@@ -12,6 +12,21 @@
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
 
+// START changed/added after v2.5beta START
+
+// general settings (security)
+define('_SETTINGS_EXTAUTH',			'Entfernte Authentifizierung erlauben');
+define('_WARNING_EXTAUTH',			'Achtung: Nur erlauben, wenn wirklich n&ouml;tig!');
+
+// member profile
+define('_MEMBERS_BYPASS',			'Entfernte Authentifizierung verwenden.');
+
+// 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
+define('_EBLOG_SEARCH',				'<em>Immer</em> in Suche aufnehmen');
+
+// END changed/added after v2.5beta
+
+
 // START introduced after v2.0 START
 
 // media library
@@ -29,9 +44,6 @@ define('_MEDIA_COLLECTION_LABEL',	'Aktuelle Sammlung: ');
 define('_ADD_ALIGNLEFT_TT',			'Links ausrichten');
 define('_ADD_ALIGNRIGHT_TT',		'Rechts ausrichten');
 define('_ADD_ALIGNCENTER_TT',		'Zentrieren');
-
-// searchable blog setting (yes/no)
-define('_EBLOG_SEARCH',				'In Suche aufnehmen');
 
 // generic upload failure
 define('_ERROR_UPLOADFAILED',		'Upload fehlgeschlagen');
@@ -73,7 +85,7 @@ define('_SETTINGS_URLMODE_NORMAL',	'Normal');
 define('_SETTINGS_URLMODE_PATHINFO','Fancy');
 
 // Batch operations
-define('_BATCH_NOSELECTION',		'Kein Ziel für Aktionen ausgew&auml;hlt');
+define('_BATCH_NOSELECTION',		'Kein Ziel f&uuml;r Aktionen ausgew&auml;hlt');
 define('_BATCH_ITEMS',				'Stapelaktionen f&uuml;r Beitr&auml;ge');
 define('_BATCH_CATEGORIES',			'Stapelaktionen f&uuml;r Kategorien');
 define('_BATCH_MEMBERS',			'Stapeloperationen f&uuml;r Mitglieder');
@@ -334,12 +346,12 @@ define('_SEARCHFORM_SUBMIT',		'Suchen');
 define('_ADD_ADDTO',				'Neues Thema hinzuf&uuml;gen zu');
 define('_ADD_CREATENEW',			'Neues Thema erstellen');
 define('_ADD_BODY',					'Inhalt');
-define('_ADD_TITLE',				'Überschrift');
+define('_ADD_TITLE',				'&Uuml;berschrift');
 define('_ADD_MORE',					'Erweitert (optional)');
 define('_ADD_CATEGORY',				'Kategorie');
 define('_ADD_PREVIEW',				'Vorschau');
 define('_ADD_DISABLE_COMMENTS',		'Kommentare verbieten?');
-define('_ADD_DRAFTNFUTURE',			'Alte &amp; zukünftige Inhalte');
+define('_ADD_DRAFTNFUTURE',			'Alte &amp; zuk&uuml;nftige Inhalte');
 define('_ADD_ADDITEM',				'Thema hinzuf&uuml;gen');
 define('_ADD_ADDNOW',				'Jetzt hinzuf&uuml;gen');
 define('_ADD_ADDLATER',				'Sp&auml;ter hinzuf&uuml;gen');
@@ -540,8 +552,8 @@ define('_EBLOG_CAT_TITLE',			'Kategorien');
 define('_EBLOG_CAT_NAME',			'Kategoriename');
 define('_EBLOG_CAT_DESC',			'Kategoriebeschreibung');
 define('_EBLOG_CAT_CREATE',			'Neue Kategorie erstellen');
-define('_EBLOG_CAT_UPDATE',			'Kategorie aktuakisieren');
-define('_EBLOG_CAT_UPDATE_BTN',		'Kategorie aktuakisieren');
+define('_EBLOG_CAT_UPDATE',			'Kategorie aktualisieren');
+define('_EBLOG_CAT_UPDATE_BTN',		'Kategorie aktualisieren');
 
 // templates
 define('_TEMPLATE_TITLE',			'Templates bearbeiten');
