@@ -9,7 +9,7 @@
 
 <div class="heading">
 Writing Plugins
-<i>December 26th, 2002</i>
+<i>December 28th, 2002</i>
 </div>
 
 <div class="note"><b>Note:</b> This document should contain enough information to write basic plugins. If you have more questions, see the <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin Development Forum</a></div>
@@ -632,12 +632,20 @@ class NP_Acronyms extends NucleusPlugin {
 	</tr>
 	<tr>
 		<td>PostPluginOptionsUpdate</td>
-		<td>After the options for a plugin have been updated.</td>
+		<td>(v2.0) After the options for a plugin have been updated.</td>
 		<td><dl>
 			<dt>plugid</dt>
-			<dd>plugin ID (compare with <tt>GetID()</tt> to find out if this concerns you)</dd>
+			<dd>plugin ID (compare with <code>GetID()</code> to find out if this concerns you)</dd>
 		</dl></td>		
 	</tr>	
+	<tr>
+		<td>PostAuthentication</td>
+		<td>(v2.0) After the login procedure has been completed. This occurs on each page request.</td>
+		<td><dl>
+			<dt>loggedIn</dt>
+			<dd>result of <code>$member->isLoggedIn()</code></dd>
+		</dl></td>		
+	</tr>		
 <!--	<tr>
 		<td></td>
 		<td></td>

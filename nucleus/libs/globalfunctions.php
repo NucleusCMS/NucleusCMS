@@ -58,18 +58,9 @@ $nextaction		= requestVar('nextaction');
 if (!headers_sent())
 	header('Generator: Nucleus ' . $nucleus['version']);
 
-include($DIR_LIBS . 'PARSER.php'); 		// PARSER and BaseActions classes
-include($DIR_LIBS . 'SKIN.php');		// SKIN class
-include($DIR_LIBS . 'TEMPLATE.php');		// TEMPLATE class 
-include($DIR_LIBS . 'BLOG.php');		// BLOG class
-include($DIR_LIBS . 'MEMBER.php');		// MEMBER class
-include($DIR_LIBS . 'COMMENTS.php');		// COMMENTS class
-include($DIR_LIBS . 'COMMENT.php');		// COMMENT class
-//include($DIR_LIBS . 'ITEM.php');		// ITEM class 
-include($DIR_LIBS . 'ACTIONLOG.php');		// ACTIONLOG class
-include($DIR_LIBS . 'NOTIFICATION.php');	// NOTIFICATION class
-include($DIR_LIBS . 'BAN.php');			// BAN(INFO) class
-include($DIR_LIBS . 'PAGEFACTORY.php'); 
+// include core classes that are needed for login & plugin handling
+include($DIR_LIBS . 'MEMBER.php');		
+include($DIR_LIBS . 'ACTIONLOG.php');	
 include($DIR_LIBS . 'MANAGER.php'); 	
 include($DIR_LIBS . 'PLUGIN.php'); 	
 
@@ -136,6 +127,22 @@ if ($action == 'login') {
 	if ($res && (cookieVar('sharedpc') != 1) && (!headers_sent()))
 		$member->setCookies();
 }
+
+// login completed
+$manager->notify('PostAuthentication',array('loggedIn' => $member->isLoggedIn()));
+
+// load other classes
+include($DIR_LIBS . 'PARSER.php'); 		
+include($DIR_LIBS . 'SKIN.php');		
+include($DIR_LIBS . 'TEMPLATE.php');	
+include($DIR_LIBS . 'BLOG.php');		
+include($DIR_LIBS . 'COMMENTS.php');	
+include($DIR_LIBS . 'COMMENT.php');		
+//include($DIR_LIBS . 'ITEM.php');		
+include($DIR_LIBS . 'NOTIFICATION.php');
+include($DIR_LIBS . 'BAN.php');			
+include($DIR_LIBS . 'PAGEFACTORY.php'); 
+
 
 // set lastVisit cookie (if allowed)
 if (!headers_sent()) {
