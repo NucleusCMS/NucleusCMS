@@ -292,7 +292,7 @@ class PAGEFACTORY extends BaseActions {
 						foreach ($btns as $button) {
 							switch($button) {
 								case "media":
-									$this->_jsbutton('media',"addMedia('body')",_ADD_MEDIA_TT .	" (Ctrl + Shift + M)");							
+									$this->_jsbutton('media',"addMedia()",_ADD_MEDIA_TT .	" (Ctrl + Shift + M)");							
 									break;
 								case "preview":
 									$this->_jsbutton('preview',"showedit()",_ADD_PREVIEW_TT);
@@ -307,9 +307,9 @@ class PAGEFACTORY extends BaseActions {
 			case "2":
 				echo '<div class="jsbuttonbar">';
 
-					$this->_jsbutton('bold',"boldThis('body')",'');
-					$this->_jsbutton('italic',"italicThis('body')",'');
-					$this->_jsbutton('link',"ahrefThis('body')",'');
+					$this->_jsbutton('bold',"boldThis()",'');
+					$this->_jsbutton('italic',"italicThis()",'');
+					$this->_jsbutton('link',"ahrefThis()",'');
 					$this->_jsbuttonspacer();										
 					$this->_jsbutton('alignleft',"alignleftThis()",_ADD_ALIGNLEFT_TT);
 					$this->_jsbutton('alignright',"alignrightThis()",_ADD_ALIGNRIGHT_TT);
@@ -325,7 +325,7 @@ class PAGEFACTORY extends BaseActions {
 						foreach ($btns as $button) {
 							switch($button) {
 								case "media":
-									$this->_jsbutton('media',"addMedia('body')",'');							
+									$this->_jsbutton('media',"addMedia()",'');							
 									break;
 							}
 						}
