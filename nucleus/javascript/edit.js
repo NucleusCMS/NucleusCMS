@@ -239,6 +239,8 @@ function insertAtCaret (text) {
 		caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? text + ' ' : text;
 	} else if (textEl) {
 		textEl.value  = text;
+	} else if (!document.all && document.getElementById) {
+		mozReplace(document.getElementById('input' + nonie_FormType), text);				
 	} else {
 		document.getElementById('input' + nonie_FormType).value += text;		
 	}
@@ -248,22 +250,61 @@ function insertAtCaret (text) {
 // inserts a tag around the selected text
 function insertAroundCaret (textpre, textpost) {
 	var textEl = lastSelected;
+	
 	if (textEl && textEl.createTextRange && textEl.caretPos) {
 		var caretPos = textEl.caretPos;
 		caretPos.text = textpre + caretPos.text + textpost;
+	} else if (!document.all && document.getElementById) {
+		mozWrap(document.getElementById('input' + nonie_FormType), textpre, textpost);		
 	} else {
 		document.getElementById('input' + nonie_FormType).value += textpre + textpost;
 	}
+
 	updAllPreviews();
 }
 
+/* some methods to get things working in Mozilla as well */
+function mozWrap(txtarea, lft, rgt) {
+	var selLength = txtarea.textLength;
+	var selStart = txtarea.selectionStart;
+	var selEnd = txtarea.selectionEnd;
+	if (selEnd==1 || selEnd==2) selEnd=selLength;
+	var s1 = (txtarea.value).substring(0,selStart);
+	var s2 = (txtarea.value).substring(selStart, selEnd)
+	var s3 = (txtarea.value).substring(selEnd, selLength);
+	txtarea.value = s1 + lft + s2 + rgt + s3;
+}
+function mozReplace(txtarea, newText) {
+	var selLength = txtarea.textLength;
+	var selStart = txtarea.selectionStart;
+	var selEnd = txtarea.selectionEnd;
+	if (selEnd==1 || selEnd==2) selEnd=selLength;
+	var s1 = (txtarea.value).substring(0,selStart);
+	var s2 = (txtarea.value).substring(selStart, selEnd)
+	var s3 = (txtarea.value).substring(selEnd, selLength);
+	txtarea.value = s1 + newText + s3;
+}
+function mozSelectedText() {
+	var txtarea = document.getElementById('input' + nonie_FormType);
+	var selLength = txtarea.textLength;
+	var selStart = txtarea.selectionStart;
+	var selEnd = txtarea.selectionEnd;
+	if (selEnd==1 || selEnd==2) selEnd=selLength;
+	return (txtarea.value).substring(selStart, selEnd);
+}
+
 function getCaretText() {
-	return lastSelected.caretPos.text;
+	if (!document.all && document.getElementById)
+		return mozSelectedText();
+	else
+		return lastSelected.caretPos.text;
 }
 
 function isCaretEmpty() {
 	if (lastSelected && lastSelected.createTextRange && lastSelected.caretPos)
-		return (lastSelected.caretPos.text == '')
+		return (lastSelected.caretPos.text == '');
+	else if (!document.all && document.getElementById)
+		return (mozSelectedText() == '');
 	else
 		return true;
 }
