@@ -1,12 +1,14 @@
 <h2><%text(_EDIT_ITEM)%></h2>
 
 <%init%>
+<script type="text/javascript" src="javascript/numbercheck.js"></script>
 
 <form method="post" action="index.php">
 <div>
 
 <input type="hidden" name="action" value="itemupdate" />
 <input name="itemid" value="<%contents(itemid)%>" type="hidden" />
+<%ticket%>
 
 <table><tr>
 	<th colspan="2"><%text(_EDIT_ITEM)%></th>
@@ -94,14 +96,14 @@
 		<br />
 		<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="70" /><label for="act_changedate"><%text(_ADD_CHANGEDATE)%></label> <%helplink(changedate)%>
 			<div class="indent">
-				<input id="inputyear" name="year" tabindex="71" size="4" value="<%itemtime(year)%>" />å¹´
-				<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" />æœˆ
-				<input id="inputday" name="day" tabindex="73" size="2" value="<%itemtime(mday)%>" />æ—¥
+				<input id="inputyear" name="year" tabindex="71" size="4" value="<%itemtime(year)%>" />”N
+				<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" />Œ
+				<input id="inputday" name="day" tabindex="73" size="2" value="<%itemtime(mday)%>" />“ú
 				 
-				<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" />æ™‚
-				<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" />åˆ†
+				<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" />
+				<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" />•ª
 				<br />
-				ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆï¼š(yyyy)å¹´(mm)æœˆ(dd)æ—¥ (hh)æ™‚(mm)åˆ†
+				ƒtƒH[ƒ}ƒbƒgF(yyyy)”N(mm)Œ(dd)“ú (hh)(mm)•ª
 			</div>
 	<%endif%>	
 	<br />
@@ -114,7 +116,12 @@
 	<td>
 		<%pluginextras%>
 	</td>	
-</tr><tr>
+</tr>
+			<%itemoptions%>	
+<tr>
+  	<th colspan="2"><%text(_ADD_MORE)%></th>
+</tr>
+<tr>
 	<td><%text(_ADD_MORE)%>
 		<br /><%helplink(extended)%>
 	</td>
@@ -126,6 +133,13 @@
 			cols="60" 
 			rows="20"><%contents(more)%></textarea>
 	</td>
+</tr><tr>
+		<td><%text(_SUBMIT)%></td>
+		<td>
+			<input tabindex="60" type="submit" value="<%text(_EDIT_SUBMIT)%>" 
+				onclick="return checkSubmit();" />
+		</td>
+	
 </tr></table>
 
 </div>

@@ -6,6 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />		
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
+		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
@@ -27,6 +28,7 @@
 			
 			<input name="action" type="hidden" value="additem" />
 			<input name="blogid" type="hidden" value="<%blogid%>" />
+			<%ticket%>
 			
 			<div id="submit" class="buttonbar">
 				<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
@@ -100,13 +102,13 @@
 					<input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 					<div class="indent">
 						<%text(_ADD_PLACE_ON)%>
-						<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" />å¹´
-						<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" />æœˆ
-						<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" />æ—¥
-						<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" />æ™‚
-						<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" />åˆ†
+						<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" />”N
+						<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" />Œ
+						<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" />“ú
+						<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" />
+						<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" />•ª
 						<br />
-						ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆï¼š(yyyy)å¹´(mm)æœˆ(dd)æ—¥ (hh)æ™‚(mm)åˆ†
+						ƒtƒH[ƒ}ƒbƒgF(yyyy)”N(mm)Œ(dd)“ú (hh)(mm)•ª
 						<%ifblogsetting(ballowpast,0)%>
 							<br />
 							<%text(_ADD_NOPASTDATES)%>
@@ -120,6 +122,9 @@
 				<td>
 				<%pluginextras%></td>
 				</tr>
+				
+				
+				  <%itemoptions%>
 				</table>
 				
 
