@@ -178,25 +178,29 @@ function media_select() {
 			
 			echo "<tr>";
 			echo "<td>". date("Y-m-d",$obj->timestamp) ."</td>";
+			
+			// strings for javascript
+			$jsCurrentCollection = str_replace("'","\\'",$currentCollection);
+			$jsFileName = str_replace("'","\\'",$obj->filename);
 
 			if ($filetype != 0) {
 				// image (gif/jpg/png/swf)
-				echo "<td><a href='media.php' onclick='chooseImage(\"$currentCollection\",\"$obj->filename\","
-							   . "\"$width\",\"$height\""
-							   . ")' title='" . htmlspecialchars($obj->filename). "'>"
+				echo "<td><a href=\"media.php\" onclick=\"chooseImage('", htmlspecialchars($jsCurrentCollection), "','", htmlspecialchars($jsFileName), "',"
+							   . "'", htmlspecialchars($width), "','" , htmlspecialchars($height), "'"
+							   . ")\" title=\"" . htmlspecialchars($obj->filename). "\">"
 							   . htmlspecialchars(shorten($obj->filename,25,'...'))
 							   ."</a>";
 				echo ' (<a href="', htmlspecialchars($CONF['MediaURL'] . $currentCollection . '/' . $obj->filename), '" onclick="window.open(this.href); return false;" title="',htmlspecialchars(_MEDIA_VIEW_TT),'">',_MEDIA_VIEW,'</a>)';
 				echo "</td>";
 			} else {
 				// no image (e.g. mpg)
-				echo "<td><a href='media.php' onclick='chooseOther(\"$currentCollection\",\"$obj->filename\""
-							   . ")' title='" . htmlspecialchars($obj->filename). "'>"
+				echo "<td><a href='media.php' onclick=\"chooseOther('" , htmlspecialchars($jsCurrentCollection), "','", htmlspecialchars($jsFileName), "'"
+							   . ")\" title=\"" . htmlspecialchars($obj->filename). "\">"
 							   . htmlspecialchars(shorten($obj->filename,30,'...'))
 							   ."</a></td>";
 
 			}
-			echo '<td>' , $width , 'x' , $height , '</td>';
+			echo '<td>' , htmlspecialchars($width) , 'x' , htmlspecialchars($height) , '</td>';
 			echo '</tr>';
 		}
 	} // if (sizeof($arr)>0)
