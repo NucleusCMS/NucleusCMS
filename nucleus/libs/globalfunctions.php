@@ -21,7 +21,7 @@ checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQ
 
 $CONF['debug'] = 1;
 
-$nucleus['version'] = 'v3.15+ CVS';
+$nucleus['version'] = 'v3.19 CVS';
 if (getNucleusPatchLevel() > 0)
 {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();
@@ -48,7 +48,7 @@ $CONF['alertOnSecurityRisk'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 316;
+	return 319;
 }
 
 /**
@@ -200,6 +200,12 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 
 // login completed
 $manager->notify('PostAuthentication',array('loggedIn' => $member->isLoggedIn()));
+
+// first, let's see if the site is disabled or not
+if ($CONF['DisableSite'] && !$member->isAdmin()) {
+	redirect($CONF['DisableSiteURL']);
+	exit;
+}
 
 // load other classes
 include($DIR_LIBS . 'PARSER.php');
@@ -499,12 +505,6 @@ function selector() {
 	global $imagepopup, $catid;
 	global $manager;
 
-	// first, let's see if the site is disabled or not
-	if ($CONF['DisableSite'] && !$member->isAdmin()) {
-		redirect($CONF['DisableSiteURL']);
-		exit;
-	}
-	
 	$actionNames = array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin');
 	$action = requestVar('action');
 	if (in_array($action, $actionNames))
