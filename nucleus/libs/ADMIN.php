@@ -50,7 +50,7 @@ class ADMIN {
 		$this->action_login($error);
 	}
 
-	function action_login($msg = '') {
+	function action_login($msg = '', $passvars = 1) {
 		global $member;
 		
 		// skip to overview when allowed
@@ -82,7 +82,7 @@ class ADMIN {
 			// pass through vars
 			
 			$oldaction = postVar('oldaction');
-			if (  ($oldaction != 'logout')  && ($oldaction != 'login')   ) {
+			if (  ($oldaction != 'logout')  && ($oldaction != 'login')  && $passvars ) {
 				passRequestVars();
 			}
 
@@ -1700,7 +1700,7 @@ class ADMIN {
 		   && ( $newpass || ( $mem->getDisplayName() != $member->getDisplayName() ) )
 		   ) {
 			$member->logout();
-			$this->action_login(_MSG_LOGINAGAIN);
+			$this->action_login(_MSG_LOGINAGAIN, 0);
 		} else {
 			$this->action_overview(_MSG_SETTINGSCHANGED);
 		}
