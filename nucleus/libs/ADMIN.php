@@ -5149,9 +5149,6 @@ selector();
 		// plugin will be added as last one in the list
 		$newOrder = $numCurrent + 1;
 
-		// set the actual opid for the plugin 
-		$plugin->plugid = $newOrder;
-		
 		$manager->notify(
 			'PreAddPlugin',
 			array(
@@ -5163,6 +5160,9 @@ selector();
 		$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.addslashes($name).'")';
 		sql_query($query);
 		$iPid = mysql_insert_id();
+
+		// need to update the plugin object's pid since we didn't have it above when it's first create....
+		$plugin->plugid = $iPid;
 
 		$manager->clearCachedInfo('installedPlugins');
 
