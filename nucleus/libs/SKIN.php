@@ -485,18 +485,22 @@ class ACTIONS extends BaseActions {
 			*/
 		  	case 'hasplugin':
                 $condition = false;
-                $plugin =& $manager->getPlugin('NP_' . $name);
-                if ($plugin != NULL){
-                    if ($value == "") {
-                        $condition = true;
-                    } else {
-                        list($name2, $value2) = explode('=', $value, 2);
-                        if ($value2 == "" && $plugin->getOption($name2) != 'no') {
-                            $condition = true;
-                        } else if ($plugin->getOption($name2) == $value2) {
-                            $condition = true;
-                        }
-                    }
+                // (pluginInstalled method won't write a message in the actionlog on failure)
+                if ($manager->pluginInstalled('NP_'.$name)) 
+                {
+					$plugin =& $manager->getPlugin('NP_' . $name);
+					if ($plugin != NULL){
+						if ($value == "") {
+							$condition = true;
+						} else {
+							list($name2, $value2) = explode('=', $value, 2);
+							if ($value2 == "" && $plugin->getOption($name2) != 'no') {
+								$condition = true;
+							} else if ($plugin->getOption($name2) == $value2) {
+								$condition = true;
+							}
+						}
+					}
                 }
                 break;				
 			default:	
