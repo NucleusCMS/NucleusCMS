@@ -75,7 +75,7 @@ $amount			= requestVar('amount');
 $action			= requestVar('action');
 $nextaction		= requestVar('nextaction');
 $maxresults     = requestVar('maxresults');
-$startpos       = requestVar('startpos');
+$startpos       = intRequestVar('startpos');
 
 if (!headers_sent())
 	header('Generator: Nucleus ' . $nucleus['version']);
