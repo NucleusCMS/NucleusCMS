@@ -1,7 +1,7 @@
 <?php
 
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
+  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
   * Copyright (C) 2002 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
@@ -16,21 +16,21 @@
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
 $nucleus['version'] = 'v2.5 beta';
-$CONF['debug'] = 1;			
+$CONF['debug'] = 1;
 
 /*
 	Indicates when Nucleus should display startup errors. Set to 1 if you want
 	the error enabled (default), false otherwise
-	
+
 	alertOnHeadersSent
-		Displays an error when visiting a public Nucleus page and headers have 
-		been sent out to early. This usually indicates an error in either a 
-		configuration file or a language file, and could cause Nucleus to 
+		Displays an error when visiting a public Nucleus page and headers have
+		been sent out to early. This usually indicates an error in either a
+		configuration file or a language file, and could cause Nucleus to
 		malfunction
 	alertOnSecurityRisk
 		Displays an error only when visiting the admin area, and when one or
-		more of the installation files (install.php, install.sql, upgrades/ 
-		directory) are still on the server. 
+		more of the installation files (install.php, install.sql, upgrades/
+		directory) are still on the server.
 */
 $CONF['alertOnHeadersSent'] = 1;
 $CONF['alertOnSecurityRisk'] = 1;
@@ -39,7 +39,7 @@ $CONF['alertOnSecurityRisk'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 249;		
+	return 249;
 }
 
 if ($CONF['debug']) {
@@ -108,7 +108,7 @@ register_shutdown_function('sql_disconnect');
 getConfig();
 
 // automatically use simpler toolbar for mozilla
-if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'),'Mozilla/5.0') && strstr(serverVar('HTTP_USER_AGENT'),'Gecko')) 
+if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'),'Mozilla/5.0') && strstr(serverVar('HTTP_USER_AGENT'),'Gecko'))
 	$CONF['DisableJsTools'] = 2;
 
 // login if cookies set
@@ -120,20 +120,20 @@ if ($action == 'login') {
 	$login 	= postVar('login');
 	$pw 	= postVar('password');
 	$shared	= intPostVar('shared');	// shared computer or not
-	
+
 	if ($member->login($login,$pw)) {
 
 		$member->newCookieKey();
 		$member->setCookies($shared);
-		
+
 		// allows direct access to parts of the admin area after logging in
 		if ($nextaction)
-			$action = $nextaction;		
-		
+			$action = $nextaction;
+
 		$manager->notify('LoginSuccess',array('member' => &$member));
 		ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
 	} else {
-		$manager->notify('LoginFailed',array('username' => $login));	
+		$manager->notify('LoginFailed',array('username' => $login));
 		ACTIONLOG::add(INFO, 'Login failed for ' . $login);
 	}
 } elseif (($action == 'logout') && (!headers_sent()) && cookieVar('user')){
@@ -254,7 +254,7 @@ function sendContentType($contenttype, $charset = _CHARSET) {
 			)
 			header('Content-Type: text/html; charset=' . $charset);
 		else
-			header('Content-Type: ' . $contenttype . '; charset=' . charset);
+			header('Content-Type: ' . $contenttype . '; charset=' . $charset);
 	}
 }
 
@@ -313,7 +313,7 @@ function highlight($text, $expression, $highlight) {
 	// $matches[1][i] = HTML
 	// $matches[2][i] = text
 	preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
-	
+
 	// throw it all together again while applying the highlight to the text pieces
 	$result = '';
 	for ($i = 0; $i < sizeof($matches[2]); $i++) {
@@ -328,7 +328,7 @@ function highlight($text, $expression, $highlight) {
 			$result .= @eregi_replace($expression,$highlight,$matches[2][$i]);
 		}
 	}
-	
+
 	return $result;
 }
 
@@ -342,15 +342,15 @@ function parseHighlight($query) {
 	$query = preg_replace('/\'|"/','',$query);
 
 	if (!query) return array();
-	
+
 	$aHighlight = explode(' ', $query);
-	
+
 	for ($i = 0; $i<count($aHighlight); $i++) {
 		$aHighlight[$i] = trim($aHighlight[$i]);
 		if (strlen($aHighlight[$i]) < 3)
 			unset($aHighlight[$i]);
 	}
-	
+
 	if (count($aHighlight) == 1)
 		return $aHighlight[0];
 	else
@@ -362,9 +362,9 @@ function parseHighlight($query) {
   */
 function isValidMailAddress($address) {
 	if (preg_match('/^[a-zA-Z0-9\._-]+@[a-zA-Z0-9\._-]+\.[A-Za-z]{2,5}$/', $address))
-		return 1; 
+		return 1;
 	else
-		return 0; 
+		return 0;
 }
 
 
@@ -420,7 +420,7 @@ function selector() {
 		} else {
 			$extraInfo = '';
 		}
-		
+
 
 		startUpError(
 			'<p>The page headers have already been sent out'.$extraInfo.'. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, at the end of the language file or at the end of a plugin file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>',
@@ -428,7 +428,7 @@ function selector() {
 		);
 		exit;
 	}
-	
+
 	// make is so ?archivelist without blogname or blogid shows the archivelist
 	// for the default weblog
 	if (serverVar('QUERY_STRING') == 'archivelist')
@@ -448,12 +448,12 @@ function selector() {
 		$query = 'SELECT UNIX_TIMESTAMP(itime) as itime, iblog FROM '.sql_table('item').' WHERE inumber=' . $itemid;
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
-		
+
 		// if a different blog id has been set through the request or selectBlog(),
 		// deny access
 		if ($blogid && (intval($blogid) != $obj->iblog))
 			doError(_ERROR_NOSUCHITEM);
-			
+
 		$blogid = $obj->iblog;
 		$timestamp = $obj->itime;
 
@@ -480,19 +480,19 @@ function selector() {
 			$itemidnext = $obj->inumber;
 			$itemtitlenext = $obj->ititle;
 		}
-		
+
 	} elseif ($archive) {
 		// show archive
 		$type = 'archive';
-		
+
 		// get next and prev month links
 		global $archivenext, $archiveprev, $archivetype;
-		
-		sscanf($archive,'%d-%d-%d',$y,$m,$d);			
+
+		sscanf($archive,'%d-%d-%d',$y,$m,$d);
 		if ($d != 0) {
 			$archivetype = 'day';	// TODO: move to language file
 			$t = mktime(0,0,0,$m,$d,$y);
-			$archiveprev = strftime('%Y-%m-%d',$t - (24*60*60));	
+			$archiveprev = strftime('%Y-%m-%d',$t - (24*60*60));
 			$archivenext = strftime('%Y-%m-%d',$t + (24*60*60));
 
 		} else {
@@ -584,7 +584,7 @@ function doError($msg, $skin = '') {
 			$skin = new SKIN($CONF['BaseSkin']);
 		}
 	}
-	
+
 	$errormessage = $msg;
 	$skin->parse('error');
 	exit;
@@ -592,7 +592,7 @@ function doError($msg, $skin = '') {
 
 function getConfig() {
 	global $CONF;
-	
+
 	$query = 'SELECT * FROM '.sql_table('config');
 	$res = sql_query($query);
 	while ($obj = mysql_fetch_object($res)) {
@@ -615,31 +615,31 @@ function removeBreaks($var) {			return str_replace("<br />\n","\n",$var); }
   * Generate a 'pronouncable' password
   * (http://www.zend.com/codex.php?id=215&single=1)
   */
-function genPassword($length){  
+function genPassword($length){
 
-    srand((double)microtime()*1000000);  
-      
-    $vowels = array('a', 'e', 'i', 'o', 'u');  
-    $cons = array('b', 'c', 'd', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'u', 'v', 'w', 'tr',  
-    'cr', 'br', 'fr', 'th', 'dr', 'ch', 'ph', 'wr', 'st', 'sp', 'sw', 'pr', 'sl', 'cl');  
-      
-    $num_vowels = count($vowels);  
-    $num_cons = count($cons);  
-      
-    for($i = 0; $i < $length; $i++){  
-        $password .= $cons[rand(0, $num_cons - 1)] . $vowels[rand(0, $num_vowels - 1)];  
-    }  
-      
-    return substr($password, 0, $length);  
-}  
+    srand((double)microtime()*1000000);
 
-// shortens a text string to maxlength ($toadd) is what needs to be added 
+    $vowels = array('a', 'e', 'i', 'o', 'u');
+    $cons = array('b', 'c', 'd', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'u', 'v', 'w', 'tr',
+    'cr', 'br', 'fr', 'th', 'dr', 'ch', 'ph', 'wr', 'st', 'sp', 'sw', 'pr', 'sl', 'cl');
+
+    $num_vowels = count($vowels);
+    $num_cons = count($cons);
+
+    for($i = 0; $i < $length; $i++){
+        $password .= $cons[rand(0, $num_cons - 1)] . $vowels[rand(0, $num_vowels - 1)];
+    }
+
+    return substr($password, 0, $length);
+}
+
+// shortens a text string to maxlength ($toadd) is what needs to be added
 // at the end (end length is <= $maxlength)
 function shorten($text, $maxlength, $toadd) {
 	// 1. remove entities...
 	$trans = get_html_translation_table(HTML_ENTITIES);
 	$trans = array_flip($trans);
-	$text = strtr($text, $trans); 
+	$text = strtr($text, $trans);
 	// 2. the actual shortening
 	if (strlen($text) > $maxlength)
 		$text = substr($text,0,$maxlength-strlen($toadd)) . $toadd;
@@ -660,7 +660,7 @@ function mysqldate($timestamp) {
 function selectBlog($shortname) {
 	global $blogid, $archivelist;
 	$blogid = getBlogIDFromName($shortname);
-	
+
 	// also force archivelist variable, if it is set
 	if ($archivelist)
 		$archivelist = $blogid;
@@ -677,7 +677,7 @@ function selectSkin($skinname) {
  */
 function selectCategory($cat) {
 	global $catid;
-	if (is_numeric($cat)) 
+	if (is_numeric($cat))
 		$catid = intval($cat);
 	else
 		$catid = getCatIDFromName($cat);
@@ -701,10 +701,10 @@ function parseFile($filename) {
 
 	if (!file_exists($filename)) doError('A file is missing');
 
-	// read file 
+	// read file
 	$fd = fopen ($filename, 'r');
 	$contents = fread ($fd, filesize ($filename));
-	fclose ($fd);		
+	fclose ($fd);
 
 	// parse file contents
 	$parser->parse($contents);
@@ -741,7 +741,7 @@ function getMailFooter() {
 }
 
 /**
-  * Returns the name of the language to use 
+  * Returns the name of the language to use
   * preference priority: member - site
   * defaults to english when no good language found
   *
@@ -749,14 +749,14 @@ function getMailFooter() {
   */
 function getLanguageName() {
 	global $CONF, $member;
-	
+
 	if (!$member) return 'english';
 
 	// try to use members language
 	$memlang = $member->getLanguage();
 	if (($memlang != '') && (checkLanguage($memlang)))
 		return $memlang;
-	
+
 	if (checkLanguage($CONF['Language']))
 		return $CONF['Language'];
 	else
@@ -811,7 +811,7 @@ $CONF['CategoryURL'] = $CONF['Self'];
 
 // switch URLMode back to normal when $CONF['Self'] ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
-if (	($CONF['URLMode'] == 'pathinfo') 
+if (	($CONF['URLMode'] == 'pathinfo')
 	&&	(strrpos($CONF['Self'], '.php') == strlen($CONF['Self']) - 4)
 	) {
 	$CONF['URLMode'] = 'normal';
