@@ -140,7 +140,7 @@ class PAGEFACTORY extends BaseActions {
 			else
 				$catid = $this->blog->getDefaultCategory();		// on add item
 			
-			ADMIN::selectBlogCategory('catid',$catid,$startidx,1);
+			ADMIN::selectBlogCategory('catid',$catid,$startidx,1,$this->blog->getID());
 	}
 	
 	function parse_blogid() {
