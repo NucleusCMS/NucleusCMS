@@ -1,0 +1,387 @@
+<nucleusskin>
+<meta>
+	<skin name="default" />
+	<template name="default/short" />
+	<template name="default/full" />
+	<info><![CDATA[Nucleus Default Skin]]></info>
+</meta>
+
+<skin name="default" type="text/html" includeMode="skindir" includePrefix="default/">
+<description>Nucleus default skin</description>
+
+
+	<part name="archive"><![CDATA[
+
+<%parsedinclude(head.inc)%>
+
+<%parsedinclude(header.inc)%>
+
+<div id="container">
+<div class="content">
+<div class="contenttitle">
+<h2>Archives</h2>
+</div>
+You are currently viewing archive for <%archivedate%>
+</div>
+<%archive(default/short)%>
+</div>
+
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(menu.inc)%>
+</div>
+
+<%parsedinclude(footer.inc)%>
+
+]]></part>
+
+
+	<part name="archivelist"><![CDATA[
+
+<%parsedinclude(head.inc)%>
+
+<%parsedinclude(header.inc)%>
+
+<div id="container">
+<div class="content">
+<div class="contenttitle">
+<h2>Archives</h2>
+</div>
+<dl>
+<dt>Monthly Archives</dt>
+<%archivelist(default/short)%>
+</dl>
+</div>
+</div>
+
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(menu.inc)%>
+</div>
+
+<%parsedinclude(footer.inc)%>
+
+]]></part>
+
+
+	<part name="error"><![CDATA[
+
+<%parsedinclude(head.inc)%>
+
+<%parsedinclude(header.inc)%>
+
+<div id="container">
+<div class="content">
+<div class="contenttitle">
+<h2>Error!</h2>
+</div>
+<%errormessage%><br /><br />
+<a href="javascript:history.go(-1);">Go back</a>
+</div>
+</div>
+
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(menu.inc)%>
+</div>
+
+<%parsedinclude(footer.inc)%>
+
+]]></part>
+
+
+	<part name="imagepopup"><![CDATA[
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<title><%imagetext%></title>
+<style type="text/css">
+img { border: none; }
+body { margin: 0px; }
+</style>
+</head>
+
+<body onblur="window.close()">
+<a href="javascript:window.close();"><%image%></a>
+</body>
+
+</html>
+
+]]></part>
+
+
+	<part name="index"><![CDATA[
+
+<%parsedinclude(head.inc)%>
+
+<%parsedinclude(header.inc)%>
+
+<div id="container">
+<%blog(default/short,10)%>
+</div>
+
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(menu.inc)%>
+</div>
+
+<%parsedinclude(footer.inc)%>
+
+]]></part>
+
+
+	<part name="item"><![CDATA[
+
+<%parsedinclude(head.inc)%>
+
+<%parsedinclude(header.inc)%>
+
+<div id="container">
+<div class="content">
+<%item(default/full)%>
+</div>
+<div class="content">
+<div class="contenttitle">
+<h2>Comments</h2>
+</div>
+<a name="c"></a>
+<%comments(default/full)%>
+</div>
+<div class="content">
+<div class="contenttitle">
+<h2>Add Comment</h2>
+</div>
+<%commentform%>
+</div>
+</div>
+
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(menu.inc)%>
+</div>
+
+<%parsedinclude(footer.inc)%>
+
+]]></part>
+
+
+	<part name="member"><![CDATA[
+
+<%parsedinclude(head.inc)%>
+
+<%parsedinclude(header.inc)%>
+
+<div id="container">
+<div class="content">
+<div class="contenttitle">
+<h2>Info about <%member(name)%></h2>
+</div>
+Real name: <%member(realname)%>
+<br /><br />
+Website: <a href="<%member(url)%>"><%member(url)%></a>
+</div>
+<div class="content">
+<div class="contenttitle">
+<h2>Send message</h2>
+</div>
+<%membermailform%>
+</div>
+</div>
+
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(menu.inc)%>
+</div>
+
+<%parsedinclude(footer.inc)%>
+
+]]></part>
+
+
+	<part name="search"><![CDATA[
+
+<%parsedinclude(head.inc)%>
+
+<%parsedinclude(header.inc)%>
+
+<div id="container">
+<div class="content">
+<div class="contenttitle">
+<h2>Search Results</h2>
+</div>
+<%searchform%>
+</div>
+<%searchresults(default/short)%>
+</div>
+
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(menu.inc)%>
+</div>
+
+<%parsedinclude(footer.inc)%>
+
+]]></part>
+
+</skin>
+
+
+<template name="default/short">
+
+<description>Nucleus default blog template</description>
+
+	<part name="ARCHIVELIST_LISTITEM"><![CDATA[
+<dd><a href="<%archivelink%>" title="Archive for %B, %Y">%B, %Y</a></dd>
+]]></part>
+
+	<part name="CATLIST_HEADER"><![CDATA[
+<dd><a href="<%blogurl%>" title="All categories">All</a></dd>
+]]></part>
+
+	<part name="CATLIST_LISTITEM"><![CDATA[
+<dd><a href="<%catlink%>" title="Category: <%catname%>"><%catname%></a></dd>
+]]></part>
+
+	<part name="COMMENTS_MANY"><![CDATA[Comments]]></part>
+
+	<part name="COMMENTS_NONE"><![CDATA[
+<div class="contentitem3"><small class="contentitemcomments">
+<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle%>'">Add comment</a>
+</small></div>
+]]></part>
+
+	<part name="COMMENTS_ONE"><![CDATA[Comment]]></part>
+
+	<part name="COMMENTS_TOOMUCH"><![CDATA[
+<div class="contentitem3"><small class="contentitemcomments">
+<a href="<%itemlink%>#c" rel="bookmark"
+title="Add comment on '<%itemtitle%>'"><%commentcount%> <%commentword%></a>
+</small></div>
+]]></part>
+
+	<part name="EDITLINK"><![CDATA[
+<div class="contentitem4">
+<small class="contentitemedit">
+<a href="<%editlink%>" title="Make changes to your entry" onclick="<%editpopupcode%>" >Edit item</a>
+</small></div>
+]]></part>
+
+	<part name="FORMAT_DATE"><![CDATA[%d/%m]]></part>
+
+	<part name="FORMAT_TIME"><![CDATA[%X]]></part>
+
+	<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+
+	<part name="ITEM"><![CDATA[
+<div class="content">
+<div class="contenttitle">
+<h2><%date%>: <a href="<%itemlink%>" title="Read entry: <%title%>"><%title%></a></h2>
+</div>
+<div class="contentitem">
+<div class="contentitem1">
+<small class="contentitemcategory">
+Category: <a href="<%categorylink%>" title="Category: <%Category%>"><%Category%></a>
+</small></div>
+<div class="contentitem2">
+<small class="contentitempostedby">
+Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
+</small></div>
+<%comments%>
+<%edit%>
+</div>
+<div class="contentbody">
+<%body%>
+<%morelink%>
+</div>
+</div>
+]]></part>
+
+	<part name="LOCALE"><![CDATA[en]]></part>
+
+	<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+
+	<part name="MORELINK"><![CDATA[
+<p>&raquo; <a href="<%itemlink%>#more" title="Read more on '<%title%>'">Read More</a></p>
+]]></part>
+
+	<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
+
+	<part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part>
+
+	<part name="SEARCH_NOTHINGFOUND"><![CDATA[
+<div class="content">No search results found for <b><%query%></b></div>
+]]></part>
+
+</template>
+
+
+<template name="default/full">
+
+<description>Nucleus default item template</description>
+
+	<part name="COMMENTS_BODY"><![CDATA[
+<div class="itemcomment id<%memberid%>">
+<h3><a href="<%userlinkraw%>"
+title="<%ip%> | Click to visit <%user%>'s website or send an email">
+<%user%></a> wrote:</h3>
+<div class="commentbody">
+<%body%>
+</div>
+<div class="commentinfo">
+<%date%> <%time%>
+</div>
+</div>
+]]></part>
+
+	<part name="COMMENTS_MANY"><![CDATA[comments]]></part>
+
+	<part name="COMMENTS_NONE"><![CDATA[<div class="comments">No comments yet</div>]]></part>
+
+	<part name="COMMENTS_ONE"><![CDATA[comment]]></part>
+
+	<part name="EDITLINK"><![CDATA[
+<div class="contentitem4">
+<small class="contentitemedit">
+<a href="<%editlink%>" title="Make changes to your entry" onclick="<%editpopupcode%>" >Edit item</a>
+</small></div>
+]]></part>
+
+	<part name="FORMAT_DATE"><![CDATA[%d/%m]]></part>
+
+	<part name="FORMAT_TIME"><![CDATA[%X]]></part>
+
+	<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+
+	<part name="ITEM"><![CDATA[
+<div class="contenttitle">
+<h2><%date%>: <%title%></h2></div>
+<div class="contentitem">
+<div class="contentitem1">
+<small class="contentitemcategory">
+Category: <a href="<%categorylink%>" title="Category: <%category%>"><%category%></a>
+</small></div>
+<div class="contentitem2">
+<small class="contentitempostedby">
+Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
+</small></div>
+<%edit%>
+</div>
+<div class="contentbody">
+<%body%><br /><br />
+<a name="more"></a><%more%>
+</div>
+]]></part>
+
+	<part name="LOCALE"><![CDATA[en]]></part>
+
+	<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+
+	<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
+
+	<part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part>
+
+</template>
+
+</nucleusskin>
