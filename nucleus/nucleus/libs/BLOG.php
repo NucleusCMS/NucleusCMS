@@ -950,9 +950,9 @@ class ITEMACTIONS extends BaseActions {
 	}			
 	
 	function parse_date($format = '') {
-        if ($format = 'rfc822') { 
+        if ($format == 'rfc822') { 
 			echo date('r', $this->currentItem->timestamp); 
-        } else if ($format = 'rfc822GMT') { 
+        } else if ($format == 'rfc822GMT') { 
 			echo gmdate('r', $this->currentItem->timestamp); 
         } else {  
 			echo strftime($format ? $format : $this->template['FORMAT_DATE'],$this->currentItem->timestamp); 
