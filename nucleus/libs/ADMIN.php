@@ -2521,6 +2521,19 @@ class ADMIN {
 		?>
 		<h2><?=_EBLOG_CREATE_TITLE?></h2>
 		
+		<h3>Some information</h3>
+		
+		<p>Before you start, here's some <strong>important information</strong></p>
+		
+		<p>After you've created a new weblog, you'll need to perform some actions to make your blog accessible. There are two possibilities:</p>
+		
+		<ol>
+			<li>Simple: Create a copy of <code>index.php</code> and modify it to display your new weblog. Further instructions on how to do this will be provided after you've submitted this first form.</li>
+			<li>Advanced: Insert the blog content into your current skins using skinvar like <code>otherblog</code>. This way, you can place multiple blogs on the same page.</li>
+		</ol>
+		
+		<h3>Create Weblog</h3>
+		
 		<p>
 		<?=_EBLOG_CREATE_TEXT?>
 		</p>
@@ -2539,10 +2552,10 @@ class ADMIN {
 		</tr><tr>
 			<td><?=_EBLOG_DESC?></td>
 			<td><input name="desc" tabindex="30" maxlength="200" size="40" /></td>
-		</tr><tr>
+<!--		</tr><tr>
 			<td><?=_EBLOG_URL?></td>
 			<td><input name="url" tabindex="40" maxlength="100" size="40" /></td>
-		</tr><tr>
+-->		</tr><tr>
 			<td><?=_EBLOG_DEFSKIN?>
 			    <? help('blogdefaultskin'); ?>
 			</td>
@@ -2555,12 +2568,12 @@ class ADMIN {
 					showlist($query,'select',$template);		
 				?>
 			</td>
-		</tr><tr>		
+<!--		</tr><tr>		
 			<td><?=_EBLOG_NOTIFY?>
 			    <? help('blognotify'); ?>
 			</td>
 			<td><input name="notify" tabindex="90" maxlength="60" size="40" /></td>
-		</tr><tr>
+-->		</tr><tr>
 			<td><?=_EBLOG_OFFSET?>
 			    <? help('blogtimeoffset'); ?>
 			    <br /><?=_EBLOG_STIME?> <b><?= strftime("%H:%M",time()); ?></b>
@@ -2583,51 +2596,33 @@ class ADMIN {
 	}
 	
 	function action_addnewlog() {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 		
 		// Only Super-Admins can do this
 		$member->isAdmin() or $this->disallow();
 		
 		$bname			= trim(postVar('name'));
 		$bshortname		= trim(postVar('shortname'));
-		$bnotify		= trim(postVar('notify'));
 		$btimeoffset	= postVar('timeoffset');
-		$burl			= trim(postVar('url'));
-		$bupdate		= trim(postVar('update'));
 		$bdesc			= trim(postVar('desc'));
 		$bdefskin		= postVar('defskin');
 		
-		// check if a valid email address is given for notify
-		if ($bnotify) {
-			$not = new NOTIFICATION($bnotify);
-			if (!$not->validAddresses())
-				$this->error(_ERROR_BADNOTIFY);
-		}
-			
 		if (!isValidShortName($bshortname))
 			$this->error(_ERROR_BADSHORTBLOGNAME);
 			
 		if ($manager->existsBlog($bshortname))
 			$this->error(_ERROR_DUPSHORTBLOGNAME);
 			
-		// check if update file is writable 
-		if ($bupdate && !is_writable($bupdate))
-			$this->error(_ERROR_UPDATEFILE);			
-
-
 		// add slashes for sql queries
 		$bname = 		addslashes($bname);
 		$bshortname = 	addslashes($bshortname);
-		$bnotify = 		addslashes($bnotify);
 		$btimeoffset = 	addslashes($btimeoffset);
-		$burl = 		addslashes($burl);
-		$bupdate = 		addslashes($bupdate);
 		$bdesc = 		addslashes($bdesc);
 		$bdefskin = 	addslashes($bdefskin);
 		
 	
 		// create blog
-		$query = "INSERT INTO nucleus_blog (bname, bshortname, bdesc, btimeoffset, bnotify, burl, bupdate, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', $btimeoffset, '$bnotify', '$burl', '$bupdate', $bdefskin)";
+		$query = "INSERT INTO nucleus_blog (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', $btimeoffset, $bdefskin)";
 		sql_query($query);
 		$blogid	= mysql_insert_id();
 		$blog	=& $manager->getBlog($blogid);
@@ -2648,8 +2643,82 @@ class ADMIN {
 
 		$blog->additem($blog->getDefaultCategory(),"First Item",'This is the first item in your weblog. Feel free to delete it.','',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
 		
-		$this->action_overview(_MSG_NEWBLOG);
 		
+		$this->pagehead();
+		?>
+		<h2>New weblog created</h2>
+		
+		<p>Your new weblog (<?=htmlspecialchars($bname)?>) has been created. To continue, choose the way you'll want to make it viewable:</p>
+		
+		<ol>
+			<li><a href="#index_php">Easiest: A copy of <code><?=htmlspecialchars($bshortname)?>.php</code></a></li>
+			<li><a href="#skins">Advanced: Call the weblog from existing skins</a></li>			
+		</ol>
+		
+		<h3><a name="index_php">Create an extra <code><?=htmlspecialchars($bshortname)?>.php</code> file</a></h3>
+		
+		<p>Create a file called <code><?=htmlspecialchars($bshortname)?>.php</code>, and copy-paste the following code into it:</p>
+<pre><code>&lt;?
+
+$CONF['Self'] = '<b><?=htmlspecialchars($bshortname)?>.php</b>';
+
+include('<i>config.php</i>');
+
+selectBlog('<b><?=htmlspecialchars($bshortname)?></b>')
+selector();
+
+?&gt;</code></pre>
+
+		<p>Upload the file next to your existing <code>index.php</code> file, and you should be all set.</p>
+		
+		<p>To finish the weblog creation process, please fill out the final URL for your weblog (the proposed value is a <em>guess</em>, don't take it for granted):</p>
+		
+		<form action="index.php" method="post"><div>
+			<input type="hidden" name="action" value="addnewlog2" />		
+			<input type="hidden" name="blogid" value="<?=intval($blogid)?>" />						
+			<table><tr>
+				<td><?=_EBLOG_URL?></td>
+				<td><input name="url" maxlength="100" size="40" value="<?=htmlspecialchars($CONF['IndexURL'].$bshortname.'.php')?>" /></td>
+			</tr><tr>
+				<td><?=_EBLOG_CREATE?></td>
+				<td><input type="submit" value="<?=_EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+			</tr></table>
+		</div></form>
+		
+		<h3><a name="skins">Call the weblog from existing skins</a></h3>
+
+		<p>To finish the weblog creation process, simply please fill out the final URL for your weblog: (might be the same as another already existing weblog)</p>
+		
+		<form action="index.php" method="post"><div>
+			<input type="hidden" name="action" value="addnewlog2" />
+			<input type="hidden" name="blogid" value="<?=intval($blogid)?>" />			
+			<table><tr>
+				<td><?=_EBLOG_URL?></td>
+				<td><input name="url" maxlength="100" size="40" /></td>
+			</tr><tr>
+				<td><?=_EBLOG_CREATE?></td>
+				<td><input type="submit" value="<?=_EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+			</tr></table>
+		</div></form>
+		
+		<?
+		$this->pagefoot();		
+		
+	}
+	
+	function action_addnewlog2() {
+		global $member, $manager;
+		
+		$member->blogAdminRights($blogid) or $this->disallow();
+		
+		$burl	= requestVar('url');
+		$blogid	= intRequestVar('blogid');
+		
+		$blog =& $manager->getBlog($blogid);		
+		$blog->setURL(trim($burl));
+		$blog->writeSettings();		
+		
+		$this->action_overview(_MSG_NEWBLOG);
 	}
 
 	function action_skinieoverview() {
