@@ -390,6 +390,75 @@ class ADMIN {
 		
 	}	
 	
+
+	function action_batchteam() {
+		global $member, $manager;
+		
+		$blogid = intRequestVar('blogid');
+		
+		// check if logged in and admin
+		($member->isLoggedIn() && $member->blogAdminRights($blogid)) or $this->disallow();
+		
+		// get array of itemids from request
+		$selected = requestIntArray('batch');
+		$action = requestVar('batchaction');
+		
+		// Show error when no members selected
+		if (!is_array($selected) || sizeof($selected) == 0)
+			$this->error(_BATCH_NOSELECTION);
+			
+		// On delete: check if confirmation has been given
+		if (($action == 'delete') && (requestVar('confirmation') != 'yes')) 
+			$this->batchAskDeleteConfirmation('team',$selected);
+
+		$this->pagehead();
+		
+		echo '<p><a href="index.php?action=manageteam&amp;blogid=',$blogid,'">(',_BACK,')</a></p>';
+
+		echo '<h2>',_BATCH_TEAM,'</h2>';
+		echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b></p>';
+		echo '<ul>';
+		
+		// walk over all itemids and perform action
+		foreach ($selected as $memberid) {
+			$memberid = intval($memberid);
+			echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b> ',_BATCH_ONTEAM,' <b>', $memberid, '</b>...';
+
+			// perform action, display errors if needed
+			switch($action) {
+				case 'delete':
+					$error = $this->deleteOneTeamMember($blogid, $memberid);
+					break;
+				case 'setadmin':
+					// always succeeds
+					sql_query('UPDATE nucleus_team SET tadmin=1 WHERE tblog='.$blogid.' and tmember='.$memberid);
+					$error = '';
+					break;
+				case 'unsetadmin':
+					// there should always remain at least one admin
+					$r = sql_query('SELECT * FROM nucleus_team WHERE tadmin=1 and tblog='.$blogid);
+					if (mysql_num_rows($r) < 2)
+						$error = _ERROR_ATLEASTONEBLOGADMIN;
+					else
+						sql_query('UPDATE nucleus_team SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
+					break;
+				default:
+					$error = _BATCH_UNKNOWN . $action;
+			}
+
+			echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
+			echo '</li>';
+		}
+		
+		echo '</ul>';
+		echo '<b>',_BATCH_DONE,'</b>';
+		
+		$this->pagefoot();
+
+		
+	}	
+
+
 	
 	function action_batchcategory() {
 		global $member, $manager;
@@ -521,6 +590,17 @@ class ADMIN {
 				$idx = 0;
 				foreach ($ids as $id)
 					echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+					
+				// add hidden vars for team & comment
+				if ($type == 'team') 
+				{
+					echo '<input type="hidden" name="blogid" value="',intRequestVar('blogid'),'" />';
+				}
+				if ($type == 'comment') 
+				{
+					echo '<input type="hidden" name="itemid" value="',intRequestVar('itemid'),'" />';
+				}
+					
 			?>
 			
 			<input type="submit" value="<?=_BATCH_DELETE_CONFIRM_BTN?>" onclick="return checkSubmit();" 
@@ -1703,8 +1783,18 @@ class ADMIN {
 		$memberid = intRequestVar('memberid');
 		$blogid = intRequestVar('blogid');
 
+		$error = $this->deleteOneTeamMember($blogid, $memberid);
+		
+		
+		$this->action_manageteam();
+	}
+	
+	function deleteOneTeamMember($blogid, $memberid) {
+		global $member;
+		
 		// check if allowed
-		$member->blogAdminRights($blogid) or $this->disallow();
+		if (!$member->blogAdminRights($blogid))
+			return _ERROR_DISALLOWED;
 
 		// check if: - there remains at least one blog admin
 		//           - (there remains at least one team member)
@@ -1716,13 +1806,13 @@ class ADMIN {
 			$query = "SELECT * FROM nucleus_team WHERE tblog=$blogid and tadmin=1";
 			$r = sql_query($query);
 			if (mysql_num_rows($r) < 2)
-				$this->error(_ERROR_ATLEASTONEBLOGADMIN);
+				return _ERROR_ATLEASTONEBLOGADMIN;
 		}
 		
 		$query = "DELETE FROM nucleus_team WHERE tblog=$blogid and tmember=$memberid";
 		sql_query($query);
 		
-		$this->action_manageteam();
+		return '';
 	}
 	
 	function action_teamchangeadmin() {
@@ -4811,6 +4901,19 @@ class BATCH extends ENCAPSULATE {
 			?>
 			</select>
 			<input type="hidden" name="action" value="batch<?=$this->type?>" />
+			<?
+				// add hidden fields for 'team' and 'comment' batchlists
+				if ($this->type == 'team') 
+				{
+					echo '<input type="hidden" name="blogid" value="',intRequestVar('blogid'),'" />';
+				}
+				if ($this->type == 'comment') 
+				{
+					echo '<input type="hidden" name="itemid" value="',intRequestVar('itemid'),'" />';
+				}
+				
+			?>
+			
 			<input type="submit" value="Execute" />
 			(
 			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); ">select all</a> -
