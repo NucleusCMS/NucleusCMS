@@ -23,7 +23,7 @@ include('./config.php');
 if (!$CONF['DisableSite']) {
 	// get feed into $feed
 	ob_start();
-		selectSkin('xmlrss2');
+		selectSkin('feeds/rss20');
 		selector();
 	$feed = ob_get_contents();
 	ob_end_clean();
