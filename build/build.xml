@@ -37,7 +37,7 @@
 	<mkdir dir="${tempdir}" />	
 
 	<!-- Copy all Nucleus files and libs -->
-    <copy todir="${release.home}">
+    <copy todir="${release.home}" preservelastmodified="yes">
     	<fileset dir="${src.home}">
 			<exclude name="**/CVS/**"/>    	
     	</fileset>
@@ -63,7 +63,7 @@
     
     <!-- Copy the correct config.php file -->
     <delete file="${release.home}/config.php" />
-    <copy file="${src.home}/build/config.php" todir="${release.home}" />
+    <copy file="${src.home}/build/config.php" todir="${release.home}"  preservelastmodified="yes" />
 
     <zip zipfile="${release.zip}"
     	basedir="${tempdir}"
@@ -76,14 +76,14 @@
 	<mkdir dir="${tempdir}" />	
 
 	<!-- Copy all Nucleus files and libs -->
-    <copy todir="${upgrade.home}/nucleus">
+    <copy todir="${upgrade.home}/nucleus" preservelastmodified="yes">
     	<fileset dir="${src.home}/nucleus">
 			<exclude name="**/CVS/**"/>    	
     	</fileset>
     </copy>
 
 	<!-- copy xml-rss2/rsd skins as well -->
-    <copy todir="${upgrade.home}/skins">
+    <copy todir="${upgrade.home}/skins" preservelastmodified="yes">
     	<fileset dir="${src.home}/skins">
 			<exclude name="**/CVS/**"/>    	
 			<exclude name="**/base/**"/>    				
@@ -91,7 +91,7 @@
     </copy>
     
 	<!-- copy extra stuff as well -->
-    <copy todir="${upgrade.home}/extra">
+    <copy todir="${upgrade.home}/extra" preservelastmodified="yes">
     	<fileset dir="${src.home}/extra">
 			<exclude name="**/CVS/**"/>    	
     	</fileset>
@@ -116,7 +116,7 @@
     <delete dir="${upgrade.home}/build" />
     
     <!-- Copy necessary files in root -->
-    <copy file="${src.home}/action.php" todir="${upgrade.home}" />
+    <copy file="${src.home}/action.php" todir="${upgrade.home}" preservelastmodified="yes" />
 
 	<zip zipfile="${upgrade.zip}"
 		basedir="${tempdir}"
@@ -129,7 +129,7 @@
 	<mkdir dir="${tempdir}" />	
 
 	<!-- Copy all necessary files in there -->
-    <copy todir="${upgradescripts.home}">
+    <copy todir="${upgradescripts.home}" preservelastmodified="yes">
     	<fileset dir="${src.home}/nucleus/upgrades">
 			<exclude name="**/CVS/**"/>    	
     	</fileset>
@@ -146,7 +146,7 @@
 	<mkdir dir="${tempdir}" />	
 
 	<!-- Copy all necessary files in there -->
-    <copy todir="${convert.home}">
+    <copy todir="${convert.home}" preservelastmodified="yes">
     	<fileset dir="${src.home}/nucleus/convert">
 			<exclude name="**/CVS/**"/>
     	</fileset>
@@ -163,7 +163,7 @@
 	<mkdir dir="${tempdir}" />	
 
 	<!-- Copy all necessary files in there -->
-    <copy todir="${devdocs.home}">
+    <copy todir="${devdocs.home}" preservelastmodified="yes">
     	<fileset dir="${src.home}/nucleus/documentation/devdocs/">
 			<exclude name="**/CVS/**"/>    	
     	</fileset>
