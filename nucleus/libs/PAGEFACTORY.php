@@ -242,15 +242,22 @@ class PAGEFACTORY extends BaseActions {
 	
 	// extra javascript for input and textarea fields
 	function parse_jsinput($which) {
+		global $CONF;
 	?>
 			name="<?php echo $which?>" 
 			id="input<?php echo $which?>" 
-	<?php		global $CONF;
-		if ($CONF['DisableJsTools'] == 0) {
+	<?php
+		if ($CONF['DisableJsTools'] != 1) {
 	?>
 			onkeyup="storeCaret(this); updPreview('<?php echo $which?>');"
 			onclick="storeCaret(this);"
 			onselect="storeCaret(this);" 
+
+	<?php		
+		} 
+		
+		if ($CONF['DisableJsTools'] == 0) {
+	?>
 	  	    onkeypress="shortCuts();"			
 	<?php		}
 	}
