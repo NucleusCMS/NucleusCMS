@@ -91,6 +91,9 @@
 		function createCategoryOption($name, $desc, $type, $defValue = '', $typeExtras = '') {
 			return $this->_createOption('category', $name, $desc, $type, $defValue, $typeExtras);
 		}
+        function createItemOption($name, $desc, $type, $defValue = '', $typeExtras = '') {
+			return $this->_createOption('item', $name, $desc, $type, $defValue, $typeExtras);
+		}
 
 		/**
 		  * Removes the option from the database
@@ -109,6 +112,9 @@
 		function deleteCategoryOption($name) {
 			return $this->_deleteOption('category', $name);
 		}
+        function deleteItemOption($name) {
+			return $this->_deleteOption('item', $name);
+		}
 
 		/**
 		  * Sets the value of an option to something new
@@ -124,6 +130,9 @@
 		}
 		function setCategoryOption($catid, $name, $value) {
 			return $this->_setOption('category', $catid, $name, $value);
+		}
+        function setItemOption($itemid, $name, $value) {
+			return $this->_setOption('item', $itemid, $name, $value);
 		}
 
 		/**
@@ -161,6 +170,9 @@
 		function getCategoryOption($catid, $name) {
 			return $this->_getOption('category', $catid, $name);
 		}
+        function getItemOption($itemid, $name) {
+			return $this->_getOption('item', $itemid, $name);
+		}
 
 		/**
 		 * Retrieves an associative array with the option value for each
@@ -174,6 +186,68 @@
 		}
 		function getAllCategoryOptions($name) {
 			return $this->_getAllOptions('category', $name);
+		}
+        function getAllItemOptions($name) {
+			return $this->_getAllOptions('item', $name);
+		}
+		
+		/**
+         * Retrieves an indexed array with the top (or bottom) of an option
+		 * (delegates to _getOptionTop())
+         */
+		function getBlogOptionTop($name, $amount = 10, $sort = 'desc') {
+			return $this->_getOptionTop('blog', $name, $amount, $sort);
+		}
+		function getMemberOptionTop($name, $amount = 10, $sort = 'desc') {
+			return $this->_getOptionTop('member', $name, $amount, $sort);
+		}
+		function getCategoryOptionTop($name, $amount = 10, $sort = 'desc') {
+			return $this->_getOptionTop('category', $name, $amount, $sort);
+		}
+		function getItemOptionTop($name, $amount = 10, $sort = 'desc') {
+			return $this->_getOptionTop('item', $name, $amount, $sort);
+		}
+		
+		/**
+		 * Retrieves an array of the top (or bottom) of an option from a plugin.
+		 * @author TeRanEX
+		 * @param  string $context the context for the option: item, blog, member,...
+		 * @param  string $name    the name of the option
+		 * @param  int    $amount  how many rows must be returned
+		 * @param  string $sort    desc or asc
+		 * @return array           array with both values and contextid's
+		 * @access private
+		 */
+        function _getOptionTop($context, $name, $amount = 10, $sort = 'desc') {
+			if (($sort != 'desc') && ($sort != 'asc')) {
+				$sort= 'desc';
+			}
+
+			$oid = $this->_getOID($context, $name);
+
+			// retrieve the data and return
+			$q = 'SELECT otype, oextra FROM '.sql_table('plugin_option_desc').' WHERE oid = '.$oid;
+			$query = mysql_query($q);
+
+			$o = mysql_fetch_array($query);
+
+			if (($this->optionCanBeNumeric($o['otype'])) && ($o['oextra'] == 'number' )) {
+				$orderby = 'CAST(ovalue AS SIGNED)';
+			} else {
+				$orderby = 'ovalue';
+			}
+			$q = 'SELECT ovalue value, ocontextid id FROM '.sql_table('plugin_option').' WHERE oid = '.$oid.' ORDER BY '.$orderby.' '.$sort.' LIMIT 0,'.$amount;
+			$query = mysql_query($q);
+			
+			// create the array
+			$i = 0;
+			$top = array();
+			while($row = mysql_fetch_array($query)) {
+				$top[$i++] = $row;
+			}
+			
+			// return the array (duh!)
+			return $top;
 		}
 
 		/**
@@ -279,6 +353,9 @@
 					break;
 				case 'category':
 					if (!$manager->existsCategory($contextid)) return 0;
+					break;
+                case 'item':
+                    if (!$manager->existsItem($contextid, true, true)) return 0;
 					break;
 				case 'global':
 					if ($contextid != 0) return 0;
@@ -412,18 +489,81 @@
 		}
 
 		/**
+		 * splits the option's typeextra field (at ;'s) to split the meta collection
+		 * @param string $typeExtra the value of the typeExtra field of an option
+		 * @return array array of the meta-values
+		 * @author TeRanEX
+		 * @static
+		 */
+		function getOptionMeta($typeExtra) {
+			return explode(';', $typeExtra);
+		}
+
+		/**
+		 * filters the selectlists out of the meta collection
+		 * @param string $typeExtra the value of the typeExtra field of an option
+		 * @return string the selectlist
+		 * @author TeRanEX
+		 */
+		function getOptionSelectValues($typeExtra) {
+			$meta = NucleusPlugin::getOptionMeta($typeExtra);
+			//now search which part is the selectlist
+			$list = '';
+			for ($i = 0; $i < count($meta); $i++) {
+				if ($meta[$i] != 'number') {
+					$list = $meta[$i];
+				}
+			}
+			return $list;
+		}
+		
+		/**
+		 * return wether or not an optiontype can be numeric
+		 * @param string $optionType type of the option
+		 * @return boolean true if this option type can be numerical
+		 * @author TeRanEX
+		 * @static
+		 */
+		function optionCanBeNumeric($optionType) {
+			switch($optionType) {
+				case 'text':
+				case 'select':
+					return true;
+					break;
+				default:
+					return false;
+					break;
+			}
+		}
+		
+		/**
+		 * accepts the typeExtra-field of an option and return's true if the option is numerical
+		 * @param string $typeExtra the value of the typeExtra field of an option
+		 * @return boolean true is the option is numerical (the meta collections contains 'number')
+		 * @author TeRanEX
+		 * @static
+		 */
+		function optionIsNumeric($typeExtra) {
+			$meta = NucleusPlugin::getOptionMeta($typeExtra);
+			return (in_array('number', $meta)) ? true : false; 
+		}
+
+		/**
 		 * @param $aOptions: array ( 'oid' => array( 'contextid' => 'value'))
 		 *        (taken from request using requestVar())
-		 *
-		 * (static method)
+		 * @param $newContextid: integer (accepts a contextid when it is for a new 
+		 *        contextid there was no id available at the moment of writing the
+		 *        formcontrols into the page (by ex: itemOptions for new item)
+		 * @static 
 		 */
-		function _applyPluginOptions(&$aOptions) {
+		function _applyPluginOptions(&$aOptions, $newContextid = 0) {
+			global $manager;
 			if (!is_array($aOptions)) return;
 
 			foreach ($aOptions as $oid => $values) {
 
 				// get option type info
-				$query = 'SELECT otype, oextra, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . intval($oid);
+				$query = 'SELECT opid, oname, ocontext, otype, oextra, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . intval($oid);
 				$res = sql_query($query);
 				if ($o = mysql_fetch_object($res))
 				{
@@ -438,6 +578,22 @@
 									break;
 							}
 
+							if ((NucleusPlugin::optionCanBeNumeric($o->otype))&&(NucleusPlugin::optionIsNumeric($o->oextra))&&(!is_numeric($value))) {
+								//the option must be numeric, but the value isn't
+								//use the default for this option
+								$value = $o->odef;
+							}
+
+							// decide wether we are using the contextid of newContextid
+							if ($newContextid != 0) {
+								$contextid = $newContextid;
+							}
+							
+							//trigger event PrePluginOptionsUpdate to give the plugin the
+							//possibility to change/validate the new value for the option
+							$manager->notify('PrePluginOptionsUpdate',array('context' => $o->ocontext, 'plugid' => $o->opid, 'optionname' => $o->oname, 'contextid' => $contextid, 'value' => &$value));
+							
+							// delete the old value for the option
 							sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));
 							sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
 

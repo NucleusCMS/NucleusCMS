@@ -70,6 +70,7 @@ class PAGEFACTORY extends BaseActions {
 			'else',
 			'endif',
 			'pluginextras',
+			'itemoptions',
 			'extrahead'
 		);
 		
@@ -378,6 +379,15 @@ class PAGEFACTORY extends BaseActions {
 				break;
 		}
 	}
+	
+	/**
+	 * Adds the itemOptions of a plugin to a page
+	 * @author TeRanEX
+	 */
+    function parse_itemoptions() {
+		global $itemid;
+		ADMIN::_insertPluginOptions('item', $itemid);
+    }
 	
 	/**
 	 * convenience method

@@ -1,6 +1,7 @@
 <h2><%text(_EDIT_ITEM)%></h2>
 
 <%init%>
+<script type="text/javascript" src="javascript/numbercheck.js"></script>
 
 <form method="post" action="index.php">
 <div>
@@ -113,7 +114,12 @@
 	<td>
 		<%pluginextras%>
 	</td>	
-</tr><tr>
+</tr>
+			<%itemoptions%>	
+<tr>
+  	<th colspan="2"><%text(_ADD_MORE)%></th>
+</tr>
+<tr>
 	<td><%text(_ADD_MORE)%>
 		<br /><%helplink(extended)%>
 	</td>
@@ -125,6 +131,13 @@
 			cols="60" 
 			rows="20"><%contents(more)%></textarea>
 	</td>
+</tr><tr>
+		<td><%text(_SUBMIT)%></td>
+		<td>
+			<input tabindex="60" type="submit" value="<%text(_EDIT_SUBMIT)%>" 
+				onclick="return checkSubmit();" />
+		</td>
+	
 </tr></table>
 
 </div>

@@ -12,6 +12,14 @@
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
 
+// START changed/added after 3.1 START
+// helppages for plugins
+define('_ERROR_PLUGNOHELPFILE',		'The helpfile for this plugin can not be found');
+define('_PLUGS_HELP_TITLE',			'Helppage for plugin');
+define('_LIST_PLUGS_HELP', 			'help');
+
+// END changed/started after 3.1
+
 // START changed/added after v2.5beta START
 
 // general settings (security)

@@ -4890,6 +4890,39 @@ selector();
 		$this->pagefoot();
 	}
 	
+	function action_pluginhelp() {
+		global $member, $manager, $DIR_PLUGINS, $CONF;
+		
+		// check if allowed
+		$member->isAdmin() or $this->disallow();
+		
+		$plugid = intGetVar('plugid');
+
+		if (!$manager->pidInstalled($plugid))
+			$this->error(_ERROR_NOSUCHPLUGIN);
+			
+		$plugName = getPluginNameFromPid($plugid);
+	
+		$this->pagehead();
+		
+		echo '<p><a href="index.php?action=pluginlist">(',_PLUGS_BACK,')</a></p>';		
+		
+		echo '<h2>',_PLUGS_HELP_TITLE,': ',htmlspecialchars($plugName),'</h2>';
+		
+		$plug =& $manager->getPlugin($plugName);
+		$helpFile = $DIR_PLUGINS.$plug->getShortName().'/help.php';
+		
+		if (($plug->supportsFeature('HelpPage') > 0) && (@file_exists($helpFile))) {
+			include($helpFile);
+		} else {
+			echo '<p>Error: ', _ERROR_PLUGNOHELPFILE,'</p>';
+			echo '<p><a href="index.php?action=pluginlist">(',_BACK,')</a></p>';
+		}
+		
+
+		$this->pagefoot();
+	}
+	
 	
 	function action_pluginadd() {
 		global $member, $manager, $DIR_PLUGINS;
@@ -5213,7 +5246,9 @@ selector();
 		$this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
 	}
 	
-
+	/**
+	  * @static
+	  */
 	function _insertPluginOptions($context, $contextid = 0) {
 		// get all current values for this contextid 
 		// (note: this might contain doubles for overlapping contextids)
@@ -5243,7 +5278,8 @@ selector();
 				'description' => $o->odesc,
 				'type' => $o->otype,
 				'typeinfo' => $o->oextra,
-				'contextid' => $contextid
+				'contextid' => $contextid,
+				'extra' => ''
 			));
 		}
 		
@@ -5719,6 +5755,8 @@ function listplug_table_pluginlist($template, $type) {
 				echo "<br /><a href='index.php?action=plugindelete&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UNINSTALL,"</a>";
 				if ($plug && ($plug->hasAdminArea() > 0))
 					echo "<br /><a href='".htmlspecialchars($plug->getAdminURL())."'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_ADMIN,"</a>";
+				if ($plug && ($plug->supportsFeature('HelpPage') > 0))
+					echo "<br /><a href='index.php?action=pluginhelp&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_HELP,"</a>";
 				if (quickQuery('SELECT COUNT(*) AS result FROM '.sql_table('plugin_option_desc').' WHERE ocontext=\'global\' and opid='.$current->pid) > 0)
 					echo "<br /><a href='index.php?action=pluginoptions&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_OPTIONS,"</a>";
 			echo '</td>';
@@ -5762,7 +5800,8 @@ function listplug_plugOptionRow($current) {
 			break;
 		case 'select':
 			echo '<select name="'.htmlspecialchars($varname).'">';
-			$aOptions = explode('|', $current['typeinfo']);
+			$aOptions = NucleusPlugin::getOptionSelectValues($current['typeinfo']);
+			$aOptions = explode('|', $aOptions);
 			for ($i=0; $i<(count($aOptions)-1); $i+=2) {
 				echo '<option value="'.htmlspecialchars($aOptions[$i+1]).'"';
 				if ($aOptions[$i+1] == $current['value'])
@@ -5776,8 +5815,13 @@ function listplug_plugOptionRow($current) {
 			break;
 		case 'text':
 		default:
-			echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'" />';
+			echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'"';
+			if ($current['typeinfo'] == 'number') {
+				echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
+			}
+			echo ' />';
 	}
+	echo $current['extra'];
 	echo '</td>';
 }
 
