@@ -1564,10 +1564,10 @@ class ADMIN {
 		<?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
 			<td><?php echo _MEMBERS_PWD?></td>
 			<td><input type="password" tabindex="30" maxlength="40" size="16" name="password" /></td>
-		<?php } ?>
 		</tr><tr>
 			<td><?php echo _MEMBERS_REPPWD?></td>
 			<td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" /></td>
+		<?php } ?>
 		</tr><tr>
 			<td><?php echo _MEMBERS_EMAIL?>
 			    <br /><small><?php echo _MEMBERS_EMAIL_EDIT?></small>
