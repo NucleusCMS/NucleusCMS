@@ -152,7 +152,6 @@ include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
 // decode path_info
 if ($CONF['URLMode'] == 'pathinfo') {
 	$data = explode("/",serverVar('PATH_INFO'));
-//	print_r($data);
 	for ($i=0;$i<sizeof($data);$i++) {
 		switch ($data[$i]) {
 			case 'item':			// item/1 (blogid)
@@ -170,6 +169,11 @@ if ($CONF['URLMode'] == 'pathinfo') {
 				$i++;
 				if ($i<sizeof($data)) $archive = $data[$i];
 				break;
+			case 'blogid':			// blogid/1
+			case 'blog':			// blog/1
+				$i++;
+				if ($i<sizeof($data)) $blogid = intval($data[$i]);
+				break;				
 			case 'category':		// category/1 (catid)
 			case 'catid':
 				$i++;
