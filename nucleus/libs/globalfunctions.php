@@ -14,7 +14,23 @@
 
 $nucleus['version'] = 'v2.1 CVS';
 $CONF['debug'] = 1;			
+
+/*
+	Indicates when Nucleus should display startup errors. Set to 1 if you want
+	the error enabled (default), false otherwise
+	
+	alertOnHeadersSent
+		Displays an error when visiting a public Nucleus page and headers have 
+		been sent out to early. This usually indicates an error in either a 
+		configuration file or a language file, and could cause Nucleus to 
+		malfunction
+	alertOnSecurityRisk
+		Displays an error only when visiting the admin area, and when one or
+		more of the installation files (install.php, install.sql, upgrades/ 
+		directory) are still on the server. 
+*/
 $CONF['alertOnHeadersSent'] = 1;
+$CONF['alertOnSecurityRisk'] = 1;
 
 /**
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)

@@ -14,6 +14,30 @@
 
 	// include the admin code
 	include('../config.php');
+	
+	if ($CONF['alertOnSecurityRisk'] == 1)
+	{
+		// check if files exist and generate an error if so
+		$aFiles = array(
+			'../install.sql' => 'install.sql', 
+			'../install.php' => 'install.php',
+			'upgrades' => 'nucleus/upgrades directory',
+			'convert' => 'nucleus/convert directory',
+		);
+		$aFound = array();
+		foreach($aFiles as $fileName => $fileDesc)
+		{
+			if (@file_exists($fileName))
+				array_push($aFound, $fileDesc);
+		}
+		if (sizeof($aFound) > 0)
+		{
+			startUpError(
+				'<p>One or more of the Nucleus installation files are still present on the webserver.</p><p>You should remove these files to ensure security. Here are the files that were found by Nucleus</p> <ul><li>'. implode($aFound, '</li><li>').'</li></ul><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code>, or do this at the end of <code>config.php</code>.</p>',
+				'Security Risk'
+			);
+		}
+	}
 
 	if (!$member->isLoggedIn() || ($action == 'logout')) {
 		$HTTP_POST_VARS['oldaction'] = $action;	// see ADMIN::login()
