@@ -37,6 +37,7 @@ Plugin API
 		<li>This document should contain enough information to write basic plugins. If you have more questions, see the <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin Development Forum</a></li>
 		<li>Methods and events introduced after Nucleus v1.5 was released have the Nucleus version in which they were introduced listed. If you use any of those functions, don't forget to adapt <code>getMinNucleusVersion</code> appropriately.
 		</li>
+  </ul>
 </div>
 
 <h1>Introduction</h1>
@@ -62,6 +63,7 @@ This document contains information on how you can write your own Nucleus plugins
 	<li><a href="#options">Saving options</a></li>
 	<li><a href="#tables">Database tables</a></li>
 	<li><a href="#admin">Providing an admin area</a></li>
+  <li><a href="#help">Providing a helppage</a></li>
 <!--	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
@@ -101,7 +103,7 @@ All plugin files should be placed in the directory that is listed in <code>confi
 Ok, lets start by writing a simple plugin. Basically, each plugin is a PHP class that inherits from the predefined class <code>NucleusPlugin</code>. Below is an example of a <code>HelloWorld</code>-plugin:
 </p>
 
-<pre class="example"><code>&lt;?
+<pre class="example"><code>&lt;?php
 
 class NP_HelloWorld extends NucleusPlugin {
 
@@ -137,7 +139,7 @@ class NP_HelloWorld extends NucleusPlugin {
 	}
 
 }
-?&gt;</pre>
+?&gt;</code></pre>
 
 <ol>
 	<li>
@@ -211,11 +213,11 @@ So, that wasn't so hard after all. Read on to find out more.
 		<td>When plugins are called using the <code>&lt;%plugin(...)%&gt;</code>-skinvar, this method will be called. the <code>$skinType</code> parameter contains the type of skin (<code>item</code>, <code>archive</code>, ...) from where the plugin is called. Don't get confused by the fact that there's only one parameter. Multiple parameters <strong>can</strong> still be passed. <a href="#skinvars">More info on implementing the <code>doSkinVar</code> method.</a> By default, this method does no output at all.</td>
 	</tr>
 	<tr>
-		<td><code>doTemplateVar(&$item)</code></td>
+		<td><code>doTemplateVar(&amp;$item)</code></td>
 		<td>Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (item header/body/footer and dateheader/footer). By default, this method forwards the handling to the <code>doSkinVar</code>-method, using <code>template</code> as skintype. <a href="#templatevars">More information on implementing the <code>doTemplateVar</code> method</a></td>
 	</tr>
 	<tr>
-		<td><code>doTemplateCommentsVar(&$item, &$comment)</code></td>
+		<td><code>doTemplateCommentsVar(&amp;$item, &amp;$comment)</code></td>
 		<td>(v2.0b) Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (comments-related parts). By default, this method forwards the handling to the <code>doSkinVar</code>-method, using <code>template</code> as skintype. <a href="#templatevars">More information on implementing the <code>doTemplateCommentsVar</code> method</a></td>
 	</tr>
 	<tr>
@@ -257,6 +259,7 @@ So, that wasn't so hard after all. Read on to find out more.
 			<br /><code>createBlogOption(...)</code>(v2.2)
 			<br /><code>createCategoryOption(...)</code>(v2.2)
 			<br /><code>createMemberOption(...)</code>(v2.2)
+      <br /><code>createItemOption(...)</code>(v3.1+CVS)
 		</td>
 		<td><a href="#options" title="More info on options">Creates a new option</a></td>
 	</tr>
@@ -266,6 +269,7 @@ So, that wasn't so hard after all. Read on to find out more.
 			<br /><code>deleteBlogOption(...)</code>(v2.2)
 			<br /><code>deleteCategoryOption(...)</code>(v2.2)
 			<br /><code>deleteMemberOption(...)</code>(v2.2)
+      <br /><code>deleteItemOption(...)</code>(v3.1+CVS)
 	   	</td>
 		<td><a href="#options" title="More info on options">Deletes an option</a></td>
 	</tr>
@@ -275,6 +279,7 @@ So, that wasn't so hard after all. Read on to find out more.
 			<br /><code>setBlogOption(...)</code>(v2.2)
 			<br /><code>setCategoryOption(...)</code>(v2.2)
 			<br /><code>setMemberOption(...)</code>(v2.2)
+      <br /><code>setItemOption(...)</code>(v3.1+CVS)
 		</td>
 		<td><a href="#options" title="More info on options">Sets the value of an option</a></td>
 	</tr>
@@ -284,6 +289,7 @@ So, that wasn't so hard after all. Read on to find out more.
 			<br /><code>getBlogOption(...)</code>(v2.2)
 			<br /><code>getCategoryOption(...)</code>(v2.2)
 			<br /><code>getMemberOption(...)</code>(v2.2)
+      <br /><code>getItemOption(...)</code>(v3.1+CVS)
 		</td>
 		<td><a href="#options" title="More info on options">Retrieves the value of an option</a></td>
 	</tr>
@@ -292,8 +298,19 @@ So, that wasn't so hard after all. Read on to find out more.
 			<code>getAllBlogOptions(...)</code>(v2.2)
 			<br /><code>getAllCategoryOptions(...)</code>(v2.2)
 			<br /><code>getAllMemberOptions(...)</code>(v2.2)
+      <br /><code>getAllItemOptions(...)</code>(v3.1+CVS)
 		</td>
 		<td><a href="#options" title="More info on options">For a given option, returns an associative of all values (one value per context)</a></td>
+	</tr>
+
+  <tr>
+		<td>
+			<code>getBlogOptionTop(...)</code>(v3.1+CVS)
+			<br /><code>getMemberOptionTop(...)</code>(v3.1+CVS)
+			<br /><code>getCategoryOptionTop(...)</code>(v3.1+CVS)
+      <br /><code>getItemOptionTop(...)</code>(v3.1+CVS)
+		</td>
+		<td><a href="#options" title="More info on options">For a given option, returns the top of all values</a></td>
 	</tr>
 	<tr>
 		<td><code>getID()</code></td>
@@ -357,8 +374,8 @@ Template plugin variables work in the same way as skin plugin vars. There are tw
 	<li>They are called from within templates instead of from within skins</li>
 	<li>They don't take a <code>$skinType</code> parameter. Instead, they take extra parameters with info on the item and comment that is currently being parsed:
 		<ul>
-			<li>The <code>doTemplateVar</code>-method gets a <code>&$item</code> parameter.</li>
-			<li>The <code>doTemplateCommentsVar</code>-method gets an <code>&$item</code> parameter as well as a <code>&$comment</code> parameter.</li>
+			<li>The <code>doTemplateVar</code>-method gets a <code>&amp;$item</code> parameter.</li>
+			<li>The <code>doTemplateCommentsVar</code>-method gets an <code>&amp;$item</code> parameter as well as a <code>&amp;$comment</code> parameter.</li>
 		</ul>
 		<strong>Note the ampersands!</strong>
 	</li>
@@ -375,14 +392,14 @@ By default, all template variables are passed on to the <code>doSkinVar</code>-m
 If you want to provide your own implementation, you'll need to redefine the method <code>doTemplateVar</code> and/or <code>doTemplateCommentsVar</code>. It works in the same way as <code>doSkinVar</code>, except that now the <code>skinType</code>-parameter is missing.
 </p>
 
-<pre class="example"><code>function doTemplateVar(&$item)
-function doTemplateVar(&$item, $param1, $param2)
-function doTemplateVar(&$item, $type, $param1, $param2)
-function doTemplateVar(&$item, $type, $param1 = 'default value')
-function doTemplateCommentsVar(&$item, &$comment)
-function doTemplateCommentsVar(&$item, &$comment, $param1, $param2)
-function doTemplateCommentsVar(&$item, &$comment, $type, $param1, $param2)
-function doTemplateCommentsVar(&$item, &$comment, $type, $param1 = 'default value')</code></pre>
+<pre class="example"><code>function doTemplateVar(&amp;$item)
+function doTemplateVar(&amp;$item, $param1, $param2)
+function doTemplateVar(&amp;$item, $type, $param1, $param2)
+function doTemplateVar(&amp;$item, $type, $param1 = 'default value')
+function doTemplateCommentsVar(&amp;$item, &amp;$comment)
+function doTemplateCommentsVar(&amp;$item, &amp;$comment, $param1, $param2)
+function doTemplateCommentsVar(&amp;$item, &amp;$comment, $type, $param1, $param2)
+function doTemplateCommentsVar(&amp;$item, &amp;$comment, $type, $param1 = 'default value')</code></pre>
 
 <h2>Notes</h2>
 
@@ -424,7 +441,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
   ...
   function getEventList() { return array('PreAddComment'); }
   ...
-  function event_PreAddComment(&$data) {
+  function event_PreAddComment(&amp;$data) {
     // replace acronym HTML
     $data['comment']['body'] =
         strreplace('HTML',
@@ -678,7 +695,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dt class="ref">more</dt>
 			<dd>extended text</dd>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code object</dd>
+			<dd><code>BLOG</code> object</dd>
 			<dt class="ref">closed</dt>
 			<dd>1 (no comments allowed) or 0 (comments allowed)</dd>
 			<dt class="ref">catid</dt>
@@ -714,19 +731,41 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td>
 			(v2.0b) before the 'edit plugin options' form is created.
 			<br />(v2.2) extra parameters
+      <br />(3.1+CVS) extra parameter for every option
 		</td>
 		<td><dl>
 			<dt class="ro">context</dt>
-			<dd>(v2.2) <code>global</code>, <code>blog</code>, <code>member</code> or <code>category</code></dd>
+			<dd>(v2.2) <code>global</code>, <code>blog</code>, <code>member</code>, <code>item</code> or <code>category</code></dd>
 			<dt class="ref">options</dt>
-			<dd>Array with for each option an associative array, having the following indices: <code>name</code>, <code>value</code>, <code>oid</code>, <code>description</code>, <code>type</code>, <code>typeinfo</code>, <code>contextid</code>. Extra options can be added here (if you want to do something with them, you'll need to subscribe to PostPluginOptionsUpdate as well)</dd>
+			<dd>Array with for each option an associative array, having the following indices: <code>name</code>, <code>value</code>, <code>oid</code>, <code>description</code>, <code>type</code>, <code>typeinfo</code>, <code>contextid</code>, <code>extra</code>. Extra options can be added here (if you want to do something with them, you'll need to subscribe to PostPluginOptionsUpdate as well)<br />
+      Using the <code>extra</code>-field you can add extra html (by example formcontrols) to the option. If you do so, you should compare <code>pid</code> with <code>getID()</code> and also check <code>name</code> before adding things to <code>extra</code></dd>
 			<dt class="ro">plugid</dt>
 			<dd>plugin ID (compare with <code>GetID()</code> to find out if this concerns you) (only present when context is global)</dd>
 			<dt class="ro">contextid</dt>
-			<dd>context ID (blogid, memberid, catid depending on context)</dd>
+			<dd>context ID (blogid, memberid, catid, itemid depending on context)</dd>
 
 		</dl></td>
 	</tr>
+  <tr>
+		<td>PrePluginOptionsUpdate</td>
+		<td>
+			(v3.1+CVS) Before the options for a plugin have been updated. (using this event you can validate/change the new value for an option)
+		</td>
+		<td><dl>
+      <dt class="ro">context</dt>
+			<dd>(v2.2) <code>global</code>, <code>member</code>, <code>blog</code>, <code>item</code> or <code>category</code></dd>
+			<dt class="ro">plugid</dt>
+			<dd>plugin ID (compare with <code>GetID()</code> to find out if this concerns you)</dd>
+      <dt class="ro">optionname</dt>
+			<dd>Name of the option</dd>
+			<dt class="ro">contextid</dt>
+			<dd>context ID (blogid, memberid, catid, itemid depending on context)</dd>
+			<dt class="ref">value</dt>
+			<dd>New value for the option</dd>
+		</dl></td>
+
+	</tr>
+  
 	<tr>
 		<td>PostPluginOptionsUpdate</td>
 		<td>
@@ -735,7 +774,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		</td>
 		<td><dl>
 			<dt class="ro">context</dt>
-			<dd>(v2.2) <code>global</code>, <code>member</code>, <code>blog</code> or <code>category</code></dd>
+			<dd>(v2.2) <code>global</code>, <code>member</code>, <code>blog</code>, <code>item</code> or <code>category</code></dd>
 			<dt class="ro">plugid</dt>
 			<dd>plugin ID (compare with <code>GetID()</code> to find out if this concerns you) (global context)</dd>
 			<dt class="ro">blogid</dt>
@@ -748,6 +787,10 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd>(v2.2) MEMBER object (member context)</dd>
 			<dt class="ro">catid</dt>
 			<dd>(v2.2) category ID (category context)</dd>
+      <dt class="ro">itemid</dt>
+			<dd>(v2.2) item ID (item context)</dd>
+      <dt class="ref obj">member</dt>
+			<dd>(v2.2) ITEM object (item context)</dd>
 		</dl></td>
 
 	</tr>
@@ -1379,6 +1422,7 @@ your stuff
 	<li><strong>Blog options</strong>: Editable from the blogsettings pages.</li>
 	<li><strong>Category options</strong>: Editable from the blogsettings pages (on the 'edit category' page).</li>
 	<li><strong>Member options</strong>: Editable on the 'edit member' pages</li>
+  <li><strong>Item options</strong>: Editable on the 'add item' or 'edit item' pages</li>
 </ol>
 
 <h2>Option types</h2>
@@ -1399,6 +1443,24 @@ your stuff
 	</dd>
 </dl>
 
+<h2>Option meta</h2>
+
+<p>As of Nucleus 3.1+CVS, some option types can be limited to only accept certain values using option-metadata. This metadata is stored in the <code>$typeExtras</code>-field, and is a semicolon-seperated list of values. Note: In a select-option, the select list must be the first value in $typeExtras.</p>
+
+<table><tr>
+	<th>key</th>
+	<th>explanation</th>
+</tr><tr>
+	<td>numeric</td>
+	<td>If set to '<code>true</code>', Nucleus will only accept numerical values for this option (available for optiontypes: '<code>select</code>' and '<code>text</code>')</td>
+</tr></table>
+
+<p>some examples:</p>
+<pre class="example"><code>// following code creates a text-option that only accepts numerical values
+$this->createItemOption('TestValue', 'TestOption', 'text', '0', 'numerical=true');
+// following code creates a select-option that only accepts numerical values
+$this->createItemOption('TestCase4', 'TestCaseOption:select(numerical)', 'select', '0', '0|0|1|1|2|2;numerical=true');
+</code></pre>
 
 <h2>Restrictions</h2>
 
@@ -1406,6 +1468,7 @@ your stuff
 	<li>The name of an option can contain a maximum of 20 characters</li>
 	<li>The description of an option can contain a maximum of 255 characters</li>
 	<li>The value for an option has no limit (Prior to v2.5 the limit was 128 characters)</li>
+  <li>The characters '=', '|' and ';' can not be used inside a select list (for a select-option), or in option-metadata</li>
 </ol>
 
 <h2>The methods</h2>
@@ -1446,6 +1509,10 @@ your stuff
 
 <p>Creates an option in the <code>member</code> context (see <code>createOption</code>)</p>
 
+<h3>[v3.1+CVS] createItemOption($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+
+<p>Creates an option in the <code>item</code> context (see <code>createOption</code>)</p>
+
 <h3>setOption($name, $value)</h3>
 
 <p>changes the value of an option that was already in the database</p>
@@ -1456,7 +1523,7 @@ your stuff
 </tr><tr>
 	<td>$name</td>
 	<td>Option name</td>
-</tr></tr>
+</tr><tr>
 	<td>$value</td>
 	<td>New value for option</td>
 </tr></table>
@@ -1472,6 +1539,10 @@ your stuff
 <h3>[v2.2] setMemberOption($memberid, $name, $value)</h3>
 
 <p>Changes the value for a member option. The <code>memberid</code> attribute indicates for which member the option is valid. (other options: see <code>setOption</code>)</p>
+
+<h3>[v3.1+CVS] setItemOption($itemid, $name, $value)</h3>
+
+<p>Changes the value for an item option. The <code>itemid</code> attribute indicates for which item the option is valid. (other options: see <code>setOption</code>)</p>
 
 <h3>getOption($name)</h3>
 
@@ -1497,6 +1568,10 @@ your stuff
 
 <p>Returns the value for a member option. <code>memberid</code> indicates for which member a value is requested (other parameters: see <code>getOption</code>)</p>
 
+<h3>[v3.1+CVS] getItemOption($itemid, $name)</h3>
+
+<p>Returns the value for an item option. <code>itemid</code> indicates for which item a value is requested (other parameters: see <code>getOption</code>)</p>
+
 <h3>deleteOption($name)</h3>
 
 <p>Deletes an option from the database</p>
@@ -1521,6 +1596,10 @@ your stuff
 
 <p>Deletes a member option (see <code>deleteOption</code>)</p>
 
+<h3>[v3.1+CVS] deleteItemOption($name)</h3>
+
+<p>Deletes an item option (see <code>deleteOption</code>)</p>
+
 <h3>[v2.2] getAllBlogOptions($name)</h3>
 
 <p>Returns all values for a given blog option. The result is an associative array with a value for each existing blogid</p>
@@ -1532,6 +1611,40 @@ your stuff
 <h3>[v2.2] getAllMemberOptions($name)</h3>
 
 <p>Returns all values for a given member option. The result is an associative array with a value for each existing memberid</p>
+
+<h3>[v3.1+CVS] getAllItemOptions($name)</h3>
+
+<p>Returns all values for a given item option. The result is an associative array with a value for each existing itemid</p>
+
+<h3>[3.1+CVS] getBlogOptionTop($name, $amount = 10, $sort = 'desc')</h3>
+
+<p>Returns the top of the values for a given option. The result is an array where every element is an array with a value ('value') for each blogid ('id')</p>
+
+<table><tr>
+	<th>parameter</th>
+	<th>value</th>
+</tr><tr>
+	<td>$name</td>
+	<td>Option name</td>
+</tr><tr>
+	<td>$amount</td>
+	<td>The amount of options you want</td>
+</tr><tr>
+	<td>$sort</td>
+	<td>Sort ascending ('asc') or descending ('desc')</td>
+</tr></table>
+
+<h3>[3.1+CVS] getMemberOptionTop($name, $amount = 10, $sort = 'desc')</h3>
+
+<p>Returns the top of the values for a given option. The result is an array where every element is an array with a value ('value') for each memberid ('id') (parameters: see <code>getBlogOptionTop</code>)</p>
+
+<h3>[3.1+CVS] getCategoryOptionTop($name, $amount = 10, $sort = 'desc')</h3>
+
+<p>Returns the top of the values for a given option. The result is an array where every element is an array with a value ('value') for each categoryid ('id') (parameters: see <code>getBlogOptionTop</code>)</p>
+
+<h3>[3.1+CVS] getItemOptionTop($name, $amount = 10, $sort = 'desc')</h3>
+
+<p>Returns the top of the values for a given option. The result is an array where every element is an array with a value ('value') for each itemid ('id') (parameters: see <code>getBlogOptionTop</code>)</p>
 
 <div class="note">
 <b>Note:</b> You can't call these functions from inside constructors of plugin classes. If you want to execute them when the plugin is loaded, place them in the <code>init()</code> method instead.
@@ -1550,9 +1663,9 @@ your stuff
 
 <p class="note">Note that the <code>sql_table</code> global function in not available in Nucleus versions up to v2.0. If you use this method and want your plugin to work on Nucleus versions &lt;= 2.0, add the following snippet of code on top of your plugin class:</p>
 
-<pre class="example"><code>&lt;?
+<pre class="example"><code>&lt;?php
 
-// plugin needs to work on Nucleus versions <=2.0 as well
+// plugin needs to work on Nucleus versions &amp;=2.0 as well
 if (!function_exists('sql_table'))
 {
 	function sql_table($name) {
@@ -1619,7 +1732,7 @@ class NP_HelloWorld extends NucleusPlugin {
   </li>
   <li>
   	Subscribe to the <code>QuickMenu</code> event and add this code in your plugin:
-  	<pre><code>function event_QuickMenu(&$data) {
+  	<pre><code>function event_QuickMenu(&amp;$data) {
 		array_push(
 			$data['options'],
 			array(
@@ -1651,6 +1764,42 @@ class NP_HelloWorld extends NucleusPlugin {
 
 <p>The purpose of the <code>PluginAdmin</code> is to help you. Once created, you can use <code>$oPluginAdmin->plugin</code> to access the instance of your plugin.</p>
 
+<h1>Plugin HelpPage <a name="help" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>As of Nucleus v3.1+CVS plugins can provide a helppage with an overview of the plugins' functionality, the available skinvars and templatevars, where to get more info,...</p>
+
+<h2>Basics</h2>
+<p>To provide a helppage, you'll need take these steps:</p>
+<ol>
+<li>Create a subdirectory of the plugins directory, and name it pluginname if your plugin is NP_PluginName. Note that the name should be lowercase! This is actually the same directory as for the <a href="#admin">admin area</a>.</li>
+<li>In that directory, create a file called help.php. In this file you can document your plugin. This is a good template to start from:
+<pre><code>&lt;h3&gt;Plugin overview&lt;/h3&gt;
+&lt;p&gt;The only purpose of this plugin is to show how the plugin helppages work&lt;/p&gt;
+&lt;h3&gt;Installation&lt;/h3&gt;
+&lt;p&gt;If you can read this you correctly installed the plugin :-)&lt;/p&gt;
+&lt;h3&gt;SkinVars&lt;/h3&gt;
+&lt;p&gt;Because this plugin is only a testcase it doesn't has any skinvars/templatevars but suppose it would have:
+&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;%HelpPageTestCase1%&gt;&lt;/b&gt;: does something&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;&lt;%HelpPageTestCase1(foobar)%&gt;&lt;/b&gt;: does something else&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;
+&lt;h3&gt;Support and Bug reports&lt;/h3&gt;
+&lt;p&gt;For additional support and/or bug reports please use this forum thread: 
+&lt;a href="http://forum.nucleuscms.org/viewtopic.php?t=&lt;TOPIC_ID_GOES_HERE&gt;"&gt;
+http://forum.nucleuscms.org/viewtopic.php?t=&lt;TOPIC_ID_GOES_HERE&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;Version History&lt;/h3&gt;
+&lt;p&gt;&lt;ul&gt;&lt;li&gt;Version 0.1: initial testcaseversion&lt;/li&gt;
+&lt;li&gt;Version 0.0: pre-initial version ;-)&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</code></pre>
+</li>
+<li>Return a value larger than 0 for supportsFeature('HelpPage'):
+<pre><code>function supportsFeature($what) {
+    switch($what) {
+    case 'HelpPage':
+        return 1;
+      default:
+        return 0;
+    }
+  }</code></pre>
+</li>
+</ol>
 
 </body>
 </html>

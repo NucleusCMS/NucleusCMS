@@ -1,4 +1,4 @@
-<?
+<?php
 
 class NP_HelpPageTestCase1 extends NucleusPlugin {
 
