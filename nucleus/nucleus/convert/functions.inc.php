@@ -462,7 +462,7 @@ class BlogImport {
 				$shortname = $shortname . $idx;
 			}
 
-			$nucleus_blogid = $this->sql_addToBlog($newblogname, $shortname, $newowner);
+			$nucleus_blogid = BlogImport::sql_addToBlog($newblogname, $shortname, $newowner);
 			
 			echo '<h2>Creating new blog</h2>';
 			echo '<p>Your new weblog has been created.</p>';
@@ -808,14 +808,17 @@ class BlogImport {
 		$shortname 	= addslashes($shortname);
 		
 		// create new category first
-		mysql_query('INSERT INTO '.sql_table('category')." (CNAME, CDESC) VALUES ('General','Items that do not fit in another categort')");
+		mysql_query('INSERT INTO '.sql_table('category')." (CNAME, CDESC) VALUES ('General','Items that do not fit in another category')");
 		$defcat = mysql_insert_id();
 
 		$query = 'INSERT INTO '.sql_table('blog')." (BNAME, BSHORTNAME, BCOMMENTS, BMAXCOMMENTS, BDEFCAT) VALUES ('$name','$shortname',1 ,0, $defcat)";
 		mysql_query($query) or die("Error while executing query: " . $query);
 		$id = mysql_insert_id();
 		
-		$this->sql_addToTeam($id,$ownerid,1);
+		// update category row so it links to blog
+		mysql_query('UPDATE ' . sql_table('category') . ' SET cblog=' . intval($id). ' WHERE catid=' . intval($defcat));
+		
+		BlogImport::sql_addToTeam($id,$ownerid,1);
 	
 		
 		return $id;
