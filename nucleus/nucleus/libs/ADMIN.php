@@ -1709,7 +1709,7 @@ class ADMIN {
 		
 		// store plugin options
 		$aOptions = requestArray('plugoption');
-		$this->_applyPluginOptions($aOptions);
+		NucleusPlugin::_applyPluginOptions($aOptions);
 		$manager->notify('PostPluginOptionsUpdate',array('context' => 'member', 'memberid' => $memberid, 'member' => &$mem));		
 		
 		// if new password was generated, send out mail message and logout
@@ -2174,11 +2174,20 @@ class ADMIN {
 		<input name="action" type="hidden" value="categoryupdate" />		
 		
 		<table><tr>
+			<th colspan="2"><?php echo _EBLOG_CAT_UPDATE ?></th>
+		</tr><tr>
 			<td><?php echo _EBLOG_CAT_NAME?></td>
 			<td><input type="text" name="cname" value="<?php echo htmlspecialchars($cname)?>" size="40" maxlength="40" /></td>
 		</tr><tr>
 			<td><?php echo _EBLOG_CAT_DESC?></td>
 			<td><input type="text" name="cdesc" value="<?php echo htmlspecialchars($cdesc)?>" size="40" maxlength="200" /></td>
+		</tr>
+		<?php 
+			// insert plugin options
+			$this->_insertPluginOptions('category',$catid);
+		?>
+		<tr>
+			<th colspan="2"><?php echo _EBLOG_CAT_UPDATE ?></th>
 		</tr><tr>
 			<td><?php echo _EBLOG_CAT_UPDATE?></td>
 			<td><input type="submit" value="<?php echo _EBLOG_CAT_UPDATE_BTN?>" /></td>
@@ -2191,7 +2200,7 @@ class ADMIN {
 	
 	
 	function action_categoryupdate() {
-		global $member;
+		global $member, $manager;
 		
 		$blogid = intPostVar('blogid');
 		$catid = intPostVar('catid');
@@ -2215,6 +2224,12 @@ class ADMIN {
 			   . " WHERE catid=" . $catid;
 			   
 		sql_query($query);
+		
+		// store plugin options
+		$aOptions = requestArray('plugoption');
+		NucleusPlugin::_applyPluginOptions($aOptions);
+		$manager->notify('PostPluginOptionsUpdate',array('context' => 'category', 'catid' => $catid));		
+
 		
 		if ($desturl) {
 			header('Location: ' . $desturl);
@@ -2314,6 +2329,9 @@ class ADMIN {
 		// change category for all items to the default category
 		$query = 'UPDATE '.sql_table('item')." SET icat=$destcatid WHERE icat=$catid";
 		sql_query($query);
+		
+		// delete all associated plugin options
+		NucleusPlugin::_deleteOptionValues('category', $catid);
 		
 		// delete category
 		$query = 'DELETE FROM '.sql_table('category').' WHERE catid=' .intval($catid);
@@ -2447,7 +2465,7 @@ class ADMIN {
 		
 		// store plugin options
 		$aOptions = requestArray('plugoption');
-		$this->_applyPluginOptions($aOptions);
+		NucleusPlugin::_applyPluginOptions($aOptions);
 		$manager->notify('PostPluginOptionsUpdate',array('context' => 'blog', 'blogid' => $blogid, 'blog' => &$blog));		
 		
 		
@@ -2521,20 +2539,8 @@ class ADMIN {
 		sql_query($query);
 		
 		// delete all associated plugin options
-		$aOIDs = array();
-			// find ids
-		$query = 'SELECT oid FROM '.sql_table('plugin_option_desc') . ' WHERE ocontext=\'blog\'';
-		$res = sql_query(query);
-		while ($o = mysql_fetch_object($res)) 
-			array_push($aOIDs, $o->oid);
-		mysql_free_result($res);
-			// delete those options. go go go
-		if (count($aOIDs) > 0) {
-			$query = 'DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).') and ocontextid=' . $blogid;
-			sql_query($query);
-		}
-				
-	
+		NucleusPlugin::_deleteOptionValues('blog', $blogid);
+		
 		// delete the blog itself
 		$query = 'DELETE FROM '.sql_table('blog').' WHERE bnumber='.$blogid;
 		sql_query($query);
@@ -2607,19 +2613,7 @@ class ADMIN {
 		sql_query($query);	
 		
 		// delete all associated plugin options
-		$aOIDs = array();
-			// find ids
-		$query = 'SELECT oid FROM '.sql_table('plugin_option_desc') . ' WHERE ocontext=\'member\'';
-		$res = sql_query(query);
-		while ($o = mysql_fetch_object($res)) 
-			array_push($aOIDs, $o->oid);
-		mysql_free_result($res);
-			// delete those options. go go go
-		if (count($aOIDs) > 0) {
-			$query = 'DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).') and ocontextid=' . $memberid;
-			sql_query($query);
-		}
-		
+		NucleusPlugin::_deleteOptionValues('member', $memberid);
 		
 		$manager->notify('PostDeleteMember', array('member' => &$mem));						
 		
@@ -5102,45 +5096,13 @@ selector();
 			$this->error(_ERROR_NOSUCHPLUGIN);
 			
 		$aOptions = requestArray('plugoption');
-		$this->_applyPluginOptions($aOptions);
+		NucleusPlugin::_applyPluginOptions($aOptions);
 
 		$manager->notify('PostPluginOptionsUpdate',array('context' => 'global', 'plugid' => $pid));		
 		
 		$this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
 	}
 	
-	/**
-	 * @param $aOptions: array ( 'oid' => array( 'contextid' => 'value'))
-	 *        (taken from request using requestVar())
-	 */
-	function _applyPluginOptions(&$aOptions) {
-		if (!is_array($aOptions)) return;
-		
-		foreach ($aOptions as $oid => $values) {
-			
-			// get option type info
-			$query = 'SELECT otype, oextra, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . intval($oid);
-			$res = sql_query($query);
-			if ($o = mysql_fetch_object($res))
-			{
-				foreach ($values as $contextid => $value) {
-						$value = undoMagic($value);	// value comes from request						
-					
-						switch($o->otype) {
-							case 'yesno':
-								if (($value != 'yes') && ($value != 'no')) $value = 'no';
-								break;
-							default:
-								break;
-						}
-						
-						sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));
-						sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
-
-				}
-			}
-		}
-	}
 
 	function _insertPluginOptions($context, $contextid = 0) {
 		// get all current values for this contextid 
