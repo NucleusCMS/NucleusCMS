@@ -216,12 +216,12 @@ class BLOG {
 	function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft) {
 		global $manager;
 
-		$blogid = intval($blogid);
-		$authorid = intval($authorid);
-		$title = trim($title);
-		$body = trim($body);
-		$more = trim($more);
-		$catid = intval($catid);
+		$blogid 	= intval($blogid);
+		$authorid	= intval($authorid);
+		$title		= $title;
+		$body		= $body;
+		$more		= $more;
+		$catid		= intval($catid);
 		
 		// convert newlines to <br />
 		if ($this->convertBreaks()) {
