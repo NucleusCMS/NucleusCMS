@@ -80,21 +80,31 @@ class SKINIMPORT {
 		// open file
 		$this->fp = @fopen($filename, 'r');
 		if (!$this->fp) return 'Failed to open file/URL';
-		
+
 		// here we go!
 		$this->inXml = 1;
-		
-		// parse file contents
-		while (($buffer = fread($this->fp, 4096)) && (!$metaOnly || ($metaOnly && !$this->metaDataRead))) {
-			$err = xml_parse( $this->parser, $buffer, feof($this->fp) );
-			if (!$err && $this->debug) 
+
+		while (!feof($this->fp)) {
+			$tempbuffer .= fread($this->fp, 4096);
+		}
+		fclose($this->fp);
+
+		$tempbuffer = preg_replace_callback("/(<!\[CDATA\[[^]]*?<!\[CDATA\[[^]]*)((?:\]\].*?<!\[CDATA.*?)*)(\]\])(.*\]\])/ms",create_function('$matches','return $matches[1].preg_replace("/(\]\])(.*?<!\[CDATA)/ms","}}$2",$matches[2])."}}".$matches[4];'), $tempbuffer);
+
+		$temp = tmpfile();
+		fwrite($temp, $tempbuffer);
+		rewind($temp);
+
+		while ( ($buffer = fread($temp, 4096) ) && (!$metaOnly || ($metaOnly && !$this->metaDataRead))) {
+			$err = xml_parse( $this->parser, $buffer, feof($temp) );
+			if (!$err && $this->debug)
 				echo 'ERROR: ', xml_error_string(xml_get_error_code($this->parser)), '<br />';
 		}
-			
+
 		// all done
 		$this->inXml = 0;
-		fclose($this->fp);
-	}
+		fclose($temp);
+	}	
 	
 	/**
 	 * Returns the list of skin names
@@ -152,6 +162,7 @@ class SKINIMPORT {
 			
 			// 2. add parts
 			foreach ($data['parts'] as $partName => $partContent) {
+				$partContent = preg_replace("/(<!\[CDATA\[.*?)(}}>)/ms", "$1]]>", $partContent);
 				$skinObj->update($partName, $partContent);
 			}
 		}
@@ -174,6 +185,7 @@ class SKINIMPORT {
 			
 			// 2. add parts
 			foreach ($data['parts'] as $partName => $partContent) {
+				$partContent = preg_replace("/(<!\[CDATA\[.*?)(}}>)/ms", "$1]]>", $partContent);
 				$templateObj->update($partName, $partContent);
 			}			
 		}
