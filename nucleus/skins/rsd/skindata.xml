@@ -1,0 +1,16 @@
+<nucleusskin><meta><skin name="rsd" /></meta><skin name="rsd" type="text/xml" includeMode="normal" includePrefix=""><description>RSD (Really Simple Discovery) information</description><part name="index"><![CDATA[<?xml version="1.0"?>
+<rsd version="1.0">
+ <service>
+  <engineName><%version%></engineName>
+  <engineLink>http://nucleuscms.org/</engineLink>
+  <homepageLink><%sitevar(url)%></homepageLink>
+  <apis>
+   <api name="MetaWeblog" preferred="true" apiLink="<%adminurl%>xmlrpc/server.php" blogID="<%blogsetting(id)%>">
+    <docs>http://nucleuscms.org/documentation/devdocs/xmlrpc.html</docs>
+   </api>
+   <api name="Blogger" preferred="false" apiLink="<%adminurl%>xmlrpc/server.php" blogID="<%blogsetting(id)%>">
+    <docs>http://nucleuscms.org/documentation/devdocs/xmlrpc.html</docs>
+   </api>
+  </apis>
+ </service>
+</rsd>]]></part></skin></nucleusskin>
