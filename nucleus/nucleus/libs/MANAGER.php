@@ -33,6 +33,14 @@ class MANAGER {
 	var $karma;
 	
 	/**
+	 * cachedInfo to avoid repeated SQL queries (see pidInstalled/pluginInstalled/getPidFromName)
+	 * e.g. which plugins exists?
+	 *
+	 * $cachedInfo['installedPlugins'] = array($pid -> $name)
+	 */
+	var $cachedInfo;
+	
+	/**
 	  * The plugin subscriptionlist
 	  *
 	  * The subcription array has the following structure
@@ -63,6 +71,7 @@ class MANAGER {
 		$this->plugins = array();
 		$this->karma = array();
 		$this->parserPrefs = array();
+		$this->cachedInfo = array();
 	}
 	
 	/**
@@ -231,15 +240,42 @@ class MANAGER {
 	  * checks if the given plugin IS installed or not
 	  */
 	function pluginInstalled($name) {
-		$res = sql_query('SELECT pfile FROM '.sql_table('plugin').' WHERE pfile=\''.addslashes($name).'\' LIMIT 1');
-		return (mysql_num_rows($res) != 0);
+		$this->_initCacheInfo('installedPlugins');
+		return ($this->getPidFromName($name) != -1);
 	}
 	function pidInstalled($pid) {
-		$res = sql_query('SELECT pid FROM '.sql_table('plugin').' WHERE pid=' . intval($pid));
-		return (mysql_num_rows($res) != 0);
+		$this->_initCacheInfo('installedPlugins');
+		return ($this->cachedInfo['installedPlugins'][$pid] != '');
 	}
 	function getPidFromName($name) {
-		return quickQuery('SELECT pid as result FROM '.sql_table('plugin').' WHERE pfile=\''.addslashes($name).'\' LIMIT 1');
+		$this->_initCacheInfo('installedPlugins');
+		foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
+		{
+			if ($pfile == $name)
+				return $pid;
+		}
+		return -1;
+	}
+	
+	/**
+	 * Loads some info on the first call only
+	 */
+	function _initCacheInfo($what)
+	{
+		if (is_array($this->cachedInfo[$what]))
+			return;
+		switch ($what)
+		{
+			// 'installedPlugins' = array ($pid => $name)
+			case 'installedPlugins':
+				$this->cachedInfo['installedPlugins'] = array();
+				$res = sql_query('SELECT pid, pfile FROM ' . sql_table('plugin'));
+				while ($o = mysql_fetch_object($res))
+				{
+					$this->cachedInfo['installedPlugins'][$o->pid] = $o->pfile;
+				}
+				break;
+		}
 	}
 	
 	/**
