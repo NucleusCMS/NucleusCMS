@@ -48,7 +48,7 @@ class ADMIN {
 		// check ticket. All actions need a ticket, unless they are considered to be safe (a safe action
 		// is an action that requires user interaction before something is actually done)
 		// all safe actions are in this array:
-		$aActionsNotToCheck = array('showlogin', 'login', 'overview', 'itemlist', 'bookmarklet', 'blogsettings', 'banlist', 'deleteblog', 'editmembersettings', 'browseownitems', 'browseowncomments', 'createitem', 'itemedit', 'itemmove', 'categoryedit', 'categorydelete', 'manage', 'actionlog', 'settingsedit', 'backupoverview', 'pluginlist', 'createnewlog', 'usermanagement', 'skinoverview', 'templateoverview', 'skinieoverview', 'itemcommentlist', 'commentedit', 'commentdelete', 'banlistnewfromitem', 'banlistdelete', 'itemdelete', 'manageteam', 'teamdelete', 'banlistnew', 'memberedit', 'memberdelete', 'pluginhelp', 'pluginoptions', 'plugindelete', 'skinedittype', 'skindelete', 'skinedit', 'templateedit', 'templatedelete', 'activate');
+		$aActionsNotToCheck = array('showlogin', 'login', 'overview', 'itemlist', 'blogcommentlist', 'bookmarklet', 'blogsettings', 'banlist', 'deleteblog', 'editmembersettings', 'browseownitems', 'browseowncomments', 'createitem', 'itemedit', 'itemmove', 'categoryedit', 'categorydelete', 'manage', 'actionlog', 'settingsedit', 'backupoverview', 'pluginlist', 'createnewlog', 'usermanagement', 'skinoverview', 'templateoverview', 'skinieoverview', 'itemcommentlist', 'commentedit', 'commentdelete', 'banlistnewfromitem', 'banlistdelete', 'itemdelete', 'manageteam', 'teamdelete', 'banlistnew', 'memberedit', 'memberdelete', 'pluginhelp', 'pluginoptions', 'plugindelete', 'skinedittype', 'skindelete', 'skinedit', 'templateedit', 'templatedelete', 'activate');
 /*		
 		// the rest of the actions needs to be checked
 		$aActionsToCheck = array('additem', 'itemupdate', 'itemmoveto', 'categoryupdate', 'categorydeleteconfirm', 'itemdeleteconfirm', 'commentdeleteconfirm', 'teamdeleteconfirm', 'memberdeleteconfirm', 'templatedeleteconfirm', 'skindeleteconfirm', 'banlistdeleteconfirm', 'plugindeleteconfirm', 'batchitem', 'batchcomment', 'batchmember', 'batchcategory', 'batchteam', 'regfile', 'commentupdate', 'banlistadd', 'changemembersettings', 'clearactionlog', 'settingsupdate', 'blogsettingsupdate', 'categorynew', 'teamchangeadmin', 'teamaddmember', 'memberadd', 'addnewlog', 'addnewlog2', 'backupcreate', 'backuprestore', 'pluginup', 'plugindown', 'pluginupdate', 'pluginadd', 'pluginoptionsupdate', 'skinupdate', 'skinclone', 'skineditgeneral', 'templateclone', 'templatenew', 'templateupdate', 'skinieimport', 'skinieexport', 'skiniedoimport', 'skinnew', 'deleteblogconfirm', 'sendping', 'rawping', 'activatesetpwd');
@@ -910,6 +910,61 @@ class ADMIN {
 		$this->pagefoot();
 	}
 	
+	/**
+	  * Browse all comments for a weblog
+	  */
+	function action_blogcommentlist($blogid = '') 
+	{
+		global $member, $manager;
+		
+		if ($blogid == '')
+			$blogid = intRequestVar('blogid');
+		else
+			$blogid = intval($blogid);
+			
+		$member->teamRights($blogid) or $member->isAdmin() or $this->disallow();		
+		
+		// start index
+		if (postVar('start'))
+			$start = postVar('start');
+		else
+			$start = 0; 	
+			
+		// amount of items to show
+		if (postVar('amount'))
+			$amount = postVar('amount');
+		else
+			$amount = 10;	
+		
+		$search = postVar('search');		// search through comments
+
+
+		$query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
+
+		if ($search != '') 
+			$query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
+			
+				
+		$query .= ' ORDER BY ctime DESC'
+		        . " LIMIT $start,$amount";
+
+
+		$blog =& $manager->getBlog($blogid);
+
+		$this->pagehead();
+				
+		echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';		
+		echo '<h2>', _COMMENTS_BLOG , ' ' , $this->bloglink($blog), '</h2>';
+		
+		$template['content'] = 'commentlist';
+		$template['canAddBan'] = $member->blogAdminRights($blogid);
+		
+		$navList =& new NAVLIST('blogcommentlist', $start, $amount, 0, 1000, $blogid, $search, 0);
+		$navList->showBatchList('comment',$query,'table',$template, _NOCOMMENTS_BLOG);
+	
+		$this->pagefoot();
+	}
+
 	/**
 	  * Provide a page to item a new item to the given blog
 	  */
@@ -6258,7 +6313,7 @@ function listplug_table_commentlist($template, $type) {
 function listplug_table_bloglist($template, $type) {
 	switch($type) {
 		case 'HEAD':
-			echo "<th>" . _NAME . "</th><th colspan='6'>" ._LISTS_ACTIONS. "</th>";		
+			echo "<th>" . _NAME . "</th><th colspan='7'>" ._LISTS_ACTIONS. "</th>";		
 			break;
 		case 'BODY':
 			$current = $template['current'];
@@ -6266,6 +6321,7 @@ function listplug_table_bloglist($template, $type) {
 			echo "<td title='blogid:$current->bnumber shortname:$current->bshortname'><a href='$current->burl'><img src='images/globe.gif' width='13' height='13' alt='". _BLOGLIST_TT_VISIT."' /></a> " . htmlspecialchars($current->bname) . "</td>";
 			echo "<td><a href='index.php?action=createitem&amp;blogid=$current->bnumber' title='" . _BLOGLIST_TT_ADD ."'>" . _BLOGLIST_ADD . "</a></td>";
 			echo "<td><a href='index.php?action=itemlist&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_EDIT."'>". _BLOGLIST_EDIT."</a></td>";
+			echo "<td><a href='index.php?action=blogcommentlist&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_COMMENTS."'>". _BLOGLIST_COMMENTS."</a></td>";
 			echo "<td><a href='index.php?action=bookmarklet&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_BMLET."'>". _BLOGLIST_BMLET . "</a></td>";
 
 			if ($current->tadmin == 1) {
