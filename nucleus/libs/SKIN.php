@@ -289,8 +289,7 @@ class SKIN {
 				break;
 			case 'error':
 				$extraActions = array(
-								'errormessage',
-								'loginform',
+								'errormessage'
 				);
 				break;
 		}
