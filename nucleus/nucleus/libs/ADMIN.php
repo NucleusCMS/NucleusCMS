@@ -1525,7 +1525,8 @@ class ADMIN {
 		// check if allowed
 		($member->getID() == $memberid) or $member->isAdmin() or $this->disallow();
 	
-		$this->pagehead();
+		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
+		$this->pagehead($extrahead);
 
 		// show message to go back to member overview (only for admins)
 		if ($member->isAdmin())
@@ -1977,7 +1978,8 @@ class ADMIN {
 		
 		$blog =& $manager->getBlog($blogid);
 		
-		$this->pagehead();
+		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
+		$this->pagehead($extrahead);
 		
 		echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';		
 		?>
@@ -2207,7 +2209,8 @@ class ADMIN {
 		$cname = $obj->cname;
 		$cdesc = $obj->cdesc;
 
-		$this->pagehead();
+		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
+		$this->pagehead($extrahead);
 
 		?>
 		<h2><?php echo _EBLOG_CAT_UPDATE?> '<?php echo htmlspecialchars($cname)?>'</h2>
@@ -5181,7 +5184,8 @@ selector();
 		if (!$manager->pidInstalled($pid))
 			$this->error(_ERROR_NOSUCHPLUGIN);
 
-		$this->pagehead();
+		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
+		$this->pagehead($extrahead);
 
 		?>
 			<p><a href="index.php?action=pluginlist">(<?php echo _PLUGS_BACK?>)</a></p>
