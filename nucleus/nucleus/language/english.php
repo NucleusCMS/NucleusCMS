@@ -1,20 +1,20 @@
 <?php
 // English Nucleus Language File
-// 
-// Author: Wouter Demuynck 
+//
+// Author: Wouter Demuynck
 // Nucleus version: v1.0-v3.2
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which 
+// might be deleted. Therefor, it's important to list the Nucleus version for which
 // the file was written in your document.
 //
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
 
-// START changed/added after 315 START
+// START changed/added after 3.15 START
 
-define('_LIST_PLUG_SUBS_NEEDUPDATE','Please use the \'Update Subscribtion list\'-button to update the plugin\'s subscription list.');
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Please use the \'Update Subscription list\'-button to update the plugin\'s subscription list.');
 define('_LIST_PLUGS_DEP',			'Plugin(s) requires:');
 
 // END changed/added after 3.15
@@ -70,7 +70,7 @@ define('_QMENU_ACTIVATE_TEXT',		'<p>After you have activated your account, you c
 
 define('_PLUGS_BTN_UPDATE',			'Update subscription list');
 
-// global settings 
+// global settings
 define('_SETTINGS_JSTOOLBAR',		'Javascript Toolbar Style');
 define('_SETTINGS_JSTOOLBAR_FULL',	'Full Toolbar (IE)');
 define('_SETTINGS_JSTOOLBAR_SIMPLE','Simple Toolbar (Non-IE)');
@@ -415,7 +415,7 @@ define('_BACKTOMANAGE',				'Back to Nucleus management');
 
 
 
-// charset to use 
+// charset to use
 define('_CHARSET',					'iso-8859-1');
 
 // global stuff
@@ -879,7 +879,7 @@ define('_OVERVIEW_SKINS',			'Edit Skins...');
 define('_OVERVIEW_BACKUP',			'Backup/Restore...');
 
 // ITEMLIST
-define('_ITEMLIST_BLOG',			'Items for blog'); 
+define('_ITEMLIST_BLOG',			'Items for blog');
 define('_ITEMLIST_YOUR',			'Your items');
 
 // Comments
@@ -909,7 +909,7 @@ define('_LISTS_COMMENTS',			'Comments');
 define('_LISTS_TYPE',				'Type');
 
 
-// member list 
+// member list
 define('_LIST_MEMBER_NAME',			'Display Name');
 define('_LIST_MEMBER_RNAME',		'Real Name');
 define('_LIST_MEMBER_ADMIN',		'Super-admin? ');
