@@ -21,7 +21,7 @@ checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQ
 
 $CONF['debug'] = 1;
 
-$nucleus['version'] = 'v3.2-b1';
+$nucleus['version'] = 'v3.2-b2';
 if (getNucleusPatchLevel() > 0)
 {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();
@@ -48,7 +48,7 @@ $CONF['alertOnSecurityRisk'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 319;
+	return 320;
 }
 
 /**
