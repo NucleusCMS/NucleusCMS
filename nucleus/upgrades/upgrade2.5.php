@@ -72,14 +72,20 @@ function upgrade_do25() {
 	
 	// -------------------- 2.0 -> 2.5 --------------------
 	
-	// add fulltext indices for search
-	$query = 'ALTER TABLE ' . sql_table('item') . ' ADD FULLTEXT(ibody, ititle, imore)';
-	upgrade_query('Adding fulltext index to item table', $query);
-	$query = 'ALTER TABLE ' . sql_table('comment') . ' ADD FULLTEXT(cbody)';
-	upgrade_query('Adding fulltext index to comments table', $query);	
-	// repair table is needed (build index)
-	upgrade_query('Repairing item table', 'REPAIR TABLE ' . sql_table('item'));
-	upgrade_query('Repairing comment table', 'REPAIR TABLE ' . sql_table('comment'));	
+	if (!upgrade_checkIfIndexExists('item', array('ibody', 'ititle', 'imore'))) {
+		// add fulltext indices for search
+		$query = 'ALTER TABLE ' . sql_table('item') . ' ADD FULLTEXT(ibody, ititle, imore)';
+		upgrade_query('Adding fulltext index to item table', $query);
+		// repair table is needed (build index)
+		upgrade_query('Repairing item table', 'REPAIR TABLE ' . sql_table('item'));
+	}
+	
+	if (!upgrade_checkIfIndexExists('comment', array('cbody'))) {
+		$query = 'ALTER TABLE ' . sql_table('comment') . ' ADD FULLTEXT(cbody)';
+		upgrade_query('Adding fulltext index to comments table', $query);	
+		upgrade_query('Repairing comment table', 'REPAIR TABLE ' . sql_table('comment'));	
+	}	
+	
         $query = ' ALTER TABLE ' . sql_table('blog') . ' ADD bincludesearch TINYINT(2) DEFAULT 0';
 	upgrade_query('Adding bincludesearch column to blog', $query);
 }

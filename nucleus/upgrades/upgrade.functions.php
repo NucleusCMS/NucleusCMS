@@ -194,6 +194,34 @@
 		return $res;
 	}
 	
+	/**
+	 * @param $table 
+	 *		table to check (without prefix)
+	 * @param $aColumns
+	 *		array of column names included
+	 */
+	function upgrade_checkIfIndexExists($table, $aColumns) {
+		// get info for indices from database
+		
+		$aIndices = array();
+		$query = 'show index from ' . sql_table($table);
+		$res = mysql_query($query);
+		while ($o = mysql_fetch_object($res)) {
+			if (!$aIndices[$o->Key_name]) {
+				$aIndices[$o->Key_name] = array();
+			}
+			array_push($aIndices[$o->Key_name], $o->Column_name);
+		}
+
+		// compare each index with parameter
+		foreach ($aIndices as $keyName => $aIndexColumns) {
+			$aDiff = array_diff($aIndexColumns, $aColumns);
+			if (count($aDiff) == 0) return 1;
+		}
+		
+		return 0;
+
+	}
 
 
 
