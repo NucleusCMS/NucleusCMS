@@ -1,1164 +1,1219 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
-
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Nucleus - SQL Table Structure</title>
+	<!-- $Id: sqltables.html,v 1.4 2005-03-19 07:28:32 kimitake Exp $ -->
+	<title>Nucleus - SQL Table Structure</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
-<style type="text/css">
+	<style type="text/css">
 		/* auto increment table columns*/
-		.autoinc     {  }
-/* primary-keys */
-		.primary     { text-decoration: underline; font-weight: bold }
-/* NOT NULL */
-		.notnull     {  }
-/* unique key */
-		.unique      {  }
-/* foreign keys */
-		.foreign     { font-style: italic }
-/* auto increment table columns*/
-		.autoinc     {  }
-/* fulltext index */
-		.fulltext    {  }
-/* columns/tables to remove in later versions */
-		.toremove    { color: red }
-</style>
-</head>
+		.autoinc {
+		}
 
+		/* primary-keys */
+		.primary {
+			text-decoration: underline;
+			font-weight: bold;
+		}
+
+		/* NOT NULL */
+		.notnull {
+		}
+
+		/* unique key */
+		.unique {
+		}
+
+		/* foreign keys */
+		.foreign {
+			font-style: italic;
+		}
+
+		/* auto increment table columns*/
+		.autoinc {
+		}
+
+		/* fulltext index */
+		.fulltext {
+		}
+
+		/* columns/tables to remove in later versions */
+		.toremove {
+			color: red;
+		}
+
+
+
+
+	</style>
+</head>
 <body>
 
 <a name="top" id="top"></a>
+
 <div class="heading">
-  SQLテーブル・リファレンス <i>May 30, 2004</i>
+SQL Table Reference
+<i>March 5, 2005</i>
 </div>
-<strong>訳者注：</strong>
+
+<h1>Introduction</h1>
+
+<p>
+<a href="index.html">Back to the developer docs index</a>
+</p>
+
+<p>
+This document contains information on the fields inside the Nucleus database tables.
+</p>
+
+<p class="note">The structure as presented here is for <strong>Nucleus v3.2</strong>.</p>
+
+<h1><a name="toc" id="toc"></a>Table Of Contents</h1>
+
 <ul>
-  <li>このドキュメントの原文は以下のURLにあります。<br>
-    <a href="http://nucleuscms.org/documentation/devdocs/sqltables.html">http://nucleuscms.org/documentation/devdocs/sqltables.html</a></li>
-  <li>誤訳にお気づきの方は<a href="http://nucleus.fel-is.info/bb/viewforum.php?f=7">こちら</a>へご連絡いただけると助かります。</li>
+	<li><a href="#legend">Color codes in this document</a></li>
+	<li>
+
+		Blogs
+
+		<ul>
+			<li><a href="#nucleus_blog">nucleus_blog</a></li>
+			<li><a href="#nucleus_category">nucleus_category</a></li>
+			<li><a href="#nucleus_item">nucleus_item</a></li>
+			<li><a href="#nucleus_comment">nucleus_comment</a></li>
+			<li><a href="#nucleus_member">nucleus_member</a></li>
+			<li><a href="#nucleus_team">nucleus_team</a></li>
+		</ul>
+	</li>
+	<li>
+		Plugins
+		<ul>
+			<li><a href="#nucleus_plugin">nucleus_plugin</a></li>
+			<li><a href="#nucleus_plugin_event">nucleus_plugin_event</a></li>
+			<li><a href="#nucleus_plugin_option">nucleus_plugin_option</a></li>
+			<li><a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a></li>
+		</ul>
+	</li>
+	<li>
+		Skins and templates
+		<ul>
+			<li><a href="#nucleus_skin">nucleus_skin</a></li>
+			<li><a href="#nucleus_skin_desc">nucleus_skin_desc</a></li>
+			<li><a href="#nucleus_template">nucleus_template</a></li>
+			<li><a href="#nucleus_template_desc">nucleus_template_desc</a></li>
+		</ul>
+	</li>
+	<li>
+		Administration
+		<ul>
+			<li><a href="#nucleus_actionlog">nucleus_actionlog</a></li>
+			<li>
+				<a href="#nucleus_config">nucleus_config</a>
+				<ul>
+				 	<li><a href="#nucleus_config_options">Available Options</a></li>
+				</ul>
+			</li>
+			<li><a href="#nucleus_tickets">nucleus_tickets</a></li>
+			<li><a href="#nucleus_activation">nucleus_activation</a></li>
+		</ul>
+	</li>
+	<li>
+		Extras
+		<ul>
+			<li><a href="#nucleus_karma">nucleus_karma</a></li>
+			<li><a href="#nucleus_ban">nucleus_ban</a></li>
+		</ul>
+	</li>
+
+
 </ul>
-<h1>はじめに</h1>
-<p><a href="index.html">開発者向けドキュメントの目次へ戻る</a></p>
-<p>このドキュメントはNucleusのデータベース・テーブルのフィールドを解説しています。</p>
-<p class="note">構造は<strong>Nucleus v3.0</strong>のものに従っています</p>
-<h1><a name="toc" id="toc"></a>目次</h1>
-<ul>
-  <li><a href="#legend">文書中の色使いについて</a></li>
-  <li>Blog
-    <ul>
-      <li><a href="#nucleus_blog">nucleus_blog</a></li>
-      <li><a href="#nucleus_category">nucleus_category</a></li>
-      <li><a href="#nucleus_item">nucleus_item</a></li>
-      <li><a href="#nucleus_comment">nucleus_comment</a></li>
-      <li><a href="#nucleus_member">nucleus_member</a></li>
-      <li><a href="#nucleus_team">nucleus_team</a></li>
-    </ul>
-  </li>
-  <li>プラグイン
-    <ul>
-      <li><a href="#nucleus_plugin">nucleus_plugin</a></li>
-      <li><a href="#nucleus_plugin_event">nucleus_plugin_event</a></li>
-      <li><a href="#nucleus_plugin_option">nucleus_plugin_option</a></li>
-      <li><a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a></li>
-    </ul>
-  </li>
-  <li>スキンとテンプレート
-    <ul>
-      <li><a href="#nucleus_skin">nucleus_skin</a></li>
-      <li><a href="#nucleus_skin_desc">nucleus_skin_desc</a></li>
-      <li><a href="#nucleus_template">nucleus_template</a></li>
-      <li><a href="#nucleus_template_desc">nucleus_template_desc</a></li>
-    </ul>
-  </li>
-  <li>管理
-    <ul>
-      <li><a href="#nucleus_actionlog">nucleus_actionlog</a></li>
-      <li><a href="#nucleus_config">nucleus_config</a>
-        <ul>
-          <li><a href="#nucleus_config_options">可能なオプション</a></li>
-        </ul>
-      </li>
-    </ul>
-  </li>
-  <li>その他
-    <ul>
-      <li><a href="#nucleus_karma">nucleus_karma</a></li>
-      <li><a href="#nucleus_ban">nucleus_ban</a></li>
-    </ul>
-  </li>
-</ul>
+
 <a id="legend" name="legend"></a>
-<h1>色使い<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>この文書中では、カラムの型を示すために、文字の修飾を使っています。以下に例を示します:</p>
-<table width="893">
-  <tbody>
-    <tr>
-      <td class="primary" width="88">プライマリ</td>
-      <td width="775">プライマリキー</td>
-    </tr>
-    <tr>
-      <td class="foreign" width="88">外部</td>
-      <td width="775">外部キー（クリックすると参照先に飛ぶ）。MySQLは外部キーとの一貫性保持に責任を持たないことに注意</td>
-    </tr>
-    <tr>
-      <td class="toremove" width="88">削除予定</td>
-      <td width="775">同じ機能を提供するプラグインを優先するため、テーブルやカラムは将来のバージョンのNucleusで削除させる可能性が高い</td>
-    </tr>
-    <tr>
-      <td class="fulltext" width="88">フルテキスト</td>
-      <td width="775">カラムにフルテキストのインデックスが付く（検索で使用する）</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Color codes<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>This document uses some visual styles to indicate the type of columns. An overview is listed below:</p>
+
+<table><tr>
+	<td class="primary">primary</td>
+	<td>Primary keys</td>
+</tr><tr>
+	<td class="foreign">foreign</td>
+	<td>Foreign keys (click to go to the references value in other columns). Please note that MySQL does not enforce foreign key restrictions.</td>
+</tr><tr>
+	<td class="toremove">toremove</td>
+	<td>Tables/columns that will probably be removed in upcoming Nucleus version, in favor of plugins that provide the same functionality.</td>
+</tr><tr>
+	<td class="fulltext">fulltext</td>
+	<td>There is a fulltext index on the column (used for searches).</td>
+</tr></table>
+
+
 <a id="nucleus_blog" name="nucleus_blog"></a>
-<h1>nucleus_blogテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull autoinc primary">bnumber</td>
-      <td>int(11)</td>
-      <td></td>
-      <td>BlogのID</td>
-    </tr>
-    <tr>
-      <td class="notnull">bname</td>
-      <td>varchar(60)</td>
-      <td>''</td>
-      <td>Blog名</td>
-    </tr>
-    <tr>
-      <td class="notnull unique">bshortname</td>
-      <td>varchar(15)</td>
-      <td>''</td>
-      <td>Blogの短縮名 (スキン変数 <code>&lt;%blog%&gt;</code>などで使うものと同じ)</td>
-    </tr>
-    <tr>
-      <td>bdesc</td>
-      <td>varchar(200)</td>
-      <td>NULL</td>
-      <td>Blogの説明</td>
-    </tr>
-    <tr>
-      <td class="notnull">bcomments</td>
-      <td>tinyint(2)</td>
-      <td>'1'</td>
-      <td>コメントを許可する(1=許可, 0=不許可)</td>
-    </tr>
-    <tr>
-      <td class="notnull">bmaxcomments</td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>indexスキンタイプで表示するコメントの最大数。規定値(0)は制限がないことを説明する。インライン・コメントを使わないのなら，ここはいじらないこと</td>
-    </tr>
-    <tr>
-      <td class="notnull">btimeoffset</td>
-      <td>decimal(3,1)</td>
-      <td>'0.0'</td>
-      <td>サーバー時刻との時差。アイテムはサーバー時刻にこの値を足した時間でデータベースに保存される</td>
-    </tr>
-    <tr>
-      <td class="toremove">bnotify</td>
-      <td>varchar(60)</td>
-      <td>NULL</td>
-      <td>通知するメール・アドレス。いくつかのイベントが起こると（どのイベントかは<code>bnotifytypeを参照のこと）</code>，このアドレス宛てにメールで通知が行く</td>
-    </tr>
-    <tr>
-      <td>burl</td>
-      <td>varchar(100)</td>
-      <td>NULL</td>
-      <td>BlogのURL</td>
-    </tr>
-    <tr>
-      <td class="toremove">bupdate</td>
-      <td>varchar(60)</td>
-      <td>NULL</td>
-      <td>アイテムが投稿されるたびに変更が必要な更新ファイル。サーバー上の絶対パスで指定する</td>
-    </tr>
-    <tr>
-      <td class="notnull foreign"><a href="#nucleus_skin_desc">bdefskin</a></td>
-      <td>int(11)</td>
-      <td>'1'</td>
-      <td>このBlogを表示するときに使う標準のスキン</td>
-    </tr>
-    <tr>
-      <td class="notnull">bpublic</td>
-      <td>tinyint(2)</td>
-      <td>'1'</td>
-      <td>登録ユーザー以外にもコメントを許可する(1=許可/0=不許可)</td>
-    </tr>
-    <tr>
-      <td class="notnull toremove">bsendping</td>
-      <td>tinyint(2)</td>
-      <td>'0'</td>
-      <td>更新があったときにweblogs.comにpingを送る (1=送る/0=送らない)</td>
-    </tr>
-    <tr>
-      <td class="notnull toremove">bconvertbreaks</td>
-      <td>tinyint(2)</td>
-      <td>'1'</td>
-      <td>改行を<code>&lt;br /&gt;</code>に変換する (1=変換する/0=変換しない)</td>
-    </tr>
-    <tr>
-      <td class="foreign"><a href="#nucleus_category">bdefcat</a></td>
-      <td>int(11)</td>
-      <td>NULL</td>
-      <td>デフォルトのカテゴリー。他のカテゴリーが選択されていないとき、このカテゴリーになる</td>
-    </tr>
-    <tr>
-      <td class="notnull">bnotifytype</td>
-      <td>int(11)</td>
-      <td>'15'</td>
-      <td>どのイベントが起こったときに通知メールを送るか（通知するメール・アドレスはbnotifyを参照）。三つの値の組み合わせからなり、掛け合わせることでnoifytypeの値が決まる。
-        <ul>
-          <li>3: 新しいコメント</li>
-          <li>5: 新しいカルマ投票</li>
-          <li>7: 新しいアイテム</li>
-        </ul>
-        規定値 = 新しいコメントと新しいカルマ投票（3×5=15）</td>
-    </tr>
-    <tr>
-      <td class="notnull">ballowpast</td>
-      <td>tinyint(2)</td>
-      <td>'0'</td>
-      <td>過去の日時での投稿を許可する (1=許可/0=不許可)</td>
-    </tr>
-    <tr>
-      <td class="notnull">bincludesearch</td>
-      <td>tinyint(2)</td>
-      <td>'0'</td>
-      <td>他のblogの検索の場合にも，検索対象にする(1=対象にする/0=対象にしない)</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_blog<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+
+</tr><tr>
+	<td class="notnull autoinc primary">bnumber</td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Blog ID</td>
+
+</tr><tr>
+	<td class="notnull">bname</td>
+	<td>varchar(60)</td>
+	<td>''</td>
+	<td>Blog Name</td>
+
+</tr><tr>
+	<td class="notnull unique">bshortname</td>
+	<td>varchar(15)</td>
+	<td>''</td>
+	<td>Short Blog Name (as used in skinvars <code>&lt;%blog%&gt;</code> etc.)</td>
+
+</tr><tr>
+	<td>bdesc</td>
+	<td>varchar(200)</td>
+	<td>NULL</td>
+	<td>Blog Description</td>
+
+</tr><tr>
+	<td class="notnull">bcomments</td>
+	<td>tinyint(2)</td>
+	<td>'1'</td>
+	<td>Enable comments (1=true, 0=false)</td>
+
+</tr><tr>
+	<td class="notnull">bmaxcomments</td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Maximum amount of comments to show on <code>index</code> skintypes (inline comments). The default value (0) means that there is no limit. If you don't use inline comments, you shouldn't edit this.</td>
+
+</tr><tr>
+	<td class="notnull">btimeoffset</td>
+	<td>decimal(3,1)</td>
+	<td>'0.0'</td>
+	<td>Time offset to use. The items will be stored in the database using the correct time (server time+offset).</td>
+
+</tr><tr>
+	<td class="toremove">bnotify</td>
+	<td>varchar(60)</td>
+	<td>NULL</td>
+	<td>Notify e-mail address. On certain events (see <code>bnotifytype</code> for the exact definition of these events), a notification e-mail is sent out to this e-mail address.</td>
+
+</tr><tr>
+	<td>burl</td>
+	<td>varchar(100)</td>
+	<td>NULL</td>
+	<td>Blog URL</td>
+
+</tr><tr>
+	<td class="toremove">bupdate</td>
+	<td>varchar(60)</td>
+	<td>NULL</td>
+	<td>Update file that needs to be altered each time a new item is posted to the weblog. Its an absolute path of a file on the server.</td>
+
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_skin_desc">bdefskin</a></td>
+	<td>int(11)</td>
+	<td>'1'</td>
+	<td>Default skin to use when displaying this weblog</td>
+
+</tr><tr>
+	<td class="notnull">bpublic</td>
+	<td>tinyint(2)</td>
+	<td>'1'</td>
+	<td>Allow comments by non-registered members? (1=true/0=false)</td>
+
+</tr><tr>
+	<td class="notnull toremove">bsendping</td>
+	<td>tinyint(2)</td>
+	<td>'0'</td>
+	<td>Send a ping to weblogs.com on update? (1=true/0=false)</td>
+
+</tr><tr>
+	<td class="notnull toremove">bconvertbreaks</td>
+	<td>tinyint(2)</td>
+	<td>'1'</td>
+	<td>Convert line breaks to <code>&lt;br /&gt;</code>? (1=true/0=false)</td>
+
+</tr><tr>
+	<td class="foreign"><a href="#nucleus_category">bdefcat</a></td>
+	<td>int(11)</td>
+	<td>NULL</td>
+	<td>Default category. This category will be selected by default when no other category is selected.</td>
+
+</tr><tr>
+	<td class="notnull">bnotifytype</td>
+	<td>int(11)</td>
+	<td>'15'</td>
+	<td>
+		Which events to send notification e-mails on (see <code>bnotify</code> for the specification of the e-mail address). It's a combination of three values (multiply the values to get the notify type):
+		<ul>
+			<li>3: New comment</li>
+			<li>5: New karma vote</li>
+			<li>7: New item</li>
+		</ul>
+		Default = New comments &amp; New karma votes (3*5=15)
+	</td>
+
+</tr><tr>
+	<td class="notnull">ballowpast</td>
+	<td>tinyint(2)</td>
+	<td>'0'</td>
+	<td>Allow backdating of items and editing the timestamp of an item (1=true/0=false)</td>
+
+</tr><tr>
+	<td class="notnull">bincludesearch</td>
+	<td>tinyint(2)</td>
+	<td>'0'</td>
+	<td>Always include in search queries, even if the query is on another blog (1=true/0=false)</td>
+</tr></table>
+
+
 <a id="nucleus_category" name="nucleus_category"></a>
-<h1>nucleus_categoryテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull autoinc primary">catid</td>
-      <td>int(11)</td>
-      <td></td>
-      <td>カテゴリーID</td>
-    </tr>
-    <tr>
-      <td class="notnull foreign"><a href="#nucleus_blog">cblog</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>カテゴリーが所属するBlogのID</td>
-    </tr>
-    <tr>
-      <td>cname</td>
-      <td>varchar(40)</td>
-      <td>NULL</td>
-      <td>カテゴリーの名前</td>
-    </tr>
-    <tr>
-      <td>cdesc</td>
-      <td>varchar(200)</td>
-      <td>NULL</td>
-      <td>カテゴリーの説明</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_category<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull autoinc primary">catid</td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Category ID</td>
+
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_blog">cblog</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Blog to which the category belongs</td>
+
+</tr><tr>
+	<td>cname</td>
+	<td>varchar(40)</td>
+	<td>NULL</td>
+	<td>Category Name</td>
+
+</tr><tr>
+	<td>cdesc</td>
+	<td>varchar(200)</td>
+	<td>NULL</td>
+	<td>Category Description</td>
+</tr></table>
+
+
 <a id="nucleus_item" name="nucleus_item"></a>
-<h1>nucleus_itemテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull autoinc primary">inumber</td>
-      <td>int(11)</td>
-      <td></td>
-      <td>アイテムのID</td>
-    </tr>
-    <tr>
-      <td class="fulltext">ititle</td>
-      <td>varchar(160)</td>
-      <td>NULL</td>
-      <td>タイトル</td>
-    </tr>
-    <tr>
-      <td class="notnull fulltext">ibody</td>
-      <td>text</td>
-      <td></td>
-      <td>本文</td>
-    </tr>
-    <tr>
-      <td class="fulltext">imore</td>
-      <td>text</td>
-      <td></td>
-      <td>追加部分</td>
-    </tr>
-    <tr>
-      <td class="notnull foreign"><a href="#nucleus_blog">iblog</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>アイテムが所属するBlogのID</td>
-    </tr>
-    <tr>
-      <td class="notnull foreign"><a href="#nucleus_member">iauthor</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>アイテムの著者のID</td>
-    </tr>
-    <tr>
-      <td class="notnull">itime</td>
-      <td>datetime</td>
-      <td>'0000-00-00 00:00:00'</td>
-      <td>投稿時間（サーバーとの時差を反映したもの）</td>
-    </tr>
-    <tr>
-      <td class="notnull">iclosed</td>
-      <td>tinyint(2)</td>
-      <td>'0'</td>
-      <td>アイテムが閉鎖されたかどうか (1=閉鎖/0=閉鎖していない). 
-        閉鎖すると、コメントやカルマ投票を受け付けない</td>
-    </tr>
-    <tr>
-      <td class="notnull">idraft</td>
-      <td>tinyint(2)</td>
-      <td>'0'</td>
-      <td>アイテムはドラフトかどうか。ドラフトは管理ページでだけ見られる</td>
-    </tr>
-    <tr>
-      <td class="notnull toremove">ikarmapos</td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>＋のカルマ投票の総数</td>
-    </tr>
-    <tr>
-      <td class="notnull toremove">ikarmaneg</td>
-      <td>int(11)</td>
-      <td>'0'</td>
-	  <td>－のカルマ投票の総数</td>
-    </tr>
-    <tr>
-      <td class="foreign"><a href="#nucleus_category">icat</a></td>
-      <td>int(11)</td>
-      <td>NULL</td>
-      <td>アイテムが所属するカテゴリーのID</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_item<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull autoinc primary">inumber</td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Item ID</td>
+
+</tr><tr>
+	<td class="fulltext">ititle</td>
+	<td>varchar(160)</td>
+	<td>NULL</td>
+	<td>Title</td>
+
+</tr><tr>
+	<td class="notnull fulltext">ibody</td>
+	<td>text</td>
+	<td></td>
+	<td>Body text</td>
+
+</tr><tr>
+	<td class="fulltext">imore</td>
+	<td>text</td>
+	<td></td>
+	<td>Extended text</td>
+
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_blog">iblog</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Blog to which the item belongs to</td>
+
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_member">iauthor</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Member that is the author of the item</td>
+
+</tr><tr>
+	<td class="notnull">itime</td>
+	<td>datetime</td>
+	<td>'0000-00-00 00:00:00'</td>
+	<td>Item time (this is the corrected time, with offset already applies)</td>
+
+</tr><tr>
+	<td class="notnull">iclosed</td>
+	<td>tinyint(2)</td>
+	<td>'0'</td>
+	<td>Is item closed? (1=true/0=false). When an item is closed, it's no longer possible to add new comments or cast 'karma votes'</td>
+
+</tr><tr>
+	<td class="notnull">idraft</td>
+	<td>tinyint(2)</td>
+	<td>'0'</td>
+	<td>Is the item a draft version? Draft versions only show up in the admin area.</td>
+
+</tr><tr>
+	<td class="notnull toremove">ikarmapos</td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Total amount of positive karma votes casted</td>
+
+</tr><tr>
+	<td class="notnull toremove">ikarmaneg</td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Total amount of negative karma votes casted</td>
+
+</tr><tr>
+	<td class="foreign"><a href="#nucleus_category">icat</a></td>
+	<td>int(11)</td>
+	<td>NULL</td>
+	<td>Category to which the item belongs</td>
+
+</tr></table>
+
+
 <a id="nucleus_comment" name="nucleus_comment"></a>
-<h1>nucleus_commentテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull autoinc primary">cnumber</td>
-      <td>int(11)</td>
-      <td></td>
-      <td>コメントのID</td>
-    </tr>
-    <tr>
-      <td class="notnull fulltext">cbody</td>
-      <td>text</td>
-      <td></td>
-      <td>コメントの本文</td>
-    </tr>
-    <tr>
-      <td>cuser</td>
-      <td>varchar(40)</td>
-      <td>NULL</td>
-      <td>筆者名（メンバーでない場合，メンバーの場合はcmember参照）</td>
-    </tr>
-    <tr>
-      <td>cmail</td>
-      <td>varchar(100)</td>
-      <td>NULL</td>
-      <td>メール・アドレスあるいはURL（メンバーでない場合，メンバーの場合はcmember参照）</td>
-    </tr>
-    <tr>
-      <td class="foreign"><a href="#nucleus_member">cmember</a></td>
-      <td>int(11)</td>
-      <td>NULL</td>
-      <td>コメントを書いたメンバーのID（メンバーでない場合は0）</td>
-    </tr>
-    <tr>
-      <td class="notnull foreign"><a href="#nucleus_item">citem</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>コメントが書き込まれたアイテムのID</td>
-    </tr>
-    <tr>
-      <td class="notnull">ctime</td>
-      <td>datetime</td>
-      <td>'0000-00-00 00:00:00'</td>
-      <td>コメントを書き込んだ時間</td>
-    </tr>
-    <tr>
-      <td>chost</td>
-      <td>varchar(60)</td>
-      <td>NULL</td>
-      <td>コメントを入力したホスト名</td>
-    </tr>
-    <tr>
-      <td class="notnull">cip</td>
-      <td>varchar(15)</td>
-      <td>''</td>
-      <td>コメントを入力したIPアドレス</td>
-    </tr>
-    <tr>
-      <td class="notnull foreign"><a href="#nucleus_blog">cblog</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>コメントが付属するBlogのID</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_comment<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull autoinc primary">cnumber</td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Comment ID</td>
+
+</tr><tr>
+	<td class="notnull fulltext">cbody</td>
+	<td>text</td>
+	<td></td>
+	<td>Comment text</td>
+
+</tr><tr>
+	<td>cuser</td>
+	<td>varchar(40)</td>
+	<td>NULL</td>
+	<td>Anonymous user name (only used when comment was placed by a non-member. For members, see <code>cmember</code>)</td>
+
+</tr><tr>
+	<td>cmail</td>
+	<td>varchar(100)</td>
+	<td>NULL</td>
+	<td>E-mail address or URL (only used when comment was placed by a non-member. For members, see <code>cmember</code>)</td>
+
+</tr><tr>
+	<td class="foreign"><a href="#nucleus_member">cmember</a></td>
+	<td>int(11)</td>
+	<td>NULL</td>
+	<td>ID of site member that placed the commend (0 for comments by non-members)</td>
+
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_item">citem</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Item ID to which the comment is attached</td>
+
+</tr><tr>
+	<td class="notnull">ctime</td>
+	<td>datetime</td>
+	<td>'0000-00-00 00:00:00'</td>
+	<td>Time of comment</td>
+
+</tr><tr>
+	<td>chost</td>
+	<td>varchar(60)</td>
+	<td>NULL</td>
+	<td>Hostname from where the comment was placed</td>
+
+</tr><tr>
+	<td class="notnull">cip</td>
+	<td>varchar(15)</td>
+	<td>''</td>
+	<td>IP address from where the comment was placed</td>
+
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_blog">cblog</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Blog to which the comment belongs (this is redundant information)</td>
+
+</tr></table>
+
+
+
 <a id="nucleus_member" name="nucleus_member"></a>
-<h1>nucleus_memberテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull autoinc primary">mnumber</td>
-      <td>int(11)</td>
-      <td></td>
-      <td>メンバーのID</td>
-    </tr>
-    <tr>
-      <td class="notnull unique">mname</td>
-      <td>varchar(16)</td>
-      <td>''</td>
-      <td>名前（ログインに使うものと同じ）</td>
-    </tr>
-    <tr>
-      <td>mrealname</td>
-      <td>varchar(60)</td>
-      <td>NULL</td>
-      <td>フルネーム</td>
-    </tr>
-    <tr>
-      <td class="notnull">mpassword</td>
-      <td>varchar(40)</td>
-      <td>''</td>
-      <td>パスワード (<a href="http://www.php.net/md5" title="Info about the PHP md5() function">md5</a>で暗号化してある)</td>
-    </tr>
-    <tr>
-      <td>memail</td>
-      <td>varchar(60)</td>
-      <td>NULL</td>
-      <td>メール・アドレス</td>
-    </tr>
-    <tr>
-      <td>murl</td>
-      <td>varchar(100)</td>
-      <td>NULL</td>
-      <td>URL</td>
-    </tr>
-    <tr>
-      <td>mnotes</td>
-      <td>varchar(100)</td>
-      <td>NULL</td>
-      <td>追加事項（メンバー自身が記述できる）</td>
-    </tr>
-    <tr>
-      <td class="notnull">madmin</td>
-      <td>tinyint(2)</td>
-      <td>'0'</td>
-      <td>Super-admin（最高権限管理者）か (1=そう/0=違う 
-        super-adminはすべての権利を持つ。システムに一人はsuper-adminがいる)</td>
-    </tr>
-    <tr>
-      <td class="notnull">mcanlogin</td>
-      <td>tinyint(2)</td>
-      <td>'1'</td>
-      <td>管理エリアへのログインを許可 (1=許可/0=不許可)</td>
-    </tr>
-    <tr>
-      <td>mcookiekey</td>
-      <td>varchar(40)</td>
-      <td>NULL</td>
-      <td>このキーのコピーがユーザーのクッキーに保存され、ログオンに使う。メンバーがログオンすると、ランダムなcookiekeyが生成され、一方はデータベースに、他方がユーザーのコンピュータに保存される。</td>
-    </tr>
-    <tr>
-      <td class="notnull">deflang</td>
-      <td>varchar(20)</td>
-      <td>''</td>
-      <td>このメンバー用の言語ファイルを指定する</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_member<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull autoinc primary">mnumber</td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Member ID</td>
+
+</tr><tr>
+	<td class="notnull unique">mname</td>
+	<td>varchar(16)</td>
+	<td>''</td>
+	<td>Display name (the one used to login)</td>
+
+</tr><tr>
+	<td>mrealname</td>
+	<td>varchar(60)</td>
+	<td>NULL</td>
+	<td>Full name</td>
+
+</tr><tr>
+	<td class="notnull">mpassword</td>
+	<td>varchar(40)</td>
+	<td>''</td>
+	<td>password (<a href="http://www.php.net/md5" title="Info about the PHP md5() function">md5</a> hash)</td>
+
+</tr><tr>
+	<td>memail</td>
+	<td>varchar(60)</td>
+	<td>NULL</td>
+	<td>E-mail address. This should always be a valid address.</td>
+
+</tr><tr>
+	<td>murl</td>
+	<td>varchar(100)</td>
+	<td>NULL</td>
+	<td>URL of members site</td>
+
+</tr><tr>
+	<td>mnotes</td>
+	<td>varchar(100)</td>
+	<td>NULL</td>
+	<td>Extra notes (members can fill these out themselves)</td>
+
+</tr><tr>
+	<td class="notnull">madmin</td>
+	<td>tinyint(2)</td>
+	<td>'0'</td>
+	<td>Is super-admin? (1=true/0=false; super-admins have all rights; there must be at least one super-admin in the system)</td>
+
+</tr><tr>
+	<td class="notnull">mcanlogin</td>
+	<td>tinyint(2)</td>
+	<td>'1'</td>
+	<td>Can logon to admin area? (1=true/0=false)</td>
+
+</tr><tr>
+	<td>mcookiekey</td>
+	<td>varchar(40)</td>
+	<td>NULL</td>
+	<td>A copy of the key that is stored in the users cookie. This key is used to log on. When a member logs on, a random cookiekey is generated. One copy goes into the database, another one goes into a cookie on the users computer. (together with the username).</td>
+
+</tr><tr>
+	<td class="notnull">deflang</td>
+	<td>varchar(20)</td>
+	<td>''</td>
+	<td>Language file to use for this member. When empty, uses the default site language.</td>
+</tr></table>
+
+
+
+
 <a id="nucleus_team" name="nucleus_team"></a>
-<h1>nucleus_teamテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>Blogのチーム・メンバーごとに、この表にデータがある</p>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull primary foreign"><a href="#nucleus_member">tmember</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>メンバーのID</td>
-    </tr>
-    <tr>
-      <td class="notnull primary foreign"><a href="#nucleus_blog">tblog</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>チーム・メンバーになっているBlog</td>
-    </tr>
-    <tr>
-      <td class="notnull">tadmin</td>
-      <td>tinyint(2)</td>
-      <td>'0'</td>
-      <td>Blogの管理者か (0=違う/1=そう。各Blogは一人は管理者がいる)</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_team<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>For each team member of a blog, there is a row in this table.</p>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull primary foreign"><a href="#nucleus_member">tmember</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Member ID</td>
+
+</tr><tr>
+	<td class="notnull primary foreign"><a href="#nucleus_blog">tblog</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Blog of which member is on team</td>
+
+</tr><tr>
+	<td class="notnull">tadmin</td>
+	<td>tinyint(2)</td>
+	<td>'0'</td>
+	<td>Is blog admin? (0=false/1=true; each blog must have at least one admin)</td>
+</tr></table>
+
+
 <a id="nucleus_plugin" name="nucleus_plugin"></a>
-<h1>nucleus_pluginテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull autoinc primary">pid</td>
-      <td>int(11)</td>
-      <td></td>
-      <td>プラグインのID</td>
-    </tr>
-    <tr>
-      <td class="notnull">pfile</td>
-      <td>varchar(40)</td>
-      <td>''</td>
-      <td>プラグインのファイル名(例えば<code>NP_CommentControl</code>)。プラグイン・ディレクトリにファイルがないといけない（.phpの拡張子が付いて）。</td>
-    </tr>
-    <tr>
-      <td class="notnull">porder</td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>プラグインが呼び出される順番。プラグイン・ページで表示される順番でもある。数字が小さい方がリストの上の方に来る。</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_plugin<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull autoinc primary">pid</td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Plugin ID</td>
+
+</tr><tr>
+	<td class="notnull">pfile</td>
+	<td>varchar(40)</td>
+	<td>''</td>
+	<td>Filename (e.g. <code>NP_CommentControl</code>) of plugin. This must be a file in the plugins directory (.php extension).</td>
+
+</tr><tr>
+	<td class="notnull">porder</td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Order in which the plugins are called, and in which they are displayed on the plugins page. A lower order number places the plugin earlier in the list.</td>
+</tr></table>
+
 <a id="nucleus_plugin_event" name="nucleus_plugin_event"></a>
-<h1>nucleus_plugin_eventテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>各プラグインが登録するイベントを記録するキャッシュ。リクエストの度にすべてのプラグインを読み込んで，それらが使うイベントを調べる手間を省くために保存している。<a href="plugins.html#events">プラグインのイベントについてはこちらを参照。</a></p>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull foreign"><a href="#nucleus_plugin">pid</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>プラグインのID</td>
-    </tr>
-    <tr>
-      <td>event</td>
-      <td>varchar(40)</td>
-      <td>NULL</td>
-      <td>イベントの名前</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_plugin_event<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>A cache that remembers which plugins are registered to which events. Thsi information is stored to avoid having to load all plugins on each requests just to find out which events they want to have. <a href="plugins.html#events">More info on plugins events</a></p>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_plugin">pid</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Plugin ID</td>
+
+</tr><tr>
+	<td>event</td>
+	<td>varchar(40)</td>
+	<td>NULL</td>
+	<td>Name of event</td>
+</tr></table>
+
 <a id="nucleus_plugin_option" name="nucleus_plugin_option"></a>
-<h1>nucleus_plugin_optionテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>プラグイン・オプションの値を格納する。オプション自体の定義については<a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a>テーブルを参照。</p>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull autoinc primary foreign"><a href="#nucleus_plugin_option_desc">oid</a></td>
-      <td>int(11)</td>
-      <td></td>
-      <td>オプションのID (<a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a>テーブルを参照)</td>
-    </tr>
-    <tr>
-      <td class="notnull">ovalue</td>
-      <td>TEXT</td>
-      <td>''</td>
-      <td>オプションの値</td>
-    </tr>
-    <tr>
-      <td class="notnull primary">ocontextid</td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>オプションが使われるコンテキストによって意味合いが変わる
-        <ul>
-          <li>グローバル・コンテキスト: 使わない</li>
-          <li>Blogコンテキスト: <a href="#nucleus_blog">B</a><a href="#nucleus_blog">logのID</a></li>
-          <li>カテゴリー・コンテキスト: <a href="#nucleus_category">カテゴリーのID</a></li>
-          <li>メンバー・コンテキスト: <a href="#nucleus_member">メンバーのID</a></li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_plugin_option<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Values for the plugin options. See the <a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a> table for the definition of the options itself.</p>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+
+</tr><tr>
+	<td class="notnull autoinc primary foreign"><a href="#nucleus_plugin_option_desc">oid</a></td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Identification of the option (See the <a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a> table)</td>
+
+</tr><tr>
+	<td class="notnull">ovalue</td>
+	<td>TEXT</td>
+	<td>''</td>
+	<td>Value of the option</td>
+
+</tr><tr>
+	<td class="notnull primary">ocontextid</td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>
+		Semantics depend on the option context type,
+		<ul>
+			<li>global context: not used</li>
+			<li>blog context: <a href="#nucleus_blog">blog id</a></li>
+			<li>category context: <a href="#nucleus_category">category id</a></li>
+			<li>member context: <a href="#nucleus_member">member id</a></li>
+		</ul>
+	</td>
+</tr></table>
+
+
 <a id="nucleus_plugin_option_desc" name="nucleus_plugin_option_desc"></a>
-<h1>nucleus_plugin_option_descテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>プラグインがオプションを作るたびにこのテーブル内にデータができる。</p>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull autoinc unique">oid</td>
-      <td>int(11)</td>
-      <td></td>
-      <td>オプションのID。<a href="#nucleus_plugin_option">nucleus_plugin_option</a>テーブルで使う</td>
-    </tr>
-    <tr>
-      <td class="notnull primary foreign"><a href="#nucleus_plugin">opid</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>オプションを作ったプラグインのID</td>
-    </tr>
-    <tr>
-      <td class="notnull primary">oname</td>
-      <td>varchar(20)</td>
-      <td>''</td>
-      <td>オプションの名前</td>
-    </tr>
-    <tr>
-      <td class="notnull primary">ocontext</td>
-      <td>varchar(20)</td>
-      <td>''</td>
-      <td>オプションのコンテキスト(<code>グローバル</code>, <code>Blog</code>, 
-        <code>カテゴリー</code>,メンバー)</td>
-    </tr>
-    <tr>
-      <td>odesc</td>
-      <td>varchar(255)</td>
-      <td>NULL</td>
-      <td>オプションの説明</td>
-    </tr>
-    <tr>
-      <td>otype</td>
-      <td>varchar(20)</td>
-      <td>NULL</td>
-      <td>オプションの型.
-      <a title="Nucleus Plugin API - Option types" href="plugins.html#options">プラグインの文書を参照</a>.</td>
-    </tr>
-    <tr>
-      <td>odef</td>
-      <td>text</td>
-      <td></td>
-      <td>オプションの規定値</td>
-    </tr>
-    <tr>
-      <td>oextra</td>
-      <td>text</td>
-      <td></td>
-      <td>select option型などで使う、その他のデータ</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_plugin_option_desc<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>For each option created by a plugin, a row is present in this table.</p>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull autoinc unique">oid</td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Option ID. Used from <a href="#nucleus_plugin_option">nucleus_plugin_option</a></td>
+
+</tr><tr>
+	<td class="notnull primary foreign"><a href="#nucleus_plugin">opid</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Plugin to which the option belongs</td>
+
+</tr><tr>
+	<td class="notnull primary">oname</td>
+	<td>varchar(20)</td>
+	<td>''</td>
+	<td>Name of the option</td>
+
+</tr><tr>
+	<td class="notnull primary">ocontext</td>
+	<td>varchar(20)</td>
+	<td>''</td>
+	<td>Context of the option (<code>global</code>, <code>blog</code>, <code>category</code>, <code>member</code>)</td>
+
+</tr><tr>
+	<td>odesc</td>
+	<td>varchar(255)</td>
+	<td>NULL</td>
+	<td>Option description</td>
+
+</tr><tr>
+	<td>otype</td>
+	<td>varchar(20)</td>
+	<td>NULL</td>
+	<td>option type. <a href="plugins.html#options" title="Nucleus Plugin API - Option types">See plugin documentation</a>.</td>
+
+</tr><tr>
+	<td>odef</td>
+	<td>text</td>
+	<td></td>
+	<td>Default value for options</td>
+
+</tr><tr>
+	<td>oextra</td>
+	<td>text</td>
+	<td></td>
+	<td>Extra data needed for some option types (e.g. <code>select</code> option type)</td>
+</tr></table>
+
 <a id="nucleus_skin" name="nucleus_skin"></a>
-<h1>nucleus_skinテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull primary foreign"><a href="#nucleus_skin_desc">sdesc</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>skin_descへの参照</td>
-    </tr>
-    <tr>
-      <td class="notnull primary">stype</td>
-      <td>varchar(20)</td>
-      <td>''</td>
-      <td>スキン・パートの型。以下のいずれかを取る
-        <ul>
-          <li><code>index</code></li>
-          <li><code>item</code></li>
-          <li><code>archive</code></li>
-          <li><code>archivelist</code></li>
-          <li><code>search</code></li>
-          <li><code>error</code></li>
-          <li><code>member</code></li>
-          <li><code>imagepopup</code></li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td class="notnull">scontent</td>
-      <td>text</td>
-      <td></td>
-      <td>スキン・パートの内容</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_skin<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull primary foreign"><a href="#nucleus_skin_desc">sdesc</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Reference to the skin description</td>
+
+</tr><tr>
+	<td class="notnull primary">stype</td>
+	<td>varchar(20)</td>
+	<td>''</td>
+	<td>
+		Skinpart type
+		<ul>
+			<li><code>index</code></li>
+			<li><code>item</code></li>
+			<li><code>archive</code></li>
+			<li><code>archivelist</code></li>
+			<li><code>search</code></li>
+			<li><code>error</code></li>
+			<li><code>member</code></li>
+			<li><code>imagepopup</code></li>
+		</ul>
+	</td>
+
+</tr><tr>
+	<td class="notnull">scontent</td>
+	<td>text</td>
+	<td></td>
+	<td>Contents of the skinpart</td>
+</tr></table>
+
 <a id="nucleus_skin_desc" name="nucleus_skin_desc"></a>
-<h1>nucleus_skin_descテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull autoinc primary">sdnumber</td>
-      <td>int(11)</td>
-      <td></td>
-      <td>スキンのID</td>
-    </tr>
-    <tr>
-      <td class="notnull unique">sdname</td>
-      <td>varchar(20)</td>
-      <td>''</td>
-      <td>スキンの名前</td>
-    </tr>
-    <tr>
-      <td>sddesc</td>
-      <td>varchar(200)</td>
-      <td>NULL</td>
-      <td>スキンの説明</td>
-    </tr>
-    <tr>
-      <td class="notnull">sd型</td>
-      <td>varchar(40)</td>
-      <td>'text/html'</td>
-      <td>スキンのmimeタイプ</td>
-    </tr>
-    <tr>
-      <td class="notnull">sdincmode</td>
-      <td>varchar(10)</td>
-      <td>'normal'</td>
-      <td>Includeモード。以下のいずれかを取る
-        <ul>
-          <li><code>normal</code></li>
-          <li><code>skindir</code></li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td class="notnull">sdincpref</td>
-      <td>varchar(50)</td>
-      <td>''</td>
-      <td>ファイルをIncludeするときのプリフィックス</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_skin_desc<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull autoinc primary">sdnumber</td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Skin ID</td>
+
+</tr><tr>
+	<td class="notnull unique">sdname</td>
+	<td>varchar(20)</td>
+	<td>''</td>
+	<td>Name of skin</td>
+
+</tr><tr>
+	<td>sddesc</td>
+	<td>varchar(200)</td>
+	<td>NULL</td>
+	<td>Skin description</td>
+
+</tr><tr>
+	<td class="notnull">sdtype</td>
+	<td>varchar(40)</td>
+	<td>'text/html'</td>
+	<td>mimetype of skin</td>
+
+</tr><tr>
+	<td class="notnull">sdincmode</td>
+	<td>varchar(10)</td>
+	<td>'normal'</td>
+	<td>
+		Include mode
+		<ul>
+			<li><code>normal</code></li>
+			<li><code>skindir</code></li>
+		</ul>
+	</td>
+
+</tr><tr>
+	<td class="notnull">sdincpref</td>
+	<td>varchar(50)</td>
+	<td>''</td>
+	<td>Prefix to use when including files</td>
+</tr></table>
+
 <a id="nucleus_template" name="nucleus_template"></a>
-<h1>nucleus_templateテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull primary foreign"><a href="#nucleus_template_desc">tdesc</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>template_descへの参照</td>
-    </tr>
-    <tr>
-      <td class="notnull primary">tpartname</td>
-      <td>varchar(20)</td>
-      <td>''</td>
-      <td>テンプレート・パートの名前。以下のいずれかを取る<ul>
-          <li>ARCHIVELIST_FOOTER</li>
-          <li>ARCHIVELIST_HEADER</li>
-          <li>ARCHIVELIST_LISTITEM</li>
-          <li>CATLIST_FOOTER</li>
-          <li>CATLIST_HEADER</li>
-          <li>CATLIST_LISTITEM</li>
-          <li>COMMENTS_BODY</li>
-          <li>COMMENTS_MANY</li>
-          <li>COMMENTS_NONE</li>
-          <li>COMMENTS_ONE</li>
-          <li>COMMENTS_TOOMUCH</li>
-          <li>DATE_HEADER</li>
-          <li>EDITLINK</li>
-          <li>FORMAT_DATE</li>
-          <li>FORMAT_TIME</li>
-          <li>IMAGE_CODE</li>
-          <li>ITEM</li>
-          <li>LOCALE</li>
-          <li>MEDIA_CODE</li>
-          <li>MORELINK</li>
-          <li>POPUP_CODE</li>
-          <li>SEARCH_HIGHLIGHT</li>
-          <li>SEARCH_NOTHINGFOUND</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td class="notnull">tcontent</td>
-      <td>text</td>
-      <td></td>
-      <td>テンプレート・パートの内容</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_template<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull primary foreign"><a href="#nucleus_template_desc">tdesc</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Reference to template description info</td>
+
+</tr><tr>
+	<td class="notnull primary">tpartname</td>
+	<td>varchar(20)</td>
+	<td>''</td>
+	<td>
+		Name of template part
+		<ul>
+			<li>ARCHIVELIST_FOOTER</li>
+			<li>ARCHIVELIST_HEADER</li>
+			<li>ARCHIVELIST_LISTITEM</li>
+			<li>CATLIST_FOOTER</li>
+			<li>CATLIST_HEADER</li>
+			<li>CATLIST_LISTITEM</li>
+			<li>COMMENTS_BODY</li>
+			<li>COMMENTS_MANY</li>
+			<li>COMMENTS_NONE</li>
+			<li>COMMENTS_ONE</li>
+			<li>COMMENTS_TOOMUCH</li>
+			<li>DATE_HEADER</li>
+			<li>EDITLINK</li>
+			<li>FORMAT_DATE</li>
+			<li>FORMAT_TIME</li>
+			<li>IMAGE_CODE</li>
+			<li>ITEM</li>
+			<li>LOCALE</li>
+			<li>MEDIA_CODE</li>
+			<li>MORELINK</li>
+			<li>POPUP_CODE</li>
+			<li>SEARCH_HIGHLIGHT</li>
+			<li>SEARCH_NOTHINGFOUND</li>
+		</ul>
+	</td>
+
+</tr><tr>
+	<td class="notnull">tcontent</td>
+	<td>text</td>
+	<td></td>
+	<td>Contents of templatepart</td>
+</tr></table>
+
+
 <a id="nucleus_template_desc" name="nucleus_template_desc"></a>
-<h1>nucleus_template_descテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull autoinc primary unique">tdnumber</td>
-      <td>int(11)</td>
-      <td></td>
-      <td>テンプレートのID</td>
-    </tr>
-    <tr>
-      <td class="notnull unique">tdname</td>
-      <td>varchar(20)</td>
-      <td>''</td>
-      <td>テンプレートの名前</td>
-    </tr>
-    <tr>
-      <td>tddesc</td>
-      <td>varchar(200)</td>
-      <td>NULL</td>
-      <td>テンプレートの説明</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_template_desc<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull autoinc primary unique">tdnumber</td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Template ID</td>
+
+</tr><tr>
+	<td class="notnull unique">tdname</td>
+	<td>varchar(20)</td>
+	<td>''</td>
+	<td>Name of template</td>
+
+</tr><tr>
+	<td>tddesc</td>
+	<td>varchar(200)</td>
+	<td>NULL</td>
+	<td>Template description</td>
+</tr></table>
+
 <a id="nucleus_actionlog" name="nucleus_actionlog"></a>
-<h1>nucleus_actionlogテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>ログインやエラーなどのログを記録する</p>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th></th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull">timestamp</td>
-      <td>datetime</td>
-      <td>'0000-00-00 00:00:00'</td>
-      <td>アクションの日時</td>
-    </tr>
-    <tr>
-      <td class="notnull">message</td>
-      <td>varchar(255)</td>
-      <td>''</td>
-      <td>アクションのメッセージ</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_actionlog<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>[[general purpose description]]</p>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th></th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull">timestamp</td>
+	<td>datetime</td>
+	<td>'0000-00-00 00:00:00'</td>
+	<td>Time of action</td>
+
+</tr><tr>
+	<td class="notnull">message</td>
+	<td>varchar(255)</td>
+	<td>''</td>
+	<td>Action message</td>
+</tr></table>
+
+
+
 <a id="nucleus_config" name="nucleus_config"></a>
-<h1>nucleus_configテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>Nucleusは、いくつかのグローバル・オプションを<code>nucleus_config</code>テーブルに記憶する。これは<code>$CONF['OptionName']</code> 
-でアクセスできる。</p>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull primary">name</td>
-      <td>varchar(20)</td>
-      <td>''</td>
-      <td>オプションの名前</td>
-    </tr>
-    <tr>
-      <td>value</td>
-      <td>varchar(128)</td>
-      <td>NULL</td>
-      <td>オプションの値</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_config<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Nucleus stores some global options in the <code>nucleus_config</code> table. They can be accessed at any time using <code>$CONF['OptionName']</code> (the values are read on each request and stored in a global array named <code>$CONF</code>)</p>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull primary">name</td>
+	<td>varchar(20)</td>
+	<td>''</td>
+	<td>Option name</td>
+
+</tr><tr>
+	<td>value</td>
+	<td>varchar(128)</td>
+	<td>NULL</td>
+	<td>Option value</td>
+</tr></table>
+
 <a name="nucleus_config_options" id="nucleus_config_options"></a>
-<h2>使用できるオプション</h2>
-<p>使用できるオプションのオーバビューを以下に示す。</p>
-<p>はい/いいえタイプのオプションは1/0 (1=はい/真, 0=いいえ/偽)で示す。</p>
-<table width="901">
-  <tbody>
-    <tr>
-      <th width="149">Name</th>
-      <th width="163">規定値 Value</th>
-      <th width="575">説明</th>
-    </tr>
-    <tr>
-      <td class="foreign" width="149"><a href="#nucleus_blog">DefaultBlog</a></td>
-      <td width="163">1</td>
-      <td width="575">デフォルトのBlogのID。Blogが明示的に記されていないときに使うもの</td>
-    </tr>
-    <tr>
-      <td width="149">AdminEmail</td>
-      <td width="163"></td>
-      <td width="575">管理者のメール・アドレス</td>
-    </tr>
-    <tr>
-      <td width="149">IndexURL</td>
-      <td width="163"></td>
-      <td width="575">サイトのURL。最後に/が付く必要がある</td>
-    </tr>
-    <tr>
-      <td width="149">Language</td>
-      <td width="163">english</td>
-      <td width="575">デフォルトの言語ファイル名。「言語ファイル名.php」ファイルがlanguageディレクトリに必要</td>
-    </tr>
-    <tr>
-      <td width="149">SessionCookie</td>
-      <td width="163">0</td>
-      <td width="575">寿命1ヶ月のクッキーの代わりにセッション・クッキーを使うかどうか</td>
-    </tr>
-    <tr>
-      <td width="149">AllowMemberCreate</td>
-      <td width="163">0</td>
-      <td width="575">ビジターにアカウント作成を許すかどうか</td>
-    </tr>
-    <tr>
-      <td width="149">AllowMemberMail</td>
-      <td width="163">1</td>
-      <td width="575">メンバー間でフォームを使ったメッセージ転送を許すかどうか（メール・アドレスは表示されない）</td>
-    </tr>
-    <tr>
-      <td width="149">SiteName</td>
-      <td width="163"></td>
-      <td width="575">サイトの名前</td>
-    </tr>
-    <tr>
-      <td width="149">AdminURL</td>
-      <td width="163"></td>
-      <td width="575">管理エリアのURL。最後に/が付く必要がある</td>
-    </tr>
-    <tr>
-      <td width="149">NewMemberCanLogon</td>
-      <td width="163">1</td>
-      <td width="575">登録されたばかりのユーザーがログインできるかどうか。できないばあい，管理者が「can login」オプションを最初に変更する必要がある</td>
-    </tr>
-    <tr>
-      <td class="toremove" width="149">DisableSite</td>
-      <td width="163">0</td>
-      <td width="575">サイトが無効状態になっているかどうか。無効状態の場合、管理者だけがアクセスできる。他のすべてのアクセスは<code>DisableSiteURL</code>にリダイレクトされる</td>
-    </tr>
-    <tr>
-      <td class="toremove" width="149">DisableSiteURL</td>
-      <td width="163"></td>
-      <td width="575">サイトが無効状態のときにリダイレクトされるURL</td>
-    </tr>
-    <tr>
-      <td class="toremove" width="149">LastVisit</td>
-      <td width="163">0</td>
-      <td width="575">「最後の訪問」のクッキーを保存するかどうか</td>
-    </tr>
-    <tr>
-      <td width="149">MediaURL</td>
-      <td width="163"></td>
-      <td width="575">メディア・フォルダのURL。最後に/が付く</td>
-    </tr>
-    <tr>
-      <td width="149">AllowedTypes</td>
-      <td width="163">jpg, jpeg, gif, mpg, mpeg, avi, mov, mp3, swf, png</td>
-      <td width="575">メディア・フォルダにアップロードを許すファイル型</td>
-    </tr>
-    <tr>
-      <td width="149">AllowLoginEdit</td>
-      <td width="163">0</td>
-      <td width="575">メンバーにログイン名とパスワードの変更を許すかどうか</td>
-    </tr>
-    <tr>
-      <td width="149">AllowUpload</td>
-      <td width="163">1</td>
-      <td width="575">ファイルのアップロードを許すかどうか</td>
-    </tr>
-    <tr>
-      <td class="toremove" width="149">DisableJsTools</td>
-      <td width="163">2</td>
-      <td width="575">JavaScriptツールバーの形式<ul>
-          <li>0: 多機能型 (IE)</li>
-          <li>1: ツールバーを無効にする</li>
-          <li>2: シンプル型(Gecko)</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td width="149">CookiePath</td>
-      <td width="163">/</td>
-      <td width="575">クッキーをセットするパス</td>
-    </tr>
-    <tr>
-      <td width="149">CookieDomain</td>
-      <td width="163"></td>
-      <td width="575">クッキーをセットするドメイン</td>
-    </tr>
-    <tr>
-      <td width="149">CookieSecure</td>
-      <td width="163">0</td>
-      <td width="575">クッキーの通信にHTTPSを使うかどうか</td>
-    </tr>
-    <tr>
-      <td width="149">MediaPrefix</td>
-      <td width="163">1</td>
-      <td width="575">アップロードしたファイル名に日付を加えるかどうか</td>
-    </tr>
-    <tr>
-      <td width="149">MaxUploadSize</td>
-      <td width="163">1048576</td>
-      <td width="575">アップロードするファイルの最大値（バイト数）</td>
-    </tr>
-    <tr>
-      <td width="149">NonmemberMail</td>
-      <td width="163">0</td>
-      <td width="575">メンバー以外の人にメンバーへのメールを許すかどうか</td>
-    </tr>
-    <tr>
-      <td width="149">PluginURL</td>
-      <td width="163"></td>
-      <td width="575">プラグイン・フォルダのURL。/で終わる必要がある</td>
-    </tr>
-    <tr>
-      <td width="149">ProtectMemNames</td>
-      <td width="163">1</td>
-      <td width="575">
-      このオプションが有効だと、ログインしていない人はメンバーと同じ名前でコメントを残せなくなる。こうすることによって、ゲストがメンバーのふりをすることを避けられる</td>
-    </tr>
-    <tr>
-      <td class="foreign" width="149"><a href="#nucleus_skin_desc">BaseSkin</a></td>
-      <td width="163">1</td>
-      <td width="575">
-      Nucleusに、自動的にスキンが決まらないときに、どのスキンを使うかを指定する。スキンのパートが空だったり、ブログやスキンが洗濯されていない場合に起こる</td>
-    </tr>
-    <tr>
-      <td width="149">SkinsURL</td>
-      <td width="163"></td>
-      <td width="575">スキン・フォルダのURL。最後に/が付く必要がある</td>
-    </tr>
-    <tr>
-      <td width="149">ActionURL</td>
-      <td width="163"></td>
-      <td width="575">action.pｈｐがあるURL.</td>
-    </tr>
-    <tr>
-      <td width="149">URLMode</td>
-      <td width="163">normal</td>
-      <td width="575"> <code>normal</code>か<code>pathinfo</code></td>
-    </tr>
-    <tr>
-      <td width="149">DatabaseVersion</td>
-      <td width="163">250</td>
-      <td width="575">データベースの構造が更新された最後のNucleusのバージョン番号</td>
-    </tr>
-  </tbody>
-</table>
+<h2>Available Options</h2>
+
+<p>An overview of available options is given below:</p>
+
+<p>Options for yes/no options are represented using 1/0 (1=yes/true, 0=no/false)</p>
+
+<table><tr>
+	<th>Name</th>
+	<th>Default Value</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="foreign"><a href="#nucleus_blog">DefaultBlog</a></td>
+	<td>1</td>
+	<td>Default weblog. This is the blog that will be used when no other blog has been specified in the request.</td>
+</tr><tr>
+	<td>AdminEmail</td>
+	<td></td>
+	<td>E-mail address of site administrator</td>
+</tr><tr>
+	<td>IndexURL</td>
+	<td></td>
+	<td>URL of website. Should end with a slash.</td>
+</tr><tr>
+	<td>Language</td>
+	<td>english</td>
+	<td>Language file to use by default. A file <strong>languagename.php</strong> must exist in the languages directory.</td>
+</tr><tr>
+	<td>SessionCookie</td>
+	<td>0</td>
+	<td>Use session cookie instead of cookies with a lifetime of one month?</td>
+</tr><tr>
+	<td>AllowMemberCreate</td>
+	<td>0</td>
+	<td>Allow visitors to create their own account?</td>
+</tr><tr>
+	<td>AllowMemberMail</td>
+	<td>1</td>
+	<td>Allow members to send messages to each other through the member mail forms (e-mail addresses remain hidden)</td>
+</tr><tr>
+	<td>SiteName</td>
+	<td></td>
+	<td>Name of the website</td>
+</tr><tr>
+	<td>AdminURL</td>
+	<td></td>
+	<td>URL of admin area. Should end with a slash.</td>
+</tr><tr>
+	<td>NewMemberCanLogon</td>
+	<td>1</td>
+	<td>Can newly registered members login right away? If not, the administrator will have to change their 'can login' option first</td>
+</tr><tr>
+	<td class="toremove">DisableSite</td>
+	<td>0</td>
+	<td>Is the website disabled? If so, only the administrator can access it. All other visitors are redirected to <code>DisableSiteURL</code>.</td>
+</tr><tr>
+	<td class="toremove">DisableSiteURL</td>
+	<td></td>
+	<td>An URL to redirect to when the site is disabled.</td>
+</tr><tr>
+	<td class="toremove">LastVisit</td>
+	<td>0</td>
+	<td>Save 'Last Visit' cookies</td>
+</tr><tr>
+	<td>MediaURL</td>
+	<td></td>
+	<td>URL of media folder. Should end with a slash.</td>
+</tr><tr>
+	<td>AllowedTypes</td>
+	<td>jpg, jpeg, gif, mpg, mpeg, avi, mov, mp3, swf, png</td>
+	<td>Filetypes that can be uploaded</td>
+</tr><tr>
+	<td>AllowLoginEdit</td>
+	<td>0</td>
+	<td>Allow members to edit their login name and password?</td>
+</tr><tr>
+	<td>AllowUpload</td>
+	<td>1</td>
+	<td>Allow file uploads?</td>
+</tr><tr>
+	<td class="toremove">DisableJsTools</td>
+	<td>2</td>
+	<td>
+		Style of the javascript toolbar:
+		<ul>
+			<li>0: full featured (IE)</li>
+			<li>1: toolbar disabled</li>
+			<li>2: simpler (Gecko)</li>
+		</ul>
+	</td>
+</tr><tr>
+	<td>CookiePath</td>
+	<td>/</td>
+	<td>Path to set cookie on</td>
+</tr><tr>
+	<td>CookiePrefix</td>
+	<td></td>
+	<td>String to prefix cookie names with. This is useful when multiple Nucleus installs are on the same domain, as it prevents login sessions to interfere with each other.</td>
+</tr><tr>
+	<td>CookieDomain</td>
+	<td></td>
+	<td>Domain to set cookie on</td>
+</tr><tr>
+	<td>CookieSecure</td>
+	<td>0</td>
+	<td>Secure cookie (https)</td>
+</tr><tr>
+	<td>MediaPrefix</td>
+	<td>1</td>
+	<td>If true, the uploaded files get the current date in their filename.</td>
+</tr><tr>
+	<td>MaxUploadSize</td>
+	<td>1048576</td>
+	<td>Max. size of uploaded files (in bytes)</td>
+</tr><tr>
+	<td>NonmemberMail</td>
+	<td>0</td>
+	<td>Allow non-members to send e-mail messages to site members?</td>
+</tr><tr>
+	<td>PluginURL</td>
+	<td></td>
+	<td>URL of plugin folder. Should end with a slash.</td>
+</tr><tr>
+	<td>ProtectMemNames</td>
+	<td>1</td>
+	<td>When this option is enabled, non-logged in members cannot add comments using the same name as registered members. The reason to do this would be to avoid guest impersonating members.</td>
+</tr><tr>
+	<td class="foreign"><a href="#nucleus_skin_desc">BaseSkin</a></td>
+	<td>1</td>
+	<td>The option tells Nucleus which skin to fall back to when no such decision can be automatically made. This happens when skin parts are empty, when no blog or skin is implicitly/explicitly selected.</td>
+</tr><tr>
+	<td>SkinsURL</td>
+	<td></td>
+	<td>URL of skins folder. Should end with a slash.</td>
+</tr><tr>
+	<td>ActionURL</td>
+	<td></td>
+	<td>URL of <code>action.php</code> script.</td>
+</tr><tr>
+	<td>URLMode</td>
+	<td>normal</td>
+	<td>either <code>normal</code> or <code>pathinfo</code></td>
+</tr><tr>
+	<td>DatabaseVersion</td>
+	<td>250</td>
+	<td>Last Nucleus version for which the database structure has been updated (introduced in Nucleus v2.5)</td>
+</tr></table
+
+<a id="nucleus_tickets" name="nucleus_tickets"></a>
+<h1>Table nucleus_tickets<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Nucleus uses the <code>nucleus_tickets</code> to prevent against certain security issues. In particular: each action on the admin area that affects the settings or database contents, requires a ticket. These tickets are generated when requesting an admin area page and passed along with the form. Tickets are destroyed one hour after their creation.</p>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull primary">ticket</td>
+	<td>varchar(40)</td>
+	<td></td>
+	<td>Unique ticket, valid for one particular member. A typical ticket looks like this: <code>65303a785423b4d53c7b3e6579766f26</code></td>
+</tr><tr>
+	<td class="notnull foreign primary"><a href="#nucleus_member">member</a></td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Member for which this ticket is valid.</td>
+</tr><tr>
+	<td class="notnull">ctime</td>
+	<td>datetime</td>
+	<td></td>
+	<td>Time of ticket creation. A ticket is valid no longer than one hour.</td>
+</tr></table>
+
+
+<a id="nucleus_activation" name="nucleus_activation"></a>
+<h1>Table nucleus_activation<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>When a new member registers, Nucleus doesn't allow that member to log in before his account is activated. This activation is done by sending out an activation link to the members email address. The <code>nucleus_activation</code> table keeps track of the activations that are in progress.</p>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull primary">vkey</td>
+	<td>varchar(40)</td>
+	<td></td>
+	<td>Activation key. This key needs to be passed to the member activation code. A typical key looks like this: <code>41cf637d4fbeeff954b4ca70b8bde9dd</code></td>
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_member">vmember</a></td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Member which needs to be activated.</td>
+</tr><tr>
+	<td class="notnull">vtime</td>
+	<td>datetime</td>
+	<td></td>
+	<td>Time at which activation key was generated. Each activation key is valid no longer than 2 days.</td>
+</tr><tr>
+	<td class="notnull">vtype</td>
+	<td>varchar(15)</td>
+	<td></td>
+	<td>Type of activation.
+		<ul>
+			<li><code>forgot</code>: member forgot his password.</li>
+			<li><code>register</code>: new member registration.</li>
+			<li><code>addresschange</code>: member changed his e-mail address.</li>
+		</ul>
+	</td>
+</tr><tr>
+	<td class="notnull">vextra</td>
+	<td>varchar(128)</td>
+	<td></td>
+	<td>Extra information. For an <code>addresschange</code> type of activation, this contains <code>oldemailaddress/x</code> with x either 0 or 1 and refering to the previous value of the <code>mcanlogin</code> field in the <a href="#nucleus_member">member</a> table. (untill fully re-activated, a user cannot login)</td>
+</tr></table>
+
+
 <a id="nucleus_karma" name="nucleus_karma"></a>
-<h1>nucleus_karmaテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p class="toremove">このテーブルは将来はなくなる可能性が高い。同じ機能を提供するプラグインに譲るためだ。</p>
-<p>この表は投票に使われたIPアドレスを記憶しておく。こうすることで一つのIPアドレスからは1票しか入れられなくなる</p>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull foreign"><a href="#nucleus_item">itemid</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>アイテムのID</td>
-    </tr>
-    <tr>
-      <td class="notnull">ip</td>
-      <td>char(15)</td>
-      <td>''</td>
-      <td>投票者のIPアドレス</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_karma<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p class="toremove">This table will most likely be removed in future Nucleus version, in favor of plugins with the same functionality.</p>
+
+<p>This table keeps track of IP addresses that have already voted for an item. This way, each IP address can cast only one vote.</p>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_item">itemid</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Item ID</td>
+
+</tr><tr>
+	<td class="notnull">ip</td>
+	<td>char(15)</td>
+	<td>''</td>
+	<td>IP address of voter</td>
+</tr></table>
+
 <a id="nucleus_ban" name="nucleus_ban"></a>
-<h1>nucleus_banテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p class="toremove">このテーブルは将来のNucleusではなくなる可能性が高い。同じ機能を提供するプラグインに譲るためだ。</p>
-<p>コメントやカルマ投票を禁止するIPアドレスを記憶</p>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>規定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull">iprange</td>
-      <td>varchar(15)</td>
-      <td>''</td>
-      <td>IPアドレスの範囲。アドレス単独でもいいし，一部（左から）でもいい。一部の場合は範囲を示す</td>
-    </tr>
-    <tr>
-      <td class="notnull">reason</td>
-      <td>varchar(255)</td>
-      <td>''</td>
-      <td>禁止の理由を示すメッセージ。コメントやカルマ投票を試みたときに表示される</td>
-    </tr>
-    <tr>
-      <td class="notnull foreign"><a href="#nucleus_blog">blogid</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>禁止を有効にするBlogのID</td>
-    </tr>
-  </tbody>
-</table>
+<h1>Table nucleus_ban<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p class="toremove">This table will most likely be removed in future Nucleus version, in favor of plugins with the same functionality.</p>
+
+<p>IP bans. These people cannot comment or cast karma votes.</p>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull">iprange</td>
+	<td>varchar(15)</td>
+	<td>''</td>
+	<td>IP 'range'. This can either be a full IP address or part of an IP address (starting from the left) to ban ranges</td>
+
+</tr><tr>
+	<td class="notnull">reason</td>
+	<td>varchar(255)</td>
+	<td>''</td>
+	<td>A message with the reason why someone was banned. This message will be shown when they try to add a comment/cast a vote.</td>
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_blog">blogid</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>Blog for which the ban is active</td>
+</tr></table>
+
 
 </body>
-
 </html>

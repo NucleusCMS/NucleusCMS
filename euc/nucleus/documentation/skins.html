@@ -1,52 +1,52 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Nucleus - スキンとテンプレートについて</title>
+	<!-- $Id: skins.html,v 1.4 2005-03-19 07:28:32 kimitake Exp $ -->
+	<title>Nucleus - Skins and Templates</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 </head>
 <body>
 
 <div class="heading">
-スキン &amp; テンプレート
+Skins &amp; Templates
 </div>
 
 <h1>Introduction</h1>
 
 <p>
-<a href="index.html">Nucleusマニュアルに戻る</a>
+<a href="index.html">Back to the manual</a>
 </p>
 
-<p>Nucleusのインストールは無事完了したと思います。ここでは、ページ表示を定義するスキン／テンプレートの編集について説明をしたいと思います:</p>
+<p>So, you've installed Nucleus... You've got several options now concerning the look of your site:</p>
 <ol>
-	<li>標準でインストールされるスキン／テンプレートの編集画面に入ります(又はこれを複製した物を編集すればいつでも標準表示に戻れます)</li>
-	<li>標準でインストールされるスキン／テンプレートを元に、希望通りの修正を行います</li>
-	<li>自分で編集したスキン／テンプレートを元に、スタイルシートを定義します</li>
+	<li>Go with the default skin/templates that comes with Nucleus</li>
+	<li>Start from the default skin/templates, and modify it to your needs (colors, etc...)</li>
+	<li>Start your own skin/templates, and define your own CSS stylesheets</li>
 </ol>
-<p>このドキュメントは、これらの作業を行うにあたりヒントになる事項を紹介します。</p>
+<p>This document tries to help you with doing this.</p>
 
-<h1><a id="toc"></a>目次</h1>
+<h1><a id="toc"></a>Table Of Contents</h1>
 
 <ul>
-	<li><a href="#htmlcss">HTMLとCSSの関係について</a></li>
-	<li><a href="#defaultskin">標準のデザインで使用するファイル</a></li>
-	<li><a href="#templatesvsskins">テンプレートとスキンの相互関係</a></li>
-	<li><a href="#skincascade">適用されるスキンの優先順位</a></li>
+	<li><a href="#htmlcss">HTML and CSS</a></li>
+	<li><a href="#defaultskin">The default skin</a></li>
+	<li><a href="#templatesvsskins">Templates vs. Skins</a></li>
+	<li><a href="#skincascade">How skins are chosen</a></li>
 	<li>Howto:
 		<ul>
-			<li><a href="#howto-additem">「アイテムの追加」フォームの埋込み方法</a></li>
-			<li><a href="#howto-cssforms">入力フォームのデザインを定義するスタイルシート情報</a></li>
-			<li><a href="#howto-karma">投票機能を有効にする方法</a></li>
-			<li><a href="#howto-edit">「アイテムの編集」リンクの設置</a></li>
+			<li><a href="#howto-additem">An 'add item' form on your website</a></li>
+			<li><a href="#howto-cssforms">Using CSS to define the look of forms</a></li>
+			<li><a href="#howto-karma">Enabling karma votes</a></li>
+			<li><a href="#howto-edit">'Edit item'-links</a></li>
 		</ul>
 	</li>
-	<li><a href="#export">スキン／テンプレートのインポート／エクスポートについて</a></li>
+	<li><a href="#export">Writing skins with Export/Import in mind</a></li>
 </ul>
 
-<h1>HTMLとCSSの関係について <a id="htmlcss" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>HTML and CSS <a id="htmlcss" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-スキンとテンプレートを編集するにあたっては、HTMLとCSSの基礎知識が必要です。このセクションでは基礎知識を得る事ができる解説サイトを紹介しておきます。
+When editing skins and templates, you'll need at least some basic knowledge about HTML and CSS. This section provides some pointers to online tutorials and references:
 </p>
 
 <ul>
@@ -63,45 +63,43 @@
 
 
 
-<h1>標準のデザインで使用するファイル <a id="defaultskin" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>The default skin <a id="defaultskin" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>このセクションでは、標準のスキンで使用しているファイル名と、編集の注意点を説明します。</p>
+<p>This section briefly explains which files are used by the default skin, and how you can edit them.</p>
 
-<p>標準のスキンは以下の3つのファイルを使用しています:</p>
+<p>The default skin uses three files:</p>
 <ol>
-	<li><tt>default.css</tt> (v3.0は <tt>grey.css</tt>): ページのデザインを定義するCSS(カスケーディング・スタイルシート)ファイル。色指定やレイアウト指定などを定義します。</li>
-	<li><tt>atom.gif</tt>: ページの左上に表示されるロゴ。</li>
-	<li><tt>nucleus2.gif</tt>: Nucleus ロゴ。</li>
+	<li><tt>default.css</tt>: CSS stylesheet that defines the page style. Colors, layout etc. are defined in this file</li>
+	<li><tt>atom.gif</tt>: The logo that appears in the upper left corner of the screen</li>
+	<li><tt>nucleus2.gif</tt>: Nucleus logo</li>
 </ol>
 
-<p>CSSファイル (<tt>default.css</tt> / <tt>grey.css</tt>) には、標準のスキン／テンプレートを使用した際のページ構成(ブロック構造)を書き入れています。 基本的には<tt>.contents</tt>、 <tt>.logo</tt>、<tt>.menu</tt>の3つのdivブロックとなっています。</p>
+<p>The CSS file <tt>default.css</tt> contains extra information about how pages are built up by the default skins and templates. Basically, it comes down to three <tt>div</tt>-containers: <tt>.contents</tt>, <tt>.logo</tt> and <tt>.menu</tt></p>
 
-<p><tt>default.css</tt> / <tt>grey.css</tt>を編集するにあたっては、テキストエディタを使用してください。 例えばWindowsに標準添付されている「Notepad」やemacs や TextPadなどです。
-「WordPad」、「Word」、「OpenOffice Writer」などは余計なデータが混入しますので、<strong>絶対に使用しないでください</strong>。
-</p>
+<p>To edit the <tt>default.css</tt> file, you'll need a simple texteditor that does not add extra data, like Notepad (comes with windows),emacs or TextPad. Do <strong>not</strong> use WordPad, Word, OpenOffice Writer, ... since those add extra markup data.</p>
 
 
 
 
 
 
-<h1>テンプレートとスキンの相互関係 <a id="templatesvsskins" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Templates vs. Skins <a id="templatesvsskins" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-Nucleusではページ表示に「スキン」と「テンプレート」の両方を使用します。ではこれら2つの違いは何でしょう？
+In Nucleus, both templates and skins are used to determine the way your blog looks. So, what is the difference between these two?
 </p>
 
 <ol>
 	<li>
-		<b>スキン</b> とは出力する内容(タグを含むソース)を定義するものです。1つのスキンでもいくつかの種別ごとに定義が必要で、メインページや個別アイテムページ、アーカイブページなど(標準で8タイプ)があります。
-		スキン内の定義内容は、どの部分にblogデータを展開するのか、どのテンプレートを使用して展開するのかなどの指定を含みます。
+		<b>Skins</b> define how your sites look. Each skin consists of several types: one for the main index, one for the detailed item pages, one for the archive, ...
+		The skins also contain instructions of where to include a weblog, and which template should be used to do so.
 	</li>
 	<li>
-		<b>テンプレート</b>とは、blogデータを展開するのに使われるひな形です。スキン内で指定されたテンプレートをひな形に、blogデータが指定された場所に出力されるのです。もちろん、複数のスキンで1つのテンプレートを使い回しすることもできますし、逆に1つのページに複数のテンプレートを使用するケースもあります。
+		Ha! This means <b>templates</b> are used to define the way the weblog block in your page looks like. The reason why templates aren't included in the skins themselves, is that several skins can use the same template to display a blog.
 	</li>
 </ol>
 
-<p>下のサンプル画像をご覧下さい。ページ全体のソースはスキンで定義しています。その中の赤点線で囲った部分(カテゴリリストとblog記事)はテンプレートをひな形にして展開されたデータ部分です。この赤点線部分をどこに出力させるのかはスキンの方で指定しています。</p>
+<p>An example is given in the image below. The whole page is defined by a skin, while the parts in the red rectangles (category list and blog contents) are formatted according to the templates. It's the skin that defines where the red rectangles will appear.</p>
 
 <div class="screenshot">
 <img src="pics/skinsandtemplates.png" width="300" height="283" alt="Skins and Templates example" />
@@ -115,54 +113,53 @@ Nucleusではページ表示に「スキン」と「テンプレート」の両�
 
 
 
-<h1>適用されるスキンの優先順位 <a id="skincascade" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>How skins are chosen <a id="skincascade" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-このセクションではページ表示に使うスキンを設定する方法を説明します。
+This section tries to explain how Nucleus chooses the skin to use when you request a page.
 </p>
 
-<h2>スキンのタイプ</h2>
+<h2>Skin Types</h2>
 
 <p>
-まず最初に、スキンタイプの種別について紹介しておきます。NucleusはアクセスされたURLを元に表示するスキンタイプを判別してページ表示に使います。下記が種別のリストです。(実際のURLは状況に応じて他のクエリが付加され、様々に変化します。)
+First of all, there are several skin types between which Nucleus makes a choice according to the request URL: see the list below. This should be very obvious.
 </p>
 
 <table>
-	<tr><th>クエリ文字列</th><th>スキンの種別</th><th>表示される記事</th></tr>
-	<tr><td>?itemid=..</td><td>item(個別アイテム)</td><td>指定された<i>itemid</i>の記事</td></tr>
-	<tr><td>?archive=..</td><td>archive(アーカイブ)</td><td>標準のblog記事、又は<i>blogid</i>で指定されたblog記事(の該当記事)</td></tr>
-	<tr><td>?archivelist=...</td><td>archivelist(アーカイブリスト)</td><td>指定された<i>archivelist</i>のblog記事(のリスト)</td></tr>
-	<tr><td>?archivelist</td><td>archivelist(アーカイブリスト)</td><td>標準のblog記事(のリスト)</td></tr>
-	<tr><td>?query=...</td><td>search(検索)</td><td>標準のblog記事、又は<i>blogid</i>で指定されたblog記事(の該当記事)</td></tr>
-	<tr><td>?memberid=..</td><td>member(メンバー)</td><td>なし</td></tr>
-	<tr><td>?imagepopup=..</td><td>imagepopup(ポップアップ画像)</td><td>なし (画像のみ表示するポップアップ・ウィンドウ)</td></tr>
-	<tr><td><i>(その他 又は クエリなし)</i></td><td>index(メイン)</td><td>標準のblog記事、又は<i>blogid</i>で指定されたblog記事</td
+	<tr><th>Query String Format</th><th>Which skin type?</th><th>Which weblog is shown?</th></tr>
+	<tr><td>?itemid=..</td><td>item</td><td>Deducted from <i>itemid</i></td></tr>
+	<tr><td>?archive=..</td><td>archive</td><td>Default weblog, or <i>blogid</i> attribute</td></tr>
+	<tr><td>?archivelist=...</td><td>archivelist</td><td><i>archivelist</i>-attribute</td></tr>
+	<tr><td>?archivelist</td><td>archivelist</td><td>Default weblog</td></tr>
+	<tr><td>?query=...</td><td>search</td><td>Default weblog, or <i>blogid</i> attribute</td></tr>
+	<tr><td>?memberid=..</td><td>member</td><td>None</td></tr>
+	<tr><td>?imagepopup=..</td><td>imagepopup</td><td>None (popup window with image)</td></tr>
+	<tr><td><i>(other or empty)</i></td><td>index</td><td>Default weblog, or <i>blogid</i> attribute</td
 	></tr>
 </table>
 
 <p>
-これら7つのタイプに併せて、エラーの場合に使われる <i>error</i> タイプがあります。
+Next to these 7 types, there is an <i>error</i> type, which is used when errors occur.
 </p>
 
-<h2>スキンの補完適用</h2>
+<h2>The Skin Cascade</h2>
 
 <p>
-上の表において、それぞれのケースで選択適用するblogがどれになるかを併せて説明しています。
-表示に使用するスキンは、blog設定で設定した「標準のスキン」です。
-</p>
-
-<p>
-新しくスキンを作成する際はすべてのスキンタイプを定義する必要はありません。選択適用するスキンタイプが定義されていない場合は、グローバル設定において設定した「標準のスキン」を代替適用します。(下記参照)。つまり、エラーページのスキンタイプだけを定義したスキンを使用するといったことが可能な訳です。
-</p>
-
-<h2>標準のスキン</h2>
-
-<p>
-Nucleus は「標準のスキン」が必ず必要です。この標準のスキンは、スキンタイプ定義が見あたらない場合の補完表示に使われるからです。もし、標準のスキンにおいても適用すべきスキンタイプの定義が見あたらない場合は、エラーメッセージが表示されてしまいます。
+The table above also indicates how the blog to be displayed is chosen. The skin that will be used, is the default skin for that weblog, as selected in the settings for that weblog.
 </p>
 
 <p>
-また、指定されたblogが見あたらない場合は、適用するスキンのblog設定そのものが存在しませんから、エラーメッセージを表示するためのページデザインとして「標準のスキン」がかならず必要なのです。
+Not every skin needs to have definitions for all skin parts. When a part is missing, the skin called 'default' will be used instead (see below). This allows you for example to only create one error page and one member page.
+</p>
+
+<h2>The 'default' Skin</h2>
+
+<p>
+Nucleus requires that at all times there exists a skin called '<b>default</b>'. This is the skin to which is backed up when a skinpart is missing. If the same skinpart is also missing from the 'default' skin, the error message 'no appropriate skin found' will be shown.
+</p>
+
+<p>
+Another reason why the 'default' skin is required, is to be able to display error messages when no blog is selected (e.g. the 'no such blog' error)
 </p>
 
 
@@ -172,19 +169,19 @@ Nucleus は「標準のスキン」が必ず必要です。この標準のスキ
 
 
 
-<h1>Howto: 「アイテムの追加」フォームの埋込み方法 <a id="howto-additem" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Howto: An 'add item' form on your website <a id="howto-additem" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-Nucleus ではblogページに新規投稿フォームを埋め込む機能を設けています。「新規投稿」リンクをページ内のどこかに作り、このリンクをクリックすると新規投稿フォームの表示/非表示の切り替えができます。 このフォームに入力後プレビュー機能が使えますので、どのように記事が表示されるかを瞬時に確認できて便利です。
+Nucleus provides facilities to add an 'add item' form to your weblog. It adds an 'add item' link that shows and hides the 'add item' form right above the current contents of your weblog. Entering text in this form results into an instant preview, so you can immediately see how the actual weblog item will look like.
 </p>
 
 <p>
-方法は、「メインの目次ページ」を編集するだけです。テンプレートの編集は必要ありません。
+All modifications below apply to the <b>skin</b> for the <b>main index</b> page. You don't need to alter any templates.
 </p>
 
-<h2>1. JavaScript コードの呼出し</h2>
+<h2>1. JavaScript code</h2>
 <p>
-まず最初に、edit.jsをページ上に呼び出すコードを追加します。&lt;head&gt; と &lt;/head&gt; タグの間のどこかに下のコードを追加して下さい。このファイルを呼び出す事によって新規投稿のプレビュー機能とフォームの表示/非表示切替え機能が有効になります。
+First of all, you need to include the edit.js Javascript code by putting the following line somewhere in between the &lt;head&gt; and &lt;/head&gt; tags. This file contains the functions that are needed to make the preview work and to hide/show the 'add item' form.
 </p>
 
 <pre>
@@ -192,10 +189,10 @@ Nucleus ではblogページに新規投稿フォームを埋め込む機能を�
         src="nucleus/javascript/edit.js"&gt;&lt;/script&gt;
 </pre>
 
-<h2>2. 新規投稿フォームを埋め込む場所を指定</h2>
+<h2>2. Indicate where the form will show up</h2>
 
 <p>
-新規投稿フォームを埋め込みたい場所に追加します。"display:none;"は必ず間違えずに記述してください。
+The, you add a logical container somewhere on your page, where you want to have the 'add item' form. The "display:none;" makes sure it is hidden.
 </p>
 
 <pre>
@@ -204,10 +201,10 @@ Nucleus ではblogページに新規投稿フォームを埋め込む機能を�
 &lt;/div&gt;
 </pre>
 
-<h2>3. 入力フォームとプレビューエリアを埋め込むコードを追加</h2>
+<h2>3. Code that inserts the form and preview</h2>
 
 <p>
-次に、このdivブロックの中に入力フォームとプレビューエリアを埋め込むコードを追加します。入力フォームは&lt;%additemform%&gt; と、プレビューエリアは &lt;%preview(<i>テンプレート名</i>)%&gt;と書く事によってそこに展開されます。あとは好きなコードを追加してください。 例えば次のように書きます。
+Now, you can add your custom HTML into this container, and use &lt;%additemform%&gt; and &lt;%preview(<i>templatename</i>)%&gt; to insert the 'add item' form and the preview code respectively. An example is given below
 </p>
 
 <pre>
@@ -218,9 +215,9 @@ Nucleus ではblogページに新規投稿フォームを埋め込む機能を�
 &lt;%preview(mytemplate)%&gt;
 </pre>
 
-<h2>4. 新規投稿リンクの追加</h2>
+<h2>4. The 'add item'-link</h2>
 <p>
-最後に、このエリアを表示/非表示させるための切替えリンクをどこか別の場所に追加します。サンプルとして2つのコードを紹介しておきます。</p><p>1つめはシンプルなタイプ:
+And the finishing touch: a link or button to trigger the visibility of the form. Two examples are given. The first one is a simple link:
 </p>
 
 <pre>
@@ -228,7 +225,7 @@ Nucleus ではblogページに新規投稿フォームを埋め込む機能を�
 </pre>
 
 <p>
-2つ目はページ左上隅に切替えリンクを配置するタイプ:
+The second example is a hidden button in the topleft corner
 </p>
 
 <pre>
@@ -243,69 +240,70 @@ Nucleus ではblogページに新規投稿フォームを埋め込む機能を�
 
 
 
-<h1>Howto: 入力フォームのデザインを定義するスタイルシート情報 <a id="howto-cssforms" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Howto: CSS to define the look of forms <a id="howto-cssforms" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-例えばスキン内に。 &lt;%searchform%&gt; や &lt;%commentform%&gt; と記述することによって、それぞれ検索フォームやコメント投稿フォームに置き換えられてページ内に表示されます。これらの入力フォームやボタンや入力フォーム領域には標準でクラス名が定義されていますので、cssファイル内でクラスの定義をすればスタイルの変更が可能です。</p>
+Through variables such as &lt;%searchform%&gt; and &lt;%commentform%&gt;, forms can easily be included into your skin. To allow styles to be applied on those forms, CSS classes have been assigned to the input fields and buttons, and to a surrounding DIV-container.
+</p>
 
 <p>
-入力フォーム領域のクラス名は下記のように指定されています。クラス名はフォーム全体を囲ったdivブロックを修飾しています。
+Below is a list of which CSS class corresponds to which form. These are the classes assigned to the surrounding DIV-container.
 </p>
 
 <table>
 	<tr>
-		<th>フォームの種類</th>
-		<th>記述コード</th>
-		<th>CSS クラス名</th>
+		<th>Form Type</th>
+		<th>Skin Variable</th>
+		<th>CSS Class Name</th>
 	</tr>
 	<tr>
-		<td>新規投稿フォーム</td>
+		<td>Add Item to Blog</td>
 		<td>&lt;%additemform%&gt;</td>
 		<td>.blogform</td>
 	</tr>
 	<tr>
-		<td>コメント投稿フォーム</td>
+		<td>Add Comment</td>
 		<td>&lt;%commentform%&gt;</td>
 		<td>.commentform</td>
 	</tr>
 	<tr>
-		<td>ログインフォーム</td>
+		<td>Login Form</td>
 		<td>&lt;%loginform%&gt;</td>
 		<td>.loginform</td>
 	</tr>
 	<tr>
-		<td>検索フォーム</td>
+		<td>Search Form</td>
 		<td>&lt;%searchform%&gt;</td>
 		<td>.searchform</td>
 	</tr>
 	<tr>
-		<td>メンバー間のメール送信フォーム</td>
+		<td>Member to Member Mail</td>
 		<td>&lt;%membermailform%&gt;</td>
 		<td>.mailform</td>
 	</tr>
 </table>
 
 <p>
-ボタンと入力フォームのクラス名は以下のように指定しています。
+Below is an overview of the CSS classes assigned to buttons and input fields.
 </p>
 
 <table>
 	<tr>
-		<th>タイプ</th>
-		<th>CSS クラス名</th>
+		<th>Type</th>
+		<th>CSS Class Name</th>
 	</tr>
 	<tr>
-		<td>単行/複数行のテキスト入力フィールド</td>
+		<td>Input fields (text and textarea)</td>
 		<td>.formfield</td>
 	</tr>
 	<tr>
-		<td>ボタン</td>
+		<td>Buttons</td>
 		<td>.formbutton</td>
 	</tr>
 </table>
 
 <p>
-スタイルシート内で実際にこれらを定義するサンプルです:
+An example of how to use these classes in you stylesheets is given below:
 </p>
 
 <pre>
@@ -323,20 +321,20 @@ Nucleus ではblogページに新規投稿フォームを埋め込む機能を�
 }
 </pre>
 
-<p>上のサンプルでは、Nucleusが自動生成するテキスト入力フィールドの全部が「 背景色 ＝ 濃灰色 」で、コメント投稿フォーム内のボタンだけが「 文字サイズ ＝ 大 / 四辺 ＝ 黒色の1ピクセルの太さの線 / 文字色 ＝ 黒 / 背景色 ＝ 淡灰色 」とする、と定義しています。</p>
+<p>In the example above, all formfields that nucleus generates are given a gray background, and the submit button on the comment form has large text, a black 1px border, black text and a light-gray background.</p>
 
 
-<h1>Howto: 投票機能を有効にする方法 <a id="howto-karma" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Howto: Enabling karma votes <a id="howto-karma" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>標準添付のスキン/テンプレートでは投票機能を表示させていません(使わない方がよいのかもしれません)。ここでは投票機能が表示されるようにテンプレートを書換える方法を紹介します。</p>
+<p>The default skins and templates have karma votes disabled (better: left out). Here's how to add them to your <i>template</i>.</p>
 
-<h2>1. 表示に使用する「メインの目次ページ」タイプで指定したテンプレートの編集画面を開く</h2>
+<h2>1. Open the template for the main index</h2>
 
-<p><tt>'default'</tt> ( v3.0では <tt>'grey/short'</tt> ) という名前のテンプレートの編集画面を開きます。(このテンプレート名はあくまでも新規インストール直後の状態で適用されているものです。複製や新規作成などにより変更している場合は読み替えてください。)</p>
+<p>Start editing the template named <tt>'default'</tt> (when starting from the default skins/templates that come with Nucleus)</p>
 
-<h2>2. アイテムの本体部分の書換え</h2>
+<h2>2. Edit the 'Item body' template-part</h2>
 
-<p>アイテムの本体部分の最後の方を以下のように書換えます:</p>
+<p>Edit the <i>bottom part</i> of the item body templatepart to be as follows:</p>
 
 <pre>
 &lt;div class="iteminfo"&gt;
@@ -349,87 +347,85 @@ Nucleus ではblogページに新規投稿フォームを埋め込む機能を�
 &lt;/div&gt;
 </pre>
 
-<p>編集後にメインページにアクセスすると記事詳細情報が下のように表示が変更されているのが確認できると思います:</p>
+<p>On the main page, the iteminfo line for the items will now look like:</p>
 
 <div><i>9:00:39 PM - <a href="">God</a> - karma: 5 [<a href="">+</a>/<a href="">-</a>] - <a href="">edit</a></i></div>
 
-<h2>3. アイテムの個別ページのテンプレート</h2>
+<h2>3. Template for the detailed pages</h2>
 
-<p>上記の編集作業ではメインページでのみ投票スコアが表示される状態です。アイテムの個別ページでも同様に投票を表示したい場合は、スキンの「アイテムの個別ページ」で使用しているテンプレートに同様の修正を行ってください。新規インストール直後の状態では<tt>'detailed'</tt> ( v3.0では <tt>'grey/full'</tt> ) という名前のテンプレートがそれに該当します。</p>
-
-
+<p>At this time, the karma score is only listed on the main page. To make it appear on the detailed page also, the same change needs to be applied to the template with name '<tt>detailed</tt>'</p>
 
 
 
 
-<h1>Howto: 「アイテムの編集」リンクの設置 <a id="howto-edit" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>Nucleus標準添付のスキンでは記事の編集権限を持つユーザーにだけ表示される「アイテムの編集」リンクを埋め込んでいます。 ここではどこでそのリンクを埋め込んでいるのかを説明します。</p>
 
-<h2>「アイテムを編集するためのリンク」の表示の設定</h2>
+<h1>Howto: 'edit item' links <a id="howto-edit" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>テンプレートの編集画面の「アイテムを編集するためのリンク」部分でアイテムの編集リンクの表示を定義しています。 標準添付のテンプレートでは以下のように定義しています:</p>
+<p>The default Nucleus skin includes 'edit item'-links that are only visible to the author of a item and to the people having the right to alter the item. This section explains which template-parts are needed for this feature to work.</p>
+
+<h2>'editlink'-template</h2>
+
+<p>The 'Edit Link'-templatepart defines how an 'edit item'-link is formatted. By default, the contents is:</p>
 <pre><code>&lt;a href="&lt;%editlink%&gt;" onclick="&lt;%editpopupcode%&gt;"&gt;edit&lt;/a&gt;</code></pre>
 
-<p>ポップアップ編集画面ではなく管理エリアの記事編集画面を使いたい場合は次のように修正してください:</p>
+<p>If you would rather edit the item in the admin area, instead of in the popup bookmarklet, use the following code instead:</p>
 
 <pre><code>&lt;a href="nucleus/index.php?action=itemedit&amp;amp;itemid=&lt;%itemid%&gt;"&gt;edit&lt;/a&gt;
 </code></pre>
 
-<h2>「アイテムの編集」リンクを表示する場所の指定</h2>
+<h2>Positioning the edit-link</h2>
 
-<p>表示形式を決めたら、次にどこにこれを表示するのかを設定します。通常なら「アイテムの本体」の中に<code>&lt;%edit%&gt;</code>と記述します。この<code>&lt;%edit%&gt;</code>の部分が上で設定した表示形式に置き換えられてコードが自動生成されます。</p>
+<p>Next to the 'editlink' template, there's the <code>&lt;%edit%&gt;</code>-templatevar that, when placed somewhere in the 'item body'-templatepart, inserts the editlink.</p>
 
-<p>「アイテムの本体」の中の記述例は <a href="#howto-karma">投票機能を有効にする方法</a> を参照してください。</p>
-
-
+<p>See the example from the <a href="#howto-karma">karma votes howto</a> to see an example.</p>
 
 
-<h1>スキン／テンプレートのインポート／エクスポートについて <a id="export" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>バージョンv2.0以降からスキンとテンプレートをインポート/エクスポートする機能が追加されています。ここでは、スキンを作成する手順を追ってその機能をわかりやすく説明したいと思います。</p>
 
-<h2>新規スキンの作成</h2>
+<h1>Writing skins with Export/Import in mind <a id="export" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Nucleus v2.0 introduced the ability to import and export skins and templates. This section describes the creation of a simple skin, highlighting the features involved.</p>
+
+<h2>Creating a new skin</h2>
 
 <ol>
 	<li>
-		<p>まず管理エリアにてスキンを新規作成します。管理エリアに入り、「スキンの編集」画面の一番下にある「新しいスキン」の所に入力します。ここでは例として名前を「<strong>vista</strong>」とします。</p>
+		<p>First, we're going to create a new skin from the admin area. Browse to <code>Nucleus Management &gt; Edit Skins</code> and scroll to the bottom of the page. Let's call this skin '<strong>vista</strong>'</p>
 	</li>
 	<li>
-		<p>スキンの一覧にこの「vista」という名前のスキンが追加されていますので、その行の右横「編集」リンクをクリックして編集画面に入ります。content type は 「<code>text/html</code>」としてください。 これから説明する作業を行うにあたって必要な設定となりますので、よく確認して設定してください。</p>
-		<p>さらにその下の <code>Include モード</code> と <code>Include プリフィックス</code> もよく注意して設定してください。スキンを移植したり配布したりする事を考えて、デザインに使用する画像やcssファイルなどは1つのディレクトリの中に格納しておく事とします。 </p>
-		 <p><code>Include モード</code> と <code>Include プリフィックス</code> が適用される仕組みを簡単に説明しておきましょう。<code>config.php</code>で定義している「<code>$DIR_SKINS</code>」の値と、管理エリアのグローバル設定の中で設定している「<code>スキンURL</code>」が関連してきます。
-		 例えばそれぞれ以下のような値になっているとします:</p>
+		<p>Now look up the 'vista' skin in the skin list and go to the <code>Edit</code> screen. The content type is set to <code>text/html</code>. That's what we want, so no need to change that</p>
+		<p>The <code>Include Mode</code> and <code>Include Prefix</code> setting reuire more attention. To export a skin, we like to have all files (images, stylesheets, etc...) under one single directory. Remember the <code>$DIR_SKINS</code> setting in <code>config.php</code> and the <code>Skins URL</code> in the general site settings? Suppose these were as follows:</p>
 		<pre><code>/home/user/example/htdocs/skins/
 http://example.org/skins/</code></pre>
-		<p>この設定を準用してデザインに使用する画像やcssファイルなどを格納するディレクトリを次のように設定させます</p>
+		<p>Then we would like to put our files in</p>
 		<pre><code>/home/user/example/htdocs/skins/vista/
 http://example.org/skins/vista/</code></pre>
-		<p>このように準用適用させる設定が<code>Include モード</code>です。準用させるためには<code>Include モード</code>を「<strong>skindirを使う</strong>」にしてください。</p>
-		<p>さらに <strong><code>Include プリフィックス</code></strong> は 「<strong>vista/</strong>」と入力してください。</p>
-		<p>この画面の設定:</p>
+		<p>And this is what the <strong><code>Include Mode</code></strong> is for. Setting it to <strong>Use skin dir</strong> will do this.</p>
+		<p>The <strong><code>Include Prefix</code></strong> also plays a role. This is the <strong>vista/</strong> part</p>
+		<p>An overview of the correct settings:</p>
 		<ul>
-			<li><strong>名前</strong>: vista</li>
+			<li><strong>Name</strong>: vista</li>
 			<li><strong>Content Type</strong>: text/html</li>
-			<li><strong>Include モード</strong>: skindirを使う</li>
-			<li><strong>Include プリフィックス</strong>: vista/</li>
+			<li><strong>Include Mode</strong>: Use skin dir</li>
+			<li><strong>Include Prefix</strong>: vista/</li>
 		</ul>
 	</li>
 </ol>
 
-<h2>スキンの編集</h2>
+<h2>Edit the skin</h2>
 
-<p>スキン内に記述するコードのうち、<code>include</code> と <code>phpinclude</code> と <code>parsedinclude</code>で読み込むファイルの場所指定に、この「<code>Include モード</code>」 と 「<code>Include プリフィックス</code>」の設定が適用されます。また、このほかに<code>skinfile</code>という記述コードでもこれらの設定を読み込んでURLの自動生成が行われます。</p>
+<p>The <code>IncludeMode</code> and <code>IncludePrefix</code> settings will cause the <code>include</code>, <code>phpinclude</code> and <code>parsedinclude</code> skinvars to get their files from the skindir. Next to that, there's the <code>skinfile</code> skinvar, which translates its argument to an URL relative to the skinsdir.</p>
 
-<p>例えばスキン内に以下のように記述したとします:</p>
+<p>In our case:</p>
 
 <pre><code>&lt;%skinfile(myFile.jpg)%&gt;</code></pre>
 
-<p>これはページ生成時に以下のように自動変換されます:</p>
+<p>Will get expanded to:</p>
 
 <pre><code>http://example.org/skins/vista/myFile.jpg</code></pre>
 
-<p>仕組みの説明はこのくらいにして、実際にスキンを編集してみましょう。<code>vista/</code> ディレクトリの中に「<code>pagefoot.inc</code>」 と 「<code>pagehead.inc</code>」 という名前の2つのファイルを作成して、これらのファイルを使い回す事によって作業効率を上げる方法をご紹介します:</p>
+<p>Lets go easy on ourselves and define the global layout in two files called <code>pagefoot.inc</code> and <code>pagehead.inc</code>, which we place in our <code>vista/</code> directory:</p>
 
 <h3>pagehead.inc</h3>
 
@@ -465,9 +461,9 @@ http://example.org/skins/vista/</code></pre>
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 
-<p>このような共通して使えるコードを書いたファイルを使い回します: (上のサンプルは重要な部分だけを抜粋した物です。実際に使用する際は標準添付のスキンを参考に、もっとたくさんのコードを書き込んだ方が良いでしょう。)</p>
+<p>The contents of the skinparts then becomes kind of trivial: (I'm not defining them all, you'll get the point by seeing the most important ones)</p>
 
-<h3>メインの目次ページ</h3>
+<h3>Main Index</h3>
 <pre><code>&lt;%parsedinclude(pagehead.inc)%&gt;
 
 &lt;h1&gt;My Blog&lt;/h1&gt;
@@ -476,7 +472,7 @@ http://example.org/skins/vista/</code></pre>
 
 &lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
 
-<h3>アイテムの個別ページ</h3>
+<h3>Item Pages</h3>
 
 <pre><code>&lt;%parsedinclude(pagehead.inc)%&gt;
 
@@ -493,9 +489,9 @@ http://example.org/skins/vista/</code></pre>
 
 &lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
 
-<p>上のサンプルでは使用するテンプレート名を「<strong>vista/main</strong>」 、 「<strong>vista/detailed</strong>」と指定していることに注意してください。テンプレート名はスキン名と揃えて置いた方が後々編集する時にわかりやすくて便利です。単純に標準添付の 「<strong>default</strong>」 と 「<strong>detailed</strong>」(v3.0 では「<strong>grey/short</strong>」 と 「<strong>grey/full</strong>」) をそれぞれ複製して名前を付け替えただけの物でも構いません。</p>
+<p>Note that I named my templates <strong>vista/main</strong> and <strong>vista/detailed</strong>. Makes it easier to see things together six months later. Both templates are actually clones that I made of the <strong>default</strong> and <strong>detailed</strong> templates that come with Nucleus.</p>
 
-<h3>アーカイブ一覧ページ</h3>
+<h3>Archive List</h3>
 
 <pre><code>&lt;%parsedinclude(pagehead.inc)%&gt;
 
@@ -505,7 +501,7 @@ http://example.org/skins/vista/</code></pre>
 
 &lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
 
-<h3>アーカイブページ</h3>
+<h3>Archive</h3>
 
 <pre><code>&lt;%parsedinclude(pagehead.inc)%&gt;
 
@@ -515,27 +511,27 @@ http://example.org/skins/vista/</code></pre>
 
 &lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
 
-<h2>スキンをエクスポートする</h2>
+<h2>Export the skin</h2>
 
-<p>これでvistaスキンのできあがりです。では、このスキンをエクスポートしてみましょう。管理エリアの「スキンのインポート/エクスポート」画面に入り、以下の作業を行います:</p>
+<p>When all is done, you can export the skin from the <code>Skin Import/Export</code> page in the admin area. Here's what to do:</p>
 
 <ol>
-	<li>書き出すスキン/テンプレートを選択するリストの中から「vista」、「vista/detailed」、「vista/main」の3つを選択してください。</li>
-	<li>その下の「追加情報」欄にこれから書き出すスキン／テンプレートについての説明書きを(必要ならば)入力し、<code>選択されたスキン／テンプレートを書き出し</code> ボタンを押します。 Nucleusにて「<code>skinbackup.xml</code>」の自動作成が行われます。</li>
-	<li>この「<code>skinbackup.xml</code>」ファイルを保存し、<code>vista/</code>ディレクトリの中に他の画像ファイルなどと一緒に格納してください。</li>
-	<li>この<code>vista/</code>ディレクトリごとzipファイルなどに圧縮します。</li>
-	<li>これでスキンパッケージのできあがりです。この圧縮ファイルを配布するだけでデザインの配布ができます。</li>
+	<li>Select vista, vista/detailed and vista/main from the skins and template list</li>
+	<li>Add some textual description and hit the <code>Export selected skins/templates</code> button. It will generate a <code>skinbackup.xml</code> for you.</li>
+	<li>Save this <code>skinbackup.xml</code> file together with the other files in the <code>vista/</code> directory.</li>
+	<li>Package all files from the vista directory inside a zipfile</li>
+	<li>All done! Your skin can now be shared with others</li>
 </ol>
 
-<h2>スキンをインポートする</h2>
+<h2>Importing a skin</h2>
 
-<p>スキンをインポートするには、上と逆の手順を踏みます:</p>
+<p>Importing is the reverse process:</p>
 
 <ol>
-	<li>圧縮ファイルを解凍して生成されたディレクトリ(<code>vista/</code>)をサーバのスキンディレクトリ内に配置します(ひとつのスキンで1つのディレクトリを使用します)。</li>
-	<li>管理エリアの「スキンのインポート/エクスポート」画面にて、ドロップダウンリストから「vista」を選択し、「読み込み」ボタンを押します。</li>
-	<li>表示される説明に従います。(すでに同じ名前のスキン／テンプレートが存在する場合はその旨の警告が出ますので、上書きしたい場合は「既に存在するスキンを上書きする (ぶつかるスキン名を参照) 」のチェックを入れてから読み込むボタンを押せば上書きされます。)</li>
-	<li>これでスキンの読込みは完了です。ページ表示に使用したい場合はblog設定でこのスキン名を選択すれば適用されます。</li>
+	<li>Unzip the zip file under your skins directory, so you end up with a <code>vista/</code> dir (there will be one directory per skin)</li>
+	<li>From the <code>Skin Import/Export</code> page in the admin area, select <code>vista</code> from the dropdown, and click the <code>Import</code> button.</li>
+	<li>Follow the instructions</li>
+	<li>The skin is now installed. It can be selected from the blogsettings.</li>
 </ol>
 
 </body>
