@@ -5576,11 +5576,6 @@ function showlist($query, $type, $template) {
 
 		call_user_func('listplug_' . $type, $template, 'HEAD');
 
-		// add extra row if needed
-		if ($template['extra']) {
-			echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
-		}
-
 		foreach ($query as $currentObj) {
 			$template['current'] = $currentObj;
 			call_user_func('listplug_' . $type, $template, 'BODY');
@@ -5600,11 +5595,6 @@ function showlist($query, $type, $template) {
 
 		call_user_func('listplug_' . $type, $template, 'HEAD');
 
-		// add extra row if needed
-		if ($template['extra']) {
-			echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
-		}
-
 		while($template['current'] = mysql_fetch_object($res)) 
 			call_user_func('listplug_' . $type, $template, 'BODY');
 
@@ -5621,6 +5611,12 @@ function listplug_select($template, $type) {
 	switch($type) {
 		case 'HEAD':
 			echo '<select name="'.$template['name'].'" tabindex="'.$template['tabindex'].'" '.$template['javascript'].'>';
+			
+			// add extra row if needed
+			if ($template['extra']) {
+				echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
+			}
+			
 			break;
 		case 'BODY':
 			$current = $template['current'];
