@@ -13,7 +13,8 @@
   */
 
 $nucleus['version'] = 'v2.0 CVS';
-$CONF['debug'] = 1;				
+$CONF['debug'] = 1;			
+$CONF['alertOnHeadersSent'] = 1;
 
 /**
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
@@ -202,21 +203,22 @@ if ($CONF['URLMode'] == 'pathinfo') {
 function sql_connect() {
 	global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE;
 	
-	$connection = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or connectError('Could not connect to MySQL database.');	
-	mysql_select_db($MYSQL_DATABASE) or connectError('Could not select database');	
+	$connection = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>','Connect Error');	
+	mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database</p>', 'Connect Error');	
 	
 	return $connection;
 }
 
-function connectError($msg) {
+/**
+ * Errors before the database connection has been made
+ */
+function startUpError($msg, $title) {
 	?>
 	<html>
-		<head><title>Connect Error</title></head>
+		<head><title><?=htmlspecialchars($title)?></title></head>
 		<body>
-			<h1>Connect Error</h1>
-			<p>
+			<h1><?=htmlspecialchars($title)?></h1>
 			<?=$msg?>
-			</p>
 		</body>
 	</html>
 	<?
@@ -322,6 +324,15 @@ function selector() {
 	// first, let's see if the site is disabled or not
 	if ($CONF['DisableSite'] && !$member->isAdmin()) {
 		header('Location: ' . $CONF['DisableSiteURL']);
+		exit;
+	}
+	
+	// show error when headers already sent out
+	if (headers_sent($hsFile, $hsLine) && $CONF['alertOnHeadersSent']) {
+		startUpError(
+			'<p>The page headers have already been sent out in <code>'.$hsFile.'</code> line <code>'.$hsLine.'</code>. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, or at the end of the language file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>',
+			'Page headers already sent'
+		);
 		exit;
 	}
 	
