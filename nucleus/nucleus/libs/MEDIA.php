@@ -144,7 +144,7 @@ class MEDIA {
 		// add trailing slash (don't add it earlier since it causes mkdir to fail on some systems)
 		$mediadir .= '/';
 			
-		if (file_exists($filename))
+		if (file_exists($mediadir . $filename))
 			return _ERROR_UPLOADDUPLICATE;
 
 		// move file to directory
@@ -155,6 +155,64 @@ class MEDIA {
 			if (!copy($uploadfile, $mediadir . $filename))
 				return _ERROR_UPLOADCOPY ;
 		}
+		
+		// chmod uploaded file
+		$oldumask = umask(0000);
+		@chmod($mediadir . $filename, 0644); 
+		umask($oldumask);		
+		
+		return '';
+	
+	}
+	
+	/**
+	 * Adds an uploaded file to the media dir. 
+	 *
+	 * @param $collection
+	 *		collection to use
+	 * @param $filename
+	 *		the filename that should be used to save the file as
+	 *		(date prefix should be already added here)
+	 * @param &$data
+	 *		File data (binary)
+	 *
+	 * NOTE: does not check if $collection is valid.
+	 */
+	function addMediaObjectRaw($collection, $filename, &$data) {
+		global $DIR_MEDIA;
+		
+		// check dir permissions (try to create dir if it does not exist)
+		$mediadir = $DIR_MEDIA . $collection;
+
+		// try to create new private media directories if needed
+		if (!@is_dir($mediadir) && is_numeric($collection)) {
+			$oldumask = umask(0000);
+			if (!@mkdir($mediadir, 0777))
+				return _ERROR_BADPERMISSIONS;
+			umask($oldumask);				
+		} 
+		
+		// if dir still not exists, the action is disallowed
+		if (!@is_dir($mediadir))
+			return _ERROR_DISALLOWED;
+		
+		if (!is_writeable($mediadir))
+			return _ERROR_BADPERMISSIONS;
+			
+		// add trailing slash (don't add it earlier since it causes mkdir to fail on some systems)
+		$mediadir .= '/';
+			
+		if (file_exists($mediadir . $filename))
+			return _ERROR_UPLOADDUPLICATE;
+
+		// create file
+		$fh = @fopen($mediadir . $filename, 'wb');
+		if (!$fh) 
+			return _ERROR_UPLOADFAILED;
+		$ok = @fwrite($fh, $data);
+		@fclose($fh);
+		if (!$ok)
+			return _ERROR_UPLOADFAILED;
 		
 		// chmod uploaded file
 		$oldumask = umask(0000);
