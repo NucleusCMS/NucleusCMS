@@ -80,6 +80,8 @@ function upgrade_do25() {
 	// repair table is needed (build index)
 	upgrade_query('Repairing item table', 'REPAIR TABLE ' . sql_table('item'));
 	upgrade_query('Repairing comment table', 'REPAIR TABLE ' . sql_table('comment'));	
+        $query = ' ALTER TABLE ' . sql_table('blog') . ' ADD bincludesearch TINYINT(2) DEFAULT 0';
+	upgrade_query('Adding bincludesearch column to blog', $query);
 }
 
 ?>
