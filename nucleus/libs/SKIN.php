@@ -403,10 +403,31 @@ class ACTIONS extends BaseActions {
 			case 'loggedin':
 				$condition = $member->isLoggedIn();
 				break;
+			case 'onteam':
+				$condition = $member->isLoggedIn() && $this->_ifOnTeam($name);
+				break;
 			default:	
 				return;
 		}
 		$this->_addIfCondition($condition);
+	}
+	
+	function _ifOnTeam($blogName = '') {
+		global $blog, $member, $manager;
+		
+		// when no blog found
+		if (($blogName == '') && (!is_object($blog)))
+			return 0;
+		
+		// explicit blog selection
+		if ($blogName != '') 
+			$blogid = getBlogIDFromName($blogName); 
+		
+		if (($blogName == '') || !$manager->existsBlogID($blogid))
+			// use current blog
+			$blogid = $blog->getID();
+			
+		return $member->teamRights($blogid);
 	}
 	
 	function parse_ifcat($text = '') {
