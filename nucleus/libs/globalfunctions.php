@@ -301,7 +301,8 @@ function highlight($text, $expression, $highlight) {
 
 		if (is_array($expression)) {
 			foreach ($expression as $regex) 
-				$matches[2][$i] = @eregi_replace($regex,$highlight,$matches[2][$i]);
+				if ($regex)
+					$matches[2][$i] = @eregi_replace($regex,$highlight,$matches[2][$i]);
 			$result .= $matches[2][$i];
 		} else {
 			$result .= @eregi_replace($expression,$highlight,$matches[2][$i]);
@@ -324,9 +325,11 @@ function parseHighlight($query) {
 	
 	$aHighlight = explode(' ', $query); 
 	
-	for ($i = 0; $i<count($aHighlight); $i++)
+	for ($i = 0; $i<count($aHighlight); $i++) {
+		$aHighlight[$i] = trim($aHighlight[$i]);
 		if (strlen($aHighlight[$i]) < 3)
 			unset($aHighlight[$i]);
+	}
 	
 	if (count($aHighlight) == 1)
 		return $aHighlight[0];
