@@ -158,7 +158,7 @@ class MEMBER {
 	  */
 	function canAlterComment($commentid) {
 		if ($this->isAdmin()) return 1;
-	
+
 		$query =  'SELECT citem as itemid, iblog as blogid, cmember as cauthor, iauthor'
 		       . ' FROM '.sql_table('comment') .', '.sql_table('item').', '.sql_table('blog')
 		       . ' WHERE citem=inumber and iblog=bnumber and cnumber=' . intval($commentid);
@@ -300,13 +300,16 @@ class MEMBER {
 	  */
 	function sendPassword($password) {
 		global $CONF;
-		
-		$message = "Someone, possibly you, requested a new password for your account at '" . $CONF['SiteName'] . "' (". $CONF['IndexURL']. ") to be sent out to you.\n Here is your new login information: \n\n";
+
+		$message = "誰か（おそらくはあなた）が'" . $CONF['SiteName'] . "' (". $CONF['IndexURL']. ") \nにおけるアカウントと新規パスワードの送信を要求しました。\nあなたの新規ログイン情報は以下のとおりです。: \n\n";
 		$message .= "\tLogin: " . $this->getDisplayName();
 		$message .= "\n\tPassword: " . $password; 
 		$message .= getMailFooter();
-		
-		@mail($this->getEmail(),'Your password',$message,"From: " . $CONF['AdminEmail']);
+
+		$title = 'パスワード情報';
+		mb_language('ja');
+		mb_internal_encoding(_CHARSET);
+		@mb_send_mail($this->getEmail(), $title, $message, "From: ". $CONF['AdminEmail']);
 		
 		ACTIONLOG::add(INFO, _ACTIONLOG_PWDREMINDERSENT . $this->getDisplayName());
 	}
@@ -480,7 +483,7 @@ class MEMBER {
 		$r = sql_query('select * FROM '.sql_table('member')." WHERE mnumber='".intval($id)."'");
 		return (mysql_num_rows($r) != 0);
 	}
-	
+
 	// checks if a username is protected. If so, it can not be used on anonymous comments
 	function isNameProtected($name) {
 		

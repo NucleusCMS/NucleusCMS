@@ -119,6 +119,9 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
 		$draft = 1;
 	if ($closed != 1)
 		$closed = 0;
+
+	$title = mb_convert_encoding($title, _CHARSET, "UTF-8");
+	$body = mb_convert_encoding($body, _CHARSET, "UTF-8");
 	
 	// 4. add to blog
 	$itemid = $blog->additem($catid, $title, $body, $more, $blogid, $mem->getID(), $timestamp, $closed, $draft);
