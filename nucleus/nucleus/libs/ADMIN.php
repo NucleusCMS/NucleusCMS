@@ -2666,31 +2666,45 @@ class ADMIN {
 		
 	?>
 		<h2>Import</h2>	
-		<form method="post" action="index.php"><div>
-			<input type="hidden" name="action" value="skinieimport" />		
 			
-			<?
-				global $DIR_SKINS;
-				
-				$candidates = SKINIMPORT::searchForCandidates($DIR_SKINS);
-				
-				if (sizeof($candidates) > 0) {
-					echo '<p>Select the file you want to import below.</p>';
-					echo '<select name="skinfile">';
-					foreach ($candidates as $skinname => $skinfile) {
-						$html = htmlspecialchars($skinfile);
-						echo '<option value="',$skinfile,'">',$skinname,'</option>';
-					}
-					echo '</select>';
-					echo '<br /><br />';
-					echo '<input type="submit" value="Import skins/templates" />';
-				} else {
-					echo '<p>No candidates for import found in the skins directory</p>';
-				}
-			?>
-			
+				<p><label for="skinie_import_local">Import from local file:</label>
+				<?
+					global $DIR_SKINS;
 
-		</div></form>
+					$candidates = SKINIMPORT::searchForCandidates($DIR_SKINS);
+
+					if (sizeof($candidates) > 0) {
+						?>
+							<form method="post" action="index.php"><div>
+								<input type="hidden" name="action" value="skinieimport" />
+								<input type="hidden" name="mode" value="file" />
+								<select name="skinfile" id="skinie_import_local">
+								<?
+									foreach ($candidates as $skinname => $skinfile) {
+										$html = htmlspecialchars($skinfile);
+										echo '<option value="',$skinfile,'">',$skinname,'</option>';
+									}
+								?>
+								</select>
+								<input type="submit" value="Import" />
+							</div></form>
+						<?
+					} else {
+						echo 'No candidates for import found in the skins directory</p>';
+					}
+				?>
+				</p>
+				
+				<p><em>or</em></p>
+				
+				<form method="post" action="index.php"><p>
+					<input type="hidden" name="action" value="skinieimport" />
+					<input type="hidden" name="mode" value="url" />					
+					<label for="skinie_import_url">Import from URL:</label>
+					<input type="text" name="skinfile" id="skinie_import_url" size="60" value="http://" />
+					<input type="submit" value="Import" />
+				</p></form>
+
 	
 		<h2>Export</h2>
 		<form method="post" action="index.php"><div>
@@ -2742,19 +2756,25 @@ class ADMIN {
 	}
 	
 	function action_skinieimport() {
-		global $member, $DIR_LIBS;
+		global $member, $DIR_LIBS, $DIR_SKINS;
 		
 		$member->isAdmin() or $this->disallow();
 		
 		// load skinie class
 		include_once($DIR_LIBS . 'skinie.php');
 		
-		$skinFile = postVar('skinfile');
+		$skinFile	= postVar('skinfile');
+		$mode 		= postVar('mode');
 
 		$importer = new SKINIMPORT();
+		
+		// get full filename
+		if ($mode == 'file')
+			$skinFile = $DIR_SKINS . $skinFile . '/skindata.xml';
 
 		// read only metadata
 		$error = $importer->readFile($skinFile, 1);	
+		
 
 		if ($error) $this->error($error);
 
@@ -2774,7 +2794,8 @@ class ADMIN {
 
 		<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="skiniedoimport" />
-			<input type="hidden" name="skinfile" value="<?=htmlspecialchars($skinFile)?>" />
+			<input type="hidden" name="skinfile" value="<?=htmlspecialchars(postVar('skinfile'))?>" />
+			<input type="hidden" name="mode" value="<?=htmlspecialchars($mode)?>" />			
 			<input type="submit" value="Yes, I want to import this" />
 			<br />
 			<input type="checkbox" name="overwrite" value="1" id="cb_overwrite" /><label for="cb_overwrite">Overwrite skins that already exists (see nameclashes)</label>
@@ -2787,19 +2808,24 @@ class ADMIN {
 	}
 	
 	function action_skiniedoimport() {
-		global $member, $DIR_LIBS;
+		global $member, $DIR_LIBS, $DIR_SKINS;
 		
 		$member->isAdmin() or $this->disallow();
 		
 		// load skinie class
 		include_once($DIR_LIBS . 'skinie.php');
 
-		$skinFile = postVar('skinfile');
+		$skinFile 	= postVar('skinfile');
+		$mode		= postVar('mode');
 
 		$allowOverwrite = intPostVar('overwrite');
+		
+		// get full filename
+		if ($mode == 'file')
+			$skinFile = $DIR_SKINS . $skinFile . '/skindata.xml';		
 
 		$importer = new SKINIMPORT();
-		// read all data
+
 		$error = $importer->readFile($skinFile);	
 
 		if ($error)

@@ -71,7 +71,8 @@ class SKINIMPORT {
 	 */
 	function readFile($filename, $metaOnly = 0) {
 		// open file
-		$this->fp = fopen($filename, 'r');
+		$this->fp = @fopen($filename, 'r');
+		if (!$this->fp) return 'Failed to open file/URL';
 		
 		// here we go!
 		$this->inXml = 1;
@@ -335,7 +336,7 @@ class SKINIMPORT {
 			if (@is_dir($dir . $filename) && ($filename != '.') && ($filename != '..')) {
 				$xml_file = $dir . $filename . '/skindata.xml';
 				if (file_exists($xml_file) && is_readable($xml_file)) {
-					$candidates[$filename] = $xml_file;
+					$candidates[$filename] = $filename; //$xml_file;
 				}
 			}
 		}
