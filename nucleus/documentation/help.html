@@ -440,9 +440,6 @@ The following vars are available in the comments header and footer templates, as
 </tr><tr>
 	<td>commentword</td>
 	<td>distinction between 1 "comment" and many "comment<strong>s</strong>" as defined <a href="#templatecommentwords">elsewhere</a> in the template</td>
-</tr><tr>
-	<td></td>
-	<td></td>
 </tr></table>
 
 <p>
@@ -1670,6 +1667,7 @@ Shows the list of available archives for the currently selected blog (usually th
 	Optional
 	<ul>
 		<li><strong><em>category</em></strong>: name of the category to show</li>
+		<li><strong><em>limit</em></strong>: limits the amount of links shown (e.g. if you only want to show links to the past 3 months)</li>		
 	</ul>
 </p>
 
@@ -1695,7 +1693,8 @@ The same as the <a href="#skinvar-archivelist">archivelist</a> skinvar, but show
 	</ul>
 	Optional
 	<ul>
-		<li><strong><em>category</em></strong>: name of the category to show</li>
+		<li><strong><em>category</em></strong> name of the category to show</li>
+		<li><strong><em>limit</em></strong>: limits the amount of links shown (e.g. if you only want to show links to the past 3 months)</li>		
 	</ul>
 </p>
 
@@ -2901,15 +2900,15 @@ all
 
 
 <div class="page">
-<a name="skinvar-loginform"></a>
-<h1>Skinvar: loginform</h1>
+<a name="skinvar-skinname"></a>
+<h1>Skin/Templatevar: skinname</h1>
 
-<p>
-Shows a login form or a message indicating that the visitor is logged in
-</p>
+<p>Inserts the name of the skin that's currently being used.</p>
 
 <h2>Arguments</h2>
-<p>None</p>
+<p>
+None
+</p>
 
 <h2>Skintypes</h2>
 
@@ -2920,7 +2919,53 @@ all
 <h2>Examples</h2>
 
 <pre>
-&lt;%loginform%&gt;
+&lt;%skinname%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-if"></a>
+<a name="skinvar-else"></a>
+<a name="skinvar-endif"></a>
+<h1>Skinvars: if/else/endif</h1>
+
+<p>Inserts a content block only when certain conditions are fullfilled</p>
+
+<h2>Arguments</h2>
+<p>Only the <code>if</code> skinvar has options</p>
+
+
+<ul>
+	<li><strong>type</strong>: type of condition</li>
+	<li><em>name</em>: name of option (optional)</li>	
+	<li><em>value</em>: value to be checked (optional)</li>
+</ul>
+
+<h2>Condition types</h2>
+
+<ul>
+	<li><strong>category</strong>: condition is fullfilled when a category is selected</li>
+	<li><strong>blogsetting</strong>: checks if the value <em>name</em> blogsetting equals <em>value</em> (the name is the column name from the nucleus_blog sql table)</li>	
+	<li><strong>loggedin</strong>: condition is fullfilled if visiting member is currently logged in</li>
+</ul>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%if(loggedin)%&gt;
+Welcome back!
+&lt;%else%&gt;
+Welcom guest!
+&lt;%endif%&gt;
 </pre>
 
 </div>
@@ -3125,8 +3170,8 @@ The variables <tt>image</tt>, <tt>popup</tt> and <tt>media</tt> can also be used
 	<td>categorylink</td>
 	<td>raw link to the category</td>
 </tr><tr>
-	<td>karma</td>
-	<td>Total karma score</td>
+	<td><a href="#templatevar-karma">karma</a></td>
+	<td>karma score</td>
 </tr><tr>
 	<td>authorlink</td>
 	<td>raw link to the author</td>
@@ -3243,6 +3288,41 @@ The variables <tt>image</tt>, <tt>popup</tt> and <tt>media</tt> can also be used
 </tr></table>
 
 <p><a href="#templatevars-overview">Template variables overview...</a></p>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="templatevar-karma"></a>
+<h1>Templatevar: karma</h1>
+
+<p>Inserts karma votes data</p>
+
+<h2>Arguments</h2>
+
+<ul>Optional:
+	<ul>
+		<li><strong><em>what</em></strong>: Choose a type of information to be displayed:
+			<ul>
+				<li>'totalscore': the total karma vote score (=amount of positive votes minus the amount of negative votes) <strong>(default)</strong></li>
+				<li>'pos': total number of positive votes</li>
+				<li>'neg': total number of negative votes</li>				
+				<li>'votes': total number of votes</li>								
+				<li>'posp': percentage of votes that is positive</li>				
+				<li>'negp': percentage of votes that is negative</li>								
+			</ul>
+		</li>
+	</ul>
+</ul>
+
+<h2>Examples</h2>
+<pre><code>&lt;%karma(posp)%&gt; out of &lt;%votes%&gt; were positive</code></pre>
+
+<h2>Note</h2>
+
+<p></p>
 
 </div>
 
