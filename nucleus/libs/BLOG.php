@@ -870,7 +870,6 @@ class ITEMACTIONS extends BaseActions {
 		global $member;
 		$this->allowEditAll = ($member->isLoggedIn() && $member->blogAdminRights($blog->getID()));
 		$this->setBlog($blog);
-
 	}
 
 	function getDefinedActions() {
@@ -917,7 +916,9 @@ class ITEMACTIONS extends BaseActions {
 			'comments'
 		);
 	}
-	function setHighlight($highlight) {		$this->highlight = $highlight; }
+	
+
+	
 	function setLastVisit($lastVisit) {		$this->lastVisit = $lastVisit; }
 	function setParser(&$parser) {			$this->parser =& $parser; }
 	function setCurrentItem(&$item) {		$this->currentItem =& $item; }
@@ -937,7 +938,7 @@ class ITEMACTIONS extends BaseActions {
 	function parse_catid() {		echo $this->currentItem->catid; }					
 	function parse_authorid() {		echo $this->currentItem->authorid; }
 	function parse_authorlink() {	echo createMemberLink($this->currentItem->authorid, $this->linkparams); }	
-	function parse_query() {		echo $this->highlight; }
+	function parse_query() {		echo $this->strHighlight; }
 	function parse_itemlink() {		echo createItemLink($this->currentItem->itemid, $this->linkparams); }
 	function parse_blogurl() {		echo $this->blog->getURL(); }
 	function parse_closed() {		echo $this->currentItem->closed; }
@@ -1089,7 +1090,7 @@ class ITEMACTIONS extends BaseActions {
 		if ($this->showComments && $this->blog->commentsEnabled()) {
 			$comments = new COMMENTS($this->currentItem->itemid);
 			$comments->setItemActions($this);
-			$comments->showComments($this->template, $maxToShow, $this->currentItem->closed ? 0 : 1); 
+			$comments->showComments($this->template, $maxToShow, $this->currentItem->closed ? 0 : 1, $this->strHighlight); 
 		}
 	}
 
@@ -1140,13 +1141,6 @@ class ITEMACTIONS extends BaseActions {
 	
 	// helper functions
 
-	function highlight(&$data) {
-		if ($this->highlight)
-			return highlight($data,$this->highlight,$this->template['SEARCH_HIGHLIGHT']);
-		else
-			return $data;
-	}
-	
 	/**
 	  * Parses highlighted text, with limited actions only (to prevent not fully trusted team members
 	  * from hacking your weblog. 

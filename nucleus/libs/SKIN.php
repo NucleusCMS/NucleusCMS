@@ -596,7 +596,7 @@ class ACTIONS extends BaseActions {
 	
 	// include comments for one item
 	function parse_comments($template) {
-		global $itemid, $manager, $blog;
+		global $itemid, $manager, $blog, $highlight;
 		$template = TEMPLATE::read($template);
 		
 		// create parser object & action handler
@@ -609,7 +609,7 @@ class ACTIONS extends BaseActions {
 
 		$comments = new COMMENTS($itemid);
 		$comments->setItemActions($actions);
-		$comments->showComments($template);	// shows ALL comments		
+		$comments->showComments($template, -1, 1, $highlight);	// shows ALL comments		
 	}
 	
 	function parse_archive($template, $category = '') {

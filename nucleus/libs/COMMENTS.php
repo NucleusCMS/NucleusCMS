@@ -44,8 +44,10 @@ class COMMENTS {
 	 * @param showNone
 	 *		indicates if the 'no comments' thingie should be outputted when there are no comments
 	 *		(useful for closed items)
+	 * @param highlight
+	 *		Highlight to use (if any)
 	 */
-	function showComments($template, $maxToShow = -1, $showNone = 1) {
+	function showComments($template, $maxToShow = -1, $showNone = 1, $highlight = '') {
 		global $CONF, $manager;
 
 		// create parser object & action handler
@@ -83,6 +85,7 @@ class COMMENTS {
 		
 		while ( $comment = mysql_fetch_assoc($comments) ) {
 			$actions->setCurrentComment($comment);
+			$actions->setHighlight($highlight);
 			$manager->notify('PreComment', array('comment' => &$comment));
 			$parser->parse($template['COMMENTS_BODY']);
 			$manager->notify('PostComment', array('comment' => &$comment));			
@@ -340,7 +343,7 @@ class COMMENTACTIONS extends BaseActions {
 	}
 
 	function parse_commentid() {			echo $this->currentComment['commentid']; }
-	function parse_body() {					echo $this->currentComment['body']; }	
+	function parse_body() {					echo $this->highlight($this->currentComment['body']); }	
 	function parse_memberid() {				echo $this->currentComment['memberid']; }
 	function parse_timestamp() {			echo $this->currentComment['timestamp']; }	
 	function parse_host() {					echo $this->currentComment['host']; }

@@ -137,6 +137,11 @@ class BaseActions {
 		
 		// if nesting level
 		$this->if_conditions = array(); // array on which condition values are pushed/popped
+
+		// highlights		
+		$this->strHighlight = '';			// full highlight
+		$this->aHighlight = array();		// parsed highlight
+		
 	}
 
 	// include file (no parsing of php)
@@ -262,6 +267,34 @@ class BaseActions {
 		} else {
 			ob_end_clean();
 		}
+	}
+	
+	
+	/** 
+	 * Sets the search terms to be highlighted
+	 *
+	 * @param $highlight
+	 *		A series of search terms
+	 */
+	function setHighlight($highlight) {	
+		$this->strHighlight = $highlight;
+		if ($highlight) {
+			$this->aHighlight = parseHighlight($highlight); 
+		}
+	}
+	
+	/**
+	 * Applies the highlight to the given piece of text
+	 *
+	 * @param &$data
+	 *		Data that needs to be highlighted
+	 * @see setHighlight
+	 */
+	function highlight(&$data) {
+		if ($this->aHighlight)
+			return highlight($data,$this->aHighlight,$this->template['SEARCH_HIGHLIGHT']);
+		else
+			return $data;
 	}
 	
 	
