@@ -2609,10 +2609,7 @@ class ADMIN {
 		</tr><tr>
 			<td><?=_EBLOG_DESC?></td>
 			<td><input name="desc" tabindex="30" maxlength="200" size="40" /></td>
-<!--		</tr><tr>
-			<td><?=_EBLOG_URL?></td>
-			<td><input name="url" tabindex="40" maxlength="100" size="40" /></td>
--->		</tr><tr>
+		</tr><tr>
 			<td><?=_EBLOG_DEFSKIN?>
 			    <? help('blogdefaultskin'); ?>
 			</td>
@@ -2625,12 +2622,7 @@ class ADMIN {
 					showlist($query,'select',$template);		
 				?>
 			</td>
-<!--		</tr><tr>		
-			<td><?=_EBLOG_NOTIFY?>
-			    <? help('blognotify'); ?>
-			</td>
-			<td><input name="notify" tabindex="90" maxlength="60" size="40" /></td>
--->		</tr><tr>
+		</tr><tr>
 			<td><?=_EBLOG_OFFSET?>
 			    <? help('blogtimeoffset'); ?>
 			    <br /><?=_EBLOG_STIME?> <b><?= strftime("%H:%M",time()); ?></b>
@@ -2709,7 +2701,7 @@ class ADMIN {
 		sql_query($query);
 	
 
-		$blog->additem($blog->getDefaultCategory(),"First Item",'This is the first item in your weblog. Feel free to delete it.','',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
+		$blog->additem($blog->getDefaultCategory(),'First Item','This is the first item in your weblog. Feel free to delete it.','',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
 		
 		$manager->notify(
 			'PostAddBlog',
