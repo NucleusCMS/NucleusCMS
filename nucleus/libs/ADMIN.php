@@ -4151,7 +4151,7 @@ selector();
 			
 			<script type="text/javascript" src="javascript/edit.js"></script>
 			<script type="text/javascript" src="javascript/admin.js"></script>
-			<script type="text/javascript" src="javascript/compatibilty.js"></script>
+			<script type="text/javascript" src="javascript/compatibility.js"></script>
 
 			<?php echo $extrahead?>
 		</head>
