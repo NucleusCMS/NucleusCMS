@@ -1,0 +1,9 @@
+<form method="get" action="<%self%>">
+  <div class="searchform">
+	<input name="query" class="formfield" size="10" maxlength="60" accesskey="4" value="<%formdata(query)%>" />
+	<input type="hidden" name="amount" value="0" />
+	<input type="hidden" name="blogid" value="<%formdata(id)%>" />
+	<br />
+	<input type="submit" value="<%text(_SEARCHFORM_SUBMIT)%>" class="formbutton" />
+  </div>
+</form>

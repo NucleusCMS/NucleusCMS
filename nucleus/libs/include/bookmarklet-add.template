@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	<html>
+	<head>
+		<title><%text(_ADD_ADDTO)%> '<%blogname%>'</title>
+		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" /> 
+		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />		
+		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
+		<script type="text/javascript" src="javascript/edit.js"></script>
+		<%init%>
+	</head>
+	<body onload="initStyles(); updAllPreviews();">
+		<h1><%text(_ADD_ADDTO)%> '<%bloglink%>'</h1>
+		<form method="post" action="bookmarklet.php" ><div>
+			
+			<input name="action" type="hidden" value="additem" />
+			<input name="blogid" type="hidden" value="<%blogid%>" />
+			
+			<div id="submit" class="buttonbar">
+				<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
+				<div id="switchbuttons">
+					<input type="button" onclick="flipBlock('body');" value="<%text(_BMLET_BODY)%> &gt;&gt;" />
+					<input type="button" onclick="flipBlock('more');" value="<%text(_BMLET_MORE)%> &gt;&gt;" />
+					<input type="button" onclick="flipBlock('options');" value="<%text(_BMLET_OPTIONS)%> &gt;&gt;" />
+					<input type="button" onclick="updAllPreviews(); flipBlock('preview');" value="<%text(_BMLET_PREVIEW)%> &gt;&gt;" />
+				</div>
+			</div>
+
+			<div id="body" class="contentblock">
+
+				<%text(_ADD_TITLE)%>:
+				<input 
+					<%jsinput(title)%>
+					type="text" size="60" maxlength="160" 
+					value="<%contents(title)%>"
+				/>
+			
+				<br />
+				<br />
+
+				<%text(_ADD_BODY)%>: 
+				<br />
+				<%jsbuttonbar(media)%>
+				<textarea 
+					<%jsinput(body)%>
+					cols="60" 
+					rows="12"><%contents(body)%></textarea>
+					
+				<br /><br />
+				<%text(_ADD_CATEGORY)%>: <%categories%>
+
+					
+			</div>
+			
+			<div id="more" class="contentblock">
+				<h2><%text(_ADD_MORE)%></h2>
+				
+				<%jsbuttonbar(media)%>
+				<textarea 
+					<%jsinput(more)%>
+					cols="60" 
+					rows="17"></textarea>
+			</div>
+			<div id="options" class="contentblock">
+				
+				<%ifblogsetting(bcomments)%>
+					<h2><%text(_ADD_DISABLE_COMMENTS)%></h2>
+					<input type='radio' name='closed' value='1' id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+					<input type='radio' name='closed' value='0' checked='checked' id="closed_no"/><label for="closed_no"><%text(_NO)%></label>
+				<%endif%>
+				
+				<h2><%text(_ADD_DRAFTNFUTURE)%></h2>
+				
+					<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
+					<br />
+					<input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+					<div class="indent">
+						<%text(_ADD_PLACE_ON)%>
+						<input name="day" size="2" value="<%currenttime(mday)%>" />/
+						<input name="month" size="2" value="<%currenttime(mon)%>" />/
+						<input name="year" size="4" value="<%currenttime(year)%>" />
+						at
+						<input name="hour" size="2" value="<%currenttime(hours)%>" />:
+						<input name="minutes" size="2" value="<%currenttime(minutes)%>" />
+						(dd/mm/yyyy hh:mm)
+						<%ifblogsetting(ballowpast,0)%>
+							<br />
+							<%text(_ADD_NOPASTDATES)%>
+						<%endif%>
+					</div>
+					<input name="actiontype" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+
+			</div>
+			
+			<div id="preview" class="contentblock">
+				<h2><%text(_ADD_PREVIEW)%></h2>
+				
+				<b><span id="prevtitle"></span></b>
+				<br />
+				<span id="prevbody"></span>
+				<br />
+				<span id="prevmore"></span>
+			</div>
+			
+		</div></form>
+	</body>
+	</html>
+

@@ -1,0 +1,228 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	<title>Nucleus - Tips and suggestions</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+</head>
+<body>
+
+<div class="heading">
+Tips &amp; Suggestions
+</div>
+
+<h1>Introduction</h1>
+
+<p>
+<a href="index.html">Back to the manual</a>
+</p>
+
+<p>
+This file contains tips and suggestions that might prove useful.
+</p>
+
+<h1><a name="toc"></a>Table Of Contents</h1>
+
+<ul>
+
+	<li><a href="#xhtml">XHTML support</a></li>
+	<li><a href="#searchengines">How to get your archives into search engines?</a></li>
+	<li><a href="#filepermissions">How to set file/dir permissions?</a></li>
+	<li><a href="#backups">How to restore backups</a></li>
+	<li><a href="#newblog">How to create a new weblogs</a></li>
+<!--
+	<li><a href="#"></a></li>
+	<li><a href="#"></a></li>
+	<li><a href="#"></a></li>
+	<li><a href="#"></a></li>
+-->
+</ul>
+
+
+
+<h1>XHTML Support <a name="xhtml" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+If you see tags like &lt;br /&gt; in the source code of your webpage, it's because the output of Nucleus <small>(except the things defined by templates and skins, of course)</small> is compliant to the XHTML 1.0 standard from the W3C, which is the successor of HTML 4. This way, Nucleus is ready for the future of the web. As far as I know, this XHTML support does not cause any trouble with older browsers and is correctly interpreted.
+</p>
+
+<p>
+What this means, is that you can perfectly create an XHTML-compliant site by using correct skins and templates. The default Nucleus skin is XHTML-compliant, but uses the "HTML 4 Loose" doctype. This way, users not knowing XHTML can not create documents with a false XHTML doctype.
+</p>
+
+
+
+
+
+
+
+
+<h1>Getting your archives into search engines like Google <a name="searchengines" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<div class="note">
+<b>Note:</b> The solution described here might not work on your system.
+</div>
+
+<p>
+Nucleus creates archives dynamically on users requests. The URL is then of the form <code>index.php?archive=2001-09&amp;blogid=1</code>. Unfortunately, Google and other search engines don't like to index pages with a question mark in it, or with too much arguments. This is because their spiders might get trapped going too deep.
+</p>
+
+<p>
+The solution presented here will only work on servers running Apache, and when you have the right to do so. What we will do is 'disguise' the archives as regular HTML pages
+</p>
+
+<p>
+Create a file called <code>.htaccess</code> (leading dot!) with the following contents:
+</p>
+
+<pre>
+RewriteEngine On
+RewriteRule ^archive-([0-9]+)-([0-9]+)-([0-9]+).html+ index.php?archive=$2-$3&blogid=$1
+RewriteRule ^item-([0-9]+).html+ index.php?itemid=$1
+RewriteRule ^archivelist-([a-z]+).html+ index.php?archivelist=$1
+</pre>
+
+<p>
+Now upload this file to the directory that contains <i>index.php</i> and <i>config.php</i>. Open your browser and try to open <code>archive-1-2001-09.html</code>. If it works, continue to read. If you get a 500 error (internal server error), it does not work on your server, so delete the .htaccess file.
+</p>
+
+<p>
+Now all you have to do is to update the link to your blog archives into <code>archivelist-<i>shortblogname</i>.html</code> and make the following changes to your archivelist item template:
+</p>
+
+<pre>
+&lt;a href="archive-&lt;%blogid%&gt;-&lt;%year%&gt;-&lt;%month%&gt;.html"&gt;...&lt;/a&gt;
+</pre>
+
+<p>
+And now, wait until Google comes spidering again...
+</p>
+
+
+<h1>How to set file/dir permissions <a name="filepermissions" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+To enable some features of Nucleus, changing file permissions is required. A small guide on how to do this using an FTP client is given below.
+</p>
+
+<p>
+First of all, you'll need an FTP client that supports file permission changing. In this example, we'll use CuteFTP. You can <a href="http://www.cuteftp.com/products/cuteftp/">download a free trial version</a> if you don't have it.
+</p>
+
+<p>
+To change the permissions of a file or directory, create an FTP connection to your website and search for that file or directory in the hierarchy. Select the file by clicking on it.
+</p>
+
+<p>
+Open the menu <tt>Commands &gt; File Actions &gt; CHMOD...</tt> for a file, or <tt>Commands &gt; Directory &gt; CHMOD...</tt> for a directory.
+</p>
+
+<div class="screenshot">
+	<img src="pics/chmod_menu.png" width="381" height="218" alt="menu" />
+</div>
+
+<p>
+A window will pop up:
+</p>
+
+<div class="screenshot">
+	<img src="pics/chmod_window.png" width="260" height="326" alt="The window that pops up" />
+</div>
+
+<p>
+On the bottom, you can enter the code that's given in the documentation (e.g. 755 or 644). Click the <tt>OK</tt> button and the changes will be applied. You're finished now.
+</p>
+
+<h1>How to restore backups <a name="backups" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+Nucleus has a backup/restore option that super-admins can use to create a backup of the database. It's strongly encouraged to take a backup regularly (weekly or so). The backup-files that are returned are files containing standard SQL-queries, that reconstruct the state of the database as it was when the backup was created.
+</p>
+
+<p>
+While backing up is easy, and restoring should also be easy, problems might pop up when your database is fucked up beyond repair. In that case, the repair function might become unaccessible. Below are some ways you can restore your database in that case:
+</p>
+
+<div class="note">
+If you're backup was gzipped, unzip if first (it contains an sql file)
+</div>
+
+
+<h2>Possibility 1: Web-based</h2>
+
+<p>
+If you have a web-based interface through which you can manage your database (e.g. <a href="http://phpmyadmin.sourceforge.net/">PHPMyAdmin</a>), there's most likely an option where you can import a file into the database. Use this function to restore your database.
+</p>
+
+<h2>Possibility 2: Shell-access</h2>
+
+<p>
+If you have a shell account, restoring a backup can be done by running the <tt>mysql</tt> program with the following arguments:
+</p>
+
+<pre>
+mysql -u <i>username</i> -p -h <i>hostname</i> <i>databasename</i> &lt; <i>backupfile.sql</i>
+</pre>
+
+
+<h1>How to create a new weblog <a name="newblog" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<h2>1. Creating the weblog</h2>
+
+<p>As a superadmin, you can create new weblogs from the 'Nucleus Management' screen. They will then show up on the admin area.</p>
+
+<h2>2. Accessing your new weblog</h2>
+
+<p>There are several ways in which you can make your new weblog accessible.</p>
+
+<ol>
+	<li>Using a <strong><code>blogid</code> attribute</strong> in the URL:
+		<pre><code>http://yourhost.com/index.php?blogid=<i>2</i></code></pre>
+		(You can find the blogid in the admin area, when hovering over the blog name in the blog list)
+	</li>
+	<li>
+		By creating a <strong>copy of the <code>index.php</code> file</strong> (in this example, our file is named <tt>copy.php</tt>), and editing the contents of the file to look like this:
+		<pre><code>$CONF['Self'] = '<i>copy.php</i>';
+include('config.php');
+selectBlog('<i>shortblogname</i>');
+selector();
+
+?></code></pre>
+		(You can find the short blog name in the admin area, when hovering over the blog name in the blog list)
+	</li>
+</ol>
+
+<h2>Extra methods to use in copy.php</h2>
+
+<p>The <tt>selectBlog</tt> is only one of the methods which you can use in copies of <tt>index.php</tt> files. Here's a list of the available calls:</p>
+
+<table><tr>
+	<th>Method</th>
+	<th>Description</th>
+</tr><tr>
+	<td><code>selectBlog('shortblogname');</td>
+	<td>Makes sure a certain blog gets selected</td>	
+</tr><tr>
+	<td><code>selectSkin('skinname');</td>
+	<td>Makes sure a certain skin gets selected</td>	
+</tr><tr>
+	<td><code>selectCategory('categoryname');</td>
+	<td>Makes sure a certain category gets selected</td>	
+</tr></table>
+
+<p>
+Make sure that these methods are called <strong>after</strong> the <code>include('config.php')</code> statement, and <strong>before</strong> the <code>selector();</code> statement!
+<p>
+
+<h2>Creating a blog in a subdirectory</h2>
+
+<p>The process for creating a blog in a subdirectory (<tt>http://yourhost.com/sub/</tt> where the main weblog is in <tt>http://yourhost.com/</tt>) is similar, with the only change that you'll need to replace <code>include('config.php');</code> by <code>include('../config.php');</code></p>
+
+<p>You'll also need to alter the <tt>&lt;%commentform%&gt;</tt> in the skins used for that blog:</p>
+
+<pre><code>&lt;%commentform(../action.php,http://yourhost.com/sub/)%&gt;</code></pre>
+
+</body>
+</html>

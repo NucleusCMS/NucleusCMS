@@ -1,0 +1,3608 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	<title>Nucleus Admin Help</title>
+	<style type="text/css">
+	<!--
+		body {
+			font-family: verdana, arial;
+			font-size: small;
+		}
+
+		h1 {
+			font-size: large;
+			border-bottom: 1px gray dashed;
+			color: #596d9d;
+			text-align: left;
+		}
+
+		h2 {
+			font-size: medium;
+			border: 1px solid #ddd;
+			background-color: whitesmoke;
+			text-align: left;
+		}
+
+		.page {
+			height: 800px;
+			text-align: justify;
+			margin-bottom: 100px;
+		}
+
+		pre {
+			background-color: #ddd;
+			padding: 5px;
+			font-size: small;
+		}
+
+		ul.templates {
+			font-size: x-small;
+			line-height: 1.1;
+			list-style: none;
+			text-indent: -20px;
+			margin-left: 20px;
+		}
+
+		ul {
+			text-align: left;
+		}
+
+		a:link, a:visited {
+			color: #1D3565;
+			font-weight: bold;
+			text-decoration: underline;
+		}
+
+		a:hover {
+			background-color: whitesmoke;
+		}
+
+		.deprecated {
+			border: 3px solid red;
+			padding: 5px;
+			font-size: medium;
+		}
+		
+		tt, code {
+			font-size: small;
+		}
+		
+		table {
+			border: 1px solid #ccc;
+		}
+		
+		th {
+			background-color: #eee;
+		}
+		
+		td {
+			vertical-align: top;
+		}
+		
+		.note {
+			background-color: #eee;
+			padding: 5px;
+		}
+	-->
+	</style>
+</head>
+<body>
+
+<h1>For those that accidentally opened this file</h1>
+<p>
+This file (<em>help.html</em>) contains popup help for the Nucleus Admin Area.
+</p>
+
+
+<div class="page"><a name="future"></a>
+<h1>Future Items</h1>
+<p>
+Future items allow you to let an item become visible only at the time you specified. This date <strong>must</strong> be in the future. Before that time has come, the item will not be viewable anywhere in the public part of your site.
+</p>
+</div>
+
+
+<div class="page"><a name="draft"></a>
+<h1>Drafts</h1>
+<p>
+Draft items are not yet viewable in the public blog. They might come in handy when you are working on a story, and something comes in between. Your draft items will be listed on the main page, so you can continue your when you have the time to do so. When editing drafts, choose the 'Add now' radiobutton and hit the 'Edit item' button to make them visible.
+</p>
+</div>
+
+<div class="page"><a name="extended"></a>
+<h1>Extended part</h1>
+<p>
+Items have an optional extended part that you can use for continued stories. e.g. when a story is too long to put on the main page of your blog, you can write an introduction in the body part and the rest in the extended part. When viewing your main blog page, you will then see 'read more' links (as defined by the templates). 
+</p>
+<p>
+If you want to write an introduction only for <em>some</em> of your items, you could use the <a href="#templatevar-smartbody">smartbody</a> template variable to make a selection out of the body text and the extended text.
+</p>
+</div>
+
+<div class="page"><a name="shortblogname"></a>
+<h1>Short Blog Name</h1>
+<p>
+The short blog name is used mainly in the admin area to indicate which items are associated with which blog. 
+</p>
+<p>
+It can also be used in alternative index files, to make a second weblog available:
+</p>
+<pre>
+&lt;?
+	include('config.php');
+	selectBlog('shortblogname');
+	selector();
+?&gt;
+</pre>
+</div>
+
+<div class="page"><a name="blogdefaultskin"></a>
+<h1>Default Skin</h1>
+<p>
+The default skin selected in the blog settings is the skin that should be used when the blog should be displayed, and there is no other skin selected (through arguments in the URL)
+</p>
+</div>
+
+
+<div class="page"><a name="blognotify"></a>
+<h1>Notify Address</h1>
+<p>
+This is one or multiple e-mail addresses to which notification e-mails will be sent when new comments are added. Leave empty if you don't want notification. The given e-mail addresses must, of course, be valid ones.
+</p>
+<p>
+If you're using multiple addresses, you should use a semicolon (<strong>;</strong>) as a separator.
+</p>
+<div class="note">
+<b>Note:</b> As the maximum length of the settings fields is 128 characters, there's only a limited amount of e-mail addresses you can list.
+</div>
+</div>
+
+<div class="page"><a name="blogmaxcomments"></a>
+<h1>Max comments</h1>
+<p>
+This is the maximum number of comments that will be shown on the main page. This is <strong>NOT</strong> a restriction on the total number of comments that can be made. On the detail pages, all comments will be shown, even if there are more than the maximum amount chosen.
+</p>
+<p>
+Inside template, this variable can be overridden by an optional parameter of the <a href="#templatevar-comments">comments</a> templatevar.
+</p>
+</div>
+
+<div class="page"><a name="blogtimeoffset"></a>
+<h1>Time Offset</h1>
+<p>
+If the time on your server is not equal to the time where you live, you might want to add an offset to the server time in order to get the correct time. Use negative values to subtract (negation sign). The current server time is listed as a reference.
+</p>
+<h2>Example</h2>
+<p>If your local time is 20:35 and the server time is listed as 14:35, you'll need to set the time offset equal to 6 in order to get your blog time to 20:35
+</p>
+</div>
+
+<div class="page"><a name="blogupdatefile"></a>
+<h1>Update File</h1>
+<p>
+Nucleus can edit a file for you whenever a new item is added to the blog. The contents of that file will be a timestamp of the last change. The use of such a file could be useful for services which check a file on your server once in a while to see if there were updates, and generate 'updated weblogs' from that. Pointing them to your main blog could cause false update warnings to be sent out when visitors add comments or when you change something to the skins or templates.
+</p>
+<p>
+When you don't need an update file, just leave the field empty.
+</p>
+<p>
+Please note that the location of the update file is relative to the admin-area, so you might want to use an absolute path (something like <tt>/path/to/your/website/update.txt</tt>). Also make sure the update file already exists and is writable (<a href="tips.html#filepermissions" onclick="window.open(this.href);return false;" class="out" title="quick guide on changing file permissions">chmod it to 666</a> if you want to be sure).
+</p>
+</div>
+
+<div class="page"><a name="teamadmin"></a>
+<h1>Blog Admin</h1>
+<p>
+Blog administrators have the following extra rights:
+</p>
+
+<ul>
+	<li>They can manage the team</li>
+	<li>They can edit blog settings</li>
+	<li>They can edit/delete all items by all authors (from the blog of which they are admin)</li>
+	<li>They can delete the blog</li>
+</ul>
+
+<p>
+A blog can have multiple admins, but there must be at least one admin at all times.
+</p>
+</div>
+
+
+<div class="page"><a name="superadmin"></a>
+<h1>Superadmin</h1>
+
+<p>
+A superadmin has <strong>full access</strong> to all functions and all weblogs, even if not on the team.
+</p>
+
+<p>
+On top of that: a super-admin has the right to create new weblogs, to change general settings, to change templates, to change skins and to manage the members (creation/ manipulation/ deletion of members).
+</p>
+
+<p>
+Usually, there will be only one super-admin, the site administrator.
+</p>
+
+</div>
+
+<div class="page"><a name="canlogin"></a>
+<h1>Can Login?</h1>
+<p>
+As a superadmin, you can disallow individual members to login to the admin area. 
+</p>
+</div>
+
+<div class="page"><a name="defaultblog"></a>
+<h1>Default Blog</h1>
+<p>
+This is the blog that will be used when no other blog has been specified in the request.
+</p>
+</div>
+
+<div class="page"><a name="cookies"></a>
+<h1>Cookies</h1>
+
+<h2>Cookie Lifetime</h2>
+<p>
+You can choose if you want to use session cookies or cookies with a lifetime of a month to store the login information of your members. The difference is that session cookies get deleted when you exit the browser, and that cookies with one month lifetime will stay on the computer until you don't use/visit the site for a month. Using the latter option, you'll never have to login again (unless you log out of course)
+</p>
+
+<h2>Cookie Path &amp; Cookie Domain</h2>
+<p>
+These settings are advanced settings. Normally, you shouldn't change them at all. In that case, cookie path is a simple slash ('/') and cookie domain is empty.
+</p>
+
+<h2>Secure Cookies</h2>
+<p>
+Normally, this should be set to 'no'. You should only set it to 'yes' when you have a HTTPS url and want cookies only to be sent over such a https connection.
+</p>
+
+<h2>'Last Visit' Cookie</h2>
+<p>
+You can setup Nucleus to store a cookie in which the time of the visitors last visit is stored. This can be used to put indications next to <a href="#templatenew">new items</a>
+</p>
+
+</div>
+
+
+<div class="page"><a name="language"></a>
+<h1>Language</h1>
+<p>
+You can choose a language to be used when nucleus creates content for you. The content generated by Nucleus includes the admin-area, the error messages, forms in skins, ...
+</p>
+
+<p>
+There are two places where a language can be chosen: the global site settings include a language option.
+Next to that, logged in members can override this setting if they want to.
+</p>
+
+<p>
+When both of these settings are invalid, 'english' is used as the default language.
+</p>
+
+</div>
+
+<div class="page"><a name="allowaccountcreation"></a>
+<h1>Account Creation</h1>
+<p>
+You can either allow or disallow your visitors to create their own 'member' account. They won't be allowed to add items to a blog (unless the admin adds them to a team), but they can login to the administration area and change their settings, and even delete or modify the comments they made.
+</p>
+</div>
+
+<div class="page"><a name="allownewmemberlogin"></a>
+<h1>New Member: can login ?</h1>
+<p>
+When you allow <a href="#allowaccountcreation">creation of member accounts</a> by your visitors, this setting defines whether or not accounts created in that way will have the ability to <a href="#canlogin">login to the administration area</a>.
+</p>
+</div>
+
+
+<div class="page"><a name="messageservice"></a>
+<h1>Message Service</h1>
+
+<p>
+For the privacy of your members, you can hide all e-mail addresses and allow members to send an e-mail message to each other through the script. The message that will be sent out will however contain the e-mail addresses of both users, so they can then do continued communication through regular e-mail. This service can be disabled.
+</p>
+
+<h2>Non-members</h2>
+<p>
+By default, non members cannot use the message service (because there's no way to check the validity of the e-mail address they enter). You can relax this restriction by allowing non-members to use the message service too. When submitting a message, they will be asked to enter their e-mail address, which will show up in the <tt>From:</tt> headers of the e-mail you receive.  
+</p>
+
+</div>
+
+<div class="page"><a name="disablesite"></a>
+<h1>Disable Site</h1>
+<p>
+It's possible to disable your entire Nucleus site. You might want to do this when you are doing some configuring, or when something went horribly wrong :-)
+</p>
+<p>
+The URL that needs to be configured is an URL to which the visitor will be redirected.
+</p>
+<p>
+Exceptions: the <strong>admin-area</strong> is still available, and <strong>super-admins</strong> can still see the entire site. (don't forget to re-enable your site afterwards ;-))
+</p>
+</div>
+
+<div class="page"><a name="templateitems"></a>
+<h1>Templates: Items</h1>
+<p>
+When items are shown, the following setup is repeated for each item:
+</p>
+
+<pre>
+item header
+item body
+item footer
+</pre>
+
+<p>These three blocks all refer to a template-part, which define what the result looks like.</p>
+
+<h2>Variables</h2>
+
+<p>Within these template, a series of so called <a href="#templatevars-overview" title="Find out which variables are available">template variables can be used</a> to insert item data.</p>
+
+<h2>Example</h2>
+<p><a href="#templateitemsexample">An example</a></p>
+
+</div>
+
+<div class="page"><a name="templateitemsexample"></a>
+<h1>Templates: Items</h1>
+<p>
+An example for the <b>item body</b> template:
+</p>
+
+<pre>
+&lt;b&gt;&lt;%title%&gt;&lt;/b&gt;
+&lt;br /&gt;
+&lt;%body%&gt;
+&lt;br /&gt;
+&lt;i&gt;
+ &lt;a href="&lt;%itemlink%&gt;"&gt;link&lt;/a&gt; -
+ &lt;%date%&gt; &lt;%time%&gt; -
+ &lt;a href="&lt;%authorlink%&gt;"&gt;&lt;%author%&gt;&lt;/a&gt; -
+ &lt;%comments%&gt;
+&lt;/i&gt;
+</pre>
+
+<p>The result would become something like this:</p>
+
+<div>
+<b>This is an item</b>
+<br />
+This is the text for the item
+<br />
+<i>
+ <a href="#templateitemsexample">link</a> -
+ August 8th 2002 18:51 -
+ <a href="#templateitemsexample">karma</a> -
+ <a href="#templateitemsexample">no comments</a>
+</i>
+</div>
+
+</div>
+
+
+<div class="page"><a name="templatecomments"></a>
+<h1>Templates: comments</h1>
+<p>
+There are three possible structures for a comments block.
+</p>
+
+<p>
+1. When comments are displayed (like on detail pages, or on the main page when there are less than the maximum allowed amount of comments)
+</p>
+
+<pre>
+comments header
+  comments body (repeated)
+comments footer
+</pre>
+
+<p>
+2. When there are no comments at all
+</p>
+
+<pre>
+no comments
+</pre>
+
+<p>
+3. When there are comments, but there are more than the maximum allowed number. (only applies when not on a detailed item page)
+</p>
+
+<pre>
+too much comments
+</pre>
+
+</div>
+
+<div class="page"><a name="templatecommentheaders"></a>
+<h1>Templates: Comment headers/footers</h1>
+<p>
+The following vars are available in the comments header and footer templates, as well as in the templates for no comments and too much comments:
+</p>
+
+<table><tr>
+	<th>Name</th>
+	<th>Description</th>
+</tr><tr>
+	<td>itemid</td>
+	<td>ID of the current item</td>
+</tr><tr>
+	<td>itemlink</td>
+	<td>link to the detailed page for the current item</td>
+</tr><tr>
+	<td>commentcount</td>
+	<td>the total number of comments for the current item</td>
+</tr><tr>
+	<td>commentword</td>
+	<td>distinction between 1 "comment" and many "comment<strong>s</strong>" as defined <a href="#templatecommentwords">elsewhere</a> in the template</td>
+</tr><tr>
+	<td></td>
+	<td></td>
+</tr></table>
+
+<p>
+An example for the 'too much comments'-template
+</p>
+
+<pre>
+&lt;a href="&lt;%itemlink%&gt;"&gt;
+&lt;%commentcount%&gt; &lt;%commentword%&gt;
+&lt;/a&gt;
+</pre>
+
+</div>
+
+<div class="page"><a name="templatemorelink"></a>
+<h1>Templates: Link to extended entry</h1>
+<p>
+This is the template that will be used to format the <a href="#templatevar-morelink">morelink templatevar</a> that is available in the item templates. <a href="#templatevars-overview">Available variables</a> are the same as in the item templates.
+</p>
+<p>
+When there's no extended part of the item, the &lt;%morelink%&gt; templatevar will have no effect.
+</p>
+<p>
+An example is given below:
+</p>
+<pre>
+&lt;a href="&lt;%itemlink%&gt;"&gt;[Read More!]&lt;/a&gt;
+</pre>
+</div>
+
+<div class="page"><a name="templatearchivelists"></a>
+<h1>Templates: Archive Lists</h1>
+<p>
+The archive lists are formatted as listed below:
+</p>
+
+<pre>
+archivelist header
+  archivelist listitem (repeated for each archive)
+archivelist footer
+</pre>
+
+<p>
+Available variables: (in the header and footer, only <tt>blogid</tt> is allowed)
+</p>
+
+<table><tr>
+	<th>Name</th>
+	<th>Description</th>
+</tr><tr>
+	<td>blogid</td>
+	<td>ID of the weblog</td>
+</tr><tr>
+	<td>archivelink</td>
+	<td>link to the archive, which you can embed in a &lt;a href=".."&gt; tag.</td>
+</tr><tr>
+	<td>month</td>
+	<td>Number of the month (2 digits: 01-12)</td>
+</tr><tr>
+	<td>year</td>
+	<td>Year (4 digits)</td>
+</tr><tr>
+	<td>day</td>
+	<td>Day of month (2 digits; only when in day mode)</td>
+</tr></table>
+
+<p>
+A more flexible way to add the date of the archive to the listitem, is to use <a href="#strftime">strftime</a> variables. If you find this too complicated, use the following:
+</p>
+
+<pre>
+&lt;a href="&lt;%archivelink%&gt;"&gt;%B, %Y&lt;/a&gt;&lt;br /&gt;
+</pre>
+
+<p>
+To change the language to your local settings, change the <a href="#templatelocale">locale</a>.
+</p>
+
+</div>
+
+
+
+
+<div class="page"><a name="templatecategorylists"></a>
+<h1>Templates: Category Lists</h1>
+<p>
+The category lists are formatted as listed below:
+</p>
+
+<pre>
+categorylist header
+  categorylist listitem (repeated)
+categorylist footer
+</pre>
+
+<p>Available variables: (in the header and footer, only <tt>blogid</tt>, <tt>blogurl</tt> and <tt>self</tt> are allowed)</p>
+
+<table><tr>
+	<th>Name</th>
+	<th>Description</th>
+</tr><tr>
+	<td>blogid</td>
+	<td>ID of the weblog</td>	
+</tr><tr>
+	<td>blogurl</td>
+	<td>URL of the blog (as defined in blogsettings)</td>
+</tr><tr>
+	<td>self</td>
+	<td>Current page, without parameters (e.g. <tt>index.php</tt>)</td>
+</tr><tr>
+	<td>catlink</td>
+	<td>a link to the most recent items for a category, which you can embed in a &lt;a href=".."&gt; tag.</td>
+</tr><tr>
+	<td>catid</td>
+	<td>Category ID</td>
+</tr><tr>
+	<td>catname</td>
+	<td>Category name</td>	
+</tr><tr>
+	<td>catdesc</td>
+	<td>Category description</td>	
+</tr></table>
+
+<p><a href="#categorylistexample">View an example</a></p>
+
+</div>
+
+<div class="page"><a name="categorylistexample"></a>
+<h1>Templates: Category Lists</h1>
+<p>
+<a href="#templatecategorylists">(go back)</a>
+</p>
+
+<h2>Header</h2>
+<pre>
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href="&lt;blogurl%&gt;"&gt;All&lt;/a&gt;&lt;/li&gt;
+</pre>
+
+<h2>List Item</h2>
+<pre>
+  &lt;li&gt;&lt;a href="&lt;%categorylink%&gt;"&gt;&lt;%catname%&gt;&lt;/a&gt;&lt;/li&gt;
+</pre>
+
+<h2>Footer</h2>
+<pre>
+&lt;/ul&gt;
+</pre>
+
+<h2>Results in:</h2>
+
+<ul>
+	<li><a href="#categorylistexample">All</a></li>
+	<li><a href="#categorylistexample">myCategory</a></li>
+	<li><a href="#categorylistexample">yourCategory</a></li>
+</ul>
+
+</div>
+
+
+
+
+
+
+
+<div class="page"><a name="templatelocale"></a>
+<h1>Templates: Locale</h1>
+<p>
+This is actually not a template-part, it's a setting. Setting it allows the date and time preferences when to be localized. Names of months and days will be in the desired language, etc.
+</p>
+
+<p>
+The possible values depend according to which machine Nucleus is running on. Some possible values are
+</p>
+
+<ul>
+	<li><strong>en</strong>: English</li>
+	<li><strong>dutch</strong>: Dutch</li>
+	<li>...</li>
+</ul>
+
+<p>
+More info in the <a href="http://www.opengroup.org/onlinepubs/7908799/xsh/strftime.html" onclick="window.open(this.href);return false;" class="out" title="Open Group specification">Open Group Specification</a> for strftime. (opens a new window)
+</p>
+
+<p>
+The locale is used for the <a href="#templatedatetime">date and time format</a>, for the <a href="#templatedateheads">dateheaders</a>, and for the <a href="#templatearchivelists">archivelist items</a>
+</p>
+
+</div>
+
+<div class="page"><a name="templatedatetime"></a>
+<h1>Templates: Date and Time formats</h1>
+<p>
+These are used to format dates and times into the &lt;%date%&gt; and &lt;%time%&gt; vars (see <a href="#templatevars-overview">template vars</a>). The formatting is done according to the <a href="#templatelocale">locale</a>
+</p>
+
+<p>
+<a href="#strftime">More info on the available vars</a>. If want to get started quickly, use "%x" to format the date and "%X" to format the time.
+</p>
+
+</div>
+
+<div class="page"><a name="templatedateheads"></a>
+<h1>Template: Date headers/footers</h1>
+<p>
+The date header and date footer can contain date and time vars. <a href="#strftime">More info on the available vars</a>. If you want to get started quickly, use "%x" to format the date. The language which is used to format the date, is determined by the <a href="#templatelocale">locale-setting</a> in the template.</p>
+
+<p>
+In the date header, the template variable &lt;%%daylink%%&gt; is allowed to insert a link to the archive for that day. <strong>Note the double '%'! It's necessary to avoid %d to be expanded as the current day of the month.</strong>
+</p>
+
+<p>
+Sample for date header:
+</p>
+
+<pre>
+&lt;div class="day"&gt;
+&lt;h1&gt;%d %B&lt;/h1&gt;
+</pre>
+
+<p>
+Sample for date footer:
+</p>
+
+<pre>
+&lt;/div&gt;
+</pre>
+
+<p>And another example for the date head using daylink</p>
+
+<pre>
+&lt;div class="day"&gt;
+&lt;h1&gt;%d %B&lt;/h1&gt;
+&lt;a href="&lt;%%daylink%%&gt;"&gt;(archive)&lt;/a&gt;
+</pre>
+
+</div>
+
+<div class="page"><a name="templatehighlight"></a>
+<h1>Templates: Highlight</h1>
+<p>
+The highlighting is used when performing searches. This is actually used in a regular expression, so you might want to escape some characters by putting a backslash before them. The place where the highlighted word will come, is indicated by "\0".
+</p>
+
+<p>
+Example:
+</p>
+
+<pre>
+&lt;span style='background-color:yellow'&gt;\0&lt;/span&gt;
+</pre>
+</div>
+
+<div class="page"><a name="templatenothingfound"></a>
+<h1>Templates: nothing found</h1>
+<p>
+Shown when a search has been performed and no results were found.
+</p>
+
+<p>
+Available variables:
+</p>
+
+<table><tr>
+	<th>Name</th>
+	<th>Description</th>
+</tr><tr>
+	<td>blogid</td>
+	<td>ID of the weblog</td>	
+</tr><tr>
+	<td>query</td>
+	<td>the query that was used in the search</td>
+</tr></table>
+
+<h2>Example</h2>
+
+<pre>
+No search results found for &lt;b&gt;&lt;%query%&gt;&lt;/b&gt;
+</pre>
+
+</div>
+
+<div class="page"><a name="templatecommentbody"></a>
+<h1>Templates: Comment body</h1>
+<p>
+This is the part of the template used to display a single comment. Available variables are listed below:
+</p>
+
+<table><tr>
+	<th>Name</th>
+	<th>Description</th>
+</tr><tr>
+	<td>commentid</td>
+	<td>ID of the comment</td>	
+</tr><tr>
+	<td>itemid</td>
+	<td>ID of the item</td>	
+</tr><tr>
+	<td>blogid</td>
+	<td>ID of the weblog</td>	
+</tr><tr>
+	<td>itemlink</td>
+	<td>link to the detailed item page</td>	
+</tr><tr>
+	<td>body</td>
+	<td>comment body</td>	
+</tr><tr>
+	<td>user</td>
+	<td>user name</td>	
+</tr><tr>
+	<td>userid</td>
+	<td>users URL or e-mail address</td>	
+</tr><tr>
+	<td>userlink</td>
+	<td>a smart link to either the e-mail or URL for non members, or the member detail page for members. Note: this link already includes the &lt;a href="..."&gt; and &lt;/a&gt; tags ! (when no valid URL or e-mail is available, only the name of the member will be shown)</td>	
+</tr><tr>
+	<td>userlinkraw</td>
+	<td>same as above, but without the &lt;a href.., empty when no valid URL or e-mail available</td>	
+</tr><tr>
+	<td>memberid</td>
+	<td>ID of the member (0 for non-members)</td>	
+</tr><tr>
+	<td>host</td>
+	<td>host from where comment was added</td>	
+</tr><tr>
+	<td>ip</td>
+	<td>IP-address from where comment was added</td>	
+</tr><tr>
+	<td>commentcount</td>
+	<td>total amount of comments for the item</td>	
+</tr><tr>
+	<td>commentword</td>
+	<td><a href="#templatecommentwords">1 'comment', 2 'comments'</a></td>	
+</tr><tr>
+	<td>date</td>
+	<td>date on which comment was added</td>	
+</tr><tr>
+	<td>time</td>
+	<td>time at which comment was added</td>	
+</tr><tr>
+	<td>authtext</td>
+	<td>the <a href="#templatememberextra">extra text</a> for members, empty for non members</td>	
+</tr><tr>
+	<td>short</td>
+	<td>a cut off version of the body, which truncates after the first line break. <a href="#templatecommentcontinued">A link is added</a> at the end according to the template</td>	
+</tr></table>
+
+<p>
+<a href="#templatecommentexample">Example</a>
+</p>
+
+</div>
+
+<div class="page"><a name="templatecommentexample"></a>
+<h1>Templates: Comment Body</h1>
+<p>
+An example for the comment body template is given below:
+</p>
+<pre>
+&lt;b&gt;Comment by &lt;%userlink%&gt;&lt;/b&gt;
+&lt;br /&gt;
+&lt;%body%&gt;
+&lt;br /&gt;
+&lt;small&gt;
+ (from &lt;%host%&gt; on &lt;%date%&gt; at &lt;%time%&gt;)
+&lt;/small&gt;
+</pre>
+</div>
+
+<div class="page"><a name="templatepopups"></a>
+<h1>Templates: Media &amp; Popups</h1>
+<p>
+These templates are used to format links to popup image windows and media objects (non-pictures). The available variables for each of the templates are described below
+</p>
+
+<h2>Popup Link Code</h2>
+
+<table><tr>
+	<th>Name</th>
+	<th>Description</th>
+</tr><tr>
+	<td>popuplink</td>
+	<td>an &lt;a href... link ready to use</td>
+</tr><tr>
+	<td>rawpopuplink</td>
+	<td>only the url inside href="..."</td>
+</tr><tr>
+	<td>popupcode</td>
+	<td>javascript code to open window</td>
+</tr><tr>
+	<td>popuptext</td>
+	<td>the alternate text (link text)</td>
+</tr></table>
+
+
+<h2>Inline Image Code</h2>
+
+<table><tr>
+	<th>Name</th>
+	<th>Description</th>
+</tr><tr>
+	<td>image</td>
+	<td>an IMG-tag, ready to use</td>
+</tr></table>
+
+<h2>Media Object Link Code</h2>
+
+<table><tr>
+	<th>Name</th>
+	<th>Description</th>
+</tr><tr>
+	<td>media</td>
+	<td>an A-tag, ready to use</td>
+</tr></table>
+
+</div>
+
+<div class="page"><a name="templatememberextra"></a>
+<h1>Templates: Member Extra</h1>
+<p>
+This is a template you can use to add an extra indication that a comment-author is a member. It ends up in the &lt;%authtext%&gt; variable for use in the <a href="#templatecommentbody">comment body</a>
+</p>
+
+<p>
+No special variables are allowed here.
+</p>
+
+</div>
+
+<div class="page"><a name="templatecommentcontinued"></a>
+<h1>Templates: Comments Read More</h1>
+<p>
+This is the format of the link that will be added at the end of &lt;%short%&gt;, which is a variable for use in the <a href="#templatecommentbody">comment body</a>
+</p>
+
+<p>
+The variables allowed here are all those that are available in the <a href="#templatecommentbody">comment body</a> (except for &lt;%short%&gt;)
+</p>
+
+<p>Example:</p>
+
+<pre>
+ &lt;a href="&lt;%itemlink%&gt;"&gt;[more]&lt;/a&gt;
+</pre>
+
+</div>
+
+<div class="page"><a name="templatecommentwords"></a>
+<h1>Templates: commentword</h1>
+<p>
+Most likely, you'll rather want to write "1 comment" than "1 comment(s)". The "One comment" and "Many comments" template parts can be used for this purpose. They will be used to fill the &lt;%commentword%&gt; variable that you can use elsewhere.
+</p>
+
+<p>
+If there is only 1 comment, &lt;%commentword%&gt; will be equal to the contents of the "one comment" part. If there are many comments (more than one), &lt;%commentword%&gt; will be equal to the contents of the "two (or more) comments" part.
+</p>
+
+<p>
+Typical values are "comment" and "comments". No special variables can be used.
+</p>
+</div>
+
+
+
+<div class="page"><a name="templateeditlink"></a>
+<h1>Templates: Edit Link</h1>
+<p>
+This template defines how the <a href="#templatevar-edit">edit-templatevar</a> will be marked up. You can use any of the <a href="#templatevars-overview">template variables</a> here.
+</p>
+
+<h2>Example:</h2>
+
+<pre>
+&lt;a href="&lt;%editlink%&gt;" 
+   onclick="&lt;%editpopupcode%&gt;"&gt;edit&lt;/a&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page"><a name="skinpartindex"></a>
+<h1>Skins: Main Index</h1>
+<p>
+This skinpart is used to show the most recent entries of your weblog. It's usually the home page of your site.
+</p>
+
+<p>
+Very basic buildup for a main index:
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Weblog&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;My Weblog&lt;/h1&gt;
+    &lt;%blog(mytemplate,20)%&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	This will show the 20 most recent items of the default weblog (unless overridden), using the 'mytemplate' template.
+</p>
+</div>
+
+
+<div class="page"><a name="skinpartitem"></a>
+<h1>Skins: Detail Pages</h1>
+<p>
+These pages are used to show the full items, all comments that were made and a form to add comments.
+</p>
+
+<p>
+Very basic buildup for a detailed item page:
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Weblog :: Item&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;Item&lt;/h1&gt;
+    &lt;%item(detailed)%&gt;
+
+    &lt;h1&gt;Comments&lt;/h1&gt;
+    &lt;%comments(detailed)%&gt;
+
+    &lt;h1&gt;Add Comment&lt;/h1&gt;
+    &lt;%commentform%&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	This will show the item and comments using the 'detailed' template, and add a standard commentform.
+</p>
+
+
+</div>
+
+<div class="page"><a name="skinpartarchivelist"></a>
+<h1>Skins: Archive List</h1>
+<p>
+An overview of all the months for which archives are available, and links to those archives
+</p>
+
+<p>
+Very basic buildup for an archive list:
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Weblog :: Archives&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;Archives&lt;/h1&gt;
+    &lt;%archivelist(default)%&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	This will show the list of all available archive files, using the 'default' template
+</p>
+
+</div>
+
+<div class="page"><a name="skinpartarchive"></a>
+<h1>Skins: Archive</h1>
+<p>
+An archive for one month. Behaves like a main index, but shows all the items from a certain month.
+</p>
+
+<p>
+Very basic buildup for an archive page:
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Weblog :: Archive&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;Archive&lt;/h1&gt;
+    &lt;%archive(default)%&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	This will show the requested archive using the 'default' template
+</p>
+
+
+</div>
+
+
+<div class="page"><a name="skinpartsearch"></a>
+<h1>Skins: Search</h1>
+<p>
+Used to show search results.
+</p>
+
+<p>
+Very basic buildup for a searchresults page:
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Weblog :: Search&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;Search&lt;/h1&gt;
+    &lt;%searchform%&gt;
+
+    &lt;h1&gt;Searchresults&lt;/h1&gt;
+    &lt;%searchresults(default)%&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	This will show search results using the 'default' template.
+</p>
+
+</div>
+
+<div class="page"><a name="skinparterror"></a>
+<h1>Skins: Errors</h1>
+<p>
+Used when there is an error
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Weblog :: Error&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;Error!&lt;/h1&gt;
+    &lt;%errormessage%&gt;
+
+    &lt;br /&gt;&lt;br /&gt;
+
+    &lt;a href="javascript:history.back();"&gt;Back&lt;/a&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	This will show the error message, plus a link to go back.
+</p>
+
+</div>
+
+<div class="page"><a name="skinpartmember"></a>
+<h1>Skins: Member</h1>
+<p>
+Used to show member details.
+</p>
+
+<p>
+Very basic buildup for a member-detail page:
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;My Weblog :: Member details&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;Info about &lt;%member(name)%&gt;&lt;/h1&gt;
+    Website:
+    &lt;a href="&lt;%member(url)%&gt;"&gt;&lt;%member(url)%&gt;&lt;/a&gt;
+
+    &lt;h1&gt;Send Message&lt;/h1&gt;
+    &lt;%membermailform%&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	This will show the members name, website address and a mailform.
+</p>
+
+</div>
+
+
+<div class="page"><a name="skinpartimagepopup"></a>
+<h1>Skins: Image Popup</h1>
+<p>
+Used when a media file (image) needs to be shown in a popup window. This skin defines the layout that will be used in that case.
+</p>
+
+<p>
+Very basic buildup for an imagepopup page:
+</p>
+
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;&lt;%imagetext%&gt;&lt;/title&gt;
+  &lt;style type="text/css"&gt;
+   img { border: none; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;a href="javascript:window.close();"&gt;&lt;%image%&gt;&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+</div>
+
+
+
+
+
+<div class="page"><a name="shortnames"></a>
+<h1>Shortnames &amp Display Names</h1>
+<p>
+Weblogs, templates and skin should all have a short name next to the full name or description.
+</p>
+
+<p>
+A short name consists of <strong>only</strong> the characters a-z and 0-9, and <strong>cannot</strong> contain spaces
+</p>
+
+<p>
+Display names are used for members. They can contain a-z, A-Z, 0-9 and spaces, but the spaces cannot be placed at the beginning or end of the name.
+</p>
+</div>
+
+
+
+
+
+
+<div class="page"><a name="templatenew"></a>
+<h1>Template: 'New' indication</h1>
+<p>
+When the <a href="#cookies">'last visit' cookie</a> option is activated, the contents of the 'Indication of new item'-template is copied into the &lt;%new%&gt; variable for items that have been added since the last visit. The &lt;%new%&gt; variable can e.g. be used in the <a href="#templateitems">item body</a>-template.
+</p>
+
+<p>
+When the 'last visit' cookie is disabled, or the item is not 'new', this template part will not be used.
+</p>
+</div>
+
+
+<div class="page"><a name="strftime"></a>
+<h1>Time variables overview</h1>
+
+<p>The following conversion specifiers are recognized in the format string <small>(taken from the PHP documentation for the strftime function)</small>. More info in the <a href="http://www.opengroup.org/onlinepubs/7908799/xsh/strftime.html" onclick="window.open(this.href);return false;" class="out" title="Open Group specification">Open Group Specification</a></p>
+
+<ul>
+	<li><strong>%a</strong> - abbreviated weekday name according to the current locale</li>
+	<li><strong>%A</strong> - full weekday name according to the current locale</li>
+	<li><strong>%b</strong> - abbreviated month name according to the current locale</li>
+	<li><strong>%B</strong> - full month name according to the current locale</li>
+	<li><strong>%c</strong> - preferred date and time representation for the current locale</li>
+	<li><strong>%d</strong> - day of the month as a decimal number (range 00 to 31)</li>
+	<li><strong>%H</strong> - hour as a decimal number using a 24-hour clock (range 00 to 23)</li>
+	<li><strong>%I</strong> - hour as a decimal number using a 12-hour clock (range 01 to 12)</li>
+	<li><strong>%j</strong> - day of the year as a decimal number (range 001 to 366)</li>
+	<li><strong>%m</strong> - month as a decimal number (range 1 to 12)</li>
+	<li><strong>%M</strong> - minute as a decimal number</li>
+	<li><strong>%p</strong> - either `am' or `pm' according to the given time value, or the corresponding strings for the current locale</li>
+	<li><strong>%S</strong> - second as a decimal number</li>
+	<li><strong>%U</strong> - week number of the current year as a decimal number, starting with the first Sunday as the first day of the first week</li>
+	<li><strong>%W</strong> - week number of the current year as a decimal number, starting with the first Monday as the first day of the first week</li>
+	<li><strong>%w</strong> - day of the week as a decimal, Sunday being 0</li>
+	<li><strong>%x</strong> - preferred date representation for the current locale without the time</li>
+	<li><strong>%X</strong> - preferred time representation for the current locale without the date</li>
+	<li><strong>%y</strong> - year as a decimal number without a century (range 00 to 99)</li>
+	<li><strong>%Y</strong> - year as a decimal number including the century</li>
+	<li><strong>%Z</strong> - time zone or name or abbreviation</li>
+	<li><strong>%%</strong> - a literal `%' character</li>
+</ul>
+
+</div>
+
+<div class="page"><a name="pinguserland"></a>
+<h1>Ping Userland</h1>
+<p>
+When updating your weblog, you can choose to send an update notification (ping) to <a href="http://www.weblogs.com/" onclick="window.open(this.href);return false;" class="out">weblogs.com</a>. This websites provides a list of recently updated weblogs to everyone who requests it. Lot's of websites are using this data, so you might receive some extra hits when enabling the ping.
+</p>
+<p>For this feature to work correctly, you need to fill out both the weblog URL and the weblog name in the blogsettings.
+</p>
+
+</div>
+
+<div class="page"><a name="convertbreaks"></a>
+<h1>Convert breaks</h1>
+<p>
+By default, Nucleus converts linebreaks in your items to &lt;br /&gt; tags, so a linebreak will also show up in your (X)HTML output
+</p>
+<p>
+Advanced users, or users striving for the semantic web (<tt>br</tt> tags don't add any information, they're just used for markup), might find this feature anoying, and turn this feature off.
+</p>
+</div>
+
+
+<div class="page"><a name="media"></a>
+<h1>Media</h1>
+<p>
+Nucleus allows you to upload media files (images, video, sound, ...) to your website
+</p>
+<p>
+Some settings are needed to do this:
+</p>
+<ul>
+	<li><strong>Media dir</strong>: location on the server where the media files will be saved (local filesystem)</li>
+	<li><strong>Media URL</strong>: location of the media files</li>
+	<li><strong>Allow upload</strong>: It's possible to disable file upload</li>
+	<li><strong>Allowed filetypes for upload</strong>: a bunch of extensions uploaded files can have (seperated by commas, case insensitive)</li>
+	<li><strong>Max. upload file size</strong>: Puts a limit on the size of uploaded files</li>	
+	<li><strong>Prefix Media Files</strong>: When this option is turned on, uploaded file will be prefixed with the current date. Uploading a file named 'bunny.jpg' on April 8, 2003 will then result in a file named 20030408-bunny.jpg. The reason why you might want to do this, is when you're uploading tons of files, and don't want problems with duplicate names.</li>
+</ul>
+<p>
+Each member has his own collection of media files. Uploading is only possible when a member is on the team of at least one of the blogs, to prevent abuse.
+</p>
+<p>
+If media items are used inside a weblog item, they are taken from the media dir of the author of that item.
+</p>
+</div>
+
+
+<div class="page"><a name="protectmemnames"></a>
+<h1>Protect Member Names</h1>
+<p>When this option is enabled, non-logged in members cannot add comments using the same name as registered members. The reason to do this would be to avoid guest impersonating members.</p>
+</div>
+
+
+<div class="page"><a name="pluginurl"></a>
+<h1>Plugin URL</h1>
+<p>This setting is the base URL for plugin admin areas. Usually it will look like the following</p>
+<pre>http://hostname.com/nucleus/plugins/</pre>
+</div>
+
+<div class="page"><a name="additem"></a>
+<h1>Adding items</h1>
+<p>
+When adding items to a weblog, there are four kinds of template variables that you can use in the body text, title or extended part:
+</p>
+<ul>
+	<li><a href="#templatevar-popup">&lt;%popup(...)%&gt;</a> to insert a popup image</li>
+	<li><a href="#templatevar-popup">&lt;%image(...)%&gt;</a> to insert an inline image</li>
+	<li><a href="#templatevar-popup">&lt;%media(...)%&gt;</a> to insert a media object</li>
+	<li><a href="#skinvar-plugin">&lt;%plugin(...)%&gt;</a> to call a plugin</li>	
+</ul>
+
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-referer"></a>
+<h1>Skinvar: referer</h1>
+<p>Inserts the refering URL (can be empty)</p>
+<h2>Arguments</h2>
+<p>None</p>
+<h2>Skintypes</h2>
+<p>all</p>
+<h2>Examples</h2>
+<pre>
+&lt;a href="&lt;%referer%&gt;"&gt;back&lt;/a&gt;
+</pre>
+</div>
+
+
+<div class="page">
+<a name="skinvar-itemid"></a>
+<h1>Skinvar: itemid</h1>
+<p>Inserts the ID of the currently selected item</p>
+<h2>Arguments</h2>
+<p>None</p>
+<h2>Skintypes</h2>
+<p>item</p>
+<h2>Examples</h2>
+<pre>
+&lt;%itemid%&gt;
+</pre>
+</div>
+
+
+<div class="page">
+<a name="skinvar-itemid"></a>
+<h1>Skinvar: itemlink</h1>
+<p>Adds a permanent link for the item.</p>
+<h2>Arguments</h2>
+<p>None</p>
+<h2>Skintypes</h2>
+<p>item</p>
+<h2>Examples</h2>
+<pre>
+&lt;%itemlink%&gt;
+</pre>
+</div>
+
+<div class="page">
+<a name="skinvar-itemtitle"></a>
+<h1>Skinvar: itemtitle</h1>
+<p>Inserts the title of the item, with HTML-stripped off and entities encoded</p>
+<h2>Arguments</h2>
+<p>None</p>
+<h2>Skintypes</h2>
+<p>item</p>
+<h2>Examples</h2>
+<pre>
+&lt;%itemtitle%&gt;
+</pre>
+</div>
+
+
+<div class="page">
+<a name="skinvar-archivedate"></a>
+<h1>Skinvar: archivedate</h1>
+<p>Inserts a formatted date for an archive date. Using no parameters, this will either insert '15 august 2002' or 'august 2002' if the archive is for august 2002</p>
+<h2>Arguments</h2>
+<ul>
+	<li>Optional
+		<table><tr>
+			<th>Name</th>
+			<th>Value</th>
+		</tr><tr>
+			<td>Locale</td>
+			<td><a href="#templatelocale">Locale</a> in which the date must be formatted</td>			
+		</tr><tr>
+			<td>Format</td>
+			<td>Date format (<a href="#strftime">strftime variables</a>)</td>
+		</tr></table>
+	</li>
+</ul>
+<h2>Skintypes</h2>
+<p>archive</p>
+<h2>Examples</h2>
+<pre>
+Archive for &lt;%archivedate%&gt;
+Archive for &lt;%archivedate(dutch)%&gt;
+Archive for &lt;%archivedate(en,%B %Y)%&gt;
+</pre>
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-blog"></a>
+<h1>Skinvar: blog</h1>
+
+<p>
+Inserts the most recently added items of the currently active blog (usually the default one) into the skin.
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required:
+	<ul>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional:
+	<ul>
+		<li><strong><em>amount</em></strong>: the amount of items to show (default = 10)</li>
+		<li><strong><em>category</em></strong>: name of the category to show</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+index, item, archive, archivelist, search
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%blog(default,15)%&gt;
+&lt;%blog(mytemplate)%&gt;
+&lt;%blog(mytemplate,5,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-otherblog"></a>
+<h1>Skinvar: otherblog</h1>
+
+<p>
+Inserts the most recently added items of a given blog into the skin.
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required:
+	<ul>
+		<li><strong>blogname</strong>: name of the blog to show</li>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional:
+	<ul>
+		<li><strong><em>amount</em></strong>: the amount of items to show (default = 10)</li>
+		<li><strong><em>category</em></strong>: name of the category to show</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%otherblog(myblog,default,15)%&gt;
+&lt;%otherblog(yourblog,mytemplate)%&gt;
+&lt;%otherblog(yourblog,mytemplate,15,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-item"></a>
+<h1>Skinvar: item</h1>
+
+<p>
+Shows the currently selected item (without comments) using a given template
+</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li><strong>template</strong>: name of the template to use</li>
+</ul>
+
+<h2>Skintypes</h2>
+
+<p>
+item
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%item(mytemplate)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-comments"></a>
+<h1>Skinvar: comments</h1>
+
+<p>
+Shows the comments for the currently selected item using a given template.
+</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li><strong>template</strong>: name of the template to use</li>
+</ul>
+
+<h2>Skintypes</h2>
+
+<p>
+item
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%comments(mytemplate)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-archive"></a>
+<h1>Skinvar: archive</h1>
+
+<p>
+Shows the archive for the selected month and the selected blog (usually the default one), using a given template
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required
+	<ul>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional
+	<ul>
+		<li><strong><em>category</em></strong>: name of the category to show</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+archive
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%archive(mytemplate)%&gt;
+&lt;%archive(mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-otherarchive"></a>
+<h1>Skinvar: otherarchive</h1>
+
+<p>
+Shows the archive for the selected month, using the given blog and template
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required
+	<ul>
+		<li><strong>blogname</strong>: name of the blog to use</li>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional
+	<ul>
+		<li><strong><em>category</em></strong>: name of the category to show</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+archive
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%otherarchive(myblog,mytemplate)%&gt;
+&lt;%otherarchive(myblog,mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-archivelist"></a>
+<h1>Skinvar: archivelist</h1>
+
+<p>
+Shows the list of available archives for the currently selected blog (usually the default one), using a given template
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required
+	<ul>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional
+	<ul>
+		<li><strong><em>category</em></strong>: name of the category to show</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+index, archive, archivelist, search, item
+</p>
+
+<div class="page">
+<a name="skinvar-archivedaylist"></a>
+<h1>Skinvar: archivedaylist</h1>
+
+<p>
+The same as the <a href="#skinvar-archivelist">archivelist</a> skinvar, but shows an entry for each <em>day</em> instead of for each <em>month</em>
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required
+	<ul>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional
+	<ul>
+		<li><strong><em>category</em></strong>: name of the category to show</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+index, archive, archivelist, search, item
+</p>
+
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%archivedaylist(mytemplate)%&gt;
+&lt;%archivedaylist(mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-otherarchivedaylist"></a>
+<h1>Skinvar: otherarchivedaylist</h1>
+
+<p>
+The same as the <a href="#skinvar-otherarchivelist">otherarchivelist</a> skinvar, but shows an entry for each <em>day</em> instead of for each <em>month</em>
+
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required
+	<ul>
+		<li><strong>blogname</strong>: name of the blog</li>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional
+	<ul>
+		<li><strong><em>category</em></strong>: name of the category to show</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%otherarchivedaylist(yourblog,mytemplate)%&gt;
+&lt;%otherarchivedaylist(yourblog,mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-otherarchivelist"></a>
+<h1>Skinvar: otherarchivelist</h1>
+
+<p>
+Shows the list of available archives for a given blog, using a given template
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required
+	<ul>
+		<li><strong>blogname</strong>: name of the blog</li>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional
+	<ul>
+		<li><strong><em>category</em></strong>: name of the category to show</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%otherarchivelist(yourblog,mytemplate)%&gt;
+&lt;%otherarchivelist(yourblog,mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-categorylist"></a>
+<h1>Skinvar: categorylist</h1>
+
+<p>
+Inserts a list of categories for a blog (defaults to the currently selected blog), using a given template
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required
+	<ul>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional
+	<ul>
+		<li><strong><em>blogname</em></strong>: short name of the blog to use</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+index, archive, archivelist, search, item
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%categorylist(mytemplate)%&gt;
+&lt;%categorylist(mytemplate,myweblog)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-category"></a>
+<h1>Skinvar: category</h1>
+
+<p>
+Inserts some information about the currently selected category. When no category is selected, does nothing.
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Optional
+	<ul>
+		<li><strong><em>type</em></strong>: What information to include. Can be <b>name</b> (default), <b>desc</b> or <b>id</b></li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%category%&gt;
+&lt;%category(id)%&gt;
+&lt;%category(desc)%&gt;
+&lt;%category(name)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-ifcat"></a>
+<h1>Skinvar: ifcat</h1>
+
+<p>
+Inserts some text <b>only</b> if there is currently a category selected
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required
+	<ul>
+		<li><strong>text</strong>: Text to show</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%ifcat(Current Category: )%&gt;&lt;%category%&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-searchresults"></a>
+<h1>Skinvar: searchresults</h1>
+
+<p>
+Shows the searchresult for the current query
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required:
+	<ul>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional:
+	<ul>
+		<li><strong><em>maxresults</em></strong>: maximum amount of results to show</li>
+	</ul>	
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+search
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%searchresults(mytemplate)%&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-othersearchresults"></a>
+<h1>Skinvar: othersearchresults</h1>
+
+<p>
+Shows the searchresult in a give blog for the current query, using the given template
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required:
+	<ul>
+		<li><strong>blogname</strong>: name of the blog to use</li>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional:
+	<ul>
+		<li><strong><em>maxresults</em></strong>: maximum amount of results to show</li>
+	</ul>	
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+search
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%othersearchresults(myblog,mytemplate)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-query"></a>
+<h1>Skinvar: query</h1>
+
+<p>
+Inserts the current search query.
+</p>
+
+<h2>Arguments</h2>
+<p>
+None
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+search
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%query%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-version"></a>
+<h1>Skinvar: version</h1>
+
+<p>
+Inserts the current Nucleus version.
+</p>
+
+<h2>Arguments</h2>
+<p>
+None
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%version%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-previtem"></a>
+<h1>Skinvar: previtem</h1>
+
+<p>
+Inserts the ID of the previous item in the blog
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+item
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%previtem%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-nextitem"></a>
+<h1>Skinvar: nextitem</h1>
+
+<p>
+Inserts the ID of the next item in the blog
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+item
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%nextitem%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-todaylink"></a>
+<h1>Skinvar: todaylink</h1>
+
+<p>
+Inserts a link to the main page of the weblog. Takes into account the currently selected blog and category.
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%todaylink%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-archivelink"></a>
+<h1>Skinvar: archivelink</h1>
+
+<p>
+Inserts a link to the archive for the currently selected blog and category (or the default blog when no blog selected)
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%archivelink%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-nextlink"></a>
+<h1>Skinvar: nextlink</h1>
+
+<p>
+Inserts a link to the next item
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+item
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%nextlink%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-prevlink"></a>
+<h1>Skinvar: prevlink</h1>
+
+<p>
+Inserts a link to the previous item
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+item
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%prevlink%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-errormessage"></a>
+<h1>Skinvar: errormessage</h1>
+
+<p>
+Inserts the message corresponding to the error that occurred
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+error
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%errormessage%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-imagetext"></a>
+<h1>Skinvar: imagetext</h1>
+
+<p>
+Inserts the caption text for a popup image
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+imagepopup
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%imagetext%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-image"></a>
+<h1>Skinvar: image</h1>
+
+<p>
+Inserts the selected image (for popup images)
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+imagepopup
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%image%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-vars"></a>
+<h1>Skinvar: vars</h1>
+
+<p>
+Inserts a hidden form-input field with the itemid.
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+item
+</p>
+
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-sitevar"></a>
+<h1>Skinvar: sitevar</h1>
+
+<p>
+Includes a site variable
+</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li><strong>type</strong>: name of the variable to show:
+	<ul>
+		<li><em>url</em>: URL of the site</li>
+		<li><em>name</em>: Name of the site</li>
+		<li><em>admin</em>: E-mail address of the administrator</li>
+	</ul>
+	</li>
+</ul>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%skinvar(name)%&gt;
+&lt;%skinvar(url)%&gt;
+&lt;a href="mailto:&lt;%skinvar(email)%&gt;"&gt;Admin&lt;/a&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-blogsetting"></a>
+<h1>Skinvar: blogsetting</h1>
+
+<p>
+Inserts a setting specific to the currently selected blog (usually the default one)
+</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li><strong>type</strong>: which setting to add
+	    <ul>
+	    	<li><em>id</em>: ID of the blog</li>
+	    	<li><em>url</em>: URL of the blog</li>
+	    	<li><em>name</em>: Name of the blog (long name)</li>
+	    	<li><em>desc</em>: Description of the blog</li>
+	    </ul>
+	</li>
+</ul>
+
+<h2>Skintypes</h2>
+
+<p>
+index, archive, archivelist, search, item, member
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%blogsetting(name)%&gt;
+&lt;%blogsetting(id)%&gt;
+&lt;%blogsetting(desc)%&gt;
+&lt;a href="&lt;%blogsetting(url)%&gt;"&gt;...&lt;/a&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-member"></a>
+<h1>Skinvar: member</h1>
+
+<p>
+Inserts some info about a member (on member detail pages)
+</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li><strong>type</strong>: which information to show
+	    <ul>
+	    	<li><em>name</em>: nickname of the member (the one used to login)</li>
+	    	<li><em>realname</em>: the full name of the member</li>
+	    	<li><em>notes</em>: extra information a member can set for him/herself</li>
+	    	<li><em>url</em>: the URL of the members website</li>
+	    	<li><em>email</em>: The email address of the member</li>
+	    </ul>
+	</li>
+</ul>
+
+<h2>Skintypes</h2>
+
+<p>
+member
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%member(realname)%&gt;
+&lt;%member(url)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-preview"></a>
+<h1>Skinvar: preview</h1>
+
+<p>
+Inserts an item-preview into the page, using a given template (to be used in conjunction with <a href="#skinvar-additemform">additemform</a>)
+</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li><strong>template</strong>: name of the template to be used</li>
+</ul>
+
+<h2>Skintypes</h2>
+
+<p>
+index
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%preview(mytemplate)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-additemform"></a>
+<h1>Skinvar: additemform</h1>
+
+<p>
+Shows an add-item form for the currently selected blog (usually the default one). Mostly used in conjunction with <a href="#skinvar-preview">preview</a>
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+index
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%additemform%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-include"></a>
+<h1>Skin/Templatevar: include</h1>
+
+<p>
+Includes a textfile into the output. The contents of the file is not parsed in any way, so you cannot use skin/templatevars or use PHP code (see <a href="#skinvar-parsedinclude">parsedinclude</a> and <a href="#skinvar-phpinclude">phpinclude</a> if you want parsed includes)
+</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li><strong>filename</strong>: the name of the file to be included (either relative to the position of index.php, or absolute). Note that an URL can also be used here.</li>
+</ul>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%include(filename.txt)%&gt;
+&lt;%include(/home/user/myself/filename.txt)%&gt;
+&lt;%include(http://mydomain.com/filename.html)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-phpinclude"></a>
+<h1>Skin/Templatevar: phpinclude</h1>
+
+<p>
+Includes a php-file into the output. The contents of the file is parsed by the PHP parser, so be careful. Nucleus skin/templatevars are <b>not</b> parsed! (see <a href="#skinvar-parsedinclude">parsedinclude</a> and <a href="#skinvar-include">include</a> for other include options).
+</p>
+
+<p>
+Your file will be included using the standard php include() command. This command will however be called from inside a class method, so you'll need to declare which global variables you want to access yourself. Most of the <a href="#skinvar-phpinclude-vars">standard variables</a> are automatically declared global by Nucleus itsself.
+</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li><strong>filename</strong>: the name of the file to be included (either relative to the position of index.php, or absolute)</li>
+</ul>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%phpinclude(filename.php)%&gt;
+&lt;%phpinclude(/home/user/myself/filename.php)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-phpinclude-vars"></a>
+<h1>Skin/Templatevar: phpinclude : vars</h1>
+
+<p>
+The following global variables are accessible from within files included by the <a href="#skinvar-phpinclude">phpinclude</a> skin/templatevar:
+</p>
+
+<p>
+$GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
+<br />$SERVER_PROTOCOL, $REQUEST_METHOD, $QUERY_STRING
+<br />$DOCUMENT_ROOT, $HTTP_ACCEPT, $HTTP_ACCEPT_CHARSET
+<br />$HTTP_ACCEPT_ENCODING, $HTTP_ACCEPT_LANGUAGE
+<br />$HTTP_CONNECTION, $HTTP_HOST, $HTTP_REFERER
+<br />$HTTP_USER_AGENT, $REMOTE_ADDR, $REMOTE_PORT
+<br />$SCRIPT_FILENAME, $SERVER_ADMIN, $SERVER_PORT
+<br />$SERVER_SIGNATURE, $PATH_TRANSLATED, $SCRIPT_NAME
+<br />$REQUEST_URI, $argv, $argc, $PHP_SELF
+<br />$HTTP_COOKIE_VARS, $HTTP_GET_VARS, $HTTP_POST_VARS
+<br />$HTTP_POST_FILES, $HTTP_ENV_VARS, $HTTP_SERVER_VARS
+<br />$HTTP_SESSION_VARS, $PATH_INFO, $HTTPS
+<br />$HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR
+</p>
+
+<p>
+For others variables, you'll need to add '<tt>global $varname;</tt>' explicitly in your code
+</p>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-parsedinclude"></a>
+<h1>Skin/Templatevar: parsedinclude</h1>
+
+<p>
+Includes a file into the output. The contents of the file is parsed by the Nucleus skin/template parser, so you can use skin/templatevars. (see <a href="#skinvar-phpinclude">phpinclude</a> and <a href="#skinvar-include">include</a> for other include options)
+</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li><strong>filename</strong>: the name of the file to be included (either relative to the position of index.php, or absolute)</li>
+</ul>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%parsedinclude(filename.txt)%&gt;
+&lt;%parsedinclude(/home/user/myself/filename.txt)%&gt;
+</pre>
+
+<h2>Notes</h2>
+
+<p>
+From inside the included file, you can call &lt;%parsedinclude(filename)%&gt; again. To avoid endless loops, the maximum depth level you can go is 3.
+</p>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-plugin"></a>
+<h1>Skin/Templatevar: plugin</h1>
+
+<p>
+Calls a plugin
+</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li>
+		<p>Required</p>
+		<table><tr>
+			<th>Name</th>
+			<th>Contents</th>
+		</tr><tr>
+			<td>PlugName</td>
+			<td>Name of the plugin that should be called. <strong>This name is case sensitive!</strong></td>		
+		</tr></table>		
+	</li>
+	<li><p>Extra parameters can be added, depending on the plugin</p></li>
+</ul>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%plugin(Calendar)%&gt;
+&lt;%plugin(LastComments,myweblog)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-commentform"></a>
+<h1>Skinvar: commentform</h1>
+
+<p>
+Adds a commentform to an item page.
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Optional:
+	<ul>
+		<li><strong><em>destinationurl</em></strong>: sets the URL to where Nucleus needs to redirect after adding the comment (by default, Nucleus redirects to the item detail page for the item)</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+item
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%commentform%&gt;
+&lt;%commentform(http://host/thanks.html)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-set"></a>
+<h1>Skin/Templatevar: set</h1>
+
+<p>
+Sets a <a href="#parser-properties" title="A list of available parser properties">parser property</a>. 
+</p>
+
+<h2>Arguments</h2>
+<p>
+	<ul>
+		<li><strong>property</strong>: name of the property</li>
+		<li><strong>value</strong>: value of the property</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%set(IncludeMode,skindir)%&gt;
+&lt;%set(IncludePrefix,somedir/)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-skinfile"></a>
+<h1>Skin/Templatevar: skinfile</h1>
+
+<p>Used by imported skins to puts a link relative to the skinsurl. Use in conjunction with the <tt>IncludePrefix</tt> <a href="#parser-properties">parser property</a> to get the best results</p>
+
+<h2>Arguments</h2>
+<p>
+	<ul>
+		<li><strong>filename</strong>: filename of which you want the correct URL</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%skinfile(mystyle.css)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-loginform"></a>
+<h1>Skinvar: loginform</h1>
+
+<p>
+Shows a login form or a message indicating that the visitor is logged in
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%loginform%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-membermailform"></a>
+<h1>Skinvar: membermailform</h1>
+
+<p>
+Shows a form through which a logged-in member can send a message to the member which details are being shown (on member detail pages)
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Optional:
+	<ul>
+		<li><strong><em>rows</em></strong>: Amount of rows in the box (default = 10)</li>
+		<li><strong><em>cols</em></strong>: Amount of columns in the box (default = 40)</li>
+		<li><strong><em>destination url</em></strong>: URL to where Nucleus needs to redirection after sending the message</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+member
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%membermailform%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-searchform"></a>
+<h1>Skinvar: searchform</h1>
+
+<p>
+Shows a search form for the current blog.
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Optional:
+	<ul>
+		<li><strong><em>blogname</em></strong>: The name of the blog for which you want a search form (short blog name)</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+index, archive, archivelist, search, item
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%searchform%&gt;
+&lt;%searchform(otherweblog)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-nucleusbutton"></a>
+<h1>Skinvar: nucleusbutton</h1>
+
+<p>
+Inserts a nucleus button, with link to the Nucleus website. It's highly suggested to place such a button on your website ;-)
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Optional:
+	<ul>
+		<li><strong><em>imgurl</em></strong>: URL of the image (if you don't want the default)</li>
+		<li><strong><em>imgwidth</em></strong>: width of the image (in pixels)</li>
+		<li><strong><em>imgheight</em></strong>: height of the image (in pixels)</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%nucleusbutton%&gt;
+&lt;%nucleusbutton(nucleus/nucleus.gif,46,43)%&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-self"></a>
+<h1>Skinvar: self</h1>
+
+<p>
+Inserts the filename of the page currently being displayed (index.php or whatever you changed it to)
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%self%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="templatevars-overview"></a>
+<h1>Template variables: Overview</h1>
+
+<h2>What?</h2>
+
+<p>Template variables largely work in exact the same way as skin variables, with the only difference that they are being used inside templates. The variables are called using <code>&lt;%<i>varname</i>%&gt;</code>, and include some text depending on the variable function. Some variables also have extra optional parameters.</p>
+
+<h2>Available variables</h2>
+
+<ul>
+	<li><a href="#templatevars-basic">Basic variables...</a> (title, body, ...)</li>
+	<li><a href="#templatevars-advanced">Advanced variables...</a> (include, plugin, ...)</li>
+</ul>
+
+<h2>Templatetypes</h2>
+
+<p>
+These template variables can currently be used in the following template-parts: <tt>item header, item body, item footer, date header, date footer, morelink, editlink</tt>
+</p>
+
+<p>
+The variables <tt>image</tt>, <tt>popup</tt> and <tt>media</tt> can also be used inside weblog items.
+</p>
+
+</div>
+
+
+
+<div class="page">
+<a name="templatevars-basic"></a>
+<h1>Template variables: Basic variables</h1>
+
+<p>All these variables concern the item that's currently being parsed.</p>
+
+<table><tr>
+	<th>Name</th>
+	<th>Description</th>
+</tr><tr>
+	<td>title</td>
+	<td>item title</td>
+</tr><tr>
+	<td>body</td>
+	<td>body text</td>
+</tr><tr>
+	<td>more</td>
+	<td>extended text</td>
+</tr><tr>
+	<td>category</td>
+	<td>name of the category</td>
+</tr><tr>
+	<td>categorylink</td>
+	<td>raw link to the category</td>
+</tr><tr>
+	<td>karma</td>
+	<td>Total karma score</td>
+</tr><tr>
+	<td>authorlink</td>
+	<td>raw link to the author</td>
+</tr><tr>
+	<td>itemlink</td>
+	<td>raw permanent link for the item</td>
+</tr><tr>
+	<td><a href="#templatevar-author">author</a></td>
+	<td>name of the author</td>
+</tr><tr>
+	<td><a href="#templatevar-smartbody">smartbody</a></td>
+	<td>either the body text or the extended text</td>
+</tr><tr>
+	<td><a href="#templatevar-morelink">morelink</a></td>
+	<td>'read more'-link</td>
+</tr><tr>
+	<td><a href="#templatevar-date">date</a></td>
+	<td>Formatted date</td>
+</tr><tr>
+	<td><a href="#templatevar-time">time</td>
+	<td>Formatted time</td>
+</tr><tr>
+	<td>daylink</td>
+	<td>raw link to the daily archive</td>
+</tr><tr>
+	<td><a href="#templatevar-comments">comments</td>
+	<td>comments block or commentcount</td>
+</tr><tr>
+	<td>itemid</td>
+	<td>ID of the item</td>		
+</tr><tr>
+	<td>blogurl</td>
+	<td>URL of the blog</td>	
+</tr></table>
+
+<p><a href="#templatevars-overview">Template variables overview...</a></p>
+
+
+</div>
+
+
+
+<div class="page">
+<a name="templatevars-advanced"></a>
+<h1>Template variables: Advanced variables</h1>
+
+
+<table><tr>
+	<th>Name</th>
+	<th>Description</th>
+</tr><tr>
+	<td>authorid</td>
+	<td>ID of the current items author</td>	
+</tr><tr>
+	<td>blogid</td>
+	<td>ID of the blog</td>
+</tr><tr>
+	<td>catid</td>
+	<td>ID of the category for the current item</td>
+</tr><tr>
+	<td>query</td>
+	<td>search query (if there is one)</td>
+</tr><tr>
+	<td><a href="#templatevar-syndicate_title">syndicate_title</a></td>
+	<td>Syndicated title</td>
+</tr><tr>
+	<td><a href="#templatevar-syndicate_description">syndicate_description</a></td>
+	<td>Syndicated body text</td>
+</tr><tr>
+	<td>karmaposlink</td>
+	<td>raw vote link</td>
+</tr><tr>
+	<td>karmaneglink</td>
+	<td>raw vote link</td>
+</tr><tr>
+	<td>new</td>
+	<td>'New Item!'-text</td>
+</tr><tr>
+	<td><a href="#skinvar-include">include</a></td>
+	<td>includes a file, whithout parsing</td>
+</tr><tr>
+	<td><a href="#skinvar-parsedinclude">parsedinclude</a></td>
+	<td>includes a file, parsing it</td>
+</tr><tr>
+	<td><a href="#skinvar-phpinclude">phpinclude</a></td>
+	<td>includes a file, parsing by PHP</td>
+</tr><tr>
+	<td><a href="#skinvar-plugin">plugin</a></td>
+	<td>executes a plugin</td>
+</tr><tr>
+	<td><a href="#templatevar-edit">edit</a></td>
+	<td>inserts an 'edit this item' link</td>
+</tr><tr>
+	<td><a href="#templatevar-editlink">editlink</a></td>
+	<td>raw 'edit item' link (links to bookmarklet)</td>
+</tr><tr>
+	<td><a href="#templatevar-editpopupcode">editpopupcode</a></td>
+	<td>javascript code to open a popup window for editlink</td>
+</tr><tr>
+	<td><a href="#skinvar-skinfile">skinfile</a></td>
+	<td>includes the correct URL for a file belonging to an imported skin</td>
+</tr><tr>
+	<td><a href="#skinvar-set">set</a></td>
+	<td>sets a parser property</td>
+</tr><tr>
+	<td><a href="#templatevar-image">image</a></td>
+	<td>inline image from media library</td>
+</tr><tr>
+	<td><a href="#templatevar-popup">popup</a></td>
+	<td>popup image from media dir</td>
+</tr><tr>
+	<td><a href="#templatevar-media">media</a></td>
+	<td>other media object from media dir</td>
+</tr></table>
+
+<p><a href="#templatevars-overview">Template variables overview...</a></p>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="templatevar-author"></a>
+<h1>Templatevar: author</h1>
+
+<p>
+Inserts the name of the author
+</p>
+
+<h2>Arguments</h2>
+<ul>Optional:
+	<ul>
+		<li><strong><em>realname</em></strong>: add "realname" as parameter to get the real name of the author instead of the display name</li>
+	</ul>
+</ul>
+
+<h2>Examples</h2>
+<pre>
+&lt;%author%&gt;
+&lt;%author(realname)%&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="templatevar-smartbody"></a>
+<h1>Templatevar: smartbody</h1>
+
+<p>
+Examines the current item and then decides to show either the body text or the expanded text.
+</p>
+
+<p>When the extended part is empty, the body part is chosen. Otherwise the extended part is shown.</p>
+
+<table style="text-align: center;"><tr>
+	<th>Part</th><th colspan="2">Empty?</th>
+</tr><tr>
+	<td>Body</td><td>No</td><td>No</td>
+</tr></tr>
+	<td>Extended</td><td>Yes</td><td>No</td>	
+</tr></tr>
+	<th>smartbody=</th><th>body part</th><th>extended part</th>
+</tr></table>
+
+<h2>Example use</h2>
+
+<p>The body text could be interpreted as your full text, and the extended part could be interpreted as an 'introduction' or 'exerpt', which you want to show on the front page.</p>
+<p>In the template used on the front page, you would use <tt>&lt;%smartbody%&gt;</tt> to insert an excerpt (if there is one), or the full text (if no excerpt). In the template for detailed items, <tt>&lt;%body%&gt;</tt> can then be used instead of the usual <tt>&lt;%body%&gt;</tt> + <tt>&lt;%more%&gt;</tt>, since <tt>&lt%body%&gt;</tt> will contain the full item anyway.</p>
+
+
+
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-morelink"></a>
+<h1>Templatevar: morelink</h1>
+
+<p>
+Inserts a link to the detail page for the item, as defined in the template (<a href="#templatemorelink">link to extended entry</a>). This is empty when there is no extended part.
+</p>
+
+<p>Note that the contents of the 'link to extended entry' templatepart is also parsed and can thus also contain templatevariables.</p>
+</div>
+
+
+<div class="page">
+<a name="templatevar-date"></a>
+<h1>Templatevar: date</h1>
+
+<p>
+Inserts a date using the <a href="#templatedatetime">date format specified in the template</a>. Optionally, a custom date format can be given as a parameter.
+</p>
+
+<h2>Arguments</h2>
+<ul>Optional
+	<ul>
+		<li><strong><i>format</i></strong>: format to be used to format the date</li>
+	</ul>
+</ul>
+
+<h2>Examples</h2>
+<pre>
+&lt;%date%&gt;
+&lt;%date(%x)%&gt;
+</pre>
+
+</div>
+
+<div class="page">
+<a name="templatevar-time"></a>
+<h1>Templatevar: time</h1>
+
+<p>
+Inserts a time using the <a href="#templatedatetime">time format specified in the template</a>. Optionally, a custom time format can be given as a parameter.
+</p>
+
+<h2>Arguments</h2>
+<ul>Optional
+	<ul>
+		<li><strong><i>format</i></strong>: format to be used to format the time</li>
+	</ul>
+</ul>
+
+<h2>Examples</h2>
+<pre>
+&lt;%time%&gt;
+&lt;%time(%X)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-comments"></a>
+<h1>Templatevar: comments</h1>
+
+<p>
+Inserts a comments 'block'. <a href="#templatecomments">More information about the structure of this block</a>.
+</p>
+
+<h2>Arguments</h2>
+<ul><p>Optional:</p>
+	<table><tr>
+		<th>Name</th>
+		<th>Contents</th>
+	</tr><tr>
+		<td>MaxToShow</td>
+		<td>Amount of comments to show (when set, this overrides the <a href="#blogmaxcomments">max. comments blogsetting</a>)</td>		
+	</tr></table>
+</ul>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%comments%&gt;
+&lt;%comments(5)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-syndicate_title"></a>
+<h1>Templatevar: syndicate_title</h1>
+
+<p>
+Inserts the title of the item, with HTML tags-stripped off, and shortened to 100 characters. When the text needs to be shortened, "..." is added at the end of the text.
+</p>
+
+<p>
+This variable was originally intended for use in the XML-RSS skin that comes with Nucleus, but can also be of use in other situations.
+</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li>
+		<p>Optional:</p>
+		<table><tr>
+			<th>Name</th>
+			<th>Contents</th>
+		</tr><tr>
+			<td>MaxChars</td>
+			<td>Maximum amount of characters to keep (defaults to 100)</td>		
+		</tr></table>
+	</li>
+</ul>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%syndicate_title%&gt;
+&lt;%syndicate_title(25)%&gt;
+</pre>
+
+</div>
+
+<div class="page">
+<a name="templatevar-syndicate_description"></a>
+<h1>Templatevar: syndicate_description</h1>
+
+<p>
+Inserts the body of the item, with HTML tags-stripped off, and shortened to 250 characters. When the text needs to be shortened, "..." is added at the end of the text.
+</p>
+
+<p>
+This variable was originally intended for use in the XML-RSS skin that comes with Nucleus, but can also be of use in other situations.
+</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li>
+		<p>Optional:</p>
+		<table><tr>
+			<th>Name</th>
+			<th>Contents</th>
+		</tr><tr>
+			<td>MaxChars</td>
+			<td>Maximum amount of characters to keep (defaults to 250)</td>		
+		</tr></table>
+	</li>
+</ul>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%syndicate_description%&gt;
+&lt;%syndicate_description(25)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-image"></a>
+<h1>Templatevar: image</h1>
+
+<p>Inserts an inline image into an item body or template.</p>
+
+<p>In normal use, the image-templatevar is generated automatically when adding images through the media library. You can call it from within templates too, though. Note that in this last case, the image will come out of the media dir of the current item's author.</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li>
+		<p>Required:</p>
+		<table><tr>
+			<th>Name</th>
+			<th>Contents</th>
+		</tr><tr>
+			<td>filename</td>
+			<td>Name of the image file (file gets)</td>		
+		</tr><tr>
+			<td>width</td>
+			<td>Width of the image (pixels or percentage)</td>		
+		</tr><tr>
+			<td>height</td>
+			<td>Height of the image</td>		
+		</tr><tr>
+			<td>text</td>
+			<td>alt-text for the image</td>		
+		</tr></table>
+	</li>
+	<li><strong>Note:</strong> for the image, popup and media tags, the parameters must be separated by the '|' character, <em>not</em> by a comma!</li>
+</ul>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%image(myphoto.jpg|100|200|this is me)%&gt;
+&lt;%image(myphoto.jpg|50%|50%|this is me, but smaller)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="templatevar-popup"></a>
+<h1>Templatevar: popup</h1>
+
+<p>Inserts a popup image into an item body or template.</p>
+
+<p>In normal use, the popup-templatevar is generated automatically when adding images through the media library. You can call it from within templates too, though. Note that in this last case, the image will come out of the media dir of the current item's author.</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li>
+		<p>Required:</p>
+		<table><tr>
+			<th>Name</th>
+			<th>Contents</th>
+		</tr><tr>
+			<td>filename</td>
+			<td>Name of the image file (file gets)</td>		
+		</tr><tr>
+			<td>width</td>
+			<td>Width of the image (pixels or percentage)</td>		
+		</tr><tr>
+			<td>height</td>
+			<td>Height of the image</td>		
+		</tr><tr>
+			<td>text</td>
+			<td>alt-text for the image</td>		
+		</tr></table>
+	</li>
+	<li><strong>Note:</strong> for the image, popup and media tags, the parameters must be separated by the '|' character, <em>not</em> by a comma!</li>
+</ul>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%popup(myphoto.jpg|100|200|this is me)%&gt;
+&lt;%popup(myphoto.jpg|50%|50%|this is me, but smaller)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="templatevar-media"></a>
+<h1>Templatevar: media</h1>
+
+<p>Inserts a media object into an item body or template.</p>
+
+<p>In normal use, the media-templatevar is generated automatically when adding images through the media library. You can call it from within templates too, though. Note that in this last case, the object will come out of the media dir of the current item's author.</p>
+
+<h2>Arguments</h2>
+<ul>
+	<li>
+		<p>Required:</p>
+		<table><tr>
+			<th>Name</th>
+			<th>Contents</th>
+		</tr><tr>
+			<td>filename</td>
+			<td>Name of the image file (file gets)</td>		
+		</tr><tr>
+			<td>text</td>
+			<td>descriptive text for the media object</td>		
+		</tr></table>
+	</li>
+	<li><strong>Note:</strong> for the image, popup and media tags, the parameters must be separated by the '|' character, <em>not</em> by a comma!</li>
+</ul>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%media(mysong.mp3|listen to my new song)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-edit"></a>
+<h1>Templatevar: edit</h1>
+
+<p>
+From within your template, you can add an 'edit item' link by using this template variable. By default, it will link to a popup-bookmarklet-window, but that behaviour can be changed through the <a href="#templateeditlink">editlink template</a>.
+</p>
+
+<p><strong>Note:</strong> only logged in members that are allowed to edit the item will see this link. In other cases, the edit-templatevar does nothing at all.</p>
+
+<h2>Example</h2>
+<p>An example for the item body template</p>
+<pre>
+&lt;b&gt;&lt;%title%&gt;&lt;/b&gt;
+&lt;br /&gt;&lt;%body%&gt; &lt;%morelink%&gt;
+&lt;br /&gt;&lt;i&gt;&lt;%edit%&gt; &lt;%comments%&gt;&lt;/i&gt;
+</pre>
+
+<h2>Results in</h2>
+
+<div>
+<b>Title</b>
+<br />This is an item
+<br /><a href="#templatevar-edit">edit</a> - <a href="#templatevar-edit">5 comments</a>
+</div>
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-editlink"></a>
+<h1>Templatevar: editlink</h1>
+
+<p>
+Insert a link to the 'edit item' bookmarklet. This can be used in the <a href="#templateeditlink">editlink template</a> for simplicity.
+</p>
+
+<h2>Example</h2>
+
+<p>The <a href="#templateeditlink">'edit link'-template</a> could look like this:</p>
+<pre>
+&lt;a href="&lt;%editlink%&gt;" 
+   onclick="&lt;%editpopupcode%&gt;"&gt;edit&lt;/a&gt; -
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-editpopupcode"></a>
+<h1>Templatevar: editpopupcode</h1>
+
+<p>
+To open a popup window for the 'edit link' window, you'll need to add some javascript code to your link. To avoid having to enter this code in the 'edit link'-template, you can insert it using the editpopupcode-templatevar. 
+</p>
+
+<h2>Example</h2>
+<p>See the example for the <a href="#templatevar-editlink">editlink templatevar</a></p>
+</div>
+
+
+
+<div class="page">
+<a name="plugins"></a>
+<h1>Plugins</h1>
+<p>
+Nucleus allows you to install custom plugins, to extend the functionality. Plugins can do different things:
+</p>
+<ol>
+	<li>Act as a skin variable</li>
+	<li>Act as a template variable</li>
+	<li>Hook into events generated by Nucleus. The 'move up' and 'move down' links in 'manage plugins' screen can be used to define the order in which plugins will be called when such an event occurs. The first plugin in the list will be called first, the last one will be called last.</li>
+	<li>Act as actors when called through <tt>action.php</tt></li>
+</ol>
+<p>
+Note the responsibility to write a working plugin, is for the plugin author.
+</p>
+</div>
+
+<div class="page"><a name="parser-properties"></a>
+<h1>Parser Properties</h1>
+
+<p>The available parser options are described below.</p>
+
+<table>
+ <caption>Parser properties</caption>
+ <tr>
+ 	<th>Option Name</th>
+	<th>Values</th>
+ </tr><tr>
+ 	<td>IncludeMode</td>
+	<td>
+		<ul>
+			<li><strong>normal</strong>: normal behaviour; included files are taken relative to the directory/url of the .php file generating the page.</li>
+			<li><strong>skindir</strong>: included files are taken relative to the skindir/skinurl</li>
+		</ul>
+		<p>This property affects the following skinvars: <a href="#skinvar-include">include</a>, <a href="#skinvar-phpinclude">phpinclude</a>, <a href="#skinvar-parsedinclude">parsedinclude</a>, <a href="#skinvar-nucleusbutton">nucleusbutton</a></p>
+	</td>
+ </tr><tr>
+ 	<td>IncludePrefix</td>
+ 	<td>
+		<p>This property is a prefix that get's added in front of each filename you want to include. For example, if the prefix is <tt>base/</tt> and you want to include <tt>somefile.txt</tt>, you'll end up including <tt>base/somefile.txt</tt></p>
+		<p>This property is intended to be used in conjunction with the IncludeMode property. This way, a skin imported to <tt><em>skindir/</em>somename/</tt> can set <tt>IncludeMode</tt> to <tt>skindir</tt> and <tt>IncludePrefix</tt> to <tt>somename/</tt></p>
+		<p>This property affects the following skinvars: <a href="#skinvar-include">include</a>, <a href="#skinvar-phpinclude">phpinclude</a>, <a href="#skinvar-parsedinclude">parsedinclude</a>, <a href="#skinvar-nucleusbutton">nucleusbutton</a></p>
+	</td>
+  </tr>
+</table>
+
+<p>The <tt>IncludePrefix</tt> and <tt>IncludeMode</tt> properties can be set globally for a skin in the general settings of a skin. Also note that from the moment a property is set, it applies to all parsed data, thus also for templates.</p>
+
+</div>
+
+</body>
+</html>
