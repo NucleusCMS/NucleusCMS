@@ -463,6 +463,9 @@ class ACTIONS extends BaseActions {
 			case 'onteam':
 				$condition = $member->isLoggedIn() && $this->_ifOnTeam($name);
 				break;
+			case 'admin':
+				$condition = $member->isLoggedIn() && $this->_ifAdmin($name);
+				break;				
 			case 'nextitem':
 				$condition = ($itemidnext != '');
 				break;
@@ -519,6 +522,24 @@ class ACTIONS extends BaseActions {
 			
 		return $member->teamRights($blogid);
 	}
+	
+	function _ifAdmin($blogName = '') {
+		global $blog, $member, $manager;
+
+		// when no blog found
+		if (($blogName == '') && (!is_object($blog)))
+			return 0;
+
+		// explicit blog selection
+		if ($blogName != '')
+			$blogid = getBlogIDFromName($blogName);
+
+		if (($blogName == '') || !$manager->existsBlogID($blogid))
+			// use current blog
+			$blogid = $blog->getID();
+
+		return $member->isBlogAdmin($blogid);
+	}	
 	
 	function parse_ifcat($text = '') {
 		if ($text == '') {
