@@ -1163,7 +1163,6 @@ class ADMIN {
 		$blogid = getBlogIDFromItemID($result['itemid']);
 		$blog =& $manager->getBlog($blogid);
 
-		// redirect to blog url
 		if ($result['status'] == 'newcategory')
 			$this->action_categoryedit($result['catid'],$blogid);
 		elseif ((postVar('actiontype') == 'addnow') && $blog->pingUserland())
@@ -1176,11 +1175,10 @@ class ADMIN {
 	  * Shows a window that says we're about to ping userland.
 	  * immediately refresh to the real pinging page, which will 
 	  * show an error, or redirect to the blog.
+	  *
+	  * @param $blogid ID of blog for which ping needs to be sent out
 	  */
-	function pingUserlandWindow() {
-		// TODO: make it look nicer
-	
-		$blogid = intRequestVar('blogid');
+	function pingUserlandWindow($blogid) {
 
 		$this->pagehead('<meta http-equiv="refresh" content="1; url=index.php?action=sendping&amp;blogid=' . $blogid . '" />');
 		?>		
