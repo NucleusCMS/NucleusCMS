@@ -16,6 +16,9 @@
 	<li>
 		<b>Nucleus v2.5 (?)</b>
 		<ul>
+			<li>ADDED: Made sure language files for v2.5beta can be used with v2.5final without strange strings (e.g. _SETTINGS_EXTAUTH) showing up in the admin area (karma)</li>
+			<li>FIXED: No CSS styles were applied on 'insert media' popup (karma)</li>
+			<li>FIXED: Some more possible problems with URL linking in comments (karma)</li>
 			<li>FIXED: In Opera, buttons on the extended area added text to the main body text instead (karma)</li>
 			<li>CHANGED: Admin pages are being sent as <code>text/html</code> instead of <code>application/xhtml+xml</code> again, since it caused too much javascript problems. When <code>$CONF['debug']</code> is <code>1</code> however, the pages are still sent as <code>application/xhtml+xml</code> (karma)</li>
 			<li>FIXED: <code>itemlink</code> in templatevars didn't include itemid when used on item skins (mas)</li>
