@@ -1031,6 +1031,9 @@ class ACTIONS extends BaseActions {
 			case 'desc':
 				echo $blog->getDescription();
 				break;
+			case 'short':
+				echo $blog->getShortName();
+				break; 				
 		}	
 	}
 	
