@@ -1,16 +1,144 @@
-<?
+<?php
 // Spanish Nucleus Language File
 // 
-// Author: Alfonso Sanchez (alsanan2@myrealbox.con)
-// Nucleus version: v1.0-v2.0
+// Author: Alfonso Sanchez 
+// Nucleus version: v1.0-v3.2
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
 // might be deleted. Therefor, it's important to list the Nucleus version for which 
 // the file was written in your document.
 //
-// Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
-// and will be available for download (with proper credit to the author, of course)
+// Fully translated language file can be sent to us and will be made
+// available for download (with proper credit to the author, of course)
+
+// START changed/added after 315 START
+
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Por favor, usa el botón de la \'lista de suscripción de actualizaciones\' para actualizar la lista de suscripciones de los plugin\'s.');
+define('_LIST_PLUGS_DEP',			'Plugin(s) requires:');
+
+// END changed/added after 3.15
+
+// START changed/added after 3.1 START
+
+// comments list per weblog
+define('_COMMENTS_BLOG',			'Todos los comentarios para la bitácora');
+define('_NOCOMMENTS_BLOG',			'No se hicieron comentarios en los elementos de esta bitácora');
+define('_BLOGLIST_COMMENTS',		'Comentarios');
+define('_BLOGLIST_TT_COMMENTS',		'Una lista de los comentarios hechos en los elementos de esta bitácora');
+
+
+// for use in archivetype-skinvar
+define('_ARCHIVETYPE_DAY',			'dia');
+define('_ARCHIVETYPE_MONTH',		'mes');
+
+// tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
+define('_ERROR_BADTICKET',			'Ticket inválido o caducado.');
+
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',		'Fracasó la instalación del plugin, requiere ');
+define('_ERROR_DELREQPLUGIN',		'Fracasó la eliminación del plugin, es requerido por ');
+
+// cookie prefix
+define('_SETTINGS_COOKIEPREFIX',	'Prefijo de la Cookie');
+
+// account activation
+define('_ERROR_NOLOGON_NOACTIVATE',	'No se puede enviar el enlace de activación. No tienes permitido el acceso.');
+define('_ERROR_ACTIVATE',			'La clave de activación no existe, es inválida, o ha caducado.');
+define('_ACTIONLOG_ACTIVATIONLINK', 'Enlace de activación enviado');
+define('_MSG_ACTIVATION_SENT',		'Un enlace de activación ha sido enviado por correo electrónico.');
+
+// activation link emails
+define('_ACTIVATE_REGISTER_MAIL',	"Hola <%memberName%>,\n\nNecesitas activar tu cuenta en <%siteName%> (<%siteUrl%>).\nPuedes hacerlo visitando el siguiente enlace: \n\n\t<%activationUrl%>\n\nTienes 2 dias para hacerlo. Después, el enlace de activación pierde su validez.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Activa tu cuenta '<%memberName%>'");
+define('_ACTIVATE_REGISTER_TITLE',	'Bienvenido <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',	'Ya casi está. Por favor, selecciona una clave para tu cuenta aquí.');
+define('_ACTIVATE_FORGOT_MAIL',		"Hola <%memberName%>,\n\nUsando el enlace inferior, puedes seleccionar una nueva clave para tu cuenta en <%siteName%> (<%siteUrl%>).\n\n\t<%activationUrl%>\n\nTienes 2 dias para hacerlo. Después, el enlace de activación pierde su validez.");
+define('_ACTIVATE_FORGOT_MAILTITLE',"Reactiva tu cuenta '<%memberName%>'");
+define('_ACTIVATE_FORGOT_TITLE',	'Bienvenido <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'Puedes elegir una nueva clave para tu cuenta aquí:');
+define('_ACTIVATE_CHANGE_MAIL',		"Hola <%memberName%>,\n\nPuesto que tu dirección de correo electrónico ha cambiado, necesitarás reactivar tu cuenta en <%siteName%> (<%siteUrl%>).\nPuedes hacerlo visitando el siguiente enlace: \n\n\t<%activationUrl%>\n\nTienes 2 dias para hacerlo. Después, el enlace de activación pierde su validez.");
+define('_ACTIVATE_CHANGE_MAILTITLE',"Reactiva tu cuenta '<%memberName%>'");
+define('_ACTIVATE_CHANGE_TITLE',	'Bienvenido <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'Tu cambio de dirección ha sido verificado. ¡Gracias!');
+define('_ACTIVATE_SUCCESS_TITLE',	'Activation Succeeded');
+define('_ACTIVATE_SUCCESS_TEXT',	'Tu cuenta ha sido activada con éxito.');
+define('_MEMBERS_SETPWD',			'Introduce clave');
+define('_MEMBERS_SETPWD_BTN',		'Introduce clave');
+define('_QMENU_ACTIVATE',			'Activación de la cuenta');
+define('_QMENU_ACTIVATE_TEXT',		'<p>Después de que hayas activado tu cuenta, puedes empezar a usarla <a href="index.php?action=showlogin">accediendo</a>.</p>');
+
+define('_PLUGS_BTN_UPDATE',			'Lista de suscripción de actualizaciones');
+
+// global settings 
+define('_SETTINGS_JSTOOLBAR',		'Estilo de barra de herramientas Javascript');
+define('_SETTINGS_JSTOOLBAR_FULL',	'Barra de herramientas completa (IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE','Barra de herramientas simple (No IE)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Deshabilita la barra de herramientas');
+define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">Cómo activar URLs atractivas</a>)');
+
+// extra plugin settings part when editing categories/members/blogs/...
+define('_PLUGINS_EXTRA',			'Configuración Extra de Plugins');
+
+// itemlist info column keys
+define('_LIST_ITEM_BLOG',			'bitácora:');
+define('_LIST_ITEM_CAT',			'cat:');
+define('_LIST_ITEM_AUTHOR',			'autor:');
+define('_LIST_ITEM_DATE',			'fecha:');
+define('_LIST_ITEM_TIME',			'hora:');
+
+// indication of registered members in comments list
+define('_LIST_COMMENTS_MEMBER', 	'(miembro)');
+
+// batch operations
+define('_BATCH_WITH_SEL',			'con los seleccionados:');
+define('_BATCH_EXEC',				'Ejecutar');
+
+// quickmenu
+define('_QMENU_HOME',				'Inicio');
+define('_QMENU_ADD',				'Agregar elemento');
+define('_QMENU_ADD_SELECT',			'-- seleccionar --');
+define('_QMENU_USER_SETTINGS',		'Configuración');
+define('_QMENU_USER_ITEMS',			'Elementos');
+define('_QMENU_USER_COMMENTS',		'Comentarios');
+define('_QMENU_MANAGE',				'Gestión');
+define('_QMENU_MANAGE_LOG',			'Historial de acciones');
+define('_QMENU_MANAGE_SETTINGS',	'Configuración global');
+define('_QMENU_MANAGE_MEMBERS',		'Miembros');
+define('_QMENU_MANAGE_NEWBLOG',		'Nueva bitácora');
+define('_QMENU_MANAGE_BACKUPS',		'Copias de seguridad');
+define('_QMENU_MANAGE_PLUGINS',		'Plugins');
+define('_QMENU_LAYOUT',				'Distribución');
+define('_QMENU_LAYOUT_SKINS',		'Pieles');
+define('_QMENU_LAYOUT_TEMPL',		'Plantillas');
+define('_QMENU_LAYOUT_IEXPORT',		'Import/Export');
+define('_QMENU_PLUGINS',			'Plugins');
+
+// quickmenu on logon screen
+define('_QMENU_INTRO',				'Introducción');
+define('_QMENU_INTRO_TEXT',			'<p>Esta es la pantalla de entrada de Nucleus CMS, el sistema de gestión de contenido usado para mantener este sitio.</p><p>Si tienes una cuenta, puedes acceder e introducir nuevos elementos (historias o posts).</p>');
+
+// helppages for plugins
+define('_ERROR_PLUGNOHELPFILE',		'El archivo de ayuda de este plugin no se encuentra');
+define('_PLUGS_HELP_TITLE',			'Página de ayuda del plugin');
+define('_LIST_PLUGS_HELP', 			'ayuda');
+
+
+// END changed/started after 3.1
+
+// START changed/added after v2.5beta START
+
+// general settings (security)
+define('_SETTINGS_EXTAUTH',			'Habilita la autenticación externa');
+define('_WARNING_EXTAUTH',			'Aviso: Habilita sólo si es necesario.');
+
+// member profile
+define('_MEMBERS_BYPASS',			'Usar Autenticación Externa');
+
+// 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
+define('_EBLOG_SEARCH',				'<em>Siempre</em> incluir en la búsqueda');
+
+// END changed/added after v2.5beta
 
 // START introduced after v2.0 START
 
