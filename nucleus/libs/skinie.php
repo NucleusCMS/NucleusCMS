@@ -341,10 +341,16 @@ class SKINIMPORT {
 		$dirhandle = opendir($dir);
 		while ($filename = readdir($dirhandle)) {
 			if (@is_dir($dir . $filename) && ($filename != '.') && ($filename != '..')) {
+				$xml_file = $dir . $filename . '/skinbackup.xml';
+				if (file_exists($xml_file) && is_readable($xml_file)) {
+					$candidates[$filename] = $filename; //$xml_file;
+				} 
+
+				// backwards compatibility			
 				$xml_file = $dir . $filename . '/skindata.xml';
 				if (file_exists($xml_file) && is_readable($xml_file)) {
 					$candidates[$filename] = $filename; //$xml_file;
-				}
+				} 
 			}
 		}
 		closedir($dirhandle);
@@ -423,7 +429,7 @@ class SKINEXPORT {
 			// make sure the mimetype is correct, and that the data does not show up 
 			// in the browser, but gets saved into and XML file (popup download window)
 			header('Content-Type: text/xml');
-			header('Content-Disposition: attachment; filename="skindata.xml"');
+			header('Content-Disposition: attachment; filename="skinbackup.xml"');
 			header('Expires: 0');
 			header('Pragma: no-cache');
 		}

@@ -24,7 +24,7 @@ This document contains information on how to customize the Nucleus install scrip
 
 <ol>
 	<li>Automatically install skins</li>
-	<li>Automatically install plugins</li>	
+	<li>Automatically install plugins</li>
 </ol>
 
 <h1>Configurations</h1>
@@ -36,16 +36,16 @@ This document contains information on how to customize the Nucleus install scrip
     //
     // example:
     //     array('NP_TrackBack', 'NP_MemberGoodies')
-    $aConfPlugsToInstall = array(); 	
+    $aConfPlugsToInstall = array();
 
-    
+
     // array with skins to install. skins must be present under the skins/ directory with
-    // a subdirectory having the same name that contains a skindata.xml file
+    // a subdirectory having the same name that contains a skinbackup.xml file
     //
     // example:
     //     array('base','rsd')
     $aConfSkinsToImport = array();</code></pre>
-    
+
 <p>This code is all you need to change: list the names of the plugins and skins you want to auto-install in the arrays.</p>
 
 <h1>Including the files</h1>

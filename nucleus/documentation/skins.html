@@ -20,7 +20,7 @@ Skins &amp; Templates
 <ol>
 	<li>Go with the default skin/templates that comes with Nucleus</li>
 	<li>Start from the default skin/templates, and modify it to your needs (colors, etc...)</li>
-	<li>Start your own skin/templates, and define your own CSS stylesheets</li>	
+	<li>Start your own skin/templates, and define your own CSS stylesheets</li>
 </ol>
 <p>This document tries to help you with doing this.</p>
 
@@ -30,16 +30,16 @@ Skins &amp; Templates
 	<li><a href="#htmlcss">HTML and CSS</a></li>
 	<li><a href="#defaultskin">The default skin</a></li>
 	<li><a href="#templatesvsskins">Templates vs. Skins</a></li>
-	<li><a href="#skincascade">How skins are chosen</a></li>	
+	<li><a href="#skincascade">How skins are chosen</a></li>
 	<li>Howto:
 		<ul>
-			<li><a href="#howto-additem">An 'add item' form on your website</a></li>	
-			<li><a href="#howto-cssforms">Using CSS to define the look of forms</a></li>			
+			<li><a href="#howto-additem">An 'add item' form on your website</a></li>
+			<li><a href="#howto-cssforms">Using CSS to define the look of forms</a></li>
 			<li><a href="#howto-karma">Enabling karma votes</a></li>
-			<li><a href="#howto-edit">'Edit item'-links</a></li>			
+			<li><a href="#howto-edit">'Edit item'-links</a></li>
 		</ul>
 	</li>
-	<li><a href="#export">Writing skins with Export/Import in mind</a></li>	
+	<li><a href="#export">Writing skins with Export/Import in mind</a></li>
 </ul>
 
 <h1>HTML and CSS <a i="htmlcss" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
@@ -53,7 +53,7 @@ When editing skins and templates, you'll need at least some basic knowledge abou
 	<li><a href="http://thenoodleincident.com/tutorials/css/">CSS Panic Guide</a>: links to various CSS resources</li>
 	<li><a href="http://hotwired.lycos.com/webmonkey/authoring/html_basics/index.html">Webmonkey: HTML Basics</a></li>
 	<li><a href="http://hotwired.lycos.com/webmonkey/authoring/stylesheets/">Webmonkey: Stylesheets</a></li>
-	<li><a href="http://diveintoaccessibility.org">Dive Into Accessibility</a>: Online book, not really about HTML, but about accessibility and how to make your site more accessible.</li>	
+	<li><a href="http://diveintoaccessibility.org">Dive Into Accessibility</a>: Online book, not really about HTML, but about accessibility and how to make your site more accessible.</li>
 </ul>
 
 
@@ -171,7 +171,7 @@ Another reason why the 'default' skin is required, is to be able to display erro
 <h1>Howto: An 'add item' form on your website <a id="howto-additem" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-Nucleus provides facilities to add an 'add item' form to your weblog. It adds an 'add item' link that shows and hides the 'add item' form right above the current contents of your weblog. Entering text in this form results into an instant preview, so you can immediately see how the actual weblog item will look like. 
+Nucleus provides facilities to add an 'add item' form to your weblog. It adds an 'add item' link that shows and hides the 'add item' form right above the current contents of your weblog. Entering text in this form results into an instant preview, so you can immediately see how the actual weblog item will look like.
 </p>
 
 <p>
@@ -302,7 +302,7 @@ Below is an overview of the CSS classes assigned to buttons and input fields.
 </table>
 
 <p>
-An example of how to use these classes in you stylesheets is given below: 
+An example of how to use these classes in you stylesheets is given below:
 </p>
 
 <pre>
@@ -399,7 +399,7 @@ An example of how to use these classes in you stylesheets is given below:
 http://example.org/skins/</code></pre>
 		<p>Then we would like to put our files in</p>
 		<pre><code>/home/user/example/htdocs/skins/vista/
-http://example.org/skins/vista/</code></pre>		
+http://example.org/skins/vista/</code></pre>
 		<p>And this is what the <strong><code>Include Mode</code></strong> is for. Setting it to <strong>Use skin dir</strong> will do this.</p>
 		<p>The <strong><code>Include Prefix</code></strong> also plays a role. This is the <strong>vista/</strong> part</p>
 		<p>An overview of the correct settings:</p>
@@ -444,14 +444,14 @@ http://example.org/skins/vista/</code></pre>
 
 &lt;div id="stuffbar"&gt;
 	&lt;h2&gt;Navigation&lt;/h2&gt;
-	
+
 	&lt;ul&gt;
 		&lt;li&gt;&lt;a href="&lt;%todaylink%&gt;"&gt;Today&lt;/a&gt;&lt;/li&gt;
 		&lt;li&gt;&lt;a href="&lt;%archivelink%&gt;"&gt;Archives&lt;/a&gt;&lt;/li&gt;
 	&lt;/ul&gt;
-	
+
 	&lt;h2&gt;About&lt;/h2&gt;
-	
+
 	&lt;ul&gt;
 		&lt;li&gt;&lt;a href="http://www.nucleuscms.org/"&gt;Nucleus&lt;/a&gt; Power!&lt;/li&gt;
 	&lt;/ul&gt;
@@ -516,8 +516,8 @@ http://example.org/skins/vista/</code></pre>
 
 <ol>
 	<li>Select vista, vista/detailed and vista/main from the skins and template list</li>
-	<li>Add some textual description and hit the <code>Export selected skins/templates</code> button. It will generate a <code>skindata.xml</code> for you.</li>
-	<li>Save this <code>skindata.xml</code> file together with the other files in the <code>vista/</code> directory.</li>
+	<li>Add some textual description and hit the <code>Export selected skins/templates</code> button. It will generate a <code>skinbackup.xml</code> for you.</li>
+	<li>Save this <code>skinbackup.xml</code> file together with the other files in the <code>vista/</code> directory.</li>
 	<li>Package all files from the vista directory inside a zipfile</li>
 	<li>All done! Your skin can now be shared with others</li>
 </ol>
