@@ -42,6 +42,16 @@ if ($action == '')
 	
 sendContentType('application/xhtml+xml', 'bookmarklet-'.$action);	
 
+// check ticket
+$action = strtolower($action);
+$aActionsNotToCheck = array('login', 'add', 'edit');
+if (!in_array($action, $aActionsNotToCheck))
+{
+	if (!$manager->checkTicket())
+		bm_doError(_ERROR_BADTICKET);
+} 
+
+
 // find out what to do
 switch ($action) {
 	case 'additem':

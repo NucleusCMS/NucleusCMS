@@ -46,8 +46,20 @@ $teams = mysql_query($query);
 if (mysql_num_rows($teams) == 0)
 	media_doError(_ERROR_DISALLOWEDUPLOAD);
 	
-// basic action:
+// get action
 $action = requestVar('action');
+if ($action == '')
+	$action = 'selectmedia';
+	
+// check ticket
+$aActionsNotToCheck = array('selectmedia', _MEDIA_FILTER_APPLY, _MEDIA_COLLECTION_SELECT);
+if (!in_array($action, $aActionsNotToCheck))
+{
+	if (!$manager->checkTicket())
+		media_doError(_ERROR_BADTICKET);
+} 
+
+
 switch($action) {
 	case 'chooseupload':
 	case _MEDIA_UPLOAD_TO:
@@ -67,7 +79,7 @@ switch($action) {
 
 // select a file
 function media_select() {
-	global $member, $CONF, $DIR_MEDIA;
+	global $member, $CONF, $DIR_MEDIA, $manager;
 	
 	media_head();
 	
@@ -101,12 +113,14 @@ function media_select() {
 			</select>
 			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_COLLECTION_SELECT) ?>" title="<?php echo htmlspecialchars(_MEDIA_COLLECTION_TT)?>" />
 			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_UPLOAD_TO) ?>" title="<?php echo htmlspecialchars(_MEDIA_UPLOADLINK) ?>" />
+			<?php $manager->addTicketHidden() ?>
 		</div></form>
 	<?php	} else {
 	?>
 		<form method="post" action="media.php" style="float:right"><div>
 			<input type="hidden" name="collection" value="<?php echo htmlspecialchars($currentCollection)?>" />
 			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_UPLOAD_NEW) ?>" title="<?php echo htmlspecialchars(_MEDIA_UPLOADLINK) ?>" />
+			<?php $manager->addTicketHidden() ?>
 		</div></form>	
 	<?php	} // if sizeof
 	
@@ -208,7 +222,7 @@ function media_select() {
   * Shows a screen where you can select the file to upload
   */
 function media_choose() {
-	global $CONF, $member;
+	global $CONF, $member, $manager;
 
 	$currentCollection = requestVar('collection');
 	
@@ -223,6 +237,7 @@ function media_choose() {
 	<form method="post" enctype="multipart/form-data" action="media.php">
 	<div>
  	  <input type="hidden" name="action" value="uploadfile" />
+ 	  <?php $manager->addTicketHidden() ?>
 	  <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $CONF['MaxUploadSize']?>" />
 	  File:
 	  <br />

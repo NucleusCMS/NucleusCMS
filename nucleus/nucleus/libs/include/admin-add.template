@@ -9,6 +9,7 @@
 
 <input type="hidden" name="action" value="additem" />
 <input name="blogid" value="<%blogid%>" type="hidden" />
+<%ticket%>
 
 <table>
 	<tr>

@@ -72,7 +72,8 @@ class PAGEFACTORY extends BaseActions {
 			'endif',
 			'pluginextras',
 			'itemoptions',
-			'extrahead'
+			'extrahead',
+			'ticket'
 		);
 		
 		// TODO: maybe add 'skin' later on?
@@ -388,6 +389,11 @@ class PAGEFACTORY extends BaseActions {
     function parse_itemoptions() {
 		global $itemid;
 		ADMIN::_insertPluginOptions('item', $itemid);
+    }
+    
+    function parse_ticket() {
+    	global $manager;
+    	$manager->addTicketHidden();
     }
 	
 	/**
