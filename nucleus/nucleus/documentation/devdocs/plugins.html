@@ -257,41 +257,41 @@ So, that wasn't so hard after all. Read on to find out more.
 	</tr>
 	<tr>
 		<td>
-			      <code>createOption(...)</code>
+				  <code>createOption(...)</code>
 			<br /><code>createBlogOption(...)</code>(v2.2)
 			<br /><code>createCategoryOption(...)</code>(v2.2)
 			<br /><code>createMemberOption(...)</code>(v2.2)
-      <br /><code>createItemOption(...)</code>(v3.1+CVS)
+	  <br /><code>createItemOption(...)</code>(v3.2)
 		</td>
 		<td><a href="#options" title="More info on options">Creates a new option</a></td>
 	</tr>
 	<tr>
 		<td>
-			      <code>deleteOption(...)</code>
+				  <code>deleteOption(...)</code>
 			<br /><code>deleteBlogOption(...)</code>(v2.2)
 			<br /><code>deleteCategoryOption(...)</code>(v2.2)
 			<br /><code>deleteMemberOption(...)</code>(v2.2)
-      <br /><code>deleteItemOption(...)</code>(v3.1+CVS)
-	   	</td>
+	  <br /><code>deleteItemOption(...)</code>(v3.2)
+		</td>
 		<td><a href="#options" title="More info on options">Deletes an option</a></td>
 	</tr>
 	<tr>
 		<td>
-			      <code>setOption(...)</code>
+				  <code>setOption(...)</code>
 			<br /><code>setBlogOption(...)</code>(v2.2)
 			<br /><code>setCategoryOption(...)</code>(v2.2)
 			<br /><code>setMemberOption(...)</code>(v2.2)
-      <br /><code>setItemOption(...)</code>(v3.1+CVS)
+	  <br /><code>setItemOption(...)</code>(v3.2)
 		</td>
 		<td><a href="#options" title="More info on options">Sets the value of an option</a></td>
 	</tr>
 	<tr>
 		<td>
-			      <code>getOption(...)</code>
+				  <code>getOption(...)</code>
 			<br /><code>getBlogOption(...)</code>(v2.2)
 			<br /><code>getCategoryOption(...)</code>(v2.2)
 			<br /><code>getMemberOption(...)</code>(v2.2)
-      <br /><code>getItemOption(...)</code>(v3.1+CVS)
+	  <br /><code>getItemOption(...)</code>(v3.2)
 		</td>
 		<td><a href="#options" title="More info on options">Retrieves the value of an option</a></td>
 	</tr>
@@ -300,17 +300,17 @@ So, that wasn't so hard after all. Read on to find out more.
 			<code>getAllBlogOptions(...)</code>(v2.2)
 			<br /><code>getAllCategoryOptions(...)</code>(v2.2)
 			<br /><code>getAllMemberOptions(...)</code>(v2.2)
-      <br /><code>getAllItemOptions(...)</code>(v3.1+CVS)
+	  <br /><code>getAllItemOptions(...)</code>(v3.2)
 		</td>
 		<td><a href="#options" title="More info on options">For a given option, returns an associative of all values (one value per context)</a></td>
 	</tr>
 
   <tr>
 		<td>
-			<code>getBlogOptionTop(...)</code>(v3.1+CVS)
-			<br /><code>getMemberOptionTop(...)</code>(v3.1+CVS)
-			<br /><code>getCategoryOptionTop(...)</code>(v3.1+CVS)
-      <br /><code>getItemOptionTop(...)</code>(v3.1+CVS)
+			<code>getBlogOptionTop(...)</code>(v3.2)
+			<br /><code>getMemberOptionTop(...)</code>(v3.2)
+			<br /><code>getCategoryOptionTop(...)</code>(v3.2)
+	  <br /><code>getItemOptionTop(...)</code>(v3.2)
 		</td>
 		<td><a href="#options" title="More info on options">For a given option, returns the top of all values</a></td>
 	</tr>
@@ -444,11 +444,11 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
   function getEventList() { return array('PreAddComment'); }
   ...
   function event_PreAddComment(&amp;$data) {
-    // replace acronym HTML
-    $data['comment']['body'] =
-        strreplace('HTML',
-                   '&lt;acronym title="HyperText Markup Language"&gt;HTML&lt;/acronym&gt;',
-                   $data['comment']['body']);
+	// replace acronym HTML
+	$data['comment']['body'] =
+		strreplace('HTML',
+				   '&lt;acronym title="HyperText Markup Language"&gt;HTML&lt;/acronym&gt;',
+				   $data['comment']['body']);
   }
 }
 </code></pre>
@@ -733,14 +733,14 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td>
 			(v2.0b) before the 'edit plugin options' form is created.
 			<br />(v2.2) extra parameters
-      <br />(3.1+CVS) extra parameter for every option
+	  <br />(v3.2) extra parameter for every option
 		</td>
 		<td><dl>
 			<dt class="ro">context</dt>
 			<dd>(v2.2) <code>global</code>, <code>blog</code>, <code>member</code>, <code>item</code> or <code>category</code></dd>
 			<dt class="ref">options</dt>
 			<dd>Array with for each option an associative array, having the following indices: <code>name</code>, <code>value</code>, <code>oid</code>, <code>description</code>, <code>type</code>, <code>typeinfo</code>, <code>contextid</code>, <code>extra</code>. Extra options can be added here (if you want to do something with them, you'll need to subscribe to PostPluginOptionsUpdate as well)<br />
-      Using the <code>extra</code>-field you can add extra html (by example formcontrols) to the option. If you do so, you should compare <code>pid</code> with <code>getID()</code> and also check <code>name</code> before adding things to <code>extra</code></dd>
+	  Using the <code>extra</code>-field you can add extra html (by example formcontrols) to the option. If you do so, you should compare <code>pid</code> with <code>getID()</code> and also check <code>name</code> before adding things to <code>extra</code></dd>
 			<dt class="ro">plugid</dt>
 			<dd>plugin ID (compare with <code>GetID()</code> to find out if this concerns you) (only present when context is global)</dd>
 			<dt class="ro">contextid</dt>
@@ -751,14 +751,14 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
   <tr>
 		<td>PrePluginOptionsUpdate</td>
 		<td>
-			(v3.1+CVS) Before the options for a plugin have been updated. (using this event you can validate/change the new value for an option)
+			(v3.2) Before the options for a plugin have been updated. (using this event you can validate/change the new value for an option)
 		</td>
 		<td><dl>
-      <dt class="ro">context</dt>
+	  <dt class="ro">context</dt>
 			<dd>(v2.2) <code>global</code>, <code>member</code>, <code>blog</code>, <code>item</code> or <code>category</code></dd>
 			<dt class="ro">plugid</dt>
 			<dd>plugin ID (compare with <code>GetID()</code> to find out if this concerns you)</dd>
-      <dt class="ro">optionname</dt>
+	  <dt class="ro">optionname</dt>
 			<dd>Name of the option</dd>
 			<dt class="ro">contextid</dt>
 			<dd>context ID (blogid, memberid, catid, itemid depending on context)</dd>
@@ -789,9 +789,9 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd>(v2.2) MEMBER object (member context)</dd>
 			<dt class="ro">catid</dt>
 			<dd>(v2.2) category ID (category context)</dd>
-      <dt class="ro">itemid</dt>
+	  <dt class="ro">itemid</dt>
 			<dd>(v2.2) item ID (item context)</dd>
-      <dt class="ref obj">member</dt>
+	  <dt class="ref obj">member</dt>
 			<dd>(v2.2) ITEM object (item context)</dd>
 		</dl></td>
 
@@ -1447,14 +1447,14 @@ your stuff
 
 <h2>Option meta</h2>
 
-<p>As of Nucleus 3.1+CVS, some option types can be limited to only accept certain values using option-metadata. This metadata is stored in the <code>$typeExtras</code>-field, and is a semicolon-seperated list of values. Note: In a select-option, the select list must be the first value in $typeExtras.</p>
+<p>As of Nucleus v3.2, some option types can be limited to only accept certain values using option-metadata. This metadata is stored in the <code>$typeExtras</code>-field, and is a semicolon-seperated list of values. Note: In a select-option, the select list must be the first value in $typeExtras.</p>
 
 <table><tr>
 	<th>key</th>
 	<th>explanation</th>
 </tr><tr>
-	<td>numeric</td>
-	<td>If set to '<code>true</code>', Nucleus will only accept numerical values for this option (available for optiontypes: '<code>select</code>' and '<code>text</code>')</td>
+	<td>datatype</td>
+	<td>Using '<code>datatype</code>' you can give some extra hints to Nucleus about the datatype you want to use. Currently only '<code>numerical</code>' is available. '<code>numerical</code>' will cause Nucleus to only accept numerical values for this option (using both client-side and server-side check) (available for optiontypes: '<code>select</code>' and '<code>text</code>')</td>
 </tr><tr>
 	<td>access</td>
 	<td>If set to '<code>readonly</code>', the option will not be editable (available for optiontypes: '<code>text</code>' and '<code>textarea</code>')<br />
@@ -1463,9 +1463,9 @@ your stuff
 
 <p>some examples:</p>
 <pre class="example"><code>// following code creates a text-option that only accepts numerical values
-$this->createBlogOption('FooBar', 'foobar', 'text', '0', 'numerical=true');
+$this->createBlogOption('FooBar', 'foobar', 'text', '0', 'datatype=numerical');
 // following code creates a select-option that only accepts numerical values
-$this->createItemOption('FooBar', 'foobar', 'select', '0', '0|0|1|1|2|2;numerical=true');
+$this->createItemOption('FooBar', 'foobar', 'select', '0', '0|0|1|1|2|2;datatype=numerical');
 // following code creates a textarea-option that is readonly
 $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly', 'access=readonly');
 </code></pre>
@@ -1517,7 +1517,7 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 
 <p>Creates an option in the <code>member</code> context (see <code>createOption</code>)</p>
 
-<h3>[v3.1+CVS] createItemOption($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+<h3>[v3.2] createItemOption($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
 
 <p>Creates an option in the <code>item</code> context (see <code>createOption</code>)</p>
 
@@ -1548,7 +1548,7 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 
 <p>Changes the value for a member option. The <code>memberid</code> attribute indicates for which member the option is valid. (other options: see <code>setOption</code>)</p>
 
-<h3>[v3.1+CVS] setItemOption($itemid, $name, $value)</h3>
+<h3>[v3.2] setItemOption($itemid, $name, $value)</h3>
 
 <p>Changes the value for an item option. The <code>itemid</code> attribute indicates for which item the option is valid. (other options: see <code>setOption</code>)</p>
 
@@ -1576,7 +1576,7 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 
 <p>Returns the value for a member option. <code>memberid</code> indicates for which member a value is requested (other parameters: see <code>getOption</code>)</p>
 
-<h3>[v3.1+CVS] getItemOption($itemid, $name)</h3>
+<h3>[v3.2] getItemOption($itemid, $name)</h3>
 
 <p>Returns the value for an item option. <code>itemid</code> indicates for which item a value is requested (other parameters: see <code>getOption</code>)</p>
 
@@ -1604,7 +1604,7 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 
 <p>Deletes a member option (see <code>deleteOption</code>)</p>
 
-<h3>[v3.1+CVS] deleteItemOption($name)</h3>
+<h3>[v3.2] deleteItemOption($name)</h3>
 
 <p>Deletes an item option (see <code>deleteOption</code>)</p>
 
@@ -1620,11 +1620,11 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 
 <p>Returns all values for a given member option. The result is an associative array with a value for each existing memberid</p>
 
-<h3>[v3.1+CVS] getAllItemOptions($name)</h3>
+<h3>[v3.2] getAllItemOptions($name)</h3>
 
 <p>Returns all values for a given item option. The result is an associative array with a value for each existing itemid</p>
 
-<h3>[3.1+CVS] getBlogOptionTop($name, $amount = 10, $sort = 'desc')</h3>
+<h3>[v3.2] getBlogOptionTop($name, $amount = 10, $sort = 'desc')</h3>
 
 <p>Returns the top of the values for a given option. The result is an array where every element is an array with a value ('value') for each blogid ('id')</p>
 
@@ -1642,15 +1642,15 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 	<td>Sort ascending ('asc') or descending ('desc')</td>
 </tr></table>
 
-<h3>[3.1+CVS] getMemberOptionTop($name, $amount = 10, $sort = 'desc')</h3>
+<h3>[v3.2] getMemberOptionTop($name, $amount = 10, $sort = 'desc')</h3>
 
 <p>Returns the top of the values for a given option. The result is an array where every element is an array with a value ('value') for each memberid ('id') (parameters: see <code>getBlogOptionTop</code>)</p>
 
-<h3>[3.1+CVS] getCategoryOptionTop($name, $amount = 10, $sort = 'desc')</h3>
+<h3>[v3.2] getCategoryOptionTop($name, $amount = 10, $sort = 'desc')</h3>
 
 <p>Returns the top of the values for a given option. The result is an array where every element is an array with a value ('value') for each categoryid ('id') (parameters: see <code>getBlogOptionTop</code>)</p>
 
-<h3>[3.1+CVS] getItemOptionTop($name, $amount = 10, $sort = 'desc')</h3>
+<h3>[v3.2] getItemOptionTop($name, $amount = 10, $sort = 'desc')</h3>
 
 <p>Returns the top of the values for a given option. The result is an array where every element is an array with a value ('value') for each itemid ('id') (parameters: see <code>getBlogOptionTop</code>)</p>
 
@@ -1712,8 +1712,8 @@ class NP_HelloWorld extends NucleusPlugin {
 <ol>
   <li>Create a subdirectory of the plugins directory, and name it <strong>pluginname</strong> if your plugin is <code>NP_PluginName</code>. Note that the name should be <strong>lowercase</strong>!</li>
   <li>
-  	In that directory, create a file called <strong>index.php</strong>, which looks like this:
-  	<pre><code>&lt;?php
+	In that directory, create a file called <strong>index.php</strong>, which looks like this:
+	<pre><code>&lt;?php
 
 	// if your 'plugin' directory is not in the default location,
 	// edit this variable to point to your site directory
@@ -1739,8 +1739,8 @@ class NP_HelloWorld extends NucleusPlugin {
 ?&gt;</code></pre>
   </li>
   <li>
-  	Subscribe to the <code>QuickMenu</code> event and add this code in your plugin:
-  	<pre><code>function event_QuickMenu(&amp;$data) {
+	Subscribe to the <code>QuickMenu</code> event and add this code in your plugin:
+	<pre><code>function event_QuickMenu(&amp;$data) {
 		array_push(
 			$data['options'],
 			array(
@@ -1752,8 +1752,8 @@ class NP_HelloWorld extends NucleusPlugin {
 	}</code></pre>
   </li>
   <li>
-  	Implement this method in your plugin:
-  	<pre><code>function hasAdminArea()
+	Implement this method in your plugin:
+	<pre><code>function hasAdminArea()
 {
 	return 1;
 }</code></pre>
@@ -1774,7 +1774,7 @@ class NP_HelloWorld extends NucleusPlugin {
 
 <h1>Plugin HelpPage <a name="help" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>As of Nucleus v3.1+CVS plugins can provide a helppage with an overview of the plugins' functionality, the available skinvars and templatevars, where to get more info,...</p>
+<p>As of Nucleus v3.2 plugins can provide a helppage with an overview of the plugins' functionality, the available skinvars and templatevars, where to get more info,...</p>
 
 <h2>Basics</h2>
 <p>To provide a helppage, you'll need take these steps:</p>
@@ -1799,19 +1799,19 @@ http://forum.nucleuscms.org/viewtopic.php?t=&lt;TOPIC_ID_GOES_HERE&gt;&lt;/a&gt;
 </li>
 <li>Return a value larger than 0 for supportsFeature('HelpPage'):
 <pre><code>function supportsFeature($what) {
-    switch($what) {
-    case 'HelpPage':
-        return 1;
-      default:
-        return 0;
-    }
+	switch($what) {
+	case 'HelpPage':
+		return 1;
+	  default:
+		return 0;
+	}
   }</code></pre>
 </li>
 </ol>
 
 <h1>Plugin Dependency Check <a name="dependency" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>Starting from 3.1+ CVS, a new plugin interface is added to allow one to declare any dependency on other plugin(s). This is useful for any
+<p>Starting from 3.2, a new plugin interface is added to allow one to declare any dependency on other plugin(s). This is useful for any
 plugin that require another plugin to function. It is particularly useful for a plugin to detect any broken dependency that prevent a plugin to function properly.</p>
 
 <h2>How to write a plugin that utilize this function</h2>
@@ -1828,7 +1828,7 @@ failed the installation if a dependency is missing.</p>
 
 <pre>
 function getPluginDep() {
-     return array('NP_BlogWithOffset');
+	 return array('NP_BlogWithOffset');
 }
 </pre>
 
