@@ -4220,7 +4220,7 @@ selector();
 		global $action, $member, $manager;
 		
 		$manager->notify(
-			'AdminPrePageHead',
+			'AdminPrePageFoot',
 			array(
 				'action' => $this->action
 			)
