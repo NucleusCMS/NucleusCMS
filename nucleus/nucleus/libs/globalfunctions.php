@@ -15,7 +15,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v2.2 CVS';
+$nucleus['version'] = 'v2.5 beta';
 $CONF['debug'] = 1;			
 
 /*
@@ -39,7 +39,7 @@ $CONF['alertOnSecurityRisk'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 220;		
+	return 249;		
 }
 
 if ($CONF['debug']) {
