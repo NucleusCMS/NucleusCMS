@@ -8,6 +8,7 @@
 
 <input type="hidden" name="action" value="itemupdate" />
 <input name="itemid" value="<%contents(itemid)%>" type="hidden" />
+<%ticket%>
 
 <table><tr>
 	<th colspan="2"><%text(_EDIT_ITEM)%></th>

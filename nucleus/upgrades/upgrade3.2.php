@@ -19,6 +19,14 @@ function upgrade_do32() {
 	$query = 'INSERT INTO '.sql_table('config')." VALUES ('CookiePrefix','')";
 	upgrade_query('Creating CookiePrefix config value',$query);	
 		
+	// create nucleus_tickets table
+	$query = 'CREATE TABLE ' . sql_table('tickets') . ' ('
+	  	   . ' ticket varchar(40) NOT NULL default \'\','
+	  	   . ' ctime datetime NOT NULL default \'0000-00-00 00:00:00\','
+	  	   . ' member int(11) NOT NULL default \'0\', '
+	  	   . ' PRIMARY KEY  (ticket, member) '
+	   	   . ' )';
+    upgrade_query('Creating ticket table', $query);    
 
 	// 3.1 -> 3.1+
 	// update database version  

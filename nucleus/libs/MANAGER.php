@@ -347,7 +347,121 @@ class MANAGER {
 		
 	}
 
+	/*
+		Ticket functions. These are uses by the admin area to make it impossible to simulate certain GET/POST
+		requests. tickets are user specific
+	*/
+
+	var $currentRequestTicket = '';
 	
+	/**
+	 * GET requests: Adds ticket to URL (URL should NOT be html-encoded!, ticket is added at the end)
+	 */
+	function addTicketToUrl($url)
+	{
+		$ticketCode = 'ticket=' . $this->_generateTicket();
+		if (strstr($url, '?'))
+			return $url . '&' . $ticketCode;
+		else 
+			return $url . '?' . $ticketCode;
+	}
+	
+	/**
+	 * POST requests: Adds ticket as hidden formvar
+	 */
+	function addTicketHidden()
+	{
+		$ticket = $this->_generateTicket();
+		
+		echo '<input type="hidden" name="ticket" value="', htmlspecialchars($ticket), '" />';
+	}
+	
+	/**
+	 * Checks the ticket that was passed along with the current request
+	 */
+	function checkTicket() 
+	{
+		global $member;
+		
+		// get ticket from request
+		$ticket = requestVar('ticket');
+		
+		// no ticket -> don't allow
+		if ($ticket == '')
+			return false;
+			
+		// remove expired tickets first
+		$this->_cleanUpExpiredTickets();
+		
+		// get member id
+		if (!$member->isLoggedIn())
+			$memberId = -1;
+		else
+			$memberId = $member->getID();
+		
+		// check if ticket is a valid one
+		$query = 'SELECT COUNT(*) as result FROM ' . sql_table('tickets') . ' WHERE member=' . intval($memberId). ' and ticket=\''.addslashes($ticket).'\'';
+		if (quickQuery($query) == 1)
+		{
+			// [in the original implementation, the checked ticket was deleted. This would lead to invalid
+			//  tickets when using the browsers back button and clicking another link/form
+			//  leaving the keys in the database is not a real problem, since they're member-specific and 
+			//  only valid for a period of one hour
+			// ]
+			// sql_query('DELETE FROM '.sql_table('tickets').' WHERE member=' . intval($memberId). ' and ticket=\''.addslashes($ticket).'\'');
+			return true;			
+		} else {
+			// not a valid ticket
+			return false;
+		}
+
+	}
+	
+	/**
+	 * (internal method) Removes the expired tickets 
+	 */
+	function _cleanUpExpiredTickets()
+	{
+		// remove tickets older than 1 hour
+		$oldTime = time() - 60 * 60;
+		$query = 'DELETE FROM ' . sql_table('tickets'). ' WHERE ctime < \'' . date('Y-m-d H:i:s',$oldTime) .'\'';
+		sql_query($query);
+	}
+
+	/**
+	 * (internal method) Generates/returns a ticket (one ticket per page request)
+	 */
+	function _generateTicket()
+	{
+		if ($this->currentRequestTicket == '')
+		{
+			// generate new ticket (only one ticket will be generated per page request)
+			// and store in database 
+			global $member;
+			// get member id
+			if (!$member->isLoggedIn())
+				$memberId = -1;
+			else
+				$memberId = $member->getID();
+			
+			$ok = false;
+			while (!$ok)
+			{
+				// generate a random token
+				srand((double)microtime()*1000000);
+				$ticket = md5(uniqid(rand(), true));
+
+				// add in database as non-active
+				$query = 'INSERT INTO ' . sql_table('tickets') . ' (ticket, member, ctime) ';
+				$query .= 'VALUES (\'' . addslashes($ticket). '\', \'' . intval($memberId). '\', \'' . date('Y-m-d H:i:s',time()) . '\')';
+				if (sql_query($query))
+					$ok = true;
+			}
+			
+			$this->currentRequestTicket = $ticket;
+		}
+		return $this->currentRequestTicket;
+	}
 	
 }
 

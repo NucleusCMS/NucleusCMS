@@ -28,6 +28,7 @@
 			
 			<input name="action" type="hidden" value="edititem" />
 			<input name="itemid" type="hidden" value="<%contents(itemid)%>" />
+			<%ticket%>
 			
 			<div id="submit" class="buttonbar">
 				<input type="submit" value="<%text(_BMLET_EDIT)%>" onclick="return checkSubmit();" />

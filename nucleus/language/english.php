@@ -14,6 +14,9 @@
 
 // START changed/added after 3.1 START
 
+// tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
+define('_ERROR_BADTICKET',			'Invalid or expired ticket.');
+
 // plugin dependency
 define('_ERROR_INSREQPLUGIN',		'Plugin installation failed, requires ');
 define('_ERROR_DELREQPLUGIN',		'Plugin deletion failed, required by ');
