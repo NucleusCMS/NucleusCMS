@@ -4859,7 +4859,7 @@ selector();
 			
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="pluginupdate" />
-				<input type="submit" value="Update Subscription List" tabindex="20" />
+				<input type="submit" value="<?php echo _PLUGS_BTN_UPDATE ?>" tabindex="20" />
 			</div></form>
 			
 			<h3><?php echo _PLUGS_TITLE_NEW?></h3>
