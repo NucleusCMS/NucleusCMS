@@ -24,6 +24,7 @@ label		{ cursor: pointer; }
 
 /* header */
 h1 {
+	text-align: right;
 	font-size: 30px;
 	font-weight: 900;
 	letter-spacing: 0.1em;
