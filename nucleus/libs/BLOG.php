@@ -97,7 +97,7 @@ class BLOG {
 	 * @param $extraQuery
 	 *		extra conditions to be added to the query
 	 * @param $highlight
-	 *		contains a search query that should be highlighted
+	 *		contains a query that should be highlighted
 	 * @param $comments
 	 *		1=show comments 0=don't show comments
 	 * @param $dateheads
@@ -361,18 +361,32 @@ class BLOG {
 	 *		amount of hits found
 	 */
 	function search($search, $template, $amount, $maxresults) {
+        $searchclass = new SEARCH($search);
 
-		$extraQuery = "and ((i.ititle LIKE '%" . addslashes($search) . "%') or (i.ibody LIKE '%" . addslashes($search) . "%') or (i.imore LIKE '%" . addslashes($search) . "%'))";
+        $where  = $searchclass->boolean_sql_where("ititle,ibody,imore");
+        $select = $searchclass->boolean_sql_select("ititle,ibody,imore");
+
+		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed'
+		       . ', '.$select. ' as score '
+		       . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
+		       . ' WHERE i.iauthor=m.mnumber'
+		       . ' and i.icat=c.catid'
+		       . ' and i.idraft=0'	// exclude drafts
+		       . ' and i.iblog = '.$this->blogid
+					// don't show future items
+		       . ' and i.itime<=' . mysqldate($this->getCorrectTime())
+               . ' and '.$where;
+
+		
+		$query .= ' ORDER BY score DESC';
 		
 		// take into account amount of months to search
-		if ($amount > 0) {
-		        $localtime = getdate($this->getCorrectTime());
-			$timestamp_start = mktime(0,0,0,$localtime['mon'] - $amount,1,$localtime['year']);
-			$extraQuery .= ' and UNIX_TIMESTAMP(i.itime)>' . $timestamp_start;
-		}
-		
-		$amountfound = $this->readLogAmount($template, $maxresults, $extraQuery, $search, 1, 1);
-		
+		//if ($amount > 0) {
+		//        $localtime = getdate($this->getCorrectTime());
+		//	$timestamp_start = mktime(0,0,0,$localtime['mon'] - $amount,1,$localtime['year']);
+		//	$extraQuery .= ' and UNIX_TIMESTAMP(i.itime)>' . $timestamp_start;
+		//}
+		$amountfound = $this->showUsingQuery($template, $query, $searchclass->inclusive, 1, 1);
 		if ($amountfound == 0) {
 			$template = TEMPLATE::read($template);
 			$vars['query'] = htmlspecialchars($search);
@@ -380,7 +394,7 @@ class BLOG {
 			
 			echo TEMPLATE::fill($template['SEARCH_NOTHINGFOUND'],$vars);
 		}
-		
+
 		return $amountfound;
 
 	}
