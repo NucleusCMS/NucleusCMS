@@ -1,23 +1,117 @@
 <?php
 // Italian Nucleus Language File
-// 
-// Author: Roberto Bolli (http://www.rbnet.it)
-// Nucleus version: v2.5 beta
+//
+// Author: Antonio Fragola - MrShark (http://www.mrshark.it)
+// Previous Author: Roberto Bolli (http://www.rbnet.it)
+// Previous Previous Author: Antonio Fragola - MrShark (http://www.mrshark.it)
+// Nucleus version: v3.1
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which 
+// might be deleted. Therefor, it's important to list the Nucleus version for which
 // the file was written in your document.
 //
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
-//
-// -------------------------------------
-// NOTE SULLA TRADUZIONE
-// siete pregati di leggere il file 'leggimi.txt' che dovreste trovare incluso nell'archivio
-// contenente questo stesso file.
-//
-// -- Roberto Bolli
+
+// START changed/added after 3.1 START
+
+// account activation
+define('_ERROR_NOLOGON_NOACTIVATE',	'Impossibile inviare il link di attivazione. Non sei autorizzato ad eseguire il login.');
+define('_ERROR_ACTIVATE',			'La chiave di attivazione non esiste, non &egrave; valida o &egrave; scaduta.');
+define('_ACTIONLOG_ACTIVATIONLINK', 'Link di attivazione inviato');
+define('_MSG_ACTIVATION_SENT',		'Un link di attivazione &egrave; stato inviato per e-mail.');
+
+// activation link emails
+define('_ACTIVATE_REGISTER_MAIL',	"Ciao <%memberName%>,\n\nHai bisogno di attivare il tuo account su <%siteName%> (<%siteUrl%>).\nPuoi farlo visitando il link seguente: \n\n\t<%activationUrl%>\n\nHai 2 giorni di tempo per farlo. Dopo questo periodo, il link di attivazione non sar&agrave; pi&ugrave; valido.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Attiva il tuo account '<%memberName%>'");
+define('_ACTIVATE_REGISTER_TITLE',	'Benvenuto <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',	'Ci sei quasi. Per favore scegli una password per il tuo account di seguito.');
+define('_ACTIVATE_FORGOT_MAIL',		"Ciao <%memberName%>,\n\nUsando il link seguente, potrai scegliere una nuova password per il tuo account su <%siteName%> (<%siteUrl%>).\n\n\t<%activationUrl%>\n\nHai 2 giorni di tempo per farlo. Dopo questo periodo, il link di attivazione non sar&agrave; pi&ugrave; valido.");
+define('_ACTIVATE_FORGOT_MAILTITLE',"Riattiva il tuo account '<%memberName%>'");
+define('_ACTIVATE_FORGOT_TITLE',	'Benvenuto <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'Puoi scegliere una nuova password per il tuo account di seguito:');
+define('_ACTIVATE_CHANGE_MAIL',		"Ciao <%memberName%>,\n\nDato che il tuo indirizzo e-mail &egrave; cambiato, devi riattivare il tuo account su <%siteName%> (<%siteUrl%>).\nPuoi farlo visitando il link seguente: \n\n\t<%activationUrl%>\n\nHai 2 giorni di tempo per farlo. Dopo questo periodo, il link di attivazione non sar&agrave; pi&ugrave; valido.");
+define('_ACTIVATE_CHANGE_MAILTITLE',"Riattiva il tuo account '<%memberName%>'");
+define('_ACTIVATE_CHANGE_TITLE',	'Benvenuto <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'Il tuo cambio di indirizzo &egrave; stato verificato. Grazie!');
+define('_ACTIVATE_SUCCESS_TITLE',	'Attivazione avvenuta con successo');
+define('_ACTIVATE_SUCCESS_TEXT',	'Il tuo account &egrave; stato attivato con successo.');
+define('_MEMBERS_SETPWD',			'Imposta Password');
+define('_MEMBERS_SETPWD_BTN',		'Imposta Password');
+define('_QMENU_ACTIVATE',			'Attivazione account');
+define('_QMENU_ACTIVATE_TEXT',		'<p>Dopo che avrai attivato il tuo account, potrai iniziare ad usarlo <a href="index.php?action=showlogin">eseguendo il login</a>.</p>');
+
+define('_PLUGS_BTN_UPDATE',			'Aggiorna la lista di sottoscrizione');
+
+// global settings
+define('_SETTINGS_JSTOOLBAR',		'Stile della Barra degli Strumenti Javascript');
+define('_SETTINGS_JSTOOLBAR_FULL',	'Barra degli Strumenti Completa (IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE','Barra degli Strumenti Semplice (Non-IE)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Disabilita la Barra degli Strumenti');
+define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">Come puoi attivare le URL brevi</a>)');
+
+// extra plugin settings part when editing categories/members/blogs/...
+define('_PLUGINS_EXTRA',			'Impostazioni extra per i Plugin');
+
+// itemlist info column keys
+define('_LIST_ITEM_BLOG',			'blog:');
+define('_LIST_ITEM_CAT',			'cat:');
+define('_LIST_ITEM_AUTHOR',			'autore:');
+define('_LIST_ITEM_DATE',			'data:');
+define('_LIST_ITEM_TIME',			'ora:');
+
+// indication of registered members in comments list
+define('_LIST_COMMENTS_MEMBER', 	'(membro)');
+
+// batch operations
+define('_BATCH_WITH_SEL',			'Con la selezione:');
+define('_BATCH_EXEC',				'Esegui');
+
+// quickmenu
+define('_QMENU_HOME',				'Home');
+define('_QMENU_ADD',				'Aggiungi articoli');
+define('_QMENU_ADD_SELECT',			'-- seleziona --');
+define('_QMENU_USER_SETTINGS',		'Impostazioni');
+define('_QMENU_USER_ITEMS',			'Articoli');
+define('_QMENU_USER_COMMENTS',		'Commenti');
+define('_QMENU_MANAGE',				'Gestione');
+define('_QMENU_MANAGE_LOG',			'Log Azioni');
+define('_QMENU_MANAGE_SETTINGS',	'Impostazioni Globali');
+define('_QMENU_MANAGE_MEMBERS',		'Membri');
+define('_QMENU_MANAGE_NEWBLOG',		'Nuovo Weblog');
+define('_QMENU_MANAGE_BACKUPS',		'Backups');
+define('_QMENU_MANAGE_PLUGINS',		'Plugins');
+define('_QMENU_LAYOUT',				'Layout');
+define('_QMENU_LAYOUT_SKINS',		'Temi');
+define('_QMENU_LAYOUT_TEMPL',		'Modelli');
+define('_QMENU_LAYOUT_IEXPORT',		'Importa/Esporta');
+define('_QMENU_PLUGINS',			'Plugins');
+
+// quickmenu on logon screen
+define('_QMENU_INTRO',				'Introduzione');
+define('_QMENU_INTRO_TEXT',			'<p>Questa &egrave; la schermata di Login per BLOG:CMS, il sistema di gestione contenuti che &egrave; usato per gestire questo sito web.</p><p>Se hai un account, puoi fare il login e iniziare a inviare nuovi articoli.</p>');
+
+// helppages for plugins
+define('_ERROR_PLUGNOHELPFILE',		'Il file di aiuto per questo plugin non pu&ograve; essere trovato');
+define('_PLUGS_HELP_TITLE',			'Pagina di aiuto per il plugin');
+define('_LIST_PLUGS_HELP', 			'aiuto');
+
+// END changed/started after 3.1
+
+// START changed/added after v2.5beta START
+
+// general settings (security)
+define('_SETTINGS_EXTAUTH',			'Abilita l\'Autenticazione Esterna');
+define('_WARNING_EXTAUTH',			'Attenzione: Abilitare solo se necessario.');
+
+// member profile
+define('_MEMBERS_BYPASS',			'Usa l\'Autenticazione Esterna');
+
+// 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
+define('_EBLOG_SEARCH',				'Includi <em>SEMPRE</em> nella ricerca');
+
+// END changed/added after v2.5beta
 
 // START introduced after v2.0 START
 
@@ -37,8 +131,6 @@ define('_ADD_ALIGNLEFT_TT',			'Allinea a sinistra');
 define('_ADD_ALIGNRIGHT_TT',		'Allinea a destra');
 define('_ADD_ALIGNCENTER_TT',		'Centra');
 
-// searchable blog setting (yes/no)
-define('_EBLOG_SEARCH',				'Includi nella ricerca');
 
 // generic upload failure
 define('_ERROR_UPLOADFAILED',		'Caricamento fallito');
@@ -296,7 +388,7 @@ define('_BACKTOMANAGE',				'Torna all\'amministrazione di Nucleus');
 
 
 
-// charset to use 
+// charset to use
 define('_CHARSET',					'iso-8859-1');
 
 // global stuff
@@ -760,7 +852,7 @@ define('_OVERVIEW_SKINS',			'Modifica i temi...');
 define('_OVERVIEW_BACKUP',			'Salva/ripristina...');
 
 // ITEMLIST
-define('_ITEMLIST_BLOG',			'Articoli del blog'); 
+define('_ITEMLIST_BLOG',			'Articoli del blog');
 define('_ITEMLIST_YOUR',			'I tuoi articolo');
 
 // Comments
@@ -790,7 +882,7 @@ define('_LISTS_COMMENTS',			'Commenti');
 define('_LISTS_TYPE',				'Tipo');
 
 
-// member list 
+// member list
 define('_LIST_MEMBER_NAME',			'Nome Utente');
 define('_LIST_MEMBER_RNAME',		'Nome Reale');
 define('_LIST_MEMBER_ADMIN',		'Super-admin? ');
