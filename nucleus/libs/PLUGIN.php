@@ -26,6 +26,7 @@
 		
 		// these function _may_ be redefined in your plugin
 		
+		function getMinNucleusVersion() { return 150; }
 		function getEventList() { return array(); }
 		function getTableList() { return array(); }
 		function hasAdminArea() { return 0; }

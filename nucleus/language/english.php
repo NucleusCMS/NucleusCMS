@@ -82,6 +82,7 @@ define('_ITEMLIST_ADDNEW',			'Add new item...');
 
 // errors
 define('_ERROR_CATCREATEFAIL',		'Could not create new category');
+define('_ERROR_NUCLEUSVERSIONREQ',	'This plugin requires a newer Nucleus version: ');
 
 
 // END introduced after v1.5 END
