@@ -20,16 +20,43 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		<b>Nucleus v2.0 Final (?)</b>	
 		<p>Being worked on...</p>
 		<ul>
+			<li></li>
+			<li></li>	
+			<li></li>
+			<li></li>				
+			<li></li>
+			<li></li>
+			<li></li>
+			<li>ADDED: Plugins: EditItemFormExtras event gets itemid as separate parameter</li>
+			<li>FIXED: missing ; in presented new blog code</li>
+			<li>FIXED: PHP 4.0.6 didn't show item/member/... lists on admin area (PHP bug)</li>
+			<li>ADDED: Plugin Hook: BlogSettingsFormExtras</li>
 			<li>FIXED: &lt;%if(blogsetting,bcomments,1)%&gt; skinvars were not working</li>
 			<li>ADDED: &lt;%if(loggedin)%&gt; skinvars were not working</li>
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v2.0 beta (?)</b>
-		<p>Being worked on...</p>
+		<b>Nucleus v2.0 beta (January 18, 2003)</b>
 		<ul>
-			<li></li>
-			<li></li>			
+			<li>FIXED: Highlighted text no longer has &lt;!--h--&gt; in it</li>	
+			<li>ADDED; Plugin hook: PostAuthentication</li>
+			<li>ADDED: Plugin hooks PreAddItemForm, AddItemFormExtras and EditItemFormExtras</li>				
+			<li>CHANGED: Notifications emails (new comment, etc) are not sent to the person causing the notification (comment author)</li>
+			<li>ADDED: plugins can access global variables <code>$currentTemplateName</code> and <code>$currentSkinName</code></li>
+			<li>CHANGED: Spaces after commas in &lt;%image%&gt;, &lt;%popup%&gt;, &lt;%media%&gt; </li>
+			<li>FIXED: HTML to Text conversion didn't always work</li>
+			<li>ADDED: &lt;%date%&gt; templatevars extras (rfc822 &amp; rfc822GMT) (Xiffy)</li>
+			<li>ADDED: ranges for &lt;%blog(...)%&gt; and &lt;%otherblog(...)%&gt; skinvars</li>
+			<li>ADDED: templatevars &lt;%author(email)%&gt;, &lt;%author(url)%&gt; and &lt;%author(id)%&lt;</li>
+			<li>CHANGED: Added info on new weblog creation (split up creation process into two steps)</li>
+			<li>FIXED: Login screen after email address change did not work correctly</li>
+			<li>ADDED: Plugin Hook: PrePluginOptionsEdit</li>
+			<li>ADDED: Added a getMinNucleusVersion method to the plugin interface</li>
+			<li>ADDED: PostPluginOptionsUpdate plugin event</li>
+			<li>ADDED: Javascript toolbar: align left/center/right buttons (Irmo)</li>
+			<li>ADDED: RSD skin/template</li>
+			<li>ADDED: 'Fancy' URLs option &amp; support files. Allows for URLs like http://hostname/archive/1/2003-01-05 instead of http://hostname/index.php?blogid=1&amp;archive=2003-01-05</li>
+			<li>ADDED: RSS 2.0 skin/template (Xiffy)</li>
 			<li>ADDED: skinvar <%skinname%></li>
 			<li>ADDED: if/else in skins. parameters for 'if' are currently 'category' (=ifcat) or 'blogsetting/settingname' (settingname = columnname from database...)</li>
 			<li>ADDED: Etag/If-None-Match support for xml-rss.php (needs some more work)</li>
