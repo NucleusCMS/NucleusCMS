@@ -8,7 +8,7 @@
 
 <target name="init">
 
-    <property name="version" value="2.0rc" />
+    <property name="version" value="2.0" />
     
     <property name="src.home" value=".." />
     <property name="build.home" value="." />    
@@ -72,6 +72,21 @@
 			<exclude name="**/CVS/**"/>    	
     	</fileset>
     </copy>
+
+	<!-- copy xml-rss2/rsd skins as well -->
+    <copy todir="${upgrade.home}/skins">
+    	<fileset dir="${src.home}/skins">
+			<exclude name="**/CVS/**"/>    	
+			<exclude name="**/base/**"/>    				
+    	</fileset>
+    </copy>
+    
+	<!-- copy xml-rss2/rsd skins as well -->
+    <copy todir="${upgrade.home}/extra">
+    	<fileset dir="${src.home}/extra">
+			<exclude name="**/CVS/**"/>    	
+    	</fileset>
+    </copy>
     
     <!-- remove convert and upgrade thingies -->
     <delete dir="${upgrade.home}/nucleus/convert" />
@@ -84,6 +99,8 @@
     
     <!-- Copy necessary files in root -->
     <copy file="${src.home}/action.php" todir="${upgrade.home}" />
+    <copy file="${src.home}/xml-rss2.php" todir="${upgrade.home}" />    
+    <copy file="${src.home}/rsd.php" todir="${upgrade.home}" />        
 
 	<zip zipfile="${upgrade.zip}"
 		basedir="${tempdir}"
