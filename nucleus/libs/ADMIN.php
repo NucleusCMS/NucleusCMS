@@ -1694,9 +1694,9 @@ class ADMIN {
 		if (($deflang != '') && (!checkLanguage($deflang))) 
 			$this->error(_ERROR_NOSUCHLANGUAGE);
 		
-		// only allow taking away super-admin privileges when there are other super-admins
-		// left
-		if (    (!$admin && $mem->isAdmin())
+		// check if there will remain at least one site member with both the logon and admin rights
+		// (check occurs when taking away one of these rights from such a member)
+		if (    (!$admin && $mem->isAdmin() && $mem->canLogin())
 		     || (!$canlogin && $mem->isAdmin() && $mem->canLogin())
 		   )
 		{
