@@ -1,5 +1,4 @@
-<?
-
+<?php
 function getVar($name) {
 	return undoMagic($_GET[$name]);
 }

@@ -1,5 +1,4 @@
-<?
-
+<?php
 // Latvian Nucleus Language File
 // 
 // Author: Kaspars Priedols (house@tvertne.nu)

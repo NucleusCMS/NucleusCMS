@@ -1,5 +1,4 @@
-<?
-
+<?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002 The Nucleus Group
@@ -151,31 +150,30 @@ function bm_loginAndPassThrough() {
 	<html>
 	<head>
 		<title>Nucleus</title>
-		<? bm_style(); ?>
+		<?php bm_style(); ?>
 	</head>
 	<body>
-	<h1><?=_LOGIN_PLEASE?></h1>
+	<h1><?php echo _LOGIN_PLEASE?></h1>
 	
 	<form method="post" action="bookmarklet.php">
 	<p>
 		<input name="action" value="login" type="hidden" />
-		<input name="blogid" value="<?= htmlspecialchars($blogid) ?>" type="hidden" />
-		<input name="logtext" value="<?= htmlspecialchars($log_text) ?>" type="hidden" />
-		<input name="loglink" value="<?= htmlspecialchars($log_link) ?>" type="hidden" />
-		<input name="loglinktitle" value="<?= htmlspecialchars($log_linktitle) ?>" type="hidden" />
-		<?=_LOGINFORM_NAME?>:
+		<input name="blogid" value="<?php echo  htmlspecialchars($blogid) ?>" type="hidden" />
+		<input name="logtext" value="<?php echo  htmlspecialchars($log_text) ?>" type="hidden" />
+		<input name="loglink" value="<?php echo  htmlspecialchars($log_link) ?>" type="hidden" />
+		<input name="loglinktitle" value="<?php echo  htmlspecialchars($log_linktitle) ?>" type="hidden" />
+		<?php echo _LOGINFORM_NAME?>:
 		<br /><input name="login" />
-		<br /><?=_LOGINFORM_PWD?>:
+		<br /><?php echo _LOGINFORM_PWD?>:
 		<br /><input name="password" type="password" />
 		<br /><br />
-		<br /><input type="submit" value="<?=_LOGIN?>" />
+		<br /><input type="submit" value="<?php echo _LOGIN?>" />
 	</p>
 	</form>
-	<p><a href="bookmarklet.php" onclick="window.close();"><?=_POPUP_CLOSE?></a></p>
+	<p><a href="bookmarklet.php" onclick="window.close();"><?php echo _POPUP_CLOSE?></a></p>
 	</body>
 	</html>
-	<?
-
+	<?php
 }
 
 function bm_doShowForm() {
@@ -244,19 +242,18 @@ function bm_message($title, $head, $msg, $extrahead = '') {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html>
 	<head>
-		<title><?= $title ?></title>
-		<? bm_style(); ?>
-		<?=$extrahead?>
+		<title><?php echo  $title ?></title>
+		<?php bm_style(); ?>
+		<?php echo $extrahead?>
 	</head>
 	<body>
-	<h1><?= $head ?></h1>
-	<p><?= $msg ?></p>
-	<p><a href="bookmarklet.php" onclick="window.close();"><?=_POPUP_CLOSE?></a></p>
+	<h1><?php echo  $head ?></h1>
+	<p><?php echo  $msg ?></p>
+	<p><a href="bookmarklet.php" onclick="window.close();"><?php echo _POPUP_CLOSE?></a></p>
 	</body>
 	</html>
 	
-	<?
-}
+	<?php}
 
 function bm_style() {
 	echo '<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />';

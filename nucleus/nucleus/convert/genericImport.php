@@ -1,5 +1,4 @@
-<?
-
+<?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
  * Copyright (C) 2002 The Nucleus Group
@@ -94,8 +93,7 @@ function gi_chooseXmlFile() {
 			</div></form>
 		</p>
 		
-	<?
-	
+	<?php	
 	convert_foot();
 }
 
@@ -129,8 +127,7 @@ function gi_assignMembers() {
 			<th>Blog Admin?</th>
 		</tr>
 	
-	<?
-		// TODO
+	<?php		// TODO
 	
 	?>
 		</table>
@@ -144,8 +141,7 @@ function gi_assignMembers() {
 		<div>
 			<input name="createnew" value="0" type="radio" checked='checked' id="createnew_no" /><label for="createnew_no">Choose existing weblog to add to:</label>
 			
-			<?
-					$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
+			<?php					$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
 					$template['name'] = 'blogid';
 					$template['selected'] = $CONF['DefaultBlog'];
 					showlist($query,'select',$template);				
@@ -156,8 +152,7 @@ function gi_assignMembers() {
 			<ul>
 				<li>New blog name: <input name="newblogname" /></li>
 				<li>Blog owner: 
-				<?
-					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
+				<?php					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 					$template['name'] = 'newowner';
 					showlist($query,'select',$template);		
@@ -168,7 +163,7 @@ function gi_assignMembers() {
 		
 		<h1>Do the conversion!</h1>
 		<p>
-		<input type="hidden" name="authorcount" value="<?=$idx?>" />
+		<input type="hidden" name="authorcount" value="<?php echo $idx?>" />
 		<input type="submit" value="Step 3: Do the conversion!" />
 		<input type="hidden" name="action" value="doConversion" />
 		</p>
@@ -178,8 +173,7 @@ function gi_assignMembers() {
 		</div>
 		
 		</form>
-	<?
-	
+	<?php	
 	convert_foot();
 
 }

@@ -1,4 +1,4 @@
-<?
+<?php
 // Russian Nucleus Language File (cyrillic charset Windows-1251)
 // 
 // Author: Alexei 'Leopold' Varavin (avv@online.sinor.ru)

@@ -171,7 +171,7 @@ class xmlrpc_server {
 
 	function service() {
 		$r=$this->parseRequest();
-		$payload="<?xml version=\"1.0\"?>\n" . 
+		$payload="<?phpxml version=\"1.0\"?>\n" . 
 			$this->serializeDebug() .
 			$r->serialize();
 		Header("Content-type: text/xml\r\nContent-length: " . 

@@ -1,5 +1,4 @@
-<?
-
+<?php
 // Dutch Nucleus Language File
 // 
 // Author: Wouter Demuynck (nucleus@demuynck.org)

@@ -244,14 +244,13 @@ function sql_table($name)
 function startUpError($msg, $title) {
 	?>
 	<html>
-		<head><title><?=htmlspecialchars($title)?></title></head>
+		<head><title><?php echo htmlspecialchars($title)?></title></head>
 		<body>
-			<h1><?=htmlspecialchars($title)?></h1>
-			<?=$msg?>
+			<h1><?php echo htmlspecialchars($title)?></h1>
+			<?php echo $msg?>
 		</body>
 	</html>
-	<?
-	exit;
+	<?php	exit;
 }
 
 /**
@@ -816,8 +815,7 @@ function passVar($key, $value) {
 	}
 	
 	// other values: do stripslashes if needed
-	?><input type="hidden" name="<?=htmlspecialchars($key)?>" value="<?=htmlspecialchars(undoMagic($value))?>" /><?
-	
+	?><input type="hidden" name="<?php echo htmlspecialchars($key)?>" value="<?php echo htmlspecialchars(undoMagic($value))?>" /><?php	
 }
 
 

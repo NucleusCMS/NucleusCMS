@@ -1,5 +1,4 @@
-<?
-
+<?php
 function upgrade_do11() {
 
 if (upgrade_checkinstall(11))

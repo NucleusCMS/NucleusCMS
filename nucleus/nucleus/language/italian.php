@@ -1,5 +1,4 @@
-<?
-
+<?php
 // Italian Nucleus Language File
 // 
 // Author: MrShark - Antonio Fragola (http://www.mrshark.it/)

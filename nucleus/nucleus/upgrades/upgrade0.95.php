@@ -1,5 +1,4 @@
-<?
-
+<?php
 function upgrade_do95() {
 
 $query =  'ALTER TABLE '.sql_table('blog')

@@ -1,4 +1,4 @@
-<?
+<?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002 The Nucleus Group
@@ -88,7 +88,7 @@
 		<h1>Please Log in First</h1>
 		<p>Enter your data below:</p>
 		
-		<form method="post" action="<?=$type?>">
+		<form method="post" action="<?php echo $type?>">
 
 			<ul>
 				<li>Name: <input name="login" /></li>
@@ -101,8 +101,7 @@
 			</p>
 		
 		</form>
-	<?
-		convert_foot();
+	<?php		convert_foot();
 		exit;
 	}
 	
@@ -117,15 +116,13 @@
 			--></style>
 		</head>
 		<body>		
-	<?
-	}
+	<?php	}
 
 	function convert_foot() {
 	?>
 		</body>
 		</html>	
-	<?
-	}	
+	<?php	}	
 	
 	function convert_doError($msg) {
 		convert_head();
@@ -135,12 +132,11 @@
 		<p>Message was:</p>
 		
 		<blockquote><div>
-		<?=$msg?>
+		<?php echo $msg?>
 		</div></blockquote>
 
 		<p><a href="index.php" onclick="history.back();">Go Back</a></p>
-		<?
-
+		<?php
 		convert_foot();
 		exit;
 	}

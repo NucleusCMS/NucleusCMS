@@ -1,5 +1,4 @@
-<?
-
+<?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
  * Copyright (C) 2002 The Nucleus Group
@@ -205,8 +204,7 @@ function bc_getBloggerBlogID() {
 		
 		<div class="note">Note: the next steps are the same as for Blogger.com blogs, so don't be surprised to see Blogger.com mentioned.</div>
 		
-	<?
-	
+	<?php	
 	convert_foot();
 }
 

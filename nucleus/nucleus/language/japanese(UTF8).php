@@ -1,4 +1,4 @@
-﻿<?
+﻿<?php
 // Japanese Nucleus Language File
 // 
 // Author: chrome (chrome@cgi.no-ip.org)

@@ -1,5 +1,4 @@
-<?
-
+<?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
  * Copyright (C) 2002 The Nucleus Group
@@ -99,7 +98,7 @@ function gmc_askGreyPath() {
 		</p>
 		
 		<ul>
-			<li>GreyMatter path: <input name="grey_scriptpath" size="60" value="<?=htmlspecialchars($guess)?>" /></li>
+			<li>GreyMatter path: <input name="grey_scriptpath" size="60" value="<?php echo htmlspecialchars($guess)?>" /></li>
 		</ul>
 		
 		<p>
@@ -108,8 +107,7 @@ function gmc_askGreyPath() {
 		</p>
 		
 		</form>
-	<?
-	
+	<?php	
 	convert_foot();
 }
 
@@ -165,8 +163,7 @@ function gmc_assignMembers() {
 			<th>Blog Admin?</th>
 		</tr>
 	
-		<?
-		
+		<?php		
 $filehandle = fopen($grey_authorfile,'r');
 	$idx = 1;
 while ($author = fgets($filehandle,4096)) {
@@ -174,12 +171,11 @@ while ($author = fgets($filehandle,4096)) {
 	?>
 		<tr>
 			<td>
-				<b><?=$a_name?></b>
-				<input name="author[<?=$idx?>]" value="<?=htmlspecialchars($a_name)?>" type="hidden"
+				<b><?php echo $a_name?></b>
+				<input name="author[<?php echo $idx?>]" value="<?php echo htmlspecialchars($a_name)?>" type="hidden"
 			</td>
 			<td>
-		<?
-			// TODO: avoid doing this query multiple times
+		<?php			// TODO: avoid doing this query multiple times
 			$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 			$template['name'] = 'memberid[' . $idx . ']';
@@ -187,14 +183,12 @@ while ($author = fgets($filehandle,4096)) {
 		?>
 			</td>
 			<td>
-				<input name="admin[<?=$idx?>]" type="checkbox" value="1" id="admin<?=$idx?>" <?
-					if ($a_configureaccess == 'Y') echo "checked='checked'";
+				<input name="admin[<?php echo $idx?>]" type="checkbox" value="1" id="admin<?php echo $idx?>" <?php					if ($a_configureaccess == 'Y') echo "checked='checked'";
 				?>
-				/><label for="admin<?=$idx?>">Blog Admin</label>
+				/><label for="admin<?php echo $idx?>">Blog Admin</label>
 			</td>
 		</tr>
-	<?
-	$idx++;
+	<?php	$idx++;
 } // while
 
 fclose($filehandle);
@@ -206,8 +200,7 @@ fclose($filehandle);
 				<input name="author[0]" value="_other_" type="hidden" />
 			</td>
 			<td>
-				<?
-					// TODO: avoid doing this query multiple times
+				<?php					// TODO: avoid doing this query multiple times
 					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 					$template['name'] = 'memberid[0]';
@@ -230,8 +223,7 @@ fclose($filehandle);
 		<div>
 			<input name="createnew" value="0" type="radio" checked='checked' label="createnew_no" /><label for="createnew_no">Choose existing weblog to add to</label>:
 			
-			<?
-					$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
+			<?php					$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
 					$template['name'] = 'blogid';
 					$template['selected'] = $CONF['DefaultBlog'];
 					showlist($query,'select',$template);				
@@ -242,8 +234,7 @@ fclose($filehandle);
 			<ul>
 				<li>New blog name: <input name="newblogname" /></li>
 				<li>Blog owner: 
-				<?
-					// TODO: avoid doing this query multiple times
+				<?php					// TODO: avoid doing this query multiple times
 					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 					$template['name'] = 'newowner';
@@ -255,17 +246,16 @@ fclose($filehandle);
 		
 		<h1>Do the conversion!</h1>
 		<p>
-		<input type="hidden" name="authorcount" value="<?=$idx?>" />
-		<input type="hidden" name="grey_scriptpath" value="<?=htmlspecialchars($grey_scriptpath)?>" />
-		<input type="hidden" name="grey_datapath" value="<?=htmlspecialchars($grey_datapath)?>" />
-		<input type="hidden" name="grey_dataurl" value="<?=htmlspecialchars($grey_dataurl)?>" />
+		<input type="hidden" name="authorcount" value="<?php echo $idx?>" />
+		<input type="hidden" name="grey_scriptpath" value="<?php echo htmlspecialchars($grey_scriptpath)?>" />
+		<input type="hidden" name="grey_datapath" value="<?php echo htmlspecialchars($grey_datapath)?>" />
+		<input type="hidden" name="grey_dataurl" value="<?php echo htmlspecialchars($grey_dataurl)?>" />
 		<input type="submit" value="Do the conversion!" />
 		<input type="hidden" name="action" value="doConversion" />
 		</p>
 		
 		</form>
-	<?
-	
+	<?php	
 	convert_foot();
 
 }
@@ -308,8 +298,7 @@ function gmc_doConversion() {
 		<p>
 		Please be patient. Don't hit reload! The conversion progress should be showing below.
 		</p>
-	<?
-	
+	<?php	
 	// try to extend time limit 
 	// surpress error messages when not allowed to do so
 	@set_time_limit(1200);

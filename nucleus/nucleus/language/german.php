@@ -1,5 +1,4 @@
-<?
-
+<?php
 // German Nucleus Language File
 // 
 // Author: Thorsten Bonck

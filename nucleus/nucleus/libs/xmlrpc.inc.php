@@ -580,7 +580,7 @@ class xmlrpcmsg {
   }
 
   function xml_header() {
-	return "<?xml version=\"1.0\"?>\n<methodCall>\n";
+	return "<?phpxml version=\"1.0\"?>\n<methodCall>\n";
   }
 
   function xml_footer() {

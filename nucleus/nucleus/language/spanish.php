@@ -1,5 +1,4 @@
-<?
-
+<?php
 // Spanish Nucleus Language File
 // 
 // Author: Alfonso Sanchez (alsanan2@myrealbox.con)

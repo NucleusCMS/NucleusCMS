@@ -1,4 +1,4 @@
-<?
+<?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002 The Nucleus Group

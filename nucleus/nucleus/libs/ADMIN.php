@@ -1,5 +1,4 @@
-<?
-
+<?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002 The Nucleus Group
@@ -66,20 +65,19 @@ class ADMIN {
 		?>
 		
 		<form action="index.php" method="post"><p>
-		<?=_LOGIN_NAME?>: <br /><input name="login"  tabindex="10" />
+		<?php echo _LOGIN_NAME?>: <br /><input name="login"  tabindex="10" />
 		<br />
-		<?=_LOGIN_PASSWORD?>: <br /><input name="password"  tabindex="20" type="password" />
+		<?php echo _LOGIN_PASSWORD?>: <br /><input name="password"  tabindex="20" type="password" />
 		<br />
 		<input name="action" value="login" type="hidden" />
 		<br />
-		<input type="submit" value="<?=_LOGIN?>" tabindex="30" />
+		<input type="submit" value="<?php echo _LOGIN?>" tabindex="30" />
 		<br />
 		<small>
-			<input type="checkbox" value="1" name="shared" tabindex="40" id="shared" /><label for="shared"><?=_LOGIN_SHARED?></label>
-			<br /><a href="forgotpassword.html"><?=_LOGIN_FORGOT?></a>
+			<input type="checkbox" value="1" name="shared" tabindex="40" id="shared" /><label for="shared"><?php echo _LOGIN_SHARED?></label>
+			<br /><a href="forgotpassword.html"><?php echo _LOGIN_FORGOT?></a>
 		</small>
-		<?
-			// pass through vars
+		<?php			// pass through vars
 			
 			$oldaction = postVar('oldaction');
 			if (  ($oldaction != 'logout')  && ($oldaction != 'login')  && $passvars ) {
@@ -89,8 +87,7 @@ class ADMIN {
 			
 		?>
 		</p></form>
-		<?
-		$this->pagefoot();
+		<?php		$this->pagefoot();
 	}
 
 
@@ -577,13 +574,12 @@ class ADMIN {
 	function batchMoveSelectDestination($type, $ids) {
 		$this->pagehead();
 		?>
-		<h2><?=_MOVE_TITLE?></h2>
+		<h2><?php echo _MOVE_TITLE?></h2>
 		<form method="post" action="index.php"><div>
 
-			<input type="hidden" name="action" value="batch<?=$type?>" />
+			<input type="hidden" name="action" value="batch<?php echo $type?>" />
 			<input type="hidden" name="batchaction" value="move" />
-			<?
-				// insert selected item numbers
+			<?php				// insert selected item numbers
 				$idx = 0;
 				foreach ($ids as $id)
 					echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
@@ -594,24 +590,22 @@ class ADMIN {
 			?>
 			
 			
-			<input type="submit" value="<?=_MOVE_BTN?>" onclick="return checkSubmit();" 
+			<input type="submit" value="<?php echo _MOVE_BTN?>" onclick="return checkSubmit();" 
 
 		<div></form>
-		<?
-		$this->pagefoot();
+		<?php		$this->pagefoot();
 		exit;
 	}
 	
 	function batchMoveCategorySelectDestination($type, $ids) {
 		$this->pagehead();
 		?>
-		<h2><?=_MOVECAT_TITLE?></h2>
+		<h2><?php echo _MOVECAT_TITLE?></h2>
 		<form method="post" action="index.php"><div>
 
-			<input type="hidden" name="action" value="batch<?=$type?>" />
+			<input type="hidden" name="action" value="batch<?php echo $type?>" />
 			<input type="hidden" name="batchaction" value="move" />
-			<?
-				// insert selected item numbers
+			<?php				// insert selected item numbers
 				$idx = 0;
 				foreach ($ids as $id)
 					echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
@@ -622,25 +616,23 @@ class ADMIN {
 			?>
 			
 			
-			<input type="submit" value="<?=_MOVECAT_BTN?>" onclick="return checkSubmit();" 
+			<input type="submit" value="<?php echo _MOVECAT_BTN?>" onclick="return checkSubmit();" 
 
 		<div></form>
-		<?
-		$this->pagefoot();
+		<?php		$this->pagefoot();
 		exit;
 	}
 	
 	function batchAskDeleteConfirmation($type, $ids) {
 		$this->pagehead();
 		?>
-		<h2><?=_BATCH_DELETE_CONFIRM?></h2>
+		<h2><?php echo _BATCH_DELETE_CONFIRM?></h2>
 		<form method="post" action="index.php"><div>
 
-			<input type="hidden" name="action" value="batch<?=$type?>" />
+			<input type="hidden" name="action" value="batch<?php echo $type?>" />
 			<input type="hidden" name="batchaction" value="delete" />
 			<input type="hidden" name="confirmation" value="yes" />			
-			<?
-				// insert selected item numbers
+			<?php				// insert selected item numbers
 				$idx = 0;
 				foreach ($ids as $id)
 					echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
@@ -657,11 +649,10 @@ class ADMIN {
 					
 			?>
 			
-			<input type="submit" value="<?=_BATCH_DELETE_CONFIRM_BTN?>" onclick="return checkSubmit();" 
+			<input type="submit" value="<?php echo _BATCH_DELETE_CONFIRM_BTN?>" onclick="return checkSubmit();" 
 
 		<div></form>
-		<?
-		$this->pagefoot();
+		<?php		$this->pagefoot();
 		exit;
 	}
 	
@@ -1028,23 +1019,22 @@ class ADMIN {
 		
 		$this->pagehead();
 		?>
-			<h2><?=_DELETE_CONFIRM?></h2>
+			<h2><?php echo _DELETE_CONFIRM?></h2>
 			
-			<p><?=_CONFIRMTXT_ITEM?></p>
+			<p><?php echo _CONFIRMTXT_ITEM?></p>
 			
 			<div class="note">
-				<b>"<?= $title ?>"</b>
+				<b>"<?php echo  $title ?>"</b>
 				<br />
-				<?=$body?>
+				<?php echo $body?>
 			</div>
 			
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="itemdeleteconfirm" />
-				<input type="hidden" name="itemid" value="<? echo $itemid; ?>" />
-				<input type="submit" value="<?=_DELETE_CONFIRM_BTN?>"  tabindex="10" />
+				<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+				<input type="submit" value="<?php echo _DELETE_CONFIRM_BTN?>"  tabindex="10" />
 			</div></form>
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -1089,17 +1079,16 @@ class ADMIN {
 		
 		$this->pagehead();
 		?>
-			<h2><?=_MOVE_TITLE?></h2>
+			<h2><?php echo _MOVE_TITLE?></h2>
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="itemmoveto" />
-				<input type="hidden" name="itemid" value="<?= $itemid; ?>" />
+				<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
 				
-				<?$this->selectBlogCategory('catid',$item['catid'],10,1);?>
+				<?php$this->selectBlogCategory('catid',$item['catid'],10,1);?>
 				
-				<input type="submit" value="<?=_MOVE_BTN?>" tabindex="10000" onclick="return checkSubmit();" />
+				<input type="submit" value="<?php echo _MOVE_BTN?>" tabindex="10000" onclick="return checkSubmit();" />
 			</div></form>
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 
@@ -1192,10 +1181,9 @@ class ADMIN {
 		</p>
 		
 		<p>
-			If you aren't automatically passed through, <a href="index.php?action=sendping&amp;blogid=<?=$blogid?>">try again</a>
+			If you aren't automatically passed through, <a href="index.php?action=sendping&amp;blogid=<?php echo $blogid?>">try again</a>
 		</p>
-		<?
-		$this->pagefoot();
+		<?php		$this->pagefoot();
 	}
 	
 	// ping to Weblogs.com
@@ -1217,15 +1205,14 @@ class ADMIN {
 		
 		<p>The following message was returned by weblogs.com:</p>
 		
-		<div class='note'><?= $result ?></div>
+		<div class='note'><?php echo  $result ?></div>
 		
 		<ul>
-			<li><a href="index.php?action=itemlist&amp;blogid=<?=$blog->getID()?>">View list of recent items for <?=htmlspecialchars($blog->getName())?></a></li>
-			<li><a href="<?=$blog->getURL()?>">Visit your own site</a></li>
+			<li><a href="index.php?action=itemlist&amp;blogid=<?php echo $blog->getID()?>">View list of recent items for <?php echo htmlspecialchars($blog->getName())?></a></li>
+			<li><a href="<?php echo $blog->getURL()?>">Visit your own site</a></li>
 		</ul>
 		
-		<?
-		$this->pagefoot();
+		<?php		$this->pagefoot();
 	}
 	
 	/** 
@@ -1250,46 +1237,43 @@ class ADMIN {
 		$this->pagehead();
 		
 		?>
-		<h2><?=_EDITC_TITLE?></h2>
+		<h2><?php echo _EDITC_TITLE?></h2>
 		
 		<form action="index.php" method="post"><div>
 		
 		<input type="hidden" name="action" value="commentupdate" />
-		<input type="hidden" name="commentid" value="<? echo $commentid; ?>" />
+		<input type="hidden" name="commentid" value="<?php echo  $commentid; ?>" />
 		<table><tr>
-			<th colspan="2"><?=_EDITC_TITLE?></th>
+			<th colspan="2"><?php echo _EDITC_TITLE?></th>
 		</tr><tr>
-			<td><?=_EDITC_WHO?></td>
+			<td><?php echo _EDITC_WHO?></td>
 			<td>
-			<?
-				if ($comment['member']) 
+			<?php				if ($comment['member']) 
 					echo $comment['member'] . " (" . _EDITC_MEMBER . ")";
 				else 
 					echo $comment['user'] . " (" . _EDITC_NONMEMBER . ")";
 			?>
 			</td>
 		</tr><tr>
-			<td><?=_EDITC_WHEN?></td>
-			<td><? echo date("Y-m-d @ H:i",$comment['timestamp']); ?></td>
+			<td><?php echo _EDITC_WHEN?></td>
+			<td><?php echo  date("Y-m-d @ H:i",$comment['timestamp']); ?></td>
 		</tr><tr>
-			<td><?=_EDITC_HOST?></td>
-			<td><? echo $comment['host']; ?></td>
+			<td><?php echo _EDITC_HOST?></td>
+			<td><?php echo  $comment['host']; ?></td>
 		</tr><tr>
-			<td><?=_EDITC_TEXT?></td>
+			<td><?php echo _EDITC_TEXT?></td>
 			<td>
-				<textarea name="body" tabindex="10" rows="10" cols="50"><?
-					// htmlspecialchars not needed (things should be escaped already)
+				<textarea name="body" tabindex="10" rows="10" cols="50"><?php					// htmlspecialchars not needed (things should be escaped already)
 					echo $comment['body'];
 				?></textarea>
 			</td>
 		</tr><tr>
-			<td><?=_EDITC_EDIT?></td>
-			<td><input type="submit"  tabindex="20" value="<?=_EDITC_EDIT?>" onclick="return checkSubmit();" /></td>
+			<td><?php echo _EDITC_EDIT?></td>
+			<td><input type="submit"  tabindex="20" value="<?php echo _EDITC_EDIT?>" onclick="return checkSubmit();" /></td>
 		</tr></table>
 		
 		</div></form>
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -1356,23 +1340,22 @@ class ADMIN {
 		$this->pagehead();
 		?>
 		
-			<h2><?=_DELETE_CONFIRM?></h2>
+			<h2><?php echo _DELETE_CONFIRM?></h2>
 			
-			<p><?=_CONFIRMTXT_COMMENT?></p>
+			<p><?php echo _CONFIRMTXT_COMMENT?></p>
 			
 			<div class="note">
-			<b><?=_EDITC_WHO?>:</b> <?= $author ?>
+			<b><?php echo _EDITC_WHO?>:</b> <?php echo  $author ?>
 			<br />
-			<b><?=_EDITC_TEXT?>:</b> <?= $body ?>
+			<b><?php echo _EDITC_TEXT?>:</b> <?php echo  $body ?>
 			</div>
 			
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="commentdeleteconfirm" />
-				<input type="hidden" name="commentid" value="<? echo $commentid; ?>" />
-				<input type="submit" tabindex="10" value="<?=_DELETE_CONFIRM_BTN?>" />
+				<input type="hidden" name="commentid" value="<?php echo  $commentid; ?>" />
+				<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -1447,44 +1430,43 @@ class ADMIN {
 			
 			<table>
 			<tr>
-				<th colspan="2"><?=_MEMBERS_NEW?></th>
+				<th colspan="2"><?php echo _MEMBERS_NEW?></th>
 			</tr><tr>
-				<td><?=_MEMBERS_DISPLAY?> <?help('shortnames');?>
+				<td><?php echo _MEMBERS_DISPLAY?> <?phphelp('shortnames');?>
 				    <br /><small>(This is the name used to logon)</small>
 				</td>
 				<td><input tabindex="10010" name="name" size="16" maxlength="16" /></td>
 			</tr><tr>
-				<td><?=_MEMBERS_REALNAME?></td>
+				<td><?php echo _MEMBERS_REALNAME?></td>
 				<td><input name="realname" tabindex="10020" size="40" maxlength="60" /></td>
 			</tr><tr>
-				<td><?=_MEMBERS_PWD?></td>
+				<td><?php echo _MEMBERS_PWD?></td>
 				<td><input name="password" tabindex="10030" size="16" maxlength="40" type="password" /></td>
 			</tr><tr>
-				<td><?=_MEMBERS_REPPWD?></td>
+				<td><?php echo _MEMBERS_REPPWD?></td>
 				<td><input name="repeatpassword" tabindex="10035" size="16" maxlength="40" type="password" /></td>
 			</tr><tr>
-				<td><?=_MEMBERS_EMAIL?></td>
+				<td><?php echo _MEMBERS_EMAIL?></td>
 				<td><input name="email" tabindex="10040" size="40" maxlength="60" /></td>
 			</tr><tr>
-				<td><?=_MEMBERS_URL?></td>
+				<td><?php echo _MEMBERS_URL?></td>
 				<td><input name="url" tabindex="10050" size="40" maxlength="100" /></td>
 			</tr><tr>
-				<td><?=_MEMBERS_SUPERADMIN?> <? help('superadmin'); ?></td>
-				<td><? $this->input_yesno('admin',0,10060); ?> </td>
+				<td><?php echo _MEMBERS_SUPERADMIN?> <?php help('superadmin'); ?></td>
+				<td><?php $this->input_yesno('admin',0,10060); ?> </td>
 			</tr><tr>
-				<td><?=_MEMBERS_CANLOGIN?> <? help('canlogin'); ?></td>
-				<td><? $this->input_yesno('canlogin',1,10070); ?></td>
+				<td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
+				<td><?php $this->input_yesno('canlogin',1,10070); ?></td>
 			</tr><tr>
-				<td><?=_MEMBERS_NOTES?></td>
+				<td><?php echo _MEMBERS_NOTES?></td>
 				<td><input name="notes" maxlength="100" size="40" tabindex="10080" /></td>
 			</tr><tr>
-				<td><?=_MEMBERS_NEW?></td>
-				<td><input type="submit" value="<?=_MEMBERS_NEW_BTN?>" tabindex="10090" onclick="return checkSubmit();" /></td>
+				<td><?php echo _MEMBERS_NEW?></td>
+				<td><input type="submit" value="<?php echo _MEMBERS_NEW_BTN?>" tabindex="10090" onclick="return checkSubmit();" /></td>
 			</tr></table>
 			
 			</div></form>		
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -1519,63 +1501,62 @@ class ADMIN {
 		<form method="post" action="index.php"><div>
 		
 		<input type="hidden" name="action" value="changemembersettings" />
-		<input type="hidden" name="memberid" value="<? echo $memberid; ?>" />
+		<input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
 		<table><tr>
-			<th colspan="2"><?=_MEMBERS_EDIT?></th>
+			<th colspan="2"><?php echo _MEMBERS_EDIT?></th>
 		</tr><tr>
-			<td><?=_MEMBERS_DISPLAY?> <?help('shortnames');?>
-			    <br /><small><?=_MEMBERS_DISPLAY_INFO?></small>
+			<td><?php echo _MEMBERS_DISPLAY?> <?phphelp('shortnames');?>
+			    <br /><small><?php echo _MEMBERS_DISPLAY_INFO?></small>
 			</td>
 			<td>
-			<? if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
-				<input name="name" tabindex="10" maxlength="16" size="16" value="<? echo htmlspecialchars($mem->getDisplayName()); ?>" />
-			<? } else {
+			<?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
+				<input name="name" tabindex="10" maxlength="16" size="16" value="<?php echo  htmlspecialchars($mem->getDisplayName()); ?>" />
+			<?php } else {
 				echo htmlspecialchars($member->getDisplayName());
 			   }
 			?>
 			</td>
 		</tr><tr>
-			<td><?=_MEMBERS_REALNAME?></td>
-			<td><input name="realname" tabindex="20" maxlength="60" size="40" value="<? echo htmlspecialchars($mem->getRealName()); ?>" /></td>
+			<td><?php echo _MEMBERS_REALNAME?></td>
+			<td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  htmlspecialchars($mem->getRealName()); ?>" /></td>
 		</tr><tr>		
-		<? if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
-			<td><?=_MEMBERS_PWD?></td>
+		<?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
+			<td><?php echo _MEMBERS_PWD?></td>
 			<td><input type="password" tabindex="30" maxlength="40" size="16" name="password" /></td>
 		</tr><tr>
-			<td><?=_MEMBERS_REPPWD?></td>
+			<td><?php echo _MEMBERS_REPPWD?></td>
 			<td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" /></td>
 		</tr><tr>
-		<? } ?>
-			<td><?=_MEMBERS_EMAIL?>
-			    <br /><small><?=_MEMBERS_EMAIL_EDIT?></small>
+		<?php } ?>
+			<td><?php echo _MEMBERS_EMAIL?>
+			    <br /><small><?php echo _MEMBERS_EMAIL_EDIT?></small>
 			</td>
-			<td><input name="email" tabindex="40" size="40" maxlength="60" value="<? echo htmlspecialchars($mem->getEmail()); ?>" /></td>
+			<td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  htmlspecialchars($mem->getEmail()); ?>" /></td>
 		</tr><tr>
-			<td><?=_MEMBERS_URL?></td>
-			<td><input name="url" tabindex="50" size="40" maxlength="100" value="<? echo htmlspecialchars($mem->getURL()); ?>" /></td>			
-		<? // only allow to change this by super-admins
+			<td><?php echo _MEMBERS_URL?></td>
+			<td><input name="url" tabindex="50" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getURL()); ?>" /></td>			
+		<?php // only allow to change this by super-admins
 		   // we don't want normal users to 'upgrade' themselves to super-admins, do we? ;-)
 		   if ($member->isAdmin()) : 
 		?>
 			</tr><tr>
-				<td><?=_MEMBERS_SUPERADMIN?> <? help('superadmin'); ?></td>
-				<td><? $this->input_yesno('admin',$mem->isAdmin(),60); ?></td>	
+				<td><?php echo _MEMBERS_SUPERADMIN?> <?php help('superadmin'); ?></td>
+				<td><?php $this->input_yesno('admin',$mem->isAdmin(),60); ?></td>	
 			</tr><tr>
-				<td><?=_MEMBERS_CANLOGIN?> <? help('canlogin'); ?></td>
-				<td><? $this->input_yesno('canlogin',$mem->canLogin(),70); ?></td>
-		<? endif; ?>
+				<td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
+				<td><?php $this->input_yesno('canlogin',$mem->canLogin(),70); ?></td>
+		<?php endif; ?>
 		</tr><tr>
-			<td><?=_MEMBERS_NOTES?></td>
-			<td><input name="notes" tabindex="80" size="40" maxlength="100" value="<? echo htmlspecialchars($mem->getNotes()); ?>" /></td>			
+			<td><?php echo _MEMBERS_NOTES?></td>
+			<td><input name="notes" tabindex="80" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getNotes()); ?>" /></td>			
 		</tr><tr>		
-			<td><?=_MEMBERS_DEFLANG?> <? help('language'); ?>
+			<td><?php echo _MEMBERS_DEFLANG?> <?php help('language'); ?>
 			</td>
 			<td>
 			
 				<select name="deflang" tabindex="85">
-					<option value=""><?=_MEMBERS_USESITELANG?></option>
-				<?
-				// show a dropdown list of all available languages
+					<option value=""><?php echo _MEMBERS_USESITELANG?></option>
+				<?php				// show a dropdown list of all available languages
 				global $DIR_LANG;
 				$dirhandle = opendir($DIR_LANG);
 				while ($filename = readdir($dirhandle)) {
@@ -1594,16 +1575,15 @@ class ADMIN {
 			
 			</td>
 		</tr><tr>
-			<td><?=_MEMBERS_EDIT?></td>
-			<td><input type="submit" tabindex="90" value="<?=_MEMBERS_EDIT_BTN?>" onclick="return checkSubmit();" /></td>
+			<td><?php echo _MEMBERS_EDIT?></td>
+			<td><input type="submit" tabindex="90" value="<?php echo _MEMBERS_EDIT_BTN?>" onclick="return checkSubmit();" /></td>
 		</tr></table>
 		
 		</div></form>
 		
 		<h3>Extra Plugin Settings</h3>
 		
-		<?
-		
+		<?php		
 			$manager->notify(
 				'MemberSettingsFormExtras', 	
 				array(
@@ -1769,17 +1749,16 @@ class ADMIN {
 		$batch->showlist($query, 'table', $template);
 
 		?>
-			<h3><?=_TEAM_ADDNEW?></h3>
+			<h3><?php echo _TEAM_ADDNEW?></h3>
 
 			<form method='post' action='index.php'><div>
 			
 			<input type='hidden' name='action' value='teamaddmember' />
-			<input type='hidden' name='blogid' value='<? echo $blogid; ?>' />
+			<input type='hidden' name='blogid' value='<?php echo  $blogid; ?>' />
 
 			<table><tr>
-				<td><?=_TEAM_CHOOSEMEMBER?></td>
-				<td><?
-					// TODO: try to make it so only non-team-members are listed
+				<td><?php echo _TEAM_CHOOSEMEMBER?></td>
+				<td><?php					// TODO: try to make it so only non-team-members are listed
 					$query =  'SELECT mname as text, mnumber as value'
 					       . ' FROM '.sql_table('member');
 
@@ -1788,16 +1767,15 @@ class ADMIN {
 					showlist($query,'select',$template);			
 				?></td>
 			</tr><tr>
-				<td><?=_TEAM_ADMIN?><? help('teamadmin'); ?></td>
-				<td><? $this->input_yesno('admin',0,10020); ?></td>
+				<td><?php echo _TEAM_ADMIN?><?php help('teamadmin'); ?></td>
+				<td><?php $this->input_yesno('admin',0,10020); ?></td>
 			</tr><tr>
-				<td><?=_TEAM_ADD?></td>
-				<td><input type='submit' value='<?=_TEAM_ADD_BTN?>' tabindex="10030" /></td>		
+				<td><?php echo _TEAM_ADD?></td>
+				<td><input type='submit' value='<?php echo _TEAM_ADD_BTN?>' tabindex="10030" /></td>		
 			</tr></table>
 			
 			</div></form>
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -1836,20 +1814,19 @@ class ADMIN {
 		
 		$this->pagehead();
 		?>
-			<h2><?=_DELETE_CONFIRM?></h2>
+			<h2><?php echo _DELETE_CONFIRM?></h2>
 			
-			<p><?=_CONFIRMTXT_TEAM1?><b><?= $teammem->getDisplayName() ?></b><?=_CONFIRMTXT_TEAM2?><b><?= htmlspecialchars(strip_tags($blog->getName())) ?></b>
+			<p><?php echo _CONFIRMTXT_TEAM1?><b><?php echo  $teammem->getDisplayName() ?></b><?php echo _CONFIRMTXT_TEAM2?><b><?php echo  htmlspecialchars(strip_tags($blog->getName())) ?></b>
 			</p>
 			
 			
 			<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="teamdeleteconfirm" />
-			<input type="hidden" name="memberid" value="<? echo $memberid; ?>" />
-			<input type="hidden" name="blogid" value="<? echo $blogid; ?>" />
-			<input type="submit" tabindex="10" value="<?=_DELETE_CONFIRM_BTN?>" />
+			<input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
+			<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+			<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -1942,40 +1919,40 @@ class ADMIN {
 		
 		echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';		
 		?>
-		<h2><?=_EBLOG_TITLE?>: '<?=$this->bloglink($blog)?>'</h2>
+		<h2><?php echo _EBLOG_TITLE?>: '<?php echo $this->bloglink($blog)?>'</h2>
 
-		<h3><?=_EBLOG_TEAM_TITLE?></h3>
+		<h3><?php echo _EBLOG_TEAM_TITLE?></h3>
 		
 		<p>
-		<a href="index.php?action=manageteam&amp;blogid=<?=$blogid?>"><?=_EBLOG_TEAM_TEXT?></a>
+		<a href="index.php?action=manageteam&amp;blogid=<?php echo $blogid?>"><?php echo _EBLOG_TEAM_TEXT?></a>
 		</p>
 
-		<h3><?=_EBLOG_SETTINGS_TITLE?></h3>
+		<h3><?php echo _EBLOG_SETTINGS_TITLE?></h3>
 		
 		<form method="post" action="index.php"><div>
 		
 		<input type="hidden" name="action" value="blogsettingsupdate" />
-		<input type="hidden" name="blogid" value="<? echo $blogid; ?>" />
+		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
 		<table><tr>
-			<td><?=_EBLOG_NAME?></td>
-			<td><input name="name" tabindex="10" size="40" maxlength="60" value="<?= htmlspecialchars($blog->getName()) ?>" /></td>
+			<td><?php echo _EBLOG_NAME?></td>
+			<td><input name="name" tabindex="10" size="40" maxlength="60" value="<?php echo  htmlspecialchars($blog->getName()) ?>" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_SHORTNAME?> <? help('shortblogname'); ?>
-				<?=_EBLOG_SHORTNAME_EXTRA?>
+			<td><?php echo _EBLOG_SHORTNAME?> <?php help('shortblogname'); ?>
+				<?php echo _EBLOG_SHORTNAME_EXTRA?>
 			</td>
-			<td><input name="shortname" tabindex="20" maxlength="15" size="15" value="<?= htmlspecialchars($blog->getShortName()) ?>" /></td>
+			<td><input name="shortname" tabindex="20" maxlength="15" size="15" value="<?php echo  htmlspecialchars($blog->getShortName()) ?>" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_DESC?></td>
-			<td><input name="desc" tabindex="30" maxlength="200" size="40" value="<?= htmlspecialchars($blog->getDescription()) ?>" /></td>
+			<td><?php echo _EBLOG_DESC?></td>
+			<td><input name="desc" tabindex="30" maxlength="200" size="40" value="<?php echo  htmlspecialchars($blog->getDescription()) ?>" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_URL?></td>
-			<td><input name="url" tabindex="40" size="40" maxlength="100" value="<?= htmlspecialchars($blog->getURL()) ?>" /></td>
+			<td><?php echo _EBLOG_URL?></td>
+			<td><input name="url" tabindex="40" size="40" maxlength="100" value="<?php echo  htmlspecialchars($blog->getURL()) ?>" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_DEFSKIN?>
-			    <? help('blogdefaultskin'); ?>
+			<td><?php echo _EBLOG_DEFSKIN?>
+			    <?php help('blogdefaultskin'); ?>
 			</td>
 			<td>
-				<? 
+				<?php 
 					$query =  'SELECT sdname as text, sdnumber as value'
 					       . ' FROM '.sql_table('skin_desc');
 					$template['name'] = 'defskin';
@@ -1986,52 +1963,52 @@ class ADMIN {
 				
 			</td>
 		</tr><tr>
-			<td><?=_EBLOG_LINEBREAKS?> <? help('convertbreaks'); ?>
+			<td><?php echo _EBLOG_LINEBREAKS?> <?php help('convertbreaks'); ?>
 			</td>
-			<td><? $this->input_yesno('convertbreaks',$blog->convertBreaks(),55); ?></td>	
+			<td><?php $this->input_yesno('convertbreaks',$blog->convertBreaks(),55); ?></td>	
 		</tr><tr>
-			<td><?=_EBLOG_ALLOWPASTPOSTING?> <? help('allowpastposting'); ?>
+			<td><?php echo _EBLOG_ALLOWPASTPOSTING?> <?php help('allowpastposting'); ?>
 			</td>
-			<td><? $this->input_yesno('allowpastposting',$blog->allowPastPosting(),57); ?></td>	
+			<td><?php $this->input_yesno('allowpastposting',$blog->allowPastPosting(),57); ?></td>	
 		</tr><tr>					
-			<td><?=_EBLOG_DISABLECOMMENTS?>
+			<td><?php echo _EBLOG_DISABLECOMMENTS?>
 			</td>
-			<td><? $this->input_yesno('comments',$blog->commentsEnabled(),60); ?></td>	
+			<td><?php $this->input_yesno('comments',$blog->commentsEnabled(),60); ?></td>	
 		</tr><tr>
-			<td><?=_EBLOG_ANONYMOUS?>
+			<td><?php echo _EBLOG_ANONYMOUS?>
 			</td>
-			<td><? $this->input_yesno('public',$blog->isPublic(),70); ?></td>	
+			<td><?php $this->input_yesno('public',$blog->isPublic(),70); ?></td>	
 		</tr><tr>		
-			<td><?=_EBLOG_NOTIFY?> <? help('blognotify'); ?></td>
-			<td><input name="notify" tabindex="80" maxlength="60" size="40" value="<? echo htmlspecialchars($blog->getNotifyAddress()); ?>" /></td>
+			<td><?php echo _EBLOG_NOTIFY?> <?php help('blognotify'); ?></td>
+			<td><input name="notify" tabindex="80" maxlength="60" size="40" value="<?php echo  htmlspecialchars($blog->getNotifyAddress()); ?>" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_NOTIFY_ON?></td>
+			<td><?php echo _EBLOG_NOTIFY_ON?></td>
 			<td>
 				<input name="notifyComment" value="3" type="checkbox" tabindex="81" id="notifyComment"
-					<?if ($blog->notifyOnComment()) echo "checked='checked'" ?>
-				/><label for="notifyComment"><?=_EBLOG_NOTIFY_COMMENT?></label>
+					<?php if  ($blog->notifyOnComment()) echo "checked='checked'" ?>
+				/><label for="notifyComment"><?php echo _EBLOG_NOTIFY_COMMENT?></label>
 				<br />
 				<input name="notifyVote" value="5" type="checkbox" tabindex="82" id="notifyVote"
-					<?if ($blog->notifyOnVote()) echo "checked='checked'" ?>				
-				/><label for="notifyVote"><?=_EBLOG_NOTIFY_KARMA?></label>
+					<?php if  ($blog->notifyOnVote()) echo "checked='checked'" ?>				
+				/><label for="notifyVote"><?php echo _EBLOG_NOTIFY_KARMA?></label>
 				<br />
 				<input name="notifyNewItem" value="7" type="checkbox" tabindex="83" id="notifyNewItem"
-					<?if ($blog->notifyOnNewItem()) echo "checked='checked'" ?>				
-				/><label for="notifyNewItem"><?=_EBLOG_NOTIFY_ITEM?></label>
+					<?php if  ($blog->notifyOnNewItem()) echo "checked='checked'" ?>				
+				/><label for="notifyNewItem"><?php echo _EBLOG_NOTIFY_ITEM?></label>
 			</td>
 		</tr><tr>
-			<td><?=_EBLOG_PING?> <? help('pinguserland'); ?></td>
-			<td><? $this->input_yesno('pinguserland',$blog->pingUserland(),85); ?></td>				
+			<td><?php echo _EBLOG_PING?> <?php help('pinguserland'); ?></td>
+			<td><?php $this->input_yesno('pinguserland',$blog->pingUserland(),85); ?></td>				
 		</tr><tr>		
-			<td><?=_EBLOG_MAXCOMMENTS?> <? help('blogmaxcomments'); ?></td>
-			<td><input name="maxcomments" tabindex="90" size="3" value="<? echo htmlspecialchars($blog->getMaxComments()); ?>" /></td>
+			<td><?php echo _EBLOG_MAXCOMMENTS?> <?php help('blogmaxcomments'); ?></td>
+			<td><input name="maxcomments" tabindex="90" size="3" value="<?php echo  htmlspecialchars($blog->getMaxComments()); ?>" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_UPDATE?> <? help('blogupdatefile'); ?></td>
-			<td><input name="update" tabindex="100" size="40" maxlength="60" value="<?= htmlspecialchars($blog->getUpdateFile()) ?>" /></td>
+			<td><?php echo _EBLOG_UPDATE?> <?php help('blogupdatefile'); ?></td>
+			<td><input name="update" tabindex="100" size="40" maxlength="60" value="<?php echo  htmlspecialchars($blog->getUpdateFile()) ?>" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_DEFCAT?></td>
+			<td><?php echo _EBLOG_DEFCAT?></td>
 			<td>
-				<? 
+				<?php 
 					$query =  'SELECT cname as text, catid as value'
 					       . ' FROM '.sql_table('category')
 					       . ' WHERE cblog=' . $blog->getID();
@@ -2042,23 +2019,22 @@ class ADMIN {
 				?>
 			</td>			
 		</tr><tr>
-			<td><?=_EBLOG_OFFSET?> <? help('blogtimeoffset'); ?>
-			    <br /><?=_EBLOG_STIME?> <b><?= strftime("%H:%M",time()); ?></b>
-			    <br /><?=_EBLOG_BTIME?> <b><?= strftime("%H:%M",$blog->getCorrectTime()); ?></b>
+			<td><?php echo _EBLOG_OFFSET?> <?php help('blogtimeoffset'); ?>
+			    <br /><?php echo _EBLOG_STIME?> <b><?php echo  strftime("%H:%M",time()); ?></b>
+			    <br /><?php echo _EBLOG_BTIME?> <b><?php echo  strftime("%H:%M",$blog->getCorrectTime()); ?></b>
 			    </td>
-			<td><input name="timeoffset" tabindex="120" size="3" value="<? echo htmlspecialchars($blog->getTimeOffset()); ?>" /></td>			
+			<td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  htmlspecialchars($blog->getTimeOffset()); ?>" /></td>			
 		</tr><tr>
-			<td><?=_EBLOG_CHANGE?></td>
-			<td><input type="submit" tabindex="130" value="<?=_EBLOG_CHANGE_BTN?>" onclick="return checkSubmit();" /></td>
+			<td><?php echo _EBLOG_CHANGE?></td>
+			<td><input type="submit" tabindex="130" value="<?php echo _EBLOG_CHANGE_BTN?>" onclick="return checkSubmit();" /></td>
 		</tr></table>
 		
 		</div></form>
 		
-		<h3><?=_EBLOG_CAT_TITLE?></h3>
+		<h3><?php echo _EBLOG_CAT_TITLE?></h3>
 		
 
-		<?
-		
+		<?php		
 		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog='.$blog->getID().' ORDER BY cname';
 		$template['content'] = 'categorylist';
 		$template['tabindex'] = 200;
@@ -2071,27 +2047,26 @@ class ADMIN {
 		
 		<form action="index.php" method="post"><div>
 		<input name="action" value="categorynew" type="hidden" />
-		<input name="blogid" value="<?=$blog->getID()?>" type="hidden" />
+		<input name="blogid" value="<?php echo $blog->getID()?>" type="hidden" />
 		
 		<table><tr>
-			<th colspan="2"><?=_EBLOG_CAT_CREATE?></th>
+			<th colspan="2"><?php echo _EBLOG_CAT_CREATE?></th>
 		</tr><tr>
-			<td><?=_EBLOG_CAT_NAME?></td>
+			<td><?php echo _EBLOG_CAT_NAME?></td>
 			<td><input name="cname" size="40" maxlength="40" tabindex="300" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_CAT_DESC?></td>
+			<td><?php echo _EBLOG_CAT_DESC?></td>
 			<td><input name="cdesc" size="40" maxlength="200" tabindex="310" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_CAT_CREATE?></td>
-			<td><input type="submit" value="<?=_EBLOG_CAT_CREATE?>" tabindex="320" /></td>
+			<td><?php echo _EBLOG_CAT_CREATE?></td>
+			<td><input type="submit" value="<?php echo _EBLOG_CAT_CREATE?>" tabindex="320" /></td>
 		</tr></table>
 		
 		</div></form>
 		
 		<h3>Extra Plugin Settings</h3>
 		
-		<?
-			$manager->notify(
+		<?php			$manager->notify(
 				'BlogSettingsFormExtras', 	
 				array(
 					'blog' => &$blog
@@ -2145,26 +2120,25 @@ class ADMIN {
 		$this->pagehead();
 
 		?>
-		<h2><?=_EBLOG_CAT_UPDATE?> '<?=htmlspecialchars($cname)?>'</h2>
+		<h2><?php echo _EBLOG_CAT_UPDATE?> '<?php echo htmlspecialchars($cname)?>'</h2>
 		<form method='post' action='index.php'><div>
-		<input name="blogid" type="hidden" value="<?=$blogid?>" />
-		<input name="catid" type="hidden" value="<?=$catid?>" />			
+		<input name="blogid" type="hidden" value="<?php echo $blogid?>" />
+		<input name="catid" type="hidden" value="<?php echo $catid?>" />			
 		<input name="action" type="hidden" value="categoryupdate" />		
 		
 		<table><tr>
-			<td><?=_EBLOG_CAT_NAME?></td>
-			<td><input type="text" name="cname" value="<?=htmlspecialchars($cname)?>" size="40" maxlength="40" /></td>
+			<td><?php echo _EBLOG_CAT_NAME?></td>
+			<td><input type="text" name="cname" value="<?php echo htmlspecialchars($cname)?>" size="40" maxlength="40" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_CAT_DESC?></td>
-			<td><input type="text" name="cdesc" value="<?=htmlspecialchars($cdesc)?>" size="40" maxlength="200" /></td>
+			<td><?php echo _EBLOG_CAT_DESC?></td>
+			<td><input type="text" name="cdesc" value="<?php echo htmlspecialchars($cdesc)?>" size="40" maxlength="200" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_CAT_UPDATE?></td>
-			<td><input type="submit" value="<?=_EBLOG_CAT_UPDATE_BTN?>" /></td>
+			<td><?php echo _EBLOG_CAT_UPDATE?></td>
+			<td><input type="submit" value="<?php echo _EBLOG_CAT_UPDATE_BTN?>" /></td>
 		</tr></table>
 			
 		</div></form>
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -2224,20 +2198,19 @@ class ADMIN {
 		
 		$this->pagehead();
 		?>
-			<h2><?=_DELETE_CONFIRM?></h2>
+			<h2><?php echo _DELETE_CONFIRM?></h2>
 			
 			<div>
-			<?=_CONFIRMTXT_CATEGORY?><b><?= $blog->getCategoryName($catid)?></b>
+			<?php echo _CONFIRMTXT_CATEGORY?><b><?php echo  $blog->getCategoryName($catid)?></b>
 			</div>
 			
 			<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="categorydeleteconfirm" />
-			<input type="hidden" name="blogid" value="<?=$blogid?>" />
-			<input type="hidden" name="catid" value="<?=$catid?>" />						
-			<input type="submit" tabindex="10" value="<?=_DELETE_CONFIRM_BTN?>" />
+			<input type="hidden" name="blogid" value="<?php echo $blogid?>" />
+			<input type="hidden" name="catid" value="<?php echo $catid?>" />						
+			<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -2437,22 +2410,21 @@ class ADMIN {
 		
 		$this->pagehead();
 		?>
-			<h2><?=_DELETE_CONFIRM?></h2>
+			<h2><?php echo _DELETE_CONFIRM?></h2>
 			
-			<p><?=_WARNINGTXT_BLOGDEL?>
+			<p><?php echo _WARNINGTXT_BLOGDEL?>
 			</p>
 			
 			<div>
-			<?=_CONFIRMTXT_BLOG?><b><?= htmlspecialchars($blog->getName())?></b>
+			<?php echo _CONFIRMTXT_BLOG?><b><?php echo  htmlspecialchars($blog->getName())?></b>
 			</div>
 			
 			<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="deleteblogconfirm" />
-			<input type="hidden" name="blogid" value="<? echo $blogid; ?>" />
-			<input type="submit" tabindex="10" value="<?=_DELETE_CONFIRM_BTN?>" />
+			<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+			<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -2509,9 +2481,9 @@ class ADMIN {
 		
 		$this->pagehead();
 		?>
-			<h2><?=_DELETE_CONFIRM?></h2>
+			<h2><?php echo _DELETE_CONFIRM?></h2>
 			
-			<p><?=_CONFIRMTXT_MEMBER?><b><?= $mem->getDisplayName() ?></b>
+			<p><?php echo _CONFIRMTXT_MEMBER?><b><?php echo  $mem->getDisplayName() ?></b>
 			</p>
 			
 			<p>
@@ -2520,11 +2492,10 @@ class ADMIN {
 			
 			<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="memberdeleteconfirm" />
-			<input type="hidden" name="memberid" value="<? echo $memberid; ?>" />
-			<input type="submit" tabindex="10" value="<?=_DELETE_CONFIRM_BTN?>" />
+			<input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
+			<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -2576,7 +2547,7 @@ class ADMIN {
 
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
 		?>
-		<h2><?=_EBLOG_CREATE_TITLE?></h2>
+		<h2><?php echo _EBLOG_CREATE_TITLE?></h2>
 		
 		<h3>Some information</h3>
 		
@@ -2592,29 +2563,29 @@ class ADMIN {
 		<h3>Create Weblog</h3>
 		
 		<p>
-		<?=_EBLOG_CREATE_TEXT?>
+		<?php echo _EBLOG_CREATE_TEXT?>
 		</p>
 		
 		<form method="post" action="index.php"><div>
 		
 		<input type="hidden" name="action" value="addnewlog" />
 		<table><tr>
-			<td><?=_EBLOG_NAME?></td>
+			<td><?php echo _EBLOG_NAME?></td>
 			<td><input name="name" tabindex="10" size="40" maxlength="60" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_SHORTNAME?>
-			    <? help('shortblogname'); ?>
+			<td><?php echo _EBLOG_SHORTNAME?>
+			    <?php help('shortblogname'); ?>
 			</td>
 			<td><input name="shortname" tabindex="20" maxlength="15" size="15" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_DESC?></td>
+			<td><?php echo _EBLOG_DESC?></td>
 			<td><input name="desc" tabindex="30" maxlength="200" size="40" /></td>
 		</tr><tr>
-			<td><?=_EBLOG_DEFSKIN?>
-			    <? help('blogdefaultskin'); ?>
+			<td><?php echo _EBLOG_DEFSKIN?>
+			    <?php help('blogdefaultskin'); ?>
 			</td>
 			<td>
-				<? 
+				<?php 
 					$query =  'SELECT sdname as text, sdnumber as value'
 					       . ' FROM '.sql_table('skin_desc');
 					$template['name'] = 'defskin';
@@ -2623,24 +2594,23 @@ class ADMIN {
 				?>
 			</td>
 		</tr><tr>
-			<td><?=_EBLOG_OFFSET?>
-			    <? help('blogtimeoffset'); ?>
-			    <br /><?=_EBLOG_STIME?> <b><?= strftime("%H:%M",time()); ?></b>
+			<td><?php echo _EBLOG_OFFSET?>
+			    <?php help('blogtimeoffset'); ?>
+			    <br /><?php echo _EBLOG_STIME?> <b><?php echo  strftime("%H:%M",time()); ?></b>
 			</td>
 			<td><input name="timeoffset" tabindex="110" size="3" value="0" /></td>			
 		</tr><tr>
-			<td><?=_EBLOG_ADMIN?>
-			    <? help('blogadmin'); ?>
+			<td><?php echo _EBLOG_ADMIN?>
+			    <?php help('blogadmin'); ?>
 			</td>
-			<td><?=_EBLOG_ADMIN_MSG?></td>
+			<td><?php echo _EBLOG_ADMIN_MSG?></td>
 		</tr><tr>
-			<td><?=_EBLOG_CREATE?></td>
-			<td><input type="submit" tabindex="120" value="<?=_EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+			<td><?php echo _EBLOG_CREATE?></td>
+			<td><input type="submit" tabindex="120" value="<?php echo _EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
 		</tr></table>
 		
 		</div></form>
-		<?
-		
+		<?php		
 		$this->pagefoot();	
 	}
 	
@@ -2715,23 +2685,23 @@ class ADMIN {
 		?>
 		<h2>New weblog created</h2>
 		
-		<p>Your new weblog (<?=htmlspecialchars($bname)?>) has been created. To continue, choose the way you'll want to make it viewable:</p>
+		<p>Your new weblog (<?php echo htmlspecialchars($bname)?>) has been created. To continue, choose the way you'll want to make it viewable:</p>
 		
 		<ol>
-			<li><a href="#index_php">Easiest: A copy of <code><?=htmlspecialchars($bshortname)?>.php</code></a></li>
+			<li><a href="#index_php">Easiest: A copy of <code><?php echo htmlspecialchars($bshortname)?>.php</code></a></li>
 			<li><a href="#skins">Advanced: Call the weblog from existing skins</a></li>			
 		</ol>
 		
-		<h3><a id="index_php">Method 1: Create an extra <code><?=htmlspecialchars($bshortname)?>.php</code> file</a></h3>
+		<h3><a id="index_php">Method 1: Create an extra <code><?php echo htmlspecialchars($bshortname)?>.php</code> file</a></h3>
 		
-		<p>Create a file called <code><?=htmlspecialchars($bshortname)?>.php</code>, and copy-paste the following code into it:</p>
+		<p>Create a file called <code><?php echo htmlspecialchars($bshortname)?>.php</code>, and copy-paste the following code into it:</p>
 <pre><code>&lt;?
 
-$CONF['Self'] = '<b><?=htmlspecialchars($bshortname)?>.php</b>';
+$CONF['Self'] = '<b><?php echo htmlspecialchars($bshortname)?>.php</b>';
 
 include('<i>config.php</i>');
 
-selectBlog('<b><?=htmlspecialchars($bshortname)?></b>');
+selectBlog('<b><?php echo htmlspecialchars($bshortname)?></b>');
 selector();
 
 ?&gt;</code></pre>
@@ -2742,13 +2712,13 @@ selector();
 		
 		<form action="index.php" method="post"><div>
 			<input type="hidden" name="action" value="addnewlog2" />		
-			<input type="hidden" name="blogid" value="<?=intval($blogid)?>" />						
+			<input type="hidden" name="blogid" value="<?php echo intval($blogid)?>" />						
 			<table><tr>
-				<td><?=_EBLOG_URL?></td>
-				<td><input name="url" maxlength="100" size="40" value="<?=htmlspecialchars($CONF['IndexURL'].$bshortname.'.php')?>" /></td>
+				<td><?php echo _EBLOG_URL?></td>
+				<td><input name="url" maxlength="100" size="40" value="<?php echo htmlspecialchars($CONF['IndexURL'].$bshortname.'.php')?>" /></td>
 			</tr><tr>
-				<td><?=_EBLOG_CREATE?></td>
-				<td><input type="submit" value="<?=_EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+				<td><?php echo _EBLOG_CREATE?></td>
+				<td><input type="submit" value="<?php echo _EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
 			</tr></table>
 		</div></form>
 		
@@ -2758,18 +2728,17 @@ selector();
 		
 		<form action="index.php" method="post"><div>
 			<input type="hidden" name="action" value="addnewlog2" />
-			<input type="hidden" name="blogid" value="<?=intval($blogid)?>" />			
+			<input type="hidden" name="blogid" value="<?php echo intval($blogid)?>" />			
 			<table><tr>
-				<td><?=_EBLOG_URL?></td>
+				<td><?php echo _EBLOG_URL?></td>
 				<td><input name="url" maxlength="100" size="40" /></td>
 			</tr><tr>
-				<td><?=_EBLOG_CREATE?></td>
-				<td><input type="submit" value="<?=_EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+				<td><?php echo _EBLOG_CREATE?></td>
+				<td><input type="submit" value="<?php echo _EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
 			</tr></table>
 		</div></form>
 		
-		<?
-		$this->pagefoot();		
+		<?php		$this->pagefoot();		
 		
 	}
 	
@@ -2801,11 +2770,10 @@ selector();
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';		
 		
 	?>
-		<h2><?=_SKINIE_TITLE_IMPORT?></h2>	
+		<h2><?php echo _SKINIE_TITLE_IMPORT?></h2>	
 			
-				<p><label for="skinie_import_local"><?=_SKINIE_LOCAL?></label>
-				<?
-					global $DIR_SKINS;
+				<p><label for="skinie_import_local"><?php echo _SKINIE_LOCAL?></label>
+				<?php					global $DIR_SKINS;
 
 					$candidates = SKINIMPORT::searchForCandidates($DIR_SKINS);
 
@@ -2815,44 +2783,41 @@ selector();
 								<input type="hidden" name="action" value="skinieimport" />
 								<input type="hidden" name="mode" value="file" />
 								<select name="skinfile" id="skinie_import_local">
-								<?
-									foreach ($candidates as $skinname => $skinfile) {
+								<?php									foreach ($candidates as $skinname => $skinfile) {
 										$html = htmlspecialchars($skinfile);
 										echo '<option value="',$skinfile,'">',$skinname,'</option>';
 									}
 								?>
 								</select>
-								<input type="submit" value="<?=_SKINIE_BTN_IMPORT?>" />
+								<input type="submit" value="<?php echo _SKINIE_BTN_IMPORT?>" />
 							</div></form>
-						<?
-					} else {
+						<?php					} else {
 						echo _SKINIE_NOCANDIDATES;
 					}
 				?>
 				</p>
 				
-				<p><em><?=_OR?></em></p>
+				<p><em><?php echo _OR?></em></p>
 				
 				<form method="post" action="index.php"><p>
 					<input type="hidden" name="action" value="skinieimport" />
 					<input type="hidden" name="mode" value="url" />					
-					<label for="skinie_import_url"><?=_SKINIE_FROMURL?></label>
+					<label for="skinie_import_url"><?php echo _SKINIE_FROMURL?></label>
 					<input type="text" name="skinfile" id="skinie_import_url" size="60" value="http://" />
-					<input type="submit" value="<?=_SKINIE_BTN_IMPORT?>" />
+					<input type="submit" value="<?php echo _SKINIE_BTN_IMPORT?>" />
 				</p></form>
 
 	
-		<h2><?=_SKINIE_TITLE_EXPORT?></h2>
+		<h2><?php echo _SKINIE_TITLE_EXPORT?></h2>
 		<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="skinieexport" />
 			
-			<p><?=_SKINIE_EXPORT_INTRO?></p>
+			<p><?php echo _SKINIE_EXPORT_INTRO?></p>
 			
 			<table><tr>
-				<th colspan="2"><?=_SKINIE_EXPORT_SKINS?></th>
+				<th colspan="2"><?php echo _SKINIE_EXPORT_SKINS?></th>
 			</tr><tr>
-	<?
-		// show list of skins
+	<?php		// show list of skins
 		$res = sql_query('SELECT * FROM '.sql_table('skin_desc'));
 		while ($skinObj = mysql_fetch_object($res)) {
 			$id = 'skinexp' . $skinObj->sdnumber;
@@ -2875,18 +2840,17 @@ selector();
 		}
 		
 	?>
-				<th colspan="2"><?=_SKINIE_EXPORT_EXTRA?></th>
+				<th colspan="2"><?php echo _SKINIE_EXPORT_EXTRA?></th>
 			</tr><tr>
 				<td colspan="2"><textarea cols="40" rows="5" name="info"></textarea></td>
 			</tr><tr>				
-				<th colspan="2"><?=_SKINIE_TITLE_EXPORT?></th>
+				<th colspan="2"><?php echo _SKINIE_TITLE_EXPORT?></th>
 			</tr><tr>
-				<td colspan="2"><input type="submit" value="<?=_SKINIE_BTN_EXPORT?>" /></td>
+				<td colspan="2"><input type="submit" value="<?php echo _SKINIE_BTN_EXPORT?>" /></td>
 			</tr></table>
 		</div></form>
 	
-	<?
-	
+	<?php	
 		$this->pagefoot();
 		
 	}
@@ -2918,28 +2882,27 @@ selector();
 
 		echo '<p><a href="index.php?action=skinieoverview">(',_BACK,')</a></p>';		
 		?>
-		<h2><?=_SKINIE_CONFIRM_TITLE?></h2>
+		<h2><?php echo _SKINIE_CONFIRM_TITLE?></h2>
 
 		<ul>
-			<li><p><strong><?=_SKINIE_INFO_GENERAL?></strong> <?=htmlspecialchars($importer->getInfo())?></p></li>
-			<li><p><strong><?=_SKINIE_INFO_SKINS?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
-			<li><p><strong><?=_SKINIE_INFO_TEMPLATES?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
-			<li><p><strong style="color: red;"><?=_SKINIE_INFO_SKINCLASH?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->checkSkinNameClashes())?></p></li>		
-			<li><p><strong style="color: red;"><?=_SKINIE_INFO_TEMPLCLASH?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->checkTemplateNameClashes())?></p></li>
+			<li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo htmlspecialchars($importer->getInfo())?></p></li>
+			<li><p><strong><?php echo _SKINIE_INFO_SKINS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
+			<li><p><strong><?php echo _SKINIE_INFO_TEMPLATES?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
+			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_SKINCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->checkSkinNameClashes())?></p></li>		
+			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_TEMPLCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->checkTemplateNameClashes())?></p></li>
 		</ul>
 
 		<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="skiniedoimport" />
-			<input type="hidden" name="skinfile" value="<?=htmlspecialchars(postVar('skinfile'))?>" />
-			<input type="hidden" name="mode" value="<?=htmlspecialchars($mode)?>" />			
-			<input type="submit" value="<?=_SKINIE_CONFIRM_IMPORT?>" />
+			<input type="hidden" name="skinfile" value="<?php echo htmlspecialchars(postVar('skinfile'))?>" />
+			<input type="hidden" name="mode" value="<?php echo htmlspecialchars($mode)?>" />			
+			<input type="submit" value="<?php echo _SKINIE_CONFIRM_IMPORT?>" />
 			<br />
-			<input type="checkbox" name="overwrite" value="1" id="cb_overwrite" /><label for="cb_overwrite"><?=_SKINIE_CONFIRM_OVERWRITE?></label>
+			<input type="checkbox" name="overwrite" value="1" id="cb_overwrite" /><label for="cb_overwrite"><?php echo _SKINIE_CONFIRM_OVERWRITE?></label>
 		</div></form>
 
 
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -2976,16 +2939,15 @@ selector();
 
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';				
 	?>
-		<h2><?=_SKINIE_DONE?></h2>
+		<h2><?php echo _SKINIE_DONE?></h2>
 
 		<ul>
-			<li><p><strong><?=_SKINIE_INFO_GENERAL?></strong> <?=htmlspecialchars($importer->getInfo())?></p></li>
-			<li><p><strong><?=_SKINIE_INFO_IMPORTEDSKINS?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
-			<li><p><strong><?=_SKINIE_INFO_IMPORTEDTEMPLS?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
+			<li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo htmlspecialchars($importer->getInfo())?></p></li>
+			<li><p><strong><?php echo _SKINIE_INFO_IMPORTEDSKINS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
+			<li><p><strong><?php echo _SKINIE_INFO_IMPORTEDTEMPLS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
 		</ul>
 
-	<?
-		$this->pagefoot();
+	<?php		$this->pagefoot();
 
 	}
 	
@@ -3044,20 +3006,19 @@ selector();
 		
 		<input name="action" value="templatenew" type="hidden" />
 		<table><tr>
-			<td><?=_TEMPLATE_NAME?> <?help('shortnames');?></td>
+			<td><?php echo _TEMPLATE_NAME?> <?phphelp('shortnames');?></td>
 			<td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
 		</tr><tr>
-			<td><?=_TEMPLATE_DESC?></td>
+			<td><?php echo _TEMPLATE_DESC?></td>
 			<td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
 		</tr><tr>
-			<td><?=_TEMPLATE_CREATE?></td>
-			<td><input type="submit" tabindex="10030" value="<?=_TEMPLATE_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+			<td><?php echo _TEMPLATE_CREATE?></td>
+			<td><input type="submit" tabindex="10030" value="<?php echo _TEMPLATE_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
 		</tr></table>
 		
 		</div></form>
 		
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -3079,43 +3040,41 @@ selector();
 		
 		?>
 		<p>
-		<a href="index.php?action=templateoverview">(<?=_TEMPLATE_BACK?>)</a>
+		<a href="index.php?action=templateoverview">(<?php echo _TEMPLATE_BACK?>)</a>
 		</p>
 
-		<h2><?=_TEMPLATE_EDIT_TITLE?> '<? echo $templatename; ?>'</h2>
+		<h2><?php echo _TEMPLATE_EDIT_TITLE?> '<?php echo  $templatename; ?>'</h2>
 		
-		<?
-					if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
+		<?php					if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
 		?>
 		
-		<p><?=_TEMPLATE_EDIT_MSG?></p>
+		<p><?php echo _TEMPLATE_EDIT_MSG?></p>
 		
 		<form method="post" action="index.php">
 		<div>
 		
 		<input type="hidden" name="action" value="templateupdate" />
-		<input type="hidden" name="templateid" value="<? echo $templateid; ?>" />
+		<input type="hidden" name="templateid" value="<?php echo  $templateid; ?>" />
 		
 		<table><tr>
-			<th colspan="2"><?=_TEMPLATE_SETTINGS?></th>
+			<th colspan="2"><?php echo _TEMPLATE_SETTINGS?></th>
 		</tr><tr>
-			<td><?=_TEMPLATE_NAME?> <?help('shortnames');?></td>
-			<td><input name="tname" tabindex="4" size="20" maxlength="20" value="<?= htmlspecialchars($templatename) ?>" /></td>
+			<td><?php echo _TEMPLATE_NAME?> <?phphelp('shortnames');?></td>
+			<td><input name="tname" tabindex="4" size="20" maxlength="20" value="<?php echo  htmlspecialchars($templatename) ?>" /></td>
 		</tr><tr>
-			<td><?=_TEMPLATE_DESC?></td>
-			<td><input name="tdesc" tabindex="5" size="50" maxlength="200" value="<?= htmlspecialchars($templatedescription) ?>" /></td>
+			<td><?php echo _TEMPLATE_DESC?></td>
+			<td><input name="tdesc" tabindex="5" size="50" maxlength="200" value="<?php echo  htmlspecialchars($templatedescription) ?>" /></td>
 		</tr><tr>
-			<th colspan="2"><?=_TEMPLATE_UPDATE?></th>
+			<th colspan="2"><?php echo _TEMPLATE_UPDATE?></th>
 		</tr><tr>
-			<td><?=_TEMPLATE_UPDATE?></td>
+			<td><?php echo _TEMPLATE_UPDATE?></td>
 			<td>
-				<input type="submit" tabindex="6" value="<?=_TEMPLATE_UPDATE_BTN?>" onclick="return checkSubmit();" />
-				<input type="reset" tabindex="7" value="<?=_TEMPLATE_RESET_BTN?>" />
+				<input type="submit" tabindex="6" value="<?php echo _TEMPLATE_UPDATE_BTN?>" onclick="return checkSubmit();" />
+				<input type="reset" tabindex="7" value="<?php echo _TEMPLATE_RESET_BTN?>" />
 			</td>
 		</tr><tr>
-			<th colspan="2"><?=_TEMPLATE_ITEMS?> <? help('templateitems'); ?></th>
-<?
-	$this->_templateEditRow($template, _TEMPLATE_ITEMHEADER, 'ITEM_HEADER', '', 8);		
+			<th colspan="2"><?php echo _TEMPLATE_ITEMS?> <?php help('templateitems'); ?></th>
+<?php	$this->_templateEditRow($template, _TEMPLATE_ITEMHEADER, 'ITEM_HEADER', '', 8);		
 	$this->_templateEditRow($template, _TEMPLATE_ITEMBODY, 'ITEM', '', 9, 1);		
 	$this->_templateEditRow($template, _TEMPLATE_ITEMFOOTER, 'ITEM_FOOTER', '', 10);		
 	$this->_templateEditRow($template, _TEMPLATE_MORELINK, 'MORELINK', 'morelink', 20);		
@@ -3123,9 +3082,8 @@ selector();
 	$this->_templateEditRow($template, _TEMPLATE_NEW, 'NEW', 'new', 30);		
 ?>
 		</tr><tr>	
-			<th colspan="2"><?=_TEMPLATE_COMMENTS_ANY?> <? help('templatecomments'); ?></th>
-<?
-	$this->_templateEditRow($template, _TEMPLATE_CHEADER, 'COMMENTS_HEADER', 'commentheaders', 40);		
+			<th colspan="2"><?php echo _TEMPLATE_COMMENTS_ANY?> <?php help('templatecomments'); ?></th>
+<?php	$this->_templateEditRow($template, _TEMPLATE_CHEADER, 'COMMENTS_HEADER', 'commentheaders', 40);		
 	$this->_templateEditRow($template, _TEMPLATE_CBODY, 'COMMENTS_BODY', 'commentbody', 50, 1);		
 	$this->_templateEditRow($template, _TEMPLATE_CFOOTER, 'COMMENTS_FOOTER', 'commentheaders', 60);		
 	$this->_templateEditRow($template, _TEMPLATE_CONE, 'COMMENTS_ONE', 'commentwords', 70);		
@@ -3134,66 +3092,58 @@ selector();
 	$this->_templateEditRow($template, _TEMPLATE_CMEXTRA, 'COMMENTS_AUTH', 'memberextra', 100);		
 ?>
 		</tr><tr>	
-			<th colspan="2"><?=_TEMPLATE_COMMENTS_NONE?> <? help('templatecomments'); ?></th>
-<?
-
+			<th colspan="2"><?php echo _TEMPLATE_COMMENTS_NONE?> <?php help('templatecomments'); ?></th>
+<?php
 	$this->_templateEditRow($template, _TEMPLATE_CNONE, 'COMMENTS_NONE', '', 110);		
 ?>
 		</tr><tr>	
-			<th colspan="2"><?=_TEMPLATE_COMMENTS_TOOMUCH?> <? help('templatecomments'); ?></th>
-<?
-	$this->_templateEditRow($template, _TEMPLATE_CTOOMUCH, 'COMMENTS_TOOMUCH', '', 120);		
+			<th colspan="2"><?php echo _TEMPLATE_COMMENTS_TOOMUCH?> <?php help('templatecomments'); ?></th>
+<?php	$this->_templateEditRow($template, _TEMPLATE_CTOOMUCH, 'COMMENTS_TOOMUCH', '', 120);		
 ?>
 		</tr><tr>	
-			<th colspan="2"><?=_TEMPLATE_ARCHIVELIST?> <? help('templatearchivelists'); ?></th>
-<?
-	$this->_templateEditRow($template, _TEMPLATE_AHEADER, 'ARCHIVELIST_HEADER', '', 130);		
+			<th colspan="2"><?php echo _TEMPLATE_ARCHIVELIST?> <?php help('templatearchivelists'); ?></th>
+<?php	$this->_templateEditRow($template, _TEMPLATE_AHEADER, 'ARCHIVELIST_HEADER', '', 130);		
 	$this->_templateEditRow($template, _TEMPLATE_AITEM, 'ARCHIVELIST_LISTITEM', '', 140);			
 	$this->_templateEditRow($template, _TEMPLATE_AFOOTER, 'ARCHIVELIST_FOOTER', '', 150);		
 ?>
 		</tr><tr>	
-			<th colspan="2"><?=_TEMPLATE_CATEGORYLIST?> <? help('templatecategorylists'); ?></th>
-<?
-	$this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 160);		
+			<th colspan="2"><?php echo _TEMPLATE_CATEGORYLIST?> <?php help('templatecategorylists'); ?></th>
+<?php	$this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 160);		
 	$this->_templateEditRow($template, _TEMPLATE_CATITEM, 'CATLIST_LISTITEM', '', 170);			
 	$this->_templateEditRow($template, _TEMPLATE_CATFOOTER, 'CATLIST_FOOTER', '', 180);		
 ?>
 		</tr><tr>
-			<th colspan="2"><?=_TEMPLATE_DATETIME?></th>
-<?
-	$this->_templateEditRow($template, _TEMPLATE_DHEADER, 'DATE_HEADER', 'dateheads', 190);		
+			<th colspan="2"><?php echo _TEMPLATE_DATETIME?></th>
+<?php	$this->_templateEditRow($template, _TEMPLATE_DHEADER, 'DATE_HEADER', 'dateheads', 190);		
 	$this->_templateEditRow($template, _TEMPLATE_DFOOTER, 'DATE_FOOTER', 'dateheads', 200);			
 	$this->_templateEditRow($template, _TEMPLATE_DFORMAT, 'FORMAT_DATE', 'datetime', 210);		
 	$this->_templateEditRow($template, _TEMPLATE_TFORMAT, 'FORMAT_TIME', 'datetime', 220);			
 	$this->_templateEditRow($template, _TEMPLATE_LOCALE, 'LOCALE', 'locale', 230);		
 ?>
 		</tr><tr>	
-			<th colspan="2"><?=_TEMPLATE_IMAGE?> <? help('templatepopups'); ?></th>
-<?
-	$this->_templateEditRow($template, _TEMPLATE_PCODE, 'POPUP_CODE', '', 240);		
+			<th colspan="2"><?php echo _TEMPLATE_IMAGE?> <?php help('templatepopups'); ?></th>
+<?php	$this->_templateEditRow($template, _TEMPLATE_PCODE, 'POPUP_CODE', '', 240);		
 	$this->_templateEditRow($template, _TEMPLATE_ICODE, 'IMAGE_CODE', '', 250);			
 	$this->_templateEditRow($template, _TEMPLATE_MCODE, 'MEDIA_CODE', '', 260);		
 ?>
 		</tr><tr>
-			<th colspan="2"><?=_TEMPLATE_SEARCH?></th>
-<?
-	$this->_templateEditRow($template, _TEMPLATE_SHIGHLIGHT, 'SEARCH_HIGHLIGHT', 'highlight',270);		
+			<th colspan="2"><?php echo _TEMPLATE_SEARCH?></th>
+<?php	$this->_templateEditRow($template, _TEMPLATE_SHIGHLIGHT, 'SEARCH_HIGHLIGHT', 'highlight',270);		
 	$this->_templateEditRow($template, _TEMPLATE_SNOTFOUND, 'SEARCH_NOTHINGFOUND', 'nothingfound',280);		
 ?>			
 		</tr><tr>
-			<th colspan="2"><?=_TEMPLATE_UPDATE?></th>
+			<th colspan="2"><?php echo _TEMPLATE_UPDATE?></th>
 		</tr><tr>
-			<td><?=_TEMPLATE_UPDATE?></td>
+			<td><?php echo _TEMPLATE_UPDATE?></td>
 			<td>
-				<input type="submit" tabindex="290" value="<?=_TEMPLATE_UPDATE_BTN?>" onclick="return checkSubmit();" />
-				<input type="reset" tabindex="300" value="<?=_TEMPLATE_RESET_BTN?>" />
+				<input type="submit" tabindex="290" value="<?php echo _TEMPLATE_UPDATE_BTN?>" onclick="return checkSubmit();" />
+				<input type="reset" tabindex="300" value="<?php echo _TEMPLATE_RESET_BTN?>" />
 			</td>
 		</tr></table>
 		
 		</div>
 		</form>
-		<?
-	
+		<?php	
 		$this->pagefoot();
 	}
 	
@@ -3201,10 +3151,9 @@ selector();
 		static $count = 1;
 	?>
 		</tr><tr>	
-			<td><?=$description?> <? if ($help) help('template'.$help); ?></td>
-			<td id="td<?=$count?>"><textarea name="<?=$name?>" tabindex="<?=$tabindex?>" cols="50" rows="<?=$big?10:5?>" id="textarea<?=$count?>"><? echo htmlspecialchars($template[$name]); ?></textarea></td>
-	<?
-		$count++;
+			<td><?php echo $description?> <?php if ($help) help('template'.$help); ?></td>
+			<td id="td<?php echo $count?>"><textarea name="<?php echo $name?>" tabindex="<?php echo $tabindex?>" cols="50" rows="<?php echo $big?10:5?>" id="textarea<?php echo $count?>"><?php echo  htmlspecialchars($template[$name]); ?></textarea></td>
+	<?php		$count++;
 	}
 	
 	function action_templateupdate() {
@@ -3304,18 +3253,18 @@ selector();
 		$desc = TEMPLATE::getDesc($templateid);
 		
 		?>
-			<h2><?=_DELETE_CONFIRM?></h2>
+			<h2><?php echo _DELETE_CONFIRM?></h2>
 			
 			<p>
-			<?=_CONFIRMTXT_TEMPLATE?><b><?=$name?></b> (<?= htmlspecialchars($desc) ?>)
+			<?php echo _CONFIRMTXT_TEMPLATE?><b><?php echo $name?></b> (<?php echo  htmlspecialchars($desc) ?>)
 			</p>
 			
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="templatedeleteconfirm" />
-				<input type="hidden" name="templateid" value="<?= $templateid ?>" />
-				<input type="submit" tabindex="10" value="<?=_DELETE_CONFIRM_BTN?>" />
+				<input type="hidden" name="templateid" value="<?php echo  $templateid ?>" />
+				<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
-		<?		
+		<?php		
 		$this->pagefoot();
 	}	
 	
@@ -3418,21 +3367,20 @@ selector();
 		
 		<input name="action" value="skinnew" type="hidden" />
 		<table><tr>
-			<td><?=_SKIN_NAME?> <?help('shortnames');?></td>
+			<td><?php echo _SKIN_NAME?> <?phphelp('shortnames');?></td>
 			<td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
 		</tr><tr>
-			<td><?=_SKIN_DESC?></td>
+			<td><?php echo _SKIN_DESC?></td>
 			<td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
 		</tr><tr>
-			<td><?=_SKIN_CREATE?></td>
-			<td><input type="submit" tabindex="10030" value="<?=_SKIN_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+			<td><?php echo _SKIN_CREATE?></td>
+			<td><input type="submit" tabindex="10030" value="<?php echo _SKIN_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
 		</tr></table>
 		
 		</div>
 		</form>
 		
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 	
@@ -3467,55 +3415,54 @@ selector();
 		$this->pagehead();
 		?>
 		<p>
-			<a href="index.php?action=skinoverview">(<?=_SKIN_BACK?>)</a>		
+			<a href="index.php?action=skinoverview">(<?php echo _SKIN_BACK?>)</a>		
 		</p>
-		<h2><?=_SKIN_EDITONE_TITLE?> '<?= $skin->getName() ?>'</h2>
+		<h2><?php echo _SKIN_EDITONE_TITLE?> '<?php echo  $skin->getName() ?>'</h2>
 		
-		<h3><?=_SKIN_PARTS_TITLE?></h3>
-		<?=_SKIN_PARTS_MSG?>
+		<h3><?php echo _SKIN_PARTS_TITLE?></h3>
+		<?php echo _SKIN_PARTS_MSG?>
 		<ul>
-			<li><a tabindex="10" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=index"><?=_SKIN_PART_MAIN?></a> <?help('skinpartindex')?></li>
-			<li><a tabindex="20" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=item"><?=_SKIN_PART_ITEM?></a> <?help('skinpartitem')?></li>
-			<li><a tabindex="30" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=archivelist"><?=_SKIN_PART_ALIST?></a> <?help('skinpartarchivelist')?></li>
-			<li><a tabindex="40" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=archive"><?=_SKIN_PART_ARCHIVE?></a> <?help('skinpartarchive')?></li>
-			<li><a tabindex="50" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=search"><?=_SKIN_PART_SEARCH?></a> <?help('skinpartsearch')?></li>
-			<li><a tabindex="60" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=error"><?=_SKIN_PART_ERROR?></a> <?help('skinparterror')?></li>
-			<li><a tabindex="70" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=member"><?=_SKIN_PART_MEMBER?></a> <?help('skinpartmember')?></li>
-			<li><a tabindex="75" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=imagepopup"><?=_SKIN_PART_POPUP?></a> <?help('skinpartimagepopup')?></li>
+			<li><a tabindex="10" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=index"><?php echo _SKIN_PART_MAIN?></a> <?phphelp('skinpartindex')?></li>
+			<li><a tabindex="20" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=item"><?php echo _SKIN_PART_ITEM?></a> <?phphelp('skinpartitem')?></li>
+			<li><a tabindex="30" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=archivelist"><?php echo _SKIN_PART_ALIST?></a> <?phphelp('skinpartarchivelist')?></li>
+			<li><a tabindex="40" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=archive"><?php echo _SKIN_PART_ARCHIVE?></a> <?phphelp('skinpartarchive')?></li>
+			<li><a tabindex="50" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=search"><?php echo _SKIN_PART_SEARCH?></a> <?phphelp('skinpartsearch')?></li>
+			<li><a tabindex="60" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=error"><?php echo _SKIN_PART_ERROR?></a> <?phphelp('skinparterror')?></li>
+			<li><a tabindex="70" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=member"><?php echo _SKIN_PART_MEMBER?></a> <?phphelp('skinpartmember')?></li>
+			<li><a tabindex="75" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=imagepopup"><?php echo _SKIN_PART_POPUP?></a> <?phphelp('skinpartimagepopup')?></li>
 		</ul>
 		
-		<h3><?=_SKIN_GENSETTINGS_TITLE?></h3>
+		<h3><?php echo _SKIN_GENSETTINGS_TITLE?></h3>
 		<form method="post" action="index.php">
 		<div>
 		
 		<input type="hidden" name="action" value="skineditgeneral" />
-		<input type="hidden" name="skinid" value="<?= $skinid ?>" />
+		<input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
 		<table><tr>
-			<td><?=_SKIN_NAME?> <?help('shortnames');?></td>
-			<td><input name="name" tabindex="90" value="<?= htmlspecialchars($skin->getName()) ?>" maxlength="20" size="20" /></td>
+			<td><?php echo _SKIN_NAME?> <?phphelp('shortnames');?></td>
+			<td><input name="name" tabindex="90" value="<?php echo  htmlspecialchars($skin->getName()) ?>" maxlength="20" size="20" /></td>
 		</tr><tr>
-			<td><?=_SKIN_DESC?></td>
-			<td><input name="desc" tabindex="100" value="<?= htmlspecialchars($skin->getDescription()) ?>" maxlength="200" size="50" /></td>
+			<td><?php echo _SKIN_DESC?></td>
+			<td><input name="desc" tabindex="100" value="<?php echo  htmlspecialchars($skin->getDescription()) ?>" maxlength="200" size="50" /></td>
 		</tr><tr>
-			<td><?=_SKIN_TYPE?></td>
-			<td><input name="type" tabindex="110" value="<?= htmlspecialchars($skin->getContentType()) ?>" maxlength="40" size="20" /></td>
+			<td><?php echo _SKIN_TYPE?></td>
+			<td><input name="type" tabindex="110" value="<?php echo  htmlspecialchars($skin->getContentType()) ?>" maxlength="40" size="20" /></td>
 		</tr><tr>
-			<td><?=_SKIN_INCLUDE_MODE?> <?help('includemode')?></td>
-			<td><?$this->input_yesno('inc_mode',$skin->getIncludeMode(),120,'skindir','normal',_PARSER_INCMODE_SKINDIR,_PARSER_INCMODE_NORMAL);?></td>
+			<td><?php echo _SKIN_INCLUDE_MODE?> <?phphelp('includemode')?></td>
+			<td><?php$this->input_yesno('inc_mode',$skin->getIncludeMode(),120,'skindir','normal',_PARSER_INCMODE_SKINDIR,_PARSER_INCMODE_NORMAL);?></td>
 		</tr><tr>		
-			<td><?=_SKIN_INCLUDE_PREFIX?> <?help('includeprefix')?></td>
-			<td><input name="inc_prefix" tabindex="130" value="<?= htmlspecialchars($skin->getIncludePrefix()) ?>" maxlength="40" size="20" /></td>
+			<td><?php echo _SKIN_INCLUDE_PREFIX?> <?phphelp('includeprefix')?></td>
+			<td><input name="inc_prefix" tabindex="130" value="<?php echo  htmlspecialchars($skin->getIncludePrefix()) ?>" maxlength="40" size="20" /></td>
 		</tr><tr>		
-			<td><?=_SKIN_CHANGE?></td>
-			<td><input type="submit" tabindex="140" value="<?=_SKIN_CHANGE_BTN?>" onclick="return checkSubmit();" /></td>
+			<td><?php echo _SKIN_CHANGE?></td>
+			<td><input type="submit" tabindex="140" value="<?php echo _SKIN_CHANGE_BTN?>" onclick="return checkSubmit();" /></td>
 		</tr></table>
 		
 		</div>
 		</form>
 		
 		
-		<?
-		$this->pagefoot();
+		<?php		$this->pagefoot();
 	}
 	
 	function action_skineditgeneral() {
@@ -3564,12 +3511,11 @@ selector();
 		
 		$this->pagehead();
 		?>
-		<p>(<a href="index.php?action=skinoverview"><?=_SKIN_GOBACK?></a>)</p>
+		<p>(<a href="index.php?action=skinoverview"><?php echo _SKIN_GOBACK?></a>)</p>
 		
-		<h2><?=_SKIN_EDITPART_TITLE?> '<?= $skin->getName() ?>': <?= $friendlyNames[$type] ?></h2>
+		<h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo  $skin->getName() ?>': <?php echo  $friendlyNames[$type] ?></h2>
 		
-		<?
-			if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
+		<?php			if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
 		?>
 		
 		
@@ -3577,26 +3523,25 @@ selector();
 		<div>
 		
 		<input type="hidden" name="action" value="skinupdate" />
-		<input type="hidden" name="skinid" value="<?= $skinid ?>" />
-		<input type="hidden" name="type" value="<?= $type ?>" />
+		<input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
+		<input type="hidden" name="type" value="<?php echo  $type ?>" />
 		
-		<input type="submit" value="<?=_SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
-		<input type="reset" value="<?=_SKIN_RESET_BTN?>" />
-		(skin type: <?= $friendlyNames[$type] ?>)
-		<?help('skinpart' . $type);?>
+		<input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
+		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
+		(skin type: <?php echo  $friendlyNames[$type] ?>)
+		<?phphelp('skinpart' . $type);?>
 		<br />
 		
-		<textarea tabindex="10" rows="20" cols="80" name="content"><?= htmlspecialchars($skin->getContent($type)) ?></textarea>
+		<textarea tabindex="10" rows="20" cols="80" name="content"><?php echo  htmlspecialchars($skin->getContent($type)) ?></textarea>
 		
 		<br />
-		<input type="submit" tabindex="20" value="<?=_SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
-		<input type="reset" value="<?=_SKIN_RESET_BTN?>" />
-		(skin type: <?= $friendlyNames[$type] ?>)
+		<input type="submit" tabindex="20" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
+		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
+		(skin type: <?php echo  $friendlyNames[$type] ?>)
 		
 		<br /><br />
-		<?=_SKIN_ALLOWEDVARS?> 
-		<?
-			$actions = SKIN::getAllowedActionsForType($type);
+		<?php echo _SKIN_ALLOWEDVARS?> 
+		<?php			$actions = SKIN::getAllowedActionsForType($type);
 
 			sort($actions);
 			
@@ -3612,15 +3557,13 @@ selector();
 		?>
 		<br /><br />
 		Short blog names:
-		<?
-			$query = 'SELECT bshortname, bname FROM '.sql_table('blog');
+		<?php			$query = 'SELECT bshortname, bname FROM '.sql_table('blog');
 			showlist($query,'table',array('content'=>'shortblognames'));
 		?>
 
 		<br />
 		Template names:
-		<?
-			$query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
+		<?php			$query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
 			showlist($query,'table',array('content'=>'shortnames'));
 		?>
 
@@ -3629,8 +3572,7 @@ selector();
 		</form>
 		
 		
-		<?
-		$this->pagefoot();	
+		<?php		$this->pagefoot();	
 	}
 	
 	function action_skinupdate() {
@@ -3672,18 +3614,18 @@ selector();
 		$desc = $skin->getDescription();
 		
 		?>
-			<h2><?=_DELETE_CONFIRM?></h2>
+			<h2><?php echo _DELETE_CONFIRM?></h2>
 			
 			<p>
-				<?=_CONFIRMTXT_SKIN?><b><?= $name ?></b> (<?= htmlspecialchars($desc)?>)
+				<?php echo _CONFIRMTXT_SKIN?><b><?php echo  $name ?></b> (<?php echo  htmlspecialchars($desc)?>)
 			</p>
 			
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="skindeleteconfirm" />
-				<input type="hidden" name="skinid" value="<?= $skinid ?>" />
-				<input type="submit" tabindex="10" value="<?=_DELETE_CONFIRM_BTN?>" />
+				<input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
+				<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
-		<?		
+		<?php		
 		$this->pagefoot();
 	}	
 	
@@ -3779,7 +3721,7 @@ selector();
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';		
 		?>
 
-		<h2><?=_SETTINGS_TITLE?></h2>
+		<h2><?php echo _SETTINGS_TITLE?></h2>
 		
 		<form action="index.php" method="post">
 		<div>
@@ -3787,11 +3729,11 @@ selector();
 		<input type="hidden" name="action" value="settingsupdate" />
 		
 		<table><tr>
-			<th colspan="2"><?=_SETTINGS_SUB_GENERAL?></th>
+			<th colspan="2"><?php echo _SETTINGS_SUB_GENERAL?></th>
 		</tr><tr>
-			<td><?=_SETTINGS_DEFBLOG?> <? help('defaultblog'); ?></td>
+			<td><?php echo _SETTINGS_DEFBLOG?> <?php help('defaultblog'); ?></td>
 			<td>
-				<? 
+				<?php 
 					$query =  'SELECT bname as text, bnumber as value'
 					       . ' FROM '.sql_table('blog');
 					$template['name'] = 'DefaultBlog';
@@ -3801,9 +3743,9 @@ selector();
 				?>
 			</td>
 		</tr><tr>
-			<td><?=_SETTINGS_BASESKIN?> <? help('baseskin'); ?></td>
+			<td><?php echo _SETTINGS_BASESKIN?> <?php help('baseskin'); ?></td>
 			<td>
-				<? 
+				<?php 
 					$query =  'SELECT sdname as text, sdnumber as value'
 					       . ' FROM '.sql_table('skin_desc');
 					$template['name'] = 'BaseSkin';
@@ -3813,34 +3755,33 @@ selector();
 				?>
 			</td>
 		</tr><tr>
-			<td><?=_SETTINGS_ADMINMAIL?></td>
-			<td><input name="AdminEmail" tabindex="10010" size="40" value="<?= htmlspecialchars($CONF['AdminEmail']) ?>" /></td>
+			<td><?php echo _SETTINGS_ADMINMAIL?></td>
+			<td><input name="AdminEmail" tabindex="10010" size="40" value="<?php echo  htmlspecialchars($CONF['AdminEmail']) ?>" /></td>
 		</tr><tr>
-			<td><?=_SETTINGS_SITENAME?></td>
-			<td><input name="SiteName" tabindex="10020" size="40" value="<?= htmlspecialchars($CONF['SiteName']) ?>" /></td>
+			<td><?php echo _SETTINGS_SITENAME?></td>
+			<td><input name="SiteName" tabindex="10020" size="40" value="<?php echo  htmlspecialchars($CONF['SiteName']) ?>" /></td>
 		</tr><tr>
-			<td><?=_SETTINGS_SITEURL?></td>
-			<td><input name="IndexURL" tabindex="10030" size="40" value="<?= htmlspecialchars($CONF['IndexURL']) ?>" /></td>
+			<td><?php echo _SETTINGS_SITEURL?></td>
+			<td><input name="IndexURL" tabindex="10030" size="40" value="<?php echo  htmlspecialchars($CONF['IndexURL']) ?>" /></td>
 		</tr><tr>
-			<td><?=_SETTINGS_ADMINURL?></td>
-			<td><input name="AdminURL" tabindex="10040" size="40" value="<?= htmlspecialchars($CONF['AdminURL']) ?>" /></td>
+			<td><?php echo _SETTINGS_ADMINURL?></td>
+			<td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  htmlspecialchars($CONF['AdminURL']) ?>" /></td>
 		</tr><tr>
-			<td><?=_SETTINGS_PLUGINURL?> <?help('pluginurl');?></td>
-			<td><input name="PluginURL" tabindex="10045" size="40" value="<?= htmlspecialchars($CONF['PluginURL']) ?>" /></td>
+			<td><?php echo _SETTINGS_PLUGINURL?> <?phphelp('pluginurl');?></td>
+			<td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  htmlspecialchars($CONF['PluginURL']) ?>" /></td>
 		</tr><tr>
-			<td><?=_SETTINGS_SKINSURL?> <?help('skinsurl');?></td>
-			<td><input name="SkinsURL" tabindex="10046" size="40" value="<?= htmlspecialchars($CONF['SkinsURL']) ?>" /></td>
+			<td><?php echo _SETTINGS_SKINSURL?> <?phphelp('skinsurl');?></td>
+			<td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  htmlspecialchars($CONF['SkinsURL']) ?>" /></td>
 		</tr><tr>
-			<td><?=_SETTINGS_ACTIONSURL?> <?help('actionurl');?></td>
-			<td><input name="ActionURL" tabindex="10047" size="40" value="<?= htmlspecialchars($CONF['ActionURL']) ?>" /></td>
+			<td><?php echo _SETTINGS_ACTIONSURL?> <?phphelp('actionurl');?></td>
+			<td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  htmlspecialchars($CONF['ActionURL']) ?>" /></td>
 		</tr><tr>		
-			<td><?=_SETTINGS_LANGUAGE?> <? help('language'); ?>
+			<td><?php echo _SETTINGS_LANGUAGE?> <?php help('language'); ?>
 			</td>
 			<td>
 			
 				<select name="Language" tabindex="10050">
-				<?
-				// show a dropdown list of all available languages
+				<?php				// show a dropdown list of all available languages
 				global $DIR_LANG;
 				$dirhandle = opendir($DIR_LANG);
 				while ($filename = readdir($dirhandle)) {
@@ -3859,22 +3800,22 @@ selector();
 			
 			</td>
 		</tr><tr>
-			<td><?=_SETTINGS_DISABLESITE?> <? help('disablesite'); ?>
+			<td><?php echo _SETTINGS_DISABLESITE?> <?php help('disablesite'); ?>
 			</td>
-			<td><? $this->input_yesno('DisableSite',$CONF['DisableSite'],10060); ?>
+			<td><?php $this->input_yesno('DisableSite',$CONF['DisableSite'],10060); ?>
     			    <br />
-			    URL: <input name="DisableSiteURL" tabindex="10070" size="40" value="<?= htmlspecialchars($CONF['DisableSiteURL'])?>" />
+			    URL: <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  htmlspecialchars($CONF['DisableSiteURL'])?>" />
 			</td>
 		</tr><tr>
-			<td><?=_SETTINGS_DIRS?></td>
-			<td><?= htmlspecialchars($DIR_NUCLEUS) ?>
-			    <i><?=_SETTINGS_SEECONFIGPHP?></i></td>				
+			<td><?php echo _SETTINGS_DIRS?></td>
+			<td><?php echo  htmlspecialchars($DIR_NUCLEUS) ?>
+			    <i><?php echo _SETTINGS_SEECONFIGPHP?></i></td>				
 		</tr><tr>		
-			<td><?=_SETTINGS_DBLOGIN?></td>
-			<td><i><?=_SETTINGS_SEECONFIGPHP?></i></td>
+			<td><?php echo _SETTINGS_DBLOGIN?></td>
+			<td><i><?php echo _SETTINGS_SEECONFIGPHP?></i></td>
 		</tr><tr>
 			<td>Javascript Toolbar Style
-			<? /* =_SETTINGS_DISABLEJS 
+			<?php /* =_SETTINGS_DISABLEJS 
 			
 					I temporary changed the meaning of DisableJsTools, until I can find a good
 					way to select the javascript version to use 
@@ -3886,10 +3827,9 @@ selector();
 			    */
 			   ?>
 			</td>
-			<td><? /* $this->input_yesno('DisableJsTools',$CONF['DisableJsTools'],10075); */?>
+			<td><?php /* $this->input_yesno('DisableJsTools',$CONF['DisableJsTools'],10075); */?>
 				<select name="DisableJsTools" tabindex="10075">
-			<?
-					$extra = ($CONF['DisableJsTools'] == 1) ? 'selected="selected"' : ''; 
+			<?php					$extra = ($CONF['DisableJsTools'] == 1) ? 'selected="selected"' : ''; 
 					echo "<option $extra value='1'>Disable Toolbar</option>";
 					$extra = ($CONF['DisableJsTools'] == 2) ? 'selected="selected"' : ''; 					
 					echo "<option $extra value='2'>Simple Toolbar (Non-IE)</option>";
@@ -3899,8 +3839,8 @@ selector();
 				</select>
 			</td>			
 		</tr><tr>
-			<td><?=_SETTINGS_URLMODE?> <?help('urlmode');?></td>
-			<td><? $this->input_yesno('URLMode',$CONF['URLMode'],10078,
+			<td><?php echo _SETTINGS_URLMODE?> <?phphelp('urlmode');?></td>
+			<td><?php $this->input_yesno('URLMode',$CONF['URLMode'],10078,
 					          'normal','pathinfo',_SETTINGS_URLMODE_NORMAL,_SETTINGS_URLMODE_PATHINFO); ?>
 				(Info: <a href="documentation/tips.html#searchengines-fancyurls">How to activate fancy URLs</a>)
 			</td>
@@ -3910,13 +3850,12 @@ selector();
 
 
 		</tr><tr>
-			<th colspan="2"><?=_SETTINGS_MEDIA?> <? help('media'); ?></th>
+			<th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
 		</tr><tr>
-			<td><?=_SETTINGS_MEDIADIR?></td>
-			<td><?= htmlspecialchars($DIR_MEDIA) ?>
-			    <i><?=_SETTINGS_SEECONFIGPHP?></i>
-			    <?
-			    	if (!is_dir($DIR_MEDIA))
+			<td><?php echo _SETTINGS_MEDIADIR?></td>
+			<td><?php echo  htmlspecialchars($DIR_MEDIA) ?>
+			    <i><?php echo _SETTINGS_SEECONFIGPHP?></i>
+			    <?php			    	if (!is_dir($DIR_MEDIA))
 			    		echo "<br /><b>" . _WARNING_NOTADIR . "</b>";
 			    	if (!is_readable($DIR_MEDIA))
 			    		echo "<br /><b>" . _WARNING_NOTREADABLE . "</b>";			    		
@@ -3925,103 +3864,102 @@ selector();
 			    ?>
 			</td>
 		</tr><tr>
-			<td><?=_SETTINGS_MEDIAURL?></td>
+			<td><?php echo _SETTINGS_MEDIAURL?></td>
 			<td>
-			    <input name="MediaURL" tabindex="10080" size="40" value="<?= htmlspecialchars($CONF['MediaURL']) ?>" />
+			    <input name="MediaURL" tabindex="10080" size="40" value="<?php echo  htmlspecialchars($CONF['MediaURL']) ?>" />
 			</td>
 		</tr><tr>
-			<td><?=_SETTINGS_ALLOWUPLOAD?></td>
-			<td><? $this->input_yesno('AllowUpload',$CONF['AllowUpload'],10090); ?></td>
+			<td><?php echo _SETTINGS_ALLOWUPLOAD?></td>
+			<td><?php $this->input_yesno('AllowUpload',$CONF['AllowUpload'],10090); ?></td>
 		</tr><tr>
-			<td><?=_SETTINGS_ALLOWUPLOADTYPES?></td>
+			<td><?php echo _SETTINGS_ALLOWUPLOADTYPES?></td>
 			<td>
-			    <input name="AllowedTypes" tabindex="10100" size="40" value="<?= htmlspecialchars($CONF['AllowedTypes']) ?>" />
+			    <input name="AllowedTypes" tabindex="10100" size="40" value="<?php echo  htmlspecialchars($CONF['AllowedTypes']) ?>" />
 			</td>
 		</tr><tr>
-			<td><?=_SETTINGS_MAXUPLOADSIZE?></td>
+			<td><?php echo _SETTINGS_MAXUPLOADSIZE?></td>
 			<td>
-			    <input name="MaxUploadSize" tabindex="10105" size="40" value="<?= htmlspecialchars($CONF['MaxUploadSize']) ?>" />
+			    <input name="MaxUploadSize" tabindex="10105" size="40" value="<?php echo  htmlspecialchars($CONF['MaxUploadSize']) ?>" />
 			</td>			
 		</tr><tr>
-			<td><?=_SETTINGS_MEDIAPREFIX?></td>
-			<td><? $this->input_yesno('MediaPrefix',$CONF['MediaPrefix'],10110); ?></td>
+			<td><?php echo _SETTINGS_MEDIAPREFIX?></td>
+			<td><?php $this->input_yesno('MediaPrefix',$CONF['MediaPrefix'],10110); ?></td>
 			</td>			
 
 
 
 		</tr><tr>
-			<th colspan="2"><?=_SETTINGS_MEMBERS?></th>
+			<th colspan="2"><?php echo _SETTINGS_MEMBERS?></th>
 		</tr><tr>
-			<td><?=_SETTINGS_CHANGELOGIN?></td>
-			<td><? $this->input_yesno('AllowLoginEdit',$CONF['AllowLoginEdit'],10120); ?></td>
+			<td><?php echo _SETTINGS_CHANGELOGIN?></td>
+			<td><?php $this->input_yesno('AllowLoginEdit',$CONF['AllowLoginEdit'],10120); ?></td>
 		</tr><tr>		
-			<td><?=_SETTINGS_ALLOWCREATE?>
-			    <? help('allowaccountcreation'); ?>
+			<td><?php echo _SETTINGS_ALLOWCREATE?>
+			    <?php help('allowaccountcreation'); ?>
 			</td>
-			<td><? $this->input_yesno('AllowMemberCreate',$CONF['AllowMemberCreate'],10130); ?>
+			<td><?php $this->input_yesno('AllowMemberCreate',$CONF['AllowMemberCreate'],10130); ?>
 			</td>
 		</tr><tr>
-			<td><?=_SETTINGS_NEWLOGIN?> <? help('allownewmemberlogin'); ?>
-			    <br /><?=_SETTINGS_NEWLOGIN2?>
+			<td><?php echo _SETTINGS_NEWLOGIN?> <?php help('allownewmemberlogin'); ?>
+			    <br /><?php echo _SETTINGS_NEWLOGIN2?>
 			</td>
-			<td><? $this->input_yesno('NewMemberCanLogon',$CONF['NewMemberCanLogon'],10140); ?>
-			</td>
-		</tr><tr>		
-			<td><?=_SETTINGS_MEMBERMSGS?>
-			    <? help('messageservice'); ?>
-			</td>
-			<td><? $this->input_yesno('AllowMemberMail',$CONF['AllowMemberMail'],10150); ?>
+			<td><?php $this->input_yesno('NewMemberCanLogon',$CONF['NewMemberCanLogon'],10140); ?>
 			</td>
 		</tr><tr>		
-			<td><?=_SETTINGS_NONMEMBERMSGS?>
-			    <? help('messageservice'); ?>
+			<td><?php echo _SETTINGS_MEMBERMSGS?>
+			    <?php help('messageservice'); ?>
 			</td>
-			<td><? $this->input_yesno('NonmemberMail',$CONF['NonmemberMail'],10155); ?>
+			<td><?php $this->input_yesno('AllowMemberMail',$CONF['AllowMemberMail'],10150); ?>
 			</td>
 		</tr><tr>		
-			<td><?=_SETTINGS_PROTECTMEMNAMES?>
-			    <? help('protectmemnames'); ?>
+			<td><?php echo _SETTINGS_NONMEMBERMSGS?>
+			    <?php help('messageservice'); ?>
 			</td>
-			<td><? $this->input_yesno('ProtectMemNames',$CONF['ProtectMemNames'],10156); ?>
+			<td><?php $this->input_yesno('NonmemberMail',$CONF['NonmemberMail'],10155); ?>
+			</td>
+		</tr><tr>		
+			<td><?php echo _SETTINGS_PROTECTMEMNAMES?>
+			    <?php help('protectmemnames'); ?>
+			</td>
+			<td><?php $this->input_yesno('ProtectMemNames',$CONF['ProtectMemNames'],10156); ?>
 			</td>
 
 
 
 		</tr><tr>
-			<th colspan="2"><?=_SETTINGS_COOKIES_TITLE?> <? help('cookies'); ?></th>
+			<th colspan="2"><?php echo _SETTINGS_COOKIES_TITLE?> <?php help('cookies'); ?></th>
 		</tr><tr>
-			<td><?=_SETTINGS_COOKIEDOMAIN?></td>
-			<td><input name="CookieDomain" tabindex="10160" size="40" value="<?= htmlspecialchars($CONF['CookieDomain'])?>" />
+			<td><?php echo _SETTINGS_COOKIEDOMAIN?></td>
+			<td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  htmlspecialchars($CONF['CookieDomain'])?>" />
 		</tr><tr>
-			<td><?=_SETTINGS_COOKIEPATH?></td>
-			<td><input name="CookiePath" tabindex="10170" size="40" value="<?= htmlspecialchars($CONF['CookiePath'])?>" />
+			<td><?php echo _SETTINGS_COOKIEPATH?></td>
+			<td><input name="CookiePath" tabindex="10170" size="40" value="<?php echo  htmlspecialchars($CONF['CookiePath'])?>" />
 		</tr><tr>
-			<td><?=_SETTINGS_COOKIESECURE?></td>
-			<td><? $this->input_yesno('CookieSecure',$CONF['CookieSecure'],10180); ?></td>
+			<td><?php echo _SETTINGS_COOKIESECURE?></td>
+			<td><?php $this->input_yesno('CookieSecure',$CONF['CookieSecure'],10180); ?></td>
 		</tr><tr>
-			<td><?=_SETTINGS_COOKIELIFE?></td>
-			<td><? $this->input_yesno('SessionCookie',$CONF['SessionCookie'],10190,
+			<td><?php echo _SETTINGS_COOKIELIFE?></td>
+			<td><?php $this->input_yesno('SessionCookie',$CONF['SessionCookie'],10190,
 					          1,0,_SETTINGS_COOKIESESSION,_SETTINGS_COOKIEMONTH); ?>
 			</td>
 		</tr><tr>
-			<td><?=_SETTINGS_LASTVISIT?></td>
-			<td><? $this->input_yesno('LastVisit',$CONF['LastVisit'],10200); ?></td>
+			<td><?php echo _SETTINGS_LASTVISIT?></td>
+			<td><?php $this->input_yesno('LastVisit',$CONF['LastVisit'],10200); ?></td>
 
 
 
 		</tr><tr>
-			<th colspan="2"><?=_SETTINGS_UPDATE?></th>
+			<th colspan="2"><?php echo _SETTINGS_UPDATE?></th>
 		</tr><tr>
-			<td><?=_SETTINGS_UPDATE?></td>
-			<td><input type="submit" tabindex="10210" value="<?=_SETTINGS_UPDATE_BTN?>" onclick="return checkSubmit();" />
+			<td><?php echo _SETTINGS_UPDATE?></td>
+			<td><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN?>" onclick="return checkSubmit();" />
 		</tr></table>
 		
 		</div>
 		</form>
 
 		<h2>Extra Plugin Settings</h2>		
-		<?
-		
+		<?php		
 			$manager->notify(
 				'GeneralSettingsFormExtras', 	
 				array()
@@ -4099,8 +4037,7 @@ selector();
 		$this->pagehead();
 		?>
 		<h2>Error!</h2>
-		<?
-		echo $msg;
+		<?php		echo $msg;
 		echo "<br />";
 		echo "<a href='index.php' onclick='history.back()'>"._BACK."</a>";
 		$this->pagefoot();
@@ -4123,23 +4060,22 @@ selector();
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html>
 		<head>
-			<title><?=htmlspecialchars($CONF['SiteName'])?> - Admin</title>		
+			<title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>		
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="styles/admin.css" />
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" 
 			href="styles/addedit.css" />
 			
 			<script type="text/javascript" src="javascript/edit.js"></script>
 			<script type="text/javascript" src="javascript/admin.js"></script>
-			<?=$extrahead?>
+			<?php echo $extrahead?>
 		</head>
 		<body>
 		<div class="header">
-		<h1><?=htmlspecialchars($CONF['SiteName'])?></h1>
+		<h1><?php echo htmlspecialchars($CONF['SiteName'])?></h1>
 		</div>
 		<div class="content">
 		<div class="loginname">
-		<?
-			if ($member->isLoggedIn()) 
+		<?php			if ($member->isLoggedIn()) 
 				echo _LOGGEDINAS . ' ' . $member->getDisplayName()
 				    ." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
 				    . "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> - ";
@@ -4148,23 +4084,21 @@ selector();
 
 			echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
 		?> 
-		<br />(Nucleus <?= $nucleus['version'] ?>)
+		<br />(Nucleus <?php echo  $nucleus['version'] ?>)
 		</div>
-		<?
-	}
+		<?php	}
 	
 	function pagefoot() {
 		global $action, $member;
 		
 		if ($action != 'showlogin') {
 			?>
-			<h2><?= _LOGOUT ?></h2>
+			<h2><?php echo  _LOGOUT ?></h2>
 			<ul>
-				<li><a href="index.php?action=overview"><?= _BACKHOME?></a></li>
-				<li><a href='index.php?action=logout'><?= _LOGOUT?></a></li>
+				<li><a href="index.php?action=overview"><?php echo  _BACKHOME?></a></li>
+				<li><a href='index.php?action=logout'><?php echo  _LOGOUT?></a></li>
 			</ul>
-			<?
-		}
+			<?php		}
 		?>
 			<div class="foot">
 				<a href="http://nucleuscms.org/">Nucleus</a> &copy; 2001-2002 The Nucleus Group
@@ -4174,11 +4108,10 @@ selector();
 			
 			</div><!-- content -->
 			
-		<? /* TO be worked on...
+		<?php /* TO be worked on...
 
 			<div class="quickmenu">
-				<?
-				// ---- user settings ---- 
+				<?php				// ---- user settings ---- 
 				echo '<h2>' . _OVERVIEW_YRSETTINGS . '</h2>';
 				echo '<ul>';
 				echo '<li><a href="index.php?action=editmembersettings">' . _OVERVIEW_EDITSETTINGS. '</a></li>';
@@ -4219,8 +4152,7 @@ selector();
 			
 			</body>
 			</html>
-		<?
-	}
+		<?php	}
 	
 	
 	function action_regfile() {
@@ -4276,18 +4208,18 @@ selector();
 			You can drag the following link to your favorites, or your browsers toolbar: <small>(if you want to test the bookmarklet first, click the link)</small>
 			<br />
 			<br />
-			<a href="<?=htmlspecialchars($bm)?>">Add to <?=$blog->getShortName()?></a> (IE5/6 on PC)
+			<a href="<?php echo htmlspecialchars($bm)?>">Add to <?php echo $blog->getShortName()?></a> (IE5/6 on PC)
 			<br />
-			<a href="<?=htmlspecialchars($bmMac)?>">Add to <?=$blog->getShortName()?></a> (IE5 on 			Mac)			
+			<a href="<?php echo htmlspecialchars($bmMac)?>">Add to <?php echo $blog->getShortName()?></a> (IE5 on 			Mac)			
 			<br />
-			<a href="<?=htmlspecialchars($bmMoz)?>">Add to <?=$blog->getShortName()?></a> (Mozilla 1.x)
+			<a href="<?php echo htmlspecialchars($bmMoz)?>">Add to <?php echo $blog->getShortName()?></a> (Mozilla 1.x)
 			<br />
-			<a href="<?=htmlspecialchars($bmOpera)?>">Add to <?=$blog->getShortName()?></a> (Opera 6)
+			<a href="<?php echo htmlspecialchars($bmOpera)?>">Add to <?php echo $blog->getShortName()?></a> (Opera 6)
 		</p>
 		
 		<h3>Right Click Menu Access (IE &amp; Windows)</h3>
 		<p>
-			Or you can install the <a href="index.php?action=regfile&amp;blogid=<?=$blogid?>">right click menu item</a> (choose 'open file' and add to registry)
+			Or you can install the <a href="index.php?action=regfile&amp;blogid=<?php echo $blogid?>">right click menu item</a> (choose 'open file' and add to registry)
 		</p>
 		
 		<p>
@@ -4311,8 +4243,7 @@ selector();
 			<li>Delete the "add to weblog" item</li>				
 		</ol>
 		
-		<?
-
+		<?php
 		$this->pagefoot();
 		
 	}
@@ -4328,10 +4259,9 @@ selector();
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';		
 		
 		?>
-			<h2><?=_ACTIONLOG_CLEAR_TITLE?></h2>
-			<p><a href="index.php?action=clearactionlog"><?=_ACTIONLOG_CLEAR_TEXT?></a></p>
-		<?
-
+			<h2><?php echo _ACTIONLOG_CLEAR_TITLE?></h2>
+			<p><a href="index.php?action=clearactionlog"><?php echo _ACTIONLOG_CLEAR_TEXT?></a></p>
+		<?php
 		echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 		
 		$query =  'SELECT * FROM '.sql_table('actionlog').' ORDER BY timestamp DESC';
@@ -4386,36 +4316,35 @@ selector();
 		
 		$this->pagehead();
 		?>
-			<h2><?=_BAN_REMOVE_TITLE?></h2>
+			<h2><?php echo _BAN_REMOVE_TITLE?></h2>
 			
 			<form method="post" action="index.php">
 			
-			<h3><?=_BAN_IPRANGE?></h3>
+			<h3><?php echo _BAN_IPRANGE?></h3>
 			
 			<p>
-				<?=_CONFIRMTXT_BAN?> <?=$iprange?>
-				<input name="iprange" type="hidden" value="<?=htmlspecialchars($iprange)?>" />
+				<?php echo _CONFIRMTXT_BAN?> <?php echo $iprange?>
+				<input name="iprange" type="hidden" value="<?php echo htmlspecialchars($iprange)?>" />
 			</p>
 			
-			<h3><?=_BAN_BLOGS?></h3>
+			<h3><?php echo _BAN_BLOGS?></h3>
 			
 			<div>
-				<input type="hidden" name="blogid" value="<?=$blogid?>" />
-				<input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">Only blog '<?=htmlspecialchars($blog->getName())?>'</label>
+				<input type="hidden" name="blogid" value="<?php echo $blogid?>" />
+				<input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">Only blog '<?php echo htmlspecialchars($blog->getName())?>'</label>
 				<br />
-				<input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?=_BAN_ALLBLOGS?></label>
+				<input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?php echo _BAN_ALLBLOGS?></label>
 			</div>
 			
-			<h3><?=_BAN_DELETE_TITLE?></h3>
+			<h3><?php echo _BAN_DELETE_TITLE?></h3>
 			
 			<div>
 				<input type="hidden" name="action" value="banlistdeleteconfirm" />
-				<input type="submit" value="<?=_DELETE_CONFIRM_BTN?>" />
+				<input type="submit" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div>
 			
 			</form>
-		<?
-		
+		<?php		
 		$this->pagefoot();
 	}
 
@@ -4480,61 +4409,59 @@ selector();
 		
 		$this->pagehead();
 		?>
-		<h2><?=_BAN_ADD_TITLE?></h2>
+		<h2><?php echo _BAN_ADD_TITLE?></h2>
 		
 		
 		<form method="post" action="index.php">
 		
-		<h3><?=_BAN_IPRANGE?></h3>
+		<h3><?php echo _BAN_IPRANGE?></h3>
 		
-		<p><?=_BAN_IPRANGE_TEXT?></p>
+		<p><?php echo _BAN_IPRANGE_TEXT?></p>
 		
 		<div class="note">
 		<b>An example</b>: "134.58.253.193" will only block one computer, while "134.58.253" will block 256 IP addresses, including the one from the first example.
 		</div>
 		
 		<div>
-		<?
-			if ($ip) { 
+		<?php			if ($ip) { 
 		?>
-			<input name="iprange" type="radio" value="<?=htmlspecialchars($ip)?>" checked="checked" id="ip_fixed" /><label for="ip_fixed"><?=htmlspecialchars($ip)?></label>
+			<input name="iprange" type="radio" value="<?php echo htmlspecialchars($ip)?>" checked="checked" id="ip_fixed" /><label for="ip_fixed"><?php echo htmlspecialchars($ip)?></label>
 			<br />
-			<input name="iprange" type="radio" value="custom" id="ip_custom" /><label for="ip_custom">Custom: </label><input name='customiprange' value='<?=htmlspecialchars($ip)?>' maxlength='15' size='15' />
-		<?	} else {
+			<input name="iprange" type="radio" value="custom" id="ip_custom" /><label for="ip_custom">Custom: </label><input name='customiprange' value='<?php echo htmlspecialchars($ip)?>' maxlength='15' size='15' />
+		<?php	} else {
 				echo "<input name='iprange' value='custom' type='hidden' />";
 				echo "<input name='customiprange' value='' maxlength='15' size='15' />";
 			}
 		?>
 		</div>
 		
-		<h3><?=_BAN_BLOGS?></h3>
+		<h3><?php echo _BAN_BLOGS?></h3>
 
-		<p><?=_BAN_BLOGS_TEXT?></p>
+		<p><?php echo _BAN_BLOGS_TEXT?></p>
 
 		<div>		
-			<input type="hidden" name="blogid" value="<?=$blogid?>" />
-			<input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">'<?=htmlspecialchars($blog->getName())?>'</label>
+			<input type="hidden" name="blogid" value="<?php echo $blogid?>" />
+			<input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">'<?php echo htmlspecialchars($blog->getName())?>'</label>
 			<br />
-			<input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?=_BAN_ALLBLOGS?></label>
+			<input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?php echo _BAN_ALLBLOGS?></label>
 		</div>
 		
-		<h3><?=_BAN_REASON_TITLE?></h3>
+		<h3><?php echo _BAN_REASON_TITLE?></h3>
 
-		<p><?=_BAN_REASON_TEXT?></p>
+		<p><?php echo _BAN_REASON_TEXT?></p>
 		
 		<div><textarea name="reason" cols="40" rows="5"></textarea></div>
 
-		<h3><?=_BAN_ADD_TITLE?></h3>
+		<h3><?php echo _BAN_ADD_TITLE?></h3>
 		
 		<div>
 			<input name="action" type="hidden" value="banlistadd" />
-			<input type="submit" value="<?=_BAN_ADD_BTN?>" />
+			<input type="submit" value="<?php echo _BAN_ADD_BTN?>" />
 		</div>
 		
 		</form>
 		
-		<?
-		$this->pagefoot();
+		<?php		$this->pagefoot();
 	}
 	
 	function action_banlistadd() {
@@ -4589,43 +4516,42 @@ selector();
 
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';				
 		?>
-		<h2><?=_BACKUPS_TITLE?></h2>
+		<h2><?php echo _BACKUPS_TITLE?></h2>
 		
-		<h3><?=_BACKUP_TITLE?></h3>
+		<h3><?php echo _BACKUP_TITLE?></h3>
 		
-		<p><?=_BACKUP_INTRO?></p>
+		<p><?php echo _BACKUP_INTRO?></p>
 		
 		<form method="post" action="index.php"><p>
 		<input type="hidden" name="action" value="backupcreate" />
 
-		<input type="radio" name="gzip" value="1" checked="checked" id="gzip_yes" tabindex="10" /><label for="gzip_yes"><?=_BACKUP_ZIP_YES?></label>
+		<input type="radio" name="gzip" value="1" checked="checked" id="gzip_yes" tabindex="10" /><label for="gzip_yes"><?php echo _BACKUP_ZIP_YES?></label>
 		<br />
-		<input type="radio" name="gzip" value="0" id="gzip_no" tabindex="10" /><label for="gzip_no" ><?=_BACKUP_ZIP_NO?></label>
+		<input type="radio" name="gzip" value="0" id="gzip_no" tabindex="10" /><label for="gzip_no" ><?php echo _BACKUP_ZIP_NO?></label>
 		<br /><br />
-		<input type="submit" value="<?=_BACKUP_BTN?>" tabindex="20" />
+		<input type="submit" value="<?php echo _BACKUP_BTN?>" tabindex="20" />
 		
 		</p></form>
 		
-		<div class="note"><?=_BACKUP_NOTE?></div>
+		<div class="note"><?php echo _BACKUP_NOTE?></div>
 
 	
-		<h3><?=_RESTORE_TITLE?></h3>
+		<h3><?php echo _RESTORE_TITLE?></h3>
 		
-		<div class="note"><?=_RESTORE_NOTE?></div>
+		<div class="note"><?php echo _RESTORE_NOTE?></div>
 		
-		<p><?=_RESTORE_INTRO?></p>
+		<p><?php echo _RESTORE_INTRO?></p>
 		
 		<form method="post" action="index.php" enctype="multipart/form-data"><p>
 			<input type="hidden" name="action" value="backuprestore" />
 			<input name="backup_file" type="file" tabindex="30" />
 			<br /><br />
-			<input type="submit" value="<?=_RESTORE_BTN?>" tabindex="40" />		
-			<br /><input type="checkbox" name="letsgo" value="1" id="letsgo" tabindex="50" /><label for="letsgo"><?=_RESTORE_IMSURE?></label>
-			<br /><?=_RESTORE_WARNING?>
+			<input type="submit" value="<?php echo _RESTORE_BTN?>" tabindex="40" />		
+			<br /><input type="checkbox" name="letsgo" value="1" id="letsgo" tabindex="50" /><label for="letsgo"><?php echo _RESTORE_IMSURE?></label>
+			<br /><?php echo _RESTORE_WARNING?>
 		</p></form>
 
-		<?
-		$this->pagefoot();
+		<?php		$this->pagefoot();
 	}
 
 	function action_backupcreate() {
@@ -4667,9 +4593,8 @@ selector();
 			
 		$this->pagehead();
 		?>
-		<h2><?=_RESTORE_COMPLETE?></h2>
-		<?
-		$this->pagefoot();
+		<h2><?php echo _RESTORE_COMPLETE?></h2>
+		<?php		$this->pagefoot();
 
 	}
 	
@@ -4696,19 +4621,18 @@ selector();
 		showlist($query, 'table', $template);
 	
 		?>
-			<h3><?=_PLUGS_TITLE_UPDATE?></h3>
+			<h3><?php echo _PLUGS_TITLE_UPDATE?></h3>
 			
-			<p><?=_PLUGS_TEXT_UPDATE?></p>
+			<p><?php echo _PLUGS_TEXT_UPDATE?></p>
 			
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="pluginupdate" />
 				<input type="submit" value="Update Subscription List" tabindex="20" />
 			</div></form>
 			
-			<h3><?=_PLUGS_TITLE_NEW?></h3>
+			<h3><?php echo _PLUGS_TITLE_NEW?></h3>
 
-			<?
-				// find a list of possibly non-installed plugins
+			<?php				// find a list of possibly non-installed plugins
 				$candidates = array();
 				global $DIR_PLUGINS;
 				$dirhandle = opendir($DIR_PLUGINS);
@@ -4725,22 +4649,20 @@ selector();
 				if (sizeof($candidates) > 0) {
 			?>
 
-			<p><?=_PLUGS_ADD_TEXT?></p>
+			<p><?php echo _PLUGS_ADD_TEXT?></p>
 			
 
 			<form method='post' action='index.php'><div>
 				<input type='hidden' name='action' value='pluginadd' />
 				<select name="filename" tabindex="30">
-				<?
-					foreach($candidates as $name)
+				<?php					foreach($candidates as $name)
 						echo '<option value="NP_',$name,'">',htmlspecialchars($name),'</option>';
 				?>
 				</select>
-				<input type='submit' tabindex="40" value='<?=_PLUGS_BTN_INSTALL?>' />
+				<input type='submit' tabindex="40" value='<?php echo _PLUGS_BTN_INSTALL?>' />
 			</div></form>
 
-		<?
-			} else {	// sizeof(candidates) == 0
+		<?php			} else {	// sizeof(candidates) == 0
 				echo '<p>',_PLUGS_NOCANDIDATES,'</p>';
 			}
 		
@@ -4853,17 +4775,16 @@ selector();
 			
 		$this->pagehead();
 		?>
-			<h2><?=_DELETE_CONFIRM?></h2>
+			<h2><?php echo _DELETE_CONFIRM?></h2>
 			
-			<p><?=_CONFIRMTXT_PLUGIN?> <strong><?=getPluginNameFromPid($pid)?></strong>?</p>
+			<p><?php echo _CONFIRMTXT_PLUGIN?> <strong><?php echo getPluginNameFromPid($pid)?></strong>?</p>
 			
 			<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="plugindeleteconfirm" />
-			<input type="hidden" name="plugid" value="<?=$pid; ?>" />
-			<input type="submit" tabindex="10" value="<?=_DELETE_CONFIRM_BTN?>" />
+			<input type="hidden" name="plugid" value="<?php echo $pid; ?>" />
+			<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
-		<?
-		$this->pagefoot();
+		<?php		$this->pagefoot();
 	}
 	
 	function action_plugindeleteconfirm() {
@@ -4979,18 +4900,17 @@ selector();
 		$this->pagehead();
 
 		?>
-			<p><a href="index.php?action=pluginlist">(<?=_PLUGS_BACK?>)</a></p>
+			<p><a href="index.php?action=pluginlist">(<?php echo _PLUGS_BACK?>)</a></p>
 			
-			<h2>Options for <?=htmlspecialchars(getPluginNameFromPid($pid))?></h2>
+			<h2>Options for <?php echo htmlspecialchars(getPluginNameFromPid($pid))?></h2>
 
-			<?if ($message) echo $message?>
+			<?php if  ($message) echo $message?>
 
 			<form action="index.php" method="post">
 			<div>
 				<input type="hidden" name="action" value="pluginoptionsupdate" />
-				<input type="hidden" name="plugid" value="<?=$pid?>" />				
-		<?
-		
+				<input type="hidden" name="plugid" value="<?php echo $pid?>" />				
+		<?php		
 		$aOptions = array();
 		$r = sql_query('SELECT oname as name, ovalue as value, odesc as description, otype as type FROM '.sql_table('plugin_option').' WHERE opid='.$pid.' order by oid asc');
 		while ($o = mysql_fetch_object($r)) array_push($aOptions, $o);
@@ -5006,8 +4926,7 @@ selector();
 		?>
 			</div>
 			</form>
-		<?
-		$this->pagefoot();
+		<?php		$this->pagefoot();
 		
 		
 		
@@ -5128,48 +5047,47 @@ class NAVLIST extends ENCAPSULATE {
 	<table class="navigation">
 	<tr><td>
 		<form method="post" action="index.php"><div>
-		<input type="submit" value="&lt;&lt; <?= _LISTS_PREV?>" />	
-		<input type="hidden" name="blogid" value="<?= $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?= $itemid; ?>" />	
-		<input type="hidden" name="action" value="<?= $action; ?>" />
-		<input type="hidden" name="amount" value="<?= $amount; ?>" />
-		<input type="hidden" name="search" value="<?= $search; ?>" />
-		<input type="hidden" name="start" value="<?= $prev; ?>" />
+		<input type="submit" value="&lt;&lt; <?php echo  _LISTS_PREV?>" />	
+		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />	
+		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
+		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
+		<input type="hidden" name="start" value="<?php echo  $prev; ?>" />
 		</div></form>
 	</td><td>
 		<form method="post" action="index.php"><div>
-		<input type="hidden" name="blogid" value="<?= $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?= $itemid; ?>" />		
-		<input type="hidden" name="action" value="<?= $action; ?>" />
-		<input name="amount" size="3" value="<?= $amount; ?>" /> <?=_LISTS_PERPAGE?> 
-		<input type="hidden" name="start" value="<?= $start; ?>" />
-		<input type="hidden" name="search" value="<?= $search; ?>" />
-		<input type="submit" value="&gt; <?=_LISTS_CHANGE?>" />	
+		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />		
+		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+		<input name="amount" size="3" value="<?php echo  $amount; ?>" /> <?php echo _LISTS_PERPAGE?> 
+		<input type="hidden" name="start" value="<?php echo  $start; ?>" />
+		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
+		<input type="submit" value="&gt; <?php echo _LISTS_CHANGE?>" />	
 		</div></form>
 	</td><td>	
 		<form method="post" action="index.php"><div>
-		<input type="hidden" name="blogid" value="<?= $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?= $itemid; ?>" />		
-		<input type="hidden" name="action" value="<?= $action; ?>" />
-		<input type="hidden" name="amount" value="<?= $amount; ?>" />
+		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />		
+		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
 		<input type="hidden" name="start" value="0" />
-		<input type="text" name="search" value="<?= $search; ?>" size="7" />
-		<input type="submit" value="&gt; <?= _LISTS_SEARCH?>" />	
+		<input type="text" name="search" value="<?php echo  $search; ?>" size="7" />
+		<input type="submit" value="&gt; <?php echo  _LISTS_SEARCH?>" />	
 		</div></form>
 	</td><td>	
 		<form method="post" action="index.php"><div>
-		<input type="submit" value="<?=_LISTS_NEXT?> &gt; &gt;" />	
-		<input type="hidden" name="search" value="<?= $search; ?>" />
-		<input type="hidden" name="blogid" value="<?= $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?= $itemid; ?>" />		
-		<input type="hidden" name="action" value="<?= $action; ?>" />
-		<input type="hidden" name="amount" value="<?= $amount; ?>" />
-		<input type="hidden" name="start" value="<?= $next; ?>" />
+		<input type="submit" value="<?php echo _LISTS_NEXT?> &gt; &gt;" />	
+		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
+		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />		
+		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
+		<input type="hidden" name="start" value="<?php echo  $next; ?>" />
 		</div></form>	
 	</td></tr>
 	</table>
-	<?
-	}
+	<?php	}
 
 
 }
@@ -5185,7 +5103,7 @@ class BATCH extends ENCAPSULATE {
 	function showHead() {
 		?>
 			<form method="post" action="index.php">
-		<?
+		<?php
 // TODO: get a list op operations above the list too 
 // (be careful not to use the same names for the select...)
 //		$this->showOperationList();		
@@ -5195,16 +5113,14 @@ class BATCH extends ENCAPSULATE {
 		$this->showOperationList();
 		?>
 			</form>
-		<?
-	}
+		<?php	}
 
 	function showOperationList() {
 		?>
 		<div class="batchoperations">
 			With selected: 
 			<select name="batchaction">
-			<?
-				$options = array();
+			<?php				$options = array();
 				switch($this->type) {
 					case 'item':
 						$options = array(
@@ -5243,9 +5159,8 @@ class BATCH extends ENCAPSULATE {
 				}
 			?>
 			</select>
-			<input type="hidden" name="action" value="batch<?=$this->type?>" />
-			<?
-				// add hidden fields for 'team' and 'comment' batchlists
+			<input type="hidden" name="action" value="batch<?php echo $this->type?>" />
+			<?php				// add hidden fields for 'team' and 'comment' batchlists
 				if ($this->type == 'team') 
 				{
 					echo '<input type="hidden" name="blogid" value="',intRequestVar('blogid'),'" />';
@@ -5259,12 +5174,11 @@ class BATCH extends ENCAPSULATE {
 			
 			<input type="submit" value="Execute" />
 			(
-			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); "><?=_BATCH_SELECTALL?></a> -
-			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); "><?=_BATCH_DESELECTALL?></a>
+			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); "><?php echo _BATCH_SELECTALL?></a> -
+			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); "><?php echo _BATCH_DESELECTALL?></a>
 			)
 		</div>
-		<?
-	}
+		<?php	}
 	
 	// shortcut :)
 	function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE) {
@@ -5522,12 +5436,11 @@ function listplug_table_plugoptionlist($template, $type) {
 			break;
 		case 'FOOT':
 			?>
-				<th colspan="2"><?=_PLUGS_SAVE?></tr>
+				<th colspan="2"><?php echo _PLUGS_SAVE?></tr>
 			</tr><tr>
-				<td><?=_PLUGS_SAVE?></td>
-				<td><input type="submit" value="<?=_PLUGS_SAVE?>" /></td>
-			<?
-			break;
+				<td><?php echo _PLUGS_SAVE?></td>
+				<td><input type="submit" value="<?php echo _PLUGS_SAVE?>" /></td>
+			<?php			break;
 	}
 }
 

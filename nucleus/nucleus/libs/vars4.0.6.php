@@ -1,5 +1,4 @@
-<?
-
+<?php
 /**
   * The purpose of the functions below is to avoid declaring HTTP_ vars to be global
   * everywhere, plus to offer support for php versions before 4.1.0, that do not

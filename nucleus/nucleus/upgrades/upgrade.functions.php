@@ -1,5 +1,4 @@
-<?
-	/**
+<?php	/**
 	  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
 	  * Copyright (C) 2002 The Nucleus Group
 	  *
@@ -74,7 +73,7 @@
 		<h1>Please Log in First</h1>
 		<p>Enter your data below:</p>
 		
-		<form method="post" action="<?=$type?>">
+		<form method="post" action="<?php echo $type?>">
 
 			<ul>
 				<li>Name: <input name="login" /></li>
@@ -87,8 +86,7 @@
 			</p>
 		
 		</form>
-	<?
-		upgrade_foot();
+	<?php		upgrade_foot();
 		exit;
 	}
 	
@@ -109,15 +107,13 @@
 				--></style>
 			</head>
 			<body>		
-	<?
-	}
+	<?php	}
 
 	function upgrade_foot() {
 	?>
 			</body>
 			</html>	
-	<?
-	}	
+	<?php	}	
 	
 	function upgrade_error($msg) {
 		upgrade_head();
@@ -127,12 +123,11 @@
 		<p>Message was:</p>
 		
 		<blockquote><div>
-		<?=$msg?>
+		<?php echo $msg?>
 		</div></blockquote>
 
 		<p><a href="index.php" onclick="history.back();">Go Back</a></p>
-		<?
-
+		<?php
 		upgrade_foot();
 		exit;
 	}
@@ -146,8 +141,7 @@
 		?>
 		<h1>Executing Upgrades</h1>
 		<ul>
-		<?
-	}
+		<?php	}
 	
 	function upgrade_end($msg = "") {
 		global $upgrade_failures;
@@ -159,12 +153,11 @@
 		
 		<h1>Upgrade Completed!</h1>
 
-		<p><?=$msg?></p>
+		<p><?php echo $msg?></p>
 		
 		<p>Back to the <a href="index.php">Upgrades Overview</a></p>
 
-		<?
-
+		<?php
 		upgrade_foot();
 		exit;
 	}	

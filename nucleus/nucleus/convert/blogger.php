@@ -1,5 +1,4 @@
-<?
-
+<?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
  * Copyright (C) 2002 The Nucleus Group
@@ -136,8 +135,7 @@ function bc_getBloggerBlogID() {
 		</form>
 		</p>
 		
-	<?
-	
+	<?php	
 	convert_foot();
 }
 
@@ -171,8 +169,7 @@ function bc_assignMembers() {
 			<th>Blog Admin?</th>
 		</tr>
 	
-		<?
-		
+		<?php		
 		$blog = new RAX();
 		$blog->openfile('blogger.xml'); 
 		$blog->record_delim = 'blogentry';
@@ -196,23 +193,21 @@ while ($a_name = array_pop($authors)) {
 	?>
 		<tr>
 			<td>
-				<b><?=$a_name?></b>
-				<input name="author[<?=$idx?>]" value="<?=htmlspecialchars($a_name)?>" type="hidden"
+				<b><?php echo $a_name?></b>
+				<input name="author[<?php echo $idx?>]" value="<?php echo htmlspecialchars($a_name)?>" type="hidden"
 			</td>
 			<td>
-		<?
-			$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
+		<?php			$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 			$template['name'] = 'memberid[' . $idx . ']';
 			showlist($query,'select',$template);		
 		?>
 			</td>
 			<td>
-				<input name="admin[<?=$idx?>]" type="checkbox" value="1" id="admin<?=$idx?>" /><label for="admin<?=$idx?>">Blog Admin</label>
+				<input name="admin[<?php echo $idx?>]" type="checkbox" value="1" id="admin<?php echo $idx?>" /><label for="admin<?php echo $idx?>">Blog Admin</label>
 			</td>
 		</tr>
-	<?
-	$idx++;
+	<?php	$idx++;
 } // while
 
 		
@@ -229,8 +224,7 @@ while ($a_name = array_pop($authors)) {
 		<div>
 			<input name="createnew" value="0" type="radio" checked='checked' id="createnew_no" /><label for="createnew_no">Choose existing weblog to add to:</label>
 			
-			<?
-					$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
+			<?php					$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
 					$template['name'] = 'blogid';
 					$template['selected'] = $CONF['DefaultBlog'];
 					showlist($query,'select',$template);				
@@ -241,8 +235,7 @@ while ($a_name = array_pop($authors)) {
 			<ul>
 				<li>New blog name: <input name="newblogname" /></li>
 				<li>Blog owner: 
-				<?
-					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
+				<?php					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 					$template['name'] = 'newowner';
 					showlist($query,'select',$template);		
@@ -253,7 +246,7 @@ while ($a_name = array_pop($authors)) {
 		
 		<h1>Do the conversion!</h1>
 		<p>
-		<input type="hidden" name="authorcount" value="<?=$idx?>" />
+		<input type="hidden" name="authorcount" value="<?php echo $idx?>" />
 		<input type="submit" value="Step 3: Do the conversion!" />
 		<input type="hidden" name="action" value="doConversion" />
 		</p>
@@ -263,8 +256,7 @@ while ($a_name = array_pop($authors)) {
 		</div>
 		
 		</form>
-	<?
-	
+	<?php	
 	convert_foot();
 
 }
@@ -300,8 +292,7 @@ function bc_doConversion() {
 		<p>
 		Please be patient. Don't hit reload! The conversion progress should be showing below.
 		</p>
-	<?
-	
+	<?php	
 	// try to extend time limit 
 	// surpress error messages when not allowed to do so
 	@set_time_limit(1200);
