@@ -275,14 +275,16 @@ function sql_query($query) {
  * @param $text 
  *		text to be highlighted 
  * @param $expression
- *		regular expression to be matched
+ *		regular expression to be matched (can be an array of expressions as well)
  * @param $highlight
  *		highlight to be used (use \\0 to indicate the matched expression)
  *
  */
 function highlight($text, $expression, $highlight) {
-	if (!$highlight) return $text;
-	
+	if (!$highlight || !$expression) return $text;
+	if (is_array($expression) && (count($expression) == 0))
+		return $text;
+
 	// add a tag in front (is needed for preg_match_all to work correct)
 	$text = '<!--h-->'.$text;
 	
@@ -296,10 +298,40 @@ function highlight($text, $expression, $highlight) {
 	$result = '';
 	for ($i = 0; $i < sizeof($matches[2]); $i++) {
 		if ($i != 0) $result .= $matches[1][$i];
-		$result .= @eregi_replace($expression,$highlight,$matches[2][$i]);
+
+		if (is_array($expression)) {
+			foreach ($expression as $regex) 
+				$matches[2][$i] = @eregi_replace($regex,$highlight,$matches[2][$i]);
+			$result .= $matches[2][$i];
+		} else {
+			$result .= @eregi_replace($expression,$highlight,$matches[2][$i]);
+		}
 	}
 	
 	return $result;
+}
+
+/**
+ * Parses a query into an array of expressions that can be passed on to the highlight method
+ */
+function parseHighlight($query) {
+	// TODO: add more intelligent splitting logic
+
+	// get rid of quotes
+	$query = preg_replace('/\'|"/','',$query);
+
+	if (!query) return array();
+	
+	$aHighlight = explode(' ', $query); 
+	
+	for ($i = 0; $i<count($aHighlight); $i++)
+		if (strlen($aHighlight[$i]) < 3)
+			unset($aHighlight[$i]);
+	
+	if (count($aHighlight) == 1)
+		return $aHighlight[0];
+	else
+		return $aHighlight;
 }
 
 /**
