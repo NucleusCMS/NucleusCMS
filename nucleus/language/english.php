@@ -13,6 +13,55 @@
 // and will be available for download (with proper credit to the author, of course)
 
 // START changed/added after 3.1 START
+
+// global settings 
+define('_SETTINGS_JSTOOLBAR',		'Javascript Toolbar Style');
+define('_SETTINGS_JSTOOLBAR_FULL',	'Full Toolbar (IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE','Simple Toolbar (Non-IE)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Disable Toolbar');
+define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">How to activate fancy URLs</a>)');
+
+// extra plugin settings part when editing categories/members/blogs/...
+define('_PLUGINS_EXTRA',			'Extra Plugin Settings');
+
+// itemlist info column keys
+define('_LIST_ITEM_BLOG',			'blog:');
+define('_LIST_ITEM_CAT',			'cat:');
+define('_LIST_ITEM_AUTHOR',			'author:');
+define('_LIST_ITEM_DATE',			'date:');
+define('_LIST_ITEM_TIME',			'time:');
+
+// indication of registered members in comments list
+define('_LIST_COMMENTS_MEMBER', 	'(member)');
+
+// batch operations
+define('_BATCH_WITHSEL',			'With selected:');
+define('_BATCH_EXEC',				'Execute');
+
+// quickmenu
+define('_QMENU_HOME',				'Home');
+define('_QMENU_ADD',				'Add Item');
+define('_QMENU_ADD_SELECT',			'-- select --');
+define('_QMENU_USER_SETTINGS',		'Settings');
+define('_QMENU_USER_ITEMS',			'Items');
+define('_QMENU_USER_COMMENTS',		'Comments');
+define('_QMENU_MANAGE',				'Management');
+define('_QMENU_MANAGE_LOG',			'Action Log');
+define('_QMENU_MANAGE_SETTINGS',	'Global Settings');
+define('_QMENU_MANAGE_MEMBERS',		'Members');
+define('_QMENU_MANAGE_NEWBLOG',		'New Weblog');
+define('_QMENU_MANAGE_BACKUPS',		'Backups');
+define('_QMENU_MANAGE_PLUGINS',		'Plugins');
+define('_QMENU_LAYOUT',				'Layout');
+define('_QMENU_LAYOUT_SKINS',		'Skins');
+define('_QMENU_LAYOUT_TEMPL',		'Templates');
+define('_QMENU_LAYOUT_IEXPORT',		'Import/Export');
+define('_QMENU_PLUGINS',			'Plugins');
+
+// quickmenu on logon screen
+define('_QMENU_INTRO',				'Introduction');
+define('_QMENU_INTRO_TEXT',			'<p>This is the logon screen for Nucleus CMS, the content management system that\'s being used to maintain this website.</p><p>If you have an account, you can log on and start posting new items.</p>');
+
 // helppages for plugins
 define('_ERROR_PLUGNOHELPFILE',		'The helpfile for this plugin can not be found');
 define('_PLUGS_HELP_TITLE',			'Helppage for plugin');
