@@ -636,9 +636,16 @@ function selectSkin($skinname) {
 	$skinid = SKIN::getIdFromName($skinname);
 }
 
-function selectCategory($catname) {
+/**
+ * Can take either a category ID or a category name (be aware that
+ * multiple categories can have the same name)
+ */
+function selectCategory($cat) {
 	global $catid;
-	$catid = getCatIDFromName($catname);
+	if (is_numeric($cat)) 
+		$catid = intval($cat);
+	else
+		$catid = getCatIDFromName($cat);
 }
 
 function selectItem($id){
