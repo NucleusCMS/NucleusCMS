@@ -53,7 +53,7 @@ class NOTIFICATION {
 			if ($member->isLoggedIn() && ($member->getEmail() == $address))
 				continue;
 		
-			@mail($address, $title, $message , "From: ". $from . "\nContent-Type: text/plain; charset=iso-8859-1");
+			@mail($address, $title, $message , "From: ". $from . "\nContent-Type: text/plain; charset=utf-8");
 		}
 	}
 }
