@@ -43,7 +43,12 @@ class ACTIONLOG {
 	  * (Static) Method to clear log
 	  */
 	function clear() {
+		global $manager;
+		
 		$query = "DELETE FROM nucleus_actionlog";
+
+		$manager->notify('ActionLogCleared',array());
+		
 		return sql_query($query);
 	}
 

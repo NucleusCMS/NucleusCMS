@@ -288,21 +288,56 @@ class BLOG {
 
 	
 	/**
-	  * Used by add/edit item to allow new categories to be created by blog admins
-	  * returns false when not allowed, new catid otherwise
+	  * Creates a new category for this blog
+	  *
+	  * @param $catName
+	  *		name of the new category. When empty, a name is generated automatically 
+	  *		(starting with newcat)
+	  * @param $catDescription
+	  *		description of the new category. Defaults to 'New Category'
+	  *
+	  * @returns 
+	  *		the new category-id in case of success. 
+	  *		0 on failure
 	  */
-	function createNewCategory() {
-		// create new category if requested (and allowed)
-		global $member;
+	function createNewCategory($catName = '', $catDescription = 'New category') {
+		global $member, $manager;
+		
 		if ($member->blogAdminRights($this->getID())) {
-			$catname = 'newcat';
-			$i = 1;
-			while(mysql_num_rows(sql_query("SELECT * FROM nucleus_category WHERE cname='".$catname.$i."' and cblog=".$this->getID())) > 0) 
-				$i++;
-
-			$query = 'INSERT INTO nucleus_category (cblog, cname, cdesc) VALUES (' . $this->getID() . ", '" . addslashes($catname . $i) . "', 'New category')";
+			// generate 
+			if ($catName == '')		
+			{
+				$catName = 'newcat';
+				$i = 1;
+				while(mysql_num_rows(sql_query("SELECT * FROM nucleus_category WHERE cname='".$catName.$i."' and cblog=".$this->getID())) > 0) 
+					$i++;
+				$catName = $catName . $i;
+			}
+			
+			$manager->notify(
+				'PreAddCategory',
+				array(
+					'blog' => &$this,
+					'name' => &$catName,
+					'description' => $catDescription
+				)
+			);
+			
+			$query = 'INSERT INTO nucleus_category (cblog, cname, cdesc) VALUES (' . $this->getID() . ", '" . addslashes($catName) . "', '" . addslashes($catDescription) . "')";
 			sql_query($query);
-			return mysql_insert_id();
+			$catid = mysql_insert_id();
+			
+			$manager->notify(
+				'PreAddCategory',
+				array(
+					'blog' => &$this,
+					'name' => $catName,
+					'description' => $catDescription,
+					'catid' => $catid
+				)
+			);			
+			
+			return $catid;
 		} else {
 			return 0;
 		}
@@ -761,16 +796,37 @@ class BLOG {
 	// tries to add a member to the team. Returns false if the member was already on
 	// the team
 	function addTeamMember($memberid, $admin) {
+		global $manager;
+		
 		// check if member is already a member
 		$tmem = MEMBER::createFromID($memberid);
 		
 		if ($tmem->isTeamMember($this->getID()))
 			return 0;
 		
+		$manager->notify(
+			'PreAddTeamMember',
+			array(
+				'blog' => &$this,
+				'member' => &$tmem,
+				'admin' => &$admin
+			)
+		);
+		
 		// add to team
 		$query = 'INSERT INTO nucleus_team (TMEMBER, TBLOG, TADMIN) '
 		       . 'VALUES (' . $memberid .', '.$this->getID().', "'.$admin.'")';
 		sql_query($query);
+		
+		$manager->notify(
+			'PostAddTeamMember',
+			array(
+				'blog' => &$this,
+				'member' => &$tmem,
+				'admin' => $admin
+			)
+			
+		);
 		
 		ACTIONLOG::add(INFO, 'Added ' . $tmem->getDisplayName() . ' (ID=' .
 		               $memberid .') to the team of blog "' . $this->getName() . '"');

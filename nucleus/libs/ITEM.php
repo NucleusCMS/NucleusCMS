@@ -204,7 +204,19 @@ class ITEM {
 	
 	// move an item to another blog (no checks, static)
 	function move($itemid, $new_catid) {
+		global $manager;
+		
 		$new_blogid = getBlogIDFromCatID($new_catid);
+
+		$manager->notify(
+			'PreMoveItem',
+			array(
+				'itemid' => $itemid,
+				'destblogid' => $new_blogid,
+				'destcatid' => $new_catid
+			)
+		);
+	
 	
 		// update item table
 		$query = "UPDATE nucleus_item SET iblog=$new_blogid, icat=$new_catid WHERE inumber=$itemid";
@@ -213,12 +225,25 @@ class ITEM {
 		// update comments
 		$query = "UPDATE nucleus_comment SET cblog=" . $new_blogid." WHERE citem=" . $itemid;
 		sql_query($query);	
+		
+		$manager->notify(
+			'PostMoveItem',
+			array(
+				'itemid' => $itemid,
+				'destblogid' => $new_blogid,
+				'destcatid' => $new_catid
+			)
+		);		
 	}
 	
 	/**
 	  * Deletes an item
 	  */
 	function delete($itemid) {
+		global $manager;
+		
+		$manager->notify('PreDeleteItem', array('itemid' => $itemid));
+		
 		// delete item
 		$query = 'DELETE FROM nucleus_item WHERE inumber=' . $itemid;
 		sql_query($query);
@@ -226,6 +251,8 @@ class ITEM {
 		// delete the comments associated with the item
 		$query = 'DELETE FROM nucleus_comment WHERE citem=' . $itemid;
 		sql_query($query);	  
+		
+		$manager->notify('PostDeleteItem', array('itemid' => $itemid));		
 	}
 	
 	// returns true if there is an item with the given ID (static)

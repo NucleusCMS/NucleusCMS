@@ -37,9 +37,30 @@ class BAN {
 	  * Adds a new ban to the banlist. Returns 1 on success, 0 on error
 	  */
 	function addBan($blogid, $iprange, $reason) {
+		global $manager;
+	
+		$manager->notify(
+			'PreAddBan',
+			array(
+				'blogid' => $blogid,
+				'iprange' => &$iprange,
+				'reason' => &$reason
+			)
+		);
+	
 		$query = "INSERT INTO nucleus_ban (blogid, iprange, reason) VALUES "
 		       . "($blogid,'$iprange','".addslashes($reason)."')";
 		$res = sql_query($query);
+		
+		$manager->notify(
+			'PostAddBan',
+			array(
+				'blogid' => $blogid,
+				'iprange' => $iprange,
+				'reason' => $reason
+			)
+		);
+		
 		return $res ? 1 : 0;
 	}
 	
@@ -48,9 +69,18 @@ class BAN {
 	  * Returns 1 on success, 0 on error
 	  */
 	function removeBan($blogid, $iprange) {
+		global $manager;
+		
+		$manager->notify('PreDeleteBan', array('blogid' => $blogid, 'range' => $iprange));
+		
 		$query = "DELETE FROM nucleus_ban WHERE blogid=$blogid and iprange='" .addslashes($iprange). "'";
 		sql_query($query);
-		return (mysql_affected_rows() > 0);
+		
+		$result = (mysql_affected_rows() > 0);
+		
+		$manager->notify('PostDeleteBan', array('blogid' => $blogid, 'range' => $iprange));
+		
+		return $result;
 	}
 }
 
