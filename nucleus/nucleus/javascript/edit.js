@@ -138,7 +138,7 @@ function addMedia(type) {
 	nonie_FormType = type;	// form type (for non-ie browsers)
 	
 	var mediapopup = window.open(nucleusMediaPopupURL + 'media.php','name',
-		'status=yes,toolbar=no,scrollbars=yes,resizable=yes,width=500,height=400,top=0,left=0');
+		'status=yes,toolbar=no,scrollbars=yes,resizable=yes,width=500,height=450,top=0,left=0');
 
 	return;
 } 

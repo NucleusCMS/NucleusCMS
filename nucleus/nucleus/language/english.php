@@ -12,6 +12,34 @@
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
 
+// START introduced after v2.0 START
+
+// media library
+define('_MEDIA_VIEW',				'view');
+define('_MEDIA_VIEW_TT',			'View file (opens in new window)');
+define('_MEDIA_FILTER_APPLY',		'Apply Filter');
+define('_MEDIA_FILTER_LABEL',		'Filter: ');
+define('_MEDIA_UPLOAD_TO',			'Upload to...');
+define('_MEDIA_UPLOAD_NEW',			'Upload new file...');
+define('_MEDIA_COLLECTION_SELECT',	'Select');
+define('_MEDIA_COLLECTION_TT',		'Switch to this category');
+define('_MEDIA_COLLECTION_LABEL',	'Current collection: ');
+
+// tooltips on toolbar
+define('_ADD_ALIGNLEFT_TT',			'Align Left');
+define('_ADD_ALIGNRIGHT_TT',		'Align Right');
+define('_ADD_ALIGNCENTER_TT',		'Align Center');
+
+/*
+define('','');
+define('','');
+define('','');
+define('','');
+define('','');
+define('','');
+*/
+// END introduced after v2.0 END
+
 // START introduced after v1.5 START
 
 // posting to the past/edit timestamps
