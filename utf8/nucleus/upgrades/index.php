@@ -9,8 +9,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: index.php,v 1.4 2005-03-18 06:07:10 kimitake Exp $
-  * $NucleusJP$
+  * $Id: index.php,v 1.5 2005-03-19 07:20:28 kimitake Exp $
+  * $NucleusJP: index.php,v 1.4 2005/03/18 06:07:10 kimitake Exp $
   */
 
 include('upgrade.functions.php'); 
@@ -21,7 +21,6 @@ if (!$member->isLoggedIn()) {
 }
 
 if (!$member->isAdmin()) {
-  //upgrade_error('Only Super-Admins are allowed to perform upgrades');
   upgrade_error('Super-admin（最高管理者）のみがアップグレードを実行できます。');
 }
 
