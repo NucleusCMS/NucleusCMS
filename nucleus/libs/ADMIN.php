@@ -1733,7 +1733,7 @@ class ADMIN {
 		}
 		
 		if (!isValidMailAddress($email))
-			$this->error(_ERROR_BADEMAILADDRESS);
+			$this->error(_ERROR_BADMAILADDRESS);
 
 	
 		if (!$realname)
@@ -4811,7 +4811,7 @@ selector();
 			<h3><?php echo _BAN_IPRANGE?></h3>
 			
 			<p>
-				<?php echo _CONFIRMTXT_BAN?> <?php echo $iprange?>
+				<?php echo _CONFIRMTXT_BAN?> <?php echo htmlspecialchars($iprange) ?>
 				<input name="iprange" type="hidden" value="<?php echo htmlspecialchars($iprange)?>" />
 			</p>
 			
@@ -5989,13 +5989,13 @@ function listplug_table_memberlist($template, $type) {
 			$id = listplug_nextBatchId();			
 			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->mnumber,'" />';
 			echo '<label for="batch',$id,'">';
-			echo "<a href='mailto:$current->memail' tabindex='".$template['tabindex']."'>$current->mname</a>";
+			echo "<a href='mailto:", htmlspecialchars($current->memail), "' tabindex='".$template['tabindex']."'>", htmlspecialchars($current->mname), "</a>";
 			echo '</label>';
 			echo '</td>';
-			echo "<td>$current->mrealname</td>";
+			echo '<td>', htmlspecialchars($current->mrealname), '</td>';
 			echo "<td><a href='$current->murl' tabindex='".$template['tabindex']."'>$current->murl</a></td>";
-			echo "<td>$current->madmin</td>";
-			echo "<td>$current->mcanlogin</td>";
+			echo '<td>', ($current->madmin ? _YES : _NO),'</td>';
+			echo '<td>', ($current->mcanlogin ? _YES : _NO), '</td>';
 			echo "<td><a href='index.php?action=memberedit&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
 			echo "<td><a href='index.php?action=memberdelete&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";			
 			break;
@@ -6017,11 +6017,11 @@ function listplug_table_teamlist($template, $type) {
 			$id = listplug_nextBatchId();			
 			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->tmember,'" />';
 			echo '<label for="batch',$id,'">';
-			echo "<a href='mailto:$current->memail' tabindex='".$template['tabindex']."'>$current->mname</a>";
+			echo "<a href='mailto:", htmlspecialchars($current->memail), "' tabindex='".$template['tabindex']."'>", htmlspecialchars($current->mname), "</a>";
 			echo '</label>';
 			echo '</td>';
-			echo "<td>$current->mrealname</td>";
-			echo "<td>$current->tadmin</td>";
+			echo '<td>', htmlspecialchars($current->mrealname), '</td>';
+			echo '<td>', ($current->tadmin ? _YES : _NO) , '</td>';
 			echo "<td><a href='index.php?action=teamdelete&amp;memberid=$current->tmember&amp;blogid=$current->tblog' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
 			
 			$url = 'index.php?action=teamchangeadmin&memberid=' . intval($current->tmember) . '&blogid=' . intval($current->tblog);
@@ -6030,6 +6030,7 @@ function listplug_table_teamlist($template, $type) {
 			break;
 	}
 }
+
 function encode_desc(&$data)
     {   $to_entities = get_html_translation_table(HTML_ENTITIES);
         $from_entities = array_flip($to_entities);
@@ -6037,6 +6038,7 @@ function encode_desc(&$data)
         $data = strtr($data,$to_entities);
         return $data;
     }
+
 function listplug_table_pluginlist($template, $type) {
 	global $manager;
 	switch($type) {
@@ -6050,21 +6052,21 @@ function listplug_table_pluginlist($template, $type) {
 			$plug =& $manager->getPlugin($current->pfile);
 			if ($plug) {
 				echo '<td>';
-					echo '<strong>' , $plug->getName() , '</strong><br />';
-					echo _LIST_PLUGS_AUTHOR, ' ' , $plug->getAuthor() , '<br />';
-					echo _LIST_PLUGS_VER, ' ' , $plug->getVersion() , '<br />';
+					echo '<strong>' , htmlspecialchars($plug->getName()) , '</strong><br />';
+					echo _LIST_PLUGS_AUTHOR, ' ' , htmlspecialchars($plug->getAuthor()) , '<br />';
+					echo _LIST_PLUGS_VER, ' ' , htmlspecialchars($plug->getVersion()) , '<br />';
 					if ($plug->getURL())
-					echo '<a href="',$plug->getURL(),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
+					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
 				echo '</td>';
 				echo '<td>';
 					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
 					if (sizeof($plug->getEventList()) > 0)
-						echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',implode($plug->getEventList(),', ');
+						echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',htmlspecialchars(implode($plug->getEventList(),', '));
 					if (sizeof($plug->getPluginDep()) > 0)
-						echo '<br /><br />',_LIST_PLUGS_DEP,'<br />',implode($plug->getPluginDep(),', ');
+						echo '<br /><br />',_LIST_PLUGS_DEP,'<br />',htmlspecialchars(implode($plug->getPluginDep(),', '));
 				echo '</td>';
 			} else {
-				echo '<td colspan="2">Error: plugin file <b>',$current->pfile,'.php</b> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)</td>';
+				echo '<td colspan="2">Error: plugin file <b>',htmlspecialchars($current->pfile),'.php</b> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)</td>';
 			}
 			echo '<td>';
 				
@@ -6177,9 +6179,9 @@ function listplug_table_itemlist($template, $type) {
 			if ($current->itime > $template['now'])
 				$cssclass = "class='future'";
 			
-			echo "<td $cssclass>",_LIST_ITEM_BLOG," $current->bshortname";
-			echo "    <br />",_LIST_ITEM_CAT," $current->cname";			
-			echo "    <br />",_LIST_ITEM_AUTHOR," $current->mname";
+			echo "<td $cssclass>",_LIST_ITEM_BLOG,' ', htmlspecialchars($current->bshortname);
+			echo "    <br />",_LIST_ITEM_CAT,' ', htmlspecialchars($current->cname);			
+			echo "    <br />",_LIST_ITEM_AUTHOR, ' ', htmlspecialchars($current->mname);
 			echo "    <br />",_LIST_ITEM_DATE," " . date("Y-m-d",$current->itime);
 			echo "<br />",_LIST_ITEM_TIME," " . date("H:i",$current->itime);
 			echo "</td>";			
@@ -6227,9 +6229,9 @@ function listplug_table_commentlist($template, $type) {
 			echo date("Y-m-d@H:i",$current->ctime);
 			echo '<br />';
 			if ($current->mname)
-				echo "$current->mname ", _LIST_COMMENTS_MEMBER;
+				echo htmlspecialchars($current->mname) ,' ', _LIST_COMMENTS_MEMBER;
 			else
-				echo $current->cuser;
+				echo htmlspecialchars($current->cuser);
 			echo '</td>';
 			
 			
@@ -6247,7 +6249,7 @@ function listplug_table_commentlist($template, $type) {
 			echo "<td><a href='index.php?action=commentedit&amp;commentid=$current->cnumber'>"._LISTS_EDIT."</a></td>";
 			echo "<td><a href='index.php?action=commentdelete&amp;commentid=$current->cnumber'>"._LISTS_DELETE."</a></td>";
 			if ($template['canAddBan'])
-				echo "<td><a href='index.php?action=banlistnewfromitem&amp;itemid=$current->citem&amp;ip=$current->cip' title='$current->chost'>"._LIST_COMMENT_BANIP."</a></td>";
+				echo "<td><a href='index.php?action=banlistnewfromitem&amp;itemid=$current->citem&amp;ip=", htmlspecialchars($current->cip), "' title='", htmlspecialchars($current->chost), "'>"._LIST_COMMENT_BANIP."</a></td>";
 			break;
 	}
 }
@@ -6289,8 +6291,8 @@ function listplug_table_shortblognames($template, $type) {
 		case 'BODY':
 			$current = $template['current'];
 			
-			echo "<td>$current->bshortname</td>";
-			echo "<td>" . htmlspecialchars($current->bname) . "</td>";
+			echo '<td>' , htmlspecialchars($current->bshortname) , '</td>';
+			echo '<td>' , htmlspecialchars($current->bname) , '</td>';
 	
 			break;
 	}
@@ -6304,8 +6306,8 @@ function listplug_table_shortnames($template, $type) {
 		case 'BODY':
 			$current = $template['current'];
 			
-			echo "<td>$current->name</td>";
-			echo "<td>" . htmlspecialchars($current->description) . "</td>";
+			echo '<td>' , htmlspecialchars($current->name) , '</td>';
+			echo '<td>' , htmlspecialchars($current->description) , '</td>';
 	
 			break;
 	}
@@ -6367,16 +6369,19 @@ function listplug_table_skinlist($template, $type) {
 		case 'BODY':
 			$current = $template['current'];
 			
-			echo "<td>";
+			echo '<td>';
+			
+			// use a special style for the default skin
 			if ($current->sdnumber == $CONF['BaseSkin']) {
 				echo '<strong>',htmlspecialchars($current->sdname),'</strong>';
 			} else {
 				echo htmlspecialchars($current->sdname);
 			}
+			
 			echo '<br /><br />';
 			echo _LISTS_TYPE ,': ' , htmlspecialchars($current->sdtype);
 			echo '<br />', _LIST_SKINS_INCMODE , ' ' , (($current->sdincmode=='skindir') ?_PARSER_INCMODE_SKINDIR:_PARSER_INCMODE_NORMAL);
-			if ($current->sdincpref) echo '<br />' , _LIST_SKINS_INCPREFIX , ' ', $current->sdincpref;
+			if ($current->sdincpref) echo '<br />' , _LIST_SKINS_INCPREFIX , ' ', htmlspecialchars($current->sdincpref);
 			
 			// add preview image when present
 			if ($current->sdincpref && @file_exists($DIR_SKINS . $current->sdincpref . 'preview.png'))
@@ -6385,16 +6390,16 @@ function listplug_table_skinlist($template, $type) {
 				
 				$hasEnlargement = @file_exists($DIR_SKINS . $current->sdincpref . 'preview-large.png');
 				if ($hasEnlargement)
-					echo '<a href="',$CONF['SkinsURL'], $current->sdincpref,'preview-large.png" title="View larger">';
+					echo '<a href="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview-large.png" title="View larger">';
 				
-				echo '<img class="skinpreview" src="',$CONF['SkinsURL'], $current->sdincpref,'preview.png" width="100" height="75" alt="Preview for \'',htmlspecialchars($current->sdname),'\' skin" />';
+				echo '<img class="skinpreview" src="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview.png" width="100" height="75" alt="Preview for \'',htmlspecialchars($current->sdname),'\' skin" />';
 				
 				if ($hasEnlargement)
 					echo '</a>';
 					
 				if (@file_exists($DIR_SKINS . $current->sdincpref . 'readme.html'))
 				{
-					echo '<br /><a href="',$CONF['SkinsURL'], $current->sdincpref,'readme.html" title="More info on the \'',htmlspecialchars($current->sdname),'\' skin">Readme</a>';
+					echo '<br /><a href="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'readme.html" title="More info on the \'',htmlspecialchars($current->sdname),'\' skin">Readme</a>';
 				}
 					
 					
@@ -6413,7 +6418,7 @@ function listplug_table_skinlist($template, $type) {
 					$friendlyNames = SKIN::getFriendlyNames();
 					for ($i=0;$i<sizeof($types);$i++) {
 						$type = $types[$i];
-						$types[$i] = '<li>' . helpHtml('skinpart'.$type) . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . $friendlyNames[$type] . "</a></li>";
+						$types[$i] = '<li>' . helpHtml('skinpart'.$type) . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . "</a></li>";
 					}
 					echo '<br /><br />',_LIST_SKINS_DEFINED,' <ul>',implode($types,'') ,'</ul>';
 				}
@@ -6436,8 +6441,8 @@ function listplug_table_draftlist($template, $type) {
 		case 'BODY':
 			$current = $template['current'];
 
-			echo "<td>$current->bshortname</td>";			
-			echo "<td>" . strip_tags($current->ititle) . "</td>";
+			echo '<td>', htmlspecialchars($current->bshortname) , '</td>';			
+			echo '<td>', htmlspecialchars(strip_tags($current->ititle)) , '</td>';
 			echo "<td><a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a></td>";
 			echo "<td><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"._LISTS_DELETE."</a></td>";			
 		
@@ -6454,8 +6459,8 @@ function listplug_table_actionlist($template, $type) {
 		case 'BODY':
 			$current = $template['current'];
 			
-			echo "<td>$current->timestamp</td>";
-			echo "<td>$current->message</td>";
+			echo '<td>' , htmlspecialchars($current->timestamp), '</td>';
+			echo '<td>' , htmlspecialchars($current->message), '</td>';
 		
 			break;
 	}
@@ -6469,9 +6474,9 @@ function listplug_table_banlist($template, $type) {
 		case 'BODY':
 			$current = $template['current'];
 		
-			echo "<td>$current->iprange</td>";
-			echo "<td>" . htmlspecialchars($current->reason) . "</td>";
-			echo "<td><a href='index.php?action=banlistdelete&amp;blogid=$current->blogid&amp;iprange=$current->iprange'>"._LISTS_DELETE."</a></td>";
+			echo '<td>' , htmlspecialchars($current->iprange) , '</td>';
+			echo '<td>' , htmlspecialchars($current->reason) , '</td>';
+			echo "<td><a href='index.php?action=banlistdelete&amp;blogid=", intval($current->blogid) , "&amp;iprange=" , htmlspecialchars($current->iprange) , "'>",_LISTS_DELETE,"</a></td>";
 			break;
 	}
 }
