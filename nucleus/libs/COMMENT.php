@@ -18,12 +18,17 @@ class COMMENT {
 	  * Returns the requested comment (static)
 	  */
 	function getComment($commentid) {
-		$query =  'SELECT cnumber as commentid, cbody as body, cuser as user, cmail as userid, cmember as memberid, UNIX_TIMESTAMP(ctime) as timestamp, chost as host, mname as member, cip as ip, cblog as blogid'
+		$query =  'SELECT cnumber as commentid, cbody as body, cuser as user, cmail as userid, cmember as memberid, ctime, chost as host, mname as member, cip as ip, cblog as blogid'
 		       . ' FROM '.sql_table('comment').' left outer join '.sql_table('member').' on cmember=mnumber'
 		       . ' WHERE cnumber=' . intval($commentid);
 		$comments = sql_query($query);
 
-		return mysql_fetch_assoc($comments);
+		$aCommentInfo = mysql_fetch_assoc($comments);
+		if ($aCommentInfo)
+		{
+			$aCommentInfo['timestamp'] = strtotime($aCommentInfo['ctime']);
+		}
+		return $aCommentInfo;
 	}	
 	
 	/**

@@ -59,7 +59,7 @@ class COMMENTS {
 		if ($maxToShow == 0) {
 			$this->commentcount = $this->amountComments();
 		} else {
-			$query =  'SELECT c.cnumber as commentid, c.cbody as body, c.cuser as user, c.cmail as userid, c.cmember as memberid, UNIX_TIMESTAMP(c.ctime) as timestamp, c.chost as host, c.cip as ip, c.cblog as blogid'
+			$query =  'SELECT c.cnumber as commentid, c.cbody as body, c.cuser as user, c.cmail as userid, c.cmember as memberid, c.ctime, c.chost as host, c.cip as ip, c.cblog as blogid'
 			       . ' FROM '.sql_table('comment').' as c'
 			       . ' WHERE c.citem=' . $this->itemid 
 			       . ' ORDER BY c.ctime';
@@ -84,6 +84,7 @@ class COMMENTS {
 		$parser->parse($template['COMMENTS_HEADER']);
 		
 		while ( $comment = mysql_fetch_assoc($comments) ) {
+			$comment['timestamp'] = strtotime($comment['ctime']);
 			$actions->setCurrentComment($comment);
 			$actions->setHighlight($highlight);
 			$manager->notify('PreComment', array('comment' => &$comment));
@@ -200,7 +201,7 @@ class COMMENTS {
 
 		// check if there exists a item for this date
 		$item =& $manager->getItem($this->itemid,0,0);
-		
+
 		if (!$item)
 			return _ERROR_NOSUCHITEM;
 

@@ -148,6 +148,9 @@ class BLOG {
 		
 		// loop over all items
 		while ($item = mysql_fetch_object($items)) {
+			
+			$item->timestamp = strtotime($item->itime);	// string timestamp -> unix timestamp
+		
 			// action handler needs to know the item we're handling
 			$actions->setCurrentItem($item);
 			
@@ -429,7 +432,7 @@ class BLOG {
 
 		if ($mode == '') 
 		{
-			$query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
+			$query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
 			if ($select) 
 				$query .= ', '.$select. ' as score ';
 		} else {
@@ -450,7 +453,7 @@ class BLOG {
 		{
 			$localtime = getdate($this->getCorrectTime());
 			$timestamp_start = mktime(0,0,0,$localtime['mon'] - $amountMonths,1,$localtime['year']);
-			$query .= ' and UNIX_TIMESTAMP(i.itime)>' . $timestamp_start;
+			$query .= ' and i.itime>' . mysqldate($timestamp_start);
 		}
 
 		if ($mode == '')
@@ -477,7 +480,7 @@ class BLOG {
 	function getSqlBlog($extraQuery, $mode = '')
 	{
 		if ($mode == '')
-			$query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
+			$query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
 		else
 			$query = 'SELECT COUNT(*) as result ';
 		
@@ -515,9 +518,9 @@ class BLOG {
 
 		echo TEMPLATE::fill($template['ARCHIVELIST_HEADER'],$data);
 
-		$query = 'SELECT UNIX_TIMESTAMP(itime) as itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM '.sql_table('item')
+		$query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM '.sql_table('item')
 		. ' WHERE iblog=' . $this->getID()
-		. ' and UNIX_TIMESTAMP(itime)<=' . $this->getCorrectTime()	// don't show future items!
+		. ' and itime <=' . mysqldate($this->getCorrectTime())	// don't show future items!
 		. ' and idraft=0'; // don't show draft items
 		
 		if ($catid)
@@ -536,6 +539,8 @@ class BLOG {
 		$res = sql_query($query);
 
 		while ($current = mysql_fetch_object($res)) {
+			$current->itime = strtotime($current->itime);	// string time -> unix timestamp
+		
 			if ($mode == 'day') {
 				$archivedate = date('Y-m-d',$current->itime);
 				$archive['day'] = date('d',$current->itime);

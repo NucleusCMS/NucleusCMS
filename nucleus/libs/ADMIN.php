@@ -238,7 +238,7 @@ class ADMIN {
 		
 		$search = postVar('search');	// search through items
 			
-		$query =  'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, UNIX_TIMESTAMP(itime) as itime'
+		$query =  'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, itime'
 		       . ' FROM ' . sql_table('item') . ', ' . sql_table('blog') . ', ' . sql_table('member') . ', ' . sql_table('category')
 		       . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=' . $blogid;
 		
@@ -765,7 +765,7 @@ class ADMIN {
 		
 		$search = postVar('search');	// search through items
 			
-		$query =  'SELECT bshortname, cname, mname, ititle, ibody, idraft, inumber, UNIX_TIMESTAMP(itime) as itime'
+		$query =  'SELECT bshortname, cname, mname, ititle, ibody, idraft, inumber, itime'
 		       . ' FROM '.sql_table('item').', '.sql_table('blog') . ', '.sql_table('member') . ', '.sql_table('category')
 		       . ' WHERE iauthor='. $member->getID() .' and iauthor=mnumber and iblog=bnumber and icat=catid';
 		
@@ -818,7 +818,7 @@ class ADMIN {
 		echo '<p>(<a href="index.php?action=itemlist&amp;blogid=',$blogid,'">',_BACKTOOVERVIEW,'</a>)</p>';
 		echo '<h2>',_COMMENTS,'</h2>';
 		
-		$query =  'SELECT cbody, cuser, cmail, mname, UNIX_TIMESTAMP(ctime) as ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE citem=' . $itemid;
+		$query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE citem=' . $itemid;
 
 		if ($search) 
 			$query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
@@ -856,7 +856,7 @@ class ADMIN {
 		$search = postVar('search');			
 
 
-		$query =  'SELECT cbody, cuser, cmail, mname, UNIX_TIMESTAMP(ctime) as ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cmember=' . $member->getID();
+		$query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cmember=' . $member->getID();
 
 		if ($search) 
 			$query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
@@ -5759,6 +5759,7 @@ function listplug_table_itemlist($template, $type) {
 			break;
 		case 'BODY';
 			$current = $template['current'];
+			$current->itime = strtotime($current->itime);	// string -> unix timestamp
 			
 			if ($current->idraft == 1) 
 				$cssclass = "class='draft'";
@@ -5811,6 +5812,7 @@ function listplug_table_commentlist($template, $type) {
 			break;
 		case 'BODY';
 			$current = $template['current'];
+			$current->ctime = strtotime($current->ctime);	// string -> unix timestamp
 			
 			echo '<td>';
 			echo date("Y-m-d@H:i",$current->ctime);

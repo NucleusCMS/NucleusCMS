@@ -25,7 +25,7 @@ class ITEM {
 	function getitem($itemid, $allowdraft, $allowfuture) {
 		global $manager;
 
-		$query =  'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, i.ititle as title, i.ibody as body, m.mname as author, i.iauthor as authorid, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, i.ikarmapos as karmapos, i.ikarmaneg as karmaneg, i.icat as catid'
+		$query =  'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, i.ititle as title, i.ibody as body, m.mname as author, i.iauthor as authorid, i.itime, i.imore as more, i.ikarmapos as karmapos, i.ikarmaneg as karmaneg, i.icat as catid'
 		       . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m'
 		       . ' WHERE i.inumber=' . $itemid
 		       . ' and i.iauthor=m.mnumber';
@@ -33,16 +33,20 @@ class ITEM {
 			$query .= ' and i.idraft=0';
 		if (!$allowfuture) {
 			$blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
-			$query .= ' and UNIX_TIMESTAMP(i.itime)<=' . $blog->getCorrectTime();		
+			$query .= ' and i.itime <=' . mysqldate($blog->getCorrectTime());		
 		}
 		$query .= ' LIMIT 1';
 
 		$res = sql_query($query);
 
 		if (mysql_num_rows($res) == 1)
-			return mysql_fetch_assoc($res);
-		else
+		{
+			$aItemInfo = mysql_fetch_assoc($res);
+			$aItemInfo['timestamp'] = strtotime($aItemInfo['itime']);	
+			return $aItemInfo;
+		} else {
 			return 0;
+		}
 
 	}	
 	
@@ -264,7 +268,7 @@ class ITEM {
 			$bid = getBlogIDFromItemID($id);
 			if (!$bid) return 0;
 			$b =& $manager->getBlog($bid);
-			$r .= ' and UNIX_TIMESTAMP(itime)<='.$b->getCorrectTime();
+			$r .= ' and itime<='.mysqldate($b->getCorrectTime());
 		}
 		if (!$draft) {
 			$r .= ' and idraft=0';
