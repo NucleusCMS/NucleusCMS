@@ -288,6 +288,7 @@
 		$struct = new xmlrpcval(
 			array(
 				'categoryId' => new xmlrpcval($catName, 'string'),
+				'categoryName' => new xmlrpcval($catName, 'string'),
 				'isPrimary'	=> new xmlrpcval(1, 'boolean')
 			), 'struct'
 		);		
