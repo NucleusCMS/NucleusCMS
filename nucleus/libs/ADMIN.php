@@ -4922,17 +4922,17 @@ selector();
 		sql_query($query);
 		$iPid = mysql_insert_id();
 
+		$manager->clearCachedInfo('installedPlugins');
+
 		// call the install method of the plugin
 		$plugin =& $manager->getPlugin($name);
 		
 		if (!$plugin)
 		{
 			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. intval($iPid));
+			$manager->clearCachedInfo('installedPlugins');
 			$this->error('Plugin could not be loaded, or does not support certain features that are required for it to run on your Nucleus installation (you might want to check the <a href="?action=actionlog">actionlog</a> for more info)');
 		}
-		
-
-		
 		
 		// check if plugin needs a newer Nucleus version
 		if (getNucleusVersion() < $plugin->getMinNucleusVersion())
@@ -4944,6 +4944,15 @@ selector();
 			$this->error(_ERROR_NUCLEUSVERSIONREQ . $plugin->getMinNucleusVersion());
 		}
 		
+		// check if plugin needs a newer Nucleus version
+		if ((getNucleusVersion() == $plugin->getMinNucleusVersion()) && (getNucleusPatchLevel() < $plugin->getMinNucleusPatchLevel()))
+		{
+			// uninstall plugin again...
+			$this->deleteOnePlugin($plugin->getID());
+			
+			// ...and show error
+			$this->error(_ERROR_NUCLEUSVERSIONREQ . $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel());
+		}
 		
 		$plugin->install();
 		
@@ -5064,6 +5073,7 @@ selector();
 		// delete row
 		sql_query('DELETE FROM '.sql_table('plugin').' WHERE pid='.$pid);
 		
+		$manager->clearCachedInfo('installedPlugins');
 		$manager->notify('PostDeletePlugin', array('plugid' => $pid));			
 		
 		return '';

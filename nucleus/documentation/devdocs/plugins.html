@@ -29,7 +29,7 @@
 
 <div class="heading">
 Plugin API
-<i>May 30, 2004</i>
+<i>July 27, 2004</i>
 </div>
 
 <div class="note"><strong>Notes:</strong>
@@ -197,6 +197,10 @@ So, that wasn't so hard after all. Read on to find out more.
 	<tr>
 		<td><code>getMinNucleusVersion()</code></td>
 		<td>(v2.0b) Returns the minimum required Nucleus version. By default, this returns <code>155</code> (v1.55). If you are using plugin features that were introduced later, please implement this function (e.g. v2.0 => 200). Please note that Nucleus v1.55 does not use this function at all, so it remains possible to install newer plugins there, even if they use newer features.</td>
+	</tr>
+	<tr>
+		<td><code>getMinNucleusPatchLevel()</code></td>
+		<td>(v3.1) Returns the minimum required Nucleus patch level that needs to be present when running the minimal required Nucleus version (<code>getMinNucleusVersion</code>). By default, this returns <code>0</code>. This function is generally used when new plugin features are available only as patches to the latest released Nucleus version.</td>
 	</tr>
 	<tr>
 		<td><code>init()</code></td>
