@@ -166,7 +166,7 @@
 		$xmlrpcString,		// blogid
 		$xmlrpcString,		// username
 		$xmlrpcString,		// password
-		$xmlrpcString		// number of posts
+		$xmlrpcInt			// number of posts
 	));
 	$f_metaWeblog_getRecentPosts_doc = 'Returns recent weblog items.';
 	function f_metaWeblog_getRecentPosts($m) {
