@@ -51,7 +51,7 @@ define('_BATCH_ITEMS',				'Batch operation on items');
 define('_BATCH_CATEGORIES',			'Batch operation on categories');
 define('_BATCH_MEMBERS',			'Batch operation on members');
 define('_BATCH_UNKNOWN',			'Unknown batch operation: ');
-define('_BATCH_EXECUTING',			'Excecuting');
+define('_BATCH_EXECUTING',			'Executing');
 define('_BATCH_ONCATEGORY',			'on category');
 define('_BATCH_ONITEM',				'on item');
 define('_BATCH_ONMEMBER',			'on member');
