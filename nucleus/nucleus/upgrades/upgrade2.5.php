@@ -86,8 +86,18 @@ function upgrade_do25() {
 		upgrade_query('Repairing comment table', 'REPAIR TABLE ' . sql_table('comment'));	
 	}	
 	
-        $query = ' ALTER TABLE ' . sql_table('blog') . ' ADD bincludesearch TINYINT(2) DEFAULT 0';
-	upgrade_query('Adding bincludesearch column to blog', $query);
+	if (!upgrade_checkinstall(24))	{
+	    $query = ' ALTER TABLE ' . sql_table('blog') . ' ADD bincludesearch TINYINT(2) DEFAULT 0';
+		upgrade_query('Adding bincludesearch column to blog', $query);
+	}
+	
+	// modify plugin option table value column type to TEXT
+	$query = 'ALTER TABLE ' . sql_table('plugin_option') . ' MODIFY ovalue TEXT NOT NULL default \'\'';
+	upgrade_query('Modifying plugin options column type', $query);
+	
+	// insert database version  (allows us to do better version checking in v3.0 upgrades)
+	$query = 'INSERT INTO ' . sql_table('config') . ' (name,value) VALUES (\'DatabaseVersion\',\'250\')';
+	upgrade_query('Adding DatabaseVersion to config table', $query);
 }
 
 ?>

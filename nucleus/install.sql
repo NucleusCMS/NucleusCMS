@@ -160,7 +160,7 @@ CREATE TABLE nucleus_plugin_event (
 ) TYPE=MyISAM;
 
 CREATE TABLE nucleus_plugin_option (
-  ovalue varchar(128) NOT NULL default '',
+  ovalue TEXT NOT NULL default '',
   oid int(11) NOT NULL auto_increment,
   ocontextid int(11) NOT NULL default '0',
   PRIMARY KEY  (oid,ocontextid)

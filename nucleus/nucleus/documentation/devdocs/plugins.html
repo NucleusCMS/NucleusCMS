@@ -6,10 +6,10 @@
 	<style type="text/css">
 		/* refence parameters (greenish) */
 		.ref {
-			background-color: #afa;	
+			background-color: #afa;
 			color: #000;
 		}
-		
+
 		/* object parameters */
 		.obj {
 			color: #00f;
@@ -17,7 +17,7 @@
 		.obj:after {
 			content: " (object)";
 		}
-		
+
 		/* read-only parameters (non-ref; reddish) */
 		.ro {
 			background-color: #faa;
@@ -32,7 +32,7 @@ Plugin API
 <i>August 12, 2003</i>
 </div>
 
-<div class="note"><strong>Notes:</strong> 
+<div class="note"><strong>Notes:</strong>
 	<ul>
 		<li>This document should contain enough information to write basic plugins. If you have more questions, see the <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin Development Forum</a></li>
 		<li>Methods and events introduced after Nucleus v1.5 was released have the Nucleus version in which they were introduced listed. If you use any of those functions, don't forget to adapt <code>getMinNucleusVersion</code> appropriately.
@@ -46,7 +46,7 @@ Plugin API
 </p>
 
 <p>
-This document contains information on how you can write your own Nucleus plugins 
+This document contains information on how you can write your own Nucleus plugins
 </p>
 
 <h1><a name="toc"></a>Table Of Contents</h1>
@@ -56,12 +56,12 @@ This document contains information on how you can write your own Nucleus plugins
 	<li><a href="#firstplug">Writing your first plugin</a></li>
 	<li><a href="#nucleusplugin">Overview of the <code>NucleusPlugin</code> class</a></li>
 	<li><a href="#skinvars">The <code>&lt;%plugin(...)%&gt;</code> skinvar</a></li>
-	<li><a href="#templatevars">The <code>&lt;%plugin(...)%&gt;</code> templatevar</a></li>	
+	<li><a href="#templatevars">The <code>&lt;%plugin(...)%&gt;</code> templatevar</a></li>
 	<li><a href="#actions">Actions using <code>action.php</code></a></li>
 	<li><a href="#events">Events, and subscribing to them</a></li>
 	<li><a href="#options">Saving options</a></li>
 	<li><a href="#tables">Database tables</a></li>
-<!--	<li><a href="#admin">Providing an admin area</a></li> 
+<!--	<li><a href="#admin">Providing an admin area</a></li>
 	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
@@ -107,35 +107,35 @@ class NP_HelloWorld extends NucleusPlugin {
 
 	// name of plugin
 	function getName() {
-		return 'Hello World'; 
+		return 'Hello World';
 	}
-	
+
 	// author of plugin
-	function getAuthor()  { 
-		return 'Wouter Demuynck'; 
+	function getAuthor()  {
+		return 'Wouter Demuynck';
 	}
-	
+
 	// an URL to the plugin website
 	// can also be of the form mailto:foo@bar.com
-	function getURL() 
+	function getURL()
 	{
-		return 'http://nucleuscms.org/'; 
+		return 'http://nucleuscms.org/';
 	}
-	
+
 	// version of the plugin
 	function getVersion() {
-		return '1.0'; 
+		return '1.0';
 	}
-	
+
 	// a description to be shown on the installed plugins listing
-	function getDescription() { 
+	function getDescription() {
 		return 'Just a sample plugin.';
 	}
 
 	function doSkinVar($skinType) {
 		echo 'Hello World!';
 	}
-	
+
 }
 ?&gt;</pre>
 
@@ -176,23 +176,23 @@ So, that wasn't so hard after all. Read on to find out more.
 	</tr>
 	<tr>
 		<td><code>getName()</code></td>
-		<td>Returns the name of the plugin. This will be the name that will show up on the list of installed plugins. You should definately redefine this method, since the default implementation returns <q>Undefined</q></td>		
+		<td>Returns the name of the plugin. This will be the name that will show up on the list of installed plugins. You should definately redefine this method, since the default implementation returns <q>Undefined</q></td>
 	</tr>
 	<tr>
 		<td><code>getAuthor()</code></td>
-		<td>Returns the name of author of the plugin. This name will show up on the list of installed plugins. You should definately redefine this method, since the default implementation returns <q>Undefined</q></td>		
+		<td>Returns the name of author of the plugin. This name will show up on the list of installed plugins. You should definately redefine this method, since the default implementation returns <q>Undefined</q></td>
 	</tr>
 	<tr>
 		<td><code>getURL()</code></td>
-		<td>Returns the URL of the site where the plugin can be downloaded, or where additional information about the plugin can be found. If no such site exists, a <code>mailto:</code>-link with the authors email address is appropriate. You should definately redefine this method, since the default implementation returns <q>Undefined</q></td>		
+		<td>Returns the URL of the site where the plugin can be downloaded, or where additional information about the plugin can be found. If no such site exists, a <code>mailto:</code>-link with the authors email address is appropriate. You should definately redefine this method, since the default implementation returns <q>Undefined</q></td>
 	</tr>
 	<tr>
 		<td><code>getDescription()</code></td>
-		<td>Returns a longer description of the plugin. This will show up on the list of installed plugins. The default implementation returns <q>Undefined</q></td>		
+		<td>Returns a longer description of the plugin. This will show up on the list of installed plugins. The default implementation returns <q>Undefined</q></td>
 	</tr>
 	<tr>
 		<td><code>getVersion()</code></td>
-		<td>Returns the current version of the plugin. Returns <q>0.0</q> by default</td>		
+		<td>Returns the current version of the plugin. Returns <q>0.0</q> by default</td>
 	</tr>
 	<tr>
 		<td><code>getMinNucleusVersion()</code></td>
@@ -204,19 +204,19 @@ So, that wasn't so hard after all. Read on to find out more.
 	</tr>
 	<tr>
 		<td><code>doSkinVar($skinType)</code></td>
-		<td>When plugins are called using the <code>&lt;%plugin(...)%&gt;</code>-skinvar, this method will be called. the <code>$skinType</code> parameter contains the type of skin (<code>item</code>, <code>archive</code>, ...) from where the plugin is called. Don't get confused by the fact that there's only one parameter. Multiple parameters <strong>can</strong> still be passed. <a href="#skinvars">More info on implementing the <code>doSkinVar</code> method.</a> By default, this method does no output at all.</td>		
+		<td>When plugins are called using the <code>&lt;%plugin(...)%&gt;</code>-skinvar, this method will be called. the <code>$skinType</code> parameter contains the type of skin (<code>item</code>, <code>archive</code>, ...) from where the plugin is called. Don't get confused by the fact that there's only one parameter. Multiple parameters <strong>can</strong> still be passed. <a href="#skinvars">More info on implementing the <code>doSkinVar</code> method.</a> By default, this method does no output at all.</td>
 	</tr>
 	<tr>
 		<td><code>doTemplateVar(&$item)</code></td>
-		<td>Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (item header/body/footer and dateheader/footer). By default, this method forwards the handling to the <code>doSkinVar</code>-method, using <code>template</code> as skintype. <a href="#templatevars">More information on implementing the <code>doTemplateVar</code> method</a></td>		
+		<td>Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (item header/body/footer and dateheader/footer). By default, this method forwards the handling to the <code>doSkinVar</code>-method, using <code>template</code> as skintype. <a href="#templatevars">More information on implementing the <code>doTemplateVar</code> method</a></td>
 	</tr>
 	<tr>
 		<td><code>doTemplateCommentsVar(&$item, &$comment)</code></td>
-		<td>(v2.0b) Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (comments-related parts). By default, this method forwards the handling to the <code>doSkinVar</code>-method, using <code>template</code> as skintype. <a href="#templatevars">More information on implementing the <code>doTemplateCommentsVar</code> method</a></td>		
-	</tr>	
+		<td>(v2.0b) Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (comments-related parts). By default, this method forwards the handling to the <code>doSkinVar</code>-method, using <code>template</code> as skintype. <a href="#templatevars">More information on implementing the <code>doTemplateCommentsVar</code> method</a></td>
+	</tr>
 	<tr>
 		<td><code>doAction($type)</code></td>
-		<td>When a plugin wants to allow user interaction, it can allow actions through <code>action.php</code>. This is the script that Nucleus uses itself to handle new comments and karma votes. Called with the correct parameters, the <code>doAction</code>-method from a plugin can be called. The <code>$type</code> contains an optional message type. Extra variables from the request can be accessed from within the <code>doAction</code> method. By default, this method returns a string <q>No Such Action</q> which will trigger an error message. <a href="#actions">More info on <code>doAction</code>.</a></td>		
+		<td>When a plugin wants to allow user interaction, it can allow actions through <code>action.php</code>. This is the script that Nucleus uses itself to handle new comments and karma votes. Called with the correct parameters, the <code>doAction</code>-method from a plugin can be called. The <code>$type</code> contains an optional message type. Extra variables from the request can be accessed from within the <code>doAction</code> method. By default, this method returns a string <q>No Such Action</q> which will trigger an error message. <a href="#actions">More info on <code>doAction</code>.</a></td>
 	</tr>
 	<tr>
 		<td><code>install()</code></td>
@@ -228,7 +228,7 @@ So, that wasn't so hard after all. Read on to find out more.
 	</tr>
 	<tr>
 		<td><code>getEventList()</code></td>
-		<td>Plugins can subscribe to events. Events get generated whenever Nucleus performs a certain action. An <code>AddItem</code> event for example, will call all plugins that subscribed to this event. The called method will be <code>event_AddItem($params)</code>. The <code>$params</code>-parameter is an associative array containing several fields of information, like the itemid for <code>AddItem</code>. Returns an empty array by default, indicating that the plugin does not subscribe to any event at all. <a href="#events">More information about events.</a></td>		
+		<td>Plugins can subscribe to events. Events get generated whenever Nucleus performs a certain action. An <code>AddItem</code> event for example, will call all plugins that subscribed to this event. The called method will be <code>event_AddItem($params)</code>. The <code>$params</code>-parameter is an associative array containing several fields of information, like the itemid for <code>AddItem</code>. Returns an empty array by default, indicating that the plugin does not subscribe to any event at all. <a href="#events">More information about events.</a></td>
 	</tr>
 	<tr>
 		<td><code>getTableList()</code></td>
@@ -254,7 +254,7 @@ So, that wasn't so hard after all. Read on to find out more.
 			<br /><code>createCategoryOption(...)</code>(v2.2)
 			<br /><code>createMemberOption(...)</code>(v2.2)
 		</td>
-		<td><a href="#options" title="More info on options">Creates a new option</a></td>		
+		<td><a href="#options" title="More info on options">Creates a new option</a></td>
 	</tr>
 	<tr>
 		<td>
@@ -263,49 +263,49 @@ So, that wasn't so hard after all. Read on to find out more.
 			<br /><code>deleteCategoryOption(...)</code>(v2.2)
 			<br /><code>deleteMemberOption(...)</code>(v2.2)
 	   	</td>
-		<td><a href="#options" title="More info on options">Deletes an option</a></td>		
+		<td><a href="#options" title="More info on options">Deletes an option</a></td>
 	</tr>
 	<tr>
 		<td>
 			      <code>setOption(...)</code>
 			<br /><code>setBlogOption(...)</code>(v2.2)
 			<br /><code>setCategoryOption(...)</code>(v2.2)
-			<br /><code>setMemberOption(...)</code>(v2.2)			      
+			<br /><code>setMemberOption(...)</code>(v2.2)
 		</td>
-		<td><a href="#options" title="More info on options">Sets the value of an option</a></td>		
+		<td><a href="#options" title="More info on options">Sets the value of an option</a></td>
 	</tr>
 	<tr>
 		<td>
 			      <code>getOption(...)</code>
 			<br /><code>getBlogOption(...)</code>(v2.2)
 			<br /><code>getCategoryOption(...)</code>(v2.2)
-			<br /><code>getMemberOption(...)</code>(v2.2)			       
+			<br /><code>getMemberOption(...)</code>(v2.2)
 		</td>
-		<td><a href="#options" title="More info on options">Retrieves the value of an option</a></td>		
+		<td><a href="#options" title="More info on options">Retrieves the value of an option</a></td>
 	</tr>
 	<tr>
 		<td>
 			<code>getAllBlogOptions(...)</code>(v2.2)
 			<br /><code>getAllCategoryOptions(...)</code>(v2.2)
-			<br /><code>getAllMemberOptions(...)</code>(v2.2)			       
+			<br /><code>getAllMemberOptions(...)</code>(v2.2)
 		</td>
-		<td><a href="#options" title="More info on options">For a given option, returns an associative of all values (one value per context)</a></td>		
-	</tr>	
+		<td><a href="#options" title="More info on options">For a given option, returns an associative of all values (one value per context)</a></td>
+	</tr>
 	<tr>
 		<td><code>getID()</code></td>
-		<td>Returns the ID for this plugin (this is the ID internally used inside Nucleus)</td>		
+		<td>Returns the ID for this plugin (this is the ID internally used inside Nucleus)</td>
 	</tr>
 	<tr>
 		<td><code>getAdminURL()</code></td>
-		<td>Returns the URL of where the admin area of the plugin is located (if there is no such admin area, this information is invalid)</td>		
+		<td>Returns the URL of where the admin area of the plugin is located (if there is no such admin area, this information is invalid)</td>
 	</tr>
 	<tr>
 		<td><code>getDirectory()</code></td>
-		<td>Returns the path in the servers filesystem where the extra files for the plugin are stored (if there are no such files, this information makes no sense). The result is something like "<code>.../nucleus/plugins/<i>plugname</i>/</code>"</td>		
+		<td>Returns the path in the servers filesystem where the extra files for the plugin are stored (if there are no such files, this information makes no sense). The result is something like "<code>.../nucleus/plugins/<i>plugname</i>/</code>"</td>
 	</tr>
 	<tr>
 		<td><code>getShortName()</code></td>
-		<td>Returns the part of the plugin classname without the "<code>NP_</code>"-part, and in all-lowercase. This information is used in the functions <code>getAdminURL</code> and <code>getDirectory</code></td>		
+		<td>Returns the part of the plugin classname without the "<code>NP_</code>"-part, and in all-lowercase. This information is used in the functions <code>getAdminURL</code> and <code>getDirectory</code></td>
 	</tr>
 
 </table>
@@ -359,7 +359,7 @@ Template plugin variables work in the same way as skin plugin vars. There are tw
 		<strong>Note the ampersands!</strong>
 	</li>
 </ol>
-	
+
 <p>Template variables are called in exactly the same way as skinvars (using <code>&lt;%plugin(<i>PlugName</i>,<i>parameters</i>)%&gt; </code> or <code>&lt;%PlugName(parameters)%&gt;</code>)
 </p>
 
@@ -422,7 +422,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
   ...
   function event_PreAddComment(&$data) {
     // replace acronym HTML
-    $data['comment']['body'] = 
+    $data['comment']['body'] =
         strreplace('HTML',
                    '&lt;acronym title="HyperText Markup Language"&gt;HTML&lt;/acronym&gt;',
                    $data['comment']['body']);
@@ -471,7 +471,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd>The <code>SKIN</code>-object that is handling the parse</dd>
 			<dt class="ro">type</dt>
 			<dd>Type of skinpart (one of 'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search', 'imagepopup', 'fileparser')</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostSkinParse</td>
@@ -481,7 +481,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd>The <code>SKIN</code>-object that is handling the parse</dd>
 			<dt class="ro">type</dt>
 			<dd>Type of skinpart (one of 'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search', 'imagepopup', 'fileparser')</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreItem</td>
@@ -491,7 +491,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd><code>BLOG</code> object</dd>
 			<dt class="ref obj">item</dt>
 			<dd>object containing item data</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostItem</td>
@@ -501,7 +501,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd><code>BLOG</code> object</dd>
 			<dt class="ref obj">item</dt>
 			<dd>object containing item data</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreComment</td>
@@ -509,7 +509,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td><dl>
 			<dt class="ref">comment</dt>
 			<dd>associative array containing comment data</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostComment</td>
@@ -517,7 +517,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td><dl>
 			<dt class="ref">comment</dt>
 			<dd>associative array containing comment data</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreDateHead</td>
@@ -527,7 +527,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd><code>BLOG</code> object</dd>
 			<dt class="ro">timestamp</dt>
 			<dd>Timestamp for date header</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostDateHead</td>
@@ -537,7 +537,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd><code>BLOG</code> object</dd>
 			<dt class="ro">timestamp</dt>
 			<dd>Timestamp for date header</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreDateFoot</td>
@@ -547,7 +547,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd><code>BLOG</code> object</dd>
 			<dt class="ro">timestamp</dt>
 			<dd>Timestamp for day that is closed</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostDateFoot</td>
@@ -557,15 +557,15 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd><code>BLOG</code> object</dd>
 			<dt class="ro">timestamp</dt>
 			<dd>Timestamp for day that is closed</dd>
-		</dl></td>		
-	</tr>	
+		</dl></td>
+	</tr>
 	<tr>
 		<td>LoginSuccess</td>
 		<td>After a successful login</td>
 		<td><dl>
 			<dt class="obj ref">member</dt>
 			<dd><code>MEMBER</code> object</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>LoginFailed</td>
@@ -573,7 +573,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td><dl>
 			<dt class="ro">username</dt>
 			<dd>login name that was used in the login attempt</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>Logout</td>
@@ -581,7 +581,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td><dl>
 			<dt class="ro">username</dt>
 			<dd>name of the user that logged out</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreBlogContent</td>
@@ -591,7 +591,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd><code>BLOG</code> object</dd>
 			<dt class="ro">type</dt>
 			<dd>Type of skinvar that's being called ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults', 'othersearchresults', 'categorylist', 'otherarchive', 'otherarchivelist')</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostBlogContent</td>
@@ -601,7 +601,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd><code>BLOG</code> object</dd>
 			<dt class="ro">type</dt>
 			<dd>Type of skinvar that's being called ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults', 'othersearchresults', 'categorylist', 'otherarchive', 'otherarchivelist')</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreAddComment</td>
@@ -609,7 +609,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td><dl>
 			<dt class="ref">comment</dt>
 			<dd>comment data (associative array)</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostAddComment</td>
@@ -619,7 +619,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd>comment data (associative array)</dd>
 			<dt class="ro">errormessage</dt>
 			<dd>error message (if any)</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostRegister</td>
@@ -627,7 +627,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td><dl>
 			<dt class="obj ref">member</dt>
 			<dd>New <code>MEMBER</code> object</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostAddItem</td>
@@ -635,7 +635,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td><dl>
 			<dt class="ro">itemid</dt>
 			<dd>new itemid in database</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreAddItem</td>
@@ -659,8 +659,8 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd>1 (draft) or 0 (not draft)</dd>
 			<dt class="ref">catid</dt>
 			<dd>ID fo category</dd>
-		</dl></td>		
-	</tr>	
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PreUpdateItem</td>
 		<td>Immediately before an item gets updates in the database</td>
@@ -679,7 +679,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd>1 (no comments allowed) or 0 (comments allowed)</dd>
 			<dt class="ref">catid</dt>
 			<dd>ID fo category</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PrepareItemForEdit</td>
@@ -687,7 +687,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td><dl>
 			<dt class="ref">item</dt>
 			<dd>associative array containing item data</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreUpdateComment</td>
@@ -695,7 +695,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td><dl>
 			<dt class="ref">body</dt>
 			<dd>Comment body</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PrepareCommentForEdit</td>
@@ -703,7 +703,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td><dl>
 			<dt class="ref">comment</dt>
 			<dd>comment data (associative array)</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PrePluginOptionsEdit</td>
@@ -720,9 +720,9 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd>plugin ID (compare with <code>GetID()</code> to find out if this concerns you) (only present when context is global)</dd>
 			<dt class="ro">contextid</dt>
 			<dd>context ID (blogid, memberid, catid depending on context)</dd>
-			
-		</dl></td>		
-	</tr>	
+
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PostPluginOptionsUpdate</td>
 		<td>
@@ -735,26 +735,26 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dt class="ro">plugid</dt>
 			<dd>plugin ID (compare with <code>GetID()</code> to find out if this concerns you) (global context)</dd>
 			<dt class="ro">blogid</dt>
-			<dd>(v2.2) blog ID (blog context)</dd>			
+			<dd>(v2.2) blog ID (blog context)</dd>
 			<dt class="ref obj">blog</dt>
-			<dd>(v2.2) BLOG object (blog context)</dd>			
+			<dd>(v2.2) BLOG object (blog context)</dd>
 			<dt class="ro">memberid</dt>
-			<dd>(v2.2) member ID (member context)</dd>			
+			<dd>(v2.2) member ID (member context)</dd>
 			<dt class="ref obj">member</dt>
-			<dd>(v2.2) MEMBER object (member context)</dd>			
+			<dd>(v2.2) MEMBER object (member context)</dd>
 			<dt class="ro">catid</dt>
-			<dd>(v2.2) category ID (category context)</dd>			
-		</dl></td>		
-		
-	</tr>	
+			<dd>(v2.2) category ID (category context)</dd>
+		</dl></td>
+
+	</tr>
 	<tr>
 		<td>PostAuthentication</td>
 		<td>(v2.0b) After the login procedure has been completed. This occurs on each page request.</td>
 		<td><dl>
 			<dt class="ro">loggedIn</dt>
 			<dd>result of <code>$member->isLoggedIn()</code></dd>
-		</dl></td>		
-	</tr>		
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PreAddItemForm</td>
 		<td>(v2.0b) Immediately before an add item form (bookmarklet or admin area) is created.</td>
@@ -763,21 +763,21 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd>reference to an associative array, in which the values 'title', 'body' and 'more' can be filled with initial values for the formfields. To avoid multiple plugins to alter these values, set the 'hasBeenSet' value to 1 when you're done (and check for it before starting)</dd>
 			<dt class="ref obj">blog</dt>
 			<dd>reference to a <code>BLOG</code> object</dd>
-		</dl></td>		
-	</tr>		
+		</dl></td>
+	</tr>
 	<tr>
 		<td>AddItemFormExtras</td>
 		<td>(v2.0b) Somewhere inside the add item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
 			<dd>reference to a <code>BLOG</code> object</dd>
-		</dl></td>		
-	</tr>			
+		</dl></td>
+	</tr>
 	<tr>
 		<td>EditItemFormExtras</td>
 		<td>
 			(v2.0b) Somewhere inside the edit item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.
-			<br /><br />			
+			<br /><br />
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
 <pre class="example"><code>&lt;h3&gt;plugin name&lt;/h3&gt;
 &lt;p&gt;your stuff&lt;/p&gt;</code></pre>
@@ -789,27 +789,27 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dt class="ro">variables</dt>
 			<dd>
 				(read-only) An associative array containing all sorts of information on the item that's being edited: 'itemid', 'draft', 'closed', 'title', 'body', 'more', 'author', 'authorid', 'timestamp', 'karmapos', 'karmaneg', 'catid'
-			</dd>			
+			</dd>
 			<dt class="ro">itemid</dt>
 			<dd>shortcut to the item ID</dd>
-		</dl></td>		
-	</tr>				
+		</dl></td>
+	</tr>
 	<tr>
 		<td>BlogSettingsFormExtras</td>
 		<td>(v2.0) On the blog settings page. You can add your own forms here.
-			<br /><br />			
+			<br /><br />
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
 <pre class="example"><code>&lt;h4&gt;plugin name&lt;/h4&gt;
 &lt;form method="post" action="..."&gt;&lt;p&gt;
 your stuff
 &lt;/p&gt;&lt;/form&gt;</code></pre>
 			This way, multiple plugins can add options here while things keep a good structure. Also try to use prefixes for your fieldnames, in order to avoid nameclashes (e.g. <code>plug_tb_url</code>)
-	
+
 		</td>
 		<td><dl>
 			<dt class="obj ref">blog</dt>
 			<dd>reference to a <code>BLOG</code> object</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreDeleteItem</td>
@@ -817,7 +817,7 @@ your stuff
 		<td><dl>
 			<dt class="ro">itemid</dt>
 			<dd>id of the item that will be deleted</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostDeleteItem</td>
@@ -825,7 +825,7 @@ your stuff
 		<td><dl>
 			<dt class="ro">itemid</dt>
 			<dd>id of the deleted item</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreDeleteCategory</td>
@@ -833,7 +833,7 @@ your stuff
 		<td><dl>
 			<dt class="ro">catid</dt>
 			<dd>category ID</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostDeleteCategory</td>
@@ -841,15 +841,15 @@ your stuff
 		<td><dl>
 			<dt class="ro">catid</dt>
 			<dd>category ID</dd>
-		</dl></td>		
-	</tr>	
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PreDeleteBlog</td>
 		<td>(v2.0) Immediately before a blog gets deleted from the database</td>
 		<td><dl>
 			<dt class="ro">blogid</dt>
 			<dd>ID of the blog that will be deleted</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostDeleteBlog</td>
@@ -857,15 +857,15 @@ your stuff
 		<td><dl>
 			<dt class="ro">blogid</dt>
 			<dd>ID of the blog that was deleted from the database</dd>
-		</dl></td>		
-	</tr>	
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PreDeleteMember</td>
 		<td>(v2.0) Immediately before a member gets deleted from the database</td>
 		<td><dl>
 			<dt class="ref obj">member</dt>
 			<dd>reference to the <code>MEMBER</code> object associated with the member that needs to be deleted</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostDeleteMember</td>
@@ -873,8 +873,8 @@ your stuff
 		<td><dl>
 			<dt class="ref obj">member</dt>
 			<dd>reference to the <code>MEMBER</code> object associated with the member that has been deleted</dd>
-		</dl></td>		
-	</tr>	
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PreDeleteTeamMember</td>
 		<td>(v2.0) Immediately before a member gets deleted from a weblog team</td>
@@ -883,7 +883,7 @@ your stuff
 			<dd>reference to the <code>MEMBER</code> object</dd>
 			<dt class="ro">blogid</dt>
 			<dd>ID of the blog</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostDeleteTeamMember</td>
@@ -893,7 +893,7 @@ your stuff
 			<dd>reference to the <code>MEMBER</code> object</dd>
 			<dt class="ro">blogid</dt>
 			<dd>ID of the blog</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreDeleteComment</td>
@@ -901,7 +901,7 @@ your stuff
 		<td><dl>
 			<dt class="ro">commentid</dt>
 			<dd>ID of the comment that will be deleted</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostDeleteComment</td>
@@ -909,12 +909,12 @@ your stuff
 		<td><dl>
 			<dt class="ro">commentid</dt>
 			<dd>ID of the deleted comment</dd>
-		</dl></td>		
-	</tr>		
+		</dl></td>
+	</tr>
 	<tr>
 		<td>ActionLogCleared</td>
 		<td>(v2.0) After the action log has been cleared</td>
-		<td>None</td>		
+		<td>None</td>
 	</tr>
 	<tr>
 		<td>PreDeleteTemplate</td>
@@ -922,7 +922,7 @@ your stuff
 		<td><dl>
 			<dt class="ro">templateid</dt>
 			<dd>ID of the template that will be deleted</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostDeleteTemplate</td>
@@ -930,15 +930,15 @@ your stuff
 		<td><dl>
 			<dt class="ro">templateid</dt>
 			<dd>ID of the deleted template</dd>
-		</dl></td>		
-	</tr>		
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PreDeleteSkin</td>
 		<td>(v2.0) Immediately before a skin gets deleted from the database</td>
 		<td><dl>
 			<dt class="ro">skinid</dt>
 			<dd>ID of the skin that will be deleted</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostDeleteSkin</td>
@@ -946,15 +946,15 @@ your stuff
 		<td><dl>
 			<dt class="ro">skinid</dt>
 			<dd>ID of the deleted skin</dd>
-		</dl></td>		
-	</tr>	
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PreDeletePlugin</td>
 		<td>(v2.0) Immediately before a plugin gets deleted from the database</td>
 		<td><dl>
 			<dt class="ro">plugid</dt>
 			<dd>ID of the plugin that will be deleted</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostDeletePlugin</td>
@@ -962,8 +962,8 @@ your stuff
 		<td><dl>
 			<dt class="ro">plugid</dt>
 			<dd>ID of the deleted plugin</dd>
-		</dl></td>		
-	</tr>		
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PreDeleteBan</td>
 		<td>(v2.0) Immediately before an IP ban gets deleted from the database</td>
@@ -971,8 +971,8 @@ your stuff
 			<dt class="ro">blogid</dt>
 			<dd>ID of the blog for which the ban will be deleted</dd>
 			<dt class="ro">iprange</dt>
-			<dd>banned IP range</dd>			
-		</dl></td>		
+			<dd>banned IP range</dd>
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostDeleteBan</td>
@@ -981,9 +981,9 @@ your stuff
 			<dt class="ro">blogid</dt>
 			<dd>ID of the blog for which the ban has been deleted</dd>
 			<dt class="ro">iprange</dt>
-			<dd>banned IP range</dd>			
-		</dl></td>		
-	</tr>			
+			<dd>banned IP range</dd>
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PreAddCategory</td>
 		<td>(v2.0) Immediately before a new category is created in the database</td>
@@ -991,10 +991,10 @@ your stuff
 			<dt class="ref obj">blog</dt>
 			<dd>reference to <code>BLOG</code> object</dd>
 			<dt class="ref">name</dt>
-			<dd>name of new category</dd>			
+			<dd>name of new category</dd>
 			<dt class="ref">description</dt>
 			<dd>description of new category</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostAddCategory</td>
@@ -1003,12 +1003,12 @@ your stuff
 			<dt class="ref obj">blog</dt>
 			<dd>reference to <code>BLOG</code> object</dd>
 			<dt class="ro">name</dt>
-			<dd>name of new category</dd>			
+			<dd>name of new category</dd>
 			<dt class="ro">description</dt>
 			<dd>description of new category</dd>
 			<dt class="ro">catid</dt>
-			<dd>New category ID</dd>			
-		</dl></td>		
+			<dd>New category ID</dd>
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreAddBlog</td>
@@ -1024,7 +1024,7 @@ your stuff
 			<dd>description of new blog</dd>
 			<dt class="ref">defaultskin</dt>
 			<dd>ID of default skin for new blog</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostAddBlog</td>
@@ -1032,7 +1032,7 @@ your stuff
 		<td><dl>
 			<dt class="ref obj">blog</dt>
 			<dd>new <code>BLOG</code> object</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreAddPlugin</td>
@@ -1040,7 +1040,7 @@ your stuff
 		<td><dl>
 			<dt class="ref">file</dt>
 			<dd>filename of the new plugin</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostAddPlugin</td>
@@ -1048,7 +1048,7 @@ your stuff
 		<td><dl>
 			<dt class="ref obj">plugin</dt>
 			<dd>An object of the newly added plugin</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreAddTeamMember</td>
@@ -1060,7 +1060,7 @@ your stuff
 			<dd><code>MEMBER</code> object</dd>
 			<dt class="ref">admin</dt>
 			<dd>boolean indicating if the newly added member will have blog admin rights or not</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostAddTeamMember</td>
@@ -1072,7 +1072,7 @@ your stuff
 			<dd><code>MEMBER</code> object</dd>
 			<dt class="ro">admin</dt>
 			<dd>boolean indicating if the newly added member has admin rights or not</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreAddTemplate</td>
@@ -1082,7 +1082,7 @@ your stuff
 			<dd>name of the new template</dd>
 			<dt class="ref">description</dt>
 			<dd>description of the new template</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostAddTemplate</td>
@@ -1094,8 +1094,8 @@ your stuff
 			<dd>description of the new template</dd>
 			<dt class="ro">templateid</dt>
 			<dd>ID of the new template</dd>
-		</dl></td>		
-	</tr>	
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PreAddSkin</td>
 		<td>(v2.0) Immediately before a new skin is created (note: this one also gets called when a skin is cloned))</td>
@@ -1110,7 +1110,7 @@ your stuff
 			<dd>includeMode of the new skin</dd>
 			<dt class="ref">includePrefix</dt>
 			<dd>includePrefix of the new skin</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostAddSkin</td>
@@ -1128,8 +1128,8 @@ your stuff
 			<dd>includePrefix of the new skin</dd>
 			<dt class="ro">skinid</dt>
 			<dd>ID of the new skin</dd>
-		</dl></td>		
-	</tr>		
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PreAddBan</td>
 		<td>(v2.0) Immediately before a new ban is added to a weblog</td>
@@ -1140,7 +1140,7 @@ your stuff
 			<dd>IP range to be banned</dd>
 			<dt class="ref">reason</dt>
 			<dd>textual message describing the reason for the ban</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostAddBan</td>
@@ -1152,8 +1152,8 @@ your stuff
 			<dd>IP range to be banned</dd>
 			<dt class="ro">reason</dt>
 			<dd>textual message describing the reason for the ban</dd>
-		</dl></td>		
-	</tr>		
+		</dl></td>
+	</tr>
 
 	<tr>
 		<td>PreMoveItem</td>
@@ -1164,8 +1164,8 @@ your stuff
 			<dt class="ref">destblogid</dt>
 			<dd>ID of the destination blog</dd>
 			<dt class="ref">destcatid</dt>
-			<dd>ID of the destination category</dd>			
-		</dl></td>		
+			<dd>ID of the destination category</dd>
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostMoveItem</td>
@@ -1176,8 +1176,8 @@ your stuff
 			<dt class="ro">destblogid</dt>
 			<dd>ID of the new blog</dd>
 			<dt class="ro">destcatid</dt>
-			<dd>ID of the new category</dd>	
-		</dl></td>		
+			<dd>ID of the new category</dd>
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreMoveCategory</td>
@@ -1188,8 +1188,8 @@ your stuff
 			<dt class="ref obj">sourceblog</dt>
 			<dd>source <code>BLOG</code> object</dd>
 			<dt class="ref obj">destblog</dt>
-			<dd>destination <code>BLOG</code> object</dd>			
-		</dl></td>		
+			<dd>destination <code>BLOG</code> object</dd>
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PostMoveCategory</td>
@@ -1200,39 +1200,39 @@ your stuff
 			<dt class="ref obj">sourceblog</dt>
 			<dd>source <code>BLOG</code> object</dd>
 			<dt class="ref obj">destblog</dt>
-			<dd>destination <code>BLOG</code> object</dd>			
-		</dl></td>		
-	</tr>	
+			<dd>destination <code>BLOG</code> object</dd>
+		</dl></td>
+	</tr>
 	<tr>
 		<td>MemberSettingsFormExtras</td>
 		<td>(v2.0) On the member settings page. You can add your own forms here.
-			<br /><br />			
+			<br /><br />
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
 <pre class="example"><code>&lt;h4&gt;plugin name&lt;/h4&gt;
 &lt;form method="post" action="..."&gt;&lt;p&gt;
 your stuff
 &lt;/p&gt;&lt;/form&gt;</code></pre>
 			This way, multiple plugins can add options here while things keep a good structure. Also try to use prefixes for your fieldnames, in order to avoid nameclashes (e.g. <code>plug_tb_url</code>)
-	
+
 		</td>
 		<td><dl>
 			<dt class="ref obj">member</dt>
 			<dd>reference to a <code>MEMBER</code> object</dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td>GeneralSettingsFormExtras</td>
 		<td>(v2.0) On the general settings page. You can add your own forms here.
-			<br /><br />			
+			<br /><br />
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
 <pre class="example"><code>&lt;h4&gt;plugin name&lt;/h4&gt;
 &lt;form method="post" action="..."&gt;&lt;p&gt;
 your stuff
 &lt;/p&gt;&lt;/form&gt;</code></pre>
 			This way, multiple plugins can add options here while things keep a good structure. Also try to use prefixes for your fieldnames, in order to avoid nameclashes (e.g. <code>plug_tb_url</code>)
-	
+
 		</td>
-		<td>None</td>		
+		<td>None</td>
 	</tr>
 <!--	<tr>
 		<td></td>
@@ -1240,7 +1240,7 @@ your stuff
 		<td><dl>
 			<dt></dt>
 			<dd></dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -1248,7 +1248,7 @@ your stuff
 		<td><dl>
 			<dt></dt>
 			<dd></dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -1256,7 +1256,7 @@ your stuff
 		<td><dl>
 			<dt></dt>
 			<dd></dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -1264,15 +1264,15 @@ your stuff
 		<td><dl>
 			<dt></dt>
 			<dd></dd>
-		</dl></td>		
-	</tr>	
+		</dl></td>
+	</tr>
 	<tr>
 		<td></td>
 		<td></td>
 		<td><dl>
 			<dt></dt>
 			<dd></dd>
-		</dl></td>		
+		</dl></td>
 	</tr> -->
 </table>
 
@@ -1287,7 +1287,7 @@ your stuff
 <ol>
 	<li><strong>Global options</strong>: Editable on the admin area from the plugins section.</li>
 	<li><strong>Blog options</strong>: Editable from the blogsettings pages.</li>
-	<li><strong>Category options</strong>: Editable from the blogsettings pages (on the 'edit category' page).</li>	
+	<li><strong>Category options</strong>: Editable from the blogsettings pages (on the 'edit category' page).</li>
 	<li><strong>Member options</strong>: Editable on the 'edit member' pages</li>
 </ol>
 
@@ -1315,7 +1315,7 @@ your stuff
 <ol>
 	<li>The name of an option can contain a maximum of 20 characters</li>
 	<li>The description of an option can contain a maximum of 255 characters</li>
-	<li>The value for an option has no limit (Prior to v2.2 the limit was 128 characters)</li>
+	<li>The value for an option has no limit (Prior to v2.5 the limit was 128 characters)</li>
 </ol>
 
 <h2>The methods</h2>
@@ -1363,7 +1363,7 @@ your stuff
 <table><tr>
 	<th>parameter</th>
 	<th>value</th>
-</tr><tr>		
+</tr><tr>
 	<td>$name</td>
 	<td>Option name</td>
 </tr></tr>
@@ -1390,7 +1390,7 @@ your stuff
 <table><tr>
 	<th>parameter</th>
 	<th>value</th>
-</tr><tr>		
+</tr><tr>
 	<td>$name</td>
 	<td>Option name</td>
 </tr></table>
@@ -1414,7 +1414,7 @@ your stuff
 <table><tr>
 	<th>parameter</th>
 	<th>value</th>
-</tr><tr>		
+</tr><tr>
 	<td>$name</td>
 	<td>Option name</td>
 </tr></table>

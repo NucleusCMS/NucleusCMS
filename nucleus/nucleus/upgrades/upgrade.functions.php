@@ -49,15 +49,20 @@
 				$query = 'SELECT sdincpref FROM '.sql_table('skin_desc').' LIMIT 1';
 				$minrows = -1;			
 				break;				
-			// dev only
+			// dev only (v2.2)
 			case '22':
 				$query = 'SELECT oid FROM '.sql_table('plugin_option_desc').' LIMIT 1';
 				$minrows = -1;			
-				break;				
-			case '25':
+				break;
+			// v2.5 beta
+			case '24':
 				$query = 'SELECT bincludesearch FROM ' . sql_table('blog') . ' LIMIT 1';
 				$minrows = -1;			
 				break;				
+			case '25':
+				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' LIMIT 1';
+				$minrows = 1;
+				break;
 				
 		}
 

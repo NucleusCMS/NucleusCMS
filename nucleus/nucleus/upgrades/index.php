@@ -50,7 +50,7 @@ When upgrading from an older Nucleus version, upgrades to the database tables ar
       <p class="ok">No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.</p>
     <?php  } else {
     ?>
-      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v2.5 (beta)</a></p>
+      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v2.5</a></p>
     <?php  }
 ?>
 
