@@ -4921,7 +4921,7 @@ selector();
 		echo '<h2>',_PLUGS_HELP_TITLE,': ',htmlspecialchars($plugName),'</h2>';
 		
 		$plug =& $manager->getPlugin($plugName);
-		$helpFile = $DIR_PLUGINS.$plug->getShortName().'/help.php';
+		$helpFile = $DIR_PLUGINS.$plug->getShortName().'/help.html';
 		
 		if (($plug->supportsFeature('HelpPage') > 0) && (@file_exists($helpFile))) {
 			include($helpFile);
