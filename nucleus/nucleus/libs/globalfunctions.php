@@ -241,6 +241,14 @@ if (!defined('_MEMBERS_BYPASS'))
 
 */
 
+// make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
+if (!defined('_ARCHIVETYPE_MONTH'))
+{
+	define('_ARCHIVETYPE_DAY','day');
+	define('_ARCHIVETYPE_MONTH','month');
+}
+
+
 // decode path_info
 if ($CONF['URLMode'] == 'pathinfo') {
 	$data = explode("/",serverVar('PATH_INFO'));
@@ -584,13 +592,13 @@ function selector() {
 
 		sscanf($archive,'%d-%d-%d',$y,$m,$d);
 		if ($d != 0) {
-			$archivetype = 'day';	// TODO: move to language file
+			$archivetype = _ARCHIVETYPE_DAY;
 			$t = mktime(0,0,0,$m,$d,$y);
 			$archiveprev = strftime('%Y-%m-%d',$t - (24*60*60));
 			$archivenext = strftime('%Y-%m-%d',$t + (24*60*60));
 
 		} else {
-			$archivetype = 'month'; // TODO: move to language file
+			$archivetype = _ARCHIVETYPE_MONTH;
 			$t = mktime(0,0,0,$m,1,$y);
 			$archiveprev = strftime('%Y-%m',$t - (1*24*60*60));
 			$archivenext = strftime('%Y-%m',$t + (32*24*60*60));
