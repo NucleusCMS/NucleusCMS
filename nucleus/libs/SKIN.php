@@ -578,7 +578,6 @@ class ACTIONS extends BaseActions {
                 }
                 break;
             case 'next':
-                $startpos = intval($startpos) + intval($maxresults);
                 $iAmountOnPage = $this->amountfound;
                 if ($iAmountOnPage == 0)
                 {
@@ -594,9 +593,10 @@ class ACTIONS extends BaseActions {
                 			break;
                 	}
                 	if ($sqlquery) 
-                		$iAmountOnPage = intval(quickQuery($sqlquery));
+                		$iAmountOnPage = intval(quickQuery($sqlquery)) - intval($startpos);
                 }
                 if (intval($iAmountOnPage) >= intval($maxresults)) {
+                	$startpos 	= intval($startpos) + intval($maxresults);                
                 	$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
                 }
                 break;
