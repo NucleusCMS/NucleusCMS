@@ -376,7 +376,7 @@ function bc_convertOneItem($row, $memberid, $nucleus_blogid) {
 function bc_transformDate($date) {
 	// 7/24/2000 11:27:13 AM
 	if (eregi("(.*)/(.*)/(.*) (.*):(.*):(.*) (.*)",$date,$regs) != false) {
-		if ($regs[7] == "PM")
+		if (($regs[7] == "PM") && ($regs[4] != "12"))
 			$regs[4] += 12;
 		return mktime($regs[4],$regs[5],$regs[6],$regs[1],$regs[2],$regs[3]);
 
