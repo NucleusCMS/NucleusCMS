@@ -264,14 +264,17 @@ function sql_table($name)
 }
 
 function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
-	global $manager;
+	global $manager, $CONF;
 	
 	if (!headers_sent()) {
 		// if content type is application/xhtml+xml, only send it to browsers
 		// that can handle it (IE6 cannot). Otherwise, send text/html
+		
+		// v2.5: For admin area pages, keep sending text/html (unless it's a debug version)
+		//       application/xhtml+xml still causes too much problems with the javascript implementations
 		if (
 				($contenttype == 'application/xhtml+xml')
-			&&	!stristr(serverVar('HTTP_ACCEPT'),'application/xhtml+xml')
+			&&	(($CONF['UsingAdminArea'] && !$CONF['debug']) || !stristr(serverVar('HTTP_ACCEPT'),'application/xhtml+xml'))
 			)
 		{
 			$contenttype = 'text/html';
@@ -286,7 +289,7 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 			)
 		);
 		
-		header('Content-Type: ' . $contenttype . '; charset=' . $charset);				
+		header('Content-Type: ' . $contenttype . '; charset=' . $charset);			
 	}
 	
 	
