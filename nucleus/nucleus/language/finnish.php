@@ -1,9 +1,8 @@
 <?php
 // Finnish Nucleus Language File
 // 
-// Author: Jukka Kolehmainen, www.timetombs.net(v2.0)
-// Author: Marko Seppänen, http://hoito.org (v1.5,v1.1)
-// Nucleus version: v2.5beta
+// Author: Marko Seppänen, http://hoito.org
+// Nucleus version: 2.5 beta
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -17,14 +16,14 @@
 
 // media library
 define('_MEDIA_VIEW',				'Tarkastele');
-define('_MEDIA_VIEW_TT',			'Katso tiedostoa (avautuu uuteen ikkunaan)');
-define('_MEDIA_FILTER_APPLY',		'Ota Filtteri käyttöön');
-define('_MEDIA_FILTER_LABEL',		'Filtteri: ');
+define('_MEDIA_VIEW_TT',			'Tarkastele tiedostoa (avautuu uuteen ikkunaan)');
+define('_MEDIA_FILTER_APPLY',		'Ota suodatin käyttöön');
+define('_MEDIA_FILTER_LABEL',		'Suodatin: ');
 define('_MEDIA_UPLOAD_TO',			'Lähetä...');
 define('_MEDIA_UPLOAD_NEW',			'Lähetä uusi tiedosto...');
 define('_MEDIA_COLLECTION_SELECT',	'Valitse');
-define('_MEDIA_COLLECTION_TT',		'Hyppää tähän kategoriaan');
-define('_MEDIA_COLLECTION_LABEL',	'Nykyinen lajitelma: ');
+define('_MEDIA_COLLECTION_TT',		'Vaihda tähän kategoriaan');
+define('_MEDIA_COLLECTION_LABEL',	'Valittu kokoelma: ');
 
 // tooltips on toolbar
 define('_ADD_ALIGNLEFT_TT',			'Tasaa vasemmalle');
@@ -35,9 +34,10 @@ define('_ADD_ALIGNCENTER_TT',		'Keskitä');
 define('_EBLOG_SEARCH',				'Sisällytä hakuun');
 
 // generic upload failure
-define('_ERROR_UPLOADFAILED',		'Lähettäminen epäonnistui');
+define('_ERROR_UPLOADFAILED',		'Lähetys epäonnistui');
 
 // END introduced after v2.0 END
+
 
 // START introduced after v1.5 START
 
@@ -69,7 +69,7 @@ define('_MOVECAT_BTN',				'Siirrä kategoria');
 // URLMode setting
 define('_SETTINGS_URLMODE',			'URL moodi');
 define('_SETTINGS_URLMODE_NORMAL',	'Normaali');
-define('_SETTINGS_URLMODE_PATHINFO','Kokonainen');
+define('_SETTINGS_URLMODE_PATHINFO','Häjynen');
 
 // Batch operations
 define('_BATCH_NOSELECTION',		'Ei valintoja, joihin kohdistuu toimintoja');
@@ -102,12 +102,12 @@ define('_BATCH_TEAM_DELETE',		'Poista hallintaryhmästä');
 define('_BATCH_TEAM_SET_ADM',		'Anna järjestelmänvalvojan oikeudet');
 define('_BATCH_TEAM_UNSET_ADM',		'Ota pois järjestelmänvalvojan oikeudet');
 define('_BATCH_CAT_DELETE',			'Poista');
-define('_BATCH_CAT_MOVE',			'Siirrä toiseen blogiin');
+define('_BATCH_CAT_MOVE',			'Siirrää toiseen blogiin');
 define('_BATCH_COMMENT_DELETE',		'Poista');
 
 // itemlist: Add new item...
 define('_ITEMLIST_ADDNEW',			'Lisää uusi blogiartikkeli...');
-define('_ADD_PLUGIN_EXTRAS',		'Pluginille lisävalinnat');
+define('_ADD_PLUGIN_EXTRAS',		'Lisävalintoja pluginille');
 
 // errors
 define('_ERROR_CATCREATEFAIL',		'Ei pystytty luomaan uutta kategoriaa');
@@ -238,7 +238,7 @@ define('_ADD_NEWCAT',				'Uusi kategoria');
 
 // new settings
 define('_SETTINGS_PLUGINURL',		'Pluginin osoite (URL)');
-define('_SETTINGS_MAXUPLOADSIZE',	'Ladatun tiedoston maksimikoko (bitteinä)');
+define('_SETTINGS_MAXUPLOADSIZE',	'Lähetetyn tiedoston maksimikoko (bitteinä)');
 define('_SETTINGS_NONMEMBERMSGS',	'Salli ei-jäsenten lähettää viestejä');
 define('_SETTINGS_PROTECTMEMNAMES',	'Suojaa jäsenten nimet');
 
@@ -252,7 +252,7 @@ define('_ACTIONLOG_NEWMEMBER',		'Uuden jäsenen rekisteröinti:');
 define('_MEMBERMAIL_MAIL',			'Sähköpostiosoitteesi:');
 
 // file upload
-define('_ERROR_DISALLOWEDUPLOAD2',	'Sinulla ei ole ylläpitäjän oikeuksia mihinkään blogiin, joilla on kohdejäsen listallaan. Täten, et ole oikeutettu lataamaan tiedostoja tämän jäsenen media -hakemistoon');
+define('_ERROR_DISALLOWEDUPLOAD2',	'Sinulla ei ole ylläpitäjän oikeuksia mihinkään blogiin, joilla on kohdejäsen listallaan. Täten, et ole oikeutettu lähettämään tiedostoja tämän jäsenen media -hakemistoon');
 
 // plugin list
 define('_LISTS_INFO',				'Tiedot');
@@ -288,6 +288,9 @@ define('_BACKTOMANAGE',				'Takaisin Nucleuksen hallintaan');
 
 // END introduced after v1.1 END
 
+
+
+
 // charset to use 
 define('_CHARSET',					'iso-8859-1');
 
@@ -320,7 +323,7 @@ define('_COMMENTFORM_YOUARE',		'Olet');
 define('_COMMENTFORM_SUBMIT',		'Lisää kommentti');
 define('_COMMENTFORM_COMMENT',		'Kommenttisi');
 define('_COMMENTFORM_NAME',			'Nimi');
-define('_COMMENTFORM_MAIL',			'Sähköpostiosoite');
+define('_COMMENTFORM_MAIL',			'Sähköpostiosoite tai WWW-osoite');
 define('_COMMENTFORM_REMEMBER',		'Muista minut');
 
 // loginform
@@ -397,8 +400,8 @@ define('_TEMPLATE_UPDATED',			'Templaattidata on tallennettu');
 
 // errors
 define('_ERROR_COMMENT_LONGWORD',	'Älä käytä kuin korkeintaan 60 merkkiä pitkiä sanoja kommenteissasi');
-define('_ERROR_COMMENT_NOCOMMENT',	'Kirjoita kommentti');
-define('_ERROR_COMMENT_NOUSERNAME',	'Ei hyväksyttävä tunnus');
+define('_ERROR_COMMENT_NOCOMMENT',	'Kommentti puuttuu');
+define('_ERROR_COMMENT_NOUSERNAME',	'Nimi puuttuu');
 define('_ERROR_COMMENT_TOOLONG',	'Kommenttisi on liian pitkä (max. 5000 merkkiä)');
 define('_ERROR_COMMENTS_DISABLED',	'Kommentointimahdollisuus tälle blogille on pois käytöstä.');
 define('_ERROR_COMMENTS_NONPUBLIC',	'Sinun täytyy olla kirjautunut käyttäjä lisätäksesi kommentin tähän blogiin');
@@ -451,7 +454,7 @@ define('_ERROR_CONNECT',			'Yhdistämisvirhe');
 define('_ERROR_FILE_TOO_BIG',		'Tiedosto on liian iso!');
 define('_ERROR_BADFILETYPE',		'Valitettavasti tämä tiedostotyyppi ei ole sallittujen joukossa');
 define('_ERROR_BADREQUEST',			'Epäkelpo tiedostonsiirto-pyyntö');
-define('_ERROR_DISALLOWEDUPLOAD',	'Et ole minkään weblogin hallintaryhmässä. Täten, et ole oikeutettu lataamaan tiedostoja blogiin');
+define('_ERROR_DISALLOWEDUPLOAD',	'Et ole minkään weblogin hallintaryhmässä. Täten, et ole oikeutettu lähettämään tiedostoja blogiin');
 define('_ERROR_BADPERMISSIONS',		'Tiedosto/hakemisto -oikeudet eivät ole oikein asetetut');
 define('_ERROR_UPLOADMOVEP',		'Virhe tiedostoa siirrettäessä');
 define('_ERROR_UPLOADCOPY',			'Virhe tiedostoa kopioidessa');
@@ -472,15 +475,15 @@ define('_WARNING_NOTREADABLE',		'Varoitus: Nykyinen arvo on ei-lukuoikeudellinen
 define('_WARNING_NOTWRITABLE',		'Varoitus: Nykyinen arvo EI ole kirjoitusoikeudellinen hakemisto!');
 
 // media and upload
-define('_MEDIA_UPLOADLINK',			'Lataa uusi tiedosto');
+define('_MEDIA_UPLOADLINK',			'Lähetä uusi tiedosto');
 define('_MEDIA_MODIFIED',			'muokattu');
 define('_MEDIA_FILENAME',			'tiedoston nimi');
 define('_MEDIA_DIMENSIONS',			'mittasuhteet');
 define('_MEDIA_INLINE',				'Inline');
 define('_MEDIA_POPUP',				'Popup');
 define('_UPLOAD_TITLE',				'Valitse tiedosto');
-define('_UPLOAD_MSG',				'Valitse alta tiedosto, jonka haluat ladata ja paina \'Lataa\' nappia.');
-define('_UPLOAD_BUTTON',			'Lataa');
+define('_UPLOAD_MSG',				'Valitse alta tiedosto, jonka haluat lähettää ja paina \'Lataa\' nappia.');
+define('_UPLOAD_BUTTON',			'Lähetä');
 
 // some status messages
 define('_MSG_ACCOUNTCREATED',		'Käyttäjätili luotu, salasana lähetetään sähköpostitse');
@@ -645,8 +648,8 @@ define('_SETTINGS_DIRS',			'Nucleus -hakemisto');
 define('_SETTINGS_MEDIADIR',		'Media -hakemisto');
 define('_SETTINGS_SEECONFIGPHP',	'(katso config.php)');
 define('_SETTINGS_MEDIAURL',		'Media URL (pitäisi loppua kauttaviivaan)');
-define('_SETTINGS_ALLOWUPLOAD',		'Salli tiedostojen lataus blogiin?');
-define('_SETTINGS_ALLOWUPLOADTYPES','Sallitut tiedostomuodot ladatessa');
+define('_SETTINGS_ALLOWUPLOAD',		'Salli tiedostojen lähetys blogiin?');
+define('_SETTINGS_ALLOWUPLOADTYPES','Sallitut tiedostomuodot lähettäessä');
 define('_SETTINGS_CHANGELOGIN',		'Salli käyttäjien vaihtaa tunnusta/salasanaa');
 define('_SETTINGS_COOKIES_TITLE',	'Eväste asetukset');
 define('_SETTINGS_COOKIELIFE',		'Kirjautumisevästeen elinaika');
