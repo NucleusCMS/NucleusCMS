@@ -14,6 +14,10 @@
 
 // START changed/added after 3.1 START
 
+// for use in archivetype-skinvar
+define('_ARCHIVETYPE_DAY',			'day');
+define('_ARCHIVETYPE_MONTH',		'month');
+
 // tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
 define('_ERROR_BADTICKET',			'Invalid or expired ticket.');
 
