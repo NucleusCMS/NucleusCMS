@@ -45,7 +45,7 @@ function getNucleusVersion() {
 if ($CONF['debug']) {
 	error_reporting(E_ALL & ~E_NOTICE);	// report almost all errors!
 										// (no uninitialized vars and such)
-} else {	
+} else {
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
 }
 
@@ -74,15 +74,17 @@ $highlight		= requestVar('highlight');
 $amount			= requestVar('amount');
 $action			= requestVar('action');
 $nextaction		= requestVar('nextaction');
+$maxresults     = requestVar('maxresults');
+$startpos       = requestVar('startpos');
 
 if (!headers_sent())
 	header('Generator: Nucleus ' . $nucleus['version']);
 
 // include core classes that are needed for login & plugin handling
-include($DIR_LIBS . 'MEMBER.php');		
-include($DIR_LIBS . 'ACTIONLOG.php');	
-include($DIR_LIBS . 'MANAGER.php'); 	
-include($DIR_LIBS . 'PLUGIN.php'); 	
+include($DIR_LIBS . 'MEMBER.php');
+include($DIR_LIBS . 'ACTIONLOG.php');
+include($DIR_LIBS . 'MANAGER.php');
+include($DIR_LIBS . 'PLUGIN.php');
 
 $manager =& MANAGER::instance();
 
@@ -140,10 +142,10 @@ if ($action == 'login') {
 	setcookie('loginkey','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 	$manager->notify('Logout',array('username' => cookieVar('user')));
 } elseif (cookieVar('user')) {
-	// login if cookies available 
-	$res = $member->cookielogin(cookieVar('user'), cookieVar('loginkey')); 
+	// login if cookies available
+	$res = $member->cookielogin(cookieVar('user'), cookieVar('loginkey'));
 
-	// renew cookies when not on a shared computer	
+	// renew cookies when not on a shared computer
 	if ($res && (cookieVar('sharedpc') != 1) && (!headers_sent()))
 		$member->setCookies();
 }
@@ -152,16 +154,16 @@ if ($action == 'login') {
 $manager->notify('PostAuthentication',array('loggedIn' => $member->isLoggedIn()));
 
 // load other classes
-include($DIR_LIBS . 'PARSER.php'); 		
-include($DIR_LIBS . 'SKIN.php');		
-include($DIR_LIBS . 'TEMPLATE.php');	
-include($DIR_LIBS . 'BLOG.php');		
-include($DIR_LIBS . 'COMMENTS.php');	
-include($DIR_LIBS . 'COMMENT.php');		
-//include($DIR_LIBS . 'ITEM.php');		
+include($DIR_LIBS . 'PARSER.php');
+include($DIR_LIBS . 'SKIN.php');
+include($DIR_LIBS . 'TEMPLATE.php');
+include($DIR_LIBS . 'BLOG.php');
+include($DIR_LIBS . 'COMMENTS.php');
+include($DIR_LIBS . 'COMMENT.php');
+//include($DIR_LIBS . 'ITEM.php');
 include($DIR_LIBS . 'NOTIFICATION.php');
-include($DIR_LIBS . 'BAN.php');			
-include($DIR_LIBS . 'PAGEFACTORY.php'); 
+include($DIR_LIBS . 'BAN.php');
+include($DIR_LIBS . 'PAGEFACTORY.php');
 include($DIR_LIBS . 'SEARCH.php');
 
 
@@ -169,7 +171,7 @@ include($DIR_LIBS . 'SEARCH.php');
 if (!headers_sent()) {
 	if ($CONF['LastVisit'])
 		setcookie('lastVisit',time(),time()+2592000,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
-	else 
+	else
 		setcookie('lastVisit','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 }
 
@@ -201,16 +203,16 @@ if ($CONF['URLMode'] == 'pathinfo') {
 			case 'blog':			// blog/1
 				$i++;
 				if ($i<sizeof($data)) $blogid = intval($data[$i]);
-				break;				
+				break;
 			case 'category':		// category/1 (catid)
 			case 'catid':
 				$i++;
 				if ($i<sizeof($data)) $catid = intval($data[$i]);
-				break;				
+				break;
 			case 'member':
 				$i++;
 				if ($i<sizeof($data)) $memberid = intval($data[$i]);
-				break;				
+				break;
 			default:
 				// skip...
 		}
@@ -222,10 +224,10 @@ if ($CONF['URLMode'] == 'pathinfo') {
   */
 function sql_connect() {
 	global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE;
-	
-	$connection = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>','Connect Error');	
-	mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: '. mysql_error().'</p>', 'Connect Error');	
-	
+
+	$connection = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>','Connect Error');
+	mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: '. mysql_error().'</p>', 'Connect Error');
+
 	return $connection;
 }
 
@@ -247,10 +249,10 @@ function sendContentType($contenttype, $charset = _CHARSET) {
 		// if content type is application/xhtml+xml, only send it to browsers
 		// that can handle it (IE6 cannot). Otherwise, send text/html
 		if (
-				($contenttype == 'application/xhtml+xml') 
+				($contenttype == 'application/xhtml+xml')
 			&&	!stristr(serverVar('HTTP_ACCEPT'),'application/xhtml+xml')
 			)
-			header('Content-Type: text/html; charset=' . $charset);			
+			header('Content-Type: text/html; charset=' . $charset);
 		else
 			header('Content-Type: ' . $contenttype . '; charset=' . charset);
 	}
@@ -279,7 +281,7 @@ function sql_disconnect() {
 }
 
 /**
-  * executes an SQL query 
+  * executes an SQL query
   */
 function sql_query($query) {
 	$res = mysql_query($query) or print("mySQL error with query $query: " . mysql_error() . '<p />');
@@ -290,8 +292,8 @@ function sql_query($query) {
 /**
  * Highlights a specific query in a given HTML text (not within HTML tags) and returns it
  *
- * @param $text 
- *		text to be highlighted 
+ * @param $text
+ *		text to be highlighted
  * @param $expression
  *		regular expression to be matched (can be an array of expressions as well)
  * @param $highlight
@@ -305,7 +307,7 @@ function highlight($text, $expression, $highlight) {
 
 	// add a tag in front (is needed for preg_match_all to work correct)
 	$text = '<!--h-->'.$text;
-	
+
 	// split the HTML up so we have HTML tags
 	// $matches[0][i] = HTML + text
 	// $matches[1][i] = HTML
@@ -318,7 +320,7 @@ function highlight($text, $expression, $highlight) {
 		if ($i != 0) $result .= $matches[1][$i];
 
 		if (is_array($expression)) {
-			foreach ($expression as $regex) 
+			foreach ($expression as $regex)
 				if ($regex)
 					$matches[2][$i] = @eregi_replace($regex,$highlight,$matches[2][$i]);
 			$result .= $matches[2][$i];
@@ -341,7 +343,7 @@ function parseHighlight($query) {
 
 	if (!query) return array();
 	
-	$aHighlight = explode(' ', $query); 
+	$aHighlight = explode(' ', $query);
 	
 	for ($i = 0; $i<count($aHighlight); $i++) {
 		$aHighlight[$i] = trim($aHighlight[$i]);
@@ -364,7 +366,7 @@ function isValidMailAddress($address) {
 	else
 		return 0; 
 }
- 
+
 
 // some helper functions
 function getBlogIDFromName($name) {
@@ -388,7 +390,7 @@ function getCatIDFromName($name) {
 function quickQuery($q) {
 	$res = sql_query($q);
 	$obj = mysql_fetch_object($res);
-	return $obj->result;	
+	return $obj->result;
 }
 
 function getPluginNameFromPid($pid) {
@@ -397,23 +399,23 @@ function getPluginNameFromPid($pid) {
 }
 
 function selector() {
-	global $itemid, $blogid, $memberid, $query, $amount, $archivelist;
+	global $itemid, $blogid, $memberid, $query, $amount, $archivelist, $maxresults;
 	global $archive, $skinid, $blog, $memberinfo, $CONF, $member;
 	global $imagepopup, $catid;
 	global $manager;
-	
+
 	// first, let's see if the site is disabled or not
 	if ($CONF['DisableSite'] && !$member->isAdmin()) {
 		header('Location: ' . $CONF['DisableSiteURL']);
 		exit;
 	}
-	
+
 	// show error when headers already sent out
 	if (headers_sent() && $CONF['alertOnHeadersSent']) {
-	
+
 		// try to get line number/filename (extra headers_sent params only exists in PHP 4.3+)
 		if (function_exists('version_compare') && version_compare('4.3.0', phpversion(), '<=')) {
-			headers_sent($hsFile, $hsLine);	
+			headers_sent($hsFile, $hsLine);
 			$extraInfo = ' in <code>'.$hsFile.'</code> line <code>'.$hsLine.'</code>';
 		} else {
 			$extraInfo = '';
@@ -431,7 +433,7 @@ function selector() {
 	// for the default weblog
 	if (serverVar('QUERY_STRING') == 'archivelist')
 		$archivelist = $CONF['DefaultBlog'];
-		
+
 	// now decide which type of skin we need
 	if ($itemid) {
 		// itemid given -> only show that item
@@ -439,9 +441,9 @@ function selector() {
 		if (!$manager->existsItem($itemid,0,0))
 			doError(_ERROR_NOSUCHITEM);
 
-		
-		global $itemidprev, $itemidnext, $catid;
-		
+
+		global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
+
 		// 1. get timestamp and blogid for item
 		$query = 'SELECT UNIX_TIMESTAMP(itime) as itime, iblog FROM '.sql_table('item').' WHERE inumber=' . $itemid;
 		$res = sql_query($query);
@@ -459,21 +461,25 @@ function selector() {
 		if ($b->isValidCategory($catid))
 			$catextra = ' and icat=' . $catid;
 
-		// get previous itemid
-		$query = 'SELECT inumber FROM '.sql_table('item').' WHERE itime<' . mysqldate($timestamp) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime DESC LIMIT 1';
+		// get previous itemid and title
+		$query = 'SELECT inumber, ititle FROM '.sql_table('item').' WHERE itime<' . mysqldate($timestamp) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime DESC LIMIT 1';
 		$res = sql_query($query);
 
 		$obj = mysql_fetch_object($res);
-		if ($obj) 
+		if ($obj) {
 			$itemidprev = $obj->inumber;
+			$itemtitleprev = $obj->ititle;
+    	}
 
-		// get next itemid
-		$query = 'SELECT inumber FROM '.sql_table('item').' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate(time()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
+		// get next itemid and title
+		$query = 'SELECT inumber, ititle FROM '.sql_table('item').' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate(time()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
 		$res = sql_query($query);
 
 		$obj = mysql_fetch_object($res);
-		if ($obj) 
-			$itemidnext = $obj->inumber;		
+		if ($obj) {
+			$itemidnext = $obj->inumber;
+			$itemtitlenext = $obj->ititle;
+		}
 		
 	} elseif ($archive) {
 		// show archive
@@ -487,16 +493,16 @@ function selector() {
 			$archivetype = 'day';	// TODO: move to language file
 			$t = mktime(0,0,0,$m,$d,$y);
 			$archiveprev = strftime('%Y-%m-%d',$t - (24*60*60));	
-			$archivenext = strftime('%Y-%m-%d',$t + (24*60*60));	
+			$archivenext = strftime('%Y-%m-%d',$t + (24*60*60));
 
 		} else {
 			$archivetype = 'month'; // TODO: move to language file
 			$t = mktime(0,0,0,$m,1,$y);
-			$archiveprev = strftime('%Y-%m',$t - (1*24*60*60));	
-			$archivenext = strftime('%Y-%m',$t + (32*24*60*60));	
+			$archiveprev = strftime('%Y-%m',$t - (1*24*60*60));
+			$archivenext = strftime('%Y-%m',$t + (32*24*60*60));
 		}
-		
-		
+
+
 	} elseif ($archivelist) {
 		$type = 'archivelist';
 		if (intval($archivelist) != 0)
@@ -504,7 +510,8 @@ function selector() {
 		else
 			$blogid = getBlogIDFromName($archivelist);
 		if (!$blogid) doError(_ERROR_NOSUCHBLOG);
-	} elseif ($query) { 
+	} elseif ($query) {
+	    global $startpos;
 		$type = 'search';
 		$query = stripslashes($query);
 		if ($blogid==0)
@@ -515,28 +522,29 @@ function selector() {
 		if (!MEMBER::existsID($memberid))
 			doError(_ERROR_NOSUCHMEMBER);
 		$memberinfo = MEMBER::createFromID($memberid);
-		
+
 	} elseif ($imagepopup) {
 		// media object (images etc.)
 		$type = 'imagepopup';
-		
+
 		// TODO: check if media-object exists
 		// TODO: set some vars?
 	} else {
 		// show regular index page
+	    global $startpos;
 		$type = 'index';
 	}
 
 	// decide which blog should be displayed
-	if (!$blogid) 
+	if (!$blogid)
 		$blogid = $CONF['DefaultBlog'];
-		
-	if (!$manager->existsBlogID($blogid)) 
-		doError(_ERROR_NOSUCHBLOG);	
+
+	if (!$manager->existsBlogID($blogid))
+		doError(_ERROR_NOSUCHBLOG);
 
 	$b =& $manager->getBlog($blogid);
 	$blog = $b;	// references can't be placed in global variables?
-	
+
 	// set catid if necessary
 	if ($catid)
 		$blog->setSelectedCategory($catid);
@@ -544,13 +552,12 @@ function selector() {
 	// decide which skin should be used
 	if ($skinid != '' && ($skinid == 0))
 		selectSkin($skinid);
-	if (!$skinid) 
+	if (!$skinid)
 		$skinid = $blog->getDefaultSkin();
-	
 
 	if (!SKIN::existsID($skinid))
 		doError(_ERROR_NOSUCHSKIN);
-	
+
 	$skin = new SKIN($skinid);
 
 	// parse the skin
@@ -558,11 +565,11 @@ function selector() {
 }
 
 /**
-  * Show error skin with given message. An optional skin-object to use can be given 
+  * Show error skin with given message. An optional skin-object to use can be given
   */
 function doError($msg, $skin = '') {
 	global $errormessage, $CONF, $skinid, $blogid, $manager;
-	
+
 	if ($skin == '') {
 		if (SKIN::existsID($skinid)) {
 			$skin = new SKIN($skinid);
@@ -823,7 +830,7 @@ function createItemLink($itemid, $extra = '') {
 }
 function createMemberLink($memberid, $extra = '') {
 	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')	
+	if ($CONF['URLMode'] == 'pathinfo')
 		$link = $CONF['MemberURL'] . '/member/' . $memberid;
 	else
 		$link = $CONF['MemberURL'] . '?memberid=' . $memberid;
@@ -831,8 +838,8 @@ function createMemberLink($memberid, $extra = '') {
 }
 function createCategoryLink($catid, $extra = '') {
 	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')		
-		$link = $CONF['CategoryURL'] . '/category/' . $catid;	
+	if ($CONF['URLMode'] == 'pathinfo')
+		$link = $CONF['CategoryURL'] . '/category/' . $catid;
 	else
 		$link = $CONF['CategoryURL'] . '?catid=' . $catid;
 	return addLinkParams($link, $extra);
@@ -841,18 +848,18 @@ function createArchiveListLink($blogid = '', $extra = '') {
 	global $CONF;
 	if (!$blogid)
 		$blogid = $CONF['DefaultBlog'];
-	if ($CONF['URLMode'] == 'pathinfo')			
+	if ($CONF['URLMode'] == 'pathinfo')
 		$link = $CONF['ArchiveListURL'] . '/archives/' . $blogid;
 	else
-		$link = $CONF['ArchiveListURL'] . '?archivelist=' . $blogid;	
+		$link = $CONF['ArchiveListURL'] . '?archivelist=' . $blogid;
 	return addLinkParams($link, $extra);
 }
 function createArchiveLink($blogid, $archive, $extra = '') {
 	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')		
+	if ($CONF['URLMode'] == 'pathinfo')
 		$link = $CONF['ArchiveURL'] . '/archive/'.$blogid.'/' . $archive;
 	else
-		$link = $CONF['ArchiveURL'] . '?blogid='.$blogid.'&amp;archive=' . $archive;	
+		$link = $CONF['ArchiveURL'] . '?blogid='.$blogid.'&amp;archive=' . $archive;
 	return addLinkParams($link, $extra);
 }
 function createBlogLink($url, $params) {
@@ -860,10 +867,10 @@ function createBlogLink($url, $params) {
 }
 function createBlogidLink($blogid, $params = '') {
 	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')			
+	if ($CONF['URLMode'] == 'pathinfo')
 		$link = $CONF['BlogURL'] . '/blog/' . $blogid;
 	else
-		$link = $CONF['BlogURL'] . '?blogid=' . $blogid;	
+		$link = $CONF['BlogURL'] . '?blogid=' . $blogid;
 	return addLinkParams($link, $params);
 }
 
@@ -884,6 +891,22 @@ function addLinkParams($link, $params) {
 	return $link;
 }
 
+function alterQueryStr($querystr, $param, $value) {
+    $vars = explode("&", $querystr);
+    $set  = false;
+    for ($i=0;$i<count($vars);$i++) {
+        $v = explode('=',$vars[$i]);
+        if ($v[0] == $param) {
+            $v[1]     = $value;
+            $vars[$i] = implode('=', $v);
+            $set      = true;
+            break;
+        }
+    }
+    if (!$set) {$vars[] = $param . '=' . $value;}
+    return ltrim(implode('&', $vars), '&');
+}
+
 // passes one variable as hidden input field (multiple fields for arrays)
 // @see passRequestVars in varsx.x.x.php
 function passVar($key, $value) {
@@ -893,9 +916,9 @@ function passVar($key, $value) {
 			passVar($key.'['.$i.']',$value[$i]);
 			return;
 	}
-	
+
 	// other values: do stripslashes if needed
-	?><input type="hidden" name="<?php echo htmlspecialchars($key)?>" value="<?php echo htmlspecialchars(undoMagic($value))?>" /><?php	
+	?><input type="hidden" name="<?php echo htmlspecialchars($key)?>" value="<?php echo htmlspecialchars(undoMagic($value))?>" /><?php
 }
 
 
