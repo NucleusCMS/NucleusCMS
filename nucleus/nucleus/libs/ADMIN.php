@@ -3542,6 +3542,8 @@ selector();
 			while ($current = array_shift($actions)) {
 				// skip deprecated vars
 				if ($current == 'ifcat') continue;
+				if ($current == 'imagetext') continue;
+				if ($current == 'vars') continue;
 				
 				echo helplink('skinvar-' . $current) . "$current</a>";
 				if (count($actions) != 0) echo ", ";

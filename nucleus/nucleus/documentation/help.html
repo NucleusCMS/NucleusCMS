@@ -1384,7 +1384,7 @@ Each member has his own private collection of media files. Next to that, subdire
 
 <div class="page">
 <a name="skinvar-itemid"></a>
-<h1>Skinvar: itemid</h1>
+<h1>+Skinvar: itemid</h1>
 <p>Inserts the ID of the currently selected item</p>
 <h2>Arguments</h2>
 <p>None</p>
@@ -1398,8 +1398,8 @@ Each member has his own private collection of media files. Next to that, subdire
 
 
 <div class="page">
-<a name="skinvar-itemid"></a>
-<h1>Skinvar: itemlink</h1>
+<a name="skinvar-itemlink"></a>
+<h1>+Skinvar: itemlink</h1>
 <p>Adds a permanent link for the item.</p>
 <h2>Arguments</h2>
 <p>None</p>
@@ -1413,7 +1413,7 @@ Each member has his own private collection of media files. Next to that, subdire
 
 <div class="page">
 <a name="skinvar-itemtitle"></a>
-<h1>Skinvar: itemtitle</h1>
+<h1>+Skinvar: itemtitle</h1>
 <p>Inserts the title of the item, with HTML-stripped off and entities encoded</p>
 <h2>Arguments</h2>
 <p>None</p>
@@ -1428,7 +1428,7 @@ Each member has his own private collection of media files. Next to that, subdire
 
 <div class="page">
 <a name="skinvar-archivedate"></a>
-<h1>Skinvar: archivedate</h1>
+<h1>+Skinvar: archivedate</h1>
 <p>Inserts a formatted date for an archive date. Using no parameters, this will either insert '15 august 2002' or 'august 2002' if the archive is for august 2002</p>
 <h2>Arguments</h2>
 <ul>
@@ -1551,7 +1551,7 @@ all
 
 <div class="page">
 <a name="skinvar-item"></a>
-<h1>Skinvar: item</h1>
+<h1>+Skinvar: item</h1>
 
 <p>
 Shows the currently selected item (without comments) using a given template
@@ -1586,7 +1586,7 @@ item
 
 <div class="page">
 <a name="skinvar-comments"></a>
-<h1>Skinvar: comments</h1>
+<h1>+Skinvar: comments</h1>
 
 <p>
 Shows the comments for the currently selected item using a given template.
@@ -1619,7 +1619,7 @@ item
 
 <div class="page">
 <a name="skinvar-archive"></a>
-<h1>Skinvar: archive</h1>
+<h1>+Skinvar: archive</h1>
 
 <p>
 Shows the archive for the selected month and the selected blog (usually the default one), using a given template
@@ -1657,7 +1657,7 @@ archive
 
 <div class="page">
 <a name="skinvar-otherarchive"></a>
-<h1>Skinvar: otherarchive</h1>
+<h1>+Skinvar: otherarchive</h1>
 
 <p>
 Shows the archive for the selected month, using the given blog and template
@@ -1944,7 +1944,7 @@ all
 
 <div class="page">
 <a name="skinvar-searchresults"></a>
-<h1>Skinvar: searchresults</h1>
+<h1>+Skinvar: searchresults</h1>
 
 <p>
 Shows the searchresult for the current query
@@ -1981,7 +1981,7 @@ search
 
 <div class="page">
 <a name="skinvar-othersearchresults"></a>
-<h1>Skinvar: othersearchresults</h1>
+<h1>+Skinvar: othersearchresults</h1>
 
 <p>
 Shows the searchresult in a give blog for the current query, using the given template
@@ -2022,7 +2022,7 @@ search
 
 <div class="page">
 <a name="skinvar-query"></a>
-<h1>Skinvar: query</h1>
+<h1>+Skinvar: query</h1>
 
 <p>
 Inserts the current search query.
@@ -2089,7 +2089,7 @@ all
 
 <div class="page">
 <a name="skinvar-previtem"></a>
-<h1>Skinvar: previtem</h1>
+<h1>+Skinvar: previtem</h1>
 
 <p>
 Inserts the ID of the previous item in the blog
@@ -2119,7 +2119,7 @@ item
 
 <div class="page">
 <a name="skinvar-nextitem"></a>
-<h1>Skinvar: nextitem</h1>
+<h1>+Skinvar: nextitem</h1>
 
 <p>
 Inserts the ID of the next item in the blog
@@ -2143,13 +2143,20 @@ item
 </div>
 
 
+
+
 <div class="page">
-<a name="skinvar-archivenext"></a>
-<h1>Skinvar: archivenext</h1>
+<a name="skinvar-prevarchive"></a>
+<h1>+Skinvar: prevarchive</h1>
 
 <p>
-Inserts the identifier for the next months archive
+Inserts the <code>archive</code> attribute that corresponds to the archive of either 1 day or 1 month back. This value can be used inside URLs to select an archive.
 </p>
+
+<ul>
+	<li>If the shown archive is for one specific day, the value has the form <code>YYYY-MM-DD</code></li>
+	<li>If the shown archive is for a full month, the value has the form <code>YYYY-MM</code></li>
+</ul>
 
 <h2>Arguments</h2>
 <p>None</p>
@@ -2162,20 +2169,27 @@ archive
 
 <h2>Examples</h2>
 
-<pre>
-index.php?archive=&lt;%archivenext%&gt;
-</pre>
+<pre><code>&lt;a href="index.php?archive=&lt;%prevarchive%&gt;&gt;....</code></pre>
 
 </div>
 
 
+
+
+
+
 <div class="page">
-<a name="skinvar-archiveprev"></a>
-<h1>Skinvar: archiveprev</h1>
+<a name="skinvar-nextarchive"></a>
+<h1>+Skinvar: nextarchive</h1>
 
 <p>
-Inserts the identifier for the previous months archive
+Inserts the <code>archive</code> attribute that corresponds to the archive of either 1 day or 1 month further in time. This value can be used inside URLs to select an archive.
 </p>
+
+<ul>
+	<li>If the shown archive is for one specific day, the value has the form <code>YYYY-MM-DD</code></li>
+	<li>If the shown archive is for a full month, the value has the form <code>YYYY-MM</code></li>
+</ul>
 
 <h2>Arguments</h2>
 <p>None</p>
@@ -2188,18 +2202,14 @@ archive
 
 <h2>Examples</h2>
 
-<pre>
-index.php?archive=&lt;%archiveprev%&gt;
-</pre>
+<pre><code>&lt;a href="index.php?archive=&lt;%nextarchive%&gt;&gt;....</code></pre>
 
 </div>
-
-
 
 
 <div class="page">
 <a name="skinvar-archivetype"></a>
-<h1>Skinvar: archivetype</h1>
+<h1>+Skinvar: archivetype</h1>
 
 <p>
 Either <tt>day</tt> or <tt>month</tt>, indicating which type of archive is currently being shown
@@ -2283,7 +2293,7 @@ all
 
 <div class="page">
 <a name="skinvar-nextlink"></a>
-<h1>Skinvar: nextlink</h1>
+<h1>+Skinvar: nextlink</h1>
 
 <p>
 Inserts a link to the next item (on item pages) or to the next archive (on archive pages)
@@ -2315,7 +2325,7 @@ item, archive
 
 <div class="page">
 <a name="skinvar-prevlink"></a>
-<h1>Skinvar: prevlink</h1>
+<h1>+Skinvar: prevlink</h1>
 
 <p>
 Inserts a link to the previous item (on item pages) or to the previous archive (on archive pages)
@@ -2347,7 +2357,7 @@ item, archive
 
 <div class="page">
 <a name="skinvar-errormessage"></a>
-<h1>Skinvar: errormessage</h1>
+<h1>+Skinvar: errormessage</h1>
 
 <p>
 Inserts the message corresponding to the error that occurred
@@ -2379,7 +2389,9 @@ error
 
 <div class="page">
 <a name="skinvar-imagetext"></a>
-<h1>Skinvar: imagetext</h1>
+<h1>+Skinvar: imagetext</h1>
+
+<p class="deprecated">This skinvar is deprecated since Nucleus v2.0. You should use <a href="#skinvar-image"><code>&lt;%image(caption)%&gt;</code></a> instead</p>
 
 <p>
 Inserts the caption text for a popup image
@@ -2406,14 +2418,36 @@ imagepopup
 
 <div class="page">
 <a name="skinvar-image"></a>
-<h1>Skinvar: image</h1>
+<h1>+Skinvar: image</h1>
 
 <p>
 Inserts the selected image (for popup images)
 </p>
 
 <h2>Arguments</h2>
-<p>None</p>
+
+<p>Optional</p>
+<ul>
+	<li>
+		<em>type</em>
+		<table><tr>
+			<td><strong>imgtag</strong> (default)</td>
+			<td>Full XHTML <code>&lt;img ... /&gt;</code> tag</td>
+		</tr><tr>
+			<td><strong>url</strong></td>
+			<td>Image file URL</td>
+		</tr><tr>
+			<td><strong>width</strong></td>
+			<td>image width</td>
+		</tr><tr>
+			<td><strong>height</strong></td>
+			<td>image height</td>
+		</tr><tr>
+			<td><strong>caption</strong></td>
+			<td>image caption (text to go with image)</td>
+		</tr></table>
+	</li>
+</ul>
 
 <h2>Skintypes</h2>
 
@@ -2432,11 +2466,15 @@ imagepopup
 
 <div class="page">
 <a name="skinvar-vars"></a>
-<h1>Skinvar: vars</h1>
+<h1>+Skinvar: vars</h1>
+
+<p class="deprecated">This skinvar is deprecated since Nucleus v2.0. It's a small pain to insert this HTML yourself using the <a href="#skinvar-itemid">itemid skinvar</a></p>
 
 <p>
 Inserts a hidden form-input field with the itemid.
 </p>
+
+<code>&lt;input type="hidden" name="itemid" value="<strong>1234</strong>" /&gt;</code>
 
 <h2>Arguments</h2>
 <p>None</p>
@@ -2539,7 +2577,7 @@ index, archive, archivelist, search, item, member
 
 <div class="page">
 <a name="skinvar-member"></a>
-<h1>Skinvar: member</h1>
+<h1>+Skinvar: member</h1>
 
 <p>
 Inserts some info about a member (on member detail pages)
@@ -2882,7 +2920,7 @@ all
 
 <div class="page">
 <a name="skinvar-commentform"></a>
-<h1>Skinvar: commentform</h1>
+<h1>+Skinvar: commentform</h1>
 
 <p>
 Adds a commentform to an item page.
@@ -3002,33 +3040,6 @@ all
 
 
 <div class="page">
-<a name="skinvar-skinname"></a>
-<h1>Skin/Templatevar: skinname</h1>
-
-<p>Inserts the name of the skin that's currently being used.</p>
-
-<h2>Arguments</h2>
-<p>
-None
-</p>
-
-<h2>Skintypes</h2>
-
-<p>
-all
-</p>
-
-<h2>Examples</h2>
-
-<pre>
-&lt;%skinname%&gt;
-</pre>
-
-</div>
-
-
-
-<div class="page">
 <a name="skinvar-if"></a>
 <a name="skinvar-else"></a>
 <a name="skinvar-endif"></a>
@@ -3079,7 +3090,7 @@ Welcom guest!
 
 <div class="page">
 <a name="skinvar-membermailform"></a>
-<h1>Skinvar: membermailform</h1>
+<h1>+Skinvar: membermailform</h1>
 
 <p>
 Shows a form through which a logged-in member can send a message to the member which details are being shown (on member detail pages)

@@ -258,7 +258,7 @@ class SKIN {
 				break;
 			case 'imagepopup':
 				$extraActions = array('image',
-								'imagetext',
+								'imagetext',				// deprecated (Nucleus v2.0)
 								);
 				break;
 			case 'member':
@@ -717,6 +717,10 @@ class ACTIONS extends BaseActions {
 				break;
 			case 'height':
 				echo $height;
+				break;
+			case 'caption':
+			case 'text':			
+				echo $imagetext;
 				break;
 			case 'imgtag':
 			default:
