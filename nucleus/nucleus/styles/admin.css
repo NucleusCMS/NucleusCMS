@@ -1,0 +1,192 @@
+body {
+	background-color: #fff;
+	color: #000;
+}
+
+body, td, th {
+	font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+}
+
+img			{ border: none; }
+.skip 		{ display: none; }
+label		{ cursor: pointer; }
+
+/* header */
+h1 {
+	text-align:center;
+	font-size: 45px;
+	font-weight: bold;
+	letter-spacing: 0.1em;
+	color: #596d9d;	
+	margin: 0px;
+	margin-bottom: 5px;
+}
+
+/* page content */
+.content {
+	width: auto;
+	
+	font-style: normal;
+	text-decoration: none;
+	color: black;
+	text-align: justify;
+	line-height: 13pt;
+
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+	
+	/* rounded borders in gecko-based browsers? why not :) */
+	-moz-border-radius: 10px;	
+
+	padding: 10px;	
+	
+	background-color: white;
+	
+}
+
+.loginname {
+	float: right;
+	font-size: x-small;
+	text-align: right;
+	line-height: normal;
+	padding-left: 5px;
+	background-color: white;
+}
+
+.content h2 {
+	color: #596d9d; 
+
+	border-color: gray;
+	border-style: dashed;
+	border-width: 0px 0px 1px 0px;
+
+	font-size: 150%;
+	line-height: 120%;
+
+	text-decoration: none;
+	font-weight: bold; 
+
+}
+
+.content h3 {
+	border-color: gray;
+	border-style: dotted;
+	border-width: 0px 0px 1px 0px;
+	font-size: 130%;
+	font-weight: normal;
+	line-height: 120%;
+
+	color: gray;
+	padding-left: 20px;
+	letter-spacing: 2;
+}
+
+.content .note {
+	background-color: #ddd;
+	padding: 5px;
+}
+
+
+table {
+	border: none;
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 10px;
+	margin-top: 10px;	
+}
+
+.batchoperations {
+	background-color: #eef;
+	width: auto;
+	padding: 5px;
+	text-align: right;
+}
+
+th {
+	background-color: #bbc;
+	color: #000;
+	font-size: small;
+}
+
+th, td {
+	padding: 4px;
+	empty-cells: show;	
+}
+
+td {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	font-size: x-small;
+	vertical-align: top;
+	text-align: left;
+}
+
+td a:link, td a:visited { 
+	text-decoration: underline;
+	color: black;
+	font-weight: normal;
+}
+td a:hover {
+	color: #1D3565;
+	text-decoration: underline;
+}
+
+td.draft, td.future {
+	background-color: #ffe;
+}
+
+tr.highlighted td {
+	background-color: green;
+}
+
+a:link, a:visited {
+	color: #1D3565;
+	font-weight: bold;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+table.navigation td, table.navigation th {
+	border: none;
+}
+
+/* footer */
+.foot {
+}
+
+form {
+	margin-bottom: 0px;
+}
+
+input.transparent {
+	background-color: transparent;
+}
+
+/* a div that has an indent */
+div.indent {
+	margin-left: 40px;
+}
+
+/* 
+	font size tricks, to make it work in all browsers
+	
+	See: 
+	http://diveintoaccessibility.org/day_26_using_relative_font_sizes.html
+
+	(netscape 4 trick is left out, Nucleus doesn't work anyway in that browser)	
+	.content should be 'small' (in standard-compliant browsers)
+	
+*/
+
+.content {
+  font-size: x-small;
+  voice-family: "\"}\"";
+  voice-family: inherit;
+  font-size: small;
+}
+html>body .content { font-size: small; }
+
+

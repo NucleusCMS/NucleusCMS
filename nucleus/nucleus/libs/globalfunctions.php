@@ -1,0 +1,694 @@
+<?php
+
+/**
+  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
+  * Copyright (C) 2002 The Nucleus Group
+  *
+  * This program is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU General Public License
+  * as published by the Free Software Foundation; either version 2
+  * of the License, or (at your option) any later version.
+  * (see nucleus/documentation/index.html#license for more info)
+  *
+  */
+
+$nucleus['version'] = 'v1.99-dev';
+$CONF['debug'] = 1;				
+
+/**
+  * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
+  */
+function getNucleusVersion() {
+	return 155;		
+}
+
+if ($CONF['debug']) {
+	error_reporting(E_ALL & ~E_NOTICE);	// report almost all errors!
+										// (no uninitialized vars and such)
+} else {	
+	error_reporting(E_ERROR | E_WARNING | E_PARSE);
+}
+
+// we will use postVar, getVar, ... methods instead of HTTP_GET_VARS or _GET
+if (phpversion() >= '4.1.0')
+	include($DIR_LIBS . 'vars4.1.0.php');
+else
+	include($DIR_LIBS . 'vars4.0.6.php');
+
+function intPostVar($name) { return intval(postVar($name));}
+function intGetVar($name) { return intval(getVar($name));}
+function intRequestVar($name) { return intval(requestVar($name)); }
+function intCookieVar($name) { return intval(cookieVar($name)); }
+
+// get all variables that can come from the request and put them in the global scope
+$blogid			= requestVar('blogid');
+$itemid			= intRequestVar('itemid');
+$catid			= intRequestVar('catid');
+$skinid			= requestVar('skinid');
+$memberid		= requestVar('memberid');
+$archivelist	= requestVar('archivelist');
+$imagepopup		= requestVar('imagepopup');
+$archive 		= requestVar('archive');
+$query			= requestVar('query');
+$highlight		= requestVar('highlight');
+$amount			= requestVar('amount');
+$action			= requestVar('action');
+$nextaction		= requestVar('nextaction');
+
+if (!headers_sent())
+	header('Generator: Nucleus ' . $nucleus['version']);
+
+include($DIR_LIBS . 'PARSER.php'); 		// PARSER and BaseActions classes
+include($DIR_LIBS . 'SKIN.php');		// SKIN class
+include($DIR_LIBS . 'TEMPLATE.php');		// TEMPLATE class 
+include($DIR_LIBS . 'BLOG.php');		// BLOG class
+include($DIR_LIBS . 'MEMBER.php');		// MEMBER class
+include($DIR_LIBS . 'COMMENTS.php');		// COMMENTS class
+include($DIR_LIBS . 'COMMENT.php');		// COMMENT class
+//include($DIR_LIBS . 'ITEM.php');		// ITEM class 
+include($DIR_LIBS . 'ACTIONLOG.php');		// ACTIONLOG class
+include($DIR_LIBS . 'NOTIFICATION.php');	// NOTIFICATION class
+include($DIR_LIBS . 'BAN.php');			// BAN(INFO) class
+include($DIR_LIBS . 'PAGEFACTORY.php'); 
+include($DIR_LIBS . 'MANAGER.php'); 	
+include($DIR_LIBS . 'PLUGIN.php'); 	
+
+$manager =& MANAGER::instance();
+
+// make sure there's no unnecessary escaping:
+set_magic_quotes_runtime(0);
+
+// only needed when updating logs
+if ($CONF['UsingAdminArea']) {
+	include($DIR_LIBS . 'xmlrpc.inc.php');	// XML-RPC client classes
+	include_once($DIR_LIBS . 'ADMIN.php');
+}
+
+
+// connect to sql
+sql_connect();
+
+// makes sure database connection gets closed on script termination
+register_shutdown_function('sql_disconnect');
+
+// read config
+getConfig();
+
+// automatically use simpler toolbar for mozilla
+if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'),'Mozilla/5.0') && strstr(serverVar('HTTP_USER_AGENT'),'Gecko')) 
+	$CONF['DisableJsTools'] = 2;
+
+// login if cookies set
+
+$member = new MEMBER();
+
+// login/logout when required or renew cookies
+if ($action == 'login') {
+	$login 	= postVar('login');
+	$pw 	= postVar('password');
+	$shared	= intPostVar('shared');	// shared computer or not
+	
+	if ($member->login($login,$pw)) {
+
+		$member->newCookieKey();
+		$member->setCookies($shared);
+		
+		// allows direct access to parts of the admin area after logging in
+		if ($nextaction)
+			$action = $nextaction;		
+		
+		$manager->notify('LoginSuccess',array('member' => &$member));
+		ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
+	} else {
+		$manager->notify('LoginFailed',array('username' => $login));	
+		ACTIONLOG::add(INFO, 'Login failed for ' . $login);
+	}
+} elseif (($action == 'logout') && (!headers_sent()) && cookieVar('user')){
+	// remove cookies on logout
+	setcookie('user','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+	setcookie('loginkey','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+	$manager->notify('Logout',array('username' => cookieVar('user')));
+} elseif (cookieVar('user')) {
+	// login if cookies available 
+	$res = $member->cookielogin(cookieVar('user'), cookieVar('loginkey')); 
+
+	// renew cookies when not on a shared computer	
+	if ($res && (cookieVar('sharedpc') != 1) && (!headers_sent()))
+		$member->setCookies();
+}
+
+// set lastVisit cookie (if allowed)
+if (!headers_sent()) {
+	if ($CONF['LastVisit'])
+		setcookie('lastVisit',time(),time()+2592000,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+	else 
+		setcookie('lastVisit','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+}
+
+
+// read language file, only after user has been initialized
+$language = getLanguageName();
+include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
+
+
+/**
+  * Connects to mysql server
+  */
+function sql_connect() {
+	global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE;
+	
+	$connection = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or connectError('Could not connect to MySQL database.');	
+	mysql_select_db($MYSQL_DATABASE) or connectError('Could not select database');	
+	
+	return $connection;
+}
+
+function connectError($msg) {
+	?>
+	<html>
+		<head><title>Connect Error</title></head>
+		<body>
+			<h1>Connect Error</h1>
+			<p>
+			<?=$msg?>
+			</p>
+		</body>
+	</html>
+	<?
+	exit;
+}
+
+/**
+  * disconnects from SQL server
+  */
+function sql_disconnect() {
+	@mysql_close();
+}
+
+/**
+  * executes an SQL query 
+  */
+function sql_query($query) {
+	$res = mysql_query($query) or print("mySQL error with query $query: " . mysql_error() . '<p />');
+	return $res;
+}
+
+
+/**
+ * Highlights a specific query in a given HTML text (not within HTML tags) and returns it
+ *
+ * @param $text 
+ *		text to be highlighted 
+ * @param $expression
+ *		regular expression to be matched
+ * @param $highlight
+ *		highlight to be used (use \\0 to indicate the matched expression)
+ *
+ */
+function highlight($text, $expression, $highlight) {
+	if (!$highlight) return $text;
+	
+	// add a tag in front (is needed for preg_match_all to work correct)
+	$text = '<!--h-->'.$text;
+	
+	// split the HTML up so we have HTML tags
+	// $matches[0][i] = HTML + text
+	// $matches[1][i] = HTML
+	// $matches[2][i] = text
+	preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
+	
+	// throw it all together again while applying the highlight to the text pieces
+	$result = '';
+	for ($i = 0; $i < sizeof($matches[2]); $i++) {
+		$result .= $matches[1][$i];
+		$result .= @eregi_replace($expression,$highlight,$matches[2][$i]);
+	}
+	
+	return $result;
+}
+
+/**
+  * Checks if email address is valid
+  */
+function isValidMailAddress($address) {
+	if (preg_match('/^[a-zA-Z0-9\._-]+@[a-zA-Z0-9\._-]+\.[A-Za-z]{2,5}$/', $address))
+		return 1; 
+	else
+		return 0; 
+}
+ 
+
+// some helper functions
+function getBlogIDFromName($name) {
+	return quickQuery('SELECT bnumber as result FROM nucleus_blog WHERE bshortname="'.addslashes($name).'"');
+}
+function getBlogNameFromID($id) {
+	return quickQuery('SELECT bname as result FROM nucleus_blog WHERE bnumber='.$id);
+}
+function getBlogIDFromItemID($itemid) {
+	return quickQuery('SELECT iblog as result FROM nucleus_item WHERE inumber='.$itemid);
+}
+function getBlogIDFromCommentID($commentid) {
+	return quickQuery('SELECT cblog as result FROM nucleus_comment WHERE cnumber='.$commentid);
+}
+function getBlogIDFromCatID($catid) {
+	return quickQuery('SELECT cblog as result FROM nucleus_category WHERE catid='.$catid);
+}
+function getCatIDFromName($name) {
+	return quickQuery('SELECT catid as result FROM nucleus_category WHERE cname="'.addslashes($name).'"');
+}
+function quickQuery($q) {
+	$res = sql_query($q);
+	$obj = mysql_fetch_object($res);
+	return $obj->result;	
+}
+
+function getPluginNameFromPid($pid) {
+	$obj = mysql_fetch_object(sql_query('SELECT pfile FROM nucleus_plugin WHERE pid='.$pid));
+	return $obj->pfile;
+}
+
+function selector() {
+	global $itemid, $blogid, $memberid, $query, $amount, $archivelist;
+	global $archive, $skinid, $blog, $memberinfo, $CONF, $member;
+	global $imagepopup, $catid;
+	global $manager;
+	
+	// first, let's see if the site is disabled or not
+	if ($CONF['DisableSite'] && !$member->isAdmin()) {
+		header('Location: ' . $CONF['DisableSiteURL']);
+		exit;
+	}
+	
+	// make is so ?archivelist without blogname or blogid shows the archivelist
+	// for the default weblog
+	if (serverVar('QUERY_STRING') == 'archivelist')
+		$archivelist = $CONF['DefaultBlog'];
+		
+	// now decide which type of skin we need
+	if ($itemid) {
+		// itemid given -> only show that item
+		$type = 'item';
+		if (!$manager->existsItem($itemid,0,0))
+			doError(_ERROR_NOSUCHITEM);
+
+		
+		global $itemidprev, $itemidnext, $catid;
+		
+		// 1. get timestamp and blogid for item
+		$query = 'SELECT UNIX_TIMESTAMP(itime) as itime, iblog FROM nucleus_item WHERE inumber=' . $itemid;
+		$res = sql_query($query);
+		$obj = mysql_fetch_object($res);
+		$blogid = $obj->iblog;
+		$timestamp = $obj->itime;
+
+		$b =& $manager->getBlog($blogid);
+		if ($b->isValidCategory($catid))
+			$catextra = ' and icat=' . $catid;
+
+		// get previous itemid
+		$query = 'SELECT inumber FROM nucleus_item WHERE itime<' . mysqldate($timestamp) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime DESC LIMIT 1';
+		$res = sql_query($query);
+
+		$obj = mysql_fetch_object($res);
+		if ($obj) 
+			$itemidprev = $obj->inumber;
+
+		// get next itemid
+		$query = 'SELECT inumber FROM nucleus_item WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate(time()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
+		$res = sql_query($query);
+
+		$obj = mysql_fetch_object($res);
+		if ($obj) 
+			$itemidnext = $obj->inumber;		
+		
+	} elseif ($archive) {
+		// show archive
+		$type = 'archive';
+		
+		// get next and prev month links
+		global $archivenext, $archiveprev, $archivetype;
+		
+		sscanf($archive,'%d-%d-%d',$y,$m,$d);			
+		if ($d != 0) {
+			$archivetype = 'day';
+			$t = mktime(0,0,0,$m,$d,$y);
+			$archiveprev = strftime('%Y-%m-%d',$t - (24*60*60));	
+			$archivenext = strftime('%Y-%m-%d',$t + (24*60*60));	
+
+		} else {
+			$archivetype = 'month';
+			$t = mktime(0,0,0,$m,1,$y);
+			$archiveprev = strftime('%Y-%m',$t - (1*24*60*60));	
+			$archivenext = strftime('%Y-%m',$t + (32*24*60*60));	
+		}
+		
+		
+	} elseif ($archivelist) {
+		$type = 'archivelist';
+		if (intval($archivelist) != 0)
+			$blogid = $archivelist;
+		else
+			$blogid = getBlogIDFromName($archivelist);
+		if (!$blogid) doError(_ERROR_NOSUCHBLOG);
+	} elseif ($query) { 
+		$type = 'search';
+		$query = stripslashes($query);
+		if ($blogid==0)
+			$blogid = getBlogIDFromName($blogid);
+		if (!$blogid) doError(_ERROR_NOSUCHBLOG);
+	} elseif ($memberid) {
+		$type = 'member';
+		if (!MEMBER::existsID($memberid))
+			doError(_ERROR_NOSUCHMEMBER);
+		$memberinfo = MEMBER::createFromID($memberid);
+		
+	} elseif ($imagepopup) {
+		// media object (images etc.)
+		$type = 'imagepopup';
+		
+		// TODO: check if media-object exists
+		// TODO: set some vars?
+	} else {
+		// show regular index page
+		$type = 'index';
+	}
+
+	// decide which blog should be displayed
+	if (!$blogid) 
+		$blogid = $CONF['DefaultBlog'];
+		
+	if (!$manager->existsBlogID($blogid)) 
+		doError(_ERROR_NOSUCHBLOG);	
+
+	$b =& $manager->getBlog($blogid);
+	$blog = $b;	// references can't be placed in global variables?
+	
+	// set catid if necessary
+	if ($catid)
+		$blog->setSelectedCategory($catid);
+
+	// decide which skin should be used
+	if ($skinid != '' && ($skinid == 0))
+		selectSkin($skinid);
+	if (!$skinid) 
+		$skinid = $blog->getDefaultSkin();
+	
+
+	if (!SKIN::existsID($skinid))
+		doError(_ERROR_NOSUCHSKIN);
+	
+	$skin = new SKIN($skinid);
+
+	// parse the skin
+	$skin->parse($type);
+}
+
+/**
+  * Show error skin with given message. An optional skin-object to use can be given 
+  */
+function doError($msg, $skin = '') {
+	global $errormessage, $CONF, $skinid, $blogid, $manager;
+	
+	if ($skin == '') {
+		if (SKIN::existsID($skinid)) {
+			$skin = new SKIN($skinid);
+		} elseif ($manager->existsBlogID($blogid)) {
+			$blog =& $manager->getBlog($blogid);
+			$skin = new SKIN($blog->getDefaultSkin());
+		} elseif ($CONF['DefaultBlog']) {
+			$blog =& $manager->getBlog($CONF['DefaultBlog']);
+			$skin = new SKIN($blog->getDefaultSkin());
+		} else {
+			// this statement should actually never be executed
+			$skin = new SKIN($CONF['BaseSkin']);
+		}
+	}
+	
+	$errormessage = $msg;
+	$skin->parse('error');
+	exit;
+}
+
+function getConfig() {
+	global $CONF;
+	
+	$query = 'SELECT * FROM nucleus_config';
+	$res = sql_query($query);
+	while ($obj = mysql_fetch_object($res)) {
+		$CONF[$obj->name] = $obj->value;
+	}
+}
+
+// some checks for names of blogs, categories, templates, members, ...
+function isValidShortName($name) {		return eregi('^[a-z0-9]+$', $name); }
+function isValidDisplayName($name) {	return eregi('^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$', $name); }
+function isValidCategoryName($name) {	return eregi('^[a-zA-Z0-9 ]+$', $name); }
+function isValidTemplateName($name) {	return eregi('^[a-z0-9/]+$', $name); }
+function isValidSkinName($name) {		return isValidShortName($name); }
+
+// add and remove linebreaks
+function addBreaks($var) { 				return str_replace("\n","<br />\n",$var); }
+function removeBreaks($var) {			return str_replace("<br />\n","\n",$var); }
+
+/**
+  * Generate a 'pronouncable' password
+  * (http://www.zend.com/codex.php?id=215&single=1)
+  */
+function genPassword($length){  
+
+    srand((double)microtime()*1000000);  
+      
+    $vowels = array('a', 'e', 'i', 'o', 'u');  
+    $cons = array('b', 'c', 'd', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'u', 'v', 'w', 'tr',  
+    'cr', 'br', 'fr', 'th', 'dr', 'ch', 'ph', 'wr', 'st', 'sp', 'sw', 'pr', 'sl', 'cl');  
+      
+    $num_vowels = count($vowels);  
+    $num_cons = count($cons);  
+      
+    for($i = 0; $i < $length; $i++){  
+        $password .= $cons[rand(0, $num_cons - 1)] . $vowels[rand(0, $num_vowels - 1)];  
+    }  
+      
+    return substr($password, 0, $length);  
+}  
+
+// shortens a text string to maxlength ($toadd) is what needs to be added 
+// at the end (end length is <= $maxlength)
+function shorten($text, $maxlength, $toadd) {
+	// 1. remove entities...
+	$trans = get_html_translation_table(HTML_ENTITIES);
+	$trans = array_flip($trans);
+	$text = strtr($text, $trans); 
+	// 2. the actual shortening
+	if (strlen($text) > $maxlength)
+		$text = substr($text,0,$maxlength-strlen($toadd)) . $toadd;
+	return $text;
+}
+
+/**
+  * Converts a unix timestamp to a mysql DATETIME format, and places
+  * quotes around it.
+  */
+function mysqldate($timestamp) {
+	return '"' . date('Y-m-d H:i:s',$timestamp) . '"';
+}
+
+/**
+  * functions for use in index.php
+  */
+function selectBlog($shortname) {
+	global $blogid;
+	$blogid = getBlogIDFromName($shortname);
+}
+
+function selectSkin($skinname) {
+	global $skinid;
+	$skinid = SKIN::getIdFromName($skinname);
+}
+
+function selectCategory($catname) {
+	global $catid;
+	$catid = getCatIDFromName($catname);
+}
+
+// force the use of a language file (warning: can cause warnings)
+function selectLanguage($language) {
+	global $DIR_LANG;
+	include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
+}
+
+function parseFile($filename) {
+	$handler = new ACTIONS('fileparser');
+	$parser = new PARSER(SKIN::getAllowedActionsForType('fileparser'), $handler);
+	$handler->parser =& $parser;
+
+	if (!file_exists($filename)) doError('A file is missing');
+
+	// read file 
+	$fd = fopen ($filename, 'r');
+	$contents = fread ($fd, filesize ($filename));
+	fclose ($fd);		
+
+	// parse file contents
+	$parser->parse($contents);
+}
+
+/**
+  * Outputs a debug message
+  */
+function debug($msg) {
+	echo '<p><b>' . $msg . "</b></p>\n";
+}
+
+// shortcut
+function addToLog($level, $msg) { ACTIONLOG::add($level, $msg); }
+
+// shows a link to help file
+function help($id) {
+	echo helplink($id) . '<img src="documentation/icon-help.gif" width="15" height="15" alt="'._HELP_TT.'" /></a>';
+}
+
+function helplink($id) {
+	return '<a href="documentation/help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
+}
+
+function getMailFooter() {
+	$message = "\n\n-----------------------------";
+	$message .=  "\n   Powered by Nucleus CMS";
+	$message .=  "\n(http://www.nucleuscms.org/)";
+	return $message;
+}
+
+/**
+  * Returns the name of the language to use 
+  * preference priority: member - site
+  * defaults to english when no good language found
+  *
+  * checks if file exists, etc...
+  */
+function getLanguageName() {
+	global $CONF, $member;
+
+	// try to use members language
+	$memlang = $member->getLanguage();
+	if (($memlang != '') && (checkLanguage($memlang)))
+		return $memlang;
+	
+	if (checkLanguage($CONF['Language']))
+		return $CONF['Language'];
+	else
+		return 'english';
+}
+
+/**
+  * Includes a PHP file. This method can be called while parsing templates and skins
+  */
+function includephp($filename) {
+	// make predefined variables global, so most simple scripts can be used here
+
+	// apache (names taken from PHP doc)
+	global $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE, $SERVER_PROTOCOL;
+	global $REQUEST_METHOD, $QUERY_STRING, $DOCUMENT_ROOT, $HTTP_ACCEPT;
+	global $HTTP_ACCEPT_CHARSET, $HTTP_ACCEPT_ENCODING, $HTTP_ACCEPT_LANGUAGE;
+	global $HTTP_CONNECTION, $HTTP_HOST, $HTTP_REFERER, $HTTP_USER_AGENT;
+	global $REMOTE_ADDR, $REMOTE_PORT, $SCRIPT_FILENAME, $SERVER_ADMIN;
+	global $SERVER_PORT, $SERVER_SIGNATURE, $PATH_TRANSLATED, $SCRIPT_NAME;
+	global $REQUEST_URI;
+
+	// php (taken from PHP doc)
+	global $argv, $argc, $PHP_SELF, $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $HTTP_POST_VARS;
+	global $HTTP_POST_FILES, $HTTP_ENV_VARS, $HTTP_SERVER_VARS, $HTTP_SESSION_VARS;
+
+	// other
+	global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
+
+	include($filename);
+}
+
+/**
+  * Checks if a certain language/plugin exists
+  */
+function checkLanguage($lang) {
+	global $DIR_LANG ;
+	return file_exists($DIR_LANG . ereg_replace( '[\\|/]', '', $lang) . '.php');
+}
+function checkPlugin($plug) {
+	global $DIR_PLUGINS;
+	return file_exists($DIR_PLUGINS . ereg_replace( '[\\|/]', '', $plug) . '.php');
+}
+
+
+$CONF['ItemURL'] = $CONF['Self'];
+$CONF['ArchiveURL'] = $CONF['Self'];
+$CONF['ArchiveListURL'] = $CONF['Self'];
+$CONF['MemberURL'] = $CONF['Self'];
+$CONF['SearchURL'] = $CONF['Self'];
+$CONF['BlogURL'] = $CONF['Self'];
+$CONF['CategoryURL'] = $CONF['Self'];
+
+/**
+  * Centralisation of the functions that generate links
+  */
+function createItemLink($itemid, $extra = '') {
+	global $CONF;
+	$link = $CONF['ItemURL'] . '?itemid=' . $itemid;
+	return addLinkParams($link, $extra);
+}
+function createMemberLink($memberid, $extra = '') {
+	global $CONF;
+	$link = $CONF['MemberURL'] . '?memberid=' . $memberid;
+	return addLinkParams($link, $extra);
+}
+function createCategoryLink($catid, $extra = '') {
+	global $CONF;
+	$link = $CONF['CategoryURL'] . '?catid=' . $catid;
+	return addLinkParams($link, $extra);
+}
+function createArchiveListLink($blogid = '', $extra = '') {
+	global $CONF;
+	if (!$blogid)
+		$blogid = $CONF['DefaultBlog'];
+	$link = $CONF['ArchiveListURL'] . '?archivelist=' . $blogid;
+	return addLinkParams($link, $extra);
+}
+function createArchiveLink($blogid, $archive, $extra = '') {
+	global $CONF;
+	$link = $CONF['ArchiveURL'] . '?blogid='.$blogid.'&amp;archive=' . $archive;
+	return addLinkParams($link, $extra);
+}
+function createBlogLink($url, $params) {
+	return addLinkParams($url . '?', $params);
+}
+function createBlogidLink($blogid, $params = '') {
+	global $CONF;
+	return addLinkParams($CONF['BlogURL'] . '?blogid=' . $blogid, $params);
+}
+
+
+function addLinkParams($link, $params) {
+	if (is_array($params)) {
+		foreach ($params as $param => $value) {
+			$link .= '&amp;' . $param . '=' . urlencode($value);
+		}
+	}
+	return $link;
+}
+
+// passes one variable as hidden input field (multiple fields for arrays)
+// @see passRequestVars in varsx.x.x.php
+function passVar($key, $value) {
+	// array ?
+	if (is_array($value)) {
+		for ($i=0;$i<sizeof($value);$i++)
+			passVar($key.'['.$i.']',$value[$i]);
+			return;
+	}
+	
+	// other values: do stripslashes if needed
+	?><input type="hidden" name="<?=htmlspecialchars($key)?>" value="<?=htmlspecialchars(undoMagic($value))?>" /><?
+	
+}
+
+
+?>

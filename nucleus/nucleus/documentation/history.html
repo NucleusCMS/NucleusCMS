@@ -1,0 +1,392 @@
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	<title>Nucleus - History</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+</head>
+<body>
+
+<h1>Version History</h1>
+
+<p>
+	<a href="index.html">Back to manual</a>
+</p>
+
+<ul>
+	<li>
+		<b>Nucleus v1.55 (August 26, 2002)</b>
+		<ul>
+			<li>ADDED: &lt;%archivedaylist%&gt; and &lt;%otherarchivedaylist%&gt; skinvars (to show archives by day instead of by month)</li>
+			<li>FIXED: PHP error on createAccount through action.php</li>
+			<li>ADDED: new parseFile-method available in index.php. Allows to parse non-blog pages with skinvars</li>
+			<li>FIXED: editing comments with hyperreffed links</li>
+			<li>ADDED: 'delete item' option on edit item, plus 'delete item' confirmation screens (also on bookmarklet)</li>
+			<li>CHANGED: on multi-blog systems, the admin now only gets to see the blogs for which (s)he is on the team. All other blogs are available through an 'show all blogs...' link</li>
+			<li>FIXED: link to recent items after weblogs.com ping was broken</li>
+			<li>CHANGED: plugin event call 'PreAddComment' moved to immediately before the item is added to the database</li>			
+			<li>FIXED: tab-orders were not correct on multiple admin pages</li>
+			<li>ADDED: &lt;%itemid%&gt; and &lt;%itemlink%&gt; available on item pages</li>
+			<li>FIXED: install.php now works when the PHP option magic_quotes_runtime is enabled</li>
+			<li>CHANGED: install.php gives an error when PHP is compiled without MySQL installed</li>
+			<li>CHANGED: install.php automatically fills the 'mysql hostname' field when PHP option mysql.default_host is set.</li>
+			<li>FIXED: greymatter convert was not putting a reference to the weblog in the comments table.</li>
+			<li>CHANGED: added some linebreaks in the login screen of the admin area</li>
+			<li>ADDED: new plugin events: PreAddItem, PreUpdateItem, PrepareItemForEdit, PreUpdateComment, PrepareCommentForEdit</li>
+			<li>ADDED: JavaScript to hide empty fields when editing templates</li>
+			<li>CHANGED: Admin area CSS now uses relative fontsizes and fontsize-keywords (also added trick to make IE5 get it right)</li>
+			<li>FIXED: backup was broken :(</li>
+			<li>CHANGED: replaced an SQL query that caused problems (NATURAL JOIN replaced by implicit inner join)</li>
+			<li>ADDED: &lt;%self%&gt; available in categorylist templates</li>
+			<li>ADDED: &lt;%itemtitle%&gt; skinvar available on item-skins</li>
+			<li>FIXED: editing a comment you made in a blog that's not your own resulted in a 'disallowed action' error </li>
+			<li>FIXED: plugin was listed twice in the list of available skinvars</li>			
+			<li>ADDED: &lt;%archivedate%&gt; skinvar on archive skins</li>
+			<li>FIXED: admininstrators could not edit details of other members</li>			
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v1.5 (August 13, 2002)</b>
+		<ul>
+			<li>ADDED: Introducing plugins (define your own skinvars and templatevars, add event listeners, ...)</li>
+			<li>CHANGED: simpler and more accessible default templates/skins</li>
+			<li>FIXED: GreyMatter convert now works when the <tt>asp_tags</tt> option in PHP is enabled</li>
+			<li>ADDED: title and authorName fields in Blogger API getRecentItems call</li>
+			<li>ADDED: HTML label tags for radio buttons and checkboxes (this way you can click anywhere on the text instead of only on the radio button/checkbox itself)</li>
+			<li>FIXED: deleting a comment you made in a blog that's not your own resulted in a 'disallowed action' error (thanks moraes)</li>
+			<li>CHANGED: the place where comments are inserted can now be chosen from within the template. Just include &lt;%comments%&gt; in the ITEM templatepart whereever you want the comment count (or comments) to appear. In upgrading, the old ordening is imitated by adding '&lt;%comments%&gt;' to the end of the ITEM template part.</li>			
+			<li>CHANGED: now trimming parameters that were passed to skinvars/templatevars</li>
+			<li>ADDED: &lt;%referer%&gt; skinvar, which inserts HTTP_REFERER</li>
+			<li>ADDED: '- New Category -' can now be chosen on add/edit item (only for blog admins). A new category is then created, and the chance is given to edit the category details.</li>
+			<li>ADDED: optional attributes for templatevars &lt;%time(format)%&gt;, &lt;%date(format)%&gt;, &lt;%syndicate_title(maxLength)%&gt;, &lt;%syndicate_description(maxLength)%&gt;</li>
+			<li>ADDED: new user registrations show up in action log</li>
+			<li>ADDED: new option to allow non-members to send messages (the membermailform)</li>
+			<li>FIXED: when an admin edits an item written by someone else, and uploads an image, the image is now saved under the original authors media directory</li>
+			<li>CHANGED: &lt;%author(realname)%&gt; in item templates now inserts the real name of the author</li>
+			<li>FIXED: install.php now works when magic_quotes_gpc is disabled</li>
+			<li>ADDED: New settings: PluginURL, MaxUploadSize, ProtectMemNames</li>
+			<li>ADDED: hotlinks to the defined skinparts from the skin overview (also gives a good view on which skinparts have been defined and which have not been defined)</li>			
+			<li>ADDED: &lt;%smartbody%&gt; for item templates, which chooses between showing the body and extended part, based on the extended part being empty or not. Using this, the body text can be your full text, and the extended part could be seen as an 'introduction', which you want to show on the front page. (request from smarko)</li>
+			<li>ADDED: &lt;%edit%&gt;, &lt;%editlink%&gt; and &lt;%editpopupcode%&gt; can be used in item templates (and in items themselves) to insert a link  to where the item can be edited/deleted. (default setting uses bookmarklet to do this). The edit links only get shown when the user is allowed to edit a certain item (blog admin or item author). </li>
+			<li>FIXED: bookmarklet now works correctly when magic_quotes_gpc and register_globals are turned off </li>
+			<li>ADDED: PHP and MySQL versions are listed during the installation proces, with warnings when those version numbers are lower than what Nucleus requires</li>
+			<li>CHANGED: item parsing method changed, so it's more easily extensible. plugin, parsedinclude, include and phpinclude are now also allowed in some templates. Inside items, there are also 3 allowed variables: 'image', 'media' and 'popup'</li>
+			<li>FIXED: image popups didn't work with register_globals disabled</li>			
+			<li>CHANGED: renamed method: getBlogidFromName -> getBlogIDFromName (consistency)</li>
+			<li>ADDED: method selectCategory($name)</li>
+			<li>FIXED: Nucleus now handles data correctly when magic_quotes_gpc is disabled (solves some problems with template editing)</li>
+			<li>CHANGED: categories in selection box are now sorted by name (tip from katatonik)</li>
+			<li>FIXED: Not all tables got exported on backup :( (thanks Xiffy!)</li>			
+			<li>FIXED: add item form didn't handle keyboard shortcuts correctly (thanks Hop!)</li>
+			<li>CHANGED: 'remember me' checkbox is now checked when the information was remembered from before (this way, the cookie gets set again and does not expire)</li>
+			<li>FIXED: after a category got selected through skinvar parameters, skinvars applying to all categories also got applied only to the last category that was selected (thanks Xiffy!)</li>
+			<li>ADDED: table nucleus_comment got an extra cblog column (redundant) to allow to find the blog that goes with a comment more easily.</li>
+			<li>FIXED: email address checking routine (false email addresses like foo@@bar.com were allowed)</li>
+			<li>CHANGED: New installations now get a robots.txt file (disallows karma voting/commenting/... by bots)</li>
+			<li>CHANGED: JavaScript preview now shows image outlines and popup image links</li>
+			<li>CHANGED: searchform now available on ALL skintypes</li>
+			<li>FIXED: headers in globalfunctions/SKIN.php now sent _only_ when no other headers have been sent before. Should make including easier.</li>
+			<li>CHANGED: RSS-auto-discovery tag in default skin</li>
+			<li>CHANGED: formfields got labels (accessibility issue). Also access keys have been defined: L for login, 4 for Search (on windows, actions keys are used together with the ALT key)</li>			
+			<li>ADDED: left and right box buttons on JS toolbar</li>
+			<li>FIXED: truncated entry when login is requested after adding (data didn't get passed on correctly)</li>
+			<li>ADDED: &lt;%authorlink%&gt; to template vars for item templates (this one can take catid into account)</li>
+			<li>ADDED: $CONF['Self'] => $CONF['ItemURL'], $CONF['IndexURL'], ... to optionally allow people to use different files for items/archives/...</li>
+			<li>CHANGED: Now using mysql_fetch_assoc instead of mysql_fetch_array (efficiency)</li>
+			<li>CHANGED: The &lt;%searchresults%&gt; and &lt;%othersearchresults%&gt; skintags got an extra parameter to limit the number of results (defaults to 50)</li>			
+			<li>FIXED: doError did not take into account chosen skin</li>
+			<li>FIXED: Commentform not shown anymore for closed items (a message is shown instead)</li>
+			<li>CHANGED: Removed all unneccessary javascript: links (deprecated)</li>
+			<li>CHANGED: Media: Procentual width and height values are now allowed in image and inline constructs (e.g. &lt;%image(bla.gif|50%|50%|lala)%&gt;)</li>
+			<li>FIXED: Blogger API: getPost wasn't returning category name</li>			
+			<li>FIXED: Blogger API: getRecentPosts wasn't converting linebreaks</li>
+			<li>FIXED: surpressed warning on mysql_close</li>
+			<li>FIXED: install-script now also accepts email addresses that contain uppercase characters</li>			
+			<li>FIXED: imported items did not show up in the weblog</li>
+			<li>FIXED: blogger api &lt;title&gt; thingie didn't work</li>
+			<li>CHANGED: Made all uploaded files be chmodded to 644</li>
+			<li>FIXED: template cloning didn't clone all parts</li>
+			<li>FIXED: After new user registration, there was a redirect to the members url (use 'desturl' now to indicate destination url)</li>
+			<li>...and a lot of small changes</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v1.1 (April 30, 2002)</b>
+		<ul>
+			<li>Started assuming that at least PHP 4.0.5 is available. (for older PHP versions, some small code-changes should do the trick)</li>
+			<li>Added bookmarklets for Mac/IE5 users and Mozilla. Also, made the title of the page also show up in the title field of the new item. Makes more sense. <small>(thanks to <a href="http://www.35mm.org">Ricardo Lamego</a>)</small></li>
+			<li>Made the <a href="http://www.php.net/manual/en/language.variables.predefined.php" title="see PHP doc">predefined PHP variables</a> available in scripts called through &lt;%phpinclude(..)%&gt; <small>(thanks to <a href="http://www.polskaya.be/">Polskaya</a> for noticing the problem)</small></li>
+			<li>Fixed: &lt;%additemform%&gt; and &lt;%nucleusbutton%&gt; didn't work when admin area was not in a dir named 'nucleus'</li>
+			<li>Added: &lt;%sitevar(adminurl)%&gt; and shortcut &lt;%adminurl%&gt; to include the URL of the admin area</li>
+			<li>Changed all references to nucleus.demuynck.org into references to <a href="http://nucleuscms.org/">nucleuscms.org</a></li>
+			<li>Extra settings: cookie domain, cookie path, secure cookie (for https)</li>
+			<li>Instead of stripping tags in comments, &lt; and &gt; are now replaced by their entities (&amp;lt; and &amp;gt;). This way, greater than and lower than signs can be used in comments <small>(inspiration by <a href="http://www.adfundum.be/">Steven Verbruggen</a>)</small></li>
+			<li>Added charset to language files, so international character sets can be used when needed <small>(<a href="http://forum.nucleuscms.org/viewtopic.php?t=56">forum</a>)</small></li>
+			<li>Added an extra content-type attribute to skins, so the output type can be set correctly by Nucleus</li>
+			<li>Removed the 'headlines' skin and templates. Don't want new users to get too confused.</li>
+			<li>Notification emails now also get the senders display name</li>
+			<li>All errors now handled by doError method in globalfunctions.php (makes it easier when you want to use your own error handler instead of the error skin)</li>
+			<li>Site-members can now override the default site-language setting for the pages they visit</li>
+			<li>Added skinvars &lt;%otherarchive%&gt; and &lt;%othersearchresults%&gt; for use on archive/search pages.</li>
+			<li>Skinvar &lt;%searchform%&gt; now takes an optional parameter: blogname (for which you want a search form)</li>
+			<li>Introducing categories! (new settings; new skinvars category, categorylist and ifcat; new template vars &lt;%category%&gt;, &lt;%catid%&gt; and &lt;%categorylink%&gt;; new optional category params for skinvars blog, otherblog, archive, otherarchive, archivelist, otherarchivelist)</li>
+			<li>Fixed: error skin didn't get copied on skin cloning</li>
+			<li>Even more new skinvars to make skinning easier: &lt;%todaylink%&gt;, &lt;%archivelink%&gt;, &lt;%prevlink%&gt; and &lt;%nextlink%&gt; <small>(<a href="http://forum.nucleuscms.org/viewtopic.php?t=67">forum</a>)</small></li>
+			<li>Fixed: The install script was giving warnings about uninitialized variables on some PHP configurations</li>
+			<li>Moved version history to separate file</li>
+			<li>Made upgrade scripts a little more robust and more verbose</li>
+			<li>XML-RPC: <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a> support</li>
+			<li>XML-RPC: &lt;title&gt; and &lt;category&gt; tags can now be used with the Blogger API (similar to b2)</li>
+			<li>Fixed problem with create account <small>(<a href="http://forum.nucleuscms.org/viewtopic.php?t=92">forum</a>)</small></li>
+			<li>Made it so Nucleus still works when using PHP &gt;4.1.0 with register_globals turned off, which is the default setting for new installations <small>(<a href="http://forum.nucleuscms.org/viewtopic.php?t=95">forum</a>)</small></li>
+			<li>Media library: popup now requests login when needed</li>
+			<li>Media library: option to auto-prefix uploaded files with date (turned on by default)</li>
+			<li>Backup/Restore: backup file name now has date + nucleus.sql renamed to install.sql + extra "I'm sure"-checkbox on restore to avoid errors <small>(<a href="http://forum.nucleuscms.org/viewtopic.php?t=100">forum</a>)</small></li>
+			<li>Javascript toolbar: simpler version available that works in Mozilla</li>
+			<li>Fixed: Closed items don't show 'no comments' link anymore <small>(forum)</small></li>
+			<li>Fixed: Drafts items don't result in 'January 1970' entries in archivelist</li>
+			<li>Fixed: Added &lt;image&gt; tag to xmlrss skin for new installs. It's required. (defaults to a nucleus logo, up to you to change it)</li>
+			<li>Fixed: Error with restore (content with semicolons in it would not get restored)</li>
+			<li>Added: Extra notification options</li>
+			<li>Archives can now also be accessed by day, and an extra daylink template var is available in date headers</li>
+			<li>Fixes in default skin</li>
+			<li>As always, lots of small fixes &amp; code rewrites</li>
+			<li>
+				Changes (additions to and <del>deletions</del> from) language file:
+				<ul>
+					<li>_SETTINGS_COOKIES_TITLE</li>
+					<li>_SETTINGS_COOKIEDOMAIN</li>
+					<li>_SETTINGS_COOKIEPATH</li>
+					<li>_SETTINGS_COOKIESECURE</li>
+					<li>_SKIN_UPDATED</li>
+					<li>_TEMPLATE_UPDATED</li>
+					<li>_CHARSET</li>
+					<li>_MEMBERS_DEFLANG</li>
+					<li>_MEMBERS_USESITELANG</li>
+					<li>_ADD_CATEGORY</li>
+					<li>_ADD_DRAFTNFUTURE</li>
+					<li>_ERROR_NOSUCHLANGUAGE</li>
+					<li>_ERROR_NOSUCHCATEGORY</li>
+					<li>_ERROR_DELETEDEFCATEGORY</li>
+					<li>_ERROR_DELETELASTCATEGORY</li>
+					<li>_ERROR_BADCATEGORYNAME</li>
+					<li>_ERROR_DUPCATEGORYNAME</li>
+					<li>_CONFIRMTXT_CATEGORY</li>
+					<li>_DELETED_CATEGORY</li>
+					<li>_LISTS_TYPE</li>
+					<li>_SKIN_TYPE</li>
+					<li>_YOURSITE</li>
+					<li><del>_LIST_COMMENT_HOST</del></li>
+					<li>_SETTINGS_MEDIA</li>
+					<li>_SETTINGS_MEDIAPREFIX</li>
+					<li>_SETTINGS_MEMBERS</li>
+					<li>_LOGIN_FORGOT</li>
+					<li>_TEMPLATE_CATEGORYLIST</li>
+					<li>_TEMPLATE_CATHEADER</li>
+					<li>_TEMPLATE_CATITEM</li>
+					<li>_TEMPLATE_CATFOOTER</li>
+					<li>_EBLOG_DEFCAT</li>
+					<li>_EBLOG_CAT_TITLE</li>
+					<li>_EBLOG_CAT_NAME</li>
+					<li>_EBLOG_CAT_DESC</li>
+					<li>_EBLOG_CAT_CREATE</li>
+					<li>_EBLOG_CAT_UPDATE</li>
+					<li>_EBLOG_CAT_UPDATE_BTN</li>
+					<li>_EBLOG_NOTIFY_ON</li>
+					<li>_EBLOG_NOTIFY_COMMENT</li>
+					<li>_EBLOG_NOTIFY_KARMA</li>
+					<li>_EBLOG_NOTIFY_ITEM</li>
+
+				</ul>
+			</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v1.0 (March 6, 2002)</b>
+		<ul>
+			<li>Fixed: width &amp; height of &lt;%image()%&gt; construct</li>
+			<li>Changed: windows in popup windows don't have a white border anymore <small>(<a href="http://www.nucleuscms.org/forum/viewtopic.php?t=3">see forum</a>)</small>
+			</li>
+			<li>Fixed: bug with single quotes in image/popup constructs <small>(<a href="http://www.nucleuscms.org/index.php?itemid=1812">see message</a>)</small></li>
+			<li>Fixed: fatal error in 'send password' method <small>(thanks to <a href="http://modder.org/HANK!">HANK!</a>)</small></li>
+			<li>Fixed: removed some illegal characters from code documentation since they caused parse errors on some systems <small>(thanks to Martin Belle-Isle and Rodrigo Moraes; see <a href="http://www.nucleuscms.org/forum/viewtopic.php?t=5">forum</a> for extra details)</small></li>
+			<li>Refined: added a note about spaces to the install-script <small>(see <a href="http://www.nucleuscms.org/forum/viewtopic.php?t=14">forum</a>)</small></li>
+			<li>Added: donate-link on admin page <small>(hey! it's free, I have the right to bug you with this sort of things ;-)</small></li>
+			<li>Changed: it's not possible anymore to create a draft future item. That didn't make sense. You can now choose whether you want to publish a draft item either immediately or in the future when editing the item</li>
+			<li>Changed: made it so that the 'disable comments' choice is not offered anymore on add/edit item form when commenting is disabled in the blogsettings</li>
+			<li>Fixed: where possible, redirection after commenting is now done to the correct file (instead of index.php)</li>
+			<li>Fixed: bug where only superadmins could change usernames/passwords, even if the corresponding option in the settings was set <small>(thx <a href="http://www.sneppah.be/">slekke</a>)</small></li>
+			<li>Added: allowed variables for a skinpart now shown when editing skin</li>
+			<li>Wrote new re-usable parser that does skin parsing in a way that is more flexible and less prone to errors.</li>
+			<li>Changed: passwords now stored in encrypted form</li>
+			<li>Optimizing: optimized some queries</li>
+			<li>Added: &lt;%otherarchivelist(blogname,templatename)%&gt; in skins</li>
+			<li>Added: Blogger Convert</li>
+			<li>Added: "shared computer" checkbox on login. Checking this box will make your cookie expire at the end of the session (instead of taking the global site setting) <small>(see <a href="http://www.nucleuscms.org/forum/viewtopic.php?t=33">forum</a>)</small></li>
+			<li>Added: "remember me" checkbox on comment forms for non-members</li>
+			<li>Most language related things are now moved to language files. Now you can roll your own :)</li>
+			<li>Added: optional parameters rows/cols in membermailform skinvar</li>
+			<li>Added: skinvars: &lt;%phpinclude(file)%&gt; and &lt;%parsedinclude(file)%&gt;. &lt;%plugin%&gt; is now deprecated (in favor of phpinclude). The plugins directory should also not be used anymore (it'll get another function in a later version)</li>
+			<li>Added: skinvar &lt;%self%&gt; which includes the filename of the currently executing script (index.php or whatever is sen in $CONF['Self'])</li>
+			<li>Automatich hyperlink detection in comments now also recognizes comma's</li>
+			<li>Added: selectSkin('name') and selectBlog('name') functions available for use in index.php</li>
+			<li>Added: Small <a href="tips.html#backups">restore-guide</a> for the worst case scenario</li>
+			<li>Added: A toolbar with markup buttons on add/edit item, plus option to disable it in the settings. When Mozilla is used, Nucleus tries to disable it automatically (since it doesn't work there anyway)</li>
+			<li>Fixed: media were not expanded in extended text <small>(thx <a href="http://www.elrado.nl/">raoul</a>)</small></li>
+			<li>Changed javascript code of popup help so it works better in Mozilla <small>(thanks to <a href="http://idontsmoke.co.uk/">Paul Sowden</a>)</small></li>
+			<li>UI improvements</li>
+			<li>New default skin (the old one was just plain ugly :-)</li>
+			<li>Small bug-fixes</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v0.96 (December 13, 2001)</b>
+		<ul>
+			<li>Added: add-item-preview now also in admin area</li>
+			<li>Added: action log</li>
+			<li>Added: media library and file-upload</li>
+			<li>Added: karma votes</li>
+			<li>Added: Option to disable loginname/password changing by members</li>
+			<li>Added: simple popup windows for image viewing
+			<li>Fixed: E-mail address validation check does not longer require addresses to be all lowercase</li>
+			<li>Fixed: magic_quotes are now explicitly disabled, solving escaping problems (thanks to <a href="http://www.aroundmyroom.com/">Dennis Slagers</a>)</li>
+			<li>Fixed: error handling when pinging weblogs.com</li>
+			<li>Added: now also storing IP with comments (next to hostname)</li>
+			<li>Added: IP banlist (to prevent nasty people from commenting/voting)</li>
+			<li>Changed: Notification mails now include the item's title</li>
+			<li>Changed: Weblogs can only be deleted by super-admins</li>
+			<li>Changed: <a href="http://xmlrpc.usefulinc.com/">XML-RPC for PHP</a> v1.02</li>
+			<li>Added: Small <a href="tips.html#filepermissions">guide to changing/setting filepermission</a> in docs</li>
+			<li>Changed: Upgrade and conversion scripts now get packed separately</li>
+			<li>Fixed: For error skins, the default skin is used now instead of 'default' (thanks to <a href="http://www.sneppah.be/">Slekke</a>)</li>
+			<li>Fixed: The code to insert the Nucleus button was not XHTML (strict) compliant, oh my!</li>
+			<li>GM Conversion: The conversion of {{popup}} now works correctly (and copies image files to the media dir)</li>
+			<li>Fixed: a minor bug in XML-RPC call blogger.getUsersBlogs</li>
+			<li>Fixed: a major bug in XML-RPC call blogger.getRecentPosts</li>
+			<li>Fixed: problem concerning template editing and the XML-RPC call blogger.setTemplate</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v0.95 (October 10, 2001)</b>
+		<ul>
+			<li>Added: per-blog setting to enable/disable line break conversion</li>
+			<li>Added: per-blog setting to send a ping to Userland (weblogs.com) when you update your blog. This way, you'll be able to end up in the weblogs.com update-list</li>
+			<li>Switched to v1.01 of the XML-RPC for PHP libs (was v1.0)</li>
+			<li>Upgrade scripts are available (for upgrade from versions &lt; 0.95 to v0.95)</li>
+			<li>Added: &lt;%previtem%&gt; and &lt;%nextitem%&gt; can be used in item-skins</li>
+			<li>Some changes in the default database dump</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v0.94 (September 27, 2001)</b>
+		<ul>
+			<li>Changed: 'Add Item' in admin-area now redirects to blog url (if available)</li>
+			<li>Changed: <i>headlines.php</i> and <i>xml-rss.php</i> adapted to behave better in disabled-site situations</li>
+			<li>Changed: &lt;%userlink%&gt; got smarter in recognizing e-mail addresses</li>
+			<li>Added: tabindices in forms to make traversal with the TAB-button more natural</li>
+			<li>Fixed: bookmarklet login did not pass data correctly</li>
+			<li>Added: JavaScript to open links in new window (javascrip/opennew.js)</li>
+			<li>Added: &lt;%year%&gt; and &lt;%month%&gt; in templates for archivelist-items</li>
+			<li>CSS lightly changed because IE6 is a little bit more picky (which is actually a good thing)</li>
+			<li>Fixed: popup code (JavaScript) for help-windows (didn't work ok in IE6)</li>
+			<li>Added: Description or summary of what you are going to delete on the confirmation screens</li>
+			<li>Added: Workaround (for advanced users) to get your archives into search engines (on tips &amp; suggestions page)</li>
+			<li>Fixed: A bug in the XML-RPC server</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v0.93 (September 19, 2001)</b>
+		<ul>
+			<li>Added: friendly error message on error with nucleusdir definition in config.php</li>
+			<li>Changed: call_user_func instead of eval</li>
+			<li>Added: forms included by skin variables now have class="formfield" and class="formbutton" arguments, to allow more control on the layout</li>
+			<li>Created a <a href="tips.html">'Tips &amp; Suggestions'</a> page next to this manual</li>
+			<li>XML-RPC API: added nucleus.addDatedItem method</li>
+			<li>XML-RPC API: added nucleus.editItem method</li>
+			<li>XML-RPC API: added nucleus.getRecentItems method</li>
+			<li>XML-RPC API: added nucleus.getItem method</li>
+			<li>Added documentation for XML-RPC nucleus.* methods</li>
+			<li>Fix: Search results didn't show the amount of comments. Now they do.</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v0.92 (September 18, 2001)</b>
+		<ul>
+			<li>GM conversion: {{linkmo and {{emailmo conversion now also works with PHP versions &lt; 4.0.4</li>
+			<li>GM conversion: Fixed occasional JavaScript errors with {{linkmo and {{emailmo</li>
+			<li>GM conversion: Fixed [read more] bug</li>
+			<li>GM conversion: Extra intelligence in choosing URL or e-mail to save as userid for comments</li>
+			<li>Added: ?archivelist can now be used without arguments to show the list of archives for the default weblog</li>
+			<li>Fixed: Editing comments now does not allow the use of HTML anymore. The same checks as when adding new comments are performed on update attempts.</li>
+			<li>Added: check to find out if update file is writable (on changing blogsettings and creating new weblog)</li>
+			<li>Changed: hard returns in add item now get converted to line breaks (&lt;br /&gt;), Also, modified javascript code that handles preview to behave in the same way.</li>
+			<li>Changed: &lt;%commentform%&gt; does not show user and userid fields for logged in users. Instead, it shows the name of the user.</li>
+			<li>GM Conversion: {{popup command now also translated (will be converted into a link to the image, not into a popup window!)</li>
+			<li>Updated: default templates (?archivelist)</li>
+			<li>Changed: E-mail Address Validation Check</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v0.91 (September 15, 2001)</b>
+		<ul>
+			<li>Improved conversion for GreyMatter blogs. Special markup commands are now recognized. (thanks to <a href="http://www.elrado.nl/">Raoul</a> for pointing this out)
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v0.90 [beta 2 release] (September 14, 2001)</b>
+		<ul>
+			<li>an install-script is now available, no more messing around in shells</li>
+			<li>created default skins/templates for a release version</li>
+			<li>option to store 'last visit' cookie and to use 'new' indication on items</li>
+			<li>?archivelist=.. request can now also be used with a blogid instead of a blog shortname</li>
+			<li>forgotten password reminder</li>
+			<li>Bookmarklet can be used without being logged in. A login prompt is shown in that case.</li>
+			<li>When not being logged in to the admin area, requested actions are now completed after passing login information. Before, you would always end up at the action overview after passing login information, and your requested action would have gone lost.</li>
+			<li>Super-admins now have access to all blogs, even if they are not on the team</li>
+			<li>Logtext passed to bookmarklet now gets &lt;br /&gt; added before each newline</li>
+			<li>Added little JavaScript to prevent submitting form data twice</li>
+			<li>Sample plugin: google referer check</li>
+			<li>Conversion script to import GreyMatter blogs included</li>
+			<li>Removed 'assign comment to member' feature</li>
+			<li>Added toolbar to popup help windows (because of the back/forward buttons)</li>
+			<li>Added &lt;%blogurl%&gt; variable for item templates</li>
+			<li>bug-fixes</li>
+			<li>small esthetic changes</li>
+			<li>...</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v0.80 [beta 1 release] (September 2, 2001)</b>
+		<ul>
+			<li>XML-RPC Interface implementing the blogger methods</li>
+			<li>fixes and code-reorganisation</li>
+			<li>popup-help on item pages</li>
+			<li>bookmarklets/right click blogging</li>
+			<li>the start of something that looks like documentation</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v0.70 [not released] (August 20, 2001)</b>
+		<ul>
+			<li>mySQL instead of XML</li>
+			<li>extensive admin area</li>
+			<li>'member' concept, including blog teams/admins/...</li>
+			<li>rewrote most of the code</li>
+			<li>skin format slightly changed</li>
+			<li>almost ready for public release :)</li>
+			<li>adding items with instant preview (when viewing the weblog)</li>
+			<li>LOCALE used for time/date notations.</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v0.60 and earlier (since February 2001)</b>
+		<br />
+		no history (XML versions with limited functions)
+	</li>
+</ul>
+
+
+</body>
+</html>

@@ -1,0 +1,330 @@
+<?
+
+/**
+  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
+  * Copyright (C) 2002 The Nucleus Group
+  *
+  * This program is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU General Public License
+  * as published by the Free Software Foundation; either version 2
+  * of the License, or (at your option) any later version.
+  * (see nucleus/documentation/index.html#license for more info)
+  *
+  */
+
+/**
+ * The formfactory class can be used to insert add/edit item forms into 
+ * admin area, bookmarklet, skins or any other places where such a form
+ * might be needed
+ */
+class PAGEFACTORY extends BaseActions {
+
+	/**
+	 * creates a new PAGEFACTORY object
+	 */
+	function PAGEFACTORY($blogid) {
+		// call constructor of superclass first
+		$this->BaseActions();			
+		
+		global $manager;
+		$this->blog =& $manager->getBlog($blogid);
+		
+		// TODO: move the definition of actions to the createXForm 
+		// methods
+		$this->actions = Array(
+			'actionurl', 
+			'title',
+			'body',
+			'more',
+			'blogid',
+			'bloglink',
+			'blogname',
+			'authorname',
+			'checkedonval',
+			'helplink',
+			'currenttime',
+			'itemtime',
+			'init',
+			'text',
+			'jsinput',
+			'jsbuttonbar',
+			'categories',
+			'contents',
+			'ifblogsetting',
+			'ifitemproperty',
+			'else',
+			'endif'
+		);
+		
+		// TODO: maybe add 'skin' later on?
+		// TODO: maybe add other pages from admin area
+		$this->allowedTypes = Array('bookmarklet','admin');	
+	}
+
+	/**
+	 * creates a "add item" form for a given type of page
+	 *
+	 * @param type
+	 *		'admin' or 'bookmarklet' 
+	 */
+	function createAddForm($type, $contents = array()) {
+		if (!in_array($type, $this->allowedTypes))
+			return;
+		$this->type = $type;
+		$this->method = 'add';
+		$this->createForm($contents);
+	}
+	
+	/**
+	 * creates a "add item" form for a given type of page
+	 *
+	 * @param type
+	 *		'admin' or 'bookmarklet' 
+	 * @param contents
+	 *		An associative array
+	 *			'author' => author
+	 *			'' => 
+	 */
+	function createEditForm($type, $contents) {
+		if (!in_array($type, $this->allowedTypes))
+			return;
+		$this->type = $type;
+		$this->method = 'edit';
+		$this->createForm($contents);
+	}
+	
+	/**
+	 * (private) creates a form for a given type of page
+	 */
+	function createForm($contents) {
+		
+
+		// save contents
+		$this->variables = $contents;
+		
+		// get template to use
+		$template = $this->getTemplateFor($type);
+		
+		// use the PARSER engine to parse that template
+		$parser = new PARSER($this->actions, $this);
+		$parser->parse($template);
+	}
+	
+	/**
+	 * returns an appropriate template
+	 */
+	function getTemplateFor($type) {
+		global $DIR_LIBS;
+		
+		$filename = $DIR_LIBS . 'include/' . $this->type . '-' . $this->method . '.template';
+		
+		if (!file_exists($filename)) 
+			return '';
+			
+		// read file and return it
+		$fd = fopen ($filename, 'r');
+		$contents = fread ($fd, filesize ($filename));
+		fclose ($fd);
+		
+		return $contents;
+		
+	}
+	
+	/**
+	 * Parse a string using other delimiters (e.g. for commentsdisabled)
+	 */
+	function subParse($text) {
+		if (!$this->subparser)
+			$this->subparser = new PARSER($this->actions, $this, '(<&|&>)' , ';');
+		$this->subparser->parse($text);
+	}
+	
+	// create category dropdown box
+	function parse_categories($startidx = 0) {
+			if ($this->variables['catid']) 
+				$catid = $this->variables['catid'];				// on edit item
+			else
+				$catid = $this->blog->getDefaultCategory();		// on add item
+			
+			ADMIN::selectBlogCategory('catid',$catid,$startidx,1);
+	}
+	
+	function parse_blogid() {
+		echo $this->blog->getID();
+	}
+	
+	function parse_blogname() {
+		echo $this->blog->getName();
+	}
+	
+	function parse_bloglink() {
+		echo '<a href="'.htmlspecialchars($this->blog->getURL()).'">'.$this->blog->getName().'</a>';
+	}
+	
+	function parse_authorname() {
+		// don't use on add item?
+		global $member;
+		echo $member->getDisplayName();
+	}
+
+	function parse_title() {
+		echo $this->contents['title'];
+	}
+
+	/**
+	 * Indicates the start of a conditional block of data. It will be added to
+	 * the output only if the blogsetting with the given name equals the 
+	 * given value (default for value = 1 = true)
+	 *
+	 * the name of the blogsetting is the column name in the nucleus_blog table
+	 *
+	 * the conditional block ends with an <endif> var
+	 */
+	function parse_ifblogsetting($name,$value=1) {
+		$this->_addIfCondition(($this->blog->getSetting($name) == $value));
+	}
+	
+	function parse_ifitemproperty($name,$value=1) {
+		$this->_addIfCondition(($this->variables[$name] == $value));
+	}
+	
+	function parse_helplink($topic) {
+		help($topic);
+	}
+	
+	// for future items
+	function parse_currenttime($what) {
+		$nu = getdate($this->blog->getCorrectTime());
+		echo $nu[$what];
+	}
+	
+	// date change on edit item
+	function parse_itemtime($what) {
+		$itemtime = getdate($this->variables['timestamp']);
+		echo $itemtime[$what];
+	}
+	
+	// some init stuff for all forms
+	function parse_init() {
+		$authorid = ($this->method == 'edit') ? $this->variables['authorid'] : '';
+		$this->blog->insertJavaScriptInfo($authorid);		
+	}
+	
+	// inserts some localized text
+	function parse_text($which) {
+		// constant($which) only available from 4.0.4 :(
+		if (defined($which)) { 	
+			eval("echo $which;");
+		}
+	}
+	
+	function parse_contents($which) {
+		echo htmlspecialchars($this->variables[$which]);
+	}
+	
+	function parse_checkedonval($value, $name) {
+		if ($this->variables[$name] == $value)
+			echo "checked='checked'";
+	}
+	
+	// extra javascript for input and textarea fields
+	function parse_jsinput($which) {
+	?>
+			name="<?=$which?>" 
+			id="input<?=$which?>" 
+	<?
+		global $CONF;
+		if ($CONF['DisableJsTools'] == 0) {
+	?>
+			onkeyup="storeCaret(this); updPreview('<?=$which?>');"
+			onclick="storeCaret(this);"
+			onselect="storeCaret(this);" 
+	  	    onkeypress="shortCuts();"			
+	<?
+		}
+	}
+	
+	// shows the javascript button bar
+	function parse_jsbuttonbar($extrabuttons = "") {
+		global $CONF;
+		switch($CONF['DisableJsTools'])	{
+
+			case "0":	
+				echo '<div class="jsbuttonbar">';
+
+					$this->_jsbutton('cut','cutThis()',_ADD_CUT_TT . " (Ctrl + X)");
+					$this->_jsbutton('copy','copyThis()',_ADD_COPY_TT . " (Ctrl + C)");
+					$this->_jsbutton('paste','pasteThis()',_ADD_PASTE_TT . " (Ctrl + V)");
+					$this->_jsbuttonspacer();
+					$this->_jsbutton('bold',"boldThis()",_ADD_BOLD_TT ." (Ctrl + Shift + B)");
+					$this->_jsbutton('italic',"italicThis()",_ADD_ITALIC_TT ." (Ctrl + Shift + I)");
+					$this->_jsbutton('link',"ahrefThis()",_ADD_HREF_TT ." (Ctrl + Shift + A)");
+					$this->_jsbuttonspacer();					
+					$this->_jsbutton('left',"leftThis()",_ADD_LEFT_TT);
+					$this->_jsbutton('right',"rightThis()",_ADD_RIGHT_TT);
+
+				
+					if ($extrabuttons) {
+						$btns = explode('+',$extrabuttons);
+						$this->_jsbuttonspacer();
+						foreach ($btns as $button) {
+							switch($button) {
+								case "media":
+									$this->_jsbutton('media',"addMedia('body')",_ADD_MEDIA_TT .	" (Ctrl + Shift + M)");							
+									break;
+								case "preview":
+									$this->_jsbutton('preview',"showedit()",_ADD_PREVIEW_TT);
+									break;
+							}
+						}
+					} 
+					
+				echo '</div>';
+				
+				break;
+			case "2":
+				echo '<div class="jsbuttonbar">';
+
+					$this->_jsbutton('bold',"boldThis('body')",'');
+					$this->_jsbutton('italic',"italicThis('body')",'');
+					$this->_jsbutton('link',"ahrefThis('body')",'');
+
+					if ($extrabuttons) {
+						$btns = explode('+',$extrabuttons);
+						$this->_jsbuttonspacer();
+						foreach ($btns as $button) {
+							switch($button) {
+								case "media":
+									$this->_jsbutton('media',"addMedia('body')",'');							
+									break;
+							}
+						}
+					} 
+					
+				echo '</div>';
+				
+				break;			
+		}
+	}
+	
+	/**
+	 * convenience method
+	 */
+	function _jsbutton($type, $code ,$tooltip) {
+	?>
+			<span class="jsbutton"
+				onmouseover="BtnHighlight(this);" 
+				onmouseout="BtnNormal(this);" 
+				onclick="<?=$code?>" >			
+				<img src="images/button-<?=$type?>.gif" alt="<?=$tooltip?>" width="16" height="16"/>
+			</span>				
+	<?
+	}
+	
+	function _jsbuttonspacer() {
+		echo '<span class="jsbuttonspacer"></span>';
+	}
+	
+}
+ 
+ ?>
