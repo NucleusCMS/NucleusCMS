@@ -10,6 +10,8 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * The code for the Nucleus admin area   
+  *
+  * $Id$
   */
  
 class ADMIN {
