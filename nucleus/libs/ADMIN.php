@@ -84,7 +84,7 @@ class ADMIN {
 		$this->pagehead();
 		
 		echo '<h2>', _LOGIN ,'</h2>';
-		if ($msg) echo _MESSAGE , ': ', $msg;
+		if ($msg) echo _MESSAGE , ': ', htmlspecialchars($msg);
 		?>
 		
 		<form action="index.php" method="post"><p>

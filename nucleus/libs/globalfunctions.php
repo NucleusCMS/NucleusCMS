@@ -21,7 +21,7 @@ checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQ
 
 $CONF['debug'] = 1;
 
-$nucleus['version'] = 'v3.1+ CVS';
+$nucleus['version'] = 'v3.15+ CVS';
 if (getNucleusPatchLevel() > 0)
 {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();
@@ -48,7 +48,7 @@ $CONF['alertOnSecurityRisk'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 310;
+	return 316;
 }
 
 /**
@@ -57,7 +57,7 @@ function getNucleusVersion() {
  * be tested without having to install CVS.
  */
 function getNucleusPatchLevel() {
-	return 1;
+	return 0;
 }
 
 
@@ -98,6 +98,7 @@ $nextaction		= requestVar('nextaction');
 $maxresults     = requestVar('maxresults');
 $startpos       = intRequestVar('startpos');
 $errormessage	= '';
+$error			= '';
 
 if (!headers_sent())
 	header('Generator: Nucleus ' . $nucleus['version']);
