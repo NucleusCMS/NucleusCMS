@@ -1626,9 +1626,9 @@ class ADMIN {
 		
 		</div></form>
 		
-		<h3>Extra Plugin Settings</h3>
-		
 		<?php		
+			echo '<h3>',_PLUGINS_EXTRA,'</h3>';		
+		
 			$manager->notify(
 				'MemberSettingsFormExtras', 	
 				array(
@@ -2146,9 +2146,11 @@ class ADMIN {
 		
 		</div></form>
 		
-		<h3>Extra Plugin Settings</h3>
+		<?php			
 		
-		<?php			$manager->notify(
+			echo '<h3>',_PLUGINS_EXTRA,'</h3>';
+		
+		 	$manager->notify(
 				'BlogSettingsFormExtras', 	
 				array(
 					'blog' => &$blog
@@ -3971,8 +3973,10 @@ selector();
 			<td><?php echo _SETTINGS_DBLOGIN?></td>
 			<td><i><?php echo _SETTINGS_SEECONFIGPHP?></i></td>
 		</tr><tr>
-			<td>Javascript Toolbar Style
-			<?php /* =_SETTINGS_DISABLEJS 
+			<td>
+			<?php
+				echo _SETTINGS_JSTOOLBAR
+				/* =_SETTINGS_DISABLEJS 
 			
 					I temporary changed the meaning of DisableJsTools, until I can find a good
 					way to select the javascript version to use 
@@ -3987,19 +3991,25 @@ selector();
 			<td><?php /* $this->input_yesno('DisableJsTools',$CONF['DisableJsTools'],10075); */?>
 				<select name="DisableJsTools" tabindex="10075">
 			<?php					$extra = ($CONF['DisableJsTools'] == 1) ? 'selected="selected"' : ''; 
-					echo "<option $extra value='1'>Disable Toolbar</option>";
+					echo "<option $extra value='1'>",_SETTINGS_JSTOOLBAR_NONE,"</option>";
 					$extra = ($CONF['DisableJsTools'] == 2) ? 'selected="selected"' : ''; 					
-					echo "<option $extra value='2'>Simple Toolbar (Non-IE)</option>";
+					echo "<option $extra value='2'>",_SETTINGS_JSTOOLBAR_SIMPLE,"</option>";
 					$extra = ($CONF['DisableJsTools'] == 0) ? 'selected="selected"' : ''; 										
-					echo "<option $extra value='0'>Full Toolbar (IE)</option>";					
+					echo "<option $extra value='0'>",_SETTINGS_JSTOOLBAR_FULL,"</option>";					
 			?>
 				</select>
 			</td>			
 		</tr><tr>
 			<td><?php echo _SETTINGS_URLMODE?> <?php help('urlmode');?></td>
-                       <td><?php $this->input_yesno('URLMode',$CONF['URLMode'],10077,
-					          'normal','pathinfo',_SETTINGS_URLMODE_NORMAL,_SETTINGS_URLMODE_PATHINFO); ?>
-				(Info: <a href="documentation/tips.html#searchengines-fancyurls">How to activate fancy URLs</a>)
+                       <td><?php 
+                       
+                       $this->input_yesno('URLMode',$CONF['URLMode'],10077,
+					          'normal','pathinfo',_SETTINGS_URLMODE_NORMAL,_SETTINGS_URLMODE_PATHINFO);
+					   
+					   echo ' ', _SETTINGS_URLMODE_HELP;
+					          
+					         ?>
+				
                        </td>
 		</tr><tr>
 			<th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
@@ -4107,8 +4117,9 @@ selector();
 		</div>
 		</form>
 
-		<h2>Extra Plugin Settings</h2>		
 		<?php		
+			echo '<h2>',_PLUGINS_EXTRA,'</h2>';		
+		
 			$manager->notify(
 				'GeneralSettingsFormExtras', 	
 				array()
@@ -4285,10 +4296,10 @@ selector();
 				
 				if ($action != 'showlogin') {
 					echo '<ul>';
-					echo '<li><a href="index.php?action=overview">Home</a></li>';
+					echo '<li><a href="index.php?action=overview">',_QMENU_HOME,'</a></li>';
 					echo '</ul>';				
 				
-					echo '<h2>Add Item</h2>';
+					echo '<h2>',_QMENU_ADD,'</h2>';
 					echo '<form method="get" action="index.php"><div>';
 					echo '<input type="hidden" name="action" value="createitem" />';
 
@@ -4306,7 +4317,7 @@ selector();
 						}
 						$template['name'] = 'blogid';
 						$template['tabindex'] = 15000;
-						$template['extra'] = '-- select --';
+						$template['extra'] = _QMENU_ADD_SELECT;
 						$template['selected'] = -1;
 						$template['shorten'] = 10;
 						$template['shortenel'] = '';
@@ -4317,9 +4328,9 @@ selector();
 
 					echo '<h2>' . $member->getDisplayName(). '</h2>';
 					echo '<ul>';
-					echo '<li><a href="index.php?action=editmembersettings">Settings</a></li>';
-					echo '<li><a href="index.php?action=browseownitems">Items</a></li>';
-					echo '<li><a href="index.php?action=browseowncomments">Comments</a></li>';
+					echo '<li><a href="index.php?action=editmembersettings">',_QMENU_USER_SETTINGS,'</a></li>';
+					echo '<li><a href="index.php?action=browseownitems">',_QMENU_USER_ITEMS,'</a></li>';
+					echo '<li><a href="index.php?action=browseowncomments">',_QMENU_USER_COMMENTS,'</a></li>';
 					echo '</ul>';
 
 
@@ -4328,22 +4339,22 @@ selector();
 					// ---- general settings ---- 
 					if ($member->isAdmin()) {
 
-						echo '<h2>Management</h2>';
+						echo '<h2>',_QMENU_MANAGE,'</h2>';
 
 						echo '<ul>';
-						echo '<li><a href="index.php?action=actionlog">Action Log</a></li>';		
-						echo '<li><a href="index.php?action=settingsedit">Global Settings</a></li>';
-						echo '<li><a href="index.php?action=usermanagement">Members</a></li>';		
-						echo '<li><a href="index.php?action=createnewlog">New Weblog</a></li>';											
-						echo '<li><a href="index.php?action=backupoverview">Backups</a></li>';			
-						echo '<li><a href="index.php?action=pluginlist">Plugins</a></li>';			
+						echo '<li><a href="index.php?action=actionlog">',_QMENU_MANAGE_LOG,'</a></li>';		
+						echo '<li><a href="index.php?action=settingsedit">',_QMENU_MANAGE_SETTINGS,'</a></li>';
+						echo '<li><a href="index.php?action=usermanagement">',_QMENU_MANAGE_MEMBERS,'</a></li>';		
+						echo '<li><a href="index.php?action=createnewlog">',_QMENU_MANAGE_NEWBLOG,'</a></li>';											
+						echo '<li><a href="index.php?action=backupoverview">',_QMENU_MANAGE_BACKUPS,'</a></li>';			
+						echo '<li><a href="index.php?action=pluginlist">',_QMENU_MANAGE_PLUGINS,'</a></li>';			
 						echo '</ul>';
 
-						echo '<h2>Layout</h2>';
+						echo '<h2>',_QMENU_LAYOUT,'</h2>';
 						echo '<ul>';
-						echo '<li><a href="index.php?action=skinoverview">Skins</a></li>';
-						echo '<li><a href="index.php?action=templateoverview">Templates</a></li>';
-						echo '<li><a href="index.php?action=skinieoverview">Import/Export</a></li>';		
+						echo '<li><a href="index.php?action=skinoverview">',_QMENU_LAYOUT_SKINS,'</a></li>';
+						echo '<li><a href="index.php?action=templateoverview">',_QMENU_LAYOUT_TEMPL,'</a></li>';
+						echo '<li><a href="index.php?action=skinieoverview">',_QMENU_LAYOUT_IEXPORT,'</a></li>';		
 						echo '</ul>';
 
 					}
@@ -4357,7 +4368,7 @@ selector();
 					);
 					if (count($aPluginExtras) > 0)
 					{
-						echo '<h2>Plugins</h2>';
+						echo '<h2>_QMENU_PLUGINS</h2>';
 						echo '<ul>';
 						foreach ($aPluginExtras as $aInfo)
 						{
@@ -4367,13 +4378,8 @@ selector();
 					}
 					
 				} else {
-					?>
-						<h2>Introduction</h2>
-						
-						<p>This is the logon screen for Nucleus CMS, the content management system that's being used to maintain this website.</p>
-						
-						<p>If you have an account, you can log on and start posting new items.</p>
-					<?php
+					// introduction text on login screen
+					echo '<h2>', _QMENU_INTRO, '</h2>', _QMENU_INTRO_TEXT;
 				}
 				?>
 			</div>
@@ -5493,7 +5499,7 @@ class BATCH extends ENCAPSULATE {
 	function showOperationList() {
 		?>
 		<div class="batchoperations">
-			With selected: 
+			<?php echo _BATCH_WITH_SEL ?>
 			<select name="batchaction">
 			<?php				$options = array();
 				switch($this->type) {
@@ -5545,10 +5551,8 @@ class BATCH extends ENCAPSULATE {
 					echo '<input type="hidden" name="itemid" value="',intRequestVar('itemid'),'" />';
 				}
 				
-			?>
-			
-			<input type="submit" value="Execute" />
-			(
+				echo '<input type="submit" value="',_BATCH_EXEC,'" />';
+			?>(
 			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); "><?php echo _BATCH_SELECTALL?></a> -
 			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); "><?php echo _BATCH_DESELECTALL?></a>
 			)
@@ -5837,11 +5841,11 @@ function listplug_table_itemlist($template, $type) {
 			if ($current->itime > $template['now'])
 				$cssclass = "class='future'";
 			
-			echo "<td $cssclass>blog: $current->bshortname";
-			echo "    <br />cat: $current->cname";			
-			echo "    <br />author: $current->mname";
-			echo "    <br />date: " . date("Y-m-d",$current->itime);
-			echo "<br />time: " . date("H:i",$current->itime);
+			echo "<td $cssclass>",_LIST_ITEM_BLOG," $current->bshortname";
+			echo "    <br />",_LIST_ITEM_CAT," $current->cname";			
+			echo "    <br />",_LIST_ITEM_AUTHOR," $current->mname";
+			echo "    <br />",_LIST_ITEM_DATE," " . date("Y-m-d",$current->itime);
+			echo "<br />",_LIST_ITEM_TIME," " . date("H:i",$current->itime);
 			echo "</td>";			
 			echo "<td $cssclass>";
 			
@@ -5887,7 +5891,7 @@ function listplug_table_commentlist($template, $type) {
 			echo date("Y-m-d@H:i",$current->ctime);
 			echo '<br />';
 			if ($current->mname)
-				echo "$current->mname (member)";
+				echo "$current->mname ", _LIST_COMMENT_MEMBER;
 			else
 				echo $current->cuser;
 			echo '</td>';
