@@ -14,8 +14,10 @@
 
 <ul>
 	<li>
-		<b>Nucleus v2.5 (?)</b>
+		<b>Nucleus v2.5 (April 2004?)</b>
 		<ul>
+			<li>FIXED: XML-RPC: <code>metaWeblog.editPost</code> assigned the default category again when no categories were passed along (karma).</li>
+			<li>FIXED: XML-RPC: <code>mt.getPostCategories</code> returned an invalid result (karma)</li>
 			<li>CHANGED: On clean install, RSS and Atom feeds contain full items rather than excerpts only (karma)</li>
 			<li>REMOVED: Clean installation does not include RSS 0.91 feed anymore. Only the RSS 2.0 and Atom 0.3 feeds are included (karma)</li>
 			<li>ADDED: When a skin provides a preview thumbnail, it is displayed in the skin overview (include prefix required, 100x75 preview.png, preview-large.png). Also, when a readme.html file is present in the skin include dir, a link to that file is added (karma)</li>

@@ -266,7 +266,7 @@
 	
 	function _mt_getPostCategories($itemid, $username, $password) {
 		global $manager;
-		
+
 		// login
 		$mem = new MEMBER();
 		if (!$mem->login($username, $password))
@@ -275,7 +275,7 @@
 		// check if item exists			
 		if (!$manager->existsItem($itemid,1,1))
 			return _error(6,"No such item ($itemid)");
-			
+
 		$blogid = getBlogIDFromItemID($itemid);
 		$blog = new BLOG($blogid);
 
@@ -283,15 +283,16 @@
 			return _error(7, 'You are not allowed to request this information');
 		
 		$info =& $manager->getItem($itemid,1,1);		
+		$catName = $blog->getCategoryName($info['catid']);
 		
 		$struct = new xmlrpcval(
 			array(
-				'categoryId' => new xmlrpcval($blog->getCategoryName($info['catid']), $xmlrpcString),
-				'isPrimary'	=> new xmlrpcval(1, $xmlrpcBoolean)
-			), $xmlrpcStruct
+				'categoryId' => new xmlrpcval($catName, 'string'),
+				'isPrimary'	=> new xmlrpcval(1, 'boolean')
+			), 'struct'
 		);		
 		
-		return new xmlrpcresp(new xmlrpcval(array($struct), $xmlrpcArray));
+		return new xmlrpcresp(new xmlrpcval(array($struct), 'array'));
 
 	}
 	

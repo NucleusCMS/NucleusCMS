@@ -112,6 +112,7 @@
 		$username = 		_getScalar($m,1);
 		$password = 		_getScalar($m,2);
 
+		$category = '';
 		$struct = 			$m->getParam(3);
 			$content = 		_getStructVal($struct, 'description');
 			$title = 		_getStructVal($struct, 'title');
@@ -129,10 +130,18 @@
 			return _error(6,"No such item ($itemid)");
 		$blogid = getBlogIDFromItemID($itemid);
 
-		$blog = new BLOG($blogid);
-		$catid = $blog->getCategoryIdFromName($category);
-		
 		$old =& $manager->getItem($itemid,1,1);
+		
+		if ($category == '')
+		{
+			// leave category unchanged when not present
+			$catid = $old['catid'];
+		}
+		else
+		{
+			$blog = new BLOG($blogid);
+			$catid = $blog->getCategoryIdFromName($category);
+		}
 		
 		if ($old['draft'] && $publish) {
 			$wasdraft = 1;
