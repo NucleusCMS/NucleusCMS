@@ -4067,13 +4067,28 @@ selector();
 			
 			<script type="text/javascript" src="javascript/edit.js"></script>
 			<script type="text/javascript" src="javascript/admin.js"></script>
+			<script type="text/javascript">
+				function styleFix() {
+					// stylefix for IE (outdated browsers)
+					if (document.all) {
+						var eContent = document.getElementById('content');
+						if (eContent) {
+							eContent.style.width = '850px';
+						}
+						var eQuickmenu = document.getElementById('quickmenu');
+						if (eQuickmenu) {
+							eQuickmenu.style.left = '7px';
+						}
+					}
+				}
+			</script>
 			<?php echo $extrahead?>
 		</head>
-		<body>
+		<body onload="styleFix()">
 		<div class="header">
 		<h1><?php echo htmlspecialchars($CONF['SiteName'])?></h1>
 		</div>
-		<div class="content">
+		<div id="content">
 		<div class="loginname">
 		<?php			if ($member->isLoggedIn()) 
 				echo _LOGGEDINAS . ' ' . $member->getDisplayName()
@@ -4108,48 +4123,82 @@ selector();
 			
 			</div><!-- content -->
 			
-		<?php /* TO be worked on...
-
-			<div class="quickmenu">
+			<div id="quickmenu">
 				<?php				// ---- user settings ---- 
-				echo '<h2>' . _OVERVIEW_YRSETTINGS . '</h2>';
-				echo '<ul>';
-				echo '<li><a href="index.php?action=editmembersettings">' . _OVERVIEW_EDITSETTINGS. '</a></li>';
-				echo '<li><a href="index.php?action=browseownitems">' . _OVERVIEW_BROWSEITEMS.'</a></li>';
-				echo '<li><a href="index.php?action=browseowncomments">'._OVERVIEW_BROWSECOMM.'</a></li>';
-				echo '</ul>';
-
-				// ---- general settings ---- 
-				if ($member->isAdmin()) {
 				
-					echo '<h2>' . _MANAGE_GENERAL. '</h2>';
+				if ($action != 'showlogin') {
+					echo '<h2>Add Item</h2>';
+					echo '<form method="get" action="index.php"><div>';
+					echo '<input type="hidden" name="action" value="createitem" />';
 
+						$showAll = requestVar('showall');
+						if (($member->isAdmin()) && ($showAll == 'yes')) {
+							// Super-Admins have access to all blogs! (no add item support though)
+							$query =  'SELECT bnumber as value, bname as text'
+								   . ' FROM ' . sql_table('blog')
+								   . ' ORDER BY bname';
+						} else {
+							$query =  'SELECT bnumber as value, bname as text'
+								   . ' FROM ' . sql_table('blog') . ', ' . sql_table('team')
+								   . ' WHERE tblog=bnumber and tmember=' . $member->getID()
+								   . ' ORDER BY bname';		
+						}
+						$template['name'] = 'blogid';
+						$template['tabindex'] = 15000;
+						$template['extra'] = '-- select --';
+						$template['selected'] = -1;
+						$template['shorten'] = 10;
+						$template['shortenel'] = '';
+						$template['javascript'] = 'onchange="return form.submit()"';					
+						$amount = showlist($query,'select',$template);
+
+					echo '</div></form>';
+
+					echo '<h2>You (' . $member->getDisplayName(). ')</h2>';
 					echo '<ul>';
-					echo '<li><a href="index.php?action=createnewlog">'._OVERVIEW_NEWLOG.'</a></li>';
-					echo '<li><a href="index.php?action=settingsedit">'._OVERVIEW_SETTINGS.'</a></li>';
-					echo '<li><a href="index.php?action=usermanagement">'._OVERVIEW_MEMBERS.'</a></li>';		
-					echo '<li><a href="index.php?action=actionlog">'._OVERVIEW_VIEWLOG.'</a></li>';		
+					echo '<li><a href="index.php?action=editmembersettings">Settings</a></li>';
+					echo '<li><a href="index.php?action=browseownitems">Items</a></li>';
+					echo '<li><a href="index.php?action=browseowncomments">Comments</a></li>';
 					echo '</ul>';
 
-					echo '<h2>' . _MANAGE_SKINS . '</h2>';
-					echo '<ul>';
-					echo '<li><a href="index.php?action=skinoverview">'._OVERVIEW_SKINS.'</a></li>';
-					echo '<li><a href="index.php?action=templateoverview">'._OVERVIEW_TEMPLATES.'</a></li>';
-					echo '<li><a href="index.php?action=skinieoverview">'._OVERVIEW_SKINIMPORT.'</a></li>';		
-					echo '</ul>';
 
-					echo '<h2>' . _MANAGE_EXTRA . '</h2>';		
-					echo '<ul>';
-					echo '<li><a href="index.php?action=backupoverview">'._OVERVIEW_BACKUP.'</a></li>';			
-					echo '<li><a href="index.php?action=pluginlist">'._OVERVIEW_PLUGINS.'</a></li>';			
-					echo '</ul>';	
+
+
+					// ---- general settings ---- 
+					if ($member->isAdmin()) {
+
+						echo '<h2>Management</h2>';
+
+						echo '<ul>';
+						echo '<li><a href="index.php?action=actionlog">Action Log</a></li>';		
+						echo '<li><a href="index.php?action=settingsedit">Global Settings</a></li>';
+						echo '<li><a href="index.php?action=usermanagement">Members</a></li>';		
+						echo '<li><a href="index.php?action=createnewlog">New Weblog</a></li>';											
+						echo '<li><a href="index.php?action=backupoverview">Backups</a></li>';			
+						echo '<li><a href="index.php?action=pluginlist">Plugins</a></li>';			
+						echo '</ul>';
+
+						echo '<h2>Layout</h2>';
+						echo '<ul>';
+						echo '<li><a href="index.php?action=skinoverview">Skins</a></li>';
+						echo '<li><a href="index.php?action=templateoverview">Templates</a></li>';
+						echo '<li><a href="index.php?action=skinieoverview">Import/Export</a></li>';		
+						echo '</ul>';
+
+					}
+				} else {
+					?>
+						<h2>Introduction</h2>
+						
+						<p>This is the logon screen for Nucleus CMS, the content management system that's being used to maintain this website.</p>
+						
+						<p>If you have an account, you can log on and start posting new items.</p>
+					<?php
 				}
-				
-		?>			
+				?>
 			</div>
 			
-		*/?>
-			
+		
 			</body>
 			</html>
 		<?php	}
@@ -5275,14 +5324,18 @@ function showlist($query, $type, $template) {
 function listplug_select($template, $type) {
 	switch($type) {
 		case 'HEAD':
-			echo '<select name="'.$template['name'].'" tabindex="'.$template['tabindex'].'">';
+			echo '<select name="'.$template['name'].'" tabindex="'.$template['tabindex'].'" '.$template['javascript'].'>';
 			break;
 		case 'BODY':
 			$current = $template['current'];
-			
-			echo "<option value='$current->value'";
+
+			echo '<option value="' . htmlspecialchars($current->value) . '"';
 			if ($template['selected'] == $current->value)
 				echo ' selected="selected" ';
+			if ($template['shorten'] > 0) {
+				echo ' title="'. htmlspecialchars($current->text).'"';
+				$current->text = shorten($current->text, $template['shorten'], $template['shortenel']);
+			}
 			echo '>' . htmlspecialchars($current->text) . '</option>';
 			break;
 		case 'FOOT':
