@@ -100,7 +100,7 @@ INSERT INTO `nucleus_config` VALUES ('BaseSkin', '1');
 INSERT INTO `nucleus_config` VALUES ('SkinsURL', 'http://hcgtv.homelinux.net/skins/');
 INSERT INTO `nucleus_config` VALUES ('ActionURL', 'http://hcgtv.homelinux.net/action.php');
 INSERT INTO `nucleus_config` VALUES ('URLMode', 'normal');
-INSERT INTO `nucleus_config` VALUES ('DatabaseVersion', '250');
+INSERT INTO `nucleus_config` VALUES ('DatabaseVersion', '300');
 
 CREATE TABLE `nucleus_item` (
   `inumber` int(11) NOT NULL auto_increment,
