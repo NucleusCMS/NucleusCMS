@@ -12,8 +12,10 @@
 		   (where your index.php and action.php file are)
 		2. Edit this file so that $CONF['Self'] points to your main directory. 
 			NOTE: this time, and only this time, the URL should NOT end in a slash
-		3. Enable 'Fancy URLs' in the Nucleus admin area (nucleus management / edit settings)
-		4. Off you go!
+		3. Also edit the $CONF['Self'] variable in your index.php, if you don't want to
+		   end up with index.php/item/1234 urls when people come via that way
+		4. Enable 'Fancy URLs' in the Nucleus admin area (nucleus management / edit settings)
+		5. Off you go!
 		
 		If it doesn't work:
 		-------------------
