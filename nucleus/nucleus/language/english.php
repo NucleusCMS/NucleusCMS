@@ -1,8 +1,8 @@
 <?php
 // English Nucleus Language File
 // 
-// Author: Wouter Demuynck (nucleus@demuynck.org)
-// Nucleus version: v1.0-v2.5
+// Author: Wouter Demuynck 
+// Nucleus version: v1.0-v3.1
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
