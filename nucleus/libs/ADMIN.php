@@ -2699,7 +2699,7 @@ class ADMIN {
 
 $CONF['Self'] = '<b><?php echo htmlspecialchars($bshortname)?>.php</b>';
 
-include('<i>config.php</i>');
+include('<i>./config.php</i>');
 
 selectBlog('<b><?php echo htmlspecialchars($bshortname)?></b>');
 selector();
