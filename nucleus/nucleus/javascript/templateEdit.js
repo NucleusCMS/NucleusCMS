@@ -9,6 +9,8 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   *	Javascript code to hide empty textareas when editing templates.
+  *
+  * @require compatibility.js
   */
 
 var amountOfFields = 1;
@@ -27,7 +29,18 @@ function hideUnused() {
 		if (el.value == '') {
 			el.style.display = 'none';
 			var tdEl = document.getElementById('td' + i);
-			tdEl.innerHTML += '<a href="" class="expandLink" id="expandLink'+i+'" onclick="return makeVisible('+i+')" tabindex="'+el.tabIndex+'">'+editText+'</a>';
+			
+			var aHref = createElement('a');
+			aHref.href = '';
+			aHref.className = "expandLink";
+			aHref.id = "expandLink" + i;
+			aHref.onclick = new Function("return makeVisible("+i+")");
+			aHref.tabIndex = el.tabIndex;
+			aHref.title = editText;
+			aHref.appendChild(document.createTextNode(editText));
+
+			tdEl.appendChild(aHref);
+			
 		}
 	}
 
