@@ -349,9 +349,6 @@ File permissions need to be set correctly in order for the update file to work. 
 
 <ul>
 	<li>At the time of release, there are no blog conversion tools available for Nucleus v2.5beta.</li>
-	<li>The search implementation included in Nucleus v2.5beta fails on special characters (like à á ã â é ê í ó õ ô ü ç). <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=821847&amp;group_id=66479&amp;atid=514643" title="[ 821847 ] Search fails on special characters">We know.</a></li>
-	<li>As of Nucleus v2.5, Nucleus sends it's admin pages as <code>application/xhtml+xml</code> to browsers that understand it (mainly Gecko based browsers). This <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=790021&amp;group_id=66479&amp;atid=514643" title="[ 790021 ] application/xhtml+xml breaks javascript
-">causes a problem</a> in Mozilla and derivates with instant item previews not longer working. This is due to <a href="http://bugzilla.mozilla.org/show_bug.cgi?id=133827">bug 133827</a></li>
 	<li>Ctrl + Shift + A shortcut might conflict with ICQ/Trillian</li>
 	<li>When PHP is running in SAFE mode, it's very likely that there will be problems when using the media directory (Nucleus will not be able to automatically detect image sizes, or disallow uploading)</li>
 	<li>Entities can get messed up in the RSS channel (e.g. &amp;amp; becomes &amp;amp;amp;)</li>
