@@ -1167,7 +1167,7 @@ class ITEMACTIONS extends BaseActions {
 		$windowwidth = $width;
 		$windowheight = $height;
 		
-		$vars['rawpopuplink'] 	= $CONF['Self'] . "?imagepopup=" . htmlspecialchars($filename) . "&amp;width=$width&amp;height=$height&amp;imagetext=" . htmlspecialchars($text);
+		$vars['rawpopuplink'] 	= $CONF['Self'] . "?imagepopup=" . htmlspecialchars($filename) . "&amp;width=$width&amp;height=$height&amp;imagetext=" . urlencode(htmlspecialchars($text));
 		$vars['popupcode'] 		= "window.open(this.href,'imagepopup','status=no,toolbar=no,scrollbars=no,resizable=yes,width=$windowwidth,height=$windowheight');return false;";
 		$vars['popuptext'] 		= htmlspecialchars($text);
 		$vars['popuplink'] 		= '<a href="' . $vars['rawpopuplink']. '" onclick="'. $vars['popupcode'].'" >' . $vars['popuptext'] . '</a>';
