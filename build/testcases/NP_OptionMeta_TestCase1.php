@@ -51,15 +51,15 @@ class NP_OptionMeta_TestCase1 extends NucleusPlugin {
 	function install()
 	{
 		// plugin options
-		$this->createOption('NumericTextOption1', 'Numeric text option', 'text', '', 'numerical=true');
+		$this->createOption('NumericTextOption1', 'Numeric text option', 'text', '', 'datatype=numerical');
 		$this->createOption('ReadonlyTextOption1', 'Readonly text option', 'text', '', 'access=readonly');
-		$this->createOption('ReadonlyNumericalTextOption1', 'Readonly, Numerical text option', 'text', '', 'access=readonly;numerical=true');
+		$this->createOption('ReadonlyNumericalTextOption1', 'Readonly, Numerical text option', 'text', '', 'access=readonly;datatype=numerical');
 		$this->createOption('ReadonlyTextAreaOption1', 'Readonly textarea option', 'textarea', 'This textarea is readonly (at least it should be :-p)', 'access=readonly');
 		$this->createOption('HiddenTextOption1', 'Hidden text option', 'text', 'hidden...', 'access=hidden');
 		// itemoptoins
-		$this->createItemOption('NumericTextOption1', 'Numeric text option', 'text', '', 'numerical=true');
+		$this->createItemOption('NumericTextOption1', 'Numeric text option', 'text', '', 'datatype=numerical');
 		$this->createItemOption('ReadonlyTextOption1', 'Readonly text option', 'text', '', 'access=readonly');
-		$this->createItemOption('ReadonlyNumericalTextOption1', 'Readonly, Numerical text option', 'text', '', 'access=readonly;numerical=true');
+		$this->createItemOption('ReadonlyNumericalTextOption1', 'Readonly, Numerical text option', 'text', '', 'access=readonly;datatype=numerical');
 		$this->createItemOption('ReadonlyTextAreaOption1', 'Readonly textarea option', 'textarea', 'This textarea is readonly (at least it should be :-p)', 'access=readonly');
 	}
 // }}}

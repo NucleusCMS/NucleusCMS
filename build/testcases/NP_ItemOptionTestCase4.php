@@ -62,7 +62,7 @@ class NP_ItemOptionTestCase4 extends NucleusPlugin {
   }
 // --------- Install and Uninstall functions --------------
   function install() {
-    $this->createItemOption('TestCase4', 'TestCaseOption:select(numerical)', 'select', '0', '0|0|1|1|2|2|test|test;numerical=true');
+    $this->createItemOption('TestCase4', 'TestCaseOption:select(numerical)', 'select', '0', '0|0|1|1|2|2|test|test;datatype=numerical');
   }
   
 // --------- do...-Functions ------------------------------

@@ -569,7 +569,7 @@
 							}
 							
 							// check the validity of numerical options
-							if (($meta['numerical'] == 'true') && (!is_numeric($value))) { 
+							if (($meta['datatype'] == 'numerical') && (!is_numeric($value))) { 
 								//the option must be numeric, but the it isn't
 								//use the default for this option
 								$value = $o->odef;
