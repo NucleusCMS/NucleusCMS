@@ -49,14 +49,20 @@
 				$query = 'SELECT sdincpref FROM '.sql_table('skin_desc').' LIMIT 1';
 				$minrows = -1;			
 				break;				
-			case '25':
+			// dev only
+			case '22':
 				$query = 'SELECT oid FROM '.sql_table('plugin_option_desc').' LIMIT 1';
 				$minrows = -1;			
 				break;				
+			case '25':
+				$query = 'SHOW INDEX FROM '.sql_table('item');
+				$minrows = 6;			
+				break;				
+				
 		}
 
 		$res = mysql_query($query);
-		$installed = ($res != 0) && (mysql_num_rows($res) > $minrows);
+		$installed = ($res != 0) && (mysql_num_rows($res) >= $minrows);
 
 		return $installed;
 	}
