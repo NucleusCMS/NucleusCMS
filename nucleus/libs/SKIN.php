@@ -409,7 +409,7 @@ class ACTIONS extends BaseActions {
 	}
 	
 	function parse_if($field, $name='', $value = '') {
-		global $catid, $blog, $member;
+		global $catid, $blog, $member, $itemidnext, $itemidprev;
 
 		$condition = 0;
 		switch($field) {
@@ -424,6 +424,15 @@ class ACTIONS extends BaseActions {
 				break;
 			case 'onteam':
 				$condition = $member->isLoggedIn() && $this->_ifOnTeam($name);
+				break;
+			case 'nextitem':
+				$condition = ($itemidnext != '');
+				break;
+			case 'previtem':
+				$condition = ($itemidprev != ''); 
+				break;
+			case 'skintype':
+				$condition = ($name == $this->skintype);
 				break;
 			default:	
 				return;
