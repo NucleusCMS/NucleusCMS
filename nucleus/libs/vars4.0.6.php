@@ -31,7 +31,11 @@ function serverVar($name) {
 
 // removes magic quotes if that option is enabled
 function undoMagic($data) {
-	return get_magic_quotes_gpc() ? stripslashes($data) : $data;
+	return get_magic_quotes_gpc() ? stripslashes_array($data) : $data;
+}
+
+function stripslashes_array($data) {
+	return is_array($data) ? array_map('stripslashes', $data) : stripslashes($data);
 }
 
 // integer array from request
