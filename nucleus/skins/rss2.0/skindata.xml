@@ -1,4 +1,5 @@
-<nucleusskin><meta><skin name="xmlrss2" /><template name="xmlrss2" /><info><![CDATA[Now it validates]]></info></meta><skin name="xmlrss2" type="text/xml" includeMode="normal" includePrefix=""><part name="index"><![CDATA[<?xml version="1.0" encoding="ISO-8859-1"?>
+<nucleusskin><meta><skin name="xmlrss2" /><template name="xmlrss2" /><info><![CDATA[This as a valid RSS 2.0 export of your weblog
+]]></info></meta><skin name="xmlrss2" type="text/xml" includeMode="normal" includePrefix=""><description>RSS 2.0 syndication of weblogs</description><part name="index"><![CDATA[<?xml version="1.0" encoding="ISO-8859-1"?>
 <rss version="2.0">
   <channel>
     <title><%blogsetting(name)%></title>
@@ -17,12 +18,11 @@
     </image>
     <%blog(xmlrss2,10)%>
   </channel>
-</rss>]]></part></skin><template name="xmlrss2"><part name="EDITLINK"><![CDATA[<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>]]></part><part name="FORMAT_DATE"><![CDATA[%x]]></part><part name="FORMAT_TIME"><![CDATA[%X]]></part><part name="ITEM"><![CDATA[<item>
+</rss>]]></part></skin><template name="xmlrss2"><description>Used for RSS syndication of your blog Version 2.0</description><part name="EDITLINK"><![CDATA[<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>]]></part><part name="FORMAT_DATE"><![CDATA[%x]]></part><part name="FORMAT_TIME"><![CDATA[%X]]></part><part name="ITEM"><![CDATA[<item>
  <title><%syndicate_title%></title>
  <link><%blogurl%>index.php?itemid=<%itemid%></link>
 <description><%syndicate_description%></description>
-<author>Someone@server.com - <%author%></author> 
  <category><%category%></category>
- <comments><%blogurl%>index.php?itemid=<%itemid%></comments>
- <pubDate><%date(%a)%>, <%date(%d %b %Y %H:%M:%S GMT)%></pubDate>
+<comments><%blogurl%>index.php?itemid=<%itemid%></comments>
+ <pubDate><%date(rfc822)%></pubDate>
 </item>]]></part></template></nucleusskin>
