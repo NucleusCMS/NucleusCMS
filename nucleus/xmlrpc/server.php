@@ -9,6 +9,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
+  * $Id$
+  *
   * This script is provides an XML-RPC [1] interface to Nucleus [2].
   *
   * At this time, the Blogger API [3], the metaWeblog API [4] and 
