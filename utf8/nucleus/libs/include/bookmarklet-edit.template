@@ -103,13 +103,13 @@
 						<li>
 							<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="70" /><label for="act_changedate"><%text(_BMLET_CHANGEDATE)%></label> <%helplink(changedate)%>
 									<div class="indent">
-										<input id="inputyear" name="year" tabindex="71" size="4" value="<%itemtime(year)%>" />”N
-										<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" />Œ
-										<input id="inputday" name="day" tabindex="73" size="2" value="<%itemtime(mday)%>" />“ú
-										<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" />
-										<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" />•ª
+										<input id="inputyear" name="year" tabindex="71" size="4" value="<%itemtime(year)%>" />å¹´
+										<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" />æœˆ
+										<input id="inputday" name="day" tabindex="73" size="2" value="<%itemtime(mday)%>" />æ—¥
+										<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" />æ™‚
+										<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" />åˆ†
 										<br />
-										ƒtƒH[ƒ}ƒbƒgF(yyyy)”N(mm)Œ(dd)“ú (hh)(mm)•ª
+										ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆï¼š(yyyy)å¹´(mm)æœˆ(dd)æ—¥ (hh)æ™‚(mm)åˆ†
 									</div>
 							</li>
 					<%endif%>						

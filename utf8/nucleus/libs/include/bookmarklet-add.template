@@ -102,13 +102,13 @@
 					<input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 					<div class="indent">
 						<%text(_ADD_PLACE_ON)%>
-						<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" />”N
-						<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" />Œ
-						<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" />“ú
-						<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" />
-						<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" />•ª
+						<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" />å¹´
+						<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" />æœˆ
+						<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" />æ—¥
+						<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" />æ™‚
+						<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" />åˆ†
 						<br />
-						ƒtƒH[ƒ}ƒbƒgF(yyyy)”N(mm)Œ(dd)“ú (hh)(mm)•ª
+						ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆï¼š(yyyy)å¹´(mm)æœˆ(dd)æ—¥ (hh)æ™‚(mm)åˆ†
 						<%ifblogsetting(ballowpast,0)%>
 							<br />
 							<%text(_ADD_NOPASTDATES)%>
