@@ -588,11 +588,10 @@ function selector() {
 	if (!$blogid)
 		$blogid = $CONF['DefaultBlog'];
 
-	if (!$manager->existsBlogID($blogid))
-		doError(_ERROR_NOSUCHBLOG);
-
 	$b =& $manager->getBlog($blogid);
 	$blog = $b;	// references can't be placed in global variables?
+	if (!$blog->isValid)
+		doError(_ERROR_NOSUCHBLOG);
 
 	// set catid if necessary
 	if ($catid)
@@ -604,10 +603,10 @@ function selector() {
 	if (!$skinid)
 		$skinid = $blog->getDefaultSkin();
 
-	if (!SKIN::existsID($skinid))
-		doError(_ERROR_NOSUCHSKIN);
-
+	
 	$skin = new SKIN($skinid);
+	if (!$skin->isValid)
+		doError(_ERROR_NOSUCHSKIN);
 
 	// parse the skin
 	$skin->parse($type);

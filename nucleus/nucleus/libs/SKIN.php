@@ -21,6 +21,10 @@ class SKIN {
 		// read skin name/description/content type
 		$res = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $this->id);
 		$obj = mysql_fetch_object($res);
+		$this->isValid = (mysql_num_rows($res) > 0);
+		if (!$this->isValid)
+			return;
+			
 		$this->name = $obj->sdname;
 		$this->description = $obj->sddesc;
 		$this->contentType = $obj->sdtype;
@@ -38,14 +42,12 @@ class SKIN {
 	
 	// returns true if there is a skin with the given shortname (static)
 	function exists($name) {
-		$r = sql_query('select * FROM '.sql_table('skin_desc').' WHERE sdname="'.addslashes($name).'"');
-		return (mysql_num_rows($r) != 0);
+		return quickQuery('select count(*) as result FROM '.sql_table('skin_desc').' WHERE sdname="'.addslashes($name).'"') > 0;
 	}
 
 	// returns true if there is a skin with the given ID (static)
 	function existsID($id) {
-		$r = sql_query('select * FROM '.sql_table('skin_desc').' WHERE sdnumber='.intval($id));
-		return (mysql_num_rows($r) != 0);
+		return quickQuery('select COUNT(*) as result FROM '.sql_table('skin_desc').' WHERE sdnumber='.intval($id)) > 0;
 	}	
 	
 	// (static)
