@@ -1,10 +1,9 @@
 body {
-	background-color: #fff;
-	color: #000;
+	background: #ffffff url(logo.gif) top left fixed no-repeat; 
 }
-
-body, td, th {
-	font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+body, td, th, a, li, ul, textarea {
+	color: #000;
+	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 }
 
 img			{ border: none; }
@@ -13,20 +12,18 @@ label		{ cursor: pointer; }
 
 /* header */
 h1 {
-	text-align:center;
-	font-size: 45px;
-	font-weight: bold;
+	text-align:right;
+	font-size: 35px;
+	font-weight: 900;
 	letter-spacing: 0.1em;
-	color: #596d9d;	
-	margin: 0px;
-	margin-bottom: 5px;
+	color: #0001AA;	
+	margin: 0 0 5px 0;
+	height: 75px;
 }
 
 /* page content */
 #content {
-	margin-left: 135px;
-	right: 10px;
-
+   margin-left:135px;
 	font-style: normal;
 	text-decoration: none;
 	color: black;
@@ -40,7 +37,7 @@ h1 {
 	/* rounded borders in gecko-based browsers? why not :) */
 	-moz-border-radius: 10px;	
 
-	padding: 10px;	
+	padding: 10px 10px 0 10px;	
 	
 	background-color: white;
 	
@@ -57,19 +54,19 @@ h1 {
 	position: absolute;
 	overflow: hidden;
 	
-	top: 70px;
+	top: 90px;
 	left: 10px;
 
 	width: 110px;
 	margin: 0px;
 	padding: 0px;
 	
-	font-size: x-small;
+	font-size: 70%;
 	
 	border-width: 1px;
 	border-style: solid;
 	border-color: black;
-
+   background: #ffffff url(quickb.jpg) top left fixed repeat-y; 
 }
 
 #quickmenu ul {
@@ -83,17 +80,16 @@ h1 {
 	text-align: justify;
 }
 #quickmenu li {
-	background-color: #fff;
 	height: 2em;
 	padding: 5px;	
 	text-align: center;
 	border-bottom: 1px solid #ccc;
 }
 #quickmenu li:hover {
-	background-color: #eee;
+	background-color: #DEE6F6;
 }
 #quickmenu h2 {
-	font-size: x-small;
+	font-size: small;
 	text-align: center;
 	padding: 1px 0px 1px 0px;
 	margin: 0px;
@@ -107,12 +103,12 @@ h1 {
 	text-align: center;
 }
 #quickmenu option {
-	font-size: xx-small;
+	font-size: x-small;
 }
 
 .loginname {
 	float: right;
-	font-size: x-small;
+	font-size: small;
 	text-align: right;
 	line-height: normal;
 	padding-left: 5px;
@@ -126,7 +122,7 @@ h1 {
 	border-style: dashed;
 	border-width: 0px 0px 1px 0px;
 
-	font-size: 150%;
+	font-size: large;
 	line-height: 120%;
 
 	text-decoration: none;
@@ -138,7 +134,7 @@ h1 {
 	border-color: gray;
 	border-style: dotted;
 	border-width: 0px 0px 1px 0px;
-	font-size: 130%;
+	font-size: medium;
 	font-weight: normal;
 	line-height: 120%;
 
@@ -185,7 +181,7 @@ th, td {
 td {
 	background-color: #fff;
 	border: 1px solid #ddd;
-	font-size: x-small;
+	font-size: small;
 	vertical-align: top;
 	text-align: left;
 }
@@ -215,6 +211,7 @@ a:link, a:visited {
 }
 a:hover {
 	text-decoration: underline;
+	background-color: #DEE6F6;
 }
 
 table.navigation td, table.navigation th {
@@ -223,6 +220,10 @@ table.navigation td, table.navigation th {
 
 /* footer */
 .foot {
+ border-top:1px solid #000;
+ padding: 2px 0px 2px 10px;
+ margin:10px -10px 0 -10px;
+ text-align: center;
 }
 
 form {
@@ -250,7 +251,7 @@ div.indent {
 */
 
 #content {
-  font-size: x-small;
+  font-size: small;
   voice-family: "\"}\"";
   voice-family: inherit;
   font-size: small;
