@@ -201,8 +201,7 @@ while ($a_name = array_pop($authors)) {
 			</td>
 			<td>
 		<?
-			$query =  "SELECT mname as text, mnumber as value"
-			       . " FROM nucleus_member";
+			$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 			$template['name'] = 'memberid[' . $idx . ']';
 			showlist($query,'select',$template);		
@@ -231,8 +230,7 @@ while ($a_name = array_pop($authors)) {
 			<input name="createnew" value="0" type="radio" checked='checked' id="createnew_no" /><label for="createnew_no">Choose existing weblog to add to:</label>
 			
 			<?
-					$query =  "SELECT bname as text, bnumber as value"
-					       . " FROM nucleus_blog";
+					$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
 					$template['name'] = 'blogid';
 					$template['selected'] = $CONF['DefaultBlog'];
 					showlist($query,'select',$template);				
@@ -244,8 +242,7 @@ while ($a_name = array_pop($authors)) {
 				<li>New blog name: <input name="newblogname" /></li>
 				<li>Blog owner: 
 				<?
-					$query =  "SELECT mname as text, mnumber as value"
-					       . " FROM nucleus_member";
+					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 					$template['name'] = 'newowner';
 					showlist($query,'select',$template);		

@@ -30,7 +30,7 @@
 
 <div class="heading">
 Writing Plugins
-<i>April 1st, 2003</i>
+<i>April 21st, 2003</i>
 </div>
 
 <div class="note"><b>Note:</b> This document should contain enough information to write basic plugins. If you have more questions, see the <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin Development Forum</a></div>
@@ -1311,11 +1311,24 @@ your stuff
 
 <h1>Database tables <a name="tables" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
+<h2>Access to Nucleus tables</h2>
+
+<p>Up to v2.0, accessing the nucleus tables was just a matter of performing an SQL query on one of the <code>nucleus_</code> tables. Since it is possible to use a custom table name in Nucleus versions >2.0, some precautions are needed in plugin development:</p>
+
+<ol>
+	<li>Instead of using a fixed tablename like <code>nucleus_item</code>, use the global function <code>sql_table('item')</code> to generate the prefixed tablename</li>
+	<li>Make sure your plugin returns <code>1</code> (<code>true</code>) when <code>supportsFeature('SqlTablePrefix')</code> is called on it. If it doesn't, you won't be able to load the plugin on Nucleus versions > 2.0 when a custom prefix has been set (as a precaution)</li>
+</ol>
+
+<p class="note">Note that the <code>sql_table</code> global function in not available in Nucleus versions up to v2.0. In order to make your plugin work, you'll need to require users of Nucleus to install a special compatibility plugin (TODO: write such a plugin / search more friendly alternatives)</p>
+
+<h2>Your own tables</h2>
+
 <p>If your plugin needs database tables of it's own, you should create then in the <tt>install</tt> method and remove them in the <tt>unInstall</tt> method.</p>
 
 <p>Some pointers</p>
 <ul>
-	<li>Consider using a table name like <tt>nucleus_plug_<i>plugname</i></tt> to avoid conflicts with other plugins</li>
+	<li>Consider using a table name like <tt>nucleus_plug_<i>plugname</i></tt> to avoid conflicts with other plugins. Generate them through <code>sql_table('plug_plugname')</code> to make it work with custom prefixes</li>
 	<li>You don't need to make a database connection yourself. You can execute queries using the PHP command <tt>mysql_query()</tt></li>
 	<li>If you do make a database connection yourself, make sure to restore the connection with the Nucleus database afterwards. You can do this by calling <tt>sql_connect()</tt> at the end of your function. It might also be good to do this from the constructor, to avoid reconnecting constantly. You could then save your link identifier in <tt>$this->db</tt> and pass that along with every query.</li>
 	<li>Also redefine the <tt>getTableList()</tt> method to make sure your table gets backupped when using the backup function.</li>
