@@ -185,7 +185,7 @@ class ACTION
 		if (postVar('desturl')) {
 			Header('Location: ' . postVar('desturl'));
 		} else {
-			echo _MSG_ACCOUNTCREATED;
+			echo _MSG_ACTIVATION_SENT;
 		}
 		
 		exit;
@@ -212,7 +212,7 @@ class ACTION
 		if (postVar('url')) {
 			Header('Location: ' . postVar('url'));
 		} else {
-			echo _MSG_PASSWORDSENT;
+			echo _MSG_ACTIVATION_SENT;
 		}
 		
 		exit;

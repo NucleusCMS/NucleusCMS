@@ -607,6 +607,7 @@ class MEMBER {
 				$canLoginWhileActive = true;
 				break;
 			case 'register':
+				break;
 			case 'addresschange':
 				$extra = $extra . '/' . ($this->canLogin() ? '1' : '0');
 				break;
