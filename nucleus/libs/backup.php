@@ -36,6 +36,7 @@ function do_backup($gzip = 0) {
 					sql_table('plugin'),
 					sql_table('plugin_event'),
 					sql_table('plugin_option'),
+					sql_table('plugin_option_desc'),
 					sql_table('category')
 			  );
 

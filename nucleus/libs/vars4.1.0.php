@@ -29,6 +29,11 @@ function requestIntArray($name) {
 	return $_REQUEST[$name];	
 }
 
+// array from request. Be sure to call undoMagic on the strings inside
+function requestArray($name) {
+	return $_REQUEST[$name];	
+}
+
 // add all the variables from the request as hidden input field
 // @see globalfunctions.php#passVar
 function passRequestVars() {

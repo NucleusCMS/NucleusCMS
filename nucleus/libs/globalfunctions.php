@@ -12,7 +12,7 @@
   *
   */
 
-$nucleus['version'] = 'v2.1 CVS';
+$nucleus['version'] = 'v2.2 CVS';
 $CONF['debug'] = 1;			
 
 /*
@@ -36,7 +36,7 @@ $CONF['alertOnSecurityRisk'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 201;		
+	return 220;		
 }
 
 if ($CONF['debug']) {

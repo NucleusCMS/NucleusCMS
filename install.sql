@@ -157,13 +157,22 @@ CREATE TABLE nucleus_plugin_event (
 ) TYPE=MyISAM;
 
 CREATE TABLE nucleus_plugin_option (
+  ovalue varchar(128) NOT NULL default '',
+  oid int(11) NOT NULL auto_increment,
+  ocontextid int(11) NOT NULL default '0',
+  PRIMARY KEY  (oid,ocontextid)
+) TYPE=MyISAM;
+
+CREATE TABLE nucleus_plugin_option_desc (
+  oid int(11) NOT NULL auto_increment,
   opid int(11) NOT NULL default '0',
   oname varchar(20) NOT NULL default '',
-  ovalue varchar(128) NOT NULL default '',
+  ocontext varchar(20) NOT NULL default '',
   odesc varchar(255) default NULL,
-  otype varchar(8) default NULL,
-  oid int(11) NOT NULL auto_increment,
-  PRIMARY KEY  (opid,oname),
+  otype varchar(20) default NULL,
+  odef text,
+  oextra text,
+  PRIMARY KEY  (opid,oname,ocontext),
   UNIQUE KEY oid (oid)
 ) TYPE=MyISAM;
 
