@@ -71,7 +71,7 @@
 	<h1>Install Nucleus</h1>
 	
 	<p>
-	This script will help you to install Nucleus. It will set up your mySQL database tables and provide you with the information you need to enter in <i>config.php</i>. In order to do all this, you need to enter some information.
+	This script will help you to install Nucleus. It will set up your MySQL database tables and provide you with the information you need to enter in <i>config.php</i>. In order to do all this, you need to enter some information.
 	</p>
 	
 	<p>
@@ -134,11 +134,27 @@
 				echo ' <span class="warning">WARNING: Nucleus requires at least version ',$minVersion,'</span>';
 		?></li>
 	</ul>
-	
-	<h1>mySQL login data</h1>
+
+<?php 
+	// tell people how they can have their config file filled out automatically
+	if (@file_exists('config.php') && @!is_writable('config.php')) { 
+?>
+	<h1>Automatic <i>config.php</i> Update</h1>
 	
 	<p>
-	Enter your mySQL data below. This install script needs it to be able to create and fill your database tables. Afterwards, you'll also need to fill it out in <i>config.php</i>.
+	If you want Nucleus to automatically update the <em>config.php</em> file, you'll need to make it writable. You can do this by changing the file permissions to <strong>666</strong>. After Nucleus is successfully installed, you can change the permissions back to <strong>644</strong> (<a href="nucleus/documentation/tips.html#filepermissions">Quick guide on how to change file permissions</a>).
+	</p>
+	
+	<p>
+	If you choose not to make your file writable (or are unable to do so): don't worry. The installation process will provide you with the contents of the <em>config.php</em> file so you can upload it yourself.
+	</p>
+
+<?php } ?>	
+
+	<h1>MySQL login data</h1>
+	
+	<p>
+	Enter your MySQL data below. This install script needs it to be able to create and fill your database tables. Afterwards, you'll also need to fill it out in <i>config.php</i>.
 	</p>
 	
 	<p>
@@ -516,6 +532,44 @@
 			. " WHERE inumber=1";
 		mysql_query($query) or doError("Error with query: " . mysql_error());		
 		
+		// 10. Write config file ourselves (if possible)
+		$bConfigWritten = 0;
+		if (@file_exists('config.php') && is_writable('config.php') && $fp = @fopen('config.php', 'w')) {
+			$config_data = "<" . "?php \n";
+			$config_data .= "\n";			
+			$config_data .= "	// mySQL connection information\n";
+			$config_data .= "	\$MYSQL_HOST = '" . $mysql_host . "';\n";
+			$config_data .= "	\$MYSQL_USER = '" . $mysql_user . "';\n";
+			$config_data .= "	\$MYSQL_PASSWORD = '" . $mysql_password . "';\n";
+			$config_data .= "	\$MYSQL_DATABASE = '" . $mysql_database . "';\n";
+			$config_data .= "	\$MYSQL_PREFIX = '" . ($mysql_usePrefix == 1)?$mysql_prefix:'' . "';\n";
+			$config_data .= "\n";
+			$config_data .= "	// main nucleus directory\n";
+			$config_data .= "	\$DIR_NUCLEUS = '" . $config_adminpath . "';\n";
+			$config_data .= "\n";
+			$config_data .= "	// path to media dir\n";
+			$config_data .= "	\$DIR_MEDIA = '" . $config_mediapath . "';\n";
+			$config_data .= "\n";
+			$config_data .= "	// extra skin files for imported skins\n";
+			$config_data .= "	\$DIR_SKINS = '" . $config_skinspath . "';\n";
+			$config_data .= "\n";
+			$config_data .= "	// these dirs are normally sub dirs of the nucleus dir, but \n";
+			$config_data .= "	// you can redefine them if you wish\n";
+			$config_data .= "	\$DIR_PLUGINS = \$DIR_NUCLEUS . 'plugins/';\n";
+			$config_data .= "	\$DIR_LANG = \$DIR_NUCLEUS . 'language/';\n";
+			$config_data .= "	\$DIR_LIBS = \$DIR_NUCLEUS . 'libs/';\n";
+			$config_data .= "\n";
+			$config_data .= "	// include libs\n";
+			$config_data .= "	include(\$DIR_LIBS.'globalfunctions.php');\n";
+			$config_data .= "?" . ">";
+			
+			$result = @fputs($fp, $config_data, strlen($config_data));			
+			fclose($fp);
+			
+			if ($result) 
+				$bConfigWritten = 1;
+		}
+		
 		?>
 <!DOCTYPE html
 	PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -528,6 +582,7 @@
 			</style>
 		</head>
 		<body>		
+<?php if (!$bConfigWritten) { ?>
 			<h1>Installation Almost Complete!</h1>
 			<p>
 			The database tables have been initialized successfully. What still needs to be done is to change the contents of <i>config.php</i>. Below is how it should look like (the mysql password is masked, so you'll have to fill that out yourself)
@@ -553,9 +608,9 @@
 
 	// these dirs are normally sub dirs of the nucleus dir, but 
 	// you can redefine them if you wish
-	$DIR_PLUGINS = $DIR_NUCLEUS . "plugins/";
-	$DIR_LANG = $DIR_NUCLEUS . "language/";
-	$DIR_LIBS = $DIR_NUCLEUS . "libs/";
+	$DIR_PLUGINS = $DIR_NUCLEUS . 'plugins/';
+	$DIR_LANG = $DIR_NUCLEUS . 'language/';
+	$DIR_LIBS = $DIR_NUCLEUS . 'libs/';
 
 	// include libs
 	include($DIR_LIBS.'globalfunctions.php');			
@@ -570,7 +625,14 @@
 			<br />
 			Thus, the first character of config.php should be "&lt;", and the last character should be "&gt;".
 			</div>
+
+<?php } else { ?>			
+			<h1>Installation complete!</h1>
 			
+			<p>Nucleus jas been installed, and your <code>config.php</code> has been updated for you.</p>
+			
+			<p>Don't forget to change the permissions on <code>config.php</code> back to 644 for security (<a href="nucleus/documentation/tips.html#filepermissions">Quick guide on how to change file permissions</a>).</p>
+<?php } ?>
 			<h1>Delete your install files</h1>
 			
 			<p>Files you should delete from your web server:</p>

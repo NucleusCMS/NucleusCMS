@@ -156,9 +156,17 @@ Unzip all files to a directory of your computer. Make sure the path names are us
 Upload all files to your server, using your favorite FTP program. Make sure to upload .php files in ASCII mode! It might not work otherwise.
 </p>
 
-<p>
-<b>Optional:</b> If you want to use file upload, you'll need to add write permissions to the /media/ directory. This is needed in order to allow PHP to write uploaded files into that directory. The directory should be <i>chmod</i>ded to 777 (<a href="tips.html#filepermissions">Quick guide to change file permissions</a>). (If you have root access, you can instead <tt>chgrp</tt> the directory to the user that is running the <tt>httpd</tt> process (usually <tt>httpd</tt> or <tt>nobody</tt>, then <tt>chmod 775</tt> the directory).
-</p>
+<h3>Optional:</h3>
+
+<ol>
+	<li>
+		To make your install process even easier, you can change the file permissions on <em>config.php</em> to <strong>666</strong>. This way, the install script will be able to update it automatically instead of you having it to do manually. (<a href="tips.html#filepermissions">Quick guide on how to change file permissions</a>)
+	</li>
+	<li>
+		If you want to use file upload, you'll need to add write permissions to the /media/ directory. This is needed in order to allow PHP to write uploaded files into that directory. The directory should be <i>chmod</i>ded to <strong>777</strong> (<a href="tips.html#filepermissions">Quick guide on how to change file permissions</a>). (If you have root access, you can instead <tt>chgrp</tt> the directory to the user that is running the <tt>httpd</tt> process (usually <tt>httpd</tt> or <tt>nobody</tt>, then <tt>chmod 775</tt> the directory).
+	</li>
+</ol>
+
 
 <h2>3. Run install.php</h2>
 
@@ -171,7 +179,7 @@ http://www.yoursite.com/yourpath/install.php
 </pre>
 
 <p>
-This install-script will prompt you for some information, and perform most of the installation for you. When everything has succeeded, <i>install.php</i> will provide you with further instructions (you'll still need to change <i>config.php</i> and delete some files manually)
+This install-script will prompt you for some information, and perform most of the installation for you. When everything has succeeded, <i>install.php</i> will provide you with further instructions. (you'll still need to delete some files manually)
 </p>
 
 <div class="note">
