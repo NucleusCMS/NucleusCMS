@@ -6049,7 +6049,7 @@ function listplug_plugOptionRow($current) {
 				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 				
 				echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'"';
-				if ($meta['numerical'] == 'true') {
+				if ($meta['datatype'] == 'numerical') {
 					echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
 				}
 				if ($meta['access'] == 'readonly') {
