@@ -1015,7 +1015,9 @@ class ADMIN {
 		// edit the item for real
 		ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
 
-		if (!$closed && $publish && $wasdraft) {
+		$blogid = getBlogIDFromItemID($itemid);
+		$blog =& $manager->getBlog($blogid);
+		if (!$closed && $publish && $wasdraft && $blog->pingUserland()) {
 			$this->action_sendping($blogid);
 			return;
 		}
