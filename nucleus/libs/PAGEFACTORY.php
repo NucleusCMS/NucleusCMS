@@ -1,5 +1,4 @@
-<?
-
+<?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002 The Nucleus Group
@@ -227,18 +226,16 @@ class PAGEFACTORY extends BaseActions {
 	// extra javascript for input and textarea fields
 	function parse_jsinput($which) {
 	?>
-			name="<?=$which?>" 
-			id="input<?=$which?>" 
-	<?
-		global $CONF;
+			name="<?php echo $which?>" 
+			id="input<?php echo $which?>" 
+	<?php		global $CONF;
 		if ($CONF['DisableJsTools'] == 0) {
 	?>
-			onkeyup="storeCaret(this); updPreview('<?=$which?>');"
+			onkeyup="storeCaret(this); updPreview('<?php echo $which?>');"
 			onclick="storeCaret(this);"
 			onselect="storeCaret(this);" 
 	  	    onkeypress="shortCuts();"			
-	<?
-		}
+	<?php		}
 	}
 	
 	// shows the javascript button bar
@@ -350,11 +347,10 @@ class PAGEFACTORY extends BaseActions {
 			<span class="jsbutton"
 				onmouseover="BtnHighlight(this);" 
 				onmouseout="BtnNormal(this);" 
-				onclick="<?=$code?>" >			
-				<img src="images/button-<?=$type?>.gif" alt="<?=$tooltip?>" width="16" height="16"/>
+				onclick="<?php echo $code?>" >			
+				<img src="images/button-<?php echo $type?>.gif" alt="<?php echo $tooltip?>" width="16" height="16"/>
 			</span>				
-	<?
-	}
+	<?php	}
 	
 	function _jsbuttonspacer() {
 		echo '<span class="jsbuttonspacer"></span>';

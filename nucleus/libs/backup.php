@@ -1,4 +1,4 @@
-<?
+<?php
 /**
   * Scripts to create/restore a backup of the Nucleus database
   *

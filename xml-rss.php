@@ -1,5 +1,4 @@
-<?
-
+<?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002 The Nucleus Group
@@ -54,13 +53,12 @@ if (!$CONF['DisableSite']) {
 	<rss version="0.91">
 
 	  <channel>
-	    <title><?=htmlspecialchars($CONF['SiteName'])?></title>
-	    <link><?=htmlspecialchars($CONF['IndexURL'])?></link>
+	    <title><?php echo htmlspecialchars($CONF['SiteName'])?></title>
+	    <link><?php echo htmlspecialchars($CONF['IndexURL'])?></link>
 	    <description></description>
 	    <docs>http://backend.userland.com/rss091</docs>
  	  </channel>
 	</rss>	
-	<?
-}
+	<?php}
 
 ?>

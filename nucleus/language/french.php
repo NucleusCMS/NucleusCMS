@@ -1,4 +1,4 @@
-<?
+<?php
 // French Nucleus Language File
 // 
 // Author: SECURIS team http://securis.info

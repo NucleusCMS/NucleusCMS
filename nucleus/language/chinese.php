@@ -1,4 +1,4 @@
-<?
+<?php
 // simple Chinese language file1.0
 // 
 // Author: buska

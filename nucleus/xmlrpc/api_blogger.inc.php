@@ -1,5 +1,4 @@
-<?
-
+<?php
 	/*
 	 * This file contains definitions for the methods in the Blogger API
 	 */

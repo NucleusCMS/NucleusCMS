@@ -1,5 +1,4 @@
-<?
-
+<?php
 function upgrade_do96() {
 
 	if (upgrade_checkinstall(96))

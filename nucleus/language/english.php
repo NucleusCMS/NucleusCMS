@@ -1,4 +1,4 @@
-<?
+<?php
 // English Nucleus Language File
 // 
 // Author: Wouter Demuynck (nucleus@demuynck.org)

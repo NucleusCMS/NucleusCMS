@@ -632,11 +632,10 @@ class BLOG {
 			
 		?>
 		<script type="text/javascript">
-			setConvertBreaks(<?= $this->convertBreaks() ? 'true' : 'false' ?>);
-			setMediaUrl("<?=$CONF['MediaURL']?>");
-			setAuthorId(<?=$authorid?>);
-		</script><?
-	}
+			setConvertBreaks(<?php echo  $this->convertBreaks() ? 'true' : 'false' ?>);
+			setMediaUrl("<?php echo $CONF['MediaURL']?>");
+			setAuthorId(<?php echo $authorid?>);
+		</script><?php	}
 	
 	function setConvertBreaks($val) {
 		$this->setSetting('bconvertbreaks',$val);

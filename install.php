@@ -1,5 +1,4 @@
-<?
-	/**
+<?php	/**
 	  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
 	  * Copyright (C) 2002 The Nucleus Group
 	  * 
@@ -13,8 +12,7 @@
 	  *
 	  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
 	  *
-	  * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?
-	  */
+	  * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php	  */
 
 	// don't give warnings for uninitialized vars
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -87,15 +85,13 @@
 	</p>
 	
 	<ul>
-		<li>PHP: <?
-			echo phpversion();
+		<li>PHP: <?php			echo phpversion();
 			$minVersion = '4.0.6';
 			
 			if (phpversion() < $minVersion)
 				echo ' <span class="warning">WARNING: Nucleus requires at least version ',$minVersion,'</span>';
 		?></li>
-		<li>MySQL: <?
-		
+		<li>MySQL: <?php		
 			// note: this piece of code is taken from phpMyAdmin
 			
 			$result = @mysql_query('SELECT VERSION() AS version');
@@ -153,7 +149,7 @@
 		<legend>General Database Settings</legend>
 		<table><tr>
 			<td>Hostname:</td>
-			<td><input name="mySQL_host" value="<?=htmlspecialchars(ini_get('mysql.default_host'))?>" /></td>
+			<td><input name="mySQL_host" value="<?php echo htmlspecialchars(ini_get('mysql.default_host'))?>" /></td>
 		</tr><tr>
 			<td>Username:</td>
 			<td><input name="mySQL_user" /></td>
@@ -187,8 +183,7 @@
 		<table><tr>
 			<td>Site <strong>URL</strong>:</td>
 			<td>
-					<input name="IndexURL" size="60" value="<?
-					$url = "http://" . serverVar('HTTP_HOST') . $PHP_SELF; 
+					<input name="IndexURL" size="60" value="<?php					$url = "http://" . serverVar('HTTP_HOST') . $PHP_SELF; 
 					$url = str_replace("install.php",'',$url);
 					$url = str_replace("\\","/",$url);
 					// add slash at end if necessary
@@ -198,14 +193,12 @@
 			</td>
 		</tr><tr>
 			<td>Admin-area <strong>URL</strong>:</td>
-			<td><input name="AdminURL" size="60" value="<?
-					if ($url) echo $url . 'nucleus/';
+			<td><input name="AdminURL" size="60" value="<?php					if ($url) echo $url . 'nucleus/';
 				?>" />
 			</td>
 		</tr><tr>	
 			<td>Admin-area <strong>path</strong>:</td>
-			<td><input name="AdminPath" size="60" value="<?
-					$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
+			<td><input name="AdminPath" size="60" value="<?php					$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
 					$path = str_replace("\\","/",$path);
 					// add slash at end if necessary
 					if (!endsWithSlash($path)) $path .= '/';
@@ -214,14 +207,12 @@
 			</td>
 		</tr><tr>	
 			<td>Media files <strong>URL</strong>:</td>
-			<td><input name="MediaURL" size="60" value="<?
-					if ($url) echo $url . 'media/';
+			<td><input name="MediaURL" size="60" value="<?php					if ($url) echo $url . 'media/';
 				?>" />	
 			</td>
 		</tr><tr>	
 			<td>Media directory <strong>path</strong>:</td>
-			<td><input name="MediaPath" size="60" value="<?
-					$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
+			<td><input name="MediaPath" size="60" value="<?php					$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
 					$path = str_replace("\\","/",$path);
 					// add slash at end if necessary
 					if (!endsWithSlash($path)) $path .= '/';
@@ -230,15 +221,13 @@
 			</td>
 		</tr><tr>	
 			<td>Extra skin files <strong>URL</strong>:</td>
-			<td><input name="SkinsURL" size="60" value="<?
-					if ($url) echo $url . 'skins/';
+			<td><input name="SkinsURL" size="60" value="<?php					if ($url) echo $url . 'skins/';
 				?>" />
 				<br />(used by imported skins)
 			</td>
 		</tr><tr>	
 			<td>Extra skin files directory <strong>path</strong>:</td>
-			<td><input name="SkinsPath" size="60" value="<?
-				$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
+			<td><input name="SkinsPath" size="60" value="<?php				$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
 				$path = str_replace("\\","/",$path);
 				// add slash at end if necessary
 				if (!endsWithSlash($path)) $path .= '/';
@@ -248,14 +237,12 @@
 			</td>
 		</tr><tr>	
 			<td>Plugin files <strong>URL</strong>:</td>
-			<td><input name="PluginURL" size="60" value="<?
-					if ($url) echo $url . 'nucleus/plugins/';
+			<td><input name="PluginURL" size="60" value="<?php					if ($url) echo $url . 'nucleus/plugins/';
 				?>" /> 
 			</td>
 		</tr><tr>	
 			<td>Action <strong>URL</strong>:</td>
-			<td><input name="ActionURL" size="60" value="<?
-					if ($url) echo $url . 'action.php';
+			<td><input name="ActionURL" size="60" value="<?php					if ($url) echo $url . 'action.php';
 				?>" />
 				<br />(absolute location of the <tt>action.php</tt> file)
 			</td>
@@ -331,8 +318,7 @@
 	</html>
 	
 	
-	<?
-	}	
+	<?php	}	
 	
 	function tableName($unPrefixed)
 	{
@@ -548,22 +534,22 @@
 			</p>
 			
 			<pre>
-&lt;?
+&lt;?php
 	// mySQL connection information
-	$MYSQL_HOST = '<b><?=$mysql_host?></b>';
-	$MYSQL_USER = '<b><?=$mysql_user?></b>';
+	$MYSQL_HOST = '<b><?php echo $mysql_host?></b>';
+	$MYSQL_USER = '<b><?php echo $mysql_user?></b>';
 	$MYSQL_PASSWORD = '<i><b>xxxxxxxxxxx</b></i>';
-	$MYSQL_DATABASE = '<b><?=$mysql_database?></b>';
-	$MYSQL_PREFIX = '<b><?=($mysql_usePrefix == 1)?$mysql_prefix:''?></b>';
+	$MYSQL_DATABASE = '<b><?php echo $mysql_database?></b>';
+	$MYSQL_PREFIX = '<b><?php echo ($mysql_usePrefix == 1)?$mysql_prefix:''?></b>';
 
 	// main nucleus directory
-	$DIR_NUCLEUS = '<b><?=$config_adminpath?></b>';
+	$DIR_NUCLEUS = '<b><?php echo $config_adminpath?></b>';
 	
 	// path to media dir
-	$DIR_MEDIA = '<b><?=$config_mediapath?></b>';
+	$DIR_MEDIA = '<b><?php echo $config_mediapath?></b>';
 	
 	// extra skin files for imported skins
-	$DIR_SKINS = '<b><?=$config_skinspath?></b>';
+	$DIR_SKINS = '<b><?php echo $config_skinspath?></b>';
 
 	// these dirs are normally sub dirs of the nucleus dir, but 
 	// you can redefine them if you wish
@@ -600,15 +586,14 @@
 			<p>
 			Your web site is now ready to use. 
 			<ul>
-				<li><a href="<?=$config_adminurl?>">Login to the admin area to configure your site</a></li>				
-				<li><a href="<?=$config_indexurl?>">Visit your site now</a></li>
+				<li><a href="<?php echo $config_adminurl?>">Login to the admin area to configure your site</a></li>				
+				<li><a href="<?php echo $config_indexurl?>">Visit your site now</a></li>
 			</ul>
 			</p>
 		
 		</body>
 		</html>		
-		<?
-	}
+		<?php	}
 	
 	// give an error if one or more nucleus are not accessible
 	function doCheckFiles() {
@@ -717,7 +702,7 @@
 		<body>		
 			<h1>Error!</h1>
 			<p>
-			Error message was: "<?=$msg?>";
+			Error message was: "<?php echo $msg?>";
 			</p>
 			
 			<p>
@@ -725,8 +710,7 @@
 			</p>
 		</body>
 		</html>
-		<?
-		exit;
+		<?php		exit;
 	}
 	
 	function showErrorMessages($errors) {
@@ -748,8 +732,7 @@
 			</p>
 			
 			<ul>
-			<?
-				while($msg = array_shift($errors))
+			<?php				while($msg = array_shift($errors))
 					echo "<li>$msg</li>";
 			?>
 			</ul>
@@ -759,13 +742,11 @@
 			</p>
 		</body>
 		</html>
-		<?
-		exit;
+		<?php		exit;
 	}	
 
 	
 	/* for the non-php systems that decide to show the contents: 
-   	   ?></div><?
-	*/
+   	   ?></div><?php	*/
 	
 ?>
