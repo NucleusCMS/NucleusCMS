@@ -57,7 +57,8 @@ CREATE TABLE nucleus_comment (
   cblog int(11) NOT NULL default '0',
   PRIMARY KEY  (cnumber),
   UNIQUE KEY cnumber (cnumber),
-  KEY citem (citem)
+  KEY citem (citem),
+  FULLTEXT KEY cbody (cbody)  
 ) TYPE=MyISAM;
 
 CREATE TABLE nucleus_config (
@@ -112,7 +113,8 @@ CREATE TABLE nucleus_item (
   ikarmaneg int(11) NOT NULL default '0',
   PRIMARY KEY  (inumber),
   UNIQUE KEY inumber (inumber),
-  KEY itime (itime)
+  KEY itime (itime),
+  FULLTEXT KEY ibody (ibody,ititle,imore)
 ) TYPE=MyISAM;
 
 INSERT INTO nucleus_item VALUES (1, 'First Item!', 'This is the first item in your weblog. Feel free to delete it.', '', 1, 1, '2001-09-04 14:47:39', 0, 0, 0, 1, 0);
