@@ -12,8 +12,8 @@
   * This script allows adding items to Nucleus through bookmarklets. The member must be logged in
   * in order to use this.
   *
-  * $Id: bookmarklet.php,v 1.4 2005-03-15 08:24:16 kimitake Exp $
-  * $NucleusJP$
+  * $Id: bookmarklet.php,v 1.5 2005-03-16 07:55:53 kimitake Exp $
+  * $NucleusJP: bookmarklet.php,v 1.4 2005/03/15 08:24:16 kimitake Exp $
   */
 
 // bookmarklet is part of admin area (might need XML-RPC)
@@ -304,7 +304,7 @@ wingm.focus();
 
 function uniDecode($str,$charcode){
   $text = preg_replace_callback("/%u[0-9A-Za-z]{4}/",toUtf8,$str);
-  return mb_convert_encoding($text, $charcode, 'utf-8');
+  return mb_convert_encoding($text, $charcode, 'UTF-8');
 }
 function toUtf8($ar){
   foreach($ar as $val){
