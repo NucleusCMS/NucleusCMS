@@ -2,19 +2,33 @@
 // Russian Nucleus Language File (cyrillic charset Windows-1251)
 // 
 // Author: *** diarchy *** (andy@diarchy.ru)
-// Inserted and corrected by * elLf * (site@ellf.pp.ru)
-// File version: 2.0
-// Nucleus version: v2.5 beta
+// Inserted and corrected by * elLf * (ellf@ellf.ru)
+// File version: 3.15
+// Nucleus version: v3.15
 //
 //=========================================================================
 //
 // Файл поддержки русского языка движка Nucleus (кодировка Windows-1251)
 //
 // Автор: *** diarchy *** (andy@diarchy.ru)
-// Дополнено и исправлено: * elLf * (site@ellf.pp.ru)
-// Версия файла: 2.0
-// Версия движка Nucleus: v2.5
+// Дополнено и исправлено: * elLf * (ellf@ellf.ru)
+// Версия файла: 3.15
+// Версия движка Nucleus: v3.15
 //
+// START changed/added after v2.5beta START
+
+// general settings (security)
+define('_SETTINGS_EXTAUTH',			'Включить внешнюю авторизацию');
+define('_WARNING_EXTAUTH',			'Внимание: включайте только при необходимости.');
+
+// member profile
+define('_MEMBERS_BYPASS',			'Использовать внешнюю авторизацию');
+
+// 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
+define('_EBLOG_SEARCH',				'<em>Всегда</em> включать в поиск');
+
+// END changed/added after v2.5beta
+
 // START introduced after v2.0 START
 
 // media library
@@ -108,7 +122,7 @@ define('_BATCH_CAT_MOVE',			'Переместить в другой блог');
 define('_BATCH_COMMENT_DELETE',		'Удалить');
 
 // itemlist: Add new item...
-define('_ITEMLIST_ADDNEW',			'Добавить новую тему...');
+define('_ITEMLIST_ADDNEW',			'Добавить новую запись...');
 define('_ADD_PLUGIN_EXTRAS',		'Дополнительные настройки плагина');
 
 // errors
