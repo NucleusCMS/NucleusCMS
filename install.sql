@@ -27,6 +27,7 @@ CREATE TABLE nucleus_blog (
   bdefcat int(11) default NULL,
   bnotifytype int(11) NOT NULL default '15',
   ballowpast tinyint(2) NOT NULL default '0',
+  bincludesearch tinyint(2) NOT NULL default '0',
   PRIMARY KEY  (bnumber),
   UNIQUE KEY bshortname (bshortname),
   UNIQUE KEY bnumber (bnumber)
