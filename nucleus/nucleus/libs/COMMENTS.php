@@ -245,6 +245,7 @@ class COMMENTACTIONS extends BaseActions {
 			'commentword',
 			'itemlink',
 			'itemid',
+			'itemtitle',	
 			'date',
 			'time',
 			'commentid',
@@ -312,12 +313,30 @@ class COMMENTACTIONS extends BaseActions {
 	
 	function parse_itemlink() {				$this->commentsObj->itemActions->parse_itemlink(); }
 	function parse_itemid() {				echo $this->commentsObj->itemid; }
-
-	function parse_date() {					
-		echo strftime($this->template['FORMAT_DATE'],$this->currentComment['timestamp']);
+	function parse_itemtitle($maxLength = 0) {
+		if ($maxLength == 0)
+			$this->commentsObj->itemActions->parse_title();
+		else
+			$this->commentsObj->itemActions->parse_syndicate_title($maxLength);		
 	}
-	function parse_time() {					
-		echo strftime($this->template['FORMAT_TIME'],$this->currentComment['timestamp']);
+
+	function parse_date($format = '') {					
+        if ($format == 'rfc822') { 
+			echo date('r', $this->currentComment['timestamp']); 
+        } else if ($format == 'rfc822GMT') { 
+			echo gmdate('r', $this->currentComment['timestamp']); 
+        } else {  
+			echo strftime(
+					($format == '') ? $this->template['FORMAT_DATE'] : $format,
+					$this->currentComment['timestamp']
+				);
+		}
+	}
+	function parse_time($format = '') {					
+		echo strftime(
+				($format == '') ? $this->template['FORMAT_TIME'] : $format,
+				$this->currentComment['timestamp']
+			);
 	}
 
 	function parse_commentid() {			echo $this->currentComment['commentid']; }
