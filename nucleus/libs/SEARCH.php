@@ -1,33 +1,33 @@
 <?php
 Class SEARCH {
     function SEARCH($text) {
-        $this->querystring = $text;
+        $this->querystring = str_replace("%","",$text);
         $this->marked = $this->boolean_mark_atoms($text);
-        $this->inclusive = $this->boolean_inclusive_atoms($text);
+        $this->inclusive = $this->boolean_inclusive_atoms($this->querystring);
     }
 
     function  boolean_sql_select($match){
         $string = $this->inclusive;
-    	/* build sql for determining score for each record */
-	    preg_match_all(
-		    "([A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_]{0,})",
-    		$string,
-	    	$result);
-    	$result = $result[0];
-	    for($cth=0;$cth<count($result);$cth++){
-		    if(strlen($result[$cth])>=4){
-			    $stringsum_long .=
-				    " $result[$cth] ";
-    		}else{
-	    		$stringsum_a[] =
-		    		' '.$this->boolean_sql_select_short($result[$cth],$match).' ';
-    		}
-	    }
-    	if(strlen($stringsum_long)>0){
+        if (strlen($string) > 0) {
+    	   /* build sql for determining score for each record */
+	       preg_match_all(
+		                   "([A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_]{0,})",
+    		               $string,
+	    	               $result);
+           $result = $result[0];
+	       for($cth=0;$cth<count($result);$cth++){
+               if(strlen($result[$cth])>=4){
+                   $stringsum_long .=  " $result[$cth] ";
+    		   }else{
+	    	       $stringsum_a[] = ' '.$this->boolean_sql_select_short($result[$cth],$match).' ';
+    		   }
+	       }
+    	   if(strlen($stringsum_long)>0){
 	    		$stringsum_a[] = " match ($match) against ('$stringsum_long') ";
-    	}
-	    $stringsum .= implode("+",$stringsum_a);
-    	return $stringsum;
+    	   }
+	       $stringsum .= implode("+",$stringsum_a);
+    	   return $stringsum;
+   	    }
     }
     
     function boolean_inclusive_atoms($string){
@@ -94,7 +94,7 @@ Class SEARCH {
     	$result=str_replace('- ','-',$result);
     	$result=str_replace('+','',$result);
     	/* apply arbitrary function to all 'word' atoms */
-	    $result=preg_replace("/([A-Za-z0-9]{1,}[A-Za-z0-9\.\_-]{0,})/", "foo[('$0')]bar", $result);
+	    $result=preg_replace("/([@-Za-z!-9]{1,}[@-Za-z!-9\.\_-]{0,})/", "foo[('$0')]bar", $result);
 
     	/* dispatch ' ' to ' AND ' */
     	$result=str_replace(' ',' AND ',$result);
