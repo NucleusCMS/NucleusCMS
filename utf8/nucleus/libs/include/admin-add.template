@@ -1,7 +1,6 @@
 <h2><%text(_ADD_ADDTO)%> '<%bloglink%>'</h2>
 
 <%init%>
-<script type="text/javascript" src="javascript/numbercheck.js"></script>
 
 <form method="post" action="index.php" >
 
@@ -9,7 +8,6 @@
 
 <input type="hidden" name="action" value="additem" />
 <input name="blogid" value="<%blogid%>" type="hidden" />
-<%ticket%>
 
 <table>
 	<tr>
@@ -89,10 +87,6 @@
 		<td>
 			<%pluginextras%>
 		</td>
-	</tr>
-			<%itemoptions%>	
-    <tr>
-    	<th colspan="2"><%text(_ADD_MORE)%></th>
 	</tr><tr>
 		<td><%text(_ADD_MORE)%>
 			<br /><%helplink(extended)%>
@@ -105,12 +99,6 @@
 				cols="60"
 				rows="20"
 				><%contents(more)%></textarea>
-		</td>
-	</tr><tr>
-		<td><%text(_SUBMIT)%></td>
-		<td>
-			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 
-				onclick="return checkSubmit();" />
 		</td>
 	</tr>
 </table>

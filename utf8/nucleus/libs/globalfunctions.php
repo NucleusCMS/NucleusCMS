@@ -10,7 +10,6 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: globalfunctions.php,v 1.1.1.1 2005-02-28 07:14:50 kimitake Exp $
   */
 
 // needed if we include globalfunctions from install.php
@@ -21,7 +20,7 @@ checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQ
 
 $CONF['debug'] = 0;
 
-$nucleus['version'] = 'v3.1+ CVS';
+$nucleus['version'] = 'v3.15';
 if (getNucleusPatchLevel() > 0)
 {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();
@@ -48,7 +47,7 @@ $CONF['alertOnSecurityRisk'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 310;
+	return 315;
 }
 
 /**
@@ -57,7 +56,7 @@ function getNucleusVersion() {
  * be tested without having to install CVS.
  */
 function getNucleusPatchLevel() {
-	return 1;
+	return 0;
 }
 
 
@@ -98,6 +97,7 @@ $nextaction		= requestVar('nextaction');
 $maxresults     = requestVar('maxresults');
 $startpos       = intRequestVar('startpos');
 $errormessage	= '';
+$error			= '';
 
 if (!headers_sent())
 	header('Generator: Nucleus ' . $nucleus['version']);
@@ -135,7 +135,7 @@ if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'),'Mozil
 
 // login if cookies set
 
-$member =& new MEMBER();
+$member = new MEMBER();
 
 // login/logout when required or renew cookies
 if ($action == 'login') {
@@ -183,17 +183,17 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
        }
 */
 
-} elseif (($action == 'logout') && (!headers_sent()) && cookieVar($CONF['CookiePrefix'] . 'user')){
+} elseif (($action == 'logout') && (!headers_sent()) && cookieVar('user')){
 	// remove cookies on logout
-	setcookie($CONF['CookiePrefix'] .'user','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
-	setcookie($CONF['CookiePrefix'] .'loginkey','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
-	$manager->notify('Logout',array('username' => cookieVar($CONF['CookiePrefix'] .'user')));
-} elseif (cookieVar($CONF['CookiePrefix'] .'user')) {
+	setcookie('user','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+	setcookie('loginkey','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+	$manager->notify('Logout',array('username' => cookieVar('user')));
+} elseif (cookieVar('user')) {
 	// Cookie Authentication
-	$res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] .'user'), cookieVar($CONF['CookiePrefix'] .'loginkey'));
+	$res = $member->cookielogin(cookieVar('user'), cookieVar('loginkey'));
 
 	// renew cookies when not on a shared computer
-	if ($res && (cookieVar($CONF['CookiePrefix'] .'sharedpc') != 1) && (!headers_sent()))
+	if ($res && (cookieVar('sharedpc') != 1) && (!headers_sent()))
 		$member->setCookies();
 }
 
@@ -217,9 +217,9 @@ include($DIR_LIBS . 'SEARCH.php');
 // set lastVisit cookie (if allowed)
 if (!headers_sent()) {
 	if ($CONF['LastVisit'])
-		setcookie($CONF['CookiePrefix'] .'lastVisit',time(),time()+2592000,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+		setcookie('lastVisit',time(),time()+2592000,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 	else
-		setcookie($CONF['CookiePrefix'] .'lastVisit','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+		setcookie('lastVisit','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 }
 
 // read language file, only after user has been initialized
@@ -240,14 +240,6 @@ if (!defined('_MEMBERS_BYPASS'))
 }
 
 */
-
-// make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
-if (!defined('_ARCHIVETYPE_MONTH'))
-{
-	define('_ARCHIVETYPE_DAY','day');
-	define('_ARCHIVETYPE_MONTH','month');
-}
-
 
 // decode path_info
 if ($CONF['URLMode'] == 'pathinfo') {
@@ -339,7 +331,7 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 				'pageType' => $pagetype
 			)
 		);
-
+		
 		// strip strange characters
 		$contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
 		$charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
@@ -358,7 +350,7 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 function startUpError($msg, $title) {
 	?>
 	<html xmlns="http://www.w3.org/1999/xhtml">
-		<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title><?php echo htmlspecialchars($title)?></title></head>
+		<head><title><?php echo htmlspecialchars($title)?></title></head>
 		<body>
 			<h1><?php echo htmlspecialchars($title)?></h1>
 			<?php echo $msg?>
@@ -503,18 +495,7 @@ function selector() {
 		redirect($CONF['DisableSiteURL']);
 		exit;
 	}
-	
-	$actionNames = array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin');
-	$action = requestVar('action');
-	if (in_array($action, $actionNames))
-	{
-		global $DIR_LIBS, $errormessage;
-		include_once($DIR_LIBS . 'ACTION.php');
-		$a =& new ACTION();
-		$errorInfo = $a->doAction($action);
-		if ($errorInfo)
-			$errormessage = $errorInfo['message'];
-	}	
+
 
 	// show error when headers already sent out
 	if (headers_sent() && $CONF['alertOnHeadersSent']) {
@@ -596,13 +577,13 @@ function selector() {
 
 		sscanf($archive,'%d-%d-%d',$y,$m,$d);
 		if ($d != 0) {
-			$archivetype = _ARCHIVETYPE_DAY;
+			$archivetype = _ARCHIVETYPE_DAY;	// TODO: move to language file
 			$t = mktime(0,0,0,$m,$d,$y);
 			$archiveprev = strftime('%Y-%m-%d',$t - (24*60*60));
 			$archivenext = strftime('%Y-%m-%d',$t + (24*60*60));
 
 		} else {
-			$archivetype = _ARCHIVETYPE_MONTH;
+			$archivetype = _ARCHIVETYPE_MONTH; // TODO: move to language file
 			$t = mktime(0,0,0,$m,1,$y);
 			$archiveprev = strftime('%Y-%m',$t - (1*24*60*60));
 			$archivenext = strftime('%Y-%m',$t + (32*24*60*60));
@@ -623,7 +604,8 @@ function selector() {
 		if(preg_match("/^(\xA1{2}|\xe3\x80{2}|\x20)+$/",$query)){
 					$type = 'index';
 		}
-		$query = mb_convert_encoding($query, _CHARSET, 'UTF-8, EUC-JP, JIS, SJIS, ASCII');
+		$order = (_CHARSET == 'euc-jp') ? 'EUC-JP, UTF-8,' : 'UTF-8, EUC-JP,';
+		$query = mb_convert_encoding($query, _CHARSET, $order.' JIS, SJIS, ASCII');
 		if (intval($blogid)==0)
 			$blogid = getBlogIDFromName($blogid);
 		if (!$blogid) doError(_ERROR_NOSUCHBLOG);
@@ -665,7 +647,7 @@ function selector() {
 		$skinid = $blog->getDefaultSkin();
 
 	
-	$skin =& new SKIN($skinid);
+	$skin = new SKIN($skinid);
 	if (!$skin->isValid)
 		doError(_ERROR_NOSUCHSKIN);
 
@@ -681,16 +663,16 @@ function doError($msg, $skin = '') {
 
 	if ($skin == '') {
 		if (SKIN::existsID($skinid)) {
-			$skin =& new SKIN($skinid);
+			$skin = new SKIN($skinid);
 		} elseif ($manager->existsBlogID($blogid)) {
 			$blog =& $manager->getBlog($blogid);
-			$skin =& new SKIN($blog->getDefaultSkin());
+			$skin = new SKIN($blog->getDefaultSkin());
 		} elseif ($CONF['DefaultBlog']) {
 			$blog =& $manager->getBlog($CONF['DefaultBlog']);
-			$skin =& new SKIN($blog->getDefaultSkin());
+			$skin = new SKIN($blog->getDefaultSkin());
 		} else {
 			// this statement should actually never be executed
-			$skin =& new SKIN($CONF['BaseSkin']);
+			$skin = new SKIN($CONF['BaseSkin']);
 		}
 	}
 
@@ -720,6 +702,28 @@ function isValidSkinName($name) {		return eregi('^[a-z0-9/]+$', $name); }
 function addBreaks($var) { 				return nl2br($var); }
 function removeBreaks($var) {			return preg_replace("/<br \/>([\r\n])/","$1",$var); }
 
+/**
+  * Generate a 'pronouncable' password
+  * (http://www.zend.com/codex.php?id=215&single=1)
+  */
+function genPassword($length){
+
+    srand((double)microtime()*1000000);
+
+    $vowels = array('a', 'e', 'i', 'o', 'u');
+    $cons = array('b', 'c', 'd', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'u', 'v', 'w', 'tr',
+    'cr', 'br', 'fr', 'th', 'dr', 'ch', 'ph', 'wr', 'st', 'sp', 'sw', 'pr', 'sl', 'cl');
+
+    $num_vowels = count($vowels);
+    $num_cons = count($cons);
+
+    for($i = 0; $i < $length; $i++){
+        $password .= $cons[rand(0, $num_cons - 1)] . $vowels[rand(0, $num_vowels - 1)];
+    }
+
+    return substr($password, 0, $length);
+}
+
 // shortens a text string to maxlength ($toadd) is what needs to be added
 // at the end (end length is <= $maxlength)
 function shorten($text, $maxlength, $toadd) {
@@ -729,7 +733,7 @@ function shorten($text, $maxlength, $toadd) {
 	$text = strtr($text, $trans);
 	// 2. the actual shortening
 	if (strlen($text) > $maxlength)
-		$text = mb_strimwidth($text, 0, $maxlength, $toadd, "UTF-8");
+		$text = mb_strimwidth($text, 0, $maxlength, $toadd, _CHARSET);
 	return $text;
 }
 
@@ -782,8 +786,8 @@ function selectLanguage($language) {
 }
 
 function parseFile($filename) {
-	$handler =& new ACTIONS('fileparser');
-	$parser =& new PARSER(SKIN::getAllowedActionsForType('fileparser'), $handler);
+	$handler = new ACTIONS('fileparser');
+	$parser = new PARSER(SKIN::getAllowedActionsForType('fileparser'), $handler);
 	$handler->parser =& $parser;
 
 	if (!file_exists($filename)) doError('A file is missing');
@@ -915,12 +919,8 @@ if (	($CONF['URLMode'] == 'pathinfo')
   */
 function createItemLink($itemid, $extra = '') {
 	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo') {
-	  if (substr($CONF['ItemURL'],strlen($CONF['ItemURL'])-1,1)=='/')
-		  $link = $CONF['ItemURL'] . 'item/' . $itemid;
-		else
-		  $link = $CONF['ItemURL'] . '/item/' . $itemid;
-	}
+	if ($CONF['URLMode'] == 'pathinfo')
+		$link = $CONF['ItemURL'] . '/item/' . $itemid;
 	else
 		$link = $CONF['ItemURL'] . '?itemid=' . $itemid;
 	return addLinkParams($link, $extra);
@@ -1032,19 +1032,19 @@ function passVar($key, $value) {
 	Date format functions (to be used from [%date(..)%] skinvars
 */
 function formatDate($format, $timestamp, $defaultFormat) {
-	if ($format == 'rfc822') {
-		return date('r', $timestamp);
-	} else if ($format == 'rfc822GMT') {
-		return gmdate('r', $timestamp);
-	} else if ($format == 'utc') {
-		return gmdate('Y-m-d\TH:i:s\Z', $timestamp);
+	if ($format == 'rfc822') { 
+		return date('r', $timestamp); 
+	} else if ($format == 'rfc822GMT') { 
+		return gmdate('r', $timestamp); 
+	} else if ($format == 'utc') { 
+		return gmdate('Y-m-d\TH:i:s\Z', $timestamp); 
 	} else if ($format == 'iso8601') {
        	$tz = date('O', $timestamp);
-        $tz = substr($tz, 0, 3) . ':' . substr($tz, 3, 2);
+        $tz = substr($tz, 0, 3) . ':' . substr($tz, 3, 2);	
 		return gmdate('Y-m-d\TH:i:s', $timestamp) . $tz;
-	} else {
-		return strftime($format ? $format : $defaultFormat,$timestamp);
-	}
+	} else {  
+		return strftime($format ? $format : $defaultFormat,$timestamp); 
+	}  
 
 }
 
@@ -1073,7 +1073,7 @@ function checkVars($aVars)
 				|| isset($HTTP_POST_FILES[$varName])
 			){
 				die('Sorry. An error occurred.');
-			}		
+			}
 		}
 	}
 }

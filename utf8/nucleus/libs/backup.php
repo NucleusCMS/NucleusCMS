@@ -1,19 +1,8 @@
 <?php
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
   * Scripts to create/restore a backup of the Nucleus database
   *
   * Based on code in phpBB (http://phpBB.sourceforge.net)
-  *
-  * $Id: backup.php,v 1.1.1.1 2005-02-28 07:14:48 kimitake Exp $
   */
 
  
@@ -48,8 +37,7 @@ function do_backup($gzip = 0) {
 					sql_table('plugin_event'),
 					sql_table('plugin_option'),
 					sql_table('plugin_option_desc'),
-					sql_table('category'),
-					sql_table('activation')
+					sql_table('category')
 			  );
 
 	// add tables that plugins want to backup to the list

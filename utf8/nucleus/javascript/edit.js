@@ -10,8 +10,6 @@
   *
   * This file contains functions to allow adding items from inside the weblog.
   * Also contains code to avoid submitting form data twice.
-  *
-  * $Id: edit.js,v 1.1.1.1 2005-02-28 07:14:41 kimitake Exp $
   */
 
 var nucleusConvertBreaks = true;
@@ -224,7 +222,8 @@ function storeCaret (textEl) {
 
 	// store caret
 	if (textEl.createTextRange) 
-		textEl.caretPos = document.selection.createRange().duplicate();
+		//textEl.caretPos = document.selection.createRange().duplicate();
+		lastCaretPos = document.selection.createRange().duplicate();
 
 	// also store lastselectedelement
 	lastSelected = textEl;

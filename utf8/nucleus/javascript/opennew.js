@@ -8,8 +8,6 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  *
- * $Id: opennew.js,v 1.1.1.1 2005-02-28 07:14:41 kimitake Exp $
- *
  * JavaScript to open non-local links in a new window.
  *
  * How to use:

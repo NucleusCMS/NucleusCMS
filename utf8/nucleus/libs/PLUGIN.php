@@ -12,9 +12,7 @@
 	  *
 	  * for more information on plugins and how to write your own, see the
 	  * plugins.html file that is included with the Nucleus documenation
- 	  *
-	  * $Id: PLUGIN.php,v 1.1.1.1 2005-02-28 07:14:52 kimitake Exp $
-  	  */
+	  */
 	class NucleusPlugin {
 
 		// these functions _have_ to be redefined in your plugin
@@ -61,18 +59,10 @@
 		 * @param $feature
 		 *		Name of the feature. See plugin documentation for more info
 		 *			'SqlTablePrefix' -> if the plugin uses the sql_table() method to get table names
-		 *			'HelpPage' -> if the plugin provides a helppage
 		 */
 		function supportsFeature($feature) {
 			return 0;
 		}
-
-		/**
-		 * Report a list of plugin that is required to function
-		 * 
-		 * @returns an array of names of plugin, an empty array indicates no dependency
-		 */
-		function getPluginDep() { return array(); }
 
 		// these helper functions should not be redefined in your plugin
 
@@ -101,9 +91,6 @@
 		function createCategoryOption($name, $desc, $type, $defValue = '', $typeExtras = '') {
 			return $this->_createOption('category', $name, $desc, $type, $defValue, $typeExtras);
 		}
-        function createItemOption($name, $desc, $type, $defValue = '', $typeExtras = '') {
-			return $this->_createOption('item', $name, $desc, $type, $defValue, $typeExtras);
-		}
 
 		/**
 		  * Removes the option from the database
@@ -122,9 +109,6 @@
 		function deleteCategoryOption($name) {
 			return $this->_deleteOption('category', $name);
 		}
-        function deleteItemOption($name) {
-			return $this->_deleteOption('item', $name);
-		}
 
 		/**
 		  * Sets the value of an option to something new
@@ -140,9 +124,6 @@
 		}
 		function setCategoryOption($catid, $name, $value) {
 			return $this->_setOption('category', $catid, $name, $value);
-		}
-        function setItemOption($itemid, $name, $value) {
-			return $this->_setOption('item', $itemid, $name, $value);
 		}
 
 		/**
@@ -180,9 +161,6 @@
 		function getCategoryOption($catid, $name) {
 			return $this->_getOption('category', $catid, $name);
 		}
-        function getItemOption($itemid, $name) {
-			return $this->_getOption('item', $itemid, $name);
-		}
 
 		/**
 		 * Retrieves an associative array with the option value for each
@@ -196,68 +174,6 @@
 		}
 		function getAllCategoryOptions($name) {
 			return $this->_getAllOptions('category', $name);
-		}
-        function getAllItemOptions($name) {
-			return $this->_getAllOptions('item', $name);
-		}
-		
-		/**
-         * Retrieves an indexed array with the top (or bottom) of an option
-		 * (delegates to _getOptionTop())
-         */
-		function getBlogOptionTop($name, $amount = 10, $sort = 'desc') {
-			return $this->_getOptionTop('blog', $name, $amount, $sort);
-		}
-		function getMemberOptionTop($name, $amount = 10, $sort = 'desc') {
-			return $this->_getOptionTop('member', $name, $amount, $sort);
-		}
-		function getCategoryOptionTop($name, $amount = 10, $sort = 'desc') {
-			return $this->_getOptionTop('category', $name, $amount, $sort);
-		}
-		function getItemOptionTop($name, $amount = 10, $sort = 'desc') {
-			return $this->_getOptionTop('item', $name, $amount, $sort);
-		}
-		
-		/**
-		 * Retrieves an array of the top (or bottom) of an option from a plugin.
-		 * @author TeRanEX
-		 * @param  string $context the context for the option: item, blog, member,...
-		 * @param  string $name    the name of the option
-		 * @param  int    $amount  how many rows must be returned
-		 * @param  string $sort    desc or asc
-		 * @return array           array with both values and contextid's
-		 * @access private
-		 */
-        function _getOptionTop($context, $name, $amount = 10, $sort = 'desc') {
-			if (($sort != 'desc') && ($sort != 'asc')) {
-				$sort= 'desc';
-			}
-
-			$oid = $this->_getOID($context, $name);
-
-			// retrieve the data and return
-			$q = 'SELECT otype, oextra FROM '.sql_table('plugin_option_desc').' WHERE oid = '.$oid;
-			$query = mysql_query($q);
-
-			$o = mysql_fetch_array($query);
-
-			if (($this->optionCanBeNumeric($o['otype'])) && ($o['oextra'] == 'number' )) {
-				$orderby = 'CAST(ovalue AS SIGNED)';
-			} else {
-				$orderby = 'ovalue';
-			}
-			$q = 'SELECT ovalue value, ocontextid id FROM '.sql_table('plugin_option').' WHERE oid = '.$oid.' ORDER BY '.$orderby.' '.$sort.' LIMIT 0,'.$amount;
-			$query = mysql_query($q);
-			
-			// create the array
-			$i = 0;
-			$top = array();
-			while($row = mysql_fetch_array($query)) {
-				$top[$i++] = $row;
-			}
-			
-			// return the array (duh!)
-			return $top;
 		}
 
 		/**
@@ -363,9 +279,6 @@
 					break;
 				case 'category':
 					if (!$manager->existsCategory($contextid)) return 0;
-					break;
-                case 'item':
-                    if (!$manager->existsItem($contextid, true, true)) return 0;
 					break;
 				case 'global':
 					if ($contextid != 0) return 0;
@@ -499,67 +412,24 @@
 		}
 
 		/**
-		 * splits the option's typeextra field (at ;'s) to split the meta collection
-		 * @param string $typeExtra the value of the typeExtra field of an option
-		 * @return array array of the meta-key/value-pairs
-		 * @author TeRanEX
-		 * @static
-		 */
-		function getOptionMeta($typeExtra) {
-			$tmpMeta = explode(';', $typeExtra);
-			$meta = array();
-			for ($i = 0; $i < count($tmpMeta); $i++) {
-				if (($i == 0) && (!strstr($tmpMeta[0], '='))) {
-					// we have the select-list
-					$meta['select'] = $tmpMeta[0];
-				} else {
-					$tmp = explode('=', $tmpMeta[$i]);
-					$meta[$tmp[0]] = $tmp[1];
-				}
-			}
-			return $meta;
-		}
-
-		/**
-		 * filters the selectlists out of the meta collection
-		 * @param string $typeExtra the value of the typeExtra field of an option
-		 * @return string the selectlist
-		 * @author TeRanEX
-		 */
-		function getOptionSelectValues($typeExtra) {
-			$meta = NucleusPlugin::getOptionMeta($typeExtra);
-			//the select list must always be the first part
-			return $meta['select'];
-		}
-		
-		/**
 		 * @param $aOptions: array ( 'oid' => array( 'contextid' => 'value'))
 		 *        (taken from request using requestVar())
-		 * @param $newContextid: integer (accepts a contextid when it is for a new 
-		 *        contextid there was no id available at the moment of writing the
-		 *        formcontrols into the page (by ex: itemOptions for new item)
-		 * @static 
+		 *
+		 * (static method)
 		 */
-		function _applyPluginOptions(&$aOptions, $newContextid = 0) {
-			global $manager;
+		function _applyPluginOptions(&$aOptions) {
 			if (!is_array($aOptions)) return;
 
 			foreach ($aOptions as $oid => $values) {
 
 				// get option type info
-				$query = 'SELECT opid, oname, ocontext, otype, oextra, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . intval($oid);
+				$query = 'SELECT otype, oextra, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . intval($oid);
 				$res = sql_query($query);
 				if ($o = mysql_fetch_object($res))
 				{
 					foreach ($values as $contextid => $value) {
-						// retreive any metadata
-						$meta = NucleusPlugin::getOptionMeta($o->oextra);
-						
-						// if the option is readonly or hidden it may not be saved
-						if (($meta['access'] != 'readonly') && ($meta['access'] != 'hidden')) {
-							
 							$value = undoMagic($value);	// value comes from request
-	
+
 							switch($o->otype) {
 								case 'yesno':
 									if (($value != 'yes') && ($value != 'no')) $value = 'no';
@@ -567,27 +437,10 @@
 								default:
 									break;
 							}
-							
-							// check the validity of numerical options
-							if (($meta['datatype'] == 'numerical') && (!is_numeric($value))) { 
-								//the option must be numeric, but the it isn't
-								//use the default for this option
-								$value = $o->odef;
-							}
-	
-							// decide wether we are using the contextid of newContextid
-							if ($newContextid != 0) {
-								$contextid = $newContextid;
-							}
-							
-							//trigger event PrePluginOptionsUpdate to give the plugin the
-							//possibility to change/validate the new value for the option
-							$manager->notify('PrePluginOptionsUpdate',array('context' => $o->ocontext, 'plugid' => $o->opid, 'optionname' => $o->oname, 'contextid' => $contextid, 'value' => &$value));
-							
-							// delete the old value for the option
+
 							sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));
 							sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
-						}
+
 					}
 				}
 			}

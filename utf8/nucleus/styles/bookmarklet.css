@@ -1,9 +1,4 @@
-@chareset "UTF-8";
-/* 
-	style definitions for the bookmarklet 
-	
-	$Id: bookmarklet.css,v 1.1.1.1 2005-02-28 07:15:02 kimitake Exp $
-*/
+/* style definitions for the bookmarklet */
 
 body {
 	font-size: small;
@@ -13,12 +8,7 @@ body {
 }		
 
 textarea {
-  font-size: 125%;
-  width: auto;
-  margin: 0;
-  padding: 0;
-  line-height:130%;
-  font-family: "ＭＳ Ｐゴシック", "ヒラギノ角ゴ Pro W3", "Osaka", sans-serif;
+  font-family: "Hiragino Kaku Gothic Pro W3", "MS PGothic", "Osaka", sans-serif;
 }
 
 h1 {

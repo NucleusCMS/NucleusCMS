@@ -8,8 +8,6 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id: index.php,v 1.1.1.1 2005-02-28 07:14:31 kimitake Exp $
   */
 	// we are using admin stuff:
 	$CONF = array();
@@ -45,25 +43,19 @@
 		}
 	}
 
-	$bNeedsLogin = false;
-	$bIsActivation = in_array($action, array('activate', 'activatesetpwd'));
-	
-	if ($action == 'logout') 
-		$bNeedsLogin = true;	
-	
-	if (!$member->isLoggedIn() && !$bIsActivation)
-		$bNeedsLogin = true;
+	if (!$member->isLoggedIn() || ($action == 'logout')) {
+		$HTTP_POST_VARS['oldaction'] = $action;	// see ADMIN::login()
+		$_POST['oldaction'] = $action;
+		$action = "showlogin";
+	}
 
 	// show error if member cannot login to admin
-	if ($member->isLoggedIn() && !$member->canLogin() && !$bIsActivation) {
+	if ($member->isLoggedIn() && !$member->canLogin()) {
 		$error = _ERROR_LOGINDISALLOWED;
-		$bNeedsLogin = true;
-	}
-	
-	if ($bNeedsLogin)
-	{
-		setOldAction($action);	// see ADMIN::login() (sets old action in POST vars)
-		$action = 'showlogin';
+		$HTTP_POST_VARS['oldaction'] = $action; // see ADMIN::login()
+		$_POST['oldaction'] = $action;
+		$action = "showlogin";
+
 	}
 
 	sendContentType('application/xhtml+xml', 'admin-' . $action);

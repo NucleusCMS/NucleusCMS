@@ -10,8 +10,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * Media classes for nucleus
-  *
-  * $Id: MEDIA.php,v 1.1.1.1 2005-02-28 07:14:50 kimitake Exp $
   */
 
 

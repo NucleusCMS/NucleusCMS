@@ -1,4 +1,12 @@
-<nucleusskin><meta><skin name="grey" /><template name="grey/short" /><template name="grey/full" /><info><![CDATA[Default (sample) skin]]></info></meta><skin name="grey" type="text/html" includeMode="skindir" includePrefix="grey/"><description>Default skin to display your blog</description><part name="archive"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<nucleusskin>
+
+<meta><skin name="grey" /><template name="grey/short" /><template name="grey/full" /><info><![CDATA[Default (sample) skin]]></info></meta>
+
+<skin name="grey" type="text/html" includeMode="skindir" includePrefix="grey/"><description>Default skin to display your blog</description>
+
+<part name="archive">
+
+<![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -56,8 +64,8 @@
  <h2>Navigation</h2>
 
  <ul class="nobullets">
-   <li><a href="<%prevlink%>">前の <%archivetype%></a></li>
-   <li><a href="<%nextlink%>">次の <%archivetype%></a></li>
+   <li><a href="<%prevlink%>">前の<%archivetype%></a></li>
+   <li><a href="<%nextlink%>">次の<%archivetype%></a></li>
    <li><a href="<%todaylink%>">Today</a></li>
    <li><a href="<%archivelink%>">Archives</a></li>
    <li><a href="<%adminurl%>">Admin Area</a></li>
@@ -78,7 +86,11 @@
 </div>
 
 </body>
-</html>]]></part><part name="archivelist"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+</html>]]></part>
+
+<part name="archivelist">
+
+<![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -125,7 +137,7 @@
 
 <!-- definition of the logo left-top -->
 <div class="logo">
- <a href="<%sitevar(url)%>"><img src="<%skinfile(atom3.gif)%>" width="155" height="137" alt="" /></a>
+ <a href="<%sitevar(url)%>"><img src="<%skinfile(atom3.gif)%>" width="155" height="137" alt="" /></a> 
 </div>
 
 <!-- definition of the menu -->
@@ -156,7 +168,11 @@
 </div>
 
 </body>
-</html>]]></part><part name="error"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+</html>]]></part>
+
+<part name="error">
+
+<![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -228,7 +244,12 @@
 </div>
 
 </body>
-</html>]]></part><part name="imagepopup"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+</html>]]></part>
+
+<part name="imagepopup">
+
+<![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -241,7 +262,11 @@
 <body onblur="window.close()">
   <a href="javascript:window.close();"><%image%></a>
 </body>
-</html>]]></part><part name="index"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+</html>]]></part>
+
+<part name="index">
+
+<![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -331,7 +356,11 @@
 </div>
 
 </body>
-</html>]]></part><part name="item"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+</html>]]></part>
+
+<part name="item">
+
+<![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -421,7 +450,11 @@
 </div>
 
 </body>
-</html>]]></part><part name="member"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+</html>]]></part>
+
+<part name="member">
+
+<![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -496,7 +529,11 @@
 </div>
 
 </body>
-</html>]]></part><part name="search"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+</html>]]></part>
+
+<part name="search">
+
+<![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -574,9 +611,30 @@
 </div>
 
 </body>
-</html>]]></part></skin><template name="grey/short"><description>The default template that is used to display your Nucleus blog</description><part name="ARCHIVELIST_FOOTER"><![CDATA[</ul>]]></part><part name="ARCHIVELIST_HEADER"><![CDATA[<ul>]]></part><part name="ARCHIVELIST_LISTITEM"><![CDATA[<li><a href="<%archivelink%>">%Y-%m</a></li>]]></part><part name="CATLIST_FOOTER"><![CDATA[</ul>]]></part><part name="CATLIST_HEADER"><![CDATA[<ul class="nobullets">
- <li><a href="<%blogurl%>">All</a></li>]]></part><part name="CATLIST_LISTITEM"><![CDATA[ <li><a href="<%catlink%>"><%catname%></a></li>]]></part><part name="COMMENTS_MANY"><![CDATA[comments]]></part><part name="COMMENTS_NONE"><![CDATA[<a href="<%itemlink%>" rel="bookmark">No <%commentword%></a>]]></part><part name="COMMENTS_ONE"><![CDATA[comment]]></part><part name="COMMENTS_TOOMUCH"><![CDATA[<a href="<%itemlink%>" rel="bookmark"><%commentcount%> <%commentword%></a>]]></part><part name="DATE_HEADER"><![CDATA[<h2>%Y-%m-%d</h2>
-]]></part><part name="EDITLINK"><![CDATA[<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a> -]]></part><part name="FORMAT_DATE"><![CDATA[%Y-%m-%d]]></part><part name="FORMAT_TIME"><![CDATA[%H:%M:%S]]></part><part name="IMAGE_CODE"><![CDATA[<%image%>]]></part><part name="ITEM"><![CDATA[<h3 class="item"><%title%></h3>
+</html>]]></part>
+
+</skin>
+
+<template name="grey/short"><description>The default template that is used to display your Nucleus blog</description>
+
+<part name="ARCHIVELIST_FOOTER"><![CDATA[</ul>]]></part>
+<part name="ARCHIVELIST_HEADER"><![CDATA[<ul>]]></part>
+<part name="ARCHIVELIST_LISTITEM"><![CDATA[<li><a href="<%archivelink%>">%Y-%m</a></li>]]></part>
+<part name="CATLIST_FOOTER"><![CDATA[</ul>]]></part>
+<part name="CATLIST_HEADER"><![CDATA[<ul class="nobullets"><li><a href="<%blogurl%>">All</a></li>]]></part>
+<part name="CATLIST_LISTITEM"><![CDATA[ <li><a href="<%catlink%>"><%catname%></a></li>]]></part>
+<part name="COMMENTS_MANY"><![CDATA[comments]]></part>
+<part name="COMMENTS_NONE"><![CDATA[<a href="<%itemlink%>" rel="bookmark">No <%commentword%></a>]]></part>
+<part name="COMMENTS_ONE"><![CDATA[comment]]></part>
+<part name="COMMENTS_TOOMUCH"><![CDATA[<a href="<%itemlink%>" rel="bookmark"><%commentcount%> <%commentword%></a>]]></part>
+<part name="DATE_HEADER"><![CDATA[<h2>%Y-%m-%d</h2>]]></part>
+<part name="EDITLINK"><![CDATA[<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a> -]]></part>
+<part name="FORMAT_DATE"><![CDATA[%Y-%m-%d]]></part>
+<part name="FORMAT_TIME"><![CDATA[%H:%M:%S]]></part>
+<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+
+<part name="ITEM"><![CDATA[
+<h3 class="item"><%title%></h3>
 
 <div class="itembody">
   <%body%>
@@ -589,7 +647,20 @@
   <%edit%>
   <%comments%>
 </div>
-]]></part><part name="LOCALE"><![CDATA[ja_JP.UTF-8]]></part><part name="MEDIA_CODE"><![CDATA[<%media%>]]></part><part name="MORELINK"><![CDATA[<a href="<%itemlink%>">[Read More!]</a>]]></part><part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part><part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part><part name="SEARCH_NOTHINGFOUND"><![CDATA[No search results found for <b><%query%></b>]]></part></template><template name="grey/full"><description>Used for detailed item pages</description><part name="COMMENTS_BODY"><![CDATA[<h3 class="comment"><%userlink%> wrote:</h3>
+]]></part>
+
+<part name="LOCALE"><![CDATA[ja_JP.UTF-8]]></part>
+<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+<part name="MORELINK"><![CDATA[<a href="<%itemlink%>">[Read More!]</a>]]></part>
+<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
+<part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part>
+<part name="SEARCH_NOTHINGFOUND"><![CDATA[No search results found for <b><%query%></b>]]></part>
+
+</template>
+
+<template name="grey/full"><description>Used for detailed item pages</description>
+
+<part name="COMMENTS_BODY"><![CDATA[<h3 class="comment"><%userlink%> wrote:</h3>
 
 <div class="commentbody">
   <%body%>
@@ -597,7 +668,17 @@
 
 <div class="commentinfo">
   <%date%> <%time%>
-</div>]]></part><part name="COMMENTS_MANY"><![CDATA[comments]]></part><part name="COMMENTS_NONE"><![CDATA[<div class="comments">No comments yet</div>]]></part><part name="COMMENTS_ONE"><![CDATA[comment]]></part><part name="EDITLINK"><![CDATA[- <a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>]]></part><part name="FORMAT_DATE"><![CDATA[%Y-%m-%d]]></part><part name="FORMAT_TIME"><![CDATA[%H:%M:%S]]></part><part name="IMAGE_CODE"><![CDATA[<%image%>]]></part><part name="ITEM"><![CDATA[<h2><%date(%Y-%m-%d)%></h2>
+</div>]]></part>
+<part name="COMMENTS_MANY"><![CDATA[comments]]></part>
+<part name="COMMENTS_NONE"><![CDATA[<div class="comments">No comments yet</div>]]></part>
+<part name="COMMENTS_ONE"><![CDATA[comment]]></part>
+<part name="EDITLINK"><![CDATA[- <a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>]]></part>
+<part name="FORMAT_DATE"><![CDATA[%Y-%m-%d]]></part>
+<part name="FORMAT_TIME"><![CDATA[%H:%M:%S]]></part>
+<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+
+<part name="ITEM"><![CDATA[
+<h2><%date(%Y-%m-%d)%></h2>
 <h3 class="item"><%title%></h3>
 
 <div class="itembody">
@@ -612,4 +693,13 @@
   Category: <a href="<%categorylink%>"><%category%></a>
   <%edit%>
 </div>
-]]></part><part name="LOCALE"><![CDATA[ja_JP.UTF-8]]></part><part name="MEDIA_CODE"><![CDATA[<%media%>]]></part><part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part><part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part></template></nucleusskin>
+]]></part>
+
+<part name="LOCALE"><![CDATA[ja_JP.UTF-8]]></part>
+<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
+<part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part>
+
+</template>
+
+</nucleusskin>

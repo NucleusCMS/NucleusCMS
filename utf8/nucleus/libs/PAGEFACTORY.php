@@ -9,7 +9,6 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: PAGEFACTORY.php,v 1.1.1.1 2005-02-28 07:14:51 kimitake Exp $
   */
 
 /**
@@ -71,9 +70,7 @@ class PAGEFACTORY extends BaseActions {
 			'else',
 			'endif',
 			'pluginextras',
-			'itemoptions',
-			'extrahead',
-			'ticket'
+			'extrahead'
 		);
 		
 		// TODO: maybe add 'skin' later on?
@@ -128,7 +125,7 @@ class PAGEFACTORY extends BaseActions {
 		$template = $this->getTemplateFor($this->type);
 		
 		// use the PARSER engine to parse that template
-		$parser =& new PARSER($this->actions, $this);
+		$parser = new PARSER($this->actions, $this);
 		$parser->parse($template);
 	}
 	
@@ -142,7 +139,7 @@ class PAGEFACTORY extends BaseActions {
 		
 		if (!file_exists($filename)) 
 			return '';
-
+			
 		$fsize = filesize($filename);
 		if ($fsize <= 0)
 			return '';
@@ -385,20 +382,6 @@ class PAGEFACTORY extends BaseActions {
 				break;
 		}
 	}
-	
-	/**
-	 * Adds the itemOptions of a plugin to a page
-	 * @author TeRanEX
-	 */
-    function parse_itemoptions() {
-		global $itemid;
-		ADMIN::_insertPluginOptions('item', $itemid);
-    }
-    
-    function parse_ticket() {
-    	global $manager;
-    	$manager->addTicketHidden();
-    }
 	
 	/**
 	 * convenience method

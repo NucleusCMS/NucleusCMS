@@ -11,8 +11,6 @@
   *
   * This script allows adding items to Nucleus through bookmarklets. The member must be logged in
   * in order to use this.
-  *
-  * $Id: bookmarklet.php,v 1.1.1.1 2005-02-28 07:14:31 kimitake Exp $
   */
 
 // bookmarklet is part of admin area (might need XML-RPC)
@@ -41,16 +39,6 @@ if ($action == '')
 	$action = 'add';
 	
 sendContentType('application/xhtml+xml', 'bookmarklet-'.$action);	
-
-// check ticket
-$action = strtolower($action);
-$aActionsNotToCheck = array('login', 'add', 'edit');
-if (!in_array($action, $aActionsNotToCheck))
-{
-	if (!$manager->checkTicket())
-		bm_doError(_ERROR_BADTICKET);
-} 
-
 
 // find out what to do
 switch ($action) {
@@ -171,7 +159,7 @@ function bm_loginAndPassThrough() {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 		<title>Nucleus</title>
 		<?php bm_style(); ?>
 	</head>
@@ -209,7 +197,7 @@ function bm_doShowForm() {
 
 	$log_text = uniDecode($log_text,_CHARSET);
 	$log_linktitle = uniDecode($log_linktitle,_CHARSET);
-
+	
 	if (!BLOG::existsID($blogid))
 		bm_doError(_ERROR_NOSUCHBLOG);
 
@@ -268,7 +256,7 @@ function bm_message($title, $head, $msg, $extrahead = '') {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 		<title><?php echo  $title ?></title>
 		<?php bm_style(); ?>
 		<?php echo $extrahead?>

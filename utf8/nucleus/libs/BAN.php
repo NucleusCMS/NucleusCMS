@@ -10,8 +10,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * PHP class responsible for ban-management. 
-  *
-  * $Id: BAN.php,v 1.1.1.1 2005-02-28 07:14:48 kimitake Exp $
   */
   
 class BAN {

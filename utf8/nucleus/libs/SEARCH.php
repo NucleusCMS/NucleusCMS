@@ -17,8 +17,6 @@
   * http://www.evolt.org/article/Boolean_Fulltext_Searching_with_PHP_and_MySQL/18/15665/
   * http://davidaltherr.net/web/php_functions/boolean/funcs.mysql.boolean.txt
   * 
-  *
-  * $Id: SEARCH.php,v 1.1.1.1 2005-02-28 07:14:52 kimitake Exp $
   */
 
 
@@ -166,11 +164,7 @@ class SEARCH {
     	$result=str_replace('+','',$result);
     	
     	$result=str_replace(',',' ,',$result);
-    	
-    	// remove double spaces (we might have introduced some new ones above)
-    	$result=trim($result);
-    	$result=preg_replace("/([[:space:]]{2,})/",' ',$result);
-    	
+
     	return $result;
     }
     

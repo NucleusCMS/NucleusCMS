@@ -11,8 +11,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * A class representing a template
-  *
-  * $Id: TEMPLATE.php,v 1.1.1.1 2005-02-28 07:14:53 kimitake Exp $
   */
 class TEMPLATE {
 

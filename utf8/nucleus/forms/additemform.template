@@ -24,6 +24,5 @@
 	onkeypress="shortCuts();"	></textarea>
    <br />
    <span class="shortcuts">[ctrl+shift+A]&nbsp;=&nbsp;Link, [ctrl+shift+B]&nbsp;=&nbsp;Bold, [ctrl+shift+I]&nbsp;=&nbsp;Italic, [ctrl+shift+M]&nbsp;=&nbsp;Insert&nbsp;Media.</span>
-   <%callback(FormExtra,additemform)%>	
  </div>
 </form>

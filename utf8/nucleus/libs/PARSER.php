@@ -9,7 +9,6 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: PARSER.php,v 1.1.1.1 2005-02-28 07:14:51 kimitake Exp $
   */
  
 /**
@@ -211,8 +210,8 @@ class BaseActions {
 		// nothing to include
 		if ($fsize <= 0)
 			return;
-		
-		$this->level = $this->level + 1;
+	
+		$this->level = $this->level + 1;	
 		
 		// read file 
 		$fd = fopen ($filename, 'r');

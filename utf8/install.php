@@ -491,9 +491,7 @@
 			'nucleus_plugin',
 			'nucleus_skin',
 			'nucleus_template',
-			'nucleus_team',
-			'nucleus_activation',
-			'nucleus_tickets'
+			'nucleus_team'
 // these are unneeded (one of the replacements above takes care of them)
 //			'nucleus_plugin_event',
 //			'nucleus_plugin_option',
@@ -514,9 +512,7 @@
 			$mysql_prefix . 'nucleus_plugin',
 			$mysql_prefix . 'nucleus_skin',
 			$mysql_prefix . 'nucleus_template',
-			$mysql_prefix . 'nucleus_team',
-			$mysql_prefix . 'nucleus_activation',
-			$mysql_prefix . 'nucleus_tickets'
+			$mysql_prefix . 'nucleus_team'
 // these are unneeded (one of the replacements above takes care of them)
 //			$mysql_prefix . 'nucleus_plugin_event',
 //			$mysql_prefix . 'nucleus_plugin_option',
@@ -699,10 +695,6 @@
 
 	// include libs
 	include($DIR_LIBS.'globalfunctions.php');
-	if (!extension_loaded('mbstring')) {
-	include($DIR_LIBS.'mb_emulator/mb-emulator.php');
-	}
-
 ?&gt;
 			</pre>
 
