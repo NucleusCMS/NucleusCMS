@@ -1,21 +1,24 @@
 <nucleusskin>
 <meta>
 	<skin name="default" />
-	<template name="default/short" />
-	<template name="default/full" />
-	<info><![CDATA[Nucleus Default Skin]]></info>
+	<template name="default/index" />
+	<template name="default/item" />
+	<info><![CDATA[Nucleus CMS Default Skin]]></info>
 </meta>
 
 <skin name="default" type="text/html" includeMode="skindir" includePrefix="default/">
-<description>Nucleus default skin</description>
+
+<description>Nucleus CMS default skin</description>
 
 
 	<part name="archive"><![CDATA[
 
 <%parsedinclude(head.inc)%>
 
+<!-- page header -->
 <%parsedinclude(header.inc)%>
 
+<!-- page content -->
 <div id="container">
 <div class="content">
 <div class="contenttitle">
@@ -23,14 +26,16 @@
 </div>
 You are currently viewing archive for <%archivedate%>
 </div>
-<%archive(default/short)%>
+<%archive(default/index)%>
 </div>
 
+<!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
 <%parsedinclude(menu.inc)%>
 </div>
 
+<!-- page footer -->
 <%parsedinclude(footer.inc)%>
 
 ]]></part>
@@ -40,8 +45,10 @@ You are currently viewing archive for <%archivedate%>
 
 <%parsedinclude(head.inc)%>
 
+<!-- page header -->
 <%parsedinclude(header.inc)%>
 
+<!-- page content -->
 <div id="container">
 <div class="content">
 <div class="contenttitle">
@@ -49,16 +56,18 @@ You are currently viewing archive for <%archivedate%>
 </div>
 <dl>
 <dt>Monthly Archives</dt>
-<%archivelist(default/short)%>
+<%archivelist(default/index)%>
 </dl>
 </div>
 </div>
 
+<!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
 <%parsedinclude(menu.inc)%>
 </div>
 
+<!-- page footer -->
 <%parsedinclude(footer.inc)%>
 
 ]]></part>
@@ -68,8 +77,10 @@ You are currently viewing archive for <%archivedate%>
 
 <%parsedinclude(head.inc)%>
 
+<!-- page header -->
 <%parsedinclude(header.inc)%>
 
+<!-- page content -->
 <div id="container">
 <div class="content">
 <div class="contenttitle">
@@ -80,11 +91,13 @@ You are currently viewing archive for <%archivedate%>
 </div>
 </div>
 
+<!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
 <%parsedinclude(menu.inc)%>
 </div>
 
+<!-- page footer -->
 <%parsedinclude(footer.inc)%>
 
 ]]></part>
@@ -103,6 +116,7 @@ body { margin: 0px; }
 </style>
 </head>
 
+<!-- image content -->
 <body onblur="window.close()">
 <a href="javascript:window.close();"><%image%></a>
 </body>
@@ -116,17 +130,21 @@ body { margin: 0px; }
 
 <%parsedinclude(head.inc)%>
 
+<!-- page header -->
 <%parsedinclude(header.inc)%>
 
+<!-- page content -->
 <div id="container">
-<%blog(default/short,10)%>
+<%blog(default/index,10)%>
 </div>
 
+<!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
 <%parsedinclude(menu.inc)%>
 </div>
 
+<!-- page footer -->
 <%parsedinclude(footer.inc)%>
 
 ]]></part>
@@ -136,18 +154,20 @@ body { margin: 0px; }
 
 <%parsedinclude(head.inc)%>
 
+<!-- page header -->
 <%parsedinclude(header.inc)%>
 
+<!-- page content -->
 <div id="container">
 <div class="content">
-<%item(default/full)%>
+<%item(default/item)%>
 </div>
 <div class="content">
 <div class="contenttitle">
 <h2>Comments</h2>
 </div>
 <a name="c"></a>
-<%comments(default/full)%>
+<%comments(default/item)%>
 </div>
 <div class="content">
 <div class="contenttitle">
@@ -157,11 +177,13 @@ body { margin: 0px; }
 </div>
 </div>
 
+<!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
 <%parsedinclude(menu.inc)%>
 </div>
 
+<!-- page footer -->
 <%parsedinclude(footer.inc)%>
 
 ]]></part>
@@ -171,8 +193,10 @@ body { margin: 0px; }
 
 <%parsedinclude(head.inc)%>
 
+<!-- page header -->
 <%parsedinclude(header.inc)%>
 
+<!-- page content -->
 <div id="container">
 <div class="content">
 <div class="contenttitle">
@@ -190,11 +214,13 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 </div>
 </div>
 
+<!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
 <%parsedinclude(menu.inc)%>
 </div>
 
+<!-- page footer -->
 <%parsedinclude(footer.inc)%>
 
 ]]></part>
@@ -204,8 +230,10 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 
 <%parsedinclude(head.inc)%>
 
+<!-- page header -->
 <%parsedinclude(header.inc)%>
 
+<!-- page content -->
 <div id="container">
 <div class="content">
 <div class="contenttitle">
@@ -213,14 +241,16 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 </div>
 <%searchform%>
 </div>
-<%searchresults(default/short)%>
+<%searchresults(default/index)%>
 </div>
 
+<!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
 <%parsedinclude(menu.inc)%>
 </div>
 
+<!-- page footer -->
 <%parsedinclude(footer.inc)%>
 
 ]]></part>
@@ -228,45 +258,43 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 </skin>
 
 
-<template name="default/short">
+<template name="default/index">
 
-<description>Nucleus default blog template</description>
+<description>Nucleus CMS default index template</description>
 
-	<part name="ARCHIVELIST_LISTITEM"><![CDATA[
-<dd><a href="<%archivelink%>" title="Archive for %B, %Y">%B, %Y</a></dd>
-]]></part>
+	<part name="ARCHIVELIST_LISTITEM"><![CDATA[<dd>
+<a href="<%archivelink%>" title="Archive for %B, %Y">%B, %Y</a>
+</dd>]]></part>
 
-	<part name="CATLIST_HEADER"><![CDATA[
-<dd><a href="<%blogurl%>" title="All categories">All</a></dd>
-]]></part>
+	<part name="CATLIST_HEADER"><![CDATA[<dd>
+<a href="<%blogurl%>" title="All categories">All</a>
+</dd>]]></part>
 
-	<part name="CATLIST_LISTITEM"><![CDATA[
-<dd><a href="<%catlink%>" title="Category: <%catname%>"><%catname%></a></dd>
-]]></part>
+	<part name="CATLIST_LISTITEM"><![CDATA[<dd>
+<a href="<%catlink%>" title="Category: <%catname%>"><%catname%></a>
+</dd>]]></part>
 
 	<part name="COMMENTS_MANY"><![CDATA[Comments]]></part>
 
-	<part name="COMMENTS_NONE"><![CDATA[
-<div class="contentitem3"><small class="contentitemcomments">
+	<part name="COMMENTS_NONE"><![CDATA[<div class="contentitem3">
+<small class="contentitemcomments">
 <a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle%>'">Add comment</a>
-</small></div>
-]]></part>
+</small>
+</div>]]></part>
 
 	<part name="COMMENTS_ONE"><![CDATA[Comment]]></part>
 
-	<part name="COMMENTS_TOOMUCH"><![CDATA[
-<div class="contentitem3"><small class="contentitemcomments">
-<a href="<%itemlink%>#c" rel="bookmark"
-title="Add comment on '<%itemtitle%>'"><%commentcount%> <%commentword%></a>
-</small></div>
-]]></part>
+	<part name="COMMENTS_TOOMUCH"><![CDATA[<div class="contentitem3">
+<small class="contentitemcomments">
+<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle%>'"><%commentcount%> <%commentword%></a>
+</small>
+</div>]]></part>
 
-	<part name="EDITLINK"><![CDATA[
-<div class="contentitem4">
+	<part name="EDITLINK"><![CDATA[<div class="contentitem4">
 <small class="contentitemedit">
 <a href="<%editlink%>" title="Make changes to your entry" onclick="<%editpopupcode%>" >Edit item</a>
-</small></div>
-]]></part>
+</small>
+</div>]]></part>
 
 	<part name="FORMAT_DATE"><![CDATA[%d/%m]]></part>
 
@@ -274,8 +302,7 @@ title="Add comment on '<%itemtitle%>'"><%commentcount%> <%commentword%></a>
 
 	<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
 
-	<part name="ITEM"><![CDATA[
-<div class="content">
+	<part name="ITEM"><![CDATA[<div class="content">
 <div class="contenttitle">
 <h2><%date%>: <a href="<%itemlink%>" title="Read entry: <%title%>"><%title%></a></h2>
 </div>
@@ -283,11 +310,13 @@ title="Add comment on '<%itemtitle%>'"><%commentcount%> <%commentword%></a>
 <div class="contentitem1">
 <small class="contentitemcategory">
 Category: <a href="<%categorylink%>" title="Category: <%Category%>"><%Category%></a>
-</small></div>
+</small>
+</div>
 <div class="contentitem2">
 <small class="contentitempostedby">
 Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
-</small></div>
+</small>
+</div>
 <%comments%>
 <%edit%>
 </div>
@@ -295,34 +324,32 @@ Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 <%body%>
 <%morelink%>
 </div>
-</div>
-]]></part>
+</div>]]></part>
 
 	<part name="LOCALE"><![CDATA[en]]></part>
 
 	<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
 
-	<part name="MORELINK"><![CDATA[
-<p>&raquo; <a href="<%itemlink%>#more" title="Read more on '<%title%>'">Read More</a></p>
-]]></part>
+	<part name="MORELINK"><![CDATA[<p>&raquo; 
+<a href="<%itemlink%>#more" title="Read more on '<%title%>'">Read More</a>
+</p>]]></part>
 
 	<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
 
 	<part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part>
 
-	<part name="SEARCH_NOTHINGFOUND"><![CDATA[
-<div class="content">No search results found for <b><%query%></b></div>
-]]></part>
+	<part name="SEARCH_NOTHINGFOUND"><![CDATA[<div class="content">
+No search results found for <b><%query%></b>
+</div>]]></part>
 
 </template>
 
 
-<template name="default/full">
+<template name="default/item">
 
-<description>Nucleus default item template</description>
+<description>Nucleus CMS default item template</description>
 
-	<part name="COMMENTS_BODY"><![CDATA[
-<div class="itemcomment id<%memberid%>">
+	<part name="COMMENTS_BODY"><![CDATA[<div class="itemcomment id<%memberid%>">
 <h3><a href="<%userlinkraw%>"
 title="<%ip%> | Click to visit <%user%>'s website or send an email">
 <%user%></a> wrote:</h3>
@@ -332,8 +359,7 @@ title="<%ip%> | Click to visit <%user%>'s website or send an email">
 <div class="commentinfo">
 <%date%> <%time%>
 </div>
-</div>
-]]></part>
+</div>]]></part>
 
 	<part name="COMMENTS_MANY"><![CDATA[comments]]></part>
 
@@ -341,12 +367,11 @@ title="<%ip%> | Click to visit <%user%>'s website or send an email">
 
 	<part name="COMMENTS_ONE"><![CDATA[comment]]></part>
 
-	<part name="EDITLINK"><![CDATA[
-<div class="contentitem4">
+	<part name="EDITLINK"><![CDATA[<div class="contentitem4">
 <small class="contentitemedit">
 <a href="<%editlink%>" title="Make changes to your entry" onclick="<%editpopupcode%>" >Edit item</a>
-</small></div>
-]]></part>
+</small>
+</div>]]></part>
 
 	<part name="FORMAT_DATE"><![CDATA[%d/%m]]></part>
 
@@ -354,25 +379,26 @@ title="<%ip%> | Click to visit <%user%>'s website or send an email">
 
 	<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
 
-	<part name="ITEM"><![CDATA[
-<div class="contenttitle">
-<h2><%date%>: <%title%></h2></div>
+	<part name="ITEM"><![CDATA[<div class="contenttitle">
+<h2><%date%>: <%title%></h2>
+</div>
 <div class="contentitem">
 <div class="contentitem1">
 <small class="contentitemcategory">
 Category: <a href="<%categorylink%>" title="Category: <%category%>"><%category%></a>
-</small></div>
+</small>
+</div>
 <div class="contentitem2">
 <small class="contentitempostedby">
 Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
-</small></div>
+</small>
+</div>
 <%edit%>
 </div>
 <div class="contentbody">
 <%body%><br /><br />
 <a name="more"></a><%more%>
-</div>
-]]></part>
+</div>]]></part>
 
 	<part name="LOCALE"><![CDATA[en]]></part>
 
