@@ -177,11 +177,11 @@ class SKIN {
 		$content = trim($content);
 
 		// delete old thingie
-		sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='$type' and sdesc=$skinid");
+		sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='".addslashes($type)."' and sdesc=" . intval($skinid));
 
 		// write new thingie
 		if ($content) {
-			sql_query('INSERT INTO '.sql_table('skin')." SET scontent='" . addslashes($content) . "', stype='" . addslashes($type) . "', sdesc=$skinid");
+			sql_query('INSERT INTO '.sql_table('skin')." SET scontent='" . addslashes($content) . "', stype='" . addslashes($type) . "', sdesc=" . intval($skinid));
 		}	
 	}
 	

@@ -27,6 +27,8 @@ class ITEM {
 	function getitem($itemid, $allowdraft, $allowfuture) {
 		global $manager;
 
+		$itemid = intval($itemid);
+		
 		$query =  'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, i.ititle as title, i.ibody as body, m.mname as author, i.iauthor as authorid, i.itime, i.imore as more, i.ikarmapos as karmapos, i.ikarmaneg as karmaneg, i.icat as catid'
 		       . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m'
 		       . ' WHERE i.inumber=' . $itemid
@@ -139,6 +141,8 @@ class ITEM {
 	  */
 	function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0) {
 		global $manager;
+		
+		$itemid = intval($itemid);
 
 		// make sure value is 1 or 0
 		if ($closed != 1) $closed = 0;
@@ -212,6 +216,9 @@ class ITEM {
 	function move($itemid, $new_catid) {
 		global $manager;
 		
+		$itemid = intval($itemid);
+		$new_catid = intval($new_catid);
+		
 		$new_blogid = getBlogIDFromCatID($new_catid);
 
 		$manager->notify(
@@ -248,6 +255,8 @@ class ITEM {
 	function delete($itemid) {
 		global $manager;
 		
+		$itemid = intval($itemid);
+		
 		$manager->notify('PreDeleteItem', array('itemid' => $itemid));
 		
 		// delete item
@@ -265,7 +274,9 @@ class ITEM {
 	function exists($id,$future,$draft) {
 		global $manager;
 		
-		$r = 'select * FROM '.sql_table('item').' WHERE inumber='.intval($id);
+		$id = intval($id);
+		
+		$r = 'select * FROM '.sql_table('item').' WHERE inumber='.$id;
 		if (!$future) {
 			$bid = getBlogIDFromItemID($id);
 			if (!$bid) return 0;

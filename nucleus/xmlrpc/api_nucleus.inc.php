@@ -200,6 +200,9 @@
 	  * ($amount = max 20);
 	  */
 	function _getRecentItems($blogid, $username, $password, $amount) {
+		$blogid = intval($blogid);
+		$amount = intval($amount);
+	
 		// 1. login
 		$mem = new MEMBER();
 		if (!$mem->login($username, $password))

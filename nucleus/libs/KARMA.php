@@ -25,14 +25,14 @@ class KARMA {
 	
 	function KARMA($itemid, $initpos = 0, $initneg = 0, $initread = 0) {	
 		// itemid
-		$this->itemid = $itemid;
+		$this->itemid = intval($itemid);
 
 		// have we read the karma info yet?
-		$this->inforead = $initread;	
+		$this->inforead = intval($initread);	
 		
 		// number of positive and negative votes
-		$this->karmapos = $initpos;
-		$this->karmaneg = $initneg;
+		$this->karmapos = intval($initpos);
+		$this->karmaneg = intval($initneg);
 	}
 	
 	function getNbPosVotes() {
@@ -53,10 +53,10 @@ class KARMA {
 	}
 	
 	function setNbPosVotes($val) {
-		$this->karmapos = $val;
+		$this->karmapos = intval($val);
 	}
 	function setNbNegVotes($val) {
-		$this->karmaneg = $val;
+		$this->karmaneg = intval($val);
 	}
 
 
@@ -97,14 +97,14 @@ class KARMA {
 	
 	// checks if a vote is still allowed for an IP
 	function isVoteAllowed($ip) {
-		$query = 'SELECT * FROM '.sql_table('karma')." WHERE itemid=$this->itemid and ip='$ip'";
+		$query = 'SELECT * FROM '.sql_table('karma')." WHERE itemid=$this->itemid and ip='".addslashes($ip)."'";
 		$res = sql_query($query);
 		return (mysql_num_rows($res) == 0);
 	}
 	
 	// save IP in database so no multiple votes are possible
 	function saveIP() {
-		$query = 'INSERT INTO '.sql_table('karma').' (itemid, ip) VALUES ('.$this->itemid.",'".serverVar('REMOTE_ADDR')."')";
+		$query = 'INSERT INTO '.sql_table('karma').' (itemid, ip) VALUES ('.$this->itemid.",'".addslashes(serverVar('REMOTE_ADDR'))."')";
 		sql_query($query);
 	}
 }

@@ -201,6 +201,10 @@
 	}
 	
 	function _getRecentItemsMetaWeblog($blogid, $username, $password, $amount) {
+	
+		$blogid = intval($blogid);
+		$amount = intval($amount);
+	
 		// 1. login
 		$mem = new MEMBER();
 		if (!$mem->login($username, $password))

@@ -506,6 +506,7 @@ class SKINEXPORT {
 		
 		// contents skins
 		foreach ($this->skins as $skinId => $skinName) {
+			$skinId = intval($skinId);
 			$skinObj = new SKIN($skinId);
 			
 			echo '<skin name="',htmlspecialchars($skinName),'" type="',htmlspecialchars($skinObj->getContentType()),'" includeMode="',htmlspecialchars($skinObj->getIncludeMode()),'" includePrefix="',htmlspecialchars($skinObj->getIncludePrefix()),'">';
@@ -522,6 +523,7 @@ class SKINEXPORT {
 		
 		// contents templates
 		foreach ($this->templates as $templateId => $templateName) {
+			$templateId = intval($templateId);
 			
 			echo '<template name="',htmlspecialchars($templateName),'">';
 			

@@ -21,6 +21,7 @@ class BAN {
 	  * message and other information of the ban
 	  */
 	function isBanned($blogid, $ip) {
+		$blogid = intval($blogid);
 		$query = 'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid;
 		$res = sql_query($query);
 		while ($obj = mysql_fetch_object($res)) {
@@ -37,6 +38,8 @@ class BAN {
 	  */
 	function addBan($blogid, $iprange, $reason) {
 		global $manager;
+		
+		$blogid = intval($blogid);
 	
 		$manager->notify(
 			'PreAddBan',
@@ -48,7 +51,7 @@ class BAN {
 		);
 	
 		$query = 'INSERT INTO '.sql_table('ban')." (blogid, iprange, reason) VALUES "
-		       . "($blogid,'$iprange','".addslashes($reason)."')";
+		       . "($blogid,'".addslashes($iprange)."','".addslashes($reason)."')";
 		$res = sql_query($query);
 		
 		$manager->notify(
@@ -69,6 +72,7 @@ class BAN {
 	  */
 	function removeBan($blogid, $iprange) {
 		global $manager;
+		$blogid = intval($blogid);
 		
 		$manager->notify('PreDeleteBan', array('blogid' => $blogid, 'range' => $iprange));
 		

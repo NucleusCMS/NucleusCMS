@@ -1418,6 +1418,8 @@ class ADMIN {
 	function deleteOneComment($commentid) {
 		global $member, $manager;
 		
+		$commentid = intval($commentid);
+		
 		if (!$member->canAlterComment($commentid))
 			return _ERROR_DISALLOWED;
 			
@@ -1900,6 +1902,9 @@ class ADMIN {
 	function deleteOneTeamMember($blogid, $memberid) {
 		global $member, $manager;
 		
+		$blogid = intval($blogid);
+		$memberid = intval($memberid);
+		
 		// check if allowed
 		if (!$member->blogAdminRights($blogid))
 			return _ERROR_DISALLOWED;
@@ -2183,8 +2188,12 @@ class ADMIN {
 		
 		if ($blogid == '')
 			$blogid = intGetVar('blogid');
+		else 
+			$blogid = intval($blogid);
 		if ($catid == '')
 			$catid = intGetVar('catid');
+		else
+			$catid = intval($catid);
 
 		$member->blogAdminRights($blogid) or $this->disallow();
 
@@ -2331,6 +2340,8 @@ class ADMIN {
 	function deleteOneCategory($catid) {
 		global $manager, $member;
 		
+		$catid = intval($catid);
+		
 		$manager->notify('PreDeleteCategory', array('catid' => $catid));		
 
 		$blogid = getBlogIDFromCatID($catid);
@@ -2365,7 +2376,7 @@ class ADMIN {
 		NucleusPlugin::_deleteOptionValues('category', $catid);
 		
 		// delete category
-		$query = 'DELETE FROM '.sql_table('category').' WHERE catid=' .intval($catid);
+		$query = 'DELETE FROM '.sql_table('category').' WHERE catid=' .$catid;
 		sql_query($query);
 		
 		$manager->notify('PostDeleteCategory', array('catid' => $catid));				
@@ -2375,6 +2386,9 @@ class ADMIN {
 	function moveOneCategory($catid, $destblogid) {
 		global $manager, $member;
 
+		$catid = intval($catid);
+		$destblogid = intval($destblogid);
+		
 		$blogid = getBlogIDFromCatID($catid);
 		
 		// mover should have admin rights on both blogs
@@ -2631,6 +2645,7 @@ class ADMIN {
 	function deleteOneMember($memberid) {
 		global $manager;
 		
+		$memberid = intval($memberid);
 		$mem = MEMBER::createFromID($memberid);
 		
 		if (!$mem->canBeDeleted()) 
@@ -2768,7 +2783,7 @@ class ADMIN {
 		$bdefskin = 	addslashes($bdefskin);
 		
 		// create blog
-		$query = 'INSERT INTO '.sql_table('blog')." (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', $btimeoffset, $bdefskin)";
+		$query = 'INSERT INTO '.sql_table('blog')." (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', '$btimeoffset', '$bdefskin')";
 		sql_query($query);
 		$blogid	= mysql_insert_id();
 		$blog	=& $manager->getBlog($blogid);
@@ -3369,6 +3384,8 @@ selector();
 		$partname = addslashes($partname);
 		$content = addslashes($content);	
 		
+		$id = intval($id);
+		
 		// don't add empty parts:
 		if (!trim($content)) return -1;
 		
@@ -3843,6 +3860,7 @@ selector();
 	}
 	
 	function skinclonetype($skin, $newid, $type) {
+		$newid = intval($newid);
 		$content = $skin->getContent($type);
 		if ($content) {
 			$query = 'INSERT INTO '.sql_table('skin')." (sdesc, scontent, stype) VALUES ($newid,'". addslashes($content)."', '". addslashes($type)."')";
@@ -4843,7 +4861,7 @@ selector();
 					if (ereg('^NP_(.*)\.php$',$filename,$matches)) {
 						$name = $matches[1];
 						// only show in list when not yet installed
-						if (mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin').' WHERE pfile="NP_'.$name.'"')) == 0)
+						if (mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin').' WHERE pfile="NP_'.addslashes($name).'"')) == 0)
 							array_push($candidates,$name);
 					}
 				}
@@ -4900,7 +4918,7 @@ selector();
 		);
 		
 		// do this before calling getPlugin (in case the plugin id is used there)
-		$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.$name.'")';
+		$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.addslashes($name).'")';
 		sql_query($query);
 		$iPid = mysql_insert_id();
 
@@ -4958,7 +4976,7 @@ selector();
 			{
 				$eventList = $plug->getEventList();
 				foreach ($eventList as $eventName) 
-					sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.$eventName.'\')');
+					sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.addslashes($eventName).'\')');
 			}
 		}
 		
@@ -5008,6 +5026,8 @@ selector();
 	
 	function deleteOnePlugin($pid, $callUninstall = 0) {
 		global $manager;
+		
+		$pid = intval($pid);
 		
 		if (!$manager->pidInstalled($pid))
 			return _ERROR_NOSUCHPLUGIN;

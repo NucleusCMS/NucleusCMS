@@ -235,7 +235,7 @@ class MANAGER {
 		return (mysql_num_rows($res) != 0);
 	}
 	function pidInstalled($pid) {
-		$res = sql_query('SELECT pid FROM '.sql_table('plugin').' WHERE pid=' . $pid);
+		$res = sql_query('SELECT pid FROM '.sql_table('plugin').' WHERE pid=' . intval($pid));
 		return (mysql_num_rows($res) != 0);
 	}
 	function getPidFromName($name) {

@@ -17,7 +17,7 @@ class TEMPLATE {
 	var $id;
 	
 	function TEMPLATE($templateid) {
-		$this->id = $templateid;
+		$this->id = intval($templateid);
 	}
 	
 	function getID() {
@@ -57,11 +57,11 @@ class TEMPLATE {
 		$id = $this->getID();
 	
 		// delete old thingie
-		sql_query('DELETE FROM '.sql_table('template')." WHERE tpartname='$type' and tdesc=$id");
+		sql_query('DELETE FROM '.sql_table('template')." WHERE tpartname='". addslashes($type) ."' and tdesc=" . intval($id));
 		
 		// write new thingie
 		if ($content) {
-			sql_query('INSERT INTO '.sql_table('template')." SET tcontent='" . addslashes($content) . "', tpartname='" . addslashes($type) . "', tdesc=$id");
+			sql_query('INSERT INTO '.sql_table('template')." SET tcontent='" . addslashes($content) . "', tpartname='" . addslashes($type) . "', tdesc=" . intval($id));
 		}	
 	}
 		
