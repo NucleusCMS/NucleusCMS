@@ -29,6 +29,7 @@ include('upgrade1.1.php');
 include('upgrade1.5.php');
 include('upgrade2.0.php');
 include('upgrade2.5.php');
+include('upgrade3.0.php');
 
 $from = intGetVar('from');
 
@@ -46,13 +47,17 @@ switch($from) {
 		upgrade_do15();
 	case 15:
 		upgrade_do20();
-		break;
 	case 20:
 		upgrade_do25();
+	case 25:
+		upgrade_do30();
 		break;
 	default:
-		echo "<li>Error! No queries to execute</li>";
+		echo "<li>Error! No updates to execute</li>";
+		break;
 }
+
+
 
 upgrade_end("Upgrade Completed");
 
