@@ -14,6 +14,8 @@
 
 // START changed/added after 3.1 START
 
+define('_PLUGS_BTN_UPDATE',			'Update subscription list');
+
 // global settings 
 define('_SETTINGS_JSTOOLBAR',		'Javascript Toolbar Style');
 define('_SETTINGS_JSTOOLBAR_FULL',	'Full Toolbar (IE)');
