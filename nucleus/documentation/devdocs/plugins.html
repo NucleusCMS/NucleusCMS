@@ -64,7 +64,8 @@ This document contains information on how you can write your own Nucleus plugins
 	<li><a href="#options">Saving options</a></li>
 	<li><a href="#tables">Database tables</a></li>
 	<li><a href="#admin">Providing an admin area</a></li>
-  <li><a href="#help">Providing a helppage</a></li>
+	<li><a href="#help">Providing a helppage</a></li>
+	<li><a href="#dependency">Plugin Dependency Check</a></li>
 <!--	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
@@ -1807,6 +1808,29 @@ http://forum.nucleuscms.org/viewtopic.php?t=&lt;TOPIC_ID_GOES_HERE&gt;&lt;/a&gt;
   }</code></pre>
 </li>
 </ol>
+
+<h1>Plugin Dependency Check <a name="dependency" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Starting from 3.1+ CVS, a new plugin interface is added to allow one to declare any dependency on other plugin(s). This is useful for any
+plugin that require another plugin to function. It is particularly useful for a plugin to detect any broken dependency that prevent a plugin to function properly.</p>
+
+<h2>How to write a plugin that utilize this function</h2>
+<p>Let try a real world example.</p>
+
+<p>NP_PageLinkList depends on NP_BlogWithOffset to function, so we want to make sure if a user install NP_PageLinkList whithout first install
+NP_BlogWithOffset. With this API, Nucleus offers a way for a plugin to detect any missing dependency before it is installed.</p>
+
+<p>In this case, we want to code into NP_PageLinkList to mark that it requires NP_BlogWithOffset. When the plugin is installed, the core calls a
+function in the plugin called getPluginDep(). This function returns a list of plugin it requires, and the core will check against all installed plugins and
+failed the installation if a dependency is missing.</p>
+
+<p>All we have to do is added this function to NP_PageLinkList:</p>
+
+<pre>
+function getPluginDep() {
+     return array('NP_BlogWithOffset');
+}
+</pre>
 
 </body>
 </html>
