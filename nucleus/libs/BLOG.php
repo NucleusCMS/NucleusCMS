@@ -655,12 +655,18 @@ class BLOG {
 	}
 	
 	function writeSettings() {
+	
+		// (can't use floatval since not available prior to PHP 4.2)
+		$offset = $this->getTimeOffset();
+		if (!is_float($offset))
+			$offset = intval($offset);
+		
 		$query =  'UPDATE '.sql_table('blog')
 		       . " SET bname='" . addslashes($this->getName()) . "',"
 		       . "     bshortname='". addslashes($this->getShortName()) . "',"
 		       . "     bcomments=". intval($this->commentsEnabled()) . ","
 		       . "     bmaxcomments=" . intval($this->getMaxComments()) . ","
-		       . "     btimeoffset=" . floatval($this->getTimeOffset()) . ","
+		       . "     btimeoffset=" . $offset . ","
 		       . "     bpublic=" . intval($this->isPublic()) . ","
 		       . "     bsendping=" . intval($this->pingUserland()) . ","
 		       . "     bconvertbreaks=" . intval($this->convertBreaks()) . ","
