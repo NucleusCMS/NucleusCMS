@@ -46,7 +46,7 @@ switch($action) {
 function addComment() {
 	global $CONF, $errormessage, $manager;
 	
-	$post['itemid'] =	postVar('itemid');
+	$post['itemid'] =	intPostVar('itemid');
 	$post['user'] = 	postVar('user');
 	$post['userid'] = 	postVar('userid');
 	$post['body'] = 	postVar('body');
