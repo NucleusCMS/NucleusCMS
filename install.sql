@@ -288,3 +288,13 @@ INSERT INTO `nucleus_template_desc` VALUES (5, 'feeds/atom/entries', 'Atom feeds
 INSERT INTO `nucleus_template_desc` VALUES (3, 'feeds/rss20', 'Used for RSS 2.0 syndication of your blog');
 INSERT INTO `nucleus_template_desc` VALUES (1, 'grey/short', 'The default template that is used to display your Nucleus blog');
 INSERT INTO `nucleus_template_desc` VALUES (2, 'grey/full', 'Used for detailed item pages');
+
+CREATE TABLE `nucleus_activation` (
+  `vkey` varchar(40) NOT NULL default '',
+  `vtime` datetime NOT NULL default '0000-00-00 00:00:00',
+  `vmember` int(11) NOT NULL default '0',
+  `vtype` varchar(15) NOT NULL default '',
+  `vextra` varchar(128) NOT NULL default '',
+  PRIMARY KEY  (`vkey`)
+) TYPE=MyISAM;
+        
