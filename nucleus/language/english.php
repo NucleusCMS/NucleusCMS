@@ -14,6 +14,13 @@
 
 // START changed/added after 3.1 START
 
+// comments list per weblog
+define('_COMMENTS_BLOG',			'All Comments for blog');
+define('_NOCOMMENTS_BLOG',			'No comments were made on items of this blog');
+define('_BLOGLIST_COMMENTS',		'Comments');
+define('_BLOGLIST_TT_COMMENTS',		'A list of all comments made on items of this blog');
+
+
 // for use in archivetype-skinvar
 define('_ARCHIVETYPE_DAY',			'day');
 define('_ARCHIVETYPE_MONTH',		'month');
