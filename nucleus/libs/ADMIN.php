@@ -3947,18 +3947,17 @@ class ADMIN {
 		
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';		
 		
+		?>
+			<h2><?=_ACTIONLOG_CLEAR_TITLE?></h2>
+			<p><a href="index.php?action=clearactionlog"><?=_ACTIONLOG_CLEAR_TEXT?></a></p>
+		<?
+
 		echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 		
 		$query =  "SELECT * FROM nucleus_actionlog ORDER BY timestamp DESC";
 		$template['content'] = 'actionlist';
 		$amount = showlist($query,'table',$template);
 		
-		?>
-			<h2><?=_ACTIONLOG_CLEAR_TITLE?></h2>
-			<p><a href="index.php?action=clearactionlog"><?=_ACTIONLOG_CLEAR_TEXT?></a></p>
-		<?
-		
-	
 		$this->pagefoot();
 
 	}
@@ -4754,65 +4753,73 @@ class BATCH extends ENCAPSULATE {
 		?>
 			<form method="post" action="index.php">
 		<?
+// TODO: get a list op operations above the list too 
+// (be careful not to use the same names for the select...)
+//		$this->showOperationList();		
 	}
 
 	function showFoot() {
+		$this->showOperationList();
 		?>
-			<div class="batchoperations">
-				With selected: 
-				<select name="batchaction">
-				<?
-					$options = array();
-					switch($this->type) {
-						case 'item':
-							$options = array(
-								'delete' => 'Delete',
-								'move' => 'Move'
-							);
-							break;
-						case 'member': 
-							$options = array(
-								'delete' => 'Delete',
-								'setadmin' => 'Give admin rights',
-								'unsetadmin' => 'Take away admin rights',
-							);
-							break;
-						case 'team':
-							$options = array(
-								'delete' => 'Delete from team',
-								'setadmin' => 'Give admin rights',
-								'unsetadmin' => 'Take away admin rights',
-							);
-							break;
-						case 'category':
-							$options = array(
-								'delete' => 'Delete',
-								'move' => 'Move to other blog',
-							);
-							break;
-						case 'comment':
-							$options = array(
-								'delete' => 'Delete',
-							);
-						break;
-					}
-					foreach ($options as $option => $label) {
-						echo '<option value="',$option,'">',$label,'</option>';
-					}
-				?>
-				</select>
-				<input type="hidden" name="action" value="batch<?=$this->type?>" />
-				<input type="submit" value="Execute" />
-				(
-				 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); ">select all</a> -
-				 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); ">deselect all</a>
-				)
-			</div>
-			
 			</form>
 		<?
 	}
 
+	function showOperationList() {
+		?>
+		<div class="batchoperations">
+			With selected: 
+			<select name="batchaction">
+			<?
+				$options = array();
+				switch($this->type) {
+					case 'item':
+						$options = array(
+							'delete' => 'Delete',
+							'move' => 'Move'
+						);
+						break;
+					case 'member': 
+						$options = array(
+							'delete' => 'Delete',
+							'setadmin' => 'Give admin rights',
+							'unsetadmin' => 'Take away admin rights',
+						);
+						break;
+					case 'team':
+						$options = array(
+							'delete' => 'Delete from team',
+							'setadmin' => 'Give admin rights',
+							'unsetadmin' => 'Take away admin rights',
+						);
+						break;
+					case 'category':
+						$options = array(
+							'delete' => 'Delete',
+							'move' => 'Move to other blog',
+						);
+						break;
+					case 'comment':
+						$options = array(
+							'delete' => 'Delete',
+						);
+					break;
+				}
+				foreach ($options as $option => $label) {
+					echo '<option value="',$option,'">',$label,'</option>';
+				}
+			?>
+			</select>
+			<input type="hidden" name="action" value="batch<?=$this->type?>" />
+			<input type="submit" value="Execute" />
+			(
+			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); ">select all</a> -
+			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); ">deselect all</a>
+			)
+		</div>
+		<?
+	}
+	
 	// shortcut :)
 	function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE) {
 		return $this->doEncapsulate(	'showlist',
