@@ -137,6 +137,10 @@ if ($action == 'login') {
 		$manager->notify('LoginFailed',array('username' => $login));
 		ACTIONLOG::add(INFO, 'Login failed for ' . $login);
 	}
+/*
+
+Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
+
 } elseif (serverVar('PHP_AUTH_USER') && serverVar('PHP_AUTH_PW')) {
 	// HTTP Authentication
        $login  = serverVar('PHP_AUTH_USER');
@@ -155,6 +159,8 @@ if ($action == 'login') {
                echo 'Invalid username or password';
                exit;
        }
+*/
+
 } elseif (($action == 'logout') && (!headers_sent()) && cookieVar('user')){
 	// remove cookies on logout
 	setcookie('user','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
