@@ -1,12 +1,14 @@
-<?php
-
+<?
 // Korean Nucleus Language File
 // 
 // Author: enamu, the most wikid (http://enamu.com/wik/)
 // Nucleus version: v1.0-v1.5
 //
 // Author: laotzu (http://www.ibizkorea.com/laotzu)
-// Nucleus version : v2.0 based with enamu
+// Nucleus version : v1.5 based with enamu
+
+// Author: sicrone (http://cecilia.ibbun.net/nucleus)
+// Nucleus version : v2.0 based with laotzu
 
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -15,6 +17,32 @@
 //
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
+// START introduced after v2.0 START
+
+// media library
+define('_MEDIA_VIEW',				'그림보기');
+define('_MEDIA_VIEW_TT',			'파일 열기 (새창으로)');
+define('_MEDIA_FILTER_APPLY',		'필터 적용');
+define('_MEDIA_FILTER_LABEL',		'필터: ');
+define('_MEDIA_UPLOAD_TO',			'어디에 업로드...');
+define('_MEDIA_UPLOAD_NEW',			'새로운 그림파일 업로드');
+define('_MEDIA_COLLECTION_SELECT',	'선택');
+define('_MEDIA_COLLECTION_TT',		'이 카테고리로 변경');
+define('_MEDIA_COLLECTION_LABEL',	'파일 목록: ');
+
+// tooltips on toolbar
+define('_ADD_ALIGNLEFT_TT',			'왼쪽 정렬');
+define('_ADD_ALIGNRIGHT_TT',		'오른쪽 정렬');
+define('_ADD_ALIGNCENTER_TT',		'가운데 정렬');
+
+// searchable blog setting (yes/no)
+define('_EBLOG_SEARCH',				'검색에 포함');
+
+// generic upload failure
+define('_ERROR_UPLOADFAILED',		'업로드 실패');
+
+// END introduced after v2.0 END
+
 // START introduced after v1.5 START
 
 // posting to the past/edit timestamps
@@ -90,7 +118,7 @@ define('_ERROR_CATCREATEFAIL',		'새로운 카테고리 생성에 실패했습니다');
 define('_ERROR_NUCLEUSVERSIONREQ',	'이 플러그인은 새 Nucleus버전이 필요합니다.: ');
 
 // backlinks
-define('_BACK_TO_BLOGSETTINGS',		'블로그 조절판으로 돌아가기');
+define('_BACK_TO_BLOGSETTINGS',		'블로그 제어판으로 돌아가기');
 
 // skin import export
 define('_SKINIE_TITLE_IMPORT',		'가져오기');
@@ -125,7 +153,7 @@ define('_EDITTEMPLATE_EMPTY',		'빈 필드(편집하려면 클릭)');
 // skin overview list
 define('_LIST_SKINS_INCMODE',		'모드포함:');
 define('_LIST_SKINS_INCPREFIX',		'서두포함:');
-define('_LIST_SKINS_DEFINED',		'부분정의:');
+define('_LIST_SKINS_defineD',		'부분정의:');
 
 // backup
 define('_BACKUPS_TITLE',			'백업하기 / 복원하기');
@@ -444,7 +472,7 @@ define('_WARNING_NOTWRITABLE',		'경고: 쓸 수 있는 디렉토리가 아닙니다!');
 
 // media and upload
 define('_MEDIA_UPLOADLINK',			'새 파일 업로드');
-define('_MEDIA_MODIFIED',			'변경된');
+define('_MEDIA_MODIFIED',			'날짜');
 define('_MEDIA_FILENAME',			'파일이름');
 define('_MEDIA_DIMENSIONS',			'크기');
 define('_MEDIA_INLINE',				'삽입');
@@ -607,7 +635,7 @@ define('_SKIN_ALLOWEDVARS',			'사용가능한 변수들 (클릭하면 도움말):');
 // global settings
 define('_SETTINGS_TITLE',			'일반 설정');
 define('_SETTINGS_SUB_GENERAL',		'일반 설정');
-define('_SETTINGS_DEFBLOG',			'기본설정 블록');
+define('_SETTINGS_DEFBLOG',			'기본 블로그');
 define('_SETTINGS_ADMINMAIL',		'관리자 이메일');
 define('_SETTINGS_SITENAME',		'사이트 이름');
 define('_SETTINGS_SITEURL',			'사이트의 URL (마지막에 슬래시 첨가)');
@@ -665,7 +693,7 @@ define('_LOGIN_MESSAGE',			'메시지');
 define('_LOGIN_NAME',				'이름');
 define('_LOGIN_PASSWORD',			'암호');
 define('_LOGIN_SHARED',				_LOGINFORM_SHARED);
-define('_LOGIN_FORGOT',				'암호를 잊으셨나요?');
+define('_LOGIN_FORGOT',				'암호를 잊으셨다면?');
 
 // membermanagement
 define('_MEMBERS_TITLE',			'회원 관리');
