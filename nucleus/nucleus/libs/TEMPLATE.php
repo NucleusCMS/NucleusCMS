@@ -13,6 +13,8 @@
   * A class representing a template
   */
 class TEMPLATE {
+
+	var $id;
 	
 	function TEMPLATE($templateid) {
 		$this->id = $templateid;
