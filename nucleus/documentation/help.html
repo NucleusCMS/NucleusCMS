@@ -3113,6 +3113,13 @@ all
 	<li><strong>nextitem</strong>: true if there is a more recent item available for the current weblog (item skintype)</li>
 	<li><strong>nextitem</strong>: true if there is an older item available for the current weblog (item skintype)</li>
 	<li><strong>skintype</strong>: checks if the current skin type is equal to <em>value</em> (index, search, item, archive, archivelist, ...)</li>
+	<li><strong>hasplugin</strong>: checks if the a plugin is installed, or if a plugin option has been set to a specific value
+		<ul>
+			<li><strong>hasplugin,PluginName</strong>: Checks if plugin is available</li>
+			<li><strong>hasplugin,PluginName,OptionName</strong>: Checks if a plugin option is not set to 'no'</li>
+			<li><strong>hasplugin,PluginName,OptionName=value</strong>: Checks if a plugin option is set to a specific value</li>
+		</ul>
+	</li>
 </ul>
 
 <h2>Skintypes</h2>

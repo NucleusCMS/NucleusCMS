@@ -397,7 +397,7 @@ class ACTIONS extends BaseActions {
 	}
 	
 	function parse_if($field, $name='', $value = '') {
-		global $catid, $blog, $member, $itemidnext, $itemidprev;
+		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager;
 
 		$condition = 0;
 		switch($field) {
@@ -422,6 +422,30 @@ class ACTIONS extends BaseActions {
 			case 'skintype':
 				$condition = ($name == $this->skintype);
 				break;
+			/*
+				hasplugin,PlugName
+					-> checks if plugin exists
+				hasplugin,PlugName,OptionName
+					-> checks if the option OptionName from plugin PlugName is not set to 'no'
+				hasplugin,PlugName,OptionName=value
+					-> checks if the option OptionName from plugin PlugName is set to value
+			*/
+		  	case 'hasplugin':
+                $condition = false;
+                $plugin =& $manager->getPlugin('NP_' . $name);
+                if ($plugin != NULL){
+                    if ($value == "") {
+                        $condition = true;
+                    } else {
+                        list($name2, $value2) = explode('=', $value, 2);
+                        if ($value2 == "" && $plugin->getOption($name2) != 'no') {
+                            $condition = true;
+                        } else if ($plugin->getOption($name2) == $value2) {
+                            $condition = true;
+                        }
+                    }
+                }
+                break;				
 			default:	
 				return;
 		}
