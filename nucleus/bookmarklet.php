@@ -59,6 +59,9 @@ function bm_doAddItem() {
 	if ($result['status'] == 'error')
 		bm_doError($result['message']);
 
+	$blogid = getBlogIDFromItemID($result['itemid']);
+	$blog =& $manager->getBlog($blogid);
+	
 	if ($result['status'] == 'newcategory') {
 		$message = 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid='.$blogid.'&amp;catid='.$result['catid'].'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>';
 		$extrahead = '';
