@@ -221,12 +221,15 @@ function checkSubmit() {
 
 // stores the caret
 function storeCaret (textEl) {
+
 	// store caret
 	if (textEl.createTextRange) 
 		textEl.caretPos = document.selection.createRange().duplicate();
 
 	// also store lastselectedelement
 	lastSelected = textEl;
+	
+	nonie_FormType = textEl.name;
 }
 
 var lastSelected;
