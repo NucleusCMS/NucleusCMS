@@ -253,29 +253,29 @@ function gzip_PrintFourChars($Val)
 } 
 
 function do_restore() {
-	global $HTTP_POST_FILES, $backup_file;
+	global $HTTP_POST_FILES;
 	
 	// first of all: get uploaded file:
 	if (empty($HTTP_POST_FILES['backup_file']['name']))
-		return "No file uploaded";
-	if (!is_uploaded_file($backup_file))
-		return "No file uploaded";
+		return 'No file uploaded';
+	if (!is_uploaded_file($HTTP_POST_FILES['backup_file']['tmp_name']))
+		return 'No file uploaded';
 		
 	$backup_file_name = $HTTP_POST_FILES['backup_file']['name'];
 	$backup_file_tmpname = $HTTP_POST_FILES['backup_file']['tmp_name'];
 	$backup_file_type = $HTTP_POST_FILES['backup_file']['type'];
 
 	if (!file_exists($backup_file_tmpname))
-		return "File Upload Error";
+		return 'File Upload Error';
 	
-	if (!preg_match("/^(text\/[a-zA-Z]+)|(application\/(x\-)?gzip\-compressed)|(application\/octet-stream)$/is", $backup_file_type) )
-		return "The uploaded file is not of the correct type";
+	if (!preg_match("/^(text\/[a-zA-Z]+)|(application\/(x\-)?gzip(\-compressed)?)|(application\/octet-stream)$/is", $backup_file_type) )
+		return 'The uploaded file is not of the correct type';
 	
-	if (preg_match("/\.gz$/is",$backup_file_name)) 
+	if (preg_match("/\.gz/is",$backup_file_name)) 
 		$gzip = 1;
 	else
 		$gzip = 0;
-	
+		
 	if (!extension_loaded("zlib") && $gzip)
 		return "Cannot decompress gzipped backup (zlib package not installed)";
 
