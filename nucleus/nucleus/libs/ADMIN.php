@@ -1017,7 +1017,7 @@ class ADMIN {
 		
 		// ping weblogs.com when posting a draft
 		if (!$closed && $publish && $wasdraft && $blog->pingUserland()) {
-			ADMIN::action_sendping($blogid);
+			action_sendping($blogid);
 			return;
 		}
 
