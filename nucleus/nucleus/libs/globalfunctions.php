@@ -1005,4 +1005,50 @@ function formatDate($format, $timestamp, $defaultFormat) {
 
 }
 
+/*
+  These functions create a FancierURL item link, needs NP_FancierURL plugin
+  installed. I put it here, to make it possible for all plugins to support 
+  FancierURL functionality.
+*/
+
+/* create a FancierURL link from ID */
+function fancyLink($id) {
+  if (empty($id)) return '';
+	global $CONF;
+	if ($CONF['URLMode'] == 'pathinfo') {
+	  // fancier URLs
+	  $query = mysql_query('SELECT iurltitle, UNIX_TIMESTAMP(itime) as itime FROM '.sql_table('item').' WHERE inumber='.strval($id));
+	  if ($obj = mysql_fetch_object($query)){
+	    $r=fancyTitle($id,$obj->iurltitle,$obj->itime);
+     } else {
+       $r='';
+     }
+     return $r;
+   } else {
+     // normal URLs
+      return $CONF['IndexURL'].'?itemid='.(strval($id));
+   }
+}
+
+/* format a FancierURL link */
+function fancyTitle($id,$title,$date) {
+  if (empty($id)) return '';
+	global $CONF;
+	if ($CONF['URLMode'] == 'pathinfo') {
+	  // fancier URLs
+    $date = getdate($date);
+    if (isset($CONF['ItemURL']) && preg_match('/^http:\/\//', $CONF['ItemURL'])) {
+	    $self = $CONF['ItemURL'] . '/';
+    } else {
+	    $self = $CONF['IndexURL'];
+    }
+    // $link = $self.'item/'.$date['year'].'/'.$date['mon'].'/'.$date['mday'].'/'.$title;
+    $link = $self.'item/'.$title;
+    return $link;
+  } else {
+    // normal URLs
+    return $CONF['IndexURL'].'?itemid='.(strval($id));
+  }
+}
+
 ?>
