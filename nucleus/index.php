@@ -3,7 +3,7 @@
 $CONF = array();
 $CONF['Self'] = 'index.php';
 
-include('config.php');
+include('./config.php');
 
 selector();
 

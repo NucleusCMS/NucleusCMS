@@ -209,7 +209,7 @@ mysql -u <i>username</i> -p -h <i>hostname</i> <i>databasename</i> &lt; <i>backu
 	<li>
 		By creating a <strong>copy of the <code>index.php</code> file</strong> (in this example, our file is named <tt>copy.php</tt>), and editing the contents of the file to look like this:
 		<pre><code>$CONF['Self'] = '<i>copy.php</i>';
-include('config.php');
+include('./config.php');
 selectBlog('<i>shortblogname</i>');
 selector();
 
@@ -243,12 +243,12 @@ selector();
 </tr></table>
 
 <p>
-Make sure that these methods are called <strong>after</strong> the <code>include('config.php')</code> statement, and <strong>before</strong> the <code>selector();</code> statement!
+Make sure that these methods are called <strong>after</strong> the <code>include('./config.php')</code> statement, and <strong>before</strong> the <code>selector();</code> statement!
 <p>
 
 <h2>Creating a blog in a subdirectory</h2>
 
-<p>The process for creating a blog in a subdirectory (<tt>http://yourhost.com/sub/</tt> where the main weblog is in <tt>http://yourhost.com/</tt>) is similar, with the only change that you'll need to replace <code>include('config.php');</code> by <code>include('../config.php');</code></p>
+<p>The process for creating a blog in a subdirectory (<tt>http://yourhost.com/sub/</tt> where the main weblog is in <tt>http://yourhost.com/</tt>) is similar, with the only change that you'll need to replace <code>include('./config.php');</code> by <code>include('../config.php');</code></p>
 
 
 

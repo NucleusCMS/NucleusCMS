@@ -18,7 +18,7 @@ header("Pragma: no-cache");
 $CONF = array();
 $CONF['Self'] = "xml-rss2.php";
 
-include('config.php');
+include('./config.php');
 
 if (!$CONF['DisableSite']) {
 	// get feed into $feed

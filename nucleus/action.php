@@ -14,7 +14,7 @@
   */
 
 $CONF = array();
-include('config.php');			// common functions
+include('./config.php');			// common functions
 
 switch($action) {
 	case 'addcomment':
