@@ -93,7 +93,7 @@ Nucleus is intended for the people that want full control and 'tweakability' ove
 
 <p>
 Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-<br /> 
+<br />
 Copyright (C) 2002 The Nucleus Group
 </p>
 
@@ -232,7 +232,7 @@ Contradictory to some other weblog/online journal scripts, Nucleus does not gene
 </p>
 
 <p>
-For small web sites, this should not cause any problem. For web sites that get dozens of hits per second, the effect on the systems performance isn't really known. So far, no problems have been reported by Nucleus users (some are running pretty big sites on it, with 30 or more weblogs on a single installation). 
+For small web sites, this should not cause any problem. For web sites that get dozens of hits per second, the effect on the systems performance isn't really known. So far, no problems have been reported by Nucleus users (some are running pretty big sites on it, with 30 or more weblogs on a single installation).
 </p>
 
 
@@ -344,10 +344,12 @@ File permissions need to be set correctly in order for the update file to work. 
 
 <h1>Known Problems <a name="known" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>Some known issues:
+<p>Some known issues/bugs:
 </p>
 
 <ul>
+	<li>At the time of release, there are no blog conversion tools available for Nucleus v2.5beta.</li>
+	<li>The search implementation included in Nucleus v2.5beta fails on special characters (like à á ã â é ê í ó õ ô ü ç). <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=821847&amp;group_id=66479&amp;atid=514643" title="[ 821847 ] Search fails on special characters">We know.</a></li>
 	<li>As of Nucleus v2.5, Nucleus sends it's admin pages as <code>application/xhtml+xml</code> to browsers that understand it (mainly Gecko based browsers). This <a href="http://sourceforge.net/tracker/index.php?func=detail&amp;aid=790021&amp;group_id=66479&amp;atid=514643" title="[ 790021 ] application/xhtml+xml breaks javascript
 ">causes a problem</a> in Mozilla and derivates with instant item previews not longer working. This is due to <a href="http://bugzilla.mozilla.org/show_bug.cgi?id=133827">bug 133827</a></li>
 	<li>Ctrl + Shift + A shortcut might conflict with ICQ/Trillian</li>
@@ -366,7 +368,7 @@ File permissions need to be set correctly in order for the update file to work. 
 
 <ul>
 	<li>Wouter Demuynck</li>
-	<li>Appie Verschoor</li>	
+	<li>Appie Verschoor</li>
 </ul>
 
 <h2>Code submissions / Patches</h2>
@@ -382,7 +384,7 @@ File permissions need to be set correctly in order for the update file to work. 
 <ul>
 	<li>Plugins are written by their respective authors.</li>
 	<li>Thanks should go out to the people that wrote language-files for Nucleus. You can <a href="http://nucleuscms.org/languages.php">download extra language files on the Nucleus website</a>.</li>
-	<li>The RSS 2.0 skin was created by <a href="http://www.xiffy.nl">Xiffy</a></li>	
+	<li>The RSS 2.0 skin was created by <a href="http://www.xiffy.nl">Xiffy</a></li>
 	<li>The XML-RPC interface uses the <a href="http://phpxmlrpc.sourceforge.net/">'XML-RPC for PHP'</a> implementation from <a href="http://www.usefulinc.com/">Useful Inc.</a>.</li>
 	<li>The backup/restore code is largely inspired on the code used in <a href="http://phpbb.sourceforge.net/">phpBB</a>. </li>
 	<li>The JavaScript code used for the instant preview was originally inspired on the code used by <a href="http://www.mijnkopthee.nl/">Mijn Kop Thee</a> <small>(dutch)</small> and <a href="http://www.milov.nl/">milov.nl</a>.</li>
