@@ -19,14 +19,19 @@ class COMMENTS {
 	 *
 	 * @param $itemid 
 	 *		id of the item
+	 */
+	function COMMENTS($itemid) {
+		$this->itemid = intval($itemid);	
+	}
+	/**
+	 * Used when parsing comments
+	 *
 	 * @param $itemActions
 	 *		itemActions object, that will take care of the parsing
 	 */
-	function COMMENTS($itemid, &$itemActions) {
-		$this->itemid = intval($itemid);
+	function setItemActions(&$itemActions) {
 		$this->itemActions =& $itemActions;
 	}
-	
 	
 	/**
 	 * Shows maximum $max comments to the given item using the given template

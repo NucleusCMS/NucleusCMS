@@ -555,7 +555,8 @@ class ACTIONS extends BaseActions {
 		$item = ITEM::getitem($itemid, 0, 0);
 		$actions->setCurrentItem($item);
 
-		$comments = new COMMENTS($itemid, $actions);
+		$comments = new COMMENTS($itemid);
+		$comments->setItemActions($actions);
 		$comments->showComments($template);	// shows ALL comments		
 	}
 	
