@@ -16,6 +16,21 @@
  * form generation, ...)
  */
 class PARSER {
+
+	// array with the names of all allowed actions
+	var $actions;
+	
+	// reference to actions handler
+	var $handler;
+	
+	// delimiters that can be used for skin/templatevars
+	var $delim;
+	
+	// parameter delimiter (to separate skinvar params)
+	var $pdelim;
+	
+	// usually set to 0. When set to 1, all skinvars are allowed regardless of $actions
+	var $norestrictions;
 	
 	/**
 	 * Creates a new parser object with the given allowed actions 
@@ -136,8 +151,33 @@ class PARSER {
  * It should never be used on it's own
  */
 class BaseActions {
+	
+	// depth level for includes (max. level is 3)
+	var $level;
+	
+	// array of evaluated conditions (true/false). The element at the end is the one for the most nested
+	// if block.
+	var $if_conditions;
+	
+	// at all times, can be evaluated to either true if the current block needs to be displayed. This 
+	// variable is used to decide to skip skinvars in parts that will never be outputted.
+	var $if_currentlevel;
+	
+	// contains a search string with keywords that need to be highlighted. These get parsed into $aHighlight
+	var $strHighlight;
+	
+	// array of keywords that need to be highlighted in search results (see the highlight() 
+	// and parseHighlight() methods)
+	var $aHighlight;
+	
+
+	// reference to the parser object that is using this object as actions-handler
+
+	var $parser;
+	
+
 	function BaseActions() {
-		$this->level = 0; // depth level
+		$this->level = 0; 
 		
 		// if nesting level
 		$this->if_conditions = array(); // array on which condition values are pushed/popped

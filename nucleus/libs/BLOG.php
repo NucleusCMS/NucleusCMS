@@ -15,6 +15,19 @@
   */
 class BLOG {
 	
+	// blog id
+	var $blogid;
+	
+	// ID of currently selected category
+	var $selectedcatid;
+	
+	// After creating an object of the blog class, contains true if the BLOG object is 
+	// valid (the blog exists)
+	var $isValid;
+	
+	// associative array, containing all blogsettings (use the get/set functions instead)
+	var $settings;
+	
 	/**
 	 * Creates a new BLOG object for the given blog
 	 *
@@ -999,6 +1012,28 @@ class BLOG {
   * This class is used when parsing item templates
   */
 class ITEMACTIONS extends BaseActions {
+
+	// contains an assoc array with parameters that need to be included when
+	// generating links to items/archives/... (e.g. catid)
+	var $linkparams;
+	
+	// true when the current user is a blog admin (and thus allowed to edit all items)
+	var $allowEditAll;
+	
+	// timestamp of last visit
+	var $lastVisit;
+	
+	// item currently being handled (mysql result object, see BLOG::showUsingQuery)
+	var $currentItem;
+	
+	// reference to the blog currently being displayed
+	var $blog;
+	
+	// associative array with template info (part name => contents)
+	var $template;
+	
+	// true when comments need to be displayed
+	var $showComments;
 	
 	function ITEMACTIONS(&$blog) {
 		// call constructor of superclass first
