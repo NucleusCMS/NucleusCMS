@@ -98,6 +98,7 @@ INSERT INTO nucleus_config VALUES ('BaseSkin', '1');
 INSERT INTO nucleus_config VALUES ('SkinsURL', 'http://localhost/release/skins/');
 INSERT INTO nucleus_config VALUES ('ActionURL', 'http://localhost/release/action.php');
 INSERT INTO nucleus_config VALUES ('URLMode', 'normal');
+INSERT INTO nucleus_config VALUES ('DatabaseVersion', '250');
 
 CREATE TABLE nucleus_item (
   inumber int(11) NOT NULL auto_increment,
