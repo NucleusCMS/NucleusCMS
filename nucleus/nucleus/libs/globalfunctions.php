@@ -953,7 +953,7 @@ function formatDate($format, $timestamp, $defaultFormat) {
         $tz = substr($tz, 0, 3) . ':' . substr($tz, 3, 2);	
 		return gmdate('Y-m-d\TH:i:s', $timestamp) . $tz;
 	} else {  
-		return strftime($format ? $format : $defaultFormat,$this->currentItem->timestamp); 
+		return strftime($format ? $format : $timestamp); 
 	}  
 
 }
