@@ -81,7 +81,7 @@
     	</fileset>
     </copy>
     
-	<!-- copy xml-rss2/rsd skins as well -->
+	<!-- copy extra stuff as well -->
     <copy todir="${upgrade.home}/extra">
     	<fileset dir="${src.home}/extra">
 			<exclude name="**/CVS/**"/>    	
@@ -100,6 +100,7 @@
     <!-- Copy necessary files in root -->
     <copy file="${src.home}/action.php" todir="${upgrade.home}" />
     <copy file="${src.home}/xml-rss2.php" todir="${upgrade.home}" />    
+    <copy file="${src.home}/xml-rss.php" todir="${upgrade.home}" />        
     <copy file="${src.home}/rsd.php" todir="${upgrade.home}" />        
 
 	<zip zipfile="${upgrade.zip}"
