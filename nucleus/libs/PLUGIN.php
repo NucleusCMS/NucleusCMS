@@ -67,6 +67,13 @@
 			return 0;
 		}
 
+		/**
+		 * Report a list of plugin that is required to function
+		 * 
+		 * @returns an array of names of plugin, an empty array indicates no dependency
+		 */
+		function getPluginDep() { return array(); }
+
 		// these helper functions should not be redefined in your plugin
 
 		/**

@@ -215,7 +215,10 @@ define('_ERROR_NOSUCHPLUGIN',		'No such plugin');
 define('_ERROR_DUPPLUGIN',			'Sorry, this plugin is already installed');
 define('_ERROR_PLUGFILEERROR',		'No such plugin exists, or the permissions are set incorrectly');
 define('_PLUGS_NOCANDIDATES',		'No plugin candidates found');
-
+define('_ERROR_INSREQPLUGIN',           'Plugin installation failed, requires
+');
+define('_ERROR_DELREQPLUGIN',           'Plugin deletion failed, required by
+');                                                                                
 define('_PLUGS_TITLE_MANAGE',		'Manage Plugins');
 define('_PLUGS_TITLE_INSTALLED',	'Currently Installed');
 define('_PLUGS_TITLE_UPDATE',		'Update subscription list');
@@ -265,6 +268,7 @@ define('_LIST_PLUGS_DOWN',			'move down');
 define('_LIST_PLUGS_UNINSTALL',		'uninstall');
 define('_LIST_PLUGS_ADMIN',			'admin');
 define('_LIST_PLUGS_OPTIONS',		'edit&nbsp;options');
+define('_LIST_PLUGS_DEP',		'Plugin(s) requires:');
 
 // plugin option list
 define('_LISTS_VALUE',				'Value');

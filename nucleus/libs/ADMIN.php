@@ -5114,6 +5114,22 @@ selector();
 		if (!checkPlugin($name))
 			$this->error(_ERROR_PLUGFILEERROR . ' (' . $name . ')');
 		
+		// check if the plugin dependency is met
+		$plugin =& $manager->getPlugin($name);
+		$pluginList = $plugin->getPluginDep();
+		foreach ($pluginList as $pluginName) 
+		{
+			
+			$res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
+			if (mysql_num_rows($res) == 0)
+			{
+				// uninstall plugin again...
+				$this->deleteOnePlugin($plugin->getID());
+			
+				$this->error(_ERROR_INSREQPLUGIN . $pluginName);
+			}
+		}
+
 		// get number of currently installed plugins
 		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
 
@@ -5135,8 +5151,6 @@ selector();
 		$manager->clearCachedInfo('installedPlugins');
 
 		// call the install method of the plugin
-		$plugin =& $manager->getPlugin($name);
-		
 		if (!$plugin)
 		{
 			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. intval($iPid));
@@ -5251,11 +5265,29 @@ selector();
 		if (!$manager->pidInstalled($pid))
 			return _ERROR_NOSUCHPLUGIN;
 			
+		$name = quickQuery('SELECT pfile as result FROM '.sql_table('plugin').' WHERE pid='.$pid);
+
 		// call the unInstall method of the plugin
 		if ($callUninstall) {
-			$name = quickQuery('SELECT pfile as result FROM '.sql_table('plugin').' WHERE pid='.$pid);
 			$plugin =& $manager->getPlugin($name);
 			if ($plugin) $plugin->unInstall();
+		}
+
+		// check dependency before delete
+		$res = sql_query('SELECT pfile FROM '.sql_table('plugin'));
+		while($o = mysql_fetch_object($res)) {
+			$plug =& $manager->getPlugin($o->pfile);
+			if ($plug)
+			{
+				$depList = $plug->getPluginDep();
+				foreach ($depList as $depName) 
+				{
+					if ($name == $depName)
+					{
+						return _ERROR_DELREQPLUGIN . $o->pfile;
+					}
+				}
+			}
 		}
 
 		$manager->notify('PreDeletePlugin', array('plugid' => $pid));	
@@ -5917,6 +5949,8 @@ function listplug_table_pluginlist($template, $type) {
 					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
 					if (sizeof($plug->getEventList()) > 0)
 						echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',implode($plug->getEventList(),', ');
+					if (sizeof($plug->getPluginDep()) > 0)
+						echo '<br /><br />',_LIST_PLUGS_DEP,'<br />',implode($plug->getPluginDep(),', ');
 				echo '</td>';
 			} else {
 				echo '<td colspan="2">Error: plugin file <b>',$current->pfile,'.php</b> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)</td>';
