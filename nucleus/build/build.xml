@@ -47,7 +47,11 @@
     <delete dir="${release.home}/nucleus/convert" />
     <delete dir="${release.home}/nucleus/upgrades" />
     <delete dir="${release.home}/nucleus/fileperms" />    
-    <delete dir="${release.home}/nucleus/documentation/devdocs" />    
+    <!--
+    	The devdocs are so small and usefull. Lets include them.
+    
+    	<delete dir="${release.home}/nucleus/documentation/devdocs" />    
+    -->
     
     <!-- remove all language files except english -->
     <delete>
@@ -101,7 +105,12 @@
     <delete dir="${upgrade.home}/nucleus/convert" />
     <delete dir="${upgrade.home}/nucleus/upgrades" />
     <delete dir="${upgrade.home}/nucleus/fileperms" />  
-    <delete dir="${upgrade.home}/nucleus/documentation/devdocs" />    
+    
+    <!--
+    	The devdocs are so small and usefull. Lets include them.
+	   
+    	<delete dir="${upgrade.home}/nucleus/documentation/devdocs" />    
+    -->
     
     <!-- remove all language files except english -->
     <delete>
