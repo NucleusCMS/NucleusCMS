@@ -626,10 +626,10 @@ class ACTIONS extends BaseActions {
 	 *		only a raw link will be outputted
 	 */
     function _searchlink($maxresults, $startpos, $direction, $linktext = '') {
-        global $CONF, $HTTP_SERVER_VARS, $blog, $query, $amount;
+        global $CONF, $blog, $query, $amount;
         // TODO: Move request uri to linkparams. this is ugly. sorry for that.
         $startpos	= intval($startpos);		// will be 0 when empty. 
-        $parsed		= parse_url($HTTP_SERVER_VARS['REQUEST_URI']);
+        $parsed		= parse_url(serverVar('REQUEST_URI'));
         $parsed		= $parsed['query'];
 		$url		= '';
         
