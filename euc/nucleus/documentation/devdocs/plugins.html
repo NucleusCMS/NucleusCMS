@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xml:lang="jp" xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	<!-- $Id: plugins.html,v 1.4 2005-03-16 08:05:24 kimitake Exp $ -->
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>Nucleus - プラグイン API</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
@@ -31,21 +32,21 @@
 <p class="heading">&nbsp;</p>
 <div class="heading">
 プラグイン API
-<i>2004年7月27日</i>
+<i>2005年3月5日</i>
 </div>
 
 <div class="note-trans"><strong>訳者注：</strong> 
 	<ul>
 		<li>このドキュメントの原文は以下のURLにあります。<br />
 		 <a href="http://nucleuscms.org/documentation/devdocs/plugins.html">http://nucleuscms.org/documentation/devdocs/plugins.html</a></li>
-	    <li>誤訳にお気づきの方は<a href="http://nucleus.fel-is.info/bb/viewforum.php?f=7">こちら</a>へご連絡いただけると助かります。</li>
+	    <li>誤訳にお気づきの方は<a href="http://japan.nucleuscms.org/bb/viewforum.php?f=7">こちら</a>へご連絡いただけると助かります。</li>
 	</ul>
 </div>
 
 <div class="note"><strong>注：</strong> 
 	<ul>
 		<li>このドキュメントは基本的なプラグインの書き方についての情報を提供しています。さらに質問がある方は <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin
-	  Development Forum</a> （<a href="http://nucleus.fel-is.info/bb/viewforum.php?f=5">日本語フォーラム</a>）をご覧ください。</li>
+	  Development Forum</a> （<a href="http://japan.nucleuscms.org/bb/viewforum.php?f=5">日本語フォーラム</a>）をご覧ください。</li>
 		<li>Nucleusバージョン1.5以降に導入されたメソッドとイベントには、導入時のバージョン情報を付記しています。それらの機能を利用するときは、<code>getMinNucleusVersion</code> を適切に設定するのを忘れないでください。</li>
 	</ul>
 </div>
@@ -60,7 +61,7 @@
 このドキュメントはNucleusプラグインの作り方についての解説です。 
 </p>
 
-<h1><a name="toc"></a>目次</h1>
+<h1><a name="toc"></a><a name="top"></a>目次</h1>
 
 <ul>
 	<li><a href="#introduction">イントロダクション</a></li>
@@ -73,8 +74,9 @@
 	<li><a href="#options">オプションを保存する</a></li>
 	<li><a href="#tables">データベース・テーブル</a></li>
 	<li><a href="#admin">プラグイン管理エリアの提供</a></li>
-<!--	<li><a href="#admin">Providing an admin area</a></li> 
-	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>
+	<li><a href="#help">ヘルプページの提供</a></li>
+	<li><a href="#dependency">プラグイン依存チェック</a></li>
+<!--	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
@@ -157,7 +159,7 @@ class NP_HelloWorld extends NucleusPlugin {
 	  <pre class="example"><code>&lt;%plugin(HelloWorld)%&gt;</code></pre>
 	注意：カッコ内の名称 (HelloWorld) は大文字小文字を識別します！</li>
 	<li>さて、編集したスキンから生成されるページを見てみましょう。プラグイン変数を追加した場所に &quot;Hello
-  World                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       &quot; と見えますね？</li>
+  World&quot; と見えますね？</li>
 </ol>
 
 <p>ここまではそれほど難しくなかったと思います。さらに読み進めて理解してください。</p>
@@ -198,11 +200,11 @@ class NP_HelloWorld extends NucleusPlugin {
 	</tr>
 	<tr>
 		<td><code>getMinNucleusVersion()</code></td>
-		<td>(v2.0b) 最低必要なNucleusのバージョンを返します。デフォルトは <code>155</code> (v1.55)を返します。後に導入されたプラグイン関連機能を利用している場合は、このファンクションを実装するようお願いします（例： v2.0 => 200）。ただし、Nucleus v1.55 はこのファンクションを使用しないため、新機能を利用したプラグインが（対応する前のシステムに）インストールされる可能性が残っています。</td>
+		<td>(v2.0b) 最低限必要なNucleusのバージョンを返します。デフォルトは <code>155</code> (v1.55)を返します。後に導入されたプラグイン関連機能を利用している場合は、このファンクションを実装するようお願いします（例： v2.0 => 200）。ただし、Nucleus v1.55 はこのファンクションを使用しないため、新機能を利用したプラグインが（対応する前のシステムに）インストールされる可能性が残っています。</td>
 	</tr>
 	<tr>
 		<td><code>getMinNucleusPatchLevel()</code></td>
-		<td>(v3.1) Returns the minimum required Nucleus patch level that needs to be present when running the minimal required Nucleus version (<code>getMinNucleusVersion</code>). By default, this returns <code>0</code>. This function is generally used when new plugin features are available only as patches to the latest released Nucleus version.</td>
+		<td>(v3.1) 最低限必要なNucleusのバージョン(<code>getMinNucleusVersion</code>)での、最低限必要なパッチレベルを返します。デフォルトは <code>0</code> を返します。このファンクションは主に新しいプラグインの機能がNucleusの最新版のパッチによって可能になる場合に用いられます。</td>
 	</tr>
 	<tr>
 		<td><code>init()</code></td>
@@ -253,6 +255,10 @@ class NP_HelloWorld extends NucleusPlugin {
 		<td><code>hasAdminArea()</code></td>
 		<td>プラグインが独自の管理エリアをもつ場合 1 を、そうでない場合 0 を返します。デフォルトでは <code>0</code> を返します。</td>
 	</tr>
+	<tr>
+		<td><code>getPluginDep()</code></td>
+		<td>(v3.2) プラグイン名の配列を返します。Nucleusはこれらのプラグインが前もってインストールされてない場合、プラグインのインストールを拒否します。デフォルトでは空の配列が返されます。<a href="#dependency">プラグイン依存に関する詳細情報はこちら</a></td>
+	</tr>
 </table>
 
 <p>実装可能なメソッドの次は、<code>NucleusPlugin</code> クラスが提供する、再実装<strong>すべきでない</strong>幾つかの特殊メソッドです。これらはプラグイン内で、<code>$this-&gt;functionName()</code>シンタックスを利用して呼び出します。</p>
@@ -267,37 +273,41 @@ class NP_HelloWorld extends NucleusPlugin {
 	</tr>
 	<tr>
 		<td>
-			      <code>createOption(...)</code>
+			<code>createOption(...)</code>
 			<br /><code>createBlogOption(...)</code>(v2.2)
 			<br /><code>createCategoryOption(...)</code>(v2.2)
 			<br /><code>createMemberOption(...)</code>(v2.2)
+			<br /><code>createItemOption(...)</code>(v3.2)
 		</td>
 		<td><a href="#options" title="More info on options">新しいオプションを生成します。</a></td>		
 	</tr>
 	<tr>
 		<td>
-			      <code>deleteOption(...)</code>
+			<code>deleteOption(...)</code>
 			<br /><code>deleteBlogOption(...)</code>(v2.2)
 			<br /><code>deleteCategoryOption(...)</code>(v2.2)
 			<br /><code>deleteMemberOption(...)</code>(v2.2)
+			<br /><code>deleteItemOption(...)</code>(v3.2)
 	   	</td>
 		<td><a href="#options" title="More info on options">オプションを削除します。</a></td>		
 	</tr>
 	<tr>
 		<td>
-			      <code>setOption(...)</code>
+			<code>setOption(...)</code>
 			<br /><code>setBlogOption(...)</code>(v2.2)
 			<br /><code>setCategoryOption(...)</code>(v2.2)
 			<br /><code>setMemberOption(...)</code>(v2.2)			      
+			<br /><code>setItemOption(...)</code>(v3.2)
 		</td>
 		<td><a href="#options" title="More info on options">オプションに値をセットします。</a></td>		
 	</tr>
 	<tr>
 		<td>
-			      <code>getOption(...)</code>
+			<code>getOption(...)</code>
 			<br /><code>getBlogOption(...)</code>(v2.2)
 			<br /><code>getCategoryOption(...)</code>(v2.2)
 			<br /><code>getMemberOption(...)</code>(v2.2)			       
+			<br /><code>getItemOption(...)</code>(v3.2)
 		</td>
 		<td><a href="#options" title="More info on options">オプションの値を取得します。</a></td>		
 	</tr>
@@ -306,9 +316,19 @@ class NP_HelloWorld extends NucleusPlugin {
 			<code>getAllBlogOptions(...)</code>(v2.2)
 			<br /><code>getAllCategoryOptions(...)</code>(v2.2)
 			<br /><code>getAllMemberOptions(...)</code>(v2.2)			       
+			<br /><code>getAllItemOptions(...)</code>(v3.2)
 		</td>
 		<td><a href="#options" title="More info on options">与えられたオプションにより、すべての値（コンテクストごとの一つの値）の連想配列を返します。</a></td>		
 	</tr>	
+	<tr>
+		<td>
+			<code>getBlogOptionTop(...)</code>(v3.2)
+			<br /><code>getMemberOptionTop(...)</code>(v3.2)
+			<br /><code>getCategoryOptionTop(...)</code>(v3.2)
+	  <br /><code>getItemOptionTop(...)</code>(v3.2)
+		</td>
+		<td><a href="#options" title="More info on options">与えられたオプションにより、すべての値のうちの最初の値を返します。</a></td>
+	</tr>
 	<tr>
 		<td><code>getID()</code></td>
 		<td>このプラグインのIDを返します（このIDはNucleus内部で利用されるものです）。</td>		
@@ -500,7 +520,7 @@ by ref</var>のように示されます。</p>
 			<dd>パースする<code>SKIN</code>オブジェクト</dd>
 			<dt class="ro">type</dt>
 			<dd>スキンタイプ（'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search',
-		  'imagepopup', 'fileparser'のいずれか）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </dd>
+		  'imagepopup', 'fileparser'のいずれか）</dd>
 		</dl></td>		
 	</tr>
 	<tr>
@@ -622,7 +642,7 @@ by ref</var>のように示されます。</p>
 			<dd><code>BLOG</code> オブジェクト</dd>
 			<dt class="ro">type</dt>
 			<dd>呼び出されたスキン変数 ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults',
-		  'othersearchresults', 'categorylist', 'otherarchive', 'otherarchivelist')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </dd>
+		  'othersearchresults', 'categorylist', 'otherarchive', 'otherarchivelist')</dd>
 		</dl></td>		
 	</tr>
 	<tr>
@@ -730,20 +750,40 @@ by ref</var>のように示されます。</p>
 	<tr>
 		<td>PrePluginOptionsEdit</td>
 		<td>
-			(v2.0b) 'プラグインオプションの編集'フォームが生成される前<br />
-			(v2.2) パラメータ追加</td>
+			(v2.0b) 'プラグインオプションの編集'フォームが生成される前
+			<br />(v2.2) パラメータ追加
+			<br />(v3.2) 各オプションにパラメータ追加
+		</td>
 		<td><dl>
 			<dt class="ro">context</dt>
-			<dd>(v2.2) <code>global</code>, <code>blog</code>, <code>member</code>, <code>category</code>のいずれか</dd>
+			<dd>(v2.2) <code>global</code>, <code>blog</code>, <code>member</code>, <code>item</code>, <code>category</code>のいずれか</dd>
 			<dt class="ref">options</dt>
-			<dd>次のインデックスをもつ連想配列： <code>name</code>, <code>value</code>, <code>oid</code>, <code>description</code>, <code>type</code>, <code>typeinfo</code>, <code>contextid</code> 。追加オプションをここに加えることも可能（それらで何かの処理をするときはPostPluginOptionsUpdateの記述も必要）			  </dd>
+			<dd>次のインデックスをもつ連想配列： <code>name</code>, <code>value</code>, <code>oid</code>, <code>description</code>, <code>type</code>, <code>typeinfo</code>, <code>contextid</code>, <code>extra</code> 。追加オプションをここに加えることも可能（それらで何かの処理をするときはPostPluginOptionsUpdateの記述も必要）<br />
+			<code>extra</code>フィールドを用いて、オプションに追加HTML（たとえばフォームのコントロール）を追加できます。もしそうする場合、 <code>extra</code> に追加する前に <code>pid</code> と <code>getID()</code> を比較し、さらに <code>name</code> をチェックすべきです。</dd>
 			<dt class="ro">plugid</dt>
 			<dd>プラグイン ID （これが気になるなら、<code>GetID()</code>を見ると理解できる）（コンテクストがglobalのときのみ存在）</dd>
 			<dt class="ro">contextid</dt>
-			<dd>コンテクスト ID (blogid, memberid, catid コンテクストによる)</dd>
-			
+			<dd>コンテクスト ID (blogid, memberid, catid, itemid コンテクストによる)</dd>
 		</dl></td>		
 	</tr>	
+	<tr>
+		<td>PrePluginOptionsUpdate</td>
+		<td>
+			(v3.2) プラグインオプションが更新される前。（このイベントを使ってオプションの新しい値を評価したり変更したりできます）
+		</td>
+		<td><dl>
+			<dt class="ro">context</dt>
+			<dd>(v2.2) <code>global</code>, <code>member</code>, <code>blog</code>, <code>item</code>, <code>category</code>のいずれか</dd>
+			<dt class="ro">plugid</dt>
+			<dd>プラグイン ID （これが気になるなら、<code>GetID()</code>を見ると理解できる）</dd>
+			<dt class="ro">optionname</dt>
+			<dd>オプション名</dd>
+			<dt class="ro">contextid</dt>
+			<dd>コンテクスト ID (blogid, memberid, catid, itemid コンテクストによる)</dd>
+			<dt class="ref">value</dt>
+			<dd>そのオプションの新しい値</dd>
+		</dl></td>
+	</tr>
 	<tr>
 		<td>PostPluginOptionsUpdate</td>
 		<td>
@@ -751,7 +791,7 @@ by ref</var>のように示されます。</p>
 		(v2.2) コンテクストによって異なるパラメータ</td>
 		<td><dl>
 			<dt class="ro">context</dt>
-			<dd>(v2.2) <code>global</code>, <code>member</code>, <code>blog</code> or <code>category</code></dd>
+			<dd>(v2.2) <code>global</code>, <code>member</code>, <code>blog</code>, <code>item</code>, <code>category</code>のいずれか</dd>
 			<dt class="ro">plugid</dt>
 			<dd>プラグイン ID （これが気になるなら、<code>GetID()</code>を見ると理解できる）（globalコンテクスト）</dd>
 			<dt class="ro">blogid</dt>
@@ -764,6 +804,10 @@ by ref</var>のように示されます。</p>
 			<dd>(v2.2) MEMBER オブジェクト (member コンテクスト)</dd>			
 			<dt class="ro">catid</dt>
 			<dd>(v2.2) category ID (category コンテクスト)</dd>			
+			<dt class="ro">itemid</dt>
+			<dd>(v2.2) item ID (item コンテクスト)</dd>
+			<dt class="ref obj">member</dt>
+			<dd>(v2.2) ITEM オブジェクト (item コンテクスト)</dd>
 		</dl></td>		
 		
 	</tr>	
@@ -1291,13 +1335,53 @@ by ref</var>のように示されます。</p>
 			<dd>XHTMLコードのヘッド領域に埋め込まれる追加情報。ここに追加したいものを入れてください。</dd>
 		</dl></td>
 	</tr>
-<!--	<tr>
+	<tr>
+		<td>FormExtra</td>
+		<td>(v3.2) このイベントは、プラグインがコメント、メンバー間メール、認証フォームのいずれかのフォーム内に追加フィールドを挿入するときに使います。フォーム処理の際に発生する <code>ValidateForm</code> イベントに対応します。</td>
+		<td><dl>
+			<dt class="ro">type</dt>
+			<dd>イベントを発生させるフォームタイプ
+				<ul>
+					<li><code>activation</code></li>
+					<li><code>additemform</code> （注：これは管理画面のアイテム追加フォームではない）</li>
+					<li><code>commentform-loggedin</code></li>
+					<li><code>commentform-notloggedin</code></li>
+					<li><code>membermailform-loggedin</code></li>
+					<li><code>membermailform-notloggedin</code></li>
+				</ul>
+			</dd>
+			<dt class="ro obj">member</dt>
+			<dd><code>type</code> が <code>activation</code>のとき、このフィールドは認証メンバーの詳細情報を含みます</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>ValidateForm</td>
+		<td>(v3.2) コメント、メンバー間メール、アカウント認証のいずれかが処理されるときに呼ばれます。プラグインはこれで各データの評価を実行でき、もし不具合があれば処理を中断できます。<code>FormExtra</code> と共に使うとフォームにフィールドを追加できます。</td>
+		<td><dl>
+			<dt class="ro">type</dt>
+			<dd>処理されるフォームタイプ
+				<ul>
+					<li><code>membermail</code></li>
+					<li><code>comment</code></li>
+					<li><code>activation</code></li>
+				</ul>
+			</dd>
+			<dt class="ref">error</dt>
+			<dd>フォーム処理をストップするときに、<code>error</code> フィールドに空でないエラーメッセージを記入します。このエラーメッセージはユーザー側に表示されます。</dd>
+			<dt class="ref">comment</dt>
+			<dd>コメントフォームのとき、コメントデータに関する連想配列を含みます。</dd>
+			<dt class="ro obj">member</dt>
+			<dd>認証フォームのとき、認証中のメンバー情報を含みます。</dd>
+		</dl></td>
+	</tr>
+<!--
+	<tr>
 		<td></td>
 		<td></td>
 		<td><dl>
 			<dt></dt>
 			<dd></dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -1305,7 +1389,7 @@ by ref</var>のように示されます。</p>
 		<td><dl>
 			<dt></dt>
 			<dd></dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -1313,7 +1397,7 @@ by ref</var>のように示されます。</p>
 		<td><dl>
 			<dt></dt>
 			<dd></dd>
-		</dl></td>		
+		</dl></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -1321,15 +1405,39 @@ by ref</var>のように示されます。</p>
 		<td><dl>
 			<dt></dt>
 			<dd></dd>
-		</dl></td>		
-	</tr>	
+		</dl></td>
+	</tr>
 	<tr>
 		<td></td>
 		<td></td>
 		<td><dl>
 			<dt></dt>
 			<dd></dd>
-		</dl></td>		
+		</dl></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>
 	</tr> -->
 </table>
 
@@ -1346,6 +1454,7 @@ by ref</var>のように示されます。</p>
 	<li><strong>blogオプション</strong>：blog設定ページで編集可能</li>
 	<li><strong>カテゴリーオプション</strong>：blog設定ページ（のカテゴリー編集ページ）で編集可能</li>	
 	<li><strong>メンバーオプション</strong>：メンバー編集ページで編集可能</li>
+	<li><strong>アイテムオプション</strong>：アイテムの追加、およびアイテムの編集ページで編集可能</li>
 </ol>
 
 <h2>オプションの種類</h2>
@@ -1365,6 +1474,30 @@ by ref</var>のように示されます。</p>
 	<dd>ドロップダウンメニュー。次のような形式の追加情報が必要です： Option 1|value1|Option 2|value2|Option 3|value3 </dd>
 </dl>
 
+<h2>オプション・メタ</h2>
+
+<p>Nucleus v3.2よりオプション・メタデータを用いて、オプションタイプを正しい値を受け取れるように制限できるようになりました。このメタデータは <code>$typeExtras</code>フィールドにセミコロン区切りのリストで保存されます。注：selectオプションでは、selectリストは<code>$typeExtras</code>のなかで一番最初でなければいけません。</p>
+
+<table><tr>
+	<th>キー</th>
+	<th>説明</th>
+</tr><tr>
+	<td><code>datatype</code></td>
+	<td>Nucleus本体に、どのデータ型を使いたいかという追加情報を与えます。現在は '<code>numerical</code>' のみ利用できます。 '<code>numerical</code>' を指定することでNucleusは数値情報のみを受け付けます（クライアントサイド・サーバサイド両方でチェック） （'<code>select</code>' と '<code>text</code>'のオプションタイプで利用できます）</td>
+</tr><tr>
+	<td><code>access</code></td>
+	<td>'<code>readonly</code>'にセットすることで、オプションを編集不可能にします（'<code>text</code>' と '<code>textarea</code>'のオプションタイプで利用できます）<br />
+	'<code>hidden</code>'を使うと、利用者側にそのオプションの存在を完全に隠蔽します（'<code>text</code>'のオプションタイプで利用できます）</td>
+</tr></table>
+
+<p>設定例</p>
+<pre class="example"><code>// 数値のみを受け付けるテキストオプションを作成
+$this->createBlogOption('FooBar', 'foobar', 'text', '0', 'datatype=numerical');
+// 数値のみを受け付けるセレクトオプションを作成
+$this->createItemOption('FooBar', 'foobar', 'select', '0', '0|0|1|1|2|2;datatype=numerical');
+// 編集不可能なテキストエリアオプションを作成
+$this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly', 'access=readonly');
+</code></pre>
 
 <h2>制限</h2>
 
@@ -1372,6 +1505,7 @@ by ref</var>のように示されます。</p>
 	<li>オプション名は最大20文字です。</li>
 	<li>オプションの説明文は最大255文字です。</li>
 	<li>オプションの値は制限ありません（v2.2より前のバージョンでは128文字の制限がありました）</li>
+	<li>'=', '|', ';' のキャラクターはセレクトオプション用のセレクトリストやオプション・メタデータ中で使用することはできません。</li>
 </ol>
 
 <h2>メソッド</h2>
@@ -1412,6 +1546,10 @@ by ref</var>のように示されます。</p>
 
 <p><strong>メンバー</strong>のコンテクストで新しいオプションを生成します（<code>createOption</code>を参照）。</p>
 
+<h3>[v3.2] createItemOption($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+
+<p><strong>アイテム</strong>のコンテクストで新しいオプションを生成します（<code>createOption</code>を参照）。</p>
+
 <h3>setOption($name, $value)</h3>
 
 <p>すでにデータベースに存在するオプションの値を変更します。</p>
@@ -1439,6 +1577,10 @@ by ref</var>のように示されます。</p>
 
 <p>メンバーオプションの値を変更します。<code>memberid</code>属性はどのメンバーでそのオプションが有効かを示します（その他のオプション：<code>setOption</code>を参照）。</p>
 
+<h3>[v3.2] setItemOption($itemid, $name, $value)</h3>
+
+<p>アイテムオプションの値を変更します。<code>itemid</code>属性はどのアイテムでそのオプションが有効かを示します（その他のオプション：<code>setOption</code>を参照）。</p>
+
 <h3>getOption($name)</h3>
 
 <p>データベース内のオプションの値を返します。</p>
@@ -1462,7 +1604,11 @@ by ref</var>のように示されます。</p>
 
 <h3>[v2.2] getMemberOption($memberid, $name)</h3>
 
-<p>メンバーオプションの値を返します。<code>memberid</code>属性は値がリスエストされたカテゴリーを示します（その他のオプション：<code>getOption</code>を参照）。</p>
+<p>メンバーオプションの値を返します。<code>memberid</code>属性は値がリスエストされたメンバーを示します（その他のオプション：<code>getOption</code>を参照）。</p>
+
+<h3>[v3.2] getItemOption($itemid, $name)</h3>
+
+<p>アイテムオプションの値を返します。<code>itemid</code>属性は値がリスエストされたアイテムを示します（その他のオプション：<code>getOption</code>を参照）。</p>
 
 <h3>deleteOption($name)</h3>
 
@@ -1488,6 +1634,10 @@ by ref</var>のように示されます。</p>
 
 <p>メンバーオプションを削除します（<code>deleteOption</code>を参照）。</p>
 
+<h3>[v3.2] deleteItemOption($name)</h3>
+
+<p>アイテムオプションを削除します（<code>deleteOption</code>を参照）。</p>
+
 <h3>[v2.2] getAllBlogOptions($name)</h3>
 
 <p>与えられたblogオプションの全ての値を返します。結果は存在するblogidごとの連想配列です。</p>
@@ -1499,6 +1649,42 @@ by ref</var>のように示されます。</p>
 <h3>[v2.2] getAllMemberOptions($name)</h3>
 
 <p>与えられたメンバーオプションの全ての値を返します。結果は存在するmemberidごとの連想配列です。</p>
+
+<h3>[v3.2] getAllItemOptions($name)</h3>
+
+<p>与えられたアイテムオプションの全ての値を返します。結果は存在するitemidごとの連想配列です。</p>
+
+<h3>[v3.2] getBlogOptionTop($name, $amount = 10, $sort = 'desc')</h3>
+
+<p>与えられたオプションの最初の値を返します。結果は配列で、各要素がそれぞれのblogid ('id') の値 ('value') を持つ配列になっています。</p>
+
+<table><tr>
+	<th>パラメータ</th>
+	<th>値</th>
+</tr><tr>
+	<td>$name</td>
+	<td>オプション名</td>
+</tr><tr>
+	<td>$amount</td>
+	<td>必要なオプション数</td>
+</tr><tr>
+	<td>$sort</td>
+	<td>昇順 ('asc') か降順 ('desc') で並べ替え</td>
+</tr></table>
+
+<h3>[v3.2] getMemberOptionTop($name, $amount = 10, $sort = 'desc')</h3>
+
+<p>与えられたオプションの最初の値を返します。結果は配列で、各要素がそれぞれのメンバーID ('id') の値 ('value') を持つ配列になっています（パラメータは<code>getBlogOptionTop</code>を参照）。</p>
+
+<h3>[v3.2] getCategoryOptionTop($name, $amount = 10, $sort = 'desc')</h3>
+
+<p>与えられたオプションの最初の値を返します。結果は配列で、各要素がそれぞれのカテゴリーID ('id') の値 ('value') を持つ配列になっています（パラメータは<code>getBlogOptionTop</code>を参照）。</p>
+
+
+<h3>[v3.2] getItemOptionTop($name, $amount = 10, $sort = 'desc')</h3>
+
+<p>与えられたオプションの最初の値を返します。結果は配列で、各要素がそれぞれのアイテムID ('id') の値 ('value') を持つ配列になっています（パラメータは<code>getBlogOptionTop</code>を参照）。</p>
+
 
 <div class="note">
 <b>注：</b> プラグインクラス内のコンストラクタから、これらのファンクションを呼ぶことはできません。プラグインがロードされた後にこれらを実行したいときは、かわりに<code>init()</code>メソッド内に置きます。</div>
@@ -1539,9 +1725,10 @@ class NP_HelloWorld extends NucleusPlugin {
 <p>いくつかの注意点</p>
 <ul>
 	<li><code>nucleus_plug_<em>plugname</em></code> のように、他のプラグインと競合しないテーブル名を考えてください。カスタムプレフィックスに対応するため、テーブル名を
-  <code>sql_table('plug_plugname')</code> で生成してください。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </li>
+	<code>sql_table('plug_plugname')</code> で生成してください。
+	</li>
 	<li>自分自身でデータベース接続をする必要はありません。PHPコマンド <code>mysql_query()</code> を使ってSQL命令を実行できます。</li>
-	<li>自分でデータベース接続をする場合、後でNucleusデータベースへの接続を復元するようにしてください。自前処理の後で <code>sql_connect()</code>  を呼ぶことで可能です。頻繁な再接続を避けるために、コンストラクタでそれを行うのも良いです。<code>$this- &gt;db</code>のリンクIDを保持でき、各クエリにそれを渡すことができます（訳者注：理解不足。別接続のリンクを同時に持てるということ？）。</li>
+	<li>自分でデータベース接続をする場合、後でNucleusデータベースへの接続を復元するようにしてください。自前処理の後で <code>sql_connect()</code>  を呼ぶことで可能です。頻繁な再接続を避けるために、コンストラクタでそれを行うのも良いです。<code>$this- &gt;db</code>のリンクIDを保持でき、各クエリにそれを渡すことができます。</li>
 	<li>バックアップ機能を使う時は、独自テーブルもバックアップに含めるよう、<code>getTableList()</code> を再定義してください。</li>
 </ul>
 
@@ -1616,6 +1803,74 @@ class NP_HelloWorld extends NucleusPlugin {
 
 <p><code>PluginAdmin</code> クラスは助けになります。これを一度生成すれば、<code>$oPluginAdmin->plugin</code> でプラグインのインスタンスにアクセスできます。</p>
 
+<h1>プラグイン用ヘルプページ <a name="help" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Nucleus v3.2から、プラグインの機能の概要、利用できるスキン・テンプレート変数、さらに詳細な情報のありかなどを示すヘルプページを提供可能になりました。</p>
+
+<p>ヘルプページは管理画面のプラグイン一覧からアクセス可能になります。</p>
+
+<h2>基本</h2>
+<p>ヘルプページを提供するために、次のステップが必要です。</p>
+<ol>
+<li>プラグインディレクトリに、プラグイン名をつけたサブディレクトリを作成します。ディレクトリ名は小文字であることに注意します。<a href="#admin">管理エリア</a>を作るときと同様です。</li>
+<li>そのディレクトリの中に help.html を作り、プラグインについての文章を記述します。次の雛型からはじめると良いでしょう。
+<pre><code>&lt;h3&gt;プラグインの概要&lt;/h3&gt;
+
+&lt;p&gt;このプラグインはヘルプページがいかに機能するかを示すためだけのものです&lt;/p&gt;
+
+&lt;h3&gt;インストール&lt;/h3&gt;
+
+&lt;p&gt;これを読めてるならインストールは正しく出来てます :-)&lt;/p&gt;
+
+&lt;h3&gt;スキン変数&lt;/h3&gt;
+
+&lt;p&gt;このプラグインはただのテストケースなのでスキン・テンプレート変数はありませんが、書くとすれば。
+
+&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;%HelpPageTestCase1%&gt;&lt;/b&gt;: なにかをする&lt;/li&gt;
+&lt;li&gt;&lt;b&gt;&lt;%HelpPageTestCase1(foobar)%&gt;&lt;/b&gt;: 別のなにかをする&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;
+
+&lt;h3&gt;サポートとバグ報告&lt;/h3&gt;
+
+&lt;p&gt;さらなるサポートやバグ報告のために、次のフォーラムのスレッドを利用してください。
+&lt;a href="http://forum.nucleuscms.org/viewtopic.php?t=&lt;トピックID&gt;"&gt;
+http://forum.nucleuscms.org/viewtopic.php?t=&lt;トピックID&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3&gt;バージョン履歴&lt;/h3&gt;
+
+&lt;ul&gt;&lt;li&gt;Version 0.1: 最初のテストケースバージョン&lt;/li&gt;
+&lt;li&gt;Version 0.0: その前のバージョン ;-)&lt;/li&gt;&lt;/ul&gt;</code></pre>
+</li>
+<li>supportsFeature('HelpPage') で0より大きい数字を返すように設定します。
+<pre><code>function supportsFeature($what) {
+	switch($what) {
+	case 'HelpPage':
+		return 1;
+	  default:
+		return 0;
+	}
+  }</code></pre>
+</li>
+</ol>
+
+<h1>プラグイン依存チェック <a name="dependency" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>v3.2から、他のプラグインとの依存関係を宣言する新しいプラグインインターフェイスが追加されました。他のプラグインの機能を必要とするプラグインに利用できます。特に依存関係が成立しなくて正しく機能しない状態を検知するときに便利です。</p>
+
+<h2>この機能を利用するプラグインの書き方</h2>
+
+<p>現実世界での例からはじめましょう。</p>
+
+<p>NP_PageLinkList は NP_BlogWithOffset の機能を利用するため、利用者には NP_BlogWithOffset のインストール後に NP_PageLinkList をインストールさせたいとします。NucleusはこのAPIによって、インストール前に依存関係を検知させる方法をプラグインに提供します。</p>
+
+<p>このケースでは、NP_PageLinkList 側に NP_BlogWithOffset が必要だということを認識させるコードを埋め込みます。プラグインがインストールされる際に、Nucleusコアは <code>getPluginDep()</code> というファンクションを呼び出します。このファンクションは必要なプラグインのリストを返し、コアはインストール済みのプラグインをチェックして、もし依存関係に欠如があればインストールを拒否します。</p>
+
+<p>必要なことは NP_PageLinkList にこのファンクションを追加する、ただそれだけです。</p>
+
+<pre><code>function getPluginDep() {
+	 return array('NP_BlogWithOffset');
+}</code></pre>
+
+<p>このプラグイン依存チェックは、他のプラグインが依存しているプラグインがアンインストールされることも防ぎます。</p>
 
 </body>
 </html>
