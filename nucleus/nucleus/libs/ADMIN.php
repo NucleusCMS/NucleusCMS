@@ -5848,8 +5848,8 @@ function listplug_table_templatelist($template, $type) {
 		case 'BODY';
 			$current = $template['current'];
 			
-			echo "<td>$current->tdname</td>";
-			echo "<td>$current->tddesc</td>";
+			echo "<td>" , htmlspecialchars($current->tdname), "</td>";
+			echo "<td>" , htmlspecialchars($current->tddesc), "</td>";
 			echo "<td><a href='index.php?action=templateedit&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
 			echo "<td><a href='index.php?action=templateclone&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
 			echo "<td><a href='index.php?action=templatedelete&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";			
