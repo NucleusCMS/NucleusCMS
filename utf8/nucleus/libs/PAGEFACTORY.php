@@ -9,7 +9,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: PAGEFACTORY.php,v 1.3 2005-03-12 06:19:05 kimitake Exp $
+  * $Id: PAGEFACTORY.php,v 1.4 2005-03-16 07:53:18 kimitake Exp $
+  * $NucleusJP$
   */
 
 /**

@@ -18,7 +18,8 @@
   *   - close the popup by selecting a file in the list. The file gets
   *     passed through to the add-item form (linkto, popupimg or inline img)
   *
-  * $Id: media.php,v 1.3 2005-03-12 06:19:03 kimitake Exp $
+  * $Id: media.php,v 1.4 2005-03-16 07:55:04 kimitake Exp $
+  * $NucleusJP$
   */
   
 $CONF = array();

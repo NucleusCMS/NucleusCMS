@@ -9,7 +9,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: index.php,v 1.4 2005-03-15 07:32:11 kimitake Exp $
+  * $Id: index.php,v 1.5 2005-03-16 07:55:05 kimitake Exp $
+  * $NucleusJP$
   */
 	// we are using admin stuff:
 	$CONF = array();
