@@ -217,14 +217,14 @@
 
 		// private
 		function _deleteOption($context, $name) {
-			$oid = getOID($name);
+			$oid = $this->_getOID($name);
 			if (!$oid) return 0; // no such option
 
 			// delete all things from plugin_option
-			sql_query('DELETE FROM plugin_option WHERE oid=' . $oid);
+			sql_query('DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid);
 
 			// delete entry from plugin_option_desc
-			sql_query('DELETE FROM plugin_option_desc WHERE oid=' . $oid);
+			sql_query('DELETE FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . $oid);
 
 			// clear from cache
 			unset($this->_aOptionToInfo[$context . '_' . $name]);
