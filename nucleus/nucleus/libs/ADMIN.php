@@ -326,7 +326,7 @@ class ADMIN {
 	}
 	
 	function action_batchcomment() {
-		global $member;
+		global $member, $manager;
 		
 		// check if logged in
 		$member->isLoggedIn() or $this->disallow();
@@ -379,7 +379,7 @@ class ADMIN {
 	}
 
 	function action_batchmember() {
-		global $member;
+		global $member, $manager;
 		
 		// check if logged in and admin
 		($member->isLoggedIn() && $member->isAdmin()) or $this->disallow();
@@ -444,7 +444,7 @@ class ADMIN {
 	
 
 	function action_batchteam() {
-		global $member;
+		global $member, $manager;
 		
 		$blogid = intRequestVar('blogid');
 		
@@ -619,7 +619,7 @@ class ADMIN {
 			
 			<input type="submit" value="<?php echo _MOVECAT_BTN?>" onclick="return checkSubmit();" 
 
-		</div></form>
+		<div></form>
 		<?php		$this->pagefoot();
 		exit;
 	}
@@ -652,7 +652,7 @@ class ADMIN {
 			
 			<input type="submit" value="<?php echo _BATCH_DELETE_CONFIRM_BTN?>" onclick="return checkSubmit();" 
 
-		</div></form>
+		<div></form>
 		<?php		$this->pagefoot();
 		exit;
 	}
@@ -870,6 +870,10 @@ class ADMIN {
 		
 		// check if allowed
 		$member->teamRights($blogid) or $this->disallow();		
+		
+		$memberid = $member->getID();
+		
+		$blog =& $manager->getBlog($blogid);
 				
 		$this->pagehead();
 	
@@ -1040,7 +1044,7 @@ class ADMIN {
 	}
 	
 	function action_itemdeleteconfirm() {
-		global $member;
+		global $member, $manager;
 		
 		$itemid = intRequestVar('itemid');
 		
@@ -1129,7 +1133,7 @@ class ADMIN {
 	  * errors are returned
 	  */
 	function moveOneItem($itemid, $destCatid) {
-		global $member;
+		global $member, $manager;
 		
 		// only allow if user is allowed to move item
 		if (!$member->canUpdateItem($itemid, $destCatid))
@@ -1142,7 +1146,7 @@ class ADMIN {
 	  * Adds a item to the chosen blog
 	  */
 	function action_additem() {
-		global $manager, $CONF;
+		global $member, $manager, $CONF;
 		 
 		$manager->loadClass('ITEM');
 
@@ -2864,7 +2868,7 @@ selector();
 								<select name="skinfile" id="skinie_import_local">
 								<?php									foreach ($candidates as $skinname => $skinfile) {
 										$html = htmlspecialchars($skinfile);
-										echo '<option value="',$html,'">',$skinname,'</option>';
+										echo '<option value="',$skinfile,'">',$skinname,'</option>';
 									}
 								?>
 								</select>
@@ -3310,7 +3314,7 @@ selector();
 		$content = addslashes($content);	
 		
 		// don't add empty parts:
-		if (!trim($content)) return -1;
+		if (!trim($content)) return;
 		
 		$query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
 		       . "VALUES ($id, '$partname', '$content')";
@@ -3381,7 +3385,7 @@ selector();
 		if (TEMPLATE::exists($name))
 			$this->error(_ERROR_DUPTEMPLATENAME);		
 
-		TEMPLATE::createNew($name, $desc);
+		$newTemplateId = TEMPLATE::createNew($name, $desc);
 
 		$this->action_templateoverview();
 	}
@@ -3477,7 +3481,7 @@ selector();
 		if (SKIN::exists($name))
 			$this->error(_ERROR_DUPSKINNAME);		
 			
-		SKIN::createNew($name, $desc);
+		$newId = SKIN::createNew($name, $desc);
 		
 		$this->action_skinoverview();
 	}	
@@ -4132,6 +4136,7 @@ selector();
 	function pagehead($extrahead = '') {
 		global $member, $nucleus, $CONF;
 
+		echo '<?xml version="1.0" encoding="'. _CHARSET .'"?>';
 		?>
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
@@ -4141,19 +4146,29 @@ selector();
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" 
 			href="styles/addedit.css" />
 			
-			<script type="text/javascript" src="javascript/compatibilty.js"></script>
 			<script type="text/javascript" src="javascript/edit.js"></script>
 			<script type="text/javascript" src="javascript/admin.js"></script>
+			<script type="text/javascript">
+				function styleFix() {
+					// stylefix for IE (outdated browsers)
+					if (document.all) {
+						var eContent = document.getElementById('content');
+						if (eContent) {
+							eContent.style.width = '850px';
+						}
+						var eQuickmenu = document.getElementById('quickmenu');
+						if (eQuickmenu) {
+							eQuickmenu.style.left = '7px';
+						}
+					}
+				}
+			</script>
 			<?php echo $extrahead?>
 		</head>
-		<body>
-		
+		<body onload="styleFix()">
 		<div class="header">
-			<h1><?php echo htmlspecialchars($CONF['SiteName'])?></h1>
+		<h1><?php echo htmlspecialchars($CONF['SiteName'])?></h1>
 		</div>
-		
-		<div id="container">
-		
 		<div id="content">
 		<div class="loginname">
 		<?php			if ($member->isLoggedIn()) 
@@ -4193,10 +4208,6 @@ selector();
 				<?php				// ---- user settings ---- 
 				
 				if ($action != 'showlogin') {
-					echo '<ul>';
-					echo '<li><a href="index.php?action=overview">Home</a></li>';
-					echo '</ul>';
-				
 					echo '<h2>Add Item</h2>';
 					echo '<form method="get" action="index.php"><div>';
 					echo '<input type="hidden" name="action" value="createitem" />';
@@ -4220,11 +4231,11 @@ selector();
 						$template['shorten'] = 10;
 						$template['shortenel'] = '';
 						$template['javascript'] = 'onchange="return form.submit()"';					
-						showlist($query,'select',$template);
+						$amount = showlist($query,'select',$template);
 
 					echo '</div></form>';
 
-					echo '<h2>' . $member->getDisplayName(). '</h2>';
+					echo '<h2>You (' . $member->getDisplayName(). ')</h2>';
 					echo '<ul>';
 					echo '<li><a href="index.php?action=editmembersettings">Settings</a></li>';
 					echo '<li><a href="index.php?action=browseownitems">Items</a></li>';
@@ -4268,8 +4279,6 @@ selector();
 				?>
 			</div>
 			
-			<!-- content / quickmenu container -->
-			</div>
 		
 			</body>
 			</html>
@@ -4285,6 +4294,8 @@ selector();
 		
 		// header-code stolen from phpMyAdmin
 		// REGEDIT and bookmarklet code stolen from GreyMatter
+
+		$bookmarkletline = getBookmarklet($blogid, 'contextmenu');
 
 		header('Content-Type: application/octetstream');
 		header('Content-Disposition: filename="nucleus.reg"');
@@ -4376,7 +4387,7 @@ selector();
 		
 		$query =  'SELECT * FROM '.sql_table('actionlog').' ORDER BY timestamp DESC';
 		$template['content'] = 'actionlist';
-		showlist($query,'table',$template);
+		$amount = showlist($query,'table',$template);
 		
 		$this->pagefoot();
 
@@ -4791,7 +4802,7 @@ selector();
 		if ($manager->pluginInstalled($name))
 			$this->error(_ERROR_DUPPLUGIN);
 		if (!checkPlugin($name))
-			$this->error(_ERROR_PLUGFILEERROR . ' (' . $name . ')');
+			$this->error(_ERROR_PLUGFILEERROR . ' (' . $file . ')');
 		
 		// get number of currently installed plugins
 		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
@@ -4898,7 +4909,7 @@ selector();
 	}
 	
 	function action_plugindeleteconfirm() {
-		global $member;
+		global $member, $manager;
 		
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
@@ -5556,7 +5567,13 @@ function listplug_table_teamlist($template, $type) {
 			break;
 	}
 }
-
+function encode_desc(&$data)
+    {   $to_entities = get_html_translation_table(HTML_ENTITIES);
+        $from_entities = array_flip($to_entities);
+        $data = strtr($data,$from_entities);
+        $data = strtr($data,$to_entities);
+        return $data;
+    }
 function listplug_table_pluginlist($template, $type) {
 	global $manager;
 	switch($type) {
@@ -5577,7 +5594,7 @@ function listplug_table_pluginlist($template, $type) {
 					echo '<a href="',$plug->getURL(),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
 				echo '</td>';
 				echo '<td>';
-					echo _LIST_PLUGS_DESC .'<br/>'. $plug->getDescription();
+					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
 					if (sizeof($plug->getEventList()) > 0)
 						echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',implode($plug->getEventList(),', ');
 				echo '</td>';
@@ -5598,6 +5615,7 @@ function listplug_table_pluginlist($template, $type) {
 }
 
 function listplug_table_plugoptionlist($template, $type) {
+	global $manager;
 	switch($type) {
 		case 'HEAD';
 			echo '<th>'._LISTS_INFO.'</th><th>'._LISTS_VALUE.'</th>';
@@ -5833,8 +5851,8 @@ function listplug_table_templatelist($template, $type) {
 		case 'BODY';
 			$current = $template['current'];
 			
-			echo '<td>', htmlspecialchars($current->tdname), '</td>';
-			echo '<td>', htmlspecialchars($current->tddesc), '</td>';
+			echo "<td>$current->tdname</td>";
+			echo "<td>$current->tddesc</td>";
 			echo "<td><a href='index.php?action=templateedit&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
 			echo "<td><a href='index.php?action=templateclone&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
 			echo "<td><a href='index.php?action=templatedelete&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";			
