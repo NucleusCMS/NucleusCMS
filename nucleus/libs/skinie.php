@@ -89,8 +89,6 @@ class SKINIMPORT {
 		}
 		fclose($this->fp);
 
-		$tempbuffer = preg_replace_callback("/(<!\[CDATA\[[^]]*?<!\[CDATA\[[^]]*)((?:\]\].*?<!\[CDATA.*?)*)(\]\])(.*\]\])/ms",create_function('$matches','return $matches[1].preg_replace("/(\]\])(.*?<!\[CDATA)/ms","}}$2",$matches[2])."}}".$matches[4];'), $tempbuffer);
-
 		$temp = tmpfile();
 		fwrite($temp, $tempbuffer);
 		rewind($temp);
@@ -162,7 +160,6 @@ class SKINIMPORT {
 			
 			// 2. add parts
 			foreach ($data['parts'] as $partName => $partContent) {
-				$partContent = preg_replace("/(<!\[CDATA\[.*?)(}}>)/ms", "$1]]>", $partContent);
 				$skinObj->update($partName, $partContent);
 			}
 		}
@@ -185,7 +182,6 @@ class SKINIMPORT {
 			
 			// 2. add parts
 			foreach ($data['parts'] as $partName => $partContent) {
-				$partContent = preg_replace("/(<!\[CDATA\[.*?)(}}>)/ms", "$1]]>", $partContent);
 				$templateObj->update($partName, $partContent);
 			}			
 		}
@@ -473,7 +469,7 @@ class SKINEXPORT {
 			
 			$res = sql_query('SELECT stype, scontent FROM '.sql_table('skin').' WHERE sdesc='.$skinId);
 			while ($partObj = mysql_fetch_object($res)) {
-				echo '<part name="',htmlspecialchars($partObj->stype),'"><![CDATA[',$partObj->scontent,']]></part>';
+				echo '<part name="',htmlspecialchars($partObj->stype),'"><![CDATA[', $this->escapeCDATA($partObj->scontent),']]></part>';
 			}
 			
 			echo '</skin>';
@@ -488,13 +484,22 @@ class SKINEXPORT {
 			
 			$res = sql_query('SELECT tpartname, tcontent FROM '.sql_table('template').' WHERE tdesc='.$templateId);
 			while ($partObj = mysql_fetch_object($res)) {
-				echo '<part name="',htmlspecialchars($partObj->tpartname),'"><![CDATA[',$partObj->tcontent,']]></part>';
+				echo '<part name="',htmlspecialchars($partObj->tpartname),'"><![CDATA[', $this->escapeCDATA($partObj->tcontent) ,']]></part>';
 			}
 			
 			echo '</template>';
 		}		
 		
 		echo '</nucleusskin>';
+	}
+	
+	/**
+	 * Escapes CDATA content so it can be included in another CDATA section
+	 */
+	function escapeCDATA($cdata)
+	{
+		return preg_replace('/]]>/', ']]]]><![CDATA[>', $cdata);
+		
 	}
 }
 
