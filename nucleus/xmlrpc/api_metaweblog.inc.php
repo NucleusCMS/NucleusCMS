@@ -118,7 +118,7 @@
 
 			// category is optional (thus: be careful)!
 			$catlist = $struct->structmem('categories');
-			if ($catlist->kindOf() == "array") {
+			if ($catlist && ($catlist->kindOf() == "array")) {
 				$category = _getArrayVal($catlist, 0);
 			} 
 			
@@ -240,8 +240,6 @@
 						,"array")
 			),'struct');
 			
-			"postid" => new xmlrpcval($itemid, "string"),
-		
 		//TODO: String link?
 		//TODO: String permaLink?
 		//TODO: String nucleus_more?
