@@ -244,7 +244,7 @@
 				"title" => new xmlrpcval($row['title'],"string"),
 				"categories" => new xmlrpcval(
 						array(
-							new xmlrpcval($row['cname'], "string")
+							new xmlrpcval($row['category'], "string")
 						)
 						,"array")
 			),'struct');
