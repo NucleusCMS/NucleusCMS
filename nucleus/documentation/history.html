@@ -16,11 +16,11 @@
 	<li>
 		<b>Nucleus v3.1+ (?, 2004)</b>
 		<ul>
-      <li>CHANGED: PluginOptionExtras-event now has an extra-field which can be used to add option-specific code to the page (TeRanEX)</li>
+      <li>CHANGED: PrePluginOptionsEdit-event now has an extra-field which can be used to add option-specific code to the page (TeRanEX)</li>
       <li>ADDED: new event, PrePluginOptionsUpdate, can be used by plugins to verify/modify the new value for an option (TeRanEX)</li>
       <li>ADDED: Plugins can now provide a documentation page, which is shown inside the admin area (TeRanEX)</li>
       <li>ADDED: Plugins can now limit values for an option to be only numeric (TeRanEX)</li>
-      <li>ADDED: OptionTop-methods, to let a plugin retreive an array of the x-heighest (of lowest) values of an option (TeRanEX)</li>
+      <li>ADDED: OptionTop-methods, to let a plugin retreive an array of the x-highest (of lowest) values of an option (TeRanEX)</li>
 			<li>ADDED: Plugins can now make specific options for items. These options can be edited directly from the item add or edit page (TeRanEX)</li>
 			<li>FIXED: <code>Call to undefined function</code> when user specified a language in its profile (jef pober)</li>
 		</ul>
@@ -79,7 +79,7 @@
 			<li>FIXED: &lt;%blogurl%&gt; problem on category lists (nakahara21)</li>
 			<li>CHANGED: Took out the HTTP Authentication part for now (it has no real use yet, and caused problems when Nucleus is installed in a protected directory)</li>
 			<li>FIXED: When the 'Allow login edit' option was disabled, the e-mail address was not checked for validity when a user edited his/her settings. This would cause an e-mail with new password to be sent out to an invalid address. (Frankenstein)</li>
-			<li>FIXED: Some PHP files were missing the closing <code>?&g;t</code> tag (ikeizer)</li>
+			<li>FIXED: Some PHP files were missing the closing <code>?&gt;</code> tag (ikeizer)</li>
 			<li>FIXED: Plugins were inable to delete options (leonbloy)</li>
 			<li>FIXED: XML-RPC: <code>metaWeblog.newPost</code> fails when an empty array is passed as list of categories (caused problems with Ecto)</li>
 			<li>FIXED: Eliminated 2 SQL queries on most requests.</li>
@@ -183,7 +183,7 @@
 	<li>
 		<b>Nucleus v2.0 Final (April 3, 2003)</b>
 		<ul>
-			<li>FIXED: renamed the <code>xmlrpc_encode</code> and <code>xmlrpc_decode</code> methods in <cod>xmlrpc.inc.php</code>, avoiding naming conflicts on some PHP configurations that are compiled with XMLRPC support</li>
+			<li>FIXED: renamed the <code>xmlrpc_encode</code> and <code>xmlrpc_decode</code> methods in <code>xmlrpc.inc.php</code>, avoiding naming conflicts on some PHP configurations that are compiled with XMLRPC support</li>
 			<li>FIXED: restore did not work on some PHP configurations, and did not correctly recognize <code>application/x-gzip</code> encoding type</li>
 			<li>ADDED: <code>if(onteam[,blogname])</code> skinvar</li>
 			<li>ADDED: automatic warning when headers have already been sent, with filename and linenumber included</li>
@@ -195,7 +195,7 @@
 			<li>CHANGED: Marked the <code>imagetext</code> skinvar as deprecated (use <code>image(caption)</code> instead)</li>
 			<li>CHANGED: Marked the <code>ifcat</code> skinvar as deprecated (use <code>if(category)</code> instead)</li>
 			<li>CHANGED: Marked the <code>vars</code> skinvar as deprecated (if anyone needs a hidden 'itemid' formfield [are there?], the itemid skinvar can be used instead)</li>
-			<li>ADDED: <code>doTemplateCommentsVar(&$item, &$comment)</code> method in plugin interface</li>
+			<li>ADDED: <code>doTemplateCommentsVar(&amp;$item, &amp;$comment)</code> method in plugin interface</li>
 			<li>CHANGED: comments are now also parsed using the same method as skins and items, allowing plugins, includes and more to be used there as well</li>
 			<li>FIXED: guests cannot longer place 'fake' comments (making it look as if a regsitered memeber made the comment)</li>
 			<li>FIXED: item contents is no longer trimmed</li>
@@ -232,7 +232,7 @@
 			<li>ADDED: RSD skin/template</li>
 			<li>ADDED: 'Fancy' URLs option &amp; support files. Allows for URLs like http://hostname/archive/1/2003-01-05 instead of http://hostname/index.php?blogid=1&amp;archive=2003-01-05</li>
 			<li>ADDED: RSS 2.0 skin/template (Xiffy)</li>
-			<li>ADDED: skinvar <%skinname%></li>
+			<li>ADDED: skinvar &lt;%skinname%&gt;</li>
 			<li>ADDED: if/else in skins. parameters for 'if' are currently 'category' (=ifcat) or 'blogsetting/settingname' (settingname = columnname from database...)</li>
 			<li>ADDED: Etag/If-None-Match support for xml-rss.php (needs some more work)</li>
 			<li>FIXED: more friendly bookmarklet for Opera 6 users (all tabs are visible, editing through bookmarklet works)</li>
@@ -512,7 +512,7 @@
 			<li>Added: media library and file-upload</li>
 			<li>Added: karma votes</li>
 			<li>Added: Option to disable loginname/password changing by members</li>
-			<li>Added: simple popup windows for image viewing
+			<li>Added: simple popup windows for image viewing</li>
 			<li>Fixed: E-mail address validation check does not longer require addresses to be all lowercase</li>
 			<li>Fixed: magic_quotes are now explicitly disabled, solving escaping problems (thanks to <a href="http://www.aroundmyroom.com/">Dennis Slagers</a>)</li>
 			<li>Fixed: error handling when pinging weblogs.com</li>
@@ -594,7 +594,7 @@
 	<li>
 		<b>Nucleus v0.91 (September 15, 2001)</b>
 		<ul>
-			<li>Improved conversion for GreyMatter blogs. Special markup commands are now recognized. (thanks to <a href="http://www.elrado.nl/">Raoul</a> for pointing this out)
+			<li>Improved conversion for GreyMatter blogs. Special markup commands are now recognized. (thanks to <a href="http://www.elrado.nl/">Raoul</a> for pointing this out)</li>
 		</ul>
 	</li>
 	<li>

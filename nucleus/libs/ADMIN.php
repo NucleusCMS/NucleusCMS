@@ -5816,7 +5816,7 @@ function listplug_plugOptionRow($current) {
 		case 'text':
 		default:
 			echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'"';
-			if ($current['typeinfo'] == 'number') {
+			if (NucleusPlugin::optionIsNumeric($current['typeinfo'])) {
 				echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
 			}
 			echo ' />';

@@ -1150,7 +1150,7 @@ Very basic buildup for an imagepopup page:
 
 
 <div class="page"><a name="shortnames"></a>
-<h1>Shortnames &amp Display Names</h1>
+<h1>Shortnames &amp; Display Names</h1>
 <p>
 Weblogs, templates and skin should all have a short name next to the full name or description.
 </p>
@@ -1267,7 +1267,7 @@ Some settings are needed to do this:
 Each member has his own private collection of media files. Next to that, subdirectories that are under the media dir are seen as global collections (shared between members).
 </p>
 
-<p>Uploading is only possible when a member is on the team of at least one of the blogs, to prevent abuse./p>
+<p>Uploading is only possible when a member is on the team of at least one of the blogs, to prevent abuse.</p>
 </div>
 
 
@@ -3365,13 +3365,13 @@ These template variables be used in the following template-parts: <tt>item heade
 	<td><a href="#templatevar-date">date</a></td>
 	<td>Formatted date</td>
 </tr><tr>
-	<td><a href="#templatevar-time">time</td>
+	<td><a href="#templatevar-time">time</a></td>
 	<td>Formatted time</td>
 </tr><tr>
 	<td>daylink</td>
 	<td>raw link to the daily archive</td>
 </tr><tr>
-	<td><a href="#templatevar-comments">comments</td>
+	<td><a href="#templatevar-comments">comments</a></td>
 	<td>comments block or commentcount</td>
 </tr><tr>
 	<td>itemid</td>
@@ -3575,6 +3575,7 @@ These template variables be used in the following template-parts: <tt>item heade
 
 <h2>Arguments</h2>
 
+
 <ul>Optional:
 	<ul>
 		<li><strong><em>what</em></strong>: Choose a type of information to be displayed:
@@ -3666,16 +3667,16 @@ Examines the current item and then decides to show either the body text or the e
 	<th>Part</th><th colspan="2">Empty?</th>
 </tr><tr>
 	<td>Body</td><td>No</td><td>No</td>
-</tr></tr>
+</tr><tr>
 	<td>Extended</td><td>Yes</td><td>No</td>
-</tr></tr>
+</tr><tr>
 	<th>smartbody=</th><th>body part</th><th>extended part</th>
 </tr></table>
 
 <h2>Example use</h2>
 
 <p>The body text could be interpreted as your full text, and the extended part could be interpreted as an 'introduction' or 'exerpt', which you want to show on the front page.</p>
-<p>In the template used on the front page, you would use <tt>&lt;%smartbody%&gt;</tt> to insert an excerpt (if there is one), or the full text (if no excerpt). In the template for detailed items, <tt>&lt;%body%&gt;</tt> can then be used instead of the usual <tt>&lt;%body%&gt;</tt> + <tt>&lt;%more%&gt;</tt>, since <tt>&lt%body%&gt;</tt> will contain the full item anyway.</p>
+<p>In the template used on the front page, you would use <tt>&lt;%smartbody%&gt;</tt> to insert an excerpt (if there is one), or the full text (if no excerpt). In the template for detailed items, <tt>&lt;%body%&gt;</tt> can then be used instead of the usual <tt>&lt;%body%&gt;</tt> + <tt>&lt;%more%&gt;</tt>, since <tt>&lt;%body%&gt;</tt> will contain the full item anyway.</p>
 
 
 

@@ -59,6 +59,7 @@
 		 * @param $feature
 		 *		Name of the feature. See plugin documentation for more info
 		 *			'SqlTablePrefix' -> if the plugin uses the sql_table() method to get table names
+		 *			'HelpPage' -> if the plugin provides a helppage
 		 */
 		function supportsFeature($feature) {
 			return 0;
@@ -491,12 +492,23 @@
 		/**
 		 * splits the option's typeextra field (at ;'s) to split the meta collection
 		 * @param string $typeExtra the value of the typeExtra field of an option
-		 * @return array array of the meta-values
+		 * @return array array of the meta-key/value-pairs
 		 * @author TeRanEX
 		 * @static
 		 */
 		function getOptionMeta($typeExtra) {
-			return explode(';', $typeExtra);
+			$tmpMeta = explode(';', $typeExtra);
+			$meta = array();
+			for ($i = 0; $i < count($tmpMeta); $i++) {
+				if (($i == 0) && (!strstr($tmpMeta[0], '='))) {
+					// we have the select-list
+					$meta['select'] = $tmpMeta[0];
+				} else {
+					$tmp = explode('=', $tmpMeta[$i]);
+					$meta[$tmp[0]] = $tmp[1];
+				}
+			}
+			return $meta;
 		}
 
 		/**
@@ -507,14 +519,8 @@
 		 */
 		function getOptionSelectValues($typeExtra) {
 			$meta = NucleusPlugin::getOptionMeta($typeExtra);
-			//now search which part is the selectlist
-			$list = '';
-			for ($i = 0; $i < count($meta); $i++) {
-				if ($meta[$i] != 'number') {
-					$list = $meta[$i];
-				}
-			}
-			return $list;
+			//the select list must always be the first part
+			return $meta['select'];
 		}
 		
 		/**
@@ -539,13 +545,18 @@
 		/**
 		 * accepts the typeExtra-field of an option and return's true if the option is numerical
 		 * @param string $typeExtra the value of the typeExtra field of an option
-		 * @return boolean true is the option is numerical (the meta collections contains 'number')
+		 * @return boolean true is the option is numerical (the meta collections contains a key 'numerical' with value = true)
 		 * @author TeRanEX
 		 * @static
 		 */
 		function optionIsNumeric($typeExtra) {
 			$meta = NucleusPlugin::getOptionMeta($typeExtra);
-			return (in_array('number', $meta)) ? true : false; 
+			//return (in_array('number', $meta)) ? true : false;
+			if ($meta['numerical'] == 'true') {
+				return true;
+			} else {
+				return false;
+			}
 		}
 
 		/**

@@ -1,4 +1,4 @@
-<?
+<?php
 class NP_PrePluginOptionsUpdate_TestCase1 extends NucleusPlugin {
   
 // --------- Plug-in Info ---------------------------------
@@ -46,17 +46,17 @@ class NP_PrePluginOptionsUpdate_TestCase1 extends NucleusPlugin {
 	function event_PrePluginOptionsUpdate(&$data) {
 		if ($this->getID() == $data['plugid']) {
 			//this belongs to us :-)
-			echo "PrePluginOptionsUpdate: TestCase-plugin<br/>";
-			echo "optionname: ".$data['optionname']."<br/>";
-			echo "context: ".$data['context']."<br/>";
-			echo "contextid: ".$data['contextid']."<br/>";
-			echo "value: ".$data['value']."<br/>";
+			//echo "PrePluginOptionsUpdate: TestCase-plugin<br/>";
+			//echo "optionname: ".$data['optionname']."<br/>";
+			//echo "context: ".$data['context']."<br/>";
+			//echo "contextid: ".$data['contextid']."<br/>";
+			//echo "value: ".$data['value']."<br/>";
 			if ($data['value'] == '') {
 				$data['value'] = 'no-value';
 			} else {
 				$data['value'] .= '-TEST';
 			}
-			echo "new value: ".$data['value']."<br /><br/>";
+			//echo "new value: ".$data['value']."<br /><br/>";
 		}
 		
 		if ($data['optionname'] == 'TestValue') {
@@ -79,13 +79,15 @@ class NP_PrePluginOptionsUpdate_TestCase1 extends NucleusPlugin {
 	// }
 	
 	function event_PrePluginOptionsEdit(&$data) {
-		echo 'PrePluginOptionsEdit ';
+		//echo 'PrePluginOptionsEdit ';
 		// if ($data['context'] == 'item') {
-			foreach($data['options'] as $option) {
+			//foreach($data['options'] as $option) {
+			foreach (array_keys($data['options']) as $optionKey) {
+				$option = &$data['options'][$optionKey];
 				// if (($option['pid'] == $this->getID)&&($option['name'] == 'TestValue')) {
-				if ($option['name'] == 'TestValue') {
+				if (($option['name'] == 'TestValue') && ($option['pid'] == $this->getID())) {
 					$option['extra'] .= ' <input type="text" name="np_testcase_item" />';
-					echo 'Extra: '.$option['extra'].'<br/>';
+					//echo 'Extra: '.$option['extra'].'<br/>';
 				}
 			// } 
 		}
