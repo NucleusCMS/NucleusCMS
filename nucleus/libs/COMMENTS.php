@@ -13,6 +13,15 @@
   * A class representing the comments (all of them) for a certain post on a ceratin blog
   */
 class COMMENTS {
+
+	// item for which comment are being displayed
+	var $itemid;
+	
+	// reference to the itemActions object that is calling the showComments function
+	var $itemActions;
+	
+	// total amount of comments displayed
+	var $commentcount;
 	
 	/**
 	 * Creates a new COMMENTS object for the given blog and item
@@ -234,6 +243,16 @@ class COMMENTS {
   * This class is used when parsing comment templates
   */
 class COMMENTACTIONS extends BaseActions {
+
+	// ref to COMMENTS object which is using this object to handle
+	// its templatevars
+	var $commentsObj;
+	
+	// template to use to parse the comments
+	var $template;
+	
+	// comment currenlty being handled (mysql result assoc array; see COMMENTS::showComments())
+	var $currentComment;
 
 	function COMMENTACTIONS(&$comments) {
 		// call constructor of superclass first

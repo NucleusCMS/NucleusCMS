@@ -14,6 +14,8 @@
   */
 class ITEM {
 	
+	var $itemid;
+	
 	function ITEM($itemid) {
 		$this->itemid = $itemid;
 	}
