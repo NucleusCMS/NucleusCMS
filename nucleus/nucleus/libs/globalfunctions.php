@@ -866,7 +866,7 @@ function includephp($filename) {
 	// other
 	global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
 
-	include($filename);
+	if (@file_exists($filename)) include($filename);
 }
 
 /**
