@@ -35,7 +35,7 @@ define('_LIST_ITEM_TIME',			'time:');
 define('_LIST_COMMENTS_MEMBER', 	'(member)');
 
 // batch operations
-define('_BATCH_WITHSEL',			'With selected:');
+define('_BATCH_WITH_SEL',			'With selected:');
 define('_BATCH_EXEC',				'Execute');
 
 // quickmenu
