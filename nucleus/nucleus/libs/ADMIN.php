@@ -4588,6 +4588,18 @@ class ADMIN {
 		
 		// call the install method of the plugin
 		$plugin =& $manager->getPlugin($name);
+		
+		// check if plugin needs a newer Nucleus version
+		if (getNucleusVersion() < $plugin->getMinNucleusVersion())
+		{
+			// uninstall plugin again...
+			$this->deleteOnePlugin($plugin->getID());
+			
+			// ...and show error
+			$this->error(_ERROR_NUCLEUSVERSIONREQ . $plugin->getMinNucleusVersion());
+		}
+		
+		
 		$plugin->install();
 		
 		// update all events
@@ -4650,13 +4662,26 @@ class ADMIN {
 		
 		$pid = intPostVar('plugid');
 		
+		$error = $this->deleteOnePlugin($pid, 1);
+		if ($error) {
+			$this->doError($error);
+		}
+
+		$this->action_pluginlist();
+	}
+	
+	function deleteOnePlugin($pid, $callUninstall = 0) {
+		global $manager;
+		
 		if (!$manager->pidInstalled($pid))
-			$this->error(_ERROR_NOSUCHPLUGIN);
+			return _ERROR_NOSUCHPLUGIN;
 			
 		// call the unInstall method of the plugin
-		$name = quickQuery('SELECT pfile as result FROM nucleus_plugin WHERE pid='.$pid);
-		$plugin =& $manager->getPlugin($name);
-		if ($plugin) $plugin->unInstall();
+		if ($callUninstall) {
+			$name = quickQuery('SELECT pfile as result FROM nucleus_plugin WHERE pid='.$pid);
+			$plugin =& $manager->getPlugin($name);
+			if ($plugin) $plugin->unInstall();
+		}
 
 		// delete all subscriptions
 		sql_query('DELETE FROM nucleus_plugin_event WHERE pid=' . $pid);
@@ -4670,9 +4695,8 @@ class ADMIN {
 		
 		// delete row
 		sql_query('DELETE FROM nucleus_plugin WHERE pid='.$pid);
-
-	
-		$this->action_pluginlist();
+		
+		return '';
 	}
 	
 	function action_pluginup() {

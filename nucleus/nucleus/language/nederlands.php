@@ -83,6 +83,7 @@ define('_ITEMLIST_ADDNEW',			'Nieuw bericht toevoegen...');
 
 // errors
 define('_ERROR_CATCREATEFAIL',		'Kon nieuwe categorie niet aanmaken');
+define('_ERROR_NUCLEUSVERSIONREQ',	'Deze plugin vereist een nieuwere Nucleus versie: ');
 
 // END introduced after v1.5 END
 

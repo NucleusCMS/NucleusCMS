@@ -9,7 +9,7 @@
 
 <div class="heading">
 Writing Plugins
-<i>December 28th, 2002</i>
+<i>December 29th, 2002</i>
 </div>
 
 <div class="note"><b>Note:</b> This document should contain enough information to write basic plugins. If you have more questions, see the <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin Development Forum</a></div>
@@ -168,6 +168,10 @@ So, that wasn't so hard after all. Read on to find out more.
 	<tr>
 		<td><tt>getVersion()</tt></td>
 		<td>Returns the current version of the plugin. Returns <q>0.0</q> by default</td>		
+	</tr>
+	<tr>
+		<td><tt>getMinNucleusVersion()</tt></td>
+		<td>(v2.0) Returns the minimum required Nucleus version. By default, this returns <tt>155</tt> (v1.55). If you are using plugin features that were introduced later, please implement this function (e.g. v2.0 => 200). Please note that Nucleus v1.55 does not use this function at all, so it remains possible to install newer plugins there, even if they use newer features.</td>
 	</tr>
 	<tr>
 		<td><tt>init()</tt></td>
