@@ -1454,13 +1454,18 @@ your stuff
 </tr><tr>
 	<td>numeric</td>
 	<td>If set to '<code>true</code>', Nucleus will only accept numerical values for this option (available for optiontypes: '<code>select</code>' and '<code>text</code>')</td>
+</tr><tr>
+	<td>access</td>
+	<td>If set to '<code>readonly</code>', the option will not be editable (available for optiontypes: '<code>text</code>' and '<code>textarea</code>')</td>
 </tr></table>
 
 <p>some examples:</p>
 <pre class="example"><code>// following code creates a text-option that only accepts numerical values
-$this->createItemOption('TestValue', 'TestOption', 'text', '0', 'numerical=true');
+$this->createBlogOption('FooBar', 'foobar', 'text', '0', 'numerical=true');
 // following code creates a select-option that only accepts numerical values
-$this->createItemOption('TestCase4', 'TestCaseOption:select(numerical)', 'select', '0', '0|0|1|1|2|2;numerical=true');
+$this->createItemOption('FooBar', 'foobar', 'select', '0', '0|0|1|1|2|2;numerical=true');
+// following code creates a textarea-option that is readonly
+$this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly', 'access=readonly');
 </code></pre>
 
 <h2>Restrictions</h2>
