@@ -2063,6 +2063,9 @@ class ADMIN {
 			    <br /><?php echo _EBLOG_BTIME?> <b><?php echo  strftime("%H:%M",$blog->getCorrectTime()); ?></b>
 			    </td>
 			<td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  htmlspecialchars($blog->getTimeOffset()); ?>" /></td>			
+		</tr><tr>
+			<td><?php echo _EBLOG_SEARCH?> <?php help('blogsearchable'); ?></td>
+			<td><?php $this->input_yesno('searchable',$blog->getSearchable(),122); ?></td>	
 		</tr>
 		<?php
 			// plugin options
@@ -2460,6 +2463,7 @@ class ADMIN {
 		$blog->setConvertBreaks(intPostVar('convertbreaks'));
 		$blog->setAllowPastPosting(intPostVar('allowpastposting'));		
 		$blog->setDefaultCategory(intPostVar('defcat'));
+		$blog->setSearchable(intPostVar('searchable'));
 
 		$blog->writeSettings();
 		
