@@ -381,13 +381,8 @@ class COMMENTACTIONS extends BaseActions {
 			echo $this->currentComment['user'];
 	}
 	function parse_short() {
-//		$tmp = strtok($this->currentComment['body'],"\n");
-//		$tmp = str_replace('<br />','',$tmp);
-		$tmp = strip_tags($this->currentComment['body']);
-		$tmp = mb_strimwidth($tmp, 0, 60, "...", "UTF-8");
-		$tmp = str_replace("\r\n", "\r", $tmp);
-		$tmp = str_replace("\r", "\n", $tmp);
-		$tmp = str_replace("\n",'&para;',$tmp);
+		$tmp = strtok($this->currentComment['body'],"\n");
+		$tmp = str_replace('<br />','',$tmp);
 		echo $tmp;
 		if ($tmp != $this->currentComment['body'])
 			$this->parser->parse($this->template['COMMENTS_CONTINUED']); 
