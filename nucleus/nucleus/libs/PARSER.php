@@ -206,11 +206,17 @@ class BaseActions {
 		$filename = $this->getIncludeFileName($filename);
 		if (!file_exists($filename)) return '';
 		
+		$fsize = filesize($filename);
+		
+		// nothing to include
+		if ($fsize <= 0)
+			return;
+		
 		$this->level = $this->level + 1;
 		
 		// read file 
 		$fd = fopen ($filename, 'r');
-		$contents = fread ($fd, filesize ($filename));
+		$contents = fread ($fd, $fsize);
 		fclose ($fd);		
 		
 		// parse file contents

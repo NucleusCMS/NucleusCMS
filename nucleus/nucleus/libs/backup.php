@@ -313,7 +313,11 @@ function do_restore() {
 			$sql_query .= gzgets($gz_ptr, 100000);
 	} else {
 		// just read
-		$sql_query = fread(fopen($backup_file_tmpname, 'r'), filesize($backup_file_tmpname));
+		$fsize = filesize($backup_file_tmpname);
+		if ($fsize <= 0)
+			$sql_query = '';
+		else
+			$sql_query = fread(fopen($backup_file_tmpname, 'r'), $fsize);
 	}
 
 	// time to execute the query
