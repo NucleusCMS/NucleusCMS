@@ -41,7 +41,7 @@ class TEMPLATE {
 	 * Updates the general information about the template
 	 */
 	function updateGeneralInfo($name, $desc) {
-		$query =  'UPDATE '.sql_table('template_desc).' SET'
+		$query =  'UPDATE '.sql_table('template_desc').' SET'
 		       . " tdname='" . addslashes($name) . "',"
 		       . " tddesc='" . addslashes($desc) . "'"
 		       . " WHERE tdnumber=" . $this->getID();
