@@ -2845,7 +2845,7 @@ class ADMIN {
 		<ul>
 			<li><p><strong><?=_SKINIE_INFO_GENERAL?></strong> <?=htmlspecialchars($importer->getInfo())?></p></li>
 			<li><p><strong><?=_SKINIE_INFO_IMPORTEDSKINS?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
-			<li><p><strong><?=_SKINIE_INFO_IMPORTERTEMPLS?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
+			<li><p><strong><?=_SKINIE_INFO_IMPORTEDTEMPLS?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
 		</ul>
 
 	<?
