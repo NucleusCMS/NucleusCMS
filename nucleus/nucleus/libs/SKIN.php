@@ -552,14 +552,14 @@ class ACTIONS extends BaseActions {
                 if ( intval($startpos) - intval($amount) >= 0) {
                     $startpos 	= intval($startpos) - intval($amount);
                     $url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
-                    echo '<a href="', htmlspecialchars($url) ,'">', htmlspecialchars($linktext),'</a>';
+                    echo '<a href="', htmlspecialchars($url) ,'">', $linktext,'</a>';
                 }
                 break;
             case 'next':
                 $startpos = intval($startpos) + intval($amount);
                 if (intval($this->amountfound) >= intval($amount) || (intval($this->amountfound) == 0) ) {
                 	$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
-                    echo '<a href="', htmlspecialchars($url), '">', htmlspecialchars($linktext),'</a>';
+                    echo '<a href="', htmlspecialchars($url), '">', $linktext,'</a>';
                 }
                 break;
             default:
