@@ -574,13 +574,16 @@ class BLOG {
 		
 		$linkparams = array();
 		if ($archive) {
+			$blogurl = createArchiveLink($this->getID(), $archive, '');
 			$linkparams['blogid'] = $this->getID();
 			$linkparams['archive'] = $archive;
 		} else if ($archivelist) {
+			$blogurl = createArchiveListLink($this->getID(), '');
 			$linkparams['archivelist'] = $archivelist;
 		} else {
+			$blogurl = createBlogidLink($this->getID(), '');
 			$linkparams['blogid'] = $this->getID();
-		}
+		} 
 			
 		//$blogurl = $this->getURL() . $qargs;
 		$blogurl = createBlogLink($this->getURL(), $linkparams);
