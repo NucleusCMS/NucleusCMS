@@ -30,10 +30,10 @@ upgrade_query("Creating nucleus_karma table",$query);
 // create MediaURL out of IndexURL
 $mediaURL = $CONF['IndexURL'] . "media/";
 
-$query = 'INSERT INTO '.sql_table('config').' VALUES ('MediaURL', '$mediaURL');";
-$query2 = 'INSERT INTO '.sql_table('config').' VALUES ('AllowedTypes', 'jpg,jpeg,gif,mpg,mpeg,avi,mov,mp3,swf,png');";
-$query3 = 'INSERT INTO '.sql_table('config').' VALUES ('AllowLoginEdit', '0');";
-$query4 = 'INSERT INTO '.sql_table('config').' VALUES ('AllowUpload', '1');";
+$query = 'INSERT INTO '.sql_table('config')." VALUES ('MediaURL', '$mediaURL');";
+$query2 = 'INSERT INTO '.sql_table('config')." VALUES ('AllowedTypes', 'jpg,jpeg,gif,mpg,mpeg,avi,mov,mp3,swf,png');";
+$query3 = 'INSERT INTO '.sql_table('config')." VALUES ('AllowLoginEdit', '0');";
+$query4 = 'INSERT INTO '.sql_table('config')." VALUES ('AllowUpload', '1');";
 upgrade_query("New setting MediaURL",$query);
 upgrade_query("New setting AllowedTypes",$query2);
 upgrade_query("New setting AllowLoginEdit",$query3);
