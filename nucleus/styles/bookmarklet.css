@@ -1,15 +1,15 @@
 /* style definitions for the bookmarklet */
 
 body {
-	font-family: verdana, arial;
 	font-size: small;
-	background-color: #fff;
+	background: #fff;
 	color: #000;
+    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif
 }		
 
 h1 {
 	border-bottom: 1px dotted gray;
-	font-size: x-large;
+	font-size: medium;
 	color: #596d9d;
 }
 
@@ -28,20 +28,27 @@ h1 {
 }
 
 .buttonbar {
-	margin-bottom: 5px;
-	background-color: linen;
-	padding: 2px;
+   margin-bottom: 5px;
+   background: rgb(187, 187, 204);
+   padding: 3px;
 }
 
 .buttonbar input {
-	background-color: transparent;
+   background: #C5C5D3;
+    border: 1px solid #CACAD7;
+    border-right: 2px solid #8E8EAB;
+    border-bottom: 2px solid #8E8EAB;
+    color: #000000;
+    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;
+    font-weight: bold;   
 }
 
 .contentblock {
-	background-color: #ddd;
-	height: 370px;
-/*	overflow: auto; */ /* temporary removed, to make the select box work in Mozilla */
-	padding: 5px;
+	/*background: #ddd;*/
+	height: 400px;
+	overflow: auto; /* temporary removed, to make the select box work in Mozilla */
+	padding: 1px;
+    margin: 0px;
 	vertical-align: top;
 }
 
@@ -51,8 +58,20 @@ h1 {
 	font-size: x-small;
 }
 
+#options {
+   margin-top:-15px;
+   }
+#options h2 {
+   margin:15px 0 0 0;
+}
+
 h2 {
-	color: gray;
+   font-size: 1.5em;
+   color: gray;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
 }
 
 a:link, a:visited {
@@ -74,3 +93,54 @@ img {
 }
 
 label		{ cursor: pointer; }
+
+table {
+	border: none;
+	width: 95%;
+	border-collapse: collapse;
+	margin-bottom: 10px;
+	margin-top: 10px;	
+}
+
+th {
+	background: #bbc;
+	color: #000;
+	font-size: small;
+}
+
+th, td {
+	padding: 4px;
+	empty-cells: show;	
+}
+
+td {
+	background: #fff;
+	border: 1px solid #ddd;
+	font-size: small;
+	vertical-align: top;
+	text-align: left;
+}
+
+td a:link, td a:visited { 
+	text-decoration: underline;
+	color: black;
+	font-weight: normal;
+}
+td a:hover {
+	color: #1D3565;
+	text-decoration: underline;
+}
+
+td.draft, td.future {
+	background: #ffe;
+}
+
+tr.highlighted td {
+	background: green;
+}
+
+ul.nobullets {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}

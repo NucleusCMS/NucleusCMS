@@ -39,51 +39,62 @@
 			</div>
 
 			<div id="body" class="contentblock">
-				<%text(_ADD_TITLE)%>:
-				<input 
+				<table>
+				<tr>
+				<td><%text(_ADD_TITLE)%></td>
+				<td><input 
 					<%jsinput(title)%>
 					type="text" size="60" maxlength="160" 
 					value="<%contents(title)%>"
-				/>
+				/></td></tr>
 			
-				<br />
-				<br />
-
-				<%text(_ADD_BODY)%>: 
-				<br />
+				<tr><td>
+				<%text(_ADD_BODY)%>
+				</td><td>
 				<%jsbuttonbar(media)%>
 				<textarea 
 					<%jsinput(body)%>
 					cols="60" 
 					rows="12"><%contents(body)%></textarea>
 
-				<br /><br />
-				<%text(_ADD_CATEGORY)%>: <%categories%>
+				</td></tr>
+				<tr>
+				<td><%text(_ADD_CATEGORY)%></td>
+				<td><%categories%></td>
+				</tr>
+				</table>
 					
 			</div>
 			
 			<div id="more" class="contentblock">
-				<h2><%text(_ADD_MORE)%></h2>
-				
+				<table>
+				<tr>
+				<td><%text(_ADD_MORE)%> <%helplink(extended)%></td>
+				<td>
 				<%jsbuttonbar(media)%>
 				<textarea 
 					<%jsinput(more)%>
 					cols="60" 
 					rows="17"><%contents(more)%></textarea>
+				</td></tr></table>
 			</div>
 			<div id="options" class="contentblock">
-				
+				<table>
 				<%ifblogsetting(bcomments)%>
-					<h2><%text(_ADD_DISABLE_COMMENTS)%></h2>
+					<tr>
+					<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+					<td>
 				    <input type="radio" name="closed" value="1" id="closed_yes" <%checkedonval(1,closed)%> /><label for="closed_yes"><%text(_YES)%></label>
 				    <input type="radio" name="closed" value="0" id="closed_no" <%checkedonval(0,closed)%> /><label for="closed_no"><%text(_NO)%></label>
+					</td>
+					</tr>
 				<%endif%>
 				
 				<!-- The only actiontypes are 'edit', 'changedate' (no draft items can be edited) and 'delete' -->
-				
-				<h2>Action</h2>
-				
-				<ul>
+				<tr>
+				<td>Action</td>
+				<td>
+				<ul class="nobullets">
 					<li><input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" /><label for="act_edit"><%text(_BMLET_EDIT)%></label></li>
 					<li><input name="actiontype" value="delete" type="radio" id="act_delete" /><label for="act_delete"><%text(_BMLET_DELETE)%></label></li>
 					<%ifblogsetting(ballowpast)%>
@@ -101,10 +112,14 @@
 							</li>
 					<%endif%>						
 				</ul>
+				</td></tr>
 				
-				<h2><%text(_ADD_PLUGIN_EXTRAS)%></h2>
-				
+				<tr>
+				<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+				<td>
 				<%pluginextras%>
+				</td></tr>
+				</table>
 				
 			</div>
 			
