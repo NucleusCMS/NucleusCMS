@@ -34,6 +34,17 @@ define('_SETTINGS_BASESKIN',		'Base Skin');
 define('_SETTINGS_SKINSURL',		'Skins URL');
 define('_SETTINGS_ACTIONSURL',		'Full URL to action.php');
 
+// category moves (batch)
+define('_ERROR_MOVEDEFCATEGORY',	'Cannot move default category');
+define('_ERROR_MOVETOSELF',			'Cannot move category (destination blog is the same as source blog)');
+define('_MOVECAT_TITLE',			'Select blog to move category to');
+define('_MOVECAT_BTN',				'Move category');
+
+// URLMode setting
+define('_SETTINGS_URLMODE',			'URL Mode');
+define('_SETTINGS_URLMODE_NORMAL',	'Normal');
+define('_SETTINGS_URLMODE_PATHINFO','Fancy');
+
 
 // END introduced after v1.5 END
 
