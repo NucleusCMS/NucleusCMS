@@ -209,7 +209,7 @@ class BLOG {
 	function showOneitem($itemid, $template, $highlight) {
 		$extraQuery = ' and inumber=' . intval($itemid);
 		
-		return $this->readLogAmount($template, 1, $extraQuery, $highlight, 0, 1);
+		return $this->readLogAmount($template, 1, $extraQuery, $highlight, 0, 0);
 	}
 	
 
