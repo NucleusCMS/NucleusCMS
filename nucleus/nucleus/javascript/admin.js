@@ -1,6 +1,7 @@
 function help(url) {
 	popup = window.open(url,'helpwindow','status=no,toolbar=yes,scrollbars=yes,resizable=yes,width=500,height=500,top=0,left=0');
-	popup.focus();
+	if (popup.focus) popup.focus();
+	if (popup.GetAttention) popup.GetAttention();
 	return false;
 }				
 
