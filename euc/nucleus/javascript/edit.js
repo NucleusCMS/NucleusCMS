@@ -11,8 +11,8 @@
   * This file contains functions to allow adding items from inside the weblog.
   * Also contains code to avoid submitting form data twice.
   *
-  * $Id: edit.js,v 1.3 2005-03-16 08:07:50 kimitake Exp $
-  * $NucleusJP: edit.js,v 1.3 2005/03/12 06:19:04 kimitake Exp $
+  * $Id: edit.js,v 1.4 2005-03-23 06:15:05 kimitake Exp $
+  * $NucleusJP: edit.js,v 1.3 2005/03/16 08:07:50 kimitake Exp $
   */
 
 var nucleusConvertBreaks = true;
@@ -128,7 +128,7 @@ function ahrefThis() {
 }
 
 function execAndUpdate(action) {
-	lastSelected.caretPos.execCommand(action);
+	lastCaretPos.execCommand(action);
 	updAllPreviews();	
 }
 
@@ -221,6 +221,7 @@ function checkSubmit() {
 // http://www.faqts.com/knowledge_base/view.phtml/aid/1052/fid/130
 
 // stores the caret
+var lastSelected, lastCaretPos;
 function storeCaret (textEl) {
 
 	// store caret
@@ -234,13 +235,13 @@ function storeCaret (textEl) {
 	nonie_FormType = textEl.name;
 }
 
-var lastSelected;
+//var lastSelected;
 
 // inserts text at caret (overwriting selection)
 function insertAtCaret (text) {
 	var textEl = lastSelected;
-	if (textEl && textEl.createTextRange && textEl.caretPos) {
-		var caretPos = textEl.caretPos;
+	if (textEl && textEl.createTextRange && lastCaretPos) {
+		var caretPos = lastCaretPos;
 		caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? text + ' ' : text;
 	} else if (!document.all && document.getElementById) {
 		mozReplace(document.getElementById('input' + nonie_FormType), text);				
@@ -256,8 +257,8 @@ function insertAtCaret (text) {
 function insertAroundCaret (textpre, textpost) {
 	var textEl = lastSelected;
 	
-	if (textEl && textEl.createTextRange && textEl.caretPos) {
-		var caretPos = textEl.caretPos;
+	if (textEl && textEl.createTextRange && lastCaretPos) {
+		var caretPos = lastCaretPos;
 		caretPos.text = textpre + caretPos.text + textpost;
 	} else if (!document.all && document.getElementById) {
 		mozWrap(document.getElementById('input' + nonie_FormType), textpre, textpost);		
@@ -302,12 +303,12 @@ function getCaretText() {
 	if (!document.all && document.getElementById)
 		return mozSelectedText();
 	else
-		return lastSelected.caretPos.text;
+		return lastCaretPos.text;
 }
 
 function isCaretEmpty() {
-	if (lastSelected && lastSelected.createTextRange && lastSelected.caretPos)
-		return (lastSelected.caretPos.text == '');
+	if (lastSelected && lastSelected.createTextRange && lastCaretPos)
+		return (lastCaretPos.text == '');
 	else if (!document.all && document.getElementById)
 		return (mozSelectedText() == '');
 	else
