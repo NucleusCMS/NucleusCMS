@@ -814,13 +814,15 @@ function getMailFooter() {
 function getLanguageName() {
 	global $CONF, $member;
 
-	if (!$member) return 'english';
+	if ($member) {
+		// try to use members language
+		$memlang = $member->getLanguage();
 
-	// try to use members language
-	$memlang = $member->getLanguage();
-	if (($memlang != '') && (checkLanguage($memlang)))
-		return $memlang;
+		if (($memlang != '') && (checkLanguage($memlang)))
+			return $memlang;
+	}
 
+	// use default language
 	if (checkLanguage($CONF['Language']))
 		return $CONF['Language'];
 	else
