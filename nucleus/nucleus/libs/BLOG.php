@@ -166,9 +166,10 @@ class BLOG {
 					// unless this is the first time, write date footer
 					$timestamp = $item->timestamp;
 					if ($old_date != 0) {
-						$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));
-						$parser->parse($template['DATE_FOOTER']);
-						$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));						
+						$oldTS = strtotime($old_date);
+						$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
+						$parser->parse(strftime($template['DATE_FOOTER'], $oldTS));
+						$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));						
 					}
 					$manager->notify('PreDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
 					// note, to use templatvars in the dateheader, the %-characters need to be doubled in
