@@ -11,6 +11,8 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * A class representing the comments (all of them) for a certain post on a ceratin blog
+  *
+  * $Id$
   */
 class COMMENTS {
 

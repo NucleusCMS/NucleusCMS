@@ -16,6 +16,8 @@
   *
   * The class is a singleton, meaning that there will be only one object of it
   * active at all times. The object can be requested using MANAGER::instance()
+  *
+  * $Id$
   */
 class MANAGER {
 

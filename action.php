@@ -11,6 +11,8 @@
   *
   * File containing actions that can be performed by visitors of the site,
   * like adding comments, etc...
+  *
+  * $Id$
   */
 
 $CONF = array();

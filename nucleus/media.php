@@ -17,6 +17,8 @@
   *     upload of new files
   *   - close the popup by selecting a file in the list. The file gets
   *     passed through to the add-item form (linkto, popupimg or inline img)
+  *
+  * $Id$
   */
   
 $CONF = array();

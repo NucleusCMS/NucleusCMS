@@ -10,6 +10,7 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
+  * $Id$
   */
 
 // needed if we include globalfunctions from install.php
