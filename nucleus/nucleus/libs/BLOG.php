@@ -547,7 +547,7 @@ class BLOG {
 		$query .= ' ORDER BY itime DESC';				
 		
 		if ($limit > 0) 
-			$query .= ' LIMIT ' . $limit;
+			$query .= ' LIMIT ' . intval($limit);
 		
 		$res = sql_query($query);
 
@@ -952,6 +952,9 @@ class BLOG {
 	// the team
 	function addTeamMember($memberid, $admin) {
 		global $manager;
+		
+		$memberid = intval($memberid);
+		$admin = intval($admin);
 		
 		// check if member is already a member
 		$tmem = MEMBER::createFromID($memberid);

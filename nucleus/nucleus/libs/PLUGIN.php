@@ -140,9 +140,7 @@
 					 'FROM '.
 					 sql_table('plugin_option').' o, '.
 					 sql_table('plugin_option_desc').' d '.
-					 'WHERE d.opid='.
-					 strval($this->getID().
-					 ' AND d.oid=o.oid')
+					 'WHERE d.opid='. intval($this->getID()).' AND d.oid=o.oid'
 				);
 				while ($row = mysql_fetch_object($query))
 					$this->plugin_options[strtolower($row->name)] = $row->value;

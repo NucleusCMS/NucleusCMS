@@ -352,6 +352,9 @@
 	
 	function _mt_getRecentPostTitles($blogid, $username, $password, $iAmount) 
 	{
+		$blogid = intval($blogid);
+		$iAmount = intval($iAmount);
+	
 		// 1. login
 		$mem = new MEMBER();
 		if (!$mem->login($username, $password))

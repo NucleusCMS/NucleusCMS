@@ -143,7 +143,7 @@ class MEMBER {
 	  */
 	function isTeamMember($blogid) {
 		$query = 'SELECT * FROM '.sql_table('team').' WHERE'
-		       . ' tblog=' . $blogid
+		       . ' tblog=' . intval($blogid)
 		       . ' and tmember='. $this->getID();
 		return (mysql_num_rows(sql_query($query)) != 0);
 	}
@@ -158,7 +158,7 @@ class MEMBER {
 	function canAlterComment($commentid) {
 		$query =  'SELECT citem as itemid, iblog as blogid, cmember as cauthor, iauthor'
 		       . ' FROM '.sql_table('comment') .', '.sql_table('item').', '.sql_table('blog')
-		       . ' WHERE citem=inumber and iblog=bnumber and cnumber=' . $commentid;
+		       . ' WHERE citem=inumber and iblog=bnumber and cnumber=' . intval($commentid);
 		$obj = mysql_fetch_object(sql_query($query));
 		
 		return ($obj->cauthor == $this->getID()) or $this->isBlogAdmin($obj->blogid) or ($obj->iauthor == $this->getID());
@@ -170,7 +170,7 @@ class MEMBER {
 	  *        - member is admin of the the associated blog
 	  */
 	function canAlterItem($itemid) {
-		$query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . $itemid;
+		$query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
 		$obj = mysql_fetch_object(sql_query($query));
 		return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
 	}
@@ -492,16 +492,17 @@ class MEMBER {
 		if (!$password)
 			return _ERROR_PASSWORDMISSING;			
 
+		// Sometimes user didn't prefix the URL with http://, this cause a malformed URL. Let's fix it.
+		if (!eregi("^https?://", $url))
+			$url = "http://".$url;
+
 		$name = addslashes($name);
 		$realname = addslashes($realname);
 		$password = addslashes(md5($password));
 		$email = addslashes($email);
 		$url = addslashes($url);
-
-		// Sometimes user didn't prefix the URL with http://, this cause a malformed URL. Let's fix it.
-		if (!eregi("^https?://", $url))
-			$url = "http://".$url;
-
+		$admin = intval($admin);
+		$canlogin = intval($canlogin);
 		$notes = addslashes($notes);
 
 		$query = 'INSERT INTO '.sql_table('member')." (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
