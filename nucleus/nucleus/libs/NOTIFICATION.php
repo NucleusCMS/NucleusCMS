@@ -28,7 +28,7 @@ class NOTIFICATION {
 	  */
 	function validAddresses() {
 		foreach ( $this->addresses as $address ) {
-			if (!isValidMailAddress($address)) 
+			if (!isValidMailAddress(trim($address))) 
 				return 0;
 		}
 		return 1;
@@ -41,6 +41,11 @@ class NOTIFICATION {
 		global $member;
 			
 		foreach ( $this->addresses as $address ) {
+			$address = trim($address);
+			
+			if (!$address)
+				continue;
+			
 			// don't send messages to yourself
 			if ($member->isLoggedIn() && ($member->getEmail() == $address))
 				continue;
