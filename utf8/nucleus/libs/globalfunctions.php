@@ -10,8 +10,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: globalfunctions.php,v 1.4 2005-03-15 07:59:27 kimitake Exp $
-  * $NucleusJP$
+  * $Id: globalfunctions.php,v 1.5 2005-03-19 09:05:40 kimitake Exp $
+  * $NucleusJP: globalfunctions.php,v 1.4 2005/03/15 07:59:27 kimitake Exp $
   */
 
 // needed if we include globalfunctions from install.php
@@ -558,9 +558,28 @@ function selector() {
 		$obj = mysql_fetch_object($res);
 
 		// if a different blog id has been set through the request or selectBlog(),
-		// deny access
-		if ($blogid && (intval($blogid) != $obj->iblog))
-			doError(_ERROR_NOSUCHITEM);
+		// jump to correct url
+//		if ($blogid && (intval($blogid) != $obj->iblog))
+//			doError(_ERROR_NOSUCHITEM);
+		if ($blogid && (intval($blogid) != $obj->iblog)) {
+		   if (!headers_sent()) {
+			  $b =& $manager->getBlog($obj->iblog);
+			  $correctURL = $b->getURL();
+
+			  if ($CONF['URLMode'] == 'pathinfo') {
+				 if (substr($correctURL,strlen($correctURL)-1,1)=='/')
+					$correctURL .= 'item/' . $itemid;
+				 else
+					$correctURL .= '/item/' . $itemid;
+			  }
+			  else
+				 $correctURL .= '?itemid=' . $itemid;
+
+			  redirect('Location: ' . $correctURL);
+			  exit;
+		   }
+		   else doError(_ERROR_NOSUCHITEM);
+		}
 
 		$blogid = $obj->iblog;
 		$timestamp = strtotime($obj->itime);
