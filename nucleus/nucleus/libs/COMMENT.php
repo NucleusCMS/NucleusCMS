@@ -61,11 +61,13 @@ class COMMENT {
 		// create hyperlinks for http:// addresses
 		// there's a testcase for this in /build/testcases/urllinking.txt
 		$replaceFrom = array(
-			'/([^:\/\/\w]|^)((http(s?):\/\/|www\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie',
+			'/([^:\/\/\w]|^)((https:\/\/)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie',		
+			'/([^:\/\/\w]|^)((http:\/\/|www\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie',
 			'/([^:\/\/\w]|^)((ftp:\/\/|ftp\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie',
 			'/([^:\/\/\w]|^)(mailto:(([a-zA-Z\@\%\.\-\+_])+))/ie'			
 		);
 		$replaceTo = array(
+			'COMMENT::createLinkCode("\\1", "\\2","https")',		
 			'COMMENT::createLinkCode("\\1", "\\2","http")',
 			'COMMENT::createLinkCode("\\1", "\\2","ftp")',
 			'COMMENT::createLinkCode("\\1", "\\3","mailto")'			
