@@ -1,7 +1,5 @@
-<!DOCTYPE html
-PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<title>Nucleus - Skins and Templates</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -27,7 +25,7 @@ Skins &amp; Templates
 </ol>
 <p>This document tries to help you with doing this.</p>
 
-<h1><a name="toc"></a>Table Of Contents</h1>
+<h1><a id="toc"></a>Table Of Contents</h1>
 
 <ul>
 	<li><a href="#htmlcss">HTML and CSS</a></li>
@@ -42,10 +40,10 @@ Skins &amp; Templates
 			<li><a href="#howto-edit">'Edit item'-links</a></li>			
 		</ul>
 	</li>
-	<li><a href="#"></a></li>	
+	<li><a href="#export">Writing skins with Export/Import in mind</a></li>	
 </ul>
 
-<h1>HTML and CSS <a name="htmlcss" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>HTML and CSS <a i="htmlcss" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
 When editing skins and templates, you'll need at least some basic knowledge about HTML and CSS. This section provides some pointers to online tutorials and references:
@@ -65,7 +63,7 @@ When editing skins and templates, you'll need at least some basic knowledge abou
 
 
 
-<h1>The default skin <a name="defaultskin" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>The default skin <a id="defaultskin" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>This section briefly explains which files are used by the default skin, and how you can edit them.</p>
 
@@ -85,7 +83,7 @@ When editing skins and templates, you'll need at least some basic knowledge abou
 
 
 
-<h1>Templates vs. Skins <a name="templatesvsskins" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Templates vs. Skins <a id="templatesvsskins" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
 In Nucleus, both templates and skins are used to determine the way your blog looks. So, what is the difference between these two?
@@ -115,7 +113,7 @@ In Nucleus, both templates and skins are used to determine the way your blog loo
 
 
 
-<h1>How skins are chosen <a name="skincascade" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>How skins are chosen <a id="skincascade" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
 This section tries to explain how Nucleus chooses the skin to use when you request a page.
@@ -171,7 +169,7 @@ Another reason why the 'default' skin is required, is to be able to display erro
 
 
 
-<h1>Howto: An 'add item' form on your website <a name="howto-additem" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Howto: An 'add item' form on your website <a id="howto-additem" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
 Nucleus provides facilities to add an 'add item' form to your weblog. It adds an 'add item' link that shows and hides the 'add item' form right above the current contents of your weblog. Entering text in this form results into an instant preview, so you can immediately see how the actual weblog item will look like. 
@@ -242,7 +240,7 @@ The second example is a hidden button in the topleft corner
 
 
 
-<h1>Howto: CSS to define the look of forms <a name="howto-cssforms" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Howto: CSS to define the look of forms <a id="howto-cssforms" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
 Through variables such as &lt;%searchform%&gt; and &lt;%commentform%&gt;, forms can easily be included into your skin. To allow styles to be applied on those forms, CSS classes have been assigned to the input fields and buttons, and to a surrounding DIV-container.
@@ -326,7 +324,7 @@ An example of how to use these classes in you stylesheets is given below:
 <p>In the example above, all formfields that nucleus generates are given a gray background, and the submit button on the comment form has large text, a black 1px border, black text and a light-gray background.</p>
 
 
-<h1>Howto: Enabling karma votes <a name="howto-karma" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Howto: Enabling karma votes <a id="howto-karma" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>The default skins and templates have karma votes disabled (better: left out). Here's how to add them to your <i>template</i>.</p>
 
@@ -362,7 +360,7 @@ An example of how to use these classes in you stylesheets is given below:
 
 
 
-<h1>Howto: 'edit item' links <a name="howto-edit" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Howto: 'edit item' links <a id="howto-edit" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>The default Nucleus skin includes 'edit item'-links that are only visible to the author of a item and to the people having the right to alter the item. This section explains which template-parts are needed for this feature to work.</p>
 
@@ -381,6 +379,160 @@ An example of how to use these classes in you stylesheets is given below:
 <p>Next to the 'editlink' template, there's the <code>&lt;%edit%&gt;</code>-templatevar that, when placed somewhere in the 'item body'-templatepart, inserts the editlink.</p>
 
 <p>See the example from the <a href="#howto-karma">karma votes howto</a> to see an example.</p>
+
+
+
+
+<h1>Writing skins with Export/Import in mind <a id="export" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Nucleus v2.0 introduced the ability to import and export skins and templates. This section describes the creation of a simple skin, highlighting the features involved.</p>
+
+<h2>Creating a new skin</h2>
+
+<ol>
+	<li>
+		<p>First, we're going to create a new skin from the admin area. Browse to <code>Nucleus Management &gt; Edit Skins</code> and scroll to the bottom of the page. Let's call this skin '<strong>vista</strong>'</p>
+	</li>
+	<li>
+		<p>Now look up the 'vista' skin in the skin list and go to the <code>Edit</code> screen. The content type is set to <code>text/html</code>. That's what we want, so no need to change that</p>
+		<p>The <code>Include Mode</code> and <code>Include Prefix</code> setting reuire more attention. To export a skin, we like to have all files (images, stylesheets, etc...) under one single directory. Remember the <code>$DIR_SKINS</code> setting in <code>config.php</code> and the <code>Skins URL</code> in the general site settings? Suppose these were as follows:</p>
+		<pre><code>/home/user/example/htdocs/skins/
+http://example.org/skins/</code></pre>
+		<p>Then we would like to put our files in</p>
+		<pre><code>/home/user/example/htdocs/skins/vista/
+http://example.org/skins/vista/</code></pre>		
+		<p>And this is what the <strong><code>Include Mode</code></strong> is for. Setting it to <strong>Use skin dir</strong> will do this.</p>
+		<p>The <strong><code>Include Prefix</code></strong> also plays a role. This is the <strong>vista/</strong> part</p>
+		<p>An overview of the correct settings:</p>
+		<ul>
+			<li><strong>Name</strong>: vista</li>
+			<li><strong>Content Type</strong>: text/html</li>
+			<li><strong>Include Mode</strong>: Use skin dir</li>
+			<li><strong>Include Prefix</strong>: vista/</li>
+		</ul>
+	</li>
+</ol>
+
+<h2>Edit the skin</h2>
+
+<p>The <code>IncludeMode</code> and <code>IncludePrefix</code> settings will cause the <code>include</code>, <code>phpinclude</code> and <code>parsedinclude</code> skinvars to get their files from the skindir. Next to that, there's the <code>skinfile</code> skinvar, which translates its argument to an URL relative to the skinsdir.</p>
+
+<p>In our case:</p>
+
+<pre><code>&lt;%skinfile(myFile.jpg)%&gt;</code></pre>
+
+<p>Will get expanded to:</p>
+
+<pre><code>http://example.org/skins/vista/myFile.jpg</code></pre>
+
+<p>Lets go easy on ourselves and define the global layout in two files called <code>pagefoot.inc</code> and <code>pagehead.inc</code>, which we place in our <code>vista/</code> directory:</p>
+
+<h3>pagehead.inc</h3>
+
+<pre><code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"&gt;
+&lt;html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml"&gt;
+&lt;head&gt;
+	&lt;title&gt;My Site&lt;/title&gt;
+	&lt;link rel="stylesheet" type="text/css" href="&lt;%skinfile(layout.css)%&gt;" /&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;div id="contents"&gt;</code></pre>
+
+<h3>pagefoot.inc</h3>
+
+<pre><code>&lt;/div&gt;&lt;!-- contents div end --&gt;
+
+&lt;div id="stuffbar"&gt;
+	&lt;h2&gt;Navigation&lt;/h2&gt;
+	
+	&lt;ul&gt;
+		&lt;li&gt;&lt;a href="&lt;%todaylink%&gt;"&gt;Today&lt;/a&gt;&lt;/li&gt;
+		&lt;li&gt;&lt;a href="&lt;%archivelink%&gt;"&gt;Archives&lt;/a&gt;&lt;/li&gt;
+	&lt;/ul&gt;
+	
+	&lt;h2&gt;About&lt;/h2&gt;
+	
+	&lt;ul&gt;
+		&lt;li&gt;&lt;a href="http://www.nucleuscms.org/"&gt;Nucleus&lt;/a&gt; Power!&lt;/li&gt;
+	&lt;/ul&gt;
+&lt;/div&gt;&lt;!-- stuffbar end --&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>The contents of the skinparts then becomes kind of trivial: (I'm not defining them all, you'll get the point by seeing the most important ones)</p>
+
+<h3>Main Index</h3>
+<pre><code>&lt;%parsedinclude(pagehead.inc)%&gt;
+
+&lt;h1&gt;My Blog&lt;/h1&gt;
+
+&lt;%blog(vista/main,10)%&gt;
+
+&lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
+
+<h3>Item Pages</h3>
+
+<pre><code>&lt;%parsedinclude(pagehead.inc)%&gt;
+
+&lt;h1&gt;My Blog&lt;/h1&gt;
+
+&lt;h2&gt;Item&lt;/h2&gt;
+&lt;%item(vista/detailed)%&gt;
+
+&lt;h2&gt;Comments&lt;/h2&gt;
+&lt;%comments(vista/detailed)%&gt;
+
+&lt;h2&gt;Add Comment&lt;/h2&gt;
+&lt;%commentform%&gt;
+
+&lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
+
+<p>Note that I named my templates <strong>vista/main</strong> and <strong>vista/detailed</strong>. Makes it easier to see things together six months later. Both templates are actually clones that I made of the <strong>default</strong> and <strong>detailed</strong> templates that come with Nucleus.</p>
+
+<h3>Archive List</h3>
+
+<pre><code>&lt;%parsedinclude(pagehead.inc)%&gt;
+
+&lt;h1&gt;My Blog&lt;/h1&gt;
+
+&lt;%archivelist(vista/main)%&gt;
+
+&lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
+
+<h3>Archive</h3>
+
+<pre><code>&lt;%parsedinclude(pagehead.inc)%&gt;
+
+&lt;h1&gt;My Blog&lt;/h1&gt;
+
+&lt;%archive(vista/main)%&gt;
+
+&lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
+
+<h2>Export the skin</h2>
+
+<p>When all is done, you can export the skin from the <code>Skin Import/Export</code> page in the admin area. Here's what to do:</p>
+
+<ol>
+	<li>Select vista, vista/detailed and vista/main from the skins and template list</li>
+	<li>Add some textual description and hit the <code>Export selected skins/templates</code> button. It will generate a <code>skindata.xml</code> for you.</li>
+	<li>Save this <code>skindata.xml</code> file together with the other files in the <code>vista/</code> directory.</li>
+	<li>Package all files from the vista directory inside a zipfile</li>
+	<li>All done! Your skin can now be shared with others</li>
+</ol>
+
+<h2>Importing a skin</h2>
+
+<p>Importing is the reverse process:</p>
+
+<ol>
+	<li>Unzip the zip file under your skins directory, so you end up with a <code>vista/</code> dir (there will be one directory per skin)</li>
+	<li>From the <code>Skin Import/Export</code> page in the admin area, select <code>vista</code> from the dropdown, and click the <code>Import</code> button.</li>
+	<li>Follow the instructions</li>
+	<li>The skin is now installed. It can be selected from the blogsettings.</li>
+</ol>
 
 </body>
 </html>
