@@ -4,11 +4,11 @@
 
 <project name="nucleus" default="all">
 
-<target name="all" depends="release, upgrade, convert, api, upgradescripts, devdocs" />
+<target name="all" depends="release, upgrade, convert, api, upgradescripts" />
 
 <target name="init">
 
-    <property name="version" value="3.2-b1" />
+    <property name="version" value="3.2-b2" />
     
     <property name="src.home" value=".." />
     <property name="build.home" value="." />    
@@ -20,13 +20,11 @@
     <property name="upgradescripts.home" value="${tempdir}/upgrades" />    
     <property name="convert.home" value="${tempdir}/convert" />
     <property name="apidocs.home" value="${build.home}/api" />
-    <property name="devdocs.home" value="${tempdir}/devdocs" />    
     
     <property name="convert.zip" value="${build.home}/import${version}.zip" />
     <property name="upgradescripts.zip" value="${build.home}/upgrade${version}-scripts.zip" />
     <property name="upgrade.zip" value="${build.home}/upgrade${version}-files.zip" />
     <property name="release.zip" value="${build.home}/nucleus${version}.zip" />    
-    <property name="devdocs.zip" value="${build.home}/devdocs${version}.zip" />        
     
     <tstamp/>
     <property name="devbuild.zip" value="${build.home}/pre${version}-${DSTAMP}.zip" />
@@ -47,11 +45,6 @@
     <delete dir="${release.home}/nucleus/convert" />
     <delete dir="${release.home}/nucleus/upgrades" />
     <delete dir="${release.home}/nucleus/fileperms" />    
-    <!--
-    	The devdocs are so small and usefull. Lets include them.
-    
-    	<delete dir="${release.home}/nucleus/documentation/devdocs" />    
-    -->
     
     <!-- remove all language files except english -->
     <delete>
@@ -105,12 +98,6 @@
     <delete dir="${upgrade.home}/nucleus/convert" />
     <delete dir="${upgrade.home}/nucleus/upgrades" />
     <delete dir="${upgrade.home}/nucleus/fileperms" />  
-    
-    <!--
-    	The devdocs are so small and usefull. Lets include them.
-	   
-    	<delete dir="${upgrade.home}/nucleus/documentation/devdocs" />    
-    -->
     
     <!-- remove all language files except english -->
     <delete>
@@ -168,23 +155,6 @@
 	<delete dir="${tempdir}" />	    
 </target>
 
-<target name="devdocs" depends="cleandevdocs">
-	<mkdir dir="${tempdir}" />	
-
-	<!-- Copy all necessary files in there -->
-    <copy todir="${devdocs.home}" preservelastmodified="yes">
-    	<fileset dir="${src.home}/nucleus/documentation/devdocs/">
-			<exclude name="**/CVS/**"/>    	
-    	</fileset>
-    </copy>
-    
-    <zip zipfile="${devdocs.zip}"
-    	basedir="${tempdir}"
-    />
-    
-	<delete dir="${tempdir}" />	    
-</target>
-
 <target name="api" depends="cleanapi">
 </target>
 
@@ -202,10 +172,6 @@
 
 <target name="cleanconvert" depends="init">
     <delete file="${convert.zip}" />
-</target>
-
-<target name="cleandevdocs" depends="init">
-    <delete file="${devdocs.zip}" />
 </target>
 
 <target name="cleanapi" depends="init">
