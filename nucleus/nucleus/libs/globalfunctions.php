@@ -12,7 +12,7 @@
   *
   */
 
-$nucleus['version'] = 'v2.0 beta';
+$nucleus['version'] = 'v2.0 CVS';
 $CONF['debug'] = 1;				
 
 /**
@@ -265,7 +265,7 @@ function highlight($text, $expression, $highlight) {
 	// throw it all together again while applying the highlight to the text pieces
 	$result = '';
 	for ($i = 0; $i < sizeof($matches[2]); $i++) {
-		$result .= $matches[1][$i];
+		if ($i != 0) $result .= $matches[1][$i];
 		$result .= @eregi_replace($expression,$highlight,$matches[2][$i]);
 	}
 	
