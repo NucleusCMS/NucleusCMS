@@ -443,6 +443,8 @@ class SKINEXPORT {
 			
 			echo '<skin name="',htmlspecialchars($skinName),'" type="',htmlspecialchars($skinObj->getContentType()),'" includeMode="',htmlspecialchars($skinObj->getIncludeMode()),'" includePrefix="',htmlspecialchars($skinObj->getIncludePrefix()),'">';
 			
+			echo '<description>',htmlspecialchars($skinObj->getDescription()),'</description>';
+			
 			$res = sql_query('SELECT stype, scontent FROM nucleus_skin WHERE sdesc='.$skinId);
 			while ($partObj = mysql_fetch_object($res)) {
 				echo '<part name="',htmlspecialchars($partObj->stype),'"><![CDATA[',$partObj->scontent,']]></part>';
@@ -455,6 +457,8 @@ class SKINEXPORT {
 		foreach ($this->templates as $templateId => $templateName) {
 			
 			echo '<template name="',htmlspecialchars($templateName),'">';
+			
+			echo '<description>',htmlspecialchars(TEMPLATE::getDesc($templateId)),'</description>';			
 			
 			$res = sql_query('SELECT tpartname, tcontent FROM nucleus_template WHERE tdesc='.$templateId);
 			while ($partObj = mysql_fetch_object($res)) {
