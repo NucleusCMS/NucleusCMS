@@ -3413,14 +3413,14 @@ selector();
 		<h3><?=_SKIN_PARTS_TITLE?></h3>
 		<?=_SKIN_PARTS_MSG?>
 		<ul>
-			<li><a tabindex="10" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=index"><?=_SKIN_PART_MAIN?></a></li>
-			<li><a tabindex="20" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=item"><?=_SKIN_PART_ITEM?></a></li>
-			<li><a tabindex="30" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=archivelist"><?=_SKIN_PART_ALIST?></a></li>
-			<li><a tabindex="40" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=archive"><?=_SKIN_PART_ARCHIVE?></a></li>
-			<li><a tabindex="50" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=search"><?=_SKIN_PART_SEARCH?></a></li>
-			<li><a tabindex="60" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=error"><?=_SKIN_PART_ERROR?></a></li>
-			<li><a tabindex="70" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=member"><?=_SKIN_PART_MEMBER?></a></li>
-			<li><a tabindex="75" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=imagepopup"><?=_SKIN_PART_POPUP?></a></li>
+			<li><a tabindex="10" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=index"><?=_SKIN_PART_MAIN?></a> <?help('skinpartindex')?></li>
+			<li><a tabindex="20" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=item"><?=_SKIN_PART_ITEM?></a> <?help('skinpartitem')?></li>
+			<li><a tabindex="30" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=archivelist"><?=_SKIN_PART_ALIST?></a> <?help('skinpartarchivelist')?></li>
+			<li><a tabindex="40" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=archive"><?=_SKIN_PART_ARCHIVE?></a> <?help('skinpartarchive')?></li>
+			<li><a tabindex="50" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=search"><?=_SKIN_PART_SEARCH?></a> <?help('skinpartsearch')?></li>
+			<li><a tabindex="60" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=error"><?=_SKIN_PART_ERROR?></a> <?help('skinparterror')?></li>
+			<li><a tabindex="70" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=member"><?=_SKIN_PART_MEMBER?></a> <?help('skinpartmember')?></li>
+			<li><a tabindex="75" href="index.php?action=skinedittype&amp;skinid=<?= $skinid ?>&amp;type=imagepopup"><?=_SKIN_PART_POPUP?></a> <?help('skinpartimagepopup')?></li>
 		</ul>
 		
 		<h3><?=_SKIN_GENSETTINGS_TITLE?></h3>
@@ -3540,6 +3540,9 @@ selector();
 			sort($actions);
 			
 			while ($current = array_shift($actions)) {
+				// skip deprecated vars
+				if ($current == 'ifcat') continue;
+				
 				echo helplink('skinvar-' . $current) . "$current</a>";
 				if (count($actions) != 0) echo ", ";
 			}
@@ -5643,7 +5646,7 @@ function listplug_table_skinlist($template, $type) {
 					$friendlyNames = SKIN::getFriendlyNames();
 					for ($i=0;$i<sizeof($types);$i++) {
 						$type = $types[$i];
-						$types[$i] = '<li><a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . $friendlyNames[$type] . "</a></li>";
+						$types[$i] = '<li>' . helpHtml('skinpart'.$type) . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . $friendlyNames[$type] . "</a></li>";
 					}
 					echo '<br /><br />',_LIST_SKINS_DEFINED,' <ul>',implode($types,'') ,'</ul>';
 				}

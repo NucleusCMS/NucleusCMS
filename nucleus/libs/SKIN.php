@@ -196,7 +196,7 @@ class SKIN {
 								'adminurl',
 								'todaylink',
 								'archivelink',
-								'ifcat',
+								'ifcat',					// deprecated (Nucleus v2.0)
 								'category',
 								'searchform',
 								'referer',

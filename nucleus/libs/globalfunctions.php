@@ -596,7 +596,11 @@ function addToLog($level, $msg) { ACTIONLOG::add($level, $msg); }
 
 // shows a link to help file
 function help($id) {
-	echo helplink($id) . '<img src="documentation/icon-help.gif" width="15" height="15" alt="'._HELP_TT.'" /></a>';
+	echo helpHtml($id);
+}
+
+function helpHtml($id) {
+	return helplink($id) . '<img src="documentation/icon-help.gif" width="15" height="15" alt="'._HELP_TT.'" /></a>';
 }
 
 function helplink($id) {
