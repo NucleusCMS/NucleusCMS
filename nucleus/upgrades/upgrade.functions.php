@@ -18,28 +18,28 @@
 		$installed = 0;
 
 		switch($version) {
-			case "95":
-				$query = "SELECT bconvertbreaks FROM nucleus_blog LIMIT 1";
+			case '95':
+				$query = 'SELECT bconvertbreaks FROM '.sql_table('blog').' LIMIT 1';
 				$minrows = -1;
 				break;
-			case "96":
-				$query = "SELECT cip FROM nucleus_comment LIMIT 1";
+			case '96':
+				$query = 'SELECT cip FROM '.sql_table('comment').' LIMIT 1';
 				$minrows = -1;			
 				break;
-			case "10":
-				$query = "SELECT mcookiekey FROM nucleus_member LIMIT 1";
+			case '10':
+				$query = 'SELECT mcookiekey FROM '.sql_table('member').' LIMIT 1';
 				$minrows = -1;			
 				break;			
-			case "11":
-				$query = "SELECT bnotifytype FROM nucleus_blog LIMIT 1";
+			case '11':
+				$query = 'SELECT bnotifytype FROM '.sql_table('blog').' LIMIT 1';
 				$minrows = -1;			
 				break;
-			case "15":
-				$query = "SELECT * FROM nucleus_plugin_option LIMIT 1";
+			case '15':
+				$query = 'SELECT * FROM '.sql_table('plugin_option').' LIMIT 1';
 				$minrows = -1;			
 				break;			
-			case "20":
-				$query = "SELECT oid FROM nucleus_plugin_option LIMIT 1";
+			case '20':
+				$query = 'SELECT oid FROM '.sql_table('plugin_option').' LIMIT 1';
 				$minrows = -1;			
 				break;				
 		}

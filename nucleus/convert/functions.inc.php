@@ -31,7 +31,7 @@
 		$body = trim(addslashes($body));
 		$more = trim(addslashes($more));
 				
-		$query = "INSERT INTO nucleus_item (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IKARMAPOS, IKARMANEG, ICAT) "
+		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IKARMAPOS, IKARMANEG, ICAT) '
 		       . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $karmapos, $karmaneg,  $category)";
 		       
 		mysql_query($query) or die("Error while executing query: " . $query);		       		       
@@ -44,10 +44,10 @@
 		$shortname = addslashes($shortname);
 		
 		// create new category first
-		mysql_query("INSERT INTO nucleus_category (CNAME, CDESC) VALUES ('General','Items that do not fit in another categort')");
+		mysql_query('INSERT INTO '.sql_table('category')." (CNAME, CDESC) VALUES ('General','Items that do not fit in another categort')");
 		$defcat = mysql_insert_id();
 
-		$query = "INSERT INTO nucleus_blog (BNAME, BSHORTNAME, BCOMMENTS, BMAXCOMMENTS, BDEFCAT) VALUES ('$name','$shortname',1 ,0, $defcat)";
+		$query = 'INSERT INTO '.sql_table('blog')." (BNAME, BSHORTNAME, BCOMMENTS, BMAXCOMMENTS, BDEFCAT) VALUES ('$name','$shortname',1 ,0, $defcat)";
 		mysql_query($query) or die("Error while executing query: " . $query);
 		$id = mysql_insert_id();
 		
@@ -63,7 +63,8 @@
 		$body = trim(addslashes($body));
 		$host = addslashes($host);
 		
-		$query = "INSERT INTO nucleus_comment (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CBLOG) "
+		$query = 'INSERT INTO '.sql_table('comment')
+			   . ' (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CBLOG) '
 		       . "VALUES ('$name', '$url', $memberid, '$body', $itemid, '$timestamp', '$host', $blogid)";
 
 		mysql_query($query) or die("Error while executing query: " . $query);
@@ -73,7 +74,7 @@
 	
 	function convert_addToTeam($blogid, $memberid, $admin) {
 	
-		$query = "INSERT INTO nucleus_team (TMEMBER, TBLOG, TADMIN) "
+		$query = 'INSERT INTO '.sql_table('team').' (TMEMBER, TBLOG, TADMIN) '
 		       . "VALUES ($memberid, $blogid, $admin)";
 
 		mysql_query($query) or die("Error while executing query: " . $query);
