@@ -13,6 +13,32 @@
 // and will be available for download (with proper credit to the author, of course)
 
 
+// START introduced after v2.0 START
+
+// media library
+define('_MEDIA_VIEW',				'bekijk');
+define('_MEDIA_VIEW_TT',			'Bekijken (opent in nieuw venster)');
+define('_MEDIA_FILTER_APPLY',		'Filter Toepassen');
+define('_MEDIA_FILTER_LABEL',		'Filter: ');
+define('_MEDIA_UPLOAD_TO',			'Upload naar...');
+define('_MEDIA_UPLOAD_NEW',			'Upload nieuw bestand...');
+define('_MEDIA_COLLECTION_SELECT',	'Kies');
+define('_MEDIA_COLLECTION_TT',		'Overschakelen naar deze collectie');
+define('_MEDIA_COLLECTION_LABEL',	'Hudige collectie: ');
+
+// tooltips on toolbar
+define('_ADD_ALIGNLEFT_TT',			'Links uitlijnen');
+define('_ADD_ALIGNRIGHT_TT',		'Links uitlijnen');
+define('_ADD_ALIGNCENTER_TT',		'Centreren');
+
+// searchable blog setting (yes/no)
+define('_EBLOG_SEARCH',				'Opnemen in zoekopdrachten');
+
+// generic upload failure
+define('_ERROR_UPLOADFAILED',		'Upload is mislukt');
+
+// END introduced after v2.0 END
+
 // START introduced after v1.5 START
 
 // posting to the past/edit timestamps
