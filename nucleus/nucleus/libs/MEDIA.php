@@ -10,6 +10,8 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * Media classes for nucleus
+  *
+  * $Id$
   */
 
 

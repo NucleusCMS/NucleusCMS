@@ -17,6 +17,8 @@
   * http://www.evolt.org/article/Boolean_Fulltext_Searching_with_PHP_and_MySQL/18/15665/
   * http://davidaltherr.net/web/php_functions/boolean/funcs.mysql.boolean.txt
   * 
+  *
+  * $Id$
   */
 
 

@@ -11,6 +11,8 @@
   *
   *	This class contains two classes that can be used for importing and 
   *	exporting Nucleus skins: SKINIMPORT and SKINEXPORT
+  *
+  * $Id$
   */
 
 class SKINIMPORT {

@@ -12,7 +12,9 @@
 	  *
 	  * for more information on plugins and how to write your own, see the
 	  * plugins.html file that is included with the Nucleus documenation
-	  */
+ 	  *
+	  * $Id$
+  	  */
 	class NucleusPlugin {
 
 		// these functions _have_ to be redefined in your plugin

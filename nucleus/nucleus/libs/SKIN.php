@@ -12,6 +12,8 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * Class representing a skin
+  *
+  * $Id$
   */
 class SKIN {
 

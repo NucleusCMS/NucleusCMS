@@ -12,6 +12,8 @@
   *
   * A class representing a blog and containing functions to get that blog shown
   * on the screen 
+  *
+  * $Id$
   */
 class BLOG {
 	

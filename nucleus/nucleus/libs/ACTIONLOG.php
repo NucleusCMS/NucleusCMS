@@ -10,6 +10,8 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * Actionlog class for Nucleus
+  *
+  * $Id$
   */
 define('ERROR',1);		// only errors
 define('WARNING',2);	// errors and warnings

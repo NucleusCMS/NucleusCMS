@@ -11,6 +11,8 @@
   *
   * This script allows adding items to Nucleus through bookmarklets. The member must be logged in
   * in order to use this.
+  *
+  * $Id$
   */
 
 // bookmarklet is part of admin area (might need XML-RPC)

@@ -11,6 +11,8 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * A class representing site members
+  *
+  * $Id$
   */
 class MEMBER {
 
