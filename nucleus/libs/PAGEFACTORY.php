@@ -215,7 +215,10 @@ class PAGEFACTORY extends BaseActions {
 		// constant($which) only available from 4.0.4 :(
 		if (defined($which)) { 	
 			eval("echo $which;");
+		} else {
+			echo $which;	// this way we see where definitions are missing
 		}
+		
 	}
 	
 	function parse_contents($which) {
