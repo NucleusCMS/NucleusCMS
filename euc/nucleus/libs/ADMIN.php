@@ -5750,13 +5750,10 @@ function listplug_table_teamlist($template, $type) {
 	}
 }
 function encode_desc(&$data)
-    {   //_$to_entities = get_html_translation_table(HTML_ENTITIES);
-        $to_entities = get_html_translation_table(HTML_SPECIALCHARS);
+    {   $to_entities = get_html_translation_table(HTML_ENTITIES);
         $from_entities = array_flip($to_entities);
-        $data = str_replace('<br />','\n',$data); //hack
         $data = strtr($data,$from_entities);
         $data = strtr($data,$to_entities);
-        $data = str_replace('\n','<br />',$data); //hack
         return $data;
     }
 function listplug_table_pluginlist($template, $type) {

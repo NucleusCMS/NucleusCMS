@@ -67,7 +67,7 @@
 			border: 3px solid red;
 			padding: 5px;
 			font-size: medium;
-	}
+		}
 
 		tt, code {
 			font-size: small;
@@ -2991,13 +2991,13 @@ $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
 	<td><a href="#templatevar-date">date</a></td>
 	<td>フォーマット済みの日付</td>
 </tr><tr>
-	<td><a href="#templatevar-time">time</a></td>
+	<td><a href="#templatevar-time">time</td>
 	<td>フォーマット済みの時刻</td>
 </tr><tr>
 	<td>daylink</td>
 	<td>その日のアーカイブへの未加工のリンク</td>
 </tr><tr>
-	<td><a href="#templatevar-comments">comments</a></td>
+	<td><a href="#templatevar-comments">comments</td>
 	<td>コメント・ブロックかコメント数</td>
 </tr><tr>
 	<td>itemid</td>
@@ -3289,16 +3289,16 @@ $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
 	<th>部分名</th><th colspan="2">空っぽか否か？</th>
 </tr><tr>
 	<td>本文</td><td>いいえ</td><td>いいえ</td>
-</tr><tr>
+</tr></tr>
 	<td>続き</td><td>はい</td><td>いいえ</td>
-</tr><tr>
+</tr></tr>
 	<th>smartbodyの表示＝</th><th>「本文部分」</th><th>「続き部分」</th>
 </tr></table>
 
 <h2>使用例</h2>
 
 <p>本文のテキストが完全なテキストと判断され、続きの部分はフロントページに表示される「紹介」や「抜粋」と判断されます。</p>
-<p>フロントページで使われているテンプレートには<tt>&lt;%smartbody%&gt;</tt>を使い、抜粋が存在するときにはそれを、無い場合は完全なテキストを挿入します。アイテムの詳細テンプレートには、<tt>&lt;%body%&gt;</tt> + <tt>&lt;%more%&gt;</tt>のかわりに<tt>&lt;%body%&gt;</tt>を使います。<tt>&lt;%body%&gt;</tt>は少なくとも完全なアイテムが入っているのですから。</p>
+<p>フロントページで使われているテンプレートには<tt>&lt;%smartbody%&gt;</tt>を使い、抜粋が存在するときにはそれを、無い場合は完全なテキストを挿入します。アイテムの詳細テンプレートには、<tt>&lt;%body%&gt;</tt> + <tt>&lt;%more%&gt;</tt>のかわりに<tt>&lt;%body%&gt;</tt>を使います。<tt>&lt%body%&gt;</tt>は少なくとも完全なアイテムが入っているのですから。</p>
 
 
 

@@ -233,11 +233,6 @@ class SEARCH {
     	$result=str_replace(' ,',',',$result);
     	$result=str_replace('- ','-',$result);
     	$result=str_replace('+','',$result);
-
-    	// remove double spaces (we might have introduced some new ones above)
-    	$result=trim($result);
-    	$result=preg_replace("/([[:space:]]{2,})/",' ',$result);
-
     	// apply arbitrary function to all 'word' atoms 
 
         $result_a = explode(" ",$result);

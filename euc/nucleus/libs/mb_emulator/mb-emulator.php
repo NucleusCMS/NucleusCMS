@@ -4,7 +4,7 @@
  *
  * license based on GPL(GNU General Public License)
  *
- * Ver.0.37 (2005/1/30)
+ * Ver.0.35 (2004/9/26)
  */
 
 
@@ -44,7 +44,6 @@ if (!(mb_detect_order($ini_file['detect_order'])))
 $sjis_match = "[\x81-\x9F,\xE0-\xFC]([\x40-\xFC])|[\x01-\x7F]|[\xA0-\xDF]";
 $euc_match = "[\xa1-\xfe]([\xa1-\xfe])|[\x01-\x7f]|\x8e([\xa0-\xdf])";
 $utf8_match = "[\x01-\x7F]|[\xC0-\xDF][\x80-\xBF]|[\xE0-\xEF][\x80-\xBF][\x80-\xBF]";
-$jis_match = "(?:^|\x1b\(\x42)([^\x1b]*)|(?:\x1b\\$\x42([^\x1b]*))|(?:\x1b\(I([^\x1b]*))";
 
 function mb_language($language)
 {
@@ -281,8 +280,10 @@ function _sub_jtosj($match)
 
 function _jistosjis(&$str)
 {
-	global $_euctosjis_byte1, $_euctosjis_byte2, $jis_match;
+	global $_euctosjis_byte1, $_euctosjis_byte2;
 	
+	
+	$jis_match = "(?:^|\x1b\(B)([^\x1b]*)|\x1b$B([^\x1b]*)|\x1b\(I([^\x1b]*)";
 	$max = preg_match_all("/$jis_match/", $str, $allchunks, PREG_SET_ORDER);  // 文字種ごとの配列に分解
 	$st = '';
 	for ($i = 0; $i < $max; ++$i) {
@@ -1234,7 +1235,7 @@ function _sub_qponechar($str, &$len)
 
 function _sub_quoted_printable_encode($str, $encoding, $maxline, $linefeed)
 {
-	global $_mb_encoding, $euc_match, $utf8_match, $sjis_match, $jis_match;
+	global $_mb_encoding, $euc_match, $utf8_match, $sjis_match;
 	switch ($_mb_encoding[$encoding]) {
 		case 0 : //ascii
 			$allchars[0] = unpack("c*", $str);
@@ -1250,6 +1251,7 @@ function _sub_quoted_printable_encode($str, $encoding, $maxline, $linefeed)
 			$max = preg_match_all("/$utf8_match/", $str, $allchars);
 			break;
 		case 3 : //jis
+			$jis_match = "(?:^|\x1b\(B)([^\x1b]*)|\x1b$B([^\x1b]*)|\x1b\(I([^\x1b]*)";
 			$max = preg_match_all("/$jis_match/", $str, $allchunks, PREG_SET_ORDER);  // 文字種ごとの配列に分解
 			$st = ''; // quoted printable変換後の文字列
 			$len = $maxline;  // その行に追加可能なバイト数
@@ -1337,7 +1339,7 @@ function _sub_quoted_printable_encode($str, $encoding, $maxline, $linefeed)
 
 function _sub_encode_base64($str, $encoding, $maxline , $linefeed)
 {
-	global $_mb_encoding, $euc_match, $utf8_match, $sjis_match, $jis_match;
+	global $_mb_encoding, $euc_match, $utf8_match, $sjis_match;
 	switch ($_mb_encoding[$encoding]) {
 		case 0 : //ascii
 			return chunk_split( base64_encode($str) , $maxline, $linefeed);
@@ -1351,6 +1353,7 @@ function _sub_encode_base64($str, $encoding, $maxline , $linefeed)
 			$max = preg_match_all("/$utf8_match/", $str, $allchars);
 			break;
 		case 3 : //jis
+			$jis_match = "(?:^|\x1b\(B)([^\x1b]*)|\x1b$B([^\x1b]*)|\x1b\(I([^\x1b]*)";
 			$max = preg_match_all("/$jis_match/", $str, $allchunks, PREG_SET_ORDER);  // 文字種ごとの配列に分解
 			$st = ''; // BASE64変換後の文字列
 			$maxbytes = floor($maxline * 3 / 4);  //1行に変換可能なバイト数
