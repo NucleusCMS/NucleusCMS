@@ -335,7 +335,7 @@ function media_head() {
 			function setType(val) { type = val; }
 			
 			function chooseImage(collection, filename, width, height) {
-				window.blur();
+				window.opener.focus(); 
 				window.opener.includeImage(collection,
 										   filename, 
 				                           type == 0 ? 'inline' : 'popup',
@@ -346,6 +346,7 @@ function media_head() {
 			}
 			
 			function chooseOther(collection, filename) {
+				window.opener.focus(); 
 				window.opener.includeOtherMedia(collection, filename);
 				window.close();
 			
