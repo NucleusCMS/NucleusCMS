@@ -428,6 +428,12 @@ function selector() {
 		$query = 'SELECT UNIX_TIMESTAMP(itime) as itime, iblog FROM '.sql_table('item').' WHERE inumber=' . $itemid;
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
+		
+		// if a different blog id has been set through the request or selectBlog(),
+		// deny access
+		if ($blogid && (intval($blogid) != $obj->iblog))
+			doError(_ERROR_NOSUCHITEM);
+			
 		$blogid = $obj->iblog;
 		$timestamp = $obj->itime;
 
