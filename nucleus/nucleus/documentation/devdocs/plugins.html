@@ -9,7 +9,7 @@
 
 <div class="heading">
 Writing Plugins
-<i>August 25th, 2002</i>
+<i>December 26th, 2002</i>
 </div>
 
 <div class="note"><b>Note:</b> This document should contain enough information to write basic plugins. If you have more questions, see the <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin Development Forum</a></div>
@@ -251,6 +251,8 @@ So, that wasn't so hard after all. Read on to find out more.
 
 <h1>Skinvars <a name="skinvars" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
+<h2>Description</h2>
+
 <p>
 You can create your own skinvars, and call them using <tt>&lt;%plugin(<i>PlugName</i>,<i>parameters</i>)%&gt; </tt> or <tt>&lt;%PlugName(parameters)%&gt;</tt> (when this does not conflict with an existing skinvar). Parameters are comma-separated.
 </p>
@@ -272,10 +274,18 @@ function doSkinVar($skinType, $skinVar, $param1 = 'default value')
 	<li>You can use <tt>doSkinVar()</tt> (no parameters) and retrieve the parameters using the PHP function <tt>func_get_args()</tt>. Could be handy if you have different types of skinvars with different numbers of arguments</li>
 </ul>
 
+<h2>Notes</h2>
+
+<ul>
+	<li>(v2.0) You can find the name of the skin that's currently being parsed in the global variable <tt>$currentSkinName</tt></li>
+</ul>
+
 
 
 
 <h1>Template variables <a name="templatevars" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<h2>Description</h2>
 
 <p>
 Template variables work in the same way as skinvars. There are two differences:</p>
@@ -302,6 +312,12 @@ function doTemplateVar(&$item, $param1, $param2)
 function doTemplateVar(&$item, $type, $param1, $param2)
 function doTemplateVar(&$item, $type, $param1 = 'default value')
 </pre>
+
+<h2>Notes</h2>
+
+<ul>
+	<li>(v2.0) You can find the name of the template that's currently being used inside the global variable <tt>$currentTemplateName</tt></li>
+</ul>
 
 
 
