@@ -4,10 +4,9 @@
     <title><%blogsetting(name)%></title>
     <link><%blogsetting(url)%></link>
     <description><%blogsetting(desc)%></description>
-    <!-- optional tags -->
-    <language>en-us</language>           <!-- valid langugae goes here -->
+    <language>en-us</language>           
     <generator><%version%></generator>
-    <copyright>©</copyright>             <!-- Copyright notice -->
+    <copyright>©</copyright>             
     <category>Weblog</category>
     <docs>http://backend.userland.com/rss</docs>
     <image>
