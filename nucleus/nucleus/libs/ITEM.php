@@ -31,16 +31,23 @@ class ITEM {
 
 		$itemid = intval($itemid);
 		
-		$query =  'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, i.ititle as title, i.ibody as body, m.mname as author, i.iauthor as authorid, i.itime, i.imore as more, i.ikarmapos as karmapos, i.ikarmaneg as karmaneg, i.icat as catid'
-		       . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m'
+		$query =  'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, '
+		       . ' i.ititle as title, i.ibody as body, m.mname as author, '
+		       . ' i.iauthor as authorid, i.itime, i.imore as more, i.ikarmapos as karmapos, '
+		       . ' i.ikarmaneg as karmaneg, i.icat as catid, i.iblog as blogid '
+		       . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, ' . sql_table('blog') . ' as b '
 		       . ' WHERE i.inumber=' . $itemid
-		       . ' and i.iauthor=m.mnumber';
+		       . ' and i.iauthor=m.mnumber '
+		       . ' and i.iblog=b.bnumber';
+		       
 		if (!$allowdraft)
 			$query .= ' and i.idraft=0';
+			
 		if (!$allowfuture) {
 			$blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
 			$query .= ' and i.itime <=' . mysqldate($blog->getCorrectTime());		
 		}
+		
 		$query .= ' LIMIT 1';
 
 		$res = sql_query($query);
