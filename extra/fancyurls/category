@@ -1,4 +1,4 @@
-<?
+<?php
 
 include('./fancyurls.config.php');
 include('./config.php');
