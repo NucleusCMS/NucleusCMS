@@ -76,8 +76,6 @@ class COMMENT {
 	}
 	
 	function createLinkCode($pre, $url, $protocol = 'http') {
-		echo '-' . $pre . '-' . $url . '-' . $protocol . '-<br />' ; 
-
 		if (!ereg('^'.$protocol.'://',$url))
 			$linkedUrl = $protocol . (($protocol == 'mailto') ? ':' : '://') . $url;
 		else
