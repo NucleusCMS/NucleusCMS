@@ -1,8 +1,9 @@
 <?php
 // Finnish Nucleus Language File
 // 
-// Author: Marko Seppänen, http://hoito.org
-// Nucleus version: 2.0
+// Author: Jukka Kolehmainen, www.timetombs.net(v2.0)
+// Author: Marko Seppänen, http://hoito.org (v1.5,v1.1)
+// Nucleus version: v2.5beta
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -11,6 +12,32 @@
 //
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
+
+// START introduced after v2.0 START
+
+// media library
+define('_MEDIA_VIEW',				'Tarkastele');
+define('_MEDIA_VIEW_TT',			'Katso tiedostoa (avautuu uuteen ikkunaan)');
+define('_MEDIA_FILTER_APPLY',		'Ota Filtteri käyttöön');
+define('_MEDIA_FILTER_LABEL',		'Filtteri: ');
+define('_MEDIA_UPLOAD_TO',			'Lähetä...');
+define('_MEDIA_UPLOAD_NEW',			'Lähetä uusi tiedosto...');
+define('_MEDIA_COLLECTION_SELECT',	'Valitse');
+define('_MEDIA_COLLECTION_TT',		'Hyppää tähän kategoriaan');
+define('_MEDIA_COLLECTION_LABEL',	'Nykyinen lajitelma: ');
+
+// tooltips on toolbar
+define('_ADD_ALIGNLEFT_TT',			'Tasaa vasemmalle');
+define('_ADD_ALIGNRIGHT_TT',		'Tasaa oikealle');
+define('_ADD_ALIGNCENTER_TT',		'Keskitä');
+
+// searchable blog setting (yes/no)
+define('_EBLOG_SEARCH',				'Sisällytä hakuun');
+
+// generic upload failure
+define('_ERROR_UPLOADFAILED',		'Lähettäminen epäonnistui');
+
+// END introduced after v2.0 END
 
 // START introduced after v1.5 START
 
@@ -42,7 +69,7 @@ define('_MOVECAT_BTN',				'Siirrä kategoria');
 // URLMode setting
 define('_SETTINGS_URLMODE',			'URL moodi');
 define('_SETTINGS_URLMODE_NORMAL',	'Normaali');
-define('_SETTINGS_URLMODE_PATHINFO','Häjynen');
+define('_SETTINGS_URLMODE_PATHINFO','Kokonainen');
 
 // Batch operations
 define('_BATCH_NOSELECTION',		'Ei valintoja, joihin kohdistuu toimintoja');
@@ -75,12 +102,12 @@ define('_BATCH_TEAM_DELETE',		'Poista hallintaryhmästä');
 define('_BATCH_TEAM_SET_ADM',		'Anna järjestelmänvalvojan oikeudet');
 define('_BATCH_TEAM_UNSET_ADM',		'Ota pois järjestelmänvalvojan oikeudet');
 define('_BATCH_CAT_DELETE',			'Poista');
-define('_BATCH_CAT_MOVE',			'Siirrää toiseen blogiin');
+define('_BATCH_CAT_MOVE',			'Siirrä toiseen blogiin');
 define('_BATCH_COMMENT_DELETE',		'Poista');
 
 // itemlist: Add new item...
 define('_ITEMLIST_ADDNEW',			'Lisää uusi blogiartikkeli...');
-define('_ADD_PLUGIN_EXTRAS',		'Lisävalintoja pluginille');
+define('_ADD_PLUGIN_EXTRAS',		'Pluginille lisävalinnat');
 
 // errors
 define('_ERROR_CATCREATEFAIL',		'Ei pystytty luomaan uutta kategoriaa');
@@ -260,9 +287,6 @@ define('_BACKTOMANAGE',				'Takaisin Nucleuksen hallintaan');
 
 
 // END introduced after v1.1 END
-
-
-
 
 // charset to use 
 define('_CHARSET',					'iso-8859-1');

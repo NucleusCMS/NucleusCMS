@@ -2,17 +2,45 @@
 // Russian Nucleus Language File (cyrillic charset Windows-1251)
 // 
 // Author: *** diarchy *** (andy@diarchy.ru)
-// File version: 1.0
-// Nucleus version: v2.0
+// Inserted and corrected by * elLf * (site@ellf.pp.ru)
+// File version: 2.0
+// Nucleus version: v2.5 beta
 //
 //=========================================================================
 //
 // Файл поддержки русского языка движка Nucleus (кодировка Windows-1251)
 //
 // Автор: *** diarchy *** (andy@diarchy.ru)
-// Версия файла: 1.0
-// Версия движка Nucleus: v2.0
+// Дополнено и исправлено: * elLf * (site@ellf.pp.ru)
+// Версия файла: 2.0
+// Версия движка Nucleus: v2.5
 //
+// START introduced after v2.0 START
+
+// media library
+define('_MEDIA_VIEW',				'посмотреть');
+define('_MEDIA_VIEW_TT',			'Посмотреть файл (открывается в новом окне)');
+define('_MEDIA_FILTER_APPLY',		'Применить фильтр');
+define('_MEDIA_FILTER_LABEL',		'Фильтр: ');
+define('_MEDIA_UPLOAD_TO',			'Закачать в...');
+define('_MEDIA_UPLOAD_NEW',			'Закачать новый файл...');
+define('_MEDIA_COLLECTION_SELECT',	'Выбрать');
+define('_MEDIA_COLLECTION_TT',		'Переключиться в эту категорию');
+define('_MEDIA_COLLECTION_LABEL',	'Текущая коллекция: ');
+
+// tooltips on toolbar
+define('_ADD_ALIGNLEFT_TT',			'Выровнять по левому краю');
+define('_ADD_ALIGNRIGHT_TT',		'Выровнять по правому краю');
+define('_ADD_ALIGNCENTER_TT',		'Выровнять по центру');
+
+// searchable blog setting (yes/no)
+define('_EBLOG_SEARCH',				'Включить в поиск по сайту');
+
+// generic upload failure
+define('_ERROR_UPLOADFAILED',		'Загрузка не удалась');
+
+// END introduced after v2.0 END
+
 // START introduced after v1.5 START
 
 // posting to the past/edit timestamps
@@ -134,11 +162,11 @@ define('_BACKUP_ZIP_NO',			'Не использовать компрессию');
 define('_BACKUP_BTN',				'Создать архив');
 define('_BACKUP_NOTE',				'<b>Замечание:</b> В архиве сохраняется только содержимое базы данных. Медиа-файлы и настройки из config.php  <b>НЕ</b> включаются в архив.');
 define('_RESTORE_TITLE',			'Восстановление');
-define('_RESTORE_NOTE',				'<b>ВНИМАНИЕ:</b> Восстановление из архива приведет к <b>УДАЛЕНИЮ</b> всей текущей информации из базы данных! Выполняете эту операцию только если Вы действительно уверены!	<br />	<b>Замечание:</b> Убедитесь, что версия  Nucleus вашего архива совпадает с версией которая работает сейчас');
-define('_RESTORE_INTRO',			'Выберите файл архива  (его необходимо загрузить на сервер) и нажмите кнопку "Восстановить" для выполнения восстановления.');
+define('_RESTORE_NOTE',				'<b>ВНИМАНИЕ:</b> Восстановление из архива приведет к <b>УДАЛЕНИЮ</b> всей текущей информации из базы данных! Выполняете эту операцию только если Вы действительно уверены!	<br />	<b>Замечание:</b> Убедитесь, что версия  Nucleus вашего архива совпадает с версией, которая работает сейчас');
+define('_RESTORE_INTRO',			'Выберите файл архива (его необходимо загрузить на сервер) и нажмите кнопку "Восстановить" для выполнения восстановления.');
 define('_RESTORE_IMSURE',			'Да, я уверен что нужно это сделать!');
 define('_RESTORE_BTN',				'Восстановление из файла');
-define('_RESTORE_WARNING',			'(Удостоверитесь, что вы восстанавливаете нужную резервную копию, возможно нужно сделаете  резервную копию текущего состояния прежде, чем выполнять восстановление)');
+define('_RESTORE_WARNING',			'(Удостоверитесь, что вы восстанавливаете нужную резервную копию, возможно нужно сделаеть резервную копию текущего состояния прежде, чем выполнять восстановление)');
 define('_ERROR_BACKUP_NOTSURE',		'Нужно отметить поле \'Я уверен\'');
 define('_RESTORE_COMPLETE',			'Востановление завершено');
 
@@ -161,7 +189,7 @@ define('_NOTIFY_CONTENTS',			'Содержание:');
 
 // member mail message
 define('_MMAIL_MSG',				'Сообщение послано вам от');
-define('_MMAIL_FROMANON',			'анонимным пользователем');
+define('_MMAIL_FROMANON',			'анонимного пользователя');
 define('_MMAIL_FROMNUC',			'Написано в  блоге');
 define('_MMAIL_TITLE',				'Сообщение от');
 define('_MMAIL_MAIL',				'Сообщение:');
@@ -259,7 +287,6 @@ define('_MANAGE_EXTRA',				'Дополнительные возможности');
 define('_BACKTOMANAGE',				'Назад к управлению движком Nucleus');
 
 
-
 // END introduced after v1.1 END
 
 
@@ -291,7 +318,6 @@ define('_YOURSITE',					'Ваш сайт');
 define('_POPUP_CLOSE',				'Закрыть окно');
 
 define('_LOGIN_PLEASE',				'Сначала вы должны войти в систему.');
-
 
 // commentform
 define('_COMMENTFORM_YOUARE',		'Ваше имя - ');
@@ -344,7 +370,7 @@ define('_EDIT_ITEM',				'Править запись');
 define('_EDIT_SUBMIT',				'Сохранить изменения');
 define('_EDIT_ORIG_AUTHOR',			'Автор оригинала');
 define('_EDIT_BACKTODRAFTS',		'Вернуть запись в черновики');
-define('_EDIT_COMMENTSNOTE',		'(внимание: запрещение комментариев не удалит уже оставленные комментарии)');
+define('_EDIT_COMMENTSNOTE',		'(внимание: запрет комментариев не удалит уже оставленные комментарии)');
 
 // used on delete screens
 define('_DELETE_CONFIRM',			'Подтвердите удаление');
@@ -411,14 +437,14 @@ define('_ERROR_BADTEMPLATENAME',	'Неверное имя шаблона - используйте только букв
 define('_ERROR_DUPTEMPLATENAME',	'Шаблон с таким именем уже существует');
 define('_ERROR_BADSKINNAME',		'Неверное имя скина - используйте только буквы a-z и цифры');
 define('_ERROR_DUPSKINNAME',		'Скин с таким именем уже существует');
-define('_ERROR_DEFAULTSKIN',		'Скин с именем "default" должен сущепствовать всегда');
+define('_ERROR_DEFAULTSKIN',		'Скин с именем "default" должен существовать всегда');
 define('_ERROR_SKINDEFDELETE',		'Не удалось удалить скин - он выбран скином по умолчанию в следующем журнале: ');
 define('_ERROR_DISALLOWED',			'У вас нет прав для совершения этого действия');
 define('_ERROR_DELETEBAN',			'Ошибка при попытке удалить бан (бан не существует)');
 define('_ERROR_ADDBAN',				'Ошибка при попытке добавить бан. Бан не можен быть корректно установлен на все журналы.');
 define('_ERROR_BADACTION',			'Требуемое действие не существует');
 define('_ERROR_MEMBERMAILDISABLED',	'Служба обмена личными сообщениями отключена');
-define('_ERROR_MEMBERCREATEDISABLED','Создание учетной записи пользвателя отключено');
+define('_ERROR_MEMBERCREATEDISABLED','Создание учетной записи пользователя отключено');
 define('_ERROR_INCORRECTEMAIL',		'Неправильный почтовый адрес');
 define('_ERROR_VOTEDBEFORE',		'Вы уже проголосовали за эту запись');
 define('_ERROR_BANNED1',			'Не удалось произвести выбранное действие, поскольку ваш IP-адрес принадлежит диапазону ');
@@ -430,7 +456,7 @@ define('_ERROR_FILE_TOO_BIG',		'Слишком большой файл!');
 define('_ERROR_BADFILETYPE',		'Файлы этого типа не разрешается закачивать');
 define('_ERROR_BADREQUEST',			'Плохой запрос на закачку');
 define('_ERROR_DISALLOWEDUPLOAD',	'Вы не входите в редакцию ни одного журнала, поэтому вам нельзя закачивать файлы');
-define('_ERROR_BADPERMISSIONS',		'Разрешения на файл/папку установлены некорректно');
+define('_ERROR_BADPERMISSIONS',		'Права на файл/папку установлены некорректно');
 define('_ERROR_UPLOADMOVEP',		'Ошибка при попытке перемещения закачанного файла');
 define('_ERROR_UPLOADCOPY',			'Ошибка при попытке копирования файла');
 define('_ERROR_UPLOADDUPLICATE',	'Файл с таким именем уже существует. Попробуйте переименовать файл перед закачкой');
@@ -447,7 +473,7 @@ define('_ERROR_DUPCATEGORYNAME',	'Категория с таким именем уже существует');
 // some warnings (used for mediadir setting)
 define('_WARNING_NOTADIR',			'Внимание! Текущее значение не является директорией!');
 define('_WARNING_NOTREADABLE',		'Внимание! Текущее значения является директорией, закрытой для чтения!');
-define('_WARNING_NOTWRITABLE',		'Внимание! Текущее значение является категорией, закрытой лдя записи!');
+define('_WARNING_NOTWRITABLE',		'Внимание! Текущее значение является категорией, закрытой для записи!');
 
 // media and upload
 define('_MEDIA_UPLOADLINK',			'Закачать новый файл');
@@ -508,7 +534,7 @@ define('_EBLOG_NOTIFY_ITEM',		'Новых записях');
 define('_EBLOG_PING',				'Пинговать Weblogs.com при обновлениях?');
 define('_EBLOG_MAXCOMMENTS',		'Максимальное число комментариев');
 define('_EBLOG_UPDATE',				'Имя файла со временем обновлений (необязательно)');
-define('_EBLOG_OFFSET',				'Временной отступ');
+define('_EBLOG_OFFSET',				'Сдвиг времени');
 define('_EBLOG_STIME',				'Текущее время сервера');
 define('_EBLOG_BTIME',				'Текущее время журнала');
 define('_EBLOG_CHANGE',				'Изменение настроек');
@@ -618,11 +644,11 @@ define('_SETTINGS_DEFBLOG',			'Журнал по умолчанию');
 define('_SETTINGS_ADMINMAIL',		'E-Mail администратора');
 define('_SETTINGS_SITENAME',		'Имя сайта');
 define('_SETTINGS_SITEURL',			'URL сайта (должен оканчиваться слэшем)');
-define('_SETTINGS_ADMINURL',		'URL области управления (должен кончаться слэшем)');
+define('_SETTINGS_ADMINURL',		'URL области управления (должен оканчиваться слэшем)');
 define('_SETTINGS_DIRS',			'Директория движка Nucleus');
 define('_SETTINGS_MEDIADIR',		'Директория для закачки файлов');
 define('_SETTINGS_SEECONFIGPHP',	'(смотри config.php)');
-define('_SETTINGS_MEDIAURL',		'URL медиа-файлов (должен кончаться слэшем)');
+define('_SETTINGS_MEDIAURL',		'URL медиа-файлов (должен оканчиваться слэшем)');
 define('_SETTINGS_ALLOWUPLOAD',		'Разрешить закачку файлов?');
 define('_SETTINGS_ALLOWUPLOADTYPES','Разрешенные для закачки типы файлов');
 define('_SETTINGS_CHANGELOGIN',		'Разрешить пользователям менять логин/пароль');
@@ -705,9 +731,9 @@ define('_BLOGLIST_TT_EDIT',			'');
 define('_BLOGLIST_BMLET',			'Закладки');
 define('_BLOGLIST_TT_BMLET',		'');
 define('_BLOGLIST_SETTINGS',		'Настройки');
-define('_BLOGLIST_TT_SETTINGS',		'Изменять настройки и состав редакции журнала');
+define('_BLOGLIST_TT_SETTINGS',		'Изменить настройки и состав редакции журнала');
 define('_BLOGLIST_BANS',			'Баны');
-define('_BLOGLIST_TT_BANS',			'Просматривать, добавлять и удалять забаненные IP-адреса');
+define('_BLOGLIST_TT_BANS',			'Просмотреть, добавить или удалить забаненные IP-адреса');
 define('_BLOGLIST_DELETE',			'Удалить');
 define('_BLOGLIST_TT_DELETE',		'Удалить журнал');
 
@@ -716,11 +742,11 @@ define('_OVERVIEW_YRBLOGS',			'Ваши журналы');
 define('_OVERVIEW_YRDRAFTS',		'Ваши черновики');
 define('_OVERVIEW_YRSETTINGS',		'Личные настройки');
 define('_OVERVIEW_GSETTINGS',		'Общие настройки');
-define('_OVERVIEW_NOBLOGS',			'Вы не входите в редакцию никакого журнала');
+define('_OVERVIEW_NOBLOGS',			'Вы не входите в редакцию ни одного журнала');
 define('_OVERVIEW_NODRAFTS',		'Нет черновиков');
 define('_OVERVIEW_EDITSETTINGS',	'Редактировать личные настройки...');
-define('_OVERVIEW_BROWSEITEMS',		'Просматривать ваши записи...');
-define('_OVERVIEW_BROWSECOMM',		'Просматривать ваши комментарии...');
+define('_OVERVIEW_BROWSEITEMS',		'Просмотреть ваши записи...');
+define('_OVERVIEW_BROWSECOMM',		'Просмотреть ваши комментарии...');
 define('_OVERVIEW_VIEWLOG',			'Просмотреть отчет о действиях...');
 define('_OVERVIEW_MEMBERS',			'Управление пользователями...');
 define('_OVERVIEW_NEWLOG',			'Создание нового журнала...');
