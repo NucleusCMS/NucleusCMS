@@ -34,7 +34,7 @@
 			padding: 5px;
 			font-size: small;
 		}
-		
+
 		.example {
 			background-color: #ddd;
 			padding: 5px;
@@ -67,23 +67,23 @@
 			padding: 5px;
 			font-size: medium;
 		}
-		
+
 		tt, code {
 			font-size: small;
 		}
-		
+
 		table {
 			border: 1px solid #ccc;
 		}
-		
+
 		th {
 			background-color: #eee;
 		}
-		
+
 		td {
 			vertical-align: top;
 		}
-		
+
 		.note {
 			background-color: #eee;
 			padding: 5px;
@@ -129,7 +129,7 @@ Draft items are not yet viewable in the public blog. They might come in handy wh
 <div class="page"><a name="extended"></a>
 <h1>Extended part</h1>
 <p>
-Items have an optional extended part that you can use for continued stories. e.g. when a story is too long to put on the main page of your blog, you can write an introduction in the body part and the rest in the extended part. When viewing your main blog page, you will then see 'read more' links (as defined by the templates). 
+Items have an optional extended part that you can use for continued stories. e.g. when a story is too long to put on the main page of your blog, you can write an introduction in the body part and the rest in the extended part. When viewing your main blog page, you will then see 'read more' links (as defined by the templates).
 </p>
 <p>
 If you want to write an introduction only for <em>some</em> of your items, you could use the <a href="#templatevar-smartbody">smartbody</a> template variable to make a selection out of the body text and the extended text.
@@ -139,7 +139,7 @@ If you want to write an introduction only for <em>some</em> of your items, you c
 <div class="page"><a name="shortblogname"></a>
 <h1>Short Blog Name</h1>
 <p>
-The short blog name is used mainly in the admin area to indicate which items are associated with which blog. 
+The short blog name is used mainly in the admin area to indicate which items are associated with which blog.
 </p>
 <p>
 It can also be used in alternative index files, to make a second weblog available:
@@ -250,7 +250,7 @@ Usually, there will be only one super-admin, the site administrator.
 <div class="page"><a name="canlogin"></a>
 <h1>Can Login?</h1>
 <p>
-As a <a href="#superadmin" title="Administrator Privileges">superadmin</a>, you can disallow individual members to login to the admin area. 
+As a <a href="#superadmin" title="Administrator Privileges">superadmin</a>, you can disallow individual members to login to the admin area.
 </p>
 </div>
 
@@ -340,7 +340,7 @@ For the privacy of your members, you can hide all e-mail addresses and allow mem
 
 <h2>Non-members</h2>
 <p>
-By default, non members cannot use the message service (because there's no way to check the validity of the e-mail address they enter). You can relax this restriction by allowing non-members to use the message service too. When submitting a message, they will be asked to enter their e-mail address, which will show up in the <tt>From:</tt> headers of the e-mail you receive.  
+By default, non members cannot use the message service (because there's no way to check the validity of the e-mail address they enter). You can relax this restriction by allowing non-members to use the message service too. When submitting a message, they will be asked to enter their e-mail address, which will show up in the <tt>From:</tt> headers of the e-mail you receive.
 </p>
 
 </div>
@@ -364,7 +364,7 @@ Exceptions: the <strong>admin-area</strong> is still available, and <strong><a h
 <p>Using this option, you can switch between URL styles:</p>
 <ul>
 	<li><strong>Normal</strong>: URLs looking like <code>http://host/index.php?itemid=1234</code></li>
-	<li><strong>Fancy</strong>: URLs looking like <code>http://host/item/1234</code></li>	
+	<li><strong>Fancy</strong>: URLs looking like <code>http://host/item/1234</code></li>
 </ul>
 <p class="note"><strong>Note:</strong> In order to get the 'Fancy URL' mode working, some extra actions are required. They're described in the <a href="tips.html" class="out" onclick="window.open(this.href);return false;">Tips &amp; Suggestions</a> (opens in new window)</p>
 
@@ -564,7 +564,7 @@ categorylist footer</pre>
 	<th>Description</th>
 </tr><tr>
 	<td>blogid</td>
-	<td>ID of the weblog</td>	
+	<td>ID of the weblog</td>
 </tr><tr>
 	<td>blogurl</td>
 	<td>URL of the blog (as defined in blogsettings)</td>
@@ -579,10 +579,10 @@ categorylist footer</pre>
 	<td>Category ID</td>
 </tr><tr>
 	<td>catname</td>
-	<td>Category name</td>	
+	<td>Category name</td>
 </tr><tr>
 	<td>catdesc</td>
-	<td>Category description</td>	
+	<td>Category description</td>
 </tr></table>
 
 <p><a href="#categorylistexample">View an example</a></p>
@@ -722,7 +722,7 @@ Shown when a search has been performed and no results were found.
 	<th>Description</th>
 </tr><tr>
 	<td>blogid</td>
-	<td>ID of the weblog</td>	
+	<td>ID of the weblog</td>
 </tr><tr>
 	<td>query</td>
 	<td>the query that was used in the search</td>
@@ -786,7 +786,7 @@ These templates are used to format links to popup image windows and media object
 	<td>image width</td>
 </tr><tr>
 	<td>height</td>
-	<td>image width</td>	
+	<td>image width</td>
 </tr><tr>
 	<td>popuptext</td>
 	<td>(=same as text)</td>
@@ -812,7 +812,7 @@ These templates are used to format links to popup image windows and media object
 	<td>image width</td>
 </tr><tr>
 	<td>height</td>
-	<td>image width</td>	
+	<td>image width</td>
 </tr></table>
 
 <h2>Media Object Link Code</h2>
@@ -884,7 +884,7 @@ This template defines how the <a href="#templatevar-edit">edit-templatevar</a> w
 
 <h2>Example:</h2>
 
-<pre><code>&lt;a href="&lt;%editlink%&gt;" 
+<pre><code>&lt;a href="&lt;%editlink%&gt;"
    onclick="&lt;%editpopupcode%&gt;"&gt;edit&lt;/a&gt;</code></pre>
 
 </div>
@@ -1247,7 +1247,7 @@ Some settings are needed to do this:
 	<li><strong>Media URL</strong>: location of the media files</li>
 	<li><strong>Allow upload</strong>: It's possible to disable file upload</li>
 	<li><strong>Allowed filetypes for upload</strong>: a bunch of extensions uploaded files can have (seperated by commas, case insensitive)</li>
-	<li><strong>Max. upload file size</strong>: Puts a limit on the size of uploaded files</li>	
+	<li><strong>Max. upload file size</strong>: Puts a limit on the size of uploaded files</li>
 	<li><strong>Prefix Media Files</strong>: When this option is turned on, uploaded file will be prefixed with the current date. Uploading a file named 'bunny.jpg' on April 8, 2003 will then result in a file named 20030408-bunny.jpg. The reason why you might want to do this, is when you're uploading tons of files, and don't want problems with duplicate names.</li>
 </ul>
 
@@ -1333,13 +1333,25 @@ Each member has his own private collection of media files. Next to that, subdire
 
 <div class="page">
 <a name="skinvar-itemlink"></a>
+
 <h1>Skinvar: itemlink</h1>
+
 <p>Adds a permanent link for the item.</p>
+
 <h2>Arguments</h2>
-<p>None</p>
+
+<p>
+	Optional
+	<ul>
+		<li><strong><em>linktext</em></strong>: when present, a full <code>&lt;a href...</code> tag will be outputted, rather than a raw link</li>
+	</ul>
+</p>
 <h2>Skintypes</h2>
+
 <p>item</p>
+
 <h2>Examples</h2>
+
 <pre>
 &lt;%itemlink%&gt;
 </pre>
@@ -1372,7 +1384,7 @@ Each member has his own private collection of media files. Next to that, subdire
 			<th>Value</th>
 		</tr><tr>
 			<td>Locale</td>
-			<td><a href="#templatelocale">Locale</a> in which the date must be formatted</td>			
+			<td><a href="#templatelocale">Locale</a> in which the date must be formatted</td>
 		</tr><tr>
 			<td>Format</td>
 			<td>Date format (<a href="#strftime">strftime variables</a>)</td>
@@ -1644,7 +1656,7 @@ Shows the list of available archives for the currently selected blog (usually th
 	Optional
 	<ul>
 		<li><strong><em>category</em></strong>: name of the category to show</li>
-		<li><strong><em>limit</em></strong>: limits the amount of links shown (e.g. if you only want to show links to the past 3 months)</li>		
+		<li><strong><em>limit</em></strong>: limits the amount of links shown (e.g. if you only want to show links to the past 3 months)</li>
 	</ul>
 </p>
 
@@ -1672,7 +1684,7 @@ The same as the <a href="#skinvar-archivelist">archivelist</a> skinvar, but show
 	Optional
 	<ul>
 		<li><strong><em>category</em></strong> name of the category to show</li>
-		<li><strong><em>limit</em></strong>: limits the amount of links shown (e.g. if you only want to show links to the past 3 months)</li>		
+		<li><strong><em>limit</em></strong>: limits the amount of links shown (e.g. if you only want to show links to the past 3 months)</li>
 	</ul>
 </p>
 
@@ -1889,7 +1901,7 @@ Shows the searchresult for the current query
 	Optional:
 	<ul>
 		<li><strong><em>maxresults</em></strong>: maximum amount of results to show</li>
-	</ul>	
+	</ul>
 </p>
 
 <h2>Skintypes</h2>
@@ -1927,7 +1939,7 @@ Shows the searchresult in a give blog for the current query, using the given tem
 	Optional:
 	<ul>
 		<li><strong><em>maxresults</em></strong>: maximum amount of results to show</li>
-	</ul>	
+	</ul>
 </p>
 
 <h2>Skintypes</h2>
@@ -2073,6 +2085,58 @@ item
 </div>
 
 
+<div class="page">
+<a name="skinvar-nextitemtitle"></a>
+<h1>Skinvar: nextitemtitle</h1>
+
+<p>
+Inserts the title of the next item in the blog
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+item
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%nextitemtitle%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-previtemtitle"></a>
+<h1>Skinvar: previtemtitle</h1>
+
+<p>
+Inserts the title of the previous item in the blog
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+item
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%previtemtitle%&gt;
+</pre>
+
+</div>
+
+
 
 
 <div class="page">
@@ -2169,7 +2233,13 @@ Inserts a link to the main page of the weblog. Takes into account the currently 
 </p>
 
 <h2>Arguments</h2>
-<p>None</p>
+<p>
+	Optional
+	<ul>
+		<li><strong><em>linktext</em></strong>: when present, a full <code>&lt;a href...</code> tag will be outputted, rather than a raw link</li>
+	</ul>
+</p>
+
 
 <h2>Skintypes</h2>
 
@@ -2200,7 +2270,14 @@ Inserts a link to the archive for the currently selected blog and category (or t
 </p>
 
 <h2>Arguments</h2>
-<p>None</p>
+
+<p>
+	Optional
+	<ul>
+		<li><strong><em>linktext</em></strong>: when present, a full <code>&lt;a href...</code> tag will be outputted, rather than a raw link</li>
+	</ul>
+</p>
+
 
 <h2>Skintypes</h2>
 
@@ -2230,12 +2307,19 @@ Inserts a link to the next item (on item pages) or to the next archive (on archi
 </p>
 
 <h2>Arguments</h2>
-<p>None</p>
+<p>
+	Optional
+	<ul>
+		<li><strong><em>linktext</em></strong>: when present, a full <code>&lt;a href...</code> tag will be outputted, rather than a raw link</li>
+		<li><strong><em>amount</em></strong>: for search and index skins: the amount of items to go forward/backward</li>
+	</ul>
+</p>
+
 
 <h2>Skintypes</h2>
 
 <p>
-item, archive
+item, archive, search, index
 </p>
 
 <h2>Examples</h2>
@@ -2258,16 +2342,22 @@ item, archive
 <h1>Skinvar: prevlink</h1>
 
 <p>
-Inserts a link to the previous item (on item pages) or to the previous archive (on archive pages)
+Inserts a link to the previous item (on item pages) or to the previous archive (on archive pages). For search and index pages
 </p>
 
 <h2>Arguments</h2>
-<p>None</p>
+<p>
+	Optional
+	<ul>
+		<li><strong><em>linktext</em></strong>: when present, a full <code>&lt;a href...</code> tag will be outputted, rather than a raw link</li>
+		<li><strong><em>amount</em></strong>: for search and index skins: the amount of items to go forward/backward</li>
+	</ul>
+</p>
 
 <h2>Skintypes</h2>
 
 <p>
-item, archive
+item, archive, search, index
 </p>
 
 <h2>Examples</h2>
@@ -2534,7 +2624,7 @@ Inserts some info about on the currently logged in member. On member detail page
 	    	<li><em>notes</em>: extra information a member can set for him/herself</li>
 	    	<li><em>url</em>: URL of the members website</li>
 	    	<li><em>email</em>: email address of the member</li>
-	    	<li><em>id</em>: ID</li>	    	
+	    	<li><em>id</em>: ID</li>
 	    </ul>
 	</li>
 </ul>
@@ -2808,8 +2898,8 @@ Calls a plugin
 			<th>Contents</th>
 		</tr><tr>
 			<td>PlugName</td>
-			<td>Name of the plugin that should be called. <strong>This name is case sensitive!</strong></td>		
-		</tr></table>		
+			<td>Name of the plugin that should be called. <strong>This name is case sensitive!</strong></td>
+		</tr></table>
 	</li>
 	<li><p>Extra parameters can be added, depending on the plugin</p></li>
 </ul>
@@ -2900,7 +2990,7 @@ item
 <h1>Skin/Templatevar: set</h1>
 
 <p>
-Sets a <a href="#parser-properties" title="A list of available parser properties">parser property</a>. 
+Sets a <a href="#parser-properties" title="A list of available parser properties">parser property</a>.
 </p>
 
 <h2>Arguments</h2>
@@ -2997,7 +3087,7 @@ all
 
 <ul>
 	<li><strong>type</strong>: type of condition</li>
-	<li><em>name</em>: name of option (optional)</li>	
+	<li><em>name</em>: name of option (optional)</li>
 	<li><em>value</em>: value to be checked (optional)</li>
 </ul>
 
@@ -3005,9 +3095,12 @@ all
 
 <ul>
 	<li><strong>category</strong>: condition is fullfilled when a category is selected</li>
-	<li><strong>blogsetting</strong>: checks if the value <em>name</em> blogsetting equals <em>value</em> (the name is the column name from the nucleus_blog sql table)</li>	
+	<li><strong>blogsetting</strong>: checks if the value <em>name</em> blogsetting equals <em>value</em> (the name is the column name from the nucleus_blog sql table)</li>
 	<li><strong>loggedin</strong>: condition is fullfilled if visiting member is currently logged in</li>
-	<li><strong>onteam</strong>: condition is fullfilled if visiting member is currently logged in &amp; member of the blog team of the current blog (or the blog given in the <em>name</em> parameter)</li>	
+	<li><strong>onteam</strong>: condition is fullfilled if visiting member is currently logged in &amp; member of the blog team of the current blog (or the blog given in the <em>name</em> parameter)</li>
+	<li><strong>nextitem</strong>: true if there is a more recent item available for the current weblog (item skintype)</li>
+	<li><strong>nextitem</strong>: true if there is an older item available for the current weblog (item skintype)</li>
+	<li><strong>skintype</strong>: checks if the current skin type is equal to <em>value</em> (index, search, item, archive, archivelist, ...)</li>
 </ul>
 
 <h2>Skintypes</h2>
@@ -3263,10 +3356,10 @@ These template variables be used in the following template-parts: <tt>item heade
 	<td>comments block or commentcount</td>
 </tr><tr>
 	<td>itemid</td>
-	<td>ID of the item</td>		
+	<td>ID of the item</td>
 </tr><tr>
 	<td>blogurl</td>
-	<td>URL of the blog</td>	
+	<td>URL of the blog</td>
 </tr></table>
 
 <p><a href="#templatevars-overview">Template variables overview...</a></p>
@@ -3286,7 +3379,7 @@ These template variables be used in the following template-parts: <tt>item heade
 	<th>Description</th>
 </tr><tr>
 	<td>authorid</td>
-	<td>ID of the current items author</td>	
+	<td>ID of the current items author</td>
 </tr><tr>
 	<td>blogid</td>
 	<td>ID of the blog</td>
@@ -3347,6 +3440,9 @@ These template variables be used in the following template-parts: <tt>item heade
 </tr><tr>
 	<td><a href="#templatevar-media">media</a></td>
 	<td>other media object from media dir</td>
+</tr><tr>
+	<td>relevance</td>
+	<td>Includes the 'search hit relevance' in templates that display search results</td>
 </tr></table>
 
 <p><a href="#templatevars-overview">Template variables overview...</a></p>
@@ -3366,64 +3462,64 @@ These template variables be used in the following template-parts: <tt>item heade
 	<th>Description</th>
 </tr><tr>
 	<td>body</td>
-	<td>comment body</td>	
+	<td>comment body</td>
 </tr><tr>
 	<td>user</td>
-	<td>user name</td>	
+	<td>user name</td>
 </tr><tr>
 	<td>userid</td>
-	<td>users URL or e-mail address</td>	
+	<td>users URL or e-mail address</td>
 </tr><tr>
 	<td>userlink</td>
-	<td>a smart link to either the e-mail or URL for non members, or the member detail page for members. Note: this link already includes the &lt;a href="..."&gt; and &lt;/a&gt; tags ! (when no valid URL or e-mail is available, only the name of the member will be shown)</td>	
+	<td>a smart link to either the e-mail or URL for non members, or the member detail page for members. Note: this link already includes the &lt;a href="..."&gt; and &lt;/a&gt; tags ! (when no valid URL or e-mail is available, only the name of the member will be shown)</td>
 </tr><tr>
 	<td>userlinkraw</td>
-	<td>same as above, but without the &lt;a href.., empty when no valid URL or e-mail available</td>	
+	<td>same as above, but without the &lt;a href.., empty when no valid URL or e-mail available</td>
 </tr><tr>
 	<td>memberid</td>
-	<td>ID of the member (0 for non-members)</td>	
+	<td>ID of the member (0 for non-members)</td>
 </tr><tr>
 	<td>commentcount</td>
-	<td>total amount of comments for the item</td>	
+	<td>total amount of comments for the item</td>
 </tr><tr>
 	<td><a href="#templatecommentwords" title="commentword()">commentword</a></td>
-	<td>1 'comment', 2 'comments'</td>	
+	<td>1 'comment', 2 'comments'</td>
 </tr><tr>
 	<td><a href="#templatevar-date" title="date([format])">date</a></td>
-	<td>date on which comment was added</td>	
+	<td>date on which comment was added</td>
 </tr><tr>
 	<td><a href="#templatevar-time" title="time([format])">time</a></td>
-	<td>time at which comment was added</td>	
+	<td>time at which comment was added</td>
 </tr><tr>
 	<td>host</td>
-	<td>host from where comment was added</td>	
+	<td>host from where comment was added</td>
 </tr><tr>
 	<td>ip</td>
-	<td>IP-address from where comment was added</td>	
+	<td>IP-address from where comment was added</td>
 </tr><tr>
 	<td>commentid</td>
-	<td>ID of the current comment</td>	
+	<td>ID of the current comment</td>
 </tr><tr>
 	<td>itemid</td>
-	<td>ID of the current item</td>	
+	<td>ID of the current item</td>
 </tr><tr>
 	<td>itemlink</td>
-	<td>link to the detailed item page</td>	
+	<td>link to the detailed item page</td>
 </tr><tr>
 	<td><a href="#templateitemtitle" title="itemtitle([maxlength])">itemtitle</a></td>
-	<td>Title of the current item</td>	
+	<td>Title of the current item</td>
 </tr><tr>
 	<td>blogid</td>
-	<td>ID of the weblog</td>	
+	<td>ID of the weblog</td>
 </tr><tr>
 	<td><a href="#templatememberextra" title="authtext()">authtext</a></td>
-	<td>the extra text</a> for members, empty for non members</td>	
+	<td>the extra text</a> for members, empty for non members</td>
 </tr><tr>
 	<td>short</td>
 	<td>a cut off version of the body, which truncates after the first line break. <a href="#templatecommentcontinued">A link is added</a> at the end according to the template</td>
 </tr><tr>
 	<td>timestamp</td>
-	<td>time at which comment was added</td>	
+	<td>time at which comment was added</td>
 </tr><tr>
 	<td><a href="#skinvar-include" title="include(filename)">include</a></td>
 	<td>includes a file, whithout parsing</td>
@@ -3466,10 +3562,10 @@ These template variables be used in the following template-parts: <tt>item heade
 			<ul>
 				<li><strong>totalscore</strong>: the total karma vote score (=amount of positive votes minus the amount of negative votes) <em>(default)</em></li>
 				<li><strong>pos</strong>: total number of positive votes</li>
-				<li><strong>neg</strong>: total number of negative votes</li>				
-				<li><strong>votes</strong>: total number of votes</li>								
-				<li><strong>posp</strong>: percentage of votes that is positive</li>				
-				<li><strong>negp</strong>: percentage of votes that is negative</li>								
+				<li><strong>neg</strong>: total number of negative votes</li>
+				<li><strong>votes</strong>: total number of votes</li>
+				<li><strong>posp</strong>: percentage of votes that is positive</li>
+				<li><strong>negp</strong>: percentage of votes that is negative</li>
 			</ul>
 		</li>
 	</ul>
@@ -3552,7 +3648,7 @@ Examines the current item and then decides to show either the body text or the e
 </tr><tr>
 	<td>Body</td><td>No</td><td>No</td>
 </tr></tr>
-	<td>Extended</td><td>Yes</td><td>No</td>	
+	<td>Extended</td><td>Yes</td><td>No</td>
 </tr></tr>
 	<th>smartbody=</th><th>body part</th><th>extended part</th>
 </tr></table>
@@ -3649,7 +3745,7 @@ Inserts a comments 'block'. <a href="#templatecomments">More information about t
 		<th>Contents</th>
 	</tr><tr>
 		<td>MaxToShow</td>
-		<td>Amount of comments to show (when set, this overrides the <a href="#blogmaxcomments">max. comments blogsetting</a>)</td>		
+		<td>Amount of comments to show (when set, this overrides the <a href="#blogmaxcomments">max. comments blogsetting</a>)</td>
 	</tr></table>
 </ul>
 
@@ -3684,7 +3780,7 @@ This variable was originally intended for use in the XML-RSS skin that comes wit
 			<th>Contents</th>
 		</tr><tr>
 			<td>MaxChars</td>
-			<td>Maximum amount of characters to keep (defaults to 100)</td>		
+			<td>Maximum amount of characters to keep (defaults to 100)</td>
 		</tr></table>
 	</li>
 </ul>
@@ -3719,7 +3815,7 @@ This variable was originally intended for use in the XML-RSS skin that comes wit
 			<th>Contents</th>
 		</tr><tr>
 			<td>MaxChars</td>
-			<td>Maximum amount of characters to keep (defaults to 250)</td>		
+			<td>Maximum amount of characters to keep (defaults to 250)</td>
 		</tr></table>
 	</li>
 </ul>
@@ -3751,16 +3847,16 @@ This variable was originally intended for use in the XML-RSS skin that comes wit
 			<th>Contents</th>
 		</tr><tr>
 			<td>filename</td>
-			<td>Name of the image file (file gets)</td>		
+			<td>Name of the image file (file gets)</td>
 		</tr><tr>
 			<td>width</td>
-			<td>Width of the image (pixels or percentage)</td>		
+			<td>Width of the image (pixels or percentage)</td>
 		</tr><tr>
 			<td>height</td>
-			<td>Height of the image</td>		
+			<td>Height of the image</td>
 		</tr><tr>
 			<td>text</td>
-			<td>alt-text for the image</td>		
+			<td>alt-text for the image</td>
 		</tr></table>
 	</li>
 	<li><strong>Note:</strong> for the image, popup and media tags, the parameters must be separated by the '|' character, <em>not</em> by a comma!</li>
@@ -3794,16 +3890,16 @@ This variable was originally intended for use in the XML-RSS skin that comes wit
 			<th>Contents</th>
 		</tr><tr>
 			<td>filename</td>
-			<td>Name of the image file (file gets)</td>		
+			<td>Name of the image file (file gets)</td>
 		</tr><tr>
 			<td>width</td>
-			<td>Width of the image (pixels or percentage)</td>		
+			<td>Width of the image (pixels or percentage)</td>
 		</tr><tr>
 			<td>height</td>
-			<td>Height of the image</td>		
+			<td>Height of the image</td>
 		</tr><tr>
 			<td>text</td>
-			<td>alt-text for the image</td>		
+			<td>alt-text for the image</td>
 		</tr></table>
 	</li>
 	<li><strong>Note:</strong> for the image, popup and media tags, the parameters must be separated by the '|' character, <em>not</em> by a comma!</li>
@@ -3837,10 +3933,10 @@ This variable was originally intended for use in the XML-RSS skin that comes wit
 			<th>Contents</th>
 		</tr><tr>
 			<td>filename</td>
-			<td>Name of the image file (file gets)</td>		
+			<td>Name of the image file (file gets)</td>
 		</tr><tr>
 			<td>text</td>
-			<td>descriptive text for the media object</td>		
+			<td>descriptive text for the media object</td>
 		</tr></table>
 	</li>
 	<li><strong>Note:</strong> for the image, popup and media tags, the parameters must be separated by the '|' character, <em>not</em> by a comma!</li>
@@ -3894,7 +3990,7 @@ Insert a link to the 'edit item' bookmarklet. This can be used in the <a href="#
 
 <p>The <a href="#templateeditlink">'edit link'-template</a> could look like this:</p>
 <pre>
-&lt;a href="&lt;%editlink%&gt;" 
+&lt;a href="&lt;%editlink%&gt;"
    onclick="&lt;%editpopupcode%&gt;"&gt;edit&lt;/a&gt; -
 </pre>
 
@@ -3906,7 +4002,7 @@ Insert a link to the 'edit item' bookmarklet. This can be used in the <a href="#
 <h1>Templatevar: editpopupcode</h1>
 
 <p>
-To open a popup window for the 'edit link' window, you'll need to add some javascript code to your link. To avoid having to enter this code in the 'edit link'-template, you can insert it using the editpopupcode-templatevar. 
+To open a popup window for the 'edit link' window, you'll need to add some javascript code to your link. To avoid having to enter this code in the 'edit link'-template, you can insert it using the editpopupcode-templatevar.
 </p>
 
 <h2>Example</h2>

@@ -471,21 +471,21 @@ class ACTIONS extends BaseActions {
 	}
 	
 	// a link to the today page (depending on selected blog, etc...)
-	function parse_todaylink() {
+	function parse_todaylink($linktext = '') {
 		global $blog, $CONF;
 		if ($blog)
-			echo createBlogidLink($blog->getID(),$this->linkparams);
+			echo $this->_link(createBlogidLink($blog->getID(),$this->linkparams), $linktext);
 		else
-			echo $CONF['SiteUrl'];
+			echo $this->_link($CONF['SiteUrl'], $linktext);
 	}
 	
 	// a link to the archives for the current blog (or for default blog)
-	function parse_archivelink() {
+	function parse_archivelink($linktext = '') {
 		global $blog, $CONF;
 		if ($blog)
-			echo createArchiveListLink($blog->getID(),$this->linkparams);
+			echo $this->_link(createArchiveListLink($blog->getID(),$this->linkparams), $linktext);
 		else
-			echo createArchiveListLink();
+			echo $this->_link(createArchiveListLink(), $linktext);
 	}
 
 	// include itemid of prev item
@@ -497,7 +497,7 @@ class ACTIONS extends BaseActions {
 	// include itemtitle of prev item
 	function parse_previtemtitle() {
 		global $itemtitleprev;
-		echo $itemtitleprev;
+		echo htmlspecialchars($itemtitleprev);
 	}
 
 	// include itemid of next item
@@ -509,7 +509,7 @@ class ACTIONS extends BaseActions {
 	// include itemtitle of next item
 	function parse_nextitemtitle() {
 		global $itemtitlenext;
-		echo $itemtitlenext;
+		echo htmlspecialchars($itemtitlenext);
 	}
 
 	function parse_prevarchive() {
@@ -527,75 +527,85 @@ class ACTIONS extends BaseActions {
 		echo $archivetype;
 	}
 
-	function parse_prevlink($amount = 10, $linktext = '') {
+	function parse_prevlink($linktext = '', $amount = 10) {
 		global $itemidprev, $archiveprev, $startpos;
 
 		if ($this->skintype == 'item')
-			$this->_itemlink($itemidprev);
+			$this->_itemlink($itemidprev, $linktext);
 	    else if ($this->skintype == 'search' || $this->skintype == 'index')
 	        $this->_searchlink($amount, $startpos, 'prev', $linktext);
 		else
-			$this->_archivelink($archiveprev);
+			$this->_archivelink($archiveprev, $linktext);
 	}
 	
-	function parse_nextlink($amount = 10, $linktext = '') {
+	function parse_nextlink($linktext = '', $amount = 10) {
 		global $itemidnext, $archivenext, $startpos;
 		if ($this->skintype == 'item')
-			$this->_itemlink($itemidnext);
+			$this->_itemlink($itemidnext, $linktext);
 	    else if ($this->skintype == 'search' || $this->skintype == 'index')
 	        $this->_searchlink($amount, $startpos, 'next', $linktext);
 		else
-			$this->_archivelink($archivenext);
+			$this->_archivelink($archivenext, $linktext);
+	}
+	
+	/**
+	 * returns either
+	 *		- a raw link (html/xml encoded) when no linktext is provided
+	 *		- a (x)html <a href... link when a text is present (text htmlencoded)
+	 */
+	function _link($url, $linktext = '')
+	{
+		if ($linktext != '')
+			return '<a href="' .  htmlspecialchars($url) .'">'.htmlspecialchars($linktext).'</a>';
 	}
 
     function _searchlink($amount, $startpos, $direction, $linktext = '') {
         global $CONF, $REQUEST_URI;
         // TODO: Move request uri to linkparams. this is ugly. sorry for that.
-        if ($startpos==""){$startpos=0;}
-        if ($linktext=="") {$linktext = $direction;} // which will read 'prev' or 'next'
-        $parsed     = parse_url($REQUEST_URI);
-        $parsed     = $parsed[query];
-
+        $startpos	= intval($startpos);		// will be 0 when empty. 
+        $parsed		= parse_url($REQUEST_URI);
+        $parsed		= $parsed[query];
+		$url		= '';
+        
         switch ($direction) {
             case 'prev':
                 if ( intval($startpos) - intval($amount) >= 0) {
                     $startpos 	= intval($startpos) - intval($amount);
                     $url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
-                    echo '<a href="', htmlspecialchars($url) ,'">', $linktext,'</a>';
                 }
                 break;
             case 'next':
                 $startpos = intval($startpos) + intval($amount);
                 if (intval($this->amountfound) >= intval($amount) || (intval($this->amountfound) == 0) ) {
                 	$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
-                    echo '<a href="', htmlspecialchars($url), '">', $linktext,'</a>';
                 }
                 break;
             default:
                 break;
         } // switch($direction)
+
+		echo $this->_link($url, $linktext);        
     }
 
-	function _itemlink($id) {
+	function _itemlink($id, $linktext = '') {
 		global $CONF;
 		if ($id)
-			echo createItemLink($id, $this->linkparams);
+			echo $this->_link(createItemLink($id, $this->linkparams), $linktext);
 		else
-			$this->parse_todaylink();
+			$this->parse_todaylink($linktext);
 	}
 
-	function _archivelink($id) {
+	function _archivelink($id, $linktext = '') {
 		global $CONF, $blog;
 		if ($id)
-			echo createArchiveLink($blog->getID(), $id, $this->linkparams);
+			echo $this->_link(createArchiveLink($blog->getID(), $id, $this->linkparams), $linktext);
 		else
-			$this->parse_todaylink();
+			$this->parse_todaylink($linktext);
 	}
 	
 	
-	function parse_itemlink() {	
-		global $itemid;
-		echo createItemLink($itemid, $this->linkparams); 
+	function parse_itemlink($linktext = '') {	
+		$this->_itemlink($itemid, $linktext);
 	}
 	
 	/**

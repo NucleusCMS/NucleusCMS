@@ -16,6 +16,8 @@
 	<li>
 		<b>Nucleus v2.5 (?)</b>
 		<ul>
+			<li>FIXED: <code>nextitemtitle</code> and <code>previtemtitle</code> skinvars did not htmlencode their output (karma)</li>
+			<li>CHANGED/ADDED: make all skinvars that insert links consistent. They can now all take a linktext parameter to insert a full link instead of a raw link. The <code>nextlink</code>/<code>prevlink</code> on search/index pages (introduced 2.5 beta) had to change for this. Skinvars that can take a linktext: <code>todaylink</code>, <code>archivelink</code>, <code>prevlink</code>, <code>nextlink</code> and <code>itemlink</code> (karma)</li>
 			<li>FIXED: XML-RPC: <code>mt.setPostCategories</code> asumed that <code>isPrimary</code> was always present (karma)</li>
 			<li>FIXED: Plugins that generate output when they are loaded can not longer break backups. (Xiffy)</li>
 			<li>FIXED: The test that auto-disabled fancy URLs was incorrect, and also applied to top-level domains that use 3 characters (like .com) (karma)</li>
@@ -45,7 +47,7 @@
 			<li>FIXED: Right-click bookmarklet for IE (re-install to get it working with IE6)</li>
 			<li>FIXED/CHANGED: hyperlink conversion in comments: ftp/http/mailto supported</li>
 			<li>FIXED: spaces in between multiple notify e-mail addresses caused ar error message saying the e-mail address is invalid.</li>
-			<li>FIXED: <code>archivedate</code> templatevar ignored the 'locale' parameter that was passed to it</li>
+			<li>FIXED: <code>archivedate</code> skinvar ignored the 'locale' parameter that was passed to it</li>
 			<li>FIXED: <code>selectBlog</code> did not protect for changes in <code>?archivelist</code></li>
 			<li>FIXED: <code>selectCategory</code> now takes a category id instead of a name (multiple categories can have the same name)</li>
 			<li>CHANGED: Fancy URLs are only generated when <code>$CONF['Self']</code> does not end in <code>.php</code> (this avoids URLs like <code>index.php/item/95/item/94/member/1</code> when turning fancy URLs on without further configuration)</li>
