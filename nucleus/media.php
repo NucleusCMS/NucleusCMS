@@ -329,9 +329,7 @@ function media_head() {
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Nucleus Media</title>
-		<style><!--
-			@import url('styles/popups.css');
-		--></style>
+		<link rel="stylesheet" type="text/css" href="styles/popups.css" />
 		<script type="text/javascript">
 			var type = 0;
 			function setType(val) { type = val; }
