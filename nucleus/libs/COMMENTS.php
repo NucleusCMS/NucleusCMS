@@ -221,14 +221,14 @@ class COMMENTS {
 		
 		$manager->notify('PreAddComment',array('comment' => &$comment));		
 
-		$name = addslashes($comment['user']);
-		$url = addslashes($comment['userid']);
-		$body = addslashes($comment['body']);
-		$host = addslashes($comment['host']);
-		$ip = addslashes($comment['ip']);
-		$memberid = intval($comment['memberid']);
-		$timestamp = date('Y-m-d H:i:s', $comment['timestamp']);
-		$itemid = $this->itemid;
+		$name		= addslashes($comment['user']);
+		$url		= addslashes($comment['userid']);
+		$body		= addslashes($comment['body']);
+		$host		= addslashes($comment['host']);
+		$ip			= addslashes($comment['ip']);
+		$memberid	= intval($comment['memberid']);
+		$timestamp	= date('Y-m-d H:i:s', $comment['timestamp']);
+		$itemid		= $this->itemid;
 				
 		$query = 'INSERT INTO nucleus_comment (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CIP, CBLOG) '
 		       . "VALUES ('$name', '$url', $memberid, '$body', $itemid, '$timestamp', '$host', '$ip', '$blogid')";

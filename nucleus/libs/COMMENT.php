@@ -35,8 +35,8 @@ class COMMENT {
 		$comment['userid'] = strip_tags($comment['userid']);
 		
 		// remove quotes and newlines from user and userid
-		$comment['user'] = strtr($comment['user'], "\'\"\n",'   ');
-		$comment['userid'] = strtr($comment['userid'], "\'\"\n",'   ');
+		$comment['user'] = strtr($comment['user'], "\'\"\n",'-- ');
+		$comment['userid'] = strtr($comment['userid'], "\'\"\n",'-- ');
 		
 		$comment['body'] = COMMENT::prepareBody($comment['body']);
 		
