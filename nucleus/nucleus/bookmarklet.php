@@ -116,7 +116,7 @@ function bm_doEditItem() {
 	
 	// redirect to admin area on delete (has delete confirmation)
 	if ($actiontype == 'delete') {
-		header('Location: index.php?action=itemdelete&itemid='.$itemid);
+		redirect('Location: index.php?action=itemdelete&itemid='.$itemid);
 		exit;	
 	}
 	

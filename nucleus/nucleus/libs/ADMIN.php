@@ -2491,7 +2491,7 @@ class ADMIN {
 
 		
 		if ($desturl) {
-			header('Location: ' . $desturl);
+			redirect($desturl);
 			exit;
 		} else {
 			$this->action_blogsettings();
@@ -4419,7 +4419,7 @@ selector();
 		// note that when changing cookie settings, this redirect might cause the user
 		// to have to log in again.
 		getConfig();
-		header('Location: ' . $CONF['AdminURL'] . '?action=manage');
+		redirect($CONF['AdminURL'] . '?action=manage');
 		exit;
 	
 	}
