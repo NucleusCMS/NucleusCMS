@@ -4394,49 +4394,39 @@ class ADMIN {
 
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';				
 		?>
-		<h2>Backup / Restore</h2>
+		<h2><?=_BACKUPS_TITLE?></h2>
 		
-		<h3>Backup</h3>
+		<h3><?=_BACKUP_TITLE?></h3>
 		
-		<p>
-		Click the button below to create a backup of your Nucleus database. You'll be prompted to save a backup file. Store it in a safe place.
-		</p>
+		<p><?=_BACKUP_INTRO?></p>
 		
 		<form method="post" action="index.php"><p>
 		<input type="hidden" name="action" value="backupcreate" />
 
-		<input type="radio" name="gzip" value="1" checked="checked" id="gzip_yes" tabindex="10" /><label for="gzip_yes">Try to use compression</label>
+		<input type="radio" name="gzip" value="1" checked="checked" id="gzip_yes" tabindex="10" /><label for="gzip_yes"><?=_BACKUP_ZIP_YES?></label>
 		<br />
-		<input type="radio" name="gzip" value="0" id="gzip_no" tabindex="10" /><label for="gzip_no" >Do not try to use compression</label>
+		<input type="radio" name="gzip" value="0" id="gzip_no" tabindex="10" /><label for="gzip_no" ><?=_BACKUP_ZIP_NO?></label>
 		<br /><br />
-		<input type="submit" value="Create Backup" tabindex="20" />
+		<input type="submit" value="<?=_BACKUP_BTN?>" tabindex="20" />
 		
 		</p></form>
 		
-		<div class="note">
-			<b>Note:</b> Only the database contents is stored in the backup. Media files and settings in config.php are thus <b>NOT</b> included in the backup.
-		</div>
+		<div class="note"><?=_BACKUP_NOTE?></div>
 
 	
-		<h3>Restore</h3>
+		<h3><?=_RESTORE_TITLE?></h3>
 		
-		<div class="note">
-			<b>WARNING:</b> Restoring from a backup will <b>ERASE</b> all current Nucleus data in the database! Only do this when you're really sure!
-			<br />
-			<b>Note:</b> Make sure that the version of Nucleus in which you created the backup should be the same as the version you're running right now! It won't work otherwise
-		</div>
+		<div class="note"><?=_RESTORE_NOTE?></div>
 		
-		<p>
-		Select the backup file below (it'll be uploaded to the server) and click the "Restore" button to start. 
-		</p>
+		<p><?=_RESTORE_INTRO?></p>
 		
 		<form method="post" action="index.php" enctype="multipart/form-data"><p>
 			<input type="hidden" name="action" value="backuprestore" />
 			<input name="backup_file" type="file" tabindex="30" />
 			<br /><br />
-			<input type="submit" value="Restore From File" tabindex="40" />		
-			<br /><input type="checkbox" name="letsgo" value="1" id="letsgo" tabindex="50" /><label for="letsgo">Yes, I'm sure I want to do this!</label>
-			<br /><small>(make sure you're restoring the correct backup, maybe make a new backup before you start)</small>
+			<input type="submit" value="<?=_RESTORE_BTN?>" tabindex="40" />		
+			<br /><input type="checkbox" name="letsgo" value="1" id="letsgo" tabindex="50" /><label for="letsgo"><?=_RESTORE_IMSURE?></label>
+			<br /><?=_RESTORE_WARNING?>
 		</p></form>
 
 		<?
@@ -4467,8 +4457,8 @@ class ADMIN {
 		
 		$member->isAdmin() or $this->disallow();
 		
-		if (intPostVar("letsgo") != 1)
-			$this->error("You'll need to check the 'I'm sure' testbox");
+		if (intPostVar('letsgo') != 1)
+			$this->error(_ERROR_BACKUP_NOTSURE);
 
 		include($DIR_LIBS . 'backup.php');
 		
@@ -4482,8 +4472,7 @@ class ADMIN {
 			
 		$this->pagehead();
 		?>
-		<h2>Restore Complete</h2>
-		<p>Let's hope so...</p>
+		<h2><?=_RESTORE_COMPLETE?></h2>
 		<?
 		$this->pagefoot();
 
@@ -5043,8 +5032,8 @@ class BATCH extends ENCAPSULATE {
 			
 			<input type="submit" value="Execute" />
 			(
-			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); ">select all</a> -
-			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); ">deselect all</a>
+			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); "><?=_BATCH_SELECTALL?></a> -
+			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); "><?=_BATCH_DESELECTALL?></a>
 			)
 		</div>
 		<?

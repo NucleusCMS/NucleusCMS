@@ -64,6 +64,9 @@ define('_BATCH_SUCCESS',			'Succes!');
 define('_BATCH_DONE',				'Klaar!');
 define('_BATCH_DELETE_CONFIRM',		'Bevestigen wissen geselecteerde items');
 define('_BATCH_DELETE_CONFIRM_BTN',	'Wissen bevestigen');
+define('_BATCH_SELECTALL',			'selecteer alles');
+define('_BATCH_DESELECTALL',		'deselecteer alles');
+
 
 // batch operations: options in dropdowns
 define('_BATCH_ITEM_DELETE',		'Verwijderen');
@@ -123,6 +126,23 @@ define('_EDITTEMPLATE_EMPTY',		'Leeg veld (klik om te bewerken)');
 define('_LIST_SKINS_INCMODE',		'IncludeMode:');
 define('_LIST_SKINS_INCPREFIX',		'IncludePrefix:');
 define('_LIST_SKINS_DEFINED',		'Gedefinieerde onderdelen:');
+
+// backup
+define('_BACKUPS_TITLE',			'Backup / Restore');
+define('_BACKUP_TITLE',				'Backup');
+define('_BACKUP_INTRO',				'Klik op de knop om een backup van uw Nucleus database te maken. Bewaar dit bestand op een veilige plaats..');
+define('_BACKUP_ZIP_YES',			'Probeer compressie te gebruiken');
+define('_BACKUP_ZIP_NO',			'Geen compressie gebruiken');
+define('_BACKUP_BTN',				'Backup maken');
+define('_BACKUP_NOTE',				'<b>Opmerking:</b> Enkel de inhoud van de database komt in de backup terecht. Media bestanden, instellingen uit config.php worden dus <b>NIET</b> opgenomen in de backup.');
+define('_RESTORE_TITLE',			'Restore');
+define('_RESTORE_NOTE',				'<b>WAARSCHUWING:</b> Het terugzetten van een backup zal alle huidige Nucleus data in de database <b>WISSEN</b>! Wees dus zeker dat je dit wilt doen!	<br />	<b>Opmerking:</b> Een backup-bestand kan enkel teruggezet worden op een Nucleus-installatie die dezelfde Nucleus-versie gebruikt. In andere gevallen kunnen onvoorspelbare resultaten opduiken.');
+define('_RESTORE_INTRO',			'Selecteer het backup-bestand dat je wilt terugzetten (zal doorgestuurd worden naar de server)');
+define('_RESTORE_IMSURE',			'Ja, ik ben 100% zeker dat ik dit wil doen');
+define('_RESTORE_BTN',				'Terugzetten van backup');
+define('_RESTORE_WARNING',			'(vergeet niet even te controleren of je wel het juiste backup-bestand geselecteerd hebt)');
+define('_ERROR_BACKUP_NOTSURE',		'Je moet de \'ik ben 100% zeker\' checkbox aanklikken');
+define('_RESTORE_COMPLETE',			'Backup Teruggezet');
 
 
 // END introduced after v1.5 END
