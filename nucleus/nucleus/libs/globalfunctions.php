@@ -117,6 +117,7 @@ $member = new MEMBER();
 
 // login/logout when required or renew cookies
 if ($action == 'login') {
+	// Form Authentication
 	$login 	= postVar('login');
 	$pw 	= postVar('password');
 	$shared	= intPostVar('shared');	// shared computer or not
@@ -136,13 +137,31 @@ if ($action == 'login') {
 		$manager->notify('LoginFailed',array('username' => $login));
 		ACTIONLOG::add(INFO, 'Login failed for ' . $login);
 	}
+} elseif (serverVar('PHP_AUTH_USER') && serverVar('PHP_AUTH_PW')) {
+	// HTTP Authentication
+       $login  = serverVar('PHP_AUTH_USER');
+       $pw     = serverVar('PHP_AUTH_PW');
+
+       if ($member->login($login,$pw)) {
+               $manager->notify('LoginSuccess',array('member' => &$member));
+               ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
+       } else {
+               $manager->notify('LoginFailed',array('username' => $login));
+               ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
+
+               //Since bad credentials, generate an apropriate error page
+               header("WWW-Authenticate: Basic realm=\"Nucleus {$nucleus['version']}\"");
+               header('HTTP/1.0 401 Unauthorized');
+               echo 'Invalid username or password';
+               exit;
+       }
 } elseif (($action == 'logout') && (!headers_sent()) && cookieVar('user')){
 	// remove cookies on logout
 	setcookie('user','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 	setcookie('loginkey','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 	$manager->notify('Logout',array('username' => cookieVar('user')));
 } elseif (cookieVar('user')) {
-	// login if cookies available
+	// Cookie Authentication
 	$res = $member->cookielogin(cookieVar('user'), cookieVar('loginkey'));
 
 	// renew cookies when not on a shared computer
