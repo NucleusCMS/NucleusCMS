@@ -107,6 +107,13 @@ class COMMENT {
 			$post = $matches[0] . $post;	// found entities (1 or more)
 			$url = substr($url, 0, strlen($url) - strlen($post));
 		}
+		
+		// move ending comma from url to 'post' part
+		if (substr($url, strlen($url) - 1) == ',')
+		{
+			$url = substr($url, 0, strlen($url) - 1);
+			$post = ',' . $post;
+		}
 
 		if (!ereg('^'.$protocol.'://',$url))
 			$linkedUrl = $protocol . (($protocol == 'mailto') ? ':' : '://') . $url;

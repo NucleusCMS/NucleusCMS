@@ -19,3 +19,4 @@ http://www.example.org/?foo=x&bar=y => ampersand entity ok?
 https://www.bla.com/
 https://bla.com/
 <a href="http://help.blogger.com/bin/answer.py?answer=698&topic=36">blogger help</a> => should become <a href="http://...">blogger help</a>
+https://www.bla.com/, => the comma should not be linked
