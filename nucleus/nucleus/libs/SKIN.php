@@ -451,7 +451,7 @@ class ACTIONS extends BaseActions {
 		$condition = 0;
 		switch($field) {
 			case 'category':
-				$condition = ($blog && $blog->isValidCategory($catid));
+				$condition = ($blog && $this->_ifCategory($name,$value));
 				break;
 			case 'blogsetting':
 				$condition = ($blog && ($blog->getSetting($name) == $value));
@@ -508,6 +508,27 @@ class ACTIONS extends BaseActions {
 		$this->_addIfCondition($condition);
 	}
 	
+	function _ifCategory($name = '', $value='') {
+		global $blog, $catid;
+
+		// when no parameter is defined, just check if a category is selected
+		if (($name != 'catname' && $name != 'catid') || ($value == ''))
+			return $blog->isValidCategory($catid);
+
+		// check category name
+		if ($name == 'catname') {
+			$value = $blog->getCategoryIdFromName($value);
+			if ($value == $catid)
+				return $blog->isValidCategory($catid);
+		}
+
+		// check category id
+		if (($name == 'catid') && ($value == $catid))
+			return $blog->isValidCategory($catid);
+		
+		return false;
+	}
+   
 	function _ifOnTeam($blogName = '') {
 		global $blog, $member, $manager;
 		
