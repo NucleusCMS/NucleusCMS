@@ -96,7 +96,7 @@ function sendMessage() {
 		$fromMail = postVar('frommail');
 		if (!isValidMailAddress($fromMail))
 			doError(_ERROR_BADMAILADDRESS);
-		$fromName = 'an anonymous visitor';
+		$fromName = _MMAIL_FROMANON;
 	} else {
 		$fromMail = $member->getEmail();
 		$fromName = $member->getDisplayName();
@@ -105,14 +105,13 @@ function sendMessage() {
 	$tomem = new MEMBER();
 	$tomem->readFromId(postVar('memberid'));
 
-
-	$message  = 'A message sent to you by ' . $fromName . "\n"
-		  . '(Posted from a Nucleus weblog at ' . $CONF['IndexURL'] .") \n\n"
-		  . "Message: \n\n"
+	$message  = _MMAIL_MSG . ' ' . $fromName . "\n"
+		  . '(' . _MMAIL_FROMNUC. ' ' . $CONF['IndexURL'] .") \n\n"
+		  . _MMAIL_MAIL . " \n\n"
 		  . postVar('message');
 	$message .= getMailFooter();
 
-	$title = 'A message from ' . $fromName;
+	$title = _MMAIL_TITLE . ' ' . $fromName;
 	mail($tomem->getEmail(), $title, $message, 'From: '. $fromMail);
 
 	if (postVar('url')) {
@@ -212,17 +211,17 @@ function doKarma($type) {
 	// send email to notification address, if any
 	if ($blog->getNotifyAddress() && $blog->notifyOnVote()) {
 
-		$mailto_msg = 'Karma vote on item: ' . $itemid . "\n";
+		$mailto_msg = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
 		$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
 		if ($member->isLoggedIn()) {
-			$mailto_msg .= 'Member: ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
+			$mailto_msg .= _NOTIFY_MEMBER . ' ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
 		}
-		$mailto_msg .= 'IP: ' . serverVar('REMOTE_ADDR') . "\n";
-		$mailto_msg .= 'Host: ' .  gethostbyaddr(serverVar('REMOTE_ADDR'))  . "\n";
-		$mailto_msg .= "Vote:\n " . $type . "\n";
+		$mailto_msg .= _NOTIFY_IP . ' ' . serverVar('REMOTE_ADDR') . "\n";
+		$mailto_msg .= _NOTIFY_HOST . ' ' .  gethostbyaddr(serverVar('REMOTE_ADDR'))  . "\n";
+		$mailto_msg .= _NOTIFY_VOTE . "\n " . $type . "\n";
 		$mailto_msg .= getMailFooter();
 
-		$mailto_title = 'Nucleus karma: ' . strip_tags($item['title']) . ' (' . $itemid . ')';
+		$mailto_title = _NOTIFY_KV_TITLE . ' ' . strip_tags($item['title']) . ' (' . $itemid . ')';
 
 		$frommail = $member->getNotifyFromMailAddress();
 
@@ -250,7 +249,7 @@ function callPlugin() {
 	
 	// 1: check if plugin is installed
 	if (!$manager->pluginInstalled($pluginName))
-		doError('No such plugin installed');
+		doError(_ERROR_NOSUCHPLUGIN);
 	
 	// 2: call plugin
 	$pluginObject =& $manager->getPlugin($pluginName);

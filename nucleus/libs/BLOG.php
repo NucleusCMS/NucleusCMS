@@ -269,13 +269,13 @@ class BLOG {
 		// create text version of html post
 		$ascii = toAscii($body);	
 
-		$mailto_msg = "A new item has been posted: \n";
+		$mailto_msg = _NOTIFY_NI_MSG . " \n";
 		$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
-		$mailto_msg .= 'Title: ' . strip_tags($title) . "\n";
-		$mailto_msg .= "Contents:\n " . $ascii . "\n";
+		$mailto_msg .= _NOTIFY_TITLE . ' ' . strip_tags($title) . "\n";
+		$mailto_msg .= _NOTIFY_CONTENTS . "\n " . $ascii . "\n";
 		$mailto_msg .= getMailFooter();
 		
-		$mailto_title = $this->getName() . ': New Item!';
+		$mailto_title = $this->getName() . ': ' . _NOTIFY_NI_TITLE;
 			
 		$frommail = $member->getNotifyFromMailAddress();
 

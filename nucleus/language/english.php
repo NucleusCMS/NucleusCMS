@@ -141,6 +141,30 @@ define('_RESTORE_WARNING',			'(make sure you\'re restoring the correct backup, m
 define('_ERROR_BACKUP_NOTSURE',		'You\'ll need to check the \'I\'m sure\' testbox');
 define('_RESTORE_COMPLETE',			'Restore Complete');
 
+// new item notification
+define('_NOTIFY_NI_MSG',			'A new item has been posted:');
+define('_NOTIFY_NI_TITLE',			'New Item!');
+define('_NOTIFY_KV_MSG',			'Karma vote on item:');
+define('_NOTIFY_KV_TITLE',			'Nucleus karma:');
+define('_NOTIFY_NC_MSG',			'Comment on item:');
+define('_NOTIFY_NC_TITLE',			'Nucleus comment:');
+define('_NOTIFY_USERID',			'User ID:');
+define('_NOTIFY_USER',				'User:');
+define('_NOTIFY_COMMENT',			'Comment:');
+define('_NOTIFY_VOTE',				'Vote:');
+define('_NOTIFY_HOST',				'Host:');
+define('_NOTIFY_IP',				'IP:');
+define('_NOTIFY_MEMBER',			'Member:');
+define('_NOTIFY_TITLE',				'Title:');
+define('_NOTIFY_CONTENTS',			'Contents:');
+
+// member mail message
+define('_MMAIL_MSG',				'A message sent to you by');
+define('_MMAIL_FROMANON',			'an anonymous visitor');
+define('_MMAIL_FROMNUC',			'Posted from a Nucleus weblog at');
+define('_MMAIL_TITLE',				'A message from');
+define('_MMAIL_MAIL',				'Message:');
+
 // END introduced after v1.5 END
 
 

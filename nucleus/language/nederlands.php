@@ -144,6 +144,31 @@ define('_RESTORE_WARNING',			'(vergeet niet even te controleren of je wel het ju
 define('_ERROR_BACKUP_NOTSURE',		'Je moet de \'ik ben 100% zeker\' checkbox aanklikken');
 define('_RESTORE_COMPLETE',			'Backup Teruggezet');
 
+// new item notification
+define('_NOTIFY_NI_MSG',			'Een nieuw bericht:');
+define('_NOTIFY_NI_TITLE',			'Nieuw bericht!');
+define('_NOTIFY_KV_MSG',			'Karma vote voor bericht:');
+define('_NOTIFY_KV_TITLE',			'Nucleus karma:');
+define('_NOTIFY_NC_MSG',			'Nieuwe reactie op bericht:');
+define('_NOTIFY_NC_TITLE',			'Nucleus reactie:');
+define('_NOTIFY_USERID',			'User ID:');
+define('_NOTIFY_USER',				'User:');
+define('_NOTIFY_COMMENT',			'Reactie:');
+define('_NOTIFY_VOTE',				'Stem:');
+define('_NOTIFY_HOST',				'Host:');
+define('_NOTIFY_IP',				'IP:');
+define('_NOTIFY_MEMBER',			'Lid:');
+define('_NOTIFY_TITLE',				'Titel:');
+define('_NOTIFY_CONTENTS',			'Inhoud:');
+
+// member mail message
+define('_MMAIL_MSG',				'Een bericht van');
+define('_MMAIL_FROMANON',			'een anonieme bezoeker');
+define('_MMAIL_FROMNUC',			'Gepost vanop het Nucleus weblog op');
+define('_MMAIL_TITLE',				'Een bericht van');
+define('_MMAIL_MAIL',				'Bericht:');
+
+
 
 // END introduced after v1.5 END
 
