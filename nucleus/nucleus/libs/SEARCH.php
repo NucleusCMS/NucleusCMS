@@ -20,9 +20,17 @@
 
 class SEARCH {
     function SEARCH($text) {
+        global $blogid;
         $this->querystring = str_replace("%","",$text);
         $this->marked = $this->boolean_mark_atoms($text);
         $this->inclusive = $this->boolean_inclusive_atoms($this->querystring);
+        // get all public searchable blogs, no matter what, include the current blog allways.
+		$res = sql_query('SELECT bnumber FROM '.sql_table('blog').' WHERE bincludesearch ');
+		$i = 0;
+		while ($obj = mysql_fetch_object($res)) {
+		    $this->blogs[$i] = $obj->bnumber;
+		    $i++;
+        }
     }
 
     function  boolean_sql_select($match){
