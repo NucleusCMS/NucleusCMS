@@ -17,10 +17,14 @@ class COMMENTS {
 	/**
 	 * Creates a new COMMENTS object for the given blog and item
 	 *
-	 * @param $itemid id of the item
+	 * @param $itemid 
+	 *		id of the item
+	 * @param $itemActions
+	 *		itemActions object, that will take care of the parsing
 	 */
-	function COMMENTS($itemid) {
+	function COMMENTS($itemid, &$itemActions) {
 		$this->itemid = intval($itemid);
+		$this->itemActions =& $itemActions;
 	}
 	
 	
@@ -38,9 +42,15 @@ class COMMENTS {
 	 */
 	function showComments($template, $maxToShow = -1, $showNone = 1) {
 		global $CONF, $manager;
+
+		// create parser object & action handler
+		$actions = new COMMENTACTIONS($this);
+		$parser = new PARSER($actions->getDefinedActions(),$actions);
+		$actions->setTemplate($template);
+		$actions->setParser($parser);
 		
-		 if ($maxToShow == 0) {
-			$commentcount = $this->amountComments();
+		if ($maxToShow == 0) {
+			$this->commentcount = $this->amountComments();
 		} else {
 			$query =  'SELECT c.cnumber as commentid, c.cbody as body, c.cuser as user, c.cmail as userid, c.cmember as memberid, UNIX_TIMESTAMP(c.ctime) as timestamp, c.chost as host, c.cip as ip, c.cblog as blogid'
 			       . ' FROM nucleus_comment as c'
@@ -48,99 +58,36 @@ class COMMENTS {
 			       . ' ORDER BY c.ctime';
 			       
 			$comments = sql_query($query);		
-			$commentcount = mysql_num_rows($comments);
+			$this->commentcount = mysql_num_rows($comments);
 		}
-		
-		global $catid;
-		$linkparams = array();
-		if ($catid) {
-			$catextra = '&amp;catid=' . $catid;
-			$linkparams['catid'] = $catid;
-		}
-		
-		$ids['itemid'] = $this->itemid;
-		$ids['itemlink'] = createItemLink($this->itemid, $linkparams);
-		$ids['commentcount'] = $commentcount;
-		
-		if ($commentcount == 1)
-			$ids['commentword'] = $template['COMMENTS_ONE'];
-		else
-			$ids['commentword'] = $template['COMMENTS_MANY'];
-		
 
 		// if no result was found
-		if ($commentcount == 0) {
+		if ($this->commentcount == 0) {
 			// note: when no reactions, COMMENTS_HEADER and COMMENTS_FOOTER are _NOT_ used
-			if ($showNone) echo TEMPLATE::fill($template['COMMENTS_NONE'],$ids);
+			if ($showNone) $parser->parse($template['COMMENTS_NONE']);
 			return 0;
 		}
 		
 		// if too many comments to show
-		if (($maxToShow != -1) && ($commentcount > $maxToShow)) {
-			echo TEMPLATE::fill($template['COMMENTS_TOOMUCH'],$ids);
+		if (($maxToShow != -1) && ($this->commentcount > $maxToShow)) {
+			$parser->parse($template['COMMENTS_TOOMUCH']);
 			return 0;
 		}
 		
-		echo TEMPLATE::fill($template['COMMENTS_HEADER'],$ids);
+		$parser->parse($template['COMMENTS_HEADER']);
 		
-		while ( $row = mysql_fetch_assoc($comments) ) {
-
-			$row['commentcount'] = $ids['commentcount'];
-			$row['commentword'] = $ids['commentword'];
-		
-			$row['date'] = strftime($template['FORMAT_DATE'],$row['timestamp']);
-			$row['time'] = strftime($template['FORMAT_TIME'],$row['timestamp']);
-			$row['itemid'] = $this->itemid;
-			$row['itemlink'] = createItemLink($this->itemid, $linkparams);
-			
-			if ($row['memberid'] != 0) {
-				$row['authtext'] = $template['COMMENTS_AUTH']; 
-				
-				$mem = MEMBER::createFromID($row['memberid']);
-				$row['user'] = $mem->getDisplayName();
-				if ($mem->getURL())
-					$row['userid'] = $mem->getURL();
-				else
-					$row['userid'] = $mem->getEmail();
-				
-				$row['userlinkraw'] = createMemberLink($row['memberid'], $linkparams);
-				
-			} else {
-
-				// create smart links
-				if (isValidMailAddress($row['userid']))
-					$row['userlinkraw'] = 'mailto:'.$row['userid'];
-				elseif (strstr($row['userid'],'http://') != false)  
-					$row['userlinkraw'] = $row['userid'];
-				elseif (strstr($row['userid'],'www') != false)
-					$row['userlinkraw'] = 'http://'.$row['userid'];
-			}
-
-			if ($row['userlinkraw']) 
-				$row['userlink'] = '<a href="'.$row['userlinkraw'].'">'.$row['user'].'</a>';
-			else 
-				$row['userlink'] = $row['user'];
-			
-			// provide a chopped-off version for summaries (like on main pages)
-			$row['short'] = strtok($row['body'],"\n");
-			$row['short'] = str_replace('<br />','',$row['short']);
-			$row['itemlink'] = createItemLink($this->itemid, $linkparams);
-			if ($row['short'] != $row['body'])
-				$row['short'] .= TEMPLATE::fill($template['COMMENTS_CONTINUED'],$row); 
-				// (fillTemplate allows for itemid-tags to be filled out)
-			
-		
-			$manager->notify('PreComment', array('comment' => &$row));
-			echo TEMPLATE::fill($template['COMMENTS_BODY'],$row);
-			$manager->notify('PostComment', array('comment' => &$row));			
-						
+		while ( $comment = mysql_fetch_assoc($comments) ) {
+			$actions->setCurrentComment($comment);
+			$manager->notify('PreComment', array('comment' => &$comment));
+			$parser->parse($template['COMMENTS_BODY']);
+			$manager->notify('PostComment', array('comment' => &$comment));			
 		}
 
-		echo TEMPLATE::fill($template['COMMENTS_FOOTER'],$ids);
+		$parser->parse($template['COMMENTS_FOOTER']);
 		
 		mysql_free_result($comments);
 				
-		return $commentcount;
+		return $this->commentcount;
 	}
 	 
 	/**
@@ -274,3 +221,152 @@ class COMMENTS {
 	
 }
 
+/**
+  * This class is used when parsing comment templates
+  */
+class COMMENTACTIONS extends BaseActions {
+
+	function COMMENTACTIONS(&$comments) {
+		// call constructor of superclass first
+		$this->BaseActions();	
+		
+		// reference to the comments object
+		$this->setCommentsObj($comments);
+	}
+
+	function getDefinedActions() {
+		return array(
+			'commentcount',
+			'commentword',
+			'itemlink',
+			'itemid',
+			'date',
+			'time',
+			'commentid',
+			'body',
+			'memberid',
+			'timestamp',
+			'host',
+			'ip',
+			'blogid',
+			'user',
+			'userid',
+			'userlinkraw',
+			'userlink',
+			'short',
+			'skinfile',
+			'set',
+			'plugin',
+			'include',
+			'phpinclude',
+			'parsedinclude'
+		);
+	}
+	
+	function setParser(&$parser) {			$this->parser =& $parser; }
+	function setCommentsObj(&$commentsObj) {$this->commentsObj =& $commentsObj; }
+	function setTemplate($template) {		$this->template =& $template; }
+	function setCurrentComment(&$comment) {	
+		if ($comment['memberid'] != 0) {
+			$comment['authtext'] = $template['COMMENTS_AUTH']; 
+
+			$mem = MEMBER::createFromID($comment['memberid']);
+			$comment['user'] = $mem->getDisplayName();
+			if ($mem->getURL())
+				$comment['userid'] = $mem->getURL();
+			else
+				$comment['userid'] = $mem->getEmail();
+
+			$comment['userlinkraw'] = createMemberLink(
+										$comment['memberid'], 
+										$this->commentsObj->itemActions->linkparams
+									  );
+
+		} else {
+
+			// create smart links
+			if (isValidMailAddress($comment['userid']))
+				$comment['userlinkraw'] = 'mailto:'.$comment['userid'];
+			elseif (strstr($comment['userid'],'http://') != false)  
+				$comment['userlinkraw'] = $comment['userid'];
+			elseif (strstr($comment['userid'],'www') != false)
+				$comment['userlinkraw'] = 'http://'.$comment['userid'];
+		}
+	
+		$this->currentComment =& $comment; 
+	}
+
+	function parse_commentcount() {			echo $this->commentsObj->commentcount; }
+	function parse_commentword() {			
+		if ($this->commentsObj->commentcount == 1)
+			echo $this->template['COMMENTS_ONE'];
+		else
+			echo $this->template['COMMENTS_MANY']; 
+	}	
+	
+	function parse_itemlink() {				$this->commentsObj->itemActions->parse_itemlink(); }
+	function parse_itemid() {				echo $this->commentsObj->itemid; }
+
+	function parse_date() {					
+		echo strftime($this->template['FORMAT_DATE'],$this->currentComment['timestamp']);
+	}
+	function parse_time() {					
+		echo strftime($this->template['FORMAT_TIME'],$this->currentComment['timestamp']);
+	}
+
+	function parse_commentid() {			echo $this->currentComment['commentid']; }
+	function parse_body() {					echo $this->currentComment['body']; }	
+	function parse_memberid() {				echo $this->currentComment['memberid']; }
+	function parse_timestamp() {			echo $this->currentComment['timestamp']; }	
+	function parse_host() {					echo $this->currentComment['host']; }
+	function parse_ip() {					echo $this->currentComment['ip']; }
+	function parse_blogid() {				echo $this->currentComment['blogid']; }
+
+	function parse_user() {					echo $this->currentComment['user']; }
+	function parse_userid() {				echo $this->currentComment['userid']; }
+	function parse_userlinkraw() {			echo $this->currentComment['userlinkraw']; }	
+	function parse_userlink() {
+		if ($this->currentComment['userlinkraw']) 
+			echo '<a href="'.$this->currentComment['userlinkraw'].'">'.$this->currentComment['user'].'</a>';
+		else 
+			echo $this->currentComment['user'];
+	}
+	function parse_short() {
+		$tmp = strtok($this->currentComment['body'],"\n");
+		$tmp = str_replace('<br />','',$tmp);
+		echo $tmp;
+		if ($tmp != $this->currentComment['body'])
+			$this->parser->parse($this->template['COMMENTS_CONTINUED']); 
+	}
+	
+	/**
+	  * Executes a plugin templatevar
+	  *
+	  * @param pluginName name of plugin (without the NP_)
+	  * 
+	  * extra parameters can be added
+	  */
+	function parse_plugin($pluginName) {
+		global $manager;
+		
+		// only continue when the plugin is really installed
+		if (!$manager->pluginInstalled('NP_' . $pluginName))
+			return;
+		
+		$plugin =& $manager->getPlugin('NP_' . $pluginName);
+
+		// get arguments
+		$params = func_get_args();
+		
+		// remove plugin name 
+		array_shift($params);
+		
+		// pass info on current item and current comment as well
+		$params = array_merge(array(&$this->currentComment),$params);		
+		$params = array_merge(array(&$this->commentsObj->itemActions->currentItem),$params);
+
+		call_user_func_array(array(&$plugin,'doTemplateCommentsVar'), $params);
+	}	
+}
+
+?>

@@ -9,7 +9,7 @@
 
 <div class="heading">
 Writing Plugins
-<i>January 17th, 2003</i>
+<i>February 15, 2003</i>
 </div>
 
 <div class="note"><b>Note:</b> This document should contain enough information to write basic plugins. If you have more questions, see the <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin Development Forum</a></div>
@@ -183,8 +183,12 @@ So, that wasn't so hard after all. Read on to find out more.
 	</tr>
 	<tr>
 		<td><tt>doTemplateVar(&$item)</tt></td>
-		<td>Basically the same as <tt>doSkinVar</tt>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (item header/body/footer and dateheader/footer) or from inside weblog items. By default, this method forwards the handling to the <tt>doSkinVar</tt>-method, using <tt>template</tt> as skintype. <a href="#templatevars">More information on implementing the <tt>doTemplateVar</tt> method</a></td>		
+		<td>Basically the same as <tt>doSkinVar</tt>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (item header/body/footer and dateheader/footer). By default, this method forwards the handling to the <tt>doSkinVar</tt>-method, using <tt>template</tt> as skintype. <a href="#templatevars">More information on implementing the <tt>doTemplateVar</tt> method</a></td>		
 	</tr>
+	<tr>
+		<td><tt>doTemplateCommentsVar(&$item, &$comment)</tt></td>
+		<td>(v2.0) Basically the same as <tt>doSkinVar</tt>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (comments-related parts). By default, this method forwards the handling to the <tt>doSkinVar</tt>-method, using <tt>template</tt> as skintype. <a href="#templatevars">More information on implementing the <tt>doTemplateCommentsVar</tt> method</a></td>		
+	</tr>	
 	<tr>
 		<td><tt>doAction($type)</tt></td>
 		<td>When a plugin wants to allow user interaction, it can allow actions through <tt>action.php</tt>. This is the script that Nucleus uses itself to handle new comments and karma votes. Called with the correct parameters, the <tt>doAction</tt>-method from a plugin can be called. The <tt>$type</tt> contains an optional message type. Extra variables from the request can be accessed from within the <tt>doAction</tt> method. By default, this method returns a string <q>No Such Action</q> which will trigger an error message. <a href="#actions">More info on <tt>doAction</tt>.</a></td>		
@@ -292,11 +296,17 @@ function doSkinVar($skinType, $skinVar, $param1 = 'default value')
 <h2>Description</h2>
 
 <p>
-Template variables work in the same way as skinvars. There are two differences:</p>
+Template plugin variables work in the same way as skin plugin vars. There are two differences:</p>
 
 <ol>
 	<li>They are called from within templates instead of from within skins</li>
-	<li>The <tt>doTemplateVar</tt>-method does not get a <tt>$skinType</tt> parameter, but gets a <tt>&$item</tt> parameter instead. <strong>Note the ampersand!</strong></li>
+	<li>They don't take a <code>$skinType</code> parameter. Instead, they take extra parameters with info on the item and comment that is currently being parsed:
+		<ul>
+			<li>The <tt>doTemplateVar</tt>-method gets a <tt>&$item</tt> parameter.</li>
+			<li>The <tt>doTemplateCommentsVar</tt>-method gets an <tt>&$item</tt> parameter as well as a <tt>&$comment</tt> parameter.</li>
+		</ul>
+		<strong>Note the ampersands!</strong>
+	</li>
 </ol>
 	
 <p>Template variables are called in exactly the same way as skinvars (using <tt>&lt;%plugin(<i>PlugName</i>,<i>parameters</i>)%&gt; </tt> or <tt>&lt;%PlugName(parameters)%&gt;</tt>)
@@ -307,7 +317,7 @@ By default, all template variables are passed on to the <tt>doSkinVar</tt>-metho
 </p>
 
 <p>
-If you want to provide your own implementation, you'll need to redefine the method <tt>doTemplateVar</tt>. It works in the same way as <tt>doSkinVar</tt>, except that now the <tt>skinType</tt>-parameter is missing.
+If you want to provide your own implementation, you'll need to redefine the method <tt>doTemplateVar</tt> and/or <tt>doTemplateCommentsVar</tt>. It works in the same way as <tt>doSkinVar</tt>, except that now the <tt>skinType</tt>-parameter is missing.
 </p>
 
 <pre>
@@ -315,6 +325,10 @@ function doTemplateVar(&$item)
 function doTemplateVar(&$item, $param1, $param2)
 function doTemplateVar(&$item, $type, $param1, $param2)
 function doTemplateVar(&$item, $type, $param1 = 'default value')
+function doTemplateCommentsVar(&$item, &$comment)
+function doTemplateCommentsVar(&$item, &$comment, $param1, $param2)
+function doTemplateCommentsVar(&$item, &$comment, $type, $param1, $param2)
+function doTemplateCommentsVar(&$item, &$comment, $type, $param1 = 'default value')
 </pre>
 
 <h2>Notes</h2>
