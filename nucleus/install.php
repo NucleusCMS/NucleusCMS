@@ -698,7 +698,7 @@
 <?php } else { ?>
 			<h1>Installation complete!</h1>
 
-			<p>Nucleus jas been installed, and your <code>config.php</code> has been updated for you.</p>
+			<p>Nucleus has been installed, and your <code>config.php</code> has been updated for you.</p>
 
 			<p>Don't forget to change the permissions on <code>config.php</code> back to 644 for security (<a href="nucleus/documentation/tips.html#filepermissions">Quick guide on how to change file permissions</a>).</p>
 <?php } ?>
