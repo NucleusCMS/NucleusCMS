@@ -21,10 +21,10 @@
 class SEARCH {
     function SEARCH($text) {
         global $blogid;
-        $text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;]/","",$text);
-        $this->querystring = str_replace("%","",$text);
-        $this->marked = $this->boolean_mark_atoms($text);
-        $this->inclusive = $this->boolean_inclusive_atoms($this->querystring);
+        $text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$text);
+        $this->querystring = $text;
+        $this->marked      = $this->boolean_mark_atoms($text);
+        $this->inclusive   = $this->boolean_inclusive_atoms($this->querystring);
 
         // get all public searchable blogs, no matter what, include the current blog allways.
 		$res = sql_query('SELECT bnumber FROM '.sql_table('blog').' WHERE bincludesearch ');
