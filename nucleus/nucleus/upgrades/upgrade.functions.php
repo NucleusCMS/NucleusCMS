@@ -55,8 +55,8 @@
 				$minrows = -1;			
 				break;				
 			case '25':
-				$query = 'SHOW INDEX FROM '.sql_table('item');
-				$minrows = 6;			
+				$query = 'SELECT bincludesearch FROM ' . sql_table('blog') . ' LIMIT 1';
+				$minrows = -1;			
 				break;				
 				
 		}
