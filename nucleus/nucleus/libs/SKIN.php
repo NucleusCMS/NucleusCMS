@@ -69,8 +69,8 @@ class SKIN {
 	}
 	
 	// (static)
-	function createNew($name, $desc, $type = 'text/html') {
-		sql_query("INSERT INTO nucleus_skin_desc (sdname, sddesc, sdtype) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "','".addslashes($type)."')");
+	function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
+		sql_query("INSERT INTO nucleus_skin_desc (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "','".addslashes($type)."','".addslashes($includeMode)."','".addslashes($includePrefix)."')");
 		return mysql_insert_id();
 	}
 	
