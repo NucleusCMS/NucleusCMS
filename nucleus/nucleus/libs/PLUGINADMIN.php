@@ -17,7 +17,11 @@ include($DIR_LIBS . 'ADMIN.php');
 
 class PluginAdmin {
 	
-
+	var $strFullName;		// NP_SomeThing
+	var $plugin;			// ref. to plugin object
+	var $bValid;			// evaluates to true when object is considered valid
+	var $admin;				// ref to an admin object
+	
 	function PluginAdmin($pluginName)
 	{
 		global $manager;

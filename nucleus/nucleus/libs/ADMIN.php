@@ -14,6 +14,9 @@
  
 class ADMIN {
 
+	// action currently being executed ($action=xxxx -> action_xxxx method)
+	var $action;
+
 	function ADMIN() {
 
 	}

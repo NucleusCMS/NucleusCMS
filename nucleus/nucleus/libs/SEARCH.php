@@ -22,6 +22,12 @@
 
 
 class SEARCH {
+	
+	var $querystring;
+	var $marked;
+	var $inclusive;
+	var $blogs;
+
 
     function SEARCH($text) {
         global $blogid;
