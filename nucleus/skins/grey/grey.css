@@ -92,13 +92,13 @@ body {
 .menu {
 	position: absolute;
 
-	top: 200px;
+	top: 175px;
 	left: 30px;
 	width: 110px;
 
 	/* use a lighter text color (grey) and a smaller font */
 	color: #777;
-	font-size: x-small;	
+	font-size: small;	
 }
 
 /*
