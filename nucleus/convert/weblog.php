@@ -33,7 +33,7 @@ if (!$member->isAdmin()) {
 }
 
 $ver = convert_getNucleusVersion();
-if ($ver > 200)
+if ($ver > 210)
 	convert_doError("You should check the Nucleus website for updates to this convert tool. This one might not work with your current Nucleus installation.");
 
 // include PRAX lib (to read XML files easily)
