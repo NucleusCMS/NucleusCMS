@@ -61,9 +61,6 @@
 	<td><%text(_EDIT_SUBMIT)%></td>
 	<td>
 
-		<%ifblogsetting(bcomments)%>
-			<input type='hidden' name='closed' value='<%contents(closed)%>' />
-		<%endif%>
 		<input type="submit" tabindex="60" value="<%text(_EDIT_SUBMIT)%>" onclick="return checkSubmit();" />
 
 <%ifitemproperty(draft)%>
