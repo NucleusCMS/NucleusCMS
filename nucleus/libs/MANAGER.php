@@ -164,6 +164,10 @@ class MANAGER {
 				// load plugin
 				include($fileName);
 				
+				// check if class exists (avoid errors in eval'd code)
+				if (!class_exists($name))
+					return 0;
+				
 				// add to plugin array
 				eval('$this->plugins[$name] = new ' . $name . '();');
 				
