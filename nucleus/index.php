@@ -32,7 +32,7 @@
 				array_push($aFound, $fileDesc);
 		}
 		if (@is_writable('../config.php')) {
-			array_push($aFound, 'config.php should be non-writable (chmod to 644)');
+			array_push($aFound, 'config.php should be non-writable (chmod to 444)');
 		}
 		if (sizeof($aFound) > 0)
 		{

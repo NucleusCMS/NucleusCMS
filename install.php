@@ -169,7 +169,7 @@
 	<h1>Automatic <i>config.php</i> Update</h1>
 
 	<p>
-	If you want Nucleus to automatically update the <em>config.php</em> file, you'll need to make it writable. You can do this by changing the file permissions to <strong>666</strong>. After Nucleus is successfully installed, you can change the permissions back to <strong>644</strong> (<a href="nucleus/documentation/tips.html#filepermissions">Quick guide on how to change file permissions</a>).
+	If you want Nucleus to automatically update the <em>config.php</em> file, you'll need to make it writable. You can do this by changing the file permissions to <strong>666</strong>. After Nucleus is successfully installed, you can change the permissions back to <strong>444</strong> (<a href="nucleus/documentation/tips.html#filepermissions">Quick guide on how to change file permissions</a>).
 	</p>
 
 	<p>
@@ -699,7 +699,7 @@
 
 			<p>Nucleus has been installed, and your <code>config.php</code> has been updated for you.</p>
 
-			<p>Don't forget to change the permissions on <code>config.php</code> back to 644 for security (<a href="nucleus/documentation/tips.html#filepermissions">Quick guide on how to change file permissions</a>).</p>
+			<p>Don't forget to change the permissions on <code>config.php</code> back to 444 for security (<a href="nucleus/documentation/tips.html#filepermissions">Quick guide on how to change file permissions</a>).</p>
 <?php } ?>
 			<h1>Delete your install files</h1>
 
