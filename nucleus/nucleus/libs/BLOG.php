@@ -1151,6 +1151,8 @@ class ITEMACTIONS extends BaseActions {
 // used for mail notification (html -> text)
 
 function toAscii($html) {
+	// strip off most tags 
+	$html = strip_tags($html,'<a>');
 	$to_replace = "/<a[^>]*href=[\"\']([^\"^']*)[\"\'][^>]*>([^<]*)<\/a>/i"; 
 	_links_init(); 
 	$ascii = preg_replace_callback ($to_replace, '_links_add', $html); 
