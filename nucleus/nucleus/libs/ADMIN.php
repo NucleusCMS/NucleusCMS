@@ -909,7 +909,7 @@ class ADMIN {
 	}
 	
 	function action_itemupdate() {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 		
 		$itemid = intRequestVar('itemid');
 		$catid = postVar('catid');
@@ -994,7 +994,11 @@ class ADMIN {
 		// show category edit window when we created a new category
 		// ($catid will then be a new category ID, while postVar('catid') will be 'newcat-x')
 		if ($catid != intPostVar('catid')) {
-			$this->action_categoryedit($catid, $blog->getID());
+			$this->action_categoryedit(
+				$catid, 
+				$blog->getID(),
+				$CONF['AdminURL'] . 'index.php?action=itemlist&blogid=' . getBlogIDFromItemID($itemid)
+			);
 		} else {
 			// TODO: set start item correctly for itemlist
 			$this->action_itemlist(getBlogIDFromItemID($itemid));
