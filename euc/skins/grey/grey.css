@@ -75,7 +75,9 @@ body {
 
 /* definitions applying to the contents block */
 .contents {
-	margin-left: 200px;
+	position: absolute;
+
+	left: 200px;
 	width: 550px;
 }
 
