@@ -52,17 +52,37 @@ define('_BATCH_ITEMS',				'Groepbewerking op berichten');
 define('_BATCH_CATEGORIES',			'Groepbewerking op categorieën');
 define('_BATCH_MEMBERS',			'Groepbewerking op leden');
 define('_BATCH_TEAM',				'Groepbewerking op teamleden');
+define('_BATCH_COMMENTS',			'Groepbewerking op reacties');
 define('_BATCH_UNKNOWN',			'Ongekende bewerking: ');
 define('_BATCH_EXECUTING',			'Bezig met uivoeren van');
 define('_BATCH_ONCATEGORY',			'op categorie');
 define('_BATCH_ONITEM',				'op bericht');
 define('_BATCH_ONMEMBER',			'op lid');
 define('_BATCH_ONTEAM',				'op teamlid');
+define('_BATCH_ONCOMMENT',			'op reactie');
 define('_BATCH_SUCCESS',			'Succes!');
 define('_BATCH_DONE',				'Klaar!');
 define('_BATCH_DELETE_CONFIRM',		'Bevestigen wissen geselecteerde items');
 define('_BATCH_DELETE_CONFIRM_BTN',	'Wissen bevestigen');
 
+// batch operations: options in dropdowns
+define('_BATCH_ITEM_DELETE',		'Verwijderen');
+define('_BATCH_ITEM_MOVE',			'Verplaatsen');
+define('_BATCH_MEMBER_DELETE',		'Verwijderen');
+define('_BATCH_MEMBER_SET_ADM',		'Admin-rechten toekennen');
+define('_BATCH_MEMBER_UNSET_ADM',	'Admin-rechten wegnemen');
+define('_BATCH_TEAM_DELETE',		'Uit team verwijderen');
+define('_BATCH_TEAM_SET_ADM',		'Admin-rechten toekennen');
+define('_BATCH_TEAM_UNSET_ADM',		'Admin-rechten wegnemen');
+define('_BATCH_CAT_DELETE',			'Verwijderen');
+define('_BATCH_CAT_MOVE',			'Verplaatsen naar andere weblog');
+define('_BATCH_COMMENT_DELETE',		'Verwijderen');
+
+// itemlist: Add new item...
+define('_ITEMLIST_ADDNEW',			'Nieuw bericht toevoegen...');
+
+// errors
+define('_ERROR_CATCREATEFAIL',		'Kon nieuwe categorie niet aanmaken');
 
 // END introduced after v1.5 END
 

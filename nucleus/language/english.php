@@ -51,16 +51,38 @@ define('_BATCH_ITEMS',				'Batch operation on items');
 define('_BATCH_CATEGORIES',			'Batch operation on categories');
 define('_BATCH_MEMBERS',			'Batch operation on members');
 define('_BATCH_TEAM',				'Batch operation on team members');
+define('_BATCH_COMMENTS',			'Batch operation on comments');
 define('_BATCH_UNKNOWN',			'Unknown batch operation: ');
 define('_BATCH_EXECUTING',			'Executing');
 define('_BATCH_ONCATEGORY',			'on category');
 define('_BATCH_ONITEM',				'on item');
+define('_BATCH_ONCOMMENT',			'on comment');
 define('_BATCH_ONMEMBER',			'on member');
 define('_BATCH_ONTEAM',				'on team member');
 define('_BATCH_SUCCESS',			'Success!');
 define('_BATCH_DONE',				'Done!');
 define('_BATCH_DELETE_CONFIRM',		'Confirm Batch Deletion');
 define('_BATCH_DELETE_CONFIRM_BTN',	'Confirm Batch Deletion');
+
+// batch operations: options in dropdowns
+define('_BATCH_ITEM_DELETE',		'Delete');
+define('_BATCH_ITEM_MOVE',			'Move');
+define('_BATCH_MEMBER_DELETE',		'Delete');
+define('_BATCH_MEMBER_SET_ADM',		'Give admin rights');
+define('_BATCH_MEMBER_UNSET_ADM',	'Take away admin rights');
+define('_BATCH_TEAM_DELETE',		'Delete from team');
+define('_BATCH_TEAM_SET_ADM',		'Give admin rights');
+define('_BATCH_TEAM_UNSET_ADM',		'Take away admin rights');
+define('_BATCH_CAT_DELETE',			'Delete');
+define('_BATCH_CAT_MOVE',			'Move to other blog');
+define('_BATCH_COMMENT_DELETE',		'Delete');
+
+// itemlist: Add new item...
+define('_ITEMLIST_ADDNEW',			'Add new item...');
+
+// errors
+define('_ERROR_CATCREATEFAIL',		'Could not create new category');
+
 
 // END introduced after v1.5 END
 
