@@ -10,8 +10,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * Class representing the karma votes for a certain item
-  *
-  * $Id: KARMA.php,v 1.1.1.1 2005-02-28 07:14:11 kimitake Exp $
   */
 class KARMA {
 	

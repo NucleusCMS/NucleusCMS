@@ -1,32 +1,32 @@
-@chareset "EUC-JP";
 body {
-	background: #ffffff;
+	background: #ffffff; 
 }
-body, td, th, a, li, ul, textarea, select {
+body, td, th, a, li, ul, textarea {
 	color: #000;
-	font-family: 'Lucida Grande', Verdana, Geneva, Lucida, Arial, Helvetica, sans-serif;
+	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 }
 
 textarea {
-  font-size: 125%;
-  width: auto;
-  margin: 0;
-  padding: 0;
-  line-height:130%;
-  font-family: "£Í£Ó £Ð¥´¥·¥Ã¥¯", "¥Ò¥é¥®¥Î³Ñ¥´ Pro W3", "Osaka", sans-serif;
+  font-size: small;
+  font-family: "Hiragino Kaku Gothic Pro W3", "MS PGothic", "Osaka", sans-serif;
+}
+*>textarea {
+  width: 95%;
 }
 
 /* textareas for skin/template editing have monospace fonts */
 textarea.skinedit, textarea.templateedit
 {
-	font-family: monospace, "£Í£Ó £Ð¥´¥·¥Ã¥¯", "¥Ò¥é¥®¥Î³Ñ¥´ Pro W3", "Osaka", sans-serif;
-	width: auto;
+  font-family: "Hiragino Kaku Gothic Pro W3", "MS PGothic", "Osaka", monospace;
+/* except MacIE \*/
+	font-family: monospace;
+/* end */
+	font-size: medium;
 }
 
 img			{ border: none; }
 .skip 		{ display: none; }
 label		{ cursor: pointer; }
-.error 		{ color: red; font-size: 1.2em; }
 
 /* header */
 h1 {
@@ -36,14 +36,15 @@ h1 {
 	letter-spacing: 0.1em;
 	/*color: #0001AA;	*/
 	color: #596d9d;
-	margin: 0 0 5px 125px;
+	margin: 0 0 5px 135px;
 	height: 35px;
 	/*display: none;	hide the header if you don't want it*/
+
 }
 
 /* page content */
 #content {
-	margin-left:125px;
+   margin-left:135px;
 	font-style: normal;
 	text-decoration: none;
 	color: black;
@@ -81,41 +82,38 @@ h1 {
 	margin: 0px;
 	padding: 0px;
 	
-	font-size: small;
+	font-size: 70%;
 	
 	border-width: 1px;
 	border-style: solid;
 	border-color: black;
-	background: #ffffff url(quickb.jpg) top left fixed repeat-y;
+   background: #ffffff url(quickb.jpg) top left fixed repeat-y; 
 }
 
 #quickmenu ul {
 	list-style-type: none;
-	margin: 0;
-	padding: 0;
+}
+#quickmenu p, #quickmenu ul {
+	margin: 3px;
+	padding: 0px;
 }
 #quickmenu p {
-	padding: 3px;
-	margin: 0px;
 	text-align: justify;
 }
 #quickmenu li {
-	padding: 0;
-	margin: 0;
+	height: 2em;
+	padding: 5px;	
 	text-align: center;
 	border-bottom: 1px solid #ccc;
-	font-size: 90%;
 }
 #quickmenu a {
-	display: block;
-	padding: 5px;
-	font-size: 90%;
-	line-height: 1.5em;
-	text-decoration: none;
+	font-family: verdana, lucida, arial, helvetica, sans-serif;
 }
-#quickmenu li a:hover {
-	background: #ffffff url(quickb-hover.jpg) top left fixed repeat-y; 
-	color: #000;
+*>#quickmenu a {
+	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+}
+#quickmenu li:hover {
+	background-color: #DEE6F6;
 }
 #quickmenu h2 {
 	font-size: small;
@@ -123,14 +121,14 @@ h1 {
 	padding: 1px 0px 1px 0px;
 	margin: 0px;
 	border-bottom: 1px solid #bbb;
+	border-top: 1px solid #bbb;	
 	background-color: #ddd;
 	color: #000;
 }
 #quickmenu form {
-	margin:0px;
+	margin: 0px;
 	padding: 2px;
 	text-align: center;
-	border-bottom: 1px solid #bbb; 	
 }
 #quickmenu option {
 	font-size: small;
@@ -200,7 +198,7 @@ table {
 th {
 	background-color: #bbc;
 	color: #000;
-	font-size: 90%;
+	font-size: small;
 }
 
 th, td {
@@ -211,7 +209,7 @@ th, td {
 td {
 	background-color: #fff;
 	border: 1px solid #ddd;
-	font-size: 90%;
+	font-size: small;
 	vertical-align: top;
 	text-align: left;
 }
@@ -249,6 +247,7 @@ table.navigation td, table.navigation th {
 
 /* footer */
 .foot {
+
  padding: 2px 0px 2px 10px;
  margin:10px -10px 0 -10px;
  text-align: center;

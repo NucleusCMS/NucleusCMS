@@ -12,8 +12,6 @@
   *
   * A class representing a blog and containing functions to get that blog shown
   * on the screen 
-  *
-  * $Id: BLOG.php,v 1.1.1.1 2005-02-28 07:14:10 kimitake Exp $
   */
 class BLOG {
 	
@@ -139,7 +137,7 @@ class BLOG {
 	function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1) {
 		global $CONF, $manager;
 
-		$lastVisit = cookieVar($CONF['CookiePrefix'] .'lastVisit');
+		$lastVisit = cookieVar('lastVisit');
 		if ($lastVisit != 0)
 			$lastVisit = $this->getCorrectTime($lastVisit);
 
@@ -147,11 +145,11 @@ class BLOG {
 		global $currentTemplateName;
 		$currentTemplateName = $templateName;
 		
-		$template =& $manager->getTemplate($templateName);
+		$template = TEMPLATE::read($templateName);
 		
 		// create parser object & action handler
-		$actions =& new ITEMACTIONS($this);
-		$parser =& new PARSER($actions->getDefinedActions(),$actions);
+		$actions = new ITEMACTIONS($this);
+		$parser = new PARSER($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setHighlight($highlight);
 		$actions->setLastVisit($lastVisit);
@@ -160,11 +158,6 @@ class BLOG {
 
 		// execute query
 		$items = sql_query($query);
-		$numrows = mysql_num_rows($items);
-		if($numrows == 0){
-			echo '<div class="itembody">このページに記事はありません。</div>';
-			echo '<p align="center"><a href="javascript:history.go(-1);">戻る</a></p>';
-		}
 		
 		// loop over all items
 		while ($item = mysql_fetch_object($items)) {
@@ -295,7 +288,7 @@ class BLOG {
 			
 		$frommail = $member->getNotifyFromMailAddress();
 
-		$notify =& new NOTIFICATION($this->getNotifyAddress());
+		$notify = new NOTIFICATION($this->getNotifyAddress());
 		$notify->notify($mailto_title, $mailto_msg , $frommail);
 				
 
@@ -378,7 +371,7 @@ class BLOG {
 	 *		amount of hits found
 	 */
 	function search($query, $template, $amountMonths, $maxresults, $startpos) {
-        global $CONF, $manager;
+        global $CONF;
 
 		$highlight 	= '';
 		$sqlquery	= $this->getSqlSearch($query, $amountMonths, $highlight);
@@ -400,7 +393,7 @@ class BLOG {
 			// when no results were found, show a message 
     		if ($amountfound == 0) 
     		{
-	    		$template =& $manager->getTemplate($template);
+	    		$template = TEMPLATE::read($template);
     			$vars = array(
     				'query'		=> htmlspecialchars($query),
     				'blogid'	=> $this->getID()
@@ -430,7 +423,7 @@ class BLOG {
 	 */
 	function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
 	{
-        $searchclass =& new SEARCH($query);
+        $searchclass = new SEARCH($query);
         
         $highlight	  = $searchclass->inclusive;
         
@@ -528,12 +521,12 @@ class BLOG {
 	  * Shows the archivelist using the given template
 	  */
 	function showArchiveList($template, $mode = 'month', $limit = 0) {
-		global $CONF, $catid, $manager;
+		global $CONF, $catid;
 
 		if ($catid) 
 			$linkparams = array('catid' => $catid);
 		
-		$template =& $manager->getTemplate($template);
+		$template = TEMPLATE::read($template);
 		$data['blogid'] = $this->getID();
 
 		echo TEMPLATE::fill($template['ARCHIVELIST_HEADER'],$data);
@@ -586,7 +579,7 @@ class BLOG {
 	  * Shows the list of categories using a given template
 	  */
 	function showCategoryList($template) {
-		global $CONF, $manager;
+		global $CONF;
 		
 		// determine arguments next to catids
 		// I guess this can be done in a better way, but it works
@@ -608,7 +601,7 @@ class BLOG {
 		//$blogurl = $this->getURL() . $qargs;
 		$blogurl = createBlogLink($this->getURL(), $linkparams);
 
-		$template =& $manager->getTemplate($template);
+		$template = TEMPLATE::read($template);
 
 		echo TEMPLATE::fill($template['CATLIST_HEADER'],
 							array(
@@ -1276,7 +1269,7 @@ class ITEMACTIONS extends BaseActions {
 			
 		// add comments
 		if ($this->showComments && $this->blog->commentsEnabled()) {
-			$comments =& new COMMENTS($this->currentItem->itemid);
+			$comments = new COMMENTS($this->currentItem->itemid);
 			$comments->setItemActions($this);
 			$comments->showComments($this->template, $maxToShow, $this->currentItem->closed ? 0 : 1, $this->strHighlight); 
 		}

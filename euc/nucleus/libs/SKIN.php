@@ -12,8 +12,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * Class representing a skin
-  *
-  * $Id: SKIN.php,v 1.1.1.1 2005-02-28 07:14:14 kimitake Exp $
   */
 class SKIN {
 
@@ -134,7 +132,7 @@ class SKIN {
 
 		if (!$contents) {
 			// use base skin if this skin does not have contents
-			$defskin =& new SKIN($CONF['BaseSkin']);
+			$defskin = new SKIN($CONF['BaseSkin']);
 			$contents = $defskin->getContent($type);
 			if (!$contents) {
 				echo _ERROR_SKIN;
@@ -150,8 +148,8 @@ class SKIN {
 		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
 		PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());
 
-		$handler =& new ACTIONS($type, $this);
-		$parser =& new PARSER($actions, $handler);
+		$handler = new ACTIONS($type, $this);
+		$parser = new PARSER($actions, $handler);
 		$handler->setParser($parser);
 		$handler->setSkin($this);
 		$parser->parse($contents);
@@ -408,7 +406,7 @@ class ACTIONS extends BaseActions {
 	*/
 	function doForm($filename) {
 		global $DIR_NUCLEUS;
-		array_push($this->parser->actions,'formdata','text','callback','errordiv');
+		array_push($this->parser->actions,'formdata','text');
 		$oldIncludeMode = PARSER::getProperty('IncludeMode');
 		$oldIncludePrefix = PARSER::getProperty('IncludePrefix');
 		PARSER::setProperty('IncludeMode','normal');
@@ -416,10 +414,8 @@ class ACTIONS extends BaseActions {
 		$this->parse_parsedinclude($DIR_NUCLEUS . 'forms/' . $filename . '.template');
 		PARSER::setProperty('IncludeMode',$oldIncludeMode);
 		PARSER::setProperty('IncludePrefix',$oldIncludePrefix);
-		array_pop($this->parser->actions);		// errordiv
-		array_pop($this->parser->actions);		// callback
-		array_pop($this->parser->actions);		// text
-		array_pop($this->parser->actions);		// formdata
+		array_pop($this->parser->actions);		
+		array_pop($this->parser->actions);		
 	}
 	function parse_formdata($what) {
 		echo $this->formdata[$what];
@@ -429,16 +425,6 @@ class ACTIONS extends BaseActions {
 		if (defined($which)) { 	
 			eval("echo $which;");
 		}
-	}
-	function parse_callback($eventName, $type)
-	{
-		global $manager;
-		$manager->notify($eventName, array('type' => $type));
-	}
-	function parse_errordiv() {
-		global $errormessage;
-		if ($errormessage)
-	  		echo '<div class="error">', htmlspecialchars($errormessage),'</div>';
 	}
 	
 	function parse_skinname() {
@@ -454,9 +440,9 @@ class ACTIONS extends BaseActions {
 				$condition = ($blog && $blog->isValidCategory($catid));
 				break;
 			case 'blogsetting':
-				if ($name == 'trackback') {
+				if ($name == 'trackback' && $manager->pluginInstalled('NP_TrackBack')) {
 					$plugin =& $manager->getPlugin('NP_TrackBack');
-					if ($plugin != NULL){
+					if ($plugin != NULL && $blog){
 						$bid = $blog->getID();
 						if ($value === '1') $value = 'yes';
 						if ($value === '0') $value = 'no';
@@ -506,19 +492,19 @@ class ACTIONS extends BaseActions {
                 // (pluginInstalled method won't write a message in the actionlog on failure)
                 if ($manager->pluginInstalled('NP_'.$name)) 
                 {
-					$plugin =& $manager->getPlugin('NP_' . $name);
-					if ($plugin != NULL){
-						if ($value == "") {
-							$condition = true;
-						} else {
-							list($name2, $value2) = explode('=', $value, 2);
-							if ($value2 == "" && $plugin->getOption($name2) != 'no') {
-								$condition = true;
-							} else if ($plugin->getOption($name2) == $value2) {
-								$condition = true;
-							}
-						}
-					}
+	                $plugin =& $manager->getPlugin('NP_' . $name);
+	                if ($plugin != NULL){
+	                    if ($value == "") {
+	                        $condition = true;
+	                    } else {
+	                        list($name2, $value2) = explode('=', $value, 2);
+	                        if ($value2 == "" && $plugin->getOption($name2) != 'no') {
+	                            $condition = true;
+	                        } else if ($plugin->getOption($name2) == $value2) {
+	                            $condition = true;
+	                        }
+	                    }
+	                }
                 }
                 break;				
 			default:	
@@ -822,17 +808,17 @@ class ACTIONS extends BaseActions {
 	// include comments for one item
 	function parse_comments($template) {
 		global $itemid, $manager, $blog, $highlight;
-		$template =& $manager->getTemplate($template);
+		$template = TEMPLATE::read($template);
 
 		// create parser object & action handler
-		$actions =& new ITEMACTIONS($blog);
-		$parser =& new PARSER($actions->getDefinedActions(),$actions);
+		$actions = new ITEMACTIONS($blog);
+		$parser = new PARSER($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setParser($parser);
 		$item = ITEM::getitem($itemid, 0, 0);
 		$actions->setCurrentItem($item);
 
-		$comments =& new COMMENTS($itemid);
+		$comments = new COMMENTS($itemid);
 		$comments->setItemActions($actions);
 		$comments->showComments($template, -1, 1, $highlight);	// shows ALL comments
 	}
@@ -982,9 +968,9 @@ class ACTIONS extends BaseActions {
 
 		$imagetext 	= htmlspecialchars(requestVar('imagetext'));
 		$imagepopup = requestVar('imagepopup');
-		$width 		= requestVar('width');
-		$height 	= requestVar('height');
-		$fullurl = $CONF['MediaURL'] . $imagepopup;
+		$width 		= intRequestVar('width');
+		$height 	= intRequestVar('height');
+		$fullurl 	= htmlspecialchars($CONF['MediaURL'] . $imagepopup);
 		
 		switch($what)
 		{
@@ -1113,9 +1099,9 @@ class ACTIONS extends BaseActions {
 	}
 	
 	function parse_preview($template) {
-		global $blog, $CONF, $manager;
+		global $blog, $CONF;
 		
-		$template =& $manager->getTemplate($template);
+		$template = TEMPLATE::read($template);
 		$row['body'] = '<span id="prevbody"></span>';
 		$row['title'] = '<span id="prevtitle"></span>';
 		$row['more'] = '<span id="prevmore"></span>';
@@ -1167,7 +1153,7 @@ class ACTIONS extends BaseActions {
 
 			
 	function parse_commentform($destinationurl = '') {
-		global $blog, $itemid, $member, $CONF, $manager, $DIR_LIBS, $errormessage;
+		global $blog, $itemid, $member, $CONF, $manager;
 		
 		// warn when trying to provide a actionurl (used to be a parameter in Nucleus <2.0)
 		if (stristr($destinationurl, 'action.php')) {
@@ -1188,22 +1174,14 @@ class ACTIONS extends BaseActions {
 		if (!$destinationurl)
 			$destinationurl = createItemLink($itemid, $this->linkparams);
 
-		// values to prefill
-		$user = cookieVar($CONF['CookiePrefix'] .'comment_user');
-		if (!$user) $user = postVar('user');
-		$userid = cookieVar($CONF['CookiePrefix'] .'comment_userid');
-		if (!$userid) $userid = postVar('userid');
-		$body = postVar('body');
-		
 		$this->formdata = array(
 			'destinationurl' => htmlspecialchars($destinationurl),
 			'actionurl' => htmlspecialchars($actionurl),
 			'itemid' => $itemid,
-			'user' => htmlspecialchars($user),
-			'userid' => htmlspecialchars($userid),			
-			'body' => htmlspecialchars($body),			
+			'user' => htmlspecialchars(cookieVar('comment_user')),
+			'userid' => htmlspecialchars(cookieVar('comment_userid')),			
 			'membername' => $member->getDisplayName(),
-			'rememberchecked' => cookieVar($CONF['CookiePrefix'] .'comment_user')?'checked="checked"':''
+			'rememberchecked' => cookieVar('comment_user')?'checked="checked"':''
 		);
 		
 		if (!$member->isLoggedIn()) {
@@ -1238,17 +1216,12 @@ class ACTIONS extends BaseActions {
 				$desturl = $CONF['IndexURL'] . createMemberLink($memberid);				
 		}
 			
-		$message = postVar('message');
-		$frommail = postVar('frommail');
-		
 		$this->formdata = array(
-			'url' => htmlspecialchars($desturl),
-			'actionurl' => htmlspecialchars($CONF['ActionURL']),
+			'url' => $desturl,
+			'actionurl' => $CONF['ActionURL'],
 			'memberid' => $memberid,
 			'rows' => $rows,
-			'cols' => $cols,
-			'message' => htmlspecialchars($message),
-			'frommail' => htmlspecialchars($frommail)
+			'cols' => $cols
 		);
 		if ($member->isLoggedIn()) {
 			$this->doForm('membermailform-loggedin');

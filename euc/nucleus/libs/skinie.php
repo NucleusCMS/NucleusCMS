@@ -11,8 +11,6 @@
   *
   *	This class contains two classes that can be used for importing and 
   *	exporting Nucleus skins: SKINIMPORT and SKINEXPORT
-  *
-  * $Id: skinie.php,v 1.1.1.1 2005-02-28 07:14:14 kimitake Exp $
   */
 
 class SKINIMPORT {

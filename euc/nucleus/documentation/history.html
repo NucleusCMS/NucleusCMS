@@ -1,7 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<!-- $Id: history.html,v 1.1.1.1 2005-02-28 07:13:56 kimitake Exp $ -->
 	<title>Nucleus - History</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 </head>
@@ -15,49 +14,30 @@
 
 <ul>
 	<li>
-		<b>Nucleus v3.1+ (?, 2004)</b>
+		<b>Nucleus v3.15 (November 14, 2004)</b>
 		<ul>
-			<li>ADDED: In the admin area, a list of all comments for a blog is now available (karma)</li>
-			<li>ADDED: Support for <code>&lt;%blogsettings(short)%&gt;</code>, as suggested by caw (karma)</li>
-			<li>ADDED: <code>ITEM::getitem</code> returns blogid, as suggested by leonbloy (karma)</li>
-			<li>FIXED: Default skin used <code>application/xml+rss</code> instead of <code>application/rss+xml</code>, causing RSS autodiscovery to fail. (karma)</li>
+			<li>FIXED: Some XSS issues, as reported by Alexander Antipov</li>
 			<li>FIXED: Validate data that is sent as HTTP headers (redirects etc) (karma)</li>
-			<li>FIXED: Moved more hardcoded text into language files</li>
 			<li>FIXED: bug 1029057, parsed include doesn't accept empty files (karma)</li>
 			<li>FIXED: bug 1036849, 'relevance' listed in list of available skinvars, while it's a templatevar (karma)</li>
 			<li>FIXED: It was possible to spoof the username on comments, even when "protect member names" was turned on. Reported by bigmouth. (karma)</li>
-			<li>FIXED: Made it so malicious users cannot trick a logged in site member/admin into visiting a specifically crafted URL that performs some admin area task. (karma).</li>
-			<li>CHANGED: replaced <code>numerical=true</code> (optionmeta) with <code>datatype=numerical</code> for easier extensibility in the future (TeRanEX)</li>
 			<li>FIXED: bug 1025675, if(hasplugin) causes warnings in action log when plugin does not exist (karma)</li>
-			<li>FIXED: bug 976777, weblogs.com was not ping when posting draft (admun)</li>
-			<li>ADDED: bug 1008171, cookie-prefix (karma)</li>
-			<li>CHANGED: bug 1008175, move <code>getTemplate</code> into <code>MANAGER</code> class + some other performance tweaks (karma)</li>
 			<li>FIXED: bug 1008700, taking away admin attribute from a member was disallowed when that member did not have logon rights (karma)</li>
 			<li>FIXED: bug 968925, member edit leak out repeat password box while it should be hidden (admun)</li>
-			<li>ADDED: add plugin dependency check (admun)</li>
 			<li>FIXED: bug 933580, URLs in comments followed with a comma should not have the comma in the generated hyperlink (karma)</li>
 			<li>FIXED: bug 1019584, separating search terms with a '+' character caused SQL errors (karma)</li>
 			<li>FIXED: bug 1016217, superadmin should be allowed to edit all items/comments (karma)</li>
 			<li>FIXED: bug 1019191, <code>&lt;%if(blogsetting,..)%&gt;</code> / <code>&lt;%if(category,...)%&gt;</code> broken on error pages (karma)</li>
-			<li>ADDED: Admin members can click the version number in the admin area to check for a newer version (karma)</li>
-			<li>CHANGED: Sending out activation links rather than new passwords on new accounts, forgotten passwords, etc. (karma)</li>
-			<li>FIXED: Quickmenu didn't show up after login from <code>index.php?action=showlogin</code> (karma)</li>
-			<li>ADDED: Plugins can now make text- and textarea-optiontypes readonly (TeRanEX)</li>
-			<li>ADDED: <code>&lt;%if(admin)%&gt;</code> and <code>&lt;%if(admin,blogname)%&gt;</code> in skins (karma)</li>
-			<li>CHANGED: new plugin events <code>FormExtra</code> and <code>ValidateForm</code> (karma)</li>
-			<li>CHANGED: better error handling when commenting. Errors now displayed together with comment form. (karma)</li>
-			<li>CHANGED: actions (commenting, membermail, ...) can be done using any entry point, not just through <code>action.php</code> (karma)</li>
 			<li>FIXED: Made sure no code relies on the PHP5 setting <code>register_long_arrays</code> to be <code>On</code> (karma)</li>
-			<li>CHANGED: Added <code>$</code><code>Id$</code> info in sourcefiles (karma)</li>
+			<li>FIXED: <code>Call to undefined function</code> when user specified a language in its profile (jef pober)</li>
+			<li>FIXED: Quickmenu didn't show up after login from <code>index.php?action=showlogin</code> (karma)</li>
+			<li>CHANGED: new plugin event <code>ValidateForm</code> (karma)</li>
 			<li>CHANGED: Extra whitespace to make skin exports easier to read in text editors (karma)</li>
 			<li>CHANGED: e-mail notifications are now sent as <code>utf-8</code> rather than <code>iso-8859-1</code> (karma)</li>
-			<li>CHANGED: PrePluginOptionsEdit-event now has an extra-field which can be used to add option-specific code to the page (TeRanEX)</li>
-			<li>ADDED: new event, PrePluginOptionsUpdate, can be used by plugins to verify/modify the new value for an option (TeRanEX)</li>
-			<li>ADDED: Plugins can now provide a documentation page, which is shown inside the admin area (TeRanEX)</li>
-			<li>ADDED: Plugins can now limit values for an option to be only numeric (TeRanEX)</li>
-			<li>ADDED: OptionTop-methods, to let a plugin retreive an array of the x-highest (of lowest) values of an option (TeRanEX)</li>
-			<li>ADDED: Plugins can now make specific options for items. These options can be edited directly from the item add or edit page (TeRanEX)</li>
-			<li>FIXED: <code>Call to undefined function</code> when user specified a language in its profile (jef pober)</li>
+			<li>ADDED: Admin members can click the version number in the admin area to check for a newer version (karma)</li>
+			<li>ADDED: <code>&lt;%if(admin)%&gt;</code> and <code>&lt;%if(admin,blogname)%&gt;</code> in skins (karma)</li>
+			<li>ADDED: In the admin area, a list of all comments for a blog is now available (karma)</li>
+			<li>ADDED: <code>ITEM::getitem</code> returns blogid, as suggested by leonbloy (karma)</li>
 		</ul>
 	</li>
 	<li>

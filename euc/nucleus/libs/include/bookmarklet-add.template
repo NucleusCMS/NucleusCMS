@@ -1,13 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=EUC-JP" />
 		<title><%text(_ADD_ADDTO)%> '<%blogname%>'</title>
 		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" /> 
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />		
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
-		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
@@ -29,7 +27,6 @@
 			
 			<input name="action" type="hidden" value="additem" />
 			<input name="blogid" type="hidden" value="<%blogid%>" />
-			<%ticket%>
 			
 			<div id="submit" class="buttonbar">
 				<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
@@ -123,9 +120,6 @@
 				<td>
 				<%pluginextras%></td>
 				</tr>
-				
-				
-				  <%itemoptions%>
 				</table>
 				
 

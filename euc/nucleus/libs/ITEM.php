@@ -11,8 +11,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * A class representing an item
-  *
-  * $Id: ITEM.php,v 1.1.1.1 2005-02-28 07:14:11 kimitake Exp $
   */
 class ITEM {
 	
@@ -137,11 +135,6 @@ class ITEM {
 		
 	 	$itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft);	
 	 	
-		//Setting the itemOptions
-		$aOptions = requestArray('plugoption');
-		NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
-		$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $i_title, 'body' => $i_body, 'more' => $i_more, 'closed' => $i_closed, 'catid' => $i_catid)));
-	 	
 	 	// success
 	 	if ($i_catid != intRequestVar('catid'))
 		 	return array('status' => 'newcategory', 'itemid' => $itemid, 'catid' => $i_catid);
@@ -224,11 +217,6 @@ class ITEM {
 		if ($moveNeeded) 
 			ITEM::move($itemid, $catid);
 		
-		//update the itemOptions
-		$aOptions = requestArray('plugoption');
-		NucleusPlugin::_applyPluginOptions($aOptions);
-		$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $title, 'body' => $body, 'more' => $more, 'closed' => $closed, 'catid' => $catid)));
-		
 	}
 	
 	// move an item to another blog (no checks, static)
@@ -285,9 +273,6 @@ class ITEM {
 		// delete the comments associated with the item
 		$query = 'DELETE FROM '.sql_table('comment').' WHERE citem=' . $itemid;
 		sql_query($query);	  
-		
-		// delete all associated plugin options
-		NucleusPlugin::_deleteOptionValues('item', $itemid);
 		
 		$manager->notify('PostDeleteItem', array('itemid' => $itemid));		
 	}

@@ -2,7 +2,6 @@
 <html xml:lang="jp" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-	<!-- $Id: plugins.html,v 1.1.1.1 2005-02-28 07:13:59 kimitake Exp $ -->
 	<title>Nucleus - プラグイン API</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 	<style type="text/css">
@@ -74,8 +73,6 @@
 	<li><a href="#options">オプションを保存する</a></li>
 	<li><a href="#tables">データベース・テーブル</a></li>
 	<li><a href="#admin">プラグイン管理エリアの提供</a></li>
-	<li><a href="#help">ヘルプページの提供</a></li>
-	<li><a href="#dependency">Plugin Dependency Check</a></li>
 <!--	<li><a href="#admin">Providing an admin area</a></li> 
 	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>
 	<li><a href="#"></a></li>
@@ -112,7 +109,7 @@ Nucleusプラグインによって、誰もがNucleusの提供する機能を、Nucleus内部のPHPコード
 <p>
 では、シンプルなプラグインを書いてみましょう。基本的にプラグインは、あらかじめ定義された <code>NucleusPlugin</code> クラスを継承したPHPクラスです。以下は<code>HelloWorld</code>プラグインの例です。</p>
 
-<pre class="example"><code>&lt;?php
+<pre class="example"><code>&lt;?
 
 class NP_HelloWorld extends NucleusPlugin {
 
@@ -148,7 +145,7 @@ class NP_HelloWorld extends NucleusPlugin {
 	}
 	
 }
-?&gt;</code></pre>
+?&gt;</pre>
 
 <ol>
 	<li>
@@ -274,7 +271,6 @@ class NP_HelloWorld extends NucleusPlugin {
 			<br /><code>createBlogOption(...)</code>(v2.2)
 			<br /><code>createCategoryOption(...)</code>(v2.2)
 			<br /><code>createMemberOption(...)</code>(v2.2)
-			<br /><code>createItemOption(...)</code>(v3.1+CVS)
 		</td>
 		<td><a href="#options" title="More info on options">新しいオプションを生成します。</a></td>		
 	</tr>
@@ -284,7 +280,6 @@ class NP_HelloWorld extends NucleusPlugin {
 			<br /><code>deleteBlogOption(...)</code>(v2.2)
 			<br /><code>deleteCategoryOption(...)</code>(v2.2)
 			<br /><code>deleteMemberOption(...)</code>(v2.2)
-			<br /><code>deleteItemOption(...)</code>(v3.1+CVS)
 	   	</td>
 		<td><a href="#options" title="More info on options">オプションを削除します。</a></td>		
 	</tr>
@@ -294,7 +289,6 @@ class NP_HelloWorld extends NucleusPlugin {
 			<br /><code>setBlogOption(...)</code>(v2.2)
 			<br /><code>setCategoryOption(...)</code>(v2.2)
 			<br /><code>setMemberOption(...)</code>(v2.2)			      
-			<br /><code>setItemOption(...)</code>(v3.1+CVS)
 		</td>
 		<td><a href="#options" title="More info on options">オプションに値をセットします。</a></td>		
 	</tr>
@@ -304,7 +298,6 @@ class NP_HelloWorld extends NucleusPlugin {
 			<br /><code>getBlogOption(...)</code>(v2.2)
 			<br /><code>getCategoryOption(...)</code>(v2.2)
 			<br /><code>getMemberOption(...)</code>(v2.2)			       
-			<br /><code>getItemOption(...)</code>(v3.1+CVS)
 		</td>
 		<td><a href="#options" title="More info on options">オプションの値を取得します。</a></td>		
 	</tr>
@@ -313,19 +306,9 @@ class NP_HelloWorld extends NucleusPlugin {
 			<code>getAllBlogOptions(...)</code>(v2.2)
 			<br /><code>getAllCategoryOptions(...)</code>(v2.2)
 			<br /><code>getAllMemberOptions(...)</code>(v2.2)			       
-			<br /><code>getAllItemOptions(...)</code>(v3.1+CVS)
 		</td>
 		<td><a href="#options" title="More info on options">与えられたオプションにより、すべての値（コンテクストごとの一つの値）の連想配列を返します。</a></td>		
 	</tr>	
-	<tr>
-		<td>
-			<code>getBlogOptionTop(...)</code>(v3.1+CVS)
-			<br /><code>getMemberOptionTop(...)</code>(v3.1+CVS)
-			<br /><code>getCategoryOptionTop(...)</code>(v3.1+CVS)
-      <br /><code>getItemOptionTop(...)</code>(v3.1+CVS)
-		</td>
-		<td><a href="#options" title="More info on options">For a given option, returns the top of all values</a></td>
-	</tr>
 	<tr>
 		<td><code>getID()</code></td>
 		<td>このプラグインのIDを返します（このIDはNucleus内部で利用されるものです）。</td>		
@@ -406,10 +389,10 @@ function doSkinVar($skinType, $skinVar, $param1 = 'default value')</code></pre>
 function doTemplateVar(&amp;$item, $param1, $param2)
 function doTemplateVar(&amp;$item, $type, $param1, $param2)
 function doTemplateVar(&amp;$item, $type, $param1 = 'default value')
-function doTemplateCommentsVar(&amp;$item, &$comment)
-function doTemplateCommentsVar(&amp;$item, &$comment, $param1, $param2)
-function doTemplateCommentsVar(&amp;$item, &$comment, $type, $param1, $param2)
-function doTemplateCommentsVar(&amp;$item, &$comment, $type, $param1 = 'default value')</code></pre>
+function doTemplateCommentsVar(&amp;$item, &amp;$comment)
+function doTemplateCommentsVar(&amp;$item, &amp;$comment, $param1, $param2)
+function doTemplateCommentsVar(&amp;$item, &amp;$comment, $type, $param1, $param2)
+function doTemplateCommentsVar(&amp;$item, &amp;$comment, $type, $param1 = 'default value')</code></pre>
 
 <h2>ノート</h2>
 
@@ -748,40 +731,19 @@ by ref</var>のように示されます。</p>
 		<td>PrePluginOptionsEdit</td>
 		<td>
 			(v2.0b) 'プラグインオプションの編集'フォームが生成される前<br />
-			(v2.2) パラメータ追加
-			<br />(3.1+CVS) extra parameter for every option
-		</td>
+			(v2.2) パラメータ追加</td>
 		<td><dl>
 			<dt class="ro">context</dt>
-			<dd>(v2.2) <code>global</code>, <code>blog</code>, <code>member</code>, <code>item</code>, <code>category</code>のいずれか</dd>
+			<dd>(v2.2) <code>global</code>, <code>blog</code>, <code>member</code>, <code>category</code>のいずれか</dd>
 			<dt class="ref">options</dt>
-			<dd>次のインデックスをもつ連想配列： <code>name</code>, <code>value</code>, <code>oid</code>, <code>description</code>, <code>type</code>, <code>typeinfo</code>, <code>contextid</code>, <code>extra</code> 。追加オプションをここに加えることも可能（それらで何かの処理をするときはPostPluginOptionsUpdateの記述も必要）<br />
-			Using the <code>extra</code>-field you can add extra html (by example formcontrols) to the option. If you do so, you should compare <code>pid</code> with <code>getID()</code> and also check <code>name</code> before adding things to <code>extra</code></dd>
+			<dd>次のインデックスをもつ連想配列： <code>name</code>, <code>value</code>, <code>oid</code>, <code>description</code>, <code>type</code>, <code>typeinfo</code>, <code>contextid</code> 。追加オプションをここに加えることも可能（それらで何かの処理をするときはPostPluginOptionsUpdateの記述も必要）			  </dd>
 			<dt class="ro">plugid</dt>
 			<dd>プラグイン ID （これが気になるなら、<code>GetID()</code>を見ると理解できる）（コンテクストがglobalのときのみ存在）</dd>
 			<dt class="ro">contextid</dt>
-			<dd>コンテクスト ID (blogid, memberid, catid, itemid コンテクストによる)</dd>
+			<dd>コンテクスト ID (blogid, memberid, catid コンテクストによる)</dd>
 			
 		</dl></td>		
-	</tr>
-	<tr>
-		<td>PrePluginOptionsUpdate</td>
-		<td>
-			(v3.1+CVS) Before the options for a plugin have been updated. (using this event you can validate/change the new value for an option)
-		</td>
-		<td><dl>
-      <dt class="ro">context</dt>
-			<dd>(v2.2) <code>global</code>, <code>member</code>, <code>blog</code>, <code>item</code> or <code>category</code></dd>
-			<dt class="ro">plugid</dt>
-			<dd>plugin ID (compare with <code>GetID()</code> to find out if this concerns you)</dd>
-      <dt class="ro">optionname</dt>
-			<dd>Name of the option</dd>
-			<dt class="ro">contextid</dt>
-			<dd>context ID (blogid, memberid, catid, itemid depending on context)</dd>
-			<dt class="ref">value</dt>
-			<dd>New value for the option</dd>
-		</dl></td>
-	</tr>
+	</tr>	
 	<tr>
 		<td>PostPluginOptionsUpdate</td>
 		<td>
@@ -789,7 +751,7 @@ by ref</var>のように示されます。</p>
 		(v2.2) コンテクストによって異なるパラメータ</td>
 		<td><dl>
 			<dt class="ro">context</dt>
-			<dd>(v2.2) <code>global</code>, <code>member</code>, <code>blog</code>, <code>item</code> or <code>category</code></dd>
+			<dd>(v2.2) <code>global</code>, <code>member</code>, <code>blog</code> or <code>category</code></dd>
 			<dt class="ro">plugid</dt>
 			<dd>プラグイン ID （これが気になるなら、<code>GetID()</code>を見ると理解できる）（globalコンテクスト）</dd>
 			<dt class="ro">blogid</dt>
@@ -801,11 +763,7 @@ by ref</var>のように示されます。</p>
 			<dt class="ref obj">member</dt>
 			<dd>(v2.2) MEMBER オブジェクト (member コンテクスト)</dd>			
 			<dt class="ro">catid</dt>
-			<dd>(v2.2) category ID (category コンテクスト)</dd>
-			<dt class="ro">itemid</dt>
-			<dd>(v2.2) item ID (item context)</dd>
-			<dt class="ref obj">member</dt>
-			<dd>(v2.2) ITEM object (item context)</dd>
+			<dd>(v2.2) category ID (category コンテクスト)</dd>			
 		</dl></td>		
 		
 	</tr>	
@@ -1388,7 +1346,6 @@ by ref</var>のように示されます。</p>
 	<li><strong>blogオプション</strong>：blog設定ページで編集可能</li>
 	<li><strong>カテゴリーオプション</strong>：blog設定ページ（のカテゴリー編集ページ）で編集可能</li>	
 	<li><strong>メンバーオプション</strong>：メンバー編集ページで編集可能</li>
-	<li><strong>Item options</strong>: Editable on the 'add item' or 'edit item' pages</li>
 </ol>
 
 <h2>オプションの種類</h2>
@@ -1408,30 +1365,6 @@ by ref</var>のように示されます。</p>
 	<dd>ドロップダウンメニュー。次のような形式の追加情報が必要です： Option 1|value1|Option 2|value2|Option 3|value3 </dd>
 </dl>
 
-<h2>Option meta</h2>
-
-<p>As of Nucleus 3.1+CVS, some option types can be limited to only accept certain values using option-metadata. This metadata is stored in the <code>$typeExtras</code>-field, and is a semicolon-seperated list of values. Note: In a select-option, the select list must be the first value in $typeExtras.</p>
-
-<table><tr>
-	<th>key</th>
-	<th>explanation</th>
-</tr><tr>
-	<td>numeric</td>
-	<td>If set to '<code>true</code>', Nucleus will only accept numerical values for this option (available for optiontypes: '<code>select</code>' and '<code>text</code>')</td>
-</tr><tr>
-	<td>access</td>
-	<td>If set to '<code>readonly</code>', the option will not be editable (available for optiontypes: '<code>text</code>' and '<code>textarea</code>')<br />
-	If set to '<code>hidden</code>', the option will be completely hidden for the end-user (available for optiontypes: '<code>text</code>')</td>
-</tr></table>
-
-<p>some examples:</p>
-<pre class="example"><code>// following code creates a text-option that only accepts numerical values
-$this->createBlogOption('FooBar', 'foobar', 'text', '0', 'numerical=true');
-// following code creates a select-option that only accepts numerical values
-$this->createItemOption('FooBar', 'foobar', 'select', '0', '0|0|1|1|2|2;numerical=true');
-// following code creates a textarea-option that is readonly
-$this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly', 'access=readonly');
-</code></pre>
 
 <h2>制限</h2>
 
@@ -1439,7 +1372,6 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 	<li>オプション名は最大20文字です。</li>
 	<li>オプションの説明文は最大255文字です。</li>
 	<li>オプションの値は制限ありません（v2.2より前のバージョンでは128文字の制限がありました）</li>
-	<li>The characters '=', '|' and ';' can not be used inside a select list (for a select-option), or in option-metadata</li>
 </ol>
 
 <h2>メソッド</h2>
@@ -1480,10 +1412,6 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 
 <p><strong>メンバー</strong>のコンテクストで新しいオプションを生成します（<code>createOption</code>を参照）。</p>
 
-<h3>[v3.1+CVS] createItemOption($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
-
-<p>Creates an option in the <code>item</code> context (see <code>createOption</code>)</p>
-
 <h3>setOption($name, $value)</h3>
 
 <p>すでにデータベースに存在するオプションの値を変更します。</p>
@@ -1511,10 +1439,6 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 
 <p>メンバーオプションの値を変更します。<code>memberid</code>属性はどのメンバーでそのオプションが有効かを示します（その他のオプション：<code>setOption</code>を参照）。</p>
 
-<h3>[v3.1+CVS] setItemOption($itemid, $name, $value)</h3>
-
-<p>Changes the value for an item option. The <code>itemid</code> attribute indicates for which item the option is valid. (other options: see <code>setOption</code>)</p>
-
 <h3>getOption($name)</h3>
 
 <p>データベース内のオプションの値を返します。</p>
@@ -1540,10 +1464,6 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 
 <p>メンバーオプションの値を返します。<code>memberid</code>属性は値がリスエストされたカテゴリーを示します（その他のオプション：<code>getOption</code>を参照）。</p>
 
-<h3>[v3.1+CVS] getItemOption($itemid, $name)</h3>
-
-<p>Returns the value for an item option. <code>itemid</code> indicates for which item a value is requested (other parameters: see <code>getOption</code>)</p>
-
 <h3>deleteOption($name)</h3>
 
 <p>データベースからオプションを削除します。</p>
@@ -1568,10 +1488,6 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 
 <p>メンバーオプションを削除します（<code>deleteOption</code>を参照）。</p>
 
-<h3>[v3.1+CVS] deleteItemOption($name)</h3>
-
-<p>Deletes an item option (see <code>deleteOption</code>)</p>
-
 <h3>[v2.2] getAllBlogOptions($name)</h3>
 
 <p>与えられたblogオプションの全ての値を返します。結果は存在するblogidごとの連想配列です。</p>
@@ -1583,40 +1499,6 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 <h3>[v2.2] getAllMemberOptions($name)</h3>
 
 <p>与えられたメンバーオプションの全ての値を返します。結果は存在するmemberidごとの連想配列です。</p>
-
-<h3>[v3.1+CVS] getAllItemOptions($name)</h3>
-
-<p>Returns all values for a given item option. The result is an associative array with a value for each existing itemid</p>
-
-<h3>[3.1+CVS] getBlogOptionTop($name, $amount = 10, $sort = 'desc')</h3>
-
-<p>Returns the top of the values for a given option. The result is an array where every element is an array with a value ('value') for each blogid ('id')</p>
-
-<table><tr>
-	<th>parameter</th>
-	<th>value</th>
-</tr><tr>
-	<td>$name</td>
-	<td>Option name</td>
-</tr><tr>
-	<td>$amount</td>
-	<td>The amount of options you want</td>
-</tr><tr>
-	<td>$sort</td>
-	<td>Sort ascending ('asc') or descending ('desc')</td>
-</tr></table>
-
-<h3>[3.1+CVS] getMemberOptionTop($name, $amount = 10, $sort = 'desc')</h3>
-
-<p>Returns the top of the values for a given option. The result is an array where every element is an array with a value ('value') for each memberid ('id') (parameters: see <code>getBlogOptionTop</code>)</p>
-
-<h3>[3.1+CVS] getCategoryOptionTop($name, $amount = 10, $sort = 'desc')</h3>
-
-<p>Returns the top of the values for a given option. The result is an array where every element is an array with a value ('value') for each categoryid ('id') (parameters: see <code>getBlogOptionTop</code>)</p>
-
-<h3>[3.1+CVS] getItemOptionTop($name, $amount = 10, $sort = 'desc')</h3>
-
-<p>Returns the top of the values for a given option. The result is an array where every element is an array with a value ('value') for each itemid ('id') (parameters: see <code>getBlogOptionTop</code>)</p>
 
 <div class="note">
 <b>注：</b> プラグインクラス内のコンストラクタから、これらのファンクションを呼ぶことはできません。プラグインがロードされた後にこれらを実行したいときは、かわりに<code>init()</code>メソッド内に置きます。</div>
@@ -1634,7 +1516,7 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 
 <p class="note">v2.0までのNucleusではグローバルファンクション <code>sql_table</code> は利用できないことに注意してください。もしこのメソッドを用いつつ、プラグインをv2.0以下のNucleusで動作させたい場合は、以下のコードをプラグインクラスの前に追加してください。</p>
 
-<pre class="example"><code>&lt;?php
+<pre class="example"><code>&lt;?
 
 // プラグインがNucleusバージョン2.0以下と互換性を持つために必要
 if (!function_exists('sql_table'))
@@ -1734,65 +1616,6 @@ class NP_HelloWorld extends NucleusPlugin {
 
 <p><code>PluginAdmin</code> クラスは助けになります。これを一度生成すれば、<code>$oPluginAdmin->plugin</code> でプラグインのインスタンスにアクセスできます。</p>
 
-<h1>Plugin HelpPage <a name="help" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
-
-<p>As of Nucleus v3.1+CVS plugins can provide a helppage with an overview of the plugins' functionality, the available skinvars and templatevars, where to get more info,...</p>
-
-<h2>Basics</h2>
-<p>To provide a helppage, you'll need take these steps:</p>
-<ol>
-<li>Create a subdirectory of the plugins directory, and name it pluginname if your plugin is NP_PluginName. Note that the name should be lowercase! This is actually the same directory as for the <a href="#admin">admin area</a>.</li>
-<li>In that directory, create a file called help.html. In this file you can document your plugin. This is a good template to start from:
-<pre><code>&lt;h3&gt;Plugin overview&lt;/h3&gt;
-&lt;p&gt;The only purpose of this plugin is to show how the plugin helppages work&lt;/p&gt;
-&lt;h3&gt;Installation&lt;/h3&gt;
-&lt;p&gt;If you can read this you correctly installed the plugin :-)&lt;/p&gt;
-&lt;h3&gt;SkinVars&lt;/h3&gt;
-&lt;p&gt;Because this plugin is only a testcase it doesn't has any skinvars/templatevars but suppose it would have:
-&lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;%HelpPageTestCase1%&gt;&lt;/b&gt;: does something&lt;/li&gt;
-&lt;li&gt;&lt;b&gt;&lt;%HelpPageTestCase1(foobar)%&gt;&lt;/b&gt;: does something else&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;
-&lt;h3&gt;Support and Bug reports&lt;/h3&gt;
-&lt;p&gt;For additional support and/or bug reports please use this forum thread:
-&lt;a href="http://forum.nucleuscms.org/viewtopic.php?t=&lt;TOPIC_ID_GOES_HERE&gt;"&gt;
-http://forum.nucleuscms.org/viewtopic.php?t=&lt;TOPIC_ID_GOES_HERE&gt;&lt;/a&gt;&lt;/p&gt;
-&lt;h3&gt;Version History&lt;/h3&gt;
-&lt;p&gt;&lt;ul&gt;&lt;li&gt;Version 0.1: initial testcaseversion&lt;/li&gt;
-&lt;li&gt;Version 0.0: pre-initial version ;-)&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</code></pre>
-</li>
-<li>Return a value larger than 0 for supportsFeature('HelpPage'):
-<pre><code>function supportsFeature($what) {
-    switch($what) {
-    case 'HelpPage':
-        return 1;
-      default:
-        return 0;
-    }
-  }</code></pre>
-</li>
-</ol>
-
-<h1>Plugin Dependency Check <a name="dependency" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
-
-<p>Starting from 3.1+ CVS, a new plugin interface is added to allow one to declare any dependency on other plugin(s). This is useful for any
-plugin that require another plugin to function. It is particularly useful for a plugin to detect any broken dependency that prevent a plugin to function properly.</p>
-
-<h2>How to write a plugin that utilize this function</h2>
-<p>Let try a real world example.</p>
-
-<p>NP_PageLinkList depends on NP_BlogWithOffset to function, so we want to make sure if a user install NP_PageLinkList whithout first install
-NP_BlogWithOffset. With this API, Nucleus offers a way for a plugin to detect any missing dependency before it is installed.</p>
-
-<p>In this case, we want to code into NP_PageLinkList to mark that it requires NP_BlogWithOffset. When the plugin is installed, the core calls a
-function in the plugin called getPluginDep(). This function returns a list of plugin it requires, and the core will check against all installed plugins and
-failed the installation if a dependency is missing.</p>
-
-<p>All we have to do is added this function to NP_PageLinkList:</p>
-
-<pre>
-function getPluginDep() {
-     return array('NP_BlogWithOffset');
-}
-</pre>
 
 </body>
 </html>

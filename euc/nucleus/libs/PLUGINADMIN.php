@@ -11,8 +11,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * code to make it easier to create plugin admin areas
-  *
-  * $Id: PLUGINADMIN.php,v 1.1.1.1 2005-02-28 07:14:13 kimitake Exp $
   */
 
 global $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_COOKIE_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_SESSION_VARS;

@@ -11,8 +11,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * A class representing a single comment
-  *
-  * $Id: COMMENT.php,v 1.1.1.1 2005-02-28 07:14:10 kimitake Exp $
   */
 class COMMENT {
 	

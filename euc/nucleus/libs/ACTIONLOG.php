@@ -10,8 +10,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * Actionlog class for Nucleus
-  *
-  * $Id: ACTIONLOG.php,v 1.1.1.1 2005-02-28 07:14:04 kimitake Exp $
   */
 define('ERROR',1);		// only errors
 define('WARNING',2);	// errors and warnings

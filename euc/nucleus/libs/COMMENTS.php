@@ -11,8 +11,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * A class representing the comments (all of them) for a certain post on a ceratin blog
-  *
-  * $Id: COMMENTS.php,v 1.1.1.1 2005-02-28 07:14:11 kimitake Exp $
   */
 class COMMENTS {
 
@@ -62,8 +60,8 @@ class COMMENTS {
 		global $CONF, $manager;
 
 		// create parser object & action handler
-		$actions =& new COMMENTACTIONS($this);
-		$parser =& new PARSER($actions->getDefinedActions(),$actions);
+		$actions = new COMMENTACTIONS($this);
+		$parser = new PARSER($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setParser($parser);
 		
@@ -181,7 +179,7 @@ class COMMENTS {
 			
 			$frommail = $member->getNotifyFromMailAddress($comment['userid']);
 
-			$notify =& new NOTIFICATION($settings->getNotifyAddress());
+			$notify = new NOTIFICATION($settings->getNotifyAddress());
 			$notify->notify($mailto_title, $mailto_msg , $frommail);
 		}
 
@@ -383,13 +381,8 @@ class COMMENTACTIONS extends BaseActions {
 			echo $this->currentComment['user'];
 	}
 	function parse_short() {
-//		$tmp = strtok($this->currentComment['body'],"\n");
-//		$tmp = str_replace('<br />','',$tmp);
-		$tmp = strip_tags($this->currentComment['body']);
-		$tmp = mb_strimwidth($tmp, 0, 60, "...", "EUC-JP");
-		$tmp = str_replace("\r\n", "\r", $tmp);
-		$tmp = str_replace("\r", "\n", $tmp);
-		$tmp = str_replace("\n",'&para;',$tmp);
+		$tmp = strtok($this->currentComment['body'],"\n");
+		$tmp = str_replace('<br />','',$tmp);
 		echo $tmp;
 		if ($tmp != $this->currentComment['body'])
 			$this->parser->parse($this->template['COMMENTS_CONTINUED']); 

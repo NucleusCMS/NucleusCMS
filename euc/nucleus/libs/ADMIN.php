@@ -10,8 +10,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * The code for the Nucleus admin area   
-  *
-  * $Id: ADMIN.php,v 1.1.1.1 2005-02-28 07:14:09 kimitake Exp $
   */
  
 class ADMIN {
@@ -30,8 +28,6 @@ class ADMIN {
 	  *		action to be performed
 	  */
 	function action($action) {
-		global $CONF, $manager;
-		
 		// list of action aliases
 		$alias = array(
 			'login' => 'overview',
@@ -43,21 +39,7 @@ class ADMIN {
 
 		$methodName = 'action_' . $action;
 		
-		$this->action = strtolower($action);
-		
-		// check ticket. All actions need a ticket, unless they are considered to be safe (a safe action
-		// is an action that requires user interaction before something is actually done)
-		// all safe actions are in this array:
-		$aActionsNotToCheck = array('showlogin', 'login', 'overview', 'itemlist', 'blogcommentlist', 'bookmarklet', 'blogsettings', 'banlist', 'deleteblog', 'editmembersettings', 'browseownitems', 'browseowncomments', 'createitem', 'itemedit', 'itemmove', 'categoryedit', 'categorydelete', 'manage', 'actionlog', 'settingsedit', 'backupoverview', 'pluginlist', 'createnewlog', 'usermanagement', 'skinoverview', 'templateoverview', 'skinieoverview', 'itemcommentlist', 'commentedit', 'commentdelete', 'banlistnewfromitem', 'banlistdelete', 'itemdelete', 'manageteam', 'teamdelete', 'banlistnew', 'memberedit', 'memberdelete', 'pluginhelp', 'pluginoptions', 'plugindelete', 'skinedittype', 'skindelete', 'skinedit', 'templateedit', 'templatedelete', 'activate');
-/*		
-		// the rest of the actions needs to be checked
-		$aActionsToCheck = array('additem', 'itemupdate', 'itemmoveto', 'categoryupdate', 'categorydeleteconfirm', 'itemdeleteconfirm', 'commentdeleteconfirm', 'teamdeleteconfirm', 'memberdeleteconfirm', 'templatedeleteconfirm', 'skindeleteconfirm', 'banlistdeleteconfirm', 'plugindeleteconfirm', 'batchitem', 'batchcomment', 'batchmember', 'batchcategory', 'batchteam', 'regfile', 'commentupdate', 'banlistadd', 'changemembersettings', 'clearactionlog', 'settingsupdate', 'blogsettingsupdate', 'categorynew', 'teamchangeadmin', 'teamaddmember', 'memberadd', 'addnewlog', 'addnewlog2', 'backupcreate', 'backuprestore', 'pluginup', 'plugindown', 'pluginupdate', 'pluginadd', 'pluginoptionsupdate', 'skinupdate', 'skinclone', 'skineditgeneral', 'templateclone', 'templatenew', 'templateupdate', 'skinieimport', 'skinieexport', 'skiniedoimport', 'skinnew', 'deleteblogconfirm', 'sendping', 'rawping', 'activatesetpwd');
-*/
-		if (!in_array($this->action, $aActionsNotToCheck))
-		{
-			if (!$manager->checkTicket())
-				$this->error(_ERROR_BADTICKET);
-		} 
+		$this->action = $action;
 
 		if (method_exists($this, $methodName))
 			call_user_func(array(&$this, $methodName));
@@ -84,7 +66,7 @@ class ADMIN {
 		$this->pagehead();
 		
 		echo '<h2>', _LOGIN ,'</h2>';
-		if ($msg) echo _MESSAGE , ': ', $msg;
+		if ($msg) echo _MESSAGE , ': ', htmlspecialchars($msg);
 		?>
 		
 		<form action="index.php" method="post"><p>
@@ -278,7 +260,7 @@ class ADMIN {
 		$template['now'] = $blog->getCorrectTime(time());
 
 
-		$navList =& new NAVLIST('itemlist', $start, $amount, 0, 1000, $blogid, $search, 0);
+		$navList = new NAVLIST('itemlist', $start, $amount, 0, 1000, $blogid, $search, 0);
 		$navList->showBatchList('item',$query,'table',$template);
 
 		
@@ -596,7 +578,6 @@ class ADMIN {
 	}
 	
 	function batchMoveSelectDestination($type, $ids) {
-		global $manager;
 		$this->pagehead();
 		?>
 		<h2><?php echo _MOVE_TITLE?></h2>
@@ -604,10 +585,7 @@ class ADMIN {
 
 			<input type="hidden" name="action" value="batch<?php echo $type?>" />
 			<input type="hidden" name="batchaction" value="move" />
-			<?php				
-				$manager->addTicketHidden();
-				
-				// insert selected item numbers
+			<?php				// insert selected item numbers
 				$idx = 0;
 				foreach ($ids as $id)
 					echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
@@ -626,7 +604,6 @@ class ADMIN {
 	}
 	
 	function batchMoveCategorySelectDestination($type, $ids) {
-		global $manager;
 		$this->pagehead();
 		?>
 		<h2><?php echo _MOVECAT_TITLE?></h2>
@@ -634,10 +611,7 @@ class ADMIN {
 
 			<input type="hidden" name="action" value="batch<?php echo $type?>" />
 			<input type="hidden" name="batchaction" value="move" />
-			<?php				
-				$manager->addTicketHidden();
-				
-				// insert selected item numbers
+			<?php				// insert selected item numbers
 				$idx = 0;
 				foreach ($ids as $id)
 					echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
@@ -656,15 +630,12 @@ class ADMIN {
 	}
 	
 	function batchAskDeleteConfirmation($type, $ids) {
-		global $manager;
-		
 		$this->pagehead();
 		?>
 		<h2><?php echo _BATCH_DELETE_CONFIRM?></h2>
 		<form method="post" action="index.php"><div>
 
 			<input type="hidden" name="action" value="batch<?php echo $type?>" />
-			<?php $manager->addTicketHidden() ?>
 			<input type="hidden" name="batchaction" value="delete" />
 			<input type="hidden" name="confirmation" value="yes" />			
 			<?php				// insert selected item numbers
@@ -810,7 +781,7 @@ class ADMIN {
 		$template['content'] = 'itemlist';
 		$template['now'] = time();
 
-		$navList =& new NAVLIST('browseownitems', $start, $amount, 0, 1000, $blogid, $search, 0);
+		$navList = new NAVLIST('browseownitems', $start, $amount, 0, 1000, $blogid, $search, 0);
 		$navList->showBatchList('item',$query,'table',$template);
 
 		$this->pagefoot();		
@@ -861,7 +832,7 @@ class ADMIN {
 		$template['content'] = 'commentlist';
 		$template['canAddBan'] = $member->blogAdminRights(getBlogIDFromItemID($itemid));
 
-		$navList =& new NAVLIST('itemcommentlist', $start, $amount, 0, 1000, 0, $search, $itemid);
+		$navList = new NAVLIST('itemcommentlist', $start, $amount, 0, 1000, 0, $search, $itemid);
 		$navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS);
 		
 		$this->pagefoot();
@@ -904,7 +875,7 @@ class ADMIN {
 		$template['content'] = 'commentlist';
 		$template['canAddBan'] = 0;	// doesn't make sense to allow banning yourself
 		
-		$navList =& new NAVLIST('browseowncomments', $start, $amount, 0, 1000, 0, $search, 0);
+		$navList = new NAVLIST('browseowncomments', $start, $amount, 0, 1000, 0, $search, 0);
 		$navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS_YOUR);
 	
 		$this->pagefoot();
@@ -960,7 +931,7 @@ class ADMIN {
 		$template['canAddBan'] = $member->blogAdminRights($blogid);
 		
 		$navList =& new NAVLIST('blogcommentlist', $start, $amount, 0, 1000, $blogid, $search, 0);
-		$navList->showBatchList('comment',$query,'table',$template, _NOCOMMENTS_BLOG);
+		$navList->showBatchList('comment',$query,'table',$template, 'No comments were made on items of this blog');
 	
 		$this->pagefoot();
 	}
@@ -983,7 +954,7 @@ class ADMIN {
 		$this->pagehead();
 	
 		// generate the add-item form
-		$formfactory =& new PAGEFACTORY($blogid);
+		$formfactory = new PAGEFACTORY($blogid);
 		$formfactory->createAddForm('admin');
 
 		$this->pagefoot();	
@@ -1009,7 +980,7 @@ class ADMIN {
 	
 		// form to edit blog items
 		$this->pagehead();
-		$formfactory =& new PAGEFACTORY($blog->getID());
+		$formfactory = new PAGEFACTORY($blog->getID());
 		$formfactory->createEditForm('admin',$item);		
 		$this->pagefoot();	
 	}
@@ -1096,14 +1067,7 @@ class ADMIN {
 		
 		// edit the item for real
 		ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
-
-		$blogid = getBlogIDFromItemID($itemid);
-		$blog =& $manager->getBlog($blogid);
-		if (!$closed && $publish && $wasdraft && $blog->pingUserland()) {
-			$this->action_sendping($blogid);
-			return;
-		}
-
+		
 		// show category edit window when we created a new category
 		// ($catid will then be a new category ID, while postVar('catid') will be 'newcat-x')
 		if ($catid != intPostVar('catid')) {
@@ -1148,7 +1112,6 @@ class ADMIN {
 			
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="itemdeleteconfirm" />
-				<?php $manager->addTicketHidden() ?>
 				<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
 				<input type="submit" value="<?php echo _DELETE_CONFIRM_BTN?>"  tabindex="10" />
 			</div></form>
@@ -1202,11 +1165,7 @@ class ADMIN {
 				<input type="hidden" name="action" value="itemmoveto" />
 				<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
 				
-				<?php 
-					
-					$manager->addTicketHidden();
-					$this->selectBlogCategory('catid',$item['catid'],10,1);
-				?>
+				<?php $this->selectBlogCategory('catid',$item['catid'],10,1);?>
 				
 				<input type="submit" value="<?php echo _MOVE_BTN?>" tabindex="10000" onclick="return checkSubmit();" />
 			</div></form>
@@ -1275,13 +1234,11 @@ class ADMIN {
 		$blogid = getBlogIDFromItemID($result['itemid']);
 		$blog =& $manager->getBlog($blogid);
 
-		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid));
-
 		if ($result['status'] == 'newcategory')
 			$this->action_categoryedit(
 				$result['catid'],
 				$blogid, 
-				$blog->pingUserland() ? $pingUrl : ''
+				$blog->pingUserland() ? $CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid) : ''
 			);
 		elseif ((postVar('actiontype') == 'addnow') && $blog->pingUserland())
 			$this->action_sendping($blogid);
@@ -1297,16 +1254,14 @@ class ADMIN {
 	  * @param $blogid ID of blog for which ping needs to be sent out
 	  */
 	function action_sendping($blogid = -1) {
-		global $member, $manager;
+		global $member;
 		
 		if ($blogid == -1)
 			$blogid = intRequestVar('blogid');
 		
 		$member->isLoggedIn() or $this->disallow();
 		
-		$rawPingUrl = $manager->addTicketToUrl('index.php?action=rawping&blogid=' . intval($blogid));
-		
-		$this->pagehead('<meta http-equiv="refresh" content="1; url='.htmlspecialchars($rawPingUrl).'" />');
+		$this->pagehead('<meta http-equiv="refresh" content="1; url=index.php?action=rawping&amp;blogid=' . $blogid . '" />');
 		?>		
 		<h2>Site Updated, Now pinging weblogs.com</h2>
 
@@ -1378,7 +1333,6 @@ class ADMIN {
 		<form action="index.php" method="post"><div>
 		
 		<input type="hidden" name="action" value="commentupdate" />
-		<?php $manager->addTicketHidden(); ?>
 		<input type="hidden" name="commentid" value="<?php echo  $commentid; ?>" />
 		<table><tr>
 			<th colspan="2"><?php echo _EDITC_TITLE?></th>
@@ -1458,7 +1412,7 @@ class ADMIN {
 	}
 	
 	function action_commentdelete() {
-		global $member, $manager;
+		global $member;
 		
 		$commentid = intRequestVar('commentid');
 		
@@ -1489,7 +1443,6 @@ class ADMIN {
 			
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="commentdeleteconfirm" />
-				<?php $manager->addTicketHidden() ?>
 				<input type="hidden" name="commentid" value="<?php echo  $commentid; ?>" />
 				<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
@@ -1540,7 +1493,7 @@ class ADMIN {
 	  * Usermanagement main
 	  */
 	function action_usermanagement() {
-		global $member, $manager;
+		global $member;
 		
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
@@ -1559,7 +1512,7 @@ class ADMIN {
 		$template['content'] = 'memberlist';
 		$template['tabindex'] = 10;
 		
-		$batch =& new BATCH('member');
+		$batch = new BATCH('member');
 		$batch->showlist($query,'table',$template);
 
 		echo '<h3>' . _MEMBERS_NEW .'</h3>';
@@ -1567,7 +1520,6 @@ class ADMIN {
 			<form method="post" action="index.php"><div>
 			
 			<input type="hidden" name="action" value="memberadd" />
-			<?php $manager->addTicketHidden() ?>
 			
 			<table>
 			<tr>
@@ -1626,8 +1578,7 @@ class ADMIN {
 		// check if allowed
 		($member->getID() == $memberid) or $member->isAdmin() or $this->disallow();
 	
-		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
-		$this->pagehead($extrahead);
+		$this->pagehead();
 
 		// show message to go back to member overview (only for admins)
 		if ($member->isAdmin())
@@ -1644,8 +1595,6 @@ class ADMIN {
 		
 		<input type="hidden" name="action" value="changemembersettings" />
 		<input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
-		<?php $manager->addTicketHidden() ?>
-		
 		<table><tr>
 			<th colspan="2"><?php echo _MEMBERS_EDIT?></th>
 		</tr><tr>
@@ -1681,7 +1630,7 @@ class ADMIN {
 			<td><input name="url" tabindex="50" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getURL()); ?>" /></td>			
 		<?php // only allow to change this by super-admins
 		   // we don't want normal users to 'upgrade' themselves to super-admins, do we? ;-)
-		   if ($member->isAdmin()) { 
+		   if ($member->isAdmin()) {
 		?>
 			</tr><tr>
 				<td><?php echo _MEMBERS_SUPERADMIN?> <?php help('superadmin'); ?></td>
@@ -1732,9 +1681,9 @@ class ADMIN {
 		
 		</div></form>
 		
-		<?php		
-			echo '<h3>',_PLUGINS_EXTRA,'</h3>';		
 		
+		<?php		
+			echo '<h3>', _PLUGINS_EXTRA , '</h3>';
 			$manager->notify(
 				'MemberSettingsFormExtras', 	
 				array(
@@ -1808,6 +1757,16 @@ class ADMIN {
 				$this->error(_ERROR_ATLEASTONEADMIN);
 		}
 		
+		
+		// if email changed, generate new password
+		if ($email != $mem->getEmail())
+		{
+			$password = genPassword(10);
+			$newpass = 1;
+		} else {
+			$newpass = 0;
+		}
+
 		if ($CONF['AllowLoginEdit'] || $member->isAdmin()) {
 			$mem->setDisplayName($name);
 			if ($password) 
@@ -1817,8 +1776,6 @@ class ADMIN {
 		if ($newpass)
 			$mem->setPassword($password);
 		
-		$oldEmail = $mem->getEmail();
-
 		$mem->setRealName($realname);
 		$mem->setEmail($email);
 		$mem->setURL($url);
@@ -1835,27 +1792,18 @@ class ADMIN {
 	
 		$mem->write();
 		
-		// if email changed, generate new password
-		if ($oldEmail != $mem->getEmail())
-		{
-			$mem->sendActivationLink('addresschange', $oldEmail);
-			// logout member
-			$mem->newCookieKey();
-			$member->logout();	
-			$this->action_login(_MSG_ACTIVATION_SENT, 0);
-			return;
-		}
-		
-		
 		// store plugin options
 		$aOptions = requestArray('plugoption');
 		NucleusPlugin::_applyPluginOptions($aOptions);
 		$manager->notify('PostPluginOptionsUpdate',array('context' => 'member', 'memberid' => $memberid, 'member' => &$mem));		
 		
+		// if new password was generated, send out mail message and logout
+		if ($newpass) 
+			$mem->sendPassword($password);
+
 		if (  ( $mem->getID() == $member->getID() ) 
 		   && ( $newpass || ( $mem->getDisplayName() != $member->getDisplayName() ) )
 		   ) {
-		    $mem->newCookieKey();
 			$member->logout();
 			$this->action_login(_MSG_LOGINAGAIN, 0);
 		} else {
@@ -1882,166 +1830,10 @@ class ADMIN {
 	}
 	
 	/**
-	 * Account activation
-	 *
-	 * @author dekarma
-	 */
-	function action_activate() {
-		
-		$key = getVar('key');
-		$this->_showActivationPage($key);
-	}
-		
-	function _showActivationPage($key, $message = '')
-	{
-		global $manager;
-		
-		// clean up old activation keys
-		MEMBER::cleanupActivationTable();
-
-		// get activation info
-		$info = MEMBER::getActivationInfo($key);
-		
-		if (!$info)
-			$this->error(_ERROR_ACTIVATE);
-			
-		$mem = MEMBER::createFromId($info->vmember);
-		
-		if (!$mem)
-			$this->error(_ERROR_ACTIVATE);
-		
-		$text = '';
-		$title = '';
-		$bNeedsPasswordChange = true;
-
-		switch ($info->vtype)
-		{
-			case 'forgot':
-				$title = _ACTIVATE_FORGOT_TITLE;
-				$text = _ACTIVATE_FORGOT_TEXT;
-				break;
-			case 'register':
-				$title = _ACTIVATE_REGISTER_TITLE;
-				$text = _ACTIVATE_REGISTER_TEXT;
-				break;
-			case 'addresschange':
-				$title = _ACTIVATE_CHANGE_TITLE;
-				$text = _ACTIVATE_CHANGE_TEXT;
-				$bNeedsPasswordChange = false;
-				MEMBER::activate($key);
-				break;
-		}
-
-		$aVars = array(
-			'memberName' => htmlspecialchars($mem->getDisplayName())
-		);
-		$title = TEMPLATE::fill($title, $aVars);
-		$text = TEMPLATE::fill($text, $aVars);
-
-		$this->pagehead();
-		
-			echo '<h2>' , $title, '</h2>';
-			echo '<p>' , $text, '</p>';
-			
-			if ($message != '')
-			{
-				echo '<p class="error">',$message,'</p>';
-			}
-			
-			if ($bNeedsPasswordChange)
-			{
-				?>			
-					<div><form action="index.php" method="post">
-
-						<input type="hidden" name="action" value="activatesetpwd" />
-						<?php $manager->addTicketHidden() ?>
-						<input type="hidden" name="key" value="<?php echo htmlspecialchars($key) ?>" />
-
-						<table><tr>
-							<td><?php echo _MEMBERS_PWD?></td>
-							<td><input type="password" maxlength="40" size="16" name="password" /></td>
-						</tr><tr>
-							<td><?php echo _MEMBERS_REPPWD?></td>
-							<td><input type="password" maxlength="40" size="16" name="repeatpassword" /></td>
-						<?php
-							
-							global $manager;
-							$manager->notify('FormExtra', array('type' => 'activation', 'member' => $mem));
-						
-						?>
-						</tr><tr>
-							<td><?php echo _MEMBERS_SETPWD ?></td>
-							<td><input type='submit' value='<?php echo _MEMBERS_SETPWD_BTN ?>' /></td>		
-						</tr></table>
-
-
-					</form></div>
-
-				<?php
-				
-			}
-		
-		$this->pagefoot();
-		
-	}	
-	
-	/**
-	 * Account activation - set password part
-	 *
-	 * @author dekarma
-	 */
-	function action_activatesetpwd() {	
-		
-		$key = postVar('key');
-		
-		// clean up old activation keys
-		MEMBER::cleanupActivationTable();
-
-		// get activation info
-		$info = MEMBER::getActivationInfo($key);
-		
-		if (!$info || ($info->type == 'addresschange'))
-			return $this->_showActivationPage($key, _ERROR_ACTIVATE);
-			
-		$mem = MEMBER::createFromId($info->vmember);
-		
-		if (!$mem)
-			return $this->_showActivationPage($key, _ERROR_ACTIVATE);
-		
-		$password 		= postVar('password');
-		$repeatpassword	= postVar('repeatpassword');
-		
-		if ($password != $repeatpassword)
-			return $this->_showActivationPage($key, _ERROR_PASSWORDMISMATCH);
-
-		if ($password && (strlen($password) < 6))
-			return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
-			
-		$error = '';
-		global $manager;
-		$manager->notify('ValidateForm', array('type' => 'activation', 'member' => $mem, 'error' => &$error));
-		if ($error != '')
-			return $this->_showActivationPage($key, $error);
-			
-		
-		// set password
-		$mem->setPassword($password);
-		$mem->write();
-		
-		// do the activation
-		MEMBER::activate($key);
-		
-		$this->pagehead();
-			echo '<h2>',_ACTIVATE_SUCCESS_TITLE,'</h2>';
-			echo '<p>',_ACTIVATE_SUCCESS_TEXT,'</p>';
-		$this->pagefoot();
-	}
-	
-	/**
 	  * Manage team
 	  */
 	function action_manageteam() {
-		global $member, $manager;
+		global $member;
 		
 		$blogid = intRequestVar('blogid');
 		
@@ -2065,7 +1857,7 @@ class ADMIN {
 		$template['content'] = 'teamlist';
 		$template['tabindex'] = 10;
 		
-		$batch =& new BATCH('team');
+		$batch = new BATCH('team');
 		$batch->showlist($query, 'table', $template);
 
 		?>
@@ -2075,7 +1867,6 @@ class ADMIN {
 			
 			<input type='hidden' name='action' value='teamaddmember' />
 			<input type='hidden' name='blogid' value='<?php echo  $blogid; ?>' />
-			<?php $manager->addTicketHidden() ?>
 
 			<table><tr>
 				<td><?php echo _TEAM_CHOOSEMEMBER?></td>
@@ -2143,7 +1934,6 @@ class ADMIN {
 			
 			<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="teamdeleteconfirm" />
-			<?php $manager->addTicketHidden() ?>
 			<input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
 			<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
 			<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
@@ -2159,8 +1949,6 @@ class ADMIN {
 		$blogid = intRequestVar('blogid');
 
 		$error = $this->deleteOneTeamMember($blogid, $memberid);
-		if ($error)
-			$this->error($error);
 		
 		
 		$this->action_manageteam();
@@ -2180,7 +1968,7 @@ class ADMIN {
 		//           - (there remains at least one team member)
 		$tmem = MEMBER::createFromID($memberid);
 		
-		$manager->notify('PreDeleteTeamMember', array('member' => &$tmem, 'blogid' => $blogid));				
+		$manager->notify('PreDeleteTeamMember', array('member' => &$mem, 'blogid' => $blogid));				
 		
 		if ($tmem->isBlogAdmin($blogid)) {
 			// check if there are more blog members left and at least one admin
@@ -2194,7 +1982,7 @@ class ADMIN {
 		$query = 'DELETE FROM '.sql_table('team')." WHERE tblog=$blogid and tmember=$memberid";
 		sql_query($query);
 		
-		$manager->notify('PostDeleteTeamMember', array('member' => &$tmem, 'blogid' => $blogid));						
+		$manager->notify('PostDeleteTeamMember', array('member' => &$mem, 'blogid' => $blogid));						
 		
 		return '';
 	}
@@ -2242,8 +2030,7 @@ class ADMIN {
 		
 		$blog =& $manager->getBlog($blogid);
 		
-		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
-		$this->pagehead($extrahead);
+		$this->pagehead();
 		
 		echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';		
 		?>
@@ -2272,7 +2059,6 @@ class ADMIN {
 		<form method="post" action="index.php"><div>
 		
 		<input type="hidden" name="action" value="blogsettingsupdate" />
-		<?php $manager->addTicketHidden() ?>
 		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
 		<table><tr>
 			<td><?php echo _EBLOG_NAME?></td>
@@ -2390,7 +2176,7 @@ class ADMIN {
 		$template['content'] = 'categorylist';
 		$template['tabindex'] = 200;
 		
-		$batch =& new BATCH('category');
+		$batch = new BATCH('category');
 		$batch->showlist($query,'table',$template);
 		
 		?>
@@ -2398,7 +2184,6 @@ class ADMIN {
 		
 		<form action="index.php" method="post"><div>
 		<input name="action" value="categorynew" type="hidden" />
-		<?php $manager->addTicketHidden() ?>
 		<input name="blogid" value="<?php echo $blog->getID()?>" type="hidden" />
 		
 		<table><tr>
@@ -2416,11 +2201,10 @@ class ADMIN {
 		
 		</div></form>
 		
-		<?php			
+		<?php		
+			echo '<h3>', _PLUGINS_EXTRA , '</h3>';
 		
-			echo '<h3>',_PLUGINS_EXTRA,'</h3>';
-		
-		 	$manager->notify(
+			$manager->notify(
 				'BlogSettingsFormExtras', 	
 				array(
 					'blog' => &$blog
@@ -2456,7 +2240,7 @@ class ADMIN {
 	
 	
 	function action_categoryedit($catid = '', $blogid = '', $desturl = '') {
-		global $member, $manager;
+		global $member;
 		
 		if ($blogid == '')
 			$blogid = intGetVar('blogid');
@@ -2475,8 +2259,7 @@ class ADMIN {
 		$cname = $obj->cname;
 		$cdesc = $obj->cdesc;
 
-		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
-		$this->pagehead($extrahead);
+		$this->pagehead();
 
 		?>
 		<h2><?php echo _EBLOG_CAT_UPDATE?> '<?php echo htmlspecialchars($cname)?>'</h2>
@@ -2485,7 +2268,6 @@ class ADMIN {
 		<input name="catid" type="hidden" value="<?php echo $catid?>" />			
 		<input name="desturl" type="hidden" value="<?php echo htmlspecialchars($desturl) ?>" />					
 		<input name="action" type="hidden" value="categoryupdate" />		
-		<?php $manager->addTicketHidden(); ?>
 		
 		<table><tr>
 			<th colspan="2"><?php echo _EBLOG_CAT_UPDATE ?></th>
@@ -2588,7 +2370,6 @@ class ADMIN {
 			
 			<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="categorydeleteconfirm" />
-			<?php $manager->addTicketHidden() ?>
 			<input type="hidden" name="blogid" value="<?php echo $blogid?>" />
 			<input type="hidden" name="catid" value="<?php echo $catid?>" />						
 			<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
@@ -2748,7 +2529,7 @@ class ADMIN {
 		
 		
 		if ($notify) {
-			$not =& new NOTIFICATION($notify);
+			$not = new NOTIFICATION($notify);
 			if (!$not->validAddresses())
 				$this->error(_ERROR_BADNOTIFY);
 			
@@ -2819,7 +2600,6 @@ class ADMIN {
 			
 			<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="deleteblogconfirm" />
-			<?php $manager->addTicketHidden() ?>
 			<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
 			<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
@@ -2873,7 +2653,7 @@ class ADMIN {
 	}
 	
 	function action_memberdelete() {
-		global $member, $manager;
+		global $member;
 		
 		$memberid = intRequestVar('memberid');
 	
@@ -2894,7 +2674,6 @@ class ADMIN {
 			
 			<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="memberdeleteconfirm" />
-			<?php $manager->addTicketHidden() ?>
 			<input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
 			<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
@@ -2919,7 +2698,6 @@ class ADMIN {
 			$this->action_overview(_DELETED_MEMBER);
 	}	
 	
-	// (static)	
 	function deleteOneMember($memberid) {
 		global $manager;
 		
@@ -2937,9 +2715,6 @@ class ADMIN {
 		$query = 'DELETE FROM '.sql_table('team').' WHERE tmember='.$memberid;
 		sql_query($query);	
 		
-		$query = 'DELETE FROM '.sql_table('activation').' WHERE vmember='.$memberid;
-		sql_query($query);			
-		
 		// delete all associated plugin options
 		NucleusPlugin::_deleteOptionValues('member', $memberid);
 		
@@ -2949,7 +2724,7 @@ class ADMIN {
 	}
 	
 	function action_createnewlog() {
-		global $member, $CONF, $manager;
+		global $member, $CONF;
 		
 		// Only Super-Admins can do this
 		$member->isAdmin() or $this->disallow();
@@ -2980,9 +2755,6 @@ class ADMIN {
 		<form method="post" action="index.php"><div>
 		
 		<input type="hidden" name="action" value="addnewlog" />
-		<?php $manager->addTicketHidden() ?>
-		
-		
 		<table><tr>
 			<td><?php echo _EBLOG_NAME?></td>
 			<td><input name="name" tabindex="10" size="40" maxlength="60" /></td>
@@ -3110,7 +2882,7 @@ class ADMIN {
 		
 		<ol>
 			<li><a href="#index_php">簡単な方法: 下のコードを貼付けた <code><?php echo htmlspecialchars($bshortname)?>.php</code> というファイルを作成する</a></li>
-			<li><a href="#skins">高度な方法: 現在使用しているスキンに新しいweblogを展開させるための記述を加える</a></li>
+			<li><a href="#skins">高度な方法: 現在使用しているスキンに新しいweblogを展開させるための記述を加える</a></li>			
 		</ol>
 		
 		<h3><a id="index_php">方法 1: <code><?php echo htmlspecialchars($bshortname)?>.php</code> というファイルを作成</a></h3>
@@ -3133,7 +2905,6 @@ selector();
 		
 		<form action="index.php" method="post"><div>
 			<input type="hidden" name="action" value="addnewlog2" />		
-			<?php $manager->addTicketHidden() ?>
 			<input type="hidden" name="blogid" value="<?php echo intval($blogid)?>" />						
 			<table><tr>
 				<td><?php echo _EBLOG_URL?></td>
@@ -3150,7 +2921,6 @@ selector();
 		
 		<form action="index.php" method="post"><div>
 			<input type="hidden" name="action" value="addnewlog2" />
-			<?php $manager->addTicketHidden() ?>
 			<input type="hidden" name="blogid" value="<?php echo intval($blogid)?>" />			
 			<table><tr>
 				<td><?php echo _EBLOG_URL?></td>
@@ -3181,7 +2951,7 @@ selector();
 	}
 
 	function action_skinieoverview() {
-		global $member, $DIR_LIBS, $manager;
+		global $member, $DIR_LIBS;
 		
 		$member->isAdmin() or $this->disallow();
 
@@ -3204,7 +2974,6 @@ selector();
 						?>
 							<form method="post" action="index.php"><div>
 								<input type="hidden" name="action" value="skinieimport" />
-								<?php $manager->addTicketHidden() ?>
 								<input type="hidden" name="mode" value="file" />
 								<select name="skinfile" id="skinie_import_local">
 								<?php									foreach ($candidates as $skinname => $skinfile) {
@@ -3224,7 +2993,6 @@ selector();
 				<p><em><?php echo _OR?></em></p>
 				
 				<form method="post" action="index.php"><p>
-					<?php $manager->addTicketHidden() ?>
 					<input type="hidden" name="action" value="skinieimport" />
 					<input type="hidden" name="mode" value="url" />					
 					<label for="skinie_import_url"><?php echo _SKINIE_FROMURL?></label>
@@ -3236,7 +3004,6 @@ selector();
 		<h2><?php echo _SKINIE_TITLE_EXPORT?></h2>
 		<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="skinieexport" />
-			<?php $manager->addTicketHidden() ?>
 			
 			<p><?php echo _SKINIE_EXPORT_INTRO?></p>
 			
@@ -3282,7 +3049,7 @@ selector();
 	}
 	
 	function action_skinieimport() {
-		global $member, $DIR_LIBS, $DIR_SKINS, $manager;
+		global $member, $DIR_LIBS, $DIR_SKINS;
 		
 		$member->isAdmin() or $this->disallow();
 		
@@ -3292,7 +3059,7 @@ selector();
 		$skinFileRaw= postVar('skinfile');
 		$mode 		= postVar('mode');
 
-		$importer =& new SKINIMPORT();
+		$importer = new SKINIMPORT();
 		
 		// get full filename
 		if ($mode == 'file')
@@ -3328,7 +3095,6 @@ selector();
 
 		<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="skiniedoimport" />
-			<?php $manager->addTicketHidden() ?>
 			<input type="hidden" name="skinfile" value="<?php echo htmlspecialchars(postVar('skinfile'))?>" />
 			<input type="hidden" name="mode" value="<?php echo htmlspecialchars($mode)?>" />			
 			<input type="submit" value="<?php echo _SKINIE_CONFIRM_IMPORT?>" />
@@ -3367,7 +3133,7 @@ selector();
 			$skinFile = $skinFileRaw;
 		}
 
-		$importer =& new SKINIMPORT();
+		$importer = new SKINIMPORT();
 
 		$error = $importer->readFile($skinFile);	
 
@@ -3414,7 +3180,7 @@ selector();
 
 		$info = postVar('info');
 
-		$exporter =& new SKINEXPORT();
+		$exporter = new SKINEXPORT();
 		foreach ($skinList as $skinId) {
 			$exporter->addSkin($skinId);
 		}
@@ -3427,7 +3193,7 @@ selector();
 	}
 	
 	function action_templateoverview() {
-		global $member, $manager;
+		global $member;
 		
 		$member->isAdmin() or $this->disallow();
 		
@@ -3449,7 +3215,6 @@ selector();
 		<form method="post" action="index.php"><div>
 		
 		<input name="action" value="templatenew" type="hidden" />
-		<?php $manager->addTicketHidden() ?>
 		<table><tr>
 			<td><?php echo _TEMPLATE_NAME?> <?php help('shortnames');?></td>
 			<td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
@@ -3468,7 +3233,7 @@ selector();
 	}
 	
 	function action_templateedit($msg = '') {
-		global $member, $manager;
+		global $member;
 		
 		$templateid = intRequestVar('templateid');
 		
@@ -3481,7 +3246,7 @@ selector();
 		
 		$templatename = TEMPLATE::getNameFromId($templateid);
 		$templatedescription = TEMPLATE::getDesc($templateid);
-		$template =& $manager->getTemplate($templatename);
+		$template = TEMPLATE::read($templatename);
 		
 		?>
 		<p>
@@ -3499,7 +3264,6 @@ selector();
 		<div>
 		
 		<input type="hidden" name="action" value="templateupdate" />
-		<?php $manager->addTicketHidden() ?>
 		<input type="hidden" name="templateid" value="<?php echo  $templateid; ?>" />
 		
 		<table><tr>
@@ -3688,7 +3452,7 @@ selector();
 	}	
 	
 	function action_templatedelete() {
-		global $member, $manager;
+		global $member;
 		
 		$member->isAdmin() or $this->disallow();
 		
@@ -3709,7 +3473,6 @@ selector();
 			
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="templatedeleteconfirm" />
-				<?php $manager->addTicketHidden() ?>
 				<input type="hidden" name="templateid" value="<?php echo  $templateid ?>" />
 				<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
@@ -3791,7 +3554,7 @@ selector();
 	}
 	
 	function action_skinoverview() {
-		global $member, $manager;
+		global $member;
 		
 		$member->isAdmin() or $this->disallow();
 		
@@ -3815,7 +3578,6 @@ selector();
 		<div>
 		
 		<input name="action" value="skinnew" type="hidden" />
-		<?php $manager->addTicketHidden() ?>
 		<table><tr>
 			<td><?php echo _SKIN_NAME?> <?php help('shortnames');?></td>
 			<td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
@@ -3854,13 +3616,13 @@ selector();
 	}	
 
 	function action_skinedit() {
-		global $member, $manager;
+		global $member;
 		
 		$skinid = intRequestVar('skinid');
 		
 		$member->isAdmin() or $this->disallow();
 		
-		$skin =& new SKIN($skinid);
+		$skin = new SKIN($skinid);
 		
 		$this->pagehead();
 		?>
@@ -3887,7 +3649,6 @@ selector();
 		<div>
 		
 		<input type="hidden" name="action" value="skineditgeneral" />
-		<?php $manager->addTicketHidden() ?>
 		<input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
 		<table><tr>
 			<td><?php echo _SKIN_NAME?> <?php help('shortnames');?></td>
@@ -3929,7 +3690,7 @@ selector();
 		$inc_mode = postVar('inc_mode');
 		$inc_prefix = postVar('inc_prefix');
 		
-		$skin =& new SKIN($skinid);
+		$skin = new SKIN($skinid);
 		
 		// 1. Some checks
 		if (!isValidSkinName($name))
@@ -3949,14 +3710,14 @@ selector();
 	}
 	
 	function action_skinedittype($msg = '') {
-		global $member, $manager;
+		global $member;
 		
 		$skinid = intRequestVar('skinid');
 		$type = requestVar('type');
 		
 		$member->isAdmin() or $this->disallow();
 		
-		$skin =& new SKIN($skinid);
+		$skin = new SKIN($skinid);
 		
 		$friendlyNames = SKIN::getFriendlyNames();
 		
@@ -3974,7 +3735,6 @@ selector();
 		<div>
 		
 		<input type="hidden" name="action" value="skinupdate" />
-		<?php $manager->addTicketHidden() ?>
 		<input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
 		<input type="hidden" name="type" value="<?php echo  $type ?>" />
 		
@@ -4036,14 +3796,14 @@ selector();
 
 		$member->isAdmin() or $this->disallow();
 		
-		$skin =& new SKIN($skinid);
+		$skin = new SKIN($skinid);
 		$skin->update($type, $content);
 		
 		$this->action_skinedittype(_SKIN_UPDATED);
 	}
 	
 	function action_skindelete() {
-		global $member, $manager, $CONF;
+		global $member, $CONF;
 		
 		$skinid = intRequestVar('skinid');
 		
@@ -4061,7 +3821,7 @@ selector();
 		
 		$this->pagehead();
 		
-		$skin =& new SKIN($skinid);
+		$skin = new SKIN($skinid);
 		$name = $skin->getName();
 		$desc = $skin->getDescription();
 		
@@ -4074,7 +3834,6 @@ selector();
 			
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="skindeleteconfirm" />
-				<?php $manager->addTicketHidden() ?>
 				<input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
 				<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
@@ -4120,7 +3879,7 @@ selector();
 		$member->isAdmin() or $this->disallow();
 		
 		// 1. read skin to clone
-		$skin =& new SKIN($skinid);
+		$skin = new SKIN($skinid);
 		
 		$name = "clone_" . $skin->getName();
 		
@@ -4181,7 +3940,6 @@ selector();
 		<div>
 		
 		<input type="hidden" name="action" value="settingsupdate" />
-		<?php $manager->addTicketHidden() ?>
 		
 		<table><tr>
 			<th colspan="2"><?php echo _SETTINGS_SUB_GENERAL?></th>
@@ -4270,9 +4028,10 @@ selector();
 			<td><i><?php echo _SETTINGS_SEECONFIGPHP?></i></td>
 		</tr><tr>
 			<td>
-			<?php
-				echo _SETTINGS_JSTOOLBAR
-				/* =_SETTINGS_DISABLEJS 
+			<?php echo _SETTINGS_JSTOOLBAR;
+				 /* =_SETTINGS_DISABLEJS 
+
+
 			
 					I temporary changed the meaning of DisableJsTools, until I can find a good
 					way to select the javascript version to use 
@@ -4297,15 +4056,12 @@ selector();
 			</td>			
 		</tr><tr>
 			<td><?php echo _SETTINGS_URLMODE?> <?php help('urlmode');?></td>
-                       <td><?php 
-                       
-                       $this->input_yesno('URLMode',$CONF['URLMode'],10077,
+                       <td><?php $this->input_yesno('URLMode',$CONF['URLMode'],10077,
 					          'normal','pathinfo',_SETTINGS_URLMODE_NORMAL,_SETTINGS_URLMODE_PATHINFO);
-					   
-					   echo ' ', _SETTINGS_URLMODE_HELP;
 					          
-					         ?>
-				
+					          echo ' ', _SETTINGS_URLMODE_HELP;
+					          
+					           ?>
                        </td>
 		</tr><tr>
 			<th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
@@ -4384,9 +4140,6 @@ selector();
 		</tr><tr>
 			<th colspan="2"><?php echo _SETTINGS_COOKIES_TITLE?> <?php help('cookies'); ?></th>
 		</tr><tr>
-			<td><?php echo _SETTINGS_COOKIEPREFIX?></td>
-			<td><input name="CookiePrefix" tabindex="10159" size="40" value="<?php echo  htmlspecialchars($CONF['CookiePrefix'])?>" /></td>
-		</tr><tr>
 			<td><?php echo _SETTINGS_COOKIEDOMAIN?></td>
 			<td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  htmlspecialchars($CONF['CookieDomain'])?>" /></td>
 		</tr><tr>
@@ -4418,7 +4171,7 @@ selector();
 
 		<?php		
 			echo '<h2>',_PLUGINS_EXTRA,'</h2>';		
-		
+
 			$manager->notify(
 				'GeneralSettingsFormExtras', 	
 				array()
@@ -4468,7 +4221,6 @@ selector();
 		$this->updateConfig('CookiePath',		postVar('CookiePath'));
 		$this->updateConfig('CookieSecure',		postVar('CookieSecure'));
 		$this->updateConfig('URLMode',			postVar('URLMode'));		
-		$this->updateConfig('CookiePrefix',		postVar('CookiePrefix'));		
 		
 		// load new config and redirect (this way, the new language will be used is necessary)
 		// note that when changing cookie settings, this redirect might cause the user
@@ -4530,7 +4282,7 @@ selector();
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
-			<meta http-equiv="Content-Type" content="text/html; charset=EUC-JP" />
+			<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 			<title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>		
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin.css" />
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" 
@@ -4558,7 +4310,7 @@ selector();
 				    ." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
 				    . "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> - ";
 			else 
-				echo '<a href="index.php?action=showlogin" title="Log in">' , _NOTLOGGEDIN , '</a> <br />';
+				echo _NOTLOGGEDIN . ' <br />';
 
 			echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
 			
@@ -4582,7 +4334,7 @@ selector();
 			)
 		);		
 		
-		if ($member->isLoggedIn() && ($action != 'showlogin')) {
+		if ($action != 'showlogin') {
 			?>
 			<h2><?php echo  _LOGOUT ?></h2>
 			<ul>
@@ -4685,12 +4437,10 @@ selector();
 						echo '</ul>';
 					}
 					
-				} else if (($action == 'activate') || ($action == 'activatesetpwd')) {
-
-					echo '<h2>', _QMENU_ACTIVATE, '</h2>', _QMENU_ACTIVATE_TEXT;
 				} else {
-					// introduction text on login screen
-					echo '<h2>', _QMENU_INTRO, '</h2>', _QMENU_INTRO_TEXT;
+
+						echo '<h2>', _QMENU_INTRO, '</h2>', _QMENU_INTRO_TEXT;
+						
 				}
 				?>
 			</div>
@@ -4725,7 +4475,7 @@ selector();
 		echo "REGEDIT4\n";
 		echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\Post To &Nucleus (".$sjisBlogName.")]\n";
 		echo '@="' . $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=".intval($blogid)."\"\n";
-		echo '"contexts"=hex:31';
+		echo '"contexts"=hex:31';		
 	}
 	
 	function action_bookmarklet() {
@@ -4760,10 +4510,6 @@ selector();
 		
 		<h3>右クリックメニューにインストール (WindowsでIE使用時)</h3>
 		<p>
-			<?php
-				$url = 'index.php?action=regfile&blogid=' . intval($blogid);
-				$url = $manager->addTicketToUrl($url);
-			?>
 			あるいは<a href="index.php?action=regfile&amp;blogid=<?php echo $blogid?>">右クリックメニュー</a>にインストールすることもできます (「開く」を選択すれば直接レジストリに登録します)
 		</p>
 		
@@ -4785,7 +4531,7 @@ selector();
 			<li>"regedit" と入力</li>
 			<li>"OK" ボタンを押す</li>
 			<li>"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" をツリーの中から検索</li>
-			<li>"add to weblog" エントリを削除</li>
+			<li>"add to weblog" エントリを削除</li>				
 		</ol>
 
 		<?php
@@ -4795,7 +4541,7 @@ selector();
 
 
 	function action_actionlog() {
-		global $member, $manager;
+		global $member;
 		
 		$member->isAdmin() or $this->disallow();
 		
@@ -4803,11 +4549,9 @@ selector();
 		
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';		
 		
-		$url = $manager->addTicketToUrl('index.php?action=clearactionlog');
-		
 		?>
 			<h2><?php echo _ACTIONLOG_CLEAR_TITLE?></h2>
-			<p><a href="<?php echo htmlspecialchars($url)?>"><?php echo _ACTIONLOG_CLEAR_TEXT?></a></p>
+			<p><a href="index.php?action=clearactionlog"><?php echo _ACTIONLOG_CLEAR_TEXT?></a></p>
 		<?php
 		echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 		
@@ -4886,7 +4630,6 @@ selector();
 			<h3><?php echo _BAN_DELETE_TITLE?></h3>
 			
 			<div>
-				<?php $manager->addTicketHidden() ?>			
 				<input type="hidden" name="action" value="banlistdeleteconfirm" />
 				<input type="submit" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div>
@@ -5004,7 +4747,6 @@ selector();
 		
 		<div>
 			<input name="action" type="hidden" value="banlistadd" />
-			<?php $manager->addTicketHidden() ?>
 			<input type="submit" value="<?php echo _BAN_ADD_BTN?>" />
 		</div>
 		
@@ -5057,7 +4799,7 @@ selector();
 	}
 	
 	function action_backupoverview() {
-		global $member, $manager;
+		global $member;
 		
 		$member->isAdmin() or $this->disallow();
 		
@@ -5073,7 +4815,6 @@ selector();
 		
 		<form method="post" action="index.php"><p>
 		<input type="hidden" name="action" value="backupcreate" />
-		<?php $manager->addTicketHidden() ?>
 
 		<input type="radio" name="gzip" value="1" checked="checked" id="gzip_yes" tabindex="10" /><label for="gzip_yes"><?php echo _BACKUP_ZIP_YES?></label>
 		<br />
@@ -5094,7 +4835,6 @@ selector();
 		
 		<form method="post" action="index.php" enctype="multipart/form-data"><p>
 			<input type="hidden" name="action" value="backuprestore" />
-			<?php $manager->addTicketHidden() ?>
 			<input name="backup_file" type="file" tabindex="30" />
 			<br /><br />
 			<input type="submit" value="<?php echo _RESTORE_BTN?>" tabindex="40" />		
@@ -5151,7 +4891,7 @@ selector();
 	
 
 	function action_pluginlist() {
-		global $member, $manager;
+		global $member;
 		
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
@@ -5178,7 +4918,6 @@ selector();
 			
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="pluginupdate" />
-				<?php $manager->addTicketHidden() ?>
 				<input type="submit" value="<?php echo _PLUGS_BTN_UPDATE ?>" tabindex="20" />
 			</div></form>
 			
@@ -5206,7 +4945,6 @@ selector();
 
 			<form method='post' action='index.php'><div>
 				<input type='hidden' name='action' value='pluginadd' />
-				<?php $manager->addTicketHidden() ?>
 				<select name="filename" tabindex="30">
 				<?php					foreach($candidates as $name)
 						echo '<option value="NP_',$name,'">',htmlspecialchars($name),'</option>';
@@ -5219,39 +4957,6 @@ selector();
 				echo '<p>',_PLUGS_NOCANDIDATES,'</p>';
 			}
 		
-		$this->pagefoot();
-	}
-	
-	function action_pluginhelp() {
-		global $member, $manager, $DIR_PLUGINS, $CONF;
-		
-		// check if allowed
-		$member->isAdmin() or $this->disallow();
-		
-		$plugid = intGetVar('plugid');
-
-		if (!$manager->pidInstalled($plugid))
-			$this->error(_ERROR_NOSUCHPLUGIN);
-			
-		$plugName = getPluginNameFromPid($plugid);
-	
-		$this->pagehead();
-		
-		echo '<p><a href="index.php?action=pluginlist">(',_PLUGS_BACK,')</a></p>';		
-		
-		echo '<h2>',_PLUGS_HELP_TITLE,': ',htmlspecialchars($plugName),'</h2>';
-		
-		$plug =& $manager->getPlugin($plugName);
-		$helpFile = $DIR_PLUGINS.$plug->getShortName().'/help.html';
-		
-		if (($plug->supportsFeature('HelpPage') > 0) && (@file_exists($helpFile))) {
-			@readfile($helpFile);
-		} else {
-			echo '<p>Error: ', _ERROR_PLUGNOHELPFILE,'</p>';
-			echo '<p><a href="index.php?action=pluginlist">(',_BACK,')</a></p>';
-		}
-		
-
 		$this->pagefoot();
 	}
 	
@@ -5269,28 +4974,12 @@ selector();
 		if (!checkPlugin($name))
 			$this->error(_ERROR_PLUGFILEERROR . ' (' . $name . ')');
 		
-		// check if the plugin dependency is met
-		$plugin =& $manager->getPlugin($name);
-		$pluginList = $plugin->getPluginDep();
-		foreach ($pluginList as $pluginName) 
-		{
-			
-			$res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
-			if (mysql_num_rows($res) == 0)
-			{
-				// uninstall plugin again...
-				$this->deleteOnePlugin($plugin->getID());
-			
-				$this->error(_ERROR_INSREQPLUGIN . $pluginName);
-			}
-		}
-
 		// get number of currently installed plugins
 		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
 
 		// plugin will be added as last one in the list
 		$newOrder = $numCurrent + 1;
-
+		
 		$manager->notify(
 			'PreAddPlugin',
 			array(
@@ -5303,12 +4992,11 @@ selector();
 		sql_query($query);
 		$iPid = mysql_insert_id();
 
-		// need to update the plugin object's pid since we didn't have it above when it's first create....
-		$plugin->plugid = $iPid;
-
 		$manager->clearCachedInfo('installedPlugins');
 
 		// call the install method of the plugin
+		$plugin =& $manager->getPlugin($name);
+		
 		if (!$plugin)
 		{
 			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. intval($iPid));
@@ -5392,7 +5080,6 @@ selector();
 			<p><?php echo _CONFIRMTXT_PLUGIN?> <strong><?php echo getPluginNameFromPid($pid)?></strong>?</p>
 			
 			<form method="post" action="index.php"><div>
-			<?php $manager->addTicketHidden() ?>
 			<input type="hidden" name="action" value="plugindeleteconfirm" />
 			<input type="hidden" name="plugid" value="<?php echo $pid; ?>" />
 			<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
@@ -5424,29 +5111,11 @@ selector();
 		if (!$manager->pidInstalled($pid))
 			return _ERROR_NOSUCHPLUGIN;
 			
-		$name = quickQuery('SELECT pfile as result FROM '.sql_table('plugin').' WHERE pid='.$pid);
-
 		// call the unInstall method of the plugin
 		if ($callUninstall) {
+			$name = quickQuery('SELECT pfile as result FROM '.sql_table('plugin').' WHERE pid='.$pid);
 			$plugin =& $manager->getPlugin($name);
 			if ($plugin) $plugin->unInstall();
-		}
-
-		// check dependency before delete
-		$res = sql_query('SELECT pfile FROM '.sql_table('plugin'));
-		while($o = mysql_fetch_object($res)) {
-			$plug =& $manager->getPlugin($o->pfile);
-			if ($plug)
-			{
-				$depList = $plug->getPluginDep();
-				foreach ($depList as $depName) 
-				{
-					if ($name == $depName)
-					{
-						return _ERROR_DELREQPLUGIN . $o->pfile;
-					}
-				}
-			}
 		}
 
 		$manager->notify('PreDeletePlugin', array('plugid' => $pid));	
@@ -5541,8 +5210,7 @@ selector();
 		if (!$manager->pidInstalled($pid))
 			$this->error(_ERROR_NOSUCHPLUGIN);
 
-		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
-		$this->pagehead($extrahead);
+		$this->pagehead();
 
 		?>
 			<p><a href="index.php?action=pluginlist">(<?php echo _PLUGS_BACK?>)</a></p>
@@ -5555,10 +5223,7 @@ selector();
 			<div>
 				<input type="hidden" name="action" value="pluginoptionsupdate" />
 				<input type="hidden" name="plugid" value="<?php echo $pid?>" />				
-
 		<?php		
-		
-		$manager->addTicketHidden();
 
 		$aOptions = array(); 
 		$aOIDs = array();
@@ -5618,9 +5283,7 @@ selector();
 		$this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
 	}
 	
-	/**
-	  * @static
-	  */
+
 	function _insertPluginOptions($context, $contextid = 0) {
 		// get all current values for this contextid 
 		// (note: this might contain doubles for overlapping contextids)
@@ -5650,8 +5313,7 @@ selector();
 				'description' => $o->odesc,
 				'type' => $o->otype,
 				'typeinfo' => $o->oextra,
-				'contextid' => $contextid,
-				'extra' => ''
+				'contextid' => $contextid
 			));
 		}
 		
@@ -5750,7 +5412,7 @@ class NAVLIST extends ENCAPSULATE {
 	}
 	
 	function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-		$batch =& new BATCH($batchtype);
+		$batch = new BATCH($batchtype);
 
 		$this->doEncapsulate(
 				array(&$batch, 'showlist'),
@@ -5863,7 +5525,6 @@ class BATCH extends ENCAPSULATE {
 		<?php	}
 
 	function showOperationList() {
-		global $manager;
 		?>
 		<div class="batchoperations">
 			<?php echo _BATCH_WITH_SEL ?>
@@ -5908,10 +5569,7 @@ class BATCH extends ENCAPSULATE {
 			?>
 			</select>
 			<input type="hidden" name="action" value="batch<?php echo $this->type?>" />
-			<?php				
-				$manager->addTicketHidden();
-				
-				// add hidden fields for 'team' and 'comment' batchlists
+			<?php				// add hidden fields for 'team' and 'comment' batchlists
 				if ($this->type == 'team') 
 				{
 					echo '<input type="hidden" name="blogid" value="',intRequestVar('blogid'),'" />';
@@ -5921,8 +5579,10 @@ class BATCH extends ENCAPSULATE {
 					echo '<input type="hidden" name="itemid" value="',intRequestVar('itemid'),'" />';
 				}
 				
-				echo '<input type="submit" value="',_BATCH_EXEC,'" />';
-			?>(
+			?>
+			
+			<input type="submit" value="Execute" />
+			(
 			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); "><?php echo _BATCH_SELECTALL?></a> -
 			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); "><?php echo _BATCH_DESELECTALL?></a>
 			)
@@ -5950,6 +5610,11 @@ function showlist($query, $type, $template) {
 
 		call_user_func('listplug_' . $type, $template, 'HEAD');
 
+		// add extra row if needed
+		if ($template['extra']) {
+			echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
+		}
+
 		foreach ($query as $currentObj) {
 			$template['current'] = $currentObj;
 			call_user_func('listplug_' . $type, $template, 'BODY');
@@ -5969,6 +5634,11 @@ function showlist($query, $type, $template) {
 
 		call_user_func('listplug_' . $type, $template, 'HEAD');
 
+		// add extra row if needed
+		if ($template['extra']) {
+			echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
+		}
+
 		while($template['current'] = mysql_fetch_object($res)) 
 			call_user_func('listplug_' . $type, $template, 'BODY');
 
@@ -5985,12 +5655,6 @@ function listplug_select($template, $type) {
 	switch($type) {
 		case 'HEAD':
 			echo '<select name="'.$template['name'].'" tabindex="'.$template['tabindex'].'" '.$template['javascript'].'>';
-			
-			// add extra row if needed
-			if ($template['extra']) {
-				echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
-			}
-			
 			break;
 		case 'BODY':
 			$current = $template['current'];
@@ -6062,7 +5726,6 @@ function listplug_table_memberlist($template, $type) {
 }
 
 function listplug_table_teamlist($template, $type) {
-	global $manager;
 	switch($type) {
 		case 'HEAD':
 			echo "<th>"._LIST_MEMBER_NAME."</th><th>"._LIST_MEMBER_RNAME."</th><th>"._LIST_TEAM_ADMIN;
@@ -6082,14 +5745,10 @@ function listplug_table_teamlist($template, $type) {
 			echo '<td>', htmlspecialchars($current->mrealname), '</td>';
 			echo '<td>', ($current->tadmin ? _YES : _NO) , '</td>';
 			echo "<td><a href='index.php?action=teamdelete&amp;memberid=$current->tmember&amp;blogid=$current->tblog' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
-			
-			$url = 'index.php?action=teamchangeadmin&memberid=' . intval($current->tmember) . '&blogid=' . intval($current->tblog);
-			$url = $manager->addTicketToUrl($url);
-			echo "<td><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LIST_TEAM_CHADMIN."</a></td>";			
+			echo "<td><a href='index.php?action=teamchangeadmin&amp;memberid=$current->tmember&amp;blogid=$current->tblog' tabindex='".$template['tabindex']."'>"._LIST_TEAM_CHADMIN."</a></td>";			
 			break;
 	}
 }
-
 function encode_desc(&$data)
     {   //_$to_entities = get_html_translation_table(HTML_ENTITIES);
         $to_entities = get_html_translation_table(HTML_SPECIALCHARS);
@@ -6100,13 +5759,12 @@ function encode_desc(&$data)
         $data = str_replace('\n','<br />',$data); //hack
         return $data;
     }
-
 function listplug_table_pluginlist($template, $type) {
 	global $manager;
 	switch($type) {
 		case 'HEAD':
 			echo '<th>'._LISTS_INFO.'</th><th>'._LISTS_DESC.'</th>';
-			echo '<th style="white-space:nowrap">'._LISTS_ACTIONS.'</th>';
+			echo '<th>'._LISTS_ACTIONS.'</th>';
 			break;
 		case 'BODY':
 			$current = $template['current'];
@@ -6124,24 +5782,17 @@ function listplug_table_pluginlist($template, $type) {
 					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
 					if (sizeof($plug->getEventList()) > 0)
 						echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',htmlspecialchars(implode($plug->getEventList(),', '));
-					if (sizeof($plug->getPluginDep()) > 0)
-						echo '<br /><br />',_LIST_PLUGS_DEP,'<br />',htmlspecialchars(implode($plug->getPluginDep(),', '));
+
 				echo '</td>';
 			} else {
 				echo '<td colspan="2">Error: plugin file <b>',htmlspecialchars($current->pfile),'.php</b> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)</td>';
 			}
-			echo '<td style="white-space:nowrap">';
-				
-				$baseUrl = 'index.php?plugid=' . intval($current->pid) . '&action=';
-				$url = $manager->addTicketToUrl($baseUrl . 'pluginup');
-				echo "<a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UP,"</a>";
-				$url = $manager->addTicketToUrl($baseUrl . 'plugindown');
-				echo "<br /><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_DOWN,"</a>";
+			echo '<td>';
+				echo "<a href='index.php?action=pluginup&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UP,"</a>";
+				echo "<br /><a href='index.php?action=plugindown&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_DOWN,"</a>";
 				echo "<br /><a href='index.php?action=plugindelete&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UNINSTALL,"</a>";
 				if ($plug && ($plug->hasAdminArea() > 0))
 					echo "<br /><a href='".htmlspecialchars($plug->getAdminURL())."'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_ADMIN,"</a>";
-				if ($plug && ($plug->supportsFeature('HelpPage') > 0))
-					echo "<br /><a href='index.php?action=pluginhelp&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_HELP,"</a>";
 				if (quickQuery('SELECT COUNT(*) AS result FROM '.sql_table('plugin_option_desc').' WHERE ocontext=\'global\' and opid='.$current->pid) > 0)
 					echo "<br /><a href='index.php?action=pluginoptions&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_OPTIONS,"</a>";
 			echo '</td>';
@@ -6173,56 +5824,35 @@ function listplug_table_plugoptionlist($template, $type) {
 
 function listplug_plugOptionRow($current) {
 	$varname = 'plugoption['.$current['oid'].']['.$current['contextid'].']';
-	// retreive the optionmeta
-	$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-	
-	// only if it is not a hidden option write the controls to the page
-	if ($meta['access'] != 'hidden') {
-		echo '<td>',htmlspecialchars($current['description']?$current['description']:$current['name']),'</td>';
-		echo '<td>';
-		switch($current['type']) {
-			case 'yesno':
-				ADMIN::input_yesno($varname, $current['value'], 0, 'yes', 'no');
-				break;
-			case 'password':
-				echo '<input type="password" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'" />';
-				break;
-			case 'select':
-				echo '<select name="'.htmlspecialchars($varname).'">';
-				$aOptions = NucleusPlugin::getOptionSelectValues($current['typeinfo']);
-				$aOptions = explode('|', $aOptions);
-				for ($i=0; $i<(count($aOptions)-1); $i+=2) {
-					echo '<option value="'.htmlspecialchars($aOptions[$i+1]).'"';
-					if ($aOptions[$i+1] == $current['value'])
-						echo ' selected="selected"';
-					echo '>'.htmlspecialchars($aOptions[$i]).'</option>';
-				}
-				echo '</select>';
-				break;
-			case 'textarea':
-				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-				echo '<textarea class="pluginoption" cols="30" rows="5" name="',htmlspecialchars($varname),'"';				
-				if ($meta['access'] == 'readonly') {
-					echo ' readonly="readonly"';
-				}
-				echo '>',htmlspecialchars($current['value']),'</textarea>';
-				break;
-			case 'text':
-			default:
-				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-				
-				echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'"';
-				if ($meta['datatype'] == 'numerical') {
-					echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
-				}
-				if ($meta['access'] == 'readonly') {
-					echo ' readonly="readonly"';
-				}
-				echo ' />';
-		}
-		echo $current['extra'];
-		echo '</td>';
+
+	echo '<td>',htmlspecialchars($current['description']?$current['description']:$current['name']),'</td>';
+	echo '<td>';
+	switch($current['type']) {
+		case 'yesno':
+			ADMIN::input_yesno($varname, $current['value'], 0, 'yes', 'no');
+			break;
+		case 'password':
+			echo '<input type="password" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'" />';
+			break;
+		case 'select':
+			echo '<select name="'.htmlspecialchars($varname).'">';
+			$aOptions = explode('|', $current['typeinfo']);
+			for ($i=0; $i<(count($aOptions)-1); $i+=2) {
+				echo '<option value="'.htmlspecialchars($aOptions[$i+1]).'"';
+				if ($aOptions[$i+1] == $current['value'])
+					echo ' selected="selected"';
+				echo '>'.htmlspecialchars($aOptions[$i]).'</option>';
+			}
+			echo '</select>';
+			break;
+		case 'textarea':
+			echo '<textarea class="pluginoption" cols="30" rows="5" name="',htmlspecialchars($varname),'">',htmlspecialchars($current['value']),'</textarea>';				
+			break;
+		case 'text':
+		default:
+			echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'" />';
 	}
+	echo '</td>';
 }
 
 function listplug_table_itemlist($template, $type) {
@@ -6241,9 +5871,9 @@ function listplug_table_itemlist($template, $type) {
 			if ($current->itime > $template['now'])
 				$cssclass = "class='future'";
 			
-			echo "<td $cssclass>",_LIST_ITEM_BLOG,' ', htmlspecialchars($current->bshortname);
-			echo "    <br />",_LIST_ITEM_CAT,' ', htmlspecialchars($current->cname);			
-			echo "    <br />",_LIST_ITEM_AUTHOR, ' ', htmlspecialchars($current->mname);
+			echo "<td $cssclass>",_LIST_ITEM_BLOG," ", htmlspecialchars($current->bshortname);
+			echo "    <br />",_LIST_ITEM_CAT," ", htmlspecialchars($current->cname);			
+			echo "    <br />",_LIST_ITEM_AUTHOR, " ", htmlspecialchars($current->mname);
 			echo "    <br />",_LIST_ITEM_DATE," " . date("Y-m-d",$current->itime);
 			echo "<br />",_LIST_ITEM_TIME," " . date("H:i",$current->itime);
 			echo "</td>";			
@@ -6291,7 +5921,7 @@ function listplug_table_commentlist($template, $type) {
 			echo date("Y-m-d@H:i",$current->ctime);
 			echo '<br />';
 			if ($current->mname)
-				echo htmlspecialchars($current->mname) ,' ', _LIST_COMMENTS_MEMBER;
+				echo htmlspecialchars($current->mname), ' ', _LIST_COMMENTS_MEMBER;
 			else
 				echo htmlspecialchars($current->cuser);
 			echo '</td>';
@@ -6328,7 +5958,7 @@ function listplug_table_bloglist($template, $type) {
 			echo "<td title='blogid:$current->bnumber shortname:$current->bshortname'><a href='$current->burl'><img src='images/globe.gif' width='13' height='13' alt='". _BLOGLIST_TT_VISIT."' /></a> " . htmlspecialchars($current->bname) . "</td>";
 			echo "<td><a href='index.php?action=createitem&amp;blogid=$current->bnumber' title='" . _BLOGLIST_TT_ADD ."'>" . _BLOGLIST_ADD . "</a></td>";
 			echo "<td><a href='index.php?action=itemlist&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_EDIT."'>". _BLOGLIST_EDIT."</a></td>";
-			echo "<td><a href='index.php?action=blogcommentlist&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_COMMENTS."'>". _BLOGLIST_COMMENTS."</a></td>";
+			echo "<td><a href='index.php?action=blogcommentlist&amp;blogid=$current->bnumber'>". _BLOGLIST_COMMENTS."</a></td>";
 			echo "<td><a href='index.php?action=bookmarklet&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_BMLET."'>". _BLOGLIST_BMLET . "</a></td>";
 
 			if ($current->tadmin == 1) {
@@ -6403,7 +6033,6 @@ function listplug_table_categorylist($template, $type) {
 
 
 function listplug_table_templatelist($template, $type) {
-	global $manager;
 	switch($type) {
 		case 'HEAD':
 			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";		
@@ -6414,9 +6043,7 @@ function listplug_table_templatelist($template, $type) {
 			echo "<td>" , htmlspecialchars($current->tdname), "</td>";
 			echo "<td>" , htmlspecialchars($current->tddesc), "</td>";
 			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templateedit&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
-			
-			$url = $manager->addTicketToUrl('index.php?action=templateclone&templateid=' . intval($current->tdnumber));
-			echo "<td style=\"white-space:nowrap\"><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
+			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templateclone&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
 			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templatedelete&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";			
 		
 			break;
@@ -6424,7 +6051,7 @@ function listplug_table_templatelist($template, $type) {
 }
 
 function listplug_table_skinlist($template, $type) {
-	global $CONF, $DIR_SKINS, $manager;
+	global $CONF, $DIR_SKINS;
 	switch($type) {
 		case 'HEAD':
 			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";		
@@ -6487,9 +6114,7 @@ function listplug_table_skinlist($template, $type) {
 				}
 			echo "</td>";
 			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skinedit&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
-			
-			$url = $manager->addTicketToUrl('index.php?action=skinclone&skinid=' . intval($current->sdnumber));
-			echo "<td style=\"white-space:nowrap\"><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
+			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skinclone&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
 			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skindelete&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
 			
 			break;

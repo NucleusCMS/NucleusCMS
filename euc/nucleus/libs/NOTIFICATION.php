@@ -11,8 +11,6 @@
   *
   * Class used to represent a collection of e-mail addresses, to which a
   * message can be sent (e.g. comment or karma vote notification).
-  *
-  * $Id: NOTIFICATION.php,v 1.1.1.1 2005-02-28 07:14:12 kimitake Exp $
   */
 class NOTIFICATION {
 

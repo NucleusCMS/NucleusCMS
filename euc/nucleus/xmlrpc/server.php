@@ -9,8 +9,6 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: server.php,v 1.1.1.1 2005-02-28 07:14:26 kimitake Exp $
-  *
   * This script is provides an XML-RPC [1] interface to Nucleus [2].
   *
   * At this time, the Blogger API [3], the metaWeblog API [4] and 
@@ -121,7 +119,7 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
 		$draft = 1;
 	if ($closed != 1)
 		$closed = 0;
-	
+
 	$title = mb_convert_encoding($title, _CHARSET, "UTF-8");
 	$body = mb_convert_encoding($body, _CHARSET, "UTF-8");
 	

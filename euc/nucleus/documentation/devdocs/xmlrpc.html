@@ -1,7 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<!-- $Id: xmlrpc.html,v 1.1.1.1 2005-02-28 07:14:00 kimitake Exp $ -->
 	<title>Nucleus - XML-RPC Interface</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 </head>
@@ -68,7 +67,7 @@ Since Nucleus is structured somewhat differently inside, there are some differen
 <h1><a name="metaweblog"></a>metaWeblog API</h1>
 
 <p>
-Since v1.1, Nucleus also supports the <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>, which is an extention to the Blogger API.
+Since v1.1, Nucleus also supports the <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>, which is an extention to the Blogger API. 
 </p>
 
 <p>In Nucleus v2.5, support was added for the <code>newMediaObject</code> and <code>getRecentPosts</code> methods as well (they weren't in the original metaWeblog specification)</p>
@@ -79,11 +78,11 @@ A list of available methods is listed below (see the <a href="http://www.xmlrpc.
 
 <ul>
 	<li>metaWeblog.newPost</li>
-	<li>metaWeblog.editPost</li>
-	<li>metaWeblog.getPost</li>
-	<li>metaWeblog.getCategories</li>
+	<li>metaWeblog.editPost</li>	
+	<li>metaWeblog.getPost</li>	
+	<li>metaWeblog.getCategories</li>	
 	<li>metaWeblog.newMediaObject (v2.5)</li>
-	<li>metaWeblog.getRecentPosts (v2.5)</li>
+	<li>metaWeblog.getRecentPosts (v2.5)</li>	
 </ul>
 
 <a name="mtApi" id="mtApi"></a>
@@ -154,11 +153,11 @@ Below is an overview of the types of errors you can get back from the methods:
 	<tr>
 		<td>808</td>
 		<td>Invalid media type</td>
-	</tr>
+	</tr>	
 	<tr>
 		<td>809</td>
 		<td>File is too large (max. upload filesize)</td>
-	</tr>
+	</tr>		
 	<tr>
 		<td>810</td>
 		<td>Other error on newMediaObject (message will contain more info about what happened)</td>

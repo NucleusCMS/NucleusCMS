@@ -8,8 +8,6 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id: api_blogger.inc.php,v 1.1.1.1 2005-02-28 07:14:25 kimitake Exp $
   */
   
 /*

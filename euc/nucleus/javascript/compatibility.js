@@ -17,8 +17,6 @@
   *		- Use createElement() instead of document.createElement()
   *
   * That's basically it :)
-  *
-  * $Id: compatibility.js,v 1.1.1.1 2005-02-28 07:14:02 kimitake Exp $
   */
 
 // to get the script working when page is sent as application/xhtml+xml
