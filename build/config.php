@@ -20,9 +20,9 @@ $DIR_SKINS = '/your/path/to/skins/';
 
 // these dirs are normally subdirs of the nucleus dir, but
 // you can redefine them if you wish
-$DIR_PLUGINS = $DIR_NUCLEUS . "plugins/";
-$DIR_LANG = $DIR_NUCLEUS . "language/";
-$DIR_LIBS = $DIR_NUCLEUS . "libs/";
+$DIR_PLUGINS = $DIR_NUCLEUS . 'plugins/';
+$DIR_LANG = $DIR_NUCLEUS . 'language/';
+$DIR_LIBS = $DIR_NUCLEUS . 'libs/';
 
 if (!file_exists($DIR_LIBS . 'globalfunctions.php')) {
 	echo "Configuration error, please run the install script or modify config.php";
