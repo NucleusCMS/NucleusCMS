@@ -2834,9 +2834,15 @@ class ADMIN {
 		
 		// load skinie class
 		include_once($DIR_LIBS . 'skinie.php');
+		
+		$aSkins = requestIntArray('skin');
+		$aTemplates = requestIntArray('template');
 
-		$skinList = array_keys(requestIntArray('skin'));
-		$templateList = array_keys(requestIntArray('template'));	
+		if (!is_array($aTemplates)) $aTemplates = array();
+		if (!is_array($aSkins)) $aSkins = array();
+
+		$skinList = array_keys($aSkins);
+		$templateList = array_keys($aTemplates);	
 
 		$info = postVar('info');
 
