@@ -1,0 +1,16 @@
+Testcases for auto-url linking in comments:
+
+http://www.nucleuscms.org/ should be linked
+www.nucleuscms.org should be linked
+Previous sentence.www.nucleuscms.org should be linked
+Previous sentence.http://www.nucleuscms.org should be linked
+awww... that hurts. Should not be linked
+http://ftp.nucleuscms.org/ should NOT be an FTP link
+ftp://www.nucleuscms.org/ should be linked as FTP
+ftp.nucleuscms.org should be linked
+Previous sentence.ftp.nucleuscms.org should be linked
+Previous sentence.ftp://ftp.nucleuscms.org should be linked
+naftp.ha should not be linked
+mailto:someone@example.org -> Linked
+someone@example.org -> not linked
+
