@@ -4205,7 +4205,7 @@ selector();
 	
 	
 	function action_regfile() {
-		global $member;
+		global $member, $CONF;
 		
 		$blogid = intRequestVar('blogid');
 		
@@ -4214,7 +4214,7 @@ selector();
 		// header-code stolen from phpMyAdmin
 		// REGEDIT and bookmarklet code stolen from GreyMatter
 
-		$bookmarkletline = getBookmarklet($blogid, 'external.menuArguments.document');
+		$bookmarkletline = getBookmarklet($blogid, 'contextmenu');
 
 		header('Content-Type: application/octetstream');
 		header('Content-Disposition: filename="nucleus.reg"');
@@ -4223,7 +4223,7 @@ selector();
 		
 		echo "REGEDIT4\n";
 		echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\Post To &Nucleus (".getBlogNameFromID($blogid).")]\n";
-		echo '@="' . $bookmarkletline . "\"\n";
+		echo '@="' . $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=".intval($blogid)."\"\n";
 		echo '"contexts"=hex:31';		
 	}
 	
@@ -4257,8 +4257,6 @@ selector();
 			<a href="<?php echo htmlspecialchars($bm)?>">Add to <?php echo $blog->getShortName()?></a> (Nearly all browsers)
 		</p>
 		
-<!-- right click code appears to be broken ?
-
 		<h3>Right Click Menu Access (IE &amp; Windows)</h3>
 		<p>
 			Or you can install the <a href="index.php?action=regfile&amp;blogid=<?php echo $blogid?>">right click menu item</a> (choose 'open file' and add to registry)
@@ -4284,7 +4282,7 @@ selector();
 			<li>Search for "\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" in the tree</li>
 			<li>Delete the "add to weblog" item</li>				
 		</ol>
--->		
+
 		<?php
 		$this->pagefoot();
 		
@@ -5779,15 +5777,15 @@ function listplug_table_banlist($template, $type) {
  * Returns the Javascript code for a bookmarklet that works on most modern browsers
  *
  * @param blogid
- * @param document
- *		how to access the document object (for menu extensions, this is external.menuArguments.document)
  */
-function getBookmarklet($blogid, $document = 'document') {
+function getBookmarklet($blogid) {
 	global $CONF;
 
-	$bookmarkletline = "javascript:Q='';x=".$document.";y=window;if(x&&y){if(x.selection){Q=x.selection.createRange().text;}else if(y.getSelection){Q=y.getSelection();}else if(x.getSelection){Q=x.getSelection();}wingm=window.open('";
+	// normal
+	$document = 'document';
+	$bookmarkletline = "javascript:Q='';x=".$document.";y=window;if(x.selection){Q=x.selection.createRange().text;}else if(y.getSelection){Q=y.getSelection();}else if(x.getSelection){Q=x.getSelection();}wingm=window.open('";
 	$bookmarkletline .= $CONF['AdminURL'] . "bookmarklet.php?blogid=$blogid";
-	$bookmarkletline .="&logtext='+escape(Q)+'&loglink='+escape(x.href)+'&loglinktitle='+escape(x.title),'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');wingm.focus();}";
+	$bookmarkletline .="&logtext='+escape(Q)+'&loglink='+escape(x.href)+'&loglinktitle='+escape(x.title),'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');wingm.focus();";	
 
 	return $bookmarkletline;
 }
