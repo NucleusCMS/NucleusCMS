@@ -6,14 +6,21 @@ body, td, th, a, li, ul, textarea {
 	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 }
 
-img			{ border: none; }
-.skip 		{ display: none; }
-label		{ cursor: pointer; }
-
 textarea {
   font-size: smaller;
   width: 95%;
 }
+
+/* textareas for skin/template editing have monospace fonts */
+textarea.skinedit, textarea.templateedit
+{
+	font-family: monospace;
+}
+
+img			{ border: none; }
+.skip 		{ display: none; }
+label		{ cursor: pointer; }
+
 
 /* header */
 h1 {
