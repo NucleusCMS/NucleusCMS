@@ -4566,7 +4566,7 @@ selector();
 			if ($member->isLoggedIn() && $member->isAdmin())
 				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus ', $nucleus['version'], '</a>';
 			else
-				echo 'Nucleus ' , $nucleus['version'];
+				echo 'Nucleus CMS ' , $nucleus['version'];
 			echo ')';
 		echo '</div>';
 	}
