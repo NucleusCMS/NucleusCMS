@@ -370,7 +370,6 @@ class BLOG {
 	 */
 	function search($search, $template, $amount, $maxresults, $startpos) {
         global $CONF;
-        global $REQUEST_URI;
         $searchclass = new SEARCH($search);
 
         $where  = $searchclass->boolean_sql_where("ititle,ibody,imore");
