@@ -9,6 +9,8 @@
   * (see nucleus/documentation/index.html#license for more info)
   *  
   * Some JavaScript code for the bookmarklets
+  *
+  * $Id$
   */
 
 /**

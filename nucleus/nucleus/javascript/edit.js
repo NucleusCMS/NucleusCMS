@@ -10,6 +10,8 @@
   *
   * This file contains functions to allow adding items from inside the weblog.
   * Also contains code to avoid submitting form data twice.
+  *
+  * $Id$
   */
 
 var nucleusConvertBreaks = true;

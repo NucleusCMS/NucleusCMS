@@ -17,6 +17,8 @@
   *		- Use createElement() instead of document.createElement()
   *
   * That's basically it :)
+  *
+  * $Id$
   */
 
 // to get the script working when page is sent as application/xhtml+xml

@@ -1,4 +1,6 @@
-<?php	/**
+<?php	
+
+	/**
 	  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
 	  * Copyright (C) 2002-2004 The Nucleus Group
 	  *
@@ -9,6 +11,8 @@
 	  * (see nucleus/documentation/index.html#license for more info)
 	  *	
 	  * Some functions common to all upgrade scripts
+	  *
+  	  * $Id$
 	  */
 
 	include('../../config.php');

@@ -11,6 +11,8 @@
   *	Javascript code to hide empty textareas when editing templates.
   *
   * @require compatibility.js
+  *
+  * $Id$
   */
 
 var amountOfFields = 1;
