@@ -16,10 +16,7 @@
 	// include the admin code
 	include('../config.php');
 	
-	if (!stristr(serverVar('HTTP_ACCEPT'),'application/xhtml+xml'))
-		header('Content-Type: text/html;');			
-	else
-		header('Content-Type: application/xhtml+xml;');			
+	sendContentType('application/xhtml+xml');
 	
 	if ($CONF['alertOnSecurityRisk'] == 1)
 	{

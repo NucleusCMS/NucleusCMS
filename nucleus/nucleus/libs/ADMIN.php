@@ -4208,6 +4208,10 @@ selector();
 				<?php				// ---- user settings ---- 
 				
 				if ($action != 'showlogin') {
+					echo '<ul>';
+					echo '<li><a href="index.php?action=overview">Home</a></li>';
+					echo '</ul>';
+				
 					echo '<h2>Add Item</h2>';
 					echo '<form method="get" action="index.php"><div>';
 					echo '<input type="hidden" name="action" value="createitem" />';
