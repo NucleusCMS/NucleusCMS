@@ -583,8 +583,8 @@ class ACTIONS extends BaseActions {
 	
 
 	function parse_itemtitle() {
-		global $manager;
-		$item =& $manager->getItem(intRequestVar('itemid'),0,0);
+		global $manager, $itemid;
+		$item =& $manager->getItem($itemid,0,0);
 		echo htmlspecialchars(strip_tags($item['title']));
 	}
 	
