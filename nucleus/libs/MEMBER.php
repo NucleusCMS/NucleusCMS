@@ -208,7 +208,7 @@ class MEMBER {
 		if ($item['authorid'] == $this->getID()) return 1;
 		
 		// if member has admin rights on both blogs: OK
-		if (($this->blogAdminRights($dest_blogid)) && ($this->blogAdminRights($source_blog))) return 1;
+		if (($this->blogAdminRights($dest_blogid)) && ($this->blogAdminRights($source_blogid))) return 1;
 		
 		// all other cases: NOK
 		return 0;

@@ -584,6 +584,7 @@
 			// close database connection (needs to be closed if we want to include globalfunctions.php)
 			mysql_close();
 
+			$manager = '';
 			include_once($DIR_LIBS . 'globalfunctions.php');
 			
 			// 11. install custom skins
@@ -741,7 +742,6 @@
 			// do this before calling getPlugin (in case the plugin id is used there)
 			$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.(++$numCurrent).',"'.addslashes($plugName).'")';
 			sql_query($query);
-			$iPid = mysql_insert_id();
 
 			// get and install the plugin
 			$plugin =& $manager->getPlugin($plugName);
@@ -926,7 +926,7 @@
 			</p>
 			
 			<ul>
-			<?php				while($msg = array_shift($errors))
+			<?php	while($msg = array_shift($errors))
 					echo "<li>$msg</li>";
 			?>
 			</ul>

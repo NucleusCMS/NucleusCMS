@@ -326,7 +326,7 @@ class ADMIN {
 	}
 	
 	function action_batchcomment() {
-		global $member, $manager;
+		global $member;
 		
 		// check if logged in
 		$member->isLoggedIn() or $this->disallow();
@@ -379,7 +379,7 @@ class ADMIN {
 	}
 
 	function action_batchmember() {
-		global $member, $manager;
+		global $member;
 		
 		// check if logged in and admin
 		($member->isLoggedIn() && $member->isAdmin()) or $this->disallow();
@@ -444,7 +444,7 @@ class ADMIN {
 	
 
 	function action_batchteam() {
-		global $member, $manager;
+		global $member;
 		
 		$blogid = intRequestVar('blogid');
 		
@@ -870,10 +870,6 @@ class ADMIN {
 		
 		// check if allowed
 		$member->teamRights($blogid) or $this->disallow();		
-		
-		$memberid = $member->getID();
-		
-		$blog =& $manager->getBlog($blogid);
 				
 		$this->pagehead();
 	
@@ -1044,7 +1040,7 @@ class ADMIN {
 	}
 	
 	function action_itemdeleteconfirm() {
-		global $member, $manager;
+		global $member;
 		
 		$itemid = intRequestVar('itemid');
 		
@@ -1133,7 +1129,7 @@ class ADMIN {
 	  * errors are returned
 	  */
 	function moveOneItem($itemid, $destCatid) {
-		global $member, $manager;
+		global $member;
 		
 		// only allow if user is allowed to move item
 		if (!$member->canUpdateItem($itemid, $destCatid))
@@ -1146,7 +1142,7 @@ class ADMIN {
 	  * Adds a item to the chosen blog
 	  */
 	function action_additem() {
-		global $member, $manager, $CONF;
+		global $manager, $CONF;
 		 
 		$manager->loadClass('ITEM');
 
@@ -2868,7 +2864,7 @@ selector();
 								<select name="skinfile" id="skinie_import_local">
 								<?php									foreach ($candidates as $skinname => $skinfile) {
 										$html = htmlspecialchars($skinfile);
-										echo '<option value="',$skinfile,'">',$skinname,'</option>';
+										echo '<option value="',$html,'">',$skinname,'</option>';
 									}
 								?>
 								</select>
@@ -3314,7 +3310,7 @@ selector();
 		$content = addslashes($content);	
 		
 		// don't add empty parts:
-		if (!trim($content)) return;
+		if (!trim($content)) return -1;
 		
 		$query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
 		       . "VALUES ($id, '$partname', '$content')";
@@ -3385,7 +3381,7 @@ selector();
 		if (TEMPLATE::exists($name))
 			$this->error(_ERROR_DUPTEMPLATENAME);		
 
-		$newTemplateId = TEMPLATE::createNew($name, $desc);
+		TEMPLATE::createNew($name, $desc);
 
 		$this->action_templateoverview();
 	}
@@ -3481,7 +3477,7 @@ selector();
 		if (SKIN::exists($name))
 			$this->error(_ERROR_DUPSKINNAME);		
 			
-		$newId = SKIN::createNew($name, $desc);
+		SKIN::createNew($name, $desc);
 		
 		$this->action_skinoverview();
 	}	
@@ -4235,7 +4231,7 @@ selector();
 						$template['shorten'] = 10;
 						$template['shortenel'] = '';
 						$template['javascript'] = 'onchange="return form.submit()"';					
-						$amount = showlist($query,'select',$template);
+						showlist($query,'select',$template);
 
 					echo '</div></form>';
 
@@ -4298,8 +4294,6 @@ selector();
 		
 		// header-code stolen from phpMyAdmin
 		// REGEDIT and bookmarklet code stolen from GreyMatter
-
-		$bookmarkletline = getBookmarklet($blogid, 'contextmenu');
 
 		header('Content-Type: application/octetstream');
 		header('Content-Disposition: filename="nucleus.reg"');
@@ -4391,7 +4385,7 @@ selector();
 		
 		$query =  'SELECT * FROM '.sql_table('actionlog').' ORDER BY timestamp DESC';
 		$template['content'] = 'actionlist';
-		$amount = showlist($query,'table',$template);
+		showlist($query,'table',$template);
 		
 		$this->pagefoot();
 
@@ -4806,7 +4800,7 @@ selector();
 		if ($manager->pluginInstalled($name))
 			$this->error(_ERROR_DUPPLUGIN);
 		if (!checkPlugin($name))
-			$this->error(_ERROR_PLUGFILEERROR . ' (' . $file . ')');
+			$this->error(_ERROR_PLUGFILEERROR . ' (' . $name . ')');
 		
 		// get number of currently installed plugins
 		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
@@ -4913,7 +4907,7 @@ selector();
 	}
 	
 	function action_plugindeleteconfirm() {
-		global $member, $manager;
+		global $member;
 		
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
@@ -5613,7 +5607,6 @@ function listplug_table_pluginlist($template, $type) {
 }
 
 function listplug_table_plugoptionlist($template, $type) {
-	global $manager;
 	switch($type) {
 		case 'HEAD';
 			echo '<th>'._LISTS_INFO.'</th><th>'._LISTS_VALUE.'</th>';
