@@ -1,5 +1,5 @@
 body {
-	background: #ffffff url(logo.gif) top left fixed no-repeat; 
+	background: #ffffff url(logo.gif) top left no-repeat; 
 }
 body, td, th, a, li, ul, textarea {
 	color: #000;
@@ -10,13 +10,19 @@ img			{ border: none; }
 .skip 		{ display: none; }
 label		{ cursor: pointer; }
 
+textarea {
+  font-size: smaller;
+  width: 95%;
+}
+
 /* header */
 h1 {
 	text-align:right;
 	font-size: 35px;
 	font-weight: 900;
 	letter-spacing: 0.1em;
-	color: #0001AA;	
+	/*color: #0001AA;	*/
+	color: #596d9d;
 	margin: 0 0 5px 0;
 	height: 75px;
 }
@@ -211,7 +217,6 @@ a:link, a:visited {
 }
 a:hover {
 	text-decoration: underline;
-	background-color: #DEE6F6;
 }
 
 table.navigation td, table.navigation th {
