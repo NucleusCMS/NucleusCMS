@@ -28,11 +28,11 @@ if (!$CONF['DisableSite']) {
 	ob_end_clean();
 	
 	// create ETAG (hash of feed)
-	$eTag = md5($feed);	
-	header('Etag: "'.$eTag.'"');
+	// (HTTP_IF_NONE_MATCH has quotes around it)
+	$eTag = '"'.md5($feed).'"';
+	header('Etag: '.$eTag);
 	
 	// compare Etag to what we got
-	// TODO: serverVar doesn't seem to work :((
 	if ($eTag == serverVar('HTTP_IF_NONE_MATCH')) {	
 		header("HTTP/1.0 304 Not Modified");
 		header('Content-Length: 0');
