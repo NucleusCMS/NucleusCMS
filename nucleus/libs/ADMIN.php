@@ -4924,7 +4924,7 @@ selector();
 		$helpFile = $DIR_PLUGINS.$plug->getShortName().'/help.html';
 		
 		if (($plug->supportsFeature('HelpPage') > 0) && (@file_exists($helpFile))) {
-			include($helpFile);
+			@readfile($helpFile);
 		} else {
 			echo '<p>Error: ', _ERROR_PLUGNOHELPFILE,'</p>';
 			echo '<p><a href="index.php?action=pluginlist">(',_BACK,')</a></p>';
