@@ -232,9 +232,9 @@ class BlogImport {
 			print_r($aData);
 			echo '</pre>';
 		}
-
+		
 		// - insert item into nucleus database
-		$iNewId = convert_addToItem(
+		$iNewId = $this->sql_addToItem(
 			$aData['title'],
 			$aData['body'],
 			$aData['extended'],
@@ -254,7 +254,7 @@ class BlogImport {
 
 		// - insert comments into nucleus database
 		foreach ($aData['comments'] as $comment) {
-			$cId = convert_addToComments(
+			$cId = $this->sql_addToComments(
 				$comment['author'],
 				$comment['authorid'],
 				$comment['body'],
@@ -462,7 +462,7 @@ class BlogImport {
 				$shortname = $shortname . $idx;
 			}
 
-			$nucleus_blogid = convert_addToBlog($newblogname, $shortname, $newowner);
+			$nucleus_blogid = $this->sql_addToBlog($newblogname, $shortname, $newowner);
 			
 			echo '<h2>Creating new blog</h2>';
 			echo '<p>Your new weblog has been created.</p>';
@@ -738,8 +738,8 @@ class BlogImport {
 				if (eregi("(.*)/(.*)/(.*) (.*):(.*):(.*) (.*)",$strTime,$regs) != false) {
 					if (($regs[7] == "PM") && ($regs[4] != "12"))
 						$regs[4] += 12;
-					return mktime($regs[4],$regs[5],$regs[6],$regs[1],$regs[2],$regs[3]);
 
+					return mktime($regs[4],$regs[5],$regs[6],$regs[1],$regs[2],$regs[3]);
 				} else {
 					return 0;
 				}
@@ -788,6 +788,66 @@ class BlogImport {
 		if (!in_array($name, $this->aCategoryNames))
 			array_push($this->aCategoryNames, $name);	
 	}	
+	
+	function sql_addToItem($title, $body, $more, $blogid, $authorid, $timestamp, $closed, $category, $karmapos, $karmaneg) {
+		$title 		= trim(addslashes($title));
+		$body 		= trim(addslashes($body));
+		$more 		= trim(addslashes($more));
+		$timestamp 	= date("Y-m-d H:i:s", $timestamp);
+				
+		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IKARMAPOS, IKARMANEG, ICAT) '
+		       . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $karmapos, $karmaneg,  $category)";
+		       
+		mysql_query($query) or die("Error while executing query: " . $query);		       		       
+		
+		return mysql_insert_id();
+	}
+	
+	function sql_addToBlog($name, $shortname, $ownerid) {
+		$name 		= addslashes($name);
+		$shortname 	= addslashes($shortname);
+		
+		// create new category first
+		mysql_query('INSERT INTO '.sql_table('category')." (CNAME, CDESC) VALUES ('General','Items that do not fit in another categort')");
+		$defcat = mysql_insert_id();
+
+		$query = 'INSERT INTO '.sql_table('blog')." (BNAME, BSHORTNAME, BCOMMENTS, BMAXCOMMENTS, BDEFCAT) VALUES ('$name','$shortname',1 ,0, $defcat)";
+		mysql_query($query) or die("Error while executing query: " . $query);
+		$id = mysql_insert_id();
+		
+		$this->sql_addToTeam($id,$ownerid,1);
+	
+		
+		return $id;
+	}
+	
+	function sql_addToComments($name, $url, $body, $blogid, $itemid, $memberid, $timestamp, $host, $ip='') {
+		$name 		= addslashes($name);
+		$url 		= addslashes($url);
+		$body 		= trim(addslashes($body));
+		$host 		= addslashes($host);
+		$ip 		= addslashes($ip);
+		$timestamp 	= date("Y-m-d H:i:s", $timestamp);
+		
+		$query = 'INSERT INTO '.sql_table('comment')
+			   . ' (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CBLOG, CIP) '
+		       . "VALUES ('$name', '$url', $memberid, '$body', $itemid, '$timestamp', '$host', $blogid, '$ip')";
+
+		mysql_query($query) or die("Error while executing query: " . $query);
+		
+		return mysql_insert_id();		       
+	}
+	
+	function sql_addToTeam($blogid, $memberid, $admin) {
+	
+		$query = 'INSERT INTO '.sql_table('team').' (TMEMBER, TBLOG, TADMIN) '
+		       . "VALUES ($memberid, $blogid, $admin)";
+
+		mysql_query($query) or die("Error while executing query: " . $query);
+		
+		return mysql_insert_id();		       
+	}	
+	
 
 
 }
@@ -812,7 +872,7 @@ if ($ver > 250)
 		return getNucleusVersion();
 	}
 
-
+	// TODO: remove this function (replaced by BlogImport::sql_addToItem)
 	function convert_addToItem($title, $body, $more, $blogid, $authorid, $timestamp, $closed, $category, $karmapos, $karmaneg) {
 		$title = trim(addslashes($title));
 		$body = trim(addslashes($body));
@@ -826,6 +886,8 @@ if ($ver > 250)
 		return mysql_insert_id();
 	}
 	
+
+	// TODO: remove this function (replaced by BlogImport::sql_addToBlog)
 	function convert_addToBlog($name, $shortname, $ownerid) {
 		$name = addslashes($name);
 		$shortname = addslashes($shortname);
@@ -844,6 +906,7 @@ if ($ver > 250)
 		return $id;
 	}
 	
+	// TODO: remove this function (replaced by BlogImport::sql_addToComments)
 	function convert_addToComments($name, $url, $body, $blogid, $itemid, $memberid, $timestamp, $host, $ip='') {
 		$name = addslashes($name);
 		$url = addslashes($url);
@@ -860,6 +923,7 @@ if ($ver > 250)
 		return mysql_insert_id();		       
 	}
 	
+	// TODO: remove this function (replaced by BlogImport::sql_addToTeam)
 	function convert_addToTeam($blogid, $memberid, $admin) {
 	
 		$query = 'INSERT INTO '.sql_table('team').' (TMEMBER, TBLOG, TADMIN) '
