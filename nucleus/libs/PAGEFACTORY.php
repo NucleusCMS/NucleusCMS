@@ -18,6 +18,22 @@
  */
 class PAGEFACTORY extends BaseActions {
 
+	// ref to the blog object for which an add:edit form is created
+	var $blog;
+	
+	// allowed actions (for parser)
+	var $actions;
+	
+	// allowed types of forms (bookmarklet/admin)
+	var $allowedTypes;
+	var $type;		// one of the types in $allowedTypes
+	
+	// 'add' or 'edit'
+	var $method;
+	
+	// info to fill out in the form (e.g. catid, itemid, ...)
+	var $variables;
+
 	/**
 	 * creates a new PAGEFACTORY object
 	 */

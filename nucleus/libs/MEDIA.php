@@ -236,6 +236,11 @@ class MEDIA {
   */
 class MEDIAOBJECT {
 
+	var $private;
+	var $collection;
+	var $filename;
+	var $timestamp;
+
 	function MEDIAOBJECT($collection, $filename, $timestamp) {
 		$this->private = is_numeric($collection);
 		$this->collection = $collection;

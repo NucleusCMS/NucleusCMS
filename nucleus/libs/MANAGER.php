@@ -18,6 +18,28 @@
   * active at all times. The object can be requested using MANAGER::instance()
   */
 class MANAGER {
+
+	/**
+	 * Cached ITEM, BLOG, PLUGIN and KARMA objects. When these objects are requested 
+	 * through the global $manager object (getItem, getBlog, ...), only the first call 
+	 * will create an object. Subsequent calls will return the same object.
+	 *
+	 * The $items, $blogs, ... arrays map an id to an object (for plugins, the name is used
+	 * rather than an ID)
+	 */
+	var $items;
+	var $blogs;
+	var $plugins;
+	var $karma;
+	
+	/**
+	  * The plugin subscriptionlist
+	  *
+	  * The subcription array has the following structure
+	  *		$subscriptions[$EventName] = array containing names of plugin classes to be
+	  *									 notified when that event happens
+	  */
+	var $subscriptions;	
 	
 	/**
 	  * Returns the only instance of this class. Creates the instance if it 
@@ -221,13 +243,6 @@ class MANAGER {
 	}
 	
 	/**
-	  * Definition of the cache variables
-	  */
-	var $items;
-	var $blogs;
-
-
-	/**
 	  * A function to notify plugins that something has happened. Only the plugins
 	  * that are subscribed to the event will get notified.
 	  * Upon the first call, the list of subscriptions will be fetched from the 
@@ -277,16 +292,6 @@ class MANAGER {
 		
 	}
 
-	/**
-	  * Definition of the plugin subscriptionlist, and the store of loaded 
-	  * plugin objects
-	  *
-	  * The subcription array has the following structure
-	  *		$subscriptions[$EventName] = array containing names of plugin classes to be
-	  *									 notified when that event happens
-	  */
-	var $subscriptions;
-	var $plugins;
 	
 	
 }

@@ -132,10 +132,9 @@
 		{
 			// only request the options the very first time. On subsequent requests
 			// the static collection is used to save SQL queries.
-			static $plugin_options = 0;
-			if ($plugin_options == 0)
+			if ($this->plugin_options == 0)
 			{
-				$plugin_options = array();  	
+				$this->plugin_options = array();  	
 				$query = mysql_query(
 					 'SELECT d.oname as name, o.ovalue as value '.
 					 'FROM '.
@@ -210,11 +209,17 @@
 			return str_replace('np_','',strtolower(get_class($this)));
 		}
 
+		var $_aOptionValues;	// oid_contextid => value
+		var $_aOptionToInfo;	// context_name => array('oid' => ..., 'default' => ...)
+		var $plugin_options;	// see getOption()
+		var $plugid;			// plugin id
+
 
 		// constructor. Initializes some internal data
 		function NucleusPlugin() {
 			$this->_aOptionValues = array();	// oid_contextid => value
 			$this->_aOptionToInfo = array();	// context_name => array('oid' => ..., 'default' => ...)
+			$this->plugin_options = 0;
 		}
 
 		// private
@@ -441,7 +446,6 @@
 				}
 			}
 		}
-
-
+		
 	}
 ?>
