@@ -2982,7 +2982,7 @@ selector();
 		// load skinie class
 		include_once($DIR_LIBS . 'skinie.php');
 		
-		$skinFile	= postVar('skinfile');
+		$skinFileRaw= postVar('skinfile');
 		$mode 		= postVar('mode');
 
 		$importer = new SKINIMPORT();
@@ -2990,12 +2990,14 @@ selector();
 		// get full filename
 		if ($mode == 'file')
 		{
-			$skinFile = $DIR_SKINS . $skinFile . '/skinbackup.xml';
+			$skinFile = $DIR_SKINS . $skinFileRaw . '/skinbackup.xml';
 			
 			// backwards compatibilty (in v2.0, exports were saved as skindata.xml)
 			if (!file_exists($skinFile))
-				$skinFile = $DIR_SKINS . $skinFile . '/skindata.xml';
-		}	
+				$skinFile = $DIR_SKINS . $skinFileRaw . '/skindata.xml';
+		} else {
+			$skinFile = $skinFileRaw;
+		}
 		
 		// read only metadata
 		$error = $importer->readFile($skinFile, 1);	
@@ -3039,7 +3041,7 @@ selector();
 		// load skinie class
 		include_once($DIR_LIBS . 'skinie.php');
 
-		$skinFile 	= postVar('skinfile');
+		$skinFileRaw= postVar('skinfile');
 		$mode		= postVar('mode');
 
 		$allowOverwrite = intPostVar('overwrite');
@@ -3047,12 +3049,14 @@ selector();
 		// get full filename
 		if ($mode == 'file')
 		{
-			$skinFile = $DIR_SKINS . $skinFile . '/skinbackup.xml';		
+			$skinFile = $DIR_SKINS . $skinFileRaw . '/skinbackup.xml';		
 			
 			// backwards compatibilty (in v2.0, exports were saved as skindata.xml)
 			if (!file_exists($skinFile))
-				$skinFile = $DIR_SKINS . $skinFile . '/skindata.xml';
+				$skinFile = $DIR_SKINS . $skinFileRaw . '/skindata.xml';
 			
+		} else {
+			$skinFile = $skinFileRaw;
 		}
 
 		$importer = new SKINIMPORT();
