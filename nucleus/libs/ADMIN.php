@@ -5947,7 +5947,7 @@ function listplug_table_templatelist($template, $type) {
 }
 
 function listplug_table_skinlist($template, $type) {
-	global $CONF;
+	global $CONF, $DIR_SKINS;
 	switch($type) {
 		case 'HEAD';
 			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";		
@@ -5965,6 +5965,22 @@ function listplug_table_skinlist($template, $type) {
 			echo _LISTS_TYPE ,': ' , htmlspecialchars($current->sdtype);
 			echo '<br />', _LIST_SKINS_INCMODE , ' ' , (($current->sdincmode=='skindir') ?_PARSER_INCMODE_SKINDIR:_PARSER_INCMODE_NORMAL);
 			if ($current->sdincpref) echo '<br />' , _LIST_SKINS_INCPREFIX , ' ', $current->sdincpref;
+			
+			// add preview image when present
+			if ($current->sdincpref && @file_exists($DIR_SKINS . $current->sdincpref . 'preview.png'))
+			{
+				echo '<br /><br />';
+				
+				$hasEnlargement = @file_exists($DIR_SKINS . $current->sdincpref . 'preview-large.png');
+				if ($hasEnlargement)
+					echo '<a href="',$CONF['SkinsURL'], $current->sdincpref,'preview-large.png" title="View larger">';
+				
+				echo '<img class="skinpreview" src="',$CONF['SkinsURL'], $current->sdincpref,'preview.png" width="100" height="75" alt="Preview for \'',htmlspecialchars($current->sdname),'\' skin" />';
+				
+				if ($hasEnlargement)
+					echo '</a>';
+			}
+			
 			echo "</td>";
 			
 						
