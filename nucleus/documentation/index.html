@@ -2,13 +2,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<!-- $Id$ -->
-	<title>Nucleus - Manual</title>
+	<title>Nucleus CMS - Manual</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 </head>
 <body>
 
 <div class="heading">
-Nucleus Manual
+Nucleus CMS Manual
 <i>(v3.2)</i>
 </div>
 
@@ -23,7 +23,7 @@ Nucleus Manual
 <h1><a name="toc"></a>Table Of Contents</h1>
 
 <ul>
-	<li><a href="#about">About Nucleus</a></li>
+	<li><a href="#about">About Nucleus CMS</a></li>
 	<li><a href="#license">License: GPL</a></li>
 	<li><a href="#installation">Installation</a></li>
 	<li><a href="skins.html">Modifying skins and templates</a> (separate file)</li>
@@ -164,6 +164,9 @@ Upload all files to your server, using your favorite FTP program. Make sure to u
 	</li>
 	<li>
 		If you want to use file upload, you'll need to add write permissions to the /media/ directory. This is needed in order to allow PHP to write uploaded files into that directory. The directory should be <i>chmod</i>ded to <strong>777</strong> (<a href="tips.html#filepermissions">Quick guide on how to change file permissions</a>). (If you have root access, you can instead <tt>chgrp</tt> the directory to the user that is running the <tt>httpd</tt> process (usually <tt>httpd</tt> or <tt>nobody</tt>, then <tt>chmod 775</tt> the directory).
+	</li>
+	<li>
+		If you want to use the SkinFiles plugin to edit files, you'll need to change the permissions on all files and directories under the /skins/ directory. To be able to edit files, they should be <i>chmod</i>ded to <strong>666</strong> (<a href="tips.html#filepermissions">Quick guide on how to change file permissions</a>). To be able to create new files or directories, the parent directory should be <i>chmod</i>ded to <strong>777</strong>.
 	</li>
 </ol>
 
