@@ -129,14 +129,18 @@ class BLOG {
 		return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
 	}
 	
-	function showUsingQuery($template, $query, $highlight = '', $comments = 0, $dateheads = 1) {
+	function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1) {
 		global $CONF, $manager;	
 
 		$lastVisit = cookieVar('lastVisit');
 		if ($lastVisit != 0)
 			$lastVisit = $this->getCorrectTime($lastVisit);
 
-		$template = TEMPLATE::read($template);
+		// set templatename as global variable (so plugins can access it)
+		global $currentTemplateName;
+		$currentTemplateName = $templateName;
+		
+		$template = TEMPLATE::read($templateName);
 		
 		// create parser object & action handler
 		$actions = new ITEMACTIONS($this);

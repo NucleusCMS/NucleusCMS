@@ -81,6 +81,10 @@ class SKIN {
 		if (!headers_sent())
 			header('Content-Type: ' . $this->getContentType() . '; charset=' . _CHARSET);
 
+		// set skin name as global var (so plugins can access it)
+		global $currentSkinName;
+		$currentSkinName = $this->getName();
+
 		$contents = $this->getContent($type);
 
 		if (!$contents) {
