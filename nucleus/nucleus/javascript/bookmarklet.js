@@ -59,3 +59,10 @@ function hideBlock(id) {
 function showBlock(id) {
 	document.getElementById(id).style.display = "block";
 }
+
+function help(url) {
+	popup = window.open(url,'helpwindow','status=no,toolbar=yes,scrollbars=yes,resizable=yes,width=500,height=500,top=0,left=0');
+	if (popup.focus) popup.focus();
+	if (popup.GetAttention) popup.GetAttention();
+	return false;
+}

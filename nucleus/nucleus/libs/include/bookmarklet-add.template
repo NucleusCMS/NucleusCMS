@@ -40,49 +40,61 @@
 
 			<div id="body" class="contentblock">
 
-				<%text(_ADD_TITLE)%>:
+				<table>
+				<tr>
+				<td><%text(_ADD_TITLE)%></td>
+				<td>
 				<input 
 					<%jsinput(title)%>
 					type="text" size="60" maxlength="160" 
 					value="<%contents(title)%>"
-				/>
-			
-				<br />
-				<br />
-
-				<%text(_ADD_BODY)%>: 
-				<br />
+				/></td>
+				</tr><tr>
+				<td>
+				<%text(_ADD_BODY)%> <%helplink(additem)%></td>
+				<td>
 				<%jsbuttonbar(media)%>
 				<textarea 
 					<%jsinput(body)%>
-					cols="60" 
+					cols="58" 
 					rows="12"><%contents(body)%></textarea>
 					
-				<br /><br />
-				<%text(_ADD_CATEGORY)%>: <%categories%>
+				</td></tr>
+				<tr><td>
+				<%text(_ADD_CATEGORY)%></td>
+				<td><%categories%></td>
+				</tr></table>
 
 					
 			</div>
 			
 			<div id="more" class="contentblock">
-				<h2><%text(_ADD_MORE)%></h2>
-				
+				<table>
+				<tr>
+				<td><%text(_ADD_MORE)%> <%helplink(extended)%></td>
+				<td>
 				<%jsbuttonbar(media)%>
 				<textarea 
 					<%jsinput(more)%>
-					cols="60" 
+					cols="58" 
 					rows="17"><%contents(more)%></textarea>
+				</td></tr></table>
 			</div>
 			<div id="options" class="contentblock">
-				
+				<table>
 				<%ifblogsetting(bcomments)%>
-					<h2><%text(_ADD_DISABLE_COMMENTS)%></h2>
+					<tr>
+					<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+					<td>
 					<input type='radio' name='closed' value='1' id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
 					<input type='radio' name='closed' value='0' checked='checked' id="closed_no"/><label for="closed_no"><%text(_NO)%></label>
+					</td>
+					</tr>
 				<%endif%>
 				
-				<h2><%text(_ADD_DRAFTNFUTURE)%></h2>
-				
+				<tr>
+				<td><%text(_ADD_DRAFTNFUTURE)%></td>
+				<td>
 					<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
 					<br />
 					<input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
@@ -101,10 +113,15 @@
 						<%endif%>
 					</div>
 					<input name="actiontype" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
-					
-				<h2><%text(_ADD_PLUGIN_EXTRAS)%></h2>
+				</td>
+				</tr>
+				<tr>
+				<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+				<td>
+				<%pluginextras%></td>
+				</tr>
+				</table>
 				
-				<%pluginextras%>
 
 			</div>
 			
