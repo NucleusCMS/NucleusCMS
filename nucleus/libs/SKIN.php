@@ -546,19 +546,20 @@ class ACTIONS extends BaseActions {
         if ($linktext=="") {$linktext = $direction;} // which will read 'prev' or 'next'
         $parsed     = parse_url($REQUEST_URI);
         $parsed     = $parsed[query];
+
         switch ($direction) {
             case 'prev':
                 if ( intval($startpos) - intval($amount) >= 0) {
-                    $startpos = intval($startpos) - intval($amount);
-                    echo '<a href="'.$CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos)
-                         .'">'.$linktext.'</a>';
+                    $startpos 	= intval($startpos) - intval($amount);
+                    $url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
+                    echo '<a href="', htmlspecialchars($url) ,'">', htmlspecialchars($linktext),'</a>';
                 }
                 break;
             case 'next':
                 $startpos = intval($startpos) + intval($amount);
                 if (intval($this->amountfound) >= intval($amount) || (intval($this->amountfound) == 0) ) {
-                    echo '<a href="'.$CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos)
-                         .'">'.$linktext.'</a>';
+                	$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
+                    echo '<a href="', htmlspecialchars($url), '">', htmlspecialchars($linktext),'</a>';
                 }
                 break;
             default:
