@@ -8,7 +8,7 @@
 
 <target name="init">
 
-    <property name="version" value="2.1CVS" />
+    <property name="version" value="2.5beta" />
     
     <property name="src.home" value=".." />
     <property name="build.home" value="." />    
