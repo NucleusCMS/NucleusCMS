@@ -16,18 +16,19 @@ include($DIR_LIBS . 'xmlrpc.inc.php');
 $f=new xmlrpcmsg(
 	'mt.setPostCategories',
 	 array(
-	 	new xmlrpcval('1637', 'string'),			// itemid
+	 	new xmlrpcval('2', 'string'),			// itemid
 	 	new xmlrpcval('god', 'string'),			// username
 	 	new xmlrpcval('heaven', 'string'),		// password
 	 	new xmlrpcval(
 	 		array(					
 	 			new xmlrpcval(
 	 				array(
-	 					'categoryId' => new xmlrpcval('newcat2','string')
+	 					'categoryId' => new xmlrpcval('Test','string')
 	 				),
 	 				'struct'
-	 			),
-	 			new xmlrpcval(
+	 			)
+/*	 			,
+				new xmlrpcval(
 	 				array(
 //	 					'isPrimary' => new xmlrpcval(1, 'boolean'),
 	 					'categoryId' => new xmlrpcval('newcat1','string')
@@ -39,7 +40,8 @@ $f=new xmlrpcmsg(
 	 					'categoryId' => new xmlrpcval('General','string')
 	 				),
 	 				'struct'
-	 			)	 			
+	 			)	 		
+*/	 			
 	 		),		
 	 		'array'
 	 	)
