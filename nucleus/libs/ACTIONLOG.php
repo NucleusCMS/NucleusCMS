@@ -34,7 +34,7 @@ class ACTIONLOG {
 		
 		$message = addslashes($message);		// add slashes
 		$timestamp = date("Y-m-d H:i:s",time());	// format timestamp
-		$query = "INSERT INTO nucleus_actionlog (timestamp, message) VALUES ('$timestamp', '$message')";
+		$query = "INSERT INTO " . sql_table('actionlog') . " (timestamp, message) VALUES ('$timestamp', '$message')";
 		
 		sql_query($query);
 	}
@@ -45,7 +45,7 @@ class ACTIONLOG {
 	function clear() {
 		global $manager;
 		
-		$query = "DELETE FROM nucleus_actionlog";
+		$query = 'DELETE FROM ' . sql_table('actionlog');
 
 		$manager->notify('ActionLogCleared',array());
 		

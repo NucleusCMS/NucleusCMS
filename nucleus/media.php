@@ -32,7 +32,7 @@ if (!$member->isLoggedIn()) {
 }
 
 // check if member is on at least one teamlist
-$query = 'SELECT * FROM nucleus_team WHERE tmember=' . $member->getID();
+$query = 'SELECT * FROM ' . sql_table('team'). ' WHERE tmember=' . $member->getID();
 $teams = mysql_query($query);
 if (mysql_num_rows($teams) == 0)
 	media_doError(_ERROR_DISALLOWEDUPLOAD);
