@@ -16,6 +16,12 @@
 	<li>
 		<b>Nucleus v2.5 beta (October 11, 2003)</b>
 		<ul>
+			<li>FIXED: The test that auto-disabled fancy URLs was incorrect, and also applied to top-level domains that use 3 characters (like .com) (karma)</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v2.5 beta (October 11, 2003)</b>
+		<ul>
 			<li>ADDED: <code>if(previtem)</code>, <code>if(nextitem)</code> and <code>if(skintype,<em>typename</em>)</code> skinvars.</li>
 			<li>FIXED: RSS conditional GET wasn't working correctly (Visa Kopu)</li>
 			<li>ADDED: Templatevar <code>relevance</code> available when displaying search results (Xiffy)</li>
@@ -23,7 +29,7 @@
 			<li>ADDED: Skinvars <code>nextitemtitle</code> and <code>previtemtitle</code> on <code>item</code> skins (Xiffy)</li>
 			<li>FIXED: Upload did not notice duplicates correctly</li>
 			<li>ADDED: XML-RPC: Support for <code>metaWeblog.newMediaObject</code> and <code>metaWeblog.getRecentPosts</code> methods</li>
-			<li>ADDED: XML-RPC: Support for the <a href="http://www.movabletype.org/docs/mtmanual_programmatic.html">Movable Type API</a> (except for <code>mt.getTrackbackPings</code>)</li>			
+			<li>ADDED: XML-RPC: Support for the <a href="http://www.movabletype.org/docs/mtmanual_programmatic.html">Movable Type API</a> (except for <code>mt.getTrackbackPings</code>)</li>
 			<li>CHANGED: Fulltext search, prev/next links on search pages, ... (Xiffy)</li>
 			<li>FIXED/CHANGED: Action log size drops back to 250 when more than 500 entries.</li>
 			<li>FIXED: No more restrictions on category names</li>
@@ -63,7 +69,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v2.0 Final (April 3, 2003)</b>	
+		<b>Nucleus v2.0 Final (April 3, 2003)</b>
 		<ul>
 			<li>FIXED: renamed the <code>xmlrpc_encode</code> and <code>xmlrpc_decode</code> methods in <cod>xmlrpc.inc.php</code>, avoiding naming conflicts on some PHP configurations that are compiled with XMLRPC support</li>
 			<li>FIXED: restore did not work on some PHP configurations, and did not correctly recognize <code>application/x-gzip</code> encoding type</li>
@@ -77,8 +83,8 @@
 			<li>CHANGED: Marked the <code>imagetext</code> skinvar as deprecated (use <code>image(caption)</code> instead)</li>
 			<li>CHANGED: Marked the <code>ifcat</code> skinvar as deprecated (use <code>if(category)</code> instead)</li>
 			<li>CHANGED: Marked the <code>vars</code> skinvar as deprecated (if anyone needs a hidden 'itemid' formfield [are there?], the itemid skinvar can be used instead)</li>
-			<li>ADDED: <code>doTemplateCommentsVar(&$item, &$comment)</code> method in plugin interface</li>			
-			<li>CHANGED: comments are now also parsed using the same method as skins and items, allowing plugins, includes and more to be used there as well</li>	
+			<li>ADDED: <code>doTemplateCommentsVar(&$item, &$comment)</code> method in plugin interface</li>
+			<li>CHANGED: comments are now also parsed using the same method as skins and items, allowing plugins, includes and more to be used there as well</li>
 			<li>FIXED: guests cannot longer place 'fake' comments (making it look as if a regsitered memeber made the comment)</li>
 			<li>FIXED: item contents is no longer trimmed</li>
 			<li>FIXED: Made install script look less messy</li>
@@ -95,9 +101,9 @@
 	<li>
 		<b>Nucleus v2.0 beta (January 18, 2003)</b>
 		<ul>
-			<li>FIXED: Highlighted text no longer has &lt;!--h--&gt; in it</li>	
+			<li>FIXED: Highlighted text no longer has &lt;!--h--&gt; in it</li>
 			<li>ADDED; Plugin hook: PostAuthentication</li>
-			<li>ADDED: Plugin hooks PreAddItemForm, AddItemFormExtras and EditItemFormExtras</li>				
+			<li>ADDED: Plugin hooks PreAddItemForm, AddItemFormExtras and EditItemFormExtras</li>
 			<li>CHANGED: Notifications emails (new comment, etc) are not sent to the person causing the notification (comment author)</li>
 			<li>ADDED: plugins can access global variables <code>$currentTemplateName</code> and <code>$currentSkinName</code></li>
 			<li>CHANGED: Spaces after commas in &lt;%image%&gt;, &lt;%popup%&gt;, &lt;%media%&gt; </li>
@@ -119,19 +125,19 @@
 			<li>ADDED: Etag/If-None-Match support for xml-rss.php (needs some more work)</li>
 			<li>FIXED: more friendly bookmarklet for Opera 6 users (all tabs are visible, editing through bookmarklet works)</li>
 			<li>ADDED: on edit item, the post time can be changed (only if 'allow post to past' is enabled)</li>
-			<li>ADDED: 'Allow Post to Past' option on weblog basis</li>			
+			<li>ADDED: 'Allow Post to Past' option on weblog basis</li>
 			<li>ADDED: IncludeMode and IncludePrefix settings in nucleus_skin_desc + interface to change these settings + user IncludePrefix while parsing includes.</li>
 			<li>CHANGED: nucleusbutton skinvar now takes into account IncludeMode</li>
 			<li>CHANGED: btimeoffset column is now DECIMAL instead of INT </li>
 			<li>CHANGED: took away actionurl parameters from commentform and membermailform skinvars (it's a global setting now)</li>
 			<li>ADDED: &lt;%set(property,value)%&lt; skin/template-var to set global parser properties. Only one option defined so far: 'IncludeMode'. Can be 'skindir' or 'normal' and affects the include/parseinclude/phpinclude skin/templatevars</li>
-			<li>ADDED: &lt;%skinfile(filename)%&gt; skinvar (to be used on imported skins)</li>			
+			<li>ADDED: &lt;%skinfile(filename)%&gt; skinvar (to be used on imported skins)</li>
 			<li>ADDED: $CONF['SkinsURL'] and $DIR_SKINS (config.php)</li>
 			<li>CHANGED: friendly names used on skin edit (instead of 'index', 'item' etc)</li>
 			<li>ADDED: action url to global settings (action.php location)</li>
-			<li>ADDED: $desturl and $actionurl parameters on membermailform skinvar</li>			
+			<li>ADDED: $desturl and $actionurl parameters on membermailform skinvar</li>
 			<li>ADDED: skin import/export class</li>
-			<li>CHANGED: media library now works with multiple collections, of which one is private to the site member, and the rest is globally shared.</li>			
+			<li>CHANGED: media library now works with multiple collections, of which one is private to the site member, and the rest is globally shared.</li>
 			<li>CHANGED: base skin can now be changed (it's now a config setting). This skin is ONLY used in two cased: when all else fails, and when the selected skin does not have contents for the needed skinpart</li>
 			<li>CHANGED: positive and negative karma votes are now kept separately, since that works better and is more flexible. The &lt;%karma%&gt; templatevar received an extra parameter to select which information to show</li>
 			<li>ADDED: skinvars archivenext/archiveprev/archivetype</li>
@@ -154,7 +160,7 @@
 			<li>CHANGED: links in comments are now handled differently. Part of the URL is now displayed instead of just http://.../</li>
 			<li>ADDED: Opera version of bookmarklet</li>
 			<li>ADDED: selectLanguage() function to force the use of a certain language file</li>
-			<li>REMOVED: there was a plugin event AddItem which was actually not needed at all (wasn't included in the documentation too)</li>			
+			<li>REMOVED: there was a plugin event AddItem which was actually not needed at all (wasn't included in the documentation too)</li>
 			<li>ADDED: archivelist skinvars now takes an extra limit-parameter</li>
 			<li>CHANGED: moved all forms which can be included through skinvar out of SKIN.php and into .template files in the nucleus/forms directory.</li>
 			<li>FIXED: 'clone skin' did not copy contenttype</li>
@@ -171,7 +177,7 @@
 			<li>ADDED: 'delete item' option on edit item, plus 'delete item' confirmation screens (also on bookmarklet)</li>
 			<li>CHANGED: on multi-blog systems, the admin now only gets to see the blogs for which (s)he is on the team. All other blogs are available through an 'show all blogs...' link</li>
 			<li>FIXED: link to recent items after weblogs.com ping was broken</li>
-			<li>CHANGED: plugin event call 'PreAddComment' moved to immediately before the item is added to the database</li>			
+			<li>CHANGED: plugin event call 'PreAddComment' moved to immediately before the item is added to the database</li>
 			<li>FIXED: tab-orders were not correct on multiple admin pages</li>
 			<li>ADDED: &lt;%itemid%&gt; and &lt;%itemlink%&gt; available on item pages</li>
 			<li>FIXED: install.php now works when the PHP option magic_quotes_runtime is enabled</li>
@@ -187,9 +193,9 @@
 			<li>ADDED: &lt;%self%&gt; available in categorylist templates</li>
 			<li>ADDED: &lt;%itemtitle%&gt; skinvar available on item-skins</li>
 			<li>FIXED: editing a comment you made in a blog that's not your own resulted in a 'disallowed action' error </li>
-			<li>FIXED: plugin was listed twice in the list of available skinvars</li>			
+			<li>FIXED: plugin was listed twice in the list of available skinvars</li>
 			<li>ADDED: &lt;%archivedate%&gt; skinvar on archive skins</li>
-			<li>FIXED: admininstrators could not edit details of other members</li>			
+			<li>FIXED: admininstrators could not edit details of other members</li>
 		</ul>
 	</li>
 	<li>
@@ -201,7 +207,7 @@
 			<li>ADDED: title and authorName fields in Blogger API getRecentItems call</li>
 			<li>ADDED: HTML label tags for radio buttons and checkboxes (this way you can click anywhere on the text instead of only on the radio button/checkbox itself)</li>
 			<li>FIXED: deleting a comment you made in a blog that's not your own resulted in a 'disallowed action' error (thanks moraes)</li>
-			<li>CHANGED: the place where comments are inserted can now be chosen from within the template. Just include &lt;%comments%&gt; in the ITEM templatepart whereever you want the comment count (or comments) to appear. In upgrading, the old ordening is imitated by adding '&lt;%comments%&gt;' to the end of the ITEM template part.</li>			
+			<li>CHANGED: the place where comments are inserted can now be chosen from within the template. Just include &lt;%comments%&gt; in the ITEM templatepart whereever you want the comment count (or comments) to appear. In upgrading, the old ordening is imitated by adding '&lt;%comments%&gt;' to the end of the ITEM template part.</li>
 			<li>CHANGED: now trimming parameters that were passed to skinvars/templatevars</li>
 			<li>ADDED: &lt;%referer%&gt; skinvar, which inserts HTTP_REFERER</li>
 			<li>ADDED: '- New Category -' can now be chosen on add/edit item (only for blog admins). A new category is then created, and the chance is given to edit the category details.</li>
@@ -212,18 +218,18 @@
 			<li>CHANGED: &lt;%author(realname)%&gt; in item templates now inserts the real name of the author</li>
 			<li>FIXED: install.php now works when magic_quotes_gpc is disabled</li>
 			<li>ADDED: New settings: PluginURL, MaxUploadSize, ProtectMemNames</li>
-			<li>ADDED: hotlinks to the defined skinparts from the skin overview (also gives a good view on which skinparts have been defined and which have not been defined)</li>			
+			<li>ADDED: hotlinks to the defined skinparts from the skin overview (also gives a good view on which skinparts have been defined and which have not been defined)</li>
 			<li>ADDED: &lt;%smartbody%&gt; for item templates, which chooses between showing the body and extended part, based on the extended part being empty or not. Using this, the body text can be your full text, and the extended part could be seen as an 'introduction', which you want to show on the front page. (request from smarko)</li>
 			<li>ADDED: &lt;%edit%&gt;, &lt;%editlink%&gt; and &lt;%editpopupcode%&gt; can be used in item templates (and in items themselves) to insert a link  to where the item can be edited/deleted. (default setting uses bookmarklet to do this). The edit links only get shown when the user is allowed to edit a certain item (blog admin or item author). </li>
 			<li>FIXED: bookmarklet now works correctly when magic_quotes_gpc and register_globals are turned off </li>
 			<li>ADDED: PHP and MySQL versions are listed during the installation proces, with warnings when those version numbers are lower than what Nucleus requires</li>
 			<li>CHANGED: item parsing method changed, so it's more easily extensible. plugin, parsedinclude, include and phpinclude are now also allowed in some templates. Inside items, there are also 3 allowed variables: 'image', 'media' and 'popup'</li>
-			<li>FIXED: image popups didn't work with register_globals disabled</li>			
+			<li>FIXED: image popups didn't work with register_globals disabled</li>
 			<li>CHANGED: renamed method: getBlogidFromName -> getBlogIDFromName (consistency)</li>
 			<li>ADDED: method selectCategory($name)</li>
 			<li>FIXED: Nucleus now handles data correctly when magic_quotes_gpc is disabled (solves some problems with template editing)</li>
 			<li>CHANGED: categories in selection box are now sorted by name (tip from katatonik)</li>
-			<li>FIXED: Not all tables got exported on backup :( (thanks Xiffy!)</li>			
+			<li>FIXED: Not all tables got exported on backup :( (thanks Xiffy!)</li>
 			<li>FIXED: add item form didn't handle keyboard shortcuts correctly (thanks Hop!)</li>
 			<li>CHANGED: 'remember me' checkbox is now checked when the information was remembered from before (this way, the cookie gets set again and does not expire)</li>
 			<li>FIXED: after a category got selected through skinvar parameters, skinvars applying to all categories also got applied only to the last category that was selected (thanks Xiffy!)</li>
@@ -234,21 +240,21 @@
 			<li>CHANGED: searchform now available on ALL skintypes</li>
 			<li>FIXED: headers in globalfunctions/SKIN.php now sent _only_ when no other headers have been sent before. Should make including easier.</li>
 			<li>CHANGED: RSS-auto-discovery tag in default skin</li>
-			<li>CHANGED: formfields got labels (accessibility issue). Also access keys have been defined: L for login, 4 for Search (on windows, actions keys are used together with the ALT key)</li>			
+			<li>CHANGED: formfields got labels (accessibility issue). Also access keys have been defined: L for login, 4 for Search (on windows, actions keys are used together with the ALT key)</li>
 			<li>ADDED: left and right box buttons on JS toolbar</li>
 			<li>FIXED: truncated entry when login is requested after adding (data didn't get passed on correctly)</li>
 			<li>ADDED: &lt;%authorlink%&gt; to template vars for item templates (this one can take catid into account)</li>
 			<li>ADDED: $CONF['Self'] => $CONF['ItemURL'], $CONF['IndexURL'], ... to optionally allow people to use different files for items/archives/...</li>
 			<li>CHANGED: Now using mysql_fetch_assoc instead of mysql_fetch_array (efficiency)</li>
-			<li>CHANGED: The &lt;%searchresults%&gt; and &lt;%othersearchresults%&gt; skintags got an extra parameter to limit the number of results (defaults to 50)</li>			
+			<li>CHANGED: The &lt;%searchresults%&gt; and &lt;%othersearchresults%&gt; skintags got an extra parameter to limit the number of results (defaults to 50)</li>
 			<li>FIXED: doError did not take into account chosen skin</li>
 			<li>FIXED: Commentform not shown anymore for closed items (a message is shown instead)</li>
 			<li>CHANGED: Removed all unneccessary javascript: links (deprecated)</li>
 			<li>CHANGED: Media: Procentual width and height values are now allowed in image and inline constructs (e.g. &lt;%image(bla.gif|50%|50%|lala)%&gt;)</li>
-			<li>FIXED: Blogger API: getPost wasn't returning category name</li>			
+			<li>FIXED: Blogger API: getPost wasn't returning category name</li>
 			<li>FIXED: Blogger API: getRecentPosts wasn't converting linebreaks</li>
 			<li>FIXED: surpressed warning on mysql_close</li>
-			<li>FIXED: install-script now also accepts email addresses that contain uppercase characters</li>			
+			<li>FIXED: install-script now also accepts email addresses that contain uppercase characters</li>
 			<li>FIXED: imported items did not show up in the weblog</li>
 			<li>FIXED: blogger api &lt;title&gt; thingie didn't work</li>
 			<li>CHANGED: Made all uploaded files be chmodded to 644</li>
