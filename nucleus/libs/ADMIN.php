@@ -2645,7 +2645,7 @@ class ADMIN {
 	}
 	
 	function action_createnewlog() {
-		global $member;
+		global $member, $CONF;
 		
 		// Only Super-Admins can do this
 		$member->isAdmin() or $this->disallow();
@@ -2697,6 +2697,7 @@ class ADMIN {
 					       . ' FROM '.sql_table('skin_desc');
 					$template['name'] = 'defskin';
 					$template['tabindex'] = 50;
+					$template['selected'] = $CONF['BaseSkin'];	// set default selected skin to be globally defined base skin
 					showlist($query,'select',$template);		
 				?>
 			</td>
