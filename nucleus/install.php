@@ -248,7 +248,7 @@
 			</td>
 		</tr><tr>
 			<td>Admin-area <strong>path</strong>:</td>
-			<td><input name="AdminPath" size="60" value="<?php					$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
+			<td><input name="AdminPath" size="60" value="<?php					$path = str_replace("install.php",'',serverVar('SCRIPT_FILENAME'));
 					$path = str_replace("\\","/",$path);
 					// add slash at end if necessary
 					if (!endsWithSlash($path)) $path .= '/';
@@ -262,7 +262,7 @@
 			</td>
 		</tr><tr>
 			<td>Media directory <strong>path</strong>:</td>
-			<td><input name="MediaPath" size="60" value="<?php					$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
+			<td><input name="MediaPath" size="60" value="<?php					$path = str_replace("install.php",'',serverVar('SCRIPT_FILENAME'));
 					$path = str_replace("\\","/",$path);
 					// add slash at end if necessary
 					if (!endsWithSlash($path)) $path .= '/';
@@ -277,7 +277,7 @@
 			</td>
 		</tr><tr>
 			<td>Extra skin files directory <strong>path</strong>:</td>
-			<td><input name="SkinsPath" size="60" value="<?php				$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
+			<td><input name="SkinsPath" size="60" value="<?php				$path = str_replace("install.php",'',serverVar('SCRIPT_FILENAME'));
 				$path = str_replace("\\","/",$path);
 				// add slash at end if necessary
 				if (!endsWithSlash($path)) $path .= '/';
