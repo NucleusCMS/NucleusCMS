@@ -139,9 +139,10 @@ class COMMENTS {
 			return _ERROR_COMMENTS_NONPUBLIC;
 
 		// member name protection
-		if ($CONF['ProtectMemNames'] && !$member->isLoggedIn() && MEMBER::exists(trim($comment['user'])))
+		if ($CONF['ProtectMemNames'] && !$member->isLoggedIn() && MEMBER::isNameProtected($comment['user']))
 			return _ERROR_COMMENTS_MEMBERNICK;
 
+		// isValidComment returns either "1" or an error message
 		$isvalid = $this->isValidComment($comment);
 		if ($isvalid != 1)
 			return $isvalid;
