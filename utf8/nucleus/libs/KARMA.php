@@ -1,7 +1,7 @@
 <?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -10,6 +10,9 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * Class representing the karma votes for a certain item
+  *
+  * $Id: KARMA.php,v 1.3 2005-03-15 07:57:29 kimitake Exp $
+  * $NucleusJP$
   */
 class KARMA {
 	
