@@ -17,7 +17,10 @@
 			array(
 				new xmlrpcval('mt.supportedMethods', 'string'),
 				new xmlrpcval('mt.supportedTextFilters', 'string'),
-				new xmlrpcval('mt.getCategoryList', 'string')								
+				new xmlrpcval('mt.publishPost', 'string'),
+				new xmlrpcval('mt.getCategoryList', 'string'),
+				new xmlrpcval('mt.getPostCategories', 'string'),
+				new xmlrpcval('mt.setPostCategories', 'string')								
 			), 'array')
 		);
 		return $res;
@@ -57,7 +60,76 @@
 
 		return _mt_categoryList($blogid, $username, $password);
 	}
+	
+	// mt.publishPost
+	$f_mt_publishPost_sig = array(array(
+			// return type
+			$xmlrpcBoolean,		// true
+			
+			// params
+			$xmlrpcString,		// itemid
+			$xmlrpcString,		// username
+			$xmlrpcString		// password
+		));
+	$f_mt_publishPost_doc = 'Transfers an item from the "draft" state to the "published" state. For items that were published earlier, does nothing.';
+	function f_mt_publishPost($m) {
+		$itemid		= intval(_getScalar($m, 0));
+		$username	= _getScalar($m, 1);
+		$password	= _getScalar($m, 2);		
+		
+		return _mt_publishPost($itemid, $username, $password);
+	}
+	
+	// mt.getPostCategories
+	$f_mt_getPostCategories_sig = array(array(
+		// return
+		$xmlrpcArray,		// array of structs
+		// parameters
+		$xmlrpcString,		// itemid
+		$xmlrpcString,		// username
+		$xmlrpcString		// password
+	));
+	$f_mt_getPostCategories_doc = 'Returns a list of all categories to which the post is assigned.';
+	function f_mt_getPostCategories($m) {
+		$itemid		= intval(_getScalar($m, 0));
+		$username	= _getScalar($m, 1);
+		$password	= _getScalar($m, 2);
+		
+		return _mt_getPostCategories($itemid, $username, $password);
+	}
 
+	// mt.setPostCategories
+	$f_mt_setPostCategories_sig = array(array(
+		// return
+		$xmlrpcBoolean,		// true
+		// parameters
+		$xmlrpcString,		// itemid
+		$xmlrpcString,		// username
+		$xmlrpcString,		// password
+		$xmlrpcArray		// categories
+	));
+	$f_mt_setPostCategories_doc = 'Sets the categories for a post. Only the primary category will be stored';
+	function f_mt_setPostCategories($m) {
+		$itemid		= intval(_getScalar($m, 0));
+		$username	= _getScalar($m, 1);
+		$password	= _getScalar($m, 2);
+
+		$categories = $m->getParam(3);
+		$iSize = $categories->arraysize();		
+
+		for ($i=0;$i<$iSize;$i++) {
+			$struct = $categories->arraymem($i);
+			$bPrimary = $struct->structmem('isPrimary');
+			$bPrimary = $bPrimary->scalarval();
+			if ($bPrimary) {
+				$category = $struct->structmem('categoryId');
+				$category = $category->scalarval();
+			}
+			
+		}
+		
+		return _mt_setPostCategories($itemid, $username, $password, $category);
+	}
 
 	$functionDefs = array_merge($functionDefs,
 		array(
@@ -74,9 +146,104 @@
 			 "mt.getCategoryList" =>
 			 array( "function" => "f_mt_getCategoryList",
 				"signature" => $f_mt_getCategoryList_sig,
-				"docstring" => $f_mt_getCategoryList_doc)				
+				"docstring" => $f_mt_getCategoryList_doc),
+				
+			 "mt.publishPost" =>
+			 array( "function" => "f_mt_publishPost",
+				"signature" => $f_mt_publishPost_sig,
+				"docstring" => $f_mt_publishPost_doc),
+				
+			 "mt.getPostCategories" =>
+			 array( "function" => "f_mt_getPostCategories",
+				"signature" => $f_mt_getPostCategories_sig,
+				"docstring" => $f_mt_getPostCategories_doc),
+				
+			 "mt.setPostCategories" =>
+			 array( "function" => "f_mt_setPostCategories",
+				"signature" => $f_mt_setPostCategories_sig,
+				"docstring" => $f_mt_setPostCategories_doc)				
+
 		)
 	);
+
+	function _mt_setPostCategories($itemid, $username, $password, $category) {
+		global $manager;
+
+		// login
+		$mem = new MEMBER();
+		if (!$mem->login($username, $password))
+			return _error(1,"Could not log in");
+
+		// check if item exists			
+		if (!$manager->existsItem($itemid,1,1))
+			return _error(6,"No such item ($itemid)");
+			
+		$blogid = getBlogIDFromItemID($itemid);
+		$blog = new BLOG($blogid);
+
+		if (!$mem->canAlterItem($itemid))
+			return _error(7,"Not allowed to alter item");
+		
+		$old =& $manager->getItem($itemid,1,1);		
+
+		$catid = $blog->getCategoryIdFromName($category);		
+
+		$publish = 0;
+		if ($old['draft'] && $publish) {
+			$wasdraft = 1;
+			$publish = 1;
+		} else {
+			$wasdraft = 0;
+		}
+		
+		return _edititem($itemid, $username, $password, $catid, $old['title'], $old['body'], $old['more'], $wasdraft, $publish, $old['closed']);
+	}
+	
+	
+	function _mt_getPostCategories($itemid, $username, $password) {
+		global $manager;
+		
+		// login
+		$mem = new MEMBER();
+		if (!$mem->login($username, $password))
+			return _error(1,"Could not log in");
+
+		// check if item exists			
+		if (!$manager->existsItem($itemid,1,1))
+			return _error(6,"No such item ($itemid)");
+			
+		$blogid = getBlogIDFromItemID($itemid);
+		$blog = new BLOG($blogid);
+
+		if (!$mem->canAlterItem($itemid))
+			return _error(7, 'You are not allowed to request this information');
+		
+		$info =& $manager->getItem($itemid,1,1);		
+		
+		$struct = new xmlrpcval(
+			array(
+				'categoryId' => new xmlrpcval($blog->getCategoryName($info['catid']), $xmlrpcString),
+				'isPrimary'	=> new xmlrpcval(1, $xmlrpcBoolean)
+			), $xmlrpcStruct
+		);		
+		
+		return new xmlrpcresp(new xmlrpcval(array($struct), $xmlrpcArray));
+
+	}
+	
+	function _mt_publishPost($itemid, $username, $password) {
+		global $manager;
+		
+		if (!$manager->existsItem($itemid,1,1))
+			return _error(6,"No such item ($itemid)");
+
+		// get item data
+		$blogid = getBlogIDFromItemID($itemid);
+		$blog = new BLOG($blogid);
+		$old =& $manager->getItem($itemid,1,1);
+
+		return _edititem($itemid, $username, $password, $old['catid'], $old['title'], $old['body'], $old['more'], $old['draft'], 1, $old['closed']);
+	}
 	
 	
 	function _mt_categoryList($blogid, $username, $password) {
@@ -106,7 +273,7 @@
 			$categorystruct[] = new xmlrpcval(
 				array(
 					"categoryName" => new xmlrpcval($obj->cname,"string"),
-					"categoryId" => new xmlrpcval($obj->catid,"string")
+					"categoryId" => new xmlrpcval($obj->cname,"string")
 				)
 			,'struct');
 			
