@@ -16,3 +16,5 @@ someone@example.org -> not linked
 http://www.example.org/?foo=x&bar=y => ampersand entity ok?
 <<<http://www.blaat.com>>> => < & > should not be included in link
 &http://www.blaat.com&& => neither should &
+https://www.bla.com/
+http://bla.com/
