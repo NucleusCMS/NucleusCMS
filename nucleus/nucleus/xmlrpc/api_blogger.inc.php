@@ -284,7 +284,7 @@
 
 		$structarray = array();		// the array in which the structs will be stored
 
-		$query = "SELECT mname, ibody, iauthor, ibody, inumber, ititle as title, UNIX_TIMESTAMP(itime) as itime, cname as category"
+		$query = "SELECT mname, ibody, iauthor, ibody, inumber, ititle as title, itime, cname as category"
 			   .' FROM '.sql_table('item').', '.sql_table('category').', '.sql_table('member')
 			   ." WHERE iblog=$blogid and icat=catid and iauthor=mnumber"
 			   ." ORDER BY itime DESC"
@@ -301,7 +301,7 @@
 		
 			$newstruct = new xmlrpcval(array(
 				"userid" => new xmlrpcval($row['iauthor'],"string"),
-				"dateCreated" => new xmlrpcval(iso8601_encode($row['itime']),"dateTime.iso8601"),
+				"dateCreated" => new xmlrpcval(iso8601_encode(strtotime($row['itime'])),"dateTime.iso8601"),
 				"blogid" => new xmlrpcval($blogid,"string"),
 				"content" => new xmlrpcval($content,"string"),
 				"postid" => new xmlrpcval($row['inumber'],"string"),

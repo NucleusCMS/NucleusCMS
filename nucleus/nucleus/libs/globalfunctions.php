@@ -494,7 +494,7 @@ function selector() {
 		global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
 
 		// 1. get timestamp and blogid for item
-		$query = 'SELECT UNIX_TIMESTAMP(itime) as itime, iblog FROM '.sql_table('item').' WHERE inumber=' . $itemid;
+		$query = 'SELECT itime, iblog FROM '.sql_table('item').' WHERE inumber=' . $itemid;
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
 
@@ -504,7 +504,7 @@ function selector() {
 			doError(_ERROR_NOSUCHITEM);
 
 		$blogid = $obj->iblog;
-		$timestamp = $obj->itime;
+		$timestamp = strtotime($obj->itime);
 
 		$b =& $manager->getBlog($blogid);
 		if ($b->isValidCategory($catid))

@@ -68,8 +68,8 @@ class ACTIONLOG {
 		$iMaxSize = 500;
 		$iDropSize = 250;
 		if ($iTotal > $iMaxSize) {
-			$tsChop = quickQuery('SELECT UNIX_TIMESTAMP(timestamp) as result FROM ' . sql_table('actionlog') . ' ORDER BY timestamp DESC LIMIT '.$iDropSize.',1');
-			sql_query('DELETE FROM ' . sql_table('actionlog') . ' WHERE UNIX_TIMESTAMP(timestamp) < ' . $tsChop);
+			$tsChop = quickQuery('SELECT timestamp as result FROM ' . sql_table('actionlog') . ' ORDER BY timestamp DESC LIMIT '.$iDropSize.',1');
+			sql_query('DELETE FROM ' . sql_table('actionlog') . ' WHERE timestamp < \'' . $tsChop . '\'');
 		}
 		
 	}
