@@ -39,7 +39,13 @@ class NOTIFICATION {
 	  * Sends email messages to all the email addresses
 	  */
 	function notify($title, $message, $from) {
+		global $member;
+			
 		foreach ( $this->addresses as $address ) {
+			// don't send messages to yourself
+			if ($member->isLoggedIn() && ($member->getEmail() == $address))
+				continue;
+		
 			@mail($address, $title, $message , "From: ". $from . "\nContent-Type: text/plain; charset=iso-8859-1");
 		}
 	}
