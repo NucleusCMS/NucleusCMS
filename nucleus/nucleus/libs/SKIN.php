@@ -544,9 +544,18 @@ class ACTIONS extends BaseActions {
 	
 	// include comments for one item
 	function parse_comments($template) {
-		global $itemid;
+		global $itemid, $manager, $blog;
 		$template = TEMPLATE::read($template);
-		$comments = new COMMENTS($itemid);
+		
+		// create parser object & action handler
+		$actions = new ITEMACTIONS($blog);
+		$parser = new PARSER($actions->getDefinedActions(),$actions);
+		$actions->setTemplate($template);
+		$actions->setParser($parser);
+		$item = ITEM::getitem($itemid, 0, 0);
+		$actions->setCurrentItem($item);
+
+		$comments = new COMMENTS($itemid, $actions);
 		$comments->showComments($template);	// shows ALL comments		
 	}
 	

@@ -43,6 +43,13 @@
 			array_unshift($args, 'template');
 			call_user_func_array(array(&$this,'doSkinVar'),$args);
 		}
+		function doTemplateCommentsVar(&$item, &$comment) {
+			$args = func_get_args();
+			array_shift($args);
+			array_shift($args);			
+			array_unshift($args, 'template');
+			call_user_func_array(array(&$this,'doSkinVar'),$args);
+		}		
 		function doAction($type) { return 'No Such Action'; }
 		
 		// these helper functions should not be redefined in your plugin
