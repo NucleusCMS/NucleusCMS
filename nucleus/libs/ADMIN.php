@@ -4780,7 +4780,7 @@ class ADMIN {
 		while ($o = mysql_fetch_object($r)) array_push($aOptions, $o);
 		
 		// call plugins
-		$manager->notify('PrePluginOptionsEdit',array('options'=>&$aOptions));
+		$manager->notify('PrePluginOptionsEdit',array('plugid' => $pid, 'options'=>&$aOptions));
 		
 		$template['content'] = 'plugoptionlist';
 		$amount = showlist($aOptions,'table',$template);
