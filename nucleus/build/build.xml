@@ -8,7 +8,7 @@
 
 <target name="init">
 
-    <property name="version" value="3.2-b2" />
+    <property name="version" value="3.2-b3" />
     
     <property name="src.home" value=".." />
     <property name="build.home" value="." />    
@@ -104,6 +104,14 @@
     	<fileset dir="${upgrade.home}/nucleus/language">
     		<include name="*.*" />
     		<exclude name="english.php" />
+    		<exclude name="index.html" />
+    	</fileset>
+    </delete>    
+    
+    <!-- remove all plugins (only included in full release) -->
+    <delete>
+    	<fileset dir="${upgrade.home}/nucleus/plugins">
+    		<include name="*.*" />
     		<exclude name="index.html" />
     	</fileset>
     </delete>    
