@@ -4597,7 +4597,10 @@ class ADMIN {
 			}
 			
 			sql_query("UPDATE nucleus_plugin_option SET ovalue='$val' WHERE opid=$pid AND oname='".addslashes($o->oname)."'");
+		
 		}
+		
+		$manager->notify('PostPluginOptionsUpdate',array('plugid' => $pid));		
 		
 		$this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
 	}
