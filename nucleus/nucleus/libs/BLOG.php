@@ -43,7 +43,7 @@ class BLOG {
 	function readLog($template, $amountEntries, $startpos = 0) {
 		$this->readLogAmount($template,$amountEntries,'','',1,1,$startpos);
 	}
-	
+
 	/**
 	 * Shows an archive for a given month
 	 *
@@ -92,7 +92,7 @@ class BLOG {
 	 *
 	 * @param $template
 	 *		String representing the template _NAME_ (!)
-	 * @param $amountEntries 
+	 * @param $amountEntries
 	 *		amount of entries to show (0 = no limit)
 	 * @param $extraQuery
 	 *		extra conditions to be added to the query
@@ -106,7 +106,7 @@ class BLOG {
 	 *		offset
 	 */
 	function readLogAmount($template, $amountEntries, $extraQuery, $highlight, $comments, $dateheads, $startpos = 0) {
-		
+
 		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed'
 		       . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
 		       . ' WHERE i.iblog='.$this->blogid
@@ -118,11 +118,11 @@ class BLOG {
 
 		if ($this->getSelectedCategory())
 			$query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
-	
-		       
+
+
 		$query .= $extraQuery
 		       . ' ORDER BY i.itime DESC';
-		
+
 		if ($amountEntries > 0)
 		       $query .= ' LIMIT ' . intval($startpos).',' . intval($amountEntries);
 
@@ -150,7 +150,7 @@ class BLOG {
 		$actions->setLastVisit($lastVisit);
 		$actions->setParser($parser);
 		$actions->setShowComments($comments);
-		
+
 		// execute query
 		$items = sql_query($query);
 		
@@ -195,7 +195,7 @@ class BLOG {
 		if (($numrows > 0) && $dateheads) {
 			$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));		
 			$parser->parse($template['DATE_FOOTER']);
-			$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));			
+			$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));
 		}
 		
 		mysql_free_result($items);	// free memory
@@ -303,10 +303,10 @@ class BLOG {
 	  */
 	function createNewCategory($catName = '', $catDescription = 'New category') {
 		global $member, $manager;
-		
+
 		if ($member->blogAdminRights($this->getID())) {
 			// generate 
-			if ($catName == '')		
+			if ($catName == '')
 			{
 				$catName = 'newcat';
 				$i = 1;
@@ -348,7 +348,7 @@ class BLOG {
 
 	/**
 	 * Searches all months of this blog for the given query
-	 * 
+	 *
 	 * @param $query
 	 *		search query
 	 * @param $template
@@ -365,42 +365,59 @@ class BLOG {
 
         $where  = $searchclass->boolean_sql_where("ititle,ibody,imore");
         $select = $searchclass->boolean_sql_select("ititle,ibody,imore");
-
-		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
-		if ($select) {
-		    $query .= ', '.$select. ' as score ';
+        // are we really looking for something??
+        if ($searchclass->inclusive == "") {
+            // no this resulted in an empty querystring
+            $extraquery = "";
+		    $amountfound = $this->readLogAmount($template, $maxresults, $extraQuery, $search, 1, 1);
         }
-		$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
-		       . ' WHERE i.iauthor=m.mnumber'
-		       . ' and i.icat=c.catid'
-		       . ' and i.idraft=0'	// exclude drafts
-		       . ' and i.iblog = '.$this->blogid
-					// don't show future items
-		       . ' and i.itime<=' . mysqldate($this->getCorrectTime())
-               . ' and '.$where;
-        if ($select) {
-            $query .= ' ORDER BY score DESC';
-        } else { $query .= ' ORDER BY i.itime DESC ';}
-		
-		// take into account amount of months to search
-		//if ($amount > 0) {
-		//        $localtime = getdate($this->getCorrectTime());
-		//	$timestamp_start = mktime(0,0,0,$localtime['mon'] - $amount,1,$localtime['year']);
-		//	$extraQuery .= ' and UNIX_TIMESTAMP(i.itime)>' . $timestamp_start;
-		//}
-		$amountfound = $this->showUsingQuery($template, $query, $searchclass->inclusive, 1, 1);
-		if ($amountfound == 0) {
-			$template = TEMPLATE::read($template);
-			$vars['query'] = htmlspecialchars($search);
-			$vars['blogid'] = $this->getID();
-			
-			echo TEMPLATE::fill($template['SEARCH_NOTHINGFOUND'],$vars);
-		}
+        else {
+
+    		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
+    		if ($select) {
+    		    $query .= ', '.$select. ' as score ';
+            }
+    		$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
+    		       . ' WHERE i.iauthor=m.mnumber'
+    		       . ' and i.icat=c.catid'
+    		       . ' and i.idraft=0'	// exclude drafts
+    		       . ' and i.iblog = '.$this->blogid
+    					// don't show future items
+    		       . ' and i.itime<=' . mysqldate($this->getCorrectTime())
+                   . ' and '.$where;
+
+    		// take into account amount of months to search
+		    if ($amount > 0) {
+    		        $localtime = getdate($this->getCorrectTime());
+    			$timestamp_start = mktime(0,0,0,$localtime['mon'] - $amount,1,$localtime['year']);
+			    $query .= ' and UNIX_TIMESTAMP(i.itime)>' . $timestamp_start;
+    		}
+
+            if ($select) {
+                $query .= ' ORDER BY score DESC';
+            } else { $query .= ' ORDER BY i.itime DESC ';}
+            if (intval($maxresults > 0)) {
+	        $query .= ' LIMIT ' . intval($startpos).',' . intval($maxresults);
+            }
+// echo "<h2>" .$query. "</h2>";
+		    $amountfound = $this->showUsingQuery($template, $query, $searchclass->inclusive, 1, 1);
+    		if ($amountfound == 0) {
+	    		$template = TEMPLATE::read($template);
+    			$vars['query'] = htmlspecialchars($search);
+		    	$vars['blogid'] = $this->getID();
+
+	    		echo TEMPLATE::fill($template['SEARCH_NOTHINGFOUND'],$vars);
+    		}
+        }
+        // at this spot read the last *startposition*
+        // add 'resultsperpage' to that for 'nextpage'
+        // substract ... and if positive amount, show 'previous page'.
+        // resultsperpage must be the same amount as maxresults !
 
 		return $amountfound;
 
 	}
-	
+
 	/**
 	  * Shows the archivelist using the given template
 	  */
