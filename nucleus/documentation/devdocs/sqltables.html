@@ -52,7 +52,7 @@
 
 <div class="heading">
 SQL Table Reference
-<i>February 26, 2005</i>
+<i>March 5, 2005</i>
 </div>
 
 <h1>Introduction</h1>
@@ -1090,7 +1090,7 @@ This document contains information on the fields inside the Nucleus database tab
 <a id="nucleus_tickets" name="nucleus_tickets"></a>
 <h1>Table nucleus_tickets<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>Nucleus uses the <code>nucleus_tickets</code> to prevent against certain security issues. In particular: each action on the admin area that affects the settings or database contents, requires a ticket. These tickets are generated when requesting an admin area page and passed along with the form. If a ticket hasn't been used one hour after it has been created, it is destroyed.</p>
+<p>Nucleus uses the <code>nucleus_tickets</code> to prevent against certain security issues. In particular: each action on the admin area that affects the settings or database contents, requires a ticket. These tickets are generated when requesting an admin area page and passed along with the form. Tickets are destroyed one hour after their creation.</p>
 
 <table><tr>
 	<th>Column Name</th>
