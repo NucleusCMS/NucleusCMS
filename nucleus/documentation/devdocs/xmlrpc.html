@@ -68,6 +68,8 @@ Since Nucleus is structured somewhat differently inside, there are some differen
 Since v1.1, Nucleus also supports the <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>, which is an extention to the Blogger API. 
 </p>
 
+<p>In Nucleus v2.5, support was added for the <code>newMediaObject</code> and <code>getRecentPosts</code> methods as well (they weren't in the original metaWeblog specification)</p>
+
 <p>
 A list of available methods is listed below (see the <a href="http://www.xmlrpc.com/metaWeblogApi">specification</a> for more info):
 </p>
@@ -77,6 +79,8 @@ A list of available methods is listed below (see the <a href="http://www.xmlrpc.
 	<li>metaWeblog.editPost</li>	
 	<li>metaWeblog.getPost</li>	
 	<li>metaWeblog.getCategories</li>	
+	<li>metaWeblog.newMediaObject (v2.5)</li>
+	<li>metaWeblog.getRecentPosts (v2.5)</li>	
 </ul>
 
 
@@ -118,6 +122,18 @@ Below is an overview of the types of errors you can get back from the methods:
 	<tr>
 		<td>807</td>
 		<td>Not Allowed to Alter Item</td>
+	</tr>
+	<tr>
+		<td>808</td>
+		<td>Invalid media type</td>
+	</tr>	
+	<tr>
+		<td>809</td>
+		<td>File is too large (max. upload filesize)</td>
+	</tr>		
+	<tr>
+		<td>810</td>
+		<td>Other error on newMediaObject (message will contain more info about what happened)</td>
 	</tr>
 	<tr>
 		<td><i>other codes &lt; 100</i></td>

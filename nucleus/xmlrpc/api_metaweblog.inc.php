@@ -132,6 +132,162 @@
 
 	}
 	
+	// metaWeblog.newMediaObject
+	$f_metaWeblog_newMediaObject_sig = array(array(
+		//  return type
+		$xmlrpcStruct,		// "url" element
+		
+		// params
+		$xmlrpcString,		// blogid
+		$xmlrpcString,		// username
+		$xmlrpcString,		// password
+		$xmlrpcStruct		// 'name', 'type' and 'bits'
+	));
+	$f_metaWeblog_newMediaObject_doc = 'Uploads a file to to the media library of the user';
+	function f_metaWeblog_newMediaObject($m) {
+		$blogid		= _getScalar($m, 0);
+		$username	= _getScalar($m, 1);
+		$password 	= _getScalar($m, 2);
+		
+		$struct		= $m->getParam(3);
+			$name	= _getStructVal($struct, 'name');
+			$type	= _getStructVal($struct, 'type');
+			$bits	= _getStructVal($struct, 'bits');
+			
+		return _newMediaObject($blogid, $username, $password, array('name' => $name, 'type' => $type, 'bits' => $bits));
+	}
+	
+	// metaWeblog.getRecentPosts
+	$f_metaWeblog_getRecentPosts_sig = array(array(
+		// return type
+		$xmlrpcStruct,		// array of structs
+
+		// params
+		$xmlrpcString,		// blogid
+		$xmlrpcString,		// username
+		$xmlrpcString,		// password
+		$xmlrpcString		// number of posts
+	));
+	$f_metaWeblog_getRecentPosts_doc = 'Returns recent weblog items.';
+	function f_metaWeblog_getRecentPosts($m) {
+		$blogid		= _getScalar($m, 0);
+		$username	= _getScalar($m, 1);
+		$password 	= _getScalar($m, 2);
+		$amount		= intval(_getScalar($m, 3));
+		
+		return _getRecentItemsMetaWeblog($blogid, $username, $password, $amount); 
+	}
+	
+	function _getRecentItemsMetaWeblog($blogid, $username, $password, $amount) {
+		// 1. login
+		$mem = new MEMBER();
+		if (!$mem->login($username, $password))
+			return _error(1,"Could not log in");
+
+		// 2. check if allowed 
+		if (!BLOG::existsID($blogid))
+			return _error(2,"No such blog ($blogid)");
+		if (!$mem->teamRights($blogid))
+			return _error(3,"Not a team member");
+		$amount = intval($amount);
+		if (($amount < 1) or ($amount > 20))
+			return _error(5,"Amount parameter must be in range 1..20");
+
+		// 3. create and return list of recent items
+		// Struct returned has dateCreated, userid, blogid and content
+		
+		$blog = new BLOG($blogid);
+
+		$structarray = array();		// the array in which the structs will be stored
+
+		$query = "SELECT mname, ibody, iauthor, ibody, inumber, ititle as title, UNIX_TIMESTAMP(itime) as itime, cname as category"
+			   .' FROM '.sql_table('item').', '.sql_table('category').', '.sql_table('member')
+			   ." WHERE iblog=$blogid and icat=catid and iauthor=mnumber"
+			   ." ORDER BY itime DESC"
+			   ." LIMIT $amount";
+		$r = sql_query($query);
+		
+		while ($row = mysql_fetch_assoc($r)) {
+		
+			// remove linebreaks if needed
+			if ($blog->convertBreaks())
+				$row['ibody'] = removeBreaks($row['ibody']);
+
+			$newstruct = new xmlrpcval(array(
+				"dateCreated" => new xmlrpcval(iso8601_encode($row['itime']),"dateTime.iso8601"),
+				"userid" => new xmlrpcval($row['iauthor'],"string"),
+				"blogid" => new xmlrpcval($blogid,"string"),
+				"description" => new xmlrpcval($row['ibody'],"string"),
+				"title" => new xmlrpcval($row['title'],"string"),
+				"categories" => new xmlrpcval(
+						array(
+							new xmlrpcval($row['cname'], "string")
+						)
+						,"array")
+			),'struct');
+		
+			array_push($structarray, $newstruct);		
+		}
+
+		return new xmlrpcresp(new xmlrpcval( $structarray , "array"));
+	}
+	
+	function _newMediaObject($blogid, $username, $password, $info) {
+		global $CONF, $DIR_MEDIA, $DIR_LIBS;
+		
+		// - login
+		$mem = new MEMBER();
+		if (!$mem->login($username, $password))
+			return _error(1,'Could not log in');
+		
+		// - check if team member 
+		if (!BLOG::existsID($blogid))
+			return _error(2,"No such blog ($blogid)");
+		if (!$mem->teamRights($blogid))
+			return _error(3,'Not a team member');
+			
+		$b = new BLOG($blogid);
+		
+		// - decode data
+		$data = $info['bits']; // decoding was done transparantly by xmlrpclib
+		
+		// - check filesize
+		if (strlen($data) > $CONF['MaxUploadSize'])
+			return _error(9, 'filesize is too big');
+
+		
+		// - check if filetype is allowed (check filename)
+		$filename = $info['name'];
+		$ok = 0;
+		$allowedtypes = explode (',', $CONF['AllowedTypes']);
+		foreach ( $allowedtypes as $type ) 
+			if (eregi("\." .$type. "$",$filename)) $ok = 1;    
+		if (!$ok) 
+			_error(8, 'Filetype is not allowed');
+				
+		// - add file to media library
+		include_once($DIR_LIBS . 'MEDIA.php');	// media classes
+		
+		// always use private media library of member
+		$collection = $mem->getID();
+
+		// prefix filename with current date (YYYY-MM-DD-)
+		// this to avoid nameclashes
+		if ($CONF['MediaPrefix'])
+			$filename = strftime("%Y%m%d-", time()) . $filename;	
+			
+		$res = MEDIA::addMediaObjectRaw($collection, $filename, $data);
+		if ($res)
+			return _error(10, $res);
+		
+		// - return URL
+		$urlstruct = new xmlrpcval(array(
+			"url" => new xmlrpcval($DIR_MEDIA . $collection. '/' . $filename,'string')
+		),'struct');		
+		
+		return new xmlrpcresp($urlstruct);
+	}
+	
 	function _categoryList($blogid, $username, $password) {
 		// 1. login
 		$mem = new MEMBER();
@@ -240,7 +396,21 @@
 				"function" => "f_metaWeblog_editPost",
 				"signature" => $f_metaWeblog_editPost_sig,
 				"docstring" => $f_metaWeblog_editPost_doc
-			 )
+			 ),
+			 
+			 'metaWeblog.newMediaObject' =>
+			 array(
+			 	'function' => 'f_metaWeblog_newMediaObject',
+			 	'signature' => $f_metaWeblog_newMediaObject_sig,
+			 	'docstring' => $f_metaWeblog_newMediaObject_doc
+			 ),
+			 
+			 'metaWeblog.getRecentPosts' =>
+			 array(
+			 	'function' => 'f_metaWeblog_getRecentPosts',
+			 	'signature' => $f_metaWeblog_getRecentPosts_sig,
+			 	'docstring' => $f_metaWeblog_getRecentPosts_doc
+			 )			 
 		
 		)
 	);
