@@ -38,6 +38,7 @@ if (!$CONF['DisableSite']) {
 		header("HTTP/1.0 304 Not Modified");
 		header('Content-Length: 0');
 	} else {
+		header("Content-Type: application/xml");
 		// dump feed
 		echo $feed;
 	}

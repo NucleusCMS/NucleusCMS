@@ -38,6 +38,8 @@ if (!$CONF['DisableSite']) {
 		header("HTTP/1.0 304 Not Modified");
 		header('Content-Length: 0');
 	} else {
+		$feed = mb_convert_encoding($feed, "UTF-8", "EUC-JP");
+		header("Content-Type: application/xml");
 		// dump feed
 		echo $feed;
 	}

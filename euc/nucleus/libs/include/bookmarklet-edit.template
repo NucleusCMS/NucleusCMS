@@ -101,13 +101,13 @@
 						<li>
 							<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="70" /><label for="act_changedate"><%text(_BMLET_CHANGEDATE)%></label> <%helplink(changedate)%>
 									<div class="indent">
-										<input id="inputmonth" name="month" tabindex="71" size="2" value="<%itemtime(mon)%>" />月
-										<input id="inputday" name="day" tabindex="72" size="2" value="<%itemtime(mday)%>" />日
-										<input id="inputyear" name="year" tabindex="73" size="4" value="<%itemtime(year)%>" />年
+										<input id="inputyear" name="year" tabindex="71" size="4" value="<%itemtime(year)%>" />年
+										<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" />月
+										<input id="inputday" name="day" tabindex="73" size="2" value="<%itemtime(mday)%>" />日
 										<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" />時
 										<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" />分
 										<br />
-										フォーマット：(mm)月(dd)日(yyyy)年 (hh)時(mm)分
+										フォーマット：(yyyy)年(mm)月(dd)日 (hh)時(mm)分
 									</div>
 							</li>
 					<%endif%>						
