@@ -627,8 +627,12 @@ function mysqldate($timestamp) {
   * functions for use in index.php
   */
 function selectBlog($shortname) {
-	global $blogid;
+	global $blogid, $archivelist;
 	$blogid = getBlogIDFromName($shortname);
+	
+	// also force archivelist variable, if it is set
+	if ($archivelist)
+		$archivelist = $blogid;
 }
 
 function selectSkin($skinname) {
