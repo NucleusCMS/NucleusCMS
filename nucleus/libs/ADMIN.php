@@ -4883,7 +4883,7 @@ selector();
 		<?
 		
 		$aOptions = array();
-		$r = sql_query('SELECT oname as name, ovalue as value, odesc as description, otype as type FROM nucleus_plugin_option WHERE opid='.$pid);
+		$r = sql_query('SELECT oname as name, ovalue as value, odesc as description, otype as type FROM nucleus_plugin_option WHERE opid='.$pid.' order by oid asc');
 		while ($o = mysql_fetch_object($r)) array_push($aOptions, $o);
 		
 		// call plugins

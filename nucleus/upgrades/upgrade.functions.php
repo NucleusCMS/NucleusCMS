@@ -39,7 +39,7 @@
 				$minrows = -1;			
 				break;			
 			case "20":
-				$query = "SELECT ikarmapos FROM nucleus_item LIMIT 1";
+				$query = "SELECT oid FROM nucleus_plugin_option LIMIT 1";
 				$minrows = -1;			
 				break;				
 		}
