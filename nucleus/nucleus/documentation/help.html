@@ -2583,6 +2583,7 @@ Inserts a setting specific to the currently selected blog (usually the default o
 	    	<li><em>url</em>: URL of the blog</li>
 	    	<li><em>name</em>: Name of the blog (long name)</li>
 	    	<li><em>desc</em>: Description of the blog</li>
+	    	<li><em>short</em>: Short name of the blog</li>
 	    </ul>
 	</li>
 </ul>
@@ -3108,7 +3109,13 @@ all
 <h2>Condition types</h2>
 
 <ul>
-	<li><strong>category</strong>: condition is fullfilled when a category is selected</li>
+	<li><strong>category</strong>: condition is fullfilled when a category is selected
+		<ul>
+			<li><strong>category</strong>: checks if any category is selected</li>
+			<li><strong>category,catname,<em>CategoryName</em></strong>: checks if the current category is <em>CategoryName</em></li>
+			<li><strong>category,catid,<em>CategoryId</em></strong>: checks if the current category is <em>CategoryId</em></li>
+		</ul>
+	</li>
 	<li><strong>blogsetting</strong>: checks if the value <em>name</em> blogsetting equals <em>value</em> (the name is the column name from the nucleus_blog sql table)</li>
 	<li><strong>loggedin</strong>: condition is fullfilled if visiting member is currently logged in</li>
 	<li><strong>onteam</strong>: condition is fullfilled if visiting member is currently logged in &amp; member of the blog team of the current blog (or the blog given in the <em>name</em> parameter)</li>
@@ -3117,9 +3124,9 @@ all
 	<li><strong>skintype</strong>: checks if the current skin type is equal to <em>value</em> (index, search, item, archive, archivelist, ...)</li>
 	<li><strong>hasplugin</strong>: checks if the a plugin is installed, or if a plugin option has been set to a specific value
 		<ul>
-			<li><strong>hasplugin,PluginName</strong>: Checks if plugin is available</li>
-			<li><strong>hasplugin,PluginName,OptionName</strong>: Checks if a plugin option is not set to 'no'</li>
-			<li><strong>hasplugin,PluginName,OptionName=value</strong>: Checks if a plugin option is set to a specific value</li>
+			<li><strong>hasplugin,<em>PluginName</em></strong>: checks if plugin is available</li>
+			<li><strong>hasplugin,<em>PluginName</em>,<em>OptionName</em></strong>: checks if a plugin option is not set to 'no'</li>
+			<li><strong>hasplugin,<em>PluginName</em>,<em>OptionName=value</em></strong>: checks if a plugin option is set to a specific value</li>
 		</ul>
 	</li>
 </ul>
@@ -3137,6 +3144,22 @@ all
 Welcome back!
 &lt;%else%&gt;
 Welcom guest!
+&lt;%endif%&gt;
+</pre>
+
+<pre>
+&lt;%if(category,catname,Off Topic)%&gt;
+Welcome to the 'Off Topic' category.
+&lt;%endif%&gt;
+</pre>
+
+<h2>Notes</h2>
+
+<p>If you want something to be displayed only if a condition is not fullfilled, you can use a construct like this:</p>
+
+<pre>
+&lt;%if(skintype,error)%&gt;&lt;%else%&gt;
+&lt;%blogsetting(name)%&gt;
 &lt;%endif%&gt;
 </pre>
 

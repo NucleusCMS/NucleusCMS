@@ -30,7 +30,7 @@
 
 <div class="heading">
 Plugin API
-<i>July 27, 2004</i>
+<i>March 5, 2005</i>
 </div>
 
 <div class="note"><strong>Notes:</strong>
@@ -51,7 +51,7 @@ Plugin API
 This document contains information on how you can write your own Nucleus plugins
 </p>
 
-<h1><a name="toc"></a>Table Of Contents</h1>
+<h1><a name="toc"></a><a name="top"></a>Table Of Contents</h1>
 
 <ul>
 	<li><a href="#introduction">Introduction</a></li>
@@ -245,6 +245,10 @@ So, that wasn't so hard after all. Read on to find out more.
 	<tr>
 		<td><code>hasAdminArea()</code></td>
 		<td>Should return <code>1</code> if the plugin has an admin area of its own, and <code>0</code> if it doesn't. By default, <code>0</code> is returned.</td>
+	</tr>
+	<tr>
+		<td><code>getPluginDep()</code></td>
+		<td>(v3.2) Returns an array of plugin names. Nucleus refuses to install the plugin if any of these plugins is not installed. By default, an empty array is returned. <a href="#dependency">More information on plugin dependencies.</a></td>
 	</tr>
 </table>
 
@@ -1329,22 +1333,46 @@ your stuff
 			<dd>Information to be included in the <code>head</code> section of the XHTML code. Add your extras here.</dd>
 		</dl></td>
 	</tr>
-<!--	<tr>
-		<td></td>
-		<td></td>
+	<tr>
+		<td>FormExtra</td>
+		<td>(v3.2) Inside one of the comment, membermail or account activation forms. This event allows plugins to insert extra fields in the form. This event corresponds with the <code>ValidateForm</code> event that is fires when the form is handled.</td>
 		<td><dl>
-			<dt></dt>
-			<dd></dd>
+			<dt class="ro">type</dt>
+			<dd>Type of the form from which the event fired.
+				<ul>
+					<li><code>activation</code></li>
+					<li><code>additemform</code> (note: this is not the add item form from the admin area!)</li>
+					<li><code>commentform-loggedin</code></li>
+					<li><code>commentform-notloggedin</code></li>
+					<li><code>membermailform-loggedin</code></li>
+					<li><code>membermailform-notloggedin</code></li>
+				</ul>
+			</dd>
+			<dt class="ro obj">member</dt>
+			<dd>When <code>type</code> is <code>activation</code>, this field contains the details of the member that's being activated</dd>
 		</dl></td>
 	</tr>
 	<tr>
-		<td></td>
-		<td></td>
+		<td>ValidateForm</td>
+		<td>(v3.2) Called when one of the comment, membermail or account activation forms is being handled. This event allows plugins to perform their own validation on the data, and prevent further handling if something is wrong. When used together with the <code>FormExtra</code> field, it can be used to add extra fields to forms.</td>
 		<td><dl>
-			<dt></dt>
-			<dd></dd>
+			<dt class="ro">type</dt>
+			<dd>Type of the form being handled
+				<ul>
+					<li><code>membermail</code></li>
+					<li><code>comment</code></li>
+					<li><code>activation</code></li>
+				</ul>
+			</dd>
+			<dt class="ref">error</dt>
+			<dd>When the plugin wants to stop the handling of the form, it needs to fill out a non-empty error string message in this <code>error</code> field. This error message will then be presented to the user.</dd>
+			<dt class="ref">comment</dt>
+			<dd>On <code>comment</code>-type forms, contains an associative array with the comment data.</dd>
+			<dt class="ro obj">member</dt>
+			<dd>On <code>activation</code>-type forms, contains information about the member being activated.</dd>
 		</dl></td>
 	</tr>
+<!--
 	<tr>
 		<td></td>
 		<td></td>
@@ -1447,16 +1475,16 @@ your stuff
 
 <h2>Option meta</h2>
 
-<p>As of Nucleus v3.2, some option types can be limited to only accept certain values using option-metadata. This metadata is stored in the <code>$typeExtras</code>-field, and is a semicolon-seperated list of values. Note: In a select-option, the select list must be the first value in $typeExtras.</p>
+<p>As of Nucleus v3.2, some option types can be limited to only accept certain values using option-metadata. This metadata is stored in the <code>$typeExtras</code>-field, and is a semicolon-seperated list of values. Note: In a select-option, the select list must be the first value in <code>$typeExtras</code>.</p>
 
 <table><tr>
 	<th>key</th>
 	<th>explanation</th>
 </tr><tr>
-	<td>datatype</td>
+	<td><code>datatype</code></td>
 	<td>Using '<code>datatype</code>' you can give some extra hints to Nucleus about the datatype you want to use. Currently only '<code>numerical</code>' is available. '<code>numerical</code>' will cause Nucleus to only accept numerical values for this option (using both client-side and server-side check) (available for optiontypes: '<code>select</code>' and '<code>text</code>')</td>
 </tr><tr>
-	<td>access</td>
+	<td><code>access</code></td>
 	<td>If set to '<code>readonly</code>', the option will not be editable (available for optiontypes: '<code>text</code>' and '<code>textarea</code>')<br />
 	If set to '<code>hidden</code>', the option will be completely hidden for the end-user (available for optiontypes: '<code>text</code>')</td>
 </tr></table>
@@ -1776,26 +1804,38 @@ class NP_HelloWorld extends NucleusPlugin {
 
 <p>As of Nucleus v3.2 plugins can provide a helppage with an overview of the plugins' functionality, the available skinvars and templatevars, where to get more info,...</p>
 
+<p>The helppage will be accessible from the plugin overview in the admin area.</p>
+
 <h2>Basics</h2>
 <p>To provide a helppage, you'll need take these steps:</p>
 <ol>
 <li>Create a subdirectory of the plugins directory, and name it pluginname if your plugin is NP_PluginName. Note that the name should be lowercase! This is actually the same directory as for the <a href="#admin">admin area</a>.</li>
 <li>In that directory, create a file called help.html. In this file you can document your plugin. This is a good template to start from:
 <pre><code>&lt;h3&gt;Plugin overview&lt;/h3&gt;
+
 &lt;p&gt;The only purpose of this plugin is to show how the plugin helppages work&lt;/p&gt;
+
 &lt;h3&gt;Installation&lt;/h3&gt;
+
 &lt;p&gt;If you can read this you correctly installed the plugin :-)&lt;/p&gt;
+
 &lt;h3&gt;SkinVars&lt;/h3&gt;
+
 &lt;p&gt;Because this plugin is only a testcase it doesn't has any skinvars/templatevars but suppose it would have:
+
 &lt;ul&gt;&lt;li&gt;&lt;b&gt;&lt;%HelpPageTestCase1%&gt;&lt;/b&gt;: does something&lt;/li&gt;
 &lt;li&gt;&lt;b&gt;&lt;%HelpPageTestCase1(foobar)%&gt;&lt;/b&gt;: does something else&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;
+
 &lt;h3&gt;Support and Bug reports&lt;/h3&gt;
+
 &lt;p&gt;For additional support and/or bug reports please use this forum thread:
 &lt;a href="http://forum.nucleuscms.org/viewtopic.php?t=&lt;TOPIC_ID_GOES_HERE&gt;"&gt;
 http://forum.nucleuscms.org/viewtopic.php?t=&lt;TOPIC_ID_GOES_HERE&gt;&lt;/a&gt;&lt;/p&gt;
+
 &lt;h3&gt;Version History&lt;/h3&gt;
-&lt;p&gt;&lt;ul&gt;&lt;li&gt;Version 0.1: initial testcaseversion&lt;/li&gt;
-&lt;li&gt;Version 0.0: pre-initial version ;-)&lt;/li&gt;&lt;/ul&gt;&lt;/p&gt;</code></pre>
+
+&lt;ul&gt;&lt;li&gt;Version 0.1: initial testcaseversion&lt;/li&gt;
+&lt;li&gt;Version 0.0: pre-initial version ;-)&lt;/li&gt;&lt;/ul&gt;</code></pre>
 </li>
 <li>Return a value larger than 0 for supportsFeature('HelpPage'):
 <pre><code>function supportsFeature($what) {
@@ -1812,25 +1852,26 @@ http://forum.nucleuscms.org/viewtopic.php?t=&lt;TOPIC_ID_GOES_HERE&gt;&lt;/a&gt;
 <h1>Plugin Dependency Check <a name="dependency" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>Starting from 3.2, a new plugin interface is added to allow one to declare any dependency on other plugin(s). This is useful for any
-plugin that require another plugin to function. It is particularly useful for a plugin to detect any broken dependency that prevent a plugin to function properly.</p>
+plugin that requires another plugin to function. It is particularly useful for a plugin to detect broken dependencies that prevent if from functioning properly.</p>
 
 <h2>How to write a plugin that utilize this function</h2>
-<p>Let try a real world example.</p>
+
+<p>Let start from a real world example:</p>
 
 <p>NP_PageLinkList depends on NP_BlogWithOffset to function, so we want to make sure if a user install NP_PageLinkList whithout first install
 NP_BlogWithOffset. With this API, Nucleus offers a way for a plugin to detect any missing dependency before it is installed.</p>
 
 <p>In this case, we want to code into NP_PageLinkList to mark that it requires NP_BlogWithOffset. When the plugin is installed, the core calls a
-function in the plugin called getPluginDep(). This function returns a list of plugin it requires, and the core will check against all installed plugins and
-failed the installation if a dependency is missing.</p>
+function in the plugin called <code>getPluginDep()</code>. This function returns a list of plugin it requires, and the core will check against all installed plugins and
+refuse to install the plugin if a dependency is missing.</p>
 
 <p>All we have to do is added this function to NP_PageLinkList:</p>
 
-<pre>
-function getPluginDep() {
+<pre><code>function getPluginDep() {
 	 return array('NP_BlogWithOffset');
-}
-</pre>
+}</code></pre>
+
+<p>The plugin dependency check also prevents plugins from being uninstalled if other plugins have a dependancy on it.</p>
 
 </body>
 </html>
