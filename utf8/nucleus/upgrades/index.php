@@ -9,7 +9,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: index.php,v 1.2 2005-03-15 08:11:33 kimitake Exp $
+  * $Id: index.php,v 1.3 2005-03-17 08:57:28 kimitake Exp $
+  * $NucleusJP$
   */
 
 include('upgrade.functions.php'); 
@@ -27,14 +28,15 @@ upgrade_head();
 
 ?>
 
-<h1>Upgrade Scripts</h1>
+<h1>アップグレードスクリプト集</h1>
 
 <div class="note">
-<b>Note:</b> If you aren't upgrading from an old Nucleus version (you installed Nucleus from scratch), you won't need these files.
+<b>Note:</b> もし古いバージョンの Nuclues からアップグレードしようとしているのでなければ（つまりまっさらな状態からインストールしたのであれば）、これらのスクリプト集は必要ありません。
 </div>
 
 <p>
-When upgrading from an older Nucleus version, upgrades to the database tables are required. This upgrade script allows you to automate these changes.
+古いバージョンの Nucleus からアップグレードするとき、データベーステーブルのアップグレードが必要です。
+このアップグレードスクリプトを実行することでそれが可能となります。
 </p>
 
 <?php  // calculate current version
@@ -51,20 +53,20 @@ When upgrading from an older Nucleus version, upgrades to the database tables ar
 
   if ($current == 32) {
     ?>
-      <p class="ok">No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.</p>
+      <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p>
     <?php  } else {
     ?>
-      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.2</a></p>
+      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.2 用にアップグレードします</a></p>
     <?php  }
 ?>
 
 <div class="note">
-<b>Note:</b> Don't forget to make a backup of your database every once in a while!
+<b>注意:</b> 作業中、各ステップごとにデータベースのバックアップを忘れないようにして下さい。
 </div>
 
-<h1>Manual changes</h1>
+<h1>手動変更</h1>
 
-<p>Some changes need to be done manually. Instructions are given below (if any)</p>
+<p>いくつかの変更は手動で行う必要があります。下記にその手順を示します。</p>
 
 <?php
 $sth = 0;
@@ -85,14 +87,14 @@ if (phpversion() < '4.0.6') {
 }
 
 if ($sth == 0)
-  echo "<p class='ok'>No manual changes needed. This must be your lucky day!</p>";  
+  echo "<p class='ok'>手動変更は必要ありません。今日はラッキーな日ですね!</p>";  
 
 
 
 upgrade_foot();
 
 function upgrade_todo($ver) {
-  return upgrade_checkinstall($ver) ? "(<span class='ok'>installed</span>)" : "(<span class='warning'>not yet installed</span>)";
+  return upgrade_checkinstall($ver) ? "(<span class='ok'>インストール済み</span>)" : "(<span class='warning'>インストールが必要</span>)";
 }
 
 function upgrade_manual_96() {
@@ -100,7 +102,7 @@ function upgrade_manual_96() {
   
   $guess = str_replace("/nucleus/","/media/",$DIR_NUCLEUS);
 ?>
-  <h2>Changes needed for Nucleus 0.96</h2>
+  <h2>Nucleus 0.96 用に必要な変更</h2>
   <p>
     A manual addition needs to be made to <i>config.php</i>, in order to get the media functions to work. Here's what to add:
   </p>
@@ -120,7 +122,7 @@ function upgrade_manual_20() {
   
   $guess = str_replace("/nucleus/","/skins/",$DIR_NUCLEUS);
 ?>
-  <h2>Changes needed for Nucleus 2.0</h2>
+  <h2>Nucleus 2.0 用に必要な変更</h2>
   <p>
     A manual addition needs to be made to <i>config.php</i>, in order to get imported skins to work correctly. Here's what to add:
   </p>
@@ -131,7 +133,7 @@ function upgrade_manual_20() {
   
   <p>Also, it will be necessary to create this directory yourself. Downloaded skins can then be expanded into that directory and be imported from inside the Nucleus admin area.</p>
   
-  <h3>RSS 2.0 and RSD skin</h3>
+  <h3>RSS 2.0 and RSD スキン</h3>
   
   <p>When a fresh version of Nucleus 2.0 is installed, an RSS 2.0 (Really Simple Syndication) syndication skin is also installed, as well as an RSD skin (Really Simple Discovery). The files <code>xml-rss2.php</code> and <code>rsd.php</code> are available in the upgrade, however the skin itself needs to be installed manually. After you've uploaded the contents of the <code>upgrade-files</code>, open <code>admin area &gt; nucleus management &gt; skin import</code>. From there, you can install both skins. (Unless you don't want them installed, that is)</p>
   
@@ -139,7 +141,7 @@ function upgrade_manual_20() {
 
 function upgrade_manual_php405() {
 ?>
-<h2>Changes needed when running PHP versions 4.0.3, 4.0.4 and 4.0.5</h2>
+<h2>PHP のバージョンが 4.0.3, 4.0.4 または 4.0.5 の場合に必要となる変更</h2>
 <p>
   There are two files that need to be changed when running PHP versions lower than 4.0.6. Even better would be to upgrade to PHP 4.0.6 or PHP 4.2.2+ (there are security issues with all PHP versions &lt; 4.0.6 and 4.2.2). If you're not able or not willing to upgrade, here's what to change:
 </p>

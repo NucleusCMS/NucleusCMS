@@ -12,7 +12,8 @@
 	  *	
 	  * Some functions common to all upgrade scripts
 	  *
-  	  * $Id: upgrade.functions.php,v 1.2 2005-03-15 08:11:16 kimitake Exp $
+  	  * $Id: upgrade.functions.php,v 1.3 2005-03-17 08:57:28 kimitake Exp $
+	  * $NucleusJP$
 	  */
 
 	include('../../config.php');
@@ -100,14 +101,14 @@
 	function upgrade_showLogin($type) {
 		upgrade_head();
 	?>
-		<h1>Please Log in First</h1>
-		<p>Enter your data below:</p>
+		<h1>まずはログインして下さい</h1>
+		<p>下記の情報を入力して下さい:</p>
 		
 		<form method="post" action="<?php echo $type?>">
 
 			<ul>
-				<li>Name: <input name="login" /></li>
-				<li>Password <input name="password" type="password" /></li>
+				<li>名前: <input name="login" /></li>
+				<li>パスワード <input name="password" type="password" /></li>
 			</ul>
 
 			<p>
@@ -125,7 +126,8 @@
 			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 			<html xmlns="http://www.w3.org/1999/xhtml">
 			<head>
-				<title>Nucleus Upgrade</title>
+				<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+				<title>Nucleus アップグレード</title>
 				<style><!--
 					@import url('../styles/manual.css');
 					.warning {
@@ -148,15 +150,15 @@
 	function upgrade_error($msg) {
 		upgrade_head();
 		?>
-		<h1>Error!</h1>
+		<h1>エラー!</h1>
 
-		<p>Message was:</p>
+		<p>メッセージは以下の通り:</p>
 		
 		<blockquote><div>
 		<?php echo $msg?>
 		</div></blockquote>
 
-		<p><a href="index.php" onclick="history.back();">Go Back</a></p>
+		<p><a href="index.php" onclick="history.back();">戻る</a></p>
 		<?php
 		upgrade_foot();
 		exit;
@@ -169,7 +171,7 @@
 		
 		upgrade_head();
 		?>
-		<h1>Executing Upgrades</h1>
+		<h1>アップグレードの実行</h1>
 		<ul>
 		<?php	}
 	
@@ -181,11 +183,11 @@
 		?>
 		</ul>
 		
-		<h1>Upgrade Completed!</h1>
+		<h1>アップグレード完了!</h1>
 
 		<p><?php echo $msg?></p>
 		
-		<p>Back to the <a href="index.php">Upgrades Overview</a></p>
+		<p><a href="index.php">アップグレード最初のページ</a>にもどる</p>
 
 		<?php
 		upgrade_foot();

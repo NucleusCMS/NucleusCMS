@@ -9,7 +9,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: upgrade.php,v 1.2 2005-03-15 08:10:59 kimitake Exp $
+  * $Id: upgrade.php,v 1.3 2005-03-17 08:57:28 kimitake Exp $
+  * $NucleusJP$
   */
 
 include('upgrade.functions.php'); 
@@ -60,12 +61,12 @@ switch($from) {
 		upgrade_do32();
 		break;
 	default:
-		echo "<li>Error! No updates to execute</li>";
+		echo "<li>エラー! 実行すべきアップデートはありません</li>";
 		break;
 }
 
 
 
-upgrade_end("Upgrade Completed");
+upgrade_end("アップグレード成功");
 
 ?>
