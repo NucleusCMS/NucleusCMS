@@ -658,22 +658,22 @@ class BLOG {
 		$query =  'UPDATE '.sql_table('blog')
 		       . " SET bname='" . addslashes($this->getName()) . "',"
 		       . "     bshortname='". addslashes($this->getShortName()) . "',"
-		       . "     bcomments=". $this->commentsEnabled() . ","
-		       . "     bmaxcomments=" . $this->getMaxComments() . ","
-		       . "     btimeoffset=" . $this->getTimeOffset() . ","
-		       . "     bpublic=" . $this->isPublic() . ","
-		       . "     bsendping=" . $this->pingUserland() . ","
-		       . "     bconvertbreaks=" . $this->convertBreaks() . ","
-		       . "     ballowpast=" . $this->allowPastPosting() . ","			   
+		       . "     bcomments=". intval($this->commentsEnabled()) . ","
+		       . "     bmaxcomments=" . intval($this->getMaxComments()) . ","
+		       . "     btimeoffset=" . floatval($this->getTimeOffset()) . ","
+		       . "     bpublic=" . intval($this->isPublic()) . ","
+		       . "     bsendping=" . intval($this->pingUserland()) . ","
+		       . "     bconvertbreaks=" . intval($this->convertBreaks()) . ","
+		       . "     ballowpast=" . intval($this->allowPastPosting()) . ","			   
 		       . "     bnotify='" . addslashes($this->getNotifyAddress()) . "',"
-		       . "     bnotifytype=" . $this->getNotifyType() . ","		       
+		       . "     bnotifytype=" . intval($this->getNotifyType()) . ","		       
 		       . "     burl='" . addslashes($this->getURL()) . "',"
 		       . "     bupdate='" . addslashes($this->getUpdateFile()) . "',"
 		       . "     bdesc='" . addslashes($this->getDescription()) . "',"
-		       . "     bdefcat=" . $this->getDefaultCategory() . ","		       
-		       . "     bdefskin=" . $this->getDefaultSkin() . ","
-		       . "     bincludesearch=" . $this->getSearchable()
-		       . " WHERE bnumber=" . $this->getID();
+		       . "     bdefcat=" . intval($this->getDefaultCategory()) . ","		       
+		       . "     bdefskin=" . intval($this->getDefaultSkin()) . ","
+		       . "     bincludesearch=" . intval($this->getSearchable())
+		       . " WHERE bnumber=" . intval($this->getID());
 		sql_query($query);
 
 	}
