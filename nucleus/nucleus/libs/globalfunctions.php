@@ -19,7 +19,7 @@ $CONF['debug'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 155;		
+	return 200;		
 }
 
 if ($CONF['debug']) {
