@@ -82,7 +82,7 @@ class BLOG {
 	function setSelectedCategoryByName($catname) {
 		$this->setSelectedCategory($this->getCategoryIdFromName($catname));
 	}
-	
+
 	function getSelectedCategory() { 
 		return $this->selectedcatid; 
 	}
@@ -128,9 +128,9 @@ class BLOG {
 
 		return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
 	}
-	
+
 	function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1) {
-		global $CONF, $manager;	
+		global $CONF, $manager;
 
 		$lastVisit = cookieVar('lastVisit');
 		if ($lastVisit != 0)
@@ -207,7 +207,7 @@ class BLOG {
 	function showOneitem($itemid, $template, $highlight) {
 		$extraQuery = ' and inumber=' . intval($itemid);
 		
-		return $this->readLogAmount($template, 1, $extraQuery, $highlight, 0, 0);
+		return $this->readLogAmount($template, 1, $extraQuery, $highlight, 0, 1);
 	}
 	
 
@@ -223,7 +223,7 @@ class BLOG {
 		$body		= $body;
 		$more		= $more;
 		$catid		= intval($catid);
-		
+
 		// convert newlines to <br />
 		if ($this->convertBreaks()) {
 			$body = addBreaks($body);
@@ -268,7 +268,7 @@ class BLOG {
 		global $CONF, $member;
 		
 		// create text version of html post
-		$ascii = toAscii($body);	
+		$ascii = toAscii($body);
 
 		$mailto_msg = _NOTIFY_NI_MSG . " \n";
 		$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
@@ -284,7 +284,7 @@ class BLOG {
 		$notify->notify($mailto_title, $mailto_msg , $frommail);
 				
 
-		
+
 	}
 
 	
@@ -357,22 +357,31 @@ class BLOG {
 	 *		max amount of months to be search (0 = all)
 	 * @param $maxresults
 	 *		max number of results to show
+	 * @param $startpos
+	 *		offset
 	 * @returns
 	 *		amount of hits found
 	 */
-	function search($search, $template, $amount, $maxresults) {
+	function search($search, $template, $amount, $maxresults, $startpos) {
+        global $CONF;
+        global $REQUEST_URI;
         $searchclass = new SEARCH($search);
 
         $where  = $searchclass->boolean_sql_where("ititle,ibody,imore");
         $select = $searchclass->boolean_sql_select("ititle,ibody,imore");
-        // are we really looking for something??
+        // are we really looking for something?
         if ($searchclass->inclusive == "") {
             // no this resulted in an empty querystring
             $extraquery = "";
 		    $amountfound = $this->readLogAmount($template, $maxresults, $extraQuery, $search, 1, 1);
         }
         else {
-
+            $blogs = $searchclass->blogs; // array containing all searchable blogs.
+            $selectblogs = ' and (i.iblog = '.$this->blogid;
+            if ($blogs) {foreach($blogs as $b) {
+                if ($b <> $this->blogid) {$selectblogs .= ' or i.iblog = '. $b;}
+            }}
+            $selectblogs .= ')';
     		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
     		if ($select) {
     		    $query .= ', '.$select. ' as score ';
@@ -381,7 +390,7 @@ class BLOG {
     		       . ' WHERE i.iauthor=m.mnumber'
     		       . ' and i.icat=c.catid'
     		       . ' and i.idraft=0'	// exclude drafts
-    		       . ' and i.iblog = '.$this->blogid
+    		       . $selectblogs
     					// don't show future items
     		       . ' and i.itime<=' . mysqldate($this->getCorrectTime())
                    . ' and '.$where;
@@ -397,9 +406,8 @@ class BLOG {
                 $query .= ' ORDER BY score DESC';
             } else { $query .= ' ORDER BY i.itime DESC ';}
             if (intval($maxresults > 0)) {
-	        $query .= ' LIMIT ' . intval($startpos).',' . intval($maxresults);
+	            $query .= ' LIMIT ' . intval($startpos).',' . intval($maxresults);
             }
-// echo "<h2>" .$query. "</h2>";
 		    $amountfound = $this->showUsingQuery($template, $query, $searchclass->inclusive, 1, 1);
     		if ($amountfound == 0) {
 	    		$template = TEMPLATE::read($template);
@@ -409,13 +417,8 @@ class BLOG {
 	    		echo TEMPLATE::fill($template['SEARCH_NOTHINGFOUND'],$vars);
     		}
         }
-        // at this spot read the last *startposition*
-        // add 'resultsperpage' to that for 'nextpage'
-        // substract ... and if positive amount, show 'previous page'.
-        // resultsperpage must be the same amount as maxresults !
-
+        
 		return $amountfound;
-
 	}
 
 	/**
@@ -423,7 +426,7 @@ class BLOG {
 	  */
 	function showArchiveList($template, $mode = 'month', $limit = 0) {
 		global $CONF, $catid;
-		
+
 		if ($catid) 
 			$linkparams = array('catid' => $catid);
 		
@@ -561,7 +564,8 @@ class BLOG {
 		       . "     bupdate='" . addslashes($this->getUpdateFile()) . "',"
 		       . "     bdesc='" . addslashes($this->getDescription()) . "',"
 		       . "     bdefcat=" . $this->getDefaultCategory() . ","		       
-		       . "     bdefskin=" . $this->getDefaultSkin()
+		       . "     bdefskin=" . $this->getDefaultSkin() . ","
+		       . "     bincludesearch=" . $this->getSearchable()
 		       . " WHERE bnumber=" . $this->getID();
 		sql_query($query);
 
@@ -576,7 +580,7 @@ class BLOG {
 			fputs($f_update,$this->getCorrectTime());
 			fclose($f_update);
 		 }
-		 
+
 	}
 	
 	/**
@@ -760,6 +764,10 @@ class BLOG {
 		return $this->getSetting('bpublic');
 	}
 	
+	function getSearchable() {
+		return $this->getSetting('bincludesearch');
+	}
+
 	function getDefaultCategory() {
 		return $this->getSetting('bdefcat');
 	}
@@ -768,10 +776,13 @@ class BLOG {
 		$this->setSetting('bpublic',$val);
 	}
 
+	function setSearchable($val) {
+		$this->setSetting('bincludesearch',$val);
+	}
+
 	function setDescription($val) {
 		$this->setSetting('bdesc',$val);
 	}
-	
 
 	function setUpdateFile($val) {
 		$this->setSetting('bupdate',$val);
@@ -953,7 +964,8 @@ class ITEMACTIONS extends BaseActions {
 			'edit',
 			'editlink',
 			'editpopupcode',
-			'comments'
+			'comments',
+			'relevance'
 		);
 	}
 	
@@ -982,6 +994,7 @@ class ITEMACTIONS extends BaseActions {
 	function parse_itemlink() {		echo createItemLink($this->currentItem->itemid, $this->linkparams); }
 	function parse_blogurl() {		echo $this->blog->getURL(); }
 	function parse_closed() {		echo $this->currentItem->closed; }
+	function parse_relevance() {    echo round($this->currentItem->score,2);}
 	
 	function parse_karma($type = 'totalscore') {
 		global $manager;
@@ -1077,9 +1090,13 @@ class ITEMACTIONS extends BaseActions {
 	/**
 	  * @param maxLength optional maximum length
 	  */
-	function parse_syndicate_description($maxLength = 250) { 
+	function parse_syndicate_description($maxLength = 250, $addHighlight = 0) { 
 		$syndicated = strip_tags($this->currentItem->body);
-		echo htmlspecialchars(shorten($syndicated,$maxLength,'...'));
+		if ($addHighlight) {
+		    echo $this->highlightAndParse(htmlspecialchars(shorten($syndicated,$maxLength,'...')));
+		} else {
+    		echo htmlspecialchars(shorten($syndicated,$maxLength,'...'));
+		}
 	}
 	
 	function parse_karmaposlink($text = '') { 
