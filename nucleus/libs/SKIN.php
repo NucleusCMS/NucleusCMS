@@ -963,9 +963,9 @@ class ACTIONS extends BaseActions {
 
 		$imagetext 	= htmlspecialchars(requestVar('imagetext'));
 		$imagepopup = requestVar('imagepopup');
-		$width 		= requestVar('width');
-		$height 	= requestVar('height');
-		$fullurl = $CONF['MediaURL'] . $imagepopup;
+		$width 		= intRequestVar('width');
+		$height 	= intRequestVar('height');
+		$fullurl 	= htmlspecialchars($CONF['MediaURL'] . $imagepopup);
 		
 		switch($what)
 		{
