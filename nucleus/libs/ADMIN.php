@@ -2071,7 +2071,7 @@ class ADMIN {
 		
 		$member->blogAdminRights($blogid) or $this->disallow();
 
-		$error = deleteOneCategory($catid);
+		$error = $this->deleteOneCategory($catid);
 		if ($error)
 			$this->error($error);
 
