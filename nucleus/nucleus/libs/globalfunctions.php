@@ -557,6 +557,11 @@ function selectCategory($catname) {
 	$catid = getCatIDFromName($catname);
 }
 
+function selectItem($id){
+	global $itemid;
+	$itemid = intval($id);
+}
+
 // force the use of a language file (warning: can cause warnings)
 function selectLanguage($language) {
 	global $DIR_LANG;
