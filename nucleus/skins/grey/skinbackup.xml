@@ -27,7 +27,7 @@
   
   <!-- extra navigational links -->
   <link rel="bookmark" title="Nucleus" href="http://nucleuscms.org/" />
-  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss2.php" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="xml-rss2.php" />
   <link rel="archives" title="Archives" href="<%archivelink%>" />
   <link rel="top" title="Today" href="<%sitevar(url)%>" />
   <link rel="up" href="<%todaylink%>" title="Today" />
@@ -110,7 +110,7 @@
   
   <!-- extra navigational links -->
   <link rel="bookmark" title="Nucleus" href="http://nucleuscms.org/" />
-  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss2.php" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="xml-rss2.php" />
   <link rel="archives" title="Archives" href="<%archivelink%>" />
   <link rel="top" title="Today" href="<%sitevar(url)%>" />
   <link rel="up" href="<%todaylink%>" title="Today" />
@@ -287,7 +287,7 @@
   <link rel="top" title="Today" href="<%todaylink%>" />
 
   <!-- link RSS as alternate version -->
-  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss2.php" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="xml-rss2.php" />
 
   <!-- RSD support -->
   <link rel="EditURI" type="application/rsd+xml" title="RSD" href="rsd.php" />
@@ -376,7 +376,7 @@
   
   <!-- extra navigational links -->
   <link rel="bookmark" title="Nucleus" href="http://nucleuscms.org/" />
-  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss2.php" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="xml-rss2.php" />
   <link rel="archives" title="Archives" href="<%archivelink%>" />
   <link rel="top" title="Today" href="<%sitevar(url)%>" />
   <link rel="next" href="<%nextlink%>" title="Next Item" />
@@ -547,7 +547,7 @@
   
   <!-- extra navigational links -->
   <link rel="bookmark" title="Nucleus" href="http://nucleuscms.org/" />
-  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss2.php" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="xml-rss2.php" />
   <link rel="archives" title="Archives" href="<%archivelink%>" />
   <link rel="top" title="Today" href="<%sitevar(url)%>" />
   <link rel="up" href="<%todaylink%>" title="Today" />
