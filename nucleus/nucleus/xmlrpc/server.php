@@ -51,7 +51,7 @@
   * Note: metaWeblog API methods only affect the body and title fields of items. 
   *       the extended part is left untouched (and empty for new posts)
   */
-
+$CONF = array();
 include("../../config.php");	// include Nucleus libs and code
 include($DIR_LIBS . "xmlrpc.inc.php");
 include($DIR_LIBS . "xmlrpcs.inc.php");

@@ -13,6 +13,7 @@
   * like adding comments, etc...
   */
 
+$CONF = array();
 include('config.php');			// common functions
 
 switch($action) {
