@@ -238,12 +238,26 @@ function sql_table($name)
 		return 'nucleus_' . $name;
 }
 
+function sendContentType($contenttype, $charset = _CHARSET) {
+	if (!headers_sent()) {
+		// if content type is application/xhtml+xml, only send it to browsers
+		// that can handle it (IE6 cannot). Otherwise, send text/html
+		if (
+				($contenttype == 'application/xhtml+xml') 
+			&&	!stristr(serverVar('HTTP_ACCEPT'),'application/xhtml+xml')
+			)
+			header('Content-Type: text/html; charset=' . $charset);			
+		else
+			header('Content-Type: ' . $contenttype . '; charset=' . charset);
+	}
+}
+
 /**
  * Errors before the database connection has been made
  */
 function startUpError($msg, $title) {
 	?>
-	<html>
+	<html xmlns="http://www.w3.org/1999/xhtml">
 		<head><title><?php echo htmlspecialchars($title)?></title></head>
 		<body>
 			<h1><?php echo htmlspecialchars($title)?></h1>

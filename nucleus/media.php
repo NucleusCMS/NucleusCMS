@@ -30,6 +30,8 @@ $CONF['MediaPerPage'] = 10;
 include('../config.php');
 include($DIR_LIBS . 'MEDIA.php');	// media classes
 
+sendContentType('application/xhtml+xml');
+
 // user needs to be logged in to use this
 if (!$member->isLoggedIn()) {
 	media_loginAndPassThrough();
@@ -323,7 +325,7 @@ function media_doError($msg) {
 function media_head() {
 ?>
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	<html>
+	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Nucleus Media</title>
 		<style><!--

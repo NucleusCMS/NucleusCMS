@@ -20,6 +20,8 @@ $CONF['UsingAdminArea'] = 1;
 // include all classes and config data 
 include('../config.php');
 
+sendContentType('application/xhtml+xml');
+
 $action = requestVar('action');
 
 if ($action == 'contextmenucode') {
@@ -154,7 +156,7 @@ function bm_loginAndPassThrough() {
 	
 	?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	<html>
+	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Nucleus</title>
 		<?php bm_style(); ?>
@@ -247,7 +249,7 @@ function bm_doError($msg) {
 function bm_message($title, $head, $msg, $extrahead = '') {
 	?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	<html>
+	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title><?php echo  $title ?></title>
 		<?php bm_style(); ?>
