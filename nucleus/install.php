@@ -535,7 +535,7 @@
 			Your web site is now ready to use. 
 			<ul>
 				<li><a href="<?=$config_adminurl?>">Login to the admin area to configure your site</a></li>				
-				<li><a href="<?=$config_siteurl?>">Visit your site now</a></li>
+				<li><a href="<?=$config_indexurl?>">Visit your site now</a></li>
 			</ul>
 			</p>
 		
