@@ -533,6 +533,28 @@
 		}
 		
 		/**
+		 * checks if the eventlist in the database is up-to-date
+		 * @return bool if it is up-to-date it return true, else false
+		 * @author TeRanEX
+		 */
+		function subscribtionListIsUptodate() {
+			$res = sql_query('SELECT event FROM '.sql_table('plugin_event').' WHERE pid = '.$this->getID());
+			$ev = array();
+			while($a = mysql_fetch_array($res)) {
+				array_push($ev, $a['event']);
+			}
+			if (count($ev) != count($this->getEventList())) {
+				return false;
+			}
+			$d = array_diff($ev, $this->getEventList());
+			if (count($d) > 0) {
+				// there are differences so the db is not up-to-date
+				return false;
+			}
+			return true;
+		}
+		
+		/**
 		 * @param $aOptions: array ( 'oid' => array( 'contextid' => 'value'))
 		 *        (taken from request using requestVar())
 		 * @param $newContextid: integer (accepts a contextid when it is for a new 

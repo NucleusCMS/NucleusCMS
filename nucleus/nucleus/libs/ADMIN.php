@@ -6115,8 +6115,13 @@ function listplug_table_pluginlist($template, $type) {
 				echo '</td>';
 				echo '<td>';
 					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
-					if (sizeof($plug->getEventList()) > 0)
+					if (sizeof($plug->getEventList()) > 0) { 
 						echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',htmlspecialchars(implode($plug->getEventList(),', '));
+						// check the database to see if it is up-to-date and notice the user if not
+					}
+					if (!$plug->subscribtionListIsUptodate()) {
+						echo '<br /><br /><strong>',_LIST_PLUG_SUBS_NEEDUPDATE,'</strong>';
+					}
 					if (sizeof($plug->getPluginDep()) > 0)
 						echo '<br /><br />',_LIST_PLUGS_DEP,'<br />',htmlspecialchars(implode($plug->getPluginDep(),', '));
 				echo '</td>';

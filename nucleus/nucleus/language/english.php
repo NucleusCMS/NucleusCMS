@@ -12,6 +12,10 @@
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
 
+// START changed/added after 315 START
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Please use the \'Update Subscribtion list\'-button to update the plugin\'s subscription list.');
+// END changed/added after 3.15
+
 // START changed/added after 3.1 START
 
 // comments list per weblog
