@@ -34,6 +34,11 @@
 			padding: 5px;
 			font-size: small;
 		}
+		
+		.example {
+			background-color: #ddd;
+			padding: 5px;
+		}
 
 		ul.templates {
 			font-size: x-small;
@@ -89,10 +94,8 @@
 <body>
 
 <div class="page">
-<h1>For those that accidentally opened this file</h1>
-<p>
-This file (<em>help.html</em>) contains popup help for the Nucleus Admin Area.
-</p>
+<h1>Nucleus Popup Help</h1>
+<p>Please hold on while the page is being downloaded (about 100KB).</p>
 </div>
 
 
@@ -361,7 +364,7 @@ Exceptions: the <strong>admin-area</strong> is still available, and <strong><a h
 </div>
 
 <div class="page"><a name="templateitems"></a>
-<h1>Templates: Items</h1>
+<h1>+Templates: Items</h1>
 <p>
 When items are shown, the following setup is repeated for each item:
 </p>
@@ -384,138 +387,123 @@ item footer
 </div>
 
 <div class="page"><a name="templateitemsexample"></a>
-<h1>Templates: Items</h1>
+<h1>+Templates: Items</h1>
 <p>
 An example for the <b>item body</b> template:
 </p>
 
-<pre>
-&lt;b&gt;&lt;%title%&gt;&lt;/b&gt;
-&lt;br /&gt;
-&lt;%body%&gt;
-&lt;br /&gt;
-&lt;i&gt;
+<pre>&lt;h1&gt;&lt;%title%&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;%body%&gt;&lt;/p&gt;
+
+&lt;div class="metadata"&gt;
  &lt;a href="&lt;%itemlink%&gt;"&gt;link&lt;/a&gt; -
  &lt;%date%&gt; &lt;%time%&gt; -
  &lt;a href="&lt;%authorlink%&gt;"&gt;&lt;%author%&gt;&lt;/a&gt; -
  &lt;%comments%&gt;
-&lt;/i&gt;
-</pre>
+&lt;/div&gt;</pre>
 
 <p>The result would become something like this:</p>
 
-<div>
-<b>This is an item</b>
-<br />
-This is the text for the item
-<br />
-<i>
+<div class="example">
+<h4 style="margin: 2px;">This is an item</h4>
+<p style="margin: 2px; padding: 0px;">This is the text for the item</p>
+<div style="font-style: italic; margin: 2px;">
  <a href="#templateitemsexample">link</a> -
  August 8th 2002 18:51 -
  <a href="#templateitemsexample">karma</a> -
  <a href="#templateitemsexample">no comments</a>
-</i>
+</div>
 </div>
 
 </div>
 
 
 <div class="page"><a name="templatecomments"></a>
-<h1>Templates: comments</h1>
-<p>
-There are three possible structures for a comments block.
-</p>
+<h1>+Templates: comments</h1>
 
-<p>
-1. When comments are displayed (like on detail pages, or on the main page when there are less than the maximum allowed amount of comments)
-</p>
+<p>There are three possible structures for a comments block.</p>
 
-<pre>
-comments header
+<ol>
+	<li>
+		When comments are displayed (like on detail pages, or on the main page when there are less than the maximum allowed amount of comments)
+<pre>comments header
   comments body (repeated)
-comments footer
-</pre>
-
-<p>
-2. When there are no comments at all
-</p>
-
+comments footer</pre>
+	</li>
+	<li>
+		When there are no comments at all
 <pre>
 no comments
 </pre>
-
-<p>
-3. When there are comments, but there are more than the maximum allowed number. (only applies when not on a detailed item page)
-</p>
-
+	</li>
+	<li>
+		When there are comments, but there are more than the maximum allowed number. (only applies when not on a detailed item page)
 <pre>
 too much comments
 </pre>
+	</li>
+</ol>
+
+<p>Inside these template-parts, some <a href="#templatevars-comments" title="Overview of comments-related template variables">comments-related variables</a> are available</p>
 
 </div>
 
-<div class="page"><a name="templatecommentheaders"></a>
-<h1>Templates: Comment headers/footers</h1>
-<p>
-The following vars are available in the comments header and footer templates, as well as in the templates for no comments and too much comments:
-</p>
+<div class="page">
+<a name="templatecommentheaders"></a>
+<a name="templatecommentfooters"></a>
+<h1>+Templates: Comment headers/footers</h1>
 
-<table><tr>
-	<th>Name</th>
-	<th>Description</th>
-</tr><tr>
-	<td>itemid</td>
-	<td>ID of the current item</td>
-</tr><tr>
-	<td>itemlink</td>
-	<td>link to the detailed page for the current item</td>
-</tr><tr>
-	<td>commentcount</td>
-	<td>the total number of comments for the current item</td>
-</tr><tr>
-	<td>commentword</td>
-	<td>distinction between 1 "comment" and many "comment<strong>s</strong>" as defined <a href="#templatecommentwords">elsewhere</a> in the template</td>
-</tr></table>
+<h2>Description</h2>
 
-<p>
-An example for the 'too much comments'-template
-</p>
+<p>While the comments-body is repeated for each comment, the header and footer are only displayed once. A typicall structure would look like this:</p>
+<pre>comments header
+  comments body 1
+  comments body 2
+  comments body 3
+comments footer</pre>
+<p>In these template-parts, <a href="#templatevars-comments" title="Overview of comments-related template variables">comments-related templatevars</a> are available</p>
 
-<pre>
-&lt;a href="&lt;%itemlink%&gt;"&gt;
-&lt;%commentcount%&gt; &lt;%commentword%&gt;
-&lt;/a&gt;
-</pre>
+<h2>Examples</h2>
+
+<p>Header:</p>
+<pre>&lt;ul&gt;</pre>
+<p>Body:</p>
+<pre>&lt;li&gt;&lt;%user%&gt;: &lt;%body%&gt;&lt;/li&gt;</pre>
+<p>Footer</p>
+<pre>&lt;/ul&gt;</pre>
+<p>Result</p>
+
+<ul class="example">
+	<li>karma: nice!</li>
+	<li>xiffy: yes indeed!</li>
+</ul>
 
 </div>
 
 <div class="page"><a name="templatemorelink"></a>
-<h1>Templates: Link to extended entry</h1>
+<h1>+Templates: Link to extended entry</h1>
 <p>
 This is the template that will be used to format the <a href="#templatevar-morelink">morelink templatevar</a> that is available in the item templates. <a href="#templatevars-overview">Available variables</a> are the same as in the item templates.
 </p>
 <p>
-When there's no extended part of the item, the &lt;%morelink%&gt; templatevar will have no effect.
+When there's no extended part of the item, the <code>&lt;%morelink%&gt;</code> templatevar will have no effect.
 </p>
-<p>
-An example is given below:
-</p>
-<pre>
-&lt;a href="&lt;%itemlink%&gt;"&gt;[Read More!]&lt;/a&gt;
-</pre>
+
+<h2>Example</h2>
+<pre><code>&lt;a href="&lt;%itemlink%&gt;"&gt;[Read More!]&lt;/a&gt;</code></pre>
+
 </div>
 
 <div class="page"><a name="templatearchivelists"></a>
-<h1>Templates: Archive Lists</h1>
-<p>
-The archive lists are formatted as listed below:
-</p>
 
-<pre>
-archivelist header
+<h1>+Templates: Archive Lists</h1>
+
+<p>The archive lists are formatted as listed below:</p>
+
+<pre>archivelist header
   archivelist listitem (repeated for each archive)
-archivelist footer
-</pre>
+archivelist footer</pre>
 
 <p>
 Available variables: (in the header and footer, only <tt>blogid</tt> is allowed)
@@ -529,7 +517,7 @@ Available variables: (in the header and footer, only <tt>blogid</tt> is allowed)
 	<td>ID of the weblog</td>
 </tr><tr>
 	<td>archivelink</td>
-	<td>link to the archive, which you can embed in a &lt;a href=".."&gt; tag.</td>
+	<td>link to the archive, which you can embed in a <code>&lt;a href=".."&gt;</code> tag.</td>
 </tr><tr>
 	<td>month</td>
 	<td>Number of the month (2 digits: 01-12)</td>
@@ -541,17 +529,12 @@ Available variables: (in the header and footer, only <tt>blogid</tt> is allowed)
 	<td>Day of month (2 digits; only when in day mode)</td>
 </tr></table>
 
-<p>
-A more flexible way to add the date of the archive to the listitem, is to use <a href="#strftime">strftime</a> variables. If you find this too complicated, use the following:
-</p>
+<p>A more flexible way to add the date of the archive to the listitem, is to use <a href="#strftime">strftime</a> variables. If you find this too complicated, use the following:</p>
 
-<pre>
-&lt;a href="&lt;%archivelink%&gt;"&gt;%B, %Y&lt;/a&gt;&lt;br /&gt;
-</pre>
+<pre><code>&lt;a href="&lt;%archivelink%&gt;"&gt;%B, %Y&lt;/a&gt;&lt;br /&gt;</code></pre>
 
-<p>
-To change the language to your local settings, change the <a href="#templatelocale">locale</a>.
-</p>
+
+<p>To change the language to your local settings, change the <a href="#templatelocale">locale</a>.</p>
 
 </div>
 
@@ -559,16 +542,13 @@ To change the language to your local settings, change the <a href="#templateloca
 
 
 <div class="page"><a name="templatecategorylists"></a>
-<h1>Templates: Category Lists</h1>
-<p>
-The category lists are formatted as listed below:
-</p>
+<h1>+Templates: Category Lists</h1>
 
-<pre>
-categorylist header
+<p>The category lists are formatted as listed below:</p>
+
+<pre>categorylist header
   categorylist listitem (repeated)
-categorylist footer
-</pre>
+categorylist footer</pre>
 
 <p>Available variables: (in the header and footer, only <tt>blogid</tt>, <tt>blogurl</tt> and <tt>self</tt> are allowed)</p>
 
@@ -603,30 +583,24 @@ categorylist footer
 </div>
 
 <div class="page"><a name="categorylistexample"></a>
-<h1>Templates: Category Lists</h1>
+<h1>+Templates: Category Lists Example</h1>
 <p>
 <a href="#templatecategorylists">(go back)</a>
 </p>
 
 <h2>Header</h2>
-<pre>
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href="&lt;blogurl%&gt;"&gt;All&lt;/a&gt;&lt;/li&gt;
-</pre>
+<pre><code>&lt;ul&gt;
+  &lt;li&gt;&lt;a href="&lt;blogurl%&gt;"&gt;All&lt;/a&gt;&lt;/li&gt;</code></pre>
 
 <h2>List Item</h2>
-<pre>
-  &lt;li&gt;&lt;a href="&lt;%categorylink%&gt;"&gt;&lt;%catname%&gt;&lt;/a&gt;&lt;/li&gt;
-</pre>
+<pre><code>&lt;li&gt;&lt;a href="&lt;%categorylink%&gt;"&gt;&lt;%catname%&gt;&lt;/a&gt;&lt;/li&gt;</code></pre>
 
 <h2>Footer</h2>
-<pre>
-&lt;/ul&gt;
-</pre>
+<pre><code>&lt;/ul&gt;</code></pre>
 
 <h2>Results in:</h2>
 
-<ul>
+<ul class="example">
 	<li><a href="#categorylistexample">All</a></li>
 	<li><a href="#categorylistexample">myCategory</a></li>
 	<li><a href="#categorylistexample">yourCategory</a></li>
@@ -641,7 +615,7 @@ categorylist footer
 
 
 <div class="page"><a name="templatelocale"></a>
-<h1>Templates: Locale</h1>
+<h1>+Templates: Locale</h1>
 <p>
 This is actually not a template-part, it's a setting. Setting it allows the date and time preferences when to be localized. Names of months and days will be in the desired language, etc.
 </p>
@@ -667,9 +641,9 @@ The locale is used for the <a href="#templatedatetime">date and time format</a>,
 </div>
 
 <div class="page"><a name="templatedatetime"></a>
-<h1>Templates: Date and Time formats</h1>
+<h1>+Templates: Date and Time formats</h1>
 <p>
-These are used to format dates and times into the &lt;%date%&gt; and &lt;%time%&gt; vars (see <a href="#templatevars-overview">template vars</a>). The formatting is done according to the <a href="#templatelocale">locale</a>
+These are used to format dates and times into the <code>&lt;%date%&gt;</code> and <code>&lt;%time%&gt;</code> vars (see <a href="#templatevars-overview">template vars</a>). The formatting is done according to the <a href="#templatelocale">locale</a>
 </p>
 
 <p>
@@ -679,7 +653,8 @@ These are used to format dates and times into the &lt;%date%&gt; and &lt;%time%&
 </div>
 
 <div class="page"><a name="templatedateheads"></a>
-<h1>Template: Date headers/footers</h1>
+<h1>+Template: Date headers/footers</h1>
+
 <p>
 The date header and date footer can contain date and time vars. <a href="#strftime">More info on the available vars</a>. If you want to get started quickly, use "%x" to format the date. The language which is used to format the date, is determined by the <a href="#templatelocale">locale-setting</a> in the template.</p>
 
@@ -715,29 +690,25 @@ Sample for date footer:
 </div>
 
 <div class="page"><a name="templatehighlight"></a>
-<h1>Templates: Highlight</h1>
+<h1>+Templates: Highlight</h1>
 <p>
 The highlighting is used when performing searches. This is actually used in a regular expression, so you might want to escape some characters by putting a backslash before them. The place where the highlighted word will come, is indicated by "\0".
 </p>
 
-<p>
-Example:
-</p>
+<h2>Example</h2>
 
-<pre>
-&lt;span style='background-color:yellow'&gt;\0&lt;/span&gt;
-</pre>
+<pre><code>&lt;span style='background-color:yellow'&gt;\0&lt;/span&gt;</code></pre>
+
 </div>
 
 <div class="page"><a name="templatenothingfound"></a>
-<h1>Templates: nothing found</h1>
+<h1>+Templates: nothing found</h1>
+
 <p>
 Shown when a search has been performed and no results were found.
 </p>
 
-<p>
-Available variables:
-</p>
+<p>Available variables:</p>
 
 <table><tr>
 	<th>Name</th>
@@ -752,101 +723,36 @@ Available variables:
 
 <h2>Example</h2>
 
-<pre>
-No search results found for &lt;b&gt;&lt;%query%&gt;&lt;/b&gt;
-</pre>
+<pre><code>No search results found for &lt;b&gt;&lt;%query%&gt;&lt;/b&gt;</code></pre>
 
 </div>
 
 <div class="page"><a name="templatecommentbody"></a>
-<h1>Templates: Comment body</h1>
+<h1>+Templates: Comment body</h1>
 <p>
-This is the part of the template used to display a single comment. Available variables are listed below:
-</p>
+This is the part of the template used to display a single comment. In this template-part, <a href="#templatevars-comments" title="Overview of comments-related template variables">comments-related templatevars</a> are available.</p>
 
-<table><tr>
-	<th>Name</th>
-	<th>Description</th>
-</tr><tr>
-	<td>commentid</td>
-	<td>ID of the comment</td>	
-</tr><tr>
-	<td>itemid</td>
-	<td>ID of the item</td>	
-</tr><tr>
-	<td>blogid</td>
-	<td>ID of the weblog</td>	
-</tr><tr>
-	<td>itemlink</td>
-	<td>link to the detailed item page</td>	
-</tr><tr>
-	<td>body</td>
-	<td>comment body</td>	
-</tr><tr>
-	<td>user</td>
-	<td>user name</td>	
-</tr><tr>
-	<td>userid</td>
-	<td>users URL or e-mail address</td>	
-</tr><tr>
-	<td>userlink</td>
-	<td>a smart link to either the e-mail or URL for non members, or the member detail page for members. Note: this link already includes the &lt;a href="..."&gt; and &lt;/a&gt; tags ! (when no valid URL or e-mail is available, only the name of the member will be shown)</td>	
-</tr><tr>
-	<td>userlinkraw</td>
-	<td>same as above, but without the &lt;a href.., empty when no valid URL or e-mail available</td>	
-</tr><tr>
-	<td>memberid</td>
-	<td>ID of the member (0 for non-members)</td>	
-</tr><tr>
-	<td>host</td>
-	<td>host from where comment was added</td>	
-</tr><tr>
-	<td>ip</td>
-	<td>IP-address from where comment was added</td>	
-</tr><tr>
-	<td>commentcount</td>
-	<td>total amount of comments for the item</td>	
-</tr><tr>
-	<td>commentword</td>
-	<td><a href="#templatecommentwords">1 'comment', 2 'comments'</a></td>	
-</tr><tr>
-	<td>date</td>
-	<td>date on which comment was added</td>	
-</tr><tr>
-	<td>time</td>
-	<td>time at which comment was added</td>	
-</tr><tr>
-	<td>authtext</td>
-	<td>the <a href="#templatememberextra">extra text</a> for members, empty for non members</td>	
-</tr><tr>
-	<td>short</td>
-	<td>a cut off version of the body, which truncates after the first line break. <a href="#templatecommentcontinued">A link is added</a> at the end according to the template</td>	
-</tr></table>
+<h2>Example</h2>
+<pre><code>&lt;h2&gt;Comment by &lt;%userlink%&gt;:&lt;/h2&gt;
 
-<p>
-<a href="#templatecommentexample">Example</a>
-</p>
+&lt;p&gt;&lt;%body%&gt;&lt;/p&gt;
 
+&lt;div class="metadata"&gt;
+ (from &lt;%host%&gt; on &lt;%date%&gt; at &lt;%time%&gt;)
+&lt;/div&gt;</code></pre>
+
+<p>Result:</p>
+
+<div class="example">
+<h4 style="margin: 2px;">Comment by <a href="#templatecommentbody">karma</a>:</h4>
+<p style="margin: 2px;">Nice!</p>
+<div style="margin:2px;font-size:smaller;">(from host.example.org on 2003-03-02 at 13:30)</div>
 </div>
 
-<div class="page"><a name="templatecommentexample"></a>
-<h1>Templates: Comment Body</h1>
-<p>
-An example for the comment body template is given below:
-</p>
-<pre>
-&lt;b&gt;Comment by &lt;%userlink%&gt;&lt;/b&gt;
-&lt;br /&gt;
-&lt;%body%&gt;
-&lt;br /&gt;
-&lt;small&gt;
- (from &lt;%host%&gt; on &lt;%date%&gt; at &lt;%time%&gt;)
-&lt;/small&gt;
-</pre>
 </div>
 
 <div class="page"><a name="templatepopups"></a>
-<h1>Templates: Media &amp; Popups</h1>
+<h1>+Templates: Media &amp; Popups</h1>
 <p>
 These templates are used to format links to popup image windows and media objects (non-pictures). The available variables for each of the templates are described below
 </p>
@@ -866,8 +772,17 @@ These templates are used to format links to popup image windows and media object
 	<td>popupcode</td>
 	<td>javascript code to open window</td>
 </tr><tr>
-	<td>popuptext</td>
+	<td>text</td>
 	<td>the alternate text (link text)</td>
+</tr><tr>
+	<td>width</td>
+	<td>image width</td>
+</tr><tr>
+	<td>height</td>
+	<td>image width</td>	
+</tr><tr>
+	<td>popuptext</td>
+	<td>(=same as text)</td>
 </tr></table>
 
 
@@ -879,6 +794,18 @@ These templates are used to format links to popup image windows and media object
 </tr><tr>
 	<td>image</td>
 	<td>an IMG-tag, ready to use</td>
+</tr><tr>
+	<td>link</td>
+	<td>direct link to the image (URL)</td>
+</tr><tr>
+	<td>text</td>
+	<td>the alternate text (link text)</td>
+</tr><tr>
+	<td>width</td>
+	<td>image width</td>
+</tr><tr>
+	<td>height</td>
+	<td>image width</td>	
 </tr></table>
 
 <h2>Media Object Link Code</h2>
@@ -889,31 +816,33 @@ These templates are used to format links to popup image windows and media object
 </tr><tr>
 	<td>media</td>
 	<td>an A-tag, ready to use</td>
+</tr><tr>
+	<td>link</td>
+	<td>direct link to the file (URL)</td>
+</tr><tr>
+	<td>text</td>
+	<td>the alternate text (link text)</td>
 </tr></table>
 
 </div>
 
 <div class="page"><a name="templatememberextra"></a>
-<h1>Templates: Member Extra</h1>
+<h1>+Templates: Member Extra</h1>
 <p>
-This is a template you can use to add an extra indication that a comment-author is a member. It ends up in the &lt;%authtext%&gt; variable for use in the <a href="#templatecommentbody">comment body</a>
+This is a template you can use to add an extra indication that a comment-author is a member. It ends up in the <code>&lt;%authtext%&gt;</code> variable for use in the <a href="#templatecommentbody">comment body</a>
 </p>
 
-<p>
-No special variables are allowed here.
-</p>
+<p>Inside this template-part, some <a href="#templatevars-comments" title="Overview of comments-related template variables">comments-related variables</a> are available.</p>
 
 </div>
 
 <div class="page"><a name="templatecommentcontinued"></a>
-<h1>Templates: Comments Read More</h1>
+<h1>+Templates: Comments Read More</h1>
 <p>
-This is the format of the link that will be added at the end of &lt;%short%&gt;, which is a variable for use in the <a href="#templatecommentbody">comment body</a>
+This is the format of the link that will be added at the end of <code>&lt;%short%&gt;</code>, which is a variable for use in the <a href="#templatecommentbody">comment body</a>
 </p>
 
-<p>
-The variables allowed here are all those that are available in the <a href="#templatecommentbody">comment body</a> (except for &lt;%short%&gt;)
-</p>
+<p>Inside this template-part, some <a href="#templatevars-comments" title="Overview of comments-related template variables">comments-related variables</a> are available (except for the <code>&lt;%short%&gt;</code> variable).</p>
 
 <p>Example:</p>
 
@@ -924,34 +853,32 @@ The variables allowed here are all those that are available in the <a href="#tem
 </div>
 
 <div class="page"><a name="templatecommentwords"></a>
-<h1>Templates: commentword</h1>
+<h1>+Templates: commentword</h1>
 <p>
-Most likely, you'll rather want to write "1 comment" than "1 comment(s)". The "One comment" and "Many comments" template parts can be used for this purpose. They will be used to fill the &lt;%commentword%&gt; variable that you can use elsewhere.
+Most likely, you'll rather want to write "1 comment" than "1 comment(s)". The "One comment" and "Many comments" template parts can be used for this purpose. They will be used to fill the <code>&lt;%commentword%&gt;</code> variable that you can use elsewhere.
 </p>
 
 <p>
-If there is only 1 comment, &lt;%commentword%&gt; will be equal to the contents of the "one comment" part. If there are many comments (more than one), &lt;%commentword%&gt; will be equal to the contents of the "two (or more) comments" part.
+If there is only 1 comment, <code>&lt;%commentword%&gt;</code> will be equal to the contents of the "one comment" part. If there are many comments (more than one), <code>&lt;%commentword%&gt;</code> will be equal to the contents of the "two (or more) comments" part.
 </p>
 
 <p>
-Typical values are "comment" and "comments". No special variables can be used.
+Typical values are "comment" and "comments". <strong>No special variables can be used here</strong>.
 </p>
 </div>
 
 
 
 <div class="page"><a name="templateeditlink"></a>
-<h1>Templates: Edit Link</h1>
+<h1>+Templates: Edit Link</h1>
 <p>
 This template defines how the <a href="#templatevar-edit">edit-templatevar</a> will be marked up. You can use any of the <a href="#templatevars-overview">template variables</a> here.
 </p>
 
 <h2>Example:</h2>
 
-<pre>
-&lt;a href="&lt;%editlink%&gt;" 
-   onclick="&lt;%editpopupcode%&gt;"&gt;edit&lt;/a&gt;
-</pre>
+<pre><code>&lt;a href="&lt;%editlink%&gt;" 
+   onclick="&lt;%editpopupcode%&gt;"&gt;edit&lt;/a&gt;</code></pre>
 
 </div>
 
@@ -1236,9 +1163,9 @@ Display names are used for members. They can contain a-z, A-Z, 0-9 and spaces, b
 
 
 <div class="page"><a name="templatenew"></a>
-<h1>Template: 'New' indication</h1>
+<h1>+Template: 'New' indication</h1>
 <p>
-When the <a href="#cookies">'last visit' cookie</a> option is activated, the contents of the 'Indication of new item'-template is copied into the &lt;%new%&gt; variable for items that have been added since the last visit. The &lt;%new%&gt; variable can e.g. be used in the <a href="#templateitems">item body</a>-template.
+When the <a href="#cookies">'last visit' cookie</a> option is activated, the contents of the 'Indication of new item'-template is copied into the &lt;%new%&gt; variable for items that have been added since the last visit. The <code>&lt;%new%&gt;</code> variable can e.g. be used in the <a href="#templateitems">item body</a>-template.
 </p>
 
 <p>
@@ -1248,7 +1175,7 @@ When the 'last visit' cookie is disabled, or the item is not 'new', this templat
 
 
 <div class="page"><a name="strftime"></a>
-<h1>Time variables overview</h1>
+<h1>+Time variables overview</h1>
 
 <p>The following conversion specifiers are recognized in the format string <small>(taken from the PHP documentation for the strftime function)</small>. More info in the <a href="http://www.opengroup.org/onlinepubs/7908799/xsh/strftime.html" onclick="window.open(this.href);return false;" class="out" title="Open Group specification">Open Group Specification</a></p>
 
@@ -3234,7 +3161,7 @@ all
 
 <div class="page">
 <a name="templatevars-overview"></a>
-<h1>Template variables: Overview</h1>
+<h1>+Template variables: Overview</h1>
 
 <h2>What?</h2>
 
@@ -3242,20 +3169,21 @@ all
 
 <h2>Available variables</h2>
 
+<p>
+These template variables be used in the following template-parts: <tt>item header, item body, item footer, date header, date footer, morelink, editlink</tt> (The variables <tt>image</tt>, <tt>popup</tt> and <tt>media</tt> can also be used inside weblog items.)
+</p>
+
 <ul>
 	<li><a href="#templatevars-basic">Basic variables...</a> (title, body, ...)</li>
 	<li><a href="#templatevars-advanced">Advanced variables...</a> (include, plugin, ...)</li>
 </ul>
 
-<h2>Templatetypes</h2>
+<p>Comments-related template-parts (<tt>comments header, comments body, comments footer, one comment, two comments, comments read more, no comments, too much comments</tt>) have a different set of available variables:</p>
 
-<p>
-These template variables can currently be used in the following template-parts: <tt>item header, item body, item footer, date header, date footer, morelink, editlink</tt>
-</p>
+<ul>
+	<li><a href="#templatevars-comments">Comments-related variables...</a></li>
+</ul>
 
-<p>
-The variables <tt>image</tt>, <tt>popup</tt> and <tt>media</tt> can also be used inside weblog items.
-</p>
 
 </div>
 
@@ -3263,7 +3191,7 @@ The variables <tt>image</tt>, <tt>popup</tt> and <tt>media</tt> can also be used
 
 <div class="page">
 <a name="templatevars-basic"></a>
-<h1>Template variables: Basic variables</h1>
+<h1>+Template variables: Basic variables</h1>
 
 <p>All these variables concern the item that's currently being parsed.</p>
 
@@ -3332,7 +3260,7 @@ The variables <tt>image</tt>, <tt>popup</tt> and <tt>media</tt> can also be used
 
 <div class="page">
 <a name="templatevars-advanced"></a>
-<h1>Template variables: Advanced variables</h1>
+<h1>+Template variables: Advanced variables</h1>
 
 
 <table><tr>
@@ -3411,10 +3339,106 @@ The variables <tt>image</tt>, <tt>popup</tt> and <tt>media</tt> can also be used
 
 
 <div class="page">
-<a name="templatevar-karma"></a>
-<h1>Templatevar: karma</h1>
+<a name="templatevars-comments"></a>
+<h1>+Template variables: Comments</h1>
 
-<p>Inserts karma votes data</p>
+
+<table><tr>
+	<th>Name</th>
+	<th>Description</th>
+</tr><tr>
+	<td>body</td>
+	<td>comment body</td>	
+</tr><tr>
+	<td>user</td>
+	<td>user name</td>	
+</tr><tr>
+	<td>userid</td>
+	<td>users URL or e-mail address</td>	
+</tr><tr>
+	<td>userlink</td>
+	<td>a smart link to either the e-mail or URL for non members, or the member detail page for members. Note: this link already includes the &lt;a href="..."&gt; and &lt;/a&gt; tags ! (when no valid URL or e-mail is available, only the name of the member will be shown)</td>	
+</tr><tr>
+	<td>userlinkraw</td>
+	<td>same as above, but without the &lt;a href.., empty when no valid URL or e-mail available</td>	
+</tr><tr>
+	<td>memberid</td>
+	<td>ID of the member (0 for non-members)</td>	
+</tr><tr>
+	<td>commentcount</td>
+	<td>total amount of comments for the item</td>	
+</tr><tr>
+	<td><a href="#templatecommentwords" title="commentword()">commentword</a></td>
+	<td>1 'comment', 2 'comments'</td>	
+</tr><tr>
+	<td><a href="#templatevar-date" title="date([format])">date</a></td>
+	<td>date on which comment was added</td>	
+</tr><tr>
+	<td><a href="#templatevar-time" title="time([format])">time</a></td>
+	<td>time at which comment was added</td>	
+</tr><tr>
+	<td>host</td>
+	<td>host from where comment was added</td>	
+</tr><tr>
+	<td>ip</td>
+	<td>IP-address from where comment was added</td>	
+</tr><tr>
+	<td>commentid</td>
+	<td>ID of the current comment</td>	
+</tr><tr>
+	<td>itemid</td>
+	<td>ID of the current item</td>	
+</tr><tr>
+	<td>itemlink</td>
+	<td>link to the detailed item page</td>	
+</tr><tr>
+	<td><a href="#templateitemtitle" title="itemtitle([maxlength])">itemtitle</a></td>
+	<td>Title of the current item</td>	
+</tr><tr>
+	<td>blogid</td>
+	<td>ID of the weblog</td>	
+</tr><tr>
+	<td><a href="#templatememberextra" title="authtext()">authtext</a></td>
+	<td>the extra text</a> for members, empty for non members</td>	
+</tr><tr>
+	<td>short</td>
+	<td>a cut off version of the body, which truncates after the first line break. <a href="#templatecommentcontinued">A link is added</a> at the end according to the template</td>
+</tr><tr>
+	<td>timestamp</td>
+	<td>time at which comment was added</td>	
+</tr><tr>
+	<td><a href="#skinvar-include" title="include(filename)">include</a></td>
+	<td>includes a file, whithout parsing</td>
+</tr><tr>
+	<td><a href="#skinvar-parsedinclude" title="parsedinclude(filename)">parsedinclude</a></td>
+	<td>includes a file, parsing it</td>
+</tr><tr>
+	<td><a href="#skinvar-phpinclude" title="phpinclude(filename)">phpinclude</a></td>
+	<td>includes a file, parsing by PHP</td>
+</tr><tr>
+	<td><a href="#skinvar-plugin" title="plugin(name,[options...])">plugin</a></td>
+	<td>executes a plugin</td>
+</tr><tr>
+	<td><a href="#skinvar-skinfile" title="skinfile(filename)">skinfile</a></td>
+	<td>includes the correct URL for a file belonging to an imported skin</td>
+</tr><tr>
+	<td><a href="#skinvar-set" title="set(property,value)">set</a></td>
+	<td>sets a parser property</td>
+</tr></table>
+
+
+
+<p><a href="#templatevars-overview">Template variables overview...</a></p>
+
+</div>
+
+
+
+<div class="page">
+<a name="templatevar-karma"></a>
+<h1>+Templatevar: karma</h1>
+
+<p>Inserts karma votes data. Karma votes are a method to vote the 'karma' of an item. With a single click, the visitor can vote either positive or negative. The total of all these votes gives an idea of how much an item is liked by the visitors</p>
 
 <h2>Arguments</h2>
 
@@ -3422,12 +3446,12 @@ The variables <tt>image</tt>, <tt>popup</tt> and <tt>media</tt> can also be used
 	<ul>
 		<li><strong><em>what</em></strong>: Choose a type of information to be displayed:
 			<ul>
-				<li>'totalscore': the total karma vote score (=amount of positive votes minus the amount of negative votes) <strong>(default)</strong></li>
-				<li>'pos': total number of positive votes</li>
-				<li>'neg': total number of negative votes</li>				
-				<li>'votes': total number of votes</li>								
-				<li>'posp': percentage of votes that is positive</li>				
-				<li>'negp': percentage of votes that is negative</li>								
+				<li><strong>totalscore</strong>: the total karma vote score (=amount of positive votes minus the amount of negative votes) <em>(default)</em></li>
+				<li><strong>pos</strong>: total number of positive votes</li>
+				<li><strong>neg</strong>: total number of negative votes</li>				
+				<li><strong>votes</strong>: total number of votes</li>								
+				<li><strong>posp</strong>: percentage of votes that is positive</li>				
+				<li><strong>negp</strong>: percentage of votes that is negative</li>								
 			</ul>
 		</li>
 	</ul>
@@ -3436,15 +3460,27 @@ The variables <tt>image</tt>, <tt>popup</tt> and <tt>media</tt> can also be used
 <h2>Examples</h2>
 <pre><code>&lt;%karma(posp)%&gt; out of &lt;%votes%&gt; were positive</code></pre>
 
-<h2>Note</h2>
-
-<p></p>
 
 </div>
 
 
 
+<div class="page">
+<a name="templateitemtitle"></a>
+<h1>+Templatevar: templateitemtitle</h1>
 
+<p>On comments-releated templateparts, inserts the title of the associated item.</p>
+
+<h2>Arguments</h2>
+
+<ul>Optional:
+	<ul>
+		<li><strong><em>maxlength</em></strong>: When provided, makes the itemtitle behave like the <a href="#templatevar-syndicate_title">syndicate_title templatevar</a>.
+		</li>
+	</ul>
+</ul>
+
+</div>
 
 
 
@@ -3453,33 +3489,30 @@ The variables <tt>image</tt>, <tt>popup</tt> and <tt>media</tt> can also be used
 
 <div class="page">
 <a name="templatevar-author"></a>
-<h1>Templatevar: author</h1>
+<h1>+Templatevar: author</h1>
 
-<p>
-Inserts the name of the author
-</p>
+<p>Inserts the name of the author</p>
 
 <h2>Arguments</h2>
 <ul>Optional:
 	<ul>
 		<li><strong><em>what</em></strong>: Choose a type of information to be displayed:
 			<ul>
-				<li>name: display name <strong>(default)</strong></li>
-				<li>realname: the real name of the author instead of the display name</li>
-				<li>id: Nucleus membet ID</li>
-				<li>url: URL of members website</li>
-				<li>email: email address of member (use of this one should be avoided)</li>
+				<li><strong>name</strong>: display name <em>(default)</em></li>
+				<li><strong>realname</strong>: the real name of the author instead of the display name</li>
+				<li><strong>id</strong>: Nucleus membet ID</li>
+				<li><strong>url</strong>: URL of members website</li>
+				<li><strong>email</strong>: email address of member (use of this one should be avoided)</li>
 			</ul>
 		</li>
 	</ul>
 </ul>
 
 <h2>Examples</h2>
-<pre>
-&lt;%author%&gt;
+
+<pre><code>&lt;%author%&gt;
 &lt;%author(realname)%&gt;
-&lt;a href="&lt;%author(url)%&gt;"&gt;&lt;%author%&gt;&lt;/a&gt;
-</pre>
+&lt;a href="&lt;%author(url)%&gt;"&gt;&lt;%author%&gt;&lt;/a&gt;</code></pre>
 
 </div>
 
@@ -3488,7 +3521,7 @@ Inserts the name of the author
 
 <div class="page">
 <a name="templatevar-smartbody"></a>
-<h1>Templatevar: smartbody</h1>
+<h1>+Templatevar: smartbody</h1>
 
 <p>
 Examines the current item and then decides to show either the body text or the expanded text.
@@ -3519,19 +3552,19 @@ Examines the current item and then decides to show either the body text or the e
 
 <div class="page">
 <a name="templatevar-morelink"></a>
-<h1>Templatevar: morelink</h1>
+<h1>+Templatevar: morelink</h1>
 
 <p>
 Inserts a link to the detail page for the item, as defined in the template (<a href="#templatemorelink">link to extended entry</a>). This is empty when there is no extended part.
 </p>
 
-<p>Note that the contents of the 'link to extended entry' templatepart is also parsed and can thus also contain templatevariables.</p>
+<p>Note that the contents of the 'link to extended entry' templatepart is also parsed and can thus also contain <a href="#templatevars-overview">templatevariables</a>.</p>
 </div>
 
 
 <div class="page">
 <a name="templatevar-date"></a>
-<h1>Templatevar: date</h1>
+<h1>+Templatevar: date</h1>
 
 <p>
 Inserts a date using the <a href="#templatedatetime">date format specified in the template</a>. Optionally, a custom date format can be given as a parameter.
@@ -3561,7 +3594,7 @@ Inserts a date using the <a href="#templatedatetime">date format specified in th
 
 <div class="page">
 <a name="templatevar-time"></a>
-<h1>Templatevar: time</h1>
+<h1>+Templatevar: time</h1>
 
 <p>
 Inserts a time using the <a href="#templatedatetime">time format specified in the template</a>. Optionally, a custom time format can be given as a parameter.
@@ -3585,7 +3618,7 @@ Inserts a time using the <a href="#templatedatetime">time format specified in th
 
 <div class="page">
 <a name="templatevar-comments"></a>
-<h1>Templatevar: comments</h1>
+<h1>+Templatevar: comments</h1>
 
 <p>
 Inserts a comments 'block'. <a href="#templatecomments">More information about the structure of this block</a>.
@@ -3614,7 +3647,7 @@ Inserts a comments 'block'. <a href="#templatecomments">More information about t
 
 <div class="page">
 <a name="templatevar-syndicate_title"></a>
-<h1>Templatevar: syndicate_title</h1>
+<h1>+Templatevar: syndicate_title</h1>
 
 <p>
 Inserts the title of the item, with HTML tags-stripped off, and shortened to 100 characters. When the text needs to be shortened, "..." is added at the end of the text.
@@ -3649,7 +3682,7 @@ This variable was originally intended for use in the XML-RSS skin that comes wit
 
 <div class="page">
 <a name="templatevar-syndicate_description"></a>
-<h1>Templatevar: syndicate_description</h1>
+<h1>+Templatevar: syndicate_description</h1>
 
 <p>
 Inserts the body of the item, with HTML tags-stripped off, and shortened to 250 characters. When the text needs to be shortened, "..." is added at the end of the text.
@@ -3685,7 +3718,7 @@ This variable was originally intended for use in the XML-RSS skin that comes wit
 
 <div class="page">
 <a name="templatevar-image"></a>
-<h1>Templatevar: image</h1>
+<h1>+Templatevar: image</h1>
 
 <p>Inserts an inline image into an item body or template.</p>
 
@@ -3728,7 +3761,7 @@ This variable was originally intended for use in the XML-RSS skin that comes wit
 
 <div class="page">
 <a name="templatevar-popup"></a>
-<h1>Templatevar: popup</h1>
+<h1>+Templatevar: popup</h1>
 
 <p>Inserts a popup image into an item body or template.</p>
 
@@ -3771,7 +3804,7 @@ This variable was originally intended for use in the XML-RSS skin that comes wit
 
 <div class="page">
 <a name="templatevar-media"></a>
-<h1>Templatevar: media</h1>
+<h1>+Templatevar: media</h1>
 
 <p>Inserts a media object into an item body or template.</p>
 
@@ -3797,16 +3830,14 @@ This variable was originally intended for use in the XML-RSS skin that comes wit
 
 <h2>Examples</h2>
 
-<pre>
-&lt;%media(mysong.mp3|listen to my new song)%&gt;
-</pre>
+<pre><code>&lt;%media(mysong.mp3|listen to my new song)%&gt;</code></pre>
 
 </div>
 
 
 <div class="page">
 <a name="templatevar-edit"></a>
-<h1>Templatevar: edit</h1>
+<h1>+Templatevar: edit</h1>
 
 <p>
 From within your template, you can add an 'edit item' link by using this template variable. By default, it will link to a popup-bookmarklet-window, but that behaviour can be changed through the <a href="#templateeditlink">editlink template</a>.
@@ -3816,18 +3847,18 @@ From within your template, you can add an 'edit item' link by using this templat
 
 <h2>Example</h2>
 <p>An example for the item body template</p>
-<pre>
-&lt;b&gt;&lt;%title%&gt;&lt;/b&gt;
-&lt;br /&gt;&lt;%body%&gt; &lt;%morelink%&gt;
-&lt;br /&gt;&lt;i&gt;&lt;%edit%&gt; &lt;%comments%&gt;&lt;/i&gt;
-</pre>
+<pre><code>&lt;h1&gt;&lt;%title%&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;%body%&gt; &lt;%morelink%&gt;&lt;/p&gt;
+&lt;div class="metadata"&gt;
+	&lt;%edit%&gt; &lt;%comments%&gt;
+&lt;/div&gt;</code></pre>
 
 <h2>Results in</h2>
 
-<div>
-<b>Title</b>
-<br />This is an item
-<br /><a href="#templatevar-edit">edit</a> - <a href="#templatevar-edit">5 comments</a>
+<div class="example">
+<h4 style="margin:2px;">Title</h4>
+<p style="margin:2px;">This is an item</p>
+<div style="margin:2px;"><a href="#templatevar-edit">edit</a> - <a href="#templatevar-edit">5 comments</a></div>
 </div>
 
 </div>
@@ -3835,7 +3866,7 @@ From within your template, you can add an 'edit item' link by using this templat
 
 <div class="page">
 <a name="templatevar-editlink"></a>
-<h1>Templatevar: editlink</h1>
+<h1>+Templatevar: editlink</h1>
 
 <p>
 Insert a link to the 'edit item' bookmarklet. This can be used in the <a href="#templateeditlink">editlink template</a> for simplicity.
@@ -3854,7 +3885,7 @@ Insert a link to the 'edit item' bookmarklet. This can be used in the <a href="#
 
 <div class="page">
 <a name="templatevar-editpopupcode"></a>
-<h1>Templatevar: editpopupcode</h1>
+<h1>+Templatevar: editpopupcode</h1>
 
 <p>
 To open a popup window for the 'edit link' window, you'll need to add some javascript code to your link. To avoid having to enter this code in the 'edit link'-template, you can insert it using the editpopupcode-templatevar. 

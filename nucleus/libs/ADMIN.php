@@ -3070,18 +3070,18 @@ selector();
 	$this->_templateEditRow($template, _TEMPLATE_CONE, 'COMMENTS_ONE', 'commentwords', 70);		
 	$this->_templateEditRow($template, _TEMPLATE_CMANY, 'COMMENTS_MANY', 'commentwords', 80);		
 	$this->_templateEditRow($template, _TEMPLATE_CMORE, 'COMMENTS_CONTINUED', 'commentcontinued', 90);		
-	$this->_templateEditRow($template, _TEMPLATE_CMEXTRA, 'COMMENTS_AUTH', 'commentmemberextra', 100);		
+	$this->_templateEditRow($template, _TEMPLATE_CMEXTRA, 'COMMENTS_AUTH', 'memberextra', 100);		
 ?>
 		</tr><tr>	
 			<th colspan="2"><?=_TEMPLATE_COMMENTS_NONE?> <? help('templatecomments'); ?></th>
 <?
 
-	$this->_templateEditRow($template, _TEMPLATE_CNONE, 'COMMENTS_NONE', 'commentheaders', 110);		
+	$this->_templateEditRow($template, _TEMPLATE_CNONE, 'COMMENTS_NONE', '', 110);		
 ?>
 		</tr><tr>	
 			<th colspan="2"><?=_TEMPLATE_COMMENTS_TOOMUCH?> <? help('templatecomments'); ?></th>
 <?
-	$this->_templateEditRow($template, _TEMPLATE_CTOOMUCH, 'COMMENTS_TOOMUCH', 'commentheaders', 120);		
+	$this->_templateEditRow($template, _TEMPLATE_CTOOMUCH, 'COMMENTS_TOOMUCH', '', 120);		
 ?>
 		</tr><tr>	
 			<th colspan="2"><?=_TEMPLATE_ARCHIVELIST?> <? help('templatearchivelists'); ?></th>
