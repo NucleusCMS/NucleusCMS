@@ -922,6 +922,7 @@ class ACTIONS extends BaseActions {
 			return;
 		
 		$plugin =& $manager->getPlugin('NP_' . $pluginName);
+		if (!$plugin) return;
 
 		// get arguments
 		$params = func_get_args();

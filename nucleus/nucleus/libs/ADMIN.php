@@ -4782,11 +4782,22 @@ selector();
 			)
 		);
 		
+		// do this before calling getPlugin (in case the plugin id is used there)
 		$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.$name.'")';
 		sql_query($query);
-		
+		$iPid = mysql_insert_id();
+
 		// call the install method of the plugin
 		$plugin =& $manager->getPlugin($name);
+		
+		if (!$plugin)
+		{
+			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. intval($iPid));
+			$this->error('Plugin could not be loaded, or does not support certain features that are required for it to run on your Nucleus installation (you might want to check the <a href="?action=actionlog">actionlog</a> for more info)');
+		}
+		
+
+		
 		
 		// check if plugin needs a newer Nucleus version
 		if (getNucleusVersion() < $plugin->getMinNucleusVersion())
@@ -4826,9 +4837,12 @@ selector();
 		while($o = mysql_fetch_object($res)) {
 			$pid = $o->pid;
 			$plug =& $manager->getPlugin($o->pfile);
-			$eventList = $plug->getEventList();
-			foreach ($eventList as $eventName) 
-				sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.$eventName.'\')');
+			if ($plug)
+			{
+				$eventList = $plug->getEventList();
+				foreach ($eventList as $eventName) 
+					sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.$eventName.'\')');
+			}
 		}
 		
 		$this->action_pluginlist();
@@ -4870,7 +4884,7 @@ selector();
 		
 		$error = $this->deleteOnePlugin($pid, 1);
 		if ($error) {
-			$this->doError($error);
+			$this->error($error);
 		}
 
 		$this->action_pluginlist();
@@ -5472,7 +5486,7 @@ function listplug_table_pluginlist($template, $type) {
 						echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',implode($plug->getEventList(),', ');
 				echo '</td>';
 			} else {
-				echo '<td colspan="2">Error: plugin file <b>',$current->pfile,'.php</b> not found in plugin directory!</td>';
+				echo '<td colspan="2">Error: plugin file <b>',$current->pfile,'.php</b> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)</td>';
 			}
 			echo '<td>';
 				echo "<a href='index.php?action=pluginup&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UP,"</a>";

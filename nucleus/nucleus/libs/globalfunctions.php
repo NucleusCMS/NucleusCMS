@@ -230,8 +230,12 @@ function sql_connect() {
  */
 function sql_table($name)
 {
-	global $CONF; // TODO: use preset
-	return 'nucleus_' . $name;
+	global $MYSQL_PREFIX;
+
+	if ($MYSQL_PREFIX)
+		return $MYSQL_PREFIX . 'nucleus_' . $name;
+	else
+		return 'nucleus_' . $name;
 }
 
 /**

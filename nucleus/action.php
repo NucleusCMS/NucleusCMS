@@ -254,7 +254,10 @@ function callPlugin() {
 	
 	// 2: call plugin
 	$pluginObject =& $manager->getPlugin($pluginName);
-	$error = $pluginObject->doAction($actionType);
+	if ($pluginObject)
+		$error = $pluginObject->doAction($actionType);
+	else
+		$error = 'Could not load plugin (see actionlog)';
 	
 	// doAction returns error when:
 	// - an error occurred (duh)
