@@ -664,27 +664,43 @@ class ADMIN {
 	  * Inserts a HTML select element with choices for all categories to which the current
 	  * member has access
 	  */
-	function selectBlogCategory($name, $selected = 0, $tabindex = 0, $showNewCat = 0) {
-		ADMIN::selectBlog($name, 'category', $selected, $tabindex, $showNewCat);
+	function selectBlogCategory($name, $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
+		ADMIN::selectBlog($name, 'category', $selected, $tabindex, $showNewCat, $iForcedBlogInclude);
 	}
 	
 	/**
 	  * Inserts a HTML select element with choices for all blogs to which the user has access
 	  *		mode = 'blog' => shows blognames and values are blogids
 	  *		mode = 'category' => show category names and values are catids
+	  *
+	  * @param $iForcedBlogInclude
+	  *		ID of a blog that always needs to be included, without checking if the member is on the blog team (-1 = none)
 	  */
-	function selectBlog($name, $mode='blog', $selected = 0, $tabindex = 0, $showNewCat = 0) {
+	function selectBlog($name, $mode='blog', $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
 		global $member, $CONF;
+		
+		// 0. get IDs of blogs to which member can post items (+ forced blog)
+		$aBlogIds = array();
+		if ($iForcedBlogInclude != -1)
+			$aBlogIds[] = intval($iForcedBlogInclude);
+
+		if (($member->isAdmin()) && ($CONF['ShowAllBlogs'])) 
+			$queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').' ORDER BY bname';
+		else
+			$queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').', '.sql_table('team').' WHERE tblog=bnumber and tmember=' . $member->getID();		
+		$rblogids = sql_query($queryBlogs);
+		while ($o = mysql_fetch_object($rblogids))
+			if ($o->bnumber != $iForcedBlogInclude)
+				$aBlogIds[] = intval($o->bnumber);
+				
+		if (count($aBlogIds) == 0)
+			return;
 		
 		echo '<select name="',$name,'" tabindex="',$tabindex,'">';
 
 		// 1. select blogs (we'll create optiongroups)
 		// (only select those blogs that have the user on the team)
-		if (($member->isAdmin()) && ($CONF['ShowAllBlogs'])) {
-			$queryBlogs =  'SELECT bnumber, bname FROM '.sql_table('blog').' ORDER BY bname';
-		} else {
-			$queryBlogs =  'SELECT bnumber, bname FROM '.sql_table('blog').', '.sql_table('team').' WHERE tblog=bnumber and tmember=' . $member->getID() . ' ORDER BY bname';		
-		}		
+		$queryBlogs =  'SELECT bnumber, bname FROM '.sql_table('blog').' WHERE bnumber in ('.implode(',',$aBlogIds).') ORDER BY bname';
 		$blogs = sql_query($queryBlogs);
 		if ($mode == 'category') {
 			if (mysql_num_rows($blogs) > 1)
