@@ -3,6 +3,14 @@
 // <edd@usefulinc.com>
 // $Id$
 
+/*
+	Modifications made for use with Nucleus:
+	
+	renamed methods:
+	xmlrpc_encode -> _xmlrpc_encode
+	xmlrpc_decode -> _xmlrpc_decode
+*/
+
 
 // Copyright (c) 1999,2000,2001 Edd Dumbill.
 // All rights reserved.
@@ -1014,7 +1022,7 @@ function iso8601_decode($idate, $utc=0) {
 *                                                               *
 * author: Dan Libby (dan@libby.com)                             *
 ****************************************************************/
-function xmlrpc_decode($xmlrpc_val) {
+function _xmlrpc_decode($xmlrpc_val) {
    $kind = $xmlrpc_val->kindOf();
 
    if($kind == "scalar") {
@@ -1025,7 +1033,7 @@ function xmlrpc_decode($xmlrpc_val) {
       $arr = array();
 
       for($i = 0; $i < $size; $i++) {
-         $arr[]=xmlrpc_decode($xmlrpc_val->arraymem($i));
+         $arr[]=_xmlrpc_decode($xmlrpc_val->arraymem($i));
       }
       return $arr; 
    }
@@ -1034,7 +1042,7 @@ function xmlrpc_decode($xmlrpc_val) {
       $arr = array();
 
       while(list($key,$value)=$xmlrpc_val->structeach()) {
-         $arr[$key] = xmlrpc_decode($value);
+         $arr[$key] = _xmlrpc_decode($value);
       }
       return $arr;
    }
@@ -1052,7 +1060,7 @@ function xmlrpc_decode($xmlrpc_val) {
 *                                                               *
 * author: Dan Libby (dan@libby.com)                             *
 ****************************************************************/
-function xmlrpc_encode($php_val) {
+function _xmlrpc_encode($php_val) {
    global $xmlrpcInt;
    global $xmlrpcDouble;
    global $xmlrpcString;
@@ -1068,7 +1076,7 @@ function xmlrpc_encode($php_val) {
       case "object":
          $arr = array();
          while (list($k,$v) = each($php_val)) {
-            $arr[$k] = xmlrpc_encode($v);
+            $arr[$k] = _xmlrpc_encode($v);
          }
          $xmlrpc_val->addStruct($arr);
          break;
