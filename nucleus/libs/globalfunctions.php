@@ -12,7 +12,7 @@
   *
   */
 
-$nucleus['version'] = 'v1.99-dev';
+$nucleus['version'] = 'v2.0 beta';
 $CONF['debug'] = 1;				
 
 /**
