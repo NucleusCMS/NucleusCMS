@@ -32,7 +32,7 @@
 
 
 		// array with skins to install. skins must be present under the skins/ directory with
-		// a subdirectory having the same name that contains a skindata.xml file
+		// a subdirectory having the same name that contains a skinbackup.xml file
 		//
 		// example:
 		//     array('base','rsd')
@@ -790,7 +790,7 @@
 		foreach ($aConfSkinsToImport as $skinName) {
 			$importer->reset();
 
-			$skinFile = $DIR_SKINS . $skinName . '/skindata.xml';
+			$skinFile = $DIR_SKINS . $skinName . '/skinbackup.xml';
 			if (!@file_exists($skinFile)) {
 				array_push($aErrors, 'Unable to import ' . $skinFile . ' : file does not exist');
 				continue;
