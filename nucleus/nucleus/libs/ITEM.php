@@ -111,7 +111,7 @@ class ITEM {
 			$posttime = mktime($i_hour, $i_minutes, 0, $i_month, $i_day, $i_year);
 			
 			// make sure the date is in the future, unless we allow past dates 
-			if ((!$blog->allowPastDates()) && ($posttime < $blog->getCorrectTime()))
+			if ((!$blog->allowPastPosting()) && ($posttime < $blog->getCorrectTime()))
 				$posttime = $blog->getCorrectTime();
 		} else {
 			// time with offset, or 0 for drafts
