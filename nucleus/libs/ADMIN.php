@@ -4235,10 +4235,7 @@ selector();
 		$member->teamRights($blogid) or $this->disallow();
 		
 		$blog =& $manager->getBlog($blogid);
-		$bm = getBookmarklet($blogid, 'document');
-		$bmMac = getBookmarklet($blogid, 'document','mac');		
-		$bmMoz = getBookmarklet($blogid, 'document','mozilla');
-		$bmOpera = getBookmarklet($blogid, 'document','opera');		
+		$bm = getBookmarklet($blogid);
 		
 		$this->pagehead();
 
@@ -4246,26 +4243,22 @@ selector();
 		
 		?>
 		
-		<h2>Bookmarklet and Right Click Menu (IE/Mozilla)</h2>
+		<h2>Bookmarklet<!-- and Right Click Menu --></h2>
 		
 		<p>
 		Bookmarklets allow adding items to your weblog with just one single click. After installing these bookmarklets, you'll be able to click the 'add to weblog' button on your browser toolbar, and a Nucleus add-item window will popup, containing the link and title of the page you were visiting, plus any text you might have selected.
 		</p>
 		
-		<h3>Bookmarklet (IE)</h3>
+		<h3>Bookmarklet</h3>
 		<p>
 			You can drag the following link to your favorites, or your browsers toolbar: <small>(if you want to test the bookmarklet first, click the link)</small>
 			<br />
 			<br />
-			<a href="<?php echo htmlspecialchars($bm)?>">Add to <?php echo $blog->getShortName()?></a> (IE5/6 on PC)
-			<br />
-			<a href="<?php echo htmlspecialchars($bmMac)?>">Add to <?php echo $blog->getShortName()?></a> (IE5 on 			Mac)			
-			<br />
-			<a href="<?php echo htmlspecialchars($bmMoz)?>">Add to <?php echo $blog->getShortName()?></a> (Mozilla 1.x)
-			<br />
-			<a href="<?php echo htmlspecialchars($bmOpera)?>">Add to <?php echo $blog->getShortName()?></a> (Opera 6)
+			<a href="<?php echo htmlspecialchars($bm)?>">Add to <?php echo $blog->getShortName()?></a> (Nearly all browsers)
 		</p>
 		
+<!-- right click code appears to be broken ?
+
 		<h3>Right Click Menu Access (IE &amp; Windows)</h3>
 		<p>
 			Or you can install the <a href="index.php?action=regfile&amp;blogid=<?php echo $blogid?>">right click menu item</a> (choose 'open file' and add to registry)
@@ -4291,7 +4284,7 @@ selector();
 			<li>Search for "\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" in the tree</li>
 			<li>Delete the "add to weblog" item</li>				
 		</ol>
-		
+-->		
 		<?php
 		$this->pagefoot();
 		
@@ -5782,33 +5775,19 @@ function listplug_table_banlist($template, $type) {
 	}
 }
 
-function getBookmarklet($blogid, $doc, $type = 'pc/ie') {
+/**
+ * Returns the Javascript code for a bookmarklet that works on most modern browsers
+ *
+ * @param blogid
+ * @param document
+ *		how to access the document object (for menu extensions, this is external.menuArguments.document)
+ */
+function getBookmarklet($blogid, $document = 'document') {
 	global $CONF;
 
-	switch ($type) {
-		// special version for Mac
-		case 'mac':
-			$bookmarkletline = "javascript:doc=$doc;lt=escape(doc.getSelection());loglink=escape(location.href);loglinktitle=escape(doc.title);wingm=window.open('";
-			$bookmarkletline .= $CONF['AdminURL'] . "bookmarklet.php?blogid=$blogid";
-			$bookmarkletline .="&logtext='+lt+'&loglink='+loglink+'&loglinktitle='+loglinktitle,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');wingm.focus();";
-			break;
-		case 'mozilla':
-			$bookmarkletline = "javascript:doc=$doc;lt=escape(window.getSelection());loglink=escape(location.href);loglinktitle=escape(doc.title);wingm=window.open('";
-			$bookmarkletline .= $CONF['AdminURL'] . "bookmarklet.php?blogid=$blogid";
-			$bookmarkletline .="&logtext='+lt+'&loglink='+loglink+'&loglinktitle='+loglinktitle,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');wingm.focus();";
-			break;		
-		case 'opera':
-			$bookmarkletline = "javascript:doc=$doc;loglink=escape(location.href);loglinktitle=escape(doc.title);wingm=window.open('";
-			$bookmarkletline .= $CONF['AdminURL'] . "bookmarklet.php?blogid=$blogid";
-			$bookmarkletline .="&logtext=&loglink='+loglink+'&loglinktitle='+loglinktitle,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');wingm.focus();";
-			break;		
-		case 'pc/ie':
-		default:
-			$bookmarkletline = "javascript:doc=$doc;lt=escape(doc.selection.createRange().text);loglink=escape(doc.location.href);loglinktitle=escape(doc.title);wingm=window.open('";
-			$bookmarkletline .= $CONF['AdminURL'] . "bookmarklet.php?blogid=$blogid";
-			$bookmarkletline .= "&logtext='+lt+'&loglink='+loglink+'&loglinktitle='+loglinktitle,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');wingm.focus();";
-			break;
-	}
+	$bookmarkletline = "javascript:Q='';x=".$document.";y=window;if(x&&y){if(x.selection){Q=x.selection.createRange().text;}else if(y.getSelection){Q=y.getSelection();}else if(x.getSelection){Q=x.getSelection();}wingm=window.open('";
+	$bookmarkletline .= $CONF['AdminURL'] . "bookmarklet.php?blogid=$blogid";
+	$bookmarkletline .="&logtext='+escape(Q)+'&loglink='+escape(x.href)+'&loglinktitle='+escape(x.title),'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');wingm.focus();}";
 
 	return $bookmarkletline;
 }
