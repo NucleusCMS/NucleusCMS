@@ -33,7 +33,7 @@ CREATE TABLE nucleus_blog (
   UNIQUE KEY bnumber (bnumber)
 ) TYPE=MyISAM;
 
-INSERT INTO nucleus_blog VALUES (1, 'My Nucleus Weblog', 'myweblog', '', 1, 0, '0.0', '', 'http://localhost/release/', '', 1, 1, 0, 1, 1, 1, 0);
+INSERT INTO nucleus_blog VALUES (1, 'My Nucleus Weblog', 'myweblog', '', 1, 0, '0.0', '', 'http://localhost/release/', '', 1, 1, 0, 1, 1, 1, 0, 0);
 
 CREATE TABLE nucleus_category (
   catid int(11) NOT NULL auto_increment,
