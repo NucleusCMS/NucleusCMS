@@ -8,8 +8,20 @@
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<%init%>
 		<%extrahead%>
+		<script type="text/javascript">
+			var nucleus_initbm_oldonload = window.onload;
+			function nucleus_initbm()
+			{
+				initStyles(); 
+				updAllPreviews();
+
+				if (nucleus_initbm_oldonload)
+					nucleus_initbm_oldonload();
+			}
+			window.onload = nucleus_initbm;
+		</script>
 	</head>
-	<body onload="initStyles(); updAllPreviews();">
+	<body>
 		<h1><%text(_ADD_ADDTO)%> '<%bloglink%>'</h1>
 		<form method="post" action="bookmarklet.php" ><div>
 			
