@@ -1,6 +1,6 @@
 <?php
 /*
- * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
  * Copyright (C) 2002 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
@@ -29,7 +29,7 @@ $thisFile = 'blogger.php';
 $xmlFile = 'blogger.xml';
 
 if (!$member->isLoggedIn($thisFile)) {
-	convert_showLogin();
+	convert_showLogin('blogger.php');
 }
 
 if (!$member->isAdmin()) {
@@ -46,29 +46,29 @@ switch($action) {
 		bc_assignMembers(); break;
 	case 'showOverview':
 		bc_showOverview(); break;
-	case 'doConvert':	
+	case 'doConvert':
 		bc_doConversion(); break;
 	case 'login': // drop through
 	default:
-		bc_BloggerToXml(); 
+		bc_BloggerToXml();
 }
 
-// step 1: get the Blogger Blog ID 
+// step 1: get the Blogger Blog ID
 function bc_BloggerToXml() {
 	global $xmlFile, $thisFile;
-	
+
 	convert_head();
-	
+
 	?>
 		<h1>Step 1: Exporting to a file</h1>
-	
+
 		<p>
-		The first step in the conversion is to export all your Blogger entries into one single file. This is done by logging in in Blogger and by temporary changing your settings and templates. 
+		The first step in the conversion is to export all your Blogger entries into one single file. This is done by logging in in Blogger and by temporary changing your settings and templates.
 		<br />The full procedure is explained below:
 		</p>
-		
+
 		<h2>Exporting</h2>
-		
+
 		<div class="note"><b>Note:</b> If you intend to keep using your weblog afterwards, write down the changes you made, so they can be undone afterwards. For the templates, copy paste the old ones in a textfile.</div>
 
 		<ol>
@@ -77,10 +77,10 @@ function bc_BloggerToXml() {
 			</li>
 			<li>
 				Change the template of your blog to the following:
-				
+
 				<pre><code>&lt;?xml version="1.0"?&gt;
 
-&lt;blog xmlns="http://nucleuscms.org/ns/import1.0" version="1.0">&gt;
+&lt;blog xmlns="http://nucleuscms.org/ns/import1.0" version="1.0"&gt;
 
  &lt;Blogger&gt;
 
@@ -91,7 +91,7 @@ function bc_BloggerToXml() {
    &lt;author&gt;&lt;$BlogItemAuthor$&gt;&lt;/author&gt;
   &lt;/item&gt;
 
- &lt;/Blogger&gt; 
+ &lt;/Blogger&gt;
 
 &lt;/blog&gt;</code></pre>
 				Don't forget to save changes!
@@ -120,25 +120,25 @@ function bc_BloggerToXml() {
 				If you're running blogspot, you'll need to edit this file and take out the advertising banner code.
 			</li>
 		</ol>
-		
+
 		<h2>Importing</h2>
-		
+
 		<p>You now have a file called <code><?php echo $xmlFile?></code>. Upload it in the same directory as the convert files (<code>/nucleus/convert</code>) and continue to the next step.</p>
-		
+
 		<p>
 		<form method="post" action="<?php echo $thisFile;?>">
 		<input type="submit" value="Next Step: Select Blog" />
 		<input type="hidden" name="action" value="selectBlog" />
 		</form>
 		</p>
-		
-	<?php	
+
+	<?php
 	convert_foot();
 }
 
 function bc_selectBlog() {
 	global $CONF, $xmlFile, $thisFile;
-	
+
 	// some checks
 	if (!file_exists($xmlFile))
 		convert_doError($xmlFile . " not found. Make sure it is in the correct directory");
@@ -146,28 +146,28 @@ function bc_selectBlog() {
 		convert_doError($xmlFile ." file is not readable. Make sure the file permissions are set correctly so PHP can access it.");
 
 	convert_head();
-	
+
 	$oImport = new BlogImport();
 
 	?>
-	
+
 	<h1>Step 2: Select Destination Blog</h1>
-			
+
 		<form method="post" action="<?php echo $thisFile;?>"><div>
 
-	<?php 
-		echo $oImport->getHtmlCode('ConvertSelectBlog'); 
+	<?php
+		echo $oImport->getHtmlCode('ConvertSelectBlog');
 	?>
-				
+
 		<p>
 			<input type="submit" value="Next Step: Assign Members" />
 			<input type="hidden" name="action" value="assignMembers" />
 			(Could take quite a while. Press the button only once)
 		</p>
-		
+
 		</div></form>
-		
-	<?php	
+
+	<?php
 	convert_foot();
 
 
@@ -176,13 +176,13 @@ function bc_selectBlog() {
 function bc_assignMembers() {
 	global $xmlFile, $thisFile;
 	global $CONF;
-	
+
 	// some checks
 	if (!file_exists($xmlFile))
 		convert_doError($xmlFile . " not found. Make sure it is in the correct directory");
 	if (!is_readable($xmlFile))
 		convert_doError($xmlFile ." file is not readable. Make sure the file permissions are set correctly so PHP can access it.");
-		
+
 	convert_head();
 
 	?>
@@ -190,27 +190,27 @@ function bc_assignMembers() {
 
 		<h1>Step 3: Assign members and Categories</h1>
 
-	<?php 
-	
-		// create blog if requested	
+	<?php
+
+		// create blog if requested
 		$blogid = BlogImport::getBlogIdFromRequest();
-		
+
 		// read author and category names
 		$oImport = new BlogImport($blogid, array('ReadNamesOnly' => 1));
 		$oImport->importXmlFile($xmlFile);
-		
+
 		echo $oImport->getHtmlCode('ConvertSelectMembers');
-//		echo $oImport->getHtmlCode('ConvertSelectCategories'); 		
+//		echo $oImport->getHtmlCode('ConvertSelectCategories');
 	?>
-		
+
 		<p>
 			<input type="submit" value="Start Conversion" />
 			<input type="hidden" name="blogid" value="<?php echo intval($blogid) ?>" />
 			<input type="hidden" name="action" value="doConvert" /> (Could take quite a while. Press the button only once)
 		</p>
-		
+
 		</div></form>
-	<?php	
+	<?php
 	convert_foot();
 
 }
@@ -224,20 +224,20 @@ function bc_doConversion() {
 		convert_doError($xmlFile . " not found. Make sure it is in the correct directory");
 	if (!is_readable($xmlFile))
 		convert_doError($xmlFile ." file is not readable. Make sure the file permissions are set correctly so PHP can access it.");
-		
-	convert_head();		
-	
+
+	convert_head();
+
 	echo '<h1>Step 4: Conversion</h1>';
 
-	echo '<h2>Importing...</h2>';	
+	echo '<h2>Importing...</h2>';
 	echo '<p>Hold on while your blog is imported...</p>';
-	
+
 	// 1. get all data
 	$blogid = BlogImport::getBlogIdFromRequest();
 	$oImport = new BlogImport($blogid);
-	
+
 	$oImport->getFromRequest('authors');
-	$oImport->getFromRequest('categories');	
+	$oImport->getFromRequest('categories');
 	$oImport->strCallback = '';	// don't use a callback method
 
 	echo '<div>';
@@ -249,133 +249,22 @@ function bc_doConversion() {
 		echo '<p class="error">Error on import: ' . $oImport->getLastError() . '</p>';
 		exit;
 	}
-	
+
 	echo '<p>Successfully imported items</p>';
-	
+
 	echo '<h2>Mappings</h2>';
+
+	echo '<p>The mapping below maps blogger post ids to nucleus ids.</p>';
+
 	echo '<pre>';
 	print_r($oImport->aMapIdToNucleusId);
 	echo '</pre>';
-	
+
 	convert_foot();
-	/*
-	for ($i=0;$i<$authorcount;$i++) {
-		$key = $author[$i];
-		$memberid[$key] = intval($HTTP_POST_VARS['memberid'][$i]);
-		$isadmin[$key] = intval($HTTP_POST_VARS['admin'][$i]);
-	}
-
-	$createnew = intval($HTTP_POST_VARS['createnew']);
-	$newblogname = stripslashes($HTTP_POST_VARS['newblogname']);
-	$newowner = intval($HTTP_POST_VARS['newowner']);
-	
-	$nucleus_blogid = intval($HTTP_POST_VARS['blogid']);
-
-	
-	// 2. check data
-
-	convert_head();
-	
-	?>
-		<h1>Step 3: Converting...</h1>
-		
-		<p>
-		Please be patient. Don't hit reload! The conversion progress should be showing below.
-		</p>
-	<?php	
-	// try to extend time limit 
-	// surpress error messages when not allowed to do so
-	@set_time_limit(1200);
-
-	echo "<pre>";
-	
-	echo "Authors: <br/>";
-	for ($i=0;$i<$authorcount;$i++) {
-		echo  "\tAuthor=" . $author[$i];
-		echo " ID=" . $memberid[$author[$i]];
-		echo " ADMIN=" . $isadmin[$author[$i]];
-		echo "<br />";
-	}
-	echo "Create New Weblog = $createnew (name='$newblogname', owner=$newowner, dest=$nucleus_blogid)<br />";
-
-	echo "</pre>";
-
-	// create blog
-	if ($createnew == 1) {
-		// choose unique name
-		$shortname = 'blogger';
-		if (BLOG::exists($shortname)) {
-			$idx = 1;
-			while (BLOG::exists($shortname . $idx))
-				$idx++;
-			$shortname = $shortname . $idx;
-		}
-
-		$nucleus_blogid = convert_addToBlog($newblogname, $shortname, $newowner);
-		echo "<pre>New blog created</pre>";
-	} 
-	
-	// add authors to blog team
-	$b = new BLOG($nucleus_blogid);
-	global $catid;
-	$catid = $b->getDefaultCategory();
-	
-	for ($i=0;$i<$authorcount;$i++) 
-		$b->addTeamMember($memberid[$author[$i]],$isadmin[$author[$i]]);
-	
-
-	// 3. go through file
-
-	$blog = new RAX();
-	$blog->openfile('blogger.xml'); 
-	$blog->record_delim = 'blogentry';
-	$blog->parse();
-
-	while ( $entry = $blog->readRecord() )  {
-		$row = $entry->getRow();
-
-		bc_convertOneItem($row, $memberid, $nucleus_blogid);
-	}
-
-	$blog->close();	// close the file
-	
-	echo "<pre>All done!</pre>";
-	*/
 	convert_foot();
 
 }
-/*
-function bc_convertOneItem($row, $memberid, $nucleus_blogid) {
-	global $catid;
-	
-	$nucl_id = $memberid[$row['author']];
 
-	$timestamp = date("Y-m-d H:i:s",bc_transformDate($row['date']));	
-
-	echo "<pre>";
-	echo "<b>body</b>:" .  htmlspecialchars(substr($row['body'],0,20)) . "...(time: " . $timestamp . ") \n";
-	echo "<b>author</b>: " . $row['author'] ;
-	echo " (nucleus-id: " . $nucl_id . ")";
-	echo "</pre>";
-
-	$title = $row['title']; // use the title when it is in the XML file
-	convert_addToItem($title, $row['body'], '', $nucleus_blogid, $nucl_id, $timestamp, 0, $catid, 0, 0);	
-	
-}
-
-function bc_transformDate($date) {
-	// 7/24/2000 11:27:13 AM
-	if (eregi("(.*)/(.*)/(.*) (.*):(.*):(.*) (.*)",$date,$regs) != false) {
-		if (($regs[7] == "PM") && ($regs[4] != "12"))
-			$regs[4] += 12;
-		return mktime($regs[4],$regs[5],$regs[6],$regs[1],$regs[2],$regs[3]);
-
-	} else {
-		return 0;
-	}
-
-}
-*/
 
 
 
