@@ -80,10 +80,24 @@ class COMMENT {
 	function createLinkCode($pre, $url, $protocol = 'http') {
 		$post = '';
 	
-		// it's possible that $url ends with an entities 
-		// since htmlspecialchars is applied before URL linking
+		// it's possible that $url ends contains entities we don't want,
+		// since htmlspecialchars is applied _before_ URL linking
+		// move the part of URL, starting from the disallowed entity to the 'post' link part
+		$aBadEntities = array('&quot;', '&gt;', '&lt;');
+		foreach ($aBadEntities as $entity)
+		{
+			$pos = strpos($url, $entity);
+			if ($pos)
+			{
+				$post = substr($url, $pos) . $post;
+				$url = substr($url, 0, $pos);
+				
+			}
+		}
+		
+		// remove entities at end (&&&&)
 		if (preg_match('/(&\w+;)+$/i', $url, $matches)) {
-			$post = $matches[0];	// found entities (1 or more)
+			$post = $matches[0] . $post;	// found entities (1 or more)
 			$url = substr($url, 0, strlen($url) - strlen($post));
 		}
 
