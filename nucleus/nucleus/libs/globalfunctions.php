@@ -715,7 +715,11 @@ function createBlogLink($url, $params) {
 }
 function createBlogidLink($blogid, $params = '') {
 	global $CONF;
-	return addLinkParams($CONF['BlogURL'] . '?blogid=' . $blogid, $params);
+	if ($CONF['URLMode'] == 'pathinfo')			
+		$link = $CONF['BlogURL'] . '/blog/' . $blogid;
+	else
+		$link = $CONF['BlogURL'] . '?blogid=' . $blogid;	
+	return addLinkParams($link, $params);
 }
 
 
