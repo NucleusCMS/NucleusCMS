@@ -120,6 +120,7 @@ function bm_doEditItem() {
 			$publish = 1;
 			$wasdraft = 0;
 			$timestamp = 0;
+			break;
 		default:
 			bm_doError('Something went wrong');
 	}
