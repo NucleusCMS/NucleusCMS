@@ -550,6 +550,8 @@ class BLOG {
 	  * show up in the weblogs.com updates-list
 	  */
 	function sendUserlandPing() {
+		global $php_errormsg;
+		
 		 if ($this->pingUserland()) {
 			  // testmessage for adding an item
 			  $message = new xmlrpcmsg('weblogUpdates.ping',array(
@@ -563,8 +565,12 @@ class BLOG {
 
 			  $r = $c->send($message,15); // 15 seconds timeout...
 			  
-			  if ($r == 0) {
+			  if (($r == 0) && ($r->errno || $r->errstring)) {
 			  	return 'Error ' . $r->errno . ' : ' . $r->errstring;
+			  } elseif (($r == 0) && ($php_errormsg)) {
+			  	return 'PHP Error: ' . $php_errormsg;
+			  } elseif ($r == 0) {
+			  	return 'Error while trying to send ping. Sorry about that.';
 			  } elseif ($r->faultCode() != 0) {
 			  	return 'Error: ' . $r->faultString();
 			  } else {
