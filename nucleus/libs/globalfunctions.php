@@ -244,7 +244,7 @@ function sql_table($name)
 		return 'nucleus_' . $name;
 }
 
-function sendContentType($contenttype, $charset = _CHARSET) {
+function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 	global $manager;
 	
 	if (!headers_sent()) {
@@ -262,7 +262,8 @@ function sendContentType($contenttype, $charset = _CHARSET) {
 			'PreSendContentType',
 			array(
 				'contentType' => &$contenttype,
-				'charset' => &$charset
+				'charset' => &$charset,
+				'pageType' => $pagetype
 			)
 		);
 		

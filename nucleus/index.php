@@ -16,8 +16,6 @@
 	// include the admin code
 	include('../config.php');
 
-	sendContentType('application/xhtml+xml');
-
 	if ($CONF['alertOnSecurityRisk'] == 1)
 	{
 		// check if files exist and generate an error if so
@@ -60,6 +58,8 @@
 
 	}
 
+	sendContentType('application/xhtml+xml', 'admin-' . $action);
+	
 	$admin = new ADMIN();
 	$admin->action($action);
 ?>

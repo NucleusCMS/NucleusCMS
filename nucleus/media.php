@@ -30,7 +30,7 @@ $CONF['MediaPerPage'] = 10;
 include('../config.php');
 include($DIR_LIBS . 'MEDIA.php');	// media classes
 
-sendContentType('application/xhtml+xml');
+sendContentType('application/xhtml+xml', 'media');
 
 // user needs to be logged in to use this
 if (!$member->isLoggedIn()) {
