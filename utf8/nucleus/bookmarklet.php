@@ -12,8 +12,8 @@
   * This script allows adding items to Nucleus through bookmarklets. The member must be logged in
   * in order to use this.
   *
-  * $Id: bookmarklet.php,v 1.3 2005-03-12 06:19:03 kimitake Exp $
-  $ $NucleusJP$
+  * $Id: bookmarklet.php,v 1.4 2005-03-15 08:24:16 kimitake Exp $
+  * $NucleusJP$
   */
 
 // bookmarklet is part of admin area (might need XML-RPC)
@@ -90,8 +90,7 @@ function bm_doAddItem() {
 		$extrahead = '';
 	} elseif ((postVar('actiontype') == 'addnow') && $blog->pingUserland()) {
 		$message = 'アイテムの追加に成功しました。現在weblogs.comにpingを送っています。しばらくの間お待ちください...';
-		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid));
-		$extrahead = '<meta http-equiv="refresh" content="1; url=' . htmlspecialchars($pingUrl). '" />';
+		$extrahead = '<meta http-equiv="refresh" content="1; url=index.php?action=sendping&amp;blogid=' . $blogid . '" />';
 	} else {
 		$message = _ITEM_ADDED;
 		$extrahead = '';
