@@ -52,7 +52,7 @@
 
 <div class="heading">
 SQL Table Reference
-<i>May 30, 2004</i>
+<i>February 26, 2005</i>
 </div>
 
 <h1>Introduction</h1>
@@ -65,7 +65,7 @@ SQL Table Reference
 This document contains information on the fields inside the Nucleus database tables.
 </p>
 
-<p class="note">The structure as presented here is for <strong>Nucleus v3.0</strong>.</p>
+<p class="note">The structure as presented here is for <strong>Nucleus v3.2</strong>.</p>
 
 <h1><a name="toc" id="toc"></a>Table Of Contents</h1>
 
@@ -112,6 +112,8 @@ This document contains information on the fields inside the Nucleus database tab
 				 	<li><a href="#nucleus_config_options">Available Options</a></li>
 				</ul>
 			</li>
+			<li><a href="#nucleus_tickets">nucleus_tickets</a></li>
+			<li><a href="#nucleus_activation">nucleus_activation</a></li>
 		</ul>
 	</li>
 	<li>
@@ -1032,6 +1034,10 @@ This document contains information on the fields inside the Nucleus database tab
 	<td>/</td>
 	<td>Path to set cookie on</td>
 </tr><tr>
+	<td>CookiePrefix</td>
+	<td></td>
+	<td>String to prefix cookie names with. This is useful when multiple Nucleus installs are on the same domain, as it prevents login sessions to interfere with each other.</td>
+</tr><tr>
 	<td>CookieDomain</td>
 	<td></td>
 	<td>Domain to set cookie on</td>
@@ -1081,6 +1087,76 @@ This document contains information on the fields inside the Nucleus database tab
 	<td>Last Nucleus version for which the database structure has been updated (introduced in Nucleus v2.5)</td>
 </tr></table
 
+<a id="nucleus_tickets" name="nucleus_tickets"></a>
+<h1>Table nucleus_tickets<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Nucleus uses the <code>nucleus_tickets</code> to prevent against certain security issues. In particular: each action on the admin area that affects the settings or database contents, requires a ticket. These tickets are generated when requesting an admin area page and passed along with the form. If a ticket hasn't been used one hour after it has been created, it is destroyed.</p>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull primary">ticket</td>
+	<td>varchar(40)</td>
+	<td></td>
+	<td>Unique ticket, valid for one particular member. A typical ticket looks like this: <code>65303a785423b4d53c7b3e6579766f26</code></td>
+</tr><tr>
+	<td class="notnull foreign primary"><a href="#nucleus_member">member</a></td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Member for which this ticket is valid.</td>
+</tr><tr>
+	<td class="notnull">ctime</td>
+	<td>datetime</td>
+	<td></td>
+	<td>Time of ticket creation. A ticket is valid no longer than one hour.</td>
+</tr></table>
+
+
+<a id="nucleus_activation" name="nucleus_activation"></a>
+<h1>Table nucleus_activation<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>When a new member registers, Nucleus doesn't allow that member to log in before his account is activated. This activation is done by sending out an activation link to the members email address. The <code>nucleus_activation</code> table keeps track of the activations that are in progress.</p>
+
+<table><tr>
+	<th>Column Name</th>
+	<th>Type</th>
+	<th>Default</th>
+	<th>Description</th>
+</tr><tr>
+	<td class="notnull primary">vkey</td>
+	<td>varchar(40)</td>
+	<td></td>
+	<td>Activation key. This key needs to be passed to the member activation code. A typical key looks like this: <code>41cf637d4fbeeff954b4ca70b8bde9dd</code></td>
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_member">vmember</a></td>
+	<td>int(11)</td>
+	<td></td>
+	<td>Member which needs to be activated.</td>
+</tr><tr>
+	<td class="notnull">vtime</td>
+	<td>datetime</td>
+	<td></td>
+	<td>Time at which activation key was generated. Each activation key is valid no longer than 2 days.</td>
+</tr><tr>
+	<td class="notnull">vtype</td>
+	<td>varchar(15)</td>
+	<td></td>
+	<td>Type of activation.
+		<ul>
+			<li><code>forgot</code>: member forgot his password.</li>
+			<li><code>register</code>: new member registration.</li>
+			<li><code>addresschange</code>: member changed his e-mail address.</li>
+		</ul>
+	</td>
+</tr><tr>
+	<td class="notnull">vextra</td>
+	<td>varchar(128)</td>
+	<td></td>
+	<td>Extra information. For an <code>addresschange</code> type of activation, this contains <code>oldemailaddress/x</code> with x either 0 or 1 and refering to the previous value of the <code>mcanlogin</code> field in the <a href="#nucleus_member">member</a> table. (untill fully re-activated, a user cannot login)</td>
+</tr></table>
 
 
 <a id="nucleus_karma" name="nucleus_karma"></a>
