@@ -2695,7 +2695,7 @@ class ADMIN {
 		<h3><a id="index_php">Method 1: Create an extra <code><?php echo htmlspecialchars($bshortname)?>.php</code> file</a></h3>
 		
 		<p>Create a file called <code><?php echo htmlspecialchars($bshortname)?>.php</code>, and copy-paste the following code into it:</p>
-<pre><code>&lt;?
+<pre><code>&lt;?php
 
 $CONF['Self'] = '<b><?php echo htmlspecialchars($bshortname)?>.php</b>';
 
