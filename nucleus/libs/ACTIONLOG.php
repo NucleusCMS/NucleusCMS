@@ -26,7 +26,7 @@ class ACTIONLOG {
 	function add($level, $message) {
 		global $member, $CONF;
 		
-		if ($CONF['LogLevel'] > $level)
+		if ($CONF['LogLevel'] < $level)
 			return;
 		
 		if ($member->isLoggedIn())
