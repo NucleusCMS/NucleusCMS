@@ -28,7 +28,7 @@
 		//
 		// example:
 		//     array('NP_TrackBack', 'NP_MemberGoodies')
-		$aConfPlugsToInstall = array(); 	// TODO: not yet implemented correctly!
+		$aConfPlugsToInstall = array(); 	
 
 		
 		// array with skins to install. skins must be present under the skins/ directory with
@@ -50,13 +50,13 @@
 	
 	// we will use postVar, getVar, ... methods instead of HTTP_GET_VARS or _GET
 	if (phpversion() >= '4.1.0')
-		include('nucleus/libs/vars4.1.0.php');
+		include_once('nucleus/libs/vars4.1.0.php');
 	else
-		include('nucleus/libs/vars4.0.6.php');
+		include_once('nucleus/libs/vars4.0.6.php');
 		
 	// check if mysql support is installed
 	if (!function_exists('mysql_query')) 
-		doError('Your PHP version does not have support for MySQL :(');
+		_doError('Your PHP version does not have support for MySQL :(');
 
 	if (postVar('action') == 'go')
 		doInstall();
@@ -437,15 +437,15 @@
 			array_push($errors,"The skins path does not end with a slash");
 		if (!is_dir($config_adminpath))
 			array_push($errors,"The path of the administration area does not exist on your server");
-		if (!isValidMailAddress($user_email))
+		if (!_isValidMailAddress($user_email))
 			array_push($errors,"Invalid e-mail address given for user");
-		if (!isValidDisplayName($user_name))
+		if (!_isValidDisplayName($user_name))
 			array_push($errors,"User name is not a valid display name (allowed chars: a-zA-Z0-9 and spaces)");
 		if (!$user_password || !$user_password2) 
 			array_push($errors, "User password is empty");
 		if ($user_password != $user_password2)
 			array_push($errors, "User password do not match");
-		if (!isValidShortName($blog_shortname))
+		if (!_isValidShortName($blog_shortname))
 			array_push($errors, "Invalid short name given for blog (allowed chars: a-z0-9, no spaces)");
 		if (sizeof($errors) > 0)
 			showErrorMessages($errors);
@@ -453,15 +453,15 @@
 		// 2. try to log in to mySQL
 		$connection = @mysql_connect($mysql_host, $mysql_user, $mysql_password);
 		if ($connection == false) 
-			doError("Could not connect to mySQL server: " . mysql_error());	
+			_doError("Could not connect to mySQL server: " . mysql_error());	
 
 		// 3. try to create database (if needed)
 		if ($mysql_create == 1) {
-			mysql_query("CREATE DATABASE " . $mysql_database) or doError("Could not create database. Make sure you have the rights to do so. SQL error was: " . mysql_error());
+			mysql_query("CREATE DATABASE " . $mysql_database) or _doError("Could not create database. Make sure you have the rights to do so. SQL error was: " . mysql_error());
 		}
 		
 		// 4. try to select database
-		mysql_select_db($mysql_database) or doError("Could not select database. Make sure it exists");
+		mysql_select_db($mysql_database) or _doError("Could not select database. Make sure it exists");
 		
 		// 5. execute queries
 		$filename = "install.sql";
@@ -520,7 +520,7 @@
 			if ($query) {
 				if ($mysql_usePrefix == 1)
 					$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
-				mysql_query($query) or doError("Error while executing query (<small>" . htmlspecialchars($query) . "</small>): " . mysql_error());
+				mysql_query($query) or _doError("Error while executing query (<small>" . htmlspecialchars($query) . "</small>): " . mysql_error());
 			}
 			
 		}
@@ -546,7 +546,7 @@
 		       . "     madmin=1,"
 		       . "     mcanlogin=1"
 		       . " WHERE mnumber=1";
-		mysql_query($query) or doError("Error while setting member settings: " . mysql_error());		
+		mysql_query($query) or _doError("Error while setting member settings: " . mysql_error());		
 		
 		// 8. update weblog settings
 		$query =  'UPDATE ' . tableName('nucleus_blog')
@@ -554,19 +554,46 @@
 		       . "     bshortname='". addslashes($blog_shortname) . "',"
 		       . "     burl='" . addslashes($config_indexurl) . "'"
 		       . " WHERE bnumber=1";
-		mysql_query($query) or doError("Error while setting weblog settings: " . mysql_error());		
+		mysql_query($query) or _doError("Error while setting weblog settings: " . mysql_error());		
 		
 		// 9. update item date
 		$query =  'UPDATE ' . tableName('nucleus_item')
 			. " SET itime='". date("Y-m-d H:i:s",time()) ."'"
 			. " WHERE inumber=1";
-		mysql_query($query) or doError("Error with query: " . mysql_error());		
+		mysql_query($query) or _doError("Error with query: " . mysql_error());		
 		
-		// 10. install custom skins
-		$aSkinErrors = installCustomSkins($config_skinspath, $config_adminpath . 'libs/');
-		
-		// 11. install custom plugins
-		$aPlugErrors = installCustomPlugs('e:/homepage/versions/plugins/'/*$config_adminpath . 'plugins/' */, $config_adminpath . 'libs/');
+		global $aConfPlugsToInstall, $aConfSkinsToImport;
+		$aSkinErrors = array();
+		$aPlugErrors = array();
+		if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0)) {
+			// 10. set global variables
+			global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_PREFIX;
+			$MYSQL_HOST = $mysql_host;
+			$MYSQL_USER = $mysql_user;		
+			$MYSQL_PASSWORD = $mysql_password;
+			$MYSQL_DATABASE = $mysql_database;
+			$MYSQL_PREFIX = ($mysql_usePrefix == 1)?$mysql_prefix:'';
+			global $DIR_NUCLEUS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
+			$DIR_NUCLEUS = $config_adminpath;
+			$DIR_MEDIA = $config_mediapath;
+			$DIR_SKINS = $config_skinspath;
+			$DIR_PLUGINS = 'e:/homepage/versions/plugins/';//$DIR_NUCLEUS . 'plugins/';
+			$DIR_LANG = $DIR_NUCLEUS . 'language/';
+			$DIR_LIBS = $DIR_NUCLEUS . 'libs/';				
+			
+			// close database connection (needs to be closed if we want to include globalfunctions.php)
+			mysql_close();
+
+			include_once($DIR_LIBS . 'globalfunctions.php');
+			
+			// 11. install custom skins
+			$aSkinErrors = installCustomSkins($manager);
+
+			// 12. install custom plugins
+			$aPlugErrors = installCustomPlugs($manager);
+			
+		}
+
 		
 		// 12. Write config file ourselves (if possible)
 		$bConfigWritten = 0;
@@ -699,44 +726,15 @@
 		<?php	
 	}
 	
-	/**
-	  * executes an SQL query 
-	  */
-	function sql_query($query) {
-		$res = mysql_query($query) or print("mySQL error with query $query: " . mysql_error() . '<p />');
-		return $res;
-	}
 
-	function sql_table($name)
-	{
-		global $mysql_prefix;
+	function installCustomPlugs(&$manager) {
+		global $aConfPlugsToInstall, $DIR_LIBS;
 
-		if ($mysql_prefix)
-			return $mysql_prefix . 'nucleus_' . $name;
-		else
-			return 'nucleus_' . $name;
-	}	
-	
-	function installCustomPlugs($pluginDir, $DIR_LIBS) {
-		return;	// TODO: fix implementation (build the same environment a
-				// plugin expects to find
-		
-		global $aConfPlugsToInstall, $manager, $DIR_PLUGINS;
-		$DIR_PLUGINS = $pluginDir;
-		
-		if (!$manager) {
-			include_once($DIR_LIBS . 'globalfunctions.php');			
-			include_once($DIR_LIBS . 'PLUGIN.php');			
-			include_once($DIR_LIBS . 'ACTIONLOG.php');			
-			include_once($DIR_LIBS . 'MANAGER.php');
-			$manager =& MANAGER::instance();
-		}
-		
 		$aErrors = array();
 		
 		if (count($aConfPlugsToInstall) == 0)
 			return $aErrors;
-		
+		 
 		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
 		
 		foreach ($aConfPlugsToInstall as $plugName) {
@@ -745,7 +743,7 @@
 			sql_query($query);
 			$iPid = mysql_insert_id();
 
-			// call the install method of the plugin
+			// get and install the plugin
 			$plugin =& $manager->getPlugin($plugName);
 			if (!$plugin) {
 				sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pfile=\''. addslashes($plugName).'\'');
@@ -759,8 +757,8 @@
 		return $aErrors;
 	}
 	
-	function installCustomSkins($DIR_SKINS, $DIR_LIBS) {
-		global $aConfSkinsToImport;
+	function installCustomSkins(&$manager) {
+		global $aConfSkinsToImport, $DIR_LIBS, $DIR_SKINS;
 		
 		$aErrors = array();
 		
@@ -768,11 +766,8 @@
 			return $aErrors;		
 	
 		// load skinie class
-		include_once($DIR_LIBS . 'PARSER.php');				
-		include_once($DIR_LIBS . 'TEMPLATE.php');				
-		include_once($DIR_LIBS . 'SKIN.php');		
 		include_once($DIR_LIBS . 'skinie.php');
-
+		
 		$importer = new SKINIMPORT();
 
 		foreach ($aConfSkinsToImport as $skinName) {
@@ -780,7 +775,7 @@
 			
 			$skinFile = $DIR_SKINS . $skinName . '/skindata.xml';
 			if (!@file_exists($skinFile)) {
-				array_push($aErrors, 'Unable to import ' . $skinName . ' : file does not exist');
+				array_push($aErrors, 'Unable to import ' . $skinFile . ' : file does not exist');
 				continue;
 			}
 			$error = $importer->readFile($skinFile);	
@@ -850,7 +845,7 @@
 		       . " SET value='$val'"
 		       . " WHERE name='$name'";
 
-		mysql_query($query) or doError("Query error while trying to update config: " . mysql_error());
+		mysql_query($query) or _doError("Query error while trying to update config: " . mysql_error());
 		return mysql_insert_id();
 	}
 	
@@ -861,7 +856,7 @@
 	/**
 	  * Checks if email address is valid
 	  */
-	function isValidMailAddress($address) {
+	function _isValidMailAddress($address) {
 		if (preg_match("/^[a-zA-Z0-9\._-]+@+[A-Za-z0-9\._-]+\.+[A-Za-z]{2,4}$/", $address))
 			return 1; 
 		else
@@ -872,7 +867,7 @@
 	// (to check short blog names and nicknames)
 	// logic: starts and ends with a non space, can contain spaces in between
 	//        min 2 chars 
-	function isValidShortName($name) {
+	function _isValidShortName($name) {
 		if (eregi("^[a-z0-9]+$", $name))
 			return 1;
 		else
@@ -883,14 +878,14 @@
 
 	// returns true if the given string is a valid display name
 	// (to check nicknames)
-	function isValidDisplayName($name) {
+	function _isValidDisplayName($name) {
 		if (eregi("^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$", $name))
 			return 1;
 		else
 			return 0;
 	}	
 	
-	function doError($msg) {
+	function _doError($msg) {
 		?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
