@@ -71,10 +71,35 @@ class TEMPLATE {
 		sql_query('DELETE FROM nucleus_template WHERE tdesc='.$this->getID());
 	}
 
-	// (static)
+	/**
+	 * Creates a new template
+	 *
+	 * (static)
+	 */
 	function createNew($name, $desc) {
+		global $manager;
+		
+		$manager->notify(
+			'PreAddTemplate',
+			array(
+				'name' => &$name,
+				'description' => &$desc
+			)
+		);
+		
 		sql_query("INSERT INTO nucleus_template_desc (tdname, tddesc) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "')");
-		return mysql_insert_id();
+		$newId = mysql_insert_id();
+		
+		$manager->notify(
+			'PostAddTemplate',
+			array(
+				'templateid' => $newId,
+				'name' => $name,
+				'description' => $desc
+			)
+		);		
+		
+		return $newId;
 	}
 
 	

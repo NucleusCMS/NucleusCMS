@@ -1398,14 +1398,18 @@ class ADMIN {
 	}
 	
 	function deleteOneComment($commentid) {
-		global $member;
+		global $member, $manager;
 		
 		if (!$member->canAlterComment($commentid))
 			return _ERROR_DISALLOWED;
+			
+		$manager->notify('PreDeleteComment', array('commentid' => $commentid));
 				
 		// delete the comments associated with the item
 		$query = "DELETE FROM nucleus_comment WHERE cnumber=" . $commentid;
 		sql_query($query);
+		
+		$manager->notify('PostDeleteComment', array('commentid' => $commentid));		
 		
 		return '';
 	}
@@ -1596,8 +1600,18 @@ class ADMIN {
 		</tr></table>
 		
 		</div></form>
+		
+		<h3>Extra Plugin Settings</h3>
+		
 		<?
 		
+			$manager->notify(
+				'MemberSettingsFormExtras', 	
+				array(
+					'member' => &$mem
+				)
+			);
+			
 		$this->pagefoot();
 	}
 	
@@ -1853,7 +1867,7 @@ class ADMIN {
 	}
 	
 	function deleteOneTeamMember($blogid, $memberid) {
-		global $member;
+		global $member, $manager;
 		
 		// check if allowed
 		if (!$member->blogAdminRights($blogid))
@@ -1862,6 +1876,8 @@ class ADMIN {
 		// check if: - there remains at least one blog admin
 		//           - (there remains at least one team member)
 		$tmem = MEMBER::createFromID($memberid);
+		
+		$manager->notify('PreDeleteTeamMember', array('member' => &$mem, 'blogid' => $blogid));				
 		
 		if ($tmem->isBlogAdmin($blogid)) {
 			// check if there are more blog members left and at least one admin
@@ -1874,6 +1890,8 @@ class ADMIN {
 		
 		$query = "DELETE FROM nucleus_team WHERE tblog=$blogid and tmember=$memberid";
 		sql_query($query);
+		
+		$manager->notify('PostDeleteTeamMember', array('member' => &$mem, 'blogid' => $blogid));						
 		
 		return '';
 	}
@@ -2074,16 +2092,18 @@ class ADMIN {
 		<h3>Extra Plugin Settings</h3>
 		
 		<?
-			$manager->notify('BlogSettingsFormExtras', 	array(
-							'blog' => &$blog
-							)
+			$manager->notify(
+				'BlogSettingsFormExtras', 	
+				array(
+					'blog' => &$blog
+				)
 			);
 		
 		$this->pagefoot();
 	}
 	
 	function action_categorynew() {
-		global $member;
+		global $member, $manager;
 		
 		$blogid = intRequestVar('blogid');
 		
@@ -2100,8 +2120,8 @@ class ADMIN {
 		if (mysql_num_rows($res) > 0)
 			$this->error(_ERROR_DUPCATEGORYNAME);
 			
-		$query = "INSERT INTO nucleus_category (cblog, cname, cdesc) VALUES (" . intval($blogid) . ", '" . addslashes($cname) . "', '". addslashes($cdesc) ."')";
-		sql_query($query);
+		$blog 		=& $manager->getBlog($blogid);
+		$newCatID	=  $blog->createNewCategory($cname, $cdesc);
 		
 		$this->action_blogsettings();
 	}
@@ -2239,6 +2259,8 @@ class ADMIN {
 
 	function deleteOneCategory($catid) {
 		global $manager, $member;
+		
+		$manager->notify('PreDeleteCategory', array('catid' => $catid));		
 
 		$blogid = getBlogIDFromCatID($catid);
 		
@@ -2271,6 +2293,8 @@ class ADMIN {
 		// delete category
 		$query = "DELETE FROM nucleus_category WHERE catid=" .intval($catid);
 		sql_query($query);
+		
+		$manager->notify('PostDeleteCategory', array('catid' => $catid));				
 
 	}
 	
@@ -2300,6 +2324,15 @@ class ADMIN {
 		// don't allow default category to be moved
 		if ($blog->getDefaultCategory() == $catid)
 			return _ERROR_MOVEDEFCATEGORY;
+			
+		$manager->notify(
+			'PreMoveCategory',
+			array(
+				'catid' => &$catid,
+				'sourceblog' => &$blog,
+				'destblog' => &$destblog
+			)
+		);
 		
 		// update comments table (cblog)
 		$query = "SELECT inumber FROM nucleus_item WHERE icat=$catid";
@@ -2315,6 +2348,15 @@ class ADMIN {
 		// move category 
 		$query = "UPDATE nucleus_category SET cblog=$destblogid WHERE catid=$catid";
 		sql_query($query);
+
+		$manager->notify(
+			'PostMoveCategory',
+			array(
+				'catid' => &$catid,
+				'sourceblog' => &$blog,
+				'destblog' => $destblog
+			)
+		);		
 		
 	}
 
@@ -2416,9 +2458,11 @@ class ADMIN {
 	}
 	
 	function action_deleteblogconfirm() {
-		global $member, $CONF;
+		global $member, $CONF, $manager;
 		
 		$blogid = intRequestVar('blogid');		
+		
+		$manager->notify('PreDeleteBlog', array('blogid' => $blogid));				
 		
 		$member->blogAdminRights($blogid) or $this->disallow();
 		
@@ -2449,6 +2493,8 @@ class ADMIN {
 		// delete the blog itself
 		$query = "DELETE FROM nucleus_blog WHERE bnumber=$blogid";
 		sql_query($query);
+		
+		$manager->notify('PostDeleteBlog', array('blogid' => $blogid));						
 		
 		$this->action_overview(_DELETED_BLOG);
 	}
@@ -2501,16 +2547,22 @@ class ADMIN {
 	}	
 	
 	function deleteOneMember($memberid) {
+		global $manager;
+		
 		$mem = MEMBER::createFromID($memberid);
 		
 		if (!$mem->canBeDeleted()) 
 			return _ERROR_DELETEMEMBER;	
 
+		$manager->notify('PreDeleteMember', array('member' => &$mem));				
+		
 		$query = "DELETE FROM nucleus_member WHERE mnumber=$memberid";
 		sql_query($query);
 
 		$query = "DELETE FROM nucleus_team WHERE tmember=$memberid";
 		sql_query($query);	
+		
+		$manager->notify('PostDeleteMember', array('member' => &$mem));						
 		
 		return '';
 	}
@@ -2619,6 +2671,18 @@ class ADMIN {
 		if ($manager->existsBlog($bshortname))
 			$this->error(_ERROR_DUPSHORTBLOGNAME);
 			
+		$manager->notify(
+			'PreAddBlog',
+			array(
+				'name' => &$bname,
+				'shortname' => &$bshortname,
+				'timeoffset' => &$btimeoffset,
+				'description' => &$bdescription,
+				'defaultskin' => &$bdefskin
+			)
+		);
+
+
 		// add slashes for sql queries
 		$bname = 		addslashes($bname);
 		$bshortname = 	addslashes($bshortname);
@@ -2626,7 +2690,6 @@ class ADMIN {
 		$bdesc = 		addslashes($bdesc);
 		$bdefskin = 	addslashes($bdefskin);
 		
-	
 		// create blog
 		$query = "INSERT INTO nucleus_blog (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', $btimeoffset, $bdefskin)";
 		sql_query($query);
@@ -2648,6 +2711,13 @@ class ADMIN {
 	
 
 		$blog->additem($blog->getDefaultCategory(),"First Item",'This is the first item in your weblog. Feel free to delete it.','',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
+		
+		$manager->notify(
+			'PostAddBlog',
+			array(
+				'blog' => &$blog
+			)
+		);
 		
 		
 		$this->pagehead();
@@ -3259,17 +3329,21 @@ selector();
 	}	
 	
 	function action_templatedeleteconfirm() {
-		global $member;
+		global $member, $manager;
 		
 		$templateid = intRequestVar('templateid');
 		
 		$member->isAdmin() or $this->disallow();
+		
+		$manager->notify('PreDeleteTemplate', array('templateid' => $templateid));
 		
 		// 1. delete description
 		sql_query("DELETE FROM nucleus_template_desc WHERE tdnumber=" . $templateid);
 		
 		// 2. delete parts
 		sql_query("DELETE FROM nucleus_template WHERE tdesc=" . $templateid);
+		
+		$manager->notify('PostDeleteTemplate', array('templateid' => $templateid));		
 		
 		$this->action_templateoverview();
 	}	
@@ -3288,10 +3362,8 @@ selector();
 		if (TEMPLATE::exists($name))
 			$this->error(_ERROR_DUPTEMPLATENAME);		
 
-		$name = addslashes($name);
-		$desc = addslashes($desc);
-		
-		sql_query("INSERT INTO nucleus_template_desc (tdname, tddesc) VALUES ('$name','$desc')");
+		$newTemplateId = TEMPLATE::createNew($name, $desc);
+
 		$this->action_templateoverview();
 	}
 	
@@ -3317,8 +3389,7 @@ selector();
 			$name .= $i;
 		}		
 		
-		sql_query("INSERT INTO nucleus_template_desc (tdname, tddesc) VALUES ('$name','$desc')");
-		$newid = mysql_insert_id();
+		$newid = TEMPLATE::createNew($name, $desc);
 
 		// 3. create clone
 		// go through parts of old template and add them to the new one
@@ -3379,8 +3450,8 @@ selector();
 		
 		$member->isAdmin() or $this->disallow();
 		
-		$name = addslashes(trim(postVar('name')));
-		$desc = addslashes(trim(postVar('desc')));
+		$name = trim(postVar('name'));
+		$desc = trim(postVar('desc'));
 		
 		if (!isValidSkinName($name))
 			$this->error(_ERROR_BADSKINNAME);
@@ -3388,8 +3459,7 @@ selector();
 		if (SKIN::exists($name))
 			$this->error(_ERROR_DUPSKINNAME);		
 			
-	
-		sql_query("INSERT INTO nucleus_skin_desc (sdname, sddesc) VALUES ('$name','$desc')");
+		$newId = SKIN::createNew($name, $desc);
 		
 		$this->action_skinoverview();
 	}	
@@ -3627,7 +3697,7 @@ selector();
 	}	
 	
 	function action_skindeleteconfirm() {
-		global $member, $CONF;
+		global $member, $CONF, $manager;
 		
 		$skinid = intRequestVar('skinid');		
 		
@@ -3636,18 +3706,22 @@ selector();
 		// don't allow default skin to be deleted
 		if ($skinid == $CONF['BaseSkin'])
 			$this->error(_ERROR_DEFAULTSKIN);
-
+			
 		// don't allow deletion of default skins for blogs
 		$query = "SELECT bname FROM nucleus_blog WHERE bdefskin=" . $skinid;
 		$r = sql_query($query);
 		if ($o = mysql_fetch_object($r))
 			$this->error(_ERROR_SKINDEFDELETE .$o->bname);		
 		
+		$manager->notify('PreDeleteSkin', array('skinid' => $skinid));	
+		
 		// 1. delete description
 		sql_query("DELETE FROM nucleus_skin_desc WHERE sdnumber=" . $skinid);
 		
 		// 2. delete parts
 		sql_query("DELETE FROM nucleus_skin WHERE sdesc=" . $skinid);
+		
+		$manager->notify('PostDeleteSkin', array('skinid' => $skinid));			
 		
 		$this->action_skinoverview();
 	}
@@ -3672,15 +3746,15 @@ selector();
 			$name .= $i;
 		}
 		
-		
-		$desc = addslashes($skin->getDescription());
-		$type = addslashes($skin->getContentType());
-		$mode = addslashes($skin->getIncludeMode());
-		$pref = addslashes($skin->getIncludePrefix());
-
 		// 2. create skin desc
-		sql_query("INSERT INTO nucleus_skin_desc (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('$name','$desc','$type','$mode','$pref')");
-		$newid = mysql_insert_id();
+		$newid = SKIN::createNew(
+			$name,
+			$skin->getDescription(),
+			$skin->getContentType(),
+			$skin->getIncludeMode(),
+			$skin->getIncludePrefix()
+		);
+		
 		
 		// 3. clone
 		$this->skinclonetype($skin, $newid, 'index');
@@ -3952,10 +4026,16 @@ selector();
 		
 		</div>
 		</form>
-		
+
+		<h2>Extra Plugin Settings</h2>		
 		<?
-		$this->pagefoot();
 		
+			$manager->notify(
+				'GeneralSettingsFormExtras', 	
+				array()
+			);
+		
+		$this->pagefoot();
 	}
 	
 	function action_settingsupdate() {
@@ -4695,6 +4775,13 @@ selector();
 		// plugin will be added as last one in the list
 		$newOrder = $numCurrent + 1;
 		
+		$manager->notify(
+			'PreAddPlugin',
+			array(
+				'file' => &$name
+			)
+		);
+		
 		$query = 'INSERT INTO nucleus_plugin (porder, pfile) VALUES ('.$newOrder.',"'.$name.'")';
 		sql_query($query);
 		
@@ -4713,6 +4800,13 @@ selector();
 		
 		
 		$plugin->install();
+		
+		$manager->notify(
+			'PostAddPlugin',
+			array(
+				'plugin' => &$plugin
+			)
+		);		
 		
 		// update all events
 		$this->action_pluginupdate();
@@ -4795,6 +4889,8 @@ selector();
 			if ($plugin) $plugin->unInstall();
 		}
 
+		$manager->notify('PreDeletePlugin', array('plugid' => $pid));	
+		
 		// delete all subscriptions
 		sql_query('DELETE FROM nucleus_plugin_event WHERE pid=' . $pid);
 		
@@ -4807,6 +4903,8 @@ selector();
 		
 		// delete row
 		sql_query('DELETE FROM nucleus_plugin WHERE pid='.$pid);
+		
+		$manager->notify('PostDeletePlugin', array('plugid' => $pid));			
 		
 		return '';
 	}

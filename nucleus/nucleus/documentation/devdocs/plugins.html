@@ -4,12 +4,33 @@
 	<title>Nucleus - Writing plugins</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+	<style type="text/css">
+		/* refence parameters (greenish) */
+		.ref {
+			background-color: #afa;	
+			color: #000;
+		}
+		
+		/* object parameters */
+		.obj {
+			color: #00f;
+		}
+		.obj:after {
+			content: " (object)";
+		}
+		
+		/* read-only parameters (non-ref; reddish) */
+		.ro {
+			background-color: #faa;
+			color: #000;
+		}
+	</style>
 </head>
 <body>
 
 <div class="heading">
 Writing Plugins
-<i>February 15, 2003</i>
+<i>March 9, 2003</i>
 </div>
 
 <div class="note"><b>Note:</b> This document should contain enough information to write basic plugins. If you have more questions, see the <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin Development Forum</a></div>
@@ -399,6 +420,15 @@ class NP_Acronyms extends NucleusPlugin {
 
 <p>The <tt>event_<em>EventName</em></tt>-method gets only one parameter, <tt>$data</tt>, of which the contents differs depending on the event. It is an associative array with data. Objects and arrays that are passed in this array, are passed by <strong>reference</strong>, so the changes you make there will be remembered.</p>
 
+<p>The event list below uses some colors to indicate if changes in the parameters will be seen by nucleus or not:</p>
+
+<ul>
+	<li><var class="ref">pass-by-reference</var>: when changes are made to this kind of parameters, they will be seen by Nucleus.</li>
+	<li><var class="ro">pass-by-value</var>: a copy of the value is made before it is sent to the plugin event handler. Changes in the contents of these variables will be discarded automatically.</li>
+</ul>
+
+<p>Objects that are passed as parameters are indicates as follows: <var class="obj">object</var>. Most objects are also passed by reference, making them look like <var class="obj ref">object by ref</var></p>
+
 <h2>Event List</h2>
 
 <table summary="An overview of events to which a Nucleus Plugin can subscribe, and what parameters are passed along to the method that handles the event">
@@ -410,9 +440,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PreSkinParse</td>
 		<td>Immediately before the parsing of a skin begins</td>
 		<td><dl>
-			<dt>skin</dt>
+			<dt class="obj ref">skin</dt>
 			<dd>The <tt>SKIN</tt>-object that is handling the parse</dd>
-			<dt>type</dt>
+			<dt class="ro">type</dt>
 			<dd>Type of skinpart (one of 'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search', 'imagepopup', 'fileparser')</dd>
 		</dl></td>		
 	</tr>
@@ -420,9 +450,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PostSkinParse</td>
 		<td>Immediately after parsing a skin</td>
 		<td><dl>
-			<dt>skin</dt>
+			<dt class="obj ref">skin</dt>
 			<dd>The <tt>SKIN</tt>-object that is handling the parse</dd>
-			<dt>type</dt>
+			<dt class="ro">type</dt>
 			<dd>Type of skinpart (one of 'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search', 'imagepopup', 'fileparser')</dd>
 		</dl></td>		
 	</tr>
@@ -430,9 +460,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PreItem</td>
 		<td>Before an item is parsed, but after the item header has been placed</td>
 		<td><dl>
-			<dt>blog</dt>
-			<dd>blog object</dd>
-			<dt>item</dt>
+			<dt class="ref obj">blog</dt>
+			<dd><code>BLOG</code> object</dd>
+			<dt class="ref obj">item</dt>
 			<dd>object containing item data</dd>
 		</dl></td>		
 	</tr>
@@ -440,9 +470,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PostItem</td>
 		<td>After an item has been parsed, but before the item footer has been parsed</td>
 		<td><dl>
-			<dt>blog</dt>
-			<dd>blog object</dd>
-			<dt>item</dt>
+			<dt class="ref obj">blog</dt>
+			<dd><code>BLOG</code> object</dd>
+			<dt class="ref obj">item</dt>
 			<dd>object containing item data</dd>
 		</dl></td>		
 	</tr>
@@ -450,7 +480,7 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PreComment</td>
 		<td>Before a comment is shown</td>
 		<td><dl>
-			<dt>comment</dt>
+			<dt class="ref">comment</dt>
 			<dd>associative array containing comment data</dd>
 		</dl></td>		
 	</tr>
@@ -458,7 +488,7 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PostComment</td>
 		<td>After a comment has been shown</td>
 		<td><dl>
-			<dt>comment</dt>
+			<dt class="ref">comment</dt>
 			<dd>associative array containing comment data</dd>
 		</dl></td>		
 	</tr>
@@ -466,9 +496,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PreDateHead</td>
 		<td>Before a date header is shown</td>
 		<td><dl>
-			<dt>blog</dt>
-			<dd>BLOG-object</dd>
-			<dt>timestamp</dt>
+			<dt class="obj ref">blog</dt>
+			<dd><code>BLOG</code> object</dd>
+			<dt class="ro">timestamp</dt>
 			<dd>Timestamp for date header</dd>
 		</dl></td>		
 	</tr>
@@ -476,9 +506,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PostDateHead</td>
 		<td>After a date header has been parsed</td>
 		<td><dl>
-			<dt>blog</dt>
-			<dd>BLOG-object</dd>
-			<dt>timestamp</dt>
+			<dt class="obj ref">blog</dt>
+			<dd><code>BLOG</code> object</dd>
+			<dt class="ro">timestamp</dt>
 			<dd>Timestamp for date header</dd>
 		</dl></td>		
 	</tr>
@@ -486,9 +516,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PreDateFoot</td>
 		<td>Before a date footer is parsed</td>
 		<td><dl>
-			<dt>blog</dt>
-			<dd>BLOG-object</dd>
-			<dt>timestamp</dt>
+			<dt class="ref obj">blog</dt>
+			<dd><code>BLOG</code> object</dd>
+			<dt class="ro">timestamp</dt>
 			<dd>Timestamp for day that is closed</dd>
 		</dl></td>		
 	</tr>
@@ -496,9 +526,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PostDateFoot</td>
 		<td>After a date footer has been parsed</td>
 		<td><dl>
-			<dt>blog</dt>
-			<dd>BLOG-object</dd>
-			<dt>timestamp</dt>
+			<dt class="ref obj">blog</dt>
+			<dd><code>BLOG</code> object</dd>
+			<dt class="ro">timestamp</dt>
 			<dd>Timestamp for day that is closed</dd>
 		</dl></td>		
 	</tr>	
@@ -506,15 +536,15 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>LoginSuccess</td>
 		<td>After a successful login</td>
 		<td><dl>
-			<dt>member</dt>
-			<dd>member object</dd>
+			<dt class="obj ref">member</dt>
+			<dd><code>MEMBER</code> object</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>LoginFailed</td>
 		<td>After a failed login</td>
 		<td><dl>
-			<dt>username</dt>
+			<dt class="ro">username</dt>
 			<dd>login name that was used in the login attempt</dd>
 		</dl></td>		
 	</tr>
@@ -522,7 +552,7 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>Logout</td>
 		<td>After logout</td>
 		<td><dl>
-			<dt>username</dt>
+			<dt class="ro">username</dt>
 			<dd>name of the user that logged out</dd>
 		</dl></td>		
 	</tr>
@@ -530,9 +560,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PreBlogContent</td>
 		<td>Before blog content has been inserted through a skinvar</td>
 		<td><dl>
-			<dt>blog</dt>
-			<dd>BLOG-object</dd>
-			<dt>type</dt>
+			<dt class="obj ref">blog</dt>
+			<dd><code>BLOG</code> object</dd>
+			<dt class="ro">type</dt>
 			<dd>Type of skinvar that's being called ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults', 'othersearchresults', 'categorylist', 'otherarchive', 'otherarchivelist')</dd>
 		</dl></td>		
 	</tr>
@@ -540,9 +570,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PostBlogContent</td>
 		<td>After blog content has been inserted through a skinvar</td>
 		<td><dl>
-			<dt>blog</dt>
-			<dd>BLOG-object</dd>
-			<dt>type</dt>
+			<dt class="obj ref">blog</dt>
+			<dd><code>BLOG</code> object</dd>
+			<dt class="ro">type</dt>
 			<dd>Type of skinvar that's being called ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults', 'othersearchresults', 'categorylist', 'otherarchive', 'otherarchivelist')</dd>
 		</dl></td>		
 	</tr>
@@ -550,7 +580,7 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PreAddComment</td>
 		<td>Before adding a comment to the database</td>
 		<td><dl>
-			<dt>comment</dt>
+			<dt class="ref">comment</dt>
 			<dd>comment data (associative array)</dd>
 		</dl></td>		
 	</tr>
@@ -558,9 +588,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PostAddComment</td>
 		<td>After adding a comment to the database</td>
 		<td><dl>
-			<dt>comment</dt>
+			<dt class="ref">comment</dt>
 			<dd>comment data (associative array)</dd>
-			<dt>errormessage</dt>
+			<dt class="ro">errormessage</dt>
 			<dd>error message (if any)</dd>
 		</dl></td>		
 	</tr>
@@ -568,15 +598,15 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PostRegister</td>
 		<td>After a new user has registered</td>
 		<td><dl>
-			<dt>member</dt>
-			<dd>New member object</dd>
+			<dt class="obj ref">member</dt>
+			<dd>New <code>MEMBER</code> object</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostAddItem</td>
 		<td>After an item has been added to the database</td>
 		<td><dl>
-			<dt>itemid</dt>
+			<dt class="ro">itemid</dt>
 			<dd>new itemid in database</dd>
 		</dl></td>		
 	</tr>
@@ -584,23 +614,23 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PreAddItem</td>
 		<td>Immediately before an item is added to the database</td>
 		<td><dl>
-			<dt>title</dt>
+			<dt class="ref">title</dt>
 			<dd>title</dd>
-			<dt>body</dt>
+			<dt class="ref">body</dt>
 			<dd>body text</dd>
-			<dt>more</dt>
+			<dt class="ref">more</dt>
 			<dd>extended text</dd>
-			<dt>blog</dt>
-			<dd>blog object</dd>
-			<dt>authorid</dt>
+			<dt class="ref obj">blog</dt>
+			<dd><code>BLOG</code> object</dd>
+			<dt class="ref">authorid</dt>
 			<dd>ID of author</dd>
-			<dt>timestamp</dt>
+			<dt class="ref">timestamp</dt>
 			<dd>UNIX timestamp</dd>
-			<dt>closed</dt>
+			<dt class="ref">closed</dt>
 			<dd>1 (no comments allowed) or 0 (comments allowed)</dd>
-			<dt>draft</dt>
+			<dt class="ref">draft</dt>
 			<dd>1 (draft) or 0 (not draft)</dd>
-			<dt>catid</dt>
+			<dt class="ref">catid</dt>
 			<dd>ID fo category</dd>
 		</dl></td>		
 	</tr>	
@@ -608,19 +638,19 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PreUpdateItem</td>
 		<td>Immediately before an item gets updates in the database</td>
 		<td><dl>
-			<dt>itemid</dt>
+			<dt class="ro">itemid</dt>
 			<dd>item ID</dd>
-			<dt>title</dt>
+			<dt class="ref">title</dt>
 			<dd>title</dd>
-			<dt>body</dt>
+			<dt class="ref">body</dt>
 			<dd>body text</dd>
-			<dt>more</dt>
+			<dt class="ref">more</dt>
 			<dd>extended text</dd>
-			<dt>blog</dt>
-			<dd>blog object</dd>
-			<dt>closed</dt>
+			<dt class="ref obj">blog</dt>
+			<dd><code>BLOG</code object</dd>
+			<dt class="ref">closed</dt>
 			<dd>1 (no comments allowed) or 0 (comments allowed)</dd>
-			<dt>catid</dt>
+			<dt class="ref">catid</dt>
 			<dd>ID fo category</dd>
 		</dl></td>		
 	</tr>
@@ -628,7 +658,7 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PrepareItemForEdit</td>
 		<td>Called after getting an item from the database, and before presenting it to the user to be edited.</td>
 		<td><dl>
-			<dt>item</dt>
+			<dt class="ref">item</dt>
 			<dd>associative array containing item data</dd>
 		</dl></td>		
 	</tr>
@@ -636,7 +666,7 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PreUpdateComment</td>
 		<td>Immediately before a comment is updated and saved into the database</td>
 		<td><dl>
-			<dt>body</dt>
+			<dt class="ref">body</dt>
 			<dd>Comment body</dd>
 		</dl></td>		
 	</tr>
@@ -644,7 +674,7 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PrepareCommentForEdit</td>
 		<td>After a comment is retrieved from the database, and before it is presented to the user to be edited.</td>
 		<td><dl>
-			<dt>comment</dt>
+			<dt class="ref">comment</dt>
 			<dd>comment data (associative array)</dd>
 		</dl></td>		
 	</tr>
@@ -652,9 +682,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PrePluginOptionsEdit</td>
 		<td>(v2.0) before the 'edit plugin options' form is created.</td>
 		<td><dl>
-			<dt>options</dt>
+			<dt class="ref">options</dt>
 			<dd>Array with for each option an object, having the following properties: <code>$obj-&gt;description</code>, <code>$obj-&gt;name</code>, <code>$obj-&gt;type</code>, <code>$obj-&gt;value</code>. Extra options can be added here (if you want to do something with them, you'll need to subscribe to PostPluginOptionsUpdate as well)</dd>
-			<dt>plugid</dt>
+			<dt class="ro">plugid</dt>
 			<dd>plugin ID (compare with <code>GetID()</code> to find out if this concerns you)</dd>
 		</dl></td>		
 	</tr>	
@@ -662,7 +692,7 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PostPluginOptionsUpdate</td>
 		<td>(v2.0) After the options for a plugin have been updated.</td>
 		<td><dl>
-			<dt>plugid</dt>
+			<dt class="ro">plugid</dt>
 			<dd>plugin ID (compare with <code>GetID()</code> to find out if this concerns you)</dd>
 		</dl></td>		
 	</tr>	
@@ -670,7 +700,7 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PostAuthentication</td>
 		<td>(v2.0) After the login procedure has been completed. This occurs on each page request.</td>
 		<td><dl>
-			<dt>loggedIn</dt>
+			<dt class="ro">loggedIn</dt>
 			<dd>result of <code>$member->isLoggedIn()</code></dd>
 		</dl></td>		
 	</tr>		
@@ -678,9 +708,9 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>PreAddItemForm</td>
 		<td>(v2.0) Immediately before an add item form (bookmarklet or admin area) is created.</td>
 		<td><dl>
-			<dt>contents</dt>
+			<dt class="ref">contents</dt>
 			<dd>reference to an associative array, in which the values 'title', 'body' and 'more' can be filled with initial values for the formfields. To avoid multiple plugins to alter these values, set the 'hasBeenSet' value to 1 when you're done (and check for it before starting)</dd>
-			<dt>blog</dt>
+			<dt class="ref obj">blog</dt>
 			<dd>reference to a <code>BLOG</code> object</dd>
 		</dl></td>		
 	</tr>		
@@ -688,7 +718,7 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>AddItemFormExtras</td>
 		<td>(v2.0) Somewhere inside the add item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.</td>
 		<td><dl>
-			<dt>blog</dt>
+			<dt class="ref obj">blog</dt>
 			<dd>reference to a <code>BLOG</code> object</dd>
 		</dl></td>		
 	</tr>			
@@ -703,12 +733,14 @@ class NP_Acronyms extends NucleusPlugin {
 			This way, multiple plugins can add options here while things keep a good structure. Also try to use prefixes for your fieldnames, in order to avoid nameclashes (e.g. <code>plug_tb_url</code>)
 		</td>
 		<td><dl>
-			<dt>blog</dt>
+			<dt class="ref obj">blog</dt>
 			<dd>reference to a <code>BLOG</code> object</dd>
-			<dt>variables</dt>
+			<dt class="ro">variables</dt>
 			<dd>
 				(read-only) An associative array containing all sorts of information on the item that's being edited: 'itemid', 'draft', 'closed', 'title', 'body', 'more', 'author', 'authorid', 'timestamp', 'karmapos', 'karmaneg', 'catid'
 			</dd>			
+			<dt class="ro">itemid</dt>
+			<dd>shortcut to the item ID</dd>
 		</dl></td>		
 	</tr>				
 	<tr>
@@ -724,25 +756,432 @@ your stuff
 	
 		</td>
 		<td><dl>
-			<dt>blog</dt>
+			<dt class="obj ref">blog</dt>
 			<dd>reference to a <code>BLOG</code> object</dd>
 		</dl></td>		
 	</tr>
 	<tr>
-		<td></td>
-		<td></td>
+		<td>PreDeleteItem</td>
+		<td>(v2.0f) Immediately before an item gets deleted in the database</td>
 		<td><dl>
-			<dt></dt>
-			<dd></dd>
+			<dt class="ro">itemid</dt>
+			<dd>id of the item that will be deleted</dd>
 		</dl></td>		
 	</tr>
 	<tr>
-		<td></td>
-		<td></td>
+		<td>PostDeleteItem</td>
+		<td>(v2.0f) Immediately after an item has been deleted in the database</td>
 		<td><dl>
-			<dt></dt>
-			<dd></dd>
+			<dt class="ro">itemid</dt>
+			<dd>id of the deleted item</dd>
 		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreDeleteCategory</td>
+		<td>(v2.0f) Immediately before a category gets deleted from the database</td>
+		<td><dl>
+			<dt class="ro">catid</dt>
+			<dd>category ID</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostDeleteCategory</td>
+		<td>(v2.0f) Immediately after a category has been deleted from the database</td>
+		<td><dl>
+			<dt class="ro">catid</dt>
+			<dd>category ID</dd>
+		</dl></td>		
+	</tr>	
+	<tr>
+		<td>PreDeleteBlog</td>
+		<td>(v2.0f) Immediately before a blog gets deleted from the database</td>
+		<td><dl>
+			<dt class="ro">blogid</dt>
+			<dd>ID of the blog that will be deleted</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostDeleteBlog</td>
+		<td>(v2.0f) Immediately after a blog has been deleted from the database</td>
+		<td><dl>
+			<dt class="ro">blogid</dt>
+			<dd>ID of the blog that was deleted from the database</dd>
+		</dl></td>		
+	</tr>	
+	<tr>
+		<td>PreDeleteMember</td>
+		<td>(v2.0f) Immediately before a member gets deleted from the database</td>
+		<td><dl>
+			<dt class="ref obj">member</dt>
+			<dd>reference to the <code>MEMBER</code> object associated with the member that needs to be deleted</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostDeleteMember</td>
+		<td>(v2.0f) Immediately after a member has been deleted from the database</td>
+		<td><dl>
+			<dt class="ref obj">member</dt>
+			<dd>reference to the <code>MEMBER</code> object associated with the member that has been deleted</dd>
+		</dl></td>		
+	</tr>	
+	<tr>
+		<td>PreDeleteTeamMember</td>
+		<td>(v2.0f) Immediately before a member gets deleted from a weblog team</td>
+		<td><dl>
+			<dt class="ref obj">member</dt>
+			<dd>reference to the <code>MEMBER</code> object</dd>
+			<dt class="ro">blogid</dt>
+			<dd>ID of the blog</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostDeleteTeamMember</td>
+		<td>(v2.0f) Immediately after a member has been deleted from a weblog team</td>
+		<td><dl>
+			<dt class="ref obj">member</dt>
+			<dd>reference to the <code>MEMBER</code> object</dd>
+			<dt class="ro">blogid</dt>
+			<dd>ID of the blog</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreDeleteComment</td>
+		<td>(v2.0f) Immediately before a comment gets deleted from the database</td>
+		<td><dl>
+			<dt class="ro">commentid</dt>
+			<dd>ID of the comment that will be deleted</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostDeleteComment</td>
+		<td>(v2.0f) Immediately after a comment has been deleted from the database</td>
+		<td><dl>
+			<dt class="ro">commentid</dt>
+			<dd>ID of the deleted comment</dd>
+		</dl></td>		
+	</tr>		
+	<tr>
+		<td>ActionLogCleared</td>
+		<td>(v2.0f) After the action log has been cleared</td>
+		<td>None</td>		
+	</tr>
+	<tr>
+		<td>PreDeleteTemplate</td>
+		<td>(v2.0f) Immediately before a template gets deleted from the database</td>
+		<td><dl>
+			<dt class="ro">templateid</dt>
+			<dd>ID of the template that will be deleted</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostDeleteTemplate</td>
+		<td>(v2.0f) Immediately after a template has been deleted from the database</td>
+		<td><dl>
+			<dt class="ro">templateid</dt>
+			<dd>ID of the deleted template</dd>
+		</dl></td>		
+	</tr>		
+	<tr>
+		<td>PreDeleteSkin</td>
+		<td>(v2.0f) Immediately before a skin gets deleted from the database</td>
+		<td><dl>
+			<dt class="ro">skinid</dt>
+			<dd>ID of the skin that will be deleted</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostDeleteSkin</td>
+		<td>(v2.0f) Immediately after a skin has been deleted from the database</td>
+		<td><dl>
+			<dt class="ro">skinid</dt>
+			<dd>ID of the deleted skin</dd>
+		</dl></td>		
+	</tr>	
+	<tr>
+		<td>PreDeletePlugin</td>
+		<td>(v2.0f) Immediately before a plugin gets deleted from the database</td>
+		<td><dl>
+			<dt class="ro">plugid</dt>
+			<dd>ID of the plugin that will be deleted</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostDeletePlugin</td>
+		<td>(v2.0f) Immediately after a plugin has been deleted from the database</td>
+		<td><dl>
+			<dt class="ro">plugid</dt>
+			<dd>ID of the deleted plugin</dd>
+		</dl></td>		
+	</tr>		
+	<tr>
+		<td>PreDeleteBan</td>
+		<td>(v2.0f) Immediately before an IP ban gets deleted from the database</td>
+		<td><dl>
+			<dt class="ro">blogid</dt>
+			<dd>ID of the blog for which the ban will be deleted</dd>
+			<dt class="ro">iprange</dt>
+			<dd>banned IP range</dd>			
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostDeleteBan</td>
+		<td>(v2.0f) Immediately after an IP ban has been deleted from the database</td>
+		<td><dl>
+			<dt class="ro">blogid</dt>
+			<dd>ID of the blog for which the ban has been deleted</dd>
+			<dt class="ro">iprange</dt>
+			<dd>banned IP range</dd>			
+		</dl></td>		
+	</tr>			
+	<tr>
+		<td>PreAddCategory</td>
+		<td>(v2.0f) Immediately before a new category is created in the database</td>
+		<td><dl>
+			<dt class="ref obj">blog</dt>
+			<dd>reference to <code>BLOG</code> object</dd>
+			<dt class="ref">name</dt>
+			<dd>name of new category</dd>			
+			<dt class="ref">description</dt>
+			<dd>description of new category</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostAddCategory</td>
+		<td>(v2.0f) Immediately after a new category has been created in the database</td>
+		<td><dl>
+			<dt class="ref obj">blog</dt>
+			<dd>reference to <code>BLOG</code> object</dd>
+			<dt class="ro">name</dt>
+			<dd>name of new category</dd>			
+			<dt class="ro">description</dt>
+			<dd>description of new category</dd>
+			<dt class="ro">catid</dt>
+			<dd>New category ID</dd>			
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreAddBlog</td>
+		<td>(v2.0f) Immediately before a new blog is created</td>
+		<td><dl>
+			<dt class="ref">name</dt>
+			<dd>name of new blog</dd>
+			<dt class="ref">shortname</dt>
+			<dd>shortname of new blog</dd>
+			<dt class="ref">timeoffset</dt>
+			<dd>time offset of new blog</dd>
+			<dt class="ref">description</dt>
+			<dd>description of new blog</dd>
+			<dt class="ref">defaultskin</dt>
+			<dd>ID of default skin for new blog</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostAddBlog</td>
+		<td>(v2.0f) Immediately after a new blog has been created</td>
+		<td><dl>
+			<dt class="ref obj">blog</dt>
+			<dd>new <code>BLOG</code> object</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreAddPlugin</td>
+		<td>(v2.0f) Immediately before a plugin is added</td>
+		<td><dl>
+			<dt class="ref">file</dt>
+			<dd>filename of the new plugin</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostAddPlugin</td>
+		<td>(v2.0f) Immediately after a plugin has been added</td>
+		<td><dl>
+			<dt class="ref obj">plugin</dt>
+			<dd>An object of the newly added plugin</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreAddTeamMember</td>
+		<td>(v2.0f) Immediately before a member gets added to a blog team</td>
+		<td><dl>
+			<dt class="ref obj">blog</dt>
+			<dd><code>BLOG</code> object</dd>
+			<dt class="ref obj">member</dt>
+			<dd><code>MEMBER</code> object</dd>
+			<dt class="ref">admin</dt>
+			<dd>boolean indicating if the newly added member will have blog admin rights or not</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostAddTeamMember</td>
+		<td>(v2.0f) Immediately after a member has been added to a blog team</td>
+		<td><dl>
+			<dt class="ref obj">blog</dt>
+			<dd><code>BLOG</code> object</dd>
+			<dt class="ref obj">member</dt>
+			<dd><code>MEMBER</code> object</dd>
+			<dt class="ro">admin</dt>
+			<dd>boolean indicating if the newly added member has admin rights or not</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreAddTemplate</td>
+		<td>(v2.0f) Immediately before a new template is created (note: this one also gets called when a template is cloned))</td>
+		<td><dl>
+			<dt class="ref">name</dt>
+			<dd>name of the new template</dd>
+			<dt class="ref">description</dt>
+			<dd>description of the new template</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostAddTemplate</td>
+		<td>(v2.0f) Immediately after a new template has been created</td>
+		<td><dl>
+			<dt class="ro">name</dt>
+			<dd>name of the new template</dd>
+			<dt class="ro">description</dt>
+			<dd>description of the new template</dd>
+			<dt class="ro">templateid</dt>
+			<dd>ID of the new template</dd>
+		</dl></td>		
+	</tr>	
+	<tr>
+		<td>PreAddSkin</td>
+		<td>(v2.0f) Immediately before a new skin is created (note: this one also gets called when a skin is cloned))</td>
+		<td><dl>
+			<dt class="ref">name</dt>
+			<dd>name of the new skin</dd>
+			<dt class="ref">description</dt>
+			<dd>description of the new skin</dd>
+			<dt class="ref">type</dt>
+			<dd>content type of the skin</dd>
+			<dt class="ref">includeMode</dt>
+			<dd>includeMode of the new skin</dd>
+			<dt class="ref">includePrefix</dt>
+			<dd>includePrefix of the new skin</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostAddSkin</td>
+		<td>(v2.0f) Immediately after a new skin has been created</td>
+		<td><dl>
+			<dt class="ro">name</dt>
+			<dd>name of the new skin</dd>
+			<dt class="ro">description</dt>
+			<dd>description of the new skin</dd>
+			<dt class="ro">type</dt>
+			<dd>content type of the skin</dd>
+			<dt class="ro">includeMode</dt>
+			<dd>includeMode of the new skin</dd>
+			<dt class="ro">includePrefix</dt>
+			<dd>includePrefix of the new skin</dd>
+			<dt class="ro">skinid</dt>
+			<dd>ID of the new skin</dd>
+		</dl></td>		
+	</tr>		
+	<tr>
+		<td>PreAddBan</td>
+		<td>(v2.0f) Immediately before a new ban is added to a weblog</td>
+		<td><dl>
+			<dt class="ref">blogid</dt>
+			<dd>ID of the blog</dd>
+			<dt class="ref">iprange</dt>
+			<dd>IP range to be banned</dd>
+			<dt class="ref">reason</dt>
+			<dd>textual message describing the reason for the ban</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostAddBan</td>
+		<td>(v2.0f) Immediately after a new ban has been added</td>
+		<td><dl>
+			<dt class="ro">blogid</dt>
+			<dd>ID of the blog</dd>
+			<dt class="ro">iprange</dt>
+			<dd>IP range to be banned</dd>
+			<dt class="ro">reason</dt>
+			<dd>textual message describing the reason for the ban</dd>
+		</dl></td>		
+	</tr>		
+
+	<tr>
+		<td>PreMoveItem</td>
+		<td>(v2.0f) Immediately before an item is moved to another blog/category</td>
+		<td><dl>
+			<dt class="ref">itemid</dt>
+			<dd>ID of the item</dd>
+			<dt class="ref">destblogid</dt>
+			<dd>ID of the destination blog</dd>
+			<dt class="ref">destcatid</dt>
+			<dd>ID of the destination category</dd>			
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostMoveItem</td>
+		<td>(v2.0f) Immediately after an item has been moved to another blog/category</td>
+		<td><dl>
+			<dt class="ro">itemid</dt>
+			<dd>ID of the item</dd>
+			<dt class="ro">destblogid</dt>
+			<dd>ID of the new blog</dd>
+			<dt class="ro">destcatid</dt>
+			<dd>ID of the new category</dd>	
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreMoveCategory</td>
+		<td>(v2.0f) Immediately before a catgeory is moved to another blog</td>
+		<td><dl>
+			<dt class="ref">catid</dt>
+			<dd>ID of the catgeory</dd>
+			<dt class="ref obj">sourceblog</dt>
+			<dd>source <code>BLOG</code> object</dd>
+			<dt class="ref obj">destblog</dt>
+			<dd>destination <code>BLOG</code> object</dd>			
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostMoveCategory</td>
+		<td>(v2.0f) Immediately after a catgeory has been moved to another blog</td>
+		<td><dl>
+			<dt class="ro">catid</dt>
+			<dd>ID of the catgeory</dd>
+			<dt class="ref obj">sourceblog</dt>
+			<dd>source <code>BLOG</code> object</dd>
+			<dt class="ref obj">destblog</dt>
+			<dd>destination <code>BLOG</code> object</dd>			
+		</dl></td>		
+	</tr>	
+	<tr>
+		<td>MemberSettingsFormExtras</td>
+		<td>(v2.0f) On the member settings page. You can add your own forms here.
+			<br /><br />			
+			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
+<pre><code>&lt;h4&gt;plugin name&lt;/h4&gt;
+&lt;form method="post" action="..."&gt;&lt;p&gt;
+your stuff
+&lt;/p&gt;&lt;/form&gt;</code></pre>
+			This way, multiple plugins can add options here while things keep a good structure. Also try to use prefixes for your fieldnames, in order to avoid nameclashes (e.g. <code>plug_tb_url</code>)
+	
+		</td>
+		<td><dl>
+			<dt class="ref obj">member</dt>
+			<dd>reference to a <code>MEMBER</code> object</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>GeneralSettingsFormExtras</td>
+		<td>(v2.0f) On the general settings page. You can add your own forms here.
+			<br /><br />			
+			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
+<pre><code>&lt;h4&gt;plugin name&lt;/h4&gt;
+&lt;form method="post" action="..."&gt;&lt;p&gt;
+your stuff
+&lt;/p&gt;&lt;/form&gt;</code></pre>
+			This way, multiple plugins can add options here while things keep a good structure. Also try to use prefixes for your fieldnames, in order to avoid nameclashes (e.g. <code>plug_tb_url</code>)
+	
+		</td>
+		<td>None</td>		
 	</tr>
 <!--	<tr>
 		<td></td>

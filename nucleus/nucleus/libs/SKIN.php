@@ -68,10 +68,41 @@ class SKIN {
 		return quickQuery('SELECT sdname as result FROM nucleus_skin_desc WHERE sdnumber=' . intval($id));
 	}
 	
-	// (static)
+	/**
+	 * Creates a new skin, with the given characteristics.
+	 *
+	 * (static)
+	 */
 	function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
+		global $manager;
+		
+		$manager->notify(
+			'PreAddSkin',
+			array(
+				'name' => &$name,
+				'description' => &$desc,
+				'type' => &$type,
+				'includeMode' => &$includeMode,
+				'includePrefix' => &$includePrefix
+			)
+		);
+				
 		sql_query("INSERT INTO nucleus_skin_desc (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "','".addslashes($type)."','".addslashes($includeMode)."','".addslashes($includePrefix)."')");
-		return mysql_insert_id();
+		$newid = mysql_insert_id();
+		
+		$manager->notify(
+			'PostAddSkin',
+			array(
+				'skinid' => $newid,
+				'name' => $name,
+				'description' => $desc,
+				'type' => $type,
+				'includeMode' => $includeMode,
+				'includePrefix' => $includePrefix
+			)
+		);		
+		
+		return $newid;
 	}
 	
 	function parse($type) {
