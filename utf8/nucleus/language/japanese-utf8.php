@@ -3,7 +3,7 @@
 // 
 // Author: chrome (chrome@cgi.no-ip.org)
 // Modified by: Osamu Higuchi (osamu@higuchi.com)
-// Nucleus version: v1.0-v3.1
+// Nucleus version: v1.0-v3.2
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -17,6 +17,13 @@
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 // ファイル名を japanese.php に変更してから、Nucleus の language ディレクトリに
 // 置いてください。
+
+// START changed/added after 3.15 START
+
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Please use the \'Update Subscription list\'-button to update the plugin\'s subscription list.');
+define('_LIST_PLUGS_DEP',			'Plugin(s) requires:');
+
+// END changed/added after 3.15
 
 // START changed/added after 3.1 START
 
@@ -608,8 +615,8 @@ define('_UPLOAD_MSG',				'アップロードするファイルを選択して、
 define('_UPLOAD_BUTTON',			'アップロード');
 
 // some status messages
-define('_MSG_ACCOUNTCREATED',		'アカウントが作成されました。パスワードがメールで送信されます');
-define('_MSG_PASSWORDSENT',			'パスワードがメールで送信されました。');
+//define('_MSG_ACCOUNTCREATED',		'アカウントが作成されました。パスワードがメールで送信されます');
+//define('_MSG_PASSWORDSENT',			'パスワードがメールで送信されました。');
 define('_MSG_LOGINAGAIN',			'あなたの情報が変更された為、ログインしなおす必要があります');
 define('_MSG_SETTINGSCHANGED',		'設定が変更されました');
 define('_MSG_ADMINCHANGED',			'管理者権限 が変更されました');

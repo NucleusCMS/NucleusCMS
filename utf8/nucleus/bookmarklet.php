@@ -1,7 +1,7 @@
 <?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -11,6 +11,9 @@
   *
   * This script allows adding items to Nucleus through bookmarklets. The member must be logged in
   * in order to use this.
+  *
+  * $Id: bookmarklet.php,v 1.3 2005-03-12 06:19:03 kimitake Exp $
+  $ $NucleusJP$
   */
 
 // bookmarklet is part of admin area (might need XML-RPC)
@@ -40,6 +43,16 @@ if ($action == '')
 	
 sendContentType('application/xhtml+xml', 'bookmarklet-'.$action);	
 
+// check ticket
+$action = strtolower($action);
+$aActionsNotToCheck = array('login', 'add', 'edit');
+if (!in_array($action, $aActionsNotToCheck))
+{
+	if (!$manager->checkTicket())
+		bm_doError(_ERROR_BADTICKET);
+} 
+
+
 // find out what to do
 switch ($action) {
 	case 'additem':
@@ -61,7 +74,7 @@ switch ($action) {
 }
 	
 function bm_doAddItem() {
-	global $member, $manager;
+	global $member, $manager, $CONF;
 	
 	$manager->loadClass('ITEM');
 	$result = ITEM::createFromRequest();
@@ -77,7 +90,8 @@ function bm_doAddItem() {
 		$extrahead = '';
 	} elseif ((postVar('actiontype') == 'addnow') && $blog->pingUserland()) {
 		$message = 'アイテムの追加に成功しました。現在weblogs.comにpingを送っています。しばらくの間お待ちください...';
-		$extrahead = '<meta http-equiv="refresh" content="1; url=index.php?action=sendping&amp;blogid=' . $blogid . '" />';
+		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid));
+		$extrahead = '<meta http-equiv="refresh" content="1; url=' . htmlspecialchars($pingUrl). '" />';
 	} else {
 		$message = _ITEM_ADDED;
 		$extrahead = '';

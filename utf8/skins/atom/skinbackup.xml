@@ -7,7 +7,7 @@
     <%blog(feeds/atom/entries,10)%>
 </feed>]]></part></skin><template name="feeds/atom/modified"><description>Atom feeds: Inserts last modification date</description><part name="ITEM"><![CDATA[<%date(utc)%>]]></part></template><template name="feeds/atom/entries"><description>Atom feeds: Feed items</description><part name="ITEM"><![CDATA[<entry>
  <title type="text/html" mode="escaped"><![CDATA[<%title%>]]></title>
- <link rel="alternate" type="text/html" href="<%blogurl%>?itemid=<%itemid%>" />
+ <link rel="alternate" type="text/html" href="<%blogurl%>index.php?itemid=<%itemid%>" />
  <author>
   <name><%author%></name>
  </author>

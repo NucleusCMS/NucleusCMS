@@ -6,21 +6,21 @@
     <description><%blogsetting(desc)%></description>
     <language>ja</language>           
     <generator><%version%></generator>
-    <copyright>&#169;</copyright>             
+    <copyright>©</copyright>             
     <category>Weblog</category>
     <docs>http://backend.userland.com/rss</docs>
     <image>
-      <url><%adminurl%>nucleus2.gif</url>
+      <url><%blogsetting(url)%>/nucleus/nucleus2.gif</url>
       <title><%blogsetting(name)%></title>
       <link><%blogsetting(url)%></link>
     </image>
     <%blog(feeds/rss20,10)%>
   </channel>
-</rss>]]></part></skin><template name="feeds/rss20"><description>Used for RSS 2.0 syndication of your blog</description><part name="EDITLINK"><![CDATA[<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>]]></part><part name="FORMAT_DATE"><![CDATA[%Y-%m-%d]]></part><part name="FORMAT_TIME"><![CDATA[%H:%M:%S]]></part><part name="ITEM"><![CDATA[<item>
+</rss>]]></part></skin><template name="feeds/rss20"><description>Used for RSS 2.0 syndication of your blog</description><part name="EDITLINK"><![CDATA[<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>]]></part><part name="FORMAT_DATE"><![CDATA[%x]]></part><part name="FORMAT_TIME"><![CDATA[%X]]></part><part name="ITEM"><![CDATA[<item>
  <title><![CDATA[<%title%>]]></title>
- <link><%blogurl%>?itemid=<%itemid%></link>
+ <link><%blogurl%>index.php?itemid=<%itemid%></link>
 <description><![CDATA[<%body%><%more%>]]></description>
  <category><%category%></category>
-<comments><%blogurl%>?itemid=<%itemid%></comments>
+<comments><%blogurl%>index.php?itemid=<%itemid%></comments>
  <pubDate><%date(rfc822)%></pubDate>
 </item>]]></part></template></nucleusskin>

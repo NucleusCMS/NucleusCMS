@@ -2,7 +2,7 @@
 
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -12,6 +12,9 @@
   *
   * A class representing a blog and containing functions to get that blog shown
   * on the screen 
+  *
+  * $Id: BLOG.php,v 1.3 2005-03-12 06:19:05 kimitake Exp $
+  * $NucleusJP$
   */
 class BLOG {
 	
@@ -137,7 +140,7 @@ class BLOG {
 	function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1) {
 		global $CONF, $manager;
 
-		$lastVisit = cookieVar('lastVisit');
+		$lastVisit = cookieVar($CONF['CookiePrefix'] .'lastVisit');
 		if ($lastVisit != 0)
 			$lastVisit = $this->getCorrectTime($lastVisit);
 
@@ -145,11 +148,11 @@ class BLOG {
 		global $currentTemplateName;
 		$currentTemplateName = $templateName;
 		
-		$template = TEMPLATE::read($templateName);
+		$template =& $manager->getTemplate($templateName);
 		
 		// create parser object & action handler
-		$actions = new ITEMACTIONS($this);
-		$parser = new PARSER($actions->getDefinedActions(),$actions);
+		$actions =& new ITEMACTIONS($this);
+		$parser =& new PARSER($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setHighlight($highlight);
 		$actions->setLastVisit($lastVisit);
@@ -288,7 +291,7 @@ class BLOG {
 			
 		$frommail = $member->getNotifyFromMailAddress();
 
-		$notify = new NOTIFICATION($this->getNotifyAddress());
+		$notify =& new NOTIFICATION($this->getNotifyAddress());
 		$notify->notify($mailto_title, $mailto_msg , $frommail);
 				
 
@@ -371,7 +374,7 @@ class BLOG {
 	 *		amount of hits found
 	 */
 	function search($query, $template, $amountMonths, $maxresults, $startpos) {
-        global $CONF;
+        global $CONF, $manager;
 
 		$highlight 	= '';
 		$sqlquery	= $this->getSqlSearch($query, $amountMonths, $highlight);
@@ -393,7 +396,7 @@ class BLOG {
 			// when no results were found, show a message 
     		if ($amountfound == 0) 
     		{
-	    		$template = TEMPLATE::read($template);
+	    		$template =& $manager->getTemplate($template);
     			$vars = array(
     				'query'		=> htmlspecialchars($query),
     				'blogid'	=> $this->getID()
@@ -423,7 +426,7 @@ class BLOG {
 	 */
 	function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
 	{
-        $searchclass = new SEARCH($query);
+        $searchclass =& new SEARCH($query);
         
         $highlight	  = $searchclass->inclusive;
         
@@ -521,12 +524,12 @@ class BLOG {
 	  * Shows the archivelist using the given template
 	  */
 	function showArchiveList($template, $mode = 'month', $limit = 0) {
-		global $CONF, $catid;
+		global $CONF, $catid, $manager;
 
 		if ($catid) 
 			$linkparams = array('catid' => $catid);
 		
-		$template = TEMPLATE::read($template);
+		$template =& $manager->getTemplate($template);
 		$data['blogid'] = $this->getID();
 
 		echo TEMPLATE::fill($template['ARCHIVELIST_HEADER'],$data);
@@ -579,7 +582,7 @@ class BLOG {
 	  * Shows the list of categories using a given template
 	  */
 	function showCategoryList($template) {
-		global $CONF;
+		global $CONF, $manager;
 		
 		// determine arguments next to catids
 		// I guess this can be done in a better way, but it works
@@ -601,7 +604,7 @@ class BLOG {
 		//$blogurl = $this->getURL() . $qargs;
 		$blogurl = createBlogLink($this->getURL(), $linkparams);
 
-		$template = TEMPLATE::read($template);
+		$template =& $manager->getTemplate($template);
 
 		echo TEMPLATE::fill($template['CATLIST_HEADER'],
 							array(
@@ -653,12 +656,18 @@ class BLOG {
 	}
 	
 	function writeSettings() {
+	
+		// (can't use floatval since not available prior to PHP 4.2)
+		$offset = $this->getTimeOffset();
+		if (!is_float($offset))
+			$offset = intval($offset);
+		
 		$query =  'UPDATE '.sql_table('blog')
 		       . " SET bname='" . addslashes($this->getName()) . "',"
 		       . "     bshortname='". addslashes($this->getShortName()) . "',"
 		       . "     bcomments=". intval($this->commentsEnabled()) . ","
 		       . "     bmaxcomments=" . intval($this->getMaxComments()) . ","
-		       . "     btimeoffset=" . floatval($this->getTimeOffset()) . ","
+		       . "     btimeoffset=" . $offset . ","
 		       . "     bpublic=" . intval($this->isPublic()) . ","
 		       . "     bsendping=" . intval($this->pingUserland()) . ","
 		       . "     bconvertbreaks=" . intval($this->convertBreaks()) . ","
@@ -1269,7 +1278,7 @@ class ITEMACTIONS extends BaseActions {
 			
 		// add comments
 		if ($this->showComments && $this->blog->commentsEnabled()) {
-			$comments = new COMMENTS($this->currentItem->itemid);
+			$comments =& new COMMENTS($this->currentItem->itemid);
 			$comments->setItemActions($this);
 			$comments->showComments($this->template, $maxToShow, $this->currentItem->closed ? 0 : 1, $this->strHighlight); 
 		}
@@ -1368,7 +1377,7 @@ class ITEMACTIONS extends BaseActions {
 		
 		$vars['link']			= htmlspecialchars($CONF['MediaURL']. $filename);
 		$vars['text']			= htmlspecialchars($text);
-		$vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" />';
+		$vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
 		$vars['width'] 			= $width;
 		$vars['height']			= $height;
 				

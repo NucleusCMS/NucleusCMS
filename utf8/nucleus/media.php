@@ -1,7 +1,7 @@
 <?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -17,6 +17,8 @@
   *     upload of new files
   *   - close the popup by selecting a file in the list. The file gets
   *     passed through to the add-item form (linkto, popupimg or inline img)
+  *
+  * $Id: media.php,v 1.3 2005-03-12 06:19:03 kimitake Exp $
   */
   
 $CONF = array();
@@ -44,8 +46,20 @@ $teams = mysql_query($query);
 if (mysql_num_rows($teams) == 0)
 	media_doError(_ERROR_DISALLOWEDUPLOAD);
 	
-// basic action:
+// get action
 $action = requestVar('action');
+if ($action == '')
+	$action = 'selectmedia';
+	
+// check ticket
+$aActionsNotToCheck = array('selectmedia', _MEDIA_FILTER_APPLY, _MEDIA_COLLECTION_SELECT);
+if (!in_array($action, $aActionsNotToCheck))
+{
+	if (!$manager->checkTicket())
+		media_doError(_ERROR_BADTICKET);
+} 
+
+
 switch($action) {
 	case 'chooseupload':
 	case _MEDIA_UPLOAD_TO:
@@ -65,7 +79,7 @@ switch($action) {
 
 // select a file
 function media_select() {
-	global $member, $CONF, $DIR_MEDIA;
+	global $member, $CONF, $DIR_MEDIA, $manager;
 	
 	media_head();
 	
@@ -99,12 +113,14 @@ function media_select() {
 			</select>
 			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_COLLECTION_SELECT) ?>" title="<?php echo htmlspecialchars(_MEDIA_COLLECTION_TT)?>" />
 			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_UPLOAD_TO) ?>" title="<?php echo htmlspecialchars(_MEDIA_UPLOADLINK) ?>" />
+			<?php $manager->addTicketHidden() ?>
 		</div></form>
 	<?php	} else {
 	?>
 		<form method="post" action="media.php" style="float:right"><div>
 			<input type="hidden" name="collection" value="<?php echo htmlspecialchars($currentCollection)?>" />
 			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_UPLOAD_NEW) ?>" title="<?php echo htmlspecialchars(_MEDIA_UPLOADLINK) ?>" />
+			<?php $manager->addTicketHidden() ?>
 		</div></form>	
 	<?php	} // if sizeof
 	
@@ -162,25 +178,29 @@ function media_select() {
 			
 			echo "<tr>";
 			echo "<td>". date("Y-m-d",$obj->timestamp) ."</td>";
+			
+			// strings for javascript
+			$jsCurrentCollection = str_replace("'","\\'",$currentCollection);
+			$jsFileName = str_replace("'","\\'",$obj->filename);
 
 			if ($filetype != 0) {
 				// image (gif/jpg/png/swf)
-				echo "<td><a href='media.php' onclick='chooseImage(\"$currentCollection\",\"$obj->filename\","
-							   . "\"$width\",\"$height\""
-							   . ")' title='" . htmlspecialchars($obj->filename). "'>"
+				echo "<td><a href=\"media.php\" onclick=\"chooseImage('", htmlspecialchars($jsCurrentCollection), "','", htmlspecialchars($jsFileName), "',"
+							   . "'", htmlspecialchars($width), "','" , htmlspecialchars($height), "'"
+							   . ")\" title=\"" . htmlspecialchars($obj->filename). "\">"
 							   . htmlspecialchars(shorten($obj->filename,25,'...'))
 							   ."</a>";
 				echo ' (<a href="', htmlspecialchars($CONF['MediaURL'] . $currentCollection . '/' . $obj->filename), '" onclick="window.open(this.href); return false;" title="',htmlspecialchars(_MEDIA_VIEW_TT),'">',_MEDIA_VIEW,'</a>)';
 				echo "</td>";
 			} else {
 				// no image (e.g. mpg)
-				echo "<td><a href='media.php' onclick='chooseOther(\"$currentCollection\",\"$obj->filename\""
-							   . ")' title='" . htmlspecialchars($obj->filename). "'>"
+				echo "<td><a href='media.php' onclick=\"chooseOther('" , htmlspecialchars($jsCurrentCollection), "','", htmlspecialchars($jsFileName), "'"
+							   . ")\" title=\"" . htmlspecialchars($obj->filename). "\">"
 							   . htmlspecialchars(shorten($obj->filename,30,'...'))
 							   ."</a></td>";
 
 			}
-			echo '<td>' , $width , 'x' , $height , '</td>';
+			echo '<td>' , htmlspecialchars($width) , 'x' , htmlspecialchars($height) , '</td>';
 			echo '</tr>';
 		}
 	} // if (sizeof($arr)>0)
@@ -206,7 +226,7 @@ function media_select() {
   * Shows a screen where you can select the file to upload
   */
 function media_choose() {
-	global $CONF, $member;
+	global $CONF, $member, $manager;
 
 	$currentCollection = requestVar('collection');
 	
@@ -221,6 +241,7 @@ function media_choose() {
 	<form method="post" enctype="multipart/form-data" action="media.php">
 	<div>
  	  <input type="hidden" name="action" value="uploadfile" />
+ 	  <?php $manager->addTicketHidden() ?>
 	  <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $CONF['MaxUploadSize']?>" />
 	  File:
 	  <br />

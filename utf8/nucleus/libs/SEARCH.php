@@ -2,7 +2,7 @@
 
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2003-2004 The Nucleus Group
+  * Copyright (C) 2003-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -17,6 +17,9 @@
   * http://www.evolt.org/article/Boolean_Fulltext_Searching_with_PHP_and_MySQL/18/15665/
   * http://davidaltherr.net/web/php_functions/boolean/funcs.mysql.boolean.txt
   * 
+  *
+  * $Id: SEARCH.php,v 1.4 2005-03-12 06:19:05 kimitake Exp $
+  $ $NucleusJP$
   */
 
 

@@ -1,7 +1,7 @@
 <?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -16,6 +16,9 @@
   *
   * The class is a singleton, meaning that there will be only one object of it
   * active at all times. The object can be requested using MANAGER::instance()
+  *
+  * $Id: MANAGER.php,v 1.3 2005-03-12 06:19:05 kimitake Exp $
+  * $NucleusJP$
   */
 class MANAGER {
 
@@ -31,6 +34,7 @@ class MANAGER {
 	var $blogs;
 	var $plugins;
 	var $karma;
+	var $templates;
 	
 	/**
 	 * cachedInfo to avoid repeated SQL queries (see pidInstalled/pluginInstalled/getPidFromName)
@@ -58,7 +62,7 @@ class MANAGER {
 	function &instance() {
 		static $instance = '';
 		if ($instance == '')
-			$instance = new MANAGER();
+			$instance =& new MANAGER();
 		return $instance;
 	}
 	
@@ -130,8 +134,8 @@ class MANAGER {
 			// load class if needed
 			$this->_loadClass('BLOG','BLOG.php');
 			// load blog object
-			$blog = new BLOG($blogid);
-			$this->blogs[$blogid] = $blog;
+			$blog =& new BLOG($blogid);
+			$this->blogs[$blogid] =& $blog;
 		}
 		return $blog;
 	}
@@ -147,6 +151,19 @@ class MANAGER {
 	}	
 	
 	/**
+	 * Returns a previously read template
+	 */
+	function &getTemplate($templateName) {
+		$template =& $this->templates[$templateName];
+
+		if (!$template) {
+			$template = TEMPLATE::read($templateName);
+			$this->templates[$templateName] =& $template;
+		}
+		return $template;
+	}	
+
+	/**
 	 * Returns a KARMA object (karma votes)
 	 */
 	function &getKarma($itemid) {
@@ -156,8 +173,8 @@ class MANAGER {
 			// load class if needed
 			$this->_loadClass('KARMA','KARMA.php');
 			// create KARMA object
-			$karma = new KARMA($itemid);
-			$this->karma[$itemid] = $karma;
+			$karma =& new KARMA($itemid);
+			$this->karma[$itemid] =& $karma;
 		}
 		return $karma;
 	}	
@@ -205,7 +222,7 @@ class MANAGER {
 				}
 				
 				// add to plugin array
-				eval('$this->plugins[$name] = new ' . $name . '();');
+				eval('$this->plugins[$name] =& new ' . $name . '();');
 				
 				// get plugid
 				$this->plugins[$name]->plugid = $this->getPidFromName($name);
@@ -331,7 +348,121 @@ class MANAGER {
 		
 	}
 
+	/*
+		Ticket functions. These are uses by the admin area to make it impossible to simulate certain GET/POST
+		requests. tickets are user specific
+	*/
+
+	var $currentRequestTicket = '';
 	
+	/**
+	 * GET requests: Adds ticket to URL (URL should NOT be html-encoded!, ticket is added at the end)
+	 */
+	function addTicketToUrl($url)
+	{
+		$ticketCode = 'ticket=' . $this->_generateTicket();
+		if (strstr($url, '?'))
+			return $url . '&' . $ticketCode;
+		else 
+			return $url . '?' . $ticketCode;
+	}
+	
+	/**
+	 * POST requests: Adds ticket as hidden formvar
+	 */
+	function addTicketHidden()
+	{
+		$ticket = $this->_generateTicket();
+		
+		echo '<input type="hidden" name="ticket" value="', htmlspecialchars($ticket), '" />';
+	}
+	
+	/**
+	 * Checks the ticket that was passed along with the current request
+	 */
+	function checkTicket() 
+	{
+		global $member;
+		
+		// get ticket from request
+		$ticket = requestVar('ticket');
+		
+		// no ticket -> don't allow
+		if ($ticket == '')
+			return false;
+			
+		// remove expired tickets first
+		$this->_cleanUpExpiredTickets();
+		
+		// get member id
+		if (!$member->isLoggedIn())
+			$memberId = -1;
+		else
+			$memberId = $member->getID();
+		
+		// check if ticket is a valid one
+		$query = 'SELECT COUNT(*) as result FROM ' . sql_table('tickets') . ' WHERE member=' . intval($memberId). ' and ticket=\''.addslashes($ticket).'\'';
+		if (quickQuery($query) == 1)
+		{
+			// [in the original implementation, the checked ticket was deleted. This would lead to invalid
+			//  tickets when using the browsers back button and clicking another link/form
+			//  leaving the keys in the database is not a real problem, since they're member-specific and 
+			//  only valid for a period of one hour
+			// ]
+			// sql_query('DELETE FROM '.sql_table('tickets').' WHERE member=' . intval($memberId). ' and ticket=\''.addslashes($ticket).'\'');
+			return true;			
+		} else {
+			// not a valid ticket
+			return false;
+		}
+
+	}
+	
+	/**
+	 * (internal method) Removes the expired tickets 
+	 */
+	function _cleanUpExpiredTickets()
+	{
+		// remove tickets older than 1 hour
+		$oldTime = time() - 60 * 60;
+		$query = 'DELETE FROM ' . sql_table('tickets'). ' WHERE ctime < \'' . date('Y-m-d H:i:s',$oldTime) .'\'';
+		sql_query($query);
+	}
+
+	/**
+	 * (internal method) Generates/returns a ticket (one ticket per page request)
+	 */
+	function _generateTicket()
+	{
+		if ($this->currentRequestTicket == '')
+		{
+			// generate new ticket (only one ticket will be generated per page request)
+			// and store in database 
+			global $member;
+			// get member id
+			if (!$member->isLoggedIn())
+				$memberId = -1;
+			else
+				$memberId = $member->getID();
+			
+			$ok = false;
+			while (!$ok)
+			{
+				// generate a random token
+				srand((double)microtime()*1000000);
+				$ticket = md5(uniqid(rand(), true));
+
+				// add in database as non-active
+				$query = 'INSERT INTO ' . sql_table('tickets') . ' (ticket, member, ctime) ';
+				$query .= 'VALUES (\'' . addslashes($ticket). '\', \'' . intval($memberId). '\', \'' . date('Y-m-d H:i:s',time()) . '\')';
+				if (sql_query($query))
+					$ok = true;
+			}
+			
+			$this->currentRequestTicket = $ticket;
+		}
+		return $this->currentRequestTicket;
+	}
 	
 }
 
