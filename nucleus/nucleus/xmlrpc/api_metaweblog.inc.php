@@ -282,7 +282,7 @@
 		
 		// - return URL
 		$urlstruct = new xmlrpcval(array(
-			"url" => new xmlrpcval($DIR_MEDIA . $collection. '/' . $filename,'string')
+			"url" => new xmlrpcval($CONF['MediaURL'] . $collection. '/' . $filename,'string')
 		),'struct');		
 		
 		return new xmlrpcresp($urlstruct);
