@@ -15,7 +15,7 @@ Nucleus Manual
 <b>Notes:</b>
 <ul>
 	<li>This manual only contains information that is not already contained in the popup-help (<a href="help.html">help.html</a>) available from the administration area. This document also contains instruction for the <a href="#installation">installation</a> of Nucleus.</li>
-	<li>If you're a developer, extra developer documentation is available as a <a href="http://nucleuscms.org/download.php">downloaded as a separate file</a> or <a href="http://nucleuscms.org/documentation/devdocs/index.html">viewable online</a></li>
+	<li>If you're a developer, <a href="devdocs/index.html">extra developer documentation</a> is available.</li>
 </ul>
 </div>
 
@@ -28,7 +28,7 @@ Nucleus Manual
 	<li><a href="skins.html">Modifying skins and templates</a> (separate file)</li>
 	<li><a href="#security">Security Aspects</a></li>
 	<li><a href="#performance">Performance Aspects</a></li>
-	<li><a href="#import">Importing from other tools</a></li>
+<!-- <li><a href="#import">Importing from other tools</a></li> -->
 	<li><a href="#comments">What's allowed/disallowed in comments?</a></li>
 	<li><a href="#xmlrpc">XML-RPC Interface</a></li>
 	<li><a href="#trouble">Troubleshooting (FAQ)</a></li>
@@ -238,7 +238,7 @@ For small web sites, this should not cause any problem. For web sites that get d
 
 
 
-
+<!--
 <h1>Importing From Other Tools <a name="import" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
@@ -248,7 +248,7 @@ Nucleus contains some conversion scripts that allow you to import the data from 
 <p>
 More information is available on the <a href="http://www.nucleuscms.org/convert.php">Nucleus website</a>. At the time of release, the only available conversion tools are those for Blogger and GreyMatter blogs.
 </p>
-
+-->
 
 
 <h1>What's allowed/disallowed in comments? <a name="comments" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
@@ -291,7 +291,7 @@ The URL for the Nucleus XML-RPC interface is:
 </p>
 
 <p>
-Currently, the <a href="http://plant.blogger.com/api/">Blogger API</a> and the <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a> are implemented. If you want an examples of such a client, try <a href="http://www.wbloggar.com/">w.Bloggar</a>, a client for machines running Windows.
+Currently, there are three APIs supported: the <a href="http://plant.blogger.com/api/">Blogger API</a>, the <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>, and the <a href="http://www.movabletype.org/docs/mtmanual_programmatic.html#xmlrpc%20api">Movable Type API</a>. If you want an examples of a client that uses these interfaces, try <a href="http://www.wbloggar.com/">w.Bloggar</a> (Windows) or <a href="http://www.kung-foo.tv/ecto/">Ecto</a> (MacOS).
 </p>
 
 <p>
@@ -348,7 +348,7 @@ File permissions need to be set correctly in order for the update file to work. 
 </p>
 
 <ul>
-	<li>At the time of release, there are no blog conversion tools available for Nucleus v3.0.</li>
+	<li>At the time of release, there are officially supported blog conversion tools available for Nucleus v3.0. We do have a set of code with which you can start, and are providing <a href="http://nucleuscms.org/convert.php">pointers to the import tools created by others</a>.</li>
 	<li>Ctrl + Shift + A shortcut might conflict with ICQ/Trillian</li>
 	<li>When PHP is running in SAFE mode, it's very likely that there will be problems when using the media directory (Nucleus will not be able to automatically detect image sizes, or disallow uploading)</li>
 	<li>Entities can get messed up in the RSS channel (e.g. &amp;amp; becomes &amp;amp;amp;)</li>
@@ -361,19 +361,19 @@ File permissions need to be set correctly in order for the update file to work. 
 
 <h1>Credits &amp; Thanks <a name="credits" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<h2>Core development</h2>
+<p>No matter how hard we try, some people will be unintentionally overlooked in this section.</p>
+
+<h2>Founder</h2>
 
 <ul>
 	<li>Wouter Demuynck</li>
-	<li>Appie Verschoor</li>
 </ul>
 
 <h2>Code submissions / Patches</h2>
 
 <ul>
-	<li>Andrew Brampton</li>
-	<li>Terry Chay</li>
-	<li>Rodrigo Moraes</li>
+	<li>Appie Verschoor (Fulltext search)</li>
+	<li>Many others... (check the <a href="history.html">history</a>)</li>
 </ul>
 
 <h2>Libraries etc</h2>
@@ -381,6 +381,7 @@ File permissions need to be set correctly in order for the update file to work. 
 <ul>
 	<li>Plugins are written by their respective authors.</li>
 	<li>Thanks should go out to the people that wrote language-files for Nucleus. You can <a href="http://nucleuscms.org/languages.php">download extra language files on the Nucleus website</a>.</li>
+	<li>The logo (the one with the yellow rays) was created by Rodrigo Moraes</li>
 	<li>The RSS 2.0 skin was created by <a href="http://www.xiffy.nl">Xiffy</a></li>
 	<li>The XML-RPC interface uses the <a href="http://phpxmlrpc.sourceforge.net/">'XML-RPC for PHP'</a> implementation from <a href="http://www.usefulinc.com/">Useful Inc.</a>.</li>
 	<li>The backup/restore code is largely inspired on the code used in <a href="http://phpbb.sourceforge.net/">phpBB</a>. </li>
@@ -391,10 +392,12 @@ File permissions need to be set correctly in order for the update file to work. 
 <h2>Thanks!</h2>
 
 <p>
-Many thanks should also go to all people who have helped me, <a href="http://nucleuscms.org/donators.php">donated</a> or inspired me (this list <em>is</em> incomplete):</p>
+Many thanks should also go to all people who have helped Nucleus to become what it is today.</p>
 
-<p>Trent Adams, Mat Bennett, Rainer Bickel, bileygur, Thorsten Bonck, Luc Van Braekel, Tim Broddin (Sir Psycho), Randy Brown, Marcelo Cabral, Monica Cainarca (pepita), Jeremy Cherfas, Luigi Cristiano, Dominique Crommen (domi), Diarchy, Aad Dekker (Zwavelaars), Raoul Dovermann (elrado), Eric Driesen, Bjorn Dubois, Charles Dubois le Pape, enamu, Gen, Malcolm Farnsworth, David Feldman, Dirk Feytons, Antonio Fragola (MrShark), gRegor, Roel Groeneveld, Alwin Hawkins, Andrew Haworth, Mr. Hop, Arne Hess, Osamu Higuchi, Gene Jablonowski, kax, Irmo Keizer, Birgit Kellner, Rudi De Kerpel, Paul Kersmaekers (Polskaya), Jason Krogh,  Ricardo Lamego (35mm), laotzu, J Keith Lehman, John Manzione, Greg Morrill, Jesus Mourazos, Rodrigo Moraes, Ricky Ng-Adam, Richard Noordhof, Bram Otto, Palla, Klaas Peeters, Lopo Pizarro, Kaspars Priedols, Al Reyes, Jamie Rytlewski, Alfonso Sanchez, Horacio Salazar, Joaquin Scholten, Anand Sesha, Marko Seppänen, Dennis Slagers, Neal Stevens, Bram Souffreau, Paul Sowden, sulleleven, Steve Taylor,  Morgan Tocker, Justin Stigall, Jeroen Vanheste (slekke), Seppe Van Sande (Sepi), Stijn Van De Vyver (HANK!), Frederik Vandaele, Jo Vanthournout (M-TT), Alexei V. Varavin, Verbal Jam, Steven Verbruggen, Appie Verschoor (Xiffy), Eugeen Vrints, Kevin Whited, Harry Young (Arthur Cronos from Voltos), Zain, ...
-</p>
+<ul>
+	<li>A list of <a href="http://nucleuscms.org/donators.php">donators</a> is available on the Nucleus website.</p>
+	<li>Special thanks to the <a href="http://forum.nucleuscms.org/groupcp.php?g=3">forum moderators</a> and <a href="http://forum.nucleuscms.org/memberlist.php?mode=posts&amp;order=DESC">frequent forum visitors</a>.</li>
+</ul>
 
 
 
