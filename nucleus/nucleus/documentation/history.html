@@ -16,6 +16,9 @@
 	<li>
 		<b>Nucleus v2.5 (?)</b>
 		<ul>
+			<li>CHANGED: exported skins are now saved as <code>skinbackup.xml</code> instead of <code>skindata.xml</code> to avoid confusion. (karma)</li>
+			<li>ADDED: New plugin events <code>AdminPrePageHead</code>, <code>AdminPrePageFoot</code>, <code>PreSendContentType</code>, <code>QuickMenu</code>, <code>BookmarkletExtraHead</code> (karma)</li>
+			<li>FIXED: Fix for bookmarklet, which failed in Opera (jmuto)</li>
 			<li>FIXED: <code>nextitemtitle</code> and <code>previtemtitle</code> skinvars did not htmlencode their output (karma)</li>
 			<li>CHANGED/ADDED: make all skinvars that insert links consistent. They can now all take a linktext parameter to insert a full link instead of a raw link. The <code>nextlink</code>/<code>prevlink</code> on search/index pages (introduced 2.5 beta) had to change for this. Skinvars that can take a linktext: <code>todaylink</code>, <code>archivelink</code>, <code>prevlink</code>, <code>nextlink</code> and <code>itemlink</code> (karma)</li>
 			<li>FIXED: XML-RPC: <code>mt.setPostCategories</code> asumed that <code>isPrimary</code> was always present (karma)</li>
