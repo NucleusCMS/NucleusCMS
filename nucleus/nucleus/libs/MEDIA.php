@@ -113,7 +113,7 @@ class MEDIA {
 	  * @param collection
 	  *		collection
 	  * @param uploadfile
-	  *		the array from the HTTP_POST_FILES array
+	  *		the postFileInfo(..) array 
 	  * @param filename
 	  *		the filename that should be used to save the file as
 	  *		(date prefix should be already added here)

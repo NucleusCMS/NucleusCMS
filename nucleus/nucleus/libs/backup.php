@@ -275,17 +275,18 @@ function gzip_PrintFourChars($Val)
 } 
 
 function do_restore() {
-	global $HTTP_POST_FILES;
+	
+	$uploadInfo = postFileInfo('backup_file');
 	
 	// first of all: get uploaded file:
-	if (empty($HTTP_POST_FILES['backup_file']['name']))
+	if (empty($uploadInfo['name']))
 		return 'No file uploaded';
-	if (!is_uploaded_file($HTTP_POST_FILES['backup_file']['tmp_name']))
+	if (!is_uploaded_file($uploadInfo['tmp_name']))
 		return 'No file uploaded';
 		
-	$backup_file_name = $HTTP_POST_FILES['backup_file']['name'];
-	$backup_file_tmpname = $HTTP_POST_FILES['backup_file']['tmp_name'];
-	$backup_file_type = $HTTP_POST_FILES['backup_file']['type'];
+	$backup_file_name = $uploadInfo['name'];
+	$backup_file_tmpname = $uploadInfo['tmp_name'];
+	$backup_file_type = $uploadInfo['backup_file']['type'];
 
 	if (!file_exists($backup_file_tmpname))
 		return 'File Upload Error';

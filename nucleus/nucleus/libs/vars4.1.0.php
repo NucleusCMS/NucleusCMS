@@ -70,5 +70,12 @@ function passRequestVars() {
 	}
 }
 
+function postFileInfo($name) {
+	return $_FILES[$name];
+}
+
+function setOldAction($value) {
+	$_POST['oldaction'] = $value;	
+}
 
 ?>

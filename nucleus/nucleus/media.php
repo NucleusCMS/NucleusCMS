@@ -259,13 +259,14 @@ function media_choose() {
   * accepts a file for upload
   */
 function media_upload() {
-	global $HTTP_POST_FILES, $DIR_MEDIA;
-	global $member, $CONF;
+	global $DIR_MEDIA, $member, $CONF;
+
+	$uploadInfo = postFileInfo('uploadfile');
 	
-	$filename = $HTTP_POST_FILES['uploadfile']['name'];
-	$filetype = $HTTP_POST_FILES['uploadfile']['type'];
-	$filesize = $HTTP_POST_FILES['uploadfile']['size'];
-	$filetempname = $HTTP_POST_FILES['uploadfile']['tmp_name'];
+	$filename = $uploadInfo['name'];
+	$filetype = $uploadInfo['type'];
+	$filesize = $uploadInfo['size'];
+	$filetempname = $uploadInfo['tmp_name'];
 	
 	if ($filesize > $CONF['MaxUploadSize'])
 		media_doError(_ERROR_FILE_TOO_BIG);
