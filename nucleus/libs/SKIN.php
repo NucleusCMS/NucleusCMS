@@ -1006,8 +1006,12 @@ class ACTIONS extends BaseActions {
 	function parse_membermailform($rows = 10, $cols = 40, $desturl = '') {
 		global $member, $CONF, $memberid;
 		
-		if ($desturl == '')
-			$desturl = $CONF['IndexURL'] . createMemberLink($memberid);
+		if ($desturl == '') {
+			if ($CONF['URLMode'] == 'pathinfo')
+				$desturl = createMemberLink($memberid);
+			else
+				$desturl = $CONF['IndexURL'] . createMemberLink($memberid);				
+		}
 			
 		$this->formdata = array(
 			'url' => $desturl,

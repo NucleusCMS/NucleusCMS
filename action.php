@@ -118,7 +118,11 @@ function sendMessage() {
 	if (postVar('url')) {
 		Header('Location: ' . postVar('url'));
 	} else {
-		$url = $CONF['IndexURL'] . 'index.php?memberid=' . $tomem->getID();
+		$CONF['MemberURL'] = $CONF['IndexURL'];
+		if ($CONF['URLMode'] == 'pathinfo')
+			$url = createMemberLink($tomem->getID());
+		else
+			$url = $CONF['IndexURL'] . createMemberLink($tomem->getID());
 		Header('Location: ' . $url);
 	}
 
