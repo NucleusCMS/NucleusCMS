@@ -111,22 +111,8 @@ class BLOG {
 	 */
 	function readLogAmount($template, $amountEntries, $extraQuery, $highlight, $comments, $dateheads, $offset = 0, $startpos = 0) {
 
-		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed'
-		       . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
-		       . ' WHERE i.iblog='.$this->blogid
-		       . ' and i.iauthor=m.mnumber'
-		       . ' and i.icat=c.catid'
-		       . ' and i.idraft=0'	// exclude drafts
-					// don't show future items
-		       . ' and i.itime<=' . mysqldate($this->getCorrectTime());
-
-		if ($this->getSelectedCategory())
-			$query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
-
-
-		$query .= $extraQuery
-		       . ' ORDER BY i.itime DESC';
-
+		$query = $this->getSqlBlog($extraQuery);
+		
 		if ($amountEntries > 0) {
 		        // $offset zou moeten worden:
 		        // (($startpos / $amountentries) + 1) * $offset ... later testen ...
@@ -447,7 +433,7 @@ class BLOG {
 			if ($select) 
 				$query .= ', '.$select. ' as score ';
 		} else {
-			$query = 'SELECT COUNT(*)';
+			$query = 'SELECT COUNT(*) as result ';
 		}
 			
 		$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
@@ -476,6 +462,43 @@ class BLOG {
 		}
 
 		return $query;		
+	}
+	
+	/**
+	 * Returns the SQL query that's normally used to display the blog items on the index type skins
+	 *
+	 * @param $mode
+	 *		either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
+	 * @returns 
+	 *		either a full SQL query, or an empty string 
+	 * @note
+	 *		No LIMIT clause is added. (caller should add this if multiple pages are requested)
+	 */
+	function getSqlBlog($extraQuery, $mode = '')
+	{
+		if ($mode == '')
+			$query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
+		else
+			$query = 'SELECT COUNT(*) as result ';
+		
+		$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
+		       . ' WHERE i.iblog='.$this->blogid
+		       . ' and i.iauthor=m.mnumber'
+		       . ' and i.icat=c.catid'
+		       . ' and i.idraft=0'	// exclude drafts
+					// don't show future items
+		       . ' and i.itime<=' . mysqldate($this->getCorrectTime());
+
+		if ($this->getSelectedCategory())
+			$query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
+
+
+		$query .= $extraQuery;
+		
+		if ($mode == '')
+			$query .= ' ORDER BY i.itime DESC';
+		       
+		return $query;
 	}
 
 	/**

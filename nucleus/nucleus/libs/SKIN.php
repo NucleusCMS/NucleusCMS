@@ -549,24 +549,54 @@ class ACTIONS extends BaseActions {
 			return htmlspecialchars($url);
 	}
 
-    function _searchlink($amount, $startpos, $direction, $linktext = '') {
-        global $CONF, $REQUEST_URI;
+	/**
+	 * Outputs a next/prev link
+	 *
+	 * @param $maxresults
+	 *		The maximum amount of items shown per page (e.g. 10)
+	 * @param $startpos
+	 *		Current start position (requestVar('startpos'))
+	 * @param $direction
+	 *		either 'prev' or 'next'
+	 * @param $linktext
+	 *		When present, the output will be a full <a href...> link. When empty,
+	 *		only a raw link will be outputted
+	 */
+    function _searchlink($maxresults, $startpos, $direction, $linktext = '') {
+        global $CONF, $HTTP_SERVER_VARS, $blog, $query, $amount;
         // TODO: Move request uri to linkparams. this is ugly. sorry for that.
         $startpos	= intval($startpos);		// will be 0 when empty. 
-        $parsed		= parse_url($REQUEST_URI);
-        $parsed		= $parsed[query];
+        $parsed		= parse_url($HTTP_SERVER_VARS['REQUEST_URI']);
+        $parsed		= $parsed['query'];
 		$url		= '';
         
         switch ($direction) {
             case 'prev':
-                if ( intval($startpos) - intval($amount) >= 0) {
-                    $startpos 	= intval($startpos) - intval($amount);
+                if ( intval($startpos) - intval($maxresults) >= 0) {
+                    $startpos 	= intval($startpos) - intval($maxresults);
                     $url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
                 }
                 break;
             case 'next':
-                $startpos = intval($startpos) + intval($amount);
-                if (intval($this->amountfound) >= intval($amount)) {
+                $startpos = intval($startpos) + intval($maxresults);
+                $iAmountOnPage = $this->amountfound;
+                if ($iAmountOnPage == 0)
+                {
+                	// [%nextlink%] or [%prevlink%] probably called before [%blog%] or [%searchresults%]
+                	// try a count query
+                	switch ($this->skintype)
+                	{
+                		case 'index':
+                			$sqlquery = $blog->getSqlBlog('', 'count');
+                			break;
+                		case 'search':
+                			$sqlquery = $blog->getSqlSearch($query, $amount, $unused_highlight, 'count');
+                			break;
+                	}
+                	if ($sqlquery) 
+                		$iAmountOnPage = intval(quickQuery($sqlquery));
+                }
+                if (intval($iAmountOnPage) >= intval($maxresults)) {
                 	$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
                 }
                 break;
