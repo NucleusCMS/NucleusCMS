@@ -135,7 +135,7 @@
 			static $plugin_options = 0;
 			if ($plugin_options == 0)
 			{
-				$plugin_option = array();  	
+				$plugin_options = array();  	
 				$query = mysql_query(
 					 'SELECT d.oname as name, o.ovalue as value '.
 					 'FROM '.
