@@ -703,7 +703,7 @@ class ADMIN {
 				if ($showNewCat) {
 					// check if allowed to do so
 					if ($member->blogAdminRights($oBlog->bnumber))
-						echo '<option value="newcat-',$oBlog->bnumber,'">New category...</option>';
+						echo '<option value="newcat-',$oBlog->bnumber,'">',_ADD_NEWCAT,'</option>';
 				}
 
 				// 2. for each category in that blog
@@ -804,7 +804,7 @@ class ADMIN {
 		
 		$search = postVar('search');	
 		
-		echo '<p>(<a href="index.php?action=itemlist&amp;blogid=',$blogid,'">Back to item overview</a>)</p>';
+		echo '<p>(<a href="index.php?action=itemlist&amp;blogid=',$blogid,'">',_BACKTOOVERVIEW,'</a>)</p>';
 		echo '<h2>',_COMMENTS,'</h2>';
 		
 		$query =  'SELECT cbody, cuser, cmail, mname, UNIX_TIMESTAMP(ctime) as ctime, chost, cnumber, cip, citem FROM nucleus_comment LEFT OUTER JOIN nucleus_member ON mnumber=cmember WHERE citem=' . $itemid;
@@ -1610,16 +1610,16 @@ class ADMIN {
 		// check if allowed
 		($member->getID() == $memberid) or $member->isAdmin() or $this->disallow();
 		
-		$name = trim(postVar('name'));
-		$realname = trim(postVar('realname'));
-		$password = postVar('password');
-		$repeatpassword = postVar('repeatpassword');		
-		$email = postVar('email');
-		$url = postVar('url');
-		$admin = postVar('admin');
-		$canlogin = postVar('canlogin');
-		$notes = postVar('notes');
-		$deflang = postVar('deflang');
+		$name			= trim(postVar('name'));
+		$realname		= trim(postVar('realname'));
+		$password		= postVar('password');
+		$repeatpassword	= postVar('repeatpassword');		
+		$email			= postVar('email');
+		$url			= postVar('url');
+		$admin			= postVar('admin');
+		$canlogin		= postVar('canlogin');
+		$notes			= postVar('notes');
+		$deflang		= postVar('deflang');
 		
 		$mem = MEMBER::createFromID($memberid);
 
@@ -1737,7 +1737,7 @@ class ADMIN {
 	
 		$this->pagehead();
 		
-		echo "<p><a href='index.php?action=blogsettings&amp;blogid=$blogid'>(Back to blogsettings)</a></p>";
+		echo "<p><a href='index.php?action=blogsettings&amp;blogid=$blogid'>(",_BACK_TO_BLOGSETTINGS,")</a></p>";
 		
 		echo '<h2>' . _TEAM_TITLE . getBlogNameFromID($blogid) . '</h2>';
 		
@@ -2321,17 +2321,17 @@ class ADMIN {
 		
 		$blog =& $manager->getBlog($blogid);
 		
-		$notify = trim(postVar('notify'));
-		$shortname = trim(postVar('shortname'));
-		$updatefile = trim(postVar('update'));
+		$notify			= trim(postVar('notify'));
+		$shortname		= trim(postVar('shortname'));
+		$updatefile		= trim(postVar('update'));
 		
-		$notifyComment = intPostVar('notifyComment');
-		$notifyVote = intPostVar('notifyVote');
-		$notifyNewItem = intPostVar('notifyNewItem');		
+		$notifyComment	= intPostVar('notifyComment');
+		$notifyVote		= intPostVar('notifyVote');
+		$notifyNewItem	= intPostVar('notifyNewItem');		
 		
-		if ($notifyComment == 0) $notifyComment = 1;
-		if ($notifyVote == 0) $notifyVote = 1;		
-		if ($notifyNewItem == 0) $notifyNewItem = 1;		
+		if ($notifyComment == 0)	$notifyComment = 1;
+		if ($notifyVote == 0)		$notifyVote = 1;		
+		if ($notifyNewItem == 0)	$notifyNewItem = 1;		
 		
 		$notifyType = $notifyComment * $notifyVote * $notifyNewItem;
 		
@@ -2588,14 +2588,14 @@ class ADMIN {
 		// Only Super-Admins can do this
 		$member->isAdmin() or $this->disallow();
 		
-		$bname = trim(postVar('name'));
-		$bshortname = trim(postVar('shortname'));
-		$bnotify = trim(postVar('notify'));
-		$btimeoffset = postVar('timeoffset');
-		$burl = trim(postVar('url'));
-		$bupdate = trim(postVar('update'));
-		$bdesc = trim(postVar('desc'));
-		$bdefskin = postVar('defskin');
+		$bname			= trim(postVar('name'));
+		$bshortname		= trim(postVar('shortname'));
+		$bnotify		= trim(postVar('notify'));
+		$btimeoffset	= postVar('timeoffset');
+		$burl			= trim(postVar('url'));
+		$bupdate		= trim(postVar('update'));
+		$bdesc			= trim(postVar('desc'));
+		$bdefskin		= postVar('defskin');
 		
 		// check if a valid email address is given for notify
 		if ($bnotify) {
@@ -2629,8 +2629,8 @@ class ADMIN {
 		// create blog
 		$query = "INSERT INTO nucleus_blog (bname, bshortname, bdesc, btimeoffset, bnotify, burl, bupdate, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', $btimeoffset, '$bnotify', '$burl', '$bupdate', $bdefskin)";
 		sql_query($query);
-		$blogid = mysql_insert_id();
-		$blog =& $manager->getBlog($blogid);
+		$blogid	= mysql_insert_id();
+		$blog	=& $manager->getBlog($blogid);
 		
 		// create new category
 		sql_query("INSERT INTO nucleus_category (cblog, cname, cdesc) VALUES ($blogid, 'General','Items that do not fit in other categories')");
@@ -2665,9 +2665,9 @@ class ADMIN {
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';		
 		
 	?>
-		<h2>Import</h2>	
+		<h2><?=_SKINIE_TITLE_IMPORT?></h2>	
 			
-				<p><label for="skinie_import_local">Import from local file:</label>
+				<p><label for="skinie_import_local"><?=_SKINIE_LOCAL?></label>
 				<?
 					global $DIR_SKINS;
 
@@ -2686,34 +2686,34 @@ class ADMIN {
 									}
 								?>
 								</select>
-								<input type="submit" value="Import" />
+								<input type="submit" value="<?=_SKINIE_BTN_IMPORT?>" />
 							</div></form>
 						<?
 					} else {
-						echo 'No candidates for import found in the skins directory</p>';
+						echo _SKINIE_NOCANDIDATES;
 					}
 				?>
 				</p>
 				
-				<p><em>or</em></p>
+				<p><em><?=_OR?></em></p>
 				
 				<form method="post" action="index.php"><p>
 					<input type="hidden" name="action" value="skinieimport" />
 					<input type="hidden" name="mode" value="url" />					
-					<label for="skinie_import_url">Import from URL:</label>
+					<label for="skinie_import_url"><?=_SKINIE_FROMURL?></label>
 					<input type="text" name="skinfile" id="skinie_import_url" size="60" value="http://" />
-					<input type="submit" value="Import" />
+					<input type="submit" value="<?=_SKINIE_BTN_IMPORT?>" />
 				</p></form>
 
 	
-		<h2>Export</h2>
+		<h2><?=_SKINIE_TITLE_EXPORT?></h2>
 		<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="skinieexport" />
 			
-			<p>Select the skins and templates you want to export below</p>
+			<p><?=_SKINIE_EXPORT_INTRO?></p>
 			
 			<table><tr>
-				<th colspan="2">Skins</th>
+				<th colspan="2"><?=_SKINIE_EXPORT_SKINS?></th>
 			</tr><tr>
 	<?
 		// show list of skins
@@ -2726,7 +2726,7 @@ class ADMIN {
 			echo '</tr><tr>';
 		}
 		
-		echo '<th colspan="3">Templates</th></tr><tr>';
+		echo '<th colspan="2">',_SKINIE_EXPORT_TEMPLATES,'</th></tr><tr>';
 		
 		// show list of templates
 		$res = sql_query('SELECT * FROM nucleus_template_desc');
@@ -2739,13 +2739,13 @@ class ADMIN {
 		}
 		
 	?>
-				<th colspan="2">Extra Info</th>
+				<th colspan="2"><?=_SKINIE_EXPORT_EXTRA?></th>
 			</tr><tr>
 				<td colspan="2"><textarea cols="40" rows="5" name="info"></textarea></td>
 			</tr><tr>				
-				<th colspan="2">Export</th>
+				<th colspan="2"><?=_SKINIE_TITLE_EXPORT?></th>
 			</tr><tr>
-				<td colspan="2"><input type="submit" value="Export selected skins/templates" /></td>
+				<td colspan="2"><input type="submit" value="<?=_SKINIE_BTN_EXPORT?>" /></td>
 			</tr></table>
 		</div></form>
 	
@@ -2782,23 +2782,23 @@ class ADMIN {
 
 		echo '<p><a href="index.php?action=skinieoverview">(',_BACK,')</a></p>';		
 		?>
-		<h2>About to import skins and templates</h2>
+		<h2><?=_SKINIE_CONFIRM_TITLE?></h2>
 
 		<ul>
-			<li><p><strong>Info:</strong> <?=htmlspecialchars($importer->getInfo())?></p></li>
-			<li><p><strong>Skins in file:</strong> <?=implode(' <em>and</em> ',$importer->getSkinNames())?></p></li>
-			<li><p><strong>Templates in file:</strong> <?=implode(' <em>and</em> ',$importer->getTemplateNames())?></p></li>
-			<li><p><strong style="color: red;">Skin name clashes:</strong> <?=implode(' <em>and</em> ',$importer->checkSkinNameClashes())?></p></li>		
-			<li><p><strong style="color: red;">Template name clashes:</strong> <?=implode(' <em>and</em> ',$importer->checkTemplateNameClashes())?></p></li>
+			<li><p><strong><?=_SKINIE_INFO_GENERAL?></strong> <?=htmlspecialchars($importer->getInfo())?></p></li>
+			<li><p><strong><?=_SKINIE_INFO_SKINS?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
+			<li><p><strong><?=_SKINIE_INFO_TEMPLATES?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
+			<li><p><strong style="color: red;"><?=_SKINIE_INFO_SKINCLASH?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->checkSkinNameClashes())?></p></li>		
+			<li><p><strong style="color: red;"><?=_SKINIE_INFO_TEMPLCLASH?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->checkTemplateNameClashes())?></p></li>
 		</ul>
 
 		<form method="post" action="index.php"><div>
 			<input type="hidden" name="action" value="skiniedoimport" />
 			<input type="hidden" name="skinfile" value="<?=htmlspecialchars(postVar('skinfile'))?>" />
 			<input type="hidden" name="mode" value="<?=htmlspecialchars($mode)?>" />			
-			<input type="submit" value="Yes, I want to import this" />
+			<input type="submit" value="<?=_SKINIE_CONFIRM_IMPORT?>" />
 			<br />
-			<input type="checkbox" name="overwrite" value="1" id="cb_overwrite" /><label for="cb_overwrite">Overwrite skins that already exists (see nameclashes)</label>
+			<input type="checkbox" name="overwrite" value="1" id="cb_overwrite" /><label for="cb_overwrite"><?=_SKINIE_CONFIRM_OVERWRITE?></label>
 		</div></form>
 
 
@@ -2840,12 +2840,12 @@ class ADMIN {
 
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';				
 	?>
-		<h2>Done importing</h2>
+		<h2><?=_SKINIE_DONE?></h2>
 
 		<ul>
-			<li><p><strong>Info:</strong> <?=htmlspecialchars($importer->getInfo())?></p></li>
-			<li><p><strong>Skins imported:</strong> <?=implode(' <em>and</em> ',$importer->getSkinNames())?></p></li>
-			<li><p><strong>Templates imported:</strong> <?=implode(' <em>and</em> ',$importer->getTemplateNames())?></p></li>
+			<li><p><strong><?=_SKINIE_INFO_GENERAL?></strong> <?=htmlspecialchars($importer->getInfo())?></p></li>
+			<li><p><strong><?=_SKINIE_INFO_IMPORTEDSKINS?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
+			<li><p><strong><?=_SKINIE_INFO_IMPORTERTEMPLS?></strong> <?=implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
 		</ul>
 
 	<?
@@ -2933,7 +2933,7 @@ class ADMIN {
 		$member->isAdmin() or $this->disallow();
 		
 		$extrahead = '<script type="text/javascript" src="javascript/templateEdit.js"></script>';
-		$extrahead .= '<script type="text/javascript">setTemplateEditText("'.addslashes('empty field (click to edit)').'");</script>';
+		$extrahead .= '<script type="text/javascript">setTemplateEditText("'.addslashes(_EDITTEMPLATE_EMPTY).'");</script>';
 
 		$this->pagehead($extrahead);
 		
@@ -5521,8 +5521,8 @@ function listplug_table_skinlist($template, $type) {
 			}
 			echo '<br /><br />';
 			echo _LISTS_TYPE ,': ' , $current->sdtype;
-			echo '<br />IncludeMode: ' , (($current->sdincmode=='skindir') ?_PARSER_INCMODE_SKINDIR:_PARSER_INCMODE_NORMAL);
-			if ($current->sdincpref) echo '<br />IncludePrefix: ' . $current->sdincpref;
+			echo '<br />', _LIST_SKINS_INCMODE , ' ' , (($current->sdincmode=='skindir') ?_PARSER_INCMODE_SKINDIR:_PARSER_INCMODE_NORMAL);
+			if ($current->sdincpref) echo '<br />' , _LIST_SKINS_INCPREFIX , ' ', $current->sdincpref;
 			echo "</td>";
 			
 						
@@ -5538,7 +5538,7 @@ function listplug_table_skinlist($template, $type) {
 						$type = $types[$i];
 						$types[$i] = '<li><a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . $friendlyNames[$type] . "</a></li>";
 					}
-					echo '<br /><br />defined parts: <ul>',implode($types,'') ,'</ul>';
+					echo '<br /><br />',_LIST_SKINS_DEFINED,' <ul>',implode($types,'') ,'</ul>';
 				}
 			echo "</td>";
 			echo "<td><a href='index.php?action=skinedit&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";

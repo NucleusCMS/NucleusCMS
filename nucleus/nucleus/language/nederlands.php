@@ -86,6 +86,45 @@ define('_ADD_PLUGIN_EXTRAS',		'Extra Plugin Opties');
 define('_ERROR_CATCREATEFAIL',		'Kon nieuwe categorie niet aanmaken');
 define('_ERROR_NUCLEUSVERSIONREQ',	'Deze plugin vereist een nieuwere Nucleus versie: ');
 
+// backlinks
+define('_BACK_TO_BLOGSETTINGS',		'Terug naar instellingen');
+
+// skin import export
+define('_SKINIE_TITLE_IMPORT',		'Importeren');
+define('_SKINIE_TITLE_EXPORT',		'Exporteren');
+define('_SKINIE_BTN_IMPORT',		'Importeren');
+define('_SKINIE_BTN_EXPORT',		'Geselecteerde skins/template exporteren');
+define('_SKINIE_LOCAL',				'Importeren van bestand op server:');
+define('_SKINIE_NOCANDIDATES',		'Geen skins gevonden');
+define('_SKINIE_FROMURL',			'Importeren van URL:');
+define('_SKINIE_EXPORT_INTRO',		'Selecteer de skins en templated die je wilt exporteren:');
+define('_SKINIE_EXPORT_SKINS',		'Skins');
+define('_SKINIE_EXPORT_TEMPLATES',	'Templates');
+define('_SKINIE_EXPORT_EXTRA',		'Extra Info');
+define('_SKINIE_CONFIRM_OVERWRITE',	'Overschrijf bestaande data (zie dubbele namen)');
+define('_SKINIE_CONFIRM_IMPORT',	'Ja, ik wil deze skins/templates importeren');
+define('_SKINIE_CONFIRM_TITLE',		'Klaar om skins/templates te importeren');
+define('_SKINIE_INFO_SKINS',		'Skins in bestand:');
+define('_SKINIE_INFO_TEMPLATES',	'Templates in bestand:');
+define('_SKINIE_INFO_GENERAL',		'Info:');
+define('_SKINIE_INFO_SKINCLASH',	'Dubbele skinnamen:');
+define('_SKINIE_INFO_TEMPLCLASH',	'Dubbele templatenamen:');
+define('_SKINIE_INFO_IMPORTEDSKINS','Geïmporteerde skins:');
+define('_SKINIE_INFO_IMPORTEDTEMPLS','Geïmporteerde templats:');
+define('_SKINIE_DONE',				'Klaar met importeren');
+
+define('_AND',						'en');
+define('_OR',						'of');
+
+// empty fields on template edit
+define('_EDITTEMPLATE_EMPTY',		'Leeg veld (klik om te bewerken)');
+
+// skin overview list
+define('_LIST_SKINS_INCMODE',		'IncludeMode:');
+define('_LIST_SKINS_INCPREFIX',		'IncludePrefix:');
+define('_LIST_SKINS_DEFINED',		'Gedefinieerde onderdelen:');
+
+
 // END introduced after v1.5 END
 
 
