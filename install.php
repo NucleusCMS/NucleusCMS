@@ -28,7 +28,7 @@
 		//
 		// example:
 		//     array('NP_TrackBack', 'NP_MemberGoodies')
-		$aConfPlugsToInstall = array();
+		$aConfPlugsToInstall = array('NP_SkinFiles');
 
 
 		// array with skins to install. skins must be present under the skins/ directory with
@@ -587,7 +587,7 @@
 			$DIR_NUCLEUS = $config_adminpath;
 			$DIR_MEDIA = $config_mediapath;
 			$DIR_SKINS = $config_skinspath;
-			$DIR_PLUGINS = 'e:/homepage/versions/plugins/';//$DIR_NUCLEUS . 'plugins/';
+			$DIR_PLUGINS = $DIR_NUCLEUS . 'plugins/';
 			$DIR_LANG = $DIR_NUCLEUS . 'language/';
 			$DIR_LIBS = $DIR_NUCLEUS . 'libs/';
 
