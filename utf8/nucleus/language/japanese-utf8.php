@@ -608,8 +608,8 @@ define('_UPLOAD_MSG',				'アップロードするファイルを選択して、
 define('_UPLOAD_BUTTON',			'アップロード');
 
 // some status messages
-//define('_MSG_ACCOUNTCREATED',		'アカウントが作成されました。パスワードがメールで送信されます');
-//define('_MSG_PASSWORDSENT',			'パスワードがメールで送信されました。');
+define('_MSG_ACCOUNTCREATED',		'アカウントが作成されました。パスワードがメールで送信されます');
+define('_MSG_PASSWORDSENT',			'パスワードがメールで送信されました。');
 define('_MSG_LOGINAGAIN',			'あなたの情報が変更された為、ログインしなおす必要があります');
 define('_MSG_SETTINGSCHANGED',		'設定が変更されました');
 define('_MSG_ADMINCHANGED',			'管理者権限 が変更されました');

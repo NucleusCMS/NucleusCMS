@@ -440,12 +440,9 @@ class ACTIONS extends BaseActions {
 				$condition = ($blog && $blog->isValidCategory($catid));
 				break;
 			case 'blogsetting':
-				$condition = ($blog && $blog->isValidCategory($catid));
-				break;
-			case 'blogsetting':
 				if ($name == 'trackback' && $manager->pluginInstalled('NP_TrackBack')) {
 					$plugin =& $manager->getPlugin('NP_TrackBack');
-					if ($plugin != NULL){
+					if ($plugin != NULL && $blog){
 						$bid = $blog->getID();
 						if ($value === '1') $value = 'yes';
 						if ($value === '0') $value = 'no';

@@ -112,9 +112,9 @@ function sendMessage() {
 
 	$title = _MMAIL_TITLE . ' ' . $fromName;
 //	mail($tomem->getEmail(), $title, $message, 'From: '. $fromMail);
-		mb_language('ja');
-		mb_internal_encoding(_CHARSET);
-		@mb_send_mail($tomem->getEmail(), $title, $message, "From: ". $fromMail);
+	mb_language('ja');
+	mb_internal_encoding(_CHARSET);
+	@mb_send_mail($tomem->getEmail(), $title, $message, "From: ". $fromMail);
 
 	if (postVar('url')) {
 			redirect(postVar('url'));
@@ -174,6 +174,7 @@ function createAccount() {
 	if (postVar('desturl')) {
 		redirect(postVar('desturl'));
 	} else {
+		header ("Content-Type: text/html; charset="._CHARSET);
 		echo _MSG_ACCOUNTCREATED;
 	}
 }
@@ -198,6 +199,7 @@ function forgotPassword() {
 	if (postVar('url')) {
 		redirect(postVar('url'));
 	} else {
+		header ("Content-Type: text/html; charset="._CHARSET);
 		echo _MSG_PASSWORDSENT;
 	}
 }

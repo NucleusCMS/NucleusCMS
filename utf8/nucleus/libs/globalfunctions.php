@@ -350,7 +350,7 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 function startUpError($msg, $title) {
 	?>
 	<html xmlns="http://www.w3.org/1999/xhtml">
-		<head><title><?php echo htmlspecialchars($title)?></title></head>
+		<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title><?php echo htmlspecialchars($title)?></title></head>
 		<body>
 			<h1><?php echo htmlspecialchars($title)?></h1>
 			<?php echo $msg?>
@@ -577,13 +577,13 @@ function selector() {
 
 		sscanf($archive,'%d-%d-%d',$y,$m,$d);
 		if ($d != 0) {
-			$archivetype = _ARCHIVETYPE_DAY;	// TODO: move to language file
+			$archivetype = _ARCHIVETYPE_DAY;
 			$t = mktime(0,0,0,$m,$d,$y);
 			$archiveprev = strftime('%Y-%m-%d',$t - (24*60*60));
 			$archivenext = strftime('%Y-%m-%d',$t + (24*60*60));
 
 		} else {
-			$archivetype = _ARCHIVETYPE_MONTH; // TODO: move to language file
+			$archivetype = _ARCHIVETYPE_MONTH;
 			$t = mktime(0,0,0,$m,1,$y);
 			$archiveprev = strftime('%Y-%m',$t - (1*24*60*60));
 			$archivenext = strftime('%Y-%m',$t + (32*24*60*60));
@@ -604,7 +604,7 @@ function selector() {
 		if(preg_match("/^(\xA1{2}|\xe3\x80{2}|\x20)+$/",$query)){
 					$type = 'index';
 		}
-		$order = (_CHARSET == 'euc-jp') ? 'EUC-JP, UTF-8,' : 'UTF-8, EUC-JP,';
+		$order = (_CHARSET == 'EUC-JP') ? 'EUC-JP, UTF-8,' : 'UTF-8, EUC-JP,';
 		$query = mb_convert_encoding($query, _CHARSET, $order.' JIS, SJIS, ASCII');
 		if (intval($blogid)==0)
 			$blogid = getBlogIDFromName($blogid);
