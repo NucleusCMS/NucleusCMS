@@ -1,18 +1,104 @@
 <?php
 // Dutch Nucleus Language File
 // 
-// Author: Wouter Demuynck (nucleus@demuynck.org)
-// Nucleus version: 1.0-2.0
+// Updates: 
+// - Nucleus v2.5-3.1 Norbert (beckerswna@yahoo.com)
+// - Nucleus v1.0-2.5 Wouter Demuynck (nucleuscms.org)   
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
 // might be deleted. Therefor, it's important to list the Nucleus version for which 
 // the file was written in your document.
 //
-// Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
+// Fully translated language file can be sent to us
 // and will be available for download (with proper credit to the author, of course)
 
-// START changed after v2.5beta START
+// START changed/added after 3.1 START
+
+// account activation
+define('_ERROR_NOLOGON_NOACTIVATE',	'Kan geen activatielink sturen. Het is jou niet toegestaan in te loggen.');
+define('_ERROR_ACTIVATE',			'De activatiesleutel bestaat niet, is niet geldig of is verlopen.');
+define('_ACTIONLOG_ACTIVATIONLINK', 'Activatielink verstuurd');
+define('_MSG_ACTIVATION_SENT',		'Een activatielink is verstuurd per e-mail.');
+
+// activation link emails
+define('_ACTIVATE_REGISTER_MAIL',	"Hallo <%memberName%>,\n\nJe moet je account <%siteName%> (<%siteUrl%>) activeren.\nDit kun je doen door op de volgende link te klikken: \n\n\t<%activationUrl%>\n\nHiervoor heb je 2 dagen de tijd. Hierna wordt de activatielink ongeldig.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Activeer je '<%memberName%>' account");
+define('_ACTIVATE_REGISTER_TITLE',	'Welkom <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',	'Je bent er bijna. Kies AUB een wacht woord voor je account.');
+define('_ACTIVATE_FORGOT_MAIL',		"Hallo <%memberName%>,\n\nMet de volgende link, kan je een nieuw wachtwoord kiezen voor je account up <%siteName%> (<%siteUrl%>) door \'Nieuw wachtwoord\' te keizen.\n\n\t<%activationUrl%>\n\nHiervoor heb je 2 dagen de tijd. Hierna wordt de activatielink ongeldig.");
+define('_ACTIVATE_FORGOT_MAILTITLE',"Her-activeer je '<%memberName%>' account");
+define('_ACTIVATE_FORGOT_TITLE',	'Welkom <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'Je kan een nieuw wachtwoord kiezen voor je account:');
+define('_ACTIVATE_CHANGE_MAIL',		"Hallo <%memberName%>,\n\nJe account op <%siteName%> (<%siteUrl%>) moet opnieuw worden geactiveerd, omdat je je adres is veranderd.\nDit kun je doen door de volgende link te klikken: \n\n\t<%activationUrl%>\n\nHiervoor heb je 2 dagen de tijd. Hierna wordt de activatielink ongeldig.");
+define('_ACTIVATE_CHANGE_MAILTITLE',"Her-activeer je '<%memberName%>' account");
+define('_ACTIVATE_CHANGE_TITLE',	'Welkom <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'Jouw adres wijziging is bevestigd. Bedankt!');
+define('_ACTIVATE_SUCCESS_TITLE',	'Activatie geslaagd');
+define('_ACTIVATE_SUCCESS_TEXT',	'Je account is succesvol geactiveerd.');
+define('_MEMBERS_SETPWD',			'Wachtwoord instellen');
+define('_MEMBERS_SETPWD_BTN',		'Wachtwoord instellen');
+define('_QMENU_ACTIVATE',			'Account Activatie');
+define('_QMENU_ACTIVATE_TEXT',		'<p>Nadat je je account hebt geactiveerd, kan je het beginnen te gebruiken door <a href="index.php?action=showlogin">in te loggen</a>.</p>');
+
+define('_PLUGS_BTN_UPDATE',			'Aanmeldingslijst bijwerken');
+
+// global settings 
+define('_SETTINGS_JSTOOLBAR',		'Javascript Toolbar Stijl');
+define('_SETTINGS_JSTOOLBAR_FULL',	'Volledige Toolbar (IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE','Simpele Toolbar (Niet-IE)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Toolbar uitschakelen');
+define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">Hoe schakel ik \'fancy URLs\' in</a>)');
+
+// extra plugin settings part when editing categories/members/blogs/...
+define('_PLUGINS_EXTRA',			'Extra Plugin Instellingen');
+
+// itemlist info column keys
+define('_LIST_ITEM_BLOG',			'blog:');
+define('_LIST_ITEM_CAT',			'cat:');
+define('_LIST_ITEM_AUTHOR',			'auteur:');
+define('_LIST_ITEM_DATE',			'datum:');
+define('_LIST_ITEM_TIME',			'tijd:');
+
+// indication of registered members in comments list
+define('_LIST_COMMENTS_MEMBER', 	'(lid)');
+
+// batch operations
+define('_BATCH_WITH_SEL',			'met geselecteerde:');
+define('_BATCH_EXEC',				'Uitvoeren');
+
+// quickmenu
+define('_QMENU_HOME',				'Home');
+define('_QMENU_ADD',				'Bericht toevoegen');
+define('_QMENU_ADD_SELECT',			'-- selecteren --');
+define('_QMENU_USER_SETTINGS',		'Instellingen');
+define('_QMENU_USER_ITEMS',			'Berichten');
+define('_QMENU_USER_COMMENTS',		'Commentaar');
+define('_QMENU_MANAGE',				'Beheer');
+define('_QMENU_MANAGE_LOG',			'Actie Log');
+define('_QMENU_MANAGE_SETTINGS',	'Globale instellingen');
+define('_QMENU_MANAGE_MEMBERS',		'leden');
+define('_QMENU_MANAGE_NEWBLOG',		'Nieuwe Weblog');
+define('_QMENU_MANAGE_BACKUPS',		'Backups');
+define('_QMENU_MANAGE_PLUGINS',		'Plugins');
+define('_QMENU_LAYOUT',				'Layout');
+define('_QMENU_LAYOUT_SKINS',		'Skins');
+define('_QMENU_LAYOUT_TEMPL',		'Sjablonen');
+define('_QMENU_LAYOUT_IEXPORT',		'Import/Export');
+define('_QMENU_PLUGINS',			'Plugins');
+
+// quickmenu on logon screen
+define('_QMENU_INTRO',				'Introductie');
+define('_QMENU_INTRO_TEXT',			'<p>Dit is het loginscherm van NucleusCMS, Het Content Beheer Systeem dat wordt gebruikt om deze website te beheren.</p><p>Als je een account hebt, kun je inloggen en beginnen met berichten te plaatsen.</p>');
+
+// helppages for plugins
+define('_ERROR_PLUGNOHELPFILE',		'Het helpbestand van de plugin kan niet worden gevonden');
+define('_PLUGS_HELP_TITLE',			'Helppagina voor plugin');
+define('_LIST_PLUGS_HELP', 			'help');
+
+// END changed/started after 3.1
+
+// START changed/added after v2.5beta START
 
 // general settings (security)
 define('_SETTINGS_EXTAUTH',			'Externe Authenticatie Toelaten');
