@@ -35,6 +35,8 @@ class ADMIN {
 			$action = $alias[$action];
 
 		$methodName = 'action_' . $action;
+		
+		$this->action = $action;
 
 		if (method_exists($this, $methodName))
 			call_user_func(array(&$this, $methodName));
@@ -2957,8 +2959,14 @@ selector();
 		
 		// get full filename
 		if ($mode == 'file')
-			$skinFile = $DIR_SKINS . $skinFile . '/skindata.xml';
-
+		{
+			$skinFile = $DIR_SKINS . $skinFile . '/skinbackup.xml';
+			
+			// backwards compatibilty (in v2.0, exports were saved as skindata.xml)
+			if (!file_exists($skinFile))
+				$skinFile = $DIR_SKINS . $skinFile . '/skindata.xml';
+		}	
+		
 		// read only metadata
 		$error = $importer->readFile($skinFile, 1);	
 		
@@ -3008,7 +3016,14 @@ selector();
 		
 		// get full filename
 		if ($mode == 'file')
-			$skinFile = $DIR_SKINS . $skinFile . '/skindata.xml';		
+		{
+			$skinFile = $DIR_SKINS . $skinFile . '/skinbackup.xml';		
+			
+			// backwards compatibilty (in v2.0, exports were saved as skindata.xml)
+			if (!file_exists($skinFile))
+				$skinFile = $DIR_SKINS . $skinFile . '/skindata.xml';
+			
+		}
 
 		$importer = new SKINIMPORT();
 
@@ -4138,20 +4153,30 @@ selector();
 	
 	
 	function pagehead($extrahead = '') {
-		global $member, $nucleus, $CONF;
+		global $member, $nucleus, $CONF, $manager;
+		
+		$manager->notify(
+			'AdminPrePageHead',
+			array(
+				'extrahead' => &$extrahead,
+				'action' => $this->action
+			)
+		);
+		
+		$baseUrl = htmlspecialchars($CONF['AdminURL']);
 
 		?>
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 			<title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>		
-			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="styles/admin.css" />
+			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin.css" />
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" 
-			href="styles/addedit.css" />
+			href="<?php echo $baseUrl?>styles/addedit.css" />
 			
-			<script type="text/javascript" src="javascript/edit.js"></script>
-			<script type="text/javascript" src="javascript/admin.js"></script>
-			<script type="text/javascript" src="javascript/compatibility.js"></script>
+			<script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit.js"></script>
+			<script type="text/javascript" src="<?php echo $baseUrl?>javascript/admin.js"></script>
+			<script type="text/javascript" src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
 
 			<?php echo $extrahead?>
 		</head>
@@ -4176,7 +4201,14 @@ selector();
 		<?php	}
 	
 	function pagefoot() {
-		global $action, $member;
+		global $action, $member, $manager;
+		
+		$manager->notify(
+			'AdminPrePageHead',
+			array(
+				'action' => $this->action
+			)
+		);		
 		
 		if ($action != 'showlogin') {
 			?>
@@ -4263,6 +4295,25 @@ selector();
 						echo '</ul>';
 
 					}
+					
+					$aPluginExtras = array();
+					$manager->notify(
+						'QuickMenu',
+						array(
+							'options' => &$aPluginExtras
+						)
+					);
+					if (count($aPluginExtras) > 0)
+					{
+						echo '<h2>Plugins</h2>';
+						echo '<ul>';
+						foreach ($aPluginExtras as $aInfo)
+						{
+							echo '<li><a href="'.htmlspecialchars($aInfo['url']).'" title="'.htmlspecialchars($aInfo['tooltip']).'">'.htmlspecialchars($aInfo['title']).'</a></li>';
+						}
+						echo '</ul>';
+					}
+					
 				} else {
 					?>
 						<h2>Introduction</h2>
@@ -5963,7 +6014,7 @@ function getBookmarklet($blogid) {
 	$document = 'document';
 	$bookmarkletline = "javascript:Q='';x=".$document.";y=window;if(x.selection){Q=x.selection.createRange().text;}else if(y.getSelection){Q=y.getSelection();}else if(x.getSelection){Q=x.getSelection();}wingm=window.open('";
 	$bookmarkletline .= $CONF['AdminURL'] . "bookmarklet.php?blogid=$blogid";
-	$bookmarkletline .="&logtext='+escape(Q)+'&loglink='+escape(x.href)+'&loglinktitle='+escape(x.title),'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');wingm.focus();";	
+	$bookmarkletline .="&logtext='+escape(Q)+'&loglink='+escape(x.location.href)+'&loglinktitle='+escape(x.title),'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');wingm.focus();";	
 
 	return $bookmarkletline;
 }
