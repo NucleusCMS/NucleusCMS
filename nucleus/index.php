@@ -46,18 +46,15 @@
 	}
 
 	if (!$member->isLoggedIn() || ($action == 'logout')) {
-		$HTTP_POST_VARS['oldaction'] = $action;	// see ADMIN::login()
-		$_POST['oldaction'] = $action;
-		$action = "showlogin";
+		setOldAction($action);	// see ADMIN::login() (sets old action in POST vars)
+		$action = 'showlogin';
 	}
 
 	// show error if member cannot login to admin
 	if ($member->isLoggedIn() && !$member->canLogin()) {
 		$error = _ERROR_LOGINDISALLOWED;
-		$HTTP_POST_VARS['oldaction'] = $action; // see ADMIN::login()
-		$_POST['oldaction'] = $action;
-		$action = "showlogin";
-
+		setOldAction($action);	// see ADMIN::login() (sets old action in POST vars)
+		$action = 'showlogin';
 	}
 
 	sendContentType('application/xhtml+xml', 'admin-' . $action);

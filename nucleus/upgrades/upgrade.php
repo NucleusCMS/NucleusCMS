@@ -16,7 +16,7 @@ include('upgrade.functions.php');
 	
 // check if logged in etc
 if (!$member->isLoggedIn()) {
-	upgrade_showLogin('upgrade.php?from=' . intval($HTTP_GET_VARS['from']));
+	upgrade_showLogin('upgrade.php?from=' . intGetVar('from'));
 }
 
 if (!$member->isAdmin()) {

@@ -81,8 +81,16 @@ function passRequestVars() {
 		if (($key != 'login') && ($key != 'password'))
 			passVar($key, $value);
 	}
-	
 }
 
+function postFileInfo($name) {
+	global $HTTP_POST_FILES;
+	return $HTTP_POST_FILES[$name];
+}
+
+function setOldAction($value) {
+	global $HTTP_POST_VARS;
+	$HTTP_POST_VARS['oldaction'] = $value;	
+}
 
 ?>
