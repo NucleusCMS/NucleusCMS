@@ -1,33 +1,175 @@
 <?php
 // Russian Nucleus Language File (cyrillic charset Windows-1251)
 // 
-// Author: Alexei 'Leopold' Varavin (avv@online.sinor.ru)
+// Author: *** diarchy *** (andy@diarchy.ru)
 // File version: 1.0
-// Nucleus version: v1.53
-//
-// To fully translate interface to Russian, you need to edit 
-// skins, templates and ADMIN.PHP - there are text blocks missing 
-// in language file. You also need to translate help.htm if you 
-// want your visitors to read Russian help.
-//
-// Feel free to email me any bugs and misprints. Thanks, good words
-// and best wishes would also be accepted.
+// Nucleus version: v2.0
 //
 //=========================================================================
 //
 // Файл поддержки русского языка движка Nucleus (кодировка Windows-1251)
 //
-// Автор: Алексей 'Леопольд' Варавин (avv@online.sinor.ru)
+// Автор: *** diarchy *** (andy@diarchy.ru)
 // Версия файла: 1.0
-// Версия движка Nucleus: v1.53
+// Версия движка Nucleus: v2.0
 //
-// Чтобы полностью перевести интерфейс на русский, нужно отредактировать 
-// скины, шаблоны и файл ADMIN.PHP - в них содержатся элементы текста, 
-// отсутствующие в этом файле. Также нужно перевести help.htm, если вы 
-// хотите, чтобы ваши посетители читали русскоязычную справку.
-//
-// Не стесняйтесь сообщать о найденных опечатках по электронной почте. 
-// Также принимаются благодарности, хорошие слова и наилучшие пожелания.
+// START introduced after v1.5 START
+
+// posting to the past/edit timestamps
+define('_EBLOG_ALLOWPASTPOSTING',	'Разрешить постинг с прошедшими датами');
+define('_ADD_CHANGEDATE',			'Обновить метку времени');
+define('_BMLET_CHANGEDATE',			'Обновить метку времени');
+
+// skin import/export
+define('_OVERVIEW_SKINIMPORT',		'Импорт/Экспорт скина...');
+
+// skin settings
+define('_PARSER_INCMODE_NORMAL',	'Нормальный');
+define('_PARSER_INCMODE_SKINDIR',	'Используйте каталог скинов');
+define('_SKIN_INCLUDE_MODE',		'Include mode');
+define('_SKIN_INCLUDE_PREFIX',		'Include prefix');
+
+// global settings
+define('_SETTINGS_BASESKIN',		'Основной скин');
+define('_SETTINGS_SKINSURL',		'URL скина');
+define('_SETTINGS_ACTIONSURL',		'Полный URL для action.php');
+
+// category moves (batch)
+define('_ERROR_MOVEDEFCATEGORY',	'Невозможно переместить категорию по-умолчанию');
+define('_ERROR_MOVETOSELF',			'Невозможно переместить категорию (блог назначения тот же что и блог источник)');
+define('_MOVECAT_TITLE',			'Выберите блог для перемещения категории');
+define('_MOVECAT_BTN',				'Переместить категорию');
+
+// URLMode setting
+define('_SETTINGS_URLMODE',			'Режим URL');
+define('_SETTINGS_URLMODE_NORMAL',	'Нормальный');
+define('_SETTINGS_URLMODE_PATHINFO','Fancy');
+
+// Batch operations
+define('_BATCH_NOSELECTION',		'Ничего не выбрано для выполнения операции');
+define('_BATCH_ITEMS',				'Групповая операция с темами');
+define('_BATCH_CATEGORIES',			'Групповая операция с категориями');
+define('_BATCH_MEMBERS',			'Групповая операция с членами');
+define('_BATCH_TEAM',				'Групповая операция с группами членов');
+define('_BATCH_COMMENTS',			'Групповая операция с комментариями');
+define('_BATCH_UNKNOWN',			'Неизвестная групповая операция: ');
+define('_BATCH_EXECUTING',			'Выполнение');
+define('_BATCH_ONCATEGORY',			'on category');
+define('_BATCH_ONITEM',				'on item');
+define('_BATCH_ONCOMMENT',			'on comment');
+define('_BATCH_ONMEMBER',			'on member');
+define('_BATCH_ONTEAM',				'on team member');
+define('_BATCH_SUCCESS',			'Выполненно!');
+define('_BATCH_DONE',				'Готово!');
+define('_BATCH_DELETE_CONFIRM',		'Подтвердите групповое удаление');
+define('_BATCH_DELETE_CONFIRM_BTN',	'Подтвердите групповое удаление');
+define('_BATCH_SELECTALL',			'выбрать все');
+define('_BATCH_DESELECTALL',		'отменить выбор');
+
+// batch operations: options in dropdowns
+define('_BATCH_ITEM_DELETE',		'Удалить');
+define('_BATCH_ITEM_MOVE',			'Переместить');
+define('_BATCH_MEMBER_DELETE',		'Удалить');
+define('_BATCH_MEMBER_SET_ADM',		'Дать права администратора');
+define('_BATCH_MEMBER_UNSET_ADM',	'Отобрать права администратора');
+define('_BATCH_TEAM_DELETE',		'Удалить из группы');
+define('_BATCH_TEAM_SET_ADM',		'Дать права администратора');
+define('_BATCH_TEAM_UNSET_ADM',		'Отобрать права администратора');
+define('_BATCH_CAT_DELETE',			'Удалить');
+define('_BATCH_CAT_MOVE',			'Переместить в другой блог');
+define('_BATCH_COMMENT_DELETE',		'Удалить');
+
+// itemlist: Add new item...
+define('_ITEMLIST_ADDNEW',			'Добавить новую тему...');
+define('_ADD_PLUGIN_EXTRAS',		'Дополнительные настройки плагина');
+
+// errors
+define('_ERROR_CATCREATEFAIL',		'Невозможно создать новую категорию');
+define('_ERROR_NUCLEUSVERSIONREQ',	'Этот плагин требует новой версии Nucleus: ');
+
+// backlinks
+define('_BACK_TO_BLOGSETTINGS',		'Назад к настройкам блога');
+
+// skin import export
+define('_SKINIE_TITLE_IMPORT',		'Импорт');
+define('_SKINIE_TITLE_EXPORT',		'Экспорт');
+define('_SKINIE_BTN_IMPORT',		'Импорт');
+define('_SKINIE_BTN_EXPORT',		'Экспорт выбранных скинов/шаблонов');
+define('_SKINIE_LOCAL',				'Импорт из локального файла:');
+define('_SKINIE_NOCANDIDATES',		'Не найдены кандидаты для импорта в каталоге скинов');
+define('_SKINIE_FROMURL',			'Импорт с адреса (URL):');
+define('_SKINIE_EXPORT_INTRO',		'Выберите скины и шаблоны которы вы хотите экспортировать');
+define('_SKINIE_EXPORT_SKINS',		'Скины');
+define('_SKINIE_EXPORT_TEMPLATES',	'Шаблоны');
+define('_SKINIE_EXPORT_EXTRA',		'Дополнительная информация');
+define('_SKINIE_CONFIRM_OVERWRITE',	'Презаписать скины, которые уже существуют (см. совпадающие имена)');
+define('_SKINIE_CONFIRM_IMPORT',	'Да, я хочу это импортировать');
+define('_SKINIE_CONFIRM_TITLE',		'Об импорте скинов и шаблонов');
+define('_SKINIE_INFO_SKINS',		'Скины в файл:');
+define('_SKINIE_INFO_TEMPLATES',	'Шаблоны в файл:');
+define('_SKINIE_INFO_GENERAL',		'Информация:');
+define('_SKINIE_INFO_SKINCLASH',	'Имена скинов повторяются:');
+define('_SKINIE_INFO_TEMPLCLASH',	'Имена шаблонов повторяются:');
+define('_SKINIE_INFO_IMPORTEDSKINS','Импортирование скинов:');
+define('_SKINIE_INFO_IMPORTEDTEMPLS','Импортирование шаблонов:');
+define('_SKINIE_DONE',				'Успешное импортирование');
+
+define('_AND',						'и');
+define('_OR',						'или');
+
+// empty fields on template edit
+define('_EDITTEMPLATE_EMPTY',		'пустое поле (нажмите для редактирования)');
+
+// skin overview list
+define('_LIST_SKINS_INCMODE',		'IncludeMode:');
+define('_LIST_SKINS_INCPREFIX',		'IncludePrefix:');
+define('_LIST_SKINS_DEFINED',		'Defined parts:');
+
+// backup
+define('_BACKUPS_TITLE',			'Архивирование / Восстановление');
+define('_BACKUP_TITLE',				'Архивирование');
+define('_BACKUP_INTRO',				'Нажмите на кнопку расположенную ниже для создания архива базы данных Nucleus. Вам будет задан вопрос где сохранить файл архива. Сохраните его в безопасном месте.');
+define('_BACKUP_ZIP_YES',			'Использовать компрессию');
+define('_BACKUP_ZIP_NO',			'Не использовать компрессию');
+define('_BACKUP_BTN',				'Создать архив');
+define('_BACKUP_NOTE',				'<b>Замечание:</b> В архиве сохраняется только содержимое базы данных. Медиа-файлы и настройки из config.php  <b>НЕ</b> включаются в архив.');
+define('_RESTORE_TITLE',			'Восстановление');
+define('_RESTORE_NOTE',				'<b>ВНИМАНИЕ:</b> Восстановление из архива приведет к <b>УДАЛЕНИЮ</b> всей текущей информации из базы данных! Выполняете эту операцию только если Вы действительно уверены!	<br />	<b>Замечание:</b> Убедитесь, что версия  Nucleus вашего архива совпадает с версией которая работает сейчас');
+define('_RESTORE_INTRO',			'Выберите файл архива  (его необходимо загрузить на сервер) и нажмите кнопку "Восстановить" для выполнения восстановления.');
+define('_RESTORE_IMSURE',			'Да, я уверен что нужно это сделать!');
+define('_RESTORE_BTN',				'Восстановление из файла');
+define('_RESTORE_WARNING',			'(Удостоверитесь, что вы восстанавливаете нужную резервную копию, возможно нужно сделаете  резервную копию текущего состояния прежде, чем выполнять восстановление)');
+define('_ERROR_BACKUP_NOTSURE',		'Нужно отметить поле \'Я уверен\'');
+define('_RESTORE_COMPLETE',			'Востановление завершено');
+
+// new item notification
+define('_NOTIFY_NI_MSG',			'Создана новая тема:');
+define('_NOTIFY_NI_TITLE',			'Новая тема!');
+define('_NOTIFY_KV_MSG',			'Оценка темы:');
+define('_NOTIFY_KV_TITLE',			'Оценка:');
+define('_NOTIFY_NC_MSG',			'Комментарий темы:');
+define('_NOTIFY_NC_TITLE',			'Комментарий:');
+define('_NOTIFY_USERID',			'ID пользователя:');
+define('_NOTIFY_USER',				'Пользователь:');
+define('_NOTIFY_COMMENT',			'Коментарий:');
+define('_NOTIFY_VOTE',				'Оценка:');
+define('_NOTIFY_HOST',				'Хост:');
+define('_NOTIFY_IP',				'IP:');
+define('_NOTIFY_MEMBER',			'Член:');
+define('_NOTIFY_TITLE',				'Заголовок:');
+define('_NOTIFY_CONTENTS',			'Содержание:');
+
+// member mail message
+define('_MMAIL_MSG',				'Сообщение послано вам от');
+define('_MMAIL_FROMANON',			'анонимным пользователем');
+define('_MMAIL_FROMNUC',			'Написано в  блоге');
+define('_MMAIL_TITLE',				'Сообщение от');
+define('_MMAIL_MAIL',				'Сообщение:');
+
+// END introduced after v1.5 END
+
+
+// START introduced after v1.1 START
 
 // bookmarklet buttons
 define('_BMLET_ADD',				'Добавить запись');
@@ -117,6 +259,7 @@ define('_MANAGE_EXTRA',				'Дополнительные возможности');
 define('_BACKTOMANAGE',				'Назад к управлению движком Nucleus');
 
 
+
 // END introduced after v1.1 END
 
 
@@ -148,6 +291,7 @@ define('_YOURSITE',					'Ваш сайт');
 define('_POPUP_CLOSE',				'Закрыть окно');
 
 define('_LOGIN_PLEASE',				'Сначала вы должны войти в систему.');
+
 
 // commentform
 define('_COMMENTFORM_YOUARE',		'Ваше имя - ');
@@ -593,7 +737,7 @@ define('_ITEMLIST_YOUR',			'Ваши записи');
 define('_COMMENTS',					'Комментарии');
 define('_NOCOMMENTS',				'Нет комментариев к этой записи');
 define('_COMMENTS_YOUR',			'Ваши комментарии');
-define('_NOCOMMENTS_YOUR',			'Вы не оставляли никких комментариев');
+define('_NOCOMMENTS_YOUR',			'Вы не оставляли никаких комментариев');
 
 // LISTS (general)
 define('_LISTS_NOMORE',				'Нет больше результатов, или вообще нет результатов');
