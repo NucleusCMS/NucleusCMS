@@ -1,4 +1,4 @@
-<nucleusskin><meta><skin name="default" /><skin name="xmlrss" /><template name="xmlrss" /><template name="default" /><template name="detailed" /><info><![CDATA[Default Nucleus Skins]]></info></meta><skin name="default" type="text/html" includeMode="skindir" includePrefix="base/"><part name="archive"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<nucleusskin><meta><skin name="default" /><template name="default" /><template name="detailed" /><info><![CDATA[Default skin that comes with the full install of Nucleus]]></info></meta><skin name="default" type="text/html" includeMode="skindir" includePrefix="base/"><description>Default skin to display your blog</description><part name="archive"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -561,32 +561,7 @@
 </div>
 
 </body>
-</html>]]></part></skin><skin name="xmlrss" type="text/xml" includeMode="normal" includePrefix=""><part name="index"><![CDATA[<?xml version="1.0" encoding="ISO-8859-1"?>
-
-<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
-
-<rss version="0.91">
-
-  <channel>
-    <title><%blogsetting(name)%></title>
-    <link><%blogsetting(url)%></link>
-    <description><%blogsetting(desc)%></description>
-    <docs>http://backend.userland.com/rss091</docs>
-    <language>en</language>
-    <image>
-      <url><%adminurl%>nucleus2.gif</url>
-      <title><%blogsetting(name)%></title>
-      <link><%blogsetting(url)%></link>
-    </image>
-
-<%blog(xmlrss,10)%>
-
-</channel>
-</rss>]]></part></skin><template name="xmlrss"><part name="FORMAT_DATE"><![CDATA[%x]]></part><part name="FORMAT_TIME"><![CDATA[%X]]></part><part name="ITEM"><![CDATA[<item>
- <title><%syndicate_title%></title>
- <link><%blogurl%>?itemid=<%itemid%></link>
- <description><%syndicate_description%></description>
-</item>]]></part></template><template name="default"><part name="ARCHIVELIST_FOOTER"><![CDATA[</ul>]]></part><part name="ARCHIVELIST_HEADER"><![CDATA[<ul>]]></part><part name="ARCHIVELIST_LISTITEM"><![CDATA[<li><a href="<%archivelink%>">%B, %Y</a></li>]]></part><part name="CATLIST_FOOTER"><![CDATA[</ul>]]></part><part name="CATLIST_HEADER"><![CDATA[<ul class="nobullets">
+</html>]]></part></skin><template name="default"><description>The default template that is used to display your Nucleus blog</description><part name="ARCHIVELIST_FOOTER"><![CDATA[</ul>]]></part><part name="ARCHIVELIST_HEADER"><![CDATA[<ul>]]></part><part name="ARCHIVELIST_LISTITEM"><![CDATA[<li><a href="<%archivelink%>">%B, %Y</a></li>]]></part><part name="CATLIST_FOOTER"><![CDATA[</ul>]]></part><part name="CATLIST_HEADER"><![CDATA[<ul class="nobullets">
  <li><a href="<%blogurl%>">All</a></li>]]></part><part name="CATLIST_LISTITEM"><![CDATA[ <li><a href="<%catlink%>"><%catname%></a></li>]]></part><part name="COMMENTS_MANY"><![CDATA[comments]]></part><part name="COMMENTS_NONE"><![CDATA[<a href="<%itemlink%>">No <%commentword%></a>]]></part><part name="COMMENTS_ONE"><![CDATA[comment]]></part><part name="COMMENTS_TOOMUCH"><![CDATA[<a href="<%itemlink%>"><%commentcount%> <%commentword%></a>]]></part><part name="DATE_HEADER"><![CDATA[<h2>%d %B</h2>
 ]]></part><part name="EDITLINK"><![CDATA[<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a> -]]></part><part name="FORMAT_DATE"><![CDATA[%x]]></part><part name="FORMAT_TIME"><![CDATA[%X]]></part><part name="IMAGE_CODE"><![CDATA[<%image%>]]></part><part name="ITEM"><![CDATA[<h3 class="item"><%title%></h3>
 
@@ -601,7 +576,7 @@
   <%edit%>
   <%comments%>
 </div>
-]]></part><part name="LOCALE"><![CDATA[en]]></part><part name="MEDIA_CODE"><![CDATA[<%media%>]]></part><part name="MORELINK"><![CDATA[<a href="<%itemlink%>">[Read More!]</a>]]></part><part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part><part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part><part name="SEARCH_NOTHINGFOUND"><![CDATA[No search results found for <b><%query%></b>]]></part></template><template name="detailed"><part name="COMMENTS_BODY"><![CDATA[<h3 class="comment"><%userlink%> wrote:</h3>
+]]></part><part name="LOCALE"><![CDATA[en]]></part><part name="MEDIA_CODE"><![CDATA[<%media%>]]></part><part name="MORELINK"><![CDATA[<a href="<%itemlink%>">[Read More!]</a>]]></part><part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part><part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part><part name="SEARCH_NOTHINGFOUND"><![CDATA[No search results found for <b><%query%></b>]]></part></template><template name="detailed"><description>Used for detailed item pages</description><part name="COMMENTS_BODY"><![CDATA[<h3 class="comment"><%userlink%> wrote:</h3>
 
 <div class="commentbody">
   <%body%>
