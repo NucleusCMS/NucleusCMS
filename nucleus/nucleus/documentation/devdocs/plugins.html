@@ -97,7 +97,7 @@ All plugin files should be placed in the directory that is listed in <tt>config.
 Ok, lets start by writing a simple plugin. Basically, each plugin is a PHP class that inherits from the predefined class <tt>NucleusPlugin</tt>. Below is an example of a <tt>HelloWorld</tt>-plugin:
 </p>
 
-<pre>&lt;?
+<pre class="example"><code>&lt;?
 
 class NP_HelloWorld extends NucleusPlugin {
 
@@ -143,7 +143,7 @@ class NP_HelloWorld extends NucleusPlugin {
 	<li>You'll find out that there's a <em>HelloWorld</em> plugin you can install. Do this. If everything worked out correctly, you'll see that your plugin is now listed in the list of installed plugins.</li>
 	<li>
 		Now edit some skin, and insert the following statement at a place of which you know where it will show up on the actual page.
-<pre><code>&lt;%plugin(HelloWorld)%&gt;</code></pre>
+<pre class="example"><code>&lt;%plugin(HelloWorld)%&gt;</code></pre>
 		Some notes: the name (HelloWorld) is case sensitive!
 	</li>
 	<li>Now visit a page that uses the skin you edited: notice the "Hello World" on the location where you added the <tt>plugin</tt>-skinvar</li>
@@ -290,12 +290,10 @@ You can create your own skinvars, and call them using <tt>&lt;%plugin(<i>PlugNam
 To handle skinvars, you'll need to implement the <tt>doSkinVar</tt> method. Some samples of signatures are given below:
 </p>
 
-<pre>
-function doSkinVar($skinType)
+<pre class="example"><code>function doSkinVar($skinType)
 function doSkinVar($skinType, $param1, $param2)
 function doSkinVar($skinType, $skinVar, $param1, $param2)
-function doSkinVar($skinType, $skinVar, $param1 = 'default value')
-</pre>
+function doSkinVar($skinType, $skinVar, $param1 = 'default value')</code></pre>
 
 <ul>
 	<li>The <tt>$skinType</tt> parameter will be one of 'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search', 'imagepopup' or <a href="#templatevars" title="Information on templatevars">'template'</a></li>
@@ -341,16 +339,14 @@ By default, all template variables are passed on to the <tt>doSkinVar</tt>-metho
 If you want to provide your own implementation, you'll need to redefine the method <tt>doTemplateVar</tt> and/or <tt>doTemplateCommentsVar</tt>. It works in the same way as <tt>doSkinVar</tt>, except that now the <tt>skinType</tt>-parameter is missing.
 </p>
 
-<pre>
-function doTemplateVar(&$item)
+<pre class="example"><code>function doTemplateVar(&$item)
 function doTemplateVar(&$item, $param1, $param2)
 function doTemplateVar(&$item, $type, $param1, $param2)
 function doTemplateVar(&$item, $type, $param1 = 'default value')
 function doTemplateCommentsVar(&$item, &$comment)
 function doTemplateCommentsVar(&$item, &$comment, $param1, $param2)
 function doTemplateCommentsVar(&$item, &$comment, $type, $param1, $param2)
-function doTemplateCommentsVar(&$item, &$comment, $type, $param1 = 'default value')
-</pre>
+function doTemplateCommentsVar(&$item, &$comment, $type, $param1 = 'default value')</code></pre>
 
 <h2>Notes</h2>
 
@@ -388,8 +384,7 @@ Nucleus Plugins can subscribe to events that occur whenever something important 
 Below is an example of how a plugin subscribes to the <tt>PreAddComment</tt>-event, an event that is generated immediately before a comment is added to a blog.
 </p>
 
-<pre>
-class NP_Acronyms extends NucleusPlugin {
+<pre class="example"><code>class NP_Acronyms extends NucleusPlugin {
   ...
   function getEventList() { return array('PreAddComment'); }
   ...
@@ -401,7 +396,7 @@ class NP_Acronyms extends NucleusPlugin {
                    $data['comment']['body']);
   }
 }
-</pre>
+</code></pre>
 
 <p>This plugin replaces the text <tt>HTML</tt> in each comment by the text <tt>&lt;acronym title="HyperText Markup Language"&gt;HTML&lt;/acronym&gt;</tt>. The <tt>acronym</tt>-tag is a <acronym title="HyperText Markup Language">HTML</acronym>-tag that allows authors to provide extra information on acronyms.</p>
 
@@ -728,7 +723,7 @@ class NP_Acronyms extends NucleusPlugin {
 			(v2.0b) Somewhere inside the edit item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.
 			<br /><br />			
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
-<pre><code>&lt;h3&gt;plugin name&lt;/h3&gt;
+<pre class="example"><code>&lt;h3&gt;plugin name&lt;/h3&gt;
 &lt;p&gt;your stuff&lt;/p&gt;</code></pre>
 			This way, multiple plugins can add options here while things keep a good structure. Also try to use prefixes for your fieldnames, in order to avoid nameclashes (e.g. <code>plug_tb_url</code>)
 		</td>
@@ -748,7 +743,7 @@ class NP_Acronyms extends NucleusPlugin {
 		<td>(v2.0) On the blog settings page. You can add your own forms here.
 			<br /><br />			
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
-<pre><code>&lt;h4&gt;plugin name&lt;/h4&gt;
+<pre class="example"><code>&lt;h4&gt;plugin name&lt;/h4&gt;
 &lt;form method="post" action="..."&gt;&lt;p&gt;
 your stuff
 &lt;/p&gt;&lt;/form&gt;</code></pre>
@@ -1157,7 +1152,7 @@ your stuff
 		<td>(v2.0) On the member settings page. You can add your own forms here.
 			<br /><br />			
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
-<pre><code>&lt;h4&gt;plugin name&lt;/h4&gt;
+<pre class="example"><code>&lt;h4&gt;plugin name&lt;/h4&gt;
 &lt;form method="post" action="..."&gt;&lt;p&gt;
 your stuff
 &lt;/p&gt;&lt;/form&gt;</code></pre>
@@ -1174,7 +1169,7 @@ your stuff
 		<td>(v2.0) On the general settings page. You can add your own forms here.
 			<br /><br />			
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
-<pre><code>&lt;h4&gt;plugin name&lt;/h4&gt;
+<pre class="example"><code>&lt;h4&gt;plugin name&lt;/h4&gt;
 &lt;form method="post" action="..."&gt;&lt;p&gt;
 your stuff
 &lt;/p&gt;&lt;/form&gt;</code></pre>
@@ -1320,7 +1315,23 @@ your stuff
 	<li>Make sure your plugin returns <code>1</code> (<code>true</code>) when <code>supportsFeature('SqlTablePrefix')</code> is called on it. If it doesn't, you won't be able to load the plugin on Nucleus versions > 2.0 when a custom prefix has been set (as a precaution)</li>
 </ol>
 
-<p class="note">Note that the <code>sql_table</code> global function in not available in Nucleus versions up to v2.0. In order to make your plugin work, you'll need to require users of Nucleus to install a special compatibility plugin (TODO: write such a plugin / search more friendly alternatives)</p>
+<p class="note">Note that the <code>sql_table</code> global function in not available in Nucleus versions up to v2.0. If you use this method and want your plugin to work on Nucleus versions &lt;= 2.0, add the following snippet of code on top of your plugin class:</p>
+
+<pre class="example"><code>&lt;?
+
+// plugin needs to work on Nucleus versions <=2.0 as well
+if (!function_exists('sql_table'))
+{
+	function sql_table($name) {
+		return 'nucleus_' . $name;
+	}
+}
+
+class NP_HelloWorld extends NucleusPlugin {
+...
+}
+
+?&gt;</code></pre>
 
 <h2>Your own tables</h2>
 
