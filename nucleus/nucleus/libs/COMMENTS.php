@@ -239,7 +239,12 @@ class COMMENTS {
 			if (strlen($comment['user'])<2)
 				return _ERROR_COMMENT_NOUSERNAME;
 
-		return 1;	
+		// let plugins do verification (any plugin which thinks the comment is invalid
+		// can change 'error' to something other than '1')
+		$result = 1;
+		$manager->notify('ValidateForm', array('type' => 'comment', 'comment' => &$comment, 'error' => &$result));
+
+		return $result;	
 	}	
 
 	
