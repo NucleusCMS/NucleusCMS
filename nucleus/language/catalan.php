@@ -1,22 +1,149 @@
 <?php
 // Catalan Nucleus Language File
 // 
-// Author: Roger Pau Monné (royger@bdftech.com)
-// Nucleus version: v1.0-v3.1
+// Author: Roger Pau Monné (royger@gmail.com) 
+// Nucleus version: v1.0-v3.2
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
 // might be deleted. Therefor, it's important to list the Nucleus version for which 
 // the file was written in your document.
 //
-// Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
-// and will be available for download (with proper credit to the author, of course)
-
-// START introduced after v2.0 START
+// Fully translated language file can be sent to us and will be made
+// available for download (with proper credit to the author, of course)
 
 // Data language
 
 @setlocale(LC_TIME, 'ca_ES@euro'); 
+
+// START changed/added after 315 START
+
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Si us plau, utilitza el botó \'Actualitzar la llista de subscripcions\' per actualitzar la llista');
+define('_LIST_PLUGS_DEP',			'Requeriments del Plugin(s):');
+
+// END changed/added after 3.15
+
+// START changed/added after 3.1 START
+
+// comments list per weblog
+define('_COMMENTS_BLOG',			'Tots els comentaris pel bloc');
+define('_NOCOMMENTS_BLOG',			'No s\ha fet cap comentari sobre algun article d\'aquest bloc');
+define('_BLOGLIST_COMMENTS',		'Comentaris');
+define('_BLOGLIST_TT_COMMENTS',		'Llista de tots els comentaris fets sobre articles d\'aquest bloc');
+
+
+// for use in archivetype-skinvar
+define('_ARCHIVETYPE_DAY',			'dia');
+define('_ARCHIVETYPE_MONTH',		'mes');
+
+// tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
+define('_ERROR_BADTICKET',			'Tiquet invàlid o caducat.');
+
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',		'La instal·lació dels plugin ha fallat, necessita ');
+define('_ERROR_DELREQPLUGIN',		'No es pot eliminar el plugin, es necessitat per ');
+
+// cookie prefix
+define('_SETTINGS_COOKIEPREFIX',	'Prefix de la "galeta"');
+
+// account activation
+define('_ERROR_NOLOGON_NOACTIVATE',	'No es pot enviar l\'enllaç d\'activació. No t\'està permès registrar-te.');
+define('_ERROR_ACTIVATE',			'La clau d\'activació no existeix, és invallida, o ha caducat.');
+define('_ACTIONLOG_ACTIVATIONLINK', 'Clau d\'activació enviada');
+define('_MSG_ACTIVATION_SENT',		'S\'ha enviat una clau d\'activació al correu.');
+
+// activation link emails
+define('_ACTIVATE_REGISTER_MAIL',	"Hola <%memberName%>,\n\nHas d'activar el teu compte a <%siteName%> (<%siteUrl%>).\nPots fer-ho visitant el seguent enllaç: \n\n\t<%activationUrl%>\n\nTens dos dies per fer-ho. Passat aquest temps la clau d'activació caduca.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Activa el teu compte: '<%memberName%>'");
+define('_ACTIVATE_REGISTER_TITLE',	'Benvingut <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',	'Casi ja està. Si us plau, tria una contrasenya pel teu compte.');
+define('_ACTIVATE_FORGOT_MAIL',		"Hola <%memberName%>,\n\nUtilitzant l'enllaç de més avall pots canviar la contrasenya del teu compte a <%siteName%> (<%siteUrl%>) i posar-ne una de nova.\n\n\t<%activationUrl%>\n\nTens dos dies per fer-ho. Després d'aquest temps l'enllaç caduca.");
+define('_ACTIVATE_FORGOT_MAILTITLE',"Re-activa el teu compte: '<%memberName%>'");
+define('_ACTIVATE_FORGOT_TITLE',	'Benvingut <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'Pots triar una nova contrasenya pel teu compte més avall:');
+define('_ACTIVATE_CHANGE_MAIL',		"Hola <%memberName%>,\n\nCom que la teva adreça ha canviat és necessari que re-activis el teu compte a <%siteName%> (<%siteUrl%>).\nPots fer-ho visitant el seguent enllaç: \n\n\t<%activationUrl%>\n\nTens dos dies per fer-ho. Després d'aquest temps l'enllaç caduca.");
+define('_ACTIVATE_CHANGE_MAILTITLE',"Re-activa el teu compte: '<%memberName%>'");
+define('_ACTIVATE_CHANGE_TITLE',	'Benvingut <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'La teva adreça ha estat verificada. Gràcies!');
+define('_ACTIVATE_SUCCESS_TITLE',	'Activació finalitzada');
+define('_ACTIVATE_SUCCESS_TEXT',	'El teu compte ha estat activat correctament.');
+define('_MEMBERS_SETPWD',			'Contrasenya desitjada');
+define('_MEMBERS_SETPWD_BTN',		'Contrasenya desitjada');
+define('_QMENU_ACTIVATE',			'Activació del compte');
+define('_QMENU_ACTIVATE_TEXT',		'<p>Després d\'activar el teu compte, ja pots <a href="index.php?action=showlogin">registrar-te</a>.</p>');
+
+define('_PLUGS_BTN_UPDATE',			'Actualitzar la llista de subscripcions');
+
+// global settings 
+define('_SETTINGS_JSTOOLBAR',		'Barra d\'eines JavaScript');
+define('_SETTINGS_JSTOOLBAR_FULL',	'Barra d\'eines completa (IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE','Barra d\'eines senzilla (Non-IE)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Desaciva la barra d\'eines');
+define('_SETTINGS_URLMODE_HELP',	'(Informació: <a href="documentation/tips.html#searchengines-fancyurls">Com activar "fancy URLs"</a>)');
+
+// extra plugin settings part when editing categories/members/blogs/...
+define('_PLUGINS_EXTRA',			'Opcions extra del plugin');
+
+// itemlist info column keys
+define('_LIST_ITEM_BLOG',			'bloc:');
+define('_LIST_ITEM_CAT',			'cat:');
+define('_LIST_ITEM_AUTHOR',			'autor:');
+define('_LIST_ITEM_DATE',			'data:');
+define('_LIST_ITEM_TIME',			'temps:');
+
+// indication of registered members in comments list
+define('_LIST_COMMENTS_MEMBER', 	'(membre)');
+
+// batch operations
+define('_BATCH_WITH_SEL',			'Amb els seleccionats:');
+define('_BATCH_EXEC',				'Executa');
+
+// quickmenu
+define('_QMENU_HOME',				'Casa');
+define('_QMENU_ADD',				'Afegir article');
+define('_QMENU_ADD_SELECT',			'-- seleccionar --');
+define('_QMENU_USER_SETTINGS',		'Opcions');
+define('_QMENU_USER_ITEMS',			'Articles');
+define('_QMENU_USER_COMMENTS',		'Comentaris');
+define('_QMENU_MANAGE',				'Administració');
+define('_QMENU_MANAGE_LOG',			'Registre d\'accions');
+define('_QMENU_MANAGE_SETTINGS',	'Opcions globals');
+define('_QMENU_MANAGE_MEMBERS',		'Membres');
+define('_QMENU_MANAGE_NEWBLOG',		'Weblog nou');
+define('_QMENU_MANAGE_BACKUPS',		'Còpia de seguretat');
+define('_QMENU_MANAGE_PLUGINS',		'Plugins');
+define('_QMENU_LAYOUT',				'Disseny');
+define('_QMENU_LAYOUT_SKINS',		'Disposicó');
+define('_QMENU_LAYOUT_TEMPL',		'Plantilles');
+define('_QMENU_LAYOUT_IEXPORT',		'Importar/Exportar');
+define('_QMENU_PLUGINS',			'Plugins');
+
+// quickmenu on logon screen
+define('_QMENU_INTRO',				'Introducció');
+define('_QMENU_INTRO_TEXT',			'<p>Aquesta és la plantalla de registre de Nucleus CMS, el gestor de contigut utilitzar per mantenir aquesta pàgina.</p><p>Si tens un compte pots registrar-te i afegir nous articles.</p>');
+
+// helppages for plugins
+define('_ERROR_PLUGNOHELPFILE',		'El fitxer d\'ajuda \'aquest plugin no existeix');
+define('_PLUGS_HELP_TITLE',			'Pàgina d\'ajuda del plugin');
+define('_LIST_PLUGS_HELP', 			'ajuda');
+
+
+// END changed/started after 3.1
+
+// START changed/added after v2.5beta START
+
+// general settings (security)
+define('_SETTINGS_EXTAUTH',			'Activa l\'autentificació externa');
+define('_WARNING_EXTAUTH',			'Avís: activa unicament si és necessari.');
+
+// member profile
+define('_MEMBERS_BYPASS',			'Utilitza autentificació externa');
+
+// 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
+define('_EBLOG_SEARCH',				'Inclou <em>sempre</em> a la búsqueda');
+
+// END changed/added after v2.5beta
+// START introduced after v2.0 START
 
 // media library
 define('_MEDIA_VIEW',				'veure');
