@@ -270,7 +270,7 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 </small>
 </div>]]></part>
 
-	<part name="FORMAT_DATE"><![CDATA[%d/%m]]></part>
+	<part name="FORMAT_DATE"><![CDATA[%m/%d]]></part>
 
 	<part name="FORMAT_TIME"><![CDATA[%X]]></part>
 
@@ -343,7 +343,7 @@ title="<%ip%> | Click to visit <%user%>'s website or send an email">
 </small>
 </div>]]></part>
 
-	<part name="FORMAT_DATE"><![CDATA[%d/%m]]></part>
+	<part name="FORMAT_DATE"><![CDATA[%m/%d]]></part>
 
 	<part name="FORMAT_TIME"><![CDATA[%X]]></part>
 
