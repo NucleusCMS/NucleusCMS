@@ -12,9 +12,14 @@ function cookieVar($name) {
 }
 
 function requestVar($name) {
-  if (!empty($_GET[$name]))	return undoMagic($_GET[$name]);
-  if (!empty($_POST[$name])) return undoMagic($_POST[$name]);
-  return undoMagic($_REQUEST[$name]);
+	if(array_key_exists($name,$_REQUEST))
+		return undoMagic($_REQUEST[$name]);
+	elseif( array_key_exists($name,$_GET))   
+		return undoMagic($_GET[$name]);
+	elseif( array_key_exists($name,$_POST))   
+		return undoMagic($_POST[$name]);
+	else
+		return;
 }
 
 function serverVar($name) {
