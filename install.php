@@ -48,11 +48,16 @@
 	// make sure there's no unnecessary escaping:
 	set_magic_quotes_runtime(0);
 
-	// we will use postVar, getVar, ... methods instead of HTTP_GET_VARS or _GET
-	if (phpversion() >= '4.1.0')
-		include_once('nucleus/libs/vars4.1.0.php');
-	else
-		include_once('nucleus/libs/vars4.0.6.php');
+  // if there are some plugins or skins to import, do not include vars
+  // in globalfunctions.php again... so set a flag
+	if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0)) {
+	  global $CONF;
+	  $CONF['installscript']=1;
+	}
+  if (phpversion() >= '4.1.0')
+	  include_once('nucleus/libs/vars4.1.0.php');
+  else
+	  include_once('nucleus/libs/vars4.0.6.php');
 
 	// check if mysql support is installed
 	if (!function_exists('mysql_query'))
