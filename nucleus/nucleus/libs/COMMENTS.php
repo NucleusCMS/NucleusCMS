@@ -324,16 +324,7 @@ class COMMENTACTIONS extends BaseActions {
 	}
 
 	function parse_date($format = '') {					
-        if ($format == 'rfc822') { 
-			echo date('r', $this->currentComment['timestamp']); 
-        } else if ($format == 'rfc822GMT') { 
-			echo gmdate('r', $this->currentComment['timestamp']); 
-        } else {  
-			echo strftime(
-					($format == '') ? $this->template['FORMAT_DATE'] : $format,
-					$this->currentComment['timestamp']
-				);
-		}
+		echo formatDate($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE']);
 	}
 	function parse_time($format = '') {					
 		echo strftime(
