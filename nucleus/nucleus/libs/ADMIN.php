@@ -5511,6 +5511,9 @@ function listplug_table_plugoptionlist($template, $type) {
 				case 'password':
 					echo '<input type="password" size="40" maxlength="128" name="',htmlspecialchars($current->name),'" value="',htmlspecialchars($current->value),'" />';
 					break;
+				case 'textarea':
+					echo '<textarea cols="30" rows="5" name="',htmlspecialchars($current->name),'">',htmlspecialchars($current->value),'</textarea>';				
+					break;
 				case 'text':
 				default:
 					echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($current->name),'" value="',htmlspecialchars($current->value),'" />';
