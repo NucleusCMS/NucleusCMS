@@ -1030,7 +1030,8 @@ class ITEMACTIONS extends BaseActions {
 			
 		// add comments
 		if ($this->showComments && $this->blog->commentsEnabled()) {
-			$comments = new COMMENTS($this->currentItem->itemid, $this);
+			$comments = new COMMENTS($this->currentItem->itemid);
+			$comments->setItemActions($this);
 			$comments->showComments($this->template, $maxToShow, $this->currentItem->closed ? 0 : 1); 
 		}
 	}
