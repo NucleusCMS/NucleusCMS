@@ -547,6 +547,8 @@ class ACTIONS extends BaseActions {
 	{
 		if ($linktext != '')
 			return '<a href="' .  htmlspecialchars($url) .'">'.htmlspecialchars($linktext).'</a>';
+		else
+			return htmlspecialchars($url);
 	}
 
     function _searchlink($amount, $startpos, $direction, $linktext = '') {
