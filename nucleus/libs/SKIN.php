@@ -409,7 +409,7 @@ class ACTIONS extends BaseActions {
 	*/
 	function doForm($filename) {
 		global $DIR_NUCLEUS;
-		array_push($this->parser->actions,'formdata','text');
+		array_push($this->parser->actions,'formdata','text','callback','errordiv');
 		$oldIncludeMode = PARSER::getProperty('IncludeMode');
 		$oldIncludePrefix = PARSER::getProperty('IncludePrefix');
 		PARSER::setProperty('IncludeMode','normal');
@@ -417,8 +417,10 @@ class ACTIONS extends BaseActions {
 		$this->parse_parsedinclude($DIR_NUCLEUS . 'forms/' . $filename . '.template');
 		PARSER::setProperty('IncludeMode',$oldIncludeMode);
 		PARSER::setProperty('IncludePrefix',$oldIncludePrefix);
-		array_pop($this->parser->actions);		
-		array_pop($this->parser->actions);		
+		array_pop($this->parser->actions);		// errordiv
+		array_pop($this->parser->actions);		// callback
+		array_pop($this->parser->actions);		// text
+		array_pop($this->parser->actions);		// formdata
 	}
 	function parse_formdata($what) {
 		echo $this->formdata[$what];
@@ -428,6 +430,16 @@ class ACTIONS extends BaseActions {
 		if (defined($which)) { 	
 			eval("echo $which;");
 		}
+	}
+	function parse_callback($eventName, $type)
+	{
+		global $manager;
+		$manager->notify($eventName, array('type' => $type));
+	}
+	function parse_errordiv() {
+		global $errormessage;
+		if ($errormessage)
+	  		echo '<div class="error">', htmlspecialchars($errormessage),'</div>';
 	}
 	
 	function parse_skinname() {
@@ -1071,7 +1083,7 @@ class ACTIONS extends BaseActions {
 	function parse_additemform() {
 		global $blog, $CONF;
 		$this->formdata = array(
-			'adminurl' => $CONF['AdminURL'],
+			'adminurl' => htmlspecialchars($CONF['AdminURL']),
 			'catid' => $blog->getDefaultCategory()
 		);
 		$blog->InsertJavaScriptInfo(); 
@@ -1109,7 +1121,7 @@ class ACTIONS extends BaseActions {
 
 			
 	function parse_commentform($destinationurl = '') {
-		global $blog, $itemid, $member, $CONF, $manager;
+		global $blog, $itemid, $member, $CONF, $manager, $DIR_LIBS, $errormessage;
 		
 		// warn when trying to provide a actionurl (used to be a parameter in Nucleus <2.0)
 		if (stristr($destinationurl, 'action.php')) {
@@ -1130,12 +1142,20 @@ class ACTIONS extends BaseActions {
 		if (!$destinationurl)
 			$destinationurl = createItemLink($itemid, $this->linkparams);
 
+		// values to prefill
+		$user = cookieVar('comment_user');
+		if (!$user) $user = postVar('user');
+		$userid = cookieVar('comment_userid');
+		if (!$userid) $userid = postVar('userid');
+		$body = postVar('body');
+		
 		$this->formdata = array(
-			'destinationurl' => $destinationurl,
-			'actionurl' => $actionurl,
+			'destinationurl' => htmlspecialchars($destinationurl),
+			'actionurl' => htmlspecialchars($actionurl),
 			'itemid' => $itemid,
-			'user' => htmlspecialchars(cookieVar('comment_user')),
-			'userid' => htmlspecialchars(cookieVar('comment_userid')),			
+			'user' => htmlspecialchars($user),
+			'userid' => htmlspecialchars($userid),			
+			'body' => htmlspecialchars($body),			
 			'membername' => $member->getDisplayName(),
 			'rememberchecked' => cookieVar('comment_user')?'checked="checked"':''
 		);
@@ -1172,12 +1192,17 @@ class ACTIONS extends BaseActions {
 				$desturl = $CONF['IndexURL'] . createMemberLink($memberid);				
 		}
 			
+		$message = postVar('message');
+		$frommail = postVar('frommail');
+		
 		$this->formdata = array(
-			'url' => $desturl,
-			'actionurl' => $CONF['ActionURL'],
+			'url' => htmlspecialchars($desturl),
+			'actionurl' => htmlspecialchars($CONF['ActionURL']),
 			'memberid' => $memberid,
 			'rows' => $rows,
-			'cols' => $cols
+			'cols' => $cols,
+			'message' => htmlspecialchars($message),
+			'frommail' => htmlspecialchars($frommail)
 		);
 		if ($member->isLoggedIn()) {
 			$this->doForm('membermailform-loggedin');

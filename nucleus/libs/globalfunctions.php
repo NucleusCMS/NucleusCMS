@@ -57,7 +57,7 @@ function getNucleusVersion() {
  * be tested without having to install CVS.
  */
 function getNucleusPatchLevel() {
-	return 0;
+	return 1;
 }
 
 
@@ -97,6 +97,7 @@ $action			= requestVar('action');
 $nextaction		= requestVar('nextaction');
 $maxresults     = requestVar('maxresults');
 $startpos       = intRequestVar('startpos');
+$errormessage	= '';
 
 if (!headers_sent())
 	header('Generator: Nucleus ' . $nucleus['version']);
@@ -490,6 +491,18 @@ function selector() {
 		header('Location: ' . $CONF['DisableSiteURL']);
 		exit;
 	}
+	
+	$actionNames = array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin');
+	$action = requestVar('action');
+	if (in_array($action, $actionNames))
+	{
+		global $DIR_LIBS, $errormessage;
+		include_once($DIR_LIBS . 'ACTION.php');
+		$a =& new ACTION();
+		$errorInfo = $a->doAction($action);
+		if ($errorInfo)
+			$errormessage = $errorInfo['message'];
+	}	
 
 	// show error when headers already sent out
 	if (headers_sent() && $CONF['alertOnHeadersSent']) {
