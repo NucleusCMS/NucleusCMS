@@ -26,6 +26,7 @@ The URL for the Nucleus XML-RPC interface is:
 <b>http://www.yourserver.com/yourpath/nucleus/xmlrpc/server.php</b>
 </div>
 
+<a name="bloggerApi" id="bloggerApi"></a>
 <h1>The Blogger API (XML-RPC)</h1>
 
 <p>
@@ -62,6 +63,7 @@ Since Nucleus is structured somewhat differently inside, there are some differen
 	<li>The <tt>getRecentPostst</tt>-method returns <tt>authorName</tt> and <tt>title</tt> as extra parameters. Blogger has been returning these also (although undocumented)</li>
 </ul>
 
+<a name="metaWeblogApi" id="metaWeblogApi"></a>
 <h1><a name="metaweblog"></a>metaWeblog API</h1>
 
 <p>
@@ -83,6 +85,31 @@ A list of available methods is listed below (see the <a href="http://www.xmlrpc.
 	<li>metaWeblog.getRecentPosts (v2.5)</li>	
 </ul>
 
+<a name="mtApi" id="mtApi"></a>
+<h1>Movable Type API</h1>
+
+<p>Since v2.5, Nucleus supports the methods from the <a href="http://www.movabletype.org/docs/mtmanual_programmatic.html">Movable Type API</a>.</p>
+
+<p>The list of available methods is listed below:</p>
+
+<ul>
+	<li>mt.supportedMethods</li>
+	<li>mt.supportedTextFilters</li>
+	<li>mt.publishPost</li>
+	<li>mt.getCategoryList</li>
+	<li>mt.getPostCategories</li>
+	<li>mt.setPostCategories</li>
+	<li>mt.getRecentPostTitles</li>
+	<li>mt.getTrackbackPings</li>
+</ul>
+
+<p>Some notes:</p>
+
+<ul>
+	<li>Nucleus only supports one category for each item. This means that all categories except the 'primary' category for an item will be ignored.</li>
+	<li>Trackback is not implemented in the Nucleus core (it's avalailable as a plugin instead). Because of this, <code>mt.getTrackbackPings</code> will return an empty array by default.</li>
+	<li>Nucleus doesn't have text filters, so <code>mt.getSupportedTextFilters</code> returns an empty array.</li>
+</ul>
 
 <h1><a name="errorcodes"></a>Error Codes</h1>
 
