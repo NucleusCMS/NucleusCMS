@@ -60,6 +60,9 @@ function upgrade_do20() {
 	$query = "INSERT INTO nucleus_config VALUES ('URLMode', 'normal');";
 	upgrade_query("Adding setting URLMode",$query);
 	
+	// add id to nucleus_plugin_option (allows for ordening)
+	$query =  "ALTER TABLE nucleus_plugin_option ADD oid int(11) NOT NULL auto_increment UNIQUE ";
+	upgrade_query("Adding id attribute to plugin options table",$query);
 	
 }
 
