@@ -833,7 +833,7 @@ function getLanguageName() {
 		// try to use members language
 		$memlang = $member->getLanguage();
 
-		if (($memlang != '') && (checkLanguage($memlang)))
+		if (($memlang != '') && (checkLanguage($memlang)))
 			return $memlang;
 	}
 
