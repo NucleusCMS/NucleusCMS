@@ -18,6 +18,7 @@
 define('_ERROR_NOLOGON_NOACTIVATE',	'Cannot send activation link. You\'re not allowed to log in.');
 define('_ERROR_ACTIVATE',			'Activation key does not exist, is invalid, or has expired.');
 define('_ACTIONLOG_ACTIVATIONLINK', 'Activation link sent');
+define('_MSG_ACTIVATION_SENT',		'An activation link has been sent by e-mail.');
 
 // activation link emails
 define('_ACTIVATE_REGISTER_MAIL',	"Hi <%memberName%>,\n\nYou need to activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
@@ -580,8 +581,8 @@ define('_UPLOAD_MSG',				'Select the file you want to upload below, and hit the 
 define('_UPLOAD_BUTTON',			'Upload');
 
 // some status messages
-define('_MSG_ACCOUNTCREATED',		'Account created, password will be sent through email');
-define('_MSG_PASSWORDSENT',			'Password has been sent by e-mail.');
+//define('_MSG_ACCOUNTCREATED',		'Account created, password will be sent through email');
+//define('_MSG_PASSWORDSENT',			'Password has been sent by e-mail.');
 define('_MSG_LOGINAGAIN',			'You\'ll need to login again, because your info changed');
 define('_MSG_SETTINGSCHANGED',		'Settings Changed');
 define('_MSG_ADMINCHANGED',			'Admin Changed');
