@@ -751,7 +751,7 @@ class ACTIONS extends BaseActions {
 		echo htmlspecialchars(requestVar('imagetext'));
 	}
 	
-	function parse_image($what) {
+	function parse_image($what = 'imgtag') {
 		global $CONF;
 
 		$imagetext 	= htmlspecialchars(requestVar('imagetext'));
