@@ -326,7 +326,7 @@ class ADMIN {
 	}
 	
 	function action_batchcomment() {
-		global $member, $manager;
+		global $member;
 		
 		// check if logged in
 		$member->isLoggedIn() or $this->disallow();
@@ -379,7 +379,7 @@ class ADMIN {
 	}
 
 	function action_batchmember() {
-		global $member, $manager;
+		global $member;
 		
 		// check if logged in and admin
 		($member->isLoggedIn() && $member->isAdmin()) or $this->disallow();
@@ -444,7 +444,7 @@ class ADMIN {
 	
 
 	function action_batchteam() {
-		global $member, $manager;
+		global $member;
 		
 		$blogid = intRequestVar('blogid');
 		
@@ -619,7 +619,7 @@ class ADMIN {
 			
 			<input type="submit" value="<?php echo _MOVECAT_BTN?>" onclick="return checkSubmit();" 
 
-		<div></form>
+		</div></form>
 		<?php		$this->pagefoot();
 		exit;
 	}
@@ -652,7 +652,7 @@ class ADMIN {
 			
 			<input type="submit" value="<?php echo _BATCH_DELETE_CONFIRM_BTN?>" onclick="return checkSubmit();" 
 
-		<div></form>
+		</div></form>
 		<?php		$this->pagefoot();
 		exit;
 	}
@@ -1044,7 +1044,7 @@ class ADMIN {
 	}
 	
 	function action_itemdeleteconfirm() {
-		global $member, $manager;
+		global $member;
 		
 		$itemid = intRequestVar('itemid');
 		
@@ -1133,7 +1133,7 @@ class ADMIN {
 	  * errors are returned
 	  */
 	function moveOneItem($itemid, $destCatid) {
-		global $member, $manager;
+		global $member;
 		
 		// only allow if user is allowed to move item
 		if (!$member->canUpdateItem($itemid, $destCatid))
@@ -1146,7 +1146,7 @@ class ADMIN {
 	  * Adds a item to the chosen blog
 	  */
 	function action_additem() {
-		global $member, $manager, $CONF;
+		global $member, $CONF;
 		 
 		$manager->loadClass('ITEM');
 
@@ -2868,7 +2868,7 @@ selector();
 								<select name="skinfile" id="skinie_import_local">
 								<?php									foreach ($candidates as $skinname => $skinfile) {
 										$html = htmlspecialchars($skinfile);
-										echo '<option value="',$skinfile,'">',$skinname,'</option>';
+										echo '<option value="',$html,'">',$skinname,'</option>';
 									}
 								?>
 								</select>
@@ -3314,7 +3314,7 @@ selector();
 		$content = addslashes($content);	
 		
 		// don't add empty parts:
-		if (!trim($content)) return;
+		if (!trim($content)) return -1;
 		
 		$query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
 		       . "VALUES ($id, '$partname', '$content')";
@@ -4136,7 +4136,6 @@ selector();
 	function pagehead($extrahead = '') {
 		global $member, $nucleus, $CONF;
 
-		echo '<?xml version="1.0" encoding="'. _CHARSET .'"?>';
 		?>
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
@@ -4148,27 +4147,15 @@ selector();
 			
 			<script type="text/javascript" src="javascript/edit.js"></script>
 			<script type="text/javascript" src="javascript/admin.js"></script>
-			<script type="text/javascript">
-				function styleFix() {
-					// stylefix for IE (outdated browsers)
-					if (document.all) {
-						var eContent = document.getElementById('content');
-						if (eContent) {
-							eContent.style.width = '850px';
-						}
-						var eQuickmenu = document.getElementById('quickmenu');
-						if (eQuickmenu) {
-							eQuickmenu.style.left = '7px';
-						}
-					}
-				}
-			</script>
+			<script type="text/javascript" src="javascript/compatibilty.js"></script>
+
 			<?php echo $extrahead?>
 		</head>
-		<body onload="styleFix()">
+		<body>
 		<div class="header">
 		<h1><?php echo htmlspecialchars($CONF['SiteName'])?></h1>
 		</div>
+		<div id="container">
 		<div id="content">
 		<div class="loginname">
 		<?php			if ($member->isLoggedIn()) 
@@ -4205,7 +4192,12 @@ selector();
 			</div><!-- content -->
 			
 			<div id="quickmenu">
+	
 				<?php				// ---- user settings ---- 
+				
+				echo '<ul>';
+				echo '<li><a href="index.php?action=overview">Home</a></li>';
+				echo '</ul>';
 				
 				if ($action != 'showlogin') {
 					echo '<h2>Add Item</h2>';
@@ -4231,11 +4223,11 @@ selector();
 						$template['shorten'] = 10;
 						$template['shortenel'] = '';
 						$template['javascript'] = 'onchange="return form.submit()"';					
-						$amount = showlist($query,'select',$template);
+						showlist($query,'select',$template);
 
 					echo '</div></form>';
 
-					echo '<h2>You (' . $member->getDisplayName(). ')</h2>';
+					echo '<h2>' . $member->getDisplayName(). '</h2>';
 					echo '<ul>';
 					echo '<li><a href="index.php?action=editmembersettings">Settings</a></li>';
 					echo '<li><a href="index.php?action=browseownitems">Items</a></li>';
@@ -4279,6 +4271,9 @@ selector();
 				?>
 			</div>
 			
+			<!-- content / quickmenu container -->
+ 			</div>
+			
 		
 			</body>
 			</html>
@@ -4294,8 +4289,6 @@ selector();
 		
 		// header-code stolen from phpMyAdmin
 		// REGEDIT and bookmarklet code stolen from GreyMatter
-
-		$bookmarkletline = getBookmarklet($blogid, 'contextmenu');
 
 		header('Content-Type: application/octetstream');
 		header('Content-Disposition: filename="nucleus.reg"');
@@ -4411,7 +4404,7 @@ selector();
 		
 		$query =  'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid.' ORDER BY iprange';
 		$template['content'] = 'banlist';
-		$amount = showlist($query,'table',$template);
+		showlist($query,'table',$template);
 		
 		if ($amount == 0)
 			echo _BAN_NONE;
@@ -4802,7 +4795,7 @@ selector();
 		if ($manager->pluginInstalled($name))
 			$this->error(_ERROR_DUPPLUGIN);
 		if (!checkPlugin($name))
-			$this->error(_ERROR_PLUGFILEERROR . ' (' . $file . ')');
+			$this->error(_ERROR_PLUGFILEERROR . ' (' . $name . ')');
 		
 		// get number of currently installed plugins
 		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
