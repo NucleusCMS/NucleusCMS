@@ -18,8 +18,10 @@
 		<b>Nucleus v2.0 Final (?)</b>	
 		<p>Being worked on...</p>
 		<ul>
-			<li></li>
-			<li>CHANGED: Marked <code>ifcat</code> skinvar as deprecated (use <code>if(category)</code> instead)</li>
+			<li>ADDED: Extra optional parameter for <code>image</code> skinvar, indicating which information to insert on the page</li>
+			<li>CHANGED: Marked the <code>imagetext</code> skinvar as deprecated (use <code>image(caption)</code> instead)</li>
+			<li>CHANGED: Marked the <code>ifcat</code> skinvar as deprecated (use <code>if(category)</code> instead)</li>
+			<li>CHANGED: Marked the <code>vars</code> skinvar as deprecated (if anyone needs a hidden 'itemid' formfield [are there?], the itemid skinvar can be used instead)</li>
 			<li>ADDED: <code>doTemplateCommentsVar(&$item, &$comment)</code> method in plugin interface</li>			
 			<li>CHANGED: comments are now also parsed using the same method as skins and items, allowing plugins, includes and more to be used there as well</li>	
 			<li>FIXED: guests cannot longer place 'fake' comments (making it look as if a regsitered memeber made the comment)</li>
