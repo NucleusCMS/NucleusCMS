@@ -106,6 +106,10 @@ function boldThis() { insertAroundCaret('<b>','</b>'); }
 function italicThis() { insertAroundCaret('<i>','</i>'); }
 function leftThis() { insertAroundCaret('<div class="leftbox">','</div>'); }
 function rightThis() { insertAroundCaret('<div class="rightbox">','</div>'); }
+function alignleftThis() { insertAroundCaret('<div style="text-align: left">','</div>'); }
+function alignrightThis() { insertAroundCaret('<div style="text-align: right">','</div>'); }
+function aligncenterThis() { insertAroundCaret('<div style="text-align: center">','</div>'); }
+
 
 function ahrefThis() {
 	if (document.selection)
