@@ -1,4 +1,4 @@
-<?php
+<?
 // Spanish Nucleus Language File
 // 
 // Author: Alfonso Sanchez (alsanan2@myrealbox.con)
@@ -11,6 +11,32 @@
 //
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
+
+// START introduced after v2.0 START
+
+// media library
+define('_MEDIA_VIEW',				'ver');
+define('_MEDIA_VIEW_TT',			'Ver archivo (se abre en nueva ventana)');
+define('_MEDIA_FILTER_APPLY',		'Aplicar filtro');
+define('_MEDIA_FILTER_LABEL',		'Filtro: ');
+define('_MEDIA_UPLOAD_TO',			'Subir a...');
+define('_MEDIA_UPLOAD_NEW',			'Subir nuevo archivo...');
+define('_MEDIA_COLLECTION_SELECT',	'Seleccionar');
+define('_MEDIA_COLLECTION_TT',		'Cambiar a esta categoría');
+define('_MEDIA_COLLECTION_LABEL',	'Colección actual: ');
+
+// tooltips on toolbar
+define('_ADD_ALIGNLEFT_TT',			'Alinear a la izquierda');
+define('_ADD_ALIGNRIGHT_TT',		'Alinear a la derecha');
+define('_ADD_ALIGNCENTER_TT',		'Alinear al centro');
+
+// searchable blog setting (yes/no)
+define('_EBLOG_SEARCH',				'Incluir en búsquedas');
+
+// generic upload failure
+define('_ERROR_UPLOADFAILED',		'Error al subir');
+
+// END introduced after v2.0 END
 
 // START introduced after v1.5 START
 
@@ -167,6 +193,7 @@ define('_MMAIL_MAIL',				'Mensaje:');
 
 // END introduced after v1.5 END
 
+
 // START introduced after v1.1 START
 
 // bookmarklet buttons
@@ -258,6 +285,9 @@ define('_BACKTOMANAGE',				'Volver a la gestión de Nucleus');
 
 
 // END introduced after v1.1 END
+
+
+
 
 // charset to use 
 define('_CHARSET',					'iso-8859-1');
