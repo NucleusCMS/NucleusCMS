@@ -77,6 +77,10 @@ class PARSER {
 		}
 	
 		$actionlc = strtolower($action);
+		
+		// skip execution of skinvars while inside an if condition which hides this part of the page
+//		if (!$this->handler->if_currentlevel && ($actionlc != 'else') && ($actionlc != 'endif'))
+//			return;
 	
 		if (in_array($actionlc, $this->actions) || $this->norestrictions ) {
 			// when using PHP versions lower than 4.0.5, uncomment the line before
@@ -137,6 +141,7 @@ class BaseActions {
 		
 		// if nesting level
 		$this->if_conditions = array(); // array on which condition values are pushed/popped
+		$this->if_currentlevel = 1;		// 1 = current level is displayed; 0 = current level not displayed
 
 		// highlights		
 		$this->strHighlight = '';			// full highlight
@@ -219,23 +224,26 @@ class BaseActions {
 	 * Helper function: add if condition
 	 */
 	function _addIfCondition($condition) {
-		
-		// if parent block is not shown, we don't need to show child blocks
-		if ($this->_getTopIfCondition())
-			array_push($this->if_conditions,$condition);
-		else
-			array_push($this->if_conditions,0);
+	
+		array_push($this->if_conditions,$condition);
+	
+		$this->_updateTopIfCondition();
 			
 		ob_start();		
+	}
+	
+	function _updateTopIfCondition() {
+		if (sizeof($this->if_conditions) == 0) 
+			$this->if_currentlevel = 1;
+		else
+			$this->if_currentlevel = $this->if_conditions[sizeof($this->if_conditions) - 1];
 	}
 	
 	/**
 	 * returns the currently top if condition
 	 */
 	function _getTopIfCondition() {
-		if (sizeof($this->if_conditions) == 0) return 1;
-		
-		return $this->if_conditions[sizeof($this->if_conditions) - 1];
+		return $this->if_currentlevel;
 	}
 	
 	/**
@@ -243,7 +251,7 @@ class BaseActions {
 	 */
 	function parse_else() {
 		if (sizeof($this->if_conditions) == 0) return;
-		
+		$old = $this->if_currentlevel;
 		if (array_pop($this->if_conditions)) {
 			ob_end_flush();
 			$this->_addIfCondition(0);
@@ -251,7 +259,6 @@ class BaseActions {
 			ob_end_clean();
 			$this->_addIfCondition(1);
 		}
-		
 	}
 	
 	/**
@@ -267,6 +274,8 @@ class BaseActions {
 		} else {
 			ob_end_clean();
 		}
+		
+		$this->_updateTopIfCondition();
 	}
 	
 	
