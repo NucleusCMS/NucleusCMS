@@ -29,13 +29,13 @@ This file contains tips and suggestions that might prove useful.
 		<a href="#searchengines">How to get your archives into search engines?</a>
 		<ul>
 			<li><a href="#searchengines-fancyurls">Fancy URLs</a></li>
-			<li><a href="#searchengines-rewrite">mod_rewrite</a></li>	
+			<li><a href="#searchengines-rewrite">mod_rewrite</a></li>
 		</ul>
 	</li>
 	<li><a href="#filepermissions">How to set file/dir permissions?</a></li>
 	<li><a href="#backups">How to restore backups</a></li>
 	<li><a href="#newblog">How to create a new weblogs</a></li>
-	<li><a href="#xhtml">XHTML support</a></li>	
+	<li><a href="#xhtml">XHTML support</a></li>
 <!--
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
@@ -67,7 +67,7 @@ Nucleus creates archives dynamically on users requests. The URL is then of the f
 
 <ol>
 	<li><a href="#searchengines-fancyurls">Fancy URLs</a></li>
-	<li><a href="#searchengines-rewrite">mod_rewrite</a></li>	
+	<li><a href="#searchengines-rewrite">mod_rewrite</a></li>
 </ol>
 
 <a name="searchengines-fancyurls"></a>
@@ -155,7 +155,7 @@ A window will pop up:
 </div>
 
 <p>
-On the bottom, you can enter the code that's given in the documentation (e.g. 755 or 644). Click the <tt>OK</tt> button and the changes will be applied. You're finished now.
+On the bottom, you can enter the code that's given in the documentation (e.g. 755 or 444). Click the <tt>OK</tt> button and the changes will be applied. You're finished now.
 </p>
 
 <h1>How to restore backups <a name="backups" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
@@ -226,19 +226,19 @@ selector();
 	<th>Description</th>
 </tr><tr>
 	<td><code>selectBlog('shortblogname');</td>
-	<td>Makes sure a certain blog gets selected</td>	
+	<td>Makes sure a certain blog gets selected</td>
 </tr><tr>
 	<td><code>selectSkin('skinname');</td>
-	<td>Makes sure a certain skin gets selected</td>	
+	<td>Makes sure a certain skin gets selected</td>
 </tr><tr>
 	<td><code>selectCategory(1234);</td>
-	<td>Makes sure a certain category gets selected. Takes a category id as argument. Also accepts a category name (keep in mind that this can cause problems if multiple categories have the same name)</td>	
+	<td>Makes sure a certain category gets selected. Takes a category id as argument. Also accepts a category name (keep in mind that this can cause problems if multiple categories have the same name)</td>
 </tr><tr>
 	<td><code>selectItem(1234);</td>
-	<td>Makes sure a certain item gets selected</td>	
+	<td>Makes sure a certain item gets selected</td>
 </tr><tr>
 	<td><code>selectLanguage('french');</td>
-	<td>Makes sure a certain language gets used (note: might produce PHP warnings)</td>		
+	<td>Makes sure a certain language gets used (note: might produce PHP warnings)</td>
 </tr></table>
 
 <p>
