@@ -339,6 +339,10 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 				'pageType' => $pagetype
 			)
 		);
+
+		// strip strange characters
+		$contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
+		$charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
 		
 		header('Content-Type: ' . $contenttype . '; charset=' . $charset);			
 	}
@@ -496,7 +500,7 @@ function selector() {
 
 	// first, let's see if the site is disabled or not
 	if ($CONF['DisableSite'] && !$member->isAdmin()) {
-		header('Location: ' . $CONF['DisableSiteURL']);
+		redirect($CONF['DisableSiteURL']);
 		exit;
 	}
 	
@@ -1064,6 +1068,17 @@ function checkVars($aVars)
 			}		
 		}
 	}
+}
+
+/** 
+ * Stops processing the request and redirects to the given URL.
+ * - no actual contents should have been sent to the output yet
+ * - the URL will be stripped of illegal or dangerous characters
+ */
+function redirect($url)
+{
+	$url = preg_replace('|[^a-z0-9-~+_.?#=&;,/:]|i', '', $url);
+	header('Location: ' . $url);
 }
 
 ?>

@@ -78,10 +78,10 @@ class ACTION
 		if ($errormessage == '1') {		
 			// redirect when adding comments succeeded
 			if (postVar('url')) {
-				Header('Location: ' . postVar('url'));
+				redirect(postVar('url'));
 			} else {
 				$url = $CONF['IndexURL'] . createItemLink($post['itemid']);
-				Header('Location: ' . $url);
+				redirect($url);
 			}
 		} else {
 			// else, show error message using default skin for blog
@@ -123,14 +123,14 @@ class ACTION
 		mail($tomem->getEmail(), $title, $message, 'From: '. $fromMail);
 
 		if (postVar('url')) {
-			Header('Location: ' . postVar('url'));
+			redirect(postVar('url'));
 		} else {
 			$CONF['MemberURL'] = $CONF['IndexURL'];
 			if ($CONF['URLMode'] == 'pathinfo')
 				$url = createMemberLink($tomem->getID());
 			else
 				$url = $CONF['IndexURL'] . createMemberLink($tomem->getID());
-			Header('Location: ' . $url);
+			redirect($url);
 		}
 		
 		exit;
@@ -183,7 +183,7 @@ class ACTION
 		$manager->notify('PostRegister',array('member' => &$newmem));		
 
 		if (postVar('desturl')) {
-			Header('Location: ' . postVar('desturl'));
+			redirect(postVar('desturl'));
 		} else {
 			echo _MSG_ACTIVATION_SENT;
 		}
@@ -210,7 +210,7 @@ class ACTION
 		$mem->sendActivationLink('forgot');
 
 		if (postVar('url')) {
-			Header('Location: ' . postVar('url'));
+			redirect(postVar('url'));
 		} else {
 			echo _MSG_ACTIVATION_SENT;
 		}
@@ -280,7 +280,7 @@ class ACTION
 		else
 			$url = $CONF['IndexURL'] . 'index.php?itemid=' . $itemid;
 
-		header('Location: ' . $url);	
+		redirect($url);	
 		exit;
 	}
 
