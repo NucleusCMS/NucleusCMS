@@ -1,4 +1,4 @@
-<nucleusskin><meta><skin name="default" /><template name="default" /><template name="detailed" /><info><![CDATA[Default Nucleus skin for new installs]]></info></meta><skin name="default" type="text/html" includeMode="skindir" includePrefix="base/"><description>Default skin to display your blog</description><part name="archive"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<nucleusskin><meta><skin name="default" /><template name="default" /><template name="detailed" /><info><![CDATA[Default skin for new Nucleus install]]></info></meta><skin name="default" type="text/html" includeMode="skindir" includePrefix="base/"><description>Default skin to display your blog</description><part name="archive"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -565,7 +565,7 @@
 
 </body>
 </html>]]></part></skin><template name="default"><description>The default template that is used to display your Nucleus blog</description><part name="ARCHIVELIST_FOOTER"><![CDATA[</ul>]]></part><part name="ARCHIVELIST_HEADER"><![CDATA[<ul>]]></part><part name="ARCHIVELIST_LISTITEM"><![CDATA[<li><a href="<%archivelink%>">%B, %Y</a></li>]]></part><part name="CATLIST_FOOTER"><![CDATA[</ul>]]></part><part name="CATLIST_HEADER"><![CDATA[<ul class="nobullets">
- <li><a href="<%blogurl%>">All</a></li>]]></part><part name="CATLIST_LISTITEM"><![CDATA[ <li><a href="<%catlink%>"><%catname%></a></li>]]></part><part name="COMMENTS_MANY"><![CDATA[comments]]></part><part name="COMMENTS_NONE"><![CDATA[<a href="<%itemlink%>">No <%commentword%></a>]]></part><part name="COMMENTS_ONE"><![CDATA[comment]]></part><part name="COMMENTS_TOOMUCH"><![CDATA[<a href="<%itemlink%>"><%commentcount%> <%commentword%></a>]]></part><part name="DATE_HEADER"><![CDATA[<h2>%d %B</h2>
+ <li><a href="<%blogurl%>">All</a></li>]]></part><part name="CATLIST_LISTITEM"><![CDATA[ <li><a href="<%catlink%>"><%catname%></a></li>]]></part><part name="COMMENTS_MANY"><![CDATA[comments]]></part><part name="COMMENTS_NONE"><![CDATA[<a href="<%itemlink%>" rel="bookmark">No <%commentword%></a>]]></part><part name="COMMENTS_ONE"><![CDATA[comment]]></part><part name="COMMENTS_TOOMUCH"><![CDATA[<a href="<%itemlink%>" rel="bookmark"><%commentcount%> <%commentword%></a>]]></part><part name="DATE_HEADER"><![CDATA[<h2>%d %B</h2>
 ]]></part><part name="EDITLINK"><![CDATA[<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a> -]]></part><part name="FORMAT_DATE"><![CDATA[%x]]></part><part name="FORMAT_TIME"><![CDATA[%X]]></part><part name="IMAGE_CODE"><![CDATA[<%image%>]]></part><part name="ITEM"><![CDATA[<h3 class="item"><%title%></h3>
 
 <div class="itembody">
