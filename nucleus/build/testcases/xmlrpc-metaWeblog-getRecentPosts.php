@@ -13,12 +13,6 @@ $serverPath = '/release/nucleus/xmlrpc/server.php';
 include('../../config.php');
 include($DIR_LIBS . 'xmlrpc.inc.php');
 
-// get file data
-$filename = '../../nucleus/nucleus.gif';
-$fh = fopen($filename,'rb');
-$data = fread ($fh, filesize ($filename));
-fclose($fh);
-
 $f=new xmlrpcmsg(
 	'metaWeblog.getRecentPosts',
 	 array(

@@ -20,7 +20,9 @@
 				new xmlrpcval('mt.publishPost', 'string'),
 				new xmlrpcval('mt.getCategoryList', 'string'),
 				new xmlrpcval('mt.getPostCategories', 'string'),
-				new xmlrpcval('mt.setPostCategories', 'string')								
+				new xmlrpcval('mt.setPostCategories', 'string'),
+				new xmlrpcval('mt.getRecentPostTitles', 'string'),
+				new xmlrpcval('mt.getTrackbackPings','string'),
 			), 'array')
 		);
 		return $res;
@@ -130,7 +132,41 @@
 		
 		return _mt_setPostCategories($itemid, $username, $password, $category);
 	}
+	
+	// mt.getRecentPostTitles
+	$f_mt_getRecentPostTitles_sig = array(array(
+		// return
+		$xmlrpcArray,		// array of structs
+		// params
+		$xmlrpcString,		// blogid
+		$xmlrpcString,		// userid
+		$xmlrpcString,		// password,
+		$xmlrpcInt			// number of posts
+	));
+	$f_mt_getRecentPostTitles_doc = 'Returns a bandwidth-friendly list of the most recent posts in the system.';
+	function f_mt_getRecentPostTitles($m) {
+		$blogid		= intval(_getScalar($m, 0));
+		$username	= _getScalar($m, 1);		
+		$password	= _getScalar($m, 2);
+		$iAmount	= intval(_getScalar($m, 3));
+		
+		return _mt_getRecentPostTitles($blogid, $username, $password, $iAmount);
+	}
 
+	// mt.getTrackbackPings
+	$f_mt_getTrackbackPings_sig = array(array(
+		// return
+		$xmlrpcArray,		// array of structs
+		// params
+		$xmlrpcString		// postid
+	));
+	$f_mt_getTrackbackPings_doc = '(this is currently just a placeholder. It returns an empty array.)';
+	function f_mt_getTrackbackPings($m) {
+		$itemid = intval(_getScalar($m, 0));
+				
+		return new xmlrpcresp(new xmlrpcval(array(), 'array'));
+	}
+	
 	$functionDefs = array_merge($functionDefs,
 		array(
 			 "mt.supportedMethods" =>
@@ -161,7 +197,17 @@
 			 "mt.setPostCategories" =>
 			 array( "function" => "f_mt_setPostCategories",
 				"signature" => $f_mt_setPostCategories_sig,
-				"docstring" => $f_mt_setPostCategories_doc)				
+				"docstring" => $f_mt_setPostCategories_doc),
+				
+			 "mt.getRecentPostTitles" =>
+			 array( "function" => "f_mt_getRecentPostTitles",
+				"signature" => $f_mt_getRecentPostTitles_sig,
+				"docstring" => $f_mt_getRecentPostTitles_doc),
+
+			 "mt.getTrackbackPings" =>
+			 array( "function" => "f_mt_getTrackbackPings",
+				"signature" => $f_mt_getTrackbackPings_sig,
+				"docstring" => $f_mt_getTrackbackPings_doc)
 
 		)
 	);
@@ -281,6 +327,52 @@
 		
 		
 		return new xmlrpcresp(new xmlrpcval( $categorystruct , "array"));
+	
+	}
+	
+	function _mt_getRecentPostTitles($blogid, $username, $password, $iAmount) 
+	{
+		// 1. login
+		$mem = new MEMBER();
+		if (!$mem->login($username, $password))
+			return _error(1,"Could not log in");
+
+		// 2. check if allowed 
+		if (!BLOG::existsID($blogid))
+			return _error(2,"No such blog ($blogid)");
+		if (!$mem->teamRights($blogid))
+			return _error(3,"Not a team member");
+		$iAmount = intval($iAmount);
+		if ($iAmount < 1)
+			return _error(5,"Amount parameter must be positive");
+
+		// 3. create and return list of recent items
+		// Struct returned has dateCreated, userid, postid and title
+		
+		$blog = new BLOG($blogid);
+
+		$structarray = array();		// the array in which the structs will be stored
+
+		$query = "SELECT inumber, ititle as title, UNIX_TIMESTAMP(itime) as itime, iauthor"
+			   .' FROM '.sql_table('item')
+			   ." WHERE iblog=$blogid"
+			   ." ORDER BY itime DESC"
+			   ." LIMIT $iAmount";
+		$r = sql_query($query);
+		
+		while ($row = mysql_fetch_assoc($r)) {
+		
+			$newstruct = new xmlrpcval(array(
+				"dateCreated" => new xmlrpcval(iso8601_encode($row['itime']),"dateTime.iso8601"),
+				"postid" => new xmlrpcval($row['inumber'],"string"),
+				"title" => new xmlrpcval($row['title'],"string"),
+				"userid" => new xmlrpcval($row['iauthor'],"string")
+			),'struct');
+		
+			array_push($structarray, $newstruct);		
+		}
+
+		return new xmlrpcresp(new xmlrpcval( $structarray , "array"));
 	
 	}
 	

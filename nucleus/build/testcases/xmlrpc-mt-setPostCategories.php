@@ -13,16 +13,10 @@ $serverPath = '/release/nucleus/xmlrpc/server.php';
 include('../../config.php');
 include($DIR_LIBS . 'xmlrpc.inc.php');
 
-// get file data
-$filename = '../../nucleus/nucleus.gif';
-$fh = fopen($filename,'rb');
-$data = fread ($fh, filesize ($filename));
-fclose($fh);
-
 $f=new xmlrpcmsg(
 	'mt.setPostCategories',
 	 array(
-	 	new xmlrpcval('1637', 'string'),			// blogid
+	 	new xmlrpcval('1637', 'string'),			// itemid
 	 	new xmlrpcval('god', 'string'),			// username
 	 	new xmlrpcval('heaven', 'string'),		// password
 	 	new xmlrpcval(array(					// data
