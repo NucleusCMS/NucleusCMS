@@ -80,6 +80,7 @@ define('_BATCH_COMMENT_DELETE',		'Verwijderen');
 
 // itemlist: Add new item...
 define('_ITEMLIST_ADDNEW',			'Nieuw bericht toevoegen...');
+define('_ADD_PLUGIN_EXTRAS',		'Extra Plugin Opties');
 
 // errors
 define('_ERROR_CATCREATEFAIL',		'Kon nieuwe categorie niet aanmaken');

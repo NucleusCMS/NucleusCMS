@@ -79,6 +79,7 @@ define('_BATCH_COMMENT_DELETE',		'Delete');
 
 // itemlist: Add new item...
 define('_ITEMLIST_ADDNEW',			'Add new item...');
+define('_ADD_PLUGIN_EXTRAS',		'Extra Plugin Options');
 
 // errors
 define('_ERROR_CATCREATEFAIL',		'Could not create new category');
