@@ -358,8 +358,8 @@ class BLOG {
 	 * @param $query
 	 *		search query
 	 * @param $template
-	 *		template to be used (__NAME__ of the query)
-	 * @param $amount
+	 *		template to be used (__NAME__ of the template)
+	 * @param $amountMonths
 	 *		max amount of months to be search (0 = all)
 	 * @param $maxresults
 	 *		max number of results to show
@@ -368,62 +368,114 @@ class BLOG {
 	 * @returns
 	 *		amount of hits found
 	 */
-	function search($search, $template, $amount, $maxresults, $startpos) {
+	function search($query, $template, $amountMonths, $maxresults, $startpos) {
         global $CONF;
-        $searchclass = new SEARCH($search);
 
-        $where  = $searchclass->boolean_sql_where("ititle,ibody,imore");
-        $select = $searchclass->boolean_sql_select("ititle,ibody,imore");
-        // are we really looking for something?
-        if ($searchclass->inclusive == "") {
-            // no this resulted in an empty querystring
-            $extraquery = "";
-		    $amountfound = $this->readLogAmount($template, $maxresults, $extraQuery, $search, 1, 1);
-        }
-        else {
-            $blogs = $searchclass->blogs; // array containing all searchable blogs.
-            $selectblogs = ' and (i.iblog = '.$this->blogid;
-            if ($blogs) {foreach($blogs as $b) {
-                if ($b <> $this->blogid) {$selectblogs .= ' or i.iblog = '. $b;}
-            }}
-            $selectblogs .= ')';
-    		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
-    		if ($select) {
-    		    $query .= ', '.$select. ' as score ';
-            }
-    		$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
-    		       . ' WHERE i.iauthor=m.mnumber'
-    		       . ' and i.icat=c.catid'
-    		       . ' and i.idraft=0'	// exclude drafts
-    		       . $selectblogs
-    					// don't show future items
-    		       . ' and i.itime<=' . mysqldate($this->getCorrectTime())
-                   . ' and '.$where;
+		$highlight 	= '';
+		$sqlquery	= $this->getSqlSearch($query, $amountMonths, $highlight);
+		
+		if ($sqlquery == '')
+		{
+			// no query -> show everything
+            $extraquery = '';
+		    $amountfound = $this->readLogAmount($template, $maxresults, $extraQuery, $query, 1, 1);
+		} else {
+		
+			// add LIMIT to query (to split search results into pages)
+            if (intval($maxresults > 0)) 
+	            $sqlquery .= ' LIMIT ' . intval($startpos).',' . intval($maxresults);
 
-    		// take into account amount of months to search
-		    if ($amount > 0) {
-    		        $localtime = getdate($this->getCorrectTime());
-    			$timestamp_start = mktime(0,0,0,$localtime['mon'] - $amount,1,$localtime['year']);
-			    $query .= ' and UNIX_TIMESTAMP(i.itime)>' . $timestamp_start;
-    		}
-
-            if ($select) {
-                $query .= ' ORDER BY score DESC';
-            } else { $query .= ' ORDER BY i.itime DESC ';}
-            if (intval($maxresults > 0)) {
-	            $query .= ' LIMIT ' . intval($startpos).',' . intval($maxresults);
-            }
-		    $amountfound = $this->showUsingQuery($template, $query, $searchclass->inclusive, 1, 1);
-    		if ($amountfound == 0) {
+			// show results
+		    $amountfound = $this->showUsingQuery($template, $sqlquery, $highlight, 1, 1);
+		    
+			// when no results were found, show a message 
+    		if ($amountfound == 0) 
+    		{
 	    		$template = TEMPLATE::read($template);
-    			$vars['query'] = htmlspecialchars($search);
-		    	$vars['blogid'] = $this->getID();
-
+    			$vars = array(
+    				'query'		=> htmlspecialchars($query),
+    				'blogid'	=> $this->getID()
+    			);
 	    		echo TEMPLATE::fill($template['SEARCH_NOTHINGFOUND'],$vars);
     		}
         }
         
 		return $amountfound;
+	}
+	
+	/**
+	 * Returns an SQL query to use for a search query
+	 *
+	 * @param $query
+	 *		search query
+	 * @param $amountMonths
+	 *		amount of months to search back. Default = 0 = unlimited
+	 * @param $mode
+	 *		either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
+	 * @returns $highlight
+	 *		words to highlight (out parameter)
+	 * @returns 
+	 *		either a full SQL query, or an empty string (if querystring empty)
+	 * @note
+	 *		No LIMIT clause is added. (caller should add this if multiple pages are requested)
+	 */
+	function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
+	{
+        $searchclass = new SEARCH($query);
+        
+        $highlight	  = $searchclass->inclusive;
+        
+        // if querystring is empty, return empty string
+        if ($searchclass->inclusive == '') 
+        	return '';
+            
+           
+		$where  = $searchclass->boolean_sql_where('ititle,ibody,imore');
+		$select = $searchclass->boolean_sql_select('ititle,ibody,imore');
+
+		// get list of blogs to search
+		$blogs 		= $searchclass->blogs; 		// array containing blogs that always need to be included
+		$blogs[]	= $this->getID();			// also search current blog (duh)
+		$blogs 		= array_unique($blogs);		// remove duplicates
+		$selectblogs = '';
+		if (count($blogs) > 0)
+			$selectblogs = ' and i.iblog in (' . implode(',', $blogs) . ')';
+
+		if ($mode == '') 
+		{
+			$query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
+			if ($select) 
+				$query .= ', '.$select. ' as score ';
+		} else {
+			$query = 'SELECT COUNT(*)';
+		}
+			
+		$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
+			   . ' WHERE i.iauthor=m.mnumber'
+			   . ' and i.icat=c.catid'
+			   . ' and i.idraft=0'	// exclude drafts
+			   . $selectblogs
+					// don't show future items
+			   . ' and i.itime<=' . mysqldate($this->getCorrectTime())
+			   . ' and '.$where;
+
+		// take into account amount of months to search
+		if ($amountMonths > 0) 
+		{
+			$localtime = getdate($this->getCorrectTime());
+			$timestamp_start = mktime(0,0,0,$localtime['mon'] - $amountMonths,1,$localtime['year']);
+			$query .= ' and UNIX_TIMESTAMP(i.itime)>' . $timestamp_start;
+		}
+
+		if ($mode == '')
+		{
+			if ($select) 
+				$query .= ' ORDER BY score DESC';
+			else 
+				$query .= ' ORDER BY i.itime DESC ';
+		}
+
+		return $query;		
 	}
 
 	/**

@@ -26,17 +26,15 @@ class SEARCH {
     function SEARCH($text) {
         global $blogid;
         $text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$text);
-        $this->querystring = $text;
-        $this->marked      = $this->boolean_mark_atoms($text);
-        $this->inclusive   = $this->boolean_inclusive_atoms($text);
+        $this->querystring	= $text;
+        $this->marked		= $this->boolean_mark_atoms($text);
+        $this->inclusive	= $this->boolean_inclusive_atoms($text);
+        $this->blogs		= array();
 
         // get all public searchable blogs, no matter what, include the current blog allways.
-		$res = sql_query('SELECT bnumber FROM '.sql_table('blog').' WHERE bincludesearch ');
-		$i = 0;
-		while ($obj = mysql_fetch_object($res)) {
-		    $this->blogs[$i] = $obj->bnumber;
-		    $i++;
-        }
+		$res = sql_query('SELECT bnumber FROM '.sql_table('blog').' WHERE bincludesearch=1 ');
+		while ($obj = mysql_fetch_object($res)) 
+		    $this->blogs[] = intval($obj->bnumber);
     }
 
     function  boolean_sql_select($match){
@@ -52,6 +50,7 @@ class SEARCH {
 	       }
 
     	   if(strlen($stringsum_long)>0){
+    	   		$stringsum_long = addslashes($stringsum_long);
 	    		$stringsum_a[] = " match ($match) against ('$stringsum_long') ";
     	   }
 
@@ -91,8 +90,8 @@ class SEARCH {
     function boolean_sql_where($match){
         $result = $this->marked;
     	$result = preg_replace(
-    		"/foo\[\(\'([^\)]{4,})\'\)\]bar/",
-    		" match ($match) against ('$1') > 0 ",
+    		"/foo\[\(\'([^\)]{4,})\'\)\]bar/e",
+    		" 'match ('.\$match.') against (\''.\$this->copyvalue(\"$1\").'\') > 0 ' ",
     		$result);
 
     	$result = preg_replace(     		
@@ -100,6 +99,12 @@ class SEARCH {
             " '('.\$this->boolean_sql_where_short(\"$1\",\"$match\").')' ",    		
             $result);
     	return $result;
+    }
+    
+    // there must be a simple way to simply copy a value with backslashes in it through
+    // the preg_replace, but I cannot currently find it (karma 2003-12-30)
+    function copyvalue($foo) {
+    	return $foo;
     }
 
 
@@ -154,9 +159,9 @@ class SEARCH {
         for($ith=0;$ith<count($match_a);$ith++){
             $score_a[$ith] =
                            " $score_unit_weight*(
-                           LENGTH($match_a[$ith]) -
-                           LENGTH(REPLACE(LOWER($match_a[$ith]),LOWER('$string'),'')))
-			               /LENGTH('$string') ";
+                           LENGTH(" . addslashes($match_a[$ith]) . ") -
+                           LENGTH(REPLACE(LOWER(" . addslashes($match_a[$ith]) . "),LOWER('" . addslashes($string) . "'),'')))
+			               /LENGTH('" . addslashes($string) . "') ";
         }
 	    $score = implode(" + ",$score_a);
 
