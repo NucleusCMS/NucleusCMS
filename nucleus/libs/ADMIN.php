@@ -1015,9 +1015,9 @@ class ADMIN {
 		// edit the item for real
 		ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
 		
-		// ITEM::update is pinging weblogs.com, no need to do more
-		// here.
+		// ping weblogs.com when posting a draft
 		if (!$closed && $publish && $wasdraft && $blog->pingUserland()) {
+			ADMIN::action_sendping($blogid);
 			return;
 		}
 

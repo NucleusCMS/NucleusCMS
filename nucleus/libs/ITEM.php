@@ -201,11 +201,6 @@ class ITEM {
 			// send new item notification
 			if (!$isFuture && $blog->getNotifyAddress() && $blog->notifyOnNewItem()) 
 				$blog->sendNewItemNotification($itemid, $title, $body);
-
-			// ping weblogs
-			if ($blog->pingUserland()) {
-                        	ADMIN::action_sendping($new_blogid);
-			}
 		}
 		
 		// update timestamp when needed
