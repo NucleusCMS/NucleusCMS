@@ -9,7 +9,7 @@
 
 <div class="heading">
 Writing Plugins
-<i>December 30th, 2002</i>
+<i>January 17th, 2003</i>
 </div>
 
 <div class="note"><b>Note:</b> This document should contain enough information to write basic plugins. If you have more questions, see the <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin Development Forum</a></div>
@@ -680,21 +680,56 @@ class NP_Acronyms extends NucleusPlugin {
 	</tr>			
 	<tr>
 		<td>EditItemFormExtras</td>
-		<td>(v2.0) Somewhere inside the edit item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.</td>
+		<td>
+			(v2.0) Somewhere inside the edit item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.
+			<br /><br />			
+			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
+<pre><code>&lt;h3&gt;plugin name&lt;/h3&gt;
+&lt;p&gt;your stuff&lt;/p&gt;</code></pre>
+			This way, multiple plugins can add options here while things keep a good structure. Also try to use prefixes for your fieldnames, in order to avoid nameclashes (e.g. <code>plug_tb_url</code>)
+		</td>
 		<td><dl>
 			<dt>blog</dt>
 			<dd>reference to a <code>BLOG</code> object</dd>
 			<dt>variables</dt>
 			<dd>
 				(read-only) An associative array containing all sorts of information on the item that's being edited: 'itemid', 'draft', 'closed', 'title', 'body', 'more', 'author', 'authorid', 'timestamp', 'karmapos', 'karmaneg', 'catid'
-				<br /><br />
-				Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
-<pre><code>&lt;h3&gt;plugin name&lt;/h3&gt;
-&lt;p&gt;your stuff&lt;/p&gt;</code></pre>
-				This way, multiple plugins can add options here while things keep a good structure. Also try to use prefixes for your fieldnames, in order to avoid nameclashes (e.g. <code>plug_tb_url</code>)
 			</dd>			
 		</dl></td>		
 	</tr>				
+	<tr>
+		<td>BlogSettingsFormExtras</td>
+		<td>(v2.0f) On the blog settings page. You can add your own forms here.
+			<br /><br />			
+			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
+<pre><code>&lt;h4&gt;plugin name&lt;/h4&gt;
+&lt;form method="post" action="..."&gt;&lt;p&gt;
+your stuff
+&lt;/p&gt;&lt;/form&gt;</code></pre>
+			This way, multiple plugins can add options here while things keep a good structure. Also try to use prefixes for your fieldnames, in order to avoid nameclashes (e.g. <code>plug_tb_url</code>)
+	
+		</td>
+		<td><dl>
+			<dt>blog</dt>
+			<dd>reference to a <code>BLOG</code> object</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>		
+	</tr>
 <!--	<tr>
 		<td></td>
 		<td></td>
@@ -703,6 +738,30 @@ class NP_Acronyms extends NucleusPlugin {
 			<dd></dd>
 		</dl></td>		
 	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>		
+	</tr>	
 	<tr>
 		<td></td>
 		<td></td>
