@@ -176,7 +176,6 @@ class SKIN {
 	 */
 	function update($type, $content) {
 		$skinid = $this->id;
-		$content = trim($content);
 
 		// delete old thingie
 		sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='".addslashes($type)."' and sdesc=" . intval($skinid));
