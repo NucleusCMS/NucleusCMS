@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+	<title>Nucleus - XML-RPC Interface</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+</head>
+<body>
+
+<div class="heading">
+XML-RPC Interface
+</div>
+
+<h1>Introduction</h1>
+
+<p>
+<a href="index.html">Back to the developer docs index</a>
+</p>
+
+<p>
+This document contains information on the XML-RPC interface that Nucleus provides, and the <a href="#errorcodes">error messages</a> it spits out. Please note that the specification of this interface might still undergo changes in the future.
+</p>
+
+<h1>The Blogger API (XML-RPC)</h1>
+
+<p>
+Nucleus implements the <a href="http://plant.blogger.com/api/">Blogger API</a>. This allows for tools and services that can communicate with Blogger, to be able to also communicate with Nucleus. Because the way Nucleus works, some interpretations of parameters are slightly different, see the notes below for more info. The structure of method calls and responses are, of course, exactly the same as the methods at Blogger.
+</p>
+
+<p>
+Here's the list of available methods. Click them to get more information (links go to either the Blogger API or the <a href="http://groups.yahoo.com/group/bloggerDev">Blogger API Mailinglist</a>).
+</p>
+
+<ul>
+	<li><b><a href="http://plant.blogger.com/api/xmlrpc_newPost.html">blogger.newPost</a></b></li>
+	<li><b><a href="http://plant.blogger.com/api/xmlrpc_editPost.html">blogger.editPost</a></b></li>
+	<li><b><a href="http://groups.yahoo.com/group/bloggerDev/message/296">blogger.getPost</a></b></li>
+	<li><b><a href="http://groups.yahoo.com/group/bloggerDev/message/147">blogger.deletePost</a></b></li>
+	<li><b><a href="http://plant.blogger.com/api/xmlrpc_getUsersBlogs.html">blogger.getUsersBlogs</a></b></li>
+	<li><b><a href="http://groups.yahoo.com/group/bloggerDev/message/225">blogger.getRecentPosts</a></b></li>
+	<li><b><a href="http://groups.yahoo.com/group/bloggerDev/message/315">blogger.getUserInfo</a></b></li>
+	<li><b><a href="http://plant.blogger.com/api/xmlrpc_getTemplate.html">blogger.getTemplate</a></b></li>
+	<li><b><a href="http://plant.blogger.com/api/xmlrpc_setTemplate.html">blogger.setTemplate</a></b></li>
+</ul>
+
+
+<p>
+Since Nucleus is structured somewhat differently inside, there are some differences in the way parameters are handled. An overview:
+</p>
+
+<ul>
+	<li>Appkeys are ignored.</li>
+	<li>Next to the body of a post, a Nucleus-item also has a title and a category. Blogger only has the body (known as 'contents'). To be able to use the extra parts, you can use <tt>&lt;title&gt;</tt> and <tt>&lt;category&gt;</tt> in the contents you send to Nucleus. These tags are only added in the getRecentPosts call</li>
+	<li>What is known under Blogger as 'templates', is known under Nucleus as 'skins'. There can be more than one skin on the system, and each skin can be used by different blogs. The blogger.setTemplate and blogger.getTemplate methods will affect the default skin for the chosen blog, as selected in the Nucleus blog settings. The 'main' and 'archiveIndex' template types refer to the nucleus skinparts 'index' and 'archivelist'</li>
+	<li>The <tt>publish</tt> parameter is used to determine wether a new post is to be added as a draft or not. When using <tt>blogger.editPost</tt>, the <tt>publish</tt> parameter is ignored unless it turns a draft into a published item</li>
+	<li>When using the <tt>getUserInfo</tt> call, the 'lastname' in the result will be empty and 'firstname' will contain the full name. This is because Nucleus does not make a difference between first name and last name</li>
+	<li>The <tt>getRecentPostst</tt>-method returns <tt>authorName</tt> and <tt>title</tt> as extra parameters. Blogger has been returning these also (although undocumented)</li>
+</ul>
+
+<h1><a name="metaweblog"></a>metaWeblog API</h1>
+
+<p>
+Since v1.1, Nucleus also supports the <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>, which is an extention to the Blogger API. 
+</p>
+
+<p>
+A list of available methods is listed below (see the <a href="http://www.xmlrpc.com/metaWeblogApi">specification</a> for more info):
+</p>
+
+<ul>
+	<li>metaWeblog.newPost</li>
+	<li>metaWeblog.editPost</li>	
+	<li>metaWeblog.getPost</li>	
+	<li>metaWeblog.getCategories</li>	
+</ul>
+
+
+<h1><a name="errorcodes"></a>Error Codes</h1>
+
+<p>
+Below is an overview of the types of errors you can get back from the methods:
+</p>
+
+<table>
+	<tr>
+		<th>Error Code</th>
+		<th>Error Message</th>
+	</tr>
+	<tr>
+		<td>801</td>
+		<td>Login Error (probably bad username/password combination)</td>
+	</tr>
+	<tr>
+		<td>802</td>
+		<td>No Such Blog</td>
+	</tr>
+	<tr>
+		<td>803</td>
+		<td>Not a Team Member</td>
+	</tr>
+	<tr>
+		<td>804</td>
+		<td>Cannot add Empty Items</td>
+	</tr>
+	<tr>
+		<td>805</td>
+		<td>Amount parameter must be in range 1..20 (<i>getRecentItems</i>)</td>
+	</tr>
+	<tr>
+		<td>806</td>
+		<td>No Such Item</td>
+	</tr>
+	<tr>
+		<td>807</td>
+		<td>Not Allowed to Alter Item</td>
+	</tr>
+	<tr>
+		<td><i>other codes &lt; 100</i></td>
+		<td>Errors encountered by the Useful Inc. XML-RPC implementation</td>
+	</tr>
+	<tr>
+		<td><i>other codes &gt; 100</i></td>
+		<td>Errors encountered by the XML parser</td>
+	</tr>
+
+
+</table>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+<form method="post" action="<%formdata(actionurl)%>">
+  <div class="mailform">
+	<input type="hidden" name="memberid" value="<%formdata(memberid)%>" />
+	<input type="hidden" name="action" value="sendmessage" />
+
+	<input type="hidden" name="url" value="<%formdata(url)%>" />
+
+	<textarea name="message" class="formfield" rows="<%formdata(rows)%>" cols="<%formdata(cols)%>"></textarea>
+	<br />
+	<input type="submit" value="<%text(_MEMBERMAIL_SUBMIT)%>" class="formbutton" />
+  </div>
+</form>		

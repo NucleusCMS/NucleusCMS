@@ -1,0 +1,734 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xml:lang="en">
+<head>
+	<title>Nucleus - Writing plugins</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+</head>
+<body>
+
+<div class="heading">
+Writing Plugins
+<i>August 25th, 2002</i>
+</div>
+
+<div class="note"><b>Note:</b> This document should contain enough information to write basic plugins. If you have more questions, see the <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin Development Forum</a></div>
+
+<h1>Introduction</h1>
+
+<p>
+<a href="index.html">Back to the developer docs index</a>
+</p>
+
+<p>
+This document contains information on how you can write your own Nucleus plugins 
+</p>
+
+<h1><a name="toc"></a>Table Of Contents</h1>
+
+<ul>
+	<li><a href="#introduction">Introduction</a></li>
+	<li><a href="#firstplug">Writing your first plugin</a></li>
+	<li><a href="#nucleusplugin">Overview of the <tt>NucleusPlugin</tt> class</a></li>
+	<li><a href="#skinvars">The <tt>&lt;%plugin(...)%&gt;</tt> skinvar</a></li>
+	<li><a href="#templatevars">The <tt>&lt;%plugin(...)%&gt;</tt> templatevar</a></li>	
+	<li><a href="#actions">Actions using <tt>action.php</tt></a></li>
+	<li><a href="#events">Events, and subscribing to them</a></li>
+	<li><a href="#options">Saving options</a></li>
+	<li><a href="#tables">Database tables</li></li>
+<!--	<li><a href="#admin">Providing an admin area</a></li> 
+	<li><a href="#parser">Using the <tt>PARSER</tt> class</a></li>
+	<li><a href="#"></a></li>
+	<li><a href="#"></a></li>
+	<li><a href="#"></a></li>
+	<li><a href="#"></a></li>-->
+</ul>
+
+<h1>Introduction <a name="introduction" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+Nucleus plugins allow just about anyone to extend the functionality that Nucleus offers, without having to alter the PHP code itself. Plugins are simple php scripts that must implement certain methods, and can easily be exchanged between Nucleus users. Installing goes as easy as adding the plugin file to the plugin directory and letting Nucleus know it's there.
+</p>
+
+<p>
+Some advantages of plugins are listed below:
+</p>
+
+<ul>
+	<li>Extra functionality can easily be added to the Nucleus framework, without having to know much details about the implementation.</li>
+	<li>You can install only the plugins you need, saving on the time needed to generate a page</li>
+</ul>
+
+<p>
+All plugin files should be placed in the directory that is listed in <tt>config.php</tt>. Commonly, this will be <tt>/your/path/nucleus/plugins/</tt>. Plugin files can be recognized by their form: <tt>NP_<i>name</i>.php</tt>. Some plugins require a subdirectory with the same <i>name</i> to store extra files or their admin area.
+</p>
+
+<div class="note">
+<b>Note:</b> the names are case-sensitive, so they should start with <tt>NP_</tt>, not <tt>Np_</tt> or <tt>np_</tt>. Also note that when the plugin uses a subdirectory, the name of that directory should be <em>all lowercase</em>.
+</div>
+
+
+
+
+<h1>Writing your first plugin <a name="firstplug" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+Ok, lets start by writing a simple plugin. Basically, each plugin is a PHP class that inherits from the predefined class <tt>NucleusPlugin</tt>. Below is an example of a <tt>HelloWorld</tt>-plugin:
+</p>
+
+<pre>&lt;?
+
+class NP_HelloWorld extends NucleusPlugin {
+
+	// name of plugin
+	function getName() {
+		return 'Hello World'; 
+	}
+	
+	// author of plugin
+	function getAuthor()  { 
+		return 'Wouter Demuynck'; 
+	}
+	
+	// an URL to the plugin website
+	// can also be of the form mailto:foo@bar.com
+	function getURL() 
+	{
+		return 'http://nucleuscms.org/'; 
+	}
+	
+	// version of the plugin
+	function getVersion() {
+		return '1.0'; 
+	}
+	
+	// a description to be shown on the installed plugins listing
+	function getDescription() { 
+		return 'Just a sample plugin.';
+	}
+
+	function doSkinVar($skinType) {
+		echo 'Hello World!';
+	}
+	
+}
+?&gt;</pre>
+
+<ol>
+	<li>
+		Copy this code in a file called <tt>NP_HelloWorld.php</tt>, and put it in your plugins directory. <em>Make sure that there are no spaces after the last <tt>?&gt;</tt> or before the first <tt>&lt;?</tt>.</em>. By the way, NP stands for "Nucleus Plugin" :-)
+	</li>
+	<li>Open the Nucleus Administration area and go into <em>Nucleus Management/Manage Plugins</em></li>
+	<li>You'll find out that there's a <em>HelloWorld</em> plugin you can install. Do this. If everything worked out correctly, you'll see that your plugin is now listed in the list of installed plugins.</li>
+	<li>
+		Now edit some skin, and insert the following statement at a place of which you know where it will show up on the actual page.
+<pre><code>&lt;%plugin(HelloWorld)%&gt;</code></pre>
+		Some notes: the name (HelloWorld) is case sensitive!
+	</li>
+	<li>Now visit a page that uses the skin you edited: notice the "Hello World" on the location where you added the <tt>plugin</tt>-skinvar</li>
+</ol>
+
+<p>
+So, that wasn't so hard after all. Read on to find out more.
+</p>
+
+
+
+
+
+
+
+<h1>The class NucleusPlugin <a name="nucleusplugin" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>All Nucleus plugins must inherit from the PHP class <tt>NucleusPlugin</tt>. If this sounds complicated, don't worry, it isn't. It even makes your life easier, allowing you to only implement the methods that your plugin needs, and giving access to some auxiliary functions.</p>
+
+<p>Below is an overview of the methods that the <tt>NucleusPlugin</tt> offers, and that you can re-implement in your own plugin. If you want to see the source of the class itsself, it's located at <tt>nucleus/libs/PLUGIN.php</tt></p>
+
+<table summary="An overview of the redefinable methods in the class NucleusPlugin">
+	<caption>Overview of the class <tt>NucleusPlugin</tt> (redefinable methods)</caption>
+	<tr>
+		<th>Method&nbsp;Signature</th><th>Explanation</th>
+	</tr>
+	<tr>
+		<td><tt>getName()</tt></td>
+		<td>Returns the name of the plugin. This will be the name that will show up on the list of installed plugins. You should definately redefine this method, since the default implementation returns <q>Undefined</q></td>		
+	</tr>
+	<tr>
+		<td><tt>getAuthor()</tt></td>
+		<td>Returns the name of author of the plugin. This name will show up on the list of installed plugins. You should definately redefine this method, since the default implementation returns <q>Undefined</q></td>		
+	</tr>
+	<tr>
+		<td><tt>getURL()</tt></td>
+		<td>Returns the URL of the site where the plugin can be downloaded, or where additional information about the plugin can be found. If no such site exists, a <tt>mailto:</tt>-link with the authors email address is appropriate. You should definately redefine this method, since the default implementation returns <q>Undefined</q></td>		
+	</tr>
+	<tr>
+		<td><tt>getDescription()</tt></td>
+		<td>Returns a longer description of the plugin. This will show up on the list of installed plugins. The default implementation returns <q>Undefined</q></td>		
+	</tr>
+	<tr>
+		<td><tt>getVersion()</tt></td>
+		<td>Returns the current version of the plugin. Returns <q>0.0</q> by default</td>		
+	</tr>
+	<tr>
+		<td><tt>init()</tt></td>
+		<td>Initializes the plugin. This method gets called immediately after the plugin object is created and the <tt>plugid</tt>-attribute has been set. By default, this method does nothing.</td>
+	</tr>
+	<tr>
+		<td><tt>doSkinVar($skinType)</tt></td>
+		<td>When plugins are called using the <tt>&lt;%plugin(...)%&gt;</tt>-skinvar, this method will be called. the <tt>$skinType</tt> parameter contains the type of skin (<tt>item</tt>, <tt>archive</tt>, ...) from where the plugin is called. Don't get confused by the fact that there's only one parameter. Multiple parameters <strong>can</strong> still be passed. <a href="#skinvars">More info on implementing the <tt>doSkinVar</tt> method.</a> By default, this method does no output at all.</td>		
+	</tr>
+	<tr>
+		<td><tt>doTemplateVar(&$item)</tt></td>
+		<td>Basically the same as <tt>doSkinVar</tt>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (item header/body/footer and dateheader/footer) or from inside weblog items. By default, this method forwards the handling to the <tt>doSkinVar</tt>-method, using <tt>template</tt> as skintype. <a href="#templatevars">More information on implementing the <tt>doTemplateVar</tt> method</a></td>		
+	</tr>
+	<tr>
+		<td><tt>doAction($type)</tt></td>
+		<td>When a plugin wants to allow user interaction, it can allow actions through <tt>action.php</tt>. This is the script that Nucleus uses itself to handle new comments and karma votes. Called with the correct parameters, the <tt>doAction</tt>-method from a plugin can be called. The <tt>$type</tt> contains an optional message type. Extra variables from the request can be accessed from within the <tt>doAction</tt> method. By default, this method returns a string <q>No Such Action</q> which will trigger an error message. <a href="#actions">More info on <tt>doAction</tt>.</a></td>		
+	</tr>
+	<tr>
+		<td><tt>install()</tt></td>
+		<td>This method gets called on the moment the plugin is installed. It can perform initializing actions, such as the creation of database tables, the creation of plugin options, etc... By default, this method does nothing.</td>
+	</tr>
+	<tr>
+		<td><tt>unInstall()</tt></td>
+		<td>Called when the plugin is uninstalled. It's a good thing to clean up information your plugin created in the database at this point. By default, this method does nothing.</td>
+	</tr>
+	<tr>
+		<td><tt>getEventList()</tt></td>
+		<td>Plugins can subscribe to events. Events get generated whenever Nucleus performs a certain action. An <tt>AddItem</tt> event for example, will call all plugins that subscribed to this event. The called method will be <tt>event_AddItem($params)</tt>. The <tt>$params</tt>-parameter is an associative array containing several fields of information, like the itemid for <tt>AddItem</tt>. Returns an empty array by default, indicating that the plugin does not subscribe to any event at all. <a href="#events">More information about events.</a></td>		
+	</tr>
+	<tr>
+		<td><tt>getTableList()</tt></td>
+		<td>This method should return an array of database tables that the plugin has created. It's used in the backup feature that Nucleus offers, so plugin tables are also included in the backup. By default, returns an empty array.</td>
+	</tr>
+	<tr>
+		<td><tt>hasAdminArea()</tt></td>
+		<td>Should return <tt>1</tt> if the plugin has an admin area of its own, and <tt>0</tt> if it doesn't. By default, <tt>0</tt> is returned.</td>
+	</tr>
+</table>
+
+<p>Next to the methods that can be implemented, the class <tt>NucleusPlugin</tt> offers some extra methods which you <em>should not</em> implement yourself. They can be called from within your plugin using the <code>$this-&gt;functionName()</code> syntax.</p>
+
+<table summary="An overview of the auxiliary methods in the class NucleusPlugin. You should NOT redefine these">
+	<caption>Overview of the class <tt>NucleusPlugin</tt> (non-redefinable methods)</caption>
+	<tr>
+		<th>Method&nbsp;Signature</th><th>Explanation</th>
+	</tr>
+	<tr>
+		<td><tt>createOption(...)</tt></td>
+		<td><a href="#options" title="More info on options">Creates a new option</a></td>		
+	</tr>
+	<tr>
+		<td><tt>deleteOption(...)</tt></td>
+		<td><a href="#options" title="More info on options">Deletes an option</a></td>		
+	</tr>
+	<tr>
+		<td><tt>setOption(...)</tt></td>
+		<td><a href="#options" title="More info on options">Sets the value of an option</a></td>		
+	</tr>
+	<tr>
+		<td><tt>getOption(...)</tt></td>
+		<td><a href="#options" title="More info on options">Retrieves the value of an option</a></td>		
+	</tr>
+	<tr>
+		<td><tt>getID()</tt></td>
+		<td>Returns the ID for this plugin (this is the ID internally used inside Nucleus)</td>		
+	</tr>
+	<tr>
+		<td><tt>getAdminURL()</tt></td>
+		<td>Returns the URL of where the admin area of the plugin is located (if there is no such admin area, this information is invalid)</td>		
+	</tr>
+	<tr>
+		<td><tt>getDirectory()</tt></td>
+		<td>Returns the path in the servers filesystem where the extra files for the plugin are stored (if there are no such files, this information makes no sense). The result is something like "<tt>.../nucleus/plugins/<i>plugname</i>/</tt>"</td>		
+	</tr>
+	<tr>
+		<td><tt>getShortName()</tt></td>
+		<td>Returns the part of the plugin classname without the "<tt>NP_</tt>"-part, and in all-lowercase. This information is used in the functions <tt>getAdminURL</tt> and <tt>getDirectory</tt></td>		
+	</tr>
+
+</table>
+
+<h1>Skinvars <a name="skinvars" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+You can create your own skinvars, and call them using <tt>&lt;%plugin(<i>PlugName</i>,<i>parameters</i>)%&gt; </tt> or <tt>&lt;%PlugName(parameters)%&gt;</tt> (when this does not conflict with an existing skinvar). Parameters are comma-separated.
+</p>
+
+<p>
+To handle skinvars, you'll need to implement the <tt>doSkinVar</tt> method. Some samples of signatures are given below:
+</p>
+
+<pre>
+function doSkinVar($skinType)
+function doSkinVar($skinType, $param1, $param2)
+function doSkinVar($skinType, $skinVar, $param1, $param2)
+function doSkinVar($skinType, $skinVar, $param1 = 'default value')
+</pre>
+
+<ul>
+	<li>The <tt>$skinType</tt> parameter will be one of 'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search', 'imagepopup' or <a href="#templatevars" title="Information on templatevars">'template'</a></li>
+	<li>The <tt>$skinVar</tt> is actually the first parameter that's being interpreted as a type of skinvar (e.g. <tt>&lt;%plugin(PlugName,VarType)%&gt;</tt>)</li>
+	<li>You can use <tt>doSkinVar()</tt> (no parameters) and retrieve the parameters using the PHP function <tt>func_get_args()</tt>. Could be handy if you have different types of skinvars with different numbers of arguments</li>
+</ul>
+
+
+
+
+<h1>Template variables <a name="templatevars" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+Template variables work in the same way as skinvars. There are two differences:</p>
+
+<ol>
+	<li>They are called from within templates instead of from within skins</li>
+	<li>The <tt>doTemplateVar</tt>-method does not get a <tt>$skinType</tt> parameter, but gets a <tt>&$item</tt> parameter instead. <strong>Note the ampersand!</strong></li>
+</ol>
+	
+<p>Template variables are called in exactly the same way as skinvars (using <tt>&lt;%plugin(<i>PlugName</i>,<i>parameters</i>)%&gt; </tt> or <tt>&lt;%PlugName(parameters)%&gt;</tt>)
+</p>
+
+<p>
+By default, all template variables are passed on to the <tt>doSkinVar</tt>-method, using '<tt>template</tt>' as <tt>skinType</tt>-parameter.
+</p>
+
+<p>
+If you want to provide your own implementation, you'll need to redefine the method <tt>doTemplateVar</tt>. It works in the same way as <tt>doSkinVar</tt>, except that now the <tt>skinType</tt>-parameter is missing.
+</p>
+
+<pre>
+function doTemplateVar(&$item)
+function doTemplateVar(&$item, $param1, $param2)
+function doTemplateVar(&$item, $type, $param1, $param2)
+function doTemplateVar(&$item, $type, $param1 = 'default value')
+</pre>
+
+
+
+
+<h1>Actions <a name="actions" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Plugins can perform actions through <tt>action.php</tt>, the same script that's being used to receive comments and karma votes. You can call it using both GET and POST methods. Required parameters are <tt>action</tt> (should be 'plugin'), <tt>name</tt> (name of the plugin) and <tt>type</tt> (type of requested action)</p>
+
+<p>To enable these actions, you should implement the <tt>doAction($actionType)</tt> method in your plugin. Extra parameters from the request can be received using <tt>requestVar('<i>name</i>')</tt> (<tt>requestVar</tt> takes care of magic_quotes_gpc that PHP might have added)</p>
+
+<p>
+When your <tt>doAction</tt> method returns a string, it will be interpreted as an error, and an error message will be shown.
+</p>
+
+
+
+
+
+
+<h1>Events <a name="events" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+Nucleus Plugins can subscribe to events that occur whenever something important happens. The plugin can then execute some actions, or output some text.
+</p>
+
+<h2>Example</h2>
+
+<p>
+Below is an example of how a plugin subscribes to the <tt>PreAddComment</tt>-event, an event that is generated immediately before a comment is added to a blog.
+</p>
+
+<pre>
+class NP_Acronyms extends NucleusPlugin {
+  ...
+  function getEventList() { return array('PreAddComment'); }
+  ...
+  function event_PreAddComment($data) {
+    // replace acronym HTML
+    $data['comment']['body'] = 
+        strreplace('HTML',
+                   '&lt;acronym title="HyperText Markup Language"&gt;HTML&lt;/acronym&gt;',
+                   $data['comment']['body']);
+  }
+}
+</pre>
+
+<p>This plugin replaces the text <tt>HTML</tt> in each comment by the text <tt>&lt;acronym title="HyperText Markup Language"&gt;HTML&lt;/acronym&gt;</tt>. The <tt>acronym</tt>-tag is a <acronym title="HyperText Markup Language">HTML</acronym>-tag that allows authors to provide extra information on acronyms.</p>
+
+<h2>Subscribing to events</h2>
+
+<p>Here's the steps you need to take to subscribe to an event:</p>
+
+<ol>
+	<li>Add the event name to the array returned by the <tt>getEventList</tt>-method</li>
+	<li>Create a method with signature <tt>event_<em>EventName</em>($data)</tt>, in which the handling of the event is done</li>
+</ol>
+
+<p>Multiple plugins can subscribe to the same event. The order in which these plugins are notified is the same order as the ordening in the plugin list of the admin area. Plugins higher in the list get notified earlier on.</p>
+
+<h2>Parameters</h2>
+
+<p>The <tt>event_<em>EventName</em></tt>-method gets only one parameter, <tt>$data</tt>, of which the contents differs depending on the event. It is an associative array with data. Objects and arrays that are passed in this array, are passed by <strong>reference</strong>, so the changes you make there will be remembered.</p>
+
+<h2>Event List</h2>
+
+<table summary="An overview of events to which a Nucleus Plugin can subscribe, and what parameters are passed along to the method that handles the event">
+	<caption>Events on which a plugin can subscribe</caption>
+	<tr>
+		<th>Name</th><th>When</th><th>Parameters</th>
+	</tr>
+	<tr>
+		<td>PreSkinParse</td>
+		<td>Immediately before the parsing of a skin begins</td>
+		<td><dl>
+			<dt>skin</dt>
+			<dd>The <tt>SKIN</tt>-object that is handling the parse</dd>
+			<dt>type</dt>
+			<dd>Type of skinpart (one of 'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search', 'imagepopup', 'fileparser')</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostSkinParse</td>
+		<td>Immediately after parsing a skin</td>
+		<td><dl>
+			<dt>skin</dt>
+			<dd>The <tt>SKIN</tt>-object that is handling the parse</dd>
+			<dt>type</dt>
+			<dd>Type of skinpart (one of 'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search', 'imagepopup', 'fileparser')</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreItem</td>
+		<td>Before an item is parsed, but after the item header has been placed</td>
+		<td><dl>
+			<dt>blog</dt>
+			<dd>blog object</dd>
+			<dt>item</dt>
+			<dd>object containing item data</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostItem</td>
+		<td>After an item has been parsed, but before the item footer has been parsed</td>
+		<td><dl>
+			<dt>blog</dt>
+			<dd>blog object</dd>
+			<dt>item</dt>
+			<dd>object containing item data</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreComment</td>
+		<td>Before a comment is shown</td>
+		<td><dl>
+			<dt>comment</dt>
+			<dd>associative array containing comment data</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostComment</td>
+		<td>After a comment has been shown</td>
+		<td><dl>
+			<dt>comment</dt>
+			<dd>associative array containing comment data</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreDateHead</td>
+		<td>Before a date header is shown</td>
+		<td><dl>
+			<dt>blog</dt>
+			<dd>BLOG-object</dd>
+			<dt>timestamp</dt>
+			<dd>Timestamp for date header</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostDateHead</td>
+		<td>After a date header has been parsed</td>
+		<td><dl>
+			<dt>blog</dt>
+			<dd>BLOG-object</dd>
+			<dt>timestamp</dt>
+			<dd>Timestamp for date header</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreDateFoot</td>
+		<td>Before a date footer is parsed</td>
+		<td><dl>
+			<dt>blog</dt>
+			<dd>BLOG-object</dd>
+			<dt>timestamp</dt>
+			<dd>Timestamp for day that is closed</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostDateFoot</td>
+		<td>After a date footer has been parsed</td>
+		<td><dl>
+			<dt>blog</dt>
+			<dd>BLOG-object</dd>
+			<dt>timestamp</dt>
+			<dd>Timestamp for day that is closed</dd>
+		</dl></td>		
+	</tr>	
+	<tr>
+		<td>LoginSuccess</td>
+		<td>After a successful login</td>
+		<td><dl>
+			<dt>member</dt>
+			<dd>member object</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>LoginFailed</td>
+		<td>After a failed login</td>
+		<td><dl>
+			<dt>username</dt>
+			<dd>login name that was used in the login attempt</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>Logout</td>
+		<td>After logout</td>
+		<td><dl>
+			<dt>username</dt>
+			<dd>name of the user that logged out</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreBlogContent</td>
+		<td>Before blog content has been inserted through a skinvar</td>
+		<td><dl>
+			<dt>blog</dt>
+			<dd>BLOG-object</dd>
+			<dt>type</dt>
+			<dd>Type of skinvar that's being called ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults', 'othersearchresults', 'categorylist', 'otherarchive', 'otherarchivelist')</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostBlogContent</td>
+		<td>After blog content has been inserted through a skinvar</td>
+		<td><dl>
+			<dt>blog</dt>
+			<dd>BLOG-object</dd>
+			<dt>type</dt>
+			<dd>Type of skinvar that's being called ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults', 'othersearchresults', 'categorylist', 'otherarchive', 'otherarchivelist')</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreAddComment</td>
+		<td>Before adding a comment to the database</td>
+		<td><dl>
+			<dt>comment</dt>
+			<dd>comment data (associative array)</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostAddComment</td>
+		<td>After adding a comment to the database</td>
+		<td><dl>
+			<dt>comment</dt>
+			<dd>comment data (associative array)</dd>
+			<dt>errormessage</dt>
+			<dd>error message (if any)</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostRegister</td>
+		<td>After a new user has registered</td>
+		<td><dl>
+			<dt>member</dt>
+			<dd>New member object</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostAddItem</td>
+		<td>After an item has been added to the database</td>
+		<td><dl>
+			<dt>itemid</dt>
+			<dd>new itemid in database</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreAddItem</td>
+		<td>Immediately before an item is added to the database</td>
+		<td><dl>
+			<dt>title</dt>
+			<dd>title</dd>
+			<dt>body</dt>
+			<dd>body text</dd>
+			<dt>more</dt>
+			<dd>extended text</dd>
+			<dt>blog</dt>
+			<dd>blog object</dd>
+			<dt>authorid</dt>
+			<dd>ID of author</dd>
+			<dt>timestamp</dt>
+			<dd>UNIX timestamp</dd>
+			<dt>closed</dt>
+			<dd>1 (no comments allowed) or 0 (comments allowed)</dd>
+			<dt>draft</dt>
+			<dd>1 (draft) or 0 (not draft)</dd>
+			<dt>catid</dt>
+			<dd>ID fo category</dd>
+		</dl></td>		
+	</tr>	
+	<tr>
+		<td>PreUpdateItem</td>
+		<td>Immediately before an item gets updates in the database</td>
+		<td><dl>
+			<dt>itemid</dt>
+			<dd>item ID</dd>
+			<dt>title</dt>
+			<dd>title</dd>
+			<dt>body</dt>
+			<dd>body text</dd>
+			<dt>more</dt>
+			<dd>extended text</dd>
+			<dt>blog</dt>
+			<dd>blog object</dd>
+			<dt>closed</dt>
+			<dd>1 (no comments allowed) or 0 (comments allowed)</dd>
+			<dt>catid</dt>
+			<dd>ID fo category</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PrepareItemForEdit</td>
+		<td>Called after getting an item from the database, and before presenting it to the user to be edited.</td>
+		<td><dl>
+			<dt>item</dt>
+			<dd>associative array containing item data</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PreUpdateComment</td>
+		<td>Immediately before a comment is updated and saved into the database</td>
+		<td><dl>
+			<dt>body</dt>
+			<dd>Comment body</dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td>PrepareCommentForEdit</td>
+		<td>After a comment is retrieved from the database, and before it is presented to the user to be edited.</td>
+		<td><dl>
+			<dt>comment</dt>
+			<dd>comment data (associative array)</dd>
+		</dl></td>		
+	</tr>
+<!--	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>		
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>		
+	</tr> -->
+</table>
+
+
+
+<h1>Saving options <a name="options" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Four methods are offered to make it easy for plugins to set and retrieve simple options. These options can be directly edited from inside the Nucleus admin area, taking the need away for the plugin to provide an admin area of its own, and avoiding that options need to be set inside the PHP file itself.</p>
+
+<h2>Option types</h2>
+
+<p>Three types of options are provided</p>
+
+<dl>
+	<dt>text</dt>
+	<dd>Simple text</dd>
+	<dt>yesno</dt>
+	<dd>Either the value '<tt>yes</tt>' or the value '<tt>no</tt>' (on edit, shown as radio button)</dd>
+	<dt>password</dt>
+	<dd>Text field (starred on edit)</dd>
+</dl>
+
+<h2>Restrictions</h2>
+
+<ol>
+	<li>The name of an option can contain a maximum of 20 characters</li>
+	<li>The description of an option can contain a maximum of 255 characters</li>
+	<li>The value for an option can contain a maximum of 128 characters</li>
+</ol>
+
+<h2>The methods</h2>
+
+<ol>
+	<li><tt>createOption($name, $description, $type, $value)</tt>: creates a new option in the database
+		<table><tr>
+			<th>parameter</th>
+			<th>value</th>
+		</tr><tr>
+			<td>$name</td>
+			<td>Option name</td>
+		</tr><tr>
+			<td>$description</td>
+			<td>Textual description, to be shown on the page where options can be edited</td>
+		</tr><tr>
+			<td>$type</td>
+			<td>Option type ('yesno','text' or 'password')</td>
+		</tr><tr>
+			<td>$value</td>
+			<td>Initial value</td>
+		</tr></table>
+	</li>
+	<li><tt>setOption($name, $value)</tt>: changes the value of an option that was already in the database
+		<table><tr>
+			<th>parameter</th>
+			<th>value</th>
+		</tr><tr>		
+			<td>$name</td>
+			<td>Option name</td>
+		</tr></tr>
+			<td>$value</td>
+			<td>New value for option</td>
+		</tr></table>
+	</li>
+	<li><tt>getOption($name)</tt>: returns the value for an option in the database
+		<table><tr>
+			<th>parameter</th>
+			<th>value</th>
+		</tr><tr>		
+			<td>$name</td>
+			<td>Option name</td>
+		</tr></table>
+	</li>
+	<li><tt>deleteOption($name)</tt>: deletes an option from the database
+		<table><tr>
+			<th>parameter</th>
+			<th>value</th>
+		</tr><tr>		
+			<td>$name</td>
+			<td>Option name</td>
+		</tr></table>
+	</li>	
+</ol>
+
+<div class="note">
+<b>Note:</b> You can't call these functions from inside constructors of plugin classes. You should call them from the <tt>init()</tt> method instead.
+</div>
+
+<h1>Database tables <a name="tables" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>If your plugin needs database tables of it's own, you should create then in the <tt>install</tt> method and remove them in the <tt>unInstall</tt> method.</p>
+
+<p>Some pointers</p>
+<ul>
+	<li>Consider using a table name like <tt>nucleus_plug_<i>plugname</i></tt> to avoid conflicts with other plugins</li>
+	<li>You don't need to make a database connection yourself. You can execute queries using the PHP command <tt>mysql_query()</tt></li>
+	<li>If you do make a database connection yourself, make sure to restore the connection with the Nucleus database afterwards. You can do this by calling <tt>sql_connect()</tt> at the end of your function. It might also be good to do this from the constructor, to avoid reconnecting constantly. You could then save your link identifier in <tt>$this->db</tt> and pass that along with every query.</li>
+	<li>Also redefine the <tt>getTableList()</tt> method to make sure your table gets backupped when using the backup function.</li>
+</ul>
+
+
+
+</body>
+</html>
