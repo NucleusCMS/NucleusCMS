@@ -1,21 +1,48 @@
 <?php
 // Finnish Nucleus Language File
 // 
-// Author: Marko Seppänen, http://hoito.org
-// Nucleus version: 2.5 beta
-//
-// Author: Jussi Josefsson, http://www.nominaali.com
-// Nucleus version: Blog:cms 3.4.7 (Nucleus 3.1)
+// Author: Toni Ruuska, http://www.feldon.net 
+// Based on earlier translations by Marko Seppänen (http://hoito.org) 
+// and Jussi Josefsson (http://www.nominaali.com).
+// Nucleus version: v1.0-v3.2 
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which 
+// might be deleted. Therefore, it's important to list the Nucleus version for which
 // the file was written in your document.
 //
-// Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
-// and will be available for download (with proper credit to the author, of course)
+// Fully translated language file can be sent to us and will be made
+// available for download (with proper credit to the author, of course)
+
+// START changed/added after 3.15 START
+
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Paina \'Päivitä laajennuslista\'-nappulaa päivittääksesi listan kaikista laajennuksista.');
+define('_LIST_PLUGS_DEP',			'Laajennus vaatii:');
+
+// END changed/added after 3.15
 
 // START changed/added after 3.1 START
+
+// comments list per weblog
+define('_COMMENTS_BLOG',			'Kaikki kommentit kohteessa ');
+define('_NOCOMMENTS_BLOG',			'Ei kommentteja');
+define('_BLOGLIST_COMMENTS',		'Kommentit');
+define('_BLOGLIST_TT_COMMENTS',		'Lista kommenteista');
+
+
+// for use in archivetype-skinvar
+define('_ARCHIVETYPE_DAY',			'päivä');
+define('_ARCHIVETYPE_MONTH',		'kuukausi');
+
+// tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
+define('_ERROR_BADTICKET',			'Vanhentunut tai virheellinen tunniste.');
+
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',		'Laajennuksen asennus ei onnistunut, syynä ');
+define('_ERROR_DELREQPLUGIN',		'Laajennuksen poistaminen ei onnistunut, syynä ');
+
+// cookie prefix
+define('_SETTINGS_COOKIEPREFIX',	'Evästeen tunniste');
 
 // account activation
 define('_ERROR_NOLOGON_NOACTIVATE',	'Aktivointiin tarvittavaa linkkiä ei voida lähettää. Sisäänkirjautumista ei ole sallittu.');
@@ -43,7 +70,7 @@ define('_MEMBERS_SETPWD_BTN',		'Aseta salasana');
 define('_QMENU_ACTIVATE',			'Tilin aktivointi');
 define('_QMENU_ACTIVATE_TEXT',		'<p>Kun olet aktivoinut tilisi, voit alkaa käyttää sitä <a href="index.php?action=showlogin">kirjautumalla sisään</a>.</p>');
 
-define('_PLUGS_BTN_UPDATE',			'Päivitä tilauksien lista');
+define('_PLUGS_BTN_UPDATE',			'Päivitä laajennuslista');
 
 // global settings 
 define('_SETTINGS_JSTOOLBAR',		'Javascript valikon tyyli');
@@ -53,7 +80,7 @@ define('_SETTINGS_JSTOOLBAR_NONE',	'Poista valikko käytöstä');
 define('_SETTINGS_URLMODE_HELP',	'(Lisätietoja: <a href="documentation/tips.html#searchengines-fancyurls">How to activate fancy URLs</a>)');
 
 // extra plugin settings part when editing categories/members/blogs/...
-define('_PLUGINS_EXTRA',			'Extra laajennuksen asetukset');
+define('_PLUGINS_EXTRA',			'Laajennuksen lisäasetukset');
 
 // itemlist info column keys
 define('_LIST_ITEM_BLOG',			'blog:');
@@ -71,27 +98,27 @@ define('_BATCH_EXEC',				'Suorita');
 
 // quickmenu
 define('_QMENU_HOME',				'Pääsivu');
-define('_QMENU_ADD',				'Lisää juttu');
+define('_QMENU_ADD',				'Lisää artikkeli');
 define('_QMENU_ADD_SELECT',			'-- valitse --');
-define('_QMENU_USER_SETTINGS',		'Asetukset');
-define('_QMENU_USER_ITEMS',			'Jutut');
+define('_QMENU_USER_SETTINGS',		'Tiedot');
+define('_QMENU_USER_ITEMS',			'Artikkelit');
 define('_QMENU_USER_COMMENTS',		'Kommentit');
 define('_QMENU_MANAGE',				'Hallinta');
 define('_QMENU_MANAGE_LOG',			'Toimintaloki');
-define('_QMENU_MANAGE_SETTINGS',	'Yleiset asetukset');
+define('_QMENU_MANAGE_SETTINGS',		'Asetukset');
 define('_QMENU_MANAGE_MEMBERS',		'Käyttäjät');
 define('_QMENU_MANAGE_NEWBLOG',		'Uusi blogi');
 define('_QMENU_MANAGE_BACKUPS',		'Varmuuskopiot');
 define('_QMENU_MANAGE_PLUGINS',		'Laajennukset');
 define('_QMENU_LAYOUT',				'Ulkoasu');
-define('_QMENU_LAYOUT_SKINS',		'Nahat');
-define('_QMENU_LAYOUT_TEMPL',		'Sivupohjat');
+define('_QMENU_LAYOUT_SKINS',		'Sivurungot');
+define('_QMENU_LAYOUT_TEMPL',		'Asettelut');
 define('_QMENU_LAYOUT_IEXPORT',		'Tuo/Vie');
 define('_QMENU_PLUGINS',			'Laajennukset');
 
 // quickmenu on logon screen
 define('_QMENU_INTRO',				'Esittely');
-define('_QMENU_INTRO_TEXT',			'<p>Tämä on kirjautumisruutu Nucleus-järjestelmään, sisällönhallintajärjestelmä jota käytetään sivuston ylläpitoon.</p><p>Jos sinulla on tili sivustolle, voit kirjautua ja kirjoittaa uusia juttuja.</p>');
+define('_QMENU_INTRO_TEXT',			'<p>Tämä on kirjautumisruutu Nucleus-sisällönhallintajärjestelmän ylläpitoalueelle.</p><p>Jos sinulla on tili sivustolle, voit kirjautua sisään ja lisätä uusia artikkeleita tai muuttaa asetuksia.</p>');
 
 // helppages for plugins
 define('_ERROR_PLUGNOHELPFILE',		'Avustustiedostoa laajennukselle ei löytynyt');
@@ -172,7 +199,7 @@ define('_MOVECAT_BTN',				'Siirrä kategoria');
 // URLMode setting
 define('_SETTINGS_URLMODE',			'URL moodi');
 define('_SETTINGS_URLMODE_NORMAL',	'Normaali');
-define('_SETTINGS_URLMODE_PATHINFO','Häjynen');
+define('_SETTINGS_URLMODE_PATHINFO','Tarkka');
 
 // Batch operations
 define('_BATCH_NOSELECTION',		'Ei valintoja, joihin kohdistuu toimintoja');
@@ -210,11 +237,11 @@ define('_BATCH_COMMENT_DELETE',		'Poista');
 
 // itemlist: Add new item...
 define('_ITEMLIST_ADDNEW',			'Lisää uusi blogiartikkeli...');
-define('_ADD_PLUGIN_EXTRAS',		'Lisävalintoja pluginille');
+define('_ADD_PLUGIN_EXTRAS',		'Laajennuksen lisävalinnat');
 
 // errors
 define('_ERROR_CATCREATEFAIL',		'Ei pystytty luomaan uutta kategoriaa');
-define('_ERROR_NUCLEUSVERSIONREQ',	'Tämä plugini vaatii uudemman Nucleuksen version: ');
+define('_ERROR_NUCLEUSVERSIONREQ',	'Tämä laajennus vaatii uudemman Nucleuksen version: ');
 
 // backlinks
 define('_BACK_TO_BLOGSETTINGS',		'Takaisin blogiasetuksiin');
@@ -222,25 +249,25 @@ define('_BACK_TO_BLOGSETTINGS',		'Takaisin blogiasetuksiin');
 // skin import export
 define('_SKINIE_TITLE_IMPORT',		'Tuo');
 define('_SKINIE_TITLE_EXPORT',		'Vie');
-define('_SKINIE_BTN_IMPORT',		'Tuo valitut sivurungot / templaatit');
-define('_SKINIE_BTN_EXPORT',		'Vie valitut sivurungot / templaatit');
+define('_SKINIE_BTN_IMPORT',		'Tuo valitut sivurungot / asettelut');
+define('_SKINIE_BTN_EXPORT',		'Vie valitut sivurungot / asettelut');
 define('_SKINIE_LOCAL',				'Tuo paikallisesta tiedostosta:');
 define('_SKINIE_NOCANDIDATES',		'Ei ehdokkaita tuotavaksi sivurunko -hakemistossa');
 define('_SKINIE_FROMURL',			'Tuo URL:sta:');
-define('_SKINIE_EXPORT_INTRO',		'Valitse sivurungot ja templaatit, jotka haluavat viedä');
+define('_SKINIE_EXPORT_INTRO',		'Valitse sivurungot ja asettelut, jotka haluavat viedä');
 define('_SKINIE_EXPORT_SKINS',		'Sivurungot');
-define('_SKINIE_EXPORT_TEMPLATES',	'Templaatit');
+define('_SKINIE_EXPORT_TEMPLATES',	'Asettelut');
 define('_SKINIE_EXPORT_EXTRA',		'Lisätietoa');
 define('_SKINIE_CONFIRM_OVERWRITE',	'Ylikirjoita sivurungot, jotka ovat jo olemassa (katso nimien päällekkäisyydet)');
 define('_SKINIE_CONFIRM_IMPORT',	'Kyllä, haluan tuoda tämän ');
-define('_SKINIE_CONFIRM_TITLE',		'Valmis tuomaan sivurungon ja templaatit');
+define('_SKINIE_CONFIRM_TITLE',		'Valmis tuomaan sivurungon ja asettelut');
 define('_SKINIE_INFO_SKINS',		'Sivurungot tiedostossa:');
-define('_SKINIE_INFO_TEMPLATES',	'Templaatit tiedostossa:');
+define('_SKINIE_INFO_TEMPLATES',	'Asettelut tiedostossa:');
 define('_SKINIE_INFO_GENERAL',		'Tietoa:');
 define('_SKINIE_INFO_SKINCLASH',	'Sivirunkonimien päällekkäisyydet:');
-define('_SKINIE_INFO_TEMPLCLASH',	'Templaattinimien päällekkäisyydet:');
+define('_SKINIE_INFO_TEMPLCLASH',	'Asettelunimien päällekkäisyydet:');
 define('_SKINIE_INFO_IMPORTEDSKINS','Tuodut sivurungot:');
-define('_SKINIE_INFO_IMPORTEDTEMPLS','Tuodut templaatit:');
+define('_SKINIE_INFO_IMPORTEDTEMPLS','Tuodut asettelut:');
 define('_SKINIE_DONE',				'Tuominen valmis');
 
 define('_AND',						'ja');
@@ -257,17 +284,17 @@ define('_LIST_SKINS_DEFINED',		'Määritellyt osat:');
 // backup
 define('_BACKUPS_TITLE',			'Varmuuskopioi / Palauta');
 define('_BACKUP_TITLE',				'Varmuuskopioi');
-define('_BACKUP_INTRO',				'Klikkaa alla olevaa painiketta luodaksesi varmuuskopio Nucleus tietokannastasi. Tallennusikkuna tulee esiin ja voit valita minne haluat tallettaa varmuuskopiotiedoston. Säilö se varmaan paikkaan.');
+define('_BACKUP_INTRO',				'Klikkaa alla olevaa painiketta luodaksesi varmuuskopion Nucleus-tietokannastasi. Tallennusikkuna tulee esiin ja voit valita minne haluat tallettaa varmuuskopiotiedoston. Säilö se varmaan paikkaan.');
 define('_BACKUP_ZIP_YES',			'Yritä käyttää tiedonpakkausta');
 define('_BACKUP_ZIP_NO',			'Älä käytä tiedonpakkausta');
 define('_BACKUP_BTN',				'Luo varmuuskopio');
 define('_BACKUP_NOTE',				'<b>Huomaa:</b> Vain tietokannan sisältö on talletettuna varmuuskopioon. Mediatiedostot ja asetukset tiedostossa config.php <b>eivät</b> täten sisälly varmuuskopioon.');
 define('_RESTORE_TITLE',			'Palauta');
-define('_RESTORE_NOTE',				'<b>VAROITUS:</b> Varmuuskopiosta palauttaminen tulee <b>TYHJENTÄMÄÄN</b> kaiken nykyisen Nucleus datan tietokannasta! Toteuta tämä vain, jos olet ehdottaman varma, että haluat tehdä tämän!	<br />	<b>Huomaa:</b> Varmista, että Nucleuksen versio, jossa varmuuskopion loit, pitäisi olla sama kuin versio, jota käytät juuri nyt! Muuten se ei toimi.');
-define('_RESTORE_INTRO',			'Valitse varmuuskopiotiedosto alta (se tullaan lataamaan serverille) ja klikkaa "Palauta tiedostosta" painiketta aloittaaksesi.');
+define('_RESTORE_NOTE',				'<b>VAROITUS:</b> Varmuuskopiosta palauttaminen tulee <b>TYHJENTÄMÄÄN</b> kaiken nykyisen Nucleus-tietokannan kokonaan! Älä jatka ellet ole ehdottoman varma siitä mitä olet tekemässä!	<br />	<b>Huom!</b> Varmista, että Nucleuksen versio, jossa varmuuskopion loit, pitäisi olla sama kuin versio, jota käytät juuri nyt! Muuten se ei toimi.');
+define('_RESTORE_INTRO',			'Valitse varmuuskopiotiedosto alta (se tullaan lataamaan serverille) ja klikkaa "Palauta tiedostosta" -painiketta aloittaaksesi.');
 define('_RESTORE_IMSURE',			'Kyllä, olen varma, että haluan tehdä tämän!');
 define('_RESTORE_BTN',				'Palauta tiedostosta');
-define('_RESTORE_WARNING',			'(varmista, että olet palauttamassa oikeaa varmuuskopiota, kenties kannattaa tehdä uusi varmuuskopio ennen kuin aloitat)');
+define('_RESTORE_WARNING',			'(varmista, että olet palauttamassa oikeaa varmuuskopiota. Kenties kannattaisi tehdä uusi varmuuskopio ennen kuin aloitat...)');
 define('_ERROR_BACKUP_NOTSURE',		'Sinun täytyy ruksittaa \'Olen varma, että haluan tehdä tämän\' -kohta');
 define('_RESTORE_COMPLETE',			'Palautus valmis');
 
@@ -301,36 +328,36 @@ define('_MMAIL_MAIL',				'Viesti:');
 // START introduced after v1.1 START
 
 // bookmarklet buttons
-define('_BMLET_ADD',				'Lisää merkintä');
-define('_BMLET_EDIT',				'Muokkaa merkintää');
-define('_BMLET_DELETE',				'Poista merkintä');
+define('_BMLET_ADD',				'Lisää artikkeli');
+define('_BMLET_EDIT',				'Muokkaa artikkelia');
+define('_BMLET_DELETE',				'Poista artikkeli');
 define('_BMLET_BODY',				'Sisältö');
 define('_BMLET_MORE',				'Laajennettu');
 define('_BMLET_OPTIONS',			'Optiot');
 define('_BMLET_PREVIEW',			'Esikatselu');
 
 // used in bookmarklet
-define('_ITEM_UPDATED',				'Merkintä päivitetty');
-define('_ITEM_DELETED',				'Merkintä poistettu');
+define('_ITEM_UPDATED',				'Artikkeli päivitetty');
+define('_ITEM_DELETED',				'Artikkeli poistettu');
 
 // plugins
-define('_CONFIRMTXT_PLUGIN',		'Oletko varma, että haluat poistaa pluginin nimeltä');
-define('_ERROR_NOSUCHPLUGIN',		'Kyseistä pluginia ei ole');
-define('_ERROR_DUPPLUGIN',			'Tämä plugini on jo asennettu');
-define('_ERROR_PLUGFILEERROR',		'Kyseistä pluginia ei ole, tai oikeudet ovat väärin asetetut');
-define('_PLUGS_NOCANDIDATES',		'Pluginehdokkaita ei löytynyt');
+define('_CONFIRMTXT_PLUGIN',		'Oletko varma, että haluat poistaa laajennuksen nimeltä');
+define('_ERROR_NOSUCHPLUGIN',		'Kyseistä laajennusta ei ole');
+define('_ERROR_DUPPLUGIN',			'Tämä laajennus on jo asennettu');
+define('_ERROR_PLUGFILEERROR',		'Kyseistä laajennusta ei ole, tai oikeudet ovat väärin asetetut');
+define('_PLUGS_NOCANDIDATES',		'Haluttuja laajennuksia ei löytynyt');
 
-define('_PLUGS_TITLE_MANAGE',		'Hallitse plugineita');
-define('_PLUGS_TITLE_INSTALLED',	'Asennetut pluginit');
+define('_PLUGS_TITLE_MANAGE',		'Laajennustenhallinta');
+define('_PLUGS_TITLE_INSTALLED',	'Asennetut laajennukset');
 define('_PLUGS_TITLE_UPDATE',		'Päivitä tapahtumalistaa');
-define('_PLUGS_TEXT_UPDATE',		'Nucleus pitää yllä listaa pluginien tapahtumatilauksista. Kun päivität pluginin ylikirjoittamalla sen tiedoston, sinun täytyisi ajaa tämä päivitys varmistaaksesi, että listassa olisi oikeat tilaukset');
-define('_PLUGS_TITLE_NEW',			'Asenna uusi plugini');
-define('_PLUGS_ADD_TEXT',			'Alla on lista kaikista tiedostoista Plugins -hakemistossasi, jotka voivat olla ei-asennettuja plugineja. Varmista että olet <strong>aivan varma</strong>, että kyseessä on plugini ennen kuin lisäät sen.');
-define('_PLUGS_BTN_INSTALL',		'Asenna plugini');
+define('_PLUGS_TEXT_UPDATE',		'Nucleus pitää yllä listaa laajennusten tapahtumatilauksista. Kun päivität laajennuksen ylikirjoittamalla sen tiedoston, sinun täytyisi ajaa tämä päivitys varmistaaksesi, että listassa olisi oikeat tilaukset');
+define('_PLUGS_TITLE_NEW',			'Asenna uusi laajennus');
+define('_PLUGS_ADD_TEXT',			'Alla on lista kaikista tiedostoista Plugins -hakemistossasi, jotka voivat olla laajennuksia, joita ei vielä ole asennettu. Varmista että olet <strong>aivan varma</strong>, että kyseessä on laajennus, ennen kuin lisäät sen.');
+define('_PLUGS_BTN_INSTALL',		'Asenna laajennus');
 define('_BACKTOOVERVIEW',			'Takaisin');
 
 // editlink
-define('_TEMPLATE_EDITLINK',		'Muokkaa merkintää -linkki');
+define('_TEMPLATE_EDITLINK',		'Muokkaa artikkelia -linkki');
 
 // add left / add right tooltips
 define('_ADD_LEFT_TT',				'Lisää vasen palsta');
@@ -340,13 +367,13 @@ define('_ADD_RIGHT_TT',				'Lisää oikea palsta');
 define('_ADD_NEWCAT',				'Uusi kategoria');
 
 // new settings
-define('_SETTINGS_PLUGINURL',		'Pluginin osoite (URL)');
+define('_SETTINGS_PLUGINURL',		'Laajennuksen osoite (URL)');
 define('_SETTINGS_MAXUPLOADSIZE',	'Lähetetyn tiedoston maksimikoko (bitteinä)');
 define('_SETTINGS_NONMEMBERMSGS',	'Salli ei-jäsenten lähettää viestejä');
 define('_SETTINGS_PROTECTMEMNAMES',	'Suojaa jäsenten nimet');
 
 // overview screen
-define('_OVERVIEW_PLUGINS',			'Hallitse plugineita...');
+define('_OVERVIEW_PLUGINS',			'Laajennuksien hallinta');
 
 // actionlog
 define('_ACTIONLOG_NEWMEMBER',		'Uuden jäsenen rekisteröinti:');
@@ -374,16 +401,16 @@ define('_LIST_PLUGS_OPTIONS',		'Säädä&nbsp;asetuksia');
 define('_LISTS_VALUE',				'Arvo');
 
 // plugin options
-define('_ERROR_NOPLUGOPTIONS',		'Tällä pluginilla ei ole asetuksia säädettävänä
+define('_ERROR_NOPLUGOPTIONS',		'Tällä laajennuksella ei ole asetuksia säädettävänä
 ');
-define('_PLUGS_BACK',				'Takaisin Pluginit -sivulle');
+define('_PLUGS_BACK',				'Takaisin Laajennukset -sivulle');
 define('_PLUGS_SAVE',				'Tallenna asetukset');
-define('_PLUGS_OPTIONS_UPDATED',	'Pluginin asetukset päivitetty');
+define('_PLUGS_OPTIONS_UPDATED',	'Laajennuksen asetukset päivitetty');
 
 define('_OVERVIEW_MANAGEMENT',		'Hallinta');
 define('_OVERVIEW_MANAGE',			'Nucleuksen hallinta...');
 define('_MANAGE_GENERAL',			'Yleinen hallinta');
-define('_MANAGE_SKINS',				'Sivurungot ja templaatit');
+define('_MANAGE_SKINS',				'Sivurungot ja asettelut');
 define('_MANAGE_EXTRA',				'Lisäominaisuudet');
 
 define('_BACKTOMANAGE',				'Takaisin Nucleuksen hallintaan');
@@ -442,21 +469,21 @@ define('_MEMBERMAIL_SUBMIT',		'Lähetä viesti');
 define('_SEARCHFORM_SUBMIT',		'Etsi');
 
 // add item form
-define('_ADD_ADDTO',				'Merkintä blogiin ');
-define('_ADD_CREATENEW',			'Luo uusi merkintä');
+define('_ADD_ADDTO',				'Uusi artikkeli blogiin ');
+define('_ADD_CREATENEW',			'Luo uusi artikkeli');
 define('_ADD_BODY',					'Sisältö');
 define('_ADD_TITLE',				'Otsikko');
 define('_ADD_MORE',					'Laajennettu (optionaalinen)');
 define('_ADD_CATEGORY',				'Kategoria');
 define('_ADD_PREVIEW',				'Esikatselu');
 define('_ADD_DISABLE_COMMENTS',		'Kommentit pois käytöstä?');
-define('_ADD_DRAFTNFUTURE',			'Vedos &amp; tulevat merkinnät');
-define('_ADD_ADDITEM',				'Lisää merkintä');
+define('_ADD_DRAFTNFUTURE',			'Vedos &amp; tulevat artikkelit');
+define('_ADD_ADDITEM',				'Lisää artikkeli');
 define('_ADD_ADDNOW',				'Lisää nyt');
 define('_ADD_ADDLATER',				'Lisää myöhemmin');
 define('_ADD_PLACE_ON',				'Place on');
 define('_ADD_ADDDRAFT',				'Lisää vedoksiin');
-define('_ADD_NOPASTDATES',			'(dates and times in the past are NOT valid, the current time will be used in that case)');
+define('_ADD_NOPASTDATES',			'(Menneet päiväykset ja kellonajat EIVÄT kelpaa, käytä meneillään olevaa aikaa.)');
 define('_ADD_BOLD_TT',				'Lihavoitu');
 define('_ADD_ITALIC_TT',			'Kursivoitu');
 define('_ADD_HREF_TT',				'Luo linkki');
@@ -468,7 +495,7 @@ define('_ADD_PASTE_TT',				'Liitä');
 
 
 // edit item form
-define('_EDIT_ITEM',				'Muokkaa merkintää');
+define('_EDIT_ITEM',				'Muokkaa artikkelia');
 define('_EDIT_SUBMIT',				'Muokkaa');
 define('_EDIT_ORIG_AUTHOR',			'Alkuperäinen kirjoittaja');
 define('_EDIT_BACKTODRAFTS',		'Tallenna takaisin vedokseen');
@@ -477,32 +504,32 @@ define('_EDIT_COMMENTSNOTE',		'(huomaa: kommenttien pois päältä kytkeminen _ei_ 
 // used on delete screens
 define('_DELETE_CONFIRM',			'Varmista poistaminen');
 define('_DELETE_CONFIRM_BTN',		'Varmista poistaminen');
-define('_CONFIRMTXT_ITEM',			'Olet poistamassa seuraavan merkinnän:');
+define('_CONFIRMTXT_ITEM',			'Olet poistamassa seuraavan artikkelin:');
 define('_CONFIRMTXT_COMMENT',		'Olet poistamassa seuraavan kommentin:');
 define('_CONFIRMTXT_TEAM1',			'Olet poistamassa ');
 define('_CONFIRMTXT_TEAM2',			' blogin hallintaryhmässä ');
 define('_CONFIRMTXT_BLOG',			'Olet poistamassa blogia: ');
-define('_WARNINGTXT_BLOGDEL',		'Varoitus! Blogin poisto tulee tuhoamaan kaikki merkinnät ja kommentit kyseisessä blogissa. Vahvista että olet AIVAN VARMA siitä mitä olet tekemässä!<br />Älä myöskään keskeytä Nucleusta sen poistaessa blogiasi.');
+define('_WARNINGTXT_BLOGDEL',		'Varoitus! Blogin poisto tulee tuhoamaan kaikki artikkelit ja kommentit kyseisessä blogissa. Vahvista että olet AIVAN VARMA siitä mitä olet tekemässä!<br />Älä myöskään keskeytä Nucleusta sen poistaessa blogiasi.');
 define('_CONFIRMTXT_MEMBER',		'Olet poistamassa seuraavan käyttäjän profiilin: ');
-define('_CONFIRMTXT_TEMPLATE',		'Olet poistamassa templaatin nimeltä ');
+define('_CONFIRMTXT_TEMPLATE',		'Olet poistamassa sivuasetuksen nimeltä ');
 define('_CONFIRMTXT_SKIN',			'Olet poistamassa sivurungon nimeltä ');
 define('_CONFIRMTXT_BAN',			'Olet poistamassa eston ip-osoitteelle ');
 define('_CONFIRMTXT_CATEGORY',		'Olet poistamassa kategorian ');
 
 // some status messages
-define('_DELETED_ITEM',				'Merkintä poistettu');
+define('_DELETED_ITEM',				'Artikkeli poistettu');
 define('_DELETED_MEMBER',			'Käyttäjä poistettu');
 define('_DELETED_COMMENT',			'Kommentti poistettu');
 define('_DELETED_BLOG',				'Blogi poistettu');
 define('_DELETED_CATEGORY',			'Kategoria poistettu');
-define('_ITEM_MOVED',				'Merkintä siirretty');
-define('_ITEM_ADDED',				'Merkintä lisätty');
+define('_ITEM_MOVED',				'Artikkeli siirretty');
+define('_ITEM_ADDED',				'Artikkeli lisätty');
 define('_COMMENT_UPDATED',			'Kommentti päivitetty');
 define('_SKIN_UPDATED',				'Sivurunkodata on tallennettu');
-define('_TEMPLATE_UPDATED',			'Templaattidata on tallennettu');
+define('_TEMPLATE_UPDATED',			'Asettelu on tallennettu');
 
 // errors
-define('_ERROR_COMMENT_LONGWORD',	'Älä käytä kuin korkeintaan 60 merkkiä pitkiä sanoja kommenteissasi');
+define('_ERROR_COMMENT_LONGWORD',	'Älä käytä yli 60 merkkiä pitkiä sanoja kommenteissasi');
 define('_ERROR_COMMENT_NOCOMMENT',	'Kommentti puuttuu');
 define('_ERROR_COMMENT_NOUSERNAME',	'Nimi puuttuu');
 define('_ERROR_COMMENT_TOOLONG',	'Kommenttisi on liian pitkä (max. 5000 merkkiä)');
@@ -510,18 +537,18 @@ define('_ERROR_COMMENTS_DISABLED',	'Kommentointimahdollisuus tälle blogille on p
 define('_ERROR_COMMENTS_NONPUBLIC',	'Sinun täytyy olla kirjautunut käyttäjä lisätäksesi kommentin tähän blogiin');
 define('_ERROR_COMMENTS_MEMBERNICK','Tunnus, jota haluat käyttää lähettääksesi kommentin on registeröityneen käyttäjän käytössä. Valitse jokin toinen tunnus.');
 define('_ERROR_SKIN',				'Sivurunkovirhe');
-define('_ERROR_ITEMCLOSED',			'Tämä merkintä on suljettu, et voi lisätä uusia kommentteja siihen tai äänestää siinä');
-define('_ERROR_NOSUCHITEM',			'Kyseistä merkintää ei ole');
+define('_ERROR_ITEMCLOSED',			'Tämä artikkeli on suljettu, et voi lisätä uusia kommentteja siihen tai äänestää siinä');
+define('_ERROR_NOSUCHITEM',			'Kyseistä artikkelia ei ole');
 define('_ERROR_NOSUCHBLOG',			'Kyseistä blogia ei ole');
 define('_ERROR_NOSUCHSKIN',			'Kyseistä sivurunkoa ei ole');
 define('_ERROR_NOSUCHMEMBER',		'Kyseistä käyttäjää ei ole');
 define('_ERROR_NOTONTEAM',			'Et ole tämän webblogin hallintaryhmässä.');
 define('_ERROR_BADDESTBLOG',		'Kohdeblogia ei ole');
-define('_ERROR_NOTONDESTTEAM',		'Merkintää ei voi siirtää, sillä et ole kohdeblogin hallintaryhmässä');
-define('_ERROR_NOEMPTYITEMS',		'Tyhjiä merkintöjä ei voi lisätä!');
+define('_ERROR_NOTONDESTTEAM',		'Artikkelia ei voi siirtää, sillä et ole kohdeblogin hallintaryhmässä');
+define('_ERROR_NOEMPTYITEMS',		'Tyhjiä artikkeleita ei voi lisätä!');
 define('_ERROR_BADMAILADDRESS',		'Sähköpostiosoite ei ole kelvollinen');
 define('_ERROR_BADNOTIFY',			'Yksi (tai useampi) annettu sähköposti-ilmoitusosoite on epäkelpo sähköpostiosoite');
-define('_ERROR_BADNAME',			'Nimi ei ole hyväksyttävä (vain a-z ja 0-9 ovat hyväksyttäviä merkkejä, ei välilyöntejä alussa/lopussa)');
+define('_ERROR_BADNAME',			'Nimi ei ole hyväksyttävä (vain a-z ja 0-9 ovat hyväksyttäviä merkkejä, ei välilyöntejä alussa eikä lopussa)');
 define('_ERROR_NICKNAMEINUSE',		'Jo registeröitynyt käyttää käyttää jo kyseistä nimeä');
 define('_ERROR_PASSWORDMISMATCH',	'Salasanojen täytyy olla samoja');
 define('_ERROR_PASSWORDTOOSHORT',	'Salasanan pitäisi olla ainakin 6 merkkiä pitkä');
@@ -534,9 +561,9 @@ define('_ERROR_BADSHORTBLOGNAME',	'Blogin id-nimi saisi sisältää vain merkkejä a
 define('_ERROR_DUPSHORTBLOGNAME',	'Toisella blogilla on jo valittu id-nimi. Näiden nimien tulisi erota toisistaan');
 define('_ERROR_UPDATEFILE',			'Päivitystiedostoon ei voi saada kirjoitusoikeutta. Tarkista että tiedosto-oikeudet ovat ok (kokeile chmod 666). Huomaa myös, että sijainti on suhteellinen järjestelmänvalvoja hakemistoon nähden, joten saattanet haluta käyttää absoluuttista polkua (kuten /sinun/polkusi/nucleukseen/)');
 define('_ERROR_DELDEFBLOG',			'Oletusblogia ei voi poistaa');
-define('_ERROR_DELETEMEMBER',		'Tätä käyttäjää ei voi poistaa, koska hän on merkintöjen tai kommenttien luoja');
-define('_ERROR_BADTEMPLATENAME',	'Epäkelpo nimi templaatille, käytä vain merkkejä a-z ja 0-9, ilman välilyöntejä');
-define('_ERROR_DUPTEMPLATENAME',	'Toinen templaatti käyttää jo tätä nimeä');
+define('_ERROR_DELETEMEMBER',		'Käyttäjää ei voi poistaa, koska hän on kirjoittanut artikkeleita ja/tai kommentteja tietokantaan');
+define('_ERROR_BADTEMPLATENAME',	'Sivuasetukselle antamasi nimi ei kelpaa. Käytä vain merkkejä a-z ja 0-9, ilman välilyöntejä');
+define('_ERROR_DUPTEMPLATENAME',	'Toinen asettelu käyttää jo tätä nimeä');
 define('_ERROR_BADSKINNAME',		'Epäkelpo nimi sivurungolle (käytä vain merkkejä a-z ja 0-9, ilman välilyöntejä)');
 define('_ERROR_DUPSKINNAME',		'Toinen sivurunko tällä nimellä on jo olemassa');
 define('_ERROR_DEFAULTSKIN',		'Sivurunko nimeltä "default" täytyy olla olemassa');
@@ -548,7 +575,7 @@ define('_ERROR_BADACTION',			'Pyydettyä toimintoa ei ole');
 define('_ERROR_MEMBERMAILDISABLED',	'Käyttäjältä käyttäjälle -viestit ovat poissa käytöstä');
 define('_ERROR_MEMBERCREATEDISABLED','Käyttäjien luomismahdollisuus on poissa käytöstä');
 define('_ERROR_INCORRECTEMAIL',		'Epäkelpo osoite');
-define('_ERROR_VOTEDBEFORE',		'Olet jo antanut äänesi tälle merkinnälle');
+define('_ERROR_VOTEDBEFORE',		'Olet jo antanut äänesi tälle artikkelille');
 define('_ERROR_BANNED1',			'Toimintoa ei voi suorittaa johtuen siitä, että (esto ip:lle ');
 define('_ERROR_BANNED2',			') olet estetty tekemästä niin. Viesti oli: \'');
 define('_ERROR_BANNED3',			'\'');
@@ -563,7 +590,7 @@ define('_ERROR_UPLOADMOVEP',		'Virhe tiedostoa siirrettäessä');
 define('_ERROR_UPLOADCOPY',			'Virhe tiedostoa kopioidessa');
 define('_ERROR_UPLOADDUPLICATE',	'Toinen samanniminen tiedosto on jo olemassa. Kokeile sen uudelleennimeästä ennen tiedostonsiirtoa.');
 define('_ERROR_LOGINDISALLOWED',	'Valitettavasti et ole oikeutettu kirjautumaan järjestelmänvalvoja alueelle. Toisaalta, voit kirjautua sisään toisena käyttäjänä');
-define('_ERROR_DBCONNECT',			'MySQL serveriin ei saatu yhteyttä');
+define('_ERROR_DBCONNECT',			'MySQL-palvelimeen ei saatu yhteyttä');
 define('_ERROR_DBSELECT',			'Nucleus tietokantaa ei voitu valita.');
 define('_ERROR_NOSUCHLANGUAGE',		'Kyseistä kielitiedostoa ei ole olemassa');
 define('_ERROR_NOSUCHCATEGORY',		'Kyseistä kategoriaa ei ole olemassa');
@@ -614,9 +641,9 @@ define('_TEAM_ADD',					'Lisää hallintaryhmään');
 define('_TEAM_ADD_BTN',				'Lisää hallintaryhmään');
 
 // blogsettings
-define('_EBLOG_TITLE',				'Säädä blogin asetuksia');
+define('_EBLOG_TITLE',				'Säädä asetuksia blogiin');
 define('_EBLOG_TEAM_TITLE',			'Käsittele hallintaryhmää');
-define('_EBLOG_TEAM_TEXT',			'Klikkaa täällä käsitelläksesi hallintaryhmääsi.');
+define('_EBLOG_TEAM_TEXT',			'Klikkaa tästä käsitelläksesi hallintaryhmääsi.');
 define('_EBLOG_SETTINGS_TITLE',		'Blogin asetukset');
 define('_EBLOG_NAME',				'Blogin nimi');
 define('_EBLOG_SHORTNAME',			'Blogin id-nimi');
@@ -628,11 +655,11 @@ define('_EBLOG_DEFCAT',				'Vakiokategoria');
 define('_EBLOG_LINEBREAKS',			'Konvertoi rivinvaihdot');
 define('_EBLOG_DISABLECOMMENTS',	'Kommentit sallittuja?<br /><small>(Estämällä kommenttien kirjoittaminen, kommenttien lisääminen ei ole mahdollista.)</small>');
 define('_EBLOG_ANONYMOUS',			'Salli kommentit ei-käyttäjiltä?');
-define('_EBLOG_NOTIFY',				'Ilmoitussähköpostiosoite/-osoitteet (käytä merkkiä ; erottajana)');
+define('_EBLOG_NOTIFY',				'Ilmoitussähköpostiosoite/-osoitteet (käytä puolipistemerkkiä ; erottajana)');
 define('_EBLOG_NOTIFY_ON',			'Ilmoitukset päällä');
 define('_EBLOG_NOTIFY_COMMENT',		'Uusista kommenteista');
 define('_EBLOG_NOTIFY_KARMA',		'Uusista karma äänestyksistä');
-define('_EBLOG_NOTIFY_ITEM',		'Uusista weblogin merkinnöistä');
+define('_EBLOG_NOTIFY_ITEM',		'Uusista weblogin artikkeleista');
 define('_EBLOG_PING',				'Pingaa Weblogs.com päivityksistä?');
 define('_EBLOG_MAXCOMMENTS',		'Kommenttien maksimimäärä');
 define('_EBLOG_UPDATE',				'Päivitystiedosto');
@@ -644,7 +671,7 @@ define('_EBLOG_CHANGE_BTN',			'Muuta asetuksia');
 define('_EBLOG_ADMIN',				'Blogin ylläpito');
 define('_EBLOG_ADMIN_MSG',			'Sinulle asetetaan järjestelmänvalvoja oikeudet');
 define('_EBLOG_CREATE_TITLE',		'Uusi weblogi');
-define('_EBLOG_CREATE_TEXT',		'Täytä alla oleva kaavake luodaksesi uusi weblogi. <br /><br /> <b>Huomaa:</b> Vain tarvittavat kentät on listattu. Jos haluat säätää muita optioita, siirry blogin asetussivulle weblogin luomisen jälkeen.');
+define('_EBLOG_CREATE_TEXT',		'Täytä alla oleva kaavake luodaksesi uuden weblogin. <br /><br /> <b>Huomaa:</b> Vain tarvittavat kentät on listattu. Jos haluat säätää muita optioita, siirry blogin asetussivulle weblogin luomisen jälkeen.');
 define('_EBLOG_CREATE',				'Luo!');
 define('_EBLOG_CREATE_BTN',			'Luo weblogi');
 define('_EBLOG_CAT_TITLE',			'Kategoriat');
@@ -655,23 +682,23 @@ define('_EBLOG_CAT_UPDATE',			'Päivitä kategoria');
 define('_EBLOG_CAT_UPDATE_BTN',		'Päivitä kategoria');
 
 // templates
-define('_TEMPLATE_TITLE',			'Templaatit');
-define('_TEMPLATE_AVAILABLE_TITLE',	'Tarjolla olevat templaatit');
-define('_TEMPLATE_NEW_TITLE',		'Uusi templaatti');
-define('_TEMPLATE_NAME',			'Templaatin nimi');
-define('_TEMPLATE_DESC',			'Templaatin kuvaus');
-define('_TEMPLATE_CREATE',			'Luo templaatti');
-define('_TEMPLATE_CREATE_BTN',		'Luo templaatti');
-define('_TEMPLATE_EDIT_TITLE',		'Templaatit');
-define('_TEMPLATE_BACK',			'Takaisin templaatit -sivulle');
-define('_TEMPLATE_EDIT_MSG',		'Kaikkia templaatteja ei tarvita, jätä tyhjäksi ne joita ei tarvita.');
-define('_TEMPLATE_SETTINGS',		'Templaattien asetukset');
-define('_TEMPLATE_ITEMS',			'Merkinnät');
-define('_TEMPLATE_ITEMHEADER',		'Merkinnän ylätunniste');
-define('_TEMPLATE_ITEMBODY',		'Merkinnän sisältö');
-define('_TEMPLATE_ITEMFOOTER',		'Merkinnän alatunniste');
-define('_TEMPLATE_MORELINK',		'Linkki laajennettuun merkintään');
-define('_TEMPLATE_NEW',				'Uuden merkinnän merkki');
+define('_TEMPLATE_TITLE',			'Asettelut');
+define('_TEMPLATE_AVAILABLE_TITLE',	'Tarjolla olevat asettelut');
+define('_TEMPLATE_NEW_TITLE',		'Uusi asettelu');
+define('_TEMPLATE_NAME',			'Asettelun nimi');
+define('_TEMPLATE_DESC',			'Asettelun kuvaus');
+define('_TEMPLATE_CREATE',			'Luo asettelu');
+define('_TEMPLATE_CREATE_BTN',		'Luo asettelu');
+define('_TEMPLATE_EDIT_TITLE',		'Asettelut');
+define('_TEMPLATE_BACK',			'Takaisin asettelut -sivulle');
+define('_TEMPLATE_EDIT_MSG',		'Kaikkia asetteluja ei tarvita. Voit jättää osan tyhjäksi.');
+define('_TEMPLATE_SETTINGS',		'Asettelun asetukset');
+define('_TEMPLATE_ITEMS',			'Artikkelit');
+define('_TEMPLATE_ITEMHEADER',		'Artikkelin ylätunniste');
+define('_TEMPLATE_ITEMBODY',		'Artikkelin sisältö');
+define('_TEMPLATE_ITEMFOOTER',		'Artikkelin alatunniste');
+define('_TEMPLATE_MORELINK',		'Linkki laajennettuun artikkeliin');
+define('_TEMPLATE_NEW',				'Uuden artikkelin merkki');
 define('_TEMPLATE_COMMENTS_ANY',	'Kommentit (jos niitä on)');
 define('_TEMPLATE_CHEADER',			'Kommentin ylätunniste');
 define('_TEMPLATE_CBODY',			'Kommentin sisältö');
@@ -686,7 +713,7 @@ define('_TEMPLATE_COMMENTS_TOOMUCH','Kommentit (jos niitä on, mutta liikaa jotta
 define('_TEMPLATE_CTOOMUCH',		'Liikaa kommentteja');
 define('_TEMPLATE_ARCHIVELIST',		'Arkistolistaukset');
 define('_TEMPLATE_AHEADER',			'Arkistolistauksen ylätunniste');
-define('_TEMPLATE_AITEM',			'Arkistolistauksen merkintä');
+define('_TEMPLATE_AITEM',			'Arkistolistauksen artikkeli');
 define('_TEMPLATE_AFOOTER',			'Arkistolistauksen alatunniste');
 define('_TEMPLATE_DATETIME',		'Päiväys ja kellonaika');
 define('_TEMPLATE_DHEADER',			'Päiväyksen ylätunniste');
@@ -702,7 +729,7 @@ define('_TEMPLATE_SEARCH',			'Etsi');
 define('_TEMPLATE_SHIGHLIGHT',		'Korosta');
 define('_TEMPLATE_SNOTFOUND',		'Haku ei palauttanut mitään');
 define('_TEMPLATE_UPDATE',			'Päivitä');
-define('_TEMPLATE_UPDATE_BTN',		'Päivitä templaatti');
+define('_TEMPLATE_UPDATE_BTN',		'Päivitä asettelu');
 define('_TEMPLATE_RESET_BTN',		'Resetoi data');
 define('_TEMPLATE_CATEGORYLIST',	'Kategorialistaus');
 define('_TEMPLATE_CATHEADER',		'Kategorialistan ylätunniste');
@@ -722,8 +749,8 @@ define('_SKIN_EDITONE_TITLE',		'Muokkaa sivurunkoa');
 define('_SKIN_BACK',				'Takaisin sivurunko -sivulle');
 define('_SKIN_PARTS_TITLE',			'Sivurungon osat');
 define('_SKIN_PARTS_MSG',			'Kaikkia osia ei tarvita jokaiselle sivurungolle. Jätä tyhjäksi ne joita et tarvitse. Valitse muokattava sivurunko alta:');
-define('_SKIN_PART_MAIN',			'Merkinnät (indeksi)');
-define('_SKIN_PART_ITEM',			'Yksittäiset merkintäsivut');
+define('_SKIN_PART_MAIN',			'Artikkelit (indeksi)');
+define('_SKIN_PART_ITEM',			'Yksittäiset artikkelisivut');
 define('_SKIN_PART_ALIST',			'Arkisto (indeksi)');
 define('_SKIN_PART_ARCHIVE',		'Arkistolistaukset');
 define('_SKIN_PART_SEARCH',			'Etsi');
@@ -754,9 +781,9 @@ define('_SETTINGS_MEDIAURL',		'Media URL (pitäisi loppua kauttaviivaan)');
 define('_SETTINGS_ALLOWUPLOAD',		'Salli tiedostojen lähetys blogiin?');
 define('_SETTINGS_ALLOWUPLOADTYPES','Sallitut tiedostomuodot lähettäessä');
 define('_SETTINGS_CHANGELOGIN',		'Salli käyttäjien vaihtaa tunnusta/salasanaa');
-define('_SETTINGS_COOKIES_TITLE',	'Eväste asetukset');
+define('_SETTINGS_COOKIES_TITLE',	'Evästeasetukset');
 define('_SETTINGS_COOKIELIFE',		'Kirjautumisevästeen elinaika');
-define('_SETTINGS_COOKIESESSION',	'Sessioevästeet');
+define('_SETTINGS_COOKIESESSION',	'Istuntoeväste');
 define('_SETTINGS_COOKIEMONTH',		'Kuukauden elinaika');
 define('_SETTINGS_COOKIEPATH',		'Evästepolku (edistykselliset)');
 define('_SETTINGS_COOKIEDOMAIN',	'Cookie Domain (edistykselliset)');
@@ -768,7 +795,7 @@ define('_SETTINGS_NEWLOGIN2',		'(koskee vain vasta luotuja tilejä)');
 define('_SETTINGS_MEMBERMSGS',		'Salli käyttäjältä-käyttäjälle palvelu');
 define('_SETTINGS_LANGUAGE',		'Vakiokieli');
 define('_SETTINGS_DISABLESITE',		'Sivusto pois käytöstä');
-define('_SETTINGS_DBLOGIN',			'mySQL -kirjautuminen &amp; -tietokanta');
+define('_SETTINGS_DBLOGIN',			'MySQL -kirjautuminen &amp; -tietokanta');
 define('_SETTINGS_UPDATE',			'Päivitä asetukset');
 define('_SETTINGS_UPDATE_BTN',		'Päivitä asetukset');
 define('_SETTINGS_DISABLEJS',		'JavaScript -työkalurivi pois käytöstä');
@@ -777,7 +804,7 @@ define('_SETTINGS_MEDIAPREFIX',		'Päiväysetuliite ladatuille tiedostoille');
 define('_SETTINGS_MEMBERS',			'Käyttäjäasetukset');
 
 // bans
-define('_BAN_TITLE',				'Estolistasi');
+define('_BAN_TITLE',				'Estolistasi blogissa');
 define('_BAN_NONE',					'Ei estoja tälle weblogille');
 define('_BAN_NEW_TITLE',			'Lisää uusi esto');
 define('_BAN_NEW_TEXT',				'Lisää uusi esto nyt');
@@ -818,7 +845,7 @@ define('_MEMBERS_SUPERADMIN',		'Järjestelmänvalvojan oikeudet');
 define('_MEMBERS_CANLOGIN',			'Voi kirjautua järjestelmänvalvoja alueelle');
 define('_MEMBERS_NOTES',			'Tietoja');
 define('_MEMBERS_NEW_BTN',			'Lisää käyttäjä');
-define('_MEMBERS_EDIT',				'Käyttäjän muokkaus');
+define('_MEMBERS_EDIT',				'Käyttäjätietojen muokkaus');
 define('_MEMBERS_EDIT_BTN',			'Muuta asetuksia');
 define('_MEMBERS_BACKTOOVERVIEW',	'Takaisin käyttäjät -sivulle');
 define('_MEMBERS_DEFLANG',			'Kieli');
@@ -826,9 +853,9 @@ define('_MEMBERS_USESITELANG',		'- käytä sivuston vakioasetusta -');
 
 // List of blogs (TT = tooltip)
 define('_BLOGLIST_TT_VISIT',		'Käy sivustolla');
-define('_BLOGLIST_ADD',				'Lisää merkintä');
-define('_BLOGLIST_TT_ADD',			'Lisää merkintä tähän weblogiin');
-define('_BLOGLIST_EDIT',			'Muokkaa/poista merkintöjä');
+define('_BLOGLIST_ADD',				'Lisää artikkeli');
+define('_BLOGLIST_TT_ADD',			'Lisää artikkeli tähän weblogiin');
+define('_BLOGLIST_EDIT',			'Muokkaa/poista artikkeleita');
 define('_BLOGLIST_TT_EDIT',			'');
 define('_BLOGLIST_BMLET',			'Bookmarklet');
 define('_BLOGLIST_TT_BMLET',		'');
@@ -847,23 +874,23 @@ define('_OVERVIEW_GSETTINGS',		'Yleiset asetukset');
 define('_OVERVIEW_NOBLOGS',			'Et ole minkään weblogin hallintaryhmässä');
 define('_OVERVIEW_NODRAFTS',		'Ei vedoksia');
 define('_OVERVIEW_EDITSETTINGS',	'Muokkaa omia tietojasi...');
-define('_OVERVIEW_BROWSEITEMS',		'Selaa merkintöjäsi...');
+define('_OVERVIEW_BROWSEITEMS',		'Selaa artikkeleitasi...');
 define('_OVERVIEW_BROWSECOMM',		'Selaa kommenttejasi...');
 define('_OVERVIEW_VIEWLOG',			'Tarkastele toimintologia...');
 define('_OVERVIEW_MEMBERS',			'Hallitse käyttäjiä...');
 define('_OVERVIEW_NEWLOG',			'Luo uusi weblogi...');
 define('_OVERVIEW_SETTINGS',		'Säädä yleisiä asetuksia...');
-define('_OVERVIEW_TEMPLATES',		'Muokkaa templaatteja...');
+define('_OVERVIEW_TEMPLATES',		'Muokkaa asetteluja...');
 define('_OVERVIEW_SKINS',			'Muokkaa sivurunkoja...');
 define('_OVERVIEW_BACKUP',			'Tee varmuuskopio / palauta varmuuskopio...');
 
 // ITEMLIST
-define('_ITEMLIST_BLOG',			'Merkinnät blogiin'); 
-define('_ITEMLIST_YOUR',			'Merkintäsi');
+define('_ITEMLIST_BLOG',			'Artikkelit blogiin'); 
+define('_ITEMLIST_YOUR',			'Artikkelisi');
 
 // Comments
 define('_COMMENTS',					'Kommentteja');
-define('_NOCOMMENTS',				'Ei kommentteja tähän merkintään');
+define('_NOCOMMENTS',				'Ei kommentteja tähän artikkeliin');
 define('_COMMENTS_YOUR',			'Kommenttisi');
 define('_NOCOMMENTS_YOUR',			'Et ole kirjoittanut kommentteja');
 
@@ -873,7 +900,7 @@ define('_LISTS_PREV',				'Edellinen');
 define('_LISTS_NEXT',				'Seuraava');
 define('_LISTS_SEARCH',				'Etsi');
 define('_LISTS_CHANGE',				'Muuta');
-define('_LISTS_PERPAGE',			'merkintää/sivu');
+define('_LISTS_PERPAGE',			'artikkelia/sivu');
 define('_LISTS_ACTIONS',			'Toiminnot');
 define('_LISTS_DELETE',				'Poista');
 define('_LISTS_EDIT',				'Muokkaa');
@@ -929,6 +956,7 @@ define('_EDITC_NONMEMBER',			'ei-käyttäjä');
 
 // move item
 define('_MOVE_TITLE',				'Siirrä mihin blogiin?');
-define('_MOVE_BTN',					'Siirrä merkintä');
+define('_MOVE_BTN',					'Siirrä artikkeli');
 
 ?>
+
