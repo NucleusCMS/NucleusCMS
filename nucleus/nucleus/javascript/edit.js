@@ -133,9 +133,7 @@ function execAndUpdate(action) {
 var nonie_FormType = 'body';
 
 // Add media to new item
-function addMedia(type) {
-	
-	nonie_FormType = type;	// form type (for non-ie browsers)
+function addMedia() {
 	
 	var mediapopup = window.open(nucleusMediaPopupURL + 'media.php','name',
 		'status=yes,toolbar=no,scrollbars=yes,resizable=yes,width=500,height=450,top=0,left=0');
@@ -240,10 +238,10 @@ function insertAtCaret (text) {
 	if (textEl && textEl.createTextRange && textEl.caretPos) {
 		var caretPos = textEl.caretPos;
 		caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? text + ' ' : text;
-	} else if (textEl) {
-		textEl.value  = text;
 	} else if (!document.all && document.getElementById) {
 		mozReplace(document.getElementById('input' + nonie_FormType), text);				
+	} else if (textEl) {
+		textEl.value  += text;
 	} else {
 		document.getElementById('input' + nonie_FormType).value += text;		
 	}
