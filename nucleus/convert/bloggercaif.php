@@ -110,7 +110,7 @@ function bc_getBloggerBlogID() {
 						Show <b>900</b> <b>day's posts</b> on main page
 					</li>
 					<li>
-						Date/Time Format: <b>DD/MM/YYYY HH:MM:SS AM|PM</b> (that option is not listed as such, instead it has the current date filled in)
+						Date/Time Format: <b>MM/DD/YYYY HH:MM:SS AM|PM</b> (that option is not listed as such, instead it has the current date filled in)
 					</li>
 					<li>
 						Archive Frequency: <b>No Archive</b>
@@ -120,6 +120,9 @@ function bc_getBloggerBlogID() {
 			<li>
 				Save the settings and publish your blog. You'll end up with a blogger.xml file on your server containing all of your blog items.
 			</li>
+			<li>
+				If you're running blogspot, you'll need to edit this file and take out the advertising banner code.
+			</li>			
 		</ol>
 		
 		<h2>Exporting comments to CAIF (Instructions for YACCS)</h2>
