@@ -328,7 +328,7 @@ define('_COMMENTFORM_SUBMIT',		'Kommentar hinzuf&uuml;gen');
 define('_COMMENTFORM_COMMENT',		'Ihr Kommentar');
 define('_COMMENTFORM_NAME',			'Name');
 define('_COMMENTFORM_MAIL',			'E-mail/HTTP');
-define('_COMMENTFORM_REMEMBER',		'Informiere mich');
+define('_COMMENTFORM_REMEMBER',		'Name und E-mail speichern');
 
 // loginform
 define('_LOGINFORM_NAME',			'Benutzer');
