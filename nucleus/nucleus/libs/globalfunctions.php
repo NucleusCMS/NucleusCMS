@@ -50,10 +50,12 @@ if ($CONF['debug']) {
 }
 
 // we will use postVar, getVar, ... methods instead of HTTP_GET_VARS or _GET
-if (phpversion() >= '4.1.0')
-	include_once($DIR_LIBS . 'vars4.1.0.php');
-else
-	include_once($DIR_LIBS . 'vars4.0.6.php');
+if ($CONF['installscript']!=1){ // vars were already included in install.php
+  if (phpversion() >= '4.1.0')
+	  include_once($DIR_LIBS . 'vars4.1.0.php');
+  else
+	  include_once($DIR_LIBS . 'vars4.0.6.php');
+}
 
 function intPostVar($name) { return intval(postVar($name));}
 function intGetVar($name) { return intval(getVar($name));}
@@ -1042,7 +1044,6 @@ function fancyTitle($id,$title,$date) {
     } else {
 	    $self = $CONF['IndexURL'];
     }
-    // $link = $self.'item/'.$date['year'].'/'.$date['mon'].'/'.$date['mday'].'/'.$title;
     $link = $self.'item/'.$title;
     return $link;
   } else {
