@@ -24,13 +24,9 @@ h1 {
 
 /* page content */
 #content {
-	position: absolute;
-	left: 125px;
+	margin-left: 135px;
 	right: 10px;
-	top: 70px;
 
-	width: auto;
-	
 	font-style: normal;
 	text-decoration: none;
 	color: black;
@@ -51,27 +47,40 @@ h1 {
 }
 
 /* quick menu on left */
+/* 
+	It's a real pain getting this absolute positioning to work correctly
+	in all browsers. IE in particular seems to have a lot of trouble, even
+	when a valid doctype is present. Because of the way it is solved currently,
+	the top of the quickmenu and the contents will not line up
+*/
 #quickmenu {
 	position: absolute;
+	overflow: hidden;
+	
 	top: 70px;
 	left: 10px;
-	width: 100px;
+
+	width: 110px;
 	margin: 0px;
-	padding: 3px;
+	padding: 0px;
+	
 	font-size: x-small;
 	
 	border-width: 1px;
 	border-style: solid;
 	border-color: black;
-	
-	/* rounded borders in gecko-based browsers? why not :) */
-	-moz-border-radius: 10px;		
+
 }
 
 #quickmenu ul {
-	margin: 0px;
-	padding: 0px;
 	list-style-type: none;
+}
+#quickmenu p, #quickmenu ul {
+	margin: 3px;
+	padding: 0px;
+}
+#quickmenu p {
+	text-align: justify;
 }
 #quickmenu li {
 	background-color: #fff;
@@ -94,7 +103,7 @@ h1 {
 	color: #000;
 }
 #quickmenu form {
-	padding: 5px;
+	padding: 2px;
 	text-align: center;
 }
 #quickmenu option {

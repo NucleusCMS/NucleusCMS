@@ -4132,7 +4132,6 @@ selector();
 	function pagehead($extrahead = '') {
 		global $member, $nucleus, $CONF;
 
-		echo '<?xml version="1.0" encoding="'. _CHARSET .'"?>';
 		?>
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
@@ -4144,27 +4143,16 @@ selector();
 			
 			<script type="text/javascript" src="javascript/edit.js"></script>
 			<script type="text/javascript" src="javascript/admin.js"></script>
-			<script type="text/javascript">
-				function styleFix() {
-					// stylefix for IE (outdated browsers)
-					if (document.all) {
-						var eContent = document.getElementById('content');
-						if (eContent) {
-							eContent.style.width = '850px';
-						}
-						var eQuickmenu = document.getElementById('quickmenu');
-						if (eQuickmenu) {
-							eQuickmenu.style.left = '7px';
-						}
-					}
-				}
-			</script>
 			<?php echo $extrahead?>
 		</head>
-		<body onload="styleFix()">
+		<body>
+		
 		<div class="header">
-		<h1><?php echo htmlspecialchars($CONF['SiteName'])?></h1>
+			<h1><?php echo htmlspecialchars($CONF['SiteName'])?></h1>
 		</div>
+		
+		<div id="container">
+		
 		<div id="content">
 		<div class="loginname">
 		<?php			if ($member->isLoggedIn()) 
@@ -4235,7 +4223,7 @@ selector();
 
 					echo '</div></form>';
 
-					echo '<h2>You (' . $member->getDisplayName(). ')</h2>';
+					echo '<h2>' . $member->getDisplayName(). '</h2>';
 					echo '<ul>';
 					echo '<li><a href="index.php?action=editmembersettings">Settings</a></li>';
 					echo '<li><a href="index.php?action=browseownitems">Items</a></li>';
@@ -4279,6 +4267,8 @@ selector();
 				?>
 			</div>
 			
+			<!-- content / quickmenu container -->
+			</div>
 		
 			</body>
 			</html>
