@@ -1146,7 +1146,7 @@ class ADMIN {
 	  * Adds a item to the chosen blog
 	  */
 	function action_additem() {
-		global $member, $CONF;
+		global $member, $manager, $CONF;
 		 
 		$manager->loadClass('ITEM');
 
