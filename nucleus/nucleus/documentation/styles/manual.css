@@ -47,9 +47,6 @@ a: hover {
 	font-weight: normal;
 }
 
-p:first-letter {
-	font-size: large;
-}
 
 p {
 	text-indent: 20px;
