@@ -12,8 +12,8 @@
   *
   */
 
-$nucleus['version'] = 'v2.0 CVS';
-$CONF['debug'] = 1;			
+$nucleus['version'] = 'v2.0';
+$CONF['debug'] = 0;			
 $CONF['alertOnHeadersSent'] = 1;
 
 /**
