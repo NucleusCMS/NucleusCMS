@@ -1,4 +1,3 @@
-
 CREATE TABLE nucleus_actionlog (
   timestamp datetime NOT NULL default '0000-00-00 00:00:00',
   message varchar(255) NOT NULL default ''
@@ -9,7 +8,6 @@ CREATE TABLE nucleus_ban (
   reason varchar(255) NOT NULL default '',
   blogid int(11) NOT NULL default '0'
 ) TYPE=MyISAM;
-
 
 CREATE TABLE nucleus_blog (
   bnumber int(11) NOT NULL auto_increment,
@@ -33,7 +31,7 @@ CREATE TABLE nucleus_blog (
   PRIMARY KEY  (bnumber),
   UNIQUE KEY bshortname (bshortname),
   UNIQUE KEY bnumber (bnumber)
-) TYPE=MyISAM AUTO_INCREMENT=2 ;
+) TYPE=MyISAM;
 
 INSERT INTO nucleus_blog VALUES (1, 'My Nucleus Weblog', 'myweblog', '', 1, 0, '0.0', '', 'http://localhost:8080/nucleus/', '', 1, 1, 0, 1, 1, 1, 0, 0);
 
@@ -43,7 +41,7 @@ CREATE TABLE nucleus_category (
   cname varchar(40) default NULL,
   cdesc varchar(200) default NULL,
   PRIMARY KEY  (catid)
-) TYPE=MyISAM AUTO_INCREMENT=2 ;
+) TYPE=MyISAM;
 
 INSERT INTO nucleus_category VALUES (1, 1, 'General', 'Items that do not fit in other categories');
 
@@ -62,7 +60,7 @@ CREATE TABLE nucleus_comment (
   UNIQUE KEY cnumber (cnumber),
   KEY citem (citem),
   FULLTEXT KEY cbody (cbody)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM;
 
 CREATE TABLE nucleus_config (
   name varchar(20) NOT NULL default '',
@@ -119,9 +117,9 @@ CREATE TABLE nucleus_item (
   UNIQUE KEY inumber (inumber),
   KEY itime (itime),
   FULLTEXT KEY ibody (ibody,ititle,imore)
-) TYPE=MyISAM AUTO_INCREMENT=2 ;
+) TYPE=MyISAM;
 
-INSERT INTO nucleus_item VALUES (1, 'First Item!', 'This is the first item in your weblog. Feel free to delete it.', '', 1, 1, '2004-03-15 18:07:53', 0, 0, 0, 1, 0);
+INSERT INTO nucleus_item VALUES (1, 'First Item!', 'This is the first item in your weblog. Feel free to delete it.', '', 1, 1, '2004-03-15 19:53:40', 0, 0, 0, 1, 0);
 
 CREATE TABLE nucleus_karma (
   itemid int(11) NOT NULL default '0',
@@ -143,7 +141,7 @@ CREATE TABLE nucleus_member (
   PRIMARY KEY  (mnumber),
   UNIQUE KEY mnumber (mnumber),
   UNIQUE KEY mname (mname)
-) TYPE=MyISAM AUTO_INCREMENT=2 ;
+) TYPE=MyISAM;
 
 INSERT INTO nucleus_member VALUES (1, 'God', 'Administrator', 'eb31870669f13fd8444c2bc918375f09', 'example@example.org', 'http://localhost:8080/nucleus/', '', 1, 1, '56de3cb81b9f3e0ddf994b8e9d88a414', '');
 
@@ -154,7 +152,7 @@ CREATE TABLE nucleus_plugin (
   PRIMARY KEY  (pid),
   KEY pid (pid),
   KEY porder (porder)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM;
 
 CREATE TABLE nucleus_plugin_event (
   pid int(11) NOT NULL default '0',
@@ -167,7 +165,7 @@ CREATE TABLE nucleus_plugin_option (
   oid int(11) NOT NULL auto_increment,
   ocontextid int(11) NOT NULL default '0',
   PRIMARY KEY  (oid,ocontextid)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM;
 
 CREATE TABLE nucleus_plugin_option_desc (
   oid int(11) NOT NULL auto_increment,
@@ -180,7 +178,7 @@ CREATE TABLE nucleus_plugin_option_desc (
   oextra text,
   PRIMARY KEY  (opid,oname,ocontext),
   UNIQUE KEY oid (oid)
-) TYPE=MyISAM AUTO_INCREMENT=1 ;
+) TYPE=MyISAM;
 
 CREATE TABLE nucleus_skin (
   sdesc int(11) NOT NULL default '0',
@@ -211,7 +209,7 @@ CREATE TABLE nucleus_skin_desc (
   PRIMARY KEY  (sdnumber),
   UNIQUE KEY sdnumber (sdnumber),
   UNIQUE KEY sdname (sdname)
-) TYPE=MyISAM AUTO_INCREMENT=5 ;
+) TYPE=MyISAM;
 
 INSERT INTO nucleus_skin_desc VALUES (2, 'feeds/atom', 'Atom 0.3 weblog syndication', 'application/atom+xml', 'normal', '');
 INSERT INTO nucleus_skin_desc VALUES (3, 'feeds/rss20', 'RSS 2.0 syndication of weblogs', 'text/xml', 'normal', '');
@@ -234,12 +232,10 @@ CREATE TABLE nucleus_template (
   PRIMARY KEY  (tdesc,tpartname)
 ) TYPE=MyISAM;
 
-INSERT INTO nucleus_template VALUES (3, 'ITEM', '<item>\r\n <title><%syndicate_title%></title>\r\n <link><%blogurl%>index.php?itemid=<%itemid%></link>\r\n<description><%syndicate_description%></description>\r\n <category><%category%></category>\r\n<comments><%blogurl%>index.php?itemid=<%itemid%></comments>\r\n <pubDate><%date(rfc822)%></pubDate>\r\n</item>');
+INSERT INTO nucleus_template VALUES (3, 'ITEM', '<item>\r\n <title><![CDATA[<%title%>]]></title>\r\n <link><%blogurl%>index.php?itemid=<%itemid%></link>\r\n<description><![CDATA[<%body%><%more%>]]></description>\r\n <category><%category%></category>\r\n<comments><%blogurl%>index.php?itemid=<%itemid%></comments>\r\n <pubDate><%date(rfc822)%></pubDate>\r\n</item>');
 INSERT INTO nucleus_template VALUES (3, 'EDITLINK', '<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>');
-INSERT INTO nucleus_template VALUES (3, 'FORMAT_DATE', '%x');
-INSERT INTO nucleus_template VALUES (3, 'FORMAT_TIME', '%X');
 INSERT INTO nucleus_template VALUES (4, 'ITEM', '<%date(utc)%>');
-INSERT INTO nucleus_template VALUES (5, 'ITEM', '<entry>\r\n <title><%syndicate_title%></title>\r\n <link rel="alternate" type="text/html" href="<%blogurl%>index.php?itemid=<%itemid%>" />\r\n <author>\r\n  <name><%author%></name>\r\n </author>\r\n <modified><%date(utc)%></modified>\r\n <issued><%date(iso8601)%></issued>\r\n <content>\r\n   <%syndicate_description%>\r\n </content>\r\n <id><%blogurl%>:<%blogid%>:<%itemid%></id>\r\n</entry>');
+INSERT INTO nucleus_template VALUES (5, 'ITEM', '<entry>\r\n <title type="text/html" mode="escaped"><![CDATA[<%title%>]]></title>\r\n <link rel="alternate" type="text/html" href="<%blogurl%>index.php?itemid=<%itemid%>" />\r\n <author>\r\n  <name><%author%></name>\r\n </author>\r\n <modified><%date(utc)%></modified>\r\n <issued><%date(iso8601)%></issued>\r\n <content type="text/html" mode="escaped"><![CDATA[<%body%><%more%>]]></content>\r\n <id><%blogurl%>:<%blogid%>:<%itemid%></id>\r\n</entry>');
 INSERT INTO nucleus_template VALUES (1, 'ARCHIVELIST_FOOTER', '</ul>');
 INSERT INTO nucleus_template VALUES (1, 'ARCHIVELIST_HEADER', '<ul>');
 INSERT INTO nucleus_template VALUES (1, 'ARCHIVELIST_LISTITEM', '<li><a href="<%archivelink%>">%B, %Y</a></li>');
@@ -275,6 +271,8 @@ INSERT INTO nucleus_template VALUES (2, 'LOCALE', 'en');
 INSERT INTO nucleus_template VALUES (2, 'MEDIA_CODE', '<%media%>');
 INSERT INTO nucleus_template VALUES (2, 'POPUP_CODE', '<%popuplink%>');
 INSERT INTO nucleus_template VALUES (2, 'SEARCH_HIGHLIGHT', '<span class="highlight">\\0</span>');
+INSERT INTO nucleus_template VALUES (3, 'FORMAT_DATE', '%x');
+INSERT INTO nucleus_template VALUES (3, 'FORMAT_TIME', '%X');
 
 CREATE TABLE nucleus_template_desc (
   tdnumber int(11) NOT NULL auto_increment,
@@ -283,7 +281,7 @@ CREATE TABLE nucleus_template_desc (
   PRIMARY KEY  (tdnumber),
   UNIQUE KEY tdname (tdname),
   UNIQUE KEY tdnumber (tdnumber)
-) TYPE=MyISAM AUTO_INCREMENT=6 ;
+) TYPE=MyISAM;
 
 INSERT INTO nucleus_template_desc VALUES (4, 'feeds/atom/modified', 'Atom feeds: Inserts last modification date');
 INSERT INTO nucleus_template_desc VALUES (5, 'feeds/atom/entries', 'Atom feeds: Feed items');
