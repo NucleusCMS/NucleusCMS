@@ -96,6 +96,10 @@
 </div>
 
 <!-- Google AdSense -->
+<!--
+	To enable adsense, remove the comments around this
+	block and fill out your adsense client code 
+	in 120x600_as.inc
 <div class="sidebar">
 <dl class="sidebardl">
 <dt>AdSense</dt>
@@ -103,9 +107,10 @@
 </div>
 <div class="sidebar">
 <div class="sidebardl centerize">
-<%include(120x600_as.inc)%>
+[%include(120x600_as.inc)%]
 </div>
 </div>
+-->
 
 <!-- Powered by -->
 <div class="sidebar">
