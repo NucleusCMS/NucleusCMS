@@ -5960,50 +5960,56 @@ function listplug_table_plugoptionlist($template, $type) {
 
 function listplug_plugOptionRow($current) {
 	$varname = 'plugoption['.$current['oid'].']['.$current['contextid'].']';
-
-	echo '<td>',htmlspecialchars($current['description']?$current['description']:$current['name']),'</td>';
-	echo '<td>';
-	switch($current['type']) {
-		case 'yesno':
-			ADMIN::input_yesno($varname, $current['value'], 0, 'yes', 'no');
-			break;
-		case 'password':
-			echo '<input type="password" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'" />';
-			break;
-		case 'select':
-			echo '<select name="'.htmlspecialchars($varname).'">';
-			$aOptions = NucleusPlugin::getOptionSelectValues($current['typeinfo']);
-			$aOptions = explode('|', $aOptions);
-			for ($i=0; $i<(count($aOptions)-1); $i+=2) {
-				echo '<option value="'.htmlspecialchars($aOptions[$i+1]).'"';
-				if ($aOptions[$i+1] == $current['value'])
-					echo ' selected="selected"';
-				echo '>'.htmlspecialchars($aOptions[$i]).'</option>';
-			}
-			echo '</select>';
-			break;
-		case 'textarea':
-			$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-			echo '<textarea class="pluginoption" cols="30" rows="5" name="',htmlspecialchars($varname),'"';				
-			if ($meta['access'] == 'readonly') {
-				echo ' readonly="readonly"';
-			}
-			echo '>',htmlspecialchars($current['value']),'</textarea>';
-			break;
-		case 'text':
-		default:
-			$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-			echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'"';
-			if ($meta['numerical'] == 'true') {
-				echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
-			}
-			if ($meta['access'] == 'readonly') {
-				echo ' readonly="readonly"';
-			}
-			echo ' />';
+	// retreive the optionmeta
+	$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
+	
+	// only if it is not a hidden option write the controls to the page
+	if ($meta['access'] != 'hidden') {
+		echo '<td>',htmlspecialchars($current['description']?$current['description']:$current['name']),'</td>';
+		echo '<td>';
+		switch($current['type']) {
+			case 'yesno':
+				ADMIN::input_yesno($varname, $current['value'], 0, 'yes', 'no');
+				break;
+			case 'password':
+				echo '<input type="password" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'" />';
+				break;
+			case 'select':
+				echo '<select name="'.htmlspecialchars($varname).'">';
+				$aOptions = NucleusPlugin::getOptionSelectValues($current['typeinfo']);
+				$aOptions = explode('|', $aOptions);
+				for ($i=0; $i<(count($aOptions)-1); $i+=2) {
+					echo '<option value="'.htmlspecialchars($aOptions[$i+1]).'"';
+					if ($aOptions[$i+1] == $current['value'])
+						echo ' selected="selected"';
+					echo '>'.htmlspecialchars($aOptions[$i]).'</option>';
+				}
+				echo '</select>';
+				break;
+			case 'textarea':
+				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
+				echo '<textarea class="pluginoption" cols="30" rows="5" name="',htmlspecialchars($varname),'"';				
+				if ($meta['access'] == 'readonly') {
+					echo ' readonly="readonly"';
+				}
+				echo '>',htmlspecialchars($current['value']),'</textarea>';
+				break;
+			case 'text':
+			default:
+				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
+				
+				echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'"';
+				if ($meta['numerical'] == 'true') {
+					echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
+				}
+				if ($meta['access'] == 'readonly') {
+					echo ' readonly="readonly"';
+				}
+				echo ' />';
+		}
+		echo $current['extra'];
+		echo '</td>';
 	}
-	echo $current['extra'];
-	echo '</td>';
 }
 
 function listplug_table_itemlist($template, $type) {

@@ -531,8 +531,9 @@
 		 * @return boolean true if this option type can be numerical
 		 * @author TeRanEX
 		 * @static
+		 * @todo IMPORTANT: remove this method
 		 */
-		function optionCanBeNumeric($optionType) {
+		/*function optionCanBeNumeric($optionType) {
 			switch ($optionType) {
 				case 'text':
 				case 'select':
@@ -542,7 +543,7 @@
 					return false;
 					break;
 			}
-		}
+		}*/
 		
 		/**
 		 * return wether or not an optiontype can have a specific access meta data
@@ -552,8 +553,9 @@
 		 * @return boolean true if this option type can have the meta
 		 * @author TeRanEX
 		 * @static
+		 * @todo IMPORTANT: remove this method
 		 */
-		function optionCanHaveAccessMeta($optionType, $accessMeta) {
+		/*function optionCanHaveAccessMeta($optionType, $accessMeta) {
 			switch ($optionType) {
 				case 'text':
 				case 'textarea':
@@ -563,7 +565,7 @@
 					return false;
 					break;
 			}
-		}
+		}*/
 		
 		/**
 		 * accepts the typeExtra-field of an option and return's true if the option is numerical
@@ -571,8 +573,9 @@
 		 * @return boolean true is the option is numerical (the meta collections contains a key 'numerical' with value = true)
 		 * @author TeRanEX
 		 * @static
+		 * @todo IMPORTANT: remove this method
 		 */
-		function optionIsNumeric($typeExtra) {
+		/*function optionIsNumeric($typeExtra) {
 			$meta = NucleusPlugin::getOptionMeta($typeExtra);
 			//return (in_array('number', $meta)) ? true : false;
 			if ($meta['numerical'] == 'true') {
@@ -580,7 +583,7 @@
 			} else {
 				return false;
 			}
-		}
+		}*/
 
 		/**
 		 * @param $aOptions: array ( 'oid' => array( 'contextid' => 'value'))
@@ -602,8 +605,14 @@
 				if ($o = mysql_fetch_object($res))
 				{
 					foreach ($values as $contextid => $value) {
+						// retreive any metadata
+						$meta = NucleusPlugin::getOptionMeta($o->oextra);
+						
+						// if the option is readonly or hidden it may not be saved
+						if (($meta['access'] != 'readonly') && ($meta['access'] != 'hidden')) {
+							
 							$value = undoMagic($value);	// value comes from request
-
+	
 							switch($o->otype) {
 								case 'yesno':
 									if (($value != 'yes') && ($value != 'no')) $value = 'no';
@@ -611,13 +620,14 @@
 								default:
 									break;
 							}
-
-							if ((NucleusPlugin::optionCanBeNumeric($o->otype))&&(NucleusPlugin::optionIsNumeric($o->oextra))&&(!is_numeric($value))) {
-								//the option must be numeric, but the value isn't
+							
+							// check the validity of numerical options
+							if (($meta['numerical'] == 'true') && (!is_numeric($value))) { 
+								//the option must be numeric, but the it isn't
 								//use the default for this option
 								$value = $o->odef;
 							}
-
+	
 							// decide wether we are using the contextid of newContextid
 							if ($newContextid != 0) {
 								$contextid = $newContextid;
@@ -630,7 +640,7 @@
 							// delete the old value for the option
 							sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));
 							sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
-
+						}
 					}
 				}
 			}
