@@ -1578,7 +1578,7 @@ class ADMIN {
 			<td><input name="url" tabindex="50" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getURL()); ?>" /></td>			
 		<?php // only allow to change this by super-admins
 		   // we don't want normal users to 'upgrade' themselves to super-admins, do we? ;-)
-		   if ($member->isAdmin()) : 
+		   if ($member->isAdmin()) {
 		?>
 			</tr><tr>
 				<td><?php echo _MEMBERS_SUPERADMIN?> <?php help('superadmin'); ?></td>
@@ -1586,7 +1586,7 @@ class ADMIN {
 			</tr><tr>
 				<td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
 				<td><?php $this->input_yesno('canlogin',$mem->canLogin(),70); ?></td>
-		<?php endif; ?>
+		<?php } ?>
 		</tr><tr>
 			<td><?php echo _MEMBERS_NOTES?></td>
 			<td><input name="notes" tabindex="80" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getNotes()); ?>" /></td>			
@@ -5836,14 +5836,14 @@ function listplug_table($template, $type) {
 
 function listplug_table_memberlist($template, $type) {
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo '<th>' . _LIST_MEMBER_NAME . '</th><th>' . _LIST_MEMBER_RNAME . '</th><th>' . _LIST_MEMBER_URL . '</th><th>' . _LIST_MEMBER_ADMIN;
 			help('superadmin'); 
 			echo "</th><th>" . _LIST_MEMBER_LOGIN;
 			help('canlogin');
 			echo "</th><th colspan='2'>" . _LISTS_ACTIONS. "</th>";		
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 			
 			echo '<td>';
@@ -5865,12 +5865,12 @@ function listplug_table_memberlist($template, $type) {
 
 function listplug_table_teamlist($template, $type) {
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo "<th>"._LIST_MEMBER_NAME."</th><th>"._LIST_MEMBER_RNAME."</th><th>"._LIST_TEAM_ADMIN;
 			help('teamadmin');
 			echo "</th><th colspan='2'>"._LISTS_ACTIONS."</th>";		
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 		
 			echo '<td>';
@@ -5897,11 +5897,11 @@ function encode_desc(&$data)
 function listplug_table_pluginlist($template, $type) {
 	global $manager;
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo '<th>'._LISTS_INFO.'</th><th>'._LISTS_DESC.'</th>';
 			echo '<th>'._LISTS_ACTIONS.'</th>';
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 			
 			$plug =& $manager->getPlugin($current->pfile);
@@ -5939,10 +5939,10 @@ function listplug_table_pluginlist($template, $type) {
 function listplug_table_plugoptionlist($template, $type) {
 	global $manager;
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo '<th>'._LISTS_INFO.'</th><th>'._LISTS_VALUE.'</th>';
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 			listplug_plugOptionRow($current);
 			break;
@@ -6014,10 +6014,10 @@ function listplug_plugOptionRow($current) {
 
 function listplug_table_itemlist($template, $type) {
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo "<th>"._LIST_ITEM_INFO."</th><th>"._LIST_ITEM_CONTENT."</th><th colspan='1'>"._LISTS_ACTIONS."</th>";
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 			$current->itime = strtotime($current->itime);	// string -> unix timestamp
 			
@@ -6067,10 +6067,10 @@ function listplug_nextBatchId() {
 
 function listplug_table_commentlist($template, $type) {
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo "<th>"._LISTS_INFO."</th><th>"._LIST_COMMENT."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 			$current->ctime = strtotime($current->ctime);	// string -> unix timestamp
 			
@@ -6106,10 +6106,10 @@ function listplug_table_commentlist($template, $type) {
 
 function listplug_table_bloglist($template, $type) {
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo "<th>" . _NAME . "</th><th colspan='6'>" ._LISTS_ACTIONS. "</th>";		
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 			
 			echo "<td title='blogid:$current->bnumber shortname:$current->bshortname'><a href='$current->burl'><img src='images/globe.gif' width='13' height='13' alt='". _BLOGLIST_TT_VISIT."' /></a> " . htmlspecialchars($current->bname) . "</td>";
@@ -6134,10 +6134,10 @@ function listplug_table_bloglist($template, $type) {
 
 function listplug_table_shortblognames($template, $type) {
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo "<th>" . _NAME . "</th><th>" . _NAME. "</th>";		
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 			
 			echo "<td>$current->bshortname</td>";
@@ -6149,10 +6149,10 @@ function listplug_table_shortblognames($template, $type) {
 
 function listplug_table_shortnames($template, $type) {
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo "<th>" . _NAME . "</th><th>" . _LISTS_DESC. "</th>";		
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 			
 			echo "<td>$current->name</td>";
@@ -6165,10 +6165,10 @@ function listplug_table_shortnames($template, $type) {
 
 function listplug_table_categorylist($template, $type) {
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='2'>"._LISTS_ACTIONS."</th>";		
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 			
 			echo '<td>';
@@ -6190,10 +6190,10 @@ function listplug_table_categorylist($template, $type) {
 
 function listplug_table_templatelist($template, $type) {
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";		
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 			
 			echo "<td>" , htmlspecialchars($current->tdname), "</td>";
@@ -6209,10 +6209,10 @@ function listplug_table_templatelist($template, $type) {
 function listplug_table_skinlist($template, $type) {
 	global $CONF, $DIR_SKINS;
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";		
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 			
 			echo "<td>";
@@ -6276,10 +6276,10 @@ function listplug_table_skinlist($template, $type) {
 
 function listplug_table_draftlist($template, $type) {
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo "<th>"._LISTS_BLOG."</th><th>"._LISTS_TITLE."</th><th colspan='2'>"._LISTS_ACTIONS."</th>";		
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 
 			echo "<td>$current->bshortname</td>";			
@@ -6294,10 +6294,10 @@ function listplug_table_draftlist($template, $type) {
 
 function listplug_table_actionlist($template, $type) {
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo '<th>'._LISTS_TIME.'</th><th>'._LIST_ACTION_MSG.'</th>';		
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 			
 			echo "<td>$current->timestamp</td>";
@@ -6309,10 +6309,10 @@ function listplug_table_actionlist($template, $type) {
 
 function listplug_table_banlist($template, $type) {
 	switch($type) {
-		case 'HEAD';
+		case 'HEAD':
 			echo '<th>'._LIST_BAN_IPRANGE.'</th><th>'. _LIST_BAN_REASON.'</th><th>'._LISTS_ACTIONS.'</th>';		
 			break;
-		case 'BODY';
+		case 'BODY':
 			$current = $template['current'];
 		
 			echo "<td>$current->iprange</td>";
