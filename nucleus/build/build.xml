@@ -8,7 +8,7 @@
 
 <target name="init">
 
-    <property name="version" value="3.2-b3" />
+    <property name="version" value="3.2-b4" />
     
     <property name="src.home" value=".." />
     <property name="build.home" value="." />    
@@ -112,8 +112,9 @@
     </delete>    
     
     <!-- remove all plugins (only included in full release) -->
-    <delete>
+    <delete includeEmptyDirs="true">
     	<fileset dir="${upgrade.home}/nucleus/plugins">
+    		<include name="**/**" />   <!-- upgrade should not contain/overwrite plugin files -->
     		<include name="*.*" />
     		<exclude name="index.html" />
     	</fileset>
