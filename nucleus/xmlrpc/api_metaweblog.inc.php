@@ -40,7 +40,7 @@
 
 			// category is optional (thus: be careful)!
 			$catlist = $struct->structmem('categories');
-			if ($catlist) 
+			if ($catlist && ($catlist->kindOf() == "array") && ($catlist->arraysize() > 0)) 
 				$category = _getArrayVal($catlist, 0);
 
 		$publish = _getScalar($m,4);
@@ -119,7 +119,7 @@
 
 			// category is optional (thus: be careful)!
 			$catlist = $struct->structmem('categories');
-			if ($catlist && ($catlist->kindOf() == "array")) {
+			if ($catlist && ($catlist->kindOf() == "array") && ($catlist->arraysize() > 0)) {
 				$category = _getArrayVal($catlist, 0);
 			} 
 			
