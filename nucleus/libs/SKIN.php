@@ -523,10 +523,8 @@ class ACTIONS extends BaseActions {
 
 		if ($this->skintype == 'item')
 			$this->_itemlink($itemidprev);
-	    else if ($this->skintype == 'search')
+	    else if ($this->skintype == 'search' || $this->skintype == 'index')
 	        $this->_searchlink($amount, $startpos, 'prev', $linktext);
-	    else if ($this->skintype == 'index')
-	        $this->_bloglink($amount, $startpos, 'prev', $linktext);
 		else
 			$this->_archivelink($archiveprev);
 	}
@@ -535,10 +533,8 @@ class ACTIONS extends BaseActions {
 		global $itemidnext, $archivenext, $startpos;
 		if ($this->skintype == 'item')
 			$this->_itemlink($itemidnext);
-	    else if ($this->skintype == 'search')
+	    else if ($this->skintype == 'search' || $this->skintype == 'index')
 	        $this->_searchlink($amount, $startpos, 'next', $linktext);
-	    else if ($this->skintype == 'index')
-	        $this->_bloglink($amount, $startpos, 'next', $linktext);
 		else
 			$this->_archivelink($archivenext);
 	}
@@ -624,12 +620,12 @@ class ACTIONS extends BaseActions {
 	}
 	
 	function parse_blog($template, $amount = 10, $category = '') {
-		global $blog;
+		global $blog, $startpos;
 		
 		list($limit, $offset) = sscanf($amount, '%d(%d)');
 		$this->_setBlogCategory($blog, $category);
 		$this->_preBlogContent('blog',$blog);
-		$blog->readLog($template, $limit, $offset);
+		$blog->readLog($template, $limit, $offset, $startpos);
 		$this->_postBlogContent('blog',$blog);
 	}
 
