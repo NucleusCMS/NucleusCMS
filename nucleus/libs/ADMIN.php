@@ -4536,7 +4536,7 @@ selector();
 					);
 					if (count($aPluginExtras) > 0)
 					{
-						echo '<h2>_QMENU_PLUGINS</h2>';
+						echo '<h2>', _QMENU_PLUGINS, '</h2>';
 						echo '<ul>';
 						foreach ($aPluginExtras as $aInfo)
 						{
