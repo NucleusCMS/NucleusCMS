@@ -54,7 +54,7 @@ class PARSER {
 	 */
 	function parse(&$contents) {
 	
-		$pieces = split($this->delim,$contents);
+		$pieces = preg_split('/'.$this->delim.'/',$contents);
 		
 		$maxidx = sizeof($pieces);
 		for ($idx = 0;$idx<$maxidx;$idx++) {
