@@ -514,6 +514,16 @@ class MEMBER {
 		return (mysql_num_rows($r) != 0);
 	}
 	
+	// checks if a username is protected. If so, it can not be used on anonymous comments
+	function isNameProtected($name) {
+		
+		// extract name
+		$name = strip_tags($name);	
+		$name = trim($name);		
+		
+		return MEMBER::exists($name);
+	}
+	
 	// adds a new member (static)
 	function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes) {
 		if (!isValidMailAddress($email))
