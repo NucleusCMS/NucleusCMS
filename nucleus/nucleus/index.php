@@ -16,6 +16,11 @@
 	// include the admin code
 	include('../config.php');
 	
+	if (!stristr(serverVar('HTTP_ACCEPT'),'application/xhtml+xml'))
+		header('Content-Type: text/html;');			
+	else
+		header('Content-Type: application/xhtml+xml;');			
+	
 	if ($CONF['alertOnSecurityRisk'] == 1)
 	{
 		// check if files exist and generate an error if so

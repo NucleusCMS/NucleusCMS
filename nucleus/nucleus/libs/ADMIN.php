@@ -3967,9 +3967,6 @@ selector();
 		</tr><tr>
 			<td><?php echo _SETTINGS_MEDIAPREFIX?></td>
 			<td><?php $this->input_yesno('MediaPrefix',$CONF['MediaPrefix'],10110); ?></td>
-			</td>			
-
-
 
 		</tr><tr>
 			<th colspan="2"><?php echo _SETTINGS_MEMBERS?></th>
@@ -4013,10 +4010,10 @@ selector();
 			<th colspan="2"><?php echo _SETTINGS_COOKIES_TITLE?> <?php help('cookies'); ?></th>
 		</tr><tr>
 			<td><?php echo _SETTINGS_COOKIEDOMAIN?></td>
-			<td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  htmlspecialchars($CONF['CookieDomain'])?>" />
+			<td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  htmlspecialchars($CONF['CookieDomain'])?>" /></td>
 		</tr><tr>
 			<td><?php echo _SETTINGS_COOKIEPATH?></td>
-			<td><input name="CookiePath" tabindex="10170" size="40" value="<?php echo  htmlspecialchars($CONF['CookiePath'])?>" />
+			<td><input name="CookiePath" tabindex="10170" size="40" value="<?php echo  htmlspecialchars($CONF['CookiePath'])?>" /></td>
 		</tr><tr>
 			<td><?php echo _SETTINGS_COOKIESECURE?></td>
 			<td><?php $this->input_yesno('CookieSecure',$CONF['CookieSecure'],10180); ?></td>
@@ -4035,7 +4032,7 @@ selector();
 			<th colspan="2"><?php echo _SETTINGS_UPDATE?></th>
 		</tr><tr>
 			<td><?php echo _SETTINGS_UPDATE?></td>
-			<td><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN?>" onclick="return checkSubmit();" />
+			<td><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN?>" onclick="return checkSubmit();" /></td>
 		</tr></table>
 		
 		</div>
@@ -4138,10 +4135,11 @@ selector();
 	
 	function pagehead($extrahead = '') {
 		global $member, $nucleus, $CONF;
-		
+
+		echo '<?xml version="1.0" encoding="'. _CHARSET .'"?>';
 		?>
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-		<html>
+		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 			<title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>		
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="styles/admin.css" />
