@@ -1,0 +1,19 @@
+<a id="nucleus_cf"></a>
+<form method="post" action="#nucleus_cf">
+  <div class="commentform">
+  	<%errordiv%>
+  	
+	<input type="hidden" name="action" value="addcomment" />
+	<input type="hidden" name="url" value="<%formdata(destinationurl)%>" />
+	<input type="hidden" name="itemid" value="<%itemid%>" />
+	<label for="nucleus_cf_body"><%text(_COMMENTFORM_COMMENT)%></label>:
+	<br />
+	<textarea name="body" class="formfield" cols="40" rows="10" id="nucleus_cf_body"><%formdata(body)%></textarea>
+	<br />
+	<%text(_COMMENTFORM_YOUARE)%> <%formdata(membername)%>
+	<small>(<a href="?action=logout"><%text(_LOGOUT)%></a>)</small>
+	<br />
+	<input type="submit" value="<%text(_COMMENTFORM_SUBMIT)%>" class="formbutton" />
+	<%callback(FormExtra,commentform-loggedin)%>	
+  </div>
+</form>

@@ -1,0 +1,11 @@
+<?
+
+include('./fancyurls.config.php');
+include('./config.php');
+
+$data = explode("/",serverVar('PATH_INFO'));
+$archivelist = intval($data[1]);
+
+selector();
+
+?>

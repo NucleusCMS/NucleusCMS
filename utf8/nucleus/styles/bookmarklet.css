@@ -1,0 +1,160 @@
+@chareset "UTF-8";
+/* 
+	style definitions for the bookmarklet 
+	
+	$Id: bookmarklet.css,v 1.1.1.1 2005-02-28 07:15:02 kimitake Exp $
+*/
+
+body {
+	font-size: small;
+	background: #fff;
+	color: #000;
+    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif
+}		
+
+textarea {
+  font-size: 125%;
+  width: auto;
+  margin: 0;
+  padding: 0;
+  line-height:130%;
+  font-family: "ＭＳ Ｐゴシック", "ヒラギノ角ゴ Pro W3", "Osaka", sans-serif;
+}
+
+h1 {
+	border-bottom: 1px dotted gray;
+	font-size: medium;
+	color: #596d9d;
+}
+
+/* 
+	Hide switch buttons initially, we'll enable them again if we are sure
+	the browser supports DOM
+*/
+#switchbuttons {
+	display: none;
+}
+/*
+	Hide preview also when no DOM is supported
+*/
+#preview {
+	display: none;
+}
+
+.buttonbar {
+   margin-bottom: 5px;
+   background: rgb(187, 187, 204);
+   padding: 3px;
+}
+
+.buttonbar input {
+   background: #C5C5D3;
+    border: 1px solid #CACAD7;
+    border-right: 2px solid #8E8EAB;
+    border-bottom: 2px solid #8E8EAB;
+    color: #000000;
+    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;
+    font-weight: bold;   
+}
+
+.contentblock {
+	/*background: #ddd;*/
+	height: 400px;
+	overflow: auto; /* temporary removed, to make the select box work in Mozilla */
+	padding: 1px;
+    margin: 0px;
+	vertical-align: top;
+}
+
+.shortcuts {
+	float: right; 
+	text-align: right;
+	font-size: x-small;
+}
+
+#options {
+   margin-top:-15px;
+   }
+#options h2 {
+   margin:15px 0 0 0;
+}
+
+h2 {
+   font-size: 1.5em;
+   color: gray;
+    margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+}
+
+a:link, a:visited {
+	color: #1D3565; 
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}			
+
+img { 
+	border: none;
+}
+
+.indent {
+	margin-left: 40px;
+}
+
+label		{ cursor: pointer; }
+
+table {
+	border: none;
+	width: 95%;
+	border-collapse: collapse;
+	margin-bottom: 10px;
+	margin-top: 10px;	
+}
+
+th {
+	background: #bbc;
+	color: #000;
+	font-size: small;
+}
+
+th, td {
+	padding: 4px;
+	empty-cells: show;	
+}
+
+td {
+	background: #fff;
+	border: 1px solid #ddd;
+	font-size: small;
+	vertical-align: top;
+	text-align: left;
+}
+
+td a:link, td a:visited { 
+	text-decoration: underline;
+	color: black;
+	font-weight: normal;
+}
+td a:hover {
+	color: #1D3565;
+	text-decoration: underline;
+}
+
+td.draft, td.future {
+	background: #ffe;
+}
+
+tr.highlighted td {
+	background: green;
+}
+
+ul.nobullets {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}

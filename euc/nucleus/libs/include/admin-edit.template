@@ -1,0 +1,146 @@
+<h2><%text(_EDIT_ITEM)%></h2>
+
+<%init%>
+<script type="text/javascript" src="javascript/numbercheck.js"></script>
+
+<form method="post" action="index.php">
+<div>
+
+<input type="hidden" name="action" value="itemupdate" />
+<input name="itemid" value="<%contents(itemid)%>" type="hidden" />
+<%ticket%>
+
+<table><tr>
+	<th colspan="2"><%text(_EDIT_ITEM)%></th>
+</tr><tr>
+	<td><%text(_EDIT_ORIG_AUTHOR)%></td>
+	<td><%contents(author)%></td>
+</tr><tr>
+	<td><%text(_ADD_TITLE)%></td>
+	<td><input 
+			<%jsinput(title)%>
+			tabindex="10" 
+			size="60" 
+			maxlength="160" 
+			value="<%contents(title)%>" />
+	</td>
+</tr><tr>
+	<td>
+		<%text(_ADD_BODY)%>
+	</td>
+	<td>
+		<%jsbuttonbar(media+preview)%>	
+		<textarea 
+			<%jsinput(body)%>
+			tabindex="20"
+			cols="60"
+			rows="20"><%contents(body)%></textarea>
+	</td>
+</tr><tr id="edit" style="display:none;">
+	<td><%text(_ADD_PREVIEW)%></td>
+	<td><b><span id="prevtitle"></span></b><br />
+		<span id="prevbody"></span><br />
+		<span id="prevmore"></span><br />
+	</td>
+</tr><tr>
+
+<%ifblogsetting(bcomments)%>
+		<td>
+			<%text(_ADD_DISABLE_COMMENTS)%>
+		</td>
+		<td> 
+			<input type="radio" name="closed" value="1" <%checkedonval(1,closed)%> tabindex="30" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+			<input type="radio" name="closed" value="0" <%checkedonval(0,closed)%> tabindex="30" id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
+			<br />
+			<small><%text(_EDIT_COMMENTSNOTE)%></small>	
+		</td>
+	</tr><tr>				
+<%endif%>
+
+	<td><%text(_ADD_CATEGORY)%></td>
+	<td><%categories(40)%></td>
+</tr><tr>
+	<td><%text(_EDIT_SUBMIT)%></td>
+	<td>
+
+		<input type="submit" tabindex="60" value="<%text(_EDIT_SUBMIT)%>" onclick="return checkSubmit();" />
+
+<%ifitemproperty(draft)%>
+		<br /><br />
+		<input name="actiontype" value="addnow" type="radio" id="act_now" /><label for="act_now" tabindex="61"><%text(_ADD_ADDNOW)%></label>
+		<br />
+		<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="61" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+		<div class="indent">
+			<%text(_ADD_PLACE_ON)%>
+			<input id="inputday" name="day" tabindex="71" size="2" value="<%currenttime(mday)%>" />/
+			<input id="inputmonth" name="month" tabindex="72" size="2" value="<%currenttime(mon)%>" />/
+			<input id="inputyear" name="year" tabindex="73" size="4" value="<%currenttime(year)%>" />
+			at
+			<input id="inputhour" name="hour" tabindex="74" size="2" value="<%currenttime(hours)%>" />:
+			<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%currenttime(minutes)%>" />
+			(dd/mm/yyyy hh:mm)
+			<%ifblogsetting(ballowpast,0)%>
+				<br />
+				<%text(_ADD_NOPASTDATES)%>
+			<%endif%>
+		</div>
+		<input name="actiontype" value="adddraft" type="radio" checked='checked' id="act_draft" tabindex="61" /><label for="act_draft"><%text(_EDIT_BACKTODRAFTS)%></label> <%helplink(draft)%>
+		<br />
+		<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="61" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
+<%endif%>
+
+<%ifitemproperty(draft,0)%>
+	<br /><br />
+	<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="61" /><label for="act_edit"><%text(_BMLET_EDIT)%></label>
+	<%ifblogsetting(ballowpast)%>
+		<br />
+		<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="70" /><label for="act_changedate"><%text(_ADD_CHANGEDATE)%></label> <%helplink(changedate)%>
+			<div class="indent">
+				<input id="inputmonth" name="month" tabindex="71" size="2" value="<%itemtime(mon)%>" />月
+				<input id="inputday" name="day" tabindex="72" size="2" value="<%itemtime(mday)%>" />日
+				<input id="inputyear" name="year" tabindex="73" size="4" value="<%itemtime(year)%>" />年
+				 
+				<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" />時
+				<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" />分
+				<br />
+				フォーマット：(mm)月(dd)日(yyyy)年 (hh)時(mm)分
+			</div>
+	<%endif%>	
+	<br />
+	<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="61" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
+<%endif%>
+
+	</td>
+</tr><tr>
+	<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+	<td>
+		<%pluginextras%>
+	</td>	
+</tr>
+			<%itemoptions%>	
+<tr>
+  	<th colspan="2"><%text(_ADD_MORE)%></th>
+</tr>
+<tr>
+	<td><%text(_ADD_MORE)%>
+		<br /><%helplink(extended)%>
+	</td>
+	<td>
+		<%jsbuttonbar(media+preview)%>
+		<textarea 
+			<%jsinput(more)%>
+			tabindex="90" 
+			cols="60" 
+			rows="20"><%contents(more)%></textarea>
+	</td>
+</tr><tr>
+		<td><%text(_SUBMIT)%></td>
+		<td>
+			<input tabindex="60" type="submit" value="<%text(_EDIT_SUBMIT)%>" 
+				onclick="return checkSubmit();" />
+		</td>
+	
+</tr></table>
+
+</div>
+</form>		

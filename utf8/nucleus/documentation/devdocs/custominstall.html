@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+	<!-- $Id: custominstall.html,v 1.1.1.1 2005-02-28 07:14:36 kimitake Exp $ -->
+	<title>Nucleus - インストールスクリプトのカスタマイズ</title>
+	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+</head>
+<body>
+
+<div class="heading">
+インストールスクリプトのカスタマイズ
+</div>
+
+<p class="note">注：この機能はバージョン2.2以降のものです。</p>
+
+<h1>イントロダクション</h1>
+
+<p>
+<a href="index.html">開発者向けドキュメントの目次へ戻る</a>
+</p>
+
+<p>このドキュメントにはNucleusのインストール・スクリプトをどのようにカスタムするかという情報が書かれています。二つの方法でカスタマイズが可能です：</p>
+
+<ol>
+	<li>スキンの自動インストール</li>
+	<li>プラグインの自動インストール</li>
+</ol>
+
+<h1>設定</h1>
+
+<p><code>install.php</code>をエディタで開き、次のコードを探してください：</p>
+
+<pre><code>    // array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
+    // directory.
+    //
+    // example:
+    //     array('NP_TrackBack', 'NP_MemberGoodies')
+    $aConfPlugsToInstall = array();
+
+
+    // array with skins to install. skins must be present under the skins/ directory with
+    // a subdirectory having the same name that contains a skinbackup.xml file
+    //
+    // example:
+    //     array('base','rsd')
+    $aConfSkinsToImport = array();</code></pre>
+
+<p>やるべき事はこのコードを変更するだけです：自動インストールしたいプラグインとスキンの名前を、例のような配列リストにしてください。</p>
+
+<h1>ファイルの取り込み</h1>
+
+<p>設定を変更した次は、ディストリビューションにファイルを追加する必要があります。</p>
+
+<h2>プラグインとスキン</h2>
+
+<p>プラグインは、<code>nucleus/plugins/</code>ディレクトリにファイルをおいてください。プラグインを手動でインストールする場合にするのと全く同じです。</p>
+
+<p>スキンは、手動でインポートする時と同様に、<code>skins/</code>直下にディレクトリをおいてください。<code>skinbackup.xml</code>をそこに入れておくことをお忘れ無く。</p>
+
+<h1>忘れてはいけないこと</h1>
+
+<p>再配布する前に、カスタマイズされたインストールスクリプトをテストすることを忘れないでください。</p>
+
+</body>
+</html>

@@ -1,0 +1,119 @@
+<h2><%text(_ADD_ADDTO)%> '<%bloglink%>'</h2>
+
+<%init%>
+<script type="text/javascript" src="javascript/numbercheck.js"></script>
+
+<form method="post" action="index.php" >
+
+<div>
+
+<input type="hidden" name="action" value="additem" />
+<input name="blogid" value="<%blogid%>" type="hidden" />
+<%ticket%>
+
+<table>
+	<tr>
+		<th colspan="2"><%text(_ADD_CREATENEW)%></th>
+	</tr><tr>
+		<td><%text(_ADD_TITLE)%></td>
+		<td><input 
+			<%jsinput(title)%>
+			tabindex="10"
+			size="60" 
+			maxlength="160" 
+			value="<%contents(title)%>"
+			/></td>
+	</tr><tr>
+		<td>
+			<%text(_ADD_BODY)%> <%helplink(additem)%>
+		</td>
+		<td>
+			<%jsbuttonbar(media+preview)%>
+			<textarea
+				<%jsinput(body)%>
+				tabindex="20"
+				cols="60"
+				rows="20"><%contents(body)%></textarea>
+		</td>
+	</tr><tr id="edit" style="display:none;">
+		<td><%text(_ADD_PREVIEW)%></td>
+		<td><b><span id="prevtitle"></span></b><br />
+			<span id="prevbody"></span><br />
+			<span id="prevmore"></span><br />
+		</td>
+	</tr><tr>
+	
+<%ifblogsetting(bcomments)%>
+		<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+		<td>
+			<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+			<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
+		</td>
+	</tr><tr>
+<%endif%>
+
+
+		<td><%text(_ADD_CATEGORY)%></td>
+		<td><%categories(40)%></td>
+	</tr><tr>
+		<td><%text(_SUBMIT)%></td>
+		<td>
+			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 
+				onclick="return checkSubmit();" />
+
+			<br /><br />
+
+			<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="61" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
+			<br />
+			<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="61" /><label for="act_future" ><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+			<div class="indent">
+				<%text(_ADD_PLACE_ON)%>
+				<input id="inputmonth" name="month" tabindex="63" size="2" value="<%currenttime(mon)%>" />月
+				<input id="inputday" name="day" tabindex="64" size="2" value="<%currenttime(mday)%>" />日
+				<input id="inputyear" name="year" tabindex="65" size="4" value="<%currenttime(year)%>" />年
+				 
+				<input id="inputhour" name="hour" tabindex="66" size="2" value="<%currenttime(hours)%>" />時
+				<input id="inputminutes" name="minutes" tabindex="67" size="2" value="<%currenttime(minutes)%>" />分
+				<br />
+				フォーマット：(mm)月(dd)日(yyyy)年 (hh)時(mm)分
+				
+				<%ifblogsetting(ballowpast,0)%>
+					<br />
+					<%text(_ADD_NOPASTDATES)%>
+				<%endif%>
+			</div>
+			<input name="actiontype" tabindex="61" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+		</td>
+	</tr><tr>
+		<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+		<td>
+			<%pluginextras%>
+		</td>
+	</tr>
+			<%itemoptions%>	
+    <tr>
+    	<th colspan="2"><%text(_ADD_MORE)%></th>
+	</tr><tr>
+		<td><%text(_ADD_MORE)%>
+			<br /><%helplink(extended)%>
+		</td>
+		<td>
+			<%jsbuttonbar(media+preview)%>		
+			<textarea 
+				<%jsinput(more)%>			
+				tabindex="70"
+				cols="60"
+				rows="20"
+				><%contents(more)%></textarea>
+		</td>
+	</tr><tr>
+		<td><%text(_SUBMIT)%></td>
+		<td>
+			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 
+				onclick="return checkSubmit();" />
+		</td>
+	</tr>
+</table>
+
+</div>
+</form>	

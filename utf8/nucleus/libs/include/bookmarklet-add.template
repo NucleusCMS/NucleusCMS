@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title><%text(_ADD_ADDTO)%> '<%blogname%>'</title>
+		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" /> 
+		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />		
+		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
+		<script type="text/javascript" src="javascript/edit.js"></script>
+		<script type="text/javascript" src="javascript/numbercheck.js"></script>
+		<%init%>
+		<%extrahead%>
+		<script type="text/javascript">
+			var nucleus_initbm_oldonload = window.onload;
+			function nucleus_initbm()
+			{
+				initStyles(); 
+				updAllPreviews();
+
+				if (nucleus_initbm_oldonload)
+					nucleus_initbm_oldonload();
+			}
+			window.onload = nucleus_initbm;
+		</script>
+	</head>
+	<body>
+		<h1><%text(_ADD_ADDTO)%> '<%bloglink%>'</h1>
+		<form method="post" action="bookmarklet.php" ><div>
+			
+			<input name="action" type="hidden" value="additem" />
+			<input name="blogid" type="hidden" value="<%blogid%>" />
+			<%ticket%>
+			
+			<div id="submit" class="buttonbar">
+				<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
+				<div id="switchbuttons">
+					<input type="button" onclick="flipBlock('body');" value="<%text(_BMLET_BODY)%> &gt;&gt;" />
+					<input type="button" onclick="flipBlock('more');" value="<%text(_BMLET_MORE)%> &gt;&gt;" />
+					<input type="button" onclick="flipBlock('options');" value="<%text(_BMLET_OPTIONS)%> &gt;&gt;" />
+					<input type="button" onclick="updAllPreviews(); flipBlock('preview');" value="<%text(_BMLET_PREVIEW)%> &gt;&gt;" />
+				</div>
+			</div>
+
+			<div id="body" class="contentblock">
+
+				<table>
+				<tr>
+				<td><%text(_ADD_TITLE)%></td>
+				<td>
+				<input 
+					<%jsinput(title)%>
+					type="text" size="60" maxlength="160" 
+					value="<%contents(title)%>"
+				/></td>
+				</tr><tr>
+				<td>
+				<%text(_ADD_BODY)%> <%helplink(additem)%></td>
+				<td>
+				<%jsbuttonbar(media)%>
+				<textarea 
+					<%jsinput(body)%>
+					cols="58" 
+					rows="12"><%contents(body)%></textarea>
+					
+				</td></tr>
+				<tr><td>
+				<%text(_ADD_CATEGORY)%></td>
+				<td><%categories%></td>
+				</tr></table>
+
+					
+			</div>
+			
+			<div id="more" class="contentblock">
+				<table>
+				<tr>
+				<td><%text(_ADD_MORE)%> <%helplink(extended)%></td>
+				<td>
+				<%jsbuttonbar(media)%>
+				<textarea 
+					<%jsinput(more)%>
+					cols="58" 
+					rows="17"><%contents(more)%></textarea>
+				</td></tr></table>
+			</div>
+			<div id="options" class="contentblock">
+				<table>
+				<%ifblogsetting(bcomments)%>
+					<tr>
+					<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+					<td>
+					<input type='radio' name='closed' value='1' id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+					<input type='radio' name='closed' value='0' checked='checked' id="closed_no"/><label for="closed_no"><%text(_NO)%></label>
+					</td>
+					</tr>
+				<%endif%>
+				
+				<tr>
+				<td><%text(_ADD_DRAFTNFUTURE)%></td>
+				<td>
+					<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
+					<br />
+					<input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+					<div class="indent">
+						<%text(_ADD_PLACE_ON)%>
+						<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" />月
+						<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" />日
+						<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" />年
+						<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" />時
+						<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" />分
+						<br />
+						フォーマット：(mm)月(dd)日(yyyy)年 (hh)時(mm)分
+						<%ifblogsetting(ballowpast,0)%>
+							<br />
+							<%text(_ADD_NOPASTDATES)%>
+						<%endif%>
+					</div>
+					<input name="actiontype" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+				</td>
+				</tr>
+				<tr>
+				<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+				<td>
+				<%pluginextras%></td>
+				</tr>
+				
+				
+				  <%itemoptions%>
+				</table>
+				
+
+			</div>
+			
+			<div id="preview" class="contentblock">
+				<h2><%text(_ADD_PREVIEW)%></h2>
+				
+				<b><span id="prevtitle"></span></b>
+				<br />
+				<span id="prevbody"></span>
+				<br />
+				<span id="prevmore"></span>
+			</div>
+			
+		</div></form>
+	</body>
+	</html>
+

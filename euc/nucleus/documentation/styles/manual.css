@@ -1,0 +1,138 @@
+body {
+	background-color: #fff;
+	color: #000;
+	font-family: verdana, arial;
+	font-size: small;
+}
+
+@media screen {
+	body {
+		margin-left: 10%;
+		margin-right: 10%;
+	}
+}
+
+@media print {
+	pre, .note, td, th {
+		border: 1px dashed gray;
+	}
+}
+
+img {
+	border: none;
+}
+
+a:link, a:visited {
+	color: #1D3565; 
+	font-weight: bold;
+	text-decoration: none;
+}
+a: hover {
+	text-decoration: underline;
+}
+
+.heading {
+	text-align: center;
+	font-size: xx-large;
+	font-weight: bold;
+	color: gray;	
+}
+
+.heading i {
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	font-size: small;
+	font-style: normal;
+	font-weight: normal;
+}
+
+
+p {
+	text-indent: 20px;
+}
+
+h1 {
+	border-bottom: 1px dotted gray;
+	font-size: x-large;
+	color: #596d9d;
+}
+
+h2 {
+	color: gray;
+	font-size: large;
+	margin-left: 20px;
+	text-indent: 10px;
+	border-bottom: 1px solid #ddd;
+}
+
+pre, .note, .faq .answer {
+	background-color: #ddd;
+	padding: 10px;
+	font-size: small;
+}
+
+.screenshot {
+	text-align: center;
+	background-color: #ddd;
+	padding: 10px;
+}
+
+.faq .question {
+	font-weight: bold;
+	margin-bottom: 0px;
+}
+
+.faq .answer {
+
+}
+
+.faq {
+	margin-bottom: 20px;
+}
+
+table {
+	border: none;
+}
+
+th {
+	background-color: linen;
+	font-size: medium;
+}
+
+th, td {
+	padding: 5px;
+}
+
+td {
+	background-color: #dddddd;
+	font-size: small;
+	vertical-align: top;
+	text-align: left;
+}
+
+.deprecated {
+	border: 3px solid red;
+	padding: 5px;
+	font-size: medium;
+}
+
+tt, code, samp {
+	font-size: small;
+}
+
+.warning {
+	color: red;
+}
+.ok {
+	color: green;
+}
+
+acronym, abbr {
+	border-bottom: 1px dotted gray;
+	cursor: help;
+}
+
+label {
+	cursor: hand;
+}
