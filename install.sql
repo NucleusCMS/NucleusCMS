@@ -228,7 +228,7 @@ INSERT INTO nucleus_template VALUES (14, 'FORMAT_DATE', '%x');
 INSERT INTO nucleus_template VALUES (14, 'FORMAT_TIME', '%X');
 INSERT INTO nucleus_template VALUES (14, 'LOCALE', 'en');
 INSERT INTO nucleus_template VALUES (14, 'SEARCH_HIGHLIGHT', '<span class="highlight">\\0</span>');
-INSERT INTO nucleus_template VALUES (14, 'COMMENTS_BODY', '<h3 class="comment"><%userlink%> wrote:</h3>\r\n\r\n<div class="commentbody">\r\n  <%body%>\r\n</div>\r\n\r\n<div class="commentinfo">\r\n  <%date%> <%time%>\r\n</div>\r\n\r\n<%HelloWorld%>\r\n\r\n');
+INSERT INTO nucleus_template VALUES (14, 'COMMENTS_BODY', '<h3 class="comment"><%userlink%> wrote:</h3>\r\n\r\n<div class="commentbody">\r\n  <%body%>\r\n</div>\r\n\r\n<div class="commentinfo">\r\n  <%date%> <%time%>\r\n</div>');
 INSERT INTO nucleus_template VALUES (14, 'EDITLINK', '- <a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>');
 INSERT INTO nucleus_template VALUES (6, 'ITEM', '<item>\r\n <title><%syndicate_title%></title>\r\n <link><%blogurl%>?itemid=<%itemid%></link>\r\n <description><%syndicate_description%></description>\r\n</item>');
 INSERT INTO nucleus_template VALUES (6, 'FORMAT_DATE', '%x');
