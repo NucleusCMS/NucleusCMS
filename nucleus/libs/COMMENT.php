@@ -59,13 +59,24 @@ class COMMENT {
 		$body = addBreaks($body);
 	
 		// create hyperlinks for http:// addresses
-		$body = preg_replace('/((http(s?):\/\/|www\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie','COMMENT::createLinkCode("\\1")', $body);
+		$replaceFrom = array(
+			'/(^|[^ftp:\/\/ ])((http(s?):\/\/|www\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie',
+			'/(^|[^http:\/\/ ])((ftp:\/\/|ftp\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie',
+			'/(mailto:(([a-zA-Z\@\%\.\-\+_])+))/ie'			
+		);
+		$replaceTo = array(
+			'COMMENT::createLinkCode("\\2","http")',
+			'COMMENT::createLinkCode("\\2","ftp")',
+			'COMMENT::createLinkCode("\\2","mailto")'			
+		);
+		$body = preg_replace($replaceFrom, $replaceTo, $body);
+
 		return $body;
 	}
 	
-	function createLinkCode($url) {
-		if (!ereg('^http',$url))
-			$url = 'http://' . $url;
+	function createLinkCode($url, $protocol = 'http') {
+			if (!ereg('^'.$protocol.'://',$url))
+			$url = $protocol . '://' . $url;
 		return '<a href="'.htmlspecialchars($url).'">'.htmlspecialchars(shorten($url,30,'...')).'</a>';
 	}
 	
