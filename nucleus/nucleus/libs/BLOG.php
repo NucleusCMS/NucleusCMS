@@ -366,9 +366,11 @@ class BLOG {
         $where  = $searchclass->boolean_sql_where("ititle,ibody,imore");
         $select = $searchclass->boolean_sql_select("ititle,ibody,imore");
 
-		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed'
-		       . ', '.$select. ' as score '
-		       . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
+		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
+		if ($select) {
+		    $query .= ', '.$select. ' as score ';
+        }
+		$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
 		       . ' WHERE i.iauthor=m.mnumber'
 		       . ' and i.icat=c.catid'
 		       . ' and i.idraft=0'	// exclude drafts
@@ -376,9 +378,9 @@ class BLOG {
 					// don't show future items
 		       . ' and i.itime<=' . mysqldate($this->getCorrectTime())
                . ' and '.$where;
-
-		
-		$query .= ' ORDER BY score DESC';
+        if ($select) {
+            $query .= ' ORDER BY score DESC';
+        } else { $query .= ' ORDER BY i.itime DESC ';}
 		
 		// take into account amount of months to search
 		//if ($amount > 0) {
