@@ -94,23 +94,28 @@ This file (<em>help.html</em>) contains popup help for the Nucleus Admin Area.
 </p>
 
 
-<div class="page"><a name="future"></a>
-<h1>Future Items</h1>
-<p>
-Future items allow you to let an item become visible only at the time you specified. This date <strong>must</strong> be in the future. Before that time has come, the item will not be viewable anywhere in the public part of your site.
-</p>
+<div class="page">
+<a name="future"></a>
+<a name="allowpastposting"></a>
+<h1>+Add Later/Earlier</h1>
+<h2>Add Later</h2>
+<p>The 'Add Later' option on add-item forms allows you to mark an item to become visible only at the exact time you've specified. Before that time has come, the item will not be viewable anywhere in the public part of your site.</p>
+<p>This date <strong>must</strong> be in the future, unless the 'Allow posting to the past' option is enabled for the blog to which you want to add the item.</p>
+<h2>Allow posting to the past</h2>
+<p>When enabled, you'll be allowed to specify the date on which an item should be added, and to edit the timestamp of already existing items.</p>
 </div>
 
 
 <div class="page"><a name="draft"></a>
-<h1>Drafts</h1>
+<h1>+Drafts</h1>
 <p>
-Draft items are not yet viewable in the public blog. They might come in handy when you are working on a story, and something comes in between. Your draft items will be listed on the main page, so you can continue your when you have the time to do so. When editing drafts, choose the 'Add now' radiobutton and hit the 'Edit item' button to make them visible.
+Draft items are not yet viewable in the public blog. They might come in handy when you are working on a story, and something comes in between. Your draft items will be listed on the main page, so you can continue your work when you have the time to do so.</p>
+<p>When editing drafts, choose the '<strong>Add now</strong>' radiobutton and hit the 'Edit item' button to make them visible.
 </p>
 </div>
 
 <div class="page"><a name="extended"></a>
-<h1>Extended part</h1>
+<h1>+Extended part</h1>
 <p>
 Items have an optional extended part that you can use for continued stories. e.g. when a story is too long to put on the main page of your blog, you can write an introduction in the body part and the rest in the extended part. When viewing your main blog page, you will then see 'read more' links (as defined by the templates). 
 </p>
@@ -120,7 +125,7 @@ If you want to write an introduction only for <em>some</em> of your items, you c
 </div>
 
 <div class="page"><a name="shortblogname"></a>
-<h1>Short Blog Name</h1>
+<h1>+Short Blog Name</h1>
 <p>
 The short blog name is used mainly in the admin area to indicate which items are associated with which blog. 
 </p>
@@ -130,24 +135,24 @@ It can also be used in alternative index files, to make a second weblog availabl
 <pre>
 &lt;?
 	include('config.php');
-	selectBlog('shortblogname');
+	selectBlog('myshortblogname');
 	selector();
 ?&gt;
 </pre>
 </div>
 
 <div class="page"><a name="blogdefaultskin"></a>
-<h1>Default Skin</h1>
+<h1>+Default Skin</h1>
 <p>
-The default skin selected in the blog settings is the skin that should be used when the blog should be displayed, and there is no other skin selected (through arguments in the URL)
+The default skin selected in the blog settings is the skin that should be used when the blog is displayed, and there is no other skin selected (through arguments in the URL)
 </p>
 </div>
 
 
 <div class="page"><a name="blognotify"></a>
-<h1>Notify Address</h1>
+<h1>+Notify Address</h1>
 <p>
-This is one or multiple e-mail addresses to which notification e-mails will be sent when new comments are added. Leave empty if you don't want notification. The given e-mail addresses must, of course, be valid ones.
+This option contains one or multiple e-mail addresses to which notification e-mails should be sent when new comments are added. Leave empty if you don't want notification. The given e-mail addresses must, of course, be valid.
 </p>
 <p>
 If you're using multiple addresses, you should use a semicolon (<strong>;</strong>) as a separator.
@@ -155,30 +160,34 @@ If you're using multiple addresses, you should use a semicolon (<strong>;</stron
 <div class="note">
 <b>Note:</b> As the maximum length of the settings fields is 128 characters, there's only a limited amount of e-mail addresses you can list.
 </div>
+<div class="note">
+<b>Note:</b> When you set up your own e-mail address as notification address, you won't get notified of the items/comments that you wrote yourself. Assuming that you know what you wrote, that shouldn't be a problem.
+</div>
 </div>
 
 <div class="page"><a name="blogmaxcomments"></a>
-<h1>Max comments</h1>
+<h1>+Max Amount of Comments</h1>
 <p>
-This is the maximum number of comments that will be shown on the main page. This is <strong>NOT</strong> a restriction on the total number of comments that can be made. On the detail pages, all comments will be shown, even if there are more than the maximum amount chosen.
+This is the maximum number of comments that will be shown on the <em>main page</em>. <strong>This is NOT a restriction on the total number of comments that can be made</strong>. On the detail pages, all comments will be shown, even if there are more than the maximum amount chosen.
 </p>
-<p>
-Inside template, this variable can be overridden by an optional parameter of the <a href="#templatevar-comments">comments</a> templatevar.
+<p class="note"><strong>Note:</strong>
+Inside templates, this variable can be overridden by an optional parameter of the <a href="#templatevar-comments">comments</a> templatevar.
 </p>
 </div>
 
 <div class="page"><a name="blogtimeoffset"></a>
-<h1>Time Offset</h1>
+<h1>+Time Offset</h1>
 <p>
 If the time on your server is not equal to the time where you live, you might want to add an offset to the server time in order to get the correct time. Use negative values to subtract (negation sign). The current server time is listed as a reference.
 </p>
 <h2>Example</h2>
 <p>If your local time is 20:35 and the server time is listed as 14:35, you'll need to set the time offset equal to 6 in order to get your blog time to 20:35
 </p>
+<p class="note"><strong>Note:</strong> Fractional offsets can be used as well, for people living in half time zones. e.g. an offset of <strong>1.5</strong> equals an offset of 1 hour and 30 minutes.</p>
 </div>
 
 <div class="page"><a name="blogupdatefile"></a>
-<h1>Update File</h1>
+<h1>+Update File</h1>
 <p>
 Nucleus can edit a file for you whenever a new item is added to the blog. The contents of that file will be a timestamp of the last change. The use of such a file could be useful for services which check a file on your server once in a while to see if there were updates, and generate 'updated weblogs' from that. Pointing them to your main blog could cause false update warnings to be sent out when visitors add comments or when you change something to the skins or templates.
 </p>
@@ -191,7 +200,7 @@ Please note that the location of the update file is relative to the admin-area, 
 </div>
 
 <div class="page"><a name="teamadmin"></a>
-<h1>Blog Admin</h1>
+<h1>+Blog Admin</h1>
 <p>
 Blog administrators have the following extra rights:
 </p>
@@ -210,10 +219,10 @@ A blog can have multiple admins, but there must be at least one admin at all tim
 
 
 <div class="page"><a name="superadmin"></a>
-<h1>Superadmin</h1>
+<h1>+Administrator Privileges</h1>
 
 <p>
-A superadmin has <strong>full access</strong> to all functions and all weblogs, even if not on the team.
+A so called <em>super-admin</em> has <strong>full access</strong> to all functions and all weblogs, even if she is not on the blog team.
 </p>
 
 <p>
@@ -227,17 +236,24 @@ Usually, there will be only one super-admin, the site administrator.
 </div>
 
 <div class="page"><a name="canlogin"></a>
-<h1>Can Login?</h1>
+<h1>+Can Login?</h1>
 <p>
-As a superadmin, you can disallow individual members to login to the admin area. 
+As a <a href="#superadmin" title="Administrator Privileges">superadmin</a>, you can disallow individual members to login to the admin area. 
 </p>
 </div>
 
 <div class="page"><a name="defaultblog"></a>
-<h1>Default Blog</h1>
+<h1>+Default Blog</h1>
 <p>
 This is the blog that will be used when no other blog has been specified in the request.
 </p>
+</div>
+
+<div class="page"><a name="baseskin"></a>
+<h1>+Base Skin</h1>
+
+<p>The option tells Nucleus which skin to fall back to when no such decision can be automatically made. This happens when skin parts are empty, when no blog or skin is implicitly/explicitly selected.</p>
+<p>Most users don't need to worry about this setting.</p>
 </div>
 
 <div class="page"><a name="cookies"></a>
@@ -267,7 +283,7 @@ You can setup Nucleus to store a cookie in which the time of the visitors last v
 
 
 <div class="page"><a name="language"></a>
-<h1>Language</h1>
+<h1>+Language</h1>
 <p>
 You can choose a language to be used when nucleus creates content for you. The content generated by Nucleus includes the admin-area, the error messages, forms in skins, ...
 </p>
@@ -281,17 +297,19 @@ Next to that, logged in members can override this setting if they want to.
 When both of these settings are invalid, 'english' is used as the default language.
 </p>
 
+<p class="note"><strong>Note:</strong> Extra language files can be downloaded from the <a href="http://www.nucleuscms.org/" onclick="window.open(this.href);return false;" class="out" title="Nucleus CMS Website">Nucleus Website</a>. (opens a new window)</p>
+
 </div>
 
 <div class="page"><a name="allowaccountcreation"></a>
-<h1>Account Creation</h1>
+<h1>+Account Creation</h1>
 <p>
 You can either allow or disallow your visitors to create their own 'member' account. They won't be allowed to add items to a blog (unless the admin adds them to a team), but they can login to the administration area and change their settings, and even delete or modify the comments they made.
 </p>
 </div>
 
 <div class="page"><a name="allownewmemberlogin"></a>
-<h1>New Member: can login ?</h1>
+<h1>+New Member: can login ?</h1>
 <p>
 When you allow <a href="#allowaccountcreation">creation of member accounts</a> by your visitors, this setting defines whether or not accounts created in that way will have the ability to <a href="#canlogin">login to the administration area</a>.
 </p>
@@ -299,7 +317,7 @@ When you allow <a href="#allowaccountcreation">creation of member accounts</a> b
 
 
 <div class="page"><a name="messageservice"></a>
-<h1>Message Service</h1>
+<h1>+Message Service</h1>
 
 <p>
 For the privacy of your members, you can hide all e-mail addresses and allow members to send an e-mail message to each other through the script. The message that will be sent out will however contain the e-mail addresses of both users, so they can then do continued communication through regular e-mail. This service can be disabled.
@@ -313,16 +331,28 @@ By default, non members cannot use the message service (because there's no way t
 </div>
 
 <div class="page"><a name="disablesite"></a>
-<h1>Disable Site</h1>
+<h1>+Disable Site</h1>
 <p>
-It's possible to disable your entire Nucleus site. You might want to do this when you are doing some configuring, or when something went horribly wrong :-)
+It's possible to disable your entire Nucleus site. You might want to do this when you are doing some configuration, or when something went horribly wrong :-)
 </p>
 <p>
 The URL that needs to be configured is an URL to which the visitor will be redirected.
 </p>
 <p>
-Exceptions: the <strong>admin-area</strong> is still available, and <strong>super-admins</strong> can still see the entire site. (don't forget to re-enable your site afterwards ;-))
+Exceptions: the <strong>admin-area</strong> is still available, and <strong><a href="#superadmin">super-admins</a></strong> can still see the entire site. (don't forget to re-enable your site afterwards ;-))
 </p>
+</div>
+
+
+<div class="page"><a name="urlmode"></a>
+<h1>+URL Mode</h1>
+<p>Using this option, you can switch between URL styles:</p>
+<ul>
+	<li><strong>Normal</strong>: URLs looking like <code>http://host/index.php?itemid=1234</code></li>
+	<li><strong>Fancy</strong>: URLs looking like <code>http://host/item/1234</code></li>	
+</ul>
+<p class="note"><strong>Note:</strong> In order to get the 'Fancy URL' mode working, some extra actions are required. They're described in the <a href="tips.html" class="out" onclick="window.open(this.href);return false;">Tips &amp; Suggestions</a> (opens in new window)</p>
+
 </div>
 
 <div class="page"><a name="templateitems"></a>
@@ -1181,7 +1211,7 @@ Very basic buildup for an imagepopup page:
 
 
 <div class="page"><a name="shortnames"></a>
-<h1>Shortnames &amp Display Names</h1>
+<h1>+Shortnames &amp Display Names</h1>
 <p>
 Weblogs, templates and skin should all have a short name next to the full name or description.
 </p>
@@ -1245,28 +1275,28 @@ When the 'last visit' cookie is disabled, or the item is not 'new', this templat
 </div>
 
 <div class="page"><a name="pinguserland"></a>
-<h1>Ping Userland</h1>
+<h1>+Ping Weblogs.com</h1>
 <p>
-When updating your weblog, you can choose to send an update notification (ping) to <a href="http://www.weblogs.com/" onclick="window.open(this.href);return false;" class="out">weblogs.com</a>. This websites provides a list of recently updated weblogs to everyone who requests it. Lot's of websites are using this data, so you might receive some extra hits when enabling the ping.
+When updating your weblog, you can choose to send an update notification (ping) to <a href="http://www.weblogs.com/" onclick="window.open(this.href);return false;" class="out">weblogs.com</a>. This website provides a list of recently updated weblogs to everyone who requests it. Lots of websites are using this data, so you might receive some extra hits when enabling the ping.
 </p>
-<p>For this feature to work correctly, you need to fill out both the weblog URL and the weblog name in the blogsettings.
+<p class="note"><strong>Note:</strong> For this feature to work correctly, you need to fill out both the weblog URL and the weblog name in the blogsettings.
 </p>
 
 </div>
 
 <div class="page"><a name="convertbreaks"></a>
-<h1>Convert breaks</h1>
+<h1>+Convert Linebreaks</h1>
 <p>
-By default, Nucleus converts linebreaks in your items to &lt;br /&gt; tags, so a linebreak will also show up in your (X)HTML output
+By default, Nucleus converts linebreaks in your items to <code>&lt;br /&gt;</code> tags, so a linebreak will also show up in your (X)HTML output
 </p>
 <p>
-Advanced users, or users striving for the semantic web (<tt>br</tt> tags don't add any information, they're just used for markup), might find this feature anoying, and turn this feature off.
+Advanced users, or users striving for the semantic web (<tt>br</tt> tags don't add any information, they're just used for markup), might find this feature annoying, and turn this feature off.
 </p>
 </div>
 
 
 <div class="page"><a name="media"></a>
-<h1>Media</h1>
+<h1>+Media</h1>
 <p>
 Nucleus allows you to upload media files (images, video, sound, ...) to your website
 </p>
@@ -1281,38 +1311,50 @@ Some settings are needed to do this:
 	<li><strong>Max. upload file size</strong>: Puts a limit on the size of uploaded files</li>	
 	<li><strong>Prefix Media Files</strong>: When this option is turned on, uploaded file will be prefixed with the current date. Uploading a file named 'bunny.jpg' on April 8, 2003 will then result in a file named 20030408-bunny.jpg. The reason why you might want to do this, is when you're uploading tons of files, and don't want problems with duplicate names.</li>
 </ul>
+
 <p>
-Each member has his own collection of media files. Uploading is only possible when a member is on the team of at least one of the blogs, to prevent abuse.
+Each member has his own private collection of media files. Next to that, subdirectories that are under the media dir are seen as global collections (shared between members).
 </p>
-<p>
-If media items are used inside a weblog item, they are taken from the media dir of the author of that item.
-</p>
+
+<p>Uploading is only possible when a member is on the team of at least one of the blogs, to prevent abuse./p>
 </div>
 
 
 <div class="page"><a name="protectmemnames"></a>
-<h1>Protect Member Names</h1>
+<h1>+Protect Member Names</h1>
 <p>When this option is enabled, non-logged in members cannot add comments using the same name as registered members. The reason to do this would be to avoid guest impersonating members.</p>
 </div>
 
 
 <div class="page"><a name="pluginurl"></a>
-<h1>Plugin URL</h1>
+<h1>+Plugin URL</h1>
 <p>This setting is the base URL for plugin admin areas. Usually it will look like the following</p>
 <pre>http://hostname.com/nucleus/plugins/</pre>
 </div>
 
+<div class="page"><a name="skinsurl"></a>
+<h1>+Skins URL</h1>
+<p>This setting is the base URL for the Nucleus skins directory. Usually it will look like the following</p>
+<pre>http://hostname.com/skins/</pre>
+</div>
+
+<div class="page"><a name="actionurl"></a>
+<h1>+Action URL</h1>
+<p>This setting is the absolute URL of the <code>action.php</code> script that comes with Nucleus. Usually it will look like the following</p>
+<pre>http://hostname.com/actions.php</pre>
+</div>
+
+
+
 <div class="page"><a name="additem"></a>
-<h1>Adding items</h1>
-<p>
-When adding items to a weblog, there are four kinds of template variables that you can use in the body text, title or extended part:
-</p>
+<h1>+Adding items</h1>
+<p>When adding items to a weblog, there are four kinds of template variables that you can use in the body text, title or extended part:</p>
 <ul>
 	<li><a href="#templatevar-popup">&lt;%popup(...)%&gt;</a> to insert a popup image</li>
 	<li><a href="#templatevar-popup">&lt;%image(...)%&gt;</a> to insert an inline image</li>
 	<li><a href="#templatevar-popup">&lt;%media(...)%&gt;</a> to insert a media object</li>
-	<li><a href="#skinvar-plugin">&lt;%plugin(...)%&gt;</a> to call a plugin</li>	
 </ul>
+<p>Usually, these tags are inserted by the 'insert media' button in the JavaScript toolbar</p>
 
 
 </div>
