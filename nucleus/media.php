@@ -21,7 +21,7 @@
   */
   
 // include all classes and config data
-
+$CONF = array();
 include('../config.php');
 include($DIR_LIBS . 'MEDIA.php');	// media classes
 

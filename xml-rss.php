@@ -15,7 +15,7 @@
 
 header("Pragma: no-cache");
 
-// $CONF['Self'] = $PHP_SELF;
+$CONF = array();
 $CONF['Self'] = "xml-rss.php";
 
 include('config.php');

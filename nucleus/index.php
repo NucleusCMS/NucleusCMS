@@ -10,6 +10,7 @@
   * (see nucleus/documentation/index.html#license for more info)
   */
 	// we are using admin stuff:
+	$CONF = array();
 	$CONF['UsingAdminArea'] = 1;
 
 	// include the admin code

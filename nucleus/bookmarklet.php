@@ -15,6 +15,7 @@
   */
 
 // bookmarklet is part of admin area (might need XML-RPC)
+$CONF = array();
 $CONF['UsingAdminArea'] = 1;
 
 // include all classes and config data 
