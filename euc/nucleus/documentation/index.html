@@ -1,96 +1,96 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-	<title>Nucleus�}�j���A��</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Nucleusマニュアル</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 </head>
 <body>
 
 <div class="heading">
-Nucleus �}�j���A��
+Nucleus マニュアル
 <i>(v3.15)</i>
 </div>
 
 <div class="note">
-<b>�͂��߂�:</b>
+<b>はじめに:</b>
 <ul>
-	<li>���̃}�j���A���͊Ǘ��G���A�ɂĎg�p���Ă���|�b�v�A�b�v�w���v(<a href="help.html">help.html</a>)�ɋL�ڂ���Ă��Ȃ����e�����^���Ă���܂��BNucleus��<a href="#installation">�C���X�g�[���K�C�h</a>�����^���Ă���܂��̂ŎQ�l�ɂ��Ă��������B</li>
-	<li>�f�x���b�p�[�̕��́A <a href="devdocs/index.html">�J���Ҍ����}�j���A��</a> �𕹂��Ă����������B</li>
+	<li>このマニュアルは管理エリアにて使用しているポップアップヘルプ(<a href="help.html">help.html</a>)に記載されていない内容を収録しております。Nucleusの<a href="#installation">インストールガイド</a>も収録しておりますので参考にしてください。</li>
+	<li>デベロッパーの方は、 <a href="devdocs/index.html">開発者向けマニュアル</a> を併せてご覧下さい。</li>
 </ul>
 </div>
 
-<h1><a name="toc"></a>�ڎ�</h1>
+<h1><a name="toc"></a>目次</h1>
 
 <ul>
-	<li><a href="#about">Nucleus�Ƃ�</a></li>
-	<li><a href="#license">GPL���C�Z���X�ɂ���</a></li>
-	<li><a href="#installation">�C���X�g�[���K�C�h</a></li>
-	<li><a href="skins.html">�X�L���ƃe���v���[�g�̕ҏW(�y�[�W�f�U�C��)</a> (�ʃt�@�C��)</li>
-	<li><a href="#security">�Z�L�����e�B�ɂ���</a></li>
-	<li><a href="#performance">�p�t�H�[�}���X�ɂ���</a></li>
+	<li><a href="#about">Nucleusとは</a></li>
+	<li><a href="#license">GPLライセンスについて</a></li>
+	<li><a href="#installation">インストールガイド</a></li>
+	<li><a href="skins.html">スキンとテンプレートの編集(ページデザイン)</a> (別ファイル)</li>
+	<li><a href="#security">セキュリティについて</a></li>
+	<li><a href="#performance">パフォーマンスについて</a></li>
 <!-- <li><a href="#import">Importing from other tools</a></li> -->
-	<li><a href="#comments">�R�����g��t���̃��[��</a></li>
-	<li><a href="#xmlrpc">XML-RPC �C���^�[�t�F�C�X�ɂ���</a></li>
-	<li><a href="#trouble">���������� (FAQ)</a></li>
-	<li><a href="tips.html">Tips &amp; Suggestions</a> (�ʃt�@�C��)</li>
-	<li><a href="#known">���ݎw�E����Ă�����_</a></li>
-	<li><a href="history.html">����</a> (�ʃt�@�C��)</li>
-	<li><a href="#credits">�ӎ�</a></li>
+	<li><a href="#comments">コメント受付時のルール</a></li>
+	<li><a href="#xmlrpc">XML-RPC インターフェイスについて</a></li>
+	<li><a href="#trouble">困った時は (FAQ)</a></li>
+	<li><a href="tips.html">Tips &amp; Suggestions</a> (別ファイル)</li>
+	<li><a href="#known">現在指摘されている問題点</a></li>
+	<li><a href="history.html">履歴</a> (別ファイル)</li>
+	<li><a href="#credits">謝辞</a></li>
 </ul>
 
-<h1>Nucleus �Ƃ�<a name="about" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Nucleus とは<a name="about" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-Nucleus �Ƃ̓R���e���c�}�l�W�����g�V�X�e��(Contents Management System : ������CMS)�c�[���ł��BPHP�ŏ�����Ă���Ablog�T�C�g�^�c�ɋ��͂ɖ𗧂��܂��B��ȓ����͈ȉ��̒ʂ�ł�:
+Nucleus とはコンテンツマネジメントシステム(Contents Management System : 略してCMS)ツールです。PHPで書かれており、blogサイト運営に強力に役立ちます。主な特徴は以下の通りです:
 </p>
 
 <ul>
-	<li>�����̃T�[�o�ŉ^�p�ł���</li>
-	<li>������blog�ݒu���\�ŒP��y�[�W�ɕ���blog�\�����\</li>
-	<li>�v���O�C���ɂ��@�\�g��</li>
-	<li>�R�����g���e�̕W������</li>
-	<li>�����ߋ����O�쐬</li>
-	<li>�J�e�S������</li>
-	<li>�����@�\�̕W������</li>
-	<li>�����l�ɂ��L�����e</li>
-	<li>�����̓��t�ł̓��e</li>
-	<li>���e�@�\</li>
-	<li>�g�����̂���Ǘ��G���A</li>
-	<li>�摜�Ȃǂ̃t�@�C���Y�t�@�\</li>
-	<li>�y�[�W�f�U�C���̃t���J�X�^�}�C�Y</li>
-	<li>�X�L���̃C���|�[�g/�G�N�X�|�[�g</li>
-	<li>�R�����g���p�҂̃u���b�N</li>
-	<li>RSS �����쐬</li>
-	<li>�C���X�g�[�����ȒP</li>
-	<li>�o�b�N�A�b�v���ȒP</li>
-	<li>XML-RPC �C���^�[�t�F�C�X ( <a href="http://plant.blogger.com/api/">Blogger API</a> / <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a> / <a href="http://www.movabletype.org/docs/mtmanual_programmatic.html#xmlrpc%20api">Movable Type API</a> �̗p)</li>
-	<li>XHTML ����</li>
-	<li>Blogger �� GreyMatter blogs����̃R���o�[�g�c�[��</li>
+	<li>自分のサーバで運用できる</li>
+	<li>複数のblog設置が可能で単一ページに複数blog表示も可能</li>
+	<li>プラグインによる機能拡張</li>
+	<li>コメント投稿の標準装備</li>
+	<li>自動過去ログ作成</li>
+	<li>カテゴリ分け</li>
+	<li>検索機能の標準装備</li>
+	<li>複数人による記事投稿</li>
+	<li>未来の日付での投稿</li>
+	<li>草稿機能</li>
+	<li>拡張性のある管理エリア</li>
+	<li>画像などのファイル添付機能</li>
+	<li>ページデザインのフルカスタマイズ</li>
+	<li>スキンのインポート/エクスポート</li>
+	<li>コメント悪用者のブロック</li>
+	<li>RSS 自動作成</li>
+	<li>インストールが簡単</li>
+	<li>バックアップが簡単</li>
+	<li>XML-RPC インターフェイス ( <a href="http://plant.blogger.com/api/">Blogger API</a> / <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a> / <a href="http://www.movabletype.org/docs/mtmanual_programmatic.html#xmlrpc%20api">Movable Type API</a> 採用)</li>
+	<li>XHTML 準拠</li>
+	<li>Blogger と GreyMatter blogsからのコンバートツール</li>
 	<li>...</li>
 </ul>
 
 <p>
-Nucleus�̃C���X�g�[���ɂ͈ȉ��̊����K�v�ł�: <small>(�s���ȓ_�̓T�[�o�Ǘ��҂ɂ��q�ˉ�����)</small>
+Nucleusのインストールには以下の環境が必要です: <small>(不明な点はサーバ管理者にお尋ね下さい)</small>
 </p>
 
 <ul>
-	<li><a href="http://jp.php.net/manual/ja/">PHP</a> (�o�[�W���� 4.0.6 �ȍ~)</li>
-	<li><a href="http://dev.mysql.com/doc/mysql/ja/">MySQL</a> �f�[�^�x�[�X (�o�[�W���� 3.23.38 �ȍ~)</li>
-	<li>�f�U�C���̃J�X�^�}�C�Y������ꍇ�́A<acronym title="Hypertext Markup Language">HTML</acronym> �� <acronym title="Cascading Style Sheets">CSS</acronym> �̊�b�m��</li>
+	<li><a href="http://jp.php.net/manual/ja/">PHP</a> (バージョン 4.0.6 以降)</li>
+	<li><a href="http://dev.mysql.com/doc/mysql/ja/">MySQL</a> データベース (バージョン 3.23.38 以降)</li>
+	<li>デザインのカスタマイズをする場合は、<acronym title="Hypertext Markup Language">HTML</acronym> と <acronym title="Cascading Style Sheets">CSS</acronym> の基礎知識</li>
 </ul>
 
 
 
 <p>
-Nucleus �̓T�C�g�\�z�ɂ��������y���Ƃ���Ɏ肪�͂��悤�ɐ݌v����Ă��܂��BHTML�Ɋւ���m�����S���Ȃ��A�ȒP��blog�T�C�g�����������l�� �C���X�g�[���s�v�̃z�X�e�B���O�^��blog�T�[�r�X(<a href="http://dir.yahoo.co.jp/Computers_and_Internet/Internet/Free_Services/Diaries/">Yahoo! JAPAN�̊Y���J�e�S��</a>�Q��)�𗘗p���������ǂ���������܂���B
+Nucleus はサイト構築にあたって痒いところに手が届くように設計されています。HTMLに関する知識が全くなく、簡単にblogサイトを持ちたい人は インストール不要のホスティング型のblogサービス(<a href="http://dir.yahoo.co.jp/Computers_and_Internet/Internet/Free_Services/Diaries/">Yahoo! JAPANの該当カテゴリ</a>参照)を利用した方が良いかもしれません。
 </p>
 
 
 
 
 <a name="license"></a>
-<h1>���C�Z���X�ɂ��� <a name="copyright" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>ライセンスについて <a name="copyright" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
 Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
@@ -98,81 +98,81 @@ Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
 Copyright (C) 2002-2004 The Nucleus Group
 </p>
 
-<p>���̃v���O�����̓t���[�E�F�A�ł��B�t���[�\�t�g�E�F�A���c(the Free Software Foundation)�����\����GNU��ʌ����g�p����(GNU General Public License)�́u�o�[�W����2�v�����͂���ȍ~�̊e�o�[�W�����̒����炢���ꂩ��I�����A���̃o�[�W��������߂�����ɏ]���������ŁA�{�v���O�����̍Ĕz�z�E���ς�F�߂Ă��܂��B
+<p>このプログラムはフリーウェアです。フリーソフトウェア財団(the Free Software Foundation)が公表したGNU一般公共使用許諾(GNU General Public License)の「バージョン2」或いはそれ以降の各バージョンの中からいずれかを選択し、そのバージョンが定める条項に従ったうえで、本プログラムの再配布・改変を認めています。
 </p>
 
-<p>���̃v���O�����������g�̎g�p�ړI�ɍ��������̂ł���΍K���ł��B�������Ȃ��� �A���i������ѓ���ړI�ɑ΂���K�����Ɋւ���َ��I�ȕۏ؂��܂݁A�����Ȃ�ۏ؂��������܂���B�ڍׂɂ��܂��Ă�GNU ��ʌ��L�g�p�����������ǂ݂��������B</p>
+<p>このプログラムがご自身の使用目的に合ったものであれば幸いです。しかしながら 、商品性および特定目的に対する適合性に関する黙示的な保証を含み、いかなる保証もいたしません。詳細につきましてはGNU 一般公有使用許諾書をお読みください。</p>
 
-<p>���̃v���O�����ƕ�����<a href="../../license.txt">GNU General Public License�̃R�s�[</a>�����󂯎��̂͂����Ǝv���܂����A�����Ă��Ȃ����́uFree Software
-Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA�v�܂ł��̎|�����m�点�������B</p>
+<p>このプログラムと併せて<a href="../../license.txt">GNU General Public Licenseのコピー</a>をお受け取りのはずかと思いますが、受取られていない方は「Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA」までその旨をお知らせ下さい。</p>
 
 <p>
-���̃\�t�g�E�F�A�����L���邱�Ƃ́A�����̏����ɓ��ӂ��邱�Ƃ��Ӗ����܂��B�����̏����ɓ��ӂ���Ȃ����́A�������邱�̃\�t�g�E�F�A�̃R�s�[���폜���Ă��������B
+このソフトウェアを所有することは、これらの条件に同意することを意味します。これらの条件に同意されない方は、所持するこのソフトウェアのコピーを削除してください。
 </p>
 
 
-<h1>�C���X�g�[���K�C�h <a name="installation" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>インストールガイド <a name="installation" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <div class="note">
-<b>����:</b> ���o�[�W���������łɂ��g�p�̕��́ANucleus Web�T�C�g��<a href="http://www.nucleuscms.org/upgrade.php">�A�b�v�O���[�h�K�C�h</a>�̕��������������B
+<b>注意:</b> 旧バージョンをすでにご使用の方は、Nucleus Webサイトの<a href="http://www.nucleuscms.org/upgrade.php">アップグレードガイド</a>の方をご覧下さい。
 </div>
 
 <p>
-�ق�̐��X�e�b�v�ŃC���X�g�[���͊������܂��B�菇�͈ȉ��̒ʂ�:
+ほんの数ステップでインストールは完了します。手順は以下の通り:
 </p>
 
-<h2>1. ���k�t�@�C���̉�</h2>
+<h2>1. 圧縮ファイルの解凍</h2>
 
 <p>
-�_�E�����[�h�����p�b�P�[�W�t�@�C�����𓀂��܂��B���������f�B���N�g���\���͈ȉ��̂悤�ɂȂ��Ă��邩�����m�F�������B(*�̓f�B���N�g���ȉ��Ƀt�@�C�������鎖���Ӗ����܂�)
+ダウンロードしたパッケージファイルを解凍します。生成されるディレクトリ構成は以下のようになっているかをご確認下さい。(*はディレクトリ以下にファイルがある事を意味します)
 </p>
 
 <pre>
-/*                           (�T�C�g�\���p���C���t�@�C��)
-/nucleus/*                   (�T�C�g�Ǘ��p�t�@�C��)
-/nucleus/javascript/*        (javascripts �X�N���v�g)
-/nucleus/libs/*              (Nucleus �̃R�A���C�u����)
-/nucleus/language/*          (����t�@�C��)
-/nucleus/plugins/*           (�v���O�C���t�@�C��)
-/nucleus/xmlrpc/*            (XML-RPC �C���^�[�t�F�C�X�p�t�@�C��)
-/nucleus/documentation/*     (������)
-/nucleus/styles/*            (�Ǘ��G���A��pcss�t�@�C��)
-/nucleus/forms/*             (���̓t�H�[�����i�t�@�C��)
-/extra/*                     (fancy URL�p�t�@�C���ȂǓ���ȃt�@�C��)
-/skins/*                     (�X�L���t�@�C�� [�Ǎ��ݎ��ɂ��g�p])
-/media/*                     (�Y�t�t�@�C�� [�C���X�g�[�����͋�])
+/*                           (サイト表示用メインファイル)
+/nucleus/*                   (サイト管理用ファイル)
+/nucleus/javascript/*        (javascripts スクリプト)
+/nucleus/libs/*              (Nucleus のコアライブラリ)
+/nucleus/language/*          (言語ファイル)
+/nucleus/plugins/*           (プラグインファイル)
+/nucleus/xmlrpc/*            (XML-RPC インターフェイス用ファイル)
+/nucleus/documentation/*     (説明書)
+/nucleus/styles/*            (管理エリア専用cssファイル)
+/nucleus/forms/*             (入力フォーム部品ファイル)
+/extra/*                     (fancy URL用ファイルなど特殊なファイル)
+/skins/*                     (スキンファイル [読込み時にも使用])
+/media/*                     (添付ファイル [インストール時は空])
 </pre>
 
 <div class="note">
-<b>�⑫:</b><ul>
-	<li> �p��o�[�W�����͈ꕔ�̊��ɂ����Đ���ɉ𓀂ł��Ȃ��Ƃ̕񍐂�����܂��B�t�@�C���T�C�Y��0�o�C�g�łȂ����Ƃ��m�F���Ă��������B</li>
-	<li>/nucleus/forms/ �f�B���N�g���ɂ���t�@�C���̊g���q�͂��ׂāu.template�v�ł��B<br />
-	�t�@�C�������������ߊg���q�̈ꕔ���J�b�g����Ă���ꍇ������܂��̂Ŋm�F���Ă��������B
+<b>補足:</b><ul>
+	<li> 英語バージョンは一部の環境において正常に解凍できないとの報告があります。ファイルサイズが0バイトでないことを確認してください。</li>
+	<li>/nucleus/forms/ ディレクトリにあるファイルの拡張子はすべて「.template」です。<br />
+	ファイル名が長いため拡張子の一部がカットされている場合がありますので確認してください。
 	</li>
 </div>
 
-<h2>2. �T�[�o�ɓ]��</h2>
+<h2>2. サーバに転送</h2>
 
 <p>
-FTP�\�t�g���g���ăT�[�o�ɑS���̃t�@�C����]�����܂��B�g���q��.php�̃t�@�C���͕K��ASCII���[�h�œ]�����Ă��������B���[�h���ԈႦ��Ɠ��삵�܂���B
+FTPソフトを使ってサーバに全部のファイルを転送します。拡張子が.phpのファイルは必ずASCIIモードで転送してください。モードを間違えると動作しません。
 </p>
 
-<h3>�p�[�~�b�V�����̕ύX(���Ȃ��Ă�OK):</h3>
+<h3>パーミッションの変更(やらなくてもOK):</h3>
 
 <ol>
 	<li>
-		���̒i�K�� <em>config.php</em> �̃p�[�~�b�V������ <strong>666</strong>�ɕύX���Ă����ƁA��̃C���X�g�[���菇�����炷�����ł��܂��B���̎菇���X�L�b�v�������͎蓮�� <em>config.php</em> ��ҏW���邾���ł��̂łǂ���ł��\���܂���B (�p�[�~�b�V�����̕ύX���@�ɂ��܂��Ă�<a href="tips.html#filepermissions">�p�[�~�b�V�����̕ύX�K�C�h</a>���Q�Ƃ��Ă�������)
+		この段階で <em>config.php</em> のパーミッションを <strong>666</strong>に変更しておくと、後のインストール手順を減らす事ができます。この手順をスキップした方は手動で <em>config.php</em> を編集するだけですのでどちらでも構いません。 (パーミッションの変更方法につきましては<a href="tips.html#filepermissions">パーミッションの変更ガイド</a>を参照してください)
 	</li>
 	<li>
-		�摜�ȂǓY�t�t�@�C�����g�p�����\��̂�����́Amedia�f�B���N�g�����쐬���Ă��̃f�B���N�g���̃p�[�~�b�V�������������݉\�ɕύX���Ă��������B�������݉\�ɂ��Ă����Ȃ��ƃA�b�v���[�h������ɍs���܂���B�ʏ�� <strong>777</strong> ���Ǝv���܂�(�p�[�~�b�V�����̕ύX���@�ɂ��܂��Ă�<a href="tips.html#filepermissions">�p�[�~�b�V�����̕ύX�K�C�h</a>���Q�Ƃ��Ă�������)�B<br /> (If you have root access, you can instead <tt>chgrp</tt> the directory to the user that is running the <tt>httpd</tt> process (usually <tt>httpd</tt> or <tt>nobody</tt>, then <tt>chmod 775</tt> the directory).
+		画像など添付ファイルを使用される予定のある方は、mediaディレクトリを作成してこのディレクトリのパーミッションを書き込み可能に変更してください。書き込み可能にしておかないとアップロードが正常に行えません。通常は <strong>777</strong> かと思います(パーミッションの変更方法につきましては<a href="tips.html#filepermissions">パーミッションの変更ガイド</a>を参照してください)。<br /> (If you have root access, you can instead <tt>chgrp</tt> the directory to the user that is running the <tt>httpd</tt> process (usually <tt>httpd</tt> or <tt>nobody</tt>, then <tt>chmod 775</tt> the directory).
 	</li>
 </ol>
 
 
-<h2>3. install.php�ɃA�N�Z�X</h2>
+<h2>3. install.phpにアクセス</h2>
 
 <p>
-�u���E�U���J���ăT�[�o�ɓ]������install.php�ɃA�N�Z�X���܂��BURL�͉��L�̂悤�ɂȂ�܂��B(<i>www.yoursite.com</i> �� <i>yourpath</i>�̕����͓ǂݑւ��Ă�������)
+ブラウザを開いてサーバに転送したinstall.phpにアクセスします。URLは下記のようになります。(<i>www.yoursite.com</i> と <i>yourpath</i>の部分は読み替えてください)
 </p>
 
 <pre>
@@ -180,17 +180,17 @@ http://www.yoursite.com/yourpath/install.php
 </pre>
 
 <p>
-�\�����ꂽ�y�[�W�ɕK�v���͎�������͂��܂��B���炩���ߎ������m���ē��͍ς̕���������܂����m�F�����肢���܂��B���M��Ɏ��ɍs���菇���\������܂��̂ł���ɏ]���č�Ƃ��Ă��������B(�Ō�ɂ������̃t�@�C�����蓮�ŃT�[�o����폜�����Ƃ��K�v�ł��̂ł��Y��Ȃ��B)
+表示されたページに必要入力事項を入力します。あらかじめ自動検知して入力済の部分がありますが確認をお願いします。送信後に次に行う手順が表示されますのでそれに従って作業してください。(最後にいくつかのファイルを手動でサーバから削除する作業が必要ですのでお忘れなく。)
 </p>
 
 <div class="note">
-<b>����:</b> <i>install.php</i> �ɃA�N�Z�X�����ہA�uIf you see this text in your browser...�v�Ƃ����e�L�X�g���\�����ꂽ��A install.php�̃_�E�����[�h�������ꂽ�肵���ꍇ�́A���̃T�[�o�ł�php�X�N���v�g�͓��삵�܂���B���R�A�c�O�Ȃ���php�X�N���v�g�ł���Nucleus���^�p���邱�Ƃ��ł��܂���B
+<b>注意:</b> <i>install.php</i> にアクセスした際、「If you see this text in your browser...」というテキストが表示されたり、 install.phpのダウンロードが促されたりした場合は、そのサーバではphpスクリプトは動作しません。当然、残念ながらphpスクリプトであるNucleusを運用することができません。
 </div>
 
-<h2>4. ����</h2>
+<h2>4. 完了</h2>
 
 <p>
-�C���X�g�[�������������炷���Ƀg�b�v�y�[�W�ɃA�N�Z�X���邱�Ƃ��ł��܂��B�C���X�g�[��������ʂ̈�ԉ��Ƀ����N�������\������Ă��܂��̂ŃW�����v���Ċm�F���Ă݂Ă��������B
+インストールが完了したらすぐにトップページにアクセスすることができます。インストール完了画面の一番下にリンクが自動表示されていますのでジャンプして確認してみてください。
 </p>
 
 
@@ -199,42 +199,42 @@ http://www.yoursite.com/yourpath/install.php
 
 
 
-<h1>�Z�L�����e�B�ɂ��� <a name="security" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>セキュリティについて <a name="security" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<h2>mySQL �̃p�X���[�h</h2>
+<h2>mySQL のパスワード</h2>
 
 <p>
-Nucleus��php�X�N���v�g����mySQL�f�[�^�x�[�X�ɃA�N�Z�X���܂��̂ŁAphp�X�N���v�g����mySQL�p�X���[�h����������ł����K�v������܂��B �������[�U�[�Ŏg�p����T�[�o�̏ꍇ��100%���S�ł͂Ȃ����Ƃ��������������B�܂��A���O�C�����ƃ��O�C���p�X���[�h�𓐂܂��\�������邱�Ƃ����m�肨�����������Bphp�X�N���v�g�ɏd�v�ȏ��𖄂ߍ���Ŏg�p���鎖�̐���ɂ��Ē��ׂ������͏ڂ������ɂ������ˉ������B
+NucleusはphpスクリプトからmySQLデータベースにアクセスしますので、phpスクリプト内にmySQLパスワードを書き込んでおく必要があります。 複数ユーザーで使用するサーバの場合は100%安全ではないことをご了解下さい。また、ログイン名とログインパスワードを盗まれる可能性もあることもお知りおきください。phpスクリプトに重要な情報を埋め込んで使用する事の是非について調べたい方は詳しい方におたずね下さい。
 </p>
 
 <p>
-���̊댯���̓f�[�^�x�[�X���g�p���邷�ׂĂ�php�X�N���v�g�ɋ��ʂ�����ł��B�ʏ�̓��[�U�[���ŉ����ł�����ł͂���܂���B100%���S�ł͂Ȃ��ƌ������Ƃ�O���ɒu���Ă����ĉ������B
+この危険性はデータベースを使用するすべてのphpスクリプトに共通する問題です。通常はユーザー側で解決できる問題ではありません。100%安全ではないと言うことを念頭に置いておいて下さい。
 </p>
 
-<h2>�N�b�L�[</h2>
+<h2>クッキー</h2>
 
 <p>
-Nucleus �ł̓��O�C�����̕ێ��ɃN�b�L�[���g�p���Ă��܂��B�N�b�L�[�����܂�N���Ƀ��O�C�������댯��������܂��B �N�b�L�[��`���������ł̓p�X���[�h�͐����ł��܂��� <small>(���ۂɂ̓p�X���[�h�͈Í������Ċi�[���Ă��܂�)</small> ���A�c�O�Ȃ���A���񂾃N�b�L�[�𗘗p���ă��O�C�����[�U�[���U�����邱�Ƃ��Z�p�I�ɉ\�ł͂���܂��B
+Nucleus ではログイン情報の保持にクッキーを使用しています。クッキーが盗まれ誰かにログインされる危険性があります。 クッキーを覗いただけではパスワードは推測できません <small>(実際にはパスワードは暗号化して格納しています)</small> が、残念ながら、盗んだクッキーを利用してログインユーザーを偽装することが技術的に可能ではあります。
 </p>
 
-<h2>���f�B�A�f�B���N�g��</h2>
+<h2>メディアディレクトリ</h2>
 
 <p>
-�Y�t�t�@�C�����g�p����ۂ̓��f�B�A�f�B���N�g���̃p�[�~�b�V������777�ɂ���K�v������܂��B777�ɂ���Ƃ������́A���̃T�[�o��ɂ���<b>�N����</b>���̃f�B���N�g���𑀍�ł��錠�������Ƃ������ł��B�������Ȃ���A�I�����C����PHP�X�N���v�g����t�@�C�����A�b�v���[�h���邽�߂ɂ͂��̐ݒ�͕K�{�ł��B��ֈĂ͂���܂���B
+添付ファイルを使用する際はメディアディレクトリのパーミッションを777にする必要があります。777にするという事は、そのサーバ上にいる<b>誰もが</b>そのディレクトリを操作できる権限を持つという事です。しかしながら、オンラインでPHPスクリプトからファイルをアップロードするためにはこの設定は必須です。代替案はありません。
 </p>
 
 
 
 
 
-<h1>�p�t�H�[�}���X�ɂ��� <a name="performance" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>パフォーマンスについて <a name="performance" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-�ق���weblog�c�[���Ƃ͈قȂ�ANucleus�ł͂�����\���y�[�W���T�[�o��ɕۑ����܂���B�A�N�Z�X��������URL�����Ƀf�[�^���ďo�����̓s�x�y�[�W�𐶐����ĕ\������Ƃ������@���̂��Ă��܂�(���I�y�[�W����)�B
+ほかのweblogツールとは異なり、Nucleusではあらゆる表示ページをサーバ上に保存しません。アクセスがあったURLを元にデータを呼出しその都度ページを生成して表示するという方法を採っています(動的ページ生成)。
 </p>
 
 <p>
-���̎d�g�݂������Ńg���u�����N���鎖�͂܂�����܂���B1�b��������̂��������̃A�N�Z�X�̂����K�͂ȃT�C�g�ł���Γ���ɖ�肪���邩������܂��񂪁A���̂Ƃ���͂悭�킩���Ă��܂���B���������傫�ȃT�C�g�ŁA1��Nucleus��30�ȏ��blog���^�p���Ă���T�C�g�ł����ɖ��_�͂Ȃ��Ƃ����񍐂��󂯂Ă��邱�Ƃ����Љ�Ă����܂��B
+この仕組みが原因でトラブルが起きる事はまずありません。1秒あたりものすごい数のアクセスのある大規模なサイトであれば動作に問題があるかもしれませんが、今のところはよくわかっていません。そこそこ大きなサイトで、1つのNucleusで30以上のblogを運用しているサイトでも特に問題点はないという報告を受けていることをご紹介しておきます。
 </p>
 
 
@@ -253,26 +253,26 @@ More information is available on the <a href="http://www.nucleuscms.org/convert.
 -->
 
 
-<h1>�R�����g��t���̃��[��  <a name="comments" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>コメント受付時のルール  <a name="comments" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-Nucleus �ł́A�R�����g�̐������l���Ĉȉ��̃��[����݂��Ă��܂�:
+Nucleus では、コメントの性質を考えて以下のルールを設けています:
 </p>
 
 <ul>
-	<li>90�����z����A���������p�̉p�����L���̓��e���֎~ (���C�A�E�g������邽��) </li>
-	<li>�R�����g����3�����ȏ�ł��邱��</li>
-	<li>�R�����g����5,000�����ȉ��ł��邱��</li>
-	<li>�Q�X�g�̂����O��2�����ȏ�ł��邱�� </li>
-	<li>�Q�X�g�̂����O��e-mail���͈��p���A���s�g�p�֎~ </li>
-	<li>�R�����g�{����3�̘A�����s��1�̉��s�ɒu�� (���f���D��)</li>
-	<li>HTML �^�O�͎g�p�s�\</li>
-	<li>���E�̗]���ȃX�y�[�X�͍폜</li>
-	<li>URL �̓����N�e�L�X�g��Z�k������Ŏ��������N</li>
+	<li>90字を越える連続した半角の英数字記号の投稿を禁止 (レイアウトが崩れるため) </li>
+	<li>コメント文は3文字以上であること</li>
+	<li>コメント文は5,000文字以下であること</li>
+	<li>ゲストのお名前は2文字以上であること </li>
+	<li>ゲストのお名前やe-mail欄は引用符、改行使用禁止 </li>
+	<li>コメント本文の3つの連続改行を1つの改行に置換 (見映え優先)</li>
+	<li>HTML タグは使用不可能</li>
+	<li>左右の余分なスペースは削除</li>
+	<li>URL はリンクテキストを短縮した上で自動リンク</li>
 </ul>
 
 <p>
-�����̃��[����ύX�������ꍇ�̓R�A�t�@�C���̏����������K�v�ƂȂ�܂��B
+これらのルールを変更したい場合はコアファイルの書き換えが必要となります。
 </p>
 
 
@@ -280,125 +280,125 @@ Nucleus �ł́A�R�����g�̐������l���Ĉȉ��̃��[����݂��Ă��܂�:
 
 
 
-<h1>XML-RPC �C���^�[�t�F�C�X <a name="xmlrpc" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>XML-RPC インターフェイス <a name="xmlrpc" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <div class="note">
-Nucleus�� XML-RPC �C���^�[�t�F�C�X�ɂ��܂��Ă͉��LURL�Q��:
+Nucleusの XML-RPC インターフェイスにつきましては下記URL参照:
 <br />
 <b>http://www.yourserver.com/yourpath/nucleus/xmlrpc/server.php</b>
 </div>
 
 <p>
-<a href="http://www.xmlrpc.com/">XML-RPC</a> �Ƃ́AXML�𗘗p���ăf�[�^��ǂݏ�������K�i�ł��B����������邩������܂��񂪁A����XML-RPC�Ƃ����K�i��g�ݍ���ł���Α��̃c�[�����g���ăf�[�^�̓ǂݏ������\�ɂȂ�Ƃ����������o���Ă����Ă��������B
+<a href="http://www.xmlrpc.com/">XML-RPC</a> とは、XMLを利用してデータを読み書きする規格です。難しく聞こえるかもしれませんが、このXML-RPCという規格を組み込んでいれば他のツールを使ってデータの読み書きが可能になるという事だけ覚えておいてください。
 </p>
 
 <p>
-���݂̏��A<a href="http://plant.blogger.com/api/">Blogger API</a>�A<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>��<a href="http://www.movabletype.org/docs/mtmanual_programmatic.html#xmlrpc%20api">Movable Type API</a>��3�̋K�i���[�����Ă��܂��B���̋K�i���g�p�����L�����e�c�[���ɋ����̂�����́A <a href="http://www.cweblogs.com/wbeditor/">WB Editor</a> (Windows��:���{��Ή�) �܂��� <a href="http://www.kung-foo.tv/ecto/">Ecto</a> (MacOS��:���{��Ή��s��) ���g���Ă݂Ă��������B
+現在の所、<a href="http://plant.blogger.com/api/">Blogger API</a>、<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>と<a href="http://www.movabletype.org/docs/mtmanual_programmatic.html#xmlrpc%20api">Movable Type API</a>の3つの規格を充足しています。この規格を使用した記事投稿ツールに興味のある方は、 <a href="http://www.cweblogs.com/wbeditor/">WB Editor</a> (Windows版:日本語対応) または <a href="http://www.kung-foo.tv/ecto/">Ecto</a> (MacOS版:日本語対応不明) を使ってみてください。
 </p>
 
 <p>
-����XML-RPC �C���^�[�t�F�C�X�̌ďo�����@�ɂ��܂��ẮA�J���Ҍ����h�L�������g�ɂĉ�����Ă��܂��B <a href="http://nucleuscms.org/download.php">�����炩��_�E�����[�h</a>���邩�A <a href="http://nucleuscms.org/documentation/devdocs/xmlrpc.html">�I�����C����</a>�����������B
+このXML-RPC インターフェイスの呼出し方法につきましては、開発者向けドキュメントにて解説しています。 <a href="http://nucleuscms.org/download.php">こちらからダウンロード</a>するか、 <a href="http://nucleuscms.org/documentation/devdocs/xmlrpc.html">オンラインで</a>ご覧下さい。
 </p>
 
 
 
-<h1>���������� (FAQ) <a name="trouble" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>困った時は (FAQ) <a name="trouble" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>Nuleus�ɂ��ėǂ�������鎿���FAQ�Ƃ��Ă܂Ƃ߂܂����B���₳���O�ɂ���ǉ������B��T�̃P�[�X�ł͉����ł���̂ł͂Ȃ��ł��傤���B
+<p>Nuleusについて良く聞かれる質問をFAQとしてまとめました。質問される前にご一読下さい。大概のケースでは解決できるのではないでしょうか。
 </p>
 
 <div class="faq">
-<div class="question">���̂悤�ȃG���[���\�������̂ł���: <q>Cannot send headers. Headers already sent...</q></div>
+<div class="question">このようなエラーが表示されるのですが: <q>Cannot send headers. Headers already sent...</q></div>
 <div class="answer">
-<code>config.php</code>�̖`���Ɩ����ɋ�(�X�y�[�X)�������Ă���ꍇ�ɂ悭�N����܂��B<tt>&lt;?</tt> �̑O�A���邢�� <tt>?&gt;</tt>������ɃX�y�[�X���}������Ă��Ȃ����ǂ����m�F���Ă��������B���̃X�y�[�X���폜����ƃG���[�͉�������܂��B�܂��A���l�Ɍ���t�@�C����C���X�g�[�����Ă���v���O�C���̃t�@�C���ɂ��Ă����������N���܂��̂Ŋm�F���Ă݂Ă��������B
+<code>config.php</code>の冒頭と末尾に空白(スペース)が入っている場合によく起こります。<tt>&lt;?</tt> の前、あるいは <tt>?&gt;</tt>よりも後にスペースが挿入されていないかどうか確認してください。このスペースを削除するとエラーは解消されます。また、同様に言語ファイルやインストールしているプラグインのファイルについても同じ事が起きますので確認してみてください。
 </div>
 </div>
 
 <div class="faq">
-<div class="question">�C���X�g�[������install.php�ɃA�N�Z�X����ƃ_�E�����[�h�𑣂����̂ł����B</div>
-<div class="answer">���̃T�[�o��PHP�v���O�����ɑΉ����Ă��܂���B�c�O�Ȃ��炻�̃T�[�o��Nucleus���^�p���邱�Ƃ͂ł��܂���B</div>
+<div class="question">インストール時にinstall.phpにアクセスするとダウンロードを促されるのですが。</div>
+<div class="answer">そのサーバはPHPプログラムに対応していません。残念ながらそのサーバでNucleusを運用することはできません。</div>
 </div>
 
 <div class="faq">
-<div class="question">�g�b�v�y�[�W�ɃA�N�Z�X����ƁuConnection Error�v�ƕ\������܂����B�Ȃ��ł����H</div>
+<div class="question">トップページにアクセスすると「Connection Error」と表示されました。なぜですか？</div>
 <div class="answer">
-Nucleus���f�[�^�x�[�X�T�[�o�ɃA�N�Z�X�ł��Ȃ����Ƃ��Ӗ����Ă��܂��B<i>config.php</i>�̍ŏ��Œ�`���Ă���f�[�^�x�[�X�ڑ���񂪐��m���ǂ�����������x�m�F���Ă݂Ă�������(�p�X���[�h��xxxxxx�̂܂܂Ƃ����P�[�X���悭����܂�)�B �܂��A�{����mySQL�T�[�o���_�E�����Ă���̂�������������܂���B
+Nucleusがデータベースサーバにアクセスできないことを意味しています。<i>config.php</i>の最初で定義しているデータベース接続情報が正確かどうかをもう一度確認してみてください(パスワードがxxxxxxのままというケースがよくあります)。 また、本当にmySQLサーバがダウンしているのが原因かもしれません。
 </div>
 </div>
 
 <div class="faq">
-<div class="question">�X�V�L�^�t�@�C���ɍX�V��񂪋L�^����Ȃ��̂ł����B</div>
+<div class="question">更新記録ファイルに更新情報が記録されないのですが。</div>
 <div class="answer">
-�X�V�L�^�t�@�C�����g�����߂ɂ̓t�@�C���̃p�[�~�b�V�����̓K�؂Ȑݒ肪�K�v�ł��B�܂�blog�ݒ�ɂĐݒ肷��O�ɂ��̃t�@�C����u���Ă����K�v������܂�(��̃t�@�C�����쐬���ăA�b�v���[�h���ɂ��Ă�������)�B���̍X�V�L�^�t�@�C���̃p�[�~�b�V������666�A���̃t�@�C��������f�B���N�g����755�Ƃ��Ă��������B (�p�[�~�b�V�����̕ύX���@�ɂ��܂��Ă�<a href="tips.html#filepermissions">�p�[�~�b�V�����̕ύX�K�C�h</a>���Q�Ƃ��Ă�������)
+更新記録ファイルを使うためにはファイルのパーミッションの適切な設定が必要です。またblog設定にて設定する前にこのファイルを置いておく必要があります(空のファイルを作成してアップロードを先にしてください)。この更新記録ファイルのパーミッションは666、このファイルがあるディレクトリは755としてください。 (パーミッションの変更方法につきましては<a href="tips.html#filepermissions">パーミッションの変更ガイド</a>を参照してください)
 </div>
 </div>
 
 <div class="faq">
-<div class="question">XML-RPC �C���^�[�t�F�C�X��L���ɂ������Ȃ��̂ł����B</div>
-<div class="answer">xmlrpc/ �f�B���N�g�����폜���邾����OK�ł��B�������͂���܂���B</div>
+<div class="question">XML-RPC インターフェイスを有効にしたくないのですが。</div>
+<div class="answer">xmlrpc/ ディレクトリを削除するだけでOKです。何も問題はありません。</div>
 </div>
 
 <div class="faq">
-<div class="question">RSS�̓f�o�����������Ȃ��̂ł����B</div>
-<div class="answer">xml-rss.php ( xml-rss2.php , rsd.php ) ���폜���āA�O�̂��߂Ɂuxmlrss�v(�ufeeds/rss20�v)�Ƃ������O�̃X�L���^�e���v���[�g���폜���Ă��������B</div>
+<div class="question">RSSの吐出しをしたくないのですが。</div>
+<div class="answer">xml-rss.php ( xml-rss2.php , rsd.php ) を削除して、念のために「xmlrss」(「feeds/rss20」)という名前のスキン／テンプレートを削除してください。</div>
 </div>
 
 
-<h1>���ݎw�E����Ă�����_ <a name="known" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>現在指摘されている問題点 <a name="known" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>���������͈ȉ��̒ʂ�ł�:
+<p>制限事項は以下の通りです:
 </p>
 
 <ul>
-	<li>���̃����[�X���_�ɂ����ẮANucleus 3.0�ւ̌����ȃ��O�ڍs�c�[���͂���܂���B����̃��O�ڍs�c�[���̏���<a href="http://nucleuscms.org/convert.php">���O�ڍs�c�[�����(�p��:�ŐV���)</a> (<a href="http://japan.nucleuscms.org/convert.php">���O�ڍs�c�[�����(���{��)</a>)�Ɍf�ڂ��Ă����܂��B</li>
-	<li>Ctrl + Shift + A �V���[�g�J�b�g�L�[�� ICQ/Trillian �ƏՓ˂��܂��B</li>
-	<li>�T�[�o��PHP�̐ݒ肪�Z�[�t���[�hon�̏ꍇ�A�Y�t�t�@�C���̎g�p���ɖ�肪�����܂��B(�摜�t�@�C���̃T�C�Y����������ł��Ȃ��A�A�b�v���[�h�����܂������Ȃ��A�Ȃ�) <br />*���炩����media�f�B���N�g���Ɂu1�v�A�u2�v�ȂǋL�����e�҂̐����������̃f�B���N�g�����쐬���Ă����ď������݉\�ɂ��Ă������Ƃŉ���ł��܂��B</li>
-	<li>RSS�̕\��������邱�Ƃ�����܂��B(���ꕶ���ϊ��������B&amp;amp; �� &amp;amp;amp; �ƂȂ�Ȃ�)</li>
-	<li>blog�ݒ�œ��͂��郁�[���A�h���X���̓o�^�̏����255�o�C�g�ł��B�ł�����A��������̃��[���A�h���X��o�^���邱�Ƃ͂ł��܂���(�����ł͂Ȃ����v�������ł�)�B</li>
-	<li>Mozilla�n�̃u���E�U�ł̓v���r���[�@�\�����܂����삵�܂���B</li>
-	<li>Internet Explorer 6 �ŋL���̓��e����ɂ��܂Ƀu���E�U�������邱�Ƃ�����܂��B�u���E�U�������Ă��L���̓��e�͔��f����Ă��܂��B(���̃g���u���񍐂��玞�Ԃ��o���Ă���̂ŉ������Ă���΂悢�̂ł���...)</li>
+	<li>このリリース時点においては、Nucleus 3.0への公式なログ移行ツールはありません。今後のログ移行ツールの情報は<a href="http://nucleuscms.org/convert.php">ログ移行ツール情報(英語:最新情報)</a> (<a href="http://japan.nucleuscms.org/convert.php">ログ移行ツール情報(日本語)</a>)に掲載していきます。</li>
+	<li>Ctrl + Shift + A ショートカットキーは ICQ/Trillian と衝突します。</li>
+	<li>サーバのPHPの設定がセーフモードonの場合、添付ファイルの使用時に問題が生じます。(画像ファイルのサイズが自動判定できない、アップロードがうまくいかない、など) <br />*あらかじめmediaディレクトリに「1」、「2」など記事投稿者の数だけ数字のディレクトリを作成しておいて書き込み可能にしておくことで回避できます。</li>
+	<li>RSSの表示が乱れることがあります。(特殊文字変換が原因。&amp;amp; が &amp;amp;amp; となるなど)</li>
+	<li>blog設定で入力するメールアドレス欄の登録の上限は255バイトです。ですから、たくさんのメールアドレスを登録することはできません(件数ではなく合計文字数です)。</li>
+	<li>Mozilla系のブラウザではプレビュー機能がうまく動作しません。</li>
+	<li>Internet Explorer 6 で記事の投稿直後にたまにブラウザが落ちることがあります。ブラウザが落ちても記事の投稿は反映されています。(このトラブル報告から時間が経っているので解決していればよいのですが...)</li>
 </ul>
 
 
 
-<h1>�ӎ� <a name="credits" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>謝辞 <a name="credits" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>����܂ł̊J���̉A�ɂ͈ȉ��̕��X�̋��͂����������Ƃ�Y��Ă͂Ȃ�܂���B�ǂ�������ǂ��B</p>
+<p>これまでの開発の陰には以下の方々の協力があったことを忘れてはなりません。どうかご一読を。</p>
 
-<h2>���</h2>
+<h2>作者</h2>
 
 <ul>
 	<li>Wouter Demuynck</li>
 </ul>
 
-<h2>�R�A�t�@�C������/�o�O�Ԃ�</h2>
+<h2>コアファイル改良/バグつぶし</h2>
 
 <ul>
-	<li>Appie Verschoor�� (�S������)</li>
-	<li>���̑���������̕��X... (<a href="history.html">�J������</a>������������)</li>
+	<li>Appie Verschoor氏 (全文検索)</li>
+	<li>その他たくさんの方々... (<a href="history.html">開発履歴</a>をご覧下さい)</li>
 </ul>
 
-<h2>���C�u�����Ȃ�</h2>
+<h2>ライブラリなど</h2>
 
 <ul>
-	<li>�e��v���O�C����҂̕��X</li>
-	<li>����t�@�C����񋟂��Ă������������X (<a href="http://nucleuscms.org/languages.php">Nucleus��Web�T�C�g�ɂČ���t�@�C���̃_�E�����[�h���ł��܂�</a>)</li>
-	<li>���S���쐬���Ă���������Rodrigo Moraes��</li>
-	<li>RSS 2.0 �X�L���쐬���ꂽ <a href="http://www.xiffy.nl">Xiffy</a>��</li>
-	<li>XML-RPC �C���^�[�t�F�C�X �����Ɏg�p���� <a href="http://phpxmlrpc.sourceforge.net/">'XML-RPC for PHP'</a> (from <a href="http://www.usefulinc.com/">Useful Inc.</a>)</li>
-	<li>�o�b�N�A�b�v/���X�g�A�����̊J���̌��ɂ����Ă��������� <a href="http://phpbb.sourceforge.net/">phpBB</a> </li>
-	<li>�����v���r���[��JavaScript �R�[�h �̌��ɂ����Ă����������R�[�h�������� <a href="http://www.mijnkopthee.nl/">Mijn Kop Thee</a>�� <small>(dutch)</small> �� <a href="http://www.milov.nl/">milov.nl</a>��</li>
-	<li>�Ǘ��G���A�Œn���A�C�R�����g�p�����Ă��������Ă��� <a href="http://www.matterform.com/qbullets/legend.html">QBullets</a></li>
+	<li>各種プラグイン作者の方々</li>
+	<li>言語ファイルを提供してくださった方々 (<a href="http://nucleuscms.org/languages.php">NucleusのWebサイトにて言語ファイルのダウンロードができます</a>)</li>
+	<li>ロゴを作成してくださったRodrigo Moraes氏</li>
+	<li>RSS 2.0 スキン作成された <a href="http://www.xiffy.nl">Xiffy</a>氏</li>
+	<li>XML-RPC インターフェイス 部分に使用した <a href="http://phpxmlrpc.sourceforge.net/">'XML-RPC for PHP'</a> (from <a href="http://www.usefulinc.com/">Useful Inc.</a>)</li>
+	<li>バックアップ/リストア部分の開発の元にさせていただいた <a href="http://phpbb.sourceforge.net/">phpBB</a> </li>
+	<li>即時プレビューのJavaScript コード の元にさせていただいたコードを書いた <a href="http://www.mijnkopthee.nl/">Mijn Kop Thee</a>氏 <small>(dutch)</small> と <a href="http://www.milov.nl/">milov.nl</a>氏</li>
+	<li>管理エリアで地球アイコンを使用させていただいている <a href="http://www.matterform.com/qbullets/legend.html">QBullets</a></li>
 </ul>
 
-<h2>����</h2>
+<h2>感謝</h2>
 
 <p>
-Nucleus�������Ɏ���̂��A�܂��A���̂ق��̂�������̕��X�̎x���Ɏx�����Ă��邩��ł��B���\���グ�܂��B</p>
+Nucleusが今日に至るのも、また、このほかのたくさんの方々の支援に支えられているからです。御礼申し上げます。</p>
 
 <ul>
-	<li>Nucleus��Web�T�C�g�ɂ�<a href="http://nucleuscms.org/donators.php">��t�҂̃��X�g</a>���f�����Ă���܂��B</p>
-	<li><a href="http://forum.nucleuscms.org/groupcp.php?g=3">�t�H�[���������d�؂��Ă��������Ă�����X</a> �� <a href="http://forum.nucleuscms.org/memberlist.php?mode=posts&amp;order=DESC">�t�H�[�����ɗ��Ă��������Ă�����X</a>�ɂ��������\���グ�܂��B</li>
+	<li>NucleusのWebサイトにて<a href="http://nucleuscms.org/donators.php">寄付者のリスト</a>を掲示しております。</li>
+	<li><a href="http://forum.nucleuscms.org/groupcp.php?g=3">フォーラムを取り仕切ってくださっている方々</a> や <a href="http://forum.nucleuscms.org/memberlist.php?mode=posts&amp;order=DESC">フォーラムに来てくださっている方々</a>にも厚く御礼申し上げます。</li>
 </ul>
 
 

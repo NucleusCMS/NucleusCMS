@@ -2,7 +2,7 @@
 <html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Nucleus - SQL Table Structure</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 <style type="text/css">
@@ -29,21 +29,21 @@
 
 <a name="top" id="top"></a>
 <div class="heading">
-  SQLƒe[ƒuƒ‹EƒŠƒtƒ@ƒŒƒ“ƒX <i>May 30, 2004</i>
+  SQLãƒ†ãƒ¼ãƒ–ãƒ«ãƒ»ãƒªãƒ•ã‚¡ãƒ¬ãƒ³ã‚¹ <i>May 30, 2004</i>
 </div>
-<strong>–óŽÒ’F</strong>
+<strong>è¨³è€…æ³¨ï¼š</strong>
 <ul>
-  <li>‚±‚ÌƒhƒLƒ…ƒƒ“ƒg‚ÌŒ´•¶‚ÍˆÈ‰º‚ÌURL‚É‚ ‚è‚Ü‚·B<br>
+  <li>ã“ã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã®åŽŸæ–‡ã¯ä»¥ä¸‹ã®URLã«ã‚ã‚Šã¾ã™ã€‚<br>
     <a href="http://nucleuscms.org/documentation/devdocs/sqltables.html">http://nucleuscms.org/documentation/devdocs/sqltables.html</a></li>
-  <li>Œë–ó‚É‚¨‹C‚Ã‚«‚Ì•û‚Í<a href="http://nucleus.fel-is.info/bb/viewforum.php?f=7">‚±‚¿‚ç</a>‚Ö‚²˜A—‚¢‚½‚¾‚¯‚é‚Æ•‚©‚è‚Ü‚·B</li>
+  <li>èª¤è¨³ã«ãŠæ°—ã¥ãã®æ–¹ã¯<a href="http://nucleus.fel-is.info/bb/viewforum.php?f=7">ã“ã¡ã‚‰</a>ã¸ã”é€£çµ¡ã„ãŸã ã‘ã‚‹ã¨åŠ©ã‹ã‚Šã¾ã™ã€‚</li>
 </ul>
-<h1>‚Í‚¶‚ß‚É</h1>
-<p><a href="index.html">ŠJ”­ŽÒŒü‚¯ƒhƒLƒ…ƒƒ“ƒg‚Ì–ÚŽŸ‚Ö–ß‚é</a></p>
-<p>‚±‚ÌƒhƒLƒ…ƒƒ“ƒg‚ÍNucleus‚Ìƒf[ƒ^ƒx[ƒXEƒe[ƒuƒ‹‚ÌƒtƒB[ƒ‹ƒh‚ð‰ðà‚µ‚Ä‚¢‚Ü‚·B</p>
-<p class="note">\‘¢‚Í<strong>Nucleus v3.0</strong>‚Ì‚à‚Ì‚É]‚Á‚Ä‚¢‚Ü‚·</p>
-<h1><a name="toc" id="toc"></a>–ÚŽŸ</h1>
+<h1>ã¯ã˜ã‚ã«</h1>
+<p><a href="index.html">é–‹ç™ºè€…å‘ã‘ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã®ç›®æ¬¡ã¸æˆ»ã‚‹</a></p>
+<p>ã“ã®ãƒ‰ã‚­ãƒ¥ãƒ¡ãƒ³ãƒˆã¯Nucleusã®ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ãƒ»ãƒ†ãƒ¼ãƒ–ãƒ«ã®ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã‚’è§£èª¬ã—ã¦ã„ã¾ã™ã€‚</p>
+<p class="note">æ§‹é€ ã¯<strong>Nucleus v3.0</strong>ã®ã‚‚ã®ã«å¾“ã£ã¦ã„ã¾ã™</p>
+<h1><a name="toc" id="toc"></a>ç›®æ¬¡</h1>
 <ul>
-  <li><a href="#legend">•¶‘’†‚ÌFŽg‚¢‚É‚Â‚¢‚Ä</a></li>
+  <li><a href="#legend">æ–‡æ›¸ä¸­ã®è‰²ä½¿ã„ã«ã¤ã„ã¦</a></li>
   <li>Blog
     <ul>
       <li><a href="#nucleus_blog">nucleus_blog</a></li>
@@ -54,7 +54,7 @@
       <li><a href="#nucleus_team">nucleus_team</a></li>
     </ul>
   </li>
-  <li>ƒvƒ‰ƒOƒCƒ“
+  <li>ãƒ—ãƒ©ã‚°ã‚¤ãƒ³
     <ul>
       <li><a href="#nucleus_plugin">nucleus_plugin</a></li>
       <li><a href="#nucleus_plugin_event">nucleus_plugin_event</a></li>
@@ -62,7 +62,7 @@
       <li><a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a></li>
     </ul>
   </li>
-  <li>ƒXƒLƒ“‚Æƒeƒ“ƒvƒŒ[ƒg
+  <li>ã‚¹ã‚­ãƒ³ã¨ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
     <ul>
       <li><a href="#nucleus_skin">nucleus_skin</a></li>
       <li><a href="#nucleus_skin_desc">nucleus_skin_desc</a></li>
@@ -70,17 +70,17 @@
       <li><a href="#nucleus_template_desc">nucleus_template_desc</a></li>
     </ul>
   </li>
-  <li>ŠÇ—
+  <li>ç®¡ç†
     <ul>
       <li><a href="#nucleus_actionlog">nucleus_actionlog</a></li>
       <li><a href="#nucleus_config">nucleus_config</a>
         <ul>
-          <li><a href="#nucleus_config_options">‰Â”\‚ÈƒIƒvƒVƒ‡ƒ“</a></li>
+          <li><a href="#nucleus_config_options">å¯èƒ½ãªã‚ªãƒ—ã‚·ãƒ§ãƒ³</a></li>
         </ul>
       </li>
     </ul>
   </li>
-  <li>‚»‚Ì‘¼
+  <li>ãã®ä»–
     <ul>
       <li><a href="#nucleus_karma">nucleus_karma</a></li>
       <li><a href="#nucleus_ban">nucleus_ban</a></li>
@@ -88,386 +88,386 @@
   </li>
 </ul>
 <a id="legend" name="legend"></a>
-<h1>FŽg‚¢<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>‚±‚Ì•¶‘’†‚Å‚ÍAƒJƒ‰ƒ€‚ÌŒ^‚ðŽ¦‚·‚½‚ß‚ÉA•¶Žš‚ÌCü‚ðŽg‚Á‚Ä‚¢‚Ü‚·BˆÈ‰º‚É—á‚ðŽ¦‚µ‚Ü‚·:</p>
+<h1>è‰²ä½¿ã„<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<p>ã“ã®æ–‡æ›¸ä¸­ã§ã¯ã€ã‚«ãƒ©ãƒ ã®åž‹ã‚’ç¤ºã™ãŸã‚ã«ã€æ–‡å­—ã®ä¿®é£¾ã‚’ä½¿ã£ã¦ã„ã¾ã™ã€‚ä»¥ä¸‹ã«ä¾‹ã‚’ç¤ºã—ã¾ã™:</p>
 <table width="893">
   <tbody>
     <tr>
-      <td class="primary" width="88">ƒvƒ‰ƒCƒ}ƒŠ</td>
-      <td width="775">ƒvƒ‰ƒCƒ}ƒŠƒL[</td>
+      <td class="primary" width="88">ãƒ—ãƒ©ã‚¤ãƒžãƒª</td>
+      <td width="775">ãƒ—ãƒ©ã‚¤ãƒžãƒªã‚­ãƒ¼</td>
     </tr>
     <tr>
-      <td class="foreign" width="88">ŠO•”</td>
-      <td width="775">ŠO•”ƒL[iƒNƒŠƒbƒN‚·‚é‚ÆŽQÆæ‚É”ò‚ÔjBMySQL‚ÍŠO•”ƒL[‚Æ‚ÌˆêŠÑ«•ÛŽ‚ÉÓ”C‚ðŽ‚½‚È‚¢‚±‚Æ‚É’ˆÓ</td>
+      <td class="foreign" width="88">å¤–éƒ¨</td>
+      <td width="775">å¤–éƒ¨ã‚­ãƒ¼ï¼ˆã‚¯ãƒªãƒƒã‚¯ã™ã‚‹ã¨å‚ç…§å…ˆã«é£›ã¶ï¼‰ã€‚MySQLã¯å¤–éƒ¨ã‚­ãƒ¼ã¨ã®ä¸€è²«æ€§ä¿æŒã«è²¬ä»»ã‚’æŒãŸãªã„ã“ã¨ã«æ³¨æ„</td>
     </tr>
     <tr>
-      <td class="toremove" width="88">íœ—\’è</td>
-      <td width="775">“¯‚¶‹@”\‚ð’ñ‹Ÿ‚·‚éƒvƒ‰ƒOƒCƒ“‚ð—Dæ‚·‚é‚½‚ßAƒe[ƒuƒ‹‚âƒJƒ‰ƒ€‚Í«—ˆ‚Ìƒo[ƒWƒ‡ƒ“‚ÌNucleus‚Åíœ‚³‚¹‚é‰Â”\«‚ª‚‚¢</td>
+      <td class="toremove" width="88">å‰Šé™¤äºˆå®š</td>
+      <td width="775">åŒã˜æ©Ÿèƒ½ã‚’æä¾›ã™ã‚‹ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã‚’å„ªå…ˆã™ã‚‹ãŸã‚ã€ãƒ†ãƒ¼ãƒ–ãƒ«ã‚„ã‚«ãƒ©ãƒ ã¯å°†æ¥ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ã®Nucleusã§å‰Šé™¤ã•ã›ã‚‹å¯èƒ½æ€§ãŒé«˜ã„</td>
     </tr>
     <tr>
-      <td class="fulltext" width="88">ƒtƒ‹ƒeƒLƒXƒg</td>
-      <td width="775">ƒJƒ‰ƒ€‚Éƒtƒ‹ƒeƒLƒXƒg‚ÌƒCƒ“ƒfƒbƒNƒX‚ª•t‚­iŒŸõ‚ÅŽg—p‚·‚éj</td>
+      <td class="fulltext" width="88">ãƒ•ãƒ«ãƒ†ã‚­ã‚¹ãƒˆ</td>
+      <td width="775">ã‚«ãƒ©ãƒ ã«ãƒ•ãƒ«ãƒ†ã‚­ã‚¹ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒä»˜ãï¼ˆæ¤œç´¢ã§ä½¿ç”¨ã™ã‚‹ï¼‰</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_blog" name="nucleus_blog"></a>
-<h1>nucleus_blogƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<h1>nucleus_blogãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull autoinc primary">bnumber</td>
       <td>int(11)</td>
       <td></td>
-      <td>Blog‚ÌID</td>
+      <td>Blogã®ID</td>
     </tr>
     <tr>
       <td class="notnull">bname</td>
       <td>varchar(60)</td>
       <td>''</td>
-      <td>Blog–¼</td>
+      <td>Blogå</td>
     </tr>
     <tr>
       <td class="notnull unique">bshortname</td>
       <td>varchar(15)</td>
       <td>''</td>
-      <td>Blog‚Ì’Zk–¼ (ƒXƒLƒ“•Ï” <code>&lt;%blog%&gt;</code>‚È‚Ç‚ÅŽg‚¤‚à‚Ì‚Æ“¯‚¶)</td>
+      <td>Blogã®çŸ­ç¸®å (ã‚¹ã‚­ãƒ³å¤‰æ•° <code>&lt;%blog%&gt;</code>ãªã©ã§ä½¿ã†ã‚‚ã®ã¨åŒã˜)</td>
     </tr>
     <tr>
       <td>bdesc</td>
       <td>varchar(200)</td>
       <td>NULL</td>
-      <td>Blog‚Ìà–¾</td>
+      <td>Blogã®èª¬æ˜Ž</td>
     </tr>
     <tr>
       <td class="notnull">bcomments</td>
       <td>tinyint(2)</td>
       <td>'1'</td>
-      <td>ƒRƒƒ“ƒg‚ð‹–‰Â‚·‚é(1=‹–‰Â, 0=•s‹–‰Â)</td>
+      <td>ã‚³ãƒ¡ãƒ³ãƒˆã‚’è¨±å¯ã™ã‚‹(1=è¨±å¯, 0=ä¸è¨±å¯)</td>
     </tr>
     <tr>
       <td class="notnull">bmaxcomments</td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>indexƒXƒLƒ“ƒ^ƒCƒv‚Å•\Ž¦‚·‚éƒRƒƒ“ƒg‚ÌÅ‘å”B‹K’è’l(0)‚Í§ŒÀ‚ª‚È‚¢‚±‚Æ‚ðà–¾‚·‚éBƒCƒ“ƒ‰ƒCƒ“EƒRƒƒ“ƒg‚ðŽg‚í‚È‚¢‚Ì‚È‚çC‚±‚±‚Í‚¢‚¶‚ç‚È‚¢‚±‚Æ</td>
+      <td>indexã‚¹ã‚­ãƒ³ã‚¿ã‚¤ãƒ—ã§è¡¨ç¤ºã™ã‚‹ã‚³ãƒ¡ãƒ³ãƒˆã®æœ€å¤§æ•°ã€‚è¦å®šå€¤(0)ã¯åˆ¶é™ãŒãªã„ã“ã¨ã‚’èª¬æ˜Žã™ã‚‹ã€‚ã‚¤ãƒ³ãƒ©ã‚¤ãƒ³ãƒ»ã‚³ãƒ¡ãƒ³ãƒˆã‚’ä½¿ã‚ãªã„ã®ãªã‚‰ï¼Œã“ã“ã¯ã„ã˜ã‚‰ãªã„ã“ã¨</td>
     </tr>
     <tr>
       <td class="notnull">btimeoffset</td>
       <td>decimal(3,1)</td>
       <td>'0.0'</td>
-      <td>ƒT[ƒo[Žž‚Æ‚ÌŽž·BƒAƒCƒeƒ€‚ÍƒT[ƒo[Žž‚É‚±‚Ì’l‚ð‘«‚µ‚½ŽžŠÔ‚Åƒf[ƒ^ƒx[ƒX‚É•Û‘¶‚³‚ê‚é</td>
+      <td>ã‚µãƒ¼ãƒãƒ¼æ™‚åˆ»ã¨ã®æ™‚å·®ã€‚ã‚¢ã‚¤ãƒ†ãƒ ã¯ã‚µãƒ¼ãƒãƒ¼æ™‚åˆ»ã«ã“ã®å€¤ã‚’è¶³ã—ãŸæ™‚é–“ã§ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«ä¿å­˜ã•ã‚Œã‚‹</td>
     </tr>
     <tr>
       <td class="toremove">bnotify</td>
       <td>varchar(60)</td>
       <td>NULL</td>
-      <td>’Ê’m‚·‚éƒ[ƒ‹EƒAƒhƒŒƒXB‚¢‚­‚Â‚©‚ÌƒCƒxƒ“ƒg‚ª‹N‚±‚é‚Æi‚Ç‚ÌƒCƒxƒ“ƒg‚©‚Í<code>bnotifytype‚ðŽQÆ‚Ì‚±‚Æj</code>C‚±‚ÌƒAƒhƒŒƒXˆ¶‚Ä‚Éƒ[ƒ‹‚Å’Ê’m‚ªs‚­</td>
+      <td>é€šçŸ¥ã™ã‚‹ãƒ¡ãƒ¼ãƒ«ãƒ»ã‚¢ãƒ‰ãƒ¬ã‚¹ã€‚ã„ãã¤ã‹ã®ã‚¤ãƒ™ãƒ³ãƒˆãŒèµ·ã“ã‚‹ã¨ï¼ˆã©ã®ã‚¤ãƒ™ãƒ³ãƒˆã‹ã¯<code>bnotifytypeã‚’å‚ç…§ã®ã“ã¨ï¼‰</code>ï¼Œã“ã®ã‚¢ãƒ‰ãƒ¬ã‚¹å®›ã¦ã«ãƒ¡ãƒ¼ãƒ«ã§é€šçŸ¥ãŒè¡Œã</td>
     </tr>
     <tr>
       <td>burl</td>
       <td>varchar(100)</td>
       <td>NULL</td>
-      <td>Blog‚ÌURL</td>
+      <td>Blogã®URL</td>
     </tr>
     <tr>
       <td class="toremove">bupdate</td>
       <td>varchar(60)</td>
       <td>NULL</td>
-      <td>ƒAƒCƒeƒ€‚ª“Še‚³‚ê‚é‚½‚Ñ‚É•ÏX‚ª•K—v‚ÈXVƒtƒ@ƒCƒ‹BƒT[ƒo[ã‚Ìâ‘ÎƒpƒX‚ÅŽw’è‚·‚é</td>
+      <td>ã‚¢ã‚¤ãƒ†ãƒ ãŒæŠ•ç¨¿ã•ã‚Œã‚‹ãŸã³ã«å¤‰æ›´ãŒå¿…è¦ãªæ›´æ–°ãƒ•ã‚¡ã‚¤ãƒ«ã€‚ã‚µãƒ¼ãƒãƒ¼ä¸Šã®çµ¶å¯¾ãƒ‘ã‚¹ã§æŒ‡å®šã™ã‚‹</td>
     </tr>
     <tr>
       <td class="notnull foreign"><a href="#nucleus_skin_desc">bdefskin</a></td>
       <td>int(11)</td>
       <td>'1'</td>
-      <td>‚±‚ÌBlog‚ð•\Ž¦‚·‚é‚Æ‚«‚ÉŽg‚¤•W€‚ÌƒXƒLƒ“</td>
+      <td>ã“ã®Blogã‚’è¡¨ç¤ºã™ã‚‹ã¨ãã«ä½¿ã†æ¨™æº–ã®ã‚¹ã‚­ãƒ³</td>
     </tr>
     <tr>
       <td class="notnull">bpublic</td>
       <td>tinyint(2)</td>
       <td>'1'</td>
-      <td>“o˜^ƒ†[ƒU[ˆÈŠO‚É‚àƒRƒƒ“ƒg‚ð‹–‰Â‚·‚é(1=‹–‰Â/0=•s‹–‰Â)</td>
+      <td>ç™»éŒ²ãƒ¦ãƒ¼ã‚¶ãƒ¼ä»¥å¤–ã«ã‚‚ã‚³ãƒ¡ãƒ³ãƒˆã‚’è¨±å¯ã™ã‚‹(1=è¨±å¯/0=ä¸è¨±å¯)</td>
     </tr>
     <tr>
       <td class="notnull toremove">bsendping</td>
       <td>tinyint(2)</td>
       <td>'0'</td>
-      <td>XV‚ª‚ ‚Á‚½‚Æ‚«‚Éweblogs.com‚Éping‚ð‘—‚é (1=‘—‚é/0=‘—‚ç‚È‚¢)</td>
+      <td>æ›´æ–°ãŒã‚ã£ãŸã¨ãã«weblogs.comã«pingã‚’é€ã‚‹ (1=é€ã‚‹/0=é€ã‚‰ãªã„)</td>
     </tr>
     <tr>
       <td class="notnull toremove">bconvertbreaks</td>
       <td>tinyint(2)</td>
       <td>'1'</td>
-      <td>‰üs‚ð<code>&lt;br /&gt;</code>‚É•ÏŠ·‚·‚é (1=•ÏŠ·‚·‚é/0=•ÏŠ·‚µ‚È‚¢)</td>
+      <td>æ”¹è¡Œã‚’<code>&lt;br /&gt;</code>ã«å¤‰æ›ã™ã‚‹ (1=å¤‰æ›ã™ã‚‹/0=å¤‰æ›ã—ãªã„)</td>
     </tr>
     <tr>
       <td class="foreign"><a href="#nucleus_category">bdefcat</a></td>
       <td>int(11)</td>
       <td>NULL</td>
-      <td>ƒfƒtƒHƒ‹ƒg‚ÌƒJƒeƒSƒŠ[B‘¼‚ÌƒJƒeƒSƒŠ[‚ª‘I‘ð‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«A‚±‚ÌƒJƒeƒSƒŠ[‚É‚È‚é</td>
+      <td>ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚«ãƒ†ã‚´ãƒªãƒ¼ã€‚ä»–ã®ã‚«ãƒ†ã‚´ãƒªãƒ¼ãŒé¸æŠžã•ã‚Œã¦ã„ãªã„ã¨ãã€ã“ã®ã‚«ãƒ†ã‚´ãƒªãƒ¼ã«ãªã‚‹</td>
     </tr>
     <tr>
       <td class="notnull">bnotifytype</td>
       <td>int(11)</td>
       <td>'15'</td>
-      <td>‚Ç‚ÌƒCƒxƒ“ƒg‚ª‹N‚±‚Á‚½‚Æ‚«‚É’Ê’mƒ[ƒ‹‚ð‘—‚é‚©i’Ê’m‚·‚éƒ[ƒ‹EƒAƒhƒŒƒX‚Íbnotify‚ðŽQÆjBŽO‚Â‚Ì’l‚Ì‘g‚Ý‡‚í‚¹‚©‚ç‚È‚èAŠ|‚¯‡‚í‚¹‚é‚±‚Æ‚Ånoifytype‚Ì’l‚ªŒˆ‚Ü‚éB
+      <td>ã©ã®ã‚¤ãƒ™ãƒ³ãƒˆãŒèµ·ã“ã£ãŸã¨ãã«é€šçŸ¥ãƒ¡ãƒ¼ãƒ«ã‚’é€ã‚‹ã‹ï¼ˆé€šçŸ¥ã™ã‚‹ãƒ¡ãƒ¼ãƒ«ãƒ»ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯bnotifyã‚’å‚ç…§ï¼‰ã€‚ä¸‰ã¤ã®å€¤ã®çµ„ã¿åˆã‚ã›ã‹ã‚‰ãªã‚Šã€æŽ›ã‘åˆã‚ã›ã‚‹ã“ã¨ã§noifytypeã®å€¤ãŒæ±ºã¾ã‚‹ã€‚
         <ul>
-          <li>3: V‚µ‚¢ƒRƒƒ“ƒg</li>
-          <li>5: V‚µ‚¢ƒJƒ‹ƒ}“Š•[</li>
-          <li>7: V‚µ‚¢ƒAƒCƒeƒ€</li>
+          <li>3: æ–°ã—ã„ã‚³ãƒ¡ãƒ³ãƒˆ</li>
+          <li>5: æ–°ã—ã„ã‚«ãƒ«ãƒžæŠ•ç¥¨</li>
+          <li>7: æ–°ã—ã„ã‚¢ã‚¤ãƒ†ãƒ </li>
         </ul>
-        ‹K’è’l = V‚µ‚¢ƒRƒƒ“ƒg‚ÆV‚µ‚¢ƒJƒ‹ƒ}“Š•[i3~5=15j</td>
+        è¦å®šå€¤ = æ–°ã—ã„ã‚³ãƒ¡ãƒ³ãƒˆã¨æ–°ã—ã„ã‚«ãƒ«ãƒžæŠ•ç¥¨ï¼ˆ3Ã—5=15ï¼‰</td>
     </tr>
     <tr>
       <td class="notnull">ballowpast</td>
       <td>tinyint(2)</td>
       <td>'0'</td>
-      <td>‰ß‹Ž‚Ì“úŽž‚Å‚Ì“Še‚ð‹–‰Â‚·‚é (1=‹–‰Â/0=•s‹–‰Â)</td>
+      <td>éŽåŽ»ã®æ—¥æ™‚ã§ã®æŠ•ç¨¿ã‚’è¨±å¯ã™ã‚‹ (1=è¨±å¯/0=ä¸è¨±å¯)</td>
     </tr>
     <tr>
       <td class="notnull">bincludesearch</td>
       <td>tinyint(2)</td>
       <td>'0'</td>
-      <td>‘¼‚Ìblog‚ÌŒŸõ‚Ìê‡‚É‚àCŒŸõ‘ÎÛ‚É‚·‚é(1=‘ÎÛ‚É‚·‚é/0=‘ÎÛ‚É‚µ‚È‚¢)</td>
+      <td>ä»–ã®blogã®æ¤œç´¢ã®å ´åˆã«ã‚‚ï¼Œæ¤œç´¢å¯¾è±¡ã«ã™ã‚‹(1=å¯¾è±¡ã«ã™ã‚‹/0=å¯¾è±¡ã«ã—ãªã„)</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_category" name="nucleus_category"></a>
-<h1>nucleus_categoryƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<h1>nucleus_categoryãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull autoinc primary">catid</td>
       <td>int(11)</td>
       <td></td>
-      <td>ƒJƒeƒSƒŠ[ID</td>
+      <td>ã‚«ãƒ†ã‚´ãƒªãƒ¼ID</td>
     </tr>
     <tr>
       <td class="notnull foreign"><a href="#nucleus_blog">cblog</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>ƒJƒeƒSƒŠ[‚ªŠ‘®‚·‚éBlog‚ÌID</td>
+      <td>ã‚«ãƒ†ã‚´ãƒªãƒ¼ãŒæ‰€å±žã™ã‚‹Blogã®ID</td>
     </tr>
     <tr>
       <td>cname</td>
       <td>varchar(40)</td>
       <td>NULL</td>
-      <td>ƒJƒeƒSƒŠ[‚Ì–¼‘O</td>
+      <td>ã‚«ãƒ†ã‚´ãƒªãƒ¼ã®åå‰</td>
     </tr>
     <tr>
       <td>cdesc</td>
       <td>varchar(200)</td>
       <td>NULL</td>
-      <td>ƒJƒeƒSƒŠ[‚Ìà–¾</td>
+      <td>ã‚«ãƒ†ã‚´ãƒªãƒ¼ã®èª¬æ˜Ž</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_item" name="nucleus_item"></a>
-<h1>nucleus_itemƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<h1>nucleus_itemãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull autoinc primary">inumber</td>
       <td>int(11)</td>
       <td></td>
-      <td>ƒAƒCƒeƒ€‚ÌID</td>
+      <td>ã‚¢ã‚¤ãƒ†ãƒ ã®ID</td>
     </tr>
     <tr>
       <td class="fulltext">ititle</td>
       <td>varchar(160)</td>
       <td>NULL</td>
-      <td>ƒ^ƒCƒgƒ‹</td>
+      <td>ã‚¿ã‚¤ãƒˆãƒ«</td>
     </tr>
     <tr>
       <td class="notnull fulltext">ibody</td>
       <td>text</td>
       <td></td>
-      <td>–{•¶</td>
+      <td>æœ¬æ–‡</td>
     </tr>
     <tr>
       <td class="fulltext">imore</td>
       <td>text</td>
       <td></td>
-      <td>’Ç‰Á•”•ª</td>
+      <td>è¿½åŠ éƒ¨åˆ†</td>
     </tr>
     <tr>
       <td class="notnull foreign"><a href="#nucleus_blog">iblog</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>ƒAƒCƒeƒ€‚ªŠ‘®‚·‚éBlog‚ÌID</td>
+      <td>ã‚¢ã‚¤ãƒ†ãƒ ãŒæ‰€å±žã™ã‚‹Blogã®ID</td>
     </tr>
     <tr>
       <td class="notnull foreign"><a href="#nucleus_member">iauthor</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>ƒAƒCƒeƒ€‚Ì’˜ŽÒ‚ÌID</td>
+      <td>ã‚¢ã‚¤ãƒ†ãƒ ã®è‘—è€…ã®ID</td>
     </tr>
     <tr>
       <td class="notnull">itime</td>
       <td>datetime</td>
       <td>'0000-00-00 00:00:00'</td>
-      <td>“ŠeŽžŠÔiƒT[ƒo[‚Æ‚ÌŽž·‚ð”½‰f‚µ‚½‚à‚Ìj</td>
+      <td>æŠ•ç¨¿æ™‚é–“ï¼ˆã‚µãƒ¼ãƒãƒ¼ã¨ã®æ™‚å·®ã‚’åæ˜ ã—ãŸã‚‚ã®ï¼‰</td>
     </tr>
     <tr>
       <td class="notnull">iclosed</td>
       <td>tinyint(2)</td>
       <td>'0'</td>
-      <td>ƒAƒCƒeƒ€‚ª•Â½‚³‚ê‚½‚©‚Ç‚¤‚© (1=•Â½/0=•Â½‚µ‚Ä‚¢‚È‚¢). 
-        •Â½‚·‚é‚ÆAƒRƒƒ“ƒg‚âƒJƒ‹ƒ}“Š•[‚ðŽó‚¯•t‚¯‚È‚¢</td>
+      <td>ã‚¢ã‚¤ãƒ†ãƒ ãŒé–‰éŽ–ã•ã‚ŒãŸã‹ã©ã†ã‹ (1=é–‰éŽ–/0=é–‰éŽ–ã—ã¦ã„ãªã„). 
+        é–‰éŽ–ã™ã‚‹ã¨ã€ã‚³ãƒ¡ãƒ³ãƒˆã‚„ã‚«ãƒ«ãƒžæŠ•ç¥¨ã‚’å—ã‘ä»˜ã‘ãªã„</td>
     </tr>
     <tr>
       <td class="notnull">idraft</td>
       <td>tinyint(2)</td>
       <td>'0'</td>
-      <td>ƒAƒCƒeƒ€‚Íƒhƒ‰ƒtƒg‚©‚Ç‚¤‚©Bƒhƒ‰ƒtƒg‚ÍŠÇ—ƒy[ƒW‚Å‚¾‚¯Œ©‚ç‚ê‚é</td>
+      <td>ã‚¢ã‚¤ãƒ†ãƒ ã¯ãƒ‰ãƒ©ãƒ•ãƒˆã‹ã©ã†ã‹ã€‚ãƒ‰ãƒ©ãƒ•ãƒˆã¯ç®¡ç†ãƒšãƒ¼ã‚¸ã§ã ã‘è¦‹ã‚‰ã‚Œã‚‹</td>
     </tr>
     <tr>
       <td class="notnull toremove">ikarmapos</td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>{‚ÌƒJƒ‹ƒ}“Š•[‚Ì‘”</td>
+      <td>ï¼‹ã®ã‚«ãƒ«ãƒžæŠ•ç¥¨ã®ç·æ•°</td>
     </tr>
     <tr>
       <td class="notnull toremove">ikarmaneg</td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>|‚ÌƒJƒ‹ƒ}“Š•[‚Ì‘”</td>
+	  <td>ï¼ã®ã‚«ãƒ«ãƒžæŠ•ç¥¨ã®ç·æ•°</td>
     </tr>
     <tr>
       <td class="foreign"><a href="#nucleus_category">icat</a></td>
       <td>int(11)</td>
       <td>NULL</td>
-      <td>ƒAƒCƒeƒ€‚ªŠ‘®‚·‚éƒJƒeƒSƒŠ[‚ÌID</td>
+      <td>ã‚¢ã‚¤ãƒ†ãƒ ãŒæ‰€å±žã™ã‚‹ã‚«ãƒ†ã‚´ãƒªãƒ¼ã®ID</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_comment" name="nucleus_comment"></a>
-<h1>nucleus_commentƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<h1>nucleus_commentãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull autoinc primary">cnumber</td>
       <td>int(11)</td>
       <td></td>
-      <td>ƒRƒƒ“ƒg‚ÌID</td>
+      <td>ã‚³ãƒ¡ãƒ³ãƒˆã®ID</td>
     </tr>
     <tr>
       <td class="notnull fulltext">cbody</td>
       <td>text</td>
       <td></td>
-      <td>ƒRƒƒ“ƒg‚Ì–{•¶</td>
+      <td>ã‚³ãƒ¡ãƒ³ãƒˆã®æœ¬æ–‡</td>
     </tr>
     <tr>
       <td>cuser</td>
       <td>varchar(40)</td>
       <td>NULL</td>
-      <td>•MŽÒ–¼iƒƒ“ƒo[‚Å‚È‚¢ê‡Cƒƒ“ƒo[‚Ìê‡‚ÍcmemberŽQÆj</td>
+      <td>ç­†è€…åï¼ˆãƒ¡ãƒ³ãƒãƒ¼ã§ãªã„å ´åˆï¼Œãƒ¡ãƒ³ãƒãƒ¼ã®å ´åˆã¯cmemberå‚ç…§ï¼‰</td>
     </tr>
     <tr>
       <td>cmail</td>
       <td>varchar(100)</td>
       <td>NULL</td>
-      <td>ƒ[ƒ‹EƒAƒhƒŒƒX‚ ‚é‚¢‚ÍURLiƒƒ“ƒo[‚Å‚È‚¢ê‡Cƒƒ“ƒo[‚Ìê‡‚ÍcmemberŽQÆj</td>
+      <td>ãƒ¡ãƒ¼ãƒ«ãƒ»ã‚¢ãƒ‰ãƒ¬ã‚¹ã‚ã‚‹ã„ã¯URLï¼ˆãƒ¡ãƒ³ãƒãƒ¼ã§ãªã„å ´åˆï¼Œãƒ¡ãƒ³ãƒãƒ¼ã®å ´åˆã¯cmemberå‚ç…§ï¼‰</td>
     </tr>
     <tr>
       <td class="foreign"><a href="#nucleus_member">cmember</a></td>
       <td>int(11)</td>
       <td>NULL</td>
-      <td>ƒRƒƒ“ƒg‚ð‘‚¢‚½ƒƒ“ƒo[‚ÌIDiƒƒ“ƒo[‚Å‚È‚¢ê‡‚Í0j</td>
+      <td>ã‚³ãƒ¡ãƒ³ãƒˆã‚’æ›¸ã„ãŸãƒ¡ãƒ³ãƒãƒ¼ã®IDï¼ˆãƒ¡ãƒ³ãƒãƒ¼ã§ãªã„å ´åˆã¯0ï¼‰</td>
     </tr>
     <tr>
       <td class="notnull foreign"><a href="#nucleus_item">citem</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>ƒRƒƒ“ƒg‚ª‘‚«ž‚Ü‚ê‚½ƒAƒCƒeƒ€‚ÌID</td>
+      <td>ã‚³ãƒ¡ãƒ³ãƒˆãŒæ›¸ãè¾¼ã¾ã‚ŒãŸã‚¢ã‚¤ãƒ†ãƒ ã®ID</td>
     </tr>
     <tr>
       <td class="notnull">ctime</td>
       <td>datetime</td>
       <td>'0000-00-00 00:00:00'</td>
-      <td>ƒRƒƒ“ƒg‚ð‘‚«ž‚ñ‚¾ŽžŠÔ</td>
+      <td>ã‚³ãƒ¡ãƒ³ãƒˆã‚’æ›¸ãè¾¼ã‚“ã æ™‚é–“</td>
     </tr>
     <tr>
       <td>chost</td>
       <td>varchar(60)</td>
       <td>NULL</td>
-      <td>ƒRƒƒ“ƒg‚ð“ü—Í‚µ‚½ƒzƒXƒg–¼</td>
+      <td>ã‚³ãƒ¡ãƒ³ãƒˆã‚’å…¥åŠ›ã—ãŸãƒ›ã‚¹ãƒˆå</td>
     </tr>
     <tr>
       <td class="notnull">cip</td>
       <td>varchar(15)</td>
       <td>''</td>
-      <td>ƒRƒƒ“ƒg‚ð“ü—Í‚µ‚½IPƒAƒhƒŒƒX</td>
+      <td>ã‚³ãƒ¡ãƒ³ãƒˆã‚’å…¥åŠ›ã—ãŸIPã‚¢ãƒ‰ãƒ¬ã‚¹</td>
     </tr>
     <tr>
       <td class="notnull foreign"><a href="#nucleus_blog">cblog</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>ƒRƒƒ“ƒg‚ª•t‘®‚·‚éBlog‚ÌID</td>
+      <td>ã‚³ãƒ¡ãƒ³ãƒˆãŒä»˜å±žã™ã‚‹Blogã®ID</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_member" name="nucleus_member"></a>
-<h1>nucleus_memberƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<h1>nucleus_memberãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull autoinc primary">mnumber</td>
       <td>int(11)</td>
       <td></td>
-      <td>ƒƒ“ƒo[‚ÌID</td>
+      <td>ãƒ¡ãƒ³ãƒãƒ¼ã®ID</td>
     </tr>
     <tr>
       <td class="notnull unique">mname</td>
       <td>varchar(16)</td>
       <td>''</td>
-      <td>–¼‘OiƒƒOƒCƒ“‚ÉŽg‚¤‚à‚Ì‚Æ“¯‚¶j</td>
+      <td>åå‰ï¼ˆãƒ­ã‚°ã‚¤ãƒ³ã«ä½¿ã†ã‚‚ã®ã¨åŒã˜ï¼‰</td>
     </tr>
     <tr>
       <td>mrealname</td>
       <td>varchar(60)</td>
       <td>NULL</td>
-      <td>ƒtƒ‹ƒl[ƒ€</td>
+      <td>ãƒ•ãƒ«ãƒãƒ¼ãƒ </td>
     </tr>
     <tr>
       <td class="notnull">mpassword</td>
       <td>varchar(40)</td>
       <td>''</td>
-      <td>ƒpƒXƒ[ƒh (<a href="http://www.php.net/md5" title="Info about the PHP md5() function">md5</a>‚ÅˆÃ†‰»‚µ‚Ä‚ ‚é)</td>
+      <td>ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ (<a href="http://www.php.net/md5" title="Info about the PHP md5() function">md5</a>ã§æš—å·åŒ–ã—ã¦ã‚ã‚‹)</td>
     </tr>
     <tr>
       <td>memail</td>
       <td>varchar(60)</td>
       <td>NULL</td>
-      <td>ƒ[ƒ‹EƒAƒhƒŒƒX</td>
+      <td>ãƒ¡ãƒ¼ãƒ«ãƒ»ã‚¢ãƒ‰ãƒ¬ã‚¹</td>
     </tr>
     <tr>
       <td>murl</td>
@@ -479,243 +479,243 @@
       <td>mnotes</td>
       <td>varchar(100)</td>
       <td>NULL</td>
-      <td>’Ç‰ÁŽ–€iƒƒ“ƒo[Ž©g‚ª‹Lq‚Å‚«‚éj</td>
+      <td>è¿½åŠ äº‹é …ï¼ˆãƒ¡ãƒ³ãƒãƒ¼è‡ªèº«ãŒè¨˜è¿°ã§ãã‚‹ï¼‰</td>
     </tr>
     <tr>
       <td class="notnull">madmin</td>
       <td>tinyint(2)</td>
       <td>'0'</td>
-      <td>Super-adminiÅ‚Œ ŒÀŠÇ—ŽÒj‚© (1=‚»‚¤/0=ˆá‚¤ 
-        super-admin‚Í‚·‚×‚Ä‚ÌŒ —˜‚ðŽ‚ÂBƒVƒXƒeƒ€‚Éˆêl‚Ísuper-admin‚ª‚¢‚é)</td>
+      <td>Super-adminï¼ˆæœ€é«˜æ¨©é™ç®¡ç†è€…ï¼‰ã‹ (1=ãã†/0=é•ã† 
+        super-adminã¯ã™ã¹ã¦ã®æ¨©åˆ©ã‚’æŒã¤ã€‚ã‚·ã‚¹ãƒ†ãƒ ã«ä¸€äººã¯super-adminãŒã„ã‚‹)</td>
     </tr>
     <tr>
       <td class="notnull">mcanlogin</td>
       <td>tinyint(2)</td>
       <td>'1'</td>
-      <td>ŠÇ—ƒGƒŠƒA‚Ö‚ÌƒƒOƒCƒ“‚ð‹–‰Â (1=‹–‰Â/0=•s‹–‰Â)</td>
+      <td>ç®¡ç†ã‚¨ãƒªã‚¢ã¸ã®ãƒ­ã‚°ã‚¤ãƒ³ã‚’è¨±å¯ (1=è¨±å¯/0=ä¸è¨±å¯)</td>
     </tr>
     <tr>
       <td>mcookiekey</td>
       <td>varchar(40)</td>
       <td>NULL</td>
-      <td>‚±‚ÌƒL[‚ÌƒRƒs[‚ªƒ†[ƒU[‚ÌƒNƒbƒL[‚É•Û‘¶‚³‚êAƒƒOƒIƒ“‚ÉŽg‚¤Bƒƒ“ƒo[‚ªƒƒOƒIƒ“‚·‚é‚ÆAƒ‰ƒ“ƒ_ƒ€‚Ècookiekey‚ª¶¬‚³‚êAˆê•û‚Íƒf[ƒ^ƒx[ƒX‚ÉA‘¼•û‚ªƒ†[ƒU[‚ÌƒRƒ“ƒsƒ…[ƒ^‚É•Û‘¶‚³‚ê‚éB</td>
+      <td>ã“ã®ã‚­ãƒ¼ã®ã‚³ãƒ”ãƒ¼ãŒãƒ¦ãƒ¼ã‚¶ãƒ¼ã®ã‚¯ãƒƒã‚­ãƒ¼ã«ä¿å­˜ã•ã‚Œã€ãƒ­ã‚°ã‚ªãƒ³ã«ä½¿ã†ã€‚ãƒ¡ãƒ³ãƒãƒ¼ãŒãƒ­ã‚°ã‚ªãƒ³ã™ã‚‹ã¨ã€ãƒ©ãƒ³ãƒ€ãƒ ãªcookiekeyãŒç”Ÿæˆã•ã‚Œã€ä¸€æ–¹ã¯ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã«ã€ä»–æ–¹ãŒãƒ¦ãƒ¼ã‚¶ãƒ¼ã®ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ã‚¿ã«ä¿å­˜ã•ã‚Œã‚‹ã€‚</td>
     </tr>
     <tr>
       <td class="notnull">deflang</td>
       <td>varchar(20)</td>
       <td>''</td>
-      <td>‚±‚Ìƒƒ“ƒo[—p‚ÌŒ¾Œêƒtƒ@ƒCƒ‹‚ðŽw’è‚·‚é</td>
+      <td>ã“ã®ãƒ¡ãƒ³ãƒãƒ¼ç”¨ã®è¨€èªžãƒ•ã‚¡ã‚¤ãƒ«ã‚’æŒ‡å®šã™ã‚‹</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_team" name="nucleus_team"></a>
-<h1>nucleus_teamƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>Blog‚Ìƒ`[ƒ€Eƒƒ“ƒo[‚²‚Æ‚ÉA‚±‚Ì•\‚Éƒf[ƒ^‚ª‚ ‚é</p>
+<h1>nucleus_teamãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<p>Blogã®ãƒãƒ¼ãƒ ãƒ»ãƒ¡ãƒ³ãƒãƒ¼ã”ã¨ã«ã€ã“ã®è¡¨ã«ãƒ‡ãƒ¼ã‚¿ãŒã‚ã‚‹</p>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull primary foreign"><a href="#nucleus_member">tmember</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>ƒƒ“ƒo[‚ÌID</td>
+      <td>ãƒ¡ãƒ³ãƒãƒ¼ã®ID</td>
     </tr>
     <tr>
       <td class="notnull primary foreign"><a href="#nucleus_blog">tblog</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>ƒ`[ƒ€Eƒƒ“ƒo[‚É‚È‚Á‚Ä‚¢‚éBlog</td>
+      <td>ãƒãƒ¼ãƒ ãƒ»ãƒ¡ãƒ³ãƒãƒ¼ã«ãªã£ã¦ã„ã‚‹Blog</td>
     </tr>
     <tr>
       <td class="notnull">tadmin</td>
       <td>tinyint(2)</td>
       <td>'0'</td>
-      <td>Blog‚ÌŠÇ—ŽÒ‚© (0=ˆá‚¤/1=‚»‚¤BŠeBlog‚Íˆêl‚ÍŠÇ—ŽÒ‚ª‚¢‚é)</td>
+      <td>Blogã®ç®¡ç†è€…ã‹ (0=é•ã†/1=ãã†ã€‚å„Blogã¯ä¸€äººã¯ç®¡ç†è€…ãŒã„ã‚‹)</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_plugin" name="nucleus_plugin"></a>
-<h1>nucleus_pluginƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<h1>nucleus_pluginãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull autoinc primary">pid</td>
       <td>int(11)</td>
       <td></td>
-      <td>ƒvƒ‰ƒOƒCƒ“‚ÌID</td>
+      <td>ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®ID</td>
     </tr>
     <tr>
       <td class="notnull">pfile</td>
       <td>varchar(40)</td>
       <td>''</td>
-      <td>ƒvƒ‰ƒOƒCƒ“‚Ìƒtƒ@ƒCƒ‹–¼(—á‚¦‚Î<code>NP_CommentControl</code>)Bƒvƒ‰ƒOƒCƒ“EƒfƒBƒŒƒNƒgƒŠ‚Éƒtƒ@ƒCƒ‹‚ª‚È‚¢‚Æ‚¢‚¯‚È‚¢i.php‚ÌŠg’£Žq‚ª•t‚¢‚ÄjB</td>
+      <td>ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®ãƒ•ã‚¡ã‚¤ãƒ«å(ä¾‹ãˆã°<code>NP_CommentControl</code>)ã€‚ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ãƒ»ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«ãƒ•ã‚¡ã‚¤ãƒ«ãŒãªã„ã¨ã„ã‘ãªã„ï¼ˆ.phpã®æ‹¡å¼µå­ãŒä»˜ã„ã¦ï¼‰ã€‚</td>
     </tr>
     <tr>
       <td class="notnull">porder</td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>ƒvƒ‰ƒOƒCƒ“‚ªŒÄ‚Ño‚³‚ê‚é‡”ÔBƒvƒ‰ƒOƒCƒ“Eƒy[ƒW‚Å•\Ž¦‚³‚ê‚é‡”Ô‚Å‚à‚ ‚éB”Žš‚ª¬‚³‚¢•û‚ªƒŠƒXƒg‚Ìã‚Ì•û‚É—ˆ‚éB</td>
+      <td>ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ãŒå‘¼ã³å‡ºã•ã‚Œã‚‹é †ç•ªã€‚ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ãƒ»ãƒšãƒ¼ã‚¸ã§è¡¨ç¤ºã•ã‚Œã‚‹é †ç•ªã§ã‚‚ã‚ã‚‹ã€‚æ•°å­—ãŒå°ã•ã„æ–¹ãŒãƒªã‚¹ãƒˆã®ä¸Šã®æ–¹ã«æ¥ã‚‹ã€‚</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_plugin_event" name="nucleus_plugin_event"></a>
-<h1>nucleus_plugin_eventƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>Šeƒvƒ‰ƒOƒCƒ“‚ª“o˜^‚·‚éƒCƒxƒ“ƒg‚ð‹L˜^‚·‚éƒLƒƒƒbƒVƒ…BƒŠƒNƒGƒXƒg‚Ì“x‚É‚·‚×‚Ä‚Ìƒvƒ‰ƒOƒCƒ“‚ð“Ç‚Ýž‚ñ‚ÅC‚»‚ê‚ç‚ªŽg‚¤ƒCƒxƒ“ƒg‚ð’²‚×‚éŽèŠÔ‚ðÈ‚­‚½‚ß‚É•Û‘¶‚µ‚Ä‚¢‚éB<a href="plugins.html#events">ƒvƒ‰ƒOƒCƒ“‚ÌƒCƒxƒ“ƒg‚É‚Â‚¢‚Ä‚Í‚±‚¿‚ç‚ðŽQÆB</a></p>
+<h1>nucleus_plugin_eventãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<p>å„ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ãŒç™»éŒ²ã™ã‚‹ã‚¤ãƒ™ãƒ³ãƒˆã‚’è¨˜éŒ²ã™ã‚‹ã‚­ãƒ£ãƒƒã‚·ãƒ¥ã€‚ãƒªã‚¯ã‚¨ã‚¹ãƒˆã®åº¦ã«ã™ã¹ã¦ã®ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã‚’èª­ã¿è¾¼ã‚“ã§ï¼Œãã‚Œã‚‰ãŒä½¿ã†ã‚¤ãƒ™ãƒ³ãƒˆã‚’èª¿ã¹ã‚‹æ‰‹é–“ã‚’çœããŸã‚ã«ä¿å­˜ã—ã¦ã„ã‚‹ã€‚<a href="plugins.html#events">ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®ã‚¤ãƒ™ãƒ³ãƒˆã«ã¤ã„ã¦ã¯ã“ã¡ã‚‰ã‚’å‚ç…§ã€‚</a></p>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull foreign"><a href="#nucleus_plugin">pid</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>ƒvƒ‰ƒOƒCƒ“‚ÌID</td>
+      <td>ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®ID</td>
     </tr>
     <tr>
       <td>event</td>
       <td>varchar(40)</td>
       <td>NULL</td>
-      <td>ƒCƒxƒ“ƒg‚Ì–¼‘O</td>
+      <td>ã‚¤ãƒ™ãƒ³ãƒˆã®åå‰</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_plugin_option" name="nucleus_plugin_option"></a>
-<h1>nucleus_plugin_optionƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>ƒvƒ‰ƒOƒCƒ“EƒIƒvƒVƒ‡ƒ“‚Ì’l‚ðŠi”[‚·‚éBƒIƒvƒVƒ‡ƒ“Ž©‘Ì‚Ì’è‹`‚É‚Â‚¢‚Ä‚Í<a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a>ƒe[ƒuƒ‹‚ðŽQÆB</p>
+<h1>nucleus_plugin_optionãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<p>ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ãƒ»ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®å€¤ã‚’æ ¼ç´ã™ã‚‹ã€‚ã‚ªãƒ—ã‚·ãƒ§ãƒ³è‡ªä½“ã®å®šç¾©ã«ã¤ã„ã¦ã¯<a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a>ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’å‚ç…§ã€‚</p>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull autoinc primary foreign"><a href="#nucleus_plugin_option_desc">oid</a></td>
       <td>int(11)</td>
       <td></td>
-      <td>ƒIƒvƒVƒ‡ƒ“‚ÌID (<a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a>ƒe[ƒuƒ‹‚ðŽQÆ)</td>
+      <td>ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®ID (<a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a>ãƒ†ãƒ¼ãƒ–ãƒ«ã‚’å‚ç…§)</td>
     </tr>
     <tr>
       <td class="notnull">ovalue</td>
       <td>TEXT</td>
       <td>''</td>
-      <td>ƒIƒvƒVƒ‡ƒ“‚Ì’l</td>
+      <td>ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®å€¤</td>
     </tr>
     <tr>
       <td class="notnull primary">ocontextid</td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>ƒIƒvƒVƒ‡ƒ“‚ªŽg‚í‚ê‚éƒRƒ“ƒeƒLƒXƒg‚É‚æ‚Á‚ÄˆÓ–¡‡‚¢‚ª•Ï‚í‚é
+      <td>ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒä½¿ã‚ã‚Œã‚‹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã«ã‚ˆã£ã¦æ„å‘³åˆã„ãŒå¤‰ã‚ã‚‹
         <ul>
-          <li>ƒOƒ[ƒoƒ‹EƒRƒ“ƒeƒLƒXƒg: Žg‚í‚È‚¢</li>
-          <li>BlogƒRƒ“ƒeƒLƒXƒg: <a href="#nucleus_blog">B</a><a href="#nucleus_blog">log‚ÌID</a></li>
-          <li>ƒJƒeƒSƒŠ[EƒRƒ“ƒeƒLƒXƒg: <a href="#nucleus_category">ƒJƒeƒSƒŠ[‚ÌID</a></li>
-          <li>ƒƒ“ƒo[EƒRƒ“ƒeƒLƒXƒg: <a href="#nucleus_member">ƒƒ“ƒo[‚ÌID</a></li>
+          <li>ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒ»ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ: ä½¿ã‚ãªã„</li>
+          <li>Blogã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ: <a href="#nucleus_blog">B</a><a href="#nucleus_blog">logã®ID</a></li>
+          <li>ã‚«ãƒ†ã‚´ãƒªãƒ¼ãƒ»ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ: <a href="#nucleus_category">ã‚«ãƒ†ã‚´ãƒªãƒ¼ã®ID</a></li>
+          <li>ãƒ¡ãƒ³ãƒãƒ¼ãƒ»ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ: <a href="#nucleus_member">ãƒ¡ãƒ³ãƒãƒ¼ã®ID</a></li>
         </ul>
       </td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_plugin_option_desc" name="nucleus_plugin_option_desc"></a>
-<h1>nucleus_plugin_option_descƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>ƒvƒ‰ƒOƒCƒ“‚ªƒIƒvƒVƒ‡ƒ“‚ðì‚é‚½‚Ñ‚É‚±‚Ìƒe[ƒuƒ‹“à‚Éƒf[ƒ^‚ª‚Å‚«‚éB</p>
+<h1>nucleus_plugin_option_descãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<p>ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ãŒã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’ä½œã‚‹ãŸã³ã«ã“ã®ãƒ†ãƒ¼ãƒ–ãƒ«å†…ã«ãƒ‡ãƒ¼ã‚¿ãŒã§ãã‚‹ã€‚</p>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull autoinc unique">oid</td>
       <td>int(11)</td>
       <td></td>
-      <td>ƒIƒvƒVƒ‡ƒ“‚ÌIDB<a href="#nucleus_plugin_option">nucleus_plugin_option</a>ƒe[ƒuƒ‹‚ÅŽg‚¤</td>
+      <td>ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®IDã€‚<a href="#nucleus_plugin_option">nucleus_plugin_option</a>ãƒ†ãƒ¼ãƒ–ãƒ«ã§ä½¿ã†</td>
     </tr>
     <tr>
       <td class="notnull primary foreign"><a href="#nucleus_plugin">opid</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>ƒIƒvƒVƒ‡ƒ“‚ðì‚Á‚½ƒvƒ‰ƒOƒCƒ“‚ÌID</td>
+      <td>ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’ä½œã£ãŸãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®ID</td>
     </tr>
     <tr>
       <td class="notnull primary">oname</td>
       <td>varchar(20)</td>
       <td>''</td>
-      <td>ƒIƒvƒVƒ‡ƒ“‚Ì–¼‘O</td>
+      <td>ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®åå‰</td>
     </tr>
     <tr>
       <td class="notnull primary">ocontext</td>
       <td>varchar(20)</td>
       <td>''</td>
-      <td>ƒIƒvƒVƒ‡ƒ“‚ÌƒRƒ“ƒeƒLƒXƒg(<code>ƒOƒ[ƒoƒ‹</code>, <code>Blog</code>, 
-        <code>ƒJƒeƒSƒŠ[</code>,ƒƒ“ƒo[)</td>
+      <td>ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ(<code>ã‚°ãƒ­ãƒ¼ãƒãƒ«</code>, <code>Blog</code>, 
+        <code>ã‚«ãƒ†ã‚´ãƒªãƒ¼</code>,ãƒ¡ãƒ³ãƒãƒ¼)</td>
     </tr>
     <tr>
       <td>odesc</td>
       <td>varchar(255)</td>
       <td>NULL</td>
-      <td>ƒIƒvƒVƒ‡ƒ“‚Ìà–¾</td>
+      <td>ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®èª¬æ˜Ž</td>
     </tr>
     <tr>
       <td>otype</td>
       <td>varchar(20)</td>
       <td>NULL</td>
-      <td>ƒIƒvƒVƒ‡ƒ“‚ÌŒ^.
-      <a title="Nucleus Plugin API - Option types" href="plugins.html#options">ƒvƒ‰ƒOƒCƒ“‚Ì•¶‘‚ðŽQÆ</a>.</td>
+      <td>ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®åž‹.
+      <a title="Nucleus Plugin API - Option types" href="plugins.html#options">ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®æ–‡æ›¸ã‚’å‚ç…§</a>.</td>
     </tr>
     <tr>
       <td>odef</td>
       <td>text</td>
       <td></td>
-      <td>ƒIƒvƒVƒ‡ƒ“‚Ì‹K’è’l</td>
+      <td>ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®è¦å®šå€¤</td>
     </tr>
     <tr>
       <td>oextra</td>
       <td>text</td>
       <td></td>
-      <td>select optionŒ^‚È‚Ç‚ÅŽg‚¤A‚»‚Ì‘¼‚Ìƒf[ƒ^</td>
+      <td>select optionåž‹ãªã©ã§ä½¿ã†ã€ãã®ä»–ã®ãƒ‡ãƒ¼ã‚¿</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_skin" name="nucleus_skin"></a>
-<h1>nucleus_skinƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<h1>nucleus_skinãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull primary foreign"><a href="#nucleus_skin_desc">sdesc</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>skin_desc‚Ö‚ÌŽQÆ</td>
+      <td>skin_descã¸ã®å‚ç…§</td>
     </tr>
     <tr>
       <td class="notnull primary">stype</td>
       <td>varchar(20)</td>
       <td>''</td>
-      <td>ƒXƒLƒ“Eƒp[ƒg‚ÌŒ^BˆÈ‰º‚Ì‚¢‚¸‚ê‚©‚ðŽæ‚é
+      <td>ã‚¹ã‚­ãƒ³ãƒ»ãƒ‘ãƒ¼ãƒˆã®åž‹ã€‚ä»¥ä¸‹ã®ã„ãšã‚Œã‹ã‚’å–ã‚‹
         <ul>
           <li><code>index</code></li>
           <li><code>item</code></li>
@@ -732,49 +732,49 @@
       <td class="notnull">scontent</td>
       <td>text</td>
       <td></td>
-      <td>ƒXƒLƒ“Eƒp[ƒg‚Ì“à—e</td>
+      <td>ã‚¹ã‚­ãƒ³ãƒ»ãƒ‘ãƒ¼ãƒˆã®å†…å®¹</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_skin_desc" name="nucleus_skin_desc"></a>
-<h1>nucleus_skin_descƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<h1>nucleus_skin_descãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull autoinc primary">sdnumber</td>
       <td>int(11)</td>
       <td></td>
-      <td>ƒXƒLƒ“‚ÌID</td>
+      <td>ã‚¹ã‚­ãƒ³ã®ID</td>
     </tr>
     <tr>
       <td class="notnull unique">sdname</td>
       <td>varchar(20)</td>
       <td>''</td>
-      <td>ƒXƒLƒ“‚Ì–¼‘O</td>
+      <td>ã‚¹ã‚­ãƒ³ã®åå‰</td>
     </tr>
     <tr>
       <td>sddesc</td>
       <td>varchar(200)</td>
       <td>NULL</td>
-      <td>ƒXƒLƒ“‚Ìà–¾</td>
+      <td>ã‚¹ã‚­ãƒ³ã®èª¬æ˜Ž</td>
     </tr>
     <tr>
-      <td class="notnull">sdŒ^</td>
+      <td class="notnull">sdåž‹</td>
       <td>varchar(40)</td>
       <td>'text/html'</td>
-      <td>ƒXƒLƒ“‚Ìmimeƒ^ƒCƒv</td>
+      <td>ã‚¹ã‚­ãƒ³ã®mimeã‚¿ã‚¤ãƒ—</td>
     </tr>
     <tr>
       <td class="notnull">sdincmode</td>
       <td>varchar(10)</td>
       <td>'normal'</td>
-      <td>Includeƒ‚[ƒhBˆÈ‰º‚Ì‚¢‚¸‚ê‚©‚ðŽæ‚é
+      <td>Includeãƒ¢ãƒ¼ãƒ‰ã€‚ä»¥ä¸‹ã®ã„ãšã‚Œã‹ã‚’å–ã‚‹
         <ul>
           <li><code>normal</code></li>
           <li><code>skindir</code></li>
@@ -785,31 +785,31 @@
       <td class="notnull">sdincpref</td>
       <td>varchar(50)</td>
       <td>''</td>
-      <td>ƒtƒ@ƒCƒ‹‚ðInclude‚·‚é‚Æ‚«‚ÌƒvƒŠƒtƒBƒbƒNƒX</td>
+      <td>ãƒ•ã‚¡ã‚¤ãƒ«ã‚’Includeã™ã‚‹ã¨ãã®ãƒ—ãƒªãƒ•ã‚£ãƒƒã‚¯ã‚¹</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_template" name="nucleus_template"></a>
-<h1>nucleus_templateƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<h1>nucleus_templateãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull primary foreign"><a href="#nucleus_template_desc">tdesc</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>template_desc‚Ö‚ÌŽQÆ</td>
+      <td>template_descã¸ã®å‚ç…§</td>
     </tr>
     <tr>
       <td class="notnull primary">tpartname</td>
       <td>varchar(20)</td>
       <td>''</td>
-      <td>ƒeƒ“ƒvƒŒ[ƒgEƒp[ƒg‚Ì–¼‘OBˆÈ‰º‚Ì‚¢‚¸‚ê‚©‚ðŽæ‚é<ul>
+      <td>ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ»ãƒ‘ãƒ¼ãƒˆã®åå‰ã€‚ä»¥ä¸‹ã®ã„ãšã‚Œã‹ã‚’å–ã‚‹<ul>
           <li>ARCHIVELIST_FOOTER</li>
           <li>ARCHIVELIST_HEADER</li>
           <li>ARCHIVELIST_LISTITEM</li>
@@ -840,321 +840,321 @@
       <td class="notnull">tcontent</td>
       <td>text</td>
       <td></td>
-      <td>ƒeƒ“ƒvƒŒ[ƒgEƒp[ƒg‚Ì“à—e</td>
+      <td>ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆãƒ»ãƒ‘ãƒ¼ãƒˆã®å†…å®¹</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_template_desc" name="nucleus_template_desc"></a>
-<h1>nucleus_template_descƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<h1>nucleus_template_descãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull autoinc primary unique">tdnumber</td>
       <td>int(11)</td>
       <td></td>
-      <td>ƒeƒ“ƒvƒŒ[ƒg‚ÌID</td>
+      <td>ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®ID</td>
     </tr>
     <tr>
       <td class="notnull unique">tdname</td>
       <td>varchar(20)</td>
       <td>''</td>
-      <td>ƒeƒ“ƒvƒŒ[ƒg‚Ì–¼‘O</td>
+      <td>ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®åå‰</td>
     </tr>
     <tr>
       <td>tddesc</td>
       <td>varchar(200)</td>
       <td>NULL</td>
-      <td>ƒeƒ“ƒvƒŒ[ƒg‚Ìà–¾</td>
+      <td>ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã®èª¬æ˜Ž</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_actionlog" name="nucleus_actionlog"></a>
-<h1>nucleus_actionlogƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>ƒƒOƒCƒ“‚âƒGƒ‰[‚È‚Ç‚ÌƒƒO‚ð‹L˜^‚·‚é</p>
+<h1>nucleus_actionlogãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<p>ãƒ­ã‚°ã‚¤ãƒ³ã‚„ã‚¨ãƒ©ãƒ¼ãªã©ã®ãƒ­ã‚°ã‚’è¨˜éŒ²ã™ã‚‹</p>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
       <th></th>
-      <th>à–¾</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull">timestamp</td>
       <td>datetime</td>
       <td>'0000-00-00 00:00:00'</td>
-      <td>ƒAƒNƒVƒ‡ƒ“‚Ì“úŽž</td>
+      <td>ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®æ—¥æ™‚</td>
     </tr>
     <tr>
       <td class="notnull">message</td>
       <td>varchar(255)</td>
       <td>''</td>
-      <td>ƒAƒNƒVƒ‡ƒ“‚ÌƒƒbƒZ[ƒW</td>
+      <td>ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_config" name="nucleus_config"></a>
-<h1>nucleus_configƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p>Nucleus‚ÍA‚¢‚­‚Â‚©‚ÌƒOƒ[ƒoƒ‹EƒIƒvƒVƒ‡ƒ“‚ð<code>nucleus_config</code>ƒe[ƒuƒ‹‚É‹L‰¯‚·‚éB‚±‚ê‚Í<code>$CONF['OptionName']</code> 
-‚ÅƒAƒNƒZƒX‚Å‚«‚éB</p>
+<h1>nucleus_configãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<p>Nucleusã¯ã€ã„ãã¤ã‹ã®ã‚°ãƒ­ãƒ¼ãƒãƒ«ãƒ»ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’<code>nucleus_config</code>ãƒ†ãƒ¼ãƒ–ãƒ«ã«è¨˜æ†¶ã™ã‚‹ã€‚ã“ã‚Œã¯<code>$CONF['OptionName']</code> 
+ã§ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹ã€‚</p>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull primary">name</td>
       <td>varchar(20)</td>
       <td>''</td>
-      <td>ƒIƒvƒVƒ‡ƒ“‚Ì–¼‘O</td>
+      <td>ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®åå‰</td>
     </tr>
     <tr>
       <td>value</td>
       <td>varchar(128)</td>
       <td>NULL</td>
-      <td>ƒIƒvƒVƒ‡ƒ“‚Ì’l</td>
+      <td>ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®å€¤</td>
     </tr>
   </tbody>
 </table>
 <a name="nucleus_config_options" id="nucleus_config_options"></a>
-<h2>Žg—p‚Å‚«‚éƒIƒvƒVƒ‡ƒ“</h2>
-<p>Žg—p‚Å‚«‚éƒIƒvƒVƒ‡ƒ“‚ÌƒI[ƒoƒrƒ…[‚ðˆÈ‰º‚ÉŽ¦‚·B</p>
-<p>‚Í‚¢/‚¢‚¢‚¦ƒ^ƒCƒv‚ÌƒIƒvƒVƒ‡ƒ“‚Í1/0 (1=‚Í‚¢/^, 0=‚¢‚¢‚¦/‹U)‚ÅŽ¦‚·B</p>
+<h2>ä½¿ç”¨ã§ãã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³</h2>
+<p>ä½¿ç”¨ã§ãã‚‹ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã®ã‚ªãƒ¼ãƒãƒ“ãƒ¥ãƒ¼ã‚’ä»¥ä¸‹ã«ç¤ºã™ã€‚</p>
+<p>ã¯ã„/ã„ã„ãˆã‚¿ã‚¤ãƒ—ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã¯1/0 (1=ã¯ã„/çœŸ, 0=ã„ã„ãˆ/å½)ã§ç¤ºã™ã€‚</p>
 <table width="901">
   <tbody>
     <tr>
       <th width="149">Name</th>
-      <th width="163">‹K’è’l Value</th>
-      <th width="575">à–¾</th>
+      <th width="163">è¦å®šå€¤ Value</th>
+      <th width="575">èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="foreign" width="149"><a href="#nucleus_blog">DefaultBlog</a></td>
       <td width="163">1</td>
-      <td width="575">ƒfƒtƒHƒ‹ƒg‚ÌBlog‚ÌIDBBlog‚ª–¾Ž¦“I‚É‹L‚³‚ê‚Ä‚¢‚È‚¢‚Æ‚«‚ÉŽg‚¤‚à‚Ì</td>
+      <td width="575">ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®Blogã®IDã€‚BlogãŒæ˜Žç¤ºçš„ã«è¨˜ã•ã‚Œã¦ã„ãªã„ã¨ãã«ä½¿ã†ã‚‚ã®</td>
     </tr>
     <tr>
       <td width="149">AdminEmail</td>
       <td width="163"></td>
-      <td width="575">ŠÇ—ŽÒ‚Ìƒ[ƒ‹EƒAƒhƒŒƒX</td>
+      <td width="575">ç®¡ç†è€…ã®ãƒ¡ãƒ¼ãƒ«ãƒ»ã‚¢ãƒ‰ãƒ¬ã‚¹</td>
     </tr>
     <tr>
       <td width="149">IndexURL</td>
       <td width="163"></td>
-      <td width="575">ƒTƒCƒg‚ÌURLBÅŒã‚É/‚ª•t‚­•K—v‚ª‚ ‚é</td>
+      <td width="575">ã‚µã‚¤ãƒˆã®URLã€‚æœ€å¾Œã«/ãŒä»˜ãå¿…è¦ãŒã‚ã‚‹</td>
     </tr>
     <tr>
       <td width="149">Language</td>
       <td width="163">english</td>
-      <td width="575">ƒfƒtƒHƒ‹ƒg‚ÌŒ¾Œêƒtƒ@ƒCƒ‹–¼BuŒ¾Œêƒtƒ@ƒCƒ‹–¼.phpvƒtƒ@ƒCƒ‹‚ªlanguageƒfƒBƒŒƒNƒgƒŠ‚É•K—v</td>
+      <td width="575">ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®è¨€èªžãƒ•ã‚¡ã‚¤ãƒ«åã€‚ã€Œè¨€èªžãƒ•ã‚¡ã‚¤ãƒ«å.phpã€ãƒ•ã‚¡ã‚¤ãƒ«ãŒlanguageãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«å¿…è¦</td>
     </tr>
     <tr>
       <td width="149">SessionCookie</td>
       <td width="163">0</td>
-      <td width="575">Žõ–½1ƒ–ŒŽ‚ÌƒNƒbƒL[‚Ì‘ã‚í‚è‚ÉƒZƒbƒVƒ‡ƒ“EƒNƒbƒL[‚ðŽg‚¤‚©‚Ç‚¤‚©</td>
+      <td width="575">å¯¿å‘½1ãƒ¶æœˆã®ã‚¯ãƒƒã‚­ãƒ¼ã®ä»£ã‚ã‚Šã«ã‚»ãƒƒã‚·ãƒ§ãƒ³ãƒ»ã‚¯ãƒƒã‚­ãƒ¼ã‚’ä½¿ã†ã‹ã©ã†ã‹</td>
     </tr>
     <tr>
       <td width="149">AllowMemberCreate</td>
       <td width="163">0</td>
-      <td width="575">ƒrƒWƒ^[‚ÉƒAƒJƒEƒ“ƒgì¬‚ð‹–‚·‚©‚Ç‚¤‚©</td>
+      <td width="575">ãƒ“ã‚¸ã‚¿ãƒ¼ã«ã‚¢ã‚«ã‚¦ãƒ³ãƒˆä½œæˆã‚’è¨±ã™ã‹ã©ã†ã‹</td>
     </tr>
     <tr>
       <td width="149">AllowMemberMail</td>
       <td width="163">1</td>
-      <td width="575">ƒƒ“ƒo[ŠÔ‚ÅƒtƒH[ƒ€‚ðŽg‚Á‚½ƒƒbƒZ[ƒW“]‘—‚ð‹–‚·‚©‚Ç‚¤‚©iƒ[ƒ‹EƒAƒhƒŒƒX‚Í•\Ž¦‚³‚ê‚È‚¢j</td>
+      <td width="575">ãƒ¡ãƒ³ãƒãƒ¼é–“ã§ãƒ•ã‚©ãƒ¼ãƒ ã‚’ä½¿ã£ãŸãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è»¢é€ã‚’è¨±ã™ã‹ã©ã†ã‹ï¼ˆãƒ¡ãƒ¼ãƒ«ãƒ»ã‚¢ãƒ‰ãƒ¬ã‚¹ã¯è¡¨ç¤ºã•ã‚Œãªã„ï¼‰</td>
     </tr>
     <tr>
       <td width="149">SiteName</td>
       <td width="163"></td>
-      <td width="575">ƒTƒCƒg‚Ì–¼‘O</td>
+      <td width="575">ã‚µã‚¤ãƒˆã®åå‰</td>
     </tr>
     <tr>
       <td width="149">AdminURL</td>
       <td width="163"></td>
-      <td width="575">ŠÇ—ƒGƒŠƒA‚ÌURLBÅŒã‚É/‚ª•t‚­•K—v‚ª‚ ‚é</td>
+      <td width="575">ç®¡ç†ã‚¨ãƒªã‚¢ã®URLã€‚æœ€å¾Œã«/ãŒä»˜ãå¿…è¦ãŒã‚ã‚‹</td>
     </tr>
     <tr>
       <td width="149">NewMemberCanLogon</td>
       <td width="163">1</td>
-      <td width="575">“o˜^‚³‚ê‚½‚Î‚©‚è‚Ìƒ†[ƒU[‚ªƒƒOƒCƒ“‚Å‚«‚é‚©‚Ç‚¤‚©B‚Å‚«‚È‚¢‚Î‚ ‚¢CŠÇ—ŽÒ‚ªucan loginvƒIƒvƒVƒ‡ƒ“‚ðÅ‰‚É•ÏX‚·‚é•K—v‚ª‚ ‚é</td>
+      <td width="575">ç™»éŒ²ã•ã‚ŒãŸã°ã‹ã‚Šã®ãƒ¦ãƒ¼ã‚¶ãƒ¼ãŒãƒ­ã‚°ã‚¤ãƒ³ã§ãã‚‹ã‹ã©ã†ã‹ã€‚ã§ããªã„ã°ã‚ã„ï¼Œç®¡ç†è€…ãŒã€Œcan loginã€ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã‚’æœ€åˆã«å¤‰æ›´ã™ã‚‹å¿…è¦ãŒã‚ã‚‹</td>
     </tr>
     <tr>
       <td class="toremove" width="149">DisableSite</td>
       <td width="163">0</td>
-      <td width="575">ƒTƒCƒg‚ª–³Œøó‘Ô‚É‚È‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©B–³Œøó‘Ô‚Ìê‡AŠÇ—ŽÒ‚¾‚¯‚ªƒAƒNƒZƒX‚Å‚«‚éB‘¼‚Ì‚·‚×‚Ä‚ÌƒAƒNƒZƒX‚Í<code>DisableSiteURL</code>‚ÉƒŠƒ_ƒCƒŒƒNƒg‚³‚ê‚é</td>
+      <td width="575">ã‚µã‚¤ãƒˆãŒç„¡åŠ¹çŠ¶æ…‹ã«ãªã£ã¦ã„ã‚‹ã‹ã©ã†ã‹ã€‚ç„¡åŠ¹çŠ¶æ…‹ã®å ´åˆã€ç®¡ç†è€…ã ã‘ãŒã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹ã€‚ä»–ã®ã™ã¹ã¦ã®ã‚¢ã‚¯ã‚»ã‚¹ã¯<code>DisableSiteURL</code>ã«ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã•ã‚Œã‚‹</td>
     </tr>
     <tr>
       <td class="toremove" width="149">DisableSiteURL</td>
       <td width="163"></td>
-      <td width="575">ƒTƒCƒg‚ª–³Œøó‘Ô‚Ì‚Æ‚«‚ÉƒŠƒ_ƒCƒŒƒNƒg‚³‚ê‚éURL</td>
+      <td width="575">ã‚µã‚¤ãƒˆãŒç„¡åŠ¹çŠ¶æ…‹ã®ã¨ãã«ãƒªãƒ€ã‚¤ãƒ¬ã‚¯ãƒˆã•ã‚Œã‚‹URL</td>
     </tr>
     <tr>
       <td class="toremove" width="149">LastVisit</td>
       <td width="163">0</td>
-      <td width="575">uÅŒã‚Ì–K–âv‚ÌƒNƒbƒL[‚ð•Û‘¶‚·‚é‚©‚Ç‚¤‚©</td>
+      <td width="575">ã€Œæœ€å¾Œã®è¨ªå•ã€ã®ã‚¯ãƒƒã‚­ãƒ¼ã‚’ä¿å­˜ã™ã‚‹ã‹ã©ã†ã‹</td>
     </tr>
     <tr>
       <td width="149">MediaURL</td>
       <td width="163"></td>
-      <td width="575">ƒƒfƒBƒAEƒtƒHƒ‹ƒ_‚ÌURLBÅŒã‚É/‚ª•t‚­</td>
+      <td width="575">ãƒ¡ãƒ‡ã‚£ã‚¢ãƒ»ãƒ•ã‚©ãƒ«ãƒ€ã®URLã€‚æœ€å¾Œã«/ãŒä»˜ã</td>
     </tr>
     <tr>
       <td width="149">AllowedTypes</td>
       <td width="163">jpg, jpeg, gif, mpg, mpeg, avi, mov, mp3, swf, png</td>
-      <td width="575">ƒƒfƒBƒAEƒtƒHƒ‹ƒ_‚ÉƒAƒbƒvƒ[ƒh‚ð‹–‚·ƒtƒ@ƒCƒ‹Œ^</td>
+      <td width="575">ãƒ¡ãƒ‡ã‚£ã‚¢ãƒ»ãƒ•ã‚©ãƒ«ãƒ€ã«ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã‚’è¨±ã™ãƒ•ã‚¡ã‚¤ãƒ«åž‹</td>
     </tr>
     <tr>
       <td width="149">AllowLoginEdit</td>
       <td width="163">0</td>
-      <td width="575">ƒƒ“ƒo[‚ÉƒƒOƒCƒ“–¼‚ÆƒpƒXƒ[ƒh‚Ì•ÏX‚ð‹–‚·‚©‚Ç‚¤‚©</td>
+      <td width="575">ãƒ¡ãƒ³ãƒãƒ¼ã«ãƒ­ã‚°ã‚¤ãƒ³åã¨ãƒ‘ã‚¹ãƒ¯ãƒ¼ãƒ‰ã®å¤‰æ›´ã‚’è¨±ã™ã‹ã©ã†ã‹</td>
     </tr>
     <tr>
       <td width="149">AllowUpload</td>
       <td width="163">1</td>
-      <td width="575">ƒtƒ@ƒCƒ‹‚ÌƒAƒbƒvƒ[ƒh‚ð‹–‚·‚©‚Ç‚¤‚©</td>
+      <td width="575">ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã‚’è¨±ã™ã‹ã©ã†ã‹</td>
     </tr>
     <tr>
       <td class="toremove" width="149">DisableJsTools</td>
       <td width="163">2</td>
-      <td width="575">JavaScriptƒc[ƒ‹ƒo[‚ÌŒ`Ž®<ul>
-          <li>0: ‘½‹@”\Œ^ (IE)</li>
-          <li>1: ƒc[ƒ‹ƒo[‚ð–³Œø‚É‚·‚é</li>
-          <li>2: ƒVƒ“ƒvƒ‹Œ^(Gecko)</li>
+      <td width="575">JavaScriptãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã®å½¢å¼<ul>
+          <li>0: å¤šæ©Ÿèƒ½åž‹ (IE)</li>
+          <li>1: ãƒ„ãƒ¼ãƒ«ãƒãƒ¼ã‚’ç„¡åŠ¹ã«ã™ã‚‹</li>
+          <li>2: ã‚·ãƒ³ãƒ—ãƒ«åž‹(Gecko)</li>
         </ul>
       </td>
     </tr>
     <tr>
       <td width="149">CookiePath</td>
       <td width="163">/</td>
-      <td width="575">ƒNƒbƒL[‚ðƒZƒbƒg‚·‚éƒpƒX</td>
+      <td width="575">ã‚¯ãƒƒã‚­ãƒ¼ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ãƒ‘ã‚¹</td>
     </tr>
     <tr>
       <td width="149">CookieDomain</td>
       <td width="163"></td>
-      <td width="575">ƒNƒbƒL[‚ðƒZƒbƒg‚·‚éƒhƒƒCƒ“</td>
+      <td width="575">ã‚¯ãƒƒã‚­ãƒ¼ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ãƒ‰ãƒ¡ã‚¤ãƒ³</td>
     </tr>
     <tr>
       <td width="149">CookieSecure</td>
       <td width="163">0</td>
-      <td width="575">ƒNƒbƒL[‚Ì’ÊM‚ÉHTTPS‚ðŽg‚¤‚©‚Ç‚¤‚©</td>
+      <td width="575">ã‚¯ãƒƒã‚­ãƒ¼ã®é€šä¿¡ã«HTTPSã‚’ä½¿ã†ã‹ã©ã†ã‹</td>
     </tr>
     <tr>
       <td width="149">MediaPrefix</td>
       <td width="163">1</td>
-      <td width="575">ƒAƒbƒvƒ[ƒh‚µ‚½ƒtƒ@ƒCƒ‹–¼‚É“ú•t‚ð‰Á‚¦‚é‚©‚Ç‚¤‚©</td>
+      <td width="575">ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã—ãŸãƒ•ã‚¡ã‚¤ãƒ«åã«æ—¥ä»˜ã‚’åŠ ãˆã‚‹ã‹ã©ã†ã‹</td>
     </tr>
     <tr>
       <td width="149">MaxUploadSize</td>
       <td width="163">1048576</td>
-      <td width="575">ƒAƒbƒvƒ[ƒh‚·‚éƒtƒ@ƒCƒ‹‚ÌÅ‘å’liƒoƒCƒg”j</td>
+      <td width="575">ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«ã®æœ€å¤§å€¤ï¼ˆãƒã‚¤ãƒˆæ•°ï¼‰</td>
     </tr>
     <tr>
       <td width="149">NonmemberMail</td>
       <td width="163">0</td>
-      <td width="575">ƒƒ“ƒo[ˆÈŠO‚Ìl‚Éƒƒ“ƒo[‚Ö‚Ìƒ[ƒ‹‚ð‹–‚·‚©‚Ç‚¤‚©</td>
+      <td width="575">ãƒ¡ãƒ³ãƒãƒ¼ä»¥å¤–ã®äººã«ãƒ¡ãƒ³ãƒãƒ¼ã¸ã®ãƒ¡ãƒ¼ãƒ«ã‚’è¨±ã™ã‹ã©ã†ã‹</td>
     </tr>
     <tr>
       <td width="149">PluginURL</td>
       <td width="163"></td>
-      <td width="575">ƒvƒ‰ƒOƒCƒ“EƒtƒHƒ‹ƒ_‚ÌURLB/‚ÅI‚í‚é•K—v‚ª‚ ‚é</td>
+      <td width="575">ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ãƒ»ãƒ•ã‚©ãƒ«ãƒ€ã®URLã€‚/ã§çµ‚ã‚ã‚‹å¿…è¦ãŒã‚ã‚‹</td>
     </tr>
     <tr>
       <td width="149">ProtectMemNames</td>
       <td width="163">1</td>
       <td width="575">
-      ‚±‚ÌƒIƒvƒVƒ‡ƒ“‚ª—LŒø‚¾‚ÆAƒƒOƒCƒ“‚µ‚Ä‚¢‚È‚¢l‚Íƒƒ“ƒo[‚Æ“¯‚¶–¼‘O‚ÅƒRƒƒ“ƒg‚ðŽc‚¹‚È‚­‚È‚éB‚±‚¤‚·‚é‚±‚Æ‚É‚æ‚Á‚ÄAƒQƒXƒg‚ªƒƒ“ƒo[‚Ì‚Ó‚è‚ð‚·‚é‚±‚Æ‚ð”ð‚¯‚ç‚ê‚é</td>
+      ã“ã®ã‚ªãƒ—ã‚·ãƒ§ãƒ³ãŒæœ‰åŠ¹ã ã¨ã€ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦ã„ãªã„äººã¯ãƒ¡ãƒ³ãƒãƒ¼ã¨åŒã˜åå‰ã§ã‚³ãƒ¡ãƒ³ãƒˆã‚’æ®‹ã›ãªããªã‚‹ã€‚ã“ã†ã™ã‚‹ã“ã¨ã«ã‚ˆã£ã¦ã€ã‚²ã‚¹ãƒˆãŒãƒ¡ãƒ³ãƒãƒ¼ã®ãµã‚Šã‚’ã™ã‚‹ã“ã¨ã‚’é¿ã‘ã‚‰ã‚Œã‚‹</td>
     </tr>
     <tr>
       <td class="foreign" width="149"><a href="#nucleus_skin_desc">BaseSkin</a></td>
       <td width="163">1</td>
       <td width="575">
-      Nucleus‚ÉAŽ©“®“I‚ÉƒXƒLƒ“‚ªŒˆ‚Ü‚ç‚È‚¢‚Æ‚«‚ÉA‚Ç‚ÌƒXƒLƒ“‚ðŽg‚¤‚©‚ðŽw’è‚·‚éBƒXƒLƒ“‚Ìƒp[ƒg‚ª‹ó‚¾‚Á‚½‚èAƒuƒƒO‚âƒXƒLƒ“‚ªô‘ó‚³‚ê‚Ä‚¢‚È‚¢ê‡‚É‹N‚±‚é</td>
+      Nucleusã«ã€è‡ªå‹•çš„ã«ã‚¹ã‚­ãƒ³ãŒæ±ºã¾ã‚‰ãªã„ã¨ãã«ã€ã©ã®ã‚¹ã‚­ãƒ³ã‚’ä½¿ã†ã‹ã‚’æŒ‡å®šã™ã‚‹ã€‚ã‚¹ã‚­ãƒ³ã®ãƒ‘ãƒ¼ãƒˆãŒç©ºã ã£ãŸã‚Šã€ãƒ–ãƒ­ã‚°ã‚„ã‚¹ã‚­ãƒ³ãŒæ´—æ¿¯ã•ã‚Œã¦ã„ãªã„å ´åˆã«èµ·ã“ã‚‹</td>
     </tr>
     <tr>
       <td width="149">SkinsURL</td>
       <td width="163"></td>
-      <td width="575">ƒXƒLƒ“EƒtƒHƒ‹ƒ_‚ÌURLBÅŒã‚É/‚ª•t‚­•K—v‚ª‚ ‚é</td>
+      <td width="575">ã‚¹ã‚­ãƒ³ãƒ»ãƒ•ã‚©ãƒ«ãƒ€ã®URLã€‚æœ€å¾Œã«/ãŒä»˜ãå¿…è¦ãŒã‚ã‚‹</td>
     </tr>
     <tr>
       <td width="149">ActionURL</td>
       <td width="163"></td>
-      <td width="575">action.p‚ˆ‚‚ª‚ ‚éURL.</td>
+      <td width="575">action.pï½ˆï½ãŒã‚ã‚‹URL.</td>
     </tr>
     <tr>
       <td width="149">URLMode</td>
       <td width="163">normal</td>
-      <td width="575"> <code>normal</code>‚©<code>pathinfo</code></td>
+      <td width="575"> <code>normal</code>ã‹<code>pathinfo</code></td>
     </tr>
     <tr>
       <td width="149">DatabaseVersion</td>
       <td width="163">250</td>
-      <td width="575">ƒf[ƒ^ƒx[ƒX‚Ì\‘¢‚ªXV‚³‚ê‚½ÅŒã‚ÌNucleus‚Ìƒo[ƒWƒ‡ƒ“”Ô†</td>
+      <td width="575">ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã®æ§‹é€ ãŒæ›´æ–°ã•ã‚ŒãŸæœ€å¾Œã®Nucleusã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³ç•ªå·</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_karma" name="nucleus_karma"></a>
-<h1>nucleus_karmaƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p class="toremove">‚±‚Ìƒe[ƒuƒ‹‚Í«—ˆ‚Í‚È‚­‚È‚é‰Â”\«‚ª‚‚¢B“¯‚¶‹@”\‚ð’ñ‹Ÿ‚·‚éƒvƒ‰ƒOƒCƒ“‚É÷‚é‚½‚ß‚¾B</p>
-<p>‚±‚Ì•\‚Í“Š•[‚ÉŽg‚í‚ê‚½IPƒAƒhƒŒƒX‚ð‹L‰¯‚µ‚Ä‚¨‚­B‚±‚¤‚·‚é‚±‚Æ‚Åˆê‚Â‚ÌIPƒAƒhƒŒƒX‚©‚ç‚Í1•[‚µ‚©“ü‚ê‚ç‚ê‚È‚­‚È‚é</p>
+<h1>nucleus_karmaãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<p class="toremove">ã“ã®ãƒ†ãƒ¼ãƒ–ãƒ«ã¯å°†æ¥ã¯ãªããªã‚‹å¯èƒ½æ€§ãŒé«˜ã„ã€‚åŒã˜æ©Ÿèƒ½ã‚’æä¾›ã™ã‚‹ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«è­²ã‚‹ãŸã‚ã ã€‚</p>
+<p>ã“ã®è¡¨ã¯æŠ•ç¥¨ã«ä½¿ã‚ã‚ŒãŸIPã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¨˜æ†¶ã—ã¦ãŠãã€‚ã“ã†ã™ã‚‹ã“ã¨ã§ä¸€ã¤ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹ã‹ã‚‰ã¯1ç¥¨ã—ã‹å…¥ã‚Œã‚‰ã‚Œãªããªã‚‹</p>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull foreign"><a href="#nucleus_item">itemid</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>ƒAƒCƒeƒ€‚ÌID</td>
+      <td>ã‚¢ã‚¤ãƒ†ãƒ ã®ID</td>
     </tr>
     <tr>
       <td class="notnull">ip</td>
       <td>char(15)</td>
       <td>''</td>
-      <td>“Š•[ŽÒ‚ÌIPƒAƒhƒŒƒX</td>
+      <td>æŠ•ç¥¨è€…ã®IPã‚¢ãƒ‰ãƒ¬ã‚¹</td>
     </tr>
   </tbody>
 </table>
 <a id="nucleus_ban" name="nucleus_ban"></a>
-<h1>nucleus_banƒe[ƒuƒ‹<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<p class="toremove">‚±‚Ìƒe[ƒuƒ‹‚Í«—ˆ‚ÌNucleus‚Å‚Í‚È‚­‚È‚é‰Â”\«‚ª‚‚¢B“¯‚¶‹@”\‚ð’ñ‹Ÿ‚·‚éƒvƒ‰ƒOƒCƒ“‚É÷‚é‚½‚ß‚¾B</p>
-<p>ƒRƒƒ“ƒg‚âƒJƒ‹ƒ}“Š•[‚ð‹ÖŽ~‚·‚éIPƒAƒhƒŒƒX‚ð‹L‰¯</p>
+<h1>nucleus_banãƒ†ãƒ¼ãƒ–ãƒ«<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+<p class="toremove">ã“ã®ãƒ†ãƒ¼ãƒ–ãƒ«ã¯å°†æ¥ã®Nucleusã§ã¯ãªããªã‚‹å¯èƒ½æ€§ãŒé«˜ã„ã€‚åŒã˜æ©Ÿèƒ½ã‚’æä¾›ã™ã‚‹ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«è­²ã‚‹ãŸã‚ã ã€‚</p>
+<p>ã‚³ãƒ¡ãƒ³ãƒˆã‚„ã‚«ãƒ«ãƒžæŠ•ç¥¨ã‚’ç¦æ­¢ã™ã‚‹IPã‚¢ãƒ‰ãƒ¬ã‚¹ã‚’è¨˜æ†¶</p>
 <table>
   <tbody>
     <tr>
-      <th>ƒJƒ‰ƒ€–¼</th>
-      <th>Œ^</th>
-      <th>‹K’è’l</th>
-      <th>à–¾</th>
+      <th>ã‚«ãƒ©ãƒ å</th>
+      <th>åž‹</th>
+      <th>è¦å®šå€¤</th>
+      <th>èª¬æ˜Ž</th>
     </tr>
     <tr>
       <td class="notnull">iprange</td>
       <td>varchar(15)</td>
       <td>''</td>
-      <td>IPƒAƒhƒŒƒX‚Ì”ÍˆÍBƒAƒhƒŒƒX’P“Æ‚Å‚à‚¢‚¢‚µCˆê•”i¶‚©‚çj‚Å‚à‚¢‚¢Bˆê•”‚Ìê‡‚Í”ÍˆÍ‚ðŽ¦‚·</td>
+      <td>IPã‚¢ãƒ‰ãƒ¬ã‚¹ã®ç¯„å›²ã€‚ã‚¢ãƒ‰ãƒ¬ã‚¹å˜ç‹¬ã§ã‚‚ã„ã„ã—ï¼Œä¸€éƒ¨ï¼ˆå·¦ã‹ã‚‰ï¼‰ã§ã‚‚ã„ã„ã€‚ä¸€éƒ¨ã®å ´åˆã¯ç¯„å›²ã‚’ç¤ºã™</td>
     </tr>
     <tr>
       <td class="notnull">reason</td>
       <td>varchar(255)</td>
       <td>''</td>
-      <td>‹ÖŽ~‚Ì——R‚ðŽ¦‚·ƒƒbƒZ[ƒWBƒRƒƒ“ƒg‚âƒJƒ‹ƒ}“Š•[‚ðŽŽ‚Ý‚½‚Æ‚«‚É•\Ž¦‚³‚ê‚é</td>
+      <td>ç¦æ­¢ã®ç†ç”±ã‚’ç¤ºã™ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã€‚ã‚³ãƒ¡ãƒ³ãƒˆã‚„ã‚«ãƒ«ãƒžæŠ•ç¥¨ã‚’è©¦ã¿ãŸã¨ãã«è¡¨ç¤ºã•ã‚Œã‚‹</td>
     </tr>
     <tr>
       <td class="notnull foreign"><a href="#nucleus_blog">blogid</a></td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>‹ÖŽ~‚ð—LŒø‚É‚·‚éBlog‚ÌID</td>
+      <td>ç¦æ­¢ã‚’æœ‰åŠ¹ã«ã™ã‚‹Blogã®ID</td>
     </tr>
   </tbody>
 </table>

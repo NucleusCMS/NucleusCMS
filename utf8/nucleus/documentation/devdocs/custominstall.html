@@ -1,34 +1,34 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-	<title>Nucleus - �C���X�g�[���X�N���v�g�̃J�X�^�}�C�Y</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Nucleus - インストールスクリプトのカスタマイズ</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 </head>
 <body>
 
 <div class="heading">
-�C���X�g�[���X�N���v�g�̃J�X�^�}�C�Y
+インストールスクリプトのカスタマイズ
 </div>
 
-<p class="note">���F���̋@�\�̓o�[�W����2.2�ȍ~�̂��̂ł��B</p>
+<p class="note">注：この機能はバージョン2.2以降のものです。</p>
 
-<h1>�C���g���_�N�V����</h1>
+<h1>イントロダクション</h1>
 
 <p>
-<a href="index.html">�J���Ҍ����h�L�������g�̖ڎ��֖߂�</a>
+<a href="index.html">開発者向けドキュメントの目次へ戻る</a>
 </p>
 
-<p>���̃h�L�������g�ɂ�Nucleus�̃C���X�g�[���E�X�N���v�g���ǂ̂悤�ɃJ�X�^�����邩�Ƃ�����񂪏�����Ă��܂��B��̕��@�ŃJ�X�^�}�C�Y���\�ł��F</p>
+<p>このドキュメントにはNucleusのインストール・スクリプトをどのようにカスタムするかという情報が書かれています。二つの方法でカスタマイズが可能です：</p>
 
 <ol>
-	<li>�X�L���̎����C���X�g�[��</li>
-	<li>�v���O�C���̎����C���X�g�[��</li>
+	<li>スキンの自動インストール</li>
+	<li>プラグインの自動インストール</li>
 </ol>
 
-<h1>�ݒ�</h1>
+<h1>設定</h1>
 
-<p><code>install.php</code>���G�f�B�^�ŊJ���A���̃R�[�h��T���Ă��������F</p>
+<p><code>install.php</code>をエディタで開き、次のコードを探してください：</p>
 
 <pre><code>    // array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
     // directory.
@@ -45,21 +45,21 @@
     //     array('base','rsd')
     $aConfSkinsToImport = array();</code></pre>
 
-<p>���ׂ����͂��̃R�[�h��ύX���邾���ł��F�����C���X�g�[���������v���O�C���ƃX�L���̖��O���A��̂悤�Ȕz�񃊃X�g�ɂ��Ă��������B</p>
+<p>やるべき事はこのコードを変更するだけです：自動インストールしたいプラグインとスキンの名前を、例のような配列リストにしてください。</p>
 
-<h1>�t�@�C���̎�荞��</h1>
+<h1>ファイルの取り込み</h1>
 
-<p>�ݒ��ύX�������́A�f�B�X�g���r���[�V�����Ƀt�@�C����ǉ�����K�v������܂��B</p>
+<p>設定を変更した次は、ディストリビューションにファイルを追加する必要があります。</p>
 
-<h2>�v���O�C���ƃX�L��</h2>
+<h2>プラグインとスキン</h2>
 
-<p>�v���O�C���́A<code>nucleus/plugins/</code>�f�B���N�g���Ƀt�@�C���������Ă��������B�v���O�C�����蓮�ŃC���X�g�[������ꍇ�ɂ���̂ƑS�������ł��B</p>
+<p>プラグインは、<code>nucleus/plugins/</code>ディレクトリにファイルをおいてください。プラグインを手動でインストールする場合にするのと全く同じです。</p>
 
-<p>�X�L���́A�蓮�ŃC���|�[�g���鎞�Ɠ��l�ɁA<code>skins/</code>�����Ƀf�B���N�g���������Ă��������B<code>skinbackup.xml</code>�������ɓ���Ă������Ƃ����Y�ꖳ���B</p>
+<p>スキンは、手動でインポートする時と同様に、<code>skins/</code>直下にディレクトリをおいてください。<code>skinbackup.xml</code>をそこに入れておくことをお忘れ無く。</p>
 
-<h1>�Y��Ă͂����Ȃ�����</h1>
+<h1>忘れてはいけないこと</h1>
 
-<p>�Ĕz�z����O�ɁA�J�X�^�}�C�Y���ꂽ�C���X�g�[���X�N���v�g���e�X�g���邱�Ƃ�Y��Ȃ��ł��������B</p>
+<p>再配布する前に、カスタマイズされたインストールスクリプトをテストすることを忘れないでください。</p>
 
 </body>
 </html>

@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xml:lang="jp" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-	<title>Nucleus - �v���O�C�� API</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Nucleus - プラグイン API</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 	<style type="text/css">
 		/* refence parameters (greenish) */
@@ -30,49 +30,49 @@
 
 <p class="heading">&nbsp;</p>
 <div class="heading">
-�v���O�C�� API
-<i>2004�N7��27��</i>
+プラグイン API
+<i>2004年7月27日</i>
 </div>
 
-<div class="note-trans"><strong>��Ғ��F</strong> 
+<div class="note-trans"><strong>訳者注：</strong> 
 	<ul>
-		<li>���̃h�L�������g�̌����͈ȉ���URL�ɂ���܂��B<br />
+		<li>このドキュメントの原文は以下のURLにあります。<br />
 		 <a href="http://nucleuscms.org/documentation/devdocs/plugins.html">http://nucleuscms.org/documentation/devdocs/plugins.html</a></li>
-	    <li>���ɂ��C�Â��̕���<a href="http://nucleus.fel-is.info/bb/viewforum.php?f=7">������</a>�ւ��A������������Ə�����܂��B</li>
+	    <li>誤訳にお気づきの方は<a href="http://nucleus.fel-is.info/bb/viewforum.php?f=7">こちら</a>へご連絡いただけると助かります。</li>
 	</ul>
 </div>
 
-<div class="note"><strong>���F</strong> 
+<div class="note"><strong>注：</strong> 
 	<ul>
-		<li>���̃h�L�������g�͊�{�I�ȃv���O�C���̏������ɂ��Ă̏���񋟂��Ă��܂��B����Ɏ��₪������� <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin
-	  Development Forum</a> �i<a href="http://nucleus.fel-is.info/bb/viewforum.php?f=5">���{��t�H�[����</a>�j���������������B</li>
-		<li>Nucleus�o�[�W����1.5�ȍ~�ɓ������ꂽ���\�b�h�ƃC�x���g�ɂ́A�������̃o�[�W��������t�L���Ă��܂��B�����̋@�\�𗘗p����Ƃ��́A<code>getMinNucleusVersion</code> ��K�؂ɐݒ肷��̂�Y��Ȃ��ł��������B</li>
+		<li>このドキュメントは基本的なプラグインの書き方についての情報を提供しています。さらに質問がある方は <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin
+	  Development Forum</a> （<a href="http://nucleus.fel-is.info/bb/viewforum.php?f=5">日本語フォーラム</a>）をご覧ください。</li>
+		<li>Nucleusバージョン1.5以降に導入されたメソッドとイベントには、導入時のバージョン情報を付記しています。それらの機能を利用するときは、<code>getMinNucleusVersion</code> を適切に設定するのを忘れないでください。</li>
 	</ul>
 </div>
 
-<h1>�͂��߂�</h1>
+<h1>はじめに</h1>
 
 <p>
-<a href="./index.html">�J���Ҍ����h�L�������g�̖ڎ��֖߂�</a>
+<a href="./index.html">開発者向けドキュメントの目次へ戻る</a>
 </p>
 
 <p>
-���̃h�L�������g��Nucleus�v���O�C���̍����ɂ��Ẳ���ł��B 
+このドキュメントはNucleusプラグインの作り方についての解説です。 
 </p>
 
-<h1><a name="toc"></a>�ڎ�</h1>
+<h1><a name="toc"></a>目次</h1>
 
 <ul>
-	<li><a href="#introduction">�C���g���_�N�V����</a></li>
-	<li><a href="#firstplug">�͂��߂ăv���O�C���������Ă݂�</a></li>
-	<li><a href="#nucleusplugin"><code>NucleusPlugin</code> �N���X�̊T�v</a></li>
-	<li><a href="#skinvars"><code>&lt;%plugin(...)%&gt;</code> �X�L���ϐ�</a></li>
-	<li><a href="#templatevars"><code>&lt;%plugin(...)%&gt;</code> �e���v���[�g�ϐ�</a></li>	
-	<li><a href="#actions"><code>action.php</code> ���g�����A�N�V����</a></li>
-	<li><a href="#events">�C�x���g�ƃC�x���g�o�^�̎d��</a></li>
-	<li><a href="#options">�I�v�V������ۑ�����</a></li>
-	<li><a href="#tables">�f�[�^�x�[�X�E�e�[�u��</a></li>
-	<li><a href="#admin">�v���O�C���Ǘ��G���A�̒�</a></li>
+	<li><a href="#introduction">イントロダクション</a></li>
+	<li><a href="#firstplug">はじめてプラグインを書いてみる</a></li>
+	<li><a href="#nucleusplugin"><code>NucleusPlugin</code> クラスの概要</a></li>
+	<li><a href="#skinvars"><code>&lt;%plugin(...)%&gt;</code> スキン変数</a></li>
+	<li><a href="#templatevars"><code>&lt;%plugin(...)%&gt;</code> テンプレート変数</a></li>	
+	<li><a href="#actions"><code>action.php</code> を使ったアクション</a></li>
+	<li><a href="#events">イベントとイベント登録の仕方</a></li>
+	<li><a href="#options">オプションを保存する</a></li>
+	<li><a href="#tables">データベース・テーブル</a></li>
+	<li><a href="#admin">プラグイン管理エリアの提供</a></li>
 <!--	<li><a href="#admin">Providing an admin area</a></li> 
 	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>
 	<li><a href="#"></a></li>
@@ -81,61 +81,61 @@
 	<li><a href="#"></a></li>-->
 </ul>
 
-<h1>�C���g���_�N�V���� <a name="introduction" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>イントロダクション <a name="introduction" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-Nucleus�v���O�C���ɂ���āA�N����Nucleus�̒񋟂���@�\���ANucleus������PHP�R�[�h��ύX���邱�ƂȂ��g�����邱�Ƃ��ł��܂��B�v���O�C���͂��郁�\�b�h�����������V���v����PHP�X�N���v�g�ŁANucleus���[�U�[���m�ŊȒP�Ɍ������邱�Ƃ��ł��܂��B�C���X�g�[���͊ȒP�ŁA�v���O�C���f�B���N�g���Ƀt�@�C�����A�b�v���ANucleus�ɂ����F�������邾���ł��B
+Nucleusプラグインによって、誰もがNucleusの提供する機能を、Nucleus内部のPHPコードを変更することなく拡張することができます。プラグインはあるメソッドを実装したシンプルなPHPスクリプトで、Nucleusユーザー同士で簡単に交換することができます。インストールは簡単で、プラグインディレクトリにファイルをアップし、Nucleusにそれを認識させるだけです。
 </p>
 
 <p>
-�v���O�C���̗��_�͈ȉ��̂Ƃ���ł��B</p>
+プラグインの利点は以下のとおりです。</p>
 
 <ul>
-	<li>�����ɂ��ďڂ�������Ȃ��Ă�Nucleus�t���[�����[�N�ɊȒP�ɋ@�\��ǉ��ł���</li>
-	<li>�K�v�ȃv���O�C���������C���X�g�[���ł��A�y�[�W�����ɂ����鎞�Ԃ�ߖ�ł���</li>
+	<li>実装について詳しくしらなくてもNucleusフレームワークに簡単に機能を追加できる</li>
+	<li>必要なプラグインだけをインストールでき、ページ生成にかかる時間を節約できる</li>
 </ul>
 
 <p>
-���ׂẴv���O�C���t�@�C���� <code>config.php</code> �ɋL�q���ꂽ�f�B���N�g���ɒu���K�v������܂��B��ʓI�ɁA����� <code>/your/path/nucleus/plugins/</code>  �ɂȂ�ł��傤�B�v���O�C���t�@�C������ <code>NP<i>_name</i>.php</code> �Ƃ����`����p���邱�Ƃɂ��F������܂��B�v���O�C���ɂ���ẮA�ǉ��t�@�C�����i�[���铯���̃T�u�f�B���N�g����A�Ǘ��G���A��K�v�Ƃ��܂��B</p>
+すべてのプラグインファイルは <code>config.php</code> に記述されたディレクトリに置く必要があります。一般的に、それは <code>/your/path/nucleus/plugins/</code>  になるでしょう。プラグインファイル名は <code>NP<i>_name</i>.php</code> という形式を用いることにより認識されます。プラグインによっては、追加ファイルを格納する同名のサブディレクトリや、管理エリアを必要とします。</p>
 
 <div class="note">
-<b>���F</b> �v���O�C�����͑啶���E�����������ʂ��܂��̂ŁA<code>Np_</code> �� <code>np_</code> �ł͂Ȃ��A<code>NP_</code> �Ŏn�܂邱�ƂɋC�����Ă��������B�܂��v���O�C�����T�u�f�B���N�g�����g�p����ꍇ�́A�T�u�f�B���N�g���̖��̂�<em>���ׂď������ɂ��܂�</em>�B</div>
+<b>注：</b> プラグイン名は大文字・小文字を識別しますので、<code>Np_</code> や <code>np_</code> ではなく、<code>NP_</code> で始まることに気をつけてください。またプラグインがサブディレクトリを使用する場合は、サブディレクトリの名称は<em>すべて小文字にします</em>。</div>
 
 
 
 
-<h1>�͂��߂ăv���O�C���������Ă݂�<a name="firstplug" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>はじめてプラグインを書いてみる<a name="firstplug" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-�ł́A�V���v���ȃv���O�C���������Ă݂܂��傤�B��{�I�Ƀv���O�C���́A���炩���ߒ�`���ꂽ <code>NucleusPlugin</code> �N���X���p������PHP�N���X�ł��B�ȉ���<code>HelloWorld</code>�v���O�C���̗�ł��B</p>
+では、シンプルなプラグインを書いてみましょう。基本的にプラグインは、あらかじめ定義された <code>NucleusPlugin</code> クラスを継承したPHPクラスです。以下は<code>HelloWorld</code>プラグインの例です。</p>
 
 <pre class="example"><code>&lt;?
 
 class NP_HelloWorld extends NucleusPlugin {
 
-	// �v���O�C���̖��O
+	// プラグインの名前
 	function getName() {
 		return 'Hello World'; 
 	}
 	
-	// �v���O�C���̍��
+	// プラグインの作者
 	function getAuthor()  { 
 		return 'Wouter Demuynck'; 
 	}
 	
-	// �v���O�C���̃T�C�gURL
-	// mailto:foo@bar.com �̌`������
+	// プラグインのサイトURL
+	// mailto:foo@bar.com の形式も可
 	function getURL() 
 	{
 		return '../../index.html'; 
 	}
 	
-	// �v���O�C���̃o�[�W����
+	// プラグインのバージョン
 	function getVersion() {
 		return '1.0'; 
 	}
 	
-	// �C���X�g�[���ς݂̃v���O�C�����X�g�ɕ\������������
+	// インストール済みのプラグインリストに表示される説明文
 	function getDescription() { 
 		return 'Just a sample plugin.';
 	}
@@ -149,56 +149,56 @@ class NP_HelloWorld extends NucleusPlugin {
 
 <ol>
 	<li>
-		���̃R�[�h���R�s�[���A <code>NP_HelloWorld.php</code> �Ɩ��Â��ĕۑ����A�v���O�C���f�B���N�g���ɒu���܂��B<em>�Ō�� <code>?&gt;</code> �̌��A�ŏ��� <code>&lt;?</code> �̑O�ɃX�y�[�X���Ȃ����Ƃ��m�F���܂��傤</em>�B�Ƃ����NP �� &quot;Nucleus Plugin&quot; ���ĈӖ��ł��� :-)
+		このコードをコピーし、 <code>NP_HelloWorld.php</code> と名づけて保存し、プラグインディレクトリに置きます。<em>最後の <code>?&gt;</code> の後や、最初の <code>&lt;?</code> の前にスペースがないことを確認しましょう</em>。ところでNP は &quot;Nucleus Plugin&quot; って意味ですよ :-)
 	</li>
-	<li>Nucleus�̊Ǘ���ʂ��J���A<em>Nucleus�̊Ǘ����v���O�C���̊Ǘ�</em>�ɂ����܂��B</li>
-	<li><em>HelloWorld</em> �v���O�C�����C���X�g�[���\�ȏ�ԂɂȂ��Ă���͂��ł��̂ŁA�C���X�g�[�����܂��B���ׂĂ����܂������΁A�C���X�g�[���ς݃v���O�C�����X�g�ɒǉ�����܂��B</li>
-	<li>�X�L����ҏW���A���ۂ̃y�[�W�ɕ\������ӏ��Ɏ��̕���}�����܂��B
+	<li>Nucleusの管理画面を開き、<em>Nucleusの管理＞プラグインの管理</em>にいきます。</li>
+	<li><em>HelloWorld</em> プラグインがインストール可能な状態になっているはずですので、インストールします。すべてがうまくいけば、インストール済みプラグインリストに追加されます。</li>
+	<li>スキンを編集し、実際のページに表示する箇所に次の文を挿入します。
 	  <pre class="example"><code>&lt;%plugin(HelloWorld)%&gt;</code></pre>
-	���ӁF�J�b�R���̖��� (HelloWorld) �͑啶�������������ʂ��܂��I</li>
-	<li>���āA�ҏW�����X�L�����琶�������y�[�W�����Ă݂܂��傤�B�v���O�C���ϐ���ǉ������ꏊ�� &quot;Hello
-  World                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       &quot; �ƌ����܂��ˁH</li>
+	注意：カッコ内の名称 (HelloWorld) は大文字小文字を識別します！</li>
+	<li>さて、編集したスキンから生成されるページを見てみましょう。プラグイン変数を追加した場所に &quot;Hello
+  World                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       &quot; と見えますね？</li>
 </ol>
 
-<p>�����܂ł͂���قǓ���Ȃ������Ǝv���܂��B����ɓǂݐi�߂ė������Ă��������B</p>
+<p>ここまではそれほど難しくなかったと思います。さらに読み進めて理解してください。</p>
 
 
-<h1>NucleusPlugin �N���X�̊T�v <a name="nucleusplugin" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>NucleusPlugin クラスの概要 <a name="nucleusplugin" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>���ׂẴv���O�C���́A<code>NucleusPlugin</code> �Ƃ���PHP�N���X���p�����Ȃ���΂Ȃ�܂���B������ɕ������Ă��S�z�����p�A���v�ł��B����PHP�N���X�̌p���ɂ���āA�v���O�C���ɕK�v�ȃ��\�b�h�����������ł��A�������̕⏕�t�@���N�V�����ɃA�N�Z�X�ł��A�܂�͂��Ȃ��̐l���͂�胉�N�ɂȂ�܂��B</p>
+<p>すべてのプラグインは、<code>NucleusPlugin</code> というPHPクラスを継承しなければなりません。難しそうに聞こえても心配ご無用、大丈夫です。このPHPクラスの継承によって、プラグインに必要なメソッドだけを実装でき、いくつかの補助ファンクションにアクセスでき、つまりはあなたの人生はよりラクになります。</p>
 
-<p>���L�� <code>NucleusPlugin</code> ���񋟂���A�Ď����\�ȃ��\�b�h�̊T�v�ł��B���̃N���X���g�̃\�[�X�R�[�h����������΁A<code>nucleus/libs/PLUGIN.php</code>�ɂ���܂��B</p>
+<p>下記は <code>NucleusPlugin</code> が提供する、再実装可能なメソッドの概要です。このクラス自身のソースコードを見たければ、<code>nucleus/libs/PLUGIN.php</code>にあります。</p>
 
 <table summary="An overview of the redefinable methods in the class NucleusPlugin">
 	<caption>
-	<code>NucleusPlugin</code> �N���X�̊T�v�i�Ē�`�\�ȃ��\�b�h�j
+	<code>NucleusPlugin</code> クラスの概要（再定義可能なメソッド）
 	</caption>
 	<tr>
-		<th>���\�b�h��</th><th>����</th>
+		<th>メソッド名</th><th>説明</th>
 	</tr>
 	<tr>
 		<td><code>getName()</code></td>
-		<td>�v���O�C������Ԃ��܂��B�C���X�g�[���ς݃v���O�C�����X�g�ɕ\������܂��B�f�t�H���g�̎����ł� <code>Undefined</code> ��Ԃ����߁A�K���Ē�`����Ȃ��Ƃ����܂���B</td>		
+		<td>プラグイン名を返します。インストール済みプラグインリストに表示されます。デフォルトの実装では <code>Undefined</code> を返すため、必ず再定義されないといけません。</td>		
 	</tr>
 	<tr>
 		<td><code>getAuthor()</code></td>
-		<td>�v���O�C���̍�Җ���Ԃ��܂��B�C���X�g�[���ς݃v���O�C�����X�g�ɕ\������܂��B�f�t�H���g�̎����ł� <code>Undefined</code> ��Ԃ����߁A�K���Ē�`����Ȃ��Ƃ����܂���B</td>		
+		<td>プラグインの作者名を返します。インストール済みプラグインリストに表示されます。デフォルトの実装では <code>Undefined</code> を返すため、必ず再定義されないといけません。</td>		
 	</tr>
 	<tr>
 		<td><code>getURL()</code></td>
-		<td>�v���O�C�����_�E�����[�h�\�ȁA�܂��̓v���O�C���̒ǉ����̂���T�C�g��URL��Ԃ��܂��B���̂悤�ȃT�C�g���Ȃ��ꍇ�͍�҂̃��[���A�h���X�ւ� mailto:�����N���K�؂ł��B�f�t�H���g�̎����ł� <code>Undefined</code> ��Ԃ����߁A�K���Ē�`����Ȃ��Ƃ����܂���B</td>		
+		<td>プラグインをダウンロード可能な、またはプラグインの追加情報のあるサイトのURLを返します。そのようなサイトがない場合は作者のメールアドレスへの mailto:リンクが適切です。デフォルトの実装では <code>Undefined</code> を返すため、必ず再定義されないといけません。</td>		
 	</tr>
 	<tr>
 		<td><code>getDescription()</code></td>
-		<td>�v���O�C���Ɋւ���������i�����j��Ԃ��܂��B�C���X�g�[���ς݃v���O�C�����X�g�ɕ\������܂��B�f�t�H���g�̎����ł� <code>Undefined</code> ��Ԃ��܂��B</td>		
+		<td>プラグインに関する説明文（長文）を返します。インストール済みプラグインリストに表示されます。デフォルトの実装では <code>Undefined</code> を返します。</td>		
 	</tr>
 	<tr>
 		<td><code>getVersion()</code></td>
-		<td>�v���O�C���̌��݂̃o�[�W������Ԃ��܂��B�f�t�H���g�� <code>0.0</code> ��Ԃ��܂��B</td>		
+		<td>プラグインの現在のバージョンを返します。デフォルトは <code>0.0</code> を返します。</td>		
 	</tr>
 	<tr>
 		<td><code>getMinNucleusVersion()</code></td>
-		<td>(v2.0b) �Œ�K�v��Nucleus�̃o�[�W������Ԃ��܂��B�f�t�H���g�� <code>155</code> (v1.55)��Ԃ��܂��B��ɓ������ꂽ�v���O�C���֘A�@�\�𗘗p���Ă���ꍇ�́A���̃t�@���N�V��������������悤���肢���܂��i��F v2.0 => 200�j�B�������ANucleus v1.55 �͂��̃t�@���N�V�������g�p���Ȃ����߁A�V�@�\�𗘗p�����v���O�C�����i�Ή�����O�̃V�X�e���Ɂj�C���X�g�[�������\�����c���Ă��܂��B</td>
+		<td>(v2.0b) 最低必要なNucleusのバージョンを返します。デフォルトは <code>155</code> (v1.55)を返します。後に導入されたプラグイン関連機能を利用している場合は、このファンクションを実装するようお願いします（例： v2.0 => 200）。ただし、Nucleus v1.55 はこのファンクションを使用しないため、新機能を利用したプラグインが（対応する前のシステムに）インストールされる可能性が残っています。</td>
 	</tr>
 	<tr>
 		<td><code>getMinNucleusPatchLevel()</code></td>
@@ -206,64 +206,64 @@ class NP_HelloWorld extends NucleusPlugin {
 	</tr>
 	<tr>
 		<td><code>init()</code></td>
-		<td>�v���O�C�������������܂��B���̃��\�b�h�̓v���O�C���I�u�W�F�N�g���������ꂽ����ɌĂяo����A<code>plugid</code>�������Z�b�g����܂��B�f�t�H���g�ł͂��̃��\�b�h�͉������܂���B</td>
+		<td>プラグインを初期化します。このメソッドはプラグインオブジェクトが生成された直後に呼び出され、<code>plugid</code>属性がセットされます。デフォルトではこのメソッドは何もしません。</td>
 	</tr>
 	<tr>
 		<td><code>doSkinVar($skinType)</code></td>
-		<td><code>&lt;%plugin(...)%&gt;</code> �X�L���ϐ��ɂ���ăv���O�C�����Ăяo���ꂽ�Ƃ��ɂ��̃��\�b�h���Ă΂�܂��B<code>$skinType</code> �p�����[�^�̓v���O�C�����Ă΂ꂽ�ꏊ�̃X�L���^�C�v�ɊY�����܂��i<code>item</code>,
-      <code>archive</code>, ...�j�B�p�����[�^��������Ȃ����Ƃɍ������Ȃ��ł��������B�����p�����[�^��n�����Ƃ�<strong>�\</strong>�ł��B<a href="#skinvars"><code>doSkinVar</code> ���\�b�h�̎����Ɋւ���ڍ׏��͂�����</a>�B�f�t�H���g�ł͂��̃��\�b�h�͂Ȃɂ��o�͂��܂���B</td>		
+		<td><code>&lt;%plugin(...)%&gt;</code> スキン変数によってプラグインが呼び出されたときにこのメソッドが呼ばれます。<code>$skinType</code> パラメータはプラグインが呼ばれた場所のスキンタイプに該当します（<code>item</code>,
+      <code>archive</code>, ...）。パラメータが一つしかないことに混乱しないでください。複数パラメータを渡すことも<strong>可能</strong>です。<a href="#skinvars"><code>doSkinVar</code> メソッドの実装に関する詳細情報はこちら</a>。デフォルトではこのメソッドはなにも出力しません。</td>		
 	</tr>
 	<tr>
 		<td><code>doTemplateVar(&amp;$item)</code></td>
-		<td>��{�I�� <code>doSkinVar</code> �Ɠ����ł����A���x��<em>�e���v���[�g</em>���i<code>item
-		    header/body/footer</code> �� <code>dateheader/footer</code>�j�ł�<code>&lt;%plugin(...)%&gt;</code> �ϐ�����̌Ăяo���ɂȂ�܂��B�f�t�H���g�ł͂��̃��\�b�h�̓e���v���[�g���X�L���^�C�v�Ƃ݂Ȃ���
-      <code>doSkinVar</code> ���\�b�h�ɏ�����n���܂��B<a href="#templatevars"><code>doTemplateVar</code> ���\�b�h�̎����Ɋւ���ڍ׏��͂�����</a></td>		
+		<td>基本的に <code>doSkinVar</code> と同じですが、今度は<em>テンプレート</em>内（<code>item
+		    header/body/footer</code> と <code>dateheader/footer</code>）での<code>&lt;%plugin(...)%&gt;</code> 変数からの呼び出しになります。デフォルトではこのメソッドはテンプレートをスキンタイプとみなして
+      <code>doSkinVar</code> メソッドに処理を渡します。<a href="#templatevars"><code>doTemplateVar</code> メソッドの実装に関する詳細情報はこちら</a></td>		
 	</tr>
 	<tr>
 		<td><code>doTemplateCommentsVar(&amp;$item, &amp;$comment)</code></td>
-		<td>(v2.0b) ��{�I�� <code>doSkinVar</code> �Ɠ����ł����A���x��<em>�e���v���[�g</em>���i�R�����g�����j�ł�<code>&lt;%plugin(...)%&gt;</code> �ϐ�����̌Ăяo���ɂȂ�܂��B�f�t�H���g�ł͂��̃��\�b�h�̓e���v���[�g���X�L���^�C�v�Ƃ݂Ȃ���
-      <code>doSkinVar</code> ���\�b�h�ɏ�����n���܂��B<a href="#templatevars"><code>doTemplateCommentsVar</code> 
-      ���\�b�h�̎����Ɋւ���ڍ׏��͂�����</a></td>		
+		<td>(v2.0b) 基本的に <code>doSkinVar</code> と同じですが、今度は<em>テンプレート</em>内（コメント部分）での<code>&lt;%plugin(...)%&gt;</code> 変数からの呼び出しになります。デフォルトではこのメソッドはテンプレートをスキンタイプとみなして
+      <code>doSkinVar</code> メソッドに処理を渡します。<a href="#templatevars"><code>doTemplateCommentsVar</code> 
+      メソッドの実装に関する詳細情報はこちら</a></td>		
 	</tr>	
 	<tr>
 		<td><code>doAction($type)</code></td>
-		<td>�v���O�C�������[�U�[�C���^���N�V���������߂��Ƃ��A <code>action.php</code>����Ă��̃��\�b�h�������^���܂��B.
-		  �����Nucleus���g���V�����R�����g�Ⓤ�[����������̂Ɏg�p����X�N���v�g�ł��B�������p�����[�^��p���邱�ƂŁA�v���O�C�������
-		  <code>doAction</code> ���\�b�h���Ăяo���܂��B<code>$type</code> �̓I�v�V�����̃��b�Z�[�W�^�C�v�ɊY�����܂��B<code>doAction</code> ���\�b�h���ŁA���N�G�X�g����̒ǉ��̕ϐ��ɃA�N�Z�X�ł��܂��B�f�t�H���g�ł͂��̃��\�b�h���G���[���b�Z�[�W���g���K�[�����<code>'No
-	  Such Action'</code>�Ƃ����������Ԃ��܂��B<a href="#actions"><code>doAction</code> �Ɋւ���ڍ׏��͂�����</a></td>		
+		<td>プラグインがユーザーインタラクションを求めたとき、 <code>action.php</code>を介してこのメソッドがそれを与えます。.
+		  これはNucleus自身が新しいコメントや投票を処理するのに使用するスクリプトです。正しいパラメータを用いることで、プラグインからの
+		  <code>doAction</code> メソッドを呼び出せます。<code>$type</code> はオプションのメッセージタイプに該当します。<code>doAction</code> メソッド内で、リクエストからの追加の変数にアクセスできます。デフォルトではこのメソッドがエラーメッセージをトリガーすると<code>'No
+	  Such Action'</code>という文字列を返します。<a href="#actions"><code>doAction</code> に関する詳細情報はこちら</a></td>		
 	</tr>
 	<tr>
 		<td><code>install()</code></td>
-		<td>���̃��\�b�h�̓v���O�C�����C���X�g�[�����ꂽ�ۂɌĂ΂�܂��B�f�[�^�x�[�X�E�e�[�u���̐�����v���O�C���I�v�V�����̐����Ȃǂ̏�������Ƃ��s�����Ƃ��ł��܂��B�f�t�H���g�ł͂��̃��\�b�h�͉������܂���B</td>
+		<td>このメソッドはプラグインがインストールされた際に呼ばれます。データベース・テーブルの生成やプラグインオプションの生成などの初期化作業を行うことができます。デフォルトではこのメソッドは何もしません。</td>
 	</tr>
 	<tr>
 		<td><code>unInstall()</code></td>
-		<td>�v���O�C�����A���C���X�g�[�����ꂽ�ۂɌĂ΂�܂��B���̎��_�Ńf�[�^�x�[�X�ɍ��ꂽ�v���O�C��������������Ɨǂ��ł��B�f�t�H���g�ł͂��̃��\�b�h�͉������܂���B</td>
+		<td>プラグインがアンインストールされた際に呼ばれます。この時点でデータベースに作られたプラグイン情報を消去すると良いです。デフォルトではこのメソッドは何もしません。</td>
 	</tr>
 	<tr>
 		<td><code>getEventList()</code></td>
-		<td>�v���O�C���̓C�x���g�o�^���\�ł��B�C�x���g��Nucleus�������A�N�V�������N�������тɐ�������܂��B���Ƃ��΁A<code>AddItem</code> �C�x���g�́A���̃C�x���g��o�^���Ă��邷�ׂẴv���O�C�����Ăяo���܂��B�Ăяo����郁�\�b�h�� <code>event_AddItem($params)</code>�ɂȂ�܂��B <code>$params</code> �p�����[�^�́A�Ⴆ�� <code>AddItem</code>	  �� <code>itemid</code> �̂悤�ȁA���t�B�[���h�𕡐����A�z�z��ł��B�f�t�H���g�ł͂ǂ̃C�x���g�ɂ��o�^����Ă��Ȃ����Ƃ�������̔z���Ԃ��܂��B<a href="#events">�C�x���g�Ɋւ���ڍ׏��
-	  �͂�����</a></td>		
+		<td>プラグインはイベント登録が可能です。イベントはNucleusが何かアクションを起こすたびに生成されます。たとえば、<code>AddItem</code> イベントは、このイベントを登録しているすべてのプラグインを呼び出します。呼び出されるメソッドは <code>event_AddItem($params)</code>になります。 <code>$params</code> パラメータは、例えば <code>AddItem</code>	  の <code>itemid</code> のような、情報フィールドを複数持つ連想配列です。デフォルトではどのイベントにも登録されていないことを示す空の配列を返します。<a href="#events">イベントに関する詳細情報
+	  はこちら</a></td>		
 	</tr>
 	<tr>
 		<td><code>getTableList()</code></td>
-		<td>���̃��\�b�h�̓v���O�C�������������f�[�^�x�[�X�E�e�[�u���̔z���Ԃ��܂��B�����Nucleus���񋟂���o�b�N�A�b�v�@�\�ŗ��p�����̂ŁA�v���O�C���e�[�u�����o�b�N�A�b�v�Ɋ܂߂邱�Ƃ��ł��܂��B�f�t�H���g�ł͋�̔z���Ԃ��܂��B</td>
+		<td>このメソッドはプラグインが生成したデータベース・テーブルの配列を返します。これはNucleusが提供するバックアップ機能で利用されるので、プラグインテーブルをバックアップに含めることができます。デフォルトでは空の配列を返します。</td>
 	</tr>
 	<tr>
 		<td><code>hasAdminArea()</code></td>
-		<td>�v���O�C�����Ǝ��̊Ǘ��G���A�����ꍇ 1 ���A�����łȂ��ꍇ 0 ��Ԃ��܂��B�f�t�H���g�ł� <code>0</code> ��Ԃ��܂��B</td>
+		<td>プラグインが独自の管理エリアをもつ場合 1 を、そうでない場合 0 を返します。デフォルトでは <code>0</code> を返します。</td>
 	</tr>
 </table>
 
-<p>�����\�ȃ��\�b�h�̎��́A<code>NucleusPlugin</code> �N���X���񋟂���A�Ď���<strong>���ׂ��łȂ�</strong>����̓��ꃁ�\�b�h�ł��B�����̓v���O�C�����ŁA<code>$this-&gt;functionName()</code>�V���^�b�N�X�𗘗p���ČĂяo���܂��B</p>
+<p>実装可能なメソッドの次は、<code>NucleusPlugin</code> クラスが提供する、再実装<strong>すべきでない</strong>幾つかの特殊メソッドです。これらはプラグイン内で、<code>$this-&gt;functionName()</code>シンタックスを利用して呼び出します。</p>
 
 <table summary="An overview of the auxiliary methods in the class NucleusPlugin. You should NOT redefine these">
 	<caption>
-	<code>NucleusPlugin</code> �N���X�̊T�v�i�Ē�`�s�\�ȃ��\�b�h�j
+	<code>NucleusPlugin</code> クラスの概要（再定義不可能なメソッド）
 	</caption>
 	<tr>
-		<th>���\�b�h��</th>
-		<th>����</th>
+		<th>メソッド名</th>
+		<th>説明</th>
 	</tr>
 	<tr>
 		<td>
@@ -272,7 +272,7 @@ class NP_HelloWorld extends NucleusPlugin {
 			<br /><code>createCategoryOption(...)</code>(v2.2)
 			<br /><code>createMemberOption(...)</code>(v2.2)
 		</td>
-		<td><a href="#options" title="More info on options">�V�����I�v�V�����𐶐����܂��B</a></td>		
+		<td><a href="#options" title="More info on options">新しいオプションを生成します。</a></td>		
 	</tr>
 	<tr>
 		<td>
@@ -281,7 +281,7 @@ class NP_HelloWorld extends NucleusPlugin {
 			<br /><code>deleteCategoryOption(...)</code>(v2.2)
 			<br /><code>deleteMemberOption(...)</code>(v2.2)
 	   	</td>
-		<td><a href="#options" title="More info on options">�I�v�V�������폜���܂��B</a></td>		
+		<td><a href="#options" title="More info on options">オプションを削除します。</a></td>		
 	</tr>
 	<tr>
 		<td>
@@ -290,7 +290,7 @@ class NP_HelloWorld extends NucleusPlugin {
 			<br /><code>setCategoryOption(...)</code>(v2.2)
 			<br /><code>setMemberOption(...)</code>(v2.2)			      
 		</td>
-		<td><a href="#options" title="More info on options">�I�v�V�����ɒl���Z�b�g���܂��B</a></td>		
+		<td><a href="#options" title="More info on options">オプションに値をセットします。</a></td>		
 	</tr>
 	<tr>
 		<td>
@@ -299,7 +299,7 @@ class NP_HelloWorld extends NucleusPlugin {
 			<br /><code>getCategoryOption(...)</code>(v2.2)
 			<br /><code>getMemberOption(...)</code>(v2.2)			       
 		</td>
-		<td><a href="#options" title="More info on options">�I�v�V�����̒l���擾���܂��B</a></td>		
+		<td><a href="#options" title="More info on options">オプションの値を取得します。</a></td>		
 	</tr>
 	<tr>
 		<td>
@@ -307,36 +307,36 @@ class NP_HelloWorld extends NucleusPlugin {
 			<br /><code>getAllCategoryOptions(...)</code>(v2.2)
 			<br /><code>getAllMemberOptions(...)</code>(v2.2)			       
 		</td>
-		<td><a href="#options" title="More info on options">�^����ꂽ�I�v�V�����ɂ��A���ׂĂ̒l�i�R���e�N�X�g���Ƃ̈�̒l�j�̘A�z�z���Ԃ��܂��B</a></td>		
+		<td><a href="#options" title="More info on options">与えられたオプションにより、すべての値（コンテクストごとの一つの値）の連想配列を返します。</a></td>		
 	</tr>	
 	<tr>
 		<td><code>getID()</code></td>
-		<td>���̃v���O�C����ID��Ԃ��܂��i����ID��Nucleus�����ŗ��p�������̂ł��j�B</td>		
+		<td>このプラグインのIDを返します（このIDはNucleus内部で利用されるものです）。</td>		
 	</tr>
 	<tr>
 		<td><code>getAdminURL()</code></td>
-		<td>�v���O�C���̊Ǘ��G���A���u���ꂽURL��Ԃ��܂��i���̂悤�ȊǗ��G���A���Ȃ��ꍇ�́A���̏��͖����ł��j�B</td>		
+		<td>プラグインの管理エリアが置かれたURLを返します（そのような管理エリアがない場合は、この情報は無効です）。</td>		
 	</tr>
 	<tr>
 		<td><code>getDirectory()</code></td>
-		<td>�v���O�C���̒ǉ��t�@�C�����i�[���ꂽ�T�[�o�[�̃t�@�C���V�X�e���̃p�X��Ԃ��܂��i���̂悤�ȃt�@�C�����Ȃ��ꍇ�́A���̏��͖����ł��j�B���ʂ�&quot;<code>.../nucleus/plugins/<em>plugname</em>/</code>&quot;�̂悤�ɂȂ�܂��B</td>		
+		<td>プラグインの追加ファイルが格納されたサーバーのファイルシステムのパスを返します（そのようなファイルがない場合は、この情報は無効です）。結果は&quot;<code>.../nucleus/plugins/<em>plugname</em>/</code>&quot;のようになります。</td>		
 	</tr>
 	<tr>
 		<td><code>getShortName()</code></td>
-		<td>"NP_"�������Ȃ��A�S�Ă��������ɂ����v���O�C���̃N���X����Ԃ��܂��B���̏��� <code>getAdminURL</code> �� <code>getDirectory</code> �Ŏg�p����܂��B</td>		
+		<td>"NP_"部分を省き、全てを小文字にしたプラグインのクラス名を返します。この情報は <code>getAdminURL</code> と <code>getDirectory</code> で使用されます。</td>		
 	</tr>
 
 </table>
 
-<h1>�X�L���ϐ�<a name="skinvars" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>スキン変数<a name="skinvars" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<h2>���</h2>
-
-<p>
-�Ǝ��̃X�L���ϐ��𐶐����A<code>&lt;%plugin(<em>PlugName,parameters</em>)%&gt;</code> �܂��� <code>&lt;%PlugName(parameters)%&gt;</code>�ŌĂяo�����Ƃ��o���܂��i���łɑ��݂���X�L���ϐ��Ƃ��Ԃ�Ȃ��ꍇ�j�B�p�����[�^�̓J���}��؂�ł��B</p>
+<h2>解説</h2>
 
 <p>
-�X�L���ϐ��������ɂ́A<code>doSkinVar</code> ���\�b�h����������K�v������܂��B�������̗���ȉ��Ɏ����܂��B</p>
+独自のスキン変数を生成し、<code>&lt;%plugin(<em>PlugName,parameters</em>)%&gt;</code> または <code>&lt;%PlugName(parameters)%&gt;</code>で呼び出すことが出来ます（すでに存在するスキン変数とかぶらない場合）。パラメータはカンマ区切りです。</p>
+
+<p>
+スキン変数を扱うには、<code>doSkinVar</code> メソッドを実装する必要があります。いくつかの例を以下に示します。</p>
 
 <pre class="example"><code>function doSkinVar($skinType)
 function doSkinVar($skinType, $param1, $param2)
@@ -344,46 +344,46 @@ function doSkinVar($skinType, $skinVar, $param1, $param2)
 function doSkinVar($skinType, $skinVar, $param1 = 'default value')</code></pre>
 
 <ul>
-	<li><code>$skinType</code> �p�����[�^�́A'index', 'item', 'archive', 'archivelist', 'member', 'error',
-  'search', 'imagepopup',  <a href="#templatevars" title="Information on templatevars">'template'</a>�̂����̈�����܂�</li>
-	<li><code>$skinVar</code> �́A�X�L���ϐ��̃^�C�v�Ƃ��ĉ��߂��������I�ɍŏ��̃p�����[�^�ɂȂ�܂��i��F<code>&lt;%plugin(PlugName,VarType)%&gt;</code>�j�B</li>
-	<li><code>doSkinVar()</code>�i�p�����[�^�����j���g���APHP�t�@���N�V������<code>func_get_args()</code>��p���ăp�����[�^���擾���邱�Ƃ��ł��܂��B�����̐��̈قȂ�A�^�C�v�̈Ⴄ�X�L���ϐ��������Ƃ��ɕ֗��ł��B</li>
+	<li><code>$skinType</code> パラメータは、'index', 'item', 'archive', 'archivelist', 'member', 'error',
+  'search', 'imagepopup',  <a href="#templatevars" title="Information on templatevars">'template'</a>のうちの一つを取ります</li>
+	<li><code>$skinVar</code> は、スキン変数のタイプとして解釈される実質的に最初のパラメータになります（例：<code>&lt;%plugin(PlugName,VarType)%&gt;</code>）。</li>
+	<li><code>doSkinVar()</code>（パラメータ無し）を使い、PHPファンクションの<code>func_get_args()</code>を用いてパラメータを取得することができます。引数の数の異なる、タイプの違うスキン変数を扱うときに便利です。</li>
 </ul>
 
-<h2>�m�[�g</h2>
+<h2>ノート</h2>
 
 <ul>
-	<li>(v2.0b) �O���[�o���ϐ��Ƃ��ăp�[�X����Ă��� <code>$currentSkinName</code> ���g���ăX�L���̖��O���擾�ł��܂��B</li>
+	<li>(v2.0b) グローバル変数としてパースされている <code>$currentSkinName</code> を使ってスキンの名前を取得できます。</li>
 </ul>
 
 
 
 
-<h1>�e���v���[�g�ϐ�<a name="templatevars" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>テンプレート変数<a name="templatevars" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<h2>���</h2>
+<h2>解説</h2>
 
 <p>
-�e���v���[�g�v���O�C���ϐ��̓X�L���v���O�C���ϐ��Ɠ��l�ɓ����܂����ȉ���2�_���قȂ�܂��B</p>
+テンプレートプラグイン変数はスキンプラグイン変数と同様に働きますが以下の2点が異なります。</p>
 
 <ol>
-	<li>�X�L�����ł͂Ȃ��e���v���[�g������Ă΂�܂��B</li>
-	<li>$skinType�p�����[�^�����܂���B����Ɍ��݃p�[�X����Ă���A�C�e����R�����g�̏��t���̒ǉ��p�����[�^�����܂��B
+	<li>スキン内ではなくテンプレート内から呼ばれます。</li>
+	<li>$skinTypeパラメータを取りません。代わりに現在パースされているアイテムやコメントの情報付きの追加パラメータを取ります。
     <ul>
-			<li><code>doTemplateVar</code> ���\�b�h�� <code>&amp;$item</code> �p�����[�^�����܂��B</li>
-			<li><code>doTemplateCommentsVar</code> ���\�b�h�� <code>&amp;$item</code> �� <code>&amp;$comment</code> �p�����[�^�����܂��B</li>
+			<li><code>doTemplateVar</code> メソッドは <code>&amp;$item</code> パラメータを取ります。</li>
+			<li><code>doTemplateCommentsVar</code> メソッドは <code>&amp;$item</code> と <code>&amp;$comment</code> パラメータを取ります。</li>
 	  </ul>
-		<strong>&amp;�}�[�N�ɒ��ӁI</strong>
+		<strong>&amp;マークに注意！</strong>
 	</li>
 </ol>
 	
-<p>�e���v���[�g�ϐ��̓X�L���ϐ��Ɠ����v�̂ŌĂ΂�܂��i<code>&lt;%plugin(PlugName,parameters)%&gt;</code> �܂��� <code>&lt;%PlugName(parameters)%&gt;</code>�j�B</p>
+<p>テンプレート変数はスキン変数と同じ要領で呼ばれます（<code>&lt;%plugin(PlugName,parameters)%&gt;</code> または <code>&lt;%PlugName(parameters)%&gt;</code>）。</p>
 
 <p>
-�f�t�H���g�ł́A�S�Ẵe���v���[�g�ϐ���'<code>template</code>'��<code>skintype</code>�p�����[�^�Ƃ��āA<code>doSkinVar</code> ���\�b�h�ɓn��܂��B</p>
+デフォルトでは、全てのテンプレート変数は'<code>template</code>'を<code>skintype</code>パラメータとして、<code>doSkinVar</code> メソッドに渡ります。</p>
 
 <p>
-�Ǝ��̎�����񋟂������ꍇ�́A<code>doTemplateVar</code> ���\�b�h�� <code>doTemplateCommentsVar</code> ���\�b�h���Ē�`����K�v������܂��B<code>skintype</code>�p�����[�^�������Ȃ�ȊO��doSkinVar�Ɠ��l�ɓ����܂��B</p>
+独自の実装を提供したい場合は、<code>doTemplateVar</code> メソッドや <code>doTemplateCommentsVar</code> メソッドを再定義する必要があります。<code>skintype</code>パラメータが無くなる以外はdoSkinVarと同様に働きます。</p>
 
 <pre class="example"><code>function doTemplateVar(&amp;$item)
 function doTemplateVar(&amp;$item, $param1, $param2)
@@ -394,47 +394,47 @@ function doTemplateCommentsVar(&amp;$item, &amp;$comment, $param1, $param2)
 function doTemplateCommentsVar(&amp;$item, &amp;$comment, $type, $param1, $param2)
 function doTemplateCommentsVar(&amp;$item, &amp;$comment, $type, $param1 = 'default value')</code></pre>
 
-<h2>�m�[�g</h2>
+<h2>ノート</h2>
 
 <ul>
-	<li>(v2.0b) �O���[�o���ϐ��Ƃ��ē����ŗ��p����� <code>$currentSkinName</code> ���g���ăe���v���[�g�̖��O���擾�ł��܂��B</li>
+	<li>(v2.0b) グローバル変数として内部で利用される <code>$currentSkinName</code> を使ってテンプレートの名前を取得できます。</li>
 </ul>
 
 
 
 
-<h1>�A�N�V����<a name="actions" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>アクション<a name="actions" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>�v���O�C���� <code>action.php</code> ��ʂ��ăA�N�V�������s�����Ƃ��ł��A���l�̃X�N���v�g���R�����g�Ⓤ�[�̎󂯎��ɂ��g�p����Ă܂��BGET�܂���POST�̂ǂ��炩��ʂ��ČĂяo���܂��B�K�v�ȃp�����[�^��
-<code>action</code>�i'plugin'�Ǝw��j�A<code>name</code>�i�v���O�C�����j�A<code>type</code>�i���N�G�X�g���ꂽ�A�N�V�����̎�ށj�ł��B</p>
+<p>プラグインは <code>action.php</code> を通してアクションを行うことができ、同様のスクリプトがコメントや投票の受け取りにも使用されてます。GETまたはPOSTのどちらかを通して呼び出せます。必要なパラメータは
+<code>action</code>（'plugin'と指定）、<code>name</code>（プラグイン名）、<code>type</code>（リクエストされたアクションの種類）です。</p>
 
-<p>�����̃A�N�V������L���ɂ��邽�߂ɁA<code>doAction($actionType)</code> ���\�b�h���v���O�C�����Ŏ�������K�v������܂��B���N�G�X�g����̒ǉ��p�����[�^��
-<code>requestVar('<em>name</em>')</code> �Ŏ擾�ł��܂��i<code>requestVar</code> ��PHP���t������ magic_quotes_gpc �ɔz�����Ă��܂��j�B</p>
-
-<p>
-<code>doAction</code> ���\�b�h���������Ԃ��Ƃ��A�G���[�Ƃ��ĉ��߂���A�G���[���b�Z�[�W���\������܂��B</p>
-
-
-
-
-
-
-<h1>�C�x���g<a name="events" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<p>これらのアクションを有効にするために、<code>doAction($actionType)</code> メソッドをプラグイン内で実装する必要があります。リクエストからの追加パラメータは
+<code>requestVar('<em>name</em>')</code> で取得できます（<code>requestVar</code> はPHPが付加する magic_quotes_gpc に配慮しています）。</p>
 
 <p>
-Nucleus�v���O�C���͂Ȃɂ��d�v�Ȃ��Ƃ��N�����Ƃ��ɔ�������C�x���g�ɓo�^�\�ł��B�v���O�C���̓C�x���g�����̍ۂɃA�N�V���������s������A�e�L�X�g���o�͂�����ł��܂��B</p>
+<code>doAction</code> メソッドが文字列を返すとき、エラーとして解釈され、エラーメッセージが表示されます。</p>
 
-<h2>��</h2>
+
+
+
+
+
+<h1>イベント<a name="events" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-���L�� <code>PreAddComment</code> �C�x���g�iblog�ɃR�����g���ǉ�����钼�O�ɐ��������C�x���g�j�Ƀv���O�C�����o�^�����ł��B</p>
+Nucleusプラグインはなにか重要なことが起きたときに発生するイベントに登録可能です。プラグインはイベント発生の際にアクションを実行したり、テキストを出力したりできます。</p>
+
+<h2>例</h2>
+
+<p>
+下記は <code>PreAddComment</code> イベント（blogにコメントが追加される直前に生成されるイベント）にプラグインが登録する例です。</p>
 
 <pre class="example"><code>class NP_Acronyms extends NucleusPlugin {
   ...
   function getEventList() { return array('PreAddComment'); }
   ...
   function event_PreAddComment(&amp;$data) {
-    // ������ HTML ��u������
+    // 頭字語 HTML を置き換え
     $data['comment']['body'] = 
         strreplace('HTML',
                    '&lt;acronym title="HyperText Markup Language"&gt;HTML&lt;/acronym&gt;',
@@ -443,852 +443,852 @@ Nucleus�v���O�C���͂Ȃɂ��d�v�Ȃ��Ƃ��N�����Ƃ��ɔ�������C�x���g�ɓo�^�\�ł��
 }
 </code></pre>
 
-<p>���̃v���O�C���̓R�����g����'HTML'�Ƃ����e�L�X�g��'<code>&lt;acronym title=&quot;HyperText
-Markup Language&quot;&gt;HTML&lt;/acronym&gt;</code>'�ɒu�������܂��Bacronym�^�O��HTML�^�O�ŁA������ɂ��Ă̒ǉ�����񋟂��܂��B</p>
+<p>このプラグインはコメント中の'HTML'というテキストを'<code>&lt;acronym title=&quot;HyperText
+Markup Language&quot;&gt;HTML&lt;/acronym&gt;</code>'に置き換えます。acronymタグはHTMLタグで、頭字語についての追加情報を提供します。</p>
 
-<h2>�C�x���g�o�^�̎d��</h2>
+<h2>イベント登録の仕方</h2>
 
-<p>�C�x���g�o�^�ɕK�v�ȃX�e�b�v�͈ȉ��ɂȂ�܂��B</p>
+<p>イベント登録に必要なステップは以下になります。</p>
 
 <ol>
-	<li><code>getEventList</code> ���\�b�h����Ԃ�z��ɃC�x���g����ǉ����܂��B</li>
-	<li><code>event_EventName($data)</code> �Ƃ����`�Ń��\�b�h�𐶐����A���̒��ŃC�x���g���������܂��B</li>
+	<li><code>getEventList</code> メソッドから返る配列にイベント名を追加します。</li>
+	<li><code>event_EventName($data)</code> という形でメソッドを生成し、この中でイベントを処理します。</li>
 </ol>
 
-<p>�����̃v���O�C���������C�x���g�ɓo�^�ł��܂��B�Ǘ��G���A�̃v���O�C�����X�g�̏����ɏ]���ăv���O�C���ɒʒm���s���܂��B���X�g�̏�ɂ���v���O�C���قǑ����ʒm����܂��B</p>
+<p>複数のプラグインが同じイベントに登録できます。管理エリアのプラグインリストの順序に従ってプラグインに通知が行きます。リストの上にあるプラグインほど早く通知されます。</p>
 
-<h2>�p�����[�^</h2>
+<h2>パラメータ</h2>
 
-<p><code>event_EventName</code> ���\�b�h�͂ЂƂ��� <code>$data</code> �p�����[�^�������A����̓C�x���g���Ƃɓ��e���قȂ�܂��B����͘A�z�z��ł��B���̘A�z�z��ɓn���ꂽ�I�u�W�F�N�g��z���<strong>�Q�ƌ`��</strong>�œn����邽�߁A�����ɉ������ύX�͋L������܂��B</p>
+<p><code>event_EventName</code> メソッドはひとつだけ <code>$data</code> パラメータを持ち、それはイベントごとに内容が異なります。これは連想配列です。この連想配列に渡されたオブジェクトや配列は<strong>参照形式</strong>で渡されるため、これらに加えた変更は記憶されます。</p>
 
-<p>�ȉ��̃C�x���g���X�g�́A�p�����[�^�ύX��Nucleus�ɒm���邩�ǂ������������߂ɐF���g�������Ă��܂��B</p>
+<p>以下のイベントリストは、パラメータ変更がNucleusに知られるかどうかを示すために色を使い分けています。</p>
 
 <ul>
-	<li><var class="ref">�Q�Ɠn���i�΁j</var>: ���̎�̃p�����[�^�ɕύX���������Nucleus�ɒm���܂��B</li>
-	<li><var class="ro">�l�n���i�ԁj</var>: �v���O�C���C�x���g�n���h���ɓn�����O�ɒl���R�s�[����܂��B�����̕ϐ��ւ̕ύX�͎����I�ɔj������܂��B.</li>
+	<li><var class="ref">参照渡し（緑）</var>: この種のパラメータに変更を加えるとNucleusに知られます。</li>
+	<li><var class="ro">値渡し（赤）</var>: プラグインイベントハンドラに渡される前に値がコピーされます。これらの変数への変更は自動的に破棄されます。.</li>
 </ul>
 
-<p>�p�����[�^�Ƃ��ēn�����I�u�W�F�N�g��<var class="obj">object</var>.�Ƃ��Ď�����܂��B�قƂ�ǂ̃I�u�W�F�N�g�͎Q�Ɠn���ŁA<var class="obj ref">object
-by ref</var>�̂悤�Ɏ�����܂��B</p>
+<p>パラメータとして渡されるオブジェクトは<var class="obj">object</var>.として示されます。ほとんどのオブジェクトは参照渡しで、<var class="obj ref">object
+by ref</var>のように示されます。</p>
 
-<h2>�C�x���g���X�g</h2>
+<h2>イベントリスト</h2>
 
 <table summary="An overview of events to which a Nucleus Plugin can subscribe, and what parameters are passed along to the method that handles the event">
 	<caption>
-	�v���O�C�����o�^�ł���C�x���g</caption>
+	プラグインが登録できるイベント</caption>
 	<tr>
-		<th>���O</th>
-		<th>����</th>
-		<th>�p�����[�^</th>
+		<th>名前</th>
+		<th>いつ</th>
+		<th>パラメータ</th>
 	</tr>
 	<tr>
 		<td>PreSkinParse</td>
-		<td>�X�L���̃p�[�X�̒��O</td>
+		<td>スキンのパースの直前</td>
 		<td><dl>
 			<dt class="obj ref">skin</dt>
-			<dd>�p�[�X����<code>SKIN</code>�I�u�W�F�N�g</dd>
+			<dd>パースする<code>SKIN</code>オブジェクト</dd>
 			<dt class="ro">type</dt>
-			<dd>�X�L���^�C�v�i'index', 'item', 'archive', 'archivelist',
-		  'member', 'error', 'search', 'imagepopup', 'fileparser'�̂����ꂩ�j</dd>
+			<dd>スキンタイプ（'index', 'item', 'archive', 'archivelist',
+		  'member', 'error', 'search', 'imagepopup', 'fileparser'のいずれか）</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostSkinParse</td>
-		<td>�X�L���̃p�[�X�̒���</td>
+		<td>スキンのパースの直後</td>
 		<td><dl>
 			<dt class="obj ref">skin</dt>
-			<dd>�p�[�X����<code>SKIN</code>�I�u�W�F�N�g</dd>
+			<dd>パースする<code>SKIN</code>オブジェクト</dd>
 			<dt class="ro">type</dt>
-			<dd>�X�L���^�C�v�i'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search',
-		  'imagepopup', 'fileparser'�̂����ꂩ�j                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </dd>
+			<dd>スキンタイプ（'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search',
+		  'imagepopup', 'fileparser'のいずれか）                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreItem</td>
-		<td>�A�C�e���̃p�[�X�O�A�������A�C�e���w�b�_�[�̃p�[�X��</td>
+		<td>アイテムのパース前、ただしアイテムヘッダーのパース後</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd><code>BLOG</code> オブジェクト</dd>
 			<dt class="ref obj">item</dt>
-			<dd>�A�C�e���f�[�^�����I�u�W�F�N�g</dd>
+			<dd>アイテムデータを持つオブジェクト</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostItem</td>
-		<td>�A�C�e���̃p�[�X��A�������A�C�e���t�b�^�[�̃p�[�X�O</td>
+		<td>アイテムのパース後、ただしアイテムフッターのパース前</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd><code>BLOG</code> オブジェクト</dd>
 			<dt class="ref obj">item</dt>
-			<dd>�A�C�e���f�[�^�����I�u�W�F�N�g</dd>
+			<dd>アイテムデータを持つオブジェクト</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreComment</td>
-		<td>�R�����g�̕\���O</td>
+		<td>コメントの表示前</td>
 		<td><dl>
 			<dt class="ref">comment</dt>
-			<dd>�R�����g�f�[�^�����A�z�z��</dd>
+			<dd>コメントデータを持つ連想配列</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostComment</td>
-		<td>�R�����g�̕\����</td>
+		<td>コメントの表示後</td>
 		<td><dl>
 			<dt class="ref">comment</dt>
-			<dd>�R�����g�f�[�^�����A�z�z��</dd>
+			<dd>コメントデータを持つ連想配列</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreDateHead</td>
-		<td>���t�w�b�_�[�̃p�[�X�O</td>
+		<td>日付ヘッダーのパース前</td>
 		<td><dl>
 			<dt class="obj ref">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd><code>BLOG</code> オブジェクト</dd>
 			<dt class="ro">timestamp</dt>
-			<dd>���t�w�b�_�[�̃^�C���X�^���v</dd>
+			<dd>日付ヘッダーのタイムスタンプ</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostDateHead</td>
-		<td>���t�w�b�_�[�̃p�[�X��</td>
+		<td>日付ヘッダーのパース後</td>
 		<td><dl>
 			<dt class="obj ref">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd><code>BLOG</code> オブジェクト</dd>
 			<dt class="ro">timestamp</dt>
-			<dd>���t�w�b�_�[�̃^�C���X�^���v</dd>
+			<dd>日付ヘッダーのタイムスタンプ</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreDateFoot</td>
-		<td>���t�t�b�^�[�̃p�[�X�O</td>
+		<td>日付フッターのパース前</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd><code>BLOG</code> オブジェクト</dd>
 			<dt class="ro">timestamp</dt>
-			<dd>���t�t�b�^�[�̃^�C���X�^���v</dd>
+			<dd>日付フッターのタイムスタンプ</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostDateFoot</td>
-		<td>���t�t�b�^�[�̃p�[�X��</td>
+		<td>日付フッターのパース後</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd><code>BLOG</code> オブジェクト</dd>
 			<dt class="ro">timestamp</dt>
-			<dd>���t�t�b�^�[�̃^�C���X�^���v</dd>
+			<dd>日付フッターのタイムスタンプ</dd>
 		</dl></td>		
 	</tr>	
 	<tr>
 		<td>LoginSuccess</td>
-		<td>���O�C��������</td>
+		<td>ログイン成功後</td>
 		<td><dl>
 			<dt class="obj ref">member</dt>
-			<dd><code>MEMBER</code> �I�u�W�F�N�g</dd>
+			<dd><code>MEMBER</code> オブジェクト</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>LoginFailed</td>
-		<td>���O�C�����s��</td>
+		<td>ログイン失敗後</td>
 		<td><dl>
 			<dt class="ro">username</dt>
-			<dd>���O�C�����Ɏg��ꂽ���[�U�[��</dd>
+			<dd>ログイン時に使われたユーザー名</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>Logout</td>
-		<td>���O�A�E�g��</td>
+		<td>ログアウト後</td>
 		<td><dl>
 			<dt class="ro">username</dt>
-			<dd>���O�A�E�g���̃��[�U�[��</dd>
+			<dd>ログアウト時のユーザー名</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreBlogContent</td>
-		<td>blog�̓��e���X�L���ϐ���ʂ��đ}�������O</td>
+		<td>blogの内容がスキン変数を通して挿入される前</td>
 		<td><dl>
 			<dt class="obj ref">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd><code>BLOG</code> オブジェクト</dd>
 			<dt class="ro">type</dt>
-			<dd>�Ăяo���ꂽ�X�L���ϐ� ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults',
+			<dd>呼び出されたスキン変数 ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults',
 			  'othersearchresults', 'categorylist', 'otherarchive', 'otherarchivelist')</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostBlogContent</td>
-		<td>blog�̓��e���X�L���ϐ���ʂ��đ}�����ꂽ��</td>
+		<td>blogの内容がスキン変数を通して挿入された後</td>
 		<td><dl>
 			<dt class="obj ref">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd><code>BLOG</code> オブジェクト</dd>
 			<dt class="ro">type</dt>
-			<dd>�Ăяo���ꂽ�X�L���ϐ� ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults',
+			<dd>呼び出されたスキン変数 ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults',
 		  'othersearchresults', 'categorylist', 'otherarchive', 'otherarchivelist')                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreAddComment</td>
-		<td>�R�����g���f�[�^�x�[�X�ɒǉ������O</td>
+		<td>コメントがデータベースに追加される前</td>
 		<td><dl>
 			<dt class="ref">comment</dt>
-			<dd>�R�����g�f�[�^�i�A�z�z��j</dd>
+			<dd>コメントデータ（連想配列）</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostAddComment</td>
-		<td>�R�����g���f�[�^�x�[�X�ɒǉ����ꂽ��</td>
+		<td>コメントがデータベースに追加された後</td>
 		<td><dl>
 			<dt class="ref">comment</dt>
-			<dd>�R�����g�f�[�^�i�A�z�z��j</dd>
+			<dd>コメントデータ（連想配列）</dd>
 			<dt class="ref">commentid</dt>
-			<dd>�R�����g��ID</dd>
+			<dd>コメントのID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostRegister</td>
-		<td>�V�K���[�U�[�̓o�^��</td>
+		<td>新規ユーザーの登録後</td>
 		<td><dl>
 			<dt class="obj ref">member</dt>
-			<dd>�V����<code>MEMBER</code> �I�u�W�F�N�g</dd>
+			<dd>新しい<code>MEMBER</code> オブジェクト</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostAddItem</td>
-		<td>�A�C�e�����f�[�^�x�[�X�ɒǉ����ꂽ��</td>
+		<td>アイテムがデータベースに追加された後</td>
 		<td><dl>
 			<dt class="ro">itemid</dt>
-			<dd>�f�[�^�x�[�X�ɏo�����V���� itemid</dd>
+			<dd>データベースに出来た新しい itemid</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreAddItem</td>
-		<td>�A�C�e�����f�[�^�x�[�X�ɒǉ�����钼�O</td>
+		<td>アイテムがデータベースに追加される直前</td>
 		<td><dl>
 			<dt class="ref">title</dt>
-			<dd>�^�C�g��</dd>
+			<dd>タイトル</dd>
 			<dt class="ref">body</dt>
-			<dd>�{��</dd>
+			<dd>本文</dd>
 			<dt class="ref">more</dt>
-			<dd>�g���e�L�X�g</dd>
+			<dd>拡張テキスト</dd>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd><code>BLOG</code> オブジェクト</dd>
 			<dt class="ref">authorid</dt>
-			<dd>���M��ID</dd>
+			<dd>執筆者ID</dd>
 			<dt class="ref">timestamp</dt>
-			<dd>UNIX �^�C���X�^���v</dd>
+			<dd>UNIX タイムスタンプ</dd>
 			<dt class="ref">closed</dt>
-			<dd>1 �i�R�����g�s�j or 0 �i�R�����g�j</dd>
+			<dd>1 （コメント不可） or 0 （コメント可）</dd>
 			<dt class="ref">draft</dt>
-			<dd>1 �i�h���t�g�j or 0 �i��h���t�g�j</dd>
+			<dd>1 （ドラフト） or 0 （非ドラフト）</dd>
 			<dt class="ref">catid</dt>
-			<dd>�J�e�S���[ID</dd>
+			<dd>カテゴリーID</dd>
 		</dl></td>		
 	</tr>	
 	<tr>
 		<td>PreUpdateItem</td>
-		<td>�f�[�^�x�[�X�ɂ���A�C�e�����X�V����钼�O</td>
+		<td>データベースにあるアイテムが更新される直前</td>
 		<td><dl>
 			<dt class="ro">itemid</dt>
-			<dd>�A�C�e�� ID</dd>
+			<dd>アイテム ID</dd>
 			<dt class="ref">title</dt>
-			<dd>�^�C�g��</dd>
+			<dd>タイトル</dd>
 			<dt class="ref">body</dt>
-			<dd>�{��</dd>
+			<dd>本文</dd>
 			<dt class="ref">more</dt>
-			<dd>�g���e�L�X�g</dd>
+			<dd>拡張テキスト</dd>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG �I�u�W�F�N�g</code> object</dd>
+			<dd><code>BLOG オブジェクト</code> object</dd>
 			<dt class="ref">closed</dt>
-			<dd>1 �i�R�����g�s�j or 0 �i�R�����g�j</dd>
+			<dd>1 （コメント不可） or 0 （コメント可）</dd>
 			<dt class="ref">catid</dt>
-			<dd>�J�e�S���[ID</dd>
+			<dd>カテゴリーID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PrepareItemForEdit</td>
-		<td>�A�C�e�����f�[�^�x�[�X����擾��������ŁA�ҏW�̂��߂Ƀ��[�U�[�ɕ\�������O</td>
+		<td>アイテムをデータベースから取得した直後で、編集のためにユーザーに表示される前</td>
 		<td><dl>
 			<dt class="ref">item</dt>
-			<dd>�A�C�e���f�[�^�����A�z�z��</dd>
+			<dd>アイテムデータを持つ連想配列</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreUpdateComment</td>
-		<td>�R�����g���X�V����A�f�[�^�x�[�X�ɕۑ�����钼�O</td>
+		<td>コメントが更新され、データベースに保存される直前</td>
 		<td><dl>
 			<dt class="ref">body</dt>
-			<dd>�R�����g�{��</dd>
+			<dd>コメント本文</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PrepareCommentForEdit</td>
-		<td>�R�����g���f�[�^�x�[�X����擾��������ŁA�ҏW�̂��߂Ƀ��[�U�[�ɕ\�������O</td>
+		<td>コメントをデータベースから取得した直後で、編集のためにユーザーに表示される前</td>
 		<td><dl>
 			<dt class="ref">comment</dt>
-			<dd>�R�����g�f�[�^�i�A�z�z��j</dd>
+			<dd>コメントデータ（連想配列）</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PrePluginOptionsEdit</td>
 		<td>
-			(v2.0b) '�v���O�C���I�v�V�����̕ҏW'�t�H�[�������������O<br />
-			(v2.2) �p�����[�^�ǉ�</td>
+			(v2.0b) 'プラグインオプションの編集'フォームが生成される前<br />
+			(v2.2) パラメータ追加</td>
 		<td><dl>
 			<dt class="ro">context</dt>
-			<dd>(v2.2) <code>global</code>, <code>blog</code>, <code>member</code>, <code>category</code>�̂����ꂩ</dd>
+			<dd>(v2.2) <code>global</code>, <code>blog</code>, <code>member</code>, <code>category</code>のいずれか</dd>
 			<dt class="ref">options</dt>
-			<dd>���̃C���f�b�N�X�����A�z�z��F <code>name</code>, <code>value</code>, <code>oid</code>, <code>description</code>, <code>type</code>, <code>typeinfo</code>, <code>contextid</code> �B�ǉ��I�v�V�����������ɉ����邱�Ƃ��\�i�����ŉ����̏���������Ƃ���PostPluginOptionsUpdate�̋L�q���K�v�j			  </dd>
+			<dd>次のインデックスをもつ連想配列： <code>name</code>, <code>value</code>, <code>oid</code>, <code>description</code>, <code>type</code>, <code>typeinfo</code>, <code>contextid</code> 。追加オプションをここに加えることも可能（それらで何かの処理をするときはPostPluginOptionsUpdateの記述も必要）			  </dd>
 			<dt class="ro">plugid</dt>
-			<dd>�v���O�C�� ID �i���ꂪ�C�ɂȂ�Ȃ�A<code>GetID()</code>������Ɨ����ł���j�i�R���e�N�X�g��global�̂Ƃ��̂ݑ��݁j</dd>
+			<dd>プラグイン ID （これが気になるなら、<code>GetID()</code>を見ると理解できる）（コンテクストがglobalのときのみ存在）</dd>
 			<dt class="ro">contextid</dt>
-			<dd>�R���e�N�X�g ID (blogid, memberid, catid �R���e�N�X�g�ɂ��)</dd>
+			<dd>コンテクスト ID (blogid, memberid, catid コンテクストによる)</dd>
 			
 		</dl></td>		
 	</tr>	
 	<tr>
 		<td>PostPluginOptionsUpdate</td>
 		<td>
-			(v2.0b) �v���O�C���I�v�V�����̍X�V��<br />
-		(v2.2) �R���e�N�X�g�ɂ���ĈقȂ�p�����[�^</td>
+			(v2.0b) プラグインオプションの更新後<br />
+		(v2.2) コンテクストによって異なるパラメータ</td>
 		<td><dl>
 			<dt class="ro">context</dt>
 			<dd>(v2.2) <code>global</code>, <code>member</code>, <code>blog</code> or <code>category</code></dd>
 			<dt class="ro">plugid</dt>
-			<dd>�v���O�C�� ID �i���ꂪ�C�ɂȂ�Ȃ�A<code>GetID()</code>������Ɨ����ł���j�iglobal�R���e�N�X�g�j</dd>
+			<dd>プラグイン ID （これが気になるなら、<code>GetID()</code>を見ると理解できる）（globalコンテクスト）</dd>
 			<dt class="ro">blogid</dt>
-			<dd>(v2.2) blog ID (blog �R���e�N�X�g)</dd>			
+			<dd>(v2.2) blog ID (blog コンテクスト)</dd>			
 			<dt class="ref obj">blog</dt>
-			<dd>(v2.2) BLOG �I�u�W�F�N�g (blog �R���e�N�X�g)</dd>			
+			<dd>(v2.2) BLOG オブジェクト (blog コンテクスト)</dd>			
 			<dt class="ro">memberid</dt>
-			<dd>(v2.2) member ID (member �R���e�N�X�g)</dd>			
+			<dd>(v2.2) member ID (member コンテクスト)</dd>			
 			<dt class="ref obj">member</dt>
-			<dd>(v2.2) MEMBER �I�u�W�F�N�g (member �R���e�N�X�g)</dd>			
+			<dd>(v2.2) MEMBER オブジェクト (member コンテクスト)</dd>			
 			<dt class="ro">catid</dt>
-			<dd>(v2.2) category ID (category �R���e�N�X�g)</dd>			
+			<dd>(v2.2) category ID (category コンテクスト)</dd>			
 		</dl></td>		
 		
 	</tr>	
 	<tr>
 		<td>PostAuthentication</td>
-		<td>(v2.0b) ���O�C�������̊�����B�y�[�W���N�G�X�g���Ƃɔ���</td>
+		<td>(v2.0b) ログイン処理の完了後。ページリクエストごとに発生</td>
 		<td><dl>
 			<dt class="ro">loggedIn</dt>
-			<dd><code>$member->isLoggedIn()</code>�̖߂�l</dd>
+			<dd><code>$member->isLoggedIn()</code>の戻り値</dd>
 		</dl></td>		
 	</tr>		
 	<tr>
 		<td>PreAddItemForm</td>
-		<td>(v2.0b) �A�C�e���ǉ��t�H�[���i�u�b�N�}�[�N���b�g�܂��͊Ǘ��G���A�j����������钼�O</td>
+		<td>(v2.0b) アイテム追加フォーム（ブックマークレットまたは管理エリア）が生成される直前</td>
 		<td><dl>
 			<dt class="ref">contents</dt>
-			<dd>�A�z�z��ւ̎Q�ƁB���̂�����'title',
-			  'body', 'more'�ɂ̓t�H�[���t�B�[���h�ւ̏����l��^���邱�Ƃ��ł��܂��B�����̃v���O�C���Ԃł����̒l�̕ύX�������ɂ́A�������'hasBeenSet'�̒l��1�ɃZ�b�g���܂��i�������O�ɂ��̒l���`�F�b�N����悤�ɂ��܂��j</dd>
+			<dd>連想配列への参照。そのうちの'title',
+			  'body', 'more'にはフォームフィールドへの初期値を与えることができます。複数のプラグイン間でこれらの値の変更を避けるには、処理後に'hasBeenSet'の値を1にセットします（かつ処理前にこの値をチェックするようにします）</dd>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g�ւ̎Q��</dd>
+			<dd><code>BLOG</code> オブジェクトへの参照</dd>
 		</dl></td>		
 	</tr>		
 	<tr>
 		<td>AddItemFormExtras</td>
-		<td>(v2.0b) �A�C�e���ǉ��y�[�W�܂��̓u�b�N�}�[�N���b�g�����̂ǂ����B<code>template</code> �t�@�C���̗ނ�ʂɗp�ӂ��Ȃ��Ă��A�����Ńv���O�C�����J�X�^���t�B�[���h��ǉ��ł���B</td>
+		<td>(v2.0b) アイテム追加ページまたはブックマークレット内部のどこか。<code>template</code> ファイルの類を別に用意しなくても、ここでプラグインがカスタムフィールドを追加できる。</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g�ւ̎Q��</dd>
+			<dd><code>BLOG</code> オブジェクトへの参照</dd>
 		</dl></td>		
 	</tr>			
 	<tr>
 		<td>EditItemFormExtras</td>
 		<td>
-			(v2.0b) �A�C�e���ҏW�y�[�W�܂��̓u�b�N�}�[�N���b�g�����̂ǂ����B<code>template</code> �t�@�C���̗ނ�ʂɗp�ӂ��Ȃ��Ă��A�����Ńv���O�C�����J�X�^���t�B�[���h��ǉ��ł���B<br />
+			(v2.0b) アイテム編集ページまたはブックマークレット内部のどこか。<code>template</code> ファイルの類を別に用意しなくても、ここでプラグインがカスタムフィールドを追加できる。<br />
 			<br />			
-			���܂葽���̃f�[�^��ǉ����Ȃ����ƁB�܂��ȉ��̂悤��<strong>������XHTML</strong>�𐶐����Ă��������B		  <pre class="example"><code>&lt;h3&gt;�v���O�C����&lt;/h3&gt;
-&lt;p&gt;�ǉ��t�H�[���̓��e&lt;/p&gt;</code></pre>
-		���̂悤�ɂ��āA�������\����ۂ������̃v���O�C�����I�v�V������ێ��ł��܂��B�܂��t�B�[���h���̏d��������邽�߂Ƀv���t�B�b�N�X��p���Ă��������i�� <code>plug_tb_url</code>�j�B</td>
+			あまり多くのデータを追加しないこと。また以下のように<strong>正しいXHTML</strong>を生成してください。		  <pre class="example"><code>&lt;h3&gt;プラグイン名&lt;/h3&gt;
+&lt;p&gt;追加フォームの内容&lt;/p&gt;</code></pre>
+		このようにして、正しい構造を保ちつつ複数のプラグインがオプションを保持できます。またフィールド名の重複を避けるためにプレフィックスを用いてください（例 <code>plug_tb_url</code>）。</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g�ւ̎Q��</dd>
+			<dd><code>BLOG</code> オブジェクトへの参照</dd>
 			<dt class="ro">variables</dt>
 			<dd>
-				(read-only) �ҏW�����A�C�e���Ɋւ���S�Ă̏������A�z�z��F 'itemid',
+				(read-only) 編集されるアイテムに関する全ての情報を持つ連想配列： 'itemid',
 				  'draft', 'closed', 'title', 'body', 'more', 'author', 'authorid',
 				  'timestamp', 'karmapos', 'karmaneg', 'catid'
 			</dd>			
 			<dt class="ro">itemid</dt>
-			<dd>�A�C�e�� ID�ւ̃V���[�g�J�b�g</dd>
+			<dd>アイテム IDへのショートカット</dd>
 		</dl></td>		
 	</tr>				
 	<tr>
 		<td>BlogSettingsFormExtras</td>
-		<td>(v2.0) blog�ݒ�y�[�W�Ƀt�H�[����ǉ��\<br /><br />			
-			���܂葽���̃f�[�^��ǉ����Ȃ����ƁB�܂��ȉ��̂悤��<strong>������XHTML</strong>�𐶐����Ă��������B		  <pre class="example"><code>&lt;h4&gt;�v���O�C����&lt;/h4&gt;
+		<td>(v2.0) blog設定ページにフォームを追加可能<br /><br />			
+			あまり多くのデータを追加しないこと。また以下のように<strong>正しいXHTML</strong>を生成してください。		  <pre class="example"><code>&lt;h4&gt;プラグイン名&lt;/h4&gt;
 &lt;form method="post" action="..."&gt;&lt;p&gt;
-�ǉ��t�H�[���̓��e&lt;/p&gt;&lt;/form&gt;</code></pre>
-			���̂悤�ɂ��āA�������\����ۂ������̃v���O�C�����I�v�V������ێ��ł��܂��B�܂��t�B�[���h���̏d��������邽�߂Ƀv���t�B�b�N�X��p���Ă��������i�� <code>plug_tb_url</code>�j�B</td>
+追加フォームの内容&lt;/p&gt;&lt;/form&gt;</code></pre>
+			このようにして、正しい構造を保ちつつ複数のプラグインがオプションを保持できます。またフィールド名の重複を避けるためにプレフィックスを用いてください（例 <code>plug_tb_url</code>）。</td>
 		<td><dl>
 			<dt class="obj ref">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g�ւ̎Q��</dd>
+			<dd><code>BLOG</code> オブジェクトへの参照</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreDeleteItem</td>
-		<td>(v2.0) �A�C�e�����f�[�^�x�[�X����폜����钼�O</td>
+		<td>(v2.0) アイテムがデータベースから削除される直前</td>
 		<td><dl>
 			<dt class="ro">itemid</dt>
-			<dd>�폜�����A�C�e��ID</dd>
+			<dd>削除されるアイテムID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostDeleteItem</td>
-		<td>(v2.0) �A�C�e�����f�[�^�x�[�X����폜���ꂽ����</td>
+		<td>(v2.0) アイテムがデータベースから削除された直後</td>
 		<td><dl>
 			<dt class="ro">itemid</dt>
-			<dd>�폜���ꂽ�A�C�e��ID</dd>
+			<dd>削除されたアイテムID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreDeleteCategory</td>
-		<td>(v2.0) �J�e�S���[���f�[�^�x�[�X����폜����钼�O</td>
+		<td>(v2.0) カテゴリーがデータベースから削除される直前</td>
 		<td><dl>
 			<dt class="ro">catid</dt>
-			<dd>�폜�����J�e�S���[ ID</dd>
+			<dd>削除されるカテゴリー ID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostDeleteCategory</td>
-		<td>(v2.0) �J�e�S���[���f�[�^�x�[�X����폜���ꂽ����</td>
+		<td>(v2.0) カテゴリーがデータベースから削除された直後</td>
 		<td><dl>
 			<dt class="ro">catid</dt>
-			<dd>�폜���ꂽ�J�e�S���[ ID</dd>
+			<dd>削除されたカテゴリー ID</dd>
 		</dl></td>		
 	</tr>	
 	<tr>
 		<td>PreDeleteBlog</td>
-		<td>(v2.0) blog���f�[�^�x�[�X����폜����钼�O</td>
+		<td>(v2.0) blogがデータベースから削除される直前</td>
 		<td><dl>
 			<dt class="ro">blogid</dt>
-			<dd>�폜�����blogID</dd>
+			<dd>削除されるblogID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostDeleteBlog</td>
-		<td>(v2.0) blog���f�[�^�x�[�X����폜���ꂽ����</td>
+		<td>(v2.0) blogがデータベースから削除された直後</td>
 		<td><dl>
 			<dt class="ro">blogid</dt>
-			<dd>�폜���ꂽblogID</dd>
+			<dd>削除されたblogID</dd>
 		</dl></td>		
 	</tr>	
 	<tr>
 		<td>PreDeleteMember</td>
-		<td>(v2.0) �����o�[���f�[�^�x�[�X����폜����钼�O</td>
+		<td>(v2.0) メンバーがデータベースから削除される直前</td>
 		<td><dl>
 			<dt class="ref obj">member</dt>
-			<dd><code>�폜����郁���o�[�Ɋւ���MEMBER</code> �I�u�W�F�N�g�ւ̎Q��</dd>
+			<dd><code>削除されるメンバーに関するMEMBER</code> オブジェクトへの参照</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostDeleteMember</td>
-		<td>(v2.0) �����o�[���f�[�^�x�[�X����폜���ꂽ����</td>
+		<td>(v2.0) メンバーがデータベースから削除された直後</td>
 		<td><dl>
 			<dt class="ref obj">member</dt>
-			<dd><code>�폜����郁���o�[�Ɋւ���MEMBER</code> �I�u�W�F�N�g�ւ̎Q��</dd>
+			<dd><code>削除されるメンバーに関するMEMBER</code> オブジェクトへの参照</dd>
 		</dl></td>		
 	</tr>	
 	<tr>
 		<td>PreDeleteTeamMember</td>
-		<td>(v2.0) �����o�[��weblog�`�[������폜����钼�O</td>
+		<td>(v2.0) メンバーがweblogチームから削除される直前</td>
 		<td><dl>
 			<dt class="ref obj">member</dt>
-			<dd><code>MEMBER</code> �I�u�W�F�N�g�ւ̎Q��</dd>
+			<dd><code>MEMBER</code> オブジェクトへの参照</dd>
 			<dt class="ro">blogid</dt>
 			<dd>blogID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostDeleteTeamMember</td>
-		<td>(v2.0) �����o�[��weblog�`�[������폜���ꂽ����</td>
+		<td>(v2.0) メンバーがweblogチームから削除された直後</td>
 		<td><dl>
 			<dt class="ref obj">member</dt>
-			<dd><code>MEMBER</code> �I�u�W�F�N�g�ւ̎Q��</dd>
+			<dd><code>MEMBER</code> オブジェクトへの参照</dd>
 			<dt class="ro">blogid</dt>
 			<dd>blogID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreDeleteComment</td>
-		<td>(v2.0) �R�����g���f�[�^�x�[�X����폜����钼�O</td>
+		<td>(v2.0) コメントがデータベースから削除される直前</td>
 		<td><dl>
 			<dt class="ro">commentid</dt>
-			<dd>�폜�����R�����gID</dd>
+			<dd>削除されるコメントID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostDeleteComment</td>
-		<td>(v2.0) �R�����g���f�[�^�x�[�X����폜���ꂽ����</td>
+		<td>(v2.0) コメントがデータベースから削除された直後</td>
 		<td><dl>
 			<dt class="ro">commentid</dt>
-			<dd>�폜���ꂽ�R�����gID</dd>
+			<dd>削除されたコメントID</dd>
 		</dl></td>		
 	</tr>		
 	<tr>
 		<td>ActionLogCleared</td>
-		<td>(v2.0) �A�N�V�������O���������ꂽ��</td>
-		<td>�Ȃ�</td>		
+		<td>(v2.0) アクションログが消去された後</td>
+		<td>なし</td>		
 	</tr>
 	<tr>
 		<td>PreDeleteTemplate</td>
-		<td>(v2.0) �e���v���[�g���f�[�^�x�[�X����폜����钼�O</td>
+		<td>(v2.0) テンプレートがデータベースから削除される直前</td>
 		<td><dl>
 			<dt class="ro">templateid</dt>
-			<dd>�폜�����e���v���[�gID</dd>
+			<dd>削除されるテンプレートID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostDeleteTemplate</td>
-		<td>(v2.0) �e���v���[�g���f�[�^�x�[�X����폜���ꂽ����</td>
+		<td>(v2.0) テンプレートがデータベースから削除された直後</td>
 		<td><dl>
 			<dt class="ro">templateid</dt>
-			<dd>�폜���ꂽ�e���v���[�gID</dd>
+			<dd>削除されたテンプレートID</dd>
 		</dl></td>		
 	</tr>		
 	<tr>
 		<td>PreDeleteSkin</td>
-		<td>(v2.0) �X�L�����f�[�^�x�[�X����폜����钼�O</td>
+		<td>(v2.0) スキンがデータベースから削除される直前</td>
 		<td><dl>
 			<dt class="ro">skinid</dt>
-			<dd>�폜�����X�L��ID</dd>
+			<dd>削除されるスキンID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostDeleteSkin</td>
-		<td>(v2.0) �X�L�����f�[�^�x�[�X����폜���ꂽ����</td>
+		<td>(v2.0) スキンがデータベースから削除された直後</td>
 		<td><dl>
 			<dt class="ro">skinid</dt>
-			<dd>�폜���ꂽ�X�L��ID</dd>
+			<dd>削除されたスキンID</dd>
 		</dl></td>		
 	</tr>	
 	<tr>
 		<td>PreDeletePlugin</td>
-		<td>(v2.0) �v���O�C�����f�[�^�x�[�X����폜����钼�O</td>
+		<td>(v2.0) プラグインがデータベースから削除される直前</td>
 		<td><dl>
 			<dt class="ro">plugid</dt>
-			<dd>�폜�����v���O�C��ID</dd>
+			<dd>削除されるプラグインID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostDeletePlugin</td>
-		<td>(v2.0) �v���O�C�����f�[�^�x�[�X����폜���ꂽ����</td>
+		<td>(v2.0) プラグインがデータベースから削除された直後</td>
 		<td><dl>
 			<dt class="ro">plugid</dt>
-			<dd>�폜���ꂽ�v���O�C��ID</dd>
+			<dd>削除されたプラグインID</dd>
 		</dl></td>		
 	</tr>		
 	<tr>
 		<td>PreDeleteBan</td>
-		<td>(v2.0) �֎~IP���f�[�^�x�[�X����폜����钼�O</td>
+		<td>(v2.0) 禁止IPがデータベースから削除される直前</td>
 		<td><dl>
 			<dt class="ro">blogid</dt>
-			<dd>�֎~IP���폜�����blog��ID</dd>
+			<dd>禁止IPが削除されるblogのID</dd>
 			<dt class="ro">iprange</dt>
-			<dd>�֎~���ꂽIP�����W</dd>			
+			<dd>禁止されたIPレンジ</dd>			
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostDeleteBan</td>
-		<td>(v2.0) �֎~IP���f�[�^�x�[�X����폜���ꂽ����</td>
+		<td>(v2.0) 禁止IPがデータベースから削除された直後</td>
 		<td><dl>
 			<dt class="ro">blogid</dt>
-			<dd>�֎~IP���폜���ꂽblog��ID</dd>
+			<dd>禁止IPが削除されたblogのID</dd>
 			<dt class="ro">iprange</dt>
-			<dd>�֎~���ꂽIP�����W</dd>			
+			<dd>禁止されたIPレンジ</dd>			
 		</dl></td>		
 	</tr>			
 	<tr>
 		<td>PreAddCategory</td>
-		<td>(v2.0) �V�����J�e�S���[���f�[�^�x�[�X�ɐ�������钼�O</td>
+		<td>(v2.0) 新しいカテゴリーがデータベースに生成される直前</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g�̎Q��</dd>
+			<dd><code>BLOG</code> オブジェクトの参照</dd>
 			<dt class="ref">name</dt>
-			<dd>�V�����J�e�S���[��</dd>			
+			<dd>新しいカテゴリー名</dd>			
 			<dt class="ref">description</dt>
-			<dd>�V�����J�e�S���[�̐���</dd>
+			<dd>新しいカテゴリーの説明</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostAddCategory</td>
-		<td>(v2.0) �V�����J�e�S���[���f�[�^�x�[�X�ɐ������ꂽ����</td>
+		<td>(v2.0) 新しいカテゴリーがデータベースに生成された直後</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g�ւ̎Q��</dd>
+			<dd><code>BLOG</code> オブジェクトへの参照</dd>
 			<dt class="ro">name</dt>
-			<dd>�V�����J�e�S���[��</dd>			
+			<dd>新しいカテゴリー名</dd>			
 			<dt class="ro">description</dt>
-			<dd>�V�����J�e�S���[�̐���</dd>
+			<dd>新しいカテゴリーの説明</dd>
 			<dt class="ro">catid</dt>
-			<dd>�V�����J�e�S���[ ID</dd>			
+			<dd>新しいカテゴリー ID</dd>			
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreAddBlog</td>
-		<td>(v2.0) �V����blog����������钼�O</td>
+		<td>(v2.0) 新しいblogが生成される直前</td>
 		<td><dl>
 			<dt class="ref">name</dt>
-			<dd>�V���� blog��</dd>
+			<dd>新しい blog名</dd>
 			<dt class="ref">shortname</dt>
-			<dd>�V���� blog�̒Z�k��</dd>
+			<dd>新しい blogの短縮名</dd>
 			<dt class="ref">timeoffset</dt>
-			<dd>�V���� blog�̃^�C���I�t�Z�b�g</dd>
+			<dd>新しい blogのタイムオフセット</dd>
 			<dt class="ref">description</dt>
-			<dd>�V���� blog�̐���</dd>
+			<dd>新しい blogの説明</dd>
 			<dt class="ref">defaultskin</dt>
-			<dd>�V����blog�̃f�t�H���g�X�L����ID</dd>
+			<dd>新しいblogのデフォルトスキンのID</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostAddBlog</td>
-		<td>(v2.0) �V����blog���������ꂽ����</td>
+		<td>(v2.0) 新しいblogが生成された直後</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
-			<dd>�V����<code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd>新しい<code>BLOG</code> オブジェクト</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreAddPlugin</td>
-		<td>(v2.0) �v���O�C�����ǉ�����钼�O</td>
+		<td>(v2.0) プラグインが追加される直前</td>
 		<td><dl>
 			<dt class="ref">file</dt>
-			<dd>�V�����v���O�C���̃t�@�C����</dd>
+			<dd>新しいプラグインのファイル名</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostAddPlugin</td>
-		<td>(v2.0) �v���O�C�����ǉ����ꂽ����</td>
+		<td>(v2.0) プラグインが追加された直後</td>
 		<td><dl>
 			<dt class="ref obj">plugin</dt>
-			<dd>�V�����ǉ����ꂽ�v���O�C���̃I�u�W�F�N�g</dd>
+			<dd>新しく追加されたプラグインのオブジェクト</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreAddTeamMember</td>
-		<td>(v2.0) �����o�[��blog�`�[���ɒǉ�����钼�O</td>
+		<td>(v2.0) メンバーがblogチームに追加される直前</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd><code>BLOG</code> オブジェクト</dd>
 			<dt class="ref obj">member</dt>
-			<dd><code>MEMBER</code> �I�u�W�F�N�g</dd>
+			<dd><code>MEMBER</code> オブジェクト</dd>
 			<dt class="ref">admin</dt>
-			<dd>�V�����ǉ����ꂽ�����o�[���Ǘ������������Ă��邩�ǂ����������u�[���l</dd>
+			<dd>新しく追加されたメンバーが管理権限を持っているかどうかを示すブール値</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostAddTeamMember</td>
-		<td>(v2.0) �����o�[��blog�`�[���ɒǉ����ꂽ����</td>
+		<td>(v2.0) メンバーがblogチームに追加された直後</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
-			<dd><code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd><code>BLOG</code> オブジェクト</dd>
 			<dt class="ref obj">member</dt>
-			<dd><code>MEMBER</code> �I�u�W�F�N�g</dd>
+			<dd><code>MEMBER</code> オブジェクト</dd>
 			<dt class="ro">admin</dt>
-			<dd>�V�����ǉ����ꂽ�����o�[���Ǘ������������Ă��邩�ǂ����������u�[���l</dd>
+			<dd>新しく追加されたメンバーが管理権限を持っているかどうかを示すブール値</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreAddTemplate</td>
-		<td>(v2.0) �V�����e���v���[�g����������钼�O�i���F�e���v���[�g���������ꂽ�Ƃ����Ă΂��j</td>
+		<td>(v2.0) 新しいテンプレートが生成される直前（注：テンプレートが複製されたときも呼ばれる）</td>
 		<td><dl>
 			<dt class="ref">name</dt>
-			<dd>�V�����e���v���[�g��</dd>
+			<dd>新しいテンプレート名</dd>
 			<dt class="ref">description</dt>
-			<dd>�V�����e���v���[�g�̐���</dd>
+			<dd>新しいテンプレートの説明</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostAddTemplate</td>
-		<td>(v2.0) �V�����e���v���[�g���������ꂽ����</td>
+		<td>(v2.0) 新しいテンプレートが生成された直後</td>
 		<td><dl>
 			<dt class="ro">name</dt>
-			<dd>�V�����e���v���[�g��</dd>
+			<dd>新しいテンプレート名</dd>
 			<dt class="ro">description</dt>
-			<dd>�V�����e���v���[�g�̐���</dd>
+			<dd>新しいテンプレートの説明</dd>
 			<dt class="ro">templateid</dt>
-			<dd>�V�����e���v���[�gID</dd>
+			<dd>新しいテンプレートID</dd>
 		</dl></td>		
 	</tr>	
 	<tr>
 		<td>PreAddSkin</td>
-		<td>(v2.0) �V�����X�L������������钼�O�i���F�X�L�����������ꂽ�Ƃ����Ă΂��j</td>
+		<td>(v2.0) 新しいスキンが生成される直前（注：スキンが複製されたときも呼ばれる）</td>
 		<td><dl>
 			<dt class="ref">name</dt>
-			<dd>�V�����X�L����</dd>
+			<dd>新しいスキン名</dd>
 			<dt class="ref">description</dt>
-			<dd>�V�����X�L�����̐���</dd>
+			<dd>新しいスキン名の説明</dd>
 			<dt class="ref">type</dt>
-			<dd>�X�L���̃R���e���g�^�C�v</dd>
+			<dd>スキンのコンテントタイプ</dd>
 			<dt class="ref">includeMode</dt>
-			<dd>�V�����X�L���̃C���N���[�h���[�h</dd>
+			<dd>新しいスキンのインクルードモード</dd>
 			<dt class="ref">includePrefix</dt>
-			<dd>�V�����X�L���̃C���N���[�h�v���t�B�b�N�X</dd>
+			<dd>新しいスキンのインクルードプレフィックス</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostAddSkin</td>
-		<td>(v2.0) �V�����X�L�����������ꂽ����</td>
+		<td>(v2.0) 新しいスキンが生成された直後</td>
 		<td><dl>
 			<dt class="ro">name</dt>
-			<dd>�V�����X�L����</dd>
+			<dd>新しいスキン名</dd>
 			<dt class="ro">description</dt>
-			<dd>�V�����X�L���̐���</dd>
+			<dd>新しいスキンの説明</dd>
 			<dt class="ro">type</dt>
-			<dd>�X�L���̃R���e���g�^�C�v</dd>
+			<dd>スキンのコンテントタイプ</dd>
 			<dt class="ro">includeMode</dt>
-			<dd>�V�����X�L���̃C���N���[�h���[�h</dd>
+			<dd>新しいスキンのインクルードモード</dd>
 			<dt class="ro">includePrefix</dt>
-			<dd>�V�����X�L���̃C���N���[�h�v���t�B�b�N�X</dd>
+			<dd>新しいスキンのインクルードプレフィックス</dd>
 			<dt class="ro">skinid</dt>
-			<dd>�V�����X�L��ID</dd>
+			<dd>新しいスキンID</dd>
 		</dl></td>		
 	</tr>		
 	<tr>
 		<td>PreAddBan</td>
-		<td>(v2.0) �V�����֎~IP���ǉ�����钼�O</td>
+		<td>(v2.0) 新しい禁止IPが追加される直前</td>
 		<td><dl>
 			<dt class="ref">blogid</dt>
 			<dd>blogID</dd>
 			<dt class="ref">iprange</dt>
-			<dd>�֎~���ꂽIP�����W</dd>
+			<dd>禁止されたIPレンジ</dd>
 			<dt class="ref">reason</dt>
-			<dd>�֎~���ꂽ���R���L�q�����e�L�X�g���b�Z�[�W</dd>
+			<dd>禁止された理由を記述したテキストメッセージ</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostAddBan</td>
-		<td>(v2.0) �V�����֎~IP���ǉ����ꂽ����</td>
+		<td>(v2.0) 新しい禁止IPが追加された直後</td>
 		<td><dl>
 			<dt class="ro">blogid</dt>
 			<dd>blogID</dd>
 			<dt class="ro">iprange</dt>
-			<dd>�֎~���ꂽIP�����W</dd>
+			<dd>禁止されたIPレンジ</dd>
 			<dt class="ro">reason</dt>
-			<dd>�֎~���ꂽ���R���L�q�����e�L�X�g���b�Z�[�W</dd>
+			<dd>禁止された理由を記述したテキストメッセージ</dd>
 		</dl></td>		
 	</tr>		
 
 	<tr>
 		<td>PreMoveItem</td>
-		<td>(v2.0) �A�C�e��������blog/�J�e�S���[�Ɉڂ���钼�O</td>
+		<td>(v2.0) アイテムが他のblog/カテゴリーに移される直前</td>
 		<td><dl>
 			<dt class="ref">itemid</dt>
-			<dd>�A�C�e��ID</dd>
+			<dd>アイテムID</dd>
 			<dt class="ref">destblogid</dt>
-			<dd>�ړ����blogID</dd>
+			<dd>移動先のblogID</dd>
 			<dt class="ref">destcatid</dt>
-			<dd>�ړ���̃J�e�S���[ID</dd>			
+			<dd>移動先のカテゴリーID</dd>			
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostMoveItem</td>
-		<td>(v2.0) �A�C�e��������blog/�J�e�S���[�Ɉڂ��ꂽ����</td>
+		<td>(v2.0) アイテムが他のblog/カテゴリーに移された直後</td>
 		<td><dl>
 			<dt class="ro">itemid</dt>
-			<dd>�A�C�e��ID</dd>
+			<dd>アイテムID</dd>
 			<dt class="ro">destblogid</dt>
-			<dd>�V����blogID</dd>
+			<dd>新しいblogID</dd>
 			<dt class="ro">destcatid</dt>
-			<dd>�V�����J�e�S���[ID</dd>	
+			<dd>新しいカテゴリーID</dd>	
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PreMoveCategory</td>
-		<td>(v2.0) �J�e�S���[������blog�Ɉڂ���钼�O</td>
+		<td>(v2.0) カテゴリーが他のblogに移される直前</td>
 		<td><dl>
 			<dt class="ref">catid</dt>
-			<dd>�J�e�S���[ID</dd>
+			<dd>カテゴリーID</dd>
 			<dt class="ref obj">sourceblog</dt>
-			<dd>�ړ�����<code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd>移動元の<code>BLOG</code> オブジェクト</dd>
 			<dt class="ref obj">destblog</dt>
-			<dd>�ړ����<code>BLOG</code> �I�u�W�F�N�g</dd>			
+			<dd>移動先の<code>BLOG</code> オブジェクト</dd>			
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>PostMoveCategory</td>
-		<td>(v2.0) �J�e�S���[������blog�Ɉڂ��ꂽ����</td>
+		<td>(v2.0) カテゴリーが他のblogに移された直後</td>
 		<td><dl>
 			<dt class="ro">catid</dt>
-			<dd>�J�e�S���[ID</dd>
+			<dd>カテゴリーID</dd>
 			<dt class="ref obj">sourceblog</dt>
-			<dd>�ړ�����<code>BLOG</code> �I�u�W�F�N�g</dd>
+			<dd>移動元の<code>BLOG</code> オブジェクト</dd>
 			<dt class="ref obj">destblog</dt>
-			<dd>�ړ����<code>BLOG</code> �I�u�W�F�N�g</dd>			
+			<dd>移動先の<code>BLOG</code> オブジェクト</dd>			
 		</dl></td>		
 	</tr>	
 	<tr>
 		<td>MemberSettingsFormExtras</td>
-		<td>(v2.0) �����o�[�ݒ�y�[�W�Ƀt�H�[����ǉ��\<br /><br />			
-			���܂葽���̃f�[�^��ǉ����Ȃ����ƁB�܂��ȉ��̂悤��<strong>������XHTML</strong>�𐶐����Ă��������B
-            <pre class="example"><code>&lt;h4&gt;�v���O�C����&lt;/h4&gt;
+		<td>(v2.0) メンバー設定ページにフォームを追加可能<br /><br />			
+			あまり多くのデータを追加しないこと。また以下のように<strong>正しいXHTML</strong>を生成してください。
+            <pre class="example"><code>&lt;h4&gt;プラグイン名&lt;/h4&gt;
 &lt;form method="post" action="..."&gt;&lt;p&gt;
-�ǉ��t�H�[���̓��e&lt;/p&gt;&lt;/form&gt;</code></pre>
-���̂悤�ɂ��āA�������\����ۂ������̃v���O�C�����I�v�V������ێ��ł��܂��B�܂��t�B�[���h���̏d��������邽�߂Ƀv���t�B�b�N�X��p���Ă��������i�� <code>plug_tb_url</code>�j�B</td>
+追加フォームの内容&lt;/p&gt;&lt;/form&gt;</code></pre>
+このようにして、正しい構造を保ちつつ複数のプラグインがオプションを保持できます。またフィールド名の重複を避けるためにプレフィックスを用いてください（例 <code>plug_tb_url</code>）。</td>
 		<td><dl>
 			<dt class="ref obj">member</dt>
-			<dd><code>MEMBER</code> �I�u�W�F�N�g�ւ̎Q��</dd>
+			<dd><code>MEMBER</code> オブジェクトへの参照</dd>
 		</dl></td>		
 	</tr>
 	<tr>
 		<td>GeneralSettingsFormExtras</td>
-		<td>(v2.0) ��ʐݒ�y�[�W�Ƀt�H�[����ǉ��\<br />
+		<td>(v2.0) 一般設定ページにフォームを追加可能<br />
 		  <br />
-���܂葽���̃f�[�^��ǉ����Ȃ����ƁB�܂��ȉ��̂悤��<strong>������XHTML</strong>�𐶐����Ă��������B
-<pre class="example"><code>&lt;h4&gt;�v���O�C����&lt;/h4&gt;
+あまり多くのデータを追加しないこと。また以下のように<strong>正しいXHTML</strong>を生成してください。
+<pre class="example"><code>&lt;h4&gt;プラグイン名&lt;/h4&gt;
 &lt;form method="post" action="..."&gt;&lt;p&gt;
-�ǉ��t�H�[���̓��e&lt;/p&gt;&lt;/form&gt;</code></pre>
-���̂悤�ɂ��āA�������\����ۂ������̃v���O�C�����I�v�V������ێ��ł��܂��B�܂��t�B�[���h���̏d��������邽�߂Ƀv���t�B�b�N�X��p���Ă��������i�� <code>plug_tb_url</code>�j�B</td>
-		<td>�Ȃ�</td>		
+追加フォームの内容&lt;/p&gt;&lt;/form&gt;</code></pre>
+このようにして、正しい構造を保ちつつ複数のプラグインがオプションを保持できます。またフィールド名の重複を避けるためにプレフィックスを用いてください（例 <code>plug_tb_url</code>）。</td>
+		<td>なし</td>		
 	</tr>
 	<tr>
 		<td>AdminPrePageHead</td>
-		<td>(v2.5) �Ǘ���ʂŁA�y�[�W�w�b�h���o�͂��钼�O�B���̃C�x���g�̓w�b�h�̈�ɃX�N���v�g��CSS��ǉ�����̂ɗp�����܂��B</td>
+		<td>(v2.5) 管理画面で、ページヘッドを出力する直前。このイベントはヘッド領域にスクリプトやCSSを追加するのに用いられます。</td>
 		<td><dl>
 			<dt class="ref">extrahead</dt>
-			<dd>HTML�y�[�W�̃w�b�h�̈�ɖ��ߍ��܂��ǉ����B�����ɒǉ����������̂����Ă��������B</dd>
+			<dd>HTMLページのヘッド領域に埋め込まれる追加情報。ここに追加したいものを入れてください。</dd>
 			<dt class="ro">action</dt>
-			<dd>���ݎ��s����Ă���A�N�V�����A�܂��̓y�[�W�^�C�v</dd>
+			<dd>現在実行されているアクション、またはページタイプ</dd>
 		</dl></td>
 	</tr>
 	<tr>
 		<td>AdminPrePageFoot</td>
-		<td>(v2.5) �Ǘ���ʂŁA�y�[�W�t�b�^�[���o�͂��钼�O�B</td>
+		<td>(v2.5) 管理画面で、ページフッターを出力する直前。</td>
 	  <td><dl>
 			<dt class="ro">action</dt>
 			<dd></dd>
 		</dl>
-	    ���ݎ��s����Ă���A�N�V�����A�܂��̓y�[�W�^�C�v</td>
+	    現在実行されているアクション、またはページタイプ</td>
 	</tr>
 	<tr>
 		<td>PreSendContentType</td>
-		<td>(v2.5) HTTP�w�b�_�[�ɃR���e���g�^�C�v���Z�b�g����钼�O</td>
+		<td>(v2.5) HTTPヘッダーにコンテントタイプがセットされる直前</td>
 		<td><dl>
 			<dt class="ref">contentType</dt>
-			<dd>�R���e���g�^�C�v�i<code>application/xhtml+xml</code>�Ȃǁj</dd>
+			<dd>コンテントタイプ（<code>application/xhtml+xml</code>など）</dd>
 			<dt class="ref">charset</dt>
-			<dd>�L�����N�^�[�Z�b�g</dd>
+			<dd>キャラクターセット</dd>
 			<dt class="ro">pageType</dt>
-			<dd>�\������y�[�W�̎�ނ�����������F<code>skin</code> (�X�L���^�C�v), <code>media</code> (���f�B�A���C�u����), <code>admin-<em>action</em></code> (�Ǘ��G���A), <code>bookmarklet-<em>action</em></code> (�u�b�N�}�[�N���b�g)</dd>
+			<dd>表示するページの種類を示す文字列：<code>skin</code> (スキンタイプ), <code>media</code> (メディアライブラリ), <code>admin-<em>action</em></code> (管理エリア), <code>bookmarklet-<em>action</em></code> (ブックマークレット)</dd>
 		</dl></td>
 	</tr>
 	<tr>
 		<td>QuickMenu</td>
-		<td>(v2.5) �Ǘ��G���A�̃N�C�b�N���j���[�̈�ԉ��B�����ւ̃v���O�C���o�^�ɗ��p����܂��B�o�^����ɂ�options�ɘA�z�z������܂��B�����Ⴊ<a href="#admin">�v���O�C���Ǘ��G���A�����</a>�̃Z�N�V�����ɂ���܂��B</td>
+		<td>(v2.5) 管理エリアのクイックメニューの一番下。そこへのプラグイン登録に利用されます。登録するにはoptionsに連想配列を入れます。実装例が<a href="#admin">プラグイン管理エリアを作る</a>のセクションにあります。</td>
 		<td><dl>
 			<dt class="ref">options</dt>
-			<dd>�z��</dd>
+			<dd>配列</dd>
 		</dl></td>
 	</tr>
 	<tr>
 		<td>BookmarkletExtraHead</td>
-		<td>(v2.5) �u�b�N�}�[�N���b�g
-	  XHTML�R�[�h�̃w�b�h�̈���B</td>
+		<td>(v2.5) ブックマークレット
+	  XHTMLコードのヘッド領域内。</td>
 		<td><dl>
 			<dt class="ref">extrahead</dt>
-			<dd>XHTML�R�[�h�̃w�b�h�̈�ɖ��ߍ��܂��ǉ����B�����ɒǉ����������̂����Ă��������B</dd>
+			<dd>XHTMLコードのヘッド領域に埋め込まれる追加情報。ここに追加したいものを入れてください。</dd>
 		</dl></td>
 	</tr>
 <!--	<tr>
@@ -1335,190 +1335,190 @@ by ref</var>�̂悤�Ɏ�����܂��B</p>
 
 
 
-<h1>�I�v�V������ۑ�����<a name="options" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>オプションを保存する<a name="options" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>�v���O�C���ɊȒP�ɃI�v�V������o�^�E�擾�ł���悤�Ɉ�A�̃��\�b�h���p�ӂ���Ă��܂��B�����̃I�v�V�����͒���Nucleus�̊Ǘ��G���A�ŕҏW�ł��A�v���O�C�����g�̊Ǘ��G���A��p�ӂ���K�v���Ȃ��APHP�t�@�C�����̂��̂̒��ɃI�v�V�����̒l���������܂��ɂ��݂܂��B</p>
+<p>プラグインに簡単にオプションを登録・取得できるように一連のメソッドが用意されています。これらのオプションは直接Nucleusの管理エリアで編集でき、プラグイン自身の管理エリアを用意する必要もなく、PHPファイルそのものの中にオプションの値を書き込まずにすみます。</p>
 
-<p>�I�v�V�����͈قȂ����R���e�N�X�g�ŗ��p�\�ł��B</p>
+<p>オプションは異なったコンテクストで利用可能です。</p>
 
 <ol>
-	<li><strong>�O���[�o���I�v�V����</strong>�F�Ǘ��G���A�̃v���O�C���Z�N�V�����ŕҏW�\</li>
-	<li><strong>blog�I�v�V����</strong>�Fblog�ݒ�y�[�W�ŕҏW�\</li>
-	<li><strong>�J�e�S���[�I�v�V����</strong>�Fblog�ݒ�y�[�W�i�̃J�e�S���[�ҏW�y�[�W�j�ŕҏW�\</li>	
-	<li><strong>�����o�[�I�v�V����</strong>�F�����o�[�ҏW�y�[�W�ŕҏW�\</li>
+	<li><strong>グローバルオプション</strong>：管理エリアのプラグインセクションで編集可能</li>
+	<li><strong>blogオプション</strong>：blog設定ページで編集可能</li>
+	<li><strong>カテゴリーオプション</strong>：blog設定ページ（のカテゴリー編集ページ）で編集可能</li>	
+	<li><strong>メンバーオプション</strong>：メンバー編集ページで編集可能</li>
 </ol>
 
-<h2>�I�v�V�����̎��</h2>
+<h2>オプションの種類</h2>
 
-<p>�I�v�V�����ɂ͂������̃^�C�v���񋟂���Ă��܂��B</p>
+<p>オプションにはいくつかのタイプが提供されています。</p>
 
 <dl>
 	<dt>text</dt>
-	<dd>�V���v���ȃe�L�X�g</dd>
+	<dd>シンプルなテキスト</dd>
 	<dt>yesno</dt>
-	<dd>'yes'��'no'�ǂ��炩�i�ҏW��ʂł̓��W�I�{�^���Ƃ��ĕ\������܂��j</dd>
+	<dd>'yes'か'no'どちらか（編集画面ではラジオボタンとして表示されます）</dd>
 	<dt>password</dt>
-	<dd>�e�L�X�g�t�B�[���h (�ҏW��ʂł͕����ŕ\������܂�)</dd>
+	<dd>テキストフィールド (編集画面では伏字で表示されます)</dd>
 	<dt>textarea (v2.2)</dt>
-	<dd>�����s�̃e�L�X�g�t�B�[���h</dd>
+	<dd>複数行のテキストフィールド</dd>
 	<dt>select (v2.2)</dt>
-	<dd>�h���b�v�_�E�����j���[�B���̂悤�Ȍ`���̒ǉ���񂪕K�v�ł��F Option 1|value1|Option 2|value2|Option 3|value3 </dd>
+	<dd>ドロップダウンメニュー。次のような形式の追加情報が必要です： Option 1|value1|Option 2|value2|Option 3|value3 </dd>
 </dl>
 
 
-<h2>����</h2>
+<h2>制限</h2>
 
 <ol>
-	<li>�I�v�V�������͍ő�20�����ł��B</li>
-	<li>�I�v�V�����̐������͍ő�255�����ł��B</li>
-	<li>�I�v�V�����̒l�͐�������܂���iv2.2���O�̃o�[�W�����ł�128�����̐���������܂����j</li>
+	<li>オプション名は最大20文字です。</li>
+	<li>オプションの説明文は最大255文字です。</li>
+	<li>オプションの値は制限ありません（v2.2より前のバージョンでは128文字の制限がありました）</li>
 </ol>
 
-<h2>���\�b�h</h2>
+<h2>メソッド</h2>
 
 <h3>createOption($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
 
-<p><strong>�O���[�o��</strong>�ȃR���e�N�X�g�ŐV�����I�v�V�����𐶐����܂��B</p>
+<p><strong>グローバル</strong>なコンテクストで新しいオプションを生成します。</p>
 
 <table><tr>
-	<th>�p�����[�^</th>
-	<th>�l</th>
+	<th>パラメータ</th>
+	<th>値</th>
 </tr><tr>
 	<td>$name</td>
-	<td>�I�v�V������</td>
+	<td>オプション名</td>
 </tr><tr>
 	<td>$desc</td>
-	<td>�I�v�V�����ҏW��ʂŕ\������������</td>
+	<td>オプション編集画面で表示される説明文</td>
 </tr><tr>
 	<td>$type</td>
-	<td>�I�v�V�����^�C�v�i�O�o�j</td>
+	<td>オプションタイプ（前出）</td>
 </tr><tr>
 	<td>$defValue</td>
-	<td>�����l</td>
+	<td>初期値</td>
 </tr><tr>
 	<td>$typeExtras</td>
-	<td>�I�v�V�����^�C�v�̒ǉ����i�O�o�j</td>
+	<td>オプションタイプの追加情報（前出）</td>
 </tr></table>
 
 <h3>[v2.2] createBlogOption($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
 
-<p><strong>blog</strong>�̃R���e�N�X�g�ŐV�����I�v�V�����𐶐����܂��i<code>createOption</code>���Q�Ɓj�B</p>
+<p><strong>blog</strong>のコンテクストで新しいオプションを生成します（<code>createOption</code>を参照）。</p>
 
 <h3>[v2.2] createCategoryOption($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
 
-<p><strong>�J�e�S���[</strong>�̃R���e�N�X�g�ŐV�����I�v�V�����𐶐����܂��i<code>createOption</code>���Q�Ɓj�B</p>
+<p><strong>カテゴリー</strong>のコンテクストで新しいオプションを生成します（<code>createOption</code>を参照）。</p>
 
 <h3>[v2.2] createMemberOption($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
 
-<p><strong>�����o�[</strong>�̃R���e�N�X�g�ŐV�����I�v�V�����𐶐����܂��i<code>createOption</code>���Q�Ɓj�B</p>
+<p><strong>メンバー</strong>のコンテクストで新しいオプションを生成します（<code>createOption</code>を参照）。</p>
 
 <h3>setOption($name, $value)</h3>
 
-<p>���łɃf�[�^�x�[�X�ɑ��݂���I�v�V�����̒l��ύX���܂��B</p>
+<p>すでにデータベースに存在するオプションの値を変更します。</p>
 
 <table><tr>
-	<th>�p�����[�^</th>
-	<th>�l</th>
+	<th>パラメータ</th>
+	<th>値</th>
 </tr><tr>		
 	<td>$name</td>
-	<td>�I�v�V������</td>
+	<td>オプション名</td>
 </tr><tr>
 	<td>$value</td>
-	<td>�V�����l</td>
+	<td>新しい値</td>
 </tr></table>
 
 <h3>[v2.2] setBlogOption($blogid, $name, $value)</h3>
 
-<p>blog�I�v�V�����̒l��ύX���܂��B<code>blogid</code>�����͂ǂ�blog�ł��̃I�v�V�������L�����������܂��i���̑��̃I�v�V�����F<code>setOption</code>���Q�Ɓj�B</p>
+<p>blogオプションの値を変更します。<code>blogid</code>属性はどのblogでそのオプションが有効かを示します（その他のオプション：<code>setOption</code>を参照）。</p>
 
 <h3>[v2.2] setCategoryOption($catid, $name, $value)</h3>
 
-<p>�J�e�S���[�I�v�V�����̒l��ύX���܂��B<code>catid</code>�����͂ǂ̃J�e�S���[�ł��̃I�v�V�������L�����������܂��i���̑��̃I�v�V�����F<code>setOption</code>���Q�Ɓj�B</p>
+<p>カテゴリーオプションの値を変更します。<code>catid</code>属性はどのカテゴリーでそのオプションが有効かを示します（その他のオプション：<code>setOption</code>を参照）。</p>
 
 <h3>[v2.2] setMemberOption($memberid, $name, $value)</h3>
 
-<p>�����o�[�I�v�V�����̒l��ύX���܂��B<code>memberid</code>�����͂ǂ̃����o�[�ł��̃I�v�V�������L�����������܂��i���̑��̃I�v�V�����F<code>setOption</code>���Q�Ɓj�B</p>
+<p>メンバーオプションの値を変更します。<code>memberid</code>属性はどのメンバーでそのオプションが有効かを示します（その他のオプション：<code>setOption</code>を参照）。</p>
 
 <h3>getOption($name)</h3>
 
-<p>�f�[�^�x�[�X���̃I�v�V�����̒l��Ԃ��܂��B</p>
+<p>データベース内のオプションの値を返します。</p>
 
 <table><tr>
-	<th>�p�����[�^</th>
-	<th>�l</th>
+	<th>パラメータ</th>
+	<th>値</th>
 </tr><tr>		
 	<td>$name</td>
-	<td>�I�v�V������</td>
+	<td>オプション名</td>
 </tr></table>
 
 <h3>[v2.2] getBlogOption($blogid, $name)</h3>
 
-<p>blog�I�v�V�����̒l��Ԃ��܂��B<code>blogid</code>�����͒l�����X�G�X�g���ꂽblog�������܂��i���̑��̃I�v�V�����F<code>getOption</code>���Q�Ɓj�B</p>
+<p>blogオプションの値を返します。<code>blogid</code>属性は値がリスエストされたblogを示します（その他のオプション：<code>getOption</code>を参照）。</p>
 
 <h3>[v2.2] getCategoryOption($catid, $name)</h3>
 
-<p>�J�e�S���[�I�v�V�����̒l��Ԃ��܂��B<code>catid</code>�����͒l�����X�G�X�g���ꂽ�J�e�S���[�������܂��i���̑��̃I�v�V�����F<code>getOption</code>���Q�Ɓj�B<br />
+<p>カテゴリーオプションの値を返します。<code>catid</code>属性は値がリスエストされたカテゴリーを示します（その他のオプション：<code>getOption</code>を参照）。<br />
 </p>
 
 <h3>[v2.2] getMemberOption($memberid, $name)</h3>
 
-<p>�����o�[�I�v�V�����̒l��Ԃ��܂��B<code>memberid</code>�����͒l�����X�G�X�g���ꂽ�J�e�S���[�������܂��i���̑��̃I�v�V�����F<code>getOption</code>���Q�Ɓj�B</p>
+<p>メンバーオプションの値を返します。<code>memberid</code>属性は値がリスエストされたカテゴリーを示します（その他のオプション：<code>getOption</code>を参照）。</p>
 
 <h3>deleteOption($name)</h3>
 
-<p>�f�[�^�x�[�X����I�v�V�������폜���܂��B</p>
+<p>データベースからオプションを削除します。</p>
 
 <table><tr>
-	<th>�p�����[�^</th>
-	<th>�l</th>
+	<th>パラメータ</th>
+	<th>値</th>
 </tr><tr>		
 	<td>$name</td>
-	<td>�I�v�V������</td>
+	<td>オプション名</td>
 </tr></table>
 
 <h3>[v2.2] deleteBlogOption($name)</h3>
 
-<p>blog�I�v�V�������폜���܂��i<code>deleteOption</code>���Q�Ɓj�B</p>
+<p>blogオプションを削除します（<code>deleteOption</code>を参照）。</p>
 
 <h3>[v2.2] deleteCategoryOption($name)</h3>
 
-<p>�J�e�S���[�I�v�V�������폜���܂��i<code>deleteOption</code>���Q�Ɓj�B</p>
+<p>カテゴリーオプションを削除します（<code>deleteOption</code>を参照）。</p>
 
 <h3>[v2.2] deleteMemberOption($name)</h3>
 
-<p>�����o�[�I�v�V�������폜���܂��i<code>deleteOption</code>���Q�Ɓj�B</p>
+<p>メンバーオプションを削除します（<code>deleteOption</code>を参照）。</p>
 
 <h3>[v2.2] getAllBlogOptions($name)</h3>
 
-<p>�^����ꂽblog�I�v�V�����̑S�Ă̒l��Ԃ��܂��B���ʂ͑��݂���blogid���Ƃ̘A�z�z��ł��B</p>
+<p>与えられたblogオプションの全ての値を返します。結果は存在するblogidごとの連想配列です。</p>
 
 <h3>[v2.2] getAllCategoryOptions($name)</h3>
 
-<p>�^����ꂽ�J�e�S���[�I�v�V�����̑S�Ă̒l��Ԃ��܂��B���ʂ͑��݂���catid���Ƃ̘A�z�z��ł��B</p>
+<p>与えられたカテゴリーオプションの全ての値を返します。結果は存在するcatidごとの連想配列です。</p>
 
 <h3>[v2.2] getAllMemberOptions($name)</h3>
 
-<p>�^����ꂽ�����o�[�I�v�V�����̑S�Ă̒l��Ԃ��܂��B���ʂ͑��݂���memberid���Ƃ̘A�z�z��ł��B</p>
+<p>与えられたメンバーオプションの全ての値を返します。結果は存在するmemberidごとの連想配列です。</p>
 
 <div class="note">
-<b>���F</b> �v���O�C���N���X���̃R���X�g���N�^����A�����̃t�@���N�V�������ĂԂ��Ƃ͂ł��܂���B�v���O�C�������[�h���ꂽ��ɂ��������s�������Ƃ��́A������<code>init()</code>���\�b�h���ɒu���܂��B</div>
+<b>注：</b> プラグインクラス内のコンストラクタから、これらのファンクションを呼ぶことはできません。プラグインがロードされた後にこれらを実行したいときは、かわりに<code>init()</code>メソッド内に置きます。</div>
 
-<h1>�f�[�^�x�[�X�E�e�[�u��<a name="tables" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>データベース・テーブル<a name="tables" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<h2>Nucleus�e�[�u���ւ̃A�N�Z�X</h2>
+<h2>Nucleusテーブルへのアクセス</h2>
 
-<p>v2.0�܂ŁANucleus�e�[�u���ւ̃A�N�Z�X�͒P��<code>nucleus_</code>�Ɩ��Â���ꂽ�e�[�u���ɑ΂���SQL���߂����s���邾���̂��̂ł����BNucleus�̃o�[�W����2.2�ȍ~�̓J�X�^���E�e�[�u�����𗘗p�ł���悤�ɂȂ������߁A�v���O�C���J���Ɏ኱���ӂ���K�v������܂��B</p>
+<p>v2.0まで、Nucleusテーブルへのアクセスは単に<code>nucleus_</code>と名づけられたテーブルに対してSQL命令を実行するだけのものでした。Nucleusのバージョン2.2以降はカスタム・テーブル名を利用できるようになったため、プラグイン開発に若干注意する必要があります。</p>
 
 <ol>
-	<li><code>nucleus_item</code> �Ȃǂ̌Œ肳�ꂽ�e�[�u�����̑���ɁA�e�[�u�����̃v���t�B�b�N�X�𐶐����邽�߂� <code>sql_table('item') </code>�Ƃ����O���[�o���t�@���N�V�����𗘗p���܂��B</li>
-	<li><code>supportsFeature('SqlTablePrefix')</code> ���Ă΂ꂽ�Ƃ��Ƀv���O�C����1�i�^�j��Ԃ��悤�ɂ��܂��B���ꂪ�Ȃ��ƁA�J�X�^���v���t�B�b�N�X���Z�b�g����Ă���ꍇ�Ńo�[�W������2.0���傫��Nucleus�ł̓v���O�C�������[�h�ł��܂���i�p�S�̂��߁j�B</li>
+	<li><code>nucleus_item</code> などの固定されたテーブル名の代わりに、テーブル名のプレフィックスを生成するために <code>sql_table('item') </code>というグローバルファンクションを利用します。</li>
+	<li><code>supportsFeature('SqlTablePrefix')</code> が呼ばれたときにプラグインが1（真）を返すようにします。これがないと、カスタムプレフィックスがセットされている場合でバージョンが2.0より大きいNucleusではプラグインをロードできません（用心のため）。</li>
 </ol>
 
-<p class="note">v2.0�܂ł�Nucleus�ł̓O���[�o���t�@���N�V���� <code>sql_table</code> �͗��p�ł��Ȃ����Ƃɒ��ӂ��Ă��������B�������̃��\�b�h��p���A�v���O�C����v2.0�ȉ���Nucleus�œ��삳�������ꍇ�́A�ȉ��̃R�[�h���v���O�C���N���X�̑O�ɒǉ����Ă��������B</p>
+<p class="note">v2.0までのNucleusではグローバルファンクション <code>sql_table</code> は利用できないことに注意してください。もしこのメソッドを用いつつ、プラグインをv2.0以下のNucleusで動作させたい場合は、以下のコードをプラグインクラスの前に追加してください。</p>
 
 <pre class="example"><code>&lt;?
 
-// �v���O�C����Nucleus�o�[�W����2.0�ȉ��ƌ݊����������߂ɕK�v
+// プラグインがNucleusバージョン2.0以下と互換性を持つために必要
 if (!function_exists('sql_table'))
 {
 	function sql_table($name) {
@@ -1532,31 +1532,31 @@ class NP_HelloWorld extends NucleusPlugin {
 
 ?&gt;</code></pre>
 
-<h2>�Ǝ��e�[�u��</h2>
+<h2>独自テーブル</h2>
 
-<p>�����v���O�C���Ǝ��̃e�[�u�����K�v�Ȃ�A<code>install</code>���\�b�h�̒��œƎ��e�[�u���𐶐����A<code>unInstall</code>���\�b�h�̒��ł�����폜����悤�ɂ��܂��B</p>
+<p>もしプラグイン独自のテーブルが必要なら、<code>install</code>メソッドの中で独自テーブルを生成し、<code>unInstall</code>メソッドの中でそれを削除するようにします。</p>
 
-<p>�������̒��ӓ_</p>
+<p>いくつかの注意点</p>
 <ul>
-	<li><code>nucleus_plug_<em>plugname</em></code> �̂悤�ɁA���̃v���O�C���Ƌ������Ȃ��e�[�u�������l���Ă��������B�J�X�^���v���t�B�b�N�X�ɑΉ����邽�߁A�e�[�u������
-  <code>sql_table('plug_plugname')</code> �Ő������Ă��������B                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </li>
-	<li>�������g�Ńf�[�^�x�[�X�ڑ�������K�v�͂���܂���BPHP�R�}���h <code>mysql_query()</code> ���g����SQL���߂����s�ł��܂��B</li>
-	<li>�����Ńf�[�^�x�[�X�ڑ�������ꍇ�A���Nucleus�f�[�^�x�[�X�ւ̐ڑ��𕜌�����悤�ɂ��Ă��������B���O�����̌�� <code>sql_connect()</code>  ���ĂԂ��Ƃŉ\�ł��B�p�ɂȍĐڑ�������邽�߂ɁA�R���X�g���N�^�ł�����s���̂��ǂ��ł��B<code>$this- &gt;db</code>�̃����NID��ێ��ł��A�e�N�G���ɂ����n�����Ƃ��ł��܂��i��Ғ��F����s���B�ʐڑ��̃����N�𓯎��Ɏ��Ă�Ƃ������ƁH�j�B</li>
-	<li>�o�b�N�A�b�v�@�\���g�����́A�Ǝ��e�[�u�����o�b�N�A�b�v�Ɋ܂߂�悤�A<code>getTableList()</code> ���Ē�`���Ă��������B</li>
+	<li><code>nucleus_plug_<em>plugname</em></code> のように、他のプラグインと競合しないテーブル名を考えてください。カスタムプレフィックスに対応するため、テーブル名を
+  <code>sql_table('plug_plugname')</code> で生成してください。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </li>
+	<li>自分自身でデータベース接続をする必要はありません。PHPコマンド <code>mysql_query()</code> を使ってSQL命令を実行できます。</li>
+	<li>自分でデータベース接続をする場合、後でNucleusデータベースへの接続を復元するようにしてください。自前処理の後で <code>sql_connect()</code>  を呼ぶことで可能です。頻繁な再接続を避けるために、コンストラクタでそれを行うのも良いです。<code>$this- &gt;db</code>のリンクIDを保持でき、各クエリにそれを渡すことができます（訳者注：理解不足。別接続のリンクを同時に持てるということ？）。</li>
+	<li>バックアップ機能を使う時は、独自テーブルもバックアップに含めるよう、<code>getTableList()</code> を再定義してください。</li>
 </ul>
 
-<h1>�v���O�C���Ǘ��G���A<a name="admin" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>プラグイン管理エリア<a name="admin" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>Ver2.5����ANucleus�̊Ǘ��G���A�ɓ������ꂽ�v���O�C���Ǘ��G���A���쐬�ł��܂��B�����̃y�[�W�͏]���̃v���O�C���Ǘ��y�[�W�⍶���̃N�C�b�N���j���[����A�N�Z�X�ł��܂��B</p>
+<p>Ver2.5から、Nucleusの管理エリアに統合されたプラグイン管理エリアを作成できます。これらのページは従来のプラグイン管理ページや左側のクイックメニューからアクセスできます。</p>
 
-<h2>��{</h2>
+<h2>基本</h2>
 
-<p>�Ǘ��G���A��񋟂���ɂ́A���̃X�e�b�v���K�v�ł��B</p>
+<p>管理エリアを提供するには、次のステップが必要です。</p>
 
 <ol>
-  <li>�v���O�C���f�B���N�g����<strong>�v���O�C����</strong>�̃T�u�f�B���N�g�������܂��B���Ƃ��΃v���O�C������<code>NP_PluginName</code>�Ȃ�A'pluginname'�ł��B�f�B���N�g�����͂��ׂď������ŁI</li>
+  <li>プラグインディレクトリに<strong>プラグイン名</strong>のサブディレクトリを作ります。たとえばプラグイン名が<code>NP_PluginName</code>なら、'pluginname'です。ディレクトリ名はすべて小文字で！</li>
   <li>
-  	���̃f�B���N�g���ŁA���̂悤��<strong>index.php</strong>��p�ӂ��܂��B
+  	そのディレクトリで、次のような<strong>index.php</strong>を用意します。
   	<pre><code>&lt;?php
 
 	// if your 'plugin' directory is not in the default location,
@@ -1574,29 +1574,29 @@ class NP_HelloWorld extends NucleusPlugin {
 	$oPluginAdmin = new PluginAdmin('<strong>PluginName</strong>');
 	$oPluginAdmin->start();
 
-	echo '&lt;h2&gt;�v���O�C����&lt;/h2&gt;';
+	echo '&lt;h2&gt;プラグイン名&lt;/h2&gt;';
 
-	echo '&lt;p&gt;<strong>�y�[�W���e</strong>&lt;p&gt;';
+	echo '&lt;p&gt;<strong>ページ内容</strong>&lt;p&gt;';
 
 	$oPluginAdmin->end();
 
 ?&gt;</code></pre>
   </li>
   <li>
-  	�v���O�C�����Ɏ��̃R�[�h��}�����A�N�C�b�N���j���[�C�x���g�ɓo�^���܂��B
+  	プラグイン側に次のコードを挿入し、クイックメニューイベントに登録します。
     <pre><code>function event_QuickMenu(&amp;$data) {
 		array_push(
 			$data['options'],
 			array(
-				'title' => '<strong>�v���O�C����</strong>',
+				'title' => '<strong>プラグイン名</strong>',
 				'url' => $this->getAdminURL(),
-				'tooltip' => '<strong>�c�[���`�b�v�e�L�X�g</strong>'
+				'tooltip' => '<strong>ツールチップテキスト</strong>'
 			)
 		);
 	}</code></pre>
   </li>
   <li>
-  	�v���O�C�����Ɏ��̊֐����L�q���܂��B
+  	プラグイン側に次の関数を記述します。
     <pre><code>function hasAdminArea()
 {
 	return 1;
@@ -1604,17 +1604,17 @@ class NP_HelloWorld extends NucleusPlugin {
   </li>
 </ol>
 
-<h2>�l�����邱��</h2>
+<h2>考慮すること</h2>
 
 <ul>
- <li>�o�^�ł��邩��Ƃ����Ĉ��ՂɃN�C�b�N���j���[�֓o�^���Ȃ����ƁB�N�C�b�N���j���[�Ƀv���O�C����100���񂾂肵���炩�Ȃ�E���U������ł��傤�B�ł��̂ŁA�N�C�b�N���j���[�ɓo�^����ꍇ�ł��A�N�C�b�N���j���[�o�^��L���E����������v���O�C���I�v�V�������i�O���[�o���܂��̓����o�[�I�v�V�����Łj�p�ӂ��邱�Ƃ��l���Ă��������B</li>
- <li><code>�v���O�C���f�B���N�g���� nucleus/plugins/ �ł͂Ȃ��ꍇ�́Aindex.php���� $strRel</code> �ϐ��͎蓮�ŏ���������K�v������܂��B</li>
- <li>�Ǘ��G���A�̃A�E�g�v�b�g��<strong>������XHTML</strong>�ɂȂ��Ă��邩�m�F���Ă��������B�������Ȃ��ƁAMozilla�Ȃǂ�Gecko�x�[�X�̃u���E�U�Ńy�[�W�\��������܂��B</li>
+ <li>登録できるからといって安易にクイックメニューへ登録しないこと。クイックメニューにプラグインが100個並んだりしたらかなりウンザリするでしょう。ですので、クイックメニューに登録する場合でも、クイックメニュー登録を有効・無効化するプラグインオプションを（グローバルまたはメンバーオプションで）用意することを考えてください。</li>
+ <li><code>プラグインディレクトリが nucleus/plugins/ ではない場合は、index.php内の $strRel</code> 変数は手動で書き換える必要があります。</li>
+ <li>管理エリアのアウトプットが<strong>正しいXHTML</strong>になっているか確認してください。正しくないと、MozillaなどのGeckoベースのブラウザでページ表示が崩れます。</li>
 </ul>
 
-<h2>PluginAdmin �N���X</h2>
+<h2>PluginAdmin クラス</h2>
 
-<p><code>PluginAdmin</code> �N���X�͏����ɂȂ�܂��B�������x��������΁A<code>$oPluginAdmin->plugin</code> �Ńv���O�C���̃C���X�^���X�ɃA�N�Z�X�ł��܂��B</p>
+<p><code>PluginAdmin</code> クラスは助けになります。これを一度生成すれば、<code>$oPluginAdmin->plugin</code> でプラグインのインスタンスにアクセスできます。</p>
 
 
 </body>

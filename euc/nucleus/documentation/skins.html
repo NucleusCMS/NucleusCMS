@@ -1,52 +1,52 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS">
-	<title>Nucleus - �X�L���ƃe���v���[�g�ɂ���</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>Nucleus - スキンとテンプレートについて</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 </head>
 <body>
 
 <div class="heading">
-�X�L�� &amp; �e���v���[�g
+スキン &amp; テンプレート
 </div>
 
 <h1>Introduction</h1>
 
 <p>
-<a href="index.html">Nucleus�}�j���A���ɖ߂�</a>
+<a href="index.html">Nucleusマニュアルに戻る</a>
 </p>
 
-<p>Nucleus�̃C���X�g�[���͖������������Ǝv���܂��B�����ł́A�y�[�W�\�����`����X�L���^�e���v���[�g�̕ҏW�ɂ��Đ������������Ǝv���܂�:</p>
+<p>Nucleusのインストールは無事完了したと思います。ここでは、ページ表示を定義するスキン／テンプレートの編集について説明をしたいと思います:</p>
 <ol>
-	<li>�W���ŃC���X�g�[�������X�L���^�e���v���[�g�̕ҏW��ʂɓ���܂�(���͂���𕡐���������ҏW����΂��ł��W���\���ɖ߂�܂�)</li>
-	<li>�W���ŃC���X�g�[�������X�L���^�e���v���[�g�����ɁA��]�ʂ�̏C�����s���܂�</li>
-	<li>�����ŕҏW�����X�L���^�e���v���[�g�����ɁA�X�^�C���V�[�g���`���܂�</li>
+	<li>標準でインストールされるスキン／テンプレートの編集画面に入ります(又はこれを複製した物を編集すればいつでも標準表示に戻れます)</li>
+	<li>標準でインストールされるスキン／テンプレートを元に、希望通りの修正を行います</li>
+	<li>自分で編集したスキン／テンプレートを元に、スタイルシートを定義します</li>
 </ol>
-<p>���̃h�L�������g�́A�����̍�Ƃ��s���ɂ�����q���g�ɂȂ鎖�����Љ�܂��B</p>
+<p>このドキュメントは、これらの作業を行うにあたりヒントになる事項を紹介します。</p>
 
-<h1><a id="toc"></a>�ڎ�</h1>
+<h1><a id="toc"></a>目次</h1>
 
 <ul>
-	<li><a href="#htmlcss">HTML��CSS�̊֌W�ɂ���</a></li>
-	<li><a href="#defaultskin">�W���̃f�U�C���Ŏg�p����t�@�C��</a></li>
-	<li><a href="#templatesvsskins">�e���v���[�g�ƃX�L���̑��݊֌W</a></li>
-	<li><a href="#skincascade">�K�p�����X�L���̗D�揇��</a></li>
+	<li><a href="#htmlcss">HTMLとCSSの関係について</a></li>
+	<li><a href="#defaultskin">標準のデザインで使用するファイル</a></li>
+	<li><a href="#templatesvsskins">テンプレートとスキンの相互関係</a></li>
+	<li><a href="#skincascade">適用されるスキンの優先順位</a></li>
 	<li>Howto:
 		<ul>
-			<li><a href="#howto-additem">�u�A�C�e���̒ǉ��v�t�H�[���̖����ݕ��@</a></li>
-			<li><a href="#howto-cssforms">���̓t�H�[���̃f�U�C�����`����X�^�C���V�[�g���</a></li>
-			<li><a href="#howto-karma">���[�@�\��L���ɂ�����@</a></li>
-			<li><a href="#howto-edit">�u�A�C�e���̕ҏW�v�����N�̐ݒu</a></li>
+			<li><a href="#howto-additem">「アイテムの追加」フォームの埋込み方法</a></li>
+			<li><a href="#howto-cssforms">入力フォームのデザインを定義するスタイルシート情報</a></li>
+			<li><a href="#howto-karma">投票機能を有効にする方法</a></li>
+			<li><a href="#howto-edit">「アイテムの編集」リンクの設置</a></li>
 		</ul>
 	</li>
-	<li><a href="#export">�X�L���^�e���v���[�g�̃C���|�[�g�^�G�N�X�|�[�g�ɂ���</a></li>
+	<li><a href="#export">スキン／テンプレートのインポート／エクスポートについて</a></li>
 </ul>
 
-<h1>HTML��CSS�̊֌W�ɂ��� <a i="htmlcss" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>HTMLとCSSの関係について <a id="htmlcss" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-�X�L���ƃe���v���[�g��ҏW����ɂ������ẮAHTML��CSS�̊�b�m�����K�v�ł��B���̃Z�N�V�����ł͊�b�m���𓾂鎖���ł������T�C�g���Љ�Ă����܂��B
+スキンとテンプレートを編集するにあたっては、HTMLとCSSの基礎知識が必要です。このセクションでは基礎知識を得る事ができる解説サイトを紹介しておきます。
 </p>
 
 <ul>
@@ -63,21 +63,21 @@
 
 
 
-<h1>�W���̃f�U�C���Ŏg�p����t�@�C�� <a id="defaultskin" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>標準のデザインで使用するファイル <a id="defaultskin" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>���̃Z�N�V�����ł́A�W���̃X�L���Ŏg�p���Ă���t�@�C�����ƁA�ҏW�̒��ӓ_��������܂��B</p>
+<p>このセクションでは、標準のスキンで使用しているファイル名と、編集の注意点を説明します。</p>
 
-<p>�W���̃X�L���͈ȉ���3�̃t�@�C�����g�p���Ă��܂�:</p>
+<p>標準のスキンは以下の3つのファイルを使用しています:</p>
 <ol>
-	<li><tt>default.css</tt> (v3.0�� <tt>grey.css</tt>): �y�[�W�̃f�U�C�����`����CSS(�J�X�P�[�f�B���O�E�X�^�C���V�[�g)�t�@�C���B�F�w��⃌�C�A�E�g�w��Ȃǂ��`���܂��B</li>
-	<li><tt>atom.gif</tt>: �y�[�W�̍���ɕ\������郍�S�B</li>
-	<li><tt>nucleus2.gif</tt>: Nucleus ���S�B</li>
+	<li><tt>default.css</tt> (v3.0は <tt>grey.css</tt>): ページのデザインを定義するCSS(カスケーディング・スタイルシート)ファイル。色指定やレイアウト指定などを定義します。</li>
+	<li><tt>atom.gif</tt>: ページの左上に表示されるロゴ。</li>
+	<li><tt>nucleus2.gif</tt>: Nucleus ロゴ。</li>
 </ol>
 
-<p>CSS�t�@�C�� (<tt>default.css</tt> / <tt>grey.css</tt>) �ɂ́A�W���̃X�L���^�e���v���[�g���g�p�����ۂ̃y�[�W�\��(�u���b�N�\��)����������Ă��܂��B ��{�I�ɂ�<tt>.contents</tt>�A <tt>.logo</tt>�A<tt>.menu</tt>��3��div�u���b�N�ƂȂ��Ă��܂��B</p>
+<p>CSSファイル (<tt>default.css</tt> / <tt>grey.css</tt>) には、標準のスキン／テンプレートを使用した際のページ構成(ブロック構造)を書き入れています。 基本的には<tt>.contents</tt>、 <tt>.logo</tt>、<tt>.menu</tt>の3つのdivブロックとなっています。</p>
 
-<p><tt>default.css</tt> / <tt>grey.css</tt>��ҏW����ɂ������ẮA�e�L�X�g�G�f�B�^���g�p���Ă��������B �Ⴆ��Windows�ɕW���Y�t����Ă���uNotepad�v��emacs �� TextPad�Ȃǂł��B
-�uWordPad�v�A�uWord�v�A�uOpenOffice Writer�v�Ȃǂ͗]�v�ȃf�[�^���������܂��̂ŁA<strong>��΂Ɏg�p���Ȃ��ł�������</strong>�B
+<p><tt>default.css</tt> / <tt>grey.css</tt>を編集するにあたっては、テキストエディタを使用してください。 例えばWindowsに標準添付されている「Notepad」やemacs や TextPadなどです。
+「WordPad」、「Word」、「OpenOffice Writer」などは余計なデータが混入しますので、<strong>絶対に使用しないでください</strong>。
 </p>
 
 
@@ -85,23 +85,23 @@
 
 
 
-<h1>�e���v���[�g�ƃX�L���̑��݊֌W <a id="templatesvsskins" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>テンプレートとスキンの相互関係 <a id="templatesvsskins" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-Nucleus�ł̓y�[�W�\���Ɂu�X�L���v�Ɓu�e���v���[�g�v�̗������g�p���܂��B�ł͂����2�̈Ⴂ�͉��ł��傤�H
+Nucleusではページ表示に「スキン」と「テンプレート」の両方を使用します。ではこれら2つの違いは何でしょう？
 </p>
 
 <ol>
 	<li>
-		<b>�X�L��</b> �Ƃ͏o�͂�����e(�^�O���܂ރ\�[�X)���`������̂ł��B1�̃X�L���ł��������̎�ʂ��Ƃɒ�`���K�v�ŁA���C���y�[�W��ʃA�C�e���y�[�W�A�A�[�J�C�u�y�[�W�Ȃ�(�W����8�^�C�v)������܂��B
-		�X�L�����̒�`���e�́A�ǂ̕�����blog�f�[�^��W�J����̂��A�ǂ̃e���v���[�g���g�p���ēW�J����̂��Ȃǂ̎w����܂݂܂��B
+		<b>スキン</b> とは出力する内容(タグを含むソース)を定義するものです。1つのスキンでもいくつかの種別ごとに定義が必要で、メインページや個別アイテムページ、アーカイブページなど(標準で8タイプ)があります。
+		スキン内の定義内容は、どの部分にblogデータを展開するのか、どのテンプレートを使用して展開するのかなどの指定を含みます。
 	</li>
 	<li>
-		<b>�e���v���[�g</b>�Ƃ́Ablog�f�[�^��W�J����̂Ɏg����ЂȌ`�ł��B�X�L�����Ŏw�肳�ꂽ�e���v���[�g���ЂȌ`�ɁAblog�f�[�^���w�肳�ꂽ�ꏊ�ɏo�͂����̂ł��B�������A�����̃X�L����1�̃e���v���[�g���g���񂵂��邱�Ƃ��ł��܂����A�t��1�̃y�[�W�ɕ����̃e���v���[�g���g�p����P�[�X������܂��B
+		<b>テンプレート</b>とは、blogデータを展開するのに使われるひな形です。スキン内で指定されたテンプレートをひな形に、blogデータが指定された場所に出力されるのです。もちろん、複数のスキンで1つのテンプレートを使い回しすることもできますし、逆に1つのページに複数のテンプレートを使用するケースもあります。
 	</li>
 </ol>
 
-<p>���̃T���v���摜�������������B�y�[�W�S�̂̃\�[�X�̓X�L���Œ�`���Ă��܂��B���̒��̐ԓ_���ň͂�������(�J�e�S�����X�g��blog�L��)�̓e���v���[�g���ЂȌ`�ɂ��ēW�J���ꂽ�f�[�^�����ł��B���̐ԓ_���������ǂ��ɏo�͂�����̂��̓X�L���̕��Ŏw�肵�Ă��܂��B</p>
+<p>下のサンプル画像をご覧下さい。ページ全体のソースはスキンで定義しています。その中の赤点線で囲った部分(カテゴリリストとblog記事)はテンプレートをひな形にして展開されたデータ部分です。この赤点線部分をどこに出力させるのかはスキンの方で指定しています。</p>
 
 <div class="screenshot">
 <img src="pics/skinsandtemplates.png" width="300" height="283" alt="Skins and Templates example" />
@@ -115,54 +115,54 @@ Nucleus�ł̓y�[�W�\���Ɂu�X�L���v�Ɓu�e���v���[�g�v�̗������g�p���܂��B�ł͂���
 
 
 
-<h1>�K�p�����X�L���̗D�揇�� <a id="skincascade" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>適用されるスキンの優先順位 <a id="skincascade" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-���̃Z�N�V�����ł̓y�[�W�\���Ɏg���X�L����ݒ肷����@��������܂��B
+このセクションではページ表示に使うスキンを設定する方法を説明します。
 </p>
 
-<h2>�X�L���̃^�C�v</h2>
+<h2>スキンのタイプ</h2>
 
 <p>
-�܂��ŏ��ɁA�X�L���^�C�v�̎�ʂɂ��ďЉ�Ă����܂��BNucleus�̓A�N�Z�X���ꂽURL�����ɕ\������X�L���^�C�v�𔻕ʂ��ăy�[�W�\���Ɏg���܂��B���L����ʂ̃��X�g�ł��B(���ۂ�URL�͏󋵂ɉ����đ��̃N�G�����t������A�l�X�ɕω����܂��B)
+まず最初に、スキンタイプの種別について紹介しておきます。NucleusはアクセスされたURLを元に表示するスキンタイプを判別してページ表示に使います。下記が種別のリストです。(実際のURLは状況に応じて他のクエリが付加され、様々に変化します。)
 </p>
 
 <table>
-	<tr><th>�N�G��������</th><th>�X�L���̎��</th><th>�\�������L��</th></tr>
-	<tr><td>?itemid=..</td><td>item(�ʃA�C�e��)</td><td>�w�肳�ꂽ<i>itemid</i>�̋L��</td></tr>
-	<tr><td>?archive=..</td><td>archive(�A�[�J�C�u)</td><td>�W����blog�L���A����<i>blogid</i>�Ŏw�肳�ꂽblog�L��(�̊Y���L��)</td></tr>
-	<tr><td>?archivelist=...</td><td>archivelist(�A�[�J�C�u���X�g)</td><td>�w�肳�ꂽ<i>archivelist</i>��blog�L��(�̃��X�g)</td></tr>
-	<tr><td>?archivelist</td><td>archivelist(�A�[�J�C�u���X�g)</td><td>�W����blog�L��(�̃��X�g)</td></tr>
-	<tr><td>?query=...</td><td>search(����)</td><td>�W����blog�L���A����<i>blogid</i>�Ŏw�肳�ꂽblog�L��(�̊Y���L��)</td></tr>
-	<tr><td>?memberid=..</td><td>member(�����o�[)</td><td>�Ȃ�</td></tr>
-	<tr><td>?imagepopup=..</td><td>imagepopup(�|�b�v�A�b�v�摜)</td><td>�Ȃ� (�摜�̂ݕ\������|�b�v�A�b�v�E�E�B���h�E)</td></tr>
-	<tr><td><i>(���̑� ���� �N�G���Ȃ�)</i></td><td>index(���C��)</td><td>�W����blog�L���A����<i>blogid</i>�Ŏw�肳�ꂽblog�L��</td
+	<tr><th>クエリ文字列</th><th>スキンの種別</th><th>表示される記事</th></tr>
+	<tr><td>?itemid=..</td><td>item(個別アイテム)</td><td>指定された<i>itemid</i>の記事</td></tr>
+	<tr><td>?archive=..</td><td>archive(アーカイブ)</td><td>標準のblog記事、又は<i>blogid</i>で指定されたblog記事(の該当記事)</td></tr>
+	<tr><td>?archivelist=...</td><td>archivelist(アーカイブリスト)</td><td>指定された<i>archivelist</i>のblog記事(のリスト)</td></tr>
+	<tr><td>?archivelist</td><td>archivelist(アーカイブリスト)</td><td>標準のblog記事(のリスト)</td></tr>
+	<tr><td>?query=...</td><td>search(検索)</td><td>標準のblog記事、又は<i>blogid</i>で指定されたblog記事(の該当記事)</td></tr>
+	<tr><td>?memberid=..</td><td>member(メンバー)</td><td>なし</td></tr>
+	<tr><td>?imagepopup=..</td><td>imagepopup(ポップアップ画像)</td><td>なし (画像のみ表示するポップアップ・ウィンドウ)</td></tr>
+	<tr><td><i>(その他 又は クエリなし)</i></td><td>index(メイン)</td><td>標準のblog記事、又は<i>blogid</i>で指定されたblog記事</td
 	></tr>
 </table>
 
 <p>
-�����7�̃^�C�v�ɕ����āA�G���[�̏ꍇ�Ɏg���� <i>error</i> �^�C�v������܂��B
+これら7つのタイプに併せて、エラーの場合に使われる <i>error</i> タイプがあります。
 </p>
 
-<h2>�X�L���̕⊮�K�p</h2>
+<h2>スキンの補完適用</h2>
 
 <p>
-��̕\�ɂ����āA���ꂼ��̃P�[�X�őI��K�p����blog���ǂ�ɂȂ邩�𕹂��Đ������Ă��܂��B
-�\���Ɏg�p����X�L���́Ablog�ݒ�Őݒ肵���u�W���̃X�L���v�ł��B
-</p>
-
-<p>
-�V�����X�L�����쐬����ۂ͂��ׂẴX�L���^�C�v���`����K�v�͂���܂���B�I��K�p����X�L���^�C�v����`����Ă��Ȃ��ꍇ�́A�O���[�o���ݒ�ɂ����Đݒ肵���u�W���̃X�L���v���֓K�p���܂��B(���L�Q��)�B�܂�A�G���[�y�[�W�̃X�L���^�C�v�������`�����X�L�����g�p����Ƃ��������Ƃ��\�Ȗ�ł��B
-</p>
-
-<h2>�W���̃X�L��</h2>
-
-<p>
-Nucleus �́u�W���̃X�L���v���K���K�v�ł��B���̕W���̃X�L���́A�X�L���^�C�v��`����������Ȃ��ꍇ�̕⊮�\���Ɏg���邩��ł��B�����A�W���̃X�L���ɂ����Ă��K�p���ׂ��X�L���^�C�v�̒�`����������Ȃ��ꍇ�́A�G���[���b�Z�[�W���\������Ă��܂��܂��B
+上の表において、それぞれのケースで選択適用するblogがどれになるかを併せて説明しています。
+表示に使用するスキンは、blog設定で設定した「標準のスキン」です。
 </p>
 
 <p>
-�܂��A�w�肳�ꂽblog����������Ȃ��ꍇ�́A�K�p����X�L����blog�ݒ肻�̂��̂����݂��܂��񂩂�A�G���[���b�Z�[�W��\�����邽�߂̃y�[�W�f�U�C���Ƃ��āu�W���̃X�L���v�����Ȃ炸�K�v�Ȃ̂ł��B
+新しくスキンを作成する際はすべてのスキンタイプを定義する必要はありません。選択適用するスキンタイプが定義されていない場合は、グローバル設定において設定した「標準のスキン」を代替適用します。(下記参照)。つまり、エラーページのスキンタイプだけを定義したスキンを使用するといったことが可能な訳です。
+</p>
+
+<h2>標準のスキン</h2>
+
+<p>
+Nucleus は「標準のスキン」が必ず必要です。この標準のスキンは、スキンタイプ定義が見あたらない場合の補完表示に使われるからです。もし、標準のスキンにおいても適用すべきスキンタイプの定義が見あたらない場合は、エラーメッセージが表示されてしまいます。
+</p>
+
+<p>
+また、指定されたblogが見あたらない場合は、適用するスキンのblog設定そのものが存在しませんから、エラーメッセージを表示するためのページデザインとして「標準のスキン」がかならず必要なのです。
 </p>
 
 
@@ -172,19 +172,19 @@ Nucleus �́u�W���̃X�L���v���K���K�v�ł��B���̕W���̃X�L���́A�X�L���^�C�v��`��
 
 
 
-<h1>Howto: �u�A�C�e���̒ǉ��v�t�H�[���̖����ݕ��@ <a id="howto-additem" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Howto: 「アイテムの追加」フォームの埋込み方法 <a id="howto-additem" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-Nucleus �ł�blog�y�[�W�ɐV�K���e�t�H�[���𖄂ߍ��ދ@�\��݂��Ă��܂��B�u�V�K���e�v�����N���y�[�W���̂ǂ����ɍ��A���̃����N���N���b�N����ƐV�K���e�t�H�[���̕\��/��\���̐؂�ւ����ł��܂��B ���̃t�H�[���ɓ��͌�v���r���[�@�\���g���܂��̂ŁA�ǂ̂悤�ɋL�����\������邩���u���Ɋm�F�ł��ĕ֗��ł��B
+Nucleus ではblogページに新規投稿フォームを埋め込む機能を設けています。「新規投稿」リンクをページ内のどこかに作り、このリンクをクリックすると新規投稿フォームの表示/非表示の切り替えができます。 このフォームに入力後プレビュー機能が使えますので、どのように記事が表示されるかを瞬時に確認できて便利です。
 </p>
 
 <p>
-���@�́A�u���C���̖ڎ��y�[�W�v��ҏW���邾���ł��B�e���v���[�g�̕ҏW�͕K�v����܂���B
+方法は、「メインの目次ページ」を編集するだけです。テンプレートの編集は必要ありません。
 </p>
 
-<h2>1. JavaScript �R�[�h�̌ďo��</h2>
+<h2>1. JavaScript コードの呼出し</h2>
 <p>
-�܂��ŏ��ɁAedit.js���y�[�W��ɌĂяo���R�[�h��ǉ����܂��B&lt;head&gt; �� &lt;/head&gt; �^�O�̊Ԃ̂ǂ����ɉ��̃R�[�h��ǉ����ĉ������B���̃t�@�C�����Ăяo�����ɂ���ĐV�K���e�̃v���r���[�@�\�ƃt�H�[���̕\��/��\���ؑւ��@�\���L���ɂȂ�܂��B
+まず最初に、edit.jsをページ上に呼び出すコードを追加します。&lt;head&gt; と &lt;/head&gt; タグの間のどこかに下のコードを追加して下さい。このファイルを呼び出す事によって新規投稿のプレビュー機能とフォームの表示/非表示切替え機能が有効になります。
 </p>
 
 <pre>
@@ -192,10 +192,10 @@ Nucleus �ł�blog�y�[�W�ɐV�K���e�t�H�[���𖄂ߍ��ދ@�\��݂��Ă��܂��B�u�V�K���e
         src="nucleus/javascript/edit.js"&gt;&lt;/script&gt;
 </pre>
 
-<h2>2. �V�K���e�t�H�[���𖄂ߍ��ޏꏊ���w��</h2>
+<h2>2. 新規投稿フォームを埋め込む場所を指定</h2>
 
 <p>
-�V�K���e�t�H�[���𖄂ߍ��݂����ꏊ�ɒǉ����܂��B"display:none;"�͕K���ԈႦ���ɋL�q���Ă��������B
+新規投稿フォームを埋め込みたい場所に追加します。"display:none;"は必ず間違えずに記述してください。
 </p>
 
 <pre>
@@ -204,10 +204,10 @@ Nucleus �ł�blog�y�[�W�ɐV�K���e�t�H�[���𖄂ߍ��ދ@�\��݂��Ă��܂��B�u�V�K���e
 &lt;/div&gt;
 </pre>
 
-<h2>3. ���̓t�H�[���ƃv���r���[�G���A�𖄂ߍ��ރR�[�h��ǉ�</h2>
+<h2>3. 入力フォームとプレビューエリアを埋め込むコードを追加</h2>
 
 <p>
-���ɁA����div�u���b�N�̒��ɓ��̓t�H�[���ƃv���r���[�G���A�𖄂ߍ��ރR�[�h��ǉ����܂��B���̓t�H�[����&lt;%additemform%&gt; �ƁA�v���r���[�G���A�� &lt;%preview(<i>�e���v���[�g��</i>)%&gt;�Ə������ɂ���Ă����ɓW�J����܂��B���Ƃ͍D���ȃR�[�h��ǉ����Ă��������B �Ⴆ�Ύ��̂悤�ɏ����܂��B
+次に、このdivブロックの中に入力フォームとプレビューエリアを埋め込むコードを追加します。入力フォームは&lt;%additemform%&gt; と、プレビューエリアは &lt;%preview(<i>テンプレート名</i>)%&gt;と書く事によってそこに展開されます。あとは好きなコードを追加してください。 例えば次のように書きます。
 </p>
 
 <pre>
@@ -218,9 +218,9 @@ Nucleus �ł�blog�y�[�W�ɐV�K���e�t�H�[���𖄂ߍ��ދ@�\��݂��Ă��܂��B�u�V�K���e
 &lt;%preview(mytemplate)%&gt;
 </pre>
 
-<h2>4. �V�K���e�����N�̒ǉ�</h2>
+<h2>4. 新規投稿リンクの追加</h2>
 <p>
-�Ō�ɁA���̃G���A��\��/��\�������邽�߂̐ؑւ������N���ǂ����ʂ̏ꏊ�ɒǉ����܂��B�T���v���Ƃ���2�̃R�[�h���Љ�Ă����܂��B</p><p>1�߂̓V���v���ȃ^�C�v:
+最後に、このエリアを表示/非表示させるための切替えリンクをどこか別の場所に追加します。サンプルとして2つのコードを紹介しておきます。</p><p>1つめはシンプルなタイプ:
 </p>
 
 <pre>
@@ -228,7 +228,7 @@ Nucleus �ł�blog�y�[�W�ɐV�K���e�t�H�[���𖄂ߍ��ދ@�\��݂��Ă��܂��B�u�V�K���e
 </pre>
 
 <p>
-2�ڂ̓y�[�W������ɐؑւ������N��z�u����^�C�v:
+2つ目はページ左上隅に切替えリンクを配置するタイプ:
 </p>
 
 <pre>
@@ -243,69 +243,69 @@ Nucleus �ł�blog�y�[�W�ɐV�K���e�t�H�[���𖄂ߍ��ދ@�\��݂��Ă��܂��B�u�V�K���e
 
 
 
-<h1>Howto: ���̓t�H�[���̃f�U�C�����`����X�^�C���V�[�g��� <a id="howto-cssforms" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Howto: 入力フォームのデザインを定義するスタイルシート情報 <a id="howto-cssforms" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
-�Ⴆ�΃X�L�����ɁB &lt;%searchform%&gt; �� &lt;%commentform%&gt; �ƋL�q���邱�Ƃɂ���āA���ꂼ�ꌟ���t�H�[����R�����g���e�t�H�[���ɒu���������ăy�[�W���ɕ\������܂��B�����̓��̓t�H�[����{�^������̓t�H�[���̈�ɂ͕W���ŃN���X������`����Ă��܂��̂ŁAcss�t�@�C�����ŃN���X�̒�`������΃X�^�C���̕ύX���\�ł��B</p>
+例えばスキン内に。 &lt;%searchform%&gt; や &lt;%commentform%&gt; と記述することによって、それぞれ検索フォームやコメント投稿フォームに置き換えられてページ内に表示されます。これらの入力フォームやボタンや入力フォーム領域には標準でクラス名が定義されていますので、cssファイル内でクラスの定義をすればスタイルの変更が可能です。</p>
 
 <p>
-���̓t�H�[���̈�̃N���X���͉��L�̂悤�Ɏw�肳��Ă��܂��B�N���X���̓t�H�[���S�̂��͂���div�u���b�N���C�����Ă��܂��B
+入力フォーム領域のクラス名は下記のように指定されています。クラス名はフォーム全体を囲ったdivブロックを修飾しています。
 </p>
 
 <table>
 	<tr>
-		<th>�t�H�[���̎��</th>
-		<th>�L�q�R�[�h</th>
-		<th>CSS �N���X��</th>
+		<th>フォームの種類</th>
+		<th>記述コード</th>
+		<th>CSS クラス名</th>
 	</tr>
 	<tr>
-		<td>�V�K���e�t�H�[��</td>
+		<td>新規投稿フォーム</td>
 		<td>&lt;%additemform%&gt;</td>
 		<td>.blogform</td>
 	</tr>
 	<tr>
-		<td>�R�����g���e�t�H�[��</td>
+		<td>コメント投稿フォーム</td>
 		<td>&lt;%commentform%&gt;</td>
 		<td>.commentform</td>
 	</tr>
 	<tr>
-		<td>���O�C���t�H�[��</td>
+		<td>ログインフォーム</td>
 		<td>&lt;%loginform%&gt;</td>
 		<td>.loginform</td>
 	</tr>
 	<tr>
-		<td>�����t�H�[��</td>
+		<td>検索フォーム</td>
 		<td>&lt;%searchform%&gt;</td>
 		<td>.searchform</td>
 	</tr>
 	<tr>
-		<td>�����o�[�Ԃ̃��[�����M�t�H�[��</td>
+		<td>メンバー間のメール送信フォーム</td>
 		<td>&lt;%membermailform%&gt;</td>
 		<td>.mailform</td>
 	</tr>
 </table>
 
 <p>
-�{�^���Ɠ��̓t�H�[���̃N���X���͈ȉ��̂悤�Ɏw�肵�Ă��܂��B
+ボタンと入力フォームのクラス名は以下のように指定しています。
 </p>
 
 <table>
 	<tr>
-		<th>�^�C�v</th>
-		<th>CSS �N���X��</th>
+		<th>タイプ</th>
+		<th>CSS クラス名</th>
 	</tr>
 	<tr>
-		<td>�P�s/�����s�̃e�L�X�g���̓t�B�[���h</td>
+		<td>単行/複数行のテキスト入力フィールド</td>
 		<td>.formfield</td>
 	</tr>
 	<tr>
-		<td>�{�^��</td>
+		<td>ボタン</td>
 		<td>.formbutton</td>
 	</tr>
 </table>
 
 <p>
-�X�^�C���V�[�g���Ŏ��ۂɂ������`����T���v���ł�:
+スタイルシート内で実際にこれらを定義するサンプルです:
 </p>
 
 <pre>
@@ -323,20 +323,20 @@ Nucleus �ł�blog�y�[�W�ɐV�K���e�t�H�[���𖄂ߍ��ދ@�\��݂��Ă��܂��B�u�V�K���e
 }
 </pre>
 
-<p>��̃T���v���ł́ANucleus��������������e�L�X�g���̓t�B�[���h�̑S�����u �w�i�F �� �Z�D�F �v�ŁA�R�����g���e�t�H�[�����̃{�^���������u �����T�C�Y �� �� / �l�� �� ���F��1�s�N�Z���̑����̐� / �����F �� �� / �w�i�F �� �W�D�F �v�Ƃ���A�ƒ�`���Ă��܂��B</p>
+<p>上のサンプルでは、Nucleusが自動生成するテキスト入力フィールドの全部が「 背景色 ＝ 濃灰色 」で、コメント投稿フォーム内のボタンだけが「 文字サイズ ＝ 大 / 四辺 ＝ 黒色の1ピクセルの太さの線 / 文字色 ＝ 黒 / 背景色 ＝ 淡灰色 」とする、と定義しています。</p>
 
 
-<h1>Howto: ���[�@�\��L���ɂ�����@ <a id="howto-karma" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Howto: 投票機能を有効にする方法 <a id="howto-karma" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>�W���Y�t�̃X�L��/�e���v���[�g�ł͓��[�@�\��\�������Ă��܂���(�g��Ȃ������悢�̂�������܂���)�B�����ł͓��[�@�\���\�������悤�Ƀe���v���[�g������������@���Љ�܂��B</p>
+<p>標準添付のスキン/テンプレートでは投票機能を表示させていません(使わない方がよいのかもしれません)。ここでは投票機能が表示されるようにテンプレートを書換える方法を紹介します。</p>
 
-<h2>1. �\���Ɏg�p����u���C���̖ڎ��y�[�W�v�^�C�v�Ŏw�肵���e���v���[�g�̕ҏW��ʂ��J��</h2>
+<h2>1. 表示に使用する「メインの目次ページ」タイプで指定したテンプレートの編集画面を開く</h2>
 
-<p><tt>'default'</tt> ( v3.0�ł� <tt>'grey/short'</tt> ) �Ƃ������O�̃e���v���[�g�̕ҏW��ʂ��J���܂��B(���̃e���v���[�g���͂����܂ł��V�K�C���X�g�[������̏�ԂœK�p����Ă�����̂ł��B������V�K�쐬�Ȃǂɂ��ύX���Ă���ꍇ�͓ǂݑւ��Ă��������B)</p>
+<p><tt>'default'</tt> ( v3.0では <tt>'grey/short'</tt> ) という名前のテンプレートの編集画面を開きます。(このテンプレート名はあくまでも新規インストール直後の状態で適用されているものです。複製や新規作成などにより変更している場合は読み替えてください。)</p>
 
-<h2>2. �A�C�e���̖{�̕����̏�����</h2>
+<h2>2. アイテムの本体部分の書換え</h2>
 
-<p>�A�C�e���̖{�̕����̍Ō�̕����ȉ��̂悤�ɏ������܂�:</p>
+<p>アイテムの本体部分の最後の方を以下のように書換えます:</p>
 
 <pre>
 &lt;div class="iteminfo"&gt;
@@ -349,87 +349,87 @@ Nucleus �ł�blog�y�[�W�ɐV�K���e�t�H�[���𖄂ߍ��ދ@�\��݂��Ă��܂��B�u�V�K���e
 &lt;/div&gt;
 </pre>
 
-<p>�ҏW��Ƀ��C���y�[�W�ɃA�N�Z�X����ƋL���ڍ׏�񂪉��̂悤�ɕ\�����ύX����Ă���̂��m�F�ł���Ǝv���܂�:</p>
+<p>編集後にメインページにアクセスすると記事詳細情報が下のように表示が変更されているのが確認できると思います:</p>
 
 <div><i>9:00:39 PM - <a href="">God</a> - karma: 5 [<a href="">+</a>/<a href="">-</a>] - <a href="">edit</a></i></div>
 
-<h2>3. �A�C�e���̌ʃy�[�W�̃e���v���[�g</h2>
+<h2>3. アイテムの個別ページのテンプレート</h2>
 
-<p>��L�̕ҏW��Ƃł̓��C���y�[�W�ł̂ݓ��[�X�R�A���\��������Ԃł��B�A�C�e���̌ʃy�[�W�ł����l�ɓ��[��\���������ꍇ�́A�X�L���́u�A�C�e���̌ʃy�[�W�v�Ŏg�p���Ă���e���v���[�g�ɓ��l�̏C�����s���Ă��������B�V�K�C���X�g�[������̏�Ԃł�<tt>'detailed'</tt> ( v3.0�ł� <tt>'grey/full'</tt> ) �Ƃ������O�̃e���v���[�g������ɊY�����܂��B</p>
-
-
+<p>上記の編集作業ではメインページでのみ投票スコアが表示される状態です。アイテムの個別ページでも同様に投票を表示したい場合は、スキンの「アイテムの個別ページ」で使用しているテンプレートに同様の修正を行ってください。新規インストール直後の状態では<tt>'detailed'</tt> ( v3.0では <tt>'grey/full'</tt> ) という名前のテンプレートがそれに該当します。</p>
 
 
 
 
-<h1>Howto: �u�A�C�e���̕ҏW�v�����N�̐ݒu <a id="howto-edit" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>Nucleus�W���Y�t�̃X�L���ł͋L���̕ҏW�����������[�U�[�ɂ����\�������u�A�C�e���̕ҏW�v�����N�𖄂ߍ���ł��܂��B �����ł͂ǂ��ł��̃����N�𖄂ߍ���ł���̂���������܂��B</p>
 
-<h2>�u�A�C�e����ҏW���邽�߂̃����N�v�̕\���̐ݒ�</h2>
+<h1>Howto: 「アイテムの編集」リンクの設置 <a id="howto-edit" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>�e���v���[�g�̕ҏW��ʂ́u�A�C�e����ҏW���邽�߂̃����N�v�����ŃA�C�e���̕ҏW�����N�̕\�����`���Ă��܂��B �W���Y�t�̃e���v���[�g�ł͈ȉ��̂悤�ɒ�`���Ă��܂�:</p>
+<p>Nucleus標準添付のスキンでは記事の編集権限を持つユーザーにだけ表示される「アイテムの編集」リンクを埋め込んでいます。 ここではどこでそのリンクを埋め込んでいるのかを説明します。</p>
+
+<h2>「アイテムを編集するためのリンク」の表示の設定</h2>
+
+<p>テンプレートの編集画面の「アイテムを編集するためのリンク」部分でアイテムの編集リンクの表示を定義しています。 標準添付のテンプレートでは以下のように定義しています:</p>
 <pre><code>&lt;a href="&lt;%editlink%&gt;" onclick="&lt;%editpopupcode%&gt;"&gt;edit&lt;/a&gt;</code></pre>
 
-<p>�|�b�v�A�b�v�ҏW��ʂł͂Ȃ��Ǘ��G���A�̋L���ҏW��ʂ��g�������ꍇ�͎��̂悤�ɏC�����Ă�������:</p>
+<p>ポップアップ編集画面ではなく管理エリアの記事編集画面を使いたい場合は次のように修正してください:</p>
 
 <pre><code>&lt;a href="nucleus/index.php?action=itemedit&amp;amp;itemid=&lt;%itemid%&gt;"&gt;edit&lt;/a&gt;
 </code></pre>
 
-<h2>�u�A�C�e���̕ҏW�v�����N��\������ꏊ�̎w��</h2>
+<h2>「アイテムの編集」リンクを表示する場所の指定</h2>
 
-<p>�\���`�������߂���A���ɂǂ��ɂ����\������̂���ݒ肵�܂��B�ʏ�Ȃ�u�A�C�e���̖{�́v�̒���<code>&lt;%edit%&gt;</code>�ƋL�q���܂��B����<code>&lt;%edit%&gt;</code>�̕�������Őݒ肵���\���`���ɒu���������ăR�[�h��������������܂��B</p>
+<p>表示形式を決めたら、次にどこにこれを表示するのかを設定します。通常なら「アイテムの本体」の中に<code>&lt;%edit%&gt;</code>と記述します。この<code>&lt;%edit%&gt;</code>の部分が上で設定した表示形式に置き換えられてコードが自動生成されます。</p>
 
-<p>�u�A�C�e���̖{�́v�̒��̋L�q��� <a href="#howto-karma">���[�@�\��L���ɂ�����@</a> ���Q�Ƃ��Ă��������B</p>
-
-
+<p>「アイテムの本体」の中の記述例は <a href="#howto-karma">投票機能を有効にする方法</a> を参照してください。</p>
 
 
-<h1>�X�L���^�e���v���[�g�̃C���|�[�g�^�G�N�X�|�[�g�ɂ��� <a id="export" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>�o�[�W����v2.0�ȍ~����X�L���ƃe���v���[�g���C���|�[�g/�G�N�X�|�[�g����@�\���ǉ�����Ă��܂��B�����ł́A�X�L�����쐬����菇��ǂ��Ă��̋@�\���킩��₷�������������Ǝv���܂��B</p>
 
-<h2>�V�K�X�L���̍쐬</h2>
+<h1>スキン／テンプレートのインポート／エクスポートについて <a id="export" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>バージョンv2.0以降からスキンとテンプレートをインポート/エクスポートする機能が追加されています。ここでは、スキンを作成する手順を追ってその機能をわかりやすく説明したいと思います。</p>
+
+<h2>新規スキンの作成</h2>
 
 <ol>
 	<li>
-		<p>�܂��Ǘ��G���A�ɂăX�L����V�K�쐬���܂��B�Ǘ��G���A�ɓ���A�u�X�L���̕ҏW�v��ʂ̈�ԉ��ɂ���u�V�����X�L���v�̏��ɓ��͂��܂��B�����ł͗�Ƃ��Ė��O���u<strong>vista</strong>�v�Ƃ��܂��B</p>
+		<p>まず管理エリアにてスキンを新規作成します。管理エリアに入り、「スキンの編集」画面の一番下にある「新しいスキン」の所に入力します。ここでは例として名前を「<strong>vista</strong>」とします。</p>
 	</li>
 	<li>
-		<p>�X�L���̈ꗗ�ɂ��́uvista�v�Ƃ������O�̃X�L�����ǉ�����Ă��܂��̂ŁA���̍s�̉E���u�ҏW�v�����N���N���b�N���ĕҏW��ʂɓ���܂��Bcontent type �� �u<code>text/html</code>�v�Ƃ��Ă��������B ���ꂩ����������Ƃ��s���ɂ������ĕK�v�Ȑݒ�ƂȂ�܂��̂ŁA�悭�m�F���Đݒ肵�Ă��������B</p>
-		<p>����ɂ��̉��� <code>Include ���[�h</code> �� <code>Include �v���t�B�b�N�X</code> ���悭���ӂ��Đݒ肵�Ă��������B�X�L�����ڐA������z�z�����肷�鎖���l���āA�f�U�C���Ɏg�p����摜��css�t�@�C���Ȃǂ�1�̃f�B���N�g���̒��Ɋi�[���Ă������Ƃ��܂��B </p>
-		 <p><code>Include ���[�h</code> �� <code>Include �v���t�B�b�N�X</code> ���K�p�����d�g�݂��ȒP�ɐ������Ă����܂��傤�B<code>config.php</code>�Œ�`���Ă���u<code>$DIR_SKINS</code>�v�̒l�ƁA�Ǘ��G���A�̃O���[�o���ݒ�̒��Őݒ肵�Ă���u<code>�X�L��URL</code>�v���֘A���Ă��܂��B
-		 �Ⴆ�΂��ꂼ��ȉ��̂悤�Ȓl�ɂȂ��Ă���Ƃ��܂�:</p>
+		<p>スキンの一覧にこの「vista」という名前のスキンが追加されていますので、その行の右横「編集」リンクをクリックして編集画面に入ります。content type は 「<code>text/html</code>」としてください。 これから説明する作業を行うにあたって必要な設定となりますので、よく確認して設定してください。</p>
+		<p>さらにその下の <code>Include モード</code> と <code>Include プリフィックス</code> もよく注意して設定してください。スキンを移植したり配布したりする事を考えて、デザインに使用する画像やcssファイルなどは1つのディレクトリの中に格納しておく事とします。 </p>
+		 <p><code>Include モード</code> と <code>Include プリフィックス</code> が適用される仕組みを簡単に説明しておきましょう。<code>config.php</code>で定義している「<code>$DIR_SKINS</code>」の値と、管理エリアのグローバル設定の中で設定している「<code>スキンURL</code>」が関連してきます。
+		 例えばそれぞれ以下のような値になっているとします:</p>
 		<pre><code>/home/user/example/htdocs/skins/
 http://example.org/skins/</code></pre>
-		<p>���̐ݒ�����p���ăf�U�C���Ɏg�p����摜��css�t�@�C���Ȃǂ��i�[����f�B���N�g�������̂悤�ɐݒ肳���܂�</p>
+		<p>この設定を準用してデザインに使用する画像やcssファイルなどを格納するディレクトリを次のように設定させます</p>
 		<pre><code>/home/user/example/htdocs/skins/vista/
 http://example.org/skins/vista/</code></pre>
-		<p>���̂悤�ɏ��p�K�p������ݒ肪<code>Include ���[�h</code>�ł��B���p�����邽�߂ɂ�<code>Include ���[�h</code>���u<strong>skindir���g��</strong>�v�ɂ��Ă��������B</p>
-		<p>����� <strong><code>Include �v���t�B�b�N�X</code></strong> �� �u<strong>vista/</strong>�v�Ɠ��͂��Ă��������B</p>
-		<p>���̉�ʂ̐ݒ�:</p>
+		<p>このように準用適用させる設定が<code>Include モード</code>です。準用させるためには<code>Include モード</code>を「<strong>skindirを使う</strong>」にしてください。</p>
+		<p>さらに <strong><code>Include プリフィックス</code></strong> は 「<strong>vista/</strong>」と入力してください。</p>
+		<p>この画面の設定:</p>
 		<ul>
-			<li><strong>���O</strong>: vista</li>
+			<li><strong>名前</strong>: vista</li>
 			<li><strong>Content Type</strong>: text/html</li>
-			<li><strong>Include ���[�h</strong>: skindir���g��</li>
-			<li><strong>Include �v���t�B�b�N�X</strong>: vista/</li>
+			<li><strong>Include モード</strong>: skindirを使う</li>
+			<li><strong>Include プリフィックス</strong>: vista/</li>
 		</ul>
 	</li>
 </ol>
 
-<h2>�X�L���̕ҏW</h2>
+<h2>スキンの編集</h2>
 
-<p>�X�L�����ɋL�q����R�[�h�̂����A<code>include</code> �� <code>phpinclude</code> �� <code>parsedinclude</code>�œǂݍ��ރt�@�C���̏ꏊ�w��ɁA���́u<code>Include ���[�h</code>�v �� �u<code>Include �v���t�B�b�N�X</code>�v�̐ݒ肪�K�p����܂��B�܂��A���̂ق���<code>skinfile</code>�Ƃ����L�q�R�[�h�ł������̐ݒ��ǂݍ����URL�̎����������s���܂��B</p>
+<p>スキン内に記述するコードのうち、<code>include</code> と <code>phpinclude</code> と <code>parsedinclude</code>で読み込むファイルの場所指定に、この「<code>Include モード</code>」 と 「<code>Include プリフィックス</code>」の設定が適用されます。また、このほかに<code>skinfile</code>という記述コードでもこれらの設定を読み込んでURLの自動生成が行われます。</p>
 
-<p>�Ⴆ�΃X�L�����Ɉȉ��̂悤�ɋL�q�����Ƃ��܂�:</p>
+<p>例えばスキン内に以下のように記述したとします:</p>
 
 <pre><code>&lt;%skinfile(myFile.jpg)%&gt;</code></pre>
 
-<p>����̓y�[�W�������Ɉȉ��̂悤�Ɏ����ϊ�����܂�:</p>
+<p>これはページ生成時に以下のように自動変換されます:</p>
 
 <pre><code>http://example.org/skins/vista/myFile.jpg</code></pre>
 
-<p>�d�g�݂̐����͂��̂��炢�ɂ��āA���ۂɃX�L����ҏW���Ă݂܂��傤�B<code>vista/</code> �f�B���N�g���̒��Ɂu<code>pagefoot.inc</code>�v �� �u<code>pagehead.inc</code>�v �Ƃ������O��2�̃t�@�C�����쐬���āA�����̃t�@�C�����g���񂷎��ɂ���č�ƌ������グ����@�����Љ�܂�:</p>
+<p>仕組みの説明はこのくらいにして、実際にスキンを編集してみましょう。<code>vista/</code> ディレクトリの中に「<code>pagefoot.inc</code>」 と 「<code>pagehead.inc</code>」 という名前の2つのファイルを作成して、これらのファイルを使い回す事によって作業効率を上げる方法をご紹介します:</p>
 
 <h3>pagehead.inc</h3>
 
@@ -465,9 +465,9 @@ http://example.org/skins/vista/</code></pre>
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
 
-<p>���̂悤�ȋ��ʂ��Ďg����R�[�h���������t�@�C�����g���񂵂܂�: (��̃T���v���͏d�v�ȕ��������𔲐��������ł��B���ۂɎg�p����ۂ͕W���Y�t�̃X�L�����Q�l�ɁA�����Ƃ�������̃R�[�h���������񂾕����ǂ��ł��傤�B)</p>
+<p>このような共通して使えるコードを書いたファイルを使い回します: (上のサンプルは重要な部分だけを抜粋した物です。実際に使用する際は標準添付のスキンを参考に、もっとたくさんのコードを書き込んだ方が良いでしょう。)</p>
 
-<h3>���C���̖ڎ��y�[�W</h3>
+<h3>メインの目次ページ</h3>
 <pre><code>&lt;%parsedinclude(pagehead.inc)%&gt;
 
 &lt;h1&gt;My Blog&lt;/h1&gt;
@@ -476,7 +476,7 @@ http://example.org/skins/vista/</code></pre>
 
 &lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
 
-<h3>�A�C�e���̌ʃy�[�W</h3>
+<h3>アイテムの個別ページ</h3>
 
 <pre><code>&lt;%parsedinclude(pagehead.inc)%&gt;
 
@@ -493,9 +493,9 @@ http://example.org/skins/vista/</code></pre>
 
 &lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
 
-<p>��̃T���v���ł͎g�p����e���v���[�g�����u<strong>vista/main</strong>�v �A �u<strong>vista/detailed</strong>�v�Ǝw�肵�Ă��邱�Ƃɒ��ӂ��Ă��������B�e���v���[�g���̓X�L�����Ƒ����Ēu����������X�ҏW���鎞�ɂ킩��₷���ĕ֗��ł��B�P���ɕW���Y�t�� �u<strong>default</strong>�v �� �u<strong>detailed</strong>�v(v3.0 �ł́u<strong>grey/short</strong>�v �� �u<strong>grey/full</strong>�v) �����ꂼ�ꕡ�����Ė��O��t���ւ��������̕��ł��\���܂���B</p>
+<p>上のサンプルでは使用するテンプレート名を「<strong>vista/main</strong>」 、 「<strong>vista/detailed</strong>」と指定していることに注意してください。テンプレート名はスキン名と揃えて置いた方が後々編集する時にわかりやすくて便利です。単純に標準添付の 「<strong>default</strong>」 と 「<strong>detailed</strong>」(v3.0 では「<strong>grey/short</strong>」 と 「<strong>grey/full</strong>」) をそれぞれ複製して名前を付け替えただけの物でも構いません。</p>
 
-<h3>�A�[�J�C�u�ꗗ�y�[�W</h3>
+<h3>アーカイブ一覧ページ</h3>
 
 <pre><code>&lt;%parsedinclude(pagehead.inc)%&gt;
 
@@ -505,7 +505,7 @@ http://example.org/skins/vista/</code></pre>
 
 &lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
 
-<h3>�A�[�J�C�u�y�[�W</h3>
+<h3>アーカイブページ</h3>
 
 <pre><code>&lt;%parsedinclude(pagehead.inc)%&gt;
 
@@ -515,27 +515,27 @@ http://example.org/skins/vista/</code></pre>
 
 &lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
 
-<h2>�X�L�����G�N�X�|�[�g����</h2>
+<h2>スキンをエクスポートする</h2>
 
-<p>�����vista�X�L���̂ł�������ł��B�ł́A���̃X�L�����G�N�X�|�[�g���Ă݂܂��傤�B�Ǘ��G���A�́u�X�L���̃C���|�[�g/�G�N�X�|�[�g�v��ʂɓ���A�ȉ��̍�Ƃ��s���܂�:</p>
+<p>これでvistaスキンのできあがりです。では、このスキンをエクスポートしてみましょう。管理エリアの「スキンのインポート/エクスポート」画面に入り、以下の作業を行います:</p>
 
 <ol>
-	<li>�����o���X�L��/�e���v���[�g��I�����郊�X�g�̒�����uvista�v�A�uvista/detailed�v�A�uvista/main�v��3��I�����Ă��������B</li>
-	<li>���̉��́u�ǉ����v���ɂ��ꂩ�珑���o���X�L���^�e���v���[�g�ɂ��Ă̐���������(�K�v�Ȃ��)���͂��A<code>�I�����ꂽ�X�L���^�e���v���[�g�������o��</code> �{�^���������܂��B Nucleus�ɂāu<code>skinbackup.xml</code>�v�̎����쐬���s���܂��B</li>
-	<li>���́u<code>skinbackup.xml</code>�v�t�@�C����ۑ����A<code>vista/</code>�f�B���N�g���̒��ɑ��̉摜�t�@�C���Ȃǂƈꏏ�Ɋi�[���Ă��������B</li>
-	<li>����<code>vista/</code>�f�B���N�g������zip�t�@�C���ȂǂɈ��k���܂��B</li>
-	<li>����ŃX�L���p�b�P�[�W�̂ł�������ł��B���̈��k�t�@�C����z�z���邾���Ńf�U�C���̔z�z���ł��܂��B</li>
+	<li>書き出すスキン/テンプレートを選択するリストの中から「vista」、「vista/detailed」、「vista/main」の3つを選択してください。</li>
+	<li>その下の「追加情報」欄にこれから書き出すスキン／テンプレートについての説明書きを(必要ならば)入力し、<code>選択されたスキン／テンプレートを書き出し</code> ボタンを押します。 Nucleusにて「<code>skinbackup.xml</code>」の自動作成が行われます。</li>
+	<li>この「<code>skinbackup.xml</code>」ファイルを保存し、<code>vista/</code>ディレクトリの中に他の画像ファイルなどと一緒に格納してください。</li>
+	<li>この<code>vista/</code>ディレクトリごとzipファイルなどに圧縮します。</li>
+	<li>これでスキンパッケージのできあがりです。この圧縮ファイルを配布するだけでデザインの配布ができます。</li>
 </ol>
 
-<h2>�X�L�����C���|�[�g����</h2>
+<h2>スキンをインポートする</h2>
 
-<p>�X�L�����C���|�[�g����ɂ́A��Ƌt�̎菇�𓥂݂܂�:</p>
+<p>スキンをインポートするには、上と逆の手順を踏みます:</p>
 
 <ol>
-	<li>���k�t�@�C�����𓀂��Đ������ꂽ�f�B���N�g��(<code>vista/</code>)���T�[�o�̃X�L���f�B���N�g�����ɔz�u���܂�(�ЂƂ̃X�L����1�̃f�B���N�g�����g�p���܂�)�B</li>
-	<li>�Ǘ��G���A�́u�X�L���̃C���|�[�g/�G�N�X�|�[�g�v��ʂɂāA�h���b�v�_�E�����X�g����uvista�v��I�����A�u�ǂݍ��݁v�{�^���������܂��B</li>
-	<li>�\�����������ɏ]���܂��B(���łɓ������O�̃X�L���^�e���v���[�g�����݂���ꍇ�͂��̎|�̌x�����o�܂��̂ŁA�㏑���������ꍇ�́u���ɑ��݂���X�L�����㏑������ (�Ԃ���X�L�������Q��) �v�̃`�F�b�N�����Ă���ǂݍ��ރ{�^���������Ώ㏑������܂��B)</li>
-	<li>����ŃX�L���̓Ǎ��݂͊����ł��B�y�[�W�\���Ɏg�p�������ꍇ��blog�ݒ�ł��̃X�L������I������ΓK�p����܂��B</li>
+	<li>圧縮ファイルを解凍して生成されたディレクトリ(<code>vista/</code>)をサーバのスキンディレクトリ内に配置します(ひとつのスキンで1つのディレクトリを使用します)。</li>
+	<li>管理エリアの「スキンのインポート/エクスポート」画面にて、ドロップダウンリストから「vista」を選択し、「読み込み」ボタンを押します。</li>
+	<li>表示される説明に従います。(すでに同じ名前のスキン／テンプレートが存在する場合はその旨の警告が出ますので、上書きしたい場合は「既に存在するスキンを上書きする (ぶつかるスキン名を参照) 」のチェックを入れてから読み込むボタンを押せば上書きされます。)</li>
+	<li>これでスキンの読込みは完了です。ページ表示に使用したい場合はblog設定でこのスキン名を選択すれば適用されます。</li>
 </ol>
 
 </body>
