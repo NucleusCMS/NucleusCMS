@@ -16,7 +16,7 @@
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
 $nucleus['version'] = 'v3.0 RC';
-$CONF['debug'] = 1;
+$CONF['debug'] = 0;
 
 /*
 	Indicates when Nucleus should display startup errors. Set to 1 if you want
