@@ -3264,7 +3264,15 @@ Inserts the name of the author
 <h2>Arguments</h2>
 <ul>Optional:
 	<ul>
-		<li><strong><em>realname</em></strong>: add "realname" as parameter to get the real name of the author instead of the display name</li>
+		<li><strong><em>what</em></strong>: Choose a type of information to be displayed:
+			<ul>
+				<li>name: display name <strong>(default)</strong></li>
+				<li>realname: the real name of the author instead of the display name</li>
+				<li>id: Nucleus membet ID</li>
+				<li>url: URL of members website</li>
+				<li>email: email address of member (use of this one should be avoided)</li>
+			</ul>
+		</li>
 	</ul>
 </ul>
 
@@ -3272,6 +3280,7 @@ Inserts the name of the author
 <pre>
 &lt;%author%&gt;
 &lt;%author(realname)%&gt;
+&lt;a href="&lt;%author(url)%&gt;"&gt;&lt;%author%&gt;&lt;/a&gt;
 </pre>
 
 </div>
