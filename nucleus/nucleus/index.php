@@ -1,6 +1,6 @@
 <?php
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
+  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
   * Copyright (C) 2002 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
@@ -15,14 +15,14 @@
 
 	// include the admin code
 	include('../config.php');
-	
+
 	sendContentType('application/xhtml+xml');
-	
+
 	if ($CONF['alertOnSecurityRisk'] == 1)
 	{
 		// check if files exist and generate an error if so
 		$aFiles = array(
-			'../install.sql' => 'install.sql should be deleted', 
+			'../install.sql' => 'install.sql should be deleted',
 			'../install.php' => 'install.php should be deleted',
 			'upgrades' => 'nucleus/upgrades directory should be deleted',
 			'convert' => 'nucleus/convert directory should be deleted'
@@ -39,7 +39,7 @@
 		if (sizeof($aFound) > 0)
 		{
 			startUpError(
-				'<p>One or more of the Nucleus installation files are still present on the webserver, or are writable.</p><p>You should remove these files or change their permissions to ensure security. Here are the files that were found by Nucleus</p> <ul><li>'. implode($aFound, '</li><li>').'</li></ul><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code>, or do this at the end of <code>config.php</code>.</p>',
+				'<p>One or more of the Nucleus installation files are still present on the webserver, or are writable.</p><p>You should remove these files or change their permissions to ensure security. Here are the files that were found by Nucleus</p> <ul><li>'. implode($aFound, '</li><li>').'</li></ul><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnSecurityRisk\']</code> in <code>globalfunctions.php</code> to <code>0</code>, or do this at the end of <code>config.php</code>.</p>',
 				'Security Risk'
 			);
 		}
@@ -47,19 +47,19 @@
 
 	if (!$member->isLoggedIn() || ($action == 'logout')) {
 		$HTTP_POST_VARS['oldaction'] = $action;	// see ADMIN::login()
-		$_POST['oldaction'] = $action;	
+		$_POST['oldaction'] = $action;
 		$action = "showlogin";
 	}
-	
+
 	// show error if member cannot login to admin
 	if ($member->isLoggedIn() && !$member->canLogin()) {
 		$error = _ERROR_LOGINDISALLOWED;
 		$HTTP_POST_VARS['oldaction'] = $action; // see ADMIN::login()
-		$_POST['oldaction'] = $action; 
+		$_POST['oldaction'] = $action;
 		$action = "showlogin";
-		
+
 	}
-	
+
 	$admin = new ADMIN();
 	$admin->action($action);
 ?>
