@@ -40,8 +40,8 @@ class BLOG {
 	 * @param $startpos
 	 *		offset from where items should be shown (e.g. 5 = start at fifth item)
 	 */
-	function readLog($template, $amountEntries, $startpos = 0) {
-		$this->readLogAmount($template,$amountEntries,'','',1,1,$startpos);
+	function readLog($template, $amountEntries, $offset = 0, $startpos = 0) {
+		$this->readLogAmount($template,$amountEntries,'','',1,1,$offset, $startpos);
 	}
 
 	/**
@@ -102,10 +102,10 @@ class BLOG {
 	 *		1=show comments 0=don't show comments
 	 * @param $dateheads
 	 *		1=show dateheads 0=don't show dateheads
-	 * @param $startpos
+	 * @param $offset
 	 *		offset
 	 */
-	function readLogAmount($template, $amountEntries, $extraQuery, $highlight, $comments, $dateheads, $startpos = 0) {
+	function readLogAmount($template, $amountEntries, $extraQuery, $highlight, $comments, $dateheads, $offset = 0, $startpos = 0) {
 
 		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed'
 		       . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
@@ -123,9 +123,11 @@ class BLOG {
 		$query .= $extraQuery
 		       . ' ORDER BY i.itime DESC';
 
-		if ($amountEntries > 0)
-		       $query .= ' LIMIT ' . intval($startpos).',' . intval($amountEntries);
-
+		if ($amountEntries > 0) {
+		        // $offset zou moeten worden:
+		        // (($startpos / $amountentries) + 1) * $offset ... later testen ...
+		       $query .= ' LIMIT ' . intval($startpos + $offset).',' . intval($amountEntries);
+		}
 		return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
 	}
 
