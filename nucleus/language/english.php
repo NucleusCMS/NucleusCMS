@@ -1,5 +1,4 @@
 <?
-
 // English Nucleus Language File
 // 
 // Author: Wouter Demuynck (nucleus@demuynck.org)
@@ -85,6 +84,44 @@ define('_ADD_PLUGIN_EXTRAS',		'Extra Plugin Options');
 define('_ERROR_CATCREATEFAIL',		'Could not create new category');
 define('_ERROR_NUCLEUSVERSIONREQ',	'This plugin requires a newer Nucleus version: ');
 
+// backlinks
+define('_BACK_TO_BLOGSETTINGS',		'Back to blogsettings');
+
+// skin import export
+define('_SKINIE_TITLE_IMPORT',		'Import');
+define('_SKINIE_TITLE_EXPORT',		'Export');
+define('_SKINIE_BTN_IMPORT',		'Import');
+define('_SKINIE_BTN_EXPORT',		'Export selected skins/templates');
+define('_SKINIE_LOCAL',				'Import from local file:');
+define('_SKINIE_NOCANDIDATES',		'No candidates for import found in the skins directory');
+define('_SKINIE_FROMURL',			'Import from URL:');
+define('_SKINIE_EXPORT_INTRO',		'Select the skins and templates you want to export below');
+define('_SKINIE_EXPORT_SKINS',		'Skins');
+define('_SKINIE_EXPORT_TEMPLATES',	'Templates');
+define('_SKINIE_EXPORT_EXTRA',		'Extra Info');
+define('_SKINIE_CONFIRM_OVERWRITE',	'Overwrite skins that already exists (see nameclashes)');
+define('_SKINIE_CONFIRM_IMPORT',	'Yes, I want to import this');
+define('_SKINIE_CONFIRM_TITLE',		'About to import skins and templates');
+define('_SKINIE_INFO_SKINS',		'Skins in file:');
+define('_SKINIE_INFO_TEMPLATES',	'Templates in file:');
+define('_SKINIE_INFO_GENERAL',		'Info:');
+define('_SKINIE_INFO_SKINCLASH',	'Skin name clashes:');
+define('_SKINIE_INFO_TEMPLCLASH',	'Template name clashes:');
+define('_SKINIE_INFO_IMPORTEDSKINS','Imported skins:');
+define('_SKINIE_INFO_IMPORTEDTEMPLS','Imported templates:');
+define('_SKINIE_DONE',				'Done Importing');
+
+define('_AND',						'and');
+define('_OR',						'or');
+
+// empty fields on template edit
+define('_EDITTEMPLATE_EMPTY',		'empty field (click to edit)');
+
+// skin overview list
+define('_LIST_SKINS_INCMODE',		'IncludeMode:');
+define('_LIST_SKINS_INCPREFIX',		'IncludePrefix:');
+define('_LIST_SKINS_DEFINED',		'Defined parts:');
+
 
 // END introduced after v1.5 END
 
@@ -128,7 +165,7 @@ define('_ADD_LEFT_TT',				'Add left box');
 define('_ADD_RIGHT_TT',				'Add right box');
 
 // add/edit item: new category (in dropdown box)
-define('_ADD_NEWCAT',				'New Category');
+define('_ADD_NEWCAT',				'New Category...');
 
 // new settings
 define('_SETTINGS_PLUGINURL',		'Plugin URL');
