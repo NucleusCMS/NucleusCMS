@@ -62,6 +62,8 @@ define('_BATCH_SUCCESS',			'Success!');
 define('_BATCH_DONE',				'Done!');
 define('_BATCH_DELETE_CONFIRM',		'Confirm Batch Deletion');
 define('_BATCH_DELETE_CONFIRM_BTN',	'Confirm Batch Deletion');
+define('_BATCH_SELECTALL',			'select all');
+define('_BATCH_DESELECTALL',		'deselect all');
 
 // batch operations: options in dropdowns
 define('_BATCH_ITEM_DELETE',		'Delete');
@@ -122,6 +124,22 @@ define('_LIST_SKINS_INCMODE',		'IncludeMode:');
 define('_LIST_SKINS_INCPREFIX',		'IncludePrefix:');
 define('_LIST_SKINS_DEFINED',		'Defined parts:');
 
+// backup
+define('_BACKUPS_TITLE',			'Backup / Restore');
+define('_BACKUP_TITLE',				'Backup');
+define('_BACKUP_INTRO',				'Click the button below to create a backup of your Nucleus database. You\'ll be prompted to save a backup file. Store it in a safe place.');
+define('_BACKUP_ZIP_YES',			'Try to use compression');
+define('_BACKUP_ZIP_NO',			'Do not use compression');
+define('_BACKUP_BTN',				'Create Backup');
+define('_BACKUP_NOTE',				'<b>Note:</b> Only the database contents is stored in the backup. Media files and settings in config.php are thus <b>NOT</b> included in the backup.');
+define('_RESTORE_TITLE',			'Restore');
+define('_RESTORE_NOTE',				'<b>WARNING:</b> Restoring from a backup will <b>ERASE</b> all current Nucleus data in the database! Only do this when you\'re really sure!	<br />	<b>Note:</b> Make sure that the version of Nucleus in which you created the backup should be the same as the version you\'re running right now! It won\'t work otherwise');
+define('_RESTORE_INTRO',			'Select the backup file below (it\'ll be uploaded to the server) and click the "Restore" button to start.');
+define('_RESTORE_IMSURE',			'Yes, I\'m sure I want to do this!');
+define('_RESTORE_BTN',				'Restore From File');
+define('_RESTORE_WARNING',			'(make sure you\'re restoring the correct backup, maybe make a new backup before you start)');
+define('_ERROR_BACKUP_NOTSURE',		'You\'ll need to check the \'I\'m sure\' testbox');
+define('_RESTORE_COMPLETE',			'Restore Complete');
 
 // END introduced after v1.5 END
 
