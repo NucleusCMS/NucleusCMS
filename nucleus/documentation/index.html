@@ -9,13 +9,12 @@
 
 <div class="heading">
 Nucleus Manual
-<i>(v2.0b)</i>
+<i>(v2.0)</i>
 </div>
 
 <div class="note">
 <b>Notes:</b>
 <ul>
-	<li><strong>This is a beta release. Expect missing or incomplete documentation.</strong></li>
 	<li>This manual only contains information that is not already contained in the popup-help (<a href="help.html">help.html</a>) available from the administration area. This document also contains instruction for the <a href="#installation">installation</a> of Nucleus.</li>
 	<li>If you're a developer, extra developer documentation is available as a <a href="http://nucleuscms.org/download.php">downloaded as a separate file</a> or <a href="http://nucleuscms.org/documentation/devdocs/index.html">viewable online</a></li>
 </ul>
@@ -49,6 +48,7 @@ Nucleus is a Content Management System (CMS): a powerful set of PHP scripts that
 <ul>
 	<li>Runs on your own server</li>
 	<li>One or more weblogs, even on the same page</li>
+	<li>Plugin-interface to add extra functionality</li>
 	<li>Comments</li>
 	<li>Archives</li>
 	<li>Categories</li>
@@ -59,7 +59,7 @@ Nucleus is a Content Management System (CMS): a powerful set of PHP scripts that
 	<li>Extensive administration area</li>
 	<li>Media library and file upload</li>
 	<li>Fully customizable skins and templates</li>
-	<li>Plugins allow easy extensions</li>
+	<li>Skin import/export</li>
 	<li>Banlist against commenting system abuse</li>
 	<li>RSS syndication</li>
 	<li>Easy installation</li>
@@ -79,6 +79,8 @@ Requirements in order to run Nucleus: <small>(If you don't know if you fit the r
 	<li>Access to a <a href="http://www.mysql.com/">MySQL</a> database (version 3.23.38 or higher)</li>
 	<li>Some <acronym title="Hypertext Markup Language">HTML</acronym> and <acronym title="Cascading Style Sheets">CSS</acronym> knowledge, to edit skins and templates</li>
 </ul>
+
+
 
 <p>
 Nucleus is intended for the people that want full control and 'tweakability' over their sites. If you're just looking for a very simple way to put up a site, or don't know any HTML, you might want to use a 'simpler' service such as <a href="http://www.blogger.com/">Blogger</a>.
@@ -141,6 +143,9 @@ Unzip all files to a directory of your computer. Make sure the path names are us
 /nucleus/xmlrpc/*            (XML-RPC interface)
 /nucleus/documentation/*     (Documentation + admin-area help)
 /nucleus/styles/*            (stylesheets for docs &amp; admin-area)
+/nucleus/forms/*             (skeletons for commentforms etc)
+/extra/*                     (extra goodies, e.g. needed files to enable fancy URLs)
+/skins/*                     (skins directory [imported skins will go here])
 /media/*                     (media library directory [emtpy])
 </pre>
 
@@ -194,13 +199,13 @@ Since Nucleus needs to connect to a mySQL database from a PHP-script, the passwo
 </p>
 
 <p>
-The problem above is common to all PHP scripts that need to connect to a database. As a user, there's usually nothing you can do about it in order to make things 100% secure. I just wanted you to be aware of this potential danger.
+The problem above is common to all PHP scripts that need to connect to a database. As a user, there's usually nothing you can do about it in order to make things 100% secure. We just want you to be aware of this potential danger.
 </p>
 
 <h2>Cookies</h2>
 
 <p>
-Nucleus uses cookies to store user login information. This could cause a security risk when your cookies are stolen. Although your password is not derivable from the cookie <small>(the values stored in the cookie are the username and a randomly generated string)</small>, there could be possibilities to 'fake' the cookie on another computer and thus to get logged in.
+Nucleus uses cookies to store user login information. This could cause a security risk when your cookies are stolen. Although your password is not derivable from the cookie <small>(the values stored in the cookie are the username and a randomly generated string)</small>, there could be ways to 'fake' the cookie on another computer and thus to get logged in.
 </p>
 
 <h2>Media dir</h2>
@@ -220,7 +225,7 @@ Contradictory to some other weblog/online journal scripts, Nucleus does not gene
 </p>
 
 <p>
-For small web sites, this should not cause any problem. For web sites that get thousands of visitors each hour, I don't know exactly what the effect on the systems performance will be. So far, no problems have been reported by Nucleus users.
+For small web sites, this should not cause any problem. For web sites that get dozens of hits per second, the effect on the systems performance isn't really known. So far, no problems have been reported by Nucleus users (some are running pretty big sites on it, with 30 or more weblogs on a single installation). 
 </p>
 
 
@@ -254,7 +259,7 @@ Nucleus has some built-in rules concerning comments:
 	<li>each sequence of 3 newlines in the body gets replaced by a single newline (why: layout)</li>
 	<li>HTML tags are replaced by entities</li>
 	<li>the comment is trimmed (leading and trailing whitespace is left of)</li>
-	<li>URLs are 'hreffed'. Reason why it's done using http://.../ is once again a possible layout mess-up for long urls.</li>
+	<li>URLs are 'hreffed'. To avoid layout mess-ups, the URLs are shortened.</li>
 </ul>
 
 <p>
@@ -279,7 +284,7 @@ The URL for the Nucleus XML-RPC interface is:
 </p>
 
 <p>
-Currently, the <a href="http://plant.blogger.com/api/">Blogger API</a> and the <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a> are implemented. If you want an examples of such a client, try <a href="http://wbloggar.blogspot.com/">w.Bloggar</a>.
+Currently, the <a href="http://plant.blogger.com/api/">Blogger API</a> and the <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a> are implemented. If you want an examples of such a client, try <a href="http://www.wbloggar.com/">w.Bloggar</a>, a client for machines running Windows.
 </p>
 
 <p>
@@ -292,6 +297,13 @@ The available calls to the interface are described in the development documentat
 
 <p>Below, some of the most common problems with and questions about Nucleus are answered. Please read these first before you ask for help. In many cases, the solution can be found here.
 </p>
+
+<div class="faq">
+<div class="question">I get an error: <q>Cannot send headers. Headers already sent...</q></div>
+<div class="answer">
+This problem is usually caused by whitespace at the beginning or end of <code>config.php</code>. Check if it has spaces or newlines before the starting <tt>&lt;?</tt> or after the ending <tt>?&gt;</tt>. If there are, remove them. The problem can also have to do with spaces in the language file or one of the installed plugins.
+</div>
+</div>
 
 <div class="faq">
 <div class="question">When I try to run install.php, I'm prompted if I want to download install.php</div>
@@ -322,14 +334,6 @@ File permissions need to be set correctly in order for the update file to work. 
 <div class="answer">You can safely delete the xml-rss.php (headlines.php) file and the 'xmlrss' (headlines) skin/template</div>
 </div>
 
-<div class="faq">
-<div class="question">I get an error: <q>Cannot send headers. Headers already sent...</q></div>
-<div class="answer">
-Most likely this problem is caused by whitespace at the beginning or end of the listed file. So, when it says: "headers already sent in config.php line x", the problem is in config.php. Check if it has spaces or newlines before the starting <tt>&lt;?</tt> or after the ending <tt>?&gt;</tt>. If there are, remove them.
-</div>
-</div>
-
-
 
 <h1>Known Problems <a name="known" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
@@ -343,8 +347,7 @@ Most likely this problem is caused by whitespace at the beginning or end of the 
 	<li>Entities can get messed up in the RSS channel (e.g. &amp;amp; becomes &amp;amp;amp;)</li>
 	<li>The notify-address option in blogsettings has a preset limit of 255 chars, which means you can't put too many e-mail addresses in there.</li>
 	<li>Live preview doesn't work correctly in Mozilla</li>
-	<li>After changing the selected language, it won't be used immediately (you'll need another click)</li>
-	<li>Internet Explorer 6 seems to be occasionally closing itsself after adding an item. The item is added, though.</li>
+	<li>Internet Explorer 6 seems to be occasionally closing itsself after adding an item. The item is added, though. (it's been a while since the last complaint about that, so it <em>might</em> have disappeared)</li>
 </ul>
 
 
@@ -366,11 +369,11 @@ All code for Nucleus, except the parts listed below, was written by <a href="mai
 </ul>
 
 <p>
-Many thanks should also go to all people who have helped me and/or inspired me. (I tried to link them in the changelog, don't shoot me if you're not in there)
+Many thanks should also go to all people who have helped me and/or inspired me. (I tried to link them in the <a href="history.html">changelog</a>, don't shoot me if you're not in there)
 </p>
 
 <p>
-And, lots of thanks should go out to the people that did a <a href="http://nucleuscms.org/donate.php">donation</a> or helped me out! This really keeps me going!
+And, lots of thanks should go out to the people that made a <a href="http://nucleuscms.org/donate.php">donation</a> or helped me out! This really keeps me going!
 </p>
 
 </body>

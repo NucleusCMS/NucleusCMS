@@ -26,12 +26,17 @@ This file contains tips and suggestions that might prove useful.
 <h1><a name="toc"></a>Table Of Contents</h1>
 
 <ul>
-
-	<li><a href="#xhtml">XHTML support</a></li>
-	<li><a href="#searchengines">How to get your archives into search engines?</a></li>
+	<li>
+		<a href="#searchengines">How to get your archives into search engines?</a>
+		<ul>
+			<li><a href="#searchengines-fancyurls">Fancy URLs</a></li>
+			<li><a href="#searchengines-rewrite">mod_rewrite</a></li>	
+		</ul>
+	</li>
 	<li><a href="#filepermissions">How to set file/dir permissions?</a></li>
 	<li><a href="#backups">How to restore backups</a></li>
 	<li><a href="#newblog">How to create a new weblogs</a></li>
+	<li><a href="#xhtml">XHTML support</a></li>	
 <!--
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
@@ -41,16 +46,6 @@ This file contains tips and suggestions that might prove useful.
 </ul>
 
 
-
-<h1>XHTML Support <a name="xhtml" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
-
-<p>
-If you see tags like &lt;br /&gt; in the source code of your webpage, it's because the output of Nucleus <small>(except the things defined by templates and skins, of course)</small> is compliant to the XHTML 1.0 standard from the W3C, which is the successor of HTML 4. This way, Nucleus is ready for the future of the web. As far as I know, this XHTML support does not cause any trouble with older browsers and is correctly interpreted.
-</p>
-
-<p>
-What this means, is that you can perfectly create an XHTML-compliant site by using correct skins and templates. The default Nucleus skin is XHTML-compliant, but uses the "HTML 4 Loose" doctype. This way, users not knowing XHTML can not create documents with a false XHTML doctype.
-</p>
 
 
 
@@ -62,15 +57,44 @@ What this means, is that you can perfectly create an XHTML-compliant site by usi
 <h1>Getting your archives into search engines like Google <a name="searchengines" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <div class="note">
-<b>Note:</b> The solution described here might not work on your system.
+<b>Note:</b> The solutions described here might not work on your system.
 </div>
 
 <p>
 Nucleus creates archives dynamically on users requests. The URL is then of the form <code>index.php?archive=2001-09&amp;blogid=1</code>. Unfortunately, Google and other search engines don't like to index pages with a question mark in it, or with too much arguments. This is because their spiders might get trapped going too deep.
 </p>
 
+<p>Two solutions are listed below. They're not guaranteed to work, however (wether they work or not depends on the webserver configuration)</p>
+
+<ol>
+	<li><a href="#searchengines-fancyurls">Fancy URLs</a></li>
+	<li><a href="#searchengines-rewrite">mod_rewrite</a></li>	
+</ol>
+
+<a name="searchengines-fancyurls"></a>
+<h2>Fancy URLs</h2>
+
+<p>Nucleus v2.0 has a new option in the global settings 'URL mode'. Setting it to 'Fancy URL' mode, and performing the steps below, will make your URLs look like <code>http://example.org/item/1234</code> instead of <code>http://example.org/index.php?itemid=1234</code>. Search engines like these URLs better.</p>
+
+<p>Installation steps:</p>
+
+<ol>
+	<li>Copy all files from the <code>/extra/fancyurls</code> directory (except for <code>index.html</code>) to your main nucleus dir (that's where your <code>index.php</code> and <code>action.php</code> file are)</li>
+	<li>If you have an already existing <code>.htaccess</code> file (most ftp-programs don't show hidden files by default, so don't start uploading it without checking your server). If you do, download that old one first, and copy the contents of the new <code>.htaccess</code> file (from the fancyurls folder) in your old one, and upload that...</li>
+	<li>Edit the <code>fancyurls.config.php</code> file so that <code>$CONF['Self']</code> points to your main directory. <br /><strong>NOTE: this time, and only this time, the URL should <em>NOT</em> end in a slash</strong></li>
+	<li>Also edit the <code>$CONF['Self']</code> variable in your <code>index.php</code>, if you don't want to end up with <code>index.php/item/1234</code> urls when people come via that way</li>
+	<li>Enable 'Fancy URLs' in the Nucleus admin area (nucleus management / edit settings)</li>
+	<li>Off you go!</li>
+</ol>
+
+<p>When it doesn't work (e.g. you receive an Internal Server Error): bad luck... Remove the files again (don't forget the hidden file <code>.htaccess</code>) and reset the Fancy URLs setting in the admin area.</p>
+
+
+<a name="searchengines-rewrite"></a>
+<h2>mod_rewrite</h2>
+
 <p>
-The solution presented here will only work on servers running Apache, and when you have the right to do so. What we will do is 'disguise' the archives as regular HTML pages
+This second possible solution will only work on servers running Apache, and when you have the right to do so. What we will do is 'disguise' the archives as regular HTML pages
 </p>
 
 <p>
@@ -210,6 +234,12 @@ selector();
 </tr><tr>
 	<td><code>selectCategory('categoryname');</td>
 	<td>Makes sure a certain category gets selected</td>	
+</tr><tr>
+	<td><code>selectItem(1234);</td>
+	<td>Makes sure a certain item gets selected</td>	
+</tr><tr>
+	<td><code>selectLanguage('french');</td>
+	<td>Makes sure a certain language gets used (note: might produce PHP warnings)</td>		
 </tr></table>
 
 <p>
@@ -220,9 +250,31 @@ Make sure that these methods are called <strong>after</strong> the <code>include
 
 <p>The process for creating a blog in a subdirectory (<tt>http://yourhost.com/sub/</tt> where the main weblog is in <tt>http://yourhost.com/</tt>) is similar, with the only change that you'll need to replace <code>include('config.php');</code> by <code>include('../config.php');</code></p>
 
-<p>You'll also need to alter the <tt>&lt;%commentform%&gt;</tt> in the skins used for that blog:</p>
 
-<pre><code>&lt;%commentform(../action.php,http://yourhost.com/sub/)%&gt;</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1>XHTML Support <a name="xhtml" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+If you see tags like <code>&lt;br /&gt;</code> in the source code of your webpage, it's because the output of Nucleus <small>(except the things defined by templates and skins, of course)</small> is compliant to the XHTML 1.0 standard from the W3C, which is the successor of HTML 4. This way, Nucleus is ready for the future of the web. As far as I know, this XHTML support does not cause any trouble with older browsers and is correctly interpreted.
+</p>
+
+<p>
+What this means, is that you can perfectly create an XHTML-compliant site by using correct skins and templates. The default Nucleus skin is XHTML-compliant, but uses the "HTML 4 Loose" doctype. This way, users not knowing XHTML can not create documents with a false XHTML doctype.
+</p>
+
+
 
 </body>
 </html>
