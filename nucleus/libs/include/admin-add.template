@@ -88,7 +88,7 @@
 		</td>
 	</tr><tr>
 		<td><%text(_ADD_MORE)%>
-			<br /><%helplink('extended')%>
+			<br /><%helplink(extended)%>
 		</td>
 		<td>
 			<%jsbuttonbar(media+preview)%>		
