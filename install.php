@@ -93,6 +93,8 @@
 	</head>
 	<body>
 
+  <div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
+
 	<form method="post" action="install.php">
 
 	<h1>Install Nucleus</h1>
@@ -643,6 +645,7 @@
 			</style>
 		</head>
 		<body>
+		<div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
 <?php
 	$aAllErrors = array_merge($aSkinErrors, $aPlugErrors);
 	if (count($aAllErrors) > 0) {
@@ -751,6 +754,21 @@
 				continue;
 			}
 			$plugin->install();
+		}
+
+		// SYNC PLUGIN EVENT LIST
+		sql_query('DELETE FROM '.sql_table('plugin_event'));
+		// loop over all installed plugins
+		$res = sql_query('SELECT pid, pfile FROM '.sql_table('plugin'));
+		while($o = mysql_fetch_object($res)) {
+			$pid = $o->pid;
+			$plug =& $manager->getPlugin($o->pfile);
+			if ($plug)
+			{
+				$eventList = $plug->getEventList();
+				foreach ($eventList as $eventName) 
+					sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.$eventName.'\')');
+			}
 		}
 
 		return $aErrors;
@@ -895,6 +913,7 @@
 			</style>
 		</head>
 		<body>
+		  <div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
 			<h1>Error!</h1>
 			<p>
 			Error message was: "<?php echo $msg?>";
@@ -919,6 +938,7 @@
 			</style>
 		</head>
 		<body>
+		  <div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
 			<h1>Errors!</h1>
 			<p>
 			Errors were found:
