@@ -228,7 +228,7 @@ class ADMIN {
 			$start = 0; 	
 			
 		if ($start == 0)
-			echo '<p><a href="index.php?action=createitem&amp;blogid='.$blogid.'">Add new item...</a></p>';		
+			echo '<p><a href="index.php?action=createitem&amp;blogid='.$blogid.'">',_ITEMLIST_ADDNEW,'</a></p>';		
 			
 		// amount of items to show
 		if (postVar('amount'))
@@ -326,6 +326,59 @@ class ADMIN {
 		
 	}
 	
+	function action_batchcomment() {
+		global $member, $manager;
+		
+		// check if logged in
+		$member->isLoggedIn() or $this->disallow();
+		
+		// more precise check will be done for each performed operation 
+	
+		// get array of itemids from request
+		$selected = requestIntArray('batch');
+		$action = requestVar('batchaction');
+		
+		// Show error when no items were selected
+		if (!is_array($selected) || sizeof($selected) == 0)
+			$this->error(_BATCH_NOSELECTION);
+			
+		// On delete: check if confirmation has been given
+		if (($action == 'delete') && (requestVar('confirmation') != 'yes')) 
+			$this->batchAskDeleteConfirmation('comment',$selected);
+
+		$this->pagehead();
+		
+		echo '<a href="index.php?action=overview">(',_BACKHOME,')</a>';		
+		echo '<h2>',_BATCH_COMMENTS,'</h2>';
+		echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b></p>';
+		echo '<ul>';
+		
+		// walk over all itemids and perform action
+		foreach ($selected as $commentid) {
+			$commentid = intval($commentid);
+			echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b> ',_BATCH_ONCOMMENT,' <b>', $commentid, '</b>...';
+
+			// perform action, display errors if needed
+			switch($action) {
+				case 'delete':
+					$error = $this->deleteOneComment($commentid);
+					break;
+				default:
+					$error = _BATCH_UNKNOWN . $action;
+			}
+
+			echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
+			echo '</li>';
+		}
+		
+		echo '</ul>';
+		echo '<b>',_BATCH_DONE,'</b>';
+		
+		$this->pagefoot();
+
+		
+	}
+
 	function action_batchmember() {
 		global $member, $manager;
 		
@@ -900,7 +953,7 @@ class ADMIN {
 
 			// show error when sth goes wrong
 			if (!$catid) 
-				$this->doError('Could not create new category');
+				$this->doError(_ERROR_CATCREATEFAIL);
 		} 
 
 		/*
@@ -1066,7 +1119,7 @@ class ADMIN {
 
 			// show error when sth goes wrong
 			if (!$catid) 
-				$this->doError('Could not create new category');
+				$this->doError(_ERROR_CATCREATEFAIL);
 		} 
 		
 		// only allow if user is allowed to alter item
@@ -1193,7 +1246,6 @@ class ADMIN {
 		// change <br /> to \n
 		$comment['body'] = str_replace('<br />','',$comment['body']);
 		
-//		$comment['body'] = eregi_replace("<a href=['\"]http://(([a-zA-Z0-9]|\.|/|~|%|&|\?|\@|\=|_|\+|\:|;|-)*)['\"]>http://.../</a>","http://\\1",$comment['body']);
 		$comment['body'] = eregi_replace("<a href=['\"]([^'\"]+)['\"]>[^<]*</a>","\\1",$comment['body']);
 		
 		$this->pagehead();
@@ -1330,21 +1382,32 @@ class ADMIN {
 		
 		$commentid = intRequestVar('commentid');
 		
-		$member->canAlterComment($commentid) or $this->disallow();
-		
 		// get item id first
 		$res = sql_query("SELECT citem FROM nucleus_comment WHERE cnumber=" . $commentid);
 		$o = mysql_fetch_object($res);
 		$itemid = $o->citem;
-		
-		// delete the comments associated with the item
-		$query = "DELETE FROM nucleus_comment WHERE cnumber=" . $commentid;
-		sql_query($query);
-		
+
+		$error = $this->deleteOneComment($commentid);
+		if ($error)
+			$this->doError($error);
+			
 		if ($member->canAlterItem($itemid))
 			$this->action_itemcommentlist($itemid); 
 		else
 			$this->action_browseowncomments();
+	}
+	
+	function deleteOneComment($commentid) {
+		global $member;
+		
+		if (!$member->canAlterComment($commentid))
+			return _ERROR_DISALLOWED;
+				
+		// delete the comments associated with the item
+		$query = "DELETE FROM nucleus_comment WHERE cnumber=" . $commentid;
+		sql_query($query);
+		
+		return '';
 	}
 	
 	/**
@@ -4865,33 +4928,33 @@ class BATCH extends ENCAPSULATE {
 				switch($this->type) {
 					case 'item':
 						$options = array(
-							'delete' => 'Delete',
-							'move' => 'Move'
+							'delete'	=> _BATCH_ITEM_DELETE,
+							'move'		=> _BATCH_ITEM_MOVE
 						);
 						break;
 					case 'member': 
 						$options = array(
-							'delete' => 'Delete',
-							'setadmin' => 'Give admin rights',
-							'unsetadmin' => 'Take away admin rights',
+							'delete'	=> _BATCH_MEMBER_DELETE,
+							'setadmin'	=> _BATCH_MEMBER_SET_ADM,
+							'unsetadmin' => _BATCH_MEMBER_UNSET_ADM
 						);
 						break;
 					case 'team':
 						$options = array(
-							'delete' => 'Delete from team',
-							'setadmin' => 'Give admin rights',
-							'unsetadmin' => 'Take away admin rights',
+							'delete' 	=> _BATCH_TEAM_DELETE,
+							'setadmin'	=> _BATCH_TEAM_SET_ADM,
+							'unsetadmin' => _BATCH_TEAM_UNSET_ADM,
 						);
 						break;
 					case 'category':
 						$options = array(
-							'delete' => 'Delete',
-							'move' => 'Move to other blog',
+							'delete'	=> _BATCH_CAT_DELETE,
+							'move'		=> _BATCH_CAT_MOVE,
 						);
 						break;
 					case 'comment':
 						$options = array(
-							'delete' => 'Delete',
+							'delete'	=> _BATCH_COMMENT_DELETE,
 						);
 					break;
 				}
