@@ -87,7 +87,7 @@ class COMMENT {
 			$displayedUrl = $linkedUrl;
 		else
 			$displayedUrl = $url;
-		return $pre . '<a href="'.htmlspecialchars($linkedUrl).'">'.htmlspecialchars(shorten($displayedUrl,30,'...')).'</a>';
+		return $pre . '<a href="'.$linkedUrl.'">'.shorten($displayedUrl,30,'...').'</a>';
 	}
 	
 }
