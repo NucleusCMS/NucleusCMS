@@ -9,7 +9,7 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: index.php,v 1.3 2005-03-17 08:57:28 kimitake Exp $
+  * $Id: index.php,v 1.4 2005-03-18 06:07:10 kimitake Exp $
   * $NucleusJP$
   */
 
@@ -21,7 +21,8 @@ if (!$member->isLoggedIn()) {
 }
 
 if (!$member->isAdmin()) {
-  upgrade_error('Only Super-Admins are allowed to perform upgrades');
+  //upgrade_error('Only Super-Admins are allowed to perform upgrades');
+  upgrade_error('Super-admin（最高管理者）のみがアップグレードを実行できます。');
 }
 
 upgrade_head();
@@ -104,7 +105,7 @@ function upgrade_manual_96() {
 ?>
   <h2>Nucleus 0.96 用に必要な変更</h2>
   <p>
-    A manual addition needs to be made to <i>config.php</i>, in order to get the media functions to work. Here's what to add:
+    メディア機能を使用するために<i>config.php</i>を手動で変更する必要があります。下記の通り追加します:
   </p>
   <pre>
   // path to media dir
@@ -112,7 +113,7 @@ function upgrade_manual_96() {
   </pre>
   
   <p>
-  Also, it will be necessary to create that directory yourself. If you want to make file upload possible, you should set the permissions of the media/ directory to 777 (see the documentation/tips.html in Nucleus 0.96+ for a quick guide on setting permissions).
+  また、ディレクトリもあなた自身の手で作る必要があります。もしファイルのアップロードを可能にしたいのであれば、media/ ディレクトリのパーミッションを777にします。（Nucleus 0.96+ のためのパーミッションの設定に関するクイックガイドが documentation/tips.html にあります）
   </p>
   
 <?php }
@@ -124,18 +125,18 @@ function upgrade_manual_20() {
 ?>
   <h2>Nucleus 2.0 用に必要な変更</h2>
   <p>
-    A manual addition needs to be made to <i>config.php</i>, in order to get imported skins to work correctly. Here's what to add:
+    スキンの取り込み機能を使用するために<i>config.php</i>を手動で変更する必要があります。下記の通り追加します:
   </p>
   <pre>
   // extra skin files for imported skins
   $DIR_SKINS = '<b><?php echo htmlspecialchars($guess)?></b>';
   </pre>
   
-  <p>Also, it will be necessary to create this directory yourself. Downloaded skins can then be expanded into that directory and be imported from inside the Nucleus admin area.</p>
+  <p>また、ディレクトリもあなた自身の手で作る必要があります。これでダウンロードしたスキンを上記ディレクトリに展開したり、Nucleus 管理画面から取り込んだりできるようになります。</p>
   
-  <h3>RSS 2.0 and RSD スキン</h3>
+  <h3>RSS 2.0 と RSD スキン</h3>
   
-  <p>When a fresh version of Nucleus 2.0 is installed, an RSS 2.0 (Really Simple Syndication) syndication skin is also installed, as well as an RSD skin (Really Simple Discovery). The files <code>xml-rss2.php</code> and <code>rsd.php</code> are available in the upgrade, however the skin itself needs to be installed manually. After you've uploaded the contents of the <code>upgrade-files</code>, open <code>admin area &gt; nucleus management &gt; skin import</code>. From there, you can install both skins. (Unless you don't want them installed, that is)</p>
+  <p>Nucleus 2.0 を新規にインストールしたとき、RSD(Really Simple Discovery) 用のスキンの他に、RSS 2.0(Really Simple Syndication)用のスキンもまたインストールされます。<code>xml-rss2.php</code> と <code>rsd.php</code> の両ファイルはアップグレードされますが、スキンに関しては手動でインストールする必要があります。<code>upgrade-files</code>の中身をアップロードしたあと、管理者画面を開き、管理ホームにあるスキンの「読込/書出」を開きます。そこから両スキンをインストールすることができます（もしインストールするつもりがなければ、しなくても結構です）。</p>
   
 <?php }
 
@@ -143,10 +144,10 @@ function upgrade_manual_php405() {
 ?>
 <h2>PHP のバージョンが 4.0.3, 4.0.4 または 4.0.5 の場合に必要となる変更</h2>
 <p>
-  There are two files that need to be changed when running PHP versions lower than 4.0.6. Even better would be to upgrade to PHP 4.0.6 or PHP 4.2.2+ (there are security issues with all PHP versions &lt; 4.0.6 and 4.2.2). If you're not able or not willing to upgrade, here's what to change:
+  PHP のバージョンが 4.0.6 より以前の場合、変更が必要なファイルが２つあります。PHP のバージョンを 4.0.6 や 4.2.2+以降のものにアップグレードした方がいいでしょう（4.0.6 や 4.2.2 以前のものにはセキュリティー問題があります）。もし PHP のアップグレードが困難もしくは、する予定がない場合は、以下のファイルを変更して下さい。
 </p>
 <ul>
-  <li>Make sure the code in nucleus/libs/PARSER.php is as follows (starting from line 84):
+  <li>nucleus/libs/PARSER.php のコードが下記のようになっていることを確認して下さい。（84行目から）:
     <pre>
 
   if (in_array($actionlc, $this-&gt;actions) || $this-&gt;norestrictions ) {
@@ -165,7 +166,7 @@ function upgrade_manual_php405() {
 }
      </pre>
     </li>
-    <li>Make sure the code in nucleus/libs/PARSER.php is as follows (starting from line 75):
+    <li>nucleus/libs/PARSER.php のコードが下記のようになっていることを確認して下さい。（75行目から）:
     <pre>
 // $params = array_map('trim',$params);
 foreach ($params as $key =&gt; $value) { $params[$key] = trim($value); }

@@ -12,7 +12,7 @@
 	  *	
 	  * Some functions common to all upgrade scripts
 	  *
-  	  * $Id: upgrade.functions.php,v 1.3 2005-03-17 08:57:28 kimitake Exp $
+  	  * $Id: upgrade.functions.php,v 1.4 2005-03-18 06:07:10 kimitake Exp $
 	  * $NucleusJP$
 	  */
 
@@ -113,7 +113,7 @@
 
 			<p>
 				<input name="action" value="login" type="hidden" />
-				<input type="submit" value="Log in" />
+				<input type="submit" value="ログイン" />
 			</p>
 		
 		</form>
