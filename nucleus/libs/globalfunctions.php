@@ -101,7 +101,7 @@ $errormessage	= '';
 $error			= '';
 
 if (!headers_sent())
-	header('Generator: Nucleus ' . $nucleus['version']);
+	header('Generator: Nucleus CMS ' . $nucleus['version']);
 
 // include core classes that are needed for login & plugin handling
 include($DIR_LIBS . 'MEMBER.php');
@@ -177,7 +177,7 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
                ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
 
                //Since bad credentials, generate an apropriate error page
-               header("WWW-Authenticate: Basic realm=\"Nucleus {$nucleus['version']}\"");
+               header("WWW-Authenticate: Basic realm=\"Nucleus CMS {$nucleus['version']}\"");
                header('HTTP/1.0 401 Unauthorized');
                echo 'Invalid username or password';
                exit;

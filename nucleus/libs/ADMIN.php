@@ -4564,7 +4564,7 @@ selector();
 			echo '<br />(';
 
 			if ($member->isLoggedIn() && $member->isAdmin())
-				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus ', $nucleus['version'], '</a>';
+				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nucleus['version'], '</a>';
 			else
 				echo 'Nucleus CMS ' , $nucleus['version'];
 			echo ')';
@@ -4591,7 +4591,7 @@ selector();
 			<?php		}
 		?>
 			<div class="foot">
-				<a href="http://nucleuscms.org/">Nucleus</a> &copy; 2002-2005 The Nucleus Group
+				<a href="http://nucleuscms.org/">Nucleus CMS</a> &copy; 2002-2005 The Nucleus Group
 				-
 				<a href="http://nucleuscms.org/donate.php">Donate!</a>
 			</div>
