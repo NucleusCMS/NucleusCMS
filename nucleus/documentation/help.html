@@ -3705,7 +3705,13 @@ Inserts a date using the <a href="#templatedatetime">date format specified in th
 
 <h2>Specials</h2>
 
-<p>Two special parameters are possible: <code>rfc822</code> and <code>rfc822GMT</code>, which insert dates in RFC 822 format. The first one uses the local date, the second one uses the GMT time.</p>
+<p>Four special parameters are possible:</p>
+<ol>
+ <li><code>rfc822</code>: RFC822 date in local time</li>
+ <li><code>rfc822GMT</code>: RFC date in GMT time</li>
+ <li><code>iso8601</code>: ISO-8601 date (<a href="http://www.w3.org/TR/NOTE-datetime">W3C Date and Time Format</a> profile). Example: 2002-10-02T10:00:00-05:00</li>
+ <li><code>utc</code>: Same as iso8601, but the date is expressed in UTC, using a "Z" for the timezone indicator.</li>
+</ol>
 
 <h2>Examples</h2>
 <pre>
