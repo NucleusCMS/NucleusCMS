@@ -174,17 +174,18 @@ class MEMBER {
 		// cannot alter item -> NOK
 		if (!$this->canAlterItem($itemid)) return 0;
 		
-		// category does not exist -> NOK
-		if (!$manager->existsCategory($newcat)) return 0;
-
 		// if this is a 'newcat' style newcat
 		// no blog admin of destination blog -> NOK
 		// blog admin of destination blog -> OK
 		if (strstr($newcat,'newcat')) {
 			// get blogid 
-			list($blogid) = sscanf($newcat,"newcat-%d");
+			list($blogid) = sscanf($newcat,'newcat-%d');
 			return $this->blogAdminRights($blogid);
 		} 
+
+		// category does not exist -> NOK
+		if (!$manager->existsCategory($newcat)) return 0;
+
 		
 		// get item
 		$item =& $manager->getItem($itemid,1,1);
