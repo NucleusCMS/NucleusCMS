@@ -17,8 +17,65 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
 <ul>
 	<li>
-		<b>Nucleus v2.0 (?)</b>
-		<p>Being worked on :)</p>
+		<b>Nucleus v2.0 Final (?)</b>	
+		<p>Being worked on...</p>
+		<ul>
+			<li>FIXED: &lt;%if(blogsetting,bcomments,1)%&gt; skinvars were not working</li>
+			<li>ADDED: &lt;%if(loggedin)%&gt; skinvars were not working</li>
+		</ul>
+	</li>
+	<li>
+		<b>Nucleus v2.0 beta (?)</b>
+		<p>Being worked on...</p>
+		<ul>
+			<li></li>
+			<li></li>			
+			<li>ADDED: skinvar <%skinname%></li>
+			<li>ADDED: if/else in skins. parameters for 'if' are currently 'category' (=ifcat) or 'blogsetting/settingname' (settingname = columnname from database...)</li>
+			<li>ADDED: Etag/If-None-Match support for xml-rss.php (needs some more work)</li>
+			<li>FIXED: more friendly bookmarklet for Opera 6 users (all tabs are visible, editing through bookmarklet works)</li>
+			<li>ADDED: on edit item, the post time can be changed (only if 'allow post to past' is enabled)</li>
+			<li>ADDED: 'Allow Post to Past' option on weblog basis</li>			
+			<li>ADDED: IncludeMode and IncludePrefix settings in nucleus_skin_desc + interface to change these settings + user IncludePrefix while parsing includes.</li>
+			<li>CHANGED: nucleusbutton skinvar now takes into account IncludeMode</li>
+			<li>CHANGED: btimeoffset column is now DECIMAL instead of INT </li>
+			<li>CHANGED: took away actionurl parameters from commentform and membermailform skinvars (it's a global setting now)</li>
+			<li>ADDED: &lt;%set(property,value)%&lt; skin/template-var to set global parser properties. Only one option defined so far: 'IncludeMode'. Can be 'skindir' or 'normal' and affects the include/parseinclude/phpinclude skin/templatevars</li>
+			<li>ADDED: &lt;%skinfile(filename)%&gt; skinvar (to be used on imported skins)</li>			
+			<li>ADDED: $CONF['SkinsURL'] and $DIR_SKINS (config.php)</li>
+			<li>CHANGED: friendly names used on skin edit (instead of 'index', 'item' etc)</li>
+			<li>ADDED: action url to global settings (action.php location)</li>
+			<li>ADDED: $desturl and $actionurl parameters on membermailform skinvar</li>			
+			<li>ADDED: skin import/export class</li>
+			<li>CHANGED: media library now works with multiple collections, of which one is private to the site member, and the rest is globally shared.</li>			
+			<li>CHANGED: base skin can now be changed (it's now a config setting). This skin is ONLY used in two cased: when all else fails, and when the selected skin does not have contents for the needed skinpart</li>
+			<li>CHANGED: positive and negative karma votes are now kept separately, since that works better and is more flexible. The &lt;%karma%&gt; templatevar received an extra parameter to select which information to show</li>
+			<li>ADDED: skinvars archivenext/archiveprev/archivetype</li>
+			<li>CHANGED: skinvars nextlink/prevlink now also work on archive skins</li>
+			<li>CHANGED: move item now also allows to choose a category</li>
+			<li>CHANGED: new items can be added to other blogs also now</li>
+			<li>FIXED: archivedate skinvar displaying wrong date</li>
+			<li>FIXED: serverVar function was not working when using vars4.0.6.php</li>
+			<li>ADDED: now also listing category in itemlist</li>
+			<li>CHANGED: Admin Area now uses the Site Name instead of Nucleus</li>
+			<li>CHANGED: admin.css and admin area: corrected h1, h2, h3 depth levels</li>
+			<li>ADDED: batch operations</li>
+			<li>FIXED: when language settings are changed, the new language is used immediately (only for global settings, not for member settings)</li>
+			<li>CHANGED: archivelist query now uses the  SUBSTRING MySQL function instead of the YEAR/DAYOFMONTH/MONTH functions (caused trouble for some people)</li>
+			<li>ADDED: maxlength attributes on forms</li>
+			<li>CHANGED: commentlists: placed time/author in same table cell </li>
+			<li>ADDED: extra convertor for Blogger blogs that use YACCS comments (exportable in CAIF format)</li>
+			<li>FIXED: some possible security issues (thanks to Morgan Tocker)</li>
+			<li>FIXED: shortening of strings does not corrupt HTML entities anymore (e.g. in RSS-feeds)</li>
+			<li>CHANGED: links in comments are now handled differently. Part of the URL is now displayed instead of just http://.../</li>
+			<li>ADDED: Opera version of bookmarklet</li>
+			<li>ADDED: selectLanguage() function to force the use of a certain language file</li>
+			<li>REMOVED: there was a plugin event AddItem which was actually not needed at all (wasn't included in the documentation too)</li>			
+			<li>ADDED: archivelist skinvars now takes an extra limit-parameter</li>
+			<li>CHANGED: moved all forms which can be included through skinvar out of SKIN.php and into .template files in the nucleus/forms directory.</li>
+			<li>FIXED: 'clone skin' did not copy contenttype</li>
+			<li>FIXED: Errors in XML-RSS template (upgrading users might need to change this manually or by importing an updated skin)</li>
+		</ul>
 	</li>
 	<li>
 		<b>Nucleus v1.55 (August 26, 2002)</b>
