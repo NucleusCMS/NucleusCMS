@@ -285,8 +285,6 @@ class SKIN {
 					            'archivedaylist',
 								'categorylist',
 								'searchresults',
-                                'nextresults',
-                                'prevresults',
 								'othersearchresults',
 								'blogsetting',
 								'query',
