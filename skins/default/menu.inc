@@ -95,6 +95,18 @@
 	</dl>
 </div>
 
+<!-- Google AdSense -->
+<div class="sidebar">
+	<dl class="sidebardl">
+	<dt>AdSense</dt>
+</dl>
+</div>
+<div class="sidebar">
+	<div class="sidebardl centerize">
+	<%include(120x600_as.inc)%>
+	</div>
+</div>
+
 <!-- Powered by -->
 <div class="sidebar">
 	<div class="sidebardl centerize">

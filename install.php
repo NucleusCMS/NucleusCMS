@@ -36,7 +36,7 @@
 		//
 		// example:
 		//     array('base','rsd')
-		$aConfSkinsToImport = array();
+		$aConfSkinsToImport = array('default');
 
 	/*
 		-- End Of Configurable Part --

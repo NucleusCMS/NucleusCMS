@@ -11,9 +11,7 @@
 <description>Nucleus CMS default skin</description>
 
 
-	<part name="archive"><![CDATA[
-
-<%parsedinclude(head.inc)%>
+	<part name="archive"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -41,9 +39,7 @@ You are currently viewing archive for <%archivedate%>
 ]]></part>
 
 
-	<part name="archivelist"><![CDATA[
-
-<%parsedinclude(head.inc)%>
+	<part name="archivelist"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -73,9 +69,7 @@ You are currently viewing archive for <%archivedate%>
 ]]></part>
 
 
-	<part name="error"><![CDATA[
-
-<%parsedinclude(head.inc)%>
+	<part name="error"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -103,9 +97,7 @@ You are currently viewing archive for <%archivedate%>
 ]]></part>
 
 
-	<part name="imagepopup"><![CDATA[
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+	<part name="imagepopup"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -126,9 +118,7 @@ body { margin: 0px; }
 ]]></part>
 
 
-	<part name="index"><![CDATA[
-
-<%parsedinclude(head.inc)%>
+	<part name="index"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -150,9 +140,7 @@ body { margin: 0px; }
 ]]></part>
 
 
-	<part name="item"><![CDATA[
-
-<%parsedinclude(head.inc)%>
+	<part name="item"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -189,9 +177,7 @@ body { margin: 0px; }
 ]]></part>
 
 
-	<part name="member"><![CDATA[
-
-<%parsedinclude(head.inc)%>
+	<part name="member"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -226,9 +212,7 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 ]]></part>
 
 
-	<part name="search"><![CDATA[
-
-<%parsedinclude(head.inc)%>
+	<part name="search"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
