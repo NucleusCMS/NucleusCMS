@@ -58,7 +58,7 @@
 				<textarea 
 					<%jsinput(more)%>
 					cols="60" 
-					rows="17"></textarea>
+					rows="17"><%contents(more)%></textarea>
 			</div>
 			<div id="options" class="contentblock">
 				
@@ -88,6 +88,10 @@
 						<%endif%>
 					</div>
 					<input name="actiontype" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+					
+				<h2><%text(_ADD_PLUGIN_EXTRAS)%></h2>
+				
+				<%pluginextras%>
 
 			</div>
 			

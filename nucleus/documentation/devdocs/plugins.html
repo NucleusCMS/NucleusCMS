@@ -354,7 +354,7 @@ class NP_Acronyms extends NucleusPlugin {
   ...
   function getEventList() { return array('PreAddComment'); }
   ...
-  function event_PreAddComment($data) {
+  function event_PreAddComment(&$data) {
     // replace acronym HTML
     $data['comment']['body'] = 
         strreplace('HTML',
@@ -646,6 +646,41 @@ class NP_Acronyms extends NucleusPlugin {
 			<dd>result of <code>$member->isLoggedIn()</code></dd>
 		</dl></td>		
 	</tr>		
+	<tr>
+		<td>PreAddItemForm</td>
+		<td>(v2.0) Immediately before an add item form (bookmarklet or admin area) is created.</td>
+		<td><dl>
+			<dt>contents</dt>
+			<dd>reference to an associative array, in which the values 'title', 'body' and 'more' can be filled with initial values for the formfields. To avoid multiple plugins to alter these values, set the 'hasBeenSet' value to 1 when you're done (and check for it before starting)</dd>
+			<dt>blog</dt>
+			<dd>reference to a <code>BLOG</code> object</dd>
+		</dl></td>		
+	</tr>		
+	<tr>
+		<td>AddItemFormExtras</td>
+		<td>(v2.0) Somewhere inside the add item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.</td>
+		<td><dl>
+			<dt>blog</dt>
+			<dd>reference to a <code>BLOG</code> object</dd>
+		</dl></td>		
+	</tr>			
+	<tr>
+		<td>EditItemFormExtras</td>
+		<td>(v2.0) Somewhere inside the edit item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.</td>
+		<td><dl>
+			<dt>blog</dt>
+			<dd>reference to a <code>BLOG</code> object</dd>
+			<dt>variables</dt>
+			<dd>
+				(read-only) An associative array containing all sorts of information on the item that's being edited: 'itemid', 'draft', 'closed', 'title', 'body', 'more', 'author', 'authorid', 'timestamp', 'karmapos', 'karmaneg', 'catid'
+				<br /><br />
+				Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
+<pre><code>&lt;h3&gt;plugin name&lt;/h3&gt;
+&lt;p&gt;your stuff&lt;/p&gt;</code></pre>
+				This way, multiple plugins can add options here while things keep a good structure. Also try to use prefixes for your fieldnames, in order to avoid nameclashes (e.g. <code>plug_tb_url</code>)
+			</dd>			
+		</dl></td>		
+	</tr>				
 <!--	<tr>
 		<td></td>
 		<td></td>
