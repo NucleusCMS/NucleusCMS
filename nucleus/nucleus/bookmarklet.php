@@ -20,12 +20,19 @@ $CONF['UsingAdminArea'] = 1;
 // include all classes and config data 
 include('../config.php');
 
+$action = requestVar('action');
+
+if ($action == 'contextmenucode') {
+	bm_doContextMenuCode();
+	exit;
+}
+
 if (!$member->isLoggedIn()) {
 	bm_loginAndPassThrough();
 	exit;
 }
 
-$action = requestVar('action');
+
 
 // on successfull login
 if (($action == 'login') && ($member->isLoggedIn()))
@@ -258,6 +265,20 @@ function bm_message($title, $head, $msg, $extrahead = '') {
 function bm_style() {
 	echo '<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />';
 	echo '<link rel="stylesheet" type="text/css" href="styles/addedit.css" />';	
+}
+
+function bm_doContextMenuCode() {
+	global $CONF;
+	?>
+<script type="text/javascript" defer="defer">
+doc=external.menuArguments.document;
+lt=escape(doc.selection.createRange().text);
+loglink=escape(external.menuArguments.location.href);
+loglinktitle=escape(doc.title);
+wingm=window.open('<?php echo $CONF['AdminURL']?>bookmarklet.php?blogid=<?php echo intGetVar('blogid')?>&logtext='+lt+'&loglink='+loglink+'&loglinktitle='+loglinktitle,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');
+wingm.focus();
+</script>	
+	<?php
 }
 
 ?>
