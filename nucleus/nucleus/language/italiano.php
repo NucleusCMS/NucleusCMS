@@ -4,7 +4,7 @@
 // Author: Antonio Fragola - MrShark (http://www.mrshark.it)
 // Previous Author: Roberto Bolli (http://www.rbnet.it)
 // Previous Previous Author: Antonio Fragola - MrShark (http://www.mrshark.it)
-// Nucleus version: v3.1
+// Nucleus version: v3.2
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -14,7 +14,35 @@
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
 
+// START changed/added after 315 START
+
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Per favore usa il pulsante \'Aggiorna lista di sottoscrizione\' per aggiornare la lista di sottoscrizione dei plugin.');
+define('_LIST_PLUGS_DEP',			'I Plugin richiedono:');
+
+// END changed/added after 3.15
+
 // START changed/added after 3.1 START
+
+// comments list per weblog
+define('_COMMENTS_BLOG',			'Tutti i commenti di un blog');
+define('_NOCOMMENTS_BLOG',			'Nessun commento è stato fatto agli elementi di questo blog');
+define('_BLOGLIST_COMMENTS',		'Commenti');
+define('_BLOGLIST_TT_COMMENTS',		'Un elenco di tutti i commenti fatti agli elementi di questo blog');
+
+
+// for use in archivetype-skinvar
+define('_ARCHIVETYPE_DAY',			'giorno');
+define('_ARCHIVETYPE_MONTH',		'mese');
+
+// tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
+define('_ERROR_BADTICKET',			'Biglietto non valido o scaduto.');
+
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',		'Installazione del plugin fallita, richiede ');
+define('_ERROR_DELREQPLUGIN',		'Cancellazione del plugin fallita, è richiesto da ');
+
+// cookie prefix
+define('_SETTINGS_COOKIEPREFIX',	'Prefisso dei Cookie');
 
 // account activation
 define('_ERROR_NOLOGON_NOACTIVATE',	'Impossibile inviare il link di attivazione. Non sei autorizzato ad eseguire il login.');
@@ -96,6 +124,7 @@ define('_QMENU_INTRO_TEXT',			'<p>Questa &egrave; la schermata di Login per BLOG
 define('_ERROR_PLUGNOHELPFILE',		'Il file di aiuto per questo plugin non pu&ograve; essere trovato');
 define('_PLUGS_HELP_TITLE',			'Pagina di aiuto per il plugin');
 define('_LIST_PLUGS_HELP', 			'aiuto');
+
 
 // END changed/started after 3.1
 
@@ -583,8 +612,8 @@ define('_UPLOAD_MSG',				'Seleziona il file che vuoi caricare e fai clic sul pul
 define('_UPLOAD_BUTTON',			'Carica');
 
 // some status messages
-define('_MSG_ACCOUNTCREATED',		'\'account &egrave; stato creato, la password ti verr&agrave; spedita via email');
-define('_MSG_PASSWORDSENT',			'La password &egrave; stata spedita per email.');
+//define('_MSG_ACCOUNTCREATED',		'\'account &egrave; stato creato, la password ti verr&agrave; spedita via email');
+//define('_MSG_PASSWORDSENT',			'La password &egrave; stata spedita per email.');
 define('_MSG_LOGINAGAIN',			'Devi effettuare nuovamente la connessione poch&eacute; le tue impostazioni sono state modificate');
 define('_MSG_SETTINGSCHANGED',		'Impostazioni Modificate');
 define('_MSG_ADMINCHANGED',			'Amministratore Modificato');
