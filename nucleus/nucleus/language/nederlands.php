@@ -12,6 +12,12 @@
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
 
+// START changed after v2.5beta START
+
+// 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
+define('_EBLOG_SEARCH',				'<em>Altijd</em> opnemen in zoekopdrachten');
+
+// END changed after v2.5beta
 
 // START introduced after v2.0 START
 
@@ -30,9 +36,6 @@ define('_MEDIA_COLLECTION_LABEL',	'Hudige collectie: ');
 define('_ADD_ALIGNLEFT_TT',			'Links uitlijnen');
 define('_ADD_ALIGNRIGHT_TT',		'Links uitlijnen');
 define('_ADD_ALIGNCENTER_TT',		'Centreren');
-
-// searchable blog setting (yes/no)
-define('_EBLOG_SEARCH',				'Opnemen in zoekopdrachten');
 
 // generic upload failure
 define('_ERROR_UPLOADFAILED',		'Upload is mislukt');
