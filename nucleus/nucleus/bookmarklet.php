@@ -73,7 +73,7 @@ switch ($action) {
 }
 	
 function bm_doAddItem() {
-	global $member, $manager;
+	global $member, $manager, $CONF;
 	
 	$manager->loadClass('ITEM');
 	$result = ITEM::createFromRequest();
@@ -89,7 +89,8 @@ function bm_doAddItem() {
 		$extrahead = '';
 	} elseif ((postVar('actiontype') == 'addnow') && $blog->pingUserland()) {
 		$message = 'Item was added successfully. Now pinging weblogs.com. Please hold on... (can take a while)';
-		$extrahead = '<meta http-equiv="refresh" content="1; url=index.php?action=sendping&amp;blogid=' . $blogid . '" />';
+		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid));
+		$extrahead = '<meta http-equiv="refresh" content="1; url=' . htmlspecialchars($pingUrl). '" />';
 	} else {
 		$message = _ITEM_ADDED;
 		$extrahead = '';
