@@ -75,7 +75,10 @@
 				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 310 LIMIT 1';
 				$minrows = 1;
 				break;
-			
+			case '32':
+				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 320 LIMIT 1';
+				$minrows = 1;
+				break;
 		}
 
 		$res = mysql_query($query);

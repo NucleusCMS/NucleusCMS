@@ -165,16 +165,20 @@ class ACTION
 		if (!$CONF['AllowMemberCreate']) 
 			doError(_ERROR_MEMBERCREATEDISABLED);
 
-		// create random password
-		$pw = genPassword(10);
-		// create member (non admin/can login/no notes)
-		$r = MEMBER::create(postVar('name'), postVar('realname'), $pw, postVar('email'), postVar('url'), 0, $CONF['NewMemberCanLogon'], '');
+		// even though the member can not log in, set some random initial password. One never knows.
+		srand((double)microtime()*1000000);
+		$initialPwd = md5(uniqid(rand(), true));
+
+		// create member (non admin/can not login/no notes/random string as password)
+		$r = MEMBER::create(postVar('name'), postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
+		
 		if ($r != 1)
 			doError($r);
+			
 		// send message containing password.
 		$newmem = new MEMBER();
 		$newmem->readFromName(postVar('name'));
-		$newmem->sendPassword($pw);
+		$newmem->sendActivationLink('register');
 
 		$manager->notify('PostRegister',array('member' => &$newmem));		
 
@@ -195,14 +199,15 @@ class ACTION
 			doError(_ERROR_NOSUCHMEMBER);
 		$mem = MEMBER::createFromName($membername);
 
+		if (!$mem->canLogin())
+			doError(_ERROR_NOLOGON_NOACTIVATE);
+
 		// check if e-mail address is correct
 		if (!($mem->getEmail() == postVar('email')))
 			doError(_ERROR_INCORRECTEMAIL);
 
-		$pw = genPassword(10);
-		$mem->setPassword($pw);	// change password
-		$mem->write();			// save
-		$mem->sendPassword($pw);// send
+		// send activation link
+		$mem->sendActivationLink('forgot');
 
 		if (postVar('url')) {
 			Header('Location: ' . postVar('url'));

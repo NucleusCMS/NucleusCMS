@@ -32,6 +32,7 @@ include('upgrade2.0.php');
 include('upgrade2.5.php');
 include('upgrade3.0.php');
 include('upgrade3.1.php');
+include('upgrade3.2.php');
 
 $from = intGetVar('from');
 
@@ -55,6 +56,8 @@ switch($from) {
 		upgrade_do30();
 	case 30:
 		upgrade_do31();
+	case 31:
+		upgrade_do32();
 		break;
 	default:
 		echo "<li>Error! No updates to execute</li>";

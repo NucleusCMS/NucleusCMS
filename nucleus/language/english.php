@@ -9,10 +9,35 @@
 // might be deleted. Therefor, it's important to list the Nucleus version for which 
 // the file was written in your document.
 //
-// Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
-// and will be available for download (with proper credit to the author, of course)
+// Fully translated language file can be sent to us and will be made
+// available for download (with proper credit to the author, of course)
 
 // START changed/added after 3.1 START
+
+// account activation
+define('_ERROR_NOLOGON_NOACTIVATE',	'Cannot send activation link. You\'re not allowed to log in.');
+define('_ERROR_ACTIVATE',			'Activation key does not exist, is invalid, or has expired.');
+define('_ACTIONLOG_ACTIVATIONLINK', 'Activation link sent');
+
+// activation link emails
+define('_ACTIVATE_REGISTER_MAIL',	"Hi <%memberName%>,\n\nYou need to activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Activate your '<%memberName%>' account");
+define('_ACTIVATE_REGISTER_TITLE',	'Welcome <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',	'You\'re almost there. Please choose a password for your account below.');
+define('_ACTIVATE_FORGOT_MAIL',		"Hi <%memberName%>,\n\nUsing the link below, you can choose a new password for your account at <%siteName%> (<%siteUrl%>) by choosing a new password.\n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_FORGOT_MAILTITLE',"Re-activate your '<%memberName%>' account");
+define('_ACTIVATE_FORGOT_TITLE',	'Welcome <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'You can choose a new password for your account below:');
+define('_ACTIVATE_CHANGE_MAIL',		"Hi <%memberName%>,\n\nSince your e-mail address has changed, you'll need to re-activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_CHANGE_MAILTITLE',"Re-activate your '<%memberName%>' account");
+define('_ACTIVATE_CHANGE_TITLE',	'Welcome <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'Your address change has been verified. Thanks!');
+define('_ACTIVATE_SUCCESS_TITLE',	'Activation Succeeded');
+define('_ACTIVATE_SUCCESS_TEXT',	'Your account has been successfully activated.');
+define('_MEMBERS_SETPWD',			'Set Password');
+define('_MEMBERS_SETPWD_BTN',		'Set Password');
+define('_QMENU_ACTIVATE',			'Account Activation');
+define('_QMENU_ACTIVATE_TEXT',		'<p>After you have activated your account, you can start using it by <a href="index.php?action=showlogin">logging in</a>.</p>');
 
 define('_PLUGS_BTN_UPDATE',			'Update subscription list');
 

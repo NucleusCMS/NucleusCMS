@@ -45,14 +45,23 @@
 		}
 	}
 
-	if (!$member->isLoggedIn() || ($action == 'logout')) {
-		setOldAction($action);	// see ADMIN::login() (sets old action in POST vars)
-		$action = 'showlogin';
-	}
+	$bNeedsLogin = false;
+	$bIsActivation = in_array($action, array('activate', 'activatesetpwd'));
+	
+	if ($action == 'logout') 
+		$bNeedsLogin = true;	
+	
+	if (!$member->isLoggedIn() && !$bIsActivation)
+		$bNeedsLogin = true;
 
 	// show error if member cannot login to admin
-	if ($member->isLoggedIn() && !$member->canLogin()) {
+	if ($member->isLoggedIn() && !$member->canLogin() && !$bIsActivation) {
 		$error = _ERROR_LOGINDISALLOWED;
+		$bNeedsLogin = true;
+	}
+	
+	if ($bNeedsLogin)
+	{
 		setOldAction($action);	// see ADMIN::login() (sets old action in POST vars)
 		$action = 'showlogin';
 	}
