@@ -15,7 +15,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v2.5 beta';
+$nucleus['version'] = 'v2.5 CVS';
 $CONF['debug'] = 1;
 
 /*
@@ -908,6 +908,16 @@ function addLinkParams($link, $params) {
 	return $link;
 }
 
+/**
+ * @param $querystr
+ *		querystring to alter (e.g. foo=1&bar=2&x=y)
+ * @param $param
+ *		name of parameter to change (e.g. 'foo')
+ * @param $value
+ *		New value for that parameter (e.g. 3)
+ * @result 
+ *		altered query string (for the examples above: foo=3&bar=2&x=y)
+ */
 function alterQueryStr($querystr, $param, $value) {
     $vars = explode("&", $querystr);
     $set  = false;
