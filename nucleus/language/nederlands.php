@@ -14,6 +14,13 @@
 
 // START changed after v2.5beta START
 
+// general settings (security)
+define('_SETTINGS_EXTAUTH',			'Externe Authenticatie Toelaten');
+define('_WARNING_EXTAUTH',			'Let op: Enkel inschakelen wanneer echt nodig!');
+
+// member profile
+define('_MEMBERS_BYPASS',			'Externe Authenticatie gebruiken');
+
 // 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
 define('_EBLOG_SEARCH',				'<em>Altijd</em> opnemen in zoekopdrachten');
 
