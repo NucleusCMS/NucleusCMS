@@ -10,7 +10,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: vars4.0.6.php,v 1.2 2005-03-08 09:32:13 kimitake Exp $
+  * $Id: vars4.0.6.php,v 1.3 2005-03-08 10:50:55 kimitake Exp $
+  * $NucleusJP$
   */
   
 /**
