@@ -7,7 +7,7 @@ body, td, th, a, li, ul, textarea {
 }
 
 textarea {
-  font-size: smaller;
+  font-size: small;
   width: 95%;
 }
 
