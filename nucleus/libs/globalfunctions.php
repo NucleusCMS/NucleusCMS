@@ -15,8 +15,8 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.0';
-$CONF['debug'] = 0;
+$nucleus['version'] = 'v3.0+ CVS';
+$CONF['debug'] = 1;
 
 /*
 	Indicates when Nucleus should display startup errors. Set to 1 if you want
@@ -576,7 +576,7 @@ function selector() {
 	    global $startpos;
 		$type = 'search';
 		$query = stripslashes($query);
-		if ($blogid==0)
+		if (intval($blogid)==0)
 			$blogid = getBlogIDFromName($blogid);
 		if (!$blogid) doError(_ERROR_NOSUCHBLOG);
 	} elseif ($memberid) {
