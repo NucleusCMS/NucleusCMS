@@ -11,18 +11,19 @@
   *
   * This script is provides an XML-RPC [1] interface to Nucleus [2].
   *
-  * As for now, only the Blogger API [3] and the metaWeblog API [4] extention
-  * are implemented.
+  * At this time, the Blogger API [3], the metaWeblog API [4] and 
+  * parts of the Movable Type API [5] are implemented
   *
-  * This script uses the the 'XML-RPC for PHP v1.02' implementation [5]
-  * All other code was written by Wouter Demuynck [6]
+  * This script uses the the 'XML-RPC for PHP v1.02' implementation [6]
+  * All other code was written by Wouter Demuynck [7]
   *
   * [1] http://www.xmlrpc.com/
   * [2] http://nucleuscms.org/
   * [3] http://plant.blogger.com/api/
   * [4] http://www.xmlrpc.com/metaWeblogApi
-  * [5] http://phpxmlrpc.sourceforge.net/
-  * [6] http://demuynck.org/
+  * [5] http://www.movabletype.org/docs/mtmanual_programmatic.html
+  * [6] http://phpxmlrpc.sourceforge.net/
+  * [7] http://demuynck.org/
   *
   *
   * The Blogger API: (more info in the documentation)
@@ -47,9 +48,15 @@
   * metaWeblog.getPost
   * metaWeblog.editPost
   * metaWeblog.getCategories
+  * metaWeblog.newMediaObject
+  * metaWeblog.getRecentPosts
   *
   * Note: metaWeblog API methods only affect the body and title fields of items. 
   *       the extended part is left untouched (and empty for new posts)
+  *
+  * The Movable Type API
+  *
+  * mt.supportedMethods
   */
 $CONF = array();
 include("../../config.php");	// include Nucleus libs and code
@@ -64,6 +71,7 @@ $functionDefs = array();
 include('api_blogger.inc.php');
 include('api_metaweblog.inc.php');
 // include('api_nucleus.inc.php'); // uncomment if you still want to use the nucleus.* methods
+include('api_mt.inc.php');
 
 
 // create server
