@@ -522,9 +522,9 @@ class SKINEXPORT {
 			
 			$res = sql_query('SELECT stype, scontent FROM '.sql_table('skin').' WHERE sdesc='.$skinId);
 			while ($partObj = mysql_fetch_object($res)) {
-				echo "\t\t",'<part name="',htmlspecialchars($partObj->stype),'">',"\n";
-				echo "\t\t\t", '<![CDATA[', $this->escapeCDATA($partObj->scontent),']]>',"\n";
-				echo "\t\t</part>\n\n";
+				echo "\t\t",'<part name="',htmlspecialchars($partObj->stype),'">';
+				echo '<![CDATA[', $this->escapeCDATA($partObj->scontent),']]>';
+				echo "</part>\n\n";
 			}
 			
 			echo "\t</skin>\n\n\n";
@@ -540,9 +540,9 @@ class SKINEXPORT {
 			
 			$res = sql_query('SELECT tpartname, tcontent FROM '.sql_table('template').' WHERE tdesc='.$templateId);
 			while ($partObj = mysql_fetch_object($res)) {
-				echo "\t\t",'<part name="',htmlspecialchars($partObj->tpartname),'">',"\n";
-				echo "\t\t\t",'<![CDATA[', $this->escapeCDATA($partObj->tcontent) ,']]>',"\n";
-				echo "\t\t",'</part>',"\n\n";
+				echo "\t\t",'<part name="',htmlspecialchars($partObj->tpartname),'">';
+				echo '<![CDATA[', $this->escapeCDATA($partObj->tcontent) ,']]>';
+				echo '</part>',"\n\n";
 			}
 			
 			echo "\t</template>\n\n\n";
