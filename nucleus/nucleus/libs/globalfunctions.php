@@ -15,7 +15,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.0 RC';
+$nucleus['version'] = 'v3.0';
 $CONF['debug'] = 0;
 
 /*
