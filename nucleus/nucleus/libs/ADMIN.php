@@ -295,6 +295,7 @@ class ADMIN {
 		echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b></p>';
 		echo '<ul>';
 		
+
 		// walk over all itemids and perform action
 		foreach ($selected as $itemid) {
 			$itemid = intval($itemid);
@@ -592,7 +593,7 @@ class ADMIN {
 			
 			<input type="submit" value="<?php echo _MOVE_BTN?>" onclick="return checkSubmit();" 
 
-		<div></form>
+		</div></form>
 		<?php		$this->pagefoot();
 		exit;
 	}
@@ -1588,6 +1589,13 @@ class ADMIN {
 				</select>			
 			
 			</td>
+		</tr>
+		<?php
+			// plugin options
+			$this->_insertPluginOptions('member',$memberid);			
+		?>
+		<tr>
+			<th colspan="2"><?php echo _MEMBERS_EDIT ?></th>
 		</tr><tr>
 			<td><?php echo _MEMBERS_EDIT?></td>
 			<td><input type="submit" tabindex="90" value="<?php echo _MEMBERS_EDIT_BTN?>" onclick="return checkSubmit();" /></td>
@@ -1610,7 +1618,7 @@ class ADMIN {
 	
 	
 	function action_changemembersettings() {
-		global $member, $CONF;
+		global $member, $CONF, $manager;
 		
 		$memberid = intRequestVar('memberid');
 		
@@ -1698,6 +1706,11 @@ class ADMIN {
 
 	
 		$mem->write();
+		
+		// store plugin options
+		$aOptions = requestArray('plugoption');
+		$this->_applyPluginOptions($aOptions);
+		$manager->notify('PostPluginOptionsUpdate',array('context' => 'member', 'memberid' => $memberid, 'member' => &$mem));		
 		
 		// if new password was generated, send out mail message and logout
 		if ($newpass) 
@@ -1937,6 +1950,18 @@ class ADMIN {
 
 		<h3><?php echo _EBLOG_TEAM_TITLE?></h3>
 		
+		<p>Members currently on your team: 
+		<?php
+			$res = sql_query('SELECT mname, mrealname FROM ' . sql_table('member') . ',' . sql_table('team') . ' WHERE mnumber=tmember AND tblog=' . intval($blogid));
+			$aMemberNames = array();
+			while ($o = mysql_fetch_object($res))
+				array_push($aMemberNames, htmlspecialchars($o->mname) . ' (' . htmlspecialchars($o->mrealname). ')');
+			echo implode(',', $aMemberNames);
+		?>
+		</p>
+		
+		
+
 		<p>
 		<a href="index.php?action=manageteam&amp;blogid=<?php echo $blogid?>"><?php echo _EBLOG_TEAM_TEXT?></a>
 		</p>
@@ -2038,7 +2063,14 @@ class ADMIN {
 			    <br /><?php echo _EBLOG_BTIME?> <b><?php echo  strftime("%H:%M",$blog->getCorrectTime()); ?></b>
 			    </td>
 			<td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  htmlspecialchars($blog->getTimeOffset()); ?>" /></td>			
-		</tr><tr>
+		</tr>
+		<?php
+			// plugin options
+			$this->_insertPluginOptions('blog',$blogid);
+		?>
+		<tr>
+			<th colspan="2"><?php echo _EBLOG_CHANGE?></th>
+		</tr><tr>		
 			<td><?php echo _EBLOG_CHANGE?></td>
 			<td><input type="submit" tabindex="130" value="<?php echo _EBLOG_CHANGE_BTN?>" onclick="return checkSubmit();" /></td>
 		</tr></table>
@@ -2413,6 +2445,12 @@ class ADMIN {
 
 		$blog->writeSettings();
 		
+		// store plugin options
+		$aOptions = requestArray('plugoption');
+		$this->_applyPluginOptions($aOptions);
+		$manager->notify('PostPluginOptionsUpdate',array('context' => 'blog', 'blogid' => $blogid, 'blog' => &$blog));		
+		
+		
 		$this->action_overview(_MSG_SETTINGSCHANGED);
 	}
 	
@@ -2481,6 +2519,21 @@ class ADMIN {
 		// delete all categories
 		$query = 'DELETE FROM '.sql_table('category').' WHERE cblog='.$blogid;
 		sql_query($query);
+		
+		// delete all associated plugin options
+		$aOIDs = array();
+			// find ids
+		$query = 'SELECT oid FROM '.sql_table('plugin_option_desc') . ' WHERE ocontext=\'blog\'';
+		$res = sql_query(query);
+		while ($o = mysql_fetch_object($res)) 
+			array_push($aOIDs, $o->oid);
+		mysql_free_result($res);
+			// delete those options. go go go
+		if (count($aOIDs) > 0) {
+			$query = 'DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).') and ocontextid=' . $blogid;
+			sql_query($query);
+		}
+				
 	
 		// delete the blog itself
 		$query = 'DELETE FROM '.sql_table('blog').' WHERE bnumber='.$blogid;
@@ -2552,6 +2605,21 @@ class ADMIN {
 
 		$query = 'DELETE FROM '.sql_table('team').' WHERE tmember='.$memberid;
 		sql_query($query);	
+		
+		// delete all associated plugin options
+		$aOIDs = array();
+			// find ids
+		$query = 'SELECT oid FROM '.sql_table('plugin_option_desc') . ' WHERE ocontext=\'member\'';
+		$res = sql_query(query);
+		while ($o = mysql_fetch_object($res)) 
+			array_push($aOIDs, $o->oid);
+		mysql_free_result($res);
+			// delete those options. go go go
+		if (count($aOIDs) > 0) {
+			$query = 'DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).') and ocontextid=' . $memberid;
+			sql_query($query);
+		}
+		
 		
 		$manager->notify('PostDeleteMember', array('member' => &$mem));						
 		
@@ -4883,8 +4951,18 @@ selector();
 		sql_query('DELETE FROM '.sql_table('plugin_event').' WHERE pid=' . $pid);
 		
 		// delete all options
-		sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE opid=' . $pid);
-
+		// get OIDs from plugin_option_desc
+		$res = sql_query('SELECT oid FROM ' . sql_table('plugin_option_desc') . ' WHERE opid=' . $pid);
+		$aOIDs = array();
+		while ($o = mysql_fetch_object($res)) {
+			array_push($aOIDs, $o->oid);
+		}
+		
+		// delete from plugin_option and plugin_option_desc
+		sql_query('DELETE FROM '.sql_table('plugin_option_desc').' WHERE opid=' . $pid);
+		if (count($aOIDs) > 0)
+			sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid in ('.implode(',',$aOIDs).')');		
+		
 		// update order numbers
 		$o = mysql_fetch_object(sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid=' . $pid));
 		sql_query('UPDATE '.sql_table('plugin').' SET porder=(porder - 1) WHERE porder>'.$o->porder);
@@ -4972,9 +5050,29 @@ selector();
 				<input type="hidden" name="action" value="pluginoptionsupdate" />
 				<input type="hidden" name="plugid" value="<?php echo $pid?>" />				
 		<?php		
-		$aOptions = array();
-		$r = sql_query('SELECT oname as name, ovalue as value, odesc as description, otype as type FROM '.sql_table('plugin_option').' WHERE opid='.$pid.' order by oid asc');
-		while ($o = mysql_fetch_object($r)) array_push($aOptions, $o);
+
+		$aOptions = array(); 
+		$aOIDs = array();
+		$query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ' WHERE ocontext=\'global\' and opid=' . $pid . ' ORDER BY oid ASC';
+		$r = sql_query($query);
+		while ($o = mysql_fetch_object($r)) {
+			array_push($aOIDs, $o->oid);
+			$aOptions[$o->oid] = array(
+						'oid' => $o->oid,
+						'value' => $o->odef,
+						'name' => $o->oname,
+						'description' => $o->odesc,
+						'type' => $o->otype,
+						'typeinfo' => $o->oextra,
+						'contextid' => 0
+			);
+		}
+		// fill out actual values
+		if (count($aOIDs) > 0) {
+			$r = sql_query('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).')');
+			while ($o = mysql_fetch_object($r)) 
+				$aOptions[$o->oid]['value'] = $o->ovalue;
+		}
 		
 		// call plugins
 		$manager->notify('PrePluginOptionsEdit',array('plugid' => $pid, 'options'=>&$aOptions));
@@ -4998,35 +5096,107 @@ selector();
 
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
-		
+
 		$pid = intRequestVar('plugid');
 		if (!$manager->pidInstalled($pid))
 			$this->error(_ERROR_NOSUCHPLUGIN);
 			
-		$options = sql_query('SELECT * FROM '.sql_table('plugin_option').' WHERE opid='.$pid);
-		while ($o = mysql_fetch_object($options)) {
-			switch($o->otype) {
-				case 'yesno':
-					$val = postVar($o->oname);
-					if (($val != 'yes') && ($val != 'no')) $val = 'no';
-					break;
-				default:
-					$val = addslashes(postVar($o->oname));
-			}
-			
-			sql_query('UPDATE '.sql_table('plugin_option')." SET ovalue='$val' WHERE opid=$pid AND oname='".addslashes($o->oname)."'");
-		
-		}
-		
-		$manager->notify('PostPluginOptionsUpdate',array('plugid' => $pid));		
+		$aOptions = requestArray('plugoption');
+		$this->_applyPluginOptions($aOptions);
+
+		$manager->notify('PostPluginOptionsUpdate',array('context' => 'global', 'plugid' => $pid));		
 		
 		$this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
 	}
+	
+	/**
+	 * @param $aOptions: array ( 'oid' => array( 'contextid' => 'value'))
+	 *        (taken from request using requestVar())
+	 */
+	function _applyPluginOptions(&$aOptions) {
+		if (!is_array($aOptions)) return;
+		
+		foreach ($aOptions as $oid => $values) {
+			
+			// get option type info
+			$query = 'SELECT otype, oextra, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . intval($oid);
+			$res = sql_query($query);
+			if ($o = mysql_fetch_object($res))
+			{
+				foreach ($values as $contextid => $value) {
+						$value = undoMagic($value);	// value comes from request						
+					
+						switch($o->otype) {
+							case 'yesno':
+								if (($value != 'yes') && ($value != 'no')) $value = 'no';
+								break;
+							default:
+								break;
+						}
+						
+						sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));
+						sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
 
+				}
+			}
+		}
+	}
+
+	function _insertPluginOptions($context, $contextid = 0) {
+		// get all current values for this contextid 
+		// (note: this might contain doubles for overlapping contextids)
+		$aIdToValue = array();
+		$res = sql_query('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE ocontextid=' . intval($contextid));
+		while ($o = mysql_fetch_object($res)) {
+			$aIdToValue[$o->oid] = $o->ovalue;
+		}
+		
+		// get list of oids per pid
+		$aPlugToOIDs = array();
+		$iPrevPid = -1;
+		$query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ',' . sql_table('plugin')
+			   . ' WHERE opid=pid and ocontext=\''.addslashes($context).'\' ORDER BY porder, oid ASC';
+		$res = sql_query($query);
+		while ($o = mysql_fetch_object($res)) {
+
+			// new plugin?
+			if ($iPrevPid != $o->pid) {
+				$iPrevPid = $o->pid;
+
+				echo '<tr><th colspan="2">Options for ', htmlspecialchars($o->pfile),'</th></tr>';
+			}
+			
+			if (in_array($o->oid, array_keys($aIdToValue)))
+				$value = $aIdToValue[$o->oid];
+			else
+				$value = $o->odef;
+				
+			echo '<tr>';
+			listplug_plugOptionRow(array(
+				'oid' => $o->oid,
+				'value' => $value,
+				'name' => $o->oname,
+				'description' => $o->odesc,
+				'type' => $o->otype,
+				'typeinfo' => $o->oextra,
+				'contextid' => $contextid
+			));
+			echo '</tr>';
+	
+
+		}
+
+
+		//	
+		
+	
+	}
 	
 	/* helper functions to create option forms etc. */
 	function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO) {
 		$id = htmlspecialchars($name);
+		$id = str_replace('[','-',$id);
+		$id = str_replace(']','-',$id);		
 		$id1 = $id . htmlspecialchars($value1);
 		$id2 = $id . htmlspecialchars($value2);
 		
@@ -5465,7 +5635,7 @@ function listplug_table_pluginlist($template, $type) {
 				echo "<br /><a href='index.php?action=plugindelete&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UNINSTALL,"</a>";
 				if ($plug && ($plug->hasAdminArea() > 0))
 					echo "<br /><a href='".htmlspecialchars($plug->getAdminURL())."'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_ADMIN,"</a>";
-				if (quickQuery('SELECT COUNT(*) AS result FROM '.sql_table('plugin_option').' WHERE opid='.$current->pid) > 0)
+				if (quickQuery('SELECT COUNT(*) AS result FROM '.sql_table('plugin_option_desc').' WHERE ocontext=\'global\' and opid='.$current->pid) > 0)
 					echo "<br /><a href='index.php?action=pluginoptions&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_OPTIONS,"</a>";
 			echo '</td>';
 			break;
@@ -5480,33 +5650,40 @@ function listplug_table_plugoptionlist($template, $type) {
 			break;
 		case 'BODY';
 			$current = $template['current'];
-			
-			echo '<td>',htmlspecialchars($current->description?$current->description:$current->name),'</td>';
-			echo '<td>';
-			switch($current->type) {
-				case 'yesno':
-					ADMIN::input_yesno($current->name, $current->value, 0, 'yes', 'no');
-					break;
-				case 'password':
-					echo '<input type="password" size="40" maxlength="128" name="',htmlspecialchars($current->name),'" value="',htmlspecialchars($current->value),'" />';
-					break;
-				case 'textarea':
-					echo '<textarea cols="30" rows="5" name="',htmlspecialchars($current->name),'">',htmlspecialchars($current->value),'</textarea>';				
-					break;
-				case 'text':
-				default:
-					echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($current->name),'" value="',htmlspecialchars($current->value),'" />';
-			}
-			echo '</td>';
+			listplug_plugOptionRow($current);
 			break;
 		case 'FOOT':
 			?>
-				<th colspan="2"><?php echo _PLUGS_SAVE?></tr>
+			<tr>
+				<th colspan="2"><?php echo _PLUGS_SAVE?></th>
 			</tr><tr>
 				<td><?php echo _PLUGS_SAVE?></td>
 				<td><input type="submit" value="<?php echo _PLUGS_SAVE?>" /></td>
+			</tr>
 			<?php			break;
 	}
+}
+
+function listplug_plugOptionRow($current) {
+	$varname = 'plugoption['.$current['oid'].']['.$current['contextid'].']';
+
+	echo '<td>',htmlspecialchars($current['description']?$current['description']:$current['name']),'</td>';
+	echo '<td>';
+	switch($current['type']) {
+		case 'yesno':
+			ADMIN::input_yesno($varname, $current['value'], 0, 'yes', 'no');
+			break;
+		case 'password':
+			echo '<input type="password" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'" />';
+			break;
+		case 'textarea':
+			echo '<textarea cols="30" rows="5" name="',htmlspecialchars($varname),'">',htmlspecialchars($current['value']),'</textarea>';				
+			break;
+		case 'text':
+		default:
+			echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'" />';
+	}
+	echo '</td>';
 }
 
 function listplug_table_itemlist($template, $type) {

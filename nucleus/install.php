@@ -460,6 +460,7 @@
 // these are unneeded (one of the replacements above takes care of them)			
 //			'nucleus_plugin_event',	
 //			'nucleus_plugin_option',
+//			'nucleus_plugin_option_desc',
 //			'nucleus_skin_desc',	
 //			'nucleus_template_desc',	
 		);
@@ -480,6 +481,7 @@
 // these are unneeded (one of the replacements above takes care of them)
 //			$mysql_prefix . 'nucleus_plugin_event',	
 //			$mysql_prefix . 'nucleus_plugin_option',
+//			$mysql_prefix . 'nucleus_plugin_option_desc',
 //			$mysql_prefix . 'nucleus_skin_desc',	
 //			$mysql_prefix . 'nucleus_template_desc',				
 		);		

@@ -40,6 +40,13 @@ function requestIntArray($name) {
 	return $HTTP_POST_VARS[$name];	
 }
 
+// array from request. Be sure to call undoMagic on the strings inside
+function requestArray($name) {
+	global $HTTP_POST_VARS;
+	return $HTTP_POST_VARS[$name];	
+}
+
+
 // add all the variables from the request as hidden input field
 // @see globalfunctions.php#passVar
 function passRequestVars() {

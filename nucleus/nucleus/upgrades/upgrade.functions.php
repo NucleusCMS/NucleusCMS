@@ -46,7 +46,11 @@
 				$minrows = -1;			
 				break;			
 			case '20':
-				$query = 'SELECT oid FROM '.sql_table('plugin_option').' LIMIT 1';
+				$query = 'SELECT sdincpref FROM '.sql_table('skin_desc').' LIMIT 1';
+				$minrows = -1;			
+				break;				
+			case '25':
+				$query = 'SELECT oid FROM '.sql_table('plugin_option_desc').' LIMIT 1';
 				$minrows = -1;			
 				break;				
 		}
