@@ -88,44 +88,55 @@ h1 {
 	border-width: 1px;
 	border-style: solid;
 	border-color: black;
-   background: #ffffff url(quickb.jpg) top left fixed repeat-y; 
+
+	background: #ffffff url(quickb.jpg) top left fixed repeat-y; 
 }
 
 #quickmenu ul {
 	list-style-type: none;
-}
-#quickmenu p, #quickmenu ul {
-	margin: 3px;
-	padding: 0px;
+	margin: 0;
+	padding: 0;
 }
 #quickmenu p {
+	padding: 5px;
+	margin: 0px;
 	text-align: justify;
 }
 #quickmenu li {
-	height: 2em;
-	padding: 5px;	
+	padding: 0;
+	margin: 0;
 	text-align: center;
 	border-bottom: 1px solid #ccc;
 }
-#quickmenu li:hover {
-	background-color: #DEE6F6;
+#quickmenu a {
+	display: block;
+	padding: 5px;
+	font-size: 1em;
+	line-height: 1.5em;
+	text-decoration: none;
 }
+#quickmenu a:hover {
+	background: #ffffff url(quickb-hover.jpg) top left fixed repeat-y; 
+	color: #000;
+	letter-spacing: 1px;
+}
+
 #quickmenu h2 {
 	font-size: small;
 	text-align: center;
 	padding: 1px 0px 1px 0px;
 	margin: 0px;
-	border-bottom: 1px solid #bbb;
-	border-top: 1px solid #bbb;	
+	border-bottom: 1px solid #bbb; 	
 	background-color: #ddd;
 	color: #000;
 }
 #quickmenu form {
-	padding: 2px;
+	margin: 0;
+	padding: 5px;
 	text-align: center;
 }
 #quickmenu option {
-	font-size: x-small;
+	font-size: 0.9em;
 }
 
 .loginname {
