@@ -53,7 +53,8 @@ class PAGEFACTORY extends BaseActions {
 			'ifitemproperty',
 			'else',
 			'endif',
-			'pluginextras'
+			'pluginextras',
+			'extrahead'
 		);
 		
 		// TODO: maybe add 'skin' later on?
@@ -201,6 +202,22 @@ class PAGEFACTORY extends BaseActions {
 	function parse_init() {
 		$authorid = ($this->method == 'edit') ? $this->variables['authorid'] : '';
 		$this->blog->insertJavaScriptInfo($authorid);		
+	}
+	
+	// on bookmarklets only: insert extra html header information (by plugins)
+	function parse_extrahead() {
+		global $manager;
+		
+		$extrahead = '';
+		
+		$manager->notify(
+			'BookmarkletExtraHead',
+			array(
+				'extrahead' => &$extrahead
+			)
+		);
+		
+		echo $extrahead;
 	}
 	
 	// inserts some localized text
