@@ -13,6 +13,21 @@
   * code to make it easier to create plugin admin areas
   */
 
+global $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_COOKIE_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_SESSION_VARS;
+$aVarsToCheck = array('DIR_LIBS');
+foreach ($aVarsToCheck as $varName)
+{
+	if (   isset($HTTP_GET_VARS[$varName]) 
+		|| isset($HTTP_POST_VARS[$varName]) 
+		|| isset($HTTP_COOKIE_VARS[$varName])
+		|| isset($HTTP_ENV_VARS[$varName])
+		|| isset($HTTP_SESSION_VARS[$varName])
+		|| isset($HTTP_POST_FILES[$varName])
+	){
+		die('Sorry, an error occurred.');
+	}
+}
+
 include($DIR_LIBS . 'ADMIN.php');
 
 class PluginAdmin {
