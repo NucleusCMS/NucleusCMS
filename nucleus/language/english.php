@@ -16,7 +16,6 @@
 
 // general settings (security)
 define('_SETTINGS_EXTAUTH',			'Enable External Authentication');
-define('_SETTINGS_ITEMFILTER',		'Enable Category Hiding');
 define('_WARNING_EXTAUTH',			'Warning: Enable only if needed.');
 
 // member profile
