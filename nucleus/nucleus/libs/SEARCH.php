@@ -1,4 +1,5 @@
 <?php
+
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2003 The Nucleus Group
@@ -18,13 +19,16 @@
   * 
   */
 
+
+
 class SEARCH {
+
     function SEARCH($text) {
         global $blogid;
         $text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$text);
         $this->querystring = $text;
         $this->marked      = $this->boolean_mark_atoms($text);
-        $this->inclusive   = $this->boolean_inclusive_atoms($this->querystring);
+        $this->inclusive   = $this->boolean_inclusive_atoms($text);
 
         // get all public searchable blogs, no matter what, include the current blog allways.
 		$res = sql_query('SELECT bnumber FROM '.sql_table('blog').' WHERE bincludesearch ');
@@ -40,10 +44,11 @@ class SEARCH {
         if (strlen($string) > 0) {
     	   /* build sql for determining score for each record */
 	       preg_match_all(
-		                   "([A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_]{0,})",
+		                   "([0-Za-z]{1,}[0-Za-z\-\.\_]{0,})",
     		               $string,
 	    	               $result);
            $result = $result[0];
+           
 	       for($cth=0;$cth<count($result);$cth++){
                if(strlen($result[$cth])>=4){
                    $stringsum_long .=  " $result[$cth] ";
@@ -51,14 +56,16 @@ class SEARCH {
 	    	       $stringsum_a[] = ' '.$this->boolean_sql_select_short($result[$cth],$match).' ';
     		   }
 	       }
+
     	   if(strlen($stringsum_long)>0){
 	    		$stringsum_a[] = " match ($match) against ('$stringsum_long') ";
     	   }
+
 	       $stringsum .= implode("+",$stringsum_a);
     	   return $stringsum;
    	    }
     }
-    
+
     function boolean_inclusive_atoms($string){
     	$result=trim($string);
     	$result=preg_replace("/([[:space:]]{2,})/",' ',$result);
@@ -89,7 +96,6 @@ class SEARCH {
 
     	return $result;
     }
-    
    
     function boolean_sql_where($match){
         $result = $this->marked;
@@ -102,9 +108,9 @@ class SEARCH {
             "/foo\[\(\'([^\)]{1,3})\'\)\]bar/e",
             " '('.\$this->boolean_sql_where_short(\"$1\",\"$match\").')' ",    		
             $result);
-
     	return $result;
     }
+
 
     function boolean_mark_atoms($string){
     	$result=trim($string);
@@ -115,6 +121,7 @@ class SEARCH {
     	$result=eregi_replace(' and ',' ',$result);
     	$result=eregi_replace(' or ',',',$result);
 
+
     	/* strip excessive whitespace */
     	$result=str_replace('( ','(',$result);
     	$result=str_replace(' )',')',$result);
@@ -123,8 +130,13 @@ class SEARCH {
     	$result=str_replace('- ','-',$result);
     	$result=str_replace('+','',$result);
     	/* apply arbitrary function to all 'word' atoms */
-	    $result=preg_replace("/([@-Za-z!-9]{1,}[@-Za-z!-9\.\_-]{0,})/", "foo[('$0')]bar", $result);
 
+        $result_a = explode(" ",$result);
+        for($word=0;$word<count($result_a);$word++){
+            $result_a[$word] = "foo[('".$result_a[$word]."')]bar";
+        }
+        $result = implode(" ",$result_a);
+        
     	/* dispatch ' ' to ' AND ' */
     	$result=str_replace(' ',' AND ',$result);
 
@@ -133,7 +145,6 @@ class SEARCH {
 
     	/* dispatch '-' to ' NOT ' */
     	$result=str_replace(' -',' NOT ',$result);
-
     	return $result;
     }
     
