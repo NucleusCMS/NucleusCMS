@@ -2,7 +2,7 @@
 // English Nucleus Language File
 // 
 // Author: Wouter Demuynck 
-// Nucleus version: v1.0-v3.1
+// Nucleus version: v1.0-v3.2
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -13,7 +13,10 @@
 // available for download (with proper credit to the author, of course)
 
 // START changed/added after 315 START
+
 define('_LIST_PLUG_SUBS_NEEDUPDATE','Please use the \'Update Subscribtion list\'-button to update the plugin\'s subscription list.');
+define('_LIST_PLUGS_DEP',			'Plugin(s) requires:');
+
 // END changed/added after 3.15
 
 // START changed/added after 3.1 START
@@ -388,7 +391,6 @@ define('_LIST_PLUGS_DOWN',			'move down');
 define('_LIST_PLUGS_UNINSTALL',		'uninstall');
 define('_LIST_PLUGS_ADMIN',			'admin');
 define('_LIST_PLUGS_OPTIONS',		'edit&nbsp;options');
-define('_LIST_PLUGS_DEP',		'Plugin(s) requires:');
 
 // plugin option list
 define('_LISTS_VALUE',				'Value');
