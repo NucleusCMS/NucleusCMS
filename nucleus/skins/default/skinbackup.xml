@@ -24,19 +24,19 @@
 </div>
 You are currently viewing archive for <%archivedate%>
 </div>
+<div class="content">
 <%archive(default/index)%>
+</div>
 </div>
 
 <!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(menu.inc)%>
+<%parsedinclude(sidebar.inc)%>
 </div>
 
 <!-- page footer -->
-<%parsedinclude(footer.inc)%>
-
-]]></part>
+<%parsedinclude(footer.inc)%>]]></part>
 
 
 	<part name="archivelist"><![CDATA[<%parsedinclude(head.inc)%>
@@ -60,13 +60,11 @@ You are currently viewing archive for <%archivedate%>
 <!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(menu.inc)%>
+<%parsedinclude(sidebar.inc)%>
 </div>
 
 <!-- page footer -->
-<%parsedinclude(footer.inc)%>
-
-]]></part>
+<%parsedinclude(footer.inc)%>]]></part>
 
 
 	<part name="error"><![CDATA[<%parsedinclude(head.inc)%>
@@ -88,13 +86,11 @@ You are currently viewing archive for <%archivedate%>
 <!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(menu.inc)%>
+<%parsedinclude(sidebar.inc)%>
 </div>
 
 <!-- page footer -->
-<%parsedinclude(footer.inc)%>
-
-]]></part>
+<%parsedinclude(footer.inc)%>]]></part>
 
 
 	<part name="imagepopup"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -113,9 +109,7 @@ body { margin: 0px; }
 <a href="javascript:window.close();"><%image%></a>
 </body>
 
-</html>
-
-]]></part>
+</html>]]></part>
 
 
 	<part name="index"><![CDATA[<%parsedinclude(head.inc)%>
@@ -125,19 +119,19 @@ body { margin: 0px; }
 
 <!-- page content -->
 <div id="container">
+<div class="content">
 <%blog(default/index,10)%>
+</div>
 </div>
 
 <!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(menu.inc)%>
+<%parsedinclude(sidebar.inc)%>
 </div>
 
 <!-- page footer -->
-<%parsedinclude(footer.inc)%>
-
-]]></part>
+<%parsedinclude(footer.inc)%>]]></part>
 
 
 	<part name="item"><![CDATA[<%parsedinclude(head.inc)%>
@@ -168,13 +162,11 @@ body { margin: 0px; }
 <!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(menu.inc)%>
+<%parsedinclude(sidebar.inc)%>
 </div>
 
 <!-- page footer -->
-<%parsedinclude(footer.inc)%>
-
-]]></part>
+<%parsedinclude(footer.inc)%>]]></part>
 
 
 	<part name="member"><![CDATA[<%parsedinclude(head.inc)%>
@@ -203,13 +195,11 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 <!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(menu.inc)%>
+<%parsedinclude(sidebar.inc)%>
 </div>
 
 <!-- page footer -->
-<%parsedinclude(footer.inc)%>
-
-]]></part>
+<%parsedinclude(footer.inc)%>]]></part>
 
 
 	<part name="search"><![CDATA[<%parsedinclude(head.inc)%>
@@ -225,19 +215,19 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 </div>
 <%searchform%>
 </div>
+<div class="content">
 <%searchresults(default/index)%>
+</div>
 </div>
 
 <!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(menu.inc)%>
+<%parsedinclude(sidebar.inc)%>
 </div>
 
 <!-- page footer -->
-<%parsedinclude(footer.inc)%>
-
-]]></part>
+<%parsedinclude(footer.inc)%>]]></part>
 
 </skin>
 
@@ -286,8 +276,7 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 
 	<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
 
-	<part name="ITEM"><![CDATA[<div class="content">
-<div class="contenttitle">
+	<part name="ITEM"><![CDATA[<div class="contenttitle">
 <h2><%date%>: <a href="<%itemlink%>" title="Read entry: <%title%>"><%title%></a></h2>
 </div>
 <div class="contentitem">
@@ -307,14 +296,13 @@ Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 <div class="contentbody">
 <%body%>
 <%morelink%>
-</div>
 </div>]]></part>
 
 	<part name="LOCALE"><![CDATA[en]]></part>
 
 	<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
 
-	<part name="MORELINK"><![CDATA[<p>&raquo; 
+	<part name="MORELINK"><![CDATA[<p>&raquo;
 <a href="<%itemlink%>#more" title="Read more on '<%title%>'">Read More</a>
 </p>]]></part>
 
@@ -322,9 +310,7 @@ Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 
 	<part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part>
 
-	<part name="SEARCH_NOTHINGFOUND"><![CDATA[<div class="content">
-No search results found for <b><%query%></b>
-</div>]]></part>
+	<part name="SEARCH_NOTHINGFOUND"><![CDATA[No search results found for <b><%query%></b>]]></part>
 
 </template>
 

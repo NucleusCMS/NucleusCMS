@@ -134,7 +134,7 @@ a:hover, a:active
 #wrapper
 {
 	width: 704px;
-	background: white url(images/bgcontainer.gif) repeat-y;
+	background: white url(images/bgcontainer01.gif) repeat-y;
 	margin: auto;
 }
 
@@ -171,6 +171,7 @@ a:hover, a:active
 {
 	font-size:13px;
 	text-align: justify;
+	padding: 0 0 16px 0;
 }
 
 /*-------------------------------------------------
@@ -188,7 +189,7 @@ a:hover, a:active
 	background: url(images/bgpostedby.gif) center left no-repeat;
 	font-size: 10px;
 	line-height: 12px;
-	padding: 0 10px 0 12px;	
+	padding: 0 10px 0 12px;
 }
 .contentitemcomments
 {
@@ -344,12 +345,19 @@ a:hover, a:active
 .commentform, .mailform
 {
 	margin-top: 10px;
+    padding: 10px;
+    background: #EEEEEE;
+    /* Rounded borders, for Mozilla browsers */
+    /* -moz-border-radius: 10px; */
+}
+.commentform img{
+    margin: 5px 0 0 0;
 }
 .formfield
 {
 	font-size: 11px;
 	background: white;
-	color: #494949;	
+	color: #494949;
 	border-top: 1px solid #868686;
 	border-left: 1px solid #868686;
 	border-bottom: 1px solid #D4D2CF;
@@ -406,17 +414,15 @@ a:hover, a:active
     font-family: Tahoma, Arial, Trebuchet MS, Verdana, sans-serif;
 	padding: 2px 2px;
 }
-.commentform textarea
-{
-	width: 280px;
-	overflow: hidden;
-    font-family: Arial, Trebuchet MS, Verdana, sans-serif;
-	padding: 0 2px;
-}
 #nucleus_cf_name, #nucleus_cf_mail
 {
-	width: 200px;
+    width: 300px;
+    margin-right: 105px;
     font-family: Arial, Trebuchet MS, Verdana, sans-serif;
+}
+.commentform textarea, .commentform .formfield, .mailform textarea, .mailform .formfield
+{
+    width: 300px;
 }
 .commentform .formbutton
 {
@@ -424,6 +430,12 @@ a:hover, a:active
 	height: 22px;
     font-family: Tahoma, Arial, Trebuchet MS, Verdana, sans-serif;
 }
+.error
+{
+	color: red;
+	font-weight: bold;
+}
+
 
 /*-------------------------------------------------
   Miscelaneous
@@ -474,6 +486,5 @@ a:hover, a:active
 }
 .rightbox {
 	float: right;
-	border-left: 2px solid #ccc;	
+	border-left: 2px solid #ccc;
 }
-	

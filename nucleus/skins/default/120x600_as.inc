@@ -1,5 +1,5 @@
 <script type="text/javascript"><!--
-google_ad_client = "pub-9946645904786279";
+google_ad_client = "pub-6534378039102893"; // replace this code by your own adsense client code
 google_ad_width = 120;
 google_ad_height = 600;
 google_ad_format = "120x600_as";
