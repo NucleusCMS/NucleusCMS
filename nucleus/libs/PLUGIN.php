@@ -128,9 +128,32 @@
 		/**
 		  * Retrieves the current value for an option
 		  */
-		function getOption($name) {
-			return $this->_getOption('global', 0, $name);
-		}
+		function getOption($name)
+		{
+			// only request the options the very first time. On subsequent requests
+			// the static collection is used to save SQL queries.
+			static $plugin_options = 0;
+			if ($plugin_options == 0)
+			{
+				$plugin_option = array();  	
+				$query = mysql_query(
+					 'SELECT d.oname as name, o.ovalue as value '.
+					 'FROM '.
+					 sql_table('plugin_option').' o, '.
+					 sql_table('plugin_option_desc').' d '.
+					 'WHERE d.opid='.
+					 strval($this->getID().
+					 ' AND d.oid=o.oid')
+				);
+				while ($row = mysql_fetch_object($query))
+					$this->plugin_options[strtolower($row->name)] = $row->value;
+		  }
+		  if (isset($this->plugin_options[strtolower($name)]))
+				return $this->plugin_options[strtolower($name)];
+		  else
+				return $this->_getOption('global', 0, $name);
+		} 		  
+
 		function getBlogOption($blogid, $name) {
 			return $this->_getOption('blog', $blogid, $name);
 		}
