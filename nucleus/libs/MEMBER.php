@@ -291,22 +291,6 @@ class MEMBER {
 			setcookie('sharedpc', '1',$lifetime,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 	}
 	
-	/**
-	  * Sends an email message containing the users password
-	  */
-	function sendPassword($password) {
-		global $CONF;
-		
-		$message = "Someone, possibly you, requested a new password for your account at '" . $CONF['SiteName'] . "' (". $CONF['IndexURL']. ") to be sent out to you.\n Here is your new login information: \n\n";
-		$message .= "\tLogin: " . $this->getDisplayName();
-		$message .= "\n\tPassword: " . $password; 
-		$message .= getMailFooter();
-		
-		@mail($this->getEmail(),'Your password',$message,"From: " . $CONF['AdminEmail']);
-		
-		ACTIONLOG::add(INFO, _ACTIONLOG_PWDREMINDERSENT . $this->getDisplayName());
-	}
-	
 	function sendActivationLink($type, $extra='') 
 	{
 		global $CONF;

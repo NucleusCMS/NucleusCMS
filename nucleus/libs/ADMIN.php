@@ -1738,7 +1738,9 @@ class ADMIN {
 			$mem->sendActivationLink('addresschange', $oldEmail);
 			// logout member
 			$mem->newCookieKey();
-			$mem->logout();	
+			$member->logout();	
+			$this->action_login(_MSG_ACTIVATION_SENT, 0);
+			return;
 		}
 		
 		
@@ -1747,10 +1749,6 @@ class ADMIN {
 		NucleusPlugin::_applyPluginOptions($aOptions);
 		$manager->notify('PostPluginOptionsUpdate',array('context' => 'member', 'memberid' => $memberid, 'member' => &$mem));		
 		
-		// if new password was generated, send out mail message and logout
-		if ($newpass) 
-			$mem->sendPassword($password);
-
 		if (  ( $mem->getID() == $member->getID() ) 
 		   && ( $newpass || ( $mem->getDisplayName() != $member->getDisplayName() ) )
 		   ) {
@@ -1788,7 +1786,11 @@ class ADMIN {
 	function action_activate() {
 		
 		$key = getVar('key');
+		$this->_showActivationPage($key);
+	}
 		
+	function _showActivationPage($key, $message = '')
+	{
 		// clean up old activation keys
 		MEMBER::cleanupActivationTable();
 
@@ -1836,6 +1838,11 @@ class ADMIN {
 			echo '<h2>' , $title, '</h2>';
 			echo '<p>' , $text, '</p>';
 			
+			if ($message != '')
+			{
+				echo '<p class="error">',$message,'</p>';
+			}
+			
 			if ($bNeedsPasswordChange)
 			{
 				?>			
@@ -1846,20 +1853,26 @@ class ADMIN {
 
 						<table><tr>
 							<td><?php echo _MEMBERS_PWD?></td>
-							<td><input type="password" tabindex="30" maxlength="40" size="16" name="password" /></td>
+							<td><input type="password" maxlength="40" size="16" name="password" /></td>
 						</tr><tr>
 							<td><?php echo _MEMBERS_REPPWD?></td>
-							<td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" /></td>
+							<td><input type="password" maxlength="40" size="16" name="repeatpassword" /></td>
+						<?php
+							
+							global $manager;
+							$manager->notify('FormExtra', array('type' => 'activation', 'member' => $mem));
+						
+						?>
 						</tr><tr>
 							<td><?php echo _MEMBERS_SETPWD ?></td>
 							<td><input type='submit' value='<?php echo _MEMBERS_SETPWD_BTN ?>' /></td>		
 						</tr></table>
 
+
 					</form></div>
 
 				<?php
 				
-				// TODO: plugin hooks!
 			}
 		
 		$this->pagefoot();
@@ -1882,21 +1895,28 @@ class ADMIN {
 		$info = MEMBER::getActivationInfo($key);
 		
 		if (!$info || ($info->type == 'addresschange'))
-			$this->error(_ERROR_ACTIVATE);
+			return $this->_showActivationPage($key, _ERROR_ACTIVATE);
 			
 		$mem = MEMBER::createFromId($info->vmember);
 		
 		if (!$mem)
-			$this->error(_ERROR_ACTIVATE);
+			return $this->_showActivationPage($key, _ERROR_ACTIVATE);
 		
 		$password 		= postVar('password');
 		$repeatpassword	= postVar('repeatpassword');
 		
 		if ($password != $repeatpassword)
-			$this->error(_ERROR_PASSWORDMISMATCH);
+			return $this->_showActivationPage($key, _ERROR_PASSWORDMISMATCH);
 
 		if ($password && (strlen($password) < 6))
-			$this->error(_ERROR_PASSWORDTOOSHORT);
+			return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
+			
+		$error = '';
+		global $manager;
+		$manager->notify('ValidateForm', array('type' => 'activation', 'member' => $mem, 'error' => &$error));
+		if ($error != '')
+			return $this->_showActivationPage($key, $error);
+			
 		
 		// set password
 		$mem->setPassword($password);
