@@ -110,7 +110,7 @@ function upgrade_manual_96() {
   Also, it will be necessary to create that directory yourself. If you want to make file upload possible, you should set the permissions of the media/ directory to 777 (see the documentation/tips.html in Nucleus 0.96+ for a quick guide on setting permissions).
   </p>
   
-<?php}
+<?php }
 
 function upgrade_manual_20() {
   global $DIR_NUCLEUS;
@@ -132,7 +132,7 @@ function upgrade_manual_20() {
   
   <p>When a fresh version of Nucleus 2.0 is installed, an RSS 2.0 (Really Simple Syndication) syndication skin is also installed, as well as an RSD skin (Really Simple Discovery). The files <code>xml-rss2.php</code> and <code>rsd.php</code> are available in the upgrade, however the skin itself needs to be installed manually. After you've uploaded the contents of the <code>upgrade-files</code>, open <code>admin area &gt; nucleus management &gt; skin import</code>. From there, you can install both skins. (Unless you don't want them installed, that is)</p>
   
-<?php}
+<?php }
 
 function upgrade_manual_php405() {
 ?>
@@ -168,6 +168,6 @@ foreach ($params as $key =&gt; $value) { $params[$key] = trim($value); }
     </li>
   </ul>
   
-<?php}
+<?php }
 
 ?>

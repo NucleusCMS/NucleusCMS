@@ -59,6 +59,6 @@ if (!$CONF['DisableSite']) {
 	    <docs>http://backend.userland.com/rss091</docs>
  	  </channel>
 	</rss>	
-	<?php}
+	<?php }
 
 ?>
