@@ -39,9 +39,11 @@ class BLOG {
 	 *		amount of entries to show
 	 * @param $startpos
 	 *		offset from where items should be shown (e.g. 5 = start at fifth item)
+	 * @returns int
+	 *		amount of items shown
 	 */
 	function readLog($template, $amountEntries, $offset = 0, $startpos = 0) {
-		$this->readLogAmount($template,$amountEntries,'','',1,1,$offset, $startpos);
+		return $this->readLogAmount($template,$amountEntries,'','',1,1,$offset, $startpos);
 	}
 
 	/**
@@ -104,6 +106,8 @@ class BLOG {
 	 *		1=show dateheads 0=don't show dateheads
 	 * @param $offset
 	 *		offset
+	 * @returns int
+	 *		amount of items shown
 	 */
 	function readLogAmount($template, $amountEntries, $extraQuery, $highlight, $comments, $dateheads, $offset = 0, $startpos = 0) {
 

@@ -568,7 +568,7 @@ class ACTIONS extends BaseActions {
                 break;
             case 'next':
                 $startpos = intval($startpos) + intval($amount);
-                if (intval($this->amountfound) >= intval($amount) || (intval($this->amountfound) == 0) ) {
+                if (intval($this->amountfound) >= intval($amount)) {
                 	$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
                 }
                 break;
@@ -576,7 +576,8 @@ class ACTIONS extends BaseActions {
                 break;
         } // switch($direction)
 
-		echo $this->_link($url, $linktext);        
+		if ($url != '')
+			echo $this->_link($url, $linktext);        
     }
 
 	function _itemlink($id, $linktext = '') {
@@ -637,7 +638,7 @@ class ACTIONS extends BaseActions {
 		list($limit, $offset) = sscanf($amount, '%d(%d)');
 		$this->_setBlogCategory($blog, $category);
 		$this->_preBlogContent('blog',$blog);
-		$blog->readLog($template, $limit, $offset, $startpos);
+		$this->amountfound = $blog->readLog($template, $limit, $offset, $startpos);
 		$this->_postBlogContent('blog',$blog);
 	}
 
@@ -649,7 +650,7 @@ class ACTIONS extends BaseActions {
 		$b =& $manager->getBlog(getBlogIDFromName($blogname));
 		$this->_setBlogCategory($b, $category);
 		$this->_preBlogContent('otherblog',$b);
-		$b->readLog($template, $limit, $offset);
+		$this->amountfound = $b->readLog($template, $limit, $offset);
 		$this->_postBlogContent('otherblog',$b);
 	}
 
