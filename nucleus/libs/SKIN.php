@@ -1013,7 +1013,7 @@ class ACTIONS extends BaseActions {
 
 			
 	function parse_commentform($destinationurl = '') {
-		global $itemid, $member, $CONF, $manager;
+		global $blog, $itemid, $member, $CONF, $manager;
 		
 		// warn when trying to provide a actionurl (used to be a parameter in Nucleus <2.0)
 		if (stristr($destinationurl, 'action.php')) {
@@ -1026,7 +1026,7 @@ class ACTIONS extends BaseActions {
 		
 		// if item is closed, show message and do nothing
 		$item =& $manager->getItem($itemid,0,0);
-		if ($item['closed']) {
+		if ($item['closed'] || !$blog->commentsEnabled()) {
 			$this->doForm('commentform-closed');
 			return;
 		}
