@@ -133,15 +133,6 @@ class PAGEFACTORY extends BaseActions {
 		
 	}
 	
-	/**
-	 * Parse a string using other delimiters (e.g. for commentsdisabled)
-	 */
-	function subParse($text) {
-		if (!$this->subparser)
-			$this->subparser = new PARSER($this->actions, $this, '(<&|&>)' , ';');
-		$this->subparser->parse($text);
-	}
-	
 	// create category dropdown box
 	function parse_categories($startidx = 0) {
 			if ($this->variables['catid']) 
