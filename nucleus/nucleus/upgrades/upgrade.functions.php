@@ -13,6 +13,14 @@
 	  */
 
 	include('../../config.php');
+	
+	// sql_table function did not exists in nucleus <= 2.0
+	if (!function_exists('sql_table'))
+	{
+		function sql_table($name) {
+			return 'nucleus_' . $name;
+		}
+	}	
 
 	function upgrade_checkinstall($version) {
 		$installed = 0;
