@@ -21,7 +21,7 @@ checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQ
 
 $CONF['debug'] = 0;
 
-$nucleus['version'] = 'v3.2-b3';
+$nucleus['version'] = 'v3.2';
 if (getNucleusPatchLevel() > 0)
 {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();
