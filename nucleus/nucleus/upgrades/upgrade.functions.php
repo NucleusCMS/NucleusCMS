@@ -40,7 +40,7 @@
 				break;			
 			case "20":
 				$query = "SELECT ikarmapos FROM nucleus_item LIMIT 1";
-				$minrows = 100;//-1;			
+				$minrows = -1;			
 				break;				
 		}
 
