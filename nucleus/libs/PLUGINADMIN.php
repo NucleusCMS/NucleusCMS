@@ -22,7 +22,13 @@ class PluginAdmin {
 	{
 		global $manager;
 		
-		$this->plugin =& $manager->getPlugin('NP_' . $pluginName);
+		$this->strFullName = 'NP_' . $pluginName;
+		
+		// check if plugin exists and is installed
+		if (!$manager->pluginInstalled($this->strFullName))
+			doError('Invalid plugin');
+		
+		$this->plugin =& $manager->getPlugin($this->strFullName);
 		$this->bValid = $this->plugin;
 	
 		if (!$this->bValid)
