@@ -1000,19 +1000,19 @@ class ITEMACTIONS extends BaseActions {
 	function parse_image() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
-		$args = explode('|',implode($args,','));
+		$args = explode('|',implode($args,', '));
 		call_user_func_array(array(&$this,'createImageCode'),$args);
 	}
 	function parse_popup() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
-		$args = explode('|',implode($args,','));
+		$args = explode('|',implode($args,', '));
 		call_user_func_array(array(&$this,'createPopupCode'),$args);
 	}
 	function parse_media() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
-		$args = explode('|',implode($args,','));
+		$args = explode('|',implode($args,', '));
 		call_user_func_array(array(&$this,'createMediaCode'),$args);
 	}
 	
