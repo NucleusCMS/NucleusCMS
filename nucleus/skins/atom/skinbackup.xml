@@ -1,4 +1,4 @@
-<nucleusskin><meta><skin name="feeds/atom" /><template name="feeds/atom/modified" /><template name="feeds/atom/entries" /><info><![CDATA[Atom 0.3 weblog syndication]]></info></meta><skin name="feeds/atom" type="application/atom+xml" includeMode="normal" includePrefix=""><description>Atom 0.3 weblog syndication</description><part name="index"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<nucleusskin><meta><skin name="feeds/atom" /><template name="feeds/atom/modified" /><template name="feeds/atom/entries" /><info><![CDATA[Atom 0.3 weblog syndication]]></info></meta><skin name="feeds/atom" type="application/atom+xml" includeMode="normal" includePrefix=""><description>Atom 0.3 weblog syndication</description><part name="index"><![CDATA[<?xml version="1.0" encoding="iso-8859-1"?>
 <feed version="0.3" xmlns="http://purl.org/atom/ns#">
     <title><%blogsetting(name)%></title>
     <link rel="alternate" type="text/html" href="<%blogsetting(url)%>" />
