@@ -89,6 +89,7 @@ INSERT INTO `nucleus_config` VALUES ('DisableJsTools', '2');
 INSERT INTO `nucleus_config` VALUES ('CookiePath', '/');
 INSERT INTO `nucleus_config` VALUES ('CookieDomain', '');
 INSERT INTO `nucleus_config` VALUES ('CookieSecure', '');
+INSERT INTO `nucleus_config` VALUES ('CookiePrefix', '');
 INSERT INTO `nucleus_config` VALUES ('MediaPrefix', '1');
 INSERT INTO `nucleus_config` VALUES ('MaxUploadSize', '1048576');
 INSERT INTO `nucleus_config` VALUES ('NonmemberMail', '');
