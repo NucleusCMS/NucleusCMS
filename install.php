@@ -149,7 +149,7 @@
 		<legend>General Database Settings</legend>
 		<table><tr>
 			<td>Hostname:</td>
-			<td><input name="mySQL_host" value="<?php echo htmlspecialchars(ini_get('mysql.default_host'))?>" /></td>
+			<td><input name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host'))?>" /></td>
 		</tr><tr>
 			<td>Username:</td>
 			<td><input name="mySQL_user" /></td>
