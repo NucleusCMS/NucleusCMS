@@ -1141,7 +1141,7 @@ class ADMIN {
 	  * Adds a item to the chosen blog
 	  */
 	function action_additem() {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 		 
 		$manager->loadClass('ITEM');
 
@@ -1154,23 +1154,33 @@ class ADMIN {
 		$blog =& $manager->getBlog($blogid);
 
 		if ($result['status'] == 'newcategory')
-			$this->action_categoryedit($result['catid'],$blogid);
+			$this->action_categoryedit(
+				$result['catid'],
+				$blogid, 
+				$blog->pingUserland() ? $CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid) : ''
+			);
 		elseif ((postVar('actiontype') == 'addnow') && $blog->pingUserland())
-			$this->pingUserlandWindow($blogid);
+			$this->action_sendping($blogid);
 		else
 			$this->action_itemlist($blogid);
 	}
 	
 	/**
-	  * Shows a window that says we're about to ping userland.
+	  * Shows a window that says we're about to ping weblogs.com.
 	  * immediately refresh to the real pinging page, which will 
 	  * show an error, or redirect to the blog.
 	  *
 	  * @param $blogid ID of blog for which ping needs to be sent out
 	  */
-	function pingUserlandWindow($blogid) {
-
-		$this->pagehead('<meta http-equiv="refresh" content="1; url=index.php?action=sendping&amp;blogid=' . $blogid . '" />');
+	function action_sendping($blogid = -1) {
+		global $member;
+		
+		if ($blogid == -1)
+			$blogid = intRequestVar('blogid');
+		
+		$member->isLoggedIn() or $this->disallow();
+		
+		$this->pagehead('<meta http-equiv="refresh" content="1; url=index.php?action=rawping&amp;blogid=' . $blogid . '" />');
 		?>		
 		<h2>Site Updated, Now pinging weblogs.com</h2>
 
@@ -1181,14 +1191,14 @@ class ADMIN {
 		</p>
 		
 		<p>
-			If you aren't automatically passed through, <a href="index.php?action=sendping&amp;blogid=<?php echo $blogid?>">try again</a>
+			If you aren't automatically passed through, <a href="index.php?action=rawping&amp;blogid=<?php echo $blogid?>">try again</a>
 		</p>
 		<?php		$this->pagefoot();
 	}
 	
 	// ping to Weblogs.com
 	// sends the real ping (can take up to 10 seconds!)
-	function action_sendping() {
+	function action_rawping() {
 		global $manager;
 		// TODO: checks?
 				
@@ -2101,7 +2111,7 @@ class ADMIN {
 	}
 	
 	
-	function action_categoryedit($catid = '', $blogid = '') {
+	function action_categoryedit($catid = '', $blogid = '', $desturl = '') {
 		global $member;
 		
 		if ($blogid == '')
@@ -2124,6 +2134,7 @@ class ADMIN {
 		<form method='post' action='index.php'><div>
 		<input name="blogid" type="hidden" value="<?php echo $blogid?>" />
 		<input name="catid" type="hidden" value="<?php echo $catid?>" />			
+		<input name="desturl" type="hidden" value="<?php echo htmlspecialchars($desturl) ?>" />					
 		<input name="action" type="hidden" value="categoryupdate" />		
 		
 		<table><tr>
@@ -2150,6 +2161,7 @@ class ADMIN {
 		$catid = intPostVar('catid');
 		$cname = postVar('cname');
 		$cdesc = postVar('cdesc');
+		$desturl = postVar('desturl');
 
 		$member->blogAdminRights($blogid) or $this->disallow();
 		
@@ -2168,7 +2180,12 @@ class ADMIN {
 			   
 		sql_query($query);
 		
-		$this->action_blogsettings();
+		if ($desturl) {
+			header('Location: ' . $desturl);
+			exit;
+		} else {
+			$this->action_blogsettings();
+		}
 	}
 
 	function action_categorydelete() {
