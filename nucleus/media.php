@@ -19,12 +19,18 @@
   *     passed through to the add-item form (linkto, popupimg or inline img)
   */
   
-// include all classes and config data
 $CONF = array();
+
+// defines how much media items will be shown per page. You can override this
+// in config.php if you like. (changing it in config.php instead of here will
+// allow your settings to be kept even after a Nucleus upgrade)
+$CONF['MediaPerPage'] = 10;
+
+// include all classes and config data
 include('../config.php');
 include($DIR_LIBS . 'MEDIA.php');	// media classes
 
-// moet ingelogd zijn
+// user needs to be logged in to use this
 if (!$member->isLoggedIn()) {
 	media_loginAndPassThrough();
 	exit;
@@ -39,15 +45,16 @@ if (mysql_num_rows($teams) == 0)
 // basic action:
 switch($action) {
 	case 'chooseupload':
-	case 'Upload to...':
-	case 'Upload new file...':
+	case _MEDIA_UPLOAD_TO:
+	case _MEDIA_UPLOAD_NEW:
 		media_choose();
 		break;
 	case 'uploadfile':
 		media_upload();
 		break;
+	case _MEDIA_FILTER_APPLY:
 	case 'selectmedia':
-	case 'Select':
+	case _MEDIA_COLLECTION_SELECT:
 	default:
 		media_select();
 		break;
@@ -76,7 +83,7 @@ function media_select() {
 	if (sizeof($collections) > 1) {
 	?>
 		<form method="post" action="media.php"><div>
-			<label for="media_collection">Current collection:</label>
+			<label for="media_collection"><?php echo htmlspecialchars(_MEDIA_COLLECTION_LABEL)?></label>
 			<select name="collection" id="media_collection">
 				<?php					foreach ($collections as $dirname => $description) {
 						echo '<option value="',htmlspecialchars($dirname),'"';
@@ -87,41 +94,52 @@ function media_select() {
 					}
 				?>
 			</select>
-			<input type="submit" name="action" value="Select" title="Switch to this category" />
-			<input type="submit" name="action" value="Upload to..." title="<?php echo _MEDIA_UPLOADLINK?>" />
+			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_COLLECTION_SELECT) ?>" title="<?php echo htmlspecialchars(_MEDIA_COLLECTION_TT)?>" />
+			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_UPLOAD_TO) ?>" title="<?php echo htmlspecialchars(_MEDIA_UPLOADLINK) ?>" />
 		</div></form>
 	<?php	} else {
 	?>
-		<form method="post" action="media.php"><div>
-			<input type="hidden" name="collection" value="<?php echo intval($currentCollection)?>" />
-			<input type="submit" name="action" value="Upload new file..." title="<?php echo _MEDIA_UPLOADLINK?>" />
+		<form method="post" action="media.php" style="float:right"><div>
+			<input type="hidden" name="collection" value="<?php echo htmlspecialchars($currentCollection)?>" />
+			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_UPLOAD_NEW) ?>" title="<?php echo htmlspecialchars(_MEDIA_UPLOADLINK) ?>" />
 		</div></form>	
 	<?php	} // if sizeof
 	
+	$filter = requestVar('filter');	
+	$offset = intRequestVar('offset');	
+	$arr = MEDIA::getMediaListByCollection($currentCollection, $filter);
+
+	?>
+		<form method="post" action="media.php"><div>
+			<label for="media_filter"><?php echo htmlspecialchars(_MEDIA_FILTER_LABEL)?></label>
+			<input id="media_filter" type="text" name="filter" value="<?php echo htmlspecialchars($filter)?>" />
+			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_FILTER_APPLY) ?>" />
+			<input type="hidden" name="collection" value="<?php echo htmlspecialchars($currentCollection)?>" />			
+			<input type="hidden" name="offset" value="<?php echo intval($offset)?>" />						
+		</div></form>	
+	
+	<?php
+	
 	?>	
 		<table width="100%">
-		<caption>Collection: <?php echo $collections[$currentCollection]?></caption>
+		<caption><?php echo _MEDIA_COLLECTION_LABEL . htmlspecialchars($collections[$currentCollection])?></caption>
 		<tr>
 		 <th><?php echo _MEDIA_MODIFIED?></th><th><?php echo _MEDIA_FILENAME?></th><th><?php echo _MEDIA_DIMENSIONS?></th>
 		</tr>
 	
 	<?php	
-	$arr = MEDIA::getMediaListByCollection($currentCollection);
-	
 	
 	if (sizeof($arr)>0) {
 	
-		$offset = intRequestVar('offset');
-	
-		if (($offset + 10) >= sizeof($arr))
-			$offset = sizeof($arr) - 10;
+		if (($offset + $CONF['MediaPerPage']) >= sizeof($arr))
+			$offset = sizeof($arr) - $CONF['MediaPerPage'];
 
 		if ($offset < 0) $offset = 0;
 		
 		$idxStart = $offset;
-		$idxEnd = $offset + 10;
+		$idxEnd = $offset + $CONF['MediaPerPage'];
 		$idxNext = $idxEnd;
-		$idxPrev = $idxStart - 10;
+		$idxPrev = $idxStart - $CONF['MediaPerPage'];
 
 		if ($idxPrev < 0) $idxPrev = 0;
 
@@ -147,8 +165,9 @@ function media_select() {
 				echo "<td><a href='media.php' onclick='chooseImage(\"$currentCollection\",\"$obj->filename\","
 							   . "\"$width\",\"$height\""
 							   . ")' title='" . htmlspecialchars($obj->filename). "'>"
-							   . htmlspecialchars(shorten($obj->filename,30,'...'))
+							   . htmlspecialchars(shorten($obj->filename,25,'...'))
 							   ."</a>";
+				echo ' (<a href="', htmlspecialchars($CONF['MediaURL'] . $currentCollection . '/' . $obj->filename), '" onclick="window.open(this.href); return false;" title="',htmlspecialchars(_MEDIA_VIEW_TT),'">',_MEDIA_VIEW,'</a>)';
 				echo "</td>";
 			} else {
 				// no image (e.g. mpg)
@@ -158,8 +177,8 @@ function media_select() {
 							   ."</a></td>";
 
 			}
-			echo "<td>" . $width . "x" . $height . "</td>";
-			echo "</tr>";
+			echo '<td>' , $width , 'x' , $height , '</td>';
+			echo '</tr>';
 		}
 	} // if (sizeof($arr)>0)
 	?>

@@ -38,7 +38,7 @@ class MEDIA {
 		$dirhandle = opendir($DIR_MEDIA);
 		while ($dirname = readdir($dirhandle)) {
 			// only add non-numeric (numeric=private) dirs
-			if (@is_dir($DIR_MEDIA . $dirname) && ($dirname != '.') && ($dirname != '..') && (!is_numeric($dirname)))  {
+			if (@is_dir($DIR_MEDIA . $dirname) && ($dirname != '.') && ($dirname != '..') && ($dirname != 'CVS') && (!is_numeric($dirname)))  {
 				$collections[$dirname] = $dirname;
 			}
 		}
@@ -50,8 +50,13 @@ class MEDIA {
 
 	/**
 	  * Returns an array of MEDIAOBJECT objects for a certain collection
+	  *
+	  * @param $collection
+	  *		name of the collection
+	  * @param $filter
+	  *		filter on filename (defaults to none)	  
 	  */
-	function getMediaListByCollection($collection) {
+	function getMediaListByCollection($collection, $filter = '') {
 		global $DIR_MEDIA;
 
 		$filelist = array();	
@@ -65,7 +70,8 @@ class MEDIA {
 		
 		$dirhandle = opendir($mediadir);
 		while ($filename = readdir($dirhandle)) {
-			if (!@is_dir($filename))
+			// only add files that match the filter
+			if (!@is_dir($filename) && MEDIA::checkFilter($filename, $filter))
 				array_push($filelist, new MEDIAOBJECT($collection, $filename, filemtime($mediadir . $filename)));
 		}
 		closedir($dirhandle);
@@ -74,6 +80,13 @@ class MEDIA {
 		usort($filelist, 'sort_media');
 		
 		return $filelist;
+	}
+	
+	function checkFilter($strText, $strFilter) {
+		if ($strFilter == '')
+			return 1;
+		else 
+			return is_integer(strpos(strtolower($strText), strtolower($strFilter)));
 	}
 
 	/**
