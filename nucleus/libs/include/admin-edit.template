@@ -70,12 +70,12 @@
 		<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="61" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 		<div class="indent">
 			<%text(_ADD_PLACE_ON)%>
-			<input name="day" tabindex="71" size="2" value="<%currenttime(mday)%>" />/
-			<input name="month" tabindex="72" size="2" value="<%currenttime(mon)%>" />/
-			<input name="year" tabindex="73" size="4" value="<%currenttime(year)%>" />
+			<input id="inputday" name="day" tabindex="71" size="2" value="<%currenttime(mday)%>" />/
+			<input id="inputmonth" name="month" tabindex="72" size="2" value="<%currenttime(mon)%>" />/
+			<input id="inputyear" name="year" tabindex="73" size="4" value="<%currenttime(year)%>" />
 			at
-			<input name="hour" tabindex="74" size="2" value="<%currenttime(hours)%>" />:
-			<input name="minutes" tabindex="75" size="2" value="<%currenttime(minutes)%>" />
+			<input id="inputhour" name="hour" tabindex="74" size="2" value="<%currenttime(hours)%>" />:
+			<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%currenttime(minutes)%>" />
 			(dd/mm/yyyy hh:mm)
 			<%ifblogsetting(ballowpast,0)%>
 				<br />
