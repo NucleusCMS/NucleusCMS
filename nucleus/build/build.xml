@@ -49,6 +49,15 @@
     <delete dir="${release.home}/nucleus/fileperms" />    
     <delete dir="${release.home}/nucleus/documentation/devdocs" />    
     
+    <!-- remove all language files except english -->
+    <delete>
+    	<fileset dir="${release.home}/nucleus/language">
+    		<include name="*.*" />
+    		<exclude name="english.php" />
+    		<exclude name="index.html" />
+    	</fileset>
+    </delete>
+    
     <!-- don't need build dir either -->
     <delete dir="${release.home}/build" />
     
@@ -93,6 +102,15 @@
     <delete dir="${upgrade.home}/nucleus/upgrades" />
     <delete dir="${upgrade.home}/nucleus/fileperms" />  
     <delete dir="${upgrade.home}/nucleus/documentation/devdocs" />    
+    
+    <!-- remove all language files except english -->
+    <delete>
+    	<fileset dir="${upgrade.home}/nucleus/language">
+    		<include name="*.*" />
+    		<exclude name="english.php" />
+    		<exclude name="index.html" />
+    	</fileset>
+    </delete>    
     
     <!-- don't need build dir either -->
     <delete dir="${upgrade.home}/build" />
