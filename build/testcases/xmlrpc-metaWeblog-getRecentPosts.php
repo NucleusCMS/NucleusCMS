@@ -7,8 +7,8 @@
 
 // URL of XML-RPC server
 $serverHost = 'localhost';
-$serverPost = 80;
-$serverPath = '/release/nucleus/xmlrpc/server.php';
+$serverPort = 8080;
+$serverPath = '/nucleus/nucleus/xmlrpc/server.php';
 	
 include('../../config.php');
 include($DIR_LIBS . 'xmlrpc.inc.php');
@@ -19,7 +19,7 @@ $f=new xmlrpcmsg(
 	 	new xmlrpcval('1', 'string'),			// blogid
 	 	new xmlrpcval('god', 'string'),			// username
 	 	new xmlrpcval('heaven', 'string'),		// password
-	 	new xmlrpcval('5', 'string')			// amount to get
+	 	new xmlrpcval('5', 'int')			// amount to get
 	 )
  );
 	 
