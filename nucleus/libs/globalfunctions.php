@@ -938,5 +938,24 @@ function passVar($key, $value) {
 	?><input type="hidden" name="<?php echo htmlspecialchars($key)?>" value="<?php echo htmlspecialchars(undoMagic($value))?>" /><?php
 }
 
+/*
+	Date format functions (to be used from [%date(..)%] skinvars
+*/
+function formatDate($format, $timestamp, $defaultFormat) {
+	if ($format == 'rfc822') { 
+		return date('r', $timestamp); 
+	} else if ($format == 'rfc822GMT') { 
+		return gmdate('r', $timestamp); 
+	} else if ($format == 'utc') { 
+		return gmdate('Y-m-d\TH:i:s\Z', $timestamp); 
+	} else if ($format == 'iso8601') {
+       	$tz = date('O', $timestamp);
+        $tz = substr($tz, 0, 3) . ':' . substr($tz, 3, 2);	
+		return gmdate('Y-m-d\TH:i:s', $timestamp) . $tz;
+	} else {  
+		return strftime($format ? $format : $defaultFormat,$this->currentItem->timestamp); 
+	}  
+
+}
 
 ?>
