@@ -1,5 +1,4 @@
-<nucleusskin><meta><skin name="xmlrss2" /><template name="xmlrss2" /><info><![CDATA[Test of export for RSS version 2.0 
-xml-rss2.php also needed]]></info></meta><skin name="xmlrss2" type="text/xml" includeMode="normal" includePrefix=""><part name="index"><![CDATA[<?xml version="1.0" encoding="ISO-8859-1"?>
+<nucleusskin><meta><skin name="xmlrss2" /><template name="xmlrss2" /><info><![CDATA[Now it validates]]></info></meta><skin name="xmlrss2" type="text/xml" includeMode="normal" includePrefix=""><part name="index"><![CDATA[<?xml version="1.0" encoding="ISO-8859-1"?>
 <rss version="2.0">
   <channel>
     <title><%blogsetting(name)%></title>
@@ -22,8 +21,8 @@ xml-rss2.php also needed]]></info></meta><skin name="xmlrss2" type="text/xml" in
  <title><%syndicate_title%></title>
  <link><%blogurl%>index.php?itemid=<%itemid%></link>
 <description><%syndicate_description%></description>
- <author><%author%></author>
+<author>Someone@server.com - <%author%></author> 
  <category><%category%></category>
  <comments><%blogurl%>index.php?itemid=<%itemid%></comments>
- <pubDate><%date(%x %X)%></pubDate>
+ <pubDate><%date(%a)%>, <%date(%d %b %Y %H:%M:%S GMT)%></pubDate>
 </item>]]></part></template></nucleusskin>
