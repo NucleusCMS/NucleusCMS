@@ -490,7 +490,8 @@
 			'nucleus_plugin',
 			'nucleus_skin',
 			'nucleus_template',
-			'nucleus_team'
+			'nucleus_team',
+			'nucleus_activation'
 // these are unneeded (one of the replacements above takes care of them)
 //			'nucleus_plugin_event',
 //			'nucleus_plugin_option',
@@ -511,7 +512,8 @@
 			$mysql_prefix . 'nucleus_plugin',
 			$mysql_prefix . 'nucleus_skin',
 			$mysql_prefix . 'nucleus_template',
-			$mysql_prefix . 'nucleus_team'
+			$mysql_prefix . 'nucleus_team',
+			$mysql_prefix . 'nucleus_activation'
 // these are unneeded (one of the replacements above takes care of them)
 //			$mysql_prefix . 'nucleus_plugin_event',
 //			$mysql_prefix . 'nucleus_plugin_option',
