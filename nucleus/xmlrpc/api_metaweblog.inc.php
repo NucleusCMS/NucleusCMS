@@ -150,7 +150,7 @@
 		$categorystruct = array();
 
 		$query =  "SELECT cname, cdesc, catid"
-				. " FROM nucleus_category"
+				. ' FROM '.sql_table('category')
 				. " WHERE cblog=" . intval($blogid)
 				. " ORDER BY cname";
 		$r = sql_query($query);

@@ -19,7 +19,7 @@ class COMMENT {
 	  */
 	function getComment($commentid) {
 		$query =  'SELECT cnumber as commentid, cbody as body, cuser as user, cmail as userid, cmember as memberid, UNIX_TIMESTAMP(ctime) as timestamp, chost as host, mname as member, cip as ip, cblog as blogid'
-		       . ' FROM nucleus_comment left outer join nucleus_member on cmember=mnumber'
+		       . ' FROM '.sql_table('comment').' left outer join '.sql_table('member').' on cmember=mnumber'
 		       . ' WHERE cnumber=' . intval($commentid);
 		$comments = sql_query($query);
 

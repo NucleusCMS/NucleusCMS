@@ -58,7 +58,7 @@ class COMMENTS {
 			$this->commentcount = $this->amountComments();
 		} else {
 			$query =  'SELECT c.cnumber as commentid, c.cbody as body, c.cuser as user, c.cmail as userid, c.cmember as memberid, UNIX_TIMESTAMP(c.ctime) as timestamp, c.chost as host, c.cip as ip, c.cblog as blogid'
-			       . ' FROM nucleus_comment as c'
+			       . ' FROM '.sql_table('comment').' as c'
 			       . ' WHERE c.citem=' . $this->itemid 
 			       . ' ORDER BY c.ctime';
 			       
@@ -100,7 +100,7 @@ class COMMENTS {
 	 */
 	function amountComments() {
 		$query =  'SELECT COUNT(*)'
-		       . ' FROM nucleus_comment as c'
+		       . ' FROM '.sql_table('comment').' as c'
 		       . ' WHERE c.citem='. $this->itemid;
 		$res = sql_query($query);
 		$arr = mysql_fetch_row($res);
@@ -182,7 +182,7 @@ class COMMENTS {
 		$timestamp	= date('Y-m-d H:i:s', $comment['timestamp']);
 		$itemid		= $this->itemid;
 				
-		$query = 'INSERT INTO nucleus_comment (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CIP, CBLOG) '
+		$query = 'INSERT INTO '.sql_table('comment').' (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CIP, CBLOG) '
 		       . "VALUES ('$name', '$url', $memberid, '$body', $itemid, '$timestamp', '$host', '$ip', '$blogid')";
 
 		sql_query($query);

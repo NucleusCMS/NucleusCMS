@@ -210,7 +210,7 @@
 		$structarray = array();		// the array in which the structs will be stored
 
 		$query = "SELECT ibody, iauthor, ibody, imore, ititle, iclosed, idraft, UNIX_TIMESTAMP(itime) as itime"
-			   ." FROM nucleus_item"
+			   .' FROM '.sql_table('item')
 			   ." WHERE iblog=$blogid"
 			   ." ORDER BY itime DESC"
 			   ." LIMIT $amount";

@@ -26,7 +26,7 @@ class ITEM {
 		global $manager;
 
 		$query =  'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, i.ititle as title, i.ibody as body, m.mname as author, i.iauthor as authorid, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, i.ikarmapos as karmapos, i.ikarmaneg as karmaneg, i.icat as catid'
-		       . ' FROM nucleus_item as i, nucleus_member as m'
+		       . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m'
 		       . ' WHERE i.inumber=' . $itemid
 		       . ' and i.iauthor=m.mnumber';
 		if (!$allowdraft)
@@ -156,7 +156,7 @@ class ITEM {
 		$manager->notify('PreUpdateItem',array('itemid' => $itemid, 'title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => &$blog, 'closed' => &$closed, 'catid' => &$catid));
 	
 		// update item itsself
-		$query =  'UPDATE nucleus_item'
+		$query =  'UPDATE '.sql_table('item')
 		       . ' SET' 
 		       . " ibody='". addslashes($body) ."',"
 		       . " ititle='" . addslashes($title) . "',"
@@ -219,11 +219,11 @@ class ITEM {
 	
 	
 		// update item table
-		$query = "UPDATE nucleus_item SET iblog=$new_blogid, icat=$new_catid WHERE inumber=$itemid";
+		$query = 'UPDATE '.sql_table('item')." SET iblog=$new_blogid, icat=$new_catid WHERE inumber=$itemid";
 		sql_query($query);		
 		
 		// update comments
-		$query = "UPDATE nucleus_comment SET cblog=" . $new_blogid." WHERE citem=" . $itemid;
+		$query = 'UPDATE '.sql_table('comment')." SET cblog=" . $new_blogid." WHERE citem=" . $itemid;
 		sql_query($query);	
 		
 		$manager->notify(
@@ -245,11 +245,11 @@ class ITEM {
 		$manager->notify('PreDeleteItem', array('itemid' => $itemid));
 		
 		// delete item
-		$query = 'DELETE FROM nucleus_item WHERE inumber=' . $itemid;
+		$query = 'DELETE FROM '.sql_table('item').' WHERE inumber=' . $itemid;
 		sql_query($query);
 
 		// delete the comments associated with the item
-		$query = 'DELETE FROM nucleus_comment WHERE citem=' . $itemid;
+		$query = 'DELETE FROM '.sql_table('comment').' WHERE citem=' . $itemid;
 		sql_query($query);	  
 		
 		$manager->notify('PostDeleteItem', array('itemid' => $itemid));		
@@ -259,7 +259,7 @@ class ITEM {
 	function exists($id,$future,$draft) {
 		global $manager;
 		
-		$r = 'select * FROM nucleus_item WHERE inumber='.intval($id);
+		$r = 'select * FROM '.sql_table('item').' WHERE inumber='.intval($id);
 		if (!$future) {
 			$bid = getBlogIDFromItemID($id);
 			if (!$bid) return 0;

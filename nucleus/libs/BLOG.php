@@ -108,7 +108,7 @@ class BLOG {
 	function readLogAmount($template, $amountEntries, $extraQuery, $highlight, $comments, $dateheads, $startpos = 0) {
 		
 		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed'
-		       . ' FROM nucleus_item as i, nucleus_member as m, nucleus_category as c'
+		       . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
 		       . ' WHERE i.iblog='.$this->blogid
 		       . ' and i.iauthor=m.mnumber'
 		       . ' and i.icat=c.catid'
@@ -246,7 +246,7 @@ class BLOG {
 		$body = addslashes($body);
 		$more = addslashes($more);
 
-		$query = 'INSERT INTO nucleus_item (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT) '
+		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT) '
 		       . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $draft, $catid)";
 		sql_query($query);  
 		$itemid = mysql_insert_id();
@@ -309,7 +309,7 @@ class BLOG {
 			{
 				$catName = 'newcat';
 				$i = 1;
-				while(mysql_num_rows(sql_query("SELECT * FROM nucleus_category WHERE cname='".$catName.$i."' and cblog=".$this->getID())) > 0) 
+				while(mysql_num_rows(sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID())) > 0) 
 					$i++;
 				$catName = $catName . $i;
 			}
@@ -323,7 +323,7 @@ class BLOG {
 				)
 			);
 			
-			$query = 'INSERT INTO nucleus_category (cblog, cname, cdesc) VALUES (' . $this->getID() . ", '" . addslashes($catName) . "', '" . addslashes($catDescription) . "')";
+			$query = 'INSERT INTO '.sql_table('category').' (cblog, cname, cdesc) VALUES (' . $this->getID() . ", '" . addslashes($catName) . "', '" . addslashes($catDescription) . "')";
 			sql_query($query);
 			$catid = mysql_insert_id();
 			
@@ -398,7 +398,7 @@ class BLOG {
 
 		echo TEMPLATE::fill($template['ARCHIVELIST_HEADER'],$data);
 
-		$query = 'SELECT UNIX_TIMESTAMP(itime) as itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM nucleus_item'
+		$query = 'SELECT UNIX_TIMESTAMP(itime) as itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM '.sql_table('item')
 		. ' WHERE iblog=' . $this->getID()
 		. ' and UNIX_TIMESTAMP(itime)<=' . $this->getCorrectTime()	// don't show future items!
 		. ' and idraft=0'; // don't show draft items
@@ -472,7 +472,7 @@ class BLOG {
 								'self' => $CONF['Self']
 							));
 
-		$query = 'SELECT catid, cdesc as catdesc, cname as catname FROM nucleus_category WHERE cblog=' . $this->getID() . ' ORDER BY cname ASC';
+		$query = 'SELECT catid, cdesc as catdesc, cname as catname FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' ORDER BY cname ASC';
 		$res = sql_query($query);
 
 
@@ -503,7 +503,7 @@ class BLOG {
 	  
 	function readSettings() {
 		$query =  'SELECT *'
-		       . ' FROM nucleus_blog'
+		       . ' FROM '.sql_table('blog')
 		       . ' WHERE bnumber=' . $this->blogid;
 		$res = sql_query($query);
 		
@@ -511,7 +511,7 @@ class BLOG {
 	}
 	
 	function writeSettings() {
-		$query =  'UPDATE nucleus_blog'
+		$query =  'UPDATE '.sql_table('blog')
 		       . " SET bname='" . addslashes($this->getName()) . "',"
 		       . "     bshortname='". addslashes($this->getShortName()) . "',"
 		       . "     bcomments=". $this->commentsEnabled() . ","
@@ -586,24 +586,24 @@ class BLOG {
 	}
 	
 	function isValidCategory($catid) {
-		$query = 'SELECT * FROM nucleus_category WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
+		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
 		return (mysql_num_rows(mysql_query($query)) != 0);
 	}
 	
 	function getCategoryName($catid) {
-		$res = mysql_query('SELECT cname FROM nucleus_category WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+		$res = mysql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
 		$o = mysql_fetch_object($res);
 		return $o->cname;
 	}
 	
 	function getCategoryDesc($catid) {
-		$res = mysql_query('SELECT cdesc FROM nucleus_category WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+		$res = mysql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
 		$o = mysql_fetch_object($res);
 		return $o->cdesc;
 	}
 
 	function getCategoryIdFromName($name) {
-		$res = mysql_query('SELECT catid FROM nucleus_category WHERE cblog='.$this->getID().' and cname="' . addslashes($name) . '"');
+		$res = mysql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . addslashes($name) . '"');
 		if (mysql_num_rows($res) > 0) {
 			$o = mysql_fetch_object($res);
 			return $o->catid;	
@@ -814,7 +814,7 @@ class BLOG {
 		);
 		
 		// add to team
-		$query = 'INSERT INTO nucleus_team (TMEMBER, TBLOG, TADMIN) '
+		$query = 'INSERT INTO '.sql_table('team').' (TMEMBER, TBLOG, TADMIN) '
 		       . 'VALUES (' . $memberid .', '.$this->getID().', "'.$admin.'")';
 		sql_query($query);
 		
@@ -840,13 +840,13 @@ class BLOG {
 	
 	// returns true if there is a blog with the given shortname (static)
 	function exists($name) {
-		$r = sql_query('select * FROM nucleus_blog WHERE bshortname="'.addslashes($name).'"');
+		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bshortname="'.addslashes($name).'"');
 		return (mysql_num_rows($r) != 0);
 	}
 
 	// returns true if there is a blog with the given ID (static)
 	function existsID($id) {
-		$r = sql_query('select * FROM nucleus_blog WHERE bnumber='.intval($id));
+		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
 		return (mysql_num_rows($r) != 0);
 	}	
 	

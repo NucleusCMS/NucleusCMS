@@ -68,7 +68,7 @@
 		  *		Initial value for the option (max. value length is 128 characters)
 		  */
 		function createOption($name, $description, $type, $value) {
-			$query = "INSERT INTO nucleus_plugin_option (oname, odesc, otype, ovalue, opid) VALUES ('".addslashes($name)."','".addslashes($description)."','".addslashes($type)."','".addslashes($value)."',".$this->plugid.")";
+			$query = 'INSERT INTO '.sql_table('plugin_option')." (oname, odesc, otype, ovalue, opid) VALUES ('".addslashes($name)."','".addslashes($description)."','".addslashes($type)."','".addslashes($value)."',".$this->plugid.")";
 			return sql_query($query);
 		}
 		
@@ -78,21 +78,21 @@
 		  * Note: Options get erased automatically on plugin uninstall
 		  */
 		function deleteOption($name) {
-			return sql_query("DELETE FROM nucleus_plugin_option WHERE opid=".$this->plugid." and oname='".addslashes($name)."'");
+			return sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE opid='.$this->plugid." and oname='".addslashes($name)."'");
 		}
 		
 		/**
 		  * Sets the value of an option to something new
 		  */
 		function setOption($name, $value) {
-			return sql_query("UPDATE nucleus_plugin_option SET ovalue='".addslashes($value)."' WHERE opid=".$this->plugid." and oname='".addslashes($name)."'");
+			return sql_query('UPDATE '.sql_table('plugin_option')." SET ovalue='".addslashes($value)."' WHERE opid=".$this->plugid." and oname='".addslashes($name)."'");
 		}
 		
 		/**
 		  * Retrieves the current value for an option
 		  */
 		function getOption($name) {
-			$query = 'SELECT ovalue AS result FROM nucleus_plugin_option WHERE oname=\''.addslashes($name).'\' and opid=' . $this->plugid;
+			$query = 'SELECT ovalue AS result FROM '.sql_table('plugin_option').' WHERE oname=\''.addslashes($name).'\' and opid=' . $this->plugid;
 			return quickQuery($query);
 		}
 		

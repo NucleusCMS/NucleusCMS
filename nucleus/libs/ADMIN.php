@@ -136,7 +136,8 @@ class ADMIN {
 			
 		if ($amount != 0) {
 			echo '<h2>' . _OVERVIEW_YRDRAFTS . '</h2>';
-			$query =  'SELECT ititle, inumber, bshortname FROM nucleus_item, nucleus_blog'
+			$query =  'SELECT ititle, inumber, bshortname'
+				   . ' FROM ' . sql_table('item'). ', ' . sql_table('blog')
 			       . ' WHERE iauthor='.$member->getID().' and iblog=bnumber and idraft=1';
 			$template['content'] = 'draftlist';
 			$amountdrafts = showlist($query, 'table', $template);
@@ -239,7 +240,7 @@ class ADMIN {
 		$search = postVar('search');	// search through items
 			
 		$query =  'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, UNIX_TIMESTAMP(itime) as itime'
-		       . ' FROM nucleus_item, nucleus_blog, nucleus_member, nucleus_category'
+		       . ' FROM ' . sql_table('item') . ', ' . sql_table('blog') . ', ' . sql_table('member') . ', ' . sql_table('category')
 		       . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=' . $blogid;
 		
 		if ($search) 
@@ -416,16 +417,16 @@ class ADMIN {
 					break;
 				case 'setadmin':
 					// always succeeds
-					sql_query('UPDATE nucleus_member SET madmin=1 WHERE mnumber='.$memberid);
+					sql_query('UPDATE ' . sql_table('member') . ' SET madmin=1 WHERE mnumber='.$memberid);
 					$error = '';
 					break;
 				case 'unsetadmin':
 					// there should always remain at least one super-admin
-					$r = sql_query('SELECT * FROM nucleus_member WHERE madmin=1 and mcanlogin=1');
+					$r = sql_query('SELECT * FROM '.sql_table('member'). ' WHERE madmin=1 and mcanlogin=1');
 					if (mysql_num_rows($r) < 2)
 						$error = _ERROR_ATLEASTONEADMIN;
 					else
-						sql_query('UPDATE nucleus_member SET madmin=0 WHERE mnumber='.$memberid);
+						sql_query('UPDATE ' . sql_table('member') .' SET madmin=0 WHERE mnumber='.$memberid);
 					break;
 				default:
 					$error = _BATCH_UNKNOWN . $action;
@@ -484,16 +485,16 @@ class ADMIN {
 					break;
 				case 'setadmin':
 					// always succeeds
-					sql_query('UPDATE nucleus_team SET tadmin=1 WHERE tblog='.$blogid.' and tmember='.$memberid);
+					sql_query('UPDATE '.sql_table('team').' SET tadmin=1 WHERE tblog='.$blogid.' and tmember='.$memberid);
 					$error = '';
 					break;
 				case 'unsetadmin':
 					// there should always remain at least one admin
-					$r = sql_query('SELECT * FROM nucleus_team WHERE tadmin=1 and tblog='.$blogid);
+					$r = sql_query('SELECT * FROM '.sql_table('team').' WHERE tadmin=1 and tblog='.$blogid);
 					if (mysql_num_rows($r) < 2)
 						$error = _ERROR_ATLEASTONEBLOGADMIN;
 					else
-						sql_query('UPDATE nucleus_team SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
+						sql_query('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
 					break;
 				default:
 					$error = _BATCH_UNKNOWN . $action;
@@ -686,9 +687,9 @@ class ADMIN {
 		// 1. select blogs (we'll create optiongroups)
 		// (only select those blogs that have the user on the team)
 		if (($member->isAdmin()) && ($CONF['ShowAllBlogs'])) {
-			$queryBlogs =  'SELECT bnumber, bname FROM nucleus_blog ORDER BY bname';
+			$queryBlogs =  'SELECT bnumber, bname FROM '.sql_table('blog').' ORDER BY bname';
 		} else {
-			$queryBlogs =  'SELECT bnumber, bname FROM nucleus_blog, nucleus_team WHERE tblog=bnumber and tmember=' . $member->getID() . ' ORDER BY bname';		
+			$queryBlogs =  'SELECT bnumber, bname FROM '.sql_table('blog').', '.sql_table('team').' WHERE tblog=bnumber and tmember=' . $member->getID() . ' ORDER BY bname';		
 		}		
 		$blogs = sql_query($queryBlogs);
 		if ($mode == 'category') {
@@ -707,7 +708,7 @@ class ADMIN {
 				}
 
 				// 2. for each category in that blog
-				$categories = sql_query('SELECT cname, catid FROM nucleus_category WHERE cblog=' . $oBlog->bnumber . ' ORDER BY cname ASC');
+				$categories = sql_query('SELECT cname, catid FROM '.sql_table('category').' WHERE cblog=' . $oBlog->bnumber . ' ORDER BY cname ASC');
 				while ($oCat = mysql_fetch_object($categories)) {
 					if ($oCat->catid == $selected)
 						$selectText = ' selected="selected" ';
@@ -755,7 +756,7 @@ class ADMIN {
 		$search = postVar('search');	// search through items
 			
 		$query =  'SELECT bshortname, cname, mname, ititle, ibody, idraft, inumber, UNIX_TIMESTAMP(itime) as itime'
-		       . ' FROM nucleus_item, nucleus_blog, nucleus_member, nucleus_category'
+		       . ' FROM '.sql_table('item').', '.sql_table('blog') . ', '.sql_table('member') . ', '.sql_table('category')
 		       . ' WHERE iauthor='. $member->getID() .' and iauthor=mnumber and iblog=bnumber and icat=catid';
 		
 		if ($search) 
@@ -807,7 +808,7 @@ class ADMIN {
 		echo '<p>(<a href="index.php?action=itemlist&amp;blogid=',$blogid,'">',_BACKTOOVERVIEW,'</a>)</p>';
 		echo '<h2>',_COMMENTS,'</h2>';
 		
-		$query =  'SELECT cbody, cuser, cmail, mname, UNIX_TIMESTAMP(ctime) as ctime, chost, cnumber, cip, citem FROM nucleus_comment LEFT OUTER JOIN nucleus_member ON mnumber=cmember WHERE citem=' . $itemid;
+		$query =  'SELECT cbody, cuser, cmail, mname, UNIX_TIMESTAMP(ctime) as ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE citem=' . $itemid;
 
 		if ($search) 
 			$query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
@@ -845,7 +846,7 @@ class ADMIN {
 		$search = postVar('search');			
 
 
-		$query =  'SELECT cbody, cuser, cmail, mname, UNIX_TIMESTAMP(ctime) as ctime, chost, cnumber, cip, citem FROM nucleus_comment LEFT OUTER JOIN nucleus_member ON mnumber=cmember WHERE cmember=' . $member->getID();
+		$query =  'SELECT cbody, cuser, cmail, mname, UNIX_TIMESTAMP(ctime) as ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cmember=' . $member->getID();
 
 		if ($search) 
 			$query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
@@ -1318,13 +1319,13 @@ class ADMIN {
 		// call plugins
 		$manager->notify('PreUpdateComment',array('body' => &$body));
 		
-		$query =  "UPDATE nucleus_comment"
+		$query =  'UPDATE '.sql_table('comment')
 		       . " SET cbody='" .addslashes($body). "'"
 		       . " WHERE cnumber=" . $commentid;
 		sql_query($query);
 		
 		// get itemid
-		$res = sql_query("SELECT citem FROM nucleus_comment WHERE cnumber=" . $commentid);
+		$res = sql_query('SELECT citem FROM '.sql_table('comment').' WHERE cnumber=' . $commentid);
 		$o = mysql_fetch_object($res);
 		$itemid = $o->citem;
 		
@@ -1381,7 +1382,7 @@ class ADMIN {
 		$commentid = intRequestVar('commentid');
 		
 		// get item id first
-		$res = sql_query("SELECT citem FROM nucleus_comment WHERE cnumber=" . $commentid);
+		$res = sql_query('SELECT citem FROM '.sql_table('comment') .' WHERE cnumber=' . $commentid);
 		$o = mysql_fetch_object($res);
 		$itemid = $o->citem;
 
@@ -1404,7 +1405,7 @@ class ADMIN {
 		$manager->notify('PreDeleteComment', array('commentid' => $commentid));
 				
 		// delete the comments associated with the item
-		$query = "DELETE FROM nucleus_comment WHERE cnumber=" . $commentid;
+		$query = 'DELETE FROM '.sql_table('comment').' WHERE cnumber=' . $commentid;
 		sql_query($query);
 		
 		$manager->notify('PostDeleteComment', array('commentid' => $commentid));		
@@ -1430,8 +1431,8 @@ class ADMIN {
 		echo '<h3>' . _MEMBERS_CURRENT .'</h3>';
 		
 		// show list of members with actions
-		$query =  "SELECT *"
-		       . " FROM nucleus_member";
+		$query =  'SELECT *'
+		       . ' FROM '.sql_table('member');
 		$template['content'] = 'memberlist';
 		$template['tabindex'] = 10;
 		
@@ -1665,7 +1666,7 @@ class ADMIN {
 		     || (!$canlogin && $mem->isAdmin() && $mem->canLogin())
 		   )
 		{
-			$r = sql_query("SELECT * FROM nucleus_member WHERE madmin=1 and mcanlogin=1");
+			$r = sql_query('SELECT * FROM '.sql_table('member').' WHERE madmin=1 and mcanlogin=1');
 			if (mysql_num_rows($r) < 2)
 				$this->error(_ERROR_ATLEASTONEADMIN);
 		}
@@ -1757,9 +1758,9 @@ class ADMIN {
 
 
 
-		$query =  "SELECT tblog, tmember, mname, mrealname, memail, tadmin"
-		       . " FROM nucleus_member, nucleus_team"
-		       . " WHERE tmember=mnumber and tblog=" . $blogid;
+		$query =  'SELECT tblog, tmember, mname, mrealname, memail, tadmin'
+		       . ' FROM '.sql_table('member').', '.sql_table('team')
+		       . ' WHERE tmember=mnumber and tblog=' . $blogid;
 
 		$template['content'] = 'teamlist';
 		$template['tabindex'] = 10;
@@ -1779,8 +1780,8 @@ class ADMIN {
 				<td><?=_TEAM_CHOOSEMEMBER?></td>
 				<td><?
 					// TODO: try to make it so only non-team-members are listed
-					$query =  "SELECT mname as text, mnumber as value"
-					       . " FROM nucleus_member";
+					$query =  'SELECT mname as text, mnumber as value'
+					       . ' FROM '.sql_table('member');
 
 					$template['name'] = 'memberid';
 					$template['tabindex'] = 10000;
@@ -1880,13 +1881,13 @@ class ADMIN {
 		if ($tmem->isBlogAdmin($blogid)) {
 			// check if there are more blog members left and at least one admin
 			// (check for at least two admins before deletion)
-			$query = "SELECT * FROM nucleus_team WHERE tblog=$blogid and tadmin=1";
+			$query = 'SELECT * FROM '.sql_table('team') . ' WHERE tblog='.$blogid.' and tadmin=1';
 			$r = sql_query($query);
 			if (mysql_num_rows($r) < 2)
 				return _ERROR_ATLEASTONEBLOGADMIN;
 		}
 		
-		$query = "DELETE FROM nucleus_team WHERE tblog=$blogid and tmember=$memberid";
+		$query = 'DELETE FROM '.sql_table('team')." WHERE tblog=$blogid and tmember=$memberid";
 		sql_query($query);
 		
 		$manager->notify('PostDeleteTeamMember', array('member' => &$mem, 'blogid' => $blogid));						
@@ -1907,7 +1908,7 @@ class ADMIN {
 		
 		// don't allow when there is only one admin at this moment
 		if ($mem->isBlogAdmin($blogid)) {
-			$r = sql_query("SELECT * FROM nucleus_team WHERE tblog=$blogid and tadmin=1");
+			$r = sql_query('SELECT * FROM '.sql_table('team') . " WHERE tblog=$blogid and tadmin=1");
 			if (mysql_num_rows($r) == 1)
 				$this->error(_ERROR_ATLEASTONEBLOGADMIN);
 		}
@@ -1917,7 +1918,7 @@ class ADMIN {
 		else	
 			$newval = 1;
 			
-		$query = "UPDATE nucleus_team SET tadmin=$newval WHERE tblog=$blogid and tmember=$memberid";
+		$query = 'UPDATE '.sql_table('team') ." SET tadmin=$newval WHERE tblog=$blogid and tmember=$memberid";
 		sql_query($query);
 		
 		// only show manageteam if member did not change its own admin privileges
@@ -1975,8 +1976,8 @@ class ADMIN {
 			</td>
 			<td>
 				<? 
-					$query =  "SELECT sdname as text, sdnumber as value"
-					       . " FROM nucleus_skin_desc";
+					$query =  'SELECT sdname as text, sdnumber as value'
+					       . ' FROM '.sql_table('skin_desc');
 					$template['name'] = 'defskin';
 					$template['selected'] = $blog->getDefaultSkin();
 					$template['tabindex'] = 50;
@@ -2031,9 +2032,9 @@ class ADMIN {
 			<td><?=_EBLOG_DEFCAT?></td>
 			<td>
 				<? 
-					$query =  "SELECT cname as text, catid as value"
-					       . " FROM nucleus_category"
-					       . " WHERE cblog=" . $blog->getID();
+					$query =  'SELECT cname as text, catid as value'
+					       . ' FROM '.sql_table('category')
+					       . ' WHERE cblog=' . $blog->getID();
 					$template['name'] = 'defcat';
 					$template['selected'] = $blog->getDefaultCategory();
 					$template['tabindex'] = 110;
@@ -2058,7 +2059,7 @@ class ADMIN {
 
 		<?
 		
-		$query = "SELECT * FROM nucleus_category WHERE cblog=".$blog->getID()." ORDER BY cname";
+		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog='.$blog->getID().' ORDER BY cname';
 		$template['content'] = 'categorylist';
 		$template['tabindex'] = 200;
 		
@@ -2113,7 +2114,7 @@ class ADMIN {
 		if (!isValidCategoryName($cname))
 			$this->error(_ERROR_BADCATEGORYNAME);
 			
-		$query = "SELECT * FROM nucleus_category WHERE cname='" . addslashes($cname)."' and cblog=" . intval($blogid);
+		$query = 'SELECT * FROM '.sql_table('category') . ' WHERE cname=\'' . addslashes($cname).'\' and cblog=' . intval($blogid);
 		$res = sql_query($query);
 		if (mysql_num_rows($res) > 0)
 			$this->error(_ERROR_DUPCATEGORYNAME);
@@ -2135,7 +2136,7 @@ class ADMIN {
 
 		$member->blogAdminRights($blogid) or $this->disallow();
 
-		$res = sql_query("SELECT * FROM nucleus_category WHERE cblog=$blogid AND catid=$catid");
+		$res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cblog=$blogid AND catid=$catid");
 		$obj = mysql_fetch_object($res);
 
 		$cname = $obj->cname;
@@ -2181,12 +2182,12 @@ class ADMIN {
 		if (!isValidCategoryName($cname))
 			$this->error(_ERROR_BADCATEGORYNAME);
 			
-		$query = "SELECT * FROM nucleus_category WHERE cname='" . addslashes($cname)."' and cblog=" . intval($blogid) . " and not(catid=$catid)";
+		$query = 'SELECT * FROM '.sql_table('category').' WHERE cname=\'' . addslashes($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
 		$res = sql_query($query);
 		if (mysql_num_rows($res) > 0)
 			$this->error(_ERROR_DUPCATEGORYNAME);
 			
-		$query =  "UPDATE nucleus_category SET"
+		$query =  'UPDATE '.sql_table('category').' SET'
 			   . " cname='" . addslashes($cname) . "',"
 			   . " cdesc='" . addslashes($cdesc) . "'"			   
 			   . " WHERE catid=" . $catid;
@@ -2215,7 +2216,7 @@ class ADMIN {
 			$this->error(_ERROR_DELETEDEFCATEGORY);
 		
 		// check if catid is the only category left for blogid
-		$query = "SELECT catid FROM nucleus_category WHERE cblog=" . $blogid;
+		$query = 'SELECT catid FROM '.sql_table('category').' WHERE cblog=' . $blogid;
 		$res = sql_query($query);
 		if (mysql_num_rows($res) == 1)
 			$this->error(_ERROR_DELETELASTCATEGORY);
@@ -2279,17 +2280,17 @@ class ADMIN {
 			return _ERROR_DELETEDEFCATEGORY;
 		
 		// check if catid is the only category left for blogid
-		$query = "SELECT catid FROM nucleus_category WHERE cblog=" . $blogid;
+		$query = 'SELECT catid FROM '.sql_table('category').' WHERE cblog=' . $blogid;
 		$res = sql_query($query);
 		if (mysql_num_rows($res) == 1)
 			return _ERROR_DELETELASTCATEGORY;
 			
 		// change category for all items to the default category
-		$query = "UPDATE nucleus_item SET icat=$destcatid WHERE icat=$catid";
+		$query = 'UPDATE '.sql_table('item')." SET icat=$destcatid WHERE icat=$catid";
 		sql_query($query);
 		
 		// delete category
-		$query = "DELETE FROM nucleus_category WHERE catid=" .intval($catid);
+		$query = 'DELETE FROM '.sql_table('category').' WHERE catid=' .intval($catid);
 		sql_query($query);
 		
 		$manager->notify('PostDeleteCategory', array('catid' => $catid));				
@@ -2333,18 +2334,18 @@ class ADMIN {
 		);
 		
 		// update comments table (cblog)
-		$query = "SELECT inumber FROM nucleus_item WHERE icat=$catid";
+		$query = 'SELECT inumber FROM '.sql_table('item').' WHERE icat='.$catid;
 		$items = sql_query($query);
 		while ($oItem = mysql_fetch_object($items)) {
-			sql_query("UPDATE nucleus_comment SET cblog=$destblogid WHERE citem=".$oItem->inumber);
+			sql_query('UPDATE '.sql_table('comment').' SET cblog='.$destblogid.' WHERE citem='.$oItem->inumber);
 		}
 
 		// update items (iblog)
-		$query = "UPDATE nucleus_item SET iblog=$destblogid WHERE icat=$catid";
+		$query = 'UPDATE '.sql_table('item').' SET iblog='.$destblogid.' WHERE icat='.$catid;
 		sql_query($query);
 
 		// move category 
-		$query = "UPDATE nucleus_category SET cblog=$destblogid WHERE catid=$catid";
+		$query = 'UPDATE '.sql_table('category').' SET cblog='.$destblogid.' WHERE catid='.$catid;
 		sql_query($query);
 
 		$manager->notify(
@@ -2469,27 +2470,27 @@ class ADMIN {
 			$this->error(_ERROR_DELDEFBLOG);
 
 		// delete all comments
-		$query = "DELETE FROM nucleus_comment WHERE cblog=$blogid";
+		$query = 'DELETE FROM '.sql_table('comment').' WHERE cblog='.$blogid;
 		sql_query($query);
 
 		// delete all items		
-		$query = "DELETE FROM nucleus_item WHERE iblog=$blogid";
+		$query = 'DELETE FROM '.sql_table('item').' WHERE iblog='.$blogid;
 		sql_query($query);
 		
 		// delete all team members
-		$query = "DELETE FROM nucleus_team WHERE tblog=$blogid";
+		$query = 'DELETE FROM '.sql_table('team').' WHERE tblog='.$blogid;
 		sql_query($query);
 		
 		// delete all bans
-		$query = "DELETE FROM nucleus_ban WHERE blogid=$blogid";
+		$query = 'DELETE FROM '.sql_table('ban').' WHERE blogid='.$blogid;
 		sql_query($query);
 		
 		// delete all categories
-		$query = "DELETE FROM nucleus_category WHERE cblog=$blogid";
+		$query = 'DELETE FROM '.sql_table('category').' WHERE cblog='.$blogid;
 		sql_query($query);
 	
 		// delete the blog itself
-		$query = "DELETE FROM nucleus_blog WHERE bnumber=$blogid";
+		$query = 'DELETE FROM '.sql_table('blog').' WHERE bnumber='.$blogid;
 		sql_query($query);
 		
 		$manager->notify('PostDeleteBlog', array('blogid' => $blogid));						
@@ -2554,10 +2555,10 @@ class ADMIN {
 
 		$manager->notify('PreDeleteMember', array('member' => &$mem));				
 		
-		$query = "DELETE FROM nucleus_member WHERE mnumber=$memberid";
+		$query = 'DELETE FROM '.sql_table('member').' WHERE mnumber='.$memberid;
 		sql_query($query);
 
-		$query = "DELETE FROM nucleus_team WHERE tmember=$memberid";
+		$query = 'DELETE FROM '.sql_table('team').' WHERE tmember='.$memberid;
 		sql_query($query);	
 		
 		$manager->notify('PostDeleteMember', array('member' => &$mem));						
@@ -2617,8 +2618,8 @@ class ADMIN {
 			</td>
 			<td>
 				<? 
-					$query =  "SELECT sdname as text, sdnumber as value"
-					       . " FROM nucleus_skin_desc";
+					$query =  'SELECT sdname as text, sdnumber as value'
+					       . ' FROM '.sql_table('skin_desc');
 					$template['name'] = 'defskin';
 					$template['tabindex'] = 50;
 					showlist($query,'select',$template);		
@@ -2689,13 +2690,13 @@ class ADMIN {
 		$bdefskin = 	addslashes($bdefskin);
 		
 		// create blog
-		$query = "INSERT INTO nucleus_blog (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', $btimeoffset, $bdefskin)";
+		$query = 'INSERT INTO '.sql_table('blog')." (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', $btimeoffset, $bdefskin)";
 		sql_query($query);
 		$blogid	= mysql_insert_id();
 		$blog	=& $manager->getBlog($blogid);
 		
 		// create new category
-		sql_query("INSERT INTO nucleus_category (cblog, cname, cdesc) VALUES ($blogid, 'General','Items that do not fit in other categories')");
+		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, 'General','Items that do not fit in other categories')");
 		$catid = mysql_insert_id();
 
 		// set as default category
@@ -2704,7 +2705,7 @@ class ADMIN {
 	
 		// create team member	
 		$memberid = $member->getID();
-		$query = "INSERT INTO nucleus_team (tmember, tblog, tadmin) VALUES ($memberid, $blogid, 1)";
+		$query = 'INSERT INTO '.sql_table('team')." (tmember, tblog, tadmin) VALUES ($memberid, $blogid, 1)";
 		sql_query($query);
 	
 
@@ -2860,7 +2861,7 @@ selector();
 			</tr><tr>
 	<?
 		// show list of skins
-		$res = sql_query('SELECT * FROM nucleus_skin_desc');
+		$res = sql_query('SELECT * FROM '.sql_table('skin_desc'));
 		while ($skinObj = mysql_fetch_object($res)) {
 			$id = 'skinexp' . $skinObj->sdnumber;
 			echo '<td><input type="checkbox" name="skin[',$skinObj->sdnumber,']"  id="',$id,'" />';
@@ -2872,7 +2873,7 @@ selector();
 		echo '<th colspan="2">',_SKINIE_EXPORT_TEMPLATES,'</th></tr><tr>';
 		
 		// show list of templates
-		$res = sql_query('SELECT * FROM nucleus_template_desc');
+		$res = sql_query('SELECT * FROM '.sql_table('template_desc'));
 		while ($templateObj = mysql_fetch_object($res)) {
 			$id = 'templateexp' . $templateObj->tdnumber;		
 			echo '<td><input type="checkbox" name="template[',$templateObj->tdnumber,']" id="',$id,'" />';
@@ -3039,7 +3040,7 @@ selector();
 		echo '<h2>' . _TEMPLATE_TITLE . '</h2>';
 		echo '<h3>' . _TEMPLATE_AVAILABLE_TITLE . '</h3>';
 		
-		$query = "SELECT * FROM nucleus_template_desc ORDER BY tdname";
+		$query = 'SELECT * FROM '.sql_table('template_desc').' ORDER BY tdname';
 		$template['content'] = 'templatelist';
 		$template['tabindex'] = 10;
 		showlist($query,'table',$template);
@@ -3235,11 +3236,11 @@ selector();
 		$desc = addslashes($desc);
 		
 		// 1. Remove all template parts
-		$query = "DELETE FROM nucleus_template WHERE tdesc=" . $templateid;
+		$query = 'DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid;
 		sql_query($query);
 		
 		// 2. Update description
-		$query =  "UPDATE nucleus_template_desc SET"
+		$query =  'UPDATE '.sql_table('template_desc').' SET'
 		       . " tdname='" . $name . "',"
 		       . " tddesc='" . $desc . "'"
 		       . " WHERE tdnumber=" . $templateid;
@@ -3291,7 +3292,7 @@ selector();
 		// don't add empty parts:
 		if (!trim($content)) return;
 		
-		$query = "INSERT INTO nucleus_template (tdesc, tpartname, tcontent) "
+		$query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
 		       . "VALUES ($id, '$partname', '$content')";
 		mysql_query($query) or die("Query error: " . mysql_error());
 		return mysql_insert_id();
@@ -3336,10 +3337,10 @@ selector();
 		$manager->notify('PreDeleteTemplate', array('templateid' => $templateid));
 		
 		// 1. delete description
-		sql_query("DELETE FROM nucleus_template_desc WHERE tdnumber=" . $templateid);
+		sql_query('DELETE FROM '.sql_table('template_desc').' WHERE tdnumber=' . $templateid);
 		
 		// 2. delete parts
-		sql_query("DELETE FROM nucleus_template WHERE tdesc=" . $templateid);
+		sql_query('DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid);
 		
 		$manager->notify('PostDeleteTemplate', array('templateid' => $templateid));		
 		
@@ -3391,7 +3392,7 @@ selector();
 
 		// 3. create clone
 		// go through parts of old template and add them to the new one
-		$res = sql_query("SELECT tpartname, tcontent FROM nucleus_template WHERE tdesc=" . $templateid);
+		$res = sql_query('SELECT tpartname, tcontent FROM '.sql_table('template').' WHERE tdesc=' . $templateid);
 		while ($o = mysql_fetch_object($res)) {
 			$this->addToTemplate($newid, $o->tpartname, $o->tcontent);
 		}
@@ -3412,7 +3413,7 @@ selector();
 		
 		echo '<h3>' . _SKIN_AVAILABLE_TITLE . '</h3>';
 		
-		$query = 'SELECT * FROM nucleus_skin_desc ORDER BY sdname';
+		$query = 'SELECT * FROM '.sql_table('skin_desc').' ORDER BY sdname';
 		$template['content'] = 'skinlist';
 		$template['tabindex'] = 10;
 		showlist($query,'table',$template);
@@ -3620,14 +3621,14 @@ selector();
 		<br /><br />
 		Short blog names:
 		<?
-			$query = "SELECT bshortname, bname FROM nucleus_blog";
+			$query = 'SELECT bshortname, bname FROM '.sql_table('blog');
 			showlist($query,'table',array('content'=>'shortblognames'));
 		?>
 
 		<br />
 		Template names:
 		<?
-			$query = "SELECT tdname as name, tddesc as description FROM nucleus_template_desc";
+			$query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
 			showlist($query,'table',array('content'=>'shortnames'));
 		?>
 
@@ -3667,7 +3668,7 @@ selector();
 			$this->error(_ERROR_DEFAULTSKIN);
 			
 		// don't allow deletion of default skins for blogs
-		$query = "SELECT bname FROM nucleus_blog WHERE bdefskin=" . $skinid;
+		$query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
 		$r = sql_query($query);
 		if ($o = mysql_fetch_object($r))
 			$this->error(_ERROR_SKINDEFDELETE . $o->bname);
@@ -3706,7 +3707,7 @@ selector();
 			$this->error(_ERROR_DEFAULTSKIN);
 			
 		// don't allow deletion of default skins for blogs
-		$query = "SELECT bname FROM nucleus_blog WHERE bdefskin=" . $skinid;
+		$query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
 		$r = sql_query($query);
 		if ($o = mysql_fetch_object($r))
 			$this->error(_ERROR_SKINDEFDELETE .$o->bname);		
@@ -3714,10 +3715,10 @@ selector();
 		$manager->notify('PreDeleteSkin', array('skinid' => $skinid));	
 		
 		// 1. delete description
-		sql_query("DELETE FROM nucleus_skin_desc WHERE sdnumber=" . $skinid);
+		sql_query('DELETE FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $skinid);
 		
 		// 2. delete parts
-		sql_query("DELETE FROM nucleus_skin WHERE sdesc=" . $skinid);
+		sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc=' . $skinid);
 		
 		$manager->notify('PostDeleteSkin', array('skinid' => $skinid));			
 		
@@ -3771,7 +3772,7 @@ selector();
 	function skinclonetype($skin, $newid, $type) {
 		$content = $skin->getContent($type);
 		if ($content) {
-			$query = "INSERT INTO nucleus_skin (sdesc, scontent, stype) VALUES ($newid,'". addslashes($content)."', '". addslashes($type)."')";
+			$query = 'INSERT INTO '.sql_table('skin')." (sdesc, scontent, stype) VALUES ($newid,'". addslashes($content)."', '". addslashes($type)."')";
 			sql_query($query);
 		}
 	}
@@ -3799,8 +3800,8 @@ selector();
 			<td><?=_SETTINGS_DEFBLOG?> <? help('defaultblog'); ?></td>
 			<td>
 				<? 
-					$query =  "SELECT bname as text, bnumber as value"
-					       . " FROM nucleus_blog";
+					$query =  'SELECT bname as text, bnumber as value'
+					       . ' FROM '.sql_table('blog');
 					$template['name'] = 'DefaultBlog';
 					$template['selected'] = $CONF['DefaultBlog'];
 					$template['tabindex'] = 10;
@@ -3811,8 +3812,8 @@ selector();
 			<td><?=_SETTINGS_BASESKIN?> <? help('baseskin'); ?></td>
 			<td>
 				<? 
-					$query =  "SELECT sdname as text, sdnumber as value"
-					       . " FROM nucleus_skin_desc";
+					$query =  'SELECT sdname as text, sdnumber as value'
+					       . ' FROM '.sql_table('skin_desc');
 					$template['name'] = 'BaseSkin';
 					$template['selected'] = $CONF['BaseSkin'];
 					$template['tabindex'] = 1;
@@ -4091,7 +4092,7 @@ selector();
 		$name = addslashes($name);
 		$val = trim(addslashes($val));
 		
-		$query = "UPDATE nucleus_config"
+		$query = 'UPDATE '.sql_table('config')
 		       . " SET value='$val'"
 		       . " WHERE name='$name'";
 
@@ -4341,7 +4342,7 @@ selector();
 
 		echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 		
-		$query =  "SELECT * FROM nucleus_actionlog ORDER BY timestamp DESC";
+		$query =  'SELECT * FROM '.sql_table('actionlog').' ORDER BY timestamp DESC';
 		$template['content'] = 'actionlist';
 		$amount = showlist($query,'table',$template);
 		
@@ -4365,7 +4366,7 @@ selector();
 		
 		echo '<h2>' . _BAN_TITLE . " '". $this->bloglink($blog) ."'</h2>";
 		
-		$query =  "SELECT * FROM nucleus_ban WHERE blogid=$blogid ORDER BY iprange";
+		$query =  'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid.' ORDER BY iprange';
 		$template['content'] = 'banlist';
 		$amount = showlist($query,'table',$template);
 		
@@ -4696,7 +4697,7 @@ selector();
 		echo '<h3>' , _PLUGS_TITLE_INSTALLED , '</h3>';
 		
 		
-		$query =  'SELECT * FROM nucleus_plugin ORDER BY porder ASC';
+		$query =  'SELECT * FROM '.sql_table('plugin').' ORDER BY porder ASC';
 
 		$template['content'] = 'pluginlist';
 		$template['tabindex'] = 10;
@@ -4723,7 +4724,7 @@ selector();
 					if (ereg('^NP_(.*)\.php$',$filename,$matches)) {
 						$name = $matches[1];
 						// only show in list when not yet installed
-						if (mysql_num_rows(sql_query('SELECT * FROM nucleus_plugin WHERE pfile="NP_'.$name.'"')) == 0)
+						if (mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin').' WHERE pfile="NP_'.$name.'"')) == 0)
 							array_push($candidates,$name);
 					}
 				}
@@ -4769,7 +4770,7 @@ selector();
 			$this->error(_ERROR_PLUGFILEERROR . ' (' . $file . ')');
 		
 		// get number of currently installed plugins
-		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM nucleus_plugin'));
+		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
 
 		// plugin will be added as last one in the list
 		$newOrder = $numCurrent + 1;
@@ -4781,7 +4782,7 @@ selector();
 			)
 		);
 		
-		$query = 'INSERT INTO nucleus_plugin (porder, pfile) VALUES ('.$newOrder.',"'.$name.'")';
+		$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.$name.'")';
 		sql_query($query);
 		
 		// call the install method of the plugin
@@ -4817,17 +4818,17 @@ selector();
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
 		
-		// delete everything from nucleus_events
-		sql_query('DELETE FROM nucleus_plugin_event');
+		// delete everything from plugin_events
+		sql_query('DELETE FROM '.sql_table('plugin_event'));
 		
 		// loop over all installed plugins
-		$res = sql_query('SELECT pid, pfile FROM nucleus_plugin');
+		$res = sql_query('SELECT pid, pfile FROM '.sql_table('plugin'));
 		while($o = mysql_fetch_object($res)) {
 			$pid = $o->pid;
 			$plug =& $manager->getPlugin($o->pfile);
 			$eventList = $plug->getEventList();
 			foreach ($eventList as $eventName) 
-				sql_query('INSERT INTO nucleus_plugin_event (pid, event) VALUES ('.$pid.', \''.$eventName.'\')');
+				sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.$eventName.'\')');
 		}
 		
 		$this->action_pluginlist();
@@ -4883,7 +4884,7 @@ selector();
 			
 		// call the unInstall method of the plugin
 		if ($callUninstall) {
-			$name = quickQuery('SELECT pfile as result FROM nucleus_plugin WHERE pid='.$pid);
+			$name = quickQuery('SELECT pfile as result FROM '.sql_table('plugin').' WHERE pid='.$pid);
 			$plugin =& $manager->getPlugin($name);
 			if ($plugin) $plugin->unInstall();
 		}
@@ -4891,17 +4892,17 @@ selector();
 		$manager->notify('PreDeletePlugin', array('plugid' => $pid));	
 		
 		// delete all subscriptions
-		sql_query('DELETE FROM nucleus_plugin_event WHERE pid=' . $pid);
+		sql_query('DELETE FROM '.sql_table('plugin_event').' WHERE pid=' . $pid);
 		
 		// delete all options
-		sql_query('DELETE FROM nucleus_plugin_option WHERE opid=' . $pid);
+		sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE opid=' . $pid);
 
 		// update order numbers
-		$o = mysql_fetch_object(sql_query('SELECT porder FROM nucleus_plugin WHERE pid=' . $pid));
-		sql_query('UPDATE nucleus_plugin SET porder=(porder - 1) WHERE porder>'.$o->porder);
+		$o = mysql_fetch_object(sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid=' . $pid));
+		sql_query('UPDATE '.sql_table('plugin').' SET porder=(porder - 1) WHERE porder>'.$o->porder);
 		
 		// delete row
-		sql_query('DELETE FROM nucleus_plugin WHERE pid='.$pid);
+		sql_query('DELETE FROM '.sql_table('plugin').' WHERE pid='.$pid);
 		
 		$manager->notify('PostDeletePlugin', array('plugid' => $pid));			
 		
@@ -4920,15 +4921,15 @@ selector();
 			$this->error(_ERROR_NOSUCHPLUGIN);
 			
 		// 1. get old order number
-		$o = mysql_fetch_object(sql_query('SELECT porder FROM nucleus_plugin WHERE pid='.$plugid));
+		$o = mysql_fetch_object(sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid));
 		$oldOrder = $o->porder;
 				
 		// 2. calculate new order number
 		$newOrder = ($oldOrder > 1) ? ($oldOrder - 1) : 1;
 		
 		// 3. update plug numbers
-		sql_query('UPDATE nucleus_plugin SET porder='.$oldOrder.' WHERE porder='.$newOrder);		
-		sql_query('UPDATE nucleus_plugin SET porder='.$newOrder.' WHERE pid='.$plugid);		
+		sql_query('UPDATE '.sql_table('plugin').' SET porder='.$oldOrder.' WHERE porder='.$newOrder);		
+		sql_query('UPDATE '.sql_table('plugin').' SET porder='.$newOrder.' WHERE pid='.$plugid);		
 		
 		$this->action_pluginlist();
 	}
@@ -4944,17 +4945,17 @@ selector();
 			$this->error(_ERROR_NOSUCHPLUGIN);
 			
 		// 1. get old order number
-		$o = mysql_fetch_object(sql_query('SELECT porder FROM nucleus_plugin WHERE pid='.$plugid));
+		$o = mysql_fetch_object(sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid));
 		$oldOrder = $o->porder;
 		
-		$maxOrder = mysql_num_rows(sql_query('SELECT * FROM nucleus_plugin'));
+		$maxOrder = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
 				
 		// 2. calculate new order number
 		$newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;
 		
 		// 3. update plug numbers
-		sql_query('UPDATE nucleus_plugin SET porder='.$oldOrder.' WHERE porder='.$newOrder);		
-		sql_query('UPDATE nucleus_plugin SET porder='.$newOrder.' WHERE pid='.$plugid);		
+		sql_query('UPDATE '.sql_table('plugin').' SET porder='.$oldOrder.' WHERE porder='.$newOrder);		
+		sql_query('UPDATE '.sql_table('plugin').' SET porder='.$newOrder.' WHERE pid='.$plugid);		
 		
 		$this->action_pluginlist();
 	}
@@ -4985,7 +4986,7 @@ selector();
 		<?
 		
 		$aOptions = array();
-		$r = sql_query('SELECT oname as name, ovalue as value, odesc as description, otype as type FROM nucleus_plugin_option WHERE opid='.$pid.' order by oid asc');
+		$r = sql_query('SELECT oname as name, ovalue as value, odesc as description, otype as type FROM '.sql_table('plugin_option').' WHERE opid='.$pid.' order by oid asc');
 		while ($o = mysql_fetch_object($r)) array_push($aOptions, $o);
 		
 		// call plugins
@@ -5016,7 +5017,7 @@ selector();
 		if (!$manager->pidInstalled($pid))
 			$this->error(_ERROR_NOSUCHPLUGIN);
 			
-		$options = sql_query('SELECT * FROM nucleus_plugin_option WHERE opid='.$pid);
+		$options = sql_query('SELECT * FROM '.sql_table('plugin_option').' WHERE opid='.$pid);
 		while ($o = mysql_fetch_object($options)) {
 			switch($o->otype) {
 				case 'yesno':
@@ -5027,7 +5028,7 @@ selector();
 					$val = addslashes(postVar($o->oname));
 			}
 			
-			sql_query("UPDATE nucleus_plugin_option SET ovalue='$val' WHERE opid=$pid AND oname='".addslashes($o->oname)."'");
+			sql_query('UPDATE '.sql_table('plugin_option')." SET ovalue='$val' WHERE opid=$pid AND oname='".addslashes($o->oname)."'");
 		
 		}
 		
@@ -5479,7 +5480,7 @@ function listplug_table_pluginlist($template, $type) {
 				echo "<br /><a href='index.php?action=plugindelete&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UNINSTALL,"</a>";
 				if ($plug && ($plug->hasAdminArea() > 0))
 					echo "<br /><a href='".htmlspecialchars($plug->getAdminURL())."'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_ADMIN,"</a>";
-				if (quickQuery('SELECT COUNT(*) AS result FROM nucleus_plugin_option WHERE opid='.$current->pid) > 0)
+				if (quickQuery('SELECT COUNT(*) AS result FROM '.sql_table('plugin_option').' WHERE opid='.$current->pid) > 0)
 					echo "<br /><a href='index.php?action=pluginoptions&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_OPTIONS,"</a>";
 			echo '</td>';
 			break;
@@ -5737,7 +5738,7 @@ function listplug_table_skinlist($template, $type) {
 						
 			echo "<td>$current->sddesc";
 				// show list of defined parts
-				$r = sql_query('SELECT stype FROM nucleus_skin WHERE sdesc='.$current->sdnumber . ' ORDER BY stype');
+				$r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber . ' ORDER BY stype');
 				$types = array();
 				while ($o = mysql_fetch_object($r))
 					array_push($types,$o->stype);
