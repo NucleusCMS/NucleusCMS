@@ -1,10 +1,8 @@
 <?php
 /**
- * :mode=php:tabSize=4:indentSize=4:noTabs=false:
- * :folding=indent:collapseFolds=0:wrap=none:maxLineLen=85:
- *
  * NP_OptionMeta_TestCase1.php
- * Copyright (C) 2004 Jeroen Budts
+ * Copyright (C) 2004 Jeroen Budts (TeRanEX)
+ * $Id$
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,35 +18,26 @@
  */
 class NP_OptionMeta_TestCase1 extends NucleusPlugin {
 
-// --------- Plug-in Info ---------------------------------
+// -- Plug-in Info ------------------------------ {{{
 	// name of plugin
-	function getName() {
-		return 'NP_OptionMeta_TestCase1';
-	}
+	function getName() { return 'NP_OptionMeta_TestCase1'; }
 	
 	// author of plugin
-	function getAuthor() {
-		return 'TeRanEX';
-	}
+	function getAuthor() {return 'TeRanEX'; }
 	// an URL to the plugin website
-	function getURL() {
-		return 'http://budts.be/weblog/';
-	}
+	function getURL() { return 'http://budts.be/weblog/'; }
 	
 	// version of the plugin
-	function getVersion() {
-		return '0.1';
-	}
+	function getVersion() { return '0.1'; }
 	
 	// a description to be shown on the installed plugins listing
-	function getDescription() {
-		return 'A plugin to test the option meta: numerical, readonly';
-	}
+	function getDescription() {	return 'A plugin to test the option meta: numerical, readonly';	}
 	
 	function getEventList() { return array('PrePluginOptionsUpdate'); }
 	
 	//supported features
-	function supportsFeature($what) {
+	function supportsFeature($what)
+	{
 		switch($what) {
 			case 'SqlTablePrefix':
 				return 1;
@@ -56,24 +45,50 @@ class NP_OptionMeta_TestCase1 extends NucleusPlugin {
 				return 0;
 		}
 	}
+// }}}
   
-	function install() {
+// -- install() --------------------------------- {{{
+	function install()
+	{
 		// plugin options
 		$this->createOption('NumericTextOption1', 'Numeric text option', 'text', '', 'numerical=true');
 		$this->createOption('ReadonlyTextOption1', 'Readonly text option', 'text', '', 'access=readonly');
 		$this->createOption('ReadonlyNumericalTextOption1', 'Readonly, Numerical text option', 'text', '', 'access=readonly;numerical=true');
 		$this->createOption('ReadonlyTextAreaOption1', 'Readonly textarea option', 'textarea', 'This textarea is readonly (at least it should be :-p)', 'access=readonly');
+		$this->createOption('HiddenTextOption1', 'Hidden text option', 'text', 'hidden...', 'access=hidden');
 		// itemoptoins
 		$this->createItemOption('NumericTextOption1', 'Numeric text option', 'text', '', 'numerical=true');
 		$this->createItemOption('ReadonlyTextOption1', 'Readonly text option', 'text', '', 'access=readonly');
 		$this->createItemOption('ReadonlyNumericalTextOption1', 'Readonly, Numerical text option', 'text', '', 'access=readonly;numerical=true');
 		$this->createItemOption('ReadonlyTextAreaOption1', 'Readonly textarea option', 'textarea', 'This textarea is readonly (at least it should be :-p)', 'access=readonly');
 	}
+// }}}
   
-    function event_PrePluginOptionsUpdate(&$data) {
+// -- events ------------------------------------ {{{
+	function event_PrePluginOptionsUpdate(&$data)
+	{
+		/*
+		 * this way of saving the date into the readonly option doesn't work anymore
+		 * since readonly options aren't saved anymore automatically and thus this event is
+		 * not triggered for a readonly option
+		 */
 		if (($this->getID() == $data['plugid']) && ($data['optionname'] == 'ReadonlyTextOption1')) {
 				$data['value'] = date('Y-m-d H:i:s');
 		}
+		/*
+		 * but we can do it by using it while this event is triggered for a non-readonly
+		 * option (there are better events that are better suited for this task)
+		 */
+		if (($this->getID() == $data['plugid']) && ($data['optionname'] == 'NumericTextOption1')) {
+				$this->setOption('HiddenTextOption1', date('Y-m-d H:i:s'));
+				$this->setOption('ReadonlyTextOption1', date('Y-m-d H:i:s'));
+		}
 	}
+// }}}
+/*
+jedit edit rules | http://jedit.org: powerful, open-source (gpl) texteditor
+:mode=php:tabSize=4:indentSize=4:noTabs=false:encoding=UTF-8:
+:folding=explicit:collapseFolds=1:wrap=none:maxLineLen=85:
+*/
 }
 ?>
