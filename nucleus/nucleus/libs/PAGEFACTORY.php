@@ -266,6 +266,10 @@ class PAGEFACTORY extends BaseActions {
 					$this->_jsbutton('italic',"italicThis()",_ADD_ITALIC_TT ." (Ctrl + Shift + I)");
 					$this->_jsbutton('link',"ahrefThis()",_ADD_HREF_TT ." (Ctrl + Shift + A)");
 					$this->_jsbuttonspacer();					
+					$this->_jsbutton('alignleft',"alignleftThis()",'Align Left'/*_ADD_ALIGNLEFT_TT*/);
+					$this->_jsbutton('alignright',"alignrightThis()",'Align Right'/*_ADD_ALIGNRIGHT_TT*/);
+					$this->_jsbutton('aligncenter',"aligncenterThis()",'Align Center'/*_ADD_ALIGNCENTER_TT*/);
+					$this->_jsbuttonspacer();					
 					$this->_jsbutton('left',"leftThis()",_ADD_LEFT_TT);
 					$this->_jsbutton('right',"rightThis()",_ADD_RIGHT_TT);
 
@@ -294,6 +298,14 @@ class PAGEFACTORY extends BaseActions {
 					$this->_jsbutton('bold',"boldThis('body')",'');
 					$this->_jsbutton('italic',"italicThis('body')",'');
 					$this->_jsbutton('link',"ahrefThis('body')",'');
+					$this->_jsbuttonspacer();										
+					$this->_jsbutton('alignleft',"alignleftThis()",'Align Left'/*_ADD_ALIGNLEFT_TT*/);
+					$this->_jsbutton('alignright',"alignrightThis()",'Align Right'/*_ADD_ALIGNRIGHT_TT*/);
+					$this->_jsbutton('aligncenter',"aligncenterThis()",'Align Center'/*_ADD_ALIGNCENTER_TT*/);
+					$this->_jsbuttonspacer();					
+					$this->_jsbutton('left',"leftThis()",_ADD_LEFT_TT);
+					$this->_jsbutton('right',"rightThis()",_ADD_RIGHT_TT);
+					
 
 					if ($extrabuttons) {
 						$btns = explode('+',$extrabuttons);
