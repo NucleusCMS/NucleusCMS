@@ -28,7 +28,7 @@ class ACTIONLOG {
 		if ($CONF['LogLevel'] < $level)
 			return;
 		
-		if ($member->isLoggedIn())
+		if ($member && $member->isLoggedIn())
 			$message = "[" . $member->getDisplayName() . "] " . $message;
 		
 		$message = addslashes($message);		// add slashes
@@ -36,6 +36,8 @@ class ACTIONLOG {
 		$query = "INSERT INTO " . sql_table('actionlog') . " (timestamp, message) VALUES ('$timestamp', '$message')";
 		
 		sql_query($query);
+		
+		ACTIONLOG::trimLog();
 	}
 	
 	/**
@@ -49,6 +51,27 @@ class ACTIONLOG {
 		$manager->notify('ActionLogCleared',array());
 		
 		return sql_query($query);
+	}
+	
+	function trimLog() {
+		static $checked = 0;
+		
+		// only check once per run
+		if ($checked) return;
+		
+		// trim
+		$checked = 1;
+		
+		$iTotal = quickQuery('SELECT COUNT(*) AS result FROM ' . sql_table('actionlog'));
+		
+		// if size > 500, drop back to about 250
+		$iMaxSize = 500;
+		$iDropSize = 250;
+		if ($iTotal > $iMaxSize) {
+			$tsChop = quickQuery('SELECT UNIX_TIMESTAMP(timestamp) as result FROM ' . sql_table('actionlog') . ' ORDER BY timestamp DESC LIMIT '.$iDropSize.',1');
+			sql_query('DELETE FROM ' . sql_table('actionlog') . ' WHERE UNIX_TIMESTAMP(timestamp) < ' . $tsChop);
+		}
+		
 	}
 
 }
