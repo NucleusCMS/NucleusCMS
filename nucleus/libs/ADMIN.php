@@ -5177,6 +5177,36 @@ selector();
 	
 } // class ADMIN
 
+class ENCAPSULATE {
+	/** 
+	  * Uses $call to call a function using parameters $params
+	  * This function should return the amount of entries shown.
+	  * When entries are show, batch operation handlers are shown too.
+	  * When no entries were shown, $errormsg is used to display an error
+	  *
+	  * Passes on the amount of results found (for further encapsulation)
+	  */
+	function doEncapsulate($call, $params, $errorMessage = 'No entries') {
+		// start output buffering
+		ob_start();
+
+		$nbOfRows = call_user_func_array($call, $params);
+
+		// get list contents and stop buffering
+		$list = ob_get_contents();
+		ob_end_clean();
+		
+		if ($nbOfRows > 0) {
+			$this->showHead();
+			echo $list;
+			$this->showFoot();
+		} else {
+			echo $errorMessage;
+		}
+
+		return $nbOfRows;
+	}
+}
 
 
 /**
@@ -5384,36 +5414,6 @@ class BATCH extends ENCAPSULATE {
 }
 
 
-class ENCAPSULATE {
-	/** 
-	  * Uses $call to call a function using parameters $params
-	  * This function should return the amount of entries shown.
-	  * When entries are show, batch operation handlers are shown too.
-	  * When no entries were shown, $errormsg is used to display an error
-	  *
-	  * Passes on the amount of results found (for further encapsulation)
-	  */
-	function doEncapsulate($call, $params, $errorMessage = 'No entries') {
-		// start output buffering
-		ob_start();
-
-		$nbOfRows = call_user_func_array($call, $params);
-
-		// get list contents and stop buffering
-		$list = ob_get_contents();
-		ob_end_clean();
-		
-		if ($nbOfRows > 0) {
-			$this->showHead();
-			echo $list;
-			$this->showFoot();
-		} else {
-			echo $errorMessage;
-		}
-
-		return $nbOfRows;
-	}
-}
 
 // can take either an array of objects, or an SQL query
 function showlist($query, $type, $template) {
