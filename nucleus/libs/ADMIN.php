@@ -5148,6 +5148,9 @@ selector();
 
 		// plugin will be added as last one in the list
 		$newOrder = $numCurrent + 1;
+
+		// set the actual opid for the plugin 
+		$plugin->plugid = $newOrder;
 		
 		$manager->notify(
 			'PreAddPlugin',
