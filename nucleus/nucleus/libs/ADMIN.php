@@ -3278,7 +3278,7 @@ selector();
 	?>
 		</tr><tr>	
 			<td><?php echo $description?> <?php if ($help) help('template'.$help); ?></td>
-			<td id="td<?php echo $count?>"><textarea name="<?php echo $name?>" tabindex="<?php echo $tabindex?>" cols="50" rows="<?php echo $big?10:5?>" id="textarea<?php echo $count?>"><?php echo  htmlspecialchars($template[$name]); ?></textarea></td>
+			<td id="td<?php echo $count?>"><textarea class="templateedit" name="<?php echo $name?>" tabindex="<?php echo $tabindex?>" cols="50" rows="<?php echo $big?10:5?>" id="textarea<?php echo $count?>"><?php echo  htmlspecialchars($template[$name]); ?></textarea></td>
 	<?php		$count++;
 	}
 	
@@ -3658,7 +3658,7 @@ selector();
 		<?php help('skinpart' . $type);?>
 		<br />
 		
-		<textarea tabindex="10" rows="20" cols="80" name="content"><?php echo  htmlspecialchars($skin->getContent($type)) ?></textarea>
+		<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content"><?php echo  htmlspecialchars($skin->getContent($type)) ?></textarea>
 		
 		<br />
 		<input type="submit" tabindex="20" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
@@ -5727,7 +5727,7 @@ function listplug_plugOptionRow($current) {
 			echo '</select>';
 			break;
 		case 'textarea':
-			echo '<textarea cols="30" rows="5" name="',htmlspecialchars($varname),'">',htmlspecialchars($current['value']),'</textarea>';				
+			echo '<textarea class="pluginoption" cols="30" rows="5" name="',htmlspecialchars($varname),'">',htmlspecialchars($current['value']),'</textarea>';				
 			break;
 		case 'text':
 		default:
