@@ -17,6 +17,7 @@
 	<li>
 		<b>Nucleus v? (being worked on)</b>
 		<ul>
+			<li>FIXED: <code>archivedate</code> templatevar ignored the 'locale' parameter that was passed to it</li>
 			<li>FIXED: <code>selectBlog</code> did not protect for changes in <code>?archivelist</code></li>
 			<li>FIXED: <code>selectCategory</code> now takes a category id instead of a name (multiple categories can have the same name)</li>
 			<li>CHANGED: Fancy URLs are only generated when <code>$CONF['Self']</code> does not end in <code>.php</code> (this avoids URLs like <code>index.php/item/95/item/94/member/1</code> when turning fancy URLs on without further configuration)</li>

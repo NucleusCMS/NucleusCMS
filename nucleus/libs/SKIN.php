@@ -538,10 +538,13 @@ class ACTIONS extends BaseActions {
 	/**
 	  * %archivedate(locale,date format)%
 	  */
-	function parse_archivedate($locale = 'dutch') {
+	function parse_archivedate($locale = '-def-') {
 		global $archive;
 		
-		setlocale(LC_TIME,$template['LOCALE']);
+		if ($locale == '-def-')
+			setlocale(LC_TIME,$template['LOCALE']);
+		else
+			setlocale(LC_TIME,$locale);
 		
 		// get archive date
 		sscanf($archive,'%d-%d-%d',$y,$m,$d);
