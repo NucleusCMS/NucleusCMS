@@ -40,15 +40,9 @@ class SEARCH {
     }
 
     function  boolean_sql_select($match){
-        $string = $this->inclusive;
-        if (strlen($string) > 0) {
+        if (strlen($this->inclusive) > 0) {
     	   /* build sql for determining score for each record */
-	       preg_match_all(
-		                   "([0-Za-z]{1,}[0-Za-z\-\.\_]{0,})",
-    		               $string,
-	    	               $result);
-           $result = $result[0];
-           
+           $result=explode(" ",$this->inclusive);
 	       for($cth=0;$cth<count($result);$cth++){
                if(strlen($result[$cth])>=4){
                    $stringsum_long .=  " $result[$cth] ";
@@ -86,10 +80,7 @@ class SEARCH {
     		"(\-\([A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_\,]{0,}\))",
     		'',
     		$result);
-    	$result=preg_replace(
-    		"(\-[A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_]{0,})",
-    		'',
-    		$result);
+
     	$result=str_replace('(',' ',$result);
     	$result=str_replace(')',' ',$result);
     	$result=str_replace(',',' ',$result);
