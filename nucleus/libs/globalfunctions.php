@@ -1077,8 +1077,9 @@ function checkVars($aVars)
  */
 function redirect($url)
 {
-	$url = preg_replace('|[^a-z0-9-~+_.?#=&;,/:]|i', '', $url);
+	$url = preg_replace('|[^a-z0-9-~+_.?#=&;,/:@%]|i', '', $url);
 	header('Location: ' . $url);
+	exit;
 }
 
 ?>
