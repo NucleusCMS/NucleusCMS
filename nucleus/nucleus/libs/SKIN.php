@@ -569,10 +569,13 @@ class ACTIONS extends BaseActions {
 	 */
 	function _link($url, $linktext = '')
 	{
+		$u = htmlspecialchars($url);
+		$u = preg_replace("/&amp;amp;/",'&amp;',$u); // fix URLs that already had encoded ampersands
 		if ($linktext != '')
-			return '<a href="' .  htmlspecialchars($url) .'">'.htmlspecialchars($linktext).'</a>';
+			$l = '<a href="' . $u .'">'.htmlspecialchars($linktext).'</a>';
 		else
-			return htmlspecialchars($url);
+			$l = $u;
+		return $l; 	
 	}
 
 	/**
