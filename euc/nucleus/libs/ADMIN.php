@@ -2742,7 +2742,7 @@ class ADMIN {
 		<p>新しいweblogを作成した後に、このblogにアクセスするための方法を紹介しておきます。方法は2つあります:</p>
 		
 		<ol>
-			<li><strong>簡単な方法:</strong> <code>index.php</code>の複製を作り、新しいblogを表示するように変更を加えます。 この変更の詳細は、作成後に表示されます。Further instructions on how to do this will be provided after you've submitted this first form.</li>
+			<li><strong>簡単な方法:</strong> <code>index.php</code>の複製を作り、新しいblogを表示するように変更を加えます。 この変更の詳細は、作成後に表示されます。</li>
 			<li><strong>高度な方法:</strong> 現在のblogで使用しているスキンに<code>otherblog</code>というコードを使った記述を加えます。この方法では、同じページ内で複数のblogを展開することが可能となります。</li>
 		</ol>
 		
