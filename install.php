@@ -65,7 +65,6 @@
 	exit;
 
 	function showInstallForm() {
-		global $PHP_SELF;
 
 		// 0. pre check if all necessary files exist
 		doCheckFiles();
@@ -227,7 +226,7 @@
 		<table><tr>
 			<td>Site <strong>URL</strong>:</td>
 			<td>
-					<input name="IndexURL" size="60" value="<?php					$url = "http://" . serverVar('HTTP_HOST') . $PHP_SELF;
+					<input name="IndexURL" size="60" value="<?php					$url = "http://" . serverVar('HTTP_HOST') . serverVar('PHP_SELF');
 					$url = str_replace("install.php",'',$url);
 					$url = str_replace("\\","/",$url);
 					// add slash at end if necessary
