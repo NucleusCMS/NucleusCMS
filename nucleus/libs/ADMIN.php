@@ -2787,6 +2787,12 @@ class ADMIN {
 			)
 		);
 		
+		$manager->notify(
+			'PostAddCategory',
+			array(
+				'catid' => $catid
+			)
+		);
 		
 		$this->pagehead();
 		?>
