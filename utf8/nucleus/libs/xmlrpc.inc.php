@@ -1,7 +1,8 @@
 <?php					// -*-c++-*-
 // by Edd Dumbill (C) 1999-2001
 // <edd@usefulinc.com>
-// $Id: xmlrpc.inc.php,v 1.3 2005-03-04 08:20:47 kimitake Exp $
+// $Id: xmlrpc.inc.php,v 1.4 2005-03-08 06:49:33 kimitake Exp $
+// $NucleusJP$
 
 /*
 	Modifications made for use with Nucleus:

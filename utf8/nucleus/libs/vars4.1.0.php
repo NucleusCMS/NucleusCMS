@@ -10,7 +10,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: vars4.1.0.php,v 1.3 2005-03-04 08:20:47 kimitake Exp $
+  * $Id: vars4.1.0.php,v 1.4 2005-03-08 06:49:33 kimitake Exp $
+  * $NucleusJP$
   */
   
 function getVar($name) {
