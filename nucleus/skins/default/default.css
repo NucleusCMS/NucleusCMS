@@ -1,6 +1,6 @@
 /*-------------------------------------------------
   Nucleus CMS Stylesheet - bundled with version 3.2
-  Based on Stanch skin by Stanch
+  Based on the Stanch skin by Ivan Fong
   Mods by hcgtv and moraes
 -------------------------------------------------*/
 
@@ -98,7 +98,9 @@ a:hover, a:active
 	position: relative;
 	width: 704px;
 	height: 168px;
-	background: white url(images/header.jpg) no-repeat;
+	/* large header image is defined below */
+	/* background: white url(images/header.jpg) no-repeat; */
+	background: white;
 	border-width: 2px 2px 0;
 	border-style: solid;
 	border-color: #E0E0E0;
@@ -106,6 +108,12 @@ a:hover, a:active
 }
 #header h1
 {
+	/* small header image specific lines */
+	height: 168px;
+	width: 692px;
+	background: white url(images/header_sm.jpg) repeat-x 0 6px;
+	margin: 0 6px;
+	/* end small header image specific lines */
 	font-size: 38px;
 	text-align: center;
 	line-height: 160px;

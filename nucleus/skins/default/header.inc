@@ -1,5 +1,6 @@
 <body>
 
+<!-- page header -->
 <div id="header"><a name="top"></a>
 <h1>
 	<%if(skintype,error)%>
@@ -14,5 +15,6 @@
 </h1>
 </div>
 
+<!-- begin wrapper divs -->
 <div id="mainwrapper">
 <div id="wrapper">
