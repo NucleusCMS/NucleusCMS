@@ -1,4 +1,5 @@
-<?php	/**
+<?php
+	/**
 	  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
 	  * Copyright (C) 2002 The Nucleus Group
 	  * 
@@ -13,6 +14,33 @@
 	  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
 	  *
 	  * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php	  */
+
+	/*
+		This part of the install.php code allows for customization of the install process.
+		When distributing plugins or skins together with a Nucleus installation, the
+		configuration below will instruct to install them
+		
+		-- Start Of Configurable Part --		
+	*/
+	
+		// array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
+		// directory.
+		//
+		// example:
+		//     array('NP_TrackBack', 'NP_MemberGoodies')
+		$aConfPlugsToInstall = array(); 	// TODO: not yet implemented correctly!
+
+		
+		// array with skins to install. skins must be present under the skins/ directory with
+		// a subdirectory having the same name that contains a skindata.xml file
+		//
+		// example:
+		//     array('base','rsd')
+		$aConfSkinsToImport = array();
+		
+	/*
+		-- End Of Configurable Part --
+	*/
 
 	// don't give warnings for uninitialized vars
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -534,7 +562,13 @@
 			. " WHERE inumber=1";
 		mysql_query($query) or doError("Error with query: " . mysql_error());		
 		
-		// 10. Write config file ourselves (if possible)
+		// 10. install custom skins
+		$aSkinErrors = installCustomSkins($config_skinspath, $config_adminpath . 'libs/');
+		
+		// 11. install custom plugins
+		$aPlugErrors = installCustomPlugs('e:/homepage/versions/plugins/'/*$config_adminpath . 'plugins/' */, $config_adminpath . 'libs/');
+		
+		// 12. Write config file ourselves (if possible)
 		$bConfigWritten = 0;
 		if (@file_exists('config.php') && is_writable('config.php') && $fp = @fopen('config.php', 'w')) {
 			$config_data = "<" . "?php \n";
@@ -584,7 +618,14 @@
 			</style>
 		</head>
 		<body>		
-<?php if (!$bConfigWritten) { ?>
+<?php		
+	$aAllErrors = array_merge($aSkinErrors, $aPlugErrors);
+	if (count($aAllErrors) > 0) { 
+		echo '<h1>Skin/Plugin Install errors</h1>';
+		echo '<ul><li>'.implode('</li><li>', $aAllErrors).'</li></ul>';
+	}
+	
+	if (!$bConfigWritten) { ?>
 			<h1>Installation Almost Complete!</h1>
 			<p>
 			The database tables have been initialized successfully. What still needs to be done is to change the contents of <i>config.php</i>. Below is how it should look like (the mysql password is masked, so you'll have to fill that out yourself)
@@ -657,7 +698,107 @@
 		
 		</body>
 		</html>		
-		<?php	}
+		<?php	
+	}
+	
+	/**
+	  * executes an SQL query 
+	  */
+	function sql_query($query) {
+		$res = mysql_query($query) or print("mySQL error with query $query: " . mysql_error() . '<p />');
+		return $res;
+	}
+
+	function sql_table($name)
+	{
+		global $mysql_prefix;
+
+		if ($mysql_prefix)
+			return $mysql_prefix . 'nucleus_' . $name;
+		else
+			return 'nucleus_' . $name;
+	}	
+	
+	function installCustomPlugs($pluginDir, $DIR_LIBS) {
+		return;	// TODO: fix implementation (build the same environment a
+				// plugin expects to find
+		
+		global $aConfPlugsToInstall, $manager, $DIR_PLUGINS;
+		$DIR_PLUGINS = $pluginDir;
+		
+		if (!$manager) {
+			include_once($DIR_LIBS . 'globalfunctions.php');			
+			include_once($DIR_LIBS . 'PLUGIN.php');			
+			include_once($DIR_LIBS . 'ACTIONLOG.php');			
+			include_once($DIR_LIBS . 'MANAGER.php');
+			$manager =& MANAGER::instance();
+		}
+		
+		$aErrors = array();
+		
+		if (count($aConfPlugsToInstall) == 0)
+			return $aErrors;
+		
+		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
+		
+		foreach ($aConfPlugsToInstall as $plugName) {
+			// do this before calling getPlugin (in case the plugin id is used there)
+			$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.(++$numCurrent).',"'.addslashes($plugName).'")';
+			sql_query($query);
+			$iPid = mysql_insert_id();
+
+			// call the install method of the plugin
+			$plugin =& $manager->getPlugin($plugName);
+			if (!$plugin) {
+				sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pfile=\''. addslashes($plugName).'\'');
+				$numCurrent--;
+				array_push($aErrors, 'Unable to install plugin ' . $plugName);
+				continue;
+			}
+			$plugin->install();
+		}
+		
+		return $aErrors;
+	}
+	
+	function installCustomSkins($DIR_SKINS, $DIR_LIBS) {
+		global $aConfSkinsToImport;
+		
+		$aErrors = array();
+		
+		if (count($aConfSkinsToImport) == 0)
+			return $aErrors;		
+	
+		// load skinie class
+		include_once($DIR_LIBS . 'PARSER.php');				
+		include_once($DIR_LIBS . 'TEMPLATE.php');				
+		include_once($DIR_LIBS . 'SKIN.php');		
+		include_once($DIR_LIBS . 'skinie.php');
+
+		$importer = new SKINIMPORT();
+
+		foreach ($aConfSkinsToImport as $skinName) {
+			$importer->reset();
+			
+			$skinFile = $DIR_SKINS . $skinName . '/skindata.xml';
+			if (!@file_exists($skinFile)) {
+				array_push($aErrors, 'Unable to import ' . $skinName . ' : file does not exist');
+				continue;
+			}
+			$error = $importer->readFile($skinFile);	
+			if ($error) {
+				array_push($aErrors, 'Unable to import ' . $skinName . ' : ' . $error);
+				continue;
+			}
+			$error = $importer->writeToDatabase(1);	
+			if ($error) {
+				array_push($aErrors, 'Unable to import ' . $skinName . ' : ' . $error);
+				continue;
+			}			
+		}
+		
+		return $aErrors;
+	}
 	
 	// give an error if one or more nucleus are not accessible
 	function doCheckFiles() {

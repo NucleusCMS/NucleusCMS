@@ -25,6 +25,14 @@ class SKINIMPORT {
 		// debugging mode?
 		$this->debug = 0;
 	
+		$this->reset();
+		
+	}
+	
+	function reset() {
+    	if ($this->parser)
+    		xml_parser_free($this->parser);
+    		
 		// XML file pointer
 		$this->fp = 0;		
 		
@@ -58,7 +66,7 @@ class SKINIMPORT {
 		xml_set_character_data_handler($this->parser, 'characterData');
 		xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);
 
-	}
+	}	
 	
 	/**
 	 * Reads an XML file into memory
