@@ -112,7 +112,7 @@ class MEDIA {
 			return _ERROR_DISALLOWED;
 
 		// check dir permissions (try to create dir if it does not exist)
-		$mediadir = $DIR_MEDIA . $collection . '/';
+		$mediadir = $DIR_MEDIA . $collection;
 
 		// try to create new private media directories if needed
 		if (!@is_dir($mediadir) && is_numeric($collection)) {
@@ -128,6 +128,9 @@ class MEDIA {
 		
 		if (!is_writeable($mediadir))
 			return _ERROR_BADPERMISSIONS;
+			
+		// add trailing slash (don't add it earlier since it causes mkdir to fail on some systems)
+		$mediadir .= '/';
 			
 		if (file_exists($filename))
 			return _ERROR_UPLOADDUPLICATE;
