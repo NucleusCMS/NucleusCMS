@@ -765,6 +765,14 @@ $CONF['SearchURL'] = $CONF['Self'];
 $CONF['BlogURL'] = $CONF['Self'];
 $CONF['CategoryURL'] = $CONF['Self'];
 
+// switch URLMode back to normal when $CONF['Self'] ends in .php
+// this avoids urls like index.php/item/13/index.php/item/15
+if (	($CONF['URLMode'] == 'pathinfo') 
+	&&	(strrpos($CONF['Self'], '.php') == strlen($CONF['Self']) - 4)
+	) {
+	$CONF['URLMode'] = 'normal';
+}
+
 /**
   * Centralisation of the functions that generate links
   */
