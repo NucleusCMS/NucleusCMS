@@ -1,4 +1,4 @@
-<a name="nucleus_cf" id="nucleus_cf"></a>
+<a id="nucleus_mf"></a>
 <form method="post" action="#nucleus_mf">
   <div class="mailform">
   	<%errordiv%>
