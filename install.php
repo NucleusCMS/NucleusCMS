@@ -51,7 +51,7 @@
 	<head>
 		<title>Nucleus Install</title>
 		<style type="text/css"><!--
-			@import url('nucleus/styles/manual.css');
+			@import url('nucleus/documentation/styles/manual.css');
 		--></style>
 		<script type="text/javascript"><!--
 			// function to make sure the submit button only gets pressed once
@@ -147,99 +147,166 @@
 	
 	<p>
 	If you don't know this information, contact your system administrator for more info. Often, the hostname will be 'localhost'. If Nucleus found a 'default MySQL host' in the PHP settings of your server, this host is already listed in the 'hostname' field. There's no guarantee that this information is correct, though.
-	<br />
-	<br />Hostname: <input name="mySQL_host" value="<?=htmlspecialchars(ini_get('mysql.default_host'))?>" />
-	<br />Username: <input name="mySQL_user" />
-	<br />Password: <input name="mySQL_password" type="password" />
-	<br />Database: <input name="mySQL_database" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create"><label for="mySQL_create" />needs to be created</label>)
 	</p>
+	
+	<table><tr>
+		<td>Hostname:</td>
+		<td><input name="mySQL_host" value="<?=htmlspecialchars(ini_get('mysql.default_host'))?>" /></td>
+	</tr><tr>
+		<td>Username:</td>
+		<td><input name="mySQL_user" /></td>
+	</tr><tr>	
+		<td>Password:</td>
+		<td><input name="mySQL_password" type="password" /></td>
+	</tr><tr>
+		<td>Database:</td>
+		<td><input name="mySQL_database" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create"><label for="mySQL_create" />needs to be created</label>)</td>
+	</tr></table>
 	
 	<h1>Directories and URLs</h1>
 	
 	<p>
 	This install script has attempted to find out the directories and URLs in which Nucleus is installed. Please check the values below and correct if necessary. The URLs and file paths should end with a slash.
-	<br />
-	<br />Site <strong>URL</strong>: <input name="IndexURL" size="60" value="<?
-		$url = "http://" . serverVar('HTTP_HOST') . $PHP_SELF; 
-		$url = str_replace("install.php",'',$url);
-		$url = str_replace("\\","/",$url);
-		// add slash at end if necessary
-		if (!endsWithSlash($url)) $url .= '/';
-		echo $url;
-	?>" />
-	<br />Admin-area <strong>URL</strong>: <input name="AdminURL" size="60" value="<?
-		if ($url) echo $url . 'nucleus/';
-	?>" />
-	<br />Admin-area <strong>path</strong>: <input name="AdminPath" size="60" value="<?
-		$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
-		$path = str_replace("\\","/",$path);
-		// add slash at end if necessary
-		if (!endsWithSlash($path)) $path .= '/';
-		if($path) echo  $path . 'nucleus/';
-	?>" />
-	<br />Media files <strong>URL</strong>: <input name="MediaURL" size="60" value="<?
-		if ($url) echo $url . 'media/';
-	?>" />	
-	<br />Media directory <strong>path</strong>: <input name="MediaPath" size="60" value="<?
-		$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
-		$path = str_replace("\\","/",$path);
-		// add slash at end if necessary
-		if (!endsWithSlash($path)) $path .= '/';
-		if ($path) echo $path . 'media/';
-	?>" />	
-	<br />Extra skin files <strong>URL</strong>: <input name="SkinsURL" size="60" value="<?
-		if ($url) echo $url . 'skins/';
-	?>" /> (used by imported skins)
-	<br />Extra skin files directory <strong>path</strong>: <input name="SkinsPath" size="60" value="<?
-		$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
-		$path = str_replace("\\","/",$path);
-		// add slash at end if necessary
-		if (!endsWithSlash($path)) $path .= '/';
-		if ($path) echo $path . 'skins/';
-	?>" /> (this is where imported skins can place their extra files)
-	<br />Plugin files <strong>URL</strong>: <input name="PluginURL" size="60" value="<?
-		if ($url) echo $url . 'nucleus/plugins/';
-	?>" /> 
-	<br />Action <strong>URL</strong>: <input name="ActionURL" size="60" value="<?
-		if ($url) echo $url . 'action.php';
-	?>" /> (absolute location of the <tt>action.php</tt> file)
-	<br />	
 	</p>
+
+	<table><tr>
+		<td>Site <strong>URL</strong>:</td>
+		<td>
+				<input name="IndexURL" size="60" value="<?
+				$url = "http://" . serverVar('HTTP_HOST') . $PHP_SELF; 
+				$url = str_replace("install.php",'',$url);
+				$url = str_replace("\\","/",$url);
+				// add slash at end if necessary
+				if (!endsWithSlash($url)) $url .= '/';
+				echo $url;
+			?>" />
+		</td>
+	</tr><tr>
+		<td>Admin-area <strong>URL</strong>:</td>
+		<td><input name="AdminURL" size="60" value="<?
+				if ($url) echo $url . 'nucleus/';
+			?>" />
+		</td>
+	</tr><tr>	
+		<td>Admin-area <strong>path</strong>:</td>
+		<td><input name="AdminPath" size="60" value="<?
+				$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
+				$path = str_replace("\\","/",$path);
+				// add slash at end if necessary
+				if (!endsWithSlash($path)) $path .= '/';
+				if($path) echo  $path . 'nucleus/';
+			?>" />
+		</td>
+	</tr><tr>	
+		<td>Media files <strong>URL</strong>:</td>
+		<td><input name="MediaURL" size="60" value="<?
+				if ($url) echo $url . 'media/';
+			?>" />	
+		</td>
+	</tr><tr>	
+		<td>Media directory <strong>path</strong>:</td>
+		<td><input name="MediaPath" size="60" value="<?
+				$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
+				$path = str_replace("\\","/",$path);
+				// add slash at end if necessary
+				if (!endsWithSlash($path)) $path .= '/';
+				if ($path) echo $path . 'media/';
+			?>" />	
+		</td>
+	</tr><tr>	
+		<td>Extra skin files <strong>URL</strong>:</td>
+		<td><input name="SkinsURL" size="60" value="<?
+				if ($url) echo $url . 'skins/';
+			?>" />
+			<br />(used by imported skins)
+		</td>
+	</tr><tr>	
+		<td>Extra skin files directory <strong>path</strong>:</td>
+		<td><input name="SkinsPath" size="60" value="<?
+			$path = str_replace("install.php",'',serverVar('PATH_TRANSLATED'));
+			$path = str_replace("\\","/",$path);
+			// add slash at end if necessary
+			if (!endsWithSlash($path)) $path .= '/';
+			if ($path) echo $path . 'skins/';
+			?>" />
+			<br />(this is where imported skins can place their extra files)
+		</td>
+	</tr><tr>	
+		<td>Plugin files <strong>URL</strong>:</td>
+		<td><input name="PluginURL" size="60" value="<?
+				if ($url) echo $url . 'nucleus/plugins/';
+			?>" /> 
+		</td>
+	</tr><tr>	
+		<td>Action <strong>URL</strong>:</td>
+		<td><input name="ActionURL" size="60" value="<?
+				if ($url) echo $url . 'action.php';
+			?>" />
+			<br />(absolute location of the <tt>action.php</tt> file)
+		</td>
+	</tr></table>
 	
-	<div class="note">
+	
+	<p class="note">
 	<strong>Note:</strong> <strong>Use absolute paths</strong> instead of relative paths. Usually, an absolute path will start with something like <tt>/home/username/public_html/</tt>. On Unix systems (most servers), paths should start with a slash. If you have trouble filling out this information, you should ask your administrator what to fill out.
-	</div>
+	</p>
 	
 	
 	<h1>Site data</h1>
 	
-	<p>
-	Below, you need to enter some general information about the site and its administrator.
-	<br />
-	<br />Administrator E-mail: <input name="AdminEmail" value="" /> <small>(needs to be a valid e-mail address)</small>
-	<br />Site Name: <input name="SiteName" size="60" value="" />
-	</p>
+	<p>Below, you need to enter some general information about the site and its administrator.</p>
+	
+	<table><tr>
+		<td>Administrator E-mail:</td>
+		<td>
+			<input name="AdminEmail" value="" /> (needs to be a valid e-mail address)
+		</td>
+	</tr><tr>
+		<td>Site Name:</td>
+		<td><input name="SiteName" size="60" value="" /></td>
+	</tr></table>
 	
 	<h1>User data</h1>
 	
-	<p>
-	Below, you need to enter some information to create the first user of your site.
-	<br />
-	<br />Display Name: <input name="User_name" value="" /> <small>(allowed characters: a-z and 0-9, spaces allowed inside)</small>
-	<br />Real Name: <input name="User_realname" value="" /> 	
-	<br />Password: <input name="User_password" type="password" value="" />
-	<br />Password Again: <input name="User_password2" type="password" value="" />	
-	<br />E-mail Address: <input name="User_email" value="" /> <small>(needs to be a valid e-mail address)</small>
-	</p>
+	<p>Below, you need to enter some information to create the first user of your site.</p>
+	
+	<table><tr>
+		<td>Display Name:</td>
+		<td>
+			<input name="User_name" value="" />
+			<small>(allowed characters: a-z and 0-9, spaces allowed inside)</small>
+		</td>
+	</tr><tr>
+		<td>Real Name:</td>
+		<td><input name="User_realname" value="" /></td>
+	</tr><tr>
+		<td>Password:</td>
+		<td><input name="User_password" type="password" value="" /></td>
+	</tr><tr>
+		<td>Password Again:</td>
+		<td><input name="User_password2" type="password" value="" /></td>
+	</tr><tr>
+		<td>E-mail Address:</td>
+		<td>
+			<input name="User_email" value="" />
+			<small>(needs to be a valid e-mail address)</small>
+		</td>
+	</tr></table>
 	
 	<h1>Weblog data</h1>
 	
-	<p>
-	Below, you need to enter some information to create a default weblog.
-	<br />
-	<br />Blog Name: <input name="Blog_name" size="60" value="My Nucleus Weblog" /> 
-	<br />Blog Short Name: <input name="Blog_shortname" value="myweblog" /> <small>(allowed characters: a-z and 0-9, no spaces allowed)</small>
-	</p>
+	<p>Below, you need to enter some information to create a default weblog.</p>
+
+	<table><tr>
+		<td>Blog Name:</td>
+		<td><input name="Blog_name" size="60" value="My Nucleus Weblog" /></td>
+	</tr><tr>
+		<td>Blog Short Name:</td>
+		<td>
+			<input name="Blog_shortname" value="myweblog" />
+			<small>(allowed characters: a-z and 0-9, no spaces allowed)</small>
+		</td>
+	</tr></table>
 	
 	<h1>Submit</h1>
 	
