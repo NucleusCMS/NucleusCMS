@@ -1649,6 +1649,11 @@ class ADMIN {
 		$repeatpassword	= postVar('repeatpassword');		
 		$email			= postVar('email');
 		$url			= postVar('url');
+
+		// Sometimes user didn't prefix the URL with http://, this cause a malformed URL. Let's fix it.
+		if (!strstr($url, 'http://'))
+			$url = "http://".$url;
+
 		$admin			= postVar('admin');
 		$canlogin		= postVar('canlogin');
 		$notes			= postVar('notes');

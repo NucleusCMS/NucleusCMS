@@ -480,6 +480,11 @@ class MEMBER {
 		$password = addslashes(md5($password));
 		$email = addslashes($email);
 		$url = addslashes($url);
+
+		// Sometimes user didn't prefix the URL with http://, this cause a malformed URL. Let's fix it.
+		if (!strstr($url, 'http://'))
+			$url = "http://".$url;
+
 		$notes = addslashes($notes);
 
 		$query = 'INSERT INTO '.sql_table('member')." (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
