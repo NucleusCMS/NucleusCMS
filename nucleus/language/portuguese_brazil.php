@@ -13,10 +13,36 @@
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
 
+// START introduced after v2.0 START
+
+// media library
+define('_MEDIA_VIEW',				'ver');
+define('_MEDIA_VIEW_TT',			'Ver imagem (nova janela)');
+define('_MEDIA_FILTER_APPLY',		'Aplicar filtro');
+define('_MEDIA_FILTER_LABEL',		'Filtro: ');
+define('_MEDIA_UPLOAD_TO',			'Enviar para');
+define('_MEDIA_UPLOAD_NEW',			'Nova imagem');
+define('_MEDIA_COLLECTION_SELECT',	'Selecionar');
+define('_MEDIA_COLLECTION_TT',		'Ir para esta coleção');
+define('_MEDIA_COLLECTION_LABEL',	'Coleção atual: ');
+
+// tooltips on toolbar
+define('_ADD_ALIGNLEFT_TT',			'Alinhar à esquerda');
+define('_ADD_ALIGNRIGHT_TT',		'Alinhar à direita');
+define('_ADD_ALIGNCENTER_TT',		'Alinhar ao centro');
+
+// searchable blog setting (yes/no)
+define('_EBLOG_SEARCH',				'Incluir na busca');
+
+// generic upload failure
+define('_ERROR_UPLOADFAILED',		'Upload failed');
+
+// END introduced after v2.0 END
+
 // START introduced after v1.5 START
 
 // posting to the past/edit timestamps
-define('_EBLOG_ALLOWPASTPOSTING',	'Permitir postar para o passado');
+define('_EBLOG_ALLOWPASTPOSTING',	'Permitir posts no passado');
 define('_ADD_CHANGEDATE',			'Atualizar horário');
 define('_BMLET_CHANGEDATE',			'Atualizar horário');
 
@@ -55,7 +81,7 @@ define('_BATCH_COMMENTS',			'Operação em grupo - comentários');
 define('_BATCH_UNKNOWN',			'Operação em grupo desconhecida: ');
 define('_BATCH_EXECUTING',			'Executando');
 define('_BATCH_ONCATEGORY',			'em: categoria');
-define('_BATCH_ONITEM',				'em: ítem');
+define('_BATCH_ONITEM',				'em: post');
 define('_BATCH_ONCOMMENT',			'em: comentário');
 define('_BATCH_ONMEMBER',			'em: membro');
 define('_BATCH_ONTEAM',				'em: membro de time');
@@ -67,20 +93,20 @@ define('_BATCH_SELECTALL',			'seleciona tudo');
 define('_BATCH_DESELECTALL',		'limpar seleção');
 
 // batch operations: options in dropdowns
-define('_BATCH_ITEM_DELETE',		'Deletar');
+define('_BATCH_ITEM_DELETE',		'Apagar');
 define('_BATCH_ITEM_MOVE',			'Mover');
-define('_BATCH_MEMBER_DELETE',		'Deletar');
+define('_BATCH_MEMBER_DELETE',		'Apagar');
 define('_BATCH_MEMBER_SET_ADM',		'Dar direitos de administrador');
 define('_BATCH_MEMBER_UNSET_ADM',	'Tirar direitos de administrador');
 define('_BATCH_TEAM_DELETE',		'Excluir do time');
 define('_BATCH_TEAM_SET_ADM',		'Dar direitos de administrador');
 define('_BATCH_TEAM_UNSET_ADM',		'Tirar direitos de administrador');
-define('_BATCH_CAT_DELETE',			'Deletar');
+define('_BATCH_CAT_DELETE',			'Apagar');
 define('_BATCH_CAT_MOVE',			'Mover para outro blog');
-define('_BATCH_COMMENT_DELETE',		'Deletar');
+define('_BATCH_COMMENT_DELETE',		'Apagar');
 
 // itemlist: Add new item...
-define('_ITEMLIST_ADDNEW',			'Adicionar novo ítem...');
+define('_ITEMLIST_ADDNEW',			'Novo post');
 define('_ADD_PLUGIN_EXTRAS',		'Opções Extra Plugin');
 
 // errors
@@ -143,14 +169,14 @@ define('_ERROR_BACKUP_NOTSURE',		'You\'ll need to check the \'I\'m sure\' testbo
 define('_RESTORE_COMPLETE',			'Restore Complete');
 
 // new item notification
-define('_NOTIFY_NI_MSG',			'Um novo ítem foi postado:');
-define('_NOTIFY_NI_TITLE',			'Novo ítem!');
-define('_NOTIFY_KV_MSG',			'Karma vote no ítem:');
+define('_NOTIFY_NI_MSG',			'Um novo post foi postado:');
+define('_NOTIFY_NI_TITLE',			'Novo post!');
+define('_NOTIFY_KV_MSG',			'Karma vote no post:');
 define('_NOTIFY_KV_TITLE',			'Nucleus karma:');
-define('_NOTIFY_NC_MSG',			'Comentário no ítem:');
+define('_NOTIFY_NC_MSG',			'Comentário no post');
 define('_NOTIFY_NC_TITLE',			'Nucleus comment:');
 define('_NOTIFY_USERID',			'ID do usuário:');
-define('_NOTIFY_USER',				'Usuário:');
+define('_NOTIFY_USER',				'Nome:');
 define('_NOTIFY_COMMENT',			'Comentário:');
 define('_NOTIFY_VOTE',				'Voto:');
 define('_NOTIFY_HOST',				'Host:');
@@ -160,10 +186,10 @@ define('_NOTIFY_TITLE',				'Título:');
 define('_NOTIFY_CONTENTS',			'Conteúdo:');
 
 // member mail message
-define('_MMAIL_MSG',				'Uma mensagem enviada para você por');
+define('_MMAIL_MSG',				'Esta mensagem foi enviada através do seu blog por ');
 define('_MMAIL_FROMANON',			'um visitante anônimo');
-define('_MMAIL_FROMNUC',			'Postado de um weblog Nucleus em');
-define('_MMAIL_TITLE',				'Uma mensagem de');
+define('_MMAIL_FROMNUC',			'');
+define('_MMAIL_TITLE',				'Mensagem de');
 define('_MMAIL_MAIL',				'Mensagem:');
 
 // END introduced after v1.5 END
@@ -195,16 +221,16 @@ define('_PLUGS_TITLE_INSTALLED',	'Já instalados');
 define('_PLUGS_TITLE_UPDATE',		'Atualizar lista de inscritos');
 define('_PLUGS_TEXT_UPDATE',		'Quando você atualiza um plugin susbstiruindo o arquivo, atualize o cache do Nucleus');
 define('_PLUGS_TITLE_NEW',			'Instalar novo plugin');
-define('_PLUGS_ADD_TEXT',			'Abaixo está uma lista com todos os arquivos do diretório de plugins. Alguns podem ser plugins não instalados. Certifique-se de que é <strong>realmente</strong> um plugin antes de adicionar algo a este diretório.');
+define('_PLUGS_ADD_TEXT',			'Aqui estão os arquivos localizados no diretório de plugins. Alguns podem ser plugins não instalados. Certifique-se de colocar apenas arquivos de plugin neste diretório.');
 define('_PLUGS_BTN_INSTALL',		'Instalar plugin');
-define('_BACKTOOVERVIEW',			'Volta');
+define('_BACKTOOVERVIEW',			'Voltar');
 
 // editlink
 define('_TEMPLATE_EDITLINK',		'Editar o link do item');
 
 // add left / add right tooltips
-define('_ADD_LEFT_TT',				'Adicionar caixa à esquerda');
-define('_ADD_RIGHT_TT',				'Adicionar caixa à direita');
+define('_ADD_LEFT_TT',				'Caixa à esquerda');
+define('_ADD_RIGHT_TT',				'Caixa à direita');
 
 // add/edit item: new category (in dropdown box)
 define('_ADD_NEWCAT',				'Nova categoria');
@@ -264,8 +290,8 @@ define('_BACKTOMANAGE',				'Volta para a Administração do Nucleus');
 define('_CHARSET',					'iso-8859-1');
 
 // global stuff
-define('_LOGOUT',					'Log Out');
-define('_LOGIN',					'Log In');
+define('_LOGOUT',					'Sair');
+define('_LOGIN',					'Entrar');
 define('_YES',						'Sim');
 define('_NO',						'Não');
 define('_SUBMIT',					'Envia');
@@ -279,8 +305,8 @@ define('_NAME',						'Nome');
 define('_BACKHOME',					'Início');
 define('_BADACTION',				'A ação solicitada não existe');
 define('_MESSAGE',					'Mensagem');
-define('_HELP_TT',					'Ajuda!');
-define('_YOURSITE',					'Seu site');
+define('_HELP_TT',					'Ajuda');
+define('_YOURSITE',					'página inicial');
 
 
 define('_POPUP_CLOSE',				'Fecha a janela');
@@ -291,54 +317,54 @@ define('_LOGIN_PLEASE',				'Por favor, faça o log in');
 define('_COMMENTFORM_YOUARE',		'Você está logado como');
 define('_COMMENTFORM_SUBMIT',		'Envia');
 define('_COMMENTFORM_COMMENT',		'Seu comentário');
-define('_COMMENTFORM_NAME',			'Nome:<br>');
-define('_COMMENTFORM_MAIL',			'E-mail ou site:<br>');
-define('_COMMENTFORM_REMEMBER',		'Receba um aviso caso respondam o seu comentário.<br>(para isso, coloque seu e-mail no campo "E-mail ou site").');
+define('_COMMENTFORM_NAME',			'Nome');
+define('_COMMENTFORM_MAIL',			'E-mail ou site');
+define('_COMMENTFORM_REMEMBER',		'auto-completar na próxima visita');
 
 // loginform
-define('_LOGINFORM_NAME',			'Usuário');
+define('_LOGINFORM_NAME',			'Nome');
 define('_LOGINFORM_PWD',			'Senha');
-define('_LOGINFORM_YOUARE',			'Logado como');
-define('_LOGINFORM_SHARED',			'Computador compartilhado');
+define('_LOGINFORM_YOUARE',			'Olá, ');
+define('_LOGINFORM_SHARED',			'Desativar login automático');
 
 // member mailform
-define('_MEMBERMAIL_SUBMIT',		'Envia');
+define('_MEMBERMAIL_SUBMIT',		'Enviar');
 
 // search form
-define('_SEARCHFORM_SUBMIT',		'Search');
+define('_SEARCHFORM_SUBMIT',		'Buscar');
 
 // add item form
-define('_ADD_ADDTO',				'Adiciona novo post para');
-define('_ADD_CREATENEW',			'Cria novo post');
+define('_ADD_ADDTO',				'Novo post em');
+define('_ADD_CREATENEW',			'Novo post');
 define('_ADD_BODY',					'Corpo do texto');
 define('_ADD_TITLE',				'Título');
 define('_ADD_MORE',					'Texto extendido para o "leia mais&raquo;" (opcional)');
 define('_ADD_CATEGORY',				'Tema');
 define('_ADD_PREVIEW',				'Previsão');
-define('_ADD_DISABLE_COMMENTS',		'Desabilita comentários');
+define('_ADD_DISABLE_COMMENTS',		'Desativar comentários');
 define('_ADD_DRAFTNFUTURE',			'Rascunhos &amp; itens futuros');
-define('_ADD_ADDITEM',				'Adiciona novo post');
-define('_ADD_ADDNOW',				'Adicina agora');
-define('_ADD_ADDLATER',				'Adiciona mais tarde');
+define('_ADD_ADDITEM',				'Novo post');
+define('_ADD_ADDNOW',				'Publicar agora');
+define('_ADD_ADDLATER',				'Publicar mais tarde');
 define('_ADD_PLACE_ON',				'Publicar no dia');
-define('_ADD_ADDDRAFT',				'Adiciona aos rascunhos');
-define('_ADD_NOPASTDATES',			'(datas e horas no passado não são válidas. a hora atual será usada nesses casos)');
+define('_ADD_ADDDRAFT',				'Colocar nos rascunhos');
+define('_ADD_NOPASTDATES',			'');
 define('_ADD_BOLD_TT',				'Negrito');
 define('_ADD_ITALIC_TT',			'Itálico');
 define('_ADD_HREF_TT',				'Link');
-define('_ADD_MEDIA_TT',				'Adiciona Imagem ou Mídia');
-define('_ADD_PREVIEW_TT',			'Mostra/Oculta a Previsão');
-define('_ADD_CUT_TT',				'Corta');
-define('_ADD_COPY_TT',				'Copia');
-define('_ADD_PASTE_TT',				'Cola');
+define('_ADD_MEDIA_TT',				'Imagem');
+define('_ADD_PREVIEW_TT',			'Mostrar o preview');
+define('_ADD_CUT_TT',				'Cortar');
+define('_ADD_COPY_TT',				'Copiar');
+define('_ADD_PASTE_TT',				'Colar');
 
 
 // edit item form
-define('_EDIT_ITEM',				'Edita post');
-define('_EDIT_SUBMIT',				'Edita post');
+define('_EDIT_ITEM',				'Editar post');
+define('_EDIT_SUBMIT',				'Editar post');
 define('_EDIT_ORIG_AUTHOR',			'Autor');
-define('_EDIT_BACKTODRAFTS',		'Adiciona de volta aos rascunhos');
-define('_EDIT_COMMENTSNOTE',		'(nota: desabilitar os comentários não oculta os já postados)');
+define('_EDIT_BACKTODRAFTS',		'Devolver aos rascunhos');
+define('_EDIT_COMMENTSNOTE',		'(desativar os comentários não oculta os já enviados)');
 
 // used on delete screens
 define('_DELETE_CONFIRM',			'Por favor, confirme ');
@@ -348,7 +374,7 @@ define('_CONFIRMTXT_COMMENT',		'Você está prestes a excluir o seguinte comentári
 define('_CONFIRMTXT_TEAM1',			'Você está prestes a excluir ');
 define('_CONFIRMTXT_TEAM2',			' da equipe do blog ');
 define('_CONFIRMTXT_BLOG',			'O blog que você vai excluir é: ');
-define('_WARNINGTXT_BLOGDEL',		'<b>ATENçãO!</b><br />Excluir um blog apagará todas os posts e todos os comentários.<br />O blog vai sumir!!! Tenha certeza do que está fazendo antes de confirmar! <br />');
+define('_WARNINGTXT_BLOGDEL',		'<b>ATENçãO!</b><br />Ao excluir um blog você apagará todas os posts e todos os comentários deste blog.<br />Certifique-se do que está fazendo antes de confirmar esta ação! <br />');
 define('_CONFIRMTXT_MEMBER',		'Você está prestes a excluir o seguinte membro: ');
 define('_CONFIRMTXT_TEMPLATE',		'Você está prestes a excluir o template ');
 define('_CONFIRMTXT_SKIN',			'Você está prestes a excluir a skin ');
@@ -362,7 +388,7 @@ define('_DELETED_COMMENT',			'Comentário excluído');
 define('_DELETED_BLOG',				'Blog excluído');
 define('_DELETED_CATEGORY',			'Tema excluí;do');
 define('_ITEM_MOVED',				'Post tranferido');
-define('_ITEM_ADDED',				'Post adicionado');
+define('_ITEM_ADDED',				'Post publicado');
 define('_COMMENT_UPDATED',			'Comentário editado');
 define('_SKIN_UPDATED',				'A skin foi salva');
 define('_TEMPLATE_UPDATED',			'O template foi salvo');
@@ -370,25 +396,25 @@ define('_TEMPLATE_UPDATED',			'O template foi salvo');
 // errors
 define('_ERROR_COMMENT_LONGWORD',	'Por favor, não use palavras com mais de 90 caracteres em seus comentários');
 define('_ERROR_COMMENT_NOCOMMENT',	'Comente');
-define('_ERROR_COMMENT_NOUSERNAME',	'Usuário desconhecido');
-define('_ERROR_COMMENT_TOOLONG',	'Seu comentário é longo demais. Escreva no máximo 5000 caracteres');
+define('_ERROR_COMMENT_NOUSERNAME',	'Usuário desconhecido.');
+define('_ERROR_COMMENT_TOOLONG',	'Seu comentário é longo demais. Escreva no máximo 5000 caracteres.');
 define('_ERROR_COMMENTS_DISABLED',	'Comentários para este blog estão desabilitados.');
 define('_ERROR_COMMENTS_NONPUBLIC',	'Você precisa estar logado como um membro para comentar este blog');
-define('_ERROR_COMMENTS_MEMBERNICK','O nome que você pretende usar na assinatura de seu comentário já é usado por outro membro. Escolha outro.');
+define('_ERROR_COMMENTS_MEMBERNICK','Você tentou assinar o comentário com um nome protegido. Esta assinatura só pode ser utilizada pelo usuário que a cadastrou.<br /><br />Por favor, volte à página anterior e tente novamente.');
 define('_ERROR_SKIN',				'Erro de skin');
 define('_ERROR_ITEMCLOSED',			'Este post não permite comentários');
-define('_ERROR_NOSUCHITEM',			'Este post não existe');
-define('_ERROR_NOSUCHBLOG',			'Este blog não existe');
-define('_ERROR_NOSUCHSKIN',			'Esta skin não existe');
-define('_ERROR_NOSUCHMEMBER',		'Este membro não existe');
+define('_ERROR_NOSUCHITEM',			'Este post não existe.');
+define('_ERROR_NOSUCHBLOG',			'Este blog não existe.');
+define('_ERROR_NOSUCHSKIN',			'Esta skin não existe.');
+define('_ERROR_NOSUCHMEMBER',		'Este membro não existe.');
 define('_ERROR_NOTONTEAM',			'Você não pertence à equipe deste blog.');
-define('_ERROR_BADDESTBLOG',		'O blog escolhido não existe');
-define('_ERROR_NOTONDESTTEAM',		'Não é possível mover o post, já que você não pertence à equipe do blog escolhido');
+define('_ERROR_BADDESTBLOG',		'O blog escolhido não existe.');
+define('_ERROR_NOTONDESTTEAM',		'Não é possível mover o post: você não pertence à equipe do blog de destino.');
 define('_ERROR_NOEMPTYITEMS',		'Não é posssível adicionar posts sem texto!');
 define('_ERROR_BADMAILADDRESS',		'Endereço de e-mail inválido');
 define('_ERROR_BADNOTIFY',			'Um ou mais e-mails não são válidos');
-define('_ERROR_BADNAME',			'O nome é inválido. Use apenas a-z e 0-9, sem espaços no início ou no fim');
-define('_ERROR_NICKNAMEINUSE',		'Outro membro já usa este apelido');
+define('_ERROR_BADNAME',			'O nome é inválido. Use apenas letras e números, sem acentos e nem espaços no início ou no fim.');
+define('_ERROR_NICKNAMEINUSE',		'Já existe um usuário com este apelido. Tente outro.');
 define('_ERROR_PASSWORDMISMATCH',	'As senhas devem ser idênticas');
 define('_ERROR_PASSWORDTOOSHORT',	'A senha precisa ter no mínimo 6 caracteres');
 define('_ERROR_PASSWORDMISSING',	'Você não digitou uma senha');
@@ -444,7 +470,7 @@ define('_WARNING_NOTREADABLE',		'Aviso: este diret&oacuterio não pode ser lido!'
 define('_WARNING_NOTWRITABLE',		'Aviso: este diret&oacuterio não tem permissão de escrita!');
 
 // media and upload
-define('_MEDIA_UPLOADLINK',			'Envia um novo arquivo');
+define('_MEDIA_UPLOADLINK',			'Enviar um novo arquivo');
 define('_MEDIA_MODIFIED',			'modificado');
 define('_MEDIA_FILENAME',			'arquivo');
 define('_MEDIA_DIMENSIONS',			'dimensões');
@@ -452,7 +478,7 @@ define('_MEDIA_INLINE',				'Na página');
 define('_MEDIA_POPUP',				'Em janela popup');
 define('_UPLOAD_TITLE',				'Escolha o arquivo');
 define('_UPLOAD_MSG',				'Escolha o arquivo que você deseja enviar e clique no botão "Envia".');
-define('_UPLOAD_BUTTON',			'Envia');
+define('_UPLOAD_BUTTON',			'Enviar');
 
 // some status messages
 define('_MSG_ACCOUNTCREATED',		'Conta criada. A senha será enviada por e-mail.');
@@ -473,29 +499,29 @@ define('_ACTIONLOG_CLEAR_TEXT',		'Limpa o log agora');
 // team management
 define('_TEAM_TITLE',				'Equipe do blog ');
 define('_TEAM_CURRENT',				'Equipe atual');
-define('_TEAM_ADDNEW',				'Adiciona novo membro à equipe');
+define('_TEAM_ADDNEW',				'Novo membro');
 define('_TEAM_CHOOSEMEMBER',		'Escolha o membro');
 define('_TEAM_ADMIN',				'Privilégios de administrador? ');
-define('_TEAM_ADD',					'Adiciona à equipe');
-define('_TEAM_ADD_BTN',				'Adiciona à equipe');
+define('_TEAM_ADD',					'Adicionar à equipe');
+define('_TEAM_ADD_BTN',				'Adicionar à equipe');
 
 // blogsettings
-define('_EBLOG_TITLE',				'Edita configurações do blog');
-define('_EBLOG_TEAM_TITLE',			'Edita equipe');
-define('_EBLOG_TEAM_TEXT',			'Clique aqui para editar a equipe deste blog.');
+define('_EBLOG_TITLE',				'Configurações do blog');
+define('_EBLOG_TEAM_TITLE',			'Alterar equipe');
+define('_EBLOG_TEAM_TEXT',			'Clique aqui para alterar a equipe deste blog.');
 define('_EBLOG_SETTINGS_TITLE',		'Configurações do blog');
-define('_EBLOG_NAME',				'Nome do blog');
-define('_EBLOG_SHORTNAME',			'Nome resumido do blog');
+define('_EBLOG_NAME',				'Nome');
+define('_EBLOG_SHORTNAME',			'Nome resumido');
 define('_EBLOG_SHORTNAME_EXTRA',	'<br />(use apenas a-z e 0-9, sem espaços)');
-define('_EBLOG_DESC',				'Descrição do blog');
-define('_EBLOG_URL',				'URL');
+define('_EBLOG_DESC',				'Descrição');
+define('_EBLOG_URL',				'Endereço (http://...)');
 define('_EBLOG_DEFSKIN',			'Skin padrão');
-define('_EBLOG_DEFCAT',				'Tema padrão');
+define('_EBLOG_DEFCAT',				'Categoria padrão');
 define('_EBLOG_LINEBREAKS',			'Converter quebras de linhas?');
 define('_EBLOG_DISABLECOMMENTS',	'Habilitar comentários?');
 define('_EBLOG_ANONYMOUS',			'Permitir comentários de não-membros?');
 define('_EBLOG_NOTIFY',				'Avisar e-mails (use ; para separar)');
-define('_EBLOG_NOTIFY_ON',			'Aviso ligado');
+define('_EBLOG_NOTIFY_ON',			'Aviso ligado para');
 define('_EBLOG_NOTIFY_COMMENT',		'Novos comentários');
 define('_EBLOG_NOTIFY_KARMA',		'Novos votos de karma');
 define('_EBLOG_NOTIFY_ITEM',		'Novos posts no blog');
@@ -505,20 +531,20 @@ define('_EBLOG_UPDATE',				'Atualiza arquivo');
 define('_EBLOG_OFFSET',				'Diferença de fuso');
 define('_EBLOG_STIME',				'A hora atual no servidor é');
 define('_EBLOG_BTIME',				'A hora atual no blog é');
-define('_EBLOG_CHANGE',				'Altera configurações');
-define('_EBLOG_CHANGE_BTN',			'Altera configurações');
+define('_EBLOG_CHANGE',				'Salvar alterações');
+define('_EBLOG_CHANGE_BTN',			'Salvar alterações');
 define('_EBLOG_ADMIN',				'Administrador do blog');
 define('_EBLOG_ADMIN_MSG',			'Você terá privilégios de administrador');
-define('_EBLOG_CREATE_TITLE',		'Cria blog');
+define('_EBLOG_CREATE_TITLE',		'Criar novo blog');
 define('_EBLOG_CREATE_TEXT',		'Preencha os campos abaixo para criar um novo blog. <br /><br /> <b>Nota:</b> Apenas os campos necessários estão listados. Se você quer configurar opções extras, acesse as configurações do blog depois de criá-lo.');
 define('_EBLOG_CREATE',				'Cria o blog!');
 define('_EBLOG_CREATE_BTN',			'Cria um novo blog');
-define('_EBLOG_CAT_TITLE',			'Temas');
-define('_EBLOG_CAT_NAME',			'Nome do tema');
-define('_EBLOG_CAT_DESC',			'Descrição do tema');
-define('_EBLOG_CAT_CREATE',			'Cria novo tema');
-define('_EBLOG_CAT_UPDATE',			'Altera o tema');
-define('_EBLOG_CAT_UPDATE_BTN',		'Altera o tema');
+define('_EBLOG_CAT_TITLE',			'Categorias');
+define('_EBLOG_CAT_NAME',			'Nome da categoria');
+define('_EBLOG_CAT_DESC',			'Descrição da categoria');
+define('_EBLOG_CAT_CREATE',			'Criar nova categoria');
+define('_EBLOG_CAT_UPDATE',			'Alterar cateforia');
+define('_EBLOG_CAT_UPDATE_BTN',		'Alterar categoria');
 
 // templates
 define('_TEMPLATE_TITLE',			'Edita templates');
@@ -644,22 +670,22 @@ define('_SETTINGS_MEMBERS',			'Configurações dos membros');
 
 // bans
 define('_BAN_TITLE',				'Lista de IPs banidos do blog');
-define('_BAN_NONE',					'Nenhum IP banido para este blog');
-define('_BAN_NEW_TITLE',			'Adicione novo IP banido');
-define('_BAN_NEW_TEXT',				'Adiciona novo IP banido');
-define('_BAN_REMOVE_TITLE',			'Remove IP banido');
+define('_BAN_NONE',					'Nenhum IP foi banido para este blog');
+define('_BAN_NEW_TITLE',			'Banir novo IP');
+define('_BAN_NEW_TEXT',				'Banir novo IP');
+define('_BAN_REMOVE_TITLE',			'Remover IP banido');
 define('_BAN_IPRANGE',				'IP');
 define('_BAN_BLOGS',				'Que blogs?');
 define('_BAN_DELETE_TITLE',			'Exclui IP banido');
 define('_BAN_ALLBLOGS',				'Todos os blogs que você tem privilégios de administrador.');
 define('_BAN_REMOVED_TITLE',		'O IP banido foi removido');
 define('_BAN_REMOVED_TEXT',			'O IP banido foi removido dos seguintes blogs:');
-define('_BAN_ADD_TITLE',			'Adiciona IP banido');
+define('_BAN_ADD_TITLE',			'Banir novo IP');
 define('_BAN_IPRANGE_TEXT',			'Escolha o raio de ação do IP banido. Quanto menos n&uacutemeros, mais endereços serão bloqueados.');
 define('_BAN_BLOGS_TEXT',			'Você pode banir o IP de apenas um blog ou bloquear o IP de todos os blogs que você possui privilégios de administrador. Escolha abaixo.');
 define('_BAN_REASON_TITLE',			'Razão');
 define('_BAN_REASON_TEXT',			'Você pode colocar uma razão para o banimento, que será mostrada se o IP tentar adicionar um comentário. Use no máximo 256 caracteres.');
-define('_BAN_ADD_BTN',				'Adiciona ip banido');
+define('_BAN_ADD_BTN',				'Banir novo IP');
 
 // LOGIN screen
 define('_LOGIN_MESSAGE',			'Mensagem');
@@ -678,23 +704,23 @@ define('_MEMBERS_REALNAME',			'Nome real');
 define('_MEMBERS_PWD',				'Senha');
 define('_MEMBERS_REPPWD',			'Repita a senha');
 define('_MEMBERS_EMAIL',			'E-mail');
-define('_MEMBERS_EMAIL_EDIT',		'(Quando você troca o seu e-mail, uma nova senha é enviada para o novo endereço automaticamente)');
+define('_MEMBERS_EMAIL_EDIT',		'(quando você altera o e-mail, uma nova senha é enviada para o novo endereço automaticamente)');
 define('_MEMBERS_URL',				'Endereço do blog');
 define('_MEMBERS_SUPERADMIN',		'Privilégios de administrador');
 define('_MEMBERS_CANLOGIN',			'Pode logar na área administrativa');
 define('_MEMBERS_NOTES',			'Notas');
-define('_MEMBERS_NEW_BTN',			'Adiciona membro');
-define('_MEMBERS_EDIT',				'Edita configuração');
-define('_MEMBERS_EDIT_BTN',			'Envia');
-define('_MEMBERS_BACKTOOVERVIEW',	'Volta para a lista de membros');
+define('_MEMBERS_NEW_BTN',			'Novo membro');
+define('_MEMBERS_EDIT',				'Perfil');
+define('_MEMBERS_EDIT_BTN',			'Salvar alterações');
+define('_MEMBERS_BACKTOOVERVIEW',	'Voltar para a lista de membros');
 define('_MEMBERS_DEFLANG',			'Língua');
 define('_MEMBERS_USESITELANG',		'- configurações do site -');
 
 // List of blogs (TT = tooltip)
-define('_BLOGLIST_TT_VISIT',		'Visita');
-define('_BLOGLIST_ADD',				'Adiciona post');
-define('_BLOGLIST_TT_ADD',			'Adiciona post para este blog');
-define('_BLOGLIST_EDIT',			'Edita/Exclui posts');
+define('_BLOGLIST_TT_VISIT',		'Visitar');
+define('_BLOGLIST_ADD',				'Novo post');
+define('_BLOGLIST_TT_ADD',			'Novo post para este blog');
+define('_BLOGLIST_EDIT',			'Editar posts');
 define('_BLOGLIST_TT_EDIT',			'');
 define('_BLOGLIST_BMLET',			'Atalho');
 define('_BLOGLIST_TT_BMLET',		'');
@@ -708,11 +734,11 @@ define('_BLOGLIST_TT_DELETE',		'Exclui este blog');
 // OVERVIEW screen
 define('_OVERVIEW_YRBLOGS',			'Seus blogs');
 define('_OVERVIEW_YRDRAFTS',		'Seus rascunhos');
-define('_OVERVIEW_YRSETTINGS',		'Suas configurações');
+define('_OVERVIEW_YRSETTINGS',		'Configurações');
 define('_OVERVIEW_GSETTINGS',		'Configurações gerais');
-define('_OVERVIEW_NOBLOGS',			'Voc6e não pertence a nenhuma equipe de blog');
+define('_OVERVIEW_NOBLOGS',			'Você não pertence a nenhuma equipe');
 define('_OVERVIEW_NODRAFTS',		'Nenhum rascunho');
-define('_OVERVIEW_EDITSETTINGS',	'Edita suas configurações...');
+define('_OVERVIEW_EDITSETTINGS',	'Alterar seu perfil...');
 define('_OVERVIEW_BROWSEITEMS',		'Explora os posts...');
 define('_OVERVIEW_BROWSECOMM',		'Explora seus comentários...');
 define('_OVERVIEW_VIEWLOG',			'Ver Log...');
@@ -728,7 +754,7 @@ define('_ITEMLIST_BLOG',			'Posts do blog');
 define('_ITEMLIST_YOUR',			'Seus posts');
 
 // Comments
-define('_COMMENTS',					'Comentárioss');
+define('_COMMENTS',					'Comentários');
 define('_NOCOMMENTS',				'Nenhum comentário para este post');
 define('_COMMENTS_YOUR',			'Seus comentários');
 define('_NOCOMMENTS_YOUR',			'Você não escreveu nenhum comentário');
@@ -772,7 +798,7 @@ define('_LIST_ACTION_MSG',			'Mensagem');
 define('_LIST_COMMENT_BANIP',		'Bane IP');
 define('_LIST_COMMENT_WHO',			'Autor');
 define('_LIST_COMMENT',				'Comentário');
-define('_LIST_COMMENT_HOST',		'Host');
+define('_LIST_COMMENT_HOST',		'IP');
 
 // itemlist
 define('_LIST_ITEM_INFO',			'Info');
@@ -784,7 +810,7 @@ define('_LIST_TEAM_ADMIN',			'Administrador ');
 define('_LIST_TEAM_CHADMIN',		'Altera Administrador');
 
 // edit comments
-define('_EDITC_TITLE',				'Editar Comentários');
+define('_EDITC_TITLE',				'Alterar comentários');
 define('_EDITC_WHO',				'Autor');
 define('_EDITC_HOST',				'De onde?');
 define('_EDITC_WHEN',				'Quando?');
@@ -794,7 +820,7 @@ define('_EDITC_MEMBER',				'membro');
 define('_EDITC_NONMEMBER',			'não membro');
 
 // move item
-define('_MOVE_TITLE',				'Move o post para qual blog?');
-define('_MOVE_BTN',					'Envia');
+define('_MOVE_TITLE',				'Mover o post para qual blog?');
+define('_MOVE_BTN',					'Mover');
 
 ?>
