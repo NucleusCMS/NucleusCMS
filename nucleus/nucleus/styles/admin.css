@@ -258,3 +258,6 @@ div.indent {
 html>body #content { font-size: small; }
 
 
+img.skinpreview {
+	border: 1px solid #ccc;
+}
