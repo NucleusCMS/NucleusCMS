@@ -98,7 +98,7 @@ function do_backup($gzip = 0) {
 	echo "#\n";
 	echo "# backup-date: " .  gmdate("d-m-Y H:i:s", time()) . " GMT\n";
 	global $nucleus;
-	echo "# nucleus version: " . $nucleus['version'] . "\n";	
+	echo "# Nucleus CMS version: " . $nucleus['version'] . "\n";	
 	echo "#\n";
 	echo "# WARNING: Only try to restore on servers running the exact same version of Nucleus\n";
 	echo "#\n";

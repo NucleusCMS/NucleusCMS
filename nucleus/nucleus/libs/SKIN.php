@@ -964,7 +964,7 @@ class ACTIONS extends BaseActions {
 	// include nucleus versionnumber
 	function parse_version() {
 		global $nucleus;
-		echo 'Nucleus ' . $nucleus['version'];
+		echo 'Nucleus CMS ' . $nucleus['version'];
 	}
 	
 
