@@ -1479,11 +1479,6 @@ class ADMIN {
 				<td><?php echo _MEMBERS_REPPWD?></td>
 				<td><input name="repeatpassword" tabindex="10035" size="16" maxlength="40" type="password" /></td>
 			</tr><tr>
-                       <?php if($CONF['ExtAuth']) { ?>
-                               <td><?php echo _MEMBERS_BYPASS?></td>
-                               <td><?php $this->input_yesno('ExtAuth',0,10037, 0, 1, _NO, _YES); ?></td>
-                       </tr><tr>
-                       <?php } ?>
 				<td><?php echo _MEMBERS_EMAIL?></td>
 				<td><input name="email" tabindex="10040" size="40" maxlength="60" /></td>
 			</tr><tr>
@@ -1565,11 +1560,6 @@ class ADMIN {
 			<td><?php echo _MEMBERS_REPPWD?></td>
 			<td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" /></td>
 		</tr><tr>
-               <?php if($CONF['ExtAuth']) { ?>
-                       <td><?php echo _MEMBERS_BYPASS?></td>
-                       <td><?php $this->input_yesno('ExtAuth',strlen($mem->getPassword())==0,37, 0, 1, _NO, _YES); ?></td>
-               </tr><tr>
-               <?php } } ?>
 			<td><?php echo _MEMBERS_EMAIL?>
 			    <br /><small><?php echo _MEMBERS_EMAIL_EDIT?></small>
 			</td>
@@ -1656,7 +1646,6 @@ class ADMIN {
 		$realname		= trim(postVar('realname'));
 		$password		= postVar('password');
 		$repeatpassword	= postVar('repeatpassword');		
-		$bypass			= postVar('ExtAuth');
 		$email			= postVar('email');
 		$url			= postVar('url');
 		$admin			= postVar('admin');
@@ -1703,13 +1692,8 @@ class ADMIN {
 		
 		
 		// if email changed, generate new password
-		// Don't generate new password if member is authenticated externally
-		// But do generate new password if a) no existing password, b) no new password
-		// and either c) ExtAuth is off or d) bypass is no.
-		if (
-			   ($email != $mem->getEmail() && $CONF['ExtAuth'] && $bypass) ||
-			   ((0==strlen($mem->getPassword())) && !$password && !($CONF['ExtAuth'] && $bypass))
-		) {
+		if ($email != $mem->getEmail())
+		{
 			$password = genPassword(10);
 			$newpass = 1;
 		} else {
@@ -1768,7 +1752,7 @@ class ADMIN {
 		
 		if (postVar('password') != postVar('repeatpassword'))
 			$this->error(_ERROR_PASSWORDMISMATCH);
-		if ((strlen(postVar('password')) < 6)  && !(postVar('ExtAuth') && $CONF['ExtAuth']))
+		if (strlen(postVar('password')) < 6)  
 			$this->error(_ERROR_PASSWORDTOOSHORT);
 		
 		$res = MEMBER::create(postVar('name'), postVar('realname'), postVar('password'), postVar('email'), postVar('url'), postVar('admin'), postVar('canlogin'), postVar('notes'));	
@@ -3978,13 +3962,6 @@ selector();
 					          'normal','pathinfo',_SETTINGS_URLMODE_NORMAL,_SETTINGS_URLMODE_PATHINFO); ?>
 				(Info: <a href="documentation/tips.html#searchengines-fancyurls">How to activate fancy URLs</a>)
                        </td>
-               </tr><tr>
-                       <td><?php echo _SETTINGS_EXTAUTH?></td>
-                       <td><?php $this->input_yesno('ExtAuth',$CONF['ExtAuth'],10078, 0, 1, _NO, _YES); ?>
-                               <b><?php echo _WARNING_EXTAUTH?></b>
-                       </td>
-
-
 		</tr><tr>
 			<th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
 		</tr><tr>
@@ -4142,7 +4119,6 @@ selector();
 		$this->updateConfig('CookiePath',		postVar('CookiePath'));
 		$this->updateConfig('CookieSecure',		postVar('CookieSecure'));
 		$this->updateConfig('URLMode',			postVar('URLMode'));		
-		$this->updateConfig('ExtAuth',			postVar('ExtAuth'));		
 		
 		// load new config and redirect (this way, the new language will be used is necessary)
 		getConfig();
