@@ -8,6 +8,7 @@ $MYSQL_HOST = 'hostname';
 $MYSQL_USER = 'username';
 $MYSQL_PASSWORD = 'password';
 $MYSQL_DATABASE = 'databasename';
+$MYSQL_PREFIX = '';
 
 // main nucleus directory
 $DIR_NUCLEUS = '/your/path/to/nucleus/';

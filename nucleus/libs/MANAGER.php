@@ -159,20 +159,35 @@ class MANAGER {
 				$fileName = $DIR_PLUGINS . $name . '.php';
 				
 				if (!file_exists($fileName))
+				{
+					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (File not found)');
 					return 0;
+				}
 				
 				// load plugin
 				include($fileName);
 				
 				// check if class exists (avoid errors in eval'd code)
 				if (!class_exists($name))
+				{
+					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (Class not found in file, possible parse error)');				
 					return 0;
+				}
 				
 				// add to plugin array
 				eval('$this->plugins[$name] = new ' . $name . '();');
 				
 				// get plugid
 				$this->plugins[$name]->plugid = $this->getPidFromName($name);
+				
+				// unload plugin if a prefix is used and the plugin cannot handle this^
+				global $MYSQL_PREFIX;
+				if (($MYSQL_PREFIX != '') && !$this->plugins[$name]->supportsFeature('SqlTablePrefix')) 
+				{
+					unset($this->plugins[$name]);
+					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (does not support SqlTablePrefix)');
+					return;
+				}
 				
 				// call init method
 				$this->plugins[$name]->init();
