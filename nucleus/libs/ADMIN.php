@@ -5869,18 +5869,18 @@ function listplug_table_skinlist($template, $type) {
 			
 			echo "<td>";
 			if ($current->sdnumber == $CONF['BaseSkin']) {
-				echo '<strong>',$current->sdname,'</strong>';
+				echo '<strong>',htmlspecialchars($current->sdname),'</strong>';
 			} else {
-				echo $current->sdname;
+				echo htmlspecialchars($current->sdname);
 			}
 			echo '<br /><br />';
-			echo _LISTS_TYPE ,': ' , $current->sdtype;
+			echo _LISTS_TYPE ,': ' , htmlspecialchars($current->sdtype);
 			echo '<br />', _LIST_SKINS_INCMODE , ' ' , (($current->sdincmode=='skindir') ?_PARSER_INCMODE_SKINDIR:_PARSER_INCMODE_NORMAL);
 			if ($current->sdincpref) echo '<br />' , _LIST_SKINS_INCPREFIX , ' ', $current->sdincpref;
 			echo "</td>";
 			
 						
-			echo "<td>$current->sddesc";
+			echo "<td>" , htmlspecialchars($current->sddesc);
 				// show list of defined parts
 				$r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber . ' ORDER BY stype');
 				$types = array();
