@@ -181,7 +181,7 @@ function forgotPassword() {
 
 // handle karma votes
 function doKarma($type) {
-	global $itemid, $member, $CONF, $HTTP_REFERER, $manager;
+	global $itemid, $member, $CONF, $manager;
 
 	// check if itemid exists
 	if (!$manager->existsItem($itemid,0,0)) 
@@ -235,8 +235,9 @@ function doKarma($type) {
 	}
 	
 	
-	if ($HTTP_REFERER)
-		$url = $HTTP_REFERER;
+	$refererUrl = serverVar('HTTP_REFERER');
+	if ($refererUrl)
+		$url = $refererUrl;
 	else
 		$url = $CONF['IndexURL'] . 'index.php?itemid=' . $itemid;
 
