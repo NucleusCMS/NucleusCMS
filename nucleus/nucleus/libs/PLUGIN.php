@@ -533,9 +533,30 @@
 		 * @static
 		 */
 		function optionCanBeNumeric($optionType) {
-			switch($optionType) {
+			switch ($optionType) {
 				case 'text':
 				case 'select':
+					return true;
+					break;
+				default:
+					return false;
+					break;
+			}
+		}
+		
+		/**
+		 * return wether or not an optiontype can have a specific access meta data
+		 * @param string $optionType type of the option
+		 * @param string $accessMeta the type of access you want info about
+		 *                           (currenlty always 'readonly')
+		 * @return boolean true if this option type can have the meta
+		 * @author TeRanEX
+		 * @static
+		 */
+		function optionCanHaveAccessMeta($optionType, $accessMeta) {
+			switch ($optionType) {
+				case 'text':
+				case 'textarea':
 					return true;
 					break;
 				default:

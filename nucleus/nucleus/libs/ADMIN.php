@@ -5817,13 +5817,22 @@ function listplug_plugOptionRow($current) {
 			echo '</select>';
 			break;
 		case 'textarea':
-			echo '<textarea class="pluginoption" cols="30" rows="5" name="',htmlspecialchars($varname),'">',htmlspecialchars($current['value']),'</textarea>';				
+			$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
+			echo '<textarea class="pluginoption" cols="30" rows="5" name="',htmlspecialchars($varname),'"';				
+			if ($meta['access'] == 'readonly') {
+				echo ' readonly="readonly"';
+			}
+			echo '>',htmlspecialchars($current['value']),'</textarea>';
 			break;
 		case 'text':
 		default:
+			$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 			echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'"';
-			if (NucleusPlugin::optionIsNumeric($current['typeinfo'])) {
+			if ($meta['numerical'] == 'true') {
 				echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
+			}
+			if ($meta['access'] == 'readonly') {
+				echo ' readonly="readonly"';
 			}
 			echo ' />';
 	}
