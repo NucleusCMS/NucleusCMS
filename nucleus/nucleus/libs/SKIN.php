@@ -1005,7 +1005,7 @@ class ACTIONS extends BaseActions {
 				break;
 			case 'imgtag':
 			default:
-				echo "<img src=\"$fullurl\" width=\"$width\" height=\"$height\" alt=\"$imagetext\" />";
+				echo "<img src=\"$fullurl\" width=\"$width\" height=\"$height\" alt=\"$imagetext\" title=\"$imagetext\" />";
 				break;
 		}
 	}

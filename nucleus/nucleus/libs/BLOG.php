@@ -1376,7 +1376,7 @@ class ITEMACTIONS extends BaseActions {
 		
 		$vars['link']			= htmlspecialchars($CONF['MediaURL']. $filename);
 		$vars['text']			= htmlspecialchars($text);
-		$vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" />';
+		$vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
 		$vars['width'] 			= $width;
 		$vars['height']			= $height;
 				
