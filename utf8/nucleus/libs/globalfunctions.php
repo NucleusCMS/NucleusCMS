@@ -2,7 +2,7 @@
 
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -10,6 +10,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
+  * $Id: globalfunctions.php,v 1.4 2005-03-15 07:59:27 kimitake Exp $
+  * $NucleusJP$
   */
 
 // needed if we include globalfunctions from install.php
@@ -20,7 +22,7 @@ checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQ
 
 $CONF['debug'] = 0;
 
-$nucleus['version'] = 'v3.15';
+$nucleus['version'] = 'v3.2';
 if (getNucleusPatchLevel() > 0)
 {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();
@@ -47,7 +49,7 @@ $CONF['alertOnSecurityRisk'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 315;
+	return 320;
 }
 
 /**
@@ -100,7 +102,7 @@ $errormessage	= '';
 $error			= '';
 
 if (!headers_sent())
-	header('Generator: Nucleus ' . $nucleus['version']);
+	header('Generator: Nucleus CMS ' . $nucleus['version']);
 
 // include core classes that are needed for login & plugin handling
 include($DIR_LIBS . 'MEMBER.php');
@@ -135,7 +137,7 @@ if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'),'Mozil
 
 // login if cookies set
 
-$member = new MEMBER();
+$member =& new MEMBER();
 
 // login/logout when required or renew cookies
 if ($action == 'login') {
@@ -176,29 +178,35 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
                ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
 
                //Since bad credentials, generate an apropriate error page
-               header("WWW-Authenticate: Basic realm=\"Nucleus {$nucleus['version']}\"");
+               header("WWW-Authenticate: Basic realm=\"Nucleus CMS {$nucleus['version']}\"");
                header('HTTP/1.0 401 Unauthorized');
                echo 'Invalid username or password';
                exit;
        }
 */
 
-} elseif (($action == 'logout') && (!headers_sent()) && cookieVar('user')){
+} elseif (($action == 'logout') && (!headers_sent()) && cookieVar($CONF['CookiePrefix'] . 'user')){
 	// remove cookies on logout
-	setcookie('user','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
-	setcookie('loginkey','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
-	$manager->notify('Logout',array('username' => cookieVar('user')));
-} elseif (cookieVar('user')) {
+	setcookie($CONF['CookiePrefix'] .'user','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+	setcookie($CONF['CookiePrefix'] .'loginkey','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+	$manager->notify('Logout',array('username' => cookieVar($CONF['CookiePrefix'] .'user')));
+} elseif (cookieVar($CONF['CookiePrefix'] .'user')) {
 	// Cookie Authentication
-	$res = $member->cookielogin(cookieVar('user'), cookieVar('loginkey'));
+	$res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] .'user'), cookieVar($CONF['CookiePrefix'] .'loginkey'));
 
 	// renew cookies when not on a shared computer
-	if ($res && (cookieVar('sharedpc') != 1) && (!headers_sent()))
+	if ($res && (cookieVar($CONF['CookiePrefix'] .'sharedpc') != 1) && (!headers_sent()))
 		$member->setCookies();
 }
 
 // login completed
 $manager->notify('PostAuthentication',array('loggedIn' => $member->isLoggedIn()));
+
+// first, let's see if the site is disabled or not
+if ($CONF['DisableSite'] && !$member->isAdmin()) {
+	redirect($CONF['DisableSiteURL']);
+	exit;
+}
 
 // load other classes
 include($DIR_LIBS . 'PARSER.php');
@@ -217,9 +225,9 @@ include($DIR_LIBS . 'SEARCH.php');
 // set lastVisit cookie (if allowed)
 if (!headers_sent()) {
 	if ($CONF['LastVisit'])
-		setcookie('lastVisit',time(),time()+2592000,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+		setcookie($CONF['CookiePrefix'] .'lastVisit',time(),time()+2592000,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 	else
-		setcookie('lastVisit','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+		setcookie($CONF['CookiePrefix'] .'lastVisit','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 }
 
 // read language file, only after user has been initialized
@@ -240,6 +248,14 @@ if (!defined('_MEMBERS_BYPASS'))
 }
 
 */
+
+// make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
+if (!defined('_ARCHIVETYPE_MONTH'))
+{
+	define('_ARCHIVETYPE_DAY','day');
+	define('_ARCHIVETYPE_MONTH','month');
+}
+
 
 // decode path_info
 if ($CONF['URLMode'] == 'pathinfo') {
@@ -331,7 +347,7 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 				'pageType' => $pagetype
 			)
 		);
-		
+
 		// strip strange characters
 		$contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
 		$charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
@@ -490,12 +506,17 @@ function selector() {
 	global $imagepopup, $catid;
 	global $manager;
 
-	// first, let's see if the site is disabled or not
-	if ($CONF['DisableSite'] && !$member->isAdmin()) {
-		redirect($CONF['DisableSiteURL']);
-		exit;
-	}
-
+	$actionNames = array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin');
+	$action = requestVar('action');
+	if (in_array($action, $actionNames))
+	{
+		global $DIR_LIBS, $errormessage;
+		include_once($DIR_LIBS . 'ACTION.php');
+		$a =& new ACTION();
+		$errorInfo = $a->doAction($action);
+		if ($errorInfo)
+			$errormessage = $errorInfo['message'];
+	}	
 
 	// show error when headers already sent out
 	if (headers_sent() && $CONF['alertOnHeadersSent']) {
@@ -647,7 +668,7 @@ function selector() {
 		$skinid = $blog->getDefaultSkin();
 
 	
-	$skin = new SKIN($skinid);
+	$skin =& new SKIN($skinid);
 	if (!$skin->isValid)
 		doError(_ERROR_NOSUCHSKIN);
 
@@ -663,16 +684,16 @@ function doError($msg, $skin = '') {
 
 	if ($skin == '') {
 		if (SKIN::existsID($skinid)) {
-			$skin = new SKIN($skinid);
+			$skin =& new SKIN($skinid);
 		} elseif ($manager->existsBlogID($blogid)) {
 			$blog =& $manager->getBlog($blogid);
-			$skin = new SKIN($blog->getDefaultSkin());
+			$skin =& new SKIN($blog->getDefaultSkin());
 		} elseif ($CONF['DefaultBlog']) {
 			$blog =& $manager->getBlog($CONF['DefaultBlog']);
-			$skin = new SKIN($blog->getDefaultSkin());
+			$skin =& new SKIN($blog->getDefaultSkin());
 		} else {
 			// this statement should actually never be executed
-			$skin = new SKIN($CONF['BaseSkin']);
+			$skin =& new SKIN($CONF['BaseSkin']);
 		}
 	}
 
@@ -701,28 +722,6 @@ function isValidSkinName($name) {		return eregi('^[a-z0-9/]+$', $name); }
 // add and remove linebreaks
 function addBreaks($var) { 				return nl2br($var); }
 function removeBreaks($var) {			return preg_replace("/<br \/>([\r\n])/","$1",$var); }
-
-/**
-  * Generate a 'pronouncable' password
-  * (http://www.zend.com/codex.php?id=215&single=1)
-  */
-function genPassword($length){
-
-    srand((double)microtime()*1000000);
-
-    $vowels = array('a', 'e', 'i', 'o', 'u');
-    $cons = array('b', 'c', 'd', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'u', 'v', 'w', 'tr',
-    'cr', 'br', 'fr', 'th', 'dr', 'ch', 'ph', 'wr', 'st', 'sp', 'sw', 'pr', 'sl', 'cl');
-
-    $num_vowels = count($vowels);
-    $num_cons = count($cons);
-
-    for($i = 0; $i < $length; $i++){
-        $password .= $cons[rand(0, $num_cons - 1)] . $vowels[rand(0, $num_vowels - 1)];
-    }
-
-    return substr($password, 0, $length);
-}
 
 // shortens a text string to maxlength ($toadd) is what needs to be added
 // at the end (end length is <= $maxlength)
@@ -786,8 +785,8 @@ function selectLanguage($language) {
 }
 
 function parseFile($filename) {
-	$handler = new ACTIONS('fileparser');
-	$parser = new PARSER(SKIN::getAllowedActionsForType('fileparser'), $handler);
+	$handler =& new ACTIONS('fileparser');
+	$parser =& new PARSER(SKIN::getAllowedActionsForType('fileparser'), $handler);
 	$handler->parser =& $parser;
 
 	if (!file_exists($filename)) doError('A file is missing');
@@ -1073,7 +1072,7 @@ function checkVars($aVars)
 				|| isset($HTTP_POST_FILES[$varName])
 			){
 				die('Sorry. An error occurred.');
-			}
+			}		
 		}
 	}
 }
