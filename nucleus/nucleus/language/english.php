@@ -2,7 +2,7 @@
 // English Nucleus Language File
 // 
 // Author: Wouter Demuynck (nucleus@demuynck.org)
-// Nucleus version: v1.0-v2.0
+// Nucleus version: v1.0-v2.5
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -12,12 +12,20 @@
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
 
-// START changed after v2.5beta START
+// START changed/added after v2.5beta START
+
+// general settings (security)
+define('_SETTINGS_EXTAUTH',			'Enable External Authentication');
+define('_SETTINGS_ITEMFILTER',		'Enable Category Hiding');
+define('_WARNING_EXTAUTH',			'Warning: Enable only if needed.');
+
+// member profile
+define('_MEMBERS_BYPASS',			'Use External Authentication');
 
 // 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
 define('_EBLOG_SEARCH',				'<em>Always</em> include in search');
 
-// END changed after v2.5beta
+// END changed/added after v2.5beta
 
 // START introduced after v2.0 START
 
