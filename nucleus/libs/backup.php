@@ -49,7 +49,8 @@ function do_backup($gzip = 0) {
 					sql_table('plugin_option'),
 					sql_table('plugin_option_desc'),
 					sql_table('category'),
-					sql_table('activation')
+					sql_table('activation'),
+					sql_table('tickets'),
 			  );
 
 	// add tables that plugins want to backup to the list
