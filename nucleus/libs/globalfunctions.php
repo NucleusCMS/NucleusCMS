@@ -206,6 +206,9 @@ if (!headers_sent()) {
 $language = getLanguageName();
 include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
 
+/*
+	Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
+	
 // To remove after v2.5 is released and language files have been updated. 
 // Including this makes sure that language files for v2.5beta can still be used for v2.5final
 // without having weird _SETTINGS_EXTAUTH string showing up in the admin area.
@@ -215,6 +218,8 @@ if (!defined('_MEMBERS_BYPASS'))
 	define('_WARNING_EXTAUTH',			'Warning: Enable only if needed.');
 	define('_MEMBERS_BYPASS',			'Use External Authentication');
 }
+
+*/
 
 // decode path_info
 if ($CONF['URLMode'] == 'pathinfo') {
