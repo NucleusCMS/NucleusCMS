@@ -341,11 +341,11 @@
 		<legend>Weblog Data</legend>
 		<table><tr>
 			<td>Blog Name:</td>
-			<td><input name="Blog_name" size="60" value="My Nucleus Weblog" /></td>
+			<td><input name="Blog_name" size="60" value="My Nucleus CMS" /></td>
 		</tr><tr>
 			<td>Blog Short Name:</td>
 			<td>
-				<input name="Blog_shortname" value="myweblog" />
+				<input name="Blog_shortname" value="mynucleuscms" />
 				<small>(allowed characters: a-z and 0-9, no spaces allowed)</small>
 			</td>
 		</tr></table>

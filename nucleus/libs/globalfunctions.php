@@ -19,9 +19,9 @@ global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS'));
 
-$CONF['debug'] = 1;
+$CONF['debug'] = 0;
 
-$nucleus['version'] = 'v3.2-b2';
+$nucleus['version'] = 'v3.2-b3';
 if (getNucleusPatchLevel() > 0)
 {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();

@@ -42,7 +42,7 @@ CREATE TABLE `nucleus_blog` (
   UNIQUE KEY `bshortname` (`bshortname`)
 ) TYPE=MyISAM;
 
-INSERT INTO `nucleus_blog` VALUES (1, 'My Nucleus Weblog', 'myweblog', '', 1, 0, 0.0, '', 'http://localhost:8080/nucleus/', '', 5, 1, 0, 1, 1, 1, 1, 0);
+INSERT INTO `nucleus_blog` VALUES (1, 'My Nucleus CMS', 'mynucleuscms', '', 1, 0, 0.0, '', 'http://localhost:8080/nucleus/', '', 5, 1, 0, 1, 1, 1, 1, 0);
 
 CREATE TABLE `nucleus_category` (
   `catid` int(11) NOT NULL auto_increment,
@@ -84,7 +84,7 @@ INSERT INTO `nucleus_config` VALUES ('Language', 'english');
 INSERT INTO `nucleus_config` VALUES ('SessionCookie', '');
 INSERT INTO `nucleus_config` VALUES ('AllowMemberCreate', '');
 INSERT INTO `nucleus_config` VALUES ('AllowMemberMail', '1');
-INSERT INTO `nucleus_config` VALUES ('SiteName', 'My Nucleus Weblog');
+INSERT INTO `nucleus_config` VALUES ('SiteName', 'My Nucleus CMS');
 INSERT INTO `nucleus_config` VALUES ('AdminURL', 'http://localhost:8080/nucleus/nucleus/');
 INSERT INTO `nucleus_config` VALUES ('NewMemberCanLogon', '1');
 INSERT INTO `nucleus_config` VALUES ('DisableSite', '');
