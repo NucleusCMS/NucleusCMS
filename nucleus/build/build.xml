@@ -99,6 +99,9 @@
     <delete dir="${upgrade.home}/nucleus/upgrades" />
     <delete dir="${upgrade.home}/nucleus/fileperms" />  
     
+    <!-- remove skins dir. prevents users from overwriting their own skins -->
+    <delete dir="${upgrade.home}/skins" />
+    
     <!-- remove all language files except english -->
     <delete>
     	<fileset dir="${upgrade.home}/nucleus/language">
