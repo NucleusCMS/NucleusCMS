@@ -14,7 +14,7 @@
 
 <!-- popup tooltips on links -->
 <link rel="stylesheet" type="text/css" href="<%skinfile(nicetitle.css)%>" />
-<script type="text/javascript" src="<%sitevar(url)%>nicetitle.js">"</script>
+<script type="text/javascript" src="<%skinfile(nicetitle.js)%>"></script>
 
 <!-- favorite icon -->
 <link rel="shortcut icon" href="/favicon.ico" />
