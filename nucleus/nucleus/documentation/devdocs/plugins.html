@@ -29,7 +29,7 @@
 
 <div class="heading">
 Plugin API
-<i>August 12, 2003</i>
+<i>December 29, 2003</i>
 </div>
 
 <div class="note"><strong>Notes:</strong>
@@ -61,8 +61,8 @@ This document contains information on how you can write your own Nucleus plugins
 	<li><a href="#events">Events, and subscribing to them</a></li>
 	<li><a href="#options">Saving options</a></li>
 	<li><a href="#tables">Database tables</a></li>
-<!--	<li><a href="#admin">Providing an admin area</a></li>
-	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>
+	<li><a href="#admin">Providing an admin area</a></li>
+<!--	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
@@ -1234,7 +1234,93 @@ your stuff
 		</td>
 		<td>None</td>
 	</tr>
+	<tr>
+		<td>AdminPrePageHead</td>
+		<td>(v2.5) On admin area pages, immediately before the page head is printed. This event could be used to add extra script/css includes in the head section</td>
+		<td><dl>
+			<dt class="ref">extrahead</dt>
+			<dd>Extra information to be included in the head section of the HTML page. Append your extras here.</dd>
+			<dt class="ro">action</dt>
+			<dd>Currently executed action or pagetype</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>AdminPrePageFoot</td>
+		<td>(v2.5) On admin area pages, immediately before the page footer is printed.</td>
+		<td><dl>
+			<dt class="ro">action</dt>
+			<dd></dd>
+		</dl>Currently executed action or pagetype</td>
+	</tr>
+	<tr>
+		<td>PreSendContentType</td>
+		<td>(v2.5) Immediately before a content type is being set in the HTTP header</td>
+		<td><dl>
+			<dt class="ref">contentType</dt>
+			<dd>content type (e.g. <code>application/xhtml+xml</code>)</dd>
+			<dt class="ref">charset</dt>
+			<dd>Character set</dd>
+			<dt class="ro">pageType</dt>
+			<dd>String indicating which type of page we're displaying: <code>skin</code> (skinparts), <code>media</code> (media library), <code>admin-<em>action</em></code> (admin area), <code>bookmarklet-<em>action</em></code> (bookmarklet)</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>QuickMenu</td>
+		<td>(v2.5) At the end of the Admin Area quick menu. This can be used to add extra plugin entries. To add entries, push associative arrays on the <code>options</code> array. An example can be found in the section about <a href="#admin">creating a plugin admin area</a>.</td>
+		<td><dl>
+			<dt class="ref">options</dt>
+			<dd>Array</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>BookmarkletExtraHead</td>
+		<td>(v2.5) Somewhere inside the <code>head</code> section of the bookmarklet XHTML code.</td>
+		<td><dl>
+			<dt class="ref">extrahead</dt>
+			<dd>Information to be included in the <code>head</code> section of the XHTML code. Add your extras here.</dd>
+		</dl></td>
+	</tr>
 <!--	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><dl>
+			<dt></dt>
+			<dd></dd>
+		</dl></td>
+	</tr>
+	<tr>
 		<td></td>
 		<td></td>
 		<td><dl>
@@ -1488,6 +1574,67 @@ class NP_HelloWorld extends NucleusPlugin {
 	<li>Also redefine the <code>getTableList()</code> method to make sure your table gets backupped when using the backup function.</li>
 </ul>
 
+
+
+<h1>Plugin Admin Area <a name="admin" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>As of Nucleus v2.5, plugins can create admin area pages that integrate with the Nucleus admin area. These pages can be accessed either from the plugin admin page, or the quickmenu on the left.</p>
+
+<h2>Basics</h2>
+
+<p>To provide an admin area, you'll need take these steps:</p>
+
+<ol>
+  <li>Create a subdirectory of the plugins directory, and name it <strong>pluginname</strong> if your plugin is <code>NP_PluginName</code>. Note that the name should be <strong>lowercase</strong>!</li>
+  <li>
+  	In that directory, create a file called <strong>index.php</strong>, which looks like this:
+  	<pre><code>&lt;?php
+
+	// if your 'plugin' directory is not in the default location,
+	// edit this variable to point to your site directory
+	// (where config.php is)
+	$strRel = '../../../';
+
+	include($strRel . 'config.php');
+	if (!$member->isLoggedIn())
+		doError('You\'re not logged in.');
+
+	include($DIR_LIBS . 'PLUGINADMIN.php');
+
+	// create the admin area page
+	$oPluginAdmin = new PluginAdmin('<strong>PluginName</strong>');
+	$oPluginAdmin->start();
+
+	echo '&lt;h2&gt;Plugin Name&lt;/h2&gt;';
+
+	echo '&lt;p&gt;<strong>Page contents here</strong>&lt;p&gt;';
+
+	$oPluginAdmin->end();
+
+?&gt;</code></pre>
+  </li>
+  <li>
+  	Subscribe to the <code>QuickMenu</code> event and add this code in your plugin:
+  	<pre><code>function event_QuickMenu(&$data) {
+		array_push(
+			$data['options'],
+			array(
+				'title' => '<strong>Plugin Name</strong>',
+				'url' => $this->getAdminURL(),
+				'tooltip' => '<strong>Tooltip text</strong>'
+			)
+		);
+	}</code></pre>
+  </li>
+</ol>
+
+<h2>Considerations</h2>
+
+<ul>
+ <li>Don't just add an entry to the quick menu because it is possible. Imagine having 100 plugins installed, which all add an entry in the menu. This would result in a real mess. So, even if you add an entry in the menu, please consider adding an option (global or member-level) to enable/disable the quick menu entry.</li>
+ <li>The <code>$strRel</code> variable in the <code>index.php</code> needs to be adapted manually if the plugins directory is not located in <code>nucleus/plugins/</code></li>
+ <li>Make sure your admin area outputs <strong>valid XHTML</strong>. If not, the page will be broken in Gecko-based (Mozilla etc) browsers.</li>
+</ul>
 
 
 </body>
