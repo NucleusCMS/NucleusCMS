@@ -343,7 +343,8 @@ class PAGEFACTORY extends BaseActions {
 				$manager->notify('EditItemFormExtras', 
 						array(
 							'variables' => $this->variables,
-							'blog' => &$this->blog
+							'blog' => &$this->blog,
+							'itemid' => $this->variables['itemid']
 						)
 				);
 				break;

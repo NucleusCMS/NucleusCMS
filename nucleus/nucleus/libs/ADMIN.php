@@ -2071,7 +2071,13 @@ class ADMIN {
 		
 		</div></form>
 		
+		<h3>Extra Plugin Settings</h3>
+		
 		<?
+			$manager->notify('BlogSettingsFormExtras', 	array(
+							'blog' => &$blog
+							)
+			);
 		
 		$this->pagefoot();
 	}
@@ -2664,7 +2670,7 @@ $CONF['Self'] = '<b><?=htmlspecialchars($bshortname)?>.php</b>';
 
 include('<i>config.php</i>');
 
-selectBlog('<b><?=htmlspecialchars($bshortname)?></b>')
+selectBlog('<b><?=htmlspecialchars($bshortname)?></b>');
 selector();
 
 ?&gt;</code></pre>
@@ -4071,7 +4077,7 @@ selector();
 	}
 	
 	function pagefoot() {
-		global $action;
+		global $action, $member;
 		
 		if ($action != 'showlogin') {
 			?>
@@ -4090,6 +4096,49 @@ selector();
 			</div>		
 			
 			</div><!-- content -->
+			
+		<? /* TO be worked on...
+
+			<div class="quickmenu">
+				<?
+				// ---- user settings ---- 
+				echo '<h2>' . _OVERVIEW_YRSETTINGS . '</h2>';
+				echo '<ul>';
+				echo '<li><a href="index.php?action=editmembersettings">' . _OVERVIEW_EDITSETTINGS. '</a></li>';
+				echo '<li><a href="index.php?action=browseownitems">' . _OVERVIEW_BROWSEITEMS.'</a></li>';
+				echo '<li><a href="index.php?action=browseowncomments">'._OVERVIEW_BROWSECOMM.'</a></li>';
+				echo '</ul>';
+
+				// ---- general settings ---- 
+				if ($member->isAdmin()) {
+				
+					echo '<h2>' . _MANAGE_GENERAL. '</h2>';
+
+					echo '<ul>';
+					echo '<li><a href="index.php?action=createnewlog">'._OVERVIEW_NEWLOG.'</a></li>';
+					echo '<li><a href="index.php?action=settingsedit">'._OVERVIEW_SETTINGS.'</a></li>';
+					echo '<li><a href="index.php?action=usermanagement">'._OVERVIEW_MEMBERS.'</a></li>';		
+					echo '<li><a href="index.php?action=actionlog">'._OVERVIEW_VIEWLOG.'</a></li>';		
+					echo '</ul>';
+
+					echo '<h2>' . _MANAGE_SKINS . '</h2>';
+					echo '<ul>';
+					echo '<li><a href="index.php?action=skinoverview">'._OVERVIEW_SKINS.'</a></li>';
+					echo '<li><a href="index.php?action=templateoverview">'._OVERVIEW_TEMPLATES.'</a></li>';
+					echo '<li><a href="index.php?action=skinieoverview">'._OVERVIEW_SKINIMPORT.'</a></li>';		
+					echo '</ul>';
+
+					echo '<h2>' . _MANAGE_EXTRA . '</h2>';		
+					echo '<ul>';
+					echo '<li><a href="index.php?action=backupoverview">'._OVERVIEW_BACKUP.'</a></li>';			
+					echo '<li><a href="index.php?action=pluginlist">'._OVERVIEW_PLUGINS.'</a></li>';			
+					echo '</ul>';	
+				}
+				
+		?>			
+			</div>
+			
+		*/?>
 			
 			</body>
 			</html>
@@ -5151,7 +5200,7 @@ class ENCAPSULATE {
 }
 
 // can take either an array of objects, or an SQL query
-function showlist(&$query, $type, $template) {
+function showlist($query, $type, $template) {
 
 	if (is_array($query)) {
 		if (sizeof($query) == 0)
