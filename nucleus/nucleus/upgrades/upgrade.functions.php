@@ -59,7 +59,7 @@
 				$query = 'SELECT bincludesearch FROM ' . sql_table('blog') . ' LIMIT 1';
 				$minrows = -1;			
 				break;				
-			case '25':
+			case '30':
 				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'ExtAuth\' LIMIT 1';
 				$minrows = 1;
 				break;
