@@ -1,8 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xml:lang="jp" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<!-- $Id: plugins.html,v 1.4 2005-03-15 07:36:51 kimitake Exp $ -->
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<!-- $Id: plugins.html,v 1.5 2005-03-19 08:34:53 kimitake Exp $ -->
+	<!-- $NucleusJP$ -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Nucleus - プラグイン API</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 	<style type="text/css">
@@ -1753,7 +1754,7 @@ class NP_HelloWorld extends NucleusPlugin {
 
 	include($strRel . 'config.php');
 	if (!$member->isLoggedIn())
-		doError('You\'re not logged in.');
+		doError('You¥'re not logged in.');
 
 	include($DIR_LIBS . 'PLUGINADMIN.php');
 
@@ -1874,3 +1875,5 @@ http://forum.nucleuscms.org/viewtopic.php?t=&lt;トピックID&gt;&lt;/a&gt;&lt;
 
 </body>
 </html>
+
+
