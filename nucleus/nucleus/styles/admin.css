@@ -23,7 +23,12 @@ h1 {
 }
 
 /* page content */
-.content {
+#content {
+	position: absolute;
+	left: 125px;
+	right: 10px;
+	top: 70px;
+
 	width: auto;
 	
 	font-style: normal;
@@ -45,6 +50,57 @@ h1 {
 	
 }
 
+/* quick menu on left */
+#quickmenu {
+	position: absolute;
+	top: 70px;
+	left: 10px;
+	width: 100px;
+	margin: 0px;
+	padding: 3px;
+	font-size: x-small;
+	
+	border-width: 1px;
+	border-style: solid;
+	border-color: black;
+	
+	/* rounded borders in gecko-based browsers? why not :) */
+	-moz-border-radius: 10px;		
+}
+
+#quickmenu ul {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+}
+#quickmenu li {
+	background-color: #fff;
+	height: 2em;
+	padding: 5px;	
+	text-align: center;
+	border-bottom: 1px solid #ccc;
+}
+#quickmenu li:hover {
+	background-color: #eee;
+}
+#quickmenu h2 {
+	font-size: x-small;
+	text-align: center;
+	padding: 1px 0px 1px 0px;
+	margin: 0px;
+	border-bottom: 1px solid #bbb;
+	border-top: 1px solid #bbb;	
+	background-color: #ddd;
+	color: #000;
+}
+#quickmenu form {
+	padding: 5px;
+	text-align: center;
+}
+#quickmenu option {
+	font-size: xx-small;
+}
+
 .loginname {
 	float: right;
 	font-size: x-small;
@@ -54,7 +110,7 @@ h1 {
 	background-color: white;
 }
 
-.content h2 {
+#content h2 {
 	color: #596d9d; 
 
 	border-color: gray;
@@ -69,7 +125,7 @@ h1 {
 
 }
 
-.content h3 {
+#content h3 {
 	border-color: gray;
 	border-style: dotted;
 	border-width: 0px 0px 1px 0px;
@@ -82,7 +138,7 @@ h1 {
 	letter-spacing: 2;
 }
 
-.content .note, pre {
+#content .note, pre {
 	background-color: #ddd;
 	padding: 5px;
 }
@@ -180,16 +236,16 @@ div.indent {
 	http://diveintoaccessibility.org/day_26_using_relative_font_sizes.html
 
 	(netscape 4 trick is left out, Nucleus doesn't work anyway in that browser)	
-	.content should be 'small' (in standard-compliant browsers)
+	#content should be 'small' (in standard-compliant browsers)
 	
 */
 
-.content {
+#content {
   font-size: x-small;
   voice-family: "\"}\"";
   voice-family: inherit;
   font-size: small;
 }
-html>body .content { font-size: small; }
+html>body #content { font-size: small; }
 
 
