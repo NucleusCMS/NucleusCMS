@@ -56,7 +56,7 @@
 				<%jsbuttonbar(media)%>
 				<textarea 
 					<%jsinput(body)%>
-					cols="60" 
+					cols="58" 
 					rows="12"><%contents(body)%></textarea>
 					
 				</td></tr>
@@ -76,7 +76,7 @@
 				<%jsbuttonbar(media)%>
 				<textarea 
 					<%jsinput(more)%>
-					cols="60" 
+					cols="58" 
 					rows="17"><%contents(more)%></textarea>
 				</td></tr></table>
 			</div>
