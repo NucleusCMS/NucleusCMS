@@ -2507,18 +2507,29 @@ index, archive, archivelist, search, item, member
 <h1>Skinvar: member</h1>
 
 <p>
-Inserts some info about a member (on member detail pages)
+Inserts some info about on the currently logged in member. On member detail pages, extra options are available to show the same information for the requested member.
 </p>
+
+<p>When the visitor is not logged in, the <em>your...</em> parameters will insert nothing</p>
 
 <h2>Arguments</h2>
 <ul>
-	<li><strong>type</strong>: which information to show
+	<li><strong>type</strong>: which information to show.
+		<p>Information on the logged in member:</p>
+	    <ul>
+	    	<li><em>yourname</em>: nickname of the member (the one used to login)</li>
+	    	<li><em>yourrealname</em>: full name of the member</li>
+	    	<li><em>yournotes</em>: extra information a member can set for him/herself</li>
+	    	<li><em>yoururl</em>: URL of the members website</li>
+	    	<li><em>youremail</em>: email address </li>
+	    </ul>
+	    <p>Information on the requested member (only available on member detail pages):</p>
 	    <ul>
 	    	<li><em>name</em>: nickname of the member (the one used to login)</li>
-	    	<li><em>realname</em>: the full name of the member</li>
+	    	<li><em>realname</em>: full name of the member</li>
 	    	<li><em>notes</em>: extra information a member can set for him/herself</li>
-	    	<li><em>url</em>: the URL of the members website</li>
-	    	<li><em>email</em>: The email address of the member</li>
+	    	<li><em>url</em>: URL of the members website</li>
+	    	<li><em>email</em>: email address of the member</li>
 	    </ul>
 	</li>
 </ul>
@@ -2526,15 +2537,16 @@ Inserts some info about a member (on member detail pages)
 <h2>Skintypes</h2>
 
 <p>
-member
+all
 </p>
 
 <h2>Examples</h2>
 
-<pre>
-&lt;%member(realname)%&gt;
-&lt;%member(url)%&gt;
-</pre>
+<pre><code>
+&lt;%if(loggedin)%&gt;
+you are &lt;%member(yourrealname)%&gt;
+&lt;%endif%&gt;
+</code></pre>
 
 </div>
 
