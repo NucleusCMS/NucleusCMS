@@ -2508,6 +2508,9 @@ class ADMIN {
 		include_once($DIR_LIBS . 'skinie.php');
 		
 		$this->pagehead();
+		
+		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';		
+		
 	?>
 		<h2>Import</h2>	
 		<form method="post" action="index.php"><div>
@@ -2604,6 +2607,7 @@ class ADMIN {
 
 		$this->pagehead();
 
+		echo '<p><a href="index.php?action=skinieoverview">(',_BACK,')</a></p>';		
 		?>
 		<h2>About to import skins and templates</h2>
 
@@ -2654,6 +2658,8 @@ class ADMIN {
 			$this->error($error);
 
 		$this->pagehead();
+
+		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';				
 	?>
 		<h2>Done importing</h2>
 
