@@ -64,7 +64,7 @@
 				$minrows = -1;			
 				break;				
 			case '25':
-				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'ExtAuth\' LIMIT 1';
+				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 250 LIMIT 1';
 				$minrows = 1;
 				break;
 			case '30':
