@@ -102,7 +102,7 @@ class ITEM {
 			if (!$i_catid) 
 				return array('status' => 'error','message' => 'Could not create new category');
 		} else {
-			// force blogid to be
+			// force blogid (must be same as category id)
 			$i_blogid = getBlogIDFromCatID($i_catid);
 			$blog =& $manager->getBlog($i_blogid);
 		}
@@ -118,7 +118,7 @@ class ITEM {
 			$posttime = $i_draft ? 0 : $blog->getCorrectTime();	
 		}
 		
-	 	$itemid = $blog->additem($c_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft);	
+	 	$itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft);	
 	 	
 	 	// success
 	 	if ($i_catid != intRequestVar('catid'))
