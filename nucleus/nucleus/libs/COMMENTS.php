@@ -200,6 +200,12 @@ class COMMENTS {
 
 		sql_query($query);
 	
+		$query = 'SELECT cnumber FROM ' . sql_table('comment') . ' WHERE ctime=\'' . $timestamp .  '\'';
+		$res= sql_query($query);
+		$commentid = mysql_fetch_object($res);
+		$commentid = $commentid->cnumber;
+		$manager->notify('PostAddComment',array('comment' => &$comment, 'commentid' => &$commentid));
+
 		// succeeded !
 		return true;
 	}
