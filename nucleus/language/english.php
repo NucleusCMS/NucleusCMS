@@ -30,14 +30,12 @@ define('_ADD_ALIGNLEFT_TT',			'Align Left');
 define('_ADD_ALIGNRIGHT_TT',		'Align Right');
 define('_ADD_ALIGNCENTER_TT',		'Align Center');
 
-/*
-define('','');
-define('','');
-define('','');
-define('','');
-define('','');
-define('','');
-*/
+// searchable blog setting (yes/no)
+define('_EBLOG_SEARCH',				'Include in search');
+
+// generic upload failure
+define('_ERROR_UPLOADFAILED',		'Upload failed');
+
 // END introduced after v2.0 END
 
 // START introduced after v1.5 START
