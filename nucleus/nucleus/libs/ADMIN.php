@@ -1705,16 +1705,6 @@ class ADMIN {
 				$this->error(_ERROR_ATLEASTONEADMIN);
 		}
 		
-		
-		// if email changed, generate new password
-		if ($email != $mem->getEmail())
-		{
-			$password = genPassword(10);
-			$newpass = 1;
-		} else {
-			$newpass = 0;
-		}
-
 		if ($CONF['AllowLoginEdit'] || $member->isAdmin()) {
 			$mem->setDisplayName($name);
 			if ($password) 
@@ -1724,6 +1714,8 @@ class ADMIN {
 		if ($newpass)
 			$mem->setPassword($password);
 		
+		$oldEmail = $mem->getEmail();
+
 		$mem->setRealName($realname);
 		$mem->setEmail($email);
 		$mem->setURL($url);
@@ -1740,6 +1732,16 @@ class ADMIN {
 	
 		$mem->write();
 		
+		// if email changed, generate new password
+		if ($oldEmail != $mem->getEmail())
+		{
+			$mem->sendActivationLink('addresschange', $oldEmail);
+			// logout member
+			$mem->newCookieKey();
+			$mem->logout();	
+		}
+		
+		
 		// store plugin options
 		$aOptions = requestArray('plugoption');
 		NucleusPlugin::_applyPluginOptions($aOptions);
@@ -1752,6 +1754,7 @@ class ADMIN {
 		if (  ( $mem->getID() == $member->getID() ) 
 		   && ( $newpass || ( $mem->getDisplayName() != $member->getDisplayName() ) )
 		   ) {
+		    $mem->newCookieKey();
 			$member->logout();
 			$this->action_login(_MSG_LOGINAGAIN, 0);
 		} else {
@@ -1775,6 +1778,137 @@ class ADMIN {
 			$this->error($res);
 		
 		$this->action_usermanagement();		
+	}
+	
+	/**
+	 * Account activation
+	 *
+	 * @author dekarma
+	 */
+	function action_activate() {
+		
+		$key = getVar('key');
+		
+		// clean up old activation keys
+		MEMBER::cleanupActivationTable();
+
+		// get activation info
+		$info = MEMBER::getActivationInfo($key);
+		
+		if (!$info)
+			$this->error(_ERROR_ACTIVATE);
+			
+		$mem = MEMBER::createFromId($info->vmember);
+		
+		if (!$mem)
+			$this->error(_ERROR_ACTIVATE);
+		
+		$text = '';
+		$title = '';
+		$bNeedsPasswordChange = true;
+
+		switch ($info->vtype)
+		{
+			case 'forgot':
+				$title = _ACTIVATE_FORGOT_TITLE;
+				$text = _ACTIVATE_FORGOT_TEXT;
+				break;
+			case 'register':
+				$title = _ACTIVATE_REGISTER_TITLE;
+				$text = _ACTIVATE_REGISTER_TEXT;
+				break;
+			case 'addresschange':
+				$title = _ACTIVATE_CHANGE_TITLE;
+				$text = _ACTIVATE_CHANGE_TEXT;
+				$bNeedsPasswordChange = false;
+				MEMBER::activate($key);
+				break;
+		}
+
+		$aVars = array(
+			'memberName' => htmlspecialchars($mem->getDisplayName())
+		);
+		$title = TEMPLATE::fill($title, $aVars);
+		$text = TEMPLATE::fill($text, $aVars);
+
+		$this->pagehead();
+		
+			echo '<h2>' , $title, '</h2>';
+			echo '<p>' , $text, '</p>';
+			
+			if ($bNeedsPasswordChange)
+			{
+				?>			
+					<div><form action="index.php" method="post">
+
+						<input type="hidden" name="action" value="activatesetpwd" />
+						<input type="hidden" name="key" value="<?php echo htmlspecialchars($key) ?>" />
+
+						<table><tr>
+							<td><?php echo _MEMBERS_PWD?></td>
+							<td><input type="password" tabindex="30" maxlength="40" size="16" name="password" /></td>
+						</tr><tr>
+							<td><?php echo _MEMBERS_REPPWD?></td>
+							<td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" /></td>
+						</tr><tr>
+							<td><?php echo _MEMBERS_SETPWD ?></td>
+							<td><input type='submit' value='<?php echo _MEMBERS_SETPWD_BTN ?>' /></td>		
+						</tr></table>
+
+					</form></div>
+
+				<?php
+				
+				// TODO: plugin hooks!
+			}
+		
+		$this->pagefoot();
+		
+	}	
+	
+	/**
+	 * Account activation - set password part
+	 *
+	 * @author dekarma
+	 */
+	function action_activatesetpwd() {	
+		
+		$key = postVar('key');
+		
+		// clean up old activation keys
+		MEMBER::cleanupActivationTable();
+
+		// get activation info
+		$info = MEMBER::getActivationInfo($key);
+		
+		if (!$info || ($info->type == 'addresschange'))
+			$this->error(_ERROR_ACTIVATE);
+			
+		$mem = MEMBER::createFromId($info->vmember);
+		
+		if (!$mem)
+			$this->error(_ERROR_ACTIVATE);
+		
+		$password 		= postVar('password');
+		$repeatpassword	= postVar('repeatpassword');
+		
+		if ($password != $repeatpassword)
+			$this->error(_ERROR_PASSWORDMISMATCH);
+
+		if ($password && (strlen($password) < 6))
+			$this->error(_ERROR_PASSWORDTOOSHORT);
+		
+		// set password
+		$mem->setPassword($password);
+		$mem->write();
+		
+		// do the activation
+		MEMBER::activate($key);
+		
+		$this->pagehead();
+			echo '<h2>',_ACTIVATE_SUCCESS_TITLE,'</h2>';
+			echo '<p>',_ACTIVATE_SUCCESS_TEXT,'</p>';
+		$this->pagefoot();
 	}
 	
 	/**
@@ -2649,6 +2783,7 @@ class ADMIN {
 			$this->action_overview(_DELETED_MEMBER);
 	}	
 	
+	// (static)	
 	function deleteOneMember($memberid) {
 		global $manager;
 		
@@ -2665,6 +2800,9 @@ class ADMIN {
 
 		$query = 'DELETE FROM '.sql_table('team').' WHERE tmember='.$memberid;
 		sql_query($query);	
+		
+		$query = 'DELETE FROM '.sql_table('activation').' WHERE vmember='.$memberid;
+		sql_query($query);			
 		
 		// delete all associated plugin options
 		NucleusPlugin::_deleteOptionValues('member', $memberid);
@@ -4260,7 +4398,7 @@ selector();
 				    ." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
 				    . "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> - ";
 			else 
-				echo _NOTLOGGEDIN . ' <br />';
+				echo '<a href="index.php?action=showlogin" title="Log in">' , _NOTLOGGEDIN , '</a> <br />';
 
 			echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
 		?> 
@@ -4278,7 +4416,7 @@ selector();
 			)
 		);		
 		
-		if ($action != 'showlogin') {
+		if ($member->isLoggedIn() && ($action != 'showlogin')) {
 			?>
 			<h2><?php echo  _LOGOUT ?></h2>
 			<ul>
@@ -4298,8 +4436,7 @@ selector();
 			<div id="quickmenu">
 	
 				<?php				// ---- user settings ---- 
-				
-				if ($action != 'showlogin') {
+				if (($action != 'showlogin') && ($member->isLoggedIn())) {
 					echo '<ul>';
 					echo '<li><a href="index.php?action=overview">',_QMENU_HOME,'</a></li>';
 					echo '</ul>';				
@@ -4382,6 +4519,9 @@ selector();
 						echo '</ul>';
 					}
 					
+				} else if (($action == 'activate') || ($action == 'activatesetpwd')) {
+
+					echo '<h2>', _QMENU_ACTIVATE, '</h2>', _QMENU_ACTIVATE_TEXT;
 				} else {
 					// introduction text on login screen
 					echo '<h2>', _QMENU_INTRO, '</h2>', _QMENU_INTRO_TEXT;
