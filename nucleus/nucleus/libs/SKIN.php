@@ -452,10 +452,10 @@ class ACTIONS extends BaseActions {
 		$condition = 0;
 		switch($field) {
 			case 'category':
-				$condition = $blog->isValidCategory($catid);
+				$condition = ($blog && $blog->isValidCategory($catid));
 				break;
 			case 'blogsetting':
-				$condition = ($blog->getSetting($name) == $value);
+				$condition = ($blog && ($blog->getSetting($name) == $value));
 				break;
 			case 'loggedin':
 				$condition = $member->isLoggedIn();

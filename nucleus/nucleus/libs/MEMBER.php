@@ -153,11 +153,14 @@ class MEMBER {
 	/**
 	  * Returns true if this member can edit/delete a commentitem. This can be in the
 	  * following cases:
+	  *	  - member is a super-admin
 	  *   - member is the author of the comment
 	  *   - member is admin of the blog associated with the comment
 	  *   - member is author of the item associated with the comment
 	  */
 	function canAlterComment($commentid) {
+		if ($this->isAdmin()) return 1;
+	
 		$query =  'SELECT citem as itemid, iblog as blogid, cmember as cauthor, iauthor'
 		       . ' FROM '.sql_table('comment') .', '.sql_table('item').', '.sql_table('blog')
 		       . ' WHERE citem=inumber and iblog=bnumber and cnumber=' . intval($commentid);
@@ -168,10 +171,13 @@ class MEMBER {
 	
 	/**
 	  * Returns true if this member can edit/delete an item. This is true in the following
-	  * cases: - member is the author of the item
+	  * cases: - member is a super-admin
+	  *	       - member is the author of the item
 	  *        - member is admin of the the associated blog
 	  */
 	function canAlterItem($itemid) {
+		if ($this->isAdmin()) return 1;
+		
 		$query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
 		$obj = mysql_fetch_object(sql_query($query));
 		return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
