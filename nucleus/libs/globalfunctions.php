@@ -245,6 +245,8 @@ function sql_table($name)
 }
 
 function sendContentType($contenttype, $charset = _CHARSET) {
+	global $manager;
+	
 	if (!headers_sent()) {
 		// if content type is application/xhtml+xml, only send it to browsers
 		// that can handle it (IE6 cannot). Otherwise, send text/html
@@ -252,10 +254,24 @@ function sendContentType($contenttype, $charset = _CHARSET) {
 				($contenttype == 'application/xhtml+xml')
 			&&	!stristr(serverVar('HTTP_ACCEPT'),'application/xhtml+xml')
 			)
-			header('Content-Type: text/html; charset=' . $charset);
-		else
-			header('Content-Type: ' . $contenttype . '; charset=' . $charset);
+		{
+			$contenttype = 'text/html';
+		}
+			
+		$manager->notify(
+			'PreSendContentType',
+			array(
+				'contentType' => &$contenttype,
+				'charset' => &$charset
+			)
+		);
+		
+		header('Content-Type: ' . $contenttype . '; charset=' . $charset);				
 	}
+	
+	
+
+	
 }
 
 /**
