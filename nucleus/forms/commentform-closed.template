@@ -1,1 +1,1 @@
-<div class="commentform"><%text(_ERROR_ITEMCLOSED)%></div>;
+<div class="commentform"><%text(_ERROR_ITEMCLOSED)%></div>
