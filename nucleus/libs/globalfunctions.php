@@ -438,16 +438,16 @@ function getBlogIDFromName($name) {
 	return quickQuery('SELECT bnumber as result FROM '.sql_table('blog').' WHERE bshortname="'.addslashes($name).'"');
 }
 function getBlogNameFromID($id) {
-	return quickQuery('SELECT bname as result FROM '.sql_table('blog').' WHERE bnumber='.$id);
+	return quickQuery('SELECT bname as result FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
 }
 function getBlogIDFromItemID($itemid) {
-	return quickQuery('SELECT iblog as result FROM '.sql_table('item').' WHERE inumber='.$itemid);
+	return quickQuery('SELECT iblog as result FROM '.sql_table('item').' WHERE inumber='.intval($itemid));
 }
 function getBlogIDFromCommentID($commentid) {
-	return quickQuery('SELECT cblog as result FROM '.sql_table('comment').' WHERE cnumber='.$commentid);
+	return quickQuery('SELECT cblog as result FROM '.sql_table('comment').' WHERE cnumber='.intval($commentid));
 }
 function getBlogIDFromCatID($catid) {
-	return quickQuery('SELECT cblog as result FROM '.sql_table('category').' WHERE catid='.$catid);
+	return quickQuery('SELECT cblog as result FROM '.sql_table('category').' WHERE catid='.intval($catid));
 }
 function getCatIDFromName($name) {
 	return quickQuery('SELECT catid as result FROM '.sql_table('category').' WHERE cname="'.addslashes($name).'"');
@@ -459,7 +459,7 @@ function quickQuery($q) {
 }
 
 function getPluginNameFromPid($pid) {
-	$obj = mysql_fetch_object(sql_query('SELECT pfile FROM '.sql_table('plugin').' WHERE pid='.$pid));
+	$obj = mysql_fetch_object(sql_query('SELECT pfile FROM '.sql_table('plugin').' WHERE pid='.intval($pid)));
 	return $obj->pfile;
 }
 
@@ -510,7 +510,7 @@ function selector() {
 		global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
 
 		// 1. get timestamp and blogid for item
-		$query = 'SELECT itime, iblog FROM '.sql_table('item').' WHERE inumber=' . $itemid;
+		$query = 'SELECT itime, iblog FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
 
