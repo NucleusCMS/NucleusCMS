@@ -698,16 +698,31 @@ class ACTIONS extends BaseActions {
 		echo htmlspecialchars(requestVar('imagetext'));
 	}
 	
-	function parse_image() {
+	function parse_image($what) {
 		global $CONF;
 
-		$imagetext = htmlspecialchars(requestVar('imagetext'));
+		$imagetext 	= htmlspecialchars(requestVar('imagetext'));
 		$imagepopup = requestVar('imagepopup');
-		$width = requestVar('width');
-		$height = requestVar('height');
-
+		$width 		= requestVar('width');
+		$height 	= requestVar('height');
 		$fullurl = $CONF['MediaURL'] . $imagepopup;
-		echo "<img src=\"$fullurl\" width=\"$width\" height=\"$height\" alt=\"$imagetext\" />";
+		
+		switch($what)
+		{
+			case 'url':
+				echo $fullurl;
+				break;
+			case 'width':
+				echo $width;
+				break;
+			case 'height':
+				echo $height;
+				break;
+			case 'imgtag':
+			default:
+				echo "<img src=\"$fullurl\" width=\"$width\" height=\"$height\" alt=\"$imagetext\" />";
+				break;
+		}
 	}
 	
 	// When commentform is not used, to include a hidden field with itemid
