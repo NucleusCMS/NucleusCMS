@@ -15,6 +15,17 @@
   */
 class SKIN {
 
+	// after creating a SKIN object, evaluates to true when the skin exists
+	var $isValid;
+	
+	// skin characteristics. Use the getXXX methods rather than accessing directly
+	var $id;
+	var $description;
+	var $contentType;
+	var $includeMode;		// either 'normal' or 'skindir'
+	var $includePrefix;
+	var $name;
+	
 	function SKIN($id) {
 		$this->id = intval($id);
 
@@ -348,6 +359,29 @@ class SKIN {
  * SKIN::getAllowedActionsForType($type) method
  */
 class ACTIONS extends BaseActions {
+
+	// part of the skin currently being parsed ('index', 'item', 'archive',
+	// 'archivelist', 'member', 'search', 'error', 'imagepopup')
+	var $skintype;
+	
+	// contains an assoc array with parameters that need to be included when
+	// generating links to items/archives/... (e.g. catid)	
+	var $linkparams;
+	
+	// reference to the skin object for which a part is being parsed
+	var $skin;
+	
+
+	// used when including templated forms from the include/ dir. The $formdata var 
+	// contains the values to fill out in there (assoc array name -> value)
+	var $formdata;
+	
+
+	// filled out with the number of displayed items after calling one of the 
+
+	// (other)blog/(other)searchresults skinvars.
+
+	var $amountfound;
 
 	function ACTIONS($type) {
 		// call constructor of superclass first
