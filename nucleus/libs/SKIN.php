@@ -101,9 +101,10 @@ class SKIN {
 		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
 		PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());
 		
-		$handler = new ACTIONS($type);
+		$handler = new ACTIONS($type, $this);
 		$parser = new PARSER($actions, $handler);
 		$handler->setParser($parser);
+		$handler->setSkin($this);
 		$parser->parse($contents);
 		
 		$manager->notify('PostSkinParse',array('skin' => &$this, 'type' => $type));		
@@ -195,6 +196,7 @@ class SKIN {
 								'category',
 								'searchform',
 								'referer',
+								'skinname',
 								'skinfile',
 								'set',
 								'if',
@@ -313,6 +315,11 @@ class ACTIONS extends BaseActions {
 		if ($catid) 
 			$this->linkparams = array('catid' => $catid);
 	}
+
+	function setSkin(&$skin) {
+		$this->skin =& $skin;
+	}
+	
 	function setParser(&$parser) {
 		$this->parser =& $parser;
 	}
@@ -343,6 +350,9 @@ class ACTIONS extends BaseActions {
 		}
 	}
 	
+	function parse_skinname() {
+		echo $this->skin->getName();
+	}
 	
 	function parse_if($field, $value = '') {
 		global $catid, $blog;
