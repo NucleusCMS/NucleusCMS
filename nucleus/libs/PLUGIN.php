@@ -87,6 +87,9 @@
 		function createMemberOption($name, $desc, $type, $defValue = '', $typeExtras = '') {
 			return $this->_createOption('member', $name, $desc, $type, $defValue, $typeExtras);
 		}
+		function createCategoryOption($name, $desc, $type, $defValue = '', $typeExtras = '') {
+			return $this->_createOption('category', $name, $desc, $type, $defValue, $typeExtras);
+		}
 		
 		/**
 		  * Removes the option from the database
@@ -102,6 +105,9 @@
 		function deleteMemberOption($name) {
 			return $this->_deleteOption('member', $name);
 		}
+		function deleteCategoryOption($name) {
+			return $this->_deleteOption('category', $name);
+		}		
 		
 		/**
 		  * Sets the value of an option to something new
@@ -115,6 +121,9 @@
 		function setMemberOption($memberid, $name, $value) {
 			return $this->_setOption('member', $memberid, $name, $value);
 		}
+		function setCategoryOption($catid, $name, $value) {
+			return $this->_setOption('category', $catid, $name, $value);
+		}
 		
 		/**
 		  * Retrieves the current value for an option
@@ -123,12 +132,28 @@
 			return $this->_getOption('global', 0, $name);			
 		}
 		function getBlogOption($blogid, $name) {
-			return $this->_getOption('blog', $memberid, $name);		
+			return $this->_getOption('blog', $blogid, $name);		
 		}
 		function getMemberOption($memberid, $name) {
 			return $this->_getOption('member', $memberid, $name);
 		}
-				
+		function getCategoryOption($catid, $name) {
+			return $this->_getOption('category', $catid, $name);
+		}		
+		
+		/**
+		 * Retrieves an associative array with the option value for each
+		 * context id
+		 */
+		function getAllBlogOptions($name) {
+			return $this->_getAllOptions('blog', $name);
+		}		 
+		function getAllMemberOptions($name) {
+			return $this->_getAllOptions('member', $name);
+		}
+		function getAllCategoryOptions($name) {
+			return $this->_getAllOptions('category', $name);
+		}		
 		
 		/**
 		  * Returns the plugin ID
@@ -186,6 +211,7 @@
 			
 			$key = $context . '_' . $name;
 			$this->_aOptionToInfo[$key] = array('oid' => $oid, 'default' => $defValue);
+			return 1;
 		}
 				
 		
@@ -203,24 +229,51 @@
 			// clear from cache
 			unset($this->_aOptionToInfo[$context . '_' . $name]);
 			$this->_aOptionValues = array();
+			return 1;
 		}
 		
-		// private
+		/**
+		 * private
+		 * returns: 1 on success, 0 on failure
+		 */
 		function _setOption($context, $contextid, $name, $value) {
+			global $manager;
+			
 			$oid = $this->_getOID($context, $name);
 			if (!$oid) return 0;
 			
+			// check if context id exists
+			switch ($context) {
+				case 'member':
+					if (!MEMBER::existsID($contextid)) return 0;
+					break;
+				case 'blog':
+					if (!$manager->existsBlogID($contextid)) return 0;
+					break;
+				case 'category':
+					if (!$manager->existsCategory($contextid)) return 0;
+					break;
+				case 'global':
+					if ($contextid != 0) return 0;
+					break;
+			}
+
+			
 			// update plugin_option
-			$res = quickQuery('UPDATE ' . sql_table('plugin_option') . ' SET ovalue=\''.addslashes($value).'\' WHERE oid=' . intval($oid) . ' and ocontextid=' . intval($ocontextid));
+			sql_query('DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid) . ' and ocontextid='. intval($contextid));
+			sql_query('INSERT INTO ' . sql_table('plugin_option') . ' (ovalue, oid, ocontextid) VALUES (\''.addslashes($value).'\', '. intval($oid) . ', ' . intval($contextid) . ')');
 			
 			// update cache
 			$this->_aOptionValues[$oid . '_' . $contextid] = $value;
+			
+			return 1;
 		}
 		
 		// private
 		function _getOption($context, $contextid, $name) {
 			$oid = $this->_getOID($context, $name);			
-			if (!$oid) return;			
+			if (!$oid) return '';			
+		
 
 			$key = $oid . '_' . $contextid;
 			
@@ -229,8 +282,9 @@
 			
 			// get from DB
 			$res = sql_query('SELECT ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid).' and ocontextid=' . intval($contextid));
-			if (!$res) {
-				$defVal = $this->_getDefVal($name);
+
+			if (!$res || (mysql_num_rows($res) == 0)) {
+				$defVal = $this->_getDefVal($context, $name);
 				$this->_aOptionValues[$key] = $defVal;
 
 				// fill DB with default value
@@ -244,6 +298,39 @@
 			}
 			
 			return $this->_aOptionValues[$key];
+		}
+		
+		/**
+		 * Returns assoc array with all values for a given option (one option per
+		 * possible context id)
+		 */
+		function _getAllOptions($context, $name) {
+			$oid = $this->_getOID($context, $name);			
+			if (!$oid) return array();			
+			$defVal = $this->_getDefVal($context, $name);
+			
+			$aOptions = array();
+			switch ($context) {
+				case 'blog':
+					$r = sql_query('SELECT bnumber as contextid FROM ' . sql_table('blog'));
+					break;
+				case 'category':
+					$r = sql_query('SELECT catid as contextid FROM ' . sql_table('category'));
+					break;
+				case 'member':
+					$r = sql_query('SELECT mnumber as contextid FROM ' . sql_table('member'));
+					break;				
+			}
+			if ($r) {
+				while ($o = mysql_fetch_object($r))
+					$aOptions[$o->contextid] = $defVal;
+			}
+				
+			$res = sql_query('SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid);
+			while ($o = mysql_fetch_object($res)) 
+				$aOptions[$o->ocontextid] = $o->ovalue;
+				
+			return $aOptions;
 		}
 		
 		/**
@@ -268,7 +355,70 @@
 			
 			return $this->_aOptionToInfo[$key]['oid'];
 		}
+		function _getDefVal($context, $name) {
+			$key = $context . '_' . $name;
+			$info = $this->_aOptionToInfo[$key];	
+			if (is_array($info)) return $info['default'];			
+		}
 		
+		
+		/**
+		 * Deletes all option values for a given context and contextid
+		 * (used when e.g. a blog, member or category is deleted)
+		 *
+		 * (static method)
+		 */
+		function _deleteOptionValues($context, $contextid) {
+			// delete all associated plugin options
+			$aOIDs = array();
+				// find ids
+			$query = 'SELECT oid FROM '.sql_table('plugin_option_desc') . ' WHERE ocontext=\''.addslashes($context).'\'';
+			$res = sql_query(query);
+			while ($o = mysql_fetch_object($res)) 
+				array_push($aOIDs, $o->oid);
+			mysql_free_result($res);
+				// delete those options. go go go
+			if (count($aOIDs) > 0) {
+				$query = 'DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).') and ocontextid=' . intval($contextid);
+				sql_query($query);
+			}
+		}
+		
+		/**
+		 * @param $aOptions: array ( 'oid' => array( 'contextid' => 'value'))
+		 *        (taken from request using requestVar())
+		 *
+		 * (static method)
+		 */
+		function _applyPluginOptions(&$aOptions) {
+			if (!is_array($aOptions)) return;
+
+			foreach ($aOptions as $oid => $values) {
+
+				// get option type info
+				$query = 'SELECT otype, oextra, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . intval($oid);
+				$res = sql_query($query);
+				if ($o = mysql_fetch_object($res))
+				{
+					foreach ($values as $contextid => $value) {
+							$value = undoMagic($value);	// value comes from request						
+
+							switch($o->otype) {
+								case 'yesno':
+									if (($value != 'yes') && ($value != 'no')) $value = 'no';
+									break;
+								default:
+									break;
+							}
+
+							sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));
+							sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
+
+					}
+				}
+			}
+		}
+		 
 		  
 	}
 ?>
