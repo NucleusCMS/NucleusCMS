@@ -326,6 +326,67 @@ class ADMIN {
 		
 	}
 	
+	
+	function action_batchcategory() {
+		global $member, $manager;
+		
+		// check if logged in
+		$member->isLoggedIn() or $this->disallow();
+		
+		// more precise check will be done for each performed operation 
+	
+		// get array of itemids from request
+		$selected = requestIntArray('batch');
+		$action = requestVar('batchaction');
+		
+		// Show error when no items were selected
+		if (!is_array($selected) || sizeof($selected) == 0)
+			$this->error('No catgeories to perform actions on');
+			
+		// On move: when no destination blog chosen, show choice now
+		$destBlogId = intRequestVar('destblogid');
+		if (($action == 'move') && (!$manager->existsBlogID($destBlogId))) 
+			$this->batchMoveCategorySelectDestination('category',$selected);
+		
+		// On delete: check if confirmation has been given
+		if (($action == 'delete') && (requestVar('confirmation') != 'yes')) 
+			$this->batchAskDeleteConfirmation('category',$selected);
+
+		$this->pagehead();
+		
+		echo '<a href="index.php?action=overview">(',_BACKHOME,')</a>';		
+		echo '<h2>Batch operation on actions</h2>';
+		echo '<p>Excecuting <b>',htmlspecialchars($action),'</b></p>';
+		echo '<ul>';
+		
+		// walk over all itemids and perform action
+		foreach ($selected as $catid) {
+			$catid = intval($catid);
+			echo '<li>Performing operation <b>',htmlspecialchars($action),'</b> on category <b>', $catid, '</b>...';
+
+			// perform action, display errors if needed
+			switch($action) {
+				case 'delete':
+					$error = $this->deleteOneCategory($catid);
+					break;
+				case 'move':
+					$error = $this->moveOneCategory($catid, $destBlogId);
+					break;
+				default:
+					$error = 'Unknown batch operation';
+			}
+
+			echo '<b>',($error ? 'Error: '.$error : 'Success'),'</b>';
+			echo '</li>';
+		}
+		
+		echo '</ul>';
+		echo '<b>Done!</b>';
+		
+		$this->pagefoot();
+		
+	}
+	
 	function batchMoveSelectDestination($type, $ids) {
 		$this->pagehead();
 		// TODO: use same language constants as action_move
@@ -348,6 +409,35 @@ class ADMIN {
 			
 			
 			<input type="submit" value="<?=_MOVE_BTN?>" onclick="return checkSubmit();" 
+
+		<div></form>
+		<?
+		$this->pagefoot();
+		exit;
+	}
+	
+	function batchMoveCategorySelectDestination($type, $ids) {
+		$this->pagehead();
+		// TODO: use same language constants as action_move
+		?>
+		<h2><?=_MOVECAT_TITLE?></h2>
+		<form method="post" action="index.php"><div>
+
+			<input type="hidden" name="action" value="batch<?=$type?>" />
+			<input type="hidden" name="batchaction" value="move" />
+			<?
+				// insert selected item numbers
+				$idx = 0;
+				foreach ($ids as $id)
+					echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+			
+				// show blog/category selection list
+				$this->selectBlog('destblogid');
+			
+			?>
+			
+			
+			<input type="submit" value="<?=_MOVECAT_BTN?>" onclick="return checkSubmit();" 
 
 		<div></form>
 		<?
@@ -386,6 +476,16 @@ class ADMIN {
 	  * member has access
 	  */
 	function selectBlogCategory($name, $selected = 0, $tabindex = 0, $showNewCat = 0) {
+		$this->selectBlog($name, 'category', $selected, $tabindex, $showNewCat);
+	}
+	
+
+	/**
+	  * Inserts a HTML select element with choices for all blogs to which the user has access
+	  *		mode = 'blog' => shows blognames and values are blogids
+	  *		mode = 'category' => show category names and values are catids
+	  */
+	function selectBlog($name, $mode='blog', $selected = 0, $tabindex = 0, $showNewCat = 0) {
 		global $member, $CONF;
 		
 		echo '<select name="',$name,'" tabindex="',$tabindex,'">';
@@ -398,37 +498,46 @@ class ADMIN {
 			$queryBlogs =  'SELECT bnumber, bname FROM nucleus_blog, nucleus_team WHERE tblog=bnumber and tmember=' . $member->getID() . ' ORDER BY bname';		
 		}		
 		$blogs = sql_query($queryBlogs);
-		if (mysql_num_rows($blogs) > 1)
-			$multipleBlogs = 1;
-			
-		while ($oBlog = mysql_fetch_object($blogs)) {
-			if ($multipleBlogs)
-				echo '<optgroup label="',htmlspecialchars($oBlog->bname),'">';
-			
-			// show selection to create new category when allowed/wanted
-			if ($showNewCat) {
-				// check if allowed to do so
-				if ($member->blogAdminRights($oBlog->bnumber))
-					echo '<option value="newcat-',$oBlog->bnumber,'">New category...</option>';
-			}
+		if ($mode == 'category') {
+			if (mysql_num_rows($blogs) > 1)
+				$multipleBlogs = 1;
 
-			// 2. for each category in that blog
-			$categories = sql_query('SELECT cname, catid FROM nucleus_category WHERE cblog=' . $oBlog->bnumber . ' ORDER BY cname ASC');
-			while ($oCat = mysql_fetch_object($categories)) {
-				if ($oCat->catid == $selected)
-					$selectText = ' selected="selected" ';
-				else
-					$selectText = '';
-				echo '<option value="',$oCat->catid,'" ', $selectText,'>',htmlspecialchars($oCat->cname),'</option>';
+			while ($oBlog = mysql_fetch_object($blogs)) {
+				if ($multipleBlogs)
+					echo '<optgroup label="',htmlspecialchars($oBlog->bname),'">';
+
+				// show selection to create new category when allowed/wanted
+				if ($showNewCat) {
+					// check if allowed to do so
+					if ($member->blogAdminRights($oBlog->bnumber))
+						echo '<option value="newcat-',$oBlog->bnumber,'">New category...</option>';
+				}
+
+				// 2. for each category in that blog
+				$categories = sql_query('SELECT cname, catid FROM nucleus_category WHERE cblog=' . $oBlog->bnumber . ' ORDER BY cname ASC');
+				while ($oCat = mysql_fetch_object($categories)) {
+					if ($oCat->catid == $selected)
+						$selectText = ' selected="selected" ';
+					else
+						$selectText = '';
+					echo '<option value="',$oCat->catid,'" ', $selectText,'>',htmlspecialchars($oCat->cname),'</option>';
+				}
+
+				if ($multipleBlogs)
+					echo '</optgroup>';
 			}
-			
-			if ($multipleBlogs)
-				echo '</optgroup>';
+		} else {
+			// blog mode
+			while ($oBlog = mysql_fetch_object($blogs)) {
+				echo '<option value="',$oBlog->bnumber,'"';
+				if ($oBlog->bnumber == $selected)
+					echo ' selected="selected"';
+				echo'>',htmlspecialchars($oBlog->bname),'</option>';			
+			}
 		}
-		
 		echo '</select>';
+		
 	}
-	
 	
 	function action_browseownitems() {
 		global $member;
@@ -1902,9 +2011,40 @@ class ADMIN {
 		
 		$member->blogAdminRights($blogid) or $this->disallow();
 
+		$error = deleteOneCategory($catid);
+		if ($error)
+			$this->error($error);
+
+		$this->action_blogsettings();
+	}	
+
+	function deleteOneCategory($catid) {
+		global $manager, $member;
+
+		$blogid = getBlogIDFromCatID($catid);
+		
+		if (!$member->blogAdminRights($blogid))
+			return ERROR_DISALLOWED;
+		
+		// get blog
 		$blog =& $manager->getBlog($blogid);
+
+		// check if the category is valid
+		if (!$blog || !$blog->isValidCategory($catid)) 
+			return _ERROR_NOSUCHCATEGORY;
+	
 		$destcatid = $blog->getDefaultCategory();
 		
+		// don't allow deletion of default category
+		if ($blog->getDefaultCategory() == $catid)
+			return _ERROR_DELETEDEFCATEGORY;
+		
+		// check if catid is the only category left for blogid
+		$query = "SELECT catid FROM nucleus_category WHERE cblog=" . $blogid;
+		$res = sql_query($query);
+		if (mysql_num_rows($res) == 1)
+			return _ERROR_DELETELASTCATEGORY;
+			
 		// change category for all items to the default category
 		$query = "UPDATE nucleus_item SET icat=$destcatid WHERE icat=$catid";
 		sql_query($query);
@@ -1912,10 +2052,53 @@ class ADMIN {
 		// delete category
 		$query = "DELETE FROM nucleus_category WHERE catid=" .intval($catid);
 		sql_query($query);
-		
-		$this->action_blogsettings();
-	}	
+
+	}
 	
+	function moveOneCategory($catid, $destblogid) {
+		global $manager, $member;
+
+		$blogid = getBlogIDFromCatID($catid);
+		
+		// mover should have admin rights on both blogs
+		if (!$member->blogAdminRights($blogid))
+			return _ERROR_DISALLOWED;
+		if (!$member->blogAdminRights($destblogid))
+			return _ERROR_DISALLOWED;
+			
+		// cannot move to self
+		if ($blogid == $destblogid)
+			return _ERROR_MOVETOSELF;
+		
+		// get blogs
+		$blog =& $manager->getBlog($blogid);
+		$destblog =& $manager->getBlog($destblogid);		
+		
+		// check if the category is valid
+		if (!$blog || !$blog->isValidCategory($catid)) 
+			return _ERROR_NOSUCHCATEGORY;
+			
+		// don't allow default category to be moved
+		if ($blog->getDefaultCategory() == $catid)
+			return _ERROR_MOVEDEFCATEGORY;
+		
+		// update comments table (cblog)
+		$query = "SELECT inumber FROM nucleus_item WHERE icat=$catid";
+		$items = sql_query($query);
+		while ($oItem = mysql_fetch_object($items)) {
+			sql_query("UPDATE nucleus_comment SET cblog=$destblogid WHERE citem=".$oItem->inumber);
+		}
+
+		// update items (iblog)
+		$query = "UPDATE nucleus_item SET iblog=$destblogid WHERE icat=$catid";
+		sql_query($query);
+
+		// move category 
+		$query = "UPDATE nucleus_category SET cblog=$destblogid WHERE catid=$catid";
+		sql_query($query);
+		
+	}
+
 	function action_blogsettingsupdate() {
 		global $member, $manager;
 		
@@ -3313,6 +3496,11 @@ class ADMIN {
 			?>
 				</select>
 			</td>			
+		</tr><tr>
+			<td><?=_SETTINGS_URLMODE?> <?help('urlmode');?></td>
+			<td><? $this->input_yesno('URLMode',$CONF['URLMode'],10078,
+					          'normal','pathinfo',_SETTINGS_URLMODE_NORMAL,_SETTINGS_URLMODE_PATHINFO); ?>
+			</td>
 
 
 
@@ -3473,6 +3661,7 @@ class ADMIN {
 		$this->updateConfig('CookieDomain',		postVar('CookieDomain'));
 		$this->updateConfig('CookiePath',		postVar('CookiePath'));
 		$this->updateConfig('CookieSecure',		postVar('CookieSecure'));
+		$this->updateConfig('URLMode',			postVar('URLMode'));		
 		
 		// load new config and redirect (this way, the new language will be used is necessary)
 		getConfig();
