@@ -37,9 +37,11 @@ class BLOG {
 	 *		String representing the template _NAME_ (!)
 	 * @param $amountEntries 
 	 *		amount of entries to show
+	 * @param $startpos
+	 *		offset from where items should be shown (e.g. 5 = start at fifth item)
 	 */
-	function readLog($template, $amountEntries) {
-		$this->readLogAmount($template,$amountEntries,'','',1,1);
+	function readLog($template, $amountEntries, $startpos = 0) {
+		$this->readLogAmount($template,$amountEntries,'','',1,1,$startpos);
 	}
 	
 	/**
@@ -100,8 +102,10 @@ class BLOG {
 	 *		1=show comments 0=don't show comments
 	 * @param $dateheads
 	 *		1=show dateheads 0=don't show dateheads
+	 * @param $startpos
+	 *		offset
 	 */
-	function readLogAmount($template, $amountEntries, $extraQuery, $highlight, $comments, $dateheads) {
+	function readLogAmount($template, $amountEntries, $extraQuery, $highlight, $comments, $dateheads, $startpos = 0) {
 		
 		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed'
 		       . ' FROM nucleus_item as i, nucleus_member as m, nucleus_category as c'
@@ -113,14 +117,14 @@ class BLOG {
 		       . ' and i.itime<=' . mysqldate($this->getCorrectTime());
 
 		if ($this->getSelectedCategory())
-			$query .= ' and i.icat=' . $this->getSelectedCategory();
+			$query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
 	
 		       
 		$query .= $extraQuery
 		       . ' ORDER BY i.itime DESC';
 		
 		if ($amountEntries > 0)
-		       $query .= ' LIMIT ' . intval($amountEntries);
+		       $query .= ' LIMIT ' . intval($startpos).',' . intval($amountEntries);
 
 		return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
 	}
@@ -945,11 +949,14 @@ class ITEMACTIONS extends BaseActions {
 			$this->parser->parse($this->template['MORELINK']);
 	}			
 	
-	/**
-	  * @param format optional strftime format
-	  */
-	function parse_date($format = '') {			
-		echo strftime($format ? $format : $this->template['FORMAT_DATE'],$this->currentItem->timestamp);
+	function parse_date($format = '') {
+        if ($format = 'rfc822') { 
+			echo date('r', $this->currentItem->timestamp); 
+        } else if ($format = 'rfc822GMT') { 
+			echo gmdate('r', $this->currentItem->timestamp); 
+        } else {  
+			echo strftime($format ? $format : $this->template['FORMAT_DATE'],$this->currentItem->timestamp); 
+        }  
 	}
 	
 	/**

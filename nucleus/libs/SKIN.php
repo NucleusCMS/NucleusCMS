@@ -496,18 +496,24 @@ class ACTIONS extends BaseActions {
 	
 	function parse_blog($template, $amount = 10, $category = '') {
 		global $blog;
+		
+		list($limit, $offset) = sscanf($amount, '%d(%d)');
+		
 		$this->_setBlogCategory($blog, $category);
 		$this->_preBlogContent('blog',$blog);
-		$blog->readLog($template, $amount);
+		$blog->readLog($template, $limit, $offset);
 		$this->_postBlogContent('blog',$blog);		
 	}
 	
 	function parse_otherblog($blogname, $template, $amount = 10, $category = '') {
 		global $manager;
+		
+		list($limit, $offset) = sscanf($amount, '%d(%d)');
+		
 		$b =& $manager->getBlog(getBlogIDFromName($blogname));
 		$this->_setBlogCategory($b, $category);	
 		$this->_preBlogContent('otherblog',$b);		
-		$b->readLog($template, $amount);
+		$b->readLog($template, $limit, $offset);
 		$this->_postBlogContent('otherblog',$b);		
 	}
 	
