@@ -446,3 +446,4 @@ function _evenNumberOfQuotes($text) {
 		return (($unescaped_quotes % 2) == 0);
 }
 
+?>

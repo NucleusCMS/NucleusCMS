@@ -1,4 +1,4 @@
-<?
+<?php
 
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
@@ -57,7 +57,7 @@ if (!$CONF['DisableSite']) {
 	    <docs>http://backend.userland.com/rss</docs>
  	  </channel>
 	</rss>	
-	<?
+	<?php
 }
 
 ?>

@@ -59,8 +59,6 @@ class COMMENT {
 		$body = addBreaks($body);
 	
 		// create hyperlinks for http:// addresses
-//		$body = eregi_replace('(http://([a-zA-Z0-9]|\.|/|~|%|&|\?|\@|\=|_|\+|\:|;|-|#|,)*)','<a href="\\0">http://.../</a>',$body);
-
 		$body = preg_replace('/((http(s?):\/\/|www\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie','COMMENT::createLinkCode("\\1")', $body);
 		return $body;
 	}

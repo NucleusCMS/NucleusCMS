@@ -1,4 +1,4 @@
-<?
+<?php
 
 // This file contains variables with the locations of the data dirs
 // and basic functions that every page can use
