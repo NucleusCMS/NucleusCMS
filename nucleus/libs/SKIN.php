@@ -196,6 +196,7 @@ class SKIN {
 								'adminurl',
 								'todaylink',
 								'archivelink',
+								'member',
 								'ifcat',					// deprecated (Nucleus v2.0)
 								'category',
 								'searchform',
@@ -262,7 +263,7 @@ class SKIN {
 								);
 				break;
 			case 'member':
-				$extraActions = array('member',
+				$extraActions = array(
 								'membermailform',
 								'blogsetting',
 								'nucleusbutton'
@@ -776,24 +777,52 @@ class ACTIONS extends BaseActions {
 	
 	// includes a member info thingie
 	function parse_member($what) {
-		global $memberinfo;
-		switch($what) {
-			case 'name':
-				echo $memberinfo->getDisplayName();
-				break;
-			case 'realname':
-				echo $memberinfo->getRealName();
-				break;
-			case 'notes':
-				echo $memberinfo->getNotes();
-				break;
-			case 'url':
-				echo $memberinfo->getURL();
-				break;
-			case 'email':
-				echo $memberinfo->getEmail();
-				break;
-		}	
+		global $memberinfo, $member;
+		
+		// 1. only allow the member-details-page specific variables on member pages
+		if ($this->skintype == 'member') {
+
+			switch($what) {
+				case 'name':
+					echo $memberinfo->getDisplayName();
+					break;
+				case 'realname':
+					echo $memberinfo->getRealName();
+					break;
+				case 'notes':
+					echo $memberinfo->getNotes();
+					break;
+				case 'url':
+					echo $memberinfo->getURL();
+					break;
+				case 'email':
+					echo $memberinfo->getEmail();
+					break;
+			}	
+		}
+		
+		// 2. the next bunch of options is available everywhere, as long as the user is logged in
+		if ($member->isLoggedIn())
+		{
+			switch($what) {
+				case 'yourname':
+					echo $member->getDisplayName();
+					break;
+				case 'yourrealname':
+					echo $member->getRealName();
+					break;
+				case 'yournotes':
+					echo $member->getNotes();
+					break;
+				case 'yoururl':
+					echo $member->getURL();
+					break;
+				case 'youremail':
+					echo $member->getEmail();
+					break;
+			}	
+		}
+
 	}
 	
 	function parse_preview($template) {
