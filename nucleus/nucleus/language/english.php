@@ -14,6 +14,9 @@
 
 // START changed/added after 3.1 START
 
+// cookie prefix
+define('_SETTINGS_COOKIEPREFIX',	'Cookie Prefix');
+
 // account activation
 define('_ERROR_NOLOGON_NOACTIVATE',	'Cannot send activation link. You\'re not allowed to log in.');
 define('_ERROR_ACTIVATE',			'Activation key does not exist, is invalid, or has expired.');

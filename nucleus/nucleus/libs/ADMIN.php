@@ -4251,6 +4251,9 @@ selector();
 		</tr><tr>
 			<th colspan="2"><?php echo _SETTINGS_COOKIES_TITLE?> <?php help('cookies'); ?></th>
 		</tr><tr>
+			<td><?php echo _SETTINGS_COOKIEPREFIX?></td>
+			<td><input name="CookiePrefix" tabindex="10159" size="40" value="<?php echo  htmlspecialchars($CONF['CookiePrefix'])?>" /></td>
+		</tr><tr>
 			<td><?php echo _SETTINGS_COOKIEDOMAIN?></td>
 			<td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  htmlspecialchars($CONF['CookieDomain'])?>" /></td>
 		</tr><tr>
@@ -4332,8 +4335,11 @@ selector();
 		$this->updateConfig('CookiePath',		postVar('CookiePath'));
 		$this->updateConfig('CookieSecure',		postVar('CookieSecure'));
 		$this->updateConfig('URLMode',			postVar('URLMode'));		
+		$this->updateConfig('CookiePrefix',		postVar('CookiePrefix'));		
 		
 		// load new config and redirect (this way, the new language will be used is necessary)
+		// note that when changing cookie settings, this redirect might cause the user
+		// to have to log in again.
 		getConfig();
 		header('Location: ' . $CONF['AdminURL'] . '?action=manage');
 		exit;

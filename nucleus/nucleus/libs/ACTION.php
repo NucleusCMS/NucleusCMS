@@ -62,8 +62,8 @@ class ACTION
 		$remember = intPostVar('remember');
 		if ($remember == 1) {
 			$lifetime = time()+2592000;
-			setcookie('comment_user',$post['user'],$lifetime,'/','',0);
-			setcookie('comment_userid', $post['userid'],$lifetime,'/','',0);
+			setcookie($CONF['CookiePrefix'] . 'comment_user',$post['user'],$lifetime,'/','',0);
+			setcookie($CONF['CookiePrefix'] . 'comment_userid', $post['userid'],$lifetime,'/','',0);
 		}
 
 		$comments = new COMMENTS($post['itemid']);
