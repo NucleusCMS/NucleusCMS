@@ -45,6 +45,20 @@ define('_SETTINGS_URLMODE',			'URL Mode');
 define('_SETTINGS_URLMODE_NORMAL',	'Normal');
 define('_SETTINGS_URLMODE_PATHINFO','Fancy');
 
+// Batch operations
+define('_BATCH_NOSELECTION',		'Nothing selected to perform actions on');
+define('_BATCH_ITEMS',				'Batch operation on items');
+define('_BATCH_CATEGORIES',			'Batch operation on categories');
+define('_BATCH_MEMBERS',			'Batch operation on members');
+define('_BATCH_UNKNOWN',			'Unknown batch operation: ');
+define('_BATCH_EXECUTING',			'Excecuting');
+define('_BATCH_ONCATEGORY',			'on category');
+define('_BATCH_ONITEM',				'on item');
+define('_BATCH_ONMEMBER',			'on member');
+define('_BATCH_SUCCESS',			'Success!');
+define('_BATCH_DONE',				'Done!');
+define('_BATCH_DELETE_CONFIRM',		'Confirm Batch Deletion');
+define('_BATCH_DELETE_CONFIRM_BTN',	'Confirm Batch Deletion');
 
 // END introduced after v1.5 END
 

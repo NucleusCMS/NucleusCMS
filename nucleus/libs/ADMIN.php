@@ -279,7 +279,7 @@ class ADMIN {
 		
 		// Show error when no items were selected
 		if (!is_array($selected) || sizeof($selected) == 0)
-			$this->error('No items to perform actions on');
+			$this->error(_BATCH_NOSELECTION);
 			
 		// On move: when no destination blog/category chosen, show choice now
 		$destCatid = intRequestVar('destcatid');
@@ -293,14 +293,14 @@ class ADMIN {
 		$this->pagehead();
 		
 		echo '<a href="index.php?action=overview">(',_BACKHOME,')</a>';		
-		echo '<h2>Batch operation on items</h2>';
-		echo '<p>Excecuting <b>',htmlspecialchars($action),'</b></p>';
+		echo '<h2>',_BATCH_ITEMS,'</h2>';
+		echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b></p>';
 		echo '<ul>';
 		
 		// walk over all itemids and perform action
 		foreach ($selected as $itemid) {
 			$itemid = intval($itemid);
-			echo '<li>Performing operation <b>',htmlspecialchars($action),'</b> on itemid <b>', $itemid, '</b>...';
+			echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b> ',_BATCH_ONITEM,' <b>', $itemid, '</b>...';
 
 			// perform action, display errors if needed
 			switch($action) {
@@ -311,20 +311,84 @@ class ADMIN {
 					$error = $this->moveOneItem($itemid, $destCatid);
 					break;
 				default:
-					$error = 'Unknown batch operation';
+					$error = _BATCH_UNKNOWN . $action;
 			}
 
-			echo '<b>',($error ? $error : 'Success'),'</b>';
+			echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
 			echo '</li>';
 		}
 		
 		echo '</ul>';
-		echo '<b>Done!</b>';
+		echo '<b>',_BATCH_DONE,'</b>';
 		
 		$this->pagefoot();
 
 		
 	}
+	
+	function action_batchmember() {
+		global $member, $manager;
+		
+		// check if logged in and admin
+		($member->isLoggedIn() && $member->isAdmin()) or $this->disallow();
+		
+		// get array of itemids from request
+		$selected = requestIntArray('batch');
+		$action = requestVar('batchaction');
+		
+		// Show error when no members selected
+		if (!is_array($selected) || sizeof($selected) == 0)
+			$this->error(_BATCH_NOSELECTION);
+			
+		// On delete: check if confirmation has been given
+		if (($action == 'delete') && (requestVar('confirmation') != 'yes')) 
+			$this->batchAskDeleteConfirmation('member',$selected);
+
+		$this->pagehead();
+		
+		echo '<a href="index.php?action=usermanagement">(',_MEMBERS_BACKTOOVERVIEW,')</a>';		
+		echo '<h2>',_BATCH_MEMBERS,'</h2>';
+		echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b></p>';
+		echo '<ul>';
+		
+		// walk over all itemids and perform action
+		foreach ($selected as $memberid) {
+			$memberid = intval($memberid);
+			echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b> ',_BATCH_ONMEMBER,' <b>', $memberid, '</b>...';
+
+			// perform action, display errors if needed
+			switch($action) {
+				case 'delete':
+					$error = $this->deleteOneMember($memberid);
+					break;
+				case 'setadmin':
+					// always succeeds
+					sql_query('UPDATE nucleus_member SET madmin=1 WHERE mnumber='.$memberid);
+					$error = '';
+					break;
+				case 'unsetadmin':
+					// there should always remain at least one super-admin
+					$r = sql_query('SELECT * FROM nucleus_member WHERE madmin=1 and mcanlogin=1');
+					if (mysql_num_rows($r) < 2)
+						$error = _ERROR_ATLEASTONEADMIN;
+					else
+						sql_query('UPDATE nucleus_member SET madmin=0 WHERE mnumber='.$memberid);
+					break;
+				default:
+					$error = _BATCH_UNKNOWN . $action;
+			}
+
+			echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
+			echo '</li>';
+		}
+		
+		echo '</ul>';
+		echo '<b>',_BATCH_DONE,'</b>';
+		
+		$this->pagefoot();
+
+		
+	}	
 	
 	
 	function action_batchcategory() {
@@ -341,7 +405,7 @@ class ADMIN {
 		
 		// Show error when no items were selected
 		if (!is_array($selected) || sizeof($selected) == 0)
-			$this->error('No catgeories to perform actions on');
+			$this->error(_BATCH_NOSELECTION);
 			
 		// On move: when no destination blog chosen, show choice now
 		$destBlogId = intRequestVar('destblogid');
@@ -355,14 +419,14 @@ class ADMIN {
 		$this->pagehead();
 		
 		echo '<a href="index.php?action=overview">(',_BACKHOME,')</a>';		
-		echo '<h2>Batch operation on actions</h2>';
-		echo '<p>Excecuting <b>',htmlspecialchars($action),'</b></p>';
+		echo '<h2>',BATCH_CATEGORIES,'</h2>';
+		echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b></p>';
 		echo '<ul>';
 		
 		// walk over all itemids and perform action
 		foreach ($selected as $catid) {
 			$catid = intval($catid);
-			echo '<li>Performing operation <b>',htmlspecialchars($action),'</b> on category <b>', $catid, '</b>...';
+			echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b> ',_BATCH_ONCATEGORY,' <b>', $catid, '</b>...';
 
 			// perform action, display errors if needed
 			switch($action) {
@@ -373,15 +437,15 @@ class ADMIN {
 					$error = $this->moveOneCategory($catid, $destBlogId);
 					break;
 				default:
-					$error = 'Unknown batch operation';
+					$error = _BATCH_UNKNOWN . $action;
 			}
 
-			echo '<b>',($error ? 'Error: '.$error : 'Success'),'</b>';
+			echo '<b>',($error ? 'Error: '.$error : _BATCH_SUCCESS),'</b>';
 			echo '</li>';
 		}
 		
 		echo '</ul>';
-		echo '<b>Done!</b>';
+		echo '<b>',_BATCH_DONE,'</b>';
 		
 		$this->pagefoot();
 		
@@ -389,7 +453,6 @@ class ADMIN {
 	
 	function batchMoveSelectDestination($type, $ids) {
 		$this->pagehead();
-		// TODO: use same language constants as action_move
 		?>
 		<h2><?=_MOVE_TITLE?></h2>
 		<form method="post" action="index.php"><div>
@@ -418,7 +481,6 @@ class ADMIN {
 	
 	function batchMoveCategorySelectDestination($type, $ids) {
 		$this->pagehead();
-		// TODO: use same language constants as action_move
 		?>
 		<h2><?=_MOVECAT_TITLE?></h2>
 		<form method="post" action="index.php"><div>
@@ -447,9 +509,8 @@ class ADMIN {
 	
 	function batchAskDeleteConfirmation($type, $ids) {
 		$this->pagehead();
-		// TODO: use same language constants as action_move
 		?>
-		<h2><?=_DELETE_CONFIRM?></h2>
+		<h2><?=_BATCH_DELETE_CONFIRM?></h2>
 		<form method="post" action="index.php"><div>
 
 			<input type="hidden" name="action" value="batch<?=$type?>" />
@@ -462,7 +523,7 @@ class ADMIN {
 					echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
 			?>
 			
-			<input type="submit" value="<?=_DELETE_CONFIRM_BTN?>" onclick="return checkSubmit();" 
+			<input type="submit" value="<?=_BATCH_DELETE_CONFIRM_BTN?>" onclick="return checkSubmit();" 
 
 		<div></form>
 		<?
@@ -2270,24 +2331,30 @@ class ADMIN {
 		
 		($member->getID() == $memberid) or $member->isAdmin() or $this->disallow();
 		
-		$mem = MEMBER::createFromID($memberid);
-		
-		if (!$mem->canBeDeleted()) {
-			$this->error(_ERROR_DELETEMEMBER);	
-			exit;
-		}
-
-		$query = "DELETE FROM nucleus_member WHERE mnumber=$memberid";
-		sql_query($query);
-
-		$query = "DELETE FROM nucleus_team WHERE tmember=$memberid";
-		sql_query($query);
+		$error = $this->deleteOneMember($memberid);
+		if ($error)
+			$this->error($error);
 		
 		if ($member->isAdmin())
 			$this->action_usermanagement();
 		else
 			$this->action_overview(_DELETED_MEMBER);
 	}	
+	
+	function deleteOneMember($memberid) {
+		$mem = MEMBER::createFromID($memberid);
+		
+		if (!$mem->canBeDeleted()) 
+			return _ERROR_DELETEMEMBER;	
+
+		$query = "DELETE FROM nucleus_member WHERE mnumber=$memberid";
+		sql_query($query);
+
+		$query = "DELETE FROM nucleus_team WHERE tmember=$memberid";
+		sql_query($query);	
+		
+		return '';
+	}
 	
 	function action_createnewlog() {
 		global $member;

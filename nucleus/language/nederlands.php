@@ -46,6 +46,21 @@ define('_SETTINGS_URLMODE',			'URL Mode');
 define('_SETTINGS_URLMODE_NORMAL',	'Normaal');
 define('_SETTINGS_URLMODE_PATHINFO','Fancy');
 
+// Batch operations
+define('_BATCH_NOSELECTION',		'Er werd niks geselecteerd');
+define('_BATCH_ITEMS',				'Groepbewerking op berichten');
+define('_BATCH_CATEGORIES',			'Groepbewerking op categorieën');
+define('_BATCH_MEMBERS',			'Groepbewerking op leden');
+define('_BATCH_UNKNOWN',			'Ongekende bewerking: ');
+define('_BATCH_EXECUTING',			'Bezig met uivoeren van');
+define('_BATCH_ONCATEGORY',			'op categorie');
+define('_BATCH_ONITEM',				'op bericht');
+define('_BATCH_ONMEMBER',			'op lid');
+define('_BATCH_SUCCESS',			'Succes!');
+define('_BATCH_DONE',				'Klaar!');
+define('_BATCH_DELETE_CONFIRM',		'Bevestigen wissen geselecteerde items');
+define('_BATCH_DELETE_CONFIRM_BTN',	'Wissen bevestigen');
+
 
 // END introduced after v1.5 END
 
