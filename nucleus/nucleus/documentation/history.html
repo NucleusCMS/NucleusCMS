@@ -17,6 +17,7 @@
 	<li>
 		<b>Nucleus v? (being worked on)</b>
 		<ul>
+			<li>CHANGED: When the content type of a skin is <code>application/xhtml+xml</code>, only send this to browsers that specify this type in their <code>HTTP_ACCEPT</code> header (otherwise, send <code>text/html</code> instead)</li>
 			<li>CHANGED: More intelligent search keywords highlighting (multiple separate keywords etc), also available inside comment bodies now</li>
 			<li>ADDED: Possibility to filter on filename in media library</li>
 			<li>FIXED: <code>include('config.php')</code> caused problems when another <code>config.php</code> was in the PHP include path (nils bernhard)</li>

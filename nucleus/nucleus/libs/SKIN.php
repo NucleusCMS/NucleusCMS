@@ -109,8 +109,17 @@ class SKIN {
 		global $manager, $CONF;
 		
 		// set output type
-		if (!headers_sent())
-			header('Content-Type: ' . $this->getContentType() . '; charset=' . _CHARSET);
+		if (!headers_sent()) {
+			// if content type is application/xhtml+xml, only send it to browsers
+			// that can handle it (IE6 cannot). Otherwise, send text/html
+			if (
+					($this->getContentType() == 'application/xhtml+xml') 
+				&&	!stristr(serverVar('HTTP_ACCEPT'),'application/xhtml+xml')
+				)
+				header('Content-Type: text/html; charset=' . _CHARSET);			
+			else
+				header('Content-Type: ' . $this->getContentType() . '; charset=' . _CHARSET);
+		}
 
 		// set skin name as global var (so plugins can access it)
 		global $currentSkinName;
