@@ -704,28 +704,6 @@ function isValidSkinName($name) {		return eregi('^[a-z0-9/]+$', $name); }
 function addBreaks($var) { 				return nl2br($var); }
 function removeBreaks($var) {			return preg_replace("/<br \/>([\r\n])/","$1",$var); }
 
-/**
-  * Generate a 'pronouncable' password
-  * (http://www.zend.com/codex.php?id=215&single=1)
-  */
-function genPassword($length){
-
-    srand((double)microtime()*1000000);
-
-    $vowels = array('a', 'e', 'i', 'o', 'u');
-    $cons = array('b', 'c', 'd', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'r', 's', 't', 'u', 'v', 'w', 'tr',
-    'cr', 'br', 'fr', 'th', 'dr', 'ch', 'ph', 'wr', 'st', 'sp', 'sw', 'pr', 'sl', 'cl');
-
-    $num_vowels = count($vowels);
-    $num_cons = count($cons);
-
-    for($i = 0; $i < $length; $i++){
-        $password .= $cons[rand(0, $num_cons - 1)] . $vowels[rand(0, $num_vowels - 1)];
-    }
-
-    return substr($password, 0, $length);
-}
-
 // shortens a text string to maxlength ($toadd) is what needs to be added
 // at the end (end length is <= $maxlength)
 function shorten($text, $maxlength, $toadd) {

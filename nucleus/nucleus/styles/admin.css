@@ -27,6 +27,7 @@ textarea.skinedit, textarea.templateedit
 img			{ border: none; }
 .skip 		{ display: none; }
 label		{ cursor: pointer; }
+.error 		{ color: red; font-size: 1.2em; }
 
 /* header */
 h1 {
