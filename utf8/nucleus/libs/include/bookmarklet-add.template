@@ -6,7 +6,6 @@
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />		
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
-		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
@@ -28,7 +27,6 @@
 			
 			<input name="action" type="hidden" value="additem" />
 			<input name="blogid" type="hidden" value="<%blogid%>" />
-			<%ticket%>
 			
 			<div id="submit" class="buttonbar">
 				<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
@@ -103,12 +101,12 @@
 					<div class="indent">
 						<%text(_ADD_PLACE_ON)%>
 						<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" />年
-						<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" />�
+						<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" />月
 						<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" />日
-						<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" />�
-						<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" />�
+						<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" />時
+						<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" />分
 						<br />
-						フォーマット！Eyyyy)年(mm)朁Edd)日 (hh)晁Emm)�
+						フォーマット：(yyyy)年(mm)月(dd)日 (hh)時(mm)分
 						<%ifblogsetting(ballowpast,0)%>
 							<br />
 							<%text(_ADD_NOPASTDATES)%>
@@ -122,9 +120,6 @@
 				<td>
 				<%pluginextras%></td>
 				</tr>
-				
-				
-				  <%itemoptions%>
 				</table>
 				
 

@@ -6,7 +6,6 @@
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />				
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
-		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
@@ -28,7 +27,6 @@
 			
 			<input name="action" type="hidden" value="edititem" />
 			<input name="itemid" type="hidden" value="<%contents(itemid)%>" />
-			<%ticket%>
 			
 			<div id="submit" class="buttonbar">
 				<input type="submit" value="<%text(_BMLET_EDIT)%>" onclick="return checkSubmit();" />
@@ -104,12 +102,12 @@
 							<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="70" /><label for="act_changedate"><%text(_BMLET_CHANGEDATE)%></label> <%helplink(changedate)%>
 									<div class="indent">
 										<input id="inputyear" name="year" tabindex="71" size="4" value="<%itemtime(year)%>" />年
-										<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" />�
+										<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" />月
 										<input id="inputday" name="day" tabindex="73" size="2" value="<%itemtime(mday)%>" />日
-										<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" />�
-										<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" />�
+										<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" />時
+										<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" />分
 										<br />
-										フォーマット！Eyyyy)年(mm)朁Edd)日 (hh)晁Emm)�
+										フォーマット：(yyyy)年(mm)月(dd)日 (hh)時(mm)分
 									</div>
 							</li>
 					<%endif%>						
@@ -121,8 +119,6 @@
 				<td>
 				<%pluginextras%>
 				</td></tr>
-				
-				  <%itemoptions%>
 				</table>
 				
 			</div>
