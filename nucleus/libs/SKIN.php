@@ -1164,9 +1164,9 @@ class ACTIONS extends BaseActions {
 			$destinationurl = createItemLink($itemid, $this->linkparams);
 
 		// values to prefill
-		$user = cookieVar('comment_user');
+		$user = cookieVar($CONF['CookiePrefix'] .'comment_user');
 		if (!$user) $user = postVar('user');
-		$userid = cookieVar('comment_userid');
+		$userid = cookieVar($CONF['CookiePrefix'] .'comment_userid');
 		if (!$userid) $userid = postVar('userid');
 		$body = postVar('body');
 		
@@ -1178,7 +1178,7 @@ class ACTIONS extends BaseActions {
 			'userid' => htmlspecialchars($userid),			
 			'body' => htmlspecialchars($body),			
 			'membername' => $member->getDisplayName(),
-			'rememberchecked' => cookieVar('comment_user')?'checked="checked"':''
+			'rememberchecked' => cookieVar($CONF['CookiePrefix'] .'comment_user')?'checked="checked"':''
 		);
 		
 		if (!$member->isLoggedIn()) {

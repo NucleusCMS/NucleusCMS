@@ -139,7 +139,7 @@ class BLOG {
 	function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1) {
 		global $CONF, $manager;
 
-		$lastVisit = cookieVar('lastVisit');
+		$lastVisit = cookieVar($CONF['CookiePrefix'] .'lastVisit');
 		if ($lastVisit != 0)
 			$lastVisit = $this->getCorrectTime($lastVisit);
 

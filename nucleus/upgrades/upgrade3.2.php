@@ -15,6 +15,11 @@ function upgrade_do32() {
 	   	   . ' )';
     upgrade_query('Creating account activation table', $query);    
 
+	// create CookiePrefix setting
+	$query = 'INSERT INTO '.sql_table('config')." VALUES ('CookiePrefix','')";
+	upgrade_query('Creating CookiePrefix config value',$query);	
+		
+
 	// 3.1 -> 3.1+
 	// update database version  
 //	$query = 'UPDATE ' . sql_table('config') . ' set value=\'320\' where name=\'DatabaseVersion\'';

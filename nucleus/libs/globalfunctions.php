@@ -183,17 +183,17 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
        }
 */
 
-} elseif (($action == 'logout') && (!headers_sent()) && cookieVar('user')){
+} elseif (($action == 'logout') && (!headers_sent()) && cookieVar($CONF['CookiePrefix'] . 'user')){
 	// remove cookies on logout
-	setcookie('user','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
-	setcookie('loginkey','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
-	$manager->notify('Logout',array('username' => cookieVar('user')));
-} elseif (cookieVar('user')) {
+	setcookie($CONF['CookiePrefix'] .'user','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+	setcookie($CONF['CookiePrefix'] .'loginkey','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+	$manager->notify('Logout',array('username' => cookieVar($CONF['CookiePrefix'] .'user')));
+} elseif (cookieVar($CONF['CookiePrefix'] .'user')) {
 	// Cookie Authentication
-	$res = $member->cookielogin(cookieVar('user'), cookieVar('loginkey'));
+	$res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] .'user'), cookieVar($CONF['CookiePrefix'] .'loginkey'));
 
 	// renew cookies when not on a shared computer
-	if ($res && (cookieVar('sharedpc') != 1) && (!headers_sent()))
+	if ($res && (cookieVar($CONF['CookiePrefix'] .'sharedpc') != 1) && (!headers_sent()))
 		$member->setCookies();
 }
 
@@ -217,9 +217,9 @@ include($DIR_LIBS . 'SEARCH.php');
 // set lastVisit cookie (if allowed)
 if (!headers_sent()) {
 	if ($CONF['LastVisit'])
-		setcookie('lastVisit',time(),time()+2592000,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+		setcookie($CONF['CookiePrefix'] .'lastVisit',time(),time()+2592000,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 	else
-		setcookie('lastVisit','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+		setcookie($CONF['CookiePrefix'] .'lastVisit','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 }
 
 // read language file, only after user has been initialized
