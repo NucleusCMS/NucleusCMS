@@ -240,7 +240,7 @@
 
 		// private
 		function _deleteOption($context, $name) {
-			$oid = $this->_getOID($name);
+			$oid = $this->_getOID($context, $name);
 			if (!$oid) return 0; // no such option
 
 			// delete all things from plugin_option
