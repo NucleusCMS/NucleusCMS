@@ -41,6 +41,7 @@ if (mysql_num_rows($teams) == 0)
 switch($action) {
 	case 'chooseupload':
 	case 'Upload to...':
+	case 'Upload new file...':
 		media_choose();
 		break;
 	case 'uploadfile':
@@ -77,7 +78,7 @@ function media_select() {
 	?>
 		<form method="post" action="media.php"><div>
 			<label for="media_collection">Current collection:</label>
-			<select name="collection" onchange="form.submit()" id="media_collection">
+			<select name="collection" id="media_collection">
 				<?
 					foreach ($collections as $dirname => $description) {
 						echo '<option value="',htmlspecialchars($dirname),'"';
@@ -91,6 +92,13 @@ function media_select() {
 			<input type="submit" name="action" value="Select" title="Switch to this category" />
 			<input type="submit" name="action" value="Upload to..." title="<?=_MEDIA_UPLOADLINK?>" />
 		</div></form>
+	<?
+	} else {
+	?>
+		<form method="post" action="media.php"><div>
+			<input type="hidden" name="collection" value="<?=intval($currentCollection)?>" />
+			<input type="submit" name="action" value="Upload new file..." title="<?=_MEDIA_UPLOADLINK?>" />
+		</div></form>	
 	<?
 	} // if sizeof
 	
