@@ -16,7 +16,8 @@
 	<li>
 		<b>Nucleus v2.5 (?)</b>
 		<ul>
-			<li>FIXED: <code>metaWeblog.getRecentPosts</code> expected a <code>string</code> instead of an <code>int</code> for the <code>amountOfPosts</code> parameter. (karma)</li>
+			<li>FIXED: XML-RPC: Added <code>postid</code> in structs returned by <code>metaWeblog.getPost</code> and <code>metaWeblog.getRecentPosts</code> (karma)</li>
+			<li>FIXED: XML-RPC: <code>metaWeblog.getRecentPosts</code> expected a <code>string</code> instead of an <code>int</code> for the <code>amountOfPosts</code> parameter. (karma)</li>
 			<li>FIXED: convert linebreaks broke <code>\r\n</code> linebreaks (jmuto)</li>
 			<li>FIXED: On <code>index</code> and <code>search</code> skinparts, <code>nextlink</code>/<code>prevlink</code> could not be used before a <code>blog</code> or <code>searchresults</code> skinvar was called (karma)</li>
 			<li>FIXED: SQL errors when search query contained single quotes (<code>'</code>) (karma)</li>
