@@ -397,13 +397,13 @@ function selector() {
 		
 		sscanf($archive,'%d-%d-%d',$y,$m,$d);			
 		if ($d != 0) {
-			$archivetype = 'day';
+			$archivetype = 'day';	// TODO: move to language file
 			$t = mktime(0,0,0,$m,$d,$y);
 			$archiveprev = strftime('%Y-%m-%d',$t - (24*60*60));	
 			$archivenext = strftime('%Y-%m-%d',$t + (24*60*60));	
 
 		} else {
-			$archivetype = 'month';
+			$archivetype = 'month'; // TODO: move to language file
 			$t = mktime(0,0,0,$m,1,$y);
 			$archiveprev = strftime('%Y-%m',$t - (1*24*60*60));	
 			$archivenext = strftime('%Y-%m',$t + (32*24*60*60));	
