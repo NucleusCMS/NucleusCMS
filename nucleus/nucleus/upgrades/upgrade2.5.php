@@ -98,6 +98,10 @@ function upgrade_do25() {
 	// insert database version  (allows us to do better version checking in v3.0 upgrades)
 	$query = 'INSERT INTO ' . sql_table('config') . ' (name,value) VALUES (\'DatabaseVersion\',\'250\')';
 	upgrade_query('Adding DatabaseVersion to config table', $query);
+
+	// insert External Authentication global option
+	$query = 'INSERT INTO ' . sql_table('config') . ' (name,value) VALUES (\'ExtAuth\',\'0\')';
+	upgrade_query('Adding External Authentication option to config table', $query);	
 }
 
 ?>

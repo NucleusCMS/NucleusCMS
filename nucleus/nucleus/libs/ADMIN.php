@@ -3983,13 +3983,6 @@ selector();
                        <td><?php $this->input_yesno('ExtAuth',$CONF['ExtAuth'],10078, 0, 1, _NO, _YES); ?>
                                <b><?php echo _WARNING_EXTAUTH?></b>
                        </td>
-               </tr><tr>
-                       <td><?php echo _SETTINGS_ITEMFILTER?></td>
-                       <td><?php $this->input_yesno('ItemFilter',$CONF['ItemFilter'],10079); ?>
-			</td>
-
-
-
 
 
 		</tr><tr>
@@ -4149,6 +4142,7 @@ selector();
 		$this->updateConfig('CookiePath',		postVar('CookiePath'));
 		$this->updateConfig('CookieSecure',		postVar('CookieSecure'));
 		$this->updateConfig('URLMode',			postVar('URLMode'));		
+		$this->updateConfig('ExtAuth',			postVar('ExtAuth'));		
 		
 		// load new config and redirect (this way, the new language will be used is necessary)
 		getConfig();
