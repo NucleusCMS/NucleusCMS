@@ -13,6 +13,31 @@
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
 
+// START introduced after v1.5 START
+
+// posting to the past/edit timestamps
+define('_EBLOG_ALLOWPASTPOSTING',	'Allow posting to the past');
+define('_ADD_CHANGEDATE',			'Update timestamp');
+define('_BMLET_CHANGEDATE',			'Update timestamp');
+
+// skin import/export
+define('_OVERVIEW_SKINIMPORT',		'Skin import/export...');
+
+// skin settings
+define('_PARSER_INCMODE_NORMAL',	'Normal');
+define('_PARSER_INCMODE_SKINDIR',	'Use skin dir');
+define('_SKIN_INCLUDE_MODE',		'Include mode');
+define('_SKIN_INCLUDE_PREFIX',		'Include prefix');
+
+// global settings
+define('_SETTINGS_BASESKIN',		'Base Skin');
+define('_SETTINGS_SKINSURL',		'Skins URL');
+define('_SETTINGS_ACTIONSURL',		'Full URL to action.php');
+
+
+// END introduced after v1.5 END
+
+
 // START introduced after v1.1 START
 
 // bookmarklet buttons
