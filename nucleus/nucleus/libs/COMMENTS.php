@@ -249,6 +249,7 @@ class COMMENTACTIONS extends BaseActions {
 			'host',
 			'ip',
 			'blogid',
+			'authtext',
 			'user',
 			'userid',
 			'userlinkraw',
@@ -337,6 +338,10 @@ class COMMENTACTIONS extends BaseActions {
 		echo $tmp;
 		if ($tmp != $this->currentComment['body'])
 			$this->parser->parse($this->template['COMMENTS_CONTINUED']); 
+	}
+	function parse_authtext() {
+		if ($this->currentComment['memberid'] != 0) 
+			$this->parser->parse($this->template['COMMENTS_AUTH']);
 	}
 	
 	/**
