@@ -53,7 +53,8 @@ class PAGEFACTORY extends BaseActions {
 			'ifblogsetting',
 			'ifitemproperty',
 			'else',
-			'endif'
+			'endif',
+			'pluginextras'
 		);
 		
 		// TODO: maybe add 'skin' later on?
@@ -72,6 +73,10 @@ class PAGEFACTORY extends BaseActions {
 			return;
 		$this->type = $type;
 		$this->method = 'add';
+		
+		global $manager;
+		$manager->notify('PreAddItemForm', array('contents' => &$contents, 'blog' => &$this->blog));
+		
 		$this->createForm($contents);
 	}
 	
@@ -97,13 +102,11 @@ class PAGEFACTORY extends BaseActions {
 	 * (private) creates a form for a given type of page
 	 */
 	function createForm($contents) {
-		
-
 		// save contents
 		$this->variables = $contents;
 		
 		// get template to use
-		$template = $this->getTemplateFor($type);
+		$template = $this->getTemplateFor($this->type);
 		
 		// use the PARSER engine to parse that template
 		$parser = new PARSER($this->actions, $this);
@@ -307,6 +310,31 @@ class PAGEFACTORY extends BaseActions {
 				echo '</div>';
 				
 				break;			
+		}
+	}
+	
+	/**
+	 * Allows plugins to add their own custom fields
+	 */
+	function parse_pluginextras() {
+		global $manager;
+			
+		switch ($this->method) {
+			case 'add':
+				$manager->notify('AddItemFormExtras', 
+						array(
+							'blog' => &$this->blog
+						)
+				);
+				break;
+			case 'edit':
+				$manager->notify('EditItemFormExtras', 
+						array(
+							'variables' => $this->variables,
+							'blog' => &$this->blog
+						)
+				);
+				break;
 		}
 	}
 	

@@ -89,7 +89,10 @@
 					<%endif%>						
 				</ul>
 				
-
+				<h2><%text(_ADD_PLUGIN_EXTRAS)%></h2>
+				
+				<%pluginextras%>
+				
 			</div>
 			
 			<div id="preview" class="contentblock">

@@ -112,6 +112,11 @@
 
 	</td>
 </tr><tr>
+	<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+	<td>
+		<%pluginextras%>
+	</td>	
+</tr><tr>
 	<td><%text(_ADD_MORE)%>
 		<br /><%helplink(extended)%>
 	</td>

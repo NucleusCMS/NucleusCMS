@@ -18,7 +18,9 @@
 			<%jsinput(title)%>
 			tabindex="10"
 			size="60" 
-			maxlength="160" /></td>
+			maxlength="160" 
+			value="<%contents(title)%>"
+			/></td>
 	</tr><tr>
 		<td>
 			<%text(_ADD_BODY)%> <%helplink(additem)%>
@@ -29,7 +31,7 @@
 				<%jsinput(body)%>
 				tabindex="20"
 				cols="60"
-				rows="20"></textarea>
+				rows="20"><%contents(body)%></textarea>
 		</td>
 	</tr><tr id="edit" style="display:none;">
 		<td><%text(_ADD_PREVIEW)%></td>
@@ -80,6 +82,11 @@
 			<input name="actiontype" tabindex="61" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
 		</td>
 	</tr><tr>
+		<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+		<td>
+			<%pluginextras%>
+		</td>
+	</tr><tr>
 		<td><%text(_ADD_MORE)%>
 			<br /><%helplink('extended')%>
 		</td>
@@ -89,7 +96,8 @@
 				<%jsinput(more)%>			
 				tabindex="70"
 				cols="60"
-				rows="20"></textarea>
+				rows="20"
+				><%contents(more)%></textarea>
 		</td>
 	</tr>
 </table>
