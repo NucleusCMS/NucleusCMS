@@ -12,6 +12,9 @@
   *
   */
 
+// needed if we include globalfunctions from install.php
+global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
+
 $nucleus['version'] = 'v2.2 CVS';
 $CONF['debug'] = 1;			
 
@@ -48,9 +51,9 @@ if ($CONF['debug']) {
 
 // we will use postVar, getVar, ... methods instead of HTTP_GET_VARS or _GET
 if (phpversion() >= '4.1.0')
-	include($DIR_LIBS . 'vars4.1.0.php');
+	include_once($DIR_LIBS . 'vars4.1.0.php');
 else
-	include($DIR_LIBS . 'vars4.0.6.php');
+	include_once($DIR_LIBS . 'vars4.0.6.php');
 
 function intPostVar($name) { return intval(postVar($name));}
 function intGetVar($name) { return intval(getVar($name));}
@@ -220,7 +223,7 @@ function sql_connect() {
 	global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE;
 	
 	$connection = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>','Connect Error');	
-	mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database</p>', 'Connect Error');	
+	mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: '. mysql_error().'</p>', 'Connect Error');	
 	
 	return $connection;
 }
@@ -738,6 +741,8 @@ function getMailFooter() {
   */
 function getLanguageName() {
 	global $CONF, $member;
+	
+	if (!$member) return 'english';
 
 	// try to use members language
 	$memlang = $member->getLanguage();
