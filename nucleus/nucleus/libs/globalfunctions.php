@@ -625,8 +625,8 @@ function isValidTemplateName($name) {	return eregi('^[a-z0-9/]+$', $name); }
 function isValidSkinName($name) {		return isValidShortName($name); }
 
 // add and remove linebreaks
-function addBreaks($var) { 				return str_replace("\n","<br />\n",$var); }
-function removeBreaks($var) {			return str_replace("<br />\n","\n",$var); }
+function addBreaks($var) { 				return nl2br($var); }
+function removeBreaks($var) {			return preg_replace("/<br \/>([\r\n])/","$1",$var); }
 
 /**
   * Generate a 'pronouncable' password
