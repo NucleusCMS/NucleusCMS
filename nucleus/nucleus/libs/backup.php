@@ -19,27 +19,28 @@ function do_backup($gzip = 0) {
 	global $manager;
 
 	// tables of which backup is needed
-	$tables = array('nucleus_actionlog',
-					'nucleus_ban',
-					'nucleus_blog',
-					'nucleus_comment',
-					'nucleus_config',
-					'nucleus_item',
-					'nucleus_karma',
-					'nucleus_member',
-					'nucleus_skin',
-					'nucleus_skin_desc',
-					'nucleus_team',
-					'nucleus_template',
-					'nucleus_template_desc',
-					'nucleus_plugin',
-					'nucleus_plugin_event',
-					'nucleus_plugin_option',
-					'nucleus_category'
+	$tables = array(
+					sql_table('actionlog'),
+					sql_table('ban'),
+					sql_table('blog'),
+					sql_table('comment'),
+					sql_table('config'),
+					sql_table('item'),
+					sql_table('karma'),
+					sql_table('member'),
+					sql_table('skin'),
+					sql_table('skin_desc'),
+					sql_table('team'),
+					sql_table('template'),
+					sql_table('template_desc'),
+					sql_table('plugin'),
+					sql_table('plugin_event'),
+					sql_table('plugin_option'),
+					sql_table('category')
 			  );
 
 	// add tables that plugins want to backup to the list
-	$res = sql_query('SELECT pfile FROM nucleus_plugin');
+	$res = sql_query('SELECT pfile FROM '.sql_table('plugin');
 	while ($plugName = mysql_fetch_object($res)) {
 		$plug =& $manager->getPlugin($plugName->pfile);
 		$tables = array_merge($tables, $plug->getTableList());
@@ -63,9 +64,9 @@ function do_backup($gzip = 0) {
 		@ob_implicit_flush(0);
 		
 		// set filename
-		$filename = "nucleus_db_backup_".strftime("%Y%m%d", time()).".sql.gz";
+		$filename = 'nucleus_db_backup_'.strftime("%Y%m%d", time()).".sql.gz";
 	} else {
-		$filename = "nucleus_db_backup_".strftime("%Y%m%d", time()).".sql";
+		$filename = 'nucleus_db_backup_'.strftime("%Y%m%d", time()).".sql";
 	}
 	
 	

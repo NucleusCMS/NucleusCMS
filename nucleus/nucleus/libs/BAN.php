@@ -22,7 +22,7 @@ class BAN {
 	  * message and other information of the ban
 	  */
 	function isBanned($blogid, $ip) {
-		$query = "SELECT * FROM nucleus_ban WHERE blogid=$blogid";
+		$query = 'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid;
 		$res = sql_query($query);
 		while ($obj = mysql_fetch_object($res)) {
 			$found = strpos ($ip, $obj->iprange);
@@ -48,7 +48,7 @@ class BAN {
 			)
 		);
 	
-		$query = "INSERT INTO nucleus_ban (blogid, iprange, reason) VALUES "
+		$query = 'INSERT INTO '.sql_table('ban')." (blogid, iprange, reason) VALUES "
 		       . "($blogid,'$iprange','".addslashes($reason)."')";
 		$res = sql_query($query);
 		
@@ -73,7 +73,7 @@ class BAN {
 		
 		$manager->notify('PreDeleteBan', array('blogid' => $blogid, 'range' => $iprange));
 		
-		$query = "DELETE FROM nucleus_ban WHERE blogid=$blogid and iprange='" .addslashes($iprange). "'";
+		$query = 'DELETE FROM '.sql_table('ban')." WHERE blogid=$blogid and iprange='" .addslashes($iprange). "'";
 		sql_query($query);
 		
 		$result = (mysql_affected_rows() > 0);

@@ -76,9 +76,7 @@ class MEMBER {
 	
 	function read($where) {
 		// read info
-		$query =  "SELECT *"
-		       . " FROM nucleus_member"
-		       . " WHERE " . $where;
+		$query =  'SELECT * FROM '.sql_table('member') . ' WHERE ' . $where;
 		
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
@@ -104,9 +102,9 @@ class MEMBER {
 	  * (returns false if not a team member)
 	  */
 	function isBlogAdmin($blogid) {
-		$query = "SELECT tadmin FROM nucleus_team WHERE"
-		       . " tblog=" . intval($blogid)
-		       . " and tmember=". $this->getID();
+		$query = 'SELECT tadmin FROM '.sql_table('team').' WHERE'
+		       . ' tblog=' . intval($blogid)
+		       . ' and tmember='. $this->getID();
 		$res = sql_query($query);
 		if (mysql_num_rows($res) == 0)
 			return 0;
@@ -127,9 +125,9 @@ class MEMBER {
 	  * Returns true if this member is a team member of the given blog
 	  */
 	function isTeamMember($blogid) {
-		$query = "SELECT * FROM nucleus_team WHERE"
-		       . " tblog=" . $blogid
-		       . " and tmember=". $this->getID();
+		$query = 'SELECT * FROM '.sql_table('team').' WHERE'
+		       . ' tblog=' . $blogid
+		       . ' and tmember='. $this->getID();
 		return (mysql_num_rows(sql_query($query)) != 0);
 	}
 	
@@ -141,9 +139,9 @@ class MEMBER {
 	  *   - member is author of the item associated with the comment
 	  */
 	function canAlterComment($commentid) {
-		$query =  "SELECT citem as itemid, iblog as blogid, cmember as cauthor, iauthor"
-		       . " FROM nucleus_comment, nucleus_item, nucleus_blog"
-		       . " WHERE citem=inumber and iblog=bnumber and cnumber=" . $commentid;
+		$query =  'SELECT citem as itemid, iblog as blogid, cmember as cauthor, iauthor'
+		       . ' FROM '.sql_table('comment') .', '.sql_table('item').', '.sql_table('blog')
+		       . ' WHERE citem=inumber and iblog=bnumber and cnumber=' . $commentid;
 		$obj = mysql_fetch_object(sql_query($query));
 		
 		return ($obj->cauthor == $this->getID()) or $this->isBlogAdmin($obj->blogid) or ($obj->iauthor == $this->getID());
@@ -155,7 +153,7 @@ class MEMBER {
 	  *        - member is admin of the the associated blog
 	  */
 	function canAlterItem($itemid) {
-		$query =  "SELECT iblog, iauthor FROM nucleus_item WHERE inumber=" . $itemid;
+		$query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . $itemid;
 		$obj = mysql_fetch_object(sql_query($query));
 		return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
 	}
@@ -195,7 +193,7 @@ class MEMBER {
 		if ($item['catid'] == $newcat) return 1;
 
 		// not a valid category -> NOK
-		$validCat = quickQuery('SELECT COUNT(*) AS result FROM nucleus_category WHERE catid='.intval($newcat));
+		$validCat = quickQuery('SELECT COUNT(*) AS result FROM '.sql_table('category').' WHERE catid='.intval($newcat));
 		if (!$validCat) return 0;
 		
 		// get destination blog
@@ -245,8 +243,8 @@ class MEMBER {
 	  * posted by the member
 	  */
 	function canBeDeleted() {
-		$res = sql_query("SELECT * FROM nucleus_item WHERE iauthor=" . $this->getID());
-		$res2 = sql_query("SELECT * FROM nucleus_comment WHERE cmember=" . $this->getID());
+		$res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
+		$res2 = sql_query('SELECT * FROM '.sql_table('comment').' WHERE cmember=' . $this->getID());
 		return ((mysql_num_rows($res) == 0) and (mysql_num_rows($res2)==0));
 	}
 
@@ -296,9 +294,9 @@ class MEMBER {
 		$blogs = array();
 		
 		if ($this->isAdmin())
-			$query = 'SELECT bnumber as blogid from nucleus_blog';
+			$query = 'SELECT bnumber as blogid from '.sql_table('blog');
 		else
-			$query = "SELECT tblog as blogid from nucleus_team where tadmin=1 and tmember=" . $this->getID();
+			$query = 'SELECT tblog as blogid from '.sql_table('team').' where tadmin=1 and tmember=' . $this->getID();
 			
 		$res = sql_query($query);
 		if (mysql_num_rows($res) > 0) {
@@ -330,7 +328,7 @@ class MEMBER {
 	  */
 	function write() {
 
-		$query =  "UPDATE nucleus_member"
+		$query =  'UPDATE '.sql_table('member')
 		       . " SET mname='" . addslashes($this->getDisplayName()) . "',"
 		       . "     mrealname='". addslashes($this->getRealName()) . "',"
 		       . "     mpassword='". addslashes($this->getPassword()) . "',"
@@ -449,13 +447,13 @@ class MEMBER {
 
 	// returns true if there is a member with the given login name (static)
 	function exists($name) {
-		$r = sql_query("select * FROM nucleus_member WHERE mname='".addslashes($name)."'");
+		$r = sql_query('select * FROM '.sql_table('member')." WHERE mname='".addslashes($name)."'");
 		return (mysql_num_rows($r) != 0);
 	}
 
 	// returns true if there is a member with the given ID (static)
 	function existsID($id) {
-		$r = sql_query("select * FROM nucleus_member WHERE mnumber='".intval($id)."'");
+		$r = sql_query('select * FROM '.sql_table('member')." WHERE mnumber='".intval($id)."'");
 		return (mysql_num_rows($r) != 0);
 	}
 	
@@ -483,7 +481,7 @@ class MEMBER {
 		$url = addslashes($url);
 		$notes = addslashes($notes);
 
-		$query = "INSERT INTO nucleus_member (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
+		$query = 'INSERT INTO '.sql_table('member')." (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
 		       . "VALUES ('$name','$realname','$password','$email','$url',$admin, $canlogin, '$notes')";
 		sql_query($query);
 		

@@ -71,7 +71,7 @@ class KARMA {
 
 	// these methods shouldn't be called directly
 	function readFromDatabase() {
-		$query = 'SELECT ikarmapos, ikarmaneg FROM nucleus_item WHERE inumber=' . $this->itemid;
+		$query = 'SELECT ikarmapos, ikarmaneg FROM '.sql_table('item').' WHERE inumber=' . $this->itemid;
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
 		
@@ -82,20 +82,20 @@ class KARMA {
 		
 	
 	function writeToDatabase() {
-		$query = 'UPDATE nucleus_item SET ikarmapos=' . $this->karmapos . ', ikarmaneg='.$this->karmaneg.' WHERE inumber=' . $this->itemid;
+		$query = 'UPDATE '.sql_table('item').' SET ikarmapos=' . $this->karmapos . ', ikarmaneg='.$this->karmaneg.' WHERE inumber=' . $this->itemid;
 		sql_query($query);
 	}
 	
 	// checks if a vote is still allowed for an IP
 	function isVoteAllowed($ip) {
-		$query = "SELECT * FROM nucleus_karma WHERE itemid=$this->itemid and ip='$ip'";
+		$query = 'SELECT * FROM '.sql_table('karma')." WHERE itemid=$this->itemid and ip='$ip'";
 		$res = sql_query($query);
 		return (mysql_num_rows($res) == 0);
 	}
 	
 	// save IP in database so no multiple votes are possible
 	function saveIP() {
-		$query = 'INSERT INTO nucleus_karma (itemid, ip) VALUES ('.$this->itemid.",'".serverVar('REMOTE_ADDR')."')";
+		$query = 'INSERT INTO '.sql_table('karma').' (itemid, ip) VALUES ('.$this->itemid.",'".serverVar('REMOTE_ADDR')."')";
 		sql_query($query);
 	}
 }

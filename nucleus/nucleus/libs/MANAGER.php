@@ -90,7 +90,7 @@ class MANAGER {
 	  * Checks if a category exists
 	  */
 	function existsCategory($id) {
-		return (quickQuery("SELECT COUNT(*) as result FROM nucleus_category WHERE catid=".intval($id)) > 0);
+		return (quickQuery('SELECT COUNT(*) as result FROM '.sql_table('category').' WHERE catid='.intval($id)) > 0);
 	}
 	
 	function &getBlog($blogid) {
@@ -195,15 +195,15 @@ class MANAGER {
 	  * checks if the given plugin IS installed or not
 	  */
 	function pluginInstalled($name) {
-		$res = sql_query('SELECT pfile FROM nucleus_plugin WHERE pfile=\''.addslashes($name).'\' LIMIT 1');
+		$res = sql_query('SELECT pfile FROM '.sql_table('plugin').' WHERE pfile=\''.addslashes($name).'\' LIMIT 1');
 		return (mysql_num_rows($res) != 0);
 	}
 	function pidInstalled($pid) {
-		$res = sql_query('SELECT pid FROM nucleus_plugin WHERE pid=' . $pid);
+		$res = sql_query('SELECT pid FROM '.sql_table('plugin').' WHERE pid=' . $pid);
 		return (mysql_num_rows($res) != 0);
 	}
 	function getPidFromName($name) {
-		return quickQuery('SELECT pid as result FROM nucleus_plugin WHERE pfile=\''.addslashes($name).'\' LIMIT 1');
+		return quickQuery('SELECT pid as result FROM '.sql_table('plugin').' WHERE pfile=\''.addslashes($name).'\' LIMIT 1');
 	}
 	
 	/**
@@ -254,7 +254,7 @@ class MANAGER {
 		// initialize as array
 		$this->subscriptions = array();
 
-		$res = sql_query('SELECT p.pfile as pfile, e.event as event FROM nucleus_plugin_event as e, nucleus_plugin as p WHERE e.pid=p.pid ORDER BY p.porder ASC');
+		$res = sql_query('SELECT p.pfile as pfile, e.event as event FROM '.sql_table('plugin_event').' as e, '.sql_table('plugin').' as p WHERE e.pid=p.pid ORDER BY p.porder ASC');
 		while ($o = mysql_fetch_object($res)) {
 			$pluginName = $o->pfile;
 			$eventName = $o->event;

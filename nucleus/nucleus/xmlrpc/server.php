@@ -156,7 +156,7 @@ function _getUsersBlogs($username, $password) {
 	
 	$structarray = array();
 	$query =  "SELECT bnumber, bname, burl"
-	        . " FROM nucleus_blog, nucleus_team "
+	        . ' FROM '.sql_table('blog').', '.sql_table('team')
 	        . " WHERE tblog=bnumber and tmember=" . $mem->getID()
 	        . " ORDER BY bname";
 	$r = sql_query($query);

@@ -12,15 +12,15 @@
   *
   */
 
-$nucleus['version'] = 'v2.0';
-$CONF['debug'] = 0;			
+$nucleus['version'] = 'v2.1 CVS';
+$CONF['debug'] = 1;			
 $CONF['alertOnHeadersSent'] = 1;
 
 /**
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 200;		
+	return 201;		
 }
 
 if ($CONF['debug']) {
@@ -296,22 +296,22 @@ function isValidMailAddress($address) {
 
 // some helper functions
 function getBlogIDFromName($name) {
-	return quickQuery('SELECT bnumber as result FROM nucleus_blog WHERE bshortname="'.addslashes($name).'"');
+	return quickQuery('SELECT bnumber as result FROM '.sql_table('blog').' WHERE bshortname="'.addslashes($name).'"');
 }
 function getBlogNameFromID($id) {
-	return quickQuery('SELECT bname as result FROM nucleus_blog WHERE bnumber='.$id);
+	return quickQuery('SELECT bname as result FROM '.sql_table('blog').' WHERE bnumber='.$id);
 }
 function getBlogIDFromItemID($itemid) {
-	return quickQuery('SELECT iblog as result FROM nucleus_item WHERE inumber='.$itemid);
+	return quickQuery('SELECT iblog as result FROM '.sql_table('item').' WHERE inumber='.$itemid);
 }
 function getBlogIDFromCommentID($commentid) {
-	return quickQuery('SELECT cblog as result FROM nucleus_comment WHERE cnumber='.$commentid);
+	return quickQuery('SELECT cblog as result FROM '.sql_table('comment').' WHERE cnumber='.$commentid);
 }
 function getBlogIDFromCatID($catid) {
-	return quickQuery('SELECT cblog as result FROM nucleus_category WHERE catid='.$catid);
+	return quickQuery('SELECT cblog as result FROM '.sql_table('category').' WHERE catid='.$catid);
 }
 function getCatIDFromName($name) {
-	return quickQuery('SELECT catid as result FROM nucleus_category WHERE cname="'.addslashes($name).'"');
+	return quickQuery('SELECT catid as result FROM '.sql_table('category').' WHERE cname="'.addslashes($name).'"');
 }
 function quickQuery($q) {
 	$res = sql_query($q);
@@ -320,7 +320,7 @@ function quickQuery($q) {
 }
 
 function getPluginNameFromPid($pid) {
-	$obj = mysql_fetch_object(sql_query('SELECT pfile FROM nucleus_plugin WHERE pid='.$pid));
+	$obj = mysql_fetch_object(sql_query('SELECT pfile FROM '.sql_table('plugin').' WHERE pid='.$pid));
 	return $obj->pfile;
 }
 
@@ -371,7 +371,7 @@ function selector() {
 		global $itemidprev, $itemidnext, $catid;
 		
 		// 1. get timestamp and blogid for item
-		$query = 'SELECT UNIX_TIMESTAMP(itime) as itime, iblog FROM nucleus_item WHERE inumber=' . $itemid;
+		$query = 'SELECT UNIX_TIMESTAMP(itime) as itime, iblog FROM '.sql_table('item').' WHERE inumber=' . $itemid;
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
 		$blogid = $obj->iblog;
@@ -382,7 +382,7 @@ function selector() {
 			$catextra = ' and icat=' . $catid;
 
 		// get previous itemid
-		$query = 'SELECT inumber FROM nucleus_item WHERE itime<' . mysqldate($timestamp) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime DESC LIMIT 1';
+		$query = 'SELECT inumber FROM '.sql_table('item').' WHERE itime<' . mysqldate($timestamp) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime DESC LIMIT 1';
 		$res = sql_query($query);
 
 		$obj = mysql_fetch_object($res);
@@ -390,7 +390,7 @@ function selector() {
 			$itemidprev = $obj->inumber;
 
 		// get next itemid
-		$query = 'SELECT inumber FROM nucleus_item WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate(time()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
+		$query = 'SELECT inumber FROM '.sql_table('item').' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate(time()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
 		$res = sql_query($query);
 
 		$obj = mysql_fetch_object($res);
@@ -508,7 +508,7 @@ function doError($msg, $skin = '') {
 function getConfig() {
 	global $CONF;
 	
-	$query = 'SELECT * FROM nucleus_config';
+	$query = 'SELECT * FROM '.sql_table('config');
 	$res = sql_query($query);
 	while ($obj = mysql_fetch_object($res)) {
 		$CONF[$obj->name] = $obj->value;

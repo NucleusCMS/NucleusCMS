@@ -30,7 +30,7 @@ class TEMPLATE {
 	// (static)
 	function getIdFromName($name) {
 		$query =  'SELECT tdnumber'
-		       . ' FROM nucleus_template_desc'
+		       . ' FROM '.sql_table('template_desc')
 		       . ' WHERE tdname="'.addslashes($name).'"';
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
@@ -41,7 +41,7 @@ class TEMPLATE {
 	 * Updates the general information about the template
 	 */
 	function updateGeneralInfo($name, $desc) {
-		$query =  "UPDATE nucleus_template_desc SET"
+		$query =  'UPDATE '.sql_table('template_desc).' SET'
 		       . " tdname='" . addslashes($name) . "',"
 		       . " tddesc='" . addslashes($desc) . "'"
 		       . " WHERE tdnumber=" . $this->getID();
@@ -55,11 +55,11 @@ class TEMPLATE {
 		$id = $this->getID();
 	
 		// delete old thingie
-		sql_query("DELETE FROM nucleus_template WHERE tpartname='$type' and tdesc=$id");
+		sql_query('DELETE FROM '.sql_table('template')." WHERE tpartname='$type' and tdesc=$id");
 		
 		// write new thingie
 		if ($content) {
-			sql_query("INSERT INTO nucleus_template SET tcontent='" . addslashes($content) . "', tpartname='" . addslashes($type) . "', tdesc=$id");
+			sql_query('INSERT INTO '.sql_table('template')." SET tcontent='" . addslashes($content) . "', tpartname='" . addslashes($type) . "', tdesc=$id");
 		}	
 	}
 		
@@ -68,7 +68,7 @@ class TEMPLATE {
 	 * Deletes all template parts from the database
 	 */
 	function deleteAllParts() {
-		sql_query('DELETE FROM nucleus_template WHERE tdesc='.$this->getID());
+		sql_query('DELETE FROM '.sql_table('template').' WHERE tdesc='.$this->getID());
 	}
 
 	/**
@@ -87,7 +87,7 @@ class TEMPLATE {
 			)
 		);
 		
-		sql_query("INSERT INTO nucleus_template_desc (tdname, tddesc) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "')");
+		sql_query('INSERT INTO '.sql_table('template_desc')." (tdname, tddesc) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "')");
 		$newId = mysql_insert_id();
 		
 		$manager->notify(
@@ -112,7 +112,7 @@ class TEMPLATE {
 	 */
 	function read($name) {
 		$query = 'SELECT tpartname, tcontent'
-		       . ' FROM nucleus_template_desc, nucleus_template'
+		       . ' FROM '.sql_table('template_desc').', '.sql_table('template')
 		       . ' WHERE tdesc=tdnumber and tdname="' . addslashes($name) . '"';
 		$res = sql_query($query);
 		while ($obj = mysql_fetch_object($res)) 
@@ -152,25 +152,25 @@ class TEMPLATE {
 	// returns true if there is a template with the given shortname
 	// (static)
 	function exists($name) {
-		$r = sql_query('select * FROM nucleus_template_desc WHERE tdname="'.addslashes($name).'"');
+		$r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdname="'.addslashes($name).'"');
 		return (mysql_num_rows($r) != 0);
 	}
 	
 	// returns true if there is a template with the given ID
 	// (static)
 	function existsID($id) {
-		$r = sql_query('select * FROM nucleus_template_desc WHERE tdnumber='.intval($id));
+		$r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdnumber='.intval($id));
 		return (mysql_num_rows($r) != 0);
 	}
 	
 	// (static)
 	function getNameFromId($id) {
-		return quickQuery('SELECT tdname as result FROM nucleus_template_desc WHERE tdnumber=' . intval($id));
+		return quickQuery('SELECT tdname as result FROM '.sql_table('template_desc').' WHERE tdnumber=' . intval($id));
 	}
 	
 	// (static)
 	function getDesc($id) {
-		$query = 'SELECT tddesc FROM nucleus_template_desc WHERE tdnumber='. intval($id);
+		$query = 'SELECT tddesc FROM '.sql_table('template_desc').' WHERE tdnumber='. intval($id);
 		$obj = mysql_fetch_object(sql_query($query));
 		return $obj->tddesc;
 	}

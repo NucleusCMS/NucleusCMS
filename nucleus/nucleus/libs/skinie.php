@@ -446,7 +446,7 @@ class SKINEXPORT {
 			
 			echo '<description>',htmlspecialchars($skinObj->getDescription()),'</description>';
 			
-			$res = sql_query('SELECT stype, scontent FROM nucleus_skin WHERE sdesc='.$skinId);
+			$res = sql_query('SELECT stype, scontent FROM '.sql_table('skin').' WHERE sdesc='.$skinId);
 			while ($partObj = mysql_fetch_object($res)) {
 				echo '<part name="',htmlspecialchars($partObj->stype),'"><![CDATA[',$partObj->scontent,']]></part>';
 			}
@@ -461,7 +461,7 @@ class SKINEXPORT {
 			
 			echo '<description>',htmlspecialchars(TEMPLATE::getDesc($templateId)),'</description>';			
 			
-			$res = sql_query('SELECT tpartname, tcontent FROM nucleus_template WHERE tdesc='.$templateId);
+			$res = sql_query('SELECT tpartname, tcontent FROM '.sql_table('template').' WHERE tdesc='.$templateId);
 			while ($partObj = mysql_fetch_object($res)) {
 				echo '<part name="',htmlspecialchars($partObj->tpartname),'"><![CDATA[',$partObj->tcontent,']]></part>';
 			}

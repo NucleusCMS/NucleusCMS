@@ -19,7 +19,7 @@ class SKIN {
 		$this->id = intval($id);
 		
 		// read skin name/description/content type
-		$res = sql_query('SELECT * FROM nucleus_skin_desc WHERE sdnumber=' . $this->id);
+		$res = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $this->id);
 		$obj = mysql_fetch_object($res);
 		$this->name = $obj->sdname;
 		$this->description = $obj->sddesc;
@@ -38,13 +38,13 @@ class SKIN {
 	
 	// returns true if there is a skin with the given shortname (static)
 	function exists($name) {
-		$r = sql_query('select * FROM nucleus_skin_desc WHERE sdname="'.addslashes($name).'"');
+		$r = sql_query('select * FROM '.sql_table('skin_desc').' WHERE sdname="'.addslashes($name).'"');
 		return (mysql_num_rows($r) != 0);
 	}
 
 	// returns true if there is a skin with the given ID (static)
 	function existsID($id) {
-		$r = sql_query('select * FROM nucleus_skin_desc WHERE sdnumber='.intval($id));
+		$r = sql_query('select * FROM '.sql_table('skin_desc').' WHERE sdnumber='.intval($id));
 		return (mysql_num_rows($r) != 0);
 	}	
 	
@@ -56,7 +56,7 @@ class SKIN {
 	// (static)
 	function getIdFromName($name) {
 		$query =  'SELECT sdnumber'
-		       . ' FROM nucleus_skin_desc'
+		       . ' FROM '.sql_table('skin_desc')
 		       . ' WHERE sdname="'.addslashes($name).'"';
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
@@ -65,7 +65,7 @@ class SKIN {
 	
 	// (static)
 	function getNameFromId($id) {
-		return quickQuery('SELECT sdname as result FROM nucleus_skin_desc WHERE sdnumber=' . intval($id));
+		return quickQuery('SELECT sdname as result FROM '.sql_table('skin_desc').' WHERE sdnumber=' . intval($id));
 	}
 	
 	/**
@@ -87,7 +87,7 @@ class SKIN {
 			)
 		);
 				
-		sql_query("INSERT INTO nucleus_skin_desc (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "','".addslashes($type)."','".addslashes($includeMode)."','".addslashes($includePrefix)."')");
+		sql_query('INSERT INTO '.sql_table('skin_desc')." (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "','".addslashes($type)."','".addslashes($includeMode)."','".addslashes($includePrefix)."')");
 		$newid = mysql_insert_id();
 		
 		$manager->notify(
@@ -148,7 +148,7 @@ class SKIN {
 	}
 	
 	function getContent($type) {
-		$query = "SELECT scontent FROM nucleus_skin WHERE sdesc=$this->id and stype='". addslashes($type) ."'";
+		$query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". addslashes($type) ."'";
 		$res = sql_query($query);
 		
 		if (mysql_num_rows($res) == 0)
@@ -165,11 +165,11 @@ class SKIN {
 		$content = trim($content);
 	
 		// delete old thingie
-		sql_query("DELETE FROM nucleus_skin WHERE stype='$type' and sdesc=$skinid");
+		sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='$type' and sdesc=$skinid");
 		
 		// write new thingie
 		if ($content) {
-			sql_query("INSERT INTO nucleus_skin SET scontent='" . addslashes($content) . "', stype='" . addslashes($type) . "', sdesc=$skinid");
+			sql_query('INSERT INTO '.sql_table('skin')." SET scontent='" . addslashes($content) . "', stype='" . addslashes($type) . "', sdesc=$skinid");
 		}	
 	}
 	
@@ -177,14 +177,14 @@ class SKIN {
 	 * Deletes all skin parts from the database
 	 */
 	function deleteAllParts() {
-		sql_query('DELETE FROM nucleus_skin WHERE sdesc='.$this->getID());
+		sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc='.$this->getID());
 	}
 	
 	/**
 	 * Updates the general information about the skin
 	 */
 	function updateGeneralInfo($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
-		$query =  "UPDATE nucleus_skin_desc SET"
+		$query =  'UPDATE '.sql_table('skin_desc').' SET'
 		       . " sdname='" . addslashes($name) . "',"
 		       . " sddesc='" . addslashes($desc) . "',"
 		       . " sdtype='" . addslashes($type) . "',"
