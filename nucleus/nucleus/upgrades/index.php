@@ -29,7 +29,7 @@ upgrade_head();
 <h1>Upgrade Scripts</h1>
 
 <div class="note">
-<b>Note:</b> If you aren't upgrading from an old Nucleus version (you installed Nucleus from scratch), you won't need this files.
+<b>Note:</b> If you aren't upgrading from an old Nucleus version (you installed Nucleus from scratch), you won't need these files.
 </div>
 
 <p>
@@ -47,10 +47,10 @@ When upgrading from an older Nucleus version, upgrades to the database tables ar
 
   if ($current == 25) {
     ?>
-      <p class="ok">No automatic upgrades required! The database tables have already been updated to the latest version op Nucleus.</p>
+      <p class="ok">No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.</p>
     <?php  } else {
     ?>
-      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v2.5</a></p>
+      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v2.5 (beta)</a></p>
     <?php  }
 ?>
 
