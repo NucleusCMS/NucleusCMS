@@ -88,10 +88,12 @@
 </head>
 <body>
 
+<div class="page">
 <h1>For those that accidentally opened this file</h1>
 <p>
 This file (<em>help.html</em>) contains popup help for the Nucleus Admin Area.
 </p>
+</div>
 
 
 <div class="page">
@@ -257,12 +259,15 @@ This is the blog that will be used when no other blog has been specified in the 
 </div>
 
 <div class="page"><a name="cookies"></a>
-<h1>Cookies</h1>
+<h1>+Cookies</h1>
 
 <h2>Cookie Lifetime</h2>
 <p>
-You can choose if you want to use session cookies or cookies with a lifetime of a month to store the login information of your members. The difference is that session cookies get deleted when you exit the browser, and that cookies with one month lifetime will stay on the computer until you don't use/visit the site for a month. Using the latter option, you'll never have to login again (unless you log out of course)
-</p>
+When a member logs in, a cookie is stored in his browser, so she doesn't need to log in again when she comes back the next day. The lifetime of this cookie decided when it will become invalid:</p>
+<ul>
+	<li><strong>Session cookies</strong> get deleted when you exit the browser</li>
+	<li>Cookies with a lifetime of <strong>one month</strong> will stay on the computer until you don't use/visit the site for a month. Using this option, you'll never have to login again (unless you've logged out yourself, or logged in from another computer)</li>
+</ul>
 
 <h2>Cookie Path &amp; Cookie Domain</h2>
 <p>
@@ -954,7 +959,7 @@ This template defines how the <a href="#templatevar-edit">edit-templatevar</a> w
 
 
 <div class="page"><a name="skinpartindex"></a>
-<h1>Skins: Main Index</h1>
+<h1>+Skins: Main Index</h1>
 <p>
 This skinpart is used to show the most recent entries of your weblog. It's usually the home page of your site.
 </p>
@@ -984,7 +989,7 @@ Very basic buildup for a main index:
 
 
 <div class="page"><a name="skinpartitem"></a>
-<h1>Skins: Detail Pages</h1>
+<h1>+Skins: Detail Pages</h1>
 <p>
 These pages are used to show the full items, all comments that were made and a form to add comments.
 </p>
@@ -1021,7 +1026,7 @@ Very basic buildup for a detailed item page:
 </div>
 
 <div class="page"><a name="skinpartarchivelist"></a>
-<h1>Skins: Archive List</h1>
+<h1>+Skins: Archive List</h1>
 <p>
 An overview of all the months for which archives are available, and links to those archives
 </p>
@@ -1051,7 +1056,7 @@ Very basic buildup for an archive list:
 </div>
 
 <div class="page"><a name="skinpartarchive"></a>
-<h1>Skins: Archive</h1>
+<h1>+Skins: Archive</h1>
 <p>
 An archive for one month. Behaves like a main index, but shows all the items from a certain month.
 </p>
@@ -1083,7 +1088,7 @@ Very basic buildup for an archive page:
 
 
 <div class="page"><a name="skinpartsearch"></a>
-<h1>Skins: Search</h1>
+<h1>+Skins: Search</h1>
 <p>
 Used to show search results.
 </p>
@@ -1116,7 +1121,7 @@ Very basic buildup for a searchresults page:
 </div>
 
 <div class="page"><a name="skinparterror"></a>
-<h1>Skins: Errors</h1>
+<h1>+Skins: Errors</h1>
 <p>
 Used when there is an error
 </p>
@@ -1146,7 +1151,7 @@ Used when there is an error
 </div>
 
 <div class="page"><a name="skinpartmember"></a>
-<h1>Skins: Member</h1>
+<h1>+Skins: Member</h1>
 <p>
 Used to show member details.
 </p>
@@ -1181,7 +1186,7 @@ Very basic buildup for a member-detail page:
 
 
 <div class="page"><a name="skinpartimagepopup"></a>
-<h1>Skins: Image Popup</h1>
+<h1>+Skins: Image Popup</h1>
 <p>
 Used when a media file (image) needs to be shown in a popup window. This skin defines the layout that will be used in that case.
 </p>
@@ -1364,7 +1369,7 @@ Each member has his own private collection of media files. Next to that, subdire
 
 <div class="page">
 <a name="skinvar-referer"></a>
-<h1>Skinvar: referer</h1>
+<h1>+Skinvar: referer</h1>
 <p>Inserts the refering URL (can be empty)</p>
 <h2>Arguments</h2>
 <p>None</p>
@@ -1454,7 +1459,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <div class="page">
 <a name="skinvar-blog"></a>
-<h1>Skinvar: blog</h1>
+<h1>+Skinvar: blog</h1>
 
 <p>
 Inserts the most recently added items of the currently active blog (usually the default one) into the skin.
@@ -1499,7 +1504,7 @@ index, item, archive, archivelist, search
 
 <div class="page">
 <a name="skinvar-otherblog"></a>
-<h1>Skinvar: otherblog</h1>
+<h1>+Skinvar: otherblog</h1>
 
 <p>
 Inserts the most recently added items of a given blog into the skin.
@@ -1694,7 +1699,7 @@ archive
 
 <div class="page">
 <a name="skinvar-archivelist"></a>
-<h1>Skinvar: archivelist</h1>
+<h1>+Skinvar: archivelist</h1>
 
 <p>
 Shows the list of available archives for the currently selected blog (usually the default one), using a given template
@@ -1718,10 +1723,11 @@ Shows the list of available archives for the currently selected blog (usually th
 <p>
 index, archive, archivelist, search, item
 </p>
+</div>
 
 <div class="page">
 <a name="skinvar-archivedaylist"></a>
-<h1>Skinvar: archivedaylist</h1>
+<h1>+Skinvar: archivedaylist</h1>
 
 <p>
 The same as the <a href="#skinvar-archivelist">archivelist</a> skinvar, but shows an entry for each <em>day</em> instead of for each <em>month</em>
@@ -1759,7 +1765,7 @@ index, archive, archivelist, search, item
 
 <div class="page">
 <a name="skinvar-otherarchivedaylist"></a>
-<h1>Skinvar: otherarchivedaylist</h1>
+<h1>+Skinvar: otherarchivedaylist</h1>
 
 <p>
 The same as the <a href="#skinvar-otherarchivelist">otherarchivelist</a> skinvar, but shows an entry for each <em>day</em> instead of for each <em>month</em>
@@ -1798,7 +1804,7 @@ all
 
 <div class="page">
 <a name="skinvar-otherarchivelist"></a>
-<h1>Skinvar: otherarchivelist</h1>
+<h1>+Skinvar: otherarchivelist</h1>
 
 <p>
 Shows the list of available archives for a given blog, using a given template
@@ -1836,7 +1842,7 @@ all
 
 <div class="page">
 <a name="skinvar-categorylist"></a>
-<h1>Skinvar: categorylist</h1>
+<h1>+Skinvar: categorylist</h1>
 
 <p>
 Inserts a list of categories for a blog (defaults to the currently selected blog), using a given template
@@ -1873,7 +1879,7 @@ index, archive, archivelist, search, item
 
 <div class="page">
 <a name="skinvar-category"></a>
-<h1>Skinvar: category</h1>
+<h1>+Skinvar: category</h1>
 
 <p>
 Inserts some information about the currently selected category. When no category is selected, does nothing.
@@ -1907,17 +1913,15 @@ all
 
 <div class="page">
 <a name="skinvar-ifcat"></a>
-<h1>Skinvar: ifcat</h1>
+<h1>+Skinvar: ifcat</h1>
 
-<p>
-Inserts some text <b>only</b> if there is currently a category selected
-</p>
+<p class="deprecated">Deprecated as of Nucleus v2.0. Use <a href="#skinvar-if">&lt;%if(category)%&gt;</a> instead.</p>
 
 <h2>Arguments</h2>
 <p>
-	Required
+	None
 	<ul>
-		<li><strong>text</strong>: Text to show</li>
+		<li><em>text</em>: Text to show</li>
 	</ul>
 </p>
 
@@ -2052,13 +2056,12 @@ search
 
 <div class="page">
 <a name="skinvar-version"></a>
-<h1>Skinvar: version</h1>
+<h1>+Skinvar: version</h1>
 
-<p>
-Inserts the current Nucleus version.
-</p>
+<p>Inserts the current Nucleus version.</p>
 
 <h2>Arguments</h2>
+
 <p>
 None
 </p>
@@ -2219,7 +2222,7 @@ archive
 
 <div class="page">
 <a name="skinvar-todaylink"></a>
-<h1>Skinvar: todaylink</h1>
+<h1>+Skinvar: todaylink</h1>
 
 <p>
 Inserts a link to the main page of the weblog. Takes into account the currently selected blog and category.
@@ -2250,7 +2253,7 @@ all
 
 <div class="page">
 <a name="skinvar-archivelink"></a>
-<h1>Skinvar: archivelink</h1>
+<h1>+Skinvar: archivelink</h1>
 
 <p>
 Inserts a link to the archive for the currently selected blog and category (or the default blog when no blog selected)
@@ -2454,7 +2457,7 @@ item
 
 <div class="page">
 <a name="skinvar-sitevar"></a>
-<h1>Skinvar: sitevar</h1>
+<h1>+Skinvar: sitevar</h1>
 
 <p>
 Includes a site variable
@@ -2494,7 +2497,7 @@ all
 
 <div class="page">
 <a name="skinvar-blogsetting"></a>
-<h1>Skinvar: blogsetting</h1>
+<h1>+Skinvar: blogsetting</h1>
 
 <p>
 Inserts a setting specific to the currently selected blog (usually the default one)
@@ -2577,7 +2580,7 @@ member
 
 <div class="page">
 <a name="skinvar-preview"></a>
-<h1>Skinvar: preview</h1>
+<h1>+Skinvar: preview</h1>
 
 <p>
 Inserts an item-preview into the page, using a given template (to be used in conjunction with <a href="#skinvar-additemform">additemform</a>)
@@ -2604,12 +2607,35 @@ index
 
 
 
+<div class="page">
+<a name="skinvar-adminurl"></a>
+<h1>+Skinvar: adminurl</h1>
+
+<p>Inserts the full URL to the Admin Area</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;a href="&lt;%adminurl%&gt;"&gt;Admin Area&lt;/a&gt;
+</pre>
+
+</div>
+
 
 
 
 <div class="page">
 <a name="skinvar-additemform"></a>
-<h1>Skinvar: additemform</h1>
+<h1>+Skinvar: additemform</h1>
 
 <p>
 Shows an add-item form for the currently selected blog (usually the default one). Mostly used in conjunction with <a href="#skinvar-preview">preview</a>
@@ -2639,7 +2665,7 @@ index
 
 <div class="page">
 <a name="skinvar-include"></a>
-<h1>Skin/Templatevar: include</h1>
+<h1>+Skin/Templatevar: include</h1>
 
 <p>
 Includes a textfile into the output. The contents of the file is not parsed in any way, so you cannot use skin/templatevars or use PHP code (see <a href="#skinvar-parsedinclude">parsedinclude</a> and <a href="#skinvar-phpinclude">phpinclude</a> if you want parsed includes)
@@ -2648,6 +2674,11 @@ Includes a textfile into the output. The contents of the file is not parsed in a
 <h2>Arguments</h2>
 <ul>
 	<li><strong>filename</strong>: the name of the file to be included (either relative to the position of index.php, or absolute). Note that an URL can also be used here.</li>
+</ul>
+
+<h2>Notes</h2>
+<ul>
+	<li>This tag is affected by the <a href="#parser-properties">parser settings <code>IncludeMode</code> and <code>IncludePrefix</code></a></li>
 </ul>
 
 <h2>Skintypes</h2>
@@ -2674,19 +2705,21 @@ all
 
 <div class="page">
 <a name="skinvar-phpinclude"></a>
-<h1>Skin/Templatevar: phpinclude</h1>
+<h1>+Skin/Templatevar: phpinclude</h1>
 
 <p>
 Includes a php-file into the output. The contents of the file is parsed by the PHP parser, so be careful. Nucleus skin/templatevars are <b>not</b> parsed! (see <a href="#skinvar-parsedinclude">parsedinclude</a> and <a href="#skinvar-include">include</a> for other include options).
 </p>
 
-<p>
-Your file will be included using the standard php include() command. This command will however be called from inside a class method, so you'll need to declare which global variables you want to access yourself. Most of the <a href="#skinvar-phpinclude-vars">standard variables</a> are automatically declared global by Nucleus itsself.
-</p>
-
 <h2>Arguments</h2>
 <ul>
 	<li><strong>filename</strong>: the name of the file to be included (either relative to the position of index.php, or absolute)</li>
+</ul>
+
+<h2>Notes</h2>
+<ul>
+	<li>This tag is affected by the <a href="#parser-properties">parser settings <code>IncludeMode</code> and <code>IncludePrefix</code></a></li>
+	<li>Your file will be included using the standard php <code>include()</code> command. This command will be called from <em>inside</em> a class method, so <strong>you'll need to declare which global variables you want to access</strong> yourself. Most of the <a href="#skinvar-phpinclude-vars">standard variables</a> are automatically declared global by Nucleus itself.</li>
 </ul>
 
 <h2>Skintypes</h2>
@@ -2697,10 +2730,8 @@ all
 
 <h2>Examples</h2>
 
-<pre>
-&lt;%phpinclude(filename.php)%&gt;
-&lt;%phpinclude(/home/user/myself/filename.php)%&gt;
-</pre>
+<pre><code>&lt;%phpinclude(filename.php)%&gt;
+&lt;%phpinclude(/home/user/myself/filename.php)%&gt;</code></pre>
 
 </div>
 
@@ -2708,7 +2739,7 @@ all
 
 <div class="page">
 <a name="skinvar-phpinclude-vars"></a>
-<h1>Skin/Templatevar: phpinclude : vars</h1>
+<h1>+Skin/Templatevar: phpinclude : vars</h1>
 
 <p>
 The following global variables are accessible from within files included by the <a href="#skinvar-phpinclude">phpinclude</a> skin/templatevar:
@@ -2740,7 +2771,7 @@ For others variables, you'll need to add '<tt>global $varname;</tt>' explicitly 
 
 <div class="page">
 <a name="skinvar-parsedinclude"></a>
-<h1>Skin/Templatevar: parsedinclude</h1>
+<h1>+Skin/Templatevar: parsedinclude</h1>
 
 <p>
 Includes a file into the output. The contents of the file is parsed by the Nucleus skin/template parser, so you can use skin/templatevars. (see <a href="#skinvar-phpinclude">phpinclude</a> and <a href="#skinvar-include">include</a> for other include options)
@@ -2750,6 +2781,13 @@ Includes a file into the output. The contents of the file is parsed by the Nucle
 <ul>
 	<li><strong>filename</strong>: the name of the file to be included (either relative to the position of index.php, or absolute)</li>
 </ul>
+
+<h2>Notes</h2>
+<ul>
+	<li>This tag is affected by the <a href="#parser-properties">parser settings <code>IncludeMode</code> and <code>IncludePrefix</code></a></li>
+	<li>From inside the included file, you can call <code>&lt;%parsedinclude(filename)%&gt;</code> again. To avoid endless loops, the maximum depth level you can go is 3.</li>
+</ul>
+
 
 <h2>Skintypes</h2>
 
@@ -2764,12 +2802,6 @@ all
 &lt;%parsedinclude(/home/user/myself/filename.txt)%&gt;
 </pre>
 
-<h2>Notes</h2>
-
-<p>
-From inside the included file, you can call &lt;%parsedinclude(filename)%&gt; again. To avoid endless loops, the maximum depth level you can go is 3.
-</p>
-
 </div>
 
 
@@ -2779,7 +2811,7 @@ From inside the included file, you can call &lt;%parsedinclude(filename)%&gt; ag
 
 <div class="page">
 <a name="skinvar-plugin"></a>
-<h1>Skin/Templatevar: plugin</h1>
+<h1>+Skin/Templatevar: plugin</h1>
 
 <p>
 Calls a plugin
@@ -2800,6 +2832,11 @@ Calls a plugin
 	<li><p>Extra parameters can be added, depending on the plugin</p></li>
 </ul>
 
+<h2>Notes</h2>
+<ul>
+	<li>When a plugin name does not conflict with existing variables, it can be called directly using <code>&lt;%PluginName(parameters)%&gt;</code></li>
+</ul>
+
 <h2>Skintypes</h2>
 
 <p>
@@ -2811,11 +2848,34 @@ all
 <pre>
 &lt;%plugin(Calendar)%&gt;
 &lt;%plugin(LastComments,myweblog)%&gt;
+&lt;%LastComments(myweblog)%&gt;
 </pre>
 
 </div>
 
 
+
+
+<div class="page">
+<a name="skinvar-loginform"></a>
+<h1>+Skinvar: loginform</h1>
+
+<p>Adds a loginform, or shows a "You are karma (Log out)" message</p>
+
+<h2>Arguments</h2>
+<p>
+	None
+</p>
+
+<h2>Skintypes</h2>
+
+<p>all</p>
+
+<h2>Examples</h2>
+
+<pre><code>&lt;%loginform%&gt;</code></pre>
+
+</div>
 
 
 
@@ -2855,7 +2915,7 @@ item
 
 <div class="page">
 <a name="skinvar-set"></a>
-<h1>Skin/Templatevar: set</h1>
+<h1>+Skin/Templatevar: set</h1>
 
 <p>
 Sets a <a href="#parser-properties" title="A list of available parser properties">parser property</a>. 
@@ -2887,9 +2947,9 @@ all
 
 <div class="page">
 <a name="skinvar-skinfile"></a>
-<h1>Skin/Templatevar: skinfile</h1>
+<h1>+Skin/Templatevar: skinfile</h1>
 
-<p>Used by imported skins to puts a link relative to the skinsurl. Use in conjunction with the <tt>IncludePrefix</tt> <a href="#parser-properties">parser property</a> to get the best results</p>
+<p>Used by imported skins to put a link relative to the skins-URL. Use it in conjunction with the <tt>IncludePrefix</tt> <a href="#parser-properties">parser property</a> to get the best results</p>
 
 <h2>Arguments</h2>
 <p>
@@ -2916,7 +2976,7 @@ all
 
 <div class="page">
 <a name="skinvar-skinname"></a>
-<h1>Skin/Templatevar: skinname</h1>
+<h1>+Skin/Templatevar: skinname</h1>
 
 <p>Inserts the name of the skin that's currently being used.</p>
 
@@ -2972,7 +3032,7 @@ all
 <a name="skinvar-if"></a>
 <a name="skinvar-else"></a>
 <a name="skinvar-endif"></a>
-<h1>Skinvars: if/else/endif</h1>
+<h1>+Skinvars: if/else/endif</h1>
 
 <p>Inserts a content block only when certain conditions are fullfilled</p>
 
@@ -3056,7 +3116,7 @@ member
 
 <div class="page">
 <a name="skinvar-searchform"></a>
-<h1>Skinvar: searchform</h1>
+<h1>+Skinvar: searchform</h1>
 
 <p>
 Shows a search form for the current blog.
@@ -3092,11 +3152,9 @@ index, archive, archivelist, search, item
 
 <div class="page">
 <a name="skinvar-nucleusbutton"></a>
-<h1>Skinvar: nucleusbutton</h1>
+<h1>+Skinvar: nucleusbutton</h1>
 
-<p>
-Inserts a nucleus button, with link to the Nucleus website. It's highly suggested to place such a button on your website ;-)
-</p>
+<p>Inserts a nucleus button, with link to the <a href="http://nucleuscms.org/" class="out" onclick="window.open(this.href);return false;" title="Nucleus website (opens in new window)">Nucleus website</a>.</p>
 
 <h2>Arguments</h2>
 <p>
@@ -3107,6 +3165,11 @@ Inserts a nucleus button, with link to the Nucleus website. It's highly suggeste
 		<li><strong><em>imgheight</em></strong>: height of the image (in pixels)</li>
 	</ul>
 </p>
+
+<h2>Notes</h2>
+<ul>
+	<li>This tag is affected by the <a href="#parser-properties">parser settings <code>IncludeMode</code> and <code>IncludePrefix</code></a></li>
+</ul>
 
 <h2>Skintypes</h2>
 
@@ -3128,7 +3191,7 @@ all
 
 <div class="page">
 <a name="skinvar-self"></a>
-<h1>Skinvar: self</h1>
+<h1>+Skinvar: self</h1>
 
 <p>
 Inserts the filename of the page currently being displayed (index.php or whatever you changed it to)
@@ -3809,8 +3872,11 @@ Note the responsibility to write a working plugin, is for the plugin author.
 </p>
 </div>
 
-<div class="page"><a name="parser-properties"></a>
-<h1>Parser Properties</h1>
+<div class="page">
+<a name="parser-properties"></a>
+<a name="includemode"></a>
+<a name="includeprefix"></a>
+<h1>+Parser Properties</h1>
 
 <p>The available parser options are described below.</p>
 
