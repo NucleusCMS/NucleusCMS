@@ -358,8 +358,8 @@ class ACTIONS extends BaseActions {
 		echo $this->skin->getName();
 	}
 	
-	function parse_if($field, $value = '') {
-		global $catid, $blog;
+	function parse_if($field, $name='', $value = '') {
+		global $catid, $blog, $member;
 		
 		$condition = 0;
 		switch($field) {
@@ -368,6 +368,10 @@ class ACTIONS extends BaseActions {
 				break;
 			case 'blogsetting':
 				$condition = ($blog->getSetting($name) == $value);
+				break;
+			case 'loggedin':
+				$condition = $member->isLoggedIn();
+				break;
 			default:	
 				return;
 		}
