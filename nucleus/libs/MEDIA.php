@@ -149,7 +149,7 @@ class MEDIA {
 
 		// move file to directory
 		if (is_uploaded_file($uploadfile)) {
-			if (!move_uploaded_file($uploadfile, $mediadir . $filename))
+			if (!@move_uploaded_file($uploadfile, $mediadir . $filename))
 				return _ERROR_UPLOADMOVE;
 		} else {
 			if (!copy($uploadfile, $mediadir . $filename))
