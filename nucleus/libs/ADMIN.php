@@ -5069,7 +5069,7 @@ selector();
 		}
 		
 		// call plugins
-		$manager->notify('PrePluginOptionsEdit',array('plugid' => $pid, 'options'=>&$aOptions));
+		$manager->notify('PrePluginOptionsEdit',array('context' => 'global', 'plugid' => $pid, 'options'=>&$aOptions));
 		
 		$template['content'] = 'plugoptionlist';
 		$amount = showlist($aOptions,'table',$template);
@@ -5114,27 +5114,19 @@ selector();
 		}
 		
 		// get list of oids per pid
-		$aPlugToOIDs = array();
-		$iPrevPid = -1;
 		$query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ',' . sql_table('plugin')
 			   . ' WHERE opid=pid and ocontext=\''.addslashes($context).'\' ORDER BY porder, oid ASC';
 		$res = sql_query($query);
+		$aOptions = array();
 		while ($o = mysql_fetch_object($res)) {
-
-			// new plugin?
-			if ($iPrevPid != $o->pid) {
-				$iPrevPid = $o->pid;
-
-				echo '<tr><th colspan="2">Options for ', htmlspecialchars($o->pfile),'</th></tr>';
-			}
-			
 			if (in_array($o->oid, array_keys($aIdToValue)))
 				$value = $aIdToValue[$o->oid];
 			else
 				$value = $o->odef;
-				
-			echo '<tr>';
-			listplug_plugOptionRow(array(
+
+			array_push($aOptions, array(
+				'pid' => $o->pid,
+				'pfile' => $o->pfile,
 				'oid' => $o->oid,
 				'value' => $value,
 				'name' => $o->oname,
@@ -5143,14 +5135,28 @@ selector();
 				'typeinfo' => $o->oextra,
 				'contextid' => $contextid
 			));
+		}
+		
+		global $manager;
+		$manager->notify('PrePluginOptionsEdit',array('context' => $context, 'contextid' => $contextid, 'options'=>&$aOptions));
+	
+		
+		$iPrevPid = -1;
+		foreach ($aOptions as $aOption) {
+
+			// new plugin?
+			if ($iPrevPid != $aOption['pid']) {
+				$iPrevPid = $aOption['pid'];
+
+				echo '<tr><th colspan="2">Options for ', htmlspecialchars($aOption['pfile']),'</th></tr>';
+			}
+				
+			echo '<tr>';
+			listplug_plugOptionRow($aOption);
 			echo '</tr>';
 	
-
 		}
 
-
-		//	
-		
 	
 	}
 	
@@ -5637,6 +5643,17 @@ function listplug_plugOptionRow($current) {
 			break;
 		case 'password':
 			echo '<input type="password" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'" />';
+			break;
+		case 'select':
+			echo '<select name="'.htmlspecialchars($varname).'">';
+			$aOptions = explode('|', $current['typeinfo']);
+			for ($i=0; $i<(count($aOptions)-1); $i+=2) {
+				echo '<option value="'.htmlspecialchars($aOptions[$i+1]).'"';
+				if ($aOptions[$i+1] == $current['value'])
+					echo ' selected="selected"';
+				echo '>'.htmlspecialchars($aOptions[$i]).'</option>';
+			}
+			echo '</select>';
 			break;
 		case 'textarea':
 			echo '<textarea cols="30" rows="5" name="',htmlspecialchars($varname),'">',htmlspecialchars($current['value']),'</textarea>';				
