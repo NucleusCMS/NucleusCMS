@@ -76,16 +76,26 @@ class COMMENT {
 	}
 	
 	function createLinkCode($pre, $url, $protocol = 'http') {
+		$post = '';
+	
+		// it's possible that $url ends with an entities 
+		// since htmlspecialchars is applied before URL linking
+		if (preg_match('/(&\w+;)+$/i', $url, $matches)) {
+			$post = $matches[0];	// found entities (1 or more)
+			$url = substr($url, 0, strlen($url) - strlen($post));
+		}
+
 		if (!ereg('^'.$protocol.'://',$url))
 			$linkedUrl = $protocol . (($protocol == 'mailto') ? ':' : '://') . $url;
 		else
 			$linkedUrl = $url;
 			
+			
 		if ($protocol != 'mailto')
 			$displayedUrl = $linkedUrl;
 		else
 			$displayedUrl = $url;
-		return $pre . '<a href="'.$linkedUrl.'">'.shorten($displayedUrl,30,'...').'</a>';
+		return $pre . '<a href="'.$linkedUrl.'">'.shorten($displayedUrl,30,'...').'</a>' . $post;
 	}
 	
 }

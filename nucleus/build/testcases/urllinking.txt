@@ -14,3 +14,5 @@ naftp.ha should not be linked
 mailto:someone@example.org -> Linked
 someone@example.org -> not linked
 http://www.example.org/?foo=x&bar=y => ampersand entity ok?
+<<<http://www.blaat.com>>> => < & > should not be included in link
+&http://www.blaat.com&& => neither should &
