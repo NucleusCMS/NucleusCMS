@@ -1,4 +1,4 @@
-<nucleusskin><meta><skin name="default" /><template name="default" /><template name="detailed" /><info><![CDATA[Default skin for new Nucleus install]]></info></meta><skin name="default" type="text/html" includeMode="skindir" includePrefix="base/"><description>Default skin to display your blog</description><part name="archive"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<nucleusskin><meta><skin name="default" /><template name="default" /><template name="detailed" /><info><![CDATA[Default Skin for new installs]]></info></meta><skin name="default" type="text/html" includeMode="skindir" includePrefix="base/"><description>Default skin to display your blog</description><part name="archive"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -19,7 +19,7 @@
   
   <!-- extra navigational links -->
   <link rel="bookmark" title="Nucleus" href="http://nucleuscms.org/" />
-  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss.php" />
+  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss2.php" />
   <link rel="archives" title="Archives" href="<%archivelink%>" />
   <link rel="top" title="Today" href="<%sitevar(url)%>" />
   <link rel="up" href="<%todaylink%>" title="Today" />
@@ -98,7 +98,7 @@
   
   <!-- extra navigational links -->
   <link rel="bookmark" title="Nucleus" href="http://nucleuscms.org/" />
-  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss.php" />
+  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss2.php" />
   <link rel="archives" title="Archives" href="<%archivelink%>" />
   <link rel="top" title="Today" href="<%sitevar(url)%>" />
   <link rel="up" href="<%todaylink%>" title="Today" />
@@ -261,7 +261,7 @@
   <link rel="top" title="Today" href="<%todaylink%>" />
 
   <!-- link RSS as alternate version -->
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="xml-rss.php" />
+  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss2.php" />
 
   <!-- RSD support -->
   <link rel="EditURI" type="application/rsd+xml" title="RSD" href="rsd.php" />
@@ -346,7 +346,7 @@
   
   <!-- extra navigational links -->
   <link rel="bookmark" title="Nucleus" href="http://nucleuscms.org/" />
-  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss.php" />
+  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss2.php" />
   <link rel="archives" title="Archives" href="<%archivelink%>" />
   <link rel="top" title="Today" href="<%sitevar(url)%>" />
   <link rel="next" href="<%nextlink%>" title="Next Item" />
@@ -508,7 +508,7 @@
   
   <!-- extra navigational links -->
   <link rel="bookmark" title="Nucleus" href="http://nucleuscms.org/" />
-  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss.php" />
+  <link rel="alternate" type="application/xml+rss" title="RSS" href="xml-rss2.php" />
   <link rel="archives" title="Archives" href="<%archivelink%>" />
   <link rel="top" title="Today" href="<%sitevar(url)%>" />
   <link rel="up" href="<%todaylink%>" title="Today" />
