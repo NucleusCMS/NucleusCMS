@@ -210,6 +210,15 @@ function sql_connect() {
 }
 
 /**
+ * returns a prefixed nucleus table name
+ */
+function sql_table($name)
+{
+	global $CONF; // TODO: use preset
+	return 'nucleus_' . $name;
+}
+
+/**
  * Errors before the database connection has been made
  */
 function startUpError($msg, $title) {

@@ -113,11 +113,11 @@ class ADMIN {
 		if (($member->isAdmin()) && ($showAll == 'yes')) {
 			// Super-Admins have access to all blogs! (no add item support though)
 			$query =  'SELECT bnumber, bname, 1 as tadmin, burl, bshortname'
-			       . ' FROM nucleus_blog '
+			       . ' FROM ' . sql_table('blog')
 			       . ' ORDER BY bname';
 		} else {
 			$query =  'SELECT bnumber, bname, tadmin, burl, bshortname'
-			       . ' FROM nucleus_blog, nucleus_team '
+			       . ' FROM ' . sql_table('blog') . ', ' . sql_table('team')
 			       . ' WHERE tblog=bnumber and tmember=' . $member->getID()
 			       . ' ORDER BY bname';		
 		}
@@ -126,7 +126,7 @@ class ADMIN {
 		$amount = showlist($query,'table',$template);
 		
 		if (($showAll != 'yes') && ($member->isAdmin())) {
-			$total = quickQuery('SELECT COUNT(*) as result FROM nucleus_blog');
+			$total = quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('blog'));
 			if ($total > $amount) 
 				echo '<p><a href="index.php?action=overview&amp;showall=yes">Show all blogs</a></p>';
 		}
