@@ -4,6 +4,9 @@
 // Author: Marko Sepp‰nen, http://hoito.org
 // Nucleus version: 2.5 beta
 //
+// Author: Jussi Josefsson, http://www.nominaali.com
+// Nucleus version: Blog:cms 3.4.7 (Nucleus 3.1)
+//
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
 // might be deleted. Therefor, it's important to list the Nucleus version for which 
@@ -11,6 +14,106 @@
 //
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
+
+// START changed/added after 3.1 START
+
+// account activation
+define('_ERROR_NOLOGON_NOACTIVATE',	'Aktivointiin tarvittavaa linkki‰ ei voida l‰hett‰‰. Sis‰‰nkirjautumista ei ole sallittu.');
+define('_ERROR_ACTIVATE',			'Aktivointiin tarvittavaa avainta ei ole olemassa, se ei ole voimassa tai se on mennyt vanhaksi.');
+define('_ACTIONLOG_ACTIVATIONLINK', 'Aktivointilinkki on l‰hetetty');
+define('_MSG_ACTIVATION_SENT',		'Aktivointilinkki on l‰hetetty s‰hkˆpostitse.');
+
+// activation link emails
+define('_ACTIVATE_REGISTER_MAIL',	"Terve <%memberName%>,\n\nSinun tulee aktivoida k‰ytt‰j‰tilisi sivustolla <%siteName%> (<%siteUrl%>).\nVoit tehd‰ t‰m‰n valitsemalla oheisen linkin: \n\n\t<%activationUrl%>\n\nSinulla on kaksi p‰iv‰‰ aikaa tehd‰ n‰in. T‰m‰n j‰lkeen aktivointilinkki menee vanhaksi.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Aktivoi tilisi nimelle '<%memberName%>'");
+define('_ACTIVATE_REGISTER_TITLE',	'Tervetuloa <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',	'Olet melkein valmis. Valitse salasana tilille.');
+define('_ACTIVATE_FORGOT_MAIL',		"Terve <%memberName%>,\n\nOheisella linkill‰ voit vaihtaa uuden salasanan tilillesi sivustolle <%siteName%> (<%siteUrl%>), valitsemalla uusi salasana.\n\n\t<%activationUrl%>\n\nSinulla on kaksi p‰iv‰‰ aikaa k‰ytt‰‰ linkki‰, t‰m‰n j‰lkeen linkki vanhenee.");
+define('_ACTIVATE_FORGOT_MAILTITLE',"Aktivoi '<%memberName%>' tilisi uudestaan");
+define('_ACTIVATE_FORGOT_TITLE',	'Tervetuloa <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'Valitse uusi salasana tilillesi:');
+define('_ACTIVATE_CHANGE_MAIL',		"Terve <%memberName%>,\n\nKoska s‰hkˆpostiosoitteesi on vaihtunut, sinun tulee aktivoida tilisi uudelleen sivustolle <%siteName%> (<%siteUrl%>).\nVoit tehd‰ t‰m‰n oheisella linkill‰: \n\n\t<%activationUrl%>\n\nSinulla on kaksi p‰iv‰‰ aikaa tehd‰ n‰in, t‰m‰n j‰lkeen linkki menee vanhaksi.");
+define('_ACTIVATE_CHANGE_MAILTITLE',"Aktivoi tilisi '<%memberName%>' uudestaan");
+define('_ACTIVATE_CHANGE_TITLE',	'Tervetuloa <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'Osoitteesi on tarkistettu. Kiitokset!');
+define('_ACTIVATE_SUCCESS_TITLE',	'Onnistunut aktivointi');
+define('_ACTIVATE_SUCCESS_TEXT',	'Tilisi on aktivoitu onnistuneesti.');
+define('_MEMBERS_SETPWD',			'Aseta salasana');
+define('_MEMBERS_SETPWD_BTN',		'Aseta salasana');
+define('_QMENU_ACTIVATE',			'Tilin aktivointi');
+define('_QMENU_ACTIVATE_TEXT',		'<p>Kun olet aktivoinut tilisi, voit alkaa k‰ytt‰‰ sit‰ <a href="index.php?action=showlogin">kirjautumalla sis‰‰n</a>.</p>');
+
+define('_PLUGS_BTN_UPDATE',			'P‰ivit‰ tilauksien lista');
+
+// global settings 
+define('_SETTINGS_JSTOOLBAR',		'Javascript valikon tyyli');
+define('_SETTINGS_JSTOOLBAR_FULL',	'T‰ydellinen valikko (IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE','Yksinkertainen valikko (Non-IE)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Poista valikko k‰ytˆst‰');
+define('_SETTINGS_URLMODE_HELP',	'(Lis‰tietoja: <a href="documentation/tips.html#searchengines-fancyurls">How to activate fancy URLs</a>)');
+
+// extra plugin settings part when editing categories/members/blogs/...
+define('_PLUGINS_EXTRA',			'Extra laajennuksen asetukset');
+
+// itemlist info column keys
+define('_LIST_ITEM_BLOG',			'blog:');
+define('_LIST_ITEM_CAT',			'cat:');
+define('_LIST_ITEM_AUTHOR',			'author:');
+define('_LIST_ITEM_DATE',			'date:');
+define('_LIST_ITEM_TIME',			'time:');
+
+// indication of registered members in comments list
+define('_LIST_COMMENTS_MEMBER', 	'(j‰sen)');
+
+// batch operations
+define('_BATCH_WITH_SEL',			'Valituille:');
+define('_BATCH_EXEC',				'Suorita');
+
+// quickmenu
+define('_QMENU_HOME',				'P‰‰sivu');
+define('_QMENU_ADD',				'Lis‰‰ juttu');
+define('_QMENU_ADD_SELECT',			'-- valitse --');
+define('_QMENU_USER_SETTINGS',		'Asetukset');
+define('_QMENU_USER_ITEMS',			'Jutut');
+define('_QMENU_USER_COMMENTS',		'Kommentit');
+define('_QMENU_MANAGE',				'Hallinta');
+define('_QMENU_MANAGE_LOG',			'Toimintaloki');
+define('_QMENU_MANAGE_SETTINGS',	'Yleiset asetukset');
+define('_QMENU_MANAGE_MEMBERS',		'K‰ytt‰j‰t');
+define('_QMENU_MANAGE_NEWBLOG',		'Uusi blogi');
+define('_QMENU_MANAGE_BACKUPS',		'Varmuuskopiot');
+define('_QMENU_MANAGE_PLUGINS',		'Laajennukset');
+define('_QMENU_LAYOUT',				'Ulkoasu');
+define('_QMENU_LAYOUT_SKINS',		'Nahat');
+define('_QMENU_LAYOUT_TEMPL',		'Sivupohjat');
+define('_QMENU_LAYOUT_IEXPORT',		'Tuo/Vie');
+define('_QMENU_PLUGINS',			'Laajennukset');
+
+// quickmenu on logon screen
+define('_QMENU_INTRO',				'Esittely');
+define('_QMENU_INTRO_TEXT',			'<p>T‰m‰ on kirjautumisruutu Nucleus-j‰rjestelm‰‰n, sis‰llˆnhallintaj‰rjestelm‰ jota k‰ytet‰‰n sivuston yll‰pitoon.</p><p>Jos sinulla on tili sivustolle, voit kirjautua ja kirjoittaa uusia juttuja.</p>');
+
+// helppages for plugins
+define('_ERROR_PLUGNOHELPFILE',		'Avustustiedostoa laajennukselle ei lˆytynyt');
+define('_PLUGS_HELP_TITLE',			'Laajennuksen avustussivu');
+define('_LIST_PLUGS_HELP', 			'apua');
+
+// END changed/started after 3.1
+
+// START changed/added after v2.5beta START
+
+// general settings (security)
+define('_SETTINGS_EXTAUTH',			'Salli ulkoinen varmennus');
+define('_WARNING_EXTAUTH',			'Varoitus: salli vain jos tarvitset t‰t‰.');
+
+// member profile
+define('_MEMBERS_BYPASS',			'K‰yt‰ ulkoista varmennusta');
+
+// 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
+define('_EBLOG_SEARCH',				'Sis‰llyt‰ <em>aina</em> hakuun');
+
+// END changed/added after v2.5beta
+
 
 // START introduced after v2.0 START
 
