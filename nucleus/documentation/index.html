@@ -157,7 +157,7 @@ Upload all files to your server, using your favorite FTP program. Make sure to u
 </p>
 
 <p>
-<b>Optional:</b> If you want to use file upload, you'll need to add write permissions to the /media/ directory. This is needed in order to allow PHP to write uploaded files into that directory. The directory should be <i>chmod</i>ded to 777 (<a href="tips.html#filepermissions">Quick guide to change file permissions</a>).
+<b>Optional:</b> If you want to use file upload, you'll need to add write permissions to the /media/ directory. This is needed in order to allow PHP to write uploaded files into that directory. The directory should be <i>chmod</i>ded to 777 (<a href="tips.html#filepermissions">Quick guide to change file permissions</a>). (If you have root access, you can instead <tt>chgrp</tt> the directory to the user that is running the <tt>httpd</tt> process (usually <tt>httpd</tt> or <tt>nobody</tt>, then <tt>chmod 775</tt> the directory).
 </p>
 
 <h2>3. Run install.php</h2>
