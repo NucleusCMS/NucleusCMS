@@ -1,6 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
+	<!-- $Id: help.html,v 1.5 2005-03-19 08:34:53 kimitake Exp $ -->
+	<!-- $NucleusJP$ -->
+
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Nucleus管理用ヘルプ</title>
 	<style type="text/css">
@@ -232,8 +235,8 @@ Blogの管理者は次のような追加権限をもちます：
 <h2>ログインCookieの有効期間</h2>
 <p>メンバーがログインするとブラウザにcookieが保存され、翌日に戻ってきたときに再びログインする必要がなくなります。クッキーの有効期間によって、いつ無効になるか決定されます：</p>
 <ul>
-	<li><strong>セッションごと</strong> － ブラウザを終了させるとcookieは削除されます</li>
-	<li><strong>一ヶ月</strong> － 一ヶ月続けてサイトか管理領域を訪れないということが無い限り、cookieはコンピュータに残ります。このオプションを使えば、たぶん再ログインする必要はなくなるでしょう。（自分でログアウトしたときや、他のコンピュータからログインするときは別ですが）</li>
+	<li><strong>セッションごと</strong> − ブラウザを終了させるとcookieは削除されます</li>
+	<li><strong>一ヶ月</strong> − 一ヶ月続けてサイトか管理領域を訪れないということが無い限り、cookieはコンピュータに残ります。このオプションを使えば、たぶん再ログインする必要はなくなるでしょう。（自分でログアウトしたときや、他のコンピュータからログインするときは別ですが）</li>
 </ul>
 
 <h2>CookieパスとCookieドメイン</h2>
@@ -600,11 +603,11 @@ Blogの管理者は次のような追加権限をもちます：
 
 <div class="page"><a name="templatehighlight"></a>
 <h1>テンプレート：ハイライト表示</h1>
-<p>ハイライト表示は検索実行時に使われます。これは規則変化に沿った表現として実際に使われますので、直前にバックスラッシュを置くことによっていくつかの記号をエスケープしたいと望むかもしれません。ハイライトされた単語が当てはめられる場所は"\0"で示されます。</p>
+<p>ハイライト表示は検索実行時に使われます。これは規則変化に沿った表現として実際に使われますので、直前にバックスラッシュを置くことによっていくつかの記号をエスケープしたいと望むかもしれません。ハイライトされた単語が当てはめられる場所は"¥0"で示されます。</p>
 
 <h2>例</h2>
 
-<pre><code>&lt;span style='background-color:yellow'&gt;\0&lt;/span&gt;</code></pre>
+<pre><code>&lt;span style='background-color:yellow'&gt;¥0&lt;/span&gt;</code></pre>
 
 </div>
 
@@ -2277,6 +2280,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 	    	<li><em>url</em>：該当blogのURL</li>
 	    	<li><em>name</em>：該当blogの名前（長い名前）</li>
 	    	<li><em>desc</em>：該当blogの説明</li>
+	    	<li><em>short</em>：該当blogの短縮名</li> 
 	    </ul>
 	</li>
 </ul>
@@ -2750,7 +2754,13 @@ $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
 <h2>条件の種類</h2>
 
 <ul>
-	<li><strong>category</strong>：カテゴリーを選択しているとき、条件は満たされる</li>
+	<li><strong>category</strong>：カテゴリーを選択しているとき、条件は満たされる
+		<ul>
+		  <li><strong>category</strong>：カテゴリが選択いるか調べる</li>
+		  <li><strong>category,catname,<em>CategoryName</em></strong>：現在のカテゴリが <em>CategoryName</em> と一致するか調べる</li>
+		  <li><strong>category,catid,<em>CategoryID</em></strong>：現在のカテゴリが <em>CategoryId</em> と一致するか調べる</li>
+		</ul>
+	</li>
 	<li><strong>blogsetting</strong>：blog設定の<em>name</em>項目の値が<em>value</em>と一致しているか調べる（nameはSQLテーブルnucleus_blogにあるカラム名）</li>
 	<li><strong>loggedin</strong>：訪問中のメンバーが現在ログインしていれば、条件は満たされる</li>
 	<li><strong>onteam</strong>：訪問中のメンバーがログインしており、かつ現在いるblog（あるいは<em>name</em>パラメーターで指示されたblog）のチームに入っていれば、条件は満たされる</li>
@@ -2759,9 +2769,9 @@ $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
 	<li><strong>skintype</strong>：現在のスキンタイプが<em>value</em>（index, search, item, archive, archivelist, ...）と一致するか調べる（URLでの表記となることに注意 2.5から）</li>
 	<li><strong>hasplugin</strong>：プラグインがインストールされているか、またはプラグインのオプションが特定の値をとっているか調べる
 		<ul>
-			<li><strong>hasplugin,PluginName</strong>：該当プラグインが存在すれば、条件は満たされる</li>
-			<li><strong>hasplugin,PluginName,OptionName</strong>：プラグインのオプションが「いいえ」に設定されてなければ、条件は満たされる</li>
-			<li><strong>hasplugin,PluginName,OptionName=value</strong>：プラグインのオプションが特定の値に設定されていれば、条件は満たされる</li>
+			<li><strong>hasplugin,<em>PluginName</em></strong>：該当プラグインが存在すれば、条件は満たされる</li>
+			<li><strong>hasplugin,<em>PluginName</em>,<em>OptionName</em></strong>：プラグインのオプションが「いいえ」に設定されてなければ、条件は満たされる</li>
+			<li><strong>hasplugin,<em>PluginName</em>,<em>OptionName=value</em></strong>：プラグインのオプションが特定の値に設定されていれば、条件は満たされる</li>
 		</ul>
 	</li>
 </ul>
@@ -2777,6 +2787,22 @@ $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
 おかえりなさい！
 &lt;%else%&gt;
 ようこそ！
+&lt;%endif%&gt;
+</pre>
+
+<pre>
+&lt;%if(category,catname,Off Topic)%&gt;
+'Off Topic' カテゴリへようこそ。
+&lt;%endif%&gt;
+</pre>
+
+<h2>注意</h2>
+
+<p>条件が満たされない時にだけ何らかの表示を行いたい場合は、次のようにすることができます：</p>
+
+<pre>
+&lt;%if(skintype,error)%&gt;&lt;%else%&gt;
+&lt;%blogsetting(name)%&gt;
 &lt;%endif%&gt;
 </pre>
 
@@ -2991,13 +3017,13 @@ $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
 	<td><a href="#templatevar-date">date</a></td>
 	<td>フォーマット済みの日付</td>
 </tr><tr>
-	<td><a href="#templatevar-time">time</a></td>
+	<td><a href="#templatevar-time">time</td>
 	<td>フォーマット済みの時刻</td>
 </tr><tr>
 	<td>daylink</td>
 	<td>その日のアーカイブへの未加工のリンク</td>
 </tr><tr>
-	<td><a href="#templatevar-comments">comments</a></td>
+	<td><a href="#templatevar-comments">comments</td>
 	<td>コメント・ブロックかコメント数</td>
 </tr><tr>
 	<td>itemid</td>
@@ -3289,16 +3315,16 @@ $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
 	<th>部分名</th><th colspan="2">空っぽか否か？</th>
 </tr><tr>
 	<td>本文</td><td>いいえ</td><td>いいえ</td>
-</tr><tr>
+</tr></tr>
 	<td>続き</td><td>はい</td><td>いいえ</td>
-</tr><tr>
+</tr></tr>
 	<th>smartbodyの表示＝</th><th>「本文部分」</th><th>「続き部分」</th>
 </tr></table>
 
 <h2>使用例</h2>
 
 <p>本文のテキストが完全なテキストと判断され、続きの部分はフロントページに表示される「紹介」や「抜粋」と判断されます。</p>
-<p>フロントページで使われているテンプレートには<tt>&lt;%smartbody%&gt;</tt>を使い、抜粋が存在するときにはそれを、無い場合は完全なテキストを挿入します。アイテムの詳細テンプレートには、<tt>&lt;%body%&gt;</tt> + <tt>&lt;%more%&gt;</tt>のかわりに<tt>&lt;%body%&gt;</tt>を使います。<tt>&lt;%body%&gt;</tt>は少なくとも完全なアイテムが入っているのですから。</p>
+<p>フロントページで使われているテンプレートには<tt>&lt;%smartbody%&gt;</tt>を使い、抜粋が存在するときにはそれを、無い場合は完全なテキストを挿入します。アイテムの詳細テンプレートには、<tt>&lt;%body%&gt;</tt> + <tt>&lt;%more%&gt;</tt>のかわりに<tt>&lt;%body%&gt;</tt>を使います。<tt>&lt%body%&gt;</tt>は少なくとも完全なアイテムが入っているのですから。</p>
 
 
 
@@ -3689,3 +3715,4 @@ $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
 
 </body>
 </html>
+

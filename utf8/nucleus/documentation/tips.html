@@ -1,8 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Nucleus - Tips and suggestions</title>
+	<!-- $Id: tips.html,v 1.4 2005-03-19 08:34:53 kimitake Exp $ -->
+	<!-- $NucleusJP$ -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Nucleus - 便利な使い方ヒントの紹介</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 </head>
 <body>
@@ -102,7 +104,7 @@ Nucleus はアクセスごとにページを生成しています。アクセス
 
 <pre>
 RewriteEngine On
-RewriteRule ^archive-([0-9]+)-([0-9]+)-([0-9]+).html+ index.php?archive=$2-$3&amp;blogid=$1
+RewriteRule ^archive-([0-9]+)-([0-9]+)-([0-9]+).html+ index.php?archive=$2-$3&blogid=$1
 RewriteRule ^item-([0-9]+).html+ index.php?itemid=$1
 RewriteRule ^archivelist-([a-z]+).html+ index.php?archivelist=$1
 </pre>
@@ -134,7 +136,7 @@ Nucleusのいくつかの機能を正常動作させるためにはパーミッ�
 
 <h2>Windows</h2>
 <p>
-Windows版では、「FFFTP」というソフトを例に用いて説明させていただきます。FFFTPはフリーウェアです。『<a href="http://www2.biglobe.ne.jp/~sota/ffftp.html">Sota's Product : FFFTP</a>』で入手できます。また、FFFTPのインストールや基本的な使い方につきましては、『<a href="http://ftp.hm/ffftp/manual.shtml">初心者マニュアル - FFFTP Support Page.</a>』をご覧下さい。
+Windows版では、「FFFTP」というソフトを例に用いて説明させていただきます。FFFTPはフリーウェアです。『<a href="http://www2.biglobe.ne.jp/‾sota/ffftp.html">Sota's Product : FFFTP</a>』で入手できます。また、FFFTPのインストールや基本的な使い方につきましては、『<a href="http://ftp.hm/ffftp/manual.shtml">初心者マニュアル - FFFTP Support Page.</a>』をご覧下さい。
 </p>
 
 <p>
@@ -333,33 +335,33 @@ selector();
 	<th>コマンド</th>
 	<th>意味</th>
 </tr><tr>
-	<td><code>selectBlog('shortblogname');</code></td>
+	<td><code>selectBlog('shortblogname');</td>
 	<td>「shortblogname」という短縮名のblogを表示させる<br />
 	(* URLにて指定するblogidの方が優先されます。URLにて指定がない場合にこの指定が使われます)
 	</td>
 </tr><tr>
-	<td><code>selectSkin('skinname');</code></td>
+	<td><code>selectSkin('skinname');</td>
 	<td>「skinname」という名前のスキンを適用してページ表示する<br />
 	(* URLにて指定するskinidの方が優先されます。URLにて指定がない場合にこの指定が使われます)
 	</td>
 </tr><tr>
-	<td><code>selectCategory(1234);</code></td>
+	<td><code>selectCategory(1234);</td>
 	<td>IDが「1234」のカテゴリを選択した状態でページ表示する<br />
 	(* URLにて指定するcatidの方が優先されます。URLにて指定がない場合にこの指定が使われます)<br />
 	この指定にはカテゴリ名を指定する事もができますが、複数blogが存在している場合は同じカテゴリ名があることが考えられますのでID指定の方が無難でしょう。</td>
 </tr><tr>
-	<td><code>selectItem(1234);</code></td>
+	<td><code>selectItem(1234);</td>
 	<td>IDが「1234」の記事を選択した状態でページ表示する<br />
 	(* URLの指定が優先されます。URLにて指定がない場合にこの指定が使われます)</td>
 </tr><tr>
-	<td><code>selectLanguage('french');</code></td>
+	<td><code>selectLanguage('french');</td>
 	<td>言語を「french」にしてページ表示する
 	 (PHPエラーが出る可能性がありますので注意してください)</td>
 </tr></table>
 
 <p>
 アクセス専用phpファイルの中にこれらのコマンドを書く時は、コードの順番に留意してください。これらのコマンドは、<code>include('./config.php')</code>よりも<strong>後に</strong>書き、かつ、<code>selector();</code>という行よりも<strong>前に</strong>書かなくては反映されません。
-</p>
+<p>
 
 <h2>サブディレクトリに新しいblogを配置する場合</h2>
 
@@ -393,3 +395,4 @@ selector();
 
 </body>
 </html>
+

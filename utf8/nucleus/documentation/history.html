@@ -1,6 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
+	<!-- $Id: history.html,v 1.3 2005-03-19 08:34:53 kimitake Exp $ -->
+	<!-- $NucleusJP$ -->
 	<title>Nucleus - History</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 </head>
@@ -13,6 +15,42 @@
 </p>
 
 <ul>
+	<li>
+		<b>Nucleus v3.2 (March 7, 2005)</b>
+		<ul>
+			<li>ADDED: <a href="http://wiki.gednet.com/NPSkinFiles">NP_SkinFiles</a> plugin installed on full install</li>
+			<li>FIXED: Installing plugins through install.php failed (karma)</li>
+			<li>FIXED: whitespace at start/end got trimmed on skin edit/import (karma)</li>
+			<li>ADDED: <code>title</code>-attributes on inline/popup images (moraes)</li>
+			<li>ADDED: New default skin (Ivan, hcgtv, moraes, ...)</li>
+			<li>ADDED: fr 1081569, <code>&lt;%if(category,catid,1)%&gt;</code> support (moraes)</li>
+			<li>ADDED: support for <code>rel="nofollow"</code> (Rakaz)</li>
+			<li>FIXED: bug 1058978, subscription list of updated plugin showed the updated subscriptions while the old subscription-list was still in the database. Nucleus now gives a warning (TeRanEX)</li>
+			<li>FIXED: bug 1083959, closed site still allowed posting comments (karma)</li>
+			<li>FIXED: bug 1083971, editing blog settings was not possible on PHP versions &lt; 4.2.0 (floatval) (karma)</li>
+			<li>FIXED: In v3.15, deleting an item via the bookmarklet failed (karma)</li>
+			<li>ADDED: Support for <code>&lt;%blogsetting(short)%&gt;</code>, as suggested by caw (karma)</li>
+			<li>FIXED: Default skin used <code>application/xml+rss</code> instead of <code>application/rss+xml</code>, causing RSS autodiscovery to fail. (karma)</li>
+			<li>FIXED: Moved more hardcoded text into language files</li>
+			<li>FIXED: Made it so malicious users cannot trick a logged in site member/admin into visiting a specifically crafted URL that performs some admin area task. (karma).</li>
+			<li>FIXED: bug 976777, weblogs.com was not ping when posting draft (admun)</li>
+			<li>ADDED: bug 1008171, cookie-prefix (karma)</li>
+			<li>CHANGED: bug 1008175, move <code>getTemplate</code> into <code>MANAGER</code> class + some other performance tweaks (karma)</li>
+			<li>ADDED: add plugin dependency check (admun)</li>
+			<li>CHANGED: Sending out activation links rather than new passwords on new accounts, forgotten passwords, etc. (karma)</li>
+			<li>ADDED: Plugins can now make text- and textarea-optiontypes readonly (TeRanEX)</li>
+			<li>CHANGED: new plugin event <code>FormExtra</code> (for use with <code>ValidateForm</code>) (karma)</li>
+			<li>CHANGED: better error handling when commenting. Errors now displayed together with comment form. (karma)</li>
+			<li>CHANGED: actions (commenting, membermail, ...) can be done using any entry point, not just through <code>action.php</code> (karma)</li>
+			<li>CHANGED: Added <code>$</code><code>Id$</code> info in sourcefiles (karma)</li>
+			<li>CHANGED: PrePluginOptionsEdit-event now has an <code>extra</code>-field which can be used to add option-specific code to the page (TeRanEX)</li>
+			<li>ADDED: new event, PrePluginOptionsUpdate, can be used by plugins to verify/modify the new value for an option (TeRanEX)</li>
+			<li>ADDED: Plugins can now provide a documentation page, which is shown inside the admin area (TeRanEX)</li>
+			<li>ADDED: Plugins can now limit values for an option to be only numeric (<code>datatype=numerical</code>) (TeRanEX)</li>
+			<li>ADDED: OptionTop-methods, to let a plugin retreive an array of the x-highest (or lowest) values of an option (TeRanEX)</li>
+			<li>ADDED: Plugins can now make specific options for items. These options can be edited directly from the item add or edit page (TeRanEX)</li>
+		</ul>
+	</li>
 	<li>
 		<b>Nucleus v3.15 (November 14, 2004)</b>
 		<ul>

@@ -1,15 +1,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Nucleusマニュアル</title>
+	<!-- $Id: index.html,v 1.4 2005-03-19 08:34:53 kimitake Exp $ -->
+	<!-- $NucleusJP$ -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Nucleus CMS マニュアル</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 </head>
 <body>
 
 <div class="heading">
-Nucleus マニュアル
-<i>(v3.15)</i>
+Nucleus CMS マニュアル
+<i>(v3.2)</i>
 </div>
 
 <div class="note">
@@ -23,7 +25,7 @@ Nucleus マニュアル
 <h1><a name="toc"></a>目次</h1>
 
 <ul>
-	<li><a href="#about">Nucleusとは</a></li>
+	<li><a href="#about">Nucleus CMS とは</a></li>
 	<li><a href="#license">GPLライセンスについて</a></li>
 	<li><a href="#installation">インストールガイド</a></li>
 	<li><a href="skins.html">スキンとテンプレートの編集(ページデザイン)</a> (別ファイル)</li>
@@ -95,7 +97,7 @@ Nucleus はサイト構築にあたって痒いところに手が届くように
 <p>
 Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
 <br />
-Copyright (C) 2002-2004 The Nucleus Group
+Copyright (C) 2002-2005 The Nucleus Group
 </p>
 
 <p>このプログラムはフリーウェアです。フリーソフトウェア財団(the Free Software Foundation)が公表したGNU一般公共使用許諾(GNU General Public License)の「バージョン2」或いはそれ以降の各バージョンの中からいずれかを選択し、そのバージョンが定める条項に従ったうえで、本プログラムの再配布・改変を認めています。
@@ -164,7 +166,10 @@ FTPソフトを使ってサーバに全部のファイルを転送します。�
 		この段階で <em>config.php</em> のパーミッションを <strong>666</strong>に変更しておくと、後のインストール手順を減らす事ができます。この手順をスキップした方は手動で <em>config.php</em> を編集するだけですのでどちらでも構いません。 (パーミッションの変更方法につきましては<a href="tips.html#filepermissions">パーミッションの変更ガイド</a>を参照してください)
 	</li>
 	<li>
-		画像など添付ファイルを使用される予定のある方は、mediaディレクトリを作成してこのディレクトリのパーミッションを書き込み可能に変更してください。書き込み可能にしておかないとアップロードが正常に行えません。通常は <strong>777</strong> かと思います(パーミッションの変更方法につきましては<a href="tips.html#filepermissions">パーミッションの変更ガイド</a>を参照してください)。<br /> (If you have root access, you can instead <tt>chgrp</tt> the directory to the user that is running the <tt>httpd</tt> process (usually <tt>httpd</tt> or <tt>nobody</tt>, then <tt>chmod 775</tt> the directory).
+		画像など添付ファイルを使用される予定のある方は、mediaディレクトリを作成してこのディレクトリのパーミッションを書き込み可能に変更してください。書き込み可能にしておかないとアップロードが正常に行えません。通常は <strong>777</strong> かと思います(パーミッションの変更方法につきましては<a href="tips.html#filepermissions">パーミッションの変更ガイド</a>を参照してください)。<br />（root 権限をお持ちの場合は、ディレクトリを <tt>httpd</tt> プロセスが動作しているユーザに <tt>chgrp</tt> してください。通常は <tt>httpd</tt> もしくは<tt>nobody</tt> で、ディレクトリは <tt>chmod 755</tt> になるでしょう。）
+	</li>
+	<li>
+		ファイル編集に SkinFiles プラグインをお使いになる場合は、/skins/ ディレクトリ以下にあるすべてのファイルとディレクトリのパーミッションを変更する必要があるでしょう。ファイルの編集を可能にするには、ファイルのパーミッションは <strong>666</strong> にしておくことになるでしょう(パーミッションの変更方法につきましては<a href="tips.html#filepermissions">パーミッションの変更ガイド</a>を参照してください)。新しいファイルやディレクトリを作成できるようにするためには、親ディレクトリのパーミッションを <strong>777</strong> にしておくことになるでしょう。
 	</li>
 </ol>
 
@@ -371,9 +376,11 @@ Nucleusがデータベースサーバにアクセスできないことを意味�
 	<li>Wouter Demuynck</li>
 </ul>
 
-<h2>コアファイル改良/バグつぶし</h2>
+<h2>コアファイル改良</h2>
 
 <ul>
+	<li>Jeroen Budts氏</li>
+	<li>Edmond Hui氏</li>
 	<li>Appie Verschoor氏 (全文検索)</li>
 	<li>その他たくさんの方々... (<a href="history.html">開発履歴</a>をご覧下さい)</li>
 </ul>
@@ -381,6 +388,8 @@ Nucleusがデータベースサーバにアクセスできないことを意味�
 <h2>ライブラリなど</h2>
 
 <ul>
+	<li>Jeff MacMichael氏（NP_SkinFiles プラグイン）</li>
+	<li>Ivan Fong氏、Moraes氏、Hcgtv氏（Nucleus 3.2 標準スキン）</li>
 	<li>各種プラグイン作者の方々</li>
 	<li>言語ファイルを提供してくださった方々 (<a href="http://nucleuscms.org/languages.php">NucleusのWebサイトにて言語ファイルのダウンロードができます</a>)</li>
 	<li>ロゴを作成してくださったRodrigo Moraes氏</li>
@@ -397,7 +406,7 @@ Nucleusがデータベースサーバにアクセスできないことを意味�
 Nucleusが今日に至るのも、また、このほかのたくさんの方々の支援に支えられているからです。御礼申し上げます。</p>
 
 <ul>
-	<li>NucleusのWebサイトにて<a href="http://nucleuscms.org/donators.php">寄付者のリスト</a>を掲示しております。</li>
+	<li>NucleusのWebサイトにて<a href="http://nucleuscms.org/donators.php">寄付者のリスト</a>を掲示しております。</p>
 	<li><a href="http://forum.nucleuscms.org/groupcp.php?g=3">フォーラムを取り仕切ってくださっている方々</a> や <a href="http://forum.nucleuscms.org/memberlist.php?mode=posts&amp;order=DESC">フォーラムに来てくださっている方々</a>にも厚く御礼申し上げます。</li>
 </ul>
 

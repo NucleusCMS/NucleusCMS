@@ -1,46 +1,70 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
-
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Nucleus - SQL Table Structure</title>
+	<!-- $Id: sqltables.html,v 1.4 2005-03-19 08:34:53 kimitake Exp $ -->
+	<!-- $NucleusJP$ -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Nucleus - SQL テーブル構造</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
-<style type="text/css">
+	<style type="text/css">
 		/* auto increment table columns*/
-		.autoinc     {  }
-/* primary-keys */
-		.primary     { text-decoration: underline; font-weight: bold }
-/* NOT NULL */
-		.notnull     {  }
-/* unique key */
-		.unique      {  }
-/* foreign keys */
-		.foreign     { font-style: italic }
-/* auto increment table columns*/
-		.autoinc     {  }
-/* fulltext index */
-		.fulltext    {  }
-/* columns/tables to remove in later versions */
-		.toremove    { color: red }
-</style>
-</head>
+		.autoinc {
+		}
 
+		/* primary-keys */
+		.primary {
+			text-decoration: underline;
+			font-weight: bold;
+		}
+
+		/* NOT NULL */
+		.notnull {
+		}
+
+		/* unique key */
+		.unique {
+		}
+
+		/* foreign keys */
+		.foreign {
+			font-style: italic;
+		}
+
+		/* auto increment table columns*/
+		.autoinc {
+		}
+
+		/* fulltext index */
+		.fulltext {
+		}
+
+		/* columns/tables to remove in later versions */
+		.toremove {
+			color: red;
+		}
+
+
+
+
+	</style>
+</head>
 <body>
+
 
 <a name="top" id="top"></a>
 <div class="heading">
-  SQLテーブル・リファレンス <i>May 30, 2004</i>
+  SQLテーブル・リファレンス <i>2005年3月5日</i>
 </div>
 <strong>訳者注：</strong>
 <ul>
   <li>このドキュメントの原文は以下のURLにあります。<br>
     <a href="http://nucleuscms.org/documentation/devdocs/sqltables.html">http://nucleuscms.org/documentation/devdocs/sqltables.html</a></li>
-  <li>誤訳にお気づきの方は<a href="http://nucleus.fel-is.info/bb/viewforum.php?f=7">こちら</a>へご連絡いただけると助かります。</li>
+  <li>誤訳にお気づきの方は<a href="http://japan.nucleuscms.org/bb/viewforum.php?f=7">こちら</a>へご連絡いただけると助かります。</li>
 </ul>
 <h1>はじめに</h1>
 <p><a href="index.html">開発者向けドキュメントの目次へ戻る</a></p>
 <p>このドキュメントはNucleusのデータベース・テーブルのフィールドを解説しています。</p>
-<p class="note">構造は<strong>Nucleus v3.0</strong>のものに従っています</p>
+<p class="note">構造は<strong>Nucleus v3.2</strong>のものに従っています</p>
 <h1><a name="toc" id="toc"></a>目次</h1>
 <ul>
   <li><a href="#legend">文書中の色使いについて</a></li>
@@ -78,6 +102,8 @@
           <li><a href="#nucleus_config_options">可能なオプション</a></li>
         </ul>
       </li>
+      <li><a href="#nucleus_tickets">nucleus_tickets</a></li>
+      <li><a href="#nucleus_activation">nucleus_activation</a></li>
     </ul>
   </li>
   <li>その他
@@ -117,7 +143,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -154,7 +180,7 @@
       <td class="notnull">bmaxcomments</td>
       <td>int(11)</td>
       <td>'0'</td>
-      <td>indexスキンタイプで表示するコメントの最大数。規定値(0)は制限がないことを説明する。インライン・コメントを使わないのなら，ここはいじらないこと</td>
+      <td>indexスキンタイプで表示するコメントの最大数。既定値(0)は制限がないことを説明する。インライン・コメントを使わないのなら，ここはいじらないこと</td>
     </tr>
     <tr>
       <td class="notnull">btimeoffset</td>
@@ -220,7 +246,7 @@
           <li>5: 新しいカルマ投票</li>
           <li>7: 新しいアイテム</li>
         </ul>
-        規定値 = 新しいコメントと新しいカルマ投票（3×5=15）</td>
+        既定値 = 新しいコメントと新しいカルマ投票（3×5=15）</td>
     </tr>
     <tr>
       <td class="notnull">ballowpast</td>
@@ -243,7 +269,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -279,7 +305,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -347,7 +373,7 @@
       <td class="notnull toremove">ikarmaneg</td>
       <td>int(11)</td>
       <td>'0'</td>
-	  <td>－のカルマ投票の総数</td>
+      <td>−のカルマ投票の総数</td>
     </tr>
     <tr>
       <td class="foreign"><a href="#nucleus_category">icat</a></td>
@@ -364,7 +390,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -436,7 +462,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -516,7 +542,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -546,7 +572,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -577,7 +603,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -602,7 +628,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -640,7 +666,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -685,7 +711,7 @@
       <td>odef</td>
       <td>text</td>
       <td></td>
-      <td>オプションの規定値</td>
+      <td>オプションの既定値</td>
     </tr>
     <tr>
       <td>oextra</td>
@@ -702,7 +728,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -743,7 +769,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -796,7 +822,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -851,7 +877,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -908,7 +934,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -933,7 +959,7 @@
   <tbody>
     <tr>
       <th width="149">Name</th>
-      <th width="163">規定値 Value</th>
+      <th width="163">既定値 Value</th>
       <th width="575">説明</th>
     </tr>
     <tr>
@@ -1037,6 +1063,11 @@
       <td width="575">クッキーをセットするパス</td>
     </tr>
     <tr>
+      <td>CookiePrefix</td>
+      <td></td>
+      <td>クッキーの名称に追加するプレフィクス文字列。複数の Nucleus を同じドメインにインストールする際に便利で、別の Nucleus で同じセッションが適用されることを予防する。
+    </tr>
+    <tr>
       <td width="149">CookieDomain</td>
       <td width="163"></td>
       <td width="575">クッキーをセットするドメイン</td>
@@ -1100,6 +1131,90 @@
     </tr>
   </tbody>
 </table>
+
+<a id="nucleus_tickets" name="nucleus_tickets"></a>
+<h1>nucleus_ticketsテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="トップに戻る" /></a></h1>
+
+<p>Nucleus は <code>nucleus_tickets</code> を使用することによりセキュリティ上の問題を予防する。特に、管理エリアにおいて諸設定やデータベースの内容に影響する場合、チケットを必須とする。チケットは管理ページがリクエストされた時とフォームから呼び出された時に発行される。チケットは発行から 1時間後に破棄される。</p>
+
+<table>
+    <tr>
+      <th>カラム名</th>
+      <th>型</th>
+      <th>既定値</th>
+      <th>説明</th>
+    </tr>
+    <tr>
+      <td class="notnull primary">ticket</td>
+      <td>varchar(40)</td>
+      <td></td>
+      <td>特定の単一ユーザに割り当てられるユニークなチケット。一般に、チケットは次のような形になる: <code>65303a785423b4d53c7b3e6579766f26</code></td>
+    </tr>
+    <tr>
+      <td class="notnull foreign primary"><a href="#nucleus_member">member</a></td>
+      <td>int(11)</td>
+      <td></td>
+      <td>当該チケットが有効適用されるメンバー。</td>
+    </tr>
+    <tr>
+      <td class="notnull">ctime</td>
+      <td>datetime</td>
+      <td></td>
+      <td>チケットの発行日時。チケットの有効期限は 1時間である。</td>
+    </tr>
+</table>
+
+
+<a id="nucleus_activation" name="nucleus_activation"></a>
+<h1>nucleus_activationテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="トップに戻る" /></a></h1>
+
+<p>新しいメンバーが登録された時点では、そのメンバーアカウントがアクティベートされるまで Nucleus はログインを許可しない。アクティベートのためのリンクを含むメールが送信され、これによってアクティベートすることができる。<code>nucleus_activation</code>テーブルはアクティベートの進捗状況を追跡する。</p>
+
+<table>
+    <tr>
+      <th>カラム名</th>
+      <th>型</th>
+      <th>既定値</th>
+      <th>説明</th>
+    </tr>
+    <tr>
+      <td class="notnull primary">vkey</td>
+      <td>varchar(40)</td>
+      <td></td>
+      <td>アクティベートキー。このキーはメンバーのアクティベートコードに渡される。一般的に、キーは次のような形になる： <code>41cf637d4fbeeff954b4ca70b8bde9dd</code></td>
+    </tr>
+    <tr>
+      <td class="notnull foreign"><a href="#nucleus_member">vmember</a></td>
+      <td>int(11)</td>
+      <td></td>
+      <td>アクティベートの必要があるメンバー。</td>
+    </tr>
+    <tr>
+      <td class="notnull">vtime</td>
+      <td>datetime</td>
+      <td></td>
+      <td>アクティベートキーが発行された日時。アクティベートキーの有効期間は 2日間である。</td>
+    </tr>
+    <tr>
+      <td class="notnull">vtype</td>
+      <td>varchar(15)</td>
+      <td></td>
+      <td>アクティベートの種別。
+          <ul>
+            <li><code>forgot</code>: パスワードを忘れたメンバー。</li>
+            <li><code>register</code>: 新しく登録されたメンバー。</li>
+            <li><code>addresschange</code>: メールアドレスを変更したメンバー。</li>
+          </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="notnull">vextra</td>
+      <td>varchar(128)</td>
+      <td></td>
+      <td>追加的な情報。アクティベート種別が <code>addresschange</code> の場合、ここには <code>oldemailaddress/x</code> として、x には 0 または 1 の値が入る。x は <a href="#nucleus_member">member</a>テーブルにある <code>mcanlogin</code> の値を参照する。（アクティベートが完全に終了するまで、このユーザはログインできない）</td>
+    </tr>
+</table>
+
 <a id="nucleus_karma" name="nucleus_karma"></a>
 <h1>nucleus_karmaテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
 <p class="toremove">このテーブルは将来はなくなる可能性が高い。同じ機能を提供するプラグインに譲るためだ。</p>
@@ -1109,7 +1224,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -1135,7 +1250,7 @@
     <tr>
       <th>カラム名</th>
       <th>型</th>
-      <th>規定値</th>
+      <th>既定値</th>
       <th>説明</th>
     </tr>
     <tr>
@@ -1162,3 +1277,4 @@
 </body>
 
 </html>
+
