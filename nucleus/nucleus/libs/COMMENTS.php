@@ -196,20 +196,20 @@ class COMMENTS {
 		// send email to notification address, if any
 		if ($settings->getNotifyAddress() && $settings->notifyOnComment()) {
 		
-			$mailto_msg = 'Comment on item: ' . $this->itemid . "\n";
+			$mailto_msg = _NOTIFY_NC_MSG . ' ' . $this->itemid . "\n";
 			$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $this->itemid . "\n\n";
 			if ($comment['memberid'] == 0) {
-				$mailto_msg .= 'User: ' . $comment['user'] . "\n";
-				$mailto_msg .= 'UserID: ' . $comment['userid'] . "\n";
+				$mailto_msg .= _NOTIFY_USER . ' ' . $comment['user'] . "\n";
+				$mailto_msg .= _NOTIFY_USERID . ' ' . $comment['userid'] . "\n";
 			} else {
-				$mailto_msg .= 'Member: ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
+				$mailto_msg .= _NOTIFY_MEMBER .' ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
 			}
-			$mailto_msg .= 'Host: ' . $comment['host'] . "\n";
-			$mailto_msg .= "Comment:\n " . $comment['body'] . "\n";
+			$mailto_msg .= _NOTIFY_HOST . ' ' . $comment['host'] . "\n";
+			$mailto_msg .= _NOTIFY_COMMENT . "\n " . $comment['body'] . "\n";
 			$mailto_msg .= getMailFooter();
 			
 			$item =& $manager->getItem($this->itemid, 0, 0);
-			$mailto_title = 'Nucleus comment: ' . strip_tags($item['title']) . ' (' . $this->itemid . ')';
+			$mailto_title = _NOTIFY_NC_TITLE . ' ' . strip_tags($item['title']) . ' (' . $this->itemid . ')';
 			
 			$frommail = $member->getNotifyFromMailAddress($comment['userid']);
 
