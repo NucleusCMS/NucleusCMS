@@ -595,7 +595,7 @@ function getConfig() {
 // some checks for names of blogs, categories, templates, members, ...
 function isValidShortName($name) {		return eregi('^[a-z0-9]+$', $name); }
 function isValidDisplayName($name) {	return eregi('^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$', $name); }
-function isValidCategoryName($name) {	return eregi('^[a-zA-Z0-9 ]+$', $name); }
+function isValidCategoryName($name) {	return 1; // return eregi('^[a-zA-Z0-9 ]+$', $name); }
 function isValidTemplateName($name) {	return eregi('^[a-z0-9/]+$', $name); }
 function isValidSkinName($name) {		return isValidShortName($name); }
 
