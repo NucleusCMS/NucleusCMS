@@ -7,6 +7,7 @@
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<%init%>
+		<%extrahead%>
 	</head>
 	<body onload="initStyles(); updAllPreviews();">
 		<h1><%text(_ADD_ADDTO)%> '<%bloglink%>'</h1>
