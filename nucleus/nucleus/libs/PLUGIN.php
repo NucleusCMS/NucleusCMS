@@ -526,66 +526,6 @@
 		}
 		
 		/**
-		 * return wether or not an optiontype can be numeric
-		 * @param string $optionType type of the option
-		 * @return boolean true if this option type can be numerical
-		 * @author TeRanEX
-		 * @static
-		 * @todo IMPORTANT: remove this method
-		 */
-		/*function optionCanBeNumeric($optionType) {
-			switch ($optionType) {
-				case 'text':
-				case 'select':
-					return true;
-					break;
-				default:
-					return false;
-					break;
-			}
-		}*/
-		
-		/**
-		 * return wether or not an optiontype can have a specific access meta data
-		 * @param string $optionType type of the option
-		 * @param string $accessMeta the type of access you want info about
-		 *                           (currenlty always 'readonly')
-		 * @return boolean true if this option type can have the meta
-		 * @author TeRanEX
-		 * @static
-		 * @todo IMPORTANT: remove this method
-		 */
-		/*function optionCanHaveAccessMeta($optionType, $accessMeta) {
-			switch ($optionType) {
-				case 'text':
-				case 'textarea':
-					return true;
-					break;
-				default:
-					return false;
-					break;
-			}
-		}*/
-		
-		/**
-		 * accepts the typeExtra-field of an option and return's true if the option is numerical
-		 * @param string $typeExtra the value of the typeExtra field of an option
-		 * @return boolean true is the option is numerical (the meta collections contains a key 'numerical' with value = true)
-		 * @author TeRanEX
-		 * @static
-		 * @todo IMPORTANT: remove this method
-		 */
-		/*function optionIsNumeric($typeExtra) {
-			$meta = NucleusPlugin::getOptionMeta($typeExtra);
-			//return (in_array('number', $meta)) ? true : false;
-			if ($meta['numerical'] == 'true') {
-				return true;
-			} else {
-				return false;
-			}
-		}*/
-
-		/**
 		 * @param $aOptions: array ( 'oid' => array( 'contextid' => 'value'))
 		 *        (taken from request using requestVar())
 		 * @param $newContextid: integer (accepts a contextid when it is for a new 
