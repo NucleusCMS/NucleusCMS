@@ -4774,8 +4774,16 @@ class ADMIN {
 				<input type="hidden" name="action" value="pluginoptionsupdate" />
 				<input type="hidden" name="plugid" value="<?=$pid?>" />				
 		<?
+		
+		$aOptions = array();
+		$r = sql_query('SELECT oname as name, ovalue as value, odesc as description, otype as type FROM nucleus_plugin_option WHERE opid='.$pid);
+		while ($o = mysql_fetch_object($r)) array_push($aOptions, $o);
+		
+		// call plugins
+		$manager->notify('PrePluginOptionsEdit',array('options'=>&$aOptions));
+		
 		$template['content'] = 'plugoptionlist';
-		$amount = showlist('SELECT * FROM nucleus_plugin_option WHERE opid='.$pid,'table',$template);
+		$amount = showlist($aOptions,'table',$template);
 		if ($amount == 0)
 			echo '<p>',_ERROR_NOPLUGOPTIONS,'</p>';
 		
@@ -4864,7 +4872,7 @@ class NAVLIST extends ENCAPSULATE {
 
 		$this->doEncapsulate(
 				array(&$batch, 'showlist'),
-				array($query, $type, $template),
+				array(&$query, $type, $template),
 				$errorMessage
 		);
 	
@@ -5084,30 +5092,54 @@ class ENCAPSULATE {
 	}
 }
 
-function showlist($query, $type, $template) {
-	$res = sql_query($query);
-	
-	// don't do anything if there are no results
-	$numrows = mysql_num_rows($res);
-	if ($numrows == 0)
-		return 0;
-	
-	call_user_func('listplug_' . $type, $template, 'HEAD');
+// can take either an array of objects, or an SQL query
+function showlist(&$query, $type, $template) {
 
-	// add extra row if needed
-	if ($template['extra']) {
-		echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
-	}
+	if (is_array($query)) {
+		if (sizeof($query) == 0)
+			return 0;
+
+		call_user_func('listplug_' . $type, $template, 'HEAD');
+
+		// add extra row if needed
+		if ($template['extra']) {
+			echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
+		}
+
+		foreach ($query as $currentObj) {
+			$template['current'] = $currentObj;
+			call_user_func('listplug_' . $type, $template, 'BODY');
+		}
+		
+		call_user_func('listplug_' . $type, $template, 'FOOT');
+		
+		return sizeof($query);
 			
-	while($template['current'] = mysql_fetch_object($res)) 
-		call_user_func('listplug_' . $type, $template, 'BODY');
-	
-	call_user_func('listplug_' . $type, $template, 'FOOT');
-	
-	mysql_free_result($res);
-	
-	// return amount of results
-	return $numrows;
+	} else {
+		$res = sql_query($query);
+
+		// don't do anything if there are no results
+		$numrows = mysql_num_rows($res);
+		if ($numrows == 0)
+			return 0;
+
+		call_user_func('listplug_' . $type, $template, 'HEAD');
+
+		// add extra row if needed
+		if ($template['extra']) {
+			echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
+		}
+
+		while($template['current'] = mysql_fetch_object($res)) 
+			call_user_func('listplug_' . $type, $template, 'BODY');
+
+		call_user_func('listplug_' . $type, $template, 'FOOT');
+
+		mysql_free_result($res);
+
+		// return amount of results
+		return $numrows;
+	}
 }
 
 function listplug_select($template, $type) {
@@ -5254,18 +5286,18 @@ function listplug_table_plugoptionlist($template, $type) {
 		case 'BODY';
 			$current = $template['current'];
 			
-			echo '<td>',htmlspecialchars($current->odesc?$current->odesc:$current->oname),'</td>';
+			echo '<td>',htmlspecialchars($current->description?$current->description:$current->name),'</td>';
 			echo '<td>';
-			switch($current->otype) {
+			switch($current->type) {
 				case 'yesno':
-					ADMIN::input_yesno($current->oname, $current->ovalue, 0, 'yes', 'no');
+					ADMIN::input_yesno($current->name, $current->value, 0, 'yes', 'no');
 					break;
 				case 'password':
-					echo '<input type="password" size="40" maxlength="128" name="',htmlspecialchars($current->oname),'" value="',htmlspecialchars($current->ovalue),'" />';
+					echo '<input type="password" size="40" maxlength="128" name="',htmlspecialchars($current->name),'" value="',htmlspecialchars($current->value),'" />';
 					break;
 				case 'text':
 				default:
-					echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($current->oname),'" value="',htmlspecialchars($current->ovalue),'" />';
+					echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($current->name),'" value="',htmlspecialchars($current->value),'" />';
 			}
 			echo '</td>';
 			break;
