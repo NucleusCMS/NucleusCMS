@@ -288,13 +288,15 @@ function do_restore() {
 		
 	$backup_file_name = $uploadInfo['name'];
 	$backup_file_tmpname = $uploadInfo['tmp_name'];
-	$backup_file_type = $uploadInfo['backup_file']['type'];
+	$backup_file_type = $uploadInfo['type'];
 
 	if (!file_exists($backup_file_tmpname))
 		return 'File Upload Error';
 	
 	if (!preg_match("/^(text\/[a-zA-Z]+)|(application\/(x\-)?gzip(\-compressed)?)|(application\/octet-stream)$/is", $backup_file_type) )
 		return 'The uploaded file is not of the correct type';
+		
+		
 	
 	if (preg_match("/\.gz/is",$backup_file_name)) 
 		$gzip = 1;
