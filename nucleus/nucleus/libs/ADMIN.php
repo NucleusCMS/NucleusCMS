@@ -4421,10 +4421,16 @@ selector();
 				echo '<a href="index.php?action=showlogin" title="Log in">' , _NOTLOGGEDIN , '</a> <br />';
 
 			echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
-		?> 
-		<br />(Nucleus <?php echo  $nucleus['version'] ?>)
-		</div>
-		<?php	}
+			
+			echo '<br />(';
+			
+			if ($member->isLoggedIn() && $member->isAdmin())
+				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus ', $nucleus['version'], '</a>';
+			else
+				echo 'Nucleus ' , $nucleus['version'];
+			echo ')';
+		echo '</div>';
+	}
 	
 	function pagefoot() {
 		global $action, $member, $manager;
