@@ -103,7 +103,7 @@ class BLOG {
 	 */
 	function readLogAmount($template, $amountEntries, $extraQuery, $highlight, $comments, $dateheads) {
 		
-		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, c.cname as category, i.icat as catid, i.iclosed as closed'
+		$query =  'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, UNIX_TIMESTAMP(i.itime) as timestamp, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed'
 		       . ' FROM nucleus_item as i, nucleus_member as m, nucleus_category as c'
 		       . ' WHERE i.iblog='.$this->blogid
 		       . ' and i.iauthor=m.mnumber'
@@ -912,7 +912,25 @@ class ITEMACTIONS extends BaseActions {
 	}						
 
 	function parse_author($which = '') {		
-		echo $which == 'realname' ? $this->currentItem->authorname : $this->currentItem->author; }		
+		switch($which)
+		{
+			case 'realname':
+				echo $this->currentItem->authorname;
+				break;
+			case 'id':
+				echo $this->currentItem->authorid;
+				break;
+			case 'email':
+				echo $this->currentItem->authormail;
+				break;
+			case 'url':
+				echo $this->currentItem->authorurl;
+				break;
+			case 'name':
+			default:
+				echo $this->currentItem->author;
+		}
+	}		
 	
 	function parse_smartbody() {
 		if (!$this->currentItem->more) {
@@ -1061,8 +1079,7 @@ class ITEMACTIONS extends BaseActions {
 	
 	/**
 	  * Parses highlighted text, with limited actions only (to prevent not fully trusted team members
-	  * from hacking your weblog. Plugins are allowed though. (Responsibility of being safe rests with
-	  * the plugins)
+	  * from hacking your weblog. 
 	  */
 	function highlightAndParse(&$data) {
 		// allow only a limited subset of actions (do not allow includes etc, they might be evil)
