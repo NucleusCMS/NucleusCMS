@@ -30,7 +30,7 @@
 
 <div class="heading">
 Writing Plugins
-<i>March 9, 2003</i>
+<i>April 1st, 2003</i>
 </div>
 
 <div class="note"><b>Note:</b> This document should contain enough information to write basic plugins. If you have more questions, see the <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin Development Forum</a></div>
@@ -192,7 +192,7 @@ So, that wasn't so hard after all. Read on to find out more.
 	</tr>
 	<tr>
 		<td><tt>getMinNucleusVersion()</tt></td>
-		<td>(v2.0) Returns the minimum required Nucleus version. By default, this returns <tt>155</tt> (v1.55). If you are using plugin features that were introduced later, please implement this function (e.g. v2.0 => 200). Please note that Nucleus v1.55 does not use this function at all, so it remains possible to install newer plugins there, even if they use newer features.</td>
+		<td>(v2.0b) Returns the minimum required Nucleus version. By default, this returns <tt>155</tt> (v1.55). If you are using plugin features that were introduced later, please implement this function (e.g. v2.0 => 200). Please note that Nucleus v1.55 does not use this function at all, so it remains possible to install newer plugins there, even if they use newer features.</td>
 	</tr>
 	<tr>
 		<td><tt>init()</tt></td>
@@ -208,7 +208,7 @@ So, that wasn't so hard after all. Read on to find out more.
 	</tr>
 	<tr>
 		<td><tt>doTemplateCommentsVar(&$item, &$comment)</tt></td>
-		<td>(v2.0) Basically the same as <tt>doSkinVar</tt>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (comments-related parts). By default, this method forwards the handling to the <tt>doSkinVar</tt>-method, using <tt>template</tt> as skintype. <a href="#templatevars">More information on implementing the <tt>doTemplateCommentsVar</tt> method</a></td>		
+		<td>(v2.0b) Basically the same as <tt>doSkinVar</tt>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (comments-related parts). By default, this method forwards the handling to the <tt>doSkinVar</tt>-method, using <tt>template</tt> as skintype. <a href="#templatevars">More information on implementing the <tt>doTemplateCommentsVar</tt> method</a></td>		
 	</tr>	
 	<tr>
 		<td><tt>doAction($type)</tt></td>
@@ -306,7 +306,7 @@ function doSkinVar($skinType, $skinVar, $param1 = 'default value')
 <h2>Notes</h2>
 
 <ul>
-	<li>(v2.0) You can find the name of the skin that's currently being parsed in the global variable <tt>$currentSkinName</tt></li>
+	<li>(v2.0b) You can find the name of the skin that's currently being parsed in the global variable <tt>$currentSkinName</tt></li>
 </ul>
 
 
@@ -355,7 +355,7 @@ function doTemplateCommentsVar(&$item, &$comment, $type, $param1 = 'default valu
 <h2>Notes</h2>
 
 <ul>
-	<li>(v2.0) You can find the name of the template that's currently being used inside the global variable <tt>$currentTemplateName</tt></li>
+	<li>(v2.0b) You can find the name of the template that's currently being used inside the global variable <tt>$currentTemplateName</tt></li>
 </ul>
 
 
@@ -680,7 +680,7 @@ class NP_Acronyms extends NucleusPlugin {
 	</tr>
 	<tr>
 		<td>PrePluginOptionsEdit</td>
-		<td>(v2.0) before the 'edit plugin options' form is created.</td>
+		<td>(v2.0b) before the 'edit plugin options' form is created.</td>
 		<td><dl>
 			<dt class="ref">options</dt>
 			<dd>Array with for each option an object, having the following properties: <code>$obj-&gt;description</code>, <code>$obj-&gt;name</code>, <code>$obj-&gt;type</code>, <code>$obj-&gt;value</code>. Extra options can be added here (if you want to do something with them, you'll need to subscribe to PostPluginOptionsUpdate as well)</dd>
@@ -690,7 +690,7 @@ class NP_Acronyms extends NucleusPlugin {
 	</tr>	
 	<tr>
 		<td>PostPluginOptionsUpdate</td>
-		<td>(v2.0) After the options for a plugin have been updated.</td>
+		<td>(v2.0b) After the options for a plugin have been updated.</td>
 		<td><dl>
 			<dt class="ro">plugid</dt>
 			<dd>plugin ID (compare with <code>GetID()</code> to find out if this concerns you)</dd>
@@ -698,7 +698,7 @@ class NP_Acronyms extends NucleusPlugin {
 	</tr>	
 	<tr>
 		<td>PostAuthentication</td>
-		<td>(v2.0) After the login procedure has been completed. This occurs on each page request.</td>
+		<td>(v2.0b) After the login procedure has been completed. This occurs on each page request.</td>
 		<td><dl>
 			<dt class="ro">loggedIn</dt>
 			<dd>result of <code>$member->isLoggedIn()</code></dd>
@@ -706,7 +706,7 @@ class NP_Acronyms extends NucleusPlugin {
 	</tr>		
 	<tr>
 		<td>PreAddItemForm</td>
-		<td>(v2.0) Immediately before an add item form (bookmarklet or admin area) is created.</td>
+		<td>(v2.0b) Immediately before an add item form (bookmarklet or admin area) is created.</td>
 		<td><dl>
 			<dt class="ref">contents</dt>
 			<dd>reference to an associative array, in which the values 'title', 'body' and 'more' can be filled with initial values for the formfields. To avoid multiple plugins to alter these values, set the 'hasBeenSet' value to 1 when you're done (and check for it before starting)</dd>
@@ -716,7 +716,7 @@ class NP_Acronyms extends NucleusPlugin {
 	</tr>		
 	<tr>
 		<td>AddItemFormExtras</td>
-		<td>(v2.0) Somewhere inside the add item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.</td>
+		<td>(v2.0b) Somewhere inside the add item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
 			<dd>reference to a <code>BLOG</code> object</dd>
@@ -725,7 +725,7 @@ class NP_Acronyms extends NucleusPlugin {
 	<tr>
 		<td>EditItemFormExtras</td>
 		<td>
-			(v2.0) Somewhere inside the edit item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.
+			(v2.0b) Somewhere inside the edit item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.
 			<br /><br />			
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
 <pre><code>&lt;h3&gt;plugin name&lt;/h3&gt;
@@ -745,7 +745,7 @@ class NP_Acronyms extends NucleusPlugin {
 	</tr>				
 	<tr>
 		<td>BlogSettingsFormExtras</td>
-		<td>(v2.0f) On the blog settings page. You can add your own forms here.
+		<td>(v2.0) On the blog settings page. You can add your own forms here.
 			<br /><br />			
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
 <pre><code>&lt;h4&gt;plugin name&lt;/h4&gt;
@@ -762,7 +762,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PreDeleteItem</td>
-		<td>(v2.0f) Immediately before an item gets deleted in the database</td>
+		<td>(v2.0) Immediately before an item gets deleted in the database</td>
 		<td><dl>
 			<dt class="ro">itemid</dt>
 			<dd>id of the item that will be deleted</dd>
@@ -770,7 +770,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostDeleteItem</td>
-		<td>(v2.0f) Immediately after an item has been deleted in the database</td>
+		<td>(v2.0) Immediately after an item has been deleted in the database</td>
 		<td><dl>
 			<dt class="ro">itemid</dt>
 			<dd>id of the deleted item</dd>
@@ -778,7 +778,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PreDeleteCategory</td>
-		<td>(v2.0f) Immediately before a category gets deleted from the database</td>
+		<td>(v2.0) Immediately before a category gets deleted from the database</td>
 		<td><dl>
 			<dt class="ro">catid</dt>
 			<dd>category ID</dd>
@@ -786,7 +786,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostDeleteCategory</td>
-		<td>(v2.0f) Immediately after a category has been deleted from the database</td>
+		<td>(v2.0) Immediately after a category has been deleted from the database</td>
 		<td><dl>
 			<dt class="ro">catid</dt>
 			<dd>category ID</dd>
@@ -794,7 +794,7 @@ your stuff
 	</tr>	
 	<tr>
 		<td>PreDeleteBlog</td>
-		<td>(v2.0f) Immediately before a blog gets deleted from the database</td>
+		<td>(v2.0) Immediately before a blog gets deleted from the database</td>
 		<td><dl>
 			<dt class="ro">blogid</dt>
 			<dd>ID of the blog that will be deleted</dd>
@@ -802,7 +802,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostDeleteBlog</td>
-		<td>(v2.0f) Immediately after a blog has been deleted from the database</td>
+		<td>(v2.0) Immediately after a blog has been deleted from the database</td>
 		<td><dl>
 			<dt class="ro">blogid</dt>
 			<dd>ID of the blog that was deleted from the database</dd>
@@ -810,7 +810,7 @@ your stuff
 	</tr>	
 	<tr>
 		<td>PreDeleteMember</td>
-		<td>(v2.0f) Immediately before a member gets deleted from the database</td>
+		<td>(v2.0) Immediately before a member gets deleted from the database</td>
 		<td><dl>
 			<dt class="ref obj">member</dt>
 			<dd>reference to the <code>MEMBER</code> object associated with the member that needs to be deleted</dd>
@@ -818,7 +818,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostDeleteMember</td>
-		<td>(v2.0f) Immediately after a member has been deleted from the database</td>
+		<td>(v2.0) Immediately after a member has been deleted from the database</td>
 		<td><dl>
 			<dt class="ref obj">member</dt>
 			<dd>reference to the <code>MEMBER</code> object associated with the member that has been deleted</dd>
@@ -826,7 +826,7 @@ your stuff
 	</tr>	
 	<tr>
 		<td>PreDeleteTeamMember</td>
-		<td>(v2.0f) Immediately before a member gets deleted from a weblog team</td>
+		<td>(v2.0) Immediately before a member gets deleted from a weblog team</td>
 		<td><dl>
 			<dt class="ref obj">member</dt>
 			<dd>reference to the <code>MEMBER</code> object</dd>
@@ -836,7 +836,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostDeleteTeamMember</td>
-		<td>(v2.0f) Immediately after a member has been deleted from a weblog team</td>
+		<td>(v2.0) Immediately after a member has been deleted from a weblog team</td>
 		<td><dl>
 			<dt class="ref obj">member</dt>
 			<dd>reference to the <code>MEMBER</code> object</dd>
@@ -846,7 +846,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PreDeleteComment</td>
-		<td>(v2.0f) Immediately before a comment gets deleted from the database</td>
+		<td>(v2.0) Immediately before a comment gets deleted from the database</td>
 		<td><dl>
 			<dt class="ro">commentid</dt>
 			<dd>ID of the comment that will be deleted</dd>
@@ -854,7 +854,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostDeleteComment</td>
-		<td>(v2.0f) Immediately after a comment has been deleted from the database</td>
+		<td>(v2.0) Immediately after a comment has been deleted from the database</td>
 		<td><dl>
 			<dt class="ro">commentid</dt>
 			<dd>ID of the deleted comment</dd>
@@ -862,12 +862,12 @@ your stuff
 	</tr>		
 	<tr>
 		<td>ActionLogCleared</td>
-		<td>(v2.0f) After the action log has been cleared</td>
+		<td>(v2.0) After the action log has been cleared</td>
 		<td>None</td>		
 	</tr>
 	<tr>
 		<td>PreDeleteTemplate</td>
-		<td>(v2.0f) Immediately before a template gets deleted from the database</td>
+		<td>(v2.0) Immediately before a template gets deleted from the database</td>
 		<td><dl>
 			<dt class="ro">templateid</dt>
 			<dd>ID of the template that will be deleted</dd>
@@ -875,7 +875,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostDeleteTemplate</td>
-		<td>(v2.0f) Immediately after a template has been deleted from the database</td>
+		<td>(v2.0) Immediately after a template has been deleted from the database</td>
 		<td><dl>
 			<dt class="ro">templateid</dt>
 			<dd>ID of the deleted template</dd>
@@ -883,7 +883,7 @@ your stuff
 	</tr>		
 	<tr>
 		<td>PreDeleteSkin</td>
-		<td>(v2.0f) Immediately before a skin gets deleted from the database</td>
+		<td>(v2.0) Immediately before a skin gets deleted from the database</td>
 		<td><dl>
 			<dt class="ro">skinid</dt>
 			<dd>ID of the skin that will be deleted</dd>
@@ -891,7 +891,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostDeleteSkin</td>
-		<td>(v2.0f) Immediately after a skin has been deleted from the database</td>
+		<td>(v2.0) Immediately after a skin has been deleted from the database</td>
 		<td><dl>
 			<dt class="ro">skinid</dt>
 			<dd>ID of the deleted skin</dd>
@@ -899,7 +899,7 @@ your stuff
 	</tr>	
 	<tr>
 		<td>PreDeletePlugin</td>
-		<td>(v2.0f) Immediately before a plugin gets deleted from the database</td>
+		<td>(v2.0) Immediately before a plugin gets deleted from the database</td>
 		<td><dl>
 			<dt class="ro">plugid</dt>
 			<dd>ID of the plugin that will be deleted</dd>
@@ -907,7 +907,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostDeletePlugin</td>
-		<td>(v2.0f) Immediately after a plugin has been deleted from the database</td>
+		<td>(v2.0) Immediately after a plugin has been deleted from the database</td>
 		<td><dl>
 			<dt class="ro">plugid</dt>
 			<dd>ID of the deleted plugin</dd>
@@ -915,7 +915,7 @@ your stuff
 	</tr>		
 	<tr>
 		<td>PreDeleteBan</td>
-		<td>(v2.0f) Immediately before an IP ban gets deleted from the database</td>
+		<td>(v2.0) Immediately before an IP ban gets deleted from the database</td>
 		<td><dl>
 			<dt class="ro">blogid</dt>
 			<dd>ID of the blog for which the ban will be deleted</dd>
@@ -925,7 +925,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostDeleteBan</td>
-		<td>(v2.0f) Immediately after an IP ban has been deleted from the database</td>
+		<td>(v2.0) Immediately after an IP ban has been deleted from the database</td>
 		<td><dl>
 			<dt class="ro">blogid</dt>
 			<dd>ID of the blog for which the ban has been deleted</dd>
@@ -935,7 +935,7 @@ your stuff
 	</tr>			
 	<tr>
 		<td>PreAddCategory</td>
-		<td>(v2.0f) Immediately before a new category is created in the database</td>
+		<td>(v2.0) Immediately before a new category is created in the database</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
 			<dd>reference to <code>BLOG</code> object</dd>
@@ -947,7 +947,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostAddCategory</td>
-		<td>(v2.0f) Immediately after a new category has been created in the database</td>
+		<td>(v2.0) Immediately after a new category has been created in the database</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
 			<dd>reference to <code>BLOG</code> object</dd>
@@ -961,7 +961,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PreAddBlog</td>
-		<td>(v2.0f) Immediately before a new blog is created</td>
+		<td>(v2.0) Immediately before a new blog is created</td>
 		<td><dl>
 			<dt class="ref">name</dt>
 			<dd>name of new blog</dd>
@@ -977,7 +977,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostAddBlog</td>
-		<td>(v2.0f) Immediately after a new blog has been created</td>
+		<td>(v2.0) Immediately after a new blog has been created</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
 			<dd>new <code>BLOG</code> object</dd>
@@ -985,7 +985,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PreAddPlugin</td>
-		<td>(v2.0f) Immediately before a plugin is added</td>
+		<td>(v2.0) Immediately before a plugin is added</td>
 		<td><dl>
 			<dt class="ref">file</dt>
 			<dd>filename of the new plugin</dd>
@@ -993,7 +993,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostAddPlugin</td>
-		<td>(v2.0f) Immediately after a plugin has been added</td>
+		<td>(v2.0) Immediately after a plugin has been added</td>
 		<td><dl>
 			<dt class="ref obj">plugin</dt>
 			<dd>An object of the newly added plugin</dd>
@@ -1001,7 +1001,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PreAddTeamMember</td>
-		<td>(v2.0f) Immediately before a member gets added to a blog team</td>
+		<td>(v2.0) Immediately before a member gets added to a blog team</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
 			<dd><code>BLOG</code> object</dd>
@@ -1013,7 +1013,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostAddTeamMember</td>
-		<td>(v2.0f) Immediately after a member has been added to a blog team</td>
+		<td>(v2.0) Immediately after a member has been added to a blog team</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
 			<dd><code>BLOG</code> object</dd>
@@ -1025,7 +1025,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PreAddTemplate</td>
-		<td>(v2.0f) Immediately before a new template is created (note: this one also gets called when a template is cloned))</td>
+		<td>(v2.0) Immediately before a new template is created (note: this one also gets called when a template is cloned))</td>
 		<td><dl>
 			<dt class="ref">name</dt>
 			<dd>name of the new template</dd>
@@ -1035,7 +1035,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostAddTemplate</td>
-		<td>(v2.0f) Immediately after a new template has been created</td>
+		<td>(v2.0) Immediately after a new template has been created</td>
 		<td><dl>
 			<dt class="ro">name</dt>
 			<dd>name of the new template</dd>
@@ -1047,7 +1047,7 @@ your stuff
 	</tr>	
 	<tr>
 		<td>PreAddSkin</td>
-		<td>(v2.0f) Immediately before a new skin is created (note: this one also gets called when a skin is cloned))</td>
+		<td>(v2.0) Immediately before a new skin is created (note: this one also gets called when a skin is cloned))</td>
 		<td><dl>
 			<dt class="ref">name</dt>
 			<dd>name of the new skin</dd>
@@ -1063,7 +1063,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostAddSkin</td>
-		<td>(v2.0f) Immediately after a new skin has been created</td>
+		<td>(v2.0) Immediately after a new skin has been created</td>
 		<td><dl>
 			<dt class="ro">name</dt>
 			<dd>name of the new skin</dd>
@@ -1081,7 +1081,7 @@ your stuff
 	</tr>		
 	<tr>
 		<td>PreAddBan</td>
-		<td>(v2.0f) Immediately before a new ban is added to a weblog</td>
+		<td>(v2.0) Immediately before a new ban is added to a weblog</td>
 		<td><dl>
 			<dt class="ref">blogid</dt>
 			<dd>ID of the blog</dd>
@@ -1093,7 +1093,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostAddBan</td>
-		<td>(v2.0f) Immediately after a new ban has been added</td>
+		<td>(v2.0) Immediately after a new ban has been added</td>
 		<td><dl>
 			<dt class="ro">blogid</dt>
 			<dd>ID of the blog</dd>
@@ -1106,7 +1106,7 @@ your stuff
 
 	<tr>
 		<td>PreMoveItem</td>
-		<td>(v2.0f) Immediately before an item is moved to another blog/category</td>
+		<td>(v2.0) Immediately before an item is moved to another blog/category</td>
 		<td><dl>
 			<dt class="ref">itemid</dt>
 			<dd>ID of the item</dd>
@@ -1118,7 +1118,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostMoveItem</td>
-		<td>(v2.0f) Immediately after an item has been moved to another blog/category</td>
+		<td>(v2.0) Immediately after an item has been moved to another blog/category</td>
 		<td><dl>
 			<dt class="ro">itemid</dt>
 			<dd>ID of the item</dd>
@@ -1130,7 +1130,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PreMoveCategory</td>
-		<td>(v2.0f) Immediately before a catgeory is moved to another blog</td>
+		<td>(v2.0) Immediately before a catgeory is moved to another blog</td>
 		<td><dl>
 			<dt class="ref">catid</dt>
 			<dd>ID of the catgeory</dd>
@@ -1142,7 +1142,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>PostMoveCategory</td>
-		<td>(v2.0f) Immediately after a catgeory has been moved to another blog</td>
+		<td>(v2.0) Immediately after a catgeory has been moved to another blog</td>
 		<td><dl>
 			<dt class="ro">catid</dt>
 			<dd>ID of the catgeory</dd>
@@ -1154,7 +1154,7 @@ your stuff
 	</tr>	
 	<tr>
 		<td>MemberSettingsFormExtras</td>
-		<td>(v2.0f) On the member settings page. You can add your own forms here.
+		<td>(v2.0) On the member settings page. You can add your own forms here.
 			<br /><br />			
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
 <pre><code>&lt;h4&gt;plugin name&lt;/h4&gt;
@@ -1171,7 +1171,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>GeneralSettingsFormExtras</td>
-		<td>(v2.0f) On the general settings page. You can add your own forms here.
+		<td>(v2.0) On the general settings page. You can add your own forms here.
 			<br /><br />			
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
 <pre><code>&lt;h4&gt;plugin name&lt;/h4&gt;
