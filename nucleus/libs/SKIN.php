@@ -2,7 +2,7 @@
 
 
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
+  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
   * Copyright (C) 2002 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
@@ -17,7 +17,7 @@ class SKIN {
 
 	function SKIN($id) {
 		$this->id = intval($id);
-		
+
 		// read skin name/description/content type
 		$res = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $this->id);
 		$obj = mysql_fetch_object($res);
@@ -26,7 +26,7 @@ class SKIN {
 		$this->contentType = $obj->sdtype;
 		$this->includeMode = $obj->sdincmode;
 		$this->includePrefix = $obj->sdincpref;
-		
+
 	}
 	
 	function getID() {				return $this->id; }
@@ -86,7 +86,7 @@ class SKIN {
 				'includePrefix' => &$includePrefix
 			)
 		);
-				
+
 		sql_query('INSERT INTO '.sql_table('skin_desc')." (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "','".addslashes($type)."','".addslashes($includeMode)."','".addslashes($includePrefix)."')");
 		$newid = mysql_insert_id();
 		
@@ -100,16 +100,26 @@ class SKIN {
 				'includeMode' => $includeMode,
 				'includePrefix' => $includePrefix
 			)
-		);		
+		);
 		
 		return $newid;
 	}
 	
 	function parse($type) {
 		global $manager, $CONF;
-		
+
 		// set output type
-		sendContentType($this->getContentType());
+		if (!headers_sent()) {
+			// if content type is application/xhtml+xml, only send it to browsers
+			// that can handle it (IE6 cannot). Otherwise, send text/html
+			if (
+					($this->getContentType() == 'application/xhtml+xml')
+				&&	!stristr(serverVar('HTTP_ACCEPT'),'application/xhtml+xml')
+				)
+				header('Content-Type: text/html; charset=' . _CHARSET);
+			else
+				header('Content-Type: ' . $this->getContentType() . '; charset=' . _CHARSET);
+		}
 
 		// set skin name as global var (so plugins can access it)
 		global $currentSkinName;
@@ -126,46 +136,46 @@ class SKIN {
 				return;
 			}
 		}
-		
+
 		$actions = $this->getAllowedActionsForType($type);
-		
+
 		$manager->notify('PreSkinParse',array('skin' => &$this, 'type' => $type));
 
 		// set IncludeMode properties of parser
 		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
 		PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());
-		
+
 		$handler = new ACTIONS($type, $this);
 		$parser = new PARSER($actions, $handler);
 		$handler->setParser($parser);
 		$handler->setSkin($this);
 		$parser->parse($contents);
-		
-		$manager->notify('PostSkinParse',array('skin' => &$this, 'type' => $type));		
+
+		$manager->notify('PostSkinParse',array('skin' => &$this, 'type' => $type));
 
 
 	}
-	
+
 	function getContent($type) {
 		$query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". addslashes($type) ."'";
 		$res = sql_query($query);
-		
+
 		if (mysql_num_rows($res) == 0)
 			return '';
 		else
 			return mysql_result($res, 0, 0);
 	}
-	
+
 	/**
 	 * Updates the contents of one part of the skin
 	 */
 	function update($type, $content) {
 		$skinid = $this->id;
 		$content = trim($content);
-	
+
 		// delete old thingie
 		sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='$type' and sdesc=$skinid");
-		
+
 		// write new thingie
 		if ($content) {
 			sql_query('INSERT INTO '.sql_table('skin')." SET scontent='" . addslashes($content) . "', stype='" . addslashes($type) . "', sdesc=$skinid");
@@ -241,6 +251,7 @@ class SKIN {
 		
 		// extra actions specific for a certain skin type
 		$extraActions = array();
+
 		switch ($type) {
 			case 'index':
 				$extraActions = array('blog', 
@@ -249,7 +260,9 @@ class SKIN {
 					            'additemform',
 								'categorylist',					            
 					            'archivelist',
-					            'archivedaylist',					            
+					            'archivedaylist',
+					            'nextlink',
+					            'prevlink'
 					            );				
 				break;
 			case 'archive':
@@ -271,20 +284,25 @@ class SKIN {
 			case 'archivelist':
 				$extraActions = array('blog',
 							    'archivelist',
-								'archivedaylist',							    
-								'categorylist',							    
+								'archivedaylist',
+								'categorylist',
 							    'blogsetting',
 							   );
 				break;
 			case 'search':
 				$extraActions = array('blog',
 								'archivelist',
-					            'archivedaylist',								
-								'categorylist',								
+					            'archivedaylist',
+								'categorylist',
 								'searchresults',
+                                'nextresults',
+                                'prevresults',
 								'othersearchresults',
 								'blogsetting',
 								'query',
+								'nextlink',
+								'prevlink',
+								'relevance',
 								);
 				break;
 			case 'imagepopup':
@@ -310,6 +328,8 @@ class SKIN {
 							    'previtem',
 							    'nextlink',
 							    'prevlink',
+							    'nexttitle',
+							    'prevtitle',
 								'categorylist',							    
 							    'archivelist',
 					            'archivedaylist',							    
@@ -341,8 +361,8 @@ class ACTIONS extends BaseActions {
 
 	function ACTIONS($type) {
 		// call constructor of superclass first
-		$this->BaseActions();	
-		
+		$this->BaseActions();
+
 		$this->skintype = $type;
 
 		global $catid;
@@ -390,7 +410,7 @@ class ACTIONS extends BaseActions {
 	
 	function parse_if($field, $name='', $value = '') {
 		global $catid, $blog, $member;
-		
+
 		$condition = 0;
 		switch($field) {
 			case 'category':
@@ -464,48 +484,95 @@ class ACTIONS extends BaseActions {
 		global $itemidprev;
 		echo $itemidprev;
 	}
-	
+
+	// include itemtitle of prev item
+	function parse_previtemtitle() {
+		global $itemtitleprev;
+		echo $itemtitleprev;
+	}
+
 	// include itemid of next item
 	function parse_nextitem() {
 		global $itemidnext;
 		echo $itemidnext;
 	}
 
+	// include itemtitle of next item
+	function parse_nextitemtitle() {
+		global $itemtitlenext;
+		echo $itemtitlenext;
+	}
+
 	function parse_prevarchive() {
 		global $archiveprev;
 		echo $archiveprev;
 	}
-	
+
 	function parse_nextarchive() {
 		global $archivenext;
 		echo $archivenext;
-	}	
-	
+	}
+
 	function parse_archivetype() {
 		global $archivetype;
 		echo $archivetype;
 	}
-	
-	function parse_prevlink() {
-		global $itemidprev, $archiveprev;	
-		
+
+	function parse_prevlink($amount = 10, $linktext = '') {
+		global $itemidprev, $archiveprev, $startpos;
+
 		if ($this->skintype == 'item')
 			$this->_itemlink($itemidprev);
+	    else if ($this->skintype == 'search')
+	        $this->_searchlink($amount, $startpos, 'prev', $linktext);
+	    else if ($this->skintype == 'index')
+	        $this->_bloglink($amount, $startpos, 'prev', $linktext);
 		else
 			$this->_archivelink($archiveprev);
 	}
-	function parse_nextlink() {
-		global $itemidnext, $archivenext;	
-		
+	
+	function parse_nextlink($amount = 10, $linktext = '') {
+		global $itemidnext, $archivenext, $startpos;
 		if ($this->skintype == 'item')
 			$this->_itemlink($itemidnext);
+	    else if ($this->skintype == 'search')
+	        $this->_searchlink($amount, $startpos, 'next', $linktext);
+	    else if ($this->skintype == 'index')
+	        $this->_bloglink($amount, $startpos, 'next', $linktext);
 		else
 			$this->_archivelink($archivenext);
-	}	
-	
+	}
+
+    function _searchlink($amount, $startpos, $direction, $linktext = '') {
+        global $CONF, $REQUEST_URI;
+        // TODO: Move request uri to linkparams. this is ugly. sorry for that.
+        if ($startpos==""){$startpos=0;}
+        if ($linktext=="") {$linktext = $direction;} // which will read 'prev' or 'next'
+        $parsed     = parse_url($REQUEST_URI);
+        $parsed     = $parsed[query];
+        switch ($direction) {
+            case 'prev':
+                if ( intval($startpos) - intval($amount) >= 0) {
+                    $startpos = intval($startpos) - intval($amount);
+                    echo '<a href="'.$CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos)
+                         .'">'.$linktext.'</a>';
+                }
+                break;
+            case 'next':
+                $startpos = intval($startpos) + intval($amount);
+                if (intval($this->amountfound) >= intval($amount) || (intval($this->amountfound) == 0) ) {
+                    echo '<a href="'.$CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos)
+                         .'">'.$linktext.'</a>';
+                }
+                break;
+            default:
+                break;
+        } // switch($direction)
+    }
+
 	function _itemlink($id) {
 		global $CONF;
-		if ($id) 
+		if ($id)
 			echo createItemLink($id, $this->linkparams);
 		else
 			$this->parse_todaylink();
@@ -513,7 +580,7 @@ class ACTIONS extends BaseActions {
 
 	function _archivelink($id) {
 		global $CONF, $blog;
-		if ($id) 
+		if ($id)
 			echo createArchiveLink($blog->getID(), $id, $this->linkparams);
 		else
 			$this->parse_todaylink();
@@ -560,47 +627,46 @@ class ACTIONS extends BaseActions {
 		global $blog;
 		
 		list($limit, $offset) = sscanf($amount, '%d(%d)');
-		
 		$this->_setBlogCategory($blog, $category);
 		$this->_preBlogContent('blog',$blog);
 		$blog->readLog($template, $limit, $offset);
-		$this->_postBlogContent('blog',$blog);		
+		$this->_postBlogContent('blog',$blog);
 	}
-	
+
 	function parse_otherblog($blogname, $template, $amount = 10, $category = '') {
 		global $manager;
-		
+
 		list($limit, $offset) = sscanf($amount, '%d(%d)');
-		
+
 		$b =& $manager->getBlog(getBlogIDFromName($blogname));
-		$this->_setBlogCategory($b, $category);	
-		$this->_preBlogContent('otherblog',$b);		
+		$this->_setBlogCategory($b, $category);
+		$this->_preBlogContent('otherblog',$b);
 		$b->readLog($template, $limit, $offset);
-		$this->_postBlogContent('otherblog',$b);		
+		$this->_postBlogContent('otherblog',$b);
 	}
-	
+
 	// include one item (no comments)
 	function parse_item($template) {
 		global $blog, $itemid, $highlight;
 		$this->_setBlogCategory($blog, '');	// need this to select default category
 		$this->_preBlogContent('item',$blog);
-		$r = $blog->showOneitem($itemid, $template, $highlight);				
+		$r = $blog->showOneitem($itemid, $template, $highlight);
 		if ($r == 0)
 			echo _ERROR_NOSUCHITEM;
 		$this->_postBlogContent('item',$blog);
 	}
-	
+
 	function parse_itemid() {
 		global $itemid;
 		echo $itemid;
 	}
-	
-	
+
+
 	// include comments for one item
 	function parse_comments($template) {
 		global $itemid, $manager, $blog, $highlight;
 		$template = TEMPLATE::read($template);
-		
+
 		// create parser object & action handler
 		$actions = new ITEMACTIONS($blog);
 		$parser = new PARSER($actions->getDefinedActions(),$actions);
@@ -611,75 +677,75 @@ class ACTIONS extends BaseActions {
 
 		$comments = new COMMENTS($itemid);
 		$comments->setItemActions($actions);
-		$comments->showComments($template, -1, 1, $highlight);	// shows ALL comments		
+		$comments->showComments($template, -1, 1, $highlight);	// shows ALL comments
 	}
-	
+
 	function parse_archive($template, $category = '') {
 		global $blog, $archive;
 		// can be used with either yyyy-mm or yyyy-mm-dd
-		sscanf($archive,'%d-%d-%d',$y,$m,$d);		
-		$this->_setBlogCategory($blog, $category);			
-		$this->_preBlogContent('achive',$blog);		
-		$blog->showArchive($template, $y, $m, $d);		
-		$this->_postBlogContent('achive',$blog);				
-		
+		sscanf($archive,'%d-%d-%d',$y,$m,$d);
+		$this->_setBlogCategory($blog, $category);
+		$this->_preBlogContent('achive',$blog);
+		$blog->showArchive($template, $y, $m, $d);
+		$this->_postBlogContent('achive',$blog);
+
 	}
-	
+
 	function parse_otherarchive($blogname, $template, $category = '') {
 		global $archive, $manager;
 		sscanf($archive,'%d-%d-%d',$y,$m,$d);
 		$b =& $manager->getBlog(getBlogIDFromName($blogname));
-		$this->_setBlogCategory($b, $category);			
-		$this->_preBlogContent('otherachive',$b);		
-		$b->showArchive($template, $y, $m, $d);		
-		$this->_postBlogContent('otherachive',$b);				
+		$this->_setBlogCategory($b, $category);
+		$this->_preBlogContent('otherachive',$b);
+		$b->showArchive($template, $y, $m, $d);
+		$this->_postBlogContent('otherachive',$b);
 	}
 
 	function parse_archivelist($template, $category = 'all', $limit = 0) {
 		global $blog;
 		if ($category == 'all') $category = '';
-		$this->_preBlogContent('archivelist',$blog);		
-		$this->_setBlogCategory($blog, $category);			
+		$this->_preBlogContent('archivelist',$blog);
+		$this->_setBlogCategory($blog, $category);
 		$blog->showArchiveList($template, 'month', $limit);
-		$this->_postBlogContent('archivelist',$blog);				
+		$this->_postBlogContent('archivelist',$blog);
 	}
-	
+
 	function parse_archivedaylist($template, $category = 'all', $limit = 0) {
 		global $blog;
-		if ($category == 'all') $category = '';		
-		$this->_preBlogContent('archivelist',$blog);		
-		$this->_setBlogCategory($blog, $category);			
+		if ($category == 'all') $category = '';
+		$this->_preBlogContent('archivelist',$blog);
+		$this->_setBlogCategory($blog, $category);
 		$blog->showArchiveList($template, 'day', $limit);
-		$this->_postBlogContent('archivelist',$blog);				
+		$this->_postBlogContent('archivelist',$blog);
 	}
-	
+
 
 	function parse_itemtitle() {
 		global $manager, $itemid;
 		$item =& $manager->getItem($itemid,0,0);
 		echo htmlspecialchars(strip_tags($item['title']));
 	}
-	
+
 	function parse_categorylist($template, $blogname = '') {
 		global $blog, $manager;
-		
+
 		if ($blogname == '') {
-			$this->_preBlogContent('categorylist',$blog);				
+			$this->_preBlogContent('categorylist',$blog);
 			$blog->showCategoryList($template);
-			$this->_postBlogContent('categorylist',$blog);							
+			$this->_postBlogContent('categorylist',$blog);
 		} else {
 			$b =& $manager->getBlog(getBlogIDFromName($blogname));
-			$this->_preBlogContent('categorylist',$b);				
+			$this->_preBlogContent('categorylist',$b);
 			$b->showCategoryList($template);
-			$this->_postBlogContent('categorylist',$b);							
+			$this->_postBlogContent('categorylist',$b);
 		}
 	}
-	
+
 	function parse_category($type = 'name') {
 		global $catid, $blog;
 		if (!$blog->isValidCategory($catid))
 			return;
-			
+
 		switch($type) {
 			case 'name':
 				echo $blog->getCategoryName($catid);
@@ -697,37 +763,38 @@ class ACTIONS extends BaseActions {
 		global $manager;
 		if ($category == 'all') $category = '';
 		$b =& $manager->getBlog(getBlogIDFromName($blogname));
-		$this->_setBlogCategory($b, $category);			
-		$this->_preBlogContent('otherarchivelist',$b);						
+		$this->_setBlogCategory($b, $category);
+		$this->_preBlogContent('otherarchivelist',$b);
 		$b->showArchiveList($template, 'month', $limit);
-		$this->_postBlogContent('otherarchivelist',$b);						
+		$this->_postBlogContent('otherarchivelist',$b);
 	}
 
 	function parse_otherarchivedaylist($blogname, $template, $category = 'all', $limit = 0) {
 		global $manager;
-		if ($category == 'all') $category = '';		
+		if ($category == 'all') $category = '';
 		$b =& $manager->getBlog(getBlogIDFromName($blogname));
-		$this->_setBlogCategory($b, $category);			
-		$this->_preBlogContent('otherarchivelist',$b);						
+		$this->_setBlogCategory($b, $category);
+		$this->_preBlogContent('otherarchivelist',$b);
 		$b->showArchiveList($template, 'day', $limit);
-		$this->_postBlogContent('otherarchivelist',$b);						
+		$this->_postBlogContent('otherarchivelist',$b);
 	}
 
-	function parse_searchresults($template, $maxresults = 50) {
-		global $blog, $query, $amount;
-		$this->_setBlogCategory($blog, '');	// need this to select default category		
-		$this->_preBlogContent('searchresults',$blog);						
-		$blog->search($query, $template, $amount, $maxresults);
-		$this->_postBlogContent('searchresults',$blog);								
+	function parse_searchresults($template, $maxresults = 50 ) {
+		global $blog, $query, $amount, $startpos;
+
+		$this->_setBlogCategory($blog, '');	// need this to select default category
+		$this->_preBlogContent('searchresults',$blog);
+		$this->amountfound = $blog->search($query, $template, $amount, $maxresults, $startpos);
+		$this->_postBlogContent('searchresults',$blog);
 	}
-	
+
 	function parse_othersearchresults($blogname, $template, $maxresults = 50) {
-		global $query, $amount, $manager;
+		global $query, $amount, $manager, $startpos;
 		$b =& $manager->getBlog(getBlogIDFromName($blogname));
-		$this->_setBlogCategory($b, '');	// need this to select default category		
-		$this->_preBlogContent('othersearchresults',$b);								
-		$b->search($query, $template, $amount, $maxresults);
-		$this->_postBlogContent('othersearchresults',$b);								
+		$this->_setBlogCategory($b, '');	// need this to select default category
+		$this->_preBlogContent('othersearchresults',$b);
+		$b->search($query, $template, $amount, $maxresults, $startpos);
+		$this->_postBlogContent('othersearchresults',$b);
 	}
 
 	// includes the search query
@@ -1018,26 +1085,24 @@ class ACTIONS extends BaseActions {
 			$this->doForm('membermailform-disallowed');		
 		}
 
-	}	
-	
+	}
+
 	function parse_searchform($blogname = '') {
-		global $CONF, $manager;
-		
+		global $CONF, $manager, $maxresults;
 		if ($blogname) {
-			$blog =& $manager->getBlog(getBlogIDFromName($blogname));  
+			$blog =& $manager->getBlog(getBlogIDFromName($blogname));
 		} else {
 			global $blog;
 		}
-		
 		// use default blog when no blog is selected
 		$this->formdata = array(
 			'id' => $blog?$blog->getID():$CONF['DefaultBlog'],
-			'query' => htmlspecialchars(getVar('query'))
+			'query' => htmlspecialchars(getVar('query')),
 		);
 		$this->doForm('searchform');
 	}
-	
-	function parse_nucleusbutton($imgurl = '', 
+
+	function parse_nucleusbutton($imgurl = '',
 							     $imgwidth = '85',
 							     $imgheight = '31') {
 		global $CONF;
@@ -1045,9 +1110,9 @@ class ACTIONS extends BaseActions {
 			$imgurl = $CONF['AdminURL'] . 'nucleus.gif';
 		} else if (PARSER::getProperty('IncludeMode') == 'skindir'){
 			// when skindit IncludeMode is used: start from skindir
-			$imgurl = $CONF['SkinsURL'] . PARSER::getProperty('IncludePrefix') . $imgurl; 
+			$imgurl = $CONF['SkinsURL'] . PARSER::getProperty('IncludePrefix') . $imgurl;
 		}
-		
+
 		$this->formdata = array(
 			'imgurl' => $imgurl,
 			'imgwidth' => $imgwidth,
