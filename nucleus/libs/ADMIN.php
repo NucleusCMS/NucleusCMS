@@ -591,7 +591,7 @@ class ADMIN {
 			?>
 			
 			
-			<input type="submit" value="<?php echo _MOVE_BTN?>" onclick="return checkSubmit();" 
+			<input type="submit" value="<?php echo _MOVE_BTN?>" onclick="return checkSubmit();" />
 
 		</div></form>
 		<?php		$this->pagefoot();
@@ -617,7 +617,7 @@ class ADMIN {
 			?>
 			
 			
-			<input type="submit" value="<?php echo _MOVECAT_BTN?>" onclick="return checkSubmit();" 
+			<input type="submit" value="<?php echo _MOVECAT_BTN?>" onclick="return checkSubmit();" />
 
 		</div></form>
 		<?php		$this->pagefoot();
@@ -650,7 +650,7 @@ class ADMIN {
 					
 			?>
 			
-			<input type="submit" value="<?php echo _BATCH_DELETE_CONFIRM_BTN?>" onclick="return checkSubmit();" 
+			<input type="submit" value="<?php echo _BATCH_DELETE_CONFIRM_BTN?>" onclick="return checkSubmit();" />
 
 		</div></form>
 		<?php		$this->pagefoot();
@@ -4408,7 +4408,7 @@ selector();
 		
 		$query =  'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid.' ORDER BY iprange';
 		$template['content'] = 'banlist';
-		showlist($query,'table',$template);
+		$amount = showlist($query,'table',$template);
 		
 		if ($amount == 0)
 			echo _BAN_NONE;
