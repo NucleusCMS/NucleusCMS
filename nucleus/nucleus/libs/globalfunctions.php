@@ -145,11 +145,45 @@ if (!headers_sent()) {
 		setcookie('lastVisit','',(time()-2592000),$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 }
 
-
 // read language file, only after user has been initialized
 $language = getLanguageName();
 include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
 
+// decode path_info
+if ($CONF['URLMode'] == 'pathinfo') {
+	$data = explode("/",serverVar('PATH_INFO'));
+//	print_r($data);
+	for ($i=0;$i<sizeof($data);$i++) {
+		switch ($data[$i]) {
+			case 'item':			// item/1 (blogid)
+				$i++;
+				if ($i<sizeof($data)) $itemid = intval($data[$i]);
+				break;
+			case 'archives':		// archives/1 (blogid)
+				$i++;
+				if ($i<sizeof($data)) $archivelist = intval($data[$i]);
+				break;
+			case 'archive':			// two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
+				if ((($i+1)<sizeof($data)) && (!strstr($data[$i+1],'-')) ){
+					$blogid = intval($data[++$i]);
+				}
+				$i++;
+				if ($i<sizeof($data)) $archive = $data[$i];
+				break;
+			case 'category':		// category/1 (catid)
+			case 'catid':
+				$i++;
+				if ($i<sizeof($data)) $catid = intval($data[$i]);
+				break;				
+			case 'member':
+				$i++;
+				if ($i<sizeof($data)) $memberid = intval($data[$i]);
+				break;				
+			default:
+				// skip...
+		}
+	}
+}
 
 /**
   * Connects to mysql server
@@ -632,29 +666,44 @@ $CONF['CategoryURL'] = $CONF['Self'];
   */
 function createItemLink($itemid, $extra = '') {
 	global $CONF;
-	$link = $CONF['ItemURL'] . '?itemid=' . $itemid;
+	if ($CONF['URLMode'] == 'pathinfo')
+		$link = $CONF['ItemURL'] . '/item/' . $itemid;
+	else
+		$link = $CONF['ItemURL'] . '?itemid=' . $itemid;
 	return addLinkParams($link, $extra);
 }
 function createMemberLink($memberid, $extra = '') {
 	global $CONF;
-	$link = $CONF['MemberURL'] . '?memberid=' . $memberid;
+	if ($CONF['URLMode'] == 'pathinfo')	
+		$link = $CONF['MemberURL'] . '/member/' . $memberid;
+	else
+		$link = $CONF['MemberURL'] . '?memberid=' . $memberid;
 	return addLinkParams($link, $extra);
 }
 function createCategoryLink($catid, $extra = '') {
 	global $CONF;
-	$link = $CONF['CategoryURL'] . '?catid=' . $catid;
+	if ($CONF['URLMode'] == 'pathinfo')		
+		$link = $CONF['CategoryURL'] . '/category/' . $catid;	
+	else
+		$link = $CONF['CategoryURL'] . '?catid=' . $catid;
 	return addLinkParams($link, $extra);
 }
 function createArchiveListLink($blogid = '', $extra = '') {
 	global $CONF;
 	if (!$blogid)
 		$blogid = $CONF['DefaultBlog'];
-	$link = $CONF['ArchiveListURL'] . '?archivelist=' . $blogid;
+	if ($CONF['URLMode'] == 'pathinfo')			
+		$link = $CONF['ArchiveListURL'] . '/archives/' . $blogid;
+	else
+		$link = $CONF['ArchiveListURL'] . '?archivelist=' . $blogid;	
 	return addLinkParams($link, $extra);
 }
 function createArchiveLink($blogid, $archive, $extra = '') {
 	global $CONF;
-	$link = $CONF['ArchiveURL'] . '?blogid='.$blogid.'&amp;archive=' . $archive;
+	if ($CONF['URLMode'] == 'pathinfo')		
+		$link = $CONF['ArchiveURL'] . '/archive/'.$blogid.'/' . $archive;
+	else
+		$link = $CONF['ArchiveURL'] . '?blogid='.$blogid.'&amp;archive=' . $archive;	
 	return addLinkParams($link, $extra);
 }
 function createBlogLink($url, $params) {
@@ -667,9 +716,16 @@ function createBlogidLink($blogid, $params = '') {
 
 
 function addLinkParams($link, $params) {
+	global $CONF;
 	if (is_array($params)) {
-		foreach ($params as $param => $value) {
-			$link .= '&amp;' . $param . '=' . urlencode($value);
+		if ($CONF['URLMode'] == 'pathinfo')	{
+			foreach ($params as $param => $value) {
+				$link .= '/' . $param . '/' . urlencode($value);
+			}
+		} else {
+			foreach ($params as $param => $value) {
+				$link .= '&amp;' . $param . '=' . urlencode($value);
+			}
 		}
 	}
 	return $link;

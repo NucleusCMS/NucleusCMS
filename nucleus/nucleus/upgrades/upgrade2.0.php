@@ -56,6 +56,11 @@ function upgrade_do20() {
 	$query =  "ALTER TABLE nucleus_blog ADD ballowpast tinyint(2) NOT NULL default '0'";
 	upgrade_query("Adding 'Allow posting to the past' option to blogs",$query);
 	
+	// URLMode
+	$query = "INSERT INTO nucleus_config VALUES ('URLMode', 'normal');";
+	upgrade_query("Adding setting URLMode",$query);
+	
+	
 }
 
 ?>

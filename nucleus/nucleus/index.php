@@ -9,7 +9,6 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   */
-  
 	// we are using admin stuff:
 	$CONF['UsingAdminArea'] = 1;
 

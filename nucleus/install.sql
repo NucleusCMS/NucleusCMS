@@ -95,6 +95,7 @@ INSERT INTO nucleus_config VALUES ('ProtectMemNames', '1');
 INSERT INTO nucleus_config VALUES ('BaseSkin', '1');
 INSERT INTO nucleus_config VALUES ('SkinsURL', 'http://localhost/release/skins/');
 INSERT INTO nucleus_config VALUES ('ActionURL', 'http://localhost/release/action.php');
+INSERT INTO nucleus_config VALUES ('URLMode', 'normal');
 
 CREATE TABLE nucleus_item (
   inumber int(11) NOT NULL auto_increment,
