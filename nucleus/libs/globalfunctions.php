@@ -772,9 +772,13 @@ function parseFile($filename) {
 
 	if (!file_exists($filename)) doError('A file is missing');
 
+	$fsize = filesize($filename);
+	if ($fsize <= 0)
+		return;
+
 	// read file
 	$fd = fopen ($filename, 'r');
-	$contents = fread ($fd, filesize ($filename));
+	$contents = fread ($fd, $fsize);
 	fclose ($fd);
 
 	// parse file contents

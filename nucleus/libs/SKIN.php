@@ -304,8 +304,7 @@ class SKIN {
 								'blogsetting',
 								'query',
 								'nextlink',
-								'prevlink',
-								'relevance',
+								'prevlink'
 								);
 				break;
 			case 'imagepopup':

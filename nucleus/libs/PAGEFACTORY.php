@@ -142,10 +142,14 @@ class PAGEFACTORY extends BaseActions {
 		
 		if (!file_exists($filename)) 
 			return '';
+
+		$fsize = filesize($filename);
+		if ($fsize <= 0)
+			return '';
 			
 		// read file and return it
 		$fd = fopen ($filename, 'r');
-		$contents = fread ($fd, filesize ($filename));
+		$contents = fread ($fd, $fsize);
 		fclose ($fd);
 		
 		return $contents;
