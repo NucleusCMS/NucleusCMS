@@ -65,6 +65,11 @@ function passRequestVars() {
 	foreach ($_REQUEST as $key => $value) {
 		if (($key == 'action') && ($value != requestVar('nextaction')))
 			$key = 'nextaction';
+			
+		// a nextaction of 'showlogin' makes no sense
+		if (($key == 'nextaction') && ($value == 'showlogin'))
+			continue;
+			
 		if (($key != 'login') && ($key != 'password'))
 			passVar($key, $value);
 	}
