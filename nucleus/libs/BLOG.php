@@ -629,6 +629,10 @@ class BLOG {
 		       . ' WHERE bnumber=' . $this->blogid;
 		$res = sql_query($query);
 		
+		$this->isValid = (mysql_num_rows($res) > 0);
+		if (!$this->isValid)
+			return;
+		
 		$this->settings = mysql_fetch_assoc($res);
 	}
 	
