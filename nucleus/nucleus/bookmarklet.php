@@ -20,8 +20,6 @@ $CONF['UsingAdminArea'] = 1;
 // include all classes and config data 
 include('../config.php');
 
-sendContentType('application/xhtml+xml');
-
 $action = requestVar('action');
 
 if ($action == 'contextmenucode') {
@@ -34,11 +32,13 @@ if (!$member->isLoggedIn()) {
 	exit;
 }
 
-
-
 // on successfull login
 if (($action == 'login') && ($member->isLoggedIn()))
 	$action = requestVar('nextaction');
+if ($action == '')
+	$action = 'add';
+	
+sendContentType('application/xhtml+xml', 'bookmarklet-'.$action);	
 
 // find out what to do
 switch ($action) {
@@ -54,6 +54,7 @@ switch ($action) {
 	case 'login':			// on login, 'action' gets changed to 'nextaction'
 		bm_doError('Something went wrong');
 		break;
+	case 'add':
 	default:
 		bm_doShowForm();	// shows the fill in form
 		break;
