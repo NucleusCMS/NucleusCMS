@@ -30,8 +30,8 @@ function upgrade_do32() {
 
 	// 3.1 -> 3.1+
 	// update database version  
-//	$query = 'UPDATE ' . sql_table('config') . ' set value=\'320\' where name=\'DatabaseVersion\'';
-//	upgrade_query('Updating DatabaseVersion in config table to 320', $query);
+	$query = 'UPDATE ' . sql_table('config') . ' set value=\'320\' where name=\'DatabaseVersion\'';
+	upgrade_query('Updating DatabaseVersion in config table to 320', $query);
 	
 	// nothing!
 }

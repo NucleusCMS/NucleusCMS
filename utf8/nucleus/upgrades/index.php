@@ -1,7 +1,7 @@
 <?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -9,7 +9,7 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: index.php,v 1.1.1.1 2005-02-28 07:15:03 kimitake Exp $
+  * $Id: index.php,v 1.2 2005-03-15 08:11:33 kimitake Exp $
   */
 
 include('upgrade.functions.php'); 
@@ -54,7 +54,7 @@ When upgrading from an older Nucleus version, upgrades to the database tables ar
       <p class="ok">No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.</p>
     <?php  } else {
     ?>
-      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.1+</a></p>
+      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.2</a></p>
     <?php  }
 ?>
 
