@@ -5913,11 +5913,11 @@ function listplug_table_categorylist($template, $type) {
 			$id = listplug_nextBatchId();			
 			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->catid,'" />';
 			echo '<label for="batch',$id,'">';
-			echo $current->cname;
+			echo htmlspecialchars($current->cname);
 			echo '</label>';
 			echo '</td>';
 			
-			echo "<td>$current->cdesc</td>";
+			echo '<td>', htmlspecialchars($current->cdesc), '</td>';
 			echo "<td><a href='index.php?action=categorydelete&amp;blogid=$current->cblog&amp;catid=$current->catid' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";			
 			echo "<td><a href='index.php?action=categoryedit&amp;blogid=$current->cblog&amp;catid=$current->catid' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";			
 		
