@@ -18,3 +18,4 @@ http://www.example.org/?foo=x&bar=y => ampersand entity ok?
 &http://www.blaat.com&& => neither should &
 https://www.bla.com/
 https://bla.com/
+<a href="http://help.blogger.com/bin/answer.py?answer=698&topic=36">blogger help</a> => should become <a href="http://...">blogger help</a>
