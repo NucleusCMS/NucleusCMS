@@ -4141,6 +4141,7 @@ selector();
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" 
 			href="styles/addedit.css" />
 			
+			<script type="text/javascript" src="javascript/compatibilty.js"></script>
 			<script type="text/javascript" src="javascript/edit.js"></script>
 			<script type="text/javascript" src="javascript/admin.js"></script>
 			<?php echo $extrahead?>
