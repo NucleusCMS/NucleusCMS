@@ -14,6 +14,10 @@
 
 // START changed/added after 3.1 START
 
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',		'Plugin installation failed, requires ');
+define('_ERROR_DELREQPLUGIN',		'Plugin deletion failed, required by ');
+
 // cookie prefix
 define('_SETTINGS_COOKIEPREFIX',	'Cookie Prefix');
 
@@ -316,8 +320,6 @@ define('_ERROR_NOSUCHPLUGIN',		'No such plugin');
 define('_ERROR_DUPPLUGIN',			'Sorry, this plugin is already installed');
 define('_ERROR_PLUGFILEERROR',		'No such plugin exists, or the permissions are set incorrectly');
 define('_PLUGS_NOCANDIDATES',		'No plugin candidates found');
-define('_ERROR_INSREQPLUGIN',		'Plugin installation failed, requires ');
-define('_ERROR_DELREQPLUGIN',		'Plugin deletion failed, required by ');
 
 define('_PLUGS_TITLE_MANAGE',		'Manage Plugins');
 define('_PLUGS_TITLE_INSTALLED',	'Currently Installed');
