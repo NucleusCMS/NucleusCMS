@@ -23,7 +23,7 @@ include('./config.php');
 if (!$CONF['DisableSite']) {
 	// get feed into $feed
 	ob_start();
-		selectSkin('atom');
+		selectSkin('feeds/atom');
 		selector();
 	$feed = ob_get_contents();
 	ob_end_clean();
