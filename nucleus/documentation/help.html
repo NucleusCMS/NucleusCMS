@@ -666,7 +666,7 @@ These are used to format dates and times into the <code>&lt;%date%&gt;</code> an
 The date header and date footer can contain date and time vars. <a href="#strftime">More info on the available vars</a>. If you want to get started quickly, use "%x" to format the date. The language which is used to format the date, is determined by the <a href="#templatelocale">locale-setting</a> in the template.</p>
 
 <p>
-In the date header, the template variable &lt;%%daylink%%&gt; is allowed to insert a link to the archive for that day. <strong>Note the double '%'! It's necessary to avoid %d to be expanded as the current day of the month.</strong>
+In the date header, the template variable &lt;%%daylink%%&gt; is allowed to insert a link to the archive for that day. <strong>Note the double '%'! It's necessary to avoid %d to be expanded as the current day of the month.</strong> Also, if you just want to add a '%' character somewhere, you should also put it twice ('%%') or it will be gone on your website.
 </p>
 
 <p>
