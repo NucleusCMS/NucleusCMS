@@ -1,7 +1,7 @@
 <?php
 // Hungarian Nucleus Language File
 // 
-// Author: Konczér Tamás (konczer@netkey.hu)
+// Author: Konczér Tamás (konczer at php-nuke dot hu)
 // Nucleus version: v1.0-v2.5
 //
 // Please note: if you want to translate this file to your own language, be aware
@@ -89,7 +89,7 @@ define('_BATCH_CATEGORIES',			'Kötegelt operáció a kategóriákon.');
 define('_BATCH_MEMBERS',			'Kötegelt operáció a tagokon.');
 define('_BATCH_TEAM',				'Kötegelt operáció a csapat tagjain.');
 define('_BATCH_COMMENTS',			'Kötegelt operáció a megjegyzéseken.');
-define('_BATCH_UNKNOWN',			'Ismeretlen kötegelt operáció:');
+define('_BATCH_UNKNOWN',			'Ismeretlen kötegelt mûvelet:');
 define('_BATCH_EXECUTING',			'Végrehajtás');
 define('_BATCH_ONCATEGORY',			'a kategórián');
 define('_BATCH_ONITEM',				'az elemen');
@@ -165,14 +165,14 @@ define('_LIST_SKINS_DEFINED',		'Definiált részek:');
 // backup
 define('_BACKUPS_TITLE',			'Biztonsági mentés / Visszaállítás');
 define('_BACKUP_TITLE',				'Biztonsági mentés');
-define('_BACKUP_INTRO',				'Az adatbázis biztonsági mentéséhez kattints a gombra. Tárold biztonságos helyen.');
+define('_BACKUP_INTRO',				'Az adatbázis biztonsági mentéséhez kattints a gombra. (Tárold biztonságos helyen.)');
 define('_BACKUP_ZIP_YES',			'Tömörítés használata');
 define('_BACKUP_ZIP_NO',			'Nincs tömörítés');
 define('_BACKUP_BTN',				'Biztonsági mentés készítése');
 define('_BACKUP_NOTE',				'<b>FONTOS:</b> Csak az adatbázis tartalma mentõdik. A média fájlok és a config.php beállításai így <b>NEM</b> mentõdnek el.');
 define('_RESTORE_TITLE',			'Visszaállítás');
 define('_RESTORE_NOTE',				'<b>FIGYELMEZTETÉS:</b> A biztonsági mentésbõl való visszaállítás <b>TÖRÖL</b> minden aktuális Nucleus adatot az adatbázisból! Csak akkor tedd ezt, ha biztos vag a dolgodban!<br/>	<b>Fontos:</b> Legyél biztos benne, hogy a Nucleus verzió, amibõl a biztonsági mentést készítetted, megegyezik azzal a Nucleus verzióval, amit jelenleg futtatsz. Ha nem így van, ne használd ezt a funkciót.');
-define('_RESTORE_INTRO',			'Válaszd ki a biztosnági mentés fájlt (ami fel elsz töltve a szerverre) és kattints a "Visszaállítás" gombra.');
+define('_RESTORE_INTRO',			'Válaszd ki a biztosnági mentés fájlt (ami fel lesz töltve a szerverre) és kattints a "Visszaállítás" gombra.');
 define('_RESTORE_IMSURE',			'Igen, biztosan ezt akarom tenni!');
 define('_RESTORE_BTN',				'Visszaállítás fájlból.');
 define('_RESTORE_WARNING',			'(legyél biztos benne, hogy a megfelelõ biztonsági mentés fájl áll a rendelkezésedre)');
@@ -326,7 +326,7 @@ define('_YOURSITE',					'Oldalad');
 
 define('_POPUP_CLOSE',				'Bezár');
 
-define('_LOGIN_PLEASE',				'Elõször be kell jelentkezned');
+define('_LOGIN_PLEASE',				'Elõször be kell jelentkezned!');
 
 // commentform
 define('_COMMENTFORM_YOUARE',		'Te vagy');
@@ -356,7 +356,7 @@ define('_ADD_TITLE',				'Cím');
 define('_ADD_MORE',					'Kiterjesztett (opcionális)');
 define('_ADD_CATEGORY',				'Kategória');
 define('_ADD_PREVIEW',				'Elõnézet');
-define('_ADD_DISABLE_COMMENTS',		'Megjegyzéseket ne lehessen írni?');
+define('_ADD_DISABLE_COMMENTS',		'Megjegyzések tiltása');
 define('_ADD_DRAFTNFUTURE',			'Piszkozat &amp; Jövõbeni elemek');
 define('_ADD_ADDITEM',				'Elem hozzáadása');
 define('_ADD_ADDNOW',				'Hozzáadás azonnal');
@@ -457,7 +457,7 @@ define('_ERROR_MEMBERCREATEDISABLED','Tag létrehozása tiltva');
 define('_ERROR_INCORRECTEMAIL',		'Helytelen email cím');
 define('_ERROR_VOTEDBEFORE',		'Már szavaztál!');
 define('_ERROR_BANNED1',			'Nem végrehajtható a mûvelet, amíg az alábbi IP tartományból jössz: ');
-define('_ERROR_BANNED2',			' .Az üzenet a következõ: \'');
+define('_ERROR_BANNED2',			' . Az üzenet a következõ: \'');
 define('_ERROR_BANNED3',			'\'');
 define('_ERROR_LOGINNEEDED',		'Be kell jelentkezned a mûvelet végrehajtásához.');
 define('_ERROR_CONNECT',			'Kapcsolódási hiba');
@@ -468,7 +468,7 @@ define('_ERROR_DISALLOWEDUPLOAD',	'Egyik blog csapatlistájában sem szerepelsz. E
 define('_ERROR_BADPERMISSIONS',		'A fájl/könyvtár jogok rosszul vannak beálítva.');
 define('_ERROR_UPLOADMOVEP',		'Hiba a feltöltött fájl mozgatása közben.');
 define('_ERROR_UPLOADCOPY',			'Hiba fájl másolásakor.');
-define('_ERROR_UPLOADDUPLICATE',	'Eg fájl már létezik ezzel a névvel. Nevezd át, és úgy próbálkozz a feltöltéssel.');
+define('_ERROR_UPLOADDUPLICATE',	'Egy fájl már létezik ezzel a névvel. Nevezd át, és úgy próbálkozz a feltöltéssel.');
 define('_ERROR_LOGINDISALLOWED',	'Sajnálom, nem engedélyezett az adminisztrációs területre való belépés. Jelentkezz be felhasználóként.');
 define('_ERROR_DBCONNECT',			'Nem tudok kapcsolódni a mySQL szerverhez.');
 define('_ERROR_DBSELECT',			'Nem látom a nucleus adatbázisát.');
@@ -604,7 +604,7 @@ define('_TEMPLATE_LOCALE',			'Lokális');
 define('_TEMPLATE_IMAGE',			'Felbukkanó képek');
 define('_TEMPLATE_PCODE',			'Felbukkanó link kód');
 define('_TEMPLATE_ICODE',			'Képek sorban kód');
-define('_TEMPLATE_MCODE',			'Media Object Link Code');
+define('_TEMPLATE_MCODE',			'Média objektum link kódja');
 define('_TEMPLATE_SEARCH',			'Keresés');
 define('_TEMPLATE_SHIGHLIGHT',		'Kiemelés');
 define('_TEMPLATE_SNOTFOUND',		'A keresés nem eredményezett találatot.');
