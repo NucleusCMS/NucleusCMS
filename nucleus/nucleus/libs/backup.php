@@ -165,7 +165,9 @@ function _backup_dump_structure($tablename) {
 
 		if(($kname != 'PRIMARY') && ($row['Non_unique'] == 0))
 			$kname = "UNIQUE|$kname";
-
+		if(($kname != 'PRIMARY') && ($row['Index_type'] == 'FULLTEXT'))
+			$kname = "FULLTEXT|$kname";
+			
 		if(!is_array($index[$kname]))
 			$index[$kname] = array();
 	
@@ -178,8 +180,10 @@ function _backup_dump_structure($tablename) {
 		if($x == 'PRIMARY')
 			echo '	PRIMARY KEY (' . implode($columns, ', ') . ')';
 		elseif (substr($x,0,6) == 'UNIQUE')
-			echo '	UNIQUE ' . substr($x,7) . ' (' . implode($columns, ', ') . ')';
-		else
+			echo '	UNIQUE KEY ' . substr($x,7) . ' (' . implode($columns, ', ') . ')';
+		elseif (substr($x,0,8) == 'FULLTEXT')
+			echo '	FULLTEXT KEY ' . substr($x,9) . ' (' . implode($columns, ', ') . ')';
+		else 
 			echo "	KEY $x (" . implode($columns, ', ') . ')';
 	}
 
