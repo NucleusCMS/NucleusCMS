@@ -1014,11 +1014,13 @@ function formatDate($format, $timestamp, $defaultFormat) {
 
 /*
   These functions create a FancierURL item link, needs NP_FancierURL plugin
-  installed. I put it here, to make it possible for all plugins to support 
+  installed. I (radek) put it here, to make it possible for all plugins to support 
   FancierURL functionality.
-*/
 
-/* create a FancierURL link from ID */
+  karma: do we really need this? 
+
+
+// create a FancierURL link from ID 
 function fancyLink($id) {
   if (empty($id)) return '';
 	global $CONF;
@@ -1037,7 +1039,7 @@ function fancyLink($id) {
    }
 }
 
-/* format a FancierURL link */
+// format a FancierURL link 
 function fancyTitle($id,$title,$date) {
   if (empty($id)) return '';
 	global $CONF;
@@ -1056,5 +1058,7 @@ function fancyTitle($id,$title,$date) {
     return $CONF['IndexURL'].'?itemid='.(strval($id));
   }
 }
+
+*/
 
 ?>
