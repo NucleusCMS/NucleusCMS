@@ -15,6 +15,27 @@
 
 // START changed/added after 3.1 START
 
+// comments list per weblog
+define('_COMMENTS_BLOG',			'Alle reacties voor blog');
+define('_NOCOMMENTS_BLOG',			'Er zijn geen reacties voor dit weblog.');
+define('_BLOGLIST_COMMENTS',		'Reacties');
+define('_BLOGLIST_TT_COMMENTS',		'Een lijst van alle reacties voor dit weblog.');
+
+
+// for use in archivetype-skinvar
+define('_ARCHIVETYPE_DAY',			'dag');
+define('_ARCHIVETYPE_MONTH',		'maand');
+
+// tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
+define('_ERROR_BADTICKET',			'Ongeldig ticket.');
+
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',		'Plugin kon niet geïnstalleerd worden: vereist ');
+define('_ERROR_DELREQPLUGIN',		'Plugin kon niet verwijderd worden: vereist door ');
+
+// cookie prefix
+define('_SETTINGS_COOKIEPREFIX',	'Cookie Prefix');
+
 // account activation
 define('_ERROR_NOLOGON_NOACTIVATE',	'Kan geen activatielink sturen. Het is jou niet toegestaan in te loggen.');
 define('_ERROR_ACTIVATE',			'De activatiesleutel bestaat niet, is niet geldig of is verlopen.');
