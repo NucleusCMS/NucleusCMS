@@ -3,7 +3,7 @@
 
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -12,6 +12,9 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * Class representing a skin
+  *
+  * $Id: SKIN.php,v 1.5 2005-03-16 08:10:35 kimitake Exp $
+  * $NucleusJP: SKIN.php,v 1.4 2005/03/12 06:19:05 kimitake Exp $
   */
 class SKIN {
 
@@ -132,7 +135,7 @@ class SKIN {
 
 		if (!$contents) {
 			// use base skin if this skin does not have contents
-			$defskin = new SKIN($CONF['BaseSkin']);
+			$defskin =& new SKIN($CONF['BaseSkin']);
 			$contents = $defskin->getContent($type);
 			if (!$contents) {
 				echo _ERROR_SKIN;
@@ -148,8 +151,8 @@ class SKIN {
 		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
 		PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());
 
-		$handler = new ACTIONS($type, $this);
-		$parser = new PARSER($actions, $handler);
+		$handler =& new ACTIONS($type, $this);
+		$parser =& new PARSER($actions, $handler);
 		$handler->setParser($parser);
 		$handler->setSkin($this);
 		$parser->parse($contents);
@@ -174,7 +177,6 @@ class SKIN {
 	 */
 	function update($type, $content) {
 		$skinid = $this->id;
-		$content = trim($content);
 
 		// delete old thingie
 		sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='".addslashes($type)."' and sdesc=" . intval($skinid));
@@ -406,7 +408,7 @@ class ACTIONS extends BaseActions {
 	*/
 	function doForm($filename) {
 		global $DIR_NUCLEUS;
-		array_push($this->parser->actions,'formdata','text');
+		array_push($this->parser->actions,'formdata','text','callback','errordiv');
 		$oldIncludeMode = PARSER::getProperty('IncludeMode');
 		$oldIncludePrefix = PARSER::getProperty('IncludePrefix');
 		PARSER::setProperty('IncludeMode','normal');
@@ -414,8 +416,10 @@ class ACTIONS extends BaseActions {
 		$this->parse_parsedinclude($DIR_NUCLEUS . 'forms/' . $filename . '.template');
 		PARSER::setProperty('IncludeMode',$oldIncludeMode);
 		PARSER::setProperty('IncludePrefix',$oldIncludePrefix);
-		array_pop($this->parser->actions);		
-		array_pop($this->parser->actions);		
+		array_pop($this->parser->actions);		// errordiv
+		array_pop($this->parser->actions);		// callback
+		array_pop($this->parser->actions);		// text
+		array_pop($this->parser->actions);		// formdata
 	}
 	function parse_formdata($what) {
 		echo $this->formdata[$what];
@@ -425,6 +429,16 @@ class ACTIONS extends BaseActions {
 		if (defined($which)) { 	
 			eval("echo $which;");
 		}
+	}
+	function parse_callback($eventName, $type)
+	{
+		global $manager;
+		$manager->notify($eventName, array('type' => $type));
+	}
+	function parse_errordiv() {
+		global $errormessage;
+		if ($errormessage)
+	  		echo '<div class="error">', htmlspecialchars($errormessage),'</div>';
 	}
 	
 	function parse_skinname() {
@@ -437,7 +451,7 @@ class ACTIONS extends BaseActions {
 		$condition = 0;
 		switch($field) {
 			case 'category':
-				$condition = ($blog && $blog->isValidCategory($catid));
+				$condition = ($blog && $this->_ifCategory($name,$value));
 				break;
 			case 'blogsetting':
 				if ($name == 'trackback' && $manager->pluginInstalled('NP_TrackBack')) {
@@ -492,19 +506,19 @@ class ACTIONS extends BaseActions {
                 // (pluginInstalled method won't write a message in the actionlog on failure)
                 if ($manager->pluginInstalled('NP_'.$name)) 
                 {
-	                $plugin =& $manager->getPlugin('NP_' . $name);
-	                if ($plugin != NULL){
-	                    if ($value == "") {
-	                        $condition = true;
-	                    } else {
-	                        list($name2, $value2) = explode('=', $value, 2);
-	                        if ($value2 == "" && $plugin->getOption($name2) != 'no') {
-	                            $condition = true;
-	                        } else if ($plugin->getOption($name2) == $value2) {
-	                            $condition = true;
-	                        }
-	                    }
-	                }
+					$plugin =& $manager->getPlugin('NP_' . $name);
+					if ($plugin != NULL){
+						if ($value == "") {
+							$condition = true;
+						} else {
+							list($name2, $value2) = explode('=', $value, 2);
+							if ($value2 == "" && $plugin->getOption($name2) != 'no') {
+								$condition = true;
+							} else if ($plugin->getOption($name2) == $value2) {
+								$condition = true;
+							}
+						}
+					}
                 }
                 break;				
 			default:	
@@ -513,6 +527,27 @@ class ACTIONS extends BaseActions {
 		$this->_addIfCondition($condition);
 	}
 	
+	function _ifCategory($name = '', $value='') {
+		global $blog, $catid;
+
+		// when no parameter is defined, just check if a category is selected
+		if (($name != 'catname' && $name != 'catid') || ($value == ''))
+			return $blog->isValidCategory($catid);
+
+		// check category name
+		if ($name == 'catname') {
+			$value = $blog->getCategoryIdFromName($value);
+			if ($value == $catid)
+				return $blog->isValidCategory($catid);
+		}
+
+		// check category id
+		if (($name == 'catid') && ($value == $catid))
+			return $blog->isValidCategory($catid);
+		
+		return false;
+	}
+   
 	function _ifOnTeam($blogName = '') {
 		global $blog, $member, $manager;
 		
@@ -808,17 +843,17 @@ class ACTIONS extends BaseActions {
 	// include comments for one item
 	function parse_comments($template) {
 		global $itemid, $manager, $blog, $highlight;
-		$template = TEMPLATE::read($template);
+		$template =& $manager->getTemplate($template);
 
 		// create parser object & action handler
-		$actions = new ITEMACTIONS($blog);
-		$parser = new PARSER($actions->getDefinedActions(),$actions);
+		$actions =& new ITEMACTIONS($blog);
+		$parser =& new PARSER($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setParser($parser);
 		$item = ITEM::getitem($itemid, 0, 0);
 		$actions->setCurrentItem($item);
 
-		$comments = new COMMENTS($itemid);
+		$comments =& new COMMENTS($itemid);
 		$comments->setItemActions($actions);
 		$comments->showComments($template, -1, 1, $highlight);	// shows ALL comments
 	}
@@ -949,7 +984,7 @@ class ACTIONS extends BaseActions {
 	// include nucleus versionnumber
 	function parse_version() {
 		global $nucleus;
-		echo 'Nucleus ' . $nucleus['version'];
+		echo 'Nucleus CMS ' . $nucleus['version'];
 	}
 	
 
@@ -989,7 +1024,7 @@ class ACTIONS extends BaseActions {
 				break;
 			case 'imgtag':
 			default:
-				echo "<img src=\"$fullurl\" width=\"$width\" height=\"$height\" alt=\"$imagetext\" />";
+				echo "<img src=\"$fullurl\" width=\"$width\" height=\"$height\" alt=\"$imagetext\" title=\"$imagetext\" />";
 				break;
 		}
 	}
@@ -1099,9 +1134,9 @@ class ACTIONS extends BaseActions {
 	}
 	
 	function parse_preview($template) {
-		global $blog, $CONF;
+		global $blog, $CONF, $manager;
 		
-		$template = TEMPLATE::read($template);
+		$template =& $manager->getTemplate($template);
 		$row['body'] = '<span id="prevbody"></span>';
 		$row['title'] = '<span id="prevtitle"></span>';
 		$row['more'] = '<span id="prevmore"></span>';
@@ -1153,7 +1188,7 @@ class ACTIONS extends BaseActions {
 
 			
 	function parse_commentform($destinationurl = '') {
-		global $blog, $itemid, $member, $CONF, $manager;
+		global $blog, $itemid, $member, $CONF, $manager, $DIR_LIBS, $errormessage;
 		
 		// warn when trying to provide a actionurl (used to be a parameter in Nucleus <2.0)
 		if (stristr($destinationurl, 'action.php')) {
@@ -1174,14 +1209,22 @@ class ACTIONS extends BaseActions {
 		if (!$destinationurl)
 			$destinationurl = createItemLink($itemid, $this->linkparams);
 
+		// values to prefill
+		$user = cookieVar($CONF['CookiePrefix'] .'comment_user');
+		if (!$user) $user = postVar('user');
+		$userid = cookieVar($CONF['CookiePrefix'] .'comment_userid');
+		if (!$userid) $userid = postVar('userid');
+		$body = postVar('body');
+		
 		$this->formdata = array(
 			'destinationurl' => htmlspecialchars($destinationurl),
 			'actionurl' => htmlspecialchars($actionurl),
 			'itemid' => $itemid,
-			'user' => htmlspecialchars(cookieVar('comment_user')),
-			'userid' => htmlspecialchars(cookieVar('comment_userid')),			
+			'user' => htmlspecialchars($user),
+			'userid' => htmlspecialchars($userid),			
+			'body' => htmlspecialchars($body),			
 			'membername' => $member->getDisplayName(),
-			'rememberchecked' => cookieVar('comment_user')?'checked="checked"':''
+			'rememberchecked' => cookieVar($CONF['CookiePrefix'] .'comment_user')?'checked="checked"':''
 		);
 		
 		if (!$member->isLoggedIn()) {
@@ -1216,12 +1259,17 @@ class ACTIONS extends BaseActions {
 				$desturl = $CONF['IndexURL'] . createMemberLink($memberid);				
 		}
 			
+		$message = postVar('message');
+		$frommail = postVar('frommail');
+		
 		$this->formdata = array(
-			'url' => $desturl,
-			'actionurl' => $CONF['ActionURL'],
+			'url' => htmlspecialchars($desturl),
+			'actionurl' => htmlspecialchars($CONF['ActionURL']),
 			'memberid' => $memberid,
 			'rows' => $rows,
-			'cols' => $cols
+			'cols' => $cols,
+			'message' => htmlspecialchars($message),
+			'frommail' => htmlspecialchars($frommail)
 		);
 		if ($member->isLoggedIn()) {
 			$this->doForm('membermailform-loggedin');

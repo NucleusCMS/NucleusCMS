@@ -2,7 +2,7 @@
 
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -11,6 +11,9 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * A class representing site members
+  *
+  * $Id: MEMBER.php,v 1.5 2005-03-16 08:10:35 kimitake Exp $
+  * $NucleusJP: MEMBER.php,v 1.4 2005/03/12 06:19:05 kimitake Exp $
   */
 class MEMBER {
 
@@ -38,14 +41,14 @@ class MEMBER {
 	
 	// (static)
 	function createFromName($displayname) {
-		$mem = new MEMBER();
+		$mem =& new MEMBER();
 		$mem->readFromName($displayname);
 		return $mem;
 	}
 	
 	// (static)
 	function createFromID($id) {
-		$mem = new MEMBER();
+		$mem =& new MEMBER();
 		$mem->readFromID($id);
 		return $mem;
 	}
@@ -158,7 +161,7 @@ class MEMBER {
 	  */
 	function canAlterComment($commentid) {
 		if ($this->isAdmin()) return 1;
-
+	
 		$query =  'SELECT citem as itemid, iblog as blogid, cmember as cauthor, iauthor'
 		       . ' FROM '.sql_table('comment') .', '.sql_table('item').', '.sql_table('blog')
 		       . ' WHERE citem=inumber and iblog=bnumber and cnumber=' . intval($commentid);
@@ -287,31 +290,61 @@ class MEMBER {
 		else
 			$lifetime = (time()+2592000);
 			
-		setcookie('user',$this->getDisplayName(),$lifetime,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
-		setcookie('loginkey', $this->getCookieKey(),$lifetime,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+		setcookie($CONF['CookiePrefix'] .'user',$this->getDisplayName(),$lifetime,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+		setcookie($CONF['CookiePrefix'] .'loginkey', $this->getCookieKey(),$lifetime,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 
 		// make sure cookies on shared pcs don't get renewed
 		if ($shared)
-			setcookie('sharedpc', '1',$lifetime,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+			setcookie($CONF['CookiePrefix'] .'sharedpc', '1',$lifetime,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
 	}
 	
-	/**
-	  * Sends an email message containing the users password
-	  */
-	function sendPassword($password) {
+	function sendActivationLink($type, $extra='') 
+	{
 		global $CONF;
+		
+		// generate key and URL
+		$key = $this->generateActivationEntry($type, $extra);
+		$url = $CONF['AdminURL'] . 'index.php?action=activate&key=' . $key;
+		
+		// choose text to use in mail
+		switch ($type)
+		{
+			case 'register':
+				$message = _ACTIVATE_REGISTER_MAIL;			
+				$title = _ACTIVATE_REGISTER_MAILTITLE;
+				break;
+			case 'forgot':
+				$message = _ACTIVATE_FORGOT_MAIL;			
+				$title = _ACTIVATE_FORGOT_MAILTITLE;
+				break;
+			case 'addresschange':
+				$message = _ACTIVATE_CHANGE_MAIL;
+				$title = _ACTIVATE_CHANGE_MAILTITLE;				
+				break;
+			default;
+		}
 
-		$message = "誰か（おそらくはあなた）が'" . $CONF['SiteName'] . "' (". $CONF['IndexURL']. ") \nにおけるアカウントと新規パスワードの送信を要求しました。\nあなたの新規ログイン情報は以下のとおりです。: \n\n";
-		$message .= "\tLogin: " . $this->getDisplayName();
-		$message .= "\n\tPassword: " . $password; 
-		$message .= getMailFooter();
+		// fill out variables in text
+		
+		$aVars = array(
+			'siteName' => $CONF['SiteName'],
+			'siteUrl' => $CONF['IndexURL'],
+			'memberName' => $this->getDisplayName(),
+			'activationUrl' => $url
+		);
 
-		$title = 'パスワード情報';
+		$message = TEMPLATE::fill($message, $aVars);		
+		$title = TEMPLATE::fill($title, $aVars);		
+		
+		// send mail
+		
 		mb_language('ja');
 		mb_internal_encoding(_CHARSET);
-		@mb_send_mail($this->getEmail(), $title, $message, "From: ". $CONF['AdminEmail']);
+		@mb_send_mail($this->getEmail(), $title ,$message,'From: ' . $CONF['AdminEmail']);
 		
-		ACTIONLOG::add(INFO, _ACTIONLOG_PWDREMINDERSENT . $this->getDisplayName());
+		ACTIONLOG::add(INFO, _ACTIONLOG_ACTIVATIONLINK . ' (' . $this->getDisplayName() . ' / type: ' . $type . ')'); 
+		
+
 	}
 	
 	/** 
@@ -483,7 +516,7 @@ class MEMBER {
 		$r = sql_query('select * FROM '.sql_table('member')." WHERE mnumber='".intval($id)."'");
 		return (mysql_num_rows($r) != 0);
 	}
-
+	
 	// checks if a username is protected. If so, it can not be used on anonymous comments
 	function isNameProtected($name) {
 		
@@ -532,6 +565,160 @@ class MEMBER {
 
 		return 1;
 	}	
+	
+	/**
+	 * Returns activation info for a certain key (an object with properties vkey, vmember, ...)
+	 * (static)
+	 *
+	 * @author karma
+	 */
+	function getActivationInfo($key)
+	{
+		$query = 'SELECT * FROM ' . sql_table('activation') . ' WHERE vkey=\'' . addslashes($key). '\'';
+		$res = sql_query($query);
+
+		if (!$res || (mysql_num_rows($res) == 0))
+			return 0;
+		else
+			return mysql_fetch_object($res);
+	}
+	
+	/**
+	 * Creates an account activation key
+	 *
+	 * @param $type one of the following values (determines what to do when activation expires)
+	 *                'register' (new member registration)
+	 *                'forgot' (forgotton password)
+	 *                'addresschange' (member address has changed)
+	 * @param $extra extra info (needed when validation link expires)
+	 *				  addresschange -> old email address
+	 * @author dekarma
+	 */
+	function generateActivationEntry($type, $extra = '') 
+	{
+		// clean up old entries
+		$this->cleanupActivationTable();
+	
+		// kill any existing entries for the current member (delete is ok)
+		// (only one outstanding activation key can be present for a member)
+		sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vmember=' . intval($this->getID()));
+
+		$canLoginWhileActive = false; // indicates if the member can log in while the link is active 
+		switch ($type)
+		{
+			case 'forgot':
+				$canLoginWhileActive = true;
+				break;
+			case 'register':
+				break;
+			case 'addresschange':
+				$extra = $extra . '/' . ($this->canLogin() ? '1' : '0');
+				break;
+		}
+		
+		$ok = false;
+		while (!$ok)
+		{
+			// generate a random key
+			srand((double)microtime()*1000000);
+			$key = md5(uniqid(rand(), true));
+			
+			// attempt to add entry in database
+			// add in database as non-active
+			$query = 'INSERT INTO ' . sql_table('activation'). ' (vkey, vtime, vmember, vtype, vextra) ';
+			$query .= 'VALUES (\'' . addslashes($key). '\', \'' . date('Y-m-d H:i:s',time()) . '\', \'' . intval($this->getID()). '\', \'' . addslashes($type). '\', \'' . addslashes($extra). '\')';
+			if (sql_query($query))
+				$ok = true;
+		}
+		
+		// mark member as not allowed to log in
+		if (!$canLoginWhileActive)
+		{
+			$this->setCanLogin(0);
+			$this->write();	
+		}
+		
+		// return the key
+		return $key;
+	}
+	
+	/**
+	 * Inidicates that an activation link has been clicked and any forms displayed
+	 * there have been successfully filled out.
+	 * @author dekarma
+	 */
+	function activate($key) 
+	{
+		// get activate info
+		$info = MEMBER::getActivationInfo($key);
+		
+		// no active key
+		if (!$info)
+			return false;
+			
+		switch ($info->vtype) 
+		{
+			case 'forgot':
+				// nothing to do
+				break;
+			case 'register':
+				// set canlogin value
+				global $CONF;
+				sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($CONF['NewMemberCanLogon']). ' WHERE mnumber=' . intval($info->vmember));
+				break;
+			case 'addresschange':
+				// reset old 'canlogin' value
+				list($oldEmail, $oldCanLogin) = explode('/', $info->vextra);
+				sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin). ' WHERE mnumber=' . intval($info->vmember));
+				break;
+		}
+		
+		// delete from activation table
+		sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vkey=\'' . addslashes($key) . '\'');
+		
+		// success!
+		return true;
+	}
+	
+	/**
+	 * Cleans up entries in the activation table. All entries older than 2 days are removed.
+	 * (static)
+	 *
+	 * @author dekarma
+	 */
+	function cleanupActivationTable() 
+	{
+		$boundary = time() - (60 * 60 * 24 * 2);
+		
+		// 1. walk over all entries, and see if special actions need to be performed
+		$res = sql_query('SELECT * FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
+		
+		while ($o = mysql_fetch_object($res))
+		{
+			switch ($o->vtype)
+			{
+				case 'register':
+					// delete all information about this site member. registration is undone because there was
+					// no timely activation
+					include_once($DIR_LIBS . 'ADMIN.php');
+					ADMIN::deleteOneMember(intval($o->vmember));
+					break;
+				case 'addresschange':
+					// revert the e-mail address of the member back to old address
+					list($oldEmail, $oldCanLogin) = explode('/', $o->vextra);
+					sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin). ', memail=\'' . addslashes($oldEmail). '\' WHERE mnumber=' . intval($o->vmember));
+					break;					
+				case 'forgot':
+					// delete the activation link and ignore. member can request a new password using the 
+					// forgot password link
+					break;
+			}
+		}
+		
+		// 2. delete activation entries for real
+		sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
+	}
+
 }
 
 ?>

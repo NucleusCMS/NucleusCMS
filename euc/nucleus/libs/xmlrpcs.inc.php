@@ -1,8 +1,8 @@
 <?php
 // by Edd Dumbill (C) 1999-2001
 // <edd@usefulinc.com>
-// $Id: xmlrpcs.inc.php,v 1.3 2005-03-08 10:50:55 kimitake Exp $
-// $NucleusJP$
+// $Id: xmlrpcs.inc.php,v 1.4 2005-03-16 08:10:35 kimitake Exp $
+// $NucleusJP: xmlrpcs.inc.php,v 1.5 2005/03/12 06:19:05 kimitake Exp $
 
 // Copyright (c) 1999,2000,2001 Edd Dumbill.
 // All rights reserved.
@@ -175,7 +175,7 @@ class xmlrpc_server {
 		$payload="<" . "?xml version=\"1.0\"?" . ">\n" . 
 			$this->serializeDebug() .
 			$r->serialize();
-		Header("Content-type: text/xml\r\nContent-length: " . 
+		header("Content-type: text/xml\r\nContent-length: " . 
 					 strlen($payload));
 		print $payload;
 	}

@@ -2,7 +2,7 @@
 
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -12,7 +12,8 @@
   *
   * Actions that can be called via action.php
   *
-  * $Id: ACTION.php,v 1.1.1.1 2005-02-28 07:14:04 kimitake Exp $
+  * $Id: ACTION.php,v 1.2 2005-03-16 08:10:35 kimitake Exp $
+  * $NucleusJP: ACTION.php,v 1.2 2005/03/12 06:19:04 kimitake Exp $
   */
 class ACTION
 {
@@ -120,7 +121,7 @@ class ACTION
 		$message .= getMailFooter();
 
 		$title = _MMAIL_TITLE . ' ' . $fromName;
-		@mb_language('ja');
+		mb_language('ja');
 		mb_internal_encoding(_CHARSET);
 		@mb_send_mail($tomem->getEmail(), $title, $message, "From: ". $fromMail);
 
@@ -187,7 +188,8 @@ class ACTION
 		if (postVar('desturl')) {
 			redirect(postVar('desturl'));
 		} else {
-			echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=EUC-JP\" />\n"._MSG_ACTIVATION_SENT;
+			header ("Content-Type: text/html; charset="._CHARSET);
+			echo _MSG_ACTIVATION_SENT;
 		}
 		
 		exit;
@@ -214,7 +216,8 @@ class ACTION
 		if (postVar('url')) {
 			redirect(postVar('url'));
 		} else {
-			echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=EUC-JP\" />\n"._MSG_ACTIVATION_SENT;
+			header ("Content-Type: text/html; charset="._CHARSET);
+			echo _MSG_ACTIVATION_SENT;
 		}
 		
 		exit;

@@ -1,7 +1,7 @@
 <?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -10,6 +10,9 @@
   * (see nucleus/documentation/index.html#license for more info)
   *
   * Media classes for nucleus
+  *
+  * $Id: MEDIA.php,v 1.3 2005-03-16 08:10:35 kimitake Exp $
+  * $NucleusJP: MEDIA.php,v 1.3 2005/03/12 06:19:05 kimitake Exp $
   */
 
 
@@ -150,7 +153,7 @@ class MEDIA {
 		// move file to directory
 		if (is_uploaded_file($uploadfile)) {
 			if (!@move_uploaded_file($uploadfile, $mediadir . $filename))
-				return _ERROR_UPLOADMOVE;
+				return _ERROR_UPLOADMOVEP;
 		} else {
 			if (!copy($uploadfile, $mediadir . $filename))
 				return _ERROR_UPLOADCOPY ;

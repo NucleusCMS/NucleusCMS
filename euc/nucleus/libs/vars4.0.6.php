@@ -2,7 +2,7 @@
 
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -10,8 +10,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: vars4.0.6.php,v 1.3 2005-03-08 10:50:55 kimitake Exp $
-  * $NucleusJP$
+  * $Id: vars4.0.6.php,v 1.4 2005-03-16 08:10:35 kimitake Exp $
+  * $NucleusJP: vars4.0.6.php,v 1.5 2005/03/12 06:19:05 kimitake Exp $
   */
   
 /**

@@ -1,7 +1,7 @@
 <?php
 	/**
 	  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-	  * Copyright (C) 2002-2004 The Nucleus Group
+	  * Copyright (C) 2002-2005 The Nucleus Group
 	  *
 	  * This program is free software; you can redistribute it and/or
 	  * modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@
 		//
 		// example:
 		//     array('NP_TrackBack', 'NP_MemberGoodies')
-		$aConfPlugsToInstall = array();
+		$aConfPlugsToInstall = array('NP_SkinFiles');
 
 
 		// array with skins to install. skins must be present under the skins/ directory with
@@ -36,7 +36,7 @@
 		//
 		// example:
 		//     array('base','rsd')
-		$aConfSkinsToImport = array();
+		$aConfSkinsToImport = array('default');
 
 	/*
 		-- End Of Configurable Part --
@@ -342,11 +342,11 @@
 		<legend>ウェブログのデータ</legend>
 		<table><tr>
 			<td>Blog名：</td>
-			<td><input name="Blog_name" size="60" value="My Nucleus Weblog" /></td>
+			<td><input name="Blog_name" size="60" value="My Nucleus CMS" /></td>
 		</tr><tr>
 			<td>Blogの短縮名：</td>
 			<td>
-				<input name="Blog_shortname" value="myweblog" />
+				<input name="Blog_shortname" value="mynucleuscms" />
 				<small>(許可される文字：a-z と 0-9、スペースは不可)</small>
 			</td>
 		</tr></table>
@@ -360,7 +360,7 @@
 
 	<p>
 		<input name="action" value="go" type="hidden" />
-		<input type="submit" value="Install Nucleus" onclick="return checkSubmit();" />
+		<input type="submit" value="Nucleus CMSのインストール" onclick="return checkSubmit();" />
 	</p>
 
 	</form>
@@ -695,6 +695,9 @@
 
 	// include libs
 	include($DIR_LIBS.'globalfunctions.php');
+	if (!extension_loaded('mbstring')) {
+		include($DIR_LIBS.'mb_emulator/mb-emulator.php');
+	}
 ?&gt;
 			</pre>
 

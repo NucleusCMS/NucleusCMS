@@ -1,16 +1,130 @@
 <?php
 // English Nucleus Language File
-// 
-// Author: Wouter Demuynck (nucleus@demuynck.org)
-// Nucleus version: v1.0-v2.5
+//
+// Author: Wouter Demuynck
+// Nucleus version: v1.0-v3.2
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which 
+// might be deleted. Therefor, it's important to list the Nucleus version for which
 // the file was written in your document.
 //
-// Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
-// and will be available for download (with proper credit to the author, of course)
+// Fully translated language file can be sent to us and will be made
+// available for download (with proper credit to the author, of course)
+
+// START changed/added after 3.15 START
+
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Please use the \'Update Subscription list\'-button to update the plugin\'s subscription list.');
+define('_LIST_PLUGS_DEP',			'Plugin(s) requires:');
+
+// END changed/added after 3.15
+
+// START changed/added after 3.1 START
+
+// comments list per weblog
+define('_COMMENTS_BLOG',			'All Comments for blog');
+define('_NOCOMMENTS_BLOG',			'No comments were made on items of this blog');
+define('_BLOGLIST_COMMENTS',		'Comments');
+define('_BLOGLIST_TT_COMMENTS',		'A list of all comments made on items of this blog');
+
+
+// for use in archivetype-skinvar
+define('_ARCHIVETYPE_DAY',			'day');
+define('_ARCHIVETYPE_MONTH',		'month');
+
+// tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
+define('_ERROR_BADTICKET',			'Invalid or expired ticket.');
+
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',		'Plugin installation failed, requires ');
+define('_ERROR_DELREQPLUGIN',		'Plugin deletion failed, required by ');
+
+// cookie prefix
+define('_SETTINGS_COOKIEPREFIX',	'Cookie Prefix');
+
+// account activation
+define('_ERROR_NOLOGON_NOACTIVATE',	'Cannot send activation link. You\'re not allowed to log in.');
+define('_ERROR_ACTIVATE',			'Activation key does not exist, is invalid, or has expired.');
+define('_ACTIONLOG_ACTIVATIONLINK', 'Activation link sent');
+define('_MSG_ACTIVATION_SENT',		'An activation link has been sent by e-mail.');
+
+// activation link emails
+define('_ACTIVATE_REGISTER_MAIL',	"Hi <%memberName%>,\n\nYou need to activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Activate your '<%memberName%>' account");
+define('_ACTIVATE_REGISTER_TITLE',	'Welcome <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',	'You\'re almost there. Please choose a password for your account below.');
+define('_ACTIVATE_FORGOT_MAIL',		"Hi <%memberName%>,\n\nUsing the link below, you can choose a new password for your account at <%siteName%> (<%siteUrl%>) by choosing a new password.\n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_FORGOT_MAILTITLE',"Re-activate your '<%memberName%>' account");
+define('_ACTIVATE_FORGOT_TITLE',	'Welcome <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'You can choose a new password for your account below:');
+define('_ACTIVATE_CHANGE_MAIL',		"Hi <%memberName%>,\n\nSince your e-mail address has changed, you'll need to re-activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_CHANGE_MAILTITLE',"Re-activate your '<%memberName%>' account");
+define('_ACTIVATE_CHANGE_TITLE',	'Welcome <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'Your address change has been verified. Thanks!');
+define('_ACTIVATE_SUCCESS_TITLE',	'Activation Succeeded');
+define('_ACTIVATE_SUCCESS_TEXT',	'Your account has been successfully activated.');
+define('_MEMBERS_SETPWD',			'Set Password');
+define('_MEMBERS_SETPWD_BTN',		'Set Password');
+define('_QMENU_ACTIVATE',			'Account Activation');
+define('_QMENU_ACTIVATE_TEXT',		'<p>After you have activated your account, you can start using it by <a href="index.php?action=showlogin">logging in</a>.</p>');
+
+define('_PLUGS_BTN_UPDATE',			'Update subscription list');
+
+// global settings
+define('_SETTINGS_JSTOOLBAR',		'Javascript Toolbar Style');
+define('_SETTINGS_JSTOOLBAR_FULL',	'Full Toolbar (IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE','Simple Toolbar (Non-IE)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Disable Toolbar');
+define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">How to activate fancy URLs</a>)');
+
+// extra plugin settings part when editing categories/members/blogs/...
+define('_PLUGINS_EXTRA',			'Extra Plugin Settings');
+
+// itemlist info column keys
+define('_LIST_ITEM_BLOG',			'blog:');
+define('_LIST_ITEM_CAT',			'cat:');
+define('_LIST_ITEM_AUTHOR',			'author:');
+define('_LIST_ITEM_DATE',			'date:');
+define('_LIST_ITEM_TIME',			'time:');
+
+// indication of registered members in comments list
+define('_LIST_COMMENTS_MEMBER', 	'(member)');
+
+// batch operations
+define('_BATCH_WITH_SEL',			'With selected:');
+define('_BATCH_EXEC',				'Execute');
+
+// quickmenu
+define('_QMENU_HOME',				'Home');
+define('_QMENU_ADD',				'Add Item');
+define('_QMENU_ADD_SELECT',			'-- select --');
+define('_QMENU_USER_SETTINGS',		'Settings');
+define('_QMENU_USER_ITEMS',			'Items');
+define('_QMENU_USER_COMMENTS',		'Comments');
+define('_QMENU_MANAGE',				'Management');
+define('_QMENU_MANAGE_LOG',			'Action Log');
+define('_QMENU_MANAGE_SETTINGS',	'Global Settings');
+define('_QMENU_MANAGE_MEMBERS',		'Members');
+define('_QMENU_MANAGE_NEWBLOG',		'New Weblog');
+define('_QMENU_MANAGE_BACKUPS',		'Backups');
+define('_QMENU_MANAGE_PLUGINS',		'Plugins');
+define('_QMENU_LAYOUT',				'Layout');
+define('_QMENU_LAYOUT_SKINS',		'Skins');
+define('_QMENU_LAYOUT_TEMPL',		'Templates');
+define('_QMENU_LAYOUT_IEXPORT',		'Import/Export');
+define('_QMENU_PLUGINS',			'Plugins');
+
+// quickmenu on logon screen
+define('_QMENU_INTRO',				'Introduction');
+define('_QMENU_INTRO_TEXT',			'<p>This is the logon screen for Nucleus CMS, the content management system that\'s being used to maintain this website.</p><p>If you have an account, you can log on and start posting new items.</p>');
+
+// helppages for plugins
+define('_ERROR_PLUGNOHELPFILE',		'The helpfile for this plugin can not be found');
+define('_PLUGS_HELP_TITLE',			'Helppage for plugin');
+define('_LIST_PLUGS_HELP', 			'help');
+
+
+// END changed/started after 3.1
 
 // START changed/added after v2.5beta START
 
@@ -301,7 +415,7 @@ define('_BACKTOMANAGE',				'Back to Nucleus management');
 
 
 
-// charset to use 
+// charset to use
 define('_CHARSET',					'iso-8859-1');
 
 // global stuff
@@ -496,8 +610,8 @@ define('_UPLOAD_MSG',				'Select the file you want to upload below, and hit the 
 define('_UPLOAD_BUTTON',			'Upload');
 
 // some status messages
-define('_MSG_ACCOUNTCREATED',		'Account created, password will be sent through email');
-define('_MSG_PASSWORDSENT',			'Password has been sent by e-mail.');
+//define('_MSG_ACCOUNTCREATED',		'Account created, password will be sent through email');
+//define('_MSG_PASSWORDSENT',			'Password has been sent by e-mail.');
 define('_MSG_LOGINAGAIN',			'You\'ll need to login again, because your info changed');
 define('_MSG_SETTINGSCHANGED',		'Settings Changed');
 define('_MSG_ADMINCHANGED',			'Admin Changed');
@@ -765,7 +879,7 @@ define('_OVERVIEW_SKINS',			'Edit Skins...');
 define('_OVERVIEW_BACKUP',			'Backup/Restore...');
 
 // ITEMLIST
-define('_ITEMLIST_BLOG',			'Items for blog'); 
+define('_ITEMLIST_BLOG',			'Items for blog');
 define('_ITEMLIST_YOUR',			'Your items');
 
 // Comments
@@ -795,7 +909,7 @@ define('_LISTS_COMMENTS',			'Comments');
 define('_LISTS_TYPE',				'Type');
 
 
-// member list 
+// member list
 define('_LIST_MEMBER_NAME',			'Display Name');
 define('_LIST_MEMBER_RNAME',		'Real Name');
 define('_LIST_MEMBER_ADMIN',		'Super-admin? ');

@@ -1,7 +1,7 @@
 <?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -9,6 +9,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
+  * $Id: PAGEFACTORY.php,v 1.3 2005-03-16 08:10:35 kimitake Exp $
+  * $NucleusJP$
   */
 
 /**
@@ -70,7 +72,9 @@ class PAGEFACTORY extends BaseActions {
 			'else',
 			'endif',
 			'pluginextras',
-			'extrahead'
+			'itemoptions',
+			'extrahead',
+			'ticket'
 		);
 		
 		// TODO: maybe add 'skin' later on?
@@ -125,7 +129,7 @@ class PAGEFACTORY extends BaseActions {
 		$template = $this->getTemplateFor($this->type);
 		
 		// use the PARSER engine to parse that template
-		$parser = new PARSER($this->actions, $this);
+		$parser =& new PARSER($this->actions, $this);
 		$parser->parse($template);
 	}
 	
@@ -139,7 +143,7 @@ class PAGEFACTORY extends BaseActions {
 		
 		if (!file_exists($filename)) 
 			return '';
-			
+
 		$fsize = filesize($filename);
 		if ($fsize <= 0)
 			return '';
@@ -327,9 +331,9 @@ class PAGEFACTORY extends BaseActions {
 			case "2":
 				echo '<div class="jsbuttonbar">';
 
-					$this->_jsbutton('bold',"boldThis()",_ADD_BOLD_TT .'');
-					$this->_jsbutton('italic',"italicThis()",_ADD_ITALIC_TT .'');
-					$this->_jsbutton('link',"ahrefThis()",_ADD_HREF_TT .'');
+					$this->_jsbutton('bold',"boldThis()",'');
+					$this->_jsbutton('italic',"italicThis()",'');
+					$this->_jsbutton('link',"ahrefThis()",'');
 					$this->_jsbuttonspacer();										
 					$this->_jsbutton('alignleft',"alignleftThis()",_ADD_ALIGNLEFT_TT);
 					$this->_jsbutton('alignright',"alignrightThis()",_ADD_ALIGNRIGHT_TT);
@@ -382,6 +386,20 @@ class PAGEFACTORY extends BaseActions {
 				break;
 		}
 	}
+	
+	/**
+	 * Adds the itemOptions of a plugin to a page
+	 * @author TeRanEX
+	 */
+    function parse_itemoptions() {
+		global $itemid;
+		ADMIN::_insertPluginOptions('item', $itemid);
+    }
+    
+    function parse_ticket() {
+    	global $manager;
+    	$manager->addTicketHidden();
+    }
 	
 	/**
 	 * convenience method

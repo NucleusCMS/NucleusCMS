@@ -1,13 +1,16 @@
 <?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
+  *
+  * $Id: index.php,v 1.3 2005-03-16 08:04:14 kimitake Exp $
+  * $NucleusJP$
   */
 	// we are using admin stuff:
 	$CONF = array();
@@ -43,19 +46,25 @@
 		}
 	}
 
-	if (!$member->isLoggedIn() || ($action == 'logout')) {
-		$HTTP_POST_VARS['oldaction'] = $action;	// see ADMIN::login()
-		$_POST['oldaction'] = $action;
-		$action = "showlogin";
-	}
+	$bNeedsLogin = false;
+	$bIsActivation = in_array($action, array('activate', 'activatesetpwd'));
+	
+	if ($action == 'logout') 
+		$bNeedsLogin = true;	
+	
+	if (!$member->isLoggedIn() && !$bIsActivation)
+		$bNeedsLogin = true;
 
 	// show error if member cannot login to admin
-	if ($member->isLoggedIn() && !$member->canLogin()) {
+	if ($member->isLoggedIn() && !$member->canLogin() && !$bIsActivation) {
 		$error = _ERROR_LOGINDISALLOWED;
-		$HTTP_POST_VARS['oldaction'] = $action; // see ADMIN::login()
-		$_POST['oldaction'] = $action;
-		$action = "showlogin";
-
+		$bNeedsLogin = true;
+	}
+	
+	if ($bNeedsLogin)
+	{
+		setOldAction($action);	// see ADMIN::login() (sets old action in POST vars)
+		$action = 'showlogin';
 	}
 
 	sendContentType('application/xhtml+xml', 'admin-' . $action);

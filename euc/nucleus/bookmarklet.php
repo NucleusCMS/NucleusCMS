@@ -1,7 +1,7 @@
 <?php
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2004 The Nucleus Group
+  * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -11,6 +11,9 @@
   *
   * This script allows adding items to Nucleus through bookmarklets. The member must be logged in
   * in order to use this.
+  *
+  * $Id: bookmarklet.php,v 1.3 2005-03-16 08:04:14 kimitake Exp $
+  * $NucleusJP: bookmarklet.php,v 1.4 2005/03/15 08:24:16 kimitake Exp $
   */
 
 // bookmarklet is part of admin area (might need XML-RPC)
@@ -40,6 +43,16 @@ if ($action == '')
 	
 sendContentType('application/xhtml+xml', 'bookmarklet-'.$action);	
 
+// check ticket
+$action = strtolower($action);
+$aActionsNotToCheck = array('login', 'add', 'edit');
+if (!in_array($action, $aActionsNotToCheck))
+{
+	if (!$manager->checkTicket())
+		bm_doError(_ERROR_BADTICKET);
+} 
+
+
 // find out what to do
 switch ($action) {
 	case 'additem':
@@ -61,7 +74,7 @@ switch ($action) {
 }
 	
 function bm_doAddItem() {
-	global $member, $manager;
+	global $member, $manager, $CONF;
 	
 	$manager->loadClass('ITEM');
 	$result = ITEM::createFromRequest();
@@ -291,7 +304,7 @@ wingm.focus();
 
 function uniDecode($str,$charcode){
   $text = preg_replace_callback("/%u[0-9A-Za-z]{4}/",toUtf8,$str);
-  return mb_convert_encoding($text, $charcode, 'utf-8');
+  return mb_convert_encoding($text, $charcode, 'UTF-8');
 }
 function toUtf8($ar){
   foreach($ar as $val){

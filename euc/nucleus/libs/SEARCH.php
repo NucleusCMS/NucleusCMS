@@ -2,7 +2,7 @@
 
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2003-2004 The Nucleus Group
+  * Copyright (C) 2003-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -17,6 +17,9 @@
   * http://www.evolt.org/article/Boolean_Fulltext_Searching_with_PHP_and_MySQL/18/15665/
   * http://davidaltherr.net/web/php_functions/boolean/funcs.mysql.boolean.txt
   * 
+  *
+  * $Id: SEARCH.php,v 1.5 2005-03-16 08:10:35 kimitake Exp $
+  $ $NucleusJP: SEARCH.php,v 1.4 2005/03/12 06:19:05 kimitake Exp $
   */
 
 
@@ -30,7 +33,8 @@ class SEARCH {
 
     function SEARCH($text) {
         global $blogid;
-//        $text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$text);
+
+//       $text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$text);
 
      /* * * for jp * * * * * * * * * * */
         $text = $this->zenspace_replace($text);
@@ -81,9 +85,14 @@ class SEARCH {
 /***********************************************/
 
     function  boolean_sql_select($match){
-//        if (strlen($this->inclusive) > 0) {
+//        $string = $this->inclusive;
+//        if (strlen($string) > 0) {
     	   /* build sql for determining score for each record */
-/*	       $result=explode(" ",$this->inclusive);
+/*
+	       preg_match_all(
+		                   "([A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_]{0,})",
+    		               $string,
+	    	               $result);
            $result = $result[0];
 	         for($cth=0;$cth<count($result);$cth++){
              if(strlen($result[$cth])>=4){
@@ -93,7 +102,7 @@ class SEARCH {
     		     }
 	         }
     	     if(strlen($stringsum_long)>0){
-    	   		$stringsum_long = addslashes($stringsum_long);
+		   		$stringsum_long = addslashes($stringsum_long);
 	    		$stringsum_a[] = " match ($match) against ('$stringsum_long') ";
     	     }
 	         $stringsum .= implode("+",$stringsum_a);
@@ -101,7 +110,9 @@ class SEARCH {
    	    }
 */
     }
+
     
+
     function boolean_inclusive_atoms($string){
     	$result=trim($string);
     	$result=preg_replace("/([[:space:]]{2,})/",' ',$result);
@@ -123,21 +134,24 @@ class SEARCH {
     		"(\-\(([A-Za-z0-9]|$this->two|$this->three){1,}([A-Za-z0-9\-\.\_\,]|$this->two|$this->three){0,}\))",
     		'',
     		$result);
+
     	$result=preg_replace(
 //    		"(\-[A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_]{0,})",
     		"(\-([A-Za-z0-9]|$this->two|$this->three){1,}([A-Za-z0-9\-\.\_\,]|$this->two|$this->three){0,})",
     		'',
     		$result);
+
     	$result=str_replace('(',' ',$result);
     	$result=str_replace(')',' ',$result);
     	$result=str_replace(',',' ',$result);
 
     	return $result;
     }
-    
+
     function boolean_sql_where($match){
-/*        $result = $this->marked;
-      	$result = preg_replace(
+/*
+        $result = $this->marked;
+    	$result = preg_replace(
     		"/foo\[\(\'([^\)]{4,})\'\)\]bar/e",
     		" 'match ('.\$match.') against (\''.\$this->copyvalue(\"$1\").'\') > 0 ' ",
     		$result);
@@ -145,12 +159,13 @@ class SEARCH {
     	$result = preg_replace(     		
             "/foo\[\(\'([^\)]{1,3})\'\)\]bar/e",
             " '('.\$this->boolean_sql_where_short(\"$1\",\"$match\").')' ",    		
-            $result);*/
+            $result);
+*/
       $result = $this->jpmarked; /* for jp */
     	$result = $this->boolean_sql_where_jp_short($result,$match);/* for jp */
     	return $result;
     }
-    
+
     // there must be a simple way to simply copy a value with backslashes in it through
     // the preg_replace, but I cannot currently find it (karma 2003-12-30)
     function copyvalue($foo) {
@@ -165,7 +180,7 @@ class SEARCH {
 
     	$result=trim($string);
     	$result=preg_replace("/([[:space:]]{2,})/",' ',$result);
-
+    	
     	/* convert normal boolean operators to shortened syntax */
     	$result=eregi_replace(' not ',' -',$result);
     	$result=eregi_replace(' and ',' ',$result);
@@ -217,16 +232,19 @@ class SEARCH {
 
 /***********************************************/
 
-/*    function boolean_mark_atoms($string){
+
+/*
+    function boolean_mark_atoms($string){
     	$result=trim($string);
     	$result=preg_replace("/([[:space:]]{2,})/",' ',$result);
 
-    	// convert normal boolean operators to shortened syntax 
+    	//convert normal boolean operators to shortened syntax
     	$result=eregi_replace(' not ',' -',$result);
     	$result=eregi_replace(' and ',' ',$result);
     	$result=eregi_replace(' or ',',',$result);
 
-    	// strip excessive whitespace 
+
+    	//strip excessive whitespace
     	$result=str_replace('( ','(',$result);
     	$result=str_replace(' )',')',$result);
     	$result=str_replace(', ',',',$result);
@@ -238,7 +256,7 @@ class SEARCH {
     	$result=trim($result);
     	$result=preg_replace("/([[:space:]]{2,})/",' ',$result);
 
-    	// apply arbitrary function to all 'word' atoms 
+    	// apply arbitrary function to all 'word' atoms
 
         $result_a = explode(" ",$result);
         for($word=0;$word<count($result_a);$word++){
@@ -246,13 +264,13 @@ class SEARCH {
         }
         $result = implode(" ",$result_a);
         
-    	// dispatch ' ' to ' AND ' 
+    	// dispatch ' ' to ' AND '
     	$result=str_replace(' ',' AND ',$result);
 
-    	// dispatch ',' to ' OR ' 
+    	// dispatch ',' to ' OR '
     	$result=str_replace(',',' OR ',$result);
 
-    	// dispatch '-' to ' NOT ' 
+    	// dispatch '-' to ' NOT '
     	$result=str_replace(' -',' NOT ',$result);
     	return $result;
     }
@@ -262,7 +280,7 @@ class SEARCH {
     	for($ith=0;$ith<count($match_a);$ith++){
     		$like_a[$ith] = " $match_a[$ith] LIKE '% $string %' ";
     	}
-    	$like = implode(" or ",$like_a);
+    	$like = implode(" OR ",$like_a);
 
     	return $like;
     }
@@ -279,6 +297,8 @@ class SEARCH {
 	    $score = implode(" + ",$score_a);
 
         return $score;
-    } */
-  }
+    }
+*/
+
+}
 ?>
