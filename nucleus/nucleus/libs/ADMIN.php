@@ -1015,6 +1015,12 @@ class ADMIN {
 		// edit the item for real
 		ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
 		
+		// ITEM::update is pinging weblogs.com, no need to do more
+		// here.
+		if (!$closed && $publish && $wasdraft && $blog->pingUserland()) {
+			return;
+		}
+
 		// show category edit window when we created a new category
 		// ($catid will then be a new category ID, while postVar('catid') will be 'newcat-x')
 		if ($catid != intPostVar('catid')) {
