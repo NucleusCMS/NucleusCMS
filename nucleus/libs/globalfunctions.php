@@ -328,9 +328,19 @@ function selector() {
 	}
 	
 	// show error when headers already sent out
-	if (headers_sent($hsFile, $hsLine) && $CONF['alertOnHeadersSent']) {
+	if (headers_sent() && $CONF['alertOnHeadersSent']) {
+	
+		// try to get line number/filename (extra headers_sent params only exists in PHP 4.3+)
+		if (function_exists('version_compare') && version_compare('4.3.0', phpversion(), '<=')) {
+			headers_sent($hsFile, $hsLine);	
+			$extraInfo = ' in <code>'.$hsFile.'</code> line <code>'.$hsLine.'</code>';
+		} else {
+			$extraInfo = '';
+		}
+		
+
 		startUpError(
-			'<p>The page headers have already been sent out in <code>'.$hsFile.'</code> line <code>'.$hsLine.'</code>. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, or at the end of the language file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>',
+			'<p>The page headers have already been sent out'.$extraInfo.'. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, or at the end of the language file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>',
 			'Page headers already sent'
 		);
 		exit;
