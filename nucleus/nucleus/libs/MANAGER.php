@@ -256,6 +256,9 @@ class MANAGER {
 		}
 		return -1;
 	}
+	function clearCachedInfo($what) {
+		unset($this->cachedInfo[$what]);
+	}
 	
 	/**
 	 * Loads some info on the first call only

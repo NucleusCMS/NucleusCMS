@@ -18,8 +18,13 @@ global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS'));
 
-$nucleus['version'] = 'v3.1 CVS';
 $CONF['debug'] = 1;
+
+$nucleus['version'] = 'v3.1+ CVS';
+if (getNucleusPatchLevel() > 0)
+{
+	$nucleus['version'] .= '/' . getNucleusPatchLevel();
+}
 
 /*
 	Indicates when Nucleus should display startup errors. Set to 1 if you want
@@ -44,6 +49,16 @@ $CONF['alertOnSecurityRisk'] = 1;
 function getNucleusVersion() {
 	return 310;
 }
+
+/**
+ * power users can install patches in between nucleus releases. These patches
+ * usually add new functionality in the plugin API and allow those to
+ * be tested without having to install CVS.
+ */
+function getNucleusPatchLevel() {
+	return 0;
+}
+
 
 if ($CONF['debug']) {
 	error_reporting(E_ALL & ~E_NOTICE);	// report almost all errors!
