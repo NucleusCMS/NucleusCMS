@@ -12,7 +12,9 @@ function cookieVar($name) {
 }
 
 function requestVar($name) {
-	return undoMagic($_REQUEST[$name]);
+  if (!empty($_GET[$name]))	return undoMagic($_GET[$name]);
+  if (!empty($_POST[$name])) return undoMagic($_POST[$name]);
+  return undoMagic($_REQUEST[$name]);
 }
 
 function serverVar($name) {
