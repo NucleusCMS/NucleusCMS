@@ -1496,7 +1496,7 @@ class ADMIN {
 		$this->action_editmembersettings(intRequestVar('memberid'));
 	}
 	function action_editmembersettings($memberid = '') {
-		global $member, $CONF;
+		global $member, $manager, $CONF;
 		
 		if ($memberid == '')
 			$memberid = $member->getID();
@@ -2586,8 +2586,8 @@ class ADMIN {
 		<p>After you've created a new weblog, you'll need to perform some actions to make your blog accessible. There are two possibilities:</p>
 		
 		<ol>
-			<li>Simple: Create a copy of <code>index.php</code> and modify it to display your new weblog. Further instructions on how to do this will be provided after you've submitted this first form.</li>
-			<li>Advanced: Insert the blog content into your current skins using skinvar like <code>otherblog</code>. This way, you can place multiple blogs on the same page.</li>
+			<li><strong>Simple:</strong> Create a copy of <code>index.php</code> and modify it to display your new weblog. Further instructions on how to do this will be provided after you've submitted this first form.</li>
+			<li><strong>Advanced:</strong> Insert the blog content into your current skins using skinvars like <code>otherblog</code>. This way, you can place multiple blogs on the same page.</li>
 		</ol>
 		
 		<h3>Create Weblog</h3>
@@ -2731,7 +2731,7 @@ class ADMIN {
 			<li><a href="#skins">Advanced: Call the weblog from existing skins</a></li>			
 		</ol>
 		
-		<h3><a name="index_php">Create an extra <code><?=htmlspecialchars($bshortname)?>.php</code> file</a></h3>
+		<h3><a id="index_php">Method 1: Create an extra <code><?=htmlspecialchars($bshortname)?>.php</code> file</a></h3>
 		
 		<p>Create a file called <code><?=htmlspecialchars($bshortname)?>.php</code>, and copy-paste the following code into it:</p>
 <pre><code>&lt;?
@@ -2761,7 +2761,7 @@ selector();
 			</tr></table>
 		</div></form>
 		
-		<h3><a name="skins">Call the weblog from existing skins</a></h3>
+		<h3><a id="skins">Method 2: Call the weblog from existing skins</a></h3>
 
 		<p>To finish the weblog creation process, simply please fill out the final URL for your weblog: (might be the same as another already existing weblog)</p>
 		
@@ -3779,7 +3779,7 @@ selector();
 	}
 	
 	function action_settingsedit() {
-		global $member, $CONF, $DIR_NUCLEUS, $DIR_MEDIA;
+		global $member, $manager, $CONF, $DIR_NUCLEUS, $DIR_MEDIA;
 		
 		$member->isAdmin() or $this->disallow();
 		
@@ -3911,6 +3911,7 @@ selector();
 			<td><?=_SETTINGS_URLMODE?> <?help('urlmode');?></td>
 			<td><? $this->input_yesno('URLMode',$CONF['URLMode'],10078,
 					          'normal','pathinfo',_SETTINGS_URLMODE_NORMAL,_SETTINGS_URLMODE_PATHINFO); ?>
+				(Info: <a href="documentation/tips.html#searchengines-fancyurls">How to activate fancy URLs</a>)
 			</td>
 
 
