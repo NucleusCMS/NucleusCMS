@@ -1042,12 +1042,14 @@ class ITEMACTIONS extends BaseActions {
 	}
 	
 	function parse_karmaposlink($text = '') { 
-		$link = 'action.php?action=votepositive&amp;itemid='.$this->currentItem->itemid; 
+		global $CONF;
+		$link = $CONF['ActionURL'] . '?action=votepositive&amp;itemid='.$this->currentItem->itemid; 
 		echo $text ? '<a href="'.$link.'">'.$text.'</a>' : $link;
 	}
 	
 	function parse_karmaneglink($text = '') { 
-		$link = 'action.php?action=votenegative&amp;itemid='.$this->currentItem->itemid; 
+		global $CONF;
+		$link = $CONF['ActionURL'] . '?action=votenegative&amp;itemid='.$this->currentItem->itemid; 
 		echo $text ? '<a href="'.$link.'">'.$text.'</a>' : $link;
 	}
 	
