@@ -5979,6 +5979,13 @@ function listplug_table_skinlist($template, $type) {
 				
 				if ($hasEnlargement)
 					echo '</a>';
+					
+				if (@file_exists($DIR_SKINS . $current->sdincpref . 'readme.html'))
+				{
+					echo '<br /><a href="',$CONF['SkinsURL'], $current->sdincpref,'readme.html" title="More info on the \'',htmlspecialchars($current->sdname),'\' skin">Readme</a>';
+				}
+					
+					
 			}
 			
 			echo "</td>";
