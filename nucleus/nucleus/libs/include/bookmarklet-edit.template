@@ -77,12 +77,12 @@
 						<li>
 							<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="70" /><label for="act_changedate"><%text(_BMLET_CHANGEDATE)%></label> <%helplink(changedate)%>
 									<div class="indent">
-										<input name="day" tabindex="71" size="2" value="<%itemtime(mday)%>" />/
-										<input name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" />/
-										<input name="year" tabindex="73" size="4" value="<%itemtime(year)%>" />
+										<input id="inputday" name="day" tabindex="71" size="2" value="<%itemtime(mday)%>" />/
+										<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" />/
+										<input id="inputyear" name="year" tabindex="73" size="4" value="<%itemtime(year)%>" />
 										at
-										<input name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" />:
-										<input name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" />
+										<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" />:
+										<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" />
 										(dd/mm/yyyy hh:mm)
 									</div>
 							</li>
