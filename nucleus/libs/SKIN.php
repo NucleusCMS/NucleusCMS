@@ -134,7 +134,7 @@ class SKIN {
 
 		if (!$contents) {
 			// use base skin if this skin does not have contents
-			$defskin = new SKIN($CONF['BaseSkin']);
+			$defskin =& new SKIN($CONF['BaseSkin']);
 			$contents = $defskin->getContent($type);
 			if (!$contents) {
 				echo _ERROR_SKIN;
@@ -150,8 +150,8 @@ class SKIN {
 		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
 		PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());
 
-		$handler = new ACTIONS($type, $this);
-		$parser = new PARSER($actions, $handler);
+		$handler =& new ACTIONS($type, $this);
+		$parser =& new PARSER($actions, $handler);
 		$handler->setParser($parser);
 		$handler->setSkin($this);
 		$parser->parse($contents);
@@ -800,17 +800,17 @@ class ACTIONS extends BaseActions {
 	// include comments for one item
 	function parse_comments($template) {
 		global $itemid, $manager, $blog, $highlight;
-		$template = TEMPLATE::read($template);
+		$template =& $manager->getTemplate($template);
 
 		// create parser object & action handler
-		$actions = new ITEMACTIONS($blog);
-		$parser = new PARSER($actions->getDefinedActions(),$actions);
+		$actions =& new ITEMACTIONS($blog);
+		$parser =& new PARSER($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setParser($parser);
 		$item = ITEM::getitem($itemid, 0, 0);
 		$actions->setCurrentItem($item);
 
-		$comments = new COMMENTS($itemid);
+		$comments =& new COMMENTS($itemid);
 		$comments->setItemActions($actions);
 		$comments->showComments($template, -1, 1, $highlight);	// shows ALL comments
 	}
@@ -1088,9 +1088,9 @@ class ACTIONS extends BaseActions {
 	}
 	
 	function parse_preview($template) {
-		global $blog, $CONF;
+		global $blog, $CONF, $manager;
 		
-		$template = TEMPLATE::read($template);
+		$template =& $manager->getTemplate($template);
 		$row['body'] = '<span id="prevbody"></span>';
 		$row['title'] = '<span id="prevtitle"></span>';
 		$row['more'] = '<span id="prevmore"></span>';

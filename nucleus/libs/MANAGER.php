@@ -33,6 +33,7 @@ class MANAGER {
 	var $blogs;
 	var $plugins;
 	var $karma;
+	var $templates;
 	
 	/**
 	 * cachedInfo to avoid repeated SQL queries (see pidInstalled/pluginInstalled/getPidFromName)
@@ -60,7 +61,7 @@ class MANAGER {
 	function &instance() {
 		static $instance = '';
 		if ($instance == '')
-			$instance = new MANAGER();
+			$instance =& new MANAGER();
 		return $instance;
 	}
 	
@@ -132,8 +133,8 @@ class MANAGER {
 			// load class if needed
 			$this->_loadClass('BLOG','BLOG.php');
 			// load blog object
-			$blog = new BLOG($blogid);
-			$this->blogs[$blogid] = $blog;
+			$blog =& new BLOG($blogid);
+			$this->blogs[$blogid] =& $blog;
 		}
 		return $blog;
 	}
@@ -149,6 +150,19 @@ class MANAGER {
 	}	
 	
 	/**
+	 * Returns a previously read template
+	 */
+	function &getTemplate($templateName) {
+		$template =& $this->templates[$templateName];
+
+		if (!$template) {
+			$template = TEMPLATE::read($templateName);
+			$this->templates[$templateName] =& $template;
+		}
+		return $template;
+	}	
+
+	/**
 	 * Returns a KARMA object (karma votes)
 	 */
 	function &getKarma($itemid) {
@@ -158,8 +172,8 @@ class MANAGER {
 			// load class if needed
 			$this->_loadClass('KARMA','KARMA.php');
 			// create KARMA object
-			$karma = new KARMA($itemid);
-			$this->karma[$itemid] = $karma;
+			$karma =& new KARMA($itemid);
+			$this->karma[$itemid] =& $karma;
 		}
 		return $karma;
 	}	
@@ -207,7 +221,7 @@ class MANAGER {
 				}
 				
 				// add to plugin array
-				eval('$this->plugins[$name] = new ' . $name . '();');
+				eval('$this->plugins[$name] =& new ' . $name . '();');
 				
 				// get plugid
 				$this->plugins[$name]->plugid = $this->getPidFromName($name);

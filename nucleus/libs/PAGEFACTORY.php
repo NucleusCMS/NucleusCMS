@@ -127,7 +127,7 @@ class PAGEFACTORY extends BaseActions {
 		$template = $this->getTemplateFor($this->type);
 		
 		// use the PARSER engine to parse that template
-		$parser = new PARSER($this->actions, $this);
+		$parser =& new PARSER($this->actions, $this);
 		$parser->parse($template);
 	}
 	
