@@ -16,6 +16,7 @@
 $CONF = array();
 include('./config.php');			// common functions
 
+$action = requestVar('action');
 switch($action) {
 	case 'addcomment':
 		addComment();

@@ -45,6 +45,7 @@ if (mysql_num_rows($teams) == 0)
 	media_doError(_ERROR_DISALLOWEDUPLOAD);
 	
 // basic action:
+$action = requestVar('action');
 switch($action) {
 	case 'chooseupload':
 	case _MEDIA_UPLOAD_TO:

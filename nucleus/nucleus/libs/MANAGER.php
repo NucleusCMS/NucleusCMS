@@ -185,7 +185,7 @@ class MANAGER {
 				{
 					unset($this->plugins[$name]);
 					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (does not support SqlTablePrefix)');
-					return;
+					return 0;
 				}
 				
 				// call init method
