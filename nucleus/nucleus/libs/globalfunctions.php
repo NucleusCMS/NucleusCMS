@@ -135,7 +135,7 @@ if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'),'Mozil
 
 // login if cookies set
 
-$member = new MEMBER();
+$member =& new MEMBER();
 
 // login/logout when required or renew cookies
 if ($action == 'login') {
@@ -649,7 +649,7 @@ function selector() {
 		$skinid = $blog->getDefaultSkin();
 
 	
-	$skin = new SKIN($skinid);
+	$skin =& new SKIN($skinid);
 	if (!$skin->isValid)
 		doError(_ERROR_NOSUCHSKIN);
 
@@ -665,16 +665,16 @@ function doError($msg, $skin = '') {
 
 	if ($skin == '') {
 		if (SKIN::existsID($skinid)) {
-			$skin = new SKIN($skinid);
+			$skin =& new SKIN($skinid);
 		} elseif ($manager->existsBlogID($blogid)) {
 			$blog =& $manager->getBlog($blogid);
-			$skin = new SKIN($blog->getDefaultSkin());
+			$skin =& new SKIN($blog->getDefaultSkin());
 		} elseif ($CONF['DefaultBlog']) {
 			$blog =& $manager->getBlog($CONF['DefaultBlog']);
-			$skin = new SKIN($blog->getDefaultSkin());
+			$skin =& new SKIN($blog->getDefaultSkin());
 		} else {
 			// this statement should actually never be executed
-			$skin = new SKIN($CONF['BaseSkin']);
+			$skin =& new SKIN($CONF['BaseSkin']);
 		}
 	}
 
@@ -766,8 +766,8 @@ function selectLanguage($language) {
 }
 
 function parseFile($filename) {
-	$handler = new ACTIONS('fileparser');
-	$parser = new PARSER(SKIN::getAllowedActionsForType('fileparser'), $handler);
+	$handler =& new ACTIONS('fileparser');
+	$parser =& new PARSER(SKIN::getAllowedActionsForType('fileparser'), $handler);
 	$handler->parser =& $parser;
 
 	if (!file_exists($filename)) doError('A file is missing');

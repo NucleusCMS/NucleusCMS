@@ -262,7 +262,7 @@ class ADMIN {
 		$template['now'] = $blog->getCorrectTime(time());
 
 
-		$navList = new NAVLIST('itemlist', $start, $amount, 0, 1000, $blogid, $search, 0);
+		$navList =& new NAVLIST('itemlist', $start, $amount, 0, 1000, $blogid, $search, 0);
 		$navList->showBatchList('item',$query,'table',$template);
 
 		
@@ -783,7 +783,7 @@ class ADMIN {
 		$template['content'] = 'itemlist';
 		$template['now'] = time();
 
-		$navList = new NAVLIST('browseownitems', $start, $amount, 0, 1000, $blogid, $search, 0);
+		$navList =& new NAVLIST('browseownitems', $start, $amount, 0, 1000, $blogid, $search, 0);
 		$navList->showBatchList('item',$query,'table',$template);
 
 		$this->pagefoot();		
@@ -834,7 +834,7 @@ class ADMIN {
 		$template['content'] = 'commentlist';
 		$template['canAddBan'] = $member->blogAdminRights(getBlogIDFromItemID($itemid));
 
-		$navList = new NAVLIST('itemcommentlist', $start, $amount, 0, 1000, 0, $search, $itemid);
+		$navList =& new NAVLIST('itemcommentlist', $start, $amount, 0, 1000, 0, $search, $itemid);
 		$navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS);
 		
 		$this->pagefoot();
@@ -877,7 +877,7 @@ class ADMIN {
 		$template['content'] = 'commentlist';
 		$template['canAddBan'] = 0;	// doesn't make sense to allow banning yourself
 		
-		$navList = new NAVLIST('browseowncomments', $start, $amount, 0, 1000, 0, $search, 0);
+		$navList =& new NAVLIST('browseowncomments', $start, $amount, 0, 1000, 0, $search, 0);
 		$navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS_YOUR);
 	
 		$this->pagefoot();
@@ -901,7 +901,7 @@ class ADMIN {
 		$this->pagehead();
 	
 		// generate the add-item form
-		$formfactory = new PAGEFACTORY($blogid);
+		$formfactory =& new PAGEFACTORY($blogid);
 		$formfactory->createAddForm('admin');
 
 		$this->pagefoot();	
@@ -927,7 +927,7 @@ class ADMIN {
 	
 		// form to edit blog items
 		$this->pagehead();
-		$formfactory = new PAGEFACTORY($blog->getID());
+		$formfactory =& new PAGEFACTORY($blog->getID());
 		$formfactory->createEditForm('admin',$item);		
 		$this->pagefoot();	
 	}
@@ -1459,7 +1459,7 @@ class ADMIN {
 		$template['content'] = 'memberlist';
 		$template['tabindex'] = 10;
 		
-		$batch = new BATCH('member');
+		$batch =& new BATCH('member');
 		$batch->showlist($query,'table',$template);
 
 		echo '<h3>' . _MEMBERS_NEW .'</h3>';
@@ -1959,7 +1959,7 @@ class ADMIN {
 		$template['content'] = 'teamlist';
 		$template['tabindex'] = 10;
 		
-		$batch = new BATCH('team');
+		$batch =& new BATCH('team');
 		$batch->showlist($query, 'table', $template);
 
 		?>
@@ -2279,7 +2279,7 @@ class ADMIN {
 		$template['content'] = 'categorylist';
 		$template['tabindex'] = 200;
 		
-		$batch = new BATCH('category');
+		$batch =& new BATCH('category');
 		$batch->showlist($query,'table',$template);
 		
 		?>
@@ -2634,7 +2634,7 @@ class ADMIN {
 		
 		
 		if ($notify) {
-			$not = new NOTIFICATION($notify);
+			$not =& new NOTIFICATION($notify);
 			if (!$not->validAddresses())
 				$this->error(_ERROR_BADNOTIFY);
 			
@@ -3168,7 +3168,7 @@ selector();
 		$skinFileRaw= postVar('skinfile');
 		$mode 		= postVar('mode');
 
-		$importer = new SKINIMPORT();
+		$importer =& new SKINIMPORT();
 		
 		// get full filename
 		if ($mode == 'file')
@@ -3242,7 +3242,7 @@ selector();
 			$skinFile = $skinFileRaw;
 		}
 
-		$importer = new SKINIMPORT();
+		$importer =& new SKINIMPORT();
 
 		$error = $importer->readFile($skinFile);	
 
@@ -3289,7 +3289,7 @@ selector();
 
 		$info = postVar('info');
 
-		$exporter = new SKINEXPORT();
+		$exporter =& new SKINEXPORT();
 		foreach ($skinList as $skinId) {
 			$exporter->addSkin($skinId);
 		}
@@ -3342,7 +3342,7 @@ selector();
 	}
 	
 	function action_templateedit($msg = '') {
-		global $member;
+		global $member, $manager;
 		
 		$templateid = intRequestVar('templateid');
 		
@@ -3355,7 +3355,7 @@ selector();
 		
 		$templatename = TEMPLATE::getNameFromId($templateid);
 		$templatedescription = TEMPLATE::getDesc($templateid);
-		$template = TEMPLATE::read($templatename);
+		$template =& $manager->getTemplate($templatename);
 		
 		?>
 		<p>
@@ -3731,7 +3731,7 @@ selector();
 		
 		$member->isAdmin() or $this->disallow();
 		
-		$skin = new SKIN($skinid);
+		$skin =& new SKIN($skinid);
 		
 		$this->pagehead();
 		?>
@@ -3799,7 +3799,7 @@ selector();
 		$inc_mode = postVar('inc_mode');
 		$inc_prefix = postVar('inc_prefix');
 		
-		$skin = new SKIN($skinid);
+		$skin =& new SKIN($skinid);
 		
 		// 1. Some checks
 		if (!isValidSkinName($name))
@@ -3826,7 +3826,7 @@ selector();
 		
 		$member->isAdmin() or $this->disallow();
 		
-		$skin = new SKIN($skinid);
+		$skin =& new SKIN($skinid);
 		
 		$friendlyNames = SKIN::getFriendlyNames();
 		
@@ -3905,7 +3905,7 @@ selector();
 
 		$member->isAdmin() or $this->disallow();
 		
-		$skin = new SKIN($skinid);
+		$skin =& new SKIN($skinid);
 		$skin->update($type, $content);
 		
 		$this->action_skinedittype(_SKIN_UPDATED);
@@ -3930,7 +3930,7 @@ selector();
 		
 		$this->pagehead();
 		
-		$skin = new SKIN($skinid);
+		$skin =& new SKIN($skinid);
 		$name = $skin->getName();
 		$desc = $skin->getDescription();
 		
@@ -3988,7 +3988,7 @@ selector();
 		$member->isAdmin() or $this->disallow();
 		
 		// 1. read skin to clone
-		$skin = new SKIN($skinid);
+		$skin =& new SKIN($skinid);
 		
 		$name = "clone_" . $skin->getName();
 		
@@ -5588,7 +5588,7 @@ class NAVLIST extends ENCAPSULATE {
 	}
 	
 	function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-		$batch = new BATCH($batchtype);
+		$batch =& new BATCH($batchtype);
 
 		$this->doEncapsulate(
 				array(&$batch, 'showlist'),

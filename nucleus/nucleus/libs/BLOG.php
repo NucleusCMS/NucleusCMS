@@ -147,11 +147,11 @@ class BLOG {
 		global $currentTemplateName;
 		$currentTemplateName = $templateName;
 		
-		$template = TEMPLATE::read($templateName);
+		$template =& $manager->getTemplate($templateName);
 		
 		// create parser object & action handler
-		$actions = new ITEMACTIONS($this);
-		$parser = new PARSER($actions->getDefinedActions(),$actions);
+		$actions =& new ITEMACTIONS($this);
+		$parser =& new PARSER($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setHighlight($highlight);
 		$actions->setLastVisit($lastVisit);
@@ -290,7 +290,7 @@ class BLOG {
 			
 		$frommail = $member->getNotifyFromMailAddress();
 
-		$notify = new NOTIFICATION($this->getNotifyAddress());
+		$notify =& new NOTIFICATION($this->getNotifyAddress());
 		$notify->notify($mailto_title, $mailto_msg , $frommail);
 				
 
@@ -373,7 +373,7 @@ class BLOG {
 	 *		amount of hits found
 	 */
 	function search($query, $template, $amountMonths, $maxresults, $startpos) {
-        global $CONF;
+        global $CONF, $manager;
 
 		$highlight 	= '';
 		$sqlquery	= $this->getSqlSearch($query, $amountMonths, $highlight);
@@ -395,7 +395,7 @@ class BLOG {
 			// when no results were found, show a message 
     		if ($amountfound == 0) 
     		{
-	    		$template = TEMPLATE::read($template);
+	    		$template =& $manager->getTemplate($template);
     			$vars = array(
     				'query'		=> htmlspecialchars($query),
     				'blogid'	=> $this->getID()
@@ -425,7 +425,7 @@ class BLOG {
 	 */
 	function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
 	{
-        $searchclass = new SEARCH($query);
+        $searchclass =& new SEARCH($query);
         
         $highlight	  = $searchclass->inclusive;
         
@@ -523,12 +523,12 @@ class BLOG {
 	  * Shows the archivelist using the given template
 	  */
 	function showArchiveList($template, $mode = 'month', $limit = 0) {
-		global $CONF, $catid;
+		global $CONF, $catid, $manager;
 
 		if ($catid) 
 			$linkparams = array('catid' => $catid);
 		
-		$template = TEMPLATE::read($template);
+		$template =& $manager->getTemplate($template);
 		$data['blogid'] = $this->getID();
 
 		echo TEMPLATE::fill($template['ARCHIVELIST_HEADER'],$data);
@@ -581,7 +581,7 @@ class BLOG {
 	  * Shows the list of categories using a given template
 	  */
 	function showCategoryList($template) {
-		global $CONF;
+		global $CONF, $manager;
 		
 		// determine arguments next to catids
 		// I guess this can be done in a better way, but it works
@@ -603,7 +603,7 @@ class BLOG {
 		//$blogurl = $this->getURL() . $qargs;
 		$blogurl = createBlogLink($this->getURL(), $linkparams);
 
-		$template = TEMPLATE::read($template);
+		$template =& $manager->getTemplate($template);
 
 		echo TEMPLATE::fill($template['CATLIST_HEADER'],
 							array(
@@ -1271,7 +1271,7 @@ class ITEMACTIONS extends BaseActions {
 			
 		// add comments
 		if ($this->showComments && $this->blog->commentsEnabled()) {
-			$comments = new COMMENTS($this->currentItem->itemid);
+			$comments =& new COMMENTS($this->currentItem->itemid);
 			$comments->setItemActions($this);
 			$comments->showComments($this->template, $maxToShow, $this->currentItem->closed ? 0 : 1, $this->strHighlight); 
 		}
