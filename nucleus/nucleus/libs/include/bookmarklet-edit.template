@@ -6,6 +6,7 @@
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />				
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
+		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
@@ -119,6 +120,8 @@
 				<td>
 				<%pluginextras%>
 				</td></tr>
+				
+				  <%itemoptions%>
 				</table>
 				
 			</div>

@@ -16,6 +16,12 @@
 	<li>
 		<b>Nucleus v3.1+ (?, 2004)</b>
 		<ul>
+      <li>CHANGED: PluginOptionExtras-event now has an extra-field which can be used to add option-specific code to the page (TeRanEX)</li>
+      <li>ADDED: new event, PrePluginOptionsUpdate, can be used by plugins to verify/modify the new value for an option (TeRanEX)</li>
+      <li>ADDED: Plugins can now provide a documentation page, which is shown inside the admin area (TeRanEX)</li>
+      <li>ADDED: Plugins can now limit values for an option to be only numeric (TeRanEX)</li>
+      <li>ADDED: OptionTop-methods, to let a plugin retreive an array of the x-heighest (of lowest) values of an option (TeRanEX)</li>
+			<li>ADDED: Plugins can now make specific options for items. These options can be edited directly from the item add or edit page (TeRanEX)</li>
 			<li>FIXED: <code>Call to undefined function</code> when user specified a language in its profile (jef pober)</li>
 		</ul>
 	</li>
@@ -26,7 +32,7 @@
 			<li>ADDED: support for patch levels, so plugin API enhancements can be distributed to power users earlier (<a href="http://forum.nucleuscms.org/viewtopic.php?t=4142" title="More info...">suggested</a> by TeRanEX)</li>
 			<li>FIXED: bug 974090, multiple identical SQL queries were executed when checking if a plugin is available (karma)</li>
 			<li>FIXED: Default language wasn't always respected (fushimi)</li>
-			<li>CHANGED: new bookmarklet style (TeRanEx / moraes)</li>
+			<li>CHANGED: new bookmarklet style (TeRanEX / moraes)</li>
 			<li>FIXED: After a karma vote, redirection to referer URL failed if <code>register_globals</code> is turned off (karma)</li>
 			<li>FIXED: SQL Injection Vulnerability, reported by aCiDBiTS</li>
 			<li>FIXED: bug 689468, moved PostAddComment from action.php to COMMENTS.php(admun)</li>
