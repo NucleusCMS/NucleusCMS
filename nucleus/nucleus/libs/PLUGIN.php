@@ -207,7 +207,7 @@
 		  * Derives the short name for the plugin from the classname (all lowercase)
 		  */
 		function getShortName() {
-			return str_replace('np_','',get_class($this));
+			return str_replace('np_','',strtolower(get_class($this)));
 		}
 
 
