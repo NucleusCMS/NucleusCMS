@@ -79,8 +79,8 @@ class PARSER {
 		$actionlc = strtolower($action);
 		
 		// skip execution of skinvars while inside an if condition which hides this part of the page
-//		if (!$this->handler->if_currentlevel && ($actionlc != 'else') && ($actionlc != 'endif'))
-//			return;
+		if (!$this->handler->if_currentlevel && ($actionlc != 'else') && ($actionlc != 'endif'))
+			return;
 	
 		if (in_array($actionlc, $this->actions) || $this->norestrictions ) {
 			// when using PHP versions lower than 4.0.5, uncomment the line before
