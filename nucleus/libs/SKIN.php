@@ -850,6 +850,9 @@ class ACTIONS extends BaseActions {
 				case 'email':
 					echo $memberinfo->getEmail();
 					break;
+				case 'id':
+					echo $memberinfo->getID();
+					break;					
 			}	
 		}
 		
@@ -872,6 +875,9 @@ class ACTIONS extends BaseActions {
 				case 'youremail':
 					echo $member->getEmail();
 					break;
+				case 'yourid':
+					echo $member->getID();
+					break;									
 			}	
 		}
 
