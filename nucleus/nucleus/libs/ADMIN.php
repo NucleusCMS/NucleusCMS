@@ -1657,8 +1657,6 @@ class ADMIN {
 		$mem = MEMBER::createFromID($memberid);
 
 		if ($CONF['AllowLoginEdit'] || $member->isAdmin()) {
-			if (!isValidMailAddress($email))
-				$this->error(_ERROR_BADEMAILADDRESS);
 
 			if (!isValidDisplayName($name))
 				$this->error(_ERROR_BADNAME);
@@ -1673,6 +1671,9 @@ class ADMIN {
 				$this->error(_ERROR_PASSWORDTOOSHORT);
 		}
 		
+		if (!isValidMailAddress($email))
+			$this->error(_ERROR_BADEMAILADDRESS);
+
 	
 		if (!$realname)
 			$this->error(_ERROR_REALNAMEMISSING);
