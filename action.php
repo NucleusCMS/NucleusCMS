@@ -66,16 +66,15 @@ function addComment() {
 	checkban($blogid);
 	$blog =& $manager->getBlog($blogid);
 
-	// note: preAddComment gets called somewhere inside addComment
+	// note: PreAddComment and PostAddComment gets called somewhere inside addComment
 	$errormessage = $comments->addComment($blog->getCorrectTime(),$post);
-	$manager->notify('PostAddComment',array('comment' => &$post, 'errormessage' => $errormessage));		
 	
 	if ($errormessage == '1') {		
 		// redirect when adding comments succeeded
 		if (postVar('url')) {
 			Header('Location: ' . postVar('url'));
 		} else {
-			$url = $CONF['IndexURL'] . 'index.php?itemid=' . $post['itemid'];
+			$url = $CONF['IndexURL'] . createItemLink($post['itemid']);
 			Header('Location: ' . $url);
 		}
 	} else {
