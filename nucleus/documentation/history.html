@@ -16,6 +16,13 @@
 	<li>
 		<b>Nucleus v3.0</b>
 		<ul>
+			<li>ADDED: ADMIN.php no-cache after doctype added to support dynamic content for plugins in admin area (rADo2)</li>
+			<li>FIXED: vars4.1.0.php fixed a strange bug for some PHP installs having empty $_REQUEST[] (rADo2)</li>
+			<li>FIXED: globalfunctions.php - added a flag preventing include of vars...php twice for custom install (rADo2)</li>
+			<li>FIXED: install.php - added a flag preventing include of vars...php twice for custom install (rADo2)</li>
+			<li>ADDED: globalfunctions.php - 2 basic functions for FancierURLs support for whole system (rADo2)</li>
+			<li>FIXED: install.php - installCustomSkins skinbackup.xml renamed (rADo2)</li>
+			<li>FIXED: install.php - installCustomPlugs now correctly syncs plugin events (rADo2)</li>
 			<li>FIXED: Forcing focus on add/edit window after closing media library (nakahara21)</li>
 			<li>ADDED: <code>class</code> attributes on textareas that allow skins/templates to be edited</li>
 			<li>FIXED: Documentation and errors now tell to chmod config.php to 444 instead of 644 (hcgtv)</li>
