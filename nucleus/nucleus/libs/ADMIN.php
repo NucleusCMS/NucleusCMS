@@ -4176,9 +4176,7 @@ selector();
 	}
 	
 	function disallow() {
-		global $HTTP_SERVER_VARS;
-		
-		ACTIONLOG::add(WARNING, _ACTIONLOG_DISALLOWED . $HTTP_SERVER_VARS['REQUEST_URI']);
+		ACTIONLOG::add(WARNING, _ACTIONLOG_DISALLOWED . serverVar('REQUEST_URI'));
 		
 		$this->error(_ERROR_DISALLOWED);
 	}
