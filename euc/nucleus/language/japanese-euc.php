@@ -3,7 +3,7 @@
 // 
 // Author: chrome (chrome@cgi.no-ip.org)
 // Modified by: Osamu Higuchi (osamu@higuchi.com)
-// Nucleus version: v1.0-v3.1
+// Nucleus version: v1.0-v3.2
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -17,6 +17,13 @@
 // ¤³¤Î¥Õ¥¡¥¤¥ë¤Ï Nucleus ¤Î EUC-JP ÈÇÆüËÜ¸ì¥é¥ó¥²¡¼¥¸¥Õ¥¡¥¤¥ë¤Ç¤¹¡£
 // ¥Õ¥¡¥¤¥ëÌ¾¤ò japanese.php ¤ËÊÑ¹¹¤·¤Æ¤«¤é¡¢Nucleus ¤Î language ¥Ç¥£¥ì¥¯¥È¥ê¤Ë
 // ÃÖ¤¤¤Æ¤¯¤À¤µ¤¤¡£
+
+// START changed/added after 3.15 START
+
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Please use the \'Update Subscription list\'-button to update the plugin\'s subscription list.');
+define('_LIST_PLUGS_DEP',			'Plugin(s) requires:');
+
+// END changed/added after 3.15
 
 // START changed/added after 3.1 START
 
@@ -608,8 +615,8 @@ define('_UPLOAD_MSG',				'¥¢¥Ã¥×¥í¡¼¥É¤¹¤ë¥Õ¥¡¥¤¥ë¤òÁªÂò¤·¤Æ¡¢\'¥¢¥Ã¥×¥í¡¼¥É\' ¥
 define('_UPLOAD_BUTTON',			'¥¢¥Ã¥×¥í¡¼¥É');
 
 // some status messages
-define('_MSG_ACCOUNTCREATED',		'¥¢¥«¥¦¥ó¥È¤¬ºîÀ®¤µ¤ì¤Þ¤·¤¿¡£¥Ñ¥¹¥ï¡¼¥É¤¬¥á¡¼¥ë¤ÇÁ÷¿®¤µ¤ì¤Þ¤¹');
-define('_MSG_PASSWORDSENT',			'¥Ñ¥¹¥ï¡¼¥É¤¬¥á¡¼¥ë¤ÇÁ÷¿®¤µ¤ì¤Þ¤·¤¿¡£');
+//define('_MSG_ACCOUNTCREATED',		'¥¢¥«¥¦¥ó¥È¤¬ºîÀ®¤µ¤ì¤Þ¤·¤¿¡£¥Ñ¥¹¥ï¡¼¥É¤¬¥á¡¼¥ë¤ÇÁ÷¿®¤µ¤ì¤Þ¤¹');
+//define('_MSG_PASSWORDSENT',			'¥Ñ¥¹¥ï¡¼¥É¤¬¥á¡¼¥ë¤ÇÁ÷¿®¤µ¤ì¤Þ¤·¤¿¡£');
 define('_MSG_LOGINAGAIN',			'¤¢¤Ê¤¿¤Î¾ðÊó¤¬ÊÑ¹¹¤µ¤ì¤¿°Ù¡¢¥í¥°¥¤¥ó¤·¤Ê¤ª¤¹É¬Í×¤¬¤¢¤ê¤Þ¤¹');
 define('_MSG_SETTINGSCHANGED',		'ÀßÄê¤¬ÊÑ¹¹¤µ¤ì¤Þ¤·¤¿');
 define('_MSG_ADMINCHANGED',			'´ÉÍý¼Ô¸¢¸Â ¤¬ÊÑ¹¹¤µ¤ì¤Þ¤·¤¿');
