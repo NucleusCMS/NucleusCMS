@@ -1084,7 +1084,7 @@ class ADMIN {
 				<input type="hidden" name="action" value="itemmoveto" />
 				<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
 				
-				<?php$this->selectBlogCategory('catid',$item['catid'],10,1);?>
+				<?php $this->selectBlogCategory('catid',$item['catid'],10,1);?>
 				
 				<input type="submit" value="<?php echo _MOVE_BTN?>" tabindex="10000" onclick="return checkSubmit();" />
 			</div></form>
@@ -1432,7 +1432,7 @@ class ADMIN {
 			<tr>
 				<th colspan="2"><?php echo _MEMBERS_NEW?></th>
 			</tr><tr>
-				<td><?php echo _MEMBERS_DISPLAY?> <?phphelp('shortnames');?>
+				<td><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
 				    <br /><small>(This is the name used to logon)</small>
 				</td>
 				<td><input tabindex="10010" name="name" size="16" maxlength="16" /></td>
@@ -1505,7 +1505,7 @@ class ADMIN {
 		<table><tr>
 			<th colspan="2"><?php echo _MEMBERS_EDIT?></th>
 		</tr><tr>
-			<td><?php echo _MEMBERS_DISPLAY?> <?phphelp('shortnames');?>
+			<td><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
 			    <br /><small><?php echo _MEMBERS_DISPLAY_INFO?></small>
 			</td>
 			<td>
@@ -3006,7 +3006,7 @@ selector();
 		
 		<input name="action" value="templatenew" type="hidden" />
 		<table><tr>
-			<td><?php echo _TEMPLATE_NAME?> <?phphelp('shortnames');?></td>
+			<td><?php echo _TEMPLATE_NAME?> <?php help('shortnames');?></td>
 			<td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
 		</tr><tr>
 			<td><?php echo _TEMPLATE_DESC?></td>
@@ -3059,7 +3059,7 @@ selector();
 		<table><tr>
 			<th colspan="2"><?php echo _TEMPLATE_SETTINGS?></th>
 		</tr><tr>
-			<td><?php echo _TEMPLATE_NAME?> <?phphelp('shortnames');?></td>
+			<td><?php echo _TEMPLATE_NAME?> <?php help('shortnames');?></td>
 			<td><input name="tname" tabindex="4" size="20" maxlength="20" value="<?php echo  htmlspecialchars($templatename) ?>" /></td>
 		</tr><tr>
 			<td><?php echo _TEMPLATE_DESC?></td>
@@ -3367,7 +3367,7 @@ selector();
 		
 		<input name="action" value="skinnew" type="hidden" />
 		<table><tr>
-			<td><?php echo _SKIN_NAME?> <?phphelp('shortnames');?></td>
+			<td><?php echo _SKIN_NAME?> <?php help('shortnames');?></td>
 			<td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
 		</tr><tr>
 			<td><?php echo _SKIN_DESC?></td>
@@ -3422,14 +3422,14 @@ selector();
 		<h3><?php echo _SKIN_PARTS_TITLE?></h3>
 		<?php echo _SKIN_PARTS_MSG?>
 		<ul>
-			<li><a tabindex="10" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=index"><?php echo _SKIN_PART_MAIN?></a> <?phphelp('skinpartindex')?></li>
-			<li><a tabindex="20" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=item"><?php echo _SKIN_PART_ITEM?></a> <?phphelp('skinpartitem')?></li>
-			<li><a tabindex="30" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=archivelist"><?php echo _SKIN_PART_ALIST?></a> <?phphelp('skinpartarchivelist')?></li>
-			<li><a tabindex="40" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=archive"><?php echo _SKIN_PART_ARCHIVE?></a> <?phphelp('skinpartarchive')?></li>
-			<li><a tabindex="50" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=search"><?php echo _SKIN_PART_SEARCH?></a> <?phphelp('skinpartsearch')?></li>
-			<li><a tabindex="60" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=error"><?php echo _SKIN_PART_ERROR?></a> <?phphelp('skinparterror')?></li>
-			<li><a tabindex="70" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=member"><?php echo _SKIN_PART_MEMBER?></a> <?phphelp('skinpartmember')?></li>
-			<li><a tabindex="75" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=imagepopup"><?php echo _SKIN_PART_POPUP?></a> <?phphelp('skinpartimagepopup')?></li>
+			<li><a tabindex="10" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=index"><?php echo _SKIN_PART_MAIN?></a> <?php help('skinpartindex')?></li>
+			<li><a tabindex="20" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=item"><?php echo _SKIN_PART_ITEM?></a> <?php help('skinpartitem')?></li>
+			<li><a tabindex="30" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=archivelist"><?php echo _SKIN_PART_ALIST?></a> <?php help('skinpartarchivelist')?></li>
+			<li><a tabindex="40" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=archive"><?php echo _SKIN_PART_ARCHIVE?></a> <?php help('skinpartarchive')?></li>
+			<li><a tabindex="50" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=search"><?php echo _SKIN_PART_SEARCH?></a> <?php help('skinpartsearch')?></li>
+			<li><a tabindex="60" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=error"><?php echo _SKIN_PART_ERROR?></a> <?php help('skinparterror')?></li>
+			<li><a tabindex="70" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=member"><?php echo _SKIN_PART_MEMBER?></a> <?php help('skinpartmember')?></li>
+			<li><a tabindex="75" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=imagepopup"><?php echo _SKIN_PART_POPUP?></a> <?php help('skinpartimagepopup')?></li>
 		</ul>
 		
 		<h3><?php echo _SKIN_GENSETTINGS_TITLE?></h3>
@@ -3439,7 +3439,7 @@ selector();
 		<input type="hidden" name="action" value="skineditgeneral" />
 		<input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
 		<table><tr>
-			<td><?php echo _SKIN_NAME?> <?phphelp('shortnames');?></td>
+			<td><?php echo _SKIN_NAME?> <?php help('shortnames');?></td>
 			<td><input name="name" tabindex="90" value="<?php echo  htmlspecialchars($skin->getName()) ?>" maxlength="20" size="20" /></td>
 		</tr><tr>
 			<td><?php echo _SKIN_DESC?></td>
@@ -3448,10 +3448,10 @@ selector();
 			<td><?php echo _SKIN_TYPE?></td>
 			<td><input name="type" tabindex="110" value="<?php echo  htmlspecialchars($skin->getContentType()) ?>" maxlength="40" size="20" /></td>
 		</tr><tr>
-			<td><?php echo _SKIN_INCLUDE_MODE?> <?phphelp('includemode')?></td>
-			<td><?php$this->input_yesno('inc_mode',$skin->getIncludeMode(),120,'skindir','normal',_PARSER_INCMODE_SKINDIR,_PARSER_INCMODE_NORMAL);?></td>
+			<td><?php echo _SKIN_INCLUDE_MODE?> <?php help('includemode')?></td>
+			<td><?php $this->input_yesno('inc_mode',$skin->getIncludeMode(),120,'skindir','normal',_PARSER_INCMODE_SKINDIR,_PARSER_INCMODE_NORMAL);?></td>
 		</tr><tr>		
-			<td><?php echo _SKIN_INCLUDE_PREFIX?> <?phphelp('includeprefix')?></td>
+			<td><?php echo _SKIN_INCLUDE_PREFIX?> <?php help('includeprefix')?></td>
 			<td><input name="inc_prefix" tabindex="130" value="<?php echo  htmlspecialchars($skin->getIncludePrefix()) ?>" maxlength="40" size="20" /></td>
 		</tr><tr>		
 			<td><?php echo _SKIN_CHANGE?></td>
@@ -3529,7 +3529,7 @@ selector();
 		<input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
 		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
 		(skin type: <?php echo  $friendlyNames[$type] ?>)
-		<?phphelp('skinpart' . $type);?>
+		<?php help('skinpart' . $type);?>
 		<br />
 		
 		<textarea tabindex="10" rows="20" cols="80" name="content"><?php echo  htmlspecialchars($skin->getContent($type)) ?></textarea>
@@ -3767,13 +3767,13 @@ selector();
 			<td><?php echo _SETTINGS_ADMINURL?></td>
 			<td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  htmlspecialchars($CONF['AdminURL']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_PLUGINURL?> <?phphelp('pluginurl');?></td>
+			<td><?php echo _SETTINGS_PLUGINURL?> <?php help('pluginurl');?></td>
 			<td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  htmlspecialchars($CONF['PluginURL']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_SKINSURL?> <?phphelp('skinsurl');?></td>
+			<td><?php echo _SETTINGS_SKINSURL?> <?php help('skinsurl');?></td>
 			<td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  htmlspecialchars($CONF['SkinsURL']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_ACTIONSURL?> <?phphelp('actionurl');?></td>
+			<td><?php echo _SETTINGS_ACTIONSURL?> <?php help('actionurl');?></td>
 			<td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  htmlspecialchars($CONF['ActionURL']) ?>" /></td>
 		</tr><tr>		
 			<td><?php echo _SETTINGS_LANGUAGE?> <?php help('language'); ?>
@@ -3839,7 +3839,7 @@ selector();
 				</select>
 			</td>			
 		</tr><tr>
-			<td><?php echo _SETTINGS_URLMODE?> <?phphelp('urlmode');?></td>
+			<td><?php echo _SETTINGS_URLMODE?> <?php help('urlmode');?></td>
 			<td><?php $this->input_yesno('URLMode',$CONF['URLMode'],10078,
 					          'normal','pathinfo',_SETTINGS_URLMODE_NORMAL,_SETTINGS_URLMODE_PATHINFO); ?>
 				(Info: <a href="documentation/tips.html#searchengines-fancyurls">How to activate fancy URLs</a>)

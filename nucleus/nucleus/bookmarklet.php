@@ -253,7 +253,7 @@ function bm_message($title, $head, $msg, $extrahead = '') {
 	</body>
 	</html>
 	
-	<?php}
+	<?php }
 
 function bm_style() {
 	echo '<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />';

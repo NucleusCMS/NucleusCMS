@@ -333,12 +333,12 @@ function media_head() {
 		</script>
 	</head>
 	<body>		
-<?php}
+<?php }
 
 function media_foot() {
 ?>
 	</body>
 	</html>	
-<?php}	
+<?php }	
 
 ?>
