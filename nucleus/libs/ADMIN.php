@@ -2433,7 +2433,7 @@ class ADMIN {
 	}
 
 	function action_skinieoverview() {
-		global $member;
+		global $member, $DIR_LIBS;
 		
 		$member->isAdmin() or $this->disallow();
 
