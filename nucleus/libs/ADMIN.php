@@ -476,10 +476,9 @@ class ADMIN {
 	  * member has access
 	  */
 	function selectBlogCategory($name, $selected = 0, $tabindex = 0, $showNewCat = 0) {
-		$this->selectBlog($name, 'category', $selected, $tabindex, $showNewCat);
+		ADMIN::selectBlog($name, 'category', $selected, $tabindex, $showNewCat);
 	}
 	
-
 	/**
 	  * Inserts a HTML select element with choices for all blogs to which the user has access
 	  *		mode = 'blog' => shows blognames and values are blogids
