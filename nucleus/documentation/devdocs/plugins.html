@@ -9,7 +9,7 @@
 
 <div class="heading">
 Writing Plugins
-<i>December 29th, 2002</i>
+<i>December 30th, 2002</i>
 </div>
 
 <div class="note"><b>Note:</b> This document should contain enough information to write basic plugins. If you have more questions, see the <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin Development Forum</a></div>
@@ -634,6 +634,14 @@ class NP_Acronyms extends NucleusPlugin {
 			<dd>comment data (associative array)</dd>
 		</dl></td>		
 	</tr>
+	<tr>
+		<td>PrePluginOptionsEdit</td>
+		<td>(v2.0) before the 'edit plugin options' form is created.</td>
+		<td><dl>
+			<dt>options</dt>
+			<dd>Array with for each option an object, having the following properties: <code>$obj-&gt;description</code>, <code>$obj-&gt;name</code>, <code>$obj-&gt;type</code>, <code>$obj-&gt;value</code>. Extra options can be added here (if you want to do something with them, you'll need to subscribe to PostPluginOptionsUpdate as well)</dd>
+		</dl></td>		
+	</tr>	
 	<tr>
 		<td>PostPluginOptionsUpdate</td>
 		<td>(v2.0) After the options for a plugin have been updated.</td>
