@@ -5265,22 +5265,6 @@ selector();
 		if (!checkPlugin($name))
 			$this->error(_ERROR_PLUGFILEERROR . ' (' . $name . ')');
 
-		// check if the plugin dependency is met
-		$plugin =& $manager->getPlugin($name);
-		$pluginList = $plugin->getPluginDep();
-		foreach ($pluginList as $pluginName)
-		{
-
-			$res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
-			if (mysql_num_rows($res) == 0)
-			{
-				// uninstall plugin again...
-				$this->deleteOnePlugin($plugin->getID());
-
-				$this->error(_ERROR_INSREQPLUGIN . $pluginName);
-			}
-		}
-
 		// get number of currently installed plugins
 		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
 
@@ -5299,17 +5283,17 @@ selector();
 		sql_query($query);
 		$iPid = mysql_insert_id();
 
-		// need to update the plugin object's pid since we didn't have it above when it's first create....
-		$plugin->plugid = $iPid;
-
 		$manager->clearCachedInfo('installedPlugins');
 
-		// call the install method of the plugin
+		// Load the plugin for condition checking and instalation
+		$plugin =& $manager->getPlugin($name);
+		
+		// check if it got loaded (could have failed)
 		if (!$plugin)
 		{
 			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. intval($iPid));
 			$manager->clearCachedInfo('installedPlugins');
-			$this->error('Plugin could not be loaded, or does not support certain features that are required for it to run on your Nucleus installation (you might want to check the <a href="?action=actionlog">actionlog</a> for more info)');
+			$this->error(_ERROR_PLUGIN_LOAD);
 		}
 
 		// check if plugin needs a newer Nucleus version
@@ -5332,6 +5316,21 @@ selector();
 			$this->error(_ERROR_NUCLEUSVERSIONREQ . $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel());
 		}
 
+		$pluginList = $plugin->getPluginDep();
+		foreach ($pluginList as $pluginName)
+		{
+
+			$res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
+			if (mysql_num_rows($res) == 0)
+			{
+				// uninstall plugin again...
+				$this->deleteOnePlugin($plugin->getID());
+
+				$this->error(_ERROR_INSREQPLUGIN . $pluginName);
+			}
+		}
+
+		// call the install method of the plugin
 		$plugin->install();
 
 		$manager->notify(
