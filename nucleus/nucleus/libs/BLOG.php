@@ -324,7 +324,7 @@ class BLOG {
 			$catid = mysql_insert_id();
 			
 			$manager->notify(
-				'PreAddCategory',
+				'PostAddCategory',
 				array(
 					'blog' => &$this,
 					'name' => $catName,
