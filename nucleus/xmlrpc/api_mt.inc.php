@@ -119,10 +119,16 @@
 		$categories = $m->getParam(3);
 		$iSize = $categories->arraysize();		
 
+		$category = '';
 		for ($i=0;$i<$iSize;$i++) {
 			$struct = $categories->arraymem($i);
 			$bPrimary = $struct->structmem('isPrimary');
-			$bPrimary = $bPrimary->scalarval();
+			if ($bPrimary)
+				$bPrimary = $bPrimary->scalarval();
+			else if (!$category)
+				$bPrimary = 1;	// "Using isPrimary to set the primary category is optional--
+								// in the absence of this flag, the first struct in the array 
+								// will be assigned the primary category for the post." (MT doc)
 			if ($bPrimary) {
 				$category = $struct->structmem('categoryId');
 				$category = $category->scalarval();
