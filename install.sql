@@ -299,7 +299,7 @@ CREATE TABLE `nucleus_activation` (
   PRIMARY KEY  (`vkey`)
 ) TYPE=MyISAM;
         
-CREATE TABLE `nucleus_ticket` (
+CREATE TABLE `nucleus_tickets` (
    `ticket` varchar(40) NOT NULL default '',
    `ctime` datetime NOT NULL default '0000-00-00 00:00:00',
    `member` int(11) NOT NULL default '0',
