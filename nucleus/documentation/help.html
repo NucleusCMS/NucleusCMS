@@ -1429,7 +1429,7 @@ Inserts the most recently added items of the currently active blog (usually the 
 	</ul>
 	Optional:
 	<ul>
-		<li><strong><em>amount</em></strong>: the amount of items to show (default = 10)</li>
+		<li><strong><em>amount</em></strong>: the amount of items to show (default = 10). Can also contain an offset telling Nucleus to start only from the given item. e.g. <code>10(5)</code> shows 10 items starting from item 5</li>
 		<li><strong><em>category</em></strong>: name of the category to show</li>
 	</ul>
 </p>
@@ -1444,6 +1444,7 @@ index, item, archive, archivelist, search
 
 <pre>
 &lt;%blog(default,15)%&gt;
+&lt;%blog(default,5(15))%&gt;
 &lt;%blog(mytemplate)%&gt;
 &lt;%blog(mytemplate,5,mycategory)%&gt;
 </pre>
@@ -1474,7 +1475,7 @@ Inserts the most recently added items of a given blog into the skin.
 	</ul>
 	Optional:
 	<ul>
-		<li><strong><em>amount</em></strong>: the amount of items to show (default = 10)</li>
+		<li><strong><em>amount</em></strong>: the amount of items to show (default = 10). Can also contain an offset telling Nucleus to start only from the given item. e.g. <code>10(5)</code> shows 10 items starting from item 5</li>
 		<li><strong><em>category</em></strong>: name of the category to show</li>
 	</ul>
 </p>
@@ -1491,6 +1492,7 @@ all
 &lt;%otherblog(myblog,default,15)%&gt;
 &lt;%otherblog(yourblog,mytemplate)%&gt;
 &lt;%otherblog(yourblog,mytemplate,15,mycategory)%&gt;
+&lt;%otherblog(yourblog,mytemplate,5(15),mycategory)%&gt;
 </pre>
 
 </div>
@@ -3346,11 +3348,18 @@ Inserts a date using the <a href="#templatedatetime">date format specified in th
 	</ul>
 </ul>
 
+<h2>Specials</h2>
+
+<p>Two special parameters are possible: <code>rfc822</code> and <code>rfc822GMT</code>, which insert dates in RFC 822 format. The first one uses the local date, the second one uses the GMT time.</p>
+
 <h2>Examples</h2>
 <pre>
 &lt;%date%&gt;
 &lt;%date(%x)%&gt;
+&lt;%date(rfc822)%&gt;
+&lt;%date(rfc822GMT)%&gt;
 </pre>
+
 
 </div>
 
