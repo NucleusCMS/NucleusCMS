@@ -117,9 +117,6 @@
     
     <!-- Copy necessary files in root -->
     <copy file="${src.home}/action.php" todir="${upgrade.home}" />
-    <copy file="${src.home}/xml-rss2.php" todir="${upgrade.home}" />    
-    <copy file="${src.home}/xml-rss.php" todir="${upgrade.home}" />        
-    <copy file="${src.home}/rsd.php" todir="${upgrade.home}" />        
 
 	<zip zipfile="${upgrade.zip}"
 		basedir="${tempdir}"
