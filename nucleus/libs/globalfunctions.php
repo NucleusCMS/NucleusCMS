@@ -14,7 +14,7 @@
   */
 
 // needed if we include globalfunctions from install.php
-global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member; 
+global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS'));
@@ -166,22 +166,22 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 
 } elseif (serverVar('PHP_AUTH_USER') && serverVar('PHP_AUTH_PW')) {
 	// HTTP Authentication
-       $login  = serverVar('PHP_AUTH_USER');
-       $pw     = serverVar('PHP_AUTH_PW');
+	   $login  = serverVar('PHP_AUTH_USER');
+	   $pw     = serverVar('PHP_AUTH_PW');
 
-       if ($member->login($login,$pw)) {
-               $manager->notify('LoginSuccess',array('member' => &$member));
-               ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
-       } else {
-               $manager->notify('LoginFailed',array('username' => $login));
-               ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
+	   if ($member->login($login,$pw)) {
+			   $manager->notify('LoginSuccess',array('member' => &$member));
+			   ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
+	   } else {
+			   $manager->notify('LoginFailed',array('username' => $login));
+			   ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
 
-               //Since bad credentials, generate an apropriate error page
-               header("WWW-Authenticate: Basic realm=\"Nucleus CMS {$nucleus['version']}\"");
-               header('HTTP/1.0 401 Unauthorized');
-               echo 'Invalid username or password';
-               exit;
-       }
+			   //Since bad credentials, generate an apropriate error page
+			   header("WWW-Authenticate: Basic realm=\"Nucleus CMS {$nucleus['version']}\"");
+			   header('HTTP/1.0 401 Unauthorized');
+			   echo 'Invalid username or password';
+			   exit;
+	   }
 */
 
 } elseif (($action == 'logout') && (!headers_sent()) && cookieVar($CONF['CookiePrefix'] . 'user')){
@@ -235,8 +235,8 @@ include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
 
 /*
 	Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
-	
-// To remove after v2.5 is released and language files have been updated. 
+
+// To remove after v2.5 is released and language files have been updated.
 // Including this makes sure that language files for v2.5beta can still be used for v2.5final
 // without having weird _SETTINGS_EXTAUTH string showing up in the admin area.
 if (!defined('_MEMBERS_BYPASS'))
@@ -323,11 +323,11 @@ function sql_table($name)
 
 function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 	global $manager, $CONF;
-	
+
 	if (!headers_sent()) {
 		// if content type is application/xhtml+xml, only send it to browsers
 		// that can handle it (IE6 cannot). Otherwise, send text/html
-		
+
 		// v2.5: For admin area pages, keep sending text/html (unless it's a debug version)
 		//       application/xhtml+xml still causes too much problems with the javascript implementations
 		if (
@@ -337,7 +337,7 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 		{
 			$contenttype = 'text/html';
 		}
-			
+
 		$manager->notify(
 			'PreSendContentType',
 			array(
@@ -350,13 +350,13 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 		// strip strange characters
 		$contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
 		$charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
-		
-		header('Content-Type: ' . $contenttype . '; charset=' . $charset);			
-	}
-	
-	
 
-	
+		header('Content-Type: ' . $contenttype . '; charset=' . $charset);
+	}
+
+
+
+
 }
 
 /**
@@ -515,7 +515,7 @@ function selector() {
 		$errorInfo = $a->doAction($action);
 		if ($errorInfo)
 			$errormessage = $errorInfo['message'];
-	}	
+	}
 
 	// show error when headers already sent out
 	if (headers_sent() && $CONF['alertOnHeadersSent']) {
@@ -576,10 +576,10 @@ function selector() {
 		if ($obj) {
 			$itemidprev = $obj->inumber;
 			$itemtitleprev = $obj->ititle;
-    	}
+		}
 
 		// get next itemid and title
-		$query = 'SELECT inumber, ititle FROM '.sql_table('item').' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate(time()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
+		$query = 'SELECT inumber, ititle FROM '.sql_table('item').' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate($b->getCorrectTime()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
 		$res = sql_query($query);
 
 		$obj = mysql_fetch_object($res);
@@ -618,7 +618,7 @@ function selector() {
 			$blogid = getBlogIDFromName($archivelist);
 		if (!$blogid) doError(_ERROR_NOSUCHBLOG);
 	} elseif ($query) {
-	    global $startpos;
+		global $startpos;
 		$type = 'search';
 		$query = stripslashes($query);
 		if (intval($blogid)==0)
@@ -638,7 +638,7 @@ function selector() {
 		// TODO: set some vars?
 	} else {
 		// show regular index page
-	    global $startpos;
+		global $startpos;
 		$type = 'index';
 	}
 
@@ -661,7 +661,7 @@ function selector() {
 	if (!$skinid)
 		$skinid = $blog->getDefaultSkin();
 
-	
+
 	$skin =& new SKIN($skinid);
 	if (!$skin->isValid)
 		doError(_ERROR_NOSUCHSKIN);
@@ -709,7 +709,7 @@ function getConfig() {
 // some checks for names of blogs, categories, templates, members, ...
 function isValidShortName($name) {		return eregi('^[a-z0-9]+$', $name); }
 function isValidDisplayName($name) {	return eregi('^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$', $name); }
-function isValidCategoryName($name) {	return 1; } 
+function isValidCategoryName($name) {	return 1; }
 function isValidTemplateName($name) {	return eregi('^[a-z0-9/]+$', $name); }
 function isValidSkinName($name) {		return eregi('^[a-z0-9/]+$', $name); }
 
@@ -988,23 +988,23 @@ function addLinkParams($link, $params) {
  *		name of parameter to change (e.g. 'foo')
  * @param $value
  *		New value for that parameter (e.g. 3)
- * @result 
+ * @result
  *		altered query string (for the examples above: foo=3&bar=2&x=y)
  */
 function alterQueryStr($querystr, $param, $value) {
-    $vars = explode("&", $querystr);
-    $set  = false;
-    for ($i=0;$i<count($vars);$i++) {
-        $v = explode('=',$vars[$i]);
-        if ($v[0] == $param) {
-            $v[1]     = $value;
-            $vars[$i] = implode('=', $v);
-            $set      = true;
-            break;
-        }
-    }
-    if (!$set) {$vars[] = $param . '=' . $value;}
-    return ltrim(implode('&', $vars), '&');
+	$vars = explode("&", $querystr);
+	$set  = false;
+	for ($i=0;$i<count($vars);$i++) {
+		$v = explode('=',$vars[$i]);
+		if ($v[0] == $param) {
+			$v[1]     = $value;
+			$vars[$i] = implode('=', $v);
+			$set      = true;
+			break;
+		}
+	}
+	if (!$set) {$vars[] = $param . '=' . $value;}
+	return ltrim(implode('&', $vars), '&');
 }
 
 // passes one variable as hidden input field (multiple fields for arrays)
@@ -1025,19 +1025,19 @@ function passVar($key, $value) {
 	Date format functions (to be used from [%date(..)%] skinvars
 */
 function formatDate($format, $timestamp, $defaultFormat) {
-	if ($format == 'rfc822') { 
-		return date('r', $timestamp); 
-	} else if ($format == 'rfc822GMT') { 
-		return gmdate('r', $timestamp); 
-	} else if ($format == 'utc') { 
-		return gmdate('Y-m-d\TH:i:s\Z', $timestamp); 
+	if ($format == 'rfc822') {
+		return date('r', $timestamp);
+	} else if ($format == 'rfc822GMT') {
+		return gmdate('r', $timestamp);
+	} else if ($format == 'utc') {
+		return gmdate('Y-m-d\TH:i:s\Z', $timestamp);
 	} else if ($format == 'iso8601') {
-       	$tz = date('O', $timestamp);
-        $tz = substr($tz, 0, 3) . ':' . substr($tz, 3, 2);	
+		$tz = date('O', $timestamp);
+		$tz = substr($tz, 0, 3) . ':' . substr($tz, 3, 2);
 		return gmdate('Y-m-d\TH:i:s', $timestamp) . $tz;
-	} else {  
-		return strftime($format ? $format : $defaultFormat,$timestamp); 
-	}  
+	} else {
+		return strftime($format ? $format : $defaultFormat,$timestamp);
+	}
 
 }
 
@@ -1048,8 +1048,8 @@ function checkVars($aVars)
 	{
 		if (phpversion() >= '4.1.0')
 		{
-			if (   isset($_GET[$varName]) 
-				|| isset($_POST[$varName]) 
+			if (   isset($_GET[$varName])
+				|| isset($_POST[$varName])
 				|| isset($_COOKIE[$varName])
 				|| isset($_ENV[$varName])
 				|| isset($_SESSION[$varName])
@@ -1058,20 +1058,20 @@ function checkVars($aVars)
 				die('Sorry. An error occurred.');
 			}
 		} else {
-			if (   isset($HTTP_GET_VARS[$varName]) 
-				|| isset($HTTP_POST_VARS[$varName]) 
+			if (   isset($HTTP_GET_VARS[$varName])
+				|| isset($HTTP_POST_VARS[$varName])
 				|| isset($HTTP_COOKIE_VARS[$varName])
 				|| isset($HTTP_ENV_VARS[$varName])
 				|| isset($HTTP_SESSION_VARS[$varName])
 				|| isset($HTTP_POST_FILES[$varName])
 			){
 				die('Sorry. An error occurred.');
-			}		
+			}
 		}
 	}
 }
 
-/** 
+/**
  * Stops processing the request and redirects to the given URL.
  * - no actual contents should have been sent to the output yet
  * - the URL will be stripped of illegal or dangerous characters
