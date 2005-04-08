@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
-	<!-- $Id: help.html,v 1.5 2005-03-19 08:34:53 kimitake Exp $ -->
-	<!-- $NucleusJP$ -->
+	<!-- $Id: help.html,v 1.6 2005-04-08 13:21:08 kimitake Exp $ -->
+	<!-- $NucleusJP: help.html,v 1.5 2005/03/19 08:34:53 kimitake Exp $ -->
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Nucleus管理用ヘルプ</title>
@@ -626,7 +626,7 @@ Blogの管理者は次のような追加権限をもちます：
 	<td>weblogのID</td>
 </tr><tr>
 	<td>query</td>
-	<td>検索に用いられたクリエー</td>
+	<td>検索に用いられたクエリ</td>
 </tr></table>
 
 <h2>例</h2>
@@ -1064,7 +1064,7 @@ Blogの管理者は次のような追加権限をもちます：
 
 <p>「検索対象にする」オプションが選択されていると、対象のweblogは<strong>常に</strong>検索対象に含まれます。たとえ検索が他のweblogで行われたとしても。（訳注：2.5からのオプション）</p>
 
-<p>例として、'lifelog'と'linkdump'という2つのweblogを持ち、'linkdump'の「検索対象にする」が有効になっていると仮定しましょう。そうすると、'lifelog'での検索クリエーは'linkdump'も検索するのに対して、'linkdump'の検索クリエーは'linkdump'のエントリーしか検索しません。</p>
+<p>例として、'lifelog'と'linkdump'という2つのweblogを持ち、'linkdump'の「検索対象にする」が有効になっていると仮定しましょう。そうすると、'lifelog'での検索クエリは'linkdump'も検索するのに対して、'linkdump'の検索クエリは'linkdump'のエントリーしか検索しません。</p>
 
 
 </div>
@@ -1682,7 +1682,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <a name="skinvar-searchresults"></a>
 <h1>スキン変数：searchresults</h1>
 
-<p>現在のクリエーに対する検索結果を表示。</p>
+<p>現在のクエリに対する検索結果を表示。</p>
 
 <h2>引数</h2>
 <p>
@@ -1715,7 +1715,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <a name="skinvar-othersearchresults"></a>
 <h1>スキン変数：othersearchresults</h1>
 
-<p>指定されたblogの現在のクリエーに対する検索結果を、指定されたテンプレートを用いて表示。</p>
+<p>指定されたblogの現在のクエリに対する検索結果を、指定されたテンプレートを用いて表示。</p>
 
 <h2>引数</h2>
 <p>
@@ -1752,7 +1752,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <a name="skinvar-query"></a>
 <h1>スキン変数：query</h1>
 
-<p>現在の検索クリエーを挿入。</p>
+<p>現在の検索クエリを挿入。</p>
 
 <h2>引数</h2>
 <p>なし</p>
@@ -3059,7 +3059,7 @@ $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
 	<td>現在のアイテムが属するカテゴリーのID</td>
 </tr><tr>
 	<td>query</td>
-	<td>検索のクリエー（もし存在するなら）</td>
+	<td>検索のクエリ（もし存在するなら）</td>
 </tr><tr>
 	<td><a href="#templatevar-syndicate_title">syndicate_title</a></td>
 	<td>配信用のタイトル</td>
