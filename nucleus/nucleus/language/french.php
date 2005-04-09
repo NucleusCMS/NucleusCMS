@@ -1,16 +1,144 @@
 <?php
 // French Nucleus Language File
-// 
-// Auteur: Papachango (pfffouitt@yahoo.fr)
-// Nucleus version: v1.0-v2.5
 //
-// Nota bene : si vous souhaitez traduire ce fichier dans votre propre langue, soyez conscient
-// que dans une version ultérieure de Nucleus, de nouvelles variables peuvent être apparues et
-// d'autres avoir été supprimées. Il est donc important de spécifier la version de Nucleus pour
-// laquelle le fichier a été écrit, dans votre document.
+// Author: Papachango <pfffouitt@yahoo.fr> (updated by Julien Pauthier <julienpauthier@yahoo.fr>)
+// Nucleus version: v1.0-v3.2
 //
-// Le fichier traduit peut-être envoyé à Wouter Demuynck (nucleus@demuynck.org)
-// et sera disponible en téléchargement (avec le crédit de l'auteur, bien entendu)
+// Please note: if you want to translate this file to your own language, be aware
+// that in a next Nucleus version, new variables might be added and some other ones
+// might be deleted. Therefor, it's important to list the Nucleus version for which
+// the file was written in your document.
+//
+// Fully translated language file can be sent to us and will be made
+// available for download (with proper credit to the author, of course)
+
+// START changed/added after 3.15 START
+
+define('_LIST_PLUG_SUBS_NEEDUPDATE',	'Veuillez utiliser le bouton \'Mettre à jour la liste des installations\' pour mettre à jour la liste des modules installés.');
+define('_LIST_PLUGS_DEP',		'Ce module nécessite:');
+
+// END changed/added after 3.15
+
+// START changed/added after 3.1 START
+
+// comments list per weblog
+define('_COMMENTS_BLOG',		'Tous les commentaires du blog');
+define('_NOCOMMENTS_BLOG',		'Aucun commentaire n\'a été fait sur les billets de ce blog');
+define('_BLOGLIST_COMMENTS',		'Commentaires');
+define('_BLOGLIST_TT_COMMENTS',		'Liste de tous les commentaires apportés aux billets de blog');
+
+
+// for use in archivetype-skinvar
+define('_ARCHIVETYPE_DAY',		'jour');
+define('_ARCHIVETYPE_MONTH',		'mois');
+
+// tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
+define('_ERROR_BADTICKET',		'Ticket invalide ou expiré.');
+
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',		'L\'installation a échoué car le module nécessite ');
+define('_ERROR_DELREQPLUGIN',		'L\'désinstallation a échoué car le module est requis par ');
+
+// cookie prefix
+define('_SETTINGS_COOKIEPREFIX',	'Préfixe du cookie');
+
+// account activation
+define('_ERROR_NOLOGON_NOACTIVATE',	'Impossible d\'envoyer le lien d\'activation. Vous n\'êtes pas autorisé à vous authentifier.');
+define('_ERROR_ACTIVATE',		'La clef d\'activation key n\'existe pas, est invalide, ou a expiré.');
+define('_ACTIONLOG_ACTIVATIONLINK', 	'Lien d\'activation envoyé');
+define('_MSG_ACTIVATION_SENT',		'Lien d\'activation a été envoyé par mail.');
+
+// activation link emails
+define('_ACTIVATE_REGISTER_MAIL',	"Bonjour <%memberName%>,\n\nvous devez activer votre compte sur <%siteName%> (<%siteUrl%>).\nVous pouvez le faire en suivant le lien ci-dessous :\n\n\t<%activationUrl%>\n\nPassés 2 jours le lien d\'activation sera invalide.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Activez votre compte '<%memberName%>'");
+define('_ACTIVATE_REGISTER_TITLE',	'Bienvenue <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',	'Une dernière étape : choisissez un mot de passe pour votre compte.');
+define('_ACTIVATE_FORGOT_MAIL',		"Bonjour <%memberName%>,\n\nEn suivant le lien ci-dessous, vous pouvez choisir un nouveau mot de passe pour votre compte sur <%siteName%> (<%siteUrl%>).\n\n\t<%activationUrl%>\n\nPassés 2 jours le lien d\'activation sera invalide.");
+define('_ACTIVATE_FORGOT_MAILTITLE',	"Procédez à la réactivation de votre compte '<%memberName%>'");
+define('_ACTIVATE_FORGOT_TITLE',	'Bienvenue <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'Vous pouvez choisir un nouveau mot de passe pour votre compte ci-dessous :');
+define('_ACTIVATE_CHANGE_MAIL',		"Bonjour <%memberName%>,\n\nMaintenant que votre adresse email a été changée, vous devez réactivation de votre compte sur <%siteName%> (<%siteUrl%>).\nVous pouvez le faire en suivant le lien ci-dessous :\n\n\t<%activationUrl%>\n\nPassés 2 jours le lien d\'activation sera invalide.");
+define('_ACTIVATE_CHANGE_MAILTITLE',	"Procédez à la réactivation de votre compte '<%memberName%>'");
+define('_ACTIVATE_CHANGE_TITLE',	'Bienvenue <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'Votre changement d\'adresse email a été validé. Merci !');
+define('_ACTIVATE_SUCCESS_TITLE',	'Activation réussie');
+define('_ACTIVATE_SUCCESS_TEXT',	'Votre compte a été réactivé.');
+define('_MEMBERS_SETPWD',		'Choisissez un mot de passe');
+define('_MEMBERS_SETPWD_BTN',		'Choisissez un mot de passe');
+define('_QMENU_ACTIVATE',		'Activation de compte');
+define('_QMENU_ACTIVATE_TEXT',		'<p>Dès l\'activation de votre compte, vous pouvez commencer à l\'utiliser en <a href="index.php?action=showlogin">vous authentifiant</a>.</p>');
+
+define('_PLUGS_BTN_UPDATE',		'Mettre à jour la liste des installations');
+
+// global settings
+define('_SETTINGS_JSTOOLBAR',		'Type de barre d\'édition');
+define('_SETTINGS_JSTOOLBAR_FULL',	'Barre d\'édition complète (IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE',	'Barre d\'édition simplifiée (Non-IE)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Désactiver la barre d\'édition');
+define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">activer l\'utilisation des URLs pour la recherche</a>)');
+
+// extra plugin settings part when editing categories/members/blogs/...
+define('_PLUGINS_EXTRA',		'Autres paramètres du module');
+
+// itemlist info column keys
+define('_LIST_ITEM_BLOG',		'blog:');
+define('_LIST_ITEM_CAT',		'thème:');
+define('_LIST_ITEM_AUTHOR',		'auteur:');
+define('_LIST_ITEM_DATE',		'date:');
+define('_LIST_ITEM_TIME',		'heure:');
+
+// indication of registered members in comments list
+define('_LIST_COMMENTS_MEMBER', 	'(participant)');
+
+// batch operations
+define('_BATCH_WITH_SEL',		'Ayant pour sélection:');
+define('_BATCH_EXEC',			'Executer');
+
+// quickmenu
+define('_QMENU_HOME',			'Accueil');
+define('_QMENU_ADD',			'Ajouter un billet');
+define('_QMENU_ADD_SELECT',		'-- sélectionnez --');
+define('_QMENU_USER_SETTINGS',		'Préférences');
+define('_QMENU_USER_ITEMS',		'Billets');
+define('_QMENU_USER_COMMENTS',		'Commentaires');
+define('_QMENU_MANAGE',			'Paramètres');
+define('_QMENU_MANAGE_LOG',		'Log');
+define('_QMENU_MANAGE_SETTINGS',	'Configuration');
+define('_QMENU_MANAGE_MEMBERS',		'Participants');
+define('_QMENU_MANAGE_NEWBLOG',		'Nouveau blog');
+define('_QMENU_MANAGE_BACKUPS',		'Sauvegardes');
+define('_QMENU_MANAGE_PLUGINS',		'Modules');
+define('_QMENU_LAYOUT',			'Mise en page');
+define('_QMENU_LAYOUT_SKINS',		'Habillages');
+define('_QMENU_LAYOUT_TEMPL',		'Modèles');
+define('_QMENU_LAYOUT_IEXPORT',		'Importer/Exporter');
+define('_QMENU_PLUGINS',		'Modules');
+
+// quickmenu on logon screen
+define('_QMENU_INTRO',			'Introduction');
+define('_QMENU_INTRO_TEXT',		'<p>Ceci est la page d\'authentification de Nucleus CMS, le système permettant la mise à jour du contenu de ce site.</p><p>Pour mettre en ligne de nouveaux billets, authentifiez-vous.</p>');
+
+// helppages for plugins
+define('_ERROR_PLUGNOHELPFILE',		'Impossible de trouver le fichier d\'aide correspondant à ce module');
+define('_PLUGS_HELP_TITLE',		'Page d\'aide pour le module');
+define('_LIST_PLUGS_HELP', 		'aide');
+
+
+// END changed/started after 3.1
+
+// START changed/added after v2.5beta START
+
+// general settings (security)
+define('_SETTINGS_EXTAUTH',		'Activer le système d\'authentification externe');
+define('_WARNING_EXTAUTH',		'Attention: à n\'activer que si nécessaire.');
+
+// member profile
+define('_MEMBERS_BYPASS',		'Utiliser le système d\'authentification externe');
+
+// 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
+define('_EBLOG_SEARCH',			'<em>Toujours</em> inclure dans la recherche');
+
+// END changed/added after v2.5beta
 
 // START introduced after v2.0 START
 
@@ -30,8 +158,6 @@ define('_ADD_ALIGNLEFT_TT',		'Aligner à gauche');
 define('_ADD_ALIGNRIGHT_TT',		'Aligner à droite');
 define('_ADD_ALIGNCENTER_TT',		'Centrer');
 
-// searchable blog setting (yes/no)
-define('_EBLOG_SEARCH',			'Inclure dans la recherche');
 
 // generic upload failure
 define('_ERROR_UPLOADFAILED',		'Echec du téléchargement');
@@ -118,7 +244,7 @@ define('_BACK_TO_BLOGSETTINGS',		'Retour au menu de configuration des blogs');
 // skin import export
 define('_SKINIE_TITLE_IMPORT',		'Importation');
 define('_SKINIE_TITLE_EXPORT',		'Exportation');
-define('_SKINIE_BTN_IMPORT',		'Importation');
+define('_SKINIE_BTN_IMPORT',		'Importer');
 define('_SKINIE_BTN_EXPORT',		'Exporter les habillages/modèles sélectionnés');
 define('_SKINIE_LOCAL',			'Importer depuis un fichier local:');
 define('_SKINIE_NOCANDIDATES',		'Aucun habillage trouvé dans le répertoire skins');
@@ -209,7 +335,7 @@ define('_BMLET_PREVIEW',		'Prévisualisation');
 define('_ITEM_UPDATED',			'Billet mis à jour');
 define('_ITEM_DELETED',			'Billet effacé');
 
-// Modules (plugins)
+// plugins
 define('_CONFIRMTXT_PLUGIN',		'Etes-vous sur de vouloir supprimer ce module?');
 define('_ERROR_NOSUCHPLUGIN',		'Pas de module correspondant');
 define('_ERROR_DUPPLUGIN',		'Désolé, ce module est déjà installé');
@@ -289,7 +415,7 @@ define('_BACKTOMANAGE',			'Retour au menu de gestion de Nucleus');
 
 
 
-// charset to use 
+// charset to use
 define('_CHARSET',			'iso-8859-1');
 
 // global stuff
@@ -305,7 +431,7 @@ define('_NOTLOGGEDIN',			'Non connecté');
 define('_LOGGEDINAS',			'Connecté en tant que');
 define('_ADMINHOME',			'Accueil');
 define('_NAME',				'Nom');
-define('_BACKHOME',			'Retout à l\'accueil');
+define('_BACKHOME',			'Retour à l\'accueil');
 define('_BADACTION',			'Action inconnue');
 define('_MESSAGE',			'Message');
 define('_HELP_TT',			'Aide!');
@@ -381,7 +507,7 @@ define('_WARNINGTXT_BLOGDEL',		'Attention! Effacer un blog effarcera TOUS les bi
 define('_CONFIRMTXT_MEMBER',		'Vous allez effacer le profil du participant suivant: ');
 define('_CONFIRMTXT_TEMPLATE',		'Vous allez effacer le modèle  ');
 define('_CONFIRMTXT_SKIN',		'Vous allez effacer l\'habillage ');
-define('_CONFIRMTXT_BAN',		'Vous allez annuler l\'exclusion du rang d\'IP');
+define('_CONFIRMTXT_BAN',		'Vous allez annuler l\'exclusion de la plage IP');
 define('_CONFIRMTXT_CATEGORY',		'Vous allez effacer le thème ');
 
 // some status messages
@@ -444,7 +570,7 @@ define('_ERROR_MEMBERMAILDISABLED',	'Messages de participant à participant désac
 define('_ERROR_MEMBERCREATEDISABLED',	'Creation de nouveaux comptes désactivée');
 define('_ERROR_INCORRECTEMAIL',		'Email incorrect');
 define('_ERROR_VOTEDBEFORE',		'Vous avez déjà voté pour ce billet');
-define('_ERROR_BANNED1',		'Action impossible car vous (ip range ');
+define('_ERROR_BANNED1',		'Action impossible car vous (plage IP ');
 define('_ERROR_BANNED2',			') êtes exclu. Le message était: \'');
 define('_ERROR_BANNED3',			'\'');
 define('_ERROR_LOGINNEEDED',		'Vous devez être connecté pour faire cela');
@@ -484,8 +610,8 @@ define('_UPLOAD_MSG',			'Sélectionnez le fichier à télécharger ci-dessous et pre
 define('_UPLOAD_BUTTON',		'Télécharger');
 
 // some status messages
-define('_MSG_ACCOUNTCREATED',		'Compte créé, le mot de passe sera envoyé par email');
-define('_MSG_PASSWORDSENT',		'Mot de passe envoyé par email');
+//define('_MSG_ACCOUNTCREATED',		'Compte créé, le mot de passe sera envoyé par email');
+//define('_MSG_PASSWORDSENT',		'Mot de passe envoyé par email');
 define('_MSG_LOGINAGAIN',		'Vous devrez vous reconnecter car vos informations ont changé');
 define('_MSG_SETTINGSCHANGED',		'Réglages modifiés');
 define('_MSG_ADMINCHANGED',		'Admin changé');
@@ -677,14 +803,14 @@ define('_BAN_NONE',			'Pas d\'exclusion pour ce blog');
 define('_BAN_NEW_TITLE',		'Ajouter une exclusion');
 define('_BAN_NEW_TEXT',			'Ajouter une exclusion maintenant');
 define('_BAN_REMOVE_TITLE',		'Retirer une exclusion');
-define('_BAN_IPRANGE',			'Rangs d\'IP');
+define('_BAN_IPRANGE',			'Plage IP');
 define('_BAN_BLOGS',			'Quels blogs?');
 define('_BAN_DELETE_TITLE',		'Supprimer une exclusion');
 define('_BAN_ALLBLOGS',			'Tous les blogs dont vous êtes administrateur.');
 define('_BAN_REMOVED_TITLE',		'Exclusion supprimée');
 define('_BAN_REMOVED_TEXT',		'L\'exclusion a été supprimée pour les blogs suivants:');
 define('_BAN_ADD_TITLE',		'Définir des exclusions');
-define('_BAN_IPRANGE_TEXT',		'Choisissez le rang d\'IP que vous voulez bloquer. Moins il y aura de nombres, plus il y aura d\'IP bloquées.');
+define('_BAN_IPRANGE_TEXT',		'Choisissez la plage IP que vous voulez bloquer. Moins il y aura de nombres, plus il y aura d\'IP bloquées.');
 define('_BAN_BLOGS_TEXT',		'Vous pouvez choisir d\'exclure une IP pour un blog seulement ou pour tous ceux dont vous êtes admin. Choisissez ici.');
 define('_BAN_REASON_TITLE',		'Motif');
 define('_BAN_REASON_TEXT',		'Vous pouvez motiver l\'exclusion: La raison s\'affichera quand l\'IP concernée essaiera d\'ajouter un commentaire ou un vote. Longueur max. 256 caractères.');
@@ -783,7 +909,7 @@ define('_LISTS_COMMENTS',		'Commentaires');
 define('_LISTS_TYPE',			'Type');
 
 
-// member list 
+// member list
 define('_LIST_MEMBER_NAME',		'Nom affiché');
 define('_LIST_MEMBER_RNAME',		'Nom');
 define('_LIST_MEMBER_ADMIN',		'Super admin? ');
@@ -791,7 +917,7 @@ define('_LIST_MEMBER_LOGIN',		'Peut se connecter? ');
 define('_LIST_MEMBER_URL',		'Site');
 
 // banlist
-define('_LIST_BAN_IPRANGE',		'IP Range');
+define('_LIST_BAN_IPRANGE',		'Plage IP');
 define('_LIST_BAN_REASON',		'Motif');
 
 // actionlist
@@ -827,3 +953,5 @@ define('_MOVE_TITLE',			'Déplacer dans quel blog?');
 define('_MOVE_BTN',			'Déplacer le billet');
 
 ?>
+
+
