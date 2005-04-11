@@ -253,7 +253,8 @@ class SKIN {
 								'set',
 								'if',
 								'else',
-								'endif'
+								'endif',
+								'charset'
 								);
 
 		// extra actions specific for a certain skin type
@@ -1305,6 +1306,10 @@ class ACTIONS extends BaseActions {
 
 	function parse_referer() {
 		echo htmlspecialchars(serverVar('HTTP_REFERER'));
+	}
+
+	function parse_charset() {
+		echo _CHARSET;
 	}
 
 	/**
