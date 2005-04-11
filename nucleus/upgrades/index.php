@@ -1,19 +1,23 @@
 <?php
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2005 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id$
-  */
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
+ *
+ */
 
-include('upgrade.functions.php'); 
-  
+include('upgrade.functions.php');
+
 // check if logged in etc
 if (!$member->isLoggedIn()) {
   upgrade_showLogin('index.php');
@@ -38,24 +42,24 @@ When upgrading from an older Nucleus version, upgrades to the database tables ar
 </p>
 
 <?php  // calculate current version
-      if (!upgrade_checkinstall(96)) $current = 95;
+	  if (!upgrade_checkinstall(96)) $current = 95;
   else  if (!upgrade_checkinstall(10)) $current = 96;
   else  if (!upgrade_checkinstall(11)) $current = 10;
-  else  if (!upgrade_checkinstall(15)) $current = 11;  
-  else  if (!upgrade_checkinstall(20)) $current = 15;    
-  else  if (!upgrade_checkinstall(25)) $current = 20;      
-  else  if (!upgrade_checkinstall(30)) $current = 25;      
-  else  if (!upgrade_checkinstall(31)) $current = 30;      
-  else  if (!upgrade_checkinstall(32)) $current = 31;      
+  else  if (!upgrade_checkinstall(15)) $current = 11;
+  else  if (!upgrade_checkinstall(20)) $current = 15;
+  else  if (!upgrade_checkinstall(25)) $current = 20;
+  else  if (!upgrade_checkinstall(30)) $current = 25;
+  else  if (!upgrade_checkinstall(31)) $current = 30;
+  else  if (!upgrade_checkinstall(32)) $current = 31;
   else  $current = 32;
 
   if ($current == 32) {
-    ?>
-      <p class="ok">No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.</p>
-    <?php  } else {
-    ?>
-      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.2</a></p>
-    <?php  }
+	?>
+	  <p class="ok">No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.</p>
+	<?php  } else {
+	?>
+	  <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.2</a></p>
+	<?php  }
 ?>
 
 <div class="note">
@@ -85,7 +89,7 @@ if (phpversion() < '4.0.6') {
 }
 
 if ($sth == 0)
-  echo "<p class='ok'>No manual changes needed. This must be your lucky day!</p>";  
+  echo "<p class='ok'>No manual changes needed. This must be your lucky day!</p>";
 
 
 
@@ -97,44 +101,44 @@ function upgrade_todo($ver) {
 
 function upgrade_manual_96() {
   global $DIR_NUCLEUS;
-  
+
   $guess = str_replace("/nucleus/","/media/",$DIR_NUCLEUS);
 ?>
   <h2>Changes needed for Nucleus 0.96</h2>
   <p>
-    A manual addition needs to be made to <i>config.php</i>, in order to get the media functions to work. Here's what to add:
+	A manual addition needs to be made to <i>config.php</i>, in order to get the media functions to work. Here's what to add:
   </p>
   <pre>
   // path to media dir
   $DIR_MEDIA = '<b><?php echo htmlspecialchars($guess)?></b>';
   </pre>
-  
+
   <p>
   Also, it will be necessary to create that directory yourself. If you want to make file upload possible, you should set the permissions of the media/ directory to 777 (see the documentation/tips.html in Nucleus 0.96+ for a quick guide on setting permissions).
   </p>
-  
+
 <?php }
 
 function upgrade_manual_20() {
   global $DIR_NUCLEUS;
-  
+
   $guess = str_replace("/nucleus/","/skins/",$DIR_NUCLEUS);
 ?>
   <h2>Changes needed for Nucleus 2.0</h2>
   <p>
-    A manual addition needs to be made to <i>config.php</i>, in order to get imported skins to work correctly. Here's what to add:
+	A manual addition needs to be made to <i>config.php</i>, in order to get imported skins to work correctly. Here's what to add:
   </p>
   <pre>
   // extra skin files for imported skins
   $DIR_SKINS = '<b><?php echo htmlspecialchars($guess)?></b>';
   </pre>
-  
+
   <p>Also, it will be necessary to create this directory yourself. Downloaded skins can then be expanded into that directory and be imported from inside the Nucleus admin area.</p>
-  
+
   <h3>RSS 2.0 and RSD skin</h3>
-  
+
   <p>When a fresh version of Nucleus 2.0 is installed, an RSS 2.0 (Really Simple Syndication) syndication skin is also installed, as well as an RSD skin (Really Simple Discovery). The files <code>xml-rss2.php</code> and <code>rsd.php</code> are available in the upgrade, however the skin itself needs to be installed manually. After you've uploaded the contents of the <code>upgrade-files</code>, open <code>admin area &gt; nucleus management &gt; skin import</code>. From there, you can install both skins. (Unless you don't want them installed, that is)</p>
-  
+
 <?php }
 
 function upgrade_manual_php405() {
@@ -145,32 +149,32 @@ function upgrade_manual_php405() {
 </p>
 <ul>
   <li>Make sure the code in nucleus/libs/PARSER.php is as follows (starting from line 84):
-    <pre>
+	<pre>
 
   if (in_array($actionlc, $this-&gt;actions) || $this-&gt;norestrictions ) {
-    <strong>$this-&gt;call_using_array($action, $this-&gt;handler, $params);</strong>
+	<strong>$this-&gt;call_using_array($action, $this-&gt;handler, $params);</strong>
   } else {
-    // redirect to plugin action if possible
-    if (in_array('plugin', $this-&gt;actions) 
-      && $manager-&gt;pluginInstalled('NP_'.$action))
-      $this-&gt;doAction('plugin('.$action.
-        $this-&gt;pdelim.implode($this-&gt;pdelim,$params).')');
-    else
-      echo '&lt;b&gt;DISALLOWED (' , $action , ')&lt;/b&gt;';
+	// redirect to plugin action if possible
+	if (in_array('plugin', $this-&gt;actions)
+	  && $manager-&gt;pluginInstalled('NP_'.$action))
+	  $this-&gt;doAction('plugin('.$action.
+		$this-&gt;pdelim.implode($this-&gt;pdelim,$params).')');
+	else
+	  echo '&lt;b&gt;DISALLOWED (' , $action , ')&lt;/b&gt;';
   }
 
 
 }
-     </pre>
-    </li>
-    <li>Make sure the code in nucleus/libs/PARSER.php is as follows (starting from line 75):
-    <pre>
+	 </pre>
+	</li>
+	<li>Make sure the code in nucleus/libs/PARSER.php is as follows (starting from line 75):
+	<pre>
 // $params = array_map('trim',$params);
 foreach ($params as $key =&gt; $value) { $params[$key] = trim($value); }
-    </pre>
-    </li>
+	</pre>
+	</li>
   </ul>
-  
+
 <?php }
 
 ?>

@@ -1,19 +1,23 @@
 <?php
+	/*
+	 * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+	 * Copyright (C) 2002-2005 The Nucleus Group
+	 *
+	 * This program is free software; you can redistribute it and/or
+	 * modify it under the terms of the GNU General Public License
+	 * as published by the Free Software Foundation; either version 2
+	 * of the License, or (at your option) any later version.
+	 * (see nucleus/documentation/index.html#license for more info)
+	 * This script will install the Nucleus tables in your SQL-database, and initialize the data in
+	 * those tables.
+	 */
 	/**
-	  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-	  * Copyright (C) 2002-2005 The Nucleus Group
-	  *
-	  * This program is free software; you can redistribute it and/or
-	  * modify it under the terms of the GNU General Public License
-	  * as published by the Free Software Foundation; either version 2
-	  * of the License, or (at your option) any later version.
-	  * (see nucleus/documentation/index.html#license for more info)
-	  * This script will install the Nucleus tables in your SQL-database, and initialize the data in
-	  * those tables.
-	  *
-	  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
-	  *
-	  * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php	  */
+	 * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
+	 * @license http://nucleuscms.org/license.txt GNU General Public License
+	 * @copyright Copyright (C) 2002-2005 The Nucleus Group
+	 * @version $Id$
+	 */
+	?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php	  */
 
 	/*
 		This part of the install.php code allows for customization of the install process.
@@ -429,11 +433,11 @@
 		if (($mysql_usePrefix == 1) && (!eregi('^[a-zA-Z0-9_]+$', $mysql_prefix)))
 			array_push($errors,"mySQL prefix should only contain characters from the ranges A-Z, a-z, 0-9 or underscores");
 		if (!endsWithSlash($config_indexurl) || !endsWithSlash($config_adminurl)
-		     				     || !endsWithSlash($config_mediaurl)
-		     				     || !endsWithSlash($config_pluginurl)
-		     				     || !endsWithSlash($config_skinsurl)
+								 || !endsWithSlash($config_mediaurl)
+								 || !endsWithSlash($config_pluginurl)
+								 || !endsWithSlash($config_skinsurl)
 								// TODO: add action.php check
-		    )
+			)
 			array_push($errors,"One of the URLs does not end with a slash, or action url does not end with 'action.php'");
 		if (!endsWithSlash($config_adminpath))
 			array_push($errors,"The path of the administration area does not end with a slash");
@@ -548,22 +552,22 @@
 
 		// 7. update GOD member
 		$query =  'UPDATE ' . tableName('nucleus_member')
-		       . " SET mname='" . addslashes($user_name) . "',"
-		       . "     mrealname='". addslashes($user_realname) . "',"
-		       . "     mpassword='". md5(addslashes($user_password)) . "',"
-		       . "     murl='" . addslashes($config_indexurl) . "',"
-		       . "     memail='" . addslashes($user_email) . "',"
-		       . "     madmin=1,"
-		       . "     mcanlogin=1"
-		       . " WHERE mnumber=1";
+			   . " SET mname='" . addslashes($user_name) . "',"
+			   . "     mrealname='". addslashes($user_realname) . "',"
+			   . "     mpassword='". md5(addslashes($user_password)) . "',"
+			   . "     murl='" . addslashes($config_indexurl) . "',"
+			   . "     memail='" . addslashes($user_email) . "',"
+			   . "     madmin=1,"
+			   . "     mcanlogin=1"
+			   . " WHERE mnumber=1";
 		mysql_query($query) or _doError("Error while setting member settings: " . mysql_error());
 
 		// 8. update weblog settings
 		$query =  'UPDATE ' . tableName('nucleus_blog')
-		       . " SET bname='" . addslashes($blog_name) . "',"
-		       . "     bshortname='". addslashes($blog_shortname) . "',"
-		       . "     burl='" . addslashes($config_indexurl) . "'"
-		       . " WHERE bnumber=1";
+			   . " SET bname='" . addslashes($blog_name) . "',"
+			   . "     bshortname='". addslashes($blog_shortname) . "',"
+			   . "     burl='" . addslashes($config_indexurl) . "'"
+			   . " WHERE bnumber=1";
 		mysql_query($query) or _doError("Error while setting weblog settings: " . mysql_error());
 
 		// 9. update item date
@@ -775,7 +779,7 @@
 			if ($plug)
 			{
 				$eventList = $plug->getEventList();
-				foreach ($eventList as $eventName) 
+				foreach ($eventList as $eventName)
 					sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.$eventName.'\')');
 			}
 		}
@@ -868,8 +872,8 @@
 		$val = trim(addslashes($val));
 
 		$query = 'UPDATE ' . tableName('nucleus_config')
-		       . " SET value='$val'"
-		       . " WHERE name='$name'";
+			   . " SET value='$val'"
+			   . " WHERE name='$name'";
 
 		mysql_query($query) or _doError("Query error while trying to update config: " . mysql_error());
 		return mysql_insert_id();
@@ -969,6 +973,6 @@
 
 
 	/* for the non-php systems that decide to show the contents:
-   	   ?></div><?php	*/
+	   ?></div><?php	*/
 
 ?>

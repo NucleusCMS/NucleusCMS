@@ -1,18 +1,21 @@
 <?php
 
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2005 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id$
-  */
-  
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
+ */
+
 /**
   * The purpose of the functions below is to avoid declaring HTTP_ vars to be global
   * everywhere, plus to offer support for php versions before 4.1.0, that do not
@@ -28,7 +31,7 @@ function postVar($name) {
 	return undoMagic($HTTP_POST_VARS[$name]);
 }
 
-function cookieVar($name) {	
+function cookieVar($name) {
 	global $HTTP_COOKIE_VARS;
 	return undoMagic($HTTP_COOKIE_VARS[$name]);
 }
@@ -55,13 +58,13 @@ function stripslashes_array($data) {
 // integer array from request
 function requestIntArray($name) {
 	global $HTTP_POST_VARS;
-	return $HTTP_POST_VARS[$name];	
+	return $HTTP_POST_VARS[$name];
 }
 
 // array from request. Be sure to call undoMagic on the strings inside
 function requestArray($name) {
 	global $HTTP_POST_VARS;
-	return $HTTP_POST_VARS[$name];	
+	return $HTTP_POST_VARS[$name];
 }
 
 
@@ -96,7 +99,7 @@ function postFileInfo($name) {
 
 function setOldAction($value) {
 	global $HTTP_POST_VARS;
-	$HTTP_POST_VARS['oldaction'] = $value;	
+	$HTTP_POST_VARS['oldaction'] = $value;
 }
 
 ?>
