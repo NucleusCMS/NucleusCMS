@@ -51,7 +51,7 @@ if (!$CONF['DisableSite']) {
 	// output empty RSS file...
 	// (because site is disabled)
 
-	echo '<' . '?xml version="1.0" encoding="ISO-8859-1"?' . '>';
+	echo '<' . '?xml version="1.0" encoding="' . _CHARSET . '"?' . '>';
 
 	?>
 	<rss version="2.0">
