@@ -1,27 +1,30 @@
 <?php
 
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2005 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * Actions that can be called via action.php
-  *
-  * $Id$
-  */
+ * Actions that can be called via action.php
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
+ */
 class ACTION
 {
 	function ACTION()
 	{
-	
+
 	}
-	
-	function doAction($action) 
+
+	function doAction($action)
 	{
 		switch($action) {
 			case 'addcomment':
@@ -32,7 +35,7 @@ class ACTION
 				break;
 			case 'createaccount':
 				return $this->createAccount();
-				break;		
+				break;
 			case 'forgotpassword':
 				return $this->forgotPassword();
 				break;
@@ -49,7 +52,7 @@ class ACTION
 				doError(_ERROR_BADACTION);
 		}
 	}
-	
+
 	function addComment() {
 		global $CONF, $errormessage, $manager;
 
@@ -75,7 +78,7 @@ class ACTION
 		// note: PreAddComment and PostAddComment gets called somewhere inside addComment
 		$errormessage = $comments->addComment($blog->getCorrectTime(),$post);
 
-		if ($errormessage == '1') {		
+		if ($errormessage == '1') {
 			// redirect when adding comments succeeded
 			if (postVar('url')) {
 				redirect(postVar('url'));
@@ -90,7 +93,7 @@ class ACTION
 				'skinid' => $blog->getDefaultSkin()
 			);
 		}
-		
+
 		exit;
 	}
 
@@ -132,15 +135,15 @@ class ACTION
 				$url = $CONF['IndexURL'] . createMemberLink($tomem->getID());
 			redirect($url);
 		}
-		
+
 		exit;
 
 	}
-	
+
 	function validateMessage() {
 		global $CONF, $member, $manager;
 
-		if (!$CONF['AllowMemberMail']) 
+		if (!$CONF['AllowMemberMail'])
 			return _ERROR_MEMBERMAILDISABLED;
 
 		if (!$member->isLoggedIn() && !$CONF['NonmemberMail'])
@@ -148,21 +151,21 @@ class ACTION
 
 		if (!$member->isLoggedIn() && (!isValidMailAddress(postVar('frommail'))))
 			return _ERROR_BADMAILADDRESS;
-			
+
 		// let plugins do verification (any plugin which thinks the comment is invalid
 		// can change 'error' to something other than '')
 		$result = '';
 		$manager->notify('ValidateForm', array('type' => 'membermail', 'error' => &$result));
-		
+
 		return $result;
-		
+
 	}
 
 	// creates a new user account
 	function createAccount() {
 		global $CONF, $manager;
 
-		if (!$CONF['AllowMemberCreate']) 
+		if (!$CONF['AllowMemberCreate'])
 			doError(_ERROR_MEMBERCREATEDISABLED);
 
 		// even though the member can not log in, set some random initial password. One never knows.
@@ -171,27 +174,27 @@ class ACTION
 
 		// create member (non admin/can not login/no notes/random string as password)
 		$r = MEMBER::create(postVar('name'), postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
-		
+
 		if ($r != 1)
 			doError($r);
-			
+
 		// send message containing password.
 		$newmem = new MEMBER();
 		$newmem->readFromName(postVar('name'));
 		$newmem->sendActivationLink('register');
 
-		$manager->notify('PostRegister',array('member' => &$newmem));		
+		$manager->notify('PostRegister',array('member' => &$newmem));
 
 		if (postVar('desturl')) {
 			redirect(postVar('desturl'));
 		} else {
 			echo _MSG_ACTIVATION_SENT;
 		}
-		
+
 		exit;
 	}
 
-	// sends a new password 
+	// sends a new password
 	function forgotPassword() {
 		$membername = trim(postVar('name'));
 
@@ -214,7 +217,7 @@ class ACTION
 		} else {
 			echo _MSG_ACTIVATION_SENT;
 		}
-		
+
 		exit;
 	}
 
@@ -223,17 +226,17 @@ class ACTION
 		global $itemid, $member, $CONF, $manager;
 
 		// check if itemid exists
-		if (!$manager->existsItem($itemid,0,0)) 
+		if (!$manager->existsItem($itemid,0,0))
 			doError(_ERROR_NOSUCHITEM);
 
 		$blogid = getBlogIDFromItemID($itemid);
-		$this->checkban($blogid);	
+		$this->checkban($blogid);
 
 		$karma =& $manager->getKarma($itemid);
 
 		// check if not already voted
-		if (!$karma->isVoteAllowed(serverVar('REMOTE_ADDR'))) 
-			doError(_ERROR_VOTEDBEFORE);		
+		if (!$karma->isVoteAllowed(serverVar('REMOTE_ADDR')))
+			doError(_ERROR_VOTEDBEFORE);
 
 		// check if item does allow voting
 		$item =& $manager->getItem($itemid,0,0);
@@ -241,7 +244,7 @@ class ACTION
 			doError(_ERROR_ITEMCLOSED);
 
 		switch($type) {
-			case 'pos': 
+			case 'pos':
 				$karma->votePositive();
 				break;
 			case 'neg':
@@ -280,7 +283,7 @@ class ACTION
 		else
 			$url = $CONF['IndexURL'] . 'index.php?itemid=' . $itemid;
 
-		redirect($url);	
+		redirect($url);
 		exit;
 	}
 
@@ -309,7 +312,7 @@ class ACTION
 		// - no actions are allowed (doAction is not implemented)
 		if ($error)
 			doError($error);
-			
+
 		exit;
 
 	}

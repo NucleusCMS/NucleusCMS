@@ -1,6 +1,6 @@
 <?php
 /*
- * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
  * Copyright (C) 2002-2005 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
@@ -8,7 +8,9 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- *
+ */
+
+/**
  * This script will convert a GreyMatter blog to a Nucleus blog, using
  * a easy to use wizard.
  *
@@ -18,6 +20,9 @@
  *   - templates are not converted
  *   - Nucleus should already be installed
  *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
  */
 
 include("../../config.php");
@@ -42,18 +47,18 @@ switch($action) {
 		gmc_assignMembers(); break;
 	case "showOverview":
 		gmc_showOverview(); break;
-	case "doConversion":	
+	case "doConversion":
 		gmc_doConversion(); break;
 	case "login": // drop through
 	default:
-		gmc_askGreyPath(); 
+		gmc_askGreyPath();
 }
 
 function gmc_askGreyPath() {
 	global $HTTP_SERVER_VARS, $PHP_SELF;
 
 	convert_head();
-	
+
 	// try to guess greymatter path
 	$guess = $HTTP_SERVER_VARS["PATH_TRANSLATED"];
 	$guess = str_replace("/nucleus/convert","",$guess);
@@ -61,63 +66,63 @@ function gmc_askGreyPath() {
 	$guess = str_replace("\\","/",$guess);
 	// add slash at end if necessary
 	if (!endsWithSlash($guess)) $guess .= '/';
-	
+
 	if (file_exists($guess . 'gm-authors.cgi'))
 		$guess = $guess;
 	else if (file_exists($guess . 'gm/gm-authors.cgi'))
-		$guess = $guess . 'gm/';	
+		$guess = $guess . 'gm/';
 	else if (file_exists($guess . 'greymatter/gm-authors.cgi'))
 		$guess = $guess . 'greymatter/';
 	else if (file_exists($guess . '../gm-authors.cgi'))
 		$guess = $guess . '../';
 	else if (file_exists($guess . '../gm/gm-authors.cgi'))
-		$guess = $guess . '../gm/';	
+		$guess = $guess . '../gm/';
 	else if (file_exists($guess . '../greymatter/gm-authors.cgi'))
 		$guess = $guess . '../greymatter/';
 
-	
+
 	?>
 		<h1>Before you start</h1>
-		
+
 		<p>
 		Before you start converting, make sure that you have created Nucleus Member accounts for all your GreyMatter authors. You'll be asked to assign Nucleus member accounts to GreyMatter authors in the next step.
 		</p>
-		
+
 		<p>
 		If you used {{popup}} tags in GreyMatter to create popup windows with images, make sure you've set the mediadir correctly and that has the correct filepermissions to allow upload. (Nucleus will copy your images to that directory)
 		</p>
-		
+
 		<h1>Greymatter Path</h1>
-		
+
 		<form method="post" action="greymatter.php">
-		
+
 		<p>
-		Please enter the path in which the GreyMatter script is installed below. The current value is a guess by Nucleus. The GreyMatter data path will be extracted from the GM config in the next step. 
+		Please enter the path in which the GreyMatter script is installed below. The current value is a guess by Nucleus. The GreyMatter data path will be extracted from the GM config in the next step.
 		<br />
 		<b>Note:</b> The path should end with a slash!
 		</p>
-		
+
 		<ul>
 			<li>GreyMatter path: <input name="grey_scriptpath" size="60" value="<?php echo htmlspecialchars($guess)?>" /></li>
 		</ul>
-		
+
 		<p>
 		<input type="submit" value="Next Step: Assign Members to Authors" />
 		<input type="hidden" name="action" value="assignMembers" />
 		</p>
-		
+
 		</form>
-	<?php	
+	<?php
 	convert_foot();
 }
 
 function gmc_assignMembers() {
 	global $HTTP_POST_VARS, $CONF;
-	
+
 	// get data from form
 	$grey_scriptpath = stripslashes($HTTP_POST_VARS['grey_scriptpath']);
 	$grey_scriptpath = str_replace("\\","/",$grey_scriptpath);
-	
+
 	// some checks
 	if (!is_dir($grey_scriptpath))
 		convert_doError("Given GreyMatter Path does not exist");
@@ -126,7 +131,7 @@ function gmc_assignMembers() {
 	$grey_configfile = $grey_scriptpath . 'gm-config.cgi';
 	if (!is_readable($grey_configfile))
 		convert_doError("GreyMatter configfile ($grey_configfile) is not readable. Make sure the path is correct and the file permissions are set correctly so PHP can access it.");
-		
+
 	// get datapath out of configfile
 	$filehandle = fopen($grey_configfile,'r');
 		$skip = fgets($filehandle,4096);
@@ -134,27 +139,27 @@ function gmc_assignMembers() {
 		$skip = fgets($filehandle,4096);
 		$grey_dataurl = chop(fgets($filehandle,4096)) . '/';
 	fclose($filehandle);
-	
+
 	if (!is_dir($grey_datapath))
-		convert_doError("GreyMatter Data Path extracted from GreyMatter configuration does not exist. Please check your GreyMatter settings.");	
-	
+		convert_doError("GreyMatter Data Path extracted from GreyMatter configuration does not exist. Please check your GreyMatter settings.");
+
 	$grey_authorfile = $grey_scriptpath . 'gm-authors.cgi';
-	
+
 	if (!is_readable($grey_authorfile))
 		convert_doError("GreyMatter authorfile ($grey_authorfile) is not readable. Make sure the path is correct and the file permissions are set correctly so PHP can access it.");
-		
+
 	convert_head();
-	
+
 	?>
 		<form method="post" action="greymatter.php">
-		
-		
+
+
 		<h1>Assign Members to Authors</h1>
-		
+
 		<p>
 		Below is a list of all the GreyMatter authors that Nucleus could discover. Please assign a Nucleus Member to all of these authors.
 		</p>
-		
+
 
 		<table>
 		<tr>
@@ -162,12 +167,12 @@ function gmc_assignMembers() {
 			<th>Nucleus Member</th>
 			<th>Blog Admin?</th>
 		</tr>
-	
-		<?php		
+
+		<?php
 $filehandle = fopen($grey_authorfile,'r');
 	$idx = 1;
 while ($author = fgets($filehandle,4096)) {
-	list ($a_name, $a_pwd, $a_email, $a_url, $a_data, $a_entries, $a_entryaccess, $a_entryeditaccess, $a_configureaccess, $templateaccess, $a_authoraccess, $a_rebuildaccess, $a_cplogaccess, $bookmarkletaccess, $uploadaccess, $loginaccess) = explode ("|", $author);			
+	list ($a_name, $a_pwd, $a_email, $a_url, $a_data, $a_entries, $a_entryaccess, $a_entryeditaccess, $a_configureaccess, $templateaccess, $a_authoraccess, $a_rebuildaccess, $a_cplogaccess, $bookmarkletaccess, $uploadaccess, $loginaccess) = explode ("|", $author);
 	?>
 		<tr>
 			<td>
@@ -179,7 +184,7 @@ while ($author = fgets($filehandle,4096)) {
 			$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 			$template['name'] = 'memberid[' . $idx . ']';
-			showlist($query,'select',$template);		
+			showlist($query,'select',$template);
 		?>
 			</td>
 			<td>
@@ -192,7 +197,7 @@ while ($author = fgets($filehandle,4096)) {
 } // while
 
 fclose($filehandle);
-		
+
 		?>
 		<tr>
 			<td>
@@ -204,46 +209,46 @@ fclose($filehandle);
 					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 					$template['name'] = 'memberid[0]';
-					showlist($query,'select',$template);		
+					showlist($query,'select',$template);
 				?>
 			</td>
 			<td>
-				<input name="admin[0]" type="checkbox" value="1" id="admin0" /><label for="admin0">Blog Admin</label>			
+				<input name="admin[0]" type="checkbox" value="1" id="admin0" /><label for="admin0">Blog Admin</label>
 			</td>
 		</tr>
 		</table>
-		
-		
+
+
 		<h1>Choose Destination Weblog</h1>
-		
+
 		<p>
 		There are two options: you can either choose an existing blog to add the greymatter entries into, or you can choose to create a new weblog.
 		</p>
-		
+
 		<div>
 			<input name="createnew" value="0" type="radio" checked='checked' label="createnew_no" /><label for="createnew_no">Choose existing weblog to add to</label>:
-			
+
 			<?php					$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
 					$template['name'] = 'blogid';
 					$template['selected'] = $CONF['DefaultBlog'];
-					showlist($query,'select',$template);				
+					showlist($query,'select',$template);
 			?>
 		</div>
 		<div>
 			<input name="createnew" value="1" type="radio" id="createnew_yes" /><label for="createnew_yes">Create new weblog</label>
 			<ul>
 				<li>New blog name: <input name="newblogname" /></li>
-				<li>Blog owner: 
+				<li>Blog owner:
 				<?php					// TODO: avoid doing this query multiple times
 					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 					$template['name'] = 'newowner';
-					showlist($query,'select',$template);		
+					showlist($query,'select',$template);
 				?>
 				</li>
 			</ul>
-		</div>		
-		
+		</div>
+
 		<h1>Do the conversion!</h1>
 		<p>
 		<input type="hidden" name="authorcount" value="<?php echo $idx?>" />
@@ -253,58 +258,58 @@ fclose($filehandle);
 		<input type="submit" value="Do the conversion!" />
 		<input type="hidden" name="action" value="doConversion" />
 		</p>
-		
+
 		</form>
-	<?php	
+	<?php
 	convert_foot();
 
 }
 
 function gmc_doConversion() {
 	global $HTTP_POST_VARS;
-	
+
 	// 1. get all data
-	
+
 	$authorcount = intval($HTTP_POST_VARS['authorcount']);
 	$author = $HTTP_POST_VARS['author'];
-	
+
 	for ($i=0;$i<$authorcount;$i++) {
 		$key = $author[$i];
 		$memberid[$key] = intval($HTTP_POST_VARS['memberid'][$i]);
 		$isadmin[$key] = intval($HTTP_POST_VARS['admin'][$i]);
 	}
-	
+
 	$grey_scriptpath = stripslashes($HTTP_POST_VARS['grey_scriptpath']);
-	$grey_datapath = stripslashes($HTTP_POST_VARS['grey_datapath']);	
-	$grey_dataurl = stripslashes($HTTP_POST_VARS['grey_dataurl']);	
-	
+	$grey_datapath = stripslashes($HTTP_POST_VARS['grey_datapath']);
+	$grey_dataurl = stripslashes($HTTP_POST_VARS['grey_dataurl']);
+
 	// needed in gm_popup
 	global $grey_datapath;
-	
+
 	$createnew = intval($HTTP_POST_VARS['createnew']);
 	$newblogname = stripslashes($HTTP_POST_VARS['newblogname']);
 	$newowner = intval($HTTP_POST_VARS['newowner']);
-	
+
 	$nucleus_blogid = intval($HTTP_POST_VARS['blogid']);
-	
+
 
 	// 2. check the data
 
 	convert_head();
-	
+
 	?>
 		<h1>Converting...</h1>
-		
+
 		<p>
 		Please be patient. Don't hit reload! The conversion progress should be showing below.
 		</p>
-	<?php	
-	// try to extend time limit 
+	<?php
+	// try to extend time limit
 	// surpress error messages when not allowed to do so
 	@set_time_limit(1200);
 
 	echo "<pre>";
-	
+
 	echo "Authors: <br/>";
 	for ($i=0;$i<$authorcount;$i++) {
 		echo  "\tAuthor=" . $author[$i];
@@ -329,15 +334,15 @@ function gmc_doConversion() {
 
 		$nucleus_blogid = convert_addToBlog($newblogname, $shortname, $newowner);
 		echo "<pre>New blog created</pre>";
-	} 
-	
+	}
+
 	// add authors to blog team
 	$blog = new BLOG($nucleus_blogid);
 	global $catid;
 	$catid = $blog->getDefaultCategory();
-	for ($i=0;$i<$authorcount;$i++) 
+	for ($i=0;$i<$authorcount;$i++)
 		$blog->addTeamMember($memberid[$author[$i]],$isadmin[$author[$i]]);
-	
+
 	// go through all files
 	$dirhandle = opendir($grey_datapath);
 	while ($filename = readdir($dirhandle)) {
@@ -346,9 +351,9 @@ function gmc_doConversion() {
 		}
 	}
 	closedir($dirhandle);
-	
+
 	echo "<pre>All done!</pre>";
-	
+
 	convert_foot();
 
 }
@@ -360,34 +365,34 @@ function gmc_convertOneFile($filename, $nucleus_blogid, $memberid) {
 	global $catid;
 
 	echo "<pre>";
-	
+
 	$filehandle = fopen($filename,'r');
-	
+
 	$entry_info = fgets($filehandle,4096);	// entry info
 	$entry_karma = fgets($filehandle,4096); // ips of karma voters (ignore)
 	$entry_body = fgets($filehandle,4096);  // body
 	$entry_more = fgets($filehandle,4096);  // extended
-	
+
 	// decode information
 	$entry_info = str_replace("|*|","\n",$entry_info);
 	$entry_body = str_replace("|*|","\n",$entry_body);
 	$entry_more = str_replace("|*|","\n",$entry_more);
-	
-	list ($e_number, $e_author, $e_title, $e_wday, $e_mon, $e_mday, $e_year, $e_hour, $e_min, $e_sec, $e_ampm, $e_karmapos, $e_karmaneg, $e_commentcount, $e_allowkarma, $e_allowcomments, $e_openclosed) = explode ("|", $entry_info);		
-	
+
+	list ($e_number, $e_author, $e_title, $e_wday, $e_mon, $e_mday, $e_year, $e_hour, $e_min, $e_sec, $e_ampm, $e_karmapos, $e_karmaneg, $e_commentcount, $e_allowkarma, $e_allowcomments, $e_openclosed) = explode ("|", $entry_info);
+
 	if (($e_ampm == "PM") && ($e_hour != 12 ))
 		$e_hour = $e_hour + 12;
-		
+
 	if ($e_allowcomments == "yes")
 		$e_closed = 0;
 	else
 		$e_closed = 1;
-	
+
 	$e_timestamp = mktime($e_hour, $e_min, $e_sec, $e_mon, $e_mday, $e_year);
 	$e_timestamp = date("Y-m-d H:i:s",$e_timestamp);
-	
 
-	
+
+
 	$nucl_id = $memberid[$e_author];
 	if (intval($nucl_id) == 0)
 		$nucl_id = $memberid['_other_'];
@@ -398,33 +403,33 @@ function gmc_convertOneFile($filename, $nucleus_blogid, $memberid) {
 	$entry_more = gm_parsecommands(trim($entry_more),$nucl_id);
 
 	echo "Title: <b>$e_title</b><br />";
-	echo "\tGreyMatter Author = $e_author<br />";		
+	echo "\tGreyMatter Author = $e_author<br />";
 	echo "\tNucleus Memberid = $nucl_id<br />";
-	echo "\tKarma: $e_karmapos+/$e_karmaneg-<br />";	
+	echo "\tKarma: $e_karmapos+/$e_karmaneg-<br />";
 
 
 	// add to nucleus_item table
 	$nucleus_itemid = convert_addToItem($e_title, $entry_body, $entry_more, $nucleus_blogid, $nucl_id, $e_timestamp, $e_closed, $catid, $e_karmapos, $e_karmaneg);
-	
-	
+
+
 	echo "\tComments: <br/>";
-	
+
 	while ($comment = fgets($filehandle,4096)) {
 		// echo "\t\tConverting comment: $comment<br />";
-		
+
 		// decode
 		$comment = str_replace("|*|","\n",$comment);
-		list ($c_author, $c_ip, $c_email, $c_url, $c_wday, $c_mon, $c_mday, $c_year, $c_hour, $c_min, $c_sec, $c_ampm, $c_body) = explode("|",$comment);		
-		
+		list ($c_author, $c_ip, $c_email, $c_url, $c_wday, $c_mon, $c_mday, $c_year, $c_hour, $c_min, $c_sec, $c_ampm, $c_body) = explode("|",$comment);
+
 		echo "\t\tConverting comment by <i>$c_author</i><br />";
-		
+
 		// make hrefs out of links
 		$c_body = eregi_replace("(http://([a-zA-Z0-9]|\.|/|~|%|&|\?|\@|\=|_|\+|\:|;|-)*)","<a href='\\0'>http://.../</a>",$c_body);
-		
+
 		// special markup commands
 		$c_body = gm_parsecommands($c_body,0);
-				
-		if ($c_ampm == "PM") 
+
+		if ($c_ampm == "PM")
 			$c_hour = $c_hour + 12;
 		$c_timestamp = mktime($c_hour, $c_min, $c_sec, $c_mon, $c_mday, $c_year);
 		$c_timestamp = date("Y-m-d H:i:s",$c_timestamp);
@@ -434,15 +439,15 @@ function gmc_convertOneFile($filename, $nucleus_blogid, $memberid) {
 			$c_userid = $c_url;
 		else
 			$c_userid = $c_email;
-				
+
 		// add to comments
 		convert_addToComments($c_author, $c_userid, $c_body, $nucleus_blogid, $nucleus_itemid, 0, $c_timestamp, $c_ip);
-		
+
 	}
-		
-	
+
+
 	fclose($filehandle);
-	
+
 	echo "</pre>";
 }
 
@@ -462,7 +467,7 @@ function gm_parsecommands($text, $authorid ) {
 		"<i>\\1</i>",
 		"<u>\\1</u>"
 	);
-	$text = preg_replace($to_replace, $replace_by, $text);	
+	$text = preg_replace($to_replace, $replace_by, $text);
 
 	// {{link url}}
 	// {{link url text}}
@@ -500,17 +505,17 @@ function gm_parsecommands($text, $authorid ) {
 
 	// newlines (greymatter renders newlines as linebreaks)
 	$text = ereg_replace("\n","<br />",$text); // newlines
-	
+
 	return $text;
 }
 
 // makes sure quotes are escaped in javascript strings
-// php seems to quote the arguments as the get passed to this method by preg_replace 
+// php seems to quote the arguments as the get passed to this method by preg_replace
 // with /e modifier
 function gm_linkmo($url, $mouseover, $text) {
 	// remove slashes from text (not needed there)
-	$text = stripslashes($text);	
-	
+	$text = stripslashes($text);
+
 	// replace " by \' in mouseover (to avoid error)
 	$mouseover = str_replace('"',"\'",$mouseover);
 
@@ -520,17 +525,17 @@ function gm_linkmo($url, $mouseover, $text) {
 // converts GM {{popup command into a link to the image
 function gm_popup($filename, $authorid, $text, $width, $height) {
 	global $grey_datapath;
-	
+
 	$res = MEDIA::addMediaObject(MEMBER::createFromID($authorid), "$grey_datapath$filename", $filename);
-	
+
 	if ($res != "")
 		die("error copying media files: $res");
-		
-	// TODO: copy file to media directory 
+
+	// TODO: copy file to media directory
 	// TODO: create %popup(...)% code instead
-	
+
 	$text = htmlspecialchars(stripslashes($text));
-		
+
 	return "<%popup($filename|$width|$height|$text)%>";
 }
 

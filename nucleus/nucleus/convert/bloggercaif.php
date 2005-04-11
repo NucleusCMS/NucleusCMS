@@ -1,6 +1,6 @@
 <?php
 /*
- * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
  * Copyright (C) 2002-2005 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
@@ -8,7 +8,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- *
+ */
+/**
  * This script will import a Blogger blog into a Nucleus blog, using
  * a easy to use wizard.
  *
@@ -17,6 +18,9 @@
  *   - Nucleus should already be installed
  *	 - Members should exist for all teammembers
  *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
  */
 
 include("../../config.php");
@@ -44,33 +48,33 @@ switch($action) {
 		bc_assignMembers(); break;
 	case "showOverview":
 		bc_showOverview(); break;
-	case "doConversion":	
+	case "doConversion":
 		bc_doConversion(); break;
 	case "login": // drop through
 	default:
-		bc_getBloggerBlogID(); 
+		bc_getBloggerBlogID();
 }
 
-// step 1: get the Blogger Blog ID 
+// step 1: get the Blogger Blog ID
 function bc_getBloggerBlogID() {
 	global $HTTP_SERVER_VARS, $PHP_SELF;
 
 	convert_head();
-	
+
 	?>
 		<div class="note">
 		<b>Note:</b> This conversion tool was written for Free Blogger blogs. If you use it for BloggerPro blogs, you'll lose the titles of your posts (as I currently have no information on the templating system of BloggerPro)
 		</div>
-		
+
 		<h1>Step 1: Exporting to a file</h1>
-	
+
 		<p>
-		The first step in the conversion is to export all your Blogger entries into one single file. This is done by logging in in Blogger and by temporary changing your settings and templates. 
+		The first step in the conversion is to export all your Blogger entries into one single file. This is done by logging in in Blogger and by temporary changing your settings and templates.
 		<br />The full procedure is explained below:
 		</p>
-		
+
 		<h2>Exporting from Blogger</h2>
-		
+
 		<div class="note"><b>Note:</b> If you intend to keep using your weblog afterwards, write down the changes you made, so they can be undone afterwards. For the templates, copy paste the old ones in a textfile.</div>
 
 		<ol>
@@ -79,7 +83,7 @@ function bc_getBloggerBlogID() {
 			</li>
 			<li>
 				Change the template of your blog to the following:
-				
+
 				<pre>
 &lt;?xml version="1.0"?&gt;
 
@@ -88,13 +92,13 @@ function bc_getBloggerBlogID() {
  &lt;Blogger&gt;
 
   &lt;blogentry&gt;
-   &lt;bloggerid&gt;&lt;$BlogItemNumber$&gt;&lt;/bloggerid&gt;  
+   &lt;bloggerid&gt;&lt;$BlogItemNumber$&gt;&lt;/bloggerid&gt;
    &lt;body&gt;&lt;![CDATA[&lt;$BlogItemBody$&gt;]]&gt;&lt;/body&gt;
    &lt;date&gt;&lt;$BlogItemDateTime$&gt;&lt;/date&gt;
    &lt;author&gt;&lt;$BlogItemAuthor$&gt;&lt;/author&gt;
   &lt;/blogentry&gt;
 
- &lt;/Blogger&gt; 
+ &lt;/Blogger&gt;
 
 &lt;/bloggerblog&gt;
 				</pre>
@@ -122,37 +126,37 @@ function bc_getBloggerBlogID() {
 			</li>
 			<li>
 				If you're running blogspot, you'll need to edit this file and take out the advertising banner code.
-			</li>			
+			</li>
 		</ol>
-		
+
 		<h2>Exporting comments to CAIF (Instructions for YACCS)</h2>
-		
+
 		<ol>
 			<li>Log into YACCS</li>
 			<li>Export using the CAIF format. This will result in an XML file, which you should save as <tt>caif.xml</tt> on your computer.</li>
 		</ol>
-		
+
 		<h2>Importing</h2>
-		
+
 		<p>
 		Now you have two files (<b>blogger.xml</b> and <b>caif.xml</b>). Upload both to the same directory as the convert files (/nucleus/convert) and continue to the next step.
 		</p>
-		
+
 		<p>
 		<form method="post" action="bloggercaif.php">
 		<input type="submit" value="Next Step: Assign Members to Authors" />
 		<input type="hidden" name="action" value="assignMembers" />
 		</form>
 		</p>
-		
-	<?php	
+
+	<?php
 	convert_foot();
 }
 
 
 function bc_assignMembers() {
 	global $HTTP_POST_VARS, $CONF;
-	
+
 	// some checks
 	if (!file_exists('blogger.xml'))
 		convert_doError("blogger.xml not found. Make sure it is in the correct directory");
@@ -162,19 +166,19 @@ function bc_assignMembers() {
 		convert_doError("caif.xml not found. Make sure it is in the correct directory");
 	if (!is_readable('caif.xml'))
 		convert_doError("The caif.xml file is not readable. Make sure the file permissions are set correctly so PHP can access it.");
-		
+
 	convert_head();
-	
+
 	?>
 		<form method="post" action="bloggercaif.php">
-		
-		
+
+
 		<h1>Step 2: Assign Members to Authors</h1>
-		
+
 		<p>
 		Below is a list of all the authors that Nucleus could discover (only authors that have posted at least one entry are listed). Please assign a Nucleus Member to all of these authors.
 		</p>
-		
+
 
 		<table>
 		<tr>
@@ -182,16 +186,16 @@ function bc_assignMembers() {
 			<th>Nucleus Member</th>
 			<th>Blog Admin?</th>
 		</tr>
-	
-		<?php		
+
+		<?php
 		$blog = new RAX();
-		$blog->openfile('blogger.xml'); 
+		$blog->openfile('blogger.xml');
 		$blog->record_delim = 'blogentry';
 		$blog->parse();
-		
+
 
 		$authors = array();
-		
+
 
 		while ( $entry = $blog->readRecord() )  {
 			$row = $entry->getRow();
@@ -199,7 +203,7 @@ function bc_assignMembers() {
 			// handle one item
 			if (!in_array($row['author'],$authors))
 				array_push($authors,$row['author']);
-		
+
 		}
 
 		$blog->close();	// close the file
@@ -216,7 +220,7 @@ while ($a_name = array_pop($authors)) {
 		<?php			$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 			$template['name'] = 'memberid[' . $idx . ']';
-			showlist($query,'select',$template);		
+			showlist($query,'select',$template);
 		?>
 			</td>
 			<td>
@@ -226,53 +230,53 @@ while ($a_name = array_pop($authors)) {
 	<?php	$idx++;
 } // while
 
-		
+
 		?>
 		</table>
-		
-		
+
+
 		<h1>Choose Destination Weblog</h1>
-		
+
 		<p>
 		There are two options: you can either choose an existing blog to add the blogger entries into, or you can choose to create a new weblog.
 		</p>
-		
+
 		<div>
 			<input name="createnew" value="0" type="radio" checked='checked' id="createnew_no" /><label for="createnew_no">Choose existing weblog to add to:</label>
-			
+
 			<?php					$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
 					$template['name'] = 'blogid';
 					$template['selected'] = $CONF['DefaultBlog'];
-					showlist($query,'select',$template);				
+					showlist($query,'select',$template);
 			?>
 		</div>
 		<div>
 			<input name="createnew" value="1" type="radio" id="createnew_yes" /><label for="createnew_yes">Create new weblog</label>
 			<ul>
 				<li>New blog name: <input name="newblogname" /></li>
-				<li>Blog owner: 
+				<li>Blog owner:
 				<?php					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 					$template['name'] = 'newowner';
-					showlist($query,'select',$template);		
+					showlist($query,'select',$template);
 				?>
 				</li>
 			</ul>
-		</div>		
-		
+		</div>
+
 		<h1>Do the conversion!</h1>
 		<p>
 		<input type="hidden" name="authorcount" value="<?php echo $idx?>" />
 		<input type="submit" value="Step 3: Do the conversion!" />
 		<input type="hidden" name="action" value="doConversion" />
 		</p>
-		
+
 		<div class="note">
 		<b>Note:</b> Clicking the button once is enough, even if it takes a while to complete.
 		</div>
-		
+
 		</form>
-	<?php	
+	<?php
 	convert_foot();
 
 }
@@ -280,11 +284,11 @@ while ($a_name = array_pop($authors)) {
 
 function bc_doConversion() {
 	global $HTTP_POST_VARS;
-	
+
 	// 1. get all data
 	$authorcount = intval($HTTP_POST_VARS['authorcount']);
 	$author = $HTTP_POST_VARS['author'];
-	
+
 	for ($i=0;$i<$authorcount;$i++) {
 		$key = $author[$i];
 		$memberid[$key] = intval($HTTP_POST_VARS['memberid'][$i]);
@@ -294,28 +298,28 @@ function bc_doConversion() {
 	$createnew = intval($HTTP_POST_VARS['createnew']);
 	$newblogname = stripslashes($HTTP_POST_VARS['newblogname']);
 	$newowner = intval($HTTP_POST_VARS['newowner']);
-	
+
 	global $nucleus_blogid;
 	$nucleus_blogid = intval($HTTP_POST_VARS['blogid']);
 
-	
+
 	// 2. check data
 
 	convert_head();
-	
+
 	?>
 		<h1>Step 3: Converting...</h1>
-		
+
 		<p>
 		Please be patient. Don't hit reload! The conversion progress should be showing below.
 		</p>
-	<?php	
-	// try to extend time limit 
+	<?php
+	// try to extend time limit
 	// surpress error messages when not allowed to do so
 	@set_time_limit(1200);
 
 	echo "<pre>";
-	
+
 	echo "Authors: <br/>";
 	for ($i=0;$i<$authorcount;$i++) {
 		echo  "\tAuthor=" . $author[$i];
@@ -340,27 +344,27 @@ function bc_doConversion() {
 
 		$nucleus_blogid = convert_addToBlog($newblogname, $shortname, $newowner);
 		echo "<pre>New blog created</pre>";
-	} 
-	
+	}
+
 	// add authors to blog team
 	$b = new BLOG($nucleus_blogid);
 	global $catid;
 	$catid = $b->getDefaultCategory();
-	
-	for ($i=0;$i<$authorcount;$i++) 
+
+	for ($i=0;$i<$authorcount;$i++)
 		$b->addTeamMember($memberid[$author[$i]],$isadmin[$author[$i]]);
-	
+
 
 	global $mapping;
 	$mapping = array();
-	
+
 	// 3. go through blogger.xml file
 
 	$blog = new RAX();
-	$blog->openfile('blogger.xml'); 
+	$blog->openfile('blogger.xml');
 	$blog->record_delim = 'blogentry';
 	$blog->parse();
-	
+
 	while ( $entry = $blog->readRecord() )  {
 		$row = $entry->getRow();
 
@@ -368,23 +372,23 @@ function bc_doConversion() {
 	}
 
 	$blog->close();	// close the file
-	
+
 	// 4. convert comments
 	bc_convertComments($mapping);
-	
+
 	echo "<pre>All done!</pre>";
-	
+
 	convert_foot();
 
 }
 
 function bc_convertOneItem($row, $memberid, $nucleus_blogid) {
 	global $catid, $comments;
-	
+
 	$nucl_id = $memberid[$row['author']];
 	$bloggerid = $row['bloggerid'];
 
-	$timestamp = date("Y-m-d H:i:s",bc_transformDate($row['date']));	
+	$timestamp = date("Y-m-d H:i:s",bc_transformDate($row['date']));
 
 	echo "<ul>";
 	echo "<li>Blogger ID: $bloggerid </li>";
@@ -392,15 +396,15 @@ function bc_convertOneItem($row, $memberid, $nucleus_blogid) {
 	echo "<li>author: " . $row['author'] ;
 	echo " (nucleus-id: " . $nucl_id . ")</li>";
 
-	$nucleus_itemid = convert_addToItem($row['title'], $row['body'], '', $nucleus_blogid, $nucl_id, $timestamp, 0, $catid, 0, 0);	
-	
+	$nucleus_itemid = convert_addToItem($row['title'], $row['body'], '', $nucleus_blogid, $nucl_id, $timestamp, 0, $catid, 0, 0);
+
 	echo "<li>New itemid= $nucleus_itemid</li>";
-	
+
 	// save mapping
 	global $mapping;
 	$mapping[$bloggerid] = $nucleus_itemid;
 
-	echo "</ul>";	
+	echo "</ul>";
 }
 
 function bc_transformDate($date) {
@@ -423,14 +427,14 @@ function bc_convertComments($mapping) {
 
 function bc_addComment($nucleus_itemid, $data) {
 	global $nucleus_blogid;
-	
+
 	if (!$nucleus_itemid) {
 		echo "<div>No matching itemid found: ";
 		print_r($data);
 		echo "</div>";
 		return;
 	}
-	
+
 	$c_datetime = $data['datetime'];
 	$c_name = $data['name'];
 	$c_email = $data['email'];
@@ -440,9 +444,9 @@ function bc_addComment($nucleus_itemid, $data) {
 
 	// to be sure the CDATA part is gone
 	$c_text = str_replace('<![CDATA[','',$c_text);
-	$c_text = str_replace(']]>','',$c_text);		
+	$c_text = str_replace(']]>','',$c_text);
 	$c_text = trim($c_text);
-	
+
 	// get unix timestamp out of datetime thing (for yaccs, this contains an erroneous comma)
 	$c_timestamp = strtotime(str_replace(',','',$c_datetime));
 
@@ -450,17 +454,17 @@ function bc_addComment($nucleus_itemid, $data) {
 	if ((stristr($c_uri,'http://') != false) && ($c_uri != 'http://'))
 		$c_userid = $c_uri;
 	else
-		$c_userid = $c_email;		
+		$c_userid = $c_email;
 
 	echo '<div>',htmlspecialchars(shorten($c_text,50,'...')),'</div><ul>';
 //	echo '<li>Date: ',strftime('%x %X',$c_timestamp),'</li>';
 	echo "<li>Name: $c_name</li>";
 //	echo "<li>Email: $c_email</li>";
 //	echo "<li>URI: $c_uri</li>";
-	echo "<li>UserID: $c_userid</li>";		
-//	echo "<li>ip: $c_ip</li>";		
-	echo "<li>nucleus itemid: $nucleus_itemid</li>";		
-//	echo "<li>nucleus blogid: $nucleus_blogid</li>";			
+	echo "<li>UserID: $c_userid</li>";
+//	echo "<li>ip: $c_ip</li>";
+	echo "<li>nucleus itemid: $nucleus_itemid</li>";
+//	echo "<li>nucleus blogid: $nucleus_blogid</li>";
 	echo '</ul>';
 
 	// prepare for MySQL
@@ -468,32 +472,32 @@ function bc_addComment($nucleus_itemid, $data) {
 
 	// add to comments
 	convert_addToComments($c_name, $c_userid, $c_text, $nucleus_blogid, $nucleus_itemid, 0, $c_timestamp, $c_ip);
-	
+
 
 }
 
 /* by Wouter Demuynck, slightly based on PRAX.php */
 class ReadCAIF {
 	function ReadCAIF($filename, $mapping) {
-		$this->fp = fopen($filename, 'r');	
-		$this->mapping =& $mapping;	
+		$this->fp = fopen($filename, 'r');
+		$this->mapping =& $mapping;
 		$this->currentItem = 0;
 		$this->tag_stack = array();
 		$this->in_rec = 0;
 		$this->in_field = 0;
 		$this->field_data = '';
 		$this->fields = array();
-		
+
 		$this->parser = xml_parser_create();
 		xml_set_object($this->parser,$this);
 		xml_set_element_handler($this->parser,  'startElement',  'endElement');
 		xml_set_character_data_handler($this->parser,  'characterData');
 		xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);
-		while ($buffer = fread($this->fp, 4096)) 
+		while ($buffer = fread($this->fp, 4096))
 			xml_parse( $this->parser, $buffer, feof($this->fp) );
 	}
-	
-	
+
+
 	function startElement($parser, $name, $attrs) {
 		array_push($this->tag_stack, $name);
 
@@ -536,15 +540,15 @@ class ReadCAIF {
 		}
 
 	}
-	
+
 	function characterData ($parser, $data) {
-		if ( $this->in_field ) 
+		if ( $this->in_field )
 			$this->field_data .= $data;
 
 	}
-	
-	
-	
+
+
+
 }
 
 

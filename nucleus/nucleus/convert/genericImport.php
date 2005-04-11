@@ -8,7 +8,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- *
+ */
+/**
  * This script is intended to be used in conjunction with one
  * of the specific convert tools that exist for different
  * blogging tools
@@ -20,6 +21,10 @@
  *			- MovableTypeToXml.php	MT -> generic XML
  *		Step 1:
  *			- genericImport.php		generic XML -> Nucleus
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
  */
 
 include("../../config.php");

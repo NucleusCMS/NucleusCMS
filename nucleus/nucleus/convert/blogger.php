@@ -8,8 +8,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- *
- *
+ */
+/**
  * This script will import a Blogger blog into a Nucleus blog, using
  * a easy to use wizard.
  *
@@ -18,6 +18,9 @@
  *   - Nucleus should already be installed
  *	 - Members should exist for all teammembers
  *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
  */
 
 include("../../config.php");
