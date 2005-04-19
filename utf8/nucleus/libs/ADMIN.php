@@ -11,8 +11,8 @@
   *
   * The code for the Nucleus admin area
   *
-  * $Id: ADMIN.php,v 1.4 2005-03-12 06:19:04 kimitake Exp $
-  * $NucleusJP$
+  * $Id: ADMIN.php,v 1.5 2005-04-19 06:58:03 kimitake Exp $
+  * $NucleusJP: ADMIN.php,v 1.4.2.1 2005/04/19 06:56:55 kimitake Exp $
   */
 
 class ADMIN {
@@ -4533,6 +4533,7 @@ selector();
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 			<title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin.css" />
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
