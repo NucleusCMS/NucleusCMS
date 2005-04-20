@@ -1,19 +1,23 @@
 <?php
+	/*
+	 * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+	 * Copyright (C) 2002-2005 The Nucleus Group
+	 *
+	 * This program is free software; you can redistribute it and/or
+	 * modify it under the terms of the GNU General Public License
+	 * as published by the Free Software Foundation; either version 2
+	 * of the License, or (at your option) any later version.
+	 * (see nucleus/documentation/index.html#license for more info)
+	 * This script will install the Nucleus tables in your SQL-database, and initialize the data in
+	 * those tables.
+	 */
 	/**
-	  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-	  * Copyright (C) 2002-2005 The Nucleus Group
-	  *
-	  * This program is free software; you can redistribute it and/or
-	  * modify it under the terms of the GNU General Public License
-	  * as published by the Free Software Foundation; either version 2
-	  * of the License, or (at your option) any later version.
-	  * (see nucleus/documentation/index.html#license for more info)
-	  * This script will install the Nucleus tables in your SQL-database, and initialize the data in
-	  * those tables.
-	  *
-	  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
-	  *
-	  * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php	  */
+	 * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
+	 * @license http://nucleuscms.org/license.txt GNU General Public License
+	 * @copyright Copyright (C) 2002-2005 The Nucleus Group
+	 * @version $Id: install.php,v 1.5 2005-04-20 06:53:20 kimitake Exp $
+	 */
+	?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php	  */
 
 	/*
 		This part of the install.php code allows for customization of the install process.
