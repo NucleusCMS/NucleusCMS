@@ -1,20 +1,22 @@
 <?php
-/** 
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id: api_blogger.inc.php,v 1.3 2005-03-12 06:19:06 kimitake Exp $
-  * $NucleusJP$
-  */
-  
 /*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2005 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
+
+/**
  * This file contains definitions for the methods in the Blogger API
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id: api_blogger.inc.php,v 1.4 2005-04-20 07:02:31 kimitake Exp $
+ * $NucleusJP: api_blogger.inc.php,v 1.3 2005/03/12 06:19:06 kimitake Exp $
  */
 
 

@@ -1,66 +1,70 @@
 <?php
-/** 
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id: server.php,v 1.3 2005-03-12 06:19:06 kimitake Exp $
-  * $NucleusJP$
-  *
-  * This script is provides an XML-RPC [1] interface to Nucleus [2].
-  *
-  * At this time, the Blogger API [3], the metaWeblog API [4] and 
-  * parts of the Movable Type API [5] are implemented
-  *
-  * This script uses the the 'XML-RPC for PHP v1.02' implementation [6]
-  * All other code was written by Wouter Demuynck [7]
-  *
-  * [1] http://www.xmlrpc.com/
-  * [2] http://nucleuscms.org/
-  * [3] http://plant.blogger.com/api/
-  * [4] http://www.xmlrpc.com/metaWeblogApi
-  * [5] http://www.movabletype.org/docs/mtmanual_programmatic.html
-  * [6] http://phpxmlrpc.sourceforge.net/
-  * [7] http://demuynck.org/
-  *
-  *
-  * The Blogger API: (more info in the documentation)
-  *
-  *	blogger.newPost 
-  *	blogger.editPost 
-  *	blogger.getUsersBlogs 
-  *	blogger.deletePost
-  *	blogger.getRecentPosts
-  *	blogger.getPost
-  *	blogger.getUserInfo
-  *	blogger.getTemplate
-  *	blogger.setTemplate
-  *
-  *	Note: The getUserInfo response contains an empty 'lastname' and the full name as 
-  *       'firstname'
-  * Note: Blogger API methods only affect the body field of items
-  *
-  * The metaWeblog API (more info in documentation)
-  *
-  * metaWeblog.newPost
-  * metaWeblog.getPost
-  * metaWeblog.editPost
-  * metaWeblog.getCategories
-  * metaWeblog.newMediaObject
-  * metaWeblog.getRecentPosts
-  *
-  * Note: metaWeblog API methods only affect the body and title fields of items. 
-  *       the extended part is left untouched (and empty for new posts)
-  *
-  * The Movable Type API
-  *
-  * mt.supportedMethods
-  */
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2005 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
+
+/**
+ * This script is provides an XML-RPC [1] interface to Nucleus [2].
+ *
+ * At this time, the Blogger API [3], the metaWeblog API [4] and
+ * parts of the Movable Type API [5] are implemented
+ *
+ * This script uses the the 'XML-RPC for PHP v1.02' implementation [6]
+ * All other code was written by Wouter Demuynck [7]
+ *
+ * [1] http://www.xmlrpc.com/
+ * [2] http://nucleuscms.org/
+ * [3] http://plant.blogger.com/api/
+ * [4] http://www.xmlrpc.com/metaWeblogApi
+ * [5] http://www.movabletype.org/docs/mtmanual_programmatic.html
+ * [6] http://phpxmlrpc.sourceforge.net/
+ * [7] http://demuynck.org/
+ *
+ *
+ * The Blogger API: (more info in the documentation)
+ *
+ *	blogger.newPost
+ *	blogger.editPost
+ *	blogger.getUsersBlogs
+ *	blogger.deletePost
+ *	blogger.getRecentPosts
+ *	blogger.getPost
+ *	blogger.getUserInfo
+ *	blogger.getTemplate
+ *	blogger.setTemplate
+ *
+ *	Note: The getUserInfo response contains an empty 'lastname' and the full name as
+ *       'firstname'
+ * Note: Blogger API methods only affect the body field of items
+ *
+ * The metaWeblog API (more info in documentation)
+ *
+ * metaWeblog.newPost
+ * metaWeblog.getPost
+ * metaWeblog.editPost
+ * metaWeblog.getCategories
+ * metaWeblog.newMediaObject
+ * metaWeblog.getRecentPosts
+ *
+ * Note: metaWeblog API methods only affect the body and title fields of items.
+ *       the extended part is left untouched (and empty for new posts)
+ *
+ * The Movable Type API
+ *
+ * mt.supportedMethods
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id: server.php,v 1.4 2005-04-20 07:02:31 kimitake Exp $
+ * $NucleusJP: server.php,v 1.3 2005/03/12 06:19:06 kimitake Exp $
+ */
 $CONF = array();
 include("../../config.php");	// include Nucleus libs and code
 include($DIR_LIBS . "xmlrpc.inc.php");
