@@ -31,7 +31,7 @@
 
 <!-- item: page title and extra navigational links -->
 <%if(skintype,item)%>
-<title><%blogsetting(name)%> &raquo; <%itemtitle%></title>
+<title><%blogsetting(name)%> &raquo; <%itemtitle(attribute)%></title>
 <link rel="archives" title="Archives" href="<%archivelink%>" />
 <link rel="top" title="Today" href="<%sitevar(url)%>" />
 <link rel="next" href="<%nextlink%>" title="Next Item" />
