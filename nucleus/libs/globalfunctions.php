@@ -1086,4 +1086,59 @@ function redirect($url)
 	exit;
 }
 
+/**
+ * Strip HTML tags from a string
+ * This function is a bit more intelligent than a regular call to strip_tags(),
+ * because it also deletes the contents of certain tags and cleans up any 
+ * unneeded whitespace.
+ */
+function stringStripTags ($string) {
+	$string = preg_replace("/<del[^>]*>.+<\/del[^>]*>/isU", '', $string);
+	$string = preg_replace("/<script[^>]*>.+<\/script[^>]*>/isU", '', $string);
+	$string = preg_replace("/<style[^>]*>.+<\/style[^>]*>/isU", '', $string);
+	$string = str_replace('>', '> ', $string);
+	$string = str_replace('<', ' <', $string);
+	$string = strip_tags($string);
+
+	$string = preg_replace("/\s+/", " ", $string);
+	$string = trim($string);
+	return $string;
+}
+
+/**
+ * Make a string containing HTML safe for use in a HTML attribute
+ * Tags are stripped and entities are normalized
+ */
+function stringToAttribute ($string) {
+	$string = stringStripTags($string);
+	$string = entity::named_to_numeric($string);
+	$string = entity::normalize_numeric($string);
+
+	if (_CHARSET == 'UTF-8') {
+		$string = entity::numeric_to_utf8($string);
+	}
+
+	$string = entity::specialchars($string, 'html');
+	$string = entity::numeric_to_named($string);
+	return $string;
+}
+
+/**
+ * Make a string containing HTML safe for use in a XML document
+ * Tags are stripped, entities are normalized and named entities are
+ * converted to numeric entities.
+ */
+function stringToXML ($string) {
+	$string = stringStripTags($string);
+	$string = entity::named_to_numeric($string);
+	$string = entity::normalize_numeric($string);
+		
+	if (_CHARSET == 'UTF-8') {
+		$string = entity::numeric_to_utf8($string);
+	}
+
+	$string = entity::specialchars($string, 'xml');
+	return $string;
+}
+
 ?>

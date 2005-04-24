@@ -605,9 +605,23 @@ class ACTIONS extends BaseActions {
 	}
 
 	// include itemtitle of prev item
-	function parse_previtemtitle() {
+	function parse_previtemtitle($format = '') {
 		global $itemtitleprev;
-		echo htmlspecialchars($itemtitleprev);
+		
+		switch ($format) {
+			case 'xml':
+				echo stringToXML ($itemtitleprev);
+				break;
+			case 'attribute':
+				echo stringToAttribute ($itemtitleprev);
+				break;
+			case 'raw':
+				echo $itemtitleprev;
+				break;
+			default:
+				echo htmlspecialchars($itemtitleprev);
+				break;
+		}
 	}
 
 	// include itemid of next item
@@ -617,9 +631,23 @@ class ACTIONS extends BaseActions {
 	}
 
 	// include itemtitle of next item
-	function parse_nextitemtitle() {
+	function parse_nextitemtitle($format = '') {
 		global $itemtitlenext;
-		echo htmlspecialchars($itemtitlenext);
+
+		switch ($format) {
+			case 'xml':
+				echo stringToXML ($itemtitlenext);
+				break;
+			case 'attribute':
+				echo stringToAttribute ($itemtitlenext);
+				break;
+			case 'raw':
+				echo $itemtitlenext;
+				break;
+			default:
+				echo htmlspecialchars($itemtitlenext);
+				break;
+		}
 	}
 
 	function parse_prevarchive() {
@@ -881,11 +909,24 @@ class ACTIONS extends BaseActions {
 		$this->_postBlogContent('archivelist',$blog);
 	}
 
-
-	function parse_itemtitle() {
+	function parse_itemtitle($format = '') {
 		global $manager, $itemid;
 		$item =& $manager->getItem($itemid,0,0);
-		echo htmlspecialchars(strip_tags($item['title']));
+		
+		switch ($format) {
+			case 'xml':
+				echo stringToXML ($item['title']);
+				break;
+			case 'attribute':
+				echo stringToAttribute ($item['title']);
+				break;
+			case 'raw':
+				echo $item['title'];
+				break;
+			default:
+				echo htmlspecialchars(strip_tags($item['title']));
+				break;
+		}
 	}
 
 	function parse_categorylist($template, $blogname = '') {
