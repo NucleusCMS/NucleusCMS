@@ -1123,7 +1123,6 @@ class ITEMACTIONS extends BaseActions {
 
 	function parse_blogid() {		echo $this->blog->getID();	}
 	function parse_body() {			$this->highlightAndParse($this->currentItem->body); }
-	function parse_title() {		$this->highlightAndParse($this->currentItem->title); }
 	function parse_more() {			$this->highlightAndParse($this->currentItem->more); }
 	function parse_itemid() {		echo $this->currentItem->itemid; }
 	function parse_category() {		echo $this->currentItem->category; }
@@ -1136,6 +1135,23 @@ class ITEMACTIONS extends BaseActions {
 	function parse_blogurl() {		echo $this->blog->getURL(); }
 	function parse_closed() {		echo $this->currentItem->closed; }
 	function parse_relevance() {    echo round($this->currentItem->score,2);}
+
+	function parse_title($format = '') {
+		switch ($format) {
+			case 'xml':
+				echo stringToXML ($this->currentItem->title);
+				break;
+			case 'attribute':
+				echo stringToAttribute ($this->currentItem->title);
+				break;
+			case 'raw':
+				echo $this->currentItem->title;
+				break;
+			default:
+				$this->highlightAndParse($this->currentItem->title); 
+				break;
+		}
+	}
 
 	function parse_karma($type = 'totalscore') {
 		global $manager;
