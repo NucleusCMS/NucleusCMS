@@ -223,6 +223,8 @@ class ITEM {
 		// off we go!
 		sql_query($query);
 
+		$manager->notify('PostUpdateItem',array('itemid' => $itemid));
+
 		// when needed, move item and comments to new blog
 		if ($moveNeeded)
 			ITEM::move($itemid, $catid);
