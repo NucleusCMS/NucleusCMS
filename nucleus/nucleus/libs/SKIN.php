@@ -779,6 +779,7 @@ class ACTIONS extends BaseActions {
 
 
 	function parse_itemlink($linktext = '') {
+		global $itemid;
 		$this->_itemlink($itemid, $linktext);
 	}
 
