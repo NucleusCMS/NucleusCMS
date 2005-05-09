@@ -18,6 +18,12 @@
 		<b>Nucleus v3.2+CVS</b>
 		<ul>
 			<li>FIXED: Most buttons of the toolbar reset the scroll position of the textarea to the top in Firefox (leonbloy)</li>
+			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=64">#64</a>): Applications that use the metaweblogAPI, such as Ecto can now also access and edit the extended body (rakaz)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=63">#63</a>): _getArrayVal() always returned first element of array (rakaz)</li>
+			<li>ADDED: add InitSkinParse event (rakaz)</li>
+			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=38">#38</a>): added alternative output for &lt;%title%&gt;, &lt;%itemtitle%&gt;, &lt;%previtemtitle%&gt; and &lt;%nextitemtitle%&gt; (rakaz)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=51">#51</a>): removed hardcoded charset declaration from the RSS 2 skin (rakaz)</li>
+			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=55">#55</a>): add &lt;%skinvar%&gt; variable that corresponds with _CHARSET (rakaz)</li>
 			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=24">#24</a>): add PostUpdateItem event (admun)</li>
 			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=48">#48</a>):  &lt;%if(nextitem)%&gt; and &lt;%nextlink%&gt; didn't use the timezone offset. (<a href="http://forum.nucleuscms.org/viewtopic.php?t=6371">Basic</a>)</li>
 			<li>FIXED: "ADMIN.php line 5270" fatal error when plugin filename and plugin classname mismtach (Frankenstein)</li>
