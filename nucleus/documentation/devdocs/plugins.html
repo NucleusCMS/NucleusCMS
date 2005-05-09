@@ -491,6 +491,16 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<th>Name</th><th>When</th><th>Parameters</th>
 	</tr>
 	<tr>
+		<td>InitSkinParse</td>
+		<td>Just before the skin is initialized</td>
+		<td><dl>
+			<dt class="obj ref">skin</dt>
+			<dd>The <code>SKIN</code>-object that is handling the parse</dd>
+			<dt class="ro">type</dt>
+			<dd>Type of skinpart (one of 'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search', 'imagepopup', 'fileparser')</dd>
+		</dl></td>
+	</tr>
+	<tr>
 		<td>PreSkinParse</td>
 		<td>Immediately before the parsing of a skin begins</td>
 		<td><dl>
@@ -498,6 +508,8 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd>The <code>SKIN</code>-object that is handling the parse</dd>
 			<dt class="ro">type</dt>
 			<dd>Type of skinpart (one of 'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search', 'imagepopup', 'fileparser')</dd>
+			<dt class="ro">contents</dt>
+			<dd>The content of the skin</dd>
 		</dl></td>
 	</tr>
 	<tr>
