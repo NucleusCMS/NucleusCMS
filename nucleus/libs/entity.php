@@ -3,23 +3,20 @@
 class entity {
 
 	function named_to_numeric ($string) {
-		global $_entities;
-		$string = strtr($string, $_entities['latin']);
-		$string = strtr($string, $_entities['extended']);
+		$string = preg_replace('/(&[0-9A-Za-z]+)(;?\=?|([^A-Za-z0-9\;\:\.\-\_]))/e', "entity::_named('\\1', '\\2') . '\\3'", $string);
 		return $string;	
 	}
 	
 	function normalize_numeric ($string) {
 		global $_entities;
-		$string = preg_replace('/&#[Xx]([0-9A-Fa-f]+)/e', "'&#'.hexdec('\\1')", $string);
+		$string = preg_replace('/&#([0-9]+)(;)?/e', "'&#x'.dechex('\\1').';'", $string);
+		$string = preg_replace('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/e', "'&#x' . strtoupper('\\2') . ';\\4'", $string);
 		$string = strtr($string, $_entities['cp1251']);
-		$string = preg_replace('/&#([0-9]+)/e', "'&#x'.dechex('\\1')", $string);
-		$string = preg_replace('/&#[Xx]([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/', '&#x\\1;\\3', $string);
 		return $string;
 	}
  
 	function numeric_to_utf8 ($string) {
-		$string = preg_replace('/&#([0-9]+)/e', "'&#x'.dechex('\\1')", $string);
+		$string = preg_replace('/&#([0-9]+)(;)?/e', "'&#x'.dechex('\\1').';'", $string);
 		$string = preg_replace('/&#[Xx]([0-9A-Fa-f]+);/e', "entity::_hex_to_utf8('\\1')", $string);		
 		return $string; 	
 	}
@@ -27,8 +24,7 @@ class entity {
 	function numeric_to_named ($string) {
 		global $_entities;
 		$string = preg_replace('/&#[Xx]([0-9A-Fa-f]+)/e', "'&#'.hexdec('\\1')", $string);
-		$string = strtr($string, array_flip($_entities['latin']));
-		$string = strtr($string, array_flip($_entities['extended']));
+		$string = strtr($string, array_flip($_entities['named']));
 		return $string;	
 	}
 	
@@ -47,6 +43,7 @@ class entity {
 		$string = preg_replace('/\[\[\[ENTITY\:([^\]]+)\]\]\]/', "&\\1;", $string);		
 		return $string;
 	}
+	
 
 	function _hex_to_utf8($s)
 	{
@@ -67,22 +64,38 @@ class entity {
 				
 		return $str;
 	} 		
+
+	function _named($entity, $extra) {
+		global $_entities;
+		
+		if ($extra == '=') return $entity . '=';
+		
+		$length = strlen($entity);
+
+		while ($length > 0) {
+			$check = substr($entity, 0, $length);
+			if (isset($_entities['named'][$check])) return $_entities['named'][$check] . ';' . substr($entity, $length);
+			$length--;
+		}
+		
+		return $entity . ($extra == ';' ? ';' : '');
+	}
 }
 
 
 $_entities['cp1251'] = array (
-	'&#128' 		=> '&#8364',	'&#130' 		=> '&#8218',	'&#131' 		=> '&#402',	
-	'&#132' 		=> '&#8222',	'&#133' 		=> '&#8230',	'&#134' 		=> '&#8224',	
-	'&#135' 		=> '&#8225',	'&#136' 		=> '&#710',		'&#137' 		=> '&#8240',	
-	'&#138' 		=> '&#352',		'&#139' 		=> '&#8249',	'&#140' 		=> '&#338',	
-	'&#142' 		=> '&#381',		'&#145' 		=> '&#8216',	'&#146' 		=> '&#8217',	
-	'&#147' 		=> '&#8220',	'&#148' 		=> '&#8221',	'&#149' 		=> '&#8226',	
-	'&#150' 		=> '&#8211',	'&#151' 		=> '&#8212',	'&#152' 		=> '&#732',	
-	'&#153' 		=> '&#8482',	'&#154' 		=> '&#353',		'&#155' 		=> '&#8250',	
-	'&#156' 		=> '&#339',		'&#158' 		=> '&#382',		'&#159' 		=> '&#376',	
+	'&#x80;' 		=> '&#x20AC;',	'&#x82;' 		=> '&#x201A;',	'&#x83;' 		=> '&#x192;',	
+	'&#x84;' 		=> '&#x201E;',	'&#x85;' 		=> '&#x2026;',	'&#x86;' 		=> '&#x2020;',	
+	'&#x87;' 		=> '&#x2021;',	'&#x88;' 		=> '&#x2C6;',	'&#x89;' 		=> '&#x2030;',	
+	'&#x8A;' 		=> '&#x160;',	'&#x8B;' 		=> '&#x2039;',	'&#x8C;' 		=> '&#x152;',	
+	'&#x8E;' 		=> '&#x17D;',	'&#x91;' 		=> '&#x2018;',	'&#x92;' 		=> '&#x2019;',	
+	'&#x93;' 		=> '&#x201C;',	'&#x94;' 		=> '&#x201D;',	'&#x95;' 		=> '&#x2022;',	
+	'&#x96;' 		=> '&#x2013;',	'&#x97;' 		=> '&#x2014;',	'&#x98;' 		=> '&#x2DC;',	
+	'&#x99;' 		=> '&#x2122;',	'&#x9A;' 		=> '&#x161;',	'&#x9B;' 		=> '&#x203A;',	
+	'&#x9C;' 		=> '&#x153;',	'&#x9E;' 		=> '&#x17E;',	'&#x9F;' 		=> '&#x178;',	
 );
 	
-$_entities['latin'] = array (
+$_entities['named'] = array (
 	'&nbsp' 		=> '&#160',		'&iexcl'		=> '&#161',		'&cent' 		=> '&#162',	
 	'&pound' 		=> '&#163',		'&curren'		=> '&#164',		'&yen' 			=> '&#165',	
 	'&brvbar'		=> '&#166', 	'&sect' 		=> '&#167',		'&uml' 			=> '&#168',	
@@ -115,9 +128,6 @@ $_entities['latin'] = array (
 	'&divide' 		=> '&#247',		'&oslash' 		=> '&#248',		'&ugrave' 		=> '&#249',	
 	'&uacute' 		=> '&#250',		'&ucirc' 		=> '&#251',		'&uuml' 		=> '&#252',	
 	'&yacute' 		=> '&#253',		'&thorn' 		=> '&#254',		'&yuml' 		=> '&#255',	
-);	
-	
-$_entities['extended'] = array (
 	'&OElig'		=> '&#338',		'&oelig'		=> '&#229',		'&Scaron'		=> '&#352',	
 	'&scaron'		=> '&#353',		'&Yuml'			=> '&#376',		'&circ'			=> '&#710',	
 	'&tilde'		=> '&#732', 	'&esnp'			=> '&#8194',	'&emsp'			=> '&#8195',	
