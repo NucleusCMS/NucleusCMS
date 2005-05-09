@@ -297,7 +297,7 @@ function _getStructVal($struct, $key) {
 }
 
 function _getArrayVal($a, $idx) {
-	$t = $a->arraymem(0);
+	$t = $a->arraymem($idx);
 	return $t->scalarval();
 }
 
