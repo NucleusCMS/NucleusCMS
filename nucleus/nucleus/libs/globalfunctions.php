@@ -222,6 +222,7 @@ include($DIR_LIBS . 'NOTIFICATION.php');
 include($DIR_LIBS . 'BAN.php');
 include($DIR_LIBS . 'PAGEFACTORY.php');
 include($DIR_LIBS . 'SEARCH.php');
+include($DIR_LIBS . 'entity.php');
 
 
 // set lastVisit cookie (if allowed)
