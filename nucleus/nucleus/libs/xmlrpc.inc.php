@@ -412,6 +412,8 @@ class xmlrpc_client {
 
   function sendPayloadHTTP10($msg, $server, $port, $timeout=0,
 			     $username="", $password="") {
+	global $xmlrpc_defencoding;		     	
+			     	
     if ($port==0) $port=80;
     if($timeout>0)
       $fp=@fsockopen($server, $port,
@@ -433,11 +435,12 @@ class xmlrpc_client {
 	base64_encode($username . ":" . $password) . "\r\n";
     }
     
-    $op= "POST " . $this->path. " HTTP/1.0\r\nUser-Agent: PHP XMLRPC 1.0\r\n" .
+    $op= "POST " . $this->path. " HTTP/1.0\r\n" .
       "Host: ". $this->server  . "\r\n" .
       $credentials . 
-      "Content-Type: text/xml\r\nContent-Length: " .
-      strlen($msg->payload) . "\r\n\r\n" .
+      "User-Agent: PHP XMLRPC 1.0" . "\r\n" .
+      "Content-Type: text/xml; charset=" . $xmlrpc_defencoding . "\r\n" .
+      "Content-Length: " . strlen($msg->payload) . "\r\n\r\n" .
       $msg->payload;
     
     if (!fputs($fp, $op, strlen($op))) {
@@ -454,7 +457,7 @@ class xmlrpc_client {
   function sendPayloadHTTPS($msg, $server, $port, $timeout=0,
 			    $username="", $password="", $cert="",
 			    $certpass="") {
-    global $xmlrpcerr, $xmlrpcstr;
+    global $xmlrpcerr, $xmlrpcstr, $xmlrpc_defencoding;
     if ($port == 0) $port = 443;
     
     // Only create the payload if it was not created previously
@@ -482,7 +485,7 @@ class xmlrpc_client {
     // the data
     curl_setopt($curl, CURLOPT_HEADER, 1);
     // return the header too
-    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: text/xml'));
+    curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: text/xml; charset=' . $xmlrpc_defencoding));
     // required for XMLRPC
     if ($timeout) curl_setopt($curl, CURLOPT_TIMEOUT, $timeout == 1 ? 1 :
 			      $timeout - 1);
@@ -580,7 +583,8 @@ class xmlrpcmsg {
   }
 
   function xml_header() {
-	return "<" . "?xml version=\"1.0\"?".">\n<methodCall>\n";
+  	global $xmlrpc_defencoding;
+	return "<" . "?xml version=\"1.0\" encoding=\"".$xmlrpc_defencoding."\"?".">\n<methodCall>\n";
   }
 
   function xml_footer() {

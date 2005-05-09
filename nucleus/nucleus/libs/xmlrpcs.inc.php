@@ -170,12 +170,13 @@ class xmlrpc_server {
 	}
 
 	function service() {
+		global $xmlrpc_defencoding;
 		$r=$this->parseRequest();
-		$payload="<" . "?xml version=\"1.0\"?" . ">\n" . 
+		$payload="<" . "?xml version=\"1.0\" encoding=\"".$xmlrpc_defencoding."\"?" . ">\n" . 
 			$this->serializeDebug() .
 			$r->serialize();
-		header("Content-type: text/xml\r\nContent-length: " . 
-					 strlen($payload));
+		header("Content-Type: text/xml; charset=".$xmlrpc_defencoding);
+		header("Content-Length: " .  strlen($payload));
 		print $payload;
 	}
 
