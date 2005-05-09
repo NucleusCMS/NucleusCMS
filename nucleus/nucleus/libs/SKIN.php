@@ -126,6 +126,8 @@ class SKIN {
 	function parse($type) {
 		global $manager, $CONF;
 
+		$manager->notify('InitSkinParse',array('skin' => &$this, 'type' => $type));
+
 		// set output type
 		sendContentType($this->getContentType(), 'skin', _CHARSET);
 
