@@ -17,7 +17,8 @@ class entity {
  
 	function numeric_to_utf8 ($string) {
 		$string = preg_replace('/&#([0-9]+)(;)?/e', "'&#x'.dechex('\\1').';'", $string);
-		$string = preg_replace('/&#[Xx]([0-9A-Fa-f]+);/e', "entity::_hex_to_utf8('\\1')", $string);		
+		$string = preg_replace('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/e', "'&#x' . strtoupper('\\2') . ';\\4'", $string);
+		$string = preg_replace('/&#x([0-9A-Fa-f]+);/e', "entity::_hex_to_utf8('\\1')", $string);		
 		return $string; 	
 	}
 
