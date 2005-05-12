@@ -279,6 +279,7 @@ class COMMENTACTIONS extends BaseActions {
 
 	function getDefinedActions() {
 		return array(
+		    'blogurl',
 			'commentcount',
 			'commentword',
 			'itemlink',
@@ -298,6 +299,9 @@ class COMMENTACTIONS extends BaseActions {
 			'userid',
 			'userlinkraw',
 			'userlink',
+			'useremail',
+			'userwebsite',
+			'excerpt',
 			'short',
 			'skinfile',
 			'set',
@@ -339,6 +343,13 @@ class COMMENTACTIONS extends BaseActions {
 		}
 
 		$this->currentComment =& $comment;
+	}
+
+	function parse_blogurl() {		
+		global $manager;
+		$blogid = getBlogIDFromItemID($this->commentsObj->itemid);
+		$blog =& $manager->getBlog($blogid);
+		echo $blog->getURL(); 
 	}
 
 	function parse_commentcount() {			echo $this->commentsObj->commentcount; }
@@ -385,6 +396,31 @@ class COMMENTACTIONS extends BaseActions {
 		} else {
 			echo $this->currentComment['user'];
 		}
+	}
+
+	function parse_useremail() {
+		if ($this->currentComment['memberid'] > 0)
+		{
+			$member = new MEMBER();
+			$member->readFromID($this->currentComment['memberid']);
+			
+			if ($member->email != '')
+				echo $member->email;		
+		}
+		else
+		{
+			if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
+				echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
+		}
+	}
+
+	function parse_userwebsite() {
+		if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false))
+			echo $this->currentComment['userlinkraw'];
+	}
+	
+	function parse_excerpt() {
+		echo stringToXML(shorten($this->currentComment['body'], 60, '...'));
 	}
 	function parse_short() {
 		$tmp = strtok($this->currentComment['body'],"\n");
