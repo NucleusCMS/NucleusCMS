@@ -184,7 +184,22 @@
 	function f_mt_getTrackbackPings($m) {
 		$itemid = intval(_getScalar($m, 0));
 
-		return new xmlrpcresp(new xmlrpcval(array(), 'array'));
+		$trackbacks = array ();
+		$tbstruct   = array ();
+			
+		$manager->notify('RetrieveTrackback', array ('tb_id' => $itemid, 'trackbacks' => & $trackbacks));
+				
+		while (list(,$v) = each ($trackbacks)) {
+			$tbstruct[] = new xmlrpcval(
+				array(
+					"pingTitle" => new xmlrpcval($v['title'], "string"),
+					"pingURL"   => new xmlrpcval($v['url'], "string"),
+					"pingIP"    => new xmlrpcval($v['ip'], "string")
+				)
+			,'struct');			
+		}		
+				
+		return new xmlrpcresp(new xmlrpcval( $tbstruct , "array"));
 	}
 
 	$functionDefs = array_merge($functionDefs,

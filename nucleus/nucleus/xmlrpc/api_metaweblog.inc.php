@@ -53,7 +53,23 @@
 		$comments = (int) _getStructVal($struct, 'mt_allow_comments') ? 0 : 1;
 		$publish = _getScalar($m,4);
 
-		return _addItem($blogid, $username, $password, $title, $content, $more, $publish, $comments, $category);
+
+		// Add item
+		$res = _addItem($blogid, $username, $password, $title, $content, $more, $publish, $comments, $category);
+		
+		// Handle trackbacks
+		$trackbacks = array();
+		$tblist = $struct->structmem('mt_tb_ping_urls');
+		if ($tblist && ($tblist->kindOf() == "array") && ($tblist->arraysize() > 0)) {
+			
+			for ($i = 0; $i < $tblist->arraysize(); $i++) {
+				$trackbacks[] = _getArrayVal($tblist, $i);
+			}
+			
+			$manager->notify('SendTrackback', array ('tb_id' => $itemid, 'urls' => & $trackbacks));
+		}
+
+		return $res;
 	}
 
 
@@ -173,7 +189,21 @@
 			$comments = $old['closed'];
 		}
 
-		return _edititem($itemid, $username, $password, $catid, $title, $content, $more, $wasdraft, $publish, $comments);
+		$res = _edititem($itemid, $username, $password, $catid, $title, $content, $more, $wasdraft, $publish, $comments);
+
+		// Handle trackbacks
+		$trackbacks = array();
+		$tblist = $struct->structmem('mt_tb_ping_urls');
+		if ($tblist && ($tblist->kindOf() == "array") && ($tblist->arraysize() > 0)) {
+			
+			for ($i = 0; $i < $tblist->arraysize(); $i++) {
+				$trackbacks[] = _getArrayVal($tblist, $i);
+			}
+			
+			$manager->notify('SendTrackback', array ('tb_id' => $itemid, 'urls' => & $trackbacks));
+		}
+
+		return $res;
 	}
 
 	// metaWeblog.newMediaObject
