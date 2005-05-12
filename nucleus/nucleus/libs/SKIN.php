@@ -149,7 +149,7 @@ class SKIN {
 
 		$actions = $this->getAllowedActionsForType($type);
 
-		$manager->notify('PreSkinParse',array('skin' => &$this, 'type' => $type, 'contents' => $contents));
+		$manager->notify('PreSkinParse',array('skin' => &$this, 'type' => $type, 'contents' => &$contents));
 
 		// set IncludeMode properties of parser
 		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
