@@ -355,7 +355,10 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 		$contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
 		$charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
 
-		header('Content-Type: ' . $contenttype . '; charset=' . $charset);
+		if ($charset != '')
+			header('Content-Type: ' . $contenttype . '; charset=' . $charset);			
+		else
+			header('Content-Type: ' . $contenttype);			
 	}
 
 
