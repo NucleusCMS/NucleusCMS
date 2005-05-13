@@ -413,7 +413,7 @@ class ACTIONS extends BaseActions {
 	*/
 	function doForm($filename) {
 		global $DIR_NUCLEUS;
-		array_push($this->parser->actions,'formdata','text','callback','errordiv');
+		array_push($this->parser->actions,'formdata','text','callback','errordiv','ticket');
 		$oldIncludeMode = PARSER::getProperty('IncludeMode');
 		$oldIncludePrefix = PARSER::getProperty('IncludePrefix');
 		PARSER::setProperty('IncludeMode','normal');
@@ -425,7 +425,14 @@ class ACTIONS extends BaseActions {
 		array_pop($this->parser->actions);		// callback
 		array_pop($this->parser->actions);		// text
 		array_pop($this->parser->actions);		// formdata
+		array_pop($this->parser->actions);		// ticket
 	}
+
+	function parse_ticket() {
+		global $manager;
+		$manager->addTicketHidden();
+	}
+
 	function parse_formdata($what) {
 		echo $this->formdata[$what];
 	}
