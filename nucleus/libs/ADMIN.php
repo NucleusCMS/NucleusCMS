@@ -17,6 +17,8 @@
  * @version $Id$
  */
 
+require_once "showlist.php";
+
 class ADMIN {
 
 	// action currently being executed ($action=xxxx -> action_xxxx method)
@@ -280,7 +282,7 @@ class ADMIN {
 		$template['content'] = 'itemlist';
 		$template['now'] = $blog->getCorrectTime(time());
 
-
+		$manager->loadClass("ENCAPSULATE");
 		$navList =& new NAVLIST('itemlist', $start, $amount, 0, 1000, $blogid, $search, 0);
 		$navList->showBatchList('item',$query,'table',$template);
 
@@ -779,7 +781,7 @@ class ADMIN {
 	}
 
 	function action_browseownitems() {
-		global $member;
+		global $member, $manager;
 
 		$this->pagehead();
 
@@ -813,6 +815,7 @@ class ADMIN {
 		$template['content'] = 'itemlist';
 		$template['now'] = time();
 
+		$manager->loadClass("ENCAPSULATE");
 		$navList =& new NAVLIST('browseownitems', $start, $amount, 0, 1000, $blogid, $search, 0);
 		$navList->showBatchList('item',$query,'table',$template);
 
@@ -824,7 +827,7 @@ class ADMIN {
 	  * Show all the comments for a given item
 	  */
 	function action_itemcommentlist($itemid = '') {
-		global $member;
+		global $member, $manager;
 
 		if ($itemid == '')
 			$itemid = intRequestVar('itemid');
@@ -864,6 +867,7 @@ class ADMIN {
 		$template['content'] = 'commentlist';
 		$template['canAddBan'] = $member->blogAdminRights(getBlogIDFromItemID($itemid));
 
+		$manager->loadClass("ENCAPSULATE");
 		$navList =& new NAVLIST('itemcommentlist', $start, $amount, 0, 1000, 0, $search, $itemid);
 		$navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS);
 
@@ -874,7 +878,7 @@ class ADMIN {
 	  * Browse own comments
 	  */
 	function action_browseowncomments() {
-		global $member;
+		global $member, $manager;
 
 		// start index
 		if (postVar('start'))
@@ -907,6 +911,7 @@ class ADMIN {
 		$template['content'] = 'commentlist';
 		$template['canAddBan'] = 0;	// doesn't make sense to allow banning yourself
 
+		$manager->loadClass("ENCAPSULATE");
 		$navList =& new NAVLIST('browseowncomments', $start, $amount, 0, 1000, 0, $search, 0);
 		$navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS_YOUR);
 
@@ -962,6 +967,7 @@ class ADMIN {
 		$template['content'] = 'commentlist';
 		$template['canAddBan'] = $member->blogAdminRights($blogid);
 
+		$manager->loadClass("ENCAPSULATE");
 		$navList =& new NAVLIST('blogcommentlist', $start, $amount, 0, 1000, $blogid, $search, 0);
 		$navList->showBatchList('comment',$query,'table',$template, _NOCOMMENTS_BLOG);
 
@@ -1562,6 +1568,7 @@ class ADMIN {
 		$template['content'] = 'memberlist';
 		$template['tabindex'] = 10;
 
+		$manager->loadClass("ENCAPSULATE");
 		$batch =& new BATCH('member');
 		$batch->showlist($query,'table',$template);
 
@@ -2068,6 +2075,7 @@ class ADMIN {
 		$template['content'] = 'teamlist';
 		$template['tabindex'] = 10;
 
+		$manager->loadClass("ENCAPSULATE");
 		$batch =& new BATCH('team');
 		$batch->showlist($query, 'table', $template);
 
@@ -2393,6 +2401,7 @@ class ADMIN {
 		$template['content'] = 'categorylist';
 		$template['tabindex'] = 200;
 
+		$manager->loadClass("ENCAPSULATE");
 		$batch =& new BATCH('category');
 		$batch->showlist($query,'table',$template);
 
@@ -5699,394 +5708,8 @@ selector();
 
 } // class ADMIN
 
-class ENCAPSULATE {
-	/**
-	  * Uses $call to call a function using parameters $params
-	  * This function should return the amount of entries shown.
-	  * When entries are show, batch operation handlers are shown too.
-	  * When no entries were shown, $errormsg is used to display an error
-	  *
-	  * Passes on the amount of results found (for further encapsulation)
-	  */
-	function doEncapsulate($call, $params, $errorMessage = 'No entries') {
-		// start output buffering
-		ob_start();
-
-		$nbOfRows = call_user_func_array($call, $params);
-
-		// get list contents and stop buffering
-		$list = ob_get_contents();
-		ob_end_clean();
-
-		if ($nbOfRows > 0) {
-			$this->showHead();
-			echo $list;
-			$this->showFoot();
-		} else {
-			echo $errorMessage;
-		}
-
-		return $nbOfRows;
-	}
-}
 
 
-/**
-  * A class used to encapsulate a list of some sort inside next/prev buttons
-  */
-class NAVLIST extends ENCAPSULATE {
-
-	function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
-		$this->action = $action;
-		$this->start = $start;
-		$this->amount = $amount;
-		$this->minamount = $minamount;
-		$this->maxamount = $maxamount;
-		$this->blogid = $blogid;
-		$this->search = $search;
-		$this->itemid = $itemid;
-	}
-
-	function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-		$batch =& new BATCH($batchtype);
-
-		$this->doEncapsulate(
-				array(&$batch, 'showlist'),
-				array(&$query, $type, $template),
-				$errorMessage
-		);
-
-	}
-
-
-	function showHead() {
-		$this->showNavigation();
-	}
-	function showFoot() {
-		$this->showNavigation();
-	}
-
-	/**
-	  * Displays a next/prev bar for long tables
-	  */
-	function showNavigation() {
-		$action = $this->action;
-		$start = $this->start;
-		$amount = $this->amount;
-		$minamount = $this->minamount;
-		$maxamount = $this->maxamount;
-		$blogid = $this->blogid;
-		$search = $this->search;
-		$itemid = $this->itemid;
-
-		$prev = $start - $amount;
-		if ($prev < $minamount) $prev=$minamount;
-
-		// maxamount not used yet
-	//	if ($start + $amount <= $maxamount)
-			$next = $start + $amount;
-	//	else
-	//		$next = $start;
-
-	?>
-	<table class="navigation">
-	<tr><td>
-		<form method="post" action="index.php"><div>
-		<input type="submit" value="&lt;&lt; <?php echo  _LISTS_PREV?>" />
-		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
-		<input type="hidden" name="start" value="<?php echo  $prev; ?>" />
-		</div></form>
-	</td><td>
-		<form method="post" action="index.php"><div>
-		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-		<input name="amount" size="3" value="<?php echo  $amount; ?>" /> <?php echo _LISTS_PERPAGE?>
-		<input type="hidden" name="start" value="<?php echo  $start; ?>" />
-		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
-		<input type="submit" value="&gt; <?php echo _LISTS_CHANGE?>" />
-		</div></form>
-	</td><td>
-		<form method="post" action="index.php"><div>
-		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-		<input type="hidden" name="start" value="0" />
-		<input type="text" name="search" value="<?php echo  $search; ?>" size="7" />
-		<input type="submit" value="&gt; <?php echo  _LISTS_SEARCH?>" />
-		</div></form>
-	</td><td>
-		<form method="post" action="index.php"><div>
-		<input type="submit" value="<?php echo _LISTS_NEXT?> &gt; &gt;" />
-		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
-		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-		<input type="hidden" name="start" value="<?php echo  $next; ?>" />
-		</div></form>
-	</td></tr>
-	</table>
-	<?php	}
-
-
-}
-
-/**
- * A class used to encapsulate a list of some sort in a batch selection
- */
-class BATCH extends ENCAPSULATE {
-	function BATCH($type) {
-		$this->type = $type;
-	}
-
-	function showHead() {
-		?>
-			<form method="post" action="index.php">
-		<?php
-// TODO: get a list op operations above the list too
-// (be careful not to use the same names for the select...)
-//		$this->showOperationList();
-	}
-
-	function showFoot() {
-		$this->showOperationList();
-		?>
-			</form>
-		<?php	}
-
-	function showOperationList() {
-		global $manager;
-		?>
-		<div class="batchoperations">
-			<?php echo _BATCH_WITH_SEL ?>
-			<select name="batchaction">
-			<?php				$options = array();
-				switch($this->type) {
-					case 'item':
-						$options = array(
-							'delete'	=> _BATCH_ITEM_DELETE,
-							'move'		=> _BATCH_ITEM_MOVE
-						);
-						break;
-					case 'member':
-						$options = array(
-							'delete'	=> _BATCH_MEMBER_DELETE,
-							'setadmin'	=> _BATCH_MEMBER_SET_ADM,
-							'unsetadmin' => _BATCH_MEMBER_UNSET_ADM
-						);
-						break;
-					case 'team':
-						$options = array(
-							'delete' 	=> _BATCH_TEAM_DELETE,
-							'setadmin'	=> _BATCH_TEAM_SET_ADM,
-							'unsetadmin' => _BATCH_TEAM_UNSET_ADM,
-						);
-						break;
-					case 'category':
-						$options = array(
-							'delete'	=> _BATCH_CAT_DELETE,
-							'move'		=> _BATCH_CAT_MOVE,
-						);
-						break;
-					case 'comment':
-						$options = array(
-							'delete'	=> _BATCH_COMMENT_DELETE,
-						);
-					break;
-				}
-				foreach ($options as $option => $label) {
-					echo '<option value="',$option,'">',$label,'</option>';
-				}
-			?>
-			</select>
-			<input type="hidden" name="action" value="batch<?php echo $this->type?>" />
-			<?php
-				$manager->addTicketHidden();
-
-				// add hidden fields for 'team' and 'comment' batchlists
-				if ($this->type == 'team')
-				{
-					echo '<input type="hidden" name="blogid" value="',intRequestVar('blogid'),'" />';
-				}
-				if ($this->type == 'comment')
-				{
-					echo '<input type="hidden" name="itemid" value="',intRequestVar('itemid'),'" />';
-				}
-
-				echo '<input type="submit" value="',_BATCH_EXEC,'" />';
-			?>(
-			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); "><?php echo _BATCH_SELECTALL?></a> -
-			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); "><?php echo _BATCH_DESELECTALL?></a>
-			)
-		</div>
-		<?php	}
-
-	// shortcut :)
-	function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-		return $this->doEncapsulate(	'showlist',
-									array($query, $type, $template),
-									$errorMessage
-								);
-	}
-
-}
-
-
-
-// can take either an array of objects, or an SQL query
-function showlist($query, $type, $template) {
-
-	if (is_array($query)) {
-		if (sizeof($query) == 0)
-			return 0;
-
-		call_user_func('listplug_' . $type, $template, 'HEAD');
-
-		foreach ($query as $currentObj) {
-			$template['current'] = $currentObj;
-			call_user_func('listplug_' . $type, $template, 'BODY');
-		}
-
-		call_user_func('listplug_' . $type, $template, 'FOOT');
-
-		return sizeof($query);
-
-	} else {
-		$res = sql_query($query);
-
-		// don't do anything if there are no results
-		$numrows = mysql_num_rows($res);
-		if ($numrows == 0)
-			return 0;
-
-		call_user_func('listplug_' . $type, $template, 'HEAD');
-
-		while($template['current'] = mysql_fetch_object($res))
-			call_user_func('listplug_' . $type, $template, 'BODY');
-
-		call_user_func('listplug_' . $type, $template, 'FOOT');
-
-		mysql_free_result($res);
-
-		// return amount of results
-		return $numrows;
-	}
-}
-
-function listplug_select($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo '<select name="'.$template['name'].'" tabindex="'.$template['tabindex'].'" '.$template['javascript'].'>';
-
-			// add extra row if needed
-			if ($template['extra']) {
-				echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
-			}
-
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<option value="' . htmlspecialchars($current->value) . '"';
-			if ($template['selected'] == $current->value)
-				echo ' selected="selected" ';
-			if ($template['shorten'] > 0) {
-				echo ' title="'. htmlspecialchars($current->text).'"';
-				$current->text = shorten($current->text, $template['shorten'], $template['shortenel']);
-			}
-			echo '>' . htmlspecialchars($current->text) . '</option>';
-			break;
-		case 'FOOT':
-			echo '</select>';
-			break;
-	}
-}
-
-function listplug_table($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<table>";
-			echo "<thead><tr>";
-			// print head
-			call_user_func("listplug_table_" . $template['content'] , $template, 'HEAD');
-			echo "</tr></thead><tbody>";
-			break;
-		case 'BODY':
-			// print tabletype specific thingies
-			echo "<tr onmouseover='focusRow(this);' onmouseout='blurRow(this);'>";
-			call_user_func("listplug_table_" . $template['content'] , $template,  'BODY');
-			echo "</tr>";
-			break;
-		case 'FOOT':
-			call_user_func("listplug_table_" . $template['content'] , $template,  'FOOT');
-			echo "</tbody></table>";
-			break;
-	}
-}
-
-function listplug_table_memberlist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo '<th>' . _LIST_MEMBER_NAME . '</th><th>' . _LIST_MEMBER_RNAME . '</th><th>' . _LIST_MEMBER_URL . '</th><th>' . _LIST_MEMBER_ADMIN;
-			help('superadmin');
-			echo "</th><th>" . _LIST_MEMBER_LOGIN;
-			help('canlogin');
-			echo "</th><th colspan='2'>" . _LISTS_ACTIONS. "</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>';
-			$id = listplug_nextBatchId();
-			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->mnumber,'" />';
-			echo '<label for="batch',$id,'">';
-			echo "<a href='mailto:", htmlspecialchars($current->memail), "' tabindex='".$template['tabindex']."'>", htmlspecialchars($current->mname), "</a>";
-			echo '</label>';
-			echo '</td>';
-			echo '<td>', htmlspecialchars($current->mrealname), '</td>';
-			echo "<td><a href='$current->murl' tabindex='".$template['tabindex']."'>$current->murl</a></td>";
-			echo '<td>', ($current->madmin ? _YES : _NO),'</td>';
-			echo '<td>', ($current->mcanlogin ? _YES : _NO), '</td>';
-			echo "<td><a href='index.php?action=memberedit&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
-			echo "<td><a href='index.php?action=memberdelete&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
-			break;
-	}
-}
-
-function listplug_table_teamlist($template, $type) {
-	global $manager;
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LIST_MEMBER_NAME."</th><th>"._LIST_MEMBER_RNAME."</th><th>"._LIST_TEAM_ADMIN;
-			help('teamadmin');
-			echo "</th><th colspan='2'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>';
-			$id = listplug_nextBatchId();
-			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->tmember,'" />';
-			echo '<label for="batch',$id,'">';
-			echo "<a href='mailto:", htmlspecialchars($current->memail), "' tabindex='".$template['tabindex']."'>", htmlspecialchars($current->mname), "</a>";
-			echo '</label>';
-			echo '</td>';
-			echo '<td>', htmlspecialchars($current->mrealname), '</td>';
-			echo '<td>', ($current->tadmin ? _YES : _NO) , '</td>';
-			echo "<td><a href='index.php?action=teamdelete&amp;memberid=$current->tmember&amp;blogid=$current->tblog' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
-
-			$url = 'index.php?action=teamchangeadmin&memberid=' . intval($current->tmember) . '&blogid=' . intval($current->tblog);
-			$url = $manager->addTicketToUrl($url);
-			echo "<td><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LIST_TEAM_CHADMIN."</a></td>";
-			break;
-	}
-}
 
 function encode_desc(&$data)
 	{   $to_entities = get_html_translation_table(HTML_ENTITIES);
@@ -6096,453 +5719,7 @@ function encode_desc(&$data)
 		return $data;
 	}
 
-function listplug_table_pluginlist($template, $type) {
-	global $manager;
-	switch($type) {
-		case 'HEAD':
-			echo '<th>'._LISTS_INFO.'</th><th>'._LISTS_DESC.'</th>';
-			echo '<th>'._LISTS_ACTIONS.'</th>';
-			break;
-		case 'BODY':
-			$current = $template['current'];
 
-			$plug =& $manager->getPlugin($current->pfile);
-			if ($plug) {
-				echo '<td>';
-					echo '<strong>' , htmlspecialchars($plug->getName()) , '</strong><br />';
-					echo _LIST_PLUGS_AUTHOR, ' ' , htmlspecialchars($plug->getAuthor()) , '<br />';
-					echo _LIST_PLUGS_VER, ' ' , htmlspecialchars($plug->getVersion()) , '<br />';
-					if ($plug->getURL())
-					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
-				echo '</td>';
-				echo '<td>';
-					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
-					if (sizeof($plug->getEventList()) > 0) {
-						echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',htmlspecialchars(implode($plug->getEventList(),', '));
-						// check the database to see if it is up-to-date and notice the user if not
-					}
-					if (!$plug->subscribtionListIsUptodate()) {
-						echo '<br /><br /><strong>',_LIST_PLUG_SUBS_NEEDUPDATE,'</strong>';
-					}
-					if (sizeof($plug->getPluginDep()) > 0)
-						echo '<br /><br />',_LIST_PLUGS_DEP,'<br />',htmlspecialchars(implode($plug->getPluginDep(),', '));
-				echo '</td>';
-			} else {
-				echo '<td colspan="2">Error: plugin file <b>',htmlspecialchars($current->pfile),'.php</b> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)</td>';
-			}
-			echo '<td>';
-
-				$baseUrl = 'index.php?plugid=' . intval($current->pid) . '&action=';
-				$url = $manager->addTicketToUrl($baseUrl . 'pluginup');
-				echo "<a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UP,"</a>";
-				$url = $manager->addTicketToUrl($baseUrl . 'plugindown');
-				echo "<br /><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_DOWN,"</a>";
-				echo "<br /><a href='index.php?action=plugindelete&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UNINSTALL,"</a>";
-				if ($plug && ($plug->hasAdminArea() > 0))
-					echo "<br /><a href='".htmlspecialchars($plug->getAdminURL())."'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_ADMIN,"</a>";
-				if ($plug && ($plug->supportsFeature('HelpPage') > 0))
-					echo "<br /><a href='index.php?action=pluginhelp&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_HELP,"</a>";
-				if (quickQuery('SELECT COUNT(*) AS result FROM '.sql_table('plugin_option_desc').' WHERE ocontext=\'global\' and opid='.$current->pid) > 0)
-					echo "<br /><a href='index.php?action=pluginoptions&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_OPTIONS,"</a>";
-			echo '</td>';
-			break;
-	}
-}
-
-function listplug_table_plugoptionlist($template, $type) {
-	global $manager;
-	switch($type) {
-		case 'HEAD':
-			echo '<th>'._LISTS_INFO.'</th><th>'._LISTS_VALUE.'</th>';
-			break;
-		case 'BODY':
-			$current = $template['current'];
-			listplug_plugOptionRow($current);
-			break;
-		case 'FOOT':
-			?>
-			<tr>
-				<th colspan="2"><?php echo _PLUGS_SAVE?></th>
-			</tr><tr>
-				<td><?php echo _PLUGS_SAVE?></td>
-				<td><input type="submit" value="<?php echo _PLUGS_SAVE?>" /></td>
-			</tr>
-			<?php			break;
-	}
-}
-
-function listplug_plugOptionRow($current) {
-	$varname = 'plugoption['.$current['oid'].']['.$current['contextid'].']';
-	// retreive the optionmeta
-	$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-
-	// only if it is not a hidden option write the controls to the page
-	if ($meta['access'] != 'hidden') {
-		echo '<td>',htmlspecialchars($current['description']?$current['description']:$current['name']),'</td>';
-		echo '<td>';
-		switch($current['type']) {
-			case 'yesno':
-				ADMIN::input_yesno($varname, $current['value'], 0, 'yes', 'no');
-				break;
-			case 'password':
-				echo '<input type="password" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'" />';
-				break;
-			case 'select':
-				echo '<select name="'.htmlspecialchars($varname).'">';
-				$aOptions = NucleusPlugin::getOptionSelectValues($current['typeinfo']);
-				$aOptions = explode('|', $aOptions);
-				for ($i=0; $i<(count($aOptions)-1); $i+=2) {
-					echo '<option value="'.htmlspecialchars($aOptions[$i+1]).'"';
-					if ($aOptions[$i+1] == $current['value'])
-						echo ' selected="selected"';
-					echo '>'.htmlspecialchars($aOptions[$i]).'</option>';
-				}
-				echo '</select>';
-				break;
-			case 'textarea':
-				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-				echo '<textarea class="pluginoption" cols="30" rows="5" name="',htmlspecialchars($varname),'"';
-				if ($meta['access'] == 'readonly') {
-					echo ' readonly="readonly"';
-				}
-				echo '>',htmlspecialchars($current['value']),'</textarea>';
-				break;
-			case 'text':
-			default:
-				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-
-				echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'"';
-				if ($meta['datatype'] == 'numerical') {
-					echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
-				}
-				if ($meta['access'] == 'readonly') {
-					echo ' readonly="readonly"';
-				}
-				echo ' />';
-		}
-		echo $current['extra'];
-		echo '</td>';
-	}
-}
-
-function listplug_table_itemlist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LIST_ITEM_INFO."</th><th>"._LIST_ITEM_CONTENT."</th><th colspan='1'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-			$current->itime = strtotime($current->itime);	// string -> unix timestamp
-
-			if ($current->idraft == 1)
-				$cssclass = "class='draft'";
-
-			// (can't use offset time since offsets might vary between blogs)
-			if ($current->itime > $template['now'])
-				$cssclass = "class='future'";
-
-			echo "<td $cssclass>",_LIST_ITEM_BLOG,' ', htmlspecialchars($current->bshortname);
-			echo "    <br />",_LIST_ITEM_CAT,' ', htmlspecialchars($current->cname);
-			echo "    <br />",_LIST_ITEM_AUTHOR, ' ', htmlspecialchars($current->mname);
-			echo "    <br />",_LIST_ITEM_DATE," " . date("Y-m-d",$current->itime);
-			echo "<br />",_LIST_ITEM_TIME," " . date("H:i",$current->itime);
-			echo "</td>";
-			echo "<td $cssclass>";
-
-			$id = listplug_nextBatchId();
-
-			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->inumber,'" />';
-			echo '<label for="batch',$id,'">';
-			echo "<b>" . htmlspecialchars(strip_tags($current->ititle)) . "</b>";
-			echo '</label>';
-			echo "<br />";
-
-
-			$current->ibody = strip_tags($current->ibody);
-			$current->ibody = htmlspecialchars(shorten($current->ibody,300,'...'));
-
-			echo "$current->ibody</td>";
-			echo "<td $cssclass>";
-			echo 	"<a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a>";
-			echo    "<br /><a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>"._LISTS_COMMENTS."</a>";
-			echo    "<br /><a href='index.php?action=itemmove&amp;itemid=$current->inumber'>"._LISTS_MOVE."</a>";
-			echo    "<br /><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"._LISTS_DELETE."</a>";
-			echo "</td>";
-			break;
-	}
-}
-
-// for batch operations: generates the index numbers for checkboxes
-function listplug_nextBatchId() {
-	static $id = 0;
-	return $id++;
-}
-
-function listplug_table_commentlist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LISTS_INFO."</th><th>"._LIST_COMMENT."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-			$current->ctime = strtotime($current->ctime);	// string -> unix timestamp
-
-			echo '<td>';
-			echo date("Y-m-d@H:i",$current->ctime);
-			echo '<br />';
-			if ($current->mname)
-				echo htmlspecialchars($current->mname) ,' ', _LIST_COMMENTS_MEMBER;
-			else
-				echo htmlspecialchars($current->cuser);
-			echo '</td>';
-
-
-			$current->cbody = strip_tags($current->cbody);
-			$current->cbody = htmlspecialchars(shorten($current->cbody, 300, '...'));
-
-			echo '<td>';
-			$id = listplug_nextBatchId();
-			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->cnumber,'" />';
-			echo '<label for="batch',$id,'">';
-			echo $current->cbody;
-			echo '</label>';
-			echo '</td>';
-
-			echo "<td><a href='index.php?action=commentedit&amp;commentid=$current->cnumber'>"._LISTS_EDIT."</a></td>";
-			echo "<td><a href='index.php?action=commentdelete&amp;commentid=$current->cnumber'>"._LISTS_DELETE."</a></td>";
-			if ($template['canAddBan'])
-				echo "<td><a href='index.php?action=banlistnewfromitem&amp;itemid=$current->citem&amp;ip=", htmlspecialchars($current->cip), "' title='", htmlspecialchars($current->chost), "'>"._LIST_COMMENT_BANIP."</a></td>";
-			break;
-	}
-}
-
-
-function listplug_table_bloglist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>" . _NAME . "</th><th colspan='7'>" ._LISTS_ACTIONS. "</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo "<td title='blogid:$current->bnumber shortname:$current->bshortname'><a href='$current->burl'><img src='images/globe.gif' width='13' height='13' alt='". _BLOGLIST_TT_VISIT."' /></a> " . htmlspecialchars($current->bname) . "</td>";
-			echo "<td><a href='index.php?action=createitem&amp;blogid=$current->bnumber' title='" . _BLOGLIST_TT_ADD ."'>" . _BLOGLIST_ADD . "</a></td>";
-			echo "<td><a href='index.php?action=itemlist&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_EDIT."'>". _BLOGLIST_EDIT."</a></td>";
-			echo "<td><a href='index.php?action=blogcommentlist&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_COMMENTS."'>". _BLOGLIST_COMMENTS."</a></td>";
-			echo "<td><a href='index.php?action=bookmarklet&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_BMLET."'>". _BLOGLIST_BMLET . "</a></td>";
-
-			if ($current->tadmin == 1) {
-				echo "<td><a href='index.php?action=blogsettings&amp;blogid=$current->bnumber' title='" . _BLOGLIST_TT_SETTINGS . "'>" ._BLOGLIST_SETTINGS. "</a></td>";
-				echo "<td><a href='index.php?action=banlist&amp;blogid=$current->bnumber' title='" . _BLOGLIST_TT_BANS. "'>". _BLOGLIST_BANS."</a></td>";
-			}
-
-			if ($template['superadmin']) {
-				echo "<td><a href='index.php?action=deleteblog&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_DELETE."'>" ._BLOGLIST_DELETE. "</a></td>";
-			}
-
-
-
-			break;
-	}
-}
-
-function listplug_table_shortblognames($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>" . _NAME . "</th><th>" . _NAME. "</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>' , htmlspecialchars($current->bshortname) , '</td>';
-			echo '<td>' , htmlspecialchars($current->bname) , '</td>';
-
-			break;
-	}
-}
-
-function listplug_table_shortnames($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>" . _NAME . "</th><th>" . _LISTS_DESC. "</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>' , htmlspecialchars($current->name) , '</td>';
-			echo '<td>' , htmlspecialchars($current->description) , '</td>';
-
-			break;
-	}
-}
-
-
-function listplug_table_categorylist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='2'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>';
-			$id = listplug_nextBatchId();
-			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->catid,'" />';
-			echo '<label for="batch',$id,'">';
-			echo htmlspecialchars($current->cname);
-			echo '</label>';
-			echo '</td>';
-
-			echo '<td>', htmlspecialchars($current->cdesc), '</td>';
-			echo "<td><a href='index.php?action=categorydelete&amp;blogid=$current->cblog&amp;catid=$current->catid' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
-			echo "<td><a href='index.php?action=categoryedit&amp;blogid=$current->cblog&amp;catid=$current->catid' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
-
-			break;
-	}
-}
-
-
-function listplug_table_templatelist($template, $type) {
-	global $manager;
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo "<td>" , htmlspecialchars($current->tdname), "</td>";
-			echo "<td>" , htmlspecialchars($current->tddesc), "</td>";
-			echo "<td><a href='index.php?action=templateedit&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
-
-			$url = $manager->addTicketToUrl('index.php?action=templateclone&templateid=' . intval($current->tdnumber));
-			echo "<td><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
-			echo "<td><a href='index.php?action=templatedelete&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
-
-			break;
-	}
-}
-
-function listplug_table_skinlist($template, $type) {
-	global $CONF, $DIR_SKINS, $manager;
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>';
-
-			// use a special style for the default skin
-			if ($current->sdnumber == $CONF['BaseSkin']) {
-				echo '<strong>',htmlspecialchars($current->sdname),'</strong>';
-			} else {
-				echo htmlspecialchars($current->sdname);
-			}
-
-			echo '<br /><br />';
-			echo _LISTS_TYPE ,': ' , htmlspecialchars($current->sdtype);
-			echo '<br />', _LIST_SKINS_INCMODE , ' ' , (($current->sdincmode=='skindir') ?_PARSER_INCMODE_SKINDIR:_PARSER_INCMODE_NORMAL);
-			if ($current->sdincpref) echo '<br />' , _LIST_SKINS_INCPREFIX , ' ', htmlspecialchars($current->sdincpref);
-
-			// add preview image when present
-			if ($current->sdincpref && @file_exists($DIR_SKINS . $current->sdincpref . 'preview.png'))
-			{
-				echo '<br /><br />';
-
-				$hasEnlargement = @file_exists($DIR_SKINS . $current->sdincpref . 'preview-large.png');
-				if ($hasEnlargement)
-					echo '<a href="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview-large.png" title="View larger">';
-
-				echo '<img class="skinpreview" src="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview.png" width="100" height="75" alt="Preview for \'',htmlspecialchars($current->sdname),'\' skin" />';
-
-				if ($hasEnlargement)
-					echo '</a>';
-
-				if (@file_exists($DIR_SKINS . $current->sdincpref . 'readme.html'))
-				{
-					echo '<br /><a href="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'readme.html" title="More info on the \'',htmlspecialchars($current->sdname),'\' skin">Readme</a>';
-				}
-
-
-			}
-
-			echo "</td>";
-
-
-			echo "<td>" , htmlspecialchars($current->sddesc);
-				// show list of defined parts
-				$r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber . ' ORDER BY stype');
-				$types = array();
-				while ($o = mysql_fetch_object($r))
-					array_push($types,$o->stype);
-				if (sizeof($types) > 0) {
-					$friendlyNames = SKIN::getFriendlyNames();
-					for ($i=0;$i<sizeof($types);$i++) {
-						$type = $types[$i];
-						$types[$i] = '<li>' . helpHtml('skinpart'.$type) . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . "</a></li>";
-					}
-					echo '<br /><br />',_LIST_SKINS_DEFINED,' <ul>',implode($types,'') ,'</ul>';
-				}
-			echo "</td>";
-			echo "<td><a href='index.php?action=skinedit&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
-
-			$url = $manager->addTicketToUrl('index.php?action=skinclone&skinid=' . intval($current->sdnumber));
-			echo "<td><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
-			echo "<td><a href='index.php?action=skindelete&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
-
-			break;
-	}
-}
-
-function listplug_table_draftlist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LISTS_BLOG."</th><th>"._LISTS_TITLE."</th><th colspan='2'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>', htmlspecialchars($current->bshortname) , '</td>';
-			echo '<td>', htmlspecialchars(strip_tags($current->ititle)) , '</td>';
-			echo "<td><a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a></td>";
-			echo "<td><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"._LISTS_DELETE."</a></td>";
-
-			break;
-	}
-}
-
-
-function listplug_table_actionlist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo '<th>'._LISTS_TIME.'</th><th>'._LIST_ACTION_MSG.'</th>';
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>' , htmlspecialchars($current->timestamp), '</td>';
-			echo '<td>' , htmlspecialchars($current->message), '</td>';
-
-			break;
-	}
-}
-
-function listplug_table_banlist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo '<th>'._LIST_BAN_IPRANGE.'</th><th>'. _LIST_BAN_REASON.'</th><th>'._LISTS_ACTIONS.'</th>';
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>' , htmlspecialchars($current->iprange) , '</td>';
-			echo '<td>' , htmlspecialchars($current->reason) , '</td>';
-			echo "<td><a href='index.php?action=banlistdelete&amp;blogid=", intval($current->blogid) , "&amp;iprange=" , htmlspecialchars($current->iprange) , "'>",_LISTS_DELETE,"</a></td>";
-			break;
-	}
-}
 
 /**
  * Returns the Javascript code for a bookmarklet that works on most modern browsers
