@@ -1378,6 +1378,8 @@ class ITEMACTIONS extends BaseActions {
 		$vars['width'] 			= $width;
 		$vars['height']			= $height;
 		$vars['text']			= $text;
+		$vars['link']			= htmlspecialchars($CONF['MediaURL'] . $filename);
+		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['popuptext'] . '</a>';		
 
 		echo TEMPLATE::fill($this->template['POPUP_CODE'],$vars);
 	}
@@ -1398,7 +1400,7 @@ class ITEMACTIONS extends BaseActions {
 		$vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
 		$vars['width'] 			= $width;
 		$vars['height']			= $height;
-
+		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
 
 
 		echo TEMPLATE::fill($this->template['IMAGE_CODE'],$vars);;
