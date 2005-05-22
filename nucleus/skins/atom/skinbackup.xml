@@ -15,4 +15,10 @@
  <issued><%date(iso8601)%></issued>
  <content type="text/html" mode="escaped"><![CDATA[<%body%><%more%>]]></content>
  <id><%blogurl%>:<%blogid%>:<%itemid%></id>
-</entry>]]></part></template></nucleusskin>
+</entry>]]></part>
+
+<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+<part name="POPUP_CODE"><![CDATA[<%media%>]]></part>
+
+</template></nucleusskin>
