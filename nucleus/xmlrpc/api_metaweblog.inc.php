@@ -176,7 +176,7 @@
 		}
 
 		$more = $struct->structmem('mt_text_more');
-		if ($more && $more->kindOf() == "string") {
+		if ($more) {
 			$more = _getStructVal($struct, 'mt_text_more');
 		} else {
 			$more = $old['more'];
