@@ -69,6 +69,10 @@ include("../../config.php");	// include Nucleus libs and code
 include($DIR_LIBS . "xmlrpc.inc.php");
 include($DIR_LIBS . "xmlrpcs.inc.php");
 
+/* define xmlrpc settings */
+$xmlrpc_internalencoding = _CHARSET;
+$xmlrpc_defencoding = 'UTF-8';
+
 /* definition of available methods */
 
 $functionDefs = array();
