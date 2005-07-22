@@ -22,9 +22,9 @@ global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS'));
 
-$CONF['debug'] = 0;
+$CONF['debug'] = 1;
 
-$nucleus['version'] = 'v3.2';
+$nucleus['version'] = 'v3.3CVS';
 if (getNucleusPatchLevel() > 0)
 {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();
@@ -51,7 +51,7 @@ $CONF['alertOnSecurityRisk'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 320;
+	return 321;
 }
 
 /**
