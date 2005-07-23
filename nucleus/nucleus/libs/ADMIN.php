@@ -1874,7 +1874,7 @@ class ADMIN {
 	}
 
 	function action_memberadd() {
-		global $member;
+		global $member, $manager;
 
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
@@ -1887,6 +1887,11 @@ class ADMIN {
 		$res = MEMBER::create(postVar('name'), postVar('realname'), postVar('password'), postVar('email'), postVar('url'), postVar('admin'), postVar('canlogin'), postVar('notes'));
 		if ($res != 1)
 			$this->error($res);
+
+		// fire PostRegister event			
+		$newmem = new MEMBER();
+		$newmem->readFromName(postVar('name'));
+		$manager->notify('PostRegister',array('member' => &$newmem)); 			
 
 		$this->action_usermanagement();
 	}
