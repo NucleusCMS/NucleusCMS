@@ -348,7 +348,7 @@ function _execute_queries($sql_query) {
 //			debug("Executing: " . htmlspecialchars($sql) . "\n");
 
 			$result = mysql_query($sql);
-			if (!$result) debug("SQL Error: " + mysql_error());
+			if (!$result) debug('SQL Error: ' . mysql_error());
 
 		}
 	}
