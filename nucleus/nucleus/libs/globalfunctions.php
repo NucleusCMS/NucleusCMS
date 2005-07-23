@@ -845,7 +845,7 @@ function getMailFooter() {
 function getLanguageName() {
 	global $CONF, $member;
 
-	if ($member) {
+	if ($member && $member->isLoggedIn())) {
 		// try to use members language
 		$memlang = $member->getLanguage();
 
