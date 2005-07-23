@@ -204,8 +204,8 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 // login completed
 $manager->notify('PostAuthentication',array('loggedIn' => $member->isLoggedIn()));
 
-// first, let's see if the site is disabled or not
-if ($CONF['DisableSite'] && !$member->isAdmin()) {
+// first, let's see if the site is disabled or not. always allow admin area access.
+if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
 	redirect($CONF['DisableSiteURL']);
 	exit;
 }
