@@ -30,7 +30,7 @@
 
 <div class="heading">
 Plugin API
-<i>March 5, 2005</i>
+<i>July 27, 2005</i>
 </div>
 
 <div class="note"><strong>Notes:</strong>
@@ -107,15 +107,17 @@ Ok, lets start by writing a simple plugin. Basically, each plugin is a PHP class
 
 <pre class="example"><code>&lt;?php
 
-class NP_HelloWorld extends NucleusPlugin {
-
+class NP_HelloWorld extends NucleusPlugin
+{
 	// name of plugin
-	function getName() {
+	function getName()
+	{
 		return 'Hello World';
 	}
 
 	// author of plugin
-	function getAuthor()  {
+	function getAuthor()
+	{
 		return 'Wouter Demuynck';
 	}
 
@@ -127,17 +129,31 @@ class NP_HelloWorld extends NucleusPlugin {
 	}
 
 	// version of the plugin
-	function getVersion() {
+	function getVersion()
+	{
 		return '1.0';
 	}
 
 	// a description to be shown on the installed plugins listing
-	function getDescription() {
+	function getDescription()
+	{
 		return 'Just a sample plugin.';
 	}
 
-	function doSkinVar($skinType) {
+	function doSkinVar($skinType)
+	{
 		echo 'Hello World!';
+	}
+
+	function supportsFeature ($what)
+	{
+		switch ($what)
+		{
+			case 'SqlTablePrefix':
+				return 1;
+			default:
+				return 0;
+		}
 	}
 
 }
@@ -145,16 +161,16 @@ class NP_HelloWorld extends NucleusPlugin {
 
 <ol>
 	<li>
-		Copy this code in a file called <code>NP_HelloWorld.php</code>, and put it in your plugins directory. <em>Make sure that there are no spaces after the last <code>?&gt;</code> or before the first <code>&lt;?</code>.</em>. By the way, NP stands for "Nucleus Plugin" :-)
+		Copy this code in a file called <code>NP_HelloWorld.php</code>, and put it in your plugins directory. <em>Make sure that there are no spaces after the last <code>?&gt;</code> or before the first <code>&lt;?php</code>.</em>. NP stands for "Nucleus Plugin", if you were wondering about that.
 	</li>
 	<li>Open the Nucleus Administration area and go into <em>Nucleus Management/Manage Plugins</em></li>
 	<li>You'll find out that there's a <em>HelloWorld</em> plugin you can install. Do this. If everything worked out correctly, you'll see that your plugin is now listed in the list of installed plugins.</li>
 	<li>
-		Now edit some skin, and insert the following statement at a place of which you know where it will show up on the actual page.
-<pre class="example"><code>&lt;%plugin(HelloWorld)%&gt;</code></pre>
-		Some notes: the name (HelloWorld) is case sensitive!
+		Now edit one of your skins and insert the following statement at a place of which you know where it will show up on the actual page.
+<pre class="example"><code>&lt;%HelloWorld%&gt;</code></pre>
+		Note that the name (<code>HelloWorld</code>) is case sensitive!
 	</li>
-	<li>Now visit a page that uses the skin you edited: notice the "Hello World" on the location where you added the <code>plugin</code>-skinvar</li>
+	<li>Now visit a page that uses the skin you edited: notice the "Hello World" at the location where you've added the <code>plugin</code>-skinvar.</li>
 </ol>
 
 <p>
