@@ -1220,7 +1220,7 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	function parse_date($format = '') {
-		echo formatDate($format, $this->currentItem->timestamp, $this->template['FORMAT_DATE']);
+		echo formatDate($format, $this->currentItem->timestamp, $this->template['FORMAT_DATE'], $this->blog);
 	}
 
 	/**

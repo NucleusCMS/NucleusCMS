@@ -1031,21 +1031,32 @@ function passVar($key, $value) {
 /*
 	Date format functions (to be used from [%date(..)%] skinvars
 */
-function formatDate($format, $timestamp, $defaultFormat) {
-	if ($format == 'rfc822') {
-		return date('r', $timestamp);
-	} else if ($format == 'rfc822GMT') {
-		return gmdate('r', $timestamp);
-	} else if ($format == 'utc') {
-		return gmdate('Y-m-d\TH:i:s\Z', $timestamp);
-	} else if ($format == 'iso8601') {
-		$tz = date('O', $timestamp);
-		$tz = substr($tz, 0, 3) . ':' . substr($tz, 3, 2);
-		return gmdate('Y-m-d\TH:i:s', $timestamp) . $tz;
-	} else {
-		return strftime($format ? $format : $defaultFormat,$timestamp);
-	}
+function formatDate($format, $timestamp, $defaultFormat, &$blog) 
+{
+	// apply blog offset (#42)
+	$boffset = $blog ? $blog->getTimeOffset() * 3600 : 0;
+	$offset = date('Z', $timestamp) + $boffset;
 
+	switch ($format) {
+		case 'rfc822' :
+			if ($offset >= 0) $tz = '+';
+		else            { $tz = '-'; $offset = -$offset;}
+			$tz .= sprintf("%02d%02d",floor($offset / 3600),round(($offset % 3600)/60));
+			return date('D, j M Y H:i:s ', $timestamp) . $tz;
+		case 'rfc822GMT' :
+			$timestamp -= $offset;
+			return date('D, j M Y H:i:s ', $timestamp) . 'GMT';
+		case 'utc' :
+			$timestamp -= $offset;
+			return date('Y-m-d\TH:i:s\Z', $timestamp);
+		case 'iso8601' :
+			if ($offset >= 0) $tz = '+';
+			else            { $tz = '-'; $offset = -$offset;}
+			$tz .= sprintf("%02d:%02d",floor($offset / 3600),round(($offset % 3600)/60));
+			return date('Y-m-d\TH:i:s', $timestamp) . $tz;
+		default :
+			return strftime($format ? $format : $defaultFormat,$timestamp);
+	}
 }
 
 function checkVars($aVars)
