@@ -370,7 +370,7 @@ class COMMENTACTIONS extends BaseActions {
 	}
 
 	function parse_date($format = '') {
-		echo formatDate($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE']);
+		echo formatDate($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE'], $this->commentsObj->itemActions->blog);
 	}
 	function parse_time($format = '') {
 		echo strftime(
