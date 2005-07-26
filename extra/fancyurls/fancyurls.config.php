@@ -1,7 +1,8 @@
-<?
+<?php
 	/*
 		About
 		-----
+		
 		This directory contains extra files to make the 'fancy urls' feature even more
 		fancier, by eliminating the 'index.php'-part of the URL
 	
@@ -16,12 +17,18 @@
 		   that old one first, and copy the contents of the new .htaccess file (from the fancyurls
 		   folder) in your old one, and upload that... 
 
-		2. Edit this file so that $CONF['Self'] points to your main directory. 
+		2. Edit fancyurls.config.php so that $CONF['Self'] points to your main directory. 
 			NOTE: this time, and only this time, the URL should NOT end in a slash
 
-		3. Also edit the $CONF['Self'] variable in your index.php, if you don't want to
-		   end up with index.php/item/1234 urls when people come via that way
+		3. Edit index.php to look like this: 
+		   
+			$CONF = array();
 
+			include('./fancyurls.config.php'); 
+			include('./config.php');
+
+			selector();
+			
 		4. Enable 'Fancy URLs' in the Nucleus admin area (nucleus management / edit settings)
 
 		5. Off you go!
