@@ -3,8 +3,16 @@
 include('./fancyurls.config.php');
 include('./config.php');
 
-$data = explode("/",serverVar('PATH_INFO'));
-$archivelist = intval($data[1]);
+// default to default implementation (/archives/1)
+// if archivelist was not filled out by plugins
+if ($archivelist == 0)
+{
+	$data = explode("/",serverVar('PATH_INFO'));
+	if (count($data) > 1)
+	{
+		$archivelist = intval($data[1]);
+	}
+}
 
 selector();
 
