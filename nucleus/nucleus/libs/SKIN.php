@@ -1242,8 +1242,18 @@ class ACTIONS extends BaseActions {
 		}
 
 		if (!$destinationurl)
-			$destinationurl = createItemLink($itemid, $this->linkparams);
-
+		{
+			$destinationurl = createLink(
+				'item', 
+				array(
+					'itemid' => $itemid,
+					'title' => $item['title'],
+					'timestamp' => $item['timestamp'],
+					'extra' => $this->linkparams
+				)
+			);
+		}
+		
 		// values to prefill
 		$user = cookieVar($CONF['CookiePrefix'] .'comment_user');
 		if (!$user) $user = postVar('user');

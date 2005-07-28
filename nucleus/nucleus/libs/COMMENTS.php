@@ -360,7 +360,15 @@ class COMMENTACTIONS extends BaseActions {
 			echo $this->template['COMMENTS_MANY'];
 	}
 
-	function parse_itemlink() {				echo createItemLink($this->commentsObj->itemid, $this->commentsObj->itemActions->linkparams); }
+	function parse_itemlink() {
+		echo createLink(
+			'item',
+			array(
+				'itemid' => $this->commentsObj->itemid,
+				'extra' => $this->commentsObj->itemActions->linkparams
+			)
+		);
+	}
 	function parse_itemid() {				echo $this->commentsObj->itemid; }
 	function parse_itemtitle($maxLength = 0) {
 		if ($maxLength == 0)
