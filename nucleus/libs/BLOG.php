@@ -1131,7 +1131,17 @@ class ITEMACTIONS extends BaseActions {
 	function parse_authorid() {		echo $this->currentItem->authorid; }
 	function parse_authorlink() {	echo createMemberLink($this->currentItem->authorid, $this->linkparams); }
 	function parse_query() {		echo $this->strHighlight; }
-	function parse_itemlink() {		echo createItemLink($this->currentItem->itemid, $this->linkparams); }
+	function parse_itemlink() {		
+		echo createLink(
+			'item', 
+			array(
+				'itemid' => $this->currentItem->itemid,
+				'title' => $this->currentItem->title,
+				'timestamp' => $this->currentItem->timestamp,
+				'extra' => $this->linkparams
+			)
+		);
+	}
 	function parse_blogurl() {		echo $this->blog->getURL(); }
 	function parse_closed() {		echo $this->currentItem->closed; }
 	function parse_relevance() {    echo round($this->currentItem->score,2);}
