@@ -261,41 +261,64 @@ if (!defined('_ARCHIVETYPE_MONTH'))
 
 
 // decode path_info
-if ($CONF['URLMode'] == 'pathinfo') {
-	$data = explode("/",serverVar('PATH_INFO'));
-	for ($i=0;$i<sizeof($data);$i++) {
-		switch ($data[$i]) {
-			case 'item':			// item/1 (blogid)
-				$i++;
-				if ($i<sizeof($data)) $itemid = intval($data[$i]);
-				break;
-			case 'archives':		// archives/1 (blogid)
-				$i++;
-				if ($i<sizeof($data)) $archivelist = intval($data[$i]);
-				break;
-			case 'archive':			// two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
-				if ((($i+1)<sizeof($data)) && (!strstr($data[$i+1],'-')) ){
-					$blogid = intval($data[++$i]);
-				}
-				$i++;
-				if ($i<sizeof($data)) $archive = $data[$i];
-				break;
-			case 'blogid':			// blogid/1
-			case 'blog':			// blog/1
-				$i++;
-				if ($i<sizeof($data)) $blogid = intval($data[$i]);
-				break;
-			case 'category':		// category/1 (catid)
-			case 'catid':
-				$i++;
-				if ($i<sizeof($data)) $catid = intval($data[$i]);
-				break;
-			case 'member':
-				$i++;
-				if ($i<sizeof($data)) $memberid = intval($data[$i]);
-				break;
-			default:
-				// skip...
+if ($CONF['URLMode'] == 'pathinfo')
+{
+	// initialize keywords if this hasn't been done before
+    if ($CONF['ItemKey'] == '')     $CONF['ItemKey'] = 'item';
+    if ($CONF['ArchiveKey'] == '')  $CONF['ArchiveKey'] = 'archive';
+    if ($CONF['ArchivesKey'] == '') $CONF['ArchivesKey'] = 'archives';
+    if ($CONF['MemberKey'] == '')   $CONF['MemberKey'] = 'member';
+    if ($CONF['BlogKey'] == '')     $CONF['BlogKey'] = 'blog';
+    if ($CONF['CategoryKey'] == '') $CONF['CategoryKey'] = 'category';
+        
+    $parsed = false;
+    $manager->notify(
+    	'ParseURL', 
+    	array(
+    		'type' => basename(serverVar('SCRIPT_NAME')),	// e.g. item, blog, ...
+    		'info' => serverVar('PATH_INFO'),
+    		'complete' => &$parsed		
+    	)
+    );
+    
+    if (!$parsed)
+    {
+        // default implementation
+		$data = explode("/",serverVar('PATH_INFO'));
+		for ($i=0;$i<sizeof($data);$i++) {
+			switch ($data[$i]) {
+				case $CONF['ItemKey']:			// item/1 (blogid)
+					$i++;
+					if ($i<sizeof($data)) $itemid = intval($data[$i]);
+					break;
+				case $CONF['ArchivesKey']:		// archives/1 (blogid)
+					$i++;
+					if ($i<sizeof($data)) $archivelist = intval($data[$i]);
+					break;
+				case $CONF['ArchiveKey']:		// two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
+					if ((($i+1)<sizeof($data)) && (!strstr($data[$i+1],'-')) ){
+						$blogid = intval($data[++$i]);
+					}
+					$i++;
+					if ($i<sizeof($data)) $archive = $data[$i];
+					break;
+				case 'blogid':			// blogid/1
+					case $CONF['BlogKey']:	// blog/1
+					$i++;
+					if ($i<sizeof($data)) $blogid = intval($data[$i]);
+					break;
+					case $CONF['CategoryKey']:	// category/1 (catid)
+				case 'catid':
+					$i++;
+					if ($i<sizeof($data)) $catid = intval($data[$i]);
+					break;
+					case $CONF['MemberKey']:
+					$i++;
+					if ($i<sizeof($data)) $memberid = intval($data[$i]);
+					break;
+				default:
+					// skip...
+			}
 		}
 	}
 }
@@ -918,59 +941,100 @@ if (	($CONF['URLMode'] == 'pathinfo')
   * Centralisation of the functions that generate links
   */
 function createItemLink($itemid, $extra = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['ItemURL'] . '/item/' . $itemid;
-	else
-		$link = $CONF['ItemURL'] . '?itemid=' . $itemid;
-	return addLinkParams($link, $extra);
+	return createLink('item', array('itemid' => $itemid));
 }
 function createMemberLink($memberid, $extra = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['MemberURL'] . '/member/' . $memberid;
-	else
-		$link = $CONF['MemberURL'] . '?memberid=' . $memberid;
-	return addLinkParams($link, $extra);
+	return createLink('member', array('memberid' => $memberid));
 }
 function createCategoryLink($catid, $extra = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['CategoryURL'] . '/category/' . $catid;
-	else
-		$link = $CONF['CategoryURL'] . '?catid=' . $catid;
-	return addLinkParams($link, $extra);
+	return createLink('category', array('catid' => $catid, 'extra' => $extra));
 }
 function createArchiveListLink($blogid = '', $extra = '') {
-	global $CONF;
-	if (!$blogid)
-		$blogid = $CONF['DefaultBlog'];
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['ArchiveListURL'] . '/archives/' . $blogid;
-	else
-		$link = $CONF['ArchiveListURL'] . '?archivelist=' . $blogid;
-	return addLinkParams($link, $extra);
+	return createLink('archivelist', array('blogid' => $blogid, 'extra' => $extra));
 }
 function createArchiveLink($blogid, $archive, $extra = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['ArchiveURL'] . '/archive/'.$blogid.'/' . $archive;
-	else
-		$link = $CONF['ArchiveURL'] . '?blogid='.$blogid.'&amp;archive=' . $archive;
-	return addLinkParams($link, $extra);
+	return createLink('archive', array('blogid' => $blogid, 'archive' => $archive, 'extra' => $extra));
 }
+function createBlogidLink($blogid, $params = '') {
+	return createLink('blog', array('blogid' => $blogid, 'extra' => $params));
+}
+
+function createLink($type, $params)
+{
+	global $manager, $CONF;
+	
+	$generatedURL = '';
+	$usePathInfo = ($CONF['URLMode'] == 'pathinfo');
+	
+	// ask plugins first
+	$created = false;
+	
+	if ($usePathInfo)
+	{
+		$manager->notify(
+			'GenerateURL',
+			array(
+				'type' => $type,
+				'params' => $params,
+				'completed' => &$created,
+				'url' => &$url
+			)
+		);
+	} 
+	
+	// if a plugin created the URL, return it
+	if ($created)
+		return $url;
+		
+	// default implementation
+	switch ($type)
+	{
+		case 'item':
+			if ($usePathInfo)
+				$url = $CONF['ItemURL'] . '/' . $CONF['ItemKey'] . '/' . $params['itemid'];
+			else
+				$url = $CONF['ItemURL'] . '?itemid=' . $params['itemid'];
+			break;
+		case 'member':
+			if ($usePathInfo)
+				$url = $CONF['MemberURL'] . '/' . $CONF['MemberKey'] . '/' . $params['memberid'];
+			else
+				$url = $CONF['MemberURL'] . '?memberid=' . $params['memberid'];
+			break;
+		case 'category':
+			if ($usePathInfo)
+				$url = $CONF['CategoryURL'] . '/' . $CONF['CategoryKey'] . '/' . $params['catid'];
+			else
+				$url = $CONF['CategoryURL'] . '?catid=' . $params['catid'];
+			break;
+		case 'archivelist':
+			if (!$params['blogid'])
+				$params['blogid'] = $CONF['DefaultBlog'];
+			if ($usePathInfo)
+				$url = $CONF['ArchiveListURL'] . '/' . $CONF['ArchivesKey'] . '/' . $params['blogid'];
+			else
+				$url = $CONF['ArchiveListURL'] . '?archivelist=' . $params['blogid'];
+			break;
+		case 'archive':
+			if ($usePathInfo)
+				$url = $CONF['ArchiveURL'] . '/' . $CONF['ArchiveKey'] . '/'.$params['blogid'].'/' . $params['archive'];
+			else
+				$url = $CONF['ArchiveURL'] . '?blogid='.$params['blogid'].'&amp;archive=' . $params['archive'];
+			break;
+		case 'blog':
+			if ($usePathInfo)
+				$url = $CONF['BlogURL'] . '/' . $CONF['BlogKey'] . '/' . $params['blogid'];
+	else
+				$url = $CONF['BlogURL'] . '?blogid=' . $params['blogid'];
+			break;
+}
+	
+	return addLinkParams($url, $params['extra']);
+}
+
 function createBlogLink($url, $params) {
 	return addLinkParams($url . '?', $params);
 }
-function createBlogidLink($blogid, $params = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['BlogURL'] . '/blog/' . $blogid;
-	else
-		$link = $CONF['BlogURL'] . '?blogid=' . $blogid;
-	return addLinkParams($link, $params);
-}
-
 
 function addLinkParams($link, $params) {
 	global $CONF;

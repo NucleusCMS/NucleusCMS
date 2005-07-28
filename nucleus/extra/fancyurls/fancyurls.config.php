@@ -43,5 +43,17 @@
 	
 	// remember: this URL should _NOT_ end with a slash. 
 	$CONF['Self'] = 'http://www.yourhost.com/yourpath';
-	
+
+    /*
+    	Advanced: keywords to use in fancy URLs. 
+    	
+    	If you want to change these, you'll also need to rename the stub files 
+    	and update the contents of the .htaccess file accordingly
+    */
+    $CONF['ItemKey'] = 'item';
+    $CONF['ArchiveKey'] = 'archive';
+    $CONF['ArchivesKey'] = 'archives';
+    $CONF['MemberKey'] = 'member';
+    $CONF['BlogKey'] = 'blog';
+    $CONF['CategoryKey'] = 'category';	
 ?>
