@@ -3,9 +3,17 @@
 include('./fancyurls.config.php');
 include('./config.php');
 
-$data = explode("/",serverVar('PATH_INFO'));
-$blogid = intval($data[1]);
-$archive = $data[2];
+// default to default implementation (/archive/1/2005-12)
+// if blogid was not filled out by plugins
+if (($blogid == 0) && ($archive == ''))
+{
+	$data = explode("/",serverVar('PATH_INFO'));
+	if (count($data) > 2)
+	{
+		$blogid = intval($data[1]);
+		$archive = $data[2];
+	}
+}
 
 selector();
 
