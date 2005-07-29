@@ -123,7 +123,7 @@ function ahrefThis() {
 	strHref = prompt("Create a link to:","http://");
 	if (strHref == null) return;
 
-	var textpre = "<a href=\"" + strHref.replace(/&/,'&amp;') + "\">";
+	var textpre = "<a href=\"" + strHref.replace(/&/g,'&amp;') + "\">";
 	insertAroundCaret(textpre, "</a>");
 }
 
