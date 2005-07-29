@@ -622,7 +622,14 @@ class BLOG {
 		while ($data = mysql_fetch_assoc($res)) {
 			$data['blogid'] = $this->getID();
 			$data['blogurl'] = $blogurl;
-			$data['catlink'] = createCategoryLink($data['catid'], $linkparams);
+			$data['catlink'] = createLink(
+								'category',
+								array(
+									'catid' => $data['catid'],
+									'name' => $data['catname'],
+									'extra' => $linkparams
+								)
+							   );
 			$data['self'] = $CONF['Self'];
 
 			$temp = TEMPLATE::fill($template['CATLIST_LISTITEM'],$data);
@@ -1126,10 +1133,19 @@ class ITEMACTIONS extends BaseActions {
 	function parse_more() {			$this->highlightAndParse($this->currentItem->more); }
 	function parse_itemid() {		echo $this->currentItem->itemid; }
 	function parse_category() {		echo $this->currentItem->category; }
-	function parse_categorylink() {	echo createCategoryLink($this->currentItem->catid); }
+	function parse_categorylink() {	echo createLink('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category)); }
 	function parse_catid() {		echo $this->currentItem->catid; }
 	function parse_authorid() {		echo $this->currentItem->authorid; }
-	function parse_authorlink() {	echo createMemberLink($this->currentItem->authorid, $this->linkparams); }
+	function parse_authorlink() {
+		echo createLink(
+			'member',
+			array(
+				'memberid' => $this->currentItem->authorid,
+				'name' => $this->currentItem->author,
+				'extra' => $this->linkparams
+			)
+		);
+	}
 	function parse_query() {		echo $this->strHighlight; }
 	function parse_itemlink() {		
 		echo createLink(
