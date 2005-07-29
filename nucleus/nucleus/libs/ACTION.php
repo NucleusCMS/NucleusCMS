@@ -130,9 +130,13 @@ class ACTION
 		} else {
 			$CONF['MemberURL'] = $CONF['IndexURL'];
 			if ($CONF['URLMode'] == 'pathinfo')
-				$url = createMemberLink($tomem->getID());
+			{
+				$url = createLink('member', array('memberid' => $tomem->getID(), 'name' => $tomem->getDisplayName()));
+			}
 			else
+			{
 				$url = $CONF['IndexURL'] . createMemberLink($tomem->getID());
+			}
 			redirect($url);
 		}
 

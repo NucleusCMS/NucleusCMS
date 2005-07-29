@@ -326,9 +326,13 @@ class COMMENTACTIONS extends BaseActions {
 			else
 				$comment['userid'] = $mem->getEmail();
 
-			$comment['userlinkraw'] = createMemberLink(
-										$comment['memberid'],
-										$this->commentsObj->itemActions->linkparams
+			$comment['userlinkraw'] = createLink(
+										'member',
+										array(
+											'memberid' => $comment['memberid'],
+											'name' => $mem->getDisplayName(),
+											'extra' => $this->commentsObj->itemActions->linkparams
+										)
 									  );
 
 		} else {
