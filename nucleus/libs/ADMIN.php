@@ -5716,7 +5716,7 @@ selector();
 
 
 
-function encode_desc(&$data)
+function encode_desc($data)
 	{   $to_entities = get_html_translation_table(HTML_ENTITIES);
 		$from_entities = array_flip($to_entities);
 		$data = strtr($data,$from_entities);
