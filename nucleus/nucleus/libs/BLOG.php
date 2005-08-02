@@ -181,13 +181,15 @@ class BLOG {
 					if ($old_date != 0) {
 						$oldTS = strtotime($old_date);
 						$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
-						$parser->parse(strftime($template['DATE_FOOTER'], $oldTS));
+						$tmp_footer = strftime($template['DATE_FOOTER'], $oldTS);
+						$parser->parse($tmp_footer);
 						$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
 					}
 					$manager->notify('PreDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
 					// note, to use templatvars in the dateheader, the %-characters need to be doubled in
 					// order to be preserved by strftime
-					$parser->parse(strftime($template['DATE_HEADER'],$timestamp));
+					$tmp_header = strftime($template['DATE_HEADER'],$timestamp);
+					$parser->parse($tmp_header);
 					$manager->notify('PostDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
 				}
 				$old_date = $new_date;
@@ -1270,7 +1272,8 @@ class ITEMACTIONS extends BaseActions {
 	function parse_syndicate_description($maxLength = 250, $addHighlight = 0) {
 		$syndicated = strip_tags($this->currentItem->body);
 		if ($addHighlight) {
-			echo $this->highlightAndParse(htmlspecialchars(shorten($syndicated,$maxLength,'...')));
+			$tmp_highlight = htmlspecialchars(shorten($syndicated,$maxLength,'...'));
+			echo $this->highlightAndParse($tmp_highlight);
 		} else {
 			echo htmlspecialchars(shorten($syndicated,$maxLength,'...'));
 		}
@@ -1382,7 +1385,8 @@ class ITEMACTIONS extends BaseActions {
 	function highlightAndParse(&$data) {
 		// allow only a limited subset of actions (do not allow includes etc, they might be evil)
 		$this->parser->actions = array('image','media','popup');
-		$this->parser->parse($this->highlight($data));
+		$tmp_highlight = $this->highlight($data);
+		$this->parser->parse($tmp_highlight);
 		$this->parser->actions = $this->getDefinedActions();
 	}
 
