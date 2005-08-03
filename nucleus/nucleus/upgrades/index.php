@@ -63,7 +63,8 @@ When upgrading from an older Nucleus version, upgrades to the database tables ar
 ?>
 
 <div class="note">
-<b>Note:</b> Don't forget to make a backup of your database every once in a while!
+<b>Note:</b> Don't forget to make a backup of your database every once in a while!<br/>
+It is suggested that you do so before upgrading the database in case things go wrong.
 </div>
 
 <h1>Manual changes</h1>
