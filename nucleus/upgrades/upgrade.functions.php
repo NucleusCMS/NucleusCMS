@@ -27,6 +27,18 @@
 			return 'nucleus_' . $name;
 		}
 	}
+	
+	//intGetVar did not exist in very early versions
+	if (!function_exists('intGetVar')) {
+		function intGetVar($name) {
+			if (defined($_GET)) {
+				return intval($_GET[$name]);
+			} else {
+				global $HTTP_GET_VARS;
+				return intval($HTTP_GET_VARS[$name]);
+			}
+		}
+	}
 
 	function upgrade_checkinstall($version) {
 		$installed = 0;
@@ -129,8 +141,10 @@
 			<html xmlns="http://www.w3.org/1999/xhtml">
 			<head>
 				<title>Nucleus Upgrade</title>
-				<style><!--
-					@import url('../styles/manual.css');
+<?php if (file_exists("../styles/manual.css")) { ?>
+				<link rel="stylesheet" href="../styles/manual.css" type="text/css" />
+<?php }else{ ?>
+				<style type="text/css"><!--
 					.warning {
 						color: red;
 					}
@@ -138,6 +152,7 @@
 						color: green;
 					}
 				--></style>
+<?php } ?>
 			</head>
 			<body>
 	<?php	}
@@ -179,7 +194,7 @@
 	function upgrade_end($msg = "") {
 		global $upgrade_failures;
 		if ($upgrade_failures > 0)
-			$msg = "Some queries have failed. If you've runned this upgrade script before, this should be normal.";
+			$msg = "Some queries have failed. Try reverting to a backup or reparing things manually, then rerun this script.";
 
 		?>
 		</ul>
@@ -207,16 +222,32 @@
 		echo "<li>$friendly ... ";
 		$res = mysql_query($query);
 		if (!$res) {
-			echo "<span style='color:red'>FAILED</span>\n";
+			echo "<span class='warning'>FAILED</span>\n";
 			echo "<blockquote>Error was: " . mysql_error() . " </blockquote>";
 			$upgrade_failures++;
 		} else {
-			echo "<span style='color:green'>SUCCESS!</span><br />\n";
+			echo "<span class='ok'>SUCCESS!</span><br />\n";
 		}
 		echo "</li>";
 		return $res;
 	}
 
+	/**
+	  * Tries to update database version, gives a message when failed
+	  *
+	  * @param $version
+	  * 	Schema version the database has been upgraded to
+	  */
+	function update_version($version) {
+		global $upgrade_failures;
+		$message='Updating DatabaseVersion in config table to '.$version;
+		if(0==$upgrade_failures){
+			$query = 'UPDATE ' . sql_table('config') . ' set value=\''.$version.'\' where name=\'DatabaseVersion\'';
+			upgrade_query($message, $query);
+		}else
+			echo '<li>'.$message.' ... <span class="warning">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>';
+	}
+	
 	/**
 	 * @param $table
 	 *		table to check (without prefix)
@@ -246,6 +277,47 @@
 
 	}
 
+	/**
+	  * Checks to see if a given table exists
+	  *
+	  * @param $table
+	  * 	Name of table to check for existance of
+	  * 	Uses sql_table internally
+	  * @return true if table exists, false otherwise.
+	  */
+	function upgrade_checkIfTableExists($table){
+		$query = 'SHOW TABLES LIKE \''.sql_table($table).'\'';
+		$res = mysql_query($query);
+		return ($res != 0) && (mysql_num_rows($res) == 1);
+	}
 
+	/**
+	  * Checks to see if a given configuration value exists
+	  *
+	  * @param $value
+	  * 	Config value to check for existance of.
+	  * 	Paramater must be MySQL escaped
+	  * @return true if configuration value exists, false otherwise.
+	  */
+	function upgrade_checkIfCVExists($value){
+		$query = 'SELECT name from '.sql_table('config').' WHERE name = \''.$value.'\'';
+		$res = mysql_query($query);
+		return ($res != 0) && (mysql_num_rows($res) == 1);
+	}
 
+	/**
+	  * Checks to see if a given column exists
+	  *
+	  * @param $table
+	  * 	Name of table to check for column in
+	  * 	Uses sql_table internally
+	  * @param $col
+	  * 	Name of column to check for existance of
+	  * @return true if column exists, false otherwise.
+	  */
+	function upgrade_checkIfColumnExists($table, $col){
+		$query = 'DESC `'.sql_table($table).'` `'.$col.'`';
+		$res = mysql_query($query);
+		return ($res != 0) && (mysql_num_rows($res) == 1);
+	}
 ?>

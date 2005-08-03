@@ -1,40 +1,50 @@
 <?php
 function upgrade_do10() {
 	
-if (upgrade_checkinstall(10))
-	return "already installed";
-
-// 1. add mcookiekey to nucleus_member
-$query =  'ALTER TABLE '.sql_table('member')
-       . " ADD mcookiekey varchar(40) ";
-$res = upgrade_query("Adding cookiekey attribute to members",$query);       
-
-// only do this when the previous query succeeds
-if ($res) {
-	// 2. for all members: hash their password and also copy it to mcookiekey
-	$query = 'SELECT * FROM '.sql_table('member');
-	$res = mysql_query($query);
-	while ($current = mysql_fetch_object($res)) {
-		$hashedpw = md5($current->mpassword);
-		$updquery = 'UPDATE '.sql_table('member')." SET mpassword='$hashedpw' WHERE mnumber=" . $current->mnumber;
-		upgrade_query("Encrypting password for member " . $current->mnumber,$updquery);
+	if (upgrade_checkinstall(10))
+		return "already installed";
+	
+	// 1. add extra indices to tables
+	if (!upgrade_checkIfIndexExists('item', array('iblog', 'itime'))) {
+		$query = 'ALTER TABLE '.sql_table('item').' ADD INDEX(iblog, itime);';
+		upgrade_query("Adding extra index to nucleus_item",$query);
 	}
-}
+	if (!upgrade_checkIfIndexExists('comment', array('citem'))) {
+		$query = 'ALTER TABLE '.sql_table('comment').' ADD INDEX(citem);';
+		upgrade_query("Adding extra index to nucleus_comment",$query);
+	}
+	
+	// 2. add DisableJsTools to config
+	if (!upgrade_checkIfCVExists('DisableJsTools')) {
+		$query = 'INSERT INTO '.sql_table('config')." VALUES ('DisableJsTools', '0');";
+		upgrade_query("Adding setting DisableJsTools",$query);
+	}
+	
+	// 3. Drop primary key in nucleus_actionlog
+	$query = 'ALTER TABLE '.sql_table('actionlog').' DROP PRIMARY KEY;';
+	upgrade_query("Dropping primary key for actionlog table",$query);
 
-// 3. add extra indices to tables
-$query = 'ALTER TABLE '.sql_table('item').' ADD INDEX(iblog, itime);';
-upgrade_query("Adding extra index to nucleus_item",$query);
-$query = 'ALTER TABLE '.sql_table('comment').' ADD INDEX(citem);';
-upgrade_query("Adding extra index to nucleus_comment",$query);
-
-// 4. add DisableJsTools to config
-$query = 'INSERT INTO '.sql_table('config')." VALUES ('DisableJsTools', '0');";
-upgrade_query("Adding setting DisableJsTools",$query);
-
-// 5. Drop primary key in nucleus_actionlog
-$query = 'ALTER TABLE '.sql_table('actionlog').' DROP PRIMARY KEY;';
-upgrade_query("Dropping primary key for actionlog table",$query);
-
+	// 4. add mcookiekey to nucleus_member
+	if(0==$upgrade_failures && !upgrade_checkIfColumnExists('member', 'mcookiekey')){
+		$query =  'ALTER TABLE '.sql_table('member')
+			   . " ADD mcookiekey varchar(40) ";
+		$res = upgrade_query("Adding cookiekey attribute to members",$query);       
+		
+		// only do this when the previous query succeeds
+		//A more efficent query might be 'UPDATE '.sql_table('member')." SET mpassword=MD5(mpassword)"
+		if ($res) {
+			// 5. for all members: hash their password and also copy it to mcookiekey
+			$query = 'SELECT * FROM '.sql_table('member');
+			$res = mysql_query($query);
+			while ($current = mysql_fetch_object($res)) {
+				$hashedpw = md5($current->mpassword);
+				$updquery = 'UPDATE '.sql_table('member')." SET mpassword='$hashedpw' WHERE mnumber=" . $current->mnumber;
+				upgrade_query("Encrypting password for member " . $current->mnumber,$updquery);
+			}
+		}
+	}else{
+		echo "<li>Adding cookiekey attribute to members ... <span class=\"warning\">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>";
+	}
 }
 
 
