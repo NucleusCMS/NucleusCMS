@@ -578,11 +578,10 @@ function selector() {
 		if (!$manager->existsItem($itemid,0,0))
 			doError(_ERROR_NOSUCHITEM);
 
-
 		global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
 
-		// 1. get timestamp and blogid for item
-		$query = 'SELECT itime, iblog FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
+		// 1. get timestamp, blogid and catid for item
+		$query = 'SELECT itime, iblog, icat FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
 
@@ -590,6 +589,13 @@ function selector() {
 		// deny access
 		if ($blogid && (intval($blogid) != $obj->iblog))
 			doError(_ERROR_NOSUCHITEM);
+			
+		// if a category has been selected which doesn't match the item, ignore the 
+		// category. #85
+		if (($catid != 0) && ($catid != $obj->icat))
+		{
+			$catid = 0;
+		}
 
 		$blogid = $obj->iblog;
 		$timestamp = strtotime($obj->itime);
