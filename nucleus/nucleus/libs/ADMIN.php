@@ -3326,11 +3326,15 @@ selector();
 		// read only metadata
 		$error = $importer->readFile($skinFile, 1);
 
+		// clashes
+		$skinNameClashes = $importer->checkSkinNameClashes();
+		$templateNameClashes = $importer->checkTemplateNameClashes();
+		$hasNameClashes = (count($skinNameClashes) > 0) || (count($templateNameClashes)	> 0);
 
 		if ($error) $this->error($error);
 
 		$this->pagehead();
-
+		
 		echo '<p><a href="index.php?action=skinieoverview">(',_BACK,')</a></p>';
 		?>
 		<h2><?php echo _SKINIE_CONFIRM_TITLE?></h2>
@@ -3339,8 +3343,15 @@ selector();
 			<li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo htmlspecialchars($importer->getInfo())?></p></li>
 			<li><p><strong><?php echo _SKINIE_INFO_SKINS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
 			<li><p><strong><?php echo _SKINIE_INFO_TEMPLATES?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
-			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_SKINCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->checkSkinNameClashes())?></p></li>
-			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_TEMPLCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->checkTemplateNameClashes())?></p></li>
+			<?php
+				if ($hasNameClashes)
+				{
+			?>
+			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_SKINCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$skinNameClashes)?></p></li>
+			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_TEMPLCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$templateNameClashes)?></p></li>
+			<?php
+				} // if (hasNameClashes)
+			?>
 		</ul>
 
 		<form method="post" action="index.php"><div>
@@ -3349,8 +3360,15 @@ selector();
 			<input type="hidden" name="skinfile" value="<?php echo htmlspecialchars(postVar('skinfile'))?>" />
 			<input type="hidden" name="mode" value="<?php echo htmlspecialchars($mode)?>" />
 			<input type="submit" value="<?php echo _SKINIE_CONFIRM_IMPORT?>" />
+			<?php
+				if ($hasNameClashes)
+				{
+			?>
 			<br />
 			<input type="checkbox" name="overwrite" value="1" id="cb_overwrite" /><label for="cb_overwrite"><?php echo _SKINIE_CONFIRM_OVERWRITE?></label>
+			<?php
+				} // if (hasNameClashes)
+			?>
 		</div></form>
 
 
