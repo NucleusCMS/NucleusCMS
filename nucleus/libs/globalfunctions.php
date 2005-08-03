@@ -158,10 +158,14 @@ if ($action == 'login') {
 			$action = $nextaction;
 
 		$manager->notify('LoginSuccess',array('member' => &$member));
+		$errormessage = '';
 		ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
 	} else {
+		// errormessage for [%errordiv%]
+		$errormessage = 'Login failed for ' . $login;
+		
 		$manager->notify('LoginFailed',array('username' => $login));
-		ACTIONLOG::add(INFO, 'Login failed for ' . $login);
+		ACTIONLOG::add(INFO, $errormessage);
 	}
 /*
 

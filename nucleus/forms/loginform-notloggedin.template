@@ -1,5 +1,9 @@
-<form method="post" action="<%self%>">
+<a id="nucleus_lf"></a>
+<form method="post" action="#nucleus_lf">
   <div class="loginform">
+  
+  	<%errordiv%>
+  
 	<input type="hidden" name="action" value="login" />
 	<label for="nucleus_lf_name" accesskey="l"><%text(_LOGINFORM_NAME)%></label>: <input id="nucleus_lf_name" name="login" size="10" value="" class="formfield" />
 	<br />
