@@ -78,7 +78,7 @@
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='cs' lang='cs'>
 <head>
 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-<title>(simple) WordPress to (powerful) Nucleus CMS convertor</title>
+<title>WordPress to Nucleus CMS convertor</title>
 <meta http-equiv='Pragma' content='no-cache' />
 <meta http-equiv='Cache-Control' content='no-cache, must-revalidate' />
 <meta http-equiv='Expires' content='-1' />
