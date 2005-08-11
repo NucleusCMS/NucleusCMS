@@ -1,30 +1,26 @@
 <?php
-/*
- * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2005 The Nucleus Group
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * (see nucleus/documentation/index.html#license for more info)
- */
 /**
- * Media popup window for Nucleus
- *
- * Purpose:
- *   - can be openen from an add-item form or bookmarklet popup
- *   - shows a list of recent files, allowing browsing, search and
- *     upload of new files
- *   - close the popup by selecting a file in the list. The file gets
- *     passed through to the add-item form (linkto, popupimg or inline img)
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2005 The Nucleus Group
- * @version $Id$
- *
- */
-
+  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
+  * Copyright (C) 2002-2005 The Nucleus Group
+  *
+  * This program is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU General Public License
+  * as published by the Free Software Foundation; either version 2
+  * of the License, or (at your option) any later version.
+  * (see nucleus/documentation/index.html#license for more info)
+  *
+  * Media popup window for Nucleus
+  *
+  * Purpose:
+  *   - can be openen from an add-item form or bookmarklet popup
+  *   - shows a list of recent files, allowing browsing, search and 
+  *     upload of new files
+  *   - close the popup by selecting a file in the list. The file gets
+  *     passed through to the add-item form (linkto, popupimg or inline img)
+  *
+  * $Id$
+  */
+  
 $CONF = array();
 
 // defines how much media items will be shown per page. You can override this
@@ -49,19 +45,19 @@ $query = 'SELECT * FROM ' . sql_table('team'). ' WHERE tmember=' . $member->getI
 $teams = mysql_query($query);
 if (mysql_num_rows($teams) == 0)
 	media_doError(_ERROR_DISALLOWEDUPLOAD);
-
+	
 // get action
 $action = requestVar('action');
 if ($action == '')
 	$action = 'selectmedia';
-
+	
 // check ticket
 $aActionsNotToCheck = array('selectmedia', _MEDIA_FILTER_APPLY, _MEDIA_COLLECTION_SELECT);
 if (!in_array($action, $aActionsNotToCheck))
 {
 	if (!$manager->checkTicket())
 		media_doError(_ERROR_BADTICKET);
-}
+} 
 
 
 switch($action) {
@@ -84,10 +80,10 @@ switch($action) {
 // select a file
 function media_select() {
 	global $member, $CONF, $DIR_MEDIA, $manager;
-
+	
 	media_head();
-
-	// show 10 files + navigation buttons
+	
+	// show 10 files + navigation buttons 
 	// show msg when no files
 	// show upload form
 	// files sorted according to last modification date
@@ -96,8 +92,8 @@ function media_select() {
 	$currentCollection = requestVar('collection');
 	if (!$currentCollection || !@is_dir($DIR_MEDIA . $currentCollection))
 		$currentCollection = $member->getID();
-
-
+		
+	
 	// get collection list
 	$collections = MEDIA::getCollectionList();
 
@@ -125,11 +121,11 @@ function media_select() {
 			<input type="hidden" name="collection" value="<?php echo htmlspecialchars($currentCollection)?>" />
 			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_UPLOAD_NEW) ?>" title="<?php echo htmlspecialchars(_MEDIA_UPLOADLINK) ?>" />
 			<?php $manager->addTicketHidden() ?>
-		</div></form>
+		</div></form>	
 	<?php	} // if sizeof
-
-	$filter = requestVar('filter');
-	$offset = intRequestVar('offset');
+	
+	$filter = requestVar('filter');	
+	$offset = intRequestVar('offset');	
 	$arr = MEDIA::getMediaListByCollection($currentCollection, $filter);
 
 	?>
@@ -137,28 +133,28 @@ function media_select() {
 			<label for="media_filter"><?php echo htmlspecialchars(_MEDIA_FILTER_LABEL)?></label>
 			<input id="media_filter" type="text" name="filter" value="<?php echo htmlspecialchars($filter)?>" />
 			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_FILTER_APPLY) ?>" />
-			<input type="hidden" name="collection" value="<?php echo htmlspecialchars($currentCollection)?>" />
-			<input type="hidden" name="offset" value="<?php echo intval($offset)?>" />
-		</div></form>
-
+			<input type="hidden" name="collection" value="<?php echo htmlspecialchars($currentCollection)?>" />			
+			<input type="hidden" name="offset" value="<?php echo intval($offset)?>" />						
+		</div></form>	
+	
 	<?php
-
-	?>
+	
+	?>	
 		<table width="100%">
 		<caption><?php echo _MEDIA_COLLECTION_LABEL . htmlspecialchars($collections[$currentCollection])?></caption>
 		<tr>
 		 <th><?php echo _MEDIA_MODIFIED?></th><th><?php echo _MEDIA_FILENAME?></th><th><?php echo _MEDIA_DIMENSIONS?></th>
 		</tr>
-
-	<?php
-
+	
+	<?php	
+	
 	if (sizeof($arr)>0) {
-
+	
 		if (($offset + $CONF['MediaPerPage']) >= sizeof($arr))
 			$offset = sizeof($arr) - $CONF['MediaPerPage'];
 
 		if ($offset < 0) $offset = 0;
-
+		
 		$idxStart = $offset;
 		$idxEnd = $offset + $CONF['MediaPerPage'];
 		$idxNext = $idxEnd;
@@ -174,15 +170,15 @@ function media_select() {
 			$filename = $DIR_MEDIA . $currentCollection . '/' . $obj->filename;
 
 			$old_level = error_reporting(0);
-			$size = @GetImageSize($filename);
+			$size = @GetImageSize($filename); 
 			error_reporting($old_level);
 			$width = $size[0];
 			$height = $size[1];
 			$filetype = $size[2];
-
+			
 			echo "<tr>";
 			echo "<td>". date("Y-m-d",$obj->timestamp) ."</td>";
-
+			
 			// strings for javascript
 			$jsCurrentCollection = str_replace("'","\\'",$currentCollection);
 			$jsFileName = str_replace("'","\\'",$obj->filename);
@@ -209,21 +205,21 @@ function media_select() {
 		}
 	} // if (sizeof($arr)>0)
 	?>
-
+	
 		</table>
-	<?php
+	<?php	
 	if ($idxStart > 0)
 		echo "<a href='media.php?offset=$idxPrev&amp;collection=".urlencode($currentCollection)."'>". _LISTS_PREV."</a> ";
 	if ($idxEnd < sizeof($arr))
 		echo "<a href='media.php?offset=$idxNext&amp;collection=".urlencode($currentCollection)."'>". _LISTS_NEXT."</a> ";
-
+	
 	?>
 		<input id="typeradio0" type="radio" name="typeradio" onclick="setType(0);" checked="checked" /><label for="typeradio0"><?php echo _MEDIA_INLINE?></label>
 		<input id="typeradio1" type="radio" name="typeradio" onclick="setType(1);" /><label for="typeradio1"><?php echo _MEDIA_POPUP?></label>
-	<?php
+	<?php	
 	media_foot();
-
-
+     
+		
 }
 
 /**
@@ -233,19 +229,19 @@ function media_choose() {
 	global $CONF, $member, $manager;
 
 	$currentCollection = requestVar('collection');
-
+	
 	$collections = MEDIA::getCollectionList();
 
 	media_head();
 	?>
 	<h1><?php echo _UPLOAD_TITLE?></h1>
-
+	
 	<p><?php echo _UPLOAD_MSG?></p>
-
+	
 	<form method="post" enctype="multipart/form-data" action="media.php">
 	<div>
-	  <input type="hidden" name="action" value="uploadfile" />
-	  <?php $manager->addTicketHidden() ?>
+ 	  <input type="hidden" name="action" value="uploadfile" />
+ 	  <?php $manager->addTicketHidden() ?>
 	  <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $CONF['MaxUploadSize']?>" />
 	  File:
 	  <br />
@@ -265,15 +261,15 @@ function media_choose() {
 		</select>
 	<?php		} else {
 	?>
-		<input name="collection" type="hidden" value="<?php echo htmlspecialchars(requestVar('collection'))?>" />
+	  	<input name="collection" type="hidden" value="<?php echo htmlspecialchars(requestVar('collection'))?>" />			
 	<?php		} // if sizeof
-	?>
+	?>  
 	  <br /><br />
 	  <input type="submit" value="<?php echo _UPLOAD_BUTTON?>" />
 	</div>
 	</form>
-
-	<?php
+	
+	<?php	
 	media_foot();
 }
 
@@ -285,23 +281,23 @@ function media_upload() {
 	global $DIR_MEDIA, $member, $CONF;
 
 	$uploadInfo = postFileInfo('uploadfile');
-
+	
 	$filename = $uploadInfo['name'];
 	$filetype = $uploadInfo['type'];
 	$filesize = $uploadInfo['size'];
 	$filetempname = $uploadInfo['tmp_name'];
-
+	
 	if ($filesize > $CONF['MaxUploadSize'])
 		media_doError(_ERROR_FILE_TOO_BIG);
-
+	
 	// check file type against allowed types
 	$ok = 0;
 	$allowedtypes = explode (',', $CONF['AllowedTypes']);
-	foreach ( $allowedtypes as $type )
-		if (eregi("\." .$type. "$",$filename)) $ok = 1;
+	foreach ( $allowedtypes as $type ) 
+		if (eregi("\." .$type. "$",$filename)) $ok = 1;    
 	if (!$ok) media_doError(_ERROR_BADFILETYPE);
-
-	if (!is_uploaded_file($filetempname))
+		
+	if (!is_uploaded_file($filetempname)) 
 		media_doError(_ERROR_BADREQUEST);
 
 	// prefix filename with current date (YYYY-MM-DD-)
@@ -312,9 +308,9 @@ function media_upload() {
 	$collection = requestVar('collection');
 	$res = MEDIA::addMediaObject($collection, $filetempname, $filename);
 
-	if ($res != '')
+	if ($res != '') 
 		media_doError($res);
-
+	
 	// shows updated list afterwards
 	media_select();
 }
@@ -323,11 +319,11 @@ function media_loginAndPassThrough() {
 	media_head();
 	?>
 		<h1><?php echo _LOGIN_PLEASE?></h1>
-
+	
 		<form method="post" action="media.php">
 		<div>
 			<input name="action" value="login" type="hidden" />
-			<input name="collection" value="<?php echo htmlspecialchars(requestVar('collection'))?>" type="hidden" />
+			<input name="collection" value="<?php echo htmlspecialchars(requestVar('collection'))?>" type="hidden" />			
 			<?php echo _LOGINFORM_NAME?>: <input name="login" />
 			<br /><?php echo _LOGINFORM_PWD?>: <input name="password" type="password" />
 			<br /><input type="submit" value="<?php echo _LOGIN?>" />
@@ -359,33 +355,33 @@ function media_head() {
 		<script type="text/javascript">
 			var type = 0;
 			function setType(val) { type = val; }
-
+			
 			function chooseImage(collection, filename, width, height) {
-				window.opener.focus();
+				window.opener.focus(); 
 				window.opener.includeImage(collection,
-										   filename,
-										   type == 0 ? 'inline' : 'popup',
-										   width,
-										   height
-										   );
+										   filename, 
+				                           type == 0 ? 'inline' : 'popup',
+				                           width,
+				                           height
+				                           );
 				window.close();
 			}
-
+			
 			function chooseOther(collection, filename) {
-				window.opener.focus();
+				window.opener.focus(); 
 				window.opener.includeOtherMedia(collection, filename);
 				window.close();
-
+			
 			}
 		</script>
 	</head>
-	<body>
+	<body>		
 <?php }
 
 function media_foot() {
 ?>
 	</body>
-	</html>
-<?php }
+	</html>	
+<?php }	
 
 ?>

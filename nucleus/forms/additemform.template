@@ -2,7 +2,6 @@
 
 <form method="post" action="<%formdata(adminurl)%>index.php">
  <div class="blogform">
-   <%ticket%>
    <input type="hidden" name="action" value="additem" />
    <input type="hidden" name="actiontype" value="addnow" />		   
    <input type="hidden" name="closed" value="0" />		   
