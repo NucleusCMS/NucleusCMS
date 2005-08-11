@@ -273,8 +273,7 @@ class MEMBER {
 	  */
 	function canBeDeleted() {
 		$res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
-		$res2 = sql_query('SELECT * FROM '.sql_table('comment').' WHERE cmember=' . $this->getID());
-		return ((mysql_num_rows($res) == 0) and (mysql_num_rows($res2)==0));
+		return (mysql_num_rows($res) == 0);
 	}
 
 	/**

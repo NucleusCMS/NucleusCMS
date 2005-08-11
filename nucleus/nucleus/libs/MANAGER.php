@@ -1,32 +1,29 @@
 <?php
-/*
- * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2005 The Nucleus Group
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- * (see nucleus/documentation/index.html#license for more info)
- */
 /**
- * This class makes sure each item/weblog/comment object gets requested from
- * the database only once, by keeping them in a cache. The class also acts as
- * a dynamic classloader, loading classes _only_ when they are first needed,
- * hoping to diminish execution time
- *
- * The class is a singleton, meaning that there will be only one object of it
- * active at all times. The object can be requested using MANAGER::instance()
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2005 The Nucleus Group
- * @version $Id$
- */
+  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
+  * Copyright (C) 2002-2005 The Nucleus Group
+  *
+  * This program is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU General Public License
+  * as published by the Free Software Foundation; either version 2
+  * of the License, or (at your option) any later version.
+  * (see nucleus/documentation/index.html#license for more info)
+  *
+  *	This class makes sure each item/weblog/comment object gets requested from
+  * the database only once, by keeping them in a cache. The class also acts as 
+  * a dynamic classloader, loading classes _only_ when they are first needed,
+  * hoping to diminish execution time
+  *
+  * The class is a singleton, meaning that there will be only one object of it
+  * active at all times. The object can be requested using MANAGER::instance()
+  *
+  * $Id$
+  */
 class MANAGER {
 
 	/**
-	 * Cached ITEM, BLOG, PLUGIN and KARMA objects. When these objects are requested
-	 * through the global $manager object (getItem, getBlog, ...), only the first call
+	 * Cached ITEM, BLOG, PLUGIN and KARMA objects. When these objects are requested 
+	 * through the global $manager object (getItem, getBlog, ...), only the first call 
 	 * will create an object. Subsequent calls will return the same object.
 	 *
 	 * The $items, $blogs, ... arrays map an id to an object (for plugins, the name is used
@@ -37,7 +34,7 @@ class MANAGER {
 	var $plugins;
 	var $karma;
 	var $templates;
-
+	
 	/**
 	 * cachedInfo to avoid repeated SQL queries (see pidInstalled/pluginInstalled/getPidFromName)
 	 * e.g. which plugins exists?
@@ -45,7 +42,7 @@ class MANAGER {
 	 * $cachedInfo['installedPlugins'] = array($pid -> $name)
 	 */
 	var $cachedInfo;
-
+	
 	/**
 	  * The plugin subscriptionlist
 	  *
@@ -53,11 +50,11 @@ class MANAGER {
 	  *		$subscriptions[$EventName] = array containing names of plugin classes to be
 	  *									 notified when that event happens
 	  */
-	var $subscriptions;
-
+	var $subscriptions;	
+	
 	/**
-	  * Returns the only instance of this class. Creates the instance if it
-	  * does not yet exists. Users should use this function as
+	  * Returns the only instance of this class. Creates the instance if it 
+	  * does not yet exists. Users should use this function as 
 	  * $manager =& MANAGER::instance(); to get a reference to the object
 	  * instead of a copy
 	  */
@@ -67,9 +64,9 @@ class MANAGER {
 			$instance =& new MANAGER();
 		return $instance;
 	}
-
+	
 	/**
-	  * The constructor of this class initializes the object caches
+	  * The constructor of this class initializes the object caches 
 	  */
 	function MANAGER() {
 		$this->items = array();
@@ -79,7 +76,7 @@ class MANAGER {
 		$this->parserPrefs = array();
 		$this->cachedInfo = array();
 	}
-
+	
 	/**
 	  * Returns the requested item object. If it is not in the cache, it will
 	  * first be loaded and then placed in the cache.
@@ -87,15 +84,15 @@ class MANAGER {
 	  */
 	function &getItem($itemid, $allowdraft, $allowfuture) {
 		$item =& $this->items[$itemid];
-
-		// check the draft and future rules if the item was already cached
+		
+		// check the draft and future rules if the item was already cached 
 		if ($item) {
 			if ((!$allowdraft) && ($item['draft']))
 				return 0;
 
 			$blog =& $this->getBlog(getBlogIDFromItemID($itemid));
 			if ((!$allowfuture) && ($item['timestamp'] > $blog->getCorrectTime()))
-				return 0;
+				return 0;				
 		}
 		if (!$item) {
 			// load class if needed
@@ -106,29 +103,29 @@ class MANAGER {
 		}
 		return $item;
 	}
-
+	
 	/**
 	  * Loads a class if it has not yet been loaded
 	  */
 	function loadClass($name) {
 		$this->_loadClass($name, $name . '.php');
 	}
-
+	
 	/**
 	  * Checks if an item exists
 	  */
 	function existsItem($id,$future,$draft) {
-		$this->_loadClass('ITEM','ITEM.php');
+		$this->_loadClass('ITEM','ITEM.php');	
 		return ITEM::exists($id,$future,$draft);
 	}
-
+	
 	/**
 	  * Checks if a category exists
 	  */
 	function existsCategory($id) {
 		return (quickQuery('SELECT COUNT(*) as result FROM '.sql_table('category').' WHERE catid='.intval($id)) > 0);
 	}
-
+	
 	function &getBlog($blogid) {
 		$blog =& $this->blogs[$blogid];
 
@@ -141,7 +138,7 @@ class MANAGER {
 		}
 		return $blog;
 	}
-
+	
 	function existsBlog($name) {
 		$this->_loadClass('BLOG','BLOG.php');
 		return BLOG::exists($name);
@@ -150,8 +147,8 @@ class MANAGER {
 	function existsBlogID($id) {
 		$this->_loadClass('BLOG','BLOG.php');
 		return BLOG::existsID($id);
-	}
-
+	}	
+	
 	/**
 	 * Returns a previously read template
 	 */
@@ -163,7 +160,7 @@ class MANAGER {
 			$this->templates[$templateName] =& $template;
 		}
 		return $template;
-	}
+	}	
 
 	/**
 	 * Returns a KARMA object (karma votes)
@@ -179,8 +176,8 @@ class MANAGER {
 			$this->karma[$itemid] =& $karma;
 		}
 		return $karma;
-	}
-
+	}	
+	
 	/**
 	 * Global parser preferences
 	 */
@@ -198,59 +195,59 @@ class MANAGER {
 		if (!class_exists($name)) {
 				global $DIR_LIBS;
 				include($DIR_LIBS . $filename);
-		}
+		}	
 	}
-
+	
 	function _loadPlugin($name) {
 		if (!class_exists($name)) {
 				global $DIR_PLUGINS;
-
+				
 				$fileName = $DIR_PLUGINS . $name . '.php';
-
+				
 				if (!file_exists($fileName))
 				{
 					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (File not found)');
 					return 0;
 				}
-
+				
 				// load plugin
 				include($fileName);
-
+				
 				// check if class exists (avoid errors in eval'd code)
 				if (!class_exists($name))
 				{
-					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (Class not found in file, possible parse error)');
+					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (Class not found in file, possible parse error)');				
 					return 0;
 				}
-
+				
 				// add to plugin array
 				eval('$this->plugins[$name] =& new ' . $name . '();');
-
+				
 				// get plugid
 				$this->plugins[$name]->plugid = $this->getPidFromName($name);
-
+				
 				// unload plugin if a prefix is used and the plugin cannot handle this^
 				global $MYSQL_PREFIX;
-				if (($MYSQL_PREFIX != '') && !$this->plugins[$name]->supportsFeature('SqlTablePrefix'))
+				if (($MYSQL_PREFIX != '') && !$this->plugins[$name]->supportsFeature('SqlTablePrefix')) 
 				{
 					unset($this->plugins[$name]);
 					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (does not support SqlTablePrefix)');
 					return 0;
 				}
-
+				
 				// call init method
 				$this->plugins[$name]->init();
-
-		}
+				
+		}	
 	}
-
+	
 	function &getPlugin($name) {
 		$plugin =& $this->plugins[$name];
 
 		if (!$plugin) {
 			// load class if needed
 			$this->_loadPlugin($name);
-			$plugin =& $this->plugins[$name];
+			$plugin =& $this->plugins[$name];			
 		}
 		return $plugin;
 	}
@@ -278,7 +275,7 @@ class MANAGER {
 	function clearCachedInfo($what) {
 		unset($this->cachedInfo[$what]);
 	}
-
+	
 	/**
 	 * Loads some info on the first call only
 	 */
@@ -299,11 +296,11 @@ class MANAGER {
 				break;
 		}
 	}
-
+	
 	/**
 	  * A function to notify plugins that something has happened. Only the plugins
 	  * that are subscribed to the event will get notified.
-	  * Upon the first call, the list of subscriptions will be fetched from the
+	  * Upon the first call, the list of subscriptions will be fetched from the 
 	  * database. The plugins itsself will only get loaded when they are first needed
 	  *
 	  * @param $eventName
@@ -314,13 +311,13 @@ class MANAGER {
 	  */
 	function notify($eventName, $data) {
 		// load subscription list if needed
-		if (!is_array($this->subscriptions))
+		if (!is_array($this->subscriptions)) 
 			$this->_loadSubscriptions();
-
+			
 
 		// get listening objects
 		$listeners = $this->subscriptions[$eventName];
-
+		
 		// notify all of them
 		if (is_array($listeners)) {
 			foreach($listeners as $listener) {
@@ -331,9 +328,9 @@ class MANAGER {
 					call_user_func(array(&$this->plugins[$listener],'event_' . $eventName), $data);
 			}
 		}
-
+		
 	}
-
+	
 	/**
 	  * Loads plugin subscriptions
 	  */
@@ -347,7 +344,7 @@ class MANAGER {
 			$eventName = $o->event;
 			$this->subscriptions[$eventName][] = $pluginName;
 		}
-
+		
 	}
 
 	/*
@@ -356,7 +353,7 @@ class MANAGER {
 	*/
 
 	var $currentRequestTicket = '';
-
+	
 	/**
 	 * GET requests: Adds ticket to URL (URL should NOT be html-encoded!, ticket is added at the end)
 	 */
@@ -365,63 +362,63 @@ class MANAGER {
 		$ticketCode = 'ticket=' . $this->_generateTicket();
 		if (strstr($url, '?'))
 			return $url . '&' . $ticketCode;
-		else
+		else 
 			return $url . '?' . $ticketCode;
 	}
-
+	
 	/**
 	 * POST requests: Adds ticket as hidden formvar
 	 */
 	function addTicketHidden()
 	{
 		$ticket = $this->_generateTicket();
-
+		
 		echo '<input type="hidden" name="ticket" value="', htmlspecialchars($ticket), '" />';
 	}
-
+	
 	/**
 	 * Checks the ticket that was passed along with the current request
 	 */
-	function checkTicket()
+	function checkTicket() 
 	{
 		global $member;
-
+		
 		// get ticket from request
 		$ticket = requestVar('ticket');
-
+		
 		// no ticket -> don't allow
 		if ($ticket == '')
 			return false;
-
+			
 		// remove expired tickets first
 		$this->_cleanUpExpiredTickets();
-
+		
 		// get member id
 		if (!$member->isLoggedIn())
 			$memberId = -1;
 		else
 			$memberId = $member->getID();
-
+		
 		// check if ticket is a valid one
 		$query = 'SELECT COUNT(*) as result FROM ' . sql_table('tickets') . ' WHERE member=' . intval($memberId). ' and ticket=\''.addslashes($ticket).'\'';
 		if (quickQuery($query) == 1)
 		{
 			// [in the original implementation, the checked ticket was deleted. This would lead to invalid
 			//  tickets when using the browsers back button and clicking another link/form
-			//  leaving the keys in the database is not a real problem, since they're member-specific and
+			//  leaving the keys in the database is not a real problem, since they're member-specific and 
 			//  only valid for a period of one hour
 			// ]
 			// sql_query('DELETE FROM '.sql_table('tickets').' WHERE member=' . intval($memberId). ' and ticket=\''.addslashes($ticket).'\'');
-			return true;
+			return true;			
 		} else {
 			// not a valid ticket
 			return false;
 		}
 
 	}
-
+	
 	/**
-	 * (internal method) Removes the expired tickets
+	 * (internal method) Removes the expired tickets 
 	 */
 	function _cleanUpExpiredTickets()
 	{
@@ -439,14 +436,14 @@ class MANAGER {
 		if ($this->currentRequestTicket == '')
 		{
 			// generate new ticket (only one ticket will be generated per page request)
-			// and store in database
+			// and store in database 
 			global $member;
 			// get member id
 			if (!$member->isLoggedIn())
 				$memberId = -1;
 			else
 				$memberId = $member->getID();
-
+			
 			$ok = false;
 			while (!$ok)
 			{
@@ -460,12 +457,12 @@ class MANAGER {
 				if (sql_query($query))
 					$ok = true;
 			}
-
+			
 			$this->currentRequestTicket = $ticket;
 		}
 		return $this->currentRequestTicket;
 	}
-
+	
 }
 
 ?>

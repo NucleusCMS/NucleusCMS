@@ -3,16 +3,8 @@
 include('./fancyurls.config.php');
 include('./config.php');
 
-// default to default implementation (/item/1234)
-// if itemid was not filled out by plugins
-if ($itemid == 0)
-{
-	$data = explode("/",serverVar('PATH_INFO'));
-	if (count($data) > 1)
-	{
-		$itemid = intval($data[1]);
-	}
-}
+$data = explode("/",serverVar('PATH_INFO'));
+$itemid = intval($data[1]);
 
 selector();
 
