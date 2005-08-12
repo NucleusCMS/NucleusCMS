@@ -1,5 +1,5 @@
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
+  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
   * Copyright (C) 2002-2005 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
@@ -18,6 +18,7 @@ var nucleusConvertBreaks = true;
 var nucleusMediaPopupURL = '';
 var nucleusMediaURL = 'media/';
 var nucleusAuthorId = 0;
+var scrollTop = -1;
 
 function setConvertBreaks(newval) {	nucleusConvertBreaks = newval; }
 function setMediaUrl(url) { nucleusMediaURL = url; }
@@ -26,17 +27,17 @@ function setAuthorId(id) { nucleusAuthorId = id; }
 function preview(id, value) {
 	elem = document.getElementById(id);
 	if (!elem) return;
-	
+
 	var preview = nucleusConvertBreaks ? str_replace("\n","<br />",value)+"&nbsp;" : value+"&nbsp;";
-	
+
 	// expand the media commands (without explicit collection)
 	preview = preview.replace(/\<\%image\(([^\/\|]*)\|([^\|]*)\|([^\|]*)\|([^)]*)\)\%\>/g,"<img src='"+nucleusMediaURL+nucleusAuthorId+"/$1' width='$2' height='$3' alt=\"$4\" />");
-	
+
 	// expand the media commands (with collection)
 	preview = preview.replace(/\<\%image\(([^\|]*)\|([^\|]*)\|([^\|]*)\|([^)]*)\)\%\>/g,"<img src='"+nucleusMediaURL+"$1' width='$2' height='$3' alt=\"$4\" />");
 	preview = preview.replace(/\<\%popup\(([^\|]*)\|([^\|]*)\|([^\|]*)\|([^)]*)\)\%\>/g,"<a href='' onclick='if (event &amp;&amp; event.preventDefault) event.preventDefault(); alert(\"popup image\"); return false;' title='popup'>$4</a>");
-	preview = preview.replace(/\<\%media\(([^\|]*)\|([^)]*)\)\%\>/g,"<a href='' title='media link'>$2</a>");	
-	
+	preview = preview.replace(/\<\%media\(([^\|]*)\|([^)]*)\)\%\>/g,"<a href='' title='media link'>$2</a>");
+
 	elem.innerHTML = preview;
 }
 
@@ -49,7 +50,7 @@ function showedit() {
 	document.getElementById('edit').style.display = newval;
 
 	if (newval == "block")
-		updAllPreviews();	
+		updAllPreviews();
 }
 
 function updAllPreviews() {
@@ -68,7 +69,7 @@ function isEditVisible() {
 function updPreview(id) {
 	// don't update when preview is hidden
 	if (!isEditVisible()) return;
-	
+
 	var inputField = document.getElementById('input' + id);
 	if (!inputField) return;
 	preview('prev' + id, inputField.value);
@@ -85,7 +86,7 @@ function str_replace(a, b, s)
 
 function shortCuts() {
 	if (!event || (event.ctrlKey != true)) return;
-	
+
 	switch (event.keyCode) {
 		case 1:
 			ahrefThis(); break; // ctrl-shift-a
@@ -95,7 +96,7 @@ function shortCuts() {
 			italicThis(); break; // ctrl-shift-i
 		case 13:
 			addMedia(); break; // ctrl-shift-m
-		default: 
+		default:
 			return;
 	}
 	return;
@@ -118,17 +119,17 @@ function ahrefThis() {
 		strSelection = document.selection.createRange().text;
 	else
 		strSelection = '';
-		
+
 	strHref = prompt("Create a link to:","http://");
 	if (strHref == null) return;
-	
-	var textpre = "<a href=\"" + strHref + "\">";
+
+	var textpre = "<a href=\"" + strHref.replace(/&/g,'&amp;') + "\">";
 	insertAroundCaret(textpre, "</a>");
 }
 
 function execAndUpdate(action) {
 	lastSelected.caretPos.execCommand(action);
-	updAllPreviews();	
+	updAllPreviews();
 }
 
 
@@ -136,12 +137,12 @@ var nonie_FormType = 'body';
 
 // Add media to new item
 function addMedia() {
-	
+
 	var mediapopup = window.open(nucleusMediaPopupURL + 'media.php','name',
 		'status=yes,toolbar=no,scrollbars=yes,resizable=yes,width=500,height=450,top=0,left=0');
 
 	return;
-} 
+}
 
 
 function setMediaPopupURL(url) {
@@ -154,7 +155,7 @@ function includeImage(collection, filename, type, width, height) {
 	} else {
 		text = getCaretText();
 	}
-	
+
 	// add collection name when not private collection (or editing a message that's not your)
 	var fullName;
 	if (isNaN(collection) || (nucleusAuthorId != collection)) {
@@ -162,8 +163,8 @@ function includeImage(collection, filename, type, width, height) {
 	} else {
 		fullName = filename;
 	}
-		
-	
+
+
 	var replaceBy;
 	switch(type) {
 		case 'popup':
@@ -173,9 +174,9 @@ function includeImage(collection, filename, type, width, height) {
 		default:
 			replaceBy = '<%image(' +  fullName + '|'+width+'|'+height+'|' + text +')%>';
 	}
-	
+
 	insertAtCaret(replaceBy);
-	updAllPreviews();	
+	updAllPreviews();
 
 }
 
@@ -186,19 +187,19 @@ function includeOtherMedia(collection, filename) {
 	} else {
 		text = getCaretText();
 	}
-	
+
 	// add collection name when not private collection (or editing a message that's not your)
 	var fullName;
 	if (isNaN(collection) || (nucleusAuthorId != collection)) {
 		fullName = collection + '/' + filename;
 	} else {
 		fullName = filename;
-	}	
-	
+	}
+
 	var replaceBy = '<%media(' +  fullName + '|' + text +')%>';
-	
+
 	insertAtCaret(replaceBy);
-	updAllPreviews();	
+	updAllPreviews();
 }
 
 
@@ -223,44 +224,58 @@ function checkSubmit() {
 function storeCaret (textEl) {
 
 	// store caret
-	if (textEl.createTextRange) 
+	if (textEl.createTextRange)
 		textEl.caretPos = document.selection.createRange().duplicate();
 
 	// also store lastselectedelement
 	lastSelected = textEl;
-	
+
 	nonie_FormType = textEl.name;
+
+	scrollTop = textEl.scrollTop;
 }
 
 var lastSelected;
 
-// inserts text at caret (overwriting selection)
+ // inserts text at caret (overwriting selection)
 function insertAtCaret (text) {
 	var textEl = lastSelected;
 	if (textEl && textEl.createTextRange && textEl.caretPos) {
 		var caretPos = textEl.caretPos;
 		caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? text + ' ' : text;
 	} else if (!document.all && document.getElementById) {
-		mozReplace(document.getElementById('input' + nonie_FormType), text);				
+		mozReplace(document.getElementById('input' + nonie_FormType), text);
+		if(scrollTop>-1) {
+			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
+		}
 	} else if (textEl) {
 		textEl.value  += text;
 	} else {
-		document.getElementById('input' + nonie_FormType).value += text;		
+		document.getElementById('input' + nonie_FormType).value += text;
+		if(scrollTop>-1) {
+			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
+		}
 	}
 	updAllPreviews();
 }
 
-// inserts a tag around the selected text
+ // inserts a tag around the selected text
 function insertAroundCaret (textpre, textpost) {
 	var textEl = lastSelected;
-	
+
 	if (textEl && textEl.createTextRange && textEl.caretPos) {
 		var caretPos = textEl.caretPos;
 		caretPos.text = textpre + caretPos.text + textpost;
 	} else if (!document.all && document.getElementById) {
-		mozWrap(document.getElementById('input' + nonie_FormType), textpre, textpost);		
+		mozWrap(document.getElementById('input' + nonie_FormType), textpre, textpost);
+		if(scrollTop>-1) {
+			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
+		}
 	} else {
 		document.getElementById('input' + nonie_FormType).value += textpre + textpost;
+		if(scrollTop>-1) {
+			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
+		}
 	}
 
 	updAllPreviews();

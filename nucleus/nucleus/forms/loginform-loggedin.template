@@ -1,3 +1,4 @@
+<a id="nucleus_lf"></a>
 <div class="loginform">
 	<%text(_LOGINFORM_YOUARE)%> <%formdata(membername)%> ! (<a href="<%self%>?action=logout"><%text(_LOGOUT)%></a>)
 </div>

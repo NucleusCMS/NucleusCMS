@@ -268,8 +268,8 @@ class MEMBER {
 	}
 
 	/**
-	  * Return true if member can be deleted. This means that there are no items or comments
-	  * posted by the member
+	  * Return true if member can be deleted. This means that there are no items 
+	  * posted by the member left
 	  */
 	function canBeDeleted() {
 		$res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());

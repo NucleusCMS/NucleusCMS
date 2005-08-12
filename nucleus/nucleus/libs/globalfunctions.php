@@ -1,27 +1,30 @@
 <?php
 
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2005 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-  * Copyright (C) 2002-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id$
-  */
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
+ */
 
 // needed if we include globalfunctions from install.php
-global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member; 
+global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS'));
 
-$CONF['debug'] = 0;
+$CONF['debug'] = 1;
 
-$nucleus['version'] = 'v3.21';
+$nucleus['version'] = 'v3.3CVS';
 if (getNucleusPatchLevel() > 0)
 {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();
@@ -48,7 +51,7 @@ $CONF['alertOnSecurityRisk'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 321;
+	return 330;
 }
 
 /**
@@ -155,10 +158,14 @@ if ($action == 'login') {
 			$action = $nextaction;
 
 		$manager->notify('LoginSuccess',array('member' => &$member));
+		$errormessage = '';
 		ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
 	} else {
+		// errormessage for [%errordiv%]
+		$errormessage = 'Login failed for ' . $login;
+		
 		$manager->notify('LoginFailed',array('username' => $login));
-		ACTIONLOG::add(INFO, 'Login failed for ' . $login);
+		ACTIONLOG::add(INFO, $errormessage);
 	}
 /*
 
@@ -166,22 +173,22 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 
 } elseif (serverVar('PHP_AUTH_USER') && serverVar('PHP_AUTH_PW')) {
 	// HTTP Authentication
-       $login  = serverVar('PHP_AUTH_USER');
-       $pw     = serverVar('PHP_AUTH_PW');
+	   $login  = serverVar('PHP_AUTH_USER');
+	   $pw     = serverVar('PHP_AUTH_PW');
 
-       if ($member->login($login,$pw)) {
-               $manager->notify('LoginSuccess',array('member' => &$member));
-               ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
-       } else {
-               $manager->notify('LoginFailed',array('username' => $login));
-               ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
+	   if ($member->login($login,$pw)) {
+			   $manager->notify('LoginSuccess',array('member' => &$member));
+			   ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
+	   } else {
+			   $manager->notify('LoginFailed',array('username' => $login));
+			   ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
 
-               //Since bad credentials, generate an apropriate error page
-               header("WWW-Authenticate: Basic realm=\"Nucleus CMS {$nucleus['version']}\"");
-               header('HTTP/1.0 401 Unauthorized');
-               echo 'Invalid username or password';
-               exit;
-       }
+			   //Since bad credentials, generate an apropriate error page
+			   header("WWW-Authenticate: Basic realm=\"Nucleus CMS {$nucleus['version']}\"");
+			   header('HTTP/1.0 401 Unauthorized');
+			   echo 'Invalid username or password';
+			   exit;
+	   }
 */
 
 } elseif (($action == 'logout') && (!headers_sent()) && cookieVar($CONF['CookiePrefix'] . 'user')){
@@ -201,8 +208,8 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 // login completed
 $manager->notify('PostAuthentication',array('loggedIn' => $member->isLoggedIn()));
 
-// first, let's see if the site is disabled or not
-if ($CONF['DisableSite'] && !$member->isAdmin()) {
+// first, let's see if the site is disabled or not. always allow admin area access.
+if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
 	redirect($CONF['DisableSiteURL']);
 	exit;
 }
@@ -219,6 +226,7 @@ include($DIR_LIBS . 'NOTIFICATION.php');
 include($DIR_LIBS . 'BAN.php');
 include($DIR_LIBS . 'PAGEFACTORY.php');
 include($DIR_LIBS . 'SEARCH.php');
+include($DIR_LIBS . 'entity.php');
 
 
 // set lastVisit cookie (if allowed)
@@ -235,8 +243,8 @@ include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
 
 /*
 	Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
-	
-// To remove after v2.5 is released and language files have been updated. 
+
+// To remove after v2.5 is released and language files have been updated.
 // Including this makes sure that language files for v2.5beta can still be used for v2.5final
 // without having weird _SETTINGS_EXTAUTH string showing up in the admin area.
 if (!defined('_MEMBERS_BYPASS'))
@@ -257,41 +265,64 @@ if (!defined('_ARCHIVETYPE_MONTH'))
 
 
 // decode path_info
-if ($CONF['URLMode'] == 'pathinfo') {
-	$data = explode("/",serverVar('PATH_INFO'));
-	for ($i=0;$i<sizeof($data);$i++) {
-		switch ($data[$i]) {
-			case 'item':			// item/1 (blogid)
-				$i++;
-				if ($i<sizeof($data)) $itemid = intval($data[$i]);
-				break;
-			case 'archives':		// archives/1 (blogid)
-				$i++;
-				if ($i<sizeof($data)) $archivelist = intval($data[$i]);
-				break;
-			case 'archive':			// two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
-				if ((($i+1)<sizeof($data)) && (!strstr($data[$i+1],'-')) ){
-					$blogid = intval($data[++$i]);
-				}
-				$i++;
-				if ($i<sizeof($data)) $archive = $data[$i];
-				break;
-			case 'blogid':			// blogid/1
-			case 'blog':			// blog/1
-				$i++;
-				if ($i<sizeof($data)) $blogid = intval($data[$i]);
-				break;
-			case 'category':		// category/1 (catid)
-			case 'catid':
-				$i++;
-				if ($i<sizeof($data)) $catid = intval($data[$i]);
-				break;
-			case 'member':
-				$i++;
-				if ($i<sizeof($data)) $memberid = intval($data[$i]);
-				break;
-			default:
-				// skip...
+if ($CONF['URLMode'] == 'pathinfo')
+{
+	// initialize keywords if this hasn't been done before
+    if ($CONF['ItemKey'] == '')     $CONF['ItemKey'] = 'item';
+    if ($CONF['ArchiveKey'] == '')  $CONF['ArchiveKey'] = 'archive';
+    if ($CONF['ArchivesKey'] == '') $CONF['ArchivesKey'] = 'archives';
+    if ($CONF['MemberKey'] == '')   $CONF['MemberKey'] = 'member';
+    if ($CONF['BlogKey'] == '')     $CONF['BlogKey'] = 'blog';
+    if ($CONF['CategoryKey'] == '') $CONF['CategoryKey'] = 'category';
+        
+    $parsed = false;
+    $manager->notify(
+    	'ParseURL', 
+    	array(
+    		'type' => basename(serverVar('SCRIPT_NAME')),	// e.g. item, blog, ...
+    		'info' => serverVar('PATH_INFO'),
+    		'complete' => &$parsed		
+    	)
+    );
+    
+    if (!$parsed)
+    {
+        // default implementation
+		$data = explode("/",serverVar('PATH_INFO'));
+		for ($i=0;$i<sizeof($data);$i++) {
+			switch ($data[$i]) {
+				case $CONF['ItemKey']:			// item/1 (blogid)
+					$i++;
+					if ($i<sizeof($data)) $itemid = intval($data[$i]);
+					break;
+				case $CONF['ArchivesKey']:		// archives/1 (blogid)
+					$i++;
+					if ($i<sizeof($data)) $archivelist = intval($data[$i]);
+					break;
+				case $CONF['ArchiveKey']:		// two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
+					if ((($i+1)<sizeof($data)) && (!strstr($data[$i+1],'-')) ){
+						$blogid = intval($data[++$i]);
+					}
+					$i++;
+					if ($i<sizeof($data)) $archive = $data[$i];
+					break;
+				case 'blogid':			// blogid/1
+					case $CONF['BlogKey']:	// blog/1
+					$i++;
+					if ($i<sizeof($data)) $blogid = intval($data[$i]);
+					break;
+					case $CONF['CategoryKey']:	// category/1 (catid)
+				case 'catid':
+					$i++;
+					if ($i<sizeof($data)) $catid = intval($data[$i]);
+					break;
+					case $CONF['MemberKey']:
+					$i++;
+					if ($i<sizeof($data)) $memberid = intval($data[$i]);
+					break;
+				default:
+					// skip...
+			}
 		}
 	}
 }
@@ -323,11 +354,11 @@ function sql_table($name)
 
 function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 	global $manager, $CONF;
-	
+
 	if (!headers_sent()) {
 		// if content type is application/xhtml+xml, only send it to browsers
 		// that can handle it (IE6 cannot). Otherwise, send text/html
-		
+
 		// v2.5: For admin area pages, keep sending text/html (unless it's a debug version)
 		//       application/xhtml+xml still causes too much problems with the javascript implementations
 		if (
@@ -337,7 +368,7 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 		{
 			$contenttype = 'text/html';
 		}
-			
+
 		$manager->notify(
 			'PreSendContentType',
 			array(
@@ -350,13 +381,16 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 		// strip strange characters
 		$contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
 		$charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
-		
-		header('Content-Type: ' . $contenttype . '; charset=' . $charset);			
-	}
-	
-	
 
-	
+		if ($charset != '')
+			header('Content-Type: ' . $contenttype . '; charset=' . $charset);			
+		else
+			header('Content-Type: ' . $contenttype);			
+	}
+
+
+
+
 }
 
 /**
@@ -385,8 +419,6 @@ function sql_disconnect() {
   * executes an SQL query
   */
 function sql_query($query) {
-global $SQLCount;
-$SQLCount++;
 	$res = mysql_query($query) or print("mySQL error with query $query: " . mysql_error() . '<p />');
 	return $res;
 }
@@ -517,7 +549,7 @@ function selector() {
 		$errorInfo = $a->doAction($action);
 		if ($errorInfo)
 			$errormessage = $errorInfo['message'];
-	}	
+	}
 
 	// show error when headers already sent out
 	if (headers_sent() && $CONF['alertOnHeadersSent']) {
@@ -550,11 +582,10 @@ function selector() {
 		if (!$manager->existsItem($itemid,0,0))
 			doError(_ERROR_NOSUCHITEM);
 
-
 		global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
 
-		// 1. get timestamp and blogid for item
-		$query = 'SELECT itime, iblog FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
+		// 1. get timestamp, blogid and catid for item
+		$query = 'SELECT itime, iblog, icat FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
 
@@ -562,6 +593,13 @@ function selector() {
 		// deny access
 		if ($blogid && (intval($blogid) != $obj->iblog))
 			doError(_ERROR_NOSUCHITEM);
+			
+		// if a category has been selected which doesn't match the item, ignore the 
+		// category. #85
+		if (($catid != 0) && ($catid != $obj->icat))
+		{
+			$catid = 0;
+		}
 
 		$blogid = $obj->iblog;
 		$timestamp = strtotime($obj->itime);
@@ -578,10 +616,10 @@ function selector() {
 		if ($obj) {
 			$itemidprev = $obj->inumber;
 			$itemtitleprev = $obj->ititle;
-    	}
+		}
 
 		// get next itemid and title
-		$query = 'SELECT inumber, ititle FROM '.sql_table('item').' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate(time()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
+		$query = 'SELECT inumber, ititle FROM '.sql_table('item').' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate($b->getCorrectTime()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
 		$res = sql_query($query);
 
 		$obj = mysql_fetch_object($res);
@@ -620,7 +658,7 @@ function selector() {
 			$blogid = getBlogIDFromName($archivelist);
 		if (!$blogid) doError(_ERROR_NOSUCHBLOG);
 	} elseif ($query) {
-	    global $startpos;
+		global $startpos;
 		$type = 'search';
 		$query = stripslashes($query);
 		if (intval($blogid)==0)
@@ -640,7 +678,7 @@ function selector() {
 		// TODO: set some vars?
 	} else {
 		// show regular index page
-	    global $startpos;
+		global $startpos;
 		$type = 'index';
 	}
 
@@ -663,7 +701,7 @@ function selector() {
 	if (!$skinid)
 		$skinid = $blog->getDefaultSkin();
 
-	
+
 	$skin =& new SKIN($skinid);
 	if (!$skin->isValid)
 		doError(_ERROR_NOSUCHSKIN);
@@ -711,7 +749,7 @@ function getConfig() {
 // some checks for names of blogs, categories, templates, members, ...
 function isValidShortName($name) {		return eregi('^[a-z0-9]+$', $name); }
 function isValidDisplayName($name) {	return eregi('^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$', $name); }
-function isValidCategoryName($name) {	return 1; } 
+function isValidCategoryName($name) {	return 1; }
 function isValidTemplateName($name) {	return eregi('^[a-z0-9/]+$', $name); }
 function isValidSkinName($name) {		return eregi('^[a-z0-9/]+$', $name); }
 
@@ -840,7 +878,7 @@ function getMailFooter() {
 function getLanguageName() {
 	global $CONF, $member;
 
-	if ($member) {
+	if ($member && $member->isLoggedIn()) {
 		// try to use members language
 		$memlang = $member->getLanguage();
 
@@ -913,59 +951,100 @@ if (	($CONF['URLMode'] == 'pathinfo')
   * Centralisation of the functions that generate links
   */
 function createItemLink($itemid, $extra = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['ItemURL'] . '/item/' . $itemid;
-	else
-		$link = $CONF['ItemURL'] . '?itemid=' . $itemid;
-	return addLinkParams($link, $extra);
+	return createLink('item', array('itemid' => $itemid));
 }
 function createMemberLink($memberid, $extra = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['MemberURL'] . '/member/' . $memberid;
-	else
-		$link = $CONF['MemberURL'] . '?memberid=' . $memberid;
-	return addLinkParams($link, $extra);
+	return createLink('member', array('memberid' => $memberid));
 }
 function createCategoryLink($catid, $extra = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['CategoryURL'] . '/category/' . $catid;
-	else
-		$link = $CONF['CategoryURL'] . '?catid=' . $catid;
-	return addLinkParams($link, $extra);
+	return createLink('category', array('catid' => $catid, 'extra' => $extra));
 }
 function createArchiveListLink($blogid = '', $extra = '') {
-	global $CONF;
-	if (!$blogid)
-		$blogid = $CONF['DefaultBlog'];
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['ArchiveListURL'] . '/archives/' . $blogid;
-	else
-		$link = $CONF['ArchiveListURL'] . '?archivelist=' . $blogid;
-	return addLinkParams($link, $extra);
+	return createLink('archivelist', array('blogid' => $blogid, 'extra' => $extra));
 }
 function createArchiveLink($blogid, $archive, $extra = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['ArchiveURL'] . '/archive/'.$blogid.'/' . $archive;
-	else
-		$link = $CONF['ArchiveURL'] . '?blogid='.$blogid.'&amp;archive=' . $archive;
-	return addLinkParams($link, $extra);
+	return createLink('archive', array('blogid' => $blogid, 'archive' => $archive, 'extra' => $extra));
 }
+function createBlogidLink($blogid, $params = '') {
+	return createLink('blog', array('blogid' => $blogid, 'extra' => $params));
+}
+
+function createLink($type, $params)
+{
+	global $manager, $CONF;
+	
+	$generatedURL = '';
+	$usePathInfo = ($CONF['URLMode'] == 'pathinfo');
+	
+	// ask plugins first
+	$created = false;
+	
+	if ($usePathInfo)
+	{
+		$manager->notify(
+			'GenerateURL',
+			array(
+				'type' => $type,
+				'params' => $params,
+				'completed' => &$created,
+				'url' => &$url
+			)
+		);
+	} 
+	
+	// if a plugin created the URL, return it
+	if ($created)
+		return $url;
+		
+	// default implementation
+	switch ($type)
+	{
+		case 'item':
+			if ($usePathInfo)
+				$url = $CONF['ItemURL'] . '/' . $CONF['ItemKey'] . '/' . $params['itemid'];
+			else
+				$url = $CONF['ItemURL'] . '?itemid=' . $params['itemid'];
+			break;
+		case 'member':
+			if ($usePathInfo)
+				$url = $CONF['MemberURL'] . '/' . $CONF['MemberKey'] . '/' . $params['memberid'];
+			else
+				$url = $CONF['MemberURL'] . '?memberid=' . $params['memberid'];
+			break;
+		case 'category':
+			if ($usePathInfo)
+				$url = $CONF['CategoryURL'] . '/' . $CONF['CategoryKey'] . '/' . $params['catid'];
+			else
+				$url = $CONF['CategoryURL'] . '?catid=' . $params['catid'];
+			break;
+		case 'archivelist':
+			if (!$params['blogid'])
+				$params['blogid'] = $CONF['DefaultBlog'];
+			if ($usePathInfo)
+				$url = $CONF['ArchiveListURL'] . '/' . $CONF['ArchivesKey'] . '/' . $params['blogid'];
+			else
+				$url = $CONF['ArchiveListURL'] . '?archivelist=' . $params['blogid'];
+			break;
+		case 'archive':
+			if ($usePathInfo)
+				$url = $CONF['ArchiveURL'] . '/' . $CONF['ArchiveKey'] . '/'.$params['blogid'].'/' . $params['archive'];
+			else
+				$url = $CONF['ArchiveURL'] . '?blogid='.$params['blogid'].'&amp;archive=' . $params['archive'];
+			break;
+		case 'blog':
+			if ($usePathInfo)
+				$url = $CONF['BlogURL'] . '/' . $CONF['BlogKey'] . '/' . $params['blogid'];
+	else
+				$url = $CONF['BlogURL'] . '?blogid=' . $params['blogid'];
+			break;
+}
+	
+	return addLinkParams($url, $params['extra']);
+}
+
 function createBlogLink($url, $params) {
 	return addLinkParams($url . '?', $params);
 }
-function createBlogidLink($blogid, $params = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['BlogURL'] . '/blog/' . $blogid;
-	else
-		$link = $CONF['BlogURL'] . '?blogid=' . $blogid;
-	return addLinkParams($link, $params);
-}
-
 
 function addLinkParams($link, $params) {
 	global $CONF;
@@ -990,23 +1069,23 @@ function addLinkParams($link, $params) {
  *		name of parameter to change (e.g. 'foo')
  * @param $value
  *		New value for that parameter (e.g. 3)
- * @result 
+ * @result
  *		altered query string (for the examples above: foo=3&bar=2&x=y)
  */
 function alterQueryStr($querystr, $param, $value) {
-    $vars = explode("&", $querystr);
-    $set  = false;
-    for ($i=0;$i<count($vars);$i++) {
-        $v = explode('=',$vars[$i]);
-        if ($v[0] == $param) {
-            $v[1]     = $value;
-            $vars[$i] = implode('=', $v);
-            $set      = true;
-            break;
-        }
-    }
-    if (!$set) {$vars[] = $param . '=' . $value;}
-    return ltrim(implode('&', $vars), '&');
+	$vars = explode("&", $querystr);
+	$set  = false;
+	for ($i=0;$i<count($vars);$i++) {
+		$v = explode('=',$vars[$i]);
+		if ($v[0] == $param) {
+			$v[1]     = $value;
+			$vars[$i] = implode('=', $v);
+			$set      = true;
+			break;
+		}
+	}
+	if (!$set) {$vars[] = $param . '=' . $value;}
+	return ltrim(implode('&', $vars), '&');
 }
 
 // passes one variable as hidden input field (multiple fields for arrays)
@@ -1026,21 +1105,32 @@ function passVar($key, $value) {
 /*
 	Date format functions (to be used from [%date(..)%] skinvars
 */
-function formatDate($format, $timestamp, $defaultFormat) {
-	if ($format == 'rfc822') { 
-		return date('r', $timestamp); 
-	} else if ($format == 'rfc822GMT') { 
-		return gmdate('r', $timestamp); 
-	} else if ($format == 'utc') { 
-		return gmdate('Y-m-d\TH:i:s\Z', $timestamp); 
-	} else if ($format == 'iso8601') {
-       	$tz = date('O', $timestamp);
-        $tz = substr($tz, 0, 3) . ':' . substr($tz, 3, 2);	
-		return gmdate('Y-m-d\TH:i:s', $timestamp) . $tz;
-	} else {  
-		return strftime($format ? $format : $defaultFormat,$timestamp); 
-	}  
+function formatDate($format, $timestamp, $defaultFormat, &$blog) 
+{
+	// apply blog offset (#42)
+	$boffset = $blog ? $blog->getTimeOffset() * 3600 : 0;
+	$offset = date('Z', $timestamp) + $boffset;
 
+	switch ($format) {
+		case 'rfc822' :
+			if ($offset >= 0) $tz = '+';
+		else            { $tz = '-'; $offset = -$offset;}
+			$tz .= sprintf("%02d%02d",floor($offset / 3600),round(($offset % 3600)/60));
+			return date('D, j M Y H:i:s ', $timestamp) . $tz;
+		case 'rfc822GMT' :
+			$timestamp -= $offset;
+			return date('D, j M Y H:i:s ', $timestamp) . 'GMT';
+		case 'utc' :
+			$timestamp -= $offset;
+			return date('Y-m-d\TH:i:s\Z', $timestamp);
+		case 'iso8601' :
+			if ($offset >= 0) $tz = '+';
+			else            { $tz = '-'; $offset = -$offset;}
+			$tz .= sprintf("%02d:%02d",floor($offset / 3600),round(($offset % 3600)/60));
+			return date('Y-m-d\TH:i:s', $timestamp) . $tz;
+		default :
+			return strftime($format ? $format : $defaultFormat,$timestamp);
+	}
 }
 
 function checkVars($aVars)
@@ -1050,8 +1140,8 @@ function checkVars($aVars)
 	{
 		if (phpversion() >= '4.1.0')
 		{
-			if (   isset($_GET[$varName]) 
-				|| isset($_POST[$varName]) 
+			if (   isset($_GET[$varName])
+				|| isset($_POST[$varName])
 				|| isset($_COOKIE[$varName])
 				|| isset($_ENV[$varName])
 				|| isset($_SESSION[$varName])
@@ -1060,20 +1150,20 @@ function checkVars($aVars)
 				die('Sorry. An error occurred.');
 			}
 		} else {
-			if (   isset($HTTP_GET_VARS[$varName]) 
-				|| isset($HTTP_POST_VARS[$varName]) 
+			if (   isset($HTTP_GET_VARS[$varName])
+				|| isset($HTTP_POST_VARS[$varName])
 				|| isset($HTTP_COOKIE_VARS[$varName])
 				|| isset($HTTP_ENV_VARS[$varName])
 				|| isset($HTTP_SESSION_VARS[$varName])
 				|| isset($HTTP_POST_FILES[$varName])
 			){
 				die('Sorry. An error occurred.');
-			}		
+			}
 		}
 	}
 }
 
-/** 
+/**
  * Stops processing the request and redirects to the given URL.
  * - no actual contents should have been sent to the output yet
  * - the URL will be stripped of illegal or dangerous characters
@@ -1083,6 +1173,61 @@ function redirect($url)
 	$url = preg_replace('|[^a-z0-9-~+_.?#=&;,/:@%]|i', '', $url);
 	header('Location: ' . $url);
 	exit;
+}
+
+/**
+ * Strip HTML tags from a string
+ * This function is a bit more intelligent than a regular call to strip_tags(),
+ * because it also deletes the contents of certain tags and cleans up any 
+ * unneeded whitespace.
+ */
+function stringStripTags ($string) {
+	$string = preg_replace("/<del[^>]*>.+<\/del[^>]*>/isU", '', $string);
+	$string = preg_replace("/<script[^>]*>.+<\/script[^>]*>/isU", '', $string);
+	$string = preg_replace("/<style[^>]*>.+<\/style[^>]*>/isU", '', $string);
+	$string = str_replace('>', '> ', $string);
+	$string = str_replace('<', ' <', $string);
+	$string = strip_tags($string);
+
+	$string = preg_replace("/\s+/", " ", $string);
+	$string = trim($string);
+	return $string;
+}
+
+/**
+ * Make a string containing HTML safe for use in a HTML attribute
+ * Tags are stripped and entities are normalized
+ */
+function stringToAttribute ($string) {
+	$string = stringStripTags($string);
+	$string = entity::named_to_numeric($string);
+	$string = entity::normalize_numeric($string);
+
+	if (_CHARSET == 'UTF-8') {
+		$string = entity::numeric_to_utf8($string);
+	}
+
+	$string = entity::specialchars($string, 'html');
+	$string = entity::numeric_to_named($string);
+	return $string;
+}
+
+/**
+ * Make a string containing HTML safe for use in a XML document
+ * Tags are stripped, entities are normalized and named entities are
+ * converted to numeric entities.
+ */
+function stringToXML ($string) {
+	$string = stringStripTags($string);
+	$string = entity::named_to_numeric($string);
+	$string = entity::normalize_numeric($string);
+		
+	if (_CHARSET == 'UTF-8') {
+		$string = entity::numeric_to_utf8($string);
+	}
+
+	$string = entity::specialchars($string, 'xml');
+	return $string;
 }
 
 ?>
