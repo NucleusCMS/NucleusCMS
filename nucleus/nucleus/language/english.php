@@ -555,7 +555,7 @@ define('_ERROR_BADSHORTBLOGNAME',	'The short blog name should only contain a-z a
 define('_ERROR_DUPSHORTBLOGNAME',	'Another blog already has the chosen short name. These names should be unique');
 define('_ERROR_UPDATEFILE',			'Cannot get write access to the update-file. Make sure the file permissions are set ok (try chmodding it to 666). Also note that the location is relative to the admin-area directory, so you might want to use an absolute path (something like /your/path/to/nucleus/)');
 define('_ERROR_DELDEFBLOG',			'Cannot delete the default blog');
-define('_ERROR_DELETEMEMBER',		'This member cannot be deleted, probably because she is the author of items or comments');
+define('_ERROR_DELETEMEMBER',		'This member cannot be deleted, probably because he/she is the author of item(s)');
 define('_ERROR_BADTEMPLATENAME',	'Invalid name for template, use only a-z and 0-9, without spaces');
 define('_ERROR_DUPTEMPLATENAME',	'Another template with this name already exists');
 define('_ERROR_BADSKINNAME',		'Invalid name for skin (only a-z, 0-9 are allowed, no spaces)');
