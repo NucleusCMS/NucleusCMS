@@ -2948,17 +2948,11 @@ class ADMIN {
 
 		$manager->notify('PreDeleteMember', array('member' => &$mem));
 
-		/* clean up all comments from this member */
-		$query = 'SELECT * FROM '.sql_table('comment').' WHERE cmember='.$memberid;
-		$res = sql_query($query);
-		if (mysql_num_rows($res) > 0) {
-			while ($comment = mysql_fetch_object($res)) {
-				$query2 = 'UPDATE '.sql_table('comment').' SET cmember="0", cuser="'.$mem->getDisplayName()
-					.'" WHERE cnumber='.$comment->cnumber;
-				sql_query($query2);
-			}
-		}
-
+		/* unlink comments from memberid */
+		$query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. addslashes($mem->getDisplayName())
+					.'" WHERE cmember='.$memberid;
+		sql_query($query);
+		
 		$query = 'DELETE FROM '.sql_table('member').' WHERE mnumber='.$memberid;
 		sql_query($query);
 

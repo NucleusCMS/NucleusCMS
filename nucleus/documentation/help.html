@@ -792,6 +792,12 @@ These templates are used to format links to popup image windows and media object
 </tr><tr>
 	<td>popuptext</td>
 	<td>(=same as text)</td>
+</tr><tr>
+	<td>link</td>
+	<td>direct link to the image (URL)</td>
+</tr><tr>
+	<td>media</td>
+	<td>a non-popup A-tag to the image, ready to use.</td>
 </tr></table>
 
 
@@ -815,6 +821,9 @@ These templates are used to format links to popup image windows and media object
 </tr><tr>
 	<td>height</td>
 	<td>image width</td>
+</tr><tr>
+	<td>media</td>
+	<td>an A-tag to the image, ready to use.</td>
 </tr></table>
 
 <h2>Media Object Link Code</h2>
@@ -3520,6 +3529,12 @@ These template variables be used in the following template-parts: <tt>item heade
 	<td>userlinkraw</td>
 	<td>same as above, but without the &lt;a href.., empty when no valid URL or e-mail available</td>
 </tr><tr>
+	<td>useremail</td>
+	<td>the e-mail address of the user, empty if the e-mail address was not provided by the user</td>
+</tr><tr>
+	<td>userwebsite</td>
+	<td>the URL of the users website, empty if the URL was not provided by the user</td>
+</tr><tr>
 	<td>memberid</td>
 	<td>ID of the member (0 for non-members)</td>
 </tr><tr>
@@ -3556,11 +3571,17 @@ These template variables be used in the following template-parts: <tt>item heade
 	<td>blogid</td>
 	<td>ID of the weblog</td>
 </tr><tr>
+	<td>blogurl</td>
+	<td>URL of the weblog</td>
+</tr><tr>
 	<td><a href="#templatememberextra" title="authtext()">authtext</a></td>
 	<td>the extra text</a> for members, empty for non members</td>
 </tr><tr>
 	<td>short</td>
 	<td>a cut off version of the body, which truncates after the first line break. <a href="#templatecommentcontinued">A link is added</a> at the end according to the template</td>
+</tr><tr>
+	<td>excerpt</td>
+	<td>the body of the comment, cut at 60 characters and appended with '...'</td>
 </tr><tr>
 	<td>timestamp</td>
 	<td>time at which comment was added</td>
