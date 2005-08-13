@@ -1,19 +1,22 @@
 <?php
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2005 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * Actionlog class for Nucleus
-  *
-  * $Id: ACTIONLOG.php,v 1.3 2005-03-12 06:19:04 kimitake Exp $
-  * $NucleusJP$
-  */
+ * Actionlog class for Nucleus
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id: ACTIONLOG.php,v 1.4 2005-08-13 07:31:04 kimitake Exp $
+ * $NucleusJP: ACTIONLOG.php,v 1.3 2005/03/12 06:19:04 kimitake Exp $
+ */
 define('ERROR',1);		// only errors
 define('WARNING',2);	// errors and warnings
 define('INFO',3);		// info, errors and warnings

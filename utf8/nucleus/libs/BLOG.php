@@ -1,21 +1,24 @@
 <?php
 
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2005 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * A class representing a blog and containing functions to get that blog shown
-  * on the screen 
-  *
-  * $Id: BLOG.php,v 1.3 2005-03-12 06:19:05 kimitake Exp $
-  * $NucleusJP$
-  */
+ * A class representing a blog and containing functions to get that blog shown
+ * on the screen
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id: BLOG.php,v 1.4 2005-08-13 07:31:04 kimitake Exp $
+ * $NucleusJP: BLOG.php,v 1.3 2005/03/12 06:19:05 kimitake Exp $
+ */
 class BLOG {
 	
 	// blog id
