@@ -12,8 +12,8 @@
   *
   * Actions that can be called via action.php
   *
-  * $Id: ACTION.php,v 1.2 2005-03-16 08:10:35 kimitake Exp $
-  * $NucleusJP: ACTION.php,v 1.2 2005/03/12 06:19:04 kimitake Exp $
+  * $Id: ACTION.php,v 1.3 2005-08-13 07:22:10 kimitake Exp $
+  * $NucleusJP: ACTION.php,v 1.2 2005/03/16 08:10:35 kimitake Exp $
   */
 class ACTION
 {
@@ -81,7 +81,7 @@ class ACTION
 			if (postVar('url')) {
 				redirect(postVar('url'));
 			} else {
-				$url = $CONF['IndexURL'] . createItemLink($post['itemid']);
+				$url = createItemLink($post['itemid']);
 				redirect($url);
 			}
 		} else {
