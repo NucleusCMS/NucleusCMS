@@ -10,8 +10,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: globalfunctions.php,v 1.5 2005-03-19 09:05:40 kimitake Exp $
-  * $NucleusJP: globalfunctions.php,v 1.4 2005/03/15 07:59:27 kimitake Exp $
+  * $Id: globalfunctions.php,v 1.6 2005-08-13 07:27:42 kimitake Exp $
+  * $NucleusJP: globalfunctions.php,v 1.5 2005/03/19 09:05:40 kimitake Exp $
   */
 
 // needed if we include globalfunctions from install.php
@@ -22,7 +22,7 @@ checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQ
 
 $CONF['debug'] = 0;
 
-$nucleus['version'] = 'v3.2';
+$nucleus['version'] = 'v3.21';
 if (getNucleusPatchLevel() > 0)
 {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();
@@ -49,7 +49,7 @@ $CONF['alertOnSecurityRisk'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 320;
+	return 321;
 }
 
 /**
@@ -575,7 +575,7 @@ function selector() {
 			  else
 				 $correctURL .= '?itemid=' . $itemid;
 
-			  redirect('Location: ' . $correctURL);
+			  redirect($correctURL);
 			  exit;
 		   }
 		   else doError(_ERROR_NOSUCHITEM);
