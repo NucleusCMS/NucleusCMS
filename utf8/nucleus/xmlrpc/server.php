@@ -62,19 +62,23 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2005 The Nucleus Group
- * @version $Id: server.php,v 1.4 2005-04-20 07:02:31 kimitake Exp $
- * $NucleusJP: server.php,v 1.3 2005/03/12 06:19:06 kimitake Exp $
+ * @version $Id: server.php,v 1.5 2005-08-13 07:25:03 kimitake Exp $
+ * @version $NucleusJP$
  */
 $CONF = array();
 include("../../config.php");	// include Nucleus libs and code
 include($DIR_LIBS . "xmlrpc.inc.php");
 include($DIR_LIBS . "xmlrpcs.inc.php");
 
+/* define xmlrpc settings */
+$xmlrpc_internalencoding = _CHARSET;
+$xmlrpc_defencoding = 'UTF-8';
+
 /* definition of available methods */
 
 $functionDefs = array();
 
-// load server functions 
+// load server functions
 include('api_blogger.inc.php');
 include('api_metaweblog.inc.php');
 // include('api_nucleus.inc.php'); // uncomment if you still want to use the nucleus.* methods
@@ -96,13 +100,13 @@ function _addItem($blogid, $username, $password, $title, $body, $more, $publish,
 	return _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $timestamp, 0, $catname);
 }
 
-/** 
+/**
   * Adds item to blog, with time of item given
   */
 function _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $timestamp, $future, $catname = "") {
 	// 1. login
 	$mem = new MEMBER();
-	
+
 	if (!$mem->login($username, $password))
 		return _error(1,"Could not log in");
 
@@ -116,7 +120,7 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
 
 	// 3. calculate missing vars
 	$blog = new BLOG($blogid);
-	
+
 	// get category id (or id for default category when false category)
 	$catid = $blog->getCategoryIdFromName($catname);
 
@@ -126,10 +130,10 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
 		$draft = 1;
 	if ($closed != 1)
 		$closed = 0;
-	
+
 	// 4. add to blog
 	$itemid = $blog->additem($catid, $title, $body, $more, $blogid, $mem->getID(), $timestamp, $closed, $draft);
-	
+
 	// [TODO] ping weblogs.com ?
 
 	return new xmlrpcresp(new xmlrpcval($itemid,"string"));
@@ -140,21 +144,21 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
   */
 function _edititem($itemid, $username, $password, $catid, $title, $body, $more, $wasdraft, $publish, $closed) {
 	global $manager;
-	
+
 	// 1. login
 	$mem = new MEMBER();
 	if (!$mem->login($username, $password))
 		return _error(1,"Could not log in");
-	
+
 	// 2. check if allowed to add to blog
 	if (!$manager->existsItem($itemid,1,1))
 		return _error(6,"No such item ($itemid)");
 	if (!$mem->canAlterItem($itemid))
 		return _error(7,"Not allowed to alter item");
-		
+
 	// 3. update item
 	ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, 0);
-	
+
 	return new xmlrpcresp(new xmlrpcval(1,"boolean"));
 }
 
@@ -168,20 +172,20 @@ function _getUsersBlogs($username, $password) {
 		return _error(1,"Could not log in");
 
 	// 2. Get list of blogs
-	
+
 	$structarray = array();
 	$query =  "SELECT bnumber, bname, burl"
-	        . ' FROM '.sql_table('blog').', '.sql_table('team')
-	        . " WHERE tblog=bnumber and tmember=" . $mem->getID()
-	        . " ORDER BY bname";
+			. ' FROM '.sql_table('blog').', '.sql_table('team')
+			. " WHERE tblog=bnumber and tmember=" . $mem->getID()
+			. " ORDER BY bname";
 	$r = sql_query($query);
-	
+
 	while ($obj = mysql_fetch_object($r)) {
 		if ($obj->burl)
 			$blogurl = $obj->burl;
 		else
 			$blogurl = 'http://';
-	
+
 		$newstruct = new xmlrpcval(array(
 			"url" => new xmlrpcval($blogurl,"string"),
 			"blogid" => new xmlrpcval($obj->bnumber,"string"),
@@ -189,7 +193,7 @@ function _getUsersBlogs($username, $password) {
 		),'struct');
 		array_push($structarray, $newstruct);
 	}
-	
+
 	return new xmlrpcresp(new xmlrpcval( $structarray , "array"));
 }
 
@@ -202,7 +206,7 @@ function _getUserInfo($username, $password) {
 
 	// 3. return the info
 	// Structure returned has nickname, userid, url, email, lastname, firstname
-	
+
 	$newstruct = new xmlrpcval(array(
 		"nickname" => new xmlrpcval($mem->getDisplayName(),"string"),
 		"userid" => new xmlrpcval($mem->getID(),"string"),
@@ -211,9 +215,9 @@ function _getUserInfo($username, $password) {
 		"lastname" => new xmlrpcval("","string"),
 		"firstname" => new xmlrpcval($mem->getRealName(),"string")
 	),'struct');
-	
+
 	return new xmlrpcresp($newstruct);
-	
+
 
 }
 
@@ -228,16 +232,16 @@ function _deleteItem($itemid, $username, $password) {
 	if (!$mem->login($username, $password))
 		return _error(1,"Could not log in");
 
-	// 2. check if allowed 
+	// 2. check if allowed
 	if (!$manager->existsItem($itemid,1,1))
 		return _error(6,"No such item ($itemid)");
 	$blogid = getBlogIDFromItemID($itemid);
 	if (!$mem->teamRights($blogid))
 		return _error(3,"Not a team member");
-		
+
 	// delete the item
-	ITEM::delete($itemid);	
-	
+	ITEM::delete($itemid);
+
 	return new xmlrpcresp(new xmlrpcval(1,"boolean"));
 }
 
@@ -249,18 +253,18 @@ function _getSkinPart($blogid, $username, $password, $type) {
 	$mem = new MEMBER();
 	if (!$mem->login($username, $password))
 		return _error(1,"Could not log in");
-		
+
 	// 2. check if allowed
 	if (!BLOG::existsID($blogid))
 		return _error(2,"No such blog ($blogid)");
 	if (!$mem->teamRights($blogid))
 		return _error(3,"Not a team member");
-	
+
 	// 3. return skin part
 	$blog = new BLOG($blogid);
 	$skin = new SKIN($blog->getDefaultSkin());
 	return new xmlrpcresp(new xmlrpcval($skin->getContent($type),"string"));
-	
+
 }
 
 function _setSkinPart($blogid, $username, $password, $content, $type) {
@@ -268,25 +272,25 @@ function _setSkinPart($blogid, $username, $password, $content, $type) {
 	$mem = new MEMBER();
 	if (!$mem->login($username, $password))
 		return _error(1,"Could not log in");
-		
+
 	// 2. check if allowed
 	if (!BLOG::existsID($blogid))
 		return _error(2,"No such blog ($blogid)");
 	if (!$mem->teamRights($blogid))
 		return _error(3,"Not a team member");
-		
+
 	// 3. update skin part
 	$blog = new BLOG($blogid);
 	$skin = new SKIN($blog->getDefaultSkin());
 	$skin->update($type, $content);
-	
+
 	return new xmlrpcresp(new xmlrpcval(1,'boolean'));
 }
 
 /**
   * Some convenience methods
   */
-  
+
 function _getScalar($m, $idx) {
 	$v = $m->getParam($idx);
 	return $v->scalarval();
@@ -298,7 +302,7 @@ function _getStructVal($struct, $key) {
 }
 
 function _getArrayVal($a, $idx) {
-	$t = $a->arraymem(0);
+	$t = $a->arraymem($idx);
 	return $t->scalarval();
 }
 
