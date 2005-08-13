@@ -16,11 +16,11 @@
     <!-- optional tags -->
     <language>ja</language>           <!-- valid langugae goes here -->
     <generator><%version%></generator>
-    <copyright>ｩ</copyright>             <!-- Copyright notice -->
+	<copyright>&#169;</copyright>             <!-- Copyright notice -->
     <category>Weblog</category>
     <docs>http://backend.userland.com/rss</docs>
     <image>
-      <url><%blogsetting(url)%>/nucleus/nucleus2.gif</url>
+      <url><%adminurl%>nucleus2.gif</url>
       <title><%blogsetting(name)%></title>
       <link><%blogsetting(url)%></link>
     </image>
@@ -41,10 +41,10 @@
 
 		<part name="ITEM"><![CDATA[<item>
  <title><![CDATA[<%title%>]]]]><![CDATA[></title>
- <link><%blogurl%>index.php?itemid=<%itemid%></link>
+ <link><%blogurl%>?itemid=<%itemid%></link>
 <description><![CDATA[<%body%><%more%>]]]]><![CDATA[></description>
  <category><%category%></category>
-<comments><%blogurl%>index.php?itemid=<%itemid%></comments>
+<comments><%blogurl%>?itemid=<%itemid%></comments>
  <pubDate><%date(rfc822)%></pubDate>
 </item>]]></part>
 
