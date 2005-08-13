@@ -31,7 +31,7 @@
 		<description>Atom feeds: Feed items</description>
 		<part name="ITEM"><![CDATA[<entry>
  <title type="text/html" mode="escaped"><![CDATA[<%title%>]]]]><![CDATA[></title>
- <link rel="alternate" type="text/html" href="<%blogurl%>index.php?itemid=<%itemid%>" />
+ <link rel="alternate" type="text/html" href="<%blogurl%>?itemid=<%itemid%>" />
  <author>
   <name><%author%></name>
  </author>
