@@ -12,8 +12,8 @@
   * This script allows adding items to Nucleus through bookmarklets. The member must be logged in
   * in order to use this.
   *
-  * $Id: bookmarklet.php,v 1.5 2005-03-16 07:55:53 kimitake Exp $
-  * $NucleusJP: bookmarklet.php,v 1.4 2005/03/15 08:24:16 kimitake Exp $
+  * $Id: bookmarklet.php,v 1.6 2005-08-13 07:33:58 kimitake Exp $
+  * $NucleusJP: bookmarklet.php,v 1.5 2005/03/16 07:55:53 kimitake Exp $
   */
 
 // bookmarklet is part of admin area (might need XML-RPC)
@@ -86,10 +86,10 @@ function bm_doAddItem() {
 	$blog =& $manager->getBlog($blogid);
 	
 	if ($result['status'] == 'newcategory') {
-		$message = 'アイテムは追加され、新しいカテゴリーが作成されました。 <a href="index.php?action=categoryedit&amp;blogid='.$blogid.'&amp;catid='.$result['catid'].'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">ここをクリックしてカテゴリーの名前と説明を編集してください。</a>';
+		$message = _BOOKMARKLET_NEW_CATEGORY <a href="index.php?action=categoryedit&amp;blogid='.$blogid.'&amp;catid='.$result['catid'].'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">ここをクリックしてカテゴリーの名前と説明を編集してください。</a>';
 		$extrahead = '';
 	} elseif ((postVar('actiontype') == 'addnow') && $blog->pingUserland()) {
-		$message = 'アイテムの追加に成功しました。現在weblogs.comにpingを送っています。しばらくの間お待ちください...';
+		$message = _BOOKMARKLET_SEND_PING;
 		$extrahead = '<meta http-equiv="refresh" content="1; url=index.php?action=sendping&amp;blogid=' . $blogid . '" />';
 	} else {
 		$message = _ITEM_ADDED;
@@ -156,7 +156,7 @@ function bm_doEditItem() {
 	
 	// show success message
 	if ($catid != intPostVar('catid'))
-		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, 'アイテムは追加され、新しいカテゴリーが作成されました。<a href="index.php?action=categoryedit&amp;blogid='.$blog->getID().'&amp;catid='.$catid.'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">ここをクリックしてカテゴリーの名前と説明を編集してください。</a>', '');
+		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _BOOKMARKLET_NEW_CATEGORY<a href="index.php?action=categoryedit&amp;blogid='.$blog->getID().'&amp;catid='.$catid.'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">ここをクリックしてカテゴリーの名前と説明を編集してください。</a>', '');
 	else
 		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _ITEM_UPDATED, '');
 }

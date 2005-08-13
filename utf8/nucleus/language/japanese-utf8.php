@@ -18,6 +18,20 @@
 // ファイル名を japanese.php に変更してから、Nucleus の language ディレクトリに
 // 置いてください。
 
+// START merge UTF-8 and EUC-JP
+define('_ADMIN_NOTABILIA',			'注意事項');
+define('_ADMIN_PLEASE_READ',		'作成にあたって、下記の<strong>注意事項</strong> をまずお読み下さい');
+define('_ADMIN_HOW_TO_ACCESS',		'新しいweblogを作成した後に、このblogにアクセスするための方法を紹介しておきます。方法は2つあります:');
+define('_ADMIN_SIMPLE_WAY',			'<strong>簡単な方法:</strong> <code>index.php</code>の複製を作り、新しいblogを表示するように変更を加えます。 この変更の詳細は、作成後に表示されます。');
+define('_ADMIN_DIFFICULT_WAY',		'<strong>高度な方法:</strong> 現在のblogで使用しているスキンに<code>otherblog</code>というコードを使った記述を加えます。この方法では、同じページ内で複数のblogを展開することが可能となります。');
+define('_ADMIN_HOW_TO_CREATE',		'Weblogの作成');
+
+
+define('_BOOKMARKLET_NEW_CATEGORY',	'アイテムは追加され、新しいカテゴリが作成されました。');
+define('_BOOKMARKLET_SEND_PING',	'アイテムの追加に成功しました。現在weblogs.comにpingを送っています。しばらくの間お待ちください...');
+
+// END merge UTF-8 and EUC-JP
+
 // START changed/added after 3.15 START
 
 define('_LIST_PLUG_SUBS_NEEDUPDATE','Please use the \'Update Subscription list\'-button to update the plugin\'s subscription list.');
