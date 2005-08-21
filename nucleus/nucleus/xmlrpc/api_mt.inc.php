@@ -182,6 +182,8 @@
 	));
 	$f_mt_getTrackbackPings_doc = '(this is currently just a placeholder. It returns an empty array.)';
 	function f_mt_getTrackbackPings($m) {
+		global $manager;
+		
 		$itemid = intval(_getScalar($m, 0));
 
 		$trackbacks = array ();

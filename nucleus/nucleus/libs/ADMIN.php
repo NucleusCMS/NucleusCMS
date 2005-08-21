@@ -1845,22 +1845,25 @@ class ADMIN {
 
 		$mem->write();
 
+		// store plugin options
+		$aOptions = requestArray('plugoption');
+		NucleusPlugin::_applyPluginOptions($aOptions);
+		$manager->notify('PostPluginOptionsUpdate',array('context' => 'member', 'memberid' => $memberid, 'member' => &$mem));
+
 		// if email changed, generate new password
 		if ($oldEmail != $mem->getEmail())
 		{
 			$mem->sendActivationLink('addresschange', $oldEmail);
 			// logout member
 			$mem->newCookieKey();
-			$member->logout();
+			
+			// only log out if the member being edited is the current member.
+			if ($member->getID() == $memberid)
+				$member->logout();
 			$this->action_login(_MSG_ACTIVATION_SENT, 0);
 			return;
 		}
 
-
-		// store plugin options
-		$aOptions = requestArray('plugoption');
-		NucleusPlugin::_applyPluginOptions($aOptions);
-		$manager->notify('PostPluginOptionsUpdate',array('context' => 'member', 'memberid' => $memberid, 'member' => &$mem));
 
 		if (  ( $mem->getID() == $member->getID() )
 		   && ( $newpass || ( $mem->getDisplayName() != $member->getDisplayName() ) )

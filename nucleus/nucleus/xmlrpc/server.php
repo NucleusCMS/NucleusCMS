@@ -297,7 +297,10 @@ function _getScalar($m, $idx) {
 
 function _getStructVal($struct, $key) {
 	$t = $struct->structmem($key);
-	return $t->scalarval();
+	if (!$t) 
+		return '';	// no such struct value
+	else
+		return $t->scalarval();
 }
 
 function _getArrayVal($a, $idx) {

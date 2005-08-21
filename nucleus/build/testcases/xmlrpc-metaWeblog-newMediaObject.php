@@ -7,9 +7,9 @@
 
 // URL of XML-RPC server
 $serverHost = 'localhost';
-$serverPost = 80;
-$serverPath = '/release/nucleus/xmlrpc/server.php';
-	
+$serverPort = 8080;
+$serverPath = '/nucleus/nucleus/xmlrpc/server.php';
+
 include('../../config.php');
 include($DIR_LIBS . 'xmlrpc.inc.php');
 
@@ -22,9 +22,9 @@ fclose($fh);
 $f=new xmlrpcmsg(
 	'metaWeblog.newMediaObject',
 	 array(
-	 	new xmlrpcval('1', 'string'),			// blogid
-	 	new xmlrpcval('god', 'string'),			// username
-	 	new xmlrpcval('heaven', 'string'),		// password
+	 	new xmlrpcval('1', 'string'),			// memberid
+	 	new xmlrpcval('example', 'string'),			// username
+	 	new xmlrpcval('example', 'string'),		// password
 	 	new xmlrpcval(array(					// data
 	 			'name' => new xmlrpcval('myImage.gif', 'string'),
 	 			'type' => new xmlrpcval('image/gif', 'string'),
