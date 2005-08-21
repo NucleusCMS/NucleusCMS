@@ -35,6 +35,8 @@
 		));
 	$f_metaWeblog_newPost_doc = "Adds a new item to the given blog. Adds it as a draft when publish is false";
 	function f_metaWeblog_newPost($m) {
+		global $manager;
+		
 		$blogid = 			_getScalar($m,0);
 		$username = 		_getScalar($m,1);
 		$password = 		_getScalar($m,2);

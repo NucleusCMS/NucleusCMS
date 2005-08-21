@@ -17,8 +17,8 @@ $f=new xmlrpcmsg(
 	'metaWeblog.editPost',
 	 array(
 	 	new xmlrpcval('2', 'string'),			// itemid
-	 	new xmlrpcval('god', 'string'),			// username
-	 	new xmlrpcval('heaven', 'string'),		// password
+	 	new xmlrpcval('example', 'string'),			// username
+	 	new xmlrpcval('example', 'string'),		// password
 	 	new xmlrpcval(							// post info
 	 		array(
 	 			'description' => new xmlrpcval('Just a test','string'),

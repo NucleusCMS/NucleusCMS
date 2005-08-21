@@ -117,6 +117,10 @@
     		<include name="**/**" />   <!-- upgrade should not contain/overwrite plugin files -->
     		<include name="*.*" />
     		<exclude name="index.html" />
+    		
+    		<!-- DO include NP_SkinFiles in the upgrade -->
+    		<exclude name="NP_SkinFiles.php" />
+    		<exclude name="skinfiles/*.*" />
     	</fileset>
     </delete>    
     

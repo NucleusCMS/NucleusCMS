@@ -17,8 +17,8 @@ $f=new xmlrpcmsg(
 	'metaWeblog.getRecentPosts',
 	 array(
 	 	new xmlrpcval('1', 'string'),			// blogid
-	 	new xmlrpcval('god', 'string'),			// username
-	 	new xmlrpcval('heaven', 'string'),		// password
+	 	new xmlrpcval('example', 'string'),			// username
+	 	new xmlrpcval('example', 'string'),		// password
 	 	new xmlrpcval('5', 'int')			// amount to get
 	 )
  );

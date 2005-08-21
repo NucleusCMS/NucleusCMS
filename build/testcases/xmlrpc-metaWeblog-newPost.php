@@ -1,6 +1,6 @@
 <?php
 /*
-	Test call to the nucleus XML-RPC server sending a metaWeblog.getRecentPosts request
+	Test call to the nucleus XML-RPC server sending a metaWeblog.newPost request
 	
 	
 */
@@ -16,9 +16,9 @@ include($DIR_LIBS . 'xmlrpc.inc.php');
 $f=new xmlrpcmsg(
 	'metaWeblog.newPost',
 	 array(
-	 	new xmlrpcval('1', 'string'),			// itemid
-	 	new xmlrpcval('god', 'string'),			// username
-	 	new xmlrpcval('heaven', 'string'),		// password
+	 	new xmlrpcval('1', 'string'),			// blogid
+	 	new xmlrpcval('example', 'string'),			// username
+	 	new xmlrpcval('example', 'string'),		// password
 	 	new xmlrpcval(							// post info
 	 		array(
 	 			'description' => new xmlrpcval('Just a test','string'),
