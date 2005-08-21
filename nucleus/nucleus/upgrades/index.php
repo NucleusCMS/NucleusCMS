@@ -1,5 +1,5 @@
 <?php
-/**
+/*
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002-2005 The Nucleus Group
   *
@@ -8,6 +8,11 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
+ */
+/**
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
   *
   * $Id$
   */
@@ -54,12 +59,13 @@ When upgrading from an older Nucleus version, upgrades to the database tables ar
       <p class="ok">No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.</p>
     <?php  } else {
     ?>
-      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.2</a></p>
+      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.22</a></p>
     <?php  }
 ?>
 
 <div class="note">
-<b>Note:</b> Don't forget to make a backup of your database every once in a while!
+<b>Note:</b> Don't forget to make a backup of your database every once in a while!<br/>
+It is suggested that you do so before upgrading the database in case things go wrong.
 </div>
 
 <h1>Manual changes</h1>

@@ -18,6 +18,7 @@ var nucleusConvertBreaks = true;
 var nucleusMediaPopupURL = '';
 var nucleusMediaURL = 'media/';
 var nucleusAuthorId = 0;
+var scrollTop = -1;
 
 function setConvertBreaks(newval) {	nucleusConvertBreaks = newval; }
 function setMediaUrl(url) { nucleusMediaURL = url; }
@@ -122,7 +123,7 @@ function ahrefThis() {
 	strHref = prompt("Create a link to:","http://");
 	if (strHref == null) return;
 	
-	var textpre = "<a href=\"" + strHref + "\">";
+	var textpre = "<a href=\"" + strHref.replace(/&/g,'&amp;') + "\">";
 	insertAroundCaret(textpre, "</a>");
 }
 
@@ -230,6 +231,8 @@ function storeCaret (textEl) {
 	lastSelected = textEl;
 	
 	nonie_FormType = textEl.name;
+
+	scrollTop = textEl.scrollTop;
 }
 
 var lastSelected;
@@ -242,10 +245,16 @@ function insertAtCaret (text) {
 		caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? text + ' ' : text;
 	} else if (!document.all && document.getElementById) {
 		mozReplace(document.getElementById('input' + nonie_FormType), text);				
+		if(scrollTop>-1) {
+			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
+		}
 	} else if (textEl) {
 		textEl.value  += text;
 	} else {
 		document.getElementById('input' + nonie_FormType).value += text;		
+		if(scrollTop>-1) {
+			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
+		}
 	}
 	updAllPreviews();
 }
@@ -259,8 +268,14 @@ function insertAroundCaret (textpre, textpost) {
 		caretPos.text = textpre + caretPos.text + textpost;
 	} else if (!document.all && document.getElementById) {
 		mozWrap(document.getElementById('input' + nonie_FormType), textpre, textpost);		
+		if(scrollTop>-1) {
+			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
+		}
 	} else {
 		document.getElementById('input' + nonie_FormType).value += textpre + textpost;
+		if(scrollTop>-1) {
+			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
+		}
 	}
 
 	updAllPreviews();

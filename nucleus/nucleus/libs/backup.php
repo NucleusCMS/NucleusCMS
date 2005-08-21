@@ -1,5 +1,5 @@
 <?php
-/**
+/*
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002-2005 The Nucleus Group
   *
@@ -8,12 +8,15 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
+ */
+/**
   * Scripts to create/restore a backup of the Nucleus database
   *
   * Based on code in phpBB (http://phpBB.sourceforge.net)
   *
-  * $Id$
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
   */
 
  
@@ -288,13 +291,15 @@ function do_restore() {
 		
 	$backup_file_name = $uploadInfo['name'];
 	$backup_file_tmpname = $uploadInfo['tmp_name'];
-	$backup_file_type = $uploadInfo['backup_file']['type'];
+	$backup_file_type = $uploadInfo['type'];
 
 	if (!file_exists($backup_file_tmpname))
 		return 'File Upload Error';
 	
 	if (!preg_match("/^(text\/[a-zA-Z]+)|(application\/(x\-)?gzip(\-compressed)?)|(application\/octet-stream)$/is", $backup_file_type) )
 		return 'The uploaded file is not of the correct type';
+		
+		
 	
 	if (preg_match("/\.gz/is",$backup_file_name)) 
 		$gzip = 1;
@@ -343,7 +348,7 @@ function _execute_queries($sql_query) {
 //			debug("Executing: " . htmlspecialchars($sql) . "\n");
 
 			$result = mysql_query($sql);
-			if (!$result) debug("SQL Error: " + mysql_error());
+			if (!$result) debug('SQL Error: ' . mysql_error());
 
 		}
 	}

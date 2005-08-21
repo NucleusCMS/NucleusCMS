@@ -1,5 +1,5 @@
 <?php
-/**
+/*
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
   * Copyright (C) 2002-2005 The Nucleus Group
   *
@@ -8,10 +8,13 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
+ */
+/**
   * The code for the Nucleus admin area
   *
-  * $Id$
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
   */
 
 class ADMIN {
@@ -1834,6 +1837,11 @@ class ADMIN {
 
 
 		$mem->write();
+		
+		// store plugin options
+		$aOptions = requestArray('plugoption');
+		NucleusPlugin::_applyPluginOptions($aOptions);
+		$manager->notify('PostPluginOptionsUpdate',array('context' => 'member', 'memberid' => $memberid, 'member' => &$mem));
 
 		// if email changed, generate new password
 		if ($oldEmail != $mem->getEmail())
@@ -1841,16 +1849,14 @@ class ADMIN {
 			$mem->sendActivationLink('addresschange', $oldEmail);
 			// logout member
 			$mem->newCookieKey();
-			$member->logout();
+			
+			// only log out if the member being edited is the current member.
+			if ($member->getID() == $memberid)
+				$member->logout();
 			$this->action_login(_MSG_ACTIVATION_SENT, 0);
 			return;
 		}
 
-
-		// store plugin options
-		$aOptions = requestArray('plugoption');
-		NucleusPlugin::_applyPluginOptions($aOptions);
-		$manager->notify('PostPluginOptionsUpdate',array('context' => 'member', 'memberid' => $memberid, 'member' => &$mem));
 
 		if (  ( $mem->getID() == $member->getID() )
 		   && ( $newpass || ( $mem->getDisplayName() != $member->getDisplayName() ) )
@@ -1864,7 +1870,7 @@ class ADMIN {
 	}
 
 	function action_memberadd() {
-		global $member;
+		global $member, $manager;
 
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
@@ -1877,6 +1883,11 @@ class ADMIN {
 		$res = MEMBER::create(postVar('name'), postVar('realname'), postVar('password'), postVar('email'), postVar('url'), postVar('admin'), postVar('canlogin'), postVar('notes'));
 		if ($res != 1)
 			$this->error($res);
+
+		// fire PostRegister event			
+		$newmem = new MEMBER();
+		$newmem->readFromName(postVar('name'));
+		$manager->notify('PostRegister',array('member' => &$newmem)); 			
 
 		$this->action_usermanagement();
 	}
@@ -3309,6 +3320,10 @@ selector();
 		// read only metadata
 		$error = $importer->readFile($skinFile, 1);
 
+		// clashes
+		$skinNameClashes = $importer->checkSkinNameClashes();
+		$templateNameClashes = $importer->checkTemplateNameClashes();
+		$hasNameClashes = (count($skinNameClashes) > 0) || (count($templateNameClashes)	> 0);
 
 		if ($error) $this->error($error);
 
@@ -3322,8 +3337,15 @@ selector();
 			<li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo htmlspecialchars($importer->getInfo())?></p></li>
 			<li><p><strong><?php echo _SKINIE_INFO_SKINS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
 			<li><p><strong><?php echo _SKINIE_INFO_TEMPLATES?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
-			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_SKINCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->checkSkinNameClashes())?></p></li>
-			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_TEMPLCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->checkTemplateNameClashes())?></p></li>
+			<?php
+				if ($hasNameClashes)
+				{
+			?>
+			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_SKINCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$skinNameClashes)?></p></li>
+			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_TEMPLCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$templateNameClashes)?></p></li>
+			<?php
+				} // if (hasNameClashes)
+			?>
 		</ul>
 
 		<form method="post" action="index.php"><div>
@@ -3332,8 +3354,15 @@ selector();
 			<input type="hidden" name="skinfile" value="<?php echo htmlspecialchars(postVar('skinfile'))?>" />
 			<input type="hidden" name="mode" value="<?php echo htmlspecialchars($mode)?>" />
 			<input type="submit" value="<?php echo _SKINIE_CONFIRM_IMPORT?>" />
+			<?php
+				if ($hasNameClashes)
+				{
+			?>
 			<br />
 			<input type="checkbox" name="overwrite" value="1" id="cb_overwrite" /><label for="cb_overwrite"><?php echo _SKINIE_CONFIRM_OVERWRITE?></label>
+			<?php
+				} // if (hasNameClashes)
+			?>
 		</div></form>
 
 
@@ -5265,22 +5294,6 @@ selector();
 		if (!checkPlugin($name))
 			$this->error(_ERROR_PLUGFILEERROR . ' (' . $name . ')');
 
-		// check if the plugin dependency is met
-		$plugin =& $manager->getPlugin($name);
-		$pluginList = $plugin->getPluginDep();
-		foreach ($pluginList as $pluginName)
-		{
-
-			$res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
-			if (mysql_num_rows($res) == 0)
-			{
-				// uninstall plugin again...
-				$this->deleteOnePlugin($plugin->getID());
-
-				$this->error(_ERROR_INSREQPLUGIN . $pluginName);
-			}
-		}
-
 		// get number of currently installed plugins
 		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
 
@@ -5299,12 +5312,12 @@ selector();
 		sql_query($query);
 		$iPid = mysql_insert_id();
 
-		// need to update the plugin object's pid since we didn't have it above when it's first create....
-		$plugin->plugid = $iPid;
-
 		$manager->clearCachedInfo('installedPlugins');
 
-		// call the install method of the plugin
+		// Load the plugin for condition checking and instalation
+		$plugin =& $manager->getPlugin($name);
+
+		// check if it got loaded (could have failed)
 		if (!$plugin)
 		{
 			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. intval($iPid));
@@ -5332,6 +5345,21 @@ selector();
 			$this->error(_ERROR_NUCLEUSVERSIONREQ . $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel());
 		}
 
+		$pluginList = $plugin->getPluginDep();
+		foreach ($pluginList as $pluginName)
+		{
+
+			$res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
+			if (mysql_num_rows($res) == 0)
+			{
+				// uninstall plugin again...
+				$this->deleteOnePlugin($plugin->getID());
+
+				$this->error(_ERROR_INSREQPLUGIN . $pluginName);
+			}
+		}
+
+		// call the install method of the plugin
 		$plugin->install();
 
 		$manager->notify(
@@ -6086,7 +6114,7 @@ function listplug_table_teamlist($template, $type) {
 	}
 }
 
-function encode_desc(&$data)
+function encode_desc($data)
 	{   $to_entities = get_html_translation_table(HTML_ENTITIES);
 		$from_entities = array_flip($to_entities);
 		$data = strtr($data,$from_entities);

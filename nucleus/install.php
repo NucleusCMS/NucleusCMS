@@ -1,5 +1,5 @@
 <?php
-	/**
+	/*
 	  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
 	  * Copyright (C) 2002-2005 The Nucleus Group
 	  *
@@ -12,8 +12,14 @@
 	  * those tables.
 	  *
 	  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
-	  *
-	  * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php	  */
+	 * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php	  
+	 */
+	/**
+	 * @license http://nucleuscms.org/license.txt GNU General Public License
+	 * @copyright Copyright (C) 2002-2005 The Nucleus Group
+	 * @version $Id$
+	 */
+	
 
 	/*
 		This part of the install.php code allows for customization of the install process.

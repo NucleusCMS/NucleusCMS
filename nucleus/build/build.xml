@@ -8,7 +8,7 @@
 
 <target name="init">
 
-    <property name="version" value="3.2-b4" />
+    <property name="version" value="3.22" />
     
     <property name="src.home" value=".." />
     <property name="build.home" value="." />    
@@ -117,6 +117,10 @@
     		<include name="**/**" />   <!-- upgrade should not contain/overwrite plugin files -->
     		<include name="*.*" />
     		<exclude name="index.html" />
+    		
+    		<!-- DO include NP_SkinFiles in the upgrade -->
+    		<exclude name="NP_SkinFiles.php" />
+    		<exclude name="skinfiles/*.*" />
     	</fileset>
     </delete>    
     

@@ -1,6 +1,6 @@
 <?php
 
-/** 
+/*
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002-2005 The Nucleus Group
   *
@@ -9,12 +9,14 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id$
   */
 
-/*
+/**
  *	This file contains definitions for the methods of the metaWeblog API
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
  */
 	 
 	
@@ -33,11 +35,15 @@
 		));
 	$f_metaWeblog_newPost_doc = "Adds a new item to the given blog. Adds it as a draft when publish is false";
 	function f_metaWeblog_newPost($m) {
+		global $manager;
+		
 		$blogid = 			_getScalar($m,0);
 		$username = 		_getScalar($m,1);
 		$password = 		_getScalar($m,2);
 		$struct = 			$m->getParam(3);
+		
 			$content = 		_getStructVal($struct, 'description');
+			$more = 		_getStructVal($struct, 'mt_text_more');
 			$title = 		_getStructVal($struct, 'title');
 
 			// category is optional (thus: be careful)!
@@ -45,9 +51,27 @@
 			if ($catlist && ($catlist->kindOf() == "array") && ($catlist->arraysize() > 0)) 
 				$category = _getArrayVal($catlist, 0);
 
+		
+		$comments = (int) _getStructVal($struct, 'mt_allow_comments') ? 0 : 1;
 		$publish = _getScalar($m,4);
 
-		return _addItem($blogid, $username, $password, $title, $content, '', $publish, 0, $category);
+
+		// Add item
+		$res = _addItem($blogid, $username, $password, $title, $content, $more, $publish, $comments, $category);
+		
+		// Handle trackbacks
+		$trackbacks = array();
+		$tblist = $struct->structmem('mt_tb_ping_urls');
+		if ($tblist && ($tblist->kindOf() == "array") && ($tblist->arraysize() > 0)) {
+			
+			for ($i = 0; $i < $tblist->arraysize(); $i++) {
+				$trackbacks[] = _getArrayVal($tblist, $i);
+			}
+			
+			$manager->notify('SendTrackback', array ('tb_id' => $itemid, 'urls' => & $trackbacks));
+		}
+
+		return $res;
 	}
 	
 	
@@ -127,6 +151,7 @@
 			
 		$publish = _getScalar($m,4);
 
+		
 		// get old title and extended part 
 		if (!$manager->existsItem($itemid,1,1))
 			return _error(6,"No such item ($itemid)");
@@ -152,8 +177,35 @@
 			$wasdraft = 0;
 		}
 
-		return _edititem($itemid, $username, $password, $catid, $title, $content, $old['more'], $wasdraft, $publish, $old['closed']);
+		$more = $struct->structmem('mt_text_more');
+		if ($more) {
+			$more = _getStructVal($struct, 'mt_text_more');
+		} else {
+			$more = $old['more'];
+		}
+		
+		$comments = $struct->structmem('mt_allow_comments');
+		if ($comments) {
+			$comments = (int) _getStructVal($struct, 'mt_allow_comments') ? 0 : 1;
+		} else {
+			$comments = $old['closed'];
+		}
 
+		$res = _edititem($itemid, $username, $password, $catid, $title, $content, $more, $wasdraft, $publish, $comments);
+
+		// Handle trackbacks
+		$trackbacks = array();
+		$tblist = $struct->structmem('mt_tb_ping_urls');
+		if ($tblist && ($tblist->kindOf() == "array") && ($tblist->arraysize() > 0)) {
+			
+			for ($i = 0; $i < $tblist->arraysize(); $i++) {
+				$trackbacks[] = _getArrayVal($tblist, $i);
+			}
+			
+			$manager->notify('SendTrackback', array ('tb_id' => $itemid, 'urls' => & $trackbacks));
+		}
+
+		return $res;
 	}
 	
 	// metaWeblog.newMediaObject
@@ -228,7 +280,7 @@
 
 		$structarray = array();		// the array in which the structs will be stored
 
-		$query = "SELECT mname, ibody, iauthor, ibody, inumber, ititle as title, itime, cname as category"
+		$query = "SELECT mname, ibody, imore, iauthor, ibody, inumber, ititle as title, itime, cname as category, iclosed"
 			   .' FROM '.sql_table('item').', '.sql_table('category').', '.sql_table('member')
 			   ." WHERE iblog=$blogid and icat=catid and iauthor=mnumber"
 			   ." ORDER BY itime DESC"
@@ -238,8 +290,10 @@
 		while ($row = mysql_fetch_assoc($r)) {
 		
 			// remove linebreaks if needed
-			if ($blog->convertBreaks())
+			if ($blog->convertBreaks()) {
 				$row['ibody'] = removeBreaks($row['ibody']);
+				$row['imore'] = removeBreaks($row['imore']);
+			}
 
 			$newstruct = new xmlrpcval(array(
 				"dateCreated" => new xmlrpcval(iso8601_encode(strtotime($row['itime'])),"dateTime.iso8601"),
@@ -252,12 +306,16 @@
 						array(
 							new xmlrpcval($row['category'], "string")
 						)
-						,"array")
+						,"array"),
+				
+						
+				"mt_text_more" 		=> new xmlrpcval($row['imore'], "string"),
+				"mt_allow_comments" => new xmlrpcval($row['iclosed'] ? 0 : 1, "int"),
+				"mt_allow_pings" 	=> new xmlrpcval(1, "int")
 			),'struct');
 			
 		//TODO: String link?
 		//TODO: String permaLink?
-		//TODO: String nucleus_more?
 		
 		
 			array_push($structarray, $newstruct);		
@@ -380,8 +438,10 @@
 		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
 		
 		$b = new BLOG($blogid);
-		if ($b->convertBreaks())
+		if ($b->convertBreaks()) {
 			$item['body'] = removeBreaks($item['body']);
+			$item['more'] = removeBreaks($item['more']);
+		}
 			
 		$categoryname = $b->getCategoryName($item['catid']);
 
@@ -396,12 +456,15 @@
 					array(
 						new xmlrpcval($categoryname, "string")
 					)
-					,"array")
+					,"array"),
+				
+			"mt_text_more" 		=> new xmlrpcval($item['more'], "string"),
+			"mt_allow_comments" => new xmlrpcval($item['closed'] ? 0 : 1, "int"),
+			"mt_allow_pings" 	=> new xmlrpcval(1, "int")
 		),'struct');
 		
 		//TODO: add "String link" to struct?
 		//TODO: add "String permaLink" to struct? 
-		//TODO: add "String nucleus_more" to struct?
 
 		return new xmlrpcresp($newstruct);
 	

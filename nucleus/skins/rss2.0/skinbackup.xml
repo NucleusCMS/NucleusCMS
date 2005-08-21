@@ -1,4 +1,4 @@
-<nucleusskin><meta><skin name="feeds/rss20" /><template name="feeds/rss20" /><info><![CDATA[RSS 2.0 syndication of weblogs]]></info></meta><skin name="feeds/rss20" type="text/xml" includeMode="normal" includePrefix=""><description>RSS 2.0 syndication of weblogs</description><part name="index"><![CDATA[<?xml version="1.0" encoding="ISO-8859-1"?>
+<nucleusskin><meta><skin name="feeds/rss20" /><template name="feeds/rss20" /><info><![CDATA[RSS 2.0 syndication of weblogs]]></info></meta><skin name="feeds/rss20" type="text/xml" includeMode="normal" includePrefix=""><description>RSS 2.0 syndication of weblogs</description><part name="index"><![CDATA[<?xml version="1.0" encoding="<%charset%>"?>
 <rss version="2.0">
   <channel>
     <title><%blogsetting(name)%></title>
@@ -17,10 +17,16 @@
     <%blog(feeds/rss20,10)%>
   </channel>
 </rss>]]></part></skin><template name="feeds/rss20"><description>Used for RSS 2.0 syndication of your blog</description><part name="EDITLINK"><![CDATA[<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>]]></part><part name="FORMAT_DATE"><![CDATA[%x]]></part><part name="FORMAT_TIME"><![CDATA[%X]]></part><part name="ITEM"><![CDATA[<item>
- <title><![CDATA[<%title%>]]></title>
+ <title><%title(xml)%></title>
  <link><%blogurl%>index.php?itemid=<%itemid%></link>
 <description><![CDATA[<%body%><%more%>]]></description>
  <category><%category%></category>
 <comments><%blogurl%>index.php?itemid=<%itemid%></comments>
  <pubDate><%date(rfc822)%></pubDate>
-</item>]]></part></template></nucleusskin>
+</item>]]></part>
+
+<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+<part name="POPUP_CODE"><![CDATA[<%media%>]]></part>
+
+</template></nucleusskin>

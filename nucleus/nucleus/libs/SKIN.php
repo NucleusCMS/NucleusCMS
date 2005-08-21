@@ -1,7 +1,7 @@
 <?php
 
 
-/**
+/*
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
   * Copyright (C) 2002-2005 The Nucleus Group
   *
@@ -10,10 +10,13 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
+ */
+/**
   * Class representing a skin
   *
-  * $Id$
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
   */
 class SKIN {
 
@@ -123,6 +126,8 @@ class SKIN {
 	function parse($type) {
 		global $manager, $CONF;
 
+		$manager->notify('InitSkinParse',array('skin' => &$this, 'type' => $type));
+
 		// set output type
 		sendContentType($this->getContentType(), 'skin', _CHARSET);
 
@@ -144,7 +149,7 @@ class SKIN {
 
 		$actions = $this->getAllowedActionsForType($type);
 
-		$manager->notify('PreSkinParse',array('skin' => &$this, 'type' => $type));
+		$manager->notify('PreSkinParse',array('skin' => &$this, 'type' => $type, 'contents' => &$contents));
 
 		// set IncludeMode properties of parser
 		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
@@ -250,7 +255,8 @@ class SKIN {
 								'set',
 								'if',
 								'else',
-								'endif'
+								'endif',
+								'charset'
 								);
 		
 		// extra actions specific for a certain skin type
@@ -407,7 +413,7 @@ class ACTIONS extends BaseActions {
 	*/
 	function doForm($filename) {
 		global $DIR_NUCLEUS;
-		array_push($this->parser->actions,'formdata','text','callback','errordiv');
+		array_push($this->parser->actions,'formdata','text','callback','errordiv','ticket');
 		$oldIncludeMode = PARSER::getProperty('IncludeMode');
 		$oldIncludePrefix = PARSER::getProperty('IncludePrefix');
 		PARSER::setProperty('IncludeMode','normal');
@@ -419,7 +425,14 @@ class ACTIONS extends BaseActions {
 		array_pop($this->parser->actions);		// callback
 		array_pop($this->parser->actions);		// text
 		array_pop($this->parser->actions);		// formdata
+		array_pop($this->parser->actions);		// ticket
 	}
+
+	function parse_ticket() {
+		global $manager;
+		$manager->addTicketHidden();
+	}
+
 	function parse_formdata($what) {
 		echo $this->formdata[$what];
 	}
@@ -601,9 +614,23 @@ class ACTIONS extends BaseActions {
 	}
 
 	// include itemtitle of prev item
-	function parse_previtemtitle() {
+	function parse_previtemtitle($format = '') {
 		global $itemtitleprev;
+		
+		switch ($format) {
+			case 'xml':
+				echo stringToXML ($itemtitleprev);
+				break;
+			case 'attribute':
+				echo stringToAttribute ($itemtitleprev);
+				break;
+			case 'raw':
+				echo $itemtitleprev;
+				break;
+			default:
 		echo htmlspecialchars($itemtitleprev);
+				break;
+		}
 	}
 
 	// include itemid of next item
@@ -613,9 +640,23 @@ class ACTIONS extends BaseActions {
 	}
 
 	// include itemtitle of next item
-	function parse_nextitemtitle() {
+	function parse_nextitemtitle($format = '') {
 		global $itemtitlenext;
+
+		switch ($format) {
+			case 'xml':
+				echo stringToXML ($itemtitlenext);
+				break;
+			case 'attribute':
+				echo stringToAttribute ($itemtitlenext);
+				break;
+			case 'raw':
+				echo $itemtitlenext;
+				break;
+			default:
 		echo htmlspecialchars($itemtitlenext);
+				break;
+		}
 	}
 
 	function parse_prevarchive() {
@@ -747,6 +788,7 @@ class ACTIONS extends BaseActions {
 	
 	
 	function parse_itemlink($linktext = '') {	
+		global $itemid;
 		$this->_itemlink($itemid, $linktext);
 	}
 	
@@ -877,11 +919,24 @@ class ACTIONS extends BaseActions {
 		$this->_postBlogContent('archivelist',$blog);
 	}
 
-
-	function parse_itemtitle() {
+	function parse_itemtitle($format = '') {
 		global $manager, $itemid;
 		$item =& $manager->getItem($itemid,0,0);
+		
+		switch ($format) {
+			case 'xml':
+				echo stringToXML ($item['title']);
+				break;
+			case 'attribute':
+				echo stringToAttribute ($item['title']);
+				break;
+			case 'raw':
+				echo $item['title'];
+				break;
+			default:
 		echo htmlspecialchars(strip_tags($item['title']));
+				break;
+		}
 	}
 
 	function parse_categorylist($template, $blogname = '') {
@@ -1187,7 +1242,17 @@ class ACTIONS extends BaseActions {
 		}
 		
 		if (!$destinationurl)
-			$destinationurl = createItemLink($itemid, $this->linkparams);
+		{
+			$destinationurl = createLink(
+				'item', 
+				array(
+					'itemid' => $itemid,
+					'title' => $item['title'],
+					'timestamp' => $item['timestamp'],
+					'extra' => $this->linkparams
+				)
+			);
+		}
 
 		// values to prefill
 		$user = cookieVar($CONF['CookiePrefix'] .'comment_user');
@@ -1304,6 +1369,10 @@ class ACTIONS extends BaseActions {
 		echo htmlspecialchars(serverVar('HTTP_REFERER'));
 	}
 	
+	function parse_charset() {
+		echo _CHARSET;
+	}
+
 	/**
 	  * Helper function that sets the category that a blog will need to use 
 	  *

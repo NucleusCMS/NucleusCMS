@@ -1,6 +1,6 @@
 <?php
 
-/** 
+/*
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002-2005 The Nucleus Group
   *
@@ -9,14 +9,15 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id$
   */
-
-/*
+/**
  * This file contains definitions for the methods in the Movable Type API
  *
  * Wouter Demuynck 2003-08-31
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
  */
 
 
@@ -182,9 +183,26 @@
 	));
 	$f_mt_getTrackbackPings_doc = '(this is currently just a placeholder. It returns an empty array.)';
 	function f_mt_getTrackbackPings($m) {
+		global $manager;
+		
 		$itemid = intval(_getScalar($m, 0));
 				
-		return new xmlrpcresp(new xmlrpcval(array(), 'array'));
+		$trackbacks = array ();
+		$tbstruct   = array ();
+			
+		$manager->notify('RetrieveTrackback', array ('tb_id' => $itemid, 'trackbacks' => & $trackbacks));
+				
+		while (list(,$v) = each ($trackbacks)) {
+			$tbstruct[] = new xmlrpcval(
+				array(
+					"pingTitle" => new xmlrpcval($v['title'], "string"),
+					"pingURL"   => new xmlrpcval($v['url'], "string"),
+					"pingIP"    => new xmlrpcval($v['ip'], "string")
+				)
+			,'struct');			
+		}		
+				
+		return new xmlrpcresp(new xmlrpcval( $tbstruct , "array"));
 	}
 	
 	$functionDefs = array_merge($functionDefs,

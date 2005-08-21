@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
   * Copyright (C) 2002-2005 The Nucleus Group
   *
@@ -9,8 +9,11 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id$
+ */
+/**
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
   */
 
 // needed if we include globalfunctions from install.php
@@ -21,7 +24,7 @@ checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQ
 
 $CONF['debug'] = 0;
 
-$nucleus['version'] = 'v3.2';
+$nucleus['version'] = 'v3.22';
 if (getNucleusPatchLevel() > 0)
 {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();
@@ -48,7 +51,7 @@ $CONF['alertOnSecurityRisk'] = 1;
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 320;
+	return 322;
 }
 
 /**
@@ -155,10 +158,14 @@ if ($action == 'login') {
 			$action = $nextaction;
 
 		$manager->notify('LoginSuccess',array('member' => &$member));
+		$errormessage = '';
 		ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
 	} else {
+		// errormessage for [%errordiv%]
+		$errormessage = 'Login failed for ' . $login;
+		
 		$manager->notify('LoginFailed',array('username' => $login));
-		ACTIONLOG::add(INFO, 'Login failed for ' . $login);
+		ACTIONLOG::add(INFO, $errormessage);
 	}
 /*
 
@@ -201,8 +208,8 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 // login completed
 $manager->notify('PostAuthentication',array('loggedIn' => $member->isLoggedIn()));
 
-// first, let's see if the site is disabled or not
-if ($CONF['DisableSite'] && !$member->isAdmin()) {
+// first, let's see if the site is disabled or not. always allow admin area access.
+if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
 	redirect($CONF['DisableSiteURL']);
 	exit;
 }
@@ -219,6 +226,7 @@ include($DIR_LIBS . 'NOTIFICATION.php');
 include($DIR_LIBS . 'BAN.php');
 include($DIR_LIBS . 'PAGEFACTORY.php');
 include($DIR_LIBS . 'SEARCH.php');
+include($DIR_LIBS . 'entity.php');
 
 
 // set lastVisit cookie (if allowed)
@@ -257,41 +265,64 @@ if (!defined('_ARCHIVETYPE_MONTH'))
 
 
 // decode path_info
-if ($CONF['URLMode'] == 'pathinfo') {
-	$data = explode("/",serverVar('PATH_INFO'));
-	for ($i=0;$i<sizeof($data);$i++) {
-		switch ($data[$i]) {
-			case 'item':			// item/1 (blogid)
-				$i++;
-				if ($i<sizeof($data)) $itemid = intval($data[$i]);
-				break;
-			case 'archives':		// archives/1 (blogid)
-				$i++;
-				if ($i<sizeof($data)) $archivelist = intval($data[$i]);
-				break;
-			case 'archive':			// two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
-				if ((($i+1)<sizeof($data)) && (!strstr($data[$i+1],'-')) ){
-					$blogid = intval($data[++$i]);
-				}
-				$i++;
-				if ($i<sizeof($data)) $archive = $data[$i];
-				break;
-			case 'blogid':			// blogid/1
-			case 'blog':			// blog/1
-				$i++;
-				if ($i<sizeof($data)) $blogid = intval($data[$i]);
-				break;
-			case 'category':		// category/1 (catid)
-			case 'catid':
-				$i++;
-				if ($i<sizeof($data)) $catid = intval($data[$i]);
-				break;
-			case 'member':
-				$i++;
-				if ($i<sizeof($data)) $memberid = intval($data[$i]);
-				break;
-			default:
-				// skip...
+if ($CONF['URLMode'] == 'pathinfo')
+{
+	// initialize keywords if this hasn't been done before
+    if ($CONF['ItemKey'] == '')     $CONF['ItemKey'] = 'item';
+    if ($CONF['ArchiveKey'] == '')  $CONF['ArchiveKey'] = 'archive';
+    if ($CONF['ArchivesKey'] == '') $CONF['ArchivesKey'] = 'archives';
+    if ($CONF['MemberKey'] == '')   $CONF['MemberKey'] = 'member';
+    if ($CONF['BlogKey'] == '')     $CONF['BlogKey'] = 'blog';
+    if ($CONF['CategoryKey'] == '') $CONF['CategoryKey'] = 'category';
+        
+    $parsed = false;
+    $manager->notify(
+    	'ParseURL', 
+    	array(
+    		'type' => basename(serverVar('SCRIPT_NAME')),	// e.g. item, blog, ...
+    		'info' => serverVar('PATH_INFO'),
+    		'complete' => &$parsed		
+    	)
+    );
+    
+    if (!$parsed)
+    {
+        // default implementation
+		$data = explode("/",serverVar('PATH_INFO'));
+		for ($i=0;$i<sizeof($data);$i++) {
+			switch ($data[$i]) {
+				case $CONF['ItemKey']:			// item/1 (blogid)
+					$i++;
+					if ($i<sizeof($data)) $itemid = intval($data[$i]);
+					break;
+				case $CONF['ArchivesKey']:		// archives/1 (blogid)
+					$i++;
+					if ($i<sizeof($data)) $archivelist = intval($data[$i]);
+					break;
+				case $CONF['ArchiveKey']:		// two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
+					if ((($i+1)<sizeof($data)) && (!strstr($data[$i+1],'-')) ){
+						$blogid = intval($data[++$i]);
+					}
+					$i++;
+					if ($i<sizeof($data)) $archive = $data[$i];
+					break;
+				case 'blogid':			// blogid/1
+					case $CONF['BlogKey']:	// blog/1
+					$i++;
+					if ($i<sizeof($data)) $blogid = intval($data[$i]);
+					break;
+					case $CONF['CategoryKey']:	// category/1 (catid)
+				case 'catid':
+					$i++;
+					if ($i<sizeof($data)) $catid = intval($data[$i]);
+					break;
+					case $CONF['MemberKey']:
+					$i++;
+					if ($i<sizeof($data)) $memberid = intval($data[$i]);
+					break;
+				default:
+					// skip...
+			}
 		}
 	}
 }
@@ -351,7 +382,10 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 		$contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
 		$charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
 		
-		header('Content-Type: ' . $contenttype . '; charset=' . $charset);			
+		if ($charset != '')
+			header('Content-Type: ' . $contenttype . '; charset=' . $charset);			
+		else
+			header('Content-Type: ' . $contenttype);			
 	}
 	
 	
@@ -551,8 +585,8 @@ function selector() {
 
 		global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
 
-		// 1. get timestamp and blogid for item
-		$query = 'SELECT itime, iblog FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
+		// 1. get timestamp, blogid and catid for item
+		$query = 'SELECT itime, iblog, icat FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
 
@@ -560,6 +594,13 @@ function selector() {
 		// deny access
 		if ($blogid && (intval($blogid) != $obj->iblog))
 			doError(_ERROR_NOSUCHITEM);
+
+		// if a category has been selected which doesn't match the item, ignore the 
+		// category. #85
+		if (($catid != 0) && ($catid != $obj->icat))
+		{
+			$catid = 0;
+		}
 
 		$blogid = $obj->iblog;
 		$timestamp = strtotime($obj->itime);
@@ -579,7 +620,7 @@ function selector() {
     	}
 
 		// get next itemid and title
-		$query = 'SELECT inumber, ititle FROM '.sql_table('item').' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate(time()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
+		$query = 'SELECT inumber, ititle FROM '.sql_table('item').' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate($b->getCorrectTime()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
 		$res = sql_query($query);
 
 		$obj = mysql_fetch_object($res);
@@ -838,7 +879,7 @@ function getMailFooter() {
 function getLanguageName() {
 	global $CONF, $member;
 
-	if ($member) {
+	if ($member && $member->isLoggedIn()) {
 		// try to use members language
 		$memlang = $member->getLanguage();
 
@@ -911,59 +952,99 @@ if (	($CONF['URLMode'] == 'pathinfo')
   * Centralisation of the functions that generate links
   */
 function createItemLink($itemid, $extra = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['ItemURL'] . '/item/' . $itemid;
-	else
-		$link = $CONF['ItemURL'] . '?itemid=' . $itemid;
-	return addLinkParams($link, $extra);
+	return createLink('item', array('itemid' => $itemid));
 }
 function createMemberLink($memberid, $extra = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['MemberURL'] . '/member/' . $memberid;
-	else
-		$link = $CONF['MemberURL'] . '?memberid=' . $memberid;
-	return addLinkParams($link, $extra);
+	return createLink('member', array('memberid' => $memberid));
 }
 function createCategoryLink($catid, $extra = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['CategoryURL'] . '/category/' . $catid;
-	else
-		$link = $CONF['CategoryURL'] . '?catid=' . $catid;
-	return addLinkParams($link, $extra);
+	return createLink('category', array('catid' => $catid, 'extra' => $extra));
 }
 function createArchiveListLink($blogid = '', $extra = '') {
-	global $CONF;
-	if (!$blogid)
-		$blogid = $CONF['DefaultBlog'];
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['ArchiveListURL'] . '/archives/' . $blogid;
-	else
-		$link = $CONF['ArchiveListURL'] . '?archivelist=' . $blogid;
-	return addLinkParams($link, $extra);
+	return createLink('archivelist', array('blogid' => $blogid, 'extra' => $extra));
 }
 function createArchiveLink($blogid, $archive, $extra = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['ArchiveURL'] . '/archive/'.$blogid.'/' . $archive;
-	else
-		$link = $CONF['ArchiveURL'] . '?blogid='.$blogid.'&amp;archive=' . $archive;
-	return addLinkParams($link, $extra);
+	return createLink('archive', array('blogid' => $blogid, 'archive' => $archive, 'extra' => $extra));
+}
+function createBlogidLink($blogid, $params = '') {
+	return createLink('blog', array('blogid' => $blogid, 'extra' => $params));
+}
+
+function createLink($type, $params)
+{
+	global $manager, $CONF;
+	
+	$generatedURL = '';
+	$usePathInfo = ($CONF['URLMode'] == 'pathinfo');
+	
+	// ask plugins first
+	$created = false;
+	
+	if ($usePathInfo)
+	{
+		$manager->notify(
+			'GenerateURL',
+			array(
+				'type' => $type,
+				'params' => $params,
+				'completed' => &$created,
+				'url' => &$url
+			)
+		);
+	} 
+	
+	// if a plugin created the URL, return it
+	if ($created)
+		return $url;
+		
+	// default implementation
+	switch ($type)
+	{
+		case 'item':
+			if ($usePathInfo)
+				$url = $CONF['ItemURL'] . '/' . $CONF['ItemKey'] . '/' . $params['itemid'];
+			else
+				$url = $CONF['ItemURL'] . '?itemid=' . $params['itemid'];
+			break;
+		case 'member':
+			if ($usePathInfo)
+				$url = $CONF['MemberURL'] . '/' . $CONF['MemberKey'] . '/' . $params['memberid'];
+			else
+				$url = $CONF['MemberURL'] . '?memberid=' . $params['memberid'];
+			break;
+		case 'category':
+			if ($usePathInfo)
+				$url = $CONF['CategoryURL'] . '/' . $CONF['CategoryKey'] . '/' . $params['catid'];
+			else
+				$url = $CONF['CategoryURL'] . '?catid=' . $params['catid'];
+			break;
+		case 'archivelist':
+			if (!$params['blogid'])
+				$params['blogid'] = $CONF['DefaultBlog'];
+			if ($usePathInfo)
+				$url = $CONF['ArchiveListURL'] . '/' . $CONF['ArchivesKey'] . '/' . $params['blogid'];
+			else
+				$url = $CONF['ArchiveListURL'] . '?archivelist=' . $params['blogid'];
+			break;
+		case 'archive':
+			if ($usePathInfo)
+				$url = $CONF['ArchiveURL'] . '/' . $CONF['ArchiveKey'] . '/'.$params['blogid'].'/' . $params['archive'];
+			else
+				$url = $CONF['ArchiveURL'] . '?blogid='.$params['blogid'].'&amp;archive=' . $params['archive'];
+			break;
+		case 'blog':
+			if ($usePathInfo)
+				$url = $CONF['BlogURL'] . '/' . $CONF['BlogKey'] . '/' . $params['blogid'];
+			else
+				$url = $CONF['BlogURL'] . '?blogid=' . $params['blogid'];
+			break;
+	}	
+	
+	return addLinkParams($url, $params['extra']);
 }
 function createBlogLink($url, $params) {
 	return addLinkParams($url . '?', $params);
 }
-function createBlogidLink($blogid, $params = '') {
-	global $CONF;
-	if ($CONF['URLMode'] == 'pathinfo')
-		$link = $CONF['BlogURL'] . '/blog/' . $blogid;
-	else
-		$link = $CONF['BlogURL'] . '?blogid=' . $blogid;
-	return addLinkParams($link, $params);
-}
-
 
 function addLinkParams($link, $params) {
 	global $CONF;
@@ -1024,18 +1105,30 @@ function passVar($key, $value) {
 /*
 	Date format functions (to be used from [%date(..)%] skinvars
 */
-function formatDate($format, $timestamp, $defaultFormat) {
-	if ($format == 'rfc822') { 
-		return date('r', $timestamp); 
-	} else if ($format == 'rfc822GMT') { 
-		return gmdate('r', $timestamp); 
-	} else if ($format == 'utc') { 
-		return gmdate('Y-m-d\TH:i:s\Z', $timestamp); 
-	} else if ($format == 'iso8601') {
-       	$tz = date('O', $timestamp);
-        $tz = substr($tz, 0, 3) . ':' . substr($tz, 3, 2);	
-		return gmdate('Y-m-d\TH:i:s', $timestamp) . $tz;
-	} else {  
+function formatDate($format, $timestamp, $defaultFormat, &$blog) 
+{
+	// apply blog offset (#42)
+	$boffset = $blog ? $blog->getTimeOffset() * 3600 : 0;
+	$offset = date('Z', $timestamp) + $boffset;
+
+	switch ($format) {
+		case 'rfc822' :
+			if ($offset >= 0) $tz = '+';
+		else            { $tz = '-'; $offset = -$offset;}
+			$tz .= sprintf("%02d%02d",floor($offset / 3600),round(($offset % 3600)/60));
+			return date('D, j M Y H:i:s ', $timestamp) . $tz;
+		case 'rfc822GMT' :
+			$timestamp -= $offset;
+			return date('D, j M Y H:i:s ', $timestamp) . 'GMT';
+		case 'utc' :
+			$timestamp -= $offset;
+			return date('Y-m-d\TH:i:s\Z', $timestamp);
+		case 'iso8601' :
+			if ($offset >= 0) $tz = '+';
+			else            { $tz = '-'; $offset = -$offset;}
+			$tz .= sprintf("%02d:%02d",floor($offset / 3600),round(($offset % 3600)/60));
+			return date('Y-m-d\TH:i:s', $timestamp) . $tz;
+		default :
 		return strftime($format ? $format : $defaultFormat,$timestamp); 
 	}  
 
@@ -1081,6 +1174,61 @@ function redirect($url)
 	$url = preg_replace('|[^a-z0-9-~+_.?#=&;,/:@%]|i', '', $url);
 	header('Location: ' . $url);
 	exit;
+}
+
+/**
+ * Strip HTML tags from a string
+ * This function is a bit more intelligent than a regular call to strip_tags(),
+ * because it also deletes the contents of certain tags and cleans up any 
+ * unneeded whitespace.
+ */
+function stringStripTags ($string) {
+	$string = preg_replace("/<del[^>]*>.+<\/del[^>]*>/isU", '', $string);
+	$string = preg_replace("/<script[^>]*>.+<\/script[^>]*>/isU", '', $string);
+	$string = preg_replace("/<style[^>]*>.+<\/style[^>]*>/isU", '', $string);
+	$string = str_replace('>', '> ', $string);
+	$string = str_replace('<', ' <', $string);
+	$string = strip_tags($string);
+
+	$string = preg_replace("/\s+/", " ", $string);
+	$string = trim($string);
+	return $string;
+}
+
+/**
+ * Make a string containing HTML safe for use in a HTML attribute
+ * Tags are stripped and entities are normalized
+ */
+function stringToAttribute ($string) {
+	$string = stringStripTags($string);
+	$string = entity::named_to_numeric($string);
+	$string = entity::normalize_numeric($string);
+
+	if (_CHARSET == 'UTF-8') {
+		$string = entity::numeric_to_utf8($string);
+	}
+
+	$string = entity::specialchars($string, 'html');
+	$string = entity::numeric_to_named($string);
+	return $string;
+}
+
+/**
+ * Make a string containing HTML safe for use in a XML document
+ * Tags are stripped, entities are normalized and named entities are
+ * converted to numeric entities.
+ */
+function stringToXML ($string) {
+	$string = stringStripTags($string);
+	$string = entity::named_to_numeric($string);
+	$string = entity::normalize_numeric($string);
+		
+	if (_CHARSET == 'UTF-8') {
+		$string = entity::numeric_to_utf8($string);
+	}
+
+	$string = entity::specialchars($string, 'xml');
+	return $string;
 }
 
 ?>

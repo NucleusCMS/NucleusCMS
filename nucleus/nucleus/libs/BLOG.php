@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002-2005 The Nucleus Group
   *
@@ -9,11 +9,14 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
+ */
+/**
   * A class representing a blog and containing functions to get that blog shown
   * on the screen 
   *
-  * $Id$
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
   */
 class BLOG {
 	
@@ -178,13 +181,15 @@ class BLOG {
 					if ($old_date != 0) {
 						$oldTS = strtotime($old_date);
 						$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
-						$parser->parse(strftime($template['DATE_FOOTER'], $oldTS));
+						$tmp_footer = strftime($template['DATE_FOOTER'], $oldTS);
+						$parser->parse($tmp_footer);
 						$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));						
 					}
 					$manager->notify('PreDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
 					// note, to use templatvars in the dateheader, the %-characters need to be doubled in
 					// order to be preserved by strftime
-					$parser->parse(strftime($template['DATE_HEADER'],$timestamp));
+					$tmp_header = strftime($template['DATE_HEADER'],$timestamp);
+					$parser->parse($tmp_header);
 					$manager->notify('PostDateHead',array('blog' => &$this, 'timestamp' => $timestamp));					
 				}
 				$old_date = $new_date;
@@ -619,7 +624,14 @@ class BLOG {
 		while ($data = mysql_fetch_assoc($res)) {
 			$data['blogid'] = $this->getID();	
 			$data['blogurl'] = $blogurl;
-			$data['catlink'] = createCategoryLink($data['catid'], $linkparams);
+			$data['catlink'] = createLink(
+								'category',
+								array(
+									'catid' => $data['catid'],
+									'name' => $data['catname'],
+									'extra' => $linkparams
+								)
+							   );
 			$data['self'] = $CONF['Self'];
 
 			$temp = TEMPLATE::fill($template['CATLIST_LISTITEM'],$data);
@@ -1120,20 +1132,55 @@ class ITEMACTIONS extends BaseActions {
 	
 	function parse_blogid() {		echo $this->blog->getID();	}
 	function parse_body() {			$this->highlightAndParse($this->currentItem->body); }
-	function parse_title() {		$this->highlightAndParse($this->currentItem->title); }
 	function parse_more() {			$this->highlightAndParse($this->currentItem->more); }	
 	function parse_itemid() {		echo $this->currentItem->itemid; }		
 	function parse_category() {		echo $this->currentItem->category; }				
-	function parse_categorylink() {	echo createCategoryLink($this->currentItem->catid); }				
+	function parse_categorylink() {	echo createLink('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category)); }
 	function parse_catid() {		echo $this->currentItem->catid; }					
 	function parse_authorid() {		echo $this->currentItem->authorid; }
-	function parse_authorlink() {	echo createMemberLink($this->currentItem->authorid, $this->linkparams); }	
+	function parse_authorlink() {
+		echo createLink(
+			'member',
+			array(
+				'memberid' => $this->currentItem->authorid,
+				'name' => $this->currentItem->author,
+				'extra' => $this->linkparams
+			)
+		);
+	}
 	function parse_query() {		echo $this->strHighlight; }
-	function parse_itemlink() {		echo createItemLink($this->currentItem->itemid, $this->linkparams); }
+	function parse_itemlink() {		
+		echo createLink(
+			'item', 
+			array(
+				'itemid' => $this->currentItem->itemid,
+				'title' => $this->currentItem->title,
+				'timestamp' => $this->currentItem->timestamp,
+				'extra' => $this->linkparams
+			)
+		);
+	}
 	function parse_blogurl() {		echo $this->blog->getURL(); }
 	function parse_closed() {		echo $this->currentItem->closed; }
 	function parse_relevance() {    echo round($this->currentItem->score,2);}
 	
+	function parse_title($format = '') {
+		switch ($format) {
+			case 'xml':
+				echo stringToXML ($this->currentItem->title);
+				break;
+			case 'attribute':
+				echo stringToAttribute ($this->currentItem->title);
+				break;
+			case 'raw':
+				echo $this->currentItem->title;
+				break;
+			default:
+				$this->highlightAndParse($this->currentItem->title); 
+				break;
+		}
+	}
+
 	function parse_karma($type = 'totalscore') {
 		global $manager;
 
@@ -1201,7 +1248,7 @@ class ITEMACTIONS extends BaseActions {
 	}			
 	
 	function parse_date($format = '') {
-		echo formatDate($format, $this->currentItem->timestamp, $this->template['FORMAT_DATE']);
+		echo formatDate($format, $this->currentItem->timestamp, $this->template['FORMAT_DATE'], $this->blog);
 	}
 	
 	/**
@@ -1225,7 +1272,8 @@ class ITEMACTIONS extends BaseActions {
 	function parse_syndicate_description($maxLength = 250, $addHighlight = 0) { 
 		$syndicated = strip_tags($this->currentItem->body);
 		if ($addHighlight) {
-		    echo $this->highlightAndParse(htmlspecialchars(shorten($syndicated,$maxLength,'...')));
+			$tmp_highlight = htmlspecialchars(shorten($syndicated,$maxLength,'...'));
+			echo $this->highlightAndParse($tmp_highlight);
 		} else {
     		echo htmlspecialchars(shorten($syndicated,$maxLength,'...'));
 		}
@@ -1337,7 +1385,8 @@ class ITEMACTIONS extends BaseActions {
 	function highlightAndParse(&$data) {
 		// allow only a limited subset of actions (do not allow includes etc, they might be evil)
 		$this->parser->actions = array('image','media','popup');
-		$this->parser->parse($this->highlight($data));
+		$tmp_highlight = $this->highlight($data);
+		$this->parser->parse($tmp_highlight);
 		$this->parser->actions = $this->getDefinedActions();
 	}
 	
@@ -1359,6 +1408,8 @@ class ITEMACTIONS extends BaseActions {
 		$vars['width'] 			= $width;
 		$vars['height']			= $height;
 		$vars['text']			= $text;
+		$vars['link']			= htmlspecialchars($CONF['MediaURL'] . $filename);
+		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['popuptext'] . '</a>';		
 		
 		echo TEMPLATE::fill($this->template['POPUP_CODE'],$vars);
 	}
@@ -1379,7 +1430,7 @@ class ITEMACTIONS extends BaseActions {
 		$vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
 		$vars['width'] 			= $width;
 		$vars['height']			= $height;
-				
+		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
 		
 		
 		echo TEMPLATE::fill($this->template['IMAGE_CODE'],$vars);;

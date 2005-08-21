@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002-2005 The Nucleus Group
   *
@@ -9,28 +9,31 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
+ */
+/**
   * A class representing site members
   *
-  * $Id$
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
   */
 class MEMBER {
 
 	// 1 when authenticated, 0 when not
-	var $loggedin;
+	var $loggedin = 0;
 	var $password;		// not the actual password, but rather a MD5 hash	
 
 	var $cookiekey;		// value that should also be in the client cookie to allow authentication
 	
 	// member info
-	var $id;
+	var $id = -1;
 	var $realname;
 	var $displayname;
 	var $email;
 	var $url;
-	var $language;		// name of the language file to use (e.g. 'english' -> english.php)
-	var $admin;			// (either 0 or 1)
-	var $canlogin;		// (either 0 or 1)
+	var $language = '';		// name of the language file to use (e.g. 'english' -> english.php)
+	var $admin = 0;			// (either 0 or 1)
+	var $canlogin = 0;		// (either 0 or 1)
 	var $notes;
 
 	// (private)

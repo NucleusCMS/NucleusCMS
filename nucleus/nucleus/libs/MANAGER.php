@@ -1,5 +1,5 @@
 <?php
-/**
+/*
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002-2005 The Nucleus Group
   *
@@ -8,7 +8,8 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
+ */
+/**
   *	This class makes sure each item/weblog/comment object gets requested from
   * the database only once, by keeping them in a cache. The class also acts as 
   * a dynamic classloader, loading classes _only_ when they are first needed,
@@ -17,7 +18,9 @@
   * The class is a singleton, meaning that there will be only one object of it
   * active at all times. The object can be requested using MANAGER::instance()
   *
-  * $Id$
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
   */
 class MANAGER {
 

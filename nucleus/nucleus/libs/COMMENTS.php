@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
   * Copyright (C) 2002-2005 The Nucleus Group
   *
@@ -9,10 +9,13 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
+ */
+/**
   * A class representing the comments (all of them) for a certain post on a ceratin blog
   *
-  * $Id$
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
   */
 class COMMENTS {
 
@@ -70,7 +73,7 @@ class COMMENTS {
 		if ($maxToShow == 0) {
 			$this->commentcount = $this->amountComments();
 		} else {
-			$query =  'SELECT c.cnumber as commentid, c.cbody as body, c.cuser as user, c.cmail as userid, c.cmember as memberid, c.ctime, c.chost as host, c.cip as ip, c.cblog as blogid'
+			$query =  'SELECT c.citem as itemid, c.cnumber as commentid, c.cbody as body, c.cuser as user, c.cmail as userid, c.cmember as memberid, c.ctime, c.chost as host, c.cip as ip, c.cblog as blogid'
 				   . ' FROM '.sql_table('comment').' as c'
 				   . ' WHERE c.citem=' . $this->itemid
 				   . ' ORDER BY c.ctime';
@@ -276,6 +279,7 @@ class COMMENTACTIONS extends BaseActions {
 
 	function getDefinedActions() {
 		return array(
+		    'blogurl',
 			'commentcount',
 			'commentword',
 			'itemlink',
@@ -295,6 +299,9 @@ class COMMENTACTIONS extends BaseActions {
 			'userid',
 			'userlinkraw',
 			'userlink',
+			'useremail',
+			'userwebsite',
+			'excerpt',
 			'short',
 			'skinfile',
 			'set',
@@ -319,9 +326,13 @@ class COMMENTACTIONS extends BaseActions {
 			else
 				$comment['userid'] = $mem->getEmail();
 
-			$comment['userlinkraw'] = createMemberLink(
-										$comment['memberid'],
-										$this->commentsObj->itemActions->linkparams
+			$comment['userlinkraw'] = createLink(
+										'member',
+										array(
+											'memberid' => $comment['memberid'],
+											'name' => $mem->getDisplayName(),
+											'extra' => $this->commentsObj->itemActions->linkparams
+										)
 									  );
 
 		} else {
@@ -338,6 +349,13 @@ class COMMENTACTIONS extends BaseActions {
 		$this->currentComment =& $comment;
 	}
 
+	function parse_blogurl() {		
+		global $manager;
+		$blogid = getBlogIDFromItemID($this->commentsObj->itemid);
+		$blog =& $manager->getBlog($blogid);
+		echo $blog->getURL(); 
+	}
+
 	function parse_commentcount() {			echo $this->commentsObj->commentcount; }
 	function parse_commentword() {
 		if ($this->commentsObj->commentcount == 1)
@@ -346,7 +364,15 @@ class COMMENTACTIONS extends BaseActions {
 			echo $this->template['COMMENTS_MANY'];
 	}
 
-	function parse_itemlink() {				echo createItemLink($this->commentsObj->itemid, $this->commentsObj->itemActions->linkparams); }
+	function parse_itemlink() {
+		echo createLink(
+			'item',
+			array(
+				'itemid' => $this->commentsObj->itemid,
+				'extra' => $this->commentsObj->itemActions->linkparams
+			)
+		);
+	}
 	function parse_itemid() {				echo $this->commentsObj->itemid; }
 	function parse_itemtitle($maxLength = 0) {
 		if ($maxLength == 0)
@@ -356,7 +382,7 @@ class COMMENTACTIONS extends BaseActions {
 	}
 
 	function parse_date($format = '') {
-		echo formatDate($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE']);
+		echo formatDate($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE'], $this->commentsObj->itemActions->blog);
 	}
 	function parse_time($format = '') {
 		echo strftime(
@@ -382,6 +408,31 @@ class COMMENTACTIONS extends BaseActions {
 		} else {
 			echo $this->currentComment['user'];
 		}
+	}
+
+	function parse_useremail() {
+		if ($this->currentComment['memberid'] > 0)
+		{
+			$member = new MEMBER();
+			$member->readFromID($this->currentComment['memberid']);
+			
+			if ($member->email != '')
+				echo $member->email;		
+		}
+		else
+		{
+			if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
+				echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
+		}
+	}
+
+	function parse_userwebsite() {
+		if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false))
+			echo $this->currentComment['userlinkraw'];
+	}
+	
+	function parse_excerpt() {
+		echo stringToXML(shorten($this->currentComment['body'], 60, '...'));
 	}
 	function parse_short() {
 		$tmp = strtok($this->currentComment['body'],"\n");

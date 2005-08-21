@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
   * Copyright (C) 2002-2005 The Nucleus Group
   *
@@ -9,8 +9,13 @@
   * as published by the Free Software Foundation; either version 2
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
-  *
+ */
+
+/**
   * Nucleus RSS syndication channel skin
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @version $Id$
   */
 
 header("Pragma: no-cache");
@@ -46,7 +51,7 @@ if (!$CONF['DisableSite']) {
 	// output empty RSS file...
 	// (because site is disabled)
 	
-	echo '<' . '?xml version="1.0" encoding="ISO-8859-1"?' . '>';
+	echo '<' . '?xml version="1.0" encoding="' . _CHARSET . '"?' . '>';
 	
 	?>
 	<rss version="2.0">
