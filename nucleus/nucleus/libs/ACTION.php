@@ -59,6 +59,7 @@ class ACTION
 		$post['itemid'] =	intPostVar('itemid');
 		$post['user'] = 	postVar('user');
 		$post['userid'] = 	postVar('userid');
+		$post['email'] =   postVar('email');
 		$post['body'] = 	postVar('body');
 
 		// set cookies when required
@@ -67,6 +68,7 @@ class ACTION
 			$lifetime = time()+2592000;
 			setcookie($CONF['CookiePrefix'] . 'comment_user',$post['user'],$lifetime,'/','',0);
 			setcookie($CONF['CookiePrefix'] . 'comment_userid', $post['userid'],$lifetime,'/','',0);
+			setcookie($CONF['CookiePrefix'] . 'comment_email',  $post['email'], $lifetime,'/','',0);
 		}
 
 		$comments = new COMMENTS($post['itemid']);

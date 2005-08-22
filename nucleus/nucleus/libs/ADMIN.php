@@ -1856,7 +1856,7 @@ class ADMIN {
 			$mem->sendActivationLink('addresschange', $oldEmail);
 			// logout member
 			$mem->newCookieKey();
-			
+
 			// only log out if the member being edited is the current member.
 			if ($member->getID() == $memberid)
 				$member->logout();
@@ -1891,10 +1891,10 @@ class ADMIN {
 		if ($res != 1)
 			$this->error($res);
 
-		// fire PostRegister event			
+		// fire PostRegister event
 		$newmem = new MEMBER();
 		$newmem->readFromName(postVar('name'));
-		$manager->notify('PostRegister',array('member' => &$newmem)); 			
+		$manager->notify('PostRegister',array('member' => &$newmem));
 
 		$this->action_usermanagement();
 	}
@@ -2339,6 +2339,10 @@ class ADMIN {
 			</td>
 			<td><?php $this->input_yesno('public',$blog->isPublic(),70); ?></td>
 		</tr><tr>
+	<td><?php echo _EBLOG_REQUIREDEMAIL?>
+		 </td>
+		 <td><?php $this->input_yesno('reqemail',$blog->emailRequired(),72); ?></td>
+	  </tr><tr>
 			<td><?php echo _EBLOG_NOTIFY?> <?php help('blognotify'); ?></td>
 			<td><input name="notify" tabindex="80" maxlength="60" size="40" value="<?php echo  htmlspecialchars($blog->getNotifyAddress()); ?>" /></td>
 		</tr><tr>
@@ -2801,6 +2805,7 @@ class ADMIN {
 		$blog->setAllowPastPosting(intPostVar('allowpastposting'));
 		$blog->setDefaultCategory(intPostVar('defcat'));
 		$blog->setSearchable(intPostVar('searchable'));
+		$blog->setEmailRequired(intPostVar('reqemail'));
 
 		$blog->writeSettings();
 
@@ -2955,7 +2960,7 @@ class ADMIN {
 		$query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. addslashes($mem->getDisplayName())
 					.'" WHERE cmember='.$memberid;
 		sql_query($query);
-		
+
 		$query = 'DELETE FROM '.sql_table('member').' WHERE mnumber='.$memberid;
 		sql_query($query);
 
@@ -3342,7 +3347,7 @@ selector();
 		if ($error) $this->error($error);
 
 		$this->pagehead();
-		
+
 		echo '<p><a href="index.php?action=skinieoverview">(',_BACK,')</a></p>';
 		?>
 		<h2><?php echo _SKINIE_CONFIRM_TITLE?></h2>

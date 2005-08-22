@@ -23,7 +23,7 @@ class COMMENT {
 	  * Returns the requested comment (static)
 	  */
 	function getComment($commentid) {
-		$query =  'SELECT cnumber as commentid, cbody as body, cuser as user, cmail as userid, cmember as memberid, ctime, chost as host, mname as member, cip as ip, cblog as blogid'
+		$query =  'SELECT cnumber as commentid, cbody as body, cuser as user, cmail as userid, cemail as email, cmember as memberid, ctime, chost as host, mname as member, cip as ip, cblog as blogid'
 			   . ' FROM '.sql_table('comment').' left outer join '.sql_table('member').' on cmember=mnumber'
 			   . ' WHERE cnumber=' . intval($commentid);
 		$comments = sql_query($query);
@@ -43,10 +43,12 @@ class COMMENT {
 	function prepare($comment) {
 		$comment['user'] = strip_tags($comment['user']);
 		$comment['userid'] = strip_tags($comment['userid']);
+		$comment['email'] = strip_tags($comment['email']);
 
 		// remove quotes and newlines from user and userid
 		$comment['user'] = strtr($comment['user'], "\'\"\n",'-- ');
 		$comment['userid'] = strtr($comment['userid'], "\'\"\n",'-- ');
+		$comment['email'] = strtr($comment['email'], "\'\"\n",'-- ');
 
 		$comment['body'] = COMMENT::prepareBody($comment['body']);
 

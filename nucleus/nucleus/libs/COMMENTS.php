@@ -73,7 +73,7 @@ class COMMENTS {
 		if ($maxToShow == 0) {
 			$this->commentcount = $this->amountComments();
 		} else {
-			$query =  'SELECT c.citem as itemid, c.cnumber as commentid, c.cbody as body, c.cuser as user, c.cmail as userid, c.cmember as memberid, c.ctime, c.chost as host, c.cip as ip, c.cblog as blogid'
+			$query =  'SELECT c.citem as itemid, c.cnumber as commentid, c.cbody as body, c.cuser as user, c.cmail as userid, c.cemail as email, c.cmember as memberid, c.ctime, c.chost as host, c.cip as ip, c.cblog as blogid'
 				   . ' FROM '.sql_table('comment').' as c'
 				   . ' WHERE c.citem=' . $this->itemid
 				   . ' ORDER BY c.ctime';
@@ -145,6 +145,11 @@ class COMMENTS {
 		if ($CONF['ProtectMemNames'] && !$member->isLoggedIn() && MEMBER::isNameProtected($comment['user']))
 			return _ERROR_COMMENTS_MEMBERNICK;
 
+		// email required protection
+		if ($settings->emailRequired() && strlen($comment['email']) == 0 && !$member->isLoggedIn()) {
+			return _ERROR_EMAIL_REQUIRED;
+		}
+
 		// isValidComment returns either "1" or an error message
 		$isvalid = $this->isValidComment($comment);
 		if ($isvalid != 1)
@@ -159,6 +164,7 @@ class COMMENTS {
 			$comment['memberid'] = $member->getID();
 			$comment['user'] = '';
 			$comment['userid'] = '';
+			$comment['email'] = '';
 		} else {
 			$comment['memberid'] = 0;
 		}
@@ -194,6 +200,7 @@ class COMMENTS {
 
 		$name		= addslashes($comment['user']);
 		$url		= addslashes($comment['userid']);
+		$email      = addslashes($comment['email']);
 		$body		= addslashes($comment['body']);
 		$host		= addslashes($comment['host']);
 		$ip			= addslashes($comment['ip']);
@@ -201,8 +208,8 @@ class COMMENTS {
 		$timestamp	= date('Y-m-d H:i:s', $comment['timestamp']);
 		$itemid		= $this->itemid;
 
-		$query = 'INSERT INTO '.sql_table('comment').' (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CIP, CBLOG) '
-			   . "VALUES ('$name', '$url', $memberid, '$body', $itemid, '$timestamp', '$host', '$ip', '$blogid')";
+		$query = 'INSERT INTO '.sql_table('comment').' (CUSER, CMAIL, CEMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CIP, CBLOG) '
+			   . "VALUES ('$name', '$url', '$email', $memberid, '$body', $itemid, '$timestamp', '$host', '$ip', '$blogid')";
 
 		sql_query($query);
 
@@ -243,6 +250,10 @@ class COMMENTS {
 			if (strlen($comment['user'])<2)
 				return _ERROR_COMMENT_NOUSERNAME;
 
+		if ((strlen($comment['email']) != 0) && !(isValidMailAddress($comment['email']))) {
+			return _ERROR_BADMAILADDRESS;
+		}
+
 		// let plugins do verification (any plugin which thinks the comment is invalid
 		// can change 'error' to something other than '1')
 		$result = 1;
@@ -279,9 +290,10 @@ class COMMENTACTIONS extends BaseActions {
 
 	function getDefinedActions() {
 		return array(
-		    'blogurl',
+			'blogurl',
 			'commentcount',
 			'commentword',
+			'email',
 			'itemlink',
 			'itemid',
 			'itemtitle',
@@ -349,11 +361,11 @@ class COMMENTACTIONS extends BaseActions {
 		$this->currentComment =& $comment;
 	}
 
-	function parse_blogurl() {		
+	function parse_blogurl() {
 		global $manager;
 		$blogid = getBlogIDFromItemID($this->commentsObj->itemid);
 		$blog =& $manager->getBlog($blogid);
-		echo $blog->getURL(); 
+		echo $blog->getURL();
 	}
 
 	function parse_commentcount() {			echo $this->commentsObj->commentcount; }
@@ -401,6 +413,12 @@ class COMMENTACTIONS extends BaseActions {
 
 	function parse_user() {					echo $this->currentComment['user']; }
 	function parse_userid() {				echo $this->currentComment['userid']; }
+	function parse_email() {
+		$email = $this->currentComment['email'];
+		$email = str_replace('@', ' (at) ', $email);
+		$email = str_replace('.', ' (dot) ', $email);
+		echo $email;
+	}
 	function parse_userlinkraw() {			echo $this->currentComment['userlinkraw']; }
 	function parse_userlink() {
 		if ($this->currentComment['userlinkraw']) {
@@ -415,9 +433,9 @@ class COMMENTACTIONS extends BaseActions {
 		{
 			$member = new MEMBER();
 			$member->readFromID($this->currentComment['memberid']);
-			
+
 			if ($member->email != '')
-				echo $member->email;		
+				echo $member->email;
 		}
 		else
 		{
@@ -430,7 +448,7 @@ class COMMENTACTIONS extends BaseActions {
 		if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false))
 			echo $this->currentComment['userlinkraw'];
 	}
-	
+
 	function parse_excerpt() {
 		echo stringToXML(shorten($this->currentComment['body'], 60, '...'));
 	}

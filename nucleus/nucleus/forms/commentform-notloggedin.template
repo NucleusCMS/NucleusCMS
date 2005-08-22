@@ -1,8 +1,8 @@
 <a id="nucleus_cf"></a>
-<form method="post" action="#nucleus_cf"> 
+<form method="post" action="#nucleus_cf">
   <div class="commentform">
 
-  	<%errordiv%>
+	<%errordiv%>
 
 	<input type="hidden" name="action" value="addcomment" />
 	<input type="hidden" name="url" value="<%formdata(destinationurl)%>" />
@@ -14,9 +14,11 @@
 	<label for="nucleus_cf_name"><%text(_COMMENTFORM_NAME)%></label>: <input name="user" size="40" maxlength="40" value="<%formdata(user)%>" class="formfield" id="nucleus_cf_name" />
 	<br />
 	<label for="nucleus_cf_mail"><%text(_COMMENTFORM_MAIL)%></label>: <input name="userid" size="40" maxlength="60" value="<%formdata(userid)%>" class="formfield" id="nucleus_cf_mail" />
+	<br />
+	<label for="nucleus_cf_email"><%text(_COMMENTFORM_EMAIL)%></label>: <input name="email" size="40" maxlength="100" value="<%formdata(email)%>" class="formfield" id="nucleus_cf_email" />
 
-	<%callback(FormExtra,commentform-notloggedin)%>	
-	
+	<%callback(FormExtra,commentform-notloggedin)%>
+
 	<br />
 	<input type="checkbox" value="1" name="remember" id="nucleus_cf_remember" <%formdata(rememberchecked)%> /><label for="nucleus_cf_remember"><%text(_COMMENTFORM_REMEMBER)%></label>
 	<br />

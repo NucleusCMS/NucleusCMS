@@ -13,6 +13,14 @@
 // Fully translated language file can be sent to us
 // and will be available for download (with proper credit to the author, of course)
 
+// START changed/added after 3.22 START
+define('_ERROR_EMAIL_REQUIRED',		'Email adres is verplicht');
+define('_COMMENTFORM_MAIL',			'Website');
+define('_COMMENTFORM_EMAIL',		'E-mail');
+define('_EBLOG_REQUIREDEMAIL',		'Verplicht E-mail adres bij reacties?');
+// END changed/added after 3.22 END
+
+
 // START changed/added after 3.15 START
 define('_LIST_PLUG_SUBS_NEEDUPDATE','Gelieve de \'Plugin Subscriptions vernieuwen\'-knop te gebruiken om de subscription-lijst van deze plugin te vernieuwen');
 define('_LIST_PLUGS_DEP',			'Plugin(s) is afhankelijk van:');

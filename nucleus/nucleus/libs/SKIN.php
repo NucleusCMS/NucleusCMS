@@ -616,7 +616,7 @@ class ACTIONS extends BaseActions {
 	// include itemtitle of prev item
 	function parse_previtemtitle($format = '') {
 		global $itemtitleprev;
-		
+
 		switch ($format) {
 			case 'xml':
 				echo stringToXML ($itemtitleprev);
@@ -922,7 +922,7 @@ class ACTIONS extends BaseActions {
 	function parse_itemtitle($format = '') {
 		global $manager, $itemid;
 		$item =& $manager->getItem($itemid,0,0);
-		
+
 		switch ($format) {
 			case 'xml':
 				echo stringToXML ($item['title']);
@@ -1244,7 +1244,7 @@ class ACTIONS extends BaseActions {
 		if (!$destinationurl)
 		{
 			$destinationurl = createLink(
-				'item', 
+				'item',
 				array(
 					'itemid' => $itemid,
 					'title' => $item['title'],
@@ -1253,12 +1253,16 @@ class ACTIONS extends BaseActions {
 				)
 			);
 		}
-		
+
 		// values to prefill
 		$user = cookieVar($CONF['CookiePrefix'] .'comment_user');
 		if (!$user) $user = postVar('user');
 		$userid = cookieVar($CONF['CookiePrefix'] .'comment_userid');
 		if (!$userid) $userid = postVar('userid');
+		$email = cookieVar($CONF['CookiePrefix'] .'comment_email');
+		if (!$email) {
+			$email = postVar('email');
+		}
 		$body = postVar('body');
 
 		$this->formdata = array(
@@ -1267,6 +1271,7 @@ class ACTIONS extends BaseActions {
 			'itemid' => $itemid,
 			'user' => htmlspecialchars($user),
 			'userid' => htmlspecialchars($userid),
+			'email' => htmlspecialchars($email),
 			'body' => htmlspecialchars($body),
 			'membername' => $member->getDisplayName(),
 			'rememberchecked' => cookieVar($CONF['CookiePrefix'] .'comment_user')?'checked="checked"':''

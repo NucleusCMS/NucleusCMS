@@ -27,7 +27,7 @@
 			return 'nucleus_' . $name;
 		}
 	}
-	
+
 	//intGetVar did not exist in very early versions
 	if (!function_exists('intGetVar')) {
 		function intGetVar($name) {
@@ -92,6 +92,10 @@
 				break;
 			case '32':
 				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 320 LIMIT 1';
+				$minrows = 1;
+				break;
+			case '33':
+				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 330 LIMIT 1';
 				$minrows = 1;
 				break;
 		}
@@ -247,7 +251,7 @@
 		}else
 			echo '<li>'.$message.' ... <span class="warning">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>';
 	}
-	
+
 	/**
 	 * @param $table
 	 *		table to check (without prefix)
