@@ -680,6 +680,7 @@ class BLOG {
 			   . "     bmaxcomments=" . intval($this->getMaxComments()) . ","
 			   . "     btimeoffset=" . $offset . ","
 			   . "     bpublic=" . intval($this->isPublic()) . ","
+			   . "     breqemail=" . intval($this->emailRequired()) . ","
 			   . "     bsendping=" . intval($this->pingUserland()) . ","
 			   . "     bconvertbreaks=" . intval($this->convertBreaks()) . ","
 			   . "     ballowpast=" . intval($this->allowPastPosting()) . ","
@@ -889,6 +890,10 @@ class BLOG {
 		return $this->getSetting('bpublic');
 	}
 
+	function emailRequired() {
+		return $this->getSetting('breqemail');
+	}
+
 	function getSearchable() {
 		return $this->getSetting('bincludesearch');
 	}
@@ -939,6 +944,10 @@ class BLOG {
 
 	function setNotifyAddress($val) {
 		$this->setSetting('bnotify',$val);
+	}
+
+	function setEmailRequired($val) {
+		$this->setSetting('breqemail',$val);
 	}
 
 	function setTimeOffset($val) {
@@ -1149,9 +1158,9 @@ class ITEMACTIONS extends BaseActions {
 		);
 	}
 	function parse_query() {		echo $this->strHighlight; }
-	function parse_itemlink() {		
+	function parse_itemlink() {
 		echo createLink(
-			'item', 
+			'item',
 			array(
 				'itemid' => $this->currentItem->itemid,
 				'title' => $this->currentItem->title,
@@ -1176,7 +1185,7 @@ class ITEMACTIONS extends BaseActions {
 				echo $this->currentItem->title;
 				break;
 			default:
-				$this->highlightAndParse($this->currentItem->title); 
+				$this->highlightAndParse($this->currentItem->title);
 				break;
 		}
 	}
@@ -1409,7 +1418,7 @@ class ITEMACTIONS extends BaseActions {
 		$vars['height']			= $height;
 		$vars['text']			= $text;
 		$vars['link']			= htmlspecialchars($CONF['MediaURL'] . $filename);
-		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['popuptext'] . '</a>';		
+		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['popuptext'] . '</a>';
 
 		echo TEMPLATE::fill($this->template['POPUP_CODE'],$vars);
 	}

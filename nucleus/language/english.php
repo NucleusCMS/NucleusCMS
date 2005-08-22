@@ -12,6 +12,13 @@
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
 
+// START changed/added after 3.22 START
+define('_ERROR_EMAIL_REQUIRED',		'Email address is required');
+define('_COMMENTFORM_MAIL',			'Website');
+define('_COMMENTFORM_EMAIL',		'E-mail');
+define('_EBLOG_REQUIREDEMAIL',		'Require E-mail address with comments?');
+// END changed/added after 3.22 END
+
 // START changed/added after 3.15 START
 
 define('_LIST_PLUG_SUBS_NEEDUPDATE','Please use the \'Update Subscription list\'-button to update the plugin\'s subscription list.');
@@ -447,7 +454,6 @@ define('_COMMENTFORM_YOUARE',		'You are');
 define('_COMMENTFORM_SUBMIT',		'Add Comment');
 define('_COMMENTFORM_COMMENT',		'Your comment');
 define('_COMMENTFORM_NAME',			'Name');
-define('_COMMENTFORM_MAIL',			'E-mail/HTTP');
 define('_COMMENTFORM_REMEMBER',		'Remember Me');
 
 // loginform
