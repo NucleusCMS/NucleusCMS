@@ -16,7 +16,11 @@
  * Notes:
  *   - Templates are not converted
  *   - Nucleus should already be installed
- *	 - Members should exist for all teammembers
+ *   - Members should exist for all teammembers
+ *
+ * History
+ *   v1.0 initial version
+ *   v1.1 (04/09/2005) change instruction as suggested by user (lloyd_borrett) 
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2005 The Nucleus Group
@@ -109,7 +113,7 @@ function bc_BloggerToXml() {
 						Show <b>900</b> <b>day's posts</b> on main page
 					</li>
 					<li>
-						Date/Time Format: <b>MM/DD/YYYY HH:MM:SS AM|PM</b> (that option is not listed as such, instead it has the current date filled in)
+						Under <b>Settings : Formating</b>, change the Timestamp Format to the date/time format <b>MM/DD/YYYY HH:MM:SS AM|PM</b> (that option is not listed as such, instead it has the current date filled in) 
 					</li>
 					<li>
 						Archive Frequency: <b>No Archive</b>
