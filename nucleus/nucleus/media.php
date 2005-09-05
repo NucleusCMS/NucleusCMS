@@ -290,6 +290,24 @@ function media_upload() {
 	$filetype = $uploadInfo['type'];
 	$filesize = $uploadInfo['size'];
 	$filetempname = $uploadInfo['tmp_name'];
+	$fileerror = intval($uploadInfo['error']);
+	
+	switch ($fileerror)
+	{
+		case 0: // = UPLOAD_ERR_OK
+			break;
+		case 1: // = UPLOAD_ERR_INI_SIZE
+		case 2:	// = UPLOAD_ERR_FORM_SIZE
+			media_doError(_ERROR_FILE_TOO_BIG);
+		case 3: // = UPLOAD_ERR_PARTIAL
+		case 4: // = UPLOAD_ERR_NO_FILE
+		case 6: // = UPLOAD_ERR_NO_TMP_DIR
+		case 7: // = UPLOAD_ERR_CANT_WRITE
+		default:
+			// include error code for debugging
+			// (see http://www.php.net/manual/en/features.file-upload.errors.php)
+			media_doError(_ERROR_BADREQUEST . ' (' . $fileerror . ')');
+	}
 
 	if ($filesize > $CONF['MaxUploadSize'])
 		media_doError(_ERROR_FILE_TOO_BIG);

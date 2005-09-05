@@ -17,6 +17,7 @@
 	<li>
 		<b>Nucleus v3.3CVS</b>
 		<ul>
+			<li>FIXED: (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=97">#97</a>): file uploads didn't check <code>$_FILES['file']['error']</code> codes. (dekarma)</li>
 			<li>CHANGED: Update user instruction for Blogger conversion tool</li>
 			<li>ADDED: When an e-mail is provided in the comment-form it is validated. (TeRanEX)</li>
 			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?id=23&amp;do=details">#23</a>): Splitted the URL &amp; E-mail field in comments. (gRegor, ketsugi, Red Dalek, TeRanEX)</li>
@@ -28,32 +29,32 @@
 		<ul>
 			<li>FIXED: Major security vulnerability in the phpxmlrpc library.</li>
 			<li>FIXED: New NP_SkinFiles version, fixing a minor security issue. (rakaz)</li>
-			<li>CHANGED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=17">#17</a>): An errormessage is now displayed when logon through loginform failed. (karma)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=91">#91</a>): Initialize variables in MEMBER class (andrew)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=90">#90</a>): there was no plugin callback on member edits when the email address changed (andrew)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=90">#90</a>): when editing members other than yourself, you shouldn't be logged out (andrew)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=85">#85</a>): If both <code>itemid</code> and <code>catid</code> are specified in the URL, ignore <code>catid</code> if it doesn't match <code>itemid</code> (karma)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=49">#49</a>): 'name clashes' warning on skin import no longer displayed when no clashes detected (karma)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=67">#67</a>): Add resilency to upgrade scripts (Frankenstein)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=88">#88</a>): PHP5.1: "Fatal error: Only variables can be passed by reference" (karma)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=87">#87</a>): Translate &amp; -> &amp;amp; when links added via toolbar (karma)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=42">#42</a>): <code>formatDate</code> didn't always use the correct timezone (karma)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=43">#43</a>): Only load user language file when logged in (karma).</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=76">#76</a>): Disabling site blocked admin menu access (karma).</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=57">#57</a>): PostRegister event not fired from inside admin area.</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=58">#58</a>): images and popups were not in feeds. (karma)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=33">#33</a>): add item form invalid ticket error (admun)</li>
+			<li>CHANGED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=17">#17</a>): An errormessage is now displayed when logon through loginform failed. (karma)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=91">#91</a>): Initialize variables in MEMBER class (andrew)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=90">#90</a>): there was no plugin callback on member edits when the email address changed (andrew)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=90">#90</a>): when editing members other than yourself, you shouldn't be logged out (andrew)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=85">#85</a>): If both <code>itemid</code> and <code>catid</code> are specified in the URL, ignore <code>catid</code> if it doesn't match <code>itemid</code> (karma)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=49">#49</a>): 'name clashes' warning on skin import no longer displayed when no clashes detected (karma)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=67">#67</a>): Add resilency to upgrade scripts (Frankenstein)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=88">#88</a>): PHP5.1: "Fatal error: Only variables can be passed by reference" (karma)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=87">#87</a>): Translate &amp; -> &amp;amp; when links added via toolbar (karma)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=42">#42</a>): <code>formatDate</code> didn't always use the correct timezone (karma)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=43">#43</a>): Only load user language file when logged in (karma).</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=76">#76</a>): Disabling site blocked admin menu access (karma).</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=57">#57</a>): PostRegister event not fired from inside admin area.</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=58">#58</a>): images and popups were not in feeds. (karma)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=33">#33</a>): add item form invalid ticket error (admun)</li>
 			<li>FIXED: Most buttons of the toolbar reset the scroll position of the textarea to the top in Firefox (leonbloy)</li>
-			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=64">#64</a>): Applications that use the metaweblogAPI, such as Ecto can now also access and edit the extended body (rakaz)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=63">#63</a>): _getArrayVal() always returned first element of array (rakaz)</li>
+			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=64">#64</a>): Applications that use the metaweblogAPI, such as Ecto can now also access and edit the extended body (rakaz)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=63">#63</a>): _getArrayVal() always returned first element of array (rakaz)</li>
 			<li>ADDED: add InitSkinParse event (rakaz)</li>
-			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=38">#38</a>): added alternative output for &lt;%title%&gt;, &lt;%itemtitle%&gt;, &lt;%previtemtitle%&gt; and &lt;%nextitemtitle%&gt; (rakaz)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=51">#51</a>): removed hardcoded charset declaration from the RSS 2 skin (rakaz)</li>
-			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=55">#55</a>): add &lt;%skinvar%&gt; variable that corresponds with _CHARSET (rakaz)</li>
-			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=24">#24</a>): add PostUpdateItem event (admun)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=48">#48</a>):  &lt;%if(nextitem)%&gt; and &lt;%nextlink%&gt; didn't use the timezone offset. (<a href="http://forum.nucleuscms.org/viewtopic.php?t=6371">Basic</a>)</li>
+			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=38">#38</a>): added alternative output for &lt;%title%&gt;, &lt;%itemtitle%&gt;, &lt;%previtemtitle%&gt; and &lt;%nextitemtitle%&gt; (rakaz)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=51">#51</a>): removed hardcoded charset declaration from the RSS 2 skin (rakaz)</li>
+			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=55">#55</a>): add &lt;%skinvar%&gt; variable that corresponds with _CHARSET (rakaz)</li>
+			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=24">#24</a>): add PostUpdateItem event (admun)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=48">#48</a>):  &lt;%if(nextitem)%&gt; and &lt;%nextlink%&gt; didn't use the timezone offset. (<a href="http://forum.nucleuscms.org/viewtopic.php?t=6371">Basic</a>)</li>
 			<li>FIXED: "ADMIN.php line 5270" fatal error when plugin filename and plugin classname mismtach (Frankenstein)</li>
-			<li>CHANGED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&id=16">#16</a>): Event <code>PreSkinItem</code> can now modify the skin contents; <code>PreComment</code> now knows the ItemID. (<a href="http://forum.nucleuscms.org/viewtopic.php?t=6266">suggested</a> by Andy)</li>
+			<li>CHANGED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=16">#16</a>): Event <code>PreSkinItem</code> can now modify the skin contents; <code>PreComment</code> now knows the ItemID. (<a href="http://forum.nucleuscms.org/viewtopic.php?t=6266">suggested</a> by Andy)</li>
 		</ul>
 	</li>
 	<li>
