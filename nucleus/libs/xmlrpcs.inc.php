@@ -380,7 +380,9 @@
 			$_xh[$parser]['isf_reason']='';
 			$_xh[$parser]['params']=array();
 			$_xh[$parser]['stack']=array();
+			$_xh[$parser]['sp'] = 0;
 			$_xh[$parser]['valuestack'] = array();
+			$_xh[$parser]['vsp'] = 0;
 			$_xh[$parser]['method']='';
 
 			// decompose incoming XML into request structure
