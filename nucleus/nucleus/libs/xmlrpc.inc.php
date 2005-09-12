@@ -101,23 +101,23 @@
 	);
 
 	$xmlrpc_valid_parents = array(
-		'BOOLEAN' => array('VALUE'),
-		'I4' => array('VALUE'),
-		'INT' => array('VALUE'),
-		'STRING' => array('VALUE'),
-		'DOUBLE' => array('VALUE'),
-		'DATETIME.ISO8601' => array('VALUE'),
-		'BASE64' => array('VALUE'),
-		'ARRAY' => array('VALUE'),
-		'STRUCT' => array('VALUE'),
-		'PARAM' => array('PARAMS'),
-		'METHODNAME' => array('METHODCALL'),		
-		'PARAMS' => array('METHODCALL', 'METHODRESPONSE'),
-		'MEMBER' => array('STRUCT'),
-		'NAME' => array('MEMBER'),
-		'DATA' => array('ARRAY'),
-		'FAULT' => array('METHODRESPONSE'),
-		'VALUE' => array('MEMBER', 'DATA', 'PARAM', 'FAULT'),
+		'BOOLEAN' => array('VALUE' => 'VALUE'),
+		'I4' => array('VALUE' => 'VALUE'),
+		'INT' => array('VALUE' => 'VALUE'),
+		'STRING' => array('VALUE' => 'VALUE'),
+		'DOUBLE' => array('VALUE' => 'VALUE'),
+		'DATETIME.ISO8601' => array('VALUE' => 'VALUE'),
+		'BASE64' => array('VALUE' => 'VALUE'),
+		'ARRAY' => array('VALUE' => 'VALUE'),
+		'STRUCT' => array('VALUE' => 'VALUE'),
+		'PARAM' => array('PARAMS' => 'PARAMS'),
+		'METHODNAME' => array('METHODCALL' => 'METHODCALL'),
+		'PARAMS' => array('METHODCALL' => 'METHODCALL', 'METHODRESPONSE' => 'METHODRESPONSE'),
+		'MEMBER' => array('STRUCT' => 'STRUCT'),
+		'NAME' => array('MEMBER' => 'MEMBER'),
+		'DATA' => array('ARRAY' => 'ARRAY'),
+		'FAULT' => array('METHODRESPONSE' => 'METHODRESPONSE'),
+		'VALUE' => array('MEMBER' => 'MEMBER', 'DATA' => 'DATA', 'PARAM' => 'PARAM', 'FAULT' => 'FAULT')
 	);
 
 	$xmlEntities=array(
@@ -168,7 +168,7 @@
 	$xmlrpc_internalencoding='ISO-8859-1';
 
 	$xmlrpcName='XML-RPC for PHP';
-	$xmlrpcVersion='1.2';
+	$xmlrpcVersion='1.2.1';
 
 	// let user errors start at 800
 	$xmlrpcerruser=800;
@@ -546,7 +546,7 @@
 
 		// check for correct element nesting
 		// top level element can only be of 2 types
-		if (count($_xh[$parser]['stack']) == 0)
+		if ($_xh[$parser]['sp'] == 0)
 		{
 			if ($name != 'METHODRESPONSE' && $name != 'METHODCALL')
 			{
@@ -558,10 +558,11 @@
 		else
 		{
 			// not top level element: see if parent is OK
-			if (!in_array($_xh[$parser]['stack'][0], $xmlrpc_valid_parents[$name]))
+			$parent = $_xh[$parser]['stack'][$_xh[$parser]['sp']-1];
+			if (!isset($xmlrpc_valid_parents[$name][$parent]))
 			{
 				$_xh[$parser]['isf'] = 2;
-				$_xh[$parser]['isf_reason'] = "xmlrpc element $name cannot be child of {$_xh[$parser]['stack'][0]}";
+				$_xh[$parser]['isf_reason'] = "xmlrpc element $name cannot be child of $parent";
 				return;
 			}
 		}
@@ -581,7 +582,8 @@
 				$cur_val = array();
 				$cur_val['values'] = array();
 				$cur_val['type'] = $name;
-				array_unshift($_xh[$parser]['valuestack'], $cur_val);
+				$_xh[$parser]['valuestack'][$_xh[$parser]['vsp']] = $cur_val;
+				$_xh[$parser]['vsp']++;
 				break;
 			case 'METHODNAME':
 			case 'NAME':
@@ -594,7 +596,7 @@
 			case 'PARAM':
 				//$_xh[$parser]['st']='';
 				// clear value, so we can check later if no value will passed for this param/member
-				$_xh[$parser]['value']=null;
+				$_xh[$parser]['value']='';
 				break;
 			case 'VALUE':
 				//$_xh[$parser]['st'].='new xmlrpcval(';
@@ -648,9 +650,9 @@
 				//$_xh[$parser]['ac']='';
 				// avoid warnings later on if no NAME is found before VALUE inside
 				// a struct member predefining member name as NULL
-				$_xh[$parser]['valuestack'][0]['name'] = '';
+				$_xh[$parser]['valuestack'][$_xh[$parser]['vsp']-1]['name'] = '';
 				// clear value, so we can check later if no value will passed for this param/member
-				$_xh[$parser]['value']=null;
+				$_xh[$parser]['value']='';
 				break;
 			case 'DATA':
 			case 'METHODCALL':
@@ -666,7 +668,8 @@
 		}
 
 		// Save current element name to stack, to validate nesting
-		array_unshift($_xh[$parser]['stack'], $name);
+		$_xh[$parser]['stack'][$_xh[$parser]['sp']] = $name;
+		$_xh[$parser]['sp']++;
 
 		if ($name!='VALUE')
 		{
@@ -686,8 +689,9 @@
 		// NB: if XML validates, correct opening/closing is guaranteed and
 		// we do not have to check for $name == $curr_elem.
 		// we also checked for proper nesting at start of elements...
-		$curr_elem = array_shift($_xh[$parser]['stack']);		
-
+		$_xh[$parser]['sp']--;
+		$curr_elem = $_xh[$parser]['stack'][$_xh[$parser]['sp']];
+		unset($_xh[$parser]['stack'][$_xh[$parser]['sp']]); 
 		switch($name)
 		{
 			case 'STRUCT':
@@ -699,7 +703,9 @@
 				//$_xh[$parser]['st'].=')';
 
 				// fetch out of stack array of values, and promote it to current value
-				$cur_val = array_shift($_xh[$parser]['valuestack']);
+				$_xh[$parser]['vsp']--;
+				$cur_val = $_xh[$parser]['valuestack'][$_xh[$parser]['vsp']];
+				unset($_xh[$parser]['valuestack'][$_xh[$parser]['vsp']]);
 				$_xh[$parser]['value'] = $cur_val['values'];
 
 				$_xh[$parser]['vt']=strtolower($name);
@@ -707,7 +713,7 @@
 				break;
 			case 'NAME':
 				//$_xh[$parser]['st'].= $_xh[$parser]['ac'] . '" => ';
-				$_xh[$parser]['valuestack'][0]['name'] = $_xh[$parser]['ac'];
+				$_xh[$parser]['valuestack'][$_xh[$parser]['vsp']-1]['name'] = $_xh[$parser]['ac'];
 				break;
 			case 'BOOLEAN':
 			case 'I4':
@@ -831,9 +837,9 @@
 				$temp = new xmlrpcval($_xh[$parser]['value'], $_xh[$parser]['vt']);
 				// check if we are inside an array or struct:
 				// if value just built is inside an array, let's move it into array on the stack
-				if (count($_xh[$parser]['valuestack']) && $_xh[$parser]['valuestack'][0]['type']=='ARRAY')
+				if ($_xh[$parser]['vsp'] && $_xh[$parser]['valuestack'][$_xh[$parser]['vsp']-1]['type']=='ARRAY')
 				{
-					$_xh[$parser]['valuestack'][0]['values'][] = $temp;
+					$_xh[$parser]['valuestack'][$_xh[$parser]['vsp']-1]['values'][] = $temp;
 				}
 				else
 				{
@@ -846,7 +852,9 @@
 				// add to array in the stack the last element built
 				// unless no VALUE was found
 				if ($_xh[$parser]['value'])
-					$_xh[$parser]['valuestack'][0]['values'][$_xh[$parser]['valuestack'][0]['name']] = $_xh[$parser]['value'];
+				{
+					$_xh[$parser]['valuestack'][$_xh[$parser]['vsp']-1]['values'][$_xh[$parser]['valuestack'][$_xh[$parser]['vsp']-1]['name']] = $_xh[$parser]['value'];
+				}
 				else
 					error_log('XML-RPC: missing VALUE inside STRUCT in received xml');
 				break;
@@ -920,7 +928,7 @@
 		global $_xh, $xmlrpc_backslash;
 
 		// skip processing if xml fault already detected
-		if ($parser[$_xh]['isf'] < 2)
+		if ($_xh[$parser]['isf'] < 2)
 		{
 		if (substr($data, 0, 1) == '&' && substr($data, -1, 1) == ';')
 		{
@@ -1478,7 +1486,9 @@
 			$_xh[$parser]=array();
 			$_xh[$parser]['headers'] = array();
 			$_xh[$parser]['stack'] = array();
+			$_xh[$parser]['sp'] = 0;
 			$_xh[$parser]['valuestack'] = array();
+			$_xh[$parser]['vsp'] = 0;
 
 			// separate HTTP headers from data
 			if (ereg("^HTTP", $data))
