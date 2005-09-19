@@ -37,6 +37,7 @@ CREATE TABLE `nucleus_blog` (
   `bnotifytype` int(11) NOT NULL default '15',
   `ballowpast` tinyint(2) NOT NULL default '0',
   `bincludesearch` tinyint(2) NOT NULL default '0',
+  `breqemail` TINYINT( 2 ) DEFAULT '0' NOT NULL, 
   PRIMARY KEY  (`bnumber`),
   UNIQUE KEY `bnumber` (`bnumber`),
   UNIQUE KEY `bshortname` (`bshortname`)
@@ -59,6 +60,7 @@ CREATE TABLE `nucleus_comment` (
   `cbody` text NOT NULL,
   `cuser` varchar(40) default NULL,
   `cmail` varchar(100) default NULL,
+  `cemail` VARCHAR( 100 ),
   `cmember` int(11) default NULL,
   `citem` int(11) NOT NULL default '0',
   `ctime` datetime NOT NULL default '0000-00-00 00:00:00',
@@ -108,7 +110,7 @@ INSERT INTO `nucleus_config` VALUES ('BaseSkin', '5');
 INSERT INTO `nucleus_config` VALUES ('SkinsURL', 'http://localhost:8080/nucleus/skins/');
 INSERT INTO `nucleus_config` VALUES ('ActionURL', 'http://localhost:8080/nucleus/action.php');
 INSERT INTO `nucleus_config` VALUES ('URLMode', 'normal');
-INSERT INTO `nucleus_config` VALUES ('DatabaseVersion', '322');
+INSERT INTO `nucleus_config` VALUES ('DatabaseVersion', '330');
 
 CREATE TABLE `nucleus_item` (
   `inumber` int(11) NOT NULL auto_increment,
