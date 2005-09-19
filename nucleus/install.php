@@ -674,8 +674,7 @@
 			The database tables have been initialized successfully. What still needs to be done is to change the contents of <i>config.php</i>. Below is how it should look like (the mysql password is masked, so you'll have to fill that out yourself)
 			</p>
 
-			<pre>
-&lt;?php
+			<pre><code>&lt;?php
 	// mySQL connection information
 	$MYSQL_HOST = '<b><?php echo $mysql_host?></b>';
 	$MYSQL_USER = '<b><?php echo $mysql_user?></b>';
@@ -700,8 +699,7 @@
 
 	// include libs
 	include($DIR_LIBS.'globalfunctions.php');
-?&gt;
-			</pre>
+?&gt;</code></pre>
 
 			<p>After you changed the file on your computer, upload it to your web server using FTP. Make sure you use ASCII mode to send over the files.
 			</p>
