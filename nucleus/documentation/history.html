@@ -17,6 +17,7 @@
 	<li>
 		<b>Nucleus v3.3CVS</b>
 		<ul>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=12">#12</a>): item id and timestamp were not sent along with <code>GenerateURL</code> event when <code>itemlink</code> called from commentvars (karma)</li>
 			<li>CHANGED: Now using XML-RPC for PHP (phpxmlrpc) v1.2.1</li>
 			<li>FIXED: (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=97">#97</a>): file uploads didn't check <code>$_FILES['file']['error']</code> codes. (dekarma)</li>
 			<li>CHANGED: Update user instruction for Blogger conversion tool</li>
@@ -54,7 +55,7 @@
 			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=55">#55</a>): add &lt;%skinvar%&gt; variable that corresponds with _CHARSET (rakaz)</li>
 			<li>ADDED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=24">#24</a>): add PostUpdateItem event (admun)</li>
 			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=48">#48</a>):  &lt;%if(nextitem)%&gt; and &lt;%nextlink%&gt; didn't use the timezone offset. (<a href="http://forum.nucleuscms.org/viewtopic.php?t=6371">Basic</a>)</li>
-			<li>FIXED: "ADMIN.php line 5270" fatal error when plugin filename and plugin classname mismtach (Frankenstein)</li>
+			<li>FIXED: "ADMIN.php line 5270" fatal error when plugin filename and plugin classname mismatch (Frankenstein)</li>
 			<li>CHANGED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=16">#16</a>): Event <code>PreSkinItem</code> can now modify the skin contents; <code>PreComment</code> now knows the ItemID. (<a href="http://forum.nucleuscms.org/viewtopic.php?t=6266">suggested</a> by Andy)</li>
 		</ul>
 	</li>
