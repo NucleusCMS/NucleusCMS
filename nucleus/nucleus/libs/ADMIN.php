@@ -947,7 +947,7 @@ class ADMIN {
 		$search = postVar('search');		// search through comments
 
 
-		$query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
+		$query =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
 
 		if ($search != '')
 			$query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
