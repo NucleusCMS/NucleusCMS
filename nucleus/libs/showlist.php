@@ -365,8 +365,15 @@ function listplug_table_commentlist($template, $type) {
 				echo htmlspecialchars($current->mname) ,' ', _LIST_COMMENTS_MEMBER;
 			else
 				echo htmlspecialchars($current->cuser);
+			if ($current->cmail != '') {
+                                echo '<br />';
+                                echo htmlspecialchars($current->cmail);
+                        }
+			if ($current->cemail != '') {
+                                echo '<br />';
+                                echo htmlspecialchars($current->cemail);
+                        }
 			echo '</td>';
-
 
 			$current->cbody = strip_tags($current->cbody);
 			$current->cbody = htmlspecialchars(shorten($current->cbody, 300, '...'));
