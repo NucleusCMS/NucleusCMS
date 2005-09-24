@@ -19,21 +19,28 @@
 
 require_once "showlist.php";
 
+/**
+ * Builds the admin area and executes admin actions
+ */
 class ADMIN {
 
-	// action currently being executed ($action=xxxx -> action_xxxx method)
+	/**
+	 * @var string $action action currently being executed ($action=xxxx -> action_xxxx method)
+	 */
 	var $action;
 
+	/**
+	 * Class constructor
+	 */
 	function ADMIN() {
 
 	}
 
 	/**
-	  * Executes an action
-	  *
-	  * @param $action
-	  *		action to be performed
-	  */
+	 * Executes an action
+	 *
+	 * @param string $action action to be performed
+	 */
 	function action($action) {
 		global $CONF, $manager;
 
@@ -71,12 +78,17 @@ class ADMIN {
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_showlogin() {
 		global $error;
 		$this->action_login($error);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_login($msg = '', $passvars = 1) {
 		global $member;
 
@@ -120,8 +132,9 @@ class ADMIN {
 
 
 	/**
-	  * provides a screen with the overview of the actions available
-	  */
+	 * provides a screen with the overview of the actions available
+	 * @todo document parameter
+	 */
 	function action_overview($msg = '') {
 		global $member;
 
@@ -190,11 +203,17 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
-	// returns a link to a weblog (takes BLOG object as parameter)
+	/**
+	 * Returns a link to a weblog
+	 * @param object BLOG
+	 */
 	function bloglink(&$blog) {
 		return '<a href="'.htmlspecialchars($blog->getURL()).'" title="'._BLOGLIST_TT_VISIT.'">'.$blog->getName() .'</a>';
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_manage($msg = '') {
 		global $member;
 
@@ -233,6 +252,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemlist($blogid = '') {
 		global $member, $manager;
 
@@ -290,7 +312,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_batchitem() {
 		global $member, $manager;
 
@@ -353,6 +377,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_batchcomment() {
 		global $member;
 
@@ -406,6 +433,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_batchmember() {
 		global $member;
 
@@ -470,7 +500,9 @@ class ADMIN {
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_batchteam() {
 		global $member;
 
@@ -538,8 +570,9 @@ class ADMIN {
 
 	}
 
-
-
+	/**
+	 * @todo document this
+	 */
 	function action_batchcategory() {
 		global $member, $manager;
 
@@ -600,6 +633,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function batchMoveSelectDestination($type, $ids) {
 		global $manager;
 		$this->pagehead();
@@ -630,6 +666,9 @@ class ADMIN {
 		exit;
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function batchMoveCategorySelectDestination($type, $ids) {
 		global $manager;
 		$this->pagehead();
@@ -660,6 +699,9 @@ class ADMIN {
 		exit;
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function batchAskDeleteConfirmation($type, $ids) {
 		global $manager;
 
@@ -698,21 +740,24 @@ class ADMIN {
 
 
 	/**
-	  * Inserts a HTML select element with choices for all categories to which the current
-	  * member has access
-	  */
+	 * Inserts a HTML select element with choices for all categories to which the current
+	 * member has access
+	 * @see function selectBlog
+	 */
 	function selectBlogCategory($name, $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
 		ADMIN::selectBlog($name, 'category', $selected, $tabindex, $showNewCat, $iForcedBlogInclude);
 	}
 
 	/**
-	  * Inserts a HTML select element with choices for all blogs to which the user has access
-	  *		mode = 'blog' => shows blognames and values are blogids
-	  *		mode = 'category' => show category names and values are catids
-	  *
-	  * @param $iForcedBlogInclude
-	  *		ID of a blog that always needs to be included, without checking if the member is on the blog team (-1 = none)
-	  */
+	 * Inserts a HTML select element with choices for all blogs to which the user has access
+	 *		mode = 'blog' => shows blognames and values are blogids
+	 *		mode = 'category' => show category names and values are catids
+	 *
+	 * @param $iForcedBlogInclude
+	 *		ID of a blog that always needs to be included, without checking if the
+	 *		member is on the blog team (-1 = none)
+	 * @todo document parameters
+	 */
 	function selectBlog($name, $mode='blog', $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
 		global $member, $CONF;
 
@@ -780,6 +825,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_browseownitems() {
 		global $member, $manager;
 
@@ -824,8 +872,9 @@ class ADMIN {
 	}
 
 	/**
-	  * Show all the comments for a given item
-	  */
+	 * Show all the comments for a given item
+	 * @param int $itemid
+	 */
 	function action_itemcommentlist($itemid = '') {
 		global $member, $manager;
 
@@ -875,8 +924,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Browse own comments
-	  */
+	 * Browse own comments
+	 */
 	function action_browseowncomments() {
 		global $member, $manager;
 
@@ -919,8 +968,9 @@ class ADMIN {
 	}
 
 	/**
-	  * Browse all comments for a weblog
-	  */
+	 * Browse all comments for a weblog
+	 * @param int $blogid
+	 */
 	function action_blogcommentlist($blogid = '')
 	{
 		global $member, $manager;
@@ -975,8 +1025,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Provide a page to item a new item to the given blog
-	  */
+	 * Provide a page to item a new item to the given blog
+	 */
 	function action_createitem() {
 		global $member, $manager;
 
@@ -998,6 +1048,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemedit() {
 		global $member, $manager;
 
@@ -1023,6 +1076,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemupdate() {
 		global $member, $manager, $CONF;
 
@@ -1127,6 +1183,9 @@ class ADMIN {
 		}
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemdelete() {
 		global $member, $manager;
 
@@ -1165,6 +1224,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemdeleteconfirm() {
 		global $member;
 
@@ -1182,7 +1244,10 @@ class ADMIN {
 		$this->action_itemlist($blogid);
 	}
 
-	// deletes one item and returns error if something goes wrong
+	/**
+	 * Deletes one item and returns error if something goes wrong
+	 * @param int $itemid
+	 */
 	function deleteOneItem($itemid) {
 		global $member, $manager;
 
@@ -1194,6 +1259,9 @@ class ADMIN {
 		ITEM::delete($itemid);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemmove() {
 		global $member, $manager;
 
@@ -1223,6 +1291,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemmoveto() {
 		global $member, $manager;
 
@@ -1255,9 +1326,11 @@ class ADMIN {
 	}
 
 	/**
-	  * Moves one item to a given category (category existance should be checked by caller)
-	  * errors are returned
-	  */
+	 * Moves one item to a given category (category existance should be checked by caller)
+	 * errors are returned
+	 * @param int $itemid
+	 * @param int $destCatid category ID to which the item will be moved
+	 */
 	function moveOneItem($itemid, $destCatid) {
 		global $member;
 
@@ -1269,8 +1342,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Adds a item to the chosen blog
-	  */
+	 * Adds a item to the chosen blog
+	 */
 	function action_additem() {
 		global $member, $manager, $CONF;
 
@@ -1299,12 +1372,12 @@ class ADMIN {
 	}
 
 	/**
-	  * Shows a window that says we're about to ping weblogs.com.
-	  * immediately refresh to the real pinging page, which will
-	  * show an error, or redirect to the blog.
-	  *
-	  * @param $blogid ID of blog for which ping needs to be sent out
-	  */
+	 * Shows a window that says we're about to ping weblogs.com.
+	 * immediately refresh to the real pinging page, which will
+	 * show an error, or redirect to the blog.
+	 *
+	 * @param int $blogid ID of blog for which ping needs to be sent out
+	 */
 	function action_sendping($blogid = -1) {
 		global $member, $manager;
 
@@ -1331,8 +1404,10 @@ class ADMIN {
 		<?php		$this->pagefoot();
 	}
 
-	// ping to Weblogs.com
-	// sends the real ping (can take up to 10 seconds!)
+	/**
+	 * Ping to Weblogs.com
+	 * Sends the real ping (can take up to 10 seconds!)
+	 */
 	function action_rawping() {
 		global $manager;
 		// TODO: checks?
@@ -1361,8 +1436,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Allows to edit previously made comments
-	  */
+	 * Allows to edit previously made comments
+	 */
 	function action_commentedit() {
 		global $member, $manager;
 
@@ -1423,6 +1498,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_commentupdate() {
 		global $member, $manager;
 
@@ -1466,6 +1544,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_commentdelete() {
 		global $member, $manager;
 
@@ -1506,6 +1587,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_commentdeleteconfirm() {
 		global $member;
 
@@ -1526,6 +1610,9 @@ class ADMIN {
 			$this->action_browseowncomments();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function deleteOneComment($commentid) {
 		global $member, $manager;
 
@@ -1546,8 +1633,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Usermanagement main
-	  */
+	 * Usermanagement main
+	 */
 	function action_usermanagement() {
 		global $member, $manager;
 
@@ -1622,11 +1709,15 @@ class ADMIN {
 	}
 
 	/**
-	  * Edit member settings
-	  */
+	 * Edit member settings
+	 */
 	function action_memberedit() {
 		$this->action_editmembersettings(intRequestVar('memberid'));
 	}
+
+	/**
+	 * @todo document this
+	 */
 	function action_editmembersettings($memberid = '') {
 		global $member, $manager, $CONF;
 
@@ -1755,7 +1846,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_changemembersettings() {
 		global $member, $CONF, $manager;
 
@@ -1876,6 +1969,9 @@ class ADMIN {
 		}
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_memberadd() {
 		global $member, $manager;
 
@@ -1910,6 +2006,9 @@ class ADMIN {
 		$this->_showActivationPage($key);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function _showActivationPage($key, $message = '')
 	{
 		global $manager;
@@ -2056,8 +2155,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Manage team
-	  */
+	 * Manage team
+	 */
 	function action_manageteam() {
 		global $member, $manager;
 
@@ -2120,8 +2219,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Add member tot tram
-	  */
+	 * Add member to team
+	 */
 	function action_teamaddmember() {
 		global $member, $manager;
 
@@ -2140,6 +2239,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_teamdelete() {
 		global $member, $manager;
 
@@ -2171,6 +2273,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_teamdeleteconfirm() {
 		global $member;
 
@@ -2185,6 +2290,9 @@ class ADMIN {
 		$this->action_manageteam();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function deleteOneTeamMember($blogid, $memberid) {
 		global $member, $manager;
 
@@ -2218,6 +2326,9 @@ class ADMIN {
 		return '';
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_teamchangeadmin() {
 		global $member;
 
@@ -2251,6 +2362,9 @@ class ADMIN {
 			$this->action_overview(_MSG_ADMINCHANGED);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_blogsettings() {
 		global $member, $manager;
 
@@ -2454,6 +2568,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_categorynew() {
 		global $member, $manager;
 
@@ -2478,7 +2595,9 @@ class ADMIN {
 		$this->action_blogsettings();
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_categoryedit($catid = '', $blogid = '', $desturl = '') {
 		global $member, $manager;
 
@@ -2536,7 +2655,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_categoryupdate() {
 		global $member, $manager;
 
@@ -2577,6 +2698,9 @@ class ADMIN {
 		}
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_categorydelete() {
 		global $member, $manager;
 
@@ -2621,6 +2745,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_categorydeleteconfirm() {
 		global $member, $manager;
 
@@ -2636,6 +2763,9 @@ class ADMIN {
 		$this->action_blogsettings();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function deleteOneCategory($catid) {
 		global $manager, $member;
 
@@ -2682,6 +2812,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function moveOneCategory($catid, $destblogid) {
 		global $manager, $member;
 
@@ -2747,6 +2880,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_blogsettingsupdate() {
 		global $member, $manager;
 
@@ -2818,6 +2954,9 @@ class ADMIN {
 		$this->action_overview(_MSG_SETTINGSCHANGED);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_deleteblog() {
 		global $member, $CONF, $manager;
 
@@ -2852,6 +2991,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_deleteblogconfirm() {
 		global $member, $CONF, $manager;
 
@@ -2897,6 +3039,9 @@ class ADMIN {
 		$this->action_overview(_DELETED_BLOG);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_memberdelete() {
 		global $member, $manager;
 
@@ -2927,6 +3072,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_memberdeleteconfirm() {
 		global $member;
 
@@ -2944,7 +3092,10 @@ class ADMIN {
 			$this->action_overview(_DELETED_MEMBER);
 	}
 
-	// (static)
+	/**
+	 * @static
+	 * @todo document this
+	 */
 	function deleteOneMember($memberid) {
 		global $manager;
 
@@ -2978,6 +3129,9 @@ class ADMIN {
 		return '';
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_createnewlog() {
 		global $member, $CONF, $manager;
 
@@ -3059,6 +3213,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_addnewlog() {
 		global $member, $manager, $CONF;
 
@@ -3195,6 +3352,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_addnewlog2() {
 		global $member, $manager;
 
@@ -3210,6 +3370,9 @@ selector();
 		$this->action_overview(_MSG_NEWBLOG);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinieoverview() {
 		global $member, $DIR_LIBS, $manager;
 
@@ -3311,6 +3474,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinieimport() {
 		global $member, $DIR_LIBS, $DIR_SKINS, $manager;
 
@@ -3389,6 +3555,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skiniedoimport() {
 		global $member, $DIR_LIBS, $DIR_SKINS;
 
@@ -3443,6 +3612,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinieexport() {
 		global $member, $DIR_LIBS;
 
@@ -3474,6 +3646,9 @@ selector();
 		$exporter->export();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templateoverview() {
 		global $member, $manager;
 
@@ -3515,6 +3690,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templateedit($msg = '') {
 		global $member, $manager;
 
@@ -3641,6 +3819,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function _templateEditRow(&$template, $description, $name, $help = '', $tabindex = 0, $big = 0) {
 		static $count = 1;
 	?>
@@ -3650,6 +3831,9 @@ selector();
 	<?php		$count++;
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templateupdate() {
 		global $member;
 
@@ -3720,6 +3904,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function addToTemplate($id, $partname, $content) {
 		$partname = addslashes($partname);
 		$content = addslashes($content);
@@ -3735,6 +3922,9 @@ selector();
 		return mysql_insert_id();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templatedelete() {
 		global $member, $manager;
 
@@ -3765,6 +3955,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templatedeleteconfirm() {
 		global $member, $manager;
 
@@ -3785,6 +3978,9 @@ selector();
 		$this->action_templateoverview();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templatenew() {
 		global $member;
 
@@ -3804,6 +4000,9 @@ selector();
 		$this->action_templateoverview();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templateclone() {
 		global $member;
 
@@ -3838,6 +4037,9 @@ selector();
 		$this->action_templateoverview();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinoverview() {
 		global $member, $manager;
 
@@ -3882,6 +4084,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinnew() {
 		global $member;
 
@@ -3901,6 +4106,9 @@ selector();
 		$this->action_skinoverview();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinedit() {
 		global $member, $manager;
 
@@ -3964,6 +4172,9 @@ selector();
 		<?php		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skineditgeneral() {
 		global $member;
 
@@ -3996,6 +4207,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinedittype($msg = '') {
 		global $member, $manager;
 
@@ -4075,6 +4289,9 @@ selector();
 		<?php		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinupdate() {
 		global $member;
 
@@ -4090,6 +4307,9 @@ selector();
 		$this->action_skinedittype(_SKIN_UPDATED);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skindelete() {
 		global $member, $manager, $CONF;
 
@@ -4130,6 +4350,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skindeleteconfirm() {
 		global $member, $CONF, $manager;
 
@@ -4160,6 +4383,9 @@ selector();
 		$this->action_skinoverview();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinclone() {
 		global $member;
 
@@ -4204,6 +4430,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function skinclonetype($skin, $newid, $type) {
 		$newid = intval($newid);
 		$content = $skin->getContent($type);
@@ -4213,6 +4442,9 @@ selector();
 		}
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_settingsedit() {
 		global $member, $manager, $CONF, $DIR_NUCLEUS, $DIR_MEDIA;
 
@@ -4475,6 +4707,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_settingsupdate() {
 		global $member, $CONF;
 
@@ -4527,7 +4762,9 @@ selector();
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function updateConfig($name, $val) {
 		$name = addslashes($name);
 		$val = trim(addslashes($val));
@@ -4541,8 +4778,9 @@ selector();
 	}
 
 	/**
-	  * Error message
-	  */
+	 * Error message
+	 * @param string $msg message that will be shown
+	 */
 	function error($msg) {
 		$this->pagehead();
 		?>
@@ -4554,13 +4792,18 @@ selector();
 		exit;
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function disallow() {
 		ACTIONLOG::add(WARNING, _ACTIONLOG_DISALLOWED . serverVar('REQUEST_URI'));
 
 		$this->error(_ERROR_DISALLOWED);
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function pagehead($extrahead = '') {
 		global $member, $nucleus, $CONF, $manager;
 
@@ -4619,6 +4862,9 @@ selector();
 		echo '</div>';
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function pagefoot() {
 		global $action, $member, $manager;
 
@@ -4750,7 +4996,9 @@ selector();
 			</html>
 		<?php	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_regfile() {
 		global $member, $CONF;
 
@@ -4772,6 +5020,9 @@ selector();
 		echo '"contexts"=hex:31';
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_bookmarklet() {
 		global $member, $manager;
 
@@ -4837,7 +5088,9 @@ selector();
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_actionlog() {
 		global $member, $manager;
 
@@ -4863,7 +5116,9 @@ selector();
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_banlist() {
 		global $member, $manager;
 
@@ -4894,7 +5149,9 @@ selector();
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_banlistdelete() {
 		global $member, $manager;
 
@@ -4940,6 +5197,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_banlistdeleteconfirm() {
 		global $member, $manager;
 
@@ -4983,10 +5243,16 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_banlistnewfromitem() {
 		$this->action_banlistnew(getBlogIDFromItemID(intRequestVar('itemid')));
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_banlistnew($blogid = '') {
 		global $member, $manager;
 
@@ -5057,6 +5323,9 @@ selector();
 		<?php		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_banlistadd() {
 		global $member;
 
@@ -5090,6 +5359,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_clearactionlog() {
 		global $member;
 
@@ -5100,6 +5372,9 @@ selector();
 		$this->action_manage(_MSG_ACTIONLOGCLEARED);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_backupoverview() {
 		global $member, $manager;
 
@@ -5149,6 +5424,9 @@ selector();
 		<?php		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_backupcreate() {
 		global $member, $DIR_LIBS;
 
@@ -5167,7 +5445,9 @@ selector();
 		exit;
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_backuprestore() {
 		global $member, $DIR_LIBS;
 
@@ -5193,7 +5473,9 @@ selector();
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_pluginlist() {
 		global $member, $manager;
 
@@ -5266,6 +5548,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_pluginhelp() {
 		global $member, $manager, $DIR_PLUGINS, $CONF;
 
@@ -5299,7 +5584,9 @@ selector();
 		$this->pagefoot();
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_pluginadd() {
 		global $member, $manager, $DIR_PLUGINS;
 
@@ -5392,6 +5679,9 @@ selector();
 		$this->action_pluginupdate();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_pluginupdate() {
 		global $member, $manager;
 
@@ -5417,6 +5707,9 @@ selector();
 		$this->action_pluginlist();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_plugindelete() {
 		global $member, $manager;
 
@@ -5443,6 +5736,9 @@ selector();
 		<?php		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_plugindeleteconfirm() {
 		global $member, $manager;
 
@@ -5459,6 +5755,9 @@ selector();
 		$this->action_pluginlist();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function deleteOnePlugin($pid, $callUninstall = 0) {
 		global $manager;
 
@@ -5523,6 +5822,9 @@ selector();
 		return '';
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_pluginup() {
 		global $member, $manager;
 
@@ -5548,6 +5850,9 @@ selector();
 		$this->action_pluginlist();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_plugindown() {
 		global $member, $manager;
 
@@ -5574,6 +5879,9 @@ selector();
 		$this->action_pluginlist();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_pluginoptions($message = '') {
 		global $member, $manager;
 
@@ -5643,6 +5951,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_pluginoptionsupdate() {
 		global $member, $manager;
 
@@ -5662,8 +5973,9 @@ selector();
 	}
 
 	/**
-	  * @static
-	  */
+	 * @static
+	 * @todo document this
+	 */
 	function _insertPluginOptions($context, $contextid = 0) {
 		// get all current values for this contextid
 		// (note: this might contain doubles for overlapping contextids)
@@ -5721,7 +6033,10 @@ selector();
 
 	}
 
-	/* helper functions to create option forms etc. */
+	/**
+	 * Helper functions to create option forms etc.
+	 * @todo document parameters
+	 */
 	function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO) {
 		$id = htmlspecialchars($name);
 		$id = str_replace('[','-',$id);
@@ -5744,9 +6059,9 @@ selector();
 
 } // class ADMIN
 
-
-
-
+/**
+ * @todo document this
+ */
 function encode_desc($data)
 	{   $to_entities = get_html_translation_table(HTML_ENTITIES);
 		$from_entities = array_flip($to_entities);
@@ -5754,8 +6069,6 @@ function encode_desc($data)
 		$data = strtr($data,$to_entities);
 		return $data;
 	}
-
-
 
 /**
  * Returns the Javascript code for a bookmarklet that works on most modern browsers
