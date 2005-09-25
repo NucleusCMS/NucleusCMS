@@ -5518,7 +5518,8 @@ selector();
 					if (ereg('^NP_(.*)\.php$',$filename,$matches)) {
 						$name = $matches[1];
 						// only show in list when not yet installed
-						if (mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin').' WHERE pfile="NP_'.addslashes($name).'"')) == 0)
+						$res = sql_query('SELECT * FROM '.sql_table('plugin').' WHERE pfile="NP_'.addslashes($name).'"');
+						if (mysql_num_rows($res) == 0)
 							array_push($candidates,$name);
 					}
 				}
@@ -5601,7 +5602,8 @@ selector();
 			$this->error(_ERROR_PLUGFILEERROR . ' (' . $name . ')');
 
 		// get number of currently installed plugins
-		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
+		$res = sql_query('SELECT * FROM '.sql_table('plugin'));
+		$numCurrent = mysql_num_rows($res);
 
 		// plugin will be added as last one in the list
 		$newOrder = $numCurrent + 1;
@@ -5810,7 +5812,8 @@ selector();
 			sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid in ('.implode(',',$aOIDs).')');
 
 		// update order numbers
-		$o = mysql_fetch_object(sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid=' . $pid));
+		$res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid=' . $pid);
+		$o = mysql_fetch_object($res);
 		sql_query('UPDATE '.sql_table('plugin').' SET porder=(porder - 1) WHERE porder>'.$o->porder);
 
 		// delete row
@@ -5837,7 +5840,8 @@ selector();
 			$this->error(_ERROR_NOSUCHPLUGIN);
 
 		// 1. get old order number
-		$o = mysql_fetch_object(sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid));
+		$res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
+		$o = mysql_fetch_object($res);
 		$oldOrder = $o->porder;
 
 		// 2. calculate new order number
@@ -5864,10 +5868,12 @@ selector();
 			$this->error(_ERROR_NOSUCHPLUGIN);
 
 		// 1. get old order number
-		$o = mysql_fetch_object(sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid));
+		$res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
+		$o = mysql_fetch_object($res);
 		$oldOrder = $o->porder;
 
-		$maxOrder = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
+		$res = sql_query('SELECT * FROM '.sql_table('plugin');
+		$maxOrder = mysql_num_rows($res));
 
 		// 2. calculate new order number
 		$newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;

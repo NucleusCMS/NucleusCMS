@@ -751,7 +751,8 @@
 		if (count($aConfPlugsToInstall) == 0)
 			return $aErrors;
 
-		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
+		$res = sql_query('SELECT * FROM '.sql_table('plugin'));
+		$numCurrent = mysql_num_rows($res);
 
 		foreach ($aConfPlugsToInstall as $plugName) {
 			// do this before calling getPlugin (in case the plugin id is used there)

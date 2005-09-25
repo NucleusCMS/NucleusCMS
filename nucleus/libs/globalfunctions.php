@@ -529,7 +529,8 @@ function quickQuery($q) {
 }
 
 function getPluginNameFromPid($pid) {
-	$obj = mysql_fetch_object(sql_query('SELECT pfile FROM '.sql_table('plugin').' WHERE pid='.intval($pid)));
+	$res = sql_query('SELECT pfile FROM '.sql_table('plugin').' WHERE pid='.intval($pid));
+	$obj = mysql_fetch_object($res);
 	return $obj->pfile;
 }
 
