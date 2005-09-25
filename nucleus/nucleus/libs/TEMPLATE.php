@@ -178,7 +178,8 @@ class TEMPLATE {
 	// (static)
 	function getDesc($id) {
 		$query = 'SELECT tddesc FROM '.sql_table('template_desc').' WHERE tdnumber='. intval($id);
-		$obj = mysql_fetch_object(sql_query($query));
+		$res = sql_query($query);
+		$obj = mysql_fetch_object($res);
 		return $obj->tddesc;
 	}
 

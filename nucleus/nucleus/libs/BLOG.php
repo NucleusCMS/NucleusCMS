@@ -325,8 +325,14 @@ class BLOG {
 			{
 				$catName = 'newcat';
 				$i = 1;
-				while(mysql_num_rows(sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID())) > 0)
+
+				$res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
+				while (mysql_num_rows($res) > 0)
+				{
 					$i++;
+					$res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
+				}
+				
 				$catName = $catName . $i;
 			}
 
@@ -757,7 +763,8 @@ class BLOG {
 
 	function isValidCategory($catid) {
 		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
-		return (mysql_num_rows(mysql_query($query)) != 0);
+		$res = mysql_query($query);
+		return (mysql_num_rows($res) != 0);
 	}
 
 	function getCategoryName($catid) {

@@ -150,7 +150,8 @@ class MEMBER {
 		$query = 'SELECT * FROM '.sql_table('team').' WHERE'
 			   . ' tblog=' . intval($blogid)
 			   . ' and tmember='. $this->getID();
-		return (mysql_num_rows(sql_query($query)) != 0);
+		$res = sql_query($query);
+		return (mysql_num_rows($res) != 0);
 	}
 
 	/**
@@ -167,7 +168,8 @@ class MEMBER {
 		$query =  'SELECT citem as itemid, iblog as blogid, cmember as cauthor, iauthor'
 			   . ' FROM '.sql_table('comment') .', '.sql_table('item').', '.sql_table('blog')
 			   . ' WHERE citem=inumber and iblog=bnumber and cnumber=' . intval($commentid);
-		$obj = mysql_fetch_object(sql_query($query));
+		$res = sql_query($query);
+		$obj = mysql_fetch_object($res);
 
 		return ($obj->cauthor == $this->getID()) or $this->isBlogAdmin($obj->blogid) or ($obj->iauthor == $this->getID());
 	}
@@ -182,7 +184,8 @@ class MEMBER {
 		if ($this->isAdmin()) return 1;
 
 		$query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
-		$obj = mysql_fetch_object(sql_query($query));
+		$res = sql_query($query);		
+		$obj = mysql_fetch_object($res);
 		return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
 	}
 
