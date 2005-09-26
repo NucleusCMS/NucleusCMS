@@ -419,6 +419,8 @@ function sql_disconnect() {
   * executes an SQL query
   */
 function sql_query($query) {
+global $SQLCount;
+$SQLCount++;
 	$res = mysql_query($query) or print("mySQL error with query $query: " . mysql_error() . '<p />');
 	return $res;
 }
