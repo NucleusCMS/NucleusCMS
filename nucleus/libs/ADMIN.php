@@ -3918,7 +3918,7 @@ selector();
 
 		$query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
 			   . "VALUES ($id, '$partname', '$content')";
-		mysql_query($query) or die("Query error: " . mysql_error());
+		sql_query($query) or die("Query error: " . mysql_error());
 		return mysql_insert_id();
 	}
 
@@ -4773,7 +4773,7 @@ selector();
 			   . " SET value='$val'"
 			   . " WHERE name='$name'";
 
-		mysql_query($query) or die("Query error: " . mysql_error());
+		sql_query($query) or die("Query error: " . mysql_error());
 		return mysql_insert_id();
 	}
 
@@ -5872,8 +5872,8 @@ selector();
 		$o = mysql_fetch_object($res);
 		$oldOrder = $o->porder;
 
-		$res = sql_query('SELECT * FROM '.sql_table('plugin');
-		$maxOrder = mysql_num_rows($res));
+		$res = sql_query('SELECT * FROM '.sql_table('plugin'));
+		$maxOrder = mysql_num_rows($res);
 
 		// 2. calculate new order number
 		$newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;
