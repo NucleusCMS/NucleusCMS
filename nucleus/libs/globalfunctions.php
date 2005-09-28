@@ -107,6 +107,7 @@ if (!headers_sent())
 	header('Generator: Nucleus CMS ' . $nucleus['version']);
 
 // include core classes that are needed for login & plugin handling
+include($DIR_LIBS . 'mysql.php');
 include($DIR_LIBS . 'MEMBER.php');
 include($DIR_LIBS . 'ACTIONLOG.php');
 include($DIR_LIBS . 'MANAGER.php');
@@ -126,6 +127,7 @@ if ($CONF['UsingAdminArea']) {
 
 // connect to sql
 sql_connect();
+$SQLCount = 0;
 
 // makes sure database connection gets closed on script termination
 register_shutdown_function('sql_disconnect');
@@ -331,12 +333,12 @@ if ($CONF['URLMode'] == 'pathinfo')
   * Connects to mysql server
   */
 function sql_connect() {
-	global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE;
+	global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN;
 
-	$connection = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>','Connect Error');
+	$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>','Connect Error');
 	mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: '. mysql_error().'</p>', 'Connect Error');
 
-	return $connection;
+	return $MYSQL_CONN;
 }
 
 /**
@@ -419,8 +421,8 @@ function sql_disconnect() {
   * executes an SQL query
   */
 function sql_query($query) {
-global $SQLCount;
-$SQLCount++;
+	global $SQLCount;
+	$SQLCount++;
 	$res = mysql_query($query) or print("mySQL error with query $query: " . mysql_error() . '<p />');
 	return $res;
 }
