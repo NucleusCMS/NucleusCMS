@@ -65,6 +65,8 @@
   else
 	  include_once('nucleus/libs/vars4.0.6.php');
 
+	 include_once('nucleus/libs/mysql.php');
+
 	// check if mysql support is installed
 	if (!function_exists('mysql_query'))
 		_doError('Your PHP version does not have support for MySQL :(');
@@ -463,8 +465,9 @@
 			showErrorMessages($errors);
 
 		// 2. try to log in to mySQL
-		$connection = @mysql_connect($mysql_host, $mysql_user, $mysql_password);
-		if ($connection == false)
+		global $MYSQL_CONN;
+		$MYSQL_CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password);
+		if ($MYSQL_CONN == false)
 			_doError("Could not connect to mySQL server: " . mysql_error());
 
 		// 3. try to create database (if needed)
