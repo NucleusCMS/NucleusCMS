@@ -12,6 +12,9 @@
 //
 // Fully translated language file can be sent to us
 // and will be available for download (with proper credit to the author, of course)
+//
+// Oct 7, 2005 - Translation fine-tuned and spellingcorrection by Errie (http://getverd.errie.com
+//
 
 // START changed/added after 3.22 START
 define('_ERROR_EMAIL_REQUIRED',		'Email adres is verplicht');
@@ -56,15 +59,15 @@ define('_ACTIONLOG_ACTIVATIONLINK', 'Activatielink verstuurd');
 define('_MSG_ACTIVATION_SENT',		'Een activatielink is verstuurd per e-mail.');
 
 // activation link emails
-define('_ACTIVATE_REGISTER_MAIL',	"Hallo <%memberName%>,\n\nJe moet je account <%siteName%> (<%siteUrl%>) activeren.\nDit kun je doen door op de volgende link te klikken: \n\n\t<%activationUrl%>\n\nHiervoor heb je 2 dagen de tijd. Hierna wordt de activatielink ongeldig.");
+define('_ACTIVATE_REGISTER_MAIL',	"Hallo <%memberName%>,\n\nJe moet je account van <%siteName%> (<%siteUrl%>) activeren.\nDit kun je doen door op de volgende link te klikken: \n\n\t<%activationUrl%>\n\nHiervoor heb je 2 dagen de tijd. Hierna wordt de activatielink ongeldig.");
 define('_ACTIVATE_REGISTER_MAILTITLE',	"Activeer je '<%memberName%>' account");
 define('_ACTIVATE_REGISTER_TITLE',	'Welkom <%memberName%>');
 define('_ACTIVATE_REGISTER_TEXT',	'Je bent er bijna. Kies AUB een wacht woord voor je account.');
-define('_ACTIVATE_FORGOT_MAIL',		"Hallo <%memberName%>,\n\nMet de volgende link, kan je een nieuw wachtwoord kiezen voor je account up <%siteName%> (<%siteUrl%>) door \'Nieuw wachtwoord\' te keizen.\n\n\t<%activationUrl%>\n\nHiervoor heb je 2 dagen de tijd. Hierna wordt de activatielink ongeldig.");
+define('_ACTIVATE_FORGOT_MAIL',		"Hallo <%memberName%>,\n\nMet de volgende link kan je een nieuw wachtwoord kiezen voor je account op <%siteName%> (<%siteUrl%>) door \'Nieuw wachtwoord\' te kiezen.\n\n\t<%activationUrl%>\n\nHiervoor heb je 2 dagen de tijd. Hierna wordt de activatielink ongeldig.");
 define('_ACTIVATE_FORGOT_MAILTITLE',"Her-activeer je '<%memberName%>' account");
 define('_ACTIVATE_FORGOT_TITLE',	'Welkom <%memberName%>');
 define('_ACTIVATE_FORGOT_TEXT',		'Je kan een nieuw wachtwoord kiezen voor je account:');
-define('_ACTIVATE_CHANGE_MAIL',		"Hallo <%memberName%>,\n\nJe account op <%siteName%> (<%siteUrl%>) moet opnieuw worden geactiveerd, omdat je je adres is veranderd.\nDit kun je doen door de volgende link te klikken: \n\n\t<%activationUrl%>\n\nHiervoor heb je 2 dagen de tijd. Hierna wordt de activatielink ongeldig.");
+define('_ACTIVATE_CHANGE_MAIL',		"Hallo <%memberName%>,\n\nJe account op <%siteName%> (<%siteUrl%>) moet opnieuw worden geactiveerd omdat je je adres hebt veranderd.\nDit kun je doen door op de volgende link te klikken: \n\n\t<%activationUrl%>\n\nHiervoor heb je 2 dagen de tijd. Hierna wordt de activatielink ongeldig.");
 define('_ACTIVATE_CHANGE_MAILTITLE',"Her-activeer je '<%memberName%>' account");
 define('_ACTIVATE_CHANGE_TITLE',	'Welkom <%memberName%>');
 define('_ACTIVATE_CHANGE_TEXT',		'Jouw adres wijziging is bevestigd. Bedankt!');
@@ -73,7 +76,7 @@ define('_ACTIVATE_SUCCESS_TEXT',	'Je account is succesvol geactiveerd.');
 define('_MEMBERS_SETPWD',			'Wachtwoord instellen');
 define('_MEMBERS_SETPWD_BTN',		'Wachtwoord instellen');
 define('_QMENU_ACTIVATE',			'Account Activatie');
-define('_QMENU_ACTIVATE_TEXT',		'<p>Nadat je je account hebt geactiveerd, kan je het beginnen te gebruiken door <a href="index.php?action=showlogin">in te loggen</a>.</p>');
+define('_QMENU_ACTIVATE_TEXT',		'<p>Nadat je je account hebt geactiveerd kan je het beginnen te gebruiken door <a href="index.php?action=showlogin">in te loggen</a>.</p>');
 
 define('_PLUGS_BTN_UPDATE',			'Aanmeldingslijst bijwerken');
 
@@ -104,7 +107,7 @@ define('_BATCH_EXEC',				'Uitvoeren');
 // quickmenu
 define('_QMENU_HOME',				'Home');
 define('_QMENU_ADD',				'Bericht toevoegen');
-define('_QMENU_ADD_SELECT',			'-- selecteren --');
+define('_QMENU_ADD_SELECT',			'- selecteren -');
 define('_QMENU_USER_SETTINGS',		'Instellingen');
 define('_QMENU_USER_ITEMS',			'Berichten');
 define('_QMENU_USER_COMMENTS',		'Commentaar');
@@ -136,7 +139,7 @@ define('_LIST_PLUGS_HELP', 			'help');
 
 // general settings (security)
 define('_SETTINGS_EXTAUTH',			'Externe Authenticatie Toelaten');
-define('_WARNING_EXTAUTH',			'Let op: Enkel inschakelen wanneer echt nodig!');
+define('_WARNING_EXTAUTH',			'Let op: Alleen inschakelen wanneer echt noodzakelijk!');
 
 // member profile
 define('_MEMBERS_BYPASS',			'Externe Authenticatie gebruiken');
@@ -157,11 +160,11 @@ define('_MEDIA_UPLOAD_TO',			'Upload naar...');
 define('_MEDIA_UPLOAD_NEW',			'Upload nieuw bestand...');
 define('_MEDIA_COLLECTION_SELECT',	'Kies');
 define('_MEDIA_COLLECTION_TT',		'Overschakelen naar deze collectie');
-define('_MEDIA_COLLECTION_LABEL',	'Hudige collectie: ');
+define('_MEDIA_COLLECTION_LABEL',	'Huidige collectie: ');
 
 // tooltips on toolbar
 define('_ADD_ALIGNLEFT_TT',			'Links uitlijnen');
-define('_ADD_ALIGNRIGHT_TT',		'Links uitlijnen');
+define('_ADD_ALIGNRIGHT_TT',		'Rechts uitlijnen');
 define('_ADD_ALIGNCENTER_TT',		'Centreren');
 
 // generic upload failure
@@ -172,7 +175,7 @@ define('_ERROR_UPLOADFAILED',		'Upload is mislukt');
 // START introduced after v1.5 START
 
 // posting to the past/edit timestamps
-define('_EBLOG_ALLOWPASTPOSTING',	'Berichten antidateren toelaten');
+define('_EBLOG_ALLOWPASTPOSTING',	'Berichten anti-dateren toelaten');
 define('_ADD_CHANGEDATE',			'Datum aanpassen');
 define('_BMLET_CHANGEDATE',			'Datum aanpassen');
 
@@ -251,19 +254,19 @@ define('_BACK_TO_BLOGSETTINGS',		'Terug naar instellingen');
 define('_SKINIE_TITLE_IMPORT',		'Importeren');
 define('_SKINIE_TITLE_EXPORT',		'Exporteren');
 define('_SKINIE_BTN_IMPORT',		'Importeren');
-define('_SKINIE_BTN_EXPORT',		'Geselecteerde skins/template exporteren');
+define('_SKINIE_BTN_EXPORT',		'Geselecteerde skins/sjabloon exporteren');
 define('_SKINIE_LOCAL',				'Importeren van bestand op server:');
 define('_SKINIE_NOCANDIDATES',		'Geen skins gevonden');
 define('_SKINIE_FROMURL',			'Importeren van URL:');
 define('_SKINIE_EXPORT_INTRO',		'Selecteer de skins en templated die je wilt exporteren:');
 define('_SKINIE_EXPORT_SKINS',		'Skins');
-define('_SKINIE_EXPORT_TEMPLATES',	'Templates');
+define('_SKINIE_EXPORT_TEMPLATES',	'Sjablonen');
 define('_SKINIE_EXPORT_EXTRA',		'Extra Info');
 define('_SKINIE_CONFIRM_OVERWRITE',	'Overschrijf bestaande data (zie dubbele namen)');
 define('_SKINIE_CONFIRM_IMPORT',	'Ja, ik wil deze skins/templates importeren');
 define('_SKINIE_CONFIRM_TITLE',		'Klaar om skins/templates te importeren');
 define('_SKINIE_INFO_SKINS',		'Skins in bestand:');
-define('_SKINIE_INFO_TEMPLATES',	'Templates in bestand:');
+define('_SKINIE_INFO_TEMPLATES',	'Sjablonen in bestand:');
 define('_SKINIE_INFO_GENERAL',		'Info:');
 define('_SKINIE_INFO_SKINCLASH',	'Dubbele skinnamen:');
 define('_SKINIE_INFO_TEMPLCLASH',	'Dubbele templatenamen:');
@@ -285,7 +288,7 @@ define('_LIST_SKINS_DEFINED',		'Gedefinieerde onderdelen:');
 // backup
 define('_BACKUPS_TITLE',			'Backup / Restore');
 define('_BACKUP_TITLE',				'Backup');
-define('_BACKUP_INTRO',				'Klik op de knop om een backup van uw Nucleus database te maken. Bewaar dit bestand op een veilige plaats..');
+define('_BACKUP_INTRO',				'Klik op de knop om een backup van uw Nucleus database te maken. Bewaar dit bestand op een veilige plaats...');
 define('_BACKUP_ZIP_YES',			'Probeer compressie te gebruiken');
 define('_BACKUP_ZIP_NO',			'Geen compressie gebruiken');
 define('_BACKUP_BTN',				'Backup maken');
@@ -356,7 +359,7 @@ define('_PLUGS_TITLE_INSTALLED',	'Momenteel ge�nstalleerd');
 define('_PLUGS_TITLE_UPDATE',		'Plugin Subscriptions vernieuwen');
 define('_PLUGS_TEXT_UPDATE',		'Nucleus houdt een cache bij van de gebeurtenissen waarop een plugin ingeschreven is. Na een plugin upgrade kan het nodig zijn dat je de lijst van subscriptions vernieuwd.');
 define('_PLUGS_TITLE_NEW',			'Nieuwe plugin installeren');
-define('_PLUGS_ADD_TEXT',			'Hieronder vind je een lijst van mogelijke pluginkandidaten, gevonden in de plugin-directory. Zorg dat je <strong>helemaal zeker</strong> bent dat het echt om een plugin gaat, voor je probeer toe te voegen.');
+define('_PLUGS_ADD_TEXT',			'Hieronder vind je een lijst van mogelijke pluginkandidaten, gevonden in de plugin-directory. Zorg dat je <strong>helemaal zeker</strong> bent dat het echt om een plugin gaat voor je het probeert toe te voegen.');
 define('_PLUGS_BTN_INSTALL',		'Installeren');
 define('_BACKTOOVERVIEW',			'Terug naar overzicht');
 
@@ -394,10 +397,10 @@ define('_LIST_PLUGS_AUTHOR',		'Auteur:');
 define('_LIST_PLUGS_VER',			'Versie:');
 define('_LIST_PLUGS_SITE',			'Bezoek Website');
 define('_LIST_PLUGS_DESC',			'Beschrijving:');
-define('_LIST_PLUGS_SUBS',			'Luistert naar gebeurtenissen:');
+define('_LIST_PLUGS_SUBS',			'Afhankelijk van:');
 define('_LIST_PLUGS_UP',			'omhoog');
 define('_LIST_PLUGS_DOWN',			'omlaag');
-define('_LIST_PLUGS_UNINSTALL',		'uninstall');
+define('_LIST_PLUGS_UNINSTALL',		'verwijder');
 define('_LIST_PLUGS_ADMIN',			'admin');
 define('_LIST_PLUGS_OPTIONS',		'opties');
 
@@ -413,8 +416,8 @@ define('_PLUGS_OPTIONS_UPDATED',	'Plugin-opties werden aangepast');
 define('_OVERVIEW_MANAGEMENT',		'Beheer');
 define('_OVERVIEW_MANAGE',			'Nucleus Beheer...');
 define('_MANAGE_GENERAL',			'Algemeen Beheer');
-define('_MANAGE_SKINS',				'Skin en Templates');
-define('_MANAGE_EXTRA',				'Extra features');
+define('_MANAGE_SKINS',				'Skin en Sjablonen');
+define('_MANAGE_EXTRA',				'Extra mogelijkheden');
 
 define('_BACKTOMANAGE',				'Terug naar Nucleus beheer');
 // END introduced after v1.1 END
@@ -501,7 +504,7 @@ define('_EDIT_BACKTODRAFTS',		'Terug toevoegen aan kladversies');
 define('_EDIT_COMMENTSNOTE',		'(opm.: reacties uitschakelen verhindert het tonen van reeds bestaande reacties niet)');
 
 // used on delete screens
-define('_DELETE_CONFIRM',			'Bent u zeker?');
+define('_DELETE_CONFIRM',			'Weet je het zeker?');
 define('_DELETE_CONFIRM_BTN',		'Ja! Wissen!');
 define('_CONFIRMTXT_ITEM',			'Je staat op het punt volgend bericht te verwijderen:');
 define('_CONFIRMTXT_COMMENT',		'Je staat op het punt volgende reactie te verwijderen:');
@@ -509,11 +512,11 @@ define('_CONFIRMTXT_TEAM1',			'Je staat op het punt om ');
 define('_CONFIRMTXT_TEAM2',			' uit het team te gooien voor het weblog ');
 define('_CONFIRMTXT_BLOG',			'Je staat op het punt om volgend weblog te verwijderen: ');
 define('_WARNINGTXT_BLOGDEL',		'Waarschuwing! Wanneer je dit weblog verwijdert, zullen all berichten en reacties die hierbij horen voor eeuwig verwijderd worden. Zorg er dus voor dat je 100% zeker bent dat je dit wel wilt doen.');
-define('_CONFIRMTXT_MEMBER',		'Je staat op het punt om hetvolgende gebruiker te verwijderen: ');
-define('_CONFIRMTXT_TEMPLATE',		'Je staat op het punt om volgend template te verwijderen: ');
-define('_CONFIRMTXT_SKIN',			'Je staat op het punt om volgende skin te verwijderen: ');
-define('_CONFIRMTXT_BAN',			'Je staat op het punt om de ban op volgende IP-range op te heffen: ');
-define('_CONFIRMTXT_CATEGORY',		'Je staat op het punt volgende categorie te verwijderen: ');
+define('_CONFIRMTXT_MEMBER',		'Je staat op het punt om de volgende gebruiker te verwijderen: ');
+define('_CONFIRMTXT_TEMPLATE',		'Je staat op het punt om het volgend sjabloon te verwijderen: ');
+define('_CONFIRMTXT_SKIN',			'Je staat op het punt om de volgende skin te verwijderen: ');
+define('_CONFIRMTXT_BAN',			'Je staat op het punt om een ban op de volgende IP-range op te heffen: ');
+define('_CONFIRMTXT_CATEGORY',		'Je staat op het punt om de volgende categorie te verwijderen: ');
 
 // some status messages
 define('_DELETED_ITEM',				'Bericht verwijderd');
@@ -525,14 +528,14 @@ define('_ITEM_MOVED',				'Bericht verplaatst');
 define('_ITEM_ADDED',				'Bericht toegevoegd');
 define('_COMMENT_UPDATED',			'Reactie aangepast');
 define('_SKIN_UPDATED',				'Skin data werd opgeslagen');
-define('_TEMPLATE_UPDATED',			'Template data werd opgeslagen');
+define('_TEMPLATE_UPDATED',			'Sjabloon data werd opgeslagen');
 
 // errors
 define('_ERROR_COMMENT_LONGWORD',	'Gelieve geen al te lange woorden in uw reactie op te nemen.');
 define('_ERROR_COMMENT_NOCOMMENT',	'Gelieve minstens wat commentaar te geven');
 define('_ERROR_COMMENT_NOUSERNAME',	'Foute gebruikersnaam');
 define('_ERROR_COMMENT_TOOLONG',	'Uw reactie is te lang... (max. 5000 karakters)');
-define('_ERROR_COMMENTS_DISABLED',	'Reageren is op dit ogenblik uitgeschakeld voor dit weblog.');
+define('_ERROR_COMMENTS_DISABLED',	'Reageren is op dit ogenblik uitgeschakeld voor deze weblog.');
 define('_ERROR_COMMENTS_NONPUBLIC',	'U moet ingelogd zijn om op dit bericht te reageren.');
 define('_ERROR_COMMENTS_MEMBERNICK','De naam die je wilt gebruiken om mee te reageren, is geregistreerd door iemand anders. Kies iets anders, of log in.');
 define('_ERROR_SKIN',				'Fout bij het kiezen van de gepaste skin');
@@ -540,14 +543,14 @@ define('_ERROR_ITEMCLOSED',			'Dit bericht is gesloten. Hierdoor zijn reacties o
 define('_ERROR_NOSUCHITEM',			'Het gevraagde bericht bestaat niet.');
 define('_ERROR_NOSUCHBLOG',			'Het gevraagde weblog bestaat niet.');
 define('_ERROR_NOSUCHSKIN',			'De gevraagde skin bestaat niet.');
-define('_ERROR_NOSUCHMEMBER',		'Het gevraagde gebruiker bestaat niet.');
+define('_ERROR_NOSUCHMEMBER',		'De gevraagde gebruiker bestaat niet.');
 define('_ERROR_NOTONTEAM',			'U staat niet in de teamlijst voor dit weblog.');
 define('_ERROR_BADDESTBLOG',		'Doel-weblog bestaat niet.');
 define('_ERROR_NOTONDESTTEAM',		'Kan bericht niet verplaatsen omdat u niet in het team van het doelblog zit.');
 define('_ERROR_NOEMPTYITEMS',		'Kan geen lege berichten toevoegen!');
 define('_ERROR_BADMAILADDRESS',		'Ongeldig e-mail adres');
 define('_ERROR_BADNOTIFY',			'Een of meer van de gegeven notify-adressen zijn ongeldig');
-define('_ERROR_BADNAME',			'Ongeldige naam (enkel a-z en 0-9 toegelaten, geen spaties aan begin en einde)');
+define('_ERROR_BADNAME',			'Ongeldige naam (enkel aA-zZ en 0-9 toegelaten, geen spaties aan begin en einde)');
 define('_ERROR_NICKNAMEINUSE',		'Een ander gebruiker gebruikt deze nickname reeds');
 define('_ERROR_PASSWORDMISMATCH',	'Wachtwoorden komen niet overeen');
 define('_ERROR_PASSWORDTOOSHORT',	'Een wachtwoord moet minstens zes tekens bevatten');
@@ -556,14 +559,14 @@ define('_ERROR_REALNAMEMISSING',	'Gelieve een echte naam op te geven');
 define('_ERROR_ATLEASTONEADMIN',	'Er moet op elk gegeven ogenblik een super-admin bestaan die kan inloggen');
 define('_ERROR_ATLEASTONEBLOGADMIN','Deze actie zou uw weblog onbeheerbaar achterlaten. Zorg ervoor dat er steeds een admin overblijft');
 define('_ERROR_ALREADYONTEAM',		'Gebruiker behoort al tot het team');
-define('_ERROR_BADSHORTBLOGNAME',	'De korte blognaam mag enkel a-z en 0-9 bevatten, zonder spaties');
-define('_ERROR_DUPSHORTBLOGNAME',	'Een ander weblog gebruikt deze kortnaam al. Kies een andere');
+define('_ERROR_BADSHORTBLOGNAME',	'De korte blognaam mag enkel aA-zZ en 0-9 bevatten, zonder spaties');
+define('_ERROR_DUPSHORTBLOGNAME',	'Een ander weblog gebruikt deze korte naam al. Kies een andere');
 define('_ERROR_UPDATEFILE',			'Kan geen schrijftoegang krijgen tot de update-file. Zorg ervoor dat filepermissies goed staan (probeer chmod 666).');
 define('_ERROR_DELDEFBLOG',			'Kan het default weblog niet verwijderen');
 define('_ERROR_DELETEMEMBER',		'Kan deze gebruiker niet verwijderen omdat er nog berichten of reacties bestaan geschreven door deze gebruiker.');
-define('_ERROR_BADTEMPLATENAME',	'Ongeldige template-naam, enkel a-z en 0-9 zijn toegelaten, geen spaties');
-define('_ERROR_DUPTEMPLATENAME',	'Een ander template met gebruikt deze template-naam al');
-define('_ERROR_BADSKINNAME',		'Ongeldige skin-naam: enkel a-z en 0-9 zijn toegelaten, spaties niet');
+define('_ERROR_BADTEMPLATENAME',	'Ongeldige sjabloon-naam, enkel aA-zZ en 0-9 zijn toegelaten, geen spaties');
+define('_ERROR_DUPTEMPLATENAME',	'Een ander sjabloon met gebruikt deze sjabloon-naam al');
+define('_ERROR_BADSKINNAME',		'Ongeldige skin-naam: enkel aA-zZ en 0-9 zijn toegelaten, spaties niet');
 define('_ERROR_DUPSKINNAME',		'Er bestaat reeds een skin met de gegeven naam');
 define('_ERROR_DEFAULTSKIN',		'Op elk ogenblik moet een skin met naam "default" bestaan...');
 define('_ERROR_SKINDEFDELETE',		'Kan skin niet verwijderen omdat deze als default staat ingesteld voor een of meer weblogs: ');
@@ -575,14 +578,14 @@ define('_ERROR_MEMBERMAILDISABLED',	'Het zenden van e-mail berichten tussen gebr
 define('_ERROR_MEMBERCREATEDISABLED','Het aanmaken van accounts is momenteel uitgeschakeld');
 define('_ERROR_INCORRECTEMAIL',		'Ongeldig email adres');
 define('_ERROR_VOTEDBEFORE',		'U heeft reeds een stem uitgebracht voor dit bericht');
-define('_ERROR_BANNED1',			'Kan actie niet uitvoeren omdat U (ip range ');
-define('_ERROR_BANNED2',			') geband bent. Bericht was: \'');
+define('_ERROR_BANNED1',			'Kan actie niet uitvoeren omdat Uw (ip range ');
+define('_ERROR_BANNED2',			') geband is. Bericht was: \'');
 define('_ERROR_BANNED3',			'\'');
 define('_ERROR_LOGINNEEDED',		'U moet ingelogd zijn om deze actie uit te voeren');
 define('_ERROR_CONNECT',			'Connectieprobleem');
 define('_ERROR_FILE_TOO_BIG',		'Bestand is te groot!');
 define('_ERROR_BADFILETYPE',		'Sorry, dit bestandstype is niet toegelaten voor upload');
-define('_ERROR_BADREQUEST',			'Foutief upload request');
+define('_ERROR_BADREQUEST',			'Foutief upload verzoek');
 define('_ERROR_DISALLOWEDUPLOAD',	'U bent niet gemachtigd om bestanden op te laden');
 define('_ERROR_BADPERMISSIONS',		'File/Dir permissies zijn niet correct ingesteld');
 define('_ERROR_UPLOADMOVEP',		'Probleem bij verplaatsen van opgeladen bestand');
@@ -646,7 +649,7 @@ define('_EBLOG_TEAM_TEXT',			'Klik hier om het team te beheren.');
 define('_EBLOG_SETTINGS_TITLE',		'Instellingen');
 define('_EBLOG_NAME',				'Blognaam');
 define('_EBLOG_SHORTNAME',			'Korte blognaam');
-define('_EBLOG_SHORTNAME_EXTRA',	'<br />(enkel a-z tekens toegelaten)');
+define('_EBLOG_SHORTNAME_EXTRA',	'<br />(enkel aA-zZ tekens toegelaten)');
 define('_EBLOG_DESC',				'Beschrijving');
 define('_EBLOG_URL',				'URL');
 define('_EBLOG_DEFSKIN',			'Default Skin');
@@ -681,45 +684,45 @@ define('_EBLOG_CAT_UPDATE',			'Categorie Aanpassen');
 define('_EBLOG_CAT_UPDATE_BTN',		'Categorie Aanpassen');
 
 // templates
-define('_TEMPLATE_TITLE',			'Templates');
-define('_TEMPLATE_AVAILABLE_TITLE',	'Beschikbare Templates');
-define('_TEMPLATE_NEW_TITLE',		'Nieuw Template');
-define('_TEMPLATE_NAME',			'Template Naam');
-define('_TEMPLATE_DESC',			'Template Beschrijving');
-define('_TEMPLATE_CREATE',			'Template Aanmaken');
-define('_TEMPLATE_CREATE_BTN',		'Template Aanmaken');
-define('_TEMPLATE_EDIT_TITLE',		'Template Aanpassen');
-define('_TEMPLATE_BACK',			'Terug naar template-overzicht');
-define('_TEMPLATE_EDIT_MSG',		'Niet alle template-onderdelen zijn in alle gevallen nodig. Je kunt de overbodige velden gerust leeglaten');
-define('_TEMPLATE_SETTINGS',		'Template Instellingen');
+define('_TEMPLATE_TITLE',			'Sjablonen');
+define('_TEMPLATE_AVAILABLE_TITLE',	'Beschikbare Sjablonen');
+define('_TEMPLATE_NEW_TITLE',		'Nieuw Sjabloon');
+define('_TEMPLATE_NAME',			'Sjabloon Naam');
+define('_TEMPLATE_DESC',			'Sjabloon Beschrijving');
+define('_TEMPLATE_CREATE',			'Sjabloon Aanmaken');
+define('_TEMPLATE_CREATE_BTN',		'Sjabloon Aanmaken');
+define('_TEMPLATE_EDIT_TITLE',		'Sjabloon Aanpassen');
+define('_TEMPLATE_BACK',			'Terug naar sjabloon-overzicht');
+define('_TEMPLATE_EDIT_MSG',		'Niet alle sjabloon-onderdelen zijn in alle gevallen nodig. Je kunt de overbodige velden gerust leeglaten');
+define('_TEMPLATE_SETTINGS',		'Sjabloon Instellingen');
 define('_TEMPLATE_ITEMS',			'Berichten');
-define('_TEMPLATE_ITEMHEADER',		'Bericht Hoofding');
+define('_TEMPLATE_ITEMHEADER',		'Bericht Kop');
 define('_TEMPLATE_ITEMBODY',		'Bericht Inhoud');
-define('_TEMPLATE_ITEMFOOTER',		'Bericht Footer');
+define('_TEMPLATE_ITEMFOOTER',		'Bericht Onderschrift');
 define('_TEMPLATE_MORELINK',		'Link naar uitgebreide versie');
 define('_TEMPLATE_NEW',				'Aanduiding voor nieuw bericht');
 define('_TEMPLATE_COMMENTS_ANY',	'Reacties (indien er zijn)');
-define('_TEMPLATE_CHEADER',			'Reacties Hoofding');
+define('_TEMPLATE_CHEADER',			'Reacties Kop');
 define('_TEMPLATE_CBODY',			'Reacties Inhoud');
-define('_TEMPLATE_CFOOTER',			'Reacties Footer');
+define('_TEMPLATE_CFOOTER',			'Reacties Onderschrift');
 define('_TEMPLATE_CONE',			'Een enkele reactie');
 define('_TEMPLATE_CMANY',			'Twee (of meer) reacties');
 define('_TEMPLATE_CMORE',			'Reacties "Lees verder"');
-define('_TEMPLATE_CMEXTRA',			'Member Extra ');
+define('_TEMPLATE_CMEXTRA',			'Leden Extra ');
 define('_TEMPLATE_COMMENTS_NONE',	'Reacties (indien geen)');
 define('_TEMPLATE_CNONE',			'Geen reacties');
 define('_TEMPLATE_COMMENTS_TOOMUCH','Reacties (indien teveel om op voorpagina te laten zien)');
 define('_TEMPLATE_CTOOMUCH',		'Heel veel reacties');
 define('_TEMPLATE_ARCHIVELIST',		'Archief Overzicht');
-define('_TEMPLATE_AHEADER',			'Archief Overzicht (header)');
+define('_TEMPLATE_AHEADER',			'Archief Overzicht (kop)');
 define('_TEMPLATE_AITEM',			'Archief Overzicht (item)');
-define('_TEMPLATE_AFOOTER',			'Archief Overzicht (footer)');
+define('_TEMPLATE_AFOOTER',			'Archief Overzicht (onderschrift)');
 define('_TEMPLATE_DATETIME',		'Tijd en Datum');
-define('_TEMPLATE_DHEADER',			'Dag Header');
-define('_TEMPLATE_DFOOTER',			'Dag Footer');
+define('_TEMPLATE_DHEADER',			'Dag Kop');
+define('_TEMPLATE_DFOOTER',			'Dag Onderschrift');
 define('_TEMPLATE_DFORMAT',			'Datumformaat');
-define('_TEMPLATE_TFORMAT',			'Tiijdsformaat');
-define('_TEMPLATE_LOCALE',			'Locale');
+define('_TEMPLATE_TFORMAT',			'Tijdsformaat');
+define('_TEMPLATE_LOCALE',			'Lokale');
 define('_TEMPLATE_IMAGE',			'Image popups');
 define('_TEMPLATE_PCODE',			'Popup Link Code');
 define('_TEMPLATE_ICODE',			'Inline Image Code');
@@ -728,12 +731,12 @@ define('_TEMPLATE_SEARCH',			'Zoeken');
 define('_TEMPLATE_SHIGHLIGHT',		'Highlight');
 define('_TEMPLATE_SNOTFOUND',		'Geen resultaten gevonden');
 define('_TEMPLATE_UPDATE',			'Update');
-define('_TEMPLATE_UPDATE_BTN',		'Update Template');
+define('_TEMPLATE_UPDATE_BTN',		'Update Sjabloon');
 define('_TEMPLATE_RESET_BTN',		'Herstellen');
-define('_TEMPLATE_CATEGORYLIST',	'Category Overzicht');
-define('_TEMPLATE_CATHEADER',		'Category Overzicht (header)');
-define('_TEMPLATE_CATITEM',			'Category Overzicht (item)');
-define('_TEMPLATE_CATFOOTER',		'Category Overzicht (footer)');
+define('_TEMPLATE_CATEGORYLIST',	'Categorie Overzicht');
+define('_TEMPLATE_CATHEADER',		'Categorie Overzicht (kop)');
+define('_TEMPLATE_CATITEM',			'Categorie Overzicht (item)');
+define('_TEMPLATE_CATFOOTER',		'Categorie Overzicht (onderschrift)');
 
 
 // skins
@@ -785,10 +788,10 @@ define('_SETTINGS_COOKIES_TITLE',	'Cookie Settings');
 define('_SETTINGS_COOKIELIFE',		'Login Cookie Levensduur');
 define('_SETTINGS_COOKIESESSION',	'Session Cookies');
 define('_SETTINGS_COOKIEMONTH',		'1 maand');
-define('_SETTINGS_COOKIEPATH',		'Cookie Path (advanced)');
-define('_SETTINGS_COOKIEDOMAIN',	'Cookie Domain (advanced)');
-define('_SETTINGS_COOKIESECURE',	'Secure Cookie (advanced)');
-define('_SETTINGS_LASTVISIT',		'Bewaar "Last Visit" Cookies');
+define('_SETTINGS_COOKIEPATH',		'Cookie Path (geavanceerd)');
+define('_SETTINGS_COOKIEDOMAIN',	'Cookie Domein (geavanceerd)');
+define('_SETTINGS_COOKIESECURE',	'Secure Cookie (geavanceerd)');
+define('_SETTINGS_LASTVISIT',		'Bewaar "Laatste Bezoek" Cookies');
 define('_SETTINGS_ALLOWCREATE',		'Bezoekers toelaten een gebruikersaccount aan te maken');
 define('_SETTINGS_NEWLOGIN',		'Login toegelaten voor nieuwe gebruikers');
 define('_SETTINGS_NEWLOGIN2',		'(geldt enkel voor nieuwe accounts)');
@@ -840,7 +843,7 @@ define('_MEMBERS_REALNAME',			'Echte Naam');
 define('_MEMBERS_PWD',				'Wachtwoord');
 define('_MEMBERS_REPPWD',			'Herhaal Wachtwoord');
 define('_MEMBERS_EMAIL',			'Email adres');
-define('_MEMBERS_EMAIL_EDIT',		'(Wanneer u uw emailadres wijzigt, zal een nieuw wachtwoord doorgestuurd worden)');
+define('_MEMBERS_EMAIL_EDIT',		'(Wanneer u uw emailadres wijzigt, zal een nieuw wachtwoord toegestuurd worden)');
 define('_MEMBERS_URL',				'Website Adres (URL)');
 define('_MEMBERS_SUPERADMIN',		'Administrator privileges');
 define('_MEMBERS_CANLOGIN',			'Kan inloggen op de Admin Area');
@@ -878,11 +881,11 @@ define('_OVERVIEW_NODRAFTS',		'Geen kladversies');
 define('_OVERVIEW_EDITSETTINGS',	'Pas uw instellingen aan...');
 define('_OVERVIEW_BROWSEITEMS',		'Al uw berichten...');
 define('_OVERVIEW_BROWSECOMM',		'Al uw reacties...');
-define('_OVERVIEW_VIEWLOG',			'Bekijk action log...');
+define('_OVERVIEW_VIEWLOG',			'Bekijk actie log...');
 define('_OVERVIEW_MEMBERS',			'Gebruikersbeheer...');
 define('_OVERVIEW_NEWLOG',			'Nieuw weblog aanmaken...');
 define('_OVERVIEW_SETTINGS',		'Instellingen...');
-define('_OVERVIEW_TEMPLATES',		'Templates...');
+define('_OVERVIEW_TEMPLATES',		'Sjablonen...');
 define('_OVERVIEW_SKINS',			'Skins...');
 define('_OVERVIEW_BACKUP',			'Backup/Restore...');
 
