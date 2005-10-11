@@ -235,13 +235,31 @@
 	<p>
 	This install script has attempted to find out the directories and URLs in which Nucleus is installed. Please check the values below and correct if necessary. The URLs and file paths should end with a slash.
 	</p>
+	
+	<?php
+		// discover full path
+		$fullPath = serverVar('PATH_TRANSLATED');
+		if ($fullPath == '')
+		{
+			$fullPath = serverVar('SCRIPT_FILENAME');
+		}
+		
+		$basePath = str_replace("install.php", '', $fullPath);
+		$basePath = str_replace("\\","/", $basePath);
+		$basePath = str_replace("//","/", $basePath);
+		// add slash at end if necessary
+		if (!endsWithSlash($basePath)) $basePath .= '/';
+
+		
+	?>
 
 	<fieldset>
 		<legend>URLs and directories</legend>
 		<table><tr>
 			<td>Site <strong>URL</strong>:</td>
 			<td>
-					<input name="IndexURL" size="60" value="<?php					$url = "http://" . serverVar('HTTP_HOST') . serverVar('PHP_SELF');
+					<input name="IndexURL" size="60" value="<?php					
+					$url = "http://" . serverVar('HTTP_HOST') . serverVar('PHP_SELF');
 					$url = str_replace("install.php",'',$url);
 					$url = str_replace("\\","/",$url);
 					// add slash at end if necessary
@@ -251,56 +269,52 @@
 			</td>
 		</tr><tr>
 			<td>Admin-area <strong>URL</strong>:</td>
-			<td><input name="AdminURL" size="60" value="<?php					if ($url) echo $url . 'nucleus/';
+			<td><input name="AdminURL" size="60" value="<?php					
+					if ($url) echo $url . 'nucleus/';
 				?>" />
 			</td>
 		</tr><tr>
 			<td>Admin-area <strong>path</strong>:</td>
-			<td><input name="AdminPath" size="60" value="<?php					$path = str_replace("install.php",'',serverVar('SCRIPT_FILENAME'));
-					$path = str_replace("\\","/",$path);
-					// add slash at end if necessary
-					if (!endsWithSlash($path)) $path .= '/';
-					if($path) echo  $path . 'nucleus/';
+			<td><input name="AdminPath" size="60" value="<?php					
+					if($basePath) echo  $basePath . 'nucleus/';
 				?>" />
 			</td>
 		</tr><tr>
 			<td>Media files <strong>URL</strong>:</td>
-			<td><input name="MediaURL" size="60" value="<?php					if ($url) echo $url . 'media/';
+			<td><input name="MediaURL" size="60" value="<?php					
+					if ($url) echo $url . 'media/';
 				?>" />
 			</td>
 		</tr><tr>
 			<td>Media directory <strong>path</strong>:</td>
-			<td><input name="MediaPath" size="60" value="<?php					$path = str_replace("install.php",'',serverVar('SCRIPT_FILENAME'));
-					$path = str_replace("\\","/",$path);
-					// add slash at end if necessary
-					if (!endsWithSlash($path)) $path .= '/';
-					if ($path) echo $path . 'media/';
+			<td><input name="MediaPath" size="60" value="<?php					
+					if ($basePath) echo $basePath . 'media/';
 				?>" />
 			</td>
 		</tr><tr>
 			<td>Extra skin files <strong>URL</strong>:</td>
-			<td><input name="SkinsURL" size="60" value="<?php					if ($url) echo $url . 'skins/';
+			<td><input name="SkinsURL" size="60" value="<?php					
+					if ($url) echo $url . 'skins/';
 				?>" />
 				<br />(used by imported skins)
 			</td>
 		</tr><tr>
 			<td>Extra skin files directory <strong>path</strong>:</td>
-			<td><input name="SkinsPath" size="60" value="<?php				$path = str_replace("install.php",'',serverVar('SCRIPT_FILENAME'));
-				$path = str_replace("\\","/",$path);
-				// add slash at end if necessary
-				if (!endsWithSlash($path)) $path .= '/';
-				if ($path) echo $path . 'skins/';
+			<td><input name="SkinsPath" size="60" value="<?php				
+				if ($basePath) echo $basePath . 'skins/';
 				?>" />
 				<br />(this is where imported skins can place their extra files)
 			</td>
 		</tr><tr>
 			<td>Plugin files <strong>URL</strong>:</td>
-			<td><input name="PluginURL" size="60" value="<?php					if ($url) echo $url . 'nucleus/plugins/';
+			<td><input name="PluginURL" size="60" value="<?php					
+				if ($url) echo $url . 'nucleus/plugins/';
 				?>" />
 			</td>
 		</tr><tr>
 			<td>Action <strong>URL</strong>:</td>
-			<td><input name="ActionURL" size="60" value="<?php					if ($url) echo $url . 'action.php';
+			<td><input name="ActionURL" size="60" value="<?php					
+				if ($url) echo $url . 'action.php';
 				?>" />
 				<br />(absolute location of the <tt>action.php</tt> file)
 			</td>
