@@ -11,7 +11,7 @@
 	<textarea name="body" class="formfield" cols="40" rows="10" id="nucleus_cf_body"><%formdata(body)%></textarea>
 	<br />
 	<%text(_COMMENTFORM_YOUARE)%> <%formdata(membername)%>
-	<small>(<a href="?action=logout"><%text(_LOGOUT)%></a>)</small>
+	<small>(<a href="<%self%>?action=logout"><%text(_LOGOUT)%></a>)</small>
 	<br />
 	<input type="submit" value="<%text(_COMMENTFORM_SUBMIT)%>" class="formbutton" />
 	<%callback(FormExtra,commentform-loggedin)%>	
