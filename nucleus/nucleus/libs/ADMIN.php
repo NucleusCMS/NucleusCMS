@@ -2620,6 +2620,8 @@ class ADMIN {
 
 		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
 		$this->pagehead($extrahead);
+		
+		echo "<p><a href='index.php?action=blogsettings&amp;blogid=$blogid'>(",_BACK_TO_BLOGSETTINGS,")</a></p>";
 
 		?>
 		<h2><?php echo _EBLOG_CAT_UPDATE?> '<?php echo htmlspecialchars($cname)?>'</h2>
