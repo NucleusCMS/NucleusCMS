@@ -42,14 +42,14 @@ class MEMBER {
 	}
 
 	// (static)
-	function createFromName($displayname) {
+	function &createFromName($displayname) {
 		$mem =& new MEMBER();
 		$mem->readFromName($displayname);
 		return $mem;
 	}
 
 	// (static)
-	function createFromID($id) {
+	function &createFromID($id) {
 		$mem =& new MEMBER();
 		$mem->readFromID($id);
 		return $mem;
