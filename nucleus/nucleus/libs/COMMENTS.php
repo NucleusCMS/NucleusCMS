@@ -328,10 +328,11 @@ class COMMENTACTIONS extends BaseActions {
 	function setCommentsObj(&$commentsObj) {$this->commentsObj =& $commentsObj; }
 	function setTemplate($template) {		$this->template =& $template; }
 	function setCurrentComment(&$comment) {
+		global $manager;
 		if ($comment['memberid'] != 0) {
 			$comment['authtext'] = $template['COMMENTS_AUTH'];
 
-			$mem = MEMBER::createFromID($comment['memberid']);
+			$mem =& $manager->getMember($comment['memberid']);
 			$comment['user'] = $mem->getDisplayName();
 			if ($mem->getURL())
 				$comment['userid'] = $mem->getURL();
@@ -431,10 +432,10 @@ class COMMENTACTIONS extends BaseActions {
 	}
 
 	function parse_useremail() {
+		global $manager;
 		if ($this->currentComment['memberid'] > 0)
 		{
-			$member = new MEMBER();
-			$member->readFromID($this->currentComment['memberid']);
+			$member =& $manager->getMember($this->currentComment['memberid']);
 
 			if ($member->email != '')
 				echo $member->email;
