@@ -1,31 +1,27 @@
 <?php
-// English Nucleus Language File
+// Russian Nucleus Language File
 //
-// Author: Wouter Demuynck
+// Author: Andrey Serebryakov - saahov@gmail.com
 // Nucleus version: v1.0-v3.2
-//
-// Please note: if you want to translate this file to your own language, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which
-// the file was written in your document.
-//
-// Fully translated language file can be sent to us and will be made
-// available for download (with proper credit to the author, of course)
+// Update: 19.10.2005
+// Вопросы по управлению, настройке и модернизации Nucleus можно
+// задать на форуме сообщества русских пользователей: http://nucleus.net.ru .
+
 
 // START changed/added after 3.15 START
 
-define('_LIST_PLUG_SUBS_NEEDUPDATE','Используйте кнопку \'Обновление листа подписки\' чтобы обновить список плагинов подписки.');
-define('_LIST_PLUGS_DEP',			'Необходим плагин(ы):');
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Нажмите \'Обновить список\'-button to update the plugin\'s subscription list.');
+define('_LIST_PLUGS_DEP',			'Плагину требуется:');
 
 // END changed/added after 3.15
 
 // START changed/added after 3.1 START
 
 // comments list per weblog
-define('_COMMENTS_BLOG',			'Все комментарии дневника');
-define('_NOCOMMENTS_BLOG',			'У этого журнала нет комментариев');
+define('_COMMENTS_BLOG',			'Все комментарии в разделе');
+define('_NOCOMMENTS_BLOG',			'В этом разделе нет комментариев');
 define('_BLOGLIST_COMMENTS',		'Комментарии');
-define('_BLOGLIST_TT_COMMENTS',		'Список всех комментариев этого дневника');
+define('_BLOGLIST_TT_COMMENTS',		'Список всех комментариев, сделанных к сообщениям этого раздела');
 
 
 // for use in archivetype-skinvar
@@ -33,94 +29,94 @@ define('_ARCHIVETYPE_DAY',			'день');
 define('_ARCHIVETYPE_MONTH',		'месяц');
 
 // tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
-define('_ERROR_BADTICKET',			'Облом, товарищ.');
+define('_ERROR_BADTICKET',			'Неправильная или используемая повторно ссылка.');
 
 // plugin dependency
-define('_ERROR_INSREQPLUGIN',		'Установка плагина не прокатила, ему надо ');
-define('_ERROR_DELREQPLUGIN',		'Удаление плагина не прокатило, он нужен ');
+define('_ERROR_INSREQPLUGIN',		'Ошибка при установке плагина, требуется ');
+define('_ERROR_DELREQPLUGIN',		'Не удалось выполнить удаление плагина, требуется ');
 
 // cookie prefix
 define('_SETTINGS_COOKIEPREFIX',	'Префикс Cookie');
 
 // account activation
-define('_ERROR_NOLOGON_NOACTIVATE',	'Не удалось послать ссылку активации. У вас не получится войти.');
-define('_ERROR_ACTIVATE',			'Ссылки активации не существует, она неправильна, или кончилась. Такие дела.');
-define('_ACTIONLOG_ACTIVATIONLINK', 'Ссылка активации послана');
-define('_MSG_ACTIVATION_SENT',		'Ссылка активации ушла на почту.');
+define('_ERROR_NOLOGON_NOACTIVATE',	'Ссылка активации не отослана. Вам запрещено входить на сайт.');
+define('_ERROR_ACTIVATE',			'Ключ активации не существует, неправильный или используется повторно.');
+define('_ACTIONLOG_ACTIVATIONLINK', 'Ссылка активации была отослана');
+define('_MSG_ACTIVATION_SENT',		'Ссылка для активации была отослана на e-mail.');
 
 // activation link emails
-define('_ACTIVATE_REGISTER_MAIL',	"Здравствуйте <%memberName%>,\n\nВам необходимо активировать свой аккаунт на <%siteName%> (<%siteUrl%>).\nВы можете сделать это щелкнув по ссылке: \n\n\t<%activationUrl%>\n\n . У вас всего два дня, поторопитесь.");
-define('_ACTIVATE_REGISTER_MAILTITLE',	"'<%memberName%>', активируйте свой аккаунт.");
+define('_ACTIVATE_REGISTER_MAIL',	"Здравствуйте, <%memberName%>,\n\nВам необходимо активировать свою эккаунт на <%siteName%> (<%siteUrl%>).\nДля этого перйдите по ссылке: \n\n\t<%activationUrl%>\n\nУ вас есть 2 дня, по истечение этого срока ссылка становится недействительной.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Активация эккаунта '<%memberName%>'");
 define('_ACTIVATE_REGISTER_TITLE',	'Добро пожаловать <%memberName%>');
-define('_ACTIVATE_REGISTER_TEXT',	'Вы близко. Выберите пароль для своего аккаунта.');
-define('_ACTIVATE_FORGOT_MAIL',		"Здравствуйте, <%memberName%>,\n\nИспользуя ссылку ниже, вы можете выбрать новый пароль для <%siteName%> (<%siteUrl%>).\n\n\t<%activationUrl%>\n\nУ. После этого ссылка активации будет недоступна.");
-define('_ACTIVATE_FORGOT_MAILTITLE',"'<%memberName%>', активируйте свой аккаунт еще раз.");
-define('_ACTIVATE_FORGOT_TITLE',	'Добро пожаловать, <%memberName%>');
-define('_ACTIVATE_FORGOT_TEXT',		'Вы можете выбрать новый пароль для своего аккаунта ниже:');
-define('_ACTIVATE_CHANGE_MAIL',		"Здравствуйте, <%memberName%>,\n\nНасколько мы знаем, вы поменяли свой e-mail адрес, поэтому вам придется заново активировать свой аккаунт на <%siteName%> (<%siteUrl%>).\nВы можете сделать это, используя ссылку: \n\n\t<%activationUrl%>\n\n . У вас всего два дня, поторопитесь.");
-define('_ACTIVATE_CHANGE_MAILTITLE',"'<%memberName%>', активируйте свой аккаунт еще раз.");
-define('_ACTIVATE_CHANGE_TITLE',	'Добро пожаловать, <%memberName%>');
-define('_ACTIVATE_CHANGE_TEXT',		'Смена вашего e-mail адреса прошла успешно.');
-define('_ACTIVATE_SUCCESS_TITLE',	'Активация прошла успешно.');
-define('_ACTIVATE_SUCCESS_TEXT',	'Ваш аккаунт был успешно активирован. Мы тоже этому несказанно рады.');
-define('_MEMBERS_SETPWD',			'Установить пароль');
-define('_MEMBERS_SETPWD_BTN',		'Установить пароль');
-define('_QMENU_ACTIVATE',			'Активация аккаунта');
-define('_QMENU_ACTIVATE_TEXT',		'<p>После активации своего аккаунта, вы можете начать вести свой дневник, пройдя на страницу <a href="index.php?action=showlogin">входа в систему</a>.</p>');
+define('_ACTIVATE_REGISTER_TEXT',	'Вы почти прошли процедуру регистрации. Пожалуйста, введите пароль для Вашей учётной записи.');
+define('_ACTIVATE_FORGOT_MAIL',		"Здравствуйте, <%memberName%>,\n\nПерейдя по следующей ссылке, вы можете выбрать новый пароль для своего аккаунта на <%siteName%> (<%siteUrl%>)\n\n\t<%activationUrl%>\n\nУ вас есть 2 дня, по истечение этого срока ссылка становится недействительной.");
+define('_ACTIVATE_FORGOT_MAILTITLE',"Переактивация эккаунта '<%memberName%>'");
+define('_ACTIVATE_FORGOT_TITLE',	'Добро пожаловать <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'Вы можете ввести новый пароль для Вашего эккаунта:');
+define('_ACTIVATE_CHANGE_MAIL',		"Здравствуйте, <%memberName%>,\n\nПосле изменения Вашего e-mail требуется переактивация эккаунта на <%siteName%> (<%siteUrl%>).\nВы можете сделать это перейдя по следующей ссылке: \n\n\t<%activationUrl%>\n\nУ Вас есть 2 дня, по истечение этого срока ссылка становится недействительной.");
+define('_ACTIVATE_CHANGE_MAILTITLE',"Переактивация эккаунта '<%memberName%>'");
+define('_ACTIVATE_CHANGE_TITLE',	'Добро пожаловать <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'Ваш изменённый адрес был проверен. Спасибо!');
+define('_ACTIVATE_SUCCESS_TITLE',	'Активация прошла успешно');
+define('_ACTIVATE_SUCCESS_TEXT',	'Ваш эккаунт был успешно активирован.');
+define('_MEMBERS_SETPWD',			'Введите пароль');
+define('_MEMBERS_SETPWD_BTN',		'Введите пароль');
+define('_QMENU_ACTIVATE',			'Активация эккаунта');
+define('_QMENU_ACTIVATE_TEXT',		'<p>После активации эккаунта, Вы сможете использовать свои логин и пароль для <a href="index.php?action=showlogin"><strong>входа</strong></a>.</p>');
 
-define('_PLUGS_BTN_UPDATE',			'Обновить список подписки');
+define('_PLUGS_BTN_UPDATE',			'Обновить список');
 
 // global settings
-define('_SETTINGS_JSTOOLBAR',		'Javascript тулбар');
-define('_SETTINGS_JSTOOLBAR_FULL',	'Модный тулбар (IE)');
-define('_SETTINGS_JSTOOLBAR_SIMPLE','Простой тулбар (Non-IE)');
-define('_SETTINGS_JSTOOLBAR_NONE',	'Без тулбара');
-define('_SETTINGS_URLMODE_HELP',	'(Информация: <a href="documentation/tips.html#searchengines-fancyurls">Как включить ЧПУ</a>)');
+define('_SETTINGS_JSTOOLBAR',		'Javascript панель');
+define('_SETTINGS_JSTOOLBAR_FULL',	'Полная панель (IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE','Мини-панель (не IE)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Выключить панель');
+define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">Как включить fancy URLs (ЧПУ)</a>)');
 
 // extra plugin settings part when editing categories/members/blogs/...
-define('_PLUGINS_EXTRA',			'Настройки экстра-плагинов');
+define('_PLUGINS_EXTRA',			'Дополнительные опции плагинов');
 
 // itemlist info column keys
-define('_LIST_ITEM_BLOG',			'дневник:');
+define('_LIST_ITEM_BLOG',			'раздел:');
 define('_LIST_ITEM_CAT',			'категория:');
 define('_LIST_ITEM_AUTHOR',			'автор:');
 define('_LIST_ITEM_DATE',			'дата:');
 define('_LIST_ITEM_TIME',			'время:');
 
 // indication of registered members in comments list
-define('_LIST_COMMENTS_MEMBER', 	'(дневниковод)');
+define('_LIST_COMMENTS_MEMBER', 	'(пользователь)');
 
 // batch operations
 define('_BATCH_WITH_SEL',			'С выбранными:');
-define('_BATCH_EXEC',				'Выполнить');
+define('_BATCH_EXEC',				'Сделать');
 
 // quickmenu
-define('_QMENU_HOME',				'В начало');
-define('_QMENU_ADD',				'Написать');
+define('_QMENU_HOME',				'Начало');
+define('_QMENU_ADD',				'Добавить сообщение в:');
 define('_QMENU_ADD_SELECT',			'-- выбрать --');
-define('_QMENU_USER_SETTINGS',		'Настройки');
-define('_QMENU_USER_ITEMS',			'Записи');
-define('_QMENU_USER_COMMENTS',		'Комментарии');
+define('_QMENU_USER_SETTINGS',		'Профиль');
+define('_QMENU_USER_ITEMS',			'Свои сообщения');
+define('_QMENU_USER_COMMENTS',		'Свои комментарии');
 define('_QMENU_MANAGE',				'Управление');
-define('_QMENU_MANAGE_LOG',			'Лог активации');
-define('_QMENU_MANAGE_SETTINGS',	'Глобальные настройки');
-define('_QMENU_MANAGE_MEMBERS',		'Дневниководы');
-define('_QMENU_MANAGE_NEWBLOG',		'Новый дневник');
+define('_QMENU_MANAGE_LOG',			'Лог действий');
+define('_QMENU_MANAGE_SETTINGS',	'Конфигурация');
+define('_QMENU_MANAGE_MEMBERS',		'Пользователи');
+define('_QMENU_MANAGE_NEWBLOG',		'Создать раздел');
 define('_QMENU_MANAGE_BACKUPS',		'Бэкап');
 define('_QMENU_MANAGE_PLUGINS',		'Плагины');
-define('_QMENU_LAYOUT',				'Макет');
+define('_QMENU_LAYOUT',				'Дизайн');
 define('_QMENU_LAYOUT_SKINS',		'Скины');
 define('_QMENU_LAYOUT_TEMPL',		'Шаблоны');
 define('_QMENU_LAYOUT_IEXPORT',		'Импорт/Экспорт');
 define('_QMENU_PLUGINS',			'Плагины');
 
 // quickmenu on logon screen
-define('_QMENU_INTRO',				'Введение');
-define('_QMENU_INTRO_TEXT',			'<p>Это экран входа для нашего движка, который помогает настроить сайт.</p><p>Если у вас есть аккаунт, вы можете войти и начать писать заметки.</p>');
+define('_QMENU_INTRO',				'Необходимо авторизоваться');
+define('_QMENU_INTRO_TEXT',			'<p>Для продолжения работы с сайтом необходима авторизация.</p><p>После авторизации Вы сможете добавлять новые сообщения.</p>');
 
 // helppages for plugins
-define('_ERROR_PLUGNOHELPFILE',		'Для этого плагина не найден файл помощи');
-define('_PLUGS_HELP_TITLE',			'Помощь к плагину');
+define('_ERROR_PLUGNOHELPFILE',		'Документация не найдена');
+define('_PLUGS_HELP_TITLE',			'Документация к плагину');
 define('_LIST_PLUGS_HELP', 			'помощь');
 
 
@@ -129,11 +125,11 @@ define('_LIST_PLUGS_HELP', 			'помощь');
 // START changed/added after v2.5beta START
 
 // general settings (security)
-define('_SETTINGS_EXTAUTH',			'Включить внешний доступ');
-define('_WARNING_EXTAUTH',			'Предупреждение: просто так не включайте.');
+define('_SETTINGS_EXTAUTH',			'Включить внешнюю аутентификацию');
+define('_WARNING_EXTAUTH',			'Внимание: Включать только при необходимости.');
 
 // member profile
-define('_MEMBERS_BYPASS',			'Использовать внешний доступ');
+define('_MEMBERS_BYPASS',			'Включить внешнюю аутентификацию');
 
 // 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
 define('_EBLOG_SEARCH',				'<em>Всегда</em> включать в поиск');
@@ -144,177 +140,177 @@ define('_EBLOG_SEARCH',				'<em>Всегда</em> включать в поиск');
 
 // media library
 define('_MEDIA_VIEW',				'просмотр');
-define('_MEDIA_VIEW_TT',			'Просмотр файла (в новом окне)');
+define('_MEDIA_VIEW_TT',			'Просмотр файл (откроется в новом окне)');
 define('_MEDIA_FILTER_APPLY',		'Применить фильтр');
 define('_MEDIA_FILTER_LABEL',		'Фильтр: ');
-define('_MEDIA_UPLOAD_TO',			'Загрузить в...');
-define('_MEDIA_UPLOAD_NEW',			'Загрузить новый файл...');
+define('_MEDIA_UPLOAD_TO',			'Закачать в ...');
+define('_MEDIA_UPLOAD_NEW',			'Закачать новый файл...');
 define('_MEDIA_COLLECTION_SELECT',	'Выбрать');
-define('_MEDIA_COLLECTION_TT',		'Выбор категории');
+define('_MEDIA_COLLECTION_TT',		'Переключить на эту категорию');
 define('_MEDIA_COLLECTION_LABEL',	'Текущая коллекция: ');
 
 // tooltips on toolbar
-define('_ADD_ALIGNLEFT_TT',			'Слева');
-define('_ADD_ALIGNRIGHT_TT',		'Справа');
-define('_ADD_ALIGNCENTER_TT',		'По центру');
+define('_ADD_ALIGNLEFT_TT',			'Выровнять влево');
+define('_ADD_ALIGNRIGHT_TT',		'Выровнять вправо');
+define('_ADD_ALIGNCENTER_TT',		'Выровнять по-центру');
 
 
 // generic upload failure
-define('_ERROR_UPLOADFAILED',		'Загрузка не прошла');
+define('_ERROR_UPLOADFAILED',		'Ошибка закачки');
 
 // END introduced after v2.0 END
 
 // START introduced after v1.5 START
 
 // posting to the past/edit timestamps
-define('_EBLOG_ALLOWPASTPOSTING',	'Разрешить записи в прошлое (включить машину времени)');
-define('_ADD_CHANGEDATE',			'Обновить время создания');
-define('_BMLET_CHANGEDATE',			'Обновить время создания');
+define('_EBLOG_ALLOWPASTPOSTING',	'Разрешить размещение сообщений в прошлое');
+define('_ADD_CHANGEDATE',			'Обновить время');
+define('_BMLET_CHANGEDATE',			'Обновить время');
 
 // skin import/export
-define('_OVERVIEW_SKINIMPORT',		'Импорт/эспорт скинов...');
+define('_OVERVIEW_SKINIMPORT',		'Импорт/экспорт скинов...');
 
 // skin settings
-define('_PARSER_INCMODE_NORMAL',	'Нормальный');
-define('_PARSER_INCMODE_SKINDIR',	'Использовать каталог скинов');
-define('_SKIN_INCLUDE_MODE',		'Включить режим');
-define('_SKIN_INCLUDE_PREFIX',		'Включить префикс');
+define('_PARSER_INCMODE_NORMAL',	'Обычный');
+define('_PARSER_INCMODE_SKINDIR',	'Папка скина');
+define('_SKIN_INCLUDE_MODE',		'Include mode');
+define('_SKIN_INCLUDE_PREFIX',		'Include prefix');
 
 // global settings
-define('_SETTINGS_BASESKIN',		'Основной скин');
-define('_SETTINGS_SKINSURL',		'Адрес скина');
-define('_SETTINGS_ACTIONSURL',		'Полный адрес к action.php');
+define('_SETTINGS_BASESKIN',		'Скин по-умолчанию');
+define('_SETTINGS_SKINSURL',		'URL скинов');
+define('_SETTINGS_ACTIONSURL',		'Полный URL к action.php');
 
 // category moves (batch)
-define('_ERROR_MOVEDEFCATEGORY',	'Не получается переместить категорию по умолчанию.');
-define('_ERROR_MOVETOSELF',			'Не получается переместить категорию (дневник назначения совпадает с исходным)');
-define('_MOVECAT_TITLE',			'Выберите журнал для перемещения в категорию');
+define('_ERROR_MOVEDEFCATEGORY',	'Нельзя перемещать заданную по умолчанию категорию');
+define('_ERROR_MOVETOSELF',			'Нельзя перемещать категорию в тот же раздел');
+define('_MOVECAT_TITLE',			'Выберите раздел, в который хотите переместить категорию');
 define('_MOVECAT_BTN',				'Переместить категорию');
 
 // URLMode setting
-define('_SETTINGS_URLMODE',			'Вид URL');
+define('_SETTINGS_URLMODE',			'Тип URL');
 define('_SETTINGS_URLMODE_NORMAL',	'Обычный');
 define('_SETTINGS_URLMODE_PATHINFO','ЧПУ');
 
 // Batch operations
-define('_BATCH_NOSELECTION',		'Уже выделите что-нибудь');
-define('_BATCH_ITEMS',				'Групповая операция над записями');
-define('_BATCH_CATEGORIES',			'Групповая операция над категориями');
-define('_BATCH_MEMBERS',			'Групповая операция над дневниководами');
-define('_BATCH_TEAM',				'Групповая операция над группами дневниководов');
-define('_BATCH_COMMENTS',			'Групповая операция над комментариями');
-define('_BATCH_UNKNOWN',			'Неизвестная групповая операция: ');
-define('_BATCH_EXECUTING',			'Выполняется');
-define('_BATCH_ONCATEGORY',			'над категорией');
-define('_BATCH_ONITEM',				'над записью');
-define('_BATCH_ONCOMMENT',			'над комментарием');
-define('_BATCH_ONMEMBER',			'над дневниководом');
-define('_BATCH_ONTEAM',				'над групповым дневниководом');
-define('_BATCH_SUCCESS',			'Ура!');
-define('_BATCH_DONE',				'Готово!');
-define('_BATCH_DELETE_CONFIRM',		'Подтвердите групповое удаление');
-define('_BATCH_DELETE_CONFIRM_BTN',	'Подтвердите групповое удаление');
-define('_BATCH_SELECTALL',			'выбрать все');
-define('_BATCH_DESELECTALL',		'выбрать ничто');
+define('_BATCH_NOSELECTION',		'Ничего не выбрано для выполнения действия');
+define('_BATCH_ITEMS',				'Массовая обработка сообщений');
+define('_BATCH_CATEGORIES',			'Массовая операция с категориями');
+define('_BATCH_MEMBERS',			'Массовая операция с пользователями');
+define('_BATCH_TEAM',				'Массовая операция с участниками команды авторов');
+define('_BATCH_COMMENTS',			'Массовая операция с комментариями');
+define('_BATCH_UNKNOWN',			'Неизвестная массовая операция: ');
+define('_BATCH_EXECUTING',			'Выполнение');
+define('_BATCH_ONCATEGORY',			'с категориями');
+define('_BATCH_ONITEM',				'с сообщениями');
+define('_BATCH_ONCOMMENT',			'с комментариями');
+define('_BATCH_ONMEMBER',			'с пользователями');
+define('_BATCH_ONTEAM',				'с участником команды авторов');
+define('_BATCH_SUCCESS',			'Успешно!');
+define('_BATCH_DONE',				'Выполнено!');
+define('_BATCH_DELETE_CONFIRM',		'Потвердите массовое удаление');
+define('_BATCH_DELETE_CONFIRM_BTN',	'Потвердите массовое удаление');
+define('_BATCH_SELECTALL',			'выделить все');
+define('_BATCH_DESELECTALL',		'снять выделение');
 
 // batch operations: options in dropdowns
 define('_BATCH_ITEM_DELETE',		'Удалить');
 define('_BATCH_ITEM_MOVE',			'Переместить');
 define('_BATCH_MEMBER_DELETE',		'Удалить');
-define('_BATCH_MEMBER_SET_ADM',		'Сделать крутым (админом)');
-define('_BATCH_MEMBER_UNSET_ADM',	'Сделать лохом (неадмином)');
-define('_BATCH_TEAM_DELETE',		'Удалить из группы');
-define('_BATCH_TEAM_SET_ADM',		'Сделать крутым (админом)');
-define('_BATCH_TEAM_UNSET_ADM',		'Сделать лохом (неадмином)');
+define('_BATCH_MEMBER_SET_ADM',		'Назначить права администратора');
+define('_BATCH_MEMBER_UNSET_ADM',	'Снять права администратора');
+define('_BATCH_TEAM_DELETE',		'Удалить из команды авторов');
+define('_BATCH_TEAM_SET_ADM',		'Назначить права администратора');
+define('_BATCH_TEAM_UNSET_ADM',		'Снять права администратора');
 define('_BATCH_CAT_DELETE',			'Удалить');
-define('_BATCH_CAT_MOVE',			'Переместить в другой дневник');
+define('_BATCH_CAT_MOVE',			'Переместить в другой раздел');
 define('_BATCH_COMMENT_DELETE',		'Удалить');
 
 // itemlist: Add new item...
-define('_ITEMLIST_ADDNEW',			'Добавить запись...');
-define('_ADD_PLUGIN_EXTRAS',		'Опции экстра-плагина');
+define('_ITEMLIST_ADDNEW',			'Добавить новое сообщение ...');
+define('_ADD_PLUGIN_EXTRAS',		'Дополнительные опции плагинов');
 
 // errors
-define('_ERROR_CATCREATEFAIL',		'Новая категория не создаётся');
-define('_ERROR_NUCLEUSVERSIONREQ',	'Этому плагину нужен движок поновее: ');
+define('_ERROR_CATCREATEFAIL',		'Не удалось создать новую категорию');
+define('_ERROR_NUCLEUSVERSIONREQ',	'Этот плагин предназначен для более поздней версии Nucleus: ');
 
 // backlinks
-define('_BACK_TO_BLOGSETTINGS',		'Назад к настройкам дневника');
+define('_BACK_TO_BLOGSETTINGS',		'Вернуться к настройкам раздела');
 
 // skin import export
 define('_SKINIE_TITLE_IMPORT',		'Импорт');
 define('_SKINIE_TITLE_EXPORT',		'Экспорт');
 define('_SKINIE_BTN_IMPORT',		'Импорт');
-define('_SKINIE_BTN_EXPORT',		'Экспорт выбранных скинов/шаблонов');
-define('_SKINIE_LOCAL',				'Импорт из файла:');
-define('_SKINIE_NOCANDIDATES',		'В каталоге скинов ничего подходящего нет');
-define('_SKINIE_FROMURL',			'Импорт с URL:');
-define('_SKINIE_EXPORT_INTRO',		'Выберите скины и шаблоны для экспорта ниже');
+define('_SKINIE_BTN_EXPORT',		'Экспортировать выбранные скины/шаблоны');
+define('_SKINIE_LOCAL',				'Импортировать с файла на сервере:');
+define('_SKINIE_NOCANDIDATES',		'Ничего не найдено для импорта в папке скина');
+define('_SKINIE_FROMURL',			'Импортировать из URL:');
+define('_SKINIE_EXPORT_INTRO',		'Выберите скины и шаблоны, которые вы хотите экспортировать');
 define('_SKINIE_EXPORT_SKINS',		'Скины');
 define('_SKINIE_EXPORT_TEMPLATES',	'Шаблоны');
 define('_SKINIE_EXPORT_EXTRA',		'Дополнительная информация');
-define('_SKINIE_CONFIRM_OVERWRITE',	'Заменять существующие скины (см. nameclashes)');
-define('_SKINIE_CONFIRM_IMPORT',	'Да-да, я хочу это импортировать');
-define('_SKINIE_CONFIRM_TITLE',		'About to import skins and templates');
-define('_SKINIE_INFO_SKINS',		'Скин в файле:');
-define('_SKINIE_INFO_TEMPLATES',	'Шаблон в файле:');
+define('_SKINIE_CONFIRM_OVERWRITE',	'Перезаписать уже существующие скины (смотрите совпадающие названия)');
+define('_SKINIE_CONFIRM_IMPORT',	'Да, я хочу импортировать это');
+define('_SKINIE_CONFIRM_TITLE',		'Об импортируемых скинах и шаблонах');
+define('_SKINIE_INFO_SKINS',		'Скины в файле:');
+define('_SKINIE_INFO_TEMPLATES',	'Шаблоны в файле:');
 define('_SKINIE_INFO_GENERAL',		'Информация:');
-define('_SKINIE_INFO_SKINCLASH',	'Конфликт имён скина:');
-define('_SKINIE_INFO_TEMPLCLASH',	'Конфликт имён шаблона:');
+define('_SKINIE_INFO_SKINCLASH',	'Совпадающие названия скинов:');
+define('_SKINIE_INFO_TEMPLCLASH',	'Совпадающие названия шаблонов:');
 define('_SKINIE_INFO_IMPORTEDSKINS','Импортированные скины:');
-define('_SKINIE_INFO_IMPORTEDTEMPLS','Импортированные шаблоны:');
-define('_SKINIE_DONE',				'Импорт завершён');
+define('_SKINIE_INFO_IMPORTEDTEMPLS','Импортрованные шаблоны:');
+define('_SKINIE_DONE',				'Импорт произведён');
 
 define('_AND',						'и');
 define('_OR',						'или');
 
 // empty fields on template edit
-define('_EDITTEMPLATE_EMPTY',		'пустое поле (нажмите, чтобы редактировать)');
+define('_EDITTEMPLATE_EMPTY',		'пустое поле (нажмите для редактирования)');
 
 // skin overview list
 define('_LIST_SKINS_INCMODE',		'IncludeMode:');
 define('_LIST_SKINS_INCPREFIX',		'IncludePrefix:');
-define('_LIST_SKINS_DEFINED',		'Defined parts:');
+define('_LIST_SKINS_DEFINED',		'Используемые части:');
 
 // backup
-define('_BACKUPS_TITLE',			'Забэкапить / восстановить');
-define('_BACKUP_TITLE',				'Бэкап');
-define('_BACKUP_INTRO',				'Нажмите кнопочку, чтобы забэкапить вашу БД. Храните под замком в чулане.');
-define('_BACKUP_ZIP_YES',			'Попробовать сжать');
-define('_BACKUP_ZIP_NO',			'Не сжимать');
+define('_BACKUPS_TITLE',			'Резервное копирование базы данных / Восстановление');
+define('_BACKUP_TITLE',				'Резервное копирование');
+define('_BACKUP_INTRO',				'Нажмите кнопку ниже, чтобы сделать резервное копирование базы данных. Сохраните файл в безопасном месте.');
+define('_BACKUP_ZIP_YES',			'Попробовать использовать сжатие');
+define('_BACKUP_ZIP_NO',			'Не использовать сжатие');
 define('_BACKUP_BTN',				'Создать бэкап');
-define('_BACKUP_NOTE',				'<b>Примечание:</b> сохраняется только БД, вся ерунда из папки media и файл config.php сохраняйте ручками.');
-define('_RESTORE_TITLE',			'Восстановить');
-define('_RESTORE_NOTE',				'<b>Предупреждение:</b> Когда восстанавливаете, всё старое стирается! Не наломайте дров.	<br />	<b>Примечание:</b> версия движка должна совпадать с той, в котоой вы делали бэкап.');
-define('_RESTORE_INTRO',			'Выберите файл, нажмите "Восстановить".');
-define('_RESTORE_IMSURE',			'Да-да, я уверен!');
+define('_BACKUP_NOTE',				'<b>Примечание:</b> В резервную копию включено только содержание базы данных. Файлы из папки MEDIA и настройки из файла config.php <b>НЕ</b> включены в резервную копию.');
+define('_RESTORE_TITLE',			'Восстановление');
+define('_RESTORE_NOTE',				'<b>Предупреждение:</b> Восстановление из резервной копии <b>СОТРЁТ</b> все текущии данные Nucleus в базе данных! Вы должны быть уверены в правильности своих действий!	<br />	<b>Примечание:</b> Удостоверитесь, что используемая сейчас версия Nucleus та же самая, какая была при резервном копировании. Иначе могут возникнуть ошибки в работе сайта.');
+define('_RESTORE_INTRO',			'Выберите файл с резервной копией (он будет загружен на сервер) и нажмите кнопку "Восстановить из файла", чтобы запустить процесс востановления.');
+define('_RESTORE_IMSURE',			'Да, я уверен, что хочу сделать это!');
 define('_RESTORE_BTN',				'Восстановить из файла');
-define('_RESTORE_WARNING',			'(убедитесь, что вы восстанавливаете хороший бэкап, а то всё закосячите нафиг)');
-define('_ERROR_BACKUP_NOTSURE',		'Скажите, что уверены (а то мало ли)');
+define('_RESTORE_WARNING',			'(Убедитесь, что файл резервной копии не повреждён. Возможно следует сделать новую резервную копию.)');
+define('_ERROR_BACKUP_NOTSURE',		'Вы не отметили поле "Да, я уверен, что хочу сделать это"');
 define('_RESTORE_COMPLETE',			'Восстановление завершено');
 
 // new item notification
-define('_NOTIFY_NI_MSG',			'Новая запись размещена:');
-define('_NOTIFY_NI_TITLE',			'Новая запись!');
-define('_NOTIFY_KV_MSG',			'Карма записи:');
-define('_NOTIFY_KV_TITLE',			'Nucleus карма:');
-define('_NOTIFY_NC_MSG',			'Комментировать:');
-define('_NOTIFY_NC_TITLE',			'Nucleus комментировать:');
-define('_NOTIFY_USERID',			'ID дневниковода:');
-define('_NOTIFY_USER',				'Дневниковод:');
+define('_NOTIFY_NI_MSG',			'Новое сообщение было добавлено:');
+define('_NOTIFY_NI_TITLE',			'Новое сообщение!');
+define('_NOTIFY_KV_MSG',			'Karma-голос к сообщению:');
+define('_NOTIFY_KV_TITLE',			'Nucleus karma:');
+define('_NOTIFY_NC_MSG',			'Комментарии к сообщению:');
+define('_NOTIFY_NC_TITLE',			'Комментарии Nucleus:');
+define('_NOTIFY_USERID',			'ID пользователя:');
+define('_NOTIFY_USER',				'Пользователь:');
 define('_NOTIFY_COMMENT',			'Комментарий:');
 define('_NOTIFY_VOTE',				'Голос:');
 define('_NOTIFY_HOST',				'Хост:');
 define('_NOTIFY_IP',				'IP:');
-define('_NOTIFY_MEMBER',			'Дневниковод:');
+define('_NOTIFY_MEMBER',			'Пользователь:');
 define('_NOTIFY_TITLE',				'Заголовок:');
 define('_NOTIFY_CONTENTS',			'Содержание:');
 
 // member mail message
-define('_MMAIL_MSG',				'Сообщение послал вам');
-define('_MMAIL_FROMANON',			'некто, пожелавший остаться неизвестным.');
-define('_MMAIL_FROMNUC',			'Сообщение послано с хрясь-дневников ');
-define('_MMAIL_TITLE',				'Сообщение от');
+define('_MMAIL_MSG',				'Вам послано письмо от:');
+define('_MMAIL_FROMANON',			'гость');
+define('_MMAIL_FROMNUC',			'Пользователь');
+define('_MMAIL_TITLE',				'Сообщение от:');
 define('_MMAIL_MAIL',				'Сообщение:');
 
 // END introduced after v1.5 END
@@ -323,91 +319,91 @@ define('_MMAIL_MAIL',				'Сообщение:');
 // START introduced after v1.1 START
 
 // bookmarklet buttons
-define('_BMLET_ADD',				'Добавить запись');
-define('_BMLET_EDIT',				'Редактировать запись');
-define('_BMLET_DELETE',				'Удалить запись');
-define('_BMLET_BODY',				'Тело');
-define('_BMLET_MORE',				'Расширенный');
+define('_BMLET_ADD',				'Добавить сообщение');
+define('_BMLET_EDIT',				'Редактировать сообщение');
+define('_BMLET_DELETE',				'Удалить сообщение');
+define('_BMLET_BODY',				'Превью');
+define('_BMLET_MORE',				'Основная часть');
 define('_BMLET_OPTIONS',			'Опции');
-define('_BMLET_PREVIEW',			'Предварительный просмотр');
+define('_BMLET_PREVIEW',			'Просмотр');
 
 // used in bookmarklet
-define('_ITEM_UPDATED',				'Запись обновлена');
-define('_ITEM_DELETED',				'Запись удалена');
+define('_ITEM_UPDATED',				'Сообщение изменено');
+define('_ITEM_DELETED',				'Сообщение удалено');
 
 // plugins
-define('_CONFIRMTXT_PLUGIN',		'Вы уверены, что хотите удалить плагин');
+define('_CONFIRMTXT_PLUGIN',		'Вы действительно хотите удалить плагин');
 define('_ERROR_NOSUCHPLUGIN',		'Нет такого плагина');
-define('_ERROR_DUPPLUGIN',			'Ничем помочь не можем, но такой плагин уже установлен');
-define('_ERROR_PLUGFILEERROR',		'Или прав у вас мало или такого плагина нет');
-define('_PLUGS_NOCANDIDATES',		'Не нашлось плагинов');
+define('_ERROR_DUPPLUGIN',			'Жаль, но этот плагин уже установлен');
+define('_ERROR_PLUGFILEERROR',		'Такого плагина не существует или CHMOD установлен неверно');
+define('_PLUGS_NOCANDIDATES',		'Нет плагинов для установки');
 
 define('_PLUGS_TITLE_MANAGE',		'Управление плагинами');
-define('_PLUGS_TITLE_INSTALLED',	'Уже установлены');
-define('_PLUGS_TITLE_UPDATE',		'Обновить лист подписки');
-define('_PLUGS_TEXT_UPDATE',		'Nucleus keeps a cache of the event subscriptions of the plugins. When you upgrade a plugin by replacing it\'s file, you should run this update to make sure that the correct subscriptions are cached (делать нехуй столько переводить)');
+define('_PLUGS_TITLE_INSTALLED',	'Установленные плагины');
+define('_PLUGS_TITLE_UPDATE',		'Обновить список');
+define('_PLUGS_TEXT_UPDATE',		'В Nucleus сохраняется кэшированный список плагинов. Если вы заменили или удалили какой-то плагин, обновите список.');
 define('_PLUGS_TITLE_NEW',			'Установить новый плагин');
-define('_PLUGS_ADD_TEXT',			'Ниже список файлов каталоге плагинов, которые по идее можно установить. Только <strong>будьте уверены</strong>, что это плагин, а не левый файл перед установкой.');
+define('_PLUGS_ADD_TEXT',			'Ниже приведён список всех файлов, находящихся в папке plugins, которые могут быть установлены. Удостоверьтесь перед установкой, что выбранный Вами файл действительно является плагином.');
 define('_PLUGS_BTN_INSTALL',		'Установить плагин');
-define('_BACKTOOVERVIEW',			'Назад к обзору');
+define('_BACKTOOVERVIEW',			'Вернуться к управлению плагинами');
 
 // editlink
-define('_TEMPLATE_EDITLINK',		'Редактировать ссылку записи');
+define('_TEMPLATE_EDITLINK',		'Ссылка на редактирование поста');
 
 // add left / add right tooltips
-define('_ADD_LEFT_TT',				'Добавить колонку слева');
-define('_ADD_RIGHT_TT',				'Добавить колонку справа');
+define('_ADD_LEFT_TT',				'Добавить левую колонку');
+define('_ADD_RIGHT_TT',				'Добавить правую колонку');
 
 // add/edit item: new category (in dropdown box)
 define('_ADD_NEWCAT',				'Новая категория...');
 
 // new settings
-define('_SETTINGS_PLUGINURL',		'Адрес плагина');
-define('_SETTINGS_MAXUPLOADSIZE',	'Максимальный размер файла (байт)');
-define('_SETTINGS_NONMEMBERMSGS',	'Разрешить недневниководам посылать сообщения.');
-define('_SETTINGS_PROTECTMEMNAMES',	'Защитить имена (и честь) дневниководов');
+define('_SETTINGS_PLUGINURL',		'URL плагина');
+define('_SETTINGS_MAXUPLOADSIZE',	'Максимальный размер закачиваемых файлов (в байтах)');
+define('_SETTINGS_NONMEMBERMSGS',	'Разрешить гостям посылать сообщения');
+define('_SETTINGS_PROTECTMEMNAMES',	'Защитить имена пользователей');
 
 // overview screen
 define('_OVERVIEW_PLUGINS',			'Управление плагинами...');
 
 // actionlog
-define('_ACTIONLOG_NEWMEMBER',		'Регистрация нового дневниковода:');
+define('_ACTIONLOG_NEWMEMBER',		'Новый пользователь зарегистрирован:');
 
 // membermail (when not logged in)
-define('_MEMBERMAIL_MAIL',			'Адрес вашей почты (e-mail в народе):');
+define('_MEMBERMAIL_MAIL',			'Ваш e-mail:');
 
 // file upload
-define('_ERROR_DISALLOWEDUPLOAD2',	'У вас нет прав загружать файлы в каталоги групп дневниководов. Даже не пытайтесь.');
+define('_ERROR_DISALLOWEDUPLOAD2',	'Вы не имеете прав для закачки файлов. С вопросами обращайтесь к администратору');
 
 // plugin list
 define('_LISTS_INFO',				'Информация');
 define('_LIST_PLUGS_AUTHOR',		'Автор:');
-define('_LIST_PLUGS_VER',			'Версия:');
-define('_LIST_PLUGS_SITE',			'Сайт');
+define('_LIST_PLUGS_VER',			'версия:');
+define('_LIST_PLUGS_SITE',			'сайт');
 define('_LIST_PLUGS_DESC',			'Описание:');
-define('_LIST_PLUGS_SUBS',			'Подписывает на события:');
+define('_LIST_PLUGS_SUBS',			'Зависит от:');
 define('_LIST_PLUGS_UP',			'вверх');
 define('_LIST_PLUGS_DOWN',			'вниз');
-define('_LIST_PLUGS_UNINSTALL',		'деинсталлировать');
-define('_LIST_PLUGS_ADMIN',			'админ');
-define('_LIST_PLUGS_OPTIONS',		'редактировать настройки');
+define('_LIST_PLUGS_UNINSTALL',		'удалить');
+define('_LIST_PLUGS_ADMIN',			'управление');
+define('_LIST_PLUGS_OPTIONS',		'настроить');
 
 // plugin option list
-define('_LISTS_VALUE',				'Оценка');
+define('_LISTS_VALUE',				'Значение');
 
 // plugin options
-define('_ERROR_NOPLUGOPTIONS',		'у этого плагина нет опций');
-define('_PLUGS_BACK',				'Назад к обзору плагинов');
-define('_PLUGS_SAVE',				'Сохранить опции');
-define('_PLUGS_OPTIONS_UPDATED',	'Опции плагина обновлены');
+define('_ERROR_NOPLUGOPTIONS',		'Нет настроек для плагина');
+define('_PLUGS_BACK',				'Вернуться к обзору плагинов');
+define('_PLUGS_SAVE',				'Сохранить настройки');
+define('_PLUGS_OPTIONS_UPDATED',	'Настройки плагина обновлены');
 
-define('_OVERVIEW_MANAGEMENT',		'Управление');
-define('_OVERVIEW_MANAGE',			'Управление ядром...');
-define('_MANAGE_GENERAL',			'Общее управление');
-define('_MANAGE_SKINS',				'Скин и шаблоны');
-define('_MANAGE_EXTRA',				'Дополнительные возможности');
+define('_OVERVIEW_MANAGEMENT',		'Управление сайтом');
+define('_OVERVIEW_MANAGE',			'Все настройки...');
+define('_MANAGE_GENERAL',			'Основные настройки');
+define('_MANAGE_SKINS',				'Скины и шаблоны');
+define('_MANAGE_EXTRA',				'Дополнительные настройки');
 
-define('_BACKTOMANAGE',				'Назад к управление ядром');
+define('_BACKTOMANAGE',				'Вернуться к управлению сайтом');
 
 
 // END introduced after v1.1 END
@@ -423,251 +419,251 @@ define('_LOGOUT',					'Выход');
 define('_LOGIN',					'Вход');
 define('_YES',						'Да');
 define('_NO',						'Нет');
-define('_SUBMIT',					'Подтвердить');
+define('_SUBMIT',					'Отправить');
 define('_ERROR',					'Ошибка');
-define('_ERRORMSG',					'Ужас! Произошла ошибка!');
-define('_BACK',						'Назад');
-define('_NOTLOGGEDIN',				'Вы не вошли');
-define('_LOGGEDINAS',				'Ваш логин');
-define('_ADMINHOME',				'Админка');
+define('_ERRORMSG',					'Произошла ошибка!');
+define('_BACK',						'Вернуться');
+define('_NOTLOGGEDIN',				'Не авторизованы');
+define('_LOGGEDINAS',				'Вошли как');
+define('_ADMINHOME',				'Начало');
 define('_NAME',						'Имя');
-define('_BACKHOME',					'Назад к началу админки');
-define('_BADACTION',				'Существующих действий не запрошено');
+define('_BACKHOME',					'Вернуться на главную страницу управления сайтом');
+define('_BADACTION',				'Запрашивается несуществующее действие');
 define('_MESSAGE',					'Сообщение');
-define('_HELP_TT',					'Помогите мне!');
-define('_YOURSITE',					'Ваш сайт');
+define('_HELP_TT',					'Помощь!');
+define('_YOURSITE',					'На сайт');
 
 
 define('_POPUP_CLOSE',				'Закрыть окно');
 
-define('_LOGIN_PLEASE',				'Сначала войдите');
+define('_LOGIN_PLEASE',				'Необходимо сначала авторизоваться');
 
 // commentform
 define('_COMMENTFORM_YOUARE',		'Вы');
-define('_COMMENTFORM_SUBMIT',		'Добавить комментарий');
+define('_COMMENTFORM_SUBMIT',		'Комментировать!');
 define('_COMMENTFORM_COMMENT',		'Ваш комментарий');
 define('_COMMENTFORM_NAME',			'Имя');
-define('_COMMENTFORM_MAIL',			'E-mail/сайт');
-define('_COMMENTFORM_REMEMBER',		'Запомнить');
+define('_COMMENTFORM_MAIL',			'E-mail/HTTP');
+define('_COMMENTFORM_REMEMBER',		'Запомнить меня');
 
 // loginform
 define('_LOGINFORM_NAME',			'Логин');
 define('_LOGINFORM_PWD',			'Пароль');
-define('_LOGINFORM_YOUARE',			'Ваш логин');
+define('_LOGINFORM_YOUARE',			'Вы вошли как');
 define('_LOGINFORM_SHARED',			'Чужой компьютер');
 
 // member mailform
-define('_MEMBERMAIL_SUBMIT',		'Отправить сообщение');
+define('_MEMBERMAIL_SUBMIT',		'Отправить');
 
 // search form
-define('_SEARCHFORM_SUBMIT',		'Поиск');
+define('_SEARCHFORM_SUBMIT',		'Найти!');
 
 // add item form
-define('_ADD_ADDTO',				'Добавить новую запись в');
-define('_ADD_CREATENEW',			'Создать новую запись');
-define('_ADD_BODY',					'Тело');
+define('_ADD_ADDTO',				'Добавить сообщение в');
+define('_ADD_CREATENEW',			'Создать новое сообщение');
+define('_ADD_BODY',					'Анонс (превью)');
 define('_ADD_TITLE',				'Заголовок');
-define('_ADD_MORE',					'Расширенный режим (опционально)');
+define('_ADD_MORE',					'Основная часть');
 define('_ADD_CATEGORY',				'Категория');
-define('_ADD_PREVIEW',				'Предварительный просмотр');
-define('_ADD_DISABLE_COMMENTS',		'Запретить комментарии?');
-define('_ADD_DRAFTNFUTURE',			'Черновик на будущее');
-define('_ADD_ADDITEM',				'Добавить запись');
+define('_ADD_PREVIEW',				'Предпросмотр');
+define('_ADD_DISABLE_COMMENTS',		'Выключить комментарии?');
+define('_ADD_DRAFTNFUTURE',			'Черновики &amp; Будущие сообшения');
+define('_ADD_ADDITEM',				'Добавить сообщение');
 define('_ADD_ADDNOW',				'Добавить сейчас');
 define('_ADD_ADDLATER',				'Добавить позже');
-define('_ADD_PLACE_ON',				'Поместить в');
+define('_ADD_PLACE_ON',				'Выберите дату');
 define('_ADD_ADDDRAFT',				'Добавить в черновики');
-define('_ADD_NOPASTDATES',			'(дата и время прошлого кривые, придётся заменить текущими)');
+define('_ADD_NOPASTDATES',			'(дата и время в прошлом недействительны, будут использовано текущее время)');
 define('_ADD_BOLD_TT',				'Жирный');
 define('_ADD_ITALIC_TT',			'Курсив');
 define('_ADD_HREF_TT',				'Ссылка');
-define('_ADD_MEDIA_TT',				'Добавить картинку');
-define('_ADD_PREVIEW_TT',			'Скрыть/показать превью');
+define('_ADD_MEDIA_TT',				'Добавить media');
+define('_ADD_PREVIEW_TT',			'Показать/Спрятать предпросмотр');
 define('_ADD_CUT_TT',				'Вырезать');
 define('_ADD_COPY_TT',				'Копировать');
 define('_ADD_PASTE_TT',				'Вставить');
 
 
 // edit item form
-define('_EDIT_ITEM',				'Редактировать запись');
-define('_EDIT_SUBMIT',				'Редактировать запись');
-define('_EDIT_ORIG_AUTHOR',			'Автор');
+define('_EDIT_ITEM',				'Редактировать сообщение');
+define('_EDIT_SUBMIT',				'Сохранить изменения');
+define('_EDIT_ORIG_AUTHOR',			'Первоначальный автор');
 define('_EDIT_BACKTODRAFTS',		'Добавить в черновики');
-define('_EDIT_COMMENTSNOTE',		'(примечание: запрещение комментариев не спрячет уже написанные)');
+define('_EDIT_COMMENTSNOTE',		'(примечание: выключение комментариев не уберёт оставленные ранее комментарии)');
 
 // used on delete screens
-define('_DELETE_CONFIRM',			'Будьте добры, подтвердите удаление');
-define('_DELETE_CONFIRM_BTN',		'Подтвердите удаление');
-define('_CONFIRMTXT_ITEM',			'Вы сейчас удалите эту запись:');
-define('_CONFIRMTXT_COMMENT',		'Вы сейчас удалите этот комментарий:');
-define('_CONFIRMTXT_TEAM1',			'Вы сейчас удалите ');
-define('_CONFIRMTXT_TEAM2',			' из группы журнала ');
-define('_CONFIRMTXT_BLOG',			'Вы сейчас удалите журнал: ');
-define('_WARNINGTXT_BLOGDEL',		'Что творишь?! Удаляя блог, ты удаляешь все записи, комментарии и часы работы человека!<br />Ну раз такой смелый, не тревожь движок, пока трёт.');
-define('_CONFIRMTXT_MEMBER',		'Вы сейчас удалите профиль этого дневниковода: ');
-define('_CONFIRMTXT_TEMPLATE',		'Вы сейчас удалите шаблон ');
-define('_CONFIRMTXT_SKIN',			'Вы сейчас удалите скин ');
-define('_CONFIRMTXT_BAN',			'Вы сейчас удалите ранг банов');
-define('_CONFIRMTXT_CATEGORY',		'Вы сейчас удалите категорию ');
+define('_DELETE_CONFIRM',			'Потдверждение удаления');
+define('_DELETE_CONFIRM_BTN',		'Удалить!');
+define('_CONFIRMTXT_ITEM',			'Вы собираетесь удалить следующие сообщения:');
+define('_CONFIRMTXT_COMMENT',		'Вы собираетесь удалить следующие комментарии:');
+define('_CONFIRMTXT_TEAM1',			'Вы собираетесь удалить ');
+define('_CONFIRMTXT_TEAM2',			' из команды авторов раздела ');
+define('_CONFIRMTXT_BLOG',			'Раздел, который вы собираетесь удалить: ');
+define('_WARNINGTXT_BLOGDEL',		'Внимание! Удалив раздел, Вы удалите вместе с ним все сообщения и комментарии, находящиеся в нём.<br />Убедитесь, что такие действия необходимы.');
+define('_CONFIRMTXT_MEMBER',		'Вы собираетесь удалить следующего пользователя: ');
+define('_CONFIRMTXT_TEMPLATE',		'Вы собираетесь удалить шаблон ');
+define('_CONFIRMTXT_SKIN',			'Вы собираетесь удалить скин ');
+define('_CONFIRMTXT_BAN',			'Вы собираетесь снять бан для следующего диапозона IP');
+define('_CONFIRMTXT_CATEGORY',		'Вы собираетесь удалить категорию ');
 
 // some status messages
-define('_DELETED_ITEM',				'Запись удалена');
-define('_DELETED_MEMBER',			'Дневниковод удалён');
+define('_DELETED_ITEM',				'Сообщение удалено');
+define('_DELETED_MEMBER',			'Пользователь удалён');
 define('_DELETED_COMMENT',			'Комментарий удалён');
-define('_DELETED_BLOG',				'Блог удалён');
+define('_DELETED_BLOG',				'Раздел удалён');
 define('_DELETED_CATEGORY',			'Категория удалена');
-define('_ITEM_MOVED',				'Запись перемещена');
-define('_ITEM_ADDED',				'Запись добавлена');
+define('_ITEM_MOVED',				'Сообщение перемещено');
+define('_ITEM_ADDED',				'Сообщение добавлено');
 define('_COMMENT_UPDATED',			'Комментарий обновлён');
-define('_SKIN_UPDATED',				'Информация скина сохранена');
-define('_TEMPLATE_UPDATED',			'Информация шаблона сохранена');
+define('_SKIN_UPDATED',				'Скин был изменён');
+define('_TEMPLATE_UPDATED',			'Шаблон был изменён');
 
 // errors
-define('_ERROR_COMMENT_LONGWORD',	'Не используйте слова длиннее 90 символов. В русском языке таких слов нет!');
+define('_ERROR_COMMENT_LONGWORD',	'Пожалуйста, не используйте слова длинной более 90 знаков в ваших комментариях');
 define('_ERROR_COMMENT_NOCOMMENT',	'Введите комментарий');
-define('_ERROR_COMMENT_NOUSERNAME',	'Неверный логин');
-define('_ERROR_COMMENT_TOOLONG',	'Куда расписались? Слишком длинный комментарий (max. 5000 символов)');
-define('_ERROR_COMMENTS_DISABLED',	'А в этом дневнике комментарии отключены. Облом-с.');
-define('_ERROR_COMMENTS_NONPUBLIC',	'Вы должны иметь статус дневниковода, чтобы добавить комментарий.');
-define('_ERROR_COMMENTS_MEMBERNICK','Имя, которое вы ввели, занято нашим дневниководом. Выберите другое.');
+define('_ERROR_COMMENT_NOUSERNAME',	'Введите другое имя');
+define('_ERROR_COMMENT_TOOLONG',	'Ваш комментарий слишком большой (макс. 5000 знаков)');
+define('_ERROR_COMMENTS_DISABLED',	'Комментарии для этого раздела запрещены.');
+define('_ERROR_COMMENTS_NONPUBLIC',	'Вы должны быть зарегистрированным пользователем, чтобы добавлять комментарии в этом разделе');
+define('_ERROR_COMMENTS_MEMBERNICK','Имя, которое Вы хотите использовать, уже занято другим пользователем. Придумайте любое другое.');
 define('_ERROR_SKIN',				'Ошибка скина');
-define('_ERROR_ITEMCLOSED',			'Запись закрыта. К ней нельзя добавлять комментарии. И вообще ничего с ней делать нельзя.');
-define('_ERROR_NOSUCHITEM',			'Такой записи не существует');
-define('_ERROR_NOSUCHBLOG',			'Такого дневника не существует');
-define('_ERROR_NOSUCHSKIN',			'Такого скина не существует');
-define('_ERROR_NOSUCHMEMBER',		'Такого дневниковода не существует');
-define('_ERROR_NOTONTEAM',			'Вы не входите в группу этого дневника.');
-define('_ERROR_BADDESTBLOG',		'Дневник назначения не существует');
-define('_ERROR_NOTONDESTTEAM',		'Запись нельзя переместить, т.к. вы не входите в группу дневника назначения');
-define('_ERROR_NOEMPTYITEMS',		'Нельзя добавлять пустые записи!');
-define('_ERROR_BADMAILADDRESS',		'Кривой e-mail');
-define('_ERROR_BADNOTIFY',			'Один или несколько из данных e-mail адресов кривой');
-define('_ERROR_BADNAME',			'Логин неверен (используйте буквы a-z и цифры 0-9 без пробелов)');
-define('_ERROR_NICKNAMEINUSE',		'Этот логин уже занят другим дневниководом');
-define('_ERROR_PASSWORDMISMATCH',	'Пароли должны совпадать');
-define('_ERROR_PASSWORDTOOSHORT',	'Длина пароля должны быть не меньше 6 символов (для вас же лучше!)');
-define('_ERROR_PASSWORDMISSING',	'Пароль ну никак не может быть пустым');
-define('_ERROR_REALNAMEMISSING',	'Вы должны ввести реальное имя');
-define('_ERROR_ATLEASTONEADMIN',	'Должен быть хотя бы один модный админ, чтобы он мог заходить в админку.');
-define('_ERROR_ATLEASTONEBLOGADMIN','Это действие сделает ваш блог неуправляемым (как в Терминаторе). Убедитесь, чтобы был хотя бы один админ.');
-define('_ERROR_ALREADYONTEAM',		'Вы не можете добавить дневниковода в группу, в которой он уже состоит');
-define('_ERROR_BADSHORTBLOGNAME',	'Короткое имя дневника может содержать только буквы a-z и цифры 0-9 без пробелов');
-define('_ERROR_DUPSHORTBLOGNAME',	'Какой-то пронырливый дневниковод уже занял это имя, придумывайте другое.');
-define('_ERROR_UPDATEFILE',			'Cannot get write access to the update-file. Make sure the file permissions are set ok (try chmodding it to 666). Also note that the location is relative to the admin-area directory, so you might want to use an absolute path (something like /your/path/to/nucleus/) (ебануться, сколько переводить)');
-define('_ERROR_DELDEFBLOG',			'Нельзя удалить дневник по умолчанию');
-define('_ERROR_DELETEMEMBER',		'Это автор не может быть удалён, возможно, помому что является автором записей или комментариев.');
-define('_ERROR_BADTEMPLATENAME',	'Имя шаблона может содержать только буквы a-z и цифры 0-9 без пробелов');
-define('_ERROR_DUPTEMPLATENAME',	'Уже есть шаблон с таким именем');
-define('_ERROR_BADSKINNAME',		'Имя скина может содержать только буквы a-z и цифры 0-9 без пробелов');
-define('_ERROR_DUPSKINNAME',		'Уже есть скин с таким именем');
-define('_ERROR_DEFAULTSKIN',		'Скин с именем "default" должен быть по-любому, не удаляйте его');
-define('_ERROR_SKINDEFDELETE',		'Нельзя удалить скин, потому это скин по умолчанию для дневника: ');
-define('_ERROR_DISALLOWED',			'У вас нет прав для этого действия. Или карма плохая');
-define('_ERROR_DELETEBAN',			'Ошибка снятия бана (бан не существует)');
-define('_ERROR_ADDBAN',				'Ошибка установки бана. Он мог установиться не во все дневники.');
-define('_ERROR_BADACTION',			'Запрошенное действие не существует');
-define('_ERROR_MEMBERMAILDISABLED',	'Послания дневниководов друг другу запрещены');
-define('_ERROR_MEMBERCREATEDISABLED','Создание аккаунтов дневниководов запрещено');
-define('_ERROR_INCORRECTEMAIL',		'Неверный адрес e-mail');
-define('_ERROR_VOTEDBEFORE',		'Вы уже голосовали за эту запись');
-define('_ERROR_BANNED1',			'Ничего не получится (ваш ip ');
-define('_ERROR_BANNED2',			'), вы забанены. Сообщение было: \'');
+define('_ERROR_ITEMCLOSED',			'Это сообщение закрыто для добавления комментариев.');
+define('_ERROR_NOSUCHITEM',			'Нет такого сообщения');
+define('_ERROR_NOSUCHBLOG',			'Нет такого раздела');
+define('_ERROR_NOSUCHSKIN',			'Нет такого скина');
+define('_ERROR_NOSUCHMEMBER',		'Нет такого пользователя');
+define('_ERROR_NOTONTEAM',			'Вы не входите в команду авторов этого раздела.');
+define('_ERROR_BADDESTBLOG',		'Запрашиваемый раздел не существует');
+define('_ERROR_NOTONDESTTEAM',		'Нельзя перемещать сообщения, пока Вы не вступили в команду авторов');
+define('_ERROR_NOEMPTYITEMS',		'Нельзя добавлять пустые сообщения!');
+define('_ERROR_BADMAILADDRESS',		'Неправильный адрес e-mail');
+define('_ERROR_BADNOTIFY',			'Один или несколько email адресов неправильны');
+define('_ERROR_BADNAME',			'Не допустимое имя (только символы a-z и 0-9, без пробелов)');
+define('_ERROR_NICKNAMEINUSE',		'Такой ник уже используется другим пользователем');
+define('_ERROR_PASSWORDMISMATCH',	'Пароли должны соответствовать');
+define('_ERROR_PASSWORDTOOSHORT',	'Пароль должен быть не менее 6 символов');
+define('_ERROR_PASSWORDMISSING',	'Пароль не ожет быть пустым');
+define('_ERROR_REALNAMEMISSING',	'Вы не ввели настоящее имя');
+define('_ERROR_ATLEASTONEADMIN',	'Всегда должен быть хотя бы один супер-администратор, который сможет входить в админку');
+define('_ERROR_ATLEASTONEBLOGADMIN','Выполнение этого действия сделало бы раздел неуправляемым. Должен быть хотя бы один администратор.');
+define('_ERROR_ALREADYONTEAM',		'Вы не можете добавить пользователя, который уже находится в команде авторов.');
+define('_ERROR_BADSHORTBLOGNAME',	'Короткое название раздела может состоять из символов a-z, 0-9, без пробелов');
+define('_ERROR_DUPSHORTBLOGNAME',	'Короткое название раздела совпадает с другим разделом. Короткое название раздела должно быть уникальным. ');
+define('_ERROR_UPDATEFILE',			'Невозможно получить доступ к файлу обновлений. Убедитесь что CHMOD установлен правильно (попробуйте поставить 666). Также обратите внимание на расположение файла относительно admin-area папки, возможно лучше использовать абсолютные пути (например /vash/put/k/nucleus/)');
+define('_ERROR_DELDEFBLOG',			'Нельзя удалить раздел по умолчанию');
+define('_ERROR_DELETEMEMBER',		'Этот пользователь не может быть удалён, вероятно потому, что он автор сообщений или комментариев');
+define('_ERROR_BADTEMPLATENAME',	'Недопустимое имя шаблона, используйте символы a-z, 0-9, без пробелов');
+define('_ERROR_DUPTEMPLATENAME',	'Шаблон с таким именем уже существует');
+define('_ERROR_BADSKINNAME',		'Недопустимое имя скина, используйте символы a-z, 0-9, без пробелов');
+define('_ERROR_DUPSKINNAME',		'Скин с таким именем уже существует');
+define('_ERROR_DEFAULTSKIN',		'Всегда должен быть существовать скин с названием "default"');
+define('_ERROR_SKINDEFDELETE',		'Невозможно удалить скин, т.к. он используется по умолчанию в следующем разделе: ');
+define('_ERROR_DISALLOWED',			'Жаль, но Вы не можете выполнить это действие');
+define('_ERROR_DELETEBAN',			'Ошибка при удалении бана (бана не существует)');
+define('_ERROR_ADDBAN',				'Ошибка при добавлении бана. Возможно, бан добавился не корректно во всех разделах.');
+define('_ERROR_BADACTION',			'Запрашиваемое действие не существует');
+define('_ERROR_MEMBERMAILDISABLED',	'Сообщения между пользователями запрещены');
+define('_ERROR_MEMBERCREATEDISABLED','Создание эккаунтов отключено');
+define('_ERROR_INCORRECTEMAIL',		'Неправильный e-mail адрес');
+define('_ERROR_VOTEDBEFORE',		'Вы уже проголосовали за это сообщение');
+define('_ERROR_BANNED1',			'Это действие запрещено пока Ваш (ip ');
+define('_ERROR_BANNED2',			') забанен.<br> Причина: \'');
 define('_ERROR_BANNED3',			'\'');
-define('_ERROR_LOGINNEEDED',		'Вы должны войти, чтобы выполнить это действие');
-define('_ERROR_CONNECT',			'Ошибка соединения');
-define('_ERROR_FILE_TOO_BIG',		'Сильно большой файл! Знай меру!');
-define('_ERROR_BADFILETYPE',		'Уж простите, но этот тип файлов запрещен');
-define('_ERROR_BADREQUEST',			'Кривой запрос загрузки');
-define('_ERROR_DISALLOWEDUPLOAD',	'Вы не состоите ни в одной группе дневниководов. А поэтому и файлы загружать не можете');
-define('_ERROR_BADPERMISSIONS',		'Права на закачку проставлены криво');
-define('_ERROR_UPLOADMOVEP',		'Ошибка при перемещении загруженных файлов');
-define('_ERROR_UPLOADCOPY',			'Ошибка при копировании файлов');
-define('_ERROR_UPLOADDUPLICATE',	'Уже есть файл с таким именем. Придумывайте другое.');
-define('_ERROR_LOGINDISALLOWED',	'Куда нос суешь? Нет у тебя прав, нет.');
-define('_ERROR_DBCONNECT',			'Ошибка соединения с сервером mySQL');
-define('_ERROR_DBSELECT',			'Не могу найти БД движка.');
-define('_ERROR_NOSUCHLANGUAGE',		'Такого языкового файла не существует');
-define('_ERROR_NOSUCHCATEGORY',		'Такой категории не существует');
+define('_ERROR_LOGINNEEDED',		'Вы должны авторизоваться, чтобы выполнить это действие');
+define('_ERROR_CONNECT',			'Ошибка подключения');
+define('_ERROR_FILE_TOO_BIG',		'Файл слишком большой!');
+define('_ERROR_BADFILETYPE',		'Жаль, это расширение запрещено');
+define('_ERROR_BADREQUEST',			'Неверный запрос закачки');
+define('_ERROR_DISALLOWEDUPLOAD',	'Вы не входите ни в одну команду авторов, следовательно, Вам запрещено закачивать файлы.');
+define('_ERROR_BADPERMISSIONS',		'Права доступа к файлу/папке установлены неправильно');
+define('_ERROR_UPLOADMOVEP',		'Ошибка при перемещении загруженного файла');
+define('_ERROR_UPLOADCOPY',			'Ошибка при копировании файла');
+define('_ERROR_UPLOADDUPLICATE',	'Файл с таким именем уже существует. Попробуйте переименовать файл перед закачкой.');
+define('_ERROR_LOGINDISALLOWED',	'Жаль, но Вам запрещено входить в панель управления сайтом.');
+define('_ERROR_DBCONNECT',			'Невозможно соединиться с MySQL сервером');
+define('_ERROR_DBSELECT',			'Невозможно выбрать базу данных Nucleus.');
+define('_ERROR_NOSUCHLANGUAGE',		'Нет такого языкового файла');
+define('_ERROR_NOSUCHCATEGORY',		'Нет такой категории');
 define('_ERROR_DELETELASTCATEGORY',	'Должна быть хотя бы одна категория');
-define('_ERROR_DELETEDEFCATEGORY',	'Нельзя удалить категорию по умолчанию');
-define('_ERROR_BADCATEGORYNAME',	'Неправильное имя для категории');
-define('_ERROR_DUPCATEGORYNAME',	'Уже есть категория с таким именем');
+define('_ERROR_DELETEDEFCATEGORY',	'Нельзя удалить заданную по умолчанию категорию');
+define('_ERROR_BADCATEGORYNAME',	'Неправильное имя категории');
+define('_ERROR_DUPCATEGORYNAME',	'Категория с таким именем уже существует');
 
 // some warnings (used for mediadir setting)
-define('_WARNING_NOTADIR',			'Предупреждение: текущее место не является каталогом!');
-define('_WARNING_NOTREADABLE',		'Предупреждение: текущее место не читается!');
-define('_WARNING_NOTWRITABLE',		'Предупреждение: в текущее место не записывается!');
+define('_WARNING_NOTADIR',			'Предупреждение: Текущее значение - не директория!');
+define('_WARNING_NOTREADABLE',		'Предупреждение: Текущее значение - нечитаемая директория!');
+define('_WARNING_NOTWRITABLE',		'Warning: Текущее значение - не перезаписываемая директория!');
 
 // media and upload
-define('_MEDIA_UPLOADLINK',			'Загрузить новый файл');
-define('_MEDIA_MODIFIED',			'изменено');
+define('_MEDIA_UPLOADLINK',			'Закачать файл');
+define('_MEDIA_MODIFIED',			'изменён');
 define('_MEDIA_FILENAME',			'имя файла');
-define('_MEDIA_DIMENSIONS',			'расширения');
-define('_MEDIA_INLINE',				'В строку');
-define('_MEDIA_POPUP',				'Всплывающее окно');
-define('_UPLOAD_TITLE',				'Выбрать файл');
-define('_UPLOAD_MSG',				'Выберите файл для загрузки ниже и нажмите кнопочку \'Загрузить\'.');
-define('_UPLOAD_BUTTON',			'Загрузить');
+define('_MEDIA_DIMENSIONS',			'размеры');
+define('_MEDIA_INLINE',				'Встроенный');
+define('_MEDIA_POPUP',				'Popup');
+define('_UPLOAD_TITLE',				'Выберите файл');
+define('_UPLOAD_MSG',				'Выберите файл, который вы хотите закачать и нажмите кнопку "Закачать".');
+define('_UPLOAD_BUTTON',			'Закачать');
 
 // some status messages
-//define('_MSG_ACCOUNTCREATED',		'Аккаун создан, пароль будет отправлен на почту');
-//define('_MSG_PASSWORDSENT',			'Пароль отправлен на почту');
-define('_MSG_LOGINAGAIN',			'Вам необходимо войти снова, потому что ваша информация изменилась');
-define('_MSG_SETTINGSCHANGED',		'Настройки изменены');
-define('_MSG_ADMINCHANGED',			'Админ изменён');
-define('_MSG_NEWBLOG',				'Новый журнал создан');
+//define('_MSG_ACCOUNTCREATED',		'Account created, password will be sent through email');
+//define('_MSG_PASSWORDSENT',			'Password has been sent by e-mail.');
+define('_MSG_LOGINAGAIN',			'Вы должны войти снова, потому что информация о Вас изменена.');
+define('_MSG_SETTINGSCHANGED',		'Настройки сохранены');
+define('_MSG_ADMINCHANGED',			'Администратор изменён');
+define('_MSG_NEWBLOG',				'Новый раздел создан');
 define('_MSG_ACTIONLOGCLEARED',		'Лог действий очищен');
 
 // actionlog in admin area
-define('_ACTIONLOG_DISALLOWED',		'Запрещенное действие: ');
-define('_ACTIONLOG_PWDREMINDERSENT','Новый пароль послан ');
+define('_ACTIONLOG_DISALLOWED',		'Запрещённые действия: ');
+define('_ACTIONLOG_PWDREMINDERSENT','Отослан новый пароль для ');
 define('_ACTIONLOG_TITLE',			'Лог действий');
 define('_ACTIONLOG_CLEAR_TITLE',	'Очистить лог действий');
-define('_ACTIONLOG_CLEAR_TEXT',		'Очистить лог действий сейчас');
+define('_ACTIONLOG_CLEAR_TEXT',		'Запустить процесс очистки');
 
 // team management
-define('_TEAM_TITLE',				'Управление групповым журналом ');
-define('_TEAM_CURRENT',				'Текущая группа');
-define('_TEAM_ADDNEW',				'Добавить нового дневниковода в группу');
-define('_TEAM_CHOOSEMEMBER',		'Выбрать дневниковода');
-define('_TEAM_ADMIN',				'Права админа? ');
-define('_TEAM_ADD',					'Добавить в группу');
-define('_TEAM_ADD_BTN',				'Добавить в группу');
+define('_TEAM_TITLE',				'Управление командой авторов для раздела ');
+define('_TEAM_CURRENT',				'Текущая команда');
+define('_TEAM_ADDNEW',				'Добавить пользователя в команду авторов');
+define('_TEAM_CHOOSEMEMBER',		'Выберите пользователя');
+define('_TEAM_ADMIN',				'Привилегии администратора? ');
+define('_TEAM_ADD',					'Добавить в команду');
+define('_TEAM_ADD_BTN',				'Добавить в команду');
 
 // blogsettings
-define('_EBLOG_TITLE',				'Редактирование настроек журнала');
-define('_EBLOG_TEAM_TITLE',			'Редактирование группы');
-define('_EBLOG_TEAM_TEXT',			'Нажмите здесь для редактирования группы...');
-define('_EBLOG_SETTINGS_TITLE',		'Настройки журнала');
-define('_EBLOG_NAME',				'Имя журнала');
-define('_EBLOG_SHORTNAME',			'Короткое имя журнала');
-define('_EBLOG_SHORTNAME_EXTRA',	'<br />(допустимы буквы a-z без пробелов)');
-define('_EBLOG_DESC',				'Описание журнала');
+define('_EBLOG_TITLE',				'Настройка раздела');
+define('_EBLOG_TEAM_TITLE',			'Управление командой авторов');
+define('_EBLOG_TEAM_TEXT',			'Изменить команду авторов для этого раздела...');
+define('_EBLOG_SETTINGS_TITLE',		'Настройки раздела');
+define('_EBLOG_NAME',				'Название раздела');
+define('_EBLOG_SHORTNAME',			'Короткое имя');
+define('_EBLOG_SHORTNAME_EXTRA',	'<br />(символы a-z без пробелов)');
+define('_EBLOG_DESC',				'Описание раздела');
 define('_EBLOG_URL',				'URL');
 define('_EBLOG_DEFSKIN',			'Скин по умолчанию');
-define('_EBLOG_DEFCAT',				'Категория по умолчанию');
-define('_EBLOG_LINEBREAKS',			'Преобразовать переносы строки');
-define('_EBLOG_DISABLECOMMENTS',	'Запретить комментарии?<br /><small>(Вам никто не сможет написать ни одного комментария. Лучше разрешите.)</small>');
-define('_EBLOG_ANONYMOUS',			'Разрешить комментарии недневниководам?');
-define('_EBLOG_NOTIFY',				'Адрес(а) уведомоления (используйте ; как разграничитель)');
+define('_EBLOG_DEFCAT',				'Основная категория');
+define('_EBLOG_LINEBREAKS',			'Автоматическая конвертация пустых срок в br');
+define('_EBLOG_DISABLECOMMENTS',	'Разрешить комментарии?<br /><small>(Если "Нет", то комментировать будет невозможно.)</small>');
+define('_EBLOG_ANONYMOUS',			'Разрешить комментирование гостям?');
+define('_EBLOG_NOTIFY',				'Адрес (а) e-mail для уведомлений<br /> (знак ; как разделитель)');
 define('_EBLOG_NOTIFY_ON',			'Уведомлять при');
 define('_EBLOG_NOTIFY_COMMENT',		'Новых комментариях');
-define('_EBLOG_NOTIFY_KARMA',		'Голосах к карме');
-define('_EBLOG_NOTIFY_ITEM',		'Новых записях в журнале');
-define('_EBLOG_PING',				'Ping Weblogs.com при обновлениях?');
-define('_EBLOG_MAXCOMMENTS',		'Максимальное число комментариев');
-define('_EBLOG_UPDATE',				'Обновить файлы');
-define('_EBLOG_OFFSET',				'Временная разница с сервером');
-define('_EBLOG_STIME',				'Сейчас на сервере');
-define('_EBLOG_BTIME',				'Сейчас в журнале');
-define('_EBLOG_CHANGE',				'Изменить настройки');
-define('_EBLOG_CHANGE_BTN',			'Изменить настройки');
-define('_EBLOG_ADMIN',				'Админ журнала');
-define('_EBLOG_ADMIN_MSG',			'Вам будут даны права админа журнала');
-define('_EBLOG_CREATE_TITLE',		'Создать новый журнал');
-define('_EBLOG_CREATE_TEXT',		'Заполните поля ниже, чтобы создать свой журнал.<br /><br /> <b>Примечание:</b> Все поля обязательны. После создания журнала, вы сможете заполнить дополнительные поля.');
+define('_EBLOG_NOTIFY_KARMA',		'Новых карма голосах');
+define('_EBLOG_NOTIFY_ITEM',		'Новых сообщениях');
+define('_EBLOG_PING',				'Пинговать Weblogs.com при обновлении?');
+define('_EBLOG_MAXCOMMENTS',		'Максимум комментариев');
+define('_EBLOG_UPDATE',				'Файл обновлений');
+define('_EBLOG_OFFSET',				'Корректировка времени');
+define('_EBLOG_STIME',				'Время сервера');
+define('_EBLOG_BTIME',				'Время раздела');
+define('_EBLOG_CHANGE',				'Применить изменения');
+define('_EBLOG_CHANGE_BTN',			'Применить изменения');
+define('_EBLOG_ADMIN',				'Администратор раздела');
+define('_EBLOG_ADMIN_MSG',			'Вам будут назначены права администратора');
+define('_EBLOG_CREATE_TITLE',		'Создать новый раздел');
+define('_EBLOG_CREATE_TEXT',		'Заполните форму для создания блога. <br /><br /> <b>Примечание:</b> В форме только самые необходимые опции. Чтобы изменить и настроить раздел, перейдите на страницу настроек после создания раздела.');
 define('_EBLOG_CREATE',				'Создать!');
-define('_EBLOG_CREATE_BTN',			'Создать журнал!');
+define('_EBLOG_CREATE_BTN',			'Создать раздел');
 define('_EBLOG_CAT_TITLE',			'Категории');
 define('_EBLOG_CAT_NAME',			'Имя категории');
 define('_EBLOG_CAT_DESC',			'Описание категории');
@@ -676,232 +672,232 @@ define('_EBLOG_CAT_UPDATE',			'Обновить категорию');
 define('_EBLOG_CAT_UPDATE_BTN',		'Обновить категорию');
 
 // templates
-define('_TEMPLATE_TITLE',			'Редактировать шаблоны');
+define('_TEMPLATE_TITLE',			'Управление шаблонами');
 define('_TEMPLATE_AVAILABLE_TITLE',	'Доступные шаблоны');
 define('_TEMPLATE_NEW_TITLE',		'Новый шаблон');
 define('_TEMPLATE_NAME',			'Имя шаблона');
 define('_TEMPLATE_DESC',			'Описание шаблона');
 define('_TEMPLATE_CREATE',			'Создать шаблон');
 define('_TEMPLATE_CREATE_BTN',		'Создать шаблон');
-define('_TEMPLATE_EDIT_TITLE',		'Редактировать шаблон');
-define('_TEMPLATE_BACK',			'Назад к обзору шаблонов');
-define('_TEMPLATE_EDIT_MSG',		'Не все части шаблона необходимы. Оставьте пустыми те, которые не необходимы.');
-define('_TEMPLATE_SETTINGS',		'Настройки шаблона');
-define('_TEMPLATE_ITEMS',			'Записи');
-define('_TEMPLATE_ITEMHEADER',		'Заголовок записи');
-define('_TEMPLATE_ITEMBODY',		'Тело записи');
-define('_TEMPLATE_ITEMFOOTER',		'Конец записи');
-define('_TEMPLATE_MORELINK',		'Ссылка на полный вариант записи');
-define('_TEMPLATE_NEW',				'Обозначение новой записи');
-define('_TEMPLATE_COMMENTS_ANY',	'Комментарии (если они есть)');
-define('_TEMPLATE_CHEADER',			'Заголовок комментария');
-define('_TEMPLATE_CBODY',			'Тело комментария');
-define('_TEMPLATE_CFOOTER',			'Конец комментария');
+define('_TEMPLATE_EDIT_TITLE',		'Изменить шаблон');
+define('_TEMPLATE_BACK',			'Вернуться к обзору шаблонов');
+define('_TEMPLATE_EDIT_MSG',		'Не все части шаблона необходимы. Некоторые поля можно оставить незаполненными.');
+define('_TEMPLATE_SETTINGS',		'Главные настройки шаблона');
+define('_TEMPLATE_ITEMS',			'Сообщение');
+define('_TEMPLATE_ITEMHEADER',		'"Шапка" сообщения');
+define('_TEMPLATE_ITEMBODY',		'Краткое описание');
+define('_TEMPLATE_ITEMFOOTER',		'"Подвал" сообщения');
+define('_TEMPLATE_MORELINK',		'Ссылка на полное сообщение');
+define('_TEMPLATE_NEW',				'Индикация новых сообщений');
+define('_TEMPLATE_COMMENTS_ANY',	'Комментарии (если есть)');
+define('_TEMPLATE_CHEADER',			'"Шапка" комментария ');
+define('_TEMPLATE_CBODY',			'Тело комменатрия');
+define('_TEMPLATE_CFOOTER',			'"Подвал" комментария');
 define('_TEMPLATE_CONE',			'Один комментарий');
-define('_TEMPLATE_CMANY',			'Два или больше комментариев');
-define('_TEMPLATE_CMORE',			'Читать дальше для комментариев');
-define('_TEMPLATE_CMEXTRA',			'Member Extra');
-define('_TEMPLATE_COMMENTS_NONE',	'Комментарии (если их нет)');
+define('_TEMPLATE_CMANY',			'2 или больше комментариев');
+define('_TEMPLATE_CMORE',			'Ссылка на все комментарии');
+define('_TEMPLATE_CMEXTRA',			'Extra настройки пользователей');
+define('_TEMPLATE_COMMENTS_NONE',	'Комментарии (если нет)');
 define('_TEMPLATE_CNONE',			'Нет комментариев');
-define('_TEMPLATE_COMMENTS_TOOMUCH','Комментарии (если их слишком много, чтобы показать все)');
+define('_TEMPLATE_COMMENTS_TOOMUCH','Комментарии (если есть, но больше, чем положено)');
 define('_TEMPLATE_CTOOMUCH',		'Слишком много комментариев');
-define('_TEMPLATE_ARCHIVELIST',		'Списки архива');
-define('_TEMPLATE_AHEADER',			'Заголовок листов архива');
-define('_TEMPLATE_AITEM',			'Запись листов архива');
-define('_TEMPLATE_AFOOTER',			'Конец листов архива');
-define('_TEMPLATE_DATETIME',		'Дата и время');
-define('_TEMPLATE_DHEADER',			'Заголовок даты');
-define('_TEMPLATE_DFOOTER',			'Конец даты');
+define('_TEMPLATE_ARCHIVELIST',		'Список архива');
+define('_TEMPLATE_AHEADER',			'"Шапка" списка архива');
+define('_TEMPLATE_AITEM',			'Пункт списка архива');
+define('_TEMPLATE_AFOOTER',			'"Подвал" списка архива');
+define('_TEMPLATE_DATETIME',		'Время и дата');
+define('_TEMPLATE_DHEADER',			'"Шапка" даты');
+define('_TEMPLATE_DFOOTER',			'"Подвал" даты');
 define('_TEMPLATE_DFORMAT',			'Формат даты');
 define('_TEMPLATE_TFORMAT',			'Формат времени');
-define('_TEMPLATE_LOCALE',			'Место');
-define('_TEMPLATE_IMAGE',			'Всплывающие окна с изображениями');
-define('_TEMPLATE_PCODE',			'Всплывающее окно со ссылкой');
-define('_TEMPLATE_ICODE',			'Код изображения');
-define('_TEMPLATE_MCODE',			'Код ссылки изображения');
+define('_TEMPLATE_LOCALE',			'Регион (язык)');
+define('_TEMPLATE_IMAGE',			'Картинка Popup');
+define('_TEMPLATE_PCODE',			'Ссылка Popup');
+define('_TEMPLATE_ICODE',			'Код встроенного изображения');
+define('_TEMPLATE_MCODE',			'Код ссылки media-объектов');
 define('_TEMPLATE_SEARCH',			'Поиск');
-define('_TEMPLATE_SHIGHLIGHT',		'Заголовок');
-define('_TEMPLATE_SNOTFOUND',		'Ничего не найдено');
+define('_TEMPLATE_SHIGHLIGHT',		'Подстветка');
+define('_TEMPLATE_SNOTFOUND',		'Ничего не найдено при поиске');
 define('_TEMPLATE_UPDATE',			'Обновить');
 define('_TEMPLATE_UPDATE_BTN',		'Обновить шаблон');
-define('_TEMPLATE_RESET_BTN',		'Сбросить');
-define('_TEMPLATE_CATEGORYLIST',	'Списки категорий');
-define('_TEMPLATE_CATHEADER',		'Заголовок списка категорий');
-define('_TEMPLATE_CATITEM',			'Запись списка категорий');
-define('_TEMPLATE_CATFOOTER',		'Конец списка категорий');
+define('_TEMPLATE_RESET_BTN',		'Сбросить данные');
+define('_TEMPLATE_CATEGORYLIST',	'Список категорий');
+define('_TEMPLATE_CATHEADER',		'"Шапка" списка категорий');
+define('_TEMPLATE_CATITEM',			'Пункт списка категорий');
+define('_TEMPLATE_CATFOOTER',		'"Подвал" списка категорий');
 
 // skins
-define('_SKIN_EDIT_TITLE',			'Редактировать скины');
+define('_SKIN_EDIT_TITLE',			'Редактировать скин');
 define('_SKIN_AVAILABLE_TITLE',		'Доступные скины');
-define('_SKIN_NEW_TITLE',			'Новые скины');
+define('_SKIN_NEW_TITLE',			'Новый скин');
 define('_SKIN_NAME',				'Имя');
 define('_SKIN_DESC',				'Описание');
-define('_SKIN_TYPE',				'Тип содержания');
+define('_SKIN_TYPE',				'Тип контента');
 define('_SKIN_CREATE',				'Создать');
 define('_SKIN_CREATE_BTN',			'Создать скин');
-define('_SKIN_EDITONE_TITLE',		'Редактировать скин');
-define('_SKIN_BACK',				'Назад к обзору скинов');
-define('_SKIN_PARTS_TITLE',			'Блоки скина');
-define('_SKIN_PARTS_MSG',			'Не все части нужны для скинов, некоторые вы можете оставить пустыми. Выберите тип скина для редактирования:');
+define('_SKIN_EDITONE_TITLE',		'Изменить скин');
+define('_SKIN_BACK',				'Вернуться к обзору скинов');
+define('_SKIN_PARTS_TITLE',			'Части скина');
+define('_SKIN_PARTS_MSG',			'Не все составляющие необходимы для скинов. Оставте пустыми те, которые Вам не нужны. <br>Выберите скин, который Вы хотите отредактировать:');
 define('_SKIN_PART_MAIN',			'Главная страница');
-define('_SKIN_PART_ITEM',			'Страницы записей');
+define('_SKIN_PART_ITEM',			'Страница с сообщением');
 define('_SKIN_PART_ALIST',			'Список архива');
 define('_SKIN_PART_ARCHIVE',		'Архив');
 define('_SKIN_PART_SEARCH',			'Поиск');
-define('_SKIN_PART_ERROR',			'Ошибка');
-define('_SKIN_PART_MEMBER',			'Данные дневниковода');
-define('_SKIN_PART_POPUP',			'Всплывающее окно изображения');
-define('_SKIN_GENSETTINGS_TITLE',	'Общие настройки');
+define('_SKIN_PART_ERROR',			'Ошибки');
+define('_SKIN_PART_MEMBER',			'Информация о пользователе');
+define('_SKIN_PART_POPUP',			'Картинка Popups');
+define('_SKIN_GENSETTINGS_TITLE',	'Основные настройки');
 define('_SKIN_CHANGE',				'Изменить');
-define('_SKIN_CHANGE_BTN',			'Изменить эти настройки');
+define('_SKIN_CHANGE_BTN',			'Изменить настройки');
 define('_SKIN_UPDATE_BTN',			'Обновить скин');
-define('_SKIN_RESET_BTN',			'Сбросить');
+define('_SKIN_RESET_BTN',			'Сбосить данные');
 define('_SKIN_EDITPART_TITLE',		'Редактировать скин');
-define('_SKIN_GOBACK',				'Назад');
+define('_SKIN_GOBACK',				'Вернуться');
 define('_SKIN_ALLOWEDVARS',			'Доступные переменные (нажмите для информации):');
 
 // global settings
-define('_SETTINGS_TITLE',			'Общие настройки');
-define('_SETTINGS_SUB_GENERAL',		'Общие настройки');
-define('_SETTINGS_DEFBLOG',			'Журнал по умолчанию');
-define('_SETTINGS_ADMINMAIL',		'E-mail админа');
-define('_SETTINGS_SITENAME',		'Имя сайта');
-define('_SETTINGS_SITEURL',			'Адрес сайта (должен кончаться на слеш)');
-define('_SETTINGS_ADMINURL',		'Адрес админки (должен кончаться на слеш)');
-define('_SETTINGS_DIRS',			'Каталоги движка');
-define('_SETTINGS_MEDIADIR',		'Каталог изображение');
+define('_SETTINGS_TITLE',			'Основные настройки');
+define('_SETTINGS_SUB_GENERAL',		'Основные настройки');
+define('_SETTINGS_DEFBLOG',			'Раздел по умолчанию');
+define('_SETTINGS_ADMINMAIL',		'E-mail администратора');
+define('_SETTINGS_SITENAME',		'Название сайта');
+define('_SETTINGS_SITEURL',			'URL сайта (должен заканчиваться слэшом "/")');
+define('_SETTINGS_ADMINURL',		'URL администраторской части (должен заканчиваться слэшом "/")');
+define('_SETTINGS_DIRS',			'Nucleus - абсолютный путь на сервере');
+define('_SETTINGS_MEDIADIR',		'Media - абсолютный путь на сервере');
 define('_SETTINGS_SEECONFIGPHP',	'(см. config.php)');
-define('_SETTINGS_MEDIAURL',		'Адрес картинок (должен кончаться на слеш)');
-define('_SETTINGS_ALLOWUPLOAD',		'Разрешить загрузку файлов?');
-define('_SETTINGS_ALLOWUPLOADTYPES','Допустимые форматы файлов для загрузки');
-define('_SETTINGS_CHANGELOGIN',		'Разрешить дневниководам менять логин и пароль');
+define('_SETTINGS_MEDIAURL',		'Media URL (должен заканчиваться слэшом "/")');
+define('_SETTINGS_ALLOWUPLOAD',		'Разрешить загрузку?');
+define('_SETTINGS_ALLOWUPLOADTYPES','Разрешённые расширения');
+define('_SETTINGS_CHANGELOGIN',		'Разрешить пользователям менять логин/пароль');
 define('_SETTINGS_COOKIES_TITLE',	'Настройки Cookie');
-define('_SETTINGS_COOKIELIFE',		'Жизнь Cookie для логина');
-define('_SETTINGS_COOKIESESSION',	'Сессии Cookies');
-define('_SETTINGS_COOKIEMONTH',		'Время жизни месяца');
-define('_SETTINGS_COOKIEPATH',		'Cookie путь (для крутых)');
-define('_SETTINGS_COOKIEDOMAIN',	'Cookie домен (для крутых)');
-define('_SETTINGS_COOKIESECURE',	'Безопасные Cookie (для крутых)');
+define('_SETTINGS_COOKIELIFE',		'Срок действия Cookie');
+define('_SETTINGS_COOKIESESSION',	'По сессиям');
+define('_SETTINGS_COOKIEMONTH',		'Один месяц');
+define('_SETTINGS_COOKIEPATH',		'Путь Cookie (расширенные настройки)');
+define('_SETTINGS_COOKIEDOMAIN',	'Домен Cookie (расширенные настройки)');
+define('_SETTINGS_COOKIESECURE',	'Безопасные Cookie (расширенные настройки)');
 define('_SETTINGS_LASTVISIT',		'Сохранять Cookies последнего посещения');
-define('_SETTINGS_ALLOWCREATE',		'Разрешить гостям создавать аккаунты дневниководов');
-define('_SETTINGS_NEWLOGIN',		'Вход доступен для созданных посетителями аккаунтов');
-define('_SETTINGS_NEWLOGIN2',		'(только для новосозданных аккаунтов)');
-define('_SETTINGS_MEMBERMSGS',		'Разрешить систему внутренних сообщений');
-define('_SETTINGS_LANGUAGE',		'Язык');
+define('_SETTINGS_ALLOWCREATE',		'Разрешить самостоятельную регистрацию');
+define('_SETTINGS_NEWLOGIN',		'Разрешить зарегистрированным пользователям входить в админку');
+define('_SETTINGS_NEWLOGIN2',		'(только для новых эккаунтов)');
+define('_SETTINGS_MEMBERMSGS',		'Разрешить сообщения между пользователями');
+define('_SETTINGS_LANGUAGE',		'Язык по умолчанию');
 define('_SETTINGS_DISABLESITE',		'Выключить сайт');
-define('_SETTINGS_DBLOGIN',			'mySQL логин &amp; БД');
-define('_SETTINGS_UPDATE',			'Обновить настройки');
-define('_SETTINGS_UPDATE_BTN',		'Обновить настройки');
-define('_SETTINGS_DISABLEJS',		'Выключить JavaScript Toolbar');
-define('_SETTINGS_MEDIA',			'Настройки загрузки');
-define('_SETTINGS_MEDIAPREFIX',		'Добавлять дату к загружаемым файлам');
-define('_SETTINGS_MEMBERS',			'Настройки дневниковода');
+define('_SETTINGS_DBLOGIN',			'mySQL данные');
+define('_SETTINGS_UPDATE',			'Сохранить изменения');
+define('_SETTINGS_UPDATE_BTN',		'Сохранить изменения');
+define('_SETTINGS_DISABLEJS',		'Выключить панель JavaScript');
+define('_SETTINGS_MEDIA',			'Настройки Media/Upload');
+define('_SETTINGS_MEDIAPREFIX',		'Префикс даты для загружаемых файлов');
+define('_SETTINGS_MEMBERS',			'Настройки пользователей');
 
 // bans
-define('_BAN_TITLE',				'Список банов для');
-define('_BAN_NONE',					'Нет банов для этого дневника');
-define('_BAN_NEW_TITLE',			'Добавить бан');
-define('_BAN_NEW_TEXT',				'Добавить новый бан сейчас');
+define('_BAN_TITLE',				'Список бана для');
+define('_BAN_NONE',					'Нет банов для этого раздела');
+define('_BAN_NEW_TITLE',			'Установить бан');
+define('_BAN_NEW_TEXT',				'Установить бан');
 define('_BAN_REMOVE_TITLE',			'Удалить бан');
-define('_BAN_IPRANGE',				'IP область');
-define('_BAN_BLOGS',				'Какие журналы?');
-define('_BAN_DELETE_TITLE',			'Удаление бана');
-define('_BAN_ALLBLOGS',				'Все журналы, в которых у вас есть права админа.');
-define('_BAN_REMOVED_TITLE',		'Бан удалён');
-define('_BAN_REMOVED_TEXT',			'Бан удалён в следующих журналах:');
-define('_BAN_ADD_TITLE',			'Добавить бан');
-define('_BAN_IPRANGE_TEXT',			'Выберите область IP для блокировки ниже. Меньше номеров - больше адресов.');
-define('_BAN_BLOGS_TEXT',			'Вы можете забанить только в одном журнале или во всех, где у вас есть права админа. Выбирайте.');
+define('_BAN_IPRANGE',				'Диапозон IP');
+define('_BAN_BLOGS',				'Для каких разделов?');
+define('_BAN_DELETE_TITLE',			'Удалить бан');
+define('_BAN_ALLBLOGS',				'Все разделы, в которых Вы имеете администраторские привилегии.');
+define('_BAN_REMOVED_TITLE',		'Удалить бан');
+define('_BAN_REMOVED_TEXT',			'Бан был снят для следующих разделов:');
+define('_BAN_ADD_TITLE',			'Установить бан');
+define('_BAN_IPRANGE_TEXT',			'Выберите диапозон IP, который Вы хотите заблокировать. Чем меньше чисел будет в диапозоне, тем больше адресов будет заблокировано.');
+define('_BAN_BLOGS_TEXT',			'Вы можете выбрать, как забанить IP - в одном разделе или в всех разделах, в которых вы обладаете привилегиями администратора.');
 define('_BAN_REASON_TITLE',			'Причина');
-define('_BAN_REASON_TEXT',			'Вы можете указать причину бана, которую злостный нарушитель увидит, когда попытается добавить комментарий или проголосовать. Максимальная длина 256 символов.');
-define('_BAN_ADD_BTN',				'Добавить бан');
+define('_BAN_REASON_TEXT',			'Причина бана (появится при попытке обладателя IP-адреса оставить комментарий или сделать голос кармы, максимум 256 знаков)');
+define('_BAN_ADD_BTN',				'Установить бан');
 
 // LOGIN screen
 define('_LOGIN_MESSAGE',			'Сообщение');
 define('_LOGIN_NAME',				'Имя');
 define('_LOGIN_PASSWORD',			'Пароль');
 define('_LOGIN_SHARED',				_LOGINFORM_SHARED);
-define('_LOGIN_FORGOT',				'Забыли пароль?');
+define('_LOGIN_FORGOT',				'Вспомнить пароль');
 
 // membermanagement
-define('_MEMBERS_TITLE',			'Управление дневниководами');
-define('_MEMBERS_CURRENT',			'Текущие дневниководы');
-define('_MEMBERS_NEW',				'Новый дневниковод');
+define('_MEMBERS_TITLE',			'Управление пользователями');
+define('_MEMBERS_CURRENT',			'Текущие пользователи');
+define('_MEMBERS_NEW',				'Новый пользователь');
 define('_MEMBERS_DISPLAY',			'Отображаемое имя');
-define('_MEMBERS_DISPLAY_INFO',		'(логин)');
-define('_MEMBERS_REALNAME',			'Реальное имя');
+define('_MEMBERS_DISPLAY_INFO',		'(Это имя используется для входа)');
+define('_MEMBERS_REALNAME',			'Настоящее имя');
 define('_MEMBERS_PWD',				'Пароль');
-define('_MEMBERS_REPPWD',			'Еще раз пароль');
-define('_MEMBERS_EMAIL',			'Email');
-define('_MEMBERS_EMAIL_EDIT',		'(При смене e-mail, вам будет выслан новый пароль)');
-define('_MEMBERS_URL',				'Сайт');
-define('_MEMBERS_SUPERADMIN',		'Права');
-define('_MEMBERS_CANLOGIN',			'Возможность логиниться в админку');
-define('_MEMBERS_NOTES',			'Примечание');
-define('_MEMBERS_NEW_BTN',			'Добавить дневниковода');
-define('_MEMBERS_EDIT',				'Редактировать дневниковода');
-define('_MEMBERS_EDIT_BTN',			'Изменить настройки');
-define('_MEMBERS_BACKTOOVERVIEW',	'Назад к обзору дневниководов');
+define('_MEMBERS_REPPWD',			'Повторите пароль');
+define('_MEMBERS_EMAIL',			'E-mail');
+define('_MEMBERS_EMAIL_EDIT',		'(Когда Вы изменяте e-mail, новый пароль будет выслан автоматически на новый адрес)');
+define('_MEMBERS_URL',				'Сайт (URL)');
+define('_MEMBERS_SUPERADMIN',		'Администратор');
+define('_MEMBERS_CANLOGIN',			'Может входить в админку');
+define('_MEMBERS_NOTES',			'Заметки');
+define('_MEMBERS_NEW_BTN',			'Добавить пользователя');
+define('_MEMBERS_EDIT',				'Изменить профиль пользователя');
+define('_MEMBERS_EDIT_BTN',			'Внести изменения');
+define('_MEMBERS_BACKTOOVERVIEW',	'Вернуться к обзору пользователей');
 define('_MEMBERS_DEFLANG',			'Язык');
 define('_MEMBERS_USESITELANG',		'- использовать настройки сайта -');
 
 // List of blogs (TT = tooltip)
 define('_BLOGLIST_TT_VISIT',		'Посетить сайт');
-define('_BLOGLIST_ADD',				'Добавить запись');
-define('_BLOGLIST_TT_ADD',			'Добавить новую запись в этот дневник');
-define('_BLOGLIST_EDIT',			'Редактирование/удаление записи');
+define('_BLOGLIST_ADD',				'Добавить сообщение');
+define('_BLOGLIST_TT_ADD',			'Добавить сообщение в этот раздел');
+define('_BLOGLIST_EDIT',			'Ред./Уд. сообщения');
 define('_BLOGLIST_TT_EDIT',			'');
-define('_BLOGLIST_BMLET',			'Закладки');
+define('_BLOGLIST_BMLET',			'Bookmarklet');
 define('_BLOGLIST_TT_BMLET',		'');
 define('_BLOGLIST_SETTINGS',		'Настройки');
-define('_BLOGLIST_TT_SETTINGS',		'Редактирование настроек или управление групповым дневником');
-define('_BLOGLIST_BANS',			'Баны');
-define('_BLOGLIST_TT_BANS',			'Просмотр, добавление или удаление банов');
-define('_BLOGLIST_DELETE',			'Удалить все');
-define('_BLOGLIST_TT_DELETE',		'Удалить этот дневник');
+define('_BLOGLIST_TT_SETTINGS',		'Настройки и управление командой авторов');
+define('_BLOGLIST_BANS',			'Bans');
+define('_BLOGLIST_TT_BANS',			'Просмотреть, добавить или удалить забаненные IP-адресы');
+define('_BLOGLIST_DELETE',			'Удалить');
+define('_BLOGLIST_TT_DELETE',		'Удалить раздел');
 
 // OVERVIEW screen
-define('_OVERVIEW_YRBLOGS',			'Ваши дневники');
+define('_OVERVIEW_YRBLOGS',			'Разделы сайта');
 define('_OVERVIEW_YRDRAFTS',		'Ваши черновики');
 define('_OVERVIEW_YRSETTINGS',		'Ваши настройки');
-define('_OVERVIEW_GSETTINGS',		'Общие настройки');
-define('_OVERVIEW_NOBLOGS',			'Вы не состоите ни в одном групповом дневнике');
-define('_OVERVIEW_NODRAFTS',		'Черновики отсутствуют');
-define('_OVERVIEW_EDITSETTINGS',	'Редактирование настроек...');
-define('_OVERVIEW_BROWSEITEMS',		'Просмотр ваших записей...');
-define('_OVERVIEW_BROWSECOMM',		'Просмотр ваших комментариев...');
-define('_OVERVIEW_VIEWLOG',			'Смотреть лог действий...');
-define('_OVERVIEW_MEMBERS',			'Управление дневниководами...');
-define('_OVERVIEW_NEWLOG',			'Создать новый дневник...');
-define('_OVERVIEW_SETTINGS',		'Редактировать настройки...');
-define('_OVERVIEW_TEMPLATES',		'Редактировать шаблоны...');
-define('_OVERVIEW_SKINS',			'Редактировать скины...');
-define('_OVERVIEW_BACKUP',			'Бэкап/восстановление...');
+define('_OVERVIEW_GSETTINGS',		'Конфигурация сайта');
+define('_OVERVIEW_NOBLOGS',			'Вы не входите ни в одну команду авторов');
+define('_OVERVIEW_NODRAFTS',		'Черновиков нет');
+define('_OVERVIEW_EDITSETTINGS',	'Настроить профиль ...');
+define('_OVERVIEW_BROWSEITEMS',		'Посмотреть свои сообщения ...');
+define('_OVERVIEW_BROWSECOMM',		'Посмотреть свои комментарии ...');
+define('_OVERVIEW_VIEWLOG',			'Посмотреть лог действий ...');
+define('_OVERVIEW_MEMBERS',			'Управление пользователями ...');
+define('_OVERVIEW_NEWLOG',			'Создать новый раздел ...');
+define('_OVERVIEW_SETTINGS',		'Изменить настройки ...');
+define('_OVERVIEW_TEMPLATES',		'Изменить шаблоны ...');
+define('_OVERVIEW_SKINS',			'Изменить скины ...');
+define('_OVERVIEW_BACKUP',			'Бэкап/Восстановление ...');
 
 // ITEMLIST
-define('_ITEMLIST_BLOG',			'Записи в дневнике');
-define('_ITEMLIST_YOUR',			'Ваши записи');
+define('_ITEMLIST_BLOG',			'Сообщения в разделе');
+define('_ITEMLIST_YOUR',			'Ваши сообщения');
 
 // Comments
 define('_COMMENTS',					'Комментарии');
-define('_NOCOMMENTS',				'У этой записи нет комментариев');
+define('_NOCOMMENTS',				'Нет комментариев к этому сообщению');
 define('_COMMENTS_YOUR',			'Ваши комментарии');
-define('_NOCOMMENTS_YOUR',			'Вы еще не написали ни одного комментария');
+define('_NOCOMMENTS_YOUR',			'Вы не оставляли комментариев');
 
 // LISTS (general)
-define('_LISTS_NOMORE',				'Нет результатов');
-define('_LISTS_PREV',				'Назад');
-define('_LISTS_NEXT',				'Вперёд');
+define('_LISTS_NOMORE',				'No more results, or no results at all');
+define('_LISTS_PREV',				'Предыдущая');
+define('_LISTS_NEXT',				'Следующая');
 define('_LISTS_SEARCH',				'Поиск');
-define('_LISTS_CHANGE',				'Изменить');
-define('_LISTS_PERPAGE',			'записи/страницы');
+define('_LISTS_CHANGE',				'Показать');
+define('_LISTS_PERPAGE',			'сообщений на странице');
 define('_LISTS_ACTIONS',			'Действия');
 define('_LISTS_DELETE',				'Удалить');
 define('_LISTS_EDIT',				'Редактировать');
 define('_LISTS_MOVE',				'Переместить');
-define('_LISTS_CLONE',				'Клонирование');
-define('_LISTS_TITLE',				'Заголовок');
-define('_LISTS_BLOG',				'Дневник');
+define('_LISTS_CLONE',				'Копировать');
+define('_LISTS_TITLE',				'Название');
+define('_LISTS_BLOG',				'Раздел');
 define('_LISTS_NAME',				'Имя');
 define('_LISTS_DESC',				'Описание');
 define('_LISTS_TIME',				'Время');
@@ -911,13 +907,13 @@ define('_LISTS_TYPE',				'Тип');
 
 // member list
 define('_LIST_MEMBER_NAME',			'Отображаемое имя');
-define('_LIST_MEMBER_RNAME',		'Реальное имя');
-define('_LIST_MEMBER_ADMIN',		'Модный? ');
-define('_LIST_MEMBER_LOGIN',		'Может входить? ');
+define('_LIST_MEMBER_RNAME',		'RНастоящее имя');
+define('_LIST_MEMBER_ADMIN',		'Супер-админ? ');
+define('_LIST_MEMBER_LOGIN',		'Может входить в админку? ');
 define('_LIST_MEMBER_URL',			'Сайт');
 
 // banlist
-define('_LIST_BAN_IPRANGE',			'IP область');
+define('_LIST_BAN_IPRANGE',			'Диапозон IP');
 define('_LIST_BAN_REASON',			'Причина');
 
 // actionlist
@@ -935,21 +931,21 @@ define('_LIST_ITEM_CONTENT',		'Заголовок и текст');
 
 
 // teamlist
-define('_LIST_TEAM_ADMIN',			'Админ ');
-define('_LIST_TEAM_CHADMIN',		'Поменять админа');
+define('_LIST_TEAM_ADMIN',			'Администратор ');
+define('_LIST_TEAM_CHADMIN',		'Сделать администратором');
 
 // edit comments
-define('_EDITC_TITLE',				'Редактирование комментариев');
+define('_EDITC_TITLE',				'Изменить комментарии');
 define('_EDITC_WHO',				'Автор');
-define('_EDITC_HOST',				'Откуда?');
-define('_EDITC_WHEN',				'Когда?');
-define('_EDITC_TEXT',				'Текст');
-define('_EDITC_EDIT',				'Редактировать комментарий');
-define('_EDITC_MEMBER',				'дневниковод');
-define('_EDITC_NONMEMBER',			'недневниковод');
+define('_EDITC_HOST',				'Откуда');
+define('_EDITC_WHEN',				'Когда');
+define('_EDITC_TEXT',				'Текст комментария');
+define('_EDITC_EDIT',				'Изменить комментарий');
+define('_EDITC_MEMBER',				'пользователь');
+define('_EDITC_NONMEMBER',			'гость');
 
 // move item
-define('_MOVE_TITLE',				'В какой дневник переместить?');
-define('_MOVE_BTN',					'Переместить запись');
+define('_MOVE_TITLE',				'Выберите раздел для перемещения');
+define('_MOVE_BTN',					'Переместить сообщение');
 
 ?>
