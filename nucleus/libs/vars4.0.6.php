@@ -48,11 +48,24 @@ function serverVar($name) {
 
 // removes magic quotes if that option is enabled
 function undoMagic($data) {
-	return get_magic_quotes_gpc() ? stripslashes_array($data) : $data;
+	if (!get_magic_quotes_gpc())
+		return $data;
+	if (ini_get('magic_quotes_sybase') != 1)
+		return stripslashes_array($data);
+	else
+		return undoSybaseQuotes_array($data);
 }
 
 function stripslashes_array($data) {
 	return is_array($data) ? array_map('stripslashes', $data) : stripslashes($data);
+}
+
+function undoSybaseQuotes_array($data) {
+	return is_array($data) ? array_map('undoSybaseQuotes', $data) : stripslashes($data);
+}
+
+function undoSybaseQuotes($data) {
+	return str_replace("''", "'", $data);
 }
 
 // integer array from request
