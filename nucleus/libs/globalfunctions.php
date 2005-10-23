@@ -823,11 +823,15 @@ function selectLanguage($language) {
 	include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
 }
 
-function parseFile($filename) {
+function parseFile($filename, $includeMode = 'normal', $includePrefix = '') {
 	$handler =& new ACTIONS('fileparser');
 	$parser =& new PARSER(SKIN::getAllowedActionsForType('fileparser'), $handler);
 	$handler->parser =& $parser;
-
+	
+	// set IncludeMode properties of parser
+	PARSER::setProperty('IncludeMode', $includeMode);
+	PARSER::setProperty('IncludePrefix', $includePrefix);
+	
 	if (!file_exists($filename)) doError('A file is missing');
 
 	$fsize = filesize($filename);
