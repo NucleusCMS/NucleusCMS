@@ -252,7 +252,7 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 
 	<part name="COMMENTS_NONE"><![CDATA[<div class="contentitem3">
 <small class="contentitemcomments">
-<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on &#39;<%itemtitle(attribute)%>&#39;">Add comment</a>
+<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle(attribute)%>'">Add comment</a>
 </small>
 </div>]]></part>
 
@@ -260,7 +260,7 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 
 	<part name="COMMENTS_TOOMUCH"><![CDATA[<div class="contentitem3">
 <small class="contentitemcomments">
-<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on &#39;<%itemtitle(attribute)%>&#39;"><%commentcount%> <%commentword%></a>
+<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle(attribute)%>'"><%commentcount%> <%commentword%></a>
 </small>
 </div>]]></part>
 
@@ -303,7 +303,7 @@ Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 	<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
 
 	<part name="MORELINK"><![CDATA[<p>&raquo;
-<a href="<%itemlink%>#more" title="Read more on &#39;<%title(attribute)%>&#39;">Read More</a>
+<a href="<%itemlink%>#more" title="Read more on '<%title(attribute)%>'">Read More</a>
 </p>]]></part>
 
 	<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
