@@ -7,24 +7,24 @@
 <%if(skintype,archive)%>
 <dd><a href="<%prevlink%>" title="Previous month">Previous <%archivetype%></a></dd>
 <dd><a href="<%nextlink%>" title="Next month">Next <%archivetype%></a></dd>
-<dd><a href="<%todaylink%>" title="Today&#39;s entry">Today</a></dd>
+<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
 <dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
 <%endif%>
 
 <!-- archivelist: navigation -->
 <%if(skintype,archivelist)%>
-<dd><a href="<%todaylink%>" title="Today&#39;s entry">Today</a></dd>
+<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
 <dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
 <%endif%>
 
 <!-- error: navigation -->
 <%if(skintype,error)%>
-<dd><a href="<%todaylink%>" title="Today&#39;s entry">Today</a></dd>
+<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
 <%endif%>
 
 <!-- index: navigation -->
 <%if(skintype,index)%>
-<dd><a href="<%todaylink%>" title="Today&#39;s entry">Today</a></dd>
+<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
 <dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
 <%endif%>
 
@@ -32,18 +32,18 @@
 <%if(skintype,item)%>
 <dd><a href="<%nextlink%>" title="Previous item">Previous Item</a></dd>
 <dd><a href="<%prevlink%>" title="Next item">Next Item</a></dd>
-<dd><a href="<%todaylink%>" title="Today&#39;s entry">Today</a></dd>
+<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
 <dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
 <%endif%>
 
 <!-- member: navigation -->
 <%if(skintype,member)%>
-<dd><a href="<%todaylink%>" title="Today&#39;s entry">Today</a></dd>
+<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
 <%endif%>
 
 <!-- search: navigation -->
 <%if(skintype,search)%>
-<dd><a href="<%todaylink%>" title="Today&#39;s entry">Today</a></dd>
+<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
 <dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
 <%endif%>
 
