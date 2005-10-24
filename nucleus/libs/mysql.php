@@ -60,6 +60,17 @@ if (!function_exists('mysql_query'))
 		return mysqli_num_rows($res);
 	}
 	
+	function mysql_num_fields($res)
+	{
+		return mysqli_num_fields($res);
+	}
+	
+	function mysql_field_name($res, $offset)
+	{
+		// [TODO] #99
+		return 'foo';
+	}
+
 	function mysql_free_result($res)
 	{
 		return mysqli_free_result($res);

@@ -214,7 +214,7 @@ function _backup_dump_contents($tablename) {
 	//
 	$result = mysql_query("SELECT * FROM $tablename");
 
-	if(mysql_numrows($result) > 0)
+	if(mysql_num_rows($result) > 0)
 		echo "\n#\n# Table Data for $tablename\n#\n";
 
 	//
