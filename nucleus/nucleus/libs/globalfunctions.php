@@ -141,7 +141,7 @@ if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'),'Mozil
 
 // login if cookies set
 
-$member =& new MEMBER();
+$member = new MEMBER();
 
 // login/logout when required or renew cookies
 if ($action == 'login') {
@@ -165,7 +165,7 @@ if ($action == 'login') {
 	} else {
 		// errormessage for [%errordiv%]
 		$errormessage = 'Login failed for ' . $login;
-		
+
 		$manager->notify('LoginFailed',array('username' => $login));
 		ACTIONLOG::add(INFO, $errormessage);
 	}
@@ -270,26 +270,26 @@ if (!defined('_ARCHIVETYPE_MONTH'))
 if ($CONF['URLMode'] == 'pathinfo')
 {
 	// initialize keywords if this hasn't been done before
-    if ($CONF['ItemKey'] == '')     $CONF['ItemKey'] = 'item';
-    if ($CONF['ArchiveKey'] == '')  $CONF['ArchiveKey'] = 'archive';
-    if ($CONF['ArchivesKey'] == '') $CONF['ArchivesKey'] = 'archives';
-    if ($CONF['MemberKey'] == '')   $CONF['MemberKey'] = 'member';
-    if ($CONF['BlogKey'] == '')     $CONF['BlogKey'] = 'blog';
-    if ($CONF['CategoryKey'] == '') $CONF['CategoryKey'] = 'category';
-        
-    $parsed = false;
-    $manager->notify(
-    	'ParseURL', 
-    	array(
-    		'type' => basename(serverVar('SCRIPT_NAME')),	// e.g. item, blog, ...
-    		'info' => serverVar('PATH_INFO'),
-    		'complete' => &$parsed		
-    	)
-    );
-    
-    if (!$parsed)
-    {
-        // default implementation
+	if ($CONF['ItemKey'] == '')     $CONF['ItemKey'] = 'item';
+	if ($CONF['ArchiveKey'] == '')  $CONF['ArchiveKey'] = 'archive';
+	if ($CONF['ArchivesKey'] == '') $CONF['ArchivesKey'] = 'archives';
+	if ($CONF['MemberKey'] == '')   $CONF['MemberKey'] = 'member';
+	if ($CONF['BlogKey'] == '')     $CONF['BlogKey'] = 'blog';
+	if ($CONF['CategoryKey'] == '') $CONF['CategoryKey'] = 'category';
+
+	$parsed = false;
+	$manager->notify(
+		'ParseURL',
+		array(
+			'type' => basename(serverVar('SCRIPT_NAME')),	// e.g. item, blog, ...
+			'info' => serverVar('PATH_INFO'),
+			'complete' => &$parsed
+		)
+	);
+
+	if (!$parsed)
+	{
+		// default implementation
 		$data = explode("/",serverVar('PATH_INFO'));
 		for ($i=0;$i<sizeof($data);$i++) {
 			switch ($data[$i]) {
@@ -385,9 +385,9 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 		$charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
 
 		if ($charset != '')
-			header('Content-Type: ' . $contenttype . '; charset=' . $charset);			
+			header('Content-Type: ' . $contenttype . '; charset=' . $charset);
 		else
-			header('Content-Type: ' . $contenttype);			
+			header('Content-Type: ' . $contenttype);
 	}
 
 
@@ -550,7 +550,7 @@ function selector() {
 	{
 		global $DIR_LIBS, $errormessage;
 		include_once($DIR_LIBS . 'ACTION.php');
-		$a =& new ACTION();
+		$a = new ACTION();
 		$errorInfo = $a->doAction($action);
 		if ($errorInfo)
 			$errormessage = $errorInfo['message'];
@@ -598,8 +598,8 @@ function selector() {
 		// deny access
 		if ($blogid && (intval($blogid) != $obj->iblog))
 			doError(_ERROR_NOSUCHITEM);
-			
-		// if a category has been selected which doesn't match the item, ignore the 
+
+		// if a category has been selected which doesn't match the item, ignore the
 		// category. #85
 		if (($catid != 0) && ($catid != $obj->icat))
 		{
@@ -707,7 +707,7 @@ function selector() {
 		$skinid = $blog->getDefaultSkin();
 
 
-	$skin =& new SKIN($skinid);
+	$skin = new SKIN($skinid);
 	if (!$skin->isValid)
 		doError(_ERROR_NOSUCHSKIN);
 
@@ -723,16 +723,16 @@ function doError($msg, $skin = '') {
 
 	if ($skin == '') {
 		if (SKIN::existsID($skinid)) {
-			$skin =& new SKIN($skinid);
+			$skin = new SKIN($skinid);
 		} elseif ($manager->existsBlogID($blogid)) {
 			$blog =& $manager->getBlog($blogid);
-			$skin =& new SKIN($blog->getDefaultSkin());
+			$skin = new SKIN($blog->getDefaultSkin());
 		} elseif ($CONF['DefaultBlog']) {
 			$blog =& $manager->getBlog($CONF['DefaultBlog']);
-			$skin =& new SKIN($blog->getDefaultSkin());
+			$skin = new SKIN($blog->getDefaultSkin());
 		} else {
 			// this statement should actually never be executed
-			$skin =& new SKIN($CONF['BaseSkin']);
+			$skin = new SKIN($CONF['BaseSkin']);
 		}
 	}
 
@@ -824,14 +824,14 @@ function selectLanguage($language) {
 }
 
 function parseFile($filename, $includeMode = 'normal', $includePrefix = '') {
-	$handler =& new ACTIONS('fileparser');
-	$parser =& new PARSER(SKIN::getAllowedActionsForType('fileparser'), $handler);
+	$handler = new ACTIONS('fileparser');
+	$parser = new PARSER(SKIN::getAllowedActionsForType('fileparser'), $handler);
 	$handler->parser =& $parser;
-	
+
 	// set IncludeMode properties of parser
 	PARSER::setProperty('IncludeMode', $includeMode);
 	PARSER::setProperty('IncludePrefix', $includePrefix);
-	
+
 	if (!file_exists($filename)) doError('A file is missing');
 
 	$fsize = filesize($filename);
@@ -981,13 +981,13 @@ function createBlogidLink($blogid, $params = '') {
 function createLink($type, $params)
 {
 	global $manager, $CONF;
-	
+
 	$generatedURL = '';
 	$usePathInfo = ($CONF['URLMode'] == 'pathinfo');
-	
+
 	// ask plugins first
 	$created = false;
-	
+
 	if ($usePathInfo)
 	{
 		$manager->notify(
@@ -999,12 +999,12 @@ function createLink($type, $params)
 				'url' => &$url
 			)
 		);
-	} 
-	
+	}
+
 	// if a plugin created the URL, return it
 	if ($created)
 		return $url;
-		
+
 	// default implementation
 	switch ($type)
 	{
@@ -1047,7 +1047,7 @@ function createLink($type, $params)
 				$url = $CONF['BlogURL'] . '?blogid=' . $params['blogid'];
 			break;
 }
-	
+
 	return addLinkParams($url, $params['extra']);
 }
 
@@ -1114,7 +1114,7 @@ function passVar($key, $value) {
 /*
 	Date format functions (to be used from [%date(..)%] skinvars
 */
-function formatDate($format, $timestamp, $defaultFormat, &$blog) 
+function formatDate($format, $timestamp, $defaultFormat, &$blog)
 {
 	// apply blog offset (#42)
 	$boffset = $blog ? $blog->getTimeOffset() * 3600 : 0;
@@ -1187,7 +1187,7 @@ function redirect($url)
 /**
  * Strip HTML tags from a string
  * This function is a bit more intelligent than a regular call to strip_tags(),
- * because it also deletes the contents of certain tags and cleans up any 
+ * because it also deletes the contents of certain tags and cleans up any
  * unneeded whitespace.
  */
 function stringStripTags ($string) {
@@ -1230,7 +1230,7 @@ function stringToXML ($string) {
 	$string = stringStripTags($string);
 	$string = entity::named_to_numeric($string);
 	$string = entity::normalize_numeric($string);
-		
+
 	if (_CHARSET == 'UTF-8') {
 		$string = entity::numeric_to_utf8($string);
 	}
