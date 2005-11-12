@@ -62,7 +62,7 @@ function do_backup($gzip = 0) {
 	$res = sql_query('SELECT pfile FROM '.sql_table('plugin'));
 	while ($plugName = mysql_fetch_object($res)) {
 		$plug =& $manager->getPlugin($plugName->pfile);
-		if ($plug) $tables = array_merge($tables, $plug->getTableList());
+		if ($plug) $tables = array_merge($tables, (array) $plug->getTableList());
 	}
 	ob_end_clean();
 
