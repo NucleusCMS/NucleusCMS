@@ -1,16 +1,123 @@
 <?php
 // Hungarian Nucleus Language File
-// 
-// Author: Konczér Tamás (konczer at php-nuke dot hu)
-// Nucleus version: v1.0-v2.5
 //
-// Please note: if you want to translate this file to your own language, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which 
-// the file was written in your document.
+// Author: Konczér Tamás (konczer@gmail.com)
+// Nucleus version: v1.0-v3.2
 //
-// Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
-// and will be available for download (with proper credit to the author, of course)
+
+// START changed/added after 3.15 START
+
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Kérlek használd a \'Csatolási lista frissítése\'-gomot a plugin(ok) csatolási listájának frissítésére.');
+define('_LIST_PLUGS_DEP',			'Szükséges plugin(ok):');
+
+// END changed/added after 3.15
+
+// START changed/added after 3.1 START
+
+// comments list per weblog
+define('_COMMENTS_BLOG',			'Összes hozzászólás a bloghoz');
+define('_NOCOMMENTS_BLOG',			'Nem volt hozzászólás ehhez a bloghoz.');
+define('_BLOGLIST_COMMENTS',		'Hozzászólások');
+define('_BLOGLIST_TT_COMMENTS',		'Lista az összes ehhez a bloghoz tartozó hozzászólásról');
+
+
+// for use in archivetype-skinvar
+define('_ARCHIVETYPE_DAY',			'nap');
+define('_ARCHIVETYPE_MONTH',		'hónap');
+
+// tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
+define('_ERROR_BADTICKET',			'Hamis vagy lejárt címke.');
+
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',		'Plugin installáció sikertelen, szükséges: ');
+define('_ERROR_DELREQPLUGIN',		'Plugin törlése sikertelen, szükséges: ');
+
+// cookie prefix
+define('_SETTINGS_COOKIEPREFIX',	'Süti elõtag');
+
+// account activation
+define('_ERROR_NOLOGON_NOACTIVATE',	'Nem lejet aktivációs linket küldeni. Nem vagy jogosult a belépésre.');
+define('_ERROR_ACTIVATE',			'Hiányzik/hibás/lejárt az aktivációs kulcs.');
+define('_ACTIONLOG_ACTIVATIONLINK', 'Aktivációs link elküldve!');
+define('_MSG_ACTIVATION_SENT',		'Az aktivációs linket elküldtük e-mailben.');
+
+// activation link emails
+define('_ACTIVATE_REGISTER_MAIL',	"Üdv <%memberName%>,\n\nAktiválnod kell a hozzáférésedet a <%siteName%> (<%siteUrl%>) honlapon.\nEzt az alábbi link segítségével teheted meg: \n\n\t<%activationUrl%>\n\n2 napod van erre a mûveletre, utána az aktivációs link lejár.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Aktiváld a '<%memberName%>' hozzáférésedet!");
+define('_ACTIVATE_REGISTER_TITLE',	'Üdv <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',	'Már majdnem kész vagy. Kérlek, válassz jelszót a hozzáférésedhez!');
+define('_ACTIVATE_FORGOT_MAIL',		"Üdv <%memberName%>,\n\nAz alábbi link segítségével új jelszót állíthatsz be a(z) <%siteName%> (<%siteUrl%>) weboldalon.\n\n\t<%activationUrl%>\n\n2 napod van erre a mûveletre, utána az aktivációs link lejár.");
+define('_ACTIVATE_FORGOT_MAILTITLE',"'<%memberName%>' hozzáférésének újraaktiválása");
+define('_ACTIVATE_FORGOT_TITLE',	'Üdv <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'Az új jelszavad:');
+define('_ACTIVATE_CHANGE_MAIL',		"Üdv <%memberName%>,\n\nAz e-mail címed megváltozása miatt a hozzáférésed újraaktiválása szükséges a <%siteName%> (<%siteUrl%>) honlapon.\nEzt az alábbi link segítségével teheted meg: \n\n\t<%activationUrl%>\n\n2 napod van erre a mûveletre, utána az aktivációs link lejár.");
+define('_ACTIVATE_CHANGE_MAILTITLE',"A hozzáférésed aktiválása '<%memberName%>' account");
+define('_ACTIVATE_CHANGE_TITLE',	'Üdv <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'A címed változása ellenõrizve. Köszönjük!');
+define('_ACTIVATE_SUCCESS_TITLE',	'Sikeres aktiválás!');
+define('_ACTIVATE_SUCCESS_TEXT',	'A hozzáférésedet sikeresen aktiváltuk.!');
+define('_MEMBERS_SETPWD',			'Jelszó beállítása');
+define('_MEMBERS_SETPWD_BTN',		'Jelszó beállítása');
+define('_QMENU_ACTIVATE',			'Hozzáférés aktiváció');
+define('_QMENU_ACTIVATE_TEXT',		'<p>A hozzáférésed aktiválása után be tudsz jelentkezni <a href="index.php?action=showlogin">itt</a>.</p>');
+
+define('_PLUGS_BTN_UPDATE',			'Csatolási lista frissítése');
+
+// global settings
+define('_SETTINGS_JSTOOLBAR',		'Javascript eszköztár');
+define('_SETTINGS_JSTOOLBAR_FULL',	'Teljes eszköztár (Internet Explorer)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE','Egyszerû eszköztár (nem Internet Explorer)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Eszköztár letiltása');
+define('_SETTINGS_URLMODE_HELP',	'(Információ: <a href="documentation/tips.html#searchengines-fancyurls">kedvenc URL-ek aktiválálása</a>)');
+
+// extra plugin settings part when editing categories/members/blogs/...
+define('_PLUGINS_EXTRA',			'Extra plugin beállítások');
+
+// itemlist info column keys
+define('_LIST_ITEM_BLOG',			'blog:');
+define('_LIST_ITEM_CAT',			'kategória:');
+define('_LIST_ITEM_AUTHOR',			'szerzõ:');
+define('_LIST_ITEM_DATE',			'dátum:');
+define('_LIST_ITEM_TIME',			'idõ:');
+
+// indication of registered members in comments list
+define('_LIST_COMMENTS_MEMBER', 	'(tag)');
+
+// batch operations
+define('_BATCH_WITH_SEL',			'A kijelöltekkel:');
+define('_BATCH_EXEC',				'végrehajt');
+
+// quickmenu
+define('_QMENU_HOME',				'Fõoldal');
+define('_QMENU_ADD',				'Elem hozzáadása');
+define('_QMENU_ADD_SELECT',			'-- válassz --');
+define('_QMENU_USER_SETTINGS',		'Beállítások');
+define('_QMENU_USER_ITEMS',			'Elemek');
+define('_QMENU_USER_COMMENTS',		'Megjegyzések');
+define('_QMENU_MANAGE',				'Menedzsment');
+define('_QMENU_MANAGE_LOG',			'Eseménynapló');
+define('_QMENU_MANAGE_SETTINGS',	'Globális beállítások');
+define('_QMENU_MANAGE_MEMBERS',		'Tagok');
+define('_QMENU_MANAGE_NEWBLOG',		'Új blog');
+define('_QMENU_MANAGE_BACKUPS',		'Backups');
+define('_QMENU_MANAGE_PLUGINS',		'Pluginok');
+define('_QMENU_LAYOUT',				'Layout');
+define('_QMENU_LAYOUT_SKINS',		'Bõrök');
+define('_QMENU_LAYOUT_TEMPL',		'Sablonok');
+define('_QMENU_LAYOUT_IEXPORT',		'Importálás/Exportálás');
+define('_QMENU_PLUGINS',			'Pluginok');
+
+// quickmenu on logon screen
+define('_QMENU_INTRO',				'Bemutatkozás');
+define('_QMENU_INTRO_TEXT',			'<p>Ez a Nucleus CMS belépési oldala.</p><p>Ha van hozzáférésed, itt be tudsz lépni, hogy hozzászólásokat tudj írni.</p>');
+
+// helppages for plugins
+define('_ERROR_PLUGNOHELPFILE',		'Nem található segítség fájl ehhez pluginhoz');
+define('_PLUGS_HELP_TITLE',			'Segítség a  pluginokhoz');
+define('_LIST_PLUGS_HELP', 			'Segítség');
+
+
+// END changed/started after 3.1
 
 // START changed/added after v2.5beta START
 
@@ -230,7 +337,7 @@ define('_PLUGS_NOCANDIDATES',		'Nem találtam kiegészítõket');
 
 define('_PLUGS_TITLE_MANAGE',		'Pluginok menedzselése');
 define('_PLUGS_TITLE_INSTALLED',	'Aktuálisan installált');
-define('_PLUGS_TITLE_UPDATE',		'Csatlakozási lista frissítése');
+define('_PLUGS_TITLE_UPDATE',		'Csatolási lista frissítése');
 define('_PLUGS_TEXT_UPDATE',		'A Nucleus a gyorsítótárban hagyja a kiegészítõk beállításait. Amikor upgrade-elsz egy kiegészítõt, azzal, hogy felülírod a fájlt, végre kell hajtanod ezt a frissítést, hogy meggyõzõdhess róla: a beállítások helyesen kerültek a gyorsítótárba.');
 define('_PLUGS_TITLE_NEW',			'Új kiegészítõ installálása');
 define('_PLUGS_ADD_TEXT',			'Az alábbi listában mindazon kiegészítõk szerepelnek, melyek nincsenek installálva. Legyél biztos benne <strong>- egészen biztos -</strong>, hogy amit hozzá akarsz adni a rendszerhez, valóban egy kiegészítõ.');
