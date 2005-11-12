@@ -65,12 +65,6 @@ if (!function_exists('mysql_query'))
 		return mysqli_num_fields($res);
 	}
 	
-	function mysql_field_name($res, $offset)
-	{
-		// [TODO] #99
-		return 'foo';
-	}
-
 	function mysql_free_result($res)
 	{
 		return mysqli_free_result($res);
@@ -78,7 +72,10 @@ if (!function_exists('mysql_query'))
 	
 	function mysql_result($res, $row, $col) 
 	{ 
-		if (($row != 0) || ($col != 0)) echo 'not implemented';
+		if (($row != 0) || ($col != 0)) {
+			trigger_error('not implemented', E_USER_ERROR);
+		}
+		
 		$row = mysqli_fetch_row($res);
 		return $row[$col];
 	}	

@@ -208,6 +208,32 @@ function _backup_dump_structure($tablename) {
 	echo "\n);\n\n";
 }
 
+/**
+ * Returns the field named for the given table in the 
+ * following format:
+ *
+ * (column1, column2, ..., columnn)
+ */
+function _backup_get_field_names($result, $num_fields) {
+
+	if (function_exists('mysqli_fetch_fields') ) {
+		
+		$fields = mysqli_fetch_fields($result);
+		for ($j = 0; $j < $num_fields; $j++)
+			$fields[$j] = $fields[$j]->name;
+
+	} else {
+
+		$fields = array();
+		for ($j = 0; $j < $num_fields; $j++) {
+			$fields[] = mysql_field_name($result, $j);
+		}
+
+	}
+	
+	return '(' . implode(', ', $fields) . ')';	
+}
+
 function _backup_dump_contents($tablename) {
 	//
 	// Grab the data from the table.
@@ -216,27 +242,19 @@ function _backup_dump_contents($tablename) {
 
 	if(mysql_num_rows($result) > 0)
 		echo "\n#\n# Table Data for $tablename\n#\n";
-
+		
+	$num_fields = mysql_num_fields($result);
+	
+	//
+	// Compose fieldname list
+	//
+	$tablename_list = _backup_get_field_names($result, $num_fields);
+		
 	//
 	// Loop through the resulting rows and build the sql statement.
 	//
 	while ($row = mysql_fetch_array($result))
 	{
-		$tablename_list = '(';
-		$num_fields = mysql_num_fields($result);
-
-		//
-		// Grab the list of field names.
-		//
-		for ($j = 0; $j < $num_fields; $j++)
-			$tablename_list .= mysql_field_name($result, $j) . ', ';
-
-		//
-		// Get rid of the last comma
-		//
-		$tablename_list = ereg_replace(', $', '', $tablename_list);
-		$tablename_list .= ')';
-
 		// Start building the SQL statement.
 
 		echo "INSERT INTO $tablename $tablename_list VALUES(";
