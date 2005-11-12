@@ -673,7 +673,7 @@ function selector() {
 		$type = 'member';
 		if (!MEMBER::existsID($memberid))
 			doError(_ERROR_NOSUCHMEMBER);
-		$memberinfo =& $manager->getMember($memberid);
+		$memberinfo = $manager->getMember($memberid);
 
 	} elseif ($imagepopup) {
 		// media object (images etc.)
