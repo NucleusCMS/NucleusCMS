@@ -13,9 +13,10 @@
 // available for download (with proper credit to the author, of course)
 
 // START changed/added after 3.22 START
+define('_SEARCHFORM_QUERY',			'Keywords to search');
 define('_ERROR_EMAIL_REQUIRED',		'Email address is required');
-define('_COMMENTFORM_MAIL',			'Website');
-define('_COMMENTFORM_EMAIL',		'E-mail');
+define('_COMMENTFORM_MAIL',			'Website:');
+define('_COMMENTFORM_EMAIL',		'E-mail:');
 define('_EBLOG_REQUIREDEMAIL',		'Require E-mail address with comments?');
 // END changed/added after 3.22 END
 
@@ -105,12 +106,12 @@ define('_BATCH_EXEC',				'Execute');
 define('_QMENU_HOME',				'Home');
 define('_QMENU_ADD',				'Add Item');
 define('_QMENU_ADD_SELECT',			'-- select --');
-define('_QMENU_USER_SETTINGS',		'Settings');
+define('_QMENU_USER_SETTINGS',		'Profile');
 define('_QMENU_USER_ITEMS',			'Items');
 define('_QMENU_USER_COMMENTS',		'Comments');
 define('_QMENU_MANAGE',				'Management');
 define('_QMENU_MANAGE_LOG',			'Action Log');
-define('_QMENU_MANAGE_SETTINGS',	'Global Settings');
+define('_QMENU_MANAGE_SETTINGS',	'Configuration');
 define('_QMENU_MANAGE_MEMBERS',		'Members');
 define('_QMENU_MANAGE_NEWBLOG',		'New Weblog');
 define('_QMENU_MANAGE_BACKUPS',		'Backups');
@@ -452,13 +453,13 @@ define('_LOGIN_PLEASE',				'Please Log in First');
 // commentform
 define('_COMMENTFORM_YOUARE',		'You are');
 define('_COMMENTFORM_SUBMIT',		'Add Comment');
-define('_COMMENTFORM_COMMENT',		'Your comment');
-define('_COMMENTFORM_NAME',			'Name');
+define('_COMMENTFORM_COMMENT',		'Your comment:');
+define('_COMMENTFORM_NAME',			'Name:');
 define('_COMMENTFORM_REMEMBER',		'Remember Me');
 
 // loginform
-define('_LOGINFORM_NAME',			'Username');
-define('_LOGINFORM_PWD',			'Password');
+define('_LOGINFORM_NAME',			'Username:');
+define('_LOGINFORM_PWD',			'Password:');
 define('_LOGINFORM_YOUARE',			'Logged in as');
 define('_LOGINFORM_SHARED',			'Shared Computer');
 
