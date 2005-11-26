@@ -1,20 +1,18 @@
 <a id="nucleus_mf"></a>
 <form method="post" action="#nucleus_mf">
-  <div class="mailform">
-  	<%errordiv%>
-  	
-	<input type="hidden" name="memberid" value="<%formdata(memberid)%>" />
-	<input type="hidden" name="action" value="sendmessage" />
+<input type="hidden" name="memberid" value="<%formdata(memberid)%>" />
+<input type="hidden" name="action" value="sendmessage" />
+<input type="hidden" name="url" value="<%formdata(url)%>" />
+	<div class="mailform">
+		<%errordiv%>
 
-	<input type="hidden" name="url" value="<%formdata(url)%>" />
+		<textarea alt="<%text(_MMAIL_MAIL)%>" name="message" class="formfield" rows="<%formdata(rows)%>" cols="<%formdata(cols)%>"><%formdata(message)%></textarea>
 
-	<textarea name="message" class="formfield" rows="<%formdata(rows)%>" cols="<%formdata(cols)%>"><%formdata(message)%></textarea>
-	<br />
-	<%text(_MEMBERMAIL_MAIL)%><input type="text" name="frommail" class="formfield" value="<%formdata(frommail)%>" />
-	
-	<%callback(FormExtra,membermailform-notloggedin)%>	
-	
-	<br />
-	<input type="submit" value="<%text(_MEMBERMAIL_SUBMIT)%>" class="formbutton" />
-  </div>
-</form>		
+		<label for="nucleus_mmf_frommail"><%text(_MEMBERMAIL_MAIL)%></label>
+		<input id="nucleus_mmf_frommail" type="text" name="frommail" class="formfield" value="<%formdata(frommail)%>" />
+
+		<%callback(FormExtra,membermailform-notloggedin)%>
+
+		<input type="submit" alt="<%text(_MEMBERMAIL_SUBMIT)%>" value="<%text(_MEMBERMAIL_SUBMIT)%>" class="formbutton" />
+	</div>
+</form>
