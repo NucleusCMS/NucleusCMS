@@ -353,8 +353,8 @@ a:hover, a:active
 .commentform img{
 	margin: 5px 0 0 0;
 }
-.formfield
-{
+.formfield {
+	display:block;
 	font-size: 11px;
 	background: white;
 	color: #494949;
@@ -374,6 +374,9 @@ a:hover, a:active
 	border-bottom: 1px solid #868686;
 	border-right: 1px solid #868686;
 	margin: 1px 0 0 0;
+}
+.commentform .formfield, .commentform .formbutton, .loginform .formbutton {
+	display: block;
 }
 .searchform .formfield
 {
@@ -435,7 +438,6 @@ a:hover, a:active
 	color: red;
 	font-weight: bold;
 }
-
 
 /*-------------------------------------------------
   Miscelaneous
