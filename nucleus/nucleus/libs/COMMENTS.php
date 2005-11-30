@@ -208,7 +208,7 @@ class COMMENTS {
 		
 
 		// isValidComment returns either "1" or an error message
-		$isvalid = $this->isValidComment($comment, &$spamcheck);
+		$isvalid = $this->isValidComment($comment, $spamcheck);
 		if ($isvalid != 1)
 			return $isvalid;
 
@@ -264,7 +264,7 @@ class COMMENTS {
 	}
 
 
-	function isValidComment($comment, $spamcheck) {
+	function isValidComment($comment, & $spamcheck) {
 		global $member, $manager;
 
 		// check if there exists a item for this date
