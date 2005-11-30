@@ -30,7 +30,7 @@
 
 <div class="heading">
 Plugin API
-<i>July 27, 2005</i>
+<i>November 29, 2005</i>
 </div>
 
 <div class="note"><strong>Notes:</strong>
@@ -664,6 +664,8 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td><dl>
 			<dt class="ref">comment</dt>
 			<dd>comment data (associative array)</dd>
+			<dt class="ref">spamcheck</dt>
+			<dd>the resulting datastructure of the previously called <code>SpamCheck</code> event (associative array)</dd>
 		</dl></td>
 	</tr>
 	<tr>
@@ -674,6 +676,8 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 			<dd>comment data (associative array)</dd>
 			<dt class="ref">commentid</dt>
 			<dd>comment ID</dd>
+			<dt class="ref">spamcheck</dt>
+			<dd>the resulting datastructure of the previously called <code>SpamCheck</code> event (associative array)</dd>
 		</dl></td>
 	</tr>
 	<tr>
@@ -1404,8 +1408,18 @@ your stuff
 			<dd>When the plugin wants to stop the handling of the form, it needs to fill out a non-empty error string message in this <code>error</code> field. This error message will then be presented to the user.</dd>
 			<dt class="ref">comment</dt>
 			<dd>On <code>comment</code>-type forms, contains an associative array with the comment data.</dd>
+			<dt class="ref">spamcheck</dt>
+			<dd>On <code>comment</code>-type forms, the resulting datastructure of the previously called <code>SpamCheck</code> event (associative array)</dd>
 			<dt class="ro obj">member</dt>
 			<dd>On <code>activation</code>-type forms, contains information about the member being activated.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>SpamCheck</td>
+		<td>(v3.3) Called when a new comment is added. This event allows anti-spam plugins to mark this comment as spam. A complete descriptions of the <code>SpamCheck</code> event can be found in a seperate document: <a href='http://wakka.xiffy.nl/spamcheck_api'>SpamCheck API 2.0</a>.</td>
+		<td><dl>
+			<dt class="ref">spamcheck</dt>
+			<dd>The spamcheck datastructure</dd>
 		</dl></td>
 	</tr>
 <!--
