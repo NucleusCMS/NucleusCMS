@@ -18,6 +18,7 @@ define('_ERROR_EMAIL_REQUIRED',		'Email address is required');
 define('_COMMENTFORM_MAIL',			'Website:');
 define('_COMMENTFORM_EMAIL',		'E-mail:');
 define('_EBLOG_REQUIREDEMAIL',		'Require E-mail address with comments?');
+define('_ERROR_COMMENTS_SPAM',      'Your comment was rejected because it did not pass the spam test');
 // END changed/added after 3.22 END
 
 // START changed/added after 3.15 START

@@ -150,11 +150,6 @@ class COMMENTS {
 			return _ERROR_EMAIL_REQUIRED;
 		}
 
-		// isValidComment returns either "1" or an error message
-		$isvalid = $this->isValidComment($comment);
-		if ($isvalid != 1)
-			return $isvalid;
-
 		$comment['timestamp'] = $timestamp;
 		$comment['host'] = gethostbyaddr(serverVar('REMOTE_ADDR'));
 		$comment['ip'] = serverVar('REMOTE_ADDR');
@@ -169,6 +164,53 @@ class COMMENTS {
 			$comment['memberid'] = 0;
 		}
 
+		// spam check
+		$continue = false;
+		$plugins = array();
+
+		if (isset($manager->subscriptions['ValidateForm']))
+			$plugins = array_merge($plugins, $manager->subscriptions['ValidateForm']);
+
+		if (isset($manager->subscriptions['PreAddComment']))
+			$plugins = array_merge($plugins, $manager->subscriptions['PreAddComment']);
+
+		if (isset($manager->subscriptions['PostAddComment']))
+			$plugins = array_merge($plugins, $manager->subscriptions['PostAddComment']);
+			
+		$plugins = array_unique($plugins);	
+			
+		while (list(,$plugin) = each($plugins)) {
+			$p = $manager->getPlugin($plugin);
+			$continue = $continue || $p->supportsFeature('handleSpam');
+		}
+		
+		$spamcheck = array (
+			'type'  	=> 'comment',
+			'body'		=> $comment['body'],
+			'id'        => $comment['itemid'],
+			'live'   	=> true,
+			'return'	=> $continue
+		);
+
+		if ($member->isLoggedIn()) {
+			$spamcheck['author'] = $member->displayname;
+			$spamcheck['email'] = $member->email;
+		} else {
+			$spamcheck['author'] = $comment['user'];
+			$spamcheck['email'] = $comment['email'];
+			$spamcheck['url'] = $comment['userid'];
+		}
+			
+		$manager->notify('SpamCheck', array ('spamcheck' => &$spamcheck));
+
+		if (!$continue && isset($spamcheck['result']) && $spamcheck['result'] == true)
+			return _ERROR_COMMENTS_SPAM;
+		
+
+		// isValidComment returns either "1" or an error message
+		$isvalid = $this->isValidComment($comment, &$spamcheck);
+		if ($isvalid != 1)
+			return $isvalid;
 
 		// send email to notification address, if any
 		if ($settings->getNotifyAddress() && $settings->notifyOnComment()) {
@@ -196,7 +238,7 @@ class COMMENTS {
 
 		$comment = COMMENT::prepare($comment);
 
-		$manager->notify('PreAddComment',array('comment' => &$comment));
+		$manager->notify('PreAddComment',array('comment' => &$comment, 'spamcheck' => &$spamcheck));		
 
 		$name		= addslashes($comment['user']);
 		$url		= addslashes($comment['userid']);
@@ -215,14 +257,14 @@ class COMMENTS {
 
 		// post add comment
 		$commentid = mysql_insert_id();
-		$manager->notify('PostAddComment',array('comment' => &$comment, 'commentid' => &$commentid));
+		$manager->notify('PostAddComment',array('comment' => &$comment, 'commentid' => &$commentid, 'spamcheck' => &$spamcheck));
 
 		// succeeded !
 		return true;
 	}
 
 
-	function isValidComment($comment) {
+	function isValidComment($comment, $spamcheck) {
 		global $member, $manager;
 
 		// check if there exists a item for this date
@@ -257,7 +299,7 @@ class COMMENTS {
 		// let plugins do verification (any plugin which thinks the comment is invalid
 		// can change 'error' to something other than '1')
 		$result = 1;
-		$manager->notify('ValidateForm', array('type' => 'comment', 'comment' => &$comment, 'error' => &$result));
+		$manager->notify('ValidateForm', array('type' => 'comment', 'comment' => &$comment, 'error' => &$result, 'spamcheck' => &$spamcheck));
 
 		return $result;
 	}
