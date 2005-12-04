@@ -1091,11 +1091,11 @@ function checkPlugin($plug) {
   * Centralisation of the functions that generate links
   */
 function createItemLink($itemid, $extra = '') {
-	return createLink('item', array('itemid' => $itemid) );
+	return createLink('item', array('itemid' => $itemid, 'extra' => $extra) );
 }
 
 function createMemberLink($memberid, $extra = '') {
-	return createLink('member', array('memberid' => $memberid) );
+	return createLink('member', array('memberid' => $memberid, 'extra' => $extra) );
 }
 
 function createCategoryLink($catid, $extra = '') {
