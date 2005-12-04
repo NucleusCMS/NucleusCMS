@@ -1252,8 +1252,13 @@ class ACTIONS extends BaseActions {
 					'extra' => $this->linkparams
 				)
 			);
+			
+			// note: createLink returns an HTML encoded URL
+		} else {
+			// HTML encode URL
+			$destinationurl = htmlspecialchars($destinationurl);
 		}
-
+		
 		// values to prefill
 		$user = cookieVar($CONF['CookiePrefix'] .'comment_user');
 		if (!$user) $user = postVar('user');
@@ -1266,7 +1271,7 @@ class ACTIONS extends BaseActions {
 		$body = postVar('body');
 
 		$this->formdata = array(
-			'destinationurl' => htmlspecialchars($destinationurl),
+			'destinationurl' => $destinationurl,	// url is already HTML encoded
 			'actionurl' => htmlspecialchars($actionurl),
 			'itemid' => $itemid,
 			'user' => htmlspecialchars($user),
