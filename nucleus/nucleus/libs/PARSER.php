@@ -111,7 +111,7 @@ class PARSER {
 			if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_'.$action))
 				$this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
 			else
-				echo '<b>DISALLOWED (' , $action , ')</b>';
+				echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
 		}
 
 	}
