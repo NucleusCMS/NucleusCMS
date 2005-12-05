@@ -19,17 +19,17 @@
  */
 
 $CONF = array();
-include('./config.php');			// common functions
+include('./config.php');
+
+// common functions
 include_once($DIR_LIBS . 'ACTION.php');
 
 $action = requestVar('action');
-
 $a =& new ACTION();
 $errorInfo = $a->doAction($action);
 
-if ($errorInfo)
-{
-	doError($errorInfo['message'], new SKIN($errorInfo['skinid']));
+if ($errorInfo) {
+	doError($errorInfo['message'], new SKIN($errorInfo['skinid']) );
 }
 
 ?>
