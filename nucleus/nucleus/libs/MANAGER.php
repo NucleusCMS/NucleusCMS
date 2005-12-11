@@ -63,10 +63,11 @@ class MANAGER {
 	  * instead of a copy
 	  */
 	function &instance() {
-		static $instance = '';
-		if ($instance == '')
-			$instance =& new MANAGER();
-		return $instance;
+		static $instance = array();
+		if (empty($instance)) {
+			$instance[0] =& new MANAGER();
+		}
+		return $instance[0];
 	}
 
 	/**
@@ -183,7 +184,7 @@ class MANAGER {
 	}
 
 	/**
-	 * Returns a MEMBER object 
+	 * Returns a MEMBER object
 	 */
 	function &getMember($memberid) {
 		$mem =& $this->members[$memberid];
