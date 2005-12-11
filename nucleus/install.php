@@ -181,6 +181,7 @@ function showInstallForm() {
 
 	if ($mysqlVersion < $minVersion) {
 		echo ' <span class="warning">WARNING: Nucleus requires at least version ', $minVersion, '</span>';
+	}
 ?>
 
 			</li>
@@ -907,21 +908,21 @@ function installCustomSkins(&$manager) {
 function doCheckFiles() {
 	$missingfiles = array();
 	$files = array(
-		'install.sql', 
-		'index.php', 
-		'action.php', 
-		'nucleus/index.php', 
-		'nucleus/libs/globalfunctions.php', 
-		'nucleus/libs/ADMIN.php', 
-		'nucleus/libs/BLOG.php', 
-		'nucleus/libs/COMMENT.php', 
-		'nucleus/libs/COMMENTS.php', 
-		'nucleus/libs/ITEM.php', 
-		'nucleus/libs/MEMBER.php', 
-		'nucleus/libs/SKIN.php', 
-		'nucleus/libs/TEMPLATE.php', 
-		'nucleus/libs/MEDIA.php', 
-		'nucleus/libs/ACTIONLOG.php', 
+		'install.sql',
+		'index.php',
+		'action.php',
+		'nucleus/index.php',
+		'nucleus/libs/globalfunctions.php',
+		'nucleus/libs/ADMIN.php',
+		'nucleus/libs/BLOG.php',
+		'nucleus/libs/COMMENT.php',
+		'nucleus/libs/COMMENTS.php',
+		'nucleus/libs/ITEM.php',
+		'nucleus/libs/MEMBER.php',
+		'nucleus/libs/SKIN.php',
+		'nucleus/libs/TEMPLATE.php',
+		'nucleus/libs/MEDIA.php',
+		'nucleus/libs/ACTIONLOG.php',
 		'nucleus/media.php'
 		);
 
@@ -1040,6 +1041,7 @@ function showErrorMessages($errors) {
 <?php
 	while($msg = array_shift($errors) ) {
 		echo '<li>', $msg, '</li>';
+	}
 ?>
 
 	</ul>
