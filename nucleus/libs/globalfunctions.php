@@ -156,7 +156,7 @@ if ($action == 'login') {
 	} else {
 		// errormessage for [%errordiv%]
 		$errormessage = 'Login failed for ' . $login;
-		
+
 		$manager->notify('LoginFailed', array('username' => $login) );
 		ACTIONLOG::add(INFO, $errormessage);
 	}
@@ -175,7 +175,7 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 	} else {
 		$manager->notify('LoginFailed',array('username' => $login));
 		ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
-		
+
 		//Since bad credentials, generate an apropriate error page
 		header("WWW-Authenticate: Basic realm=\"Nucleus CMS {$nucleus['version']}\"");
 		header('HTTP/1.0 401 Unauthorized');
@@ -419,7 +419,7 @@ function sql_table($name) {
 
 function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 	global $manager, $CONF;
-	
+
 	if (!headers_sent() ) {
 		// if content type is application/xhtml+xml, only send it to browsers
 		// that can handle it (IE6 cannot). Otherwise, send text/html
@@ -774,7 +774,7 @@ function selector() {
 		if (!MEMBER::existsID($memberid) ) {
 			doError(_ERROR_NOSUCHMEMBER);
 		}
-	
+
 		$memberinfo = $manager->getMember($memberid);
 
 	} elseif ($imagepopup) {
@@ -1193,7 +1193,7 @@ function createLink($type, $params) {
 				$url = $CONF['BlogURL'] . '?blogid=' . $params['blogid'];
 			}
 			break;
-	}	
+	}
 
 	return addLinkParams($url, $params['extra']);
 }
@@ -1415,4 +1415,38 @@ function stringToXML ($string) {
 	return $string;
 }
 
+// START: functions that came from the end of file BLOG.php
+// used for mail notification (html -> text)
+function toAscii($html) {
+	// strip off most tags
+	$html = strip_tags($html,'<a>');
+	$to_replace = "/<a[^>]*href=[\"\']([^\"^']*)[\"\'][^>]*>([^<]*)<\/a>/i";
+	_links_init();
+	$ascii = preg_replace_callback ($to_replace, '_links_add', $html);
+	$ascii .= "\n\n" . _links_list();
+	return strip_tags($ascii);
+}
+
+function _links_init() {
+   global $tmp_links;
+   $tmp_links = array();
+}
+
+function _links_add($match) {
+   global $tmp_links;
+   array_push($tmp_links, $match[1]);
+   return $match[2] . ' [' . sizeof($tmp_links) .']';
+}
+
+function _links_list() {
+   global $tmp_links;
+   $output = '';
+   $i = 1;
+   foreach ($tmp_links as $current) {
+	  $output .= "[$i] $current\n";
+	  $i++;
+   }
+   return $output;
+}
+// END: functions that came from the end of file BLOG.php
 ?>
