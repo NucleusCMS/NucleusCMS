@@ -258,6 +258,9 @@ class SKIN {
 								'if',
 								'else',
 								'endif',
+								'elseif',
+								'ifnot',
+								'elseifnot',
 								'charset'
 								);
 
