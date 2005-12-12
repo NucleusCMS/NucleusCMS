@@ -110,7 +110,80 @@ class ACTIONS extends BaseActions {
 		echo $this->skin->getName();
 	}
 
+	/*
+	// moved to BaseActions.php
 	function parse_if($field, $name='', $value = '') {
+		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager;
+
+		$condition = 0;
+		switch($field) {
+			case 'category':
+				$condition = ($blog && $this->_ifCategory($name,$value));
+				break;
+			case 'blogsetting':
+				$condition = ($blog && ($blog->getSetting($name) == $value));
+				break;
+			case 'loggedin':
+				$condition = $member->isLoggedIn();
+				break;
+			case 'onteam':
+				$condition = $member->isLoggedIn() && $this->_ifOnTeam($name);
+				break;
+			case 'admin':
+				$condition = $member->isLoggedIn() && $this->_ifAdmin($name);
+				break;
+			case 'nextitem':
+				$condition = ($itemidnext != '');
+				break;
+			case 'previtem':
+				$condition = ($itemidprev != '');
+				break;
+			case 'skintype':
+				$condition = ($name == $this->skintype);
+				break;
+			//
+			//	hasplugin,PlugName
+			//		-> checks if plugin exists
+			//	hasplugin,PlugName,OptionName
+			//		-> checks if the option OptionName from plugin PlugName is not set to 'no'
+			//	hasplugin,PlugName,OptionName=value
+			//		-> checks if the option OptionName from plugin PlugName is set to value
+			//
+			case 'hasplugin':
+				$condition = false;
+				// (pluginInstalled method won't write a message in the actionlog on failure)
+				if ($manager->pluginInstalled('NP_'.$name))
+				{
+					$plugin =& $manager->getPlugin('NP_' . $name);
+					if ($plugin != NULL){
+						if ($value == "") {
+							$condition = true;
+						} else {
+							list($name2, $value2) = explode('=', $value, 2);
+							if ($value2 == "" && $plugin->getOption($name2) != 'no') {
+								$condition = true;
+							} else if ($plugin->getOption($name2) == $value2) {
+								$condition = true;
+							}
+						}
+					}
+				}
+				break;
+			default:
+				return;
+		}
+		$this->_addIfCondition($condition);
+	}
+*/
+
+	/**
+	 * Checks conditions for if statements
+	 *
+	 * @param string $field type of <%if%>
+	 * @param string $name property of field
+	 * @param string $value value of property
+	 */
+	function checkCondition($field, $name='', $value = '') {
 		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager;
 
 		$condition = 0;
@@ -141,19 +214,18 @@ class ACTIONS extends BaseActions {
 				break;
 			/*
 				hasplugin,PlugName
-					-> checks if plugin exists
+				   -> checks if plugin exists
 				hasplugin,PlugName,OptionName
-					-> checks if the option OptionName from plugin PlugName is not set to 'no'
+				   -> checks if the option OptionName from plugin PlugName is not set to 'no'
 				hasplugin,PlugName,OptionName=value
-					-> checks if the option OptionName from plugin PlugName is set to value
+				   -> checks if the option OptionName from plugin PlugName is set to value
 			*/
 			case 'hasplugin':
 				$condition = false;
 				// (pluginInstalled method won't write a message in the actionlog on failure)
-				if ($manager->pluginInstalled('NP_'.$name))
-				{
+				if ($manager->pluginInstalled('NP_'.$name)) {
 					$plugin =& $manager->getPlugin('NP_' . $name);
-					if ($plugin != NULL){
+					if ($plugin != NULL) {
 						if ($value == "") {
 							$condition = true;
 						} else {
@@ -170,7 +242,7 @@ class ACTIONS extends BaseActions {
 			default:
 				return;
 		}
-		$this->_addIfCondition($condition);
+		return $condition;
 	}
 
 	function _ifCategory($name = '', $value='') {
