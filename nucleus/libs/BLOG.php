@@ -1051,39 +1051,4 @@ class BLOG {
 
 }
 
-// used for mail notification (html -> text)
-
-function toAscii($html) {
-	// strip off most tags
-	$html = strip_tags($html,'<a>');
-	$to_replace = "/<a[^>]*href=[\"\']([^\"^']*)[\"\'][^>]*>([^<]*)<\/a>/i";
-	_links_init();
-	$ascii = preg_replace_callback ($to_replace, '_links_add', $html);
-	$ascii .= "\n\n" . _links_list();
-	return strip_tags($ascii);
-}
-
-function _links_init() {
-   global $tmp_links;
-   $tmp_links = array();
-}
-
-function _links_add($match) {
-   global $tmp_links;
-   array_push($tmp_links, $match[1]);
-   return $match[2] . ' [' . sizeof($tmp_links) .']';
-}
-
-function _links_list() {
-   global $tmp_links;
-   $output = '';
-   $i = 1;
-   foreach ($tmp_links as $current) {
-	  $output .= "[$i] $current\n";
-	  $i++;
-   }
-   return $output;
-}
-
-
 ?>
