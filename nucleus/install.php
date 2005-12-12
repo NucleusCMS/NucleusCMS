@@ -544,7 +544,7 @@ function doInstall() {
 	$queries = fread($fd, filesize($filename) );
 	fclose($fd);
 
-	$queries = split('(;\n|;\r)', $queries);
+	$queries = split("(;\n|;\r)", $queries);
 
 	$aTableNames = array(
 		'nucleus_actionlog',
