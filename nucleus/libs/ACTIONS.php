@@ -239,12 +239,26 @@ class ACTIONS extends BaseActions {
 					}
 				}
 				break;
+
 			default:
-				return;
+            	$condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
+            	break;
 		}
 		return $condition;
 	}
 
+	function _ifPlugin($name, $key = '', $value = '') {
+		global $manager;
+      
+		$plugin =& $manager->getPlugin('NP_' . $name);
+		if (!$plugin) return;
+
+		$params = func_get_args();
+		array_shift($params);
+
+    	return call_user_func_array(array(&$plugin, 'doIf'), $params);
+	}
+   
 	function _ifCategory($name = '', $value='') {
 		global $blog, $catid;
 
