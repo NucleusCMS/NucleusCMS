@@ -246,6 +246,9 @@ function showInstallForm() {
 		<p>This install script has attempted to find out the directories and URLs in which Nucleus is installed. Please check the values below and correct if necessary. The URLs and file paths should end with a slash.</p>
 
 <?php
+
+	// no need to this all! dirname(__FILE__) is all we need -- moraes
+	/*
 	// discover full path
 	$fullPath = serverVar('PATH_TRANSLATED');
 
@@ -261,6 +264,9 @@ function showInstallForm() {
 	if (!endsWithSlash($basePath) ) {
 		$basePath .= '/';
 	}
+	*/
+
+	$basePath = dirname(__FILE__) . '/';
 ?>
 
 		<fieldset>
