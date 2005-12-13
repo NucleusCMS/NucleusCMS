@@ -57,6 +57,7 @@
 			call_user_func_array(array(&$this,'doSkinVar'),$args);
 		}
 		function doAction($type) { return 'No Such Action'; }
+		function doIf($key,$value) { return false; }
 
 		/**
 		 * Checks if a plugin supports a certain feature.
