@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2005 The Nucleus Group
+ * Copyright (C) 2002-2006 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@
  *   v1.1 (04/09/2005) change instruction as suggested by user (lloyd_borrett) 
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2005 The Nucleus Group
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
  * @version $Id$
  */
 
