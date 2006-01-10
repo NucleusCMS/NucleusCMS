@@ -1415,7 +1415,7 @@ function stringToXML ($string) {
 	return $string;
 }
 
-// START: functions that came from the end of file BLOG.php
+// START: functions from the end of file BLOG.php
 // used for mail notification (html -> text)
 function toAscii($html) {
 	// strip off most tags
@@ -1448,5 +1448,35 @@ function _links_list() {
    }
    return $output;
 }
-// END: functions that came from the end of file BLOG.php
+// END: functions from the end of file BLOG.php
+
+// START: functions from the end of file ADMIN.php
+/**
+ * @todo document this
+ */
+function encode_desc($data)
+	{   $to_entities = get_html_translation_table(HTML_ENTITIES);
+		$from_entities = array_flip($to_entities);
+		$data = strtr($data,$from_entities);
+		$data = strtr($data,$to_entities);
+		return $data;
+	}
+
+/**
+ * Returns the Javascript code for a bookmarklet that works on most modern browsers
+ *
+ * @param blogid
+ */
+function getBookmarklet($blogid) {
+	global $CONF;
+
+	// normal
+	$document = 'document';
+	$bookmarkletline = "javascript:Q='';x=".$document.";y=window;if(x.selection){Q=x.selection.createRange().text;}else if(y.getSelection){Q=y.getSelection();}else if(x.getSelection){Q=x.getSelection();}wingm=window.open('";
+	$bookmarkletline .= $CONF['AdminURL'] . "bookmarklet.php?blogid=$blogid";
+	$bookmarkletline .="&logtext='+escape(Q)+'&loglink='+escape(x.location.href)+'&loglinktitle='+escape(x.title),'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');wingm.focus();";
+
+	return $bookmarkletline;
+}
+// END: functions from the end of file ADMIN.php
 ?>
