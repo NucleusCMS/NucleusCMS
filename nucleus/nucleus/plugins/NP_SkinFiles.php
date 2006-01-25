@@ -6,6 +6,10 @@ class NP_SkinFiles extends NucleusPlugin {
 	* Nucleus SkinFiles Plugin
 	*
 	* Copyright 2005 by Jeff MacMichael and Niels Leenheer
+	*
+	* @version $Id$
+	* @version $NucleusJP: NP_SkinFiles.php,v 1.1.2.5 2006/01/25 09:58:54 kimitake Exp $
+	*
 	* ==========================================================================================
 	* This program is free software and open source software; you can redistribute
 	* it and/or modify it under the terms of the GNU General Public License as
@@ -36,13 +40,15 @@ class NP_SkinFiles extends NucleusPlugin {
 	* v1.01 ged   - fixed event_QuickMenu to properly skip for non-admins
 	*               lined up columns for directories & added <tr> highlights
 	* v2.00 rakaz - Almost complete rewrite
+	* v2.01 yama  - modified form button for IE
+	* v2.02 kimitake - multilingual support, modified form button for IE
 	*/
 
 
 	function getName() 		  { return 'SkinFiles'; }
 	function getAuthor()  	  { return 'Misc authors'; }
 	function getURL()  		  { return 'http://www.nucleuscms.org/'; }
-	function getVersion() 	  { return '2.0'; }
+	function getVersion() 	  { return '2.02'; }
 	function getDescription() { return 'A simple file manager for skins.';	}
 
 	function supportsFeature($what) {
@@ -66,6 +72,16 @@ class NP_SkinFiles extends NucleusPlugin {
 	function hasAdminArea() {
 		return 1;
 	}
+
+	function init()
+	{
+		// include language file for this plugin
+		$language = ereg_replace( '[\\|/]', '', getLanguageName());
+		if (file_exists($this->getDirectory().$language.'.php'))
+			include_once($this->getDirectory().$language.'.php');
+		else
+			include_once($this->getDirectory().'english.php');
+	}
 	
 	function event_QuickMenu(&$data) {
 		global $member;
@@ -76,9 +92,9 @@ class NP_SkinFiles extends NucleusPlugin {
 		array_push(
 			$data['options'], 
 			array(
-				'title' => 'Skin Files',
+				'title' => _SKINFILES_TITLE,
 				'url' => $this->getAdminURL(),
-				'tooltip' => 'Manage skin files'
+				'tooltip' => _SKINFILES_TOOLTIP
 			)
 		);
 	}
