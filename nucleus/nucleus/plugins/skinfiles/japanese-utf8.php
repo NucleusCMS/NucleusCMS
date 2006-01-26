@@ -95,8 +95,7 @@ define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR11',	'そのディレクトリにア�
 define('_SKINFILES_ERR_DELETE_DIR1',			'エラー: ディレクトリ ');
 define('_SKINFILES_ERR_DELETE_DIR2',			'は存在しないか');
 define('_SKINFILES_ERR_DELETE_DIR3',			'そのディレクトリを削除する権限がありません。');
-define('_SKINFILES_ERR_DELETE_DIR4',			'エラー: ディレクトリを削除できませんでした。
-');
+define('_SKINFILES_ERR_DELETE_DIR4',			'エラー: ディレクトリを削除できませんでした。');
 define('_SKINFILES_ERR_DELETE_DIR5',			'メッセージ: ディレクトリ ');
 define('_SKINFILES_ERR_DELETE_DIR6',			'を削除しました。');
 define('_SKINFILES_ERR_DELETE_DIR7',			'現在このディレクトリには削除できるファイルはありません。');

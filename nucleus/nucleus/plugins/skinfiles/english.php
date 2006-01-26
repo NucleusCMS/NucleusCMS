@@ -59,10 +59,10 @@ define('_SKINFILES_VIEW_FILE_COLORS2',		' colors');
 
 
 
-define('_SKINFILES_ERR_DIR_DOES_NOT_CONTAIN',	'This directory does not contain any files or directories');
+define('_SKINFILES_ERR_DIR_DOES_NOT_CONTAIN',	'This directory does not contain any files or directories.');
 define('_SKINFILES_ERR_DIR_DOES_NOT_EXIST1',	'Error: The directory ');
 define('_SKINFILES_ERR_DIR_DOES_NOT_EXIST2',	'does not exist ');
-define('_SKINFILES_ERR_DIR_DOES_NOT_EXIST3',	'or you do not have permission to rename the directory');
+define('_SKINFILES_ERR_DIR_DOES_NOT_EXIST3',	'or you do not have permission to rename the directory.');
 
 define('_SKINFILES_ERR_COULD_NOT_RENAME_DIR1',	'Error: Could not rename the directory ');
 define('_SKINFILES_ERR_COULD_NOT_RENAME_DIR2',	'because no new name was supplied.');
@@ -79,50 +79,50 @@ define('_SKINFILES_ERR_COULD_NOT_RENAME_DIR11',	'Error: Could not rename the dir
 define('_SKINFILES_RENAMED_DIR1',				'Message: The directory ');
 define('_SKINFILES_RENAMED_DIR2',				'has been renamed ');
 define('_SKINFILES_RENAMED_DIR3',				'to ');
-define('_SKINFILES_RENAMED_DIR4',				'');
+define('_SKINFILES_RENAMED_DIR4',				'.');
 
-define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR1',	'Error: Could not create a new directory because there was no name supplied ');
+define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR1',	'Error: Could not create a new directory because there was no name supplied. ');
 define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR2',	'Error: Could not create the directory ');
-define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR3',	'because the supplied name contains one or more illegal characters');
+define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR3',	'because the supplied name contains one or more illegal characters.');
 define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR4',	'Error: Could not create the directory ');
 define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR5',	'because the supplied name is already used by another file or directory.');
-define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR6',	' Consider using a different name, or delete the existing file or directory first');
+define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR6',	' Consider using a different name, or delete the existing file or directory first.');
 define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR7',	'Message: The directory ');
-define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR8',	'has been created');
+define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR8',	'has been created.');
 define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR9',	'Error: The directory ');
 define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR10',	'does not exist ');
-define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR11',	'or you do not have permission to access that directory');
+define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR11',	'or you do not have permission to access that directory.');
 
 define('_SKINFILES_ERR_DELETE_DIR1',			'Error: The directory ');
 define('_SKINFILES_ERR_DELETE_DIR2',			'does not exist ');
-define('_SKINFILES_ERR_DELETE_DIR3',			'or you do not have permission to delete the directory');
-define('_SKINFILES_ERR_DELETE_DIR4',			'Error: Could not delete the directory ');
+define('_SKINFILES_ERR_DELETE_DIR3',			'or you do not have permission to delete the directory.');
+define('_SKINFILES_ERR_DELETE_DIR4',			'Error: Could not delete the directory.');
 define('_SKINFILES_ERR_DELETE_DIR5',			'Message: The directory ');
-define('_SKINFILES_ERR_DELETE_DIR6',			'has been deleted');
-define('_SKINFILES_ERR_DELETE_DIR7',			'There are currently no files in this directory that can be deleted');
+define('_SKINFILES_ERR_DELETE_DIR6',			'has been deleted.');
+define('_SKINFILES_ERR_DELETE_DIR7',			'There are currently no files in this directory that can be deleted.');
 
 define('_SKINFILES_ERR_EMPTY_DIR1',				'Message: The file ');
-define('_SKINFILES_ERR_EMPTY_DIR2',				'has been deleted');
+define('_SKINFILES_ERR_EMPTY_DIR2',				'has been deleted.');
 define('_SKINFILES_ERR_EMPTY_DIR3',				'Error: The file ');
-define('_SKINFILES_ERR_EMPTY_DIR4',				'could not be deleted');
+define('_SKINFILES_ERR_EMPTY_DIR4',				'could not be deleted.');
 define('_SKINFILES_ERR_EMPTY_DIR5',				'Error: The directory ');
 define('_SKINFILES_ERR_EMPTY_DIR6',				'does not exist ');
-define('_SKINFILES_ERR_EMPTY_DIR7',				'or you do not have permission to access that directory');
+define('_SKINFILES_ERR_EMPTY_DIR7',				'or you do not have permission to access that directory.');
 
-define('_SKINFILES_ERR_DOWNLOAD_FILE1',			'Error: Could not access the file');
-define('_SKINFILES_ERR_DOWNLOAD_FILE2',			'Error: No permission to access the file');
+define('_SKINFILES_ERR_DOWNLOAD_FILE1',			'Error: Could not access the file.');
+define('_SKINFILES_ERR_DOWNLOAD_FILE2',			'Error: No permission to access the file.');
 
 define('_SKINFILES_ERR_VIEW_FILE1',				'Error: The file ');
 define('_SKINFILES_ERR_VIEW_FILE2',				'does not exist ');
-define('_SKINFILES_ERR_VIEW_FILE3',				'or you do not have permission to view the file');
+define('_SKINFILES_ERR_VIEW_FILE3',				'or you do not have permission to view the file.');
 
 define('_SKINFILES_ERR_EDIT_FILE1',				'Error: The file ');
 define('_SKINFILES_ERR_EDIT_FILE2',				'does not exist ');
-define('_SKINFILES_ERR_EDIT_FILE3',				'or you do not have permission to edit the file');
+define('_SKINFILES_ERR_EDIT_FILE3',				'or you do not have permission to edit the file.');
 define('_SKINFILES_ERR_EDIT_FILE4',				'Message: The file ');
-define('_SKINFILES_ERR_EDIT_FILE5',				'has been saved');
+define('_SKINFILES_ERR_EDIT_FILE5',				'has been saved.');
 define('_SKINFILES_ERR_EDIT_FILE6',				'Error: The file ');
-define('_SKINFILES_ERR_EDIT_FILE7',				'could not be saved');
+define('_SKINFILES_ERR_EDIT_FILE7',				'could not be saved.');
 
 define('_SKINFILES_ERR_RENAME_FILE1',			'Error: The file ');
 define('_SKINFILES_ERR_RENAME_FILE2',			'does not exist ');
@@ -143,12 +143,12 @@ define('_SKINFILES_ERR_RENAME_FILE16',			'has been renamed ');
 define('_SKINFILES_ERR_RENAME_FILE17',			'to ');
 define('_SKINFILES_ERR_RENAME_FILE18',			'.');
 
-define('_SKINFILES_ERR_CREATE_FILE1',			'Error: Could not create a new file because there was no name supplied');
+define('_SKINFILES_ERR_CREATE_FILE1',			'Error: Could not create a new file because there was no name supplied.');
 define('_SKINFILES_ERR_CREATE_FILE2',			'Error: Could not create the file ');
-define('_SKINFILES_ERR_CREATE_FILE3',			'because the supplied file name contains one or more illegal characters');
+define('_SKINFILES_ERR_CREATE_FILE3',			'because the supplied file name contains one or more illegal characters.');
 define('_SKINFILES_ERR_CREATE_FILE4',			'Error: Could not create the file ');
 define('_SKINFILES_ERR_CREATE_FILE5',			'because the supplied name is already used by another file or directory. Consider using a different name, or ');
-define('_SKINFILES_ERR_CREATE_FILE6',			'delete the existing file or directory first');
+define('_SKINFILES_ERR_CREATE_FILE6',			'delete the existing file or directory first.');
 define('_SKINFILES_ERR_CREATE_FILE7',			'Error: Could not create the file ');
 define('_SKINFILES_ERR_CREATE_FILE8',			'.');
 define('_SKINFILES_ERR_CREATE_FILE9',			'Message: The file ');
@@ -159,10 +159,10 @@ define('_SKINFILES_ERR_CREATE_FILE13',			'or you do not have permission to acces
 
 define('_SKINFILES_ERR_DELETE_FILE1',			'Error: The file ');
 define('_SKINFILES_ERR_DELETE_FILE2',			'does not exist ');
-define('_SKINFILES_ERR_DELETE_FILE3',			'or you do not have permission to delete the file');
-define('_SKINFILES_ERR_DELETE_FILE4',			'Error: Could not delete the file ');
+define('_SKINFILES_ERR_DELETE_FILE3',			'or you do not have permission to delete the file.');
+define('_SKINFILES_ERR_DELETE_FILE4',			'Error: Could not delete the file.');
 define('_SKINFILES_ERR_DELETE_FILE5',			'Message: The file ');
-define('_SKINFILES_ERR_DELETE_FILE6',			'has been delete');
+define('_SKINFILES_ERR_DELETE_FILE6',			'has been delete.');
 
 define('_SKINFILES_ERR_UPLOAD_FILE1',			'Error: Could not upload the file ');
 define('_SKINFILES_ERR_UPLOAD_FILE2',			'. ');
@@ -171,9 +171,9 @@ define('_SKINFILES_ERR_UPLOAD_FILE4',			'.');
 define('_SKINFILES_ERR_UPLOAD_FILE5',			'Error: Could not upload the file ');
 define('_SKINFILES_ERR_UPLOAD_FILE6',			',because the supplied file name contains one or more illegal characters.');
 define('_SKINFILES_ERR_UPLOAD_FILE7',			'Message: The file ');
-define('_SKINFILES_ERR_UPLOAD_FILE8',			'has been uploaded');
+define('_SKINFILES_ERR_UPLOAD_FILE8',			'has been uploaded.');
 define('_SKINFILES_ERR_UPLOAD_FILE9',			'Error: The directory ');
 define('_SKINFILES_ERR_UPLOAD_FILE10',			'does not exist ');
-define('_SKINFILES_ERR_UPLOAD_FILE11',			'or you do not have permission to access that directory');
+define('_SKINFILES_ERR_UPLOAD_FILE11',			'or you do not have permission to access that directory.');
 
 ?>
