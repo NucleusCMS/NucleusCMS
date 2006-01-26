@@ -95,8 +95,7 @@ define('_SKINFILES_ERR_COULD_NOT_CREATE_DIR11',	'¤½¤Î¥Ç¥£¥ì¥¯¥È¥ê¤Ë¥¢¥¯¥»¥¹¤¹¤ë¸
 define('_SKINFILES_ERR_DELETE_DIR1',			'¥¨¥é¡¼: ¥Ç¥£¥ì¥¯¥È¥ê ');
 define('_SKINFILES_ERR_DELETE_DIR2',			'¤ÏÂ¸ºß¤·¤Ê¤¤¤«');
 define('_SKINFILES_ERR_DELETE_DIR3',			'¤½¤Î¥Ç¥£¥ì¥¯¥È¥ê¤òºï½ü¤¹¤ë¸¢¸Â¤¬¤¢¤ê¤Þ¤»¤ó¡£');
-define('_SKINFILES_ERR_DELETE_DIR4',			'¥¨¥é¡¼: ¥Ç¥£¥ì¥¯¥È¥ê¤òºï½ü¤Ç¤­¤Þ¤»¤ó¤Ç¤·¤¿¡£
-');
+define('_SKINFILES_ERR_DELETE_DIR4',			'¥¨¥é¡¼: ¥Ç¥£¥ì¥¯¥È¥ê¤òºï½ü¤Ç¤­¤Þ¤»¤ó¤Ç¤·¤¿¡£');
 define('_SKINFILES_ERR_DELETE_DIR5',			'¥á¥Ã¥»¡¼¥¸: ¥Ç¥£¥ì¥¯¥È¥ê ');
 define('_SKINFILES_ERR_DELETE_DIR6',			'¤òºï½ü¤·¤Þ¤·¤¿¡£');
 define('_SKINFILES_ERR_DELETE_DIR7',			'¸½ºß¤³¤Î¥Ç¥£¥ì¥¯¥È¥ê¤Ë¤Ïºï½ü¤Ç¤­¤ë¥Õ¥¡¥¤¥ë¤Ï¤¢¤ê¤Þ¤»¤ó¡£');
