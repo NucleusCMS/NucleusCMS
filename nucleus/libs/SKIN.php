@@ -58,22 +58,42 @@ class SKIN {
 	function getIncludeMode() { 	return $this->includeMode; }
 	function getIncludePrefix() { 	return $this->includePrefix; }
 
-	// returns true if there is a skin with the given shortname (static)
+	/**
+	 * Checks if a skin with a given shortname exists
+	 * @param string $name Skin short name
+	 * @return int number of skins with the given ID
+	 * @static
+	 */
 	function exists($name) {
 		return quickQuery('select count(*) as result FROM '.sql_table('skin_desc').' WHERE sdname="'.addslashes($name).'"') > 0;
 	}
 
-	// returns true if there is a skin with the given ID (static)
+	/**
+	 * Checks if a skin with a given ID exists
+	 * @param string $id Skin ID
+	 * @return int number of skins with the given ID
+	 * @static
+	 */
 	function existsID($id) {
 		return quickQuery('select COUNT(*) as result FROM '.sql_table('skin_desc').' WHERE sdnumber='.intval($id)) > 0;
 	}
 
-	// (static)
+	/**
+	 * Returns a skin given its shortname
+	 * @param string $name Skin shortname
+	 * @return object SKIN
+	 * @static
+	 */
 	function createFromName($name) {
 		return new SKIN(SKIN::getIdFromName($name));
 	}
 
-	// (static)
+	/**
+	 * Returns a skin ID given its shortname
+	 * @param string $name Skin shortname
+	 * @return int Skin ID
+	 * @static
+	 */
 	function getIdFromName($name) {
 		$query =  'SELECT sdnumber'
 			   . ' FROM '.sql_table('skin_desc')
@@ -83,7 +103,12 @@ class SKIN {
 		return $obj->sdnumber;
 	}
 
-	// (static)
+	/**
+	 * Returns a skin shortname given its ID
+	 * @param string $name
+	 * @return string Skin short name
+	 * @static
+	 */
 	function getNameFromId($id) {
 		return quickQuery('SELECT sdname as result FROM '.sql_table('skin_desc').' WHERE sdnumber=' . intval($id));
 	}
@@ -91,7 +116,7 @@ class SKIN {
 	/**
 	 * Creates a new skin, with the given characteristics.
 	 *
-	 * (static)
+	 * @static
 	 */
 	function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
 		global $manager;
