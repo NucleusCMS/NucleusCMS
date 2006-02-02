@@ -358,9 +358,22 @@ class ITEMACTIONS extends BaseActions {
 	// helper functions
 
 	/**
-	  * Parses highlighted text, with limited actions only (to prevent not fully trusted team members
-	  * from hacking your weblog.
-	  */
+	 * Parses highlighted text, with limited actions only (to prevent not fully trusted team members
+	 * from hacking your weblog.
+	 * 'plugin variables in items' implementation by Andy
+	 */
+	function highlightAndParse(&$data) {
+		$actions =& new BODYACTIONS($this->blog);
+		$parser =& new PARSER($actions->getDefinedActions(), $actions);
+		$actions->setTemplate($this->template);
+		$actions->setHighlight($this->strHighlight);
+		$actions->setCurrentItem($this->currentItem);
+		$actions->setParser($parser);
+		$parser->parse($actions->highlight($data));
+	}
+
+	/*
+	// this is the function previous to the 'plugin variables in items' implementation by Andy
 	function highlightAndParse(&$data) {
 		// allow only a limited subset of actions (do not allow includes etc, they might be evil)
 		$this->parser->actions = array('image','media','popup');
@@ -368,6 +381,7 @@ class ITEMACTIONS extends BaseActions {
 		$this->parser->parse($tmp_highlight);
 		$this->parser->actions = $this->getDefinedActions();
 	}
+	*/
 
 	function createPopupCode($filename, $width, $height, $text = '') {
 		global $CONF;
