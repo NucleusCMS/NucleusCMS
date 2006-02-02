@@ -19,7 +19,7 @@
  */
 
 // temporary: dirt way to separe class COMMENTACTIONS from COMMENTS
-require_once dirname(__FILE__) . '/COMMENTACTIONS.php';
+require_once $DIR_LIBS . 'COMMENTACTIONS.php';
 
 class COMMENTS {
 
