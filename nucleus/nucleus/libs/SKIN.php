@@ -11,7 +11,7 @@
  */
 
 // temporary: dirt way to separe class ACTIONS from SKIN
-require_once dirname(__FILE__) . '/ACTIONS.php';
+require_once $DIR_LIBS . 'ACTIONS.php';
 
 /**
  * Class representing a skin
