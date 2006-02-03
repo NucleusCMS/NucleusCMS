@@ -110,72 +110,6 @@ class ACTIONS extends BaseActions {
 		echo $this->skin->getName();
 	}
 
-	/*
-	// moved to BaseActions.php
-	function parse_if($field, $name='', $value = '') {
-		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager;
-
-		$condition = 0;
-		switch($field) {
-			case 'category':
-				$condition = ($blog && $this->_ifCategory($name,$value));
-				break;
-			case 'blogsetting':
-				$condition = ($blog && ($blog->getSetting($name) == $value));
-				break;
-			case 'loggedin':
-				$condition = $member->isLoggedIn();
-				break;
-			case 'onteam':
-				$condition = $member->isLoggedIn() && $this->_ifOnTeam($name);
-				break;
-			case 'admin':
-				$condition = $member->isLoggedIn() && $this->_ifAdmin($name);
-				break;
-			case 'nextitem':
-				$condition = ($itemidnext != '');
-				break;
-			case 'previtem':
-				$condition = ($itemidprev != '');
-				break;
-			case 'skintype':
-				$condition = ($name == $this->skintype);
-				break;
-			//
-			//	hasplugin,PlugName
-			//		-> checks if plugin exists
-			//	hasplugin,PlugName,OptionName
-			//		-> checks if the option OptionName from plugin PlugName is not set to 'no'
-			//	hasplugin,PlugName,OptionName=value
-			//		-> checks if the option OptionName from plugin PlugName is set to value
-			//
-			case 'hasplugin':
-				$condition = false;
-				// (pluginInstalled method won't write a message in the actionlog on failure)
-				if ($manager->pluginInstalled('NP_'.$name))
-				{
-					$plugin =& $manager->getPlugin('NP_' . $name);
-					if ($plugin != NULL){
-						if ($value == "") {
-							$condition = true;
-						} else {
-							list($name2, $value2) = explode('=', $value, 2);
-							if ($value2 == "" && $plugin->getOption($name2) != 'no') {
-								$condition = true;
-							} else if ($plugin->getOption($name2) == $value2) {
-								$condition = true;
-							}
-						}
-					}
-				}
-				break;
-			default:
-				return;
-		}
-		$this->_addIfCondition($condition);
-	}
-*/
-
 	/**
 	 * Checks conditions for if statements
 	 *
@@ -212,53 +146,58 @@ class ACTIONS extends BaseActions {
 			case 'skintype':
 				$condition = ($name == $this->skintype);
 				break;
-			/*
-				hasplugin,PlugName
-				   -> checks if plugin exists
-				hasplugin,PlugName,OptionName
-				   -> checks if the option OptionName from plugin PlugName is not set to 'no'
-				hasplugin,PlugName,OptionName=value
-				   -> checks if the option OptionName from plugin PlugName is set to value
-			*/
 			case 'hasplugin':
-				$condition = false;
-				// (pluginInstalled method won't write a message in the actionlog on failure)
-				if ($manager->pluginInstalled('NP_'.$name)) {
-					$plugin =& $manager->getPlugin('NP_' . $name);
-					if ($plugin != NULL) {
-						if ($value == "") {
-							$condition = true;
-						} else {
-							list($name2, $value2) = explode('=', $value, 2);
-							if ($value2 == "" && $plugin->getOption($name2) != 'no') {
-								$condition = true;
-							} else if ($plugin->getOption($name2) == $value2) {
-								$condition = true;
-							}
-						}
+				$condition = $this->_ifHasPlugin($name, $value);
+				break;
+			default:
+				$condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
+				break;
+		}
+		return $condition;
+	}
+
+	/**
+	 *	hasplugin,PlugName
+	 *	   -> checks if plugin exists
+	 *	hasplugin,PlugName,OptionName
+	 *	   -> checks if the option OptionName from plugin PlugName is not set to 'no'
+	 *	hasplugin,PlugName,OptionName=value
+	 *	   -> checks if the option OptionName from plugin PlugName is set to value
+	 */
+	function _ifHasPlugin($name, $value) {
+		global $manager;
+		$condition = false;
+		// (pluginInstalled method won't write a message in the actionlog on failure)
+		if ($manager->pluginInstalled('NP_'.$name)) {
+			$plugin =& $manager->getPlugin('NP_' . $name);
+			if ($plugin != NULL) {
+				if ($value == "") {
+					$condition = true;
+				} else {
+					list($name2, $value2) = explode('=', $value, 2);
+					if ($value2 == "" && $plugin->getOption($name2) != 'no') {
+						$condition = true;
+					} else if ($plugin->getOption($name2) == $value2) {
+						$condition = true;
 					}
 				}
-				break;
-
-			default:
-            	$condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
-            	break;
+			}
 		}
 		return $condition;
 	}
 
 	function _ifPlugin($name, $key = '', $value = '') {
 		global $manager;
-      
+
 		$plugin =& $manager->getPlugin('NP_' . $name);
 		if (!$plugin) return;
 
 		$params = func_get_args();
 		array_shift($params);
 
-    	return call_user_func_array(array(&$plugin, 'doIf'), $params);
+		return call_user_func_array(array(&$plugin, 'doIf'), $params);
 	}
-   
+
 	function _ifCategory($name = '', $value='') {
 		global $blog, $catid;
 
