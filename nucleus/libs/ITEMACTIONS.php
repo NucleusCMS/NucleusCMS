@@ -9,10 +9,13 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-
 /**
-  * This class is used when parsing item templates
-  */
+ * This class to parse item templates
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @version $Id$
+ */
 class ITEMACTIONS extends BaseActions {
 
 	// contains an assoc array with parameters that need to be included when
@@ -444,7 +447,38 @@ class ITEMACTIONS extends BaseActions {
 
 		echo TEMPLATE::fill($this->template['MEDIA_CODE'],$vars);;
 	}
+}
 
+/**
+ * A class to parse plugin calls inside items
+ */
+class BODYACTIONS extends ITEMACTIONS {
 
+	function getDefinedActions() {
+		return array('image','media','popup','plugin');
+	}
+
+	function parse_plugin($pluginName) {
+		global $manager;
+
+		// only continue when the plugin is really installed
+		if (!$manager->pluginInstalled('NP_' . $pluginName)) {
+			return;
+		}
+
+		$plugin =& $manager->getPlugin('NP_' . $pluginName);
+		if (!$plugin) return;
+
+		// get arguments
+		$params = func_get_args();
+
+		// remove plugin name
+		array_shift($params);
+
+		// add item reference (array_unshift didn't work)
+		$params = array_merge(array(&$this->currentItem),$params);
+
+		call_user_func_array(array(&$plugin,'doItemVar'), $params);
+	}
 }
 ?>

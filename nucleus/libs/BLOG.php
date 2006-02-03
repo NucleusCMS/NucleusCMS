@@ -21,7 +21,6 @@
 
 // temporary: dirt way to separe class ITEMACTIONS from BLOG
 require_once $DIR_LIBS . 'ITEMACTIONS.php';
-require_once $DIR_LIBS . 'BODYACTIONS.php';
 
 class BLOG {
 
