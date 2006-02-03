@@ -97,7 +97,13 @@ class ITEMACTIONS extends BaseActions {
 			'editlink',
 			'editpopupcode',
 			'comments',
-			'relevance'
+			'relevance'/*,
+			'if',
+			'else',
+			'endif',
+			'elseif',
+			'ifnot',
+			'elseifnot'*/
 		);
 	}
 
