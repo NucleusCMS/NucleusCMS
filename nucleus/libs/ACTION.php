@@ -27,6 +27,9 @@ class ACTION
 	function doAction($action)
 	{
 		switch($action) {
+			case 'updateticket':
+				return $this->updateTicket();
+				break;
 			case 'addcomment':
 				return $this->addComment();
 				break;
@@ -330,6 +333,20 @@ class ACTION
 			doError(_ERROR_BANNED1 . $ban->iprange . _ERROR_BANNED2 . $ban->message . _ERROR_BANNED3);
 		}
 
+	}
+
+	/**
+	 * Gets a new ticket
+	 */
+	function updateTicket() {
+		global $manager;
+		if ($manager->checkTicket()) {
+			echo $manager->getTicket();
+		}
+		else {
+			echo 'err:' . _ERROR_BADTICKET;
+		}
+		return false;
 	}
 
 

@@ -398,6 +398,16 @@ class MANAGER {
 	}
 
 	/**
+	 * Get a new ticket
+	 * (xmlHTTPRequest AutoSaveDraft uses this to refresh the ticket)
+	 */
+	function getNewTicket()
+	{
+		$this->currentRequestTicket = '';
+		return $this->_generateTicket();
+	}
+
+	/**
 	 * Checks the ticket that was passed along with the current request
 	 */
 	function checkTicket()
