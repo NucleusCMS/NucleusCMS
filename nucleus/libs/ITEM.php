@@ -148,7 +148,7 @@ class ITEM {
 		$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $i_title, 'body' => $i_body, 'more' => $i_more, 'closed' => $i_closed, 'catid' => $i_catid)));
 
 		if ($i_draftid > 0) {
-			$this->delete($i_draftid);
+			ITEM::delete($i_draftid);
 		}
 
 		// success
@@ -376,7 +376,7 @@ class ITEM {
 		$posttime = 0;
 
 		if ($i_draftid > 0) {
-			$this->update($i_draftid, $i_catid, $i_title, $i_body, $i_more, $i_closed, 1, 0, 0);
+			ITEM::update($i_draftid, $i_catid, $i_title, $i_body, $i_more, $i_closed, 1, 0, 0);
 			$itemid = $i_draftid;
 		}
 		else {
