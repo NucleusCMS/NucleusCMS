@@ -72,7 +72,7 @@ function doMonitor() {
 
 		var title = encodeURI(addform.title.value);
 		var body = encodeURI(addform.body.value);
-		var catid = addform.catid.options[addform.catid.selectedindex].value;
+		var catid = addform.catid.options[addform.catid.selectedIndex].value;
 		var more = encodeURI(addform.more.value);
 		var closed = 0;
 		if (addform.closed[0].checked) {
