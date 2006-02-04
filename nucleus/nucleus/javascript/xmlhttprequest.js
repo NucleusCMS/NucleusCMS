@@ -14,7 +14,9 @@
   *
   *
   * Usage:
-  * - Add in the page at the top:
+  * - Add in the page before the form open tag:
+  *     <script type="text/javascript" src="javascript/xmlhttprequest.js" />
+  * - Add in the page behind the form close tag:
   *     var xmlhttprequest = new Array();
   *     xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
   *     xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
@@ -22,8 +24,10 @@
   *     var checks = 0; // Number of checks since last AutoDraft
   *     var addform = document.getElementById('addform'); // The form id
   *     var goal = document.getElementById('lastsaved'); // The html div id where 'Last saved: date time' must come
-  *     var goalurl = 'index.php'; // The PHP file where the content must be posted to
+  *     var goalurl = 'action.php'; // The PHP file where the content must be posted to (action.php)
   *     var lastsavedtext = 'Last saved'; // The language variable for 'Last saved'
+  * - Add to the form tag:
+  *     id="addform"
   * - Add to the textarea's and text fields:
   *     onkeyup="doMonitor();"
   * - Add tot the selectboxes and radio buttons
