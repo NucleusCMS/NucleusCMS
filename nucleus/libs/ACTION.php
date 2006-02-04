@@ -358,6 +358,7 @@ class ACTION
 	function autoDraft() {
 		global $manager;
 		if ($manager->checkTicket()) {
+			$manager->loadClass('ITEM');
 			$info = ITEM::CreateDraftFromRequest();
 			if ($info['status'] == 'error') {
 				echo $info['message'];
