@@ -15,7 +15,7 @@
   *
   * Usage:
   * - Add in the page before the form open tag:
-  *     <script type="text/javascript" src="javascript/xmlhttprequest.js" />
+  *     <script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
   * - Add in the page behind the form close tag:
   *     var xmlhttprequest = new Array();
   *     xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
