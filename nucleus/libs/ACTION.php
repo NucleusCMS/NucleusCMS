@@ -27,6 +27,9 @@ class ACTION
 	function doAction($action)
 	{
 		switch($action) {
+			case 'autodraft':
+				return $this->autoDraft();
+				break;
 			case 'updateticket':
 				return $this->updateTicket();
 				break;
@@ -341,7 +344,27 @@ class ACTION
 	function updateTicket() {
 		global $manager;
 		if ($manager->checkTicket()) {
-			echo $manager->getTicket();
+			echo $manager->getNewTicket();
+		}
+		else {
+			echo 'err:' . _ERROR_BADTICKET;
+		}
+		return false;
+	}
+
+	/**
+	 * Handles AutoSaveDraft
+	 */
+	function autoDraft() {
+		global $manager;
+		if ($manager->checkTicket()) {
+			$info = ITEM::CreateDraftFromRequest();
+			if ($info['status'] == 'error') {
+				echo $info['message'];
+			}
+			else {
+				echo $info['draftid'];
+			}
 		}
 		else {
 			echo 'err:' . _ERROR_BADTICKET;

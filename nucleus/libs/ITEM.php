@@ -91,6 +91,8 @@ class ITEM {
 
 		 $i_catid = 		postVar('catid');
 
+		 $i_draftid = 		intPostVar('draftid');
+
 		 if (!$member->canAddItem($i_catid))
 			return array('status' => 'error', 'message' => _ERROR_DISALLOWED);
 
@@ -144,6 +146,10 @@ class ITEM {
 		$aOptions = requestArray('plugoption');
 		NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
 		$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $i_title, 'body' => $i_body, 'more' => $i_more, 'closed' => $i_closed, 'catid' => $i_catid)));
+
+		if ($i_draftid > 0) {
+			$this->delete($i_draftid);
+		}
 
 		// success
 		if ($i_catid != intRequestVar('catid'))
@@ -384,7 +390,7 @@ class ITEM {
 		//$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $i_title, 'body' => $i_body, 'more' => $i_more, 'closed' => $i_closed, 'catid' => $i_catid)));
 
 		// success
-		return array('status' => 'added', 'itemid' => $itemid);
+		return array('status' => 'added', 'draftid' => $itemid);
 	}
 
 }
