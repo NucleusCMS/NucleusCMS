@@ -128,7 +128,12 @@ function checkMonitor() {
 function updateTicket() {
 	if (xmlhttprequest[1].readyState == 4) {
 		if (xmlhttprequest[1].responseText) {
-			addform.ticket.value = xmlhttprequest[1].responseText;
+			if (xmlhttprequest[1].responseText.substr(0, 4) == 'err:') {
+				goal.innerHTML = '<p>' + xmlhttprequest[1].responseText.substr(4) + '</p>';
+			}
+			else {
+				addform.ticket.value = xmlhttprequest[1].responseText;
+			}
 		}
 	}
 }
