@@ -24,6 +24,10 @@
   *     var goal = document.getElementById('lastsaved'); // The html div id where 'Last saved: date time' must come
   *     var goalurl = 'index.php'; // The PHP file where the content must be posted to
   *     var lastsavedtext = 'Last saved'; // The language variable for 'Last saved'
+  * - Add to the textarea's and text fields:
+  *     onkeyup="doMonitor();"
+  * - Add tot the selectboxes and radio buttons
+  *     onchange="doMonitor();"
   *
   *
   * $Id$
