@@ -16,10 +16,10 @@
   * Usage:
   * - Add in the page at the top:
   *     var xmlhttprequest = new Array();
-  *     xmlhttprequest[0] = createHTTPHandler();
-  *     xmlhttprequest[1] = createHTTPHandler();
-  *     var seconds = now();
-  *     var checks = 0;
+  *     xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
+  *     xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
+  *     var seconds = now(); // Last AutoDraft time
+  *     var checks = 0; // Number of checks since last AutoDraft
   *     var addform = document.getElementById('addform'); // The form id
   *     var goal = document.getElementById('lastsaved'); // The html div id where 'Last saved: date time' must come
   *     var goalurl = 'index.php'; // The PHP file where the content must be posted to
@@ -28,6 +28,8 @@
   *     onkeyup="doMonitor();"
   * - Add tot the selectboxes and radio buttons
   *     onchange="doMonitor();"
+  * - Add to the form:
+  *     <input type="hidden" name="draftid" value="0" />
   *
   *
   * $Id$
@@ -90,6 +92,9 @@ function doMonitor() {
 		querystring += '&closed=' + closed;
 		querystring += '&ticket=' + ticket;
 		querystring += '&blogid=' + blogid;
+		if (addform.draftid.value > 0) {
+			querystring += '&draftid=' + addform.draftid.value;
+		}
 
 		xmlhttprequest[0].open('POST', goalurl, true);
 		xmlhttprequest[0].onreadystatechange = checkMonitor;
@@ -113,11 +118,14 @@ function doMonitor() {
  */
 function checkMonitor() {
 	if (xmlhttprequest[0].readyState == 4) {
-		if (xmlhttprequest[0].responseText == 'updated') {
-			goal.innerHTML = '<p>' + lastsavedtext + ': ' + formattedDate() + '</p>';
-		}
-		else {
-			goal.innerHTML = '<p>' + xmlhttprequest.responseText + ' (' + formattedDate() + ')</p>';
+		if (xmlhttprequest[0].responseText) {
+			if (xmlhttprequest[0].responseText.substr(0, 4) == 'err:') {
+				goal.innerHTML = '<p>' + xmlhttprequest[0].responseText.substr(4) + ' (' + formattedDate() + ')</p>';
+			}
+			else {
+				addform.draftid.value = xmlhttprequest[0].responseText;
+				goal.innerHTML = '<p>' + lastsavedtext + ': ' + formattedDate() + '</p>';
+			}
 		}
 	}
 }
@@ -129,7 +137,7 @@ function updateTicket() {
 	if (xmlhttprequest[1].readyState == 4) {
 		if (xmlhttprequest[1].responseText) {
 			if (xmlhttprequest[1].responseText.substr(0, 4) == 'err:') {
-				goal.innerHTML = '<p>' + xmlhttprequest[1].responseText.substr(4) + '</p>';
+				goal.innerHTML = '<p>' + xmlhttprequest[1].responseText.substr(4) + ' (' + formattedDate() + ')</p>';
 			}
 			else {
 				addform.ticket.value = xmlhttprequest[1].responseText;

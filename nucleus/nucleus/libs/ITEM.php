@@ -318,6 +318,75 @@ class ITEM {
 		return (mysql_num_rows($r) != 0);
 	}
 
+	/**
+	 * Tries to create an draft from the data in the current request (comes from
+	 * bookmarklet or admin area
+	 *
+	 * Returns an array with status info (status = 'added', 'error', 'newcategory')
+	 *
+	 * (static)
+	 *
+	 * Used by xmlHTTPRequest AutoDraft
+	 */
+	function createDraftFromRequest() {
+		global $member, $manager;
+
+		$i_author = $member->getID();
+		$i_body = postVar('body');
+		$i_title = postVar('title');
+		$i_more = postVar('more');
+		//$i_actiontype = postVar('actiontype');
+		$i_closed = intPostVar('closed');
+		//$i_hour = intPostVar('hour');
+		//$i_minutes = intPostVar('minutes');
+		//$i_month = intPostVar('month');
+		//$i_day = intPostVar('day');
+		//$i_year = intPostVar('year');
+		$i_catid = postVar('catid');
+		$i_draft = 1;
+		$i_blogid = intPostVar('blogid');
+		$i_draftid = intPostVar('draftid');
+
+		if (!$member->canAddItem($i_catid)) {
+			return array('status' => 'error', 'message' => _ERROR_DISALLOWED);
+		}
+
+		if (!trim($i_body)) {
+			return array('status' => 'error', 'message' => _ERROR_NOEMPTYITEMS);
+		}
+
+		// create new category if needed
+		if (strstr($i_catid, 'newcat')) {
+			// Set in default category
+			$blog =& $manager->getBlog($i_blogid);
+			$i_catid = $blog->getDefaultCategory();
+		}
+		else {
+			// force blogid (must be same as category id)
+			$i_blogid = getBlogIDFromCatID($i_catid);
+			$blog =& $manager->getBlog($i_blogid);
+		}
+
+		$posttime = 0;
+
+		if ($i_draftid > 0) {
+			$this->update($i_draftid, $i_catid, $i_title, $i_body, $i_more, $i_closed, 1, 0, 0);
+			$itemid = $i_draftid;
+		}
+		else {
+			$itemid = $blog->additem($i_catid, $i_title, $i_body, $i_more, $i_blogid, $i_author, $posttime, $i_closed, $i_draft);
+		}
+
+		// No plugin support in AutoSaveDraft yet
+		//Setting the itemOptions
+		//$aOptions = requestArray('plugoption');
+		//NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
+		//$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $i_title, 'body' => $i_body, 'more' => $i_more, 'closed' => $i_closed, 'catid' => $i_catid)));
+
+		// success
+		return array('status' => 'added', 'itemid' => $itemid);
+	}
+
 }
 
 ?>
