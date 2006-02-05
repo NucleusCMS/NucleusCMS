@@ -128,7 +128,7 @@ function checkMonitor() {
 			}
 			else {
 				addform.draftid.value = xmlhttprequest[0].responseText;
-				goal.innerHTML = '<p>' + lastsavedtext + ': ' + formattedDate() + '</p>';
+				goal.innerHTML = '<p>' + lastsavedtext + ' ' + formattedDate() + '</p>';
 			}
 		}
 	}
