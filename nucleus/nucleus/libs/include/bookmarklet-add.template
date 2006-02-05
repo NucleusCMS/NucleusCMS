@@ -7,6 +7,7 @@
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
+		<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
@@ -24,10 +25,11 @@
 	</head>
 	<body>
 		<h1><%text(_ADD_ADDTO)%> '<%bloglink%>'</h1>
-		<form method="post" action="bookmarklet.php" ><div>
+		<form id="addform" method="post" action="bookmarklet.php" ><div>
 			
 			<input name="action" type="hidden" value="additem" />
 			<input name="blogid" type="hidden" value="<%blogid%>" />
+			<input type="hidden" name="draftid" value="0" />
 			<%ticket%>
 			
 			<div id="submit" class="buttonbar">
@@ -43,6 +45,10 @@
 			<div id="body" class="contentblock">
 
 				<table>
+				<tr>
+				<td><%text(_AUTOSAVEDRAFT)%></td>
+				<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+				</tr>
 				<tr>
 				<td><%text(_ADD_TITLE)%></td>
 				<td>
@@ -141,6 +147,19 @@
 			</div>
 			
 		</div></form>
+
+	<script type="text/javascript">
+		var xmlhttprequest = new Array();
+		xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
+		xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
+		var seconds = now(); // Last AutoDraft time
+		var checks = 0; // Number of checks since last AutoDraft
+		var addform = document.getElementById('addform'); // The form id
+		var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
+		var goalurl = '../action.php'; // The PHP file where the content must be posted to
+		var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
+	</script>
+
 	</body>
 	</html>
 

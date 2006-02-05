@@ -275,17 +275,23 @@ class PAGEFACTORY extends BaseActions {
 	<?php
 		if ($CONF['DisableJsTools'] != 1) {
 	?>
-			onkeyup="storeCaret(this); updPreview('<?php echo $which?>');"
+			onkeyup="storeCaret(this); updPreview('<?php echo $which?>'); doMonitor();"
 			onclick="storeCaret(this);"
 			onselect="storeCaret(this);"
 
 	<?php
 		}
-
-		if ($CONF['DisableJsTools'] == 0) {
+		else if ($CONF['DisableJsTools'] == 0) {
 	?>
+			onkeyup="doMonitor();"
 			onkeypress="shortCuts();"
-	<?php		}
+	<?php
+		}
+		else {
+	?>
+			onkeyup="doMonitor();"
+	<?php
+		}
 	}
 
 	// shows the javascript button bar

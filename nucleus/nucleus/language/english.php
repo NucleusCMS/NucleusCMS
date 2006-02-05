@@ -12,6 +12,12 @@
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
 
+// START changed/added after 3.3 START
+define('_AUTOSAVEDRAFT',		'Auto save draft');
+define('_AUTOSAVEDRAFT_LASTSAVED',	'Last saved: ');
+define('_AUTOSAVEDRAFT_NOTYETSAVED',	'No saves have been made yet');
+// END changed/added after 3.3 END
+
 // START changed/added after 3.22 START
 define('_SEARCHFORM_QUERY',			'Keywords to search');
 define('_ERROR_EMAIL_REQUIRED',		'Email address is required');
