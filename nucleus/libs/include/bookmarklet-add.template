@@ -158,7 +158,7 @@
 		var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
 		var goalurl = '../action.php'; // The PHP file where the content must be posted to
 		var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
-		var type = 'add'; // Add or edit form
+		var formtype = 'add'; // Add or edit form
 	</script>
 
 	</body>
