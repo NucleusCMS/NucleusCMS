@@ -26,6 +26,7 @@
   *     var goal = document.getElementById('lastsaved'); // The html div id where 'Last saved: date time' must come
   *     var goalurl = 'action.php'; // The PHP file where the content must be posted to (action.php)
   *     var lastsavedtext = 'Last saved'; // The language variable for 'Last saved'
+  *     var type = 'add'; // Add or edit form
   * - Add to the form tag:
   *     id="addform"
   * - Add to the textarea's and text fields:
@@ -86,7 +87,6 @@ function doMonitor() {
 			closed = addform.closed[1].value;
 		}
 		var ticket = addform.ticket.value;
-		var blogid = addform.blogid.value;
 
 		var querystring = 'action=autodraft';
 		querystring += '&title=' + title;
@@ -95,7 +95,14 @@ function doMonitor() {
 		querystring += '&more=' + more;
 		querystring += '&closed=' + closed;
 		querystring += '&ticket=' + ticket;
-		querystring += '&blogid=' + blogid;
+		if (type == 'edit') {
+			querystring += '&itemid=' + addform.itemid.value;
+			querystring += '&type=edit';
+		}
+		else {
+			querystring += '&blogid=' + addform.blogid.value;
+			querystring += '&type=add';
+		}
 		if (addform.draftid.value > 0) {
 			querystring += '&draftid=' + addform.draftid.value;
 		}

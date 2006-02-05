@@ -350,7 +350,13 @@ class ITEM {
 		//$i_year = intPostVar('year');
 		$i_catid = postVar('catid');
 		$i_draft = 1;
-		$i_blogid = intPostVar('blogid');
+		$type = postVar('type');
+		if ($type == 'edit') {
+			$i_blogid = getBlogIDFromItemID(intPostVar('itemid'));
+		}
+		else {
+			$i_blogid = intPostVar('blogid');
+		}
 		$i_draftid = intPostVar('draftid');
 
 		if (!$member->canAddItem($i_catid)) {
