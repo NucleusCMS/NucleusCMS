@@ -26,7 +26,7 @@
   *     var goal = document.getElementById('lastsaved'); // The html div id where 'Last saved: date time' must come
   *     var goalurl = 'action.php'; // The PHP file where the content must be posted to (action.php)
   *     var lastsavedtext = 'Last saved'; // The language variable for 'Last saved'
-  *     var type = 'add'; // Add or edit form
+  *     var formtype = 'add'; // Add or edit form
   * - Add to the form tag:
   *     id="addform"
   * - Add to the textarea's and text fields:
@@ -95,7 +95,7 @@ function doMonitor() {
 		querystring += '&more=' + more;
 		querystring += '&closed=' + closed;
 		querystring += '&ticket=' + ticket;
-		if (type == 'edit') {
+		if (formtype == 'edit') {
 			querystring += '&itemid=' + addform.itemid.value;
 			querystring += '&type=edit';
 		}
