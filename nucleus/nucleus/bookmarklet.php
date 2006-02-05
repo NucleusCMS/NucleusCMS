@@ -118,6 +118,8 @@ function bm_doEditItem() {
 	$closed 	= intPostVar('closed');
 	$actiontype = postVar('actiontype');
 
+	$draftid 	= intPostVar('draftid');
+
 	// redirect to admin area on delete (has delete confirmation)
 	if ($actiontype == 'delete') {
 		redirect('index.php?action=itemdelete&itemid='.$itemid);
@@ -156,6 +158,10 @@ function bm_doEditItem() {
 
 	// update item for real
 	ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
+
+	if ($draftid > 0) {
+		ITEM::delete($draftid);
+	}
 
 	// show success message
 	if ($catid != intPostVar('catid'))

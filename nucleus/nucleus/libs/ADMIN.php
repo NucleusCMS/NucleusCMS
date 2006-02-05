@@ -1100,6 +1100,7 @@ class ADMIN {
 		$title 	= postVar('title');
 		$more 	= postVar('more');
 		$closed = intPostVar('closed');
+		$draftid = intPostVar('draftid');
 
 		// default action = add now
 		if (!$actiontype)
@@ -1161,6 +1162,10 @@ class ADMIN {
 
 		// edit the item for real
 		ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
+
+		if ($draftid > 0) {
+			ITEM::delete($draftid);
+		}
 
 		$blogid = getBlogIDFromItemID($itemid);
 		$blog =& $manager->getBlog($blogid);
