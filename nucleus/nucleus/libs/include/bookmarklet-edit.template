@@ -136,11 +136,11 @@
 			<div id="preview" class="contentblock">
 				<h2><%text(_ADD_PREVIEW)%></h2>
 				
-				<b><span id="prevtitle">&nbsp;</span></b>
+				<b><span id="prevtitle">&#160;</span></b>
 				<br />
-				<span id="prevbody">&nbsp;</span>
+				<span id="prevbody">&#160;</span>
 				<br />
-				<span id="prevmore">&nbsp;</span>
+				<span id="prevmore">&#160;</span>
 			</div>
 			
 		</div></form>
