@@ -28,7 +28,7 @@ function preview(id, value) {
 	elem = document.getElementById(id);
 	if (!elem) return;
 
-	var preview = nucleusConvertBreaks ? str_replace("\n","<br />",value)+"&nbsp;" : value+"&nbsp;";
+	var preview = nucleusConvertBreaks ? str_replace("\n","<br />",value)+"&#160;" : value+"&#160;";
 
 	// expand the media commands (without explicit collection)
 	preview = preview.replace(/\<\%image\(([^\/\|]*)\|([^\|]*)\|([^\|]*)\|([^)]*)\)\%\>/g,"<img src='"+nucleusMediaURL+nucleusAuthorId+"/$1' width='$2' height='$3' alt=\"$4\" />");
