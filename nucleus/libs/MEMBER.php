@@ -43,14 +43,14 @@ class MEMBER {
 
 	// (static)
 	function &createFromName($displayname) {
-		$mem =& new MEMBER();
+		$mem = new MEMBER();
 		$mem->readFromName($displayname);
 		return $mem;
 	}
 
 	// (static)
 	function &createFromID($id) {
-		$mem =& new MEMBER();
+		$mem = new MEMBER();
 		$mem->readFromID($id);
 		return $mem;
 	}
@@ -184,7 +184,7 @@ class MEMBER {
 		if ($this->isAdmin()) return 1;
 
 		$query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
-		$res = sql_query($query);		
+		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
 		return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
 	}
@@ -271,7 +271,7 @@ class MEMBER {
 	}
 
 	/**
-	  * Return true if member can be deleted. This means that there are no items 
+	  * Return true if member can be deleted. This means that there are no items
 	  * posted by the member left
 	  */
 	function canBeDeleted() {
