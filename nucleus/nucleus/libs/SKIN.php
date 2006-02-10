@@ -166,7 +166,7 @@ class SKIN {
 
 		if (!$contents) {
 			// use base skin if this skin does not have contents
-			$defskin =& new SKIN($CONF['BaseSkin']);
+			$defskin = new SKIN($CONF['BaseSkin']);
 			$contents = $defskin->getContent($type);
 			if (!$contents) {
 				echo _ERROR_SKIN;
@@ -182,8 +182,8 @@ class SKIN {
 		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
 		PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());
 
-		$handler =& new ACTIONS($type, $this);
-		$parser =& new PARSER($actions, $handler);
+		$handler = new ACTIONS($type, $this);
+		$parser = new PARSER($actions, $handler);
 		$handler->setParser($parser);
 		$handler->setSkin($this);
 		$parser->parse($contents);
