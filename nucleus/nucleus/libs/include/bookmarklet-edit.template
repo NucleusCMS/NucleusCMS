@@ -73,6 +73,7 @@
 				<tr>
 				<td><%text(_AUTOSAVEDRAFT_NOW)%></td>
 				<td><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="autoSaveDraft();" /></td>
+				</tr>
 				</table>
 					
 			</div>
