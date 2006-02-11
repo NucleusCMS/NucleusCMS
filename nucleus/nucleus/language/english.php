@@ -16,6 +16,7 @@
 define('_AUTOSAVEDRAFT',		'Auto save draft');
 define('_AUTOSAVEDRAFT_LASTSAVED',	'Last saved: ');
 define('_AUTOSAVEDRAFT_NOTYETSAVED',	'No saves have been made yet');
+define('_AUTOSAVEDRAFT_NOW',		'Auto save now');
 // END changed/added after 3.3 END
 
 // START changed/added after 3.22 START
