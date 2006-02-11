@@ -426,9 +426,12 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 
 		// v2.5: For admin area pages, keep sending text/html (unless it's a debug version)
 		//       application/xhtml+xml still causes too much problems with the javascript implementations
+
+		// v3.3: ($CONF['UsingAdminArea'] && !$CONF['debug']) becomes !$CONF['debug'],
+		//       application/xhtml+xml seems to be working, so it's on in debug versions.
 		if (
 				($contenttype == 'application/xhtml+xml')
-			&&	(($CONF['UsingAdminArea'] && !$CONF['debug']) || !stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml') )
+			&&	(!$CONF['debug'] || !stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml') )
 			) {
 			$contenttype = 'text/html';
 		}
