@@ -35,6 +35,8 @@
   *     onchange="doMonitor();"
   * - Add to the form:
   *     <input type="hidden" name="draftid" value="0" />
+  * - Optionally a autosave now button can be add:
+  *     <input type="button" name="autosavenow" value="AutoSave now" onclick="autoSaveDraft();" />
   *
   *
   * $Id$
@@ -68,56 +70,63 @@ function createHTTPHandler() {
 }
 
 /**
+ * Auto saves as draft
+ */
+function autoSaveDraft() {
+	checks = 0;
+	seconds = now();
+
+	var title = encodeURI(addform.title.value);
+	var body = encodeURI(addform.body.value);
+	var catid = addform.catid.options[addform.catid.selectedIndex].value;
+	var more = encodeURI(addform.more.value);
+	var closed = 0;
+	if (addform.closed[0].checked) {
+		closed = addform.closed[0].value;
+	}
+	else if (addform.closed[1].checked) {
+		closed = addform.closed[1].value;
+	}
+	var ticket = addform.ticket.value;
+
+	var querystring = 'action=autodraft';
+	querystring += '&title=' + title;
+	querystring += '&body=' + body;
+	querystring += '&catid=' + catid;
+	querystring += '&more=' + more;
+	querystring += '&closed=' + closed;
+	querystring += '&ticket=' + ticket;
+	if (formtype == 'edit') {
+		querystring += '&itemid=' + addform.itemid.value;
+		querystring += '&type=edit';
+	}
+	else {
+		querystring += '&blogid=' + addform.blogid.value;
+		querystring += '&type=add';
+	}
+	if (addform.draftid.value > 0) {
+		querystring += '&draftid=' + addform.draftid.value;
+	}
+
+	xmlhttprequest[0].open('POST', goalurl, true);
+	xmlhttprequest[0].onreadystatechange = checkMonitor;
+	xmlhttprequest[0].setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xmlhttprequest[0].send(querystring);
+
+	var querystring = 'action=updateticket&ticket=' + ticket;
+
+	xmlhttprequest[1].open('POST', goalurl, true);
+	xmlhttprequest[1].onreadystatechange = updateTicket;
+	xmlhttprequest[1].setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xmlhttprequest[1].send(querystring);
+}
+
+/**
  * Monitors the edits
  */
 function doMonitor() {
 	if (checks * (now() - seconds) > 120 * 1000 * 50) {
-		checks = 0;
-		seconds = now();
-
-		var title = encodeURI(addform.title.value);
-		var body = encodeURI(addform.body.value);
-		var catid = addform.catid.options[addform.catid.selectedIndex].value;
-		var more = encodeURI(addform.more.value);
-		var closed = 0;
-		if (addform.closed[0].checked) {
-			closed = addform.closed[0].value;
-		}
-		else if (addform.closed[1].checked) {
-			closed = addform.closed[1].value;
-		}
-		var ticket = addform.ticket.value;
-
-		var querystring = 'action=autodraft';
-		querystring += '&title=' + title;
-		querystring += '&body=' + body;
-		querystring += '&catid=' + catid;
-		querystring += '&more=' + more;
-		querystring += '&closed=' + closed;
-		querystring += '&ticket=' + ticket;
-		if (formtype == 'edit') {
-			querystring += '&itemid=' + addform.itemid.value;
-			querystring += '&type=edit';
-		}
-		else {
-			querystring += '&blogid=' + addform.blogid.value;
-			querystring += '&type=add';
-		}
-		if (addform.draftid.value > 0) {
-			querystring += '&draftid=' + addform.draftid.value;
-		}
-
-		xmlhttprequest[0].open('POST', goalurl, true);
-		xmlhttprequest[0].onreadystatechange = checkMonitor;
-		xmlhttprequest[0].setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		xmlhttprequest[0].send(querystring);
-
-		var querystring = 'action=updateticket&ticket=' + ticket;
-
-		xmlhttprequest[1].open('POST', goalurl, true);
-		xmlhttprequest[1].onreadystatechange = updateTicket;
-		xmlhttprequest[1].setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		xmlhttprequest[1].send(querystring);
+		autoSaveDraft();
 	}
 	else {
 		checks++;
