@@ -142,6 +142,8 @@
 		<td>
 			<input tabindex="60" type="submit" value="<%text(_EDIT_SUBMIT)%>" 
 				onclick="return checkSubmit();" />
+			<input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
+				onclick="autoSaveDraft();" />
 		</td>
 	
 </tr></table>
