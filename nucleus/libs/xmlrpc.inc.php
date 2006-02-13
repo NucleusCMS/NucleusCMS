@@ -748,7 +748,9 @@
 					// constants true or false
 					// NB: this simple checks helps a lot sanitizing input, ie no
 					// security problems around here
-					if ($_xh[$parser]['ac']=='1')
+
+					// [MOD] S. Verberkt (Legolas) (13/02/2006 21:16): Also accept 'true' and 'false'
+					if ($_xh[$parser]['ac']=='1' || strcasecmp($_xh[$parser]['ac'], 'true') == 0)
 					{
 						//$_xh[$parser]['ac']='true';	
 						$_xh[$parser]['value']=true;
@@ -757,10 +759,12 @@
 					{
 						//$_xh[$parser]['ac']='false';
 						// log if receiveing something strange, even though we set the value to false anyway
-						if ($_xh[$parser]['ac']!='0')
+						if ($_xh[$parser]['ac']!='0' && strcasecmp($_xh[$parser]['ac'], 'false') != 0)
 							error_log('XML-RPC: invalid value received in BOOLEAN: '.$_xh[$parser]['ac']);
 						$_xh[$parser]['value']=false;
 					}
+					// [/MOD]
+
 					//$_xh[$parser]['st'].=$_xh[$parser]['ac'];
 				}
 				elseif ($name=='DOUBLE')
