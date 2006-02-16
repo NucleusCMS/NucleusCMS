@@ -1,4 +1,4 @@
-CREATE TABLE `nucleus_actionlog` (
+﻿CREATE TABLE `nucleus_actionlog` (
   `timestamp` datetime NOT NULL default '0000-00-00 00:00:00',
   `message` varchar(255) NOT NULL default ''
 ) TYPE=MyISAM;
@@ -48,7 +48,7 @@ INSERT INTO `nucleus_blog` VALUES (1, 'My Nucleus CMS', 'mynucleuscms', '', 1, 0
 CREATE TABLE `nucleus_category` (
   `catid` int(11) NOT NULL auto_increment,
   `cblog` int(11) NOT NULL default '0',
-  `cname` varchar(40) default NULL,
+  `cname` varchar(200) default NULL,
   `cdesc` varchar(200) default NULL,
   PRIMARY KEY  (`catid`)
 ) TYPE=MyISAM;
