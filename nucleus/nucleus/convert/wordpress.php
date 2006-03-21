@@ -18,6 +18,9 @@
 /* This script will convert     */
 /* your WP blog into            */
 /* Nucleus CMS weblog           */
+/*
+  v1.1 - add robustness code for category creation and item adding (admun)
+*/
 
   function def($s){ 
     if (isset($_POST[$s])) 
@@ -146,6 +149,12 @@ a:hover{text-decoration:underline}
       /* *********************************************** */
       echo "<h2>Transfering categories...</h2>";
       mysql_query("delete from ".$prefixblogcms."nucleus_category where cdesc='@wordpress'",$linkblogcms);
+      $q = mysql_query("SELECT count(*) as result FROM nucleus_category");
+      $total_row = mysql_fetch_object($q);
+      $total_num = $total_row->result;
+      $catdd = $total_num;
+      $total_num++;
+
       $query="select cat_ID, cat_name from ".$prefixwp."categories order by cat_ID";
       $querywp=mysql_query($query,$linkwp) or die($query);
       echo "<p>rows to transfer: ".mysql_num_rows($querywp)."</p>";
@@ -156,8 +165,10 @@ a:hover{text-decoration:underline}
         $query=
           "insert into ".$prefixblogcms."nucleus_category ".
           "(catid,cblog,cname,cdesc)  values (".
-          intval(intval($row->cat_ID)+1).",1,'".encoding($row->cat_name)."','@wordpress')";
+          intval($total_num).",1,'".encoding($row->cat_name)."','@wordpress')";
+        // echo $queryi . "<br/>";
         $result = mysql_query($query,$linkblogcms) or die($query);
+        $total_num++;
       }
       echo "</p>";
 
@@ -174,12 +185,13 @@ a:hover{text-decoration:underline}
         // category id
         $query="select category_id from ".$prefixwp."post2cat where post_id=".$row->ID;
         $querywp_detail=mysql_query($query,$linkwp) or die($query);
-        if ($row_detail=mysql_fetch_object($querywp_detail)) $cat=intval($row_detail->category_id)+1; else $cat=1;
+        if ($row_detail=mysql_fetch_object($querywp_detail)) $cat=intval($row_detail->category_id)+$catdd; else $cat=1;
         // insert post
         $query=
           "insert into ".$prefixblogcms."nucleus_item ".
           "(ititle,ibody,iblog,iauthor,itime,icat) values (".
           "'".addslashes(encoding($row->post_title))."','".addslashes(paragraph(encoding(stripslashes($row->post_content)),false))."',1,1,'".$row->post_date."',$cat)";
+        //echo $query . "<br/>";
         $result = mysql_query($query,$linkblogcms) or die($query);
         $itemid=mysql_insert_id($linkblogcms);
         // insert comments
