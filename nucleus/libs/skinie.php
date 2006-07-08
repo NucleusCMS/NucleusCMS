@@ -118,6 +118,8 @@ class SKINIMPORT {
 		// here we go!
 		$this->inXml = 1;
 
+		$tempbuffer = null;
+
 		while (!feof($this->fp)) {
 			$tempbuffer .= fread($this->fp, 4096);
 		}

@@ -17,7 +17,6 @@ define('_AUTOSAVEDRAFT',		'Auto save draft');
 define('_AUTOSAVEDRAFT_LASTSAVED',	'Last saved: ');
 define('_AUTOSAVEDRAFT_NOTYETSAVED',	'No saves have been made yet');
 define('_AUTOSAVEDRAFT_NOW',		'Auto save now');
-define('_AUTOSAVEDRAFT_NOW',		'Auto save now');
 define('_SKIN_PARTS_SPECIAL',		'Special skin parts');
 define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',		'You must enter a name that exists only out of lowercase letters and digits');
 // END changed/added after 3.3 END
