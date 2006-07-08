@@ -1,4 +1,4 @@
-﻿CREATE TABLE `nucleus_actionlog` (
+CREATE TABLE `nucleus_actionlog` (
   `timestamp` datetime NOT NULL default '0000-00-00 00:00:00',
   `message` varchar(255) NOT NULL default ''
 ) TYPE=MyISAM;
