@@ -31,6 +31,11 @@ if ($CONF['debug']) {
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
 }
 
+// Avoid notices
+if (!isset($CONF['Self'])) {
+	$CONF['Self'] = $_SERVER['PHP_SELF'];
+}
+
 /*
 	Indicates when Nucleus should display startup errors. Set to 1 if you want
 	the error enabled (default), false otherwise
@@ -57,12 +62,17 @@ $CONF['CategoryURL'] = $CONF['Self'];
 
 // switch URLMode back to normal when $CONF['Self'] ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
-if (($CONF['URLMode'] == 'pathinfo') &&	(substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php') ) {
+if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php'))) {
 	$CONF['URLMode'] = 'normal';
 }
 
 if (getNucleusPatchLevel() > 0) {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();
+}
+
+// Avoid notices
+if (!isset($CONF['installscript'])) {
+	$CONF['installscript'] = 0;
 }
 
 // we will use postVar, getVar, ... methods instead of HTTP_GET_VARS or _GET
@@ -108,6 +118,11 @@ $manager =& MANAGER::instance();
 
 // make sure there's no unnecessary escaping:
 set_magic_quotes_runtime(0);
+
+// Avoid notices
+if (!isset($CONF['UsingAdminArea'])) {
+	$CONF['UsingAdminArea'] = 0;
+}
 
 // only needed when updating logs
 if ($CONF['UsingAdminArea']) {

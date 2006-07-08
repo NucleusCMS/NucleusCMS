@@ -17,14 +17,26 @@
  */
 
 function getVar($name) {
+	if (!isset($_GET[$name])) {
+		return;
+	}
+
 	return undoMagic($_GET[$name]);
 }
 
 function postVar($name) {
+	if (!isset($_POST[$name])) {
+		return;
+	}
+
 	return undoMagic($_POST[$name]);
 }
 
 function cookieVar($name) {
+	if (!isset($_COOKIE[$name])) {
+		return;
+	}
+
 	return undoMagic($_COOKIE[$name]);
 }
 
@@ -40,6 +52,10 @@ function requestVar($name) {
 }
 
 function serverVar($name) {
+	if (!isset($_SERVER[$name])) {
+		return false;
+	}
+
 	return $_SERVER[$name];
 }
 
@@ -67,11 +83,19 @@ function undoSybaseQuotes($data) {
 
 // integer array from request
 function requestIntArray($name) {
+	if (!isset($_REQUEST[$name])) {
+		return;
+	}
+
 	return $_REQUEST[$name];
 }
 
 // array from request. Be sure to call undoMagic on the strings inside
 function requestArray($name) {
+	if (!isset($_REQUEST[$name])) {
+		return;
+	}
+
 	return $_REQUEST[$name];
 }
 
@@ -92,6 +116,10 @@ function passRequestVars() {
 }
 
 function postFileInfo($name) {
+	if (!isset($_FILES[$name])) {
+		return;
+	}
+
 	return $_FILES[$name];
 }
 
