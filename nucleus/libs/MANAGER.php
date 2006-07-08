@@ -65,7 +65,7 @@ class MANAGER {
 	function &instance() {
 		static $instance = array();
 		if (empty($instance)) {
-			$instance[0] = new MANAGER();
+			$instance[0] =& new MANAGER();
 		}
 		return $instance[0];
 	}
@@ -138,7 +138,7 @@ class MANAGER {
 			// load class if needed
 			$this->_loadClass('BLOG','BLOG.php');
 			// load blog object
-			$blog = new BLOG($blogid);
+			$blog =& new BLOG($blogid);
 			$this->blogs[$blogid] =& $blog;
 		}
 		return $blog;
@@ -177,7 +177,7 @@ class MANAGER {
 			// load class if needed
 			$this->_loadClass('KARMA','KARMA.php');
 			// create KARMA object
-			$karma = new KARMA($itemid);
+			$karma =& new KARMA($itemid);
 			$this->karma[$itemid] =& $karma;
 		}
 		return $karma;
@@ -242,7 +242,7 @@ class MANAGER {
 				}
 
 				// add to plugin array
-				eval('$this->plugins[$name] = new ' . $name . '();');
+				eval('$this->plugins[$name] =& new ' . $name . '();');
 
 				// get plugid
 				$this->plugins[$name]->plugid = $this->getPidFromName($name);

@@ -19,14 +19,14 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.3CVS';
+$nucleus['version'] = 'v3.3SVN';
+$nucleus['codename'] = 'Lithium';
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS'));
 
 $CONF['debug'] = 1;
 if ($CONF['debug']) {
-	error_reporting(E_ALL & ~E_NOTICE);	// report almost all errors!
-										// (no uninitialized vars and such)
+	error_reporting(E_ALL);	// report all errors!
 } else {
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
 }
