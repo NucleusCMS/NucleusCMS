@@ -4145,6 +4145,32 @@ selector();
 			<li><a tabindex="75" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=imagepopup"><?php echo _SKIN_PART_POPUP?></a> <?php help('skinpartimagepopup')?></li>
 		</ul>
 
+		<?php
+
+		$query = "SELECT stype FROM " . sql_table('skin') . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member') and sdesc = " . $skinid;
+		$res = sql_query($query);
+
+		echo '<h3>' . _SKIN_PARTS_SPECIAL . '</h3>';
+		echo '<form method="get" action="index.php">' . "\r\n";
+		echo '<input type="hidden" name="action" value="skinedittype" />' . "\r\n";
+		echo '<input type="hidden" name="skinid" value="' . $skinid . '" />' . "\r\n";
+		echo '<input name="type" tabindex="89" size="20" maxlength="20" />' . "\r\n";
+		echo '<input type="submit" tabindex="140" value="' . _SKIN_CREATE . '" onclick="return checkSubmit();" />' . "\r\n";
+		echo '</form>' . "\r\n";
+
+		if ($res && mysql_num_rows($res) > 0) {
+			echo '<ul>';
+			$tabstart = 76;
+
+			while ($row = mysql_fetch_assoc($cskinres)) {
+				echo '<li><a tabindex="' . $tabstart . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . strtolower($row['stype']) . '">' . ucfirst($row['stype']) . '</a></li>';
+
+				$tabstart++;
+			}
+
+			echo '</ul>';
+		}
+
 		<h3><?php echo _SKIN_GENSETTINGS_TITLE?></h3>
 		<form method="post" action="index.php">
 		<div>
@@ -4225,6 +4251,13 @@ selector();
 
 		$member->isAdmin() or $this->disallow();
 
+		$type = trim($type);
+		$type = strtolower($type);
+
+		if (!isValidShortName($type)) {
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_FORMAT);
+		}
+
 		$skin =& new SKIN($skinid);
 
 		$friendlyNames = SKIN::getFriendlyNames();
@@ -4249,7 +4282,7 @@ selector();
 
 		<input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
 		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-		(skin type: <?php echo  $friendlyNames[$type] ?>)
+		(skin type: <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type); ?>)
 		<?php help('skinpart' . $type);?>
 		<br />
 
@@ -4424,6 +4457,7 @@ selector();
 
 
 		// 3. clone
+		/*
 		$this->skinclonetype($skin, $newid, 'index');
 		$this->skinclonetype($skin, $newid, 'item');
 		$this->skinclonetype($skin, $newid, 'archivelist');
@@ -4432,6 +4466,13 @@ selector();
 		$this->skinclonetype($skin, $newid, 'error');
 		$this->skinclonetype($skin, $newid, 'member');
 		$this->skinclonetype($skin, $newid, 'imagepopup');
+		*/
+
+		$query = "SELECT stype FROM " . sql_table('nucleus_skin') . " WHERE sdesc = " . $skinid;
+		$res = sql_query($query);
+		while ($row = mysql_fetch_assoc($res)) {
+			$this->skinclonetype($skin, $newid, $row['stype']);
+		}
 
 		$this->action_skinoverview();
 

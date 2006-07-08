@@ -818,6 +818,11 @@ function selector() {
 		$skinid = $blog->getDefaultSkin();
 	}
 
+	$special = requestVar('special');
+	if (!empty($special) && isValidShortName($special)) {
+		$type = strtolower($special);
+	}
+
 	$skin = new SKIN($skinid);
 
 	if (!$skin->isValid) {
