@@ -302,7 +302,7 @@ class MANAGER {
 	 */
 	function _initCacheInfo($what)
 	{
-		if (is_array($this->cachedInfo[$what]))
+		if (isset($this->cachedInfo[$what]) && is_array($this->cachedInfo[$what]))
 			return;
 		switch ($what)
 		{
@@ -337,7 +337,10 @@ class MANAGER {
 
 
 		// get listening objects
-		$listeners = $this->subscriptions[$eventName];
+		$listeners = false;
+		if (isset($this->subscriptions[$eventName])) {
+			$listeners = $this->subscriptions[$eventName];
+		}
 
 		// notify all of them
 		if (is_array($listeners)) {
