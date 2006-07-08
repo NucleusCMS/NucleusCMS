@@ -157,8 +157,8 @@ class BLOG {
 		$template =& $manager->getTemplate($templateName);
 
 		// create parser object & action handler
-		$actions = new ITEMACTIONS($this);
-		$parser = new PARSER($actions->getDefinedActions(),$actions);
+		$actions =& new ITEMACTIONS($this);
+		$parser =& new PARSER($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setHighlight($highlight);
 		$actions->setLastVisit($lastVisit);
@@ -299,7 +299,7 @@ class BLOG {
 
 		$frommail = $member->getNotifyFromMailAddress();
 
-		$notify = new NOTIFICATION($this->getNotifyAddress());
+		$notify =& new NOTIFICATION($this->getNotifyAddress());
 		$notify->notify($mailto_title, $mailto_msg , $frommail);
 
 
@@ -440,7 +440,7 @@ class BLOG {
 	 */
 	function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
 	{
-		$searchclass = new SEARCH($query);
+		$searchclass =& new SEARCH($query);
 
 		$highlight	  = $searchclass->inclusive;
 
