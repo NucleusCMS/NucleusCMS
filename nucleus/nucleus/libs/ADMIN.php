@@ -4903,9 +4903,9 @@ selector();
 			echo '<br />(';
 
 			if ($member->isLoggedIn() && $member->isAdmin())
-				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nucleus['version'], '</a>';
+				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nucleus['version'], ' &quot;', $nucleus['codename'], '&quot;</a>';
 			else
-				echo 'Nucleus CMS ' , $nucleus['version'];
+				echo 'Nucleus CMS ', $nucleus['version'], ' &quot;', $nucleus['codename'], '&quot;;
 			echo ')';
 		echo '</div>';
 	}
