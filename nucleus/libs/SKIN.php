@@ -243,7 +243,7 @@ class SKIN {
 	 * static: returns an array of friendly names
 	 */
 	function getFriendlyNames() {
-		return array(
+		$skintypes = array(
 			'index' => _SKIN_PART_MAIN,
 			'item' => _SKIN_PART_ITEM,
 			'archivelist' => _SKIN_PART_ALIST,
@@ -253,9 +253,19 @@ class SKIN {
 			'member' => _SKIN_PART_MEMBER,
 			'imagepopup' => _SKIN_PART_POPUP
 		);
+
+		$query = "SELECT stype FROM " . sql_table('skin') . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member')";
+		$res = sql_query($query);
+		while ($row = mysql_fetch_array($res)) {
+			$skintypes[strtolower($row['stype'])] = ucfirst($row['stype']);
+		}
+
+		return $skintypes;
 	}
 
 	function getAllowedActionsForType($type) {
+		global $blogid;
+
 		// some actions that can be performed at any time, from anywhere
 		$defaultActions = array('otherblog',
 								'plugin',
@@ -380,7 +390,27 @@ class SKIN {
 								'errormessage'
 				);
 				break;
+			default:
+				if ($blogid && $blogid > 0) {
+					$extraActions = array(
+						'blog',
+						'blogsetting',
+						'preview',
+						'additemform',
+						'categorylist',
+						'archivelist',
+						'archivedaylist',
+						'nextlink',
+						'archivelist',
+						'archivedaylist',
+						'prevlink',
+						'membermailform',
+						'nucleusbutton'
+					);
+				}
+				break;
 		}
+
 		return array_merge($defaultActions, $extraActions);
 	}
 
