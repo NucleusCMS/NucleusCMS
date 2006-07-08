@@ -23,16 +23,31 @@
   */
 function getVar($name) {
 	global $HTTP_GET_VARS;
+
+	if (!isset($HTTP_GET_VARS[$name])) {
+		return;
+	}
+
 	return undoMagic($HTTP_GET_VARS[$name]);
 }
 
 function postVar($name) {
 	global $HTTP_POST_VARS;
+
+	if (!isset($HTTP_POST_VARS[$name])) {
+		return;
+	}
+
 	return undoMagic($HTTP_POST_VARS[$name]);
 }
 
 function cookieVar($name) {
 	global $HTTP_COOKIE_VARS;
+
+	if (!isset($HTTP_COOKIE_VARS[$name])) {
+		return;
+	}
+
 	return undoMagic($HTTP_COOKIE_VARS[$name]);
 }
 
@@ -43,6 +58,11 @@ function requestVar($name) {
 
 function serverVar($name) {
 	global $HTTP_SERVER_VARS;
+
+	if (!isset($HTTP_SERVER_VARS[$name])) {
+		return;
+	}
+
 	return $HTTP_SERVER_VARS[$name];
 }
 
@@ -71,12 +91,22 @@ function undoSybaseQuotes($data) {
 // integer array from request
 function requestIntArray($name) {
 	global $HTTP_POST_VARS;
+
+	if (!isset($HTTP_POST_VARS[$name])) {
+		return;
+	}
+
 	return $HTTP_POST_VARS[$name];
 }
 
 // array from request. Be sure to call undoMagic on the strings inside
 function requestArray($name) {
 	global $HTTP_POST_VARS;
+
+	if (!isset($HTTP_POST_VARS[$name])) {
+		return;
+	}
+
 	return $HTTP_POST_VARS[$name];
 }
 
@@ -107,6 +137,11 @@ function passRequestVars() {
 
 function postFileInfo($name) {
 	global $HTTP_POST_FILES;
+
+	if (!isset($HTTP_POST_FILES[$name])) {
+		return;
+	}
+
 	return $HTTP_POST_FILES[$name];
 }
 
