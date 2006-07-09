@@ -177,6 +177,7 @@ class BLOG {
 			$actions->setCurrentItem($item);
 
 			// add date header if needed
+			$old_date = 0;
 			if ($dateheads) {
 				$new_date = date('dFY',$item->timestamp);
 				if ($new_date != $old_date) {
@@ -192,7 +193,7 @@ class BLOG {
 					$manager->notify('PreDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
 					// note, to use templatvars in the dateheader, the %-characters need to be doubled in
 					// order to be preserved by strftime
-					$tmp_header = strftime($template['DATE_HEADER'],$timestamp);
+					$tmp_header = strftime((isset($template['DATE_HEADER']) ? $template['DATE_HEADER'] : null), $timestamp);
 					$parser->parse($tmp_header);
 					$manager->notify('PostDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
 				}
@@ -620,7 +621,7 @@ class BLOG {
 
 		$template =& $manager->getTemplate($template);
 
-		echo TEMPLATE::fill($template['CATLIST_HEADER'],
+		echo TEMPLATE::fill((isset($template['CATLIST_HEADER']) ? $template['CATLIST_HEADER'] : null),
 							array(
 								'blogid' => $this->getID(),
 								'blogurl' => $blogurl,
@@ -644,14 +645,15 @@ class BLOG {
 							   );
 			$data['self'] = $CONF['Self'];
 
-			$temp = TEMPLATE::fill($template['CATLIST_LISTITEM'],$data);
-			echo strftime($temp,$current->itime);
+			echo TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
+			//$temp = TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
+			//echo strftime($temp, $current->itime);
 
 		}
 
 		mysql_free_result($res);
 
-		echo TEMPLATE::fill($template['CATLIST_FOOTER'],
+		echo TEMPLATE::fill((isset($template['CATLIST_FOOTER']) ? $template['CATLIST_FOOTER'] : null),
 							array(
 								'blogid' => $this->getID(),
 								'blogurl' => $blogurl,
