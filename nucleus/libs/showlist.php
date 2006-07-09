@@ -65,6 +65,7 @@ function listplug_select($template, $type) {
 
 			// add extra row if needed
 			if ($template['extra']) {
+				$template['extraval'] = (isset($template['extraval']) ? $template['extraval'] : null);
 				echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
 			}
 
@@ -297,6 +298,8 @@ function listplug_plugOptionRow($current) {
 }
 
 function listplug_table_itemlist($template, $type) {
+	$cssclass = null;
+
 	switch($type) {
 		case 'HEAD':
 			echo "<th>"._LIST_ITEM_INFO."</th><th>"._LIST_ITEM_CONTENT."</th><th colspan='1'>"._LISTS_ACTIONS."</th>";

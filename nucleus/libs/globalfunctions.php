@@ -1218,7 +1218,7 @@ function createLink($type, $params) {
 			break;
 	}
 
-	return addLinkParams($url, $params['extra']);
+	return addLinkParams($url, (isset($params['extra'])? $params['extra'] : null));
 }
 
 function createBlogLink($url, $params) {
