@@ -50,7 +50,7 @@ class ADMIN {
 			'' => 'overview'
 		);
 
-		if ($alias[$action])
+		if (isset($alias[$action]))
 			$action = $alias[$action];
 
 		$methodName = 'action_' . $action;
@@ -864,7 +864,7 @@ class ADMIN {
 		$template['now'] = time();
 
 		$manager->loadClass("ENCAPSULATE");
-		$navList =& new NAVLIST('browseownitems', $start, $amount, 0, 1000, $blogid, $search, 0);
+		$navList =& new NAVLIST('browseownitems', $start, $amount, 0, 1000, /*$blogid*/ 0, $search, 0);
 		$navList->showBatchList('item',$query,'table',$template);
 
 		$this->pagefoot();
@@ -4284,7 +4284,7 @@ selector();
 
 		<input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
 		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-		(skin type: <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type); ?>)
+		(skin type: <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
 		<?php help('skinpart' . $type);?>
 		<br />
 
@@ -4907,7 +4907,7 @@ selector();
 			if ($member->isLoggedIn() && $member->isAdmin())
 				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nucleus['version'], ' &quot;', $nucleus['codename'], '&quot;</a>';
 			else
-				echo 'Nucleus CMS ', $nucleus['version'], ' &quot;', $nucleus['codename'], '&quot;;
+				echo 'Nucleus CMS ', $nucleus['version'], ' &quot;', $nucleus['codename'], '&quot';
 			echo ')';
 		echo '</div>';
 	}
