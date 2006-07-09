@@ -63,10 +63,12 @@ class PARSER {
 		$pieces = preg_split('/'.$this->delim.'/',$contents);
 
 		$maxidx = sizeof($pieces);
-		for ($idx = 0;$idx<$maxidx;$idx++) {
+		for ($idx = 0; $idx < $maxidx; $idx++) {
 			echo $pieces[$idx];
 			$idx++;
-			$this->doAction($pieces[$idx]);
+			if ($idx < $maxidx) {
+				$this->doAction($pieces[$idx]);
+			}
 		}
 	}
 

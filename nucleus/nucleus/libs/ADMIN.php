@@ -4171,7 +4171,9 @@ selector();
 			echo '</ul>';
 		}
 
-		<h3><?php echo _SKIN_GENSETTINGS_TITLE?></h3>
+		?>
+
+		<h3><?php echo _SKIN_GENSETTINGS_TITLE; ?></h3>
 		<form method="post" action="index.php">
 		<div>
 
