@@ -60,7 +60,7 @@ class ADMIN {
 		// check ticket. All actions need a ticket, unless they are considered to be safe (a safe action
 		// is an action that requires user interaction before something is actually done)
 		// all safe actions are in this array:
-		$aActionsNotToCheck = array('showlogin', 'login', 'overview', 'itemlist', 'blogcommentlist', 'bookmarklet', 'blogsettings', 'banlist', 'deleteblog', 'editmembersettings', 'browseownitems', 'browseowncomments', 'createitem', 'itemedit', 'itemmove', 'categoryedit', 'categorydelete', 'manage', 'actionlog', 'settingsedit', 'backupoverview', 'pluginlist', 'createnewlog', 'usermanagement', 'skinoverview', 'templateoverview', 'skinieoverview', 'itemcommentlist', 'commentedit', 'commentdelete', 'banlistnewfromitem', 'banlistdelete', 'itemdelete', 'manageteam', 'teamdelete', 'banlistnew', 'memberedit', 'memberdelete', 'pluginhelp', 'pluginoptions', 'plugindelete', 'skinedittype', 'skindelete', 'skinedit', 'templateedit', 'templatedelete', 'activate');
+		$aActionsNotToCheck = array('showlogin', 'login', 'overview', 'itemlist', 'blogcommentlist', 'bookmarklet', 'blogsettings', 'banlist', 'deleteblog', 'editmembersettings', 'browseownitems', 'browseowncomments', 'createitem', 'itemedit', 'itemmove', 'categoryedit', 'categorydelete', 'manage', 'actionlog', 'settingsedit', 'backupoverview', 'pluginlist', 'createnewlog', 'usermanagement', 'skinoverview', 'templateoverview', 'skinieoverview', 'itemcommentlist', 'commentedit', 'commentdelete', 'banlistnewfromitem', 'banlistdelete', 'itemdelete', 'manageteam', 'teamdelete', 'banlistnew', 'memberedit', 'memberdelete', 'pluginhelp', 'pluginoptions', 'plugindelete', 'skinedittype', 'skinremovetype', 'skindelete', 'skinedit', 'templateedit', 'templatedelete', 'activate');
 /*
 		// the rest of the actions needs to be checked
 		$aActionsToCheck = array('additem', 'itemupdate', 'itemmoveto', 'categoryupdate', 'categorydeleteconfirm', 'itemdeleteconfirm', 'commentdeleteconfirm', 'teamdeleteconfirm', 'memberdeleteconfirm', 'templatedeleteconfirm', 'skindeleteconfirm', 'banlistdeleteconfirm', 'plugindeleteconfirm', 'batchitem', 'batchcomment', 'batchmember', 'batchcategory', 'batchteam', 'regfile', 'commentupdate', 'banlistadd', 'changemembersettings', 'clearactionlog', 'settingsupdate', 'blogsettingsupdate', 'categorynew', 'teamchangeadmin', 'teamaddmember', 'memberadd', 'addnewlog', 'addnewlog2', 'backupcreate', 'backuprestore', 'pluginup', 'plugindown', 'pluginupdate', 'pluginadd', 'pluginoptionsupdate', 'skinupdate', 'skinclone', 'skineditgeneral', 'templateclone', 'templatenew', 'templateupdate', 'skinieimport', 'skinieexport', 'skiniedoimport', 'skinnew', 'deleteblogconfirm', 'sendping', 'rawping', 'activatesetpwd');
@@ -4160,12 +4160,10 @@ selector();
 
 		if ($res && mysql_num_rows($res) > 0) {
 			echo '<ul>';
-			$tabstart = 76;
+			$tabstart = 75;
 
-			while ($row = mysql_fetch_assoc($cskinres)) {
-				echo '<li><a tabindex="' . $tabstart . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . strtolower($row['stype']) . '">' . ucfirst($row['stype']) . '</a></li>';
-
-				$tabstart++;
+			while ($row = mysql_fetch_assoc($res)) {
+				echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . strtolower($row['stype']) . '">' . ucfirst($row['stype']) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . strtolower($row['stype']) . '">remove</a>)</li>';
 			}
 
 			echo '</ul>';
@@ -4268,7 +4266,7 @@ selector();
 		?>
 		<p>(<a href="index.php?action=skinoverview"><?php echo _SKIN_GOBACK?></a>)</p>
 
-		<h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo  $skin->getName() ?>': <?php echo  $friendlyNames[$type] ?></h2>
+		<h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo  $skin->getName() ?>': <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?></h2>
 
 		<?php			if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
 		?>
@@ -4293,7 +4291,7 @@ selector();
 		<br />
 		<input type="submit" tabindex="20" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
 		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-		(skin type: <?php echo  $friendlyNames[$type] ?>)
+		(skin type: <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
 
 		<br /><br />
 		<?php echo _SKIN_ALLOWEDVARS?>
@@ -4423,6 +4421,80 @@ selector();
 		$manager->notify('PostDeleteSkin', array('skinid' => $skinid));
 
 		$this->action_skinoverview();
+	}
+
+	/**
+	 * @todo document this
+	 */
+	function action_skinremovetype() {
+		global $member, $manager, $CONF;
+
+		$skinid = intRequestVar('skinid');
+		$skintype = requestVar('type');
+
+		if (!isValidShortName($skintype)) {
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+		}
+
+		$member->isAdmin() or $this->disallow();
+
+		// don't allow default skinparts to be deleted
+		if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+		}
+
+		$this->pagehead();
+
+		$skin =& new SKIN($skinid);
+		$name = $skin->getName();
+		$desc = $skin->getDescription();
+
+		?>
+			<h2><?php echo _DELETE_CONFIRM?></h2>
+
+			<p>
+				<?php echo _CONFIRMTXT_SKIN_PARTS_SPECIAL; ?> <b><?php echo $skintype; ?> (<?php echo $name; ?>)</b> (<?php echo  htmlspecialchars($desc)?>)
+			</p>
+
+			<form method="post" action="index.php"><div>
+				<input type="hidden" name="action" value="skinremovetypeconfirm" />
+				<?php $manager->addTicketHidden() ?>
+				<input type="hidden" name="skinid" value="<?php echo $skinid; ?>" />
+				<input type="hidden" name="type" value="<?php echo $skintype; ?>" />
+				<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
+			</div></form>
+		<?php
+		$this->pagefoot();
+	}
+
+	/**
+	 * @todo document this
+	 */
+	function action_skinremovetypeconfirm() {
+		global $member, $CONF, $manager;
+
+		$skinid = intRequestVar('skinid');
+		$skintype = requestVar('type');
+
+		if (!isValidShortName($skintype)) {
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+		}
+
+		$member->isAdmin() or $this->disallow();
+
+		// don't allow default skinparts to be deleted
+		if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+		}
+
+		$manager->notify('PreDeleteSkinPart', array('skinid' => $skinid, 'skintype' => $skintype));
+
+		// delete part
+		sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc=' . $skinid . ' AND stype=\'' . $skintype . '\'');
+
+		$manager->notify('PostDeleteSkinPart', array('skinid' => $skinid, 'skintype' => $skintype));
+
+		$this->action_skinedit();
 	}
 
 	/**

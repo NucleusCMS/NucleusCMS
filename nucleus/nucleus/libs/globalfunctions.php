@@ -1502,4 +1502,19 @@ function getBookmarklet($blogid) {
 	return $bookmarkletline;
 }
 // END: functions from the end of file ADMIN.php
+
+/**
+ * Returns a variable or null if not set
+ *
+ * @param mixed Variable
+ * @return mixed Variable
+ */
+function ifset(&$var) {
+	if (isset($var)) {
+		return $var;
+	}
+
+	return null;
+}
+
 ?>
