@@ -19,6 +19,8 @@ define('_AUTOSAVEDRAFT_NOTYETSAVED',	'No saves have been made yet');
 define('_AUTOSAVEDRAFT_NOW',		'Auto save now');
 define('_SKIN_PARTS_SPECIAL',		'Special skin parts');
 define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',		'You must enter a name that exists only out of lowercase letters and digits');
+define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',		'Can\'t delete this skin part');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',		'Do you really want to delete this special skin part?');
 // END changed/added after 3.3 END
 
 // START changed/added after 3.22 START

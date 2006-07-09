@@ -61,12 +61,11 @@ function showlist($query, $type, $template) {
 function listplug_select($template, $type) {
 	switch($type) {
 		case 'HEAD':
-			echo '<select name="'.$template['name'].'" tabindex="'.$template['tabindex'].'" '.$template['javascript'].'>';
+			echo '<select name="' . ifset($template['name']) . '" tabindex="' . ifset($template['tabindex']) . '" ' . ifset($template['javascript']) . '>';
 
 			// add extra row if needed
-			if ($template['extra']) {
-				$template['extraval'] = (isset($template['extraval']) ? $template['extraval'] : null);
-				echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
+			if (ifset($template['extra'])) {
+				echo '<option value="', ifset($template['extraval']), '">', $template['extra'], '</option>';
 			}
 
 			break;
@@ -76,7 +75,7 @@ function listplug_select($template, $type) {
 			echo '<option value="' . htmlspecialchars($current->value) . '"';
 			if ($template['selected'] == $current->value)
 				echo ' selected="selected" ';
-			if ($template['shorten'] > 0) {
+			if (isset($template['shorten']) && $template['shorten'] > 0) {
 				echo ' title="'. htmlspecialchars($current->text).'"';
 				$current->text = shorten($current->text, $template['shorten'], $template['shortenel']);
 			}
