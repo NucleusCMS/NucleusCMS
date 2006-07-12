@@ -18,8 +18,8 @@
   * http://davidaltherr.net/web/php_functions/boolean/funcs.mysql.boolean.txt
   * 
   *
-  * $Id: SEARCH.php,v 1.4 2005-03-12 06:19:05 kimitake Exp $
-  $ $NucleusJP$
+  * $Id: SEARCH.php,v 1.5 2006-07-12 07:11:47 kimitake Exp $
+  $ $NucleusJP: SEARCH.php,v 1.4 2005/03/12 06:19:05 kimitake Exp $
   */
 
 

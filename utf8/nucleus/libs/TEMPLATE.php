@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2005 The Nucleus Group
+ * Copyright (C) 2002-2006 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,35 +14,35 @@
  * A class representing a template
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2005 The Nucleus Group
- * @version $Id: TEMPLATE.php,v 1.4 2005-08-13 07:33:02 kimitake Exp $
- * $NucleusJP: TEMPLATE.php,v 1.3 2005/03/12 06:19:05 kimitake Exp $
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @version $Id: TEMPLATE.php,v 1.5 2006-07-12 07:11:47 kimitake Exp $
+ * $NucleusJP: TEMPLATE.php,v 1.4 2005/08/13 07:33:02 kimitake Exp $
  */
 class TEMPLATE {
 
 	var $id;
-	
+
 	function TEMPLATE($templateid) {
 		$this->id = intval($templateid);
 	}
-	
+
 	function getID() {
 		return intval($this->id);
 	}
-	
+
 	// (static)
 	function createFromName($name) {
 		return new TEMPLATE(TEMPLATE::getIdFromName($name));
 	}
-	
+
 	// (static)
 	function getIdFromName($name) {
 		$query =  'SELECT tdnumber'
-		       . ' FROM '.sql_table('template_desc')
-		       . ' WHERE tdname="'.addslashes($name).'"';
+			   . ' FROM '.sql_table('template_desc')
+			   . ' WHERE tdname="'.addslashes($name).'"';
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
-		return $obj->tdnumber;	
+		return $obj->tdnumber;
 	}
 
 	/**
@@ -50,27 +50,27 @@ class TEMPLATE {
 	 */
 	function updateGeneralInfo($name, $desc) {
 		$query =  'UPDATE '.sql_table('template_desc').' SET'
-		       . " tdname='" . addslashes($name) . "',"
-		       . " tddesc='" . addslashes($desc) . "'"
-		       . " WHERE tdnumber=" . $this->getID();
-		sql_query($query);		
+			   . " tdname='" . addslashes($name) . "',"
+			   . " tddesc='" . addslashes($desc) . "'"
+			   . " WHERE tdnumber=" . $this->getID();
+		sql_query($query);
 	}
-	
+
 	/**
 	 * Updates the contents of one part of the template
 	 */
 	function update($type, $content) {
 		$id = $this->getID();
-	
+
 		// delete old thingie
 		sql_query('DELETE FROM '.sql_table('template')." WHERE tpartname='". addslashes($type) ."' and tdesc=" . intval($id));
-		
+
 		// write new thingie
 		if ($content) {
 			sql_query('INSERT INTO '.sql_table('template')." SET tcontent='" . addslashes($content) . "', tpartname='" . addslashes($type) . "', tdesc=" . intval($id));
-		}	
+		}
 	}
-		
+
 
 	/**
 	 * Deletes all template parts from the database
@@ -86,7 +86,7 @@ class TEMPLATE {
 	 */
 	function createNew($name, $desc) {
 		global $manager;
-		
+
 		$manager->notify(
 			'PreAddTemplate',
 			array(
@@ -94,10 +94,10 @@ class TEMPLATE {
 				'description' => &$desc
 			)
 		);
-		
+
 		sql_query('INSERT INTO '.sql_table('template_desc')." (tdname, tddesc) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "')");
 		$newId = mysql_insert_id();
-		
+
 		$manager->notify(
 			'PostAddTemplate',
 			array(
@@ -105,12 +105,12 @@ class TEMPLATE {
 				'name' => $name,
 				'description' => $desc
 			)
-		);		
-		
+		);
+
 		return $newId;
 	}
 
-	
+
 
 	/**
 	 * Reads a template and returns an array with the parts.
@@ -120,29 +120,29 @@ class TEMPLATE {
 	 */
 	function read($name) {
 		$query = 'SELECT tpartname, tcontent'
-		       . ' FROM '.sql_table('template_desc').', '.sql_table('template')
-		       . ' WHERE tdesc=tdnumber and tdname="' . addslashes($name) . '"';
+			   . ' FROM '.sql_table('template_desc').', '.sql_table('template')
+			   . ' WHERE tdesc=tdnumber and tdname="' . addslashes($name) . '"';
 		$res = sql_query($query);
-		while ($obj = mysql_fetch_object($res)) 
+		while ($obj = mysql_fetch_object($res))
 			$template[$obj->tpartname] = $obj->tcontent;
-		
+
 		// set locale according to template:
 		if ($template['LOCALE'])
 			setlocale(LC_TIME,$template['LOCALE']);
 		else
-			setlocale(LC_TIME,'');	
-			
+			setlocale(LC_TIME,'');
+
 		return $template;
 	}
-	
+
 	/**
 	  * fills a template with values
 	  * (static)
 	  *
-	  * @param $template 
+	  * @param $template
 	  *		Template to be used
 	  * @param $values
-	  *		Array of all the values 
+	  *		Array of all the values
 	  */
 	function fill($template, $values) {
 
@@ -155,36 +155,37 @@ class TEMPLATE {
 
 		// remove non matched template-tags
 		return preg_replace('/<%[a-zA-Z]+%>/','',$template);
-	}	
-	
+	}
+
 	// returns true if there is a template with the given shortname
 	// (static)
 	function exists($name) {
 		$r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdname="'.addslashes($name).'"');
 		return (mysql_num_rows($r) != 0);
 	}
-	
+
 	// returns true if there is a template with the given ID
 	// (static)
 	function existsID($id) {
 		$r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdnumber='.intval($id));
 		return (mysql_num_rows($r) != 0);
 	}
-	
+
 	// (static)
 	function getNameFromId($id) {
 		return quickQuery('SELECT tdname as result FROM '.sql_table('template_desc').' WHERE tdnumber=' . intval($id));
 	}
-	
+
 	// (static)
 	function getDesc($id) {
 		$query = 'SELECT tddesc FROM '.sql_table('template_desc').' WHERE tdnumber='. intval($id);
-		$obj = mysql_fetch_object(sql_query($query));
+		$res = sql_query($query);
+		$obj = mysql_fetch_object($res);
 		return $obj->tddesc;
 	}
-	
 
-	
+
+
 }
 
 ?>

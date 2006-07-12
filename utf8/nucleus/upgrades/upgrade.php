@@ -9,8 +9,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: upgrade.php,v 1.3 2005-03-17 08:57:28 kimitake Exp $
-  * $NucleusJP$
+  * $Id: upgrade.php,v 1.4 2006-07-12 07:11:49 kimitake Exp $
+  * $NucleusJP: upgrade.php,v 1.3 2005/03/17 08:57:28 kimitake Exp $
   */
 
 include('upgrade.functions.php'); 

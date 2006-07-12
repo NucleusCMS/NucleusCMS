@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2005 The Nucleus Group
+ * Copyright (C) 2002-2006 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,9 +14,9 @@
 /**
  * Nucleus RSS syndication channel skin
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2005 The Nucleus Group
- * @version $Id: xml-rss2.php,v 1.5 2005-04-20 06:49:45 kimitake Exp $
- * $NucleusJP$
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @version $Id: xml-rss2.php,v 1.6 2006-07-12 07:11:45 kimitake Exp $
+ * $NucleusJP: xml-rss2.php,v 1.5 2005/04/20 06:49:45 kimitake Exp $
  */
 
 header("Pragma: no-cache");
@@ -33,14 +33,14 @@ if (!$CONF['DisableSite']) {
 		selector();
 	$feed = ob_get_contents();
 	ob_end_clean();
-	
+
 	// create ETAG (hash of feed)
 	// (HTTP_IF_NONE_MATCH has quotes around it)
 	$eTag = '"'.md5($feed).'"';
 	header('Etag: '.$eTag);
-	
+
 	// compare Etag to what we got
-	if ($eTag == serverVar('HTTP_IF_NONE_MATCH')) {	
+	if ($eTag == serverVar('HTTP_IF_NONE_MATCH')) {
 		header("HTTP/1.0 304 Not Modified");
 		header('Content-Length: 0');
 	} else {
@@ -48,7 +48,7 @@ if (!$CONF['DisableSite']) {
 		// dump feed
 		echo $feed;
 	}
-		
+
 } else {
 	// output empty RSS file...
 	// (because site is disabled)
@@ -58,12 +58,12 @@ if (!$CONF['DisableSite']) {
 	?>
 	<rss version="2.0">
 	  <channel>
-	    <title><?php echo htmlspecialchars($CONF['SiteName'])?></title>
-	    <link><?php echo htmlspecialchars($CONF['IndexURL'])?></link>
-	    <description></description>
-	    <docs>http://backend.userland.com/rss</docs>
- 	  </channel>
-	</rss>	
+		<title><?php echo htmlspecialchars($CONF['SiteName'])?></title>
+		<link><?php echo htmlspecialchars($CONF['IndexURL'])?></link>
+		<description></description>
+		<docs>http://backend.userland.com/rss</docs>
+	  </channel>
+	</rss>
 	<?php
 }
 

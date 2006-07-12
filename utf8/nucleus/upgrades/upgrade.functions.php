@@ -12,8 +12,8 @@
 	  *	
 	  * Some functions common to all upgrade scripts
 	  *
-  	  * $Id: upgrade.functions.php,v 1.5 2005-03-19 07:20:50 kimitake Exp $
-	  * $NucleusJP: upgrade.functions.php,v 1.4 2005/03/18 06:07:10 kimitake Exp $
+  	  * $Id: upgrade.functions.php,v 1.6 2006-07-12 07:11:49 kimitake Exp $
+	  * $NucleusJP: upgrade.functions.php,v 1.5 2005/03/19 07:20:50 kimitake Exp $
 	  */
 
 	include('../../config.php');

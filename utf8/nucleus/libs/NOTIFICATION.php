@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2005 The Nucleus Group
+ * Copyright (C) 2002-2006 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,9 +14,9 @@
  * message can be sent (e.g. comment or karma vote notification).
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2005 The Nucleus Group
- * @version $Id: NOTIFICATION.php,v 1.4 2005-08-13 07:33:02 kimitake Exp $
- * $NucleusJP: NOTIFICATION.php,v 1.3 2005/03/12 06:19:05 kimitake Exp $
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @version $Id: NOTIFICATION.php,v 1.5 2006-07-12 07:11:47 kimitake Exp $
+ * $NucleusJP: NOTIFICATION.php,v 1.4 2005/08/13 07:33:02 kimitake Exp $
  */
 class NOTIFICATION {
 
@@ -37,24 +37,24 @@ class NOTIFICATION {
 	  */
 	function validAddresses() {
 		foreach ( $this->addresses as $address ) {
-			if (!isValidMailAddress(trim($address))) 
+			if (!isValidMailAddress(trim($address)))
 				return 0;
 		}
 		return 1;
 	}
-	
+
 	/**
 	  * Sends email messages to all the email addresses
 	  */
 	function notify($title, $message, $from) {
 		global $member;
-			
+
 		foreach ( $this->addresses as $address ) {
 			$address = trim($address);
-			
+
 			if (!$address)
 				continue;
-			
+
 			// don't send messages to yourself
 			if ($member->isLoggedIn() && ($member->getEmail() == $address))
 				continue;

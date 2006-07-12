@@ -1,6 +1,6 @@
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
- * Copyright (C) 2002-2005 The Nucleus Group
+ * Copyright (C) 2002-2006 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -8,8 +8,8 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  *
- * $Id: opennew.js,v 1.3 2005-03-12 06:19:04 kimitake Exp $
- * $NucleusJP$
+ * $Id: opennew.js,v 1.4 2006-07-12 07:11:47 kimitake Exp $
+ * $NucleusJP: opennew.js,v 1.3 2005/03/12 06:19:04 kimitake Exp $
  *
  * JavaScript to open non-local links in a new window.
  *

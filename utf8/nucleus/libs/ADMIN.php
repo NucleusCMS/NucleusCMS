@@ -1,19 +1,21 @@
 <?php
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2006 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-  * Copyright (C) 2002-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * The code for the Nucleus admin area
-  *
-  * $Id: ADMIN.php,v 1.6 2005-08-13 07:28:38 kimitake Exp $
-  * $NucleusJP: ADMIN.php,v 1.5 2005/04/19 06:58:03 kimitake Exp $
-  */
+ * The code for the Nucleus admin area
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @version $Id: ADMIN.php,v 1.7 2006-07-12 07:11:47 kimitake Exp $
+ */
 
 class ADMIN {
 
@@ -3087,7 +3089,7 @@ class ADMIN {
 		sql_query($query);
 
 
-		$blog->additem($blog->getDefaultCategory(),'First Item','これはあなたのweblogにおける最初のアイテムです。自由に削除していただいてかまいません。','',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
+		$blog->additem($blog->getDefaultCategory(),'First Item','これはあなた�Eweblogにおける最初�EアイチE��です。�E由に削除してぁE��だぁE��かまぁE��せん、E,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
 
 		$manager->notify(
 			'PostAddBlog',
@@ -3105,18 +3107,18 @@ class ADMIN {
 
 		$this->pagehead();
 		?>
-		<h2>新しいweblogが作成されました</h2>
+		<h2>新しいweblogが作�Eされました</h2>
 
-		<p>新しいweblog 「<?php echo htmlspecialchars($bname)?>」が作成されました。続けて、これにアクセスするために以下のどちらかの手順に進んでください。</p>
+		<p>新しいweblog 、E?php echo htmlspecialchars($bname)?>」が作�Eされました。続けて、これにアクセスするために以下�Eどちらかの手頁E��進んでください、E/p>
 
 		<ol>
-			<li><a href="#index_php">簡単な方法: 下のコードを貼付けた <code><?php echo htmlspecialchars($bshortname)?>.php</code> というファイルを作成する</a></li>
-			<li><a href="#skins">高度な方法: 現在使用しているスキンに新しいweblogを展開させるための記述を加える</a></li>
+			<li><a href="#index_php">簡単な方況E 下�Eコードを貼付けぁE<code><?php echo htmlspecialchars($bshortname)?>.php</code> とぁE��ファイルを作�Eする</a></li>
+			<li><a href="#skins">高度な方況E 現在使用してぁE��スキンに新しいweblogを展開させるため�E記述を加える</a></li>
 		</ol>
 
-		<h3><a id="index_php">方法 1: <code><?php echo htmlspecialchars($bshortname)?>.php</code> というファイルを作成</a></h3>
+		<h3><a id="index_php">方況E1: <code><?php echo htmlspecialchars($bshortname)?>.php</code> とぁE��ファイルを作�E</a></h3>
 
-		<p><code><?php echo htmlspecialchars($bshortname)?>.php</code> というファイルを作成して、中身に以下のコードを貼り付ける:</p>
+		<p><code><?php echo htmlspecialchars($bshortname)?>.php</code> とぁE��ファイルを作�Eして、中身に以下�Eコードを貼り付けめE</p>
 <pre><code>&lt;?php
 
 $CONF['Self'] = '<b><?php echo htmlspecialchars($bshortname)?>.php</b>';
@@ -3128,9 +3130,9 @@ selector();
 
 ?&gt;</code></pre>
 
-		<p>すでにある<code>index.php</code>と同じディレクトリにアップロードします。</p>
+		<p>すでにある<code>index.php</code>と同じチE��レクトリにアチE�Eロードします、E/p>
 
-		<p>新しいweblogの作成を完了するためには、下にこのファイルのURLを入力してください。 (すでに用意した値で合っているとは思いますが保証はしません):</p>
+		<p>新しいweblogの作�Eを完亁E��るためには、下にこ�EファイルのURLを�E力してください、E(すでに用意した値で合ってぁE��とは思いますが保証はしません):</p>
 
 
 		<form action="index.php" method="post"><div>
@@ -3146,9 +3148,9 @@ selector();
 			</tr></table>
 		</div></form>
 
-		<h3><a id="skins">方法 2: 現在使用しているスキンに新しいweblogを展開する記述を加える</a></h3>
+		<h3><a id="skins">方況E2: 現在使用してぁE��スキンに新しいweblogを展開する記述を加える</a></h3>
 
-		<p>新しいweblogの作成を完了するためには、下にURLを入力してください。 (大抵は既存blogと同じURL)</p>
+		<p>新しいweblogの作�Eを完亁E��るためには、下にURLを�E力してください、E(大抵は既存blogと同じURL)</p>
 
 
 		<form action="index.php" method="post"><div>
@@ -4750,43 +4752,43 @@ selector();
 		<h2>Bookmarklet<!-- and Right Click Menu --></h2>
 
 		<p>
-		Bookmarklet とは、クリック1回で記事の投稿ができるシステムです。 この Bookmarklet をインストールすると、ブラウザのツールバーの'add to weblog'ボタンが利用可能となり、Nucleusの新規アイテムの追加ウィンドウがポップアップします。任意のWebページを開いた状態でこのボタンを押せば、そのWebページのタイトルと、そのページへのリンクタグがすでに埋め込まれた状態でアイテム追加ウィンドウが開き、さらに、そのページ内に引用したい文を選択した状態であればその引用文も自動的に引用します。
+		Bookmarklet とは、クリチE��1回で記事�E投稿ができるシスチE��です、Eこ�E Bookmarklet をインスト�Eルすると、ブラウザのチE�Eルバ�Eの'add to weblog'ボタンが利用可能となり、Nucleusの新規アイチE��の追加ウィンドウが�EチE�EアチE�Eします。任意�EWebペ�Eジを開ぁE��状態でこ�Eボタンを押せ�E、そのWebペ�Eジのタイトルと、そのペ�Eジへのリンクタグがすでに埋め込まれた状態でアイチE��追加ウィンドウが開き、さらに、そのペ�Eジ冁E��引用したぁE��を選択した状態であればそ�E引用斁E��自動的に引用します�
 		</p>
 
 		<h3>Bookmarklet</h3>
 		<p>
-			下のリンク部分を「お気に入り」もしくはツールバーにドラッグできます。<small>(その前にテストしてみたい場合は単純に下のリンクをクリックしてみてください)</small>
+			下�Eリンク部刁E��「お気に入り」もしくはチE�Eルバ�EにドラチE��できます、Esmall>(そ�E前にチE��トしてみたい場合�E単純に下�EリンクをクリチE��してみてください)</small>
 			<br />
 			<br />
-			<a href="<?php echo htmlspecialchars($bm)?>">Add to <?php echo $blog->getShortName()?></a> (ほとんどのブラウザで動作します)
+			<a href="<?php echo htmlspecialchars($bm)?>">Add to <?php echo $blog->getShortName()?></a> (ほとんどのブラウザで動作しまぁE
 		</p>
 
-		<h3>右クリックメニューにインストール (WindowsでIE使用時)</h3>
+		<h3>右クリチE��メニューにインスト�Eル (WindowsでIE使用晁E</h3>
 		<p>
 			<?php
 				$url = 'index.php?action=regfile&blogid=' . intval($blogid);
 				$url = $manager->addTicketToUrl($url);
 			?>
-			あるいは<a href="<?php echo htmlspecialchars($url) ?>">右クリックメニュー</a>にインストールすることもできます (「開く」を選択すれば直接レジストリに登録します)
+			あるぁE�E<a href="<?php echo htmlspecialchars($url) ?>">右クリチE��メニュー</a>にインスト�EルすることもできまぁE(「開く」を選択すれ�E直接レジストリに登録しまぁE
 		</p>
 
 		<p>
-			このインストールした右クリックメニューを表示するためにはIEの再起動が必要です。
+			こ�Eインスト�Eルした右クリチE��メニューを表示するためにはIEの再起動が忁E��です�
 		</p>
 
-		<h3>アンインストール</h3>
+		<h3>アンインスト�Eル</h3>
 		<p>
-			「お気に入り」もしくはツールバーから消すには、単に削除するだけです。
+			「お気に入り」もしくはチE�Eルバ�Eから消すには、単に削除するだけです�
 		</p>
 		
 		<p>
-			右クリックメニューから消したい時は、以下の手順を踏んでください:
+			右クリチE��メニューから消したい時�E、以下�E手頁E��踏んでください:
 		</p>
 
 		<ol>
-			<li>スタートメニューから「ファイルを指定して実行...」を選択</li>
-			<li>"regedit" と入力</li>
-			<li>"OK" ボタンを押す</li>
+			<li>スタートメニューから「ファイルを指定して実衁E..」を選抁E/li>
+			<li>"regedit" と入劁E/li>
+			<li>"OK" ボタンを押ぁE/li>
 			<li>"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" をツリーの中から検索</li>
 			<li>"add to weblog" エントリを削除</li>				
 		</ol>

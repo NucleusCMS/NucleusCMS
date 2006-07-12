@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2005 The Nucleus Group
- * @version $Id: ACTION.php,v 1.3 2005-08-13 07:30:01 kimitake Exp $
- * $NucleusJP: ACTION.php,v 1.2 2005/03/12 06:19:04 kimitake Exp $
+ * @version $Id: ACTION.php,v 1.4 2006-07-12 07:11:47 kimitake Exp $
+ * $NucleusJP: ACTION.php,v 1.3 2005/08/13 07:30:01 kimitake Exp $
  */
 class ACTION
 {
@@ -133,9 +133,13 @@ class ACTION
 		} else {
 			$CONF['MemberURL'] = $CONF['IndexURL'];
 			if ($CONF['URLMode'] == 'pathinfo')
-				$url = createMemberLink($tomem->getID());
+			{
+				$url = createLink('member', array('memberid' => $tomem->getID(), 'name' => $tomem->getDisplayName()));
+			}
 			else
+			{
 				$url = $CONF['IndexURL'] . createMemberLink($tomem->getID());
+			}
 			redirect($url);
 		}
 		

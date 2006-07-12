@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
-	<!-- $Id: help.html,v 1.7 2005-04-09 05:36:19 kimitake Exp $ -->
-	<!-- $NucleusJP: help.html,v 1.6 2005/04/08 13:21:08 kimitake Exp $ -->
+	<!-- $Id: help.html,v 1.8 2006-07-12 07:11:46 kimitake Exp $ -->
+	<!-- $NucleusJP: help.html,v 1.7.2.1 2005/09/09 07:34:11 kimitake Exp $ -->
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Nucleus管理用ヘルプ</title>
@@ -235,8 +235,8 @@ Blogの管理者は次のような追加権限をもちます：
 <h2>ログインCookieの有効期間</h2>
 <p>メンバーがログインするとブラウザにcookieが保存され、翌日に戻ってきたときに再びログインする必要がなくなります。クッキーの有効期間によって、いつ無効になるか決定されます：</p>
 <ul>
-	<li><strong>セッションごと</strong> − ブラウザを終了させるとcookieは削除されます</li>
-	<li><strong>一ヶ月</strong> − 一ヶ月続けてサイトか管理領域を訪れないということが無い限り、cookieはコンピュータに残ります。このオプションを使えば、たぶん再ログインする必要はなくなるでしょう。（自分でログアウトしたときや、他のコンピュータからログインするときは別ですが）</li>
+	<li><strong>セッションごと</strong> ? ブラウザを終了させるとcookieは削除されます</li>
+	<li><strong>一ヶ月</strong> ? 一ヶ月続けてサイトか管理領域を訪れないということが無い限り、cookieはコンピュータに残ります。このオプションを使えば、たぶん再ログインする必要はなくなるでしょう。（自分でログアウトしたときや、他のコンピュータからログインするときは別ですが）</li>
 </ul>
 
 <h2>CookieパスとCookieドメイン</h2>
@@ -603,11 +603,11 @@ Blogの管理者は次のような追加権限をもちます：
 
 <div class="page"><a name="templatehighlight"></a>
 <h1>テンプレート：ハイライト表示</h1>
-<p>ハイライト表示は検索実行時に使われます。これは規則変化に沿った表現として実際に使われますので、直前にバックスラッシュを置くことによっていくつかの記号をエスケープしたいと望むかもしれません。ハイライトされた単語が当てはめられる場所は"¥0"で示されます。</p>
+<p>ハイライト表示は検索実行時に使われます。これは規則変化に沿った表現として実際に使われますので、直前にバックスラッシュを置くことによっていくつかの記号をエスケープしたいと望むかもしれません。ハイライトされた単語が当てはめられる場所は"\0"で示されます。</p>
 
 <h2>例</h2>
 
-<pre><code>&lt;span style='background-color:yellow'&gt;¥0&lt;/span&gt;</code></pre>
+<pre><code>&lt;span style='background-color:yellow'&gt;\0&lt;/span&gt;</code></pre>
 
 </div>
 
@@ -688,6 +688,12 @@ Blogの管理者は次のような追加権限をもちます：
 </tr><tr>
 	<td>popuptext</td>
 	<td>（textと同じ）</td>
+</tr><tr>
+	<td>link</td>
+	<td>画像への直接リンク（URL）</td>
+</tr><tr>
+	<td>media</td>
+	<td>すぐに使える、ポップアップしないイメージのための A タグ</td>
 </tr></table>
 
 
@@ -711,6 +717,9 @@ Blogの管理者は次のような追加権限をもちます：
 </tr><tr>
 	<td>height</td>
 	<td>イメージの高さ</td>
+</tr><tr>
+	<td>media</td>
+	<td>すぐに使える、イメージのための A タグ</td>
 </tr></table>
 
 <h2>メディアオブジェクトへのリンクコード</h2>
@@ -3147,6 +3156,12 @@ $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
 	<td>userlinkraw</td>
 	<td>上と同じだが&lt;a href..の部分を除く。有効なURLかメールアドレスが存在しないときは空っぽになる。</td>
 </tr><tr>
+	<td>useremail</td>
+	<td>ユーザーのメールアドレス。もしユーザーによって提供されていない場合は空っぽ</td>
+</tr><tr>
+	<td>userwebsite</td>
+	<td>ユーザーのwebsiteのURL。もしユーザーによって提供されていない場合は空っぽ</td>
+</tr><tr>
 	<td>memberid</td>
 	<td>メンバーのID（非メンバーは0となる）</td>
 </tr><tr>
@@ -3183,11 +3198,17 @@ $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
 	<td>blogid</td>
 	<td>weblogのID</td>
 </tr><tr>
+	<td>blogurl</td>
+	<td>weblogのURL</td>
+</tr><tr>
 	<td><a href="#templatememberextra" title="authtext()">authtext</a></td>
 	<td>メンバーなら証となるテキストを表示し、非メンバーなら空っぽ</td>
 </tr><tr>
 	<td>short</td>
 	<td>最初の改行部分から先が省略されたコメントの本体。テンプレートによっては末尾に<a href="#templatecommentcontinued">リンクが追加</a>される。</td>
+</tr><tr>
+	<td>excerpt</td>
+	<td>コメントの本体。60文字でカットし'...'を追加</td>
 </tr><tr>
 	<td>timestamp</td>
 	<td>コメントが追加された時のタイムスタンプ</td>

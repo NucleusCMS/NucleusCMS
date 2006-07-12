@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
-	<!-- $Id: plugins.html,v 1.6 2005-03-19 08:39:53 kimitake Exp $ -->
-	<!-- $NucleusJP: plugins.html,v 1.5 2005/03/19 08:34:53 kimitake Exp $ -->
+	<!-- $Id: plugins.html,v 1.7 2006-07-12 07:11:46 kimitake Exp $ -->
+	<!-- $NucleusJP: plugins.html,v 1.6.2.1 2005/09/09 07:34:26 kimitake Exp $ -->
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Nucleus - プラグイン API</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
@@ -33,7 +33,7 @@
 <p class="heading">&nbsp;</p>
 <div class="heading">
 プラグイン API
-<i>2005年3月5日</i>
+<i>2005年7月27日</i>
 </div>
 
 <div class="note-trans"><strong>訳者注：</strong> 
@@ -114,15 +114,18 @@ Nucleusプラグインによって、誰もがNucleusの提供する機能を、
 
 <pre class="example"><code>&lt;?
 
-class NP_HelloWorld extends NucleusPlugin {
+class NP_HelloWorld extends NucleusPlugin
+{
 
 	// プラグインの名前
-	function getName() {
+	function getName()
+	{
 		return 'Hello World'; 
 	}
 	
 	// プラグインの作者
-	function getAuthor()  { 
+	function getAuthor()
+	{ 
 		return 'Wouter Demuynck'; 
 	}
 	
@@ -134,31 +137,45 @@ class NP_HelloWorld extends NucleusPlugin {
 	}
 	
 	// プラグインのバージョン
-	function getVersion() {
+	function getVersion()
+	{
 		return '1.0'; 
 	}
 	
 	// インストール済みのプラグインリストに表示される説明文
-	function getDescription() { 
+	function getDescription()
+	{ 
 		return 'Just a sample plugin.';
 	}
 
-	function doSkinVar($skinType) {
+	function doSkinVar($skinType)
+	{
 		echo 'Hello World!';
 	}
-	
+
+	function supportsFeature ($what)
+	{
+		switch ($what)
+		{
+			case 'SqlTablePrefix':
+				return 1;
+			default:
+				return 0;
+		}
+	}
+	  
 }
 ?&gt;</pre>
 
 <ol>
 	<li>
-		このコードをコピーし、 <code>NP_HelloWorld.php</code> と名づけて保存し、プラグインディレクトリに置きます。<em>最後の <code>?&gt;</code> の後や、最初の <code>&lt;?</code> の前にスペースがないことを確認しましょう</em>。ところでNP は &quot;Nucleus Plugin&quot; って意味ですよ :-)
+		このコードをコピーし、 <code>NP_HelloWorld.php</code> と名づけて保存し、プラグインディレクトリに置きます。<em>最後の <code>?&gt;</code> の後や、最初の <code>&lt;?</code> の前にスペースがないことを確認しましょう</em>。ところでNP は &quot;Nucleus Plugin&quot; って意味ですよ :-) 念のため。
 	</li>
 	<li>Nucleusの管理画面を開き、<em>Nucleusの管理＞プラグインの管理</em>にいきます。</li>
 	<li><em>HelloWorld</em> プラグインがインストール可能な状態になっているはずですので、インストールします。すべてがうまくいけば、インストール済みプラグインリストに追加されます。</li>
-	<li>スキンを編集し、実際のページに表示する箇所に次の文を挿入します。
-	  <pre class="example"><code>&lt;%plugin(HelloWorld)%&gt;</code></pre>
-	注意：カッコ内の名称 (HelloWorld) は大文字小文字を識別します！</li>
+	<li>あなたのスキンの１つを編集し、実際のページに表示する箇所に次の文を挿入します。
+	  <pre class="example"><code>&lt;%HelloWorld%&gt;</code></pre>
+	注意：カッコ内の名称 (<code>HelloWorld</code>) は大文字小文字を識別します！</li>
 	<li>さて、編集したスキンから生成されるページを見てみましょう。プラグイン変数を追加した場所に &quot;Hello
   World&quot; と見えますね？</li>
 </ol>
@@ -503,6 +520,17 @@ by ref</var>のように示されます。</p>
 		<th>パラメータ</th>
 	</tr>
 	<tr>
+		<td>InitSkinParse</td>
+		<td>スキンの初期化の直前</td>
+		<td><dl>
+			<dt class="obj ref">skin</dt>
+			<dd>パースする<code>SKIN</code>オブジェクト</dd>
+			<dt class="ro">type</dt>
+			<dd>スキンタイプ（'index', 'item', 'archive', 'archivelist',
+			'member', 'error', 'search', 'imagepopup', 'fileparser'のいずれか)</dd>
+		</dl></td>
+	</tr>
+	<tr>
 		<td>PreSkinParse</td>
 		<td>スキンのパースの直前</td>
 		<td><dl>
@@ -511,6 +539,8 @@ by ref</var>のように示されます。</p>
 			<dt class="ro">type</dt>
 			<dd>スキンタイプ（'index', 'item', 'archive', 'archivelist',
 		  'member', 'error', 'search', 'imagepopup', 'fileparser'のいずれか）</dd>
+			<dt class="ref">contents</dt>
+			<dd>スキンの内容</dd>
 		</dl></td>		
 	</tr>
 	<tr>
@@ -679,6 +709,14 @@ by ref</var>のように示されます。</p>
 			<dt class="ro">itemid</dt>
 			<dd>データベースに出来た新しい itemid</dd>
 		</dl></td>		
+	</tr>
+	<tr>
+		<td>PostUpdateItem</td>
+		<td>アイテムがデータベースにアップデートされた直後</td>
+		<td><dl>
+			<dt class="ro">itemid</dt>
+			<dd>アイテムのID</dd>
+		</dl></td>
 	</tr>
 	<tr>
 		<td>PreAddItem</td>
@@ -1754,7 +1792,7 @@ class NP_HelloWorld extends NucleusPlugin {
 
 	include($strRel . 'config.php');
 	if (!$member->isLoggedIn())
-		doError('You¥'re not logged in.');
+		doError('You\'re not logged in.');
 
 	include($DIR_LIBS . 'PLUGINADMIN.php');
 
