@@ -14,24 +14,34 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.7 2006-07-12 07:11:47 kimitake Exp $
+ * @version $Id: ADMIN.php,v 1.8 2006-07-12 09:18:02 kimitake Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.4.2.4 2005/09/09 06:21:38 kimitake Exp $
  */
 
+require_once "showlist.php";
+
+/**
+ * Builds the admin area and executes admin actions
+ */
 class ADMIN {
 
-	// action currently being executed ($action=xxxx -> action_xxxx method)
+	/**
+	 * @var string $action action currently being executed ($action=xxxx -> action_xxxx method)
+	 */
 	var $action;
 
+	/**
+	 * Class constructor
+	 */
 	function ADMIN() {
 
 	}
 
 	/**
-	  * Executes an action
-	  *
-	  * @param $action
-	  *		action to be performed
-	  */
+	 * Executes an action
+	 *
+	 * @param string $action action to be performed
+	 */
 	function action($action) {
 		global $CONF, $manager;
 
@@ -41,7 +51,7 @@ class ADMIN {
 			'' => 'overview'
 		);
 
-		if ($alias[$action])
+		if (isset($alias[$action]))
 			$action = $alias[$action];
 
 		$methodName = 'action_' . $action;
@@ -51,7 +61,7 @@ class ADMIN {
 		// check ticket. All actions need a ticket, unless they are considered to be safe (a safe action
 		// is an action that requires user interaction before something is actually done)
 		// all safe actions are in this array:
-		$aActionsNotToCheck = array('showlogin', 'login', 'overview', 'itemlist', 'blogcommentlist', 'bookmarklet', 'blogsettings', 'banlist', 'deleteblog', 'editmembersettings', 'browseownitems', 'browseowncomments', 'createitem', 'itemedit', 'itemmove', 'categoryedit', 'categorydelete', 'manage', 'actionlog', 'settingsedit', 'backupoverview', 'pluginlist', 'createnewlog', 'usermanagement', 'skinoverview', 'templateoverview', 'skinieoverview', 'itemcommentlist', 'commentedit', 'commentdelete', 'banlistnewfromitem', 'banlistdelete', 'itemdelete', 'manageteam', 'teamdelete', 'banlistnew', 'memberedit', 'memberdelete', 'pluginhelp', 'pluginoptions', 'plugindelete', 'skinedittype', 'skindelete', 'skinedit', 'templateedit', 'templatedelete', 'activate');
+		$aActionsNotToCheck = array('showlogin', 'login', 'overview', 'itemlist', 'blogcommentlist', 'bookmarklet', 'blogsettings', 'banlist', 'deleteblog', 'editmembersettings', 'browseownitems', 'browseowncomments', 'createitem', 'itemedit', 'itemmove', 'categoryedit', 'categorydelete', 'manage', 'actionlog', 'settingsedit', 'backupoverview', 'pluginlist', 'createnewlog', 'usermanagement', 'skinoverview', 'templateoverview', 'skinieoverview', 'itemcommentlist', 'commentedit', 'commentdelete', 'banlistnewfromitem', 'banlistdelete', 'itemdelete', 'manageteam', 'teamdelete', 'banlistnew', 'memberedit', 'memberdelete', 'pluginhelp', 'pluginoptions', 'plugindelete', 'skinedittype', 'skinremovetype', 'skindelete', 'skinedit', 'templateedit', 'templatedelete', 'activate');
 /*
 		// the rest of the actions needs to be checked
 		$aActionsToCheck = array('additem', 'itemupdate', 'itemmoveto', 'categoryupdate', 'categorydeleteconfirm', 'itemdeleteconfirm', 'commentdeleteconfirm', 'teamdeleteconfirm', 'memberdeleteconfirm', 'templatedeleteconfirm', 'skindeleteconfirm', 'banlistdeleteconfirm', 'plugindeleteconfirm', 'batchitem', 'batchcomment', 'batchmember', 'batchcategory', 'batchteam', 'regfile', 'commentupdate', 'banlistadd', 'changemembersettings', 'clearactionlog', 'settingsupdate', 'blogsettingsupdate', 'categorynew', 'teamchangeadmin', 'teamaddmember', 'memberadd', 'addnewlog', 'addnewlog2', 'backupcreate', 'backuprestore', 'pluginup', 'plugindown', 'pluginupdate', 'pluginadd', 'pluginoptionsupdate', 'skinupdate', 'skinclone', 'skineditgeneral', 'templateclone', 'templatenew', 'templateupdate', 'skinieimport', 'skinieexport', 'skiniedoimport', 'skinnew', 'deleteblogconfirm', 'sendping', 'rawping', 'activatesetpwd');
@@ -69,12 +79,17 @@ class ADMIN {
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_showlogin() {
 		global $error;
 		$this->action_login($error);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_login($msg = '', $passvars = 1) {
 		global $member;
 
@@ -118,8 +133,9 @@ class ADMIN {
 
 
 	/**
-	  * provides a screen with the overview of the actions available
-	  */
+	 * provides a screen with the overview of the actions available
+	 * @todo document parameter
+	 */
 	function action_overview($msg = '') {
 		global $member;
 
@@ -188,11 +204,17 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
-	// returns a link to a weblog (takes BLOG object as parameter)
+	/**
+	 * Returns a link to a weblog
+	 * @param object BLOG
+	 */
 	function bloglink(&$blog) {
 		return '<a href="'.htmlspecialchars($blog->getURL()).'" title="'._BLOGLIST_TT_VISIT.'">'.$blog->getName() .'</a>';
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_manage($msg = '') {
 		global $member;
 
@@ -231,6 +253,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemlist($blogid = '') {
 		global $member, $manager;
 
@@ -280,7 +305,7 @@ class ADMIN {
 		$template['content'] = 'itemlist';
 		$template['now'] = $blog->getCorrectTime(time());
 
-
+		$manager->loadClass("ENCAPSULATE");
 		$navList =& new NAVLIST('itemlist', $start, $amount, 0, 1000, $blogid, $search, 0);
 		$navList->showBatchList('item',$query,'table',$template);
 
@@ -288,7 +313,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_batchitem() {
 		global $member, $manager;
 
@@ -351,6 +378,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_batchcomment() {
 		global $member;
 
@@ -404,6 +434,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_batchmember() {
 		global $member;
 
@@ -468,7 +501,9 @@ class ADMIN {
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_batchteam() {
 		global $member;
 
@@ -536,8 +571,9 @@ class ADMIN {
 
 	}
 
-
-
+	/**
+	 * @todo document this
+	 */
 	function action_batchcategory() {
 		global $member, $manager;
 
@@ -598,6 +634,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function batchMoveSelectDestination($type, $ids) {
 		global $manager;
 		$this->pagehead();
@@ -628,6 +667,9 @@ class ADMIN {
 		exit;
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function batchMoveCategorySelectDestination($type, $ids) {
 		global $manager;
 		$this->pagehead();
@@ -658,6 +700,9 @@ class ADMIN {
 		exit;
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function batchAskDeleteConfirmation($type, $ids) {
 		global $manager;
 
@@ -696,21 +741,24 @@ class ADMIN {
 
 
 	/**
-	  * Inserts a HTML select element with choices for all categories to which the current
-	  * member has access
-	  */
+	 * Inserts a HTML select element with choices for all categories to which the current
+	 * member has access
+	 * @see function selectBlog
+	 */
 	function selectBlogCategory($name, $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
 		ADMIN::selectBlog($name, 'category', $selected, $tabindex, $showNewCat, $iForcedBlogInclude);
 	}
 
 	/**
-	  * Inserts a HTML select element with choices for all blogs to which the user has access
-	  *		mode = 'blog' => shows blognames and values are blogids
-	  *		mode = 'category' => show category names and values are catids
-	  *
-	  * @param $iForcedBlogInclude
-	  *		ID of a blog that always needs to be included, without checking if the member is on the blog team (-1 = none)
-	  */
+	 * Inserts a HTML select element with choices for all blogs to which the user has access
+	 *		mode = 'blog' => shows blognames and values are blogids
+	 *		mode = 'category' => show category names and values are catids
+	 *
+	 * @param $iForcedBlogInclude
+	 *		ID of a blog that always needs to be included, without checking if the
+	 *		member is on the blog team (-1 = none)
+	 * @todo document parameters
+	 */
 	function selectBlog($name, $mode='blog', $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
 		global $member, $CONF;
 
@@ -778,8 +826,11 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_browseownitems() {
-		global $member;
+		global $member, $manager;
 
 		$this->pagehead();
 
@@ -813,7 +864,8 @@ class ADMIN {
 		$template['content'] = 'itemlist';
 		$template['now'] = time();
 
-		$navList =& new NAVLIST('browseownitems', $start, $amount, 0, 1000, $blogid, $search, 0);
+		$manager->loadClass("ENCAPSULATE");
+		$navList =& new NAVLIST('browseownitems', $start, $amount, 0, 1000, /*$blogid*/ 0, $search, 0);
 		$navList->showBatchList('item',$query,'table',$template);
 
 		$this->pagefoot();
@@ -821,10 +873,11 @@ class ADMIN {
 	}
 
 	/**
-	  * Show all the comments for a given item
-	  */
+	 * Show all the comments for a given item
+	 * @param int $itemid
+	 */
 	function action_itemcommentlist($itemid = '') {
-		global $member;
+		global $member, $manager;
 
 		if ($itemid == '')
 			$itemid = intRequestVar('itemid');
@@ -864,6 +917,7 @@ class ADMIN {
 		$template['content'] = 'commentlist';
 		$template['canAddBan'] = $member->blogAdminRights(getBlogIDFromItemID($itemid));
 
+		$manager->loadClass("ENCAPSULATE");
 		$navList =& new NAVLIST('itemcommentlist', $start, $amount, 0, 1000, 0, $search, $itemid);
 		$navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS);
 
@@ -871,10 +925,10 @@ class ADMIN {
 	}
 
 	/**
-	  * Browse own comments
-	  */
+	 * Browse own comments
+	 */
 	function action_browseowncomments() {
-		global $member;
+		global $member, $manager;
 
 		// start index
 		if (postVar('start'))
@@ -907,6 +961,7 @@ class ADMIN {
 		$template['content'] = 'commentlist';
 		$template['canAddBan'] = 0;	// doesn't make sense to allow banning yourself
 
+		$manager->loadClass("ENCAPSULATE");
 		$navList =& new NAVLIST('browseowncomments', $start, $amount, 0, 1000, 0, $search, 0);
 		$navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS_YOUR);
 
@@ -914,8 +969,9 @@ class ADMIN {
 	}
 
 	/**
-	  * Browse all comments for a weblog
-	  */
+	 * Browse all comments for a weblog
+	 * @param int $blogid
+	 */
 	function action_blogcommentlist($blogid = '')
 	{
 		global $member, $manager;
@@ -942,7 +998,7 @@ class ADMIN {
 		$search = postVar('search');		// search through comments
 
 
-		$query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
+		$query =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
 
 		if ($search != '')
 			$query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
@@ -962,6 +1018,7 @@ class ADMIN {
 		$template['content'] = 'commentlist';
 		$template['canAddBan'] = $member->blogAdminRights($blogid);
 
+		$manager->loadClass("ENCAPSULATE");
 		$navList =& new NAVLIST('blogcommentlist', $start, $amount, 0, 1000, $blogid, $search, 0);
 		$navList->showBatchList('comment',$query,'table',$template, _NOCOMMENTS_BLOG);
 
@@ -969,8 +1026,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Provide a page to item a new item to the given blog
-	  */
+	 * Provide a page to item a new item to the given blog
+	 */
 	function action_createitem() {
 		global $member, $manager;
 
@@ -992,6 +1049,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemedit() {
 		global $member, $manager;
 
@@ -1017,6 +1077,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemupdate() {
 		global $member, $manager, $CONF;
 
@@ -1038,6 +1101,7 @@ class ADMIN {
 		$title 	= postVar('title');
 		$more 	= postVar('more');
 		$closed = intPostVar('closed');
+		$draftid = intPostVar('draftid');
 
 		// default action = add now
 		if (!$actiontype)
@@ -1100,6 +1164,10 @@ class ADMIN {
 		// edit the item for real
 		ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
 
+		if ($draftid > 0) {
+			ITEM::delete($draftid);
+		}
+
 		$blogid = getBlogIDFromItemID($itemid);
 		$blog =& $manager->getBlog($blogid);
 		if (!$closed && $publish && $wasdraft && $blog->pingUserland()) {
@@ -1121,6 +1189,9 @@ class ADMIN {
 		}
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemdelete() {
 		global $member, $manager;
 
@@ -1159,6 +1230,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemdeleteconfirm() {
 		global $member;
 
@@ -1176,7 +1250,10 @@ class ADMIN {
 		$this->action_itemlist($blogid);
 	}
 
-	// deletes one item and returns error if something goes wrong
+	/**
+	 * Deletes one item and returns error if something goes wrong
+	 * @param int $itemid
+	 */
 	function deleteOneItem($itemid) {
 		global $member, $manager;
 
@@ -1188,6 +1265,9 @@ class ADMIN {
 		ITEM::delete($itemid);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemmove() {
 		global $member, $manager;
 
@@ -1217,6 +1297,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_itemmoveto() {
 		global $member, $manager;
 
@@ -1249,9 +1332,11 @@ class ADMIN {
 	}
 
 	/**
-	  * Moves one item to a given category (category existance should be checked by caller)
-	  * errors are returned
-	  */
+	 * Moves one item to a given category (category existance should be checked by caller)
+	 * errors are returned
+	 * @param int $itemid
+	 * @param int $destCatid category ID to which the item will be moved
+	 */
 	function moveOneItem($itemid, $destCatid) {
 		global $member;
 
@@ -1263,8 +1348,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Adds a item to the chosen blog
-	  */
+	 * Adds a item to the chosen blog
+	 */
 	function action_additem() {
 		global $member, $manager, $CONF;
 
@@ -1293,12 +1378,12 @@ class ADMIN {
 	}
 
 	/**
-	  * Shows a window that says we're about to ping weblogs.com.
-	  * immediately refresh to the real pinging page, which will
-	  * show an error, or redirect to the blog.
-	  *
-	  * @param $blogid ID of blog for which ping needs to be sent out
-	  */
+	 * Shows a window that says we're about to ping weblogs.com.
+	 * immediately refresh to the real pinging page, which will
+	 * show an error, or redirect to the blog.
+	 *
+	 * @param int $blogid ID of blog for which ping needs to be sent out
+	 */
 	function action_sendping($blogid = -1) {
 		global $member, $manager;
 
@@ -1325,8 +1410,10 @@ class ADMIN {
 		<?php		$this->pagefoot();
 	}
 
-	// ping to Weblogs.com
-	// sends the real ping (can take up to 10 seconds!)
+	/**
+	 * Ping to Weblogs.com
+	 * Sends the real ping (can take up to 10 seconds!)
+	 */
 	function action_rawping() {
 		global $manager;
 		// TODO: checks?
@@ -1355,8 +1442,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Allows to edit previously made comments
-	  */
+	 * Allows to edit previously made comments
+	 */
 	function action_commentedit() {
 		global $member, $manager;
 
@@ -1417,6 +1504,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_commentupdate() {
 		global $member, $manager;
 
@@ -1460,6 +1550,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_commentdelete() {
 		global $member, $manager;
 
@@ -1500,6 +1593,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_commentdeleteconfirm() {
 		global $member;
 
@@ -1520,6 +1616,9 @@ class ADMIN {
 			$this->action_browseowncomments();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function deleteOneComment($commentid) {
 		global $member, $manager;
 
@@ -1540,8 +1639,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Usermanagement main
-	  */
+	 * Usermanagement main
+	 */
 	function action_usermanagement() {
 		global $member, $manager;
 
@@ -1562,6 +1661,7 @@ class ADMIN {
 		$template['content'] = 'memberlist';
 		$template['tabindex'] = 10;
 
+		$manager->loadClass("ENCAPSULATE");
 		$batch =& new BATCH('member');
 		$batch->showlist($query,'table',$template);
 
@@ -1615,11 +1715,15 @@ class ADMIN {
 	}
 
 	/**
-	  * Edit member settings
-	  */
+	 * Edit member settings
+	 */
 	function action_memberedit() {
 		$this->action_editmembersettings(intRequestVar('memberid'));
 	}
+
+	/**
+	 * @todo document this
+	 */
 	function action_editmembersettings($memberid = '') {
 		global $member, $manager, $CONF;
 
@@ -1748,7 +1852,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_changemembersettings() {
 		global $member, $CONF, $manager;
 
@@ -1838,22 +1944,25 @@ class ADMIN {
 
 		$mem->write();
 
+		// store plugin options
+		$aOptions = requestArray('plugoption');
+		NucleusPlugin::_applyPluginOptions($aOptions);
+		$manager->notify('PostPluginOptionsUpdate',array('context' => 'member', 'memberid' => $memberid, 'member' => &$mem));
+
 		// if email changed, generate new password
 		if ($oldEmail != $mem->getEmail())
 		{
 			$mem->sendActivationLink('addresschange', $oldEmail);
 			// logout member
 			$mem->newCookieKey();
-			$member->logout();
+
+			// only log out if the member being edited is the current member.
+			if ($member->getID() == $memberid)
+				$member->logout();
 			$this->action_login(_MSG_ACTIVATION_SENT, 0);
 			return;
 		}
 
-
-		// store plugin options
-		$aOptions = requestArray('plugoption');
-		NucleusPlugin::_applyPluginOptions($aOptions);
-		$manager->notify('PostPluginOptionsUpdate',array('context' => 'member', 'memberid' => $memberid, 'member' => &$mem));
 
 		if (  ( $mem->getID() == $member->getID() )
 		   && ( $newpass || ( $mem->getDisplayName() != $member->getDisplayName() ) )
@@ -1866,8 +1975,11 @@ class ADMIN {
 		}
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_memberadd() {
-		global $member;
+		global $member, $manager;
 
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
@@ -1880,6 +1992,11 @@ class ADMIN {
 		$res = MEMBER::create(postVar('name'), postVar('realname'), postVar('password'), postVar('email'), postVar('url'), postVar('admin'), postVar('canlogin'), postVar('notes'));
 		if ($res != 1)
 			$this->error($res);
+
+		// fire PostRegister event
+		$newmem = new MEMBER();
+		$newmem->readFromName(postVar('name'));
+		$manager->notify('PostRegister',array('member' => &$newmem));
 
 		$this->action_usermanagement();
 	}
@@ -1895,6 +2012,9 @@ class ADMIN {
 		$this->_showActivationPage($key);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function _showActivationPage($key, $message = '')
 	{
 		global $manager;
@@ -2041,8 +2161,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Manage team
-	  */
+	 * Manage team
+	 */
 	function action_manageteam() {
 		global $member, $manager;
 
@@ -2068,6 +2188,7 @@ class ADMIN {
 		$template['content'] = 'teamlist';
 		$template['tabindex'] = 10;
 
+		$manager->loadClass("ENCAPSULATE");
 		$batch =& new BATCH('team');
 		$batch->showlist($query, 'table', $template);
 
@@ -2104,8 +2225,8 @@ class ADMIN {
 	}
 
 	/**
-	  * Add member tot tram
-	  */
+	 * Add member to team
+	 */
 	function action_teamaddmember() {
 		global $member, $manager;
 
@@ -2124,6 +2245,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_teamdelete() {
 		global $member, $manager;
 
@@ -2155,6 +2279,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_teamdeleteconfirm() {
 		global $member;
 
@@ -2169,6 +2296,9 @@ class ADMIN {
 		$this->action_manageteam();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function deleteOneTeamMember($blogid, $memberid) {
 		global $member, $manager;
 
@@ -2202,6 +2332,9 @@ class ADMIN {
 		return '';
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_teamchangeadmin() {
 		global $member;
 
@@ -2235,6 +2368,9 @@ class ADMIN {
 			$this->action_overview(_MSG_ADMINCHANGED);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_blogsettings() {
 		global $member, $manager;
 
@@ -2323,6 +2459,10 @@ class ADMIN {
 			</td>
 			<td><?php $this->input_yesno('public',$blog->isPublic(),70); ?></td>
 		</tr><tr>
+	<td><?php echo _EBLOG_REQUIREDEMAIL?>
+		 </td>
+		 <td><?php $this->input_yesno('reqemail',$blog->emailRequired(),72); ?></td>
+	  </tr><tr>
 			<td><?php echo _EBLOG_NOTIFY?> <?php help('blognotify'); ?></td>
 			<td><input name="notify" tabindex="80" maxlength="60" size="40" value="<?php echo  htmlspecialchars($blog->getNotifyAddress()); ?>" /></td>
 		</tr><tr>
@@ -2393,6 +2533,7 @@ class ADMIN {
 		$template['content'] = 'categorylist';
 		$template['tabindex'] = 200;
 
+		$manager->loadClass("ENCAPSULATE");
 		$batch =& new BATCH('category');
 		$batch->showlist($query,'table',$template);
 
@@ -2433,6 +2574,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_categorynew() {
 		global $member, $manager;
 
@@ -2457,7 +2601,9 @@ class ADMIN {
 		$this->action_blogsettings();
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_categoryedit($catid = '', $blogid = '', $desturl = '') {
 		global $member, $manager;
 
@@ -2480,6 +2626,8 @@ class ADMIN {
 
 		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
 		$this->pagehead($extrahead);
+
+		echo "<p><a href='index.php?action=blogsettings&amp;blogid=$blogid'>(",_BACK_TO_BLOGSETTINGS,")</a></p>";
 
 		?>
 		<h2><?php echo _EBLOG_CAT_UPDATE?> '<?php echo htmlspecialchars($cname)?>'</h2>
@@ -2515,7 +2663,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_categoryupdate() {
 		global $member, $manager;
 
@@ -2556,6 +2706,9 @@ class ADMIN {
 		}
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_categorydelete() {
 		global $member, $manager;
 
@@ -2600,6 +2753,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_categorydeleteconfirm() {
 		global $member, $manager;
 
@@ -2615,6 +2771,9 @@ class ADMIN {
 		$this->action_blogsettings();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function deleteOneCategory($catid) {
 		global $manager, $member;
 
@@ -2661,6 +2820,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function moveOneCategory($catid, $destblogid) {
 		global $manager, $member;
 
@@ -2726,6 +2888,9 @@ class ADMIN {
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_blogsettingsupdate() {
 		global $member, $manager;
 
@@ -2784,6 +2949,7 @@ class ADMIN {
 		$blog->setAllowPastPosting(intPostVar('allowpastposting'));
 		$blog->setDefaultCategory(intPostVar('defcat'));
 		$blog->setSearchable(intPostVar('searchable'));
+		$blog->setEmailRequired(intPostVar('reqemail'));
 
 		$blog->writeSettings();
 
@@ -2796,6 +2962,9 @@ class ADMIN {
 		$this->action_overview(_MSG_SETTINGSCHANGED);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_deleteblog() {
 		global $member, $CONF, $manager;
 
@@ -2830,6 +2999,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_deleteblogconfirm() {
 		global $member, $CONF, $manager;
 
@@ -2875,6 +3047,9 @@ class ADMIN {
 		$this->action_overview(_DELETED_BLOG);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_memberdelete() {
 		global $member, $manager;
 
@@ -2905,6 +3080,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_memberdeleteconfirm() {
 		global $member;
 
@@ -2922,7 +3100,10 @@ class ADMIN {
 			$this->action_overview(_DELETED_MEMBER);
 	}
 
-	// (static)
+	/**
+	 * @static
+	 * @todo document this
+	 */
 	function deleteOneMember($memberid) {
 		global $manager;
 
@@ -2933,6 +3114,11 @@ class ADMIN {
 			return _ERROR_DELETEMEMBER;
 
 		$manager->notify('PreDeleteMember', array('member' => &$mem));
+
+		/* unlink comments from memberid */
+		$query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. addslashes($mem->getDisplayName())
+					.'" WHERE cmember='.$memberid;
+		sql_query($query);
 
 		$query = 'DELETE FROM '.sql_table('member').' WHERE mnumber='.$memberid;
 		sql_query($query);
@@ -2951,6 +3137,9 @@ class ADMIN {
 		return '';
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_createnewlog() {
 		global $member, $CONF, $manager;
 
@@ -2963,18 +3152,18 @@ class ADMIN {
 		?>
 		<h2><?php echo _EBLOG_CREATE_TITLE?></h2>
 
-		<h3>_ADMIN_NOTABILIA</h3>
+		<h3>注意事項</h3>
 
-		<p>_ADMIN_PLEASE_READ</p>
+		<p>作成にあたって、下記の<strong>注意事項</strong> をまずお読み下さい</p>
 
-		<p>_ADMIN_HOW_TO_ACCESS</p>
+		<p>新しいweblogを作成した後に、このblogにアクセスするための方法を紹介しておきます。方法は2つあります:</p>
 
 		<ol>
-			<li>_ADMIN_SIMPLE_WAY</li>
-			<li>_ADMIN_DIFFICULT_WAY</li>
+			<li><strong>簡単な方法:</strong> <code>index.php</code>の複製を作り、新しいblogを表示するように変更を加えます。 この変更の詳細は、作成後に表示されます。</li>
+			<li><strong>高度な方法:</strong> 現在のblogで使用しているスキンに<code>otherblog</code>というコードを使った記述を加えます。この方法では、同じページ内で複数のblogを展開することが可能となります。</li>
 		</ol>
 
-		<h3>_ADMIN_HOW_TO_CREATE</h3>
+		<h3>Weblogの作成</h3>
 
 		<p>
 		<?php echo _EBLOG_CREATE_TEXT?>
@@ -3032,6 +3221,9 @@ class ADMIN {
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_addnewlog() {
 		global $member, $manager, $CONF;
 
@@ -3089,7 +3281,7 @@ class ADMIN {
 		sql_query($query);
 
 
-		$blog->additem($blog->getDefaultCategory(),'First Item','これはあなた�Eweblogにおける最初�EアイチE��です。�E由に削除してぁE��だぁE��かまぁE��せん、E,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
+		$blog->additem($blog->getDefaultCategory(),'First Item','これはあなたのweblogにおける最初のアイテムです。自由に削除していただいてかまいません。','',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
 
 		$manager->notify(
 			'PostAddBlog',
@@ -3107,18 +3299,18 @@ class ADMIN {
 
 		$this->pagehead();
 		?>
-		<h2>新しいweblogが作�Eされました</h2>
+		<h2>新しいweblogが作成されました</h2>
 
-		<p>新しいweblog 、E?php echo htmlspecialchars($bname)?>」が作�Eされました。続けて、これにアクセスするために以下�Eどちらかの手頁E��進んでください、E/p>
+		<p>新しいweblog 「<?php echo htmlspecialchars($bname)?>」が作成されました。続けて、これにアクセスするために以下のどちらかの手順に進んでください。</p>
 
 		<ol>
-			<li><a href="#index_php">簡単な方況E 下�Eコードを貼付けぁE<code><?php echo htmlspecialchars($bshortname)?>.php</code> とぁE��ファイルを作�Eする</a></li>
-			<li><a href="#skins">高度な方況E 現在使用してぁE��スキンに新しいweblogを展開させるため�E記述を加える</a></li>
+			<li><a href="#index_php">簡単な方法: 下のコードを貼付けた <code><?php echo htmlspecialchars($bshortname)?>.php</code> というファイルを作成する</a></li>
+			<li><a href="#skins">高度な方法: 現在使用しているスキンに新しいweblogを展開させるための記述を加える</a></li>
 		</ol>
 
-		<h3><a id="index_php">方況E1: <code><?php echo htmlspecialchars($bshortname)?>.php</code> とぁE��ファイルを作�E</a></h3>
+		<h3><a id="index_php">方法 1: <code><?php echo htmlspecialchars($bshortname)?>.php</code> というファイルを作成</a></h3>
 
-		<p><code><?php echo htmlspecialchars($bshortname)?>.php</code> とぁE��ファイルを作�Eして、中身に以下�Eコードを貼り付けめE</p>
+		<p><code><?php echo htmlspecialchars($bshortname)?>.php</code> というファイルを作成して、中身に以下のコードを貼り付ける:</p>
 <pre><code>&lt;?php
 
 $CONF['Self'] = '<b><?php echo htmlspecialchars($bshortname)?>.php</b>';
@@ -3130,10 +3322,9 @@ selector();
 
 ?&gt;</code></pre>
 
-		<p>すでにある<code>index.php</code>と同じチE��レクトリにアチE�Eロードします、E/p>
+		<p>すでにある<code>index.php</code>と同じディレクトリにアップロードします。</p>
 
-		<p>新しいweblogの作�Eを完亁E��るためには、下にこ�EファイルのURLを�E力してください、E(すでに用意した値で合ってぁE��とは思いますが保証はしません):</p>
-
+		<p>新しいweblogの作成を完了するためには、下にこのファイルのURLを入力してください。 (すでに用意した値で合っているとは思いますが保証はしません):</p>
 
 		<form action="index.php" method="post"><div>
 			<input type="hidden" name="action" value="addnewlog2" />
@@ -3148,10 +3339,9 @@ selector();
 			</tr></table>
 		</div></form>
 
-		<h3><a id="skins">方況E2: 現在使用してぁE��スキンに新しいweblogを展開する記述を加える</a></h3>
+		<h3><a id="skins">方法 2: 現在使用しているスキンに新しいweblogを展開する記述を加える</a></h3>
 
-		<p>新しいweblogの作�Eを完亁E��るためには、下にURLを�E力してください、E(大抵は既存blogと同じURL)</p>
-
+		<p>新しいweblogの作成を完了するためには、下にURLを入力してください。 (大抵は既存blogと同じURL)</p>
 
 		<form action="index.php" method="post"><div>
 			<input type="hidden" name="action" value="addnewlog2" />
@@ -3170,6 +3360,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_addnewlog2() {
 		global $member, $manager;
 
@@ -3185,6 +3378,9 @@ selector();
 		$this->action_overview(_MSG_NEWBLOG);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinieoverview() {
 		global $member, $DIR_LIBS, $manager;
 
@@ -3286,6 +3482,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinieimport() {
 		global $member, $DIR_LIBS, $DIR_SKINS, $manager;
 
@@ -3314,6 +3513,10 @@ selector();
 		// read only metadata
 		$error = $importer->readFile($skinFile, 1);
 
+		// clashes
+		$skinNameClashes = $importer->checkSkinNameClashes();
+		$templateNameClashes = $importer->checkTemplateNameClashes();
+		$hasNameClashes = (count($skinNameClashes) > 0) || (count($templateNameClashes)	> 0);
 
 		if ($error) $this->error($error);
 
@@ -3327,8 +3530,15 @@ selector();
 			<li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo htmlspecialchars($importer->getInfo())?></p></li>
 			<li><p><strong><?php echo _SKINIE_INFO_SKINS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
 			<li><p><strong><?php echo _SKINIE_INFO_TEMPLATES?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
-			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_SKINCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->checkSkinNameClashes())?></p></li>
-			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_TEMPLCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->checkTemplateNameClashes())?></p></li>
+			<?php
+				if ($hasNameClashes)
+				{
+			?>
+			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_SKINCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$skinNameClashes)?></p></li>
+			<li><p><strong style="color: red;"><?php echo _SKINIE_INFO_TEMPLCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$templateNameClashes)?></p></li>
+			<?php
+				} // if (hasNameClashes)
+			?>
 		</ul>
 
 		<form method="post" action="index.php"><div>
@@ -3337,8 +3547,15 @@ selector();
 			<input type="hidden" name="skinfile" value="<?php echo htmlspecialchars(postVar('skinfile'))?>" />
 			<input type="hidden" name="mode" value="<?php echo htmlspecialchars($mode)?>" />
 			<input type="submit" value="<?php echo _SKINIE_CONFIRM_IMPORT?>" />
+			<?php
+				if ($hasNameClashes)
+				{
+			?>
 			<br />
 			<input type="checkbox" name="overwrite" value="1" id="cb_overwrite" /><label for="cb_overwrite"><?php echo _SKINIE_CONFIRM_OVERWRITE?></label>
+			<?php
+				} // if (hasNameClashes)
+			?>
 		</div></form>
 
 
@@ -3346,6 +3563,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skiniedoimport() {
 		global $member, $DIR_LIBS, $DIR_SKINS;
 
@@ -3400,6 +3620,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinieexport() {
 		global $member, $DIR_LIBS;
 
@@ -3431,6 +3654,9 @@ selector();
 		$exporter->export();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templateoverview() {
 		global $member, $manager;
 
@@ -3472,6 +3698,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templateedit($msg = '') {
 		global $member, $manager;
 
@@ -3598,6 +3827,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function _templateEditRow(&$template, $description, $name, $help = '', $tabindex = 0, $big = 0) {
 		static $count = 1;
 	?>
@@ -3607,6 +3839,9 @@ selector();
 	<?php		$count++;
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templateupdate() {
 		global $member;
 
@@ -3677,6 +3912,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function addToTemplate($id, $partname, $content) {
 		$partname = addslashes($partname);
 		$content = addslashes($content);
@@ -3688,10 +3926,13 @@ selector();
 
 		$query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
 			   . "VALUES ($id, '$partname', '$content')";
-		mysql_query($query) or die("Query error: " . mysql_error());
+		sql_query($query) or die("Query error: " . mysql_error());
 		return mysql_insert_id();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templatedelete() {
 		global $member, $manager;
 
@@ -3722,6 +3963,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templatedeleteconfirm() {
 		global $member, $manager;
 
@@ -3742,6 +3986,9 @@ selector();
 		$this->action_templateoverview();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templatenew() {
 		global $member;
 
@@ -3761,6 +4008,9 @@ selector();
 		$this->action_templateoverview();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_templateclone() {
 		global $member;
 
@@ -3795,6 +4045,9 @@ selector();
 		$this->action_templateoverview();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinoverview() {
 		global $member, $manager;
 
@@ -3839,6 +4092,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinnew() {
 		global $member;
 
@@ -3858,6 +4114,9 @@ selector();
 		$this->action_skinoverview();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinedit() {
 		global $member, $manager;
 
@@ -3887,7 +4146,33 @@ selector();
 			<li><a tabindex="75" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=imagepopup"><?php echo _SKIN_PART_POPUP?></a> <?php help('skinpartimagepopup')?></li>
 		</ul>
 
-		<h3><?php echo _SKIN_GENSETTINGS_TITLE?></h3>
+		<?php
+
+		$query = "SELECT stype FROM " . sql_table('skin') . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member') and sdesc = " . $skinid;
+		$res = sql_query($query);
+
+		echo '<h3>' . _SKIN_PARTS_SPECIAL . '</h3>';
+		echo '<form method="get" action="index.php">' . "\r\n";
+		echo '<input type="hidden" name="action" value="skinedittype" />' . "\r\n";
+		echo '<input type="hidden" name="skinid" value="' . $skinid . '" />' . "\r\n";
+		echo '<input name="type" tabindex="89" size="20" maxlength="20" />' . "\r\n";
+		echo '<input type="submit" tabindex="140" value="' . _SKIN_CREATE . '" onclick="return checkSubmit();" />' . "\r\n";
+		echo '</form>' . "\r\n";
+
+		if ($res && mysql_num_rows($res) > 0) {
+			echo '<ul>';
+			$tabstart = 75;
+
+			while ($row = mysql_fetch_assoc($res)) {
+				echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . strtolower($row['stype']) . '">' . ucfirst($row['stype']) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . strtolower($row['stype']) . '">remove</a>)</li>';
+			}
+
+			echo '</ul>';
+		}
+
+		?>
+
+		<h3><?php echo _SKIN_GENSETTINGS_TITLE; ?></h3>
 		<form method="post" action="index.php">
 		<div>
 
@@ -3921,6 +4206,9 @@ selector();
 		<?php		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skineditgeneral() {
 		global $member;
 
@@ -3953,6 +4241,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinedittype($msg = '') {
 		global $member, $manager;
 
@@ -3960,6 +4251,13 @@ selector();
 		$type = requestVar('type');
 
 		$member->isAdmin() or $this->disallow();
+
+		$type = trim($type);
+		$type = strtolower($type);
+
+		if (!isValidShortName($type)) {
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_FORMAT);
+		}
 
 		$skin =& new SKIN($skinid);
 
@@ -3969,7 +4267,7 @@ selector();
 		?>
 		<p>(<a href="index.php?action=skinoverview"><?php echo _SKIN_GOBACK?></a>)</p>
 
-		<h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo  $skin->getName() ?>': <?php echo  $friendlyNames[$type] ?></h2>
+		<h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo  $skin->getName() ?>': <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?></h2>
 
 		<?php			if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
 		?>
@@ -3985,7 +4283,7 @@ selector();
 
 		<input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
 		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-		(skin type: <?php echo  $friendlyNames[$type] ?>)
+		(skin type: <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
 		<?php help('skinpart' . $type);?>
 		<br />
 
@@ -3994,7 +4292,7 @@ selector();
 		<br />
 		<input type="submit" tabindex="20" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
 		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-		(skin type: <?php echo  $friendlyNames[$type] ?>)
+		(skin type: <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
 
 		<br /><br />
 		<?php echo _SKIN_ALLOWEDVARS?>
@@ -4032,6 +4330,9 @@ selector();
 		<?php		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skinupdate() {
 		global $member;
 
@@ -4047,6 +4348,9 @@ selector();
 		$this->action_skinedittype(_SKIN_UPDATED);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skindelete() {
 		global $member, $manager, $CONF;
 
@@ -4087,6 +4391,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_skindeleteconfirm() {
 		global $member, $CONF, $manager;
 
@@ -4117,6 +4424,83 @@ selector();
 		$this->action_skinoverview();
 	}
 
+	/**
+	 * @todo document this
+	 */
+	function action_skinremovetype() {
+		global $member, $manager, $CONF;
+
+		$skinid = intRequestVar('skinid');
+		$skintype = requestVar('type');
+
+		if (!isValidShortName($skintype)) {
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+		}
+
+		$member->isAdmin() or $this->disallow();
+
+		// don't allow default skinparts to be deleted
+		if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+		}
+
+		$this->pagehead();
+
+		$skin =& new SKIN($skinid);
+		$name = $skin->getName();
+		$desc = $skin->getDescription();
+
+		?>
+			<h2><?php echo _DELETE_CONFIRM?></h2>
+
+			<p>
+				<?php echo _CONFIRMTXT_SKIN_PARTS_SPECIAL; ?> <b><?php echo $skintype; ?> (<?php echo $name; ?>)</b> (<?php echo  htmlspecialchars($desc)?>)
+			</p>
+
+			<form method="post" action="index.php"><div>
+				<input type="hidden" name="action" value="skinremovetypeconfirm" />
+				<?php $manager->addTicketHidden() ?>
+				<input type="hidden" name="skinid" value="<?php echo $skinid; ?>" />
+				<input type="hidden" name="type" value="<?php echo $skintype; ?>" />
+				<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
+			</div></form>
+		<?php
+		$this->pagefoot();
+	}
+
+	/**
+	 * @todo document this
+	 */
+	function action_skinremovetypeconfirm() {
+		global $member, $CONF, $manager;
+
+		$skinid = intRequestVar('skinid');
+		$skintype = requestVar('type');
+
+		if (!isValidShortName($skintype)) {
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+		}
+
+		$member->isAdmin() or $this->disallow();
+
+		// don't allow default skinparts to be deleted
+		if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+		}
+
+		$manager->notify('PreDeleteSkinPart', array('skinid' => $skinid, 'skintype' => $skintype));
+
+		// delete part
+		sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc=' . $skinid . ' AND stype=\'' . $skintype . '\'');
+
+		$manager->notify('PostDeleteSkinPart', array('skinid' => $skinid, 'skintype' => $skintype));
+
+		$this->action_skinedit();
+	}
+
+	/**
+	 * @todo document this
+	 */
 	function action_skinclone() {
 		global $member;
 
@@ -4148,6 +4532,7 @@ selector();
 
 
 		// 3. clone
+		/*
 		$this->skinclonetype($skin, $newid, 'index');
 		$this->skinclonetype($skin, $newid, 'item');
 		$this->skinclonetype($skin, $newid, 'archivelist');
@@ -4156,11 +4541,21 @@ selector();
 		$this->skinclonetype($skin, $newid, 'error');
 		$this->skinclonetype($skin, $newid, 'member');
 		$this->skinclonetype($skin, $newid, 'imagepopup');
+		*/
+
+		$query = "SELECT stype FROM " . sql_table('nucleus_skin') . " WHERE sdesc = " . $skinid;
+		$res = sql_query($query);
+		while ($row = mysql_fetch_assoc($res)) {
+			$this->skinclonetype($skin, $newid, $row['stype']);
+		}
 
 		$this->action_skinoverview();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function skinclonetype($skin, $newid, $type) {
 		$newid = intval($newid);
 		$content = $skin->getContent($type);
@@ -4170,6 +4565,9 @@ selector();
 		}
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_settingsedit() {
 		global $member, $manager, $CONF, $DIR_NUCLEUS, $DIR_MEDIA;
 
@@ -4432,6 +4830,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_settingsupdate() {
 		global $member, $CONF;
 
@@ -4484,7 +4885,9 @@ selector();
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function updateConfig($name, $val) {
 		$name = addslashes($name);
 		$val = trim(addslashes($val));
@@ -4493,13 +4896,14 @@ selector();
 			   . " SET value='$val'"
 			   . " WHERE name='$name'";
 
-		mysql_query($query) or die("Query error: " . mysql_error());
+		sql_query($query) or die("Query error: " . mysql_error());
 		return mysql_insert_id();
 	}
 
 	/**
-	  * Error message
-	  */
+	 * Error message
+	 * @param string $msg message that will be shown
+	 */
 	function error($msg) {
 		$this->pagehead();
 		?>
@@ -4511,13 +4915,18 @@ selector();
 		exit;
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function disallow() {
 		ACTIONLOG::add(WARNING, _ACTIONLOG_DISALLOWED . serverVar('REQUEST_URI'));
 
 		$this->error(_ERROR_DISALLOWED);
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function pagehead($extrahead = '') {
 		global $member, $nucleus, $CONF, $manager;
 
@@ -4535,7 +4944,6 @@ selector();
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
-			<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 			<title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin.css" />
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
@@ -4570,13 +4978,16 @@ selector();
 			echo '<br />(';
 
 			if ($member->isLoggedIn() && $member->isAdmin())
-				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nucleus['version'], '</a>';
+				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nucleus['version'], ' &quot;', $nucleus['codename'], '&quot;</a>';
 			else
-				echo 'Nucleus CMS ' , $nucleus['version'];
+				echo 'Nucleus CMS ', $nucleus['version'], ' &quot;', $nucleus['codename'], '&quot;';
 			echo ')';
 		echo '</div>';
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function pagefoot() {
 		global $action, $member, $manager;
 
@@ -4597,7 +5008,7 @@ selector();
 			<?php		}
 		?>
 			<div class="foot">
-				<a href="http://nucleuscms.org/">Nucleus CMS</a> &copy; 2002-2005 The Nucleus Group
+				<a href="http://nucleuscms.org/">Nucleus CMS</a> &copy; 2002-2006 The Nucleus Group
 				-
 				<a href="http://nucleuscms.org/donate.php">Donate!</a>
 			</div>
@@ -4708,7 +5119,9 @@ selector();
 			</html>
 		<?php	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_regfile() {
 		global $member, $CONF;
 
@@ -4719,20 +5132,20 @@ selector();
 		// header-code stolen from phpMyAdmin
 		// REGEDIT and bookmarklet code stolen from GreyMatter
 
-		$sjisBlogName = getBlogNameFromID($blogid);
-		$sjisBlogName = mb_convert_encoding($sjisBlogName, "SJIS", "auto");
-
 		header('Content-Type: application/octetstream');
 		header('Content-Disposition: filename="nucleus.reg"');
 		header('Pragma: no-cache');
 		header('Expires: 0');
 
 		echo "REGEDIT4\n";
-		echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\Post To &Nucleus (".$sjisBlogName.")]\n";
+		echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\Post To &Nucleus (".getBlogNameFromID($blogid).")]\n";
 		echo '@="' . $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=".intval($blogid)."\"\n";
 		echo '"contexts"=hex:31';
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_bookmarklet() {
 		global $member, $manager;
 
@@ -4752,43 +5165,43 @@ selector();
 		<h2>Bookmarklet<!-- and Right Click Menu --></h2>
 
 		<p>
-		Bookmarklet とは、クリチE��1回で記事�E投稿ができるシスチE��です、Eこ�E Bookmarklet をインスト�Eルすると、ブラウザのチE�Eルバ�Eの'add to weblog'ボタンが利用可能となり、Nucleusの新規アイチE��の追加ウィンドウが�EチE�EアチE�Eします。任意�EWebペ�Eジを開ぁE��状態でこ�Eボタンを押せ�E、そのWebペ�Eジのタイトルと、そのペ�Eジへのリンクタグがすでに埋め込まれた状態でアイチE��追加ウィンドウが開き、さらに、そのペ�Eジ冁E��引用したぁE��を選択した状態であればそ�E引用斁E��自動的に引用します�
+		Bookmarklet とは、クリック1回で記事の投稿ができるシステムです。 この Bookmarklet をインストールすると、ブラウザのツールバーの'add to weblog'ボタンが利用可能となり、Nucleusの新規アイテムの追加ウィンドウがポップアップします。任意のWebページを開いた状態でこのボタンを押せば、そのWebページのタイトルと、そのページへのリンクタグがすでに埋め込まれた状態でアイテム追加ウィンドウが開き、さらに、そのページ内に引用したい文を選択した状態であればその引用文も自動的に引用します。
 		</p>
 
 		<h3>Bookmarklet</h3>
 		<p>
-			下�Eリンク部刁E��「お気に入り」もしくはチE�Eルバ�EにドラチE��できます、Esmall>(そ�E前にチE��トしてみたい場合�E単純に下�EリンクをクリチE��してみてください)</small>
+			下のリンク部分を「お気に入り」もしくはツールバーにドラッグできます。<small>(その前にテストしてみたい場合は単純に下のリンクをクリックしてみてください)</small>
 			<br />
 			<br />
-			<a href="<?php echo htmlspecialchars($bm)?>">Add to <?php echo $blog->getShortName()?></a> (ほとんどのブラウザで動作しまぁE
+			<a href="<?php echo htmlspecialchars($bm)?>">Add to <?php echo $blog->getShortName()?></a> (ほとんどのブラウザで動作します)
 		</p>
 
-		<h3>右クリチE��メニューにインスト�Eル (WindowsでIE使用晁E</h3>
+		<h3>右クリックメニューにインストール (WindowsでIE使用時)</h3>
 		<p>
 			<?php
 				$url = 'index.php?action=regfile&blogid=' . intval($blogid);
 				$url = $manager->addTicketToUrl($url);
 			?>
-			あるぁE�E<a href="<?php echo htmlspecialchars($url) ?>">右クリチE��メニュー</a>にインスト�EルすることもできまぁE(「開く」を選択すれ�E直接レジストリに登録しまぁE
+			あるいは<a href="<?php echo htmlspecialchars($url) ?>">右クリックメニュー</a>にインストールすることもできます (「開く」を選択すれば直接レジストリに登録します)
 		</p>
 
 		<p>
-			こ�Eインスト�Eルした右クリチE��メニューを表示するためにはIEの再起動が忁E��です�
+			このインストールした右クリックメニューを表示するためにはIEの再起動が必要です。
 		</p>
 
-		<h3>アンインスト�Eル</h3>
+		<h3>アンインストール</h3>
 		<p>
-			「お気に入り」もしくはチE�Eルバ�Eから消すには、単に削除するだけです�
+			「お気に入り」もしくはツールバーから消すには、単に削除するだけです。
 		</p>
 		
 		<p>
-			右クリチE��メニューから消したい時�E、以下�E手頁E��踏んでください:
+			右クリックメニューから消したい時は、以下の手順を踏んでください:
 		</p>
 
 		<ol>
-			<li>スタートメニューから「ファイルを指定して実衁E..」を選抁E/li>
-			<li>"regedit" と入劁E/li>
-			<li>"OK" ボタンを押ぁE/li>
+			<li>スタートメニューから「ファイルを指定して実行...」を選択</li>
+			<li>"regedit" と入力</li>
+			<li>"OK" ボタンを押す</li>
 			<li>"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" をツリーの中から検索</li>
 			<li>"add to weblog" エントリを削除</li>				
 		</ol>
@@ -4798,7 +5211,9 @@ selector();
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_actionlog() {
 		global $member, $manager;
 
@@ -4824,7 +5239,9 @@ selector();
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_banlist() {
 		global $member, $manager;
 
@@ -4855,7 +5272,9 @@ selector();
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_banlistdelete() {
 		global $member, $manager;
 
@@ -4901,6 +5320,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_banlistdeleteconfirm() {
 		global $member, $manager;
 
@@ -4944,10 +5366,16 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_banlistnewfromitem() {
 		$this->action_banlistnew(getBlogIDFromItemID(intRequestVar('itemid')));
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_banlistnew($blogid = '') {
 		global $member, $manager;
 
@@ -5018,6 +5446,9 @@ selector();
 		<?php		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_banlistadd() {
 		global $member;
 
@@ -5051,6 +5482,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_clearactionlog() {
 		global $member;
 
@@ -5061,6 +5495,9 @@ selector();
 		$this->action_manage(_MSG_ACTIONLOGCLEARED);
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_backupoverview() {
 		global $member, $manager;
 
@@ -5110,6 +5547,9 @@ selector();
 		<?php		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_backupcreate() {
 		global $member, $DIR_LIBS;
 
@@ -5128,7 +5568,9 @@ selector();
 		exit;
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_backuprestore() {
 		global $member, $DIR_LIBS;
 
@@ -5154,7 +5596,9 @@ selector();
 
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_pluginlist() {
 		global $member, $manager;
 
@@ -5197,7 +5641,8 @@ selector();
 					if (ereg('^NP_(.*)\.php$',$filename,$matches)) {
 						$name = $matches[1];
 						// only show in list when not yet installed
-						if (mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin').' WHERE pfile="NP_'.addslashes($name).'"')) == 0)
+						$res = sql_query('SELECT * FROM '.sql_table('plugin').' WHERE pfile="NP_'.addslashes($name).'"');
+						if (mysql_num_rows($res) == 0)
 							array_push($candidates,$name);
 					}
 				}
@@ -5227,6 +5672,9 @@ selector();
 		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_pluginhelp() {
 		global $member, $manager, $DIR_PLUGINS, $CONF;
 
@@ -5260,7 +5708,9 @@ selector();
 		$this->pagefoot();
 	}
 
-
+	/**
+	 * @todo document this
+	 */
 	function action_pluginadd() {
 		global $member, $manager, $DIR_PLUGINS;
 
@@ -5274,24 +5724,9 @@ selector();
 		if (!checkPlugin($name))
 			$this->error(_ERROR_PLUGFILEERROR . ' (' . $name . ')');
 
-		// check if the plugin dependency is met
-		$plugin =& $manager->getPlugin($name);
-		$pluginList = $plugin->getPluginDep();
-		foreach ($pluginList as $pluginName)
-		{
-
-			$res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
-			if (mysql_num_rows($res) == 0)
-			{
-				// uninstall plugin again...
-				$this->deleteOnePlugin($plugin->getID());
-
-				$this->error(_ERROR_INSREQPLUGIN . $pluginName);
-			}
-		}
-
 		// get number of currently installed plugins
-		$numCurrent = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
+		$res = sql_query('SELECT * FROM '.sql_table('plugin'));
+		$numCurrent = mysql_num_rows($res);
 
 		// plugin will be added as last one in the list
 		$newOrder = $numCurrent + 1;
@@ -5308,17 +5743,17 @@ selector();
 		sql_query($query);
 		$iPid = mysql_insert_id();
 
-		// need to update the plugin object's pid since we didn't have it above when it's first create....
-		$plugin->plugid = $iPid;
-
 		$manager->clearCachedInfo('installedPlugins');
 
-		// call the install method of the plugin
+		// Load the plugin for condition checking and instalation
+		$plugin =& $manager->getPlugin($name);
+
+		// check if it got loaded (could have failed)
 		if (!$plugin)
 		{
 			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. intval($iPid));
 			$manager->clearCachedInfo('installedPlugins');
-			$this->error('Plugin could not be loaded, or does not support certain features that are required for it to run on your Nucleus installation (you might want to check the <a href="?action=actionlog">actionlog</a> for more info)');
+			$this->error(_ERROR_PLUGIN_LOAD);
 		}
 
 		// check if plugin needs a newer Nucleus version
@@ -5341,6 +5776,21 @@ selector();
 			$this->error(_ERROR_NUCLEUSVERSIONREQ . $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel());
 		}
 
+		$pluginList = $plugin->getPluginDep();
+		foreach ($pluginList as $pluginName)
+		{
+
+			$res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
+			if (mysql_num_rows($res) == 0)
+			{
+				// uninstall plugin again...
+				$this->deleteOnePlugin($plugin->getID());
+
+				$this->error(_ERROR_INSREQPLUGIN . $pluginName);
+			}
+		}
+
+		// call the install method of the plugin
 		$plugin->install();
 
 		$manager->notify(
@@ -5354,6 +5804,9 @@ selector();
 		$this->action_pluginupdate();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_pluginupdate() {
 		global $member, $manager;
 
@@ -5379,6 +5832,9 @@ selector();
 		$this->action_pluginlist();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_plugindelete() {
 		global $member, $manager;
 
@@ -5405,6 +5861,9 @@ selector();
 		<?php		$this->pagefoot();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_plugindeleteconfirm() {
 		global $member, $manager;
 
@@ -5421,6 +5880,9 @@ selector();
 		$this->action_pluginlist();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function deleteOnePlugin($pid, $callUninstall = 0) {
 		global $manager;
 
@@ -5473,7 +5935,8 @@ selector();
 			sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid in ('.implode(',',$aOIDs).')');
 
 		// update order numbers
-		$o = mysql_fetch_object(sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid=' . $pid));
+		$res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid=' . $pid);
+		$o = mysql_fetch_object($res);
 		sql_query('UPDATE '.sql_table('plugin').' SET porder=(porder - 1) WHERE porder>'.$o->porder);
 
 		// delete row
@@ -5485,6 +5948,9 @@ selector();
 		return '';
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_pluginup() {
 		global $member, $manager;
 
@@ -5497,7 +5963,8 @@ selector();
 			$this->error(_ERROR_NOSUCHPLUGIN);
 
 		// 1. get old order number
-		$o = mysql_fetch_object(sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid));
+		$res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
+		$o = mysql_fetch_object($res);
 		$oldOrder = $o->porder;
 
 		// 2. calculate new order number
@@ -5510,6 +5977,9 @@ selector();
 		$this->action_pluginlist();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_plugindown() {
 		global $member, $manager;
 
@@ -5521,10 +5991,12 @@ selector();
 			$this->error(_ERROR_NOSUCHPLUGIN);
 
 		// 1. get old order number
-		$o = mysql_fetch_object(sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid));
+		$res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
+		$o = mysql_fetch_object($res);
 		$oldOrder = $o->porder;
 
-		$maxOrder = mysql_num_rows(sql_query('SELECT * FROM '.sql_table('plugin')));
+		$res = sql_query('SELECT * FROM '.sql_table('plugin'));
+		$maxOrder = mysql_num_rows($res);
 
 		// 2. calculate new order number
 		$newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;
@@ -5536,6 +6008,9 @@ selector();
 		$this->action_pluginlist();
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_pluginoptions($message = '') {
 		global $member, $manager;
 
@@ -5605,6 +6080,9 @@ selector();
 
 	}
 
+	/**
+	 * @todo document this
+	 */
 	function action_pluginoptionsupdate() {
 		global $member, $manager;
 
@@ -5624,8 +6102,9 @@ selector();
 	}
 
 	/**
-	  * @static
-	  */
+	 * @static
+	 * @todo document this
+	 */
 	function _insertPluginOptions($context, $contextid = 0) {
 		// get all current values for this contextid
 		// (note: this might contain doubles for overlapping contextids)
@@ -5683,7 +6162,10 @@ selector();
 
 	}
 
-	/* helper functions to create option forms etc. */
+	/**
+	 * Helper functions to create option forms etc.
+	 * @todo document parameters
+	 */
 	function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO) {
 		$id = htmlspecialchars($name);
 		$id = str_replace('[','-',$id);
@@ -5702,874 +6184,6 @@ selector();
 			echo ' id="'.$id2.'" /><label for="'.$id2.'">' . $noval . '</label>';
 	}
 
-
-
 } // class ADMIN
-
-class ENCAPSULATE {
-	/**
-	  * Uses $call to call a function using parameters $params
-	  * This function should return the amount of entries shown.
-	  * When entries are show, batch operation handlers are shown too.
-	  * When no entries were shown, $errormsg is used to display an error
-	  *
-	  * Passes on the amount of results found (for further encapsulation)
-	  */
-	function doEncapsulate($call, $params, $errorMessage = 'No entries') {
-		// start output buffering
-		ob_start();
-
-		$nbOfRows = call_user_func_array($call, $params);
-
-		// get list contents and stop buffering
-		$list = ob_get_contents();
-		ob_end_clean();
-
-		if ($nbOfRows > 0) {
-			$this->showHead();
-			echo $list;
-			$this->showFoot();
-		} else {
-			echo $errorMessage;
-		}
-
-		return $nbOfRows;
-	}
-}
-
-
-/**
-  * A class used to encapsulate a list of some sort inside next/prev buttons
-  */
-class NAVLIST extends ENCAPSULATE {
-
-	function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
-		$this->action = $action;
-		$this->start = $start;
-		$this->amount = $amount;
-		$this->minamount = $minamount;
-		$this->maxamount = $maxamount;
-		$this->blogid = $blogid;
-		$this->search = $search;
-		$this->itemid = $itemid;
-	}
-
-	function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-		$batch =& new BATCH($batchtype);
-
-		$this->doEncapsulate(
-				array(&$batch, 'showlist'),
-				array(&$query, $type, $template),
-				$errorMessage
-		);
-
-	}
-
-
-	function showHead() {
-		$this->showNavigation();
-	}
-	function showFoot() {
-		$this->showNavigation();
-	}
-
-	/**
-	  * Displays a next/prev bar for long tables
-	  */
-	function showNavigation() {
-		$action = $this->action;
-		$start = $this->start;
-		$amount = $this->amount;
-		$minamount = $this->minamount;
-		$maxamount = $this->maxamount;
-		$blogid = $this->blogid;
-		$search = $this->search;
-		$itemid = $this->itemid;
-
-		$prev = $start - $amount;
-		if ($prev < $minamount) $prev=$minamount;
-
-		// maxamount not used yet
-	//	if ($start + $amount <= $maxamount)
-			$next = $start + $amount;
-	//	else
-	//		$next = $start;
-
-	?>
-	<table class="navigation">
-	<tr><td>
-		<form method="post" action="index.php"><div>
-		<input type="submit" value="&lt;&lt; <?php echo  _LISTS_PREV?>" />
-		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
-		<input type="hidden" name="start" value="<?php echo  $prev; ?>" />
-		</div></form>
-	</td><td>
-		<form method="post" action="index.php"><div>
-		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-		<input name="amount" size="3" value="<?php echo  $amount; ?>" /> <?php echo _LISTS_PERPAGE?>
-		<input type="hidden" name="start" value="<?php echo  $start; ?>" />
-		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
-		<input type="submit" value="&gt; <?php echo _LISTS_CHANGE?>" />
-		</div></form>
-	</td><td>
-		<form method="post" action="index.php"><div>
-		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-		<input type="hidden" name="start" value="0" />
-		<input type="text" name="search" value="<?php echo  $search; ?>" size="7" />
-		<input type="submit" value="&gt; <?php echo  _LISTS_SEARCH?>" />
-		</div></form>
-	</td><td>
-		<form method="post" action="index.php"><div>
-		<input type="submit" value="<?php echo _LISTS_NEXT?> &gt; &gt;" />
-		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
-		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-		<input type="hidden" name="start" value="<?php echo  $next; ?>" />
-		</div></form>
-	</td></tr>
-	</table>
-	<?php	}
-
-
-}
-
-/**
- * A class used to encapsulate a list of some sort in a batch selection
- */
-class BATCH extends ENCAPSULATE {
-	function BATCH($type) {
-		$this->type = $type;
-	}
-
-	function showHead() {
-		?>
-			<form method="post" action="index.php">
-		<?php
-// TODO: get a list op operations above the list too
-// (be careful not to use the same names for the select...)
-//		$this->showOperationList();
-	}
-
-	function showFoot() {
-		$this->showOperationList();
-		?>
-			</form>
-		<?php	}
-
-	function showOperationList() {
-		global $manager;
-		?>
-		<div class="batchoperations">
-			<?php echo _BATCH_WITH_SEL ?>
-			<select name="batchaction">
-			<?php				$options = array();
-				switch($this->type) {
-					case 'item':
-						$options = array(
-							'delete'	=> _BATCH_ITEM_DELETE,
-							'move'		=> _BATCH_ITEM_MOVE
-						);
-						break;
-					case 'member':
-						$options = array(
-							'delete'	=> _BATCH_MEMBER_DELETE,
-							'setadmin'	=> _BATCH_MEMBER_SET_ADM,
-							'unsetadmin' => _BATCH_MEMBER_UNSET_ADM
-						);
-						break;
-					case 'team':
-						$options = array(
-							'delete' 	=> _BATCH_TEAM_DELETE,
-							'setadmin'	=> _BATCH_TEAM_SET_ADM,
-							'unsetadmin' => _BATCH_TEAM_UNSET_ADM,
-						);
-						break;
-					case 'category':
-						$options = array(
-							'delete'	=> _BATCH_CAT_DELETE,
-							'move'		=> _BATCH_CAT_MOVE,
-						);
-						break;
-					case 'comment':
-						$options = array(
-							'delete'	=> _BATCH_COMMENT_DELETE,
-						);
-					break;
-				}
-				foreach ($options as $option => $label) {
-					echo '<option value="',$option,'">',$label,'</option>';
-				}
-			?>
-			</select>
-			<input type="hidden" name="action" value="batch<?php echo $this->type?>" />
-			<?php
-				$manager->addTicketHidden();
-
-				// add hidden fields for 'team' and 'comment' batchlists
-				if ($this->type == 'team')
-				{
-					echo '<input type="hidden" name="blogid" value="',intRequestVar('blogid'),'" />';
-				}
-				if ($this->type == 'comment')
-				{
-					echo '<input type="hidden" name="itemid" value="',intRequestVar('itemid'),'" />';
-				}
-
-				echo '<input type="submit" value="',_BATCH_EXEC,'" />';
-			?>(
-			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); "><?php echo _BATCH_SELECTALL?></a> -
-			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); "><?php echo _BATCH_DESELECTALL?></a>
-			)
-		</div>
-		<?php	}
-
-	// shortcut :)
-	function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-		return $this->doEncapsulate(	'showlist',
-									array($query, $type, $template),
-									$errorMessage
-								);
-	}
-
-}
-
-
-
-// can take either an array of objects, or an SQL query
-function showlist($query, $type, $template) {
-
-	if (is_array($query)) {
-		if (sizeof($query) == 0)
-			return 0;
-
-		call_user_func('listplug_' . $type, $template, 'HEAD');
-
-		foreach ($query as $currentObj) {
-			$template['current'] = $currentObj;
-			call_user_func('listplug_' . $type, $template, 'BODY');
-		}
-
-		call_user_func('listplug_' . $type, $template, 'FOOT');
-
-		return sizeof($query);
-
-	} else {
-		$res = sql_query($query);
-
-		// don't do anything if there are no results
-		$numrows = mysql_num_rows($res);
-		if ($numrows == 0)
-			return 0;
-
-		call_user_func('listplug_' . $type, $template, 'HEAD');
-
-		while($template['current'] = mysql_fetch_object($res))
-			call_user_func('listplug_' . $type, $template, 'BODY');
-
-		call_user_func('listplug_' . $type, $template, 'FOOT');
-
-		mysql_free_result($res);
-
-		// return amount of results
-		return $numrows;
-	}
-}
-
-function listplug_select($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo '<select name="'.$template['name'].'" tabindex="'.$template['tabindex'].'" '.$template['javascript'].'>';
-
-			// add extra row if needed
-			if ($template['extra']) {
-				echo '<option value="',$template['extraval'],'">',$template['extra'],'</option>';
-			}
-
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<option value="' . htmlspecialchars($current->value) . '"';
-			if ($template['selected'] == $current->value)
-				echo ' selected="selected" ';
-			if ($template['shorten'] > 0) {
-				echo ' title="'. htmlspecialchars($current->text).'"';
-				$current->text = shorten($current->text, $template['shorten'], $template['shortenel']);
-			}
-			echo '>' . htmlspecialchars($current->text) . '</option>';
-			break;
-		case 'FOOT':
-			echo '</select>';
-			break;
-	}
-}
-
-function listplug_table($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<table>";
-			echo "<thead><tr>";
-			// print head
-			call_user_func("listplug_table_" . $template['content'] , $template, 'HEAD');
-			echo "</tr></thead><tbody>";
-			break;
-		case 'BODY':
-			// print tabletype specific thingies
-			echo "<tr onmouseover='focusRow(this);' onmouseout='blurRow(this);'>";
-			call_user_func("listplug_table_" . $template['content'] , $template,  'BODY');
-			echo "</tr>";
-			break;
-		case 'FOOT':
-			call_user_func("listplug_table_" . $template['content'] , $template,  'FOOT');
-			echo "</tbody></table>";
-			break;
-	}
-}
-
-function listplug_table_memberlist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo '<th>' . _LIST_MEMBER_NAME . '</th><th>' . _LIST_MEMBER_RNAME . '</th><th>' . _LIST_MEMBER_URL . '</th><th>' . _LIST_MEMBER_ADMIN;
-			help('superadmin');
-			echo "</th><th>" . _LIST_MEMBER_LOGIN;
-			help('canlogin');
-			echo "</th><th colspan='2'>" . _LISTS_ACTIONS. "</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>';
-			$id = listplug_nextBatchId();
-			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->mnumber,'" />';
-			echo '<label for="batch',$id,'">';
-			echo "<a href='mailto:", htmlspecialchars($current->memail), "' tabindex='".$template['tabindex']."'>", htmlspecialchars($current->mname), "</a>";
-			echo '</label>';
-			echo '</td>';
-			echo '<td>', htmlspecialchars($current->mrealname), '</td>';
-			echo "<td><a href='$current->murl' tabindex='".$template['tabindex']."'>$current->murl</a></td>";
-			echo '<td>', ($current->madmin ? _YES : _NO),'</td>';
-			echo '<td>', ($current->mcanlogin ? _YES : _NO), '</td>';
-			echo "<td><a href='index.php?action=memberedit&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
-			echo "<td><a href='index.php?action=memberdelete&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
-			break;
-	}
-}
-
-function listplug_table_teamlist($template, $type) {
-	global $manager;
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LIST_MEMBER_NAME."</th><th>"._LIST_MEMBER_RNAME."</th><th>"._LIST_TEAM_ADMIN;
-			help('teamadmin');
-			echo "</th><th colspan='2'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>';
-			$id = listplug_nextBatchId();
-			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->tmember,'" />';
-			echo '<label for="batch',$id,'">';
-			echo "<a href='mailto:", htmlspecialchars($current->memail), "' tabindex='".$template['tabindex']."'>", htmlspecialchars($current->mname), "</a>";
-			echo '</label>';
-			echo '</td>';
-			echo '<td>', htmlspecialchars($current->mrealname), '</td>';
-			echo '<td>', ($current->tadmin ? _YES : _NO) , '</td>';
-			echo "<td><a href='index.php?action=teamdelete&amp;memberid=$current->tmember&amp;blogid=$current->tblog' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
-
-			$url = 'index.php?action=teamchangeadmin&memberid=' . intval($current->tmember) . '&blogid=' . intval($current->tblog);
-			$url = $manager->addTicketToUrl($url);
-			echo "<td><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LIST_TEAM_CHADMIN."</a></td>";
-			break;
-	}
-}
-
-function encode_desc(&$data)
-    {   //_$to_entities = get_html_translation_table(HTML_ENTITIES);
-        $to_entities = get_html_translation_table(HTML_SPECIALCHARS);
-        $from_entities = array_flip($to_entities);
-        $data = str_replace('<br />','\n',$data); //hack
-        $data = strtr($data,$from_entities);
-        $data = strtr($data,$to_entities);
-        $data = str_replace('\n','<br />',$data); //hack
-        return $data;
-    }
-
-function listplug_table_pluginlist($template, $type) {
-	global $manager;
-	switch($type) {
-		case 'HEAD':
-			echo '<th>'._LISTS_INFO.'</th><th>'._LISTS_DESC.'</th>';
-			echo '<th style="white-space:nowrap">'._LISTS_ACTIONS.'</th>';
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			$plug =& $manager->getPlugin($current->pfile);
-			if ($plug) {
-				echo '<td>';
-					echo '<strong>' , htmlspecialchars($plug->getName()) , '</strong><br />';
-					echo _LIST_PLUGS_AUTHOR, ' ' , htmlspecialchars($plug->getAuthor()) , '<br />';
-					echo _LIST_PLUGS_VER, ' ' , htmlspecialchars($plug->getVersion()) , '<br />';
-					if ($plug->getURL())
-					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
-				echo '</td>';
-				echo '<td>';
-					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
-					if (sizeof($plug->getEventList()) > 0) {
-						echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',htmlspecialchars(implode($plug->getEventList(),', '));
-						// check the database to see if it is up-to-date and notice the user if not
-					}
-					if (!$plug->subscribtionListIsUptodate()) {
-						echo '<br /><br /><strong>',_LIST_PLUG_SUBS_NEEDUPDATE,'</strong>';
-					}
-					if (sizeof($plug->getPluginDep()) > 0)
-						echo '<br /><br />',_LIST_PLUGS_DEP,'<br />',htmlspecialchars(implode($plug->getPluginDep(),', '));
-				echo '</td>';
-			} else {
-				echo '<td colspan="2">Error: plugin file <b>',htmlspecialchars($current->pfile),'.php</b> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)</td>';
-			}
-			echo '<td>';
-
-				$baseUrl = 'index.php?plugid=' . intval($current->pid) . '&action=';
-				$url = $manager->addTicketToUrl($baseUrl . 'pluginup');
-				echo "<a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UP,"</a>";
-				$url = $manager->addTicketToUrl($baseUrl . 'plugindown');
-				echo "<br /><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_DOWN,"</a>";
-				echo "<br /><a href='index.php?action=plugindelete&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UNINSTALL,"</a>";
-				if ($plug && ($plug->hasAdminArea() > 0))
-					echo "<br /><a href='".htmlspecialchars($plug->getAdminURL())."'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_ADMIN,"</a>";
-				if ($plug && ($plug->supportsFeature('HelpPage') > 0))
-					echo "<br /><a href='index.php?action=pluginhelp&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_HELP,"</a>";
-				if (quickQuery('SELECT COUNT(*) AS result FROM '.sql_table('plugin_option_desc').' WHERE ocontext=\'global\' and opid='.$current->pid) > 0)
-					echo "<br /><a href='index.php?action=pluginoptions&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_OPTIONS,"</a>";
-			echo '</td>';
-			break;
-	}
-}
-
-function listplug_table_plugoptionlist($template, $type) {
-	global $manager;
-	switch($type) {
-		case 'HEAD':
-			echo '<th>'._LISTS_INFO.'</th><th>'._LISTS_VALUE.'</th>';
-			break;
-		case 'BODY':
-			$current = $template['current'];
-			listplug_plugOptionRow($current);
-			break;
-		case 'FOOT':
-			?>
-			<tr>
-				<th colspan="2"><?php echo _PLUGS_SAVE?></th>
-			</tr><tr>
-				<td><?php echo _PLUGS_SAVE?></td>
-				<td><input type="submit" value="<?php echo _PLUGS_SAVE?>" /></td>
-			</tr>
-			<?php			break;
-	}
-}
-
-function listplug_plugOptionRow($current) {
-	$varname = 'plugoption['.$current['oid'].']['.$current['contextid'].']';
-	// retreive the optionmeta
-	$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-
-	// only if it is not a hidden option write the controls to the page
-	if ($meta['access'] != 'hidden') {
-		echo '<td>',htmlspecialchars($current['description']?$current['description']:$current['name']),'</td>';
-		echo '<td>';
-		switch($current['type']) {
-			case 'yesno':
-				ADMIN::input_yesno($varname, $current['value'], 0, 'yes', 'no');
-				break;
-			case 'password':
-				echo '<input type="password" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'" />';
-				break;
-			case 'select':
-				echo '<select name="'.htmlspecialchars($varname).'">';
-				$aOptions = NucleusPlugin::getOptionSelectValues($current['typeinfo']);
-				$aOptions = explode('|', $aOptions);
-				for ($i=0; $i<(count($aOptions)-1); $i+=2) {
-					echo '<option value="'.htmlspecialchars($aOptions[$i+1]).'"';
-					if ($aOptions[$i+1] == $current['value'])
-						echo ' selected="selected"';
-					echo '>'.htmlspecialchars($aOptions[$i]).'</option>';
-				}
-				echo '</select>';
-				break;
-			case 'textarea':
-				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-				echo '<textarea class="pluginoption" cols="30" rows="5" name="',htmlspecialchars($varname),'"';
-				if ($meta['access'] == 'readonly') {
-					echo ' readonly="readonly"';
-				}
-				echo '>',htmlspecialchars($current['value']),'</textarea>';
-				break;
-			case 'text':
-			default:
-				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-
-				echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'"';
-				if ($meta['datatype'] == 'numerical') {
-					echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
-				}
-				if ($meta['access'] == 'readonly') {
-					echo ' readonly="readonly"';
-				}
-				echo ' />';
-		}
-		echo $current['extra'];
-		echo '</td>';
-	}
-}
-
-function listplug_table_itemlist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LIST_ITEM_INFO."</th><th>"._LIST_ITEM_CONTENT."</th><th style=\"white-space:nowrap\" colspan='1'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-			$current->itime = strtotime($current->itime);	// string -> unix timestamp
-
-			if ($current->idraft == 1)
-				$cssclass = "class='draft'";
-
-			// (can't use offset time since offsets might vary between blogs)
-			if ($current->itime > $template['now'])
-				$cssclass = "class='future'";
-
-			echo "<td $cssclass>",_LIST_ITEM_BLOG,' ', htmlspecialchars($current->bshortname);
-			echo "    <br />",_LIST_ITEM_CAT,' ', htmlspecialchars($current->cname);
-			echo "    <br />",_LIST_ITEM_AUTHOR, ' ', htmlspecialchars($current->mname);
-			echo "    <br />",_LIST_ITEM_DATE," " . date("Y-m-d",$current->itime);
-			echo "<br />",_LIST_ITEM_TIME," " . date("H:i",$current->itime);
-			echo "</td>";
-			echo "<td $cssclass>";
-
-			$id = listplug_nextBatchId();
-
-			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->inumber,'" />';
-			echo '<label for="batch',$id,'">';
-			echo "<b>" . htmlspecialchars(strip_tags($current->ititle)) . "</b>";
-			echo '</label>';
-			echo "<br />";
-
-
-			$current->ibody = strip_tags($current->ibody);
-			$current->ibody = htmlspecialchars(shorten($current->ibody,300,'...'));
-
-			echo "$current->ibody</td>";
-			echo "<td style=\"white-space:nowrap\" $cssclass>";
-			echo 	"<a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a>";
-			echo    "<br /><a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>"._LISTS_COMMENTS."</a>";
-			echo    "<br /><a href='index.php?action=itemmove&amp;itemid=$current->inumber'>"._LISTS_MOVE."</a>";
-			echo    "<br /><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"._LISTS_DELETE."</a>";
-			echo "</td>";
-			break;
-	}
-}
-
-// for batch operations: generates the index numbers for checkboxes
-function listplug_nextBatchId() {
-	static $id = 0;
-	return $id++;
-}
-
-function listplug_table_commentlist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LISTS_INFO."</th><th>"._LIST_COMMENT."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-			$current->ctime = strtotime($current->ctime);	// string -> unix timestamp
-
-			echo '<td>';
-			echo date("Y-m-d@H:i",$current->ctime);
-			echo '<br />';
-			if ($current->mname)
-				echo htmlspecialchars($current->mname) ,' ', _LIST_COMMENTS_MEMBER;
-			else
-				echo htmlspecialchars($current->cuser);
-			echo '</td>';
-
-
-			$current->cbody = strip_tags($current->cbody);
-			$current->cbody = htmlspecialchars(shorten($current->cbody, 300, '...'));
-
-			echo '<td>';
-			$id = listplug_nextBatchId();
-			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->cnumber,'" />';
-			echo '<label for="batch',$id,'">';
-			echo $current->cbody;
-			echo '</label>';
-			echo '</td>';
-
-			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentedit&amp;commentid=$current->cnumber'>"._LISTS_EDIT."</a></td>";
-			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentdelete&amp;commentid=$current->cnumber'>"._LISTS_DELETE."</a></td>";
-			if ($template['canAddBan'])
-				echo "<td style=\"white-space:nowrap\"><a href='index.php?action=banlistnewfromitem&amp;itemid=$current->citem&amp;ip=", htmlspecialchars($current->cip), "' title='", htmlspecialchars($current->chost), "'>"._LIST_COMMENT_BANIP."</a></td>";
-			break;
-	}
-}
-
-
-function listplug_table_bloglist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>" . _NAME . "</th><th colspan='7'>" ._LISTS_ACTIONS. "</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo "<td title='blogid:$current->bnumber shortname:$current->bshortname'><a href='$current->burl'><img src='images/globe.gif' width='13' height='13' alt='". _BLOGLIST_TT_VISIT."' /></a> " . htmlspecialchars($current->bname) . "</td>";
-			echo "<td><a href='index.php?action=createitem&amp;blogid=$current->bnumber' title='" . _BLOGLIST_TT_ADD ."'>" . _BLOGLIST_ADD . "</a></td>";
-			echo "<td><a href='index.php?action=itemlist&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_EDIT."'>". _BLOGLIST_EDIT."</a></td>";
-			echo "<td><a href='index.php?action=blogcommentlist&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_COMMENTS."'>". _BLOGLIST_COMMENTS."</a></td>";
-			echo "<td><a href='index.php?action=bookmarklet&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_BMLET."'>". _BLOGLIST_BMLET . "</a></td>";
-
-			if ($current->tadmin == 1) {
-				echo "<td><a href='index.php?action=blogsettings&amp;blogid=$current->bnumber' title='" . _BLOGLIST_TT_SETTINGS . "'>" ._BLOGLIST_SETTINGS. "</a></td>";
-				echo "<td><a href='index.php?action=banlist&amp;blogid=$current->bnumber' title='" . _BLOGLIST_TT_BANS. "'>". _BLOGLIST_BANS."</a></td>";
-			}
-
-			if ($template['superadmin']) {
-				echo "<td><a href='index.php?action=deleteblog&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_DELETE."'>" ._BLOGLIST_DELETE. "</a></td>";
-			}
-
-
-
-			break;
-	}
-}
-
-function listplug_table_shortblognames($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>" . _NAME . "</th><th>" . _NAME. "</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>' , htmlspecialchars($current->bshortname) , '</td>';
-			echo '<td>' , htmlspecialchars($current->bname) , '</td>';
-
-			break;
-	}
-}
-
-function listplug_table_shortnames($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>" . _NAME . "</th><th>" . _LISTS_DESC. "</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>' , htmlspecialchars($current->name) , '</td>';
-			echo '<td>' , htmlspecialchars($current->description) , '</td>';
-
-			break;
-	}
-}
-
-
-function listplug_table_categorylist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='2'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>';
-			$id = listplug_nextBatchId();
-			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->catid,'" />';
-			echo '<label for="batch',$id,'">';
-			echo htmlspecialchars($current->cname);
-			echo '</label>';
-			echo '</td>';
-
-			echo '<td>', htmlspecialchars($current->cdesc), '</td>';
-			echo "<td><a href='index.php?action=categorydelete&amp;blogid=$current->cblog&amp;catid=$current->catid' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
-			echo "<td><a href='index.php?action=categoryedit&amp;blogid=$current->cblog&amp;catid=$current->catid' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
-
-			break;
-	}
-}
-
-
-function listplug_table_templatelist($template, $type) {
-	global $manager;
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo "<td>" , htmlspecialchars($current->tdname), "</td>";
-			echo "<td>" , htmlspecialchars($current->tddesc), "</td>";
-			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templateedit&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
-
-			$url = $manager->addTicketToUrl('index.php?action=templateclone&templateid=' . intval($current->tdnumber));
-			echo "<td style=\"white-space:nowrap\"><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
-			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templatedelete&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
-
-			break;
-	}
-}
-
-function listplug_table_skinlist($template, $type) {
-	global $CONF, $DIR_SKINS, $manager;
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>';
-
-			// use a special style for the default skin
-			if ($current->sdnumber == $CONF['BaseSkin']) {
-				echo '<strong>',htmlspecialchars($current->sdname),'</strong>';
-			} else {
-				echo htmlspecialchars($current->sdname);
-			}
-
-			echo '<br /><br />';
-			echo _LISTS_TYPE ,': ' , htmlspecialchars($current->sdtype);
-			echo '<br />', _LIST_SKINS_INCMODE , ' ' , (($current->sdincmode=='skindir') ?_PARSER_INCMODE_SKINDIR:_PARSER_INCMODE_NORMAL);
-			if ($current->sdincpref) echo '<br />' , _LIST_SKINS_INCPREFIX , ' ', htmlspecialchars($current->sdincpref);
-
-			// add preview image when present
-			if ($current->sdincpref && @file_exists($DIR_SKINS . $current->sdincpref . 'preview.png'))
-			{
-				echo '<br /><br />';
-
-				$hasEnlargement = @file_exists($DIR_SKINS . $current->sdincpref . 'preview-large.png');
-				if ($hasEnlargement)
-					echo '<a href="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview-large.png" title="View larger">';
-
-				echo '<img class="skinpreview" src="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview.png" width="100" height="75" alt="Preview for \'',htmlspecialchars($current->sdname),'\' skin" />';
-
-				if ($hasEnlargement)
-					echo '</a>';
-
-				if (@file_exists($DIR_SKINS . $current->sdincpref . 'readme.html'))
-				{
-					echo '<br /><a href="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'readme.html" title="More info on the \'',htmlspecialchars($current->sdname),'\' skin">Readme</a>';
-				}
-
-
-			}
-
-			echo "</td>";
-
-
-			echo "<td>" , htmlspecialchars($current->sddesc);
-				// show list of defined parts
-				$r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber . ' ORDER BY stype');
-				$types = array();
-				while ($o = mysql_fetch_object($r))
-					array_push($types,$o->stype);
-				if (sizeof($types) > 0) {
-					$friendlyNames = SKIN::getFriendlyNames();
-					for ($i=0;$i<sizeof($types);$i++) {
-						$type = $types[$i];
-						$types[$i] = '<li>' . helpHtml('skinpart'.$type) . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . "</a></li>";
-					}
-					echo '<br /><br />',_LIST_SKINS_DEFINED,' <ul>',implode($types,'') ,'</ul>';
-				}
-			echo "</td>";
-			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skinedit&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
-
-			$url = $manager->addTicketToUrl('index.php?action=skinclone&skinid=' . intval($current->sdnumber));
-			echo "<td style=\"white-space:nowrap\"><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
-			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skindelete&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
-
-			break;
-	}
-}
-
-function listplug_table_draftlist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo "<th>"._LISTS_BLOG."</th><th>"._LISTS_TITLE."</th><th colspan='2'>"._LISTS_ACTIONS."</th>";
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>', htmlspecialchars($current->bshortname) , '</td>';
-			echo '<td>', htmlspecialchars(strip_tags($current->ititle)) , '</td>';
-			echo "<td><a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a></td>";
-			echo "<td><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"._LISTS_DELETE."</a></td>";
-
-			break;
-	}
-}
-
-
-function listplug_table_actionlist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo '<th>'._LISTS_TIME.'</th><th>'._LIST_ACTION_MSG.'</th>';
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>' , htmlspecialchars($current->timestamp), '</td>';
-			echo '<td>' , htmlspecialchars($current->message), '</td>';
-
-			break;
-	}
-}
-
-function listplug_table_banlist($template, $type) {
-	switch($type) {
-		case 'HEAD':
-			echo '<th>'._LIST_BAN_IPRANGE.'</th><th>'. _LIST_BAN_REASON.'</th><th>'._LISTS_ACTIONS.'</th>';
-			break;
-		case 'BODY':
-			$current = $template['current'];
-
-			echo '<td>' , htmlspecialchars($current->iprange) , '</td>';
-			echo '<td>' , htmlspecialchars($current->reason) , '</td>';
-			echo "<td><a href='index.php?action=banlistdelete&amp;blogid=", intval($current->blogid) , "&amp;iprange=" , htmlspecialchars($current->iprange) , "'>",_LISTS_DELETE,"</a></td>";
-			break;
-	}
-}
-
-/**
- * Returns the Javascript code for a bookmarklet that works on most modern browsers
- *
- * @param blogid
- */
-function getBookmarklet($blogid) {
-	global $CONF;
-
-	// normal
-	$document = 'document';
-	$bookmarkletline = "javascript:Q='';x=".$document.";y=window;if(x.selection){Q=x.selection.createRange().text;}else if(y.getSelection){Q=y.getSelection();}else if(x.getSelection){Q=x.getSelection();}wingm=window.open('";
-	$bookmarkletline .= $CONF['AdminURL'] . "bookmarklet.php?blogid=$blogid";
-	$bookmarkletline .="&logtext='+escape(Q)+'&loglink='+escape(x.location.href)+'&loglinktitle='+escape(x.title),'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');wingm.focus();";
-
-	return $bookmarkletline;
-}
-
 
 ?>
