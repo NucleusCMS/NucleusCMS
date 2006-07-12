@@ -15,8 +15,6 @@
 
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
-// ファイル名を japanese.php に変更してから、Nucleus の language ディレクトリに
-// 置いてください。
 
 // START merge UTF-8 and EUC-JP
 define('_ADMIN_NOTABILIA',			'注意事項');
@@ -32,6 +30,27 @@ define('_BOOKMARKLET_SEND_PING',	'アイテムの追加に成功しました。�
 
 // END merge UTF-8 and EUC-JP
 
+
+// START changed/added after 3.3 START
+define('_AUTOSAVEDRAFT',			'自動草稿保存');
+define('_AUTOSAVEDRAFT_LASTSAVED',	'最終保存日時: ');
+define('_AUTOSAVEDRAFT_NOTYETSAVED',	'未保存です');
+define('_AUTOSAVEDRAFT_NOW',		'自動保存中');
+define('_SKIN_PARTS_SPECIAL',		'スペシャルスキンパーツ');
+define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',		'You must enter a name that exists only out of lowercase letters and digits');
+define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',		'このスキンパートを削除できません');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',		'本当にこのスペシャルスキンパートを削除してもいいですか？');
+// END changed/added after 3.3 END
+
+// START changed/added after 3.22 START
+define('_SEARCHFORM_QUERY',			'検索キーワード');
+define('_ERROR_EMAIL_REQUIRED',		'メールアドレスが必要です');
+define('_COMMENTFORM_MAIL',			'ウェブサイト:');
+define('_COMMENTFORM_EMAIL',		'メール:');
+define('_EBLOG_REQUIREDEMAIL',		'コメントにメールアドレスを要求する');
+define('_ERROR_COMMENTS_SPAM',      'あなたのコメントは、スパムテストの結果、拒否されました');
+// END changed/added after 3.22 END
+
 // START changed/added after 3.15 START
 
 define('_LIST_PLUG_SUBS_NEEDUPDATE','Please use the \'Update Subscription list\'-button to update the plugin\'s subscription list.');
@@ -42,7 +61,7 @@ define('_LIST_PLUGS_DEP',			'Plugin(s) requires:');
 // START changed/added after 3.1 START
 
 // comments list per weblog
-define('_COMMENTS_BLOG',			'コメントのリスト：');
+define('_COMMENTS_BLOG',			'コメントのリスト:');
 define('_NOCOMMENTS_BLOG',			'このblogにはまだコメントがつけられていません');
 define('_BLOGLIST_COMMENTS',		'コメント');
 define('_BLOGLIST_TT_COMMENTS',		'このblogにつけられたコメントのリスト');
@@ -118,12 +137,12 @@ define('_BATCH_EXEC',				'実行');
 define('_QMENU_HOME',				'管理ホーム');
 define('_QMENU_ADD',				'アイテム追加');
 define('_QMENU_ADD_SELECT',			'- blog選択 -');
-define('_QMENU_USER_SETTINGS',		'あなたの設定');
+define('_QMENU_USER_SETTINGS',		'あなたのプロフィール');
 define('_QMENU_USER_ITEMS',			'あなたのアイテム');
 define('_QMENU_USER_COMMENTS',		'あなたのコメント');
 define('_QMENU_MANAGE',				'サイト管理');
 define('_QMENU_MANAGE_LOG',			'管理操作履歴');
-define('_QMENU_MANAGE_SETTINGS',	'グローバル設定');
+define('_QMENU_MANAGE_SETTINGS',	'構成');
 define('_QMENU_MANAGE_MEMBERS',		'メンバー管理');
 define('_QMENU_MANAGE_NEWBLOG',		'新規Blog作成');
 define('_QMENU_MANAGE_BACKUPS',		'DB保存/復元');
@@ -464,14 +483,13 @@ define('_LOGIN_PLEASE',				'まずログインしてください');
 // commentform
 define('_COMMENTFORM_YOUARE',		'ユーザー名: ');
 define('_COMMENTFORM_SUBMIT',		'コメントを追加');
-define('_COMMENTFORM_COMMENT',		'コメント');
-define('_COMMENTFORM_NAME',			'お名前');
-define('_COMMENTFORM_MAIL',			'メールまたはWebサイト');
+define('_COMMENTFORM_COMMENT',		'コメント:');
+define('_COMMENTFORM_NAME',			'お名前:');
 define('_COMMENTFORM_REMEMBER',		'情報を記憶しておく');
 
 // loginform
-define('_LOGINFORM_NAME',			'ユーザー名');
-define('_LOGINFORM_PWD',			'パスワード');
+define('_LOGINFORM_NAME',			'ユーザー名:');
+define('_LOGINFORM_PWD',			'パスワード:');
 define('_LOGINFORM_YOUARE',			'ログイン中:');
 define('_LOGINFORM_SHARED',			'このPCを他の人と共用する');
 
@@ -574,7 +592,7 @@ define('_ERROR_BADSHORTBLOGNAME',	'短いBlog名には a-z 、0-9、の英数字
 define('_ERROR_DUPSHORTBLOGNAME',	'他のBlogで同じ短縮名が使われています。同じ名前は使用できません。');
 define('_ERROR_UPDATEFILE',			'更新ファイルに書き込めません。ファイルのパーミッションが正しくセットされているか確認してください (chmod 666 を試してみてください)。また、それが管理領域ディレクトリからの相対位置である場合、(/your/path/to/nucleus/ のように)絶対パスで指定してみてください');
 define('_ERROR_DELDEFBLOG',			'既定のBlogは削除できません');
-define('_ERROR_DELETEMEMBER',		'このメンバーはアイテムかコメントを書いているため削除できません');
+define('_ERROR_DELETEMEMBER',		'おそらくこのメンバーは１つ以上のアイテムの著者であるため、削除できません');
 define('_ERROR_BADTEMPLATENAME',	'不正なテンプレート名です (a-z 、0-9 の英数字のみ使用可。スペースは使用不可)');
 define('_ERROR_DUPTEMPLATENAME',	'同じ名前のテンプレートが既に存在します');
 define('_ERROR_BADSKINNAME',		'不正なスキン名です (a-z 、0-9 の英数字のみ使用可。スペースは使用不可)');
