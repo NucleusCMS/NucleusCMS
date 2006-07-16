@@ -102,7 +102,7 @@ $maxresults = requestVar('maxresults');
 $startpos = intRequestVar('startpos');
 $errormessage = '';
 $error = '';
-$virtualpath = (!empty(getVar('virtualpath')) ? getVar('virtualpath') : serverVar('PATH_INFO'));
+$virtualpath = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 if (!headers_sent() ) {
 	header('Generator: Nucleus CMS ' . $nucleus['version']);
