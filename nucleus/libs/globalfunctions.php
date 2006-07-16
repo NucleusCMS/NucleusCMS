@@ -102,6 +102,7 @@ $maxresults = requestVar('maxresults');
 $startpos = intRequestVar('startpos');
 $errormessage = '';
 $error = '';
+$virtualpath = (!empty(getVar('virtualpath')) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 if (!headers_sent() ) {
 	header('Generator: Nucleus CMS ' . $nucleus['version']);
@@ -304,14 +305,14 @@ if ($CONF['URLMode'] == 'pathinfo') {
 		'ParseURL',
 		array(
 			'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
-			'info' => serverVar('PATH_INFO'),
+			'info' => $virtualpath,
 			'complete' => &$parsed
 		)
 	);
 
 	if (!$parsed) {
 		// default implementation
-		$data = explode("/", serverVar('PATH_INFO') );
+		$data = explode("/", $virtualpath );
 		for ($i = 0; $i < sizeof($data); $i++) {
 			switch ($data[$i]) {
 				case $CONF['ItemKey']: // item/1 (blogid)
