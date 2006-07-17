@@ -2,18 +2,23 @@
 
 <%init%>
 <script type="text/javascript" src="javascript/numbercheck.js"></script>
+<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
 
-<form method="post" action="index.php" >
+<form id="addform" method="post" action="index.php" >
 
 <div>
 
 <input type="hidden" name="action" value="additem" />
 <input name="blogid" value="<%blogid%>" type="hidden" />
+<input type="hidden" name="draftid" value="0" />
 <%ticket%>
 
 <table>
 	<tr>
 		<th colspan="2"><%text(_ADD_CREATENEW)%></th>
+	</tr><tr>
+		<td><%text(_AUTOSAVEDRAFT)%></td>
+		<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
 	</tr><tr>
 		<td><%text(_ADD_TITLE)%></td>
 		<td><input 
@@ -37,9 +42,9 @@
 		</td>
 	</tr><tr id="edit" style="display:none;">
 		<td><%text(_ADD_PREVIEW)%></td>
-		<td><b><span id="prevtitle"></span></b><br />
-			<span id="prevbody"></span><br />
-			<span id="prevmore"></span><br />
+		<td><b><span id="prevtitle">&#160;</span></b><br />
+			<span id="prevbody">&#160;</span><br />
+			<span id="prevmore">&#160;</span><br />
 		</td>
 	</tr><tr>
 	
@@ -111,9 +116,24 @@
 		<td>
 			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 
 				onclick="return checkSubmit();" />
+			<input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
+				onclick="autoSaveDraft();" />
 		</td>
 	</tr>
 </table>
 
 </div>
-</form>	
+</form>
+
+<script type="text/javascript">
+	var xmlhttprequest = new Array();
+	xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
+	xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
+	var seconds = now(); // Last AutoDraft time
+	var checks = 0; // Number of checks since last AutoDraft
+	var addform = document.getElementById('addform'); // The form id
+	var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
+	var goalurl = '../action.php'; // The PHP file where the content must be posted to
+	var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
+	var formtype = 'add'; // Add or edit form
+</script>	

@@ -1,18 +1,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
-	<!-- $Id: plugins.html,v 1.7 2006-07-12 07:11:46 kimitake Exp $ -->
-	<!-- $NucleusJP: plugins.html,v 1.6.2.1 2005/09/09 07:34:26 kimitake Exp $ -->
+	<!-- $Id: plugins.html,v 1.8 2006-07-17 20:02:50 kimitake Exp $ -->
+	<!-- $NucleusJP: plugins.html,v 1.7 2006/07/12 07:11:46 kimitake Exp $ -->
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Nucleus - プラグイン API</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 	<style type="text/css">
 		/* refence parameters (greenish) */
 		.ref {
-			background-color: #afa;	
+			background-color: #afa;
 			color: #000;
 		}
-		
+
 		/* object parameters */
 		.obj {
 			color: #00f;
@@ -20,7 +20,7 @@
 		.obj:after {
 			content: " (object)";
 		}
-		
+
 		/* read-only parameters (non-ref; reddish) */
 		.ro {
 			background-color: #faa;
@@ -112,39 +112,38 @@ Nucleusプラグインによって、誰もがNucleusの提供する機能を、
 <p>
 では、シンプルなプラグインを書いてみましょう。基本的にプラグインは、あらかじめ定義された <code>NucleusPlugin</code> クラスを継承したPHPクラスです。以下は<code>HelloWorld</code>プラグインの例です。</p>
 
-<pre class="example"><code>&lt;?
+<pre class="example"><code>&lt;?php
 
 class NP_HelloWorld extends NucleusPlugin
 {
-
 	// プラグインの名前
 	function getName()
 	{
-		return 'Hello World'; 
+		return 'Hello World';
 	}
-	
+
 	// プラグインの作者
 	function getAuthor()
-	{ 
-		return 'Wouter Demuynck'; 
+	{
+		return 'Wouter Demuynck';
 	}
-	
+
 	// プラグインのサイトURL
 	// mailto:foo@bar.com の形式も可
-	function getURL() 
+	function getURL()
 	{
-		return '../../index.html'; 
+		return 'http://nucleuscms.org/';
 	}
-	
+
 	// プラグインのバージョン
 	function getVersion()
 	{
-		return '1.0'; 
+		return '1.0';
 	}
-	
+
 	// インストール済みのプラグインリストに表示される説明文
 	function getDescription()
-	{ 
+	{
 		return 'Just a sample plugin.';
 	}
 
@@ -163,9 +162,9 @@ class NP_HelloWorld extends NucleusPlugin
 				return 0;
 		}
 	}
-	  
+
 }
-?&gt;</pre>
+?&gt;</code></pre>
 
 <ol>
 	<li>
@@ -1913,5 +1912,3 @@ http://forum.nucleuscms.org/viewtopic.php?t=&lt;トピックID&gt;&lt;/a&gt;&lt;
 
 </body>
 </html>
-
-

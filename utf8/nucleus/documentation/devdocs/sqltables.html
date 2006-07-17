@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
-	<!-- $Id: sqltables.html,v 1.5 2006-07-12 07:11:46 kimitake Exp $ -->
-	<!-- $NucleusJP: sqltables.html,v 1.4.2.1 2005/09/09 05:25:32 kimitake Exp $ -->
+	<!-- $Id: sqltables.html,v 1.6 2006-07-17 20:02:50 kimitake Exp $ -->
+	<!-- $NucleusJP: sqltables.html,v 1.5 2006/07/12 07:11:46 kimitake Exp $ -->
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Nucleus - SQL テーブル構造</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
@@ -50,10 +50,11 @@
 </head>
 <body>
 
-
 <a name="top" id="top"></a>
+
 <div class="heading">
-  SQLテーブル・リファレンス <i>2005年3月5日</i>
+SQLテーブル・リファレンス
+<i>2005年3月5日</i>
 </div>
 <strong>訳者注：</strong>
 <ul>
@@ -61,110 +62,126 @@
     <a href="http://nucleuscms.org/documentation/devdocs/sqltables.html">http://nucleuscms.org/documentation/devdocs/sqltables.html</a></li>
   <li>誤訳にお気づきの方は<a href="http://japan.nucleuscms.org/bb/viewforum.php?f=7">こちら</a>へご連絡いただけると助かります。</li>
 </ul>
+
 <h1>はじめに</h1>
-<p><a href="index.html">開発者向けドキュメントの目次へ戻る</a></p>
-<p>このドキュメントはNucleusのデータベース・テーブルのフィールドを解説しています。</p>
+
+<p>
+<a href="index.html">開発者向けドキュメントの目次へ戻る</a>
+</p>
+
+<p>
+このドキュメントはNucleusのデータベース・テーブルのフィールドを解説しています。
+</p>
+
 <p class="note">構造は<strong>Nucleus v3.2</strong>のものに従っています</p>
+
 <h1><a name="toc" id="toc"></a>目次</h1>
 <ul>
-  <li><a href="#legend">文書中の色使いについて</a></li>
-  <li>Blog
-    <ul>
-      <li><a href="#nucleus_blog">nucleus_blog</a></li>
-      <li><a href="#nucleus_category">nucleus_category</a></li>
-      <li><a href="#nucleus_item">nucleus_item</a></li>
-      <li><a href="#nucleus_comment">nucleus_comment</a></li>
-      <li><a href="#nucleus_member">nucleus_member</a></li>
-      <li><a href="#nucleus_team">nucleus_team</a></li>
-    </ul>
-  </li>
-  <li>プラグイン
-    <ul>
-      <li><a href="#nucleus_plugin">nucleus_plugin</a></li>
-      <li><a href="#nucleus_plugin_event">nucleus_plugin_event</a></li>
-      <li><a href="#nucleus_plugin_option">nucleus_plugin_option</a></li>
-      <li><a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a></li>
-    </ul>
-  </li>
-  <li>スキンとテンプレート
-    <ul>
-      <li><a href="#nucleus_skin">nucleus_skin</a></li>
-      <li><a href="#nucleus_skin_desc">nucleus_skin_desc</a></li>
-      <li><a href="#nucleus_template">nucleus_template</a></li>
-      <li><a href="#nucleus_template_desc">nucleus_template_desc</a></li>
-    </ul>
-  </li>
-  <li>管理
-    <ul>
-      <li><a href="#nucleus_actionlog">nucleus_actionlog</a></li>
-      <li><a href="#nucleus_config">nucleus_config</a>
-        <ul>
-          <li><a href="#nucleus_config_options">可能なオプション</a></li>
-        </ul>
-      </li>
-      <li><a href="#nucleus_tickets">nucleus_tickets</a></li>
-      <li><a href="#nucleus_activation">nucleus_activation</a></li>
-    </ul>
-  </li>
-  <li>その他
-    <ul>
-      <li><a href="#nucleus_karma">nucleus_karma</a></li>
-      <li><a href="#nucleus_ban">nucleus_ban</a></li>
-    </ul>
-  </li>
+	<li><a href="#legend">文書中の色使いについて</a></li>
+	<li>
+
+		Blog
+
+		<ul>
+			<li><a href="#nucleus_blog">nucleus_blog</a></li>
+			<li><a href="#nucleus_category">nucleus_category</a></li>
+			<li><a href="#nucleus_item">nucleus_item</a></li>
+			<li><a href="#nucleus_comment">nucleus_comment</a></li>
+			<li><a href="#nucleus_member">nucleus_member</a></li>
+			<li><a href="#nucleus_team">nucleus_team</a></li>
+		</ul>
+	</li>
+	<li>
+		プラグイン
+		<ul>
+			<li><a href="#nucleus_plugin">nucleus_plugin</a></li>
+			<li><a href="#nucleus_plugin_event">nucleus_plugin_event</a></li>
+			<li><a href="#nucleus_plugin_option">nucleus_plugin_option</a></li>
+			<li><a href="#nucleus_plugin_option_desc">nucleus_plugin_option_desc</a></li>
+		</ul>
+	</li>
+	<li>
+		スキンとテンプレート
+		<ul>
+ 			<li><a href="#nucleus_skin">nucleus_skin</a></li>
+			<li><a href="#nucleus_skin_desc">nucleus_skin_desc</a></li>
+			<li><a href="#nucleus_template">nucleus_template</a></li>
+			<li><a href="#nucleus_template_desc">nucleus_template_desc</a></li>
+		</ul>
+	</li>
+	<li>
+		管理
+		<ul>
+			<li><a href="#nucleus_actionlog">nucleus_actionlog</a></li>
+			<li>
+				<a href="#nucleus_config">nucleus_config</a>
+				<ul>
+				 	<li><a href="#nucleus_config_options">可能なオプション</a></li>
+				</ul>
+			</li>
+			<li><a href="#nucleus_tickets">nucleus_tickets</a></li>
+			<li><a href="#nucleus_activation">nucleus_activation</a></li>
+		</ul>
+	</li>
+	<li>
+		その他
+   <ul>
+		<ul>
+			<li><a href="#nucleus_karma">nucleus_karma</a></li>
+			<li><a href="#nucleus_ban">nucleus_ban</a></li>
+		</ul>
+	</li>
+
+
 </ul>
+
 <a id="legend" name="legend"></a>
 <h1>色使い<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+
 <p>この文書中では、カラムの型を示すために、文字の修飾を使っています。以下に例を示します:</p>
-<table width="893">
-  <tbody>
-    <tr>
-      <td class="primary" width="88">プライマリ</td>
-      <td width="775">プライマリキー</td>
-    </tr>
-    <tr>
-      <td class="foreign" width="88">外部</td>
-      <td width="775">外部キー（クリックすると参照先に飛ぶ）。MySQLは外部キーとの一貫性保持に責任を持たないことに注意</td>
-    </tr>
-    <tr>
-      <td class="toremove" width="88">削除予定</td>
-      <td width="775">同じ機能を提供するプラグインを優先するため、テーブルやカラムは将来のバージョンのNucleusで削除させる可能性が高い</td>
-    </tr>
-    <tr>
-      <td class="fulltext" width="88">フルテキスト</td>
-      <td width="775">カラムにフルテキストのインデックスが付く（検索で使用する）</td>
-    </tr>
-  </tbody>
-</table>
+
+<table width="893"><tr>
+	<td class="primary" width="88">プライマリ</td>
+	<td width="775">プライマリキー</td>
+</tr><tr>
+	<td class="foreign" width="88">外部</td>
+	<td width="775">外部キー（クリックすると参照先に飛ぶ）。MySQLは外部キーとの一貫性保持に責任を持たないことに注意</td>
+</tr><tr>
+	<td class="toremove" width="88">削除予定</td>
+	<td width="775">同じ機能を提供するプラグインを優先するため、テーブルやカラムは将来のバージョンのNucleusで削除させる可能性が高い</td>
+</tr><tr>
+	<td class="fulltext" width="88">フルテキスト</td>
+	<td width="775">カラムにフルテキストのインデックスが付く（検索で使用する）</td>
+</tr></table>
+
+
 <a id="nucleus_blog" name="nucleus_blog"></a>
 <h1>nucleus_blogテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>既定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull autoinc primary">bnumber</td>
-      <td>int(11)</td>
-      <td></td>
-      <td>BlogのID</td>
-    </tr>
-    <tr>
-      <td class="notnull">bname</td>
-      <td>varchar(60)</td>
-      <td>''</td>
-      <td>Blog名</td>
-    </tr>
-    <tr>
-      <td class="notnull unique">bshortname</td>
-      <td>varchar(15)</td>
-      <td>''</td>
-      <td>Blogの短縮名 (スキン変数 <code>&lt;%blog%&gt;</code>などで使うものと同じ)</td>
-    </tr>
-    <tr>
+
+<table><tr>
+	<th>カラム名</th>
+	<th>型</th>
+	<th>既定値</th>
+	<th>説明</th>
+
+</tr><tr>
+	<td class="notnull autoinc primary">bnumber</td>
+	<td>int(11)</td>
+	<td></td>
+	<td>BlogのID</td>
+
+</tr><tr>
+	<td class="notnull">bname</td>
+	<td>varchar(60)</td>
+	<td>''</td>
+	<td>Blog名</td>
+
+</tr><tr>
+	<td class="notnull unique">bshortname</td>
+	<td>varchar(15)</td>
+	<td>''</td>
+	<td>Blogの短縮名 (スキン変数 <code>&lt;%blog%&gt;</code>などで使うものと同じ)</td>
+</tr><tr>
       <td>bdesc</td>
       <td>varchar(200)</td>
       <td>NULL</td>
@@ -1170,111 +1187,100 @@
 
 <p>新しいメンバーが登録された時点では、そのメンバーアカウントがアクティベートされるまで Nucleus はログインを許可しない。アクティベートのためのリンクを含むメールが送信され、これによってアクティベートすることができる。<code>nucleus_activation</code>テーブルはアクティベートの進捗状況を追跡する。</p>
 
-<table>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>既定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull primary">vkey</td>
-      <td>varchar(40)</td>
-      <td></td>
-      <td>アクティベートキー。このキーはメンバーのアクティベートコードに渡される。一般的に、キーは次のような形になる： <code>41cf637d4fbeeff954b4ca70b8bde9dd</code></td>
-    </tr>
-    <tr>
-      <td class="notnull foreign"><a href="#nucleus_member">vmember</a></td>
-      <td>int(11)</td>
-      <td></td>
-      <td>アクティベートの必要があるメンバー。</td>
-    </tr>
-    <tr>
-      <td class="notnull">vtime</td>
-      <td>datetime</td>
-      <td></td>
-      <td>アクティベートキーが発行された日時。アクティベートキーの有効期間は 2日間である。</td>
-    </tr>
-    <tr>
-      <td class="notnull">vtype</td>
-      <td>varchar(15)</td>
-      <td></td>
-      <td>アクティベートの種別。
-          <ul>
-            <li><code>forgot</code>: パスワードを忘れたメンバー。</li>
-            <li><code>register</code>: 新しく登録されたメンバー。</li>
-            <li><code>addresschange</code>: メールアドレスを変更したメンバー。</li>
-          </ul>
-      </td>
-    </tr>
-    <tr>
-      <td class="notnull">vextra</td>
-      <td>varchar(128)</td>
-      <td></td>
-      <td>追加的な情報。アクティベート種別が <code>addresschange</code> の場合、ここには <code>oldemailaddress/x</code> として、x には 0 または 1 の値が入る。x は <a href="#nucleus_member">member</a>テーブルにある <code>mcanlogin</code> の値を参照する。（アクティベートが完全に終了するまで、このユーザはログインできない）</td>
-    </tr>
-</table>
+<table><tr>
+	<th>カラム名</th>
+	<th>型</th>
+	<th>既定値</th>
+	<th>説明</th>
+</tr><tr>
+	<td class="notnull primary">vkey</td>
+	<td>varchar(40)</td>
+	<td></td>
+	<td>アクティベートキー。このキーはメンバーのアクティベートコードに渡される。一般的に、キーは次のような形になる： <code>41cf637d4fbeeff954b4ca70b8bde9dd</code></td>
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_member">vmember</a></td>
+	<td>int(11)</td>
+	<td></td>
+	<td>アクティベートの必要があるメンバー。</td>
+</tr><tr>
+	<td class="notnull">vtime</td>
+	<td>datetime</td>
+	<td></td>
+	<td>アクティベートキーが発行された日時。アクティベートキーの有効期間は 2日間である。</td>
+</tr><tr>
+	<td class="notnull">vtype</td>
+	<td>varchar(15)</td>
+	<td></td>
+	<td>アクティベートの種別。
+		<ul>
+			<li><code>forgot</code>: パスワードを忘れたメンバー。</li>
+			<li><code>register</code>: 新しく登録されたメンバー。</li>
+			<li><code>addresschange</code>: メールアドレスを変更したメンバー。</li>
+		</ul>
+	</td>
+</tr><tr>
+	<td class="notnull">vextra</td>
+	<td>varchar(128)</td>
+	<td></td>
+	<td>追加的な情報。アクティベート種別が <code>addresschange</code> の場合、ここには <code>oldemailaddress/x</code> として、x には 0 または 1 の値が入る。x は <a href="#nucleus_member">member</a>テーブルにある <code>mcanlogin</code> の値を参照する。（アクティベートが完全に終了するまで、このユーザはログインできない）</td>
+</tr></table>
+
 
 <a id="nucleus_karma" name="nucleus_karma"></a>
 <h1>nucleus_karmaテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+
 <p class="toremove">このテーブルは将来はなくなる可能性が高い。同じ機能を提供するプラグインに譲るためだ。</p>
+
 <p>この表は投票に使われたIPアドレスを記憶しておく。こうすることで一つのIPアドレスからは1票しか入れられなくなる</p>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>既定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull foreign"><a href="#nucleus_item">itemid</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>アイテムのID</td>
-    </tr>
-    <tr>
-      <td class="notnull">ip</td>
-      <td>char(15)</td>
-      <td>''</td>
-      <td>投票者のIPアドレス</td>
-    </tr>
-  </tbody>
-</table>
+
+<table><tr>
+	<th>カラム名</th>
+	<th>型</th>
+	<th>既定値</th>
+	<th>説明</th>
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_item">itemid</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>アイテムのID</td>
+
+</tr><tr>
+	<td class="notnull">ip</td>
+	<td>char(15)</td>
+	<td>''</td>
+	<td>投票者のIPアドレス</td>
+</tr></table>
+
 <a id="nucleus_ban" name="nucleus_ban"></a>
 <h1>nucleus_banテーブル<a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15"></a></h1>
+
 <p class="toremove">このテーブルは将来のNucleusではなくなる可能性が高い。同じ機能を提供するプラグインに譲るためだ。</p>
+
 <p>コメントやカルマ投票を禁止するIPアドレスを記憶</p>
-<table>
-  <tbody>
-    <tr>
-      <th>カラム名</th>
-      <th>型</th>
-      <th>既定値</th>
-      <th>説明</th>
-    </tr>
-    <tr>
-      <td class="notnull">iprange</td>
-      <td>varchar(15)</td>
-      <td>''</td>
-      <td>IPアドレスの範囲。アドレス単独でもいいし，一部（左から）でもいい。一部の場合は範囲を示す</td>
-    </tr>
-    <tr>
-      <td class="notnull">reason</td>
-      <td>varchar(255)</td>
-      <td>''</td>
-      <td>禁止の理由を示すメッセージ。コメントやカルマ投票を試みたときに表示される</td>
-    </tr>
-    <tr>
-      <td class="notnull foreign"><a href="#nucleus_blog">blogid</a></td>
-      <td>int(11)</td>
-      <td>'0'</td>
-      <td>禁止を有効にするBlogのID</td>
-    </tr>
-  </tbody>
-</table>
+
+<table><tr>
+	<th>カラム名</th>
+	<th>型</th>
+	<th>既定値</th>
+	<th>説明</th>
+</tr><tr>
+	<td class="notnull">iprange</td>
+	<td>varchar(15)</td>
+	<td>''</td>
+	<td>IPアドレスの範囲。アドレス単独でもいいし，一部（左から）でもいい。一部の場合は範囲を示す</td>
+
+</tr><tr>
+	<td class="notnull">reason</td>
+	<td>varchar(255)</td>
+	<td>''</td>
+	<td>禁止の理由を示すメッセージ。コメントやカルマ投票を試みたときに表示される</td>
+</tr><tr>
+	<td class="notnull foreign"><a href="#nucleus_blog">blogid</a></td>
+	<td>int(11)</td>
+	<td>'0'</td>
+	<td>禁止を有効にするBlogのID</td>
+</tr></table>
+
 
 </body>
-
 </html>
-

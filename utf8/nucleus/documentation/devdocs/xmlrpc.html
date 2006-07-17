@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
-	<!-- $Id: xmlrpc.html,v 1.6 2006-07-12 07:11:46 kimitake Exp $ -->
-	<!-- $NucleusJP: xmlrpc.html,v 1.5.2.1 2005/09/09 07:34:26 kimitake Exp $ -->
+	<!-- $Id: xmlrpc.html,v 1.7 2006-07-17 20:02:50 kimitake Exp $ -->
+	<!-- $NucleusJP: xmlrpc.html,v 1.6 2006/07/12 07:11:46 kimitake Exp $ -->
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Nucleus - XML-RPC インターフェイス</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
@@ -27,7 +27,6 @@ XML-RPC インターフェイス
 NucleusにおけるXML-RPCインターフェイスのURLは以下のようになります：
 <br />
 <b>http://www.yourserver.com/yourpath/nucleus/xmlrpc/server.php</b>
-
 </div>
 
 <a name="bloggerApi" id="bloggerApi"></a>
@@ -44,11 +43,9 @@ Nucleusは<a href="http://www.blogger.com/developers/api/1_docs/">Blogger API</a
 <ul>
 	<li><b><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_newPost.html">blogger.newPost</a></b></li>
 	<li><b><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_editPost.html">blogger.editPost</a></b></li>
-
 	<li><b><a href="http://groups.yahoo.com/group/bloggerDev/message/296">blogger.getPost</a></b></li>
 	<li><b><a href="http://groups.yahoo.com/group/bloggerDev/message/147">blogger.deletePost</a></b></li>
 	<li><b><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_getUsersBlogs.html">blogger.getUsersBlogs</a></b></li>
-
 	<li><b><a href="http://groups.yahoo.com/group/bloggerDev/message/225">blogger.getRecentPosts</a></b></li>
 	<li><b><a href="http://groups.yahoo.com/group/bloggerDev/message/315">blogger.getUserInfo</a></b></li>
 	<li><b><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_getTemplate.html">blogger.getTemplate</a></b></li>
@@ -79,9 +76,7 @@ Nucleusは内部的に異なる実装を用いているため、パラメータ�
 Nucleus v1.1以降、<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>もサポートされました。これはBlogger APIの拡張版です。 
 </p>
 
-<p>
-Nucleus v2.5では <code>newMediaObject</code> と <code>getRecentPosts</code> の二つのメソッドにも対応しました（これらは最初のmetaWeblog仕様には存在しませんでした）。
-</p>
+<p>Nucleus v2.5では <code>newMediaObject</code> と <code>getRecentPosts</code> の二つのメソッドにも対応しました（これらは最初のmetaWeblog仕様には存在しませんでした）。</p>
 
 <p>
 利用可能なメソッド一覧は以下の通りです（<a href="http://www.xmlrpc.com/metaWeblogApi">specification</a>に詳しい情報があります）：
@@ -89,12 +84,11 @@ Nucleus v2.5では <code>newMediaObject</code> と <code>getRecentPosts</code> �
 
 <ul>
 	<li>metaWeblog.newPost</li>
-	<li>metaWeblog.editPost</li>	
-	<li>metaWeblog.getPost</li>	
-	<li>metaWeblog.getCategories</li>	
+	<li>metaWeblog.editPost</li>
+	<li>metaWeblog.getPost</li>
+	<li>metaWeblog.getCategories</li>
 	<li>metaWeblog.newMediaObject (v2.5)</li>
-	<li>metaWeblog.getRecentPosts (v2.5)</li>	
-
+	<li>metaWeblog.getRecentPosts (v2.5)</li>
 </ul>
 
 <p>Nucleus v3.22以降、<code>mt_text_more</code> と <code>m_tallow_comment</code>もサポートされました。これはmetaWeblog API の拡張版です。つまりこれらの拡張機能をサポートするアプリケーション、例えば Ectoなど、を使用した場合、「続き」を編集することができ、アイテムにコメントを許可するかどうかを決定することができるようになる、ということです。</p>
@@ -108,14 +102,12 @@ Nucleus v2.5では <code>newMediaObject</code> と <code>getRecentPosts</code> �
 
 <ul>
 	<li>mt.supportedMethods</li>
-
 	<li>mt.supportedTextFilters</li>
 	<li>mt.publishPost</li>
 	<li>mt.getCategoryList</li>
 	<li>mt.getPostCategories</li>
 	<li>mt.setPostCategories</li>
 	<li>mt.getRecentPostTitles</li>
-
 	<li>mt.getTrackbackPings</li>
 </ul>
 
@@ -136,7 +128,6 @@ Nucleus v2.5では <code>newMediaObject</code> と <code>getRecentPosts</code> �
 
 <table>
 	<tr>
-
 		<th>エラーコード</th>
 		<th>エラーメッセージ</th>
 	</tr>
@@ -145,7 +136,6 @@ Nucleus v2.5では <code>newMediaObject</code> と <code>getRecentPosts</code> �
 		<td>Login Error <br />
 		ログインエラー（ユーザ名とパスワードの組み合わせが正しくないと推測されます）</td>
 	</tr>
-
 	<tr>
 		<td>802</td>
 		<td>No Such Blog<br />
@@ -155,7 +145,6 @@ Nucleus v2.5では <code>newMediaObject</code> と <code>getRecentPosts</code> �
 		<td>803</td>
 		<td>Not a Team Member<br />
 		チームに登録されていません</td>
-
 	</tr>
 	<tr>
 		<td>804</td>
@@ -164,7 +153,6 @@ Nucleus v2.5では <code>newMediaObject</code> と <code>getRecentPosts</code> �
 	</tr>
 	<tr>
 		<td>805</td>
-
 		<td>Amount parameter must be in range 1..20<br />
 		パラメータの値は 1..20 の範囲でなければなりません（<i>getRecentItems</i></td>
 	</tr>
@@ -173,7 +161,6 @@ Nucleus v2.5では <code>newMediaObject</code> と <code>getRecentPosts</code> �
 		<td>No Such Item<br />
 		指定されたアイテムは存在しません</td>
 	</tr>
-
 	<tr>
 		<td>807</td>
 		<td>Not Allowed to Alter Item<br />
@@ -183,8 +170,7 @@ Nucleus v2.5では <code>newMediaObject</code> と <code>getRecentPosts</code> �
 		<td>808</td>
 		<td>Invalid media type<br />
 		メディアタイプが不正です</td>
-
-	</tr>	
+	</tr>
 	<tr>
 		<td>809</td>
 		<td>File is too large<br />

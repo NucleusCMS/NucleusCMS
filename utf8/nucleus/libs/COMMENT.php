@@ -1,27 +1,30 @@
 <?php
 
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2006 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-  * Copyright (C) 2002-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * A class representing a single comment
-  *
-  * $Id: COMMENT.php,v 1.3 2005-03-12 06:19:05 kimitake Exp $
-  * $NucleusJP$
-  */
+ * A class representing a single comment
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @version $Id: COMMENT.php,v 1.4 2006-07-17 20:03:44 kimitake Exp $
+ * $NucleusJP: COMMENT.php,v 1.3 2005/03/12 06:19:05 kimitake Exp $
+ */
 class COMMENT {
 
 	/**
 	  * Returns the requested comment (static)
 	  */
 	function getComment($commentid) {
-		$query =  'SELECT cnumber as commentid, cbody as body, cuser as user, cmail as userid, cmember as memberid, ctime, chost as host, mname as member, cip as ip, cblog as blogid'
+		$query =  'SELECT cnumber as commentid, cbody as body, cuser as user, cmail as userid, cemail as email, cmember as memberid, ctime, chost as host, mname as member, cip as ip, cblog as blogid'
 			   . ' FROM '.sql_table('comment').' left outer join '.sql_table('member').' on cmember=mnumber'
 			   . ' WHERE cnumber=' . intval($commentid);
 		$comments = sql_query($query);
@@ -41,10 +44,12 @@ class COMMENT {
 	function prepare($comment) {
 		$comment['user'] = strip_tags($comment['user']);
 		$comment['userid'] = strip_tags($comment['userid']);
+		$comment['email'] = strip_tags($comment['email']);
 
 		// remove quotes and newlines from user and userid
 		$comment['user'] = strtr($comment['user'], "\'\"\n",'-- ');
 		$comment['userid'] = strtr($comment['userid'], "\'\"\n",'-- ');
+		$comment['email'] = strtr($comment['email'], "\'\"\n",'-- ');
 
 		$comment['body'] = COMMENT::prepareBody($comment['body']);
 
@@ -69,9 +74,9 @@ class COMMENT {
 		// create hyperlinks for http:// addresses
 		// there's a testcase for this in /build/testcases/urllinking.txt
 		$replaceFrom = array(
-			'/([^:\/\/\w]|^)((https:\/\/)([a-z0-9_\.-]+)([\/a-z0-9_+\.~%&?@=_:;#,-]+))/ie',
-			'/([^:\/\/\w]|^)((http:\/\/|www\.)([a-z0-9_\.-]+)([\/a-z0-9_+\.~%&?@=_:;#,-]+))/ie',
-			'/([^:\/\/\w]|^)((ftp:\/\/|ftp\.)([a-z0-9_\.-]+)([\/a-z0-9_+\.~%&?@=_:;#,-]+))/ie',
+			'/([^:\/\/\w]|^)((https:\/\/)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie',
+			'/([^:\/\/\w]|^)((http:\/\/|www\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie',
+			'/([^:\/\/\w]|^)((ftp:\/\/|ftp\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie',
 			'/([^:\/\/\w]|^)(mailto:(([a-zA-Z\@\%\.\-\+_])+))/ie'
 		);
 		$replaceTo = array(

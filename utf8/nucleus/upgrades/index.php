@@ -9,8 +9,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: index.php,v 1.6 2006-07-12 07:11:49 kimitake Exp $
-  * $NucleusJP: index.php,v 1.5 2005/03/19 07:20:28 kimitake Exp $
+  * $Id: index.php,v 1.7 2006-07-17 20:03:45 kimitake Exp $
+  * $NucleusJP: index.php,v 1.6 2006/07/12 07:11:49 kimitake Exp $
   */
 
 include('upgrade.functions.php'); 
@@ -56,7 +56,7 @@ upgrade_head();
       <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p>
     <?php  } else {
     ?>
-      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.2 用にアップグレードします</a></p>
+      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.3 用にアップグレードします</a></p>
     <?php  }
 ?>
 

@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2005 The Nucleus Group
+ * Copyright (C) 2002-2006 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,9 +13,9 @@
  * Media classes for nucleus
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2005 The Nucleus Group
- * @version $Id: MEDIA.php,v 1.4 2005-08-13 07:33:02 kimitake Exp $
- * $NucleusJP: MEDIA.php,v 1.3 2005/03/12 06:19:05 kimitake Exp $
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @version $Id: MEDIA.php,v 1.5 2006-07-17 20:03:44 kimitake Exp $
+ * $NucleusJP: MEDIA.php,v 1.4 2005/08/13 07:33:02 kimitake Exp $
  */
 
 
@@ -23,24 +23,24 @@
   * Represents the media objects for a certain member
   */
 class MEDIA {
-	
+
 	/**
 	  * Gets the list of collections available to the currently logged
-	  * in member 
+	  * in member
 	  *
 	  * @returns array of dirname => display name
 	  */
 	function getCollectionList() {
 		global $member, $DIR_MEDIA;
-		
+
 		$collections = array();
-		
+
 		// add private directory for member
 		$collections[$member->getID()] = 'Private Collection';
-		
+
 		// add global collections
 		if (!is_dir($DIR_MEDIA)) return $collections;
-		
+
 		$dirhandle = opendir($DIR_MEDIA);
 		while ($dirname = readdir($dirhandle)) {
 			// only add non-numeric (numeric=private) dirs
@@ -49,9 +49,9 @@ class MEDIA {
 			}
 		}
 		closedir($dirhandle);
-		
+
 		return $collections;
-		
+
 	}
 
 	/**
@@ -60,20 +60,20 @@ class MEDIA {
 	  * @param $collection
 	  *		name of the collection
 	  * @param $filter
-	  *		filter on filename (defaults to none)	  
+	  *		filter on filename (defaults to none)
 	  */
 	function getMediaListByCollection($collection, $filter = '') {
 		global $DIR_MEDIA;
 
-		$filelist = array();	
-		
+		$filelist = array();
+
 		// 1. go through all objects and add them to the filelist
 
 		$mediadir = $DIR_MEDIA . $collection . '/';
-		
+
 		// return if dir does not exist
 		if (!is_dir($mediadir)) return $filelist;
-		
+
 		$dirhandle = opendir($mediadir);
 		while ($filename = readdir($dirhandle)) {
 			// only add files that match the filter
@@ -84,28 +84,28 @@ class MEDIA {
 
 		// sort array so newer files are shown first
 		usort($filelist, 'sort_media');
-		
+
 		return $filelist;
 	}
-	
+
 	function checkFilter($strText, $strFilter) {
 		if ($strFilter == '')
 			return 1;
-		else 
+		else
 			return is_integer(strpos(strtolower($strText), strtolower($strFilter)));
 	}
 
 	/**
-	  * checks if a collection exists with the given name, and if it's 
+	  * checks if a collection exists with the given name, and if it's
 	  * allowed for the currently logged in member to upload files to it
-	  */ 
+	  */
 	function isValidCollection($collectionName) {
 		global $member, $DIR_MEDIA;
-		
+
 		// private collections only accept uploads from their owners
 		if (is_numeric($collectionName))
 			return ($member->getID() == $collectionName);
-			
+
 		// other collections should exists and be writable
 		$collectionDir = $DIR_MEDIA . $collectionName;
 		return (@is_dir($collectionDir) || @is_writable($collectionDir));
@@ -117,14 +117,14 @@ class MEDIA {
 	  * @param collection
 	  *		collection
 	  * @param uploadfile
-	  *		the postFileInfo(..) array 
+	  *		the postFileInfo(..) array
 	  * @param filename
 	  *		the filename that should be used to save the file as
 	  *		(date prefix should be already added here)
 	  */
 	function addMediaObject($collection, $uploadfile, $filename) {
 		global $DIR_MEDIA;
-		
+
 		// don't allow uploads to unknown or forbidden collections
 		if (!MEDIA::isValidCollection($collection))
 			return _ERROR_DISALLOWED;
@@ -137,19 +137,19 @@ class MEDIA {
 			$oldumask = umask(0000);
 			if (!@mkdir($mediadir, 0777))
 				return _ERROR_BADPERMISSIONS;
-			umask($oldumask);				
-		} 
-		
+			umask($oldumask);
+		}
+
 		// if dir still not exists, the action is disallowed
 		if (!@is_dir($mediadir))
 			return _ERROR_DISALLOWED;
-		
+
 		if (!is_writeable($mediadir))
 			return _ERROR_BADPERMISSIONS;
-			
+
 		// add trailing slash (don't add it earlier since it causes mkdir to fail on some systems)
 		$mediadir .= '/';
-			
+
 		if (file_exists($mediadir . $filename))
 			return _ERROR_UPLOADDUPLICATE;
 
@@ -161,18 +161,18 @@ class MEDIA {
 			if (!copy($uploadfile, $mediadir . $filename))
 				return _ERROR_UPLOADCOPY ;
 		}
-		
+
 		// chmod uploaded file
 		$oldumask = umask(0000);
-		@chmod($mediadir . $filename, 0644); 
-		umask($oldumask);		
-		
+		@chmod($mediadir . $filename, 0644);
+		umask($oldumask);
+
 		return '';
-	
+
 	}
-	
+
 	/**
-	 * Adds an uploaded file to the media dir. 
+	 * Adds an uploaded file to the media dir.
 	 *
 	 * @param $collection
 	 *		collection to use
@@ -186,7 +186,7 @@ class MEDIA {
 	 */
 	function addMediaObjectRaw($collection, $filename, &$data) {
 		global $DIR_MEDIA;
-		
+
 		// check dir permissions (try to create dir if it does not exist)
 		$mediadir = $DIR_MEDIA . $collection;
 
@@ -195,38 +195,38 @@ class MEDIA {
 			$oldumask = umask(0000);
 			if (!@mkdir($mediadir, 0777))
 				return _ERROR_BADPERMISSIONS;
-			umask($oldumask);				
-		} 
-		
+			umask($oldumask);
+		}
+
 		// if dir still not exists, the action is disallowed
 		if (!@is_dir($mediadir))
 			return _ERROR_DISALLOWED;
-		
+
 		if (!is_writeable($mediadir))
 			return _ERROR_BADPERMISSIONS;
-			
+
 		// add trailing slash (don't add it earlier since it causes mkdir to fail on some systems)
 		$mediadir .= '/';
-			
+
 		if (file_exists($mediadir . $filename))
 			return _ERROR_UPLOADDUPLICATE;
 
 		// create file
 		$fh = @fopen($mediadir . $filename, 'wb');
-		if (!$fh) 
+		if (!$fh)
 			return _ERROR_UPLOADFAILED;
 		$ok = @fwrite($fh, $data);
 		@fclose($fh);
 		if (!$ok)
 			return _ERROR_UPLOADFAILED;
-		
+
 		// chmod uploaded file
 		$oldumask = umask(0000);
-		@chmod($mediadir . $filename, 0644); 
-		umask($oldumask);		
-		
+		@chmod($mediadir . $filename, 0644);
+		umask($oldumask);
+
 		return '';
-	
+
 	}
 
 }
@@ -253,15 +253,15 @@ class MEDIAOBJECT {
 		$this->filename = $filename;
 		$this->timestamp = $timestamp;
 	}
-	
+
 }
 
 /**
   * User-defined sort method to sort an array of MEDIAOBJECTS
   */
 function sort_media($a, $b) {
-    if ($a->timestamp == $b->timestamp) return 0;
-    return ($a->timestamp > $b->timestamp) ? -1 : 1;
+	if ($a->timestamp == $b->timestamp) return 0;
+	return ($a->timestamp > $b->timestamp) ? -1 : 1;
 }
 
 ?>

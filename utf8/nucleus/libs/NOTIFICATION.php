@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: NOTIFICATION.php,v 1.5 2006-07-12 07:11:47 kimitake Exp $
- * $NucleusJP: NOTIFICATION.php,v 1.4 2005/08/13 07:33:02 kimitake Exp $
+ * @version $Id: NOTIFICATION.php,v 1.6 2006-07-17 20:03:44 kimitake Exp $
+ * $NucleusJP: NOTIFICATION.php,v 1.5 2006/07/12 07:11:47 kimitake Exp $
  */
 class NOTIFICATION {
 
@@ -58,7 +58,7 @@ class NOTIFICATION {
 			// don't send messages to yourself
 			if ($member->isLoggedIn() && ($member->getEmail() == $address))
 				continue;
-		
+
 			@mb_language('ja');
 			@mb_internal_encoding(_CHARSET);
 			@mb_send_mail($address, $title, $message, "From: ". $from);

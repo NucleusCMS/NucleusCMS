@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2005 The Nucleus Group
+ * Copyright (C) 2002-2006 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,9 +14,9 @@
  * This file contains definitions for the methods in the Blogger API
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2005 The Nucleus Group
- * @version $Id: api_blogger.inc.php,v 1.4 2005-04-20 07:02:31 kimitake Exp $
- * $NucleusJP: api_blogger.inc.php,v 1.3 2005/03/12 06:19:06 kimitake Exp $
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @version $Id: api_blogger.inc.php,v 1.5 2006-07-17 20:03:45 kimitake Exp $
+ * $NucleusJP: api_blogger.inc.php,v 1.4 2005/04/20 07:02:31 kimitake Exp $
  */
 
 
@@ -41,10 +41,10 @@
 		$password = _getScalar($m,3);
 		$content = _getScalar($m,4);
 		$publish = _getScalar($m,5);
-		
+
 		$title = blogger_extractTitle($content);
 		$category = blogger_extractCategory($content);
-		$content = blogger_removeSpecialTags($content);	
+		$content = blogger_removeSpecialTags($content);
 
 		return _addItem($blogid, $username, $password, $title, $content, '', $publish, 0, $category);
 	}
@@ -66,7 +66,7 @@
 	$f_blogger_editPost_doc = "Edits an item of a blog";
 	function f_blogger_editPost($m) {
 		global $manager;
-		
+
 		$itemid = intval(_getScalar($m,1));
 		$username = _getScalar($m,2);
 		$password = _getScalar($m,3);
@@ -75,9 +75,9 @@
 
 		$title = blogger_extractTitle($content);
 		$category = blogger_extractCategory($content);
-		$content = blogger_removeSpecialTags($content);	
+		$content = blogger_removeSpecialTags($content);
 
-		// get old title and extended part 
+		// get old title and extended part
 		if (!$manager->existsItem($itemid,1,1))
 			return _error(6,"No such item ($itemid)");
 		$old =& $manager->getItem($itemid,1,1);
@@ -86,7 +86,7 @@
 
 		$blog = new BLOG($blogid);
 		$catid = $blog->getCategoryIdFromName($category);
-		
+
 		if ($old['draft'] && $publish) {
 			$wasdraft = 1;
 			$publish = 1;
@@ -265,19 +265,19 @@
 
 
 	/**
-	  * Returns a list of recent items 
+	  * Returns a list of recent items
 	  */
 	function _getRecentItemsBlogger($blogid, $username, $password, $amount) {
-		
+
 		$blogid = intval($blogid);
 		$amount = intval($amount);
-			
+
 		// 1. login
 		$mem = new MEMBER();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
-		// 2. check if allowed 
+		// 2. check if allowed
 		if (!BLOG::existsID($blogid))
 			return _error(2,"No such blog ($blogid)");
 		if (!$mem->teamRights($blogid))
@@ -288,7 +288,7 @@
 
 		// 3. create and return list of recent items
 		// Struct returned has dateCreated, userid, blogid and content
-		
+
 		$blog = new BLOG($blogid);
 
 		$structarray = array();		// the array in which the structs will be stored
@@ -299,15 +299,15 @@
 			   ." ORDER BY itime DESC"
 			   ." LIMIT $amount";
 		$r = sql_query($query);
-		
+
 		while ($row = mysql_fetch_assoc($r)) {
-		
+
 			// remove linebreaks if needed
 			if ($blog->convertBreaks())
 				$row['ibody'] = removeBreaks($row['ibody']);
 
 			$content = blogger_specialTags($row) . $row['ibody'];
-		
+
 			$newstruct = new xmlrpcval(array(
 				"userid" => new xmlrpcval($row['iauthor'],"string"),
 				"dateCreated" => new xmlrpcval(iso8601_encode(strtotime($row['itime'])),"dateTime.iso8601"),
@@ -317,25 +317,25 @@
 				"authorName" => new xmlrpcval($row['mname'],'string'),
 				"title" => new xmlrpcval($row['title'],'string'),
 			),'struct');
-			array_push($structarray, $newstruct);		
+			array_push($structarray, $newstruct);
 		}
 
 		return new xmlrpcresp(new xmlrpcval( $structarray , "array"));
 
 	}
-	
+
 	/**
 	  * Returns one item (Blogger version)
 	  */
 	function _getItemBlogger($itemid, $username, $password) {
 		global $manager;
-	
+
 		// 1. login
 		$mem = new MEMBER();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
-		// 2. check if allowed 
+		// 2. check if allowed
 		if (!$manager->existsItem($itemid,1,1))
 			return _error(6,"No such item ($itemid)");
 		$blogid = getBlogIDFromItemID($itemid);
@@ -347,10 +347,10 @@
 
 		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
 		$blog = new BLOG($blogid);
-		
+
 		// get category
 		$item['category'] = $blog->getCategoryName($item['catid']);
-		
+
 		// remove linebreaks if needed
 		if ($blog->convertBreaks())
 			$item['body'] = removeBreaks($item['body']);
@@ -376,10 +376,10 @@
 
 	function blogger_extractCategory($body) {
 		return blogger_matchTag('category',$body);
-	}	
-	
+	}
+
 	function blogger_matchTag($tag, $body) {
-		if (preg_match("/<" . $tag .">(.+?)<\/".$tag.">/is",$body,$match)) 
+		if (preg_match("/<" . $tag .">(.+?)<\/".$tag.">/is",$body,$match))
 			return $match[1];
 		else
 			return "";
@@ -390,13 +390,13 @@
 		$body = preg_replace("/<category>(.+?)<\/category>/","",$body);
 		return trim($body);
 	}
-	
+
 	function blogger_specialTags($item) {
 		$result = "<title>". $item['title']."</title>";
 		$result .= "<category>".$item['category']."</category>";
 		return $result;
 	}
-	
+
 
 
 	$functionDefs = array_merge($functionDefs,
@@ -445,7 +445,7 @@
 			 array( "function" => "f_blogger_setTemplate",
 				"signature" => $f_blogger_setTemplate_sig,
 				"docstring" => $f_blogger_setTemplate_doc)
-		
+
 		)
 	);
 
