@@ -15,8 +15,8 @@
  * Nucleus RSS syndication channel skin
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: xml-rss2.php,v 1.6 2006-07-12 07:11:45 kimitake Exp $
- * $NucleusJP: xml-rss2.php,v 1.5 2005/04/20 06:49:45 kimitake Exp $
+ * @version $Id: xml-rss2.php,v 1.7 2006-07-17 19:59:46 kimitake Exp $
+ * $NucleusJP: xml-rss2.php,v 1.6 2006/07/12 07:11:45 kimitake Exp $
  */
 
 header("Pragma: no-cache");
@@ -52,9 +52,9 @@ if (!$CONF['DisableSite']) {
 } else {
 	// output empty RSS file...
 	// (because site is disabled)
-	
+
 	echo '<' . '?xml version="1.0" encoding="ISO-8859-1"?' . '>';
-	
+
 	?>
 	<rss version="2.0">
 	  <channel>
