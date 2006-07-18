@@ -14,7 +14,7 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: showlist.php,v 1.1 2006-07-12 07:13:31 kimitake Exp $
+ * @version $Id: showlist.php,v 1.2 2006-07-18 08:42:40 kimitake Exp $
  */
 
 
@@ -172,7 +172,7 @@ function listplug_table_pluginlist($template, $type) {
 	switch($type) {
 		case 'HEAD':
 			echo '<th>'._LISTS_INFO.'</th><th>'._LISTS_DESC.'</th>';
-			echo '<th>'._LISTS_ACTIONS.'</th>';
+			echo '<th style="white-space:nowrap">'._LISTS_ACTIONS.'</th>';
 			break;
 		case 'BODY':
 			$current = $template['current'];
@@ -301,7 +301,7 @@ function listplug_table_itemlist($template, $type) {
 
 	switch($type) {
 		case 'HEAD':
-			echo "<th>"._LIST_ITEM_INFO."</th><th>"._LIST_ITEM_CONTENT."</th><th colspan='1'>"._LISTS_ACTIONS."</th>";
+			echo "<th>"._LIST_ITEM_INFO."</th><th>"._LIST_ITEM_CONTENT."</th><th style=\"white-space:nowrap\" colspan='1'>"._LISTS_ACTIONS."</th>";
 			break;
 		case 'BODY':
 			$current = $template['current'];
@@ -335,7 +335,7 @@ function listplug_table_itemlist($template, $type) {
 			$current->ibody = htmlspecialchars(shorten($current->ibody,300,'...'));
 
 			echo "$current->ibody</td>";
-			echo "<td $cssclass>";
+			echo "<td  style=\"white-space:nowrap\" $cssclass>";
 			echo 	"<a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a>";
 			echo    "<br /><a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>"._LISTS_COMMENTS."</a>";
 			echo    "<br /><a href='index.php?action=itemmove&amp;itemid=$current->inumber'>"._LISTS_MOVE."</a>";
@@ -388,10 +388,10 @@ function listplug_table_commentlist($template, $type) {
 			echo '</label>';
 			echo '</td>';
 
-			echo "<td><a href='index.php?action=commentedit&amp;commentid=$current->cnumber'>"._LISTS_EDIT."</a></td>";
-			echo "<td><a href='index.php?action=commentdelete&amp;commentid=$current->cnumber'>"._LISTS_DELETE."</a></td>";
+			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentedit&amp;commentid=$current->cnumber'>"._LISTS_EDIT."</a></td>";
+			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentdelete&amp;commentid=$current->cnumber'>"._LISTS_DELETE."</a></td>";
 			if ($template['canAddBan'])
-				echo "<td><a href='index.php?action=banlistnewfromitem&amp;itemid=$current->citem&amp;ip=", htmlspecialchars($current->cip), "' title='", htmlspecialchars($current->chost), "'>"._LIST_COMMENT_BANIP."</a></td>";
+				echo "<td style=\"white-space:nowrap\"><a href='index.php?action=banlistnewfromitem&amp;itemid=$current->citem&amp;ip=", htmlspecialchars($current->cip), "' title='", htmlspecialchars($current->chost), "'>"._LIST_COMMENT_BANIP."</a></td>";
 			break;
 	}
 }
@@ -493,11 +493,11 @@ function listplug_table_templatelist($template, $type) {
 
 			echo "<td>" , htmlspecialchars($current->tdname), "</td>";
 			echo "<td>" , htmlspecialchars($current->tddesc), "</td>";
-			echo "<td><a href='index.php?action=templateedit&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
+			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templateedit&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
 
 			$url = $manager->addTicketToUrl('index.php?action=templateclone&templateid=' . intval($current->tdnumber));
-			echo "<td><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
-			echo "<td><a href='index.php?action=templatedelete&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
+			echo "<td style=\"white-space:nowrap\"><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
+			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templatedelete&amp;templateid=$current->tdnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
 
 			break;
 	}
@@ -566,11 +566,11 @@ function listplug_table_skinlist($template, $type) {
 					echo '<br /><br />',_LIST_SKINS_DEFINED,' <ul>',implode($types,'') ,'</ul>';
 				}
 			echo "</td>";
-			echo "<td><a href='index.php?action=skinedit&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
+			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skinedit&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
 
 			$url = $manager->addTicketToUrl('index.php?action=skinclone&skinid=' . intval($current->sdnumber));
-			echo "<td><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
-			echo "<td><a href='index.php?action=skindelete&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
+			echo "<td style=\"white-space:nowrap\"><a href='",htmlspecialchars($url),"' tabindex='".$template['tabindex']."'>"._LISTS_CLONE."</a></td>";
+			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skindelete&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
 
 			break;
 	}
