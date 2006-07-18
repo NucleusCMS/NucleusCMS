@@ -32,10 +32,10 @@ define('_BOOKMARKLET_SEND_PING',	'アイテムの追加に成功しました。�
 
 
 // START changed/added after 3.3 START
-define('_AUTOSAVEDRAFT',			'自動草稿保存');
-define('_AUTOSAVEDRAFT_LASTSAVED',	'最終保存日時: ');
+define('_AUTOSAVEDRAFT',			'自動ドラフト保存');
+define('_AUTOSAVEDRAFT_LASTSAVED',	'最終ドラフト保存日時: ');
 define('_AUTOSAVEDRAFT_NOTYETSAVED',	'未保存です');
-define('_AUTOSAVEDRAFT_NOW',		'自動保存中');
+define('_AUTOSAVEDRAFT_NOW',		'ドラフト保存');
 define('_SKIN_PARTS_SPECIAL',		'スペシャルスキンパーツ');
 define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',		'You must enter a name that exists only out of lowercase letters and digits');
 define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',		'このスキンパートを削除できません');
@@ -428,7 +428,6 @@ define('_LIST_PLUGS_DOWN',			'下へ');
 define('_LIST_PLUGS_UNINSTALL',		'削除');
 define('_LIST_PLUGS_ADMIN',			'管理');
 define('_LIST_PLUGS_OPTIONS',		'編集');
-define('_LIST_PLUGS_DEP',		'Plugin(s) requires:');
 
 // plugin option list
 define('_LISTS_VALUE',				'値');
