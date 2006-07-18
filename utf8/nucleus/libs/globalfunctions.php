@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.7 2006-07-17 20:03:44 kimitake Exp $
- * $NucleusJP: globalfunctions.php,v 1.6 2005/08/13 07:27:42 kimitake Exp $
+ * @version $Id: globalfunctions.php,v 1.8 2006-07-18 08:42:04 kimitake Exp $
+ * $NucleusJP: globalfunctions.php,v 1.7 2006/07/17 20:03:44 kimitake Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -25,7 +25,7 @@ $nucleus['codename'] = 'Lithium';
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
 
-$CONF['debug'] = 1;
+$CONF['debug'] = 0;
 if ($CONF['debug']) {
 	error_reporting(E_ALL);	// report all errors!
 } else {
@@ -103,6 +103,7 @@ $maxresults = requestVar('maxresults');
 $startpos = intRequestVar('startpos');
 $errormessage = '';
 $error = '';
+$virtualpath = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 if (!headers_sent() ) {
 	header('Generator: Nucleus CMS ' . $nucleus['version']);
@@ -305,14 +306,14 @@ if ($CONF['URLMode'] == 'pathinfo') {
 		'ParseURL',
 		array(
 			'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
-			'info' => serverVar('PATH_INFO'),
+			'info' => $virtualpath,
 			'complete' => &$parsed
 		)
 	);
 
 	if (!$parsed) {
 		// default implementation
-		$data = explode("/", serverVar('PATH_INFO') );
+		$data = explode("/", $virtualpath );
 		for ($i = 0; $i < sizeof($data); $i++) {
 			switch ($data[$i]) {
 				case $CONF['ItemKey']: // item/1 (blogid)
