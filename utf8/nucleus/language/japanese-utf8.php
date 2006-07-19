@@ -40,6 +40,7 @@ define('_SKIN_PARTS_SPECIAL',		'スペシャルスキンパーツ');
 define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',		'You must enter a name that exists only out of lowercase letters and digits');
 define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',		'このスキンパートを削除できません');
 define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',		'本当にこのスペシャルスキンパートを削除してもいいですか？');
+define('_ERROR_PLUGIN_LOAD',		'プラグインが読み込めませんでした。もくは、使用中の Nucleus 上で動作させるために必要な機能が、プラグインでサポートされていません。(<a href="?action=actionlog">管理操作履歴</a>に詳細があります。)');
 // END changed/added after 3.3 END
 
 // START changed/added after 3.22 START
