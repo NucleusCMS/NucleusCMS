@@ -9,13 +9,17 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-
 /**
  * This class contains parse actions that are available in all ACTION classes
  * e.g. include, phpinclude, parsedinclude, skinfile, ...
  *
  * It should never be used on it's own
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @version $Id$
  */
+
 class BaseActions {
 
 	// depth level for includes (max. level is 3)
