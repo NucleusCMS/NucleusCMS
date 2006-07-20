@@ -9,8 +9,7 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-
-/*
+/**
  * This class contains the functions that get called by using
  * the special tags in the skins
  *
