@@ -10,14 +10,15 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-
 /**
  * A class to parses plugin calls inside items
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $ $
+ * @version $Id: BODYACTIONS.php,v 1.2 2006-07-20 08:01:52 kimitake Exp $
+ * @version $NucleusJP$
  */
+
 class BODYACTIONS extends ITEMACTIONS {
 
 	function getDefinedActions() {

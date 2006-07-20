@@ -18,8 +18,8 @@ require_once $DIR_LIBS . 'ACTIONS.php';
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: SKIN.php,v 1.5 2006-07-12 07:11:47 kimitake Exp $
- * $NucleusJP: SKIN.php,v 1.4 2005/03/12 06:19:05 kimitake Exp $
+ * @version $Id: SKIN.php,v 1.6 2006-07-20 08:01:52 kimitake Exp $
+ * @version $NucleusJP: SKIN.php,v 1.5 2006/07/12 07:11:47 kimitake Exp $
  */
 class SKIN {
 

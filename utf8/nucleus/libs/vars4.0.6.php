@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: vars4.0.6.php,v 1.7 2006-07-12 07:11:47 kimitake Exp $
- * $NucleusJP: vars4.0.6.php,v 1.6 2005/08/13 07:33:02 kimitake Exp $
+ * @version $Id: vars4.0.6.php,v 1.8 2006-07-20 08:01:52 kimitake Exp $
+ * @version $NucleusJP: vars4.0.6.php,v 1.7 2006/07/12 07:11:47 kimitake Exp $
  */
 
 /**

@@ -9,14 +9,19 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-
-/*
+/**
  * This class contains the functions that get called by using
  * the special tags in the skins
  *
  * The allowed tags for a type of skinpart are defined by the
  * SKIN::getAllowedActionsForType($type) method
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @version $Id: ACTIONS.php,v 1.2 2006-07-20 08:01:52 kimitake Exp $
+ * @version $NucleusJP$
  */
+
 class ACTIONS extends BaseActions {
 
 	// part of the skin currently being parsed ('index', 'item', 'archive',

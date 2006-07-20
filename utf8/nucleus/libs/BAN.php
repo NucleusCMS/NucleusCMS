@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: BAN.php,v 1.5 2006-07-17 20:03:44 kimitake Exp $
-  * $NucleusJP: BAN.php,v 1.4 2005/08/13 07:31:04 kimitake Exp $
+ * @version $Id: BAN.php,v 1.6 2006-07-20 08:01:52 kimitake Exp $
+ * $NucleusJP: BAN.php,v 1.5 2006/07/17 20:03:44 kimitake Exp $
  */
 
 class BAN {

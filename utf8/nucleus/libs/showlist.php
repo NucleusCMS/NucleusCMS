@@ -14,7 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: showlist.php,v 1.2 2006-07-18 08:42:40 kimitake Exp $
+ * @version $Id: showlist.php,v 1.3 2006-07-20 08:01:52 kimitake Exp $
+ * @version $NucleusJP$
  */
 
 

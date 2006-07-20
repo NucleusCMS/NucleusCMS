@@ -11,8 +11,14 @@
  */
 
 /**
-  * This class is used when parsing comment templates
-  */
+ * This class is used when parsing comment templates
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @version $Id: COMMENTACTIONS.php,v 1.2 2006-07-20 08:01:52 kimitake Exp $
+ * @version $NucleusJP$
+ */
+
 class COMMENTACTIONS extends BaseActions {
 
 	// ref to COMMENTS object which is using this object to handle
