@@ -16,7 +16,12 @@
  *
  * The allowed tags for a type of skinpart are defined by the
  * SKIN::getAllowedActionsForType($type) method
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @version $Id$
  */
+
 class ACTIONS extends BaseActions {
 
 	// part of the skin currently being parsed ('index', 'item', 'archive',
