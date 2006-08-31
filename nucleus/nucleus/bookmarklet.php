@@ -180,10 +180,11 @@ function bm_doEditItem() {
 	}
 
 	// show success message
-	if ($catid != intPostVar('catid'))
-		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid='.$blog->getID().'&amp;catid='.$catid.'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>', '');
-	else
+	if ($catid != intPostVar('catid') ) {
+		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid=' . $blog->getID() . '&amp;catid=' . $catid . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>', '');
+	} else {
 		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _ITEM_UPDATED, '');
+	}
 }
 
 function bm_loginAndPassThrough() {
@@ -201,24 +202,24 @@ function bm_loginAndPassThrough() {
 		<?php bm_style(); ?>
 	</head>
 	<body>
-	<h1><?php echo _LOGIN_PLEASE?></h1>
+	<h1><?php echo _LOGIN_PLEASE ?></h1>
 
 	<form method="post" action="bookmarklet.php">
 	<p>
 		<input name="action" value="login" type="hidden" />
-		<input name="blogid" value="<?php echo  htmlspecialchars($blogid) ?>" type="hidden" />
-		<input name="logtext" value="<?php echo  htmlspecialchars($log_text) ?>" type="hidden" />
-		<input name="loglink" value="<?php echo  htmlspecialchars($log_link) ?>" type="hidden" />
-		<input name="loglinktitle" value="<?php echo  htmlspecialchars($log_linktitle) ?>" type="hidden" />
-		<?php echo _LOGINFORM_NAME?>:
+		<input name="blogid" value="<?php echo htmlspecialchars($blogid); ?>" type="hidden" />
+		<input name="logtext" value="<?php echo htmlspecialchars($log_text); ?>" type="hidden" />
+		<input name="loglink" value="<?php echo htmlspecialchars($log_link); ?>" type="hidden" />
+		<input name="loglinktitle" value="<?php echo htmlspecialchars($log_linktitle); ?>" type="hidden" />
+		<?php echo _LOGINFORM_NAME ?>:
 		<br /><input name="login" />
-		<br /><?php echo _LOGINFORM_PWD?>:
+		<br /><?php echo _LOGINFORM_PWD ?>:
 		<br /><input name="password" type="password" />
 		<br /><br />
-		<br /><input type="submit" value="<?php echo _LOGIN?>" />
+		<br /><input type="submit" value="<?php echo _LOGIN ?>" />
 	</p>
 	</form>
-	<p><a href="bookmarklet.php" onclick="window.close();"><?php echo _POPUP_CLOSE?></a></p>
+	<p><a href="bookmarklet.php" onclick="window.close();"><?php echo _POPUP_CLOSE ?></a></p>
 	</body>
 	</html>
 	<?php
@@ -232,26 +233,33 @@ function bm_doShowForm() {
 	$log_link = requestVar('loglink');
 	$log_linktitle = requestVar('loglinktitle');
 
-	if (!BLOG::existsID($blogid))
+	if (!BLOG::existsID($blogid) ) {
 		bm_doError(_ERROR_NOSUCHBLOG);
+	}
 
-	if (!$member->isTeamMember($blogid))
+	if (!$member->isTeamMember($blogid) ) {
 		bm_doError(_ERROR_NOTONTEAM);
+	}
 
 	$logje = '';
-	if ($log_text)
-		$logje .= '<blockquote><div>"' . htmlspecialchars($log_text) .'"</div></blockquote>' . "\n";
-	if (!$log_linktitle)
-		$log_linktitle = $log_link;
-	if ($log_link)
-		$logje .= '<a href="'. htmlspecialchars($log_link) . '">'. htmlspecialchars($log_linktitle).'</a>';
 
+	if ($log_text) {
+		$logje .= '<blockquote><div>"' . htmlspecialchars($log_text) . '"</div></blockquote>' . "\n";
+	}
+
+	if (!$log_linktitle) {
+		$log_linktitle = $log_link;
+	}
+
+	if ($log_link) {
+		$logje .= '<a href="' . htmlspecialchars($log_link) . '">' . htmlspecialchars($log_linktitle) . '</a>';
+	}
 
 	$item['body'] = $logje;
 	$item['title'] = htmlspecialchars($log_linktitle);
 
 	$factory = new PAGEFACTORY($blogid);
-	$factory->createAddForm('bookmarklet',$item);
+	$factory->createAddForm('bookmarklet', $item);
 }
 
 function bm_doEditForm() {
@@ -259,29 +267,30 @@ function bm_doEditForm() {
 
 	$itemid = intRequestVar('itemid');
 
-	if (!$manager->existsItem($itemid, 0, 0))
+	if (!$manager->existsItem($itemid, 0, 0) ) {
 		bm_doError(_ERROR_NOSUCHITEM);
+	}
 
-	if (!$member->canAlterItem($itemid))
+	if (!$member->canAlterItem($itemid) ) {
 		bm_doError(_ERROR_DISALLOWED);
+	}
 
-	$item =& $manager->getItem($itemid,1,1);
-	$blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
+	$item =& $manager->getItem($itemid, 1, 1);
+	$blog =& $manager->getBlog(getBlogIDFromItemID($itemid) );
 
-	$manager->notify('PrepareItemForEdit', array('item' => &$item));
+	$manager->notify('PrepareItemForEdit', array('item' => &$item) );
 
-	if ($blog->convertBreaks()) {
+	if ($blog->convertBreaks() ) {
 		$item['body'] = removeBreaks($item['body']);
 		$item['more'] = removeBreaks($item['more']);
 	}
 
-	$formfactory = new PAGEFACTORY($blog->getID());
-	$formfactory->createEditForm('bookmarklet',$item);
-
+	$formfactory = new PAGEFACTORY($blog->getID() );
+	$formfactory->createEditForm('bookmarklet', $item);
 }
 
 function bm_doError($msg) {
-	bm_message(_ERROR,_ERRORMSG,$msg);
+	bm_message(_ERROR, _ERRORMSG, $msg);
 	die;
 }
 
@@ -290,18 +299,19 @@ function bm_message($title, $head, $msg, $extrahead = '') {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title><?php echo  $title ?></title>
+		<title><?php echo $title ?></title>
 		<?php bm_style(); ?>
-		<?php echo $extrahead?>
+		<?php echo $extrahead; ?>
 	</head>
 	<body>
-	<h1><?php echo  $head ?></h1>
-	<p><?php echo  $msg ?></p>
-	<p><a href="bookmarklet.php" onclick="window.close();"><?php echo _POPUP_CLOSE?></a></p>
+	<h1><?php echo $head; ?></h1>
+	<p><?php echo $msg; ?></p>
+	<p><a href="bookmarklet.php" onclick="window.close();"><?php echo _POPUP_CLOSE ?></a></p>
 	</body>
 	</html>
 
-	<?php }
+	<?php
+}
 
 function bm_style() {
 	echo '<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />';
@@ -312,11 +322,11 @@ function bm_doContextMenuCode() {
 	global $CONF;
 	?>
 <script type="text/javascript" defer="defer">
-doc=external.menuArguments.document;
-lt=escape(doc.selection.createRange().text);
-loglink=escape(external.menuArguments.location.href);
-loglinktitle=escape(doc.title);
-wingm=window.open('<?php echo $CONF['AdminURL']?>bookmarklet.php?blogid=<?php echo intGetVar('blogid')?>&logtext='+lt+'&loglink='+loglink+'&loglinktitle='+loglinktitle,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');
+doc = external.menuArguments.document;
+lt = escape(doc.selection.createRange().text);
+loglink = escape(external.menuArguments.location.href);
+loglinktitle = escape(doc.title);
+wingm = window.open('<?php echo $CONF['AdminURL']?>bookmarklet.php?blogid=<?php echo intGetVar('blogid')?>&logtext=' + lt + '&loglink=' + loglink + '&loglinktitle=' + loglinktitle, 'nucleusbm', 'scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');
 wingm.focus();
 </script>
 	<?php
