@@ -32,46 +32,60 @@ if ($action == 'contextmenucode') {
 	exit;
 }
 
-if (!$member->isLoggedIn()) {
+if (!$member->isLoggedIn() ) {
 	bm_loginAndPassThrough();
 	exit;
 }
 
 // on successfull login
-if (($action == 'login') && ($member->isLoggedIn()))
+if ( ($action == 'login') && ($member->isLoggedIn() ) ) {
 	$action = requestVar('nextaction');
-if ($action == '')
-	$action = 'add';
+}
 
-sendContentType('application/xhtml+xml', 'bookmarklet-'.$action);
+if ($action == '') {
+	$action = 'add';
+}
+
+sendContentType('application/xhtml+xml', 'bookmarklet-' . $action);
 
 // check ticket
 $action = strtolower($action);
 $aActionsNotToCheck = array('login', 'add', 'edit');
-if (!in_array($action, $aActionsNotToCheck))
-{
-	if (!$manager->checkTicket())
-		bm_doError(_ERROR_BADTICKET);
-}
 
+if (!in_array($action, $aActionsNotToCheck) ) {
+
+	if (!$manager->checkTicket() ) {
+		bm_doError(_ERROR_BADTICKET);
+	}
+
+}
 
 // find out what to do
 switch ($action) {
+	// adds the item for real
 	case 'additem':
-		bm_doAddItem();		// adds the item for real
+		bm_doAddItem();
 		break;
+
+	// shows the edit item form
 	case 'edit':
-		bm_doEditForm();	// shows the edit item form
+		bm_doEditForm();
 		break;
-	case 'edititem':		// edits the item for real
+
+	// edits the item for real
+	case 'edititem':
 		bm_doEditItem();
 		break;
-	case 'login':			// on login, 'action' gets changed to 'nextaction'
+
+	// on login, 'action' gets changed to 'nextaction'
+	case 'login':
 		bm_doError('Something went wrong');
 		break;
+
+	// shows the fill in form
 	case 'add':
 	default:
-		bm_doShowForm();	// shows the fill in form
+		bm_doShowForm();
 		break;
 }
 
@@ -81,19 +95,20 @@ function bm_doAddItem() {
 	$manager->loadClass('ITEM');
 	$result = ITEM::createFromRequest();
 
-	if ($result['status'] == 'error')
+	if ($result['status'] == 'error') {
 		bm_doError($result['message']);
+	}
 
 	$blogid = getBlogIDFromItemID($result['itemid']);
 	$blog =& $manager->getBlog($blogid);
 
 	if ($result['status'] == 'newcategory') {
-		$message = 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid='.$blogid.'&amp;catid='.$result['catid'].'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>';
+		$message = 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid=' . $blogid . '&amp;catid=' . $result['catid'] . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>';
 		$extrahead = '';
-	} elseif ((postVar('actiontype') == 'addnow') && $blog->pingUserland()) {
+	} elseif ( (postVar('actiontype') == 'addnow') && $blog->pingUserland() ) {
 		$message = 'Item was added successfully. Now pinging weblogs.com. Please hold on... (can take a while)';
-		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid));
-		$extrahead = '<meta http-equiv="refresh" content="1; url=' . htmlspecialchars($pingUrl). '" />';
+		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid) );
+		$extrahead = '<meta http-equiv="refresh" content="1; url=' . htmlspecialchars($pingUrl) . '" />';
 	} else {
 		$message = _ITEM_ADDED;
 		$extrahead = '';
@@ -105,39 +120,40 @@ function bm_doAddItem() {
 function bm_doEditItem() {
 	global $member, $manager, $CONF;
 
-	$itemid 	= intRequestVar('itemid');
-	$catid 		= postVar('catid');
+	$itemid = intRequestVar('itemid');
+	$catid = postVar('catid');
 
 	// only allow if user is allowed to alter item
-	if (!$member->canUpdateItem($itemid, $catid))
+	if (!$member->canUpdateItem($itemid, $catid) ) {
 		bm_doError(_ERROR_DISALLOWED);
+	}
 
-	$body 		= postVar('body');
-	$title 		= postVar('title');
-	$more 		= postVar('more');
-	$closed 	= intPostVar('closed');
+	$body = postVar('body');
+	$title = postVar('title');
+	$more = postVar('more');
+	$closed = intPostVar('closed');
 	$actiontype = postVar('actiontype');
-
-	$draftid 	= intPostVar('draftid');
+	$draftid = intPostVar('draftid');
 
 	// redirect to admin area on delete (has delete confirmation)
 	if ($actiontype == 'delete') {
-		redirect('index.php?action=itemdelete&itemid='.$itemid);
+		redirect('index.php?action=itemdelete&itemid=' . $itemid);
 		exit;
 	}
 
 	// create new category if needed (only on edit/changedate)
-	if (strstr($catid,'newcat')) {
+	if (strstr($catid,'newcat') ) {
 		// get blogid
-		list($blogid) = sscanf($catid,"newcat-%d");
+		list($blogid) = sscanf($catid, "newcat-%d");
 
 		// create
 		$blog =& $manager->getBlog($blogid);
 		$catid = $blog->createNewCategory();
 
 		// show error when sth goes wrong
-		if (!$catid)
+		if (!$catid) {
 			bm_doError('Could not create new category');
+		}
 	}
 
 	// only edit action is allowed for bookmarklet edit
@@ -145,7 +161,7 @@ function bm_doEditItem() {
 		case 'changedate':
 			$publish = 1;
 			$wasdraft = 0;
-			$timestamp = mktime(postVar('hour'), postVar('minutes'), 0, postVar('month'), postVar('day'), postVar('year'));
+			$timestamp = mktime(postVar('hour'), postVar('minutes'), 0, postVar('month'), postVar('day'), postVar('year') );
 			break;
 		case 'edit':
 			$publish = 1;
