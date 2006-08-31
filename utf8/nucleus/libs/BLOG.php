@@ -16,8 +16,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: BLOG.php,v 1.5 2006-07-17 20:03:44 kimitake Exp $
- * $NucleusJP: BLOG.php,v 1.4 2005/08/13 07:31:04 kimitake Exp $
+ * @version $Id: BLOG.php,v 1.6 2006-08-31 20:58:50 kimitake Exp $
+ * $NucleusJP: BLOG.php,v 1.5 2006/07/17 20:03:44 kimitake Exp $
  */
 
 // temporary: dirt way to separe class ITEMACTIONS from BLOG
@@ -1036,7 +1036,7 @@ class BLOG {
 	}
 
 	function getID() {
-		return $this->blogid;
+		return intVal($this->blogid);
 	}
 
 	// returns true if there is a blog with the given shortname (static)
