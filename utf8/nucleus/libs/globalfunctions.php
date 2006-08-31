@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.8 2006-07-18 08:42:04 kimitake Exp $
- * $NucleusJP: globalfunctions.php,v 1.7 2006/07/17 20:03:44 kimitake Exp $
+* @version $Id: globalfunctions.php,v 1.9 2006-08-31 21:00:21 kimitake Exp $
+ * $NucleusJP: globalfunctions.php,v 1.8 2006/07/18 08:42:04 kimitake Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -786,8 +786,8 @@ function selector() {
 	} elseif ($archivelist) {
 		$type = 'archivelist';
 
-		if (intval($archivelist) != 0) {
-			$blogid = $archivelist;
+		if (is_numeric($archivelist)) {
+			$blogid = intVal($archivelist);
 		} else {
 			$blogid = getBlogIDFromName($archivelist);
 		}
@@ -805,7 +805,9 @@ function selector() {
 		}
 		$order = (_CHARSET == 'EUC-JP') ? 'EUC-JP, UTF-8,' : 'UTF-8, EUC-JP,';
 		$query = mb_convert_encoding($query, _CHARSET, $order.' JIS, SJIS, ASCII');
-		if (intval($blogid) == 0) {
+		if (is_numeric($blogid)) {
+			$blogid = intVal($blogid);
+		} else {
 			$blogid = getBlogIDFromName($blogid);
 		}
 
@@ -1502,14 +1504,17 @@ function _links_list() {
 /**
  * @todo document this
  */
-function encode_desc($data)
-	{   $to_entities = get_html_translation_table(HTML_ENTITIES);
-		$from_entities = array_flip($to_entities);
-		$data = strtr($data,$from_entities);
-		$data = strtr($data,$to_entities);
-		return $data;
-	}
-
+function encode_desc(&$data)
+    {   //_$to_entities = get_html_translation_table(HTML_ENTITIES);
+        $to_entities = get_html_translation_table(HTML_SPECIALCHARS);
+        $from_entities = array_flip($to_entities);
+        $data = str_replace('<br />','\n',$data); //hack
+        $data = strtr($data,$from_entities);
+        $data = strtr($data,$to_entities);
+        $data = str_replace('\n','<br />',$data); //hack
+        return $data;
+    }
+ 
 /**
  * Returns the Javascript code for a bookmarklet that works on most modern browsers
  *
