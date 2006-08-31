@@ -18,29 +18,30 @@
  * @version $Id$
  */
 
-header("Pragma: no-cache");
+header('Pragma: no-cache');
 
 $CONF = array();
-$CONF['Self'] = "xml-rss2.php";
+$CONF['Self'] = 'xml-rss2.php';
 
 include('./config.php');
 
 if (!$CONF['DisableSite']) {
+
 	// get feed into $feed
 	ob_start();
-		selectSkin('feeds/rss20');
-		selector();
+	selectSkin('feeds/rss20');
+	selector();
 	$feed = ob_get_contents();
 	ob_end_clean();
 
 	// create ETAG (hash of feed)
 	// (HTTP_IF_NONE_MATCH has quotes around it)
-	$eTag = '"'.md5($feed).'"';
-	header('Etag: '.$eTag);
+	$eTag = '"' . md5($feed) . '"';
+	header('Etag: ' . $eTag);
 
 	// compare Etag to what we got
-	if ($eTag == serverVar('HTTP_IF_NONE_MATCH')) {
-		header("HTTP/1.0 304 Not Modified");
+	if ($eTag == serverVar('HTTP_IF_NONE_MATCH') ) {
+		header('HTTP/1.0 304 Not Modified');
 		header('Content-Length: 0');
 	} else {
 		// dump feed
@@ -55,12 +56,12 @@ if (!$CONF['DisableSite']) {
 
 	?>
 	<rss version="2.0">
-	  <channel>
-		<title><?php echo htmlspecialchars($CONF['SiteName'])?></title>
-		<link><?php echo htmlspecialchars($CONF['IndexURL'])?></link>
-		<description></description>
-		<docs>http://backend.userland.com/rss</docs>
-	  </channel>
+		<channel>
+			<title><?php echo htmlspecialchars($CONF['SiteName']); ?></title>
+			<link><?php echo htmlspecialchars($CONF['IndexURL']); ?></link>
+			<description></description>
+			<docs>http://backend.userland.com/rss</docs>
+		</channel>
 	</rss>
 	<?php
 }
