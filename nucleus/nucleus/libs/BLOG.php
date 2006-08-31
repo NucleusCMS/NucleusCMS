@@ -1035,7 +1035,7 @@ class BLOG {
 	}
 
 	function getID() {
-		return $this->blogid;
+		return intVal($this->blogid);
 	}
 
 	// returns true if there is a blog with the given shortname (static)
