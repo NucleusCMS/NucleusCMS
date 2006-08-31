@@ -4542,7 +4542,7 @@ selector();
 		$this->skinclonetype($skin, $newid, 'imagepopup');
 		*/
 
-		$query = "SELECT stype FROM " . sql_table('nucleus_skin') . " WHERE sdesc = " . $skinid;
+		$query = "SELECT stype FROM " . sql_table('skin') . " WHERE sdesc = " . $skinid;
 		$res = sql_query($query);
 		while ($row = mysql_fetch_assoc($res)) {
 			$this->skinclonetype($skin, $newid, $row['stype']);
