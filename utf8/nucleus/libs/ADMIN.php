@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.8 2006-07-12 09:18:02 kimitake Exp $
- * @version $NucleusJP: ADMIN.php,v 1.4.2.4 2005/09/09 06:21:38 kimitake Exp $
+ * @version $Id: ADMIN.php,v 1.9 2006-08-31 20:58:00 kimitake Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.8 2006/07/12 09:18:02 kimitake Exp $
  */
 
 require_once "showlist.php";
@@ -4944,6 +4944,7 @@ selector();
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 			<title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin.css" />
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
