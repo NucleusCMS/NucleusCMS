@@ -764,8 +764,8 @@ function selector() {
 	} elseif ($archivelist) {
 		$type = 'archivelist';
 
-		if (intval($archivelist) != 0) {
-			$blogid = $archivelist;
+		if (is_numeric($archivelist)) {
+			$blogid = intVal($archivelist);
 		} else {
 			$blogid = getBlogIDFromName($archivelist);
 		}
@@ -779,7 +779,9 @@ function selector() {
 		$type = 'search';
 		$query = stripslashes($query);
 
-		if (intval($blogid) == 0) {
+		if (is_numeric($blogid)) {
+			$blogid = intVal($blogid);
+		} else {
 			$blogid = getBlogIDFromName($blogid);
 		}
 
