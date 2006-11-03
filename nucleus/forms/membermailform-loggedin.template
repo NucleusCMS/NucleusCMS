@@ -1,9 +1,9 @@
 <a id="nucleus_mf"></a>
 <form method="post" action="#nucleus_mf">
+	<div class="mailform">
 <input type="hidden" name="memberid" value="<%formdata(memberid)%>" />
 <input type="hidden" name="action" value="sendmessage" />
 <input type="hidden" name="url" value="<%formdata(url)%>" />
-	<div class="mailform">
 		<%errordiv%>
 
 		<textarea alt="<%text(_MMAIL_MAIL)%>" name="message" class="formfield" rows="<%formdata(rows)%>" cols="<%formdata(cols)%>"><%formdata(message)%></textarea>
