@@ -8,7 +8,7 @@
 
 <target name="init">
 
-    <property name="version" value="3.22" />
+    <property name="version" value="3.24" />
     
     <property name="src.home" value=".." />
     <property name="build.home" value="." />    
