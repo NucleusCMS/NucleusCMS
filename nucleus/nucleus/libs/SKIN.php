@@ -1095,19 +1095,19 @@ class ACTIONS extends BaseActions {
 		global $blog;
 		switch($which) {
 			case 'id':
-				echo $blog->getID();
+				echo htmlspecialchars($blog->getID());
 				break;
 			case 'url':
-				echo $blog->getURL();
+				echo htmlspecialchars($blog->getURL());
 				break;
 			case 'name':
-				echo $blog->getName();
+				echo htmlspecialchars($blog->getName());
 				break;
 			case 'desc':
-				echo $blog->getDescription();
+				echo htmlspecialchars($blog->getDescription());
 				break;
 			case 'short':
-				echo $blog->getShortName();
+				echo htmlspecialchars($blog->getShortName());
 				break; 				
 		}	
 	}
@@ -1121,22 +1121,22 @@ class ACTIONS extends BaseActions {
 
 			switch($what) {
 				case 'name':
-					echo $memberinfo->getDisplayName();
+					echo htmlspecialchars($memberinfo->getDisplayName());
 					break;
 				case 'realname':
-					echo $memberinfo->getRealName();
+					echo htmlspecialchars($memberinfo->getRealName());
 					break;
 				case 'notes':
-					echo $memberinfo->getNotes();
+					echo htmlspecialchars($memberinfo->getNotes());
 					break;
 				case 'url':
-					echo $memberinfo->getURL();
+					echo htmlspecialchars($memberinfo->getURL());
 					break;
 				case 'email':
-					echo $memberinfo->getEmail();
+					echo htmlspecialchars($memberinfo->getEmail());
 					break;
 				case 'id':
-					echo $memberinfo->getID();
+					echo htmlspecialchars($memberinfo->getID());
 					break;					
 			}	
 		}
@@ -1146,22 +1146,22 @@ class ACTIONS extends BaseActions {
 		{
 			switch($what) {
 				case 'yourname':
-					echo $member->getDisplayName();
+					echo htmlspecialchars($member->getDisplayName());
 					break;
 				case 'yourrealname':
-					echo $member->getRealName();
+					echo htmlspecialchars($member->getRealName());
 					break;
 				case 'yournotes':
-					echo $member->getNotes();
+					echo htmlspecialchars($member->getNotes());
 					break;
 				case 'yoururl':
-					echo $member->getURL();
+					echo htmlspecialchars($member->getURL());
 					break;
 				case 'youremail':
-					echo $member->getEmail();
+					echo htmlspecialchars($member->getEmail());
 					break;
 				case 'yourid':
-					echo $member->getID();
+					echo htmlspecialchars($member->getID());
 					break;									
 			}	
 		}
