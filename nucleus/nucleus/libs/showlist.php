@@ -129,7 +129,7 @@ function listplug_table_memberlist($template, $type) {
 			echo '</label>';
 			echo '</td>';
 			echo '<td>', htmlspecialchars($current->mrealname), '</td>';
-			echo "<td><a href='$current->murl' tabindex='".$template['tabindex']."'>$current->murl</a></td>";
+			echo "<td><a href='", htmlspecialchars($current->murl), "' tabindex='", $template['tabindex'] , "'>", htmlspecialchars($current->murl), "</a></td>";
 			echo '<td>', ($current->madmin ? _YES : _NO),'</td>';
 			echo '<td>', ($current->mcanlogin ? _YES : _NO), '</td>';
 			echo "<td><a href='index.php?action=memberedit&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";

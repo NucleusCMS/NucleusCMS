@@ -777,19 +777,19 @@ class ACTIONS extends BaseActions {
 		global $blog;
 		switch($which) {
 			case 'id':
-				echo $blog->getID();
+				echo htmlspecialchars($blog->getID());
 				break;
 			case 'url':
-				echo $blog->getURL();
+				echo htmlspecialchars($blog->getURL());
 				break;
 			case 'name':
-				echo $blog->getName();
+				echo htmlspecialchars($blog->getName());
 				break;
 			case 'desc':
-				echo $blog->getDescription();
+				echo htmlspecialchars($blog->getDescription());
 				break;
 			case 'short':
-				echo $blog->getShortName();
+				echo htmlspecialchars($blog->getShortName());
 				break;
 		}
 	}
@@ -803,23 +803,23 @@ class ACTIONS extends BaseActions {
 
 			switch($what) {
 				case 'name':
-					echo $memberinfo->getDisplayName();
+					echo htmlspecialchars($memberinfo->getDisplayName());
 					break;
 				case 'realname':
-					echo $memberinfo->getRealName();
+					echo htmlspecialchars($memberinfo->getRealName());
 					break;
 				case 'notes':
-					echo $memberinfo->getNotes();
+					echo htmlspecialchars($memberinfo->getNotes());
 					break;
 				case 'url':
-					echo $memberinfo->getURL();
+					echo htmlspecialchars($memberinfo->getURL());
 					break;
 				case 'email':
-					echo $memberinfo->getEmail();
+					echo htmlspecialchars($memberinfo->getEmail());
 					break;
 				case 'id':
-					echo $memberinfo->getID();
-					break;
+					echo htmlspecialchars($memberinfo->getID());
+					break;					
 			}
 		}
 
