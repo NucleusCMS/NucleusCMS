@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: showlist.php,v 1.3 2006-07-20 08:01:52 kimitake Exp $
- * @version $NucleusJP$
+ * @version $Id: showlist.php,v 1.4 2006-11-13 00:36:39 kimitake Exp $
+ * @version $NucleusJP: showlist.php,v 1.3 2006/07/20 08:01:52 kimitake Exp $
  */
 
 
@@ -130,7 +130,7 @@ function listplug_table_memberlist($template, $type) {
 			echo '</label>';
 			echo '</td>';
 			echo '<td>', htmlspecialchars($current->mrealname), '</td>';
-			echo "<td><a href='$current->murl' tabindex='".$template['tabindex']."'>$current->murl</a></td>";
+			echo "<td><a href='", htmlspecialchars($current->murl), "' tabindex='", $template['tabindex'] , "'>", htmlspecialchars($current->murl), "</a></td>";
 			echo '<td>', ($current->madmin ? _YES : _NO),'</td>';
 			echo '<td>', ($current->mcanlogin ? _YES : _NO), '</td>';
 			echo "<td><a href='index.php?action=memberedit&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";

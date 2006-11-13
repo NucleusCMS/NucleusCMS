@@ -18,8 +18,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: ACTIONS.php,v 1.2 2006-07-20 08:01:52 kimitake Exp $
- * @version $NucleusJP$
+ * @version $Id: ACTIONS.php,v 1.3 2006-11-13 00:36:39 kimitake Exp $
+ * @version $NucleusJP: ACTIONS.php,v 1.2 2006/07/20 08:01:52 kimitake Exp $
  */
 
 class ACTIONS extends BaseActions {
@@ -778,19 +778,19 @@ class ACTIONS extends BaseActions {
 		global $blog;
 		switch($which) {
 			case 'id':
-				echo $blog->getID();
+				echo htmlspecialchars($blog->getID());
 				break;
 			case 'url':
-				echo $blog->getURL();
+				echo htmlspecialchars($blog->getURL());
 				break;
 			case 'name':
-				echo $blog->getName();
+				echo htmlspecialchars($blog->getName());
 				break;
 			case 'desc':
-				echo $blog->getDescription();
+				echo htmlspecialchars($blog->getDescription());
 				break;
 			case 'short':
-				echo $blog->getShortName();
+				echo htmlspecialchars($blog->getShortName());
 				break;
 		}
 	}
@@ -804,23 +804,23 @@ class ACTIONS extends BaseActions {
 
 			switch($what) {
 				case 'name':
-					echo $memberinfo->getDisplayName();
+					echo htmlspecialchars($memberinfo->getDisplayName());
 					break;
 				case 'realname':
-					echo $memberinfo->getRealName();
+					echo htmlspecialchars($memberinfo->getRealName());
 					break;
 				case 'notes':
-					echo $memberinfo->getNotes();
+					echo htmlspecialchars($memberinfo->getNotes());
 					break;
 				case 'url':
-					echo $memberinfo->getURL();
+					echo htmlspecialchars($memberinfo->getURL());
 					break;
 				case 'email':
-					echo $memberinfo->getEmail();
+					echo htmlspecialchars($memberinfo->getEmail());
 					break;
 				case 'id':
-					echo $memberinfo->getID();
-					break;
+					echo htmlspecialchars($memberinfo->getID());
+					break;					
 			}
 		}
 

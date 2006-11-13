@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.9 2006-08-31 20:58:00 kimitake Exp $
- * @version $NucleusJP: ADMIN.php,v 1.8 2006/07/12 09:18:02 kimitake Exp $
+ * @version $Id: ADMIN.php,v 1.10 2006-11-13 00:36:39 kimitake Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.9 2006/08/31 20:58:00 kimitake Exp $
  */
 
 require_once "showlist.php";
@@ -1863,12 +1863,12 @@ class ADMIN {
 		// check if allowed
 		($member->getID() == $memberid) or $member->isAdmin() or $this->disallow();
 
-		$name			= trim(postVar('name'));
-		$realname		= trim(postVar('realname'));
+		$name			= trim(strip_tags(postVar('name')));
+		$realname		= trim(strip_tags(postVar('realname')));
 		$password		= postVar('password');
 		$repeatpassword	= postVar('repeatpassword');
-		$email			= postVar('email');
-		$url			= postVar('url');
+		$email			= strip_tags(postVar('email'));
+		$url			= strip_tags(postVar('url'));
 
 		// Sometimes user didn't prefix the URL with http://, this cause a malformed URL. Let's fix it.
 		if (!eregi("^https?://", $url))
@@ -1876,7 +1876,7 @@ class ADMIN {
 
 		$admin			= postVar('admin');
 		$canlogin		= postVar('canlogin');
-		$notes			= postVar('notes');
+		$notes			= strip_tags(postVar('notes'));
 		$deflang		= postVar('deflang');
 
 		$mem = MEMBER::createFromID($memberid);
@@ -1923,9 +1923,6 @@ class ADMIN {
 				$mem->setPassword($password);
 		}
 
-		if ($newpass)
-			$mem->setPassword($password);
-
 		$oldEmail = $mem->getEmail();
 
 		$mem->setRealName($realname);
@@ -1965,7 +1962,7 @@ class ADMIN {
 
 
 		if (  ( $mem->getID() == $member->getID() )
-		   && ( $newpass || ( $mem->getDisplayName() != $member->getDisplayName() ) )
+		   && ( $mem->getDisplayName() != $member->getDisplayName() )
 		   ) {
 			$mem->newCookieKey();
 			$member->logout();
@@ -5009,7 +5006,7 @@ selector();
 			<?php		}
 		?>
 			<div class="foot">
-				<a href="http://nucleuscms.org/">Nucleus CMS</a> &copy; 2002-2006 The Nucleus Group
+				<a href="http://nucleuscms.org/">Nucleus CMS</a> &copy; 2002-<?php echo date('Y'); ?> The Nucleus Group
 				-
 				<a href="http://nucleuscms.org/donate.php">Donate!</a>
 			</div>
