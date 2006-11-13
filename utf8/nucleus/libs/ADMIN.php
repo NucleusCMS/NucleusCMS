@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.10 2006-11-13 00:36:39 kimitake Exp $
- * @version $NucleusJP: ADMIN.php,v 1.9 2006/08/31 20:58:00 kimitake Exp $
+ * @version $Id: ADMIN.php,v 1.11 2006-11-13 00:43:07 kimitake Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.10 2006/11/13 00:36:39 kimitake Exp $
  */
 
 require_once "showlist.php";
@@ -4540,7 +4540,7 @@ selector();
 		$this->skinclonetype($skin, $newid, 'imagepopup');
 		*/
 
-		$query = "SELECT stype FROM " . sql_table('nucleus_skin') . " WHERE sdesc = " . $skinid;
+		$query = "SELECT stype FROM " . sql_table('skin') . " WHERE sdesc = " . $skinid;
 		$res = sql_query($query);
 		while ($row = mysql_fetch_assoc($res)) {
 			$this->skinclonetype($skin, $newid, $row['stype']);
