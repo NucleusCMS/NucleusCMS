@@ -592,7 +592,7 @@ function parseHighlight($query) {
   * Checks if email address is valid
   */
 function isValidMailAddress($address) {
-	if (preg_match('/^[a-zA-Z0-9\._-]+@[a-zA-Z0-9\._-]+\.[A-Za-z]{2,5}$/', $address) ) {
+	if (preg_match('/^[a-zA-Z+0-9\._-]+@[a-zA-Z0-9\._-]+\.[A-Za-z]{2,5}$/', $address)) {
 		return 1;
 	} else {
 		return 0;
