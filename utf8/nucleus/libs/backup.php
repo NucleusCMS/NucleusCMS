@@ -16,8 +16,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: backup.php,v 1.5 2006-07-17 20:03:44 kimitake Exp $
- * $NucleusJP: backup.php,v 1.4 2005/08/13 07:31:04 kimitake Exp $
+ * @version $Id: backup.php,v 1.6 2006-12-11 22:23:49 kmorimatsu Exp $
+ * $NucleusJP: backup.php,v 1.5 2006/07/17 20:03:44 kimitake Exp $
  */
 
 
@@ -157,7 +157,7 @@ function _backup_dump_structure($tablename) {
 
 		echo '	' . $row['Field'] . ' ' . $row['Type'];
 
-		if(!empty($row['Default']))
+		if(isset($row['Default']))
 			echo ' DEFAULT \'' . $row['Default'] . '\'';
 
 		if($row['Null'] != "YES")
