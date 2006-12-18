@@ -10,7 +10,7 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: vars4.0.6.php,v 1.4 2005-03-16 08:10:35 kimitake Exp $
+  * $Id: vars4.0.6.php,v 1.5 2006-12-18 20:31:39 kmorimatsu Exp $
   * $NucleusJP: vars4.0.6.php,v 1.5 2005/03/12 06:19:05 kimitake Exp $
   */
   
@@ -29,7 +29,7 @@ function postVar($name) {
 	return undoMagic($HTTP_POST_VARS[$name]);
 }
 
-function cookieVar($name) {	
+function cookieVar($name) {
 	global $HTTP_COOKIE_VARS;
 	return undoMagic($HTTP_COOKIE_VARS[$name]);
 }
@@ -50,19 +50,19 @@ function undoMagic($data) {
 }
 
 function stripslashes_array($data) {
-	return is_array($data) ? array_map('stripslashes', $data) : stripslashes($data);
+	return is_array($data) ? array_map('stripslashes_array', $data) : stripslashes($data);
 }
 
 // integer array from request
 function requestIntArray($name) {
 	global $HTTP_POST_VARS;
-	return $HTTP_POST_VARS[$name];	
+	return $HTTP_POST_VARS[$name];
 }
 
 // array from request. Be sure to call undoMagic on the strings inside
 function requestArray($name) {
 	global $HTTP_POST_VARS;
-	return $HTTP_POST_VARS[$name];	
+	return $HTTP_POST_VARS[$name];
 }
 
 
@@ -97,7 +97,7 @@ function postFileInfo($name) {
 
 function setOldAction($value) {
 	global $HTTP_POST_VARS;
-	$HTTP_POST_VARS['oldaction'] = $value;	
+	$HTTP_POST_VARS['oldaction'] = $value;
 }
 
 ?>

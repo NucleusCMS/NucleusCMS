@@ -10,7 +10,7 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: vars4.1.0.php,v 1.4 2005-03-16 08:10:35 kimitake Exp $
+  * $Id: vars4.1.0.php,v 1.5 2006-12-18 20:31:58 kmorimatsu Exp $
   * $NucleusJP: vars4.1.0.php,v 1.5 2005/03/12 06:19:05 kimitake Exp $
   */
   
@@ -22,7 +22,7 @@ function postVar($name) {
 	return undoMagic($_POST[$name]);
 }
 
-function cookieVar($name) {	
+function cookieVar($name) {
 	return undoMagic($_COOKIE[$name]);
 }
 
@@ -47,17 +47,17 @@ function undoMagic($data) {
 }
 
 function stripslashes_array($data) {
-	return is_array($data) ? array_map('stripslashes', $data) : stripslashes($data);
+	return is_array($data) ? array_map('stripslashes_array', $data) : stripslashes($data);
 }
 
 // integer array from request
 function requestIntArray($name) {
-	return $_REQUEST[$name];	
+	return $_REQUEST[$name];
 }
 
 // array from request. Be sure to call undoMagic on the strings inside
 function requestArray($name) {
-	return $_REQUEST[$name];	
+	return $_REQUEST[$name];
 }
 
 // add all the variables from the request as hidden input field
@@ -66,11 +66,11 @@ function passRequestVars() {
 	foreach ($_REQUEST as $key => $value) {
 		if (($key == 'action') && ($value != requestVar('nextaction')))
 			$key = 'nextaction';
-			
+
 		// a nextaction of 'showlogin' makes no sense
 		if (($key == 'nextaction') && ($value == 'showlogin'))
 			continue;
-			
+
 		if (($key != 'login') && ($key != 'password'))
 			passVar($key, $value);
 	}
@@ -81,7 +81,7 @@ function postFileInfo($name) {
 }
 
 function setOldAction($value) {
-	$_POST['oldaction'] = $value;	
+	$_POST['oldaction'] = $value;
 }
 
 ?>

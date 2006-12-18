@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: vars4.1.0.php,v 1.8 2006-07-20 08:01:52 kimitake Exp $
- * @version $NucleusJP: vars4.1.0.php,v 1.7 2006/07/12 07:11:47 kimitake Exp $
+ * @version $Id: vars4.1.0.php,v 1.9 2006-12-18 20:31:08 kmorimatsu Exp $
+ * @version $NucleusJP: vars4.1.0.php,v 1.8 2006/07/20 08:01:52 kimitake Exp $
  */
 
 function getVar($name) {
@@ -71,7 +71,7 @@ function undoMagic($data) {
 }
 
 function stripslashes_array($data) {
-	return is_array($data) ? array_map('stripslashes', $data) : stripslashes($data);
+	return is_array($data) ? array_map('stripslashes_array', $data) : stripslashes($data);
 }
 
 function undoSybaseQuotes_array($data) {
@@ -127,6 +127,5 @@ function postFileInfo($name) {
 function setOldAction($value) {
 	$_POST['oldaction'] = $value;
 }
-
 
 ?>
