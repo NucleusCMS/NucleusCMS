@@ -122,7 +122,9 @@ class MEDIA {
 	  *		(date prefix should be already added here)
 	  */
 	function addMediaObject($collection, $uploadfile, $filename) {
-		global $DIR_MEDIA;
+		global $DIR_MEDIA, $manager;
+
+		$manager->notify('PreMediaUpload',array('collection' => &$collection, 'uploadfile' => $uploadfile, 'filename' => &$filename));
 
 		// don't allow uploads to unknown or forbidden collections
 		if (!MEDIA::isValidCollection($collection))
@@ -165,6 +167,8 @@ class MEDIA {
 		$oldumask = umask(0000);
 		@chmod($mediadir . $filename, 0644);
 		umask($oldumask);
+
+		$manager->notify('PostMediaUpload',array('collection' => $collection, 'mediadir' => $mediadir, 'filename' => $filename));
 
 		return '';
 
