@@ -296,7 +296,8 @@ class SKIN {
 								'elseif',
 								'ifnot',
 								'elseifnot',
-								'charset'
+								'charset',
+								'bloglist'
 								);
 
 		// extra actions specific for a certain skin type

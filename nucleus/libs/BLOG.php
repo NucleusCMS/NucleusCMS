@@ -660,6 +660,39 @@ class BLOG {
 								'self' => $CONF['Self']
 							));
 	}
+	
+	/**
+	  * Shows a list of all blogs in the system using a given template
+	  */
+	function showBlogList($template, $bnametype) {
+		global $CONF, $manager;
+		
+		$template =& $manager->getTemplate($template);
+		
+		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY bnumber ASC';
+		$res = sql_query($query);
+		
+		while ($data = mysql_fetch_assoc($res)) {
+		
+			$list = array();
+		
+			$list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
+		
+			$list['blogdesc'] = $data['bdesc'];
+			
+			if ($bnametype=='shortname') {
+				$list['blogname'] = $data['bshortname'];
+			}
+			else { // all other cases
+				$list['blogname'] = $data['bname'];
+			}
+			
+			echo TEMPLATE::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
+			
+		}
+		
+		mysql_free_result($res);
+	}
 
 	/**
 	  * Blogsettings functions

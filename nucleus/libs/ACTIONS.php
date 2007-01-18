@@ -636,6 +636,16 @@ class ACTIONS extends BaseActions {
 		}
 	}
 
+	/*
+	*	Shows a list of all blogs
+	*	bnametype: whether 'name' or 'shortname' is used for the link text 	  
+	*/	
+	function parse_bloglist($template, $bnametype = '') {
+		global $blog;
+		
+		$blog->showBlogList($template, $bnametype);
+	}
+
 	function parse_category($type = 'name') {
 		global $catid, $blog;
 		if (!$blog->isValidCategory($catid))

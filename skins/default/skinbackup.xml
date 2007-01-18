@@ -240,6 +240,10 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 <a href="<%archivelink%>" title="Archive for %B, %Y">%B, %Y</a>
 </dd>]]></part>
 
+	<part name="BLOGLIST_LISTITEM"><![CDATA[<dd>
+<a href="<%bloglink%>" title="<%blogdesc%>"><%blogname%></a>
+</dd>]]></part>
+
 	<part name="CATLIST_HEADER"><![CDATA[<dd>
 <a href="<%blogurl%>" title="All categories">All</a>
 </dd>]]></part>
