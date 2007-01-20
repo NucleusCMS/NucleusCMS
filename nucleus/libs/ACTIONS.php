@@ -65,8 +65,8 @@ class ACTIONS extends BaseActions {
 		$this->parser =& $parser;
 	}
 
-	/*
-		Forms get parsedincluded now, using an extra <formdata> skinvar
+	/**
+	 *	Forms get parsedincluded now, using an extra <formdata> skinvar
 	*/
 	function doForm($filename) {
 		global $DIR_NUCLEUS;
@@ -85,31 +85,52 @@ class ACTIONS extends BaseActions {
 		array_pop($this->parser->actions);		// ticket
 	}
 
+	/**
+	 * Parse ticket
+	 */
 	function parse_ticket() {
 		global $manager;
 		$manager->addTicketHidden();
 	}
 
+	/**
+	 * Parse formdata
+	 */
 	function parse_formdata($what) {
 		echo $this->formdata[$what];
 	}
+	
+	/**
+	 * Parse text
+	 */
 	function parse_text($which) {
 		// constant($which) only available from 4.0.4 :(
 		if (defined($which)) {
 			eval("echo $which;");
 		}
 	}
+	
+	/**
+	 * Parse callback
+	 */
 	function parse_callback($eventName, $type)
 	{
 		global $manager;
 		$manager->notify($eventName, array('type' => $type));
 	}
+	
+	/**
+	 * Parse errordiv
+	 */
 	function parse_errordiv() {
 		global $errormessage;
 		if ($errormessage)
 			echo '<div class="error">', htmlspecialchars($errormessage),'</div>';
 	}
 
+	/**
+	 * Parse skinname
+	 */
 	function parse_skinname() {
 		echo $this->skin->getName();
 	}
@@ -259,6 +280,9 @@ class ACTIONS extends BaseActions {
 		return $member->isBlogAdmin($blogid);
 	}
 
+	/**
+	 * Parse ifcat
+	 */
 	function parse_ifcat($text = '') {
 		if ($text == '') {
 			// new behaviour
@@ -271,7 +295,10 @@ class ACTIONS extends BaseActions {
 		}
 	}
 
-	// a link to the today page (depending on selected blog, etc...)
+	/**
+	 *	Parse skinvar todaylink
+	 *	A link to the today page (depending on selected blog, etc...)
+	 */	
 	function parse_todaylink($linktext = '') {
 		global $blog, $CONF;
 		if ($blog)
@@ -280,7 +307,9 @@ class ACTIONS extends BaseActions {
 			echo $this->_link($CONF['SiteUrl'], $linktext);
 	}
 
-	// a link to the archives for the current blog (or for default blog)
+	/**
+	 *	A link to the archives for the current blog (or for default blog)
+	 */
 	function parse_archivelink($linktext = '') {
 		global $blog, $CONF;
 		if ($blog)
@@ -289,13 +318,19 @@ class ACTIONS extends BaseActions {
 			echo $this->_link(createArchiveListLink(), $linktext);
 	}
 
-	// include itemid of prev item
+	/*
+	 * Parse skinvar previtem
+	 * (include itemid of prev item)	 	 
+	 */	  
 	function parse_previtem() {
 		global $itemidprev;
 		echo $itemidprev;
 	}
 
-	// include itemtitle of prev item
+	/**
+	 * Parse skinvar previtemtitle
+	 * (include itemtitle of prev item)
+	 */	 
 	function parse_previtemtitle($format = '') {
 		global $itemtitleprev;
 
@@ -315,13 +350,19 @@ class ACTIONS extends BaseActions {
 		}
 	}
 
-	// include itemid of next item
+	/**
+	 * Parse skinvar nextitem
+	 * (include itemid of next item)
+	 */	 
 	function parse_nextitem() {
 		global $itemidnext;
 		echo $itemidnext;
 	}
 
-	// include itemtitle of next item
+	/**
+	 * Parse skinvar nextitemtitle
+	 * (include itemtitle of next item)
+	 */	 
 	function parse_nextitemtitle($format = '') {
 		global $itemtitlenext;
 
@@ -341,21 +382,33 @@ class ACTIONS extends BaseActions {
 		}
 	}
 
+	/**
+	 * Parse skinvar prevarchive
+	 */	
 	function parse_prevarchive() {
 		global $archiveprev;
 		echo $archiveprev;
 	}
 
+	/**
+	 * Parse skinvar nextarchive
+	 */	
 	function parse_nextarchive() {
 		global $archivenext;
 		echo $archivenext;
 	}
 
+	/**
+	 * Parse skinvar archivetype
+	 */	
 	function parse_archivetype() {
 		global $archivetype;
 		echo $archivetype;
 	}
 
+	/**
+	 * Parse skinvar prevlink
+	 */	
 	function parse_prevlink($linktext = '', $amount = 10) {
 		global $itemidprev, $archiveprev, $startpos;
 
@@ -367,6 +420,9 @@ class ACTIONS extends BaseActions {
 			$this->_archivelink($archiveprev, $linktext);
 	}
 
+	/**
+	 * Parse skinvar nextlink
+	 */	
 	function parse_nextlink($linktext = '', $amount = 10) {
 		global $itemidnext, $archivenext, $startpos;
 		if ($this->skintype == 'item')
@@ -468,7 +524,9 @@ class ACTIONS extends BaseActions {
 			$this->parse_todaylink($linktext);
 	}
 
-
+	/**
+	 * Parse skinvar itemlink
+	 */	
 	function parse_itemlink($linktext = '') {
 		global $itemid;
 		$this->_itemlink($itemid, $linktext);
@@ -505,6 +563,9 @@ class ACTIONS extends BaseActions {
 		echo strftime($format,mktime(0,0,0,$m,$d?$d:1,$y));
 	}
 
+	/**
+	 * Parse skinvar blog
+	 */	
 	function parse_blog($template, $amount = 10, $category = '') {
 		global $blog, $startpos;
 
@@ -515,6 +576,9 @@ class ACTIONS extends BaseActions {
 		$this->_postBlogContent('blog',$blog);
 	}
 
+	/**
+	 * Parse skinvar otherblog
+	 */	
 	function parse_otherblog($blogname, $template, $amount = 10, $category = '') {
 		global $manager;
 
@@ -527,7 +591,10 @@ class ACTIONS extends BaseActions {
 		$this->_postBlogContent('otherblog',$b);
 	}
 
-	// include one item (no comments)
+	/**
+	 * Parse skinvar item
+	 * include one item (no comments)	 
+	 */	
 	function parse_item($template) {
 		global $blog, $itemid, $highlight;
 		$this->_setBlogCategory($blog, '');	// need this to select default category
@@ -538,13 +605,18 @@ class ACTIONS extends BaseActions {
 		$this->_postBlogContent('item',$blog);
 	}
 
+	/**
+	 * Parse skinvar itemid
+	 */	
 	function parse_itemid() {
 		global $itemid;
 		echo $itemid;
 	}
 
-
-	// include comments for one item
+	/**
+	 * Parse skinvar comments
+	 * include comments for one item	 
+	 */	
 	function parse_comments($template) {
 		global $itemid, $manager, $blog, $highlight;
 		$template =& $manager->getTemplate($template);
@@ -562,6 +634,9 @@ class ACTIONS extends BaseActions {
 		$comments->showComments($template, -1, 1, $highlight);	// shows ALL comments
 	}
 
+	/**
+	 * Parse skinvar archive
+	 */	
 	function parse_archive($template, $category = '') {
 		global $blog, $archive;
 		// can be used with either yyyy-mm or yyyy-mm-dd
@@ -601,6 +676,9 @@ class ACTIONS extends BaseActions {
 		$this->_postBlogContent('archivelist',$blog);
 	}
 
+	/**
+	 * Parse itemtitle
+	 */	
 	function parse_itemtitle($format = '') {
 		global $manager, $itemid;
 		$item =& $manager->getItem($itemid,0,0);
@@ -621,6 +699,9 @@ class ACTIONS extends BaseActions {
 		}
 	}
 
+	/**
+	 * Parse categorylist
+	 */	
 	function parse_categorylist($template, $blogname = '') {
 		global $blog, $manager;
 
@@ -637,6 +718,7 @@ class ACTIONS extends BaseActions {
 	}
 
 	/*
+	*	Parse skinvar bloglist
 	*	Shows a list of all blogs
 	*	bnametype: whether 'name' or 'shortname' is used for the link text 	  
 	*/	
@@ -646,6 +728,9 @@ class ACTIONS extends BaseActions {
 		$blog->showBlogList($template, $bnametype);
 	}
 
+	/**
+	 * Parse skinvar category
+	 */	
 	function parse_category($type = 'name') {
 		global $catid, $blog;
 		if (!$blog->isValidCategory($catid))
@@ -664,6 +749,9 @@ class ACTIONS extends BaseActions {
 		}
 	}
 
+	/**
+	 * Parse skinvar otherarchivelist
+	 */	
 	function parse_otherarchivelist($blogname, $template, $category = 'all', $limit = 0) {
 		global $manager;
 		if ($category == 'all') $category = '';
@@ -674,6 +762,9 @@ class ACTIONS extends BaseActions {
 		$this->_postBlogContent('otherarchivelist',$b);
 	}
 
+	/**
+	 * Parse skinvar otherarchivedaylist
+	 */	
 	function parse_otherarchivedaylist($blogname, $template, $category = 'all', $limit = 0) {
 		global $manager;
 		if ($category == 'all') $category = '';
@@ -684,6 +775,9 @@ class ACTIONS extends BaseActions {
 		$this->_postBlogContent('otherarchivelist',$b);
 	}
 
+	/**
+	 * Parse skinvar searchresults
+	 */	
 	function parse_searchresults($template, $maxresults = 50 ) {
 		global $blog, $query, $amount, $startpos;
 
@@ -693,6 +787,9 @@ class ACTIONS extends BaseActions {
 		$this->_postBlogContent('searchresults',$blog);
 	}
 
+	/**
+	 * Parse skinvar othersearchresults
+	 */	
 	function parse_othersearchresults($blogname, $template, $maxresults = 50) {
 		global $query, $amount, $manager, $startpos;
 		$b =& $manager->getBlog(getBlogIDFromName($blogname));
@@ -702,29 +799,42 @@ class ACTIONS extends BaseActions {
 		$this->_postBlogContent('othersearchresults',$b);
 	}
 
-	// includes the search query
+	/**
+	 * Parse skinvar query
+	 * (includes the search query)	 
+	 */	
 	function parse_query() {
 		global $query;
 		echo htmlspecialchars($query);
 	}
 
-	// include nucleus versionnumber
+	/**
+	 * Parse skinvar version
+	 * (include nucleus versionnumber)	 
+	 */
 	function parse_version() {
 		global $nucleus;
 		echo 'Nucleus CMS ' . $nucleus['version'];
 	}
 
-
+	/**
+	 * Parse skinvar errormessage
+	 */
 	function parse_errormessage() {
 		global $errormessage;
 		echo $errormessage;
 	}
 
-
+	/**
+	 * Parse skinvar imagetext
+	 */
 	function parse_imagetext() {
 		echo htmlspecialchars(requestVar('imagetext'));
 	}
 
+	/**
+	 * Parse skinvar image
+	 */
 	function parse_image($what = 'imgtag') {
 		global $CONF;
 
@@ -756,13 +866,19 @@ class ACTIONS extends BaseActions {
 		}
 	}
 
-	// When commentform is not used, to include a hidden field with itemid
+	/**
+	 * Parse vars
+	 * When commentform is not used, to include a hidden field with itemid	 
+	 */
 	function parse_vars() {
 		global $itemid;
 		echo '<input type="hidden" name="itemid" value="'.$itemid.'" />';
 	}
 
-	// include a sitevar
+	/**
+	 * Parse skinvar sitevar
+	 * (include a sitevar)	 
+	 */
 	function parse_sitevar($which) {
 		global $CONF;
 		switch($which) {
@@ -780,9 +896,17 @@ class ACTIONS extends BaseActions {
 		}
 	}
 
-	// shortcut for admin url
-	function parse_adminurl() { $this->parse_sitevar('adminurl'); }
+	/**
+	 * Parse skinvar adminurl
+	 * (shortcut for admin url)	 
+	 */
+	function parse_adminurl() {
+		$this->parse_sitevar('adminurl');
+	}
 
+	/**
+	 * Parse skinvar blogsetting
+	 */
 	function parse_blogsetting($which) {
 		global $blog;
 		switch($which) {
@@ -804,7 +928,10 @@ class ACTIONS extends BaseActions {
 		}
 	}
 
-	// includes a member info thingie
+	/**
+	 * Parse skinvar member
+	 * (includes a member info thingie)	 
+	 */
 	function parse_member($what) {
 		global $memberinfo, $member;
 
@@ -860,6 +987,9 @@ class ACTIONS extends BaseActions {
 
 	}
 
+	/**
+	 * Parse skinvar preview
+	 */
 	function parse_preview($template) {
 		global $blog, $CONF, $manager;
 
@@ -874,6 +1004,9 @@ class ACTIONS extends BaseActions {
 		echo TEMPLATE::fill($template['ITEM_FOOTER'],$row);
 	}
 
+	/**
+	 * Parse skinvar additemform
+	 */
 	function parse_additemform() {
 		global $blog, $CONF;
 		$this->formdata = array(
@@ -913,7 +1046,9 @@ class ACTIONS extends BaseActions {
 		call_user_func_array(array(&$plugin,'doSkinVar'), $params);
 	}
 
-
+	/**
+	 * Parse skinvar commentform
+	 */
 	function parse_commentform($destinationurl = '') {
 		global $blog, $itemid, $member, $CONF, $manager, $DIR_LIBS, $errormessage;
 
@@ -981,6 +1116,9 @@ class ACTIONS extends BaseActions {
 		}
 	}
 
+	/**
+	 * Parse skinvar loginform
+	 */
 	function parse_loginform() {
 		global $member, $CONF;
 		if (!$member->isLoggedIn()) {
@@ -995,7 +1133,9 @@ class ACTIONS extends BaseActions {
 		$this->doForm($filename);
 	}
 
-
+	/**
+	 * Parse skinvar membermailform
+	 */
 	function parse_membermailform($rows = 10, $cols = 40, $desturl = '') {
 		global $member, $CONF, $memberid;
 
@@ -1028,6 +1168,9 @@ class ACTIONS extends BaseActions {
 
 	}
 
+	/**
+	 * Parse skinvar searchform
+	 */
 	function parse_searchform($blogname = '') {
 		global $CONF, $manager, $maxresults;
 		if ($blogname) {
@@ -1043,6 +1186,9 @@ class ACTIONS extends BaseActions {
 		$this->doForm('searchform');
 	}
 
+	/**
+	 * Parse skinvar nucleusbutton
+	 */
 	function parse_nucleusbutton($imgurl = '',
 								 $imgwidth = '85',
 								 $imgheight = '31') {
@@ -1062,15 +1208,24 @@ class ACTIONS extends BaseActions {
 		$this->doForm('nucleusbutton');
 	}
 
+	/**
+	 * Parse skinvar self
+	 */
 	function parse_self() {
 		global $CONF;
 		echo $CONF['Self'];
 	}
 
+	/**
+	 * Parse skinvar referer
+	 */
 	function parse_referer() {
 		echo htmlspecialchars(serverVar('HTTP_REFERER'));
 	}
 
+	/**
+	 * Parse skinvar charset
+	 */
 	function parse_charset() {
 		echo _CHARSET;
 	}
