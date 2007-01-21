@@ -107,25 +107,64 @@ class ITEMACTIONS extends BaseActions {
 		);
 	}
 
-
-
-	function setLastVisit($lastVisit) {		$this->lastVisit = $lastVisit; }
-	function setParser(&$parser) {			$this->parser =& $parser; }
-	function setCurrentItem(&$item) {		$this->currentItem =& $item; }
-	function setBlog(&$blog) {				$this->blog =& $blog; }
-	function setTemplate($template) {		$this->template =& $template; }
-	function setShowComments($val) {		$this->showComments = $val; }
+	function setLastVisit($lastVisit) {
+		$this->lastVisit = $lastVisit;
+	}
+	
+	function setParser(&$parser) {
+		$this->parser =& $parser;
+	}
+	
+	function setCurrentItem(&$item) {
+		$this->currentItem =& $item;
+	}
+	
+	function setBlog(&$blog) {
+		$this->blog =& $blog;
+	}
+	
+	function setTemplate($template) {
+		$this->template =& $template;
+	}
+	
+	function setShowComments($val) {
+		$this->showComments = $val;
+	}
 
 	// methods used by parser to insert content
 
-	function parse_blogid() {		echo $this->blog->getID();	}
-	function parse_body() {			$this->highlightAndParse($this->currentItem->body); }
-	function parse_more() {			$this->highlightAndParse($this->currentItem->more); }
-	function parse_itemid() {		echo $this->currentItem->itemid; }
-	function parse_category() {		echo $this->currentItem->category; }
-	function parse_categorylink() {	echo createLink('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category)); }
-	function parse_catid() {		echo $this->currentItem->catid; }
-	function parse_authorid() {		echo $this->currentItem->authorid; }
+	function parse_blogid() {
+		echo $this->blog->getID();
+	}
+	
+	function parse_body() {
+		$this->highlightAndParse($this->currentItem->body);
+	}
+	
+	function parse_more() {
+		$this->highlightAndParse($this->currentItem->more);
+	}
+	
+	function parse_itemid() {
+		echo $this->currentItem->itemid;
+	}
+	
+	function parse_category() {
+		echo $this->currentItem->category;
+	}
+	
+	function parse_categorylink() {
+		echo createLink('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category));
+	}
+	
+	function parse_catid() {
+		echo $this->currentItem->catid;
+	}
+	
+	function parse_authorid() {
+		echo $this->currentItem->authorid;
+	}
+	
 	function parse_authorlink() {
 		echo createLink(
 			'member',
@@ -136,7 +175,11 @@ class ITEMACTIONS extends BaseActions {
 			)
 		);
 	}
-	function parse_query() {		echo $this->strHighlight; }
+	
+	function parse_query() {
+		echo $this->strHighlight;
+	}
+	
 	function parse_itemlink() {
 		echo createLink(
 			'item',
@@ -148,9 +191,18 @@ class ITEMACTIONS extends BaseActions {
 			)
 		);
 	}
-	function parse_blogurl() {		echo $this->blog->getURL(); }
-	function parse_closed() {		echo $this->currentItem->closed; }
-	function parse_relevance() {    echo round($this->currentItem->score,2);}
+	
+	function parse_blogurl() {
+		echo $this->blog->getURL();
+	}
+	
+	function parse_closed() {
+		echo $this->currentItem->closed;
+	}
+	
+	function parse_relevance() {
+		echo round($this->currentItem->score,2);
+	}
 
 	function parse_title($format = '') {
 		switch ($format) {
@@ -290,12 +342,14 @@ class ITEMACTIONS extends BaseActions {
 		$args = explode('|',implode($args,', '));
 		call_user_func_array(array(&$this,'createImageCode'),$args);
 	}
+	
 	function parse_popup() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
 		$args = explode('|',implode($args,', '));
 		call_user_func_array(array(&$this,'createPopupCode'),$args);
 	}
+	
 	function parse_media() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
