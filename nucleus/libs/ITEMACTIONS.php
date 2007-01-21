@@ -455,36 +455,4 @@ class ITEMACTIONS extends BaseActions {
 	}
 }
 
-/**
- * A class to parse plugin calls inside items
- */
-class BODYACTIONS extends ITEMACTIONS {
-
-	function getDefinedActions() {
-		return array('image','media','popup','plugin');
-	}
-
-	function parse_plugin($pluginName) {
-		global $manager;
-
-		// only continue when the plugin is really installed
-		if (!$manager->pluginInstalled('NP_' . $pluginName)) {
-			return;
-		}
-
-		$plugin =& $manager->getPlugin('NP_' . $pluginName);
-		if (!$plugin) return;
-
-		// get arguments
-		$params = func_get_args();
-
-		// remove plugin name
-		array_shift($params);
-
-		// add item reference (array_unshift didn't work)
-		$params = array_merge(array(&$this->currentItem),$params);
-
-		call_user_func_array(array(&$plugin,'doItemVar'), $params);
-	}
-}
 ?>
