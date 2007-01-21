@@ -229,6 +229,7 @@ include($DIR_LIBS . 'PARSER.php');
 include($DIR_LIBS . 'SKIN.php');
 include($DIR_LIBS . 'TEMPLATE.php');
 include($DIR_LIBS . 'BLOG.php');
+include($DIR_LIBS . 'BODYACTIONS.php');
 include($DIR_LIBS . 'COMMENTS.php');
 include($DIR_LIBS . 'COMMENT.php');
 //include($DIR_LIBS . 'ITEM.php');
