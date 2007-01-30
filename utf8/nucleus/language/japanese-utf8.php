@@ -40,7 +40,7 @@ define('_SKIN_PARTS_SPECIAL',		'スペシャルスキンパーツ');
 define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',		'英数字以外の文字は使えません');
 define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',		'このスキンパートを削除できません');
 define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',		'本当にこのスペシャルスキンパートを削除してもいいですか？');
-define('_ERROR_PLUGIN_LOAD',		'プラグインが読み込めませんでした。もくは、使用中の Nucleus 上で動作させるために必要な機能が、プラグインでサポートされていないようです。(<a href="?action=actionlog">管理操作履歴</a>に詳細があります。)');
+define('_ERROR_PLUGIN_LOAD',		'プラグインが読み込めませんでした。もくは、使用中の Nucleus 上で動作させるために必要な機能が、プラグインでサポートされていません。(<a href="?action=actionlog">管理操作履歴</a>に詳細があります。)');
 // END changed/added after 3.3 END
 
 // START changed/added after 3.22 START
@@ -135,15 +135,18 @@ define('_BATCH_WITH_SEL',			'選択されたものを：');
 define('_BATCH_EXEC',				'実行');
 
 // quickmenu
+// Note: _USER_SETTINGS と _MANAGE_SETTINGS は 3.3 以降、オリジナル版は
+// 変更されましたが、日本語版は表記をそのままとします。
+// 間違って更新しないように!!
 define('_QMENU_HOME',				'管理ホーム');
 define('_QMENU_ADD',				'アイテム追加');
 define('_QMENU_ADD_SELECT',			'- blog選択 -');
-define('_QMENU_USER_SETTINGS',		'あなたのプロフィール');
+define('_QMENU_USER_SETTINGS',		'あなたの設定');
 define('_QMENU_USER_ITEMS',			'あなたのアイテム');
 define('_QMENU_USER_COMMENTS',		'あなたのコメント');
 define('_QMENU_MANAGE',				'サイト管理');
 define('_QMENU_MANAGE_LOG',			'管理操作履歴');
-define('_QMENU_MANAGE_SETTINGS',	'構成');
+define('_QMENU_MANAGE_SETTINGS',	'グローバル設定');
 define('_QMENU_MANAGE_MEMBERS',		'メンバー管理');
 define('_QMENU_MANAGE_NEWBLOG',		'新規Blog作成');
 define('_QMENU_MANAGE_BACKUPS',		'DB保存/復元');
