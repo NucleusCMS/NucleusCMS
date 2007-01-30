@@ -1,19 +1,19 @@
 /* 
 	style definitions for the bookmarklet 
 	
-	$Id: bookmarklet.css,v 1.5 2006-07-17 20:03:45 kimitake Exp $
-	$NucleusJP: bookmarklet.css,v 1.4 2006/07/12 07:11:48 kimitake Exp $
+	$Id: bookmarklet.css,v 1.6 2007-01-30 07:35:20 kimitake Exp $
+	$NucleusJP: bookmarklet.css,v 1.5 2006/07/17 20:03:45 kimitake Exp $
 */
 
 body {
 	font-size: small;
 	background: #fff;
 	color: #000;
-    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif
+    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;
 }		
 
 textarea {
-  font-family: "Hiragino Kaku Gothic Pro W3", "MS PGothic", "Osaka", sans-serif;
+	font-family: "Hiragino Kaku Gothic Pro W3", "MS P Gothic", "Osaka", sans-serif;
 }
 
 h1 {
