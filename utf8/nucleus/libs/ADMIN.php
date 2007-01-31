@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.11 2006-11-13 00:43:07 kimitake Exp $
- * @version $NucleusJP: ADMIN.php,v 1.10 2006/11/13 00:36:39 kimitake Exp $
+ * @version $Id: ADMIN.php,v 1.12 2007-01-31 10:02:58 kimitake Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.11 2006/11/13 00:43:07 kimitake Exp $
  */
 
 require_once "showlist.php";
@@ -4975,10 +4975,17 @@ selector();
 
 			echo '<br />(';
 
+			// Note(JP): disabled code name description
+/*
 			if ($member->isLoggedIn() && $member->isAdmin())
 				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nucleus['version'], ' &quot;', $nucleus['codename'], '&quot;</a>';
 			else
 				echo 'Nucleus CMS ', $nucleus['version'], ' &quot;', $nucleus['codename'], '&quot;';
+*/
+			if ($member->isLoggedIn() && $member->isAdmin())
+				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nucleus['version'], ' </a>';
+			else
+				echo 'Nucleus CMS ', $nucleus['version'];
 			echo ')';
 		echo '</div>';
 	}
@@ -5130,13 +5137,16 @@ selector();
 		// header-code stolen from phpMyAdmin
 		// REGEDIT and bookmarklet code stolen from GreyMatter
 
+		$sjisBlogName = getBlogNameFromID($blogid);
+		$sjisBlogName = mb_convert_encoding($sjisBlogName, "SJIS", "auto");
+
 		header('Content-Type: application/octetstream');
 		header('Content-Disposition: filename="nucleus.reg"');
 		header('Pragma: no-cache');
 		header('Expires: 0');
 
 		echo "REGEDIT4\n";
-		echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\Post To &Nucleus (".getBlogNameFromID($blogid).")]\n";
+		echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\Post To &Nucleus (".$sjisBlogName.")]\n";
 		echo '@="' . $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=".intval($blogid)."\"\n";
 		echo '"contexts"=hex:31';
 	}

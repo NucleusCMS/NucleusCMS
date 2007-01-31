@@ -1,12 +1,12 @@
-<?php
+\<?php
 
    /* ==========================================================================================
 	* Nucleus SkinFiles Plugin
 	*
 	* Copyright 2005 by Jeff MacMichael and Niels Leenheer
 	*
-	* @version $Id: index.php,v 1.3 2007-01-29 22:07:42 kimitake Exp $
-	* @version $NucleusJP: index.php,v 1.5.2.1 2005/08/25 07:04:13 kimitake Exp $
+	* @version $Id: index.php,v 1.4 2007-01-31 10:02:58 kimitake Exp $
+	* @version $NucleusJP: index.php,v 1.3 2007/01/29 22:07:42 kimitake Exp $
 	*
 	* ==========================================================================================
 	* This program is free software and open source software; you can redistribute

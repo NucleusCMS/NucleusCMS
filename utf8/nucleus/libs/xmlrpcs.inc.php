@@ -1,8 +1,8 @@
 <?php
 // by Edd Dumbill (C) 1999-2002
 // <edd@usefulinc.com>
-// $Id: xmlrpcs.inc.php,v 1.7 2006-07-12 07:11:47 kimitake Exp $
-// $NucleusJP: xmlrpcs.inc.php,v 1.6 2005/08/13 07:24:44 kimitake Exp $
+// $Id: xmlrpcs.inc.php,v 1.8 2007-01-31 10:02:58 kimitake Exp $
+// $NucleusJP: xmlrpcs.inc.php,v 1.7 2006/07/12 07:11:47 kimitake Exp $
 
 // Copyright (c) 1999,2000,2002 Edd Dumbill.
 // All rights reserved.
@@ -383,7 +383,6 @@
 			$_xh[$parser]['stack']=array();
 			$_xh[$parser]['sp'] = 0;
 			$_xh[$parser]['valuestack'] = array();
-			$_xh[$parser]['vsp'] = 0;
 			$_xh[$parser]['method']='';
 
 			// decompose incoming XML into request structure

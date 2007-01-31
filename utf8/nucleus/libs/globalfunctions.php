@@ -13,15 +13,17 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
-* @version $Id: globalfunctions.php,v 1.9 2006-08-31 21:00:21 kimitake Exp $
- * $NucleusJP: globalfunctions.php,v 1.8 2006/07/18 08:42:04 kimitake Exp $
+* @version $Id: globalfunctions.php,v 1.10 2007-01-31 10:02:58 kimitake Exp $
+ * $NucleusJP: globalfunctions.php,v 1.9 2006/08/31 21:00:21 kimitake Exp $
  */
 
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.3SVN';
-$nucleus['codename'] = 'Lithium';
+//$nucleus['version'] = 'v3.3SVN';
+//$nucleus['codename'] = 'Lithium';
+$nucleus['version'] = 'v3.3';
+$nucleus['codename'] = '';
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
 
@@ -85,6 +87,13 @@ if ($CONF['installscript'] != 1) { // vars were already included in install.php
 	}
 }
 
+// sanitize option
+$bLoggingSanitizedResult=0;
+$bSanitizeAndContinue=0;
+
+$orgRequestURI = serverVar('REQUEST_URI');
+sanitizeParams();
+
 // get all variables that can come from the request and put them in the global scope
 $blogid	= requestVar('blogid');
 $itemid	= intRequestVar('itemid');
@@ -135,6 +144,18 @@ if ($CONF['UsingAdminArea']) {
 // connect to database
 sql_connect();
 $SQLCount = 0;
+
+// logs sanitized result if need
+if ($orgRequestURI!==serverVar('REQUEST_URI')) {
+	$msg = "Sanitized [" . serverVar('REMOTE_ADDR') . "] ";
+	$msg .= $orgRequestURI . " -> " . serverVar('REQUEST_URI');
+    if ($bLoggingSanitizedResult) {
+        addToLog(WARNING, $msg);
+    }
+    if (!$bSanitizeAndContinue) {
+        die("");
+    }
+}
 
 // makes sure database connection gets closed on script termination
 register_shutdown_function('sql_disconnect');
@@ -480,7 +501,8 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 function startUpError($msg, $title) {
 	?>
 	<html xmlns="http://www.w3.org/1999/xhtml">
-		<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title><?php echo htmlspecialchars($title)?></title></head>
+		<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title><?php echo htmlspecialchars($title)?></title></head>
 		<body>
 			<h1><?php echo htmlspecialchars($title)?></h1>
 			<?php echo $msg?>
@@ -1397,6 +1419,171 @@ function checkVars($aVars) {
 			}
 
 		}
+	}
+}
+
+
+/** 
+ * Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc.
+ * to avoid XSS 
+ */
+function sanitizeParams()
+{
+	global $HTTP_SERVER_VARS;
+	
+	$array = array();
+	$str = '';
+	$frontParam = '';
+	
+	// REQUEST_URI of $HTTP_SERVER_VARS
+	$str =& $HTTP_SERVER_VARS["REQUEST_URI"];
+	serverStringToArray($str, $array, $frontParam);
+	sanitizeArray($array);
+	arrayToServerString($array, $frontParam, $str);
+	
+	// QUERY_STRING of $HTTP_SERVER_VARS
+	$str =& $HTTP_SERVER_VARS["QUERY_STRING"];
+	serverStringToArray($str, $array, $frontParam);
+	sanitizeArray($array);
+	arrayToServerString($array, $frontParam, $str);
+	
+	if (phpversion() >= '4.1.0') {
+		// REQUEST_URI of $_SERVER
+		$str =& $_SERVER["REQUEST_URI"];
+		serverStringToArray($str, $array, $frontParam);
+		sanitizeArray($array);
+		arrayToServerString($array, $frontParam, $str);
+	
+		// QUERY_STRING of $_SERVER
+		$str =& $_SERVER["QUERY_STRING"];
+		serverStringToArray($str, $array, $frontParam);
+		sanitizeArray($array);
+		arrayToServerString($array, $frontParam, $str);
+	}
+	
+	// $_GET
+	convArrayForSanitizing($_GET, $array);
+	sanitizeArray($array);
+	revertArrayForSanitizing($array, $_GET);
+	
+	// $_REQUEST (only GET param)
+	convArrayForSanitizing($_REQUEST, $array);
+	sanitizeArray($array);
+	revertArrayForSanitizing($array, $_REQUEST);
+}
+
+/** 
+ * Convert the server string such as $_SERVER['REQUEST_URI']
+ * to arry like arry['blogid']=1 and array['page']=2 etc.
+ */
+function serverStringToArray($str, &$array, &$frontParam)
+{
+	// init param
+	$array = array();
+	$fronParam = "";
+
+	// split front param, e.g. /index.php, and others, e.g. blogid=1&page=2
+	if (strstr($str, "?")){
+		list($frontParam, $args) = preg_split("/\?/", $str, 2);
+	}
+	else {
+		$args = $str;
+		$frontParam = "";
+	}
+	
+	// If there is no args like blogid=1&page=2, return
+	if (!strstr($str, "=") && !strlen($frontParam)) {
+		$frontParam = $str;
+		return;
+	}
+
+	$array = explode("&", $args);
+}
+
+/** 
+ * Convert array like array['blogid'] to server string
+ * such as $_SERVER['REQUEST_URI']
+ */
+function arrayToServerString($array, $frontParam, &$str)
+{
+	if (strstr($str, "?")) {
+		$str = $frontParam . "?";
+	} else {
+		$str = $frontParam;
+	}
+	if (count($array)) {
+		$str .= implode("&", $array);
+	}
+}
+
+/** 
+ * Sanitize array parameters.
+ * This function checks both key and value.
+ * - check key if it inclues " (double quote),  remove from array
+ * - check value if it includes \ (escape sequece), remove remaining string
+ */
+function sanitizeArray(&$array)
+{	
+	$excludeListForSanitization = array('query');
+//	$excludeListForSanitization = array();
+
+	foreach ($array as $k => $v) {
+
+		// split to key and value
+		list($key, $val) = preg_split("/=/", $v, 2);
+		if (!isset($val)) {
+			continue;
+		}
+
+		// when magic quotes is on, need to use stripslashes,
+		// and then addslashes
+		if (get_magic_quotes_gpc()) {
+			$val = stripslashes($val);
+		}
+		$val = addslashes($val);
+		
+		// if $key is included in exclude list, skip this param
+		if (!in_array($key, $excludeListForSanitization)) {
+				
+			// check value
+			list($val, $tmp) = explode('\\', $val);
+			
+			// remove control code etc.
+			$val = strtr($val, "\0\r\n<>'\"", "       ");
+				
+			// check key
+			if (preg_match('/\"/i', $key)) {
+				unset($array[$k]);
+				continue;
+			}
+				
+			// set sanitized info
+			$array[$k] = sprintf("%s=%s", $key, $val);
+		}
+	}
+}
+
+/**
+ * Convert array for sanitizeArray function
+ */
+function convArrayForSanitizing($src, &$array)
+{
+	$array = array();
+	foreach ($src as $key => $val) {
+		if (key_exists($key, $_GET)) {
+			array_push($array, sprintf("%s=%s", $key, $val));
+		}
+	}
+}
+
+/**
+ * Revert array after sanitizeArray function
+ */
+function revertArrayForSanitizing($array, &$dst)
+{
+	foreach ($array as $v) {
+		list($key, $val) = preg_split("/=/", $v, 2);
+		$dst[$key] = $val;
 	}
 }
 

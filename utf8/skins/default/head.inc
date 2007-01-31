@@ -7,8 +7,8 @@
 
 <!-- meta information for search engines -->
 <meta name="generator" content="<%version%>" />
-<meta name="name" content="<%blogsetting(name)%>" />
-<meta name="description" content="<%blogsetting(desc)%>" />
+<meta name="name" content="<%if(skintype,error)%><%sitevar(name)%><%else%><%blogsetting(name)%><%endif%>" />
+<meta name="description" content="<%if(skintype,error)%><%sitevar(name)%><%else%><%blogsetting(desc)%><%endif%>" />
 
 <!-- prevent caching (can be removed) -->
 <meta http-equiv="Pragma" content="no-cache" />

@@ -48,7 +48,8 @@
  <pubDate><%date(rfc822)%></pubDate>
 </item>]]></part>
 
-	</template>
+<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+<part name="POPUP_CODE"><![CDATA[<%media%>]]></part>
 
-
-</nucleusskin>
+</template></nucleusskin>

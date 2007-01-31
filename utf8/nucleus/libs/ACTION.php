@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: ACTION.php,v 1.5 2006-07-17 20:03:44 kimitake Exp $
- * $NucleusJP: ACTION.php,v 1.4 2006/07/12 07:11:47 kimitake Exp $
+ * @version $Id: ACTION.php,v 1.6 2007-01-31 10:02:58 kimitake Exp $
+ * $NucleusJP: ACTION.php,v 1.5 2006/07/17 20:03:44 kimitake Exp $
  */
 class ACTION
 {
@@ -231,6 +231,7 @@ class ACTION
 		if (postVar('url')) {
 			redirect(postVar('url'));
 		} else {
+			header ("Content-Type: text/html; charset="._CHARSET);
 			echo _MSG_ACTIVATION_SENT;
 		}
 

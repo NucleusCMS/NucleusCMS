@@ -65,6 +65,14 @@
 </div>
 <%endif%><%endif%>
 
+<!-- bloglist-->
+<div class="sidebar">
+<dl class="sidebardl">
+<dt>Blogs</dt>
+<%bloglist(default/index)%>
+</dl>
+</div>
+
 <!-- search form -->
 <div class="sidebar">
 <dl class="sidebardl">
