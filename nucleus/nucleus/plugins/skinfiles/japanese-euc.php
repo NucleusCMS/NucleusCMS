@@ -2,7 +2,7 @@
 
    /*
 	* @version $Id$
-	* @version $NucleusJP: index.php,v 1.5.2.1 2005/08/25 07:04:13 kimitake Exp $
+	* @version $NucleusJP: japanese-euc.php,v 1.2 2007/01/29 22:07:42 kimitake Exp $
 	*/
 
 define('_SKINFILES_TITLE',				'スキンファイル');
