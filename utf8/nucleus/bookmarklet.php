@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: bookmarklet.php,v 1.7 2006-07-17 20:01:39 kimitake Exp $
-  * $NucleusJP: bookmarklet.php,v 1.6 2005/08/13 07:33:58 kimitake Exp $
+ * @version $Id: bookmarklet.php,v 1.8 2007-02-03 05:41:29 kimitake Exp $
+  * $NucleusJP: bookmarklet.php,v 1.7 2006/07/17 20:01:39 kimitake Exp $
  */
 
 // bookmarklet is part of admin area (might need XML-RPC)
@@ -89,10 +89,10 @@ function bm_doAddItem() {
 	$blog =& $manager->getBlog($blogid);
 
 	if ($result['status'] == 'newcategory') {
-		$message = 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid='.$blogid.'&amp;catid='.$result['catid'].'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>';
+		$message = 'アイテムは追加され、新しいカテゴリーが作成されました。 <a href="index.php?action=categoryedit&amp;blogid='.$blogid.'&amp;catid='.$result['catid'].'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">ここをクリックしてカテゴリーの名前と説明を編集してください。</a>';
 		$extrahead = '';
 	} elseif ((postVar('actiontype') == 'addnow') && $blog->pingUserland()) {
-		$message = 'Item was added successfully. Now pinging weblogs.com. Please hold on... (can take a while)';
+		$message = 'アイテムの追加に成功しました。現在weblogs.comにpingを送っています。しばらくの間お待ちください...';
 		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid));
 		$extrahead = '<meta http-equiv="refresh" content="1; url=' . htmlspecialchars($pingUrl). '" />';
 	} else {
@@ -166,7 +166,7 @@ function bm_doEditItem() {
 
 	// show success message
 	if ($catid != intPostVar('catid'))
-		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid='.$blog->getID().'&amp;catid='.$catid.'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>', '');
+		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, 'アイテムは追加され、新しいカテゴリーが作成されました。<a href="index.php?action=categoryedit&amp;blogid='.$blog->getID().'&amp;catid='.$catid.'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">ここをクリックしてカテゴリーの名前と説明を編集してください。</a>', '');
 	else
 		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _ITEM_UPDATED, '');
 }
