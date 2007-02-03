@@ -1,5 +1,5 @@
 <?php
-$_sjistoeuc_byte1 = array(
+$mbemu_internals['sjistoeuc_byte1'] = array(
 129 => 161 ,130 => 163 ,131 => 165 ,132 => 167 ,133 => 169 ,134 => 171 ,
 135 => 173 ,136 => 175 ,137 => 177 ,138 => 179 ,139 => 181 ,140 => 183 ,
 141 => 185 ,142 => 187 ,143 => 189 ,144 => 191 ,145 => 193 ,146 => 195 ,
@@ -9,7 +9,7 @@ $_sjistoeuc_byte1 = array(
 229 => 233 ,230 => 235 ,231 => 237 ,232 => 239 ,233 => 241 ,234 => 243 ,
 235 => 245 ,236 => 247 ,237 => 249 ,238 => 251 ,239 => 253 ,240 => 255 );
 
-$_sjistoeuc_byte2 = array(
+$mbemu_internals['sjistoeuc_byte2'] = array(
 0 => array(
 64 => 161 ,65 => 162 ,66 => 163 ,67 => 164 ,68 => 165 ,69 => 166 ,
 70 => 167 ,71 => 168 ,72 => 169 ,73 => 170 ,74 => 171 ,75 => 172 ,
@@ -46,7 +46,7 @@ $_sjistoeuc_byte2 = array(
 245 => 247 ,246 => 248 ,247 => 249 ,248 => 250 ,249 => 251 ,250 => 252 ,
 251 => 253 ,252 => 254 ));
 
-$_sjistoeuc_byte1_shift = array (
+$mbemu_internals['sjistoeuc_byte1_shift'] = array (
 64 => 0 ,65 => 0 ,66 => 0 ,67 => 0 ,68 => 0 ,69 => 0 ,
 70 => 0 ,71 => 0 ,72 => 0 ,73 => 0 ,74 => 0 ,75 => 0 ,
 76 => 0 ,77 => 0 ,78 => 0 ,79 => 0 ,80 => 0 ,81 => 0 ,
@@ -80,7 +80,7 @@ $_sjistoeuc_byte1_shift = array (
 245 => 1 ,246 => 1 ,247 => 1 ,248 => 1 ,249 => 1 ,250 => 1 ,
 251 => 1 ,252 => 1 );
 
-$_euctosjis_byte1 = array(
+$mbemu_internals['euctosjis_byte1'] = array(
 161 => 129, 162 => 129, 163 => 130, 164 => 130, 165 => 131, 
 166 => 131, 167 => 132, 168 => 132, 169 => 133, 170 => 133, 
 171 => 134, 172 => 134, 173 => 135, 174 => 135, 175 => 136, 
@@ -101,7 +101,7 @@ $_euctosjis_byte1 = array(
 246 => 235, 247 => 236, 248 => 236, 249 => 237, 250 => 237, 
 251 => 238, 252 => 238, 253 => 239, 254 => 239, 255 => 240);
 
-$_euctosjis_byte2 = array(
+$mbemu_internals['euctosjis_byte2'] = array(
 0 => array(
 161 => 64, 162 => 65, 163 => 66, 164 => 67, 165 => 68, 
 166 => 69, 167 => 70, 168 => 71, 169 => 72, 170 => 73, 
@@ -143,7 +143,7 @@ $_euctosjis_byte2 = array(
 246 => 244, 247 => 245, 248 => 246, 249 => 247, 250 => 248, 
 251 => 249, 252 => 250, 253 => 251, 254 => 252));
 
-$alphanumeric_convert = array (
+$mbemu_internals['alphanumeric_convert'] = array (
 0x20 => "\xa1\xa1",0x21 => "\xa1\xaa",0x23 => "\xa1\xf4",0x24 => 
 "\xa1\xf0",0x25 => "\xa1\xf3",
 0x26 => "\xa1\xf5",0x28 => "\xa1\xca",0x29 => "\xa1\xcb",0x2a => "\xa1\xf6",
@@ -169,7 +169,7 @@ $alphanumeric_convert = array (
 0x79 => "\xa3\xf9",0x7a => "\xa3\xfa",0x7b => "\xa1\xd0",0x7c => "\xa1\xc3",
 0x7d => "\xa1\xd1");
 
-$kana_zenhan_convert = array (
+$mbemu_internals['kana_zenhan_convert'] = array (
 0xa1 => "\xa7",0xa2 => "\xb1",0xa3 => "\xa8",0xa4 => "\xb2",
 0xa5 => "\xa9",0xa6 => "\xb3",0xa7 => "\xaa",0xa8 => "\xb4",
 0xa9 => "\xab",0xaa => "\xb5",0xab => "\xb6",0xac => "\xb6\x8e\xde",
@@ -195,7 +195,7 @@ $kana_zenhan_convert = array (
 0xee => "\xdc",0xf0 => "\xb2",0xf1 => "\xb4",0xf2 => "\xa6",0xf3 => "\xdd",
 0xf4 => "\xb3\x8e\xde");
 
-$special_zenhan_convert = array(
+$mbemu_internals['special_zenhan_convert'] = array(
 0xa2 => "\xa4",0xa3 => "\xa1",0xa6 => "\xa5",0xab => "\xde",
 0xac => "\xdf",0xbc => "\xb0",0xd6 => "\xa2",0xd7 => "\xa3");
 
