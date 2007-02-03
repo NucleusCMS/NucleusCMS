@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,8 +12,9 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
  * @version $Id$
+
  */
 
 // needed if we include globalfunctions from install.php
@@ -24,7 +25,7 @@ $nucleus['codename'] = 'Lithium';
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
 
-$CONF['debug'] = 1;
+$CONF['debug'] = 0;
 if ($CONF['debug']) {
 	error_reporting(E_ALL);	// report all errors!
 } else {

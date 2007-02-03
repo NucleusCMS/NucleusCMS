@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2003-2006 The Nucleus Group
+ * Copyright (C) 2003-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
  * http://davidaltherr.net/web/php_functions/boolean/funcs.mysql.boolean.txt
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
  * @version $Id$
  */
 
