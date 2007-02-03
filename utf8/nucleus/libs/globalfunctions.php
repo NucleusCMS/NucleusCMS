@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
-* @version $Id: globalfunctions.php,v 1.10 2007-01-31 10:02:58 kimitake Exp $
- * $NucleusJP: globalfunctions.php,v 1.9 2006/08/31 21:00:21 kimitake Exp $
+* @version $Id: globalfunctions.php,v 1.11 2007-02-03 06:03:57 kimitake Exp $
+ * $NucleusJP: globalfunctions.php,v 1.10 2007/01/31 10:02:58 kimitake Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -467,10 +467,24 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 
 		// v3.3: ($CONF['UsingAdminArea'] && !$CONF['debug']) gets removed,
 		//       application/xhtml+xml seems to be working, so we're going to use it if we can.
+		//
+		// Note: reverted the following function in JP version
+		//
+	/*
+	 	// v3.3 code
 		if (
 				($contenttype == 'application/xhtml+xml')
 			&&	(!stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml') )
 			) {
+			$contenttype = 'text/html';
+		}
+	*/
+		// v3.2x code
+		if (
+				($contenttype == 'application/xhtml+xml')
+			&&	(($CONF['UsingAdminArea'] && !$CONF['debug']) || !stristr(serverVar('HTTP_ACCEPT'),'application/xhtml+xml'))
+			)
+		{
 			$contenttype = 'text/html';
 		}
 
