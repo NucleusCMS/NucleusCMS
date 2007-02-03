@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.12 2007-01-31 10:02:58 kimitake Exp $
- * @version $NucleusJP: ADMIN.php,v 1.11 2006/11/13 00:43:07 kimitake Exp $
+ * @version $Id: ADMIN.php,v 1.13 2007-02-03 06:00:04 kimitake Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.12 2007/01/31 10:02:58 kimitake Exp $
  */
 
 require_once "showlist.php";
@@ -3290,6 +3290,9 @@ class ADMIN {
 		$manager->notify(
 			'PostAddCategory',
 			array(
+				'blog' => &$blog,
+				'name' => 'General',
+				'description' => 'Items that do not fit in other categories',
 				'catid' => $catid
 			)
 		);
