@@ -1,6 +1,6 @@
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2006 The Nucleus Group
+  * Copyright (C) 2002-2007 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -18,8 +18,8 @@
   *
   * That's basically it :)
   *
-  * $Id: compatibility.js,v 1.4 2006-07-12 07:11:47 kimitake Exp $
-  * $NucleusJP: compatibility.js,v 1.3 2005/03/12 06:19:04 kimitake Exp $
+  * $Id: compatibility.js,v 1.5 2007-02-04 06:28:45 kimitake Exp $
+  * $NucleusJP: compatibility.js,v 1.4 2006/07/12 07:11:47 kimitake Exp $
   */
 
 // to get the script working when page is sent as application/xhtml+xml

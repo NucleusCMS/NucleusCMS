@@ -1,6 +1,6 @@
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-  * Copyright (C) 2002-2006 The Nucleus Group
+  * Copyright (C) 2002-2007 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -11,8 +11,8 @@
   * This file contains functions to allow adding items from inside the weblog.
   * Also contains code to avoid submitting form data twice.
   *
-  * $Id: edit.js,v 1.5 2006-07-12 07:11:47 kimitake Exp $
-  * $NucleusJP: edit.js,v 1.4.2.1 2005/09/27 06:58:55 kimitake Exp $
+  * $Id: edit.js,v 1.6 2007-02-04 06:28:45 kimitake Exp $
+  * $NucleusJP: edit.js,v 1.5 2006/07/12 07:11:47 kimitake Exp $
   */
 
 var nucleusConvertBreaks = true;

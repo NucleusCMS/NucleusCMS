@@ -5,10 +5,10 @@ class NP_SkinFiles extends NucleusPlugin {
    /* ==========================================================================================
 	* Nucleus SkinFiles Plugin
 	*
-	* Copyright 2005 by Jeff MacMichael and Niels Leenheer
+	* Copyright 2005-2007 by Jeff MacMichael and Niels Leenheer
 	*
-	* @version $Id: NP_SkinFiles.php,v 1.3 2006-07-17 20:03:45 kimitake Exp $
-	* @version $NucleusJP: NP_SkinFiles.php,v 1.1.2.5 2006/01/25 09:58:54 kimitake Exp $
+	* @version $Id: NP_SkinFiles.php,v 1.4 2007-02-04 06:28:46 kimitake Exp $
+	* @version $NucleusJP: NP_SkinFiles.php,v 1.3 2006/07/17 20:03:45 kimitake Exp $
 	*
 	* ==========================================================================================
 	* This program is free software and open source software; you can redistribute

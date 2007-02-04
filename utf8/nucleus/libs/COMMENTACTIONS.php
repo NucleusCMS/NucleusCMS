@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -9,14 +9,13 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-
 /**
  * This class is used when parsing comment templates
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: COMMENTACTIONS.php,v 1.2 2006-07-20 08:01:52 kimitake Exp $
- * @version $NucleusJP$
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: COMMENTACTIONS.php,v 1.3 2007-02-04 06:28:46 kimitake Exp $
+ * @version $NucleusJP: COMMENTACTIONS.php,v 1.2 2006/07/20 08:01:52 kimitake Exp $
  */
 
 class COMMENTACTIONS extends BaseActions {
@@ -75,9 +74,18 @@ class COMMENTACTIONS extends BaseActions {
 		);
 	}
 
-	function setParser(&$parser) {			$this->parser =& $parser; }
-	function setCommentsObj(&$commentsObj) {$this->commentsObj =& $commentsObj; }
-	function setTemplate($template) {		$this->template =& $template; }
+	function setParser(&$parser) {
+		$this->parser =& $parser;
+	}
+	
+	function setCommentsObj(&$commentsObj) {
+		$this->commentsObj =& $commentsObj;
+	}
+	
+	function setTemplate($template) {
+		$this->template =& $template;
+	}
+	
 	function setCurrentComment(&$comment) {
 		global $manager;
 		if ($comment['memberid'] != 0) {
@@ -120,7 +128,10 @@ class COMMENTACTIONS extends BaseActions {
 		echo $blog->getURL();
 	}
 
-	function parse_commentcount() {			echo $this->commentsObj->commentcount; }
+	function parse_commentcount() {
+			echo $this->commentsObj->commentcount;
+	}
+	
 	function parse_commentword() {
 		if ($this->commentsObj->commentcount == 1)
 			echo $this->template['COMMENTS_ONE'];
@@ -139,7 +150,11 @@ class COMMENTACTIONS extends BaseActions {
 			)
 		);
 	}
-	function parse_itemid() {				echo $this->commentsObj->itemid; }
+	
+	function parse_itemid() {
+		echo $this->commentsObj->itemid;
+	}
+	
 	function parse_itemtitle($maxLength = 0) {
 		if ($maxLength == 0)
 			$this->commentsObj->itemActions->parse_title();
@@ -150,6 +165,7 @@ class COMMENTACTIONS extends BaseActions {
 	function parse_date($format = '') {
 		echo formatDate($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE'], $this->commentsObj->itemActions->blog);
 	}
+	
 	function parse_time($format = '') {
 		echo strftime(
 				($format == '') ? $this->template['FORMAT_TIME'] : $format,
@@ -157,23 +173,53 @@ class COMMENTACTIONS extends BaseActions {
 			);
 	}
 
-	function parse_commentid() {			echo $this->currentComment['commentid']; }
-	function parse_body() {					echo $this->highlight($this->currentComment['body']); }
-	function parse_memberid() {				echo $this->currentComment['memberid']; }
-	function parse_timestamp() {			echo $this->currentComment['timestamp']; }
-	function parse_host() {					echo $this->currentComment['host']; }
-	function parse_ip() {					echo $this->currentComment['ip']; }
-	function parse_blogid() {				echo $this->currentComment['blogid']; }
+	function parse_commentid() {
+		echo $this->currentComment['commentid'];
+	}
+	
+	function parse_body() {
+		echo $this->highlight($this->currentComment['body']);
+	}
+	
+	function parse_memberid() {
+		echo $this->currentComment['memberid'];
+	}
+	
+	function parse_timestamp() {
+		echo $this->currentComment['timestamp'];
+	}
+	
+	function parse_host() {
+		echo $this->currentComment['host'];
+	}
+	
+	function parse_ip() {
+		echo $this->currentComment['ip'];
+	}
+	
+	function parse_blogid() {
+		echo $this->currentComment['blogid'];
+	}
 
-	function parse_user() {					echo $this->currentComment['user']; }
-	function parse_userid() {				echo $this->currentComment['userid']; }
+	function parse_user() {
+			echo $this->currentComment['user'];
+	}
+	
+	function parse_userid() {
+			echo $this->currentComment['userid'];
+	}
+	
 	function parse_email() {
 		$email = $this->currentComment['email'];
 		$email = str_replace('@', ' (at) ', $email);
 		$email = str_replace('.', ' (dot) ', $email);
 		echo $email;
 	}
-	function parse_userlinkraw() {			echo $this->currentComment['userlinkraw']; }
+	
+	function parse_userlinkraw() {
+		echo $this->currentComment['userlinkraw'];
+	}
+	
 	function parse_userlink() {
 		if ($this->currentComment['userlinkraw']) {
 			echo '<a href="'.$this->currentComment['userlinkraw'].'" rel="nofollow">'.$this->currentComment['user'].'</a>';
@@ -206,6 +252,7 @@ class COMMENTACTIONS extends BaseActions {
 	function parse_excerpt() {
 		echo stringToXML(shorten($this->currentComment['body'], 60, '...'));
 	}
+	
 	function parse_short() {
 		$tmp = strtok($this->currentComment['body'],"\n");
 		$tmp = str_replace('<br />','',$tmp);
@@ -213,6 +260,7 @@ class COMMENTACTIONS extends BaseActions {
 		if ($tmp != $this->currentComment['body'])
 			$this->parser->parse($this->template['COMMENTS_CONTINUED']);
 	}
+	
 	function parse_authtext() {
 		if ($this->currentComment['memberid'] != 0)
 			$this->parser->parse($this->template['COMMENTS_AUTH']);

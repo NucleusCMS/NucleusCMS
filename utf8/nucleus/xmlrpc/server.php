@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -61,9 +61,9 @@
  * mt.supportedMethods
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: server.php,v 1.6 2006-07-17 20:03:45 kimitake Exp $
- * @version $NucleusJP: server.php,v 1.5 2005/08/13 07:25:03 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: server.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
+ * @version $NucleusJP: server.php,v 1.6 2006/07/17 20:03:45 kimitake Exp $
  */
 $CONF = array();
 include("../../config.php");	// include Nucleus libs and code

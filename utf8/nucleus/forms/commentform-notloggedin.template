@@ -1,9 +1,9 @@
 <a id="nucleus_cf"></a>
 <form method="post" action="#nucleus_cf">
+	<div class="commentform">
 <input type="hidden" name="action" value="addcomment" />
 <input type="hidden" name="url" value="<%formdata(destinationurl)%>" />
 <input type="hidden" name="itemid" value="<%itemid%>" />
-	<div class="commentform">
 		<%errordiv%>
 
 		<label for="nucleus_cf_body"><%text(_COMMENTFORM_COMMENT)%></label>

@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,9 +13,9 @@
  * The code for the Nucleus admin area
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.13 2007-02-03 06:00:04 kimitake Exp $
- * @version $NucleusJP: ADMIN.php,v 1.12 2007/01/31 10:02:58 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: ADMIN.php,v 1.14 2007-02-04 06:28:46 kimitake Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.13 2007/02/03 06:00:04 kimitake Exp $
  */
 
 require_once "showlist.php";

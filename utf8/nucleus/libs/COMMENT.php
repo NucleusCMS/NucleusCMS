@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,9 +14,9 @@
  * A class representing a single comment
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: COMMENT.php,v 1.4 2006-07-17 20:03:44 kimitake Exp $
- * $NucleusJP: COMMENT.php,v 1.3 2005/03/12 06:19:05 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: COMMENT.php,v 1.5 2007-02-04 06:28:46 kimitake Exp $
+ * $NucleusJP: COMMENT.php,v 1.4 2006/07/17 20:03:44 kimitake Exp $
  */
 class COMMENT {
 

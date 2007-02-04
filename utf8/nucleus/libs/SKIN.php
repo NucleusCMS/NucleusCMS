@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,9 +17,9 @@ require_once $DIR_LIBS . 'ACTIONS.php';
  * Class representing a skin
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: SKIN.php,v 1.6 2006-07-20 08:01:52 kimitake Exp $
- * @version $NucleusJP: SKIN.php,v 1.5 2006/07/12 07:11:47 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: SKIN.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
+ * @version $NucleusJP: SKIN.php,v 1.6 2006/07/20 08:01:52 kimitake Exp $
  */
 class SKIN {
 
@@ -297,7 +297,8 @@ class SKIN {
 								'elseif',
 								'ifnot',
 								'elseifnot',
-								'charset'
+								'charset',
+								'bloglist'
 								);
 
 		// extra actions specific for a certain skin type

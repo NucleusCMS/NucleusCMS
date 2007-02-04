@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,9 +14,9 @@
  * Actions that can be called via action.php
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: ACTION.php,v 1.6 2007-01-31 10:02:58 kimitake Exp $
- * $NucleusJP: ACTION.php,v 1.5 2006/07/17 20:03:44 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: ACTION.php,v 1.7 2007-02-04 06:28:45 kimitake Exp $
+ * $NucleusJP: ACTION.php,v 1.6 2007/01/31 10:02:58 kimitake Exp $
  */
 class ACTION
 {

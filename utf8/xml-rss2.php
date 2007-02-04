@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,34 +14,35 @@
 /**
  * Nucleus RSS syndication channel skin
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: xml-rss2.php,v 1.7 2006-07-17 19:59:46 kimitake Exp $
- * $NucleusJP: xml-rss2.php,v 1.6 2006/07/12 07:11:45 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: xml-rss2.php,v 1.8 2007-02-04 06:28:44 kimitake Exp $
+ * $NucleusJP: xml-rss2.php,v 1.7 2006/07/17 19:59:46 kimitake Exp $
  */
 
-header("Pragma: no-cache");
+header('Pragma: no-cache');
 
 $CONF = array();
-$CONF['Self'] = "xml-rss2.php";
+$CONF['Self'] = 'xml-rss2.php';
 
 include('./config.php');
 
 if (!$CONF['DisableSite']) {
+
 	// get feed into $feed
 	ob_start();
-		selectSkin('feeds/rss20');
-		selector();
+	selectSkin('feeds/rss20');
+	selector();
 	$feed = ob_get_contents();
 	ob_end_clean();
 
 	// create ETAG (hash of feed)
 	// (HTTP_IF_NONE_MATCH has quotes around it)
-	$eTag = '"'.md5($feed).'"';
-	header('Etag: '.$eTag);
+	$eTag = '"' . md5($feed) . '"';
+	header('Etag: ' . $eTag);
 
 	// compare Etag to what we got
-	if ($eTag == serverVar('HTTP_IF_NONE_MATCH')) {
-		header("HTTP/1.0 304 Not Modified");
+	if ($eTag == serverVar('HTTP_IF_NONE_MATCH') ) {
+		header('HTTP/1.0 304 Not Modified');
 		header('Content-Length: 0');
 	} else {
 		header("Content-Type: application/xml");
@@ -53,16 +54,16 @@ if (!$CONF['DisableSite']) {
 	// output empty RSS file...
 	// (because site is disabled)
 
-	echo '<' . '?xml version="1.0" encoding="ISO-8859-1"?' . '>';
+	echo '<' . '?xml version="1.0" encoding="' . _CHARSET . '"?' . '>';
 
 	?>
 	<rss version="2.0">
-	  <channel>
-		<title><?php echo htmlspecialchars($CONF['SiteName'])?></title>
-		<link><?php echo htmlspecialchars($CONF['IndexURL'])?></link>
-		<description></description>
-		<docs>http://backend.userland.com/rss</docs>
-	  </channel>
+		<channel>
+			<title><?php echo htmlspecialchars($CONF['SiteName']); ?></title>
+			<link><?php echo htmlspecialchars($CONF['IndexURL']); ?></link>
+			<description></description>
+			<docs>http://backend.userland.com/rss</docs>
+		</channel>
 	</rss>
 	<?php
 }

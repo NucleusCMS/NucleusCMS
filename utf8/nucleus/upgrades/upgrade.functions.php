@@ -2,7 +2,7 @@
 
 	/**
 	  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-	  * Copyright (C) 2002-2005 The Nucleus Group
+	  * Copyright (C) 2002-2007 The Nucleus Group
 	  *
 	  * This program is free software; you can redistribute it and/or
 	  * modify it under the terms of the GNU General Public License
@@ -12,8 +12,8 @@
 	  *	
 	  * Some functions common to all upgrade scripts
 	  *
-  	  * $Id: upgrade.functions.php,v 1.6 2006-07-12 07:11:49 kimitake Exp $
-	  * $NucleusJP: upgrade.functions.php,v 1.5 2005/03/19 07:20:50 kimitake Exp $
+  	  * $Id: upgrade.functions.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
+	  * $NucleusJP: upgrade.functions.php,v 1.6 2006/07/12 07:11:49 kimitake Exp $
 	  */
 
 	include('../../config.php');

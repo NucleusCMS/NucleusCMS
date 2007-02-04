@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,9 +15,9 @@
  * on the screen
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: BLOG.php,v 1.6 2006-08-31 20:58:50 kimitake Exp $
- * $NucleusJP: BLOG.php,v 1.5 2006/07/17 20:03:44 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: BLOG.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
+ * $NucleusJP: BLOG.php,v 1.6 2006/08/31 20:58:50 kimitake Exp $
  */
 
 // temporary: dirt way to separe class ITEMACTIONS from BLOG
@@ -660,6 +660,39 @@ class BLOG {
 								'blogurl' => $blogurl,
 								'self' => $CONF['Self']
 							));
+	}
+	
+	/**
+	  * Shows a list of all blogs in the system using a given template
+	  */
+	function showBlogList($template, $bnametype) {
+		global $CONF, $manager;
+		
+		$template =& $manager->getTemplate($template);
+		
+		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY bnumber ASC';
+		$res = sql_query($query);
+		
+		while ($data = mysql_fetch_assoc($res)) {
+		
+			$list = array();
+		
+			$list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
+		
+			$list['blogdesc'] = $data['bdesc'];
+			
+			if ($bnametype=='shortname') {
+				$list['blogname'] = $data['bshortname'];
+			}
+			else { // all other cases
+				$list['blogname'] = $data['bname'];
+			}
+			
+			echo TEMPLATE::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
+			
+		}
+		
+		mysql_free_result($res);
 	}
 
 	/**

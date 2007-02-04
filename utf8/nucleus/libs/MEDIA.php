@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,9 +13,9 @@
  * Media classes for nucleus
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: MEDIA.php,v 1.5 2006-07-17 20:03:44 kimitake Exp $
- * $NucleusJP: MEDIA.php,v 1.4 2005/08/13 07:33:02 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: MEDIA.php,v 1.6 2007-02-04 06:28:46 kimitake Exp $
+ * $NucleusJP: MEDIA.php,v 1.5 2006/07/17 20:03:44 kimitake Exp $
  */
 
 
@@ -123,7 +123,9 @@ class MEDIA {
 	  *		(date prefix should be already added here)
 	  */
 	function addMediaObject($collection, $uploadfile, $filename) {
-		global $DIR_MEDIA;
+		global $DIR_MEDIA, $manager;
+
+		$manager->notify('PreMediaUpload',array('collection' => &$collection, 'uploadfile' => $uploadfile, 'filename' => &$filename));
 
 		// don't allow uploads to unknown or forbidden collections
 		if (!MEDIA::isValidCollection($collection))
@@ -166,6 +168,8 @@ class MEDIA {
 		$oldumask = umask(0000);
 		@chmod($mediadir . $filename, 0644);
 		umask($oldumask);
+
+		$manager->notify('PostMediaUpload',array('collection' => $collection, 'mediadir' => $mediadir, 'filename' => $filename));
 
 		return '';
 

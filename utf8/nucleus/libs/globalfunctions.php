@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,9 +12,9 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
-* @version $Id: globalfunctions.php,v 1.11 2007-02-03 06:03:57 kimitake Exp $
- * $NucleusJP: globalfunctions.php,v 1.10 2007/01/31 10:02:58 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: globalfunctions.php,v 1.12 2007-02-04 06:28:46 kimitake Exp $
+ * $NucleusJP: globalfunctions.php,v 1.11 2007/02/03 06:03:57 kimitake Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -251,6 +251,7 @@ include($DIR_LIBS . 'PARSER.php');
 include($DIR_LIBS . 'SKIN.php');
 include($DIR_LIBS . 'TEMPLATE.php');
 include($DIR_LIBS . 'BLOG.php');
+include($DIR_LIBS . 'BODYACTIONS.php');
 include($DIR_LIBS . 'COMMENTS.php');
 include($DIR_LIBS . 'COMMENT.php');
 //include($DIR_LIBS . 'ITEM.php');
@@ -629,7 +630,7 @@ function parseHighlight($query) {
   * Checks if email address is valid
   */
 function isValidMailAddress($address) {
-	if (preg_match('/^[a-zA-Z0-9\._-]+@[a-zA-Z0-9\._-]+\.[A-Za-z]{2,5}$/', $address) ) {
+	if (preg_match('/^[a-zA-Z+0-9\._-]+@[a-zA-Z0-9\._-]+\.[A-Za-z]{2,5}$/', $address)) {
 		return 1;
 	} else {
 		return 0;

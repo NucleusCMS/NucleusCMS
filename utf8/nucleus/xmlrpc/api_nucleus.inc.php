@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,9 +16,9 @@
  * NOTE: These functions are deprecated and will most likely be removed!
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: api_nucleus.inc.php,v 1.5 2006-07-17 20:03:45 kimitake Exp $
- * $NucleusJP: api_nucleus.inc.php,v 1.4 2005/04/20 07:02:31 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: api_nucleus.inc.php,v 1.6 2007-02-04 06:28:46 kimitake Exp $
+ * $NucleusJP: api_nucleus.inc.php,v 1.5 2006/07/17 20:03:45 kimitake Exp $
  */
 
 	// nucleus.addItem

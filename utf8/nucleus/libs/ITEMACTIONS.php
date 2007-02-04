@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,11 +13,10 @@
  * This class to parse item templates
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: ITEMACTIONS.php,v 1.2 2006-07-20 08:01:52 kimitake Exp $
- * @version $NucleusJP$
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: ITEMACTIONS.php,v 1.3 2007-02-04 06:28:46 kimitake Exp $
+ * @version $NucleusJP: ITEMACTIONS.php,v 1.2 2006/07/20 08:01:52 kimitake Exp $
  */
-
 class ITEMACTIONS extends BaseActions {
 
 	// contains an assoc array with parameters that need to be included when
@@ -109,25 +108,64 @@ class ITEMACTIONS extends BaseActions {
 		);
 	}
 
-
-
-	function setLastVisit($lastVisit) {		$this->lastVisit = $lastVisit; }
-	function setParser(&$parser) {			$this->parser =& $parser; }
-	function setCurrentItem(&$item) {		$this->currentItem =& $item; }
-	function setBlog(&$blog) {				$this->blog =& $blog; }
-	function setTemplate($template) {		$this->template =& $template; }
-	function setShowComments($val) {		$this->showComments = $val; }
+	function setLastVisit($lastVisit) {
+		$this->lastVisit = $lastVisit;
+	}
+	
+	function setParser(&$parser) {
+		$this->parser =& $parser;
+	}
+	
+	function setCurrentItem(&$item) {
+		$this->currentItem =& $item;
+	}
+	
+	function setBlog(&$blog) {
+		$this->blog =& $blog;
+	}
+	
+	function setTemplate($template) {
+		$this->template =& $template;
+	}
+	
+	function setShowComments($val) {
+		$this->showComments = $val;
+	}
 
 	// methods used by parser to insert content
 
-	function parse_blogid() {		echo $this->blog->getID();	}
-	function parse_body() {			$this->highlightAndParse($this->currentItem->body); }
-	function parse_more() {			$this->highlightAndParse($this->currentItem->more); }
-	function parse_itemid() {		echo $this->currentItem->itemid; }
-	function parse_category() {		echo $this->currentItem->category; }
-	function parse_categorylink() {	echo createLink('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category)); }
-	function parse_catid() {		echo $this->currentItem->catid; }
-	function parse_authorid() {		echo $this->currentItem->authorid; }
+	function parse_blogid() {
+		echo $this->blog->getID();
+	}
+	
+	function parse_body() {
+		$this->highlightAndParse($this->currentItem->body);
+	}
+	
+	function parse_more() {
+		$this->highlightAndParse($this->currentItem->more);
+	}
+	
+	function parse_itemid() {
+		echo $this->currentItem->itemid;
+	}
+	
+	function parse_category() {
+		echo $this->currentItem->category;
+	}
+	
+	function parse_categorylink() {
+		echo createLink('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category));
+	}
+	
+	function parse_catid() {
+		echo $this->currentItem->catid;
+	}
+	
+	function parse_authorid() {
+		echo $this->currentItem->authorid;
+	}
+	
 	function parse_authorlink() {
 		echo createLink(
 			'member',
@@ -138,7 +176,11 @@ class ITEMACTIONS extends BaseActions {
 			)
 		);
 	}
-	function parse_query() {		echo $this->strHighlight; }
+	
+	function parse_query() {
+		echo $this->strHighlight;
+	}
+	
 	function parse_itemlink() {
 		echo createLink(
 			'item',
@@ -150,9 +192,18 @@ class ITEMACTIONS extends BaseActions {
 			)
 		);
 	}
-	function parse_blogurl() {		echo $this->blog->getURL(); }
-	function parse_closed() {		echo $this->currentItem->closed; }
-	function parse_relevance() {    echo round($this->currentItem->score,2);}
+	
+	function parse_blogurl() {
+		echo $this->blog->getURL();
+	}
+	
+	function parse_closed() {
+		echo $this->currentItem->closed;
+	}
+	
+	function parse_relevance() {
+		echo round($this->currentItem->score,2);
+	}
 
 	function parse_title($format = '') {
 		switch ($format) {
@@ -292,12 +343,14 @@ class ITEMACTIONS extends BaseActions {
 		$args = explode('|',implode($args,', '));
 		call_user_func_array(array(&$this,'createImageCode'),$args);
 	}
+	
 	function parse_popup() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
 		$args = explode('|',implode($args,', '));
 		call_user_func_array(array(&$this,'createPopupCode'),$args);
 	}
+	
 	function parse_media() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
@@ -457,36 +510,4 @@ class ITEMACTIONS extends BaseActions {
 	}
 }
 
-/**
- * A class to parse plugin calls inside items
- */
-class BODYACTIONS extends ITEMACTIONS {
-
-	function getDefinedActions() {
-		return array('image','media','popup','plugin');
-	}
-
-	function parse_plugin($pluginName) {
-		global $manager;
-
-		// only continue when the plugin is really installed
-		if (!$manager->pluginInstalled('NP_' . $pluginName)) {
-			return;
-		}
-
-		$plugin =& $manager->getPlugin('NP_' . $pluginName);
-		if (!$plugin) return;
-
-		// get arguments
-		$params = func_get_args();
-
-		// remove plugin name
-		array_shift($params);
-
-		// add item reference (array_unshift didn't work)
-		$params = array_merge(array(&$this->currentItem),$params);
-
-		call_user_func_array(array(&$plugin,'doItemVar'), $params);
-	}
-}
 ?>

@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,9 +13,9 @@
  * Functions to create lists of things inside the admin are
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: showlist.php,v 1.4 2006-11-13 00:36:39 kimitake Exp $
- * @version $NucleusJP: showlist.php,v 1.3 2006/07/20 08:01:52 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: showlist.php,v 1.5 2007-02-04 06:28:46 kimitake Exp $
+ * @version $NucleusJP: showlist.php,v 1.4 2006/11/13 00:36:39 kimitake Exp $
  */
 
 

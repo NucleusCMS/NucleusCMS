@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2006 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,9 +14,9 @@
  * File containing actions that can be performed by visitors of the site,
  * like adding comments, etc...
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id: action.php,v 1.6 2006-07-12 07:11:45 kimitake Exp $
- * $NucleusJP: action.php,v 1.5 2005/04/20 06:49:45 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: action.php,v 1.7 2007-02-04 06:28:44 kimitake Exp $
+ * $NucleusJP: action.php,v 1.6 2006/07/12 07:11:45 kimitake Exp $
  */
 
 $CONF = array();
