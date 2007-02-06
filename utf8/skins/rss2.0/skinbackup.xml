@@ -2,8 +2,8 @@
 	<meta>
 		<skin name="feeds/rss20" />
 		<template name="feeds/rss20" />
+		<info><![CDATA[RSS 2.0 syndication of weblogs]]></info>
 	</meta>
-
 
 	<skin name="feeds/rss20" type="text/xml" includeMode="normal" includePrefix="">
 		<description>RSS 2.0 syndication of weblogs</description>
@@ -13,10 +13,9 @@
     <title><%blogsetting(name)%></title>
     <link><%blogsetting(url)%></link>
     <description><%blogsetting(desc)%></description>
-    <!-- optional tags -->
-    <language>ja</language>           <!-- valid langugae goes here -->
+    <language>ja</language>
     <generator><%version%></generator>
-	<copyright>&#169;</copyright>             <!-- Copyright notice -->
+    <copyright>&#169;</copyright>
     <category>Weblog</category>
     <docs>http://backend.userland.com/rss</docs>
     <image>
@@ -27,29 +26,25 @@
     <%blog(feeds/rss20,10)%>
   </channel>
 </rss>]]></part>
-
 	</skin>
-
 
 	<template name="feeds/rss20">
 		<description>Used for RSS 2.0 syndication of your blog</description>
 		<part name="EDITLINK"><![CDATA[<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>]]></part>
-
 		<part name="FORMAT_DATE"><![CDATA[%Y-%m-%d]]></part>
-
 		<part name="FORMAT_TIME"><![CDATA[%H:%M:%S]]></part>
-
 		<part name="ITEM"><![CDATA[<item>
- <title><![CDATA[<%title%>]]]]><![CDATA[></title>
- <link><%blogurl%>?itemid=<%itemid%></link>
+<title><![CDATA[<%title(xml)%>]]]]><![CDATA[></title>
+<link><%blogurl%>?itemid=<%itemid%></link>
 <description><![CDATA[<%body%><%more%>]]]]><![CDATA[></description>
- <category><%category%></category>
+<category><%category%></category>
 <comments><%blogurl%>?itemid=<%itemid%></comments>
- <pubDate><%date(rfc822)%></pubDate>
+<pubDate><%date(rfc822)%></pubDate>
 </item>]]></part>
 
-<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
-<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
-<part name="POPUP_CODE"><![CDATA[<%media%>]]></part>
+		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+		<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+		<part name="POPUP_CODE"><![CDATA[<%media%>]]></part>
 
-</template></nucleusskin>
+	</template>
+</nucleusskin>

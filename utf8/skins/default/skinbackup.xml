@@ -1,17 +1,14 @@
 <nucleusskin>
-<meta>
-	<skin name="default" />
-	<template name="default/index" />
-	<template name="default/item" />
-	<info><![CDATA[Nucleus CMS Default Skin]]></info>
-</meta>
+	<meta>
+		<skin name="default" />
+		<template name="default/index" />
+		<template name="default/item" />
+		<info><![CDATA[Nucleus CMS Default Skin]]></info>
+	</meta>
 
-<skin name="default" type="text/html" includeMode="skindir" includePrefix="default/">
-
-<description>Nucleus CMS default skin</description>
-
-
-	<part name="archive"><![CDATA[<%parsedinclude(head.inc)%>
+	<skin name="default" type="text/html" includeMode="skindir" includePrefix="default/">
+		<description>Nucleus CMS default skin</description>
+		<part name="archive"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -38,8 +35,7 @@ You are currently viewing archive for <%archivedate%>
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
-
-	<part name="archivelist"><![CDATA[<%parsedinclude(head.inc)%>
+		<part name="archivelist"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -66,8 +62,7 @@ You are currently viewing archive for <%archivedate%>
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
-
-	<part name="error"><![CDATA[<%parsedinclude(head.inc)%>
+		<part name="error"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -92,8 +87,7 @@ You are currently viewing archive for <%archivedate%>
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
-
-	<part name="imagepopup"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+		<part name="imagepopup"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
 <head>
@@ -111,8 +105,7 @@ body { margin: 0px; }
 
 </html>]]></part>
 
-
-	<part name="index"><![CDATA[<%parsedinclude(head.inc)%>
+		<part name="index"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -133,8 +126,7 @@ body { margin: 0px; }
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
-
-	<part name="item"><![CDATA[<%parsedinclude(head.inc)%>
+		<part name="item"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -168,8 +160,7 @@ body { margin: 0px; }
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
-
-	<part name="member"><![CDATA[<%parsedinclude(head.inc)%>
+		<part name="member"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -201,8 +192,7 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
-
-	<part name="search"><![CDATA[<%parsedinclude(head.inc)%>
+		<part name="search"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
@@ -229,14 +219,12 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
-</skin>
+	</skin>
 
 
-<template name="default/index">
-
-<description>Nucleus CMS default index template</description>
-
-	<part name="ARCHIVELIST_LISTITEM"><![CDATA[<dd>
+	<template name="default/index">
+		<description>Nucleus CMS default index template</description>
+		<part name="ARCHIVELIST_LISTITEM"><![CDATA[<dd>
 <a href="<%archivelink%>" title="Archive for %B, %Y">%B, %Y</a>
 </dd>]]></part>
 
@@ -244,43 +232,43 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 <a href="<%bloglink%>" title="<%blogdesc%>"><%blogname%></a>
 </dd>]]></part>
 
-	<part name="CATLIST_HEADER"><![CDATA[<dd>
+		<part name="CATLIST_HEADER"><![CDATA[<dd>
 <a href="<%blogurl%>" title="All categories">All</a>
 </dd>]]></part>
 
-	<part name="CATLIST_LISTITEM"><![CDATA[<dd>
+		<part name="CATLIST_LISTITEM"><![CDATA[<dd>
 <a href="<%catlink%>" title="Category: <%catname%>"><%catname%></a>
 </dd>]]></part>
 
-	<part name="COMMENTS_MANY"><![CDATA[Comments]]></part>
+		<part name="COMMENTS_MANY"><![CDATA[Comments]]></part>
 
-	<part name="COMMENTS_NONE"><![CDATA[<div class="contentitem3">
+		<part name="COMMENTS_NONE"><![CDATA[<div class="contentitem3">
 <small class="contentitemcomments">
-<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle(attribute)%>'">Add comment</a>
+<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on &#39;<%itemtitle(attribute)%>&#39;">Add comment</a>
 </small>
 </div>]]></part>
 
-	<part name="COMMENTS_ONE"><![CDATA[Comment]]></part>
+		<part name="COMMENTS_ONE"><![CDATA[Comment]]></part>
 
-	<part name="COMMENTS_TOOMUCH"><![CDATA[<div class="contentitem3">
+		<part name="COMMENTS_TOOMUCH"><![CDATA[<div class="contentitem3">
 <small class="contentitemcomments">
-<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle(attribute)%>'"><%commentcount%> <%commentword%></a>
+<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on &#39;<%itemtitle(attribute)%>&#39;"><%commentcount%> <%commentword%></a>
 </small>
 </div>]]></part>
 
-	<part name="EDITLINK"><![CDATA[<div class="contentitem4">
+		<part name="EDITLINK"><![CDATA[<div class="contentitem4">
 <small class="contentitemedit">
 <a href="<%editlink%>" title="Make changes to your entry" onclick="<%editpopupcode%>" >Edit item</a>
 </small>
 </div>]]></part>
 
-	<part name="FORMAT_DATE"><![CDATA[%d/%m]]></part>
+		<part name="FORMAT_DATE"><![CDATA[%m/%d]]></part>
 
-	<part name="FORMAT_TIME"><![CDATA[%X]]></part>
+		<part name="FORMAT_TIME"><![CDATA[%X]]></part>
 
-	<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
 
-	<part name="ITEM"><![CDATA[<div class="contenttitle">
+		<part name="ITEM"><![CDATA[<div class="contenttitle">
 <h2><%date%>: <a href="<%itemlink%>" title="Read entry: <%title(attribute)%>"><%title(raw)%></a></h2>
 </div>
 <div class="contentitem">
@@ -302,28 +290,26 @@ Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 <%morelink%>
 </div>]]></part>
 
-	<part name="LOCALE"><![CDATA[en]]></part>
+		<part name="LOCALE"><![CDATA[en]]></part>
 
-	<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+		<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
 
-	<part name="MORELINK"><![CDATA[<p>&raquo;
-<a href="<%itemlink%>#more" title="Read more on '<%title(attribute)%>'">Read More</a>
+		<part name="MORELINK"><![CDATA[<p>&raquo;
+<a href="<%itemlink%>#more" title="Read more on &#39;<%title(attribute)%>&#39;">Read More</a>
 </p>]]></part>
 
-	<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
+		<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
 
-	<part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part>
+		<part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part>
 
-	<part name="SEARCH_NOTHINGFOUND"><![CDATA[No search results found for <b><%query%></b>]]></part>
+		<part name="SEARCH_NOTHINGFOUND"><![CDATA[No search results found for <b><%query%></b>]]></part>
 
-</template>
+	</template>
 
 
-<template name="default/item">
-
-<description>Nucleus CMS default item template</description>
-
-	<part name="COMMENTS_BODY"><![CDATA[<div class="itemcomment id<%memberid%>">
+	<template name="default/item">
+		<description>Nucleus CMS default item template</description>
+		<part name="COMMENTS_BODY"><![CDATA[<div class="itemcomment id<%memberid%>">
 <h3><a href="<%userlinkraw%>"
 title="<%ip%> | Click to visit <%user%>'s website or send an email">
 <%user%></a> wrote:</h3>
@@ -335,25 +321,25 @@ title="<%ip%> | Click to visit <%user%>'s website or send an email">
 </div>
 </div>]]></part>
 
-	<part name="COMMENTS_MANY"><![CDATA[comments]]></part>
+		<part name="COMMENTS_MANY"><![CDATA[comments]]></part>
 
-	<part name="COMMENTS_NONE"><![CDATA[<div class="comments">No comments yet</div>]]></part>
+		<part name="COMMENTS_NONE"><![CDATA[<div class="comments">No comments yet</div>]]></part>
 
-	<part name="COMMENTS_ONE"><![CDATA[comment]]></part>
+		<part name="COMMENTS_ONE"><![CDATA[comment]]></part>
 
-	<part name="EDITLINK"><![CDATA[<div class="contentitem4">
+		<part name="EDITLINK"><![CDATA[<div class="contentitem4">
 <small class="contentitemedit">
 <a href="<%editlink%>" title="Make changes to your entry" onclick="<%editpopupcode%>" >Edit item</a>
 </small>
 </div>]]></part>
 
-	<part name="FORMAT_DATE"><![CDATA[%d/%m]]></part>
+		<part name="FORMAT_DATE"><![CDATA[%m/%d]]></part>
 
-	<part name="FORMAT_TIME"><![CDATA[%X]]></part>
+		<part name="FORMAT_TIME"><![CDATA[%X]]></part>
 
-	<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
 
-	<part name="ITEM"><![CDATA[<div class="contenttitle">
+		<part name="ITEM"><![CDATA[<div class="contenttitle">
 <h2><%date%>: <%title(raw)%></h2>
 </div>
 <div class="contentitem">
@@ -374,14 +360,15 @@ Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 <a name="more"></a><%more%>
 </div>]]></part>
 
-	<part name="LOCALE"><![CDATA[en]]></part>
+		<part name="LOCALE"><![CDATA[en]]></part>
 
-	<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+		<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
 
-	<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
+		<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
 
-	<part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part>
+		<part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part>
 
-</template>
+	</template>
+
 
 </nucleusskin>
