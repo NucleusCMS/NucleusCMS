@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: PLUGINADMIN.php,v 1.6 2007-02-04 06:28:46 kimitake Exp $
- * $NucleusJP: PLUGINADMIN.php,v 1.5 2006/07/12 07:11:47 kimitake Exp $
+ * @version $Id: PLUGINADMIN.php,v 1.7 2007-02-06 09:00:24 kimitake Exp $
+ * $NucleusJP: PLUGINADMIN.php,v 1.6 2007/02/04 06:28:46 kimitake Exp $
  */
 
 global $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_COOKIE_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_SESSION_VARS;
@@ -92,7 +92,75 @@ class PluginAdmin {
 
 	function end()
 	{
+		$this->_AddTicketByJS();
 		$this->admin->pagefoot();
+	}
+
+/** 
+ * Add ticket when not used in plugin's admin page
+ * to avoid CSRF.
+ */
+	function _AddTicketByJS(){
+		global $CONF,$ticketforplugin;
+		if (!($ticket=$ticketforplugin['ticket'])) {
+			//echo "\n<!--TicketForPlugin skipped-->\n";
+			return;
+		}
+ 
+?><script type="text/javascript">
+/*<![CDATA[*/
+/* Add tickets for available links (outside blog excluded) */
+for (i=0;document.links[i];i++){
+  if (document.links[i].href.indexOf('<?php echo $CONF['PluginURL']; ?>',0)<0
+    && !(document.links[i].href.indexOf('//',0)<0)) continue;
+  if ((j=document.links[i].href.indexOf('?',0))<0) continue;
+  if (document.links[i].href.indexOf('ticket=',j)>=0) continue;
+  document.links[i].href=document.links[i].href.substring(0,j+1)+'ticket=<?php echo $ticket; ?>&'+document.links[i].href.substring(j+1);
+}
+/* Add tickets for forms (outside blog excluded) */
+for (i=0;document.forms[i];i++){
+  /* check if ticket is already used */
+  for (j=0;document.forms[i].elements[j];j++) {
+    if (document.forms[i].elements[j].name=='ticket') {
+      j=-1;
+      break;
+    }
+  }
+  if (j==-1) continue;
+ 
+  /* check if the modification works */
+  try{document.forms[i].innerHTML+='';}catch(e){
+    /* Modificaion falied: this sometime happens on IE */
+    if (!document.forms[i].action.name && document.forms[i].method.toUpperCase()=="POST") {
+      /* <input name="action"/> is not used for POST method*/
+      if (document.forms[i].action.indexOf('<?php echo $CONF['PluginURL']; ?>',0)<0
+        && !(document.forms[i].action.indexOf('//',0)<0)) continue;
+      if (0<(j=document.forms[i].action.indexOf('?',0))) if (0<document.forms[i].action.indexOf('ticket=',j)) continue;
+      if (j<0) document.forms[i].action+='?'+'ticket=<?php echo $ticket; ?>';
+      else document.forms[i].action+='&'+'ticket=<?php echo $ticket; ?>';
+      continue;
+    }
+    document.write('<p><b>Error occured druing automatic addition of tickets.</b></p>');
+    j=document.forms[i].outerHTML;
+    while (j!=j.replace('<','&lt;')) j=j.replace('<','&lt;');
+    document.write('<p>'+j+'</p>');
+    continue;
+  }
+  /* check the action paramer in form tag */
+  /* note that <input name="action"/> may be used here */
+  j=document.forms[i].innerHTML;
+  document.forms[i].innerHTML='';
+  if ((document.forms[i].action+'').indexOf('<?php echo $CONF['PluginURL']; ?>',0)<0
+      && !((document.forms[i].action+'').indexOf('//',0)<0)) {
+    document.forms[i].innerHTML=j;
+    continue;
+  }
+  /* add ticket */
+  document.forms[i].innerHTML=j+'<input type="hidden" name="ticket" value="<?php echo $ticket; ?>"/>';
+}
+/*]]>*/
+</script><?php
+ 
 	}
 }
 
