@@ -16,8 +16,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BLOG.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
- * $NucleusJP: BLOG.php,v 1.6 2006/08/31 20:58:50 kimitake Exp $
+ * @version $Id: BLOG.php,v 1.8 2007-02-07 12:32:25 shizuki Exp $
+ * $NucleusJP: BLOG.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
  */
 
 // temporary: dirt way to separe class ITEMACTIONS from BLOG
@@ -618,7 +618,7 @@ class BLOG {
 		}
 
 		//$blogurl = $this->getURL() . $qargs;
-		$blogurl = createBlogLink($this->getURL(), $linkparams);
+		//$blogurl = createBlogLink($this->getURL(), $linkparams);
 
 		$template =& $manager->getTemplate($template);
 
