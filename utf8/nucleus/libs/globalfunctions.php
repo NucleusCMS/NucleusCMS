@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.13 2007-02-06 09:00:24 kimitake Exp $
- * $NucleusJP: globalfunctions.php,v 1.12 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: globalfunctions.php,v 1.14 2007-02-07 09:15:57 kimitake Exp $
+ * $NucleusJP: globalfunctions.php,v 1.13 2007/02/06 09:00:24 kimitake Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -741,21 +741,13 @@ function selector() {
 //		if ($blogid && (intval($blogid) != $obj->iblog) ) {
 //			doError(_ERROR_NOSUCHITEM);
 //		}
-		if ($blogid && (intval($blogid) != $obj->iblog) ) {
+		if ($blogid && (intval($blogid) != $obj->iblog)) {
 			if (!headers_sent()) {
 				$b =& $manager->getBlog($obj->iblog);
-				$correctURL = $b->getURL();
-
-				if ($CONF['URLMode'] == 'pathinfo') {
-					if (substr($correctURL,strlen($correctURL)-1,1)=='/') {
-						$correctURL .= 'item/' . $itemid;
-					} else {
-						$correctURL .= '/item/' . $itemid;
-					}
-				} else {
-					$correctURL .= '?itemid=' . $itemid;
-				}
-
+				$CONF['ItemURL'] = $b->getURL();
+				if ($CONF['URLMode'] == 'pathinfo' and substr($CONF['ItemURL'],-1) == '/')
+					$CONF['ItemURL'] = substr($CONF['ItemURL'], 0, -1);
+				$correctURL = createItemLink($itemid, '');
 				redirect($correctURL);
 				exit;
 			} else {
