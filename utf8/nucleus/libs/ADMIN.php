@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.14 2007-02-04 06:28:46 kimitake Exp $
- * @version $NucleusJP: ADMIN.php,v 1.13 2007/02/03 06:00:04 kimitake Exp $
+ * @version $Id: ADMIN.php,v 1.15 2007-02-09 02:47:47 kimitake Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.14 2007/02/04 06:28:46 kimitake Exp $
  */
 
 require_once "showlist.php";
@@ -1667,7 +1667,7 @@ class ADMIN {
 
 		echo '<h3>' . _MEMBERS_NEW .'</h3>';
 		?>
-			<form method="post" action="index.php"><div>
+			<form method="post" action="index.php" name="memberedit"><div>
 
 			<input type="hidden" name="action" value="memberadd" />
 			<?php $manager->addTicketHidden() ?>
@@ -1747,7 +1747,7 @@ class ADMIN {
 		$mem = MEMBER::createFromID($memberid);
 
 		?>
-		<form method="post" action="index.php"><div>
+		<form method="post" action="index.php" name="memberedit"><div>
 
 		<input type="hidden" name="action" value="changemembersettings" />
 		<input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
@@ -1795,7 +1795,7 @@ class ADMIN {
 				<td><?php $this->input_yesno('admin',$mem->isAdmin(),60); ?></td>
 			</tr><tr>
 				<td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
-				<td><?php $this->input_yesno('canlogin',$mem->canLogin(),70); ?></td>
+				<td><?php $this->input_yesno('canlogin',$mem->canLogin(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
 		<?php } ?>
 		</tr><tr>
 			<td><?php echo _MEMBERS_NOTES?></td>
@@ -6177,21 +6177,32 @@ selector();
 	 * Helper functions to create option forms etc.
 	 * @todo document parameters
 	 */
-	function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO) {
+	function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0) {
 		$id = htmlspecialchars($name);
 		$id = str_replace('[','-',$id);
 		$id = str_replace(']','-',$id);
 		$id1 = $id . htmlspecialchars($value1);
 		$id2 = $id . htmlspecialchars($value2);
 
-		echo '<input type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value1),'" ';
+		if ($name=="admin") {
+			echo '<input onclick="selectCanLogin(true);" type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value1),'" ';
+	   	} else {
+			echo '<input type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value1),'" ';
+		}
+
 			if ($checkedval == $value1)
 				echo "tabindex='$tabindex' checked='checked'";
 			echo ' id="'.$id1.'" /><label for="'.$id1.'">' . $yesval . '</label>';
 		echo ' ';
-		echo '<input type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value2),'" ';
+		if ($name=="admin") {
+			echo '<input onclick="selectCanLogin(false);" type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value2),'" ';
+		} else {
+			echo '<input type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value2),'" ';
+		}
 			if ($checkedval != $value1)
 				echo "tabindex='$tabindex' checked='checked'";
+			if ($isAdmin && $name=="canlogin")
+				echo " disabled='true'";
 			echo ' id="'.$id2.'" /><label for="'.$id2.'">' . $noval . '</label>';
 	}
 
