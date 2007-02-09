@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.15 2007-02-09 02:47:47 kimitake Exp $
- * @version $NucleusJP: ADMIN.php,v 1.14 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: ADMIN.php,v 1.16 2007-02-09 02:48:44 kimitake Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.15 2007/02/09 02:47:47 kimitake Exp $
  */
 
 require_once "showlist.php";
@@ -3205,7 +3205,7 @@ class ADMIN {
 			<td><input name="timeoffset" tabindex="110" size="3" value="0" /></td>
 		</tr><tr>
 			<td><?php echo _EBLOG_ADMIN?>
-				<?php help('blogadmin'); ?>
+				<?php help('teamadmin'); ?>
 			</td>
 			<td><?php echo _EBLOG_ADMIN_MSG?></td>
 		</tr><tr>
