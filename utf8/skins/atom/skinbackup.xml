@@ -13,7 +13,7 @@
 		<part name="index"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <feed xml:lang="ja" xmlns="http://www.w3.org/2005/Atom">
     <title><%blogsetting(name)%></title>
-	<tagline><%blogsetting(desc)%></tagline>
+	<subtitle><%blogsetting(desc)%></subtitle>
 	<id><%blogsetting(url)%>:<%blogsetting(id)%></id>
 
     <link rel="alternate" type="text/html" href="<%blogsetting(url)%>" />
@@ -35,14 +35,14 @@
 	<template name="feeds/atom/entries">
 		<description>Atom feeds: Feed items</description>
 		<part name="ITEM"><![CDATA[<entry>
- <title type="text/html" mode="escaped"><![CDATA[<%title%>]]]]><![CDATA[></title>
+ <title type="html"><![CDATA[<%title%>]]]]><![CDATA[></title>
  <link rel="alternate" type="text/html" href="<%blogurl%>?itemid=<%itemid%>" />
  <author>
   <name><%author%></name>
  </author>
- <modified><%date(utc)%></modified>
- <issued><%date(iso8601)%></issued>
- <content type="text/html" mode="escaped"><![CDATA[<%body%><%more%>]]]]><![CDATA[></content>
+ <updated><%date(utc)%></updated>
+ <published><%date(iso8601)%></published>
+ <content type="html"><![CDATA[<%body%><%more%>]]]]><![CDATA[></content>
  <id><%blogurl%>:<%blogid%>:<%itemid%></id>
 </entry>]]></part>
 		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
