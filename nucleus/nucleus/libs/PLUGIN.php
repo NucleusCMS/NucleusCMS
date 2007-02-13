@@ -58,6 +58,7 @@
 		}
 		function doAction($type) { return 'No Such Action'; }
 		function doIf($key,$value) { return false; }
+		function doItemVar () {}
 
 		/**
 		 * Checks if a plugin supports a certain feature.
