@@ -18,10 +18,26 @@
  * @version $Id$
  */
 
-class BODYACTIONS extends ITEMACTIONS {
+class BODYACTIONS extends BaseActions {
+
+	var $currentItem;
+
+	var $template;
+
+	function BODYACTIONS () {
+		$this->BaseActions();	
+	}
+	
+	function setCurrentItem(&$item) {
+		$this->currentItem =& $item;
+	}
+	
+	function setTemplate($template) {
+		$this->template =& $template;
+	}
 
 	function getDefinedActions() {
-		return array('image','media','popup','plugin');
+		return array('image', 'media', 'popup', 'plugin');
 	}
 
 	function parse_plugin($pluginName) {
@@ -46,5 +62,90 @@ class BODYACTIONS extends ITEMACTIONS {
 
 		call_user_func_array(array(&$plugin,'doItemVar'), $params);
 	}
+	
+	function parse_image() {
+		// image/popup calls have arguments separated by |
+		$args = func_get_args();
+		$args = explode('|',implode($args,', '));
+		call_user_func_array(array(&$this,'createImageCode'),$args);
+	}
+	
+	function createImageCode($filename, $width, $height, $text = '') {
+		global $CONF;
+
+		// select private collection when no collection given
+		if (!strstr($filename,'/')) {
+			$filename = $this->currentItem->authorid . '/' . $filename;
+		}
+
+		$windowwidth = $width;
+		$windowheight = $height;
+
+		$vars['link']			= htmlspecialchars($CONF['MediaURL']. $filename);
+		$vars['text']			= htmlspecialchars($text);
+		$vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
+		$vars['width'] 			= $width;
+		$vars['height']			= $height;
+		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
+
+
+		echo TEMPLATE::fill($this->template['IMAGE_CODE'],$vars);;
+
+	}
+	
+	function parse_media() {
+		// image/popup calls have arguments separated by |
+		$args = func_get_args();
+		$args = explode('|',implode($args,', '));
+		call_user_func_array(array(&$this,'createMediaCode'),$args);
+	}
+
+	function createMediaCode($filename, $text = '') {
+		global $CONF;
+
+		// select private collection when no collection given
+		if (!strstr($filename,'/')) {
+			$filename = $this->currentItem->authorid . '/' . $filename;
+		}
+
+		$vars['link']			= htmlspecialchars($CONF['MediaURL'] . $filename);
+		$vars['text']			= htmlspecialchars($text);
+		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
+
+		echo TEMPLATE::fill($this->template['MEDIA_CODE'],$vars);;
+	}
+
+
+	function parse_popup() {
+		// image/popup calls have arguments separated by |
+		$args = func_get_args();
+		$args = explode('|',implode($args,', '));
+		call_user_func_array(array(&$this,'createPopupCode'),$args);
+	}
+
+	function createPopupCode($filename, $width, $height, $text = '') {
+		global $CONF;
+
+		// select private collection when no collection given
+		if (!strstr($filename,'/')) {
+			$filename = $this->currentItem->authorid . '/' . $filename;
+		}
+
+		$windowwidth = $width;
+		$windowheight = $height;
+
+		$vars['rawpopuplink'] 	= $CONF['Self'] . "?imagepopup=" . htmlspecialchars($filename) . "&amp;width=$width&amp;height=$height&amp;imagetext=" . urlencode(htmlspecialchars($text));
+		$vars['popupcode'] 		= "window.open(this.href,'imagepopup','status=no,toolbar=no,scrollbars=no,resizable=yes,width=$windowwidth,height=$windowheight');return false;";
+		$vars['popuptext'] 		= htmlspecialchars($text);
+		$vars['popuplink'] 		= '<a href="' . $vars['rawpopuplink']. '" onclick="'. $vars['popupcode'].'" >' . $vars['popuptext'] . '</a>';
+		$vars['width'] 			= $width;
+		$vars['height']			= $height;
+		$vars['text']			= $text;
+		$vars['link']			= htmlspecialchars($CONF['MediaURL'] . $filename);
+		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['popuptext'] . '</a>';
+
+		echo TEMPLATE::fill($this->template['POPUP_CODE'],$vars);
+	}
+
 }
 ?>
