@@ -578,7 +578,7 @@ define('_ERROR_VOTEDBEFORE',		'このアイテムに既に投票済みです');
 define('_ERROR_BANNED1',			'あなた (IP範囲 ');
 define('_ERROR_BANNED2',			') はこのアクションの実行が禁止されています。メッセージ: \'');
 define('_ERROR_BANNED3',			'\'');
-define('_ERROR_LOGINNEEDED',		'このアクションを実行するするにはログインが必要です');
+define('_ERROR_LOGINNEEDED',		'このアクションを実行するにはログインが必要です');
 define('_ERROR_CONNECT',			'接続エラー');
 define('_ERROR_FILE_TOO_BIG',		'ファイルが大きすぎます!');
 define('_ERROR_BADFILETYPE',		'このファイルタイプは認められていません');
