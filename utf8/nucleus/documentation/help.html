@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
-	<!-- $Id: help.html,v 1.8 2006-07-12 07:11:46 kimitake Exp $ -->
-	<!-- $NucleusJP: help.html,v 1.7.2.1 2005/09/09 07:34:11 kimitake Exp $ -->
+	<!-- $Id: help.html,v 1.9 2007-02-17 04:36:54 shizuki Exp $ -->
+	<!-- $NucleusJP: help.html,v 1.8 2006/07/12 07:11:46 kimitake Exp $ -->
 
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Nucleus管理用ヘルプ</title>
@@ -467,6 +467,75 @@ Blogの管理者は次のような追加権限をもちます：
 <p>言語設定をあなたの住んでいる地域の設定に変更するためには、<a href="#templatelocale">locale</a>を変更してください。</p>
 
 </div>
+
+
+
+
+<div class="page"><a name="templatebloglists"></a>
+<h1>テンプレート：ブログリスト</h1>
+
+<p>ブログリストは下の表のようにフォーマットされます：</p>
+
+<pre>ブログリストヘッダー
+  ブログリストアイテム（繰り返し）
+ブログリストフッター</pre>
+
+<p>利用可能な変数：（ヘッダーとフッターでは<tt>sitename</tt>、<tt>siteurl</tt>のみが許可されています）</p>
+
+<table><tr>
+	<th>名前</th>
+	<th>説明</th>
+</tr><tr>
+	<td>bloglink</td>
+	<td>blogのURL（blogごとの「設定」で定義される）これにより&lt;a href=".."&gt;タグを埋め込むことができる。</td>
+</tr><tr>
+	<td>blogname</td>
+	<td>ブログ名(第二引数に『shortname』が指定された場合は『ブログの短縮名』)</td>
+</tr><tr>
+	<td>blogdesc</td>
+	<td>ブログの説明</td>
+</tr><tr>
+	<th colspan="2">ヘッダーとフッターでのみ使用できる変数</th>
+</tr><tr>
+	<td>sitename</td>
+	<td>グローバル設定の『サイト名』</td>
+</tr><tr>
+	<td>siteurl</td>
+	<td>グローバル設定の『サイトのURL』</td>
+</tr></table>
+
+<p><a href="#bloglistexample">例を見る</a></p>
+
+</div>
+
+<div class="page"><a name="bloglistexample"></a>
+<h1>テンプレート：ブログリストの例</h1>
+<p>
+<a href="#templatebloglists">（戻る）</a>
+</p>
+
+<h2>ブログリストヘッダー</h2>
+<pre><code>&lt;ul&gt;
+  &lt;li&gt;&lt;a href="&lt;%siteurl%&gt;"&gt;&lt;%sitename%&gt;&lt;/a&gt;&lt;/li&gt;</code></pre>
+
+<h2>ブログリストアイテム</h2>
+<pre><code>&lt;li&gt;&lt;a href="&lt;%bloglink%&gt;" title="&lt;%blogdesc%&gt;"&gt;&lt;%blogname%&gt;&lt;/a&gt;&lt;/li&gt;</code></pre>
+
+<h2>ブログリストフッター</h2>
+<pre><code>&lt;/ul&gt;</code></pre>
+
+<h2>結果はこうなります：</h2>
+
+<ul class="example">
+	<li><a href="#categorylistexample">あなたのサイト</a></li>
+	<li><a href="#categorylistexample" title="あなたのブログの説明">あなたのブログ</a></li>
+	<li><a href="#categorylistexample" title="わたしのブログの説明">わたしのブログ</a></li>
+</ul>
+
+</div>
+
+
+
 
 
 
@@ -1622,6 +1691,39 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <pre>
 &lt;%categorylist(mytemplate)%&gt;
 &lt;%categorylist(mytemplate,myweblog)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-bloglist"></a>
+<h1>スキン変数：bloglist</h1>
+
+<p>Nucleusで管理しているブログリストを、指定されたテンプレートを用いて挿入。</p>
+
+<h2>引数</h2>
+<p>
+	必須：
+	<ul>
+		<li><strong>template</strong>：使用するテンプレート名</li>
+	</ul>
+	オプション：
+	<ul>
+		<li><strong><em>blognamemode</em></strong>：『shortname』を指定する事で、ブログ名の変わりにブログの短縮名を表示</li>
+	</ul>
+</p>
+
+<h2>スキンタイプ</h2>
+
+<p>メインの目次、月別アーカイブ、月別アーカイブ一覧、検索、個別アイテム</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%bloglist(mytemplate)%&gt;
+&lt;%bloglist(mytemplate,shortname)%&gt;
 </pre>
 
 </div>

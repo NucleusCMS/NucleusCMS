@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.16 2007-02-09 02:48:44 kimitake Exp $
- * @version $NucleusJP: ADMIN.php,v 1.15 2007/02/09 02:47:47 kimitake Exp $
+ * @version $Id: ADMIN.php,v 1.17 2007-02-17 04:37:50 shizuki Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.16 2007/02/09 02:48:44 kimitake Exp $
  */
 
 require_once "showlist.php";
@@ -3787,6 +3787,12 @@ selector();
 	$this->_templateEditRow($template, _TEMPLATE_AFOOTER, 'ARCHIVELIST_FOOTER', '', 150);
 ?>
 		</tr><tr>
+			<th colspan="2"><?php echo _TEMPLATE_BLOGLIST?> <?php help('templatebloglists'); ?></th>
+<?php	$this->_templateEditRow($template, _TEMPLATE_BLOGHEADER, 'BLOGLIST_HEADER', '', 160);
+	$this->_templateEditRow($template, _TEMPLATE_BLOGITEM, 'BLOGLIST_LISTITEM', '', 170);
+	$this->_templateEditRow($template, _TEMPLATE_BLOGFOOTER, 'BLOGLIST_FOOTER', '', 180);
+?>
+		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_CATEGORYLIST?> <?php help('templatecategorylists'); ?></th>
 <?php	$this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 160);
 	$this->_templateEditRow($template, _TEMPLATE_CATITEM, 'CATLIST_LISTITEM', '', 170);
@@ -3892,6 +3898,9 @@ selector();
 		$this->addToTemplate($templateid, 'ARCHIVELIST_HEADER', postVar('ARCHIVELIST_HEADER'));
 		$this->addToTemplate($templateid, 'ARCHIVELIST_LISTITEM', postVar('ARCHIVELIST_LISTITEM'));
 		$this->addToTemplate($templateid, 'ARCHIVELIST_FOOTER', postVar('ARCHIVELIST_FOOTER'));
+		$this->addToTemplate($templateid, 'BLOGLIST_HEADER', postVar('BLOGLIST_HEADER'));
+		$this->addToTemplate($templateid, 'BLOGLIST_LISTITEM', postVar('BLOGLIST_LISTITEM'));
+		$this->addToTemplate($templateid, 'BLOGLIST_FOOTER', postVar('BLOGLIST_FOOTER'));
 		$this->addToTemplate($templateid, 'CATLIST_HEADER', postVar('CATLIST_HEADER'));
 		$this->addToTemplate($templateid, 'CATLIST_LISTITEM', postVar('CATLIST_LISTITEM'));
 		$this->addToTemplate($templateid, 'CATLIST_FOOTER', postVar('CATLIST_FOOTER'));
