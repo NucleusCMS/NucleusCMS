@@ -1,0 +1,17 @@
+<?php
+
+include('./fancyurls.config.php');
+include('./config.php');
+
+if (!requestVar('special'))
+{
+       $data = explode("/",serverVar('PATH_INFO'));
+       if (count($data) > 1)
+       {
+               $_REQUEST['special'] = $data[1];
+       }
+}
+
+selector();
+
+?>
