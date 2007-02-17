@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.14 2007-02-07 09:15:57 kimitake Exp $
- * $NucleusJP: globalfunctions.php,v 1.13 2007/02/06 09:00:24 kimitake Exp $
+ * @version $Id: globalfunctions.php,v 1.15 2007-02-17 04:39:59 shizuki Exp $
+ * $NucleusJP: globalfunctions.php,v 1.14 2007/02/07 09:15:57 kimitake Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -392,6 +392,14 @@ if ($CONF['URLMode'] == 'pathinfo') {
 						$memberid = intval($data[$i]);
 					}
 					break;
+
+                case 'special':
+                    $i++;
+
+					if ($i < sizeof($data) ) {
+                    	$_REQUEST['special'] = $data[$i];
+                    }
+                    break;
 
 				default:
 					// skip...
