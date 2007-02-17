@@ -5,8 +5,16 @@
 
 <!-- archive: navigation -->
 <%if(skintype,archive)%>
+<%if(archiveprevexists)%>
 <dd><a href="<%prevlink%>" title="Previous month">Previous <%archivetype%></a></dd>
+<%else%>
+<dd>&nbsp;</dd>
+<%endif%>
+<%if(archivenextexists)%>
 <dd><a href="<%nextlink%>" title="Next month">Next <%archivetype%></a></dd>
+<%else%>
+<dd>&nbsp;</dd>
+<%endif%>
 <dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
 <dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
 <%endif%>

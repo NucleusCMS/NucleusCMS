@@ -93,7 +93,7 @@ class ACTIONS extends BaseActions {
 	 * @param string $value value of property
 	 */
 	function checkCondition($field, $name='', $value = '') {
-		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager;
+		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
 
 		$condition = 0;
 		switch($field) {
@@ -117,6 +117,12 @@ class ACTIONS extends BaseActions {
 				break;
 			case 'previtem':
 				$condition = ($itemidprev != '');
+				break;
+			case 'archiveprevexists':
+				$condition = ($archiveprevexists == true);
+				break;
+			case 'archivenextexists':
+				$condition = ($archivenextexists == true);
 				break;
 			case 'skintype':
 				$condition = ($name == $this->skintype);
