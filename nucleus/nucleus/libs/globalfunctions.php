@@ -746,21 +746,61 @@ function selector() {
 		// show archive
 		$type = 'archive';
 
-		// get next and prev month links
-		global $archivenext, $archiveprev, $archivetype;
+		// get next and prev month links ...
+		global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
+		
+		// sql queries for the timestamp of the first and the last published item
+		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime ASC";
+		$first_timestamp=quickQuery ($query); 
+		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime DESC";
+		$last_timestamp=quickQuery ($query); 
 
 		sscanf($archive, '%d-%d-%d', $y, $m, $d);
 
 		if ($d != 0) {
 			$archivetype = _ARCHIVETYPE_DAY;
 			$t = mktime(0, 0, 0, $m, $d, $y);
-			$archiveprev = strftime('%Y-%m-%d', $t - (24 * 60 * 60) );
-			$archivenext = strftime('%Y-%m-%d', $t + (24 * 60 * 60) );
+			// one day has 24 * 60 * 60 = 86400 seconds			
+			$archiveprev = strftime('%Y-%m-%d', $t - 86400 );
+			// check for published items			
+			if ($t > $first_timestamp) {
+				$archiveprevexists = true;
+			}
+			else {
+				$archiveprevexists = false;
+			}
+			
+			// one day later
+			$t += 86400; 
+			$archivenext = strftime('%Y-%m-%d', $t);
+			if ($t < $last_timestamp) {
+				$archivenextexists = true;
+			}
+			else {
+				$archivenextexists = false;
+			}
+			
 		} else {
 			$archivetype = _ARCHIVETYPE_MONTH;
 			$t = mktime(0, 0, 0, $m, 1, $y);
-			$archiveprev = strftime('%Y-%m', $t - (1 * 24 * 60 * 60) );
-			$archivenext = strftime('%Y-%m', $t + (32 * 24 * 60 * 60) );
+			// one day before is in the previous month
+			$archiveprev = strftime('%Y-%m', $t - 86400);
+			if ($t > $first_timestamp) {
+				$archiveprevexists = true;
+			}
+			else {
+				$archiveprevexists = false;
+			}
+			
+			// timestamp for the next month			
+			$t = mktime(0, 0, 0, $m+1, 1, $y);
+			$archivenext = strftime('%Y-%m', $t);
+			if ($t < $last_timestamp) {
+				$archivenextexists = true;
+			}
+			else {
+				$archivenextexists = false;
+			}
 		}
 
 	} elseif ($archivelist) {
