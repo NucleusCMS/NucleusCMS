@@ -16,8 +16,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BLOG.php,v 1.8 2007-02-07 12:32:25 shizuki Exp $
- * $NucleusJP: BLOG.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: BLOG.php,v 1.9 2007-02-17 04:39:29 shizuki Exp $
+ * $NucleusJP: BLOG.php,v 1.8 2007/02/07 12:32:25 shizuki Exp $
  */
 
 // temporary: dirt way to separe class ITEMACTIONS from BLOG
@@ -670,6 +670,12 @@ class BLOG {
 		
 		$template =& $manager->getTemplate($template);
 		
+		echo TEMPLATE::fill((isset($template['BLOGLIST_HEADER']) ? $template['BLOGLIST_HEADER'] : null),
+							array(
+								'sitename' => $CONF['SiteName'],
+								'siteurl' => $CONF['IndexURL']
+							));
+		
 		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY bnumber ASC';
 		$res = sql_query($query);
 		
@@ -693,6 +699,13 @@ class BLOG {
 		}
 		
 		mysql_free_result($res);
+		
+		echo TEMPLATE::fill((isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
+							array(
+								'sitename' => $CONF['SiteName'],
+								'siteurl' => $CONF['IndexURL']
+							));
+
 	}
 
 	/**
