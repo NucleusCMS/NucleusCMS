@@ -16,8 +16,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: backup.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
- * $NucleusJP: backup.php,v 1.6 2006/12/11 22:23:49 kmorimatsu Exp $
+ * @version $Id: backup.php,v 1.8 2007-02-19 22:27:59 kmorimatsu Exp $
+ * $NucleusJP: backup.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
  */
 
 
@@ -188,7 +188,7 @@ function _backup_dump_structure($tablename) {
 		if(!is_array($index[$kname]))
 			$index[$kname] = array();
 
-		$index[$kname][] = $row['Column_name'];
+		$index[$kname][] = $row['Column_name'] . ( ($row['Sub_part']) ? ' (' . $row['Sub_part'] . ')' : '');
 	}
 
 	while(list($x, $columns) = @each($index)) {
