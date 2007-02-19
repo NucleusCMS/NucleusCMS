@@ -17,8 +17,8 @@
 	 *
 	 * @license http://nucleuscms.org/license.txt GNU General Public License
 	 * @copyright Copyright (C) 2002-2007 The Nucleus Group
-	 * @version $Id: PLUGIN.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
-	 * $NucleusJP: PLUGIN.php,v 1.6 2006/12/07 03:18:33 kmorimatsu Exp $
+	 * @version $Id: PLUGIN.php,v 1.8 2007-02-19 22:29:31 kmorimatsu Exp $
+	 * $NucleusJP: PLUGIN.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
 	 */
 	class NucleusPlugin {
 
@@ -359,7 +359,7 @@
 
 			// update plugin_option
 			sql_query('DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid) . ' and ocontextid='. intval($contextid));
-			sql_query('INSERT INTO ' . sql_table('plugin_option') . ' (ovalue, oid, ocontextid) VALUES (\''.addslashes($value).'\', '. intval($oid) . ', ' . intval($contextid) . ')');
+			@mysql_query('INSERT INTO ' . sql_table('plugin_option') . ' (ovalue, oid, ocontextid) VALUES (\''.addslashes($value).'\', '. intval($oid) . ', ' . intval($contextid) . ')');
 
 			// update cache
 			$this->_aOptionValues[$oid . '_' . $contextid] = $value;
@@ -592,7 +592,7 @@
 
 							// delete the old value for the option
 							sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));
-							sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
+							@mysql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
 						}
 					}
 				}
