@@ -34,18 +34,17 @@ class ACTIONS extends BaseActions {
 	// reference to the skin object for which a part is being parsed
 	var $skin;
 
-
 	// used when including templated forms from the include/ dir. The $formdata var
 	// contains the values to fill out in there (assoc array name -> value)
 	var $formdata;
 
-
 	// filled out with the number of displayed items after calling one of the
-
 	// (other)blog/(other)searchresults skinvars.
-
 	var $amountfound;
 
+	/**
+	 * Constructor for a new ACTIONS object
+	 */
 	function ACTIONS($type) {
 		// call constructor of superclass first
 		$this->BaseActions();
@@ -57,10 +56,16 @@ class ACTIONS extends BaseActions {
 			$this->linkparams = array('catid' => $catid);
 	}
 
+	/**
+	 *  Set the skin
+	 */
 	function setSkin(&$skin) {
 		$this->skin =& $skin;
 	}
 
+	/**
+	 *  Set the parser
+	 */
 	function setParser(&$parser) {
 		$this->parser =& $parser;
 	}
@@ -167,6 +172,9 @@ class ACTIONS extends BaseActions {
 		return $condition;
 	}
 
+	/**
+	 * Checks if a plugin exists and call its doIf function
+	 */
 	function _ifPlugin($name, $key = '', $value = '') {
 		global $manager;
 
@@ -179,6 +187,9 @@ class ACTIONS extends BaseActions {
 		return call_user_func_array(array(&$plugin, 'doIf'), $params);
 	}
 
+	/**
+	 *  Different checks for a category
+	 */
 	function _ifCategory($name = '', $value='') {
 		global $blog, $catid;
 
@@ -200,6 +211,9 @@ class ACTIONS extends BaseActions {
 		return false;
 	}
 
+	/**
+	 *  Checks if a member is on the team of a blog and return his rights
+	 */	 	
 	function _ifOnTeam($blogName = '') {
 		global $blog, $member, $manager;
 
@@ -218,6 +232,9 @@ class ACTIONS extends BaseActions {
 		return $member->teamRights($blogid);
 	}
 
+	/**
+	 *  Checks if a member is admin of a blog
+	 */	 	
 	function _ifAdmin($blogName = '') {
 		global $blog, $member, $manager;
 
@@ -311,6 +328,9 @@ class ACTIONS extends BaseActions {
 			echo $this->_link($url, $linktext);
 	}
 
+	/**
+	 *  Creates an item link and if no id is given a todaylink 
+	 */
 	function _itemlink($id, $linktext = '') {
 		global $CONF;
 		if ($id)
@@ -319,6 +339,9 @@ class ACTIONS extends BaseActions {
 			$this->parse_todaylink($linktext);
 	}
 	
+	/**
+	 *  Creates an archive link and if no id is given a todaylink 
+	 */
 	function _archivelink($id, $linktext = '') {
 		global $CONF, $blog;
 		if ($id)
@@ -342,12 +365,18 @@ class ACTIONS extends BaseActions {
 		else
 			$blog->setSelectedCategory($catid);
 	}
-	
+
+	/**
+	 *  Notifies the Manager that a PreBlogContent event occurs
+	 */	 		
 	function _preBlogContent($type, &$blog) {
 		global $manager;
 		$manager->notify('PreBlogContent',array('blog' => &$blog, 'type' => $type));
 	}
 
+	/**
+	 *  Notifies the Manager that a PostBlogContent event occurs
+	 */	 
 	function _postBlogContent($type, &$blog) {
 		global $manager;
 		$manager->notify('PostBlogContent',array('blog' => &$blog, 'type' => $type));
@@ -419,6 +448,9 @@ class ACTIONS extends BaseActions {
 		echo strftime($format,mktime(0,0,0,$m,$d?$d:1,$y));
 	}
 
+	/**
+	 *  Parse skinvar archivedaylist
+	 */	 	
 	function parse_archivedaylist($template, $category = 'all', $limit = 0) {
 		global $blog;
 		if ($category == 'all') $category = '';
