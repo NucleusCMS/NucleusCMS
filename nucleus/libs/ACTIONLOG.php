@@ -25,7 +25,7 @@ $CONF['LogLevel'] = INFO;
 class ACTIONLOG {
 
 	/**
-	  * (Static) Method to add message to log
+	  * (Static) Method to add a message to the action log
 	  */
 	function add($level, $message) {
 		global $member, $CONF;
@@ -46,7 +46,7 @@ class ACTIONLOG {
 	}
 
 	/**
-	  * (Static) Method to clear log
+	  * (Static) Method to clear the whole action log
 	  */
 	function clear() {
 		global $manager;
@@ -58,6 +58,9 @@ class ACTIONLOG {
 		return sql_query($query);
 	}
 
+	/**
+	  * (Static) Method to trim the action log (from over 500 back to 250 entries)
+	  */
 	function trimLog() {
 		static $checked = 0;
 
