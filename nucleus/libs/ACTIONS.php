@@ -1213,6 +1213,13 @@ class ACTIONS extends BaseActions {
 	function parse_skinname() {
 		echo $this->skin->getName();
 	}
+	
+	/**
+	 * Parse skintype (experimental)
+	 */
+	function parse_skintype() {
+		echo $this->skintype;
+	}
 
 	/**
 	 * Parse text
