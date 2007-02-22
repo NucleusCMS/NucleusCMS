@@ -213,7 +213,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 *  Checks if a member is on the team of a blog and return his rights
-	 */	 	
+	 */
 	function _ifOnTeam($blogName = '') {
 		global $blog, $member, $manager;
 
@@ -234,7 +234,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 *  Checks if a member is admin of a blog
-	 */	 	
+	 */
 	function _ifAdmin($blogName = '') {
 		global $blog, $member, $manager;
 
@@ -368,7 +368,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 *  Notifies the Manager that a PreBlogContent event occurs
-	 */	 		
+	 */
 	function _preBlogContent($type, &$blog) {
 		global $manager;
 		$manager->notify('PreBlogContent',array('blog' => &$blog, 'type' => $type));
@@ -376,7 +376,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 *  Notifies the Manager that a PostBlogContent event occurs
-	 */	 
+	 */
 	function _postBlogContent($type, &$blog) {
 		global $manager;
 		$manager->notify('PostBlogContent',array('blog' => &$blog, 'type' => $type));
@@ -405,7 +405,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 * Parse skinvar archive
-	 */	
+	 */
 	function parse_archive($template, $category = '') {
 		global $blog, $archive;
 		// can be used with either yyyy-mm or yyyy-mm-dd
@@ -482,7 +482,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 * Parse skinvar archivetype
-	 */	
+	 */
 	function parse_archivetype() {
 		global $archivetype;
 		echo $archivetype;
@@ -490,7 +490,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 * Parse skinvar blog
-	 */	
+	 */
 	function parse_blog($template, $amount = 10, $category = '') {
 		global $blog, $startpos;
 
@@ -505,7 +505,7 @@ class ACTIONS extends BaseActions {
 	*	Parse skinvar bloglist
 	*	Shows a list of all blogs
 	*	bnametype: whether 'name' or 'shortname' is used for the link text 	  
-	*/	
+	*/
 	function parse_bloglist($template, $bnametype = '') {
 		global $blog;
 		
@@ -547,7 +547,7 @@ class ACTIONS extends BaseActions {
 	
 	/**
 	 * Parse skinvar category
-	 */	
+	 */
 	function parse_category($type = 'name') {
 		global $catid, $blog;
 		if (!$blog->isValidCategory($catid))
@@ -568,7 +568,7 @@ class ACTIONS extends BaseActions {
 	
 	/**
 	 * Parse categorylist
-	 */	
+	 */
 	function parse_categorylist($template, $blogname = '') {
 		global $blog, $manager;
 
@@ -664,7 +664,7 @@ class ACTIONS extends BaseActions {
 	/**
 	 * Parse skinvar comments
 	 * include comments for one item	 
-	 */	
+	 */
 	function parse_comments($template) {
 		global $itemid, $manager, $blog, $highlight;
 		$template =& $manager->getTemplate($template);
@@ -765,7 +765,7 @@ class ACTIONS extends BaseActions {
 	/**
 	 * Parse skinvar item
 	 * include one item (no comments)	 
-	 */	
+	 */
 	function parse_item($template) {
 		global $blog, $itemid, $highlight;
 		$this->_setBlogCategory($blog, '');	// need this to select default category
@@ -778,7 +778,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 * Parse skinvar itemid
-	 */	
+	 */
 	function parse_itemid() {
 		global $itemid;
 		echo $itemid;
@@ -786,7 +786,7 @@ class ACTIONS extends BaseActions {
 	
 	/**
 	 * Parse skinvar itemlink
-	 */	
+	 */
 	function parse_itemlink($linktext = '') {
 		global $itemid;
 		$this->_itemlink($itemid, $linktext);
@@ -794,7 +794,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 * Parse itemtitle
-	 */	
+	 */
 	function parse_itemtitle($format = '') {
 		global $manager, $itemid;
 		$item =& $manager->getItem($itemid,0,0);
@@ -928,7 +928,7 @@ class ACTIONS extends BaseActions {
 	
 	/**
 	 * Parse skinvar nextarchive
-	 */	
+	 */
 	function parse_nextarchive() {
 		global $archivenext;
 		echo $archivenext;
@@ -937,7 +937,7 @@ class ACTIONS extends BaseActions {
 	/**
 	 * Parse skinvar nextitem
 	 * (include itemid of next item)
-	 */	 
+	 */
 	function parse_nextitem() {
 		global $itemidnext;
 		echo $itemidnext;
@@ -946,7 +946,7 @@ class ACTIONS extends BaseActions {
 	/**
 	 * Parse skinvar nextitemtitle
 	 * (include itemtitle of next item)
-	 */	 
+	 */
 	function parse_nextitemtitle($format = '') {
 		global $itemtitlenext;
 
@@ -968,7 +968,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 * Parse skinvar nextlink
-	 */	
+	 */
 	function parse_nextlink($linktext = '', $amount = 10) {
 		global $itemidnext, $archivenext, $startpos;
 		if ($this->skintype == 'item')
@@ -1013,7 +1013,7 @@ class ACTIONS extends BaseActions {
 	
 	/**
 	 * Parse skinvar otherarchivedaylist
-	 */	
+	 */
 	function parse_otherarchivedaylist($blogname, $template, $category = 'all', $limit = 0) {
 		global $manager;
 		if ($category == 'all') $category = '';
@@ -1026,7 +1026,7 @@ class ACTIONS extends BaseActions {
 	
 	/**
 	 * Parse skinvar otherarchivelist
-	 */	
+	 */
 	function parse_otherarchivelist($blogname, $template, $category = 'all', $limit = 0) {
 		global $manager;
 		if ($category == 'all') $category = '';
@@ -1039,7 +1039,7 @@ class ACTIONS extends BaseActions {
 	
 	/**
 	 * Parse skinvar otherblog
-	 */	
+	 */
 	function parse_otherblog($blogname, $template, $amount = 10, $category = '') {
 		global $manager;
 
@@ -1054,7 +1054,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 * Parse skinvar othersearchresults
-	 */	
+	 */
 	function parse_othersearchresults($blogname, $template, $maxresults = 50) {
 		global $query, $amount, $manager, $startpos;
 		$b =& $manager->getBlog(getBlogIDFromName($blogname));
@@ -1095,7 +1095,7 @@ class ACTIONS extends BaseActions {
 	
 	/**
 	 * Parse skinvar prevarchive
-	 */	
+	 */
 	function parse_prevarchive() {
 		global $archiveprev;
 		echo $archiveprev;
@@ -1121,7 +1121,7 @@ class ACTIONS extends BaseActions {
 	/*
 	 * Parse skinvar previtem
 	 * (include itemid of prev item)	 	 
-	 */	  
+	 */
 	function parse_previtem() {
 		global $itemidprev;
 		echo $itemidprev;
@@ -1130,7 +1130,7 @@ class ACTIONS extends BaseActions {
 	/**
 	 * Parse skinvar previtemtitle
 	 * (include itemtitle of prev item)
-	 */	 
+	 */
 	function parse_previtemtitle($format = '') {
 		global $itemtitleprev;
 
@@ -1152,7 +1152,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 * Parse skinvar prevlink
-	 */	
+	 */
 	function parse_prevlink($linktext = '', $amount = 10) {
 		global $itemidprev, $archiveprev, $startpos;
 
@@ -1167,7 +1167,7 @@ class ACTIONS extends BaseActions {
 	/**
 	 * Parse skinvar query
 	 * (includes the search query)	 
-	 */	
+	 */
 	function parse_query() {
 		global $query;
 		echo htmlspecialchars($query);
@@ -1200,7 +1200,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 * Parse skinvar searchresults
-	 */	
+	 */
 	function parse_searchresults($template, $maxresults = 50 ) {
 		global $blog, $query, $amount, $startpos;
 
@@ -1274,7 +1274,7 @@ class ACTIONS extends BaseActions {
 	/**
 	 *	Parse skinvar todaylink
 	 *	A link to the today page (depending on selected blog, etc...)
-	 */	
+	 */
 	function parse_todaylink($linktext = '') {
 		global $blog, $CONF;
 		if ($blog)
