@@ -18,8 +18,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ACTIONS.php,v 1.4 2007-02-04 06:28:45 kimitake Exp $
- * @version $NucleusJP: ACTIONS.php,v 1.3 2006/11/13 00:36:39 kimitake Exp $
+ * @version $Id: ACTIONS.php,v 1.5 2007-02-26 23:42:01 kmorimatsu Exp $
+ * @version $NucleusJP: ACTIONS.php,v 1.4 2007/02/04 06:28:45 kimitake Exp $
  */
 
 class ACTIONS extends BaseActions {
@@ -470,9 +470,7 @@ class ACTIONS extends BaseActions {
 	*	bnametype: whether 'name' or 'shortname' is used for the link text 	  
 	*/	
 	function parse_bloglist($template, $bnametype = '') {
-		global $blog;
-		
-		$blog->showBlogList($template, $bnametype);
+		BLOG::showBlogList($template, $bnametype);
 	}
 	
 	/**
