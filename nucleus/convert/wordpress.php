@@ -20,7 +20,10 @@
 /* Nucleus CMS weblog           */
 /*
   v1.1 - add robustness code for category creation and item adding (admun)
+  v1.2 - add sql_table()
 */
+
+include("../../config.php");
 
   function def($s){ 
     if (isset($_POST[$s])) 
@@ -134,7 +137,6 @@ a:hover{text-decoration:underline}
       /* transfer data ! */
       /*                 */
       $prefixwp=$_POST['wpprefix'];
-      $prefixblogcms=$_POST['blogcmsprefix'];
       
       /* *********************************************** */
       echo "<h2>Getting encoding...</h2>";
@@ -148,8 +150,8 @@ a:hover{text-decoration:underline}
 
       /* *********************************************** */
       echo "<h2>Transfering categories...</h2>";
-      mysql_query("delete from ".$prefixblogcms."nucleus_category where cdesc='@wordpress'",$linkblogcms);
-      $q = mysql_query("SELECT count(*) as result FROM nucleus_category");
+      mysql_query("delete from ". sql_table('category') . " where cdesc='@wordpress'",$linkblogcms);
+      $q = mysql_query("SELECT count(*) as result FROM " . sql_table('category'));
       $total_row = mysql_fetch_object($q);
       $total_num = $total_row->result;
       $catdd = $total_num;
@@ -163,8 +165,8 @@ a:hover{text-decoration:underline}
       while ($row=mysql_fetch_object($querywp)) {
         echo $i++.", ";
         $query=
-          "insert into ".$prefixblogcms."nucleus_category ".
-          "(catid,cblog,cname,cdesc)  values (".
+          "insert into " . sql_table('category') .
+          " (catid,cblog,cname,cdesc)  values (".
           intval($total_num).",1,'".encoding($row->cat_name)."','@wordpress')";
         // echo $queryi . "<br/>";
         $result = mysql_query($query,$linkblogcms) or die($query);
@@ -174,7 +176,7 @@ a:hover{text-decoration:underline}
 
       /* *********************************************** */
       echo "<h2>Transfering posts and comments...</h2>";
-      mysql_query("delete from ".$prefixblogcms."nucleus_comment where chost='@wordpress'",$linkblogcms);
+      mysql_query("delete from " . sql_table('comment') . " where chost='@wordpress'",$linkblogcms);
       $query="select ID,post_date,post_content,post_title from ".$prefixwp."posts where post_status='publish' order by ID";
       $querywp=mysql_query($query,$linkwp) or die($query);
       echo "<p>rows to transfer: ".mysql_num_rows($querywp)."</p>";
@@ -188,7 +190,7 @@ a:hover{text-decoration:underline}
         if ($row_detail=mysql_fetch_object($querywp_detail)) $cat=intval($row_detail->category_id)+$catdd; else $cat=1;
         // insert post
         $query=
-          "insert into ".$prefixblogcms."nucleus_item ".
+          "insert into " . sql_table('item') . " ".
           "(ititle,ibody,iblog,iauthor,itime,icat) values (".
           "'".addslashes(encoding($row->post_title))."','".addslashes(paragraph(encoding(stripslashes($row->post_content)),false))."',1,1,'".$row->post_date."',$cat)";
         //echo $query . "<br/>";
@@ -201,8 +203,8 @@ a:hover{text-decoration:underline}
           $url=$row_detail->comment_author_email;
           if (!empty($row_detail->comment_author_url)) $url=$row_detail->comment_author_url;
           $query=
-            "insert into ".$prefixblogcms."nucleus_comment ".
-            "(cbody,cuser,cmail,cmember,citem,ctime,cip,cblog,chost) values (".
+            "insert into " . sql_table('comment') .
+            " (cbody,cuser,cmail,cmember,citem,ctime,cip,cblog,chost) values (".
               "'".addslashes(paragraph(encoding(strip_tags(stripslashes($row_detail->comment_content))),true))."',".
               "'".encoding($row_detail->comment_author)."',".
               "'$url',".
@@ -241,7 +243,6 @@ a:hover{text-decoration:underline}
       <label>Username: <input type='text' name='blogcmsusername' size='50' value='<?php def('blogcmsusername'); ?>' /></label><br />
       <label>Password: <input type='text' name='blogcmspassword' size='50' value='<?php def('blogcmspassword'); ?>' /></label><br />
       <label>Database Name: <input type='text' name='blogcmsdatabase' size='50' value='<?php def('blogcmsdatabase'); ?>' /></label><br />
-      <label>Table Prefix: <input type='text' name='blogcmsprefix' size='50' value='<?php def('blogcmsprefix'); ?>' /></label>
     </fieldset>
     
     <h2>Submit</h2>
