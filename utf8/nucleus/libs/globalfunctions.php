@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.15 2007-02-17 04:39:59 shizuki Exp $
- * $NucleusJP: globalfunctions.php,v 1.14 2007/02/07 09:15:57 kimitake Exp $
+ * @version $Id: globalfunctions.php,v 1.16 2007-02-28 21:12:33 kmorimatsu Exp $
+ * $NucleusJP: globalfunctions.php,v 1.15 2007/02/17 04:39:59 shizuki Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -1560,11 +1560,17 @@ function ticketForPlugin(){
 	if ( ( strstr(serverVar('REQUEST_URI'),'?') || serverVar('QUERY_STRING')
 			|| strtoupper(serverVar('REQUEST_METHOD'))=='POST' )
 				&& (!$manager->checkTicket()) ){
- 
+
 		if (!class_exists('PluginAdmin')) {
 			$language = getLanguageName();
 			include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
 			include($DIR_LIBS . 'PLUGINADMIN.php');
+		}
+		if (!(function_exists('mb_strimwidth') || extension_loaded('mbstring'))) {
+			if (file_exists($DIR_LIBS.'mb_emulator/mb-emulator.php')) {
+				global $mbemu_internals;
+				include_once($DIR_LIBS.'mb_emulator/mb-emulator.php');
+			}
 		}
 		$oPluginAdmin = new PluginAdmin($plugin_name);
 		$oPluginAdmin->start();
