@@ -83,7 +83,7 @@
 			
 			<input id="inputhour" name="hour" tabindex="74" size="2" value="<%currenttime(hours)%>" />:
 			<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%currenttime(minutes)%>" />
-			(yyy/mm/dd hh:mm)
+			(yyyy/mm/dd hh:mm)
 			<%ifblogsetting(ballowpast,0)%>
 				<br />
 				<%text(_ADD_NOPASTDATES)%>
