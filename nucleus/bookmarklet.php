@@ -105,7 +105,7 @@ function bm_doAddItem() {
 	if ($result['status'] == 'newcategory') {
 		$message = 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid=' . $blogid . '&amp;catid=' . $result['catid'] . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>';
 		$extrahead = '';
-	} elseif ( (postVar('actiontype') == 'addnow') && $blog->pingUserland() ) {
+	} elseif ( (postVar('actiontype') == 'addnow') && $blog->sendPing() ) {
 		$message = 'Item was added successfully. Now pinging weblogs.com. Please hold on... (can take a while)';
 		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid) );
 		$extrahead = '<meta http-equiv="refresh" content="1; url=' . htmlspecialchars($pingUrl) . '" />';

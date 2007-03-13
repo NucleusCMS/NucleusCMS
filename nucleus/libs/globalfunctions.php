@@ -1562,4 +1562,17 @@ function ifset(&$var) {
 	return null;
 }
 
+/**
+ * Returns number of subscriber to an event
+ *
+ * @param event
+ * @return number of subscriber(s)
+ */
+function numberOfEventSubscriber($event) {
+	$query = 'SELECT COUNT(*) as count FROM ' . sql_table('plugin_event') . ' WHERE event=\'' . $event . '\'';
+	$res = sql_query($query);
+	$obj = mysql_fetch_object($res);
+	return $obj->count;
+}
+
 ?>

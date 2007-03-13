@@ -674,7 +674,7 @@ define('_EBLOG_NOTIFY_ON',			'Notify on');
 define('_EBLOG_NOTIFY_COMMENT',		'New comments');
 define('_EBLOG_NOTIFY_KARMA',		'New karma votes');
 define('_EBLOG_NOTIFY_ITEM',		'New weblog items');
-define('_EBLOG_PING',				'Ping Weblogs.com on update?');
+define('_EBLOG_PING',				'Ping weblog listing service on update?');
 define('_EBLOG_MAXCOMMENTS',		'Max Amount of comments');
 define('_EBLOG_UPDATE',				'Update file');
 define('_EBLOG_OFFSET',				'Time Offset');
