@@ -17,8 +17,8 @@
 	 *
 	 * @license http://nucleuscms.org/license.txt GNU General Public License
 	 * @copyright Copyright (C) 2002-2007 The Nucleus Group
-	 * @version $Id: PLUGIN.php,v 1.8 2007-02-19 22:29:31 kmorimatsu Exp $
-	 * $NucleusJP: PLUGIN.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
+	 * @version $Id: PLUGIN.php,v 1.9 2007-03-13 05:03:23 shizuki Exp $
+	 * $NucleusJP: PLUGIN.php,v 1.8 2007/02/19 22:29:31 kmorimatsu Exp $
 	 */
 	class NucleusPlugin {
 
@@ -59,6 +59,7 @@
 		}
 		function doAction($type) { return 'No Such Action'; }
 		function doIf($key,$value) { return false; }
+		function doItemVar () {}
 
 		/**
 		 * Checks if a plugin supports a certain feature.
@@ -154,7 +155,26 @@
 		/**
 		  * Retrieves the current value for an option
 		  */
-		function getOption($name) {
+		function getOption($name)
+		{
+			// only request the options the very first time. On subsequent requests
+			// the static collection is used to save SQL queries.
+			if ($this->plugin_options == 0)
+			{
+				$this->plugin_options = array();
+				$query = mysql_query(
+					 'SELECT d.oname as name, o.ovalue as value '.
+					 'FROM '.
+					 sql_table('plugin_option').' o, '.
+					 sql_table('plugin_option_desc').' d '.
+					 'WHERE d.opid='. intval($this->getID()).' AND d.oid=o.oid'
+				);
+				while ($row = mysql_fetch_object($query))
+					$this->plugin_options[strtolower($row->name)] = $row->value;
+		  }
+		  if (isset($this->plugin_options[strtolower($name)]))
+				return $this->plugin_options[strtolower($name)];
+		  else
 			return $this->_getOption('global', 0, $name);
 		}
 		function getBlogOption($blogid, $name) {
@@ -280,6 +300,7 @@
 
 		var $_aOptionValues;	// oid_contextid => value
 		var $_aOptionToInfo;	// context_name => array('oid' => ..., 'default' => ...)
+		var $plugin_options;	// see getOption()
 		var $plugid;			// plugin id
 
 
@@ -287,6 +308,7 @@
 		function NucleusPlugin() {
 			$this->_aOptionValues = array();	// oid_contextid => value
 			$this->_aOptionToInfo = array();	// context_name => array('oid' => ..., 'default' => ...)
+			$this->plugin_options = 0;
 		}
 
 		// private
@@ -417,6 +439,9 @@
 					break;
 				case 'member':
 					$r = sql_query('SELECT mnumber as contextid FROM ' . sql_table('member'));
+					break;
+				case 'item':
+					$r = sql_query('SELECT inumber as contextid FROM ' . sql_table('item'));
 					break;
 			}
 			if ($r) {
