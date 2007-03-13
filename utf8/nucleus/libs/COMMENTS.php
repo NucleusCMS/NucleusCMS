@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: COMMENTS.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
- * $NucleusJP: COMMENTS.php,v 1.6 2006/07/17 20:03:44 kimitake Exp $
+ * @version $Id: COMMENTS.php,v 1.8 2007-03-13 05:12:19 shizuki Exp $
+ * $NucleusJP: COMMENTS.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
  */
 
 // temporary: dirt way to separe class COMMENTACTIONS from COMMENTS
@@ -221,7 +221,18 @@ class COMMENTS {
 		if ($settings->getNotifyAddress() && $settings->notifyOnComment()) {
 
 			$mailto_msg = _NOTIFY_NC_MSG . ' ' . $this->itemid . "\n";
-			$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $this->itemid . "\n\n";
+//			$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $this->itemid . "\n\n";
+			$temp = parse_url($CONF['Self']);
+			if ($temp['scheme']) {
+				$mailto_msg .= createItemLink($this->itemid) . "\n\n";
+			} else {
+				$tempurl = $settings->getURL();
+				if (substr($tempurl, -1) == '/' || substr($tempurl, -4) == '.php') {
+					$mailto_msg .= $tempurl . '?itemid=' . $this->itemid . "\n\n";
+				} else {
+					$mailto_msg .= $tempurl . '/?itemid=' . $this->itemid . "\n\n";
+				}
+			}
 			if ($comment['memberid'] == 0) {
 				$mailto_msg .= _NOTIFY_USER . ' ' . $comment['user'] . "\n";
 				$mailto_msg .= _NOTIFY_USERID . ' ' . $comment['userid'] . "\n";

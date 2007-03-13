@@ -16,8 +16,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BLOG.php,v 1.9 2007-02-17 04:39:29 shizuki Exp $
- * $NucleusJP: BLOG.php,v 1.8 2007/02/07 12:32:25 shizuki Exp $
+ * @version $Id: BLOG.php,v 1.10 2007-03-13 05:13:29 shizuki Exp $
+ * $NucleusJP: BLOG.php,v 1.9 2007/02/17 04:39:29 shizuki Exp $
  */
 
 // temporary: dirt way to separe class ITEMACTIONS from BLOG
@@ -292,7 +292,18 @@ class BLOG {
 		$ascii = toAscii($body);
 
 		$mailto_msg = _NOTIFY_NI_MSG . " \n";
-		$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
+//		$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
+		$temp = parse_url($CONF['Self']);
+		if ($temp['scheme']) {
+			$mailto_msg .= createItemLink($itemid) . "\n\n";
+		} else {
+			$tempurl = $this->getURL();
+			if (substr($tempurl, -1) == '/' || substr($tempurl, -4) == '.php') {
+				$mailto_msg .= $tempurl . '?itemid=' . $itemid . "\n\n";
+			} else {
+				$mailto_msg .= $tempurl . '/?itemid=' . $itemid . "\n\n";
+			}
+		}
 		$mailto_msg .= _NOTIFY_TITLE . ' ' . strip_tags($title) . "\n";
 		$mailto_msg .= _NOTIFY_CONTENTS . "\n " . $ascii . "\n";
 		$mailto_msg .= getMailFooter();
