@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.16 2007-02-28 21:12:33 kmorimatsu Exp $
- * $NucleusJP: globalfunctions.php,v 1.15 2007/02/17 04:39:59 shizuki Exp $
+ * @version $Id: globalfunctions.php,v 1.17 2007-03-13 05:10:23 shizuki Exp $
+ * $NucleusJP: globalfunctions.php,v 1.16 2007/02/28 21:12:33 kmorimatsu Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -324,6 +324,10 @@ if ($CONF['URLMode'] == 'pathinfo') {
 		$CONF['CategoryKey'] = 'category';
 	}
 
+	if ($CONF['SpecialskinKey'] == '') {
+		$CONF['SpecialskinKey'] = 'special';
+	}
+
 	$parsed = false;
 	$manager->notify(
 		'ParseURL',
@@ -393,7 +397,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
 					}
 					break;
 
-                case 'special':
+                case $CONF['SpecialskinKey']:
                     $i++;
 
 					if ($i < sizeof($data) ) {
@@ -804,21 +808,63 @@ function selector() {
 		// show archive
 		$type = 'archive';
 
-		// get next and prev month links
-		global $archivenext, $archiveprev, $archivetype;
+		// get next and prev month links ...
+		global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
+
+		// sql queries for the timestamp of the first and the last published item
+		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime ASC";
+		$first_timestamp=quickQuery ($query); 
+		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime DESC";
+		$last_timestamp=quickQuery ($query); 
 
 		sscanf($archive, '%d-%d-%d', $y, $m, $d);
 
 		if ($d != 0) {
 			$archivetype = _ARCHIVETYPE_DAY;
 			$t = mktime(0, 0, 0, $m, $d, $y);
+
 			$archiveprev = strftime('%Y-%m-%d', $t - (24 * 60 * 60) );
+			// check for published items			
+			if ($t > $first_timestamp) {
+				$archiveprevexists = true;
+			}
+			else {
+				$archiveprevexists = false;
+			}
+
+			// one day later
+//			$t += 86400; 
+//			$archivenext = strftime('%Y-%m-%d', $t);
 			$archivenext = strftime('%Y-%m-%d', $t + (24 * 60 * 60) );
+			if ($t + (24 * 60 * 60) < $last_timestamp) {
+				$archivenextexists = true;
+			}
+			else {
+				$archivenextexists = false;
+			}
+
 		} else {
 			$archivetype = _ARCHIVETYPE_MONTH;
 			$t = mktime(0, 0, 0, $m, 1, $y);
+
 			$archiveprev = strftime('%Y-%m', $t - (1 * 24 * 60 * 60) );
-			$archivenext = strftime('%Y-%m', $t + (32 * 24 * 60 * 60) );
+			if ($t > $first_timestamp) {
+				$archiveprevexists = true;
+			}
+			else {
+				$archiveprevexists = false;
+			}
+
+//			$archivenext = strftime('%Y-%m', $t + (32 * 24 * 60 * 60) );
+			// timestamp for the next month			
+			$t = mktime(0, 0, 0, $m+1, 1, $y);
+			$archivenext = strftime('%Y-%m', $t);
+			if ($t < $last_timestamp) {
+				$archivenextexists = true;
+			}
+			else {
+				$archivenextexists = false;
+			}
 		}
 
 	} elseif ($archivelist) {
@@ -988,7 +1034,8 @@ function removeBreaks($var) {
 // at the end (end length is <= $maxlength)
 function shorten($text, $maxlength, $toadd) {
 	// 1. remove entities...
-	$trans = get_html_translation_table(HTML_ENTITIES);
+//	$trans = get_html_translation_table(HTML_ENTITIES);
+	$trans = get_html_translation_table(HTML_SPECIALCHARS); // for Japanese
 	$trans = array_flip($trans);
 	$text = strtr($text, $trans);
 
