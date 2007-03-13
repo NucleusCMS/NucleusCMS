@@ -50,10 +50,11 @@
     	If you want to change these, you'll also need to rename the stub files 
     	and update the contents of the .htaccess file accordingly
     */
-    $CONF['ItemKey'] = 'item';
-    $CONF['ArchiveKey'] = 'archive';
-    $CONF['ArchivesKey'] = 'archives';
-    $CONF['MemberKey'] = 'member';
-    $CONF['BlogKey'] = 'blog';
-    $CONF['CategoryKey'] = 'category';	
+    $CONF['ItemKey']        = 'item';
+    $CONF['ArchiveKey']     = 'archive';
+    $CONF['ArchivesKey']    = 'archives';
+    $CONF['MemberKey']      = 'member';
+    $CONF['BlogKey']        = 'blog';
+    $CONF['CategoryKey']    = 'category';
+    $CONF['SpecialskinKey'] = 'special';
 ?>
