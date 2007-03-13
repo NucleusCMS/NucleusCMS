@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ACTIONLOG.php,v 1.6 2007-02-04 06:28:45 kimitake Exp $
- * $NucleusJP: ACTIONLOG.php,v 1.5 2006/07/17 20:03:44 kimitake Exp $
+ * @version $Id: ACTIONLOG.php,v 1.7 2007-03-13 05:18:32 shizuki Exp $
+ * $NucleusJP: ACTIONLOG.php,v 1.6 2007/02/04 06:28:45 kimitake Exp $
  */
 define('ERROR',1);		// only errors
 define('WARNING',2);	// errors and warnings
@@ -26,7 +26,7 @@ $CONF['LogLevel'] = INFO;
 class ACTIONLOG {
 
 	/**
-	  * (Static) Method to add message to log
+	  * (Static) Method to add message to the action log
 	  */
 	function add($level, $message) {
 		global $member, $CONF;
@@ -42,12 +42,11 @@ class ACTIONLOG {
 		$query = "INSERT INTO " . sql_table('actionlog') . " (timestamp, message) VALUES ('$timestamp', '$message')";
 
 		sql_query($query);
-
 		ACTIONLOG::trimLog();
 	}
 
 	/**
-	  * (Static) Method to clear log
+	  * (Static) Method to clear the whole action log
 	  */
 	function clear() {
 		global $manager;
@@ -59,6 +58,9 @@ class ACTIONLOG {
 		return sql_query($query);
 	}
 
+	/**
+	  * (Static) Method to trim the action log (from over 500 back to 250 entries)
+	  */
 	function trimLog() {
 		static $checked = 0;
 
