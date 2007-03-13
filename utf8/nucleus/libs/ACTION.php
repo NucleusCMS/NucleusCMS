@@ -15,16 +15,22 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ACTION.php,v 1.7 2007-02-04 06:28:45 kimitake Exp $
- * $NucleusJP: ACTION.php,v 1.6 2007/01/31 10:02:58 kimitake Exp $
+ * @version $Id: ACTION.php,v 1.8 2007-03-13 05:19:04 shizuki Exp $
+ * $NucleusJP: ACTION.php,v 1.7 2007/02/04 06:28:45 kimitake Exp $
  */
 class ACTION
 {
+	/**
+	 *  Constructor for an new ACTION object
+	 */
 	function ACTION()
 	{
-
+		// do nothing
 	}
 
+	/**
+	 *  Calls functions that handle an action called from action.php
+	 */
 	function doAction($action)
 	{
 		switch($action) {
@@ -60,6 +66,9 @@ class ACTION
 		}
 	}
 
+	/**
+	 *  Adds a new comment to an item (if IP isn't banned)
+	 */
 	function addComment() {
 		global $CONF, $errormessage, $manager;
 
@@ -106,7 +115,9 @@ class ACTION
 		exit;
 	}
 
-	// Sends a message from the current member to the member given as argument
+	/**
+	 *  Sends a message from the current member to the member given as argument
+	 */
 	function sendMessage() {
 		global $CONF, $member;
 
@@ -150,11 +161,13 @@ class ACTION
 			}
 			redirect($url);
 		}
-
 		exit;
-
 	}
 
+	/**
+	 *  Checks if a mail to a member is allowed
+	 *  Returns a string with the error message if the mail is disallowed
+	 */
 	function validateMessage() {
 		global $CONF, $member, $manager;
 
@@ -176,7 +189,9 @@ class ACTION
 
 	}
 
-	// creates a new user account
+	/**
+	 *  Creates a new user account
+	 */
 	function createAccount() {
 		global $CONF, $manager;
 
@@ -206,11 +221,12 @@ class ACTION
 			header ("Content-Type: text/html; charset="._CHARSET);
 			echo _MSG_ACTIVATION_SENT;
 		}
-
 		exit;
 	}
 
-	// sends a new password
+	/**
+	 *  Sends a new password
+	 */
 	function forgotPassword() {
 		$membername = trim(postVar('name'));
 
@@ -234,11 +250,12 @@ class ACTION
 			header ("Content-Type: text/html; charset="._CHARSET);
 			echo _MSG_ACTIVATION_SENT;
 		}
-
 		exit;
 	}
 
-	// handle karma votes
+	/**
+	 *  Handle karma votes
+	 */
 	function doKarma($type) {
 		global $itemid, $member, $CONF, $manager;
 
@@ -334,6 +351,9 @@ class ACTION
 
 	}
 
+	/**
+	  * Checks if an IP or IP range is banned
+	  */
 	function checkban($blogid) {
 		// check if banned
 		$ban = BAN::isBanned($blogid, serverVar('REMOTE_ADDR'));
