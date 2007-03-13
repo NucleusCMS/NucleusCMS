@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ITEMACTIONS.php,v 1.3 2007-02-04 06:28:46 kimitake Exp $
- * @version $NucleusJP: ITEMACTIONS.php,v 1.2 2006/07/20 08:01:52 kimitake Exp $
+ * @version $Id: ITEMACTIONS.php,v 1.4 2007-03-13 05:04:13 shizuki Exp $
+ * @version $NucleusJP: ITEMACTIONS.php,v 1.3 2007/02/04 06:28:46 kimitake Exp $
  */
 class ITEMACTIONS extends BaseActions {
 
@@ -337,27 +337,6 @@ class ITEMACTIONS extends BaseActions {
 			echo $this->template['NEW'];
 	}
 
-	function parse_image() {
-		// image/popup calls have arguments separated by |
-		$args = func_get_args();
-		$args = explode('|',implode($args,', '));
-		call_user_func_array(array(&$this,'createImageCode'),$args);
-	}
-	
-	function parse_popup() {
-		// image/popup calls have arguments separated by |
-		$args = func_get_args();
-		$args = explode('|',implode($args,', '));
-		call_user_func_array(array(&$this,'createPopupCode'),$args);
-	}
-	
-	function parse_media() {
-		// image/popup calls have arguments separated by |
-		$args = func_get_args();
-		$args = explode('|',implode($args,', '));
-		call_user_func_array(array(&$this,'createMediaCode'),$args);
-	}
-
 	function parse_daylink() {
 		echo createArchiveLink($this->blog->getID(), strftime('%Y-%m-%d',$this->currentItem->timestamp), $this->linkparams);
 	}
@@ -432,7 +411,7 @@ class ITEMACTIONS extends BaseActions {
 		$actions->setTemplate($this->template);
 		$actions->setHighlight($this->strHighlight);
 		$actions->setCurrentItem($this->currentItem);
-		$actions->setParser($parser);
+		//$actions->setParser($parser);
 		$parser->parse($actions->highlight($data));
 	}
 
@@ -446,68 +425,6 @@ class ITEMACTIONS extends BaseActions {
 		$this->parser->actions = $this->getDefinedActions();
 	}
 	*/
-
-	function createPopupCode($filename, $width, $height, $text = '') {
-		global $CONF;
-
-		// select private collection when no collection given
-		if (!strstr($filename,'/')) {
-			$filename = $this->currentItem->authorid . '/' . $filename;
-		}
-
-		$windowwidth = $width;
-		$windowheight = $height;
-
-		$vars['rawpopuplink'] 	= $CONF['Self'] . "?imagepopup=" . htmlspecialchars($filename) . "&amp;width=$width&amp;height=$height&amp;imagetext=" . urlencode(htmlspecialchars($text));
-		$vars['popupcode'] 		= "window.open(this.href,'imagepopup','status=no,toolbar=no,scrollbars=no,resizable=yes,width=$windowwidth,height=$windowheight');return false;";
-		$vars['popuptext'] 		= htmlspecialchars($text);
-		$vars['popuplink'] 		= '<a href="' . $vars['rawpopuplink']. '" onclick="'. $vars['popupcode'].'" >' . $vars['popuptext'] . '</a>';
-		$vars['width'] 			= $width;
-		$vars['height']			= $height;
-		$vars['text']			= $text;
-		$vars['link']			= htmlspecialchars($CONF['MediaURL'] . $filename);
-		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['popuptext'] . '</a>';
-
-		echo TEMPLATE::fill($this->template['POPUP_CODE'],$vars);
-	}
-
-	function createImageCode($filename, $width, $height, $text = '') {
-		global $CONF;
-
-		// select private collection when no collection given
-		if (!strstr($filename,'/')) {
-			$filename = $this->currentItem->authorid . '/' . $filename;
-		}
-
-		$windowwidth = $width;
-		$windowheight = $height;
-
-		$vars['link']			= htmlspecialchars($CONF['MediaURL']. $filename);
-		$vars['text']			= htmlspecialchars($text);
-		$vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
-		$vars['width'] 			= $width;
-		$vars['height']			= $height;
-		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
-
-
-		echo TEMPLATE::fill($this->template['IMAGE_CODE'],$vars);;
-
-	}
-
-	function createMediaCode($filename, $text = '') {
-		global $CONF;
-
-		// select private collection when no collection given
-		if (!strstr($filename,'/')) {
-			$filename = $this->currentItem->authorid . '/' . $filename;
-		}
-
-		$vars['link']			= htmlspecialchars($CONF['MediaURL'] . $filename);
-		$vars['text']			= htmlspecialchars($text);
-		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
-
-		echo TEMPLATE::fill($this->template['MEDIA_CODE'],$vars);;
-	}
 }
 
 ?>
