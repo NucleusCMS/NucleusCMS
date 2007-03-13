@@ -1169,7 +1169,7 @@ class ADMIN {
 
 		$blogid = getBlogIDFromItemID($itemid);
 		$blog =& $manager->getBlog($blogid);
-		if (!$closed && $publish && $wasdraft && $blog->pingUserland()) {
+		if (!$closed && $publish && $wasdraft && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0) {
 			$this->action_sendping($blogid);
 			return;
 		}
@@ -1368,16 +1368,16 @@ class ADMIN {
 			$this->action_categoryedit(
 				$result['catid'],
 				$blogid,
-				$blog->pingUserland() ? $pingUrl : ''
+				$blog->sendPing() && numberOfEventSubscriber('SendPing') > 0 ? $pingUrl : ''
 			);
-		elseif ((postVar('actiontype') == 'addnow') && $blog->pingUserland())
+		elseif ((postVar('actiontype') == 'addnow') && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0)
 			$this->action_sendping($blogid);
 		else
 			$this->action_itemlist($blogid);
 	}
 
 	/**
-	 * Shows a window that says we're about to ping weblogs.com.
+	 * Shows a window that says we're about to ping.
 	 * immediately refresh to the real pinging page, which will
 	 * show an error, or redirect to the blog.
 	 *
@@ -1395,12 +1395,10 @@ class ADMIN {
 
 		$this->pagehead('<meta http-equiv="refresh" content="1; url='.htmlspecialchars($rawPingUrl).'" />');
 		?>
-		<h2>Site Updated, Now pinging weblogs.com</h2>
+		<h2>Site Updated, Now pinging various weblog listing services...</h2>
 
 		<p>
-			Pinging weblogs.com! This can a while...
-			<br />
-			When the ping is complete (and successfull), your weblog will show up in the weblogs.com updates list.
+			This can take a while...
 		</p>
 
 		<p>
@@ -1410,7 +1408,6 @@ class ADMIN {
 	}
 
 	/**
-	 * Ping to Weblogs.com
 	 * Sends the real ping (can take up to 10 seconds!)
 	 */
 	function action_rawping() {
@@ -1420,17 +1417,19 @@ class ADMIN {
 		$blogid = intRequestVar('blogid');
 		$blog =& $manager->getBlog($blogid);
 
-		$result = $blog->sendUserlandPing();
-
 		$this->pagehead();
 
 		?>
 
-		<h2>Ping Results</h2>
+		<h2>Pinging services, please wait...</h2>
+		<div class='note'>
+                <?
 
-		<p>The following message was returned by weblogs.com:</p>
+		// send sendPing event
+		$manager->notify('SendPing', array('blogid' => $blogid));
 
-		<div class='note'><?php echo  $result ?></div>
+                ?>
+                </div>
 
 		<ul>
 			<li><a href="index.php?action=itemlist&amp;blogid=<?php echo $blog->getID()?>">View list of recent items for <?php echo htmlspecialchars($blog->getName())?></a></li>
@@ -2477,9 +2476,15 @@ class ADMIN {
 				/><label for="notifyNewItem"><?php echo _EBLOG_NOTIFY_ITEM?></label>
 			</td>
 		</tr><tr>
-			<td><?php echo _EBLOG_PING?> <?php help('pinguserland'); ?></td>
-			<td><?php $this->input_yesno('pinguserland',$blog->pingUserland(),85); ?></td>
+		<? 
+		if (numberOfEventSubscriber('SendPing') > 0) {
+		?>
+			<td><?php echo _EBLOG_PING?> <?php help('sendping'); ?></td>
+			<td><?php $this->input_yesno('sendping',$blog->sendPing(),85); ?></td>
 		</tr><tr>
+		<?
+		}
+		?>
 			<td><?php echo _EBLOG_MAXCOMMENTS?> <?php help('blogmaxcomments'); ?></td>
 			<td><input name="maxcomments" tabindex="90" size="3" value="<?php echo  htmlspecialchars($blog->getMaxComments()); ?>" /></td>
 		</tr><tr>
@@ -2940,7 +2945,7 @@ class ADMIN {
 		$blog->setDefaultSkin(intPostVar('defskin'));
 		$blog->setDescription(trim(postVar('desc')));
 		$blog->setPublic(postVar('public'));
-		$blog->setPingUserland(postVar('pinguserland'));
+		$blog->setPingUserland(postVar('sendping'));
 		$blog->setConvertBreaks(intPostVar('convertbreaks'));
 		$blog->setAllowPastPosting(intPostVar('allowpastposting'));
 		$blog->setDefaultCategory(intPostVar('defcat'));

@@ -726,7 +726,7 @@ class BLOG {
 			   . "     btimeoffset=" . $offset . ","
 			   . "     bpublic=" . intval($this->isPublic()) . ","
 			   . "     breqemail=" . intval($this->emailRequired()) . ","
-			   . "     bsendping=" . intval($this->pingUserland()) . ","
+			   . "     bsendping=" . intval($this->sendPing()) . ","
 			   . "     bconvertbreaks=" . intval($this->convertBreaks()) . ","
 			   . "     ballowpast=" . intval($this->allowPastPosting()) . ","
 			   . "     bnotify='" . addslashes($this->getNotifyAddress()) . "',"
@@ -752,52 +752,6 @@ class BLOG {
 			fclose($f_update);
 		 }
 
-	}
-
-	/**
-	  * Sends a XML-RPC ping message to Userland, so the weblog can
-	  * show up in the weblogs.com updates-list
-	  */
-	function sendUserlandPing() {
-		global $php_errormsg;
-
-		 if ($this->pingUserland()) {
-			  // testmessage for adding an item
-			  $message = new xmlrpcmsg('weblogUpdates.ping',array(
-					new xmlrpcval($this->getName(),'string'),
-					new xmlrpcval($this->getURL(),'string')
-			  ));
-
-			  $c = new xmlrpc_client('/RPC2', 'rpc.weblogs.com', 80);
-
-			  // $c->setDebug(1);
-
-			  $r = $c->send($message,15); // 15 seconds timeout...
-
-			  if (($r == 0) && ($r->errno || $r->errstring)) {
-				return 'Error ' . $r->errno . ' : ' . $r->errstring;
-			  } elseif (($r == 0) && ($php_errormsg)) {
-				return 'PHP Error: ' . $php_errormsg;
-			  } elseif ($r == 0) {
-				return 'Error while trying to send ping. Sorry about that.';
-			  } elseif ($r->faultCode() != 0) {
-				return 'Error: ' . $r->faultString();
-			  } else {
-				  $r = $r->value();	// get response struct
-				  // get values
-				  $flerror = $r->structmem('flerror');
-				  $flerror = $flerror->scalarval();
-
-
-				  $message = $r->structmem('message');
-				  $message = $message->scalarval();
-
-				  if ($flerror != 0)
-					return 'Error (flerror=1): ' . $message;
-				  else
-					return 'Success: ' . $message;
-			  }
-		 }
 	}
 
 	function isValidCategory($catid) {
@@ -828,7 +782,7 @@ class BLOG {
 		}
 	}
 
-	function pingUserland() {
+	function sendPing() {
 		return $this->getSetting('bsendping');
 	}
 
