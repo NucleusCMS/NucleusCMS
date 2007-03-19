@@ -872,7 +872,7 @@ define('_MEMBERS_TITLE',			'メンバーの管理');
 define('_MEMBERS_CURRENT',			'現在のメンバー');
 define('_MEMBERS_NEW',				'新しいメンバーの追加');
 define('_MEMBERS_DISPLAY',			'表示される名前');
-define('_MEMBERS_DISPLAY_INFO',		'(この名前はログオン時に使われます)');
+define('_MEMBERS_DISPLAY_INFO',		'(この名前はログイン時に使われます)');
 define('_MEMBERS_REALNAME',			'本名');
 define('_MEMBERS_PWD',				'パスワード');
 define('_MEMBERS_REPPWD',			'パスワード（確認）');
