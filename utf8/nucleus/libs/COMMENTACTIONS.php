@@ -14,7 +14,7 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: COMMENTACTIONS.php,v 1.3 2007-02-04 06:28:46 kimitake Exp $
+ * @version $Id: COMMENTACTIONS.php,v 1.4 2007-03-19 10:20:24 shizuki Exp $
  * @version $NucleusJP: COMMENTACTIONS.php,v 1.2 2006/07/20 08:01:52 kimitake Exp $
  */
 
@@ -110,12 +110,20 @@ class COMMENTACTIONS extends BaseActions {
 		} else {
 
 			// create smart links
-			if (isValidMailAddress($comment['userid']))
+/*			if (isValidMailAddress($comment['userid']))
 				$comment['userlinkraw'] = 'mailto:'.$comment['userid'];
 			elseif (strstr($comment['userid'],'http://') != false)
 				$comment['userlinkraw'] = $comment['userid'];
 			elseif (strstr($comment['userid'],'www') != false)
+				$comment['userlinkraw'] = 'http://'.$comment['userid'];*/
+			if (strstr($comment['userid'],'http://') != false)
+				$comment['userlinkraw'] = $comment['userid'];
+			elseif (strstr($comment['userid'],'www') != false)
 				$comment['userlinkraw'] = 'http://'.$comment['userid'];
+			elseif (isValidMailAddress($comment['email']))
+				$comment['userlinkraw'] = 'mailto:'.$comment['userid'];
+			elseif (isValidMailAddress($comment['userid']))
+				$comment['userlinkraw'] = 'mailto:'.$comment['email'];
 		}
 
 		$this->currentComment =& $comment;
@@ -201,8 +209,15 @@ class COMMENTACTIONS extends BaseActions {
 		echo $this->currentComment['blogid'];
 	}
 
-	function parse_user() {
+//	function parse_user() {
+	function parse_user($mode='') {
+		global $manager;
+		if ($mode == 'realname' && $this->currentComment['memberid'] > 0) {
+			$member =& $manager->getMember($this->currentComment['memberid']);
+			echo $member->getRealName();
+		} else {
 			echo $this->currentComment['user'];
+		}
 	}
 	
 	function parse_userid() {
@@ -239,8 +254,12 @@ class COMMENTACTIONS extends BaseActions {
 		}
 		else
 		{
-			if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
-				echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
+			if (isValidMailAddress($this->currentComment['email']))
+				echo $this->currentComment['email'];
+			elseif (isValidMailAddress($this->currentComment['userid']))
+				echo $this->currentComment['userid'];
+//			if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
+//				echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
 		}
 	}
 
