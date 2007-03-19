@@ -14,7 +14,7 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: showlist.php,v 1.5 2007-02-04 06:28:46 kimitake Exp $
+ * @version $Id: showlist.php,v 1.6 2007-03-19 10:21:21 shizuki Exp $
  * @version $NucleusJP: showlist.php,v 1.4 2006/11/13 00:36:39 kimitake Exp $
  */
 
@@ -562,7 +562,11 @@ function listplug_table_skinlist($template, $type) {
 					$friendlyNames = SKIN::getFriendlyNames();
 					for ($i=0;$i<sizeof($types);$i++) {
 						$type = $types[$i];
-						$types[$i] = '<li>' . helpHtml('skinpart'.$type) . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . "</a></li>";
+						if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+							$types[$i] = '<li>' . helpHtml('skinpart'.$type) . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . "</a></li>";
+						} else {
+							$types[$i] = '<li>' . helpHtml('skinpartspecial') . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . "</a></li>";
+						}
 					}
 					echo '<br /><br />',_LIST_SKINS_DEFINED,' <ul>',implode($types,'') ,'</ul>';
 				}

@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.17 2007-02-17 04:37:50 shizuki Exp $
- * @version $NucleusJP: ADMIN.php,v 1.16 2007/02/09 02:48:44 kimitake Exp $
+ * @version $Id: ADMIN.php,v 1.18 2007-03-19 10:21:41 shizuki Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.15 2007/02/09 02:47:47 kimitake Exp $
  */
 
 require_once "showlist.php";
@@ -1677,7 +1677,7 @@ class ADMIN {
 				<th colspan="2"><?php echo _MEMBERS_NEW?></th>
 			</tr><tr>
 				<td><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
-					<br /><small>(This is the name used to logon)</small>
+				<br /><small><?php echo _MEMBERS_DISPLAY_INFO?></small>
 				</td>
 				<td><input tabindex="10010" name="name" size="16" maxlength="16" /></td>
 			</tr><tr>
@@ -4293,7 +4293,11 @@ selector();
 		<input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
 		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
 		(skin type: <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
-		<?php help('skinpart' . $type);?>
+		<?php if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+			help('skinpart' . $type);
+		} else {
+			help('skinpartspecial');
+		}?>
 		<br />
 
 		<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content"><?php echo  htmlspecialchars($skin->getContent($type)) ?></textarea>
