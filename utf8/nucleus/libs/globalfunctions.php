@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.17 2007-03-13 05:10:23 shizuki Exp $
- * $NucleusJP: globalfunctions.php,v 1.16 2007/02/28 21:12:33 kmorimatsu Exp $
+ * @version $Id: globalfunctions.php,v 1.18 2007-03-19 10:19:29 shizuki Exp $
+ * $NucleusJP: globalfunctions.php,v 1.17 2007/03/13 05:10:23 shizuki Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -1334,7 +1334,18 @@ function createLink($type, $params) {
 }
 
 function createBlogLink($url, $params) {
-	return addLinkParams($url . '?', $params);
+    global $CONF;
+    if ($CONF['URLMode'] == 'normal') {
+        if (strpos($url, '?') === FALSE && is_array($params)) {
+            $fParam = reset($params);
+            $fKey   = key($params);
+            array_shift($params);
+            $url .= '?' . $fKey . '=' . $fParam;
+        }
+    } elseif ($CONF['URLMode'] == 'pathinfo' && substr($url, -1) == '/') {
+        $url = substr($url, 0, -1);
+    }
+	return addLinkParams($url, $params);
 }
 
 function addLinkParams($link, $params) {
