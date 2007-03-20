@@ -15,12 +15,12 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: COMMENTS.php,v 1.8 2007-03-13 05:12:19 shizuki Exp $
- * $NucleusJP: COMMENTS.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: COMMENTS.php,v 1.9 2007-03-20 19:31:29 kmorimatsu Exp $
+ * $NucleusJP: COMMENTS.php,v 1.8 2007/03/13 05:12:19 shizuki Exp $
  */
 
-// temporary: dirt way to separe class COMMENTACTIONS from COMMENTS
-require_once $DIR_LIBS . 'COMMENTACTIONS.php';
+if ( !function_exists('requestVar') ) exit;
+require_once dirname(__FILE__) . '/COMMENTACTIONS.php';
 
 class COMMENTS {
 

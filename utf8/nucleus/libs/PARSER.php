@@ -12,12 +12,13 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: PARSER.php,v 1.6 2007-02-04 06:28:46 kimitake Exp $
- * $NucleusJP: PARSER.php,v 1.5 2006/07/12 07:11:47 kimitake Exp $
+ * @version $Id: PARSER.php,v 1.7 2007-03-20 19:31:29 kmorimatsu Exp $
+ * $NucleusJP: PARSER.php,v 1.6 2007/02/04 06:28:46 kimitake Exp $
  */
 
-// temporary: dirt way to separe class BaseActions from PARSER
-require_once $DIR_LIBS . 'BaseActions.php';
+if ( !function_exists('requestVar') ) exit;
+require_once dirname(__FILE__) . '/BaseActions.php';
+
 /**
  * This is the parser class of Nucleus. It is used for various things (skin parsing,
  * form generation, ...)

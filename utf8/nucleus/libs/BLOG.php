@@ -16,12 +16,12 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BLOG.php,v 1.10 2007-03-13 05:13:29 shizuki Exp $
- * $NucleusJP: BLOG.php,v 1.9 2007/02/17 04:39:29 shizuki Exp $
+ * @version $Id: BLOG.php,v 1.11 2007-03-20 19:31:29 kmorimatsu Exp $
+ * $NucleusJP: BLOG.php,v 1.10 2007/03/13 05:13:29 shizuki Exp $
  */
 
-// temporary: dirt way to separe class ITEMACTIONS from BLOG
-require_once $DIR_LIBS . 'ITEMACTIONS.php';
+if ( !function_exists('requestVar') ) exit;
+require_once dirname(__FILE__) . '/ITEMACTIONS.php';
 
 class BLOG {
 

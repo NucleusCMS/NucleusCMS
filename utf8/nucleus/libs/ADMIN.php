@@ -14,11 +14,12 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.18 2007-03-19 10:21:41 shizuki Exp $
- * @version $NucleusJP: ADMIN.php,v 1.15 2007/02/09 02:47:47 kimitake Exp $
+ * @version $Id: ADMIN.php,v 1.19 2007-03-20 19:31:29 kmorimatsu Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.18 2007/03/19 10:21:41 shizuki Exp $
  */
 
-require_once "showlist.php";
+if ( !function_exists('requestVar') ) exit;
+require_once dirname(__FILE__) . '/showlist.php';
 
 /**
  * Builds the admin area and executes admin actions

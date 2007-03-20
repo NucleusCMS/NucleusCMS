@@ -21,8 +21,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: media.php,v 1.7 2007-02-04 06:28:45 kimitake Exp $
- * $NucleusJP: media.php,v 1.6 2006/07/17 20:01:39 kimitake Exp $
+ * @version $Id: media.php,v 1.8 2007-03-20 19:32:19 kmorimatsu Exp $
+ * $NucleusJP: media.php,v 1.7 2007/02/04 06:28:45 kimitake Exp $
  *
  */
 
@@ -34,7 +34,7 @@ $CONF = array();
 $CONF['MediaPerPage'] = 10;
 
 // include all classes and config data
-include('../config.php');
+require('../config.php');
 include($DIR_LIBS . 'MEDIA.php');	// media classes
 
 sendContentType('application/xhtml+xml', 'media');

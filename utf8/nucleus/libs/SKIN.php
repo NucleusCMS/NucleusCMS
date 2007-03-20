@@ -10,17 +10,18 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
-// temporary: dirt way to separe class ACTIONS from SKIN
-require_once $DIR_LIBS . 'ACTIONS.php';
-
 /**
  * Class representing a skin
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: SKIN.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
- * @version $NucleusJP: SKIN.php,v 1.6 2006/07/20 08:01:52 kimitake Exp $
+ * @version $Id: SKIN.php,v 1.8 2007-03-20 19:31:29 kmorimatsu Exp $
+ * @version $NucleusJP: SKIN.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
  */
+
+if ( !function_exists('requestVar') ) exit;
+require_once dirname(__FILE__) . '/ACTIONS.php';
+
 class SKIN {
 
 	// after creating a SKIN object, evaluates to true when the skin exists

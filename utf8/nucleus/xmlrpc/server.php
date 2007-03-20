@@ -62,11 +62,11 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: server.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
- * @version $NucleusJP: server.php,v 1.6 2006/07/17 20:03:45 kimitake Exp $
+ * @version $Id: server.php,v 1.8 2007-03-20 19:33:25 kmorimatsu Exp $
+ * @version $NucleusJP: server.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
  */
 $CONF = array();
-include("../../config.php");	// include Nucleus libs and code
+require("../../config.php");	// include Nucleus libs and code
 include($DIR_LIBS . "xmlrpc.inc.php");
 include($DIR_LIBS . "xmlrpcs.inc.php");
 
