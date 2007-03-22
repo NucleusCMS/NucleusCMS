@@ -1,23 +1,26 @@
 <?php
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2007 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * Scripts to create/restore a backup of the Nucleus database
-  *
-  * Based on code in phpBB (http://phpBB.sourceforge.net)
-  *
-  * $Id: backup.php,v 1.4 2006-12-11 22:23:14 kmorimatsu Exp $
-  * $NucleusJP: backup.php,v 1.3 2005/03/12 06:19:05 kimitake Exp $
-  */
+ * Scripts to create/restore a backup of the Nucleus database
+ *
+ * Based on code in phpBB (http://phpBB.sourceforge.net)
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: backup.php,v 1.5 2007-03-22 08:32:11 kimitake Exp $
+ * $NucleusJP: backup.php,v 1.8 2007/02/19 22:27:59 kmorimatsu Exp $
+ */
 
- 
+
 /**
   * This function creates an sql dump of the database and sends it to
   * the user as a file (can be gzipped if they want)
@@ -60,7 +63,7 @@ function do_backup($gzip = 0) {
 	$res = sql_query('SELECT pfile FROM '.sql_table('plugin'));
 	while ($plugName = mysql_fetch_object($res)) {
 		$plug =& $manager->getPlugin($plugName->pfile);
-		if ($plug) $tables = array_merge($tables, $plug->getTableList());
+		if ($plug) $tables = array_merge($tables, (array) $plug->getTableList());
 	}
 	ob_end_clean();
 
@@ -185,7 +188,7 @@ function _backup_dump_structure($tablename) {
 		if(!is_array($index[$kname]))
 			$index[$kname] = array();
 
-		$index[$kname][] = $row['Column_name'];
+		$index[$kname][] = $row['Column_name'] . ( ($row['Sub_part']) ? ' (' . $row['Sub_part'] . ')' : '');
 	}
 
 	while(list($x, $columns) = @each($index)) {
@@ -206,35 +209,53 @@ function _backup_dump_structure($tablename) {
 	echo "\n);\n\n";
 }
 
+/**
+ * Returns the field named for the given table in the 
+ * following format:
+ *
+ * (column1, column2, ..., columnn)
+ */
+function _backup_get_field_names($result, $num_fields) {
+
+	if (function_exists('mysqli_fetch_fields') ) {
+		
+		$fields = mysqli_fetch_fields($result);
+		for ($j = 0; $j < $num_fields; $j++)
+			$fields[$j] = $fields[$j]->name;
+
+	} else {
+
+		$fields = array();
+		for ($j = 0; $j < $num_fields; $j++) {
+			$fields[] = mysql_field_name($result, $j);
+		}
+
+	}
+	
+	return '(' . implode(', ', $fields) . ')';	
+}
+
 function _backup_dump_contents($tablename) {
 	//
 	// Grab the data from the table.
 	//
 	$result = mysql_query("SELECT * FROM $tablename");
 
-	if(mysql_numrows($result) > 0)
+	if(mysql_num_rows($result) > 0)
 		echo "\n#\n# Table Data for $tablename\n#\n";
-
+		
+	$num_fields = mysql_num_fields($result);
+	
+	//
+	// Compose fieldname list
+	//
+	$tablename_list = _backup_get_field_names($result, $num_fields);
+		
 	//
 	// Loop through the resulting rows and build the sql statement.
 	//
 	while ($row = mysql_fetch_array($result))
 	{
-		$tablename_list = '(';
-		$num_fields = mysql_num_fields($result);
-
-		//
-		// Grab the list of field names.
-		//
-		for ($j = 0; $j < $num_fields; $j++)
-			$tablename_list .= mysql_field_name($result, $j) . ', ';
-
-		//
-		// Get rid of the last comma
-		//
-		$tablename_list = ereg_replace(', $', '', $tablename_list);
-		$tablename_list .= ')';
-
 		// Start building the SQL statement.
 
 		echo "INSERT INTO $tablename $tablename_list VALUES(";

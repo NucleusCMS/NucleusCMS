@@ -10,8 +10,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: globalfunctions.php,v 1.7 2005-08-13 07:21:03 kimitake Exp $
-  * $NucleusJP: globalfunctions.php,v 1.6 2005/03/19 09:06:10 kimitake Exp $
+  * $Id: globalfunctions.php,v 1.8 2007-03-22 08:32:11 kimitake Exp $
+  * $NucleusJP: globalfunctions.php,v 1.7 2005/08/13 07:21:03 kimitake Exp $
   */
 
 // needed if we include globalfunctions from install.php

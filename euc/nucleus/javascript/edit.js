@@ -1,6 +1,6 @@
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2005 The Nucleus Group
+  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+  * Copyright (C) 2002-2007 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -11,14 +11,15 @@
   * This file contains functions to allow adding items from inside the weblog.
   * Also contains code to avoid submitting form data twice.
   *
-  * $Id: edit.js,v 1.4 2005-03-23 06:15:05 kimitake Exp $
-  * $NucleusJP: edit.js,v 1.3 2005/03/16 08:07:50 kimitake Exp $
+  * $Id: edit.js,v 1.5 2007-03-22 08:31:55 kimitake Exp $
+  * $NucleusJP: edit.js,v 1.4 2005/03/23 06:15:05 kimitake Exp $
   */
 
 var nucleusConvertBreaks = true;
 var nucleusMediaPopupURL = '';
 var nucleusMediaURL = 'media/';
 var nucleusAuthorId = 0;
+var scrollTop = -1;
 
 function setConvertBreaks(newval) {	nucleusConvertBreaks = newval; }
 function setMediaUrl(url) { nucleusMediaURL = url; }
@@ -27,17 +28,17 @@ function setAuthorId(id) { nucleusAuthorId = id; }
 function preview(id, value) {
 	elem = document.getElementById(id);
 	if (!elem) return;
-	
-	var preview = nucleusConvertBreaks ? str_replace("\n","<br />",value)+"&nbsp;" : value+"&nbsp;";
-	
+
+	var preview = nucleusConvertBreaks ? str_replace("\n","<br />",value)+"&#160;" : value+"&#160;";
+
 	// expand the media commands (without explicit collection)
 	preview = preview.replace(/\<\%image\(([^\/\|]*)\|([^\|]*)\|([^\|]*)\|([^)]*)\)\%\>/g,"<img src='"+nucleusMediaURL+nucleusAuthorId+"/$1' width='$2' height='$3' alt=\"$4\" />");
-	
+
 	// expand the media commands (with collection)
 	preview = preview.replace(/\<\%image\(([^\|]*)\|([^\|]*)\|([^\|]*)\|([^)]*)\)\%\>/g,"<img src='"+nucleusMediaURL+"$1' width='$2' height='$3' alt=\"$4\" />");
 	preview = preview.replace(/\<\%popup\(([^\|]*)\|([^\|]*)\|([^\|]*)\|([^)]*)\)\%\>/g,"<a href='' onclick='if (event &amp;&amp; event.preventDefault) event.preventDefault(); alert(\"popup image\"); return false;' title='popup'>$4</a>");
-	preview = preview.replace(/\<\%media\(([^\|]*)\|([^)]*)\)\%\>/g,"<a href='' title='media link'>$2</a>");	
-	
+	preview = preview.replace(/\<\%media\(([^\|]*)\|([^)]*)\)\%\>/g,"<a href='' title='media link'>$2</a>");
+
 	elem.innerHTML = preview;
 }
 
@@ -50,7 +51,7 @@ function showedit() {
 	document.getElementById('edit').style.display = newval;
 
 	if (newval == "block")
-		updAllPreviews();	
+		updAllPreviews();
 }
 
 function updAllPreviews() {
@@ -69,7 +70,7 @@ function isEditVisible() {
 function updPreview(id) {
 	// don't update when preview is hidden
 	if (!isEditVisible()) return;
-	
+
 	var inputField = document.getElementById('input' + id);
 	if (!inputField) return;
 	preview('prev' + id, inputField.value);
@@ -86,7 +87,7 @@ function str_replace(a, b, s)
 
 function shortCuts() {
 	if (!event || (event.ctrlKey != true)) return;
-	
+
 	switch (event.keyCode) {
 		case 1:
 			ahrefThis(); break; // ctrl-shift-a
@@ -96,7 +97,7 @@ function shortCuts() {
 			italicThis(); break; // ctrl-shift-i
 		case 13:
 			addMedia(); break; // ctrl-shift-m
-		default: 
+		default:
 			return;
 	}
 	return;
@@ -119,17 +120,17 @@ function ahrefThis() {
 		strSelection = document.selection.createRange().text;
 	else
 		strSelection = '';
-		
+
 	strHref = prompt("Create a link to:","http://");
 	if (strHref == null) return;
-	
-	var textpre = "<a href=\"" + strHref + "\">";
+
+	var textpre = "<a href=\"" + strHref.replace(/&/g,'&amp;') + "\">";
 	insertAroundCaret(textpre, "</a>");
 }
 
 function execAndUpdate(action) {
-	lastCaretPos.execCommand(action);
-	updAllPreviews();	
+	lastSelected.caretPos.execCommand(action);
+	updAllPreviews();
 }
 
 
@@ -137,12 +138,12 @@ var nonie_FormType = 'body';
 
 // Add media to new item
 function addMedia() {
-	
+
 	var mediapopup = window.open(nucleusMediaPopupURL + 'media.php','name',
 		'status=yes,toolbar=no,scrollbars=yes,resizable=yes,width=500,height=450,top=0,left=0');
 
 	return;
-} 
+}
 
 
 function setMediaPopupURL(url) {
@@ -155,7 +156,7 @@ function includeImage(collection, filename, type, width, height) {
 	} else {
 		text = getCaretText();
 	}
-	
+
 	// add collection name when not private collection (or editing a message that's not your)
 	var fullName;
 	if (isNaN(collection) || (nucleusAuthorId != collection)) {
@@ -163,8 +164,8 @@ function includeImage(collection, filename, type, width, height) {
 	} else {
 		fullName = filename;
 	}
-		
-	
+
+
 	var replaceBy;
 	switch(type) {
 		case 'popup':
@@ -174,9 +175,9 @@ function includeImage(collection, filename, type, width, height) {
 		default:
 			replaceBy = '<%image(' +  fullName + '|'+width+'|'+height+'|' + text +')%>';
 	}
-	
+
 	insertAtCaret(replaceBy);
-	updAllPreviews();	
+	updAllPreviews();
 
 }
 
@@ -187,19 +188,19 @@ function includeOtherMedia(collection, filename) {
 	} else {
 		text = getCaretText();
 	}
-	
+
 	// add collection name when not private collection (or editing a message that's not your)
 	var fullName;
 	if (isNaN(collection) || (nucleusAuthorId != collection)) {
 		fullName = collection + '/' + filename;
 	} else {
 		fullName = filename;
-	}	
-	
+	}
+
 	var replaceBy = '<%media(' +  fullName + '|' + text +')%>';
-	
+
 	insertAtCaret(replaceBy);
-	updAllPreviews();	
+	updAllPreviews();
 }
 
 
@@ -233,6 +234,8 @@ function storeCaret (textEl) {
 	lastSelected = textEl;
 	
 	nonie_FormType = textEl.name;
+
+	scrollTop = textEl.scrollTop;
 }
 
 //var lastSelected;
@@ -245,10 +248,16 @@ function insertAtCaret (text) {
 		caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? text + ' ' : text;
 	} else if (!document.all && document.getElementById) {
 		mozReplace(document.getElementById('input' + nonie_FormType), text);				
+		if(scrollTop>-1) {
+			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
+		}
 	} else if (textEl) {
 		textEl.value  += text;
 	} else {
 		document.getElementById('input' + nonie_FormType).value += text;		
+		if(scrollTop>-1) {
+			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
+		}
 	}
 	updAllPreviews();
 }
@@ -262,8 +271,14 @@ function insertAroundCaret (textpre, textpost) {
 		caretPos.text = textpre + caretPos.text + textpost;
 	} else if (!document.all && document.getElementById) {
 		mozWrap(document.getElementById('input' + nonie_FormType), textpre, textpost);		
+		if(scrollTop>-1) {
+			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
+		}
 	} else {
 		document.getElementById('input' + nonie_FormType).value += textpre + textpost;
+		if(scrollTop>-1) {
+			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
+		}
 	}
 
 	updAllPreviews();

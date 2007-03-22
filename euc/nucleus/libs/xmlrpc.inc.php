@@ -1,8 +1,8 @@
 <?php					// -*-c++-*-
 // by Edd Dumbill (C) 1999-2002
 // <edd@usefulinc.com>
-// $Id: xmlrpc.inc.php,v 1.5 2005-08-13 07:20:34 kimitake Exp $
-// $NucleusJP: xmlrpc.inc.php,v 1.4.2.2 2005/07/03 05:16:44 kimitake Exp $
+// $Id: xmlrpc.inc.php,v 1.6 2007-03-22 08:32:11 kimitake Exp $
+// $NucleusJP: xmlrpc.inc.php,v 1.5 2005/08/13 07:20:34 kimitake Exp $
 
 // Copyright (c) 1999,2000,2002 Edd Dumbill.
 // All rights reserved.

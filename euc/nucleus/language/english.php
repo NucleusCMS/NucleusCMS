@@ -12,6 +12,27 @@
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
 
+// START changed/added after 3.3 START
+define('_AUTOSAVEDRAFT',		'Auto save draft');
+define('_AUTOSAVEDRAFT_LASTSAVED',	'Last saved: ');
+define('_AUTOSAVEDRAFT_NOTYETSAVED',	'No saves have been made yet');
+define('_AUTOSAVEDRAFT_NOW',		'Auto save now');
+define('_SKIN_PARTS_SPECIAL',		'Special skin parts');
+define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',		'You must enter a name that exists only out of lowercase letters and digits');
+define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',		'Can\'t delete this skin part');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',		'Do you really want to delete this special skin part?');
+define('_ERROR_PLUGIN_LOAD',		'Plugin could not be loaded, or does not support certain features that are required for it to run on your Nucleus installation (you might want to check the <a href="?action=actionlog">actionlog</a> for more info)');
+// END changed/added after 3.3 END
+
+// START changed/added after 3.22 START
+define('_SEARCHFORM_QUERY',			'Keywords to search');
+define('_ERROR_EMAIL_REQUIRED',		'Email address is required');
+define('_COMMENTFORM_MAIL',			'Website:');
+define('_COMMENTFORM_EMAIL',		'E-mail:');
+define('_EBLOG_REQUIREDEMAIL',		'Require E-mail address with comments?');
+define('_ERROR_COMMENTS_SPAM',      'Your comment was rejected because it did not pass the spam test');
+// END changed/added after 3.22 END
+
 // START changed/added after 3.15 START
 
 define('_LIST_PLUG_SUBS_NEEDUPDATE','Please use the \'Update Subscription list\'-button to update the plugin\'s subscription list.');
@@ -98,12 +119,12 @@ define('_BATCH_EXEC',				'Execute');
 define('_QMENU_HOME',				'Home');
 define('_QMENU_ADD',				'Add Item');
 define('_QMENU_ADD_SELECT',			'-- select --');
-define('_QMENU_USER_SETTINGS',		'Settings');
+define('_QMENU_USER_SETTINGS',		'Profile');
 define('_QMENU_USER_ITEMS',			'Items');
 define('_QMENU_USER_COMMENTS',		'Comments');
 define('_QMENU_MANAGE',				'Management');
 define('_QMENU_MANAGE_LOG',			'Action Log');
-define('_QMENU_MANAGE_SETTINGS',	'Global Settings');
+define('_QMENU_MANAGE_SETTINGS',	'Configuration');
 define('_QMENU_MANAGE_MEMBERS',		'Members');
 define('_QMENU_MANAGE_NEWBLOG',		'New Weblog');
 define('_QMENU_MANAGE_BACKUPS',		'Backups');
@@ -445,14 +466,13 @@ define('_LOGIN_PLEASE',				'Please Log in First');
 // commentform
 define('_COMMENTFORM_YOUARE',		'You are');
 define('_COMMENTFORM_SUBMIT',		'Add Comment');
-define('_COMMENTFORM_COMMENT',		'Your comment');
-define('_COMMENTFORM_NAME',			'Name');
-define('_COMMENTFORM_MAIL',			'E-mail/HTTP');
+define('_COMMENTFORM_COMMENT',		'Your comment:');
+define('_COMMENTFORM_NAME',			'Name:');
 define('_COMMENTFORM_REMEMBER',		'Remember Me');
 
 // loginform
-define('_LOGINFORM_NAME',			'Username');
-define('_LOGINFORM_PWD',			'Password');
+define('_LOGINFORM_NAME',			'Username:');
+define('_LOGINFORM_PWD',			'Password:');
 define('_LOGINFORM_YOUARE',			'Logged in as');
 define('_LOGINFORM_SHARED',			'Shared Computer');
 
@@ -555,7 +575,7 @@ define('_ERROR_BADSHORTBLOGNAME',	'The short blog name should only contain a-z a
 define('_ERROR_DUPSHORTBLOGNAME',	'Another blog already has the chosen short name. These names should be unique');
 define('_ERROR_UPDATEFILE',			'Cannot get write access to the update-file. Make sure the file permissions are set ok (try chmodding it to 666). Also note that the location is relative to the admin-area directory, so you might want to use an absolute path (something like /your/path/to/nucleus/)');
 define('_ERROR_DELDEFBLOG',			'Cannot delete the default blog');
-define('_ERROR_DELETEMEMBER',		'This member cannot be deleted, probably because she is the author of items or comments');
+define('_ERROR_DELETEMEMBER',		'This member cannot be deleted, probably because he/she is the author of item(s)');
 define('_ERROR_BADTEMPLATENAME',	'Invalid name for template, use only a-z and 0-9, without spaces');
 define('_ERROR_DUPTEMPLATENAME',	'Another template with this name already exists');
 define('_ERROR_BADSKINNAME',		'Invalid name for skin (only a-z, 0-9 are allowed, no spaces)');

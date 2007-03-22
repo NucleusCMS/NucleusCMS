@@ -62,8 +62,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2005 The Nucleus Group
- * @version $Id: server.php,v 1.6 2005-08-13 07:22:41 kimitake Exp $
- * @version $NucleusJP: server.php,v 1.5.2.2 2005/07/03 05:16:16 kimitake Exp $
+ * @version $Id: server.php,v 1.7 2007-03-22 08:32:43 kimitake Exp $
+ * @version $NucleusJP: server.php,v 1.6 2005/08/13 07:22:41 kimitake Exp $
  */
 $CONF = array();
 include("../../config.php");	// include Nucleus libs and code

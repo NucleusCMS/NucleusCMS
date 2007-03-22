@@ -1,19 +1,15 @@
 <a id="nucleus_mf"></a>
 <form method="post" action="#nucleus_mf">
-  <div class="mailform">
-  	<%errordiv%>
-  
-	<input type="hidden" name="memberid" value="<%formdata(memberid)%>" />
-	<input type="hidden" name="action" value="sendmessage" />
+	<div class="mailform">
+<input type="hidden" name="memberid" value="<%formdata(memberid)%>" />
+<input type="hidden" name="action" value="sendmessage" />
+<input type="hidden" name="url" value="<%formdata(url)%>" />
+		<%errordiv%>
 
-	<input type="hidden" name="url" value="<%formdata(url)%>" />
+		<textarea alt="<%text(_MMAIL_MAIL)%>" name="message" class="formfield" rows="<%formdata(rows)%>" cols="<%formdata(cols)%>"><%formdata(message)%></textarea>
 
-	<textarea name="message" class="formfield" rows="<%formdata(rows)%>" cols="<%formdata(cols)%>"><%formdata(message)%></textarea>
+		<%callback(FormExtra,membermailform-loggedin)%>
 
-	<%callback(FormExtra,membermailform-loggedin)%>	
-	
-	<br />
-	<input type="submit" value="<%text(_MEMBERMAIL_SUBMIT)%>" class="formbutton" />
-	
-  </div>
-</form>		
+		<input type="submit" alt="<%text(_MEMBERMAIL_SUBMIT)%>" value="<%text(_MEMBERMAIL_SUBMIT)%>" class="formbutton" />
+	</div>
+</form>

@@ -1,8 +1,8 @@
 <?php
 // by Edd Dumbill (C) 1999-2002
 // <edd@usefulinc.com>
-// $Id: xmlrpcs.inc.php,v 1.5 2005-08-13 07:20:34 kimitake Exp $
-// $NucleusJP: xmlrpcs.inc.php,v 1.4.2.1 2005/06/30 21:23:01 kimitake Exp $
+// $Id: xmlrpcs.inc.php,v 1.6 2007-03-22 08:32:11 kimitake Exp $
+// $NucleusJP: xmlrpcs.inc.php,v 1.5 2005/08/13 07:20:34 kimitake Exp $
 
 // Copyright (c) 1999,2000,2002 Edd Dumbill.
 // All rights reserved.

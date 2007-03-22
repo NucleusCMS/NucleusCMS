@@ -11,8 +11,8 @@
   *
   * The code for the Nucleus admin area
   *
-  * $Id: ADMIN.php,v 1.8 2005-08-13 07:21:33 kimitake Exp $
-  * $NucleusJP: ADMIN.php,v 1.7 2005/04/19 06:57:48 kimitake Exp $
+  * $Id: ADMIN.php,v 1.9 2007-03-22 08:32:11 kimitake Exp $
+  * $NucleusJP: ADMIN.php,v 1.8 2005/08/13 07:21:33 kimitake Exp $
   */
 
 class ADMIN {
