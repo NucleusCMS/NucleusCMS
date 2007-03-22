@@ -12,7 +12,7 @@
   * File containing actions that can be performed by visitors of the site,
   * like adding comments, etc...
   *
-  * $Id: action.php,v 1.4 2005-03-16 07:59:48 kimitake Exp $
+  * $Id: action.php,v 1.5 2007-03-22 08:07:09 kimitake Exp $
   */
 
 $CONF = array();
