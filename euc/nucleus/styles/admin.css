@@ -1,8 +1,8 @@
 /*
 	admin area style
 	
-	$Id: admin.css,v 1.6 2007-03-22 08:32:35 kimitake Exp $
-	$NucleusJP: admin.css,v 1.5 2005/08/13 07:26:38 kimitake Exp $
+	$Id: admin.css,v 1.7 2007-03-22 09:18:16 kimitake Exp $
+	$NucleusJP: admin.css,v 1.7 2006/07/18 08:43:24 kimitake Exp $
 */
 
 body {
@@ -52,7 +52,7 @@ h1 {
 
 /* page content */
 #content {
-   margin-left:135px;
+   margin-left:155px;
 	font-style: normal;
 	text-decoration: none;
 	color: black;
@@ -86,7 +86,7 @@ h1 {
 	top: 10px;
 	left: 10px;
 
-	width: 110px;
+	width: 130px;
 	margin: 0px;
 	padding: 0px;
 	

@@ -33,6 +33,6 @@ if (!@file_exists($DIR_LIBS . 'globalfunctions.php')) {
 // include libs
 include($DIR_LIBS.'globalfunctions.php');
 if (!extension_loaded('mbstring')) {
-include($DIR_LIBS.'mb_emulator/mb-emulator.php');
+	include($DIR_LIBS.'mb_emulator/mb-emulator.php');
 }
 ?>
