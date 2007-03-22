@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.19 2007-03-20 19:31:29 kmorimatsu Exp $
- * @version $NucleusJP: ADMIN.php,v 1.18 2007/03/19 10:21:41 shizuki Exp $
+ * @version $Id: ADMIN.php,v 1.20 2007-03-22 03:30:14 kmorimatsu Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.19 2007/03/20 19:31:29 kmorimatsu Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -76,7 +76,7 @@ class ADMIN {
 		if (method_exists($this, $methodName))
 			call_user_func(array(&$this, $methodName));
 		else
-			$this->error(_BADACTION . " ($action)");
+			$this->error(_BADACTION . htmlspecialchars(" ($action)"));
 
 	}
 
@@ -210,7 +210,7 @@ class ADMIN {
 	 * @param object BLOG
 	 */
 	function bloglink(&$blog) {
-		return '<a href="'.htmlspecialchars($blog->getURL()).'" title="'._BLOGLIST_TT_VISIT.'">'.$blog->getName() .'</a>';
+		return '<a href="'.htmlspecialchars($blog->getURL()).'" title="'._BLOGLIST_TT_VISIT.'">'. htmlspecialchars( $blog->getName() ) .'</a>';
 	}
 
 	/**
@@ -364,7 +364,7 @@ class ADMIN {
 					$error = $this->moveOneItem($itemid, $destCatid);
 					break;
 				default:
-					$error = _BATCH_UNKNOWN . $action;
+					$error = _BATCH_UNKNOWN . htmlspecialchars($action);
 			}
 
 			echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -420,7 +420,7 @@ class ADMIN {
 					$error = $this->deleteOneComment($commentid);
 					break;
 				default:
-					$error = _BATCH_UNKNOWN . $action;
+					$error = _BATCH_UNKNOWN . htmlspecialchars($action);
 			}
 
 			echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -487,7 +487,7 @@ class ADMIN {
 						sql_query('UPDATE ' . sql_table('member') .' SET madmin=0 WHERE mnumber='.$memberid);
 					break;
 				default:
-					$error = _BATCH_UNKNOWN . $action;
+					$error = _BATCH_UNKNOWN . htmlspecialchars($action);
 			}
 
 			echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -557,7 +557,7 @@ class ADMIN {
 						sql_query('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
 					break;
 				default:
-					$error = _BATCH_UNKNOWN . $action;
+					$error = _BATCH_UNKNOWN . htmlspecialchars($action);
 			}
 
 			echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -621,7 +621,7 @@ class ADMIN {
 					$error = $this->moveOneCategory($catid, $destBlogId);
 					break;
 				default:
-					$error = _BATCH_UNKNOWN . $action;
+					$error = _BATCH_UNKNOWN . htmlspecialchars($action);
 			}
 
 			echo '<b>',($error ? 'Error: '.$error : _BATCH_SUCCESS),'</b>';
@@ -2262,7 +2262,7 @@ class ADMIN {
 		?>
 			<h2><?php echo _DELETE_CONFIRM?></h2>
 
-			<p><?php echo _CONFIRMTXT_TEAM1?><b><?php echo  $teammem->getDisplayName() ?></b><?php echo _CONFIRMTXT_TEAM2?><b><?php echo  htmlspecialchars(strip_tags($blog->getName())) ?></b>
+			<p><?php echo _CONFIRMTXT_TEAM1?><b><?php echo  htmlspecialchars($teammem->getDisplayName()) ?></b><?php echo _CONFIRMTXT_TEAM2?><b><?php echo  htmlspecialchars(strip_tags($blog->getName())) ?></b>
 			</p>
 
 
@@ -2737,7 +2737,7 @@ class ADMIN {
 			<h2><?php echo _DELETE_CONFIRM?></h2>
 
 			<div>
-			<?php echo _CONFIRMTXT_CATEGORY?><b><?php echo  $blog->getCategoryName($catid)?></b>
+			<?php echo _CONFIRMTXT_CATEGORY?><b><?php echo  htmlspecialchars($blog->getCategoryName($catid))?></b>
 			</div>
 
 			<form method="post" action="index.php"><div>
@@ -3061,7 +3061,7 @@ class ADMIN {
 		?>
 			<h2><?php echo _DELETE_CONFIRM?></h2>
 
-			<p><?php echo _CONFIRMTXT_MEMBER?><b><?php echo  $mem->getDisplayName() ?></b>
+			<p><?php echo _CONFIRMTXT_MEMBER?><b><?php echo htmlspecialchars($mem->getDisplayName()) ?></b>
 			</p>
 
 			<p>
@@ -3723,7 +3723,7 @@ selector();
 		<a href="index.php?action=templateoverview">(<?php echo _TEMPLATE_BACK?>)</a>
 		</p>
 
-		<h2><?php echo _TEMPLATE_EDIT_TITLE?> '<?php echo  $templatename; ?>'</h2>
+		<h2><?php echo _TEMPLATE_EDIT_TITLE?> '<?php echo  htmlspecialchars($templatename); ?>'</h2>
 
 		<?php					if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
 		?>
@@ -3960,7 +3960,7 @@ selector();
 			<h2><?php echo _DELETE_CONFIRM?></h2>
 
 			<p>
-			<?php echo _CONFIRMTXT_TEMPLATE?><b><?php echo $name?></b> (<?php echo  htmlspecialchars($desc) ?>)
+			<?php echo _CONFIRMTXT_TEMPLATE?><b><?php echo htmlspecialchars($name)?></b> (<?php echo  htmlspecialchars($desc) ?>)
 			</p>
 
 			<form method="post" action="index.php"><div>
@@ -4174,7 +4174,7 @@ selector();
 			$tabstart = 75;
 
 			while ($row = mysql_fetch_assoc($res)) {
-				echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . strtolower($row['stype']) . '">' . ucfirst($row['stype']) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . strtolower($row['stype']) . '">remove</a>)</li>';
+				echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype'])) . '">' . htmlspecialchars(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype'])) . '">remove</a>)</li>';
 			}
 
 			echo '</ul>';
@@ -4277,7 +4277,7 @@ selector();
 		?>
 		<p>(<a href="index.php?action=skinoverview"><?php echo _SKIN_GOBACK?></a>)</p>
 
-		<h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo  $skin->getName() ?>': <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?></h2>
+		<h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo htmlspecialchars($skin->getName()) ?>': <?php echo htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?></h2>
 
 		<?php			if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
 		?>
@@ -4293,7 +4293,7 @@ selector();
 
 		<input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
 		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-		(skin type: <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
+		(skin type: <?php echo htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
 		<?php if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
 			help('skinpart' . $type);
 		} else {
@@ -4306,7 +4306,7 @@ selector();
 		<br />
 		<input type="submit" tabindex="20" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
 		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-		(skin type: <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
+		(skin type: <?php echo htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
 
 		<br /><br />
 		<?php echo _SKIN_ALLOWEDVARS?>
@@ -4380,7 +4380,7 @@ selector();
 		$query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
 		$r = sql_query($query);
 		if ($o = mysql_fetch_object($r))
-			$this->error(_ERROR_SKINDEFDELETE . $o->bname);
+			$this->error(_ERROR_SKINDEFDELETE . htmlspecialchars($o->bname));
 
 		$this->pagehead();
 
@@ -4392,7 +4392,7 @@ selector();
 			<h2><?php echo _DELETE_CONFIRM?></h2>
 
 			<p>
-				<?php echo _CONFIRMTXT_SKIN?><b><?php echo  $name ?></b> (<?php echo  htmlspecialchars($desc)?>)
+				<?php echo _CONFIRMTXT_SKIN?><b><?php echo htmlspecialchars($name) ?></b> (<?php echo  htmlspecialchars($desc)?>)
 			</p>
 
 			<form method="post" action="index.php"><div>
@@ -4468,14 +4468,14 @@ selector();
 			<h2><?php echo _DELETE_CONFIRM?></h2>
 
 			<p>
-				<?php echo _CONFIRMTXT_SKIN_PARTS_SPECIAL; ?> <b><?php echo $skintype; ?> (<?php echo $name; ?>)</b> (<?php echo  htmlspecialchars($desc)?>)
+				<?php echo _CONFIRMTXT_SKIN_PARTS_SPECIAL; ?> <b><?php echo htmlspecialchars($skintype); ?> (<?php echo htmlspecialchars($name); ?>)</b> (<?php echo  htmlspecialchars($desc)?>)
 			</p>
 
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="skinremovetypeconfirm" />
 				<?php $manager->addTicketHidden() ?>
 				<input type="hidden" name="skinid" value="<?php echo $skinid; ?>" />
-				<input type="hidden" name="type" value="<?php echo $skintype; ?>" />
+				<input type="hidden" name="type" value="<?php echo htmlspecialchars($skintype); ?>" />
 				<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
 		<?php
@@ -5747,7 +5747,7 @@ selector();
 		if ($manager->pluginInstalled($name))
 			$this->error(_ERROR_DUPPLUGIN);
 		if (!checkPlugin($name))
-			$this->error(_ERROR_PLUGFILEERROR . ' (' . $name . ')');
+			$this->error(_ERROR_PLUGFILEERROR . ' (' . htmlspecialchars($name) . ')');
 
 		// get number of currently installed plugins
 		$res = sql_query('SELECT * FROM '.sql_table('plugin'));
@@ -5788,7 +5788,7 @@ selector();
 			$this->deleteOnePlugin($plugin->getID());
 
 			// ...and show error
-			$this->error(_ERROR_NUCLEUSVERSIONREQ . $plugin->getMinNucleusVersion());
+			$this->error(_ERROR_NUCLEUSVERSIONREQ . htmlspecialchars($plugin->getMinNucleusVersion()));
 		}
 
 		// check if plugin needs a newer Nucleus version
@@ -5798,7 +5798,7 @@ selector();
 			$this->deleteOnePlugin($plugin->getID());
 
 			// ...and show error
-			$this->error(_ERROR_NUCLEUSVERSIONREQ . $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel());
+			$this->error(_ERROR_NUCLEUSVERSIONREQ . htmlspecialchars( $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel() ) );
 		}
 
 		$pluginList = $plugin->getPluginDep();
@@ -5811,7 +5811,7 @@ selector();
 				// uninstall plugin again...
 				$this->deleteOnePlugin($plugin->getID());
 
-				$this->error(_ERROR_INSREQPLUGIN . $pluginName);
+				$this->error(_ERROR_INSREQPLUGIN . htmlspecialchars($pluginName));
 			}
 		}
 

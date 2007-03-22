@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ITEMACTIONS.php,v 1.4 2007-03-13 05:04:13 shizuki Exp $
- * @version $NucleusJP: ITEMACTIONS.php,v 1.3 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: ITEMACTIONS.php,v 1.5 2007-03-22 03:30:14 kmorimatsu Exp $
+ * @version $NucleusJP: ITEMACTIONS.php,v 1.4 2007/03/13 05:04:13 shizuki Exp $
  */
 class ITEMACTIONS extends BaseActions {
 
@@ -304,7 +304,7 @@ class ITEMACTIONS extends BaseActions {
 	  */
 	function parse_syndicate_title($maxLength = 100) {
 		$syndicated = strip_tags($this->currentItem->title);
-		echo htmlspecialchars(shorten($syndicated,$maxLength,'...'));
+		echo htmlspecialchars(shorten($syndicated,$maxLength,'...'),ENT_QUOTES);
 	}
 
 	/**
@@ -313,10 +313,10 @@ class ITEMACTIONS extends BaseActions {
 	function parse_syndicate_description($maxLength = 250, $addHighlight = 0) {
 		$syndicated = strip_tags($this->currentItem->body);
 		if ($addHighlight) {
-			$tmp_highlight = htmlspecialchars(shorten($syndicated,$maxLength,'...'));
+			$tmp_highlight = htmlspecialchars(shorten($syndicated,$maxLength,'...'),ENT_QUOTES);
 			echo $this->highlightAndParse($tmp_highlight);
 		} else {
-			echo htmlspecialchars(shorten($syndicated,$maxLength,'...'));
+			echo htmlspecialchars(shorten($syndicated,$maxLength,'...'),ENT_QUOTES);
 		}
 	}
 

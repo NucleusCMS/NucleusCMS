@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: skinie.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
- * @version $NucleusJP: skinie.php,v 1.6 2006/07/20 08:01:52 kimitake Exp $
+ * @version $Id: skinie.php,v 1.8 2007-03-22 03:30:14 kmorimatsu Exp $
+ * @version $NucleusJP: skinie.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
  */
 
 class SKINIMPORT {
@@ -276,7 +276,7 @@ class SKINIMPORT {
 	 * Called by XML parser for each new start element encountered
 	 */
 	function startElement($parser, $name, $attrs) {
-		if ($this->debug) echo 'START: ', $name, '<br />';
+		if ($this->debug) echo 'START: ', htmlspecialchars($name), '<br />';
 
 		switch ($name) {
 			case 'nucleusskin':
@@ -318,7 +318,7 @@ class SKINIMPORT {
 				$this->currentPartName = $attrs['name'];
 				break;
 			default:
-				echo 'UNEXPECTED TAG: ' , $name , '<br />';
+				echo 'UNEXPECTED TAG: ' , htmlspecialchars($name) , '<br />';
 				break;
 		}
 
@@ -331,7 +331,7 @@ class SKINIMPORT {
 	  * Called by the XML parser for each closing tag encountered
 	  */
 	function endElement($parser, $name) {
-		if ($this->debug) echo 'END: ', $name, '<br />';
+		if ($this->debug) echo 'END: ', htmlspecialchars($name), '<br />';
 
 		switch ($name) {
 			case 'nucleusskin':
@@ -365,7 +365,7 @@ class SKINIMPORT {
 				}
 				break;
 			default:
-				echo 'UNEXPECTED TAG: ' , $name, '<br />';
+				echo 'UNEXPECTED TAG: ' , htmlspecialchars($name), '<br />';
 				break;
 		}
 		$this->clearCharacterData();

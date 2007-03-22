@@ -18,8 +18,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ACTIONS.php,v 1.6 2007-03-13 05:17:37 shizuki Exp $
- * @version $NucleusJP: ACTIONS.php,v 1.5 2007/02/26 23:42:01 kmorimatsu Exp $
+ * @version $Id: ACTIONS.php,v 1.7 2007-03-22 03:30:13 kmorimatsu Exp $
+ * @version $NucleusJP: ACTIONS.php,v 1.6 2007/03/13 05:17:37 shizuki Exp $
  */
 
 class ACTIONS extends BaseActions {
@@ -389,7 +389,7 @@ class ACTIONS extends BaseActions {
 	function parse_additemform() {
 		global $blog, $CONF;
 		$this->formdata = array(
-			'adminurl' => htmlspecialchars($CONF['AdminURL']),
+			'adminurl' => htmlspecialchars($CONF['AdminURL'],ENT_QUOTES),
 			'catid' => $blog->getDefaultCategory()
 		);
 		$blog->InsertJavaScriptInfo();
@@ -518,19 +518,19 @@ class ACTIONS extends BaseActions {
 		global $blog;
 		switch($which) {
 			case 'id':
-				echo htmlspecialchars($blog->getID());
+				echo htmlspecialchars($blog->getID(),ENT_QUOTES);
 				break;
 			case 'url':
-				echo htmlspecialchars($blog->getURL());
+				echo htmlspecialchars($blog->getURL(),ENT_QUOTES);
 				break;
 			case 'name':
-				echo htmlspecialchars($blog->getName());
+				echo htmlspecialchars($blog->getName(),ENT_QUOTES);
 				break;
 			case 'desc':
-				echo htmlspecialchars($blog->getDescription());
+				echo htmlspecialchars($blog->getDescription(),ENT_QUOTES);
 				break;
 			case 'short':
-				echo htmlspecialchars($blog->getShortName());
+				echo htmlspecialchars($blog->getShortName(),ENT_QUOTES);
 				break;
 		}
 	}
@@ -627,7 +627,7 @@ class ACTIONS extends BaseActions {
 			// note: createLink returns an HTML encoded URL
 		} else {
 			// HTML encode URL
-			$destinationurl = htmlspecialchars($destinationurl);
+			$destinationurl = htmlspecialchars($destinationurl,ENT_QUOTES);
 		}
 
 		// values to prefill
@@ -643,12 +643,12 @@ class ACTIONS extends BaseActions {
 
 		$this->formdata = array(
 			'destinationurl' => $destinationurl,	// url is already HTML encoded
-			'actionurl' => htmlspecialchars($actionurl),
+			'actionurl' => htmlspecialchars($actionurl,ENT_QUOTES),
 			'itemid' => $itemid,
-			'user' => htmlspecialchars($user),
-			'userid' => htmlspecialchars($userid),
-			'email' => htmlspecialchars($email),
-			'body' => htmlspecialchars($body),
+			'user' => htmlspecialchars($user,ENT_QUOTES),
+			'userid' => htmlspecialchars($userid,ENT_QUOTES),
+			'email' => htmlspecialchars($email,ENT_QUOTES),
+			'body' => htmlspecialchars($body,ENT_QUOTES),
 			'membername' => $member->getDisplayName(),
 			'rememberchecked' => cookieVar($CONF['CookiePrefix'] .'comment_user')?'checked="checked"':''
 		);
@@ -758,7 +758,7 @@ class ACTIONS extends BaseActions {
 	 * Parse skinvar imagetext
 	 */
 	function parse_imagetext() {
-		echo htmlspecialchars(requestVar('imagetext'));
+		echo htmlspecialchars(requestVar('imagetext'),ENT_QUOTES);
 	}
 
 	/**
@@ -809,7 +809,7 @@ class ACTIONS extends BaseActions {
 				echo $item['title'];
 				break;
 			default:
-				echo htmlspecialchars(strip_tags($item['title']));
+				echo htmlspecialchars(strip_tags($item['title']),ENT_QUOTES);
 				break;
 		}
 	}
@@ -843,22 +843,22 @@ class ACTIONS extends BaseActions {
 
 			switch($what) {
 				case 'name':
-					echo htmlspecialchars($memberinfo->getDisplayName());
+					echo htmlspecialchars($memberinfo->getDisplayName(),ENT_QUOTES);
 					break;
 				case 'realname':
-					echo htmlspecialchars($memberinfo->getRealName());
+					echo htmlspecialchars($memberinfo->getRealName(),ENT_QUOTES);
 					break;
 				case 'notes':
-					echo htmlspecialchars($memberinfo->getNotes());
+					echo htmlspecialchars($memberinfo->getNotes(),ENT_QUOTES);
 					break;
 				case 'url':
-					echo htmlspecialchars($memberinfo->getURL());
+					echo htmlspecialchars($memberinfo->getURL(),ENT_QUOTES);
 					break;
 				case 'email':
-					echo htmlspecialchars($memberinfo->getEmail());
+					echo htmlspecialchars($memberinfo->getEmail(),ENT_QUOTES);
 					break;
 				case 'id':
-					echo htmlspecialchars($memberinfo->getID());
+					echo htmlspecialchars($memberinfo->getID(),ENT_QUOTES);
 					break;
 			}
 		}
@@ -908,12 +908,12 @@ class ACTIONS extends BaseActions {
 
 		$this->formdata = array(
 			'url' => htmlspecialchars($desturl),
-			'actionurl' => htmlspecialchars($CONF['ActionURL']),
+			'actionurl' => htmlspecialchars($CONF['ActionURL'],ENT_QUOTES),
 			'memberid' => $memberid,
 			'rows' => $rows,
 			'cols' => $cols,
-			'message' => htmlspecialchars($message),
-			'frommail' => htmlspecialchars($frommail)
+			'message' => htmlspecialchars($message,ENT_QUOTES),
+			'frommail' => htmlspecialchars($frommail,ENT_QUOTES)
 		);
 		if ($member->isLoggedIn()) {
 			$this->doForm('membermailform-loggedin');
@@ -939,7 +939,7 @@ class ACTIONS extends BaseActions {
 	 */	 
 	function parse_nextitem() {
 		global $itemidnext;
-		echo $itemidnext;
+		if (isset($itemidnext)) echo (int)$itemidnext;
 	}
 
 	/**
@@ -960,7 +960,7 @@ class ACTIONS extends BaseActions {
 				echo $itemtitlenext;
 				break;
 			default:
-				echo htmlspecialchars($itemtitlenext);
+				echo htmlspecialchars($itemtitlenext,ENT_QUOTES);
 				break;
 		}
 	}
@@ -1126,7 +1126,7 @@ class ACTIONS extends BaseActions {
 	 */	  
 	function parse_previtem() {
 		global $itemidprev;
-		echo $itemidprev;
+		if (isset($itemidprev)) echo (int)$itemidprev;
 	}
 
 	/**
@@ -1147,7 +1147,7 @@ class ACTIONS extends BaseActions {
 				echo $itemtitleprev;
 				break;
 			default:
-				echo htmlspecialchars($itemtitleprev);
+				echo htmlspecialchars($itemtitleprev,ENT_QUOTES);
 				break;
 		}
 	}
@@ -1172,14 +1172,14 @@ class ACTIONS extends BaseActions {
 	 */	
 	function parse_query() {
 		global $query;
-		echo htmlspecialchars($query);
+		echo htmlspecialchars($query,ENT_QUOTES);
 	}
 
 	/**
 	 * Parse skinvar referer
 	 */
 	function parse_referer() {
-		echo htmlspecialchars(serverVar('HTTP_REFERER'));
+		echo htmlspecialchars(serverVar('HTTP_REFERER'),ENT_QUOTES);
 	}
 
 	/**
@@ -1195,7 +1195,7 @@ class ACTIONS extends BaseActions {
 		// use default blog when no blog is selected
 		$this->formdata = array(
 			'id' => $blog?$blog->getID():$CONF['DefaultBlog'],
-			'query' => htmlspecialchars(getVar('query')),
+			'query' => htmlspecialchars(getVar('query'),ENT_QUOTES),
 		);
 		$this->doForm('searchform');
 	}

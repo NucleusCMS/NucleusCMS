@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BODYACTIONS.php,v 1.4 2007-03-13 05:15:41 shizuki Exp $
- * @version $NucleusJP: BODYACTIONS.php,v 1.3 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: BODYACTIONS.php,v 1.5 2007-03-22 03:30:14 kmorimatsu Exp $
+ * @version $NucleusJP: BODYACTIONS.php,v 1.4 2007/03/13 05:15:41 shizuki Exp $
  */
 
 class BODYACTIONS extends BaseActions {
@@ -82,8 +82,8 @@ class BODYACTIONS extends BaseActions {
 		$windowwidth = $width;
 		$windowheight = $height;
 
-		$vars['link']			= htmlspecialchars($CONF['MediaURL']. $filename);
-		$vars['text']			= htmlspecialchars($text);
+		$vars['link']			= htmlspecialchars($CONF['MediaURL']. $filename ,ENT_QUOTES);
+		$vars['text']			= htmlspecialchars($text ,ENT_QUOTES);
 		$vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
 		$vars['width'] 			= $width;
 		$vars['height']			= $height;
@@ -109,8 +109,8 @@ class BODYACTIONS extends BaseActions {
 			$filename = $this->currentItem->authorid . '/' . $filename;
 	}
 
-		$vars['link']			= htmlspecialchars($CONF['MediaURL'] . $filename);
-		$vars['text']			= htmlspecialchars($text);
+		$vars['link']			= htmlspecialchars($CONF['MediaURL'] . $filename ,ENT_QUOTES);
+		$vars['text']			= htmlspecialchars($text ,ENT_QUOTES);
 		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
 
 		echo TEMPLATE::fill($this->template['MEDIA_CODE'],$vars);;
@@ -135,14 +135,14 @@ class BODYACTIONS extends BaseActions {
 		$windowwidth = $width;
 		$windowheight = $height;
 
-		$vars['rawpopuplink'] 	= $CONF['Self'] . "?imagepopup=" . htmlspecialchars($filename) . "&amp;width=$width&amp;height=$height&amp;imagetext=" . urlencode(htmlspecialchars($text));
+		$vars['rawpopuplink'] 	= $CONF['Self'] . "?imagepopup=" . htmlspecialchars($filename,ENT_QUOTES) . "&amp;width=$width&amp;height=$height&amp;imagetext=" . urlencode(htmlspecialchars($text));
 		$vars['popupcode'] 		= "window.open(this.href,'imagepopup','status=no,toolbar=no,scrollbars=no,resizable=yes,width=$windowwidth,height=$windowheight');return false;";
-		$vars['popuptext'] 		= htmlspecialchars($text);
+		$vars['popuptext'] 		= htmlspecialchars($text,ENT_QUOTES);
 		$vars['popuplink'] 		= '<a href="' . $vars['rawpopuplink']. '" onclick="'. $vars['popupcode'].'" >' . $vars['popuptext'] . '</a>';
 		$vars['width'] 			= $width;
 		$vars['height']			= $height;
 		$vars['text']			= $text;
-		$vars['link']			= htmlspecialchars($CONF['MediaURL'] . $filename);
+		$vars['link']			= htmlspecialchars($CONF['MediaURL'] . $filename ,ENT_QUOTES);
 		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['popuptext'] . '</a>';
 
 		echo TEMPLATE::fill($this->template['POPUP_CODE'],$vars);

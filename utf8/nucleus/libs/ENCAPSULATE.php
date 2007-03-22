@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ENCAPSULATE.php,v 1.3 2007-02-04 06:28:46 kimitake Exp $
- * @version $NucleusJP: ENCAPSULATE.php,v 1.2 2006/07/20 08:01:52 kimitake Exp $
+ * @version $Id: ENCAPSULATE.php,v 1.4 2007-03-22 03:30:14 kmorimatsu Exp $
+ * @version $NucleusJP: ENCAPSULATE.php,v 1.3 2007/02/04 06:28:46 kimitake Exp $
  */
 
 class ENCAPSULATE {
@@ -95,7 +95,7 @@ class NAVLIST extends ENCAPSULATE {
 		$minamount = $this->minamount;
 		$maxamount = $this->maxamount;
 		$blogid = $this->blogid;
-		$search = $this->search;
+		$search = htmlspecialchars($this->search);
 		$itemid = $this->itemid;
 
 		$prev = $start - $amount;

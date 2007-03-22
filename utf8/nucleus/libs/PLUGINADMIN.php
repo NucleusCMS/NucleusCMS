@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: PLUGINADMIN.php,v 1.7 2007-02-06 09:00:24 kimitake Exp $
- * $NucleusJP: PLUGINADMIN.php,v 1.6 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: PLUGINADMIN.php,v 1.8 2007-03-22 03:30:14 kmorimatsu Exp $
+ * $NucleusJP: PLUGINADMIN.php,v 1.7 2007/02/06 09:00:24 kimitake Exp $
  */
 
 global $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_COOKIE_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_SESSION_VARS;
@@ -106,6 +106,7 @@ class PluginAdmin {
 			//echo "\n<!--TicketForPlugin skipped-->\n";
 			return;
 		}
+		$ticket=htmlspecialchars($ticket,ENT_QUOTES);
  
 ?><script type="text/javascript">
 /*<![CDATA[*/

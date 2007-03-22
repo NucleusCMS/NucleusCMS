@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.18 2007-03-19 10:19:29 shizuki Exp $
- * $NucleusJP: globalfunctions.php,v 1.17 2007/03/13 05:10:23 shizuki Exp $
+ * @version $Id: globalfunctions.php,v 1.19 2007-03-22 03:30:14 kmorimatsu Exp $
+ * $NucleusJP: globalfunctions.php,v 1.18 2007/03/19 10:19:29 shizuki Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -1576,7 +1576,7 @@ function ticketForPlugin(){
 	/* Solve the plugin php file or admin directory */
 	$phppath=substr($p_translated,strlen($d_plugins));
 	$phppath=preg_replace('!^/!','',$phppath);// Remove the first "/" if exists.
-	$path=preg_replace('/^NP_([.]*)\.php$/','$1',$phppath); // Remove the first "NP_" and the last ".php" if exists.
+	$path=preg_replace('/^NP_(.*)\.php$/','$1',$phppath); // Remove the first "NP_" and the last ".php" if exists.
 	$path=preg_replace('!^([^/]*)/(.*)$!','$1',$path); // Remove the "/" and beyond.
 	
 	/* Solve the plugin name. */
@@ -1589,7 +1589,7 @@ function ticketForPlugin(){
 	}
 	mysql_free_result($res);
 	if ($plugins[$path]) $plugin_name=$plugins[$path];
-	else if (array_key_exists($path,$plugins)) $plugin_name=$path;
+	else if (in_array($path,$plugins)) $plugin_name=$path;
 	else {
 		header("HTTP/1.0 404 Not Found");
 		exit('');

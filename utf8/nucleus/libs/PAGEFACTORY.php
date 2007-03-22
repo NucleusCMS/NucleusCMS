@@ -12,8 +12,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: PAGEFACTORY.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
- * $NucleusJP: PAGEFACTORY.php,v 1.6 2006/07/12 07:11:47 kimitake Exp $
+ * @version $Id: PAGEFACTORY.php,v 1.8 2007-03-22 03:30:14 kmorimatsu Exp $
+ * $NucleusJP: PAGEFACTORY.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
  */
 
 /**
@@ -259,7 +259,7 @@ class PAGEFACTORY extends BaseActions {
 	}
 
 	function parse_contents($which) {
-		echo htmlspecialchars($this->variables[$which]);
+		echo htmlspecialchars($this->variables[$which],ENT_QUOTES);
 	}
 
 	function parse_checkedonval($value, $name) {
