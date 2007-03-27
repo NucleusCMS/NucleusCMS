@@ -30,7 +30,7 @@
 
 <div class="heading">
 Plugin API
-<i>November 29, 2005</i>
+<i>March 26, 2007</i>
 </div>
 
 <div class="note"><strong>Notes:</strong>
@@ -1425,6 +1425,14 @@ your stuff
 	<tr>
 		<td>SendPing</td>
 		<td>(v3.3) Called when a new item is added and the blog is configured to send ping (need NP_Ping installed). This event is used by NP_Ping to ping various weblog listing service (i.e. pingomatic.com)</td>
+		<td><dl>
+			<dt class="ref">blogid</dt>
+			<dd>ID of the blog</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>JustPosted</td>
+		<td>(v3.3) Called when a future post appears on the blog the first time. The event is trigger after a skin parse is completed</td>
 		<td><dl>
 			<dt class="ref">blogid</dt>
 			<dd>ID of the blog</dd>

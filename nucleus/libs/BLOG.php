@@ -1044,19 +1044,19 @@ class BLOG {
 		sql_query($query);
         }
 
-        // clear there is a future post pending
-        function clearFuturePost() {
+	// clear there is a future post pending
+	function clearFuturePost() {
 		$query =  'UPDATE '.sql_table('blog')
 			   . " SET bfuturepost='0' WHERE bnumber=" . $this->getID();
 		sql_query($query);
-        }
+	}
 
 	// check if we should throw justPosted event
-	function JustPosted() {
+	function checkJustPosted() {
 		global $manager;
-		$blogid = $this->getID();
 
 		if ($this->settings['bfuturepost'] == 1) {
+			$blogid = $this->getID();
 			$result = sql_query("SELECT * FROM " . sql_table('item')
 			          . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()");
 			if (mysql_num_rows($result) > 0) {
