@@ -4,6 +4,7 @@
 
   History
     v1.0 - Initial version
+    v1.1 - Add JustPosted event support
  */
 
 class NP_Ping extends NucleusPlugin {
@@ -12,7 +13,7 @@ class NP_Ping extends NucleusPlugin {
 
 	function getAuthor() { return 'admun (Edmond Hui)'; }
 	function getURL()    { return 'http://edmondhui.homeip.net/nudn'; }
-	function getVersion() { return '1.0'; }
+	function getVersion() { return '1.1'; }
 
 	function getMinNucleusVersion() { return '330'; }
 
@@ -40,10 +41,22 @@ class NP_Ping extends NucleusPlugin {
 	}
 
 	function getEventList() {
-		return array('SendPing');
+		return array('SendPing', 'JustPosted');
 	}
 
+	function event_JustPosted($data) {
+                // should fork and do ping from background 
+                // exec();
+                // ob_end_clean()?
+                ACTIONLOG::add(INFO, 'NP_Ping: Sending ping');
+                $this->sendPings($data);
+        }
+
 	function event_SendPing($data) {
+                $this->sendPings($data);
+	}
+
+        function sendPings($data) {
 		if (!class_exists('xmlrpcmsg')) {
 			global $DIR_LIBS;
 			include($DIR_LIBS . 'xmlrpc.inc.php');
@@ -92,7 +105,7 @@ class NP_Ping extends NucleusPlugin {
 			echo $this->pingBloggDe();
 			echo "<br/>";
 		}
-	}
+        }
 
 	function pingPingomatic() {
 		$b = new BLOG($this->myBlogId);

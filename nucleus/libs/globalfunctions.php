@@ -891,6 +891,9 @@ function selector() {
 
 	// parse the skin
 	$skin->parse($type);
+
+	// check to see we should throw JustPosted event
+	$blog->JustPosted();
 }
 
 /**

@@ -161,7 +161,7 @@
 			if ($this->plugin_options == 0)
 			{
 				$this->plugin_options = array();
-				$query = mysql_query(
+				$query = sql_query(
 					 'SELECT d.oname as name, o.ovalue as value '.
 					 'FROM '.
 					 sql_table('plugin_option').' o, '.
@@ -243,7 +243,7 @@
 
 			// retrieve the data and return
 			$q = 'SELECT otype, oextra FROM '.sql_table('plugin_option_desc').' WHERE oid = '.$oid;
-			$query = mysql_query($q);
+			$query = sql_query($q);
 
 			$o = mysql_fetch_array($query);
 
@@ -253,7 +253,7 @@
 				$orderby = 'ovalue';
 			}
 			$q = 'SELECT ovalue value, ocontextid id FROM '.sql_table('plugin_option').' WHERE oid = '.$oid.' ORDER BY '.$orderby.' '.$sort.' LIMIT 0,'.$amount;
-			$query = mysql_query($q);
+			$query = sql_query($q);
 
 			// create the array
 			$i = 0;

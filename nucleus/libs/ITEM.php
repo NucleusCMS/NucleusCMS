@@ -78,16 +78,16 @@ class ITEM {
 		 global $member, $manager;
 
 		 $i_author = 		$member->getID();
-		 $i_body = 			postVar('body');
-		 $i_title =			postVar('title');
-		 $i_more = 			postVar('more');
+		 $i_body = 		postVar('body');
+		 $i_title =		postVar('title');
+		 $i_more = 		postVar('more');
 		 $i_actiontype = 	postVar('actiontype');
 		 $i_closed = 		intPostVar('closed');
-		 $i_hour = 			intPostVar('hour');
+		 $i_hour = 		intPostVar('hour');
 		 $i_minutes = 		intPostVar('minutes');
 		 $i_month = 		intPostVar('month');
-		 $i_day = 			intPostVar('day');
-		 $i_year = 			intPostVar('year');
+		 $i_day = 		intPostVar('day');
+		 $i_year = 		intPostVar('year');
 
 		 $i_catid = 		postVar('catid');
 
@@ -140,7 +140,15 @@ class ITEM {
 			$posttime = $i_draft ? 0 : $blog->getCorrectTime();
 		}
 
-		$itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft);
+                if ($posttime > $blog->getCorrectTime()) {
+                        $posted = 0;
+                        $blog->setFuturePost();
+                }
+                else {
+                        $posted = 1;
+                }
+
+		$itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft,$posted);
 
 		//Setting the itemOptions
 		$aOptions = requestArray('plugoption');
@@ -202,14 +210,20 @@ class ITEM {
 		if ( (!$blog->allowPastPosting()) && ($timestamp < $blog->getCorrectTime()))
 				$timestamp = 0;
 
-		if ($wasdraft && $publish) {
-			$query .= ', idraft=0';
+		if ($timestamp > $blog->getCorrectTime(time())) {
+			$isFuture = 1;
+			$query .= ', iposted=0';
+		}
+		else {
+			$isFuture = 0;
+			$query .= ', iposted=1';
+		}
 
+		if ($wasdraft && $publish) {
 			// set timestamp to current date only if it's not a future item
 			// draft items have timestamp == 0
 			// don't allow timestamps in the past (unless otherwise defined in blogsettings)
-			if ($timestamp > $blog->getCorrectTime())
-				$isFuture = 1;
+			$query .= ', idraft=0';
 
 			if ($timestamp == 0)
 				$timestamp = $blog->getCorrectTime();

@@ -234,7 +234,7 @@ class BLOG {
 	/**
 	  * Adds an item to this blog
 	  */
-	function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft) {
+	function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted='1') {
 		global $manager;
 
 		$blogid 	= intval($blogid);
@@ -250,7 +250,7 @@ class BLOG {
 			$more = addBreaks($more);
 		}
 
-		if ($closed != '1')	$closed = '0';
+		if ($closed != '1') $closed = '0';
 		if ($draft != '0') $draft = '1';
 
 		if (!$this->isValidCategory($catid))
@@ -267,8 +267,8 @@ class BLOG {
 		$body = addslashes($body);
 		$more = addslashes($more);
 
-		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT) '
-			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $draft, $catid)";
+		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
+			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
 		sql_query($query);
 		$itemid = mysql_insert_id();
 
@@ -756,24 +756,24 @@ class BLOG {
 
 	function isValidCategory($catid) {
 		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
-		$res = mysql_query($query);
+		$res = sql_query($query);
 		return (mysql_num_rows($res) != 0);
 	}
 
 	function getCategoryName($catid) {
-		$res = mysql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+		$res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
 		$o = mysql_fetch_object($res);
 		return $o->cname;
 	}
 
 	function getCategoryDesc($catid) {
-		$res = mysql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+		$res = sql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
 		$o = mysql_fetch_object($res);
 		return $o->cdesc;
 	}
 
 	function getCategoryIdFromName($name) {
-		$res = mysql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . addslashes($name) . '"');
+		$res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . addslashes($name) . '"');
 		if (mysql_num_rows($res) > 0) {
 			$o = mysql_fetch_object($res);
 			return $o->catid;
@@ -1037,6 +1037,46 @@ class BLOG {
 		return (mysql_num_rows($r) != 0);
 	}
 
+        // flag there is a future post pending
+        function setFuturePost() {
+		$query =  'UPDATE '.sql_table('blog')
+			   . " SET bfuturepost='1' WHERE bnumber=" . $this->getID();
+		sql_query($query);
+        }
+
+        // clear there is a future post pending
+        function clearFuturePost() {
+		$query =  'UPDATE '.sql_table('blog')
+			   . " SET bfuturepost='0' WHERE bnumber=" . $this->getID();
+		sql_query($query);
+        }
+
+	// check if we should throw justPosted event
+	function JustPosted() {
+		global $manager;
+		$blogid = $this->getID();
+
+		if ($this->settings['bfuturepost'] == 1) {
+			$result = sql_query("SELECT * FROM " . sql_table('item')
+			          . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()");
+			if (mysql_num_rows($result) > 0) {
+				$manager->notify(
+						'JustPosted',
+						array('blogid' => $blogid)
+				);
+
+				// clear all expired future posts
+				sql_query("UPDATE " . sql_table('item') . " SET iposted='1' WHERE iblog=" . $blogid . " AND itime<NOW()");
+
+				// check to see any pending future post, clear the flag is none 
+				$result = sql_query("SELECT * FROM " . sql_table('item') 
+				          . " WHERE iposted=0 AND iblog=" . $blogid);
+				if (mysql_num_rows($result) == 0) {
+					$this->clearFuturePost();
+				}
+			}
+		}
+	}
 
 }
 
