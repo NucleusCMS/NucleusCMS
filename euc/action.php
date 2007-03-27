@@ -15,12 +15,12 @@
  * like adding comments, etc...
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: action.php,v 1.6 2007-03-22 09:23:50 kimitake Exp $
- * $NucleusJP: action.php,v 1.7 2007/02/04 06:28:44 kimitake Exp $
+ * @version $Id: action.php,v 1.7 2007-03-27 22:00:12 kmorimatsu Exp $
+ * $NucleusJP: action.php,v 1.6 2007/03/22 09:23:50 kimitake Exp $
  */
 
 $CONF = array();
-include('./config.php');
+require('./config.php');
 
 // common functions
 include_once($DIR_LIBS . 'ACTION.php');
