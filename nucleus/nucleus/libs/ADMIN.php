@@ -884,6 +884,7 @@ class ADMIN {
 		// only allow if user is allowed to alter item
 		$member->canAlterItem($itemid) or $this->disallow();
 
+                // ED$ what is this??? getBlogIDFromItemId()??
 		$blogid = getBlogIdFromItemId($itemid);
 
 		$this->pagehead();
@@ -1163,13 +1164,21 @@ class ADMIN {
 		// edit the item for real
 		ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
 
+		$blogid = getBlogIDFromItemID($itemid);
+		$blog =& $manager->getBlog($blogid);
+
+		$isFuture = 0;
+		if ($timestamp > $blog->getCorrectTime(time())) {
+			$isFuture = 1;
+		}
+
+		$this->updateFuturePosted($blogid);
+
 		if ($draftid > 0) {
 			ITEM::delete($draftid);
 		}
 
-		$blogid = getBlogIDFromItemID($itemid);
-		$blog =& $manager->getBlog($blogid);
-		if (!$closed && $publish && $wasdraft && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0) {
+		if (!$closed && $publish && $wasdraft && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0 && !$isFuture) {
 			$this->action_sendping($blogid);
 			return;
 		}
@@ -1240,7 +1249,7 @@ class ADMIN {
 		// only allow if user is allowed to alter item
 		$member->canAlterItem($itemid) or $this->disallow();
 
-		// get blogid first
+		// get blogid first ED$ What is this? getBlogIDFromItemId()???
 		$blogid = getBlogIdFromItemId($itemid);
 
 		// delete item (note: some checks will be performed twice)
@@ -1260,9 +1269,32 @@ class ADMIN {
 		if (!$member->canAlterItem($itemid))
 			return _ERROR_DISALLOWED;
 
+                // need to get blogid before the item is deleted
+		$blogid = getBlogIDFromItemId($itemid);
+
 		$manager->loadClass('ITEM');
 		ITEM::delete($itemid);
+
+                // update blog's futureposted
+                $this->updateFuturePosted($blogid);
 	}
+
+        /**
+         * Update a blog's future posted flag
+         * @param int $blogid
+         */
+        function updateFuturePosted($blogid) {
+                global $manager;
+		$blog =& $manager->getBlog($blogid);
+		$currenttime = $blog->getCorrectTime(time());
+                $result = sql_query("SELECT * FROM ".sql_table('item')." WHERE iblog='".$blogid."' AND iposted=0 AND itime>".mysqldate($currenttime));
+                if (mysql_num_rows($result) > 0) {
+                        $blog->setFuturePost();
+                }
+                else {
+                        $blog->clearFuturePost();
+                }
+        }
 
 	/**
 	 * @todo document this
@@ -1322,7 +1354,15 @@ class ADMIN {
 		// only allow if user is allowed to alter item
 		$member->canUpdateItem($itemid, $catid) or $this->disallow();
 
+		$old_blogid = getBlogIDFromItemId($itemid);
+
 		ITEM::move($itemid, $catid);
+
+		// set the futurePosted flag on the blog
+		$this->updateFuturePosted(getBlogIDFromItemId($itemid));
+
+		// reset the futurePosted in case the item is moved from one blog to another
+		$this->updateFuturePosted($old_blogid);
 
 		if ($catid != intRequestVar('catid'))
 			$this->action_categoryedit($catid, $blog->getID());

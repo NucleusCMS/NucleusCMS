@@ -18,6 +18,20 @@ function upgrade_do33() {
 		upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
 	}
 
+	if (!upgrade_checkIfColumnExists('item','posted')) {
+		$query = "	ALTER TABLE `" . sql_table('item') . "`
+                                ADD `iposted` TINYINT(2) DEFAULT 1 NOT NULL ;";
+
+		upgrade_query('Altering ' . sql_table('item') . ' table', $query);
+	}
+
+	if (!upgrade_checkIfColumnExists('blog','bfuturepost')) {
+		$query = "	ALTER TABLE `" . sql_table('blog') . "`
+                                ADD `bfuturepost` TINYINT(2) DEFAULT 0 NOT NULL ;";
+
+		upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+	}
+
 	// 3.2 -> 3.3
 	// update database version
 	update_version('330');
