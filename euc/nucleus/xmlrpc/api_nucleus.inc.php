@@ -1,22 +1,24 @@
 <?php
-/** 
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id: api_nucleus.inc.php,v 1.3 2005-03-16 08:12:06 kimitake Exp $
-  * $NucleusJP: api_nucleus.inc.php,v 1.3 2005/03/12 06:19:06 kimitake Exp $
-  */
-
 /*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2007 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
+
+/**
  * This file contains definitions for the functions in the Nucleus API
  *
  * NOTE: These functions are deprecated and will most likely be removed!
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: api_nucleus.inc.php,v 1.4 2007-03-27 12:14:05 kimitake Exp $
+ * $NucleusJP: api_nucleus.inc.php,v 1.6 2007/02/04 06:28:46 kimitake Exp $
  */
 
 	// nucleus.addItem
@@ -100,7 +102,7 @@
 	$f_nucleus_editItem_doc = "Edits an item of a blog";
 	function f_nucleus_editItem($m) {
 		global $manager;
-	
+
 		$itemid = intval(_getScalar($m,0));
 		$username = _getScalar($m,1);
 		$password = _getScalar($m,2);
@@ -110,7 +112,7 @@
 		$publish = _getScalar($m,6);
 		$closed = _getScalar($m,7);
 
-		// get old title and extended part 
+		// get old title and extended part
 		if (!$manager->existsItem($itemid,1,1))
 			return _error(6,"No such item ($itemid)");
 
@@ -205,13 +207,13 @@
 	function _getRecentItems($blogid, $username, $password, $amount) {
 		$blogid = intval($blogid);
 		$amount = intval($amount);
-	
+
 		// 1. login
 		$mem = new MEMBER();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
-		// 2. check if allowed 
+		// 2. check if allowed
 		if (!BLOG::existsID($blogid))
 			return _error(2,"No such blog ($blogid)");
 		if (!$mem->teamRights($blogid))
@@ -242,31 +244,31 @@
 				"draft" => new xmlrpcval($obj->idraft,"boolean"),
 				"closed" => new xmlrpcval($obj->iclosed,"boolean"),
 			),'struct');
-			array_push($structarray, $newstruct);		
+			array_push($structarray, $newstruct);
 		}
 
 		return new xmlrpcresp(new xmlrpcval( $structarray , "array"));
 
 	}
-	
-	
+
+
 
 	/**
 	  * Returns one item (Nucleus version)
 	  */
 	function _getItem($itemid, $username, $password) {
 		global $manager;
-	
+
 		// 1. login
 		$mem = new MEMBER();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
-		// 2. check if allowed 
+		// 2. check if allowed
 		if (!$manager->existsItem($itemid,1,1))
 			return _error(6,"No such item ($itemid)");
 		$blogid = getBlogIDFromItemID($itemid);
-		
+
 		if (!$mem->teamRights($blogid))
 			return _error(3,"Not a team member");
 
@@ -274,7 +276,7 @@
 		// Structure returned has dateCreated, userid, blogid and content
 
 		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
-		
+
 		$blog = new BLOG($blogid);
 		if ($blog->convertBreaks())
 			$item['body'] = removeBreaks($item['body']);
@@ -293,7 +295,7 @@
 		return new xmlrpcresp($newstruct);
 
 
-	}	
+	}
 
 
 	$functionDefs = array_merge($functionDefs,
@@ -321,19 +323,19 @@
 			"nucleus.getUsersBlogs" =>
 			array( "function" => "f_nucleus_getUsersBlogs",
 				"signature" => $f_nucleus_getUsersBlogs_sig,
-				"docstring" => $f_nucleus_getUsersBlogs_doc),		
+				"docstring" => $f_nucleus_getUsersBlogs_doc),
 
 			"nucleus.getRecentItems" =>
 			array( "function" => "f_nucleus_getRecentItems",
 				"signature" => $f_nucleus_getRecentItems_sig,
-				"docstring" => $f_nucleus_getRecentItems_doc),		
+				"docstring" => $f_nucleus_getRecentItems_doc),
 
 			"nucleus.getItem" =>
 			array( "function" => "f_nucleus_getItem",
 				"signature" => $f_nucleus_getItem_sig,
 				"docstring" => $f_nucleus_getItem_doc)
-		)		
-		
+		)
+
 	);
 
 ?>

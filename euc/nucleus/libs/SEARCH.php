@@ -1,40 +1,43 @@
 <?php
 
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2003-2007 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2003-2005 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * SEARCH(querystring) offers different functionality to create an
-  * SQL query to find certain items. (and comments)
-  *
-  * based on code by David Altherr:
-  * http://www.evolt.org/article/Boolean_Fulltext_Searching_with_PHP_and_MySQL/18/15665/
-  * http://davidaltherr.net/web/php_functions/boolean/funcs.mysql.boolean.txt
-  * 
-  *
-  * $Id: SEARCH.php,v 1.5 2005-03-16 08:10:35 kimitake Exp $
-  $ $NucleusJP: SEARCH.php,v 1.4 2005/03/12 06:19:05 kimitake Exp $
-  */
+ * SEARCH(querystring) offers different functionality to create an
+ * SQL query to find certain items. (and comments)
+ *
+ * based on code by David Altherr:
+ * http://www.evolt.org/article/Boolean_Fulltext_Searching_with_PHP_and_MySQL/18/15665/
+ * http://davidaltherr.net/web/php_functions/boolean/funcs.mysql.boolean.txt
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: SEARCH.php,v 1.6 2007-03-27 12:13:56 kimitake Exp $
+ * @version $NucleusJP: SEARCH.php,v 1.8 2007/02/04 06:28:46 kimitake Exp $
+ */
+
 
 
 class SEARCH {
-	
+
 	var $querystring;
 	var $marked;
 	var $inclusive;
 	var $blogs;
 
 
-    function SEARCH($text) {
-        global $blogid;
+	function SEARCH($text) {
+		global $blogid;
+//		$text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$text);
 
-//       $text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$text);
 
      /* * * for jp * * * * * * * * * * */
         $text = $this->zenspace_replace($text);
@@ -48,7 +51,7 @@ class SEARCH {
      /* * * * * * * * * * * * * * * * */
 
         $this->querystring	= $text;
-//        $this->marked		= $this->boolean_mark_atoms($text);
+//		$this->marked		= $this->boolean_mark_atoms($text);
         $this->inclusive	= $this->boolean_inclusive_atoms($text);
         $this->blogs		= array();
 

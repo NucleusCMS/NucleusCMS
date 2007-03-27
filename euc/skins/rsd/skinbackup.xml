@@ -1,8 +1,8 @@
 <nucleusskin>
 	<meta>
 		<skin name="xml/rsd" />
+		<info><![CDATA[RSD (Really Simple Discovery) information for weblog clients]]></info>
 	</meta>
-
 
 	<skin name="xml/rsd" type="text/xml" includeMode="normal" includePrefix="">
 		<description>RSD (Really Simple Discovery) information for weblog clients</description>
@@ -22,8 +22,6 @@
   </apis>
  </service>
 </rsd>]]></part>
-
 	</skin>
-
 
 </nucleusskin>

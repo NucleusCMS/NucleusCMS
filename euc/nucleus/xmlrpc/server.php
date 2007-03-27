@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2005 The Nucleus Group
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -61,12 +61,12 @@
  * mt.supportedMethods
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2005 The Nucleus Group
- * @version $Id: server.php,v 1.7 2007-03-22 08:32:43 kimitake Exp $
- * @version $NucleusJP: server.php,v 1.6 2005/08/13 07:22:41 kimitake Exp $
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: server.php,v 1.8 2007-03-27 12:14:05 kimitake Exp $
+ * @version $NucleusJP: server.php,v 1.8 2007/03/20 19:33:25 kmorimatsu Exp $
  */
 $CONF = array();
-include("../../config.php");	// include Nucleus libs and code
+require("../../config.php");	// include Nucleus libs and code
 include($DIR_LIBS . "xmlrpc.inc.php");
 include($DIR_LIBS . "xmlrpcs.inc.php");
 
@@ -306,7 +306,10 @@ function _getScalar($m, $idx) {
 
 function _getStructVal($struct, $key) {
 	$t = $struct->structmem($key);
-	return $t->scalarval();
+	if (!$t) 
+		return '';	// no such struct value
+	else
+		return $t->scalarval();
 }
 
 function _getArrayVal($a, $idx) {

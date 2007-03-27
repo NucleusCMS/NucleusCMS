@@ -1,7 +1,7 @@
 <?php
 	/*
 	 * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-	 * Copyright (C) 2002-2006 The Nucleus Group
+	 * Copyright (C) 2002-2007 The Nucleus Group
 	 *
 	 * This program is free software; you can redistribute it and/or
 	 * modify it under the terms of the GNU General Public License
@@ -16,9 +16,9 @@
 	 * plugins.html file that is included with the Nucleus documenation
 	 *
 	 * @license http://nucleuscms.org/license.txt GNU General Public License
-	 * @copyright Copyright (C) 2002-2005 The Nucleus Group
-	 * @version $Id: PLUGIN.php,v 1.4 2006-12-07 03:18:54 kmorimatsu Exp $
-	 * @version $NucleusJP: PLUGIN.php,v 1.3.2.1 2005/08/23 08:08:38 kimitake Exp $
+	 * @copyright Copyright (C) 2002-2007 The Nucleus Group
+	 * @version $Id: PLUGIN.php,v 1.5 2007-03-27 12:13:56 kimitake Exp $
+	 * $NucleusJP: PLUGIN.php,v 1.9 2007/03/13 05:03:23 shizuki Exp $
 	 */
 	class NucleusPlugin {
 
@@ -58,6 +58,8 @@
 			call_user_func_array(array(&$this,'doSkinVar'),$args);
 		}
 		function doAction($type) { return 'No Such Action'; }
+		function doIf($key,$value) { return false; }
+		function doItemVar () {}
 
 		/**
 		 * Checks if a plugin supports a certain feature.
@@ -153,7 +155,26 @@
 		/**
 		  * Retrieves the current value for an option
 		  */
-		function getOption($name) {
+		function getOption($name)
+		{
+			// only request the options the very first time. On subsequent requests
+			// the static collection is used to save SQL queries.
+			if ($this->plugin_options == 0)
+			{
+				$this->plugin_options = array();
+				$query = mysql_query(
+					 'SELECT d.oname as name, o.ovalue as value '.
+					 'FROM '.
+					 sql_table('plugin_option').' o, '.
+					 sql_table('plugin_option_desc').' d '.
+					 'WHERE d.opid='. intval($this->getID()).' AND d.oid=o.oid'
+				);
+				while ($row = mysql_fetch_object($query))
+					$this->plugin_options[strtolower($row->name)] = $row->value;
+		  }
+		  if (isset($this->plugin_options[strtolower($name)]))
+				return $this->plugin_options[strtolower($name)];
+		  else
 			return $this->_getOption('global', 0, $name);
 		}
 		function getBlogOption($blogid, $name) {
@@ -279,6 +300,7 @@
 
 		var $_aOptionValues;	// oid_contextid => value
 		var $_aOptionToInfo;	// context_name => array('oid' => ..., 'default' => ...)
+		var $plugin_options;	// see getOption()
 		var $plugid;			// plugin id
 
 
@@ -286,6 +308,7 @@
 		function NucleusPlugin() {
 			$this->_aOptionValues = array();	// oid_contextid => value
 			$this->_aOptionToInfo = array();	// context_name => array('oid' => ..., 'default' => ...)
+			$this->plugin_options = 0;
 		}
 
 		// private
@@ -358,7 +381,7 @@
 
 			// update plugin_option
 			sql_query('DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid) . ' and ocontextid='. intval($contextid));
-			sql_query('INSERT INTO ' . sql_table('plugin_option') . ' (ovalue, oid, ocontextid) VALUES (\''.addslashes($value).'\', '. intval($oid) . ', ' . intval($contextid) . ')');
+			@mysql_query('INSERT INTO ' . sql_table('plugin_option') . ' (ovalue, oid, ocontextid) VALUES (\''.addslashes($value).'\', '. intval($oid) . ', ' . intval($contextid) . ')');
 
 			// update cache
 			$this->_aOptionValues[$oid . '_' . $contextid] = $value;
@@ -416,6 +439,9 @@
 					break;
 				case 'member':
 					$r = sql_query('SELECT mnumber as contextid FROM ' . sql_table('member'));
+					break;
+				case 'item':
+					$r = sql_query('SELECT inumber as contextid FROM ' . sql_table('item'));
 					break;
 			}
 			if ($r) {
@@ -591,7 +617,7 @@
 
 							// delete the old value for the option
 							sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));
-							sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
+							@mysql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
 						}
 					}
 				}
