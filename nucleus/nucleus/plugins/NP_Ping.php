@@ -6,6 +6,7 @@
     v1.0 - Initial version
     v1.1 - Add JustPosted event support
     v1.2 - JustPosted event handling in background
+    v1.3 - pinged variable support
  */
 
 class NP_Ping extends NucleusPlugin {
@@ -14,7 +15,7 @@ class NP_Ping extends NucleusPlugin {
 
 	function getAuthor() { return 'admun (Edmond Hui)'; }
 	function getURL()    { return 'http://edmondhui.homeip.net/nudn'; }
-	function getVersion() { return '1.2'; }
+	function getVersion() { return '1.3'; }
 
 	function getMinNucleusVersion() { return '330'; }
 
@@ -47,7 +48,16 @@ class NP_Ping extends NucleusPlugin {
 
 	function event_JustPosted($data) {
 		global $DIR_PLUGINS, $DIR_NUCLEUS;
+
+		// exit is another plugin already send ping
+		if ($data['pinged'] == true) {
+			return;
+		}
+
 		exec("php $DIR_PLUGINS/ping/ping.php $DIR_NUCLEUS " . $data['blogid'] . " &");
+
+		// mark the ping has been sent
+		$data['pinged'] = true;
         }
 
 	function event_SendPing($data) {
