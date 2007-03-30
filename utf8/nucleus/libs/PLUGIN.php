@@ -17,8 +17,8 @@
 	 *
 	 * @license http://nucleuscms.org/license.txt GNU General Public License
 	 * @copyright Copyright (C) 2002-2007 The Nucleus Group
-	 * @version $Id: PLUGIN.php,v 1.9 2007-03-13 05:03:23 shizuki Exp $
-	 * $NucleusJP: PLUGIN.php,v 1.8 2007/02/19 22:29:31 kmorimatsu Exp $
+	 * @version $Id: PLUGIN.php,v 1.10 2007-03-30 22:18:28 kmorimatsu Exp $
+	 * $NucleusJP: PLUGIN.php,v 1.9 2007/03/13 05:03:23 shizuki Exp $
 	 */
 	class NucleusPlugin {
 
@@ -155,26 +155,7 @@
 		/**
 		  * Retrieves the current value for an option
 		  */
-		function getOption($name)
-		{
-			// only request the options the very first time. On subsequent requests
-			// the static collection is used to save SQL queries.
-			if ($this->plugin_options == 0)
-			{
-				$this->plugin_options = array();
-				$query = mysql_query(
-					 'SELECT d.oname as name, o.ovalue as value '.
-					 'FROM '.
-					 sql_table('plugin_option').' o, '.
-					 sql_table('plugin_option_desc').' d '.
-					 'WHERE d.opid='. intval($this->getID()).' AND d.oid=o.oid'
-				);
-				while ($row = mysql_fetch_object($query))
-					$this->plugin_options[strtolower($row->name)] = $row->value;
-		  }
-		  if (isset($this->plugin_options[strtolower($name)]))
-				return $this->plugin_options[strtolower($name)];
-		  else
+		function getOption($name){
 			return $this->_getOption('global', 0, $name);
 		}
 		function getBlogOption($blogid, $name) {
