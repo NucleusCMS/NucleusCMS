@@ -1060,9 +1060,14 @@ class BLOG {
 			$result = sql_query("SELECT * FROM " . sql_table('item')
 			          . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()");
 			if (mysql_num_rows($result) > 0) {
+				// This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
+				// Note that the plugins's calling order is subject to thri order in the plugin list
+				$pinged = false;
 				$manager->notify(
 						'JustPosted',
-						array('blogid' => $blogid)
+						array('blogid' => $blogid,
+						'pinged' => &$pinged
+						)
 				);
 
 				// clear all expired future posts
