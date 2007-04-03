@@ -35,6 +35,13 @@ function upgrade_do33() {
 	// 3.2 -> 3.3
 	// update database version
 	update_version('330');
+
+	// check to see if user turn on Weblogs.com ping, if so, suggest to install the plugin
+	$query = "SELECT bsendping FROM " . sql_table('blog') . " WHERE bsendping='1'"; 
+	$res = mysql_query($query);
+	if (mysql_num_rows($res) > 0) {
+		echo "<li>Note: The weblogs.com ping function is improved and moved into a plugin. To activate this function in v3.3, please go to plugin menu and install NP_Ping plugin.</li>";
+	}
 }
 
 ?>
