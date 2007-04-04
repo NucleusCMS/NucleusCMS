@@ -7,6 +7,7 @@
     v1.1 - Add JustPosted event support
     v1.2 - JustPosted event handling in background
     v1.3 - pinged variable support
+    v1.4 - language file support
  */
 
 class NP_Ping extends NucleusPlugin {
@@ -15,12 +16,12 @@ class NP_Ping extends NucleusPlugin {
 
 	function getAuthor() { return 'admun (Edmond Hui)'; }
 	function getURL()    { return 'http://edmondhui.homeip.net/nudn'; }
-	function getVersion() { return '1.3'; }
+	function getVersion() { return '1.4'; }
 
 	function getMinNucleusVersion() { return '330'; }
 
 	function getDescription() {
-		return 'This plugin can be used to ping many blog tracking services';
+		return _PING_DESC;
 	}
 
 	function supportsFeature($what) {
@@ -32,14 +33,24 @@ class NP_Ping extends NucleusPlugin {
 		}
 	}
 
+	function init()
+	{
+		$language = ereg_replace( '[\\|/]', '', getLanguageName());
+		if (file_exists($this->getDirectory()  . $language . '.php')) {
+			include_once($this->getDirectory() . $language . '.php');
+		}else {
+			include_once($this->getDirectory() . 'english.php');
+		}
+	}
+
 	function install() {
-		$this->createOption('pingpong_pingomatic','Ping-o-matic','yesno','yes');  // Default, http://pingomatic.com
-		$this->createOption('pingpong_weblogs','weblogs.com','yesno','no'); // http://weblogs.com
-		$this->createOption('pingpong_technorati',"Technorati",'yesno','no'); // http://www.technorati.com
-		$this->createOption('pingpong_blogrolling',"Blogrolling",'yesno','no'); // http://www.blogrolling.com
-		$this->createOption('pingpong_blogs','Blo.gs (no longer works?)','yesno','no'); // http://blo.gs
-		$this->createOption('pingpong_weblogues','Weblogues (no longer works?)','yesno','no'); // http://weblogues.com/
-		$this->createOption('pingpong_bloggde',"Blogg.de (not working??)",'yesno','no'); // http://blogg.de
+		$this->createOption('pingpong_pingomatic',_PING_PINGOM,'yesno','yes');  // Default, http://pingomatic.com
+		$this->createOption('pingpong_weblogs',_PING_WEBLOGS,'yesno','no'); // http://weblogs.com
+		$this->createOption('pingpong_technorati',_PING_TECHNOR,'yesno','no'); // http://www.technorati.com
+		$this->createOption('pingpong_blogrolling',_PING_BLOGR,'yesno','no'); // http://www.blogrolling.com
+		$this->createOption('pingpong_blogs',_PING_BLOGS,'yesno','no'); // http://blo.gs
+		$this->createOption('pingpong_weblogues',_PING_WEBLOGUES,'yesno','no'); // http://weblogues.com/
+		$this->createOption('pingpong_bloggde',_PING_BLOGGDE,'yesno','no'); // http://blogg.de
 	}
 
 	function getEventList() {
@@ -73,43 +84,43 @@ class NP_Ping extends NucleusPlugin {
                 $this->myBlogId = $data['blogid'];
 
 		if ($this->getOption('pingpong_pingomatic')=='yes') {
-			echo "Pinging Ping-o-matic:<br/>";
+			echo _PINGING . "Ping-o-matic:<br/>";
 			echo $this->pingPingomatic();
 			echo "<br/>";
 		}
 
 		if ($this->getOption('pingpong_weblogs')=='yes') { 
-			echo "Pinging Weblogs.com:<br/>";
+			echo _PINGING . "Weblogs.com:<br/>";
 			echo $this->pingWeblogs();
 			echo "<br/>";
 		}
 
 		if ($this->getOption('pingpong_technorati')=='yes') {
-			echo "Pinging Technorati:<br/>";
+			echo _PINGING . "Technorati:<br/>";
 			echo $this->pingTechnorati();
 			echo "<br/>";
 		}
 
 		if ($this->getOption('pingpong_blogrolling')=='yes') {
-			echo "Pinging Blogrolling.com:<br/>";
+			echo _PINGING . "Blogrolling.com:<br/>";
 			echo $this->pingBlogRollingDotCom();
 			echo "<br/>";
 		}
 
 		if ($this->getOption('pingpong_blogs')=='yes') {
-			echo "Pinging Blog.gs:<br/>";
+			echo _PINGING . "Blog.gs:<br/>";
 			echo $this->pingBloGs();
 			echo "<br/>";
 		}
 
 		if ($this->getOption('pingpong_weblogues')=='yes') {
-			echo "Pinging Weblogues.com:<br/>";
+			echo _PINGING . "Weblogues.com:<br/>";
 			echo $this->pingWebloguesDotCom();
 			echo "<br/>";
 		}
 
 		if ($this->getOption('pingpong_bloggde')=='yes') {
-			echo "Pinging Blog.de:<br/>";
+			echo _PINGING . "Blog.de:<br/>";
 			echo $this->pingBloggDe();
 			echo "<br/>";
 		}
@@ -226,13 +237,13 @@ class NP_Ping extends NucleusPlugin {
 		global $php_errormsg;
 
 		if (($r == 0) && ($r->errno || $r->errstring)) {
-			return 'Error ' . $r->errno . ' : ' . $r->errstring;
+			return _PING_ERROR . " " . $r->errno . ' : ' . $r->errstring;
 		} elseif (($r == 0) && ($php_errormsg)) {
-			return 'PHP Error: ' . $php_errormsg;
+			return _PING_PHP_ERROR . $php_errormsg;
 		} elseif ($r == 0) {
-			return 'Error while trying to send ping. Sorry about that.';
+			return _PING_PHP_PING_ERROR;
 		} elseif ($r->faultCode() != 0) {
-			return 'Error: ' . $r->faultString();
+			return _PING_ERROR . ': ' . $r->faultString();
 		} else {
 			$r = $r->value();	// get response struct
 
@@ -244,10 +255,10 @@ class NP_Ping extends NucleusPlugin {
 			$message = $message->scalarval();
 
 			if ($flerror != 0) {
-      				return 'Error (flerror=1): ' . $message;
+      				return _PING_ERROR . ' (flerror=1): ' . $message;
 			}
 			else {
-				return 'Success: ' . $message;
+				return _PING_SUCCESS . ': ' . $message;
 			}
 		}
 	}
