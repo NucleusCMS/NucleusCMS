@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: COMMENTS.php,v 1.4 2007-03-27 12:13:56 kimitake Exp $
- * $NucleusJP: COMMENTS.php,v 1.9 2007/03/20 19:31:29 kmorimatsu Exp $
+ * @version $Id: COMMENTS.php,v 1.5 2007-04-04 07:52:08 kimitake Exp $
+ * $NucleusJP: COMMENTS.php,v 1.4 2007/03/27 12:13:56 kimitake Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -150,7 +150,7 @@ class COMMENTS {
 		if ($CONF['ProtectMemNames'] && !$member->isLoggedIn() && MEMBER::isNameProtected($comment['user']))
 			return _ERROR_COMMENTS_MEMBERNICK;
 
-		if ($isvalid != 1)
+		// email required protection
 		if ($settings->emailRequired() && strlen($comment['email']) == 0 && !$member->isLoggedIn()) {
 			return _ERROR_EMAIL_REQUIRED;
 		}
