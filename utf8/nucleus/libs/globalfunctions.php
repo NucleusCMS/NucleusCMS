@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.19 2007-03-22 03:30:14 kmorimatsu Exp $
- * $NucleusJP: globalfunctions.php,v 1.18 2007/03/19 10:19:29 shizuki Exp $
+ * @version $Id: globalfunctions.php,v 1.20 2007-04-04 20:59:34 kmorimatsu Exp $
+ * $NucleusJP: globalfunctions.php,v 1.19 2007/03/22 03:30:14 kmorimatsu Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -238,8 +238,8 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 }
 
 // login completed
-ticketForPlugin();
 $manager->notify('PostAuthentication', array('loggedIn' => $member->isLoggedIn() ) );
+ticketForPlugin();
 
 // first, let's see if the site is disabled or not. always allow admin area access.
 if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
