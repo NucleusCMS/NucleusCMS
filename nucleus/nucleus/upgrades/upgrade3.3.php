@@ -40,7 +40,7 @@ function upgrade_do33() {
 	$query = "SELECT bsendping FROM " . sql_table('blog') . " WHERE bsendping='1'"; 
 	$res = mysql_query($query);
 	if (mysql_num_rows($res) > 0) {
-		echo "<li>Note: The weblogs.com ping function is improved and moved into a plugin. To activate this function in v3.3, please go to plugin menu and install NP_Ping plugin.</li>";
+		echo "<li>Note: The weblogs.com ping function is improved and moved into a plugin. To activate this function in v3.3, please go to plugin menu and install NP_Ping plugin. Also, NP_Ping is replacing NP_PingPong. If you have NP_PingPing installed, please also remove it.</li>";
 	}
 }
 
