@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.21 2007-04-06 21:25:30 kmorimatsu Exp $
- * $NucleusJP: globalfunctions.php,v 1.20 2007/04/04 20:59:34 kmorimatsu Exp $
+ * @version $Id: globalfunctions.php,v 1.22 2007-04-06 22:08:39 kmorimatsu Exp $
+ * $NucleusJP: globalfunctions.php,v 1.21 2007/04/06 21:25:30 kmorimatsu Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -175,13 +175,13 @@ $member = new MEMBER();
 if (!isset($CONF['secureCookieKey'])) $CONF['secureCookieKey']=24;
 switch($CONF['secureCookieKey']){
 case 8:
-	$CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]?\.[0-9]?\.[0-9]?$/','',serverVar('REMOTE_ADDR'));
+	$CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
 	break;
 case 16:
-	$CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]?\.[0-9]?$/','',serverVar('REMOTE_ADDR'));
+	$CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
 	break;
 case 24:
-	$CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]?$/','',serverVar('REMOTE_ADDR'));
+	$CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
 	break;
 case 32:
 	$CONF['secureCookieKeyIP']=serverVar('REMOTE_ADDR');
