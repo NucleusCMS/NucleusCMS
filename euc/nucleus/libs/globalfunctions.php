@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.10 2007-04-04 21:00:14 kmorimatsu Exp $
- * $NucleusJP: globalfunctions.php,v 1.9 2007/03/27 12:13:56 kimitake Exp $
+ * @version $Id: globalfunctions.php,v 1.11 2007-04-06 21:25:58 kmorimatsu Exp $
+ * $NucleusJP: globalfunctions.php,v 1.10 2007/04/04 21:00:14 kmorimatsu Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -171,6 +171,25 @@ if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'), 'Mozi
 // login if cookies set
 $member = new MEMBER();
 
+// secure cookie key settings (either 'none', 0, 8, 16, 24, or 32)
+if (!isset($CONF['secureCookieKey'])) $CONF['secureCookieKey']=24;
+switch($CONF['secureCookieKey']){
+case 8:
+	$CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]?\.[0-9]?\.[0-9]?$/','',serverVar('REMOTE_ADDR'));
+	break;
+case 16:
+	$CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]?\.[0-9]?$/','',serverVar('REMOTE_ADDR'));
+	break;
+case 24:
+	$CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]?$/','',serverVar('REMOTE_ADDR'));
+	break;
+case 32:
+	$CONF['secureCookieKeyIP']=serverVar('REMOTE_ADDR');
+	break;
+default:
+	$CONF['secureCookieKeyIP']='';
+}
+
 // login/logout when required or renew cookies
 if ($action == 'login') {
 	// Form Authentication
@@ -182,6 +201,12 @@ if ($action == 'login') {
 
 		$member->newCookieKey();
 		$member->setCookies($shared);
+
+		if ($CONF['secureCookieKey']!=='none') {
+			// secure cookie key
+			$member->setCookieKey(md5($member->getCookieKey().$CONF['secureCookieKeyIP']));
+			$member->write();
+		}
 
 		// allows direct access to parts of the admin area after logging in
 		if ($nextaction) {
@@ -229,10 +254,15 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 	$manager->notify('Logout', array('username' => cookieVar($CONF['CookiePrefix'] . 'user') ) );
 } elseif (cookieVar($CONF['CookiePrefix'] . 'user') ) {
 	// Cookie Authentication
-	$res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] . 'user'), cookieVar($CONF['CookiePrefix'] . 'loginkey') );
+	$ck=cookieVar($CONF['CookiePrefix'] . 'loginkey');
+	// secure cookie key
+	if ($CONF['secureCookieKey']!=='none') $ck=md5($ck.$CONF['secureCookieKeyIP']);
+	$res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] . 'user'), $ck );
+	unset($ck);
 
 	// renew cookies when not on a shared computer
 	if ($res && (cookieVar($CONF['CookiePrefix'] . 'sharedpc') != 1) && (!headers_sent() ) ) {
+		$member->setCookieKey(cookieVar($CONF['CookiePrefix'] . 'loginkey'));
 		$member->setCookies();
 	}
 }
