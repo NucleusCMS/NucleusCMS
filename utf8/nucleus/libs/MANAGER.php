@@ -20,8 +20,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: MANAGER.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
- * $NucleusJP: MANAGER.php,v 1.6 2006/07/20 08:01:52 kimitake Exp $
+ * @version $Id: MANAGER.php,v 1.8 2007-04-06 19:36:29 kmorimatsu Exp $
+ * $NucleusJP: MANAGER.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
  */
 class MANAGER {
 
@@ -270,6 +270,24 @@ class MANAGER {
 			// load class if needed
 			$this->_loadPlugin($name);
 			$plugin =& $this->plugins[$name];
+		}
+		return $plugin;
+	}
+
+	/**
+	  * checks if the given plugin IS loaded or not
+	  */
+	function &pluginLoaded($name) {
+		$plugin =& $this->plugins[$name];
+		return $plugin;
+	}
+	function &pidLoaded($pid) {
+		$plugin=false;
+		reset($this->plugins);
+		while (list($name) = each($this->plugins)) {
+			if ($pid!=$this->plugins[$name]->getId()) continue;
+			$plugin= & $this->plugins[$name];
+			break;
 		}
 		return $plugin;
 	}

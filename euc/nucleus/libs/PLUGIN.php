@@ -17,8 +17,8 @@
 	 *
 	 * @license http://nucleuscms.org/license.txt GNU General Public License
 	 * @copyright Copyright (C) 2002-2007 The Nucleus Group
-	 * @version $Id: PLUGIN.php,v 1.6 2007-03-30 22:18:54 kmorimatsu Exp $
-	 * $NucleusJP: PLUGIN.php,v 1.5 2007/03/27 12:13:56 kimitake Exp $
+	 * @version $Id: PLUGIN.php,v 1.7 2007-04-06 19:37:07 kmorimatsu Exp $
+	 * $NucleusJP: PLUGIN.php,v 1.6 2007/03/30 22:18:54 kmorimatsu Exp $
 	 */
 	class NucleusPlugin {
 
@@ -292,6 +292,10 @@
 			$this->plugin_options = 0;
 		}
 
+		function clearOptionValueCache(){
+			$this->_aOptionValues = array();
+		}
+
 		// private
 		function _createOption($context, $name, $desc, $type, $defValue, $typeExtras = '') {
 			// create in plugin_option_desc
@@ -563,7 +567,10 @@
 				$res = sql_query($query);
 				if ($o = mysql_fetch_object($res))
 				{
-					foreach ($values as $contextid => $value) {
+					foreach ($values as $key => $value) {
+						// avoid overriding the key used by foreach statement
+						$contextid=$key;
+
 						// retreive any metadata
 						$meta = NucleusPlugin::getOptionMeta($o->oextra);
 
@@ -602,6 +609,11 @@
 						}
 					}
 				}
+			}
+			// clear option value cache if the plugin object is already loaded
+			if (is_object($o)) {
+				$plugin=& $manager->pidLoaded($o->opid);
+				if ($plugin) $plugin->clearOptionValueCache();
 			}
 		}
 
