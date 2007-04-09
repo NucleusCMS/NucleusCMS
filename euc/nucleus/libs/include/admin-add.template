@@ -73,14 +73,14 @@
 			<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="61" /><label for="act_future" ><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 			<div class="indent">
 				<%text(_ADD_PLACE_ON)%>
-				<input id="inputyear" name="year" tabindex="63" size="4" value="<%currenttime(year)%>" />å¹´
-				<input id="inputmonth" name="month" tabindex="64" size="2" value="<%currenttime(mon)%>" />æœˆ
-				<input id="inputday" name="day" tabindex="65" size="2" value="<%currenttime(mday)%>" />æ—¥
+				<input id="inputyear" name="year" tabindex="63" size="4" value="<%currenttime(year)%>" />Ç¯
+				<input id="inputmonth" name="month" tabindex="64" size="2" value="<%currenttime(mon)%>" />·î
+				<input id="inputday" name="day" tabindex="65" size="2" value="<%currenttime(mday)%>" />Æü
 				 
-				<input id="inputhour" name="hour" tabindex="66" size="2" value="<%currenttime(hours)%>" />æ™‚
-				<input id="inputminutes" name="minutes" tabindex="67" size="2" value="<%currenttime(minutes)%>" />åˆ†
+				<input id="inputhour" name="hour" tabindex="66" size="2" value="<%currenttime(hours)%>" />»þ
+				<input id="inputminutes" name="minutes" tabindex="67" size="2" value="<%currenttime(minutes)%>" />Ê¬
 				<br />
-				ãƒ•ã‚©ãƒ¼ãƒžãƒƒãƒˆï¼š(yyyy)å¹´(mm)æœˆ(dd)æ—¥ (hh)æ™‚(mm)åˆ†
+				¥Õ¥©¡¼¥Þ¥Ã¥È¡§(yyyy)Ç¯(mm)·î(dd)Æü (hh)»þ(mm)Ê¬
 				
 				<%ifblogsetting(ballowpast,0)%>
 					<br />
