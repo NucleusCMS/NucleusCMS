@@ -13,8 +13,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.12 2007-04-06 22:08:56 kmorimatsu Exp $
- * $NucleusJP: globalfunctions.php,v 1.11 2007/04/06 21:25:58 kmorimatsu Exp $
+ * @version $Id: globalfunctions.php,v 1.13 2007-04-09 23:20:52 kmorimatsu Exp $
+ * $NucleusJP: globalfunctions.php,v 1.12 2007/04/06 22:08:56 kmorimatsu Exp $
  */
 
 // needed if we include globalfunctions from install.php
@@ -196,6 +196,8 @@ if ($action == 'login') {
 	$login = postVar('login');
 	$pw = postVar('password');
 	$shared	= intPostVar('shared');	// shared computer or not
+	
+	$pw=substr($pw,0,40); // avoid md5 collision by using a long key
 
 	if ($member->login($login, $pw) ) {
 
@@ -256,6 +258,7 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 	// Cookie Authentication
 	$ck=cookieVar($CONF['CookiePrefix'] . 'loginkey');
 	// secure cookie key
+	$ck=substr($ck,0,32); // avoid md5 collision by using a long key
 	if ($CONF['secureCookieKey']!=='none') $ck=md5($ck.$CONF['secureCookieKeyIP']);
 	$res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] . 'user'), $ck );
 	unset($ck);
