@@ -10,9 +10,8 @@ function upgrade_do33() {
 	upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
 
 	// insert breqemail default value
-	$query = 'INSERT INTO ' . sql_table('blog')
-		   . ' (breqemail)'
-		   . ' VALUES (0)';
+	$query = 'UPDATE ' . sql_table('blog')
+		   . ' SET breqemail=0';
 	upgrade_query('Filling breqemail column of ' . sql_table('blog') . ' table', $query);
 
 	// store cname from nucleus_category
@@ -48,6 +47,11 @@ function upgrade_do33() {
 		   . ' AFTER cmail';
 	upgrade_query('Altering ' . sql_table('comment') . ' table', $query);
 	
+	// 3.2 -> 3.2+
+	// update database version  
+	$query = 'UPDATE ' . sql_table('config') . ' set value=\'330\' where name=\'DatabaseVersion\'';
+	upgrade_query('Updating DatabaseVersion in config table to 330', $query);
+
 	// nothing!
 }
 
