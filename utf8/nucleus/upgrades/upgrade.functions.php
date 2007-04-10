@@ -12,8 +12,8 @@
 	  *	
 	  * Some functions common to all upgrade scripts
 	  *
-  	  * $Id: upgrade.functions.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
-	  * $NucleusJP: upgrade.functions.php,v 1.6 2006/07/12 07:11:49 kimitake Exp $
+  	  * $Id: upgrade.functions.php,v 1.8 2007-04-10 03:55:20 kmorimatsu Exp $
+	  * $NucleusJP: upgrade.functions.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
 	  */
 
 	include('../../config.php');
@@ -204,7 +204,7 @@
 		global $upgrade_failures;
 		
 		echo "<li>$friendly ... ";
-		$res = mysql_query($query);
+		$res = sql_query($query);
 		if (!$res) {
 			echo "<span style='color:red'>失敗</span>\n";
 			echo "<blockquote>失敗の理由: " . mysql_error() . " </blockquote>";

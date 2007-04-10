@@ -9,8 +9,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: index.php,v 1.8 2007-02-04 06:28:46 kimitake Exp $
-  * $NucleusJP: index.php,v 1.7 2006/07/17 20:03:45 kimitake Exp $
+  * $Id: index.php,v 1.9 2007-04-10 03:55:20 kmorimatsu Exp $
+  * $NucleusJP: index.php,v 1.8 2007/02/04 06:28:46 kimitake Exp $
   */
 
 include('upgrade.functions.php'); 
@@ -49,9 +49,10 @@ upgrade_head();
   else  if (!upgrade_checkinstall(30)) $current = 25;      
   else  if (!upgrade_checkinstall(31)) $current = 30;      
   else  if (!upgrade_checkinstall(32)) $current = 31;      
-  else  $current = 32;
+  else  if (!upgrade_checkinstall(33)) $current = 32;      
+  else  $current = 33;
 
-  if ($current == 32) {
+  if ($current == 33) {
     ?>
       <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p>
     <?php  } else {

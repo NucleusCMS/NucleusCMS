@@ -9,8 +9,8 @@
   * of the License, or (at your option) any later version.
   * (see nucleus/documentation/index.html#license for more info)
   *
-  * $Id: upgrade.php,v 1.5 2007-02-04 06:28:46 kimitake Exp $
-  * $NucleusJP: upgrade.php,v 1.4 2006/07/12 07:11:49 kimitake Exp $
+  * $Id: upgrade.php,v 1.6 2007-04-10 03:55:20 kmorimatsu Exp $
+  * $NucleusJP: upgrade.php,v 1.5 2007/02/04 06:28:46 kimitake Exp $
   */
 
 include('upgrade.functions.php'); 
@@ -34,6 +34,7 @@ include('upgrade2.5.php');
 include('upgrade3.0.php');
 include('upgrade3.1.php');
 include('upgrade3.2.php');
+include('upgrade3.3.php');
 
 $from = intGetVar('from');
 
@@ -59,6 +60,8 @@ switch($from) {
 		upgrade_do31();
 	case 31:
 		upgrade_do32();
+	case 32:
+		upgrade_do33();
 		break;
 	default:
 		echo "<li>エラー! 実行すべきアップデートはありません</li>";
