@@ -12,8 +12,8 @@
 	  *	
 	  * Some functions common to all upgrade scripts
 	  *
-  	  * $Id: upgrade.functions.php,v 1.8 2007-04-10 03:55:20 kmorimatsu Exp $
-	  * $NucleusJP: upgrade.functions.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
+  	  * $Id: upgrade.functions.php,v 1.9 2007-04-14 00:44:27 kmorimatsu Exp $
+	  * $NucleusJP: upgrade.functions.php,v 1.8 2007/04/10 03:55:20 kmorimatsu Exp $
 	  */
 
 	include('../../config.php');
@@ -78,6 +78,10 @@
 				break;
 			case '32':
 				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 320 LIMIT 1';
+				$minrows = 1;
+				break;
+			case '33':
+				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 330 LIMIT 1';
 				$minrows = 1;
 				break;
 		}
