@@ -15,8 +15,42 @@
 
 // Note for Japanese users
 // ¤³¤Î¥Õ¥¡¥¤¥ë¤Ï Nucleus ¤Î EUC-JP ÈÇÆüËÜ¸ì¥é¥ó¥²¡¼¥¸¥Õ¥¡¥¤¥ë¤Ç¤¹¡£
-// ¥Õ¥¡¥¤¥ëÌ¾¤ò japanese.php ¤ËÊÑ¹¹¤·¤Æ¤«¤é¡¢Nucleus ¤Î language ¥Ç¥£¥ì¥¯¥È¥ê¤Ë
-// ÃÖ¤¤¤Æ¤¯¤À¤µ¤¤¡£
+
+// START merge UTF-8 and EUC-JP
+define('_ADMIN_NOTABILIA',			'Ãí°Õ»ö¹à');
+define('_ADMIN_PLEASE_READ',		'ºîÀ®¤Ë¤¢¤¿¤Ã¤Æ¡¢²¼µ­¤Î<strong>Ãí°Õ»ö¹à</strong> ¤ò¤Þ¤º¤ªÆÉ¤ß²¼¤µ¤¤');
+define('_ADMIN_HOW_TO_ACCESS',		'¿·¤·¤¤weblog¤òºîÀ®¤·¤¿¸å¤Ë¡¢¤³¤Îblog¤Ë¥¢¥¯¥»¥¹¤¹¤ë¤¿¤á¤ÎÊýË¡¤ò¾Ò²ð¤·¤Æ¤ª¤­¤Þ¤¹¡£ÊýË¡¤Ï2¤Ä¤¢¤ê¤Þ¤¹:');
+define('_ADMIN_SIMPLE_WAY',			'<strong>´ÊÃ±¤ÊÊýË¡:</strong> <code>index.php</code>¤ÎÊ£À½¤òºî¤ê¡¢¿·¤·¤¤blog¤òÉ½¼¨¤¹¤ë¤è¤¦¤ËÊÑ¹¹¤ò²Ã¤¨¤Þ¤¹¡£ ¤³¤ÎÊÑ¹¹¤Î¾ÜºÙ¤Ï¡¢ºîÀ®¸å¤ËÉ½¼¨¤µ¤ì¤Þ¤¹¡£');
+define('_ADMIN_DIFFICULT_WAY',		'<strong>¹âÅÙ¤ÊÊýË¡:</strong> ¸½ºß¤Îblog¤Ç»ÈÍÑ¤·¤Æ¤¤¤ë¥¹¥­¥ó¤Ë<code>otherblog</code>¤È¤¤¤¦¥³¡¼¥É¤ò»È¤Ã¤¿µ­½Ò¤ò²Ã¤¨¤Þ¤¹¡£¤³¤ÎÊýË¡¤Ç¤Ï¡¢Æ±¤¸¥Ú¡¼¥¸Æâ¤ÇÊ£¿ô¤Îblog¤òÅ¸³«¤¹¤ë¤³¤È¤¬²ÄÇ½¤È¤Ê¤ê¤Þ¤¹¡£');
+define('_ADMIN_HOW_TO_CREATE',		'Weblog¤ÎºîÀ®');
+
+
+define('_BOOKMARKLET_NEW_CATEGORY',	'¥¢¥¤¥Æ¥à¤ÏÄÉ²Ã¤µ¤ì¡¢¿·¤·¤¤¥«¥Æ¥´¥ê¤¬ºîÀ®¤µ¤ì¤Þ¤·¤¿¡£');
+define('_BOOKMARKLET_SEND_PING',	'¥¢¥¤¥Æ¥à¤ÎÄÉ²Ã¤ËÀ®¸ù¤·¤Þ¤·¤¿¡£¸½ºßweblogs.com¤Ëping¤òÁ÷¤Ã¤Æ¤¤¤Þ¤¹¡£¤·¤Ð¤é¤¯¤Î´Ö¤ªÂÔ¤Á¤¯¤À¤µ¤¤...');
+
+// END merge UTF-8 and EUC-JP
+
+
+// START changed/added after 3.3 START
+define('_AUTOSAVEDRAFT',			'¥É¥é¥Õ¥ÈÊÝÂ¸¾õ¶·');
+define('_AUTOSAVEDRAFT_LASTSAVED',	'ºÇ½ª¥É¥é¥Õ¥ÈÊÝÂ¸Æü»þ: ');
+define('_AUTOSAVEDRAFT_NOTYETSAVED',	'Ì¤ÊÝÂ¸¤Ç¤¹');
+define('_AUTOSAVEDRAFT_NOW',		'¥É¥é¥Õ¥ÈÊÝÂ¸');
+define('_SKIN_PARTS_SPECIAL',		'¥¹¥Ú¥·¥ã¥ë¥¹¥­¥ó¥Ñ¡¼¥Ä');
+define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',		'±Ñ¿ô»ú°Ê³°¤ÎÊ¸»ú¤Ï»È¤¨¤Þ¤»¤ó');
+define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',		'¤³¤Î¥¹¥­¥ó¥Ñ¡¼¥È¤òºï½ü¤Ç¤­¤Þ¤»¤ó');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',		'ËÜÅö¤Ë¤³¤Î¥¹¥Ú¥·¥ã¥ë¥¹¥­¥ó¥Ñ¡¼¥È¤òºï½ü¤·¤Æ¤â¤¤¤¤¤Ç¤¹¤«¡©');
+define('_ERROR_PLUGIN_LOAD',		'¥×¥é¥°¥¤¥ó¤¬ÆÉ¤ß¹þ¤á¤Þ¤»¤ó¤Ç¤·¤¿¡£¤â¤¯¤Ï¡¢»ÈÍÑÃæ¤Î Nucleus ¾å¤ÇÆ°ºî¤µ¤»¤ë¤¿¤á¤ËÉ¬Í×¤Êµ¡Ç½¤¬¡¢¥×¥é¥°¥¤¥ó¤Ç¥µ¥Ý¡¼¥È¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£(<a href="?action=actionlog">´ÉÍýÁàºîÍúÎò</a>¤Ë¾ÜºÙ¤¬¤¢¤ê¤Þ¤¹¡£)');
+// END changed/added after 3.3 END
+
+// START changed/added after 3.22 START
+define('_SEARCHFORM_QUERY',			'¸¡º÷¥­¡¼¥ï¡¼¥É');
+define('_ERROR_EMAIL_REQUIRED',		'¥á¡¼¥ë¥¢¥É¥ì¥¹¤¬É¬Í×¤Ç¤¹');
+define('_COMMENTFORM_MAIL',			'¥¦¥§¥Ö¥µ¥¤¥È:');
+define('_COMMENTFORM_EMAIL',		'¥á¡¼¥ë:');
+define('_EBLOG_REQUIREDEMAIL',		'¥³¥á¥ó¥È¤Ë¥á¡¼¥ë¥¢¥É¥ì¥¹¤òÍ×µá¤¹¤ë');
+define('_ERROR_COMMENTS_SPAM',      '¤¢¤Ê¤¿¤Î¥³¥á¥ó¥È¤Ï¡¢¥¹¥Ñ¥à¥Æ¥¹¥È¤Î·ë²Ì¡¢µñÈÝ¤µ¤ì¤Þ¤·¤¿');
+// END changed/added after 3.22 END
 
 // START changed/added after 3.15 START
 
@@ -28,7 +62,7 @@ define('_LIST_PLUGS_DEP',			'Plugin(s) requires:');
 // START changed/added after 3.1 START
 
 // comments list per weblog
-define('_COMMENTS_BLOG',			'¥³¥á¥ó¥È¤Î¥ê¥¹¥È¡§');
+define('_COMMENTS_BLOG',			'¥³¥á¥ó¥È¤Î¥ê¥¹¥È:');
 define('_NOCOMMENTS_BLOG',			'¤³¤Îblog¤Ë¤Ï¤Þ¤À¥³¥á¥ó¥È¤¬¤Ä¤±¤é¤ì¤Æ¤¤¤Þ¤»¤ó');
 define('_BLOGLIST_COMMENTS',		'¥³¥á¥ó¥È');
 define('_BLOGLIST_TT_COMMENTS',		'¤³¤Îblog¤Ë¤Ä¤±¤é¤ì¤¿¥³¥á¥ó¥È¤Î¥ê¥¹¥È');
@@ -101,6 +135,9 @@ define('_BATCH_WITH_SEL',			'ÁªÂò¤µ¤ì¤¿¤â¤Î¤ò¡§');
 define('_BATCH_EXEC',				'¼Â¹Ô');
 
 // quickmenu
+// Note: _USER_SETTINGS ¤È _MANAGE_SETTINGS ¤Ï 3.3 °Ê¹ß¡¢¥ª¥ê¥¸¥Ê¥ëÈÇ¤Ï
+// ÊÑ¹¹¤µ¤ì¤Þ¤·¤¿¤¬¡¢ÆüËÜ¸ìÈÇ¤ÏÉ½µ­¤ò¤½¤Î¤Þ¤Þ¤È¤·¤Þ¤¹¡£
+// ´Ö°ã¤Ã¤Æ¹¹¿·¤·¤Ê¤¤¤è¤¦¤Ë!!
 define('_QMENU_HOME',				'´ÉÍý¥Û¡¼¥à');
 define('_QMENU_ADD',				'¥¢¥¤¥Æ¥àÄÉ²Ã');
 define('_QMENU_ADD_SELECT',			'- blogÁªÂò -');
@@ -395,7 +432,6 @@ define('_LIST_PLUGS_DOWN',			'²¼¤Ø');
 define('_LIST_PLUGS_UNINSTALL',		'ºï½ü');
 define('_LIST_PLUGS_ADMIN',			'´ÉÍý');
 define('_LIST_PLUGS_OPTIONS',		'ÊÔ½¸');
-define('_LIST_PLUGS_DEP',		'Plugin(s) requires:');
 
 // plugin option list
 define('_LISTS_VALUE',				'ÃÍ');
@@ -450,14 +486,13 @@ define('_LOGIN_PLEASE',				'¤Þ¤º¥í¥°¥¤¥ó¤·¤Æ¤¯¤À¤µ¤¤');
 // commentform
 define('_COMMENTFORM_YOUARE',		'¥æ¡¼¥¶¡¼Ì¾: ');
 define('_COMMENTFORM_SUBMIT',		'¥³¥á¥ó¥È¤òÄÉ²Ã');
-define('_COMMENTFORM_COMMENT',		'¥³¥á¥ó¥È');
-define('_COMMENTFORM_NAME',			'¤ªÌ¾Á°');
-define('_COMMENTFORM_MAIL',			'¥á¡¼¥ë¤Þ¤¿¤ÏWeb¥µ¥¤¥È');
+define('_COMMENTFORM_COMMENT',		'¥³¥á¥ó¥È:');
+define('_COMMENTFORM_NAME',			'¤ªÌ¾Á°:');
 define('_COMMENTFORM_REMEMBER',		'¾ðÊó¤òµ­²±¤·¤Æ¤ª¤¯');
 
 // loginform
-define('_LOGINFORM_NAME',			'¥æ¡¼¥¶¡¼Ì¾');
-define('_LOGINFORM_PWD',			'¥Ñ¥¹¥ï¡¼¥É');
+define('_LOGINFORM_NAME',			'¥æ¡¼¥¶¡¼Ì¾:');
+define('_LOGINFORM_PWD',			'¥Ñ¥¹¥ï¡¼¥É:');
 define('_LOGINFORM_YOUARE',			'¥í¥°¥¤¥óÃæ:');
 define('_LOGINFORM_SHARED',			'¤³¤ÎPC¤òÂ¾¤Î¿Í¤È¶¦ÍÑ¤¹¤ë');
 
@@ -560,7 +595,7 @@ define('_ERROR_BADSHORTBLOGNAME',	'Ã»¤¤BlogÌ¾¤Ë¤Ï a-z ¡¢0-9¡¢¤Î±Ñ¿ô»ú¤Î¤ß»ÈÍÑ¤Ç¤
 define('_ERROR_DUPSHORTBLOGNAME',	'Â¾¤ÎBlog¤ÇÆ±¤¸Ã»½ÌÌ¾¤¬»È¤ï¤ì¤Æ¤¤¤Þ¤¹¡£Æ±¤¸Ì¾Á°¤Ï»ÈÍÑ¤Ç¤­¤Þ¤»¤ó¡£');
 define('_ERROR_UPDATEFILE',			'¹¹¿·¥Õ¥¡¥¤¥ë¤Ë½ñ¤­¹þ¤á¤Þ¤»¤ó¡£¥Õ¥¡¥¤¥ë¤Î¥Ñ¡¼¥ß¥Ã¥·¥ç¥ó¤¬Àµ¤·¤¯¥»¥Ã¥È¤µ¤ì¤Æ¤¤¤ë¤«³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤ (chmod 666 ¤ò»î¤·¤Æ¤ß¤Æ¤¯¤À¤µ¤¤)¡£¤Þ¤¿¡¢¤½¤ì¤¬´ÉÍýÎÎ°è¥Ç¥£¥ì¥¯¥È¥ê¤«¤é¤ÎÁêÂÐ°ÌÃÖ¤Ç¤¢¤ë¾ì¹ç¡¢(/your/path/to/nucleus/ ¤Î¤è¤¦¤Ë)ÀäÂÐ¥Ñ¥¹¤Ç»ØÄê¤·¤Æ¤ß¤Æ¤¯¤À¤µ¤¤');
 define('_ERROR_DELDEFBLOG',			'´ûÄê¤ÎBlog¤Ïºï½ü¤Ç¤­¤Þ¤»¤ó');
-define('_ERROR_DELETEMEMBER',		'¤³¤Î¥á¥ó¥Ð¡¼¤Ï¥¢¥¤¥Æ¥à¤«¥³¥á¥ó¥È¤ò½ñ¤¤¤Æ¤¤¤ë¤¿¤áºï½ü¤Ç¤­¤Þ¤»¤ó');
+define('_ERROR_DELETEMEMBER',		'¤ª¤½¤é¤¯¤³¤Î¥á¥ó¥Ð¡¼¤Ï£±¤Ä°Ê¾å¤Î¥¢¥¤¥Æ¥à¤ÎÃø¼Ô¤Ç¤¢¤ë¤¿¤á¡¢ºï½ü¤Ç¤­¤Þ¤»¤ó');
 define('_ERROR_BADTEMPLATENAME',	'ÉÔÀµ¤Ê¥Æ¥ó¥×¥ì¡¼¥ÈÌ¾¤Ç¤¹ (a-z ¡¢0-9 ¤Î±Ñ¿ô»ú¤Î¤ß»ÈÍÑ²Ä¡£¥¹¥Ú¡¼¥¹¤Ï»ÈÍÑÉÔ²Ä)');
 define('_ERROR_DUPTEMPLATENAME',	'Æ±¤¸Ì¾Á°¤Î¥Æ¥ó¥×¥ì¡¼¥È¤¬´û¤ËÂ¸ºß¤·¤Þ¤¹');
 define('_ERROR_BADSKINNAME',		'ÉÔÀµ¤Ê¥¹¥­¥óÌ¾¤Ç¤¹ (a-z ¡¢0-9 ¤Î±Ñ¿ô»ú¤Î¤ß»ÈÍÑ²Ä¡£¥¹¥Ú¡¼¥¹¤Ï»ÈÍÑÉÔ²Ä)');
@@ -730,6 +765,10 @@ define('_TEMPLATE_SNOTFOUND',		'¸¡º÷¤Ç²¿¤â¸«¤Ä¤«¤é¤Ê¤«¤Ã¤¿¾ì¹ç');
 define('_TEMPLATE_UPDATE',			'¹¹¿·');
 define('_TEMPLATE_UPDATE_BTN',		'¥Æ¥ó¥×¥ì¡¼¥È¤Î¹¹¿·');
 define('_TEMPLATE_RESET_BTN',		'¥ê¥»¥Ã¥È');
+define('_TEMPLATE_BLOGLIST',            '¥Ö¥í¥°°ìÍ÷');
+define('_TEMPLATE_BLOGHEADER',          '¥Ö¥í¥°°ìÍ÷¤Î¥Ø¥Ã¥À¡¼');
+define('_TEMPLATE_BLOGITEM',            '¥Ö¥í¥°°ìÍ÷¤ÎËÜÂÎ');
+define('_TEMPLATE_BLOGFOOTER',          '¥Ö¥í¥°°ìÍ÷¤Î¥Õ¥Ã¥¿¡¼');
 define('_TEMPLATE_CATEGORYLIST',	'¥«¥Æ¥´¥ê¡¼°ìÍ÷');
 define('_TEMPLATE_CATHEADER',		'¥«¥Æ¥´¥ê¡¼°ìÍ÷¤Î¥Ø¥Ã¥À¡¼');
 define('_TEMPLATE_CATITEM',			'¥«¥Æ¥´¥ê¡¼°ìÍ÷¤ÎËÜÂÎ');
@@ -833,7 +872,7 @@ define('_MEMBERS_TITLE',			'¥á¥ó¥Ð¡¼¤Î´ÉÍý');
 define('_MEMBERS_CURRENT',			'¸½ºß¤Î¥á¥ó¥Ð¡¼');
 define('_MEMBERS_NEW',				'¿·¤·¤¤¥á¥ó¥Ð¡¼¤ÎÄÉ²Ã');
 define('_MEMBERS_DISPLAY',			'É½¼¨¤µ¤ì¤ëÌ¾Á°');
-define('_MEMBERS_DISPLAY_INFO',		'(¤³¤ÎÌ¾Á°¤Ï¥í¥°¥ª¥ó»þ¤Ë»È¤ï¤ì¤Þ¤¹)');
+define('_MEMBERS_DISPLAY_INFO',		'(¤³¤ÎÌ¾Á°¤Ï¥í¥°¥¤¥ó»þ¤Ë»È¤ï¤ì¤Þ¤¹)');
 define('_MEMBERS_REALNAME',			'ËÜÌ¾');
 define('_MEMBERS_PWD',				'¥Ñ¥¹¥ï¡¼¥É');
 define('_MEMBERS_REPPWD',			'¥Ñ¥¹¥ï¡¼¥É¡Ê³ÎÇ§¡Ë');
