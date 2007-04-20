@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BODYACTIONS.php,v 1.1 2007-04-04 07:52:08 kimitake Exp $
- * @version $NucleusJP: BODYACTIONS.php,v 1.5 2007/03/22 03:30:14 kmorimatsu Exp $
+ * @version $Id: BODYACTIONS.php,v 1.2 2007-04-20 08:27:13 kimitake Exp $
+ * @version $NucleusJP: BODYACTIONS.php,v 1.6 2007/04/19 06:13:50 kimitake Exp $
  */
 
 class BODYACTIONS extends BaseActions {
@@ -38,7 +38,7 @@ class BODYACTIONS extends BaseActions {
 	}
 
 	function getDefinedActions() {
-		return array('image','media','popup','plugin');
+		return array('image', 'media', 'popup', 'plugin');
 	}
 
 	function parse_plugin($pluginName) {
@@ -107,7 +107,7 @@ class BODYACTIONS extends BaseActions {
 		// select private collection when no collection given
 		if (!strstr($filename,'/')) {
 			$filename = $this->currentItem->authorid . '/' . $filename;
-	}
+		}
 
 		$vars['link']			= htmlspecialchars($CONF['MediaURL'] . $filename ,ENT_QUOTES);
 		$vars['text']			= htmlspecialchars($text ,ENT_QUOTES);
