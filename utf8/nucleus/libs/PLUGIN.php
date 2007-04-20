@@ -17,8 +17,8 @@
 	 *
 	 * @license http://nucleuscms.org/license.txt GNU General Public License
 	 * @copyright Copyright (C) 2002-2007 The Nucleus Group
-	 * @version $Id: PLUGIN.php,v 1.11 2007-04-06 19:36:29 kmorimatsu Exp $
-	 * $NucleusJP: PLUGIN.php,v 1.10 2007/03/30 22:18:28 kmorimatsu Exp $
+	 * @version $Id: PLUGIN.php,v 1.12 2007-04-20 08:43:25 kimitake Exp $
+	 * $NucleusJP: PLUGIN.php,v 1.11 2007/04/06 19:36:29 kmorimatsu Exp $
 	 */
 	class NucleusPlugin {
 
@@ -233,7 +233,7 @@
 			} else {
 				$orderby = 'ovalue';
 			}
-			$q = 'SELECT ovalue value, ocontextid id FROM '.sql_table('plugin_option').' WHERE oid = '.$oid.' ORDER BY '.$orderby.' '.$sort.' LIMIT 0,'.$amount;
+			$q = 'SELECT ovalue value, ocontextid id FROM '.sql_table('plugin_option').' WHERE oid = '.$oid.' ORDER BY '.$orderby.' '.$sort.' LIMIT 0,'.intval($amount);
 			$query = mysql_query($q);
 
 			// create the array
