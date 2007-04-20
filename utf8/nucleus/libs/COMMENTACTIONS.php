@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: COMMENTACTIONS.php,v 1.4 2007-03-19 10:20:24 shizuki Exp $
- * @version $NucleusJP: COMMENTACTIONS.php,v 1.2 2006/07/20 08:01:52 kimitake Exp $
+ * @version $Id: COMMENTACTIONS.php,v 1.5 2007-04-20 08:43:57 kimitake Exp $
+ * @version $NucleusJP: COMMENTACTIONS.php,v 1.4 2007/03/19 10:20:24 shizuki Exp $
  */
 
 class COMMENTACTIONS extends BaseActions {
@@ -121,9 +121,9 @@ class COMMENTACTIONS extends BaseActions {
 			elseif (strstr($comment['userid'],'www') != false)
 				$comment['userlinkraw'] = 'http://'.$comment['userid'];
 			elseif (isValidMailAddress($comment['email']))
-				$comment['userlinkraw'] = 'mailto:'.$comment['userid'];
-			elseif (isValidMailAddress($comment['userid']))
 				$comment['userlinkraw'] = 'mailto:'.$comment['email'];
+			elseif (isValidMailAddress($comment['userid']))
+				$comment['userlinkraw'] = 'mailto:'.$comment['userid'];
 		}
 
 		$this->currentComment =& $comment;
