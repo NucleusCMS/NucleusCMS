@@ -16,8 +16,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BLOG.php,v 1.4 2007-03-22 09:23:58 kimitake Exp $
- * $NucleusJP: BLOG.php,v 1.11 2007/03/20 19:31:29 kmorimatsu Exp $
+ * @version $Id: BLOG.php,v 1.5 2007-04-20 08:20:31 kimitake Exp $
+ * $NucleusJP: BLOG.php,v 1.4 2007/03/22 09:23:58 kimitake Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -694,7 +694,8 @@ class BLOG {
 		
 			$list = array();
 		
-			$list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
+//			$list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
+			$list['bloglink'] = createBlogidLink($data['bnumber']);
 		
 			$list['blogdesc'] = $data['bdesc'];
 			
