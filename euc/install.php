@@ -18,8 +18,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: install.php,v 1.5 2007-04-04 07:52:04 kimitake Exp $
- * $NucleusJP: install.php,v 1.7 2007/02/04 06:28:44 kimitake Exp $
+ * @version $Id: install.php,v 1.6 2007-04-25 06:34:13 kimitake Exp $
+ * $NucleusJP: install.php,v 1.5 2007/04/04 07:52:04 kimitake Exp $
  */
 
 /*
@@ -463,6 +463,7 @@ function doInstall() {
 	$config_actionurl = replaceDoubleBackslash($config_actionurl);
 	$config_adminpath = replaceDoubleBackslash($config_adminpath);
 	$config_skinspath = replaceDoubleBackslash($config_skinspath);
+	$config_mediapath = replaceDoubleBackslash($config_mediapath);
 
 	// 1. check all the data
 	$errors = array();
