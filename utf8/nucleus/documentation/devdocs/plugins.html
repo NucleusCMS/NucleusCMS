@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
-	<!-- $Id: plugins.html,v 1.9 2007-02-04 06:28:45 kimitake Exp $ -->
-	<!-- $NucleusJP: plugins.html,v 1.8 2006/07/17 20:02:50 kimitake Exp $ -->
+	<!-- $Id: plugins.html,v 1.10 2007-04-25 19:51:32 andy Exp $ -->
+	<!-- $NucleusJP: plugins.html,v 1.9 2007/02/04 06:28:45 kimitake Exp $ -->
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Nucleus - プラグイン API</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
@@ -33,7 +33,7 @@
 <p class="heading">&nbsp;</p>
 <div class="heading">
 プラグイン API
-<i>2005年7月27日</i>
+<i>2007年3月26日</i>
 </div>
 
 <div class="note-trans"><strong>訳者注：</strong> 
@@ -681,6 +681,8 @@ by ref</var>のように示されます。</p>
 		<td><dl>
 			<dt class="ref">comment</dt>
 			<dd>コメントデータ（連想配列）</dd>
+			<dt class="ref">spamcheck</dt>
+			<dd>(v3.3) <em>SpamCheck</em>イベントの結果として返されるデータ構造（連想配列）</dd>
 		</dl></td>		
 	</tr>
 	<tr>
@@ -691,6 +693,8 @@ by ref</var>のように示されます。</p>
 			<dd>コメントデータ（連想配列）</dd>
 			<dt class="ref">commentid</dt>
 			<dd>コメントのID</dd>
+			<dt class="ref">spamcheck</dt>
+			<dd>(v3.3) <em>SpamCheck</em>イベントの結果として返されるデータ構造（連想配列）</dd>
 		</dl></td>		
 	</tr>
 	<tr>
@@ -1407,34 +1411,36 @@ by ref</var>のように示されます。</p>
 			<dt class="ref">error</dt>
 			<dd>フォーム処理をストップするときに、<code>error</code> フィールドに空でないエラーメッセージを記入します。このエラーメッセージはユーザー側に表示されます。</dd>
 			<dt class="ref">comment</dt>
-			<dd>コメントフォームのとき、コメントデータに関する連想配列を含みます。</dd>
+			<dd>コメントデータの連想配列（コメントフォームのときのみ）</dd>
+			<dt class="ref">spamcheck</dt>
+			<dd>(v3.3) <em>SpamCheck</em>イベントの結果として返される連想配列（コメントフォームのときのみ）</dd>
 			<dt class="ro obj">member</dt>
 			<dd>認証フォームのとき、認証中のメンバー情報を含みます。</dd>
 		</dl></td>
 	</tr>
+	<tr>
+		<td>SpamCheck</td>
+		<td>(v3.3) 新しいコメントが追加されるときに呼ばれます。アンチスパムのプラグインはこのイベントを使ってコメントがスパムかどうかマークを付けられます。<code>SpamCheck</code>イベントの詳しい説明は別の文書を参照のこと（<a href='http://wakka.xiffy.nl/spamcheck_api'>SpamCheck API 2.0</a>）</td>
+		<td><dl>
+			<dt class="ref">spamcheck</dt>
+			<dd>spamcheckのデータ構造（連想配列）</dd>
+		</dl></td>
+	</tr>
 <!--
 	<tr>
-		<td></td>
-		<td></td>
+		<td>SendPing</td>
+		<td>(v3.3) Called when a new item is added and the blog is configured to send ping (need NP_Ping installed). This event is used by NP_Ping to ping various weblog listing service (i.e. pingomatic.com)</td>
 		<td><dl>
-			<dt></dt>
-			<dd></dd>
+			<dt class="ref">blogid</dt>
+			<dd>ID of the blog</dd>
 		</dl></td>
 	</tr>
 	<tr>
-		<td></td>
-		<td></td>
+		<td>JustPosted</td>
+		<td>(v3.3) Called when a future post appears on the blog the first time. The event is trigger after a skin parse is completed</td>
 		<td><dl>
-			<dt></dt>
-			<dd></dd>
-		</dl></td>
-	</tr>
-	<tr>
-		<td></td>
-		<td></td>
-		<td><dl>
-			<dt></dt>
-			<dd></dd>
+			<dt class="ref">blogid</dt>
+			<dd>ID of the blog</dd>
 		</dl></td>
 	</tr>
 	<tr>
