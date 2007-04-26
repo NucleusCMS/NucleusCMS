@@ -12,8 +12,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: index.php,v 1.10 2007-04-26 06:20:18 kimitake Exp $
- * $NucleusJP: index.php,v 1.9 2007/04/10 03:55:20 kmorimatsu Exp $
+ * @version $Id: index.php,v 1.11 2007-04-26 08:45:26 kimitake Exp $
+ * $NucleusJP: index.php,v 1.10 2007/04/26 06:20:18 kimitake Exp $
  *
  */
 
@@ -92,6 +92,9 @@ if (phpversion() < '4.0.6') {
   upgrade_manual_php405();
   $sth = 1;
 }
+
+// from v3.3, atom feed supports 1.0 and blogsetting is added
+$sth = upgrade_manual_atom1_0();
 
 if ($sth == 0)
   echo "<p class='ok'>手動変更は必要ありません。今日はラッキーな日ですね!</p>";
@@ -181,5 +184,59 @@ foreach ($params as $key =&gt; $value) { $params[$key] = trim($value); }
   </ul>
 
 <?php }
+
+function upgrade_manual_atom1_0() {
+
+	$sth = 0;
+
+	// atom 1.0
+	$query = 'SELECT sddesc FROM ' . sql_table('skin_desc')
+		. ' WHERE sdname="feeds/atom"';
+	$res = mysql_query($query);
+	while ($o = mysql_fetch_object($res)) {
+		if ($o->sddesc=='Atom 0.3 weblog syndication')
+		{
+			$sth = 1;
+?>
+<h2>Atom 1.0</h2>
+<p>Nucleus 3.3 から atom feed が 1.0 対応になりましたので、次の手順でスキン・テンプレートのアップグレードをして下さい。</p>
+
+<p>管理者画面を開き、管理ホームにあるスキンの「読込/書出」を開きます。そこから atom を選択し、読み込みボタンを押して上書きインストールしてください。</p>
+
+<p>もし atom のスキンやテンプレートを変更している場合は、既存の内容をファイルに書き出して（skinbackup.xml というファイルが作成されます）、/skins/atom/skinbackup.xml （これが新しいファイル）と比較し、この新しいファイルを更新します。その後、前述の通り管理者画面からスキンの「読込/書出」を開いて同様にして上書きインストールして下さい。</p>
+
+<?php
+		}
+	}
+
+	// default skin
+	$query = 'SELECT tdnumber FROM ' . sql_table('template_desc')
+		   . ' WHERE tdname="default/index"';
+	$res = mysql_query($query);
+	$tdnumber = 0;
+	while ($o = mysql_fetch_object($res)) {
+		$tdnumber = $o->tdnumber;
+	}
+	if ($tdnumber>0)
+	{
+		$query = 'SELECT tpartname FROM ' . sql_table('template')
+			   . ' WHERE tdesc=' . $tdnumber . ' AND tpartname="BLOGLIST_LISTITEM"';
+		$res = mysql_query($query);
+		if (!mysql_fetch_object($res)) {
+
+			$sth = 1;
+?>
+<h2>Default スキン</h2>
+<p>Nucleus 3.3 からいくつかのフォームの CSS が変更になっています。たとえば最初のページのログインフォームや、コメント投稿のためのフォームなど。このためフォームの表示が崩れるので、次の手順でDefault スキンのアップグレードをして下さい。</p>
+
+<p>管理者画面を開き、管理ホームにあるスキンの「読込/書出」を開きます。そこから default を選択し、読み込みボタンを押して上書きインストールしてください。</p>
+
+<p>もし default のスキンやテンプレートを変更している場合は、既存の内容をファイルに書き出して（skinbackup.xml というファイルが作成されます）、/skins/default/skinbackup.xml （これが新しいファイル）と比較し、この新しいファイルを更新します。その後、前述の通り管理者画面からスキンの「読込/書出」を開いて同様にして上書きインストールして下さい。</p>
+<?php
+		}
+	}
+
+	return $sth;
+}
 
 ?>
