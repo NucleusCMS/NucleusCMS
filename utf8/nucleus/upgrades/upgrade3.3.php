@@ -18,19 +18,12 @@ function upgrade_do33() {
 		upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
 	}
 
-	if (!upgrade_checkIfColumnExists('item','posted')) {
-		$query = "	ALTER TABLE `" . sql_table('item') . "`
-                                ADD `iposted` TINYINT(2) DEFAULT 1 NOT NULL ;";
-
-		upgrade_query('Altering ' . sql_table('item') . ' table', $query);
-	}
-
-	if (!upgrade_checkIfColumnExists('blog','bfuturepost')) {
-		$query = "	ALTER TABLE `" . sql_table('blog') . "`
-                                ADD `bfuturepost` TINYINT(2) DEFAULT 0 NOT NULL ;";
-
-		upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
-	}
+	// check cmail column to separate to URL and cemail
+	mysql_query(
+		'UPDATE ' . sql_table('comment') . ' ' . 
+		"SET cemail = cmail, cmail = '' " .
+		"WHERE cmail LIKE '%@%'"
+	);
 
 	// 3.2 -> 3.3
 	// update database version
