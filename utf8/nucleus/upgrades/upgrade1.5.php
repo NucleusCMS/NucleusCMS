@@ -3,32 +3,37 @@ function upgrade_do15() {
 
 	if (upgrade_checkinstall(15))
 		return "already installed";
-
-	// first two queries are needed for people running the development version
-	global $nucleus;
-	if (strstr($nucleus['version'],'dev')) {
-		upgrade_query('Renaming table nucleus_plugins_events','RENAME TABLE '.sql_table('plugins_events').' TO '.sql_table('plugin_event'));
-		upgrade_query('Renaming table nucleus_plugins','RENAME TABLE '.sql_table('plugins').' TO '.sql_table('plugin'));
-	}
 	
 	// create nucleus_plugin_event
-	$query = 'CREATE TABLE '.sql_table('plugin_event').' (pid int(11) NOT NULL, event varchar(40)) TYPE=MyISAM;';
-	upgrade_query("Creating nucleus_plugin_event table",$query);
+	if (upgrade_checkIfTableExists('plugin_events')) {//present in dev version
+		upgrade_query('Renaming table nucleus_plugins_events','RENAME TABLE '.sql_table('plugins_events').' TO '.sql_table('plugin_event'));
+	}elseif (!upgrade_checkIfTableExists('plugin_event')) {
+		$query = 'CREATE TABLE '.sql_table('plugin_event').' (pid int(11) NOT NULL, event varchar(40)) TYPE=MyISAM;';
+		upgrade_query("Creating nucleus_plugin_event table",$query);
+	}
 
 	// create nucleus_plugin
-	$query = 'CREATE TABLE '.sql_table('plugin')." (pid int(11) NOT NULL auto_increment, pfile varchar(40) NOT NULL, porder int(11) not null, PRIMARY KEY(pid)) TYPE=MyISAM;";
-	upgrade_query("Creating nucleus_plugin table",$query);
+	if (upgrade_checkIfTableExists('plugins')) {//present in dev version
+		upgrade_query('Renaming table nucleus_plugins','RENAME TABLE '.sql_table('plugins').' TO '.sql_table('plugin'));
+	}elseif (!upgrade_checkIfTableExists('plugin')) {
+		$query = 'CREATE TABLE '.sql_table('plugin')." (pid int(11) NOT NULL auto_increment, pfile varchar(40) NOT NULL, porder int(11) not null, PRIMARY KEY(pid)) TYPE=MyISAM;";
+		upgrade_query("Creating nucleus_plugin table",$query);
+	}
 
 	// add MaxUploadSize to config	
-	$query = 'INSERT INTO '.sql_table('config')." VALUES ('MaxUploadSize','1048576')";
-	upgrade_query('MaxUploadSize setting',$query);	
+	if (!upgrade_checkIfCVExists('MaxUploadSize')) {
+		$query = 'INSERT INTO '.sql_table('config')." VALUES ('MaxUploadSize','1048576')";
+		upgrade_query('MaxUploadSize setting',$query);
+	}
 	
 
 	// try to add cblog column when it does not exists yet
-	$query = 'SELECT * FROM '.sql_table('comment').' WHERE cblog=0 LIMIT 1';
-	$res = mysql_query($query);
-	if (!$res || (mysql_num_rows($res) > 0)) {
-
+	//The logic on the old code seems off, but my replacement may not be correct either--AWB
+	//$query = 'SELECT * FROM '.sql_table('comment').' WHERE cblog=0 LIMIT 1';
+	//$res = mysql_query($query);
+	//if (!$res || (mysql_num_rows($res) > 0)) {
+	
+	if(!upgrade_checkIfColumnExists('comment', 'cblog')){
 		$query = 'ALTER TABLE '.sql_table('comment')." ADD cblog int(11) NOT NULL default '0'";
 		upgrade_query('Adding cblog column in table nucleus_comment',$query);
 
@@ -43,9 +48,11 @@ function upgrade_do15() {
 	
 	// add 'pluginURL' to config
 	global $CONF;
-	$pluginURL = $CONF['AdminURL'] . "plugins/";
-	$query = 'INSERT INTO '.sql_table('config')." VALUES ('PluginURL', '$pluginURL');";
-	upgrade_query('PluginURL setting', $query);
+	if (!upgrade_checkIfCVExists('PluginURL')) {
+		$pluginURL = $CONF['AdminURL'] . "plugins/";
+		$query = 'INSERT INTO '.sql_table('config')." VALUES ('PluginURL', '$pluginURL');";
+		upgrade_query('PluginURL setting', $query);
+	}
 	
 	// add 'EDITLINK' to all templates
 	$query = 'SELECT tdnumber FROM '.sql_table('template_desc');
@@ -77,16 +84,25 @@ function upgrade_do15() {
 	}
 
 	// new setting: NonmemberMail
-	upgrade_query('NonmemberMail setting', 'INSERT INTO '.sql_table('config')." VALUES ('NonmemberMail', '0');");
+	if (!upgrade_checkIfCVExists('NonmemberMail')) {
+		$query = 'INSERT INTO '.sql_table('config')." VALUES ('NonmemberMail', '0');";
+		upgrade_query("Adding setting NonmemberMail",$query);
+	}
 	
 	// new setting: ProtectMemNames
-	upgrade_query('ProtectMemNames setting', 'INSERT INTO '.sql_table('config')." VALUES ('ProtectMemNames', '1');");
+	if (!upgrade_checkIfCVExists('ProtectMemNames')) {
+		$query = 'INSERT INTO '.sql_table('config')." VALUES ('ProtectMemNames', '1');";
+		upgrade_query("Adding setting ProtectMemNames",$query);
+	}
 
 	// create new table: nucleus_plugin_option
-	$query = 'CREATE TABLE '.sql_table('plugin_option')." (opid int(11) NOT NULL, oname varchar(20) NOT NULL, ovalue varchar(128) not null, odesc varchar(255), otype varchar(8), PRIMARY KEY(opid, oname)) TYPE=MyISAM;";
-	upgrade_query("Creating nucleus_plugin_option table",$query);
-
-
+	global $upgrade_failures;
+	if (0==$upgrade_failures && !upgrade_checkIfTableExists('plugin_option')) {
+		$query = 'CREATE TABLE '.sql_table('plugin_option')." (opid int(11) NOT NULL, oname varchar(20) NOT NULL, ovalue varchar(128) not null, odesc varchar(255), otype varchar(8), PRIMARY KEY(opid, oname)) TYPE=MyISAM;";
+		upgrade_query("Creating nucleus_plugin_option table",$query);
+	}else{
+		echo "<li>Creating nucleus_plugin_option table ... <span class=\"warning\">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>";
+	}
 }
 
 ?>

@@ -1,20 +1,24 @@
 <?php
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2007 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2007 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id: index.php,v 1.9 2007-04-10 03:55:20 kmorimatsu Exp $
-  * $NucleusJP: index.php,v 1.8 2007/02/04 06:28:46 kimitake Exp $
-  */
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: index.php,v 1.10 2007-04-26 06:20:18 kimitake Exp $
+ * $NucleusJP: index.php,v 1.9 2007/04/10 03:55:20 kmorimatsu Exp $
+ *
+ */
 
-include('upgrade.functions.php'); 
-  
+include('upgrade.functions.php');
+
 // check if logged in etc
 if (!$member->isLoggedIn()) {
   upgrade_showLogin('index.php');
@@ -40,25 +44,27 @@ upgrade_head();
 </p>
 
 <?php  // calculate current version
-      if (!upgrade_checkinstall(96)) $current = 95;
+	  if (!upgrade_checkinstall(96)) $current = 95;
   else  if (!upgrade_checkinstall(10)) $current = 96;
   else  if (!upgrade_checkinstall(11)) $current = 10;
-  else  if (!upgrade_checkinstall(15)) $current = 11;  
-  else  if (!upgrade_checkinstall(20)) $current = 15;    
-  else  if (!upgrade_checkinstall(25)) $current = 20;      
-  else  if (!upgrade_checkinstall(30)) $current = 25;      
-  else  if (!upgrade_checkinstall(31)) $current = 30;      
-  else  if (!upgrade_checkinstall(32)) $current = 31;      
-  else  if (!upgrade_checkinstall(33)) $current = 32;      
+  else  if (!upgrade_checkinstall(15)) $current = 11;
+  else  if (!upgrade_checkinstall(20)) $current = 15;
+  else  if (!upgrade_checkinstall(25)) $current = 20;
+  else  if (!upgrade_checkinstall(30)) $current = 25;
+  else  if (!upgrade_checkinstall(31)) $current = 30;
+  else  if (!upgrade_checkinstall(32)) $current = 31;
+  else  if (!upgrade_checkinstall(33)) $current = 32;
   else  $current = 33;
 
   if ($current == 33) {
-    ?>
-      <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p>
-    <?php  } else {
-    ?>
-      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.3 用にアップグレードします</a></p>
-    <?php  }
+	?>
+	  <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p>
+	<?php
+  } else {
+	?>
+	  <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.3 用にアップグレードします</a></p>
+	<?php
+  }
 ?>
 
 <div class="note">
@@ -88,7 +94,7 @@ if (phpversion() < '4.0.6') {
 }
 
 if ($sth == 0)
-  echo "<p class='ok'>手動変更は必要ありません。今日はラッキーな日ですね!</p>";  
+  echo "<p class='ok'>手動変更は必要ありません。今日はラッキーな日ですね!</p>";
 
 
 
@@ -100,7 +106,7 @@ function upgrade_todo($ver) {
 
 function upgrade_manual_96() {
   global $DIR_NUCLEUS;
-  
+
   $guess = str_replace("/nucleus/","/media/",$DIR_NUCLEUS);
 ?>
   <h2>Nucleus 0.96 用に必要な変更</h2>
@@ -111,16 +117,16 @@ function upgrade_manual_96() {
   // path to media dir
   $DIR_MEDIA = '<b><?php echo htmlspecialchars($guess)?></b>';
   </pre>
-  
+
   <p>
   また、ディレクトリもあなた自身の手で作る必要があります。もしファイルのアップロードを可能にしたいのであれば、media/ ディレクトリのパーミッションを777にします。（Nucleus 0.96+ のためのパーミッションの設定に関するクイックガイドが documentation/tips.html にあります）
   </p>
-  
+
 <?php }
 
 function upgrade_manual_20() {
   global $DIR_NUCLEUS;
-  
+
   $guess = str_replace("/nucleus/","/skins/",$DIR_NUCLEUS);
 ?>
   <h2>Nucleus 2.0 用に必要な変更</h2>
@@ -131,13 +137,13 @@ function upgrade_manual_20() {
   // extra skin files for imported skins
   $DIR_SKINS = '<b><?php echo htmlspecialchars($guess)?></b>';
   </pre>
-  
+
   <p>また、ディレクトリもあなた自身の手で作る必要があります。これでダウンロードしたスキンを上記ディレクトリに展開したり、Nucleus 管理画面から取り込んだりできるようになります。</p>
-  
+
   <h3>RSS 2.0 と RSD スキン</h3>
-  
+
   <p>Nucleus 2.0 を新規にインストールしたとき、RSD(Really Simple Discovery) 用のスキンの他に、RSS 2.0(Really Simple Syndication)用のスキンもまたインストールされます。<code>xml-rss2.php</code> と <code>rsd.php</code> の両ファイルはアップグレードされますが、スキンに関しては手動でインストールする必要があります。<code>upgrade-files</code>の中身をアップロードしたあと、管理者画面を開き、管理ホームにあるスキンの「読込/書出」を開きます。そこから両スキンをインストールすることができます（もしインストールするつもりがなければ、しなくても結構です）。</p>
-  
+
 <?php }
 
 function upgrade_manual_php405() {
@@ -148,32 +154,32 @@ function upgrade_manual_php405() {
 </p>
 <ul>
   <li>nucleus/libs/PARSER.php のコードが下記のようになっていることを確認して下さい。（84行目から）:
-    <pre>
+	<pre>
 
   if (in_array($actionlc, $this-&gt;actions) || $this-&gt;norestrictions ) {
-    <strong>$this-&gt;call_using_array($action, $this-&gt;handler, $params);</strong>
+	<strong>$this-&gt;call_using_array($action, $this-&gt;handler, $params);</strong>
   } else {
-    // redirect to plugin action if possible
-    if (in_array('plugin', $this-&gt;actions) 
-      && $manager-&gt;pluginInstalled('NP_'.$action))
-      $this-&gt;doAction('plugin('.$action.
-        $this-&gt;pdelim.implode($this-&gt;pdelim,$params).')');
-    else
-      echo '&lt;b&gt;DISALLOWED (' , $action , ')&lt;/b&gt;';
+	// redirect to plugin action if possible
+	if (in_array('plugin', $this-&gt;actions)
+	  && $manager-&gt;pluginInstalled('NP_'.$action))
+	  $this-&gt;doAction('plugin('.$action.
+		$this-&gt;pdelim.implode($this-&gt;pdelim,$params).')');
+	else
+	  echo '&lt;b&gt;DISALLOWED (' , $action , ')&lt;/b&gt;';
   }
 
 
 }
-     </pre>
-    </li>
-    <li>nucleus/libs/PARSER.php のコードが下記のようになっていることを確認して下さい。（75行目から）:
-    <pre>
+	 </pre>
+	</li>
+	<li>nucleus/libs/PARSER.php のコードが下記のようになっていることを確認して下さい。（75行目から）:
+	<pre>
 // $params = array_map('trim',$params);
 foreach ($params as $key =&gt; $value) { $params[$key] = trim($value); }
-    </pre>
-    </li>
+	</pre>
+	</li>
   </ul>
-  
+
 <?php }
 
 ?>

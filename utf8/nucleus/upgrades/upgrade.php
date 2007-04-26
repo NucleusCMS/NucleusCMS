@@ -1,20 +1,23 @@
 <?php
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2007 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
 /**
-  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2007 The Nucleus Group
-  *
-  * This program is free software; you can redistribute it and/or
-  * modify it under the terms of the GNU General Public License
-  * as published by the Free Software Foundation; either version 2
-  * of the License, or (at your option) any later version.
-  * (see nucleus/documentation/index.html#license for more info)
-  *
-  * $Id: upgrade.php,v 1.6 2007-04-10 03:55:20 kmorimatsu Exp $
-  * $NucleusJP: upgrade.php,v 1.5 2007/02/04 06:28:46 kimitake Exp $
-  */
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: upgrade.php,v 1.7 2007-04-26 06:20:19 kimitake Exp $
+ * $NucleusJP: upgrade.php,v 1.6 2007/04/10 03:55:20 kmorimatsu Exp $
+ */
 
-include('upgrade.functions.php'); 
-	
+include('upgrade.functions.php');
+
 // check if logged in etc
 if (!$member->isLoggedIn()) {
 	upgrade_showLogin('upgrade.php?from=' . intGetVar('from'));
@@ -60,6 +63,7 @@ switch($from) {
 		upgrade_do31();
 	case 31:
 		upgrade_do32();
+		break;
 	case 32:
 		upgrade_do33();
 		break;
