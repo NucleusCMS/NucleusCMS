@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.20 2007-03-22 03:30:14 kmorimatsu Exp $
- * @version $NucleusJP: ADMIN.php,v 1.19 2007/03/20 19:31:29 kmorimatsu Exp $
+ * @version $Id: ADMIN.php,v 1.21 2007-04-27 19:05:53 kimitake Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.20 2007/03/22 03:30:14 kmorimatsu Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -840,13 +840,13 @@ class ADMIN {
 
 		// start index
 		if (postVar('start'))
-			$start = postVar('start');
+			$start = intPostVar('start');
 		else
 			$start = 0;
 
 		// amount of items to show
 		if (postVar('amount'))
-			$amount = postVar('amount');
+			$amount = intPostVar('amount');
 		else
 			$amount = 10;
 
@@ -892,13 +892,13 @@ class ADMIN {
 
 		// start index
 		if (postVar('start'))
-			$start = postVar('start');
+			$start = intPostVar('start');
 		else
 			$start = 0;
 
 		// amount of items to show
 		if (postVar('amount'))
-			$amount = postVar('amount');
+			$amount = intPostVar('amount');
 		else
 			$amount = 10;
 
@@ -933,13 +933,13 @@ class ADMIN {
 
 		// start index
 		if (postVar('start'))
-			$start = postVar('start');
+			$start = intPostVar('start');
 		else
 			$start = 0;
 
 		// amount of items to show
 		if (postVar('amount'))
-			$amount = postVar('amount');
+			$amount = intPostVar('amount');
 		else
 			$amount = 10;
 
@@ -986,13 +986,13 @@ class ADMIN {
 
 		// start index
 		if (postVar('start'))
-			$start = postVar('start');
+			$start = intPostVar('start');
 		else
 			$start = 0;
 
 		// amount of items to show
 		if (postVar('amount'))
-			$amount = postVar('amount');
+			$amount = intPostVar('amount');
 		else
 			$amount = 10;
 
