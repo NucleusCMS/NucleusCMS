@@ -243,7 +243,7 @@ INSERT INTO `nucleus_template` VALUES (3, 'EDITLINK', '<a href="<%editlink%>" on
 INSERT INTO `nucleus_template` VALUES (3, 'FORMAT_DATE', '%Y-%m-%d');
 INSERT INTO `nucleus_template` VALUES (3, 'FORMAT_TIME', '%H:%M:%S');
 INSERT INTO `nucleus_template` VALUES (4, 'ITEM', '<%date(utc)%>');
-INSERT INTO `nucleus_template` VALUES (5, 'ITEM', '<entry>\r\n <title type="text/html" mode="escaped"><![CDATA[<%title%>]]></title>\r\n <link rel="alternate" type="text/html" href="<%blogurl%>?itemid=<%itemid%>" />\r\n <author>\r\n  <name><%author%></name>\r\n </author>\r\n <modified><%date(utc)%></modified>\r\n <issued><%date(iso8601)%></issued>\r\n <content type="text/html" mode="escaped"><![CDATA[<%body%><%more%>]]></content>\r\n <id><%blogurl%>:<%blogid%>:<%itemid%></id>\r\n</entry>');
+INSERT INTO `nucleus_template` VALUES (5, 'ITEM', '<entry>\r\n <title type="html"><![CDATA[<%title%>]]></title>\r\n <link rel="alternate" type="text/html" href="<%blogurl%>?itemid=<%itemid%>" />\r\n <author>\r\n  <name><%author%></name>\r\n </author>\r\n <updated><%date(utc)%></updated>\r\n <published><%date(iso8601)%></published>\r\n <content type="html"><![CDATA[<%body%><%more%>]]></content>\r\n <id><%blogurl%>:<%blogid%>:<%itemid%></id>\r\n</entry>');
 
 INSERT INTO `nucleus_template` VALUES (5, 'POPUP_CODE', '<%media%>');
 INSERT INTO `nucleus_template` VALUES (5, 'IMAGE_CODE', '<%image%>');
