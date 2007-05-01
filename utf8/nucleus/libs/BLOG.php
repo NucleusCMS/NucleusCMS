@@ -16,8 +16,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BLOG.php,v 1.12 2007-04-13 16:51:49 shizuki Exp $
- * $NucleusJP: BLOG.php,v 1.11 2007/03/20 19:31:29 kmorimatsu Exp $
+ * @version $Id: BLOG.php,v 1.13 2007-05-01 08:39:18 kimitake Exp $
+ * $NucleusJP: BLOG.php,v 1.12 2007/04/13 16:51:49 shizuki Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -170,6 +170,7 @@ class BLOG {
 		$items = sql_query($query);
 
 		// loop over all items
+		$old_date = 0;
 		while ($item = mysql_fetch_object($items)) {
 
 			$item->timestamp = strtotime($item->itime);	// string timestamp -> unix timestamp
@@ -178,7 +179,6 @@ class BLOG {
 			$actions->setCurrentItem($item);
 
 			// add date header if needed
-			$old_date = 0;
 			if ($dateheads) {
 				$new_date = date('dFY',$item->timestamp);
 				if ($new_date != $old_date) {
