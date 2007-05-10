@@ -17,7 +17,8 @@
  * @version $Id$
  */
 
-require_once "showlist.php";
+if ( !function_exists('requestVar') ) exit;
+require_once dirname(__FILE__) . '/showlist.php';
 
 /**
  * Builds the admin area and executes admin actions
@@ -74,7 +75,7 @@ class ADMIN {
 		if (method_exists($this, $methodName))
 			call_user_func(array(&$this, $methodName));
 		else
-			$this->error(_BADACTION . " ($action)");
+			$this->error(_BADACTION . htmlspecialchars(" ($action)"));
 
 	}
 
@@ -208,7 +209,7 @@ class ADMIN {
 	 * @param object BLOG
 	 */
 	function bloglink(&$blog) {
-		return '<a href="'.htmlspecialchars($blog->getURL()).'" title="'._BLOGLIST_TT_VISIT.'">'.$blog->getName() .'</a>';
+		return '<a href="'.htmlspecialchars($blog->getURL()).'" title="'._BLOGLIST_TT_VISIT.'">'. htmlspecialchars( $blog->getName() ) .'</a>';
 	}
 
 	/**
@@ -362,7 +363,7 @@ class ADMIN {
 					$error = $this->moveOneItem($itemid, $destCatid);
 					break;
 				default:
-					$error = _BATCH_UNKNOWN . $action;
+					$error = _BATCH_UNKNOWN . htmlspecialchars($action);
 			}
 
 			echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -418,7 +419,7 @@ class ADMIN {
 					$error = $this->deleteOneComment($commentid);
 					break;
 				default:
-					$error = _BATCH_UNKNOWN . $action;
+					$error = _BATCH_UNKNOWN . htmlspecialchars($action);
 			}
 
 			echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -485,7 +486,7 @@ class ADMIN {
 						sql_query('UPDATE ' . sql_table('member') .' SET madmin=0 WHERE mnumber='.$memberid);
 					break;
 				default:
-					$error = _BATCH_UNKNOWN . $action;
+					$error = _BATCH_UNKNOWN . htmlspecialchars($action);
 			}
 
 			echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -555,7 +556,7 @@ class ADMIN {
 						sql_query('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
 					break;
 				default:
-					$error = _BATCH_UNKNOWN . $action;
+					$error = _BATCH_UNKNOWN . htmlspecialchars($action);
 			}
 
 			echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -619,7 +620,7 @@ class ADMIN {
 					$error = $this->moveOneCategory($catid, $destBlogId);
 					break;
 				default:
-					$error = _BATCH_UNKNOWN . $action;
+					$error = _BATCH_UNKNOWN . htmlspecialchars($action);
 			}
 
 			echo '<b>',($error ? 'Error: '.$error : _BATCH_SUCCESS),'</b>';
@@ -838,13 +839,13 @@ class ADMIN {
 
 		// start index
 		if (postVar('start'))
-			$start = postVar('start');
+			$start = intPostVar('start');
 		else
 			$start = 0;
 
 		// amount of items to show
 		if (postVar('amount'))
-			$amount = postVar('amount');
+			$amount = intPostVar('amount');
 		else
 			$amount = 10;
 
@@ -884,20 +885,20 @@ class ADMIN {
 		// only allow if user is allowed to alter item
 		$member->canAlterItem($itemid) or $this->disallow();
 
-                // ED$ what is this??? getBlogIDFromItemId()??
+		// ED$ what is this??? getBlogIDFromItemId()??
 		$blogid = getBlogIdFromItemId($itemid);
 
 		$this->pagehead();
 
 		// start index
 		if (postVar('start'))
-			$start = postVar('start');
+			$start = intPostVar('start');
 		else
 			$start = 0;
 
 		// amount of items to show
 		if (postVar('amount'))
-			$amount = postVar('amount');
+			$amount = intPostVar('amount');
 		else
 			$amount = 10;
 
@@ -932,13 +933,13 @@ class ADMIN {
 
 		// start index
 		if (postVar('start'))
-			$start = postVar('start');
+			$start = intPostVar('start');
 		else
 			$start = 0;
 
 		// amount of items to show
 		if (postVar('amount'))
-			$amount = postVar('amount');
+			$amount = intPostVar('amount');
 		else
 			$amount = 10;
 
@@ -985,13 +986,13 @@ class ADMIN {
 
 		// start index
 		if (postVar('start'))
-			$start = postVar('start');
+			$start = intPostVar('start');
 		else
 			$start = 0;
 
 		// amount of items to show
 		if (postVar('amount'))
-			$amount = postVar('amount');
+			$amount = intPostVar('amount');
 		else
 			$amount = 10;
 
@@ -1269,32 +1270,34 @@ class ADMIN {
 		if (!$member->canAlterItem($itemid))
 			return _ERROR_DISALLOWED;
 
-                // need to get blogid before the item is deleted
+		// need to get blogid before the item is deleted
 		$blogid = getBlogIDFromItemId($itemid);
 
 		$manager->loadClass('ITEM');
 		ITEM::delete($itemid);
 
-                // update blog's futureposted
-                $this->updateFuturePosted($blogid);
+		// update blog's futureposted
+		$this->updateFuturePosted($blogid);
 	}
 
-        /**
-         * Update a blog's future posted flag
-         * @param int $blogid
-         */
-        function updateFuturePosted($blogid) {
-                global $manager;
+	/**
+	 * Update a blog's future posted flag
+	 * @param int $blogid
+	 */
+	function updateFuturePosted($blogid) {
+		global $manager;
+
 		$blog =& $manager->getBlog($blogid);
 		$currenttime = $blog->getCorrectTime(time());
-                $result = sql_query("SELECT * FROM ".sql_table('item')." WHERE iblog='".$blogid."' AND iposted=0 AND itime>".mysqldate($currenttime));
-                if (mysql_num_rows($result) > 0) {
-                        $blog->setFuturePost();
-                }
-                else {
-                        $blog->clearFuturePost();
-                }
-        }
+		$result = sql_query("SELECT * FROM ".sql_table('item').
+			" WHERE iblog='".$blogid."' AND iposted=0 AND itime>".mysqldate($currenttime));
+		if (mysql_num_rows($result) > 0) {
+				$blog->setFuturePost();
+		}
+		else {
+				$blog->clearFuturePost();
+		}
+	}
 
 	/**
 	 * @todo document this
@@ -1705,7 +1708,7 @@ class ADMIN {
 
 		echo '<h3>' . _MEMBERS_NEW .'</h3>';
 		?>
-			<form method="post" action="index.php"><div>
+			<form method="post" action="index.php" name="memberedit"><div>
 
 			<input type="hidden" name="action" value="memberadd" />
 			<?php $manager->addTicketHidden() ?>
@@ -1715,7 +1718,7 @@ class ADMIN {
 				<th colspan="2"><?php echo _MEMBERS_NEW?></th>
 			</tr><tr>
 				<td><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
-					<br /><small>(This is the name used to logon)</small>
+				<br /><small><?php echo _MEMBERS_DISPLAY_INFO?></small>
 				</td>
 				<td><input tabindex="10010" name="name" size="16" maxlength="16" /></td>
 			</tr><tr>
@@ -1785,7 +1788,7 @@ class ADMIN {
 		$mem = MEMBER::createFromID($memberid);
 
 		?>
-		<form method="post" action="index.php"><div>
+		<form method="post" action="index.php" name="memberedit"><div>
 
 		<input type="hidden" name="action" value="changemembersettings" />
 		<input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
@@ -1833,7 +1836,7 @@ class ADMIN {
 				<td><?php $this->input_yesno('admin',$mem->isAdmin(),60); ?></td>
 			</tr><tr>
 				<td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
-				<td><?php $this->input_yesno('canlogin',$mem->canLogin(),70); ?></td>
+				<td><?php $this->input_yesno('canlogin',$mem->canLogin(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
 		<?php } ?>
 		</tr><tr>
 			<td><?php echo _MEMBERS_NOTES?></td>
@@ -2299,7 +2302,7 @@ class ADMIN {
 		?>
 			<h2><?php echo _DELETE_CONFIRM?></h2>
 
-			<p><?php echo _CONFIRMTXT_TEAM1?><b><?php echo  $teammem->getDisplayName() ?></b><?php echo _CONFIRMTXT_TEAM2?><b><?php echo  htmlspecialchars(strip_tags($blog->getName())) ?></b>
+			<p><?php echo _CONFIRMTXT_TEAM1?><b><?php echo  htmlspecialchars($teammem->getDisplayName()) ?></b><?php echo _CONFIRMTXT_TEAM2?><b><?php echo  htmlspecialchars(strip_tags($blog->getName())) ?></b>
 			</p>
 
 
@@ -2780,7 +2783,7 @@ class ADMIN {
 			<h2><?php echo _DELETE_CONFIRM?></h2>
 
 			<div>
-			<?php echo _CONFIRMTXT_CATEGORY?><b><?php echo  $blog->getCategoryName($catid)?></b>
+			<?php echo _CONFIRMTXT_CATEGORY?><b><?php echo  htmlspecialchars($blog->getCategoryName($catid))?></b>
 			</div>
 
 			<form method="post" action="index.php"><div>
@@ -3104,7 +3107,7 @@ class ADMIN {
 		?>
 			<h2><?php echo _DELETE_CONFIRM?></h2>
 
-			<p><?php echo _CONFIRMTXT_MEMBER?><b><?php echo  $mem->getDisplayName() ?></b>
+			<p><?php echo _CONFIRMTXT_MEMBER?><b><?php echo htmlspecialchars($mem->getDisplayName()) ?></b>
 			</p>
 
 			<p>
@@ -3249,7 +3252,7 @@ class ADMIN {
 			<td><input name="timeoffset" tabindex="110" size="3" value="0" /></td>
 		</tr><tr>
 			<td><?php echo _EBLOG_ADMIN?>
-				<?php help('blogadmin'); ?>
+				<?php help('teamadmin'); ?>
 			</td>
 			<td><?php echo _EBLOG_ADMIN_MSG?></td>
 		</tr><tr>
@@ -3334,6 +3337,9 @@ class ADMIN {
 		$manager->notify(
 			'PostAddCategory',
 			array(
+				'blog' => &$blog,
+				'name' => 'General',
+				'description' => 'Items that do not fit in other categories',
 				'catid' => $catid
 			)
 		);
@@ -3828,6 +3834,12 @@ selector();
 	$this->_templateEditRow($template, _TEMPLATE_AFOOTER, 'ARCHIVELIST_FOOTER', '', 150);
 ?>
 		</tr><tr>
+			<th colspan="2"><?php echo _TEMPLATE_BLOGLIST?> <?php help('templatebloglists'); ?></th>
+<?php	$this->_templateEditRow($template, _TEMPLATE_BLOGHEADER, 'BLOGLIST_HEADER', '', 160);
+	$this->_templateEditRow($template, _TEMPLATE_BLOGITEM, 'BLOGLIST_LISTITEM', '', 170);
+	$this->_templateEditRow($template, _TEMPLATE_BLOGFOOTER, 'BLOGLIST_FOOTER', '', 180);
+?>
+		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_CATEGORYLIST?> <?php help('templatecategorylists'); ?></th>
 <?php	$this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 160);
 	$this->_templateEditRow($template, _TEMPLATE_CATITEM, 'CATLIST_LISTITEM', '', 170);
@@ -3933,6 +3945,9 @@ selector();
 		$this->addToTemplate($templateid, 'ARCHIVELIST_HEADER', postVar('ARCHIVELIST_HEADER'));
 		$this->addToTemplate($templateid, 'ARCHIVELIST_LISTITEM', postVar('ARCHIVELIST_LISTITEM'));
 		$this->addToTemplate($templateid, 'ARCHIVELIST_FOOTER', postVar('ARCHIVELIST_FOOTER'));
+		$this->addToTemplate($templateid, 'BLOGLIST_HEADER', postVar('BLOGLIST_HEADER'));
+		$this->addToTemplate($templateid, 'BLOGLIST_LISTITEM', postVar('BLOGLIST_LISTITEM'));
+		$this->addToTemplate($templateid, 'BLOGLIST_FOOTER', postVar('BLOGLIST_FOOTER'));
 		$this->addToTemplate($templateid, 'CATLIST_HEADER', postVar('CATLIST_HEADER'));
 		$this->addToTemplate($templateid, 'CATLIST_LISTITEM', postVar('CATLIST_LISTITEM'));
 		$this->addToTemplate($templateid, 'CATLIST_FOOTER', postVar('CATLIST_FOOTER'));
@@ -3991,7 +4006,7 @@ selector();
 			<h2><?php echo _DELETE_CONFIRM?></h2>
 
 			<p>
-			<?php echo _CONFIRMTXT_TEMPLATE?><b><?php echo $name?></b> (<?php echo  htmlspecialchars($desc) ?>)
+			<?php echo _CONFIRMTXT_TEMPLATE?><b><?php echo htmlspecialchars($name)?></b> (<?php echo  htmlspecialchars($desc) ?>)
 			</p>
 
 			<form method="post" action="index.php"><div>
@@ -4205,7 +4220,7 @@ selector();
 			$tabstart = 75;
 
 			while ($row = mysql_fetch_assoc($res)) {
-				echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . strtolower($row['stype']) . '">' . ucfirst($row['stype']) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . strtolower($row['stype']) . '">remove</a>)</li>';
+				echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype'])) . '">' . htmlspecialchars(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype'])) . '">remove</a>)</li>';
 			}
 
 			echo '</ul>';
@@ -4308,7 +4323,7 @@ selector();
 		?>
 		<p>(<a href="index.php?action=skinoverview"><?php echo _SKIN_GOBACK?></a>)</p>
 
-		<h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo  $skin->getName() ?>': <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?></h2>
+		<h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo htmlspecialchars($skin->getName()) ?>': <?php echo htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?></h2>
 
 		<?php			if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
 		?>
@@ -4324,8 +4339,12 @@ selector();
 
 		<input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
 		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-		(skin type: <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
-		<?php help('skinpart' . $type);?>
+		(skin type: <?php echo htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
+		<?php if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+			help('skinpart' . $type);
+		} else {
+			help('skinpartspecial');
+		}?>
 		<br />
 
 		<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content"><?php echo  htmlspecialchars($skin->getContent($type)) ?></textarea>
@@ -4333,7 +4352,7 @@ selector();
 		<br />
 		<input type="submit" tabindex="20" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
 		<input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-		(skin type: <?php echo (isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
+		(skin type: <?php echo htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
 
 		<br /><br />
 		<?php echo _SKIN_ALLOWEDVARS?>
@@ -4407,7 +4426,7 @@ selector();
 		$query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
 		$r = sql_query($query);
 		if ($o = mysql_fetch_object($r))
-			$this->error(_ERROR_SKINDEFDELETE . $o->bname);
+			$this->error(_ERROR_SKINDEFDELETE . htmlspecialchars($o->bname));
 
 		$this->pagehead();
 
@@ -4419,7 +4438,7 @@ selector();
 			<h2><?php echo _DELETE_CONFIRM?></h2>
 
 			<p>
-				<?php echo _CONFIRMTXT_SKIN?><b><?php echo  $name ?></b> (<?php echo  htmlspecialchars($desc)?>)
+				<?php echo _CONFIRMTXT_SKIN?><b><?php echo htmlspecialchars($name) ?></b> (<?php echo  htmlspecialchars($desc)?>)
 			</p>
 
 			<form method="post" action="index.php"><div>
@@ -4495,14 +4514,14 @@ selector();
 			<h2><?php echo _DELETE_CONFIRM?></h2>
 
 			<p>
-				<?php echo _CONFIRMTXT_SKIN_PARTS_SPECIAL; ?> <b><?php echo $skintype; ?> (<?php echo $name; ?>)</b> (<?php echo  htmlspecialchars($desc)?>)
+				<?php echo _CONFIRMTXT_SKIN_PARTS_SPECIAL; ?> <b><?php echo htmlspecialchars($skintype); ?> (<?php echo htmlspecialchars($name); ?>)</b> (<?php echo  htmlspecialchars($desc)?>)
 			</p>
 
 			<form method="post" action="index.php"><div>
 				<input type="hidden" name="action" value="skinremovetypeconfirm" />
 				<?php $manager->addTicketHidden() ?>
 				<input type="hidden" name="skinid" value="<?php echo $skinid; ?>" />
-				<input type="hidden" name="type" value="<?php echo $skintype; ?>" />
+				<input type="hidden" name="type" value="<?php echo htmlspecialchars($skintype); ?>" />
 				<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
 		<?php
@@ -5763,7 +5782,7 @@ selector();
 		if ($manager->pluginInstalled($name))
 			$this->error(_ERROR_DUPPLUGIN);
 		if (!checkPlugin($name))
-			$this->error(_ERROR_PLUGFILEERROR . ' (' . $name . ')');
+			$this->error(_ERROR_PLUGFILEERROR . ' (' . htmlspecialchars($name) . ')');
 
 		// get number of currently installed plugins
 		$res = sql_query('SELECT * FROM '.sql_table('plugin'));
@@ -5804,7 +5823,7 @@ selector();
 			$this->deleteOnePlugin($plugin->getID());
 
 			// ...and show error
-			$this->error(_ERROR_NUCLEUSVERSIONREQ . $plugin->getMinNucleusVersion());
+			$this->error(_ERROR_NUCLEUSVERSIONREQ . htmlspecialchars($plugin->getMinNucleusVersion()));
 		}
 
 		// check if plugin needs a newer Nucleus version
@@ -5814,7 +5833,7 @@ selector();
 			$this->deleteOnePlugin($plugin->getID());
 
 			// ...and show error
-			$this->error(_ERROR_NUCLEUSVERSIONREQ . $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel());
+			$this->error(_ERROR_NUCLEUSVERSIONREQ . htmlspecialchars( $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel() ) );
 		}
 
 		$pluginList = $plugin->getPluginDep();
@@ -5827,7 +5846,7 @@ selector();
 				// uninstall plugin again...
 				$this->deleteOnePlugin($plugin->getID());
 
-				$this->error(_ERROR_INSREQPLUGIN . $pluginName);
+				$this->error(_ERROR_INSREQPLUGIN . htmlspecialchars($pluginName));
 			}
 		}
 
@@ -6207,21 +6226,32 @@ selector();
 	 * Helper functions to create option forms etc.
 	 * @todo document parameters
 	 */
-	function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO) {
+	function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0) {
 		$id = htmlspecialchars($name);
 		$id = str_replace('[','-',$id);
 		$id = str_replace(']','-',$id);
 		$id1 = $id . htmlspecialchars($value1);
 		$id2 = $id . htmlspecialchars($value2);
 
-		echo '<input type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value1),'" ';
+		if ($name=="admin") {
+			echo '<input onclick="selectCanLogin(true);" type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value1),'" ';
+	   	} else {
+			echo '<input type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value1),'" ';
+		}
+
 			if ($checkedval == $value1)
 				echo "tabindex='$tabindex' checked='checked'";
 			echo ' id="'.$id1.'" /><label for="'.$id1.'">' . $yesval . '</label>';
 		echo ' ';
-		echo '<input type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value2),'" ';
+		if ($name=="admin") {
+			echo '<input onclick="selectCanLogin(false);" type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value2),'" ';
+		} else {
+			echo '<input type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value2),'" ';
+		}
 			if ($checkedval != $value1)
 				echo "tabindex='$tabindex' checked='checked'";
+			if ($isAdmin && $name=="canlogin")
+				echo " disabled='true'";
 			echo ' id="'.$id2.'" /><label for="'.$id2.'">' . $noval . '</label>';
 	}
 
