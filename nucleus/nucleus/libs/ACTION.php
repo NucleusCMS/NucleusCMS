@@ -19,10 +19,9 @@
  */
 class ACTION
 {
-
 	/**
 	 *  Constructor for an new ACTION object
-	 */	 	
+	 */
 	function ACTION()
 	{
 		// do nothing
@@ -30,7 +29,7 @@ class ACTION
 
 	/**
 	 *  Calls functions that handle an action called from action.php
-	 */	 	
+	 */
 	function doAction($action)
 	{
 		switch($action) {
@@ -67,8 +66,8 @@ class ACTION
 	}
 
 	/**
-	 *  Adds a new comment to an item (if IP isn't banned) 
-	 */	 	
+	 *  Adds a new comment to an item (if IP isn't banned)
+	 */
 	function addComment() {
 		global $CONF, $errormessage, $manager;
 
@@ -101,7 +100,7 @@ class ACTION
 			if (postVar('url')) {
 				redirect(postVar('url'));
 			} else {
-				$url = $CONF['IndexURL'] . createItemLink($post['itemid']);
+				$url = createItemLink($post['itemid']);
 				redirect($url);
 			}
 		} else {
@@ -117,7 +116,7 @@ class ACTION
 
 	/**
 	 *  Sends a message from the current member to the member given as argument
-	 */	 	
+	 */
 	function sendMessage() {
 		global $CONF, $member;
 
@@ -159,15 +158,13 @@ class ACTION
 			}
 			redirect($url);
 		}
-
 		exit;
-
 	}
 
 	/**
-	 * Checks if a mail to a member is allowed
-	 * Returns a string with the error message if the mail is disallowed
-	 */	 	
+	 *  Checks if a mail to a member is allowed
+	 *  Returns a string with the error message if the mail is disallowed
+	 */
 	function validateMessage() {
 		global $CONF, $member, $manager;
 
@@ -191,7 +188,7 @@ class ACTION
 
 	/**
 	 *  Creates a new user account
-	 */	 	
+	 */
 	function createAccount() {
 		global $CONF, $manager;
 
@@ -220,13 +217,12 @@ class ACTION
 		} else {
 			echo _MSG_ACTIVATION_SENT;
 		}
-
 		exit;
 	}
 
 	/**
 	 *  Sends a new password
-	 */	 	
+	 */
 	function forgotPassword() {
 		$membername = trim(postVar('name'));
 
@@ -249,13 +245,12 @@ class ACTION
 		} else {
 			echo _MSG_ACTIVATION_SENT;
 		}
-
 		exit;
 	}
 
 	/**
 	 *  Handle karma votes
-	 */	 	
+	 */
 	function doKarma($type) {
 		global $itemid, $member, $CONF, $manager;
 
@@ -353,7 +348,7 @@ class ACTION
 
 	/**
 	 *  Checks if an IP or IP range is banned
-	 */	 	
+	 */
 	function checkban($blogid) {
 		// check if banned
 		$ban = BAN::isBanned($blogid, serverVar('REMOTE_ADDR'));
