@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.21 2007-04-27 19:05:53 kimitake Exp $
- * @version $NucleusJP: ADMIN.php,v 1.20 2007/03/22 03:30:14 kmorimatsu Exp $
+ * @version $Id: ADMIN.php,v 1.22 2007-05-10 08:38:33 kimitake Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.21 2007/04/27 19:05:53 kimitake Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -886,6 +886,7 @@ class ADMIN {
 		// only allow if user is allowed to alter item
 		$member->canAlterItem($itemid) or $this->disallow();
 
+		// ED$ what is this??? getBlogIDFromItemId()??
 		$blogid = getBlogIdFromItemId($itemid);
 
 		$this->pagehead();
@@ -1165,13 +1166,21 @@ class ADMIN {
 		// edit the item for real
 		ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
 
+		$blogid = getBlogIDFromItemID($itemid);
+		$blog =& $manager->getBlog($blogid);
+
+		$isFuture = 0;
+		if ($timestamp > $blog->getCorrectTime(time())) {
+			$isFuture = 1;
+		}
+
+		$this->updateFuturePosted($blogid);
+
 		if ($draftid > 0) {
 			ITEM::delete($draftid);
 		}
 
-		$blogid = getBlogIDFromItemID($itemid);
-		$blog =& $manager->getBlog($blogid);
-		if (!$closed && $publish && $wasdraft && $blog->pingUserland()) {
+		if (!$closed && $publish && $wasdraft && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0 && !$isFuture) {
 			$this->action_sendping($blogid);
 			return;
 		}
@@ -1242,7 +1251,7 @@ class ADMIN {
 		// only allow if user is allowed to alter item
 		$member->canAlterItem($itemid) or $this->disallow();
 
-		// get blogid first
+		// get blogid first ED$ What is this? getBlogIDFromItemId()???
 		$blogid = getBlogIdFromItemId($itemid);
 
 		// delete item (note: some checks will be performed twice)
@@ -1262,8 +1271,33 @@ class ADMIN {
 		if (!$member->canAlterItem($itemid))
 			return _ERROR_DISALLOWED;
 
+		// need to get blogid before the item is deleted
+		$blogid = getBlogIDFromItemId($itemid);
+
 		$manager->loadClass('ITEM');
 		ITEM::delete($itemid);
+
+		// update blog's futureposted
+		$this->updateFuturePosted($blogid);
+	}
+
+	/**
+	 * Update a blog's future posted flag
+	 * @param int $blogid
+	 */
+	function updateFuturePosted($blogid) {
+		global $manager;
+
+		$blog =& $manager->getBlog($blogid);
+		$currenttime = $blog->getCorrectTime(time());
+		$result = sql_query("SELECT * FROM ".sql_table('item').
+			" WHERE iblog='".$blogid."' AND iposted=0 AND itime>".mysqldate($currenttime));
+		if (mysql_num_rows($result) > 0) {
+				$blog->setFuturePost();
+		}
+		else {
+				$blog->clearFuturePost();
+		}
 	}
 
 	/**
@@ -1324,7 +1358,15 @@ class ADMIN {
 		// only allow if user is allowed to alter item
 		$member->canUpdateItem($itemid, $catid) or $this->disallow();
 
+		$old_blogid = getBlogIDFromItemId($itemid);
+
 		ITEM::move($itemid, $catid);
+
+		// set the futurePosted flag on the blog
+		$this->updateFuturePosted(getBlogIDFromItemId($itemid));
+
+		// reset the futurePosted in case the item is moved from one blog to another
+		$this->updateFuturePosted($old_blogid);
 
 		if ($catid != intRequestVar('catid'))
 			$this->action_categoryedit($catid, $blog->getID());
@@ -1370,16 +1412,16 @@ class ADMIN {
 			$this->action_categoryedit(
 				$result['catid'],
 				$blogid,
-				$blog->pingUserland() ? $pingUrl : ''
+				$blog->sendPing() && numberOfEventSubscriber('SendPing') > 0 ? $pingUrl : ''
 			);
-		elseif ((postVar('actiontype') == 'addnow') && $blog->pingUserland())
+		elseif ((postVar('actiontype') == 'addnow') && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0)
 			$this->action_sendping($blogid);
 		else
 			$this->action_itemlist($blogid);
 	}
 
 	/**
-	 * Shows a window that says we're about to ping weblogs.com.
+	 * Shows a window that says we're about to ping.
 	 * immediately refresh to the real pinging page, which will
 	 * show an error, or redirect to the blog.
 	 *
@@ -1397,12 +1439,10 @@ class ADMIN {
 
 		$this->pagehead('<meta http-equiv="refresh" content="1; url='.htmlspecialchars($rawPingUrl).'" />');
 		?>
-		<h2>Site Updated, Now pinging weblogs.com</h2>
+		<h2>Site Updated, Now pinging various weblog listing services...</h2>
 
 		<p>
-			Pinging weblogs.com! This can a while...
-			<br />
-			When the ping is complete (and successfull), your weblog will show up in the weblogs.com updates list.
+			This can take a while...
 		</p>
 
 		<p>
@@ -1412,7 +1452,6 @@ class ADMIN {
 	}
 
 	/**
-	 * Ping to Weblogs.com
 	 * Sends the real ping (can take up to 10 seconds!)
 	 */
 	function action_rawping() {
@@ -1422,17 +1461,19 @@ class ADMIN {
 		$blogid = intRequestVar('blogid');
 		$blog =& $manager->getBlog($blogid);
 
-		$result = $blog->sendUserlandPing();
-
 		$this->pagehead();
 
 		?>
 
-		<h2>Ping Results</h2>
+		<h2>Pinging services, please wait...</h2>
+		<div class='note'>
+                <?
 
-		<p>The following message was returned by weblogs.com:</p>
+		// send sendPing event
+		$manager->notify('SendPing', array('blogid' => $blogid));
 
-		<div class='note'><?php echo  $result ?></div>
+                ?>
+                </div>
 
 		<ul>
 			<li><a href="index.php?action=itemlist&amp;blogid=<?php echo $blog->getID()?>">View list of recent items for <?php echo htmlspecialchars($blog->getName())?></a></li>
@@ -2479,9 +2520,15 @@ class ADMIN {
 				/><label for="notifyNewItem"><?php echo _EBLOG_NOTIFY_ITEM?></label>
 			</td>
 		</tr><tr>
-			<td><?php echo _EBLOG_PING?> <?php help('pinguserland'); ?></td>
-			<td><?php $this->input_yesno('pinguserland',$blog->pingUserland(),85); ?></td>
+		<? 
+		if (numberOfEventSubscriber('SendPing') > 0) {
+		?>
+			<td><?php echo _EBLOG_PING?> <?php help('sendping'); ?></td>
+			<td><?php $this->input_yesno('sendping',$blog->sendPing(),85); ?></td>
 		</tr><tr>
+		<?
+		}
+		?>
 			<td><?php echo _EBLOG_MAXCOMMENTS?> <?php help('blogmaxcomments'); ?></td>
 			<td><input name="maxcomments" tabindex="90" size="3" value="<?php echo  htmlspecialchars($blog->getMaxComments()); ?>" /></td>
 		</tr><tr>
@@ -2942,7 +2989,7 @@ class ADMIN {
 		$blog->setDefaultSkin(intPostVar('defskin'));
 		$blog->setDescription(trim(postVar('desc')));
 		$blog->setPublic(postVar('public'));
-		$blog->setPingUserland(postVar('pinguserland'));
+		$blog->setPingUserland(postVar('sendping'));
 		$blog->setConvertBreaks(intPostVar('convertbreaks'));
 		$blog->setAllowPastPosting(intPostVar('allowpastposting'));
 		$blog->setDefaultCategory(intPostVar('defcat'));
@@ -3150,18 +3197,18 @@ class ADMIN {
 		?>
 		<h2><?php echo _EBLOG_CREATE_TITLE?></h2>
 
-		<h3>ц│ицДПф║ЛщаЕ</h3>
+		<h3>ц│бжзяф║╢ч@бж/h3>
 
-		<p>ф╜ЬцИРуБлуБВуБЯуБгуБжуАБф╕ЛшиШуБо<strong>ц│ицДПф║ЛщаЕ</strong> уВТуБ╛уБЪуБКшкнуБ┐ф╕ЛуБХуБД</p>
+		<p>ф╜╪хбжбжбжбтбж▐ф!губусрвфО╢╢цОж╨ф!бжstrong>ц│бжзяф║╢ч@бж/strong> бж─ф!╛уб·бж┤цОинубЁзь▓ф!╩ф!бж/p>
 
-		<p>цЦ░уБЧуБДweblogуВТф╜ЬцИРуБЧуБЯх╛МуБлуАБуБУуБоblogуБлуВвуВпуВ╗уВ╣уБЩуВЛуБЯуВБуБоцЦ╣ц│ХуВТч┤╣ф╗ЛуБЧуБжуБКуБНуБ╛уБЩуАВцЦ╣ц│ХуБп2уБдуБВуВКуБ╛уБЩ:</p>
+		<p>хЇ░убўбжз╪eblogбж─фО╗╪хбжбж╬ф!▐х]╕ф!бжАвф!╞ф!н┴logбжбжгсстбжгюет╣уб∙бж╢ф!▐ф"вф!бж╦эбж5бж─цS╣фбжбж╬ф!бжбъбж║ф!╛уб∙бждх╟эбж5бж░╘бждубтбж┤ф!╛уб∙:</p>
 
 		<ol>
-			<li><strong>ч░бхНШуБкцЦ╣ц│Х:</strong> <code>index.php</code>уБошдЗшг╜уВТф╜ЬуВКуАБцЦ░уБЧуБДblogуВТшбичд║уБЩуВЛуВИуБЖуБлхдЙцЫ┤уВТхКауБИуБ╛уБЩуАВ уБУуБохдЙцЫ┤уБошй│ч┤░уБпуАБф╜ЬцИРх╛МуБлшбичд║уБХуВМуБ╛уБЩуАВ</li>
-			<li><strong>щлШх║жуБкцЦ╣ц│Х:</strong> чП╛хЬиуБоblogуБзф╜┐чФиуБЧуБжуБДуВЛуВ╣уВнуГ│уБл<code>otherblog</code>уБиуБДуБЖуВ│уГ╝уГЙуВТф╜┐уБгуБЯшиШш┐░уВТхКауБИуБ╛уБЩуАВуБУуБоцЦ╣ц│ХуБзуБпуАБхРМуБШуГЪуГ╝уВ╕хЖЕуБзшдЗцХ░уБоblogуВТх▒ХщЦЛуБЩуВЛуБУуБиуБМхПпшГ╜уБиуБкуВКуБ╛уБЩуАВ</li>
+			<li><strong>ч░бх╣°бжбж╦эбж5:</strong> <code>index.php</code>бжбжгхшг╜угЄф╜╪ф"┤ф вх╟шсс╬ф!бжlogбж─ц▌фщтО╕бж╥ф"╢ф"░ф!бж!бжгчх∙┤угЄбжабж░ф!╛уб∙бжбжбж╞ф!бжгчх∙┤убчыхRч┤░убшервфО╗╪хбжх╛╕ф!бжбичд║убїбж╕ф!╛уб∙бжбж/li>
+			<li><strong>щл╨хYбжбхчЎ╣цбж:</strong> бж╛х╫фссн┴logбжзф╜┐бжбжбўбжбжбфбж╢ф"╣угчеу│убцО▄code>otherblog</code>бжбжбфбжбж"│уеюсу▓ф"─фО╗┐убтес▐цОж╨цО╜░угЄбжабж░ф!╛уб∙бждф!╞ф!бж╦эбж5бжзубшервх0╕ф!╨ф#╘ф#╝угьхцбж!зшгххє░убч`logбж─хP╩ч6╢ф!╥ф"╢ф!╞ф!бжбьбжбжеяесбжбхст┤ф!╛уб∙бжбж/li>
 		</ol>
 
-		<h3>WeblogуБоф╜ЬцИР</h3>
+		<h3>Weblogбжбжбжхцбж/h3>
 
 		<p>
 		<?php echo _EBLOG_CREATE_TEXT?>
@@ -3279,7 +3326,7 @@ class ADMIN {
 		sql_query($query);
 
 
-		$blog->additem($blog->getDefaultCategory(),'First Item','уБУуВМуБпуБВуБкуБЯуБоweblogуБлуБКуБСуВЛцЬАхИЭуБоуВвуВдуГЖуГауБзуБЩуАВшЗкчФ▒уБлхЙКщЩдуБЧуБжуБДуБЯуБауБДуБжуБЛуБ╛уБДуБ╛уБЫуВУуАВ','',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
+		$blog->additem($blog->getDefaultCategory(),'First Item','бж╞ф"╕ф!бжбтбжбжвббжн╓eblogбжбжбъбж┬ф"╢х╙рбж┌ф!бжгсстдуецбжабжзуб∙бждцбжщЇ▒убцбж┤ч9дубўбжбжбфбж▐ф!абжбж!бжбыбж╛убфбж╛уб√бж╞ф бж,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
 
 		$manager->notify(
 			'PostAddBlog',
@@ -3300,18 +3347,18 @@ class ADMIN {
 
 		$this->pagehead();
 		?>
-		<h2>цЦ░уБЧуБДweblogуБМф╜ЬцИРуБХуВМуБ╛уБЧуБЯ</h2>
+		<h2>хЇ░убўбжз╪eblogбж╕фО╗╪хбжбж╩ф"╕ф!╛убўбжбж/h2>
 
-		<p>цЦ░уБЧуБДweblog уАМ<?php echo htmlspecialchars($bname)?>уАНуБМф╜ЬцИРуБХуВМуБ╛уБЧуБЯуАВч╢ЪуБСуБжуАБуБУуВМуБлуВвуВпуВ╗уВ╣уБЩуВЛуБЯуВБуБлф╗еф╕ЛуБоуБйуБбуВЙуБЛуБоцЙЛщаЖуБлщА▓уВУуБзуБПуБауБХуБДуАВ</p>
+		<p>хЇ░убўбжз╪eblog бжбж?php echo htmlspecialchars($bname)?>бж║ф!╕фО╗╪хбжбж╩ф"╕ф!╛убўбж▐ф дцU╘ф!┬ф!бжАвф!╞ф"╕ф!бжгсстбжгюет╣уб∙бж╢ф!▐ф"вф!бж╗еф╕╢ф!бжбхесбугщбж╢ф!бж▒ыщббж!бжА▓угєбжзубябжабж╩ф!бж бж/p>
 
 		<ol>
-			<li><a href="#index_php">ч░бхНШуБкцЦ╣ц│Х: ф╕ЛуБоуВ│уГ╝уГЙуВТш▓╝ф╗ШуБСуБЯ <code><?php echo htmlspecialchars($bshortname)?>.php</code> уБиуБДуБЖуГХуВбуВдуГлуВТф╜ЬцИРуБЩуВЛ</a></li>
-			<li><a href="#skins">щлШх║жуБкцЦ╣ц│Х: чП╛хЬиф╜┐чФиуБЧуБжуБДуВЛуВ╣уВнуГ│уБлцЦ░уБЧуБДweblogуВТх▒ХщЦЛуБХуБЫуВЛуБЯуВБуБошиШш┐░уВТхКауБИуВЛ</a></li>
+			<li><a href="#index_php">ч░бх╣°бжбж╦эбж5: ф╕╢ф!бжгъеу╝уещбж─цО░╝фбжбж┬ф!бж<code><?php echo htmlspecialchars($bshortname)?>.php</code> бжбжбфбжбж#╩ф"бугтсубжгЄф╜╪хбжбж╥ф"бж/a></li>
+			<li><a href="#skins">щл╨хYбжбхчЎ╣цбж: бж╛х╫фуя^бжбжбўбжбжбфбж╢ф"╣угчеу│убцбж░убўбжз╪eblogбж─хP╩ч6╢ф!╩ф!╓ф"╢ф!▐ф"вф!бжбжш┐░угЄбжабж░ф"бж/a></li>
 		</ol>
 
-		<h3><a id="index_php">цЦ╣ц│Х 1: <code><?php echo htmlspecialchars($bshortname)?>.php</code> уБиуБДуБЖуГХуВбуВдуГлуВТф╜ЬцИР</a></h3>
+		<h3><a id="index_php">хЇ╣цбж 1: <code><?php echo htmlspecialchars($bshortname)?>.php</code> бжбжбфбжбж#╩ф"бугтсубжгЄф╜╪хбж</a></h3>
 
-		<p><code><?php echo htmlspecialchars($bshortname)?>.php</code> уБиуБДуБЖуГХуВбуВдуГлуВТф╜ЬцИРуБЧуБжуАБф╕нш║луБлф╗еф╕ЛуБоуВ│уГ╝уГЙуВТш▓╝уВКф╗ШуБСуВЛ:</p>
+		<p><code><?php echo htmlspecialchars($bshortname)?>.php</code> бжбжбфбжбж#╩ф"бугтсубжгЄф╜╪хбжбж╬ф!бжАвфО╢нш║лбжбж╗еф╕╢ф!бжгъеу╝уещбж─цО░╝угъф╗╨ф!┬ф"бж</p>
 <pre><code>&lt;?php
 
 $CONF['Self'] = '<b><?php echo htmlspecialchars($bshortname)?>.php</b>';
@@ -3323,9 +3370,9 @@ selector();
 
 ?&gt;</code></pre>
 
-		<p>уБЩуБзуБлуБВуВЛ<code>index.php</code>уБихРМуБШуГЗуВгуГмуВпуГИуГкуБлуВвуГГуГЧуГнуГ╝уГЙуБЧуБ╛уБЩуАВ</p>
+		<p>бж╥ф!зубцесдф"бжcode>index.php</code>бжбж┐ьбж╨ф#бж"гуецстбжешбжбжбцетвуеубж╬ф#нуеюсу▓ф!╬ф!╛уб∙бжбж/p>
 
-		<p>цЦ░уБЧуБДweblogуБоф╜ЬцИРуВТхоМф║ЖуБЩуВЛуБЯуВБуБлуБпуАБф╕ЛуБлуБУуБоуГХуВбуВдуГлуБоURLуВТхЕехКЫуБЧуБжуБПуБауБХуБДуАВ (уБЩуБзуБлчФицДПуБЧуБЯхАдуБзхРИуБгуБжуБДуВЛуБиуБпцАЭуБДуБ╛уБЩуБМф┐Эши╝уБпуБЧуБ╛уБЫуВУ):</p>
+		<p>хЇ░убўбжз╪eblogбжбжбжхц└ф"─хM╕фО╕бж!╥ф"╢ф!▐ф"вф!бжбшервфО╢╢ф!бжбєбжбжеїбжбугтсубжбчSRLбж─х%ех│√бж╬ф!бжбябжабж╩ф!бж бж(бж╥ф!зубцнЇбжзябж╬ф!▐х дубфбж░ф!губуссбж"╢ф!бжбшбж┌ф!бж!╛уб∙бж╕фО╜┌цОж╝убшес╬ф!╛уб√бжбж:</p>
 
 		<form action="index.php" method="post"><div>
 			<input type="hidden" name="action" value="addnewlog2" />
@@ -3340,9 +3387,9 @@ selector();
 			</tr></table>
 		</div></form>
 
-		<h3><a id="skins">цЦ╣ц│Х 2: чП╛хЬиф╜┐чФиуБЧуБжуБДуВЛуВ╣уВнуГ│уБлцЦ░уБЧуБДweblogуВТх▒ХщЦЛуБЩуВЛшиШш┐░уВТхКауБИуВЛ</a></h3>
+		<h3><a id="skins">хЇ╣цбж 2: бж╛х╫фуя^бжбжбўбжбжбфбж╢ф"╣угчеу│убцбж░убўбжз╪eblogбж─хP╩ч6╢ф!╥ф"╢цОж╨цО╜░угЄбжабж░ф"бж/a></h3>
 
-		<p>цЦ░уБЧуБДweblogуБоф╜ЬцИРуВТхоМф║ЖуБЩуВЛуБЯуВБуБлуБпуАБф╕ЛуБлURLуВТхЕехКЫуБЧуБжуБПуБауБХуБДуАВ (хдзцК╡уБпцЧвхнШblogуБихРМуБШURL)</p>
+		<p>хЇ░убўбжз╪eblogбжбжбжхц└ф"─хM╕фО╕бж!╥ф"╢ф!▐ф"вф!бжбшервфО╢╢ф!бжRLбж─х%ех│√бж╬ф!бжбябжабж╩ф!бж бж(хдзц│ыесбж═схч8blogбжбж┐ьбж╧╢RL)</p>
 
 		<form action="index.php" method="post"><div>
 			<input type="hidden" name="action" value="addnewlog2" />
@@ -5190,45 +5237,45 @@ selector();
 		<h2>Bookmarklet<!-- and Right Click Menu --></h2>
 
 		<p>
-		Bookmarklet уБиуБпуАБуВпуГкуГГуВп1хЫЮуБзшиШф║ЛуБоцКХчи┐уБМуБзуБНуВЛуВ╖уВ╣уГЖуГауБзуБЩуАВ уБУуБо Bookmarklet уВТуВдуГ│уВ╣уГИуГ╝уГлуБЩуВЛуБиуАБуГЦуГйуВжуВ╢уБоуГДуГ╝уГлуГРуГ╝уБо'add to weblog'уГЬуВ┐уГ│уБМхИйчФихПпшГ╜уБиуБкуВКуАБNucleusуБоцЦ░шжПуВвуВдуГЖуГауБош┐╜хКауВжуВгуГ│уГЙуВжуБМуГЭуГГуГЧуВвуГГуГЧуБЧуБ╛уБЩуАВф╗╗цДПуБоWebуГЪуГ╝уВ╕уВТщЦЛуБДуБЯчК╢цЕЛуБзуБУуБоуГЬуВ┐уГ│уВТцК╝уБЫуБ░уАБуБЭуБоWebуГЪуГ╝уВ╕уБоуВ┐уВдуГИуГлуБиуАБуБЭуБоуГЪуГ╝уВ╕уБ╕уБоуГкуГ│уВпуВ┐уВ░уБМуБЩуБзуБлхЯЛуВБш╛╝уБ╛уВМуБЯчК╢цЕЛуБзуВвуВдуГЖуГаш┐╜хКауВжуВгуГ│уГЙуВжуБМщЦЛуБНуАБуБХуВЙуБлуАБуБЭуБоуГЪуГ╝уВ╕хЖЕуБлх╝ХчФиуБЧуБЯуБДцЦЗуВТщБ╕цКЮуБЧуБЯчК╢цЕЛуБзуБВуВМуБ░уБЭуБох╝ХчФицЦЗуВВшЗкхЛХчЪДуБлх╝ХчФиуБЧуБ╛уБЩуАВ
+		Bookmarklet бжбжбшервф"бжехсубж"░╙бж▄ф!зшбжф║╢ф!бж│їчи┐убьбжзубэбж╢ф"╖угэеубж#абжзуб∙бжбжбж╞ф!бжBookmarklet бж─ф"дуеъет╣уешбж╝уецес╥ф"╢ф!бжАвф#╠ф#бжгуст╢убчсубж#╝уецеу└ф#╝убч%add to weblog'бж╪ф"┐уеъес╕х(бж╟фхябжеяесбжбхст┤ф бпucleusбжбж╦шыу║ф"вугтсубж#абжбж┐╜бжабжбжгтеу│уещбжбжбьбж┌ф#бж#╬ф"вуеубж╬ф!╬ф!╛уб∙бждфО╣╗цзябжн╢ebбж╘ф#╝угьст─ч6╢ф!бж!▐ц*╢цбжбжзубєбжбжбжбж┐уеъет─хбжсс╓ф!░уАвф!┌ф!н╢ebбж╘ф#╝угьссбжгЁетдуешбжбжбфсрвф!┌ф!бжбжбж╝угьсс╕убчсубжеъетбжгЁет░убьбж╥ф!зубцбж╢ф"вцО╝╝убяст╕ф!▐ц*╢цбжбжзугсстдуецбжаш┐╜х┤вбжбжгтеу│уещбжбжбьбж╢ф!║ф вф!╩ф"▓ф!бжАвф!┌ф!бжбжбж╝угьхцбж!бж╗єбжбжбўбж▐ф!бж╟чбж─ч!╕ц│■бж╬ф!▐ц*╢цбжбжзубтбж╕ф!░уб¤бжбж╗єбжбж╦чбждцбжхы╩ц:бж!бж╗єбжбжбўбж╛уб∙бж
 		</p>
 
 		<h3>Bookmarklet</h3>
 		<p>
-			ф╕ЛуБоуГкуГ│уВпщГихИЖуВТуАМуБКц░ЧуБлхЕеуВКуАНуВВуБЧуБПуБпуГДуГ╝уГлуГРуГ╝уБлуГЙуГйуГГуВ░уБзуБНуБ╛уБЩуАВ<small>(уБЭуБохЙНуБлуГЖуВ╣уГИуБЧуБжуБ┐уБЯуБДха┤хРИуБпхНШч┤ФуБлф╕ЛуБоуГкуГ│уВпуВТуВпуГкуГГуВпуБЧуБжуБ┐уБжуБПуБауБХуБД)</small>
+			ф╕╢ф!бжехсу│угш▒убжбжбж─ф ╕ф!┤хОо╬ф!бжбжет┤ф ║ф"дф!╬ф!╛ф!бжефбж╝уецеу└ф#╝убцеу▓ф#бжеубж░убфес║ф!╛уб∙бжбжsmall>(бж┌ф!бж▒эбжбжецбж╣уешбж╬ф!бжбЁес▐ф!бж@┤х┐шбжбж╣°ч┤╚ф!бж╖щбжбжехсу│угшет─ф"бжехсубж"бжбўбжбжбЁесбжбябжабж╩ф!бж</small>
 			<br />
 			<br />
-			<a href="<?php echo htmlspecialchars($bm)?>">Add to <?php echo $blog->getShortName()?></a> (уБ╗уБиуВУуБйуБоуГЦуГйуВжуВ╢уБзхЛХф╜ЬуБЧуБ╛уБЩ)
+			<a href="<?php echo htmlspecialchars($bm)?>">Add to <?php echo $blog->getShortName()?></a> (бж╗убфст╞ф!бжбчсу╠ф#бжгуст╢убфбж╩фО╗╪ф!╬ф!╛уб∙)
 		</p>
 
-		<h3>хП│уВпуГкуГГуВпуГбуГЛуГеуГ╝уБлуВдуГ│уВ╣уГИуГ╝уГл (WindowsуБзIEф╜┐чФицЩВ)</h3>
+		<h3>бж│угшеубжеубжбжесеу╢ф#еуеюссбжгтсу│угэеу░ф#╝уецО└(WindowsбжбжEф╜┐ч╟фч∙бж</h3>
 		<p>
 			<?php
 				$url = 'index.php?action=regfile&blogid=' . intval($blogid);
 				$url = $manager->addTicketToUrl($url);
 			?>
-			уБВуВЛуБДуБп<a href="<?php echo htmlspecialchars($url) ?>">хП│уВпуГкуГГуВпуГбуГЛуГеуГ╝</a>уБлуВдуГ│уВ╣уГИуГ╝уГлуБЩуВЛуБУуБиуВВуБзуБНуБ╛уБЩ (уАМщЦЛуБПуАНуВТщБ╕цКЮуБЩуВМуБ░чЫ┤цОеуГмуВ╕уВ╣уГИуГкуБлчЩ╗щМ▓уБЧуБ╛уБЩ)
+			бждф"╢ф!бж!░▐a href="<?php echo htmlspecialchars($url) ?>">бж│угшеубжеубжбжесеу╢ф#еуею:/a>бжбжгтсу│угэеу░ф#╝уецес╥ф"╢ф!╞ф!бжгтбжзубэбж╛уб∙ (бж╕ч6╢ф!╛ф ║ф"─ч!╕ц│■бж╥ф"╕ф!░ч╒ъшзбжбжгьст╣уешбжбжбцн∙╗щ╖щсс╬ф!╛уб∙)
 		</p>
 
 		<p>
-			уБУуБоуВдуГ│уВ╣уГИуГ╝уГлуБЧуБЯхП│уВпуГкуГГуВпуГбуГЛуГеуГ╝уВТшбичд║уБЩуВЛуБЯуВБуБлуБпIEуБохЖНш╡╖хЛХуБМх┐ЕшжБуБзуБЩуАВ
+			бж╞ф!бжгтсу│угэеу░ф#╝уецес╬ф!▐х/│угшеубжеубжбжесеу╢ф#еуеюст─ц▌фщтО╕бж╥ф"╢ф!▐ф"вф!бжбшёжбжбжбжш╡╖х╡їбж╕х^бжОдвф!зуб∙бж
 		</p>
 
-		<h3>уВвуГ│уВдуГ│уВ╣уГИуГ╝уГл</h3>
+		<h3>бжвуеъетдуеъет╣уешбж╝уецО▄/h3>
 		<p>
-			уАМуБКц░ЧуБлхЕеуВКуАНуВВуБЧуБПуБпуГДуГ╝уГлуГРуГ╝уБЛуВЙц╢ИуБЩуБлуБпуАБхНШуБлхЙКщЩдуБЩуВЛуБауБСуБзуБЩуАВ
+			бж╕ф!┤хОо╬ф!бжбжет┤ф ║ф"дф!╬ф!╛ф!бжефбж╝уецеу└ф#╝убыбж▓хО┤░ф!╥ф!бжбшервх-╨ф!бж▒ъбждуб∙бж╢ф!абж┬ф!зуб∙бж
 		</p>
 		
 		<p>
-			хП│уВпуГкуГГуВпуГбуГЛуГеуГ╝уБЛуВЙц╢ИуБЧуБЯуБДцЩВуБпуАБф╗еф╕ЛуБоцЙЛщаЖуВТш╕ПуВУуБзуБПуБауБХуБД:
+			бж│угшеубжеубжбжесеу╢ф#еуеюсс╢ф"▓хО┤░ф!╬ф!▐ф!бж═тбжбжАвфО╣еф╖щбжбж▒ыщббж"─цО╢╛ф"╞ф!зубябжабж╩ф!бж
 		</p>
 
 		<ol>
-			<li>уВ╣уВ┐уГ╝уГИуГбуГЛуГеуГ╝уБЛуВЙуАМуГХуВбуВдуГлуВТцМЗхоЪуБЧуБжхоЯшбМ...уАНуВТщБ╕цКЮ</li>
-			<li>"regedit" уБихЕехКЫ</li>
-			<li>"OK" уГЬуВ┐уГ│уВТцК╝уБЩ</li>
-			<li>"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" уВТуГДуГкуГ╝уБоф╕нуБЛуВЙцдЬч┤в</li>
-			<li>"add to weblog" уВиуГ│уГИуГкуВТхЙКщЩд</li>				
+			<li>бж╣угЁеу╝уешбжбуеыбжеуеюсс╢ф"▓ф ╕ф#╩ф"бугтсубжгЄхъбжM╘ф!╬ф!бжбжшббж..бж║ф"─ч!╕ц│■</li>
+			<li>"regedit" бжбжбжбжбж/li>
+			<li>"OK" бж╪ф"┐уеъет─хбжссбж/li>
+			<li>"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" бж─ф#бж#бжеюссбж╕нбж╢ф"▓хОв╪цSбж/li>
+			<li>"add to weblog" бжбжеъеу░ф#бжгЄбж┤ч9бж/li>				
 		</ol>
 
 		<?php
