@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ACTION.php,v 1.8 2007-03-13 05:19:04 shizuki Exp $
- * $NucleusJP: ACTION.php,v 1.7 2007/02/04 06:28:45 kimitake Exp $
+ * @version $Id: ACTION.php,v 1.9 2007-05-10 08:11:32 kimitake Exp $
+ * $NucleusJP: ACTION.php,v 1.8 2007/03/13 05:19:04 shizuki Exp $
  */
 class ACTION
 {
@@ -352,8 +352,8 @@ class ACTION
 	}
 
 	/**
-	  * Checks if an IP or IP range is banned
-	  */
+	 *  Checks if an IP or IP range is banned
+	 */
 	function checkban($blogid) {
 		// check if banned
 		$ban = BAN::isBanned($blogid, serverVar('REMOTE_ADDR'));
