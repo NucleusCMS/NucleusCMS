@@ -18,8 +18,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ACTIONS.php,v 1.8 2007-04-19 06:05:55 kimitake Exp $
- * @version $NucleusJP: ACTIONS.php,v 1.7 2007/03/22 03:30:13 kmorimatsu Exp $
+ * @version $Id: ACTIONS.php,v 1.9 2007-05-10 08:12:51 kimitake Exp $
+ * @version $NucleusJP: ACTIONS.php,v 1.8 2007/04/19 06:05:55 kimitake Exp $
  */
 
 class ACTIONS extends BaseActions {
