@@ -45,4 +45,15 @@ function batchSelectAll(what) {
 	}
 	return false;					
 }
+function selectCanLogin(flag) {
+	if (flag) {
+		window.document.memberedit.canlogin[0].checked=true;
 
+		// don't disable canlogin[0], otherwise the value won't be passed.
+//		window.document.memberedit.canlogin[0].disabled=true;
+		window.document.memberedit.canlogin[1].disabled=true;
+	} else {
+		window.document.memberedit.canlogin[0].disabled=false;
+		window.document.memberedit.canlogin[1].disabled=false;
+	}
+}
