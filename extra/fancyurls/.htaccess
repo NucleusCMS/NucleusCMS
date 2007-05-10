@@ -16,3 +16,6 @@
 <FilesMatch "^blog$">
     ForceType application/x-httpd-php
 </FilesMatch>
+<FilesMatch "^special$">
+    ForceType application/x-httpd-php
+</FilesMatch>
