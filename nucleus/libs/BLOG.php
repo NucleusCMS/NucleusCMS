@@ -19,8 +19,8 @@
  * @version $Id$
  */
 
-// temporary: dirt way to separe class ITEMACTIONS from BLOG
-require_once $DIR_LIBS . 'ITEMACTIONS.php';
+if ( !function_exists('requestVar') ) exit;
+require_once dirname(__FILE__) . '/ITEMACTIONS.php';
 
 class BLOG {
 
@@ -169,6 +169,7 @@ class BLOG {
 		$items = sql_query($query);
 
 		// loop over all items
+		$old_date = 0;
 		while ($item = mysql_fetch_object($items)) {
 
 			$item->timestamp = strtotime($item->itime);	// string timestamp -> unix timestamp
@@ -177,7 +178,6 @@ class BLOG {
 			$actions->setCurrentItem($item);
 
 			// add date header if needed
-			$old_date = 0;
 			if ($dateheads) {
 				$new_date = date('dFY',$item->timestamp);
 				if ($new_date != $old_date) {
@@ -291,7 +291,18 @@ class BLOG {
 		$ascii = toAscii($body);
 
 		$mailto_msg = _NOTIFY_NI_MSG . " \n";
-		$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
+//		$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
+		$temp = parse_url($CONF['Self']);
+		if ($temp['scheme']) {
+			$mailto_msg .= createItemLink($itemid) . "\n\n";
+		} else {
+			$tempurl = $this->getURL();
+			if (substr($tempurl, -1) == '/' || substr($tempurl, -4) == '.php') {
+				$mailto_msg .= $tempurl . '?itemid=' . $itemid . "\n\n";
+			} else {
+				$mailto_msg .= $tempurl . '/?itemid=' . $itemid . "\n\n";
+			}
+		}
 		$mailto_msg .= _NOTIFY_TITLE . ' ' . strip_tags($title) . "\n";
 		$mailto_msg .= _NOTIFY_CONTENTS . "\n " . $ascii . "\n";
 		$mailto_msg .= getMailFooter();
@@ -617,7 +628,7 @@ class BLOG {
 		}
 
 		//$blogurl = $this->getURL() . $qargs;
-		$blogurl = createBlogLink($this->getURL(), $linkparams);
+		//$blogurl = createBlogLink($this->getURL(), $linkparams);
 
 		$template =& $manager->getTemplate($template);
 
@@ -669,6 +680,12 @@ class BLOG {
 		
 		$template =& $manager->getTemplate($template);
 		
+		echo TEMPLATE::fill((isset($template['BLOGLIST_HEADER']) ? $template['BLOGLIST_HEADER'] : null),
+							array(
+								'sitename' => $CONF['SiteName'],
+								'siteurl' => $CONF['IndexURL']
+							));
+		
 		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY bnumber ASC';
 		$res = sql_query($query);
 		
@@ -676,7 +693,8 @@ class BLOG {
 		
 			$list = array();
 		
-			$list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
+//			$list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
+			$list['bloglink'] = createBlogidLink($data['bnumber']);
 		
 			$list['blogdesc'] = $data['bdesc'];
 			
@@ -692,6 +710,13 @@ class BLOG {
 		}
 		
 		mysql_free_result($res);
+		
+		echo TEMPLATE::fill((isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
+							array(
+								'sitename' => $CONF['SiteName'],
+								'siteurl' => $CONF['IndexURL']
+							));
+
 	}
 
 	/**
@@ -756,24 +781,24 @@ class BLOG {
 
 	function isValidCategory($catid) {
 		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
-		$res = sql_query($query);
+		$res = mysql_query($query);
 		return (mysql_num_rows($res) != 0);
 	}
 
 	function getCategoryName($catid) {
-		$res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+		$res = mysql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
 		$o = mysql_fetch_object($res);
 		return $o->cname;
 	}
 
 	function getCategoryDesc($catid) {
-		$res = sql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+		$res = mysql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
 		$o = mysql_fetch_object($res);
 		return $o->cdesc;
 	}
 
 	function getCategoryIdFromName($name) {
-		$res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . addslashes($name) . '"');
+		$res = mysql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . addslashes($name) . '"');
 		if (mysql_num_rows($res) > 0) {
 			$o = mysql_fetch_object($res);
 			return $o->catid;
