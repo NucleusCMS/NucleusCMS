@@ -156,7 +156,7 @@ function _backup_dump_structure($tablename) {
 
 		echo '	' . $row['Field'] . ' ' . $row['Type'];
 
-		if(!empty($row['Default']))
+		if(isset($row['Default']))
 			echo ' DEFAULT \'' . $row['Default'] . '\'';
 
 		if($row['Null'] != "YES")
@@ -187,7 +187,7 @@ function _backup_dump_structure($tablename) {
 		if(!is_array($index[$kname]))
 			$index[$kname] = array();
 
-		$index[$kname][] = $row['Column_name'];
+		$index[$kname][] = $row['Column_name'] . ( ($row['Sub_part']) ? ' (' . $row['Sub_part'] . ')' : '');
 	}
 
 	while(list($x, $columns) = @each($index)) {
