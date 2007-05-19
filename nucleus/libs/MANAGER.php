@@ -274,6 +274,24 @@ class MANAGER {
 	}
 
 	/**
+	  * checks if the given plugin IS loaded or not
+	  */
+	function &pluginLoaded($name) {
+		$plugin =& $this->plugins[$name];
+		return $plugin;
+	}
+	function &pidLoaded($pid) {
+		$plugin=false;
+		reset($this->plugins);
+		while (list($name) = each($this->plugins)) {
+			if ($pid!=$this->plugins[$name]->getId()) continue;
+			$plugin= & $this->plugins[$name];
+			break;
+		}
+		return $plugin;
+	}
+
+	/**
 	  * checks if the given plugin IS installed or not
 	  */
 	function pluginInstalled($name) {
