@@ -258,7 +258,7 @@ class PAGEFACTORY extends BaseActions {
 	}
 
 	function parse_contents($which) {
-		echo htmlspecialchars($this->variables[$which]);
+		echo htmlspecialchars($this->variables[$which],ENT_QUOTES);
 	}
 
 	function parse_checkedonval($value, $name) {
