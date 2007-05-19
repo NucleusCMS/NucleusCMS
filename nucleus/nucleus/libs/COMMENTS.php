@@ -18,8 +18,8 @@
  * @version $Id$
  */
 
-// temporary: dirt way to separe class COMMENTACTIONS from COMMENTS
-require_once $DIR_LIBS . 'COMMENTACTIONS.php';
+if ( !function_exists('requestVar') ) exit;
+require_once dirname(__FILE__) . '/COMMENTACTIONS.php';
 
 class COMMENTS {
 
