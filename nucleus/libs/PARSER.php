@@ -15,8 +15,9 @@
  * @version $Id$
  */
 
-// temporary: dirt way to separe class BaseActions from PARSER
-require_once $DIR_LIBS . 'BaseActions.php';
+if ( !function_exists('requestVar') ) exit;
+require_once dirname(__FILE__) . '/BaseActions.php';
+
 /**
  * This is the parser class of Nucleus. It is used for various things (skin parsing,
  * form generation, ...)
