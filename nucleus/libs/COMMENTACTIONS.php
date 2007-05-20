@@ -109,12 +109,20 @@ class COMMENTACTIONS extends BaseActions {
 		} else {
 
 			// create smart links
-			if (isValidMailAddress($comment['userid']))
+/*			if (isValidMailAddress($comment['userid']))
 				$comment['userlinkraw'] = 'mailto:'.$comment['userid'];
 			elseif (strstr($comment['userid'],'http://') != false)
 				$comment['userlinkraw'] = $comment['userid'];
 			elseif (strstr($comment['userid'],'www') != false)
+				$comment['userlinkraw'] = 'http://'.$comment['userid'];*/
+			if (strstr($comment['userid'],'http://') != false)
+				$comment['userlinkraw'] = $comment['userid'];
+			elseif (strstr($comment['userid'],'www') != false)
 				$comment['userlinkraw'] = 'http://'.$comment['userid'];
+			elseif (isValidMailAddress($comment['email']))
+				$comment['userlinkraw'] = 'mailto:'.$comment['email'];
+			elseif (isValidMailAddress($comment['userid']))
+				$comment['userlinkraw'] = 'mailto:'.$comment['userid'];
 		}
 
 		$this->currentComment =& $comment;
@@ -200,8 +208,15 @@ class COMMENTACTIONS extends BaseActions {
 		echo $this->currentComment['blogid'];
 	}
 
-	function parse_user() {
+//	function parse_user() {
+	function parse_user($mode='') {
+		global $manager;
+		if ($mode == 'realname' && $this->currentComment['memberid'] > 0) {
+			$member =& $manager->getMember($this->currentComment['memberid']);
+			echo $member->getRealName();
+		} else {
 			echo $this->currentComment['user'];
+	}
 	}
 	
 	function parse_userid() {
@@ -238,8 +253,12 @@ class COMMENTACTIONS extends BaseActions {
 		}
 		else
 		{
-			if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
-				echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
+			if (isValidMailAddress($this->currentComment['email']))
+				echo $this->currentComment['email'];
+			elseif (isValidMailAddress($this->currentComment['userid']))
+				echo $this->currentComment['userid'];
+//			if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
+//				echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
 		}
 	}
 
