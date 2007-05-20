@@ -77,7 +77,7 @@ function undoMagic($data) {
 }
 
 function stripslashes_array($data) {
-	return is_array($data) ? array_map('stripslashes', $data) : stripslashes($data);
+	return is_array($data) ? array_map('stripslashes_array', $data) : stripslashes($data);
 }
 
 function undoSybaseQuotes_array($data) {
