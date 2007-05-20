@@ -220,7 +220,18 @@ class COMMENTS {
 		if ($settings->getNotifyAddress() && $settings->notifyOnComment()) {
 
 			$mailto_msg = _NOTIFY_NC_MSG . ' ' . $this->itemid . "\n";
-			$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $this->itemid . "\n\n";
+//			$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $this->itemid . "\n\n";
+			$temp = parse_url($CONF['Self']);
+			if ($temp['scheme']) {
+				$mailto_msg .= createItemLink($this->itemid) . "\n\n";
+			} else {
+				$tempurl = $settings->getURL();
+				if (substr($tempurl, -1) == '/' || substr($tempurl, -4) == '.php') {
+					$mailto_msg .= $tempurl . '?itemid=' . $this->itemid . "\n\n";
+				} else {
+					$mailto_msg .= $tempurl . '/?itemid=' . $this->itemid . "\n\n";
+				}
+			}
 			if ($comment['memberid'] == 0) {
 				$mailto_msg .= _NOTIFY_USER . ' ' . $comment['user'] . "\n";
 				$mailto_msg .= _NOTIFY_USERID . ' ' . $comment['userid'] . "\n";
