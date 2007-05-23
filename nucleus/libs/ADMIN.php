@@ -885,7 +885,6 @@ class ADMIN {
 		// only allow if user is allowed to alter item
 		$member->canAlterItem($itemid) or $this->disallow();
 
-		// ED$ what is this??? getBlogIDFromItemId()??
 		$blogid = getBlogIdFromItemId($itemid);
 
 		$this->pagehead();
@@ -1250,7 +1249,7 @@ class ADMIN {
 		// only allow if user is allowed to alter item
 		$member->canAlterItem($itemid) or $this->disallow();
 
-		// get blogid first ED$ What is this? getBlogIDFromItemId()???
+		// get blogid first
 		$blogid = getBlogIdFromItemId($itemid);
 
 		// delete item (note: some checks will be performed twice)
