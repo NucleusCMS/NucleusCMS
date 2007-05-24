@@ -275,7 +275,9 @@ class SKINIMPORT {
 	 * Called by XML parser for each new start element encountered
 	 */
 	function startElement($parser, $name, $attrs) {
-		if ($this->debug) echo 'START: ', $name, '<br />';
+		foreach($attrs as $key=>$value) $attrs[$key]=htmlspecialchars($value,ENT_QUOTES);
+
+		if ($this->debug) echo 'START: ', htmlspecialchars($name), '<br />';
 
 		switch ($name) {
 			case 'nucleusskin':
@@ -317,7 +319,7 @@ class SKINIMPORT {
 				$this->currentPartName = $attrs['name'];
 				break;
 			default:
-				echo 'UNEXPECTED TAG: ' , $name , '<br />';
+				echo 'UNEXPECTED TAG: ' , htmlspecialchars($name) , '<br />';
 				break;
 		}
 
@@ -330,7 +332,7 @@ class SKINIMPORT {
 	  * Called by the XML parser for each closing tag encountered
 	  */
 	function endElement($parser, $name) {
-		if ($this->debug) echo 'END: ', $name, '<br />';
+		if ($this->debug) echo 'END: ', htmlspecialchars($name), '<br />';
 
 		switch ($name) {
 			case 'nucleusskin':
@@ -364,7 +366,7 @@ class SKINIMPORT {
 				}
 				break;
 			default:
-				echo 'UNEXPECTED TAG: ' , $name, '<br />';
+				echo 'UNEXPECTED TAG: ' , htmlspecialchars($name), '<br />';
 				break;
 		}
 		$this->clearCharacterData();
