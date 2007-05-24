@@ -302,6 +302,10 @@ if ($CONF['URLMode'] == 'pathinfo') {
 		$CONF['CategoryKey'] = 'category';
 	}
 
+	if ($CONF['SpecialskinKey'] == '') {
+		$CONF['SpecialskinKey'] = 'special';
+	}
+
 	$parsed = false;
 	$manager->notify(
 		'ParseURL',
@@ -370,6 +374,14 @@ if ($CONF['URLMode'] == 'pathinfo') {
 						$memberid = intval($data[$i]);
 					}
 					break;
+
+                case $CONF['SpecialskinKey']:
+                    $i++;
+
+					if ($i < sizeof($data) ) {
+                    	$_REQUEST['special'] = $data[$i];
+                    }
+                    break;
 
 				default:
 					// skip...
