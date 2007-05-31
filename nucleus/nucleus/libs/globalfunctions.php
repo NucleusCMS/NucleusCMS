@@ -1335,7 +1335,18 @@ function createLink($type, $params) {
 }
 
 function createBlogLink($url, $params) {
-	return addLinkParams($url . '?', $params);
+    global $CONF;
+    if ($CONF['URLMode'] == 'normal') {
+        if (strpos($url, '?') === FALSE && is_array($params)) {
+            $fParam = reset($params);
+            $fKey   = key($params);
+            array_shift($params);
+            $url .= '?' . $fKey . '=' . $fParam;
+        }
+    } elseif ($CONF['URLMode'] == 'pathinfo' && substr($url, -1) == '/') {
+        $url = substr($url, 0, -1);
+    }
+	return addLinkParams($url, $params);
 }
 
 function addLinkParams($link, $params) {
