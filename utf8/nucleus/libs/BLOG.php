@@ -16,8 +16,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BLOG.php,v 1.13 2007-05-01 08:39:18 kimitake Exp $
- * $NucleusJP: BLOG.php,v 1.12 2007/04/13 16:51:49 shizuki Exp $
+ * @version $Id: BLOG.php,v 1.14 2007-05-31 07:28:30 kimitake Exp $
+ * $NucleusJP: BLOG.php,v 1.13 2007/05/01 08:39:18 kimitake Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -235,7 +235,7 @@ class BLOG {
 	/**
 	  * Adds an item to this blog
 	  */
-	function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft) {
+	function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted='1') {
 		global $manager;
 
 		$blogid 	= intval($blogid);
@@ -251,7 +251,7 @@ class BLOG {
 			$more = addBreaks($more);
 		}
 
-		if ($closed != '1')	$closed = '0';
+		if ($closed != '1') $closed = '0';
 		if ($draft != '0') $draft = '1';
 
 		if (!$this->isValidCategory($catid))
@@ -268,8 +268,8 @@ class BLOG {
 		$body = addslashes($body);
 		$more = addslashes($more);
 
-		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT) '
-			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $draft, $catid)";
+		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
+			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
 		sql_query($query);
 		$itemid = mysql_insert_id();
 
@@ -752,7 +752,7 @@ class BLOG {
 			   . "     btimeoffset=" . $offset . ","
 			   . "     bpublic=" . intval($this->isPublic()) . ","
 			   . "     breqemail=" . intval($this->emailRequired()) . ","
-			   . "     bsendping=" . intval($this->pingUserland()) . ","
+			   . "     bsendping=" . intval($this->sendPing()) . ","
 			   . "     bconvertbreaks=" . intval($this->convertBreaks()) . ","
 			   . "     ballowpast=" . intval($this->allowPastPosting()) . ","
 			   . "     bnotify='" . addslashes($this->getNotifyAddress()) . "',"
@@ -778,52 +778,6 @@ class BLOG {
 			fclose($f_update);
 		 }
 
-	}
-
-	/**
-	  * Sends a XML-RPC ping message to Userland, so the weblog can
-	  * show up in the weblogs.com updates-list
-	  */
-	function sendUserlandPing() {
-		global $php_errormsg;
-
-		 if ($this->pingUserland()) {
-			  // testmessage for adding an item
-			  $message = new xmlrpcmsg('weblogUpdates.ping',array(
-					new xmlrpcval($this->getName(),'string'),
-					new xmlrpcval($this->getURL(),'string')
-			  ));
-
-			  $c = new xmlrpc_client('/RPC2', 'rpc.weblogs.com', 80);
-
-			  // $c->setDebug(1);
-
-			  $r = $c->send($message,15); // 15 seconds timeout...
-
-			  if (($r == 0) && ($r->errno || $r->errstring)) {
-				return 'Error ' . $r->errno . ' : ' . $r->errstring;
-			  } elseif (($r == 0) && ($php_errormsg)) {
-				return 'PHP Error: ' . $php_errormsg;
-			  } elseif ($r == 0) {
-				return 'Error while trying to send ping. Sorry about that.';
-			  } elseif ($r->faultCode() != 0) {
-				return 'Error: ' . $r->faultString();
-			  } else {
-				  $r = $r->value();	// get response struct
-				  // get values
-				  $flerror = $r->structmem('flerror');
-				  $flerror = $flerror->scalarval();
-
-
-				  $message = $r->structmem('message');
-				  $message = $message->scalarval();
-
-				  if ($flerror != 0)
-					return 'Error (flerror=1): ' . $message;
-				  else
-					return 'Success: ' . $message;
-			  }
-		 }
 	}
 
 	function isValidCategory($catid) {
@@ -854,7 +808,7 @@ class BLOG {
 		}
 	}
 
-	function pingUserland() {
+	function sendPing() {
 		return $this->getSetting('bsendping');
 	}
 
@@ -1109,6 +1063,51 @@ class BLOG {
 		return (mysql_num_rows($r) != 0);
 	}
 
+        // flag there is a future post pending
+        function setFuturePost() {
+		$query =  'UPDATE '.sql_table('blog')
+			   . " SET bfuturepost='1' WHERE bnumber=" . $this->getID();
+		sql_query($query);
+        }
+
+	// clear there is a future post pending
+	function clearFuturePost() {
+		$query =  'UPDATE '.sql_table('blog')
+			   . " SET bfuturepost='0' WHERE bnumber=" . $this->getID();
+		sql_query($query);
+	}
+
+	// check if we should throw justPosted event
+	function checkJustPosted() {
+		global $manager;
+
+		if ($this->settings['bfuturepost'] == 1) {
+			$blogid = $this->getID();
+			$result = sql_query("SELECT * FROM " . sql_table('item')
+			          . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()");
+			if (mysql_num_rows($result) > 0) {
+				// This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
+				// Note that the plugins's calling order is subject to thri order in the plugin list
+				$pinged = false;
+				$manager->notify(
+						'JustPosted',
+						array('blogid' => $blogid,
+						'pinged' => &$pinged
+						)
+				);
+
+				// clear all expired future posts
+				sql_query("UPDATE " . sql_table('item') . " SET iposted='1' WHERE iblog=" . $blogid . " AND itime<NOW()");
+
+				// check to see any pending future post, clear the flag is none 
+				$result = sql_query("SELECT * FROM " . sql_table('item') 
+				          . " WHERE iposted=0 AND iblog=" . $blogid);
+				if (mysql_num_rows($result) == 0) {
+					$this->clearFuturePost();
+				}
+			}
+		}
+	}
 
 }
 
