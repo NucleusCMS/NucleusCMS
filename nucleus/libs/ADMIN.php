@@ -3768,7 +3768,7 @@ selector();
 		<a href="index.php?action=templateoverview">(<?php echo _TEMPLATE_BACK?>)</a>
 		</p>
 
-		<h2><?php echo _TEMPLATE_EDIT_TITLE?> '<?php echo  $templatename; ?>'</h2>
+		<h2><?php echo _TEMPLATE_EDIT_TITLE?> '<?php echo  htmlspecialchars($templatename); ?>'</h2>
 
 		<?php					if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
 		?>
