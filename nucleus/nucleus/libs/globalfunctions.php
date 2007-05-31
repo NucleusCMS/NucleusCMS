@@ -263,6 +263,7 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 
 	// renew cookies when not on a shared computer
 	if ($res && (cookieVar($CONF['CookiePrefix'] . 'sharedpc') != 1) && (!headers_sent() ) ) {
+		$member->setCookieKey(cookieVar($CONF['CookiePrefix'] . 'loginkey'));
 		$member->setCookies();
 	}
 }
