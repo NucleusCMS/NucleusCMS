@@ -85,6 +85,13 @@ if ($CONF['installscript'] != 1) { // vars were already included in install.php
 	}
 }
 
+// sanitize option
+$bLoggingSanitizedResult=0;
+$bSanitizeAndContinue=0;
+
+$orgRequestURI = serverVar('REQUEST_URI');
+sanitizeParams();
+
 // get all variables that can come from the request and put them in the global scope
 $blogid	= requestVar('blogid');
 $itemid	= intRequestVar('itemid');
@@ -135,6 +142,18 @@ if ($CONF['UsingAdminArea']) {
 // connect to database
 sql_connect();
 $SQLCount = 0;
+
+// logs sanitized result if need
+if ($orgRequestURI!==serverVar('REQUEST_URI')) {
+	$msg = "Sanitized [" . serverVar('REMOTE_ADDR') . "] ";
+	$msg .= $orgRequestURI . " -> " . serverVar('REQUEST_URI');
+    if ($bLoggingSanitizedResult) {
+        addToLog(WARNING, $msg);
+    }
+    if (!$bSanitizeAndContinue) {
+        die("");
+    }
+}
 
 // makes sure database connection gets closed on script termination
 register_shutdown_function('sql_disconnect');
@@ -218,6 +237,7 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 
 // login completed
 $manager->notify('PostAuthentication', array('loggedIn' => $member->isLoggedIn() ) );
+ticketForPlugin();
 
 // first, let's see if the site is disabled or not. always allow admin area access.
 if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
@@ -1430,6 +1450,311 @@ function checkVars($aVars) {
 			}
 
 		}
+	}
+}
+
+
+/** 
+ * Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc.
+ * to avoid XSS 
+ */
+function sanitizeParams()
+{
+	global $HTTP_SERVER_VARS;
+	
+	$array = array();
+	$str = '';
+	$frontParam = '';
+	
+	// REQUEST_URI of $HTTP_SERVER_VARS
+	$str =& $HTTP_SERVER_VARS["REQUEST_URI"];
+	serverStringToArray($str, $array, $frontParam);
+	sanitizeArray($array);
+	arrayToServerString($array, $frontParam, $str);
+	
+	// QUERY_STRING of $HTTP_SERVER_VARS
+	$str =& $HTTP_SERVER_VARS["QUERY_STRING"];
+	serverStringToArray($str, $array, $frontParam);
+	sanitizeArray($array);
+	arrayToServerString($array, $frontParam, $str);
+	
+	if (phpversion() >= '4.1.0') {
+		// REQUEST_URI of $_SERVER
+		$str =& $_SERVER["REQUEST_URI"];
+		serverStringToArray($str, $array, $frontParam);
+		sanitizeArray($array);
+		arrayToServerString($array, $frontParam, $str);
+	
+		// QUERY_STRING of $_SERVER
+		$str =& $_SERVER["QUERY_STRING"];
+		serverStringToArray($str, $array, $frontParam);
+		sanitizeArray($array);
+		arrayToServerString($array, $frontParam, $str);
+	}
+	
+	// $_GET
+	convArrayForSanitizing($_GET, $array);
+	sanitizeArray($array);
+	revertArrayForSanitizing($array, $_GET);
+	
+	// $_REQUEST (only GET param)
+	convArrayForSanitizing($_REQUEST, $array);
+	sanitizeArray($array);
+	revertArrayForSanitizing($array, $_REQUEST);
+}
+
+/** 
+ * Check ticket when not checked in plugin's admin page
+ * to avoid CSRF.
+ * Also avoid the access to plugin/index.php by guest user.
+ */
+function ticketForPlugin(){
+	global $CONF,$DIR_PLUGINS,$member,$ticketforplugin;
+	
+	/* initialize */
+	$ticketforplugin=array();
+	$ticketforplugin['ticket']=false;
+	
+	/* Check if using plugin's php file. */
+	if ($p_translated=serverVar('PATH_TRANSLATED')) {
+		if (!file_exists($p_translated)) $p_translated='';
+	}
+	if (!$p_translated) {
+		$p_translated=serverVar('SCRIPT_FILENAME');
+		if (!file_exists($p_translated)) {
+			header("HTTP/1.0 404 Not Found");
+			exit('');
+		}
+	}
+	$p_translated=str_replace('\\','/',$p_translated);
+	$d_plugins=str_replace('\\','/',$DIR_PLUGINS);
+	if (strpos($p_translated,$d_plugins)!==0) return;// This isn't plugin php file.
+	
+	/* Solve the plugin php file or admin directory */
+	$phppath=substr($p_translated,strlen($d_plugins));
+	$phppath=preg_replace('!^/!','',$phppath);// Remove the first "/" if exists.
+	$path=preg_replace('/^NP_(.*)\.php$/','$1',$phppath); // Remove the first "NP_" and the last ".php" if exists.
+	$path=preg_replace('!^([^/]*)/(.*)$!','$1',$path); // Remove the "/" and beyond.
+	
+	/* Solve the plugin name. */
+	$plugins=array();
+	$query='SELECT pfile FROM '.sql_table('plugin');
+	$res=sql_query($query);
+	while($row=mysql_fetch_row($res)) {
+		$name=substr($row[0],3);
+		$plugins[strtolower($name)]=$name;
+	}
+	mysql_free_result($res);
+	if ($plugins[$path]) $plugin_name=$plugins[$path];
+	else if (in_array($path,$plugins)) $plugin_name=$path;
+	else {
+		header("HTTP/1.0 404 Not Found");
+		exit('');
+	}
+	
+	/* Return if not index.php */
+	if ( $phppath!=strtolower($plugin_name).'/'
+		&& $phppath!=strtolower($plugin_name).'/index.php' ) return;
+	
+	/* Exit if not logged in. */
+	if ( !$member->isLoggedIn() ) exit("You aren't logged in.");
+	
+	global $manager,$DIR_LIBS,$DIR_LANG,$HTTP_GET_VARS,$HTTP_POST_VARS;
+	
+	/* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
+	if (!($p_translated=serverVar('PATH_TRANSLATED'))) $p_translated=serverVar('SCRIPT_FILENAME');
+	if ($file=@file($p_translated)) {
+		$prevline='';
+		foreach($file as $line) {
+			if (preg_match('/[\$]manager([\s]*)[\-]>([\s]*)checkTicket([\s]*)[\(]/i',$prevline.$line)) return;
+			$prevline=$line;
+		}
+	}
+	
+	/* Show a form if not valid ticket */
+	if ( ( strstr(serverVar('REQUEST_URI'),'?') || serverVar('QUERY_STRING')
+			|| strtoupper(serverVar('REQUEST_METHOD'))=='POST' )
+				&& (!$manager->checkTicket()) ){
+
+		if (!class_exists('PluginAdmin')) {
+			$language = getLanguageName();
+			include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
+			include($DIR_LIBS . 'PLUGINADMIN.php');
+		}
+		if (!(function_exists('mb_strimwidth') || extension_loaded('mbstring'))) {
+			if (file_exists($DIR_LIBS.'mb_emulator/mb-emulator.php')) {
+				global $mbemu_internals;
+				include_once($DIR_LIBS.'mb_emulator/mb-emulator.php');
+			}
+		}
+		$oPluginAdmin = new PluginAdmin($plugin_name);
+		$oPluginAdmin->start();
+		echo '<p>' . _ERROR_BADTICKET . "</p>\n";
+		
+		/* Show the form to confirm action */
+		// PHP 4.0.x support
+		$get=  (isset($_GET))  ? $_GET  : $HTTP_GET_VARS;
+		$post= (isset($_POST)) ? $_POST : $HTTP_POST_VARS;
+		// Resolve URI and QUERY_STRING
+		if ($uri=serverVar('REQUEST_URI')) {
+			list($uri,$qstring)=explode('?',$uri);
+		} else {
+			if ( !($uri=serverVar('PHP_SELF')) ) $uri=serverVar('SCRIPT_NAME');
+			$qstring=serverVar('QUERY_STRING');
+		}
+		if ($qstring) $qstring='?'.$qstring;
+		echo '<p>'._SETTINGS_UPDATE.' : '._QMENU_PLUGINS.' <span style="color:red;">'.
+			htmlspecialchars($plugin_name)."</span> ?</p>\n";
+		switch(strtoupper(serverVar('REQUEST_METHOD'))){
+		case 'POST':
+			echo '<form method="POST" action="'.htmlspecialchars($uri.$qstring).'">';
+			$manager->addTicketHidden();
+			_addInputTags($post);
+			break;
+		case 'GET':
+			echo '<form method="GET" action="'.htmlspecialchars($uri).'">';
+			$manager->addTicketHidden();
+			_addInputTags($get);
+		default:
+			break;
+		}
+		echo '<input type="submit" value="'._YES.'" />&nbsp;&nbsp;&nbsp;&nbsp;';
+		echo '<input type="button" value="'._NO.'" onclick="history.back(); return false;" />';
+		echo "</form>\n";
+		
+		$oPluginAdmin->end();
+		exit;
+	}
+	
+	/* Create new ticket */
+	$ticket=$manager->addTicketToUrl('');
+	$ticketforplugin['ticket']=substr($ticket,strpos($ticket,'ticket=')+7);
+}
+function _addInputTags(&$keys,$prefix=''){
+	foreach($keys as $key=>$value){
+		if ($prefix) $key=$prefix.'['.$key.']';
+		if (is_array($value)) _addInputTags($value,$key);
+		else {
+			if (get_magic_quotes_gpc()) $value=stripslashes($value);
+			if ($key=='ticket') continue;
+			echo '<input type="hidden" name="'.htmlspecialchars($key).
+				'" value="'.htmlspecialchars($value).'" />'."\n";
+		}
+	}
+}
+
+/** 
+ * Convert the server string such as $_SERVER['REQUEST_URI']
+ * to arry like arry['blogid']=1 and array['page']=2 etc.
+ */
+function serverStringToArray($str, &$array, &$frontParam)
+{
+	// init param
+	$array = array();
+	$fronParam = "";
+
+	// split front param, e.g. /index.php, and others, e.g. blogid=1&page=2
+	if (strstr($str, "?")){
+		list($frontParam, $args) = preg_split("/\?/", $str, 2);
+	}
+	else {
+		$args = $str;
+		$frontParam = "";
+	}
+	
+	// If there is no args like blogid=1&page=2, return
+	if (!strstr($str, "=") && !strlen($frontParam)) {
+		$frontParam = $str;
+		return;
+	}
+
+	$array = explode("&", $args);
+}
+
+/** 
+ * Convert array like array['blogid'] to server string
+ * such as $_SERVER['REQUEST_URI']
+ */
+function arrayToServerString($array, $frontParam, &$str)
+{
+	if (strstr($str, "?")) {
+		$str = $frontParam . "?";
+	} else {
+		$str = $frontParam;
+	}
+	if (count($array)) {
+		$str .= implode("&", $array);
+	}
+}
+
+/** 
+ * Sanitize array parameters.
+ * This function checks both key and value.
+ * - check key if it inclues " (double quote),  remove from array
+ * - check value if it includes \ (escape sequece), remove remaining string
+ */
+function sanitizeArray(&$array)
+{	
+	$excludeListForSanitization = array('query');
+//	$excludeListForSanitization = array();
+
+	foreach ($array as $k => $v) {
+
+		// split to key and value
+		list($key, $val) = preg_split("/=/", $v, 2);
+		if (!isset($val)) {
+			continue;
+		}
+
+		// when magic quotes is on, need to use stripslashes,
+		// and then addslashes
+		if (get_magic_quotes_gpc()) {
+			$val = stripslashes($val);
+		}
+		$val = addslashes($val);
+		
+		// if $key is included in exclude list, skip this param
+		if (!in_array($key, $excludeListForSanitization)) {
+				
+			// check value
+			list($val, $tmp) = explode('\\', $val);
+			
+			// remove control code etc.
+			$val = strtr($val, "\0\r\n<>'\"", "       ");
+				
+			// check key
+			if (preg_match('/\"/i', $key)) {
+				unset($array[$k]);
+				continue;
+			}
+				
+			// set sanitized info
+			$array[$k] = sprintf("%s=%s", $key, $val);
+		}
+	}
+}
+
+/**
+ * Convert array for sanitizeArray function
+ */
+function convArrayForSanitizing($src, &$array)
+{
+	$array = array();
+	foreach ($src as $key => $val) {
+		if (key_exists($key, $_GET)) {
+			array_push($array, sprintf("%s=%s", $key, $val));
+		}
+	}
+}
+
+/**
+ * Revert array after sanitizeArray function
+ */
+function revertArrayForSanitizing($array, &$dst)
+{
+	foreach ($array as $v) {
+		list($key, $val) = preg_split("/=/", $v, 2);
+		$dst[$key] = $val;
 	}
 }
 
