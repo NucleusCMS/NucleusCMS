@@ -252,7 +252,7 @@
 			} else {
 				$orderby = 'ovalue';
 			}
-			$q = 'SELECT ovalue value, ocontextid id FROM '.sql_table('plugin_option').' WHERE oid = '.$oid.' ORDER BY '.$orderby.' '.$sort.' LIMIT 0,'.$amount;
+			$q = 'SELECT ovalue value, ocontextid id FROM '.sql_table('plugin_option').' WHERE oid = '.$oid.' ORDER BY '.$orderby.' '.$sort.' LIMIT 0,'.intval($amount);
 			$query = sql_query($q);
 
 			// create the array
@@ -309,6 +309,10 @@
 			$this->_aOptionValues = array();	// oid_contextid => value
 			$this->_aOptionToInfo = array();	// context_name => array('oid' => ..., 'default' => ...)
 			$this->plugin_options = 0;
+		}
+
+		function clearOptionValueCache(){
+			$this->_aOptionValues = array();
 		}
 
 		// private
@@ -439,6 +443,9 @@
 					break;
 				case 'member':
 					$r = sql_query('SELECT mnumber as contextid FROM ' . sql_table('member'));
+					break;
+				case 'item':
+					$r = sql_query('SELECT inumber as contextid FROM ' . sql_table('item'));
 					break;
 			}
 			if ($r) {
@@ -579,7 +586,10 @@
 				$res = sql_query($query);
 				if ($o = mysql_fetch_object($res))
 				{
-					foreach ($values as $contextid => $value) {
+					foreach ($values as $key => $value) {
+						// avoid overriding the key used by foreach statement
+						$contextid=$key;
+
 						// retreive any metadata
 						$meta = NucleusPlugin::getOptionMeta($o->oextra);
 
@@ -618,6 +628,10 @@
 						}
 					}
 				}
+			// clear option value cache if the plugin object is already loaded
+			if (is_object($o)) {
+				$plugin=& $manager->pidLoaded($o->opid);
+				if ($plugin) $plugin->clearOptionValueCache();
 			}
 		}
 
