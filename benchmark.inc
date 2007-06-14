@@ -12,6 +12,6 @@ if (!function_exists('getmtime'))
 // For benchmarking
 global $StartTime, $SQLQCount;
 $StartTime = getmtime();
-$SQLQCount = 0;
+$SQLCount = 0;
 
 ?>
