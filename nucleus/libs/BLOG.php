@@ -781,24 +781,24 @@ class BLOG {
 
 	function isValidCategory($catid) {
 		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
-		$res = mysql_query($query);
+		$res = sql_query($query);
 		return (mysql_num_rows($res) != 0);
 	}
 
 	function getCategoryName($catid) {
-		$res = mysql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+		$res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
 		$o = mysql_fetch_object($res);
 		return $o->cname;
 	}
 
 	function getCategoryDesc($catid) {
-		$res = mysql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+		$res = sql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
 		$o = mysql_fetch_object($res);
 		return $o->cdesc;
 	}
 
 	function getCategoryIdFromName($name) {
-		$res = mysql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . addslashes($name) . '"');
+		$res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . addslashes($name) . '"');
 		if (mysql_num_rows($res) > 0) {
 			$o = mysql_fetch_object($res);
 			return $o->catid;
