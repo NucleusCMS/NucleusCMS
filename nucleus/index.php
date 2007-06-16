@@ -69,7 +69,7 @@
 		$action = 'showlogin';
 	}
 
-	sendContentType('application/xhtml+xml', 'admin-' . $action);
+	sendContentType('text/html', 'admin-' . $action);
 
 	$admin = new ADMIN();
 	$admin->action($action);
