@@ -1464,6 +1464,41 @@ index, item, archive, archivelist, search
 
 </div>
 
+<div class="page">
+<a name="skinvar-bloglist"></a>
+<h1>Skinvar: bloglist</h1>
+
+<p>
+Shows a list of all blogs that are defined in your Nucles CMS.
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required:
+	<ul>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional:
+	<ul>
+		<li><strong>bnametype</strong>: whether the Blog Name (<code>name</code>) or the Short Blog Name (<code>shortname</code>) of the Blog is used. Default setting is the Blog name (<code>name</code>).</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%bloglist(default/index)%&gt;
+&lt;%bloglist(default/index,name)%&gt; 
+&lt;%bloglist(default/index,shortname)%&gt;
+</pre>
+
+</div>
 
 
 
