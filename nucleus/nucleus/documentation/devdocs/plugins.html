@@ -1415,11 +1415,61 @@ your stuff
 		</dl></td>
 	</tr>
 	<tr>
+		<td>ParseURL</td>
+		<td>(v3.22) Called before an URL is resolved from the Nucleus Core. This event allows Plugins to interpret URLs.</td>
+		<td><dl>
+			<dt class="ro">type</dt>
+			<dd>Type of the page, e.g. item, blog, ...</dd>
+			<dt class="ro">info</dt>
+			<dd>The full URL which should be resolved (the name is derived from the old fashion variable <code>pathinfo</code>).</dd>
+			<dt class="ref">complete</dt>
+			<dd>Should be set to <b>true</b> if the plugin has resolved the URL and to <b>false</b> if the plugin hasn't resolved the URL.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>GenerateURL</td>
+		<td>(v3.22) Called before an URL is output on the page. Allows plugins to rewrite the output URLs and offer an own URL logic.</td>
+		<td><dl>
+			<dt class="ro">type</dt>
+			<dd>Type of the page, e.g. item, blog, ...</dd>
+			<dt class="ro">params</dt>
+			<dd>Parameters which should be added to the URL.</dd>
+			<dt class="ref">completed</dt>
+			<dd>Should be set to <b>true</b> if the plugin returns an URL and to <b>false</b> if the plugin don't returns an URL.</dd>
+			<dt class="ref">url</dt>
+			<dd>The URL itself which should be output from Nucleus.</dd>
+		</dl></td>
+	</tr>
+	<tr>
 		<td>SpamCheck</td>
 		<td>(v3.3) Called when a new comment is added. This event allows anti-spam plugins to mark this comment as spam. A complete descriptions of the <code>SpamCheck</code> event can be found in a seperate document: <a href='http://wakka.xiffy.nl/spamcheck_api'>SpamCheck API 2.0</a>.</td>
 		<td><dl>
 			<dt class="ref">spamcheck</dt>
 			<dd>The spamcheck datastructure</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>PreMediaUpload</td>
+		<td>(v3.3) Before an uploaded media file is written to the media directory.</td>
+		<td><dl>
+			<dt class="ref">collection</dt>
+			<dd>The collection where the uploaded file should be saved.</dd>
+			<dt class="ro">uploadfile</dt>
+			<dd>The temporary name of the uploaded file.</dd>
+			<dt class="ref">filename</dt>
+			<dd>The filename under which the file should be saved.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>PostMediaUpload</td>
+		<td>(v3.3) After an uploaded is written to the media directory.</td>
+		<td><dl>
+			<dt class="ro">collection</dt>
+			<dd>The collection to which the uploaded file has been added.</dd>
+			<dt class="ro">mediadir</dt>
+			<dd>The media directory to which the uploaded file has been written.</dd>
+			<dt class="ro">filename</dt>
+			<dd>The filename under which the file has been saved.</dd>
 		</dl></td>
 	</tr>
 	<tr>
