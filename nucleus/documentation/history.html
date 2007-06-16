@@ -15,11 +15,14 @@
 
 <ul>
 	<li>
-		<b>Nucleus v3.3 &quot;Lithium&quot; (Bèta - July 8, 2006)</b>
+		<b>Nucleus v3.3 (June 16, 2007)</b>
 		<ul>
 			<li>ADDED: NP_Ping sends ping for future post via JustPosted event (admun)</li>
 			<li>ADDED: JustPosted event (admun)</li>
 			<li>ADDED: move weblogs.com ping function into plugin (admun)</li>
+			<li>ADDED: Serveral changes and fixes from Nucleus Japan (details in the log files of the <a href="http://sourceforge.net/svn/?group_id=66479">Nucleus repository</a> at sourceforge.net)</li>
+			<li>ADDED: Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc. to avoid XSS (from Nucleus Japan)</li>
+			<li>ADDED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&id=45">#45</a>  from the Japanese Tracker): include code from NP_0TicketForPlugin in the core (Changes from Nucleus Japan)
 			<li>ADDED: new events for Media upload: PreMediaUpload and PostMediaUpload (kaigreve)</li>
 			<li>ADDED: new skinvar bloglist (kaigreve)</li>
 			<li>ADDED: new method for URL rewriting with the global variable virtualpath, new .htaccess file can be found in the folder extra/fancyurl-2, more information <a href="http://forum.nucleuscms.org/viewtopic.php?t=12241">here</a> (kaigreve and Legolas)</li>
