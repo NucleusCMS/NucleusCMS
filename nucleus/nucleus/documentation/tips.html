@@ -69,6 +69,7 @@ Nucleus creates archives dynamically on users requests. The URL is then of the f
 <ol>
 	<li><a href="#searchengines-fancyurls">Fancy URLs</a></li>
 	<li><a href="#searchengines-rewrite">mod_rewrite</a></li>
+	<li><a href="#fancyurls-2">Fancy URLs 2</a></li>
 </ol>
 
 <a name="searchengines-fancyurls"></a>
@@ -124,6 +125,20 @@ Now all you have to do is to update the link to your blog archives into <code>ar
 And now, wait until Google comes spidering again...
 </p>
 
+<a name="fancyurls-2"></a>
+<h2>Fancy URLs 2</h2>
+
+<p>Nucleus CMS version 3.3 offers an easier way to enable the basic Fancy URLs. There are only three steps necessary to install this solution:</p>
+
+<ol><li>Copy or move the <code>.htaccess</code> file from <code>extra/fancyurl-2</code> to the root directory of your Nucleus CMS installation.</li>
+<li>Edit the <code>index.php</code> file which you can find in your root directory. Change value of the <code>CONF['Self']</code> from the  default value (<code>'index.php'</code>) to the URL that points to your root directory, for example:<br />
+<pre>CONF['Self'] = 'http://yourdomain.com/yourNucleusDirectory';</pre>
+Don't use a slash at the end.<br /></li>
+<li>Enable the 'Fancy URLs' in the Nucleus admin area, you can find this setting under <em>Management &gt; Configuration</em>.</li></ol>
+
+<p>Everything done.</p>
+
+<p>If you want to use rewritten URLs like <code>item/this-is-a-title</code> you can find plugin solutions for it in the Nucleus Plugin Wiki, for example <a href="http://wakka.xiffy.nl/fancierurl2">NP_FancierURL2</a>.</p>
 
 <h1>How to set file/dir permissions <a name="filepermissions" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
