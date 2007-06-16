@@ -10,6 +10,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 <body>
 
 <div class="heading">
+<a name="top" />
 Tips &amp; Suggestions
 </div>
 
@@ -31,6 +32,7 @@ This file contains tips and suggestions that might prove useful.
 		<ul>
 			<li><a href="#searchengines-fancyurls">Fancy URLs</a></li>
 			<li><a href="#searchengines-rewrite">mod_rewrite</a></li>
+			<li><a href="#fancyurls-2">Fancy URLs 2</a></li>
 		</ul>
 	</li>
 	<li><a href="#filepermissions">How to set file/dir permissions?</a></li>
@@ -72,8 +74,8 @@ Nucleus creates archives dynamically on users requests. The URL is then of the f
 	<li><a href="#fancyurls-2">Fancy URLs 2</a></li>
 </ol>
 
-<a name="searchengines-fancyurls"></a>
-<h2>Fancy URLs</h2>
+
+<h2><a name="searchengines-fancyurls"></a>Fancy URLs</h2>
 
 <p>Nucleus v2.0 has a new option in the global settings 'URL mode'. Setting it to 'Fancy URL' mode, and performing the steps below, will make your URLs look like <code>http://example.org/item/1234</code> instead of <code>http://example.org/index.php?itemid=1234</code>. Search engines like these URLs better.</p>
 
@@ -91,8 +93,8 @@ Nucleus creates archives dynamically on users requests. The URL is then of the f
 <p>When it doesn't work (e.g. you receive an Internal Server Error): bad luck... Remove the files again (don't forget the hidden file <code>.htaccess</code>) and reset the Fancy URLs setting in the admin area.</p>
 
 
-<a name="searchengines-rewrite"></a>
-<h2>mod_rewrite</h2>
+
+<h2><a name="searchengines-rewrite"></a>mod_rewrite</h2>
 
 <p>
 This second possible solution will only work on servers running Apache, and when you have the right to do so. What we will do is 'disguise' the archives as regular HTML pages
@@ -125,8 +127,8 @@ Now all you have to do is to update the link to your blog archives into <code>ar
 And now, wait until Google comes spidering again...
 </p>
 
-<a name="fancyurls-2"></a>
-<h2>Fancy URLs 2</h2>
+
+<h2><a name="fancyurls-2"></a>Fancy URLs 2</h2>
 
 <p>Nucleus CMS version 3.3 offers an easier way to enable the basic Fancy URLs. There are only three steps necessary to install this solution:</p>
 
