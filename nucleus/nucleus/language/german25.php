@@ -11,6 +11,23 @@
 //
 // Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
 // and will be available for download (with proper credit to the author, of course)
+//
+// The german translation was formerly supportet from Holger Laschka, Thorsten Bonck, Dieter Mayer
+//
+// The changes for Nucleus version 3.3 are added from Kai Greve (http://kgblog.de)
+
+
+// START changed/added after 3.3 START
+define('_AUTOSAVEDRAFT',		'Auto save draft');
+define('_AUTOSAVEDRAFT_LASTSAVED',	'Zuletzt gespeichert: ');
+define('_AUTOSAVEDRAFT_NOTYETSAVED',	'Bisher noch nicht gespeichert');
+define('_AUTOSAVEDRAFT_NOW',		'Auto save now');
+define('_SKIN_PARTS_SPECIAL',		'Special skin parts');
+define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',		'Sie müssen einen Namen eingeben, der nur aus Kleinbuchstaben und Ziffern zusammengestzt ist.');
+define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',		'Can\'t delete this skin part');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',		'Do you really want to delete this special skin part?');
+define('_ERROR_PLUGIN_LOAD',		'Plugin could not be loaded, or does not support certain features that are required for it to run on your Nucleus installation (you might want to check the <a href="?action=actionlog">actionlog</a> for more info)');
+// END changed/added after 3.3 END
 
 // START changed/added after v2.5beta START
 
@@ -117,6 +134,34 @@ define('_BATCH_TEAM_UNSET_ADM',		'Administratorrechte nehmen');
 define('_BATCH_CAT_DELETE',			'L&ouml;schen');
 define('_BATCH_CAT_MOVE',			'In anderes Blog verschieben');
 define('_BATCH_COMMENT_DELETE',		'L&ouml;schen');
+
+// itemlist info column keys
+define('_LIST_ITEM_BLOG',			'Blog:');
+define('_LIST_ITEM_CAT',			'Kategorie:');
+define('_LIST_ITEM_AUTHOR',			'Autor:');
+define('_LIST_ITEM_DATE',			'Datum:');
+define('_LIST_ITEM_TIME',			'Uhrzeit:');
+
+// quickmenu
+define('_QMENU_HOME',				'Home');
+define('_QMENU_ADD',				'Neuer Artikel');
+define('_QMENU_ADD_SELECT',			'-- ausw&auml;hlen --');
+define('_QMENU_USER_SETTINGS',		'Profil');
+define('_QMENU_USER_ITEMS',			'Artikel');
+define('_QMENU_USER_COMMENTS',		'Kommentare');
+define('_QMENU_MANAGE',				'Management');
+define('_QMENU_MANAGE_LOG',			'Action Log');
+define('_QMENU_MANAGE_SETTINGS',	'Konfiguration');
+define('_QMENU_MANAGE_MEMBERS',		'Mitglieder');
+define('_QMENU_MANAGE_NEWBLOG',		'Neues Weblog');
+define('_QMENU_MANAGE_BACKUPS',		'Backup');
+define('_QMENU_MANAGE_PLUGINS',		'Plugins');
+define('_QMENU_LAYOUT',				'Layout');
+define('_QMENU_LAYOUT_SKINS',		'Skins');
+define('_QMENU_LAYOUT_TEMPL',		'Templates');
+define('_QMENU_LAYOUT_IEXPORT',		'Import/Export');
+define('_QMENU_PLUGINS',			'Plugins');
+
 
 // itemlist: Add new item...
 define('_ITEMLIST_ADDNEW',			'Hinzuf&uuml;gen');
@@ -343,8 +388,8 @@ define('_MEMBERMAIL_SUBMIT',		'Nachricht absenden');
 define('_SEARCHFORM_SUBMIT',		'Suchen');
 
 // add item form
-define('_ADD_ADDTO',				'Neues Thema hinzuf&uuml;gen zu');
-define('_ADD_CREATENEW',			'Neues Thema erstellen');
+define('_ADD_ADDTO',				'Neuen Artikel hinzuf&uuml;gen zu');
+define('_ADD_CREATENEW',			'Neuen Artikel erstellen');
 define('_ADD_BODY',					'Inhalt');
 define('_ADD_TITLE',				'&Uuml;berschrift');
 define('_ADD_MORE',					'Erweitert (optional)');
@@ -352,7 +397,7 @@ define('_ADD_CATEGORY',				'Kategorie');
 define('_ADD_PREVIEW',				'Vorschau');
 define('_ADD_DISABLE_COMMENTS',		'Kommentare verbieten?');
 define('_ADD_DRAFTNFUTURE',			'Alte &amp; zuk&uuml;nftige Inhalte');
-define('_ADD_ADDITEM',				'Thema hinzuf&uuml;gen');
+define('_ADD_ADDITEM',				'Artikel hinzuf&uuml;gen');
 define('_ADD_ADDNOW',				'Jetzt hinzuf&uuml;gen');
 define('_ADD_ADDLATER',				'Sp&auml;ter hinzuf&uuml;gen');
 define('_ADD_PLACE_ON',				'Aufsetzen');
@@ -369,8 +414,8 @@ define('_ADD_PASTE_TT',				'Ausschneiden');
 
 
 // edit item form
-define('_EDIT_ITEM',				'Thema bearbeiten');
-define('_EDIT_SUBMIT',				'Thema bearbeiten');
+define('_EDIT_ITEM',				'Artikel bearbeiten');
+define('_EDIT_SUBMIT',				'Artikel bearbeiten');
 define('_EDIT_ORIG_AUTHOR',			'Autor - Urheber');
 define('_EDIT_BACKTODRAFTS',		'Entwurf um Hintergrund erg&auml;nzen');
 define('_EDIT_COMMENTSNOTE',		'(Achtung: Beim Ausschalten der Kommentarfunktion bleiben bisherige Kommentare online)');
@@ -391,13 +436,13 @@ define('_CONFIRMTXT_BAN',			'Sie sind dabei, folgende ausgesperrte IP-Adressen f
 define('_CONFIRMTXT_CATEGORY',		'Sie sind dabei, folgende Kategorie zu l&ouml;schen ');
 
 // some status messages
-define('_DELETED_ITEM',				'Thema gel&ouml;scht');
+define('_DELETED_ITEM',				'Artikel gel&ouml;scht');
 define('_DELETED_MEMBER',			'Mitglied gel&ouml;scht');
 define('_DELETED_COMMENT',			'Kommentar gel&ouml;scht');
 define('_DELETED_BLOG',				'Weblog gel&ouml;scht');
 define('_DELETED_CATEGORY',			'Kategorie gel&ouml;scht');
-define('_ITEM_MOVED',				'Thema verschoben');
-define('_ITEM_ADDED',				'Thema hinzugef&uuml;gt');
+define('_ITEM_MOVED',				'Artikel verschoben');
+define('_ITEM_ADDED',				'Artikel hinzugef&uuml;gt');
 define('_COMMENT_UPDATED',			'Kommentar ge&auml;ndert');
 define('_SKIN_UPDATED',				'Designvorlage wurde gespeichert');
 define('_TEMPLATE_UPDATED',			'Template wurde gespeichert');
@@ -495,7 +540,7 @@ define('_MSG_PASSWORDSENT',			'Passwort wurde per eMail zugestellt.');
 define('_MSG_LOGINAGAIN',			'Sie m&uuml;ssen sich neu anmelden nach der &Auml;nderung Ihrer Benutzerdaten');
 define('_MSG_SETTINGSCHANGED',		'Einstellungen ge&auml;ndert');
 define('_MSG_ADMINCHANGED',			'Administrator ge&auml;ndert');
-define('_MSG_NEWBLOG',				'Neues Hauptthema angelegt');
+define('_MSG_NEWBLOG',				'Neues Weblog angelegt');
 define('_MSG_ACTIONLOGCLEARED',		'Aktions-Log gel&ouml;scht');
 
 // actionlog in admin area
@@ -729,9 +774,9 @@ define('_MEMBERS_USESITELANG',		'- Site-Einstellungen verwenden -');
 
 // List of blogs (TT = tooltip)
 define('_BLOGLIST_TT_VISIT',		'Webseite ausw&auml;hlen');
-define('_BLOGLIST_ADD',				'Thema hinzuf&uuml;gen');
-define('_BLOGLIST_TT_ADD',			'Neues Thema zu diesem Weblog hinzuf&uuml;gen');
-define('_BLOGLIST_EDIT',			'Themen bearbeiten oder l&ouml;schen');
+define('_BLOGLIST_ADD',				'Artikel hinzuf&uuml;gen');
+define('_BLOGLIST_TT_ADD',			'Neuen Artikel zu diesem Weblog hinzuf&uuml;gen');
+define('_BLOGLIST_EDIT',			'Artikel bearbeiten oder l&ouml;schen');
 define('_BLOGLIST_TT_EDIT',			'Bearbeitet dieses Weblog');
 define('_BLOGLIST_BMLET',			'Favoritenverwaltung');
 define('_BLOGLIST_TT_BMLET',		'Verwaltet die Favoriten');
@@ -741,6 +786,12 @@ define('_BLOGLIST_BANS',			'Zugriffssperren');
 define('_BLOGLIST_TT_BANS',			'Zugriffssperren verwalten');
 define('_BLOGLIST_DELETE',			'Alles l&ouml;schen');
 define('_BLOGLIST_TT_DELETE',		'Dieses Weblog l&ouml;schen ');
+
+// comments list per weblog
+define('_COMMENTS_BLOG',			'Alle Kommentare für ein Weblog');
+define('_NOCOMMENTS_BLOG',			'Es wurden bisher keine Kommentare in diesem Blog veröffentlicht.');
+define('_BLOGLIST_COMMENTS',		'Kommentare');
+define('_BLOGLIST_TT_COMMENTS',		'Eine Liste aller Kommentare in diesem Weblog');
 
 // OVERVIEW screen
 define('_OVERVIEW_YRBLOGS',			'Ihre Weblogs');
@@ -768,7 +819,7 @@ define('_ITEMLIST_YOUR',			'Ihre Themen');
 define('_COMMENTS',					'Kommentare');
 define('_NOCOMMENTS',				'Keine Kommentare zu diesem Thema');
 define('_COMMENTS_YOUR',			'Ihre Kommentare');
-define('_NOCOMMENTS_YOUR',			'Sie haben keine Kommentare verfasst');
+define('_NOCOMMENTS_YOUR',			'Sie haben bisher keine Kommentare verfasst.');
 
 // LISTS (general)
 define('_LISTS_NOMORE',				'Keine Ergebnisse (mehr)');
