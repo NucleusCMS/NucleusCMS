@@ -29,6 +29,129 @@ define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',		'Do you really want to delete this spe
 define('_ERROR_PLUGIN_LOAD',		'Plugin could not be loaded, or does not support certain features that are required for it to run on your Nucleus installation (you might want to check the <a href="?action=actionlog">actionlog</a> for more info)');
 // END changed/added after 3.3 END
 
+// START changed/added after 3.22 START
+define('_SEARCHFORM_QUERY',			'Gesuchte Stichwörter');
+define('_ERROR_EMAIL_REQUIRED',		'Email Adresse ist erforderlich');
+define('_COMMENTFORM_MAIL',			'Website:');
+define('_COMMENTFORM_EMAIL',		'E-mail:');
+define('_EBLOG_REQUIREDEMAIL',		'Require E-mail address with comments?');
+define('_ERROR_COMMENTS_SPAM',      'Ihr Kommentar wurde abgelehnt, weil er den Spamtest nicht bestanden hat.');
+// END changed/added after 3.22 END
+
+// START changed/added after 3.15 START
+
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Bitte benutzen Sie den \'Update Subscription list\'-button, um die Subskriptionsliste des Plugins zu aktualisieren.');
+define('_LIST_PLUGS_DEP',			'Plugin benötigt:');
+
+// END changed/added after 3.15
+
+// START changed/added after 3.1 START
+
+// comments list per weblog
+define('_COMMENTS_BLOG',			'Alle Kommentare für ein Weblog');
+define('_NOCOMMENTS_BLOG',			'Es wurden bisher keine Kommentare in diesem Blog veröffentlicht.');
+define('_BLOGLIST_COMMENTS',		'Kommentare');
+define('_BLOGLIST_TT_COMMENTS',		'Eine Liste aller Kommentare in diesem Weblog');
+
+
+// for use in archivetype-skinvar
+define('_ARCHIVETYPE_DAY',			'Tag');
+define('_ARCHIVETYPE_MONTH',		'Monat');
+
+// tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
+define('_ERROR_BADTICKET',			'Ungültiges oder ausgelaufenes Ticket.');
+
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',		'Plugin Installation fehlgeschlagen, ben&ouml;tigt ');
+define('_ERROR_DELREQPLUGIN',		'Plugin L&ouml;schung fehlgeschlagen, wird benötigt von ');
+
+// cookie prefix
+define('_SETTINGS_COOKIEPREFIX',	'Cookie Prefix');
+
+// account activation
+define('_ERROR_NOLOGON_NOACTIVATE',	'Ein Aktivierungslink kann nicht versandt werden. Sie haben keine Berechtigung sich einzuloggen');
+define('_ERROR_ACTIVATE',			'Activation key does not exist, is invalid, or has expired.');
+define('_ACTIONLOG_ACTIVATIONLINK', 'Aktivierungslink versandt');
+define('_MSG_ACTIVATION_SENT',		'Ein Aktivierungslink wurde per E-Mail versandt.');
+
+// activation link emails
+define('_ACTIVATE_REGISTER_MAIL',	"Hi <%memberName%>,\n\nYou need to activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Activate your '<%memberName%>' account");
+define('_ACTIVATE_REGISTER_TITLE',	'Welcome <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',	'You\'re almost there. Please choose a password for your account below.');
+define('_ACTIVATE_FORGOT_MAIL',		"Hi <%memberName%>,\n\nUsing the link below, you can choose a new password for your account at <%siteName%> (<%siteUrl%>) by choosing a new password.\n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_FORGOT_MAILTITLE',"Re-activate your '<%memberName%>' account");
+define('_ACTIVATE_FORGOT_TITLE',	'Welcome <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'You can choose a new password for your account below:');
+define('_ACTIVATE_CHANGE_MAIL',		"Hi <%memberName%>,\n\nSince your e-mail address has changed, you'll need to re-activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_CHANGE_MAILTITLE',"Re-activate your '<%memberName%>' account");
+define('_ACTIVATE_CHANGE_TITLE',	'Welcome <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'Your address change has been verified. Thanks!');
+define('_ACTIVATE_SUCCESS_TITLE',	'Activation Succeeded');
+define('_ACTIVATE_SUCCESS_TEXT',	'Your account has been successfully activated.');
+define('_MEMBERS_SETPWD',			'Set Password');
+define('_MEMBERS_SETPWD_BTN',		'Set Password');
+define('_QMENU_ACTIVATE',			'Account Activation');
+define('_QMENU_ACTIVATE_TEXT',		'<p>After you have activated your account, you can start using it by <a href="index.php?action=showlogin">logging in</a>.</p>');
+
+define('_PLUGS_BTN_UPDATE',			'Update subscription list');
+
+// global settings
+define('_SETTINGS_JSTOOLBAR',		'Javascript Toolbar Style');
+define('_SETTINGS_JSTOOLBAR_FULL',	'Full Toolbar (IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE','Simple Toolbar (Non-IE)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Disable Toolbar');
+define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">How to activate fancy URLs</a>)');
+
+// extra plugin settings part when editing categories/members/blogs/...
+define('_PLUGINS_EXTRA',			'Extra Plugin Settings');
+
+// itemlist info column keys
+define('_LIST_ITEM_BLOG',			'Blog:');
+define('_LIST_ITEM_CAT',			'Kategorie:');
+define('_LIST_ITEM_AUTHOR',			'Autor:');
+define('_LIST_ITEM_DATE',			'Datum:');
+define('_LIST_ITEM_TIME',			'Uhrzeit:');
+
+// indication of registered members in comments list
+define('_LIST_COMMENTS_MEMBER', 	'(member)');
+
+// batch operations
+define('_BATCH_WITH_SEL',			'With selected:');
+define('_BATCH_EXEC',				'Execute');
+
+// quickmenu
+define('_QMENU_HOME',				'Home');
+define('_QMENU_ADD',				'Neuer Artikel');
+define('_QMENU_ADD_SELECT',			'-- ausw&auml;hlen --');
+define('_QMENU_USER_SETTINGS',		'Profil');
+define('_QMENU_USER_ITEMS',			'Artikel');
+define('_QMENU_USER_COMMENTS',		'Kommentare');
+define('_QMENU_MANAGE',				'Management');
+define('_QMENU_MANAGE_LOG',			'Action Log');
+define('_QMENU_MANAGE_SETTINGS',	'Konfiguration');
+define('_QMENU_MANAGE_MEMBERS',		'Mitglieder');
+define('_QMENU_MANAGE_NEWBLOG',		'Neues Weblog');
+define('_QMENU_MANAGE_BACKUPS',		'Backup');
+define('_QMENU_MANAGE_PLUGINS',		'Plugins');
+define('_QMENU_LAYOUT',				'Layout');
+define('_QMENU_LAYOUT_SKINS',		'Skins');
+define('_QMENU_LAYOUT_TEMPL',		'Templates');
+define('_QMENU_LAYOUT_IEXPORT',		'Import/Export');
+define('_QMENU_PLUGINS',			'Plugins');
+
+// quickmenu on logon screen
+define('_QMENU_INTRO',				'Introduction');
+define('_QMENU_INTRO_TEXT',			'<p>This is the logon screen for Nucleus CMS, the content management system that\'s being used to maintain this website.</p><p>If you have an account, you can log on and start posting new items.</p>');
+
+// helppages for plugins
+define('_ERROR_PLUGNOHELPFILE',		'The helpfile for this plugin can not be found');
+define('_PLUGS_HELP_TITLE',			'Helppage for plugin');
+define('_LIST_PLUGS_HELP', 			'help');
+
+
+// END changed/started after 3.1
+
 // START changed/added after v2.5beta START
 
 // general settings (security)
@@ -134,34 +257,6 @@ define('_BATCH_TEAM_UNSET_ADM',		'Administratorrechte nehmen');
 define('_BATCH_CAT_DELETE',			'L&ouml;schen');
 define('_BATCH_CAT_MOVE',			'In anderes Blog verschieben');
 define('_BATCH_COMMENT_DELETE',		'L&ouml;schen');
-
-// itemlist info column keys
-define('_LIST_ITEM_BLOG',			'Blog:');
-define('_LIST_ITEM_CAT',			'Kategorie:');
-define('_LIST_ITEM_AUTHOR',			'Autor:');
-define('_LIST_ITEM_DATE',			'Datum:');
-define('_LIST_ITEM_TIME',			'Uhrzeit:');
-
-// quickmenu
-define('_QMENU_HOME',				'Home');
-define('_QMENU_ADD',				'Neuer Artikel');
-define('_QMENU_ADD_SELECT',			'-- ausw&auml;hlen --');
-define('_QMENU_USER_SETTINGS',		'Profil');
-define('_QMENU_USER_ITEMS',			'Artikel');
-define('_QMENU_USER_COMMENTS',		'Kommentare');
-define('_QMENU_MANAGE',				'Management');
-define('_QMENU_MANAGE_LOG',			'Action Log');
-define('_QMENU_MANAGE_SETTINGS',	'Konfiguration');
-define('_QMENU_MANAGE_MEMBERS',		'Mitglieder');
-define('_QMENU_MANAGE_NEWBLOG',		'Neues Weblog');
-define('_QMENU_MANAGE_BACKUPS',		'Backup');
-define('_QMENU_MANAGE_PLUGINS',		'Plugins');
-define('_QMENU_LAYOUT',				'Layout');
-define('_QMENU_LAYOUT_SKINS',		'Skins');
-define('_QMENU_LAYOUT_TEMPL',		'Templates');
-define('_QMENU_LAYOUT_IEXPORT',		'Import/Export');
-define('_QMENU_PLUGINS',			'Plugins');
-
 
 // itemlist: Add new item...
 define('_ITEMLIST_ADDNEW',			'Hinzuf&uuml;gen');
@@ -743,12 +838,11 @@ define('_BAN_ADD_BTN',				'Zugriffssperre hinzuf&uuml;gen');
 
 // LOGIN screen
 // define('_LOGIN_SHARED',				_LOGINFORM_SHARED); //
-define('_LOGIN_FORGOT',				'Haben Sie Ihr Passwort vergessen?');
 define('_LOGIN_MESSAGE',			'Nachricht');
 define('_LOGIN_NAME',				'Name');
 define('_LOGIN_PASSWORD',			'Passwort');
 define('_LOGIN_SHARED',				'&Ouml;ffenlicher Rechner');
-
+define('_LOGIN_FORGOT',				'Haben Sie Ihr Passwort vergessen?');
 
 // membermanagement
 define('_MEMBERS_TITLE',			'Benutzerverwaltung');
@@ -786,12 +880,6 @@ define('_BLOGLIST_BANS',			'Zugriffssperren');
 define('_BLOGLIST_TT_BANS',			'Zugriffssperren verwalten');
 define('_BLOGLIST_DELETE',			'Alles l&ouml;schen');
 define('_BLOGLIST_TT_DELETE',		'Dieses Weblog l&ouml;schen ');
-
-// comments list per weblog
-define('_COMMENTS_BLOG',			'Alle Kommentare für ein Weblog');
-define('_NOCOMMENTS_BLOG',			'Es wurden bisher keine Kommentare in diesem Blog veröffentlicht.');
-define('_BLOGLIST_COMMENTS',		'Kommentare');
-define('_BLOGLIST_TT_COMMENTS',		'Eine Liste aller Kommentare in diesem Weblog');
 
 // OVERVIEW screen
 define('_OVERVIEW_YRBLOGS',			'Ihre Weblogs');
