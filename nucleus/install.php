@@ -791,6 +791,15 @@ function doInstall() {
 
 <?php } ?>
 
+	<h1>Fight against Spam</h1>
+	
+	<p>Nucleus CMS allows every visitor to write comments in blogs. So there is a high risk that spammers abuse this function. We recommend that you protect your blog with one of the following methods:</p>
+
+	<ul>
+		<li>If you don't want comments you can disable them individually for each blog: Go to the hompage of the Admin area and choose <b>Your Weblog > Settings > Comments enabled > No</b>.</li>
+		<li>Install one of serveral plugins that help to avoid spam comments: <a href="http://faq.nucleuscms.org/item/45">How can I stop comment and trackback spam?</a> (you could bookmark this page to read it later).</li>
+	</ul>
+	
 	<h1>Delete your install files</h1>
 
 	<p>Files you should delete from your web server:</p>
