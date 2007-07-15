@@ -216,20 +216,20 @@ function _backup_dump_structure($tablename) {
  */
 function _backup_get_field_names($result, $num_fields) {
 
-	if (function_exists('mysqli_fetch_fields') ) {
+/*	if (function_exists('mysqli_fetch_fields') ) {
 		
 		$fields = mysqli_fetch_fields($result);
 		for ($j = 0; $j < $num_fields; $j++)
 			$fields[$j] = $fields[$j]->name;
 
-	} else {
+	} else {*/
 
 		$fields = array();
 		for ($j = 0; $j < $num_fields; $j++) {
 			$fields[] = mysql_field_name($result, $j);
 		}
 
-	}
+/*	}*/
 	
 	return '(' . implode(', ', $fields) . ')';	
 }
