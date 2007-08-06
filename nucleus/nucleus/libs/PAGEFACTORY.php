@@ -178,7 +178,7 @@ class PAGEFACTORY extends BaseActions {
 	}
 
 	function parse_bloglink() {
-		echo '<a href="'.htmlspecialchars($this->blog->getURL()).'">'.$this->blog->getName().'</a>';
+		echo '<a href="'.htmlspecialchars($this->blog->getURL()).'">'.htmlspecialchars($this->blog->getName()).'</a>';
 	}
 
 	function parse_authorname() {
