@@ -1174,7 +1174,7 @@ class ADMIN {
 
 		$this->updateFuturePosted($blogid);
 
-		if ($draftid > 0) {
+		if ($draftid > 0 && $member->canAlterItem($draftid)) {
 			ITEM::delete($draftid);
 		}
 
