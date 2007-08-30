@@ -7,10 +7,10 @@
 	define('_PING_BLOGS', 'Blo.gs (no longer works?)');
 	define('_PING_WEBLOGUES', 'Weblogues (no longer works?)');
 	define('_PING_BLOGGDE', 'Blogg.de (not working??)');
+	define('_PING_BG', 'Ping from background when a future post first appears');
 	define('_PINGING', 'Pinging ');
 	define('_PING_ERROR', 'Error');
 	define('_PING_PHP_ERROR', 'PHP Error: ');
 	define('_PING_PHP_PING_ERROR', 'Error while trying to send ping. Sorry about that.');
 	define('_PING_SUCCESS', 'Success');
 ?>
-
