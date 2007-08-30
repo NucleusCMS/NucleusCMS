@@ -8,6 +8,7 @@
     v1.2 - JustPosted event handling in background
     v1.3 - pinged variable support
     v1.4 - language file support
+    v1.5 - remove arg1 in exec() call
  */
 
 class NP_Ping extends NucleusPlugin {
@@ -16,7 +17,7 @@ class NP_Ping extends NucleusPlugin {
 
 	function getAuthor() { return 'admun (Edmond Hui)'; }
 	function getURL()    { return 'http://edmondhui.homeip.net/nudn'; }
-	function getVersion() { return '1.4'; }
+	function getVersion() { return '1.5'; }
 
 	function getMinNucleusVersion() { return '330'; }
 
@@ -51,6 +52,7 @@ class NP_Ping extends NucleusPlugin {
 		$this->createOption('pingpong_blogs',_PING_BLOGS,'yesno','no'); // http://blo.gs
 		$this->createOption('pingpong_weblogues',_PING_WEBLOGUES,'yesno','no'); // http://weblogues.com/
 		$this->createOption('pingpong_bloggde',_PING_BLOGGDE,'yesno','no'); // http://blogg.de
+		$this->createOption('ping_background',_PING_BG,'yesno','yes');
 	}
 
 	function getEventList() {
@@ -65,7 +67,13 @@ class NP_Ping extends NucleusPlugin {
 			return;
 		}
 
-		exec("php $DIR_PLUGINS/ping/ping.php $DIR_NUCLEUS " . $data['blogid'] . " &");
+		if ($this->getOption('ping_background') == "yes") {
+			exec("php $DIR_PLUGINS/ping/ping.php " . $data['blogid'] . " &");
+		} else {
+			$this->sendPings($data['blogid']);
+
+        		ACTIONLOG::add(INFO, 'NP_Ping: Sending ping (from foreground)');
+		}
 
 		// mark the ping has been sent
 		$data['pinged'] = true;
