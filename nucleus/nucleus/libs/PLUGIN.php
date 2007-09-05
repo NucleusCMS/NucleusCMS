@@ -628,13 +628,12 @@
 						}
 					}
 				}
-			// clear option value cache if the plugin object is already loaded
-			if (is_object($o)) {
-				$plugin=& $manager->pidLoaded($o->opid);
-				if ($plugin) $plugin->clearOptionValueCache();
+				// clear option value cache if the plugin object is already loaded
+				if (is_object($o)) {
+					$plugin=& $manager->pidLoaded($o->opid);
+					if ($plugin) $plugin->clearOptionValueCache();
+				}
 			}
 		}
-
 	}
-}
 ?>
