@@ -9,9 +9,6 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-
-
-
 /**
  * Class representing a skin
  *
