@@ -78,16 +78,16 @@ class ITEM {
 		 global $member, $manager;
 
 		 $i_author = 		$member->getID();
-		 $i_body = 		postVar('body');
-		 $i_title =		postVar('title');
-		 $i_more = 		postVar('more');
+		 $i_body = 			postVar('body');
+		 $i_title =			postVar('title');
+		 $i_more = 			postVar('more');
 		 $i_actiontype = 	postVar('actiontype');
 		 $i_closed = 		intPostVar('closed');
-		 $i_hour = 		intPostVar('hour');
+		 $i_hour = 			intPostVar('hour');
 		 $i_minutes = 		intPostVar('minutes');
 		 $i_month = 		intPostVar('month');
-		 $i_day = 		intPostVar('day');
-		 $i_year = 		intPostVar('year');
+		 $i_day = 			intPostVar('day');
+		 $i_year = 			intPostVar('year');
 
 		 $i_catid = 		postVar('catid');
 
@@ -140,13 +140,13 @@ class ITEM {
 			$posttime = $i_draft ? 0 : $blog->getCorrectTime();
 		}
 
-                if ($posttime > $blog->getCorrectTime()) {
-                        $posted = 0;
-                        $blog->setFuturePost();
-                }
-                else {
-                        $posted = 1;
-                }
+		if ($posttime > $blog->getCorrectTime()) {
+			$posted = 0;
+			$blog->setFuturePost();
+		}
+		else {
+			$posted = 1;
+		}
 
 		$itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft,$posted);
 
