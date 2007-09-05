@@ -19,7 +19,7 @@
  */
 
 $CONF = array();
-include('./config.php');
+require('./config.php');
 
 // common functions
 include_once($DIR_LIBS . 'ACTION.php');
