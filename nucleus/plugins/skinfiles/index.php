@@ -27,7 +27,7 @@
 	*/
 
  	$strRel = '../../../'; 
-	include($strRel . 'config.php');
+	require($strRel . 'config.php');
 	include($DIR_LIBS . 'PLUGINADMIN.php');
 
 	$language = ereg_replace( '[\\|/]', '', getLanguageName());
