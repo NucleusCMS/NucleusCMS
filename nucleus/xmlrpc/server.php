@@ -65,7 +65,7 @@
  * @version $Id$
  */
 $CONF = array();
-include("../../config.php");	// include Nucleus libs and code
+require("../../config.php");	// include Nucleus libs and code
 include($DIR_LIBS . "xmlrpc.inc.php");
 include($DIR_LIBS . "xmlrpcs.inc.php");
 
