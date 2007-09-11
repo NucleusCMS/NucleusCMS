@@ -952,4 +952,11 @@ define('_EDITC_NONMEMBER',			'non member');
 define('_MOVE_TITLE',				'Move to which blog?');
 define('_MOVE_BTN',					'Move Item');
 
+// auto save
+define('_AUTOSAVEDRAFT',                'Auto save draft');
+define('_AUTOSAVEDRAFT_LASTSAVED',      'Last saved: ');
+define('_AUTOSAVEDRAFT_NOTYETSAVED',    'No saves have been made yet');
+define('_AUTOSAVEDRAFT_NOW',            'Auto save now');
+
+
 ?>
