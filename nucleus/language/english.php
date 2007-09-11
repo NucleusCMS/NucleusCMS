@@ -13,8 +13,6 @@
 // available for download (with proper credit to the author, of course)
 
 // START changed/added after 3.3 START
-define('_CHARSET', 'UTF-8');
-
 define('_AUTOSAVEDRAFT',		'Auto save draft');
 define('_AUTOSAVEDRAFT_LASTSAVED',	'Last saved: ');
 define('_AUTOSAVEDRAFT_NOTYETSAVED',	'No saves have been made yet');
