@@ -12,6 +12,28 @@
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
 
+// START changed/added after 3.3 START
+define('_AUTOSAVEDRAFT',                'Auto save draft');
+define('_AUTOSAVEDRAFT_LASTSAVED',      'Last saved: ');
+define('_AUTOSAVEDRAFT_NOTYETSAVED',    'No saves have been made yet');
+define('_AUTOSAVEDRAFT_NOW',            'Auto save now');
+define('_SKIN_PARTS_SPECIAL',           'Special skin parts');
+define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',              'You must enter a name that exists only out of lowercase letters and digits');
+define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',              'Can\'t delete this skin part');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',                'Do you really want to delete this special skin part?');
+define('_ERROR_PLUGIN_LOAD',            'Plugin could not be loaded, or does not support certain features that are required for it to run on your
+Nucleus installation (you might want to check the <a href="?action=actionlog">actionlog</a> for more info)');
+// END changed/added after 3.3 END
+
+// START changed/added after 3.22 START
+define('_SEARCHFORM_QUERY',                     'Keywords to search');
+define('_ERROR_EMAIL_REQUIRED',         'Email address is required');
+define('_COMMENTFORM_MAIL',                     'Website:');
+define('_COMMENTFORM_EMAIL',            'E-mail:');
+define('_EBLOG_REQUIREDEMAIL',          'Require E-mail address with comments?');
+define('_ERROR_COMMENTS_SPAM',      'Your comment was rejected because it did not pass the spam test');
+// END changed/added after 3.22 END
+
 // START changed/added after 3.15 START
 
 define('_LIST_PLUG_SUBS_NEEDUPDATE','Please use the \'Update Subscription list\'-button to update the plugin\'s subscription list.');
@@ -951,12 +973,4 @@ define('_EDITC_NONMEMBER',			'non member');
 // move item
 define('_MOVE_TITLE',				'Move to which blog?');
 define('_MOVE_BTN',					'Move Item');
-
-// auto save
-define('_AUTOSAVEDRAFT',                'Auto save draft');
-define('_AUTOSAVEDRAFT_LASTSAVED',      'Last saved: ');
-define('_AUTOSAVEDRAFT_NOTYETSAVED',    'No saves have been made yet');
-define('_AUTOSAVEDRAFT_NOW',            'Auto save now');
-
-
 ?>
