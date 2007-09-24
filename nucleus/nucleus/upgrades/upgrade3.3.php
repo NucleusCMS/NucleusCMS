@@ -18,7 +18,7 @@ function upgrade_do33() {
 		upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
 	}
 
-	if (!upgrade_checkIfColumnExists('item','posted')) {
+	if (!upgrade_checkIfColumnExists('item','iposted')) {
 		$query = "	ALTER TABLE `" . sql_table('item') . "`
                                 ADD `iposted` TINYINT(2) DEFAULT 1 NOT NULL ;";
 
