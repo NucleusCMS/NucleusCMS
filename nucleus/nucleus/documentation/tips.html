@@ -39,8 +39,8 @@ This file contains tips and suggestions that might prove useful.
 	<li><a href="#backups">How to restore backups</a></li>
 	<li><a href="#newblog">How to create a new weblogs</a></li>
 	<li><a href="#xhtml">XHTML support</a></li>
+	<li><a href="#specialskinpart">How to create a Special skin part</a></li>
 <!--
-	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
@@ -292,6 +292,60 @@ What this means, is that you can perfectly create an XHTML-compliant site by usi
 </p>
 
 
+
+
+
+
+
+
+
+
+
+<h1>How to create a Special skin part <a name="specialskinpart" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>1. Enter the Nucleus admin area and go to Skins management page (<strong>Layout>Skins</strong>). Find your skin and click the Edit link in the right column.</p>
+
+<p>2. Under the list of skin parts there is a sections called Special skin parts. In the field type the name of your special skin part and then click the Create button. (I'm using the name 'About' for my example). You then get a Edit skin part form, just like for any other skin part, that you can add content, skin variables or anything else. If you want to make it look like the rest of your site, you can copy the contents of the Main Index skinpart here and replace the <code>&lt;%body(...)%&gt;</code> skin variable with the contents of the static page.<br />
+<br />
+For example, using the default skin, the contents of the About skin part would look something like this:</p>
+<pre><code>&lt;%parsedinclude(head.inc)%&gt;
+
+&lt;!-- page header --&gt;
+&lt;%parsedinclude(header.inc)%&gt;
+
+&lt;!-- page content --&gt;
+&lt;div id="container"&gt;
+&lt;div class="content"&gt;
+This site is run by a group of friends who all enjoy hiking. Together we have
+hiked a total of over 4000 miles though out the US, Canada and Europe. Here we
+share our experiences and our experience. Though we are serious hikers, we
+believe hiking should first be fun for everybody.
+&lt;br /&gt;&lt;br /&gt;
+To join our community, please register here: (...link to registration page...)
+&lt;br /&gt;&lt;br /&gt;
+... insert links to images of hiking fun...
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- page menu --&gt;
+&lt;h2 class="hidden"&gt;Sidebar&lt;/h2&gt;
+&lt;div id="sidebarcontainer"&gt;
+&lt;%parsedinclude(sidebar.inc)%&gt;
+&lt;/div&gt;
+
+&lt;!-- page footer --&gt;
+&lt;%parsedinclude(footer.inc)%&gt;</code></pre>
+
+<p>3. Now to access this page, you would point your browser (or put a link in your skin somewhere) to </p>
+
+<pre><code>www.yourdomain.tld/index.php?special=About</code></pre>
+
+
+<p>4. You can edit this skin part just as you would any other skin part and most skin variables and plugins will probably work.</p>
+
+<p><strong>Note:</strong> You may want to keep your static content in a file called <code>About.html</code> in the <code>skins/default/</code> directory (if using the default skin) and instead of typing the content of the page in the skin part, just put <code>&lt;%include(About.html)%&gt;</code>. There's almost no restriction on what these pages can contain.</p>
+
+<p>(Tip from  <a href="http://www.iai.com/">ftruscot</a>)</p>
 
 </body>
 </html>
