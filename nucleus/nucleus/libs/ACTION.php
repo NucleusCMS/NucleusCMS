@@ -195,6 +195,16 @@ class ACTION
 		if (!$CONF['AllowMemberCreate'])
 			doError(_ERROR_MEMBERCREATEDISABLED);
 
+		// evaluate content from FormExtra
+		$result = 1;
+		$data = array('type' => 'membermail', 'error' => &$result);
+		$manager->notify('ValidateForm', &$data);
+
+		if ($result!=1) {
+			return $result;
+		}
+		else {
+
 		// even though the member can not log in, set some random initial password. One never knows.
 		srand((double)microtime()*1000000);
 		$initialPwd = md5(uniqid(rand(), true));
@@ -202,8 +212,9 @@ class ACTION
 		// create member (non admin/can not login/no notes/random string as password)
 		$r = MEMBER::create(postVar('name'), postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
 
-		if ($r != 1)
-			doError($r);
+			if ($r != 1) {
+				return $r;
+			}
 
 		// send message containing password.
 		$newmem = new MEMBER();
@@ -218,6 +229,7 @@ class ACTION
 			echo _MSG_ACTIVATION_SENT;
 		}
 		exit;
+	}
 	}
 
 	/**
