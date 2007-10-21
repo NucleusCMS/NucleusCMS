@@ -1,5 +1,5 @@
 <?php
-	define('_PING_DESC', 'This plugin can be used to ping many blog tracking services');
+	define('_PING_DESC', 'This plugin can be used to ping many blog tracking services. - Don\'t forget to enable the option \'Ping weblog listing service on update\' in your blog settings!');
 	define('_PING_PINGOM', 'Ping-o-matic');
 	define('_PING_WEBLOGS', 'weblogs.com');
 	define('_PING_TECHNOR', 'Technorati');
