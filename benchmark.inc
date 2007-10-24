@@ -10,7 +10,7 @@ if (!function_exists('getmtime'))
 }
 
 // For benchmarking
-global $StartTime, $SQLQCount;
+global $StartTime, $SQLCount;
 $StartTime = getmtime();
 $SQLCount = 0;
 
