@@ -13,9 +13,19 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: vars4.1.0.php,v 1.10 2007-02-04 06:28:46 kimitake Exp $
- * @version $NucleusJP: vars4.1.0.php,v 1.9 2006/12/18 20:31:08 kmorimatsu Exp $
+ * @version $Id: vars4.1.0.php,v 1.11 2007-10-30 18:47:03 kmorimatsu Exp $
+ * @version $NucleusJP: vars4.1.0.php,v 1.10 2007/02/04 06:28:46 kimitake Exp $
  */
+
+
+// Remove $_COOKIE keys in $_REQUEST
+// This is for maintaining the compatibility with PHP 4.0.6
+// and also for avoiding bugs of plugins due to cookie keys
+if (isset($_REQUEST) and isset($_COOKIE)) {
+	foreach($_COOKIE as $key=>$value) {
+		if (isset($_REQUEST[$key])) unset($_REQUEST[$key]);
+	}
+}
 
 function getVar($name) {
 	if (!isset($_GET[$name])) {
