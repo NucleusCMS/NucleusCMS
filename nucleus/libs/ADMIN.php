@@ -906,7 +906,7 @@ class ADMIN {
 		echo '<p>(<a href="index.php?action=itemlist&amp;blogid=',$blogid,'">',_BACKTOOVERVIEW,'</a>)</p>';
 		echo '<h2>',_COMMENTS,'</h2>';
 
-		$query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE citem=' . $itemid;
+		$query = 'SELECT cbody, cuser, cmail, cemail, mname, ctime, chost, cnumber, cip, citem FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
 
 		if ($search)
 			$query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
@@ -1527,7 +1527,16 @@ class ADMIN {
 		</tr><tr>
 			<td><?php echo _EDITC_HOST?></td>
 			<td><?php echo  $comment['host']; ?></td>
-		</tr><tr>
+		</tr>
+		<tr>
+			<td><?php echo _EDITC_URL; ?></td>
+			<td><?php echo $comment['userid']; ?></td>
+		</tr>
+		<tr>
+			<td><?php echo _EDITC_EMAIL; ?></td>
+			<td><?php echo $comment['email']; ?></td>
+		</tr>
+		<tr>
 			<td><?php echo _EDITC_TEXT?></td>
 			<td>
 				<textarea name="body" tabindex="10" rows="10" cols="50"><?php					// htmlspecialchars not needed (things should be escaped already)
