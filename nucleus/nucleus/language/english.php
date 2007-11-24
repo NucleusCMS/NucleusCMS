@@ -963,6 +963,8 @@ define('_EDITC_TITLE',				'Edit Comments');
 define('_EDITC_WHO',				'Author');
 define('_EDITC_HOST',				'From Where?');
 define('_EDITC_WHEN',				'When?');
+define('_EDITC_URL',				'Web site');
+define('_EDITC_EMAIL',				'E-mail');
 define('_EDITC_TEXT',				'Text');
 define('_EDITC_EDIT',				'Edit Comment');
 define('_EDITC_MEMBER',				'member');
