@@ -1,16 +1,23 @@
 <?php
-// English Nucleus Language File
-//
+
 // Author: Wouter Demuynck
 // Nucleus version: v1.0-v3.2
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which
+// might be deleted. Therefore, it's important to list the Nucleus version for which
 // the file was written in your document.
 //
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
+
+/**
+ * English Nucleus Language File
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id$
+ */
 
 // START changed/added after 3.3 START
 define('_AUTOSAVEDRAFT',		'Auto save draft');
