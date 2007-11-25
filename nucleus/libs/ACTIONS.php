@@ -505,9 +505,11 @@ class ACTIONS extends BaseActions {
 	*	Parse skinvar bloglist
 	*	Shows a list of all blogs
 	*	bnametype: whether 'name' or 'shortname' is used for the link text 	  
+	*	orderby: order criteria
+	*	direction: order ascending or descending		  
 	*/
-	function parse_bloglist($template, $bnametype = '') {
-		BLOG::showBlogList($template, $bnametype);
+	function parse_bloglist($template, $bnametype = '', $orderby, $direction) {
+		BLOG::showBlogList($template, $bnametype, $orderby, $direction);
 	}
 	
 	/**

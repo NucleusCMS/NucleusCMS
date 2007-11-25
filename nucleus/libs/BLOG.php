@@ -674,9 +674,26 @@ class BLOG {
 	
 	/**
 	  * Shows a list of all blogs in the system using a given template
+	  * ordered by 	number, name, shortname or description
+	  * in ascending or descending order	    
 	  */
-	function showBlogList($template, $bnametype) {
+	function showBlogList($template, $bnametype, $orderby, $direction) {
 		global $CONF, $manager;
+		
+		switch ($orderby) {
+			case 'number': $orderby='bnumber'; break;
+			case 'name': $orderby='bname'; break;
+			case 'shortname': $orderby='bshortname'; break;
+			case 'description': $orderby='bdesc'; break;
+			default: $orderby='bnumber';	break;
+		}
+		
+		$direction=strtolower($direction);
+		switch ($direction) {
+			case 'asc': $direction='ASC';  break;
+			case 'desc': $direction='DESC'; break;
+			default: $direction='ASC';	break;
+		}
 		
 		$template =& $manager->getTemplate($template);
 		
@@ -686,7 +703,7 @@ class BLOG {
 								'siteurl' => $CONF['IndexURL']
 							));
 		
-		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY bnumber ASC';
+		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY '.$orderby.' '.$direction;
 		$res = sql_query($query);
 		
 		while ($data = mysql_fetch_assoc($res)) {
