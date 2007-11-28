@@ -1530,11 +1530,11 @@ class ADMIN {
 		</tr>
 		<tr>
 			<td><?php echo _EDITC_URL; ?></td>
-			<td><?php echo $comment['userid']; ?></td>
+			<td><input type="text" name="url" size="30" tabindex="6" value="<?php echo $comment['userid']; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo _EDITC_EMAIL; ?></td>
-			<td><?php echo $comment['email']; ?></td>
+			<td><input type="text" name="email" size="30" tabindex="8" value="<?php echo $comment['email']; ?>" /></td>
 		</tr>
 		<tr>
 			<td><?php echo _EDITC_TEXT?></td>
@@ -1563,6 +1563,8 @@ class ADMIN {
 
 		$member->canAlterComment($commentid) or $this->disallow();
 
+		$url = postVar('url');
+		$email = postVar('email');
 		$body = postVar('body');
 
 		// intercept words that are too long
@@ -1582,9 +1584,9 @@ class ADMIN {
 		// call plugins
 		$manager->notify('PreUpdateComment',array('body' => &$body));
 
-		$query =  'UPDATE '.sql_table('comment')
-			   . " SET cbody='" .addslashes($body). "'"
-			   . " WHERE cnumber=" . $commentid;
+		$query = 'UPDATE ' . sql_table('comment')
+			   . " SET cmail = '" . addslashes($url) . "', cemail = '" . addslashes($email) . "', cbody = '" . addslashes($body) . "'"
+			   . " WHERE cnumber = " . $commentid;
 		sql_query($query);
 
 		// get itemid
