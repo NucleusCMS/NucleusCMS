@@ -245,7 +245,7 @@ class COMMENTS {
 			$item =& $manager->getItem($this->itemid, 0, 0);
 			$mailto_title = _NOTIFY_NC_TITLE . ' ' . strip_tags($item['title']) . ' (' . $this->itemid . ')';
 
-			$frommail = $member->getNotifyFromMailAddress($comment['userid']);
+			$frommail = $member->getNotifyFromMailAddress($comment['email']);
 
 			$notify =& new NOTIFICATION($settings->getNotifyAddress());
 			$notify->notify($mailto_title, $mailto_msg , $frommail);
