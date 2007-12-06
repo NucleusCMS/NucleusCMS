@@ -78,7 +78,7 @@ class PARSER {
 	  * handle an action
 	  */
 	function doAction($action) {
-		global $manager;
+		global $manager, $CONF;
 
 		if (!$action) return;
 
@@ -113,10 +113,15 @@ class PARSER {
 			call_user_func_array(array(&$this->handler,'parse_' . $actionlc), $params);
 		} else {
 			// redirect to plugin action if possible
-			if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_'.$action))
+			if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_'.$action)) {
 				$this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
-			else
+			}
+			else {
+				if ($CONF['DebugVars']==true) {
 				echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
+		}
+			}
+			
 		}
 
 	}

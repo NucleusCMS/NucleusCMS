@@ -112,6 +112,7 @@ INSERT INTO `nucleus_config` VALUES ('SkinsURL', 'http://localhost:8080/nucleus/
 INSERT INTO `nucleus_config` VALUES ('ActionURL', 'http://localhost:8080/nucleus/action.php');
 INSERT INTO `nucleus_config` VALUES ('URLMode', 'normal');
 INSERT INTO `nucleus_config` VALUES ('DatabaseVersion', '330');
+INSERT INTO `nucleus_config` VALUES ('DebugVars', '0');
 
 CREATE TABLE `nucleus_item` (
   `inumber` int(11) NOT NULL auto_increment,

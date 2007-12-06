@@ -4781,6 +4781,15 @@ selector();
 
 					   </td>
 		</tr><tr>
+			<td><?php echo _SETTINGS_DEBUGVARS?> <?php help('debugvars');?></td>
+					   <td><?php
+
+						$this->input_yesno('DebugVars',$CONF['DebugVars'],10078);
+						
+							 ?>
+
+					   </td>
+		</tr><tr>
 			<th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
 		</tr><tr>
 			<td><?php echo _SETTINGS_MEDIADIR?></td>
@@ -4945,6 +4954,7 @@ selector();
 		$this->updateConfig('CookieSecure',		postVar('CookieSecure'));
 		$this->updateConfig('URLMode',			postVar('URLMode'));
 		$this->updateConfig('CookiePrefix',		postVar('CookiePrefix'));
+		$this->updateConfig('DebugVars',			postVar('DebugVars'));
 
 		// load new config and redirect (this way, the new language will be used is necessary)
 		// note that when changing cookie settings, this redirect might cause the user
