@@ -19,6 +19,10 @@
  * @version $Id$
  */
 
+// START changed/added for 3.32 START
+define('_SETTINGS_DEBUGVARS',		'Debug Vars');
+// END changed/added for 3.32 END
+
 // START changed/added after 3.3 START
 define('_AUTOSAVEDRAFT',		'Auto save draft');
 define('_AUTOSAVEDRAFT_LASTSAVED',	'Last saved: ');

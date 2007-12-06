@@ -12,6 +12,10 @@
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
 
+// START changed/added for 3.32 START
+define('_SETTINGS_DEBUGVARS',		'Debug Vars');
+// END changed/added for 3.32 END
+
 // START changed/added after 3.3 START
 define('_AUTOSAVEDRAFT',                'Auto save draft');
 define('_AUTOSAVEDRAFT_LASTSAVED',      'Last saved: ');
