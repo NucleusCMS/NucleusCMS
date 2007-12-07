@@ -311,8 +311,15 @@
 			$this->plugin_options = 0;
 		}
 
+		/**
+		 *	Clears the option value cache which saves the option values during
+		 *	the plugin execution. This function is usefull if the options has 
+		 *	changed during the plugin execution (especially in association with
+		 *	the PrePluginOptionsUpdate and the PostPluginOptionsUpdate events)
+		 **/		 		
 		function clearOptionValueCache(){
 			$this->_aOptionValues = array();
+			$this->plugin_options = 0;
 		}
 
 		// private
