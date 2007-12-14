@@ -864,7 +864,6 @@ function installCustomPlugs(&$manager) {
 		// get and install the plugin
 		$plugin =& $manager->getPlugin($plugName);
 		$plugin->plugid = $numCurrent;
-		echo "plugid: " . $plugin->plugid . "<br/>";
 
 		if (!$plugin) {
 			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pfile=\'' . addslashes($plugName) . '\'');
