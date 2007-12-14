@@ -401,6 +401,17 @@ function showInstallForm() {
 			</table>
 		</fieldset>
 
+		<h1>Weblog Ping</h1>
+
+		<fieldset>
+			<legend>Weblog Ping</legend>
+			<table>
+				<tr>
+					<td><input name="Weblog_ping" value="1" type="checkbox" id="Weblog_ping" />Install NP_Ping weblog pinging plugin</td>
+				</tr>
+			</table>
+		</fieldset>
+
 		<h1>Submit</h1>
 
 		<p>Verify the data above, and click the button below to set up your database tables and initial data. This can take a while, so have patience. <strong>ONLY CLICK THE BUTTON ONCE !</strong></p>
@@ -424,7 +435,7 @@ function tableName($unPrefixed) {
 }
 
 function doInstall() {
-	global $mysql_usePrefix, $mysql_prefix;
+	global $mysql_usePrefix, $mysql_prefix, $weblog_ping;
 
 	// 0. put all POST-vars into vars
 	$mysql_host = postVar('mySQL_host');
@@ -452,6 +463,7 @@ function doInstall() {
 	$blog_shortname = postVar('Blog_shortname');
 	$config_adminemail = $user_email;
 	$config_sitename = $blog_name;
+	$weblog_ping = postVar('Weblog_ping');
 
 	$config_indexurl = replaceDoubleBackslash($config_indexurl);
 	$config_adminurl = replaceDoubleBackslash($config_adminurl);
@@ -680,11 +692,17 @@ function doInstall() {
 		// 11. install custom skins
 		$aSkinErrors = installCustomSkins($manager);
 
-		// 12. install custom plugins
+		// 12. install NP_Ping, if decided
+		if ($weblog_ping == 1) {
+			global $aConfPlugsToInstall;
+			array_push($aConfPlugsToInstall, "NP_Ping");
+		}
+
+		// 13. install custom plugins
 		$aPlugErrors = installCustomPlugs($manager);
 	}
 
-	// 12. Write config file ourselves (if possible)
+	// 14. Write config file ourselves (if possible)
 	$bConfigWritten = 0;
 
 	if (@file_exists('config.php') && is_writable('config.php') && $fp = @fopen('config.php', 'w') ) {
@@ -845,6 +863,8 @@ function installCustomPlugs(&$manager) {
 
 		// get and install the plugin
 		$plugin =& $manager->getPlugin($plugName);
+		$plugin->plugid = $numCurrent;
+		echo "plugid: " . $plugin->plugid . "<br/>";
 
 		if (!$plugin) {
 			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pfile=\'' . addslashes($plugName) . '\'');
