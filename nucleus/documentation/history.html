@@ -15,9 +15,15 @@
 
 <ul>
 	<li>
-		<b>Nucleus SVN ()</b>
+		<b>Nucleus v3.32 SVN (development version)</b>
 		<ul>
 			<li>ADDED: add language file install_lang_english.php to install process (admun)</li>
+			<li>ADDED: add option to install NP_Ping during installation (admun)</li>
+			<li>FIXED: remove bug in the plugin api: function clearOptionValueCache hasn't worked correct with the getOption function (kaigreve)</li>
+			<li>ADDED: add global configuration DebugVars which decides if unresolved Vars (SkinVars, TemplateVars, ItemVars) are shown on the blog (kaigreve)</li>
+			<li>FIX: Fix getNotifyFromMailAddress to use email field now that we've separated email/url fields (gregorlove)</li>
+			<li>CHANGED: extend skinvar Bloglist with parameters to specify the sort order (kaigreve)</li>
+			<li>ADDED: add comment URL and email to "edit comment" form and make them editable (gregorlove)</li>
 		</ul>
 	</li>
 	<li>
