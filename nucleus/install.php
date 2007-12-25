@@ -29,6 +29,8 @@
 	-- Start Of Configurable Part --
 */
 
+include('./install_lang_english.php');
+
 // array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
 // directory.
 //
@@ -71,7 +73,7 @@ include_once('nucleus/libs/mysql.php');
 
 // check if mysql support is installed
 	if (!function_exists('mysql_query') ) {
-		_doError('Your PHP version does not have support for MySQL :(');
+		_doError(_ERROR1);
 	}
 
 	if (postVar('action') == 'go') {
@@ -90,7 +92,7 @@ function showInstallForm() {
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<title>Nucleus Install</title>
+		<title><?php echo _TITLE; ?></title>
 		<style type="text/css"><!--
 			@import url('nucleus/documentation/styles/manual.css');
 		--></style>
@@ -112,15 +114,13 @@ function showInstallForm() {
 		<div style="text-align:center"><img src="./nucleus/styles/logo.gif" /></div> <!-- Nucleus logo -->
 		<form method="post" action="install.php">
 
-		<h1>Install Nucleus</h1>
+		<h1><?php echo _HEADER1; ?></h1>
 
-		<p>This script will help you to install Nucleus. It will set up your MySQL database tables and provide you with the information you need to enter in <i>config.php</i>. In order to do all this, you need to enter some information.</p>
+		<?php echo _TEXT1; ?>
 
-		<p>All fields are mandatory. Optional information can be set from the Nucleus admin-area when installation is completed.</p>
+		<h1><?php echo _HEADER2; ?></h1>
 
-		<h1>PHP &amp; MySQL Versions</h1>
-
-		<p>Below are the version numbers of the PHP interpreter and the MySQL server on your webhost. When reporting problems on the Nucleus Support Forum, please include this information.</p>
+		<?php echo _TEXT2; ?>
 
 		<ul>
 			<li>PHP:
@@ -130,7 +130,7 @@ function showInstallForm() {
 	$minVersion = '4.0.6';
 
 	if (phpversion() < $minVersion) {
-		echo ' <span class="warning">WARNING: Nucleus requires at least version ', $minVersion, '</span>';
+		echo ' <span class="warning">', _TEXT2_WARN , $minVersion, '</span>';
 	}
 ?>
 
@@ -180,7 +180,7 @@ function showInstallForm() {
 	echo $mysqlVersion;
 
 	if ($mysqlVersion < $minVersion) {
-		echo ' <span class="warning">WARNING: Nucleus requires at least version ', $minVersion, '</span>';
+		echo ' <span class="warning">', _TEXT2_WARN2 , $minVersion, '</span>';
 	}
 ?>
 
@@ -192,58 +192,54 @@ function showInstallForm() {
 	if (@file_exists('config.php') && @!is_writable('config.php') ) {
 ?>
 
-		<h1>Automatic <i>config.php</i> Update</h1>
+		<h1><?php echo _HEADER3; ?></h1>
 
-		<p>If you want Nucleus to automatically update the <em>config.php</em> file, you'll need to make it writable. You can do this by changing the file permissions to <strong>666</strong>. After Nucleus is successfully installed, you can change the permissions back to <strong>444</strong> (<a href="nucleus/documentation/tips.html#filepermissions">Quick guide on how to change file permissions</a>).</p>
+		<?php echo _TEXT3;
 
-		<p>If you choose not to make your file writable (or are unable to do so): don't worry. The installation process will provide you with the contents of the <em>config.php</em> file so you can upload it yourself.</p>
+} ?>
 
-<?php } ?>
+		<h1><?php echo _HEADER4; ?></h1>
 
-		<h1>MySQL login data</h1>
-
-		<p>Enter your MySQL data below. This install script needs it to be able to create and fill your database tables. Afterwards, you'll also need to fill it out in <i>config.php</i>.</p>
-
-		<p>If you don't know this information, contact your system administrator for more info. Often, the hostname will be 'localhost'. If Nucleus found a 'default MySQL host' in the PHP settings of your server, this host is already listed in the 'hostname' field. There's no guarantee that this information is correct, though.</p>
+		<?php echo _TEXT4; ?>
 
 		<fieldset>
-			<legend>General Database Settings</legend>
+			<legend><?php echo _TEXT4_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td>Hostname:</td>
+					<td><?php echo _TEXT4_TAB_FIELD1; ?>:</td>
 					<td><input name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host') )?>" /></td>
 				</tr>
 				<tr>
-					<td>Username:</td>
+					<td><?php echo _TEXT4_TAB_FIELD2; ?>:</td>
 					<td><input name="mySQL_user" /></td>
 				</tr>
 				<tr>
-					<td>Password:</td>
+					<td><?php echo _TEXT4_TAB_FIELD3; ?>:</td>
 					<td><input name="mySQL_password" type="password" /></td>
 				</tr>
 				<tr>
-					<td>Database:</td>
-					<td><input name="mySQL_database" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create"><label for="mySQL_create" />needs to be created</label>)</td>
+					<td><?php echo _TEXT4_TAB_FIELD4; ?>:</td>
+					<td><input name="mySQL_database" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create"><label for="mySQL_create" /><?php echo _TEXT4_TAB_FIELD4_ADD; ?></label>)</td>
 				</tr>
 			</table>
 		</fieldset>
 
 		<fieldset>
-			<legend>Advanced Database Settings</legend>
+			<legend><?php echo _TEXT4_TAB2_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><input name="mySQL_usePrefix" value="1" type="checkbox" id="mySQL_usePrefix"><label for="mySQL_usePrefix" />Use table prefix:</label></td>
+					<td><input name="mySQL_usePrefix" value="1" type="checkbox" id="mySQL_usePrefix"><label for="mySQL_usePrefix" /><?php echo _TEXT4_TAB2_FIELD; ?>:</label></td>
 					<td><input name="mySQL_tablePrefix" value="" /></td>
 				</tr>
 			</table>
 
-			<p>Unless you're installing multiple Nucleus installations in one single database and know what you're doing, <strong>you really shouldn't change this</strong>.</p>
-			<p>All database tables generated by Nucleus will start with this prefix.</p>
+			<?php echo _TEXT4_TAB2_ADD; ?>
+
 		</fieldset>
 
-		<h1>Directories and URLs</h1>
+		<h1><?php echo _HEADER5; ?></h1>
 
-		<p>This install script has attempted to find out the directories and URLs in which Nucleus is installed. Please check the values below and correct if necessary. The URLs and file paths should end with a slash.</p>
+		<?php echo _TEXT5; ?>
 
 <?php
 
@@ -270,10 +266,10 @@ function showInstallForm() {
 ?>
 
 		<fieldset>
-			<legend>URLs and directories</legend>
+			<legend><?php echo _TEXT5_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td>Site <strong>URL</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD1;?>:</td>
 					<td><input name="IndexURL" size="60" value="<?php
 						$url = 'http://' . serverVar('HTTP_HOST') . serverVar('PHP_SELF');
 						$url = str_replace('install.php', '', $url);
@@ -287,35 +283,35 @@ function showInstallForm() {
 						echo $url; ?>" /></td>
 				</tr>
 				<tr>
-					<td>Admin-area <strong>URL</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD2;?>:</td>
 					<td><input name="AdminURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'nucleus/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td>Admin-area <strong>path</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD3;?>:</td>
 					<td><input name="AdminPath" size="60" value="<?php
 						if($basePath) {
 							echo $basePath, 'nucleus/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td>Media files <strong>URL</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD4;?>:</td>
 					<td><input name="MediaURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'media/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td>Media directory <strong>path</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD5;?>:</td>
 					<td><input name="MediaPath" size="60" value="<?php
 						if ($basePath) {
 							echo $basePath, 'media/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td>Extra skin files <strong>URL</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD6;?>:</td>
 					<td><input name="SkinsURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'skins/';
@@ -324,99 +320,99 @@ function showInstallForm() {
 					</td>
 				</tr>
 				<tr>
-					<td>Extra skin files directory <strong>path</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD7;?>:</td>
 					<td><input name="SkinsPath" size="60" value="<?php
 						if ($basePath) {
 							echo $basePath, 'skins/';
 						} ?>" />
-						<br />(this is where imported skins can place their extra files)
+						<br />(<?php echo _TEXT5_TAB_FIELD7_2;?>)
 					</td>
 				</tr>
 				<tr>
-					<td>Plugin files <strong>URL</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD8;?>:</td>
 					<td><input name="PluginURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'nucleus/plugins/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td>Action <strong>URL</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD9;?>:</td>
 					<td><input name="ActionURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'action.php';
 						} ?>" />
-						<br />(absolute location of the <tt>action.php</tt> file)
+						<br />(<?php echo _TEXT5_TAB_FIELD9_2;?>)
 					</td>
 				</tr>
 			</table>
 		</fieldset>
 
-		<p class="note"><strong>Note: Use absolute paths</strong> instead of relative paths. Usually, an absolute path will start with something like <tt>/home/username/public_html/</tt>. On Unix systems (most servers), paths should start with a slash. If you have trouble filling out this information, you should ask your administrator what to fill out.</p>
+		<?php echo _TEXT5_2; ?>
 
-		<h1>Administrator User</h1>
+		<h1><? echo _HEADER6; ?></h1>
 
-		<p>Below, you need to enter some information to create the first user of your site.</p>
+		<?php echo _TEXT6; ?>
 
 		<fieldset>
-			<legend>Administrator User</legend>
+			<legend><?php echo _TEXT6_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td>Display Name:</td>
-					<td><input name="User_name" value="" /> <small>(allowed characters: a-z and 0-9, spaces allowed inside)</small></td>
+					<td><?php echo _TEXT6_TAB_FIELD1; ?>:</td>
+					<td><input name="User_name" value="" /> <small>(<?php echo _TEXT6_TAB_FIELD1_2; ?>)</small></td>
 				</tr>
 				<tr>
-					<td>Real Name:</td>
+					<td><?php echo _TEXT6_TAB_FIELD2; ?>:</td>
 					<td><input name="User_realname" value="" /></td>
 				</tr>
 				<tr>
-					<td>Password:</td>
+					<td><?php echo _TEXT6_TAB_FIELD3; ?>:</td>
 					<td><input name="User_password" type="password" value="" /></td>
 				</tr>
 				<tr>
-					<td>Password Again:</td>
+					<td><?php echo _TEXT6_TAB_FIELD4; ?>:</td>
 					<td><input name="User_password2" type="password" value="" /></td>
 				</tr>
 				<tr>
-					<td>E-mail Address:</td>
-					<td><input name="User_email" value="" /> <small>(needs to be a valid e-mail address)</small></td>
+					<td><?php echo _TEXT6_TAB_FIELD5; ?>:</td>
+					<td><input name="User_email" value="" /> <small>(<?php echo _TEXT6_TAB_FIELD5_2; ?>)</small></td>
 				</tr>
 			</table>
 		</fieldset>
 
-		<h1>Weblog data</h1>
+		<h1><?php echo _HEADER7; ?></h1>
 
-		<p>Below, you need to enter some information to create a default weblog. The name of this weblog will also be used as name for your site</p>
+		<?php echo _TEXT7; ?>
 
 		<fieldset>
-			<legend>Weblog Data</legend>
+			<legend><?php echo _TEXT7_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td>Blog Name:</td>
+					<td><?php echo _TEXT7_TAB_FIELD1; ?>:</td>
 					<td><input name="Blog_name" size="60" value="My Nucleus CMS" /></td>
 				</tr>
 				<tr>
-					<td>Blog Short Name:</td>
-					<td><input name="Blog_shortname" value="mynucleuscms" /> <small>(allowed characters: a-z and 0-9, no spaces allowed)</small></td>
+					<td><?php echo _TEXT7_TAB_FIELD2; ?>:</td>
+					<td><input name="Blog_shortname" value="mynucleuscms" /> <small>(<?php echo _TEXT7_TAB_FIELD2_2; ?>)</small></td>
 				</tr>
 			</table>
 		</fieldset>
 
-		<h1>Weblog Ping</h1>
+		<h1><?php echo _HEADER8; ?></h1>
 
 		<fieldset>
-			<legend>Weblog Ping</legend>
+			<legend><?php echo _TEXT8_TAB_HEADER; ?></legend>
 			<table>
 				<tr>
-					<td><input name="Weblog_ping" value="1" type="checkbox" id="Weblog_ping" />Install NP_Ping weblog pinging plugin</td>
+					<td><input name="Weblog_ping" value="1" type="checkbox" id="Weblog_ping" /><?php echo _TEXT8_TAB_FIELD1; ?></td>
 				</tr>
 			</table>
 		</fieldset>
 
-		<h1>Submit</h1>
+		<h1><?php echo _HEADER9; ?></h1>
 
-		<p>Verify the data above, and click the button below to set up your database tables and initial data. This can take a while, so have patience. <strong>ONLY CLICK THE BUTTON ONCE !</strong></p>
+		<?php echo _TEXT9; ?>
 
-		<p><input name="action" value="go" type="hidden" /> <input type="submit" value="Install Nucleus" onclick="return checkSubmit();" /></p>
+		<p><input name="action" value="go" type="hidden" /> <input type="submit" value="<?php echo _BUTTON1; ?>" onclick="return checkSubmit();" /></p>
 
 		</form>
 	</body>
@@ -478,56 +474,56 @@ function doInstall() {
 	$errors = array();
 
 	if (!$mysql_database) {
-		array_push($errors, 'mySQL database name missing');
+		array_push($errors, _ERROR2);
 	}
 
 	if (($mysql_usePrefix == 1) && (strlen($mysql_prefix) == 0) ) {
-		array_push($errors, 'mySQL prefix was selected, but prefix is empty');
+		array_push($errors, _ERROR3);
 	}
 
 	if (($mysql_usePrefix == 1) && (!eregi('^[a-zA-Z0-9_]+$', $mysql_prefix) ) ) {
-		array_push($errors, 'mySQL prefix should only contain characters from the ranges A-Z, a-z, 0-9 or underscores');
+		array_push($errors, _ERROR4);
 	}
 
 	// TODO: add action.php check
 	if (!endsWithSlash($config_indexurl) || !endsWithSlash($config_adminurl) || !endsWithSlash($config_mediaurl) || !endsWithSlash($config_pluginurl) || !endsWithSlash($config_skinsurl) ) {
-		array_push($errors, 'One of the URLs does not end with a slash, or action url does not end with \'action.php\'');
+		array_push($errors, _ERROR5);
 	}
 
 	if (!endsWithSlash($config_adminpath) ) {
-		array_push($errors, 'The path of the administration area does not end with a slash');
+		array_push($errors, _ERROR6);
 	}
 
 	if (!endsWithSlash($config_mediapath) ) {
-		array_push($errors, 'The media path does not end with a slash');
+		array_push($errors, _ERROR7);
 	}
 
 	if (!endsWithSlash($config_skinspath) ) {
-		array_push($errors, 'The skins path does not end with a slash');
+		array_push($errors, _ERROR8);
 	}
 
 	if (!is_dir($config_adminpath) ) {
-		array_push($errors, 'The path of the administration area does not exist on your server');
+		array_push($errors, _ERROR9);
 	}
 
 	if (!_isValidMailAddress($user_email) ) {
-		array_push($errors, 'Invalid e-mail address given for user');
+		array_push($errors, _ERROR10);
 	}
 
 	if (!_isValidDisplayName($user_name) ) {
-		array_push($errors, 'User name is not a valid display name (allowed chars: a-zA-Z0-9 and spaces)');
+		array_push($errors, _ERROR11);
 	}
 
 	if (!$user_password || !$user_password2) {
-		array_push($errors, 'User password is empty');
+		array_push($errors, _ERROR12);
 	}
 
 	if ($user_password != $user_password2) {
-		array_push($errors, 'User password do not match');
+		array_push($errors, _ERROR13);
 	}
 
 	if (!_isValidShortName($blog_shortname) ) {
-		array_push($errors, 'Invalid short name given for blog (allowed chars: a-z0-9, no spaces)');
+		array_push($errors, _ERROR14);
 	}
 
 	if (sizeof($errors) > 0) {
@@ -539,16 +535,16 @@ function doInstall() {
 	$MYSQL_CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password);
 
 	if ($MYSQL_CONN == false) {
-		_doError('Could not connect to mySQL server: ' . mysql_error() );
+		_doError(_ERROR15 . ': ' . mysql_error() );
 	}
 
 	// 3. try to create database (if needed)
 	if ($mysql_create == 1) {
-		mysql_query('CREATE DATABASE ' . $mysql_database) or _doError('Could not create database. Make sure you have the rights to do so. SQL error was: ' . mysql_error() );
+		mysql_query('CREATE DATABASE ' . $mysql_database) or _doError(_ERROR16 . ': ' . mysql_error() );
 	}
 
 	// 4. try to select database
-	mysql_select_db($mysql_database) or _doError('Could not select database. Make sure it exists');
+	mysql_select_db($mysql_database) or _doError(_ERROR17);
 
 	// 5. execute queries
 	$filename = 'install.sql';
@@ -618,9 +614,13 @@ function doInstall() {
 					$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
 			}
 
-			mysql_query($query) or _doError('Error while executing query (<small>' . htmlspecialchars($query) . '</small>): ' . mysql_error() );
+			mysql_query($query) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query) . '</small>): ' . mysql_error() );
 		}
 	}
+
+	// 5a make first post
+	$newpost = "INSERT INTO `nucleus_item` VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
+	mysql_query($newpost) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . mysql_error() );
 
 	// 6. update global settings
 	updateConfig('IndexURL', $config_indexurl);
@@ -642,7 +642,7 @@ function doInstall() {
 			. " madmin=1, mcanlogin=1"
 			. " WHERE mnumber=1";
 
-	mysql_query($query) or _doError('Error while setting member settings: ' . mysql_error() );
+	mysql_query($query) or _doError(_ERROR19 . ': ' . mysql_error() );
 
 	// 8. update weblog settings
 	$query = 'UPDATE ' . tableName('nucleus_blog')
@@ -651,14 +651,14 @@ function doInstall() {
 			. " burl='" . addslashes($config_indexurl) . "'"
 			. " WHERE bnumber=1";
 
-	mysql_query($query) or _doError('Error while setting weblog settings: ' . mysql_error() );
+	mysql_query($query) or _doError(_ERROR20 . ': ' . mysql_error() );
 
 	// 9. update item date
 	$query = 'UPDATE ' . tableName('nucleus_item')
 			. " SET itime='" . date('Y-m-d H:i:s', time() ) ."'"
 			. " WHERE inumber=1";
 
-	mysql_query($query) or _doError('Error with query: ' . mysql_error() );
+	mysql_query($query) or _doError(_ERROR21 . ': ' . mysql_error() );
 
 	global $aConfPlugsToInstall, $aConfSkinsToImport;
 	$aSkinErrors = array();
@@ -746,7 +746,7 @@ function doInstall() {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Nucleus Install</title>
+	<title><?php echo _TITLE; ?></title>
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>
 <body>
@@ -756,14 +756,14 @@ function doInstall() {
 	$aAllErrors = array_merge($aSkinErrors, $aPlugErrors);
 
 	if (count($aAllErrors) > 0) {
-		echo '<h1>Skin/Plugin Install errors</h1>';
+		echo '<h1>' . _TITLE2 . '</h1>';
 		echo '<ul><li>' . implode('</li><li>', $aAllErrors) . '</li></ul>';
 	}
 
 	if (!$bConfigWritten) { ?>
-		<h1>Installation Almost Complete!</h1>
+		<h1><?php echo _TITLE3; ?></h1>
 
-		<p>The database tables have been initialized successfully. What still needs to be done is to change the contents of <i>config.php</i>. Below is how it should look like (the mysql password is masked, so you'll have to fill that out yourself)</p>
+		<? echo _TEXT10; ?>
 
 		<pre><code>&lt;?php
 	// mySQL connection information
@@ -792,49 +792,46 @@ function doInstall() {
 	include($DIR_LIBS.'globalfunctions.php');
 ?&gt;</code></pre>
 
-	<p>After you changed the file on your computer, upload it to your web server using FTP. Make sure you use ASCII mode to send over the files.</p>
+	<?php echo _TEXT11; ?>
 
 	<div class="note">
-		<b>Note:</b> Make sure that you have no spaces at the beginning or end of the <i>config.php</i> file. These would cause errors to happen when performing certain actions.<br />
-		Thus, the first character of config.php should be "&lt;", and the last character should be "&gt;".
+	<?php echo _TEXT12; ?>
 	</div>
 
 <?php } else { ?>
 
-	<h1>Installation complete!</h1>
+	<h1><?php echo _TITLE4; ?></h1>
 
-	<p>Nucleus has been installed, and your <code>config.php</code> has been updated for you.</p>
-
-	<p>Don't forget to change the permissions on <code>config.php</code> back to 444 for security (<a href="nucleus/documentation/tips.html#filepermissions">Quick guide on how to change file permissions</a>).</p>
+	<?php echo _TEXT13; ?>
 
 <?php } ?>
 
-	<h1>Fight against Spam</h1>
+	<h1><?php echo _TITLE5; ?></h1>
 	
-	<p>Nucleus CMS allows every visitor to write comments in blogs. So there is a high risk that spammers abuse this function. We recommend that you protect your blog with one of the following methods:</p>
+	<?php echo _TEXT14; ?>
 
 	<ul>
-		<li>If you don't want comments you can disable them individually for each blog: Go to the hompage of the Admin area and choose <b>Your Weblog > Settings > Comments enabled > No</b>.</li>
-		<li>Install one of serveral plugins that help to avoid spam comments: <a href="http://faq.nucleuscms.org/item/45">How can I stop comment and trackback spam?</a> (you could bookmark this page to read it later).</li>
+		<li><?php echo _TEXT14_L1; ?></li>
+		<li><?php echo _TEXT14_L2; ?></li>
 	</ul>
 	
-	<h1>Delete your install files</h1>
+	<h1><?php echo _HEADER10; ?></h1>
 
-	<p>Files you should delete from your web server:</p>
+	<?php echo _TEXT15; ?>
 
 	<ul>
-		<li><b>install.sql</b>: file containing table structures</li>
-		<li><b>install.php</b>: this file</li>
+		<li><?php echo _TEXT15_L1; ?></li>
+		<li><?php echo _TEXT15_L2; ?></li>
 	</ul>
 
-	<p>If you don't delete these files, you won't be able to open the admin area</p>
+	<?php echo _TEXT16; ?>
 
-	<h1>Visit your web site</h1>
+	<h1><?php echo _HEADER11; ?></h1>
 
-	<p>Your web site is now ready to use.
+	<p><?php echo _TEXT16; ?>
 		<ul>
-			<li><a href="<?php echo $config_adminurl?>">Login to the admin area to configure your site</a></li>
-			<li><a href="<?php echo $config_indexurl?>">Visit your site now</a></li>
+			<li><a href="<?php echo $config_adminurl?>"><?php echo _TEXT16_L1; ?></a></li>
+			<li><a href="<?php echo $config_indexurl?>"><?php echo _TEXT16_L2; ?></a></li>
 		</ul>
 	</p>
 
@@ -868,7 +865,7 @@ function installCustomPlugs(&$manager) {
 		if (!$plugin) {
 			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pfile=\'' . addslashes($plugName) . '\'');
 			$numCurrent--;
-			array_push($aErrors, 'Unable to install plugin ' . $plugName);
+			array_push($aErrors, _ERROR22 . $plugName);
 			continue;
 		}
 
@@ -916,21 +913,21 @@ function installCustomSkins(&$manager) {
 		$skinFile = $DIR_SKINS . $skinName . '/skinbackup.xml';
 
 		if (!@file_exists($skinFile) ) {
-			array_push($aErrors, 'Unable to import ' . $skinFile . ' : file does not exist');
+			array_push($aErrors, _ERROR23_1 . $skinFile . ' : ' . _ERROR23_2);
 			continue;
 		}
 
 		$error = $importer->readFile($skinFile);
 
 		if ($error) {
-			array_push($aErrors, 'Unable to import ' . $skinName . ' : ' . $error);
+			array_push($aErrors, _ERROR24 . $skinName . ' : ' . $error);
 			continue;
 		}
 
 		$error = $importer->writeToDatabase(1);
 
 		if ($error) {
-			array_push($aErrors, 'Unable to import ' . $skinName . ' : ' . $error);
+			array_push($aErrors, _ERROR24 . $skinName . ' : ' . $error);
 			continue;
 		}
 	}
@@ -964,7 +961,7 @@ function doCheckFiles() {
 
 	for ($i = 0; $i < $count; $i++) {
 		if (!is_readable($files[$i]) ) {
-			array_push($missingfiles, 'File <b>' . $files[$i] . '</b> is missing or not readable.');
+			array_push($missingfiles, _ERROR25_1 . $files[$i] . _ERROR25_2);
 		}
 	}
 
@@ -987,7 +984,7 @@ function updateConfig($name, $val) {
 			. " SET value='$val'"
 			. " WHERE name='$name'";
 
-	mysql_query($query) or _doError('Query error while trying to update config: ' . mysql_error() );
+	mysql_query($query) or _doError(_ERROR26 . ': ' . mysql_error() );
 	return mysql_insert_id();
 }
 
@@ -1039,16 +1036,16 @@ function _doError($msg) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Nucleus Install</title>
+	<title><?php echo _TITLE; ?></title>
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>
 <body>
 	<div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
-	<h1>Error!</h1>
+	<h1><?php echo _ERROR27; ?></h1>
 
-	<p>Error message was: "<?php echo $msg?>";</p>
+	<p><?php echo _ERROR28; ?>: "<?php echo $msg?>";</p>
 
-	<p><a href="install.php" onclick="history.back();return false;">Go Back</a></p>
+	<p><a href="install.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
 </body>
 </html>
 
@@ -1061,14 +1058,14 @@ function showErrorMessages($errors) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>Nucleus Install</title>
+	<title><?php echo _TITLE; ?></title>
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>
 <body>
 	<div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
-	<h1>Errors!</h1>
+	<h1><?php echo _ERROR27; ?></h1>
 
-	<p>Errors were found:</p>
+	<p><?php echo _ERROR29; ?>:</p>
 
 	<ul>
 
@@ -1080,7 +1077,7 @@ function showErrorMessages($errors) {
 
 	</ul>
 
-	<p><a href="install.php" onclick="history.back();return false;">Go Back</a></p>
+	<p><a href="install.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
 </body>
 </html>
 
