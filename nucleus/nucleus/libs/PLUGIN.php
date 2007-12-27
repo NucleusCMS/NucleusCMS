@@ -304,7 +304,9 @@
 		var $plugid;			// plugin id
 
 
-		// constructor. Initializes some internal data
+		/**
+		 * Class constructor: Initializes some internal data
+		 */		 		 		
 		function NucleusPlugin() {
 			$this->_aOptionValues = array();	// oid_contextid => value
 			$this->_aOptionToInfo = array();	// context_name => array('oid' => ..., 'default' => ...)
@@ -322,7 +324,11 @@
 			$this->plugin_options = 0;
 		}
 
-		// private
+		/**
+		 * Creates an option in the database table plugin_option_desc
+		 *		 
+		 * private
+		 */		 		 		
 		function _createOption($context, $name, $desc, $type, $defValue, $typeExtras = '') {
 			// create in plugin_option_desc
 			$query = 'INSERT INTO ' . sql_table('plugin_option_desc')
@@ -343,7 +349,12 @@
 		}
 
 
-		// private
+		/**
+		 * Deletes an option from the database tables
+		 * plugin_option and plugin_option_desc 
+		 *
+		 * private		 
+		 */		 		 		
 		function _deleteOption($context, $name) {
 			$oid = $this->_getOID($context, $name);
 			if (!$oid) return 0; // no such option
@@ -361,8 +372,10 @@
 		}
 
 		/**
-		 * private
+		 * Update an option in the database table plugin_option
+		 * 		 
 		 * returns: 1 on success, 0 on failure
+		 * private
 		 */
 		function _setOption($context, $contextid, $name, $value) {
 			global $manager;
@@ -400,7 +413,13 @@
 			return 1;
 		}
 
-		// private
+		/**
+		 * Get an option from Cache or database
+		 * 	 - if not in the option Cache read it from the database
+		 *   - if not in the database write default values into the database
+		 *   		  
+		 * private		 
+		 */		 		 		
 		function _getOption($context, $contextid, $name) {
 			$oid = $this->_getOID($context, $name);
 			if (!$oid) return '';
@@ -432,8 +451,10 @@
 		}
 
 		/**
-		 * Returns assoc array with all values for a given option (one option per
-		 * possible context id)
+		 * Returns assoc array with all values for a given option 
+		 * (one option per possible context id)
+		 * 
+		 * private		 		 
 		 */
 		function _getAllOptions($context, $name) {
 			$oid = $this->_getOID($context, $name);
