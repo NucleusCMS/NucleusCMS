@@ -225,6 +225,77 @@
 		}
 
 		/**
+		  * Returns the plugin ID
+		  * 
+		  * public		  		  
+		  */
+		function getID() {
+			return $this->plugid;
+		}
+
+		/**
+		  * Returns the URL of the admin area for this plugin (in case there's
+		  * no such area, the returned information is invalid)
+		  * 
+		  * public		  		  
+		  */
+		function getAdminURL() {
+			global $CONF;
+			return $CONF['PluginURL'] . $this->getShortName() . '/';
+		}
+
+		/**
+		  * Returns the directory where the admin directory is located and
+		  * where the plugin can maintain his extra files
+		  * 
+		  * public		  		  
+		  */
+		function getDirectory() {
+			global $DIR_PLUGINS;
+			return $DIR_PLUGINS . $this->getShortName() . '/';
+		}
+
+		/**
+		  * Derives the short name for the plugin from the classname (all 
+		  * lowercase)
+		  * 
+		  * public		  		  
+		  */
+		function getShortName() {
+			return str_replace('np_','',strtolower(get_class($this)));
+		}
+
+		/**
+		 *	Clears the option value cache which saves the option values during
+		 *	the plugin execution. This function is usefull if the options has 
+		 *	changed during the plugin execution (especially in association with
+		 *	the PrePluginOptionsUpdate and the PostPluginOptionsUpdate events)
+		 *	
+		 *  public		 		 
+		 **/		 		
+		function clearOptionValueCache(){
+			$this->_aOptionValues = array();
+			$this->plugin_options = 0;
+		}
+
+		// internal functions of the class starts here
+
+		var $_aOptionValues;	// oid_contextid => value
+		var $_aOptionToInfo;	// context_name => array('oid' => ..., 'default' => ...)
+		var $plugin_options;	// see getOption()
+		var $plugid;			// plugin id
+
+
+		/**
+		 * Class constructor: Initializes some internal data
+		 */		 		 		
+		function NucleusPlugin() {
+			$this->_aOptionValues = array();	// oid_contextid => value
+			$this->_aOptionToInfo = array();	// context_name => array('oid' => ..., 'default' => ...)
+			$this->plugin_options = 0;
+		}
+
+		/**
 		 * Retrieves an array of the top (or bottom) of an option from a plugin.
 		 * @author TeRanEX
 		 * @param  string $context the context for the option: item, blog, member,...
@@ -264,64 +335,6 @@
 
 			// return the array (duh!)
 			return $top;
-		}
-
-		/**
-		  * Returns the plugin ID
-		  */
-		function getID() {
-			return $this->plugid;
-		}
-
-		/**
-		  * returns the URL of the admin area for this plugin (in case there's
-		  * no such area, the returned information is invalid)
-		  */
-		function getAdminURL() {
-			global $CONF;
-			return $CONF['PluginURL'] . $this->getShortName() . '/';
-		}
-
-		/**
-		  * Returns the directory where the admin directory is located and
-		  * where the plugin can maintain his extra files
-		  */
-		function getDirectory() {
-			global $DIR_PLUGINS;
-			return $DIR_PLUGINS . $this->getShortName() . '/';
-		}
-
-		/**
-		  * Derives the short name for the plugin from the classname (all lowercase)
-		  */
-		function getShortName() {
-			return str_replace('np_','',strtolower(get_class($this)));
-		}
-
-		var $_aOptionValues;	// oid_contextid => value
-		var $_aOptionToInfo;	// context_name => array('oid' => ..., 'default' => ...)
-		var $plugin_options;	// see getOption()
-		var $plugid;			// plugin id
-
-
-		/**
-		 * Class constructor: Initializes some internal data
-		 */		 		 		
-		function NucleusPlugin() {
-			$this->_aOptionValues = array();	// oid_contextid => value
-			$this->_aOptionToInfo = array();	// context_name => array('oid' => ..., 'default' => ...)
-			$this->plugin_options = 0;
-		}
-
-		/**
-		 *	Clears the option value cache which saves the option values during
-		 *	the plugin execution. This function is usefull if the options has 
-		 *	changed during the plugin execution (especially in association with
-		 *	the PrePluginOptionsUpdate and the PostPluginOptionsUpdate events)
-		 **/		 		
-		function clearOptionValueCache(){
-			$this->_aOptionValues = array();
-			$this->plugin_options = 0;
 		}
 
 		/**
