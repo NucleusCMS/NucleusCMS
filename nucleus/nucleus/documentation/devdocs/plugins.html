@@ -239,6 +239,10 @@ So, that wasn't so hard after all. Read on to find out more.
 		<td>(v2.0b) Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (comments-related parts). By default, this method forwards the handling to the <code>doSkinVar</code>-method, using <code>template</code> as skintype. <a href="#templatevars">More information on implementing the <code>doTemplateCommentsVar</code> method</a></td>
 	</tr>
 	<tr>
+		<td><code>doItemVar(&amp;$item, &amp;param)</code></td>
+		<td>(v3.30) Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in an <i>item</i>. <code>&amp;$item</code> provides the full item object of the item in which the ItemVar appears and <code>&amp;$param</code> the parameters of the ItemVar.</td>
+	</tr>
+	<tr>
 		<td><code>doAction($type)</code></td>
 		<td>When a plugin wants to allow user interaction, it can allow actions through <code>action.php</code>. This is the script that Nucleus uses itself to handle new comments and karma votes. Called with the correct parameters, the <code>doAction</code>-method from a plugin can be called. The <code>$type</code> contains an optional message type. Extra variables from the request can be accessed from within the <code>doAction</code> method. By default, this method returns a string <q>No Such Action</q> which will trigger an error message. <a href="#actions">More info on <code>doAction</code>.</a></td>
 	</tr>
