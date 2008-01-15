@@ -391,7 +391,7 @@ class ACTION
 		global $manager;
 		if ($manager->checkTicket()) {
 			$manager->loadClass('ITEM');
-			$info = ITEM::CreateDraftFromRequest();
+			$info = ITEM::createDraftFromRequest();
 			if ($info['status'] == 'error') {
 				echo $info['message'];
 			}
