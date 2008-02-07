@@ -96,9 +96,9 @@ function do_backup($gzip = 0) {
 		@ob_implicit_flush(0);
 
 		// set filename
-		$filename = 'nucleus_db_backup_'.strftime("%Y%m%d", time()).".sql.gz";
+		$filename = 'nucleus_db_backup_'.strftime("%Y-%m-%d-%H-%M-%S", time()).".sql.gz";
 	} else {
-		$filename = 'nucleus_db_backup_'.strftime("%Y%m%d", time()).".sql";
+		$filename = 'nucleus_db_backup_'.strftime("%Y-%m-%d-%H-%M-%S", time()).".sql";
 	}
 
 
