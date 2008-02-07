@@ -508,7 +508,7 @@ class ACTIONS extends BaseActions {
 	*	orderby: order criteria
 	*	direction: order ascending or descending		  
 	*/
-	function parse_bloglist($template, $bnametype = '', $orderby, $direction) {
+	function parse_bloglist($template, $bnametype = '', $orderby='number', $direction='asc') {
 		BLOG::showBlogList($template, $bnametype, $orderby, $direction);
 	}
 	
