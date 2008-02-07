@@ -5646,7 +5646,8 @@ selector();
 		// (creating/restoring dumps might take a while)
 		@set_time_limit(1200);
 
-		do_backup($useGzip);
+		$bu = new Backup();
+		$bu->do_backup($useGzip);
 		exit;
 	}
 
@@ -5667,7 +5668,8 @@ selector();
 		// (creating/restoring dumps might take a while)
 		@set_time_limit(1200);
 
-		$message = do_restore();
+		$bu = new Backup();
+		$message = $bu->do_restore();
 		if ($message != '')
 			$this->error($message);
 

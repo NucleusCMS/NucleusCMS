@@ -20,6 +20,18 @@
  */
 
 
+class Backup
+{ 
+
+	/**
+	 * Constructor
+	 */	 	 	
+	function Backup()
+	{
+		// do nothing		
+	}
+
+
 /**
   * This function creates an sql dump of the database and sends it to
   * the user as a file (can be gzipped if they want)
@@ -108,7 +120,7 @@ function do_backup($gzip = 0) {
 
 	// dump all tables
 	reset($tables);
-	array_walk($tables, '_backup_dump_table');
+	array_walk($tables, array(&$this, '_backup_dump_table'));
 
 	if($gzip)
 	{
@@ -116,7 +128,7 @@ function do_backup($gzip = 0) {
 		$Crc = crc32(ob_get_contents());
 		$contents = gzcompress(ob_get_contents());
 		ob_end_clean();
-		echo "\x1f\x8b\x08\x00\x00\x00\x00\x00".substr($contents, 0, strlen($contents) - 4).gzip_PrintFourChars($Crc).gzip_PrintFourChars($Size);
+		echo "\x1f\x8b\x08\x00\x00\x00\x00\x00".substr($contents, 0, strlen($contents) - 4).$this->gzip_PrintFourChars($Crc).$this->gzip_PrintFourChars($Size);
 	}
 
 	exit;
@@ -135,10 +147,10 @@ function _backup_dump_table($tablename, $key) {
 	echo "#\n";
 
 	// dump table structure
-	_backup_dump_structure($tablename);
+	$this->_backup_dump_structure($tablename);
 
 	// dump table contents
-	_backup_dump_contents($tablename);
+	$this->_backup_dump_contents($tablename);
 }
 
 function _backup_dump_structure($tablename) {
@@ -248,7 +260,7 @@ function _backup_dump_contents($tablename) {
 	//
 	// Compose fieldname list
 	//
-	$tablename_list = _backup_get_field_names($result, $num_fields);
+	$tablename_list = $this->_backup_get_field_names($result, $num_fields);
 		
 	//
 	// Loop through the resulting rows and build the sql statement.
@@ -345,15 +357,15 @@ function do_restore() {
 	}
 
 	// time to execute the query
-	_execute_queries($sql_query);
+	$this->_execute_queries($sql_query);
 }
 
 function _execute_queries($sql_query) {
 	if (!$sql_query) return;
 
 	// Strip out sql comments...
-	$sql_query = remove_remarks($sql_query);
-	$pieces = split_sql_file($sql_query);
+	$sql_query = $this->remove_remarks($sql_query);
+	$pieces = $this->split_sql_file($sql_query);
 
 	$sql_count = count($pieces);
 	for($i = 0; $i < $sql_count; $i++)
@@ -435,7 +447,7 @@ function split_sql_file($sql)
 		{
 
 			// even number of quotes means a complete SQL statement
-			if (_evenNumberOfQuotes($tokens[$i]))
+			if ($this->_evenNumberOfQuotes($tokens[$i]))
 			{
 				$output[] = $tokens[$i];
 				$tokens[$i] = ""; 	// save memory.
@@ -454,7 +466,7 @@ function split_sql_file($sql)
 				{
 					// odd number of quotes means a completed statement
 					// (in combination with the odd number we had already)
-					if (!_evenNumberOfQuotes($tokens[$j]))
+					if (!$this->_evenNumberOfQuotes($tokens[$j]))
 					{
 						$output[] = $temp . $tokens[$j];
 
