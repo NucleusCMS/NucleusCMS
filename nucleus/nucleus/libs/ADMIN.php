@@ -1154,6 +1154,11 @@ class ADMIN {
 				$publish = 1;
 				$wasdraft = 0;
 				break;
+			case 'backtodrafts':
+				$wasdraft = 0;
+				$publish = 0;
+				$timestamp = 0;
+				break;			
 			case 'edit':
 			default:
 				$publish = 1;
