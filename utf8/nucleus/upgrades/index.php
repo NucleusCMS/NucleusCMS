@@ -12,8 +12,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: index.php,v 1.11 2007-04-26 08:45:26 kimitake Exp $
- * $NucleusJP: index.php,v 1.10 2007/04/26 06:20:18 kimitake Exp $
+ * @version $Id: index.php,v 1.12 2008-02-08 09:31:23 kimitake Exp $
+ * $NucleusJP: index.php,v 1.11 2007/04/26 08:45:26 kimitake Exp $
  *
  */
 
@@ -54,18 +54,19 @@ upgrade_head();
   else  if (!upgrade_checkinstall(31)) $current = 30;
   else  if (!upgrade_checkinstall(32)) $current = 31;
   else  if (!upgrade_checkinstall(33)) $current = 32;
-  else  $current = 33;
+  else  if (!upgrade_checkinstall(331)) $current = 33;
+  else  $current = 331;
 
-  if ($current == 33) {
+  if ($current == 331) { 	 
+         ?> 	 
+           <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p> 	 
+         <?php 	 
+   } else {
 	?>
-	  <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p>
-	<?php
-  } else {
-	?>
-	  <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.3 用にアップグレードします</a></p>
-	<?php
-  }
-?>
+	  <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.31 用にアップグレードします</a></p>
+         <?php 	 
+   } 	 
+ ?> 	 
 
 <div class="note">
 <b>注意:</b> 作業中、各ステップごとにデータベースのバックアップを忘れないようにして下さい。

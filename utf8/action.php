@@ -15,8 +15,8 @@
  * like adding comments, etc...
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: action.php,v 1.8 2007-03-27 21:59:40 kmorimatsu Exp $
- * $NucleusJP: action.php,v 1.7 2007/02/04 06:28:44 kimitake Exp $
+ * @version $Id: action.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
+ * $NucleusJP: action.php,v 1.8.2.1 2007/09/05 05:50:12 kimitake Exp $
  */
 
 $CONF = array();

@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ITEMACTIONS.php,v 1.5 2007-03-22 03:30:14 kmorimatsu Exp $
- * @version $NucleusJP: ITEMACTIONS.php,v 1.4 2007/03/13 05:04:13 shizuki Exp $
+ * @version $Id: ITEMACTIONS.php,v 1.6 2008-02-08 09:31:22 kimitake Exp $
+ * @version $NucleusJP: ITEMACTIONS.php,v 1.5.2.3 2007/10/30 19:05:20 kmorimatsu Exp $
  */
 class ITEMACTIONS extends BaseActions {
 
@@ -206,18 +206,27 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	function parse_title($format = '') {
+		if (is_array($this->currentItem)) {
+			$itemtitle = $this->currentItem['title'];
+		} elseif (is_object($this->currentItem)) {
+			$itemtitle = $this->currentItem->title;
+		}
 		switch ($format) {
 			case 'xml':
-				echo stringToXML ($this->currentItem->title);
+//				echo stringToXML ($this->currentItem->title);
+				echo stringToXML ($itemtitle);
 				break;
 			case 'attribute':
-				echo stringToAttribute ($this->currentItem->title);
+//				echo stringToAttribute ($this->currentItem->title);
+				echo stringToAttribute ($itemtitle);
 				break;
 			case 'raw':
-				echo $this->currentItem->title;
+//				echo $this->currentItem->title;
+				echo $itemtitle;
 				break;
 			default:
-				$this->highlightAndParse($this->currentItem->title);
+//				$this->highlightAndParse($this->currentItem->title);
+				$this->highlightAndParse($itemtitle);
 				break;
 		}
 	}
@@ -337,6 +346,7 @@ class ITEMACTIONS extends BaseActions {
 			echo $this->template['NEW'];
 	}
 
+
 	function parse_daylink() {
 		echo createArchiveLink($this->blog->getID(), strftime('%Y-%m-%d',$this->currentItem->timestamp), $this->linkparams);
 	}
@@ -395,7 +405,7 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	function parse_editpopupcode() {
-		echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
+		echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=550,left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
 	}
 
 	// helper functions
@@ -425,6 +435,9 @@ class ITEMACTIONS extends BaseActions {
 		$this->parser->actions = $this->getDefinedActions();
 	}
 	*/
+
 }
+	
+
 
 ?>

@@ -30,6 +30,17 @@ define('_BOOKMARKLET_SEND_PING',	'アイテムの追加に成功しました。�
 
 // END merge UTF-8 and EUC-JP
 
+// START changed/added after 3.31 START
+define('_CREATE_ACCOUNT0', 'アカウントの作成');
+define('_CREATE_ACCOUNT1', 'ビジターのよるメンバーアカウントの作成は許可されていません。<br /><br />');
+define('_CREATE_ACCOUNT2', '詳細はウェブサイトの管理者にお問い合わせください。');
+define('_CREATE_ACCOUNT_LOGIN_NAME',	'ログイン名 (必須):');
+define('_CREATE_ACCOUNT_REAL_NAME',		'本名 (必須):');
+define('_CREATE_ACCOUNT_EMAIL',			'Email (必須):');
+define('_CREATE_ACCOUNT_EMAIL2',		'(アクティベーション用のリンクが送られるので有効なものを使用してください)');
+define('_CREATE_ACCOUNT_URL',			'URL:');
+define('_CREATE_ACCOUNT_SUBMIT',		'アカウントの作成');
+
 
 // START changed/added after 3.3 START
 define('_AUTOSAVEDRAFT',			'ドラフト保存状況');
@@ -694,7 +705,7 @@ define('_EBLOG_NOTIFY_ON',			'以下を通知する');
 define('_EBLOG_NOTIFY_COMMENT',		'新しいコメント');
 define('_EBLOG_NOTIFY_KARMA',		'新しいカルマ投票');
 define('_EBLOG_NOTIFY_ITEM',		'新しいBlogアイテム');
-define('_EBLOG_PING',				'更新時に Weblogs.com へPingを送りますか?');
+define('_EBLOG_PING',				'更新時にweblogsアップデート通知サービスへPingを送りますか?');
 define('_EBLOG_MAXCOMMENTS',		'コメントの最大量');
 define('_EBLOG_UPDATE',				'自動更新するファイル');
 define('_EBLOG_OFFSET',				'サーバ時刻との時差');

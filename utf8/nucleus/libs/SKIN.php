@@ -9,14 +9,13 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-
 /**
  * Class representing a skin
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: SKIN.php,v 1.8 2007-03-20 19:31:29 kmorimatsu Exp $
- * @version $NucleusJP: SKIN.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: SKIN.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
+ * @version $NucleusJP: SKIN.php,v 1.8.2.1 2007/09/05 07:45:01 kimitake Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;

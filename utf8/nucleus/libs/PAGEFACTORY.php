@@ -12,8 +12,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: PAGEFACTORY.php,v 1.8 2007-03-22 03:30:14 kmorimatsu Exp $
- * $NucleusJP: PAGEFACTORY.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: PAGEFACTORY.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
+ * $NucleusJP: PAGEFACTORY.php,v 1.8.2.2 2007/10/30 16:12:27 shizuki Exp $
  */
 
 /**
@@ -179,7 +179,7 @@ class PAGEFACTORY extends BaseActions {
 	}
 
 	function parse_bloglink() {
-		echo '<a href="'.htmlspecialchars($this->blog->getURL()).'">'.$this->blog->getName().'</a>';
+		echo '<a href="'.htmlspecialchars($this->blog->getURL()).'">'.htmlspecialchars($this->blog->getName()).'</a>';
 	}
 
 	function parse_authorname() {
@@ -340,9 +340,9 @@ class PAGEFACTORY extends BaseActions {
 			case "2":
 				echo '<div class="jsbuttonbar">';
 
-					$this->_jsbutton('bold',"boldThis()",'');
-					$this->_jsbutton('italic',"italicThis()",'');
-					$this->_jsbutton('link',"ahrefThis()",'');
+					$this->_jsbutton('bold',"boldThis()",_ADD_BOLD_TT);
+					$this->_jsbutton('italic',"italicThis()",_ADD_ITALIC_TT);
+					$this->_jsbutton('link',"ahrefThis()",_ADD_HREF_TT);
 					$this->_jsbuttonspacer();
 					$this->_jsbutton('alignleft',"alignleftThis()",_ADD_ALIGNLEFT_TT);
 					$this->_jsbutton('alignright',"alignrightThis()",_ADD_ALIGNRIGHT_TT);

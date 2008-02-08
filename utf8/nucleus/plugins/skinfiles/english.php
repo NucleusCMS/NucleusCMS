@@ -1,9 +1,11 @@
 <?php
 
    /*
-	* @version $Id: english.php,v 1.3 2007-02-04 06:28:46 kimitake Exp $
-	* @version $NucleusJP: english.php,v 1.2 2007/01/29 22:07:42 kimitake Exp $
+	* @version $Id: english.php,v 1.4 2008-02-08 09:31:23 kimitake Exp $
+	* @version $NucleusJP: english.php,v 1.3.2.1 2007/10/24 09:35:07 kimitake Exp $
 	*/
+
+define('_SKINFILES_DESC',				'A simple file manager for skins.');
 
 define('_SKINFILES_TITLE',				'Skin Files');
 define('_SKINFILES_TOOLTIP',			'Manage skin files');

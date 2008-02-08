@@ -16,8 +16,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: backup.php,v 1.8 2007-02-19 22:27:59 kmorimatsu Exp $
- * $NucleusJP: backup.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: backup.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
+ * $NucleusJP: backup.php,v 1.8.2.1 2007/08/08 05:23:31 kimitake Exp $
  */
 
 
@@ -217,20 +217,20 @@ function _backup_dump_structure($tablename) {
  */
 function _backup_get_field_names($result, $num_fields) {
 
-	if (function_exists('mysqli_fetch_fields') ) {
+/*	if (function_exists('mysqli_fetch_fields') ) {
 		
 		$fields = mysqli_fetch_fields($result);
 		for ($j = 0; $j < $num_fields; $j++)
 			$fields[$j] = $fields[$j]->name;
 
-	} else {
+	} else {*/
 
 		$fields = array();
 		for ($j = 0; $j < $num_fields; $j++) {
 			$fields[] = mysql_field_name($result, $j);
 		}
 
-	}
+/*	}*/
 	
 	return '(' . implode(', ', $fields) . ')';	
 }

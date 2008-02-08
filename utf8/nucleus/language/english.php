@@ -12,6 +12,18 @@
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
 
+// START changed/added after 3.31 START
+define('_CREATE_ACCOUNT0', 'Create Account');
+define('_CREATE_ACCOUNT1', 'Visitors are not allowed to create a Member Account.<br /><br />');
+define('_CREATE_ACCOUNT2', 'Please contact the website administrator for more information.');
+define('_CREATE_ACCOUNT_LOGIN_NAME',	'Login Name (required):');
+define('_CREATE_ACCOUNT_REAL_NAME',		'Real Name (required):');
+define('_CREATE_ACCOUNT_EMAIL',			'Email (required):');
+define('_CREATE_ACCOUNT_EMAIL2',		'(must be valid, because an activation link will be sent over there)');
+define('_CREATE_ACCOUNT_URL',			'URL:');
+define('_CREATE_ACCOUNT_SUBMIT',		'Create Account');
+
+
 // START changed/added after 3.3 START
 define('_AUTOSAVEDRAFT',		'Auto save draft');
 define('_AUTOSAVEDRAFT_LASTSAVED',	'Last saved: ');

@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ACTION.php,v 1.10 2007-05-31 07:23:39 kimitake Exp $
- * $NucleusJP: ACTION.php,v 1.9 2007/05/10 08:11:32 kimitake Exp $
+ * @version $Id: ACTION.php,v 1.11 2008-02-08 09:31:22 kimitake Exp $
+ * $NucleusJP: ACTION.php,v 1.10 2007/05/31 07:23:39 kimitake Exp $
  */
 class ACTION
 {
@@ -198,30 +198,42 @@ class ACTION
 		if (!$CONF['AllowMemberCreate'])
 			doError(_ERROR_MEMBERCREATEDISABLED);
 
-		// even though the member can not log in, set some random initial password. One never knows.
-		srand((double)microtime()*1000000);
-		$initialPwd = md5(uniqid(rand(), true));
+		// evaluate content from FormExtra
+		$result = 1;
+		$manager->notify('ValidateForm', array('type' => 'membermail', 'error' => &$result));
 
-		// create member (non admin/can not login/no notes/random string as password)
-		$r = MEMBER::create(postVar('name'), postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
-
-		if ($r != 1)
-			doError($r);
-
-		// send message containing password.
-		$newmem = new MEMBER();
-		$newmem->readFromName(postVar('name'));
-		$newmem->sendActivationLink('register');
-
-		$manager->notify('PostRegister',array('member' => &$newmem));
-
-		if (postVar('desturl')) {
-			redirect(postVar('desturl'));
-		} else {
-			header ("Content-Type: text/html; charset="._CHARSET);
-			echo _MSG_ACTIVATION_SENT;
+		if ($result!=1) {
+			return $result;
 		}
-		exit;
+		else {
+
+			// even though the member can not log in, set some random initial password. One never knows.
+			srand((double)microtime()*1000000);
+			$initialPwd = md5(uniqid(rand(), true));
+
+			// create member (non admin/can not login/no notes/random string as password)
+			$r = MEMBER::create(postVar('name'), postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
+
+			if ($r != 1) {
+				return $r;
+			}
+
+			// send message containing password.
+			$newmem = new MEMBER();
+			$newmem->readFromName(postVar('name'));
+			$newmem->sendActivationLink('register');
+
+			$manager->notify('PostRegister',array('member' => &$newmem));
+
+			if (postVar('desturl')) {
+				redirect(postVar('desturl'));
+			} else {
+				// header has been already sent, so deleted the line below
+				//header ("Content-Type: text/html; charset="._CHARSET);
+				echo _MSG_ACTIVATION_SENT;
+			}
+			exit;
+		}
 	}
 
 	/**
@@ -384,7 +396,7 @@ class ACTION
 		global $manager;
 		if ($manager->checkTicket()) {
 			$manager->loadClass('ITEM');
-			$info = ITEM::CreateDraftFromRequest();
+			$info = ITEM::createDraftFromRequest();
 			if ($info['status'] == 'error') {
 				echo $info['message'];
 			}

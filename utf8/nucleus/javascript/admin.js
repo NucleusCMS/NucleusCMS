@@ -10,8 +10,8 @@
   *  
   * Some JavaScript code for the admin area
   *
-  * $Id: admin.js,v 1.6 2007-02-28 07:22:22 kimitake Exp $
-  * $NucleusJP: admin.js,v 1.5 2007/02/04 06:28:45 kimitake Exp $
+  * $Id: admin.js,v 1.7 2008-02-08 09:31:22 kimitake Exp $
+  * $NucleusJP: admin.js,v 1.6.2.1 2007/09/05 05:58:56 kimitake Exp $
   */
 
 function help(url) {

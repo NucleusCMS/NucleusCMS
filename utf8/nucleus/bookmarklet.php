@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: bookmarklet.php,v 1.9 2007-02-04 06:28:45 kimitake Exp $
- * $NucleusJP: bookmarklet.php,v 1.8 2007/02/03 05:41:29 kimitake Exp $
+ * @version $Id: bookmarklet.php,v 1.10 2008-02-08 09:31:22 kimitake Exp $
+ * $NucleusJP: bookmarklet.php,v 1.9.2.1 2007/09/07 07:16:39 kimitake Exp $
  */
 
 // bookmarklet is part of admin area (might need XML-RPC)
@@ -106,10 +106,10 @@ function bm_doAddItem() {
 	if ($result['status'] == 'newcategory') {
 		$message = 'アイテムは追加され、新しいカテゴリーが作成されました。 <a href="index.php?action=categoryedit&amp;blogid='.$blogid.'&amp;catid='.$result['catid'].'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">ここをクリックしてカテゴリーの名前と説明を編集してください。</a>';
 		$extrahead = '';
-	} elseif ((postVar('actiontype') == 'addnow') && $blog->pingUserland()) {
+	} elseif ( (postVar('actiontype') == 'addnow') && $blog->sendPing() ) {
 		$message = 'アイテムの追加に成功しました。現在weblogs.comにpingを送っています。しばらくの間お待ちください...';
-		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid));
-		$extrahead = '<meta http-equiv="refresh" content="1; url=' . htmlspecialchars($pingUrl). '" />';
+		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid) );
+		$extrahead = '<meta http-equiv="refresh" content="1; url=' . htmlspecialchars($pingUrl) . '" />';
 	} else {
 		$message = _ITEM_ADDED;
 		$extrahead = '';
@@ -238,8 +238,9 @@ function bm_doShowForm() {
 	$log_text = uniDecode($log_text,_CHARSET);
 	$log_linktitle = uniDecode($log_linktitle,_CHARSET);
 	
-	if (!BLOG::existsID($blogid))
+	if (!BLOG::existsID($blogid) ) {
 		bm_doError(_ERROR_NOSUCHBLOG);
+	}
 
 	if (!$member->isTeamMember($blogid) ) {
 		bm_doError(_ERROR_NOTONTEAM);
@@ -304,7 +305,7 @@ function bm_message($title, $head, $msg, $extrahead = '') {
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
-		<title><?php echo  $title ?></title>
+		<title><?php echo $title ?></title>
 		<?php bm_style(); ?>
 		<?php echo $extrahead; ?>
 	</head>

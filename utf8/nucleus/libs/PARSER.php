@@ -12,8 +12,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: PARSER.php,v 1.7 2007-03-20 19:31:29 kmorimatsu Exp $
- * $NucleusJP: PARSER.php,v 1.6 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: PARSER.php,v 1.8 2008-02-08 09:31:22 kimitake Exp $
+ * $NucleusJP: PARSER.php,v 1.7.2.1 2007/09/05 07:35:59 kimitake Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;

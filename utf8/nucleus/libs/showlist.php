@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: showlist.php,v 1.7 2007-04-19 06:26:15 kimitake Exp $
- * @version $NucleusJP: showlist.php,v 1.6 2007/03/19 10:21:21 shizuki Exp $
+ * @version $Id: showlist.php,v 1.8 2008-02-08 09:31:22 kimitake Exp $
+ * @version $NucleusJP: showlist.php,v 1.7.2.3 2007/12/03 00:01:48 kmorimatsu Exp $
  */
 
 
@@ -249,7 +249,7 @@ function listplug_plugOptionRow($current) {
 	$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 
 	// only if it is not a hidden option write the controls to the page
-	if ($meta['access'] != 'hidden') {
+	if (@$meta['access'] != 'hidden') {
 		echo '<td>',htmlspecialchars($current['description']?$current['description']:$current['name']),'</td>';
 		echo '<td>';
 		switch($current['type']) {
@@ -274,7 +274,7 @@ function listplug_plugOptionRow($current) {
 			case 'textarea':
 				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 				echo '<textarea class="pluginoption" cols="30" rows="5" name="',htmlspecialchars($varname),'"';
-				if ($meta['access'] == 'readonly') {
+				if (@$meta['access'] == 'readonly') {
 					echo ' readonly="readonly"';
 				}
 				echo '>',htmlspecialchars($current['value']),'</textarea>';
@@ -284,15 +284,15 @@ function listplug_plugOptionRow($current) {
 				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 
 				echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'"';
-				if ($meta['datatype'] == 'numerical') {
+				if (@$meta['datatype'] == 'numerical') {
 					echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
 				}
-				if ($meta['access'] == 'readonly') {
+				if (@$meta['access'] == 'readonly') {
 					echo ' readonly="readonly"';
 				}
 				echo ' />';
 		}
-		echo $current['extra'];
+		echo @$current['extra'];
 		echo '</td>';
 	}
 }

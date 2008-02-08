@@ -7,8 +7,8 @@ class NP_SkinFiles extends NucleusPlugin {
 	*
 	* Copyright 2005-2007 by Jeff MacMichael and Niels Leenheer
 	*
-	* @version $Id: NP_SkinFiles.php,v 1.4 2007-02-04 06:28:46 kimitake Exp $
-	* @version $NucleusJP: NP_SkinFiles.php,v 1.3 2006/07/17 20:03:45 kimitake Exp $
+	* @version $Id: NP_SkinFiles.php,v 1.5 2008-02-08 09:31:23 kimitake Exp $
+	* @version $NucleusJP: NP_SkinFiles.php,v 1.4 2007/02/04 06:28:46 kimitake Exp $
 	*
 	* ==========================================================================================
 	* This program is free software and open source software; you can redistribute
@@ -49,7 +49,7 @@ class NP_SkinFiles extends NucleusPlugin {
 	function getAuthor()  	  { return 'Misc authors'; }
 	function getURL()  		  { return 'http://www.nucleuscms.org/'; }
 	function getVersion() 	  { return '2.02'; }
-	function getDescription() { return 'A simple file manager for skins.';	}
+	function getDescription() { return _SKINFILES_DESC;	}
 
 	function supportsFeature($what) {
 		switch($what)

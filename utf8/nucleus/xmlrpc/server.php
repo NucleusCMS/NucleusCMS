@@ -62,8 +62,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: server.php,v 1.8 2007-03-20 19:33:25 kmorimatsu Exp $
- * @version $NucleusJP: server.php,v 1.7 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: server.php,v 1.9 2008-02-08 09:31:23 kimitake Exp $
+ * @version $NucleusJP: server.php,v 1.8.2.1 2007/09/07 07:12:42 kimitake Exp $
  */
 $CONF = array();
 require("../../config.php");	// include Nucleus libs and code

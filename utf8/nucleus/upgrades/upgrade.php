@@ -12,8 +12,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: upgrade.php,v 1.7 2007-04-26 06:20:19 kimitake Exp $
- * $NucleusJP: upgrade.php,v 1.6 2007/04/10 03:55:20 kmorimatsu Exp $
+ * @version $Id: upgrade.php,v 1.8 2008-02-08 09:31:23 kimitake Exp $
+ * $NucleusJP: upgrade.php,v 1.7 2007/04/26 06:20:19 kimitake Exp $
  */
 
 include('upgrade.functions.php');
@@ -38,6 +38,7 @@ include('upgrade3.0.php');
 include('upgrade3.1.php');
 include('upgrade3.2.php');
 include('upgrade3.3.php');
+include('upgrade3.31.php');
 
 $from = intGetVar('from');
 
@@ -66,6 +67,9 @@ switch($from) {
 		break;
 	case 32:
 		upgrade_do33();
+		break;
+	case 33:
+		upgrade_do331();
 		break;
 	default:
 		echo "<li>エラー! 実行すべきアップデートはありません</li>";

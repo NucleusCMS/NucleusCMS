@@ -16,8 +16,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BLOG.php,v 1.14 2007-05-31 07:28:30 kimitake Exp $
- * $NucleusJP: BLOG.php,v 1.13 2007/05/01 08:39:18 kimitake Exp $
+ * @version $Id: BLOG.php,v 1.15 2008-02-08 09:31:22 kimitake Exp $
+ * $NucleusJP: BLOG.php,v 1.12.2.2 2007/08/08 05:26:22 kimitake Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -782,24 +782,24 @@ class BLOG {
 
 	function isValidCategory($catid) {
 		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
-		$res = mysql_query($query);
+		$res = sql_query($query);
 		return (mysql_num_rows($res) != 0);
 	}
 
 	function getCategoryName($catid) {
-		$res = mysql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+		$res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
 		$o = mysql_fetch_object($res);
 		return $o->cname;
 	}
 
 	function getCategoryDesc($catid) {
-		$res = mysql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+		$res = sql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
 		$o = mysql_fetch_object($res);
 		return $o->cdesc;
 	}
 
 	function getCategoryIdFromName($name) {
-		$res = mysql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . addslashes($name) . '"');
+		$res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . addslashes($name) . '"');
 		if (mysql_num_rows($res) > 0) {
 			$o = mysql_fetch_object($res);
 			return $o->catid;

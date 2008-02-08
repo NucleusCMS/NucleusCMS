@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BODYACTIONS.php,v 1.6 2007-04-19 06:13:50 kimitake Exp $
- * @version $NucleusJP: BODYACTIONS.php,v 1.5 2007/03/22 03:30:14 kmorimatsu Exp $
+ * @version $Id: BODYACTIONS.php,v 1.7 2008-02-08 09:31:22 kimitake Exp $
+ * @version $NucleusJP: BODYACTIONS.php,v 1.6.2.1 2007/08/08 05:27:14 kimitake Exp $
  */
 
 class BODYACTIONS extends BaseActions {

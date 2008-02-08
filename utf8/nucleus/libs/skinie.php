@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: skinie.php,v 1.9 2007-04-20 08:43:25 kimitake Exp $
- * @version $NucleusJP: skinie.php,v 1.8 2007/03/22 03:30:14 kmorimatsu Exp $
+ * @version $Id: skinie.php,v 1.10 2008-02-08 09:31:22 kimitake Exp $
+ * @version $NucleusJP: skinie.php,v 1.9.2.1 2007/09/05 07:46:30 kimitake Exp $
  */
 
 class SKINIMPORT {

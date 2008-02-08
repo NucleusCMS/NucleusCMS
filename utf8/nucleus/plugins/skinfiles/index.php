@@ -5,8 +5,8 @@
 	*
 	* Copyright 2005-2007 by Jeff MacMichael and Niels Leenheer
 	*
-	* @version $Id: index.php,v 1.6 2007-03-20 19:32:47 kmorimatsu Exp $
-	* @version $NucleusJP: index.php,v 1.5 2007/02/04 06:28:46 kimitake Exp $
+	* @version $Id: index.php,v 1.7 2008-02-08 09:31:23 kimitake Exp $
+	* @version $NucleusJP: index.php,v 1.6.2.1 2007/09/07 07:08:01 kimitake Exp $
 	*
 	* ==========================================================================================
 	* This program is free software and open source software; you can redistribute

@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ITEM.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
- * $NucleusJP: ITEM.php,v 1.6 2006/07/20 08:01:52 kimitake Exp $
+ * @version $Id: ITEM.php,v 1.8 2008-02-08 09:31:22 kimitake Exp $
+ * $NucleusJP: ITEM.php,v 1.7.2.3 2008/02/07 06:13:30 kimitake Exp $
  */
 class ITEM {
 
@@ -141,7 +141,15 @@ class ITEM {
 			$posttime = $i_draft ? 0 : $blog->getCorrectTime();
 		}
 
-		$itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft);
+		if ($posttime > $blog->getCorrectTime()) {
+			$posted = 0;
+			$blog->setFuturePost();
+		}
+		else {
+			$posted = 1;
+		}
+
+		$itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft,$posted);
 
 		//Setting the itemOptions
 		$aOptions = requestArray('plugoption');
@@ -203,14 +211,20 @@ class ITEM {
 		if ( (!$blog->allowPastPosting()) && ($timestamp < $blog->getCorrectTime()))
 				$timestamp = 0;
 
-		if ($wasdraft && $publish) {
-			$query .= ', idraft=0';
+		if ($timestamp > $blog->getCorrectTime(time())) {
+			$isFuture = 1;
+			$query .= ', iposted=0';
+		}
+		else {
+			$isFuture = 0;
+			$query .= ', iposted=1';
+		}
 
+		if ($wasdraft && $publish) {
 			// set timestamp to current date only if it's not a future item
 			// draft items have timestamp == 0
 			// don't allow timestamps in the past (unless otherwise defined in blogsettings)
-			if ($timestamp > $blog->getCorrectTime())
-				$isFuture = 1;
+			$query .= ', idraft=0';
 
 			if ($timestamp == 0)
 				$timestamp = $blog->getCorrectTime();
@@ -342,6 +356,12 @@ class ITEM {
 		$i_body = postVar('body');
 		$i_title = postVar('title');
 		$i_more = postVar('more');
+
+		if(_CHARSET != 'UTF-8'){
+			$i_body = mb_convert_encoding($i_body, _CHARSET, "UTF-8");
+			$i_title = mb_convert_encoding($i_title, _CHARSET, "UTF-8");
+			$i_more = mb_convert_encoding($i_more, _CHARSET, "UTF-8");
+		}
 		//$i_actiontype = postVar('actiontype');
 		$i_closed = intPostVar('closed');
 		//$i_hour = intPostVar('hour');

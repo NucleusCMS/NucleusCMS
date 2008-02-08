@@ -1,9 +1,11 @@
 <?php
 
    /*
-	* @version $Id: japanese-utf8.php,v 1.3 2007-02-04 06:28:46 kimitake Exp $
-	* @version $NucleusJP: japanese-utf8.php,v 1.2 2007/01/29 22:07:42 kimitake Exp $
+	* @version $Id: japanese-utf8.php,v 1.4 2008-02-08 09:31:23 kimitake Exp $
+	* @version $NucleusJP: japanese-utf8.php,v 1.3.2.1 2007/10/24 09:35:07 kimitake Exp $
 	*/
+
+define('_SKINFILES_DESC',				'スキンのための簡易ファイルマネージャ');
 
 define('_SKINFILES_TITLE',				'スキンファイル');
 define('_SKINFILES_TOOLTIP',			'スキンファイルの管理');

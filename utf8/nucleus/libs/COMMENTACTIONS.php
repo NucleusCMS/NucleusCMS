@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: COMMENTACTIONS.php,v 1.5 2007-04-20 08:43:57 kimitake Exp $
- * @version $NucleusJP: COMMENTACTIONS.php,v 1.4 2007/03/19 10:20:24 shizuki Exp $
+ * @version $Id: COMMENTACTIONS.php,v 1.6 2008-02-08 09:31:22 kimitake Exp $
+ * @version $NucleusJP: COMMENTACTIONS.php,v 1.5.2.1 2007/08/08 05:31:31 kimitake Exp $
  */
 
 class COMMENTACTIONS extends BaseActions {

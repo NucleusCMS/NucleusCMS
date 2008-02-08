@@ -17,8 +17,8 @@
 	 *
 	 * @license http://nucleuscms.org/license.txt GNU General Public License
 	 * @copyright Copyright (C) 2002-2007 The Nucleus Group
-	 * @version $Id: PLUGIN.php,v 1.12 2007-04-20 08:43:25 kimitake Exp $
-	 * $NucleusJP: PLUGIN.php,v 1.11 2007/04/06 19:36:29 kmorimatsu Exp $
+	 * @version $Id: PLUGIN.php,v 1.13 2008-02-08 09:31:22 kimitake Exp $
+	 * $NucleusJP: PLUGIN.php,v 1.12.2.3 2007/12/03 02:22:42 kmorimatsu Exp $
 	 */
 	class NucleusPlugin {
 
@@ -155,9 +155,29 @@
 		/**
 		  * Retrieves the current value for an option
 		  */
-		function getOption($name){
-			return $this->_getOption('global', 0, $name);
+		function getOption($name)
+		{
+			// only request the options the very first time. On subsequent requests
+			// the static collection is used to save SQL queries.
+			if ($this->plugin_options == 0)
+			{
+				$this->plugin_options = array();
+				$query = sql_query(
+					 'SELECT d.oname as name, o.ovalue as value '.
+					 'FROM '.
+					 sql_table('plugin_option').' o, '.
+					 sql_table('plugin_option_desc').' d '.
+					 'WHERE d.opid='. intval($this->getID()).' AND d.oid=o.oid'
+				);
+				while ($row = mysql_fetch_object($query))
+					$this->plugin_options[strtolower($row->name)] = $row->value;
+		  }
+		  if (isset($this->plugin_options[strtolower($name)]))
+				return $this->plugin_options[strtolower($name)];
+		  else
+				return $this->_getOption('global', 0, $name);
 		}
+
 		function getBlogOption($blogid, $name) {
 			return $this->_getOption('blog', $blogid, $name);
 		}
@@ -224,7 +244,7 @@
 
 			// retrieve the data and return
 			$q = 'SELECT otype, oextra FROM '.sql_table('plugin_option_desc').' WHERE oid = '.$oid;
-			$query = mysql_query($q);
+			$query = sql_query($q);
 
 			$o = mysql_fetch_array($query);
 
@@ -234,7 +254,7 @@
 				$orderby = 'ovalue';
 			}
 			$q = 'SELECT ovalue value, ocontextid id FROM '.sql_table('plugin_option').' WHERE oid = '.$oid.' ORDER BY '.$orderby.' '.$sort.' LIMIT 0,'.intval($amount);
-			$query = mysql_query($q);
+			$query = sql_query($q);
 
 			// create the array
 			$i = 0;
@@ -366,7 +386,7 @@
 
 			// update plugin_option
 			sql_query('DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid) . ' and ocontextid='. intval($contextid));
-			@mysql_query('INSERT INTO ' . sql_table('plugin_option') . ' (ovalue, oid, ocontextid) VALUES (\''.addslashes($value).'\', '. intval($oid) . ', ' . intval($contextid) . ')');
+			sql_query('INSERT INTO ' . sql_table('plugin_option') . ' (ovalue, oid, ocontextid) VALUES (\''.addslashes($value).'\', '. intval($oid) . ', ' . intval($contextid) . ')');
 
 			// update cache
 			$this->_aOptionValues[$oid . '_' . $contextid] = $value;
@@ -448,7 +468,7 @@
 		 */
 		function _getOID($context, $name) {
 			$key = $context . '_' . $name;
-			$info = $this->_aOptionToInfo[$key];
+			$info = @$this->_aOptionToInfo[$key];
 			if (is_array($info)) return $info['oid'];
 
 			// load all OIDs for this plugin from the database
@@ -461,7 +481,7 @@
 			}
 			mysql_free_result($res);
 
-			return $this->_aOptionToInfo[$key]['oid'];
+			return @$this->_aOptionToInfo[$key]['oid'];
 		}
 		function _getDefVal($context, $name) {
 			$key = $context . '_' . $name;
@@ -575,7 +595,7 @@
 						$meta = NucleusPlugin::getOptionMeta($o->oextra);
 
 						// if the option is readonly or hidden it may not be saved
-						if (($meta['access'] != 'readonly') && ($meta['access'] != 'hidden')) {
+						if ((@$meta['access'] != 'readonly') && (@$meta['access'] != 'hidden')) {
 
 							$value = undoMagic($value);	// value comes from request
 
@@ -588,7 +608,7 @@
 							}
 
 							// check the validity of numerical options
-							if (($meta['datatype'] == 'numerical') && (!is_numeric($value))) {
+							if ((@$meta['datatype'] == 'numerical') && (!is_numeric($value))) {
 								//the option must be numeric, but the it isn't
 								//use the default for this option
 								$value = $o->odef;
@@ -605,17 +625,16 @@
 
 							// delete the old value for the option
 							sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));
-							@mysql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
+							sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
 						}
 					}
 				}
-			}
-			// clear option value cache if the plugin object is already loaded
-			if (is_object($o)) {
-				$plugin=& $manager->pidLoaded($o->opid);
-				if ($plugin) $plugin->clearOptionValueCache();
+				// clear option value cache if the plugin object is already loaded
+				if (is_object($o)) {
+					$plugin=& $manager->pidLoaded($o->opid);
+					if ($plugin) $plugin->clearOptionValueCache();
+				}
 			}
 		}
-
 	}
 ?>

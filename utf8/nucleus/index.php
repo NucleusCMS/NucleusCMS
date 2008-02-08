@@ -12,8 +12,8 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: index.php,v 1.8 2007-02-04 06:28:45 kimitake Exp $
- * $NucleusJP: index.php,v 1.7 2006/07/17 20:01:39 kimitake Exp $
+ * @version $Id: index.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
+ * $NucleusJP: index.php,v 1.8.2.1 2007/09/07 07:36:09 kimitake Exp $
  */
 	// we are using admin stuff:
 	$CONF = array();
@@ -70,7 +70,7 @@
 		$action = 'showlogin';
 	}
 
-	sendContentType('application/xhtml+xml', 'admin-' . $action);
+	sendContentType('text/html', 'admin-' . $action);
 
 	$admin = new ADMIN();
 	$admin->action($action);

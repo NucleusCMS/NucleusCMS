@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: COMMENTS.php,v 1.9 2007-03-20 19:31:29 kmorimatsu Exp $
- * $NucleusJP: COMMENTS.php,v 1.8 2007/03/13 05:12:19 shizuki Exp $
+ * @version $Id: COMMENTS.php,v 1.10 2008-02-08 09:31:22 kimitake Exp $
+ * $NucleusJP: COMMENTS.php,v 1.9.2.1 2007/08/08 05:32:21 kimitake Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;

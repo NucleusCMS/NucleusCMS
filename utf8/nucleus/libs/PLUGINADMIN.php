@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: PLUGINADMIN.php,v 1.8 2007-03-22 03:30:14 kmorimatsu Exp $
- * $NucleusJP: PLUGINADMIN.php,v 1.7 2007/02/06 09:00:24 kimitake Exp $
+ * @version $Id: PLUGINADMIN.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
+ * $NucleusJP: PLUGINADMIN.php,v 1.8.2.2 2007/10/23 22:48:56 kmorimatsu Exp $
  */
 
 global $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_COOKIE_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_SESSION_VARS;
@@ -141,7 +141,7 @@ for (i=0;document.forms[i];i++){
       else document.forms[i].action+='&'+'ticket=<?php echo $ticket; ?>';
       continue;
     }
-    document.write('<p><b>Error occured druing automatic addition of tickets.</b></p>');
+    document.write('<p><b>Error occured during automatic addition of tickets.</b></p>');
     j=document.forms[i].outerHTML;
     while (j!=j.replace('<','&lt;')) j=j.replace('<','&lt;');
     document.write('<p>'+j+'</p>');

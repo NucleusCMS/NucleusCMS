@@ -15,8 +15,8 @@
 	 *
 	 * @license http://nucleuscms.org/license.txt GNU General Public License
 	 * @copyright Copyright (C) 2002-2007 The Nucleus Group
-	 * @version $Id: upgrade.functions.php,v 1.10 2007-04-26 06:20:19 kimitake Exp $
-	 * $NucleusJP: upgrade.functions.php,v 1.9 2007/04/14 00:44:27 kmorimatsu Exp $
+	 * @version $Id: upgrade.functions.php,v 1.11 2008-02-08 09:31:23 kimitake Exp $
+	 * $NucleusJP: upgrade.functions.php,v 1.10 2007/04/26 06:20:19 kimitake Exp $
 	 */
 
 	include('../../config.php');
@@ -97,6 +97,10 @@
 				break;
 			case '33':
 				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 330 LIMIT 1';
+				$minrows = 1;
+				break;
+			case '331':
+				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 331 LIMIT 1';
 				$minrows = 1;
 				break;
 		}

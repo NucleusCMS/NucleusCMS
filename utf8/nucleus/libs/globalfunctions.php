@@ -13,16 +13,14 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.23 2007-04-09 23:21:34 kmorimatsu Exp $
- * $NucleusJP: globalfunctions.php,v 1.22 2007/04/06 22:08:39 kmorimatsu Exp $
+ * @version $Id: globalfunctions.php,v 1.24 2008-02-08 09:31:22 kimitake Exp $
+ * $NucleusJP: globalfunctions.php,v 1.23.2.7 2008/02/05 08:30:08 kimitake Exp $
  */
 
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-//$nucleus['version'] = 'v3.3SVN';
-//$nucleus['codename'] = 'Lithium';
-$nucleus['version'] = 'v3.3';
+$nucleus['version'] = 'v3.4';
 $nucleus['codename'] = '';
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
@@ -36,7 +34,7 @@ if ($CONF['debug']) {
 
 // Avoid notices
 if (!isset($CONF['Self'])) {
-	$CONF['Self'] = $_SERVER['PHP_SELF'];
+	$CONF['Self'] = htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES);
 }
 
 /*
@@ -196,7 +194,7 @@ if ($action == 'login') {
 	$login = postVar('login');
 	$pw = postVar('password');
 	$shared	= intPostVar('shared');	// shared computer or not
-	
+
 	$pw=substr($pw,0,40); // avoid md5 collision by using a long key
 
 	if ($member->login($login, $pw) ) {
@@ -465,7 +463,7 @@ function intCookieVar($name) {
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 330;
+	return 340;
 }
 
 /**
@@ -786,7 +784,7 @@ function selector() {
 //		if ($blogid && (intval($blogid) != $obj->iblog) ) {
 //			doError(_ERROR_NOSUCHITEM);
 //		}
-		if ($blogid && (intval($blogid) != $obj->iblog)) {
+		if ($blogid && (intval($blogid) != $obj->iblog) ) {
 			if (!headers_sent()) {
 				$b =& $manager->getBlog($obj->iblog);
 				$CONF['ItemURL'] = $b->getURL();
@@ -843,20 +841,20 @@ function selector() {
 
 		// get next and prev month links ...
 		global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
-
+		
 		// sql queries for the timestamp of the first and the last published item
-		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime ASC";
-		$first_timestamp=quickQuery ($query); 
-		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime DESC";
-		$last_timestamp=quickQuery ($query); 
+		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 AND iblog=".(int)($blogid ? $blogid : $CONF['DefaultBlog'])." ORDER BY itime ASC";
+		$first_timestamp=quickQuery ($query);
+		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 AND iblog=".(int)($blogid ? $blogid : $CONF['DefaultBlog'])." ORDER BY itime DESC";
+		$last_timestamp=quickQuery ($query);
 
 		sscanf($archive, '%d-%d-%d', $y, $m, $d);
 
 		if ($d != 0) {
 			$archivetype = _ARCHIVETYPE_DAY;
 			$t = mktime(0, 0, 0, $m, $d, $y);
-
-			$archiveprev = strftime('%Y-%m-%d', $t - (24 * 60 * 60) );
+			// one day has 24 * 60 * 60 = 86400 seconds			
+			$archiveprev = strftime('%Y-%m-%d', $t - 86400 );
 			// check for published items			
 			if ($t > $first_timestamp) {
 				$archiveprevexists = true;
@@ -864,31 +862,29 @@ function selector() {
 			else {
 				$archiveprevexists = false;
 			}
-
+			
 			// one day later
-//			$t += 86400; 
-//			$archivenext = strftime('%Y-%m-%d', $t);
-			$archivenext = strftime('%Y-%m-%d', $t + (24 * 60 * 60) );
-			if ($t + (24 * 60 * 60) < $last_timestamp) {
+			$t += 86400; 
+			$archivenext = strftime('%Y-%m-%d', $t);
+			if ($t < $last_timestamp) {
 				$archivenextexists = true;
 			}
 			else {
 				$archivenextexists = false;
 			}
-
+			
 		} else {
 			$archivetype = _ARCHIVETYPE_MONTH;
 			$t = mktime(0, 0, 0, $m, 1, $y);
-
-			$archiveprev = strftime('%Y-%m', $t - (1 * 24 * 60 * 60) );
+			// one day before is in the previous month
+			$archiveprev = strftime('%Y-%m', $t - 86400);
 			if ($t > $first_timestamp) {
 				$archiveprevexists = true;
 			}
 			else {
 				$archiveprevexists = false;
 			}
-
-//			$archivenext = strftime('%Y-%m', $t + (32 * 24 * 60 * 60) );
+			
 			// timestamp for the next month			
 			$t = mktime(0, 0, 0, $m+1, 1, $y);
 			$archivenext = strftime('%Y-%m', $t);
@@ -992,6 +988,9 @@ function selector() {
 
 	// parse the skin
 	$skin->parse($type);
+
+	// check to see we should throw JustPosted event
+	$blog->checkJustPosted();
 }
 
 /**
@@ -1793,7 +1792,7 @@ function sanitizeArray(&$array)
 		if (!in_array($key, $excludeListForSanitization)) {
 				
 			// check value
-			list($val, $tmp) = explode('\\', $val);
+			@list($val, $tmp) = explode('\\', $val);
 			
 			// remove control code etc.
 			$val = strtr($val, "\0\r\n<>'\"", "       ");
@@ -1961,7 +1960,7 @@ function getBookmarklet($blogid) {
 	$document = 'document';
 	$bookmarkletline = "javascript:Q='';x=".$document.";y=window;if(x.selection){Q=x.selection.createRange().text;}else if(y.getSelection){Q=y.getSelection();}else if(x.getSelection){Q=x.getSelection();}wingm=window.open('";
 	$bookmarkletline .= $CONF['AdminURL'] . "bookmarklet.php?blogid=$blogid";
-	$bookmarkletline .="&logtext='+escape(Q)+'&loglink='+escape(x.location.href)+'&loglinktitle='+escape(x.title),'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');wingm.focus();";
+	$bookmarkletline .="&logtext='+escape(Q)+'&loglink='+escape(x.location.href)+'&loglinktitle='+escape(x.title),'nucleusbm','scrollbars=yes,width=600,height=550,left=10,top=10,status=yes,resizable=yes');wingm.focus();";
 
 	return $bookmarkletline;
 }
@@ -1979,6 +1978,19 @@ function ifset(&$var) {
 	}
 
 	return null;
+}
+
+/**
+ * Returns number of subscriber to an event
+ *
+ * @param event
+ * @return number of subscriber(s)
+ */
+function numberOfEventSubscriber($event) {
+	$query = 'SELECT COUNT(*) as count FROM ' . sql_table('plugin_event') . ' WHERE event=\'' . $event . '\'';
+	$res = sql_query($query);
+	$obj = mysql_fetch_object($res);
+	return $obj->count;
 }
 
 ?>

@@ -15,8 +15,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ENCAPSULATE.php,v 1.4 2007-03-22 03:30:14 kmorimatsu Exp $
- * @version $NucleusJP: ENCAPSULATE.php,v 1.3 2007/02/04 06:28:46 kimitake Exp $
+ * @version $Id: ENCAPSULATE.php,v 1.5 2008-02-08 09:31:22 kimitake Exp $
+ * @version $NucleusJP: ENCAPSULATE.php,v 1.4.2.1 2007/08/08 05:32:54 kimitake Exp $
  */
 
 class ENCAPSULATE {

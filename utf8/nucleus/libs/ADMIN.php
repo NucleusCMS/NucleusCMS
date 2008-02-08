@@ -14,8 +14,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.23 2007-05-31 07:20:48 kimitake Exp $
- * @version $NucleusJP: ADMIN.php,v 1.20 2007/03/22 03:30:14 kmorimatsu Exp $
+ * @version $Id: ADMIN.php,v 1.24 2008-02-08 09:31:22 kimitake Exp $
+ * @version $NucleusJP: ADMIN.php,v 1.21.2.4 2007/10/30 19:04:24 kmorimatsu Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -1175,7 +1175,7 @@ class ADMIN {
 
 		$this->updateFuturePosted($blogid);
 
-		if ($draftid > 0) {
+		if ($draftid > 0 && $member->canAlterItem($draftid)) {
 			ITEM::delete($draftid);
 		}
 
@@ -1466,7 +1466,7 @@ class ADMIN {
 
 		<h2>Pinging services, please wait...</h2>
 		<div class='note'>
-                <?
+                <?php
 
 		// send sendPing event
 		$manager->notify('SendPing', array('blogid' => $blogid));
@@ -2349,11 +2349,11 @@ class ADMIN {
 
 		// check if: - there remains at least one blog admin
 		//           - (there remains at least one team member)
-		$tmem = MEMBER::createFromID($memberid);
+		$mem = MEMBER::createFromID($memberid);
 
 		$manager->notify('PreDeleteTeamMember', array('member' => &$mem, 'blogid' => $blogid));
 
-		if ($tmem->isBlogAdmin($blogid)) {
+		if ($mem->isBlogAdmin($blogid)) {
 			// check if there are more blog members left and at least one admin
 			// (check for at least two admins before deletion)
 			$query = 'SELECT * FROM '.sql_table('team') . ' WHERE tblog='.$blogid.' and tadmin=1';
@@ -2519,13 +2519,13 @@ class ADMIN {
 				/><label for="notifyNewItem"><?php echo _EBLOG_NOTIFY_ITEM?></label>
 			</td>
 		</tr><tr>
-		<? 
+		<?php
 		if (numberOfEventSubscriber('SendPing') > 0) {
 		?>
 			<td><?php echo _EBLOG_PING?> <?php help('sendping'); ?></td>
 			<td><?php $this->input_yesno('sendping',$blog->sendPing(),85); ?></td>
 		</tr><tr>
-		<?
+		<?php
 		}
 		?>
 			<td><?php echo _EBLOG_MAXCOMMENTS?> <?php help('blogmaxcomments'); ?></td>
@@ -3292,7 +3292,7 @@ class ADMIN {
 				'name' => &$bname,
 				'shortname' => &$bshortname,
 				'timeoffset' => &$btimeoffset,
-				'description' => &$bdescription,
+				'description' => &$bdesc,
 				'defaultskin' => &$bdefskin
 			)
 		);
@@ -5264,7 +5264,7 @@ selector();
 		<p>
 			「お気に入り」もしくはツールバーから消すには、単に削除するだけです。
 		</p>
-
+		
 		<p>
 			右クリックメニューから消したい時は、以下の手順を踏んでください:
 		</p>
@@ -6045,7 +6045,9 @@ selector();
 		sql_query('UPDATE '.sql_table('plugin').' SET porder='.$oldOrder.' WHERE porder='.$newOrder);
 		sql_query('UPDATE '.sql_table('plugin').' SET porder='.$newOrder.' WHERE pid='.$plugid);
 
-		$this->action_pluginlist();
+		//$this->action_pluginlist();
+		// To avoid showing ticket in the URL, redirect to pluginlist, instead.
+		redirect('?action=pluginlist');
 	}
 
 	/**
@@ -6076,7 +6078,9 @@ selector();
 		sql_query('UPDATE '.sql_table('plugin').' SET porder='.$oldOrder.' WHERE porder='.$newOrder);
 		sql_query('UPDATE '.sql_table('plugin').' SET porder='.$newOrder.' WHERE pid='.$plugid);
 
-		$this->action_pluginlist();
+		//$this->action_pluginlist();
+		// To avoid showing ticket in the URL, redirect to pluginlist, instead.
+		redirect('?action=pluginlist');
 	}
 
 	/**
