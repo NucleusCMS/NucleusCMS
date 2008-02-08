@@ -232,6 +232,13 @@ class ITEM {
 			if (!$isFuture && $blog->getNotifyAddress() && $blog->notifyOnNewItem())
 				$blog->sendNewItemNotification($itemid, $title, $body);
 		}
+		
+		// save back to drafts		
+		if (!$wasdraft && !$publish) {
+			$query .= ', idraft=1';
+			// set timestamp back to zero for a draft
+			$query .= ", itime=" . mysqldate($timestamp);
+		}
 
 		// update timestamp when needed
 		if ($timestamp != 0)
