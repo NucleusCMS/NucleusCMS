@@ -85,10 +85,9 @@ class Backup
 		header("Pragma: no-cache");
 		
 		// don't allow gzip compression when extension is not loaded
-		if (($gzip != 0) && !extension_loaded("zlib"))
+		if (($gzip != 0) && !extension_loaded("zlib")) {
 			$gzip = 0;
-		
-		
+		}
 		
 		if ($gzip) {
 			// use an output buffer
@@ -152,6 +151,9 @@ class Backup
 		$this->_backup_dump_contents($tablename);
 	}
 
+	/**
+	  * Creates a dump of the table structure for one table
+	  */
 	function _backup_dump_structure($tablename) {
 	
 		// add command to drop table on restore
@@ -245,6 +247,9 @@ class Backup
 		return '(' . implode(', ', $fields) . ')';	
 	}
 
+	/**
+	  * Creates a dump of the table content for one table	  
+	  */
 	function _backup_dump_contents($tablename) {
 		//
 		// Grab the data from the table.
@@ -297,7 +302,9 @@ class Backup
 	
 	}
 
-	// copied from phpBB
+	/**
+	 * copied from phpBB
+	 */	 	
 	function gzip_PrintFourChars($Val)
 	{
 		for ($i = 0; $i < 4; $i ++)
@@ -308,6 +315,9 @@ class Backup
 		return $return;
 	}
 
+	/**
+	 * Restores a database backup
+	 */	
 	function do_restore() {
 	
 		$uploadInfo = postFileInfo('backup_file');
@@ -327,7 +337,6 @@ class Backup
 	
 		if (!preg_match("/^(text\/[a-zA-Z]+)|(application\/(x\-)?gzip(\-compressed)?)|(application\/octet-stream)$/is", $backup_file_type) )
 			return 'The uploaded file is not of the correct type';
-	
 	
 	
 		if (preg_match("/\.gz/is",$backup_file_name))
@@ -359,6 +368,9 @@ class Backup
 		$this->_execute_queries($sql_query);
 	}
 
+	/**
+	 * Executes a SQL query
+	 */	
 	function _execute_queries($sql_query) {
 		if (!$sql_query) return;
 	
@@ -384,9 +396,10 @@ class Backup
 	
 	}
 
-	//
-	// remove_remarks will strip the sql comment lines out of an uploaded sql file
-	//
+	/**
+	 * remove_remarks will strip the sql comment lines
+	 * out of an uploaded sql file
+	 */	
 	function remove_remarks($sql)
 	{
 		$lines = explode("\n", $sql);
@@ -418,13 +431,13 @@ class Backup
 	
 	}
 
-
-	//
-	// split_sql_file will split an uploaded sql file into single sql statements.
-	// Note: expects trim() to have already been run on $sql.
-	//
-	// taken from phpBB
-	//
+	/**
+	 * split_sql_file will split an uploaded sql file
+	 * into single sql statements.
+	 * 	 
+	 * Note: expects trim() to have already been run on $sql.	 
+	 * taken from phpBB
+	 */	 
 	function split_sql_file($sql)
 	{
 		// Split up our string into "possible" SQL statements.
@@ -495,7 +508,11 @@ class Backup
 		return $output;
 	}
 
-
+	/**
+	 * sub function of split_sql_file
+	 * 	 
+	 * taken from phpBB
+	 */	 
 	function _evenNumberOfQuotes($text) {
 			// This is the total number of single quotes in the token.
 			$total_quotes = preg_match_all("/'/", $text, $matches);
