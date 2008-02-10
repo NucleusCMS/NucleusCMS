@@ -33,13 +33,13 @@
 			<%ticket%>
 			
 			<div id="submit" class="buttonbar">
-				<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
 				<div id="switchbuttons">
 					<input type="button" onclick="flipBlock('body');" value="<%text(_BMLET_BODY)%> &gt;&gt;" />
 					<input type="button" onclick="flipBlock('more');" value="<%text(_BMLET_MORE)%> &gt;&gt;" />
 					<input type="button" onclick="flipBlock('options');" value="<%text(_BMLET_OPTIONS)%> &gt;&gt;" />
 					<input type="button" onclick="updAllPreviews(); flipBlock('preview');" value="<%text(_BMLET_PREVIEW)%> &gt;&gt;" />
 				</div>
+				<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
 			</div>
 
 			<div id="body" class="contentblock">
