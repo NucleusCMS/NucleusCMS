@@ -40,6 +40,7 @@
 					<input type="button" onclick="updAllPreviews(); flipBlock('preview');" value="<%text(_BMLET_PREVIEW)%> &gt;&gt;" />
 				</div>
 				<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
+				<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
 			</div>
 
 			<div id="body" class="contentblock">
