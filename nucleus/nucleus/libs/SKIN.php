@@ -297,7 +297,9 @@ class SKIN {
 								'ifnot',
 								'elseifnot',
 								'charset',
-								'bloglist'
+								'bloglist',
+								'addlink',
+								'addpopupcode'
 								);
 
 		// extra actions specific for a certain skin type

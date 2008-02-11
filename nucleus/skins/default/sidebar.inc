@@ -58,6 +58,7 @@
 <!-- admin link, only visible if logged in -->
 <%if(loggedin)%>
 <dd><a href="<%adminurl%>" title="Admin Area">Admin</a></dd>
+<dd><a href="<%addlink%>" onclick="<%addpopupcode%>" title="Add an item to your blog">Add an item</a></dd>
 <%endif%>
 </dl>
 </div>
