@@ -396,6 +396,25 @@ class ACTIONS extends BaseActions {
 	}
 	
 	/**
+	 * Parse skinvar addlink
+	 * A Link that allows to open a bookmarklet to add an item
+	 */
+	function parse_addlink() {
+		global $CONF, $member, $blog;
+		if ($member->isLoggedIn() && $member->isTeamMember($blog->blogid) ) {
+			echo $CONF['AdminURL'].'bookmarklet.php?blogid='.$blog->blogid;
+		}
+	}
+	
+	/**
+	 * Parse skinvar addpopupcode
+	 * Code that opens a bookmarklet in an popup window
+	 */
+	function parse_addpopupcode() {
+		echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
+	}
+	
+	/**
 	 * Parse skinvar adminurl
 	 * (shortcut for admin url)	 
 	 */
