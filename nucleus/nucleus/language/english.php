@@ -358,6 +358,7 @@ define('_MMAIL_MAIL',				'Message:');
 define('_BMLET_ADD',				'Add Item');
 define('_BMLET_EDIT',				'Edit Item');
 define('_BMLET_BACKTODRAFTS',		'Move back to drafts');
+define('_BMLET_CANCEL',				'Cancel');
 define('_BMLET_DELETE',				'Delete Item');
 define('_BMLET_BODY',				'Body');
 define('_BMLET_MORE',				'Extended');
