@@ -168,6 +168,11 @@ function bm_doEditItem() {
 			$wasdraft = 0;
 			$timestamp = 0;
 			break;
+		case 'backtodrafts':
+			$publish = 0;
+			$wasdraft = 0;
+			$timestamp = 0;
+			break;
 		default:
 			bm_doError('Something went wrong');
 	}
