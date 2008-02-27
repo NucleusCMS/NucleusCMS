@@ -32,11 +32,6 @@ if ($CONF['debug']) {
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
 }
 
-// Avoid notices
-if (!isset($CONF['Self'])) {
-	$CONF['Self'] = htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES);
-}
-
 /*
 	Indicates when Nucleus should display startup errors. Set to 1 if you want
 	the error enabled (default), false otherwise
@@ -160,6 +155,23 @@ register_shutdown_function('sql_disconnect');
 
 // read config
 getConfig();
+
+// Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
+if (!isset($CONF['Self'])) {
+	$CONF['Self'] = $CONF['IndexURL'];
+	// strip trailing /
+	if ($CONF['Self'][strlen($CONF['Self']) -1] == "/") {
+		$CONF['Self'] = substr($CONF['Self'], 0, strlen($CONF['Self']) -1);
+	}
+
+	$CONF['ItemURL'] = $CONF['Self'];
+	$CONF['ArchiveURL'] = $CONF['Self'];
+	$CONF['ArchiveListURL'] = $CONF['Self'];
+	$CONF['MemberURL'] = $CONF['Self'];
+	$CONF['SearchURL'] = $CONF['Self'];
+	$CONF['BlogURL'] = $CONF['Self'];
+	$CONF['CategoryURL'] = $CONF['Self'];
+}
 
 // automatically use simpler toolbar for mozilla
 if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0') && strstr(serverVar('HTTP_USER_AGENT'), 'Gecko') ) {
