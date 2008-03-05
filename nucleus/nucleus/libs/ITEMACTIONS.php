@@ -10,7 +10,7 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 /**
- * This class to parse item templates
+ * This class is used to parse item templates
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
@@ -55,6 +55,10 @@ class ITEMACTIONS extends BaseActions {
 		$this->setBlog($blog);
 	}
 
+	/**
+	  * Returns an array with the actions that are defined
+	  * in the ITEMACTIONS class 
+	  */
 	function getDefinedActions() {
 		return array(
 			'blogid',
@@ -133,38 +137,66 @@ class ITEMACTIONS extends BaseActions {
 
 	// methods used by parser to insert content
 
+
+	/**
+	 * Parse templatevar blogid
+	 */
 	function parse_blogid() {
 		echo $this->blog->getID();
 	}
 	
+	/**
+	 * Parse templatevar body
+	 */
 	function parse_body() {
 		$this->highlightAndParse($this->currentItem->body);
 	}
 	
+	/**
+	 * Parse templatevar more
+	 */
 	function parse_more() {
 		$this->highlightAndParse($this->currentItem->more);
 	}
 	
+	/**
+	 * Parse templatevar itemid
+	 */
 	function parse_itemid() {
 		echo $this->currentItem->itemid;
 	}
-	
+
+	/**
+	 * Parse templatevar category
+	 */	
 	function parse_category() {
 		echo $this->currentItem->category;
 	}
 	
+	/**
+	 * Parse templatevar categorylink
+	 */
 	function parse_categorylink() {
 		echo createLink('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category));
 	}
 	
+	/**
+	 * Parse templatevar catid
+	 */
 	function parse_catid() {
 		echo $this->currentItem->catid;
 	}
 	
+	/**
+	 * Parse templatevar authorid
+	 */
 	function parse_authorid() {
 		echo $this->currentItem->authorid;
 	}
 	
+	/**
+	 * Parse templatevar authorlink
+	 */
 	function parse_authorlink() {
 		echo createLink(
 			'member',
@@ -176,10 +208,16 @@ class ITEMACTIONS extends BaseActions {
 		);
 	}
 	
+	/**
+	 * Parse templatevar query
+	 */
 	function parse_query() {
 		echo $this->strHighlight;
 	}
 	
+	/**
+	 * Parse templatevar itemlink
+	 */
 	function parse_itemlink() {
 		echo createLink(
 			'item',
@@ -192,18 +230,32 @@ class ITEMACTIONS extends BaseActions {
 		);
 	}
 	
+	/**
+	 * Parse templatevar blogurl
+	 */
 	function parse_blogurl() {
 		echo $this->blog->getURL();
 	}
 	
+	/**
+	 * Parse templatevar closed
+	 */
 	function parse_closed() {
 		echo $this->currentItem->closed;
 	}
 	
+	/**
+	 * Parse templatevar relevance
+	 */
 	function parse_relevance() {
 		echo round($this->currentItem->score,2);
 	}
 
+	/**
+	 * Parse templatevar title
+	 * 
+	 * @param string $format defines in which format the title is shown	 	 
+	 */
 	function parse_title($format = '') {
 		switch ($format) {
 			case 'xml':
@@ -221,6 +273,9 @@ class ITEMACTIONS extends BaseActions {
 		}
 	}
 
+	/**
+	 * Parse templatevar karma
+	 */
 	function parse_karma($type = 'totalscore') {
 		global $manager;
 
@@ -253,6 +308,9 @@ class ITEMACTIONS extends BaseActions {
 
 	}
 
+	/**
+	 * Parse templatevar author
+	 */
 	function parse_author($which = '') {
 		switch($which)
 		{
@@ -274,6 +332,9 @@ class ITEMACTIONS extends BaseActions {
 		}
 	}
 
+	/**
+	 * Parse templatevar smartbody
+	 */
 	function parse_smartbody() {
 		if (!$this->currentItem->more) {
 			$this->highlightAndParse($this->currentItem->body);
@@ -282,16 +343,26 @@ class ITEMACTIONS extends BaseActions {
 		}
 	}
 
+	/**
+	 * Parse templatevar morelink
+	 */
 	function parse_morelink() {
 		if ($this->currentItem->more)
 			$this->parser->parse($this->template['MORELINK']);
 	}
 
+	/**
+	 * Parse templatevar date
+	 * 
+	 * @param format optional strftime format	 	 
+	 */
 	function parse_date($format = '') {
 		echo formatDate($format, $this->currentItem->timestamp, $this->template['FORMAT_DATE'], $this->blog);
 	}
 
 	/**
+	  * Parse templatevar time
+	  * 	  
 	  * @param format optional strftime format
 	  */
 	function parse_time($format = '') {
@@ -299,6 +370,8 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	/**
+	  * Parse templatevar syndicate_title
+	  *
 	  * @param maxLength optional maximum length
 	  */
 	function parse_syndicate_title($maxLength = 100) {
@@ -307,6 +380,8 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	/**
+	  * Parse templatevar syndicate_description
+	  *
 	  * @param maxLength optional maximum length
 	  */
 	function parse_syndicate_description($maxLength = 250, $addHighlight = 0) {
@@ -319,28 +394,46 @@ class ITEMACTIONS extends BaseActions {
 		}
 	}
 
+	/**
+	  * Parse templatevar karmaposlink
+	  *
+	  * @param string text
+	  */
 	function parse_karmaposlink($text = '') {
 		global $CONF;
 		$link = $CONF['ActionURL'] . '?action=votepositive&amp;itemid='.$this->currentItem->itemid;
 		echo $text ? '<a href="'.$link.'">'.$text.'</a>' : $link;
 	}
 
+	/**
+	  * Parse templatevar karmaneglink
+	  *
+	  * @param string text
+	  */
 	function parse_karmaneglink($text = '') {
 		global $CONF;
 		$link = $CONF['ActionURL'] . '?action=votenegative&amp;itemid='.$this->currentItem->itemid;
 		echo $text ? '<a href="'.$link.'">'.$text.'</a>' : $link;
 	}
 
+	/**
+	  * Parse templatevar new
+	  */
 	function parse_new() {
 		if (($this->lastVisit != 0) && ($this->currentItem->timestamp > $this->lastVisit))
 			echo $this->template['NEW'];
 	}
 
-
+	/**
+	  * Parse templatevar daylink
+	  */
 	function parse_daylink() {
 		echo createArchiveLink($this->blog->getID(), strftime('%Y-%m-%d',$this->currentItem->timestamp), $this->linkparams);
 	}
 
+	/**
+	  * Parse templatevar comments
+	  */
 	function parse_comments($maxToShow = 0) {
 		if ($maxToShow == 0)
 			$maxToShow = $this->blog->getMaxComments();
@@ -382,6 +475,9 @@ class ITEMACTIONS extends BaseActions {
 		call_user_func_array(array(&$plugin,'doTemplateVar'), $params);
 	}
 
+	/**
+	  * Parse templatevar edit
+	  */
 	function parse_edit() {
 		global $member, $CONF;
 		if ($this->allowEditAll || ($member->isLoggedIn() && ($member->getID() == $this->currentItem->authorid)) ) {
@@ -389,11 +485,17 @@ class ITEMACTIONS extends BaseActions {
 		}
 	}
 
+	/**
+	  * Parse templatevar editlink
+	  */
 	function parse_editlink() {
 		global $CONF;
 		echo $CONF['AdminURL'],'bookmarklet.php?action=edit&amp;itemid=',$this->currentItem->itemid;
 	}
 
+	/**
+	  * Parse templatevar editpopupcode
+	  */
 	function parse_editpopupcode() {
 		echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
 	}
