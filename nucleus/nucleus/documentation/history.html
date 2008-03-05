@@ -17,6 +17,17 @@
 	<li>
 		<b>Nucleus v3.33 SVN (development version)</b>
 		<ul>
+			<li>FIXED: CONF['Self'] fix (ehui)</li>
+			<li>ADDED: Add an link to the front end that allows to add an item in a bookmarklet popup window (two new skinvars addlink and addpopupcode needed) (kaigreve)</li>
+			<li>ADDED: add a cancel button to the bookmarklet add and edit forms (kaigreve)</li>
+			<li>CHANGED: Move the submit button in the bookmarklet edit from to the end of the button bar (logical order) (kaigreve)</li>
+			<li>ADDED: Add the possibility to move a published item back to drafts (kaigreve)</li>
+			<li>ADDED: more and improved comments in classes NucleusPlugin, BACKUP, ITEM and ITEMACTIONS (kaigreve)</li>
+			<li>CHANGED: Use ISO date for backup filename and add hour, minute and second  (kaigreve)</li>
+			<li>CHANGED: Put backup functions in an own class Backup (kaigreve)
+			<li>FIXED: add default values for the parse_bloglist function to avoid warnings (kaigreve)</li>
+			<li>FIXED: fix case sensitive function name createDraftFromRequest in class ACTION (ehui)</li>
+			<li>ADDED: add description of the doItemVar function to the plugin documentation (kaigreve)</li>
 			<li>ADDED: add language file install_lang_english.php to install process (admun)</li>
 			<li>ADDED: add option to install NP_Ping during installation (admun)</li>
 			<li>FIXED: remove bug in the plugin api: function clearOptionValueCache hasn't worked correct with the getOption function (kaigreve)</li>
