@@ -21,13 +21,22 @@ class ITEM {
 
 	var $itemid;
 
+	/**
+	  * Constructor of an ITEM object
+	  * 
+	  * @param integer $itemid id of the item
+	  */
 	function ITEM($itemid) {
 		$this->itemid = $itemid;
 	}
 
 	/**
 	  * Returns one item with the specific itemid
-	  * (static)
+	  * 
+	  * @param integer $itemid id of the item
+	  * @param boolean $allowdraft
+	  * @param boolean $allowfuture	  	  	  	  
+	  * @static
 	  */
 	function getitem($itemid, $allowdraft, $allowfuture) {
 		global $manager;
@@ -70,9 +79,10 @@ class ITEM {
 	 * Tries to create an item from the data in the current request (comes from
 	 * bookmarklet or admin area
 	 *
-	 * Returns an array with status info (status = 'added', 'error', 'newcategory')
+	 * Returns an array with status info:
+	 * status = 'added', 'error', 'newcategory'
 	 *
-	 * (static)
+	 * @static
 	 */
 	function createFromRequest() {
 		 global $member, $manager;
@@ -168,7 +178,9 @@ class ITEM {
 
 
 	/**
-	  * Updates an item (static)
+	  * Updates an item
+	  * 
+	  * @static
 	  */
 	function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0) {
 		global $manager;
@@ -263,7 +275,11 @@ class ITEM {
 
 	}
 
-	// move an item to another blog (no checks, static)
+	/**
+	 * Move an item to another blog (no checks)
+	 *
+	 * @static
+	 */	 	 	 	
 	function move($itemid, $new_catid) {
 		global $manager;
 
@@ -324,7 +340,11 @@ class ITEM {
 		$manager->notify('PostDeleteItem', array('itemid' => $itemid));
 	}
 
-	// returns true if there is an item with the given ID (static)
+	/**
+	 * Returns true if there is an item with the given ID
+	 *
+	 * @static
+	 */	 	 	
 	function exists($id,$future,$draft) {
 		global $manager;
 
@@ -349,9 +369,10 @@ class ITEM {
 	 * Tries to create an draft from the data in the current request (comes from
 	 * bookmarklet or admin area
 	 *
-	 * Returns an array with status info (status = 'added', 'error', 'newcategory')
+	 * Returns an array with status info:
+	 * status = 'added', 'error', 'newcategory'
 	 *
-	 * (static)
+	 * @static
 	 *
 	 * Used by xmlHTTPRequest AutoDraft
 	 */
