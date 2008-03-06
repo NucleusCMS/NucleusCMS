@@ -41,6 +41,7 @@ class COMMENTS {
 	function COMMENTS($itemid) {
 		$this->itemid = intval($itemid);
 	}
+	
 	/**
 	 * Used when parsing comments
 	 *
@@ -130,7 +131,9 @@ class COMMENTS {
 		return $arr[0];
 	}
 
-
+	/**
+	 * Adds a new comment to the database
+	 */
 	function addComment($timestamp, $comment) {
 		global $CONF, $member, $manager;
 
@@ -278,7 +281,10 @@ class COMMENTS {
 		return true;
 	}
 
-
+	/**
+	 * Checks if a comment is valid and call plugins
+	 * that can check if the comment is a spam comment	  
+	 */
 	function isValidComment($comment, & $spamcheck) {
 		global $member, $manager;
 
