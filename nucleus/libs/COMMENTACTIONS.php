@@ -128,15 +128,32 @@ class COMMENTACTIONS extends BaseActions {
 		$this->currentComment =& $comment;
 	}
 
+	function parse_authtext() {
+		if ($this->currentComment['memberid'] != 0)
+			$this->parser->parse($this->template['COMMENTS_AUTH']);
+	}
+
+	function parse_blogid() {
+		echo $this->currentComment['blogid'];
+	}
+	
 	function parse_blogurl() {
 		global $manager;
 		$blogid = getBlogIDFromItemID($this->commentsObj->itemid);
 		$blog =& $manager->getBlog($blogid);
 		echo $blog->getURL();
 	}
+	
+	function parse_body() {
+		echo $this->highlight($this->currentComment['body']);
+	}
 
 	function parse_commentcount() {
 			echo $this->commentsObj->commentcount;
+	}
+	
+	function parse_commentid() {
+		echo $this->currentComment['commentid'];
 	}
 	
 	function parse_commentword() {
@@ -144,6 +161,33 @@ class COMMENTACTIONS extends BaseActions {
 			echo $this->template['COMMENTS_ONE'];
 		else
 			echo $this->template['COMMENTS_MANY'];
+	}
+	
+	function parse_date($format = '') {
+		echo formatDate($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE'], $this->commentsObj->itemActions->blog);
+	}
+	
+	function parse_email() {
+		$email = $this->currentComment['email'];
+		$email = str_replace('@', ' (at) ', $email);
+		$email = str_replace('.', ' (dot) ', $email);
+		echo $email;
+	}
+	
+	function parse_excerpt() {
+		echo stringToXML(shorten($this->currentComment['body'], 60, '...'));
+	}
+	
+	function parse_host() {
+		echo $this->currentComment['host'];
+	}
+	
+	function parse_ip() {
+		echo $this->currentComment['ip'];
+	}
+
+	function parse_itemid() {
+		echo $this->commentsObj->itemid;
 	}
 
 	function parse_itemlink() {
@@ -158,10 +202,6 @@ class COMMENTACTIONS extends BaseActions {
 		);
 	}
 	
-	function parse_itemid() {
-		echo $this->commentsObj->itemid;
-	}
-	
 	function parse_itemtitle($maxLength = 0) {
 		if ($maxLength == 0)
 			$this->commentsObj->itemActions->parse_title();
@@ -169,108 +209,10 @@ class COMMENTACTIONS extends BaseActions {
 			$this->commentsObj->itemActions->parse_syndicate_title($maxLength);
 	}
 
-	function parse_date($format = '') {
-		echo formatDate($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE'], $this->commentsObj->itemActions->blog);
-	}
-	
-	function parse_time($format = '') {
-		echo strftime(
-				($format == '') ? $this->template['FORMAT_TIME'] : $format,
-				$this->currentComment['timestamp']
-			);
-	}
-
-	function parse_commentid() {
-		echo $this->currentComment['commentid'];
-	}
-	
-	function parse_body() {
-		echo $this->highlight($this->currentComment['body']);
-	}
-	
 	function parse_memberid() {
 		echo $this->currentComment['memberid'];
 	}
-	
-	function parse_timestamp() {
-		echo $this->currentComment['timestamp'];
-	}
-	
-	function parse_host() {
-		echo $this->currentComment['host'];
-	}
-	
-	function parse_ip() {
-		echo $this->currentComment['ip'];
-	}
-	
-	function parse_blogid() {
-		echo $this->currentComment['blogid'];
-	}
 
-//	function parse_user() {
-	function parse_user($mode='') {
-		global $manager;
-		if ($mode == 'realname' && $this->currentComment['memberid'] > 0) {
-			$member =& $manager->getMember($this->currentComment['memberid']);
-			echo $member->getRealName();
-		} else {
-			echo $this->currentComment['user'];
-	}
-	}
-	
-	function parse_userid() {
-			echo $this->currentComment['userid'];
-	}
-	
-	function parse_email() {
-		$email = $this->currentComment['email'];
-		$email = str_replace('@', ' (at) ', $email);
-		$email = str_replace('.', ' (dot) ', $email);
-		echo $email;
-	}
-	
-	function parse_userlinkraw() {
-		echo $this->currentComment['userlinkraw'];
-	}
-	
-	function parse_userlink() {
-		if ($this->currentComment['userlinkraw']) {
-			echo '<a href="'.$this->currentComment['userlinkraw'].'" rel="nofollow">'.$this->currentComment['user'].'</a>';
-		} else {
-			echo $this->currentComment['user'];
-		}
-	}
-
-	function parse_useremail() {
-		global $manager;
-		if ($this->currentComment['memberid'] > 0)
-		{
-			$member =& $manager->getMember($this->currentComment['memberid']);
-
-			if ($member->email != '')
-				echo $member->email;
-		}
-		else
-		{
-			if (isValidMailAddress($this->currentComment['email']))
-				echo $this->currentComment['email'];
-			elseif (isValidMailAddress($this->currentComment['userid']))
-				echo $this->currentComment['userid'];
-//			if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
-//				echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
-		}
-	}
-
-	function parse_userwebsite() {
-		if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false))
-			echo $this->currentComment['userlinkraw'];
-	}
-
-	function parse_excerpt() {
-		echo stringToXML(shorten($this->currentComment['body'], 60, '...'));
-	}
-	
 	function parse_short() {
 		$tmp = strtok($this->currentComment['body'],"\n");
 		$tmp = str_replace('<br />','',$tmp);
@@ -279,11 +221,17 @@ class COMMENTACTIONS extends BaseActions {
 			$this->parser->parse($this->template['COMMENTS_CONTINUED']);
 	}
 	
-	function parse_authtext() {
-		if ($this->currentComment['memberid'] != 0)
-			$this->parser->parse($this->template['COMMENTS_AUTH']);
+	function parse_time($format = '') {
+		echo strftime(
+				($format == '') ? $this->template['FORMAT_TIME'] : $format,
+				$this->currentComment['timestamp']
+			);
 	}
-
+	
+	function parse_timestamp() {
+		echo $this->currentComment['timestamp'];
+	}
+	
 	/**
 	  * Executes a plugin templatevar
 	  *
@@ -313,5 +261,59 @@ class COMMENTACTIONS extends BaseActions {
 
 		call_user_func_array(array(&$plugin,'doTemplateCommentsVar'), $params);
 	}
+
+//	function parse_user() {
+	function parse_user($mode='') {
+		global $manager;
+		if ($mode == 'realname' && $this->currentComment['memberid'] > 0) {
+			$member =& $manager->getMember($this->currentComment['memberid']);
+			echo $member->getRealName();
+		} else {
+			echo $this->currentComment['user'];
+	}
+	}
+	
+	function parse_useremail() {
+		global $manager;
+		if ($this->currentComment['memberid'] > 0)
+		{
+			$member =& $manager->getMember($this->currentComment['memberid']);
+
+			if ($member->email != '')
+				echo $member->email;
+		}
+		else
+		{
+			if (isValidMailAddress($this->currentComment['email']))
+				echo $this->currentComment['email'];
+			elseif (isValidMailAddress($this->currentComment['userid']))
+				echo $this->currentComment['userid'];
+//			if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
+//				echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
+		}
+	}
+	
+	function parse_userid() {
+			echo $this->currentComment['userid'];
+	}
+	
+
+	function parse_userlink() {
+		if ($this->currentComment['userlinkraw']) {
+			echo '<a href="'.$this->currentComment['userlinkraw'].'" rel="nofollow">'.$this->currentComment['user'].'</a>';
+		} else {
+			echo $this->currentComment['user'];
+		}
+	}
+	
+	function parse_userlinkraw() {
+		echo $this->currentComment['userlinkraw'];
+	}
+
+	function parse_userwebsite() {
+		if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false))
+			echo $this->currentComment['userlinkraw'];
+	}
+
 }
 ?>
