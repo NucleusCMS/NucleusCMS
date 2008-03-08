@@ -715,6 +715,8 @@ class BLOG {
 		
 			$list['blogdesc'] = $data['bdesc'];
 			
+			$list['blogurl'] = $data['burl'];
+			
 			if ($bnametype=='shortname') {
 				$list['blogname'] = $data['bshortname'];
 			}
