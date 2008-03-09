@@ -19,6 +19,13 @@
  * @version $Id$
  */
 
+// START changed/added for 3.34 START
+define('_TEMPLATE_BLOGLIST',		'Template Blog List');
+define('_TEMPLATE_BLOGHEADER',		'Blog List Header');
+define('_TEMPLATE_BLOGITEM',		'Blog List Item');
+define('_TEMPLATE_BLOGFOOTER',		'Blog List Footer');
+// END changed/added for 3.34 END
+
 // START changed/added for 3.32 START
 define('_SETTINGS_DEBUGVARS',		'Debug Vars');
 // END changed/added for 3.32 END
