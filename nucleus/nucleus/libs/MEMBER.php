@@ -36,19 +36,29 @@ class MEMBER {
 	var $canlogin = 0;		// (either 0 or 1)
 	var $notes;
 
-	// (private)
+	/**
+	 * Constructor for a member object
+	 */	 	
 	function MEMBER() {
-
+		// do nothing
 	}
 
-	// (static)
+	/**
+	 * Create a member object for a given displayname
+	 *
+	 * @static	 	 
+	 */	 	
 	function &createFromName($displayname) {
 		$mem =& new MEMBER();
 		$mem->readFromName($displayname);
 		return $mem;
 	}
 
-	// (static)
+	/**
+	 * Create a member object for a given ID
+	 *
+	 * @static	 	 
+	 */	
 	function &createFromID($id) {
 		$mem =& new MEMBER();
 		$mem->readFromID($id);
@@ -64,8 +74,8 @@ class MEMBER {
 	}
 
 	/**
-	  * Tries to login as a given user. Returns true when succeeded,
-	  * returns false when failed
+	  * Tries to login as a given user.
+	  * Returns true when succeeded, returns false when failed
 	  */
 	function login($login, $password) {
 		$this->loggedin = 0;
@@ -77,7 +87,9 @@ class MEMBER {
 		return $this->isLoggedIn();
 	}
 
-	// login using cookie key
+	/**
+	 * Login using cookie key
+	 */	 	
 	function cookielogin($login, $cookiekey) {
 		$this->loggedin = 0;
 		if (!$this->readFromName($login))
@@ -96,6 +108,9 @@ class MEMBER {
 		return $this->loggedin;
 	}
 
+	/**
+	 * Read member information from the database 
+	 */	 	
 	function read($where) {
 		// read info
 		$query =  'SELECT * FROM '.sql_table('member') . ' WHERE ' . $where;
@@ -507,19 +522,30 @@ class MEMBER {
 		return $this->id;
 	}
 
-	// returns true if there is a member with the given login name (static)
+	/**
+	 * Returns true if there is a member with the given login name
+	 * 
+	 * @static
+	 */	 	
 	function exists($name) {
 		$r = sql_query('select * FROM '.sql_table('member')." WHERE mname='".addslashes($name)."'");
 		return (mysql_num_rows($r) != 0);
 	}
 
-	// returns true if there is a member with the given ID (static)
+	/**
+	 * Returns true if there is a member with the given ID
+	 *
+	 * @static
+	 */	 	 	
 	function existsID($id) {
 		$r = sql_query('select * FROM '.sql_table('member')." WHERE mnumber='".intval($id)."'");
 		return (mysql_num_rows($r) != 0);
 	}
 
-	// checks if a username is protected. If so, it can not be used on anonymous comments
+	/**
+	 *  Checks if a username is protected. 
+	 *  If so, it can not be used on anonymous comments
+	 */	 	 	
 	function isNameProtected($name) {
 
 		// extract name
@@ -529,7 +555,11 @@ class MEMBER {
 		return MEMBER::exists($name);
 	}
 
-	// adds a new member (static)
+	/**
+	 * Adds a new member
+	 * 
+	 * @static
+	 */	 	 	
 	function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes) {
 		if (!isValidMailAddress($email))
 			return _ERROR_BADMAILADDRESS;
