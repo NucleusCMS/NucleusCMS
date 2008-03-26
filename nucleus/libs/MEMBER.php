@@ -169,6 +169,30 @@ class MEMBER {
 		return (mysql_num_rows($res) != 0);
 	}
 
+	function canAddItem($catid) {
+		global $manager;
+
+		// if this is a 'newcat' style newcat
+		// no blog admin of destination blog -> NOK
+		// blog admin of destination blog -> OK
+		if (strstr($catid,'newcat')) {
+			// get blogid
+			list($blogid) = sscanf($catid,"newcat-%d");
+			return $this->blogAdminRights($blogid);
+		}
+
+		// category does not exist -> NOK
+		if (!$manager->existsCategory($catid)) return 0;
+
+		$blogid = getBlogIDFromCatID($catid);
+
+		// no team rights for blog -> NOK
+		if (!$this->teamRights($blogid)) return 0;
+
+		// all other cases: OK
+		return 1;
+	}
+
 	/**
 	  * Returns true if this member can edit/delete a commentitem. This can be in the
 	  * following cases:
@@ -202,6 +226,15 @@ class MEMBER {
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
 		return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
+	}
+
+	/**
+	  * Return true if member can be deleted. This means that there are no items
+	  * posted by the member left
+	  */
+	function canBeDeleted() {
+		$res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
+		return (mysql_num_rows($res) == 0);
 	}
 
 	/**
@@ -259,39 +292,6 @@ class MEMBER {
 		// all other cases: NOK
 		return 0;
 
-	}
-
-	function canAddItem($catid) {
-		global $manager;
-
-		// if this is a 'newcat' style newcat
-		// no blog admin of destination blog -> NOK
-		// blog admin of destination blog -> OK
-		if (strstr($catid,'newcat')) {
-			// get blogid
-			list($blogid) = sscanf($catid,"newcat-%d");
-			return $this->blogAdminRights($blogid);
-		}
-
-		// category does not exist -> NOK
-		if (!$manager->existsCategory($catid)) return 0;
-
-		$blogid = getBlogIDFromCatID($catid);
-
-		// no team rights for blog -> NOK
-		if (!$this->teamRights($blogid)) return 0;
-
-		// all other cases: OK
-		return 1;
-	}
-
-	/**
-	  * Return true if member can be deleted. This means that there are no items
-	  * posted by the member left
-	  */
-	function canBeDeleted() {
-		$res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
-		return (mysql_num_rows($res) == 0);
 	}
 
 	/**
@@ -420,12 +420,12 @@ class MEMBER {
 		sql_query($query);
 	}
 
-	function checkPassword($pw) {
-		return (md5($pw) == $this->getPassword());
-	}
-
 	function checkCookieKey($key) {
 		return (($key != '') && ($key == $this->getCookieKey()));
+	}
+
+	function checkPassword($pw) {
+		return (md5($pw) == $this->getPassword());
 	}
 
 	function getRealName() {
