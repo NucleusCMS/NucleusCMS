@@ -61,7 +61,7 @@ class ADMIN {
 		// check ticket. All actions need a ticket, unless they are considered to be safe (a safe action
 		// is an action that requires user interaction before something is actually done)
 		// all safe actions are in this array:
-		$aActionsNotToCheck = array('showlogin', 'login', 'overview', 'itemlist', 'blogcommentlist', 'bookmarklet', 'blogsettings', 'banlist', 'deleteblog', 'editmembersettings', 'browseownitems', 'browseowncomments', 'createitem', 'itemedit', 'itemmove', 'categoryedit', 'categorydelete', 'manage', 'actionlog', 'settingsedit', 'backupoverview', 'pluginlist', 'createnewlog', 'usermanagement', 'skinoverview', 'templateoverview', 'skinieoverview', 'itemcommentlist', 'commentedit', 'commentdelete', 'banlistnewfromitem', 'banlistdelete', 'itemdelete', 'manageteam', 'teamdelete', 'banlistnew', 'memberedit', 'memberdelete', 'pluginhelp', 'pluginoptions', 'plugindelete', 'skinedittype', 'skinremovetype', 'skindelete', 'skinedit', 'templateedit', 'templatedelete', 'activate');
+		$aActionsNotToCheck = array('showlogin', 'login', 'overview', 'itemlist', 'blogcommentlist', 'bookmarklet', 'blogsettings', 'banlist', 'deleteblog', 'editmembersettings', 'browseownitems', 'browseowncomments', 'createitem', 'itemedit', 'itemmove', 'categoryedit', 'categorydelete', 'manage', 'actionlog', 'settingsedit', 'backupoverview', 'pluginlist', 'createnewlog', 'usermanagement', 'skinoverview', 'templateoverview', 'skinieoverview', 'itemcommentlist', 'commentedit', 'commentdelete', 'banlistnewfromitem', 'banlistdelete', 'itemdelete', 'manageteam', 'teamdelete', 'banlistnew', 'memberedit', 'memberdelete', 'pluginhelp', 'pluginoptions', 'plugindelete', 'skinedittype', 'skinremovetype', 'skindelete', 'skinedit', 'templateedit', 'templatedelete', 'activate', 'systemoverview');
 /*
 		// the rest of the actions needs to be checked
 		$aActionsToCheck = array('additem', 'itemupdate', 'itemmoveto', 'categoryupdate', 'categorydeleteconfirm', 'itemdeleteconfirm', 'commentdeleteconfirm', 'teamdeleteconfirm', 'memberdeleteconfirm', 'templatedeleteconfirm', 'skindeleteconfirm', 'banlistdeleteconfirm', 'plugindeleteconfirm', 'batchitem', 'batchcomment', 'batchmember', 'batchcategory', 'batchteam', 'regfile', 'commentupdate', 'banlistadd', 'changemembersettings', 'clearactionlog', 'settingsupdate', 'blogsettingsupdate', 'categorynew', 'teamchangeadmin', 'teamaddmember', 'memberadd', 'addnewlog', 'addnewlog2', 'backupcreate', 'backuprestore', 'pluginup', 'plugindown', 'pluginupdate', 'pluginadd', 'pluginoptionsupdate', 'skinupdate', 'skinclone', 'skineditgeneral', 'templateclone', 'templatenew', 'templateupdate', 'skinieimport', 'skinieexport', 'skiniedoimport', 'skinnew', 'deleteblogconfirm', 'sendping', 'rawping', 'activatesetpwd');
@@ -4968,6 +4968,94 @@ selector();
 		redirect($CONF['AdminURL'] . '?action=manage');
 		exit;
 
+	}
+	
+	/**
+	 *  Give an overview over the used system
+	 */	
+	function action_systemoverview() {
+		global $member, $nucleus, $CONF;
+		
+		$this->pagehead();
+		
+		echo '<h2>System Overview</h2>';
+		
+		if ($member->isLoggedIn() && $member->isAdmin()) {
+		
+		// Information about the used PHP and MySQL installation
+		echo '<h3>PHP and MySQL</h3>';
+
+		// Version of PHP MySQL		
+		echo '<table>';
+		echo '<tr><th colspan="2">Versions</th></tr>';
+		echo '<tr><td width="50%">PHP version</td><td>'.phpversion().'</td></tr>';
+		echo '<tr><td>MySQL version</td><td>'.mysql_get_server_info().' ('.mysql_get_client_info().')'.'</td></tr>';
+		echo '</table>';
+
+		// Important PHP settings
+		echo '<table>';
+		echo '<tr><th colspan="2">Settings</th></tr>';
+		echo '<tr><td width="50%">magic_quotes_gpc</td><td>'.get_magic_quotes_gpc().'</td></tr>';
+		echo '<tr><td>magic_quotes_runtime</td><td>'.get_magic_quotes_runtime().'</td></tr>';
+		$rg = ini_get('register_globals')?'enabled':'disabled';
+		echo '<tr><td>register_globals</td><td>'.$rg.'</td></tr>';
+		echo '</table>';
+		
+		// Information about GD library
+		$gdinfo = gd_info();
+		echo '<table>';
+		echo '<tr><th colspan="2">GD library</th></tr>';
+		foreach ($gdinfo as $key=>$value) {
+			if ($value==1) {
+				$value='enabled';
+			}
+			else {
+				$value='-';
+			}
+			echo '<tr><td width="50%">'.$key.'</td><td>'.$value.'</td></tr>';  	
+		}
+		echo '</table>';
+
+		// Check if special modules are loaded
+		ob_start();
+		phpinfo(INFO_MODULES);
+		$im =  ob_get_contents();
+		ob_clean();
+		echo '<table>';
+		echo '<tr><th colspan="2">Modules</th></tr>';
+		echo '<tr><td width="50%">mod_rewrite</td><td>';
+		echo (strstr($im, 'mod_rewrite')!='')?'loaded':'not loaded';
+		echo '</td></tr>';
+		echo '</table>';
+
+		// Information about the used Nucleus CMS 
+		echo '<h3>Your Nucleus CMS System</h3>';
+		$nv= getNucleusVersion()/100;
+		$np= getNucleusPatchLevel();		
+		echo '<table>';
+		echo '<tr><th colspan="2">Nucleus CMS</th></tr>';
+		echo '<tr><td width="50%">Nucleus CMS version</td><td>'.$nv.'</td></tr>';
+		echo '<tr><td width="50%">Nucleus CMS patch level</td><td>'.$np.'</td></tr>';	
+		echo '</table>';
+		
+		// Important settings of the installation
+		echo '<table>';
+		echo '<tr><th colspan="2">Important settings</th></tr>';
+		echo '<tr><td width="50%">CONF[\'Self\']</td><td>'.$CONF['Self'].'</td></tr>';
+		echo '<tr><td width="50%">CONF[\'alertOnHeadersSent\']</td><td>'.$CONF['alertOnHeadersSent'].'</td></tr>';	
+		echo '</table>';
+		
+		// Link to the online version test at the Nucleus CMS website
+		echo '<h3>Check for a new version</h3>';
+		$codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
+		echo 'Check on nucleuscms.org if a new version is available: <a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nv, $codenamestring, '</a>';
+		//echo '<br />';
+		}
+		else {
+			echo 'You haven\'t enough rights to see the system informations.';	
+		}
+		
+		$this->pagefoot();
 	}
 
 	/**
