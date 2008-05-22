@@ -26,19 +26,20 @@ a:hover {
 
 /* textareas */
 textarea {
-  font-size: small;
-  width: 95%;
+	font-size: small;
+	width: 95%;
 }
 
 /* textareas for skin/template editing have monospace fonts */
-textarea.skinedit, textarea.templateedit 
-{
+textarea.skinedit, textarea.templateedit {
 	font-family: monospace;
 	font-size: medium;
 }
 
 /* images */
-img	{ border: none; }
+img	{
+	border: none;
+}
 
 img.skinpreview {
 	border: 1px solid #ccc;
@@ -49,7 +50,9 @@ form {
 	margin-bottom: 0px;
 }
 
-label		{ cursor: pointer; }
+label {
+	cursor: pointer;
+}
 
 input.transparent {
 	background-color: transparent;
@@ -65,9 +68,14 @@ div.indent {
 	margin-left: 40px;
 }
 
-.skip 		{ display: none; }
+.skip {
+	display: none;
+}
 
-.error 		{ color: red; font-size: 1.2em; }
+.error {
+	color: red;
+	font-size: 1.2em;
+}
 
 /* header */
 h1 {
@@ -174,7 +182,7 @@ h1 {
 
 /* page content */
 #content {
-   margin-left:135px;
+	margin-left: 135px;
 	font-style: normal;
 	text-decoration: none;
 	color: black;
@@ -206,7 +214,6 @@ h1 {
 
 	text-decoration: none;
 	font-weight: bold; 
-
 }
 
 #content h3 {
@@ -244,8 +251,6 @@ h1 {
   font-size: small;
 }
 html>body #content { font-size: small; }
-
-
 
 /* tables */
 table {
@@ -307,7 +312,7 @@ table.navigation td, table.navigation th {
 
 /* footer */
 .foot {
- padding: 2px 0px 2px 10px;
- margin:10px -10px 0 -10px;
- text-align: center;
+	padding: 2px 0px 2px 10px;
+	margin:10px -10px 0 -10px;
+	text-align: center;
 }
