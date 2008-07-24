@@ -262,7 +262,7 @@ class ACTIONS extends BaseActions {
 	{
 		$u = htmlspecialchars($url);
 		$u = preg_replace("/&amp;amp;/",'&amp;',$u); // fix URLs that already had encoded ampersands
-		if ($linktext != '')
+		if ($linktext != '') 
 			$l = '<a href="' . $u .'">'.htmlspecialchars($linktext).'</a>';
 		else
 			$l = $u;

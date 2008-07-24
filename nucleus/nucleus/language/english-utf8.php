@@ -25,6 +25,7 @@ define('_TEMPLATE_BLOGLIST',		'Template Blog List');
 define('_TEMPLATE_BLOGHEADER',		'Blog List Header');
 define('_TEMPLATE_BLOGITEM',		'Blog List Item');
 define('_TEMPLATE_BLOGFOOTER',		'Blog List Footer');
+define('_SETTINGS_DEFAULTLISTSIZE',		'Default Size of Lists in Admin Area');
 // END changed/added for 3.34 END
 
 // START changed/added for 3.32 START

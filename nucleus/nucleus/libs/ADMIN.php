@@ -257,7 +257,7 @@ class ADMIN {
 	 * @todo document this
 	 */
 	function action_itemlist($blogid = '') {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		if ($blogid == '')
 			$blogid = intRequestVar('blogid');
@@ -282,8 +282,11 @@ class ADMIN {
 		// amount of items to show
 		if (postVar('amount'))
 			$amount = intPostVar('amount');
-		else
-			$amount = 10;
+		else {
+			$amount = intval($CONF['DefaultListSize']);
+			if ($amount < 1) 
+				$amount = 10;
+		}
 
 		$search = postVar('search');	// search through items
 
@@ -830,7 +833,7 @@ class ADMIN {
 	 * @todo document this
 	 */
 	function action_browseownitems() {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		$this->pagehead();
 
@@ -846,8 +849,11 @@ class ADMIN {
 		// amount of items to show
 		if (postVar('amount'))
 			$amount = intPostVar('amount');
-		else
-			$amount = 10;
+		else {
+			$amount = intval($CONF['DefaultListSize']);
+			if ($amount < 1) 
+				$amount = 10;
+		}
 
 		$search = postVar('search');	// search through items
 
@@ -877,7 +883,7 @@ class ADMIN {
 	 * @param int $itemid
 	 */
 	function action_itemcommentlist($itemid = '') {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		if ($itemid == '')
 			$itemid = intRequestVar('itemid');
@@ -898,8 +904,11 @@ class ADMIN {
 		// amount of items to show
 		if (postVar('amount'))
 			$amount = intPostVar('amount');
-		else
-			$amount = 10;
+		else {
+			$amount = intval($CONF['DefaultListSize']);
+			if ($amount < 1) 
+				$amount = 10;
+		}
 
 		$search = postVar('search');
 
@@ -928,7 +937,7 @@ class ADMIN {
 	 * Browse own comments
 	 */
 	function action_browseowncomments() {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		// start index
 		if (postVar('start'))
@@ -939,8 +948,11 @@ class ADMIN {
 		// amount of items to show
 		if (postVar('amount'))
 			$amount = intPostVar('amount');
-		else
-			$amount = 10;
+		else {
+			$amount = intval($CONF['DefaultListSize']);
+			if ($amount < 1) 
+				$amount = 10;
+		}
 
 		$search = postVar('search');
 
@@ -974,7 +986,7 @@ class ADMIN {
 	 */
 	function action_blogcommentlist($blogid = '')
 	{
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		if ($blogid == '')
 			$blogid = intRequestVar('blogid');
@@ -992,8 +1004,11 @@ class ADMIN {
 		// amount of items to show
 		if (postVar('amount'))
 			$amount = intPostVar('amount');
-		else
-			$amount = 10;
+		else {
+			$amount = intval($CONF['DefaultListSize']);
+			if ($amount < 1) 
+				$amount = 10;
+		}
 
 		$search = postVar('search');		// search through comments
 
@@ -4795,6 +4810,17 @@ selector();
 
 					   </td>
 		</tr><tr>
+			<td><?php echo _SETTINGS_DEFAULTLISTSIZE?> <?php help('defaultlistsize');?></td>
+			<td>
+			<?php 
+				if (!array_key_exists('DefaultListSize',$CONF)) {
+					sql_query("INSERT INTO ".sql_table('config')." VALUES ('DefaultListSize', '10')");
+					$CONF['DefaultListSize'] = 10;
+				}
+			?>
+				<input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  htmlspecialchars((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
+			</td>
+		</tr><tr>
 			<th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
 		</tr><tr>
 			<td><?php echo _SETTINGS_MEDIADIR?></td>
@@ -4960,6 +4986,7 @@ selector();
 		$this->updateConfig('URLMode',			postVar('URLMode'));
 		$this->updateConfig('CookiePrefix',		postVar('CookiePrefix'));
 		$this->updateConfig('DebugVars',			postVar('DebugVars'));
+		$this->updateConfig('DefaultListSize',			postVar('DefaultListSize'));
 
 		// load new config and redirect (this way, the new language will be used is necessary)
 		// note that when changing cookie settings, this redirect might cause the user

@@ -46,7 +46,7 @@ if ($action == '') {
 	$action = 'add';
 }
 
-sendContentType('application/xhtml+xml', 'bookmarklet-' . $action);
+sendContentType('text/html', 'bookmarklet-' . $action);
 
 // check ticket
 $action = strtolower($action);
