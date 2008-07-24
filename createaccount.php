@@ -53,6 +53,8 @@
 		<input name="url" size="60" />
 		<br />
 		<?php
+		// add extra fields from Plugins, like NP_Profile
+		$manager->notify('RegistrationFormExtraFields', array('type' => 'createaccount.php', 'prelabel' => '', 'postlabel' => '<br />', 'prefield' => '', 'postfield' => '<br /><br />'));
 		// add a Captcha challenge or something else
 		global $manager;
 		$manager->notify('FormExtra', array('type' => 'membermailform-notloggedin'));
@@ -103,6 +105,8 @@
 		<input name="url" size="60" <?php if(isset($_POST['url'])){echo 'value="'.$_POST['url'].'"';}?>/>
 		<br />
 		<?php
+		// add extra fields from plugin, like NP_Profile
+		$manager->notify('RegistrationFormExtraFields', array('type' => 'createaccount.php', 'prelabel' => '', 'postlabel' => '<br />', 'prefield' => '', 'postfield' => '<br /><br />'));
 		// add a Captcha challenge or something else
 		global $manager;
 		$manager->notify('FormExtra', array('type' => 'membermailform-notloggedin'));
