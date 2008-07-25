@@ -239,8 +239,12 @@ So, that wasn't so hard after all. Read on to find out more.
 		<td>(v2.0b) Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (comments-related parts). By default, this method forwards the handling to the <code>doSkinVar</code>-method, using <code>template</code> as skintype. <a href="#templatevars">More information on implementing the <code>doTemplateCommentsVar</code> method</a></td>
 	</tr>
 	<tr>
-		<td><code>doItemVar(&amp;$item, &amp;param)</code></td>
+		<td><code>doItemVar(&amp;$item, &amp;$param)</code></td>
 		<td>(v3.30) Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in an <i>item</i>. <code>&amp;$item</code> provides the full item object of the item in which the ItemVar appears and <code>&amp;$param</code> the parameters of the ItemVar.</td>
+	</tr>
+	<tr>
+		<td><code>doIf($key, $value)</code></td>
+		<td>(v3.30) Evaluates a custom conditional statement for the <code>if/ifnot/elseif/elseifnot</code> skin variables. Must return either <code>true</code> or <code>false</code>. $key and $value are strings passed from the <code>if/ifnot/elseif/elseifnot</code> skin variable. Normally, the plugin should check whether <code>$key</code> has the value of <code>$value</code>, but other uses are possible. Plugins that make use of this method, should document its use for users of the plugin.</td>
 	</tr>
 	<tr>
 		<td><code>doAction($type)</code></td>
@@ -1490,6 +1494,22 @@ your stuff
 		<td><dl>
 			<dt class="ref">blogid</dt>
 			<dd>ID of the blog</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>RegistrationFormExtraFields</td>
+		<td>(v3.33) Called from createaccount.php after basic account fields, but before FormExtra event. This event can be used by plugins to add custom fields to the registration form. Plugins that subscribe to this event should also subscribe to PostRegister event to process the added fields. The parameters should be used to fit custom fields into existing format of registration form.</td>
+		<td><dl>
+			<dt class="ro">type</dt>
+			<dd>Type of registration form. Normally, <code>createaccount.php</code>.</dd>
+			<dt class="ro">prelabel</dt>
+			<dd>HTML code or string that should be inserted <strong>before</strong> the field label.</dd>
+			<dt class="ro">postlabel</dt>
+			<dd>HTML code or string that should be inserted <strong>after</strong> the field label.</dd>
+			<dt class="ro">prefield</dt>
+			<dd>HTML code or string that should be inserted <strong>before</strong> the input field.</dd>
+			<dt class="ro">postfield</dt>
+			<dd>HTML code or string that should be inserted <strong>after</strong> the input field.</dd>
 		</dl></td>
 	</tr>
 <!--
