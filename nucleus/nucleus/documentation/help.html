@@ -2086,7 +2086,31 @@ all
 </div>
 
 
+<div class="page">
+<a name="skinvar-charset"></a>
+<h1>Skinvar: charset</h1>
 
+<p>Inserts the character set encoding used by the current language file.</p>
+
+<h2>Arguments</h2>
+
+<p>
+None
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%charset%&gt;
+</pre>
+
+</div>
 
 
 
@@ -3141,12 +3165,15 @@ all
 <a name="skinvar-if"></a>
 <a name="skinvar-else"></a>
 <a name="skinvar-endif"></a>
-<h1>Skinvars: if/else/endif</h1>
+<a name="skinvar-ifnot"></a>
+<a name="skinvar-elseifnot"></a>
+<a name="skinvar-elseif"></a>
+<h1>Skinvars: if/ifnot/else/elseif/elseifnot/endif</h1>
 
 <p>Inserts a content block only when certain conditions are fullfilled</p>
 
 <h2>Arguments</h2>
-<p>Only the <code>if</code> skinvar has options</p>
+<p>Only the <code>if</code>, <code>ifnot</code>, <code>elseif</code>, and <code>elseifnot</code> skinvars have options</p>
 
 
 <ul>
@@ -3168,14 +3195,23 @@ all
 	<li><strong>blogsetting</strong>: checks if the value <em>name</em> blogsetting equals <em>value</em> (the name is the column name from the nucleus_blog sql table)</li>
 	<li><strong>loggedin</strong>: condition is fullfilled if visiting member is currently logged in</li>
 	<li><strong>onteam</strong>: condition is fullfilled if visiting member is currently logged in &amp; member of the blog team of the current blog (or the blog given in the <em>name</em> parameter)</li>
+	<li><strong>admin</strong>: condition is fullfilled if visiting member is currently logged in &amp; member with blog admin rights to the current blog (or the blog given in the <em>name</em> parameter)</li>
 	<li><strong>nextitem</strong>: true if there is a more recent item available for the current weblog (item skintype)</li>
-	<li><strong>nextitem</strong>: true if there is an older item available for the current weblog (item skintype)</li>
+	<li><strong>previtem</strong>: true if there is an older item available for the current weblog (item skintype)</li>
+	<li><strong>archivenextexists</strong>: true if there is a more recent archive available for the current weblog (archive skintype)</li>
+	<li><strong>archiveprevexists</strong>: true if there is an older archive available for the current weblog (archive skintype)</li>
 	<li><strong>skintype</strong>: checks if the current skin type is equal to <em>value</em> (index, search, item, archive, archivelist, ...)</li>
 	<li><strong>hasplugin</strong>: checks if the a plugin is installed, or if a plugin option has been set to a specific value
 		<ul>
 			<li><strong>hasplugin,<em>PluginName</em></strong>: checks if plugin is available</li>
 			<li><strong>hasplugin,<em>PluginName</em>,<em>OptionName</em></strong>: checks if a plugin option is not set to 'no'</li>
 			<li><strong>hasplugin,<em>PluginName</em>,<em>OptionName=value</em></strong>: checks if a plugin option is set to a specific value</li>
+		</ul>
+	</li>
+	<li><strong><em>PluginName</em></strong>: checks if the a plugin is installed, and executes doIf() method of plugin to check condition of name/value pair. This allows plugins to do conditional checks in a skin. See documentation for your plugin to determine what conditionals it can perform and the syntax required for its use.
+		<ul>
+			<li><strong><em>PluginName</em>,<em>AttributeName</em></strong>: uses <em>PluginName</em> plugin to check if <em>AttributeName</em> has empty value</li>
+			<li><strong><em>PluginName</em>,<em>AttributeName</em>,<em>AttributeValue</em></strong>: uses <em>PluginName</em> plugin to check if <em>AttributeName</em> is <em>AttributeValue</em></li>
 		</ul>
 	</li>
 </ul>
@@ -3202,12 +3238,24 @@ Welcome to the 'Off Topic' category.
 &lt;%endif%&gt;
 </pre>
 
+<pre>
+&lt;%ifnot(loggedin)%&gt;
+Access Denied!
+&lt;%elseif(admin)%&gt;
+Welcome O Mighty Admin of this Blog!
+&lt;%elseif(onteam)%&gt;
+Welcome O Worthy Blog Team Member!
+&lt;%else%&gt;
+Welcome O Humble Site Member!
+&lt;%endif%&gt;
+</pre>
+
 <h2>Notes</h2>
 
 <p>If you want something to be displayed only if a condition is not fullfilled, you can use a construct like this:</p>
 
 <pre>
-&lt;%if(skintype,error)%&gt;&lt;%else%&gt;
+&lt;%ifnot(skintype,error)%&gt;
 &lt;%blogsetting(name)%&gt;
 &lt;%endif%&gt;
 </pre>
