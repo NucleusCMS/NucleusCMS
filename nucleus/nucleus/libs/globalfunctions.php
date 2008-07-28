@@ -1820,7 +1820,7 @@ function revertArrayForSanitizing($array, &$dst)
  * - the URL will be stripped of illegal or dangerous characters
  */
 function redirect($url) {
-	$url = preg_replace('|[^a-z0-9-~+_.?#=&;,/:@%]|i', '', $url);
+	$url = preg_replace('|[^a-z0-9-~+_.?#=&;,/:@%*]|i', '', $url);
 	header('Location: ' . $url);
 	exit;
 }
