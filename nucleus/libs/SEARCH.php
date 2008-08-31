@@ -97,26 +97,53 @@ class SEARCH {
 		return $result;
 	}
 
-	function boolean_sql_where($match){
-		$result = $this->marked;
-		$result = preg_replace(
-			"/foo\[\(\'([^\)]{4,})\'\)\]bar/e",
-			" 'match ('.\$match.') against (\''.\$this->copyvalue(\"$1\").'\') > 0 ' ",
-			$result);
+    function boolean_sql_where($match){
 
-		$result = preg_replace(
-			"/foo\[\(\'([^\)]{1,3})\'\)\]bar/e",
-			" '('.\$this->boolean_sql_where_short(\"$1\",\"$match\").')' ",
-			$result);
-		return $result;
-	}
+        $result = $this->marked;
 
-	// there must be a simple way to simply copy a value with backslashes in it through
-	// the preg_replace, but I cannot currently find it (karma 2003-12-30)
-	function copyvalue($foo) {
-		return $foo;
-	}
+        $this->boolean_sql_where_cb1($match); // set the static $match
 
+        $result = preg_replace_callback(
+
+            "/foo\[\(\'([^\)]{4,})\'\)\]bar/",
+
+            array($this,'boolean_sql_where_cb1'),
+
+            $result);
+
+        $this->boolean_sql_where_cb2($match); // set the static $match
+
+        $result = preg_replace_callback(
+
+            "/foo\[\(\'([^\)]{1,3})\'\)\]bar/",
+
+            array($this,'boolean_sql_where_cb2'),
+
+            $result);
+
+        return $result;
+
+    }
+
+    function boolean_sql_where_cb1($matches){
+
+        static $match;
+
+        if (!is_array($matches)) $match=$matches;
+
+        else return ' match ('.$match.') against (\''.addslashes($matches[1]).'\') > 0 ';
+
+    }
+
+    function boolean_sql_where_cb2($matches){
+
+        static $match;
+
+        if (!is_array($matches)) $match=$matches;
+
+        else return ' ('.$this->boolean_sql_where_short(addslashes($mathes[1]),$match).') ';
+
+    }	
 
 	function boolean_mark_atoms($string){
 		$result=trim($string);
