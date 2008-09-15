@@ -592,6 +592,13 @@ class BLOG {
 			$data['month'] = date('m',$current->itime);
 			$data['year'] = date('Y',$current->itime);
 			$data['archivelink'] = createArchiveLink($this->getID(),$archivedate,$linkparams);
+			
+			$manager->notify(
+				'PreArchiveListItem',
+				array(
+					'listitem' => &$data
+				)
+			);
 
 			$temp = TEMPLATE::fill($template['ARCHIVELIST_LISTITEM'],$data);
 			echo strftime($temp,$current->itime);
@@ -656,6 +663,13 @@ class BLOG {
 							   );
 			$data['self'] = $CONF['Self'];
 
+			$manager->notify(
+				'PreCategoryListItem',
+				array(
+					'listitem' => &$data
+				)
+			);
+			
 			echo TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
 			//$temp = TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
 			//echo strftime($temp, $current->itime);
@@ -723,6 +737,13 @@ class BLOG {
 			else { // all other cases
 				$list['blogname'] = $data['bname'];
 			}
+			
+			$manager->notify(
+				'PreBlogListItem',
+				array(
+					'listitem' => &$list
+				)
+			);
 			
 			echo TEMPLATE::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
 			
