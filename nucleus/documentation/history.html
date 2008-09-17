@@ -43,6 +43,7 @@
 			<li>ADDED: add description of the doIf function to the plugin documentation (ftruscot)</li>
 			<li>FIXED: fix redirect function in globalfunctions so that it does not strip out the permitted "*" character. See <a href="http://forum.nucleuscms.org/viewtopic.php?p=86007#86007">here</a> (ftruscot)</li>
 			<li>ADDED: three new events in BLOG.php called PreArchiveListItem, PreCategoryListItem, and PreBlogListItem to allow plugin developers to modify or add template variables to the ArchiveList Item, Category List Item and Blog List Item template fields (ftruscot)</li>
+			<li>ADDED: new event in TEMPLATE.php called PreTemplateRead to allow plugin developers to change name of template being used. This is obscure and probably won't be publicized, but I need it for NP_MultiLanguage to allow mapping of templates depending on language being viewed, permitting translations of all parts of a template and localization of dates. (ftruscot)</li>
 		</ul>
 	</li>
 	<li>

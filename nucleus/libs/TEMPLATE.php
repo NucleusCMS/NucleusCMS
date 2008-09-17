@@ -118,6 +118,14 @@ class TEMPLATE {
 	 * @param $name name of the template file
 	 */
 	function read($name) {
+		global $manager;
+		$manager->notify(
+			'PreTemplateRead',
+			array(
+				'template' => &$name
+			)
+		);
+			
 		$query = 'SELECT tpartname, tcontent'
 			   . ' FROM '.sql_table('template_desc').', '.sql_table('template')
 			   . ' WHERE tdesc=tdnumber and tdname="' . addslashes($name) . '"';
