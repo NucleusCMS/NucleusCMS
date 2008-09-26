@@ -309,6 +309,13 @@ if (!headers_sent() ) {
 $language = getLanguageName();
 include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
 
+// check if valid charset
+if (!encoding_check(false,false,_CHARSET)) {
+	foreach(array($_REQUEST, $_SERVER) as $input) {
+		array_walk($input, 'encoding_check');
+	}
+}
+
 /*
 	Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
 
@@ -553,6 +560,13 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 		} else {
 			header('Content-Type: ' . $contenttype);
 		}
+
+		// check if valid charset
+		if (!encoding_check(false,false,$charset)) {
+			foreach(array($_REQUEST, $_SERVER) as $input) {
+				array_walk($input, 'encoding_check');
+			}
+		}
 	}
 }
 
@@ -560,9 +574,11 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
  * Errors before the database connection has been made
  */
 function startUpError($msg, $title) {
+	if (!defined('_CHARSET')) define('_CHARSET','iso-8859-1');
+	header('Content-Type: text/html; charset=' . _CHARSET);
 	?>
 	<html xmlns="http://www.w3.org/1999/xhtml">
-		<head><meta http-equiv="Content-Type" content="text/html; charset=EUC-JP" />
+		<head><meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET?>" />
 		<title><?php echo htmlspecialchars($title)?></title></head>
 		<body>
 			<h1><?php echo htmlspecialchars($title)?></h1>
@@ -1494,6 +1510,69 @@ function formatDate($format, $timestamp, $defaultFormat, &$blog) {
 		default :
 			return strftime($format ? $format : $defaultFormat, $timestamp);
 	}
+}
+
+function encoding_check($val, $key, $encoding=false, $exclude=false) {
+	/*
+	  When 3rd argument is set, return if checked already.
+	  When 4th argument is set, set the excluded key(s).
+	*/
+	static $search=false, $checked=array(), $excludes=array();
+	if ($exclude!==false) {
+		if (is_array($exclude)) {
+			foreach($exclude as $v) $excludes[$v]=true;
+		} else $excludes[$excludes]=true;
+		return;
+	}
+	if ($encoding!==false) {
+		switch($encoding=strtolower($encoding)){
+			case 'utf-8':
+				$search='/^([\x00-\x7F]+'.
+					'|[\xC2-\xDF][\x80-\xBF]'.
+					'|[\xE0-\xEF][\x80-\xBF][\x80-\xBF]'.
+					'|[\xF0-\xF7][\x80-\xBF][\x80-\xBF][\x80-\xBF]'.
+					'|[\xF8-\xFB][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF]'.
+					'|[\xFC-\xFD][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF])*/';
+					break;
+			case 'euc-jp':
+				$search='/^([\x00-\x7F]+'.
+					'|[\x8E][\xA0-\xDF]'.
+					'|[\x8F]?[\xA1-\xFE][\xA1-\xFE])*/';
+				break;
+			case 'gb2312':
+				$search='/^([\x00-\x7F]+'.
+					'|[\xA1-\xF7][\xA1-\xFE])*/';
+				break;
+			default:
+				$search=false;
+				if (preg_match('/^iso\-8859\-[0-9]{1,2}$/',$encoding)) break;
+				if (preg_match('/^windows\-125[0-8]$/',$encoding)) break;
+				startUpError('<p>Unknown or non-supported encoding.</p>', 'Encoding Error');
+				exit;
+		}
+		if (isset($checked[$encoding])) return true; // Already checked.
+		$checked[$encoding]=true;
+	}
+	if ($key===false) return false; // Not yet checked.
+	if ($search===false) return true; // non-multibyte encoding
+	if (isset($excludes[$key])) return true; // This key isn't checked.
+	if (is_array($val)) {
+		array_walk($val, 'encoding_check');
+	} else {
+		preg_match($search,$val,$m);
+		$val2 = (string)$m[0];
+		if (!($val2 === (string)$val)) {
+			startUpError('<p>Invalid input.</p>', 'Input Error');
+			exit;
+		}
+	}
+	preg_match($search,$key,$m);
+	$key2 = (string)$m[0];
+	if (!($key2 === (string)$key)) {
+		startUpError('<p>Invalid input.</p>', 'Input Error');
+		exit;
+	}
+	return true;
 }
 
 function checkVars($aVars) {
