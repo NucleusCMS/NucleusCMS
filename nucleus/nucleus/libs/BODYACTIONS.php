@@ -43,10 +43,11 @@ class BODYACTIONS extends BaseActions {
 	function parse_plugin($pluginName) {
 		global $manager;
 
+		// should be already tested from the parser (PARSER.php)
 		// only continue when the plugin is really installed
-		if (!$manager->pluginInstalled('NP_' . $pluginName)) {
+		/*if (!$manager->pluginInstalled('NP_' . $pluginName)) {
 			return;
-		}
+		}*/
 
 		$plugin =& $manager->getPlugin('NP_' . $pluginName);
 		if (!$plugin) return;
