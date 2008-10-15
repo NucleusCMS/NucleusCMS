@@ -263,7 +263,10 @@ class MANAGER {
 	}
 
 	function &getPlugin($name) {
-		$plugin =& $this->plugins[$name];
+		// retrieve the name of the plugin in the right capitalisation
+		$name = $this->getUpperCaseName ($name);
+		// get the plugin	
+		$plugin =& $this->plugins[$name]; 
 
 		if (!$plugin) {
 			// load class if needed
@@ -306,11 +309,22 @@ class MANAGER {
 		$this->_initCacheInfo('installedPlugins');
 		foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
 		{
-			if ($pfile == $name)
+			if (strtolower($pfile) == strtolower($name))
 				return $pid;
 		}
 		return -1;
 	}
+
+	function getUpperCaseName ($name) {
+		$this->_initCacheInfo('installedPlugins');
+		foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
+		{
+			if (strtolower($pfile) == strtolower($name))
+				return $pfile;
+		}
+		return -1;
+	}
+	
 	function clearCachedInfo($what) {
 		unset($this->cachedInfo[$what]);
 	}
