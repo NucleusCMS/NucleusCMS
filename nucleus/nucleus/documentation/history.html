@@ -17,6 +17,16 @@
 	<li>
 		<b>Nucleus v3.34 SVN (development version)</b>
 		<ul>
+			<li>CHANGED: make ItemVars case insentive to ease the usage (work with plugins that use the function doItemVar) (kaigreve)</li>
+			<li>ADDED: new event in TEMPLATE.php called PreTemplateRead to allow plugin developers to change name of template being used. This is obscure and probably won't be publicized, but I need it for NP_MultiLanguage to allow mapping of templates depending on language being viewed, permitting translations of all parts of a template and localization of dates. (ftruscot)</li>
+			<li>ADDED: three new events in BLOG.php called PreArchiveListItem, PreCategoryListItem, and PreBlogListItem to allow plugin developers to modify or add template variables to the ArchiveList Item, Category List Item and Blog List Item template fields (ftruscot)</li>
+			<li>FIXED: fix redirect function in globalfunctions so that it does not strip out the permitted "*" character. See <a href="http://forum.nucleuscms.org/viewtopic.php?p=86007#86007">here</a> (ftruscot)</li>
+			<li>ADDED: add description of the doIf function to the plugin documentation (ftruscot)</li>
+			<li>FIXED: fix description of if/else/endif skin variables to documentation, inlcuding ifnot, elseif, and elseifnot (ftruscot)</li>
+			<li>ADDED: add description of charset skin variable to documentation. (ftruscot)</li>
+			<li>ADDED: add global configuration, DefaultListSize, which sets and maintains a custom value for length of item/comment lists in the admin area (ftruscot)</li>
+			<li>FIXED: fix content type of bookmarklet.php file to text/html to conform with other pages (ftruscot)</li>
+			<li>ADDED: new event in createaccount.php called RegistrationFormExtraFields to allow fields from plugins onto registration form (ftruscot)</li>
 			<li>FIXED: CONF['Self'] fix (ehui)</li>
 			<li>ADDED: Add an link to the front end that allows to add an item in a bookmarklet popup window (two new skinvars addlink and addpopupcode needed) (kaigreve)</li>
 			<li>ADDED: add a cancel button to the bookmarklet add and edit forms (kaigreve)</li>
@@ -35,15 +45,6 @@
 			<li>FIX: Fix getNotifyFromMailAddress to use email field now that we've separated email/url fields (gregorlove)</li>
 			<li>CHANGED: extend skinvar Bloglist with parameters to specify the sort order (kaigreve)</li>
 			<li>ADDED: add comment URL and email to "edit comment" form and make them editable (gregorlove)</li>
-			<li>ADDED: new event in createaccount.php called RegistrationFormExtraFields to allow fields from plugins onto registration form (ftruscot)</li>
-			<li>FIXED: fix content type of bookmarklet.php file to text/html to conform with other pages (ftruscot)</li>
-			<li>ADDED: add global configuration, DefaultListSize, which sets and maintains a custom value for length of item/comment lists in the admin area (ftruscot)</li>
-			<li>ADDED: add description of charset skin variable to documentation. (ftruscot)</li>
-			<li>FIXED: fix description of if/else/endif skin variables to documentation, inlcuding ifnot, elseif, and elseifnot (ftruscot)</li>
-			<li>ADDED: add description of the doIf function to the plugin documentation (ftruscot)</li>
-			<li>FIXED: fix redirect function in globalfunctions so that it does not strip out the permitted "*" character. See <a href="http://forum.nucleuscms.org/viewtopic.php?p=86007#86007">here</a> (ftruscot)</li>
-			<li>ADDED: three new events in BLOG.php called PreArchiveListItem, PreCategoryListItem, and PreBlogListItem to allow plugin developers to modify or add template variables to the ArchiveList Item, Category List Item and Blog List Item template fields (ftruscot)</li>
-			<li>ADDED: new event in TEMPLATE.php called PreTemplateRead to allow plugin developers to change name of template being used. This is obscure and probably won't be publicized, but I need it for NP_MultiLanguage to allow mapping of templates depending on language being viewed, permitting translations of all parts of a template and localization of dates. (ftruscot)</li>
 		</ul>
 	</li>
 	<li>
