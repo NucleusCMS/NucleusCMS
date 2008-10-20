@@ -3871,36 +3871,51 @@ selector();
 ?>
 		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_CATEGORYLIST?> <?php help('templatecategorylists'); ?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 160);
-	$this->_templateEditRow($template, _TEMPLATE_CATITEM, 'CATLIST_LISTITEM', '', 170);
-	$this->_templateEditRow($template, _TEMPLATE_CATFOOTER, 'CATLIST_FOOTER', '', 180);
+<?php	$this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 190);
+	$this->_templateEditRow($template, _TEMPLATE_CATITEM, 'CATLIST_LISTITEM', '', 200);
+	$this->_templateEditRow($template, _TEMPLATE_CATFOOTER, 'CATLIST_FOOTER', '', 210);
 ?>
 		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_DATETIME?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_DHEADER, 'DATE_HEADER', 'dateheads', 190);
-	$this->_templateEditRow($template, _TEMPLATE_DFOOTER, 'DATE_FOOTER', 'dateheads', 200);
-	$this->_templateEditRow($template, _TEMPLATE_DFORMAT, 'FORMAT_DATE', 'datetime', 210);
-	$this->_templateEditRow($template, _TEMPLATE_TFORMAT, 'FORMAT_TIME', 'datetime', 220);
-	$this->_templateEditRow($template, _TEMPLATE_LOCALE, 'LOCALE', 'locale', 230);
+<?php	$this->_templateEditRow($template, _TEMPLATE_DHEADER, 'DATE_HEADER', 'dateheads', 220);
+	$this->_templateEditRow($template, _TEMPLATE_DFOOTER, 'DATE_FOOTER', 'dateheads', 230);
+	$this->_templateEditRow($template, _TEMPLATE_DFORMAT, 'FORMAT_DATE', 'datetime', 240);
+	$this->_templateEditRow($template, _TEMPLATE_TFORMAT, 'FORMAT_TIME', 'datetime', 250);
+	$this->_templateEditRow($template, _TEMPLATE_LOCALE, 'LOCALE', 'locale', 260);
 ?>
 		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_IMAGE?> <?php help('templatepopups'); ?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_PCODE, 'POPUP_CODE', '', 240);
-	$this->_templateEditRow($template, _TEMPLATE_ICODE, 'IMAGE_CODE', '', 250);
-	$this->_templateEditRow($template, _TEMPLATE_MCODE, 'MEDIA_CODE', '', 260);
+<?php	$this->_templateEditRow($template, _TEMPLATE_PCODE, 'POPUP_CODE', '', 270);
+	$this->_templateEditRow($template, _TEMPLATE_ICODE, 'IMAGE_CODE', '', 280);
+	$this->_templateEditRow($template, _TEMPLATE_MCODE, 'MEDIA_CODE', '', 290);
 ?>
 		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_SEARCH?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_SHIGHLIGHT, 'SEARCH_HIGHLIGHT', 'highlight',270);
-	$this->_templateEditRow($template, _TEMPLATE_SNOTFOUND, 'SEARCH_NOTHINGFOUND', 'nothingfound',280);
+<?php	$this->_templateEditRow($template, _TEMPLATE_SHIGHLIGHT, 'SEARCH_HIGHLIGHT', 'highlight',300);
+	$this->_templateEditRow($template, _TEMPLATE_SNOTFOUND, 'SEARCH_NOTHINGFOUND', 'nothingfound',310);
 ?>
+		</tr><tr>
+			<th colspan="2"><?php echo _TEMPLATE_PLUGIN_FIELDS?></th>
+<?php
+		$tab = 600;
+		$pluginfields = array();
+		$manager->notify('TemplateExtraFields',array('fields'=>&$pluginfields));
+
+		foreach ($pluginfields as $pfkey=>$pfvalue) {
+			echo "</tr><tr>\n";
+			echo '<th colspan="2">'.htmlentities($pfkey)."</th>\n";
+			foreach ($pfvalue as $pffield=>$pfdesc) {
+				$this->_templateEditRow($template, $pfdesc, $pffield, '',++$tab,0);
+			}
+		}
+?>			
 		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_UPDATE?></th>
 		</tr><tr>
 			<td><?php echo _TEMPLATE_UPDATE?></td>
 			<td>
-				<input type="submit" tabindex="290" value="<?php echo _TEMPLATE_UPDATE_BTN?>" onclick="return checkSubmit();" />
-				<input type="reset" tabindex="300" value="<?php echo _TEMPLATE_RESET_BTN?>" />
+				<input type="submit" tabindex="800" value="<?php echo _TEMPLATE_UPDATE_BTN?>" onclick="return checkSubmit();" />
+				<input type="reset" tabindex="810" value="<?php echo _TEMPLATE_RESET_BTN?>" />
 			</td>
 		</tr></table>
 
@@ -3926,7 +3941,7 @@ selector();
 	 * @todo document this
 	 */
 	function action_templateupdate() {
-		global $member;
+		global $member,$manager;
 
 		$templateid = intRequestVar('templateid');
 
@@ -3992,6 +4007,13 @@ selector();
 		$this->addToTemplate($templateid, 'MEDIA_CODE', postVar('MEDIA_CODE'));
 		$this->addToTemplate($templateid, 'IMAGE_CODE', postVar('IMAGE_CODE'));
 
+		$pluginfields = array();
+		$manager->notify('TemplateExtraFields',array('fields'=>&$pluginfields));
+		foreach ($pluginfields as $pfkey=>$pfvalue) {
+			foreach ($pfvalue as $pffield=>$pfdesc) {
+				$this->addToTemplate($templateid, $pffield, postVar($pffield));
+			}
+		}
 
 		// jump back to template edit
 		$this->action_templateedit(_TEMPLATE_UPDATED);
