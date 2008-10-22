@@ -6055,7 +6055,8 @@ selector();
 			}
 		}
 
-		$this->action_pluginlist();
+		redirect('?action=pluginlist');
+//		$this->action_pluginlist();
 	}
 
 	/**
@@ -6103,7 +6104,8 @@ selector();
 			$this->error($error);
 		}
 
-		$this->action_pluginlist();
+		redirect('?action=pluginlist');
+//		$this->action_pluginlist();
 	}
 
 	/**
@@ -6119,11 +6121,11 @@ selector();
 
 		$name = quickQuery('SELECT pfile as result FROM '.sql_table('plugin').' WHERE pid='.$pid);
 
-		// call the unInstall method of the plugin
+/*		// call the unInstall method of the plugin
 		if ($callUninstall) {
 			$plugin =& $manager->getPlugin($name);
 			if ($plugin) $plugin->unInstall();
-		}
+		}*/
 
 		// check dependency before delete
 		$res = sql_query('SELECT pfile FROM '.sql_table('plugin'));
@@ -6143,6 +6145,12 @@ selector();
 		}
 
 		$manager->notify('PreDeletePlugin', array('plugid' => $pid));
+
+		// call the unInstall method of the plugin
+		if ($callUninstall) {
+			$plugin =& $manager->getPlugin($name);
+			if ($plugin) $plugin->unInstall();
+		}
 
 		// delete all subscriptions
 		sql_query('DELETE FROM '.sql_table('plugin_event').' WHERE pid=' . $pid);
