@@ -357,7 +357,7 @@ class PAGEFACTORY extends BaseActions {
 						foreach ($btns as $button) {
 							switch($button) {
 								case "media":
-									$this->_jsbutton('media',"addMedia()",'');
+									$this->_jsbutton('media',"addMedia()",ADD_MEDIA_TT);
 									break;
 							}
 						}

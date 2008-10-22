@@ -49,7 +49,8 @@ h1 {
 
 .contentblock {
 	/*background: #ddd;*/
-	height: 400px;
+/*	height: 400px;*/
+	height: 450px;
 	overflow: auto; /* temporary removed, to make the select box work in Mozilla */
 	padding: 1px;
     margin: 0px;

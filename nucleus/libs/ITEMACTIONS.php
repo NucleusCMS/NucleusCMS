@@ -257,18 +257,27 @@ class ITEMACTIONS extends BaseActions {
 	 * @param string $format defines in which format the title is shown	 	 
 	 */
 	function parse_title($format = '') {
+		if (is_array($this->currentItem)) {
+			$itemtitle = $this->currentItem['title'];
+		} elseif (is_object($this->currentItem)) {
+			$itemtitle = $this->currentItem->title;
+		}
 		switch ($format) {
 			case 'xml':
-				echo stringToXML ($this->currentItem->title);
+//				echo stringToXML ($this->currentItem->title);
+				echo stringToXML ($itemtitle);
 				break;
 			case 'attribute':
-				echo stringToAttribute ($this->currentItem->title);
+//				echo stringToAttribute ($this->currentItem->title);
+				echo stringToAttribute ($itemtitle);
 				break;
 			case 'raw':
-				echo $this->currentItem->title;
+//				echo $this->currentItem->title;
+				echo $itemtitle;
 				break;
 			default:
-				$this->highlightAndParse($this->currentItem->title);
+//				$this->highlightAndParse($this->currentItem->title);
+				$this->highlightAndParse($itemtitle);
 				break;
 		}
 	}
@@ -498,7 +507,7 @@ class ITEMACTIONS extends BaseActions {
 	  * Parse templatevar editpopupcode
 	  */
 	function parse_editpopupcode() {
-		echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
+		echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=550,left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
 	}
 
 	// helper functions

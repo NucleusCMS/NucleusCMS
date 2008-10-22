@@ -17,6 +17,11 @@
 	<li>
 		<b>Nucleus v3.34 SVN (development version)</b>
 		<ul>
+			<li>FIXED: (<a href="http://dev.nucleuscms.org/tracker/index.php?id=142&amp;do=details">#142</a>): Plugin API: Incorrect operation order. (shizuki/Andrew Black)</li>
+			<li>ADDED: <a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=22675#22675">Add tool tip for "MEDIA" button</a> (shizuki/kyasya)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=82">#82(JP)</a>): fix &lt;%itemtitle%&gt; on COMMENT_HEADER COMMENT_BODY COMMENT_FOOTER (shizuki)</li>
+			<li>CHANGED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=83">#83(JP)</a>): Change bookmarklet height. Add 50pix. (kmorimatsu)</li>
+			<li>CHANGED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=84">#84(JP)</a>): To avoid showing ticket in the URL, redirect to pluginlist, instead. (kmorimatsu)</li>
 			<li>CHANGED: make ItemVars case insentive to ease the usage (work with plugins that use the function doItemVar) (kaigreve)</li>
 			<li>ADDED: new event in TEMPLATE.php called PreTemplateRead to allow plugin developers to change name of template being used. This is obscure and probably won't be publicized, but I need it for NP_MultiLanguage to allow mapping of templates depending on language being viewed, permitting translations of all parts of a template and localization of dates. (ftruscot)</li>
 			<li>ADDED: three new events in BLOG.php called PreArchiveListItem, PreCategoryListItem, and PreBlogListItem to allow plugin developers to modify or add template variables to the ArchiveList Item, Category List Item and Blog List Item template fields (ftruscot)</li>
