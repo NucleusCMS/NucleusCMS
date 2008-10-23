@@ -1,9 +1,22 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-us" xml:lang="en-us">
 <head>
 	<!-- $Id$ -->
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <link rel="index" href="./index.html" />
 	<title>Nucleus - History</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+    <style type="text/css">
+        strong {
+            font-weight: bold;
+        }
+        em {
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
 
@@ -15,8 +28,17 @@
 
 <ul>
 	<li>
-		<b>Nucleus v3.34 SVN (development version)</b>
+		<strong>Nucleus v3.34 SVN (development version)</strong>
 		<ul>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&task_id=94">#94(JP)</a>): A plugin option isn't generated. (kimitake/shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&task_id=79">#79(JP)</a>): Permission setting of upload isn't effective. (shizuki/yu)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&task_id=77">#77(JP)</a>): [XHTML] When the attribute of the option is hidden,&lt;tr&gt; isn't output. (shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&task_id=76">#76(JP)</a>): [XHTML] Validate admin-area. (shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&task_id=67">#67(JP)</a>): Change isn't reflected on ValidateForm event. (shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&task_id=107">#107(JP)</a>): When editing an item, time generation will be an error. (kotorisan/yu/shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&task_id=108">#108(JP)</a>): Pop-up, for if a character string is the sky, nothing is indicated. (sato-na/shizuki)</li>
+			<li>FIXED: Fix history. (shizuki)</li>
+			<li>FIXED: "history.html" is XHTML 1.0 Strict. (shizuki)</li>
 			<li>FIXED: (<a href="http://dev.nucleuscms.org/tracker/index.php?id=142&amp;do=details">#142</a>): Plugin API: Incorrect operation order. (shizuki/Andrew Black)</li>
 			<li>ADDED: <a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=22675#22675">Add tool tip for "MEDIA" button</a> (shizuki/kyasya)</li>
 			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=82">#82(JP)</a>): fix &lt;%itemtitle%&gt; on COMMENT_HEADER COMMENT_BODY COMMENT_FOOTER (shizuki)</li>
@@ -25,7 +47,7 @@
 			<li>CHANGED: make ItemVars case insentive to ease the usage (work with plugins that use the function doItemVar) (kaigreve)</li>
 			<li>ADDED: new event in TEMPLATE.php called PreTemplateRead to allow plugin developers to change name of template being used. This is obscure and probably won't be publicized, but I need it for NP_MultiLanguage to allow mapping of templates depending on language being viewed, permitting translations of all parts of a template and localization of dates. (ftruscot)</li>
 			<li>ADDED: three new events in BLOG.php called PreArchiveListItem, PreCategoryListItem, and PreBlogListItem to allow plugin developers to modify or add template variables to the ArchiveList Item, Category List Item and Blog List Item template fields (ftruscot)</li>
-			<li>FIXED: fix redirect function in globalfunctions so that it does not strip out the permitted "*" character. See <a href="http://forum.nucleuscms.org/viewtopic.php?p=86007#86007">here</a> (ftruscot)</li>
+			<li>FIXED: fix redirect function in globalfunctions so that it does not strip out the permitted "*" character. See <a href="http://forum.nucleuscms.org/viewtopic.php?p=86007#86007">forum(Trying to get a create an account link)</a> (ftruscot)</li>
 			<li>ADDED: add description of the doIf function to the plugin documentation (ftruscot)</li>
 			<li>FIXED: fix description of if/else/endif skin variables to documentation, inlcuding ifnot, elseif, and elseifnot (ftruscot)</li>
 			<li>ADDED: add description of charset skin variable to documentation. (ftruscot)</li>
@@ -39,7 +61,7 @@
 			<li>ADDED: Add the possibility to move a published item back to drafts (kaigreve)</li>
 			<li>ADDED: more and improved comments in classes NucleusPlugin, BACKUP, ITEM and ITEMACTIONS (kaigreve)</li>
 			<li>CHANGED: Use ISO date for backup filename and add hour, minute and second  (kaigreve)</li>
-			<li>CHANGED: Put backup functions in an own class Backup (kaigreve)
+			<li>CHANGED: Put backup functions in an own class Backup (kaigreve)</li>
 			<li>FIXED: add default values for the parse_bloglist function to avoid warnings (kaigreve)</li>
 			<li>FIXED: fix case sensitive function name createDraftFromRequest in class ACTION (ehui)</li>
 			<li>ADDED: add description of the doItemVar function to the plugin documentation (kaigreve)</li>
@@ -47,26 +69,26 @@
 			<li>ADDED: add option to install NP_Ping during installation (admun)</li>
 			<li>FIXED: remove bug in the plugin api: function clearOptionValueCache hasn't worked correct with the getOption function (kaigreve)</li>
 			<li>ADDED: add global configuration DebugVars which decides if unresolved Vars (SkinVars, TemplateVars, ItemVars) are shown on the blog (kaigreve)</li>
-			<li>FIX: Fix getNotifyFromMailAddress to use email field now that we've separated email/url fields (gregorlove)</li>
+			<li>FIXED: Fix getNotifyFromMailAddress to use email field now that we've separated email/url fields (gregorlove)</li>
 			<li>CHANGED: extend skinvar Bloglist with parameters to specify the sort order (kaigreve)</li>
 			<li>ADDED: add comment URL and email to "edit comment" form and make them editable (gregorlove)</li>
 			<li>ADDED: new event in ADMIN.php called TemplateExtraFields to allow plugin developers to add fields to templates. This should encourage plugin authors to make use of the core template storage to provide formatting for their output. This event just presents the extra fields on the template edit form and stores data entered there into the nucleus_template table. It is the responsibility of the plugin authors to use the template fields they add and to provide the variables used in those fields. Plugins should also document their variables and provide for a default, either in the code or through a plugin option. (ftruscot)</li> 
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.33 (August 20, 2008)</b>
+		<strong>Nucleus v3.33 (August 20, 2008)</strong>
 		<ul>
 			<li>FIXED: Security issue (Thanks to Bradley Bell)</li>
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.32 (January 26, 2008)</b>
+		<strong>Nucleus v3.32 (January 26, 2008)</strong>
 		<ul>
 			<li>FIXED: An XSS issue</li>
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.31 (October 22, 2007)</b>
+		<strong>Nucleus v3.31 (October 22, 2007)</strong>
 		<ul>
 			<li>ADDED: add <code>createaccount.html</code> with a redirect to <code>createaccount.php</code> for backward compatibility with the old location of the form</li>
 			<li>CHANGED: protect the 'create account form' against abuse: show the form only if needed and add FormExtra (e.g. Captcha) and ValidateForm (to validate input) events (ftruscot and kaigreve)</li>
@@ -78,18 +100,32 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.3 (August 7, 2007)</b>
+		<strong>Nucleus v3.3 (August 7, 2007)</strong>
 		<ul>
 			<li>ADDED: NP_Ping sends ping for future post via JustPosted event (admun)</li>
 			<li>ADDED: JustPosted event (admun)</li>
 			<li>ADDED: move weblogs.com ping function into plugin (admun)</li>
-			<li>ADDED: Serveral changes and fixes from Nucleus Japan (details in the log files of the <a href="http://sourceforge.net/svn/?group_id=66479">Nucleus repository</a> at sourceforge.net)</li>
+			<li>
+				ADDED: Serveral changes and fixes from Nucleus Japan (details in the log files of the <a href="http://sourceforge.net/svn/?group_id=66479">Nucleus repository</a> at sourceforge.net)
+				<ul>
+					<li>ADDED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=68">#68(JP)</a>: Encrypted cookie key. (Katsumi)</li>
+					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=60">#60(JP)</a>: Item link in notification email is wrong. (shizuki)</li>
+					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=62">#62(JP)</a>: email address is not referred in &lt;%usermail%&gt;. (shizuki)</li>
+					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=66">#66(JP)</a>: Even if calling PostPluginOptionsUpdate, getOption does not returns correct value. (Katsumi)</li>
+					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=49">#49(JP)</a>: PLUGIN::getAllItemOptions does not work correctly. (NKJG)</li>
+					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=57">#57(JP)</a>: SQL error happens when updating plugin option. (Katsumi)</li>
+					<li>CHANGED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=48">#48(JP)</a>: Super-admin always can login to admin page (Kimitake)</li>
+					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=56">#56(JP)</a>: When creating db backup, the key length drops (Katsumi)</li>
+					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=41">#41(JP)</a>): fixed dropped info during backing up (Katsumi)</li>
+					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=40">#40(JP)</a>): fixed PostAddCategory event (Kimitake)</li>
+				</ul>
+			</li>
 			<li>ADDED: Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc. to avoid XSS (from Nucleus Japan)</li>
-			<li>ADDED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&id=45">#45</a>  from the Japanese Tracker): include code from NP_0TicketForPlugin in the core (Changes from Nucleus Japan)
+			<li>ADDED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=45">#45</a>  from the Japanese Tracker): include code from NP_0TicketForPlugin in the core (Changes from Nucleus Japan)</li>
 			<li>ADDED: new events for Media upload: PreMediaUpload and PostMediaUpload (kaigreve)</li>
 			<li>ADDED: new skinvar bloglist (kaigreve)</li>
-			<li>ADDED: new method for URL rewriting with the global variable virtualpath, new .htaccess file can be found in the folder extra/fancyurl-2, more information <a href="http://forum.nucleuscms.org/viewtopic.php?t=12241">here</a> (kaigreve and Legolas)</li>
-			<li>FIXED: allow + in email address, see <a href="http://forum.nucleuscms.org/viewtopic.php?t=14207">here</a> (wgroleau)</li>
+			<li>ADDED: new method for URL rewriting with the global variable virtualpath, new .htaccess file can be found in the folder extra/fancyurl-2, more information <a href="http://forum.nucleuscms.org/viewtopic.php?t=12241">forum(Another approach to Fancy URLs)</a> (kaigreve and Legolas)</li>
+			<li>FIXED: allow + in email address, see <a href="http://forum.nucleuscms.org/viewtopic.php?t=14207">forum(Minor bug fix in globalfunctions.php)</a> (wgroleau)</li>
 			<li>FIXED: XHTML compliance in default skin (admun)</li>
 			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?id=80&amp;do=details">#80</a>): Atom 1.0 support (rakaz)</li>
 			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?id=129&amp;do=details">#129</a>): Plugin API: SpamCheck event called from core. (rakaz)</li>
@@ -118,19 +154,19 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.24 (November 11, 2006)</b>
+		<strong>Nucleus v3.24 (November 11, 2006)</strong>
 		<ul>
 			<li>FIXED: XSS issue (reported by <a href="http://www.jpcert.or.jp/">JPCERT/CC</a>).</li>
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.23 (May 23, 2006)</b>
+		<strong>Nucleus v3.23 (May 23, 2006)</strong>
 		<ul>
 			<li>FIXED: Remote code execution vulnerability (reported by rgod).</li>
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.22 (August 21, 2005)</b>
+		<strong>Nucleus v3.22 (August 21, 2005)</strong>
 		<ul>
 			<li>FIXED: Major security vulnerability in the phpxmlrpc library.</li>
 			<li>FIXED: New NP_SkinFiles version, fixing a minor security issue. (rakaz)</li>
@@ -142,7 +178,7 @@
 			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=49">#49</a>): 'name clashes' warning on skin import no longer displayed when no clashes detected (karma)</li>
 			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=67">#67</a>): Add resilency to upgrade scripts (Frankenstein)</li>
 			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=88">#88</a>): PHP5.1: "Fatal error: Only variables can be passed by reference" (karma)</li>
-			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=87">#87</a>): Translate &amp; -> &amp;amp; when links added via toolbar (karma)</li>
+			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=87">#87</a>): Translate &amp; -&gt; &amp;amp; when links added via toolbar (karma)</li>
 			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=42">#42</a>): <code>formatDate</code> didn't always use the correct timezone (karma)</li>
 			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=43">#43</a>): Only load user language file when logged in (karma).</li>
 			<li>FIXED (<a href="http://dev.nucleuscms.org/tracker/index.php?do=details&amp;id=76">#76</a>): Disabling site blocked admin menu access (karma).</li>
@@ -163,13 +199,13 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.21 (June 30, 2005)</b>
+		<strong>Nucleus v3.21 (June 30, 2005)</strong>
 		<ul>
 			<li>FIXED: <a href="http://secunia.com/advisories/15852/">XML-RPC for PHP Unspecified PHP Code Execution Vulnerability</a></li>
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.2 (March 7, 2005)</b>
+		<strong>Nucleus v3.2 (March 7, 2005)</strong>
 		<ul>
 			<li>ADDED: <a href="http://wiki.gednet.com/NPSkinFiles">NP_SkinFiles</a> plugin installed on full install</li>
 			<li>FIXED: Installing plugins through install.php failed (karma)</li>
@@ -205,7 +241,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.15 (November 14, 2004)</b>
+		<strong>Nucleus v3.15 (November 14, 2004)</strong>
 		<ul>
 			<li>FIXED: Some XSS issues, as reported by Alexander Antipov</li>
 			<li>FIXED: Validate data that is sent as HTTP headers (redirects etc) (karma)</li>
@@ -232,7 +268,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.1 (July 28, 2004)</b>
+		<strong>Nucleus v3.1 (July 28, 2004)</strong>
 		<ul>
 			<li>FIXED: Nucleus v3.01 was missing a fix in <code>backup.php</code>, which could cause fulltext key info not to be backed up correctly</li>
 			<li>ADDED: support for patch levels, so plugin API enhancements can be distributed to power users earlier (<a href="http://forum.nucleuscms.org/viewtopic.php?t=4142" title="More info...">suggested</a> by TeRanEX)</li>
@@ -254,7 +290,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.01 (July 13, 2004)</b>
+		<strong>Nucleus v3.01 (July 13, 2004)</strong>
 		<ul>
 			<li>FIXED: PHP5: Links to plugin admin area broken (radekradek)</li>
 			<li>FIXED: bug 966011, skins created with v2.0 could not be imported (karma)</li>
@@ -262,7 +298,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.0 (May 30, 2004)</b>
+		<strong>Nucleus v3.0 (May 30, 2004)</strong>
 		<ul>
 			<li>FIXED: When adding a weblog, select globally defined default skin by default (TeRanEX)</li>
 			<li>FIXED: CSS conflict in default skin (moraes)</li>
@@ -292,7 +328,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v3.0 RC (April 27, 2004)</b>
+		<strong>Nucleus v3.0 RC (April 27, 2004)</strong>
 		<ul>
 			<li>CHANGED: Labeled it v3.0, since users started believing "2.5 beta == 25 final"</li>
 			<li>FIXED: XML-RPC: <code>metaWeblog.editPost</code> assigned the default category again when no categories were passed along (karma).</li>
@@ -338,7 +374,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v2.5 beta (October 11, 2003)</b>
+		<strong>Nucleus v2.5 beta (October 11, 2003)</strong>
 		<ul>
 			<li>ADDED: <code>if(previtem)</code>, <code>if(nextitem)</code> and <code>if(skintype,<em>typename</em>)</code> skinvars.</li>
 			<li>FIXED: RSS conditional GET wasn't working correctly (Visa Kopu)</li>
@@ -387,7 +423,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v2.0 Final (April 3, 2003)</b>
+		<strong>Nucleus v2.0 Final (April 3, 2003)</strong>
 		<ul>
 			<li>FIXED: renamed the <code>xmlrpc_encode</code> and <code>xmlrpc_decode</code> methods in <code>xmlrpc.inc.php</code>, avoiding naming conflicts on some PHP configurations that are compiled with XMLRPC support</li>
 			<li>FIXED: restore did not work on some PHP configurations, and did not correctly recognize <code>application/x-gzip</code> encoding type</li>
@@ -417,7 +453,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v2.0 beta (January 18, 2003)</b>
+		<strong>Nucleus v2.0 beta (January 18, 2003)</strong>
 		<ul>
 			<li>FIXED: Highlighted text no longer has &lt;!--h--&gt; in it</li>
 			<li>ADDED; Plugin hook: PostAuthentication</li>
@@ -486,7 +522,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v1.55 (August 26, 2002)</b>
+		<strong>Nucleus v1.55 (August 26, 2002)</strong>
 		<ul>
 			<li>ADDED: &lt;%archivedaylist%&gt; and &lt;%otherarchivedaylist%&gt; skinvars (to show archives by day instead of by month)</li>
 			<li>FIXED: PHP error on createAccount through action.php</li>
@@ -517,11 +553,11 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v1.5 (August 13, 2002)</b>
+		<strong>Nucleus v1.5 (August 13, 2002)</strong>
 		<ul>
 			<li>ADDED: Introducing plugins (define your own skinvars and templatevars, add event listeners, ...)</li>
 			<li>CHANGED: simpler and more accessible default templates/skins</li>
-			<li>FIXED: GreyMatter convert now works when the <tt>asp_tags</tt> option in PHP is enabled</li>
+			<li>FIXED: GreyMatter convert now works when the <code>asp_tags</code> option in PHP is enabled</li>
 			<li>ADDED: title and authorName fields in Blogger API getRecentItems call</li>
 			<li>ADDED: HTML label tags for radio buttons and checkboxes (this way you can click anywhere on the text instead of only on the radio button/checkbox itself)</li>
 			<li>FIXED: deleting a comment you made in a blog that's not your own resulted in a 'disallowed action' error (thanks moraes)</li>
@@ -543,7 +579,7 @@
 			<li>ADDED: PHP and MySQL versions are listed during the installation proces, with warnings when those version numbers are lower than what Nucleus requires</li>
 			<li>CHANGED: item parsing method changed, so it's more easily extensible. plugin, parsedinclude, include and phpinclude are now also allowed in some templates. Inside items, there are also 3 allowed variables: 'image', 'media' and 'popup'</li>
 			<li>FIXED: image popups didn't work with register_globals disabled</li>
-			<li>CHANGED: renamed method: getBlogidFromName -> getBlogIDFromName (consistency)</li>
+			<li>CHANGED: renamed method: getBlogidFromName -&gt; getBlogIDFromName (consistency)</li>
 			<li>ADDED: method selectCategory($name)</li>
 			<li>FIXED: Nucleus now handles data correctly when magic_quotes_gpc is disabled (solves some problems with template editing)</li>
 			<li>CHANGED: categories in selection box are now sorted by name (tip from katatonik)</li>
@@ -562,7 +598,7 @@
 			<li>ADDED: left and right box buttons on JS toolbar</li>
 			<li>FIXED: truncated entry when login is requested after adding (data didn't get passed on correctly)</li>
 			<li>ADDED: &lt;%authorlink%&gt; to template vars for item templates (this one can take catid into account)</li>
-			<li>ADDED: $CONF['Self'] => $CONF['ItemURL'], $CONF['IndexURL'], ... to optionally allow people to use different files for items/archives/...</li>
+			<li>ADDED: $CONF['Self'] =&gt; $CONF['ItemURL'], $CONF['IndexURL'], ... to optionally allow people to use different files for items/archives/...</li>
 			<li>CHANGED: Now using mysql_fetch_assoc instead of mysql_fetch_array (efficiency)</li>
 			<li>CHANGED: The &lt;%searchresults%&gt; and &lt;%othersearchresults%&gt; skintags got an extra parameter to limit the number of results (defaults to 50)</li>
 			<li>FIXED: doError did not take into account chosen skin</li>
@@ -582,7 +618,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v1.1 (April 30, 2002)</b>
+		<strong>Nucleus v1.1 (April 30, 2002)</strong>
 		<ul>
 			<li>Started assuming that at least PHP 4.0.5 is available. (for older PHP versions, some small code-changes should do the trick)</li>
 			<li>Added bookmarklets for Mac/IE5 users and Mozilla. Also, made the title of the page also show up in the title field of the new item. Makes more sense. <small>(thanks to <a href="http://www.35mm.org">Ricardo Lamego</a>)</small></li>
@@ -673,7 +709,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v1.0 (March 6, 2002)</b>
+		<strong>Nucleus v1.0 (March 6, 2002)</strong>
 		<ul>
 			<li>Fixed: width &amp; height of &lt;%image()%&gt; construct</li>
 			<li>Changed: windows in popup windows don't have a white border anymore <small>(<a href="http://www.nucleuscms.org/forum/viewtopic.php?t=3">see forum</a>)</small>
@@ -711,7 +747,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v0.96 (December 13, 2001)</b>
+		<strong>Nucleus v0.96 (December 13, 2001)</strong>
 		<ul>
 			<li>Added: add-item-preview now also in admin area</li>
 			<li>Added: action log</li>
@@ -738,7 +774,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v0.95 (October 10, 2001)</b>
+		<strong>Nucleus v0.95 (October 10, 2001)</strong>
 		<ul>
 			<li>Added: per-blog setting to enable/disable line break conversion</li>
 			<li>Added: per-blog setting to send a ping to Userland (weblogs.com) when you update your blog. This way, you'll be able to end up in the weblogs.com update-list</li>
@@ -749,10 +785,10 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v0.94 (September 27, 2001)</b>
+		<strong>Nucleus v0.94 (September 27, 2001)</strong>
 		<ul>
 			<li>Changed: 'Add Item' in admin-area now redirects to blog url (if available)</li>
-			<li>Changed: <i>headlines.php</i> and <i>xml-rss.php</i> adapted to behave better in disabled-site situations</li>
+			<li>Changed: <em>headlines.php</em> and <em>xml-rss.php</em> adapted to behave better in disabled-site situations</li>
 			<li>Changed: &lt;%userlink%&gt; got smarter in recognizing e-mail addresses</li>
 			<li>Added: tabindices in forms to make traversal with the TAB-button more natural</li>
 			<li>Fixed: bookmarklet login did not pass data correctly</li>
@@ -766,7 +802,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v0.93 (September 19, 2001)</b>
+		<strong>Nucleus v0.93 (September 19, 2001)</strong>
 		<ul>
 			<li>Added: friendly error message on error with nucleusdir definition in config.php</li>
 			<li>Changed: call_user_func instead of eval</li>
@@ -781,7 +817,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v0.92 (September 18, 2001)</b>
+		<strong>Nucleus v0.92 (September 18, 2001)</strong>
 		<ul>
 			<li>GM conversion: {{linkmo and {{emailmo conversion now also works with PHP versions &lt; 4.0.4</li>
 			<li>GM conversion: Fixed occasional JavaScript errors with {{linkmo and {{emailmo</li>
@@ -798,13 +834,13 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v0.91 (September 15, 2001)</b>
+		<strong>Nucleus v0.91 (September 15, 2001)</strong>
 		<ul>
 			<li>Improved conversion for GreyMatter blogs. Special markup commands are now recognized. (thanks to <a href="http://www.elrado.nl/">Raoul</a> for pointing this out)</li>
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v0.90 [beta 2 release] (September 14, 2001)</b>
+		<strong>Nucleus v0.90 [beta 2 release] (September 14, 2001)</strong>
 		<ul>
 			<li>an install-script is now available, no more messing around in shells</li>
 			<li>created default skins/templates for a release version</li>
@@ -827,7 +863,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v0.80 [beta 1 release] (September 2, 2001)</b>
+		<strong>Nucleus v0.80 [beta 1 release] (September 2, 2001)</strong>
 		<ul>
 			<li>XML-RPC Interface implementing the blogger methods</li>
 			<li>fixes and code-reorganisation</li>
@@ -837,7 +873,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v0.70 [not released] (August 20, 2001)</b>
+		<strong>Nucleus v0.70 [not released] (August 20, 2001)</strong>
 		<ul>
 			<li>mySQL instead of XML</li>
 			<li>extensive admin area</li>
@@ -850,7 +886,7 @@
 		</ul>
 	</li>
 	<li>
-		<b>Nucleus v0.60 and earlier (since February 2001)</b>
+		<strong>Nucleus v0.60 and earlier (since February 2001)</strong>
 		<br />
 		no history (XML versions with limited functions)
 	</li>

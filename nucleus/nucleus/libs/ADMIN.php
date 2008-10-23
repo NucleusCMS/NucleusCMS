@@ -1157,7 +1157,7 @@ class ADMIN {
 			case 'addfuture':
 				$wasdraft = 1;
 				$publish = 1;
-				$timestamp = mktime(postVar('hour'), postVar('minutes'), 0, postVar('month'), postVar('day'), postVar('year'));
+				$timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year'));
 				break;
 			case 'addnow':
 				$wasdraft = 1;
@@ -1165,7 +1165,7 @@ class ADMIN {
 				$timestamp = 0;
 				break;
 			case 'changedate':
-				$timestamp = mktime(postVar('hour'), postVar('minutes'), 0, postVar('month'), postVar('day'), postVar('year'));
+				$timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year'));
 				$publish = 1;
 				$wasdraft = 0;
 				break;
@@ -6387,9 +6387,12 @@ selector();
 				echo '<tr><th colspan="2">Options for ', htmlspecialchars($aOption['pfile']),'</th></tr>';
 			}
 
-			echo '<tr>';
-			listplug_plugOptionRow($aOption);
-			echo '</tr>';
+			$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
+			if (@$meta['access'] != 'hidden') {
+				echo '<tr>';
+				listplug_plugOptionRow($aOption);
+				echo '</tr>';
+			}
 
 		}
 
@@ -6425,7 +6428,7 @@ selector();
 			if ($checkedval != $value1)
 				echo "tabindex='$tabindex' checked='checked'";
 			if ($isAdmin && $name=="canlogin")
-				echo " disabled='true'";
+				echo ' disabled="disabled"';
 			echo ' id="'.$id2.'" /><label for="'.$id2.'">' . $noval . '</label>';
 	}
 

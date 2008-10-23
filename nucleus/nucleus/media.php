@@ -68,10 +68,18 @@ switch($action) {
 	case 'chooseupload':
 	case _MEDIA_UPLOAD_TO:
 	case _MEDIA_UPLOAD_NEW:
-		media_choose();
+		if (!$member->isAdmin() and $CONF['AllowUpload'] != true) {
+			media_doError(_ERROR_DISALLOWED);
+		} else {
+			media_choose();
+		}
 		break;
 	case 'uploadfile':
-		media_upload();
+		if (!$member->isAdmin() and $CONF['AllowUpload'] != true) {
+			media_doError(_ERROR_DISALLOWED);
+		} else {
+			media_upload();
+		}
 		break;
 	case _MEDIA_FILTER_APPLY:
 	case 'selectmedia':
