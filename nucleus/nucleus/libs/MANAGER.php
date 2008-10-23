@@ -247,7 +247,7 @@ class MANAGER {
 
 				if (!file_exists($fileName))
 				{
-					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (File not found)');
+					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name));
 					return 0;
 				}
 
@@ -257,7 +257,7 @@ class MANAGER {
 				// check if class exists (avoid errors in eval'd code)
 				if (!class_exists($name))
 				{
-					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (Class not found in file, possible parse error)');
+					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
 					return 0;
 				}
 
@@ -272,7 +272,7 @@ class MANAGER {
 				if (($MYSQL_PREFIX != '') && !$this->plugins[$name]->supportsFeature('SqlTablePrefix'))
 				{
 					unset($this->plugins[$name]);
-					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (does not support SqlTablePrefix)');
+					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
 					return 0;
 				}
 

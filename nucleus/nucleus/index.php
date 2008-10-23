@@ -25,10 +25,10 @@
 	{
 		// check if files exist and generate an error if so
 		$aFiles = array(
-			'../install.sql' => 'install.sql should be deleted',
-			'../install.php' => 'install.php should be deleted',
-			'upgrades' => 'nucleus/upgrades directory should be deleted',
-			'convert' => 'nucleus/convert directory should be deleted'
+			'../install.sql' => _ERRORS_INSTALLSQL,
+			'../install.php' => _ERRORS_INSTALLPHP,
+			'upgrades' => _ERRORS_UPGRADESDIR,
+			'convert' => _ERRORS_CONVERTDIR
 		);
 		$aFound = array();
 		foreach($aFiles as $fileName => $fileDesc)
@@ -37,13 +37,13 @@
 				array_push($aFound, $fileDesc);
 		}
 		if (@is_writable('../config.php')) {
-			array_push($aFound, 'config.php should be non-writable (chmod to 444)');
+			array_push($aFound, _ERRORS_CONFIGPHP);
 		}
 		if (sizeof($aFound) > 0)
 		{
 			startUpError(
-				'<p>One or more of the Nucleus installation files are still present on the webserver, or are writable.</p><p>You should remove these files or change their permissions to ensure security. Here are the files that were found by Nucleus</p> <ul><li>'. implode($aFound, '</li><li>').'</li></ul><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnSecurityRisk\']</code> in <code>globalfunctions.php</code> to <code>0</code>, or do this at the end of <code>config.php</code>.</p>',
-				'Security Risk'
+				_ERRORS_STARTUPERROR1. implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2,
+				_ERRORS_STARTUPERROR3
 			);
 		}
 	}

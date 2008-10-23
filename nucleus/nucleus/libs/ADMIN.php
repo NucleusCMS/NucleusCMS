@@ -61,7 +61,57 @@ class ADMIN {
 		// check ticket. All actions need a ticket, unless they are considered to be safe (a safe action
 		// is an action that requires user interaction before something is actually done)
 		// all safe actions are in this array:
-		$aActionsNotToCheck = array('showlogin', 'login', 'overview', 'itemlist', 'blogcommentlist', 'bookmarklet', 'blogsettings', 'banlist', 'deleteblog', 'editmembersettings', 'browseownitems', 'browseowncomments', 'createitem', 'itemedit', 'itemmove', 'categoryedit', 'categorydelete', 'manage', 'actionlog', 'settingsedit', 'backupoverview', 'pluginlist', 'createnewlog', 'usermanagement', 'skinoverview', 'templateoverview', 'skinieoverview', 'itemcommentlist', 'commentedit', 'commentdelete', 'banlistnewfromitem', 'banlistdelete', 'itemdelete', 'manageteam', 'teamdelete', 'banlistnew', 'memberedit', 'memberdelete', 'pluginhelp', 'pluginoptions', 'plugindelete', 'skinedittype', 'skinremovetype', 'skindelete', 'skinedit', 'templateedit', 'templatedelete', 'activate', 'systemoverview');
+		$aActionsNotToCheck = array(
+			'showlogin',
+			'login',
+			'overview',
+			'itemlist',
+			'blogcommentlist',
+			'bookmarklet',
+			'blogsettings',
+			'banlist',
+			'deleteblog',
+			'editmembersettings',
+			'browseownitems',
+			'browseowncomments',
+			'createitem',
+			'itemedit',
+			'itemmove',
+			'categoryedit',
+			'categorydelete',
+			'manage',
+			'actionlog',
+			'settingsedit',
+			'backupoverview',
+			'pluginlist',
+			'createnewlog',
+			'usermanagement',
+			'skinoverview',
+			'templateoverview',
+			'skinieoverview',
+			'itemcommentlist',
+			'commentedit',
+			'commentdelete',
+			'banlistnewfromitem',
+			'banlistdelete',
+			'itemdelete',
+			'manageteam',
+			'teamdelete',
+			'banlistnew',
+			'memberedit',
+			'memberdelete',
+			'pluginhelp',
+			'pluginoptions',
+			'plugindelete',
+			'skinedittype',
+			'skinremovetype',
+			'skindelete',
+			'skinedit',
+			'templateedit',
+			'templatedelete',
+			'activate',
+			'systemoverview'
+		);
 /*
 		// the rest of the actions needs to be checked
 		$aActionsToCheck = array('additem', 'itemupdate', 'itemmoveto', 'categoryupdate', 'categorydeleteconfirm', 'itemdeleteconfirm', 'commentdeleteconfirm', 'teamdeleteconfirm', 'memberdeleteconfirm', 'templatedeleteconfirm', 'skindeleteconfirm', 'banlistdeleteconfirm', 'plugindeleteconfirm', 'batchitem', 'batchcomment', 'batchmember', 'batchcategory', 'batchteam', 'regfile', 'commentupdate', 'banlistadd', 'changemembersettings', 'clearactionlog', 'settingsupdate', 'blogsettingsupdate', 'categorynew', 'teamchangeadmin', 'teamaddmember', 'memberadd', 'addnewlog', 'addnewlog2', 'backupcreate', 'backuprestore', 'pluginup', 'plugindown', 'pluginupdate', 'pluginadd', 'pluginoptionsupdate', 'skinupdate', 'skinclone', 'skineditgeneral', 'templateclone', 'templatenew', 'templateupdate', 'skinieimport', 'skinieexport', 'skiniedoimport', 'skinnew', 'deleteblogconfirm', 'sendping', 'rawping', 'activatesetpwd');
@@ -167,7 +217,7 @@ class ADMIN {
 		if (($showAll != 'yes') && ($member->isAdmin())) {
 			$total = quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('blog'));
 			if ($total > $amount)
-				echo '<p><a href="index.php?action=overview&amp;showall=yes">Show all blogs</a></p>';
+				echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
 		}
 
 		if ($amount == 0)
@@ -1456,17 +1506,12 @@ class ADMIN {
 		$rawPingUrl = $manager->addTicketToUrl('index.php?action=rawping&blogid=' . intval($blogid));
 
 		$this->pagehead('<meta http-equiv="refresh" content="1; url='.htmlspecialchars($rawPingUrl).'" />');
+		echo _UPDATEDPING_MESSAGE;
 		?>
-		<h2>Site Updated, Now pinging various weblog listing services...</h2>
-
-		<p>
-			This can take a while...
+		<a href="index.php?action=rawping&amp;blogid=<?php echo $blogid?>"><?php echo _UPDATEDPING_GOPINGPAGE ?></a>
 		</p>
-
-		<p>
-			If you aren't automatically passed through, <a href="index.php?action=rawping&amp;blogid=<?php echo $blogid?>">try again</a>
-		</p>
-		<?php		$this->pagefoot();
+		<?php
+		$this->pagefoot();
 	}
 
 	/**
@@ -1483,9 +1528,9 @@ class ADMIN {
 
 		?>
 
-		<h2>Pinging services, please wait...</h2>
+		<h2><?php echo _UPDATEDPING_PINGING ?></h2>
 		<div class='note'>
-                <?
+                <?php
 
 		// send sendPing event
 		$manager->notify('SendPing', array('blogid' => $blogid));
@@ -1494,8 +1539,8 @@ class ADMIN {
                 </div>
 
 		<ul>
-			<li><a href="index.php?action=itemlist&amp;blogid=<?php echo $blog->getID()?>">View list of recent items for <?php echo htmlspecialchars($blog->getName())?></a></li>
-			<li><a href="<?php echo $blog->getURL()?>">Visit your own site</a></li>
+			<li><a href="index.php?action=itemlist&amp;blogid=<?php echo $blog->getID()?>"><?php echo _UPDATEDPING_VIEWITEM . htmlspecialchars($blog->getName())?></a></li>
+			<li><a href="<?php echo $blog->getURL()?>"><?php echo _UPDATEDPING_VISITOWNSITE ?></a></li>
 		</ul>
 
 		<?php		$this->pagefoot();
@@ -3141,7 +3186,7 @@ class ADMIN {
 			</p>
 
 			<p>
-			Please note that media files will <b>NOT</b> be deleted. (At least not in this Nucleus version)
+			<?php echo _WARNINGTXT_NOTDELMEDIAFILES ?>
 			</p>
 
 			<form method="post" action="index.php"><div>
@@ -3226,18 +3271,18 @@ class ADMIN {
 		?>
 		<h2><?php echo _EBLOG_CREATE_TITLE?></h2>
 
-		<h3>Some information</h3>
+		<h3><?php echo _ADMIN_NOTABILIA ?></h3>
 
-		<p>Before you start, here's some <strong>important information</strong></p>
+		<p><?php echo _ADMIN_PLEASE_READ ?></p>
 
-		<p>After you've created a new weblog, you'll need to perform some actions to make your blog accessible. There are two possibilities:</p>
+		<p><?php echo _ADMIN_HOW_TO_ACCESS ?></p>
 
 		<ol>
-			<li><strong>Simple:</strong> Create a copy of <code>index.php</code> and modify it to display your new weblog. Further instructions on how to do this will be provided after you've submitted this first form.</li>
-			<li><strong>Advanced:</strong> Insert the blog content into your current skins using skinvars like <code>otherblog</code>. This way, you can place multiple blogs on the same page.</li>
+			<li><?php echo _ADMIN_SIMPLE_WAY ?></li>
+			<li><?php echo _ADMIN_ADVANCED_WAY ?></li>
 		</ol>
 
-		<h3>Create Weblog</h3>
+		<h3><?php echo _ADMIN_HOW_TO_CREATE ?></h3>
 
 		<p>
 		<?php echo _EBLOG_CREATE_TEXT?>
@@ -3342,7 +3387,7 @@ class ADMIN {
 		$blog	=& $manager->getBlog($blogid);
 
 		// create new category
-		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, 'General','Items that do not fit in other categories')");
+		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
 		$catid = mysql_insert_id();
 
 		// set as default category
@@ -3355,7 +3400,7 @@ class ADMIN {
 		sql_query($query);
 
 
-		$blog->additem($blog->getDefaultCategory(),'First Item','This is the first item in your weblog. Feel free to delete it.','',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
+		$blog->additem($blog->getDefaultCategory(),_EBLOG_FIRSTITEM_TITLE,_EBLOG_FIRSTITEM_BODY,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
 
 		$manager->notify(
 			'PostAddBlog',
@@ -3368,26 +3413,26 @@ class ADMIN {
 			'PostAddCategory',
 			array(
 				'blog' => &$blog,
-				'name' => 'General',
-				'description' => 'Items that do not fit in other categories',
+				'name' => _EBLOGDEFAULTCATEGORY_NAME,
+				'description' => _EBLOGDEFAULTCATEGORY_DESC,
 				'catid' => $catid
 			)
 		);
 
 		$this->pagehead();
 		?>
-		<h2>New weblog created</h2>
+		<h2><?php echo _BLOGCREATED_TITLE ?></h2>
 
-		<p>Your new weblog (<?php echo htmlspecialchars($bname)?>) has been created. To continue, choose the way you'll want to make it viewable:</p>
+		<p><?php echo sprintf(_BLOGCREATED_ADDEDTXT, htmlspecialchars($bname)) ?></p>
 
 		<ol>
-			<li><a href="#index_php">Easiest: A copy of <code><?php echo htmlspecialchars($bshortname)?>.php</code></a></li>
-			<li><a href="#skins">Advanced: Call the weblog from existing skins</a></li>
+			<li><a href="#index_php"><?php sprintf(_BLOGCREATED_SIMPLEWAY, htmlspecialchars($bshortname)) ?></code></a></li>
+			<li><a href="#skins"><?php _BLOGCREATED_ADVANCEDWAY ?></a></li>
 		</ol>
 
-		<h3><a id="index_php">Method 1: Create an extra <code><?php echo htmlspecialchars($bshortname)?>.php</code> file</a></h3>
+		<h3><a id="index_php"><?php sprintf(_BLOGCREATED_SIMPLEDESC1, htmlspecialchars($bshortname)) ?></a></h3>
 
-		<p>Create a file called <code><?php echo htmlspecialchars($bshortname)?>.php</code>, and copy-paste the following code into it:</p>
+		<p><?php sprintf(_BLOGCREATED_SIMPLEDESC2, htmlspecialchars($bshortname)) ?></p>
 <pre><code>&lt;?php
 
 $CONF['Self'] = '<b><?php echo htmlspecialchars($bshortname)?>.php</b>';
@@ -3399,9 +3444,9 @@ selector();
 
 ?&gt;</code></pre>
 
-		<p>Upload the file next to your existing <code>index.php</code> file, and you should be all set.</p>
+		<p><?php echo _BLOGCREATED_SIMPLEDESC3 ?></p>
 
-		<p>To finish the weblog creation process, please fill out the final URL for your weblog (the proposed value is a <em>guess</em>, don't take it for granted):</p>
+		<p><?php echo _BLOGCREATED_SIMPLEDESC4 ?></p>
 
 		<form action="index.php" method="post"><div>
 			<input type="hidden" name="action" value="addnewlog2" />
@@ -3416,9 +3461,9 @@ selector();
 			</tr></table>
 		</div></form>
 
-		<h3><a id="skins">Method 2: Call the weblog from existing skins</a></h3>
+		<h3><a id="skins"><?php echo _BLOGCREATED_ADVANCEDWAY2 ?></a></h3>
 
-		<p>To finish the weblog creation process, simply please fill out the final URL for your weblog: (might be the same as another already existing weblog)</p>
+		<p><?php echo _BLOGCREATED_ADVANCEDWAY3 ?></p>
 
 		<form action="index.php" method="post"><div>
 			<input type="hidden" name="action" value="addnewlog2" />
@@ -4034,7 +4079,7 @@ selector();
 
 		$query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
 			   . "VALUES ($id, '$partname', '$content')";
-		sql_query($query) or die("Query error: " . mysql_error());
+		sql_query($query) or exit(_ADMIN_SQLDIE_QUERYERROR . mysql_error());
 		return mysql_insert_id();
 	}
 
@@ -4421,25 +4466,14 @@ selector();
 				echo helplink('skinvar-' . $current) . "$current</a>";
 				if (count($actions) != 0) echo ", ";
 			}
-		?>
-		<br /><br />
-		Short blog names:
-		<?php			$query = 'SELECT bshortname, bname FROM '.sql_table('blog');
-			showlist($query,'table',array('content'=>'shortblognames'));
-		?>
-
-		<br />
-		Template names:
-		<?php			$query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
-			showlist($query,'table',array('content'=>'shortnames'));
-		?>
-
-
-		</div>
-		</form>
-
-
-		<?php		$this->pagefoot();
+		echo '<br /><br />' . _SKIN_ALLOWEDBLOGS;
+		$query = 'SELECT bshortname, bname FROM '.sql_table('blog');
+		showlist($query,'table',array('content'=>'shortblognames'));
+		echo '<br />' . _SKIN_ALLOWEDTEMPLATESS;
+		$query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
+		showlist($query,'table',array('content'=>'shortnames'));
+		echo '</div></form>';
+		$this->pagefoot();
 	}
 
 	/**
@@ -4774,7 +4808,7 @@ selector();
 			</td>
 			<td><?php $this->input_yesno('DisableSite',$CONF['DisableSite'],10060); ?>
 					<br />
-				URL: <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  htmlspecialchars($CONF['DisableSiteURL'])?>" />
+				<?php echo _SETTINGS_DISABLESITEURL ?> <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  htmlspecialchars($CONF['DisableSiteURL'])?>" />
 			</td>
 		</tr><tr>
 			<td><?php echo _SETTINGS_DIRS?></td>
@@ -5024,84 +5058,133 @@ selector();
 	 */	
 	function action_systemoverview() {
 		global $member, $nucleus, $CONF;
-		
+
 		$this->pagehead();
-		
-		echo '<h2>System Overview</h2>';
-		
+
+		echo '<h2>' . _ADMIN_SYSTEMOVERVIEW_HEADING . "</h2>\n";
+
 		if ($member->isLoggedIn() && $member->isAdmin()) {
-		
-		// Information about the used PHP and MySQL installation
-		echo '<h3>PHP and MySQL</h3>';
 
-		// Version of PHP MySQL		
-		echo '<table>';
-		echo '<tr><th colspan="2">Versions</th></tr>';
-		echo '<tr><td width="50%">PHP version</td><td>'.phpversion().'</td></tr>';
-		echo '<tr><td>MySQL version</td><td>'.mysql_get_server_info().' ('.mysql_get_client_info().')'.'</td></tr>';
-		echo '</table>';
+			// Information about the used PHP and MySQL installation
+			echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL . "</h3>\n";
 
-		// Important PHP settings
-		echo '<table>';
-		echo '<tr><th colspan="2">Settings</th></tr>';
-		echo '<tr><td width="50%">magic_quotes_gpc</td><td>'.get_magic_quotes_gpc().'</td></tr>';
-		echo '<tr><td>magic_quotes_runtime</td><td>'.get_magic_quotes_runtime().'</td></tr>';
-		$rg = ini_get('register_globals')?'enabled':'disabled';
-		echo '<tr><td>register_globals</td><td>'.$rg.'</td></tr>';
-		echo '</table>';
-		
-		// Information about GD library
-		$gdinfo = gd_info();
-		echo '<table>';
-		echo '<tr><th colspan="2">GD library</th></tr>';
-		foreach ($gdinfo as $key=>$value) {
-			if ($value==1) {
-				$value='enabled';
+			// Version of PHP MySQL
+			echo "<table>\n";
+			echo "\t<tr>\n";
+			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_VERSIONS . "</th>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_PHPVERSION . "</td>\n";
+			echo "\t\t" . '<td>' . phpversion() . "</td>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td>' . _ADMIN_SYSTEMOVERVIEW_MYSQLVERSION . "</td>\n";
+			echo "\t\t" . '<td>' . mysql_get_server_info() . ' (' . mysql_get_client_info() . ')' . "</td>\n";
+			echo "\t</tr>";
+			echo "</table>\n";
+
+			// Important PHP settings
+			echo "<table>\n";
+			echo "\t<tr>\n";
+			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "</th>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">magic_quotes_gpc' . "</td>\n";
+			$mqg = get_magic_quotes_gpc() ? 'On' : 'Off';
+			echo "\t\t" . '<td>' . $mqg . "</td>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td>magic_quotes_runtime' . "</td>\n";
+			$mqr = get_magic_quotes_runtime() ? 'On' : 'Off';
+			echo "\t\t" . '<td>' . $mqr . "</td>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td>magic_quotes_runtime' . "</td>\n";
+			$rg = ini_get('register_globals') ? 'On' : 'Off';
+			echo "\t\t" . '<td>' . $rg . "</td>\n";
+			echo "\t</tr>";
+			echo "</table>\n";
+
+			// Information about GD library
+			$gdinfo = gd_info();
+			echo "<table>\n";
+			echo "\t<tr>";
+			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_GDLIBRALY . "</th>\n";
+			echo "\t</tr>\n";
+			foreach ($gdinfo as $key=>$value) {
+				if (is_bool($value)) {
+					$value = $value ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE;
+				} else {
+					$value = htmlspecialchars($value, ENT_QUOTES);
+				}
+				echo "\t<tr>";
+				echo "\t\t" . '<td width="50%">' . $key . "</td>\n";
+				echo "\t\t" . '<td>' . $value . "</td>\n";
+				echo "\t</tr>\n";
 			}
-			else {
-				$value='-';
+			echo "</table>\n";
+
+			// Check if special modules are loaded
+			ob_start();
+			phpinfo(INFO_MODULES);
+			$im = ob_get_contents();
+			ob_clean();
+			echo "<table>\n";
+			echo "\t<tr>";
+			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_MODULES . "</th>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">mod_rewrite' . "</td>\n";
+			$modrewrite = (strstr($im, 'mod_rewrite') != '') ? 
+						_ADMIN_SYSTEMOVERVIEW_ENABLE :
+						_ADMIN_SYSTEMOVERVIEW_DISABLE;
+			echo "\t\t" . '<td>' . $modrewrite . "</td>\n";
+			echo "\t</tr>\n";
+			echo "</table>\n";
+
+			// Information about the used Nucleus CMS 
+			echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM . "</h3>\n";
+			global $nucleus;
+			$nv = getNucleusVersion() / 100 . '(' . $nucleus['version'] . ')';
+			$np = getNucleusPatchLevel();
+			echo "<table>\n";
+			echo "\t<tr>";
+			echo "\t\t" . '<th colspan="2">Nucleus CMS' . "</th>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION . "</td>\n";
+			echo "\t\t" . '<td>' . $nv . "</td>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL . "</td>\n";
+			echo "\t\t" . '<td>' . $np . "</td>\n";
+			echo "\t</tr>\n";
+			echo "</table>\n";
+
+			// Important settings of the installation
+			echo "<table>\n";
+			echo "\t<tr>";
+			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS . "</th>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">' . '$CONF[' . "'Self']</td>\n";
+			echo "\t\t" . '<td>' . $CONF['Self'] . "</td>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">' . '$CONF[' . "'alertOnHeadersSent']</td>\n";
+			$ohs = $CONF['alertOnHeadersSent'] ?
+						_ADMIN_SYSTEMOVERVIEW_ENABLE :
+						_ADMIN_SYSTEMOVERVIEW_DISABLE;
+			echo "\t\t" . '<td>' . $ohs . "</td>\n";
+			echo "\t</tr>\n";
+			echo "</table>\n";
+
+			// Link to the online version test at the Nucleus CMS website
+			echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK . "</h3>\n";
+			if ($nucleus['codename'] != '') {
+				$codenamestring = ' &quot;' . $nucleus['codename'] . '&quot;';
+			} else {
+				$codenamestring = '';
 			}
-			echo '<tr><td width="50%">'.$key.'</td><td>'.$value.'</td></tr>';  	
-		}
-		echo '</table>';
-
-		// Check if special modules are loaded
-		ob_start();
-		phpinfo(INFO_MODULES);
-		$im =  ob_get_contents();
-		ob_clean();
-		echo '<table>';
-		echo '<tr><th colspan="2">Modules</th></tr>';
-		echo '<tr><td width="50%">mod_rewrite</td><td>';
-		echo (strstr($im, 'mod_rewrite')!='')?'loaded':'not loaded';
-		echo '</td></tr>';
-		echo '</table>';
-
-		// Information about the used Nucleus CMS 
-		echo '<h3>Your Nucleus CMS System</h3>';
-		$nv= getNucleusVersion()/100;
-		$np= getNucleusPatchLevel();		
-		echo '<table>';
-		echo '<tr><th colspan="2">Nucleus CMS</th></tr>';
-		echo '<tr><td width="50%">Nucleus CMS version</td><td>'.$nv.'</td></tr>';
-		echo '<tr><td width="50%">Nucleus CMS patch level</td><td>'.$np.'</td></tr>';	
-		echo '</table>';
-		
-		// Important settings of the installation
-		echo '<table>';
-		echo '<tr><th colspan="2">Important settings</th></tr>';
-		echo '<tr><td width="50%">CONF[\'Self\']</td><td>'.$CONF['Self'].'</td></tr>';
-		echo '<tr><td width="50%">CONF[\'alertOnHeadersSent\']</td><td>'.$CONF['alertOnHeadersSent'].'</td></tr>';	
-		echo '</table>';
-		
-		// Link to the online version test at the Nucleus CMS website
-		echo '<h3>Check for a new version</h3>';
-		$codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
-		echo 'Check on nucleuscms.org if a new version is available: <a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nv, $codenamestring, '</a>';
+			echo _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT;
+			$checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
+			echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">';
+			echo 'Nucleus CMS ' . $nv . $codenamestring;
+			echo '</a>';
 		//echo '<br />';
 		}
 		else {
-			echo 'You haven\'t enough rights to see the system informations.';	
+			echo _ADMIN_SYSTEMOVERVIEW_NOT_ADMIN;
 		}
 		
 		$this->pagefoot();
@@ -5232,9 +5315,9 @@ selector();
 			<?php		}
 		?>
 			<div class="foot">
-				<a href="http://nucleuscms.org/">Nucleus CMS</a> &copy; 2002-<?php echo date('Y'); ?> The Nucleus Group
+				<a href="<?php echo _ADMINPAGEFOOT_OFFICIALURL ?>">Nucleus CMS</a> &copy; 2002-<?php echo date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT; ?>
 				-
-				<a href="http://nucleuscms.org/donate.php">Donate!</a>
+				<a href="<?php echo _ADMINPAGEFOOT_DONATEURL ?>"><?php echo _ADMINPAGEFOOT_DONATE ?></a>
 			</div>
 
 			</div><!-- content -->
@@ -5296,6 +5379,7 @@ selector();
 						echo '<li><a href="index.php?action=createnewlog">',_QMENU_MANAGE_NEWBLOG,'</a></li>';
 						echo '<li><a href="index.php?action=backupoverview">',_QMENU_MANAGE_BACKUPS,'</a></li>';
 						echo '<li><a href="index.php?action=pluginlist">',_QMENU_MANAGE_PLUGINS,'</a></li>';
+						echo '<li><a href="index.php?action=systemoverview">',_QMENU_MANAGE_SYSTEM,'</a></li>';
 						echo '</ul>';
 
 						echo '<h2>',_QMENU_LAYOUT,'</h2>';
@@ -5356,13 +5440,15 @@ selector();
 		// header-code stolen from phpMyAdmin
 		// REGEDIT and bookmarklet code stolen from GreyMatter
 
+		$sjisBlogName = sprintf(_WINREGFILE_TEXT, getBlogNameFromID($blogid));
+
 		header('Content-Type: application/octetstream');
 		header('Content-Disposition: filename="nucleus.reg"');
 		header('Pragma: no-cache');
 		header('Expires: 0');
 
 		echo "REGEDIT4\n";
-		echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\Post To &Nucleus (".getBlogNameFromID($blogid).")]\n";
+		echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\" . $sjisBlogName . "]\n";
 		echo '@="' . $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=".intval($blogid)."\"\n";
 		echo '"contexts"=hex:31';
 	}
@@ -5386,48 +5472,48 @@ selector();
 
 		?>
 
-		<h2>Bookmarklet<!-- and Right Click Menu --></h2>
+		<h2><?php echo _BOOKMARKLET_TITLE ?></h2>
 
 		<p>
-		Bookmarklets allow adding items to your weblog with just one single click. After installing these bookmarklets, you'll be able to click the 'add to weblog' button on your browser toolbar, and a Nucleus add-item window will popup, containing the link and title of the page you were visiting, plus any text you might have selected.
+		<?php echo _BOOKMARKLET_DESC1 . _BOOKMARKLET_DESC2 . _BOOKMARKLET_DESC3 . _BOOKMARKLET_DESC4 . _BOOKMARKLET_DESC5 ?>
 		</p>
 
-		<h3>Bookmarklet</h3>
+		<h3><?php echo _BOOKMARKLET_BOOKARKLET ?></h3>
 		<p>
-			You can drag the following link to your favorites, or your browsers toolbar: <small>(if you want to test the bookmarklet first, click the link)</small>
+			<?php echo _BOOKMARKLET_BMARKTEXT ?><small><?php echo _BOOKMARKLET_BMARKTEST ?></small>
 			<br />
 			<br />
-			<a href="<?php echo htmlspecialchars($bm)?>">Add to <?php echo $blog->getShortName()?></a> (Nearly all browsers)
+			<?php echo '<a href="' . htmlspecialchars($bm, ENT_QUOTES) . '">' . sprintf(_BOOKMARKLET_ANCHOR, htmlspecialchars($blog->getName(), ENT_QUOTES)) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
 		</p>
 
-		<h3>Right Click Menu Access (IE &amp; Windows)</h3>
+		<h3><?php echo _BOOKMARKLET_RIGHTCLICK ?></h3>
 		<p>
 			<?php
 				$url = 'index.php?action=regfile&blogid=' . intval($blogid);
 				$url = $manager->addTicketToUrl($url);
 			?>
-			Or you can install the <a href="<?php echo htmlspecialchars($url) ?>">right click menu item</a> (choose 'open file' and add to registry)
+			<?php echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . htmlspecialchars($url, ENT_QUOTES, "SJIS") . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2; ?>
 		</p>
 
 		<p>
-			You'll have to restart Internet Explorer before the option shows up in the context menus.
+			<?php echo _BOOKMARKLET_RIGHTTEXT3 ?>
 		</p>
 
-		<h3>Uninstalling</h3>
+		<h3><?php echo _BOOKMARKLET_UNINSTALLTT ?></h3>
 		<p>
-			For the bookmarklet, you can just delete it.
+			<?php echo _BOOKMARKLET_DELETEBAR ?>
 		</p>
 
 		<p>
-			For the right click menu item, follow the procedure listed below:
+			<?php echo _BOOKMARKLET_DELETERIGHTT ?>
 		</p>
 
 		<ol>
-			<li>Select "Run..." from the Start Menu</li>
-			<li>Type: "regedit"</li>
-			<li>Click the "OK" button</li>
-			<li>Search for "\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" in the tree</li>
-			<li>Delete the "add to weblog" item</li>
+			<li><?php echo _BOOKMARKLET_DELETERIGHT1 ?></li>
+			<li><?php echo _BOOKMARKLET_DELETERIGHT2 ?></li>
+			<li><?php echo _BOOKMARKLET_DELETERIGHT3 ?></li>
+			<li><?php echo _BOOKMARKLET_DELETERIGHT4 ?></li>
+			<li><?php echo _BOOKMARKLET_DELETERIGHT5 ?></li>
 		</ol>
 
 		<?php
@@ -5508,6 +5594,7 @@ selector();
 		$member->blogAdminRights($blogid) or $this->disallow();
 
 		$blog =& $manager->getBlog($blogid);
+		$banBlogName =  htmlspecialchars($blog->getName(), ENT_QUOTES);
 
 		$this->pagehead();
 		?>
@@ -5526,7 +5613,8 @@ selector();
 
 			<div>
 				<input type="hidden" name="blogid" value="<?php echo $blogid?>" />
-				<input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">Only blog '<?php echo htmlspecialchars($blog->getName())?>'</label>
+				<input name="allblogs" type="radio" value="0" id="allblogs_one" />
+				<label for="allblogs_one"><?php echo sprintf(_BAN_BANBLOGNAME, $banBlogName) ?></label>
 				<br />
 				<input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?php echo _BAN_ALLBLOGS?></label>
 			</div>
@@ -5624,19 +5712,26 @@ selector();
 		<p><?php echo _BAN_IPRANGE_TEXT?></p>
 
 		<div class="note">
-		<b>An example</b>: "134.58.253.193" will only block one computer, while "134.58.253" will block 256 IP addresses, including the one from the first example.
+			<strong><?php echo _BAN_EXAMPLE_TITLE ?></strong>
+			<?php echo _BAN_EXAMPLE_TEXT ?>
 		</div>
 
 		<div>
-		<?php			if ($ip) {
+		<?php
+		if ($ip) {
+			$iprangeVal = htmlspecialchars($ip, ENT_QUOTES);
 		?>
-			<input name="iprange" type="radio" value="<?php echo htmlspecialchars($ip)?>" checked="checked" id="ip_fixed" /><label for="ip_fixed"><?php echo htmlspecialchars($ip)?></label>
+			<input name="iprange" type="radio" value="<?php echo $iprangeVal ?>" checked="checked" id="ip_fixed" />
+			<label for="ip_fixed"><?php echo $iprangeVal ?></label>
 			<br />
-			<input name="iprange" type="radio" value="custom" id="ip_custom" /><label for="ip_custom">Custom: </label><input name='customiprange' value='<?php echo htmlspecialchars($ip)?>' maxlength='15' size='15' />
-		<?php	} else {
-				echo "<input name='iprange' value='custom' type='hidden' />";
-				echo "<input name='customiprange' value='' maxlength='15' size='15' />";
-			}
+			<input name="iprange" type="radio" value="custom" id="ip_custom" />
+			<label for="ip_custom"><?php echo _BAN_IP_CUSTOM ?></label>
+			<input name='customiprange' value='<?php echo $iprangeVal ?>' maxlength='15' size='15' />
+		<?php
+		} else {
+			echo "<input name='iprange' value='custom' type='hidden' />";
+			echo "<input name='customiprange' value='' maxlength='15' size='15' />";
+		}
 		?>
 		</div>
 
@@ -6012,7 +6107,7 @@ selector();
 				// uninstall plugin again...
 				$this->deleteOnePlugin($plugin->getID());
 
-				$this->error(_ERROR_INSREQPLUGIN . htmlspecialchars($pluginName));
+				$this->error(sprintf(_ERROR_INSREQPLUGIN, htmlspecialchars($pluginName, ENT_QUOTES)));
 			}
 		}
 
@@ -6138,7 +6233,7 @@ selector();
 				{
 					if ($name == $depName)
 					{
-						return _ERROR_DELREQPLUGIN . $o->pfile;
+						return sprintf(_ERROR_DELREQPLUGIN, $o->pfile);
 					}
 				}
 			}
@@ -6256,12 +6351,13 @@ selector();
 			$this->error(_ERROR_NOSUCHPLUGIN);
 
 		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
+		$pluginName = htmlspecialchars(getPluginNameFromPid($pid), ENT_QUOTES);
 		$this->pagehead($extrahead);
 
 		?>
 			<p><a href="index.php?action=pluginlist">(<?php echo _PLUGS_BACK?>)</a></p>
 
-			<h2>Options for <?php echo htmlspecialchars(getPluginNameFromPid($pid))?></h2>
+			<h2><?php echo sprintf(_PLUGIN_OPTIONS_TITLE, $pluginName) ?></h2>
 
 			<?php if  ($message) echo $message?>
 

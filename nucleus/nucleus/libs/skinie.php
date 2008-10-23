@@ -113,7 +113,7 @@ class SKINIMPORT {
 	function readFile($filename, $metaOnly = 0) {
 		// open file
 		$this->fp = @fopen($filename, 'r');
-		if (!$this->fp) return 'Failed to open file/URL';
+		if (!$this->fp) return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
 
 		// here we go!
 		$this->inXml = 1;
@@ -192,7 +192,7 @@ class SKINIMPORT {
 		// if not allowed to overwrite, check if any nameclashes exists
 		if (!$allowOverwrite) {
 			if ((sizeof($existingSkins) > 0) || (sizeof($existingTemplates) > 0))
-				return 'Name clashes detected, re-run with allowOverwrite = 1 to force overwrite';
+				return _SKINIE_NAME_CLASHES_DETECTED;
 		}
 
 		foreach ($this->skins as $skinName => $data) {
@@ -319,7 +319,7 @@ class SKINIMPORT {
 				$this->currentPartName = $attrs['name'];
 				break;
 			default:
-				echo 'UNEXPECTED TAG: ' , htmlspecialchars($name) , '<br />';
+				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . htmlspecialchars($name) , '<br />';
 				break;
 		}
 
@@ -366,7 +366,7 @@ class SKINIMPORT {
 				}
 				break;
 			default:
-				echo 'UNEXPECTED TAG: ' , htmlspecialchars($name), '<br />';
+				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . htmlspecialchars($name), '<br />';
 				break;
 		}
 		$this->clearCharacterData();

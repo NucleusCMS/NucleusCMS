@@ -332,14 +332,14 @@ class BLOG {
 	  *		the new category-id in case of success.
 	  *		0 on failure
 	  */
-	function createNewCategory($catName = '', $catDescription = 'New category') {
+	function createNewCategory($catName = '', $catDescription = _CREATED_NEW_CATEGORY_DESC) {
 		global $member, $manager;
 
 		if ($member->blogAdminRights($this->getID())) {
 			// generate
 			if ($catName == '')
 			{
-				$catName = 'newcat';
+				$catName = _CREATED_NEW_CATEGORY_NAME;
 				$i = 1;
 
 				$res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
@@ -1080,9 +1080,9 @@ class BLOG {
 
 		);
 
-		ACTIONLOG::add(INFO, 'Added ' . $tmem->getDisplayName() . ' (ID=' .
-					   $memberid .') to the team of blog "' . $this->getName() . '"');
-
+		$logMsg = sprintf(_TEAM_ADD_NEWTEAMMEMBER, $tmem->getDisplayName(), $memberid, $this->getName());
+		ACTIONLOG::add(INFO, $logMsg);
+		
 		return 1;
 	}
 
