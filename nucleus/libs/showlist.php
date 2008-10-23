@@ -195,11 +195,34 @@ function listplug_table_pluginlist($template, $type) {
 					if (!$plug->subscribtionListIsUptodate()) {
 						echo '<br /><br /><strong>',_LIST_PLUG_SUBS_NEEDUPDATE,'</strong>';
 					}
-					if (sizeof($plug->getPluginDep()) > 0)
+					if (sizeof($plug->getPluginDep()) > 0) {
 						echo '<br /><br />',_LIST_PLUGS_DEP,'<br />',htmlspecialchars(implode($plug->getPluginDep(),', '));
+					}
+// <add by shizuki>
+				// check dependency require
+				$req = array();
+				$res = sql_query('SELECT pfile FROM ' . sql_table('plugin'));
+				while($o = mysql_fetch_object($res)) {
+					$preq =& $manager->getPlugin($o->pfile);
+					if ($plug) {
+						$depList = $preq->getPluginDep();
+						foreach ($depList as $depName) {
+							if ($current->pfile == $depName) {
+								$req[] = $o->pfile;
+							}
+						}
+					}
+				}
+				if (count($req) > 0) {
+					echo '<h4 class="plugin_dependreq_title">' . _LIST_PLUGS_DEPREQ . "</h4>\n";
+					echo '<p class="plugin_dependreq_text">';
+					echo htmlspecialchars(implode(', ', $req), ENT_QUOTES);
+					echo "</p>\n";
+				}
+// </add by shizuki>
 				echo '</td>';
 			} else {
-				echo '<td colspan="2">Error: plugin file <b>',htmlspecialchars($current->pfile),'.php</b> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)</td>';
+				echo '<td colspan="2">' . sprintf(_PLUGINFILE_COULDNT_BELOADED, htmlspecialchars($current->pfile, ENT_QUOTES)) . '</td>';
 			}
 			echo '<td>';
 
@@ -533,16 +556,19 @@ function listplug_table_skinlist($template, $type) {
 
 				$hasEnlargement = @file_exists($DIR_SKINS . $current->sdincpref . 'preview-large.png');
 				if ($hasEnlargement)
-					echo '<a href="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview-large.png" title="View larger">';
+					echo '<a href="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview-large.png" title="' . _LIST_SKIN_PREVIEW_VIEWLARGER . '">';
 
-				echo '<img class="skinpreview" src="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview.png" width="100" height="75" alt="Preview for \'',htmlspecialchars($current->sdname),'\' skin" />';
+				$imgAlt = sprintf(_LIST_SKIN_PREVIEW, htmlspecialchars($current->sdname, ENT_QUOTES));
+				echo '<img class="skinpreview" src="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview.png" width="100" height="75" alt="' . $imgAlt . '" />';
 
 				if ($hasEnlargement)
 					echo '</a>';
 
 				if (@file_exists($DIR_SKINS . $current->sdincpref . 'readme.html'))
 				{
-					echo '<br /><a href="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'readme.html" title="More info on the \'',htmlspecialchars($current->sdname),'\' skin">Readme</a>';
+					$url         = $CONF['SkinsURL'] . htmlspecialchars($current->sdincpref, ENT_QUOTES) . 'readme.html';
+					$readmeTitle = sprintf(_LIST_SKIN_README, htmlspecialchars($current->sdname, ENT_QUOTES));
+					echo '<br /><a href="' . $url . '" title="' . $readmeTitle . '">' . _LIST_SKIN_README_TXT . '</a>';
 				}
 
 

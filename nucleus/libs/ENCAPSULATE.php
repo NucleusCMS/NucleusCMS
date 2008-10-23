@@ -27,7 +27,7 @@ class ENCAPSULATE {
 	  *
 	  * Passes on the amount of results found (for further encapsulation)
 	  */
-	function doEncapsulate($call, $params, $errorMessage = 'No entries') {
+	function doEncapsulate($call, $params, $errorMessage = _ENCAPSULATE_ENCAPSULATE_NOENTRY) {
 		// start output buffering
 		ob_start();
 

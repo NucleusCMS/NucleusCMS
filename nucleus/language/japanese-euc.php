@@ -1220,6 +1220,7 @@ define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			'ログインしていません');
 
 // MANAGER.php
 define('_MANAGER_PLUGINFILE_NOTFOUND',				"プラグイン「%s」を読み込めませんでした(ファイルが見つかりません)");
+define('_MANAGER_PLUGINFILE_NOCLASS',				"プラグイン「%s」を読み込めませんでした(プラグインクラスが存在しません)");
 define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"プラグイン「%s」を読み込めませんでした(｢SqlTablePrefix｣をサポートしていません)");
 
 // mysql.php

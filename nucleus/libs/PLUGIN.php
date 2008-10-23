@@ -56,7 +56,7 @@
 			array_unshift($args, 'template');
 			call_user_func_array(array(&$this,'doSkinVar'),$args);
 		}
-		function doAction($type) { return 'No Such Action'; }
+		function doAction($type) { return _ERROR_PLUGIN_NOSUCHACTION; }
 		function doIf($key,$value) { return false; }
 		function doItemVar () {}
 

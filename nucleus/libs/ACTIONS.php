@@ -620,7 +620,7 @@ class ACTIONS extends BaseActions {
 		if (stristr($destinationurl, 'action.php')) {
 			$args = func_get_args();
 			$destinationurl = $args[1];
-			ACTIONLOG::add(WARNING,'actionurl is not longer a parameter on commentform skinvars. Moved to be a global setting instead.');
+			ACTIONLOG::add(WARNING,_ACTIONURL_NOTLONGER_PARAMATER);
 		}
 
 		$actionurl = $CONF['ActionURL'];

@@ -68,13 +68,13 @@ class PluginAdmin {
 
 		// check if plugin exists and is installed
 		if (!$manager->pluginInstalled($this->strFullName))
-			doError('Invalid plugin');
+			doError(_ERROR_INVALID_PLUGIN);
 
 		$this->plugin =& $manager->getPlugin($this->strFullName);
 		$this->bValid = $this->plugin;
 
 		if (!$this->bValid)
-			doError('Invalid plugin');
+			doError(_ERROR_INVALID_PLUGIN);
 
 		$this->admin = new ADMIN();
 		$this->admin->action = 'plugin_' . $pluginName;
@@ -140,7 +140,7 @@ for (i=0;document.forms[i];i++){
       else document.forms[i].action+='&'+'ticket=<?php echo $ticket; ?>';
       continue;
     }
-    document.write('<p><b>Error occured druing automatic addition of tickets.</b></p>');
+    document.write('<?php echo _PLUGINADMIN_TICKETS_JAVASCRIPT ?>');
     j=document.forms[i].outerHTML;
     while (j!=j.replace('<','&lt;')) j=j.replace('<','&lt;');
     document.write('<p>'+j+'</p>');

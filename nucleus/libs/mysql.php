@@ -26,7 +26,7 @@ if (!function_exists('mysql_query'))
 {
 	if (!function_exists('mysqli_query') && function_exists('startUpError'))
 	{
-		startUpError('<p>No suitable mySQL library was found to run Nucleus</p>');
+		startUpError(_NO_SUITABLE_MYSQL_LIBRARY);
 	}
 	
 	function mysql_query($query) 
