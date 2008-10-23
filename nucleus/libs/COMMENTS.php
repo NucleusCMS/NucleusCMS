@@ -285,7 +285,7 @@ class COMMENTS {
 	 * Checks if a comment is valid and call plugins
 	 * that can check if the comment is a spam comment	  
 	 */
-	function isValidComment($comment, & $spamcheck) {
+	function isValidComment(&$comment, &$spamcheck) {
 		global $member, $manager;
 
 		// check if there exists a item for this date

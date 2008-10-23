@@ -161,7 +161,7 @@ function bm_doEditItem() {
 		case 'changedate':
 			$publish = 1;
 			$wasdraft = 0;
-			$timestamp = mktime(postVar('hour'), postVar('minutes'), 0, postVar('month'), postVar('day'), postVar('year') );
+			$timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year') );
 			break;
 		case 'edit':
 			$publish = 1;

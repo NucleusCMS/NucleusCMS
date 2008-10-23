@@ -44,6 +44,7 @@ define('_BOOKMARKLET_SEND_PING',			'アイテムの追加に成功しました。現在blog検索サ
 // END merge UTF-8 and EUC-JP
 
 // START changed/added for 3.34 START
+define('_TEMPLATE_PLUGIN_FIELDS',       'Custom Plugin Fields');
 define('_TEMPLATE_BLOGLIST',				'Blog一覧');
 define('_TEMPLATE_BLOGHEADER',				'Blog一覧のヘッダー');
 define('_TEMPLATE_BLOGITEM',				'Blog一覧の本体');

@@ -151,7 +151,7 @@ function setMediaPopupURL(url) {
 
 function includeImage(collection, filename, type, width, height) {
 	if (isCaretEmpty()) {
-		text = prompt("Text to display ?","");
+		text = prompt("Text to display ?",filename);
 	} else {
 		text = getCaretText();
 	}
@@ -183,7 +183,7 @@ function includeImage(collection, filename, type, width, height) {
 
 function includeOtherMedia(collection, filename) {
 	if (isCaretEmpty()) {
-		text = prompt("Text to display ?","");
+		text = prompt("Text to display ?",filename);
 	} else {
 		text = getCaretText();
 	}
