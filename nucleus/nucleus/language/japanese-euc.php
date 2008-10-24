@@ -1054,6 +1054,7 @@ define('_UPDATEDPING_GOPINGPAGE',					'更新Ping送信');
 define('_UPDATEDPING_PINGING',						'Pingサーバに送信中です');
 define('_UPDATEDPING_VIEWITEM',						'更新されたblog:');
 define('_UPDATEDPING_VISITOWNSITE',					'サイトへ行ってみる');
+define('_UPDATEDPING_GOSENDPING',					'更新Ping送信');
 
 // General category
 define('_EBLOGDEFAULTCATEGORY_NAME',				'総合');

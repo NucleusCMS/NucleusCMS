@@ -75,21 +75,29 @@ class BaseActions {
 	function parse_parsedinclude($filename) {
 		// check current level
 		if ($this->level > 3) return;	// max. depth reached (avoid endless loop)
-		$filename = $this->getIncludeFileName($filename);
-		if (!file_exists($filename)) return '';
-
-		$fsize = filesize($filename);
-
-		// nothing to include
-		if ($fsize <= 0)
+		$skin = new SKIN($skinid);
+		if (!$skin->isValid) {
 			return;
+		}
+		$parts = explode('|', $filename, 2);
+		if ($skin->getContent($parts[0])) {
+			$contents = $skin->getContent($parts[0]);
+		} else {
+			$filename = $this->getIncludeFileName($filename);
+			if (!file_exists($filename)) return '';
 
-		$this->level = $this->level + 1;
+			$fsize = filesize($filename);
 
-		// read file
-		$fd = fopen ($filename, 'r');
-		$contents = fread ($fd, $fsize);
-		fclose ($fd);
+			// nothing to include
+			if ($fsize <= 0) return;
+
+			$this->level = $this->level + 1;
+
+			// read file
+			$fd = fopen ($filename, 'r');
+			$contents = fread ($fd, $fsize);
+			fclose ($fd);
+		}
 
 		// parse file contents
 		$this->parser->parse($contents);

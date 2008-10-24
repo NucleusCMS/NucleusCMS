@@ -311,7 +311,7 @@ function bm_message($title, $head, $msg, $extrahead = '') {
 	<body>
 	<h1><?php echo $head; ?></h1>
 	<p><?php echo $msg; ?></p>
-	<p><a href="bookmarklet.php" onclick="window.close();"><?php echo _POPUP_CLOSE ?></a></p>
+	<p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();"><?php echo _POPUP_CLOSE ?></a></p>
 	</body>
 	</html>
 

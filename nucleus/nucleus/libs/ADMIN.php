@@ -1198,6 +1198,7 @@ class ADMIN {
 				$wasdraft: set to 1 when the item used to be a draft item
 				$publish: set to 1 when the edited item is not a draft
 		*/
+/*<del by shizuki>
 		switch ($actiontype) {
 			case 'adddraft':
 				$publish = 0;
@@ -1230,10 +1231,26 @@ class ADMIN {
 				$wasdraft = 0;
 				$timestamp = 0;
 		}
+</del by shizuki>*/
+// <add by shizuki>
+		$blogid =  getBlogIDFromItemID($itemid);
+		$blog   =& $manager->getBlog($blogid);
+
+		$wasdrafts = array('adddraft', 'addfuture', 'addnow');
+		$wasdraft  = in_array($actiontype, $wasdrafts) ? 1 : 0;
+		$publish   = ($actiontype != 'adddraft' && $actiontype != 'backtodrafts') ? 1 : 0;
+		if ($actiontype == 'addfuture' || $actiontype == 'changedate') {
+			$timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year'));
+		} else {
+			$timestamp =0;
+		}
+		$doping = ($publish && $timestamp < $blog->getCorrectTime() && postVar('dosendping')) ? 1 : 0;
+// </add by shizuki>
 
 		// edit the item for real
 		ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
 
+/* <del by shizuki>
 		$blogid = getBlogIDFromItemID($itemid);
 		$blog =& $manager->getBlog($blogid);
 
@@ -1242,13 +1259,15 @@ class ADMIN {
 			$isFuture = 1;
 		}
 
+</del by shizuki>*/
 		$this->updateFuturePosted($blogid);
 
 		if ($draftid > 0 && $member->canAlterItem($draftid)) {
 			ITEM::delete($draftid);
 		}
 
-		if (!$closed && $publish && $wasdraft && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0 && !$isFuture) {
+//		if (!$closed && $publish && $wasdraft && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0 && !$isFuture) {
+		if (!$closed && $doping && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0) {		//<mod by shizuki />
 			$this->action_sendping($blogid);
 			return;
 		}
@@ -1473,7 +1492,7 @@ class ADMIN {
 
 		$blogid = getBlogIDFromItemID($result['itemid']);
 		$blog =& $manager->getBlog($blogid);
-
+/* <del by shizuki>
 		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid));
 
 		if ($result['status'] == 'newcategory')
@@ -1486,6 +1505,27 @@ class ADMIN {
 			$this->action_sendping($blogid);
 		else
 			$this->action_itemlist($blogid);
+</del by shizuki>*/
+// <add by shizuki>
+		$btimestamp = $blog->getCorrectTime();
+		$bPingInfo  = ($blog->sendPing() && numberOfEventSubscriber('SendPing') > 0);
+		$item       = $manager->getItem(intval($result['itemid']), 1, 1);
+		$iPingInfo  = (!$item['draft'] && postVar('dosendping') && $item['timestamp'] < $btimestamp);
+		if ($iPingInfo && $bPingInfo) {
+			$nextAction = 'sendping';
+		} else {
+			$nextAction = 'itemlist';
+		}
+		if ($result['status'] == 'newcategory') {
+			$distURI = ($nextAction = 'sendping') ? $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action='
+					 . $nextAction . '&blogid=' . intval($blogid)) : 
+					   '';
+			$this->action_categoryedit($result['catid'], $blogid, $distURI);
+		} else {
+			$methodName = 'action_' . $nextAction;
+			call_user_func(array(&$this, $methodName), $blogid);
+		}
+//</add by shizuki>
 	}
 
 	/**
