@@ -859,6 +859,7 @@ function installCustomPlugs(&$manager) {
 		sql_query($query);
 
 		// get and install the plugin
+		$manager->clearCachedInfo('installedPlugins');
 		$plugin =& $manager->getPlugin($plugName);
 		$plugin->plugid = $numCurrent;
 
