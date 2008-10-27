@@ -75,8 +75,10 @@ class BaseActions {
 	function parse_parsedinclude($filename) {
 		// check current level
 		if ($this->level > 3) return;	// max. depth reached (avoid endless loop)
+		global $skinid;
 		$skin = new SKIN($skinid);
-		if (!$skin->isValid) {
+		$file = $this->getIncludeFileName($filename);
+		if (!$skin->isValid && !file_exists($file)) {
 			return;
 		}
 		$parts = explode('|', $filename, 2);
