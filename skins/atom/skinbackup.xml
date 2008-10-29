@@ -3,41 +3,57 @@
 		<skin name="feeds/atom" />
 		<template name="feeds/atom/modified" />
 		<template name="feeds/atom/entries" />
-		<info><![CDATA[Atom 0.3 weblog syndication]]></info>
+		<info><![CDATA[Atom 1.0 weblog syndication]]></info>
 	</meta>
-	
+
+
 	<skin name="feeds/atom" type="application/atom+xml" includeMode="normal" includePrefix="">
-		<description>Atom 0.3 weblog syndication</description>
+		<description>Atom 1.0 weblog syndication</description>
 		<part name="index"><![CDATA[<?xml version="1.0" encoding="<%charset%>"?>
-<feed version="0.3" xmlns="http://purl.org/atom/ns#">
+
+<feed xml:lang="en-us" xmlns="http://www.w3.org/2005/Atom">
     <title><%blogsetting(name)%></title>
+    <id><%blogsetting(url)%>:<%blogsetting(id)%></id>
+
     <link rel="alternate" type="text/html" href="<%blogsetting(url)%>" />
-    <generator url="http://nucleuscms.org/"><%version%></generator>
-    <modified><%blog(feeds/atom/modified,1)%></modified>
+    <link rel="self" type="application/atom+xml" href="<%blogsetting(url)%><%self%>" />
+    <generator uri="http://nucleuscms.org/"><%version%></generator>
+    <updated><%blog(feeds/atom/modified,1)%></updated>
+
     <%blog(feeds/atom/entries,10)%>
 </feed>]]></part>
+
 	</skin>
+
 
 	<template name="feeds/atom/modified">
 		<description>Atom feeds: Inserts last modification date</description>
 		<part name="ITEM"><![CDATA[<%date(utc)%>]]></part>
+
 	</template>
+
 
 	<template name="feeds/atom/entries">
 		<description>Atom feeds: Feed items</description>
 		<part name="ITEM"><![CDATA[<entry>
- <title type="text/html" mode="escaped"><![CDATA[<%title%>]]></title>
- <link rel="alternate" type="text/html" href="<%blogurl%>index.php?itemid=<%itemid%>" />
- <author>
-  <name><%author%></name>
- </author>
- <modified><%date(utc)%></modified>
- <issued><%date(iso8601)%></issued>
- <content type="text/html" mode="escaped"><![CDATA[<%body%><%more%>]]></content>
- <id><%blogurl%>:<%blogid%>:<%itemid%></id>
+    <title type="html"><![CDATA[<%title%>]]]]><![CDATA[></title>
+    <link rel="alternate" type="text/html" href="<%itemlink%>" />
+    <author>
+        <name><%author%></name>
+    </author>
+    <updated><%date(utc)%></updated>
+    <published><%date(iso8601)%></published>
+    <content type="html"><![CDATA[<%body%><%more%>]]]]><![CDATA[></content>
+    <id><%blogurl%>:<%blogid%>:<%itemid%></id>
 </entry>]]></part>
-		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
-		<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+
 		<part name="POPUP_CODE"><![CDATA[<%media%>]]></part>
+
+		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+
+		<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+
 	</template>
+
+
 </nucleusskin>

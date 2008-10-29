@@ -1,9 +1,9 @@
-<?
+<?php
 if (!function_exists('getmtime'))
 {
   function getmtime()
   {
-    $a = explode (' ',microtime());
+    $a = explode (' ', microtime());
     return(double) $a[0] + $a[1];
   }
 }
