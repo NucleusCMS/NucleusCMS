@@ -21,6 +21,9 @@
 <link rel="stylesheet" type="text/css" href="<%skinfile(nicetitle.css)%>" />
 <script type="text/javascript" src="<%skinfile(nicetitle.js)%>"></script>
 
+<!-- ATOM support --> 
+<link rel="alternate" type="application/atom+xml" title="ATOM" href="atom.phpl" /> 
+
 <!-- RSS 2.0 feed -->
 <link rel="alternate" type="application/rss+xml" title="RSS" href="xml-rss2.php" />
 
