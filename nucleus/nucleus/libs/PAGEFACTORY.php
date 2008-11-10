@@ -339,9 +339,9 @@ class PAGEFACTORY extends BaseActions {
 			case "2":
 				echo '<div class="jsbuttonbar">';
 
-					$this->_jsbutton('bold',"boldThis()",'');
-					$this->_jsbutton('italic',"italicThis()",'');
-					$this->_jsbutton('link',"ahrefThis()",'');
+					$this->_jsbutton('bold',"boldThis()",_ADD_BOLD_TT);
+					$this->_jsbutton('italic',"italicThis()",_ADD_ITALIC_TT);
+					$this->_jsbutton('link',"ahrefThis()",_ADD_HREF_TT);
 					$this->_jsbuttonspacer();
 					$this->_jsbutton('alignleft',"alignleftThis()",_ADD_ALIGNLEFT_TT);
 					$this->_jsbutton('alignright',"alignrightThis()",_ADD_ALIGNRIGHT_TT);
@@ -357,7 +357,7 @@ class PAGEFACTORY extends BaseActions {
 						foreach ($btns as $button) {
 							switch($button) {
 								case "media":
-									$this->_jsbutton('media',"addMedia()",ADD_MEDIA_TT);
+									$this->_jsbutton('media',"addMedia()",_ADD_MEDIA_TT);
 									break;
 							}
 						}
@@ -418,7 +418,7 @@ class PAGEFACTORY extends BaseActions {
 				onmouseover="BtnHighlight(this);"
 				onmouseout="BtnNormal(this);"
 				onclick="<?php echo $code?>" >
-				<img src="images/button-<?php echo $type?>.gif" alt="<?php echo $tooltip?>" width="16" height="16"/>
+				<img src="images/button-<?php echo $type?>.gif" alt="<?php echo $tooltip?>" title="<?php echo $tooltip?>" width="16" height="16"/>
 			</span>
 	<?php	}
 
