@@ -156,7 +156,7 @@ class ITEM {
 		NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
 		$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $i_title, 'body' => $i_body, 'more' => $i_more, 'closed' => $i_closed, 'catid' => $i_catid)));
 
-		if ($i_draftid > 0) {
+		if ($i_draftid > 0 && $member->canAlterItem($i_draftid) ) {
 			ITEM::delete($i_draftid);
 		}
 
@@ -298,9 +298,10 @@ class ITEM {
 	  * Deletes an item
 	  */
 	function delete($itemid) {
-		global $manager;
+		global $manager, $member;
 
 		$itemid = intval($itemid);
+		if (!$member->canAlterItem($itemid)) return;
 
 		$manager->notify('PreDeleteItem', array('itemid' => $itemid));
 
