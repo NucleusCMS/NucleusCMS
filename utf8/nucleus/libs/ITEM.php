@@ -156,7 +156,8 @@ class ITEM {
 		NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
 		$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $i_title, 'body' => $i_body, 'more' => $i_more, 'closed' => $i_closed, 'catid' => $i_catid)));
 
-		if ($i_draftid > 0 && $member->canAlterItem($i_draftid) ) {
+		if ($i_draftid > 0) {
+			// delete permission is checked inside ITEM::delete()
 			ITEM::delete($i_draftid);
 		}
 
@@ -301,7 +302,11 @@ class ITEM {
 		global $manager, $member;
 
 		$itemid = intval($itemid);
-		if (!$member->canAlterItem($itemid)) return;
+		// check to ensure only those allow to alter the item can
+		// proceed
+		if (!$member->canAlterItem($itemid)) {
+			return 1;
+		}
 
 		$manager->notify('PreDeleteItem', array('itemid' => $itemid));
 

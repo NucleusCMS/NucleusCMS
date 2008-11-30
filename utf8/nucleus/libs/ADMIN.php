@@ -1175,7 +1175,8 @@ class ADMIN {
 
 		$this->updateFuturePosted($blogid);
 
-		if ($draftid > 0 && $member->canAlterItem($draftid)) {
+		if ($draftid > 0) {
+			// delete permission is checked inside ITEM::delete()
 			ITEM::delete($draftid);
 		}
 
