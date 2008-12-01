@@ -323,13 +323,14 @@ class ITEM {
 	function delete($itemid) {
 		global $manager, $member;
 
+		$itemid = intval($itemid);
+
 		// check to ensure only those allow to alter the item can
 		// proceed
 		if (!$member->canAlterItem($itemid)) {
 			return 1;
 		}
 
-		$itemid = intval($itemid);
 
 		$manager->notify('PreDeleteItem', array('itemid' => $itemid));
 
