@@ -210,7 +210,8 @@ class ACTION
 		$initialPwd = md5(uniqid(rand(), true));
 
 		// create member (non admin/can not login/no notes/random string as password)
-		$r = MEMBER::create(postVar('name'), postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
+		$name = shorten(postVar('name'),16,'');
+		$r = MEMBER::create($name, postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
 
 			if ($r != 1) {
 				return $r;
@@ -218,7 +219,7 @@ class ACTION
 
 		// send message containing password.
 		$newmem = new MEMBER();
-		$newmem->readFromName(postVar('name'));
+		$newmem->readFromName($name);
 		$newmem->sendActivationLink('register');
 
 		$manager->notify('PostRegister',array('member' => &$newmem));

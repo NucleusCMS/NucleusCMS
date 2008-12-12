@@ -3276,9 +3276,11 @@ class ADMIN {
 		$manager->notify('PreDeleteMember', array('member' => &$mem));
 
 		/* unlink comments from memberid */
-		$query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. addslashes($mem->getDisplayName())
-					.'" WHERE cmember='.$memberid;
-		sql_query($query);
+		if ($memberid) {
+			$query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. addslashes($mem->getDisplayName())
+						.'" WHERE cmember='.$memberid;
+			sql_query($query);
+		}
 
 		$query = 'DELETE FROM '.sql_table('member').' WHERE mnumber='.$memberid;
 		sql_query($query);

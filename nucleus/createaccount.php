@@ -35,7 +35,7 @@
 	
 		Login Name (required): 
 		<br />
-		<input name="name" size="20" /> <small>(only a-z, 0-9)</small>
+		<input name="name" size="20" maxlength="16" /> <small>(only a-z, 0-9)</small>
 		<br />
 		<br />		
 		Real Name (required): 
@@ -87,7 +87,7 @@
 	
 		Login Name (required): 
 		<br />
-		<input name="name" size="20" <?php if(isset($_POST['name'])){echo 'value="'.$_POST['name'].'"';}?>/> <small>(only a-z, 0-9)</small>
+		<input name="name" size="20" maxlength="16" <?php if(isset($_POST['name'])){echo 'value="'.$_POST['name'].'"';}?>/> <small>(only a-z, 0-9)</small>
 		<br />
 		<br />		
 		Real Name (required): 
