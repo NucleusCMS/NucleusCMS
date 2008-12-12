@@ -93,8 +93,6 @@ switch($action) {
 function media_select() {
 	global $member, $CONF, $DIR_MEDIA, $manager;
 
-	media_head();
-
 	// show 10 files + navigation buttons
 	// show msg when no files
 	// show upload form
@@ -105,6 +103,10 @@ function media_select() {
 	if (!$currentCollection || !@is_dir($DIR_MEDIA . $currentCollection))
 		$currentCollection = $member->getID();
 
+	// avoid directory travarsal and accessing invalid directory
+	if (!MEDIA::isValidCollection($currentCollection)) media_doError(_ERROR_DISALLOWED);
+
+	media_head();
 
 	// get collection list
 	$collections = MEDIA::getCollectionList();

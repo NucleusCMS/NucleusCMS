@@ -101,14 +101,19 @@ class MEDIA {
 	function isValidCollection($collectionName) {
 		global $member, $DIR_MEDIA;
 
+		// avoid directory traversal
+		$media = realpath($DIR_MEDIA);
+		$collectionDir = realpath( $DIR_MEDIA . $collectionName );
+		if (strpos($collectionDir,$media)!==0) return false;
+
 		// private collections only accept uploads from their owners
-		if (is_numeric($collectionName))
-			return ($member->getID() == $collectionName);
+		$collectionName=substr($collectionDir,strlen($media));
+		if (preg_match('/^[0-9]+[\/\\\\]?$/',$collectionName))
+			return ((int)$member->getID() == (int)$collectionName);
 
 		// other collections should exists and be writable
-		$collectionDir = $DIR_MEDIA . $collectionName;
-		return (@is_dir($collectionDir) || @is_writable($collectionDir));
-	}
+		return (@is_dir($collectionDir) && @is_writable($collectionDir));
+       }
 
 	/**
 	  * Adds an uploaded file to the media archive
