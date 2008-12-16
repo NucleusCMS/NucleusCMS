@@ -100,16 +100,24 @@ class MEDIA {
 	  */
 	function isValidCollection($collectionName) {
 		global $member, $DIR_MEDIA;
-
-		// avoid directory traversal
-		$media = realpath($DIR_MEDIA);
-		$collectionDir = realpath( $DIR_MEDIA . $collectionName );
-		if (strpos($collectionDir,$media)!==0) return false;
-
-		// private collections only accept uploads from their owners
-		$collectionName=substr($collectionDir,strlen($media));
-		if (preg_match('/^[0-9]+[\/\\\\]?$/',$collectionName))
+	  	 
+		// allow creating new private directory
+		if (preg_match('#^[0-9]+[/\\\\]?$#',$collectionName))
 			return ((int)$member->getID() == (int)$collectionName);
+	  	 
+		// avoid directory traversal
+		// note that preg_replace() is requred to remove the last "/" or "\" if exists
+		$media = realpath($DIR_MEDIA);
+		$media = preg_replace('#[/\\\\]+$#','',$media);
+		$collectionDir = realpath( $DIR_MEDIA . $collectionName );
+		$collectionDir = preg_replace('#[/\\\\]+$#','',$collectionDir);
+		if (strpos($collectionDir,$media)!==0 || $collectionDir == $media) return false;
+	  	 
+		// private collections only accept uploads from their owners
+		// The "+1" of "strlen($media)+1" corresponds to "/" or "\".
+		$collectionName=substr($collectionDir,strlen($media)+1);
+		if (preg_match('/^[0-9]+$/',$collectionName))
+		return ((int)$member->getID() == (int)$collectionName);
 
 		// other collections should exists and be writable
 		return (@is_dir($collectionDir) && @is_writable($collectionDir));
