@@ -102,13 +102,26 @@ class MEDIA {
 	function isValidCollection($collectionName) {
 		global $member, $DIR_MEDIA;
 
+		// allow creating new private directory
+		if (preg_match('#^[0-9]+[/\\\\]?$#',$collectionName))
+			return ((int)$member->getID() == (int)$collectionName);
+
+		// avoid directory traversal
+		// note that preg_replace() is requred to remove the last "/" or "\" if exists
+		$media = realpath($DIR_MEDIA);
+		$media = preg_replace('#[/\\\\]+$#','',$media);
+		$collectionDir = realpath( $DIR_MEDIA . $collectionName );
+		$collectionDir = preg_replace('#[/\\\\]+$#','',$collectionDir);
+		if (strpos($collectionDir,$media)!==0 || $collectionDir == $media) return false;
+
 		// private collections only accept uploads from their owners
-		if (is_numeric($collectionName))
-			return ($member->getID() == $collectionName);
+		// The "+1" of "strlen($media)+1" corresponds to "/" or "\".
+		$collectionName=substr($collectionDir,strlen($media)+1);
+		if (preg_match('/^[0-9]+$/',$collectionName))
+			return ((int)$member->getID() == (int)$collectionName);
 
 		// other collections should exists and be writable
-		$collectionDir = $DIR_MEDIA . $collectionName;
-		return (@is_dir($collectionDir) || @is_writable($collectionDir));
+		return (@is_dir($collectionDir) && @is_writable($collectionDir));
 	}
 
 	/**
