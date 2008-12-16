@@ -1542,6 +1542,12 @@ function encoding_check($val, $key, $encoding=false, $exclude=false) {
 				$search='/^([\x00-\x7F]+'.
 					'|[\xA1-\xF7][\xA1-\xFE])*/';
 				break;
+			case 'shift_jis':
+				// Note that shift_jis is only supported for output.
+				// Using shift_jis in DB is prohibited.
+				$search='/^([\x00-\x7F\xA1-\xDF]+'.
+					'|[\x81-\x9F\xE0-\xFC][\x40-\xFC])*/';
+				break;
 			default:
 				$search=false;
 				if (preg_match('/^iso\-8859\-[0-9]{1,2}$/',$encoding)) break;
