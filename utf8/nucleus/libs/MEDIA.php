@@ -18,6 +18,8 @@
  * $NucleusJP: MEDIA.php,v 1.5 2006/07/17 20:03:44 kimitake Exp $
  */
 
+define('PRIVATE_COLLECTION', 'Private Collection');
+define('READ_ONLY_MEDIA_FOLDER', '(Read Only)');
 
 /**
   * Represents the media objects for a certain member
@@ -30,22 +32,29 @@ class MEDIA {
 	  *
 	  * @returns array of dirname => display name
 	  */
-	function getCollectionList() {
+	function getCollectionList($exceptReadOnly = false) {
 		global $member, $DIR_MEDIA;
 
 		$collections = array();
 
 		// add private directory for member
-		$collections[$member->getID()] = 'Private Collection';
-
+		$collections[$member->getID()] = PRIVATE_COLLECTION;
+		
 		// add global collections
 		if (!is_dir($DIR_MEDIA)) return $collections;
 
 		$dirhandle = opendir($DIR_MEDIA);
 		while ($dirname = readdir($dirhandle)) {
 			// only add non-numeric (numeric=private) dirs
-			if (@is_dir($DIR_MEDIA . $dirname) && ($dirname != '.') && ($dirname != '..') && ($dirname != 'CVS') && (!is_numeric($dirname)))  {
-				$collections[$dirname] = $dirname;
+			if (@is_dir($DIR_MEDIA . $dirname) &&
+				($dirname != '.') &&
+				($dirname != '..') &&
+				($dirname != 'CVS') &&
+				(!is_numeric($dirname)))  {
+				if (@is_writable($DIR_MEDIA . $dirname))
+					$collections[$dirname] = $dirname;
+				else if ($exceptReadOnly == false)
+					$collections[$dirname] = $dirname . ' ' . READ_ONLY_MEDIA_FOLDER;
 			}
 		}
 		closedir($dirhandle);
@@ -99,29 +108,25 @@ class MEDIA {
 	  * checks if a collection exists with the given name, and if it's
 	  * allowed for the currently logged in member to upload files to it
 	  */
-	function isValidCollection($collectionName) {
+	function isValidCollection($collectionName, $exceptReadOnly = false) {
 		global $member, $DIR_MEDIA;
 
 		// allow creating new private directory
-		if (preg_match('#^[0-9]+[/\\\\]?$#',$collectionName))
-			return ((int)$member->getID() == (int)$collectionName);
+		if ($collectionName === (string)$member->getID())
+			return true;
+			
+		$collections = MEDIA::getCollectionList($exceptReadOnly);
+		$dirname = $collections[$collectionName];
+		if ($dirname == NULL || $dirname === PRIVATE_COLLECTION)
+			return false;  
 
-		// avoid directory traversal
-		// note that preg_replace() is requred to remove the last "/" or "\" if exists
-		$media = realpath($DIR_MEDIA);
-		$media = preg_replace('#[/\\\\]+$#','',$media);
-		$collectionDir = realpath( $DIR_MEDIA . $collectionName );
-		$collectionDir = preg_replace('#[/\\\\]+$#','',$collectionDir);
-		if (strpos($collectionDir,$media)!==0 || $collectionDir == $media) return false;
+		// other collections should exist and be writable
+		$collectionDir = $DIR_MEDIA . $collectionName;
+		if ($exceptReadOnly)
+			return (@is_dir($collectionDir) && @is_writable($collectionDir));
 
-		// private collections only accept uploads from their owners
-		// The "+1" of "strlen($media)+1" corresponds to "/" or "\".
-		$collectionName=substr($collectionDir,strlen($media)+1);
-		if (preg_match('/^[0-9]+$/',$collectionName))
-			return ((int)$member->getID() == (int)$collectionName);
-
-		// other collections should exists and be writable
-		return (@is_dir($collectionDir) && @is_writable($collectionDir));
+		// other collections should exist
+		return @is_dir($collectionDir);
 	}
 
 	/**
@@ -141,7 +146,8 @@ class MEDIA {
 		$manager->notify('PreMediaUpload',array('collection' => &$collection, 'uploadfile' => $uploadfile, 'filename' => &$filename));
 
 		// don't allow uploads to unknown or forbidden collections
-		if (!MEDIA::isValidCollection($collection))
+		$exceptReadOnly = true;
+		if (!MEDIA::isValidCollection($collection,$exceptReadOnly))
 			return _ERROR_DISALLOWED;
 
 		// check dir permissions (try to create dir if it does not exist)
