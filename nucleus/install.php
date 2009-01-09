@@ -131,6 +131,8 @@ function showInstallForm() {
 
 	if (phpversion() < $minVersion) {
 		echo ' <span class="warning">', _TEXT2_WARN , $minVersion, '</span>';
+	} elseif (phpversion() < '5') {
+		echo ' <span class="warning">' . _TEXT2_WARN3 . '</span>';
 	}
 ?>
 
@@ -139,39 +141,28 @@ function showInstallForm() {
 
 <?php
 	// note: this piece of code is taken from phpMyAdmin
-	$result = @mysql_query('SELECT VERSION() AS version');
+	$result = mysql_query('SELECT VERSION() AS version');
 
-	if ($result != FALSE && @mysql_num_rows($result) > 0) {
+	if ($result != FALSE && mysql_num_rows($result) > 0) {
 		$row = mysql_fetch_array($result);
 		$match = explode('.', $row['version']);
 	} else {
-		$result = @mysql_query('SHOW VARIABLES LIKE \'version\'');
+		$result = mysql_query('SHOW VARIABLES LIKE \'version\'');
 
 		if ($result != FALSE && @mysql_num_rows($result) > 0) {
 			$row = mysql_fetch_row($result);
 			$match = explode('.', $row[1]);
 		} else {
-			$match[0] = '?';
-			$match[1] = '?';
-			$match[2] = '?';
+			$output = shell_exec('mysql -V');
+   			preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
+			$match = explode('.', $version[0]);
+
+			if ($match[0] == '') {
+				$match[0] = '0';
+				$match[1] = '0';
+				$match[2] = '0';
+			}
 		}
-	}
-
-	if (!isset($match) || !isset($match[0]) ) {
-		$match[0] = 3;
-	}
-
-	if (!isset($match[1]) ) {
-		$match[1] = 21;
-	}
-
-	if (!isset($match[2]) ) {
-		$match[2] = 0;
-	}
-
-	if ($match[0] != '?') {
-		$match[0] = intval($match[0]);
-		$match[1] = intval($match[1]);
 	}
 
 	$mysqlVersion = implode($match, '.');
