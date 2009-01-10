@@ -362,7 +362,7 @@ function listplug_table_itemlist($template, $type) {
 			echo "<td  style=\"white-space:nowrap\" $cssclass>";
 			echo 	"<a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a>";
 			echo    "<br /><a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>"._LISTS_COMMENTS;
-			echo _LISTS_COMMENTS . '(' . $COMMENTS->amountComments() . ')'."</a>";
+			echo '(' . $COMMENTS->amountComments() . ')'."</a>";
 			echo    "<br /><a href='index.php?action=itemmove&amp;itemid=$current->inumber'>"._LISTS_MOVE."</a>";
 			echo    "<br /><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"._LISTS_DELETE."</a>";
 			echo "</td>";
