@@ -22,7 +22,7 @@
 <script type="text/javascript" src="<%skinfile(nicetitle.js)%>"></script>
 
 <!-- ATOM support --> 
-<link rel="alternate" type="application/atom+xml" title="ATOM" href="atom.phpl" /> 
+<link rel="alternate" type="application/atom+xml" title="ATOM" href="atom.php" /> 
 
 <!-- RSS 2.0 feed -->
 <link rel="alternate" type="application/rss+xml" title="RSS" href="xml-rss2.php" />
