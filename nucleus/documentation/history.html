@@ -30,6 +30,8 @@
 	<li>
 		<strong>Nucleus v3.34 SVN (development version)</strong>
 		<ul>
+			<li>ADDED: BLOG::readLogFromList() and BLOG::getSqlItemList() to allow using the core item display mechanisms for customized lists of items. Will be used primarily by plugins. (ftruscot)</li>
+			<li>CHANGED: MEMBER::login() to add CustomLogin event. Provides hook for plugins to perform authentication from external sources. (ftruscot)</li>
 			<li>ADDED: Upgrade scripts for version 3.40. Lengthen nucleus_template.tpartname column to 64. Lengthen nucleus_template_desc.tdname to 64. (ftruscot)</li>
 			<li>ADDED: Warning for PHP 4.x depreciated (admun)</li>
 			<li>FIXED: MySQL version check failure in install.php (admun)</li>
