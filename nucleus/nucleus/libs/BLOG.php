@@ -1147,6 +1147,71 @@ class BLOG {
 			}
 		}
 	}
+	
+	/**
+	 * Shows the given list of items for this blog
+	 *
+	 * @param $itemarray
+	 *		array of item numbers to be displayed
+	 * @param $template
+	 *		String representing the template _NAME_ (!)	 
+	 * @param $highlight
+	 *		contains a query that should be highlighted
+	 * @param $comments
+	 *		1=show comments 0=don't show comments
+	 * @param $dateheads
+	 *		1=show dateheads 0=don't show dateheads
+	 * @returns int
+	 *		amount of items shown
+	 */
+	function readLogFromList($itemarray, $template, $highlight = 0, $comments = 1, $dateheads = 1) {
+
+		$query = $this->getSqlItemList($itemarray);
+
+		return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
+	}
+	
+	/**
+	 * Returns the SQL query used to fill out templates for a list of items
+	 *
+	 * @param $itemarray
+	 *		an array holding the item numbers of the items to be displayed
+	 * @returns
+	 *		either a full SQL query, or an empty string
+	 * @note
+	 *		No LIMIT clause is added. (caller should add this if multiple pages are requested)
+	 */
+	function getSqlItemList($itemarray)
+	{
+		if (!is_array($itemarray)) return '';
+		$items = array();
+		foreach ($itemarray as $value) {
+			if (intval($value)) $items[] = intval($value);
+		}
+		if (!count($items)) return '';
+		//$itemlist = implode(',',$items);
+		$i = count($items);
+		$query = '';
+		foreach ($items as $value) {
+			$query .= '(SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
+			
+			$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
+				   . ' WHERE i.iblog='.$this->blogid
+				   . ' and i.iauthor=m.mnumber'
+				   . ' and i.icat=c.catid'
+				   . ' and i.idraft=0'	// exclude drafts
+						// don't show future items
+				   . ' and i.itime<=' . mysqldate($this->getCorrectTime());
+
+			//$query .= ' and i.inumber IN ('.$itemlist.')';
+			$query .= ' and i.inumber='.intval($value);
+			$query .= ')';
+			$i--;
+			if ($i) $query .= ' UNION ';
+		}
+		
+		return $query;
+	}
 
 }
 
