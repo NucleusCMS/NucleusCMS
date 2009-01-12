@@ -52,7 +52,8 @@ When upgrading from an older Nucleus version, upgrades to the database tables ar
   else  if (!upgrade_checkinstall(31)) $current = 30;
   else  if (!upgrade_checkinstall(32)) $current = 31;
   else  if (!upgrade_checkinstall(33)) $current = 32;
-  else  $current = 33;
+  else  if (!upgrade_checkinstall(34)) $current = 33;
+  else  $current = 34;
 
   if ($current == 33) {
 	?>
