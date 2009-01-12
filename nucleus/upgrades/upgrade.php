@@ -62,9 +62,12 @@ switch($from) {
 		upgrade_do31();
 	case 31:
 		upgrade_do32();
-		break;
+		//break;
 	case 32:
 		upgrade_do33();
+		//break;
+	case 33:
+		upgrade_do34();
 		break;
 	default:
 		echo "<li>Error! No updates to execute</li>";
