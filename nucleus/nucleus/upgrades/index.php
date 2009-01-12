@@ -55,7 +55,7 @@ When upgrading from an older Nucleus version, upgrades to the database tables ar
   else  if (!upgrade_checkinstall(34)) $current = 33;
   else  $current = 34;
 
-  if ($current == 33) {
+  if ($current == 34) {
 	?>
 	  <p class="ok">No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.</p>
 	<?php

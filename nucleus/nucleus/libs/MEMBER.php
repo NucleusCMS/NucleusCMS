@@ -76,15 +76,28 @@ class MEMBER {
 	/**
 	  * Tries to login as a given user.
 	  * Returns true when succeeded, returns false when failed
+	  * 3.40 adds CustomLogin event
 	  */
 	function login($login, $password) {
+		global $manager;
 		$this->loggedin = 0;
-		if (!$this->readFromName($login))
+		$success = 0;
+		$allowlocal = 1;
+		$manager->notify('CustomLogin', array('login' => &$login, 'password'=>&$password, 'success'=>&$success, 'allowlocal'=>&$allowlocal) );
+		if ($success && $this->readFromName($login)) {
+			$this->loggedin = 1;
+			return $this->isLoggedIn();
+		}
+		elseif (!$success && $allowlocal) {
+			if (!$this->readFromName($login))
+				return 0;
+			if (!$this->checkPassword($password))
+				return 0;
+			$this->loggedin = 1;
+			return $this->isLoggedIn();
+		}
+		else 
 			return 0;
-		if (!$this->checkPassword($password))
-			return 0;
-		$this->loggedin = 1;
-		return $this->isLoggedIn();
 	}
 
 	/**
