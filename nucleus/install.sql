@@ -233,7 +233,7 @@ INSERT INTO `nucleus_team` VALUES (1, 1, 1);
 
 CREATE TABLE `nucleus_template` (
   `tdesc` int(11) NOT NULL default '0',
-  `tpartname` varchar(20) NOT NULL default '',
+  `tpartname` varchar(64) NOT NULL default '',
   `tcontent` text NOT NULL,
   PRIMARY KEY  (`tdesc`,`tpartname`)
 ) TYPE=MyISAM;
@@ -253,7 +253,7 @@ INSERT INTO `nucleus_template` VALUES (3, 'IMAGE_CODE', '<%media%>');
 
 CREATE TABLE `nucleus_template_desc` (
   `tdnumber` int(11) NOT NULL auto_increment,
-  `tdname` varchar(20) NOT NULL default '',
+  `tdname` varchar(64) NOT NULL default '',
   `tddesc` varchar(200) default NULL,
   PRIMARY KEY  (`tdnumber`),
   UNIQUE KEY `tdnumber` (`tdnumber`),
