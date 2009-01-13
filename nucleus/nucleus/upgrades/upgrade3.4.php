@@ -15,6 +15,18 @@ function upgrade_do34() {
 					MODIFY `tdname` varchar(64) NOT NULL default '' ;";
 
 	upgrade_query('Altering ' . sql_table('template_desc') . ' table', $query);
+	
+	// create DebugVars setting
+	if (!upgrade_checkIfCVExists('DebugVars')) {
+		$query = 'INSERT INTO '.sql_table('config')." VALUES ('DebugVars',0)";
+		upgrade_query('Creating DebugVars config value',$query);	
+	}
+	
+	// create DefaultListSize setting
+	if (!upgrade_checkIfCVExists('DefaultListSize')) {
+		$query = 'INSERT INTO '.sql_table('config')." VALUES ('DefaultListSize',10)";
+		upgrade_query('Creating DefaultListSize config value',$query);	
+	}
 
 	// 3.3 -> 3.4
 	// update database version
