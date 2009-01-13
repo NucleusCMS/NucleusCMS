@@ -4,6 +4,11 @@ function upgrade_do34() {
 	if (upgrade_checkinstall(34))
 		return 'already installed';
 	
+	// Give user warning if they are running old version of PHP
+        if (phpversion() < '5') {
+                echo 'WARNING: You are running NucleusCMS on a older version of PHP. PHP4 support will be depreciated in the next release, please consider upgrade to PHP5!';
+        }
+
 	// lengthen tpartname column of nucleus_template
 	$query = "	ALTER TABLE `" . sql_table('template') . "`
 					MODIFY `tpartname` varchar(64) NOT NULL default '' ;";
