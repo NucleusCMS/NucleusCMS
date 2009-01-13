@@ -586,6 +586,7 @@ class BLOG {
 			if ($mode == 'day') {
 				$archivedate = date('Y-m-d',$current->itime);
 				$archive['day'] = date('d',$current->itime);
+				$data['day'] = date('d',$current->itime);
 			} else {
 				$archivedate = date('Y-m',$current->itime);
 			}

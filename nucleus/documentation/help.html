@@ -374,7 +374,12 @@ Exceptions: the <strong>admin-area</strong> is still available, and <strong><a h
 
 <div class="page"><a name="defaultlistsize"></a>
 <h1>Default List Size</h1>
-<p>Using this option, you can set the default size of lists in the Admin Area. Value should be an integer. 10 is a good default for most users.</p>
+<p>(3.40) Using this option, you can set the default size of lists in the Admin Area. Value should be an integer. 10 is a good default for most users.</p>
+</div>
+
+<div class="page"><a name="debugvars"></a>
+<h1>Debug Vars</h1>
+<p>(3.40) Using this option, you can set whether unresolved Vars (SkinVars, TemplateVars, ItemVars) are shown on the blog. Default is <code>No</code>.</p>
 </div>
 
 <div class="page"><a name="templateitems"></a>
@@ -1487,6 +1492,12 @@ Shows a list of all blogs that are defined in your Nucles CMS.
 	<ul>
 		<li><strong>bnametype</strong>: whether the Blog Name (<code>name</code>) or the Short Blog Name (<code>shortname</code>) of the Blog is used. Default setting is the Blog name (<code>name</code>).</li>
 	</ul>
+	<ul>
+		<li><strong>orderby</strong>: (3.40) Attribute of the blog used for determinig the order in which the blogs are listed. Supported values are <code>number</code>, <code>name</code>, <code>shortname</code>, <code>description</code>. Default is <code>number</code>.</li>
+	</ul>
+	<ul>
+		<li><strong>direction</strong>: (3.40) Direction of the sorting, <code>asc</code> for ascending order, or <code>desc</code> for descending order. Default is <code>asc</code>.
+	</ul>
 </p>
 
 <h2>Skintypes</h2>
@@ -1501,6 +1512,7 @@ all
 &lt;%bloglist(default/index)%&gt;
 &lt;%bloglist(default/index,name)%&gt; 
 &lt;%bloglist(default/index,shortname)%&gt;
+&lt;%bloglist(default/index,name,name,asc)%&gt; 
 </pre>
 
 </div>
@@ -3200,7 +3212,7 @@ all
 	<li><strong>previtem</strong>: true if there is an older item available for the current weblog (item skintype)</li>
 	<li><strong>archivenextexists</strong>: true if there is a more recent archive available for the current weblog (archive skintype)</li>
 	<li><strong>archiveprevexists</strong>: true if there is an older archive available for the current weblog (archive skintype)</li>
-	<li><strong>skintype</strong>: checks if the current skin type is equal to <em>value</em> (index, search, item, archive, archivelist, ...)</li>
+	<li><strong>skintype</strong>: checks if the current skin type is equal to <em>value</em> (index, search, item, archive, archivelist, ...). For special skin parts, the skin type is the name of the special skin part.</li>
 	<li><strong>hasplugin</strong>: checks if the a plugin is installed, or if a plugin option has been set to a specific value
 		<ul>
 			<li><strong>hasplugin,<em>PluginName</em></strong>: checks if plugin is available</li>
@@ -3405,9 +3417,55 @@ all
 </div>
 
 
+<div class="page">
+<a name="skinvar-addlink"></a>
+<h1>Skinvar: addlink</h1>
 
+<p>
+Inserts a URL to the new item bookmarklet form. Only shown for members who have rights on the current blog.
+</p>
 
+<h2>Arguments</h2>
+<p>None</p>
 
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;a href="&lt;%addlink%&gt;" title="Add Item"&gt;Add Item&lt;/a&gt;
+</pre>
+
+</div>
+
+<div class="page">
+<a name="skinvar-addpopupcode"></a>
+<h1>Skinvar: addpopupcode</h1>
+
+<p>
+Inserts javascript code to open a bookmarklet in an popup window. 
+</p>
+
+<h2>Arguments</h2>
+<p>None</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%addpopupcode%&gt;
+</pre>
+
+</div>
 
 
 

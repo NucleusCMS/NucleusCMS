@@ -30,6 +30,7 @@
 	<li>
 		<strong>Nucleus v3.34 SVN (development version)</strong>
 		<ul>
+			<li>ADDED: Documentation, as needed, for changes below. (ftruscot).
 			<li>ADDED: BLOG::readLogFromList() and BLOG::getSqlItemList() to allow using the core item display mechanisms for customized lists of items. Will be used primarily by plugins. (ftruscot)</li>
 			<li>CHANGED: MEMBER::login() to add CustomLogin event. Provides hook for plugins to perform authentication from external sources. (ftruscot)</li>
 			<li>ADDED: Upgrade scripts for version 3.40. Lengthen nucleus_template.tpartname column to 64. Lengthen nucleus_template_desc.tdname to 64. (ftruscot)</li>
@@ -37,7 +38,7 @@
 			<li>FIXED: MySQL version check failure in install.php (admun)</li>
 			<li>FIXED: bugs in last fix of directory traversal vulnerability in Nucleus media manager. Fix code providedby kmorimatsu inserted by ftruscot.</li>
 			<li>FIXED: directory traversal vulnerability in Nucleus media manager. Fix code provided by kmorimatsu inserted by ftruscot.</li>
-			<li>FIXED: cuser field of non-member comments being blanked out intermittently<a href="http://forum.nucleuscms.org/viewtopic.php?t=18059">Old comments from field is gone.</a> Caused by registration with names longer than 16 characters. creataccount.php, ADMIN.php, ACTION.php (ftruscot)</li>
+			<li>FIXED: cuser field of non-member comments being blanked out intermittently<a href="http://forum.nucleuscms.org/viewtopic.php?t=18059">Old comments from field is gone.</a> Caused by registration with names longer than 16 characters. Enforce 16 character limit in createaccount.php, ADMIN.php, ACTION.php (ftruscot)</li>
 			<li>ADDED: Add delete permission check (katsumi/admun)<.li>
 			<li>ADDED: Add ATOM1.0 autodiscovery for default skin. (shizuki)</li>
 			<li>FIXED: Fix short open tag on skins/default/show_benchmark.inc. (shizuki)</li>
@@ -75,7 +76,7 @@
 			<li>FIXED: fix content type of bookmarklet.php file to text/html to conform with other pages (ftruscot)</li>
 			<li>ADDED: new event in createaccount.php called RegistrationFormExtraFields to allow fields from plugins onto registration form (ftruscot)</li>
 			<li>FIXED: CONF['Self'] fix (ehui)</li>
-			<li>ADDED: Add an link to the front end that allows to add an item in a bookmarklet popup window (two new skinvars addlink and addpopupcode needed) (kaigreve)</li>
+			<li>ADDED: Add a link to the front end that allows to add an item in a bookmarklet popup window (two new skinvars addlink and addpopupcode needed) (kaigreve)</li>
 			<li>ADDED: add a cancel button to the bookmarklet add and edit forms (kaigreve)</li>
 			<li>CHANGED: Move the submit button in the bookmarklet edit from to the end of the button bar (logical order) (kaigreve)</li>
 			<li>ADDED: Add the possibility to move a published item back to drafts (kaigreve)</li>

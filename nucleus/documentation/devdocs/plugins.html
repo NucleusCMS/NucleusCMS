@@ -1498,10 +1498,10 @@ your stuff
 	</tr>
 	<tr>
 		<td>RegistrationFormExtraFields</td>
-		<td>(v3.33) Called from createaccount.php after basic account fields, but before FormExtra event. This event can be used by plugins to add custom fields to the registration form. Plugins that subscribe to this event should also subscribe to PostRegister event to process the added fields. The parameters should be used to fit custom fields into existing format of registration form.</td>
+		<td>(v3.40) Called from createaccount.php after basic account fields, but before FormExtra event. This event can be used by plugins to add custom fields to the registration form. Plugins that subscribe to this event should also subscribe to PostRegister event to process the added fields. The parameters should be used to fit custom fields into existing format of registration form. Plugins should output the html code needed for their extra fields. For an example of using this event, see the NP_Profile plugin.</td>
 		<td><dl>
 			<dt class="ro">type</dt>
-			<dd>Type of registration form. Normally, <code>createaccount.php</code>.</dd>
+			<dd>String. Type of registration form. Normally, <code>createaccount.php</code>.</dd>
 			<dt class="ro">prelabel</dt>
 			<dd>HTML code or string that should be inserted <strong>before</strong> the field label.</dd>
 			<dt class="ro">postlabel</dt>
@@ -1510,6 +1510,60 @@ your stuff
 			<dd>HTML code or string that should be inserted <strong>before</strong> the input field.</dd>
 			<dt class="ro">postfield</dt>
 			<dd>HTML code or string that should be inserted <strong>after</strong> the input field.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>TemplateExtraFields</td>
+		<td>(v3.40) Called when templates are edited and updated from the admin area. Allows plugin developers to add fields to existing templates to encourage the use of the core template storage system to provide formatting for their output. It is the responsibility of the plugin authors to use the template fields they add and to provide the variables used in those fields. Plugins should also document their variables and provide for a default, either in the code or through a plugin option. <a href="http://forum.nucleuscms.org/viewtopic.php?p=87672#87672" title="Sample">Sample plugin using this event.</a></td>
+		<td><dl>
+			<dt class="ref">fields</dt>
+			<dd>Associative Array. Key should be name of the plugin, i.e. <code>NP_TemplateTest</code>, and value should be an associative array with keys designating the template field name, and values designating the label used for the field. Template field names should be lowercase and incorporate the plugin name to avoid duplication of template field names.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>PreArchiveListItem</td>
+		<td>(v3.40) Called right before the archive list is displayed. Allows plugin developers to add/modify template variables in the Archive List Item field of the template used for displaying archive lists. Plugins should document the variables added. </td>
+		<td><dl>
+			<dt class="ref">listitem</dt>
+			<dd>Associative Array. The key represents the template variable, i.e. <code>month</code>, and the value of the array element is a string representing the value of the template variable. To add a variable, simply add an element to this array with a key-value pair representing the new variable.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>PreCategoryListItem</td>
+		<td>(v3.40) Called right before the category list is displayed. Allows plugin developers to add/modify template variables in the Category List Item field of the template used for displaying category lists. Plugins should document the variables added. </td>
+		<td><dl>
+			<dt class="ref">listitem</dt>
+			<dd>Associative Array. The key represents the template variable, i.e. <code>catname</code>, and the value of the array element is a string representing the value of the template variable. To add a variable, simply add an element to this array with a key-value pair representing the new variable.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>PreBlogListItem</td>
+		<td>(v3.40) Called right before the blog list is displayed. Allows plugin developers to add/modify template variables in the Blog List Item field of the template used for displaying blog lists. Plugins should document the variables added. </td>
+		<td><dl>
+			<dt class="ref">listitem</dt>
+			<dd>Associative Array. The key represents the template variable, i.e. <code>blogname</code>, and the value of the array element is a string representing the value of the template variable. To add a variable, simply add an element to this array with a key-value pair representing the new variable.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>PreTemplateRead</td>
+		<td>(v3.40) Called right before a template is read and its parts returned. Allows plugin developers to change the name of the template being used. NP_MultiLanguage makes use of this event. </td>
+		<td><dl>
+			<dt class="ref">name</dt>
+			<dd>String containing the name of the template being called.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>CustomLogin</td>
+		<td>(v3.40) Called right before local (Nucleus) login. Allows plugin developers to customize the login process. This simplifies external authentication and permits using something beside the displayname, i.e. email address, to be used for the login name. </td>
+		<td><dl>
+			<dt class="ref">login</dt>
+			<dd>String containing the name entered by user in login field. If this is other than the Nucleus mname (display name), it should be mapped by the plugin, after a successful authentication, to a valid mname corresponding to the authenticated member. Otherwise the authentication will last only one page and no cookies will be set.</dd>
+			<dt class="ref">password</dt>
+			<dd>String containing the password entered by user in password field.</dd>
+			<dt class="ref">success</dt>
+			<dd>Integer indicating whether the login is successful. 1 means success, 0 means unsuccessful. 0 is the default. The plugin should set this.</dd>
+			<dt class="ref">allowlocal</dt>
+			<dd>Integer indicating whether local authentication should be tried after an unsuccessful authentication by your plugin. 1 means yes, 0 means no. 1 is the default.</dd>
 		</dl></td>
 	</tr>
 <!--

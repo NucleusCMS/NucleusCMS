@@ -52,7 +52,7 @@
 
 <div class="heading">
 SQL Table Reference
-<i>March 13, 2007</i>
+<i>January 15, 2009</i>
 </div>
 
 <h1>Introduction</h1>
@@ -65,7 +65,7 @@ SQL Table Reference
 This document contains information on the fields inside the Nucleus database tables.
 </p>
 
-<p class="note">The structure as presented here is for <strong>Nucleus v3.2</strong>.</p>
+<p class="note">The structure as presented here is for <strong>Nucleus v3.4</strong>.</p>
 
 <h1><a name="toc" id="toc"></a>Table Of Contents</h1>
 
@@ -271,7 +271,20 @@ This document contains information on the fields inside the Nucleus database tab
 	<td>tinyint(2)</td>
 	<td>'0'</td>
 	<td>Always include in search queries, even if the query is on another blog (1=true/0=false)</td>
-</tr></table>
+
+</tr><tr>
+	<td class="notnull">breqemail</td>
+	<td>tinyint(2)</td>
+	<td>'0'</td>
+	<td>Require non-members to supply an email address when adding comments (1=true/0=false)</td>
+	
+</tr><tr>
+	<td class="notnull">bfuturepost</td>
+	<td>tinyint(2)</td>
+	<td>'0'</td>
+	<td>Whether blog has future posts awaiting publishing (1=true/0=false)</td>
+</tr>
+</table>
 
 
 <a id="nucleus_category" name="nucleus_category"></a>
@@ -388,6 +401,12 @@ This document contains information on the fields inside the Nucleus database tab
 	<td>NULL</td>
 	<td>Category to which the item belongs</td>
 
+</tr><tr>
+	<td class="notnull">iposted</td>
+	<td>tinyint(2)</td>
+	<td>'1'</td>
+	<td>Is the item posted? 0 means it is awaiting publication on a future date.</td>
+
 </tr></table>
 
 
@@ -421,7 +440,13 @@ This document contains information on the fields inside the Nucleus database tab
 	<td>cmail</td>
 	<td>varchar(100)</td>
 	<td>NULL</td>
-	<td>E-mail address or URL (only used when comment was placed by a non-member. For members, see <code>cmember</code>)</td>
+	<td>URL or, pre-3.3, E-mail address (only used when comment was placed by a non-member. For members, see <code>cmember</code>)</td>
+
+</tr><tr>
+	<td>cemail</td>
+	<td>varchar(100)</td>
+	<td>NULL</td>
+	<td>E-mail address (only used when comment was placed by a non-member. For members, see <code>cmember</code>)</td>
 
 </tr><tr>
 	<td class="foreign"><a href="#nucleus_member">cmember</a></td>
@@ -825,7 +850,7 @@ This document contains information on the fields inside the Nucleus database tab
 
 </tr><tr>
 	<td class="notnull primary">tpartname</td>
-	<td>varchar(20)</td>
+	<td>varchar(64)</td>
 	<td>''</td>
 	<td>
 		Name of template part
@@ -833,26 +858,38 @@ This document contains information on the fields inside the Nucleus database tab
 			<li>ARCHIVELIST_FOOTER</li>
 			<li>ARCHIVELIST_HEADER</li>
 			<li>ARCHIVELIST_LISTITEM</li>
+			<li>BLOGLIST_FOOTER</li>
+			<li>BLOGLIST_HEADER</li>
+			<li>BLOGLIST_LISTITEM</li>
 			<li>CATLIST_FOOTER</li>
 			<li>CATLIST_HEADER</li>
 			<li>CATLIST_LISTITEM</li>
+			<li>COMMENTS_AUTH</li>
 			<li>COMMENTS_BODY</li>
+			<li>COMMENTS_CONTINUED</li>
+			<li>COMMENTS_FOOTER</li>
+			<li>COMMENTS_HEADER</li>
 			<li>COMMENTS_MANY</li>
 			<li>COMMENTS_NONE</li>
 			<li>COMMENTS_ONE</li>
 			<li>COMMENTS_TOOMUCH</li>
+			<li>DATE_FOOTER</li>
 			<li>DATE_HEADER</li>
 			<li>EDITLINK</li>
 			<li>FORMAT_DATE</li>
 			<li>FORMAT_TIME</li>
 			<li>IMAGE_CODE</li>
+			<li>ITEM_FOOTER</li>
+			<li>ITEM_HEADER</li>
 			<li>ITEM</li>
 			<li>LOCALE</li>
 			<li>MEDIA_CODE</li>
 			<li>MORELINK</li>
+			<li>NEW</li>
 			<li>POPUP_CODE</li>
 			<li>SEARCH_HIGHLIGHT</li>
 			<li>SEARCH_NOTHINGFOUND</li>
+			<li>other template fields as added by plugins using TemplateExtraFields event</li>
 		</ul>
 	</td>
 
@@ -880,7 +917,7 @@ This document contains information on the fields inside the Nucleus database tab
 
 </tr><tr>
 	<td class="notnull unique">tdname</td>
-	<td>varchar(20)</td>
+	<td>varchar(64)</td>
 	<td>''</td>
 	<td>Name of template</td>
 
@@ -1085,6 +1122,14 @@ This document contains information on the fields inside the Nucleus database tab
 	<td>DatabaseVersion</td>
 	<td>250</td>
 	<td>Last Nucleus version for which the database structure has been updated (introduced in Nucleus v2.5)</td>
+</tr><tr>
+	<td>DebugVars</td>
+	<td>0</td>
+	<td>Whether unresolved variables should be displayed in skins (introduced in Nucleus v3.4)</td>
+</tr><tr>
+	<td>DefaultListSize</td>
+	<td>10</td>
+	<td>Set the size of lists in the admin area (introduced in Nucleus v3.4)</td>
 </tr></table
 
 <a id="nucleus_tickets" name="nucleus_tickets"></a>
