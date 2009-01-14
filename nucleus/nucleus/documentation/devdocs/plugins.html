@@ -30,7 +30,7 @@
 
 <div class="heading">
 Plugin API
-<i>June 16, 2007</i>
+<i>January 15, 2008</i>
 </div>
 
 <div class="note"><strong>Notes:</strong>
@@ -66,8 +66,8 @@ This document contains information on how you can write your own Nucleus plugins
 	<li><a href="#admin">Providing an admin area</a></li>
 	<li><a href="#help">Providing a helppage</a></li>
 	<li><a href="#dependency">Plugin Dependency Check</a></li>
-<!--	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>
-	<li><a href="#"></a></li>
+	<li><a href="#skinvar-formatting">Formatting Output of SkinVars</a></li>
+<!--	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>	
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>-->
@@ -1911,14 +1911,22 @@ class NP_HelloWorld extends NucleusPlugin {
 
 <h2>Your own tables</h2>
 
-<p>If your plugin needs database tables of it's own, you should create then in the <code>install</code> method and remove them in the <code>unInstall</code> method.</p>
+<p>If your plugin needs database tables of it's own, you should create them in the <code>install</code> method and remove them in the <code>unInstall</code> method.</p>
 
 <p>Some pointers</p>
 <ul>
 	<li>Consider using a table name like <code>nucleus_plug_<i>plugname</i></code> to avoid conflicts with other plugins. Generate them through <code>sql_table('plug_plugname')</code> to make it work with custom prefixes</li>
-	<li>You don't need to make a database connection yourself. You can execute queries using the PHP command <code>mysql_query()</code></li>
+	<li>You don't need to make a database connection yourself. You can execute queries using the Nucleus function <code>sql_query()</code> which is a wrapper for the PHP command <code>mysql_query()</code></li>
 	<li>If you do make a database connection yourself, make sure to restore the connection with the Nucleus database afterwards. You can do this by calling <code>sql_connect()</code> at the end of your function. It might also be good to do this from the constructor, to avoid reconnecting constantly. You could then save your link identifier in <code>$this->db</code> and pass that along with every query.</li>
-	<li>Also redefine the <code>getTableList()</code> method to make sure your table gets backupped when using the backup function.</li>
+	<li>Also redefine the <code>getTableList()</code> method to make sure your table gets backed up when using the backup function.</li>
+	<li>It's a good idea to make the removal of your database tables optional. This will allow your users to temporarily remove your plugin without losing the data. For instance, you may need to make changes to options or database tables requiring that the install() method be run to execute code neccessary to modify existing tables or options. This will require that your users uninstall the old version and then install the new version and losing their data in the process. To make the deletion of your tables optional, you can add an option like this in install():
+	<pre class="example"><code>$this->createOption('del_uninstall', 'Delete NP_MyPlugin data tables on uninstall?', 'yesno','no');</code></pre>
+	and this snippet in uninstall():
+	<pre class="example"><code>if ($this->getOption('del_uninstall') == 'yes')	{
+	foreach ($this->getTableList() as $table) {
+		sql_query("DROP TABLE $table");
+	}
+}</code></pre></li>
 </ul>
 
 
@@ -1929,7 +1937,7 @@ class NP_HelloWorld extends NucleusPlugin {
 
 <h2>Basics</h2>
 
-<p>To provide an admin area, you'll need take these steps:</p>
+<p>To provide an admin area, you'll need to take these steps:</p>
 
 <ol>
   <li>Create a subdirectory of the plugins directory, and name it <strong>pluginname</strong> if your plugin is <code>NP_PluginName</code>. Note that the name should be <strong>lowercase</strong>!</li>
@@ -1978,6 +1986,18 @@ class NP_HelloWorld extends NucleusPlugin {
 	<pre><code>function hasAdminArea()
 {
 	return 1;
+}</code></pre>
+  </li>
+  <li> Optional. Make the <code>QuickMenu</code> entry optional, and restrict who sees it. The following assumes that an option, of type <code>yesno</code> and called <code>quickmenu</code>, exists in install(). It also will restrict viewing of the <code>QuickMenu</code> entry to super-admins and to blog-admins.
+	<pre class="example"><code>function event_QuickMenu(&$data) {
+    // only show when option enabled
+    if ($this->getOption('quickmenu') != 'yes') return;
+    global $member;
+    if (!$member->isAdmin() && !count($member->getAdminBlogs())) return;
+    array_push($data['options'],
+      	array('title' => 'PluginName',
+       	'url' => $this->getAdminURL(),
+       	'tooltip' => 'Administer NP_PluginName'));
 }</code></pre>
   </li>
 </ol>
@@ -2050,22 +2070,282 @@ plugin that requires another plugin to function. It is particularly useful for a
 
 <h2>How to write a plugin that utilize this function</h2>
 
-<p>Let start from a real world example:</p>
+<p>Let's start from a real world example:</p>
 
-<p>NP_PageLinkList depends on NP_BlogWithOffset to function, so we want to make sure if a user install NP_PageLinkList whithout first install
+<p>NP_PageLinkList depends on NP_BlogWithOffset to function, so we want to make sure a user cannot install NP_PageLinkList whithout first installing
 NP_BlogWithOffset. With this API, Nucleus offers a way for a plugin to detect any missing dependency before it is installed.</p>
 
 <p>In this case, we want to code into NP_PageLinkList to mark that it requires NP_BlogWithOffset. When the plugin is installed, the core calls a
 function in the plugin called <code>getPluginDep()</code>. This function returns a list of plugin it requires, and the core will check against all installed plugins and
 refuse to install the plugin if a dependency is missing.</p>
 
-<p>All we have to do is added this function to NP_PageLinkList:</p>
+<p>All we have to do is add this function to NP_PageLinkList:</p>
 
 <pre><code>function getPluginDep() {
 	 return array('NP_BlogWithOffset');
 }</code></pre>
 
-<p>The plugin dependency check also prevents plugins from being uninstalled if other plugins have a dependancy on it.</p>
+<p>The plugin dependency check also prevent a plugin from being uninstalled if other plugins have a dependancy on it.</p>
+
+<h1>Formatting your SkinVar output <a name="skinvar-formatting" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Some great plugin ideas never receive general use simply because the output generated by the <code>doSkinVar()</code> method is not flexible enough to meet the needs of 
+different skins or URL schemes. Nucleus provides some tools to help you generalize your output in ways that allow each user to fit it to his or her needs.</p>
+
+<p>To create links to Nucleus pages, such as blogs, categories, items, member details, action.php, admin area, or the plugin admin page, use the built in Nucleus functions 
+and global variables described below:</p>
+
+<table summary="An overview of functions and variables useful in creating links to Nucleus pages">
+	<caption>Functions and variables useful in creating links to Nucleus pages</caption>
+	<tr>
+		<th>Name</th><th>What</th><th>Parameters</th><th>Description</th>
+	</tr>
+	<tr>
+		<td><code>$CONF['AdminURL']</code></td>
+		<td>Global variable</td>
+		<td>None</td>
+		<td>Full URL to the Nucleus Admin Area</td>
+	</tr>
+	<tr>
+		<td><code>$CONF['PluginURL']</code></td>
+		<td>Global variable</td>
+		<td>None</td>
+		<td>Full URL to the Nucleus plugins directory. Use it to link to a plugin's admin page, like this <code>$CONF['PluginURL'].'pluginname/'</code></td>
+	</tr>
+	<tr>
+		<td><code>$CONF['ActionURL']</code></td>
+		<td>Global variable</td>
+		<td>None</td>
+		<td>Full URL to the Nucleus action.php file</td>
+	</tr>
+	<tr>
+		<td><code>$CONF['MediaURL']</code></td>
+		<td>Global variable</td>
+		<td>None</td>
+		<td>Full URL to the Nucleus media folder</td>
+	</tr>
+	<tr>
+		<td><code>$CONF['SkinsURL']</code></td>
+		<td>Global variable</td>
+		<td>None</td>
+		<td>Full URL to the Nucleus skins folder</td>
+	</tr>
+	<tr>
+		<td><code>$CONF['IndexURL']</code></td>
+		<td>Global variable</td>
+		<td>None</td>
+		<td>Full URL to the main Nucleus directory.</td>
+	</tr>
+	<tr>
+		<td><code>$DIR_NUCLEUS</code></td>
+		<td>Global variable</td>
+		<td>None</td>
+		<td>Full system path to the Nucleus Admin folder</td>
+	</tr>
+	<tr>
+		<td><code>$DIR_SKINS</code></td>
+		<td>Global variable</td>
+		<td>None</td>
+		<td>Full system path to the Nucleus skins folder</td>
+	</tr>
+	<tr>
+		<td><code>$DIR_MEDIA</code></td>
+		<td>Global variable</td>
+		<td>None</td>
+		<td>Full system path to the Nucleus media folder</td>
+	</tr>
+	<tr>
+		<td><code>$DIR_PLUGINS</code></td>
+		<td>Global variable</td>
+		<td>None</td>
+		<td>Full system path to the Nucleus plugins folder</td>
+	</tr>
+	<tr>
+		<td><code>$DIR_LANG</code></td>
+		<td>Global variable</td>
+		<td>None</td>
+		<td>Full system path to the Nucleus language folder</td>
+	</tr>
+	<tr>
+		<td><code>$DIR_LIBS</code></td>
+		<td>Global variable</td>
+		<td>None</td>
+		<td>Full system path to the Nucleus libs folder</td>
+	</tr>
+	<tr>
+		<td><code>getAdminURL()</code></td>
+		<td>method, PLUGIN class</td>
+		<td>None</td>
+		<td>Returns the URL of where the admin area of the plugin is located (if there is no such admin area, this information is invalid)</td>
+	</tr>
+	<tr>
+		<td><code>getDirectory()</code></td>
+		<td>method, PLUGIN class</td>
+		<td>None</td>
+		<td>Returns the full system path where the extra files for the plugin are stored (if there are no such files, this information makes no sense). The result is something like ".../nucleus/plugins/plugname/"</td>
+	</tr>
+	<tr>
+		<td><code>createItemLink($itemid, $extra = '')</code></td>
+		<td>Global function</td>
+		<td><code>$itemid</code> Integer. ID of item being linked.<br />
+			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
+		</td>
+		<td>Returns the full URL, in scheme chosen by user, of item indicated by <code>$itemid</code></td>
+	</tr>
+	<tr>
+		<td><code>createMemberLink($memberid, $extra = '')</code></td>
+		<td>Global function</td>
+		<td><code>$memberid</code> Integer. ID of member being linked.<br />
+			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
+		</td>
+		<td>Returns the full URL, in scheme chosen by user, of member page indicated by <code>$memberid</code></td>
+	</tr>
+	<tr>
+		<td><code>createCategoryLink($catid, $extra = '')</code></td>
+		<td>Global function</td>
+		<td><code>$catid</code> Integer. ID of category being linked.<br />
+			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
+		</td>
+		<td>Returns the full URL, in scheme chosen by user, of category index page indicated by <code>$catid</code></td>
+	</tr>
+	<tr>
+		<td><code>createArchiveListLink($blogid = '', $extra = '')</code></td>
+		<td>Global function</td>
+		<td><code>$blogid</code> Integer. ID of blog whose archivelist is being linked.<br />
+			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
+		</td>
+		<td>Returns the full URL, in scheme chosen by user, of archivelist page indicated by <code>$blogid</code></td>
+	</tr>
+	<tr>
+		<td><code>createArchiveLink($blogid, $archive, $extra = '')</code></td>
+		<td>Global function</td>
+		<td><code>$blogid</code> Integer. ID of blog whose archive is being linked.<br />
+			<code>$archive</code> String. Valid archive parameter for date (year-month) being linked.<br />
+			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
+		</td>
+		<td>Returns the full URL, in scheme chosen by user, of archive page indicated by <code>$blogid</code> and <code>$archive</code></td>
+	</tr>
+	<tr>
+		<td><code>createBlogidLink($blogid, $extra = '')</code></td>
+		<td>Global function</td>
+		<td><code>$blogid</code> Integer. ID of blog being linked.<br />
+			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
+		</td>
+		<td>Returns the full URL, in scheme chosen by user, of main index page indicated by <code>$blogid</code></td>
+	</tr>
+</table>
+
+<p>Using a template to format your output is always a good idea. You may want to output an unordered list, but another user may want the same data 
+separated by a simple character, or other unique format. Nucleus provides two ways to create and store the template data. In both 
+examples below, we will be creating a template with 2 variables, <code>&lt;%foo%&gt;</code> and <code>&lt;%bar%&gt;</code>.</p>
+
+<ol>
+	<li><strong>Using Plugin Options</strong>. This method may be the simplest and will work on all versions 3.2 and higher. It's 
+	big disadvantage is that plugin options are deleted during an uninstall, so your users may lose customizations during an upgrade of 
+	your plugin. Simply create an option in the <code>install()</code> method like the following:
+	<pre class="example"><code>$this->createOption('my_template', 
+		'Template used to format output of plugin.', 
+		'textarea', 
+		'&lt;li&gt;&lt;%foo%&gt; loves &lt;%bar%&gt;&lt;/li&gt;');</code></pre>
+	Then in the <code>doSkinVar()</code> method, determine the values of <code>foo</code> and <code>bar</code> and fill the template like this:
+	<pre class="example"><code>$mytemplate = $this->getOption('my_template');
+$couples = array(
+			array(
+				'foo'=>'Ricky',
+				'bar'=>'Lucy'),
+			array(
+				'foo'=>'Sid',
+				'bar'=>'Nancy'),
+			array(
+				'foo'=>'Mickey',
+				'bar'=>'Minnie')
+			);
+foreach ($couples as $values) {
+	echo TEMPLATE::fill($mytemplate,$values);
+}</code></pre>
+	Now the skinvar for our plugin <code>&lt;%TemplateTest%&gt;</code> will output three lines like this:
+	<pre class="example"><code>&lt;li&gt;Ricky loves Lucy&lt;/li&gt;
+&lt;li&gt;Sid loves Nancy&lt;/li&gt;
+&lt;li&gt;Mickey loves Minnie&lt;/li&gt;</code></pre>
+	</li>
+	
+	<li><strong>Using Nucleus Core Template System</strong>. This method will only work with versions 3.4 and higher. It has the advantage of 
+	being using the database-stored template system and can be exported like other template fields. For a full sample plugin using this method, 
+	see this <a href="http://forum.nucleuscms.org/viewtopic.php?p=87672#87672" title="Sample">thread from the support forum</a>. A summary is given here. 
+	First, create the option in <code>install()</code> as in method 1, but now we will use it as a default.
+	<pre class="example"><code>$this->createOption('my_template', 
+		'Template used to format output of plugin.', 
+		'textarea', 
+		'&lt;li&gt;&lt;%foo%&gt; loves &lt;%bar%&gt;&lt;/li&gt;');</code></pre>
+	Then, subscribe to the <code>TemplateExtraFields</code> event like this:
+	<pre class="example"><code>function getEventList() { return array('TemplateExtraFields'); }</code></pre>
+	Then, create a <code>event_TemplateExtraFields</code> method in your plugin, like this:
+	<pre class="example"><code>function event_TemplateExtraFields(&$data) {
+    /* Add an element in the $data['fields'] array using your plugin name as the key 
+	and an associative array containing the field name and field label*/
+    /* note that your field names should be lowercase and include the name 
+	of your template as shown below. This will ensure that all template field names are unique. */
+    $data['fields']['NP_TemplateTest'] = array(
+        'templatetest_body'=>'TemplateTest Body'
+    );
+}</code></pre>
+	Then, in the <code>doSkinVar()</code> method, you need to retrieve the template and fill it. Note the skinvar now needs to take 
+	the template name as a parameter.
+	<pre class="example"><code>function doSkinVar($skinType,$template = '') {
+	global $blog, $CONF, $manager,$member;
+
+	$template =& $manager->getTemplate($template);
+	if (trim($template['templatetest_body']) == '')
+		$template['templatetest_body'] = $this->getOption('my_template');
+		
+	$couples = array(
+			array(
+				'foo'=>'Ricky',
+				'bar'=>'Lucy'),
+			array(
+				'foo'=>'Sid',
+				'bar'=>'Nancy'),
+			array(
+				'foo'=>'Mickey',
+				'bar'=>'Minnie')
+			);
+	foreach ($couples as $values) {
+		echo TEMPLATE::fill($template['templatetest_body'],$values);
+	}	
+}</code></pre>
+	Here, the user needs to go to the template he wants to use and enter the formatting he desires into the TemplateTest Body field. 
+	For our purposes, we are using the default/index template. He may enter something like this:
+	<pre class="example"><code>&lt;li&gt;&lt;%foo%&gt; loves &lt;%bar%&gt;!!!&lt;/li&gt;</code></pre>
+	And using a SkinVar like <code>&lt;%TemplateTest(default/index)%&gt;</code> will output this:
+	<pre class="example"><code>&lt;li&gt;Ricky loves Lucy!!!&lt;/li&gt;
+&lt;li&gt;Sid loves Nancy!!!&lt;/li&gt;
+&lt;li&gt;Mickey loves Minnie!!!&lt;/li&gt;</code></pre>
+	</li>
+	
+	<li><strong>Formatting Items Using Regular Template</strong>. This applies only to versions 3.40 and higher and for 
+	plugins which output items. It has the advantage of using the existing Item fields in the core template system, 
+	just like the <code>&lt;%blog%&gt;</code> SkinVar does. This requires the use of a method in the BLOG class called 
+	<code>readLogFromList()</code> and requires that you input an array of itemids and a template name. If you need to 
+	add variables to the template, you can do so using the <code>doTemplateVar()</code> method. Here is an example of 
+	a <code>doSkinVar()</code> method that uses this technique. It takes 4 itemids as parameters, then outputs those four 
+	items using the default/index template
+	<pre class="example"><code>function doSkinVar($skinType,$item1 = 0,$item2 = 0,$item3 = 0,$item4 = 0) {
+	global $blog;
+	$highlight = '';
+	$template = 'default/index';
+	$item_array = array($item1,$item2,$item3,$item4);
+	$blog->readLogFromList($item_array, $template);
+}</code></pre>
+	
+	</li>
+</ol>
+
+<!--
+<pre class="example"><code></code></pre>
+<pre class="example"><code></code></pre>
+<pre class="example"><code></code></pre>
+<pre class="example"><code></code></pre>
+-->
 
 </body>
 </html>

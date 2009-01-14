@@ -1165,7 +1165,7 @@ class BLOG {
 	 * @returns int
 	 *		amount of items shown
 	 */
-	function readLogFromList($itemarray, $template, $highlight = 0, $comments = 1, $dateheads = 1) {
+	function readLogFromList($itemarray, $template, $highlight = '', $comments = 1, $dateheads = 1) {
 
 		$query = $this->getSqlItemList($itemarray);
 
