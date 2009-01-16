@@ -35,7 +35,8 @@ class MEMBER {
 	var $admin = 0;			// (either 0 or 1)
 	var $canlogin = 0;		// (either 0 or 1)
 	var $notes;
-
+	var $autosave = 1;		// if the member use the autosave draft function
+	
 	/**
 	 * Constructor for a member object
 	 */	 	
@@ -142,6 +143,7 @@ class MEMBER {
 		$this->setCanLogin($obj->mcanlogin);
 		$this->setNotes($obj->mnotes);
 		$this->setLanguage($obj->deflang);
+		$this->setAutosave($obj->mautosave);
 
 		return mysql_num_rows($res);
 	}
@@ -428,7 +430,8 @@ class MEMBER {
 			   . "     madmin=" . $this->isAdmin() . ","
 			   . "     mnotes='" . addslashes($this->getNotes()) . "',"
 			   . "     mcanlogin=" . $this->canLogin() . ","
-			   . "	   deflang='" . addslashes($this->getLanguage()) . "'"
+			   . "	   deflang='" . addslashes($this->getLanguage()) . "',"
+			   . "	   mautosave=" . addslashes($this->getAutosave()) . ""			   
 			   . " WHERE mnumber=" . $this->getID();
 		sql_query($query);
 	}
@@ -529,6 +532,14 @@ class MEMBER {
 
 	function setNotes($val) {
 		$this->notes = $val;
+	}
+	
+	function getAutosave() {
+		return $this->autosave;
+	}
+
+	function setAutosave($val) {
+		$this->autosave = $val;
 	}
 
 	function getID() {

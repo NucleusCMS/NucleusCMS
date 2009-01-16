@@ -32,11 +32,14 @@ function upgrade_do34() {
 		$query = 'INSERT INTO '.sql_table('config')." VALUES ('DefaultListSize',10)";
 		upgrade_query('Creating DefaultListSize config value',$query);	
 	}
+	
+	// changing the member table
+    $query = ' ALTER TABLE ' . sql_table('member') . ' ADD mautosave TINYINT(2) DEFAULT 1';
+	upgrade_query('Adding a new row for the autosave member option', $query);
 
 	// 3.3 -> 3.4
 	// update database version
 	update_version('340');
-
 	
 }
 

@@ -1983,6 +1983,10 @@ class ADMIN {
 
 			</td>
 		</tr>
+		<tr>
+			<td><?php echo _MEMBERS_USEAUTOSAVE?> <?php help('autosave'); ?></td>
+			<td><?php $this->input_yesno('autosave', $mem->getAutosave(), 87); ?></td>
+		</tr>
 		<?php
 			// plugin options
 			$this->_insertPluginOptions('member',$memberid);
@@ -2095,6 +2099,8 @@ class ADMIN {
 			$mem->setCanLogin($canlogin);
 		}
 
+		$autosave = postVar ('autosave'); 
+		$mem->setAutosave($autosave);
 
 		$mem->write();
 
