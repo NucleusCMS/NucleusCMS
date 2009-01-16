@@ -76,7 +76,10 @@ class PAGEFACTORY extends BaseActions {
 			'pluginextras',
 			'itemoptions',
 			'extrahead',
-			'ticket'
+			'ticket',
+			'autosave',
+			'autosaveinfo',
+			'ifautosave'
 		);
 
 		// TODO: maybe add 'skin' later on?
@@ -207,6 +210,11 @@ class PAGEFACTORY extends BaseActions {
 	function parse_ifitemproperty($name,$value=1) {
 		$this->_addIfCondition(($this->variables[$name] == $value));
 	}
+	
+	function parse_ifautosave($name,$value=1) {
+		global $member;
+		$this->_addIfCondition($member->getAutosave() == $value);
+	}
 
 	function parse_helplink($topic) {
 		help($topic);
@@ -229,6 +237,24 @@ class PAGEFACTORY extends BaseActions {
 		$authorid = ($this->method == 'edit') ? $this->variables['authorid'] : '';
 		$this->blog->insertJavaScriptInfo($authorid);
 	}
+	
+	function parse_autosave() {
+		global $member;
+		if ($member->getAutosave()) {
+			echo '<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>';
+		}
+	}
+	
+	function parse_autosaveinfo() {
+		global $member;
+		if ($member->getAutosave()) {
+			echo _AUTOSAVEDRAFT_NOTYETSAVED;
+		}
+		else {
+			echo _AUTOSAVEDRAFT_DISABLED;
+		}
+	}
+	
 
 	// on bookmarklets only: insert extra html header information (by plugins)
 	function parse_extrahead() {

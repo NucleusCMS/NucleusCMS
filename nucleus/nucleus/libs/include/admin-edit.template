@@ -2,7 +2,7 @@
 
 <%init%>
 <script type="text/javascript" src="javascript/numbercheck.js"></script>
-<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
+<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 
 <form id="editform" method="post" action="index.php">
 <div>
@@ -16,7 +16,7 @@
 	<th colspan="2"><%text(_EDIT_ITEM)%></th>
 </tr><tr>
 	<td><%text(_AUTOSAVEDRAFT)%></td>
-	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+	<td><span id="info"><%autosaveinfo%></span></td>
 </tr><tr>
 	<td><%text(_EDIT_ORIG_AUTHOR)%></td>
 	<td><%contents(author)%></td>
@@ -145,8 +145,8 @@
 		<td>
 			<input tabindex="60" type="submit" value="<%text(_EDIT_SUBMIT)%>" 
 				onclick="return checkSubmit();" />
-			<input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
-				onclick="autoSaveDraft();" />
+			<%ifautosave()%><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
+				onclick="autoSaveDraft();" /><%endif%>
 		</td>
 	
 </tr></table>
@@ -154,7 +154,7 @@
 </div>
 </form>
 
-<script type="text/javascript">
+<%ifautosave()%><script type="text/javascript">
 	var xmlhttprequest = new Array();
 	xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
 	xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
@@ -165,4 +165,4 @@
 	var goalurl = '../action.php'; // The PHP file where the content must be posted to
 	var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
 	var formtype = 'edit'; // Add or edit form
-</script>	
+</script><%endif%>

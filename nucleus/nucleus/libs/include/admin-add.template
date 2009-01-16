@@ -2,7 +2,7 @@
 
 <%init%>
 <script type="text/javascript" src="javascript/numbercheck.js"></script>
-<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
+<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 
 <form id="addform" method="post" action="index.php" >
 
@@ -18,7 +18,7 @@
 		<th colspan="2"><%text(_ADD_CREATENEW)%></th>
 	</tr><tr>
 		<td><%text(_AUTOSAVEDRAFT)%></td>
-		<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+		<td><span id="info"><%autosaveinfo%></span></td>
 	</tr><tr>
 		<td><%text(_ADD_TITLE)%></td>
 		<td><input 
@@ -117,15 +117,17 @@
 		<td>
 			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 
 				onclick="return checkSubmit();" />
+			<%ifautosave()%>
 			<input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
 				onclick="autoSaveDraft();" />
+			<%endif%>
 		</td>
 	</tr>
 </table>
 
 </div>
 </form>
-
+<%ifautosave()%>
 <script type="text/javascript">
 	var xmlhttprequest = new Array();
 	xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
@@ -137,4 +139,5 @@
 	var goalurl = '../action.php'; // The PHP file where the content must be posted to
 	var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
 	var formtype = 'add'; // Add or edit form
-</script>	
+</script>
+<%endif%>

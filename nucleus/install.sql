@@ -152,6 +152,7 @@ CREATE TABLE `nucleus_member` (
   `mcanlogin` tinyint(2) NOT NULL default '1',
   `mcookiekey` varchar(40) default NULL,
   `deflang` varchar(20) NOT NULL default '',
+  `mautosave` tinyint(2) NOT NULL default '1',
   PRIMARY KEY  (`mnumber`),
   UNIQUE KEY `mname` (`mname`),
   UNIQUE KEY `mnumber` (`mnumber`)
