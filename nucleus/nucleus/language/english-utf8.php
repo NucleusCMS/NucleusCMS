@@ -22,7 +22,6 @@
 
 // START changed/added after 3.33 START
 define('_MEMBERS_USEAUTOSAVE',						'Use the Autosave function?');
-define('_AUTOSAVEDRAFT_DISABLED',					'The Autosave function is disabled');
 // END changed/added after 3.33 END
 
 // START merge UTF-8 and EUC-JP

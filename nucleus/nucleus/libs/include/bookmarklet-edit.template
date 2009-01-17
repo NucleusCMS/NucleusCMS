@@ -45,10 +45,10 @@
 
 			<div id="body" class="contentblock">
 				<table>
-				<tr>
+				<%ifautosave()%><tr>
 				<td><%text(_AUTOSAVEDRAFT)%></td>
-				<td><span id="info"><%autosaveinfo%></span></td>
-				</tr>
+				<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+				</tr><%endif%>
 				<tr>
 				<td><%text(_ADD_TITLE)%></td>
 				<td><input 

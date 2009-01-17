@@ -238,24 +238,6 @@ class PAGEFACTORY extends BaseActions {
 		$this->blog->insertJavaScriptInfo($authorid);
 	}
 	
-	function parse_autosave() {
-		global $member;
-		if ($member->getAutosave()) {
-			echo '<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>';
-		}
-	}
-	
-	function parse_autosaveinfo() {
-		global $member;
-		if ($member->getAutosave()) {
-			echo _AUTOSAVEDRAFT_NOTYETSAVED;
-		}
-		else {
-			echo _AUTOSAVEDRAFT_DISABLED;
-		}
-	}
-	
-
 	// on bookmarklets only: insert extra html header information (by plugins)
 	function parse_extrahead() {
 		global $manager;
