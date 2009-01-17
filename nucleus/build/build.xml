@@ -8,7 +8,7 @@
 
 <target name="init">
 
-    <property name="version" value="3.2" />
+    <property name="version" value="3.40RC" />
     
     <property name="src.home" value=".." />
     <property name="build.home" value="." />    
@@ -107,6 +107,7 @@
     	<fileset dir="${upgrade.home}/nucleus/language">
     		<include name="*.*" />
     		<exclude name="english.php" />
+    		<exclude name="english-utf8.php" />
     		<exclude name="index.html" />
     	</fileset>
     </delete>    
@@ -121,6 +122,9 @@
     		<!-- DO include NP_SkinFiles in the upgrade -->
     		<exclude name="NP_SkinFiles.php" />
     		<exclude name="skinfiles/*.*" />
+    		<!-- DO include NP_Ping in the upgrade -->
+    		<exclude name="NP_Ping.php" />
+    		<exclude name="ping/*.*" />
     	</fileset>
     </delete>    
     
@@ -129,6 +133,13 @@
     
     <!-- Copy necessary files in root -->
     <copy file="${src.home}/action.php" todir="${upgrade.home}" preservelastmodified="yes" />
+	<copy file="${src.home}/atom.php" todir="${upgrade.home}" preservelastmodified="yes" />
+	<copy file="${src.home}/createaccount.html" todir="${upgrade.home}" preservelastmodified="yes" />
+	<copy file="${src.home}/createaccount.php" todir="${upgrade.home}" preservelastmodified="yes" />
+	<copy file="${src.home}/readme.html" todir="${upgrade.home}" preservelastmodified="yes" />
+	<copy file="${src.home}/robots.txt" todir="${upgrade.home}" preservelastmodified="yes" />
+	<copy file="${src.home}/rsd.php" todir="${upgrade.home}" preservelastmodified="yes" />
+	<copy file="${src.home}/xml-rss2.php" todir="${upgrade.home}" preservelastmodified="yes" />
 
 	<zip zipfile="${upgrade.zip}"
 		basedir="${tempdir}"
@@ -193,8 +204,5 @@
 <target name="cleanapi" depends="init">
     <delete dir="${apidocs.home}"/>
 </target>
-
-
-
 
 </project>
