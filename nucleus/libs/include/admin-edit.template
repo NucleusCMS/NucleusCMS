@@ -14,10 +14,12 @@
 
 <table><tr>
 	<th colspan="2"><%text(_EDIT_ITEM)%></th>
-</tr><tr>
+</tr>
+<%ifautosave()%><tr>
 	<td><%text(_AUTOSAVEDRAFT)%></td>
-	<td><span id="info"><%autosaveinfo%></span></td>
-</tr><tr>
+	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+</tr><%endif%>
+<tr>
 	<td><%text(_EDIT_ORIG_AUTHOR)%></td>
 	<td><%contents(author)%></td>
 </tr><tr>
