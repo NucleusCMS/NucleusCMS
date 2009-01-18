@@ -158,7 +158,7 @@ CREATE TABLE `nucleus_member` (
   UNIQUE KEY `mnumber` (`mnumber`)
 ) TYPE=MyISAM;
 
-INSERT INTO `nucleus_member` VALUES (1, 'example', 'example', '1a79a4d60de6718e8e5b326e338ae533', 'example@example.org', 'http://localhost:8080/nucleus/', '', 1, 1, 'd767aefc60415859570d64c649257f19', '');
+INSERT INTO `nucleus_member` VALUES (1, 'example', 'example', '1a79a4d60de6718e8e5b326e338ae533', 'example@example.org', 'http://localhost:8080/nucleus/', '', 1, 1, 'd767aefc60415859570d64c649257f19', '', 1);
 
 CREATE TABLE `nucleus_plugin` (
   `pid` int(11) NOT NULL auto_increment,
