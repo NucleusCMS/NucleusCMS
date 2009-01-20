@@ -30,7 +30,7 @@
 
 <div class="heading">
 Plugin API
-<i>January 15, 2008</i>
+<i>January 20, 2008</i>
 </div>
 
 <div class="note"><strong>Notes:</strong>
@@ -66,7 +66,9 @@ This document contains information on how you can write your own Nucleus plugins
 	<li><a href="#admin">Providing an admin area</a></li>
 	<li><a href="#help">Providing a helppage</a></li>
 	<li><a href="#dependency">Plugin Dependency Check</a></li>
+	<li><a href="#internationalization">Internationalizing a Plugin</a></li>
 	<li><a href="#skinvar-formatting">Formatting Output of SkinVars</a></li>
+	<li><a href="#additional-reading">Additional Reading</a></li>
 <!--	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>	
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
@@ -2068,7 +2070,7 @@ http://forum.nucleuscms.org/viewtopic.php?t=&lt;TOPIC_ID_GOES_HERE&gt;&lt;/a&gt;
 <p>Starting from 3.2, a new plugin interface is added to allow one to declare any dependency on other plugin(s). This is useful for any
 plugin that requires another plugin to function. It is particularly useful for a plugin to detect broken dependencies that prevent if from functioning properly.</p>
 
-<h2>How to write a plugin that utilize this function</h2>
+<h2>How to write a plugin that utilizes this function</h2>
 
 <p>Let's start from a real world example:</p>
 
@@ -2086,6 +2088,57 @@ refuse to install the plugin if a dependency is missing.</p>
 }</code></pre>
 
 <p>The plugin dependency check also prevent a plugin from being uninstalled if other plugins have a dependancy on it.</p>
+
+<h1>Internationalizing Your Plugin <a name="internationalization" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Internationalization of a plugin allows your plugin to be easily used by people all over the world, people who do not 
+speak the same language as you do. It requires a little additional work for you, but makes translating the output of your plugin 
+as easy as translating a few phrases in a text file. Below is a description of the standard method suggested for use by Nucleus plugins. 
+Thanks to Andy Matsubara for the instructions.</p>
+
+<ol>
+	<li><strong>Develop your plugin</strong>
+
+At first, it is easier to develop it in your language. Use of language files is recommended after the plugin becomes stable.</li>
+	<li><strong>Create plugin directory</strong>
+
+If your plugin name is NP_AbcDef, the plugin directory name is abcdef (always lower case).</li>
+	<li><strong>Create language files</strong>
+
+Create the language files in the directory of your plugin. The name of the language file must be the same as that of the Nucleus language file name. For example, english.php is for English and default use. japanese-utf8.php for Japanese(UTF-Cool,japanese-euc.php for Japanese(EUC-JP).</li>
+	<li><strong>Define strings</strong>
+
+Define strings like below in the language file:
+
+<pre class="example"><code>&lt;?php
+define('_ABCDEF_MESSAGENAME',                  'actual strings in the language');
+  . . .
+?&gt;</code></pre>
+
+You have to define them for all static strings in your plugin. As defined name is used globally in the environment, it is recommended to have a prefix derived from the plugin name(in this case _ABCDEF).</li>
+	<li><strong>Replace static strings</strong>
+
+Replace static strings in your plugin with the defined names so they will change according to the language file.</li>
+	<li><strong>Create init method</strong>
+
+Make the init method in the plugin like below
+
+<pre class="example"><code>   function init() {
+      // include language file for this plugin
+      $language = ereg_replace( '[\\|/]', '', getLanguageName());
+      if (file_exists($this->getDirectory().$language.'.php'))
+         include_once($this->getDirectory().$language.'.php');
+      else
+         include_once($this->getDirectory().'english.php');
+   }</code></pre>
+</li>
+This logic is same as Nucleus’ language file setting.
+	<li><strong>Add language files</strong>
+
+As English is the default language, it is recommended to have at least the English version.	</li>
+</ol>
+
+
 
 <h1>Formatting your SkinVar output <a name="skinvar-formatting" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
@@ -2339,6 +2392,16 @@ foreach ($couples as $values) {
 	
 	</li>
 </ol>
+
+
+<h1>Additional Reading <a name="additional-reading" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>As this document is intended to get you started, there are other resources available that offer additional insight.</p>
+<ul>
+<li><a href="http://wiki.nucleuscms.org/plugindev:index" title="Development Wiki">Development Wiki</a></li>
+<li><a href="sqltables.html" title="Database Tables">Nucleus Database Table Structure</a></li>
+<!-- <li><a href="" title=""></a></li> -->
+</ul>
 
 <!--
 <pre class="example"><code></code></pre>
