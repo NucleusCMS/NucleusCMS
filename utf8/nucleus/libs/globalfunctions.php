@@ -1520,33 +1520,33 @@ function encoding_check($val, $key, $encoding=false, $exclude=false) {
 	if ($exclude!==false) {
 		if (is_array($exclude)) {
 			foreach($exclude as $v) $excludes[$v]=true;
-		} else $excludes[$excludes]=true;
+		} else $excludes[$exclude]=true;
 		return;
 	}
 	if ($encoding!==false) {
 		switch($encoding=strtolower($encoding)){
 			case 'utf-8':
-				$search='/^([\x00-\x7F]+'.
+				$search='/([\x00-\x7F]+'.
 					'|[\xC2-\xDF][\x80-\xBF]'.
 					'|[\xE0-\xEF][\x80-\xBF][\x80-\xBF]'.
 					'|[\xF0-\xF7][\x80-\xBF][\x80-\xBF][\x80-\xBF]'.
 					'|[\xF8-\xFB][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF]'.
-					'|[\xFC-\xFD][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF])*/';
+					'|[\xFC-\xFD][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF])/';
 					break;
 			case 'euc-jp':
-				$search='/^([\x00-\x7F]+'.
+				$search='/([\x00-\x7F]+'.
 					'|[\x8E][\xA0-\xDF]'.
-					'|[\x8F]?[\xA1-\xFE][\xA1-\xFE])*/';
+					'|[\x8F]?[\xA1-\xFE][\xA1-\xFE])/';
 				break;
 			case 'gb2312':
-				$search='/^([\x00-\x7F]+'.
-					'|[\xA1-\xF7][\xA1-\xFE])*/';
+				$search='/([\x00-\x7F]+'.
+					'|[\xA1-\xF7][\xA1-\xFE])/';
 				break;
 			case 'shift_jis':
 				// Note that shift_jis is only supported for output.
 				// Using shift_jis in DB is prohibited.
-				$search='/^([\x00-\x7F\xA1-\xDF]+'.
-					'|[\x81-\x9F\xE0-\xFC][\x40-\xFC])*/';
+				$search='/([\x00-\x7F\xA1-\xDF]+'.
+					'|[\x81-\x9F\xE0-\xFC][\x40-\xFC])/';
 				break;
 			default:
 				$search=false;
@@ -1564,16 +1564,14 @@ function encoding_check($val, $key, $encoding=false, $exclude=false) {
 	if (is_array($val)) {
 		array_walk($val, 'encoding_check');
 	} else {
-		preg_match($search,$val,$m);
-		$val2 = (string)$m[0];
-		if (!($val2 === (string)$val)) {
+		$result=preg_replace($search,'',$val);
+		if (strlen($result)!=0) {
 			startUpError('<p>Invalid input.</p>', 'Input Error');
 			exit;
 		}
 	}
-	preg_match($search,$key,$m);
-	$key2 = (string)$m[0];
-	if (!($key2 === (string)$key)) {
+	$result=preg_replace($search,'',$key);
+	if (strlen($result)!=0) {
 		startUpError('<p>Invalid input.</p>', 'Input Error');
 		exit;
 	}
