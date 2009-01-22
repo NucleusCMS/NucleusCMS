@@ -361,8 +361,15 @@ function listplug_table_itemlist($template, $type) {
 			echo "$current->ibody</td>";
 			echo "<td  style=\"white-space:nowrap\" $cssclass>";
 			echo 	"<a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a>";
-			echo    "<br /><a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>"._LISTS_COMMENTS;
-			echo '(' . $COMMENTS->amountComments() . ')'."</a>";
+			// evaluate amount of comments for the item
+			$camount = $COMMENTS->amountComments();
+			if ($camount>0) {
+				echo    "<br /><a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>"._LISTS_COMMENTS;
+				echo '(' . $COMMENTS->amountComments() . ')'."</a>";
+			}
+			else {
+				echo "<br />"._TEMPLATE_CNONE;
+			}
 			echo    "<br /><a href='index.php?action=itemmove&amp;itemid=$current->inumber'>"._LISTS_MOVE."</a>";
 			echo    "<br /><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"._LISTS_DELETE."</a>";
 			echo "</td>";
