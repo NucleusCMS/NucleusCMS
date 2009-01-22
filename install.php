@@ -141,13 +141,13 @@ function showInstallForm() {
 
 <?php
 	// note: this piece of code is taken from phpMyAdmin
-	$result = mysql_query('SELECT VERSION() AS version');
+	$result = @mysql_query('SELECT VERSION() AS version');
 
 	if ($result != FALSE && mysql_num_rows($result) > 0) {
 		$row = mysql_fetch_array($result);
 		$match = explode('.', $row['version']);
 	} else {
-		$result = mysql_query('SHOW VARIABLES LIKE \'version\'');
+		$result = @mysql_query('SHOW VARIABLES LIKE \'version\'');
 
 		if ($result != FALSE && @mysql_num_rows($result) > 0) {
 			$row = mysql_fetch_row($result);
@@ -168,10 +168,15 @@ function showInstallForm() {
 	$mysqlVersion = implode($match, '.');
 	$minVersion = '3.23';
 
-	echo $mysqlVersion;
-
+	if ($mysqlVersion == '0.0.0') {
+		echo _NOTIFICATION1;
+	}
+	else {
+		echo $mysqlVersion;
+	}
+	
 	if ($mysqlVersion < $minVersion) {
-		echo ' <span class="warning">', _TEXT2_WARN2 , $minVersion, '</span>';
+		echo ' <strong>', _TEXT2_WARN2 , $minVersion, '</strong>';
 	}
 ?>
 

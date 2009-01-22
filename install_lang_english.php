@@ -49,6 +49,8 @@ define('_ERROR28',	'Error message was');
 define('_ERROR29',	'Error message were');
 define('_ERROR30',	'Error while executing query');
 
+define('_NOTIFICATION1',	'Not available');
+
 define('_TITLE',	'Nuclues Install');
 define('_TITLE2',	'Skin/Plugin Install Errors');
 define('_TITLE3',	'Installation Almost Complete!');
@@ -61,7 +63,7 @@ define('_TEXT1',	'<p>This script will help you to install Nucleus. It will set u
 define('_HEADER2',	'PHP &amp; MySQL Versions');
 define('_TEXT2',	'<p>Below are the version numbers of the PHP interpreter and the MySQL server on your webhost. When reporting problems on the Nucleus Support Forum, please include this information.</p>');
 define('_TEXT2_WARN',	'WARNING: Nucleus requires at least PHP ');
-define('_TEXT2_WARN2',	'WARNING: Nucleus requires at least MySQL ');
+define('_TEXT2_WARN2',	'INFORMATION: Nucleus requires at least MySQL ');
 define('_TEXT2_WARN3',	'WARNING: You are installing NucleusCMS on a older version of PHP. PHP4 support will be depreciated in the next release, please consider upgrade to PHP5!');
 
 define('_HEADER3',	'Automatic <i>config.php</i> Update');
