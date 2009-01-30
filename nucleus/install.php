@@ -615,7 +615,7 @@ function doInstall() {
 	}
 
 	// 5a make first post
-	$newpost = "INSERT INTO `nucleus_item` VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
+	$newpost = "INSERT INTO ". tableName('nucleus_item') ." VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
 	mysql_query($newpost) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . mysql_error() );
 
 	// 6. update global settings
