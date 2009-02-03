@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>Nucleus - Readme</title>
+	<style type="text/css">
+	<!--
+		@import url(nucleus/styles/manual.css);
+	-->
+	</style>
+</head>
+<body>
+<h1>Readme</h1>
+
+<p>
+The only purpose of this file is to guide you to <a href="nucleus/documentation/index.html">the Nucleus manual</a>.
+</p>
+</body>
+</html>

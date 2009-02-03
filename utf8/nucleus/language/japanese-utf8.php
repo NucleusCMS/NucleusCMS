@@ -31,6 +31,7 @@ define('_BOOKMARKLET_SEND_PING',	'アイテムの追加に成功しました。�
 // END merge UTF-8 and EUC-JP
 
 // START changed/added after 3.31 START
+define('_CREATE_ACCOUNT_TITLE',				'アカウントの新規作成');
 define('_CREATE_ACCOUNT0', 'アカウントの作成');
 define('_CREATE_ACCOUNT1', 'ビジターのよるメンバーアカウントの作成は許可されていません。<br /><br />');
 define('_CREATE_ACCOUNT2', '詳細はウェブサイトの管理者にお問い合わせください。');

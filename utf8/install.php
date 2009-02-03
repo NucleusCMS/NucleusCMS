@@ -30,6 +30,8 @@
 	-- Start Of Configurable Part --
 */
 
+include('./install_lang_japanese.php');
+
 // array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
 // directory.
 //
@@ -72,7 +74,7 @@ include_once('nucleus/libs/mysql.php');
 
 // check if mysql support is installed
 	if (!function_exists('mysql_query') ) {
-		_doError('Your PHP version does not have support for MySQL :(');
+		_doError(_ERROR1);
 	}
 
 	if (postVar('action') == 'go') {
@@ -92,7 +94,7 @@ function showInstallForm() {
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
-		<title>Nucleusのインストール</title>
+		<title><?php echo _TITLE; ?></title>
 		<style type="text/css"><!--
 			@import url('nucleus/documentation/styles/manual.css');
 		--></style>
@@ -114,15 +116,13 @@ function showInstallForm() {
 		<div style="text-align:center"><img src="./nucleus/styles/logo.gif" /></div> <!-- Nucleus logo -->
 		<form method="post" action="install.php">
 
-		<h1>Install Nucleus</h1>
+		<h1><?php echo _HEADER1; ?></h1>
 
-		<p>このスクリプトはNucleusのインストールを手助けします。MySQLテーブルのセットアップと、<i>config.php</i>に入力するための情報を表示します（config.phpのパーミッションを0666にしておけば、後者の作業は自動的に行われます）。これをなす為に、いくつかの情報を入力する必要があります。</p>
+		<?php echo _TEXT1; ?>
 
-		<p>すべての欄の入力が必要です。オプション情報はインストールが完了したら、Nucleusの管理領域から設定可能です。</p>
+		<h1><?php echo _HEADER2; ?></h1>
 
-		<h1>PHP &amp; MySQL Versions</h1>
-
-		<p>以下はあなたのウェブホストにおけるPHPインタープリターとMySQLサーバーのバージョンです。Nucleusのサポートフォーラムに問題を報告するときは、この情報を書き添えてください。</p>
+		<?php echo _TEXT2; ?>
 
 		<ul>
 			<li>PHP:
@@ -132,7 +132,9 @@ function showInstallForm() {
 	$minVersion = '4.0.6';
 
 	if (phpversion() < $minVersion) {
-		echo ' <span class="warning">注意: Nucleusの動作には少なくともバージョン ',$minVersion,' が必要とされます</span>';
+		echo ' <span class="warning">', _TEXT2_WARN , $minVersion, '</span>';
+	} elseif (phpversion() < '5') {
+		echo ' <span class="warning">' . _TEXT2_WARN3 . '</span>';
 	}
 ?>
 
@@ -153,36 +155,30 @@ function showInstallForm() {
 			$row = mysql_fetch_row($result);
 			$match = explode('.', $row[1]);
 		} else {
-			$match[0] = '?';
-			$match[1] = '?';
-			$match[2] = '?';
+			$output = shell_exec('mysql -V');
+			preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
+			$match = explode('.', $version[0]);
+
+			if ($match[0] == '') {
+				$match[0] = '0';
+				$match[1] = '0';
+				$match[2] = '0';
+			}
 		}
-	}
-
-	if (!isset($match) || !isset($match[0]) ) {
-		$match[0] = 3;
-	}
-
-	if (!isset($match[1]) ) {
-		$match[1] = 21;
-	}
-
-	if (!isset($match[2]) ) {
-		$match[2] = 0;
-	}
-
-	if ($match[0] != '?') {
-		$match[0] = intval($match[0]);
-		$match[1] = intval($match[1]);
 	}
 
 	$mysqlVersion = implode($match, '.');
 	$minVersion = '3.23';
 
-	echo $mysqlVersion;
+	if ($mysqlVersion == '0.0.0') {
+		echo _NOTIFICATION1;
+	}
+	else {
+		echo $mysqlVersion;
+	}
 
 	if ($mysqlVersion < $minVersion) {
-		echo ' <span class="warning">注意: Nucleusの動作には少なくともバージョン ',$minVersion,' が必要とされます</span>';
+		echo ' <span class="warning">'._TEXT2_WARN2 , $minVersion.'</span>';
 	}
 ?>
 
@@ -194,58 +190,54 @@ function showInstallForm() {
 	if (@file_exists('config.php') && @!is_writable('config.php') ) {
 ?>
 
-		<h1><i>config.php</i>の自動アップデート</h1>
+		<h1><?php echo _HEADER3; ?></h1>
 
-		<p>もし<em>config.php</em>を自動的に更新するようにしたいなら、書き込み可能にする必要があります。<em>config.php</em>のパーミッションを<strong>666</strong>にしてください。Nucleusのインストール成功後に、パーミッションを<strong>444</strong>に戻さなければなりません（<a href="nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>）。</p>
+		<?php echo _TEXT3;
 
-		<p>もしファイルに書き込まないという選択をした（あるいは行えない）場合：ご心配なく。インストールの過程で<em>config.php</em>の中身が提供されます。ですから、それをご自身でアップロードしてください。</p>
+} ?>
 
-<?php } ?>
+		<h1><?php echo _HEADER4; ?></h1>
 
-		<h1>MySQLのログインデータ</h1>
-
-		<p>MySQLのデータを以下に入力してください。それらはデータベース・テーブルを作成し情報を入力するために必要なものです。後で、<i>config.php</i>にも記入する必要があります（上記の自動アップデートを利用する場合、その手順は省略されます）。</p>
-
-		<p>もしこの情報がわからなければ、システム管理者かホスティング元に連絡をとってください。ほとんどの場合、ホスト名は'localhost'です。もしNucleusがあなたのサーバのPHP設定から'default MySQL host'を検知したなら、'ホスト名'に既に記入されているはずです。もっとも、この情報が正確であるという保証はありません。</p>
+		<?php echo _TEXT4; ?>
 
 		<fieldset>
-			<legend>基本のデータベース設定</legend>
+			<legend><?php echo _TEXT4_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td>ホスト名：</td>
+					<td><?php echo _TEXT4_TAB_FIELD1; ?>:</td>
 					<td><input name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host') )?>" /></td>
 				</tr>
 				<tr>
-					<td>ユーザー名：</td>
+					<td><?php echo _TEXT4_TAB_FIELD2; ?>:</td>
 					<td><input name="mySQL_user" /></td>
 				</tr>
 				<tr>
-					<td>パスワード：</td>
+					<td><?php echo _TEXT4_TAB_FIELD3; ?>:</td>
 					<td><input name="mySQL_password" type="password" /></td>
 				</tr>
 				<tr>
-					<td>データベース名：</td>
-					<td><input name="mySQL_database" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create"><label for="mySQL_create" />データベースを作成する必要がある</label>)</td>
+					<td><?php echo _TEXT4_TAB_FIELD4; ?>:</td>
+					<td><input name="mySQL_database" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create"><label for="mySQL_create" /><?php echo _TEXT4_TAB_FIELD4_ADD; ?></label>)</td>
 				</tr>
 			</table>
 		</fieldset>
 
 		<fieldset>
-			<legend>高等なデータベース設定</legend>
+			<legend><?php echo _TEXT4_TAB2_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><input name="mySQL_usePrefix" value="1" type="checkbox" id="mySQL_usePrefix"><label for="mySQL_usePrefix" />テーブル・プリフィックスを利用</label></td>
+					<td><input name="mySQL_usePrefix" value="1" type="checkbox" id="mySQL_usePrefix"><label for="mySQL_usePrefix" /><?php echo _TEXT4_TAB2_FIELD; ?>:</label></td>
 					<td><input name="mySQL_tablePrefix" value="" /></td>
 				</tr>
 			</table>
 
-			<p>一つのデータベースに複数のNucleusをインストールしており、自分が何をやっているのか理解されている場合を除いては、<strong>これを変更する必要はありません</strong>。</p>
-			<p>Nucleusによって生成されたすべてのデータベーステーブルは、このプリフィックスが頭につきます。</p>
+			<?php echo _TEXT4_TAB2_ADD; ?>
+
 		</fieldset>
 
-	<h1>ディレクトリとURL</h1>
+	<h1><?php echo _HEADER5; ?></h1>
 
-	<p>このインストールスクリプトはNucleusがインストールされているディレクトリとURLを見つけようとしました。下の値をチェックして必要なら訂正してください。ファイルへのパスとURLはスラッシュ'/'で終わらなくてはなりません。</p>
+	<?php echo _TEXT5; ?>
 
 <?php
 
@@ -272,10 +264,10 @@ function showInstallForm() {
 ?>
 
 		<fieldset>
-			<legend>URLs and directories</legend>
+			<legend><?php echo _TEXT5_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td>Site <strong>URL</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD1;?>:</td>
 					<td><input name="IndexURL" size="60" value="<?php
 						$url = 'http://' . serverVar('HTTP_HOST') . serverVar('PHP_SELF');
 						$url = str_replace('install.php', '', $url);
@@ -289,125 +281,136 @@ function showInstallForm() {
 						echo $url; ?>" /></td>
 				</tr>
 				<tr>
-					<td>Admin-area <strong>URL</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD2;?>:</td>
 					<td><input name="AdminURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'nucleus/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td>Admin-area <strong>path</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD3;?>:</td>
 					<td><input name="AdminPath" size="60" value="<?php
 						if($basePath) {
 							echo $basePath, 'nucleus/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td>Media files <strong>URL</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD4;?>:</td>
 					<td><input name="MediaURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'media/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td>Media directory <strong>path</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD5;?>:</td>
 					<td><input name="MediaPath" size="60" value="<?php
 						if ($basePath) {
 							echo $basePath, 'media/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td>Extra skin files <strong>URL</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD6;?>:</td>
 					<td><input name="SkinsURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'skins/';
 						} ?>" />
-						<br />(インポートされたスキンが使用)
+						<br />(used by imported skins)
 					</td>
 				</tr>
 				<tr>
-					<td>Extra skin files directory <strong>path</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD7;?>:</td>
 					<td><input name="SkinsPath" size="60" value="<?php
 						if ($basePath) {
 							echo $basePath, 'skins/';
 						} ?>" />
-						<br />(インポートされたスキンのファイル類を置く場所)
+						<br />(<?php echo _TEXT5_TAB_FIELD7_2;?>)
 					</td>
 				</tr>
 				<tr>
-					<td>Plugin files <strong>URL</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD8;?>:</td>
 					<td><input name="PluginURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'nucleus/plugins/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td>Action <strong>URL</strong>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD9;?>:</td>
 					<td><input name="ActionURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'action.php';
 						} ?>" />
-						<br />(<tt>action.php</tt>へのhttp://から始まるURL)
+						<br />(<?php echo _TEXT5_TAB_FIELD9_2;?>)
 					</td>
 				</tr>
 			</table>
 		</fieldset>
 
-		<p class="note"><strong>付記:</strong> 相対パスではなく<strong>絶対パスを使ってください</strong>。通常、絶対パスは<tt>/home/username/public_html/</tt>のような形をとります。Unixシステム（ほとんどのサーバーがそうです）において、パスはスラッシュから始まります。もしこれらの情報入力に問題が生じたら、あなたのサーバ管理者にたずねるべきです。</p>
+		<?php echo _TEXT5_2; ?>
 
-		<h1>管理権限をもつユーザー</h1>
+		<h1><? echo _HEADER6; ?></h1>
 
-		<p>以下に、サイトの最初のユーザーを作成するためのいくつかの情報を入力してください。</p>
+		<?php echo _TEXT6; ?>
 
 		<fieldset>
-			<legend>管理権限を持つユーザー</legend>
+			<legend><?php echo _TEXT6_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td>表示される名前：</td>
-					<td><input name="User_name" value="" /> <small>(許可される文字：a-z と 0-9、最初と最後以外のスペース)</small></td>
+					<td><?php echo _TEXT6_TAB_FIELD1; ?>:</td>
+					<td><input name="User_name" value="" /> <small>(<?php echo _TEXT6_TAB_FIELD1_2; ?>)</small></td>
 				</tr>
 				<tr>
-					<td>本名（ハンドル名）：</td>
+					<td><?php echo _TEXT6_TAB_FIELD2; ?>:</td>
 					<td><input name="User_realname" value="" /></td>
 				</tr>
 				<tr>
-					<td>パスワード：</td>
+					<td><?php echo _TEXT6_TAB_FIELD3; ?>:</td>
 					<td><input name="User_password" type="password" value="" /></td>
 				</tr>
 				<tr>
-					<td>パスワードの確認：</td>
+					<td><?php echo _TEXT6_TAB_FIELD4; ?>:</td>
 					<td><input name="User_password2" type="password" value="" /></td>
 				</tr>
 				<tr>
-					<td>メールアドレス：</td>
-					<td><input name="User_email" value="" /> <small>(利用可能なメールアドレスを入れてください)</small></td>
+					<td><?php echo _TEXT6_TAB_FIELD5; ?>:</td>
+					<td><input name="User_email" value="" /> <small>(<?php echo _TEXT6_TAB_FIELD5_2; ?>)</small></td>
 				</tr>
 			</table>
 		</fieldset>
 
-		<h1>ウェブログのデータ</h1>
+		<h1><?php echo _HEADER7; ?></h1>
 
-		<p>以下に、デフォルトのweblogを作成するためにいくつかの情報を入力してください。このweblogの名前は、サイト名としても利用されます。</p>
+		<?php echo _TEXT7; ?>
 
 		<fieldset>
-			<legend>ウェブログのデータ</legend>
+			<legend><?php echo _TEXT7_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td>Blog名：</td>
+					<td><?php echo _TEXT7_TAB_FIELD1; ?>:</td>
 					<td><input name="Blog_name" size="60" value="My Nucleus CMS" /></td>
 				</tr>
 				<tr>
-					<td>Blogの短縮名：</td>
-					<td><input name="Blog_shortname" value="mynucleuscms" /> <small>(許可される文字：a-z と 0-9、スペースは不可)</small></td>
+					<td><?php echo _TEXT7_TAB_FIELD2; ?>:</td>
+					<td><input name="Blog_shortname" value="mynucleuscms" /> <small>(<?php echo _TEXT7_TAB_FIELD2_2; ?>)</small></td>
 				</tr>
 			</table>
 		</fieldset>
 
-		<h1>データの送信</h1>
+		<h1><?php echo _HEADER8; ?></h1>
 
-		<p>上に書いてきたデータが正しいか確かめてください。よければデータベース・テーブルと最初のデータを設定するために下のボタンを押してください。少し時間がかかるかもしれませんがご辛抱を。<b>ボタンをクリックするのは一回だけにしてください。</b></p>
+		<fieldset>
+			<legend><?php echo _TEXT8_TAB_HEADER; ?></legend>
+			<table>
+				<tr>
+					<td><input name="Weblog_ping" value="1" type="checkbox" id="Weblog_ping" /><?php echo _TEXT8_TAB_FIELD1; ?></td>
+				</tr>
+			</table>
+		</fieldset>
 
-		<p><input name="action" value="go" type="hidden" /> <input type="submit" value="Nucleus CMSのインストール" onclick="return checkSubmit();" /></p>
+		<h1><?php echo _HEADER9; ?></h1>
+
+		<?php echo _TEXT9; ?>
+
+		<p><input name="action" value="go" type="hidden" /> <input type="submit" value="<?php echo _BUTTON1; ?>" onclick="return checkSubmit();" /></p>
 
 		</form>
 	</body>
@@ -426,7 +429,7 @@ function tableName($unPrefixed) {
 }
 
 function doInstall() {
-	global $mysql_usePrefix, $mysql_prefix;
+	global $mysql_usePrefix, $mysql_prefix, $weblog_ping;
 
 	// 0. put all POST-vars into vars
 	$mysql_host = postVar('mySQL_host');
@@ -454,6 +457,7 @@ function doInstall() {
 	$blog_shortname = postVar('Blog_shortname');
 	$config_adminemail = $user_email;
 	$config_sitename = $blog_name;
+	$weblog_ping = postVar('Weblog_ping');
 
 	$config_indexurl = replaceDoubleBackslash($config_indexurl);
 	$config_adminurl = replaceDoubleBackslash($config_adminurl);
@@ -469,56 +473,56 @@ function doInstall() {
 	$errors = array();
 
 	if (!$mysql_database) {
-		array_push($errors, 'mySQL database name missing');
+		array_push($errors, _ERROR2);
 	}
 
 	if (($mysql_usePrefix == 1) && (strlen($mysql_prefix) == 0) ) {
-		array_push($errors, 'mySQL prefix was selected, but prefix is empty');
+		array_push($errors, _ERROR3);
 	}
 
 	if (($mysql_usePrefix == 1) && (!eregi('^[a-zA-Z0-9_]+$', $mysql_prefix) ) ) {
-		array_push($errors, 'mySQL prefix should only contain characters from the ranges A-Z, a-z, 0-9 or underscores');
+		array_push($errors, _ERROR4);
 	}
 
 	// TODO: add action.php check
 	if (!endsWithSlash($config_indexurl) || !endsWithSlash($config_adminurl) || !endsWithSlash($config_mediaurl) || !endsWithSlash($config_pluginurl) || !endsWithSlash($config_skinsurl) ) {
-		array_push($errors, 'One of the URLs does not end with a slash, or action url does not end with \'action.php\'');
+		array_push($errors, _ERROR5);
 	}
 
 	if (!endsWithSlash($config_adminpath) ) {
-		array_push($errors, 'The path of the administration area does not end with a slash');
+		array_push($errors, _ERROR6);
 	}
 
 	if (!endsWithSlash($config_mediapath) ) {
-		array_push($errors, 'The media path does not end with a slash');
+		array_push($errors, _ERROR7);
 	}
 
 	if (!endsWithSlash($config_skinspath) ) {
-		array_push($errors, 'The skins path does not end with a slash');
+		array_push($errors, _ERROR8);
 	}
 
 	if (!is_dir($config_adminpath) ) {
-		array_push($errors, 'The path of the administration area does not exist on your server');
+		array_push($errors, _ERROR9);
 	}
 
 	if (!_isValidMailAddress($user_email) ) {
-		array_push($errors, 'Invalid e-mail address given for user');
+		array_push($errors, _ERROR10);
 	}
 
 	if (!_isValidDisplayName($user_name) ) {
-		array_push($errors, 'User name is not a valid display name (allowed chars: a-zA-Z0-9 and spaces)');
+		array_push($errors, _ERROR11);
 	}
 
 	if (!$user_password || !$user_password2) {
-		array_push($errors, 'User password is empty');
+		array_push($errors, _ERROR12);
 	}
 
 	if ($user_password != $user_password2) {
-		array_push($errors, 'User password do not match');
+		array_push($errors, _ERROR13);
 	}
 
 	if (!_isValidShortName($blog_shortname) ) {
-		array_push($errors, 'Invalid short name given for blog (allowed chars: a-z0-9, no spaces)');
+		array_push($errors, _ERROR14);
 	}
 
 	if (sizeof($errors) > 0) {
@@ -530,16 +534,16 @@ function doInstall() {
 	$MYSQL_CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password);
 
 	if ($MYSQL_CONN == false) {
-		_doError('Could not connect to mySQL server: ' . mysql_error() );
+		_doError(_ERROR15 . ': ' . mysql_error() );
 	}
 
 	// 3. try to create database (if needed)
 	if ($mysql_create == 1) {
-		mysql_query('CREATE DATABASE ' . $mysql_database) or _doError('Could not create database. Make sure you have the rights to do so. SQL error was: ' . mysql_error() );
+		mysql_query('CREATE DATABASE ' . $mysql_database) or _doError(_ERROR16 . ': ' . mysql_error() );
 	}
 
 	// 4. try to select database
-	mysql_select_db($mysql_database) or _doError('Could not select database. Make sure it exists');
+	mysql_select_db($mysql_database) or _doError(_ERROR17);
 
 	// 5. execute queries
 	$filename = 'install.sql';
@@ -609,9 +613,13 @@ function doInstall() {
 					$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
 			}
 
-			mysql_query($query) or _doError('Error while executing query (<small>' . htmlspecialchars($query) . '</small>): ' . mysql_error() );
+			mysql_query($query) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query) . '</small>): ' . mysql_error() );
 		}
 	}
+
+	// 5a make first post
+	$newpost = "INSERT INTO `nucleus_item` VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
+	mysql_query($newpost) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . mysql_error() );
 
 	// 6. update global settings
 	updateConfig('IndexURL', $config_indexurl);
@@ -633,7 +641,7 @@ function doInstall() {
 			. " madmin=1, mcanlogin=1"
 			. " WHERE mnumber=1";
 
-	mysql_query($query) or _doError('Error while setting member settings: ' . mysql_error() );
+	mysql_query($query) or _doError(_ERROR19 . ': ' . mysql_error() );
 
 	// 8. update weblog settings
 	$query = 'UPDATE ' . tableName('nucleus_blog')
@@ -642,14 +650,14 @@ function doInstall() {
 			. " burl='" . addslashes($config_indexurl) . "'"
 			. " WHERE bnumber=1";
 
-	mysql_query($query) or _doError('Error while setting weblog settings: ' . mysql_error() );
+	mysql_query($query) or _doError(_ERROR20 . ': ' . mysql_error() );
 
 	// 9. update item date
 	$query = 'UPDATE ' . tableName('nucleus_item')
 			. " SET itime='" . date('Y-m-d H:i:s', time() ) ."'"
 			. " WHERE inumber=1";
 
-	mysql_query($query) or _doError('Error with query: ' . mysql_error() );
+	mysql_query($query) or _doError(_ERROR21 . ': ' . mysql_error() );
 
 	global $aConfPlugsToInstall, $aConfSkinsToImport;
 	$aSkinErrors = array();
@@ -683,11 +691,17 @@ function doInstall() {
 		// 11. install custom skins
 		$aSkinErrors = installCustomSkins($manager);
 
-		// 12. install custom plugins
+		// 12. install NP_Ping, if decided
+		if ($weblog_ping == 1) {
+			global $aConfPlugsToInstall;
+			array_push($aConfPlugsToInstall, "NP_Ping");
+		}
+
+		// 13. install custom plugins
 		$aPlugErrors = installCustomPlugs($manager);
 	}
 
-	// 12. Write config file ourselves (if possible)
+	// 14. Write config file ourselves (if possible)
 	$bConfigWritten = 0;
 
 	if (@file_exists('config.php') && is_writable('config.php') && $fp = @fopen('config.php', 'w') ) {
@@ -735,7 +749,7 @@ function doInstall() {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Nucleusのインストール</title>
+	<title><?php echo _TITLE; ?></title>
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>
 <body>
@@ -745,14 +759,14 @@ function doInstall() {
 	$aAllErrors = array_merge($aSkinErrors, $aPlugErrors);
 
 	if (count($aAllErrors) > 0) {
-		echo '<h1>Skin/Plugin Install errors</h1>';
+		echo '<h1>' . _TITLE2 . '</h1>';
 		echo '<ul><li>' . implode('</li><li>', $aAllErrors) . '</li></ul>';
 	}
 
 	if (!$bConfigWritten) { ?>
-		<h1>インストールはほぼ完了しました！</h1>
+		<h1><?php echo _TITLE3; ?></h1>
 
-		<p>データベーステーブルの初期値入力が成功しました。後は<i>config.php</i>を書き換えるだけです。以下に書き換えるべき内容を表示します（mysqlのパスワードはマスクされています。ここは実際のものに書き換えてください）</p>
+		<? echo _TEXT10; ?>
 
 		<pre><code>&lt;?php
 	// mySQL connection information
@@ -784,40 +798,47 @@ function doInstall() {
 	}
 ?&gt;</code></pre>
 
-	<p>あなたのコンピュータ上のファイルを書き換えたら、FTPを使ってウェブサーバにアップロードしてください。ASCIIモードで送信してファイルを上書きします。</p>
+	<?php echo _TEXT11; ?>
 
 	<div class="note">
-		<b>付記:</b> <i>config.php</i>の最初や終わりにスペースを空けないようにしましょう。実行時にエラーを引き起こす原因となります。<br />
-		したがって、config.phpの最初の文字は "&lt;"で最後の文字は"&gt;"としなければなりません。
+	<?php echo _TEXT12; ?>
 	</div>
 
 <?php } else { ?>
 
-	<h1>インストールは完了しました！</h1>
+	<h1><?php echo _TITLE4; ?></h1>
 
-	<p>Nucleusはインストールされ、<code>config.php</code>はアップデートされました。</p>
-
-	<p>セキュリティのため<code>config.php</code>のパーミッションを444に戻すことを忘れないでください(<a href="nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>)。</p>
+	<?php echo _TEXT13; ?>
 
 <?php } ?>
 
-	<h1>インストールファイルの削除</h1>
-
-	<p>ウェブサーバから次のファイルを削除してください：</p>
+	<h1><?php echo _TITLE5; ?></h1>
+	
+	<?php echo _TEXT14; ?>
 
 	<ul>
-		<li><b>install.sql</b>：テーブルの構造を内包するファイル</li>
-		<li><b>install.php</b>：このファイル</li>
+		<li><?php echo _TEXT14_L1; ?></li>
+		<li><?php echo _TEXT14_L2; ?></li>
 	</ul>
 
 	<p>もしこれらのファイルを削除していなければ、管理領域を開くことが出来ません。</p>
 
-	<h1>ウェブサイトの確認</h1>
+	<h1><?php echo _HEADER10; ?></h1>
 
-	<p>ウェブサイトを使う準備が整いました。
+	<?php echo _TEXT15; ?>
 		<ul>
-			<li><a href="<?php echo $config_adminurl?>">管理領域にログインしてサイトの設定を行う</a></li>
-			<li><a href="<?php echo $config_indexurl?>">すぐにサイトへ行ってみる</a></li>
+		<li><?php echo _TEXT15_L1; ?></li>
+		<li><?php echo _TEXT15_L2; ?></li>
+		</ul>
+
+	<?php echo _TEXT16; ?>
+
+	<h1><?php echo _HEADER11; ?></h1>
+
+	<p><?php echo _TEXT16; ?>
+		<ul>
+			<li><a href="<?php echo $config_adminurl?>"><?php echo _TEXT16_L1; ?></a></li>
+			<li><a href="<?php echo $config_indexurl?>"><?php echo _TEXT16_L2; ?></a></li>
 		</ul>
 	</p>
 
@@ -845,12 +866,14 @@ function installCustomPlugs(&$manager) {
 		sql_query($query);
 
 		// get and install the plugin
+		$manager->clearCachedInfo('installedPlugins');
 		$plugin =& $manager->getPlugin($plugName);
+		$plugin->plugid = $numCurrent;
 
 		if (!$plugin) {
 			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pfile=\'' . addslashes($plugName) . '\'');
 			$numCurrent--;
-			array_push($aErrors, 'Unable to install plugin ' . $plugName);
+			array_push($aErrors, _ERROR22 . $plugName);
 			continue;
 		}
 
@@ -898,21 +921,21 @@ function installCustomSkins(&$manager) {
 		$skinFile = $DIR_SKINS . $skinName . '/skinbackup.xml';
 
 		if (!@file_exists($skinFile) ) {
-			array_push($aErrors, 'Unable to import ' . $skinFile . ' : file does not exist');
+			array_push($aErrors, _ERROR23_1 . $skinFile . ' : ' . _ERROR23_2);
 			continue;
 		}
 
 		$error = $importer->readFile($skinFile);
 
 		if ($error) {
-			array_push($aErrors, 'Unable to import ' . $skinName . ' : ' . $error);
+			array_push($aErrors, _ERROR24 . $skinName . ' : ' . $error);
 			continue;
 		}
 
 		$error = $importer->writeToDatabase(1);
 
 		if ($error) {
-			array_push($aErrors, 'Unable to import ' . $skinName . ' : ' . $error);
+			array_push($aErrors, _ERROR24 . $skinName . ' : ' . $error);
 			continue;
 		}
 	}
@@ -946,7 +969,7 @@ function doCheckFiles() {
 
 	for ($i = 0; $i < $count; $i++) {
 		if (!is_readable($files[$i]) ) {
-			array_push($missingfiles, 'File <b>' . $files[$i] . '</b> is missing or not readable.');
+			array_push($missingfiles, _ERROR25_1 . $files[$i] . _ERROR25_2);
 		}
 	}
 
@@ -969,7 +992,7 @@ function updateConfig($name, $val) {
 			. " SET value='$val'"
 			. " WHERE name='$name'";
 
-	mysql_query($query) or _doError('Query error while trying to update config: ' . mysql_error() );
+	mysql_query($query) or _doError(_ERROR26 . ': ' . mysql_error() );
 	return mysql_insert_id();
 }
 
@@ -1022,16 +1045,16 @@ function _doError($msg) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Nucleus Install</title>
+	<title><?php echo _TITLE; ?></title>
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>
 <body>
 	<div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
-	<h1>Error!</h1>
+	<h1><?php echo _ERROR27; ?></h1>
 
-	<p>Error message was: "<?php echo $msg?>";</p>
+	<p><?php echo _ERROR28; ?>: "<?php echo $msg?>";</p>
 
-	<p><a href="install.php" onclick="history.back();return false;">Go Back</a></p>
+	<p><a href="install.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
 </body>
 </html>
 
@@ -1045,14 +1068,14 @@ function showErrorMessages($errors) {
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<title>Nucleus Install</title>
+	<title><?php echo _TITLE; ?></title>
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>
 <body>
 	<div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
-	<h1>Errors!</h1>
+	<h1><?php echo _ERROR27; ?></h1>
 
-	<p>Errors were found:</p>
+	<p><?php echo _ERROR29; ?>:</p>
 
 	<ul>
 
@@ -1064,7 +1087,7 @@ function showErrorMessages($errors) {
 
 	</ul>
 
-	<p><a href="install.php" onclick="history.back();return false;">Go Back</a></p>
+	<p><a href="install.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
 </body>
 </html>
 

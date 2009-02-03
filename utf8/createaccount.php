@@ -13,7 +13,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja-JP" lang="ja-JP">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET; ?>" />
-	<title>Create Member Account</title>
+	<title><?php echo CREATE_ACCOUNT_TITLE ?></title>
 	<style type="text/css">@import url(nucleus/styles/manual.css);</style>
 </head>
 <body>
