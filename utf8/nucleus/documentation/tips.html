@@ -1,11 +1,24 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
 	<!-- $Id: tips.html,v 1.7 2007-04-25 07:01:16 kimitake Exp $ -->
 	<!-- $NucleusJP: tips.html,v 1.6 2007/02/04 06:28:45 kimitake Exp $ -->
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <link rel="index" href="./index.html" />
 	<title>Nucleus - 便利な使い方ヒントの紹介</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+    <style type="text/css">
+        strong {
+            font-weight: bold;
+        }
+        em {
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
 
@@ -13,16 +26,17 @@
 Tips &amp; Suggestions
 </div>
 
-<h1>Introduction</h1>
+<h1><a id="top" name="top">Introduction</a></h1>
 
 <p>
 <a href="index.html">Nucleusマニュアルに戻る</a>
 </p>
 
 <p>
-ここでは便利な使い方ヒントをご紹介します。</p>
+ここでは便利な使い方ヒントをご紹介します。
+</p>
 
-<h1><a name="toc"></a>目次</h1>
+<h1><a id="toc" name="toc">目次</a></h1>
 
 <ul>
 	<li>
@@ -30,14 +44,15 @@ Tips &amp; Suggestions
 		<ul>
 			<li><a href="#searchengines-fancyurls">Fancy URL モード</a></li>
 			<li><a href="#searchengines-rewrite">mod_rewrite</a></li>
+			<li><a href="#searchengines-fancyurls2">Fancy URL2 モード</a></li>
 		</ul>
 	</li>
 	<li><a href="#filepermissions">ファイルとディレクトリのパーミッション変更ガイド</a></li>
 	<li><a href="#backups">バックアップをリストア(復元)する方法</a></li>
 	<li><a href="#newblog">新しくweblogを作成する方法</a></li>
 	<li><a href="#xhtml">XHTMLサポートについて</a></li>
+	<li><a href="#specialskinpart">スペシャルスキンパーツの作り方</a></li>
 <!--
-	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
 	<li><a href="#"></a></li>
@@ -53,10 +68,10 @@ Tips &amp; Suggestions
 
 
 
-<h1>Googleなどのサーチエンジンに引っかかりやすくする方法 <a name="searchengines" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>Googleなどのサーチエンジンに引っかかりやすくする方法 <a id="searchengines" name="searchengines" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <div class="note">
-<b>留意点:</b> これらの方法は、サーバの環境によっては動作しない事があります。
+<strong>留意点:</strong> これらの方法は、サーバの環境によっては動作しないことがあります。
 </div>
 
 <p>
@@ -68,10 +83,11 @@ Nucleus はアクセスごとにページを生成しています。アクセス
 <ol>
 	<li><a href="#searchengines-fancyurls">Fancy URLモード</a></li>
 	<li><a href="#searchengines-rewrite">mod_rewrite</a></li>
+	<li><a href="#searchengines-fancyurls2">Fancy URL2 モード</a></li>
 </ol>
 
-<a name="searchengines-fancyurls"></a>
-<h2>Fancy URLモード</h2>
+
+<h2><a id="searchengines-fancyurls" name="searchengines-fancyurls">Fancy URLモード</a></h2>
 
 <p>Nucleusではバージョン2.0からグローバル設定において「URLモード」というオプションを設けています。ここを「FancyURLモード」に設定して以下の作業を行うと、URLが「<code>http://example.org/index.php?itemid=1234</code>」から「<code>http://example.org/item/1234</code>」に変わります。このURL形式の方が検索エンジンに登録されやすくなります。 </p>
 
@@ -79,8 +95,7 @@ Nucleus はアクセスごとにページを生成しています。アクセス
 
 <ol>
 	<li>Copy all files from the <code>/extra/fancyurls</code> ディレクトリにある<code>index.html</code>以外の全部のファイルをルートディレクトリ(<code>index.php</code> と <code>action.php</code>があるディレクトリ)にコピーします。</li>
-	<li>すでにルートディレクトリに<code>.htaccess</code>ファイルを設置している方はまず現在の<code>.htaccess</code>ファイルをダウンロード後に今回の <code>/extra/fancyurls</code> ディレクトリにある<code>.htaccess</code>ファイルの中身を追加してください。(FTPソフトでは標準設定では<code>.htaccess</code>ファイルは見えないことが多いので、確認方法を調べた上で存在を確認してください。)<br />
-	<code>.htaccess</code>ファイルを設置していなかった方は<code>/extra/fancyurls</code> ディレクトリにある<code>.htaccess</code>ファイルをそのまま使用してください。</li>
+	<li>すでにルートディレクトリに<code>.htaccess</code>ファイルを設置している方はまず現在の<code>.htaccess</code>ファイルをダウンロード後に今回の <code>/extra/fancyurls</code> ディレクトリにある<code>.htaccess</code>ファイルの中身を追加してください。(FTPソフトでは標準設定では<code>.htaccess</code>ファイルは見えないことが多いので、確認方法を調べた上で存在を確認してください。)<br /><code>.htaccess</code>ファイルを設置していなかった方は<code>/extra/fancyurls</code> ディレクトリにある<code>.htaccess</code>ファイルをそのまま使用してください。</li>
 	<li>「<code>fancyurls.config.php</code>」という名前のファイルの中の<code>$CONF['Self']</code>の値を自分のトップページのURLとします。 <br /><strong>重要: URLの末尾にスラッシュは<em>絶対に</em>入れないでください。</strong></li>
 	<li>同様に<code>index.php</code>ファイルの<code>$CONF['Self']</code>の値を編集(引用符の中を削除)します。これをやらないと、URLが<code>index.php/item/1234</code>などとおかしくなります。</li>
 	<li>これらの新しくルートディレクトリに追加したファイルをサーバにアップロードします。</li>
@@ -91,8 +106,8 @@ Nucleus はアクセスごとにページを生成しています。アクセス
 <p>もしページが正常に表示されない場合(Internal Server Errorなどと表示される場合)は、残念ですがこの対策は使えません。上の作業で追加したファイルを速やかに削除し(<code>.htaccess</code>ファイルの削除も忘れずに)、管理エリアのグローバル設定においてURLモードを元に戻してください。</p>
 
 
-<a name="searchengines-rewrite"></a>
-<h2>mod_rewrite</h2>
+
+<h2><a id="searchengines-rewrite" name="searchengines-rewrite">mod_rewrite</a></h2>
 
 <p>
 次に紹介する対策はApacheサーバを使用していて、かつ、「mod_rewrite」の使用が許可されている環境でのみ有効な方法です。アクセスするページがhtmlファイルであるかのようにみせかける方法です。
@@ -104,13 +119,13 @@ Nucleus はアクセスごとにページを生成しています。アクセス
 
 <pre>
 RewriteEngine On
-RewriteRule ^archive-([0-9]+)-([0-9]+)-([0-9]+).html+ index.php?archive=$2-$3&blogid=$1
+RewriteRule ^archive-([0-9]+)-([0-9]+)-([0-9]+).html+ index.php?archive=$2-$3&amp;blogid=$1
 RewriteRule ^item-([0-9]+).html+ index.php?itemid=$1
 RewriteRule ^archivelist-([a-z]+).html+ index.php?archivelist=$1
 </pre>
 
 <p>
-このファイルを <i>index.php</i> や <i>config.php</i> があるディレクトリにアップロードします。ブラウザで「<code>archive-1-2004-06.html</code>」にアクセスしてみましょう。きちんとページが表示されればこの方法が使える環境です。(このURL例は2004年6月の記事を表示させるURLですから該当月のログがない場合は「記事がありません」となりますが、これは成功している事を意味します。)<br />もし、アクセスした際に  500 error (internal server error) が表示されていたらそのサーバ環境ではこの方法は使えません。.htaccess ファイルを削除してください。
+このファイルを <em>index.php</em> や <em>config.php</em> があるディレクトリにアップロードします。ブラウザで「<code>archive-1-2004-06.html</code>」にアクセスしてみましょう。きちんとページが表示されればこの方法が使える環境です。(このURL例は2004年6月の記事を表示させるURLですから該当月のログがない場合は「記事がありません」となりますが、これは成功していることを意味します。)<br />もし、アクセスした際に  500 error (internal server error) が表示されていたらそのサーバ環境ではこの方法は使えません。.htaccess ファイルを削除してください。
 </p>
 
 <p>
@@ -126,13 +141,27 @@ RewriteRule ^archivelist-([a-z]+).html+ index.php?archivelist=$1
 </p>
 
 
-<h1>ファイルとディレクトリのパーミッション変更ガイド <a name="filepermissions" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h2><a id="searchengines-fancyurls2" name="searchengines-fancyurls2">Fancy URL2モード</a></h2>
+
+<p>Nucleus CMS version バージョン3.3からは、FancyURLモードを有効にするもう一つの方法が用意されました。たった3行程で完了するやり方です。</p>
+
+<ol><li><code>extra/fancyurl-2</code>の中の｢<code>.htaccess</code>｣ファイルを、Nucleus CMSをインストールしたディレクトリにコピーします。</li>
+<li><code>index.php</code>を編集します。<code>CONF['Self']</code>(デフォルトは<code>'index.php'</code>となっています)を、Nucleus CMSをインストールしたURLに書き換えます<br />
+例：<pre>CONF['Self'] = 'http://yourdomain.com/yourNucleusDirectory';</pre>
+最後にスラッシュをつけないように気をつけてください<br /></li>
+<li>最後に、管理エリアのグローバル設定においてURLモードを「FancyURLモード」に変更します。</li></ol>
+
+<p>これだけで完了です</p>
+
+<p>もしURLを<code>item/this-is-a-title</code>の様にしたいのであれば、NucleusサイトのPlugin Wikiで、目的にあったプラグインを見つけることができるでしょう。(たとえば <a href="http://japan.nucleuscms.org/wiki/plugins:customurl">NP_CustomURL</a>とか)</p>
+
+<h1>ファイルとディレクトリのパーミッション変更ガイド <a id="filepermissions" name="filepermissions" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
 Nucleusのいくつかの機能を正常動作させるためにはパーミッションの変更作業が必要となります。ここではFTPソフト(FTPクライアント)を使ってパーミッションを変更する方法を紹介しておきます。
 </p>
 <p>
-まずはパーミッション変更ができるFTPソフト(FTPクライアント)を入手します。英語ガイドでは「CuteFTP」というソフトを例にとって説明されていますが、シェアウェアであり日本ではメジャーではないのでOS別に分けて説明します。</P>
+まずはパーミッション変更ができるFTPソフト(FTPクライアント)を入手します。英語ガイドでは「CuteFTP」というソフトを例にとって説明されていますが、シェアウェアであり日本ではメジャーではないのでOS別に分けて説明します。</p>
 
 <h2>Windows</h2>
 <p>
@@ -144,11 +173,11 @@ Windows版では、「FFFTP」というソフトを例に用いて説明させ�
 </p>
 
 <p>
-メニューバーの <tt>コマンド &gt; 属性変更</tt> を選択します。
+メニューバーの <code>コマンド &gt; 属性変更</code> を選択します。
 </p>
 
 <div class="screenshot">
-	<img src="pics/screen4.png" width="370" height="257" alt="menu" />
+	<img src="pics/screen4.png" width="682" height="379" alt="menu" />
 </div>
 
 <p>
@@ -156,7 +185,7 @@ Windows版では、「FFFTP」というソフトを例に用いて説明させ�
 </p>
 
 <div class="screenshot">
-	<img src="pics/screen5.png" width="305" height="189" alt="The window that pops up" />
+	<img src="pics/screen5.png" width="305" height="196" alt="The window that pops up" />
 </div>
 
 <p>
@@ -171,13 +200,14 @@ MacOS上で動作する日本語が使えるFTPクライアントでは、「Fet
 </p>
 <p>
 または、下記の表にチェックを入れてみて指示されているパーミッション値になるようにテストしてみても良いかと思います。
-(上記のWindows版FTPソフトの設定画面とは縦軸と横軸が逆になっていますので混同しないように。)
+<!-- (上記のWindows版FTPソフトの設定画面とは縦軸と横軸が逆になっていますので混同しないように。) -->
 </p>
-<SCRIPT language="javascript">
-<!--//
-//------------------------------------------------------------
+<script type="text/javascript">
+
+//************************************************************
 //javascript by ＠うさ http://usagi-js.com/
-//------------------------------------------------------------
+// mod by しづき
+//************************************************************/
 var nCurrentValue;
 function ResetValue()
 {
@@ -185,89 +215,109 @@ function ResetValue()
 }
 function CheckValue()
 {
+	var frm = document.getElementById('frmSample');
 	//リセット
 	ResetValue()
 	//全てをチェック
-	if (document.frmSample.chkValue11.checked)
+//	if (document.frmSample.chkValue11.checked)
+	if (frm.chkValue11.checked)
 	{
-		nCurrentValue = eval(document.frmSample.chkValue11.value);
+//		nCurrentValue = eval(document.frmSample.chkValue11.value);
+		nCurrentValue = eval(frm.chkValue11.value);
 	}
-	if (document.frmSample.chkValue12.checked)
+//	if (document.frmSample.chkValue12.checked)
+	if (frm.chkValue12.checked)
 	{
-		nCurrentValue += eval(document.frmSample.chkValue12.value);
+//		nCurrentValue += eval(document.frmSample.chkValue12.value);
+		nCurrentValue += eval(frm.chkValue12.value);
 	}
-	if (document.frmSample.chkValue13.checked)
+//	if (document.frmSample.chkValue13.checked)
+	if (frm.chkValue13.checked)
 	{
-		nCurrentValue += eval(document.frmSample.chkValue13.value);
+//		nCurrentValue += eval(document.frmSample.chkValue13.value);
+		nCurrentValue += eval(frm.chkValue13.value);
 	}
-	if (document.frmSample.chkValue21.checked)
+//	if (document.frmSample.chkValue21.checked)
+	if (frm.chkValue21.checked)
 	{
-		nCurrentValue += eval(document.frmSample.chkValue21.value);
+//		nCurrentValue += eval(document.frmSample.chkValue21.value);
+		nCurrentValue += eval(frm.chkValue21.value);
 	}
-	if (document.frmSample.chkValue22.checked)
+//	if (document.frmSample.chkValue22.checked)
+	if (frm.chkValue22.checked)
 	{
-		nCurrentValue += eval(document.frmSample.chkValue22.value);
+//		nCurrentValue += eval(document.frmSample.chkValue22.value);
+		nCurrentValue += eval(frm.chkValue22.value);
 	}
-	if (document.frmSample.chkValue23.checked)
+//	if (document.frmSample.chkValue23.checked)
+	if (frm.chkValue23.checked)
 	{
-		nCurrentValue += eval(document.frmSample.chkValue23.value);
+//		nCurrentValue += eval(document.frmSample.chkValue23.value);
+		nCurrentValue += eval(frm.chkValue23.value);
 	}
-	if (document.frmSample.chkValue31.checked)
+//	if (document.frmSample.chkValue31.checked)
+	if (frm.chkValue31.checked)
 	{
-		nCurrentValue += eval(document.frmSample.chkValue31.value);
+//		nCurrentValue += eval(document.frmSample.chkValue31.value);
+		nCurrentValue += eval(frm.chkValue31.value);
 	}
-	if (document.frmSample.chkValue32.checked)
+//	if (document.frmSample.chkValue32.checked)
+	if (frm.chkValue32.checked)
 	{
-		nCurrentValue += eval(document.frmSample.chkValue32.value);
+//		nCurrentValue += eval(document.frmSample.chkValue32.value);
+		nCurrentValue += eval(frm.chkValue32.value);
 	}
-	if (document.frmSample.chkValue33.checked)
+//	if (document.frmSample.chkValue33.checked)
+	if (frm.chkValue33.checked)
 	{
-		nCurrentValue += eval(document.frmSample.chkValue33.value);
+//		nCurrentValue += eval(document.frmSample.chkValue33.value);
+		nCurrentValue += eval(frm.chkValue33.value);
 	}
 	//表示
-	document.frmSample.txtTotal.value=nCurrentValue;
+//	document.frmSample.txtTotal.value=nCurrentValue;
+	frm.txtTotal.value=nCurrentValue;
 }
-//-->
-</SCRIPT>
 
-<table align="center"><tr>
-<FORM name="frmSample">
+</script>
+
+<form id="frmSample" action="#">
+<table style="margin:auto;text-align:center;" summary="パーミッション設定"><tr>
 <td> </td>
-<td >読む</td>
-<td>書込</td>
-<td>検索/実行</td>
-</tr>
-<tr>
-<td>オーナー</td>
-<td><INPUT type="checkbox" name="chkValue11" value="400" onClick="CheckValue()"></td>
-<td><INPUT type="checkbox" name="chkValue12" value="200" onClick="CheckValue()"></td>
-<td><INPUT type="checkbox" name="chkValue13" value="100" onClick="CheckValue()"></td>
-</tr>
-<tr>
+<td >オーナー</td>
 <td>グループ</td>
-<td><INPUT type="checkbox" name="chkValue21" value="40" onClick="CheckValue()"></td>
-<td><INPUT type="checkbox" name="chkValue22" value="20" onClick="CheckValue()"></td>
-<td><INPUT type="checkbox" name="chkValue23" value="10" onClick="CheckValue()"></td>
-</tr>
-<tr>
 <td>全員</td>
-<td><INPUT type="checkbox" name="chkValue31" value="4" onClick="CheckValue()"></td>
-<td><INPUT type="checkbox" name="chkValue32" value="2" onClick="CheckValue()"></td>
-<td><INPUT type="checkbox" name="chkValue33" value="1" onClick="CheckValue()"></td>
 </tr>
 <tr>
-<td colspan="4">
-パーミッション値(直接入力はできません)<br>
-<INPUT type="text" name="txtTotal" readonly>
+<td>読む</td>
+<td><input type="checkbox" name="chkValue11" value="400" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10001" /></td>
+<td><input type="checkbox" name="chkValue21" value="40" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10004" /></td>
+<td><input type="checkbox" name="chkValue31" value="4" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10007" /></td>
+</tr>
+<tr>
+<td>書込</td>
+<td><input type="checkbox" name="chkValue12" value="200" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10002" /></td>
+<td><input type="checkbox" name="chkValue22" value="20" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10005" /></td>
+<td><input type="checkbox" name="chkValue32" value="2" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10008" /></td>
+</tr>
+<tr>
+<td>検索/実行</td>
+<td><input type="checkbox" name="chkValue13" value="100" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10003" /></td>
+<td><input type="checkbox" name="chkValue23" value="10" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10006" /></td>
+<td><input type="checkbox" name="chkValue33" value="1" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10009" /></td>
+</tr>
+<tr>
+<td colspan="4" style="text-align:center;">
+パーミッション値(直接入力はできません)<br />
+<input type="text" name="txtTotal" readonly="readonly" value=""  tabindex="10010" />
 
 </td>
-</FORM>
-
-
 </tr></table>
+</form>
 
 
-<h1>バックアップをリストア(復元)する方法 <a name="backups" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+
+<h1>バックアップをリストア(復元)する方法 <a id="backups" name="backups" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
 Nucleus には最高管理者が使うことができるデータベースのバックアップ機能があります。定期的に(週1回など)バックアップを取られることを強くおすすめします。 生成されるバックアップファイルはスタンダードなSQLクエリ文です。バックアップを取った時点のデータベース状態に再構成するコマンドが書かれています。
@@ -295,11 +345,11 @@ Shellにアクセスできる状態の方は、mysqlプログラムを実行し�
 </p>
 
 <pre>
-mysql -u <i>username</i> -p -h <i>hostname</i> <i>databasename</i> &lt; <i>backupfile.sql</i>
+mysql -u <em>username</em> -p -h <em>hostname</em> <em>databasename</em> &lt; <em>backupfile.sql</em>
 </pre>
 
 
-<h1>新しくweblogを作成する方法 <a name="newblog" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>新しくweblogを作成する方法 <a id="newblog" name="newblog" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <h2>1. 新規weblogの作成</h2>
 
@@ -311,61 +361,62 @@ mysql -u <i>username</i> -p -h <i>hostname</i> <i>databasename</i> &lt; <i>backu
 
 <ol>
 	<li>URLにて<strong><code>blogid</code>の値</strong>を指定する:
-		<pre><code>http://yourhost.com/index.php?blogid=<i>2</i></code></pre>
+		<pre><code>http://yourhost.com/index.php?blogid=<em>2</em></code></pre>
 		(作成したweblogのblogidは管理エリアのトップページにあるblog一覧の中の該当blogのリンク先を見ればわかります。)
 	</li>
 	<li>
 		アクセス専用のphpファイルを作成する:
-		<pre><code>$CONF['Self'] = '<i>copy.php</i>';
+		<pre><code>&lt;?php
+$CONF['Self'] = '<em>copy.php</em>';
 include('./config.php');
-selectBlog('<i>shortblogname</i>');
+selectBlog('<em>shortblogname</em>');
 selector();
 
-?></code></pre>
-		上のような内容の「<tt>copy.php</tt>」という名前(この名前は一例です)のファイルをルートディレクトリに作成し、これにアクセスすると新しく追加されたblogが表示されます。
+?&gt;</code></pre>
+		上のような内容の「<code>copy.php</code>」という名前(この名前は一例です)のファイルをルートディレクトリに作成し、これにアクセスすると新しく追加されたblogが表示されます。
 		(作成したweblogの短縮名はは管理エリアのトップページにあるblog一覧の中から該当blogの設定画面に入るとわかります。)
 	</li>
 </ol>
 
 <h2>アクセス専用phpファイルの中で使用できるコマンド</h2>
 
-<p>上記のサンプル内で使用している <tt>selectBlog</tt> というコマンドは、アクセス専用phpファイルにて使用できるコマンドの一例です。他にも使用できるコマンドがありますので紹介しておきます:</p>
+<p>上記のサンプル内で使用している <code>selectBlog</code> というコマンドは、アクセス専用phpファイルにて使用できるコマンドの一例です。他にも使用できるコマンドがありますので紹介しておきます:</p>
 
-<table><tr>
-	<th>コマンド</th>
-	<th>意味</th>
+<table summary="アクセス専用phpファイルの中で使用できるコマンド"><tr>
+	<th abbr="コマンド">コマンド</th>
+	<th abbr="意味">意味</th>
 </tr><tr>
-	<td><code>selectBlog('shortblogname');</td>
+	<td><code>selectBlog('shortblogname');</code></td>
 	<td>「shortblogname」という短縮名のblogを表示させる<br />
 	(* URLにて指定するblogidの方が優先されます。URLにて指定がない場合にこの指定が使われます)
 	</td>
 </tr><tr>
-	<td><code>selectSkin('skinname');</td>
+	<td><code>selectSkin('skinname');</code></td>
 	<td>「skinname」という名前のスキンを適用してページ表示する<br />
 	(* URLにて指定するskinidの方が優先されます。URLにて指定がない場合にこの指定が使われます)
 	</td>
 </tr><tr>
-	<td><code>selectCategory(1234);</td>
+	<td><code>selectCategory(1234);</code></td>
 	<td>IDが「1234」のカテゴリを選択した状態でページ表示する<br />
 	(* URLにて指定するcatidの方が優先されます。URLにて指定がない場合にこの指定が使われます)<br />
-	この指定にはカテゴリ名を指定する事もができますが、複数blogが存在している場合は同じカテゴリ名があることが考えられますのでID指定の方が無難でしょう。</td>
+	この指定にはカテゴリ名を指定することもできますが、複数blogが存在している場合は同じカテゴリ名があることが考えられますのでID指定の方が無難でしょう。</td>
 </tr><tr>
-	<td><code>selectItem(1234);</td>
+	<td><code>selectItem(1234);</code></td>
 	<td>IDが「1234」の記事を選択した状態でページ表示する<br />
 	(* URLの指定が優先されます。URLにて指定がない場合にこの指定が使われます)</td>
 </tr><tr>
-	<td><code>selectLanguage('french');</td>
+	<td><code>selectLanguage('french');</code></td>
 	<td>言語を「french」にしてページ表示する
 	 (PHPエラーが出る可能性がありますので注意してください)</td>
 </tr></table>
 
 <p>
 アクセス専用phpファイルの中にこれらのコマンドを書く時は、コードの順番に留意してください。これらのコマンドは、<code>include('./config.php')</code>よりも<strong>後に</strong>書き、かつ、<code>selector();</code>という行よりも<strong>前に</strong>書かなくては反映されません。
-<p>
+</p>
 
 <h2>サブディレクトリに新しいblogを配置する場合</h2>
 
-<p>例えば、最初のblogが <tt>http://yourhost.com/</tt> で表示されていて、新しく追加するblogは <tt>http://yourhost.com/sub/</tt> のようにサブディレクトリに配置したい方は、上記のサンプルと同じアクセス専用phpファイルをそのサブディレクトリに作成します。このサブディレクトリに配置したアクセス専用phpファイルの<code>include('./config.php');</code> という部分を <code>include('../config.php');</code>と書き換えるだけで動作します。</p>
+<p>例えば、最初のblogが <code>http://yourhost.com/</code> で表示されていて、新しく追加するblogは <code>http://yourhost.com/sub/</code> のようにサブディレクトリに配置したい方は、上記のサンプルと同じアクセス専用phpファイルをそのサブディレクトリに作成します。このサブディレクトリに配置したアクセス専用phpファイルの<code>include('./config.php');</code> という部分を <code>include('../config.php');</code>と書き換えるだけで動作します。</p>
 
 
 
@@ -381,7 +432,7 @@ selector();
 
 
 
-<h1>XHTML サポートについて <a name="xhtml" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>XHTML サポートについて <a id="xhtml" name="xhtml" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>
 自分のページのソースコードを見た時、<code>&lt;br /&gt;</code>のようなタグコードにお気付きかと思います。これは、Nucleusが自動生成するコードがW3Cにて策定されているXHTML 1.0 standard(HTML4継承)に則っているからです。webの将来性を鑑みてこのようにしております。知る限りでは、XHTML形式の記述が古いブラウザとの互換性を損なってはいないようです。
@@ -393,6 +444,56 @@ selector();
 
 
 
+
+
+
+
+
+
+
+
+<h1>スペシャルスキンパーツの作り方<a id="specialskinpart" name="specialskinpart" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>1. 管理エリアの｢スキンの編集｣ページ(<strong>レイアウト設定 &raquo; スキン編集</strong>)へ入り、パーツを作成したい(追加したい)スキンの右側のカラムにある｢編集｣リンクをクリックします</p>
+
+<p>2. ｢スペシャルスキンパーツ｣とある下にあるテキストボックスに作成したいスキンパーツの名前を書き込んで、｢作成｣ボタンをクリックします(例えば｢About｣など)。すると、スキンパーツ編集フォームが表示されるので、他のスキンパーツと同じように編集することができます(スキン変数も他のパーツと同様に使用できます)。 他のページと同じように見せたいのであれば、｢メインの目次ページ｣の内容をそっくりコピー&amp;ペーストして、<code>&lt;%blog(...)%&gt;</code>の部分を置き換えれば、静的ページのできあがりです。<br />
+例えばデフォルトスキンを使って、サイトの｢About｣ページを作るとすると、次の様になるでしょう。</p>
+<pre><code>&lt;%parsedinclude(head.inc)%&gt;
+
+&lt;!-- page header --&gt;
+&lt;%parsedinclude(header.inc)%&gt;
+
+&lt;!-- page content --&gt;
+&lt;div id="container"&gt;
+&lt;div class="content"&gt;
+ここはハイキング好きの仲間たちのサイトです。私たちは、アメリカ、カナダ、ヨーロッパで、合計4000マイルを越えるハイキングをしてきました。
+このサイトを通じて、皆さんと経験を共有したいと思います。私たちはハイキングが、誰もノ楽しみの一つであると信じています。
+&lt;br /&gt;&lt;br /&gt;
+コミュニティに参加したい人は -&gt; をクリック: (...アカウント発行ページへのリンク...)
+&lt;br /&gt;&lt;br /&gt;
+... ここには写真などを貼り付けるのもいいでしょう ...
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- page menu --&gt;
+&lt;h2 class="hidden"&gt;Sidebar&lt;/h2&gt;
+&lt;div id="sidebarcontainer"&gt;
+&lt;%parsedinclude(sidebar.inc)%&gt;
+&lt;/div&gt;
+
+&lt;!-- page footer --&gt;
+&lt;%parsedinclude(footer.inc)%&gt;</code></pre>
+
+<p>3. これで、次のURLでこのページにアクセスできるようになりました(このURLを他のスキンパーツのどこかにリンクとして書いておくといいでしょう)</p>
+
+<pre><code>http://www.example.jp/index.php?special=About</code></pre>
+
+
+<p>4. このスキンパーツは他のスキンパーツと同様に編集でき、スキン変数やプラグインなども同様に動きます。</p>
+
+<p><strong>注意:</strong>もし、既に用意してある<code>About.html</code>を使いたい時は、ファイルを<code>skins/default/</code>ディレクトリ(デフォルトスキン使用時)に置き、スキンパーツに<code>&lt;%include(About.html)%&gt;</code>と書くだけで、その内容を取り込むことができます。そしてその内容はほぼ無制限です。</p>
+
+<p>(<a href="http://www.iai.com/">ftruscot</a>より)</p>
+
 </body>
 </html>
-

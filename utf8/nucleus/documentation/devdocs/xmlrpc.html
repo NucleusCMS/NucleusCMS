@@ -1,13 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
 	<!-- $Id: xmlrpc.html,v 1.7 2006-07-17 20:02:50 kimitake Exp $ -->
 	<!-- $NucleusJP: xmlrpc.html,v 1.6 2006/07/12 07:11:46 kimitake Exp $ -->
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <link rel="index" href="./index.html" />
 	<title>Nucleus - XML-RPC インターフェイス</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+    <style type="text/css">
+        strong {
+            font-weight: bold;
+        }
+        em {
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
+<div id="body">
 
 <div class="heading">
 XML-RPC インターフェイス
@@ -26,11 +39,10 @@ XML-RPC インターフェイス
 <div class="note">
 NucleusにおけるXML-RPCインターフェイスのURLは以下のようになります：
 <br />
-<b>http://www.yourserver.com/yourpath/nucleus/xmlrpc/server.php</b>
+<strong>http://www.yourserver.com/yourpath/nucleus/xmlrpc/server.php</strong>
 </div>
 
-<a name="bloggerApi" id="bloggerApi"></a>
-<h1>Blogger API (XML-RPC)</h1>
+<h1><a name="bloggerApi" id="bloggerApi">Blogger API (XML-RPC)</a></h1>
 
 <p>
 Nucleusは<a href="http://www.blogger.com/developers/api/1_docs/">Blogger API</a>に対応しています。これはBloggerと通信するツールやサービスに対して、Nucleusとも通信できるようにするものです。Nucleusの仕様により、いくつかのパラメータに若干の違いがあります。これについては後述の説明を参照して下さい。呼び出しや応答のメソッドは、もちろん、Bloggerのものと同じ構造になっています。
@@ -41,36 +53,32 @@ Nucleusは<a href="http://www.blogger.com/developers/api/1_docs/">Blogger API</a
 </p>
 
 <ul>
-	<li><b><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_newPost.html">blogger.newPost</a></b></li>
-	<li><b><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_editPost.html">blogger.editPost</a></b></li>
-	<li><b><a href="http://groups.yahoo.com/group/bloggerDev/message/296">blogger.getPost</a></b></li>
-	<li><b><a href="http://groups.yahoo.com/group/bloggerDev/message/147">blogger.deletePost</a></b></li>
-	<li><b><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_getUsersBlogs.html">blogger.getUsersBlogs</a></b></li>
-	<li><b><a href="http://groups.yahoo.com/group/bloggerDev/message/225">blogger.getRecentPosts</a></b></li>
-	<li><b><a href="http://groups.yahoo.com/group/bloggerDev/message/315">blogger.getUserInfo</a></b></li>
-	<li><b><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_getTemplate.html">blogger.getTemplate</a></b></li>
-	<li><b><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_setTemplate.html">blogger.setTemplate</a></b></li>
+	<li><strong><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_newPost.html">blogger.newPost</a></strong></li>
+	<li><strong><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_editPost.html">blogger.editPost</a></strong></li>
+	<li><strong><a href="http://groups.yahoo.com/group/bloggerDev/message/296">blogger.getPost</a></strong></li>
+	<li><strong><a href="http://groups.yahoo.com/group/bloggerDev/message/147">blogger.deletePost</a></strong></li>
+	<li><strong><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_getUsersBlogs.html">blogger.getUsersBlogs</a></strong></li>
+	<li><strong><a href="http://groups.yahoo.com/group/bloggerDev/message/225">blogger.getRecentPosts</a></strong></li>
+	<li><strong><a href="http://groups.yahoo.com/group/bloggerDev/message/315">blogger.getUserInfo</a></strong></li>
+	<li><strong><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_getTemplate.html">blogger.getTemplate</a></strong></li>
+	<li><strong><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_setTemplate.html">blogger.setTemplate</a></strong></li>
 </ul>
 
 
 <p>
 Nucleusは内部的に異なる実装を用いているため、パラメータの扱いに若干の違いがあります。概説すると：
-
 </p>
 
 <ul>
 	<li>Appkeyは無視されます。</li>
-	<li>Nucleusの場合は本文のあとにタイトルとカテゴリが続きます。Bloggerでは 'コンテンツ' と呼ばれるは本文だけが存在します。これらの追加されたパーツを利用可能にするため、<tt>&lt;title&gt;</tt>や<tt>&lt;category&gt;</tt>をNucleusに送るコンテンツに含めることができます。これらのタグは getRecentPosts の呼び出しでのみ追加されます。</li>
+	<li>Nucleusの場合は本文のあとにタイトルとカテゴリが続きます。Bloggerでは 'コンテンツ' と呼ばれるは本文だけが存在します。これらの追加されたパーツを利用可能にするため、<samp>&lt;title&gt;</samp>や<samp>&lt;category&gt;</samp>をNucleusに送るコンテンツに含めることができます。これらのタグは getRecentPosts の呼び出しでのみ追加されます。</li>
 	<li>Bloggerで 'templates' と呼ばれているものに相当するのが、Nucleusの 'スキン' です。ひとつのシステムに複数のスキンを設定でき、それぞれのスキンをblogごとに使い分けることができます。メソッド blogger.setTemplate と blogger.getTemplate は、Nucleusのblog設定で選択されているblogのデフォルトスキンに影響します。'main' と 'archiveIndex' の二種類のテンプレートは、Nucleusの 'メインの目次ページ' と '月別アーカイブ一覧ページ' に相当します。（<em>訳注： Blogger の仕様がわからないので、この項不確か</em>)</li>
-
-	<li>項目 <tt>publish</tt> は、追加した項目がデフォルトでドラフトになるか公開になるかを決める箇所です。<tt>blogger.editPost</tt> を使う場合は、<tt>publish</tt> がドラフトと公開のどちらになっていても無視されます。</li>
-	<li><tt>getUserInfo</tt> を呼び出した場合、返値のうち 'lastname' は空になり、'firstname' にフルネームが入ります。これはNucleusが姓と名を分けない仕様になっていることに由来します。</li>
-
-	<li>メソッド <tt>getRecentPostst</tt> は <tt>authorName</tt> と <tt>title</tt> を追加パラメータとして返します。Bloggerもまたこれらの値を返します（この仕様は文書化されていないようですが）。</li>
+	<li>項目 <code>publish</code> は、追加した項目がデフォルトでドラフトになるか公開になるかを決める箇所です。<code>blogger.editPost</code> を使う場合は、<code>publish</code> がドラフトと公開のどちらになっていても無視されます。</li>
+	<li><code>getUserInfo</code> を呼び出した場合、返値のうち 'lastname' は空になり、'firstname' にフルネームが入ります。これはNucleusが姓と名を分けない仕様になっていることに由来します。</li>
+	<li>メソッド <code>getRecentPostst</code> は <code>authorName</code> と <code>title</code> を追加パラメータとして返します。Bloggerもまたこれらの値を返します（この仕様は文書化されていないようですが）。</li>
 </ul>
 
-<a name="metaWeblogApi" id="metaWeblogApi"></a>
-<h1><a name="metaweblog"></a>metaWeblog API</h1>
+<h1><a id="metaweblog" name="metaweblog">metaWeblog API</a></h1>
 
 <p>
 Nucleus v1.1以降、<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>もサポートされました。これはBlogger APIの拡張版です。 
@@ -93,8 +101,7 @@ Nucleus v1.1以降、<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog AP
 
 <p>Nucleus v3.22以降、<code>mt_text_more</code> と <code>m_tallow_comment</code>もサポートされました。これはmetaWeblog API の拡張版です。つまりこれらの拡張機能をサポートするアプリケーション、例えば Ectoなど、を使用した場合、「続き」を編集することができ、アイテムにコメントを許可するかどうかを決定することができるようになる、ということです。</p>
 
-<a name="mtApi" id="mtApi"></a>
-<h1>Movable Type API</h1>
+<h1><a name="mtApi" id="mtApi">Movable Type API</a></h1>
 
 <p>v2.5から、Nucleusは<a href="http://www.movabletype.org/docs/mtmanual_programmatic.html">Movable Type API</a>からのメソッドをサポートするようになりました。</p>
 
@@ -116,20 +123,19 @@ Nucleus v1.1以降、<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog AP
 <ul>
 	<li>Nucleusはアイテムひとつにつき一つだけカテゴリを設定することができます。これは 'primary' 以外のカテゴリ設定項目はすべて無視されることを意味します。</li>
 	<li>トラックバックはNucleusのコアではサポート対象外です（プラグインの導入によって利用することができるようになります）。このため、<code>mt.getTrackbackPings</code> のデフォルトの返値は空です。</li>
-
 	<li>Nucleusはテキストフィルタを実装していません。このため、<code>mt.getSupportedTextFilters</code> は空の値を返します。</li>
 </ul>
 
-<h1><a name="errorcodes"></a>エラーコード</h1>
+<h1><a id="errorcodes" name="errorcodes">エラーコード</a></h1>
 
 <p>
 以下に示すのは、それぞれのメソッドから得られるエラーの種類です：
 </p>
 
-<table>
+<table summary="エラーコード と エラーメッセージ">
 	<tr>
-		<th>エラーコード</th>
-		<th>エラーメッセージ</th>
+		<th abbr="エラーコード">エラーコード</th>
+		<th abbr="エラーメッセージ">エラーメッセージ</th>
 	</tr>
 	<tr>
 		<td>801</td>
@@ -154,7 +160,7 @@ Nucleus v1.1以降、<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog AP
 	<tr>
 		<td>805</td>
 		<td>Amount parameter must be in range 1..20<br />
-		パラメータの値は 1..20 の範囲でなければなりません（<i>getRecentItems</i></td>
+		パラメータの値は 1..20 の範囲でなければなりません（<em>getRecentItems</em></td>
 	</tr>
 	<tr>
 		<td>806</td>
@@ -183,12 +189,12 @@ Nucleus v1.1以降、<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog AP
 
 	</tr>
 	<tr>
-		<td><i>その他のコード &lt; 100</i></td>
+		<td><em>その他のコード &lt; 100</em></td>
 		<td>Errors encountered by the Useful Inc. XML-RPC implementation<br />
 		Usefil Inc. XML-RPC の実行でエラーが発生しました</td>
 	</tr>
 	<tr>
-		<td><i>その他のコード &gt; 100</i></td>
+		<td><em>その他のコード &gt; 100</em></td>
 
 		<td>Errors encountered by the XML parser<br />
 		XML パーサでエラーが発生しました</td>
@@ -196,6 +202,8 @@ Nucleus v1.1以降、<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog AP
 
 
 </table>
+
+</div>
 
 </body>
 </html>

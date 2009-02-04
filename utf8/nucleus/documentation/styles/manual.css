@@ -1,7 +1,19 @@
+@charset 'UTF-8';
+
+/**
+ * NucleusCMS Manual Style sheet
+ *
+ * $Id: manual.css 68 2008-09-06 05:46:46Z yama.kyms $
+ */
+
 body {
 	background-color: #fff;
-	color: #000;
-	font-family: verdana, arial;
+	background:url(background.png) repeat-x;
+	padding-top:13px;
+	color: #555;
+	/*font-family: verdana, arial;*/
+/*	font-family: "Hiragino Kaku Gothic Pro W3", "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif; */
+	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 	font-size: small;
 }
 
@@ -35,7 +47,9 @@ a: hover {
 	text-align: center;
 	font-size: xx-large;
 	font-weight: bold;
-	color: gray;	
+	color: gray;
+	letter-spacing:3px;
+	margin: 15px 0 20px;
 }
 
 .heading i {
@@ -49,32 +63,51 @@ a: hover {
 
 
 p {
-	text-indent: 20px;
+	text-indent: 10px;
+	margin-left:20px;
 }
 
 h1 {
 	border-bottom: 1px dotted gray;
-	font-size: x-large;
+	font-size: 145%;
 	color: #596d9d;
+	font-weight:normal;
+	letter-spacing:2px;
 }
 
 h2 {
-	color: gray;
-	font-size: large;
-	margin-left: 20px;
-	text-indent: 10px;
-	border-bottom: 1px solid #ddd;
+	color: #666;
+	font-size: 110%;
+	margin: 20px 10px 10px 10px;
+	border-left: 5px solid #94a8c9;
+	padding: 0 0 0 8px;
+	letter-spacing:2px;
+}
+
+h3 {
+	margin-left: 12px;
+	border-bottom:1px dotted #666;
+	font-size:100%;
+	color:#596d9d;
+	letter-spacing:1px;
 }
 
 pre, .note, .faq .answer {
-	background-color: #ddd;
+	font-family: "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+	font-size: small;
+	background-color: #eee;
 	padding: 10px;
 	font-size: small;
+	white-space: -moz-pre-wrap; /* Mozilla */
+	white-space: -pre-wrap;     /* Opera 4-6 */
+	white-space: -o-pre-wrap;   /* Opera 7 */
+	white-space: pre-wrap;      /* CSS3 */
+	word-wrap: break-word;      /* IE 5.5+ */
 }
 
 .screenshot {
 	text-align: center;
-	background-color: #ddd;
+	background-color: #eee;
 	padding: 10px;
 }
 
@@ -105,7 +138,7 @@ th, td {
 }
 
 td {
-	background-color: #dddddd;
+	background-color: #eee;
 	font-size: small;
 	vertical-align: top;
 	text-align: left;
@@ -118,6 +151,8 @@ td {
 }
 
 tt, code, samp {
+	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+
 	font-size: small;
 }
 
@@ -135,4 +170,11 @@ acronym, abbr {
 
 label {
 	cursor: hand;
+}
+
+ul {
+	line-height:1.5em;
+	margin:0 0 0.5em 40px;
+	padding:0;
+	list-style-image:url(bullet.gif);
 }

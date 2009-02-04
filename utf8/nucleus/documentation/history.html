@@ -29,6 +29,86 @@
 
 <ul>
 	<li>
+		<strong>Nucleus v3.4 SVN</strong>
+		<ul>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=73">#73(JP)</a>): スキン読み込みの改良. (kotorisan/yu/shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=74">#74(JP)</a>): スキン編集画面の日本語化漏れ. (shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=89">#89(JP)</a>): metaWeblog.newPostにおけるコメント可否. (shizuki/NKJG)</li>
+			<li>ADDED: .htaccess file in skins/ and nucleus/libs/ to fight possible script execution due to certain apache configurations. (Code recommended by Katsumi, added to svn by ftruscot)</li>
+			<li>ADDED: .htaccess file in media/ to fight possible script execution due to certain apache configurations. (Code recommended by Katsumi, added to svn by ftruscot)</li>
+			<li>ADDED: New member option to decide whether the autosave draft function is used or not (kaigreve)</li>
+			<li>CHANGED: Additional improvements and updates in devdocs and help.html (ftruscot)</li>
+			<li>ADDED: Warning for PHP 4.x depreciated during upgrade(admun)</li>
+			<li>ADDED: Documentation, as needed, for changes below. (ftruscot)</li>
+			<li>ADDED: BLOG::readLogFromList() and BLOG::getSqlItemList() to allow using the core item display mechanisms for customized lists of items. Will be used primarily by plugins. (ftruscot)</li>
+			<li>CHANGED: MEMBER::login() to add CustomLogin event. Provides hook for plugins to perform authentication from external sources. (ftruscot)</li>
+			<li>ADDED: Upgrade scripts for version 3.40. Lengthen nucleus_template.tpartname column to 64. Lengthen nucleus_template_desc.tdname to 64. (ftruscot)</li>
+			<li>ADDED: Warning for PHP 4.x depreciated (admun)</li>
+			<li>FIXED: MySQL version check failure in install.php (admun)</li>
+			<li>FIXED: bugs in last fix of directory traversal vulnerability in Nucleus media manager. Fix code providedby kmorimatsu inserted by ftruscot.</li>
+			<li>FIXED: directory traversal vulnerability in Nucleus media manager. Fix code provided by kmorimatsu inserted by ftruscot.</li>
+			<li>FIXED: cuser field of non-member comments being blanked out intermittently<a href="http://forum.nucleuscms.org/viewtopic.php?t=18059">Old comments from field is gone.</a> Caused by registration with names longer than 16 characters. Enforce 16 character limit in createaccount.php, ADMIN.php, ACTION.php (ftruscot)</li>
+			<li>ADDED: Add delete permission check (katsumi/admun)</li>
+			<li>ADDED: Add ATOM1.0 autodiscovery for default skin. (shizuki)</li>
+			<li>FIXED: Fix short open tag on skins/default/show_benchmark.inc. (shizuki)</li>
+			<li>FIXED: Fix broken XML for Skins. (shizuki)</li>
+			<li>ADDED: <a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=3231">Japanese forum:Special skin parts are used as a skin part.</a> (Andy/shizuki)</li>
+			<li>ADDED: The number of comments is indicated on the item list screen. <a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=2231">Japanese forum(The confirmation and the elimination which are a comment every item.)</a> (shizuki)</li>
+			<li>ADDED: Automatic re loading after an item renewal. <a href="http://blog.bitocean.net/item/40/catid/2">Bibou-Nikki/Automatic re loading after an item renewal.</a> (shizuki)</li>
+			<li>ADDED: Prevention of comment double contribution. <a href="http://blog.bitocean.net/item/35/catid/2">Bibou-Nikki/Prevention of comment double contribution.</a> (shizuki)</li>
+			<li>ADDED: Addition of an item  The hack which checks a radio button of "of the date and time, designation" automatically if the item of the date is changed at the time of edit. <a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=2285">Japanese forum(Check box of "later, addition" and "of a time stamp, renewal")</a> (shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=110">#110(JP)</a>): When an item is added by "new category", a SendPing event doesn't occur. (shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=58">#58(JP)</a>): When database backup, table name and a column name are bound up with back quotat. (shizuki)</li>
+			<li>CHANGED: Eliminate few hardcoded language (shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=94">#94(JP)</a>): A plugin option isn't generated. (kimitake/shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=79">#79(JP)</a>): Permission setting of upload isn't effective. (shizuki/yu)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=77">#77(JP)</a>): [XHTML] When the attribute of the option is hidden,&lt;tr&gt; isn't output. (shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=76">#76(JP)</a>): [XHTML] Validate admin-area. (shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=67">#67(JP)</a>): Change isn't reflected on ValidateForm event. (shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=107">#107(JP)</a>): When editing an item, time generation will be an error. (kotorisan/yu/shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=108">#108(JP)</a>): Pop-up, for if a character string is empty, nothing is indicated. (sato-na/shizuki)</li>
+			<li>FIXED: Fix history. (shizuki)</li>
+			<li>FIXED: "history.html" is XHTML 1.0 Strict. (shizuki)</li>
+			<li>ADDED: <a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=22675#22675">Add tool tip for "MEDIA" button</a> (shizuki/kyasya)</li>
+			<li>CHANGED: make ItemVars case insentive to ease the usage (work with plugins that use the function doItemVar) (kaigreve)</li>
+			<li>ADDED: new event in TEMPLATE.php called PreTemplateRead to allow plugin developers to change name of template being used. This is obscure and probably won't be publicized, but I need it for NP_MultiLanguage to allow mapping of templates depending on language being viewed, permitting translations of all parts of a template and localization of dates. (ftruscot)</li>
+			<li>ADDED: three new events in BLOG.php called PreArchiveListItem, PreCategoryListItem, and PreBlogListItem to allow plugin developers to modify or add template variables to the ArchiveList Item, Category List Item and Blog List Item template fields (ftruscot)</li>
+			<li>ADDED: add description of the doIf function to the plugin documentation (ftruscot)</li>
+			<li>FIXED: fix description of if/else/endif skin variables to documentation, inlcuding ifnot, elseif, and elseifnot (ftruscot)</li>
+			<li>ADDED: add description of charset skin variable to documentation. (ftruscot)</li>
+			<li>ADDED: add global configuration, DefaultListSize, which sets and maintains a custom value for length of item/comment lists in the admin area (ftruscot)</li>
+			<li>FIXED: fix content type of bookmarklet.php file to text/html to conform with other pages (ftruscot)</li>
+			<li>ADDED: new event in createaccount.php called RegistrationFormExtraFields to allow fields from plugins onto registration form (ftruscot)</li>
+			<li>FIXED: (<a href="http://dev.nucleuscms.org/tracker/index.php?id=142&amp;do=details">#142</a><a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=97">#97(JP)</a>): Plugin API: Incorrect operation order. (shizuki/Andrew Black)</li>
+			<li>FIXED: fix redirect function in globalfunctions so that it does not strip out the permitted "*" character. See <a href="http://forum.nucleuscms.org/viewtopic.php?p=86007#86007">forum(Trying to get a create an account link)</a> (ftruscot)</li>
+			<li>FIXED: CONF['Self'] fix (ehui)</li>
+			<li>ADDED: Add a link to the front end that allows to add an item in a bookmarklet popup window (two new skinvars addlink and addpopupcode needed) (kaigreve)</li>
+			<li>ADDED: add a cancel button to the bookmarklet add and edit forms (kaigreve)</li>
+			<li>CHANGED: Move the submit button in the bookmarklet edit from to the end of the button bar (logical order) (kaigreve)</li>
+			<li>ADDED: Add the possibility to move a published item back to drafts (kaigreve)</li>
+			<li>ADDED: more and improved comments in classes NucleusPlugin, BACKUP, ITEM and ITEMACTIONS (kaigreve)</li>
+			<li>CHANGED: Use ISO date for backup filename and add hour, minute and second  (kaigreve)</li>
+			<li>CHANGED: Put backup functions in an own class Backup (kaigreve)</li>
+			<li>FIXED: add default values for the parse_bloglist function to avoid warnings (kaigreve)</li>
+			<li>FIXED: fix case sensitive function name createDraftFromRequest in class ACTION (ehui)</li>
+			<li>ADDED: add description of the doItemVar function to the plugin documentation (kaigreve)</li>
+			<li>ADDED: add language file install_lang_english.php to install process (admun)</li>
+			<li>ADDED: add option to install NP_Ping during installation (admun)</li>
+			<li>FIXED: remove bug in the plugin api: function clearOptionValueCache hasn't worked correct with the getOption function (kaigreve)</li>
+			<li>ADDED: add global configuration DebugVars which decides if unresolved Vars (SkinVars, TemplateVars, ItemVars) are shown on the blog (kaigreve)</li>
+			<li>FIXED: Fix getNotifyFromMailAddress to use email field now that we've separated email/url fields (gregorlove)</li>
+			<li>CHANGED: extend skinvar Bloglist with parameters to specify the sort order (kaigreve)</li>
+			<li>ADDED: add comment URL and email to "edit comment" form and make them editable (gregorlove)</li>
+			<li>ADDED: new event in ADMIN.php called TemplateExtraFields to allow plugin developers to add fields to templates. This should encourage plugin authors to make use of the core template storage to provide formatting for their output. This event just presents the extra fields on the template edit form and stores data entered there into the nucleus_template table. It is the responsibility of the plugin authors to use the template fields they add and to provide the variables used in those fields. Plugins should also document their variables and provide for a default, either in the code or through a plugin option. (ftruscot)</li> 
+		</ul>
+	</li>
+	<li>
+		<strong>Nucleus v3.31 SP3 (Dec 17, 2008)</strong>
+		<ul>
+			<li>FIXED: An XSS issue</li>
+		</ul>
+	</li>
+	<li>
 		<strong>Nucleus v3.31 SP2 (EUC-JP only) (September 26, 2008)</strong>
 		<ul>
 			<li>FIXED: An XSS issue</li>
@@ -37,8 +117,12 @@
 	<li>
 		<strong>Nucleus v3.31 SP1 (February 5, 2008)</strong>
 		<ul>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=82">#82(JP)</a>): fix &lt;%itemtitle%&gt; on COMMENT_HEADER COMMENT_BODY COMMENT_FOOTER (shizuki)</li>
+			<li>ADDED: NP_Ping sends ping for future post via JustPosted event (admun)</li>
+			<li>ADDED: JustPosted event (admun)</li>
+			<li>ADDED: move weblogs.com ping function into plugin (admun)</li>
 			<li>FIXED: An XSS issue</li>
-			<li>CHANGED(JP): (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;id=83">#83(JP)</a>): ブックマークレットの高さを50ピクセル追加. (kmorimatsu)</li>
+			<li>CHANGED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=83">#83(JP)</a>): Change bookmarklet height. Add 50pix. (kmorimatsu)</li>
 			<li>CHANGED(JP): (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;id=84">#84(JP)</a>): To avoid showing ticket in the URL, redirect to pluginlist, instead. (kmorimatsu)</li>
 			<li>ADDED: add <code>createaccount.html</code> with a redirect to <code>createaccount.php</code> for backward compatibility with the old location of the form</li>
 			<li>CHANGED: protect the 'create account form' against abuse: show the form only if needed and add FormExtra (e.g. Captcha) and ValidateForm (to validate input) events (ftruscot and kaigreve)</li>
@@ -58,9 +142,6 @@
 			<li>ADDED: add description of charset skin variable to documentation.(JP) (shizuki)</li>
 			<li>FIXED: fix description of if/else/endif skin variables to documentation, inlcuding ifnot, elseif, and elseifnot (JP) (shizuki)</li>
 			<li>ADDED: add description of the doIf function to the plugin documentation (JP) (shizuki)</li>
-			<li>ADDED: NP_Ping sends ping for future post via JustPosted event (admun)</li>
-			<li>ADDED: JustPosted event (admun)</li>
-			<li>ADDED: move weblogs.com ping function into plugin (admun)</li>
 			<li>ADDED: Serveral changes and fixes from Nucleus Japan (details in the log files of the <a href="http://sourceforge.net/svn/?group_id=66479">Nucleus repository</a> at sourceforge.net)</li>
 			<li>ADDED: Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc. to avoid XSS (from Nucleus Japan)</li>
 			<li>ADDED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;id=45">#45</a>  from the Japanese Tracker): include code from NP_0TicketForPlugin in the core (Changes from Nucleus Japan)</li>

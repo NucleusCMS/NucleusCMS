@@ -1,7 +1,10 @@
 body {
 	background-color: #fff;
-	color: #000;
-	font-family: verdana, arial;
+	background:url(background.png) repeat-x;
+	padding-top:13px;
+	color: #555;
+	/*font-family: verdana, arial;*/
+	font-family: "Hiragino Kaku Gothic Pro W3", "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 	font-size: small;
 }
 
@@ -13,7 +16,10 @@ body {
 }
 
 @media print {
-	pre, .note, td, th {
+	pre,
+	.note
+	 td,
+	 th {
 		border: 1px dashed gray;
 	}
 }
@@ -22,7 +28,8 @@ img {
 	border: none;
 }
 
-a:link, a:visited {
+a:link,
+a:visited {
 	color: #1D3565; 
 	font-weight: bold;
 	text-decoration: none;
@@ -35,49 +42,65 @@ a: hover {
 	text-align: center;
 	font-size: xx-large;
 	font-weight: bold;
-	color: gray;	
+	color: gray;
+	letter-spacing:3px;
+	margin: 15px 0 20px;
 }
 
-.heading i {
+.heading i,
+.heading em {
 	position: absolute;
-	top: 5px;
+	top: 25px;
 	right: 5px;
 	font-size: small;
 	font-style: normal;
 	font-weight: normal;
 }
 
+
 p:first-letter {
 	font-size: large;
 }
 
 p {
-	text-indent: 20px;
+	text-indent: 10px;
+	margin: 12px;
 }
 
 h1 {
 	border-bottom: 1px dotted gray;
-	font-size: x-large;
+	font-size: 145%;
 	color: #596d9d;
+	font-weight:normal;
+	letter-spacing:2px;
 }
 
 h2 {
-	color: gray;
-	font-size: large;
-	margin-left: 20px;
-	text-indent: 10px;
-	border-bottom: 1px solid #ddd;
+	color: #666;
+	font-size: 110%;
+	margin: 20px 10px 10px 10px;
+	border-left: 5px solid #94a8c9;
+	padding: 0 0 0 8px;
+	letter-spacing:2px;
 }
 
-pre, .note, .faq .answer {
-	background-color: #ddd;
+h3 {
+	margin-left: 12px;
+	border-bottom:1px dotted #666;
+	color:#596d9d;
+}
+
+pre,
+.note,
+.faq .answer {
+	background-color: #eee;
 	padding: 10px;
 	font-size: small;
 }
 
 .screenshot {
 	text-align: center;
-	background-color: #ddd;
+	background-color: #eee;
 	padding: 10px;
 }
 
@@ -96,25 +119,35 @@ pre, .note, .faq .answer {
 
 table {
 	border: none;
+	border-collapse: collapse;
+	margin: 0 auto;
+	text-align: center;
+	width: 860px;
 }
 
 th {
 	background-color: linen;
-	font-size: medium;
+	font-size: small;
+	font-weight:normal;
+	border:1px solid linen;
 }
 
 th, td {
-	padding: 5px;
+	padding: 5px 8px;
 }
 
 td {
-	background-color: #dddddd;
+	background-color: #eee;
+	border:1px solid #fff;
 	font-size: small;
 	vertical-align: top;
 	text-align: left;
 }
 
-input, select, option, textarea {
+input,
+select,
+option,
+textarea {
 	background-color: transparent;
 }
 
@@ -124,8 +157,11 @@ input, select, option, textarea {
 	font-size: medium;
 }
 
-tt, code, samp {
+tt,
+code,
+samp {
 	font-size: small;
+	font-family: "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 }
 
 .warning {
@@ -135,7 +171,44 @@ tt, code, samp {
 	color: green;
 }
 
-acronym, abbr {
+acronym,
+abbr {
 	border-bottom: 1px dotted gray;
 	cursor: help;
+}
+
+strong {
+    font-weight: bold;
+}
+
+em {
+    font-style: italic;
+}
+
+body div#body > .example {
+	width: 860px;
+	margin: 0 auto;
+}
+
+body div#body {
+	width: 900px;
+	margin: 0 auto;
+}
+
+ul {
+	line-height:1.5em;
+	margin:0 0 0.5em 40px;
+	padding:0;
+	list-style-image:url(bullet.gif);
+}
+
+dl {
+	margin:0 0 0.5em 20px;
+	padding:0;
+}
+
+dt {
+	font-family: "Hiragino Kaku Gothic Pro W3", "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+	font-weight:bold;
+	margin-top:7px;
 }
