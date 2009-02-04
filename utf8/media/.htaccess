@@ -1,0 +1,11 @@
+# You may modify following line to avoid script execution completely.
+# In environment where multiple users are using Nucleus,
+# be sure that any script cannot be executed due to your server setting.
+# Note that this isn't needed when all members are super-admin.
+# スクリプトの実行を避ける為に、適宜追加してください。
+# サーバの設定によっては、アップロードされたファイルをスクリプトとして
+# 実行される恐れがありますので、複数人でNucleusを運用している場合は特に
+# 注意が必要です。
+#
+
+RemoveHandler php cgi pl py rb shtml
