@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
  *     passed through to the add-item form (linkto, popupimg or inline img)
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id: media.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
  * $NucleusJP: media.php,v 1.8.2.1 2007/09/07 07:36:44 kimitake Exp $
  *
@@ -69,10 +69,18 @@ switch($action) {
 	case 'chooseupload':
 	case _MEDIA_UPLOAD_TO:
 	case _MEDIA_UPLOAD_NEW:
-		media_choose();
+		if (!$member->isAdmin() and $CONF['AllowUpload'] != true) {
+			media_doError(_ERROR_DISALLOWED);
+		} else {
+			media_choose();
+		}
 		break;
 	case 'uploadfile':
-		media_upload();
+		if (!$member->isAdmin() and $CONF['AllowUpload'] != true) {
+			media_doError(_ERROR_DISALLOWED);
+		} else {
+			media_upload();
+		}
 		break;
 	case _MEDIA_FILTER_APPLY:
 	case 'selectmedia':
@@ -86,8 +94,6 @@ switch($action) {
 function media_select() {
 	global $member, $CONF, $DIR_MEDIA, $manager;
 
-	media_head();
-
 	// show 10 files + navigation buttons
 	// show msg when no files
 	// show upload form
@@ -98,6 +104,10 @@ function media_select() {
 	if (!$currentCollection || !@is_dir($DIR_MEDIA . $currentCollection))
 		$currentCollection = $member->getID();
 
+	// avoid directory travarsal and accessing invalid directory
+	if (!MEDIA::isValidCollection($currentCollection)) media_doError(_ERROR_DISALLOWED);
+
+	media_head();
 
 	// get collection list
 	$collections = MEDIA::getCollectionList();

@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -11,7 +11,7 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id: index.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
  * $NucleusJP: index.php,v 1.8.2.1 2007/09/07 07:36:09 kimitake Exp $
  */
@@ -26,10 +26,10 @@
 	{
 		// check if files exist and generate an error if so
 		$aFiles = array(
-			'../install.sql' => 'install.sql should be deleted',
-			'../install.php' => 'install.php should be deleted',
-			'upgrades' => 'nucleus/upgrades directory should be deleted',
-			'convert' => 'nucleus/convert directory should be deleted'
+			'../install.sql' => _ERRORS_INSTALLSQL,
+			'../install.php' => _ERRORS_INSTALLPHP,
+			'upgrades' => _ERRORS_UPGRADESDIR,
+			'convert' => _ERRORS_CONVERTDIR
 		);
 		$aFound = array();
 		foreach($aFiles as $fileName => $fileDesc)
@@ -43,8 +43,8 @@
 		if (sizeof($aFound) > 0)
 		{
 			startUpError(
-				'<p>One or more of the Nucleus installation files are still present on the webserver, or are writable.</p><p>You should remove these files or change their permissions to ensure security. Here are the files that were found by Nucleus</p> <ul><li>'. implode($aFound, '</li><li>').'</li></ul><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnSecurityRisk\']</code> in <code>globalfunctions.php</code> to <code>0</code>, or do this at the end of <code>config.php</code>.</p>',
-				'Security Risk'
+				_ERRORS_STARTUPERROR1. implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2,
+				_ERRORS_STARTUPERROR3
 			);
 		}
 	}

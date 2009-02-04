@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * in order to use this.
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id: bookmarklet.php,v 1.10 2008-02-08 09:31:22 kimitake Exp $
  * $NucleusJP: bookmarklet.php,v 1.9.2.1 2007/09/07 07:16:39 kimitake Exp $
  */
@@ -104,10 +104,14 @@ function bm_doAddItem() {
 	$blog =& $manager->getBlog($blogid);
 
 	if ($result['status'] == 'newcategory') {
-		$message = 'アイテムは追加され、新しいカテゴリーが作成されました。 <a href="index.php?action=categoryedit&amp;blogid='.$blogid.'&amp;catid='.$result['catid'].'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">ここをクリックしてカテゴリーの名前と説明を編集してください。</a>';
+		$href      = 'index.php?action=categoryedit&amp;blogid=' . $blogid . '&amp;catid=' . $result['catid'];
+		$onclick   = 'if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;';
+		$title     = _BOOKMARKLET_NEW_WINDOW;
+		$aTag      = ' <a href="' . $href . '" onclick="' . $onclick . '" title="' . $title . '">';
+		$message   = _BOOKMARKLET_NEW_CATEGORY . $aTag . _BOOKMARKLET_NEW_CATEGORY_EDIT . '</a>';
 		$extrahead = '';
 	} elseif ( (postVar('actiontype') == 'addnow') && $blog->sendPing() ) {
-		$message = 'アイテムの追加に成功しました。現在weblogs.comにpingを送っています。しばらくの間お待ちください...';
+		$message = _BOOKMARKLET_SEND_PING;
 		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid) );
 		$extrahead = '<meta http-equiv="refresh" content="1; url=' . htmlspecialchars($pingUrl) . '" />';
 	} else {
@@ -162,10 +166,15 @@ function bm_doEditItem() {
 		case 'changedate':
 			$publish = 1;
 			$wasdraft = 0;
-			$timestamp = mktime(postVar('hour'), postVar('minutes'), 0, postVar('month'), postVar('day'), postVar('year') );
+			$timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year') );
 			break;
 		case 'edit':
 			$publish = 1;
+			$wasdraft = 0;
+			$timestamp = 0;
+			break;
+		case 'backtodrafts':
+			$publish = 0;
 			$wasdraft = 0;
 			$timestamp = 0;
 			break;
@@ -182,7 +191,12 @@ function bm_doEditItem() {
 
 	// show success message
 	if ($catid != intPostVar('catid') ) {
-		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, 'アイテムは追加され、新しいカテゴリーが作成されました。<a href="index.php?action=categoryedit&amp;blogid='.$blog->getID().'&amp;catid='.$catid.'" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">ここをクリックしてカテゴリーの名前と説明を編集してください。</a>', '');
+		$href      = 'index.php?action=categoryedit&amp;blogid=' . $blog->getID() . '&amp;catid=' . $catid;
+		$onclick   = 'if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;';
+		$title     = _BOOKMARKLET_NEW_WINDOW;
+		$aTag      = ' <a href="' . $href . '" onclick="' . $onclick . '" title="' . $title . '">';
+		$message   = _BOOKMARKLET_NEW_CATEGORY . $aTag . _BOOKMARKLET_NEW_CATEGORY_EDIT . '</a>';
+		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _BOOKMARKLET_NEW_CATEGORY . $aTag . _BOOKMARKLET_NEW_CATEGORY_EDIT . '</a>', '');
 	} else {
 		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _ITEM_UPDATED, '');
 	}
@@ -312,7 +326,7 @@ function bm_message($title, $head, $msg, $extrahead = '') {
 	<body>
 	<h1><?php echo $head; ?></h1>
 	<p><?php echo $msg; ?></p>
-	<p><a href="bookmarklet.php" onclick="window.close();"><?php echo _POPUP_CLOSE ?></a></p>
+	<p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();"><?php echo _POPUP_CLOSE ?></a></p>
 	</body>
 	</html>
 

@@ -1,0 +1,5238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
+<head>
+	<!-- $Id: help.html 68 2008-09-06 05:46:46Z yama.kyms $ -->
+    <!-- $NucleusJP: help.html,v 1.15 2007/04/19 08:58:40 kimitake Exp $ -->
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <link rel="index" href="./index.html" />
+    <title>Nucleus管理用ヘルプ</title>
+    <style type="text/css">
+        body, pre, code {
+            font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+            font-size: small;
+            color:#555;
+        }
+
+        h1 {
+            font-size: medium;
+            font-weight:normal;
+            border-bottom: 1px gray dashed;
+            color: #596d9d;
+            text-align: left;
+            letter-spacing:1px;
+        }
+
+        h2 {
+            font-size: small;
+            font-weight:normal;
+            border-color: #94a8c9;
+            border-style: solid;
+            border-width: 0px 0px 0px 5px;
+            text-align: left;
+            letter-spacing:2px;
+            padding: 0 0 0 8px;
+        }
+
+        .page {
+            height: 1000px;
+            text-align: justify;
+            margin-bottom: 100px;
+        }
+
+        pre {
+            background-color: #eee;
+            padding: 8px;
+            font-size: small;
+            line-height:135%;
+            white-space: -moz-pre-wrap; /* Mozilla */
+            white-space: -pre-wrap;     /* Opera 4-6 */
+            white-space: -o-pre-wrap;   /* Opera 7 */
+            white-space: pre-wrap;      /* CSS3 */
+            word-wrap: break-word;      /* IE 5.5+ */
+        }
+
+        .example {
+            background-color: #fff;
+            padding: 8px;
+            border: 1px solid #999;
+            border-right-width: 2px;
+            border-bottom-width: 2px;
+            width:400px;
+        }
+
+        ul.example {
+        margin-left:0px;
+        }
+
+        ul.example li {
+        margin-left:17px;
+        }
+
+        ul.templates {
+            font-size: x-small;
+            line-height: 1.1;
+            list-style: none;
+            text-indent: -20px;
+            margin-left: 20px;
+        }
+
+        ul {
+            text-align: left;
+        }
+
+        a:link, a:visited {
+            color: #1D3565;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        a:hover {
+            background-color: whitesmoke;
+        }
+
+        .deprecated {
+            border: 3px solid red;
+            padding: 5px;
+            font-size: medium;
+        }
+
+        tt, code {
+            font-size: small;
+        }
+
+        table {
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #eee;
+        }
+
+        td {
+            vertical-align: top;
+        }
+
+        .note {
+            background-color: #eee;
+            padding: 5px;
+        }
+
+        .invisible {
+            display: block;
+            visibility: hidden;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+
+        em {
+            font-style: italic;
+        }
+
+        .heading_example {
+            margin: 2px;
+            font-weight: bold;
+            font-size: 1.15em;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="page">
+<h1>Nucleusポップアップ・ヘルプ</h1>
+<p>ファイル読み込み中、しばらく待ちください（ファイルサイズはおよそ170KBです）。</p>
+</div>
+
+
+<div class="page">
+<a name="future" id="future"><span class="invisible">future</span></a>
+<a name="allowpastposting" id="allowpastposting"><span class="invisible">allowpastposting</span></a>
+<h1>後で追加/過去の日時での投稿</h1>
+<h2>後で追加</h2>
+<p>アイテム追加フォームの「後で追加」オプションをチェックすることで、アイテムを指定した時間きっかりに公開することができます。指定された時間が来るまで、アイテムはサイトの公開された部分で見られることはありません。</p>
+<p>この日時は、アイテムを追加するブログの「過去の日時での投稿を許可する」オプションが有効である場合を除いて、<strong>未来のものでなくてはなりません</strong>。</p>
+<h2>過去の日時での投稿を許可する</h2>
+<p>この設定を有効にすると、アイテムを追加する時に、アイテムの投稿日時を過去に指定することができるようになります。また、既存のアイテムの投稿日時を編集することもできるようになります。</p>
+</div>
+
+<div class="page"><a name="changedate" id="changedate"><span class="invisible">allowpastposting</span></a>
+<h1>投稿日時の変更</h1>
+<p>
+「タイムスタンプを更新」オプションにより、アイテムの投稿された日付や時間を変更することができます。アイテムの内容を変更した時に、「タイムスタンプを更新」することで記事をブログののトップに戻すことができます。</p>
+<p>しかし、そのアイテム独自のIDは変更されませんので、訪問者はアイテムのIDから、そのアイテムが編集後に投稿時間が変更されたものだと気づくことができます。</p>
+</div>
+
+
+<div class="page"><a name="autosave"></a>
+<h1>Autosave</h1>
+<p>The Autosave function saves an item as a <a href="#draft">draft</a> after 10 minutes editing. It should avoid that unsaved changes get lost. It is usefull for users that work for a long time on an item and often forget to save their work.</p>
+<p>If you want to invoke Autosave before the 10 minutes are past, you can press the '<strong>Auto save now</strong>' button at the end of the form.</p>
+<p>The Autosave function can be enabled and disabled in the member options.</p>
+</div>
+
+
+<div class="page"><a name="draft" id="draft"><span class="invisible">allowpastposting</span></a>
+<h1>ドラフト(Drafts/草稿)</h1>
+<p>
+ドラフト状態のアイテムはブログの公開されたところでは閲覧することができません。推敲に時間をかけたい時や、、実際に投稿するまでに、少し時間を空けたいときなどに役に立つでしょう。ドラフト状態のアイテムは「管理ホーム」にリストとして表示されるので、時間があるときに、いつでも作業を再開することが可能です。</p>
+<p>ドラフト状態のアイテムを編集する際に、「<strong>今すぐ追加</strong>」のラジオボタンを選んで「保存」ボタンを押すと、ドラフト状態が解除されてブログに公開されます。
+</p>
+</div>
+
+<div class="page"><a name="extended" id="extended"><span class="invisible">extended</span></a>
+<h1>「続き」部分</h1>
+<p>
+アイテムには、長文記事を分割して表示するために、オプションとして「続き」部分があります。例えば、記事がブログのメインページに置くには長すぎる場合、導入を「本文」部分に、残りを「続き」部分に書くことができます。テンプレートによって、表示の形態は変わってきますが、ブログのメインページを閲覧すると「続きを読む」というリンクが出現します。
+</p>
+<p>
+もしアイテムの単なる<em>概略</em>として導入部分を書きたいのなら、<a href="#templatevar-smartbody">smartbody</a>というテンプレート変数を用いることで、「本文」と「続き」の表示を分けることも可能です。
+</p>
+</div>
+
+<div class="page"><a name="shortblogname" id="shortblogname"><span class="invisible">shortblogname</span></a>
+<h1>Blogの短縮名</h1>
+<p>
+「Blogの短縮名」は主に管理領域で、どのアイテムがどのブログと結びついているのか示すために使われます。
+</p>
+<p>
+また、新規ブログを有効にするための代替indexファイルでも用いられます（以下は「Blogの短縮名」が「myshortblogname」の時の呼び出しファイルの例）：
+</p>
+<pre>
+&lt;?php
+    include('./config.php');
+    selectBlog('myshortblogname');
+    selector();
+?&gt;
+</pre>
+</div>
+
+<div class="page"><a name="blogdefaultskin" id="blogdefaultskin"><span class="invisible">blogdefaultskin</span></a>
+<h1>標準のスキン</h1>
+<p>
+ブログが表示される時には、ブログごとの「設定」で選択された「標準のスキン」が使用されます。選択できるのは一つだけです。（URLの引数として指定することで、別のスキンで表示させることは可能です）
+</p>
+</div>
+
+
+<div class="page"><a name="blognotify" id="blognotify"><span class="invisible">blognotify</span></a>
+<h1>通知するメールアドレス</h1>
+<p>
+このオプションには、新しくコメントが追加された時などに通知するメールアドレスを、一つあるいは複数設定することができます。もし通知が不要なら空っぽにしておいてください。メールアドレスは、当然ですが、有効なものでなくてはなりません。
+</p>
+<p>
+複数のメールアドレスを設定する場合には、各メールアドレスをセミコロン(<strong>;</strong>)で区切ってください。
+</p>
+<div class="note">
+<strong>注意：</strong>設定フィールドの最大長は128文字です。セミコロン(<strong>;</strong>)を含んだ合計の文字数が128文字を超えない限り、メールアドレスはいくつでも設定することができます。
+</div>
+<div class="note">
+<strong>注意：</strong>通知先に、メンバー登録に使われているメールアドレスを設定した場合、自分で書いたアイテムやコメントの通知はされません。自分で書いたことは知っているはずですから、問題にはならないでしょう。
+</div>
+</div>
+
+<div class="page"><a name="blogmaxcomments" id="blogmaxcomments"><span class="invisible">blogmaxcomments</span></a>
+<h1>コメントの最大量</h1>
+<p>
+<em>メインの目次ページ</em>に表示するコメントの最大数です。<strong>これはコメント可能な最大数を制限するものではありません</strong>。個別アイテムページでは、設定した最大数を超えていても全てのコメントが表示されます。
+</p>
+<p class="note"><strong>注意：</strong>
+テンプレート内部では、テンプレート変数<a href="#templatevar-comments">comments</a>の引数によってここでの値が上書きされます。
+</p>
+</div>
+
+<div class="page"><a name="blogtimeoffset" id="blogtimeoffset"><span class="invisible">blogtimeoffset</span></a>
+<h1>サーバ時刻との時差</h1>
+<p>
+もしサーバの時刻とあなたの住んでいる地域の時刻とが一致していなければ、ここにサーバとの時差を入力することで、Nucleus内部の時刻をあなたの住んでいる地域の時刻に合わせることができます（マイナス時差の地域に住んでいる場合は、マイナス記号付きで入力します）。参考のために現在のサーバの時刻が表示されています。
+</p>
+<h2>実例</h2>
+<p>あなたの住んでいる地域の時刻が20:35で、表示されているサーバの時刻が14:35のとき、ブログの時刻を20:35にするためには「サーバ時刻との時差」を6.0に設定します。
+</p>
+<p class="note"><strong>注意：</strong>30分刻みでの時差のある地域のために、0.5刻みで設定することができます。例えば「サーバ時刻との時差」を<strong>1.5</strong>に設定すると、1時間30分の補正となります。</p>
+</div>
+
+<div class="page"><a name="blogupdatefile" id="blogupdatefile"><span class="invisible">blogupdatefile</span></a>
+<h1>自動更新するファイル</h1>
+<p>
+ブログに新しいアイテムが追加された時に、上書きするファイルのパスを入力します。このファイルは、新しいアイテムが追加されるたびに最終変更時のタイムスタンプが上書きされ、外部からはこのファイルを参照することで、ブログに更新があったかどうかをチェックすることができます。このファイルは訪問者によるコメントが追加された時や、スキン/テンプレートに変更を加えた時には更新されません。アイテムが追加されてブログの記事に変更があったときに更新されるので、「Weblogの更新状況」等を作成するサービスに使うことができます。
+</p>
+<p>
+自動更新されるファイルが必要ないときは、フィールドを空っぽにしておいてください。
+</p>
+<p>
+自動更新されるファイルの場所は管理領域からの相対パスでも指定することが可能ですが、<code> /path/to/your/website/update.txt</code> のようにより確実な絶対パスを使った方が良いでしょう。また自動更新されるファイルを作成し、かつそのファイルに書き込みができるように、自動更新ファイルとそれを作成するディレクトリの<a href="tips.html#filepermissions" onclick="window.open(this.href);return false;" onkeypress="window.open(this.href);return false;" class="out" title="quick guide on changing file permissions">パーミッションを0666</a>にしてください。
+</p>
+</div>
+
+<div class="page"><a name="teamadmin" id="teamadmin"><span class="invisible">teamadmin</span></a>
+<h1>Blogの管理者</h1>
+<p>
+Blogの管理者は次のような追加権限をもちます：
+</p>
+
+<ul>
+    <li>チームの操作</li>
+    <li>Blog設定の変更</li>
+    <li>投稿者に関係なく、該当Blogのどのアイテムでも編集や削除が可能</li>
+    <li>Blogの削除</li>
+</ul>
+
+<p>
+一つのブログは複数の管理者を持つことができます。各ブログには、最低でも一人の管理者がいなくてはなりません。
+</p>
+</div>
+
+
+<div class="page"><a name="superadmin" id="superadmin"><span class="invisible">superadmin</span></a>
+<h1>管理者の特権</h1>
+
+<p>
+<em>super-admin（最高管理者）</em>と呼ばれ、ブログのチームへの所属とは無関係に、全ての機能と全てのブログに<strong>フルアクセス</strong>できます。
+</p>
+
+<p>
+またsuper-adminは、ブログの作成、グローバル設定の変更、テンプレートの書き換え、スキンの書き換え、メンバーの操作（メンバーの作成/編集/削除）を行う権限があります。
+</p>
+
+<p>
+super-adminとなるのは通常サイトの管理者ただ一人でしょう。
+</p>
+
+</div>
+
+<div class="page"><a name="canlogin" id="canlogin"><span class="invisible">canlogin</span></a>
+<h1>管理者領域へのログイン</h1>
+<p>
+<a href="#superadmin" title="Administrator Privileges">super-admin</a>はそれぞれのメンバーを、管理領域へのログインを許可しないよう設定できます。 
+</p>
+</div>
+
+<div class="page"><a name="defaultblog" id="defaultblog"><span class="invisible">defaultblog</span></a>
+<h1>既定のBlog</h1>
+<p>
+サイトへの接続時にブログが指定されていない場合に表示されるブログです。
+</p>
+</div>
+
+<div class="page"><a name="baseskin" id="baseskin"><span class="invisible">baseskin</span></a>
+<h1>基本のスキン</h1>
+
+<p>適用すべきスキンが見つからなかった時に代用するスキンを設定します。これはスキン・パーツが設定されていなかったり、スキンが明確に指定されていなかったりした時に起こります。</p>
+<p>ほとんどのユーザーは、この設定を気にする必要がありません。</p>
+</div>
+
+<div class="page"><a name="cookies" id="cookies"><span class="invisible">cookies</span></a>
+<h1>Cookie設定</h1>
+
+<h2>ログインCookieの有効期間</h2>
+<p>
+デフォルトでは、メンバーがログインするとブラウザにcookieが保存され、翌日に戻ってきたときに再びログインする必要がなくなります。クッキーの有効期間によって、いつ無効になるか決定されます。</p>
+<ul>
+    <li><strong>セッションごと</strong> ? ブラウザを終了させるとcookieは削除されます。</li>
+    <li><strong>一ヶ月</strong> ? 一ヶ月続けてサイトか管理領域を訪れないというようなことが無い限り、cookieはコンピュータに残り続けます。このオプションを使えば、おそらく再ログインする必要はなくなるでしょう。（自分でログアウトしたときや、他のコンピュータからログインするときは別ですが）</li>
+</ul>
+
+<h2>CookieパスとCookieドメイン</h2>
+<p>
+これらは取り高度な設定です。通常は、cookieパスは単純にスラッシュ（'/'）、cookieドメインは空っぽの状態から変更する必要はありません。
+</p>
+
+<h2>セキュアCookie</h2>
+<p>
+通常は「いいえ」に設定してください。HTTPSのurlを用いており、cookieの送受信をhttps接続を通してのみに限定したい時だけ、この設定を「はい」にします。
+</p>
+
+<h2>最終訪問日時Cookieの保存</h2>
+<p>
+訪問者が最後に訪れた時間をcookieに保存させるように設定することができます。これによって、<a href="#templatenew">新規アイテム</a>の隣にマークを付けることができます。
+</p>
+
+</div>
+
+
+<div class="page"><a name="language" id="language"><span class="invisible">language</span></a>
+<h1>言語</h1>
+<p>
+Nucleusが生成する個々のメンバー用のコンテンツを作成するときに用いられる言語を選択することができます。Nucleusによって生成されるコンテンツには、管理領域、エラーメッセージ、スキンにおけるフォームなどが含まれます。
+</p>
+
+<p>
+言語の選択を行う場所は二ヶ所あります。一箇所目は「グローバル設定」で、デフォルトで用いられる「既定の言語」を設定します。もう一箇所は、各「メンバーの編集」ページの設定でメンバー毎ログイン時の使用言語を設定することができます。
+
+</p>
+
+<p>
+これら両方の設定が無効の場合、英語がデフォルトの言語として用いられます
+</p>
+
+<p class="note"><strong>注意：</strong> 追加の言語ファイルは<a href="http://www.nucleuscms.org/" onclick="window.open(this.href);return false;" onkeypress="window.open(this.href);return false;" class="out" title="Nucleus CMS Website">Nucleusのウェブサイト</a>からダウンロードできます。（新規ウィンドウが開きます）</p>
+
+</div>
+
+<div class="page"><a name="allowaccountcreation" id="allowaccountcreation"><span class="invisible">allowaccountcreation</span></a>
+<h1>アカウントの作成</h1>
+<p>
+訪問者に自身のメンバーアカウント作成を許可することができます。新規メンバーは管理者がチームに加えるまでは、ブログにアイテムを追加することはできませんが、自分のコメントを削除したり変更したりすることが可能です。<a href="#allowaccountcreation">新規メンバーのログイン許可</a>を許可している場合、管理領域にログインして自分の設定を変更することもできます。
+</p>
+</div>
+
+<div class="page"><a name="allownewmemberlogin" id="allownewmemberlogin"><span class="invisible">allownewmemberlogin</span></a>
+<h1>新規メンバーのログイン許可</h1>
+<p>
+この設定は、訪問者による<a href="#allowaccountcreation">アカウントの作成</a>を許可している場合に、その方法で作られたアカウントを使用して<a href="#canlogin">管理領域にログイン</a>できるかどうかを設定します。
+</p>
+</div>
+
+
+<div class="page"><a name="messageservice" id="messageservice"><span class="invisible">messageservice</span></a>
+<h1>メッセージサービス</h1>
+
+<h2>メンバー間メッセージサービス</h2>
+<p>
+メンバーのプライバシーのために、メールアドレスを隠したままで、スクリプトを通してメンバー同士でメールメッセージの送信ができます。送信されたメッセージには両ユーザーのメールアドレスが含まれますので、その後は通常のメールを用いた連絡を続けることができます。このサービスは無効にすることが可能です。
+</p>
+
+<h2>メンバー以外のメッセージサービス</h2>
+<p>
+デフォルトでは非メンバーは、入力されたメールアドレスが有効なものかチェックする方法が無いために、メッセージサービスを使用できません。「メンバー以外からのメッセージ送付を許可」することによってこの制限を緩和できます。非メンバーはメッセージの投函時にメールアドレスを尋ねられ、そのアドレスがメールのヘッダー<code>From:</code>に表示されることになります。
+</p>
+
+</div>
+
+<div class="page"><a name="disablesite" id="disablesite"><span class="invisible">disablesite</span></a>
+<h1>サイトの閉鎖</h1>
+<p>
+Nucleusのサイト全体を閉鎖することが可能です。なんらかの設定調整を行うときに、あるいは何か恐ろしい間違いが起きた時にこれを実行したいと思うかもしれません:-)
+</p>
+<p>
+チェックボックスを「はい」に設定した場合に、訪問者はここで設定したURLにリダイレクトされます。
+</p>
+<p>
+例外：<strong>管理領域</strong>は閉鎖していない時と同様に利用可能であり、<strong><a href="#superadmin">最高管理者</a></strong>は通常通りサイト全体を閲覧することができます。（あとでサイトを再開することを忘れないでください;-)）
+</p>
+</div>
+
+
+<div class="page"><a name="urlmode" id="urlmode"><span class="invisible">urlmode</span></a>
+<h1>URLモード</h1>
+<p>このオプションを用いることにより、URLスタイルを切り替え可能です：</p>
+<ul>
+    <li><strong>Normal</strong>: URLは次のようになります <code>http://example.jp/index.php?itemid=1234</code></li>
+    <li><strong>Fancy</strong>: URLは次のようになります <code>http://example.jp/item/1234</code></li>
+</ul>
+<p class="note"><strong>注意：</strong>「Fancy URL」モードで動作するようにするためには、この設定のほかにもいくつかの作業が必要になります。詳しい解説は<a href="tips.html" class="out" onclick="window.open(this.href);return false;" onkeypress="window.open(this.href);return false;">Tips &amp; Suggestions</a>に記述されています。（新規ウィンドウが開きます）</p>
+
+</div>
+
+
+<div class="page"><a name="defaultlistsize" id="defaultlistsize"><span class="invisible">defaultlistsize</span></a>
+<h1>一覧の既定の表示数</h1>
+<p>一覧表示画面で一度に表示するブログ、アイテム、コメントの数を入力します。初期値は｢10｣です。</p>
+</div>
+
+
+<div class="page"><a name="debugvars" id="debugvars"><span class="invisible">debugvars</span></a>
+<h1>デバッグモード</h1>
+<p>｢はい｣に設定すると、システム情報を表示したり、対応しているプラグインをデバッグモードにしたりできます。</p>
+</div>
+
+
+<div class="page"><a name="templateitems" id="templateitems"><span class="invisible">templateitems</span></a>
+<h1>テンプレート：アイテム</h1>
+<p>
+アイテム表示時に、それぞれのアイテムで次のセットが繰り返されます：
+</p>
+
+<pre>
+アイテムのヘッダー
+アイテムの本体
+アイテムのフッター
+</pre>
+
+<p>「ヘッダー」、「本体」「フッター」の3つのブロックは、それぞれテンプレートの一部として、どのような見た目になるのかを定義します。</p>
+
+<h2>変数</h2>
+
+<p>これらのテンプレート内では、アイテムのデータを挿入するのに<a href="#templatevars-overview" title="Find out which variables are available">テンプレート変数</a>とよばれる系列が利用できます。</p>
+
+<h2>例</h2>
+<p><a href="#templateitemsexample">テンプレート：アイテムの例</a></p>
+
+</div>
+
+<div class="page"><a name="templateitemsexample" id="templateitemsexample"><span class="invisible">templateitemsexample</span></a>
+<h1>テンプレート：アイテムの例</h1>
+<p>
+「アイテムの本体」テンプレートの一例です：
+</p>
+
+<pre>&lt;h1&gt;&lt;%title%&gt;&lt;/h1&gt;
+
+&lt;p&gt;&lt;%body%&gt;&lt;/p&gt;
+
+&lt;div class="metadata"&gt;
+ &lt;a href="&lt;%itemlink%&gt;"&gt;link&lt;/a&gt; -
+ &lt;%date%&gt; &lt;%time%&gt; -
+ &lt;a href="&lt;%authorlink%&gt;"&gt;&lt;%author%&gt;&lt;/a&gt; -
+ &lt;%comments%&gt;
+&lt;/div&gt;</pre>
+
+<p>結果は次のようになります：</p>
+
+<div class="example">
+<span class="heading_example">ここはアイテムのタイトルです</span>
+<p style="margin: 2px; padding: 0px;">ここはアイテムのテキスト部分です</p>
+<div style="font-style: italic; margin: 2px;">
+ <a href="#templateitemsexample">link</a> -
+ September 5th 2008 18:51 -
+ <a href="#templateitemsexample">カルマ</a> -
+ <a href="#templateitemsexample">no comments</a>
+</div>
+</div>
+
+</div>
+
+
+<div class="page"><a name="templatecomments" id="templatecomments"><span class="invisible">templatecomments</span></a>
+<h1>テンプレート：コメント</h1>
+
+<p>コメントブロックは3つの要素で構成されています。</p>
+
+<ol>
+    <li>
+        コメントが表示されるとき（ブログの設定、もしくは「コメント本体」のテンプレート内の&lt;%comments%&gt;の引数で許可されているコメントの最大数を下回っているとき）
+<pre>コメントのヘッダー
+  コメントの本体（コメントの数だけ繰り返し）
+コメントのフッター</pre>
+    </li>
+    <li>
+        コメントがまったく無いとき
+<pre>
+コメントが無い時
+</pre>
+    </li>
+    <li>
+        コメントがあるが、許可されている最大数を上回っているとき（個別アイテムページでのみ表示されます）
+<pre>
+コメントが多すぎる時
+</pre>
+    </li>
+</ol>
+
+<p>コメントのテンプレート内部では、<a href="#templatevars-comments" title="Overview of comments-related template variables">コメント関連テンプレート変数</a>が利用できます。</p>
+
+</div>
+
+<div class="page">
+<a name="templatecommentheaders" id="templatecommentheaders"><span class="invisible">templatecommentheaders</span></a>
+<a name="templatecommentfooters" id="templatecommentfooters"><span class="invisible">templatecommentfooters</span></a>
+<h1>テンプレート：コメントのヘッダーとフッター</h1>
+
+<h2>特徴</h2>
+
+<p>「コメントの本体」はコメント一つごとに繰り返されますが、ヘッダーとフッターは一度しか表示されません。出力は次のようになります：</p>
+<pre>コメントのヘッダー
+  コメントの本体 1
+  コメントの本体 2
+  コメントの本体 3
+コメントのフッター</pre>
+<p>これらのテンプレート内では、<a href="#templatevars-comments" title="Overview of comments-related template variables">コメント関連テンプレート変数</a>が利用できます。</p>
+
+<h2>例</h2>
+
+<p>コメントのヘッダー:</p>
+<pre>&lt;ul&gt;</pre>
+<p>コメントの本体:</p>
+<pre>&lt;li&gt;&lt;%user%&gt;: &lt;%body%&gt;&lt;/li&gt;</pre>
+<p>コメントのフッター</p>
+<pre>&lt;/ul&gt;</pre>
+<p>結果は次のようになります</p>
+
+<ul class="example">
+    <li>hsur: そうでしたね。なんでソコ抱き合ってんの・・・っていう感じで</li>
+    <li>satona: ぼくは、センセーとしましたよ。ハグ。</li>
+    <li>hsur: ぇ！</li>
+</ul>
+
+</div>
+
+<div class="page"><a name="templatemorelink" id="templatemorelink"><span class="invisible">templatemorelink</span></a>
+<h1>テンプレート：続きへのリンク</h1>
+<p>
+これはアイテムのテンプレート（アイテムのヘッダー、アイテムの本体、アイテムのフッターの3つ）で利用できるテンプレート変数、"morelink"がどのように表示されるかを決めるものです。<a href="#templatevars-overview">利用可能な変数</a>はアイテムのテンプレートと同じです。
+</p>
+<p>
+もしアイテムに「続き」の部分が存在しない場合、テンプレート変数<code>&lt;%morelink%&gt;</code>は無視されます。
+</p>
+
+<h2>例</h2>
+<pre><code>&lt;a href="&lt;%itemlink%&gt;"&gt;[続きを読む！]&lt;/a&gt;</code></pre>
+
+</div>
+
+<div class="page"><a name="templatearchivelists" id="templatearchivelists"><span class="invisible">templatearchivelists</span></a>
+
+<h1>テンプレート：アーカイブリスト</h1>
+
+<p>過去ログのリストは、以下のようなリスト体裁をとります：</p>
+
+<pre>アーカイブリストヘッダー
+  アーカイブリスト本体（アーカイブごとに繰り返し）
+アーカイブリストフッター</pre>
+
+<p>
+利用できる変数：（ヘッダーとフッターでは<code>blogid</code>のみが使用できます）
+</p>
+
+<table summary="Template::Archive lists"><tr>
+    <th abbr="名前">名前</th>
+    <th abbr="説明">説明</th>
+</tr><tr>
+    <td>blogid</td>
+    <td>weblogのID</td>
+</tr><tr>
+    <td>archivelink</td>
+    <td>アーカイブへのリンク。<code>&lt;a href="&lt;%archivelink%&gt;"&gt;</code>のように使用します。</td>
+</tr><tr>
+    <td>month</td>
+    <td>月の数値（01-12の2文字表記）</td>
+</tr><tr>
+    <td>year</td>
+    <td>年（西暦の4文字表記）</td>
+</tr><tr>
+    <td>day</td>
+    <td>月の中での日付（二文字表記。日ごと表示の時のみ）</td>
+</tr></table>
+
+<p><a href="#strftime">strftime</a>変数を使用することで、日付の表記を自由にカスタマイズすることができます。この変数が複雑すぎると感じるなら、次のように記述すると良いでしょう。</p>
+
+<pre><code>&lt;a href="&lt;%archivelink%&gt;"&gt;%B, %Y&lt;/a&gt;&lt;br /&gt;</code></pre>
+
+
+<p>出力される時刻と言語をあなたの住んでいる地域にあわせるために、<a href="#templatelocale">locale</a>を適切に設定してください。</p>
+
+</div>
+
+
+
+
+<div class="page"><a name="templatecategorylists" id="templatecategorylists"><span class="invisible">templatecategorylists</span></a>
+<h1>テンプレート：カテゴリーリスト</h1>
+
+<p>カテゴリーリストは下の表のようにフォーマットされます：</p>
+
+<pre>カテゴリーリストヘッダー
+  カテゴリーリストアイテム（繰り返し）
+カテゴリーリストフッター</pre>
+
+<p>利用可能な変数：（ヘッダーとフッターでは<code>blogid</code>、<code> blogurl</code>、<code>self</code>のみが許可されています）</p>
+
+<table summary="Template::Category lists"><tr>
+    <th abbr="名前">名前</th>
+    <th abbr="説明">説明</th>
+</tr><tr>
+    <td>blogid</td>
+    <td>weblogのID</td>
+</tr><tr>
+    <td>blogurl</td>
+    <td>blogのURL（blogごとの「設定」で定義される）</td>
+</tr><tr>
+    <td>self</td>
+    <td>パラメーター無しの現在のページ（例えば<code>index.php</code>）</td>
+</tr><tr>
+    <td>catlink</td>
+    <td>該当カテゴリーの新しいアイテムへのリンク。これにより&lt;a href=".."&gt;タグを埋め込むことができる。</td>
+</tr><tr>
+    <td>catid</td>
+    <td>カテゴリーのID</td>
+</tr><tr>
+    <td>catname</td>
+    <td>カテゴリー名</td>
+</tr><tr>
+    <td>catdesc</td>
+    <td>カテゴリーの説明</td>
+</tr></table>
+
+<p><a href="#categorylistexample">カテゴリーリストの例を見る</a></p>
+
+</div>
+
+<div class="page"><a name="categorylistexample" id="categorylistexample"><span class="invisible">categorylistexample</span></a>
+<h1>テンプレート：カテゴリーリストの例</h1>
+<p>
+<a href="#templatecategorylists">「テンプレート：カテゴリーリスト」の解説に戻る</a>
+</p>
+
+<h2>カテゴリーリストヘッダー</h2>
+<pre><code>&lt;ul&gt;
+  &lt;li&gt;&lt;a href="&lt;blogurl%&gt;"&gt;まとめて表示&lt;/a&gt;&lt; /li&gt;</code></pre>
+
+<h2>カテゴリーリストアイテム</h2>
+<pre><code>&lt;li&gt;&lt;a href="&lt;%catlink%&gt;"&gt;&lt;%catname%&gt;&lt;/a&gt;&lt;/li&gt;</code></pre>
+
+<h2>カテゴリーリストフッター</h2>
+<pre><code>&lt;/ul&gt;</code></pre>
+
+<h2>結果はこうなります：</h2>
+
+<ul class="example">
+    <li><a href="#categorylistexample">まとめて表示</a></li>
+    <li><a href="#categorylistexample">あなたのカテゴリー</a></li>
+    <li><a href="#categorylistexample">わたしのカテゴリー</a></li>
+</ul>
+
+</div>
+
+<div class="page"><a name="templatebloglists" id="templatebloglists"><span class="invisible">templatebloglists</span></a>
+<h1>テンプレート：ブログリスト</h1>
+
+<p>ブログリストは次の様に出力されます：</p>
+
+<pre>ブログリストヘッダー
+  ブログリストアイテム（存在するブログの数だけ繰り返し）
+ブログリストフッター</pre>
+
+<p>ブログリストアイテムで利用可能な変数：</p>
+
+<table summary="Template::Blog lists item"><tr>
+    <th abbr="名前">名前</th>
+    <th abbr="説明">説明</th>
+</tr><tr>
+    <td>bloglink</td>
+    <td>ブログのURL（Nucleusコアによって与えられた引数から生成されるもの）<code>&lt;a href="&lt;%bloglink%&gt;"&gt;</code>のように使用します。</td>
+</tr><tr>
+	<td>blogurl</td>
+	<td>ブログのURL（「Blog設定」の「URL」で設定されているもの）<code>&lt;a href="&lt;%bloglink%&gt;"&gt;</code>のように使用します。</td>
+</tr><tr>
+    <td>blogdesc</td>
+    <td>ブログの説明</td>
+</tr><tr>
+    <td>blogname</td>
+    <td>ブログ名(第二引数に『shortname』が指定された場合は『ブログの短縮名』)</td>
+</tr></table>
+
+<p>ヘッダーとフッターでのみ使用できる変数：</p>
+
+<table summary="Template::Blog lists header/footer"><tr>
+    <th abbr="名前">名前</th>
+    <th abbr="説明">説明</th>
+</tr><tr>
+    <td>siteurl</td>
+    <td>グローバル設定の「サイトのURL」</td>
+</tr><tr>
+    <td>sitename</td>
+    <td>グローバル設定の「サイト名」</td>
+</tr></table>
+
+<p><a href="#bloglistexample">ブログリストの例を見る</a></p>
+
+</div>
+
+<div class="page"><a name="bloglistexample" id="bloglistexample"><span class="invisible">bloglistexample</span></a>
+<h1>テンプレート：ブログリストの例</h1>
+<p>
+<a href="#templatebloglists">「テンプレート：ブログリスト」の解説に戻る</a>
+</p>
+
+<h2>ブログリストヘッダー</h2>
+<pre><code>&lt;ul&gt;
+  &lt;li&gt;&lt;a href="&lt;%siteurl%&gt;"&gt;&lt;%sitename%&gt;&lt;/a&gt;&lt;/li&gt;</code></pre>
+
+<h2>ブログリストアイテム</h2>
+<pre><code>&lt;li&gt;&lt;a href="&lt;%bloglink%&gt;" title="&lt;%blogdesc%&gt;"&gt;&lt;%blogname%&gt;&lt;/a&gt;&lt;/li&gt;</code></pre>
+
+<h2>ブログリストフッター</h2>
+<pre><code>&lt;/ul&gt;</code></pre>
+
+<h2>表示は次のようになります</h2>
+
+<ul class="example">
+    <li><a href="#bloglistexample">あなたのサイト</a></li>
+    <li><a href="#bloglistexample" title="あなたのブログの説明">あなたのブログ</a></li>
+    <li><a href="#bloglistexample" title="わたしのブログの説明">わたしのブログ</a></li>
+</ul>
+
+</div>
+
+
+
+
+
+
+
+<div class="page"><a name="templatelocale" id="templatelocale"><span class="invisible">templatelocale</span></a>
+<h1>テンプレート：Locale</h1>
+<p>
+これは実際のところテンプレートの部品というより設定です。設定することによって、日付と時刻のローカライズを選択できます。月や曜日などは要求された言語での表示になるでしょう。
+</p>
+
+<p>
+使える変数は、Nucleusが動作しているコンピュータによります。使える変数をいくつかあげますと･･･：
+</p>
+
+<ul>
+    <li><strong>en</strong>：英語</li>
+    <li><strong>dutch</strong>：オランダ語</li>
+    <li><strong>ja_JP</strong>：日本語</li>
+    <li>...</li>
+</ul>
+
+<p>
+strftimeに関するより詳しい情報は、<a href="http://www.opengroup.org/onlinepubs/7908799/xsh/strftime.html" onclick="window.open(this.href);return false;" onkeypress="window.open(this.href);return false;" class="out" title="Open Group specification">Open Group Specification</a>にあります。（新規ウィンドウが開きます）
+</p>
+
+<p>
+locale は<a href="#templatedatetime">日付と時刻のフォーマット</a>、<a href="#templatedateheads">日付ヘッダー</a>、<a href="#templatearchivelists">アーカイブリスト</a>で利用されます。
+</p>
+
+</div>
+
+<div class="page"><a name="templatedatetime" id="templatedatetime"><span class="invisible">templatedatetime</span></a>
+<h1>テンプレート：日付と時刻のフォーマット</h1>
+<p>
+これらは<code>&lt;%date%&gt;</code>と<code> &lt;%time%&gt;</code>という変数（詳細は<a href="#templatevars-overview">テンプレート変数</a>を参照）の日付と時刻の表示方法を設定します。フォーマットは<a href="#templatelocale">Locale</a>にも左右されます。
+</p>
+
+<p>
+利用できる変数の<a href="#strftime">詳細な情報はこちら</a>。もし手っ取り早く始めたいのなら、日付フォーマットに"%x"を、時刻フォーマットに"%X"をお使いください。
+</p>
+
+</div>
+
+<div class="page"><a name="templatedateheads" id="templatedateheads"><span class="invisible">templatedateheads</span></a>
+<h1>テンプレート：日付のヘッダー/フッター</h1>
+
+<p>
+日付のヘッダーと日付のフッターは、日付と時刻の変数を入力することができます。利用できる変数の詳細情報は<a href="#strftime">こちらにあります</a>。もし手っ取り早く始めたいのなら、日付フォーマットとして"%x"を使ってください。日付フォーマットで使われる言語は、テンプレートの<a href="#templatelocale">Locale</a>で設定できます。</p>
+
+<p>
+日付のヘッダーにテンプレート変数&lt;%%daylink%%&gt;を含めることによって、その日のアーカイブへのリンクを挿入できます。<strong>'%'が二つ続けてあることに注意！変数として展開される%dを無効にするために必要な措置です。 </strong>同様に、このテンプレート内で'%'という文字を使いたい場合は、二つ重ねて"%%"と記述しないとサイトには表示されません。 
+</p>
+
+<p>
+日付のヘッダーのサンプル：
+</p>
+
+<pre>
+&lt;div class="day"&gt;
+&lt;h1&gt;%d %B&lt;/h1&gt;
+</pre>
+
+<p>
+日付のフッターのサンプル：
+</p>
+
+<pre>
+&lt;/div&gt;
+</pre>
+
+<p>daylinkを用いた日付ヘッダーの例：</p>
+
+<pre>
+&lt;div class="day"&gt;
+&lt;h1&gt;%d %B&lt;/h1&gt;
+&lt;a href="&lt;%%daylink%%&gt;"&gt;（アーカイブ）&lt;/a&gt;
+</pre>
+
+</div>
+
+<div class="page"><a name="templatehighlight" id="templatehighlight"><span class="invisible">templatehighlight</span></a>
+<h1>テンプレート：ハイライト表示</h1>
+<p>
+検索結果をハイライト表示するために、検索文字列を挟み込む(X)HTMLタグを入力します。"\0"と記述した場所が、検索文字列に置き換えられます。また、ここで入力された文字列は、プログラム中で<a href="http://jp.php.net/manual/ja/reference.pcre.pattern.syntax.php" onclick="window.open(this.href);return false;" onkeypress="window.open(this.href);return false;" class="out">正規表現のパターン構文数</a>（新しいウィンドウが開きます）としてそのまま使用されますので、いくつかの記号はバックスラッシュを直前に置くことでエスケープしなければなりません。
+</p>
+
+<h2>例</h2>
+
+<pre><code>&lt;span style='background-color:yellow'&gt;\0&lt;/span&gt;</code></pre>
+
+</div>
+
+<div class="page"><a name="templatenothingfound" id="templatenothingfound"><span class="invisible">templatenothingfound</span></a>
+<h1>テンプレート：検索で何も見つからなかった場合</h1>
+
+<p>
+検索が実行され結果何も見つからなかった場合に表示されます。
+</p>
+
+<p>利用可能な変数：</p>
+
+<table summary="Template::othing found"><tr>
+    <th abbr="名前">名前</th>
+    <th abbr="説明">説明</th>
+</tr><tr>
+    <td>blogid</td>
+    <td>ブログのID</td>
+</tr><tr>
+    <td>query</td>
+    <td>検索に用いられた文字列</td>
+</tr></table>
+
+<h2>例</h2>
+
+<pre><code>&lt;b&gt;&lt;%query%&gt;&lt;/b&gt;に該当する検索結果はありませんでした</code></pre>
+
+</div>
+
+<div class="page"><a name="templatecommentbody" id="templatecommentbody"><span class="invisible">templatecommentbody</span></a>
+<h1>テンプレート：コメントの本体</h1>
+<p>
+このテンプレート・パーツは単独のコメント表示に使われます。このテンプレートでは、<a href="#templatevars-comments" title="Overview of comments-related template variables">コメント関連テンプレート変数</a>が利用できます。</p>
+
+<h2>例</h2>
+<pre><code>&lt;h2&gt;&lt;%userlink%&gt;さんによるコメント：&lt;/h2&gt;
+
+&lt;p&gt;&lt;%body%&gt;&lt;/p&gt;
+
+&lt;div class="metadata"&gt;
+ （接続元：&lt;%host%&gt; 投稿日時：&lt;%date%&gt; &lt;%time%&gt;）
+&lt;/div&gt;</code></pre>
+
+<p>結果は次のようになります：</p>
+
+<div class="example">
+<span class="heading_example"><a href="#templatecommentbody">fujisaki</a>さんによるコメント：</span>
+<p style="margin: 2px;">このういろう、味薄い</p>
+<div style="margin:2px;font-size:smaller;">(接続元：host.example.org 投稿日時：2008-08-23 02:30)</div>
+</div>
+
+</div>
+
+<div class="page"><a name="templatepopups" id="templatepopups"><span class="invisible">templatepopups</span></a>
+<h1>テンプレート：メディアとポップアップ</h1>
+<p>
+これらのテンプレートは、画像のポップアップウィンドウへのリンクと画像以外のメディア・オブジェクトのフォーマットに用いられます。それぞれのテンプレートで利用可能な変数は以下の通りです。
+</p>
+
+<h2>ポップアップ画像へのリンクコード</h2>
+
+<table summary="Template::Popup kink code"><tr>
+    <th abbr="名前">名前</th>
+    <th abbr="説明">説明</th>
+</tr><tr>
+    <td>popuplink</td>
+    <td>画像へのポップアップ・リンク</td>
+</tr><tr>
+    <td>rawpopuplink</td>
+    <td>popuplinkのジャンプ先URL</td>
+</tr><tr>
+    <td>popupcode</td>
+    <td>ポップアップウィンドウを開くjavascriptコード</td>
+</tr><tr>
+    <td>text</td>
+    <td>代替テキスト（リンクテキスト）</td>
+</tr><tr>
+    <td>width</td>
+    <td>イメージの幅</td>
+</tr><tr>
+    <td>height</td>
+    <td>イメージの高さ</td>
+</tr><tr>
+    <td>popuptext</td>
+    <td>textと同じだが、htmlエンティティ変換される</td>
+</tr><tr>
+    <td>link</td>
+    <td>画像の直接のURL</td>
+</tr><tr>
+    <td>media</td>
+    <td>画像への直接リンク</td>
+</tr></table>
+
+
+<h2>インライン画像のコード</h2>
+
+<table summary="Template::Inline image"><tr>
+    <th abbr="名前">名前</th>
+    <th abbr="説明">説明</th>
+</tr><tr>
+    <td>image</td>
+    <td>(x)htmlのimgタグ</td>
+</tr><tr>
+    <td>link</td>
+    <td>画像の直接のURL</td>
+</tr><tr>
+    <td>text</td>
+    <td>代替テキスト（リンクテキスト。htmlエンティティ変換される）</td>
+</tr><tr>
+    <td>width</td>
+    <td>イメージの幅</td>
+</tr><tr>
+    <td>height</td>
+    <td>イメージの高さ</td>
+</tr><tr>
+    <td>media</td>
+    <td>画像への直接リンク</td>
+</tr></table>
+
+<h2>メディアオブジェクトへのリンクコード</h2>
+
+<table summary="Template::Media objects"><tr>
+    <th abbr="名前">名前</th>
+    <th abbr="説明">説明</th>
+</tr><tr>
+    <td>media</td>
+    <td>ファイルへの直接リンク</td>
+</tr><tr>
+    <td>link</td>
+    <td>ファイルの直接のURL</td>
+</tr><tr>
+    <td>text</td>
+    <td>代替テキスト（リンクテキスト。htmlエンティティ変換される）</td>
+</tr></table>
+
+</div>
+
+<div class="page"><a name="templatememberextra" id="templatememberextra"><span class="invisible">templatememberextra</span></a>
+<h1>テンプレート：登録メンバーからのコメントへの追加表示</h1>
+<p>
+これはコメントが登録メンバーからのものであることを示すのに利用できるテンプレートです。最終的には<a href="#templatecommentbody">コメントの本体</a>で使われる<code>&lt;%authtext%&gt;</code>変数の中身として表示されます。
+</p>
+
+<p> このテンプレート内部では、<a href="#templatevars-comments" title="Overview of comments-related template variables">コメント関連テンプレート変数</a>が利用できます。</p>
+
+</div>
+
+<div class="page"><a name="templatecommentcontinued" id="templatecommentcontinued"><span class="invisible">templatecommentcontinued</span></a>
+<h1>テンプレート：コメントの続きを読む</h1>
+<p>
+このテンプレートの内容は、<a href="#templatecommentbody">コメントの本体</a>で使われる変数<code>&lt;%short%&gt;</code>に追加されます。
+</p>
+
+<p>このテンプレート内部では、<code>&lt;%short%&gt;</code>以外の<a href="#templatevars-comments" title="Overview of comments-related template variables">コメント関連テンプレート変数</a>が利用できます。</p>
+
+<p>例：</p>
+
+<pre>
+ &lt;a href="&lt;%itemlink%&gt;"&gt;[続き]&lt;/a&gt;
+</pre>
+
+</div>
+
+<div class="page"><a name="templatecommentwords" id="templatecommentwords"><span class="invisible">templatecommentwords</span></a>
+<h1>テンプレート：コメントの数え方</h1>
+<p>
+日本語で使う場合は、単複同型なので両方"件のコメント"にしておいて問題ないでしょう。英語で表記したい時は、次のようなことが気になるかもしれません。</p>
+<p>コメントの件数の表示の仕方を、"1 comment(s)"とするよりも"1 comment"、"3 comments"と表示したい人が多いのではないでしょうか？「コメントが1つの時」と「コメントが2つ以上の時」のテンプレート部分はその目的のために存在します。これらは他の所で使える<code>&lt;%commentword%&gt;</code>変数の中身として利用されます。
+</p>
+
+<p>
+1つしかコメントが無い時は、<code>&lt;%commentword%&gt;</code>は「コメントが一つの時」で設定した内容になり、2つ以上のコメントがついているなら「コメントが二つ以上の時」で設定した内容になります。
+</p>
+
+<p>
+典型的な値は"comment"と"comments"です。<strong>ここでは変数は利用できません</strong>。
+</p>
+</div>
+
+
+
+<div class="page"><a name="templateeditlink" id="templateeditlink"><span class="invisible">templateeditlink</span></a>
+<h1>テンプレート：アイテムを編集するためのリンク </h1>
+<p>
+このテンプレートは<a href="#templatevar-edit">テンプレート変数"edit"</a>がどのように表示されるかを決めるものです。このテンプレートではすべての<a href="#templatevars-overview">テンプレート変数</a>が使用できます。
+</p>
+
+<h2>例：</h2>
+
+<pre><code>&lt;a href="&lt;%editlink%&gt;"
+   onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt;</code></pre>
+
+</div>
+
+
+
+
+<div class="page"><a name="skinpartindex" id="skinpartindex"><span class="invisible">skinpartindex</span></a>
+<h1>スキン：メインの目次ページ</h1>
+<p>
+このスキンパーツはブログ内の最新のエントリーを表示するのに用いられます。通常はサイト、またはブログのトップページにあたる場所になります。
+</p>
+
+<p>
+「メインの目次ページ」の基本的な形：
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;私のウェブログ&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;私のウェブログ&lt;/h1&gt;
+    &lt;%blog(mytemplate,20)%&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	このスキンでは、選択中のブログのアイテムが、タイムスタンプの新しいものから20個、'mytemplate'というテンプレートを使用して表示されます。
+	</p>
+</div>
+
+
+<div class="page"><a name="skinpartitem" id="skinpartitem"><span class="invisible">skinpartitem</span></a>
+<h1>個別アイテムページ</h1>
+<p>
+このスキンパーツは個別のアイテムを表示するために使われます。アイテムに付けられた全てのコメントと、コメント追加フォームを含めたものになります。
+</p>
+
+<p>
+「個別アイテムページ」の基本的な形：
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;私のウェブログ :: アイテム&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;アイテム&lt;/h1&gt;
+    &lt;%item(detailed)%&gt;
+
+    &lt;h1&gt;コメント&lt;/h1&gt;
+    &lt;%comments(detailed)%&gt;
+
+    &lt;h1&gt;コメントを追加&lt;/h1&gt;
+    &lt;%commentform%&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	このスキンでは、'detailed'テンプレートを使用してアイテムとコメント、そして標準のコメントフォームが表示されます。
+</p>
+
+
+</div>
+
+<div class="page"><a name="skinpartarchivelist" id="skinpartarchivelist"><span class="invisible">skinpartarchivelist</span></a>
+<h1>スキン：月別アーカイブ一覧ページ</h1>
+<p>
+このスキンパーツはアーカイブが存在する全ての月の概略と、それらアーカイブへのリンクを表示します。
+</p>
+
+<p>
+「月別アーカイブ一覧ページ」の基本的な形：
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;私のウェブログ :: アーカイブ集&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;アーカイブ集&lt;/h1&gt;
+    &lt;%archivelist(default)%&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	このスキンでは、'default'テンプレートを使用して、選択中のブログのアーカイブが存在する全ての月のリストが表示されます。
+</p>
+
+</div>
+
+<div class="page"><a name="skinpartarchive" id="skinpartarchive"><span class="invisible">skinpartarchive</span></a>
+<h1>スキン：月別アーカイブページ</h1>
+<p>
+このスキンパーツは「メインの目次ページ」と似た振る舞いをしますが、該当月の全てのアイテムを表示します。
+</p>
+
+<p>
+「月別アーカイブページ」の基本的な形：
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;私のウェブログ :: アーカイブ&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;アーカイブ&lt;/h1&gt;
+    &lt;%archive(default)%&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	このスキンでは、'default'テンプレートを使用して、選択中のブログの要求されたアーカイブが表示されます。
+</p>
+
+
+</div>
+
+
+<div class="page"><a name="skinpartsearch" id="skinpartsearch"><span class="invisible">skinpartsearch</span></a>
+<h1>スキン：検索ページ</h1>
+<p>
+このスキンパーツは検索結果の表示に使われます。
+</p>
+
+<p>
+「検索ページ」の基本的な形：
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;私のウェブログ :: 検索&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;検索&lt;/h1&gt;
+    &lt;%searchform%&gt;
+
+    &lt;h1&gt;検索結果&lt;/h1&gt;
+    &lt;%searchresults(default)%&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	このスキンでは、'default'テンプレートを使用して検索の結果が表示されます。
+</p>
+
+</div>
+
+<div class="page"><a name="skinparterror" id="skinparterror"><span class="invisible">skinparterror</span></a>
+<h1>スキン：エラーページ</h1>
+<p>
+このスキンパーツはエラーが発生したときに用いられます。
+</p>
+<p>
+「エラーページ」の基本的な形：
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;私のウェブログ :: エラー&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;エラーが発生しました！&lt;/h1&gt;
+    &lt;%errormessage%&gt;
+
+    &lt;br /&gt;&lt;br /&gt;
+
+    &lt;a href="javascript:history.back();"&gt;戻る&lt;/a&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	このスキンでは、エラーメッセージと、元のページへ戻るためのリンクが表示されます。
+</p>
+
+</div>
+
+<div class="page"><a name="skinpartmember" id="skinpartmember"><span class="invisible">skinpartmember</span></a>
+<h1>スキン：メンバー詳細ページ</h1>
+<p>
+このスキンパーツはメンバーの詳細を表示するのに使われます。
+</p>
+
+<p>
+「メンバー詳細ページ」の基本的な形：
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;私のウェブログ :: メンバーの詳細&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;&lt;%member(name)%&gt; の情報&lt;/h1&gt;
+    ウェブサイト：
+    &lt;a href="&lt;%member(url)%&gt;"&gt;&lt;%member(url)%&gt;&lt;/a&gt;
+
+    &lt;h1&gt;メッセージを送る&lt;/h1&gt;
+    &lt;%membermailform%&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	このスキンでは、メンバー名とメンバーのウェブサイトのアドレス、そしてメール送信フォームが表示されます。
+</p>
+
+</div>
+
+
+<div class="page"><a name="skinpartimagepopup" id="skinpartimagepopup"><span class="invisible">skinpartimagepopup</span></a>
+<h1>スキン：画像ポップアップウィンドウ</h1>
+<p>
+このスキンパーツは画像をポップアップウィンドウを使用して表示する場合に使われる、ポップアップウィンドウ内のレイアウトを決定します。
+</p>
+
+<p>
+「画像ポップアップウィンドウ」の基本的な形：
+</p>
+
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;&lt;%imagetext%&gt;&lt;/title&gt;
+  &lt;style type="text/css"&gt;
+   img { border: none; }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;a href="javascript:window.close();"&gt;&lt;%image%&gt;&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+</div>
+
+
+<div class="page"><a name="skinpartspecial" id="skinpartspecial"><span class="invisible">skinpartspecial</span></a>
+<h1>スキン：スペシャルスキンパーツ</h1>
+<p>
+このスキンパーツは、特別な見せ方をしたいコンテンツやブログの内容以外のコンテンツ、例えばフォームや静的なコンテンツ、もしくはNucleusとは切り離された動的なコンテンツ等を表示する為に使用します。
+スペシャルスキンパーツは次のようにして表示します。
+(<code>fred</code>という名前でスペシャルスキンパーツを作った場合)
+</p>
+<code>http://www.yoursite.tld/index.php?special=fred</code>
+
+<p>このスキンタイプに関するさらなる議論は、NucleusCMS本家サポートフォーラムで行われています。: 
+<a href="http://forum.nucleuscms.org/viewtopic.php?t=16501" title="Special Skin Parts">Nucleus 3.31 and Static Pages</a>
+</p>
+
+<p>
+標準的なスペシャルスキンパーツ:
+</p>
+
+<pre>
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;私のブログ&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+
+    &lt;h1&gt;このサイトについて&lt;/h1&gt;
+    &lt;p&gt;This page was published in order 
+	to provide a platform to publicize the plight 
+	of the peeping-polly parrot whose present 
+	prognosis is perturbingly pessimistic.&lt;/p&gt;
+
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<p>
+	この例は、ごく一般的なHTML文書として表示されます。
+	また、標準的なスキン変数が使えるので、ブログとの連系を持たせた静的ページを持たせたいときなどに役立つでしょう。
+</p>
+</div>
+
+
+
+
+<div class="page"><a name="shortnames" id="shortnames"><span class="invisible">shortnames</span></a>
+<h1>短縮名と表示される名前</h1>
+<p>
+ブログ、テンプレート、そしてスキンは名前や説明の他に短縮名を持たなくてはなりません。
+</p>
+
+<p>
+短縮名はa～zと0～9<strong>のみ</strong>で構成され、スペースを含むことは<strong>できません</strong>。</p>
+<p>訳注：テンプレートの名前には'/'が利用できたりするので、実際にはこの限りではないようです。
+</p>
+
+<p>
+メンバーの場合、「表示される名前」はログイン名として使われます。a～z、 A～Z、0～9とスペース（半角）が使用できます。ただし、名前の最初や最後にスペースを付けることはできません。
+</p>
+</div>
+
+
+
+
+
+
+<div class="page"><a name="templatenew" id="templatenew"><span class="invisible">templatenew</span></a>
+<h1>テンプレート：新しいアイテムに付けるマーク</h1>
+<p>
+<a href="#cookies">最終訪問日時Cookieの保存</a>オプションを「はい」に設定している時、前回訪問時から後に追加されたアイテムに、「新しいアイテムに付けるマーク」テンプレートの内容が、アイテムのテンプレートに記述した変数<code>&lt;%new%&gt;</code>の部分に表示されます。
+</p>
+
+<p>
+<a href="#cookies">「最終訪問日時Cookieの保存」</a>が「いいえ」に設定されている、または前回訪問時以降にアイテムが新しく追加されていなければ、変数<code>&lt;%new%&gt;</code>は無視されます。
+</p>
+</div>
+
+
+
+<div class="page"><a name="strftime" id="strftime"><span class="invisible">strftime</span></a>
+<h1>時間変数の概要</h1>
+
+<p>次の変換記述は文字列フォーマットに基づきます<small>（PHPドキュメントの<a href="http://jp.php.net/manual/ja/function.strftime.php" onclick="window.open(this.href);return false;" onkeypress="window.open(this.href);return false;" class="out">strftime関数</a>から持ってきたものです）</small>。より詳しい情報は <a href="http://www.opengroup.org/onlinepubs/7908799/xsh/strftime.html" onclick="window.open(this.href);return false;" onkeypress="window.open(this.href);return false;" class="out" title="Open Group specification">Open Group Specification</a>にあります。</p>
+
+<ul>
+    <li><strong>%a</strong> - 現在のロケールに基づく短縮された曜日の名前</li>
+    <li><strong>%A</strong> - 現在のロケールに基づく完全な曜日の名前</li>
+    <li><strong>%b</strong> - 現在のロケールに基づく短縮された月の名前</li>
+    <li><strong>%B</strong> - 現在のロケールに基づく完全な月の名前</li>
+    <li><strong>%c</strong> - 現在のロケールに基づく適当な日付と時間の表現</li>
+    <li><strong>%d</strong> - 日付を10進数で(01から31) </li>
+    <li><strong>%H</strong> - 時間を24時間表示の10進数で(00から23まで)</li>
+    <li><strong>%I</strong> - 時間を12時間表示の10進数で(01から12までの範囲)</li>
+    <li><strong>%j</strong> - 年間での日付を10進数で表現 (001から366)</li>
+    <li><strong>%m</strong> - 月を10進数で表現 (01から12)</li>
+    <li><strong>%M</strong> - 分を10進数で表現</li>
+    <li><strong>%p</strong> - 指定した時間により 'am' または 'pm' 、または 現在のロケールに対応した文字列</li>
+    <li><strong>%S</strong> - 秒を10進数で表現</li>
+    <li><strong>%U</strong> - 年間で何番目の週であるかを 10 進数で表現。 年間で最初の日曜を最初の週の最初の日として数えます。</li>
+    <li><strong>%W</strong> - 現在の年で何番目の週であるかを10進数で表現。 年間で最初の月曜を最初の週の最初の日として数えます。</li>
+    <li><strong>%w</strong> - 曜日を10進数で表現。日曜は0になります。</li>
+    <li><strong>%x</strong> - 時間を除いた日付を現在のロケールに基づき表現します。</li>
+    <li><strong>%X</strong> - 日付を除いた時間を現在のロケールに基づき表現します。</li>
+    <li><strong>%y</strong> - 世紀の部分を除いた年を10進数として表現。(00から99までの範囲) </li>
+    <li><strong>%Y</strong> - 世紀を含む年を 10進数で表現</li>
+    <li><strong>%Z</strong> - タイムゾーンまたはその名前または短縮形</li>
+    <li><strong>%%</strong> - 文字リテラル'%' </li>
+</ul>
+
+<p>以下はサーバによって対応が異なりますので、参考程度にお試しください。</p>
+
+<ul>
+    <li><strong>%-d</strong>または<strong>%#d</strong> - 日付を10進数で(1から31) </li>
+    <li><strong>%-H</strong>または<strong>%#H</strong> - 時間を24時間表示の10進数で(0から23まで)</li>
+    <li><strong>%-I</strong>または<strong>%#I</strong> - 時間を12時間表示の10進数で(1から12までの範囲)</li>
+    <li><strong>%-m</strong>または<strong>%#m</strong> - 月を10進数で表現 (1から12)</li>
+    <li><strong>%-M</strong>または<strong>%#M</strong> - 分を10進数で表現(0から59まで)</li>
+</ul>
+
+</div>
+
+<div class="page"><a name="sendping" id="sendping"><span class="invisible">sendping</span></a>
+<h1>Pingサーバに更新通知を送信する</h1>
+<p>
+ブログを更新した時に、ブログ検索サイト等の公開している複数のpingサーバに更新pingを送信することができます。これらのpingサーバを用意しているサイﾄでは、リクエストに応じて最近更新されたブログのリストを提示してくれます。このデータを利用した新着記事のリスト等のサービスを、数多くのウェブサイトが提供していますので、このオプションを「はい」に設定することで、あなたのブログは新しい訪問者を得ることになるでしょう。
+</p>
+<p class="note"><strong>注意:</strong>この機能を正しく動かすために、blogごとの「設定」にあるweblogの「URL」と「Blogの名前」を埋める必要があります。
+</p>
+
+</div>
+
+<div class="page"><a name="blogsearchable" id="blogsearchable"><span class="invisible">blogsearchable</span></a>
+
+<h1>常に検索対象に含める</h1>
+
+<p>「常に検索対象にする」オプションが選択されていると、同一のNucleus内で行われたすべてのブログ内検索において、<strong>常に</strong>検索対象に含まれます。</p>
+
+<p>例として、'lifelog'と'linkdump'という2つのブログを持ち、'linkdump'の「常に検索対象にする」が「はい」、'lifelog'は「いいえ」にになっていると仮定しましょう。そうすると、'lifelog'で検索した場合は'linkdump'も検索するのに対して、'linkdump'での検索では、'linkdump'のエントリーしか検索しません。</p>
+
+
+</div>
+
+
+<div class="page"><a name="convertbreaks" id="convertbreaks"><span class="invisible">convertbreaks</span></a>
+<h1>改行を変換する</h1>
+<p>
+Nucleusはアイテム内の改行を、デフォルトで<code>&lt;br /&gt;</code>タグに変換します。この設定によって、アイテム内の改行箇所を出力後の(X)HTMLに反映させることができます。
+</p>
+<p>
+手馴れたユーザーや、Semantic Web（<code>br</code>タグは情報を付加せず、ただ記述のためにのみ使われる）のために努力するユーザーの中には、この機能が迷惑だと感じるかもしれません。その場合はこのオプションを「いいえ」に設定してください。
+</p>
+</div>
+
+
+<div class="page"><a name="media" id="media"><span class="invisible">media</span></a>
+<h1>メディア</h1>
+<p>
+Nucleusはメディアファイル（画像、動画、音楽など等）をウェブサイトにアップロードすることができます。
+</p>
+<p>
+このためにいくつかの設定が必要となります：
+</p>
+<ul>
+    <li><strong>メディア(画像・音声)ディレクトリ</strong>：メディアファイルが保存されるサーバー上の場所（サーバのファイルシステム上のパス）</li>
+    <li><strong>メディアURL</strong>：メディアファイルのURL上の場所</li>
+    <li><strong>ファイルのアップロードを許可しますか?</strong>：ファイルのアップロードを不許可にすることができます</li>
+    <li><strong>アップロードを許可するファイルタイプ</strong>：アップロードできるファイルの拡張子（複数必要な場合は、コンマで区切る）</li>
+    <li><strong>アップロードファイルの最大サイズ</strong>：ここで設定したものよりファイルサイズの大きなものはアップロードすることができません。</li>
+    <li><strong>アップロードするファイル名の頭に日付を付加する</strong>：アップロードされたファイルのファイル名の先頭に、現在の日付が頭に付加するかどうかを選択します。このオプションで「はい」を選んでいると、例えば 'bunny.jpg'という名前のファイルを2008年9月5日にアップロードしたなら、'20080905-bunny.jpg'というファイル名になります。何故こんな機能があるかというと、大量のファイルをアップロードしているときについ同じ名前を用いてしまう問題を避けるためです。</li>
+</ul>
+
+<p>
+メンバーはそれぞれ、自身のメディアファイルのプライベートなコレクションを持ちます。また、それ以外のメディア・ディレクトリ下のサブディレクトリはグローバルなコレクション（メンバー間で共有）とみなされます。
+</p>
+
+<p>アップロードは悪用を予防するため、少なくとも一つのブログチームに入っているメンバーでなくては行えません。</p>
+</div>
+
+
+<div class="page"><a name="protectmemnames" id="protectmemnames"><span class="invisible">protectmemnames</span></a>
+<h1>メンバー名の保護</h1>
+<p>訪問者によるメンバーへの成りすましを防止するために、メンバーとして登録済みの名前を使ってのゲストコメントはできないようになっています。このオプションを「いいえ」に設定することで、この規制を緩和することができます。</p>
+</div>
+
+
+<div class="page"><a name="pluginurl" id="pluginurl"><span class="invisible">pluginurl</span></a>
+<h1>プラグインURL</h1>
+<p>この設定はプラグイン管理領域のベースURLです。通常次のようになります。</p>
+<pre>http://example.jp/nucleus/plugins/</pre>
+</div>
+
+<div class="page"><a name="skinsurl" id="skinsurl"><span class="invisible">skinsurl</span></a>
+<h1>スキンURL</h1>
+<p>この設定はNucleusスキン・ディレクトリのベースURLです。通常次のようになります。</p>
+<pre>http://example.jp/skins/</pre>
+</div>
+
+<div class="page"><a name="actionurl" id="actionurl"><span class="invisible">actionurl</span></a>
+<h1>action.phpへのフルURL</h1>
+<p>この設定はNucleus付属のスクリプト<code>action.php</code>の絶対URLです。通常次のようになります。</p>
+<pre>http://example.jp/actions.php</pre>
+</div>
+
+
+
+<div class="page"><a name="additem" id="additem"><span class="invisible">additem</span></a>
+<h1>アイテムの追加</h1>
+<p>ブログにアイテムを追加する際、「本文」「タイトル」「続き」に4種類の変数を利用することができます：</p>
+<ul>
+    <li><a href="#templatevar-popup">&lt;%popup(...)%&gt;</a> ポップアップ画像の挿入</li>
+    <li><a href="#templatevar-image">&lt;%image(...)%&gt;</a> インライン画像の挿入</li>
+    <li><a href="#templatevar-media">&lt;%media(...)%&gt;</a> メディアオブジェクトの挿入</li>
+    <li><a href="#skinvar-plugin">&lt;%plugin(...)%&gt;</a> プラグインによる処理</li>
+</ul>
+<p>&lt;%plugin%&gt;以外のこれらのタグはJavaScriptツールバーにある「メディアの追加」ボタンで書き入れられます。</p>
+
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-referer" id="skinvar-referer"><span class="invisible">skinvar-referer</span></a>
+<h1>スキン変数：referer</h1>
+<p>リンク元のURLを挿入します。アクセス方法や、ブラウザ、ファイアウォール等の設定によって、空白の時があります。</p>
+<h2>引数</h2>
+<p>なし</p>
+<h2>スキンタイプ</h2>
+<p>全て</p>
+<h2>例</h2>
+<pre>
+&lt;a href="&lt;%referer%&gt;"&gt;戻る&lt;/a&gt;
+</pre>
+</div>
+
+
+<div class="page">
+<a name="skinvar-itemid" id="skinvar-itemid"><span class="invisible">skinvar-itemid</span></a>
+<h1>スキン変数：itemid</h1>
+<p>現在選択しているアイテムのIDを挿入します。</p>
+<h2>引数</h2>
+<p>なし</p>
+<h2>スキンタイプ</h2>
+<p>個別アイテム</p>
+<h2>例</h2>
+<pre>
+&lt;%itemid%&gt;
+</pre>
+</div>
+
+
+<div class="page">
+<a name="skinvar-itemlink" id="skinvar-itemlink"><span class="invisible">skinvar-itemlink</span></a>
+
+<h1>スキン変数：itemlink</h1>
+
+<p>アイテムのURL（permanent link）を挿入します。</p>
+
+<h2>引数</h2>
+
+<div>
+<ul>
+    <li>オプション：
+        <table summary="Skin var::Item link">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="適用">適用</th>
+            </tr>
+            <tr>
+                <td><strong><em>linktext</em></strong></td>
+                <td>記述されていると、URLの代わりに<code>&lt;a href...</code>タグによるリンクが挿入されます。</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+<h2>スキンタイプ</h2>
+
+<p>個別アイテム</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%itemlink%&gt;
+</pre>
+</div>
+
+<div class="page">
+<a name="skinvar-itemtitle" id="skinvar-itemtitle"><span class="invisible">skinvar-itemtitle</span></a>
+<h1>スキン変数：itemtitle</h1>
+<p>アイテムのタイトルを挿入します。HTMLタグは除去され、エンティティはエンコードされます。</p>
+<h2>引数</h2>
+<p>なし</p>
+<h2>スキンタイプ</h2>
+<p>個別アイテム</p>
+<h2>例</h2>
+<pre>
+&lt;%itemtitle%&gt;
+</pre>
+</div>
+
+
+<div class="page">
+<a name="skinvar-archivedate" id="skinvar-archivedate"><span class="invisible">skinvar-archivedate</span></a>
+<h1>スキン変数：archivedate</h1>
+<p>アーカイブの日付としてフォーマット済みの日付を挿入します。パラメーターなしで使うと、例えばアーカイブが2008年9月のものなら、'05 september 2008'か'september 2008'のどちらかが挿入されることになります。</p>
+<h2>引数</h2>
+<ul>
+    <li>オプション：
+        <table summary="Skin var::Archive date"><tr>
+            <th abbr="名前">名前</th>
+            <th abbr="値">値</th>
+        </tr><tr>
+            <td>Locale</td>
+            <td>日付がフォーマットされるときに用いられる<a href="#templatelocale">Locale</a></td>
+        </tr><tr>
+            <td>Format</td>
+            <td>日付のフォーマット（<a href="#strftime">strftime変数</a>）</td>
+        </tr></table>
+    </li>
+</ul>
+<h2>スキンタイプ</h2>
+<p>月別アーカイブ</p>
+<h2>例</h2>
+<pre>
+Archive for &lt;%archivedate%&gt;
+Archive for &lt;%archivedate(dutch)%&gt;
+Archive for &lt;%archivedate(en,%B %Y)%&gt;
+</pre>
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-blog" id="skinvar-blog"><span class="invisible">skinvar-blog</span></a>
+<h1>スキン変数：blog</h1>
+
+<p>
+選択中のブログの、タイムスタンプの新しいアイテム群を挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Blog::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Blog::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>amount</em></strong></td>
+                <td>表示するアイテムの数（デフォルトは10）。何番目のアイテムから始めるかというオフセットを含めることもできます。例えば<code>10(5) </code>と記述すると5番目から始めて10個のアイテムを表示します。</td>
+            </tr>
+            <tr>
+                <td><strong><em>category</em></strong></td>
+                <td>表示するカテゴリーの名前</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+メインの目次、個別アイテム、月別アーカイブ、月別アーカイブ一覧、検索
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%blog(default,15)%&gt;
+&lt;%blog(default,5(15))%&gt;
+&lt;%blog(mytemplate)%&gt;
+&lt;%blog(mytemplate,5,mycategory)%&gt;
+</pre>
+
+</div>
+
+<div class="page">
+<a name="skinvar-bloglist" id="skinvar-bloglist"><span class="invisible">skinvar-bloglist</span></a>
+<h1>スキン変数：bloglist</h1>
+
+<p>
+Nucleusで管理しているブログのリストを、指定されたテンプレートを用いて挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Blog list::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Blog list::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+                <th abbr="初期値">初期値</th>
+            </tr>
+            <tr>
+                <td><strong><em>bnametype</em></strong></td>
+                <td>「shortname」を指定することで、ブログ名の変わりにブログの短縮名を挿入します</td>
+                <td>bname</td>
+            </tr>
+            <tr>
+                <td><strong><em>orderby</em></strong></td>
+                <td>並べ替えのキーを指定します。指定可能なキーは「number(ブログID)」「name(ブログ名)」「shortnameブログの短縮名)」「description(ブログの説明)」です。</td>
+                <td>number</td>
+            </tr>
+            <tr>
+                <td><strong><em>direction</em></strong></td>
+                <td><strong><em>orderby</em></strong>で指定したキーを使って「asc」で昇順、「desc」で降順に並べ替えます。</td>
+                <td>asc</td>
+            </tr>
+        </table>
+        途中の引数を省略する時は｢,(カンマ)｣のみ記述します。
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%bloglist(mytemplate)%&gt;
+標準。「mytemplate」を使って、ブログの一覧を｢ブログ名｣で表示します
+&lt;%bloglist(mytemplate,shortname)%&gt;
+「mytemplate」を使って、ブログの一覧を｢ブログの短縮名｣で表示します
+&lt;%bloglist(default/index,name,description)%&gt; 
+「default/index」を使って、ブログの一覧を｢ブログの説明｣で並べ替えて｢ブログ名｣で表示します。
+&lt;%bloglist(default/index,shortname,,desc)%&gt; 
+「default/index」を使って、ブログの一覧を｢ブログ名｣の降順で並べ替えて｢ブログ短縮名｣で表示します。
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-otherblog" id="skinvar-otherblog"><span class="invisible">skinvar-otherblog</span></a>
+<h1>スキン変数：otherblog</h1>
+
+<p>
+指定されたブログの、タイムスタンプの新しいアイテム群を挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Other blog::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>blogname</strong></td>
+                <td>表示するブログの短縮名</td>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Other blog::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>amount</em></strong></td>
+                <td>表示するアイテムの数（デフォルトは10）。何番目のアイテムから始めるかというオフセットを含めることもできます。例えば<code>10(5) </code>と記述すると5番目から始めて10個のアイテムを表示します。</td>
+            </tr>
+            <tr>
+                <td><strong><em>category</em></strong></td>
+                <td>表示するカテゴリーの名前</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%otherblog(myblog,default,15)%&gt;
+&lt;%otherblog(yourblog,mytemplate)%&gt;
+&lt;%otherblog(yourblog,mytemplate,15,mycategory)%&gt;
+&lt;%otherblog(yourblog,mytemplate,5(15),mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-item" id="skinvar-item"><span class="invisible">skinvar-item</span></a>
+<h1>スキン変数：item</h1>
+
+<p>
+現在選択されているアイテムを、指定されたテンプレートを用いて挿入します（コメントは挿入されません）。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Item::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>スキンタイプ</h2>
+
+<p>
+個別アイテム
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%item(mytemplate)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-comments" id="skinvar-comments"><span class="invisible">skinvar-comments</span></a>
+<h1>スキン変数：comments</h1>
+
+<p>
+現在選択されているアイテムについているコメントを、指定されたテンプレートを用いて挿入します。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Comments::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>スキンタイプ</h2>
+
+<p>
+個別アイテム
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%comments(mytemplate)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-archive" id="skinvar-archive"><span class="invisible">skinvar-archive</span></a>
+<h1>スキン変数：archive</h1>
+
+<p>
+選択されているブログの選択された月のアーカイブを、指定されたテンプレートを用いて表示。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Archive::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション：
+        <table summary="Skin var::Archive::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>category</em></strong></td>
+                <td>表示するカテゴリー名</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+月別アーカイブ
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%archive(mytemplate)%&gt;
+&lt;%archive(mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-otherarchive" id="skinvar-otherarchive"><span class="invisible">skinvar-otherarchive</span></a>
+<h1>スキン変数：otherarchive</h1>
+
+<p>
+指定されたブログの選択された月のアーカイブを、指定されたテンプレートを用いて表示。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Other archive::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>blogname</strong></td>
+                <td>表示するブログの短縮名</td>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Other archive::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>category</em></strong></td>
+                <td>表示するカテゴリーの名前</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+月別アーカイブ
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%otherarchive(myblog,mytemplate)%&gt;
+&lt;%otherarchive(myblog,mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-archivelist" id="skinvar-archivelist"><span class="invisible">skinvar-archivelist</span></a>
+<h1>スキン変数：archivelist</h1>
+
+<p>
+現在選択しているブログに存在するアーカイブの月ごとのリストを、指定されたテンプレートを使って挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Archive list::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Archive list::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>category</em></strong></td>
+                <td>表示するカテゴリーの名前</td>
+            </tr>
+            <tr>
+                <td><strong><em>limit</em></strong></td>
+                <td>表示するリンク数の制限（例えば、過去3ヶ月分へのリンクしか表示させたくないときなど）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+メインの目次、月別アーカイブ、月別アーカイブ一覧、検索、個別アイテム
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%archivelist(mytemplate)%&gt;
+&lt;%archivelist(mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+<div class="page">
+<a name="skinvar-archivedaylist" id="skinvar-archivedaylist"><span class="invisible">skinvar-archivedaylist</span></a>
+<h1>スキン変数：archivedaylist</h1>
+
+<p>
+スキン変数<a href="#skinvar-archivelist">archivelist</a>と同様にアーカイブのリストを挿入しますが、<em>月</em>ごとの代わりに<em>日</em>ごとのアーカイブのリストを挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Archive Day list::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Archive Day list::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>category</em></strong></td>
+                <td>表示するカテゴリーの名前</td>
+            </tr>
+            <tr>
+                <td><strong><em>limit</em></strong></td>
+                <td>表示するリンク数の制限（例えば、過去3ヶ月分へのリンクしか表示させたくないときなど）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+メインの目次、月別アーカイブ、月別アーカイブ一覧、検索、個別アイテム
+</p>
+
+
+<h2>例</h2>
+
+<pre>
+&lt;%archivedaylist(mytemplate)%&gt;
+&lt;%archivedaylist(mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-otherarchivedaylist" id="skinvar-otherarchivedaylist"><span class="invisible">skinvar-otherarchivedaylist</span></a>
+<h1>スキン変数：otherarchivedaylist</h1>
+
+<p>
+スキン変数<a href="#skinvar-otherarchivelist">otherarchivelist</a>と同様に、指定されたブログのアーカイブのリストを挿入しますが、 <em>月</em>ごとの代わりに<em>日</em>ごとのアーカイブを挿入します。
+
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Other archive day list::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>blogname</strong></td>
+                <td>表示するブログの短縮名</td>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Other archive day list::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>category</em></strong></td>
+                <td>表示するカテゴリーの名前</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%otherarchivedaylist(yourblog,mytemplate)%&gt;
+&lt;%otherarchivedaylist(yourblog,mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-otherarchivelist" id="skinvar-otherarchivelist"><span class="invisible">skinvar-otherarchivelist</span></a>
+<h1>スキン変数：otherarchivelist</h1>
+
+<p>
+指定されたブログに存在するアーカイブ月ごとのリストを、指定されたテンプレートを用いて表示します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Other archive list::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>blogname</strong></td>
+                <td>表示するブログの短縮名</td>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Other archive list::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>category</em></strong></td>
+                <td>表示するカテゴリーの名前</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%otherarchivelist(yourblog,mytemplate)%&gt;
+&lt;%otherarchivelist(yourblog,mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-categorylist" id="skinvar-categorylist"><span class="invisible">skinvar-categorylist</span></a>
+<h1>スキン変数：categorylist</h1>
+
+<p>
+選択中のブログのカテゴリーリストを、指定されたテンプレートを用いて挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Category list::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Category list::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>blogname</em></strong></td>
+                <td>表示するブログの短縮名</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+メインの目次、月別アーカイブ、月別アーカイブ一覧、検索、個別アイテム
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%categorylist(mytemplate)%&gt;
+&lt;%categorylist(mytemplate,myweblog)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-category" id="skinvar-category"><span class="invisible">skinvar-category</span></a>
+<h1>スキン変数：category</h1>
+
+<p>
+現在選択されているカテゴリーに関する情報を挿入します。カテゴリーが選択されていないときは何も挿入されません。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>オプション
+        <table summary="Skin var::Category::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="挿入される設定">挿入される設定</th>
+            </tr>
+            <tr>
+                <td><em>name</em></td>
+                <td>カテゴリー名（デフォルト）</td>
+            </tr>
+            <tr>
+                <td><em>desc</em></td>
+                <td>カテゴリーの説明L</td>
+            </tr>
+            <tr>
+                <td><em>id</em></td>
+                <td>カテゴリーのID</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%category%&gt;
+&lt;%category(id)%&gt;
+&lt;%category(desc)%&gt;
+&lt;%category(name)%&gt;
+</pre>
+
+</div>
+
+
+<!-- div class="page">
+<a name="skinvar-ifcat" id="skinvar-ifcat"><span class="invisible">skinvar-ifcat</span></a>
+<h1>スキン変数：ifcat</h1>
+
+<p class="deprecated">バージョン2.0以降のNucleusでは使用できません。<a href="#skinvar-if">&lt;%if(category)%&gt;</a>を代わりに使ってください。</p>
+
+<h2>引数</h2>
+<div>
+    なし
+    <ul>
+        <li><em>text</em>：表示するテキスト</li>
+    </ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%ifcat(Current Category: )%&gt;&lt;%category%&gt;
+</pre>
+
+</div -->
+
+
+
+
+<div class="page">
+<a name="skinvar-searchresults" id="skinvar-searchresults"><span class="invisible">skinvar-searchresults</span></a>
+<h1>スキン変数：searchresults</h1>
+
+<p>
+現在の検索文字列に対する検索結果を、指定されたテンプレートを使用して挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Search results::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Search resulta::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>maxresults</em></strong></td>
+                <td>表示する結果の最大数</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+検索
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%searchresults(mytemplate)%&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-othersearchresults" id="skinvar-othersearchresults"><span class="invisible">skinvar-othersearchresults</span></a>
+<h1>スキン変数：othersearchresults</h1>
+
+<p>
+指定されたブログの、現在の検索文字列に対する検索結果を、指定されたテンプレートを使用して挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Other sezrch results::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>blogname</strong></td>
+                <td>ブログの短縮名</td>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Other search results::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>maxresults</em></strong></td>
+                <td>表示する結果の最大数</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+検索
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%othersearchresults(myblog,mytemplate)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-query" id="skinvar-query"><span class="invisible">skinvar-query</span></a>
+<h1>スキン変数：query</h1>
+
+<p>
+現在の検索文字列を挿入します。
+</p>
+
+<h2>引数</h2>
+<p>
+なし
+</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+検索
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%query%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-version" id="skinvar-version"><span class="invisible">skinvar-version</span></a>
+<h1>スキン変数：version</h1>
+
+<p>現在使用しているNucleusのバージョンを挿入します。</p>
+
+<h2>引数</h2>
+
+<p>
+なし
+</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%version%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-charset" id="skinvar-charset"><span class="invisible">skinvar-charset</span></a>
+<h1>スキン変数：charset</h1>
+
+<p>グローバル設定の既定の言語で設定した言語に基づいたキャラクターセットのコードを挿入します。日本語版では、'UTF-8'か、'EUC-JP'の何れかになります</p>
+
+<h2>引数</h2>
+
+<p>
+なし
+</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;meta http-equiv="Content-Type" content="text/html; charset=&lt;%charset%&gt;" /&gt;
+</pre>
+
+</div>
+
+
+
+
+
+<div class="page">
+<a name="skinvar-previtem" id="skinvar-previtem"><span class="invisible">skinvar-previtem</span></a>
+<h1>スキン変数：previtem</h1>
+
+<p>
+そのブログにおける一つ古いアイテムのIDを挿入します。
+</p>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+個別アイテム
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%previtem%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-nextitem" id="skinvar-nextitem"><span class="invisible">skinvar-nextitem</span></a>
+<h1>スキン変数：nextitem</h1>
+
+<p>
+そのブログにおける一つ新しいアイテムのIDを挿入します
+。</p>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+個別アイテム
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%nextitem%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-nextitemtitle" id="skinvar-nextitemtitle"><span class="invisible">skinvar-nextitemtitle</span></a>
+<h1>スキン変数：nextitemtitle</h1>
+
+<p>
+そのブログにおける一つ新しいアイテムのタイトルを挿入します。
+</p>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+個別アイテム
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%nextitemtitle%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-previtemtitle" id="skinvar-previtemtitle"><span class="invisible">skinvar-previtemtitle</span></a>
+<h1>スキン変数：previtemtitle</h1>
+
+<p>
+そのブログにおける一つ古いアイテムのタイトルを挿入します。
+</p>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+個別アイテム
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%previtemtitle%&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-prevarchive" id="skinvar-prevarchive"><span class="invisible">skinvar-prevarchive</span></a>
+<h1>スキン変数：prevarchive</h1>
+
+<p>
+表示中のアーカイブの形式に応じて、一つ古いアーカイブの月、または日を挿入します。
+</p>
+
+<table summary="Skin var::Prev archive">
+    <tr>
+        <th abbr="表示中の形式">表示中の形式</th>
+        <th abbr="挿入される日付のフォーマット">挿入される日付のフォーマット</th>
+    </tr>
+    <tr>
+        <td>日単位で表示している時</td>
+        <td><code>YYYY-MM-DD</code></td>
+    </tr>
+    <tr>
+        <td>月単位で表示している時</td>
+        <td><code>YYYY-MM</code></td>
+    </tr>
+</table>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+月別アーカイブ
+</p>
+
+<h2>例</h2>
+
+<pre><code>&lt;a href="index.php?archive=&lt;%prevarchive%&gt;"&gt;....</code></pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-nextarchive" id="skinvar-nextarchive"><span class="invisible">skinvar-nextarchive</span></a>
+<h1>スキン変数：nextarchive</h1>
+
+<p>
+表示中のアーカイブの形式に応じて、一つ新しいアーカイブの月、または日を挿入します。
+</p>
+
+<table summary="Skin var::Next archive">
+    <tr>
+        <th abbr="表示中の形式">表示中の形式</th>
+        <th abbr="挿入される日付のフォーマット">挿入される日付のフォーマット</th>
+    </tr>
+    <tr>
+        <td>日単位で表示している時</td>
+        <td><code>YYYY-MM-DD</code></td>
+    </tr>
+    <tr>
+        <td>月単位で表示している時</td>
+        <td><code>YYYY-MM</code></td>
+    </tr>
+</table>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+月別アーカイブ
+</p>
+
+<h2>例</h2>
+
+<pre><code>&lt;a href="index.php?archive=&lt;%nextarchive%&gt;"&gt;....</code></pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-archivetype" id="skinvar-archivetype"><span class="invisible">skinvar-archivetype</span></a>
+<h1>スキン変数：archivetype</h1>
+
+<p>
+<code>日単位</code>か<code>月単位</code>、どちらのアーカイブタイプが現在表示されているのか示す。
+</p>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+月別アーカイブ
+</p>
+
+</div>
+
+
+
+
+
+<div class="page">
+<a name="skinvar-todaylink" id="skinvar-todaylink"><span class="invisible">skinvar-todaylink</span></a>
+<h1>スキン変数：todaylink</h1>
+
+<p>
+選択中のブログ、あるいはカテゴリーのトップページのURLを挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+
+<ul>
+    <li>オプション
+        <table summary="Skin var::Today link::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>linktext</em></strong></td>
+                <td>記述されていると、URLの代わりに<code>&lt;a href...</code>タグによるリンクが挿入されます。</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%todaylink%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-archivelink" id="skinvar-archivelink"><span class="invisible">skinvar-archivelink</span></a>
+<h1>スキン変数：archivelink</h1>
+
+<p>
+選択中のブログ、あるいはカテゴリーのアーカイブへのリンクを挿入します。
+</p>
+
+<h2>引数</h2>
+
+<div>
+
+<ul>
+    <li>オプション
+        <table summary="Skin var::Archive link::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>linktext</em></strong></td>
+                <td>記述されていると、URLの代わりに<code>&lt;a href...</code>タグによるリンクが挿入されます。</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%archivelink%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-nextlink" id="skinvar-nextlink"><span class="invisible">skinvar-nextlink</span></a>
+<h1>スキン変数：nextlink</h1>
+
+<p>
+アイテムページでは一つ新しいアイテムへの、アーカイブページでは一つ新しいアーカイブへのURLを挿入します。「検索ページ」と「メインの目次ページ」でも使えます。「検索ページ」と「メインの目次ページ」で使用したときは、「次のページ」へのURLを挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>オプション
+        <table summary="Skin var::Next link::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>linktext</em></strong></td>
+                <td>記述されていると、URLの代わりに<code>&lt;a href...</code>タグによるリンクが挿入されます。</td>
+            </tr>
+            <tr>
+                <td><strong><em>amount</em></strong></td>
+                <td>「検索ページ」と「メインの目次ページ」で使用したときに、前または次のページに進んだときに表示されるアイテムの数</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+
+<h2>スキンタイプ</h2>
+
+<p>
+個別アイテム、月別アーカイブ、検索、メインの目次
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%nextlink%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-prevlink" id="skinvar-prevlink"><span class="invisible">skinvar-prevlink</span></a>
+<h1>スキン変数：prevlink</h1>
+
+<p>
+アイテムページでは一つ古いアイテムへの、アーカイブページでは一つ古いアーカイブへのURLを挿入します。「検索」と「メインの目次」でも使えます。「検索ページ」と「メインの目次ページ」で使用したときは、「次のページ」へのURLを挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>オプション
+        <table summary="Skin var::Prev link::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>linktext</em></strong></td>
+                <td>記述されていると、URLの代わりに<code>&lt;a href...</code>タグによるリンクが挿入されます。</td>
+            </tr>
+            <tr>
+                <td><strong><em>amount</em></strong></td>
+                <td>「検索ページ」と「メインの目次ページ」で使用したときに、前または次のページに進んだときに表示されるアイテムの数</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+個別アイテム、月別アーカイブ、検索、メインの目次
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%prevlink%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-errormessage" id="skinvar-errormessage"><span class="invisible">skinvar-errormessage</span></a>
+<h1>スキン変数：errormessage</h1>
+
+<p>
+エラーが発生したときにエラーメッセージを挿入します。
+</p>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+エラー
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%errormessage%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+
+<!-- div class="page">
+<a name="skinvar-imagetext" id="skinvar-imagetext"><span class="invisible">skinvar-imagetext</span></a>
+<h1>スキン変数：imagetext</h1>
+
+<p class="deprecated">このスキン変数はNucleusバージョン2.0以降使いません。代わりに<a href="#skinvar-image"><code>&lt;%image(caption)%&gt;</code></a>を使ってください。</p>
+
+<p>
+ポップアップ画像に見出しテキストをつける
+</p>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+画像ポップアップウィンドウ
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%imagetext%&gt;
+</pre>
+
+</div -->
+
+
+
+<div class="page">
+<a name="skinvar-image" id="skinvar-image"><span class="invisible">skinvar-image</span></a>
+<h1>スキン変数：image</h1>
+
+<p>
+選択された画像を挿入します（画像ポップアップ用）。
+</p>
+
+<h2>引数</h2>
+
+<ul>
+    <li>オプション
+        <table summary="Skin var::Image::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>imgtag</strong>（デフォルト）</td>
+                <td>(x)htmlの<em>img</em>タグ <code>&lt;img ... /&gt;</code></td>
+            </tr>
+            <tr>
+                <td><strong>url</strong></td>
+                <td>画像ファイルへのURL</td>
+            </tr>
+            <tr>
+                <td><strong>width</strong></td>
+                <td>イメージの幅</td>
+            </tr>
+            <tr>
+                <td><strong>height</strong></td>
+                <td>イメージの高さ</td>
+            </tr>
+            <tr>
+                <td><strong>caption</strong></td>
+                <td>画像の見出し（画像と共に表示されるテキスト）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>スキンタイプ</h2>
+
+<p>
+画像ポップアップウィンドウ
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%image%&gt;
+</pre>
+
+</div>
+
+
+<!-- div class="page">
+<a name="skinvar-vars" id="skinvar-vars"><span class="invisible">skinvar-vars</span></a>
+<h1>スキン変数：vars</h1>
+
+<p class="deprecated">このスキン変数はNucleusバージョン2.0以降使いません。<a href="#skinvar-itemid">スキン変数：itemid</a>を使ってこのHTMLをあなた自身で挿入することはたいした手間ではないでしょう。</p>
+
+<p>
+itemid入りの隠しフォームのインプット欄を挿入。
+</p>
+
+<code>&lt;input type="hidden" name="itemid" value="<strong>1234</strong>" /&gt;</code>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+個別アイテム
+</p>
+
+
+</div -->
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-sitevar" id="skinvar-sitevar"><span class="invisible">skinvar-sitevar</span></a>
+<h1>スキン変数：sitevar</h1>
+
+<p>
+「グローバル設定」でのサイトの設定を挿入します。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Site var::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="挿入される設定">挿入される設定</th>
+            </tr>
+            <tr>
+                <td><em>url</em></td>
+                <td>サイトのURL</td>
+            </tr>
+            <tr>
+                <td><em>name</em></td>
+                <td>サイトの名前</td>
+            </tr>
+            <tr>
+                <td><em>admin</em></td>
+                <td>管理者のメールアドレス</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%sitevar(name)%&gt;
+&lt;%sitevar(url)%&gt;
+&lt;a href="mailto:&lt;%sitevar(email)%&gt;"&gt;管理人&lt;/a&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-blogsetting" id="skinvar-blogsetting"><span class="invisible">skinvar-blogsetting</span></a>
+<h1>スキン変数：blogsetting</h1>
+
+<p>
+選択中のブログの設定を挿入します。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Blog setting::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="挿入される設定">挿入される設定</th>
+            </tr>
+            <tr>
+                <td><em>id</em></td>
+                <td>ブログのID</td>
+            </tr>
+            <tr>
+                <td><em>url</em></td>
+                <td>ブログのURL</td>
+            </tr>
+            <tr>
+                <td><em>name</em></td>
+                <td>ブログの名前</td>
+            </tr>
+            <tr>
+                <td><em>desc</em></td>
+                <td>ブログの説明</td>
+            </tr>
+            <tr>
+                <td><em>short</em></td>
+                <td>ブログの短縮名</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>スキンタイプ</h2>
+
+<p>
+メインの目次、月別アーカイブ、月別アーカイブ一覧、検索、個別アイテム、メンバー詳細
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%blogsetting(name)%&gt;
+&lt;%blogsetting(id)%&gt;
+&lt;%blogsetting(desc)%&gt;
+&lt;a href="&lt;%blogsetting(url)%&gt;"&gt;...&lt;/a&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-member" id="skinvar-member"><span class="invisible">skinvar-member</span></a>
+<h1>スキン変数：member</h1>
+
+<p>
+訪問者がログイン中のメンバーの場合、そのメンバーに関する情報を挿入します。メンバーの詳細ページにおいては、指定されたメンバーについての同じ情報を表示する追加オプションがあります。
+</p>
+
+<p>訪問者がログイン中のメンバーではない場合は、<em>your...</em>のパラメーターは何も挿入しません。</p>
+
+<h2>引数</h2>
+<ul>
+<li>必須：
+<ul>
+    <li>ログインしたメンバーの情報（全てのスキンタイプで使用可能）：
+        <table summary="Skin var::Member logged in::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="挿入される設定">挿入される設定</th>
+            </tr>
+            <tr>
+                <td><em>yourname</em></td>
+                <td>訪問メンバーの<a href="#shortnames">表示される名前</a>（ログインに使うもの）</td>
+            </tr>
+            <tr>
+                <td><em>yourrealname</em></td>
+                <td>訪問メンバーの本名</td>
+            </tr>
+            <tr>
+                <td><em>yournotes</em></td>
+                <td>訪問メンバーが自身のために設定できるその他の情報（備考欄）</td>
+            </tr>
+            <tr>
+                <td><em>yoururl</em></td>
+                <td>訪問メンバーのウェブサイトURL</td>
+            </tr>
+            <tr>
+                <td><em>youremail</em></td>
+                <td>訪問メンバーのメールアドレス</td>
+            </tr>
+            <tr>
+                <td><em>yourid</em></td>
+                <td>訪問メンバーのID</td>
+            </tr>
+        </table>
+    </li>
+    <li>指定されたメンバーの情報（「メンバーの詳細ページ」でのみ使用可能）：
+        <table summary="Skin var::Member requier::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="挿入される設定">挿入される設定</th>
+            </tr>
+            <tr>
+                <td><em>name</em></td>
+                <td>指定されたメンバーの<a href="#shortnames">表示される名前</a>（ログインに使うもの）</td>
+            </tr>
+            <tr>
+                <td><em>realname</em></td>
+                <td>指定されたメンバーの本名</td>
+            </tr>
+            <tr>
+                <td><em>notes</em></td>
+                <td>指定されたメンバーが自身のために設定できるその他の情報（備考欄）</td>
+            </tr>
+            <tr>
+                <td><em>url</em></td>
+                <td>指定されたメンバーのウェブサイトURL</td>
+            </tr>
+            <tr>
+                <td><em>email</em></td>
+                <td>指定されたメンバーのメールアドレス</td>
+            </tr>
+            <tr>
+                <td><em>id</em></td>
+                <td>指定されたメンバーのID</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</li>
+</ul>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre><code>
+&lt;%if(loggedin)%&gt;
+こんにちは&lt;%member(yourrealname)%&gt;さん
+&lt;%endif%&gt;
+</code></pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-preview" id="skinvar-preview"><span class="invisible">skinvar-preview</span></a>
+<h1>スキン変数：preview</h1>
+
+<p>
+指定されたテンプレートを用いて、ページ内にアイテムのプレビューを挿入します。（<a href="#skinvar-additemform">additemform</a>と一緒に使われることが多いようです）
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Preview::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>スキンタイプ</h2>
+
+<p>
+メインの目次
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%preview(mytemplate)%&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-adminurl" id="skinvar-adminurl"><span class="invisible">skinvar-adminurl</span></a>
+<h1>スキン変数：adminurl</h1>
+
+<p>管理領域のURLを挿入します。</p>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;a href="&lt;%adminurl%&gt;"&gt;管理領域&lt;/a&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-additemform" id="skinvar-additemform"><span class="invisible">skinvar-additemform</span></a>
+<h1>スキン変数：additemform</h1>
+
+<p>
+現在選択しているブログへのアイテムの追加フォームを挿入します。多くの場合、<a href="#skinvar-preview">preview</a>と共に使用されます。
+</p>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+メインの目次
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%additemform%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-include" id="skinvar-include"><span class="invisible">skinvar-include</span></a>
+<h1>スキン/テンプレート変数：include</h1>
+
+<p>
+Webページ出力時に、指定されたテキストファイルを取り込んで挿入します。ファイルの中身がそのまま出力されるので、スキン/テンプレート変数やPHPコードを使っても反映されません。同じような変数に、取り込み時にスキン/テンプレート変数を展開する<a href="#skinvar-parsedinclude">parsedinclude</a>や、PHPコードを実行する<a href="#skinvar-phpinclude">phpinclude</a>があります。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>必須：
+        <table summary="Skin var::include::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>filename</strong></td>
+                <td>取り込むファイルの名前（index.phpからの相対位置でも絶対位置でもかまいません。URLを指定することもできます）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>注意</h2>
+<ul>
+    <li>この変数は<a href="#parser-properties">パーサー設定の<code>IncludeMode</code> と<code>IncludePrefix</code></a>に影響を受けます。</li>
+</ul>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%include(filename.txt)%&gt;
+&lt;%include(/home/user/myself/filename.txt)%&gt;
+&lt;%include(http://example.jp/filename.html)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-phpinclude" id="skinvar-phpinclude"><span class="invisible">skinvar-phpinclude</span></a>
+<h1>スキン/テンプレート変数：phpinclude</h1>
+
+<p>
+Webページ出力時に、指定されたPHPファイルを実行し、その結果を挿入します。ファイルの中身はPHPとして解釈され、実行されるので注意が必要です。また、Nucleusのスキン/テンプレート変数は展開<strong>されません</strong>。同じような変数に、取り込み時にスキン/テンプレート変数を展開する<a href="#skinvar-parsedinclude">parsedinclude</a>や、ファイルの中身をそのまま表示する<a href="#skinvar-include">include</a>があります。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Php include::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>filename</strong></td>
+                <td>取り込むファイルの名前（index.phpからの相対位置でも絶対位置でもかまいません。）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>注意</h2>
+<ul>
+    <li>この変数は<a href="#parser-properties">パーサー設定の<code>IncludeMode</code> と<code>IncludePrefix</code></a>に影響を受けます。</li>
+    <li>ファイルはphpのコマンド<code>include()</code>を使ってインクルードされます。このコマンドは<em>内部の</em>クラス・メソッドから呼び出されるので、Nucleus内部やプラグインで使用されているグローバル変数にアクセスしたい時は、<strong>自身でグローバル変数を宣言する必要があります</strong>。多くの<a href="#skinvar-phpinclude-vars">標準的な変数</a>はNucleusによって自動的にグローバルが宣言されます。</li>
+</ul>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre><code>&lt;%phpinclude(filename.php)%&gt;
+&lt;%phpinclude(/home/user/myself/filename.php)%&gt;</code></pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-phpinclude-vars" id="skinvar-phpinclude-vars"><span class="invisible">skinvar-phpinclude-vars</span></a>
+<h1>スキン/テンプレート変数：phpinclude：vars</h1>
+
+<p>
+次のグローバル変数は、スキン/テンプレート変数の<a href="#skinvar-phpinclude">phpinclude</a>によってインクルードされたファイルからアクセスできるものです：
+</p>
+
+<p>
+$GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
+<br />$SERVER_PROTOCOL, $REQUEST_METHOD, $QUERY_STRING
+<br />$DOCUMENT_ROOT, $HTTP_ACCEPT, $HTTP_ACCEPT_CHARSET
+<br />$HTTP_ACCEPT_ENCODING, $HTTP_ACCEPT_LANGUAGE
+<br />$HTTP_CONNECTION, $HTTP_HOST, $HTTP_REFERER
+<br />$HTTP_USER_AGENT, $REMOTE_ADDR, $REMOTE_PORT
+<br />$SCRIPT_FILENAME, $SERVER_ADMIN, $SERVER_PORT
+<br />$SERVER_SIGNATURE, $PATH_TRANSLATED, $SCRIPT_NAME
+<br />$REQUEST_URI, $argv, $argc, $PHP_SELF
+<br />$HTTP_COOKIE_VARS, $HTTP_GET_VARS, $HTTP_POST_VARS
+<br />$HTTP_POST_FILES, $HTTP_ENV_VARS, $HTTP_SERVER_VARS
+<br />$HTTP_SESSION_VARS, $PATH_INFO, $HTTPS
+<br />$HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR
+</p>
+
+<p>
+他の変数に関しては、'<code>global $varname;</code>'をきっちりとコードに加える必要があります。
+</p>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-parsedinclude" id="skinvar-parsedinclude"><span class="invisible">skinvar-parsedinclude</span></a>
+<h1>スキン/テンプレート変数：parsedinclude</h1>
+
+<p>
+Webページ出力時に、指定されたファイルを取り込んで挿入します。このファイルのは、取り込み時にNucleusのスキン/テンプレートによる構文解析にかけられるので、スキン/テンプレート変数が使用できます。同じような変数に、取り込んだファイルのPHPを実行する<a href="#skinvar-phpinclude">phpinclude</a>や、ファイルの中身をそのまま表示する<a href="#skinvar-include">include</a>があります。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Parsed include::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>filename</strong></td>
+                <td>取り込むファイルの名前（index.phpからの相対位置でも絶対位置でもかまいません。URLを指定することもできます）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+
+<h2>注意</h2>
+<ul>
+    <li>この変数は<a href="#parser-properties">パーサー設定の<code>IncludeMode</code> と<code>IncludePrefix</code></a>に影響を受けます。</li>
+    <li>インクルードしたファイルの中からでも、再び<code>&lt;%parsedinclude (filename)%&gt;</code>を呼び出すことができますが、無限ループを避けるために最大で3段階までとなります。</li>
+</ul>
+
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%parsedinclude(filename.txt)%&gt;
+&lt;%parsedinclude(/home/user/myself/filename.txt)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-plugin" id="skinvar-plugin"><span class="invisible">skinvar-plugin</span></a>
+<h1>スキン/テンプレート変数：plugin</h1>
+
+<p>
+プラグインを呼び出します。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>必須：
+        <table summary="Skin/Template var::Plugin::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>PluginName</strong></td>
+                <td>呼び出されるプラグインの名前。<strong>大文字小文字が区別されるので注意が必要です。</strong></td>
+            </tr>
+        </table>
+    </li>
+	<li><p>この他、プラグインごとに引数が定義・追加されます。</p></li>
+</ul>
+
+<h2>注意</h2>
+<ul>
+    <li>プラグイン名が既存の変数とぶつからない場合、<code>&lt;%PluginName (parameters)%&gt;</code>と記述することで、プラグインを直接呼び出すこともできます。現在はそのようにプラグイン名で呼び出す方法が主流ですが、プラグイン呼び出しであることをあえて明示したい場合は<code>&lt;%plugin(parameters)%&gt;</code>のほうを利用するといいでしょう。</li>
+</ul>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%plugin(Calendar)%&gt;
+&lt;%plugin(LastComments,myweblog)%&gt;
+&lt;%LastComments(myweblog)%&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-loginform" id="skinvar-loginform"><span class="invisible">skinvar-loginform</span></a>
+<h1>スキン変数：loginform</h1>
+
+<p>ログインフォームまたは、ログイン中メッセージ（"ログイン中:ketsunet (ログアウト)"）を挿入します</p>
+
+<h2>引数</h2>
+<p>
+	なし
+</p>
+
+<h2>スキンタイプ</h2>
+
+<p>全て</p>
+
+<h2>例</h2>
+
+<pre><code>&lt;%loginform%&gt;</code></pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-commentform" id="skinvar-commentform"><span class="invisible">skinvar-commentform</span></a>
+<h1>スキン変数：commentform</h1>
+
+<p>
+アイテムページにコメントフォームを挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>オプション：
+        <table summary="Skin var::Comment form::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>destinationurl</em></strong></td>
+                <td>コメント追加後にリダイレクトさせるURL（デフォルトでは、投稿したアイテムの「個別アイテムページ」にリダイレクトされます）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+</div>
+
+
+<h2>スキンタイプ</h2>
+
+<p>
+個別アイテム
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%commentform%&gt;
+&lt;%commentform(http://example.jp/thanks.html)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-set" id="skinvar-set"><span class="invisible">skinvar-set</span></a>
+<h1>スキン/テンプレート変数 set</h1>
+
+<p>
+<a href="#parser-properties" title="A list of available parser properties">パーサーのプロパティ</a>を設定します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin/Template var::Set::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>property</strong></td>
+                <td>プロパティの名前</td>
+            </tr>
+            <tr>
+                <td><strong>value</strong></td>
+                <td>プロパティの値</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%set(IncludeMode,skindir)%&gt;
+&lt;%set(IncludePrefix,somedir/)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-skinfile" id="skinvar-skinfile"><span class="invisible">skinvar-skinfile</span></a>
+<h1>スキン/テンプレート変数：skinfile</h1>
+
+<p>表示に使用中のスキンのあるディレクトリにリンクを張る時に使用します。<a href="#parser-properties">パーサーのプロパティ</a><code>IncludePrefix</code>と共に使用することで、最良の結果を得ることができます。</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin/Template var::Skin file::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>filename</strong></td>
+                <td>ファイルの名前（「http://～」から始まるURLに変換されます）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%skinfile(mystyle.css)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-skinname" id="skinvar-skinname"><span class="invisible">skinvar-skinname</span></a>
+<h1>スキン/テンプレート変数：skinname</h1>
+
+<p>現在使用しているスキンの名前を挿入します。</p>
+
+<h2>引数</h2>
+<p>
+なし
+</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%skinname%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-if" id="skinvar-if"><span class="invisible">skinvar-if</span></a>
+<a name="skinvar-else" id="skinvar-else"><span class="invisible">skinvar-else</span></a>
+<a name="skinvar-endif" id="skinvar-endif"><span class="invisible">skinvar-endif</span></a>
+<a name="skinvar-ifnot" id="skinvar-ifnot"><span class="invisible">skinvar-ifnot</span></a>
+<a name="skinvar-elseif" id="skinvar-elseif"><span class="invisible">skinvar-elseif</span></a>
+<a name="skinvar-elseifnot" id="skinvar-elseifnot"><span class="invisible">skinvar-elseifnot</span></a>
+<h1>スキン変数：if/ifnot/else/elseif/elseifnot/endif</h1>
+
+<p>決まった条件を満たしているときにのみ、コンテンツ・ブロックを挿入。</p>
+
+<h2>引数</h2>
+<p>スキン変数<code>if/ifnot/elseif/elseifnot</code>に対してのみ、引数が必須になります</p>
+
+
+<ul>
+    <li>必須：
+        <table summary="Skin var::if::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th colspan="3" abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>type</strong></td>
+                <td colspan="3"><a href="#if_condition">条件の種類</a></td>
+            </tr>
+            <tr>
+                <td colspan="4">typeによって、以下のオプションをとることがあります</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><em>name</em></td>
+                <td>条件の名前</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><em>value</em></td>
+                <td>条件の名前の値</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>条件の種類</h2>
+
+<ul>
+    <li><strong>category</strong>：カテゴリーを選択しているとき、条件は満たされる
+        <ul>
+          <li><strong>category</strong>：カテゴリが選択されているか調べる</li>
+          <li><strong>category,catname,<em>CategoryName</em> </strong>：現在のカテゴリが <em>CategoryName</em> と一致するか調べる</li>
+          <li><strong>category,catid,<em>CategoryID</em></strong>：現在のカテゴリのIDが <em>CategoryId</em> と一致するか調べる</li>
+        </ul>
+    </li>
+    <li><strong>blogsetting</strong>：Blog設定の<em> name</em>項目の値が<em>value</em>と一致しているか調べる（nameはSQLテーブル nucleus_blogにあるカラム名）</li>
+    <li><strong>loggedin</strong>：訪問中のメンバーが現在ログインしていれば、条件は満たされる</li>
+    <li><strong>onteam</strong>：訪問中のメンバーがログインしており、かつ現在いるブログ（あるいは<em>name</em>パラメーターで指示されたブログ）のチームに入っていれば、条件は満たされる </li>
+    <li><strong>admin</strong>：訪問中のメンバーがログインしており、かつ現在いるブログ（あるいは<em>name</em>パラメーターで指示されたブログ）の管理権限があれば、条件は満たされる</li>
+    <li><strong>archiveprevexists</strong>：もし現在のブログに現在表示しているものより新しい月、または日のアーカイブがあれば真</li>
+    <li><strong>archivenextexists</strong>：もし現在のブログに現在表示しているものより古い月、または日のアーカイブがあれば真</li>
+    <li><strong>previtem</strong>：もし現在のブログにより新しいアイテムがあるのなら真となる（個別アイテムページでのみ使用可能）</li>
+    <li><strong>nextitem</strong>：もし現在のブログにより古いアイテムがあるのなら真となる（個別アイテムページでのみ使用可能）</li>
+    <li><strong>skintype</strong>：現在のスキンタイプが<em> value</em>（index, search, item, archive, archivelist, ...）と一致するか調べる（URLによって判別）</li>
+    <li><strong>hasplugin</strong>：プラグインがインストールされているか、またはプラグインのオプションが特定の値をとっているか調べる
+        <ul>
+            <li><strong>hasplugin,<em>PluginName</em></strong>：該当プラグインが存在すれば、条件は満たされる</li>
+            <li><strong>hasplugin,<em>PluginName</em>,<em> OptionName</em></strong>：プラグインのオプションが「いいえ」に設定されてなければ、条件は満たされる</li>
+            <li><strong>hasplugin,<em>PluginName</em>,<em> OptionName=value</em></strong>：プラグインのオプションが特定の値に設定されていれば、条件は満たされる</li>
+        </ul>
+    </li>
+    <li><strong>if拡張対応プラグイン名</strong>：第1引数には、'NP_'を取ったプラグイン名を指定します。第1引数で指定したプラグインに、第2引数、第3引数を渡した結果が真なら真
+		<ul>
+			<li><strong><em>プラグイン名</em>,<em>属性名</em></strong>: 使用法 <em>プラグイン名</em> プラグインが <em>属性名</em> をチェックします</li>
+			<li><strong><em>プラグイン名</em>,<em>属性名</em>,<em>属性値</em></strong>: 使用法 <em>プラグイン名</em> プラグインが <em>属性名</em> の値が <em>属性値</em> かどうかチェックします</li>
+		</ul>
+    </li>
+</ul>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%if(loggedin)%&gt;
+おかえりなさい！
+&lt;%else%&gt;
+ようこそ！
+&lt;%endif%&gt;
+</pre>
+
+<pre>
+&lt;%if(category,catname,Off Topic)%&gt;
+'Off Topic' カテゴリへようこそ。
+&lt;%endif%&gt;
+</pre>
+
+<pre>
+&lt;%ifnot(loggedin)%&gt;
+アクセス禁止！
+&lt;%elseif(admin)%&gt;
+管理者さんようこそ！
+&lt;%elseif(onteam)%&gt;
+チームメンバーさんようこそ！
+&lt;%else%&gt;
+サイトメンバーさんようこそ！
+&lt;%endif%&gt;
+</pre>
+
+<h2>注意</h2>
+
+<p>条件が満たされない時にだけ何らかの表示を行いたい場合は、次のようにすることができます：</p>
+
+<pre>
+&lt;%ifnot(skintype,error)%&gt;
+&lt;%blogsetting(name)%&gt;
+&lt;%endif%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-membermailform" id="skinvar-membermailform"><span class="invisible">skinvar-membermailform</span></a>
+<h1>スキン変数：membermailform</h1>
+
+<p>
+メンバー詳細のページで、表示されているメンバーに対して、他のログインしているメンバーがメッセージを送ることのできるフォームを挿入します。
+</p>
+
+<h2>引数</h2>
+
+<div>
+<ul>
+    <li>オプション：
+        <table summary="Skin var::Member mail form::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>rows</em></strong></td>
+                <td>ボックスの横列の数値（デフォルトは10）</td>
+            </tr>
+            <tr>
+                <td><strong><em>cols</em></strong></td>
+                <td>ボックスの縦列の数値（デフォルトは40）</td>
+            </tr>
+            <tr>
+                <td><strong><em>destination url</em></strong></td>
+                <td>メッセージを送信した後リダイレクトされるURL</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+</div>
+
+
+<h2>スキンタイプ</h2>
+
+<p>
+メンバー詳細
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%membermailform%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-searchform" id="skinvar-searchform"><span class="invisible">skinvar-searchform</span></a>
+<h1>スキン変数：searchform</h1>
+
+<p>
+現在のブログに対する検索フォームを挿入します。
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>オプション：
+        <table summary="Skin var::Sezrch form::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>blogname</em></strong></td>
+                <td>検索を実行するブログの短縮名（ブログの短縮名を指定していても、<a href="#blogsearchable">常に検索対象に含める</a>の設定が「はい」のブログは検索対象になります）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+メインの目次、月別アーカイブ、月別アーカイブ一覧、個別アイテム
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%searchform%&gt;
+&lt;%searchform(otherweblog)%&gt;
+</pre>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="skinvar-nucleusbutton" id="skinvar-nucleusbutton"><span class="invisible">skinvar-nucleusbutton</span></a>
+<h1>スキン変数：nucleusbutton</h1>
+
+<p><a href="http://nucleuscms.org/" class="out" onclick="window.open(this.href);return false;" onkeypress="window.open(this.href);return false;" title="Nucleus website (opens in new window)">本家Nucleusウェブサイト（英語）</a>へのリンクが付いたボタン、あるいはバナーを挿入します。</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>オプション：
+        <table summary="Skin var::Nucleus button::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>imgurl</em></strong></td>
+                <td>画像のURL（デフォルトのものを使わない場合）</td>
+            </tr>
+            <tr>
+                <td><strong><em>imgwidth</em></strong></td>
+                <td>画像の横幅（ピクセル単位）</td>
+            </tr>
+            <tr>
+                <td><strong><em>imgheight</em></strong></td>
+                <td>画像の高さ（ピクセル単位）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>注意</h2>
+<ul>
+    <li>このタグは<a href="#parser-properties">パーサー設定の<code>IncludeMode</code> と<code>IncludePrefix</code></a>に影響を受けます。</li>
+</ul>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%nucleusbutton%&gt;
+&lt;%nucleusbutton(nucleus/nucleus.gif,46,43)%&gt;
+</pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="skinvar-self" id="skinvar-self"><span class="invisible">skinvar-self</span></a>
+<h1>スキン変数：self</h1>
+
+<p>
+現在表示しているページのファイル名を挿入します（index.php等で記述した「$CONF['Self']」の値です）。
+</p>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%self%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-addlink" id="skinvar-addlink"><span class="invisible">skinvar-addlink</span></a>
+<h1>スキン変数：addlink</h1>
+
+<p>
+表示中のブログにアイテムを追加するためのブックマークレットのURLを出力します
+</p>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;dd&gt;&lt;a href="&lt;%addlink%&gt;" onclick="&lt;%addpopupcode%&gt;" title="ブログにアイテムを追加する"&gt;アイテムを投稿する&lt;/a&gt;&lt;/dd&gt;
+</pre>
+
+</div>
+
+<div class="page">
+<a name="skinvar-addpopupcode" id="skinvar-addpopupcode"><span class="invisible">skinvar-addpopupcode</span></a>
+<h1>スキン変数：addpopupcode</h1>
+
+<p>
+アイテムを追加するブックマークレットをポップアップさせるためのJavascriptコードを出力します
+</p>
+
+<h2>引数</h2>
+<p>なし</p>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;dd&gt;&lt;a href="&lt;%addlink%&gt;" onclick="&lt;%addpopupcode%&gt;" title="ブログにアイテムを追加する"&gt;アイテムを投稿する&lt;/a&gt;&lt;/dd&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="templatevars-overview" id="templatevars-overview"><span class="invisible">templatevars-overview</span></a>
+<h1>テンプレート変数：概略</h1>
+
+<h2>どういったものなのか？</h2>
+
+<p>テンプレート変数はスキン変数と同じ方法で広く働きますが、テンプレート内部で利用できる点でスキン変数と区別されます。変数は <code>&lt;%<em style="font-style:italic;">変数名</em>%&gt;</code>という形で呼び出され、変数の機能によってはテキストを挿入します。また、その他のオプションパラメーターを持つ変数もあります。</p>
+
+<h2>利用可能な変数</h2>
+
+<p>
+テンプレート変数は、<code>「アイテムのヘッダー」、「アイテムの本体」、「アイテムのフッター」、「日付ヘッダー」、「日付フッター」、「続きへのリンク」、「アイテムリンクの編集」</code>といった、テンプレート・パーツの中で使用できます。（変数<code>image</code>、 <code>popup</code>、<code>media</code>、<code> plugin</code>はブログアイテムの中でも使用できます。）
+</p>
+
+<ul>
+    <li><a href="#templatevars-basic">基本の変数･･･</a>（title、bodyなど...）</li>
+    <li><a href="#templatevars-advanced">上級の変数･･･</a>（include、pluginなど...）</li>
+</ul>
+
+<p>コメント関連のテンプレート・パーツ（<code>「コメントのヘッダー」、「コメントの本体」、「コメントのフッター」、「コメントが1 つの時」、「コメントが2つ以上の時」、「コメントの続きを読む」、「コメントが無い時」、「長すぎるコメントの時」</code>）では、利用可能な変数のセットが異なります：</p>
+
+<ul>
+    <li><a href="#templatevars-comments">コメント関連の変数･･･</a></li>
+</ul>
+
+
+</div>
+
+
+
+<div class="page">
+<a name="templatevars-basic" id="templatevars-basic"><span class="invisible">templatevars-basic</span></a>
+<h1>テンプレート変数：基本の変数</h1>
+
+<p>これらの変数はすべて、そのときパースされているアイテムに関わる値になります。</p>
+
+<table summary="Template var::Basic vars"><tr>
+    <th abbr="名前">名前</th>
+    <th abbr="説明">説明</th>
+</tr><tr>
+    <td>title</td>
+    <td>アイテムのタイトル</td>
+</tr><tr>
+    <td>body</td>
+    <td>「本文」のテキスト</td>
+</tr><tr>
+    <td>more</td>
+    <td>「続き」のテキスト</td>
+</tr><tr>
+    <td>category</td>
+    <td>アイテムが所属しているカテゴリーの名前</td>
+</tr><tr>
+    <td>categorylink</td>
+    <td>アイテムが所属しているカテゴリーのURL</td>
+</tr><tr>
+    <td><a href="#templatevar-karma">karma</a></td>
+    <td>カルマ投票の得点</td>
+</tr><tr>
+    <td>authorlink</td>
+    <td>投稿者の「メンバーの詳細ページ」のURL</td>
+</tr><tr>
+    <td>itemlink</td>
+    <td>アイテムのURL（permanent）</td>
+</tr><tr>
+    <td><a href="#templatevar-author">author</a></td>
+    <td>投稿者の「<a href="#shortnames">表示される名前</a>」</td>
+</tr><tr>
+    <td><a href="#templatevar-smartbody">smartbody</a></td>
+    <td>本文か続きのどちらか</td>
+</tr><tr>
+    <td><a href="#templatevar-morelink">morelink</a></td>
+    <td>「続き」部分のURL</td>
+</tr><tr>
+    <td><a href="#templatevar-date">date</a></td>
+    <td>フォーマット済みの日付</td>
+</tr><tr>
+    <td><a href="#templatevar-time">time</a></td>
+    <td>フォーマット済みの時刻</td>
+</tr><tr>
+    <td>daylink</td>
+    <td>アイテムが投稿された日付のアーカイブのURL</td>
+</tr><tr>
+    <td><a href="#templatevar-comments">comments</a></td>
+    <td>コメント・ブロック、もしくはコメント数</td>
+</tr><tr>
+    <td>itemid</td>
+    <td>アイテムのID</td>
+</tr><tr>
+    <td>blogurl</td>
+    <td>ブログのURL</td>
+</tr></table>
+
+<p><a href="#templatevars-overview">テンプレート変数の概略...</a></p>
+
+
+</div>
+
+
+
+<div class="page">
+<a name="templatevars-advanced" id="templatevars-advanced"><span class="invisible">templatevars-advanced</span></a>
+<h1>テンプレート変数：上級の変数</h1>
+
+
+<table summary="Template var::Advanced vars"><tr>
+    <th abbr="名前">名前</th>
+    <th abbr="説明">説明</th>
+</tr><tr>
+    <td>authorid</td>
+    <td>現在のアイテムの投稿者のID</td>
+</tr><tr>
+    <td>blogid</td>
+    <td>アイテムが所属するブログのID</td>
+</tr><tr>
+    <td>catid</td>
+    <td>アイテムが所属するカテゴリーのID</td>
+</tr><tr>
+    <td>query</td>
+    <td>存在していれば、検索文字列</td>
+</tr><tr>
+    <td><a href="#templatevar-syndicate_title">syndicate_title</a></td>
+    <td>RSSなどの配信用に、指定文字数以上を省略したアイテムのタイトル</td>
+</tr><tr>
+    <td><a href="#templatevar-syndicate_description">syndicate_description</a></td>
+    <td>RSSなどの配信用に、指定文字数以上を省略した「本文」テキスト</td>
+</tr><tr>
+    <td>karmaposlink</td>
+    <td>投票用のURL</td>
+</tr><tr>
+    <td>karmaneglink</td>
+    <td>投票用のURL</td>
+</tr><tr>
+    <td>new</td>
+    <td>前回訪問時意向に追加されたアイテムを示すテキストなど</td>
+</tr><tr>
+    <td><a href="#skinvar-include">include</a></td>
+    <td>指定されたファイルの内容をそのまま挿入</td>
+</tr><tr>
+    <td><a href="#skinvar-parsedinclude">parsedinclude</a></td>
+    <td>指定されたファイル内のスキン/テンプレート変数を展開して、その結果を挿入</td>
+</tr><tr>
+    <td><a href="#skinvar-phpinclude">phpinclude</a></td>
+    <td>指定されたファイルをPHPとして実行した結果を挿入</td>
+</tr><tr>
+    <td><a href="#skinvar-plugin">plugin</a></td>
+    <td>プラグインを実行</td>
+</tr><tr>
+    <td><a href="#templatevar-edit">edit</a></td>
+    <td>テンプレート「アイテムを編集するためのリンク」の内容を挿入</td>
+</tr><tr>
+    <td><a href="#templatevar-editlink">editlink</a></td>
+    <td>アイテム編集画面（bookmarklet）のURL</td>
+</tr><tr>
+    <td><a href="#templatevar-editpopupcode">editpopupcode</a></td>
+    <td>editlink用のウィンドウをポップアップするjavascriptコード</td>
+</tr><tr>
+    <td><a href="#skinvar-skinfile">skinfile</a></td>
+    <td>使用中のスキンのあるディレクトリに存在するファイルへのを使う時に使用</td>
+</tr><tr>
+    <td><a href="#skinvar-set">set</a></td>
+    <td><a href="#parser-properties">パーサーのプロパティ</a>を設定</td>
+</tr><tr>
+    <td><a href="#templatevar-image">image</a></td>
+    <td>メディア書庫へのインライン画像</td>
+</tr><tr>
+    <td><a href="#templatevar-popup">popup</a></td>
+    <td>メディア・ディレクトリの画像をポップアップ</td>
+</tr><tr>
+    <td><a href="#templatevar-media">media</a></td>
+    <td>メディア・ディレクトリからの他のメディア・オブジェクト</td>
+</tr><tr>
+    <td>relevance</td>
+    <td>検索結果を表示するテンプレートに'search hit relevance'をインクルードする（2.5より）</td>
+</tr></table>
+
+<p><a href="#templatevars-overview">テンプレート変数の概略...</a></p>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="templatevars-comments" id="templatevars-comments"><span class="invisible">templatevars-comments</span></a>
+<h1>テンプレート変数：コメント関連（前半）</h1>
+<a href="#templatevars-comments_l">テンプレート変数：コメント関連（後半）</a>
+
+<table summary="Template comment var::First half"><tr>
+    <th abbr="名前">名前</th>
+    <th abbr="説明">説明</th>
+</tr><tr>
+    <td>body</td>
+    <td>コメントの本体</td>
+</tr><tr>
+    <td>user</td>
+    <td>コメント者の名前</td>
+</tr><tr>
+    <td>userid</td>
+    <td>コメント者のWebサイトのURL、もしくはコメント者のメールアドレス（入力されたままのものが挿入されます）</td>
+</tr><tr>
+    <td>email</td>
+    <td>コメント者のメールアドレス（スパム対策として、"@"は"(at)"に、".(ピリオド)"は"(dot)"に変換されます）</td>
+</tr><tr>
+    <td>userlink</td>
+    <td>コメント者がログイン中の登録メンバーの時はメンバー詳細ページに、それ以外の時は入力されたWebサイトのURL、もしくはメールアドレスに対する&lt;a href="..."&gt;タグ付きのリンク（有効なURLかメールアドレスが入力されていない場合は、コメント者の名前のみが表示されます）</td>
+</tr><tr>
+    <td>userlinkraw</td>
+    <td>userlinkと同じ。ただし、aタグの付いたリンクではなくURL、もしくはmailto:メールアドレスのみの表記。（入力されたURLやメールアドレスがいずれも文法的に有効でない場合は空になります）</td>
+</tr><tr>
+    <td>useremail</td>
+    <td>ユーザーのメールアドレス。もしコメント者によって入力されていない場合は空</td>
+</tr><tr>
+    <td>userwebsite</td>
+    <td>ユーザーのwebsiteのURL。もしコメント者によって入力されていない場合は空</td>
+</tr><tr>
+    <td>memberid</td>
+    <td>メンバーのID（コメント者がログイン中の登録メンバーでない時は0になります）</td>
+</tr><tr>
+    <td>commentcount</td>
+    <td>該当アイテムに付けられたコメントの総数</td>
+</tr><tr>
+    <td><a href="#templatecommentwords" title="commentword()">commentword</a></td>
+    <td>アイテムに付けられたコメントの件数の数え方の表記</td>
+</tr>
+</table>
+<a href="#templatevars-comments_l">テンプレート変数：コメント関連（後半）</a>
+<p><a href="#templatevars-overview">テンプレート変数の概略...</a></p>
+</div>
+<div class="page">
+<a name="templatevars-comments_l" id="templatevars-comments_l"><span class="invisible">templatevars-comments_l</span></a>
+<h1>テンプレート変数：コメント関連（後半）</h1>
+<a href="#templatevars-comments">テンプレート変数：コメント関連（前半）</a>
+<table summary="Template comment var::Second half">
+<tr>
+    <td><a href="#templatevar-date" title="date([format])">date</a></td>
+    <td>コメントが追加された時の日付</td>
+</tr><tr>
+    <td><a href="#templatevar-time" title="time([format])">time</a></td>
+    <td>コメントが追加された時の時刻</td>
+</tr><tr>
+    <td>host</td>
+    <td>コメントが投稿されたホスト名</td>
+</tr><tr>
+    <td>ip</td>
+    <td>コメントが投稿されたIPアドレス</td>
+</tr><tr>
+    <td>commentid</td>
+    <td>現在のコメントのID</td>
+</tr><tr>
+    <td>itemid</td>
+    <td>現在のアイテムのID</td>
+</tr><tr>
+    <td>itemlink</td>
+    <td>アイテムの詳細ページへのリンク</td>
+</tr><tr>
+    <td><a href="#templateitemtitle" title="itemtitle([maxlength])">itemtitle</a></td>
+    <td>現在のアイテムのタイトル</td>
+</tr><tr>
+    <td>blogid</td>
+    <td>ブログのID</td>
+</tr><tr>
+    <td>blogurl</td>
+    <td>ブログのURL</td>
+</tr><tr>
+    <td><a href="#templatememberextra" title="authtext()">authtext</a></td>
+    <td>コメント者がログイン中の登録メンバーの時は「<a href="#templatememberextra">登録メンバーからのコメントへの追加表示</a>」テンプレートで設定した内容、それ以外は空</td>
+</tr><tr>
+    <td>short</td>
+    <td>最初の改行部分から先が省略されたコメントの本体。テンプレートによっては末尾に<a href="#templatecommentcontinued">リンクが追加</a>されます。</td>
+</tr><tr>
+    <td>excerpt</td>
+    <td>コメントの本体。60文字でカットし'...'を追加</td>
+</tr><tr>
+    <td>timestamp</td>
+    <td>コメントが追加された時のタイムスタンプ</td>
+</tr><tr>
+    <td><a href="#skinvar-include">include</a></td>
+    <td>指定されたファイルの内容をそのまま挿入</td>
+</tr><tr>
+    <td><a href="#skinvar-parsedinclude">parsedinclude</a></td>
+    <td>指定されたファイル内のスキン/テンプレート変数を展開して、その結果を挿入</td>
+</tr><tr>
+    <td><a href="#skinvar-phpinclude">phpinclude</a></td>
+    <td>指定されたファイルをPHPとして実行した結果を挿入</td>
+</tr><tr>
+    <td><a href="#skinvar-plugin">plugin</a></td>
+    <td>プラグインを実行</td>
+</tr><tr>
+    <td><a href="#skinvar-skinfile">skinfile</a></td>
+    <td>使用中のスキンのあるディレクトリに存在するファイルへのを使う時に使用</td>
+</tr><tr>
+    <td><a href="#skinvar-set">set</a></td>
+    <td><a href="#parser-properties">パーサーのプロパティ</a>を設定</td>
+</tr></table>
+<a href="#templatevars-comments">テンプレート変数：コメント関連（前半）</a>
+
+
+
+<p><a href="#templatevars-overview">テンプレート変数の概略...</a></p>
+
+</div>
+
+
+
+<div class="page">
+<a name="templatevar-karma" id="templatevar-karma"><span class="invisible">templatevar-karma</span></a>
+<h1>テンプレート変数：karma</h1>
+
+<p>カルマ投票のデータを挿入します。カルマ投票は、アイテムの'カルマ'を投票する方法で、正にでも負にでも投票できます。これら投票の総計によって、該当記事が訪問者にどのように思われているのか知ることができます。</p>
+
+<h2>引数</h2>
+
+<ul>
+    <li>オプション：
+        <table summary="Template var::Karma::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="挿入される情報の種類">挿入される情報の種類</th>
+            </tr>
+            <tr>
+                <td><strong><em>totalscore</em></strong></td>
+                <td>カルマ投票の総合得点（正の投票数から負の投票数を引いたもの/デフォルト）</td>
+            </tr>
+            <tr>
+                <td><strong><em>pos</em></strong></td>
+                <td>正の投票の総計</td>
+            </tr>
+            <tr>
+                <td><strong><em>neg</em></strong></td>
+                <td>負の投票の総計</td>
+            </tr>
+            <tr>
+                <td><strong><em>votes</em></strong></td>
+                <td>投票数の総計</td>
+            </tr>
+            <tr>
+                <td><strong><em>posp</em></strong></td>
+                <td>正に投じられたパーセンテージ</td>
+            </tr>
+            <tr>
+                <td><strong><em>negp</em></strong></td>
+                <td>負に投じられたパーセンテージ</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+
+<h2>例</h2>
+<pre><code>&lt;%karma(posp)%&gt;がよい記事だと評価しました（総計&lt;%votes%&gt;票）</code></pre>
+
+
+</div>
+
+
+
+<div class="page">
+<a name="templateitemtitle" id="templateitemtitle"><span class="invisible">templateitemtitle</span></a>
+<h1>テンプレート変数：templateitemtitle</h1>
+
+<p>コメント関連テンプレート変数で、元記事のタイトルを挿入します。</p>
+
+<h2>引数</h2>
+
+<ul>
+    <li>オプション：
+        <table summary="Template var::Item title::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>maxlength</em></strong></td>
+                <td>maxlengthで指定された数値で、アイテムのタイトル省略。</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+</div>
+
+
+
+
+
+
+<div class="page">
+<a name="templatevar-author" id="templatevar-author"><span class="invisible">templatevar-author</span></a>
+<h1>テンプレート変数：author</h1>
+
+<p>投稿者のデータを挿入します。</p>
+
+<h2>引数</h2>
+<ul>
+    <li>オプション：
+        <table summary="Template var::Author::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="挿入される情報の種類">挿入される情報の種類</th>
+            </tr>
+            <tr>
+                <td><strong><em>name</em></strong></td>
+                <td>投稿者の「<a href="#shortnames">表示される名前</a>」（ログインに使うもの）</td>
+            </tr>
+            <tr>
+                <td><strong><em>realname</em></strong></td>
+                <td>投稿者の「本名」</td>
+            </tr>
+            <tr>
+                <td><strong><em>id</em></strong></td>
+                <td>投稿者のメンバーID</td>
+            </tr>
+            <tr>
+                <td><strong><em>url</em></strong></td>
+                <td>投稿者のウェブサイトのURL</td>
+            </tr>
+            <tr>
+                <td><strong><em>email</em></strong></td>
+                <td>投稿者の登録メールアドレス（使うのは避けるべき）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>例</h2>
+
+<pre><code>&lt;%author%&gt;
+&lt;%author(realname)%&gt;
+&lt;a href="&lt;%author(url)%&gt;"&gt;&lt;%author%&gt;&lt;/a&gt;</code></pre>
+
+</div>
+
+
+
+
+<div class="page">
+<a name="templatevar-smartbody" id="templatevar-smartbody"><span class="invisible">templatevar-smartbody</span></a>
+<h1>テンプレート変数：smartbody</h1>
+
+<p>
+現在のアイテムを調べてから、｢本文｣と｢続き｣のどちらを表示するか決定します。
+</p>
+
+<p>「続き」に何かが入力されていれば「続き」が、何も入力されていなければ「本文」が挿入されます。</p>
+
+<table summary="Template var::Smart body" style="text-align: center;"><tr>
+    <th abbr="部分名">部分名</th><th colspan="2" abbr="何か入力されている？">何か入力されている？</th>
+</tr><tr>
+    <td>本文</td><td>入力あり</td><td>入力あり</td>
+</tr><tr>
+    <td>続き</td><td>入力なし</td><td>入力あり</td>
+</tr><tr>
+    <th abbr="smartbodyで挿入される部分">smartbodyで挿入される部分</th><th abbr="「本文」部分">「本文」部分</th><th abbr="「続き」部分">「続き」部分</th>
+</tr></table>
+
+<h2>使用例</h2>
+
+<p>「本文」に詳しい内容を入力し、「続き」には"紹介"、"抜粋"といった内容のものを入力し、「メインの目次ページ」で使用するテンプレートには<code>&lt;%smartbody%&gt;</code>を使い、抜粋が存在するときにはそれを、無い時は「本文」を使用するような使い方をします</p>
+<p>この時、「個別アイテムページ」で使うテンプレートには、<code> &lt;%body%&gt;</code> + <code>&lt;%more%&gt;</code>のかわりに<code>&lt;%body% &gt;</code>だけを記述するようにすると、より効果的に使えるでしょう</p>
+<!-- のテキストが完全なテキストと判断され、続きの部分はフロントページに表示される「紹介」や「抜粋」と判断されます。</p>
+<p>フロントページで使われているテンプレートには<code>&lt;%smartbody%&gt;</code>を使い、抜粋が存在するときにはそれを、無い場合は完全なテキストを挿入します。アイテムの詳細テンプレートには、<code> &lt;%body%&gt;</code> + <code>&lt;%more%&gt;</code>のかわりに<code>&lt;%body% &gt;</code>を使います。<code>&lt%body%&gt;</code>は少なくとも完全なアイテムが入っているのですから。</p> -->
+
+
+
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-morelink" id="templatevar-morelink"><span class="invisible">templatevar-morelink</span></a>
+<h1>テンプレート変数：morelink</h1>
+
+<p>
+テンプレート<a href="#templatemorelink">続きへのリンク</a>で定義されているリンクを挿入します。「続き」に何も入力されていない時は無視されます。
+</p>
+
+<p>テンプレート部品'<a href="#templatemorelink">続きへのリンク</a>'の中身もまたパースされるので、同様に<a href="#templatevars-overview">テンプレート変数</a>を含むことができることに注意してください（例：<a href="#templatemorelink">続きへのリンク</a>に&lt;%morelink%&gt;を記述することは可能ですが、無限ループを起こします）。</p>
+<h2>引数</h2>
+<p>なし</p>
+</div>
+
+
+<div class="page">
+<a name="templatevar-date" id="templatevar-date"><span class="invisible">templatevar-date</span></a>
+<h1>テンプレート変数：date</h1>
+
+<p>
+<a href="#templatedatetime">日付フォーマット</a>で設定した書式で日付を挿入します。オプションの引数に<a href="#strftime">strftime</a>変数を使用して、フォーマットを変更することもできます。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>オプション：
+        <table summary="Template var::Date::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>format</em></strong></td>
+                <td>日付のフォーマットに用いる形式</td>
+            </tr>
+            <tr>
+                <td colspan="2">下記の4つの特別なパラメーターが利用可能です</td>
+            </tr>
+            <tr>
+                <td><strong><em><code>rfc822</code></em></strong></td>
+                <td>LocaleにあわせたRFC822フォーマットの日付</td>
+            </tr>
+            <tr>
+                <td><strong><em><code>rfc822GMT</code></em></strong></td>
+                <td>GMTにあわせたRFCフォーマットの日付</td>
+            </tr>
+            <tr>
+                <td><strong><em><code>iso8601</code></em></strong></td>
+                <td>ISO-8601フォーマットの日付（<a href="http://www.w3.org/TR/NOTE-datetime" onclick="window.open(this.href);return false;" onkeypress="window.open(this.href);return false;" class="out">W3Cの時刻と日付フォーマット</a>（新しいウィンドウが開きます）に概略があります）。例：2008-09-05T10:00:00-05:00</td>
+            </tr>
+            <tr>
+                <td><strong><em><code>utc</code></em></strong></td>
+                <td>iso8601と同じ。ただし、タイムゾーンの表示として"Z"を使うUTCで表現される。</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>例</h2>
+<pre>
+&lt;%date%&gt;
+&lt;%date(%x)%&gt;
+&lt;%date(rfc822)%&gt;
+&lt;%date(rfc822GMT)%&gt;
+</pre>
+
+
+</div>
+
+<div class="page">
+<a name="templatevar-time" id="templatevar-time"><span class="invisible">templatevar-time</span></a>
+<h1>テンプレート変数：time</h1>
+
+<p>
+<a href="#templatedatetime">時刻フォーマット</a>で設定した書式で時刻を挿入します。オプションの引数に<a href="#strftime">strftime</a>変数を使用して、フォーマットを変更することもできます。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>オプション：
+        <table summary="Template var::Time:::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>format</em></strong></td>
+                <td>時刻のフォーマットに用いる形式</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>例</h2>
+<pre>
+&lt;%time%&gt;
+&lt;%time(%X)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-comments" id="templatevar-comments"><span class="invisible">templatevar-comments</span></a>
+<h1>テンプレート変数：comments</h1>
+
+<p>
+コメントブロックを挿入します。<a href="#templatecomments">このブロックの詳しい説明</a>。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>オプション：
+        <table summary="Template var::Comments::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>MaxToShow</em></strong></td>
+                <td>表示するコメントの数（設定されていれば、Blog設定にある<a href="#blogmaxcomments">コメントの最大量</a>を上書きします）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>例</h2>
+
+<pre>
+&lt;%comments%&gt;
+&lt;%comments(5)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-syndicate_title" id="templatevar-syndicate_title"><span class="invisible">templatevar-syndicate_title</span></a>
+<h1>テンプレート変数：syndicate_title</h1>
+
+<p>
+HTMLタグを取り除き、指定された長さにまで縮めたアイテムのタイトルを挿入します（指定が無い時は100）。省略された場合、末尾に"..."が追加されます。
+</p>
+
+<p>
+この変数はRSS等のために使うことが意図されていましたが、他にも便利な使い方があるでしょう。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>オプション：
+        <table summary="Template var::Syndicate title::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>MaxChars</em></strong></td>
+                <td>省略せずに残す最大の幅（デフォルトは100）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>例</h2>
+
+<pre>
+&lt;%syndicate_title%&gt;
+&lt;%syndicate_title(25)%&gt;
+</pre>
+
+</div>
+
+<div class="page">
+<a name="templatevar-syndicate_description" id="templatevar-syndicate_description"><span class="invisible">templatevar-syndicate_description</span></a>
+<h1>テンプレート変数：syndicate_description</h1>
+
+<p>
+HTMLタグを取り除き、指定された幅にまで縮めたアイテムのタイトルを挿入します（指定が無い時は250）。テキストが縮められた場合は、末尾に"..."が追加される。
+</p>
+
+<p>
+この変数はRSSのために使うことが意図されていましたが、他にも便利な使い方があるでしょう。
+</p>
+
+<h2>引数</h2>
+<ul>
+    <li>オプション：
+        <table summary="Template var::Syndicate description::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>MaxChars</em></strong></td>
+                <td>省略せずに残す最大の幅（デフォルトは250）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+
+<h2>例</h2>
+
+<pre>
+&lt;%syndicate_description%&gt;
+&lt;%syndicate_description(25)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-image" id="templatevar-image"><span class="invisible">templatevar-image</span></a>
+<h1>テンプレート変数：image</h1>
+
+<p>アイテム本体やテンプレートにインライン画像を挿入します。</p>
+
+<p>通常テンプレート変数&lt;%image%&gt;はアイテムに画像を挿入するときに自動的に生成されますが、テンプレート内部で直接呼び出すこともできます。その場合は、メディア・ディレクトリにある、現在のアイテムの投稿者のプライベート・コレクションから画像が持って来られるので注意が必要です。</p>
+
+<h2>引数</h2>
+<ul>
+    <li>必須：
+        <table summary="Template var::Image::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>filename</strong></td>
+                <td>画像ファイルの名前</td>
+            </tr>
+            <tr>
+                <td><strong>width</strong></td>
+                <td>画像の横幅（ピクセルかパーセンテージ）</td>
+            </tr>
+            <tr>
+                <td><strong>height</strong></td>
+                <td>画像の高さ（ピクセルかパーセンテージ）</td>
+            </tr>
+            <tr>
+                <td><strong>text</strong></td>
+                <td>画像の代用テキスト</td>
+            </tr>
+        </table>
+    </li>
+	<li><strong>注意:</strong>画像、ポップアップ、メディアタグでは、引数は<em>コンマではなく '|'で</em>区切られなければなりません。</li>
+</ul>
+
+<h2>例</h2>
+
+<pre>
+&lt;%image(myphoto.jpg|100|200|これが私です)%&gt;
+&lt;%image(myphoto.jpg|50%|50%|縮小していますが、これが私です)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="templatevar-popup" id="templatevar-popup"><span class="invisible">templatevar-popup</span></a>
+<h1>テンプレート変数：popup</h1>
+
+<p>アイテム本体やテンプレートにポップアップ画像を挿入します。</p>
+
+<p>通常テンプレート変数&lt;%popup%&gt;はアイテムに画像を挿入するときに自動的に生成されますが、テンプレート内部で直接呼び出すこともできます。その場合は、メディア・ディレクトリにある、現在のアイテムの投稿者のプライベート・コレクションから画像が持って来られるので注意が必要です。</p>
+
+<h2>引数</h2>
+<ul>
+    <li>必須：
+        <table summary="Template var::Popup::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>filename</strong></td>
+                <td>画像ファイルの名前</td>
+            </tr>
+            <tr>
+                <td><strong>width</strong></td>
+                <td>画像の横幅（ピクセルかパーセンテージ）</td>
+            </tr>
+            <tr>
+                <td><strong>height</strong></td>
+                <td>画像の高さ（ピクセルかパーセンテージ）</td>
+            </tr>
+            <tr>
+                <td><strong>text</strong></td>
+                <td>画像の代用テキスト</td>
+            </tr>
+        </table>
+    </li>
+	<li><strong>注意:</strong>画像、ポップアップ、メディアタグでは、引数は<em>コンマではなく '|'で</em>区切られなければなりません。</li>
+</ul>
+
+<h2>例</h2>
+
+<pre>
+&lt;%popup(myphoto.jpg|100|200|これが私です)%&gt;
+&lt;%popup(myphoto.jpg|50%|50%|縮小していますが、これが私です)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="templatevar-media" id="templatevar-media"><span class="invisible">templatevar-media</span></a>
+<h1>テンプレート変数：media</h1>
+
+<p>アイテム本体やテンプレートにメディアオブジェクトを挿入します。</p>
+
+<p>通常テンプレート変数&lt;%media%&gt;はアイテムにメディアファイルを挿入するときに自動的に生成されますが、テンプレート内部で直接呼び出すこともできます。その場合は、メディア・ディレクトリにある、現在のアイテムの投稿者のプライベート・コレクションから画像が持って来られるので注意が必要です。</p>
+
+<h2>引数</h2>
+<ul>
+    <li>必須：
+        <table summary="Template var::Media::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>filename</strong></td>
+                <td>オブジェクトファイルの名前</td>
+            </tr>
+            <tr>
+                <td><strong>text</strong></td>
+                <td>オブジェクトの説明テキスト</td>
+            </tr>
+        </table>
+    </li>
+	<li><strong>注意:</strong>画像、ポップアップ、メディアタグでは、引数は<em>コンマではなく '|'で</em>区切られなければなりません。</li>
+</ul>
+
+<h2>例</h2>
+
+<pre><code>&lt;%media(mysong.mp3|新曲を聞いてみてください)%&gt;</code></pre>
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-edit" id="templatevar-edit"><span class="invisible">templatevar-edit</span></a>
+<h1>テンプレート変数：edit</h1>
+
+<p>
+<a href="#templateeditlink">テンプレート：アイテムを編集するためのリンク</a>の内容を挿入します。
+</p>
+
+<p><strong>注意：</strong>ログイン状態のメンバーが、閲覧中のアイテムの編集を許可されている時のみ、この変数が働きます。それ以外の場合は、テンプレート変数&lt;%edit%&gt;は何も表示しません。</p>
+
+<h2>例</h2>
+<p>「アイテムの本体」テンプレートの一例</p>
+<pre><code>&lt;h1&gt;&lt;%title%&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;%body%&gt; &lt;%morelink%&gt;&lt;/p&gt;
+&lt;div class="metadata"&gt;
+    &lt;%edit%&gt; &lt;%comments%&gt;
+&lt;/div&gt;</code></pre>
+
+<h2>結果は次のようになります</h2>
+
+<div class="example">
+<span class="heading_example">タイトル</span>
+<p style="margin:2px;">アイテムの本文</p>
+<div style="margin:2px;"><a href="#templatevar-edit">編集</a> - <a href="#templatevar-edit">5 comments</a></div>
+</div>
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-editlink" id="templatevar-editlink"><span class="invisible">templatevar-editlink</span></a>
+<h1>テンプレート変数：editlink</h1>
+
+<p>
+アイテムを編集するためのbookmarkletのURLを挿入します。この変数は<a href="#templateeditlink">テンプレート：アイテムを編集するためのリンク</a>内で使用することができます。
+</p>
+
+<h2>例</h2>
+
+<p>「<a href="#templateeditlink">アイテムを編集するためのリンク</a>」テンプレートの一例</p>
+<pre>
+&lt;a href="&lt;%editlink%&gt;"
+    onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="templatevar-editpopupcode" id="templatevar-editpopupcode"><span class="invisible">templatevar-editpopupcode</span></a>
+<h1>テンプレート変数：editpopupcode</h1>
+
+<p>
+'アイテムの編集'ウィンドウをポップアップで開くためのjavascriptのコードを挿入します。
+</p>
+
+<h2>例</h2>
+
+<p>「<a href="#templateeditlink">アイテムを編集するためのリンク</a>」テンプレートの一例</p>
+<pre>
+&lt;a href="&lt;%editlink%&gt;" onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="plugins" id="plugins"><span class="invisible">plugins</span></a>
+<h1>プラグイン</h1>
+<p>
+Nucleusでは機能を追加するために、プラグインをインストールすることができます。プラグインは次のリストの様に働き、Nucleus本体だけでは実現できな様々な機能を提供してくれるでしょう。
+</p>
+<ol>
+    <li>スキン変数のように振舞う</li>
+    <li>テンプレート変数のように振舞う</li>
+    <li>Nucleusによって生成されたイベントのフック。「プラグインの管理」画面での「上へ」と「下へ」リンクは、イベント発生時にプラグインを呼び出す順番を決定するために用いられます。最初のプラグインは最初に呼び出され、最後のプラグインは最後に呼び出されます。</li>
+    <li><code>action.php</code>を通して呼び出されたときにアクタのように振舞う</li>
+</ol>
+<p>
+プラグインに対する責任は、完全にプラグインの作者にあることをお忘れなく。プラグイン作者は、プラグインが問題なく動くように作らなければなりません。
+</p>
+</div>
+
+<div class="page">
+<a name="parser-properties" id="parser-properties"><span class="invisible">parser-properties</span></a>
+<a name="includemode" id="includemode"><span class="invisible">includemode</span></a>
+<a name="includeprefix" id="includeprefix"><span class="invisible">includeprefix</span></a>
+<h1>パーサーのプロパティ</h1>
+
+<p>利用可能なパーサーオプションを以下に記述します。</p>
+
+<table summary="Parser properties">
+    <caption>パーサーのプロパティ</caption>
+    <tr>
+        <th abbr="オプション名">オプション名</th>
+        <th colspan="2" abbr="値">値</th>
+    </tr>
+    <tr>
+        <td rowspan="3">Includeモード</td>
+        <td><strong>normal</strong></td>
+        <td>通常の動作。ページを作成する「.php」ファイルのディレクトリ/URLから相対位置のファイルを取り出しインクルードします。</td>
+    </tr>
+    <tr>
+        <td><strong>skindir</strong></td>
+        <td>スキンディレクトリ/スキンURLから相対位置のファイルを取り出しインクルードします。</td>
+    </tr>
+    <tr>
+        <td>影響を与えるスキン変数</td>
+        <td>
+            <ul>
+                <li><a href="#skinvar-include">include</a></li>
+                <li><a href="#skinvar-phpinclude">phpinclude</a></li>
+                <li><a href="#skinvar-parsedinclude">parsedinclude</a></li>
+                <li><a href="#skinvar-nucleusbutton">nucleusbutton</a></li>
+            </ul>
+        </td>
+    </tr>
+    <tr>
+        <td rowspan="2">Includeプリフィックス</td>
+        <td colspan="2"><p>このプロパティはインクルードするファイルそれぞれの頭に追加されるプリフィックスです。例えば、プリフィックスが<code>base/</code>でインクルードするファイルが<code>somefile.txt</code>なら、最終的には<code>base/somefile.txt</code>をインクルードすることになります。</p>
+        <p>このプロパティはIncludeModeのプロパティと共に使われることが意図されています。この方法で、<code> <em>skindir/</em>somename/</code>にインポートされたスキンは、<code>IncludeMode</code>を<code>skindirを使う</code>に<code> IncludePrefix</code>を<code>somename/</code>に設定しておくことができます。 </p></td>
+    </tr>
+    <tr>
+        <td>影響を与えるスキン変数</td>
+        <td>
+            <ul>
+                <li><a href="#skinvar-include">include</a></li>
+                <li><a href="#skinvar-phpinclude">phpinclude</a></li>
+                <li><a href="#skinvar-parsedinclude">parsedinclude</a></li>
+                <li><a href="#skinvar-nucleusbutton">nucleusbutton</a></li>
+            </ul>
+        </td>
+    </tr>
+</table>
+
+<p><code>Includeプリフィックス</code>と<code>Includeモード</code> のプロパティは、「スキンの一般的設定」において該当スキンでの包括的な設定が可能です。なお、プロパティが設定されてしまうと、例えばテンプレートも含めたすべてのパースデータにそれが適用されることを心にとめておいてください。</p>
+
+</div>
+
+</body>
+</html>

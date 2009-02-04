@@ -1,6 +1,6 @@
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-  * Copyright (C) 2002-2007 The Nucleus Group
+  * Copyright (C) 2002-2009 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -152,7 +152,7 @@ function setMediaPopupURL(url) {
 
 function includeImage(collection, filename, type, width, height) {
 	if (isCaretEmpty()) {
-		text = prompt("Text to display ?","");
+		text = prompt("Text to display ?", filename);
 	} else {
 		text = getCaretText();
 	}
@@ -184,7 +184,7 @@ function includeImage(collection, filename, type, width, height) {
 
 function includeOtherMedia(collection, filename) {
 	if (isCaretEmpty()) {
-		text = prompt("Text to display ?","");
+		text = prompt("Text to display ?", filename);
 	} else {
 		text = getCaretText();
 	}

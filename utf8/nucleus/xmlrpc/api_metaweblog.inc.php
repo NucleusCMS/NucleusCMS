@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  *	This file contains definitions for the methods of the metaWeblog API
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id: api_metaweblog.inc.php,v 1.6 2007-02-04 06:28:46 kimitake Exp $
  * $NucleusJP: api_metaweblog.inc.php,v 1.5 2006/07/17 20:03:45 kimitake Exp $
  */
@@ -53,13 +53,20 @@
 			$category = _getArrayVal($catlist, 0);
 		
 		
-		$comments = (int) _getStructVal($struct, 'mt_allow_comments') ? 0 : 1;
-		$publish = _getScalar($m,4);
+//		$comments = (int) _getStructVal($struct, 'mt_allow_comments') ? 0 : 1;
+		$comments = $struct->structmem('mt_allow_comments');
+		if ($comments) {
+			$closed = (intval(_getStructVal($struct, 'mt_allow_comments')) == 1) ? 0 : 1;
+		} else {
+			$closed = 0;
+		}
+					$publish = _getScalar($m,4);
 
 
 		// Add item
-		$res = _addItem($blogid, $username, $password, $title, $content, $more, $publish, $comments, $category);
-		
+//		$res = _addItem($blogid, $username, $password, $title, $content, $more, $publish, $comments, $category);
+		$res = _addItem($blogid, $username, $password, $title, $content, $more, $publish, $closed, $category);
+							
 		// Handle trackbacks
 		$trackbacks = array();
 		$tblist = $struct->structmem('mt_tb_ping_urls');
@@ -187,13 +194,15 @@
 		
 		$comments = $struct->structmem('mt_allow_comments');
 		if ($comments) {
-			$comments = (int) _getStructVal($struct, 'mt_allow_comments') ? 0 : 1;
+//			$comments = (int) _getStructVal($struct, 'mt_allow_comments') ? 0 : 1;
+			$closed = (intval(_getStructVal($struct, 'mt_allow_comments')) == 1) ? 0 : 1;
 		} else {
-			$comments = $old['closed'];
+//			$comments = $old['closed'];
+			$closed = $old['closed'];
 		}
 
-		$res = _edititem($itemid, $username, $password, $catid, $title, $content, $more, $wasdraft, $publish, $comments);
-
+//		$res = _edititem($itemid, $username, $password, $catid, $title, $content, $more, $wasdraft, $publish, $comments);
+		$res = _edititem($itemid, $username, $password, $catid, $title, $content, $more, $wasdraft, $publish, $closed);
 		// Handle trackbacks
 		$trackbacks = array();
 		$tblist = $struct->structmem('mt_tb_ping_urls');
