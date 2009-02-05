@@ -1,13 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=<%text(_CHARSET)%>" />
 		<title><%text(_EDIT_ITEM)%></title>
 		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />				
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
-		<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
+		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
@@ -33,21 +34,22 @@
 			<%ticket%>
 			
 			<div id="submit" class="buttonbar">
-				<input type="submit" value="<%text(_BMLET_EDIT)%>" onclick="return checkSubmit();" />
 				<div id="switchbuttons">
 					<input type="button" onclick="flipBlock('body');" value="<%text(_BMLET_BODY)%> &gt;&gt;" />
 					<input type="button" onclick="flipBlock('more');" value="<%text(_BMLET_MORE)%> &gt;&gt;" />
 					<input type="button" onclick="flipBlock('options');" value="<%text(_BMLET_OPTIONS)%> &gt;&gt;" />
 					<input type="button" onclick="updAllPreviews(); flipBlock('preview');" value="<%text(_BMLET_PREVIEW)%> &gt;&gt;" />
 				</div>
+				<input type="submit" value="<%text(_BMLET_EDIT)%>" onclick="return checkSubmit();" />
+				<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
 			</div>
 
 			<div id="body" class="contentblock">
 				<table>
-				<tr>
+				<%ifautosave()%><tr>
 				<td><%text(_AUTOSAVEDRAFT)%></td>
 				<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
-				</tr>
+				</tr><%endif%>
 				<tr>
 				<td><%text(_ADD_TITLE)%></td>
 				<td><input 
@@ -71,8 +73,8 @@
 				<td><%categories%></td>
 				</tr>
 				<tr>
-				<td><%text(_AUTOSAVEDRAFT_NOW)%></td>
-				<td><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="autoSaveDraft();" /></td>
+				<%ifautosave()%><td><%text(_AUTOSAVEDRAFT_NOW)%></td>
+				<td><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="autoSaveDraft();" /></td><%endif%>
 				</tr>
 				</table>
 					
@@ -113,17 +115,21 @@
 						<li>
 							<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="70" /><label for="act_changedate"><%text(_BMLET_CHANGEDATE)%></label> <%helplink(changedate)%>
 									<div class="indent">
-										<input id="inputyear" name="year" tabindex="71" size="4" value="<%itemtime(year)%>" />年
-										<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" />月
-										<input id="inputday" name="day" tabindex="73" size="2" value="<%itemtime(mday)%>" />日
-										<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" />時
-										<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" />分
-										<br />
-										フォーマット：(yyyy)年(mm)月(dd)日 (hh)時(mm)分
+										<input id="inputyear" name="year" tabindex="71" size="4" value="<%itemtime(year)%>" onchange="document.forms[0].act_changedate.checked=true;" />年
+										<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" onchange="document.forms[0].act_changedate.checked=true;" />月
+										<input id="inputday" name="day" tabindex="73" size="2" value="<%itemtime(mday)%>" onchange="document.forms[0].act_changedate.checked=true;" />日
+
+										<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" onchange="document.forms[0].act_changedate.checked=true;" />時
+										<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" onchange="document.forms[0].act_changedate.checked=true;" />分
+										<br />フォーマット：(yyyy)年(mm)月(dd)日 (hh)時(mm)分
 									</div>
 							</li>
-					<%endif%>						
+							<li>
+								<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="71" /><label for="act_backtodrafts"><%text(_BMLET_BACKTODRAFTS)%></label> <%helplink(draft)%>
+							</li>
+					<%endif%>
 				</ul>
+				<input id="dosendping" name="dosendping" value="1" type="checkbox"><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label>
 				</td></tr>
 				
 				<tr>
@@ -149,7 +155,7 @@
 			
 		</div></form>
 
-	<script type="text/javascript">
+	<%ifautosave()%><script type="text/javascript">
 		var xmlhttprequest = new Array();
 		xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
 		xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
@@ -160,7 +166,7 @@
 		var goalurl = '../action.php'; // The PHP file where the content must be posted to
 		var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
 		var formtype = 'edit'; // Add or edit form
-	</script>
+	</script><%endif%>
 
 	</body>
 	</html>

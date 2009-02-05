@@ -1,13 +1,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=<%text(_CHARSET)%>" />
 		<title><%text(_ADD_ADDTO)%> '<%blogname%>'</title>
 		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" /> 
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />		
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
-		<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
+		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
@@ -33,22 +34,23 @@
 			<%ticket%>
 			
 			<div id="submit" class="buttonbar">
-				<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
 				<div id="switchbuttons">
 					<input type="button" onclick="flipBlock('body');" value="<%text(_BMLET_BODY)%> &gt;&gt;" />
 					<input type="button" onclick="flipBlock('more');" value="<%text(_BMLET_MORE)%> &gt;&gt;" />
 					<input type="button" onclick="flipBlock('options');" value="<%text(_BMLET_OPTIONS)%> &gt;&gt;" />
 					<input type="button" onclick="updAllPreviews(); flipBlock('preview');" value="<%text(_BMLET_PREVIEW)%> &gt;&gt;" />
 				</div>
+				<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
+				<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
 			</div>
 
 			<div id="body" class="contentblock">
 
 				<table>
-				<tr>
+				<%ifautosave()%><tr>
 				<td><%text(_AUTOSAVEDRAFT)%></td>
 				<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
-				</tr>
+				</tr><%endif%>
 				<tr>
 				<td><%text(_ADD_TITLE)%></td>
 				<td>
@@ -73,8 +75,8 @@
 				<td><%categories%></td>
 				</tr>
 				<tr>
-				<td><%text(_AUTOSAVEDRAFT_NOW)%></td>
-				<td><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="autoSaveDraft();" /></td>
+				<%ifautosave()%><td><%text(_AUTOSAVEDRAFT_NOW)%></td>
+				<td><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="autoSaveDraft();" /></td><%endif%>
 				</tr>
 				</table>
 
@@ -113,19 +115,21 @@
 					<input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 					<div class="indent">
 						<%text(_ADD_PLACE_ON)%>
-						<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" />年
-						<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" />月
-						<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" />日
-						<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" />時
-						<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" />分
-						<br />
-						フォーマット：(yyyy)年(mm)月(dd)日 (hh)時(mm)分
+						<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" />年
+						<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" />月
+						<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" />日
+
+						<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" />時
+						<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />分
+						<br />フォーマット：(yyyy)年(mm)月(dd)日 (hh)時(mm)分
 						<%ifblogsetting(ballowpast,0)%>
 							<br />
 							<%text(_ADD_NOPASTDATES)%>
 						<%endif%>
 					</div>
 					<input name="actiontype" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+					<br />
+					<input id="dosendping" name="dosendping" value="1" type="checkbox" checked="checked"><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label>
 				</td>
 				</tr>
 				<tr>
@@ -153,7 +157,7 @@
 			
 		</div></form>
 
-	<script type="text/javascript">
+	<%ifautosave()%><script type="text/javascript">
 		var xmlhttprequest = new Array();
 		xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
 		xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
@@ -164,8 +168,7 @@
 		var goalurl = '../action.php'; // The PHP file where the content must be posted to
 		var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
 		var formtype = 'add'; // Add or edit form
-	</script>
+	</script><%endif%>
 
 	</body>
 	</html>
-

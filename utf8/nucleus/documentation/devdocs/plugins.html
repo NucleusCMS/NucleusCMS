@@ -1965,10 +1965,10 @@ class NP_HelloWorld extends NucleusPlugin {
     <li>自分でデータベース接続をする場合、後でNucleusデータベースへの接続を復元するようにしてください。自前処理の後で <code>sql_connect()</code>  を呼ぶことで可能です。頻繁な再接続を避けるために、コンストラクタでそれを行うのも良いです。<code>$this- &gt;db</code>のリンクIDを保持でき、各クエリにそれを渡すことができます。</li>
     <li>バックアップ機能を使う時は、独自テーブルもバックアップに含めるよう、<code>getTableList()</code> を再定義してください。</li>
 	<li>It's a good idea to make the removal of your database tables optional. This will allow your users to temporarily remove your plugin without losing the data. For instance, you may need to make changes to options or database tables requiring that the install() method be run to execute code neccessary to modify existing tables or options. This will require that your users uninstall the old version and then install the new version and losing their data in the process. To make the deletion of your tables optional, you can add an option like this in install():
-	<pre class="example"><code>$this->createOption('del_uninstall', 'Delete NP_MyPlugin data tables on uninstall?', 'yesno','no');</code></pre>
+	<pre class="example"><code>$this-&gt;createOption('del_uninstall', 'Delete NP_MyPlugin data tables on uninstall?', 'yesno','no');</code></pre>
 	and this snippet in uninstall():
-	<pre class="example"><code>if ($this->getOption('del_uninstall') == 'yes')	{
-	foreach ($this->getTableList() as $table) {
+	<pre class="example"><code>if ($this-&gt;getOption('del_uninstall') == 'yes')	{
+	foreach ($this-&gt;getTableList() as $table) {
 		sql_query("DROP TABLE $table");
 	}
 }</code></pre></li>
@@ -2034,15 +2034,15 @@ class NP_HelloWorld extends NucleusPlugin {
 }</code></pre>
   </li>
   <li> Optional. Make the <code>QuickMenu</code> entry optional, and restrict who sees it. The following assumes that an option, of type <code>yesno</code> and called <code>quickmenu</code>, exists in install(). It also will restrict viewing of the <code>QuickMenu</code> entry to super-admins and to blog-admins.
-	<pre class="example"><code>function event_QuickMenu(&$data) {
+	<pre class="example"><code>function event_QuickMenu(&amp;$data) {
     // only show when option enabled
-    if ($this->getOption('quickmenu') != 'yes') return;
+    if ($this-&gt;getOption('quickmenu') != 'yes') return;
     global $member;
-    if (!$member->isAdmin() && !count($member->getAdminBlogs())) return;
+    if (!$member-&gt;isAdmin() &amp;&amp; !count($member-&gt;getAdminBlogs())) return;
     array_push($data['options'],
-      	array('title' => 'PluginName',
-       	'url' => $this->getAdminURL(),
-       	'tooltip' => 'Administer NP_PluginName'));
+      	array('title' =&gt; 'PluginName',
+       	'url' =&gt; $this-&gt;getAdminURL(),
+       	'tooltip' =&gt; 'Administer NP_PluginName'));
 }</code></pre>
   </li>
 </ol>
@@ -2133,202 +2133,202 @@ NucleusはこのAPIによって、インストール前に依存関係を検知�
 <p>このプラグイン依存チェックは、他のプラグインが依存しているプラグインがアンインストールされることも防ぎます。</p>
 
 </div>
-<h1>Internationalizing Your Plugin <a name="internationalization" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>プラグインの多国語化<a name="internationalization" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>Internationalization of a plugin allows your plugin to be easily used by people all over the world, people who do not 
-speak the same language as you do. It requires a little additional work for you, but makes translating the output of your plugin 
-as easy as translating a few phrases in a text file. Below is a description of the standard method suggested for use by Nucleus plugins. 
-Thanks to Andy Matsubara for the instructions.</p>
+<p>あなたと同じ言葉を話さない世界中の人達がプラグインをより使いやすくするために、プラグインを多国語化できます。
+少し手間は増えますが、プラグインが出力する文章を翻訳するだけで可能です。
+以下に Nucleus のコアで用意されている標準的な手順を記載します。
+Andyさん、ありがとう！</p>
 
 <ol>
-	<li><strong>Develop your plugin</strong>
+	<li><strong>プラグインを作る</strong>
 
-At first, it is easier to develop it in your language. Use of language files is recommended after the plugin becomes stable.</li>
-	<li><strong>Create plugin directory</strong>
+先ずはじめに、あなたが普段使っている言葉でプラグインを作ります。プラグインが安定して動作するようになってから、言語ファイルを作成することが推奨されます。</li>
+	<li><strong>プラグインディレクトリを作る</strong>
 
-If your plugin name is NP_AbcDef, the plugin directory name is abcdef (always lower case).</li>
-	<li><strong>Create language files</strong>
+作ったプラグインの名前が NP_AbcDef なら、プラグインディレクトリの名前は abcdef になります(必ず小文字を使用すること)。</li>
+	<li><strong>言語ファイルを作る</strong>
 
-Create the language files in the directory of your plugin. The name of the language file must be the same as that of the Nucleus language file name. For example, english.php is for English and default use. japanese-utf8.php for Japanese(UTF-Cool,japanese-euc.php for Japanese(EUC-JP).</li>
-	<li><strong>Define strings</strong>
+プラグインディレクトリに言語ファイルを作成します。言語ファイルの名前は Nucleus コアが使用しているものと同じにします。例えば、英語なら english.php。日本語の UTF-8 なら japanese-utf8.phpになります(UTF がお勧めです。参考までに日本語の EUC の場合は japanese-euc.php になります)。</li>
+	<li><strong>文を定義する</strong>
 
-Define strings like below in the language file:
+次のように言語ファイル内で分を定義します。
 
 <pre class="example"><code>&lt;?php
-define('_ABCDEF_MESSAGENAME',                  'actual strings in the language');
+define('_ABCDEF_MESSAGENAME',                  '実際のメッセージ');
   . . .
 ?&gt;</code></pre>
 
-You have to define them for all static strings in your plugin. As defined name is used globally in the environment, it is recommended to have a prefix derived from the plugin name(in this case _ABCDEF).</li>
-	<li><strong>Replace static strings</strong>
+全ての文を定義する必要があります。定数は一回しか定義できないので、既に定義されているものと重複しないようにプラグインの名前をはじめにつけることが推奨されます(この例だと _ABCDEF)。</li>
+	<li><strong>文の置き換え</strong>
 
-Replace static strings in your plugin with the defined names so they will change according to the language file.</li>
-	<li><strong>Create init method</strong>
+全ての文を、言語ファイルで定義した定数と置き換えます</li>
+	<li><strong>init() メソッドの編集</strong>
 
-Make the init method in the plugin like below
+プラグイン内の init() メソッドを、次のように編集します(既に init() メソッドを定義している場合は init() メソッド内にコードを追記します)。
 
 <pre class="example"><code>   function init() {
       // include language file for this plugin
       $language = ereg_replace( '[\\|/]', '', getLanguageName());
-      if (file_exists($this->getDirectory().$language.'.php'))
-         include_once($this->getDirectory().$language.'.php');
+      if (file_exists($this-&gt;getDirectory().$language.'.php'))
+         include_once($this-&gt;getDirectory().$language.'.php');
       else
-         include_once($this->getDirectory().'english.php');
+         include_once($this-&gt;getDirectory().'english.php');
    }</code></pre>
-</li>
-This logic is same as Nucleus・language file setting.
-	<li><strong>Add language files</strong>
+このコードは Nucleus のコアで使用されているものと同一です。</li>
 
-As English is the default language, it is recommended to have at least the English version.	</li>
+	<li><strong>言語ファイルの追加</strong>
+
+｢英語｣が基本の言語になっていますので、｢英語｣の言語ファイルも追加することが望まれます。</li>
 </ol>
 
 
 
-<h1>Formatting your SkinVar output <a name="skinvar-formatting" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>スキン変数の出力の書式 <a name="skinvar-formatting" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>Some great plugin ideas never receive general use simply because the output generated by the <code>doSkinVar()</code> method is not flexible enough to meet the needs of 
-different skins or URL schemes. Nucleus provides some tools to help you generalize your output in ways that allow each user to fit it to his or her needs.</p>
+<p>偉大なプラグインのいくつかは、様々なスキンや URL の生成において、必ずしもそのまま使用できるとはいえません。なぜなら、doSkinVar() メソッドによって出力されるものが、
+ユーザーのニーズに十二分に合致するものであるとは言いがたいからです。Nucleus では、出力をここのユーザーによっておのおののニーズに沿ったものにする為に、いくつかのツールを用意しています。</p>
 
-<p>To create links to Nucleus pages, such as blogs, categories, items, member details, action.php, admin area, or the plugin admin page, use the built in Nucleus functions 
-and global variables described below:</p>
+<p>各ブログ・カテゴリー・アイテム・メンバー、それから action.php や管理エリア、または各プラグインの管理エリアなどの URL を出力する為に、Nucleus はコアの機能として
+いくつかのファンクションとグローバル変数を用意しています。：</p>
 
-<table summary="An overview of functions and variables useful in creating links to Nucleus pages">
+<table summary="Nucleus の各ページへのリンクを生成する為に便利な変数とファンクション">
 	<caption>Functions and variables useful in creating links to Nucleus pages</caption>
 	<tr>
-		<th>Name</th><th>What</th><th>Parameters</th><th>Description</th>
+		<th>名前</th><th>種類</th><th>引数</th><th>説明</th>
 	</tr>
 	<tr>
 		<td><code>$CONF['AdminURL']</code></td>
-		<td>Global variable</td>
-		<td>None</td>
-		<td>Full URL to the Nucleus Admin Area</td>
+		<td>グローバル変数</td>
+		<td>なし</td>
+		<td>Nucleus の管理領域への絶対 URL</td>
 	</tr>
 	<tr>
 		<td><code>$CONF['PluginURL']</code></td>
-		<td>Global variable</td>
-		<td>None</td>
-		<td>Full URL to the Nucleus plugins directory. Use it to link to a plugin's admin page, like this <code>$CONF['PluginURL'].'pluginname/'</code></td>
+		<td>グローバル変数</td>
+		<td>なし</td>
+		<td>Nucleus のプラグインディレクトリへの絶対 URL。<code>$CONF['PluginURL'].'pluginname/'</code> の様にして、プラグインの管理エリアへのリンク生成に使用する。</td>
 	</tr>
 	<tr>
 		<td><code>$CONF['ActionURL']</code></td>
-		<td>Global variable</td>
-		<td>None</td>
-		<td>Full URL to the Nucleus action.php file</td>
+		<td>グローバル変数</td>
+		<td>なし</td>
+		<td>Nucleus の action.php への絶対 URL。</td>
 	</tr>
 	<tr>
 		<td><code>$CONF['MediaURL']</code></td>
-		<td>Global variable</td>
-		<td>None</td>
-		<td>Full URL to the Nucleus media folder</td>
+		<td>グローバル変数</td>
+		<td>なし</td>
+		<td>Nucleus のメディアディレクトリへの絶対 URL。</td>
 	</tr>
 	<tr>
 		<td><code>$CONF['SkinsURL']</code></td>
-		<td>Global variable</td>
-		<td>None</td>
-		<td>Full URL to the Nucleus skins folder</td>
+		<td>グローバル変数</td>
+		<td>なし</td>
+		<td>Nucleus のスキンディレクトリへの絶対 URL。</td>
 	</tr>
 	<tr>
 		<td><code>$CONF['IndexURL']</code></td>
-		<td>Global variable</td>
-		<td>None</td>
-		<td>Full URL to the main Nucleus directory.</td>
+		<td>グローバル変数</td>
+		<td>なし</td>
+		<td>Nucleus のメインディレクトリへの絶対 URL。</td>
 	</tr>
 	<tr>
 		<td><code>$DIR_NUCLEUS</code></td>
-		<td>Global variable</td>
-		<td>None</td>
-		<td>Full system path to the Nucleus Admin folder</td>
+		<td>グローバル変数</td>
+		<td>なし</td>
+		<td>Nucleus のメインディレクトリへのシステムルートからのフルパス。</td>
 	</tr>
 	<tr>
 		<td><code>$DIR_SKINS</code></td>
-		<td>Global variable</td>
-		<td>None</td>
-		<td>Full system path to the Nucleus skins folder</td>
+		<td>グローバル変数</td>
+		<td>なし</td>
+		<td>Nucleus のスキンディレクトリへのシステムルートからのフルパス。</td>
 	</tr>
 	<tr>
 		<td><code>$DIR_MEDIA</code></td>
-		<td>Global variable</td>
-		<td>None</td>
-		<td>Full system path to the Nucleus media folder</td>
+		<td>グローバル変数</td>
+		<td>なし</td>
+		<td>Nucleus のメディアディレクトリへのシステムルートからのフルパス。</td>
 	</tr>
 	<tr>
 		<td><code>$DIR_PLUGINS</code></td>
-		<td>Global variable</td>
-		<td>None</td>
-		<td>Full system path to the Nucleus plugins folder</td>
+		<td>グローバル変数</td>
+		<td>なし</td>
+		<td>Nucleus のプラグインディレクトリへのシステムルートからのフルパス。</td>
 	</tr>
 	<tr>
 		<td><code>$DIR_LANG</code></td>
-		<td>Global variable</td>
-		<td>None</td>
-		<td>Full system path to the Nucleus language folder</td>
+		<td>グローバル変数</td>
+		<td>なし</td>
+		<td>Nucleus の言語ファイルディレクトリへのシステムルートからのフルパス。</td>
 	</tr>
 	<tr>
 		<td><code>$DIR_LIBS</code></td>
-		<td>Global variable</td>
-		<td>None</td>
-		<td>Full system path to the Nucleus libs folder</td>
+		<td>グローバル変数</td>
+		<td>なし</td>
+		<td>Nucleus のコアディレクトリへのシステムルートからのフルパス。</td>
 	</tr>
 	<tr>
 		<td><code>getAdminURL()</code></td>
-		<td>method, PLUGIN class</td>
-		<td>None</td>
-		<td>Returns the URL of where the admin area of the plugin is located (if there is no such admin area, this information is invalid)</td>
+		<td>PLUGIN クラス内メソッド</td>
+		<td>なし</td>
+		<td>プラグインの管理エリアディレクトリが存在すればその URL を返す(存在しない場合は無効)。</td>
 	</tr>
 	<tr>
 		<td><code>getDirectory()</code></td>
-		<td>method, PLUGIN class</td>
-		<td>None</td>
-		<td>Returns the full system path where the extra files for the plugin are stored (if there are no such files, this information makes no sense). The result is something like ".../nucleus/plugins/plugname/"</td>
+		<td>PLUGIN クラス内メソッド</td>
+		<td>なし</td>
+		<td>プラグインの追加ファイルが格納されたサーバーのファイルシステムのパスを返します(存在しない場合は無効)。結果は".../nucleus/plugins/plugname/"のようになります。</td>
 	</tr>
 	<tr>
 		<td><code>createItemLink($itemid, $extra = '')</code></td>
-		<td>Global function</td>
-		<td><code>$itemid</code> Integer. ID of item being linked.<br />
-			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
+		<td>グローバルファンクション</td>
+		<td><code>$itemid</code> 整数。リンクしたいアイテムの ID。<br />
+			<code>$extra</code> 連想配列。｢キー｣と｢値｣のペアが、URL の｢パラメータ｣と｢値｣に反映される。
 		</td>
-		<td>Returns the full URL, in scheme chosen by user, of item indicated by <code>$itemid</code></td>
+		<td>ユーザーによって選択されたスキームにより、 <code>$itemid</code> に対応したアイテムへのリンクが生成されます。</td>
 	</tr>
 	<tr>
 		<td><code>createMemberLink($memberid, $extra = '')</code></td>
-		<td>Global function</td>
-		<td><code>$memberid</code> Integer. ID of member being linked.<br />
-			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
+		<td>グローバルファンクション</td>
+		<td><code>$memberid</code> 整数。リンクしたい存在するメンバーの ID。<br />
+			<code>$extra</code> 連想配列。｢キー｣と｢値｣のペアが、URL の｢パラメータ｣と｢値｣に反映される。
 		</td>
-		<td>Returns the full URL, in scheme chosen by user, of member page indicated by <code>$memberid</code></td>
+		<td>ユーザーによって選択されたスキームにより、 <code>$memberid</code> に対応したメンバーへのリンクが生成されます。</td>
 	</tr>
 	<tr>
 		<td><code>createCategoryLink($catid, $extra = '')</code></td>
-		<td>Global function</td>
-		<td><code>$catid</code> Integer. ID of category being linked.<br />
-			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
+		<td>グローバルファンクション</td>
+		<td><code>$catid</code> 整数。リンクしたいカテゴリーの ID。<br />
+			<code>$extra</code> 連想配列。｢キー｣と｢値｣のペアが、URL の｢パラメータ｣と｢値｣に反映される。
 		</td>
-		<td>Returns the full URL, in scheme chosen by user, of category index page indicated by <code>$catid</code></td>
+		<td>ユーザーによって選択されたスキームにより、 <code>$catid</code> に対応したカテゴリーへのリンクが生成されます。</td>
 	</tr>
 	<tr>
 		<td><code>createArchiveListLink($blogid = '', $extra = '')</code></td>
-		<td>Global function</td>
-		<td><code>$blogid</code> Integer. ID of blog whose archivelist is being linked.<br />
-			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
+		<td>グローバルファンクション</td>
+		<td><code>$blogid</code> 整数。リンクしたいアーカイブ一覧が存在ブログの ID。<br />
+			<code>$extra</code> 連想配列。｢キー｣と｢値｣のペアが、URL の｢パラメータ｣と｢値｣に反映される。
 		</td>
-		<td>Returns the full URL, in scheme chosen by user, of archivelist page indicated by <code>$blogid</code></td>
+		<td>ユーザーによって選択されたスキームにより、 <code>$blogid</code> に対応したアーカイブ一覧へのリンクが生成されます。</td>
 	</tr>
 	<tr>
 		<td><code>createArchiveLink($blogid, $archive, $extra = '')</code></td>
-		<td>Global function</td>
-		<td><code>$blogid</code> Integer. ID of blog whose archive is being linked.<br />
-			<code>$archive</code> String. Valid archive parameter for date (year-month) being linked.<br />
-			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
+		<td>グローバルファンクション</td>
+		<td><code>$blogid</code> 整数。リンクしたい月別アーカイブが存在するブログの ID。<br />
+			<code>$archive</code> 文字列。アーカイブのパラメータとして、渡した｢日(または年、月)｣のものが存在するもの。<br />
+			<code>$extra</code> 連想配列。｢キー｣と｢値｣のペアが、URL の｢パラメータ｣と｢値｣に反映される。
 		</td>
-		<td>Returns the full URL, in scheme chosen by user, of archive page indicated by <code>$blogid</code> and <code>$archive</code></td>
+		<td>ユーザーによって選択されたスキームにより、 <code>$blogid</code> に対応した月別アーカイブへのリンクが生成されます。</td>
 	</tr>
 	<tr>
 		<td><code>createBlogidLink($blogid, $extra = '')</code></td>
-		<td>Global function</td>
-		<td><code>$blogid</code> Integer. ID of blog being linked.<br />
-			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
+		<td>グローバルファンクション</td>
+		<td><code>$blogid</code> 整数。リンクしたいブログの ID。<br />
+			<code>$extra</code> 連想配列。｢キー｣と｢値｣のペアが、URL の｢パラメータ｣と｢値｣に反映される。
 		</td>
-		<td>Returns the full URL, in scheme chosen by user, of main index page indicated by <code>$blogid</code></td>
+		<td>ユーザーによって選択されたスキームにより、 <code>$blogid</code> に対応したブログへのリンクが生成されます。</td>
 	</tr>
 </table>
 
@@ -2340,22 +2340,22 @@ examples below, we will be creating a template with 2 variables, <code>&lt;%foo%
 	<li><strong>Using Plugin Options</strong>. This method may be the simplest and will work on all versions 3.2 and higher. It's 
 	big disadvantage is that plugin options are deleted during an uninstall, so your users may lose customizations during an upgrade of 
 	your plugin. Simply create an option in the <code>install()</code> method like the following:
-	<pre class="example"><code>$this->createOption('my_template', 
+	<pre class="example"><code>$this-&gt;createOption('my_template', 
 		'Template used to format output of plugin.', 
 		'textarea', 
 		'&lt;li&gt;&lt;%foo%&gt; loves &lt;%bar%&gt;&lt;/li&gt;');</code></pre>
 	Then in the <code>doSkinVar()</code> method, determine the values of <code>foo</code> and <code>bar</code> and fill the template like this:
-	<pre class="example"><code>$mytemplate = $this->getOption('my_template');
+	<pre class="example"><code>$mytemplate = $this-&gt;getOption('my_template');
 $couples = array(
 			array(
-				'foo'=>'Ricky',
-				'bar'=>'Lucy'),
+				'foo'=&gt;'Ricky',
+				'bar'=&gt;'Lucy'),
 			array(
-				'foo'=>'Sid',
-				'bar'=>'Nancy'),
+				'foo'=&gt;'Sid',
+				'bar'=&gt;'Nancy'),
 			array(
-				'foo'=>'Mickey',
-				'bar'=>'Minnie')
+				'foo'=&gt;'Mickey',
+				'bar'=&gt;'Minnie')
 			);
 foreach ($couples as $values) {
 	echo TEMPLATE::fill($mytemplate,$values);
@@ -2370,20 +2370,20 @@ foreach ($couples as $values) {
 	being using the database-stored template system and can be exported like other template fields. For a full sample plugin using this method, 
 	see this <a href="http://forum.nucleuscms.org/viewtopic.php?p=87672#87672" title="Sample">thread from the support forum</a>. A summary is given here. 
 	First, create the option in <code>install()</code> as in method 1, but now we will use it as a default.
-	<pre class="example"><code>$this->createOption('my_template', 
+	<pre class="example"><code>$this-&gt;createOption('my_template', 
 		'Template used to format output of plugin.', 
 		'textarea', 
 		'&lt;li&gt;&lt;%foo%&gt; loves &lt;%bar%&gt;&lt;/li&gt;');</code></pre>
 	Then, subscribe to the <code>TemplateExtraFields</code> event like this:
 	<pre class="example"><code>function getEventList() { return array('TemplateExtraFields'); }</code></pre>
 	Then, create a <code>event_TemplateExtraFields</code> method in your plugin, like this:
-	<pre class="example"><code>function event_TemplateExtraFields(&$data) {
+	<pre class="example"><code>function event_TemplateExtraFields(&amp;$data) {
     /* Add an element in the $data['fields'] array using your plugin name as the key 
 	and an associative array containing the field name and field label*/
     /* note that your field names should be lowercase and include the name 
 	of your template as shown below. This will ensure that all template field names are unique. */
     $data['fields']['NP_TemplateTest'] = array(
-        'templatetest_body'=>'TemplateTest Body'
+        'templatetest_body'=&gt;'TemplateTest Body'
     );
 }</code></pre>
 	Then, in the <code>doSkinVar()</code> method, you need to retrieve the template and fill it. Note the skinvar now needs to take 
@@ -2391,20 +2391,20 @@ foreach ($couples as $values) {
 	<pre class="example"><code>function doSkinVar($skinType,$template = '') {
 	global $blog, $CONF, $manager,$member;
 
-	$template =& $manager->getTemplate($template);
+	$template =&amp; $manager-&gt;getTemplate($template);
 	if (trim($template['templatetest_body']) == '')
-		$template['templatetest_body'] = $this->getOption('my_template');
+		$template['templatetest_body'] = $this-&gt;getOption('my_template');
 		
 	$couples = array(
 			array(
-				'foo'=>'Ricky',
-				'bar'=>'Lucy'),
+				'foo'=&gt;'Ricky',
+				'bar'=&gt;'Lucy'),
 			array(
-				'foo'=>'Sid',
-				'bar'=>'Nancy'),
+				'foo'=&gt;'Sid',
+				'bar'=&gt;'Nancy'),
 			array(
-				'foo'=>'Mickey',
-				'bar'=>'Minnie')
+				'foo'=&gt;'Mickey',
+				'bar'=&gt;'Minnie')
 			);
 	foreach ($couples as $values) {
 		echo TEMPLATE::fill($template['templatetest_body'],$values);
@@ -2431,7 +2431,7 @@ foreach ($couples as $values) {
 	$highlight = '';
 	$template = 'default/index';
 	$item_array = array($item1,$item2,$item3,$item4);
-	$blog->readLogFromList($item_array, $template);
+	$blog-&gt;readLogFromList($item_array, $template);
 }</code></pre>
 	
 	</li>

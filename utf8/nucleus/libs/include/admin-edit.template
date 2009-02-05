@@ -2,7 +2,7 @@
 
 <%init%>
 <script type="text/javascript" src="javascript/numbercheck.js"></script>
-<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
+<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 
 <form id="editform" method="post" action="index.php">
 <div>
@@ -14,10 +14,12 @@
 
 <table><tr>
 	<th colspan="2"><%text(_EDIT_ITEM)%></th>
-</tr><tr>
+</tr>
+<%ifautosave()%><tr>
 	<td><%text(_AUTOSAVEDRAFT)%></td>
 	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
-</tr><tr>
+</tr><%endif%>
+<tr>
 	<td><%text(_EDIT_ORIG_AUTHOR)%></td>
 	<td><%contents(author)%></td>
 </tr><tr>
@@ -77,13 +79,13 @@
 		<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="61" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 		<div class="indent">
 			<%text(_ADD_PLACE_ON)%>
-			<input id="inputyear" name="year" tabindex="71" size="4" value="<%currenttime(year)%>" />/
-			<input id="inputmonth" name="month" tabindex="72" size="2" value="<%currenttime(mon)%>" />/
-			<input id="inputday" name="day" tabindex="73" size="2" value="<%currenttime(mday)%>" />&nbsp;
+			<input id="inputyear" name="year" tabindex="71" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" />年
+			<input id="inputmonth" name="month" tabindex="72" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" />月
+			<input id="inputday" name="day" tabindex="73" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" />日
 			
-			<input id="inputhour" name="hour" tabindex="74" size="2" value="<%currenttime(hours)%>" />:
-			<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%currenttime(minutes)%>" />
-			(yyyy/mm/dd hh:mm)
+			<input id="inputhour" name="hour" tabindex="74" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" />時
+			<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />分
+				<br />フォーマット：(yyyy)年(mm)月(dd)日 (hh)時(mm)分
 			<%ifblogsetting(ballowpast,0)%>
 				<br />
 				<%text(_ADD_NOPASTDATES)%>
@@ -101,19 +103,21 @@
 		<br />
 		<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="70" /><label for="act_changedate"><%text(_ADD_CHANGEDATE)%></label> <%helplink(changedate)%>
 			<div class="indent">
-				<input id="inputyear" name="year" tabindex="71" size="4" value="<%itemtime(year)%>" />年
-				<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" />月
-				<input id="inputday" name="day" tabindex="73" size="2" value="<%itemtime(mday)%>" />日
+				<input id="inputyear" name="year" tabindex="71" size="4" value="<%itemtime(year)%>" onchange="document.forms[0].act_changedate.checked=true;" />年
+				<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" onchange="document.forms[0].act_changedate.checked=true;" />月
+				<input id="inputday" name="day" tabindex="73" size="2" value="<%itemtime(mday)%>" onchange="document.forms[0].act_changedate.checked=true;" />日
 				 
-				<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" />時
-				<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" />分
-				<br />
-				フォーマット：(yyyy)年(mm)月(dd)日 (hh)時(mm)分
+				<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" onchange="document.forms[0].act_changedate.checked=true;" />時
+				<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" onchange="document.forms[0].act_changedate.checked=true;" />分
+				<br />フォーマット：(yyyy)年(mm)月(dd)日 (hh)時(mm)分
 			</div>
 	<%endif%>	
+	<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="71" /><label for="act_backtodrafts"><%text(_BMLET_BACKTODRAFTS)%></label> <%helplink(draft)%>
 	<br />
 	<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="61" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
 <%endif%>
+	<br />
+	<input id="dosendping" name="dosendping" value="1" type="checkbox"><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label>
 
 	</td>
 </tr><tr>
@@ -143,8 +147,8 @@
 		<td>
 			<input tabindex="60" type="submit" value="<%text(_EDIT_SUBMIT)%>" 
 				onclick="return checkSubmit();" />
-			<input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
-				onclick="autoSaveDraft();" />
+			<%ifautosave()%><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
+				onclick="autoSaveDraft();" /><%endif%>
 		</td>
 	
 </tr></table>
@@ -152,7 +156,7 @@
 </div>
 </form>
 
-<script type="text/javascript">
+<%ifautosave()%><script type="text/javascript">
 	var xmlhttprequest = new Array();
 	xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
 	xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
@@ -163,4 +167,4 @@
 	var goalurl = '../action.php'; // The PHP file where the content must be posted to
 	var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
 	var formtype = 'edit'; // Add or edit form
-</script>	
+</script><%endif%>
