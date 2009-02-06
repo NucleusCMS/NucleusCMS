@@ -62,7 +62,7 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id: server.php,v 1.9 2008-02-08 09:31:23 kimitake Exp $
+ * @version $Id$
  * @version $NucleusJP: server.php,v 1.8.2.1 2007/09/07 07:12:42 kimitake Exp $
  */
 $CONF = array();

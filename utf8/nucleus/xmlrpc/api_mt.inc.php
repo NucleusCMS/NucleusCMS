@@ -17,7 +17,8 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * $NucleusJP: api_mt.inc.php,v 1.5 2006/07/17 20:03:45 kimitake Exp $
+ * @version $Id$
+ *  * $NucleusJP: api_mt.inc.php,v 1.5 2006/07/17 20:03:45 kimitake Exp $
  */
 
 	// mt.supportedMethods
