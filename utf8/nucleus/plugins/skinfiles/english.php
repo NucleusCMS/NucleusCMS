@@ -1,7 +1,7 @@
 <?php
 
    /*
-	* @version $Id: english.php,v 1.4 2008-02-08 09:31:23 kimitake Exp $
+	* @version $Id$
 	* @version $NucleusJP: english.php,v 1.3.2.1 2007/10/24 09:35:07 kimitake Exp $
 	*/
 

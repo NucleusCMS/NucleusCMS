@@ -7,7 +7,7 @@ class NP_SkinFiles extends NucleusPlugin {
 	*
 	* Copyright 2005-2007 by Jeff MacMichael and Niels Leenheer
 	*
-	* @version $Id: NP_SkinFiles.php,v 1.5 2008-02-08 09:31:23 kimitake Exp $
+	* @version $Id$
 	* @version $NucleusJP: NP_SkinFiles.php,v 1.4 2007/02/04 06:28:46 kimitake Exp $
 	*
 	* ==========================================================================================
