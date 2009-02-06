@@ -10,7 +10,7 @@
   *  
   * Some JavaScript code for the admin area
   *
-  * $Id: admin.js,v 1.7 2008-02-08 09:31:22 kimitake Exp $
+  * $Id$
   * $NucleusJP: admin.js,v 1.6.2.1 2007/09/05 05:58:56 kimitake Exp $
   */
 

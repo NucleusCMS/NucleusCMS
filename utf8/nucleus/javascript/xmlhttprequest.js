@@ -39,7 +39,7 @@
   *     <input type="button" name="autosavenow" value="AutoSave now" onclick="autoSaveDraft();" />
   *
   *
-  * $Id: xmlhttprequest.js,v 1.1 2007-02-28 21:34:18 kimitake Exp $
+  * $Id$
   * $NucleusJP$
   */
 

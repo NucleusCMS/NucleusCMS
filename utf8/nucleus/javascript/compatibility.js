@@ -18,7 +18,7 @@
   *
   * That's basically it :)
   *
-  * $Id: compatibility.js,v 1.5 2007-02-04 06:28:45 kimitake Exp $
+  * $Id$
   * $NucleusJP: compatibility.js,v 1.4 2006/07/12 07:11:47 kimitake Exp $
   */
 

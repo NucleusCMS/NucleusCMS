@@ -11,7 +11,7 @@
   * script the check (on the clientside) if a entered value
   * is a valid number and remove the invalid chars
   *
-  * $Id: numbercheck.js,v 1.4 2007-02-04 06:28:45 kimitake Exp $
+  * $Id$
   * $NucleusJP: numbercheck.js,v 1.3 2006/07/12 07:11:47 kimitake Exp $
   */
 

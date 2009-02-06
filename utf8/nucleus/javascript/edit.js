@@ -11,7 +11,7 @@
   * This file contains functions to allow adding items from inside the weblog.
   * Also contains code to avoid submitting form data twice.
   *
-  * $Id: edit.js,v 1.6 2007-02-04 06:28:45 kimitake Exp $
+  * $Id$
   * $NucleusJP: edit.js,v 1.5 2006/07/12 07:11:47 kimitake Exp $
   */
 
