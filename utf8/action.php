@@ -15,7 +15,7 @@
  * like adding comments, etc...
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id: action.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
+ * @version $Id$
  * $NucleusJP: action.php,v 1.8.2.1 2007/09/05 05:50:12 kimitake Exp $
  */
 

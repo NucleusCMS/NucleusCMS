@@ -52,7 +52,7 @@ define('_ERROR28',				'エラーメッセージは次の通りです：');
 define('_ERROR29',				'複数のエラーを発見しました');
 define('_ERROR30',				'クエリの実行中にエラーが発生しました：');
 
-define('_NOTIFICATION1',	'Not available');
+define('_NOTIFICATION1',		'判別不能');
 
 define('_TITLE',				'Nucleusのインストール');
 define('_TITLE2',				'テーマ・プラグインのインストールエラー');
@@ -67,7 +67,7 @@ define('_HEADER2',				'PHP と MySQL のバージョン');
 define('_TEXT2',				'<p>以下はあなたのウェブホストにおけるPHPとMySQLサーバーのバージョンです。Nucleusのサポートフォーラムに問題を報告する時は、この情報を書き添えてください。</p>');
 define('_TEXT2_WARN',			' 注意: Nucleusの動作には少なくともバージョン %s が必要です');
 define('_TEXT2_WARN2',			' 注意: Nucleusの動作には少なくともバージョン %s が必要です');
-define('_TEXT2_WARN3',	'WARNING: You are installing NucleusCMS on a older version of PHP. PHP4 support will be depreciated in the next release, please consider upgrade to PHP5!');
+define('_TEXT2_WARN3',			'警告！ 動作しているPHPのバージョンが古いようです！次にリリースされるNucleusCMSではPHP4はサポートされません！早急にPHP5にアップグレードしてください！');
 
 define('_HEADER3',				'<i>config.php</i>の自動設定');
 define('_TEXT3',				'<em>config.php</em>のパーミッションを<strong>666</strong>にしておけば、スクリプトが自動で設定情報を書き込みます。ただし、Nucleusのインストール完了後、<strong><em style="font-color:#f00;">必ず</em></strong>パーミッションを<strong>444</strong>に変更してください(<a href="nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>)。</p><p>スクリプトに書き込み権限を与えなくても、インストール中に<em>config.php</em>に書き込むべき内容が表示されるので、内容を書き換えてFTP等でアップロードすれば問題ありません。');
@@ -82,42 +82,42 @@ define('_TEXT4_TAB_FIELD4',		'データベース名：');
 define('_TEXT4_TAB_FIELD4_ADD',	'データベースを作成する必要がある');
 
 define('_TEXT4_TAB2_HEAD',		'高度なデータベース設定');
-define('_TEXT4_TAB2_FIELD',		'テーブル・プリフィックスを使用');
-define('_TEXT4_TAB2_ADD',		'<p>一つのデータベースに複数のNucleusをインストールしており、自分が何をやっているのか理解されている場合を除いては、<strong>これを変更する必要はありません</strong>。</p><p>Nucleusによって生成されたすべてのデータベーステーブルは、このプリフィックスが頭につきます。</p>');
+define('_TEXT4_TAB2_FIELD',		'テーブル・プリフィックスを使用する：');
+define('_TEXT4_TAB2_ADD',		'<p>一つのデータベースに複数のNucleusをインストールし、自分が何をやっているのか理解している場合を除き、<strong>これを変更する必要はありません</strong>。</p><p>Nucleusによって生成されたすべてのデータベーステーブルは、このプリフィックスが頭につきます。</p>');
 
 define('_HEADER5',				'ディレクトリとURL');
 define('_TEXT5',				'<p>このインストールスクリプトはNucleusがインストールされているディレクトリとURLを見つけようとしました。下の値をチェックして必要なら訂正してください。ファイルへのパスとURLはスラッシュ\'/\'で終わらなくてはなりません。</p>');
 
 define('_TEXT5_TAB_HEAD',		'ディレクトリとURL');
-define('_TEXT5_TAB_FIELD1',		'サイトの<strong>URL</strong>');
-define('_TEXT5_TAB_FIELD2',		'管理エリアの<strong>URL</strong>');
-define('_TEXT5_TAB_FIELD3',		'管理エリアの<strong>ディレクトリ</strong>');
-define('_TEXT5_TAB_FIELD4',		'アップロードしたファイルが格納される<strong>URL</strong>');
-define('_TEXT5_TAB_FIELD5',		'アップロードしたファイルが格納される<strong>ディレクトリ</strong>');
-define('_TEXT5_TAB_FIELD6',		'テーマファイルの<strong>URL</strong>');
-define('_TEXT5_TAB_FIELD7',		'テーマファイルの<strong>ディレクトリ</strong>');
-define('_TEXT5_TAB_FIELD7_2',	'インポートしたテーマで使用するファイル');
-define('_TEXT5_TAB_FIELD8',		'プラグインが格納されている<strong>URL</strong>');
-define('_TEXT5_TAB_FIELD9',		'機能決定ファイルの<strong>URL</strong>');
-define('_TEXT5_TAB_FIELD9_2',	'<tt>action.php</tt>ファイルへのhttp://から始まるURL');
+define('_TEXT5_TAB_FIELD1',		'サイトの<strong>URL</strong>：');
+define('_TEXT5_TAB_FIELD2',		'管理エリアの<strong>URL</strong>：');
+define('_TEXT5_TAB_FIELD3',		'管理エリアの<strong>ディレクトリ</strong>：');
+define('_TEXT5_TAB_FIELD4',		'アップロードしたファイルが格納される<strong>URL</strong>：');
+define('_TEXT5_TAB_FIELD5',		'アップロードしたファイルが格納される<strong>ディレクトリ</strong>：');
+define('_TEXT5_TAB_FIELD6',		'スキンファイルの<strong>URL</strong>：');
+define('_TEXT5_TAB_FIELD7',		'スキンファイルの<strong>ディレクトリ</strong>：');
+define('_TEXT5_TAB_FIELD7_2',	'インポートしたスキンで使用するファイル');
+define('_TEXT5_TAB_FIELD8',		'プラグインが格納されている<strong>URL</strong>：');
+define('_TEXT5_TAB_FIELD9',		'機能決定ファイルの<strong>URL</strong>：');
+define('_TEXT5_TAB_FIELD9_2',	'<tt>action.php</tt>ファイルへのhttp://から始まるURL：');
 define('_TEXT5_2',				'<p class="note"><strong>付記:</strong> 相対パスではなく<strong>絶対パスを使用してください</strong>。絶対パスはほとんどの場合、<tt>/home/username/public_html/</tt>のようにスラッシュから始まります。よく解らない場合はサーバ管理者に質問してください。</p>');
 
 define('_HEADER6',				'管理権限をもつユーザー');
-define('_TEXT6',				'<p>以下に、サイトの最初のユーザーを作成するためのいくつかの情報を入力してください。</p>');
-define('_TEXT6_TAB_HEAD',		'サイトの管理者');
-define('_TEXT6_TAB_FIELD1',		'表示される名前：');
+define('_TEXT6',				'<p>以下に、サイトの最初のユーザーを作成するための情報を入力してください。</p>');
+define('_TEXT6_TAB_HEAD',		'サイトの管理者：');
+define('_TEXT6_TAB_FIELD1',		'表示される名前(ログインID)：');
 define('_TEXT6_TAB_FIELD1_2',	'使用できる文字：a-z と 0-9、最初と最後以外の空白');
-define('_TEXT6_TAB_FIELD2',		'本名（ハンドル名）：');
+define('_TEXT6_TAB_FIELD2',		'本名(ハンドル名)：');
 define('_TEXT6_TAB_FIELD3',		'パスワード：');
 define('_TEXT6_TAB_FIELD4',		'パスワード(確認の為にもういちど入力してください)：');
 define('_TEXT6_TAB_FIELD5',		'メールアドレス：');
 define('_TEXT6_TAB_FIELD5_2',	'利用可能なメールアドレスを入れてください');
 
-define('_HEADER7',				'Weblog のデータ');
+define('_HEADER7',				'ブログのデータ');
 define('_TEXT7',				'<p>以下に、デフォルトのWeblogを作成するための情報を入力してください。このWeblogの名前は、サイト名としても利用されます。</p>');
-define('_TEXT7_TAB_HEAD',		'Weblog のデータ');
-define('_TEXT7_TAB_FIELD1',		'Blogの名前');
-define('_TEXT7_TAB_FIELD2',		'Blogの短縮名(略称)');
+define('_TEXT7_TAB_HEAD',		'ブログのデータ');
+define('_TEXT7_TAB_FIELD1',		'ブログの名前：');
+define('_TEXT7_TAB_FIELD2',		'ブログの短縮名(略称)：');
 define('_TEXT7_TAB_FIELD2_2',	'使用できる文字：a-z と 0-9、空白は不可');
 
 define('_HEADER8',				'更新Ping');
@@ -126,7 +126,7 @@ define('_TEXT8_TAB_HEADER',		'更新Ping');
 define('_TEXT8_TAB_PLUGINDEP', '以下のプラグインに依存します。%s'); //<addsatona date="2008-09-03" />
 //define('_TEXT8_TAB_HEADER',		'プラグインの選択');
 define('_TEXT8_TAB_HEADER2',	'テーマの選択');
-define('_TEXT8_TAB_FIELD1',		'更新Ping送信のために、 NP_Ping をインストールしますか？(このプラグインをインストールしなくても、他のプラグインで更新Pingを送信する事は出来ます)');
+define('_TEXT8_TAB_FIELD1',		'更新Ping送信のために、NP_Pingをインストールしますか？(このプラグインをインストールしなくても、他のプラグインで更新Pingを送信する事は出来ます)');
 
 define('_HEADER9',				'データの送信');
 define('_TEXT9',				'<p>上に書いてきたデータが正しいか確かめてください。よければデータベース・テーブルと最初のデータを設定するために下のボタンを押してください。少し時間がかかるかもしれませんがご辛抱を。<strong>ボタンをクリックするのは一回だけにしてください。</strong></p>');
@@ -143,7 +143,7 @@ define('_TEXT15',				'<p>ウェブサーバから次のファイルを削除し�
 define('_TEXT15_L1',			'<b>install.sql</b>：テーブルの構造を内包するファイル');
 define('_TEXT15_L2',			'<b>install.php</b>：このファイル');
 
-define('_TEXT16',				'<p>もしこれらのファイルを削除していなければ、管理領域を開くことが出来ません。</p>');
+define('_TEXT14_EX',			'<p>もしこれらのファイルを削除していなければ、管理領域を開くことが出来ません。</p>');
 
 define('_HEADER11',				'ウェブサイトの確認');
 define('_TEXT16',				'ウェブサイトを使う準備が整いました。');

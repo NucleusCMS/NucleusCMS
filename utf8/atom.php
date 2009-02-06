@@ -14,7 +14,7 @@
  * Nucleus Atom Syndication
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id: atom.php,v 1.7 2007-02-04 06:28:44 kimitake Exp $
+ * @version $Id$
  * $NucleusJP: atom.php,v 1.6 2006/07/12 07:11:45 kimitake Exp $
  */
 
