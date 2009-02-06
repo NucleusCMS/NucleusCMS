@@ -25,6 +25,10 @@
  * @version $Id$
  */
 
+// START changed/added after 3.33 START
+define('_MEMBERS_USEAUTOSAVE',				'下書きの自動保存機能を有効にしますか?');
+// END changed/added after 3.33 END
+
 // START merge UTF-8 and EUC-JP
 
 // Create New blog
@@ -44,6 +48,7 @@ define('_BOOKMARKLET_SEND_PING',			'アイテムの追加に成功しました�
 // END merge UTF-8 and EUC-JP
 
 // START changed/added for 3.34 START
+define('_TEMPLATE_PLUGIN_FIELDS',			'プラグインによる拡張フィールド');
 define('_TEMPLATE_BLOGLIST',				'Blog一覧');
 define('_TEMPLATE_BLOGHEADER',				'Blog一覧のヘッダー');
 define('_TEMPLATE_BLOGITEM',				'Blog一覧の本体');
@@ -204,6 +209,7 @@ define('_ERROR_PLUGNOHELPFILE',				'このプラグイン用のヘルプファ�
 define('_PLUGS_HELP_TITLE',					'プラグインのヘルプページ');
 define('_LIST_PLUGS_HELP', 					'ヘルプ');
 
+
 // END changed/started after 3.1
 
 // START changed/added after v2.5beta START
@@ -237,6 +243,7 @@ define('_MEDIA_COLLECTION_LABEL',			'現在のコレクション: ');
 define('_ADD_ALIGNLEFT_TT',					'左寄せ');
 define('_ADD_ALIGNRIGHT_TT',				'右寄せ');
 define('_ADD_ALIGNCENTER_TT',				'中央寄せ');
+
 
 // generic upload failure
 define('_ERROR_UPLOADFAILED',				'アップロードに失敗しました');
@@ -795,7 +802,7 @@ define('_TEMPLATE_DHEADER',					'日付のヘッダー');
 define('_TEMPLATE_DFOOTER',					'日付のフッター');
 define('_TEMPLATE_DFORMAT',					'日付フォーマット');
 define('_TEMPLATE_TFORMAT',					'時刻フォーマット');
-define('_TEMPLATE_LOCALE',					'Locale');
+define('_TEMPLATE_LOCALE',					'ロケール');
 define('_TEMPLATE_IMAGE',					'画像とメディアのポップアップ');
 define('_TEMPLATE_PCODE',					'ポップアップ画像へのリンクコード');
 define('_TEMPLATE_ICODE',					'インライン画像のコード');
@@ -995,7 +1002,7 @@ define('_LIST_MEMBER_NAME',							'表示される名前(ログインID)');
 define('_LIST_MEMBER_RNAME',						'ハンドルネーム');
 define('_LIST_MEMBER_ADMIN',						'Super-admin権限 ');
 define('_LIST_MEMBER_LOGIN',						'ログイン可能');
-define('_LIST_MEMBER_URL',							'Web site');
+define('_LIST_MEMBER_URL',							'ウェブサイト');
 
 // banlist
 define('_LIST_BAN_IPRANGE',							'規制中のIPアドレスの範囲');
@@ -1053,6 +1060,7 @@ define('_UPDATEDPING_GOPINGPAGE',					'更新Ping送信');
 define('_UPDATEDPING_PINGING',						'Pingサーバに送信中です');
 define('_UPDATEDPING_VIEWITEM',						'更新されたblog:');
 define('_UPDATEDPING_VISITOWNSITE',					'サイトへ行ってみる');
+define('_UPDATEDPING_GOSENDPING',					'更新Ping送信');
 
 // General category
 define('_EBLOGDEFAULTCATEGORY_NAME',				'総合');
@@ -1219,6 +1227,7 @@ define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			'ログインしていません');
 
 // MANAGER.php
 define('_MANAGER_PLUGINFILE_NOTFOUND',				"プラグイン「%s」を読み込めませんでした(ファイルが見つかりません)");
+define('_MANAGER_PLUGINFILE_NOCLASS',				"プラグイン「%s」を読み込めませんでした(ファイル内にプラグインクラスが存在しません)");
 define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"プラグイン「%s」を読み込めませんでした(｢SqlTablePrefix｣をサポートしていません)");
 
 // mysql.php
@@ -1240,6 +1249,9 @@ define('_LIST_SKIN_README_TXT',						'Read me');
 // BLOG.php createNewCategory()
 define('_CREATED_NEW_CATEGORY_NAME',				'新しいカテゴリ');
 define('_CREATED_NEW_CATEGORY_DESC',				'新しいカテゴリの説明');
+
+// HTML outputs
+define('_HTML_XML_NAME_SPACE_AND_COUNTRY_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja-JP" lang="ja-JP"');
 
 // Language Files
 define('_LANGUAGEFILES_JAPANESE-UTF8',				'日本語 - 日本語 (UTF-8)');
