@@ -1234,6 +1234,9 @@ define('_LIST_SKIN_README_TXT',						'Read me');
 define('_CREATED_NEW_CATEGORY_NAME',				'newcat');
 define('_CREATED_NEW_CATEGORY_DESC',				'New category');
 
+// HTML outputs
+define('_HTML_XML_NAME_SPACE_AND_LANG_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us"');
+
 // Language Files
 define('_LANGUAGEFILES_JAPANESE-UTF8',				'Japanese - &#26085;&#26412;&#35486; (UTF-8)');
 define('_LANGUAGEFILES_JAPANESE-EUC',				'Japanese - &#26085;&#26412;&#35486; (EUC)');

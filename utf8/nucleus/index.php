@@ -12,7 +12,7 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id: index.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
+ * @version $Id$
  * $NucleusJP: index.php,v 1.8.2.1 2007/09/07 07:36:09 kimitake Exp $
  */
 	// we are using admin stuff:
@@ -22,26 +22,23 @@
 	// include the admin code
 	include('../config.php');
 
-	if ($CONF['alertOnSecurityRisk'] == 1)
-	{
+	if ($CONF['alertOnSecurityRisk'] == 1) {
 		// check if files exist and generate an error if so
 		$aFiles = array(
 			'../install.sql' => _ERRORS_INSTALLSQL,
 			'../install.php' => _ERRORS_INSTALLPHP,
-			'upgrades' => _ERRORS_UPGRADESDIR,
-			'convert' => _ERRORS_CONVERTDIR
+			'upgrades'       => _ERRORS_UPGRADESDIR,
+			'convert'        => _ERRORS_CONVERTDIR
 		);
 		$aFound = array();
-		foreach($aFiles as $fileName => $fileDesc)
-		{
+		foreach($aFiles as $fileName => $fileDesc) {
 			if (@file_exists($fileName))
 				array_push($aFound, $fileDesc);
 		}
 		if (@is_writable('../config.php')) {
-			array_push($aFound, 'config.php should be non-writable (chmod to 444)');
+			array_push($aFound, _ERRORS_CONFIGPHP);
 		}
-		if (sizeof($aFound) > 0)
-		{
+		if (sizeof($aFound) > 0) {
 			startUpError(
 				_ERRORS_STARTUPERROR1. implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2,
 				_ERRORS_STARTUPERROR3
@@ -49,23 +46,24 @@
 		}
 	}
 
-	$bNeedsLogin = false;
+	$bNeedsLogin   = false;
 	$bIsActivation = in_array($action, array('activate', 'activatesetpwd'));
 
-	if ($action == 'logout')
-		$bNeedsLogin = true;
-
-	if (!$member->isLoggedIn() && !$bIsActivation)
-		$bNeedsLogin = true;
-
-	// show error if member cannot login to admin
-	if ($member->isLoggedIn() && !$member->canLogin() && !$bIsActivation) {
-		$error = _ERROR_LOGINDISALLOWED;
+	if ($action == 'logout') {
 		$bNeedsLogin = true;
 	}
 
-	if ($bNeedsLogin)
-	{
+	if (!$member->isLoggedIn() && !$bIsActivation) {
+		$bNeedsLogin = true;
+	}
+
+	// show error if member cannot login to admin
+	if ($member->isLoggedIn() && !$member->canLogin() && !$bIsActivation) {
+		$error       = _ERROR_LOGINDISALLOWED;
+		$bNeedsLogin = true;
+	}
+
+	if ($bNeedsLogin) {
 		setOldAction($action);	// see ADMIN::login() (sets old action in POST vars)
 		$action = 'showlogin';
 	}

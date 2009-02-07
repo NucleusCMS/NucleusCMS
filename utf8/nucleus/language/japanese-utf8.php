@@ -1251,7 +1251,7 @@ define('_CREATED_NEW_CATEGORY_NAME',				'新しいカテゴリ');
 define('_CREATED_NEW_CATEGORY_DESC',				'新しいカテゴリの説明');
 
 // HTML outputs
-define('_HTML_XML_NAME_SPACE_AND_COUNTRY_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja-JP" lang="ja-JP"');
+define('_HTML_XML_NAME_SPACE_AND_LANG_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"');
 
 // Language Files
 define('_LANGUAGEFILES_JAPANESE-UTF8',				'日本語 - 日本語 (UTF-8)');

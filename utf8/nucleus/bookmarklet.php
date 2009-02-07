@@ -15,7 +15,7 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id: bookmarklet.php,v 1.10 2008-02-08 09:31:22 kimitake Exp $
+ * @version $Id$
  * $NucleusJP: bookmarklet.php,v 1.9.2.1 2007/09/07 07:16:39 kimitake Exp $
  */
 
@@ -47,7 +47,7 @@ if ($action == '') {
 	$action = 'add';
 }
 
-sendContentType('application/xhtml+xml', 'bookmarklet-' . $action);
+sendContentType('text/html', 'bookmarklet-' . $action);
 
 // check ticket
 $action = strtolower($action);
@@ -211,7 +211,7 @@ function bm_loginAndPassThrough() {
 
 	?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	<html xmlns="http://www.w3.org/1999/xhtml">
+	<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 		<title>Nucleus</title>
@@ -316,7 +316,7 @@ function bm_doError($msg) {
 function bm_message($title, $head, $msg, $extrahead = '') {
 	?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	<html xmlns="http://www.w3.org/1999/xhtml">
+	<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 		<title><?php echo $title ?></title>
