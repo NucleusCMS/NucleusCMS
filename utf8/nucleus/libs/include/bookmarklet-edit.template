@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	<html xmlns="http://www.w3.org/1999/xhtml">
+	<html <%text(_HTML_XML_NAME_SPACE_AND_LANG_CODE)%>>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=<%text(_CHARSET)%>" />
 		<title><%text(_EDIT_ITEM)%></title>
@@ -8,6 +8,20 @@
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
+	<!--
+		Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+		Copyright (C) 2002-2009 The Nucleus Group
+
+		This program is free software; you can redistribute it and/or
+		modify it under the terms of the GNU General Public License
+		as published by the Free Software Foundation; either version 2
+		of the License, or (at your option) any later version.
+		(see nucleus/documentation/index.html#license for more info)
+
+		@license http://nucleuscms.org/license.txt GNU General Public License
+		@copyright Copyright (C) 2002-2009 The Nucleus Group
+		$Id$
+	-->
 		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 		<%init%>
 		<%extrahead%>
