@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,8 +14,8 @@
  *	exporting Nucleus skins: SKINIMPORT and SKINEXPORT
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: skinie.php,v 1.10 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * @version $NucleusJP: skinie.php,v 1.9.2.1 2007/09/05 07:46:30 kimitake Exp $
  */
 
@@ -114,7 +114,9 @@ class SKINIMPORT {
 	function readFile($filename, $metaOnly = 0) {
 		// open file
 		$this->fp = @fopen($filename, 'r');
-		if (!$this->fp) return 'Failed to open file/URL';
+		if (!$this->fp) {
+			return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
+		}
 
 		// here we go!
 		$this->inXml = 1;
@@ -125,6 +127,10 @@ class SKINIMPORT {
 			$tempbuffer .= fread($this->fp, 4096);
 		}
 		fclose($this->fp);
+		$tempcharset = mb_detect_encoding($tempbuffer);
+		if ($tempcharset != 'UTF-8') {
+			$tempbuffer = mb_convert_encoding($tempbuffer, 'UTF-8', $tempcharset);
+		}
 
 /*
 	[2004-08-04] dekarma - Took this out since it messes up good XML if it has skins/templates
@@ -149,8 +155,9 @@ class SKINIMPORT {
 
 		while ( ($buffer = fread($temp, 4096) ) && (!$metaOnly || ($metaOnly && !$this->metaDataRead))) {
 			$err = xml_parse( $this->parser, $buffer, feof($temp) );
-			if (!$err && $this->debug)
-				echo 'ERROR: ', xml_error_string(xml_get_error_code($this->parser)), '<br />';
+			if (!$err && $this->debug) {
+				echo _ERROR . ': ' . xml_error_string(xml_get_error_code($this->parser)) . '<br />';
+			}
 		}
 
 		// all done
@@ -192,8 +199,9 @@ class SKINIMPORT {
 
 		// if not allowed to overwrite, check if any nameclashes exists
 		if (!$allowOverwrite) {
-			if ((sizeof($existingSkins) > 0) || (sizeof($existingTemplates) > 0))
-				return 'Name clashes detected, re-run with allowOverwrite = 1 to force overwrite';
+			if ((sizeof($existingSkins) > 0) || (sizeof($existingTemplates) > 0)) {
+				return _SKINIE_NAME_CLASHES_DETECTED;
+			}
 		}
 
 		foreach ($this->skins as $skinName => $data) {
@@ -206,9 +214,21 @@ class SKINIMPORT {
 				$skinObj->deleteAllParts();
 
 				// update general info
-				$skinObj->updateGeneralInfo($skinName, $data['description'], $data['type'], $data['includeMode'], $data['includePrefix']);
+				$skinObj->updateGeneralInfo(
+					$skinName,
+					$data['description'],
+					$data['type'],
+					$data['includeMode'],
+					$data['includePrefix']
+				);
 			} else {
-				$skinid = SKIN::createNew($skinName, $data['description'], $data['type'], $data['includeMode'], $data['includePrefix']);
+				$skinid = SKIN::createNew(
+					$skinName,
+					$data['description'],
+					$data['type'],
+					$data['includeMode'],
+					$data['includePrefix']
+				);
 				$skinObj = new SKIN($skinid);
 			}
 
@@ -250,8 +270,9 @@ class SKINIMPORT {
 		$clashes = array();
 
 		foreach ($this->skins as $skinName => $data) {
-			if (SKIN::exists($skinName))
+			if (SKIN::exists($skinName)) {
 				array_push($clashes, $skinName);
+			}
 		}
 
 		return $clashes;
@@ -265,8 +286,9 @@ class SKINIMPORT {
 		$clashes = array();
 
 		foreach ($this->templates as $templateName => $data) {
-			if (TEMPLATE::exists($templateName))
+			if (TEMPLATE::exists($templateName)) {
 				array_push($clashes, $templateName);
+			}
 		}
 
 		return $clashes;
@@ -276,9 +298,13 @@ class SKINIMPORT {
 	 * Called by XML parser for each new start element encountered
 	 */
 	function startElement($parser, $name, $attrs) {
-		foreach($attrs as $key=>$value) $attrs[$key]=htmlspecialchars($value,ENT_QUOTES);
+		foreach($attrs as $key=>$value) [
+			$attrs[$key] = htmlspecialchars($value, ENT_QUOTES);
+		}
 
-		if ($this->debug) echo 'START: ', htmlspecialchars($name), '<br />';
+		if ($this->debug) {
+			echo 'START: ' . htmlspecialchars($name, ENT_QUOTES) . '<br />';
+		}
 
 		switch ($name) {
 			case 'nucleusskin':
@@ -320,7 +346,7 @@ class SKINIMPORT {
 				$this->currentPartName = $attrs['name'];
 				break;
 			default:
-				echo 'UNEXPECTED TAG: ' , htmlspecialchars($name) , '<br />';
+				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . htmlspecialchars($name, ENT_QUOTES) . '<br />';
 				break;
 		}
 
@@ -333,7 +359,9 @@ class SKINIMPORT {
 	  * Called by the XML parser for each closing tag encountered
 	  */
 	function endElement($parser, $name) {
-		if ($this->debug) echo 'END: ', htmlspecialchars($name), '<br />';
+		if ($this->debug) {
+			echo 'END: ' . htmlspecialchars($name, ENT_QUOTES) . '<br />';
+		}
 
 		switch ($name) {
 			case 'nucleusskin':
@@ -347,10 +375,14 @@ class SKINIMPORT {
 			case 'info':
 				$this->info = $this->getCharacterData();
 			case 'skin':
-				if (!$this->inMeta) $this->inSkin = 0;
+				if (!$this->inMeta) {
+					$this->inSkin = 0;
+				}
 				break;
 			case 'template':
-				if (!$this->inMeta) $this->inTemplate = 0;
+				if (!$this->inMeta) {
+					$this->inTemplate = 0;
+				}
 				break;
 			case 'description':
 				if ($this->inSkin) {
@@ -367,7 +399,7 @@ class SKINIMPORT {
 				}
 				break;
 			default:
-				echo 'UNEXPECTED TAG: ' , htmlspecialchars($name), '<br />';
+				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . htmlspecialchars($name, ENT_QUOTES) . '<br />';
 				break;
 		}
 		$this->clearCharacterData();
@@ -378,7 +410,9 @@ class SKINIMPORT {
 	 * Called by XML parser for data inside elements
 	 */
 	function characterData ($parser, $data) {
-		if ($this->debug) echo 'NEW DATA: ', htmlspecialchars($data), '<br />';
+		if ($this->debug) {
+			echo 'NEW DATA: ' . htmlspecialchars($data, ENT_QUOTES) . '<br />';
+		}
 		$this->cdata .= $data;
 	}
 
@@ -386,7 +420,11 @@ class SKINIMPORT {
 	 * Returns the data collected so far
 	 */
 	function getCharacterData() {
-		return $this->cdata;
+		if (_CHARSET != 'UTF-8') {
+			return mb_convert_encoding($this->cdata, _CHARSET, 'UTF-8');
+		} else {
+			return $this->cdata;
+		}
 	}
 
 	/**
@@ -455,7 +493,10 @@ class SKINEXPORT {
 	 * @result false when no such ID exists
 	 */
 	function addTemplate($id) {
-		if (!TEMPLATE::existsID($id)) return 0;
+		if (!TEMPLATE::existsID($id)) {
+			return 0;
+		}
+
 
 		$this->templates[$id] = TEMPLATE::getNameFromId($id);
 
@@ -470,7 +511,9 @@ class SKINEXPORT {
 	 * @result false when no such ID exists
 	 */
 	function addSkin($id) {
-		if (!SKIN::existsID($id)) return 0;
+		if (!SKIN::existsID($id)) {
+			return 0;
+		}
 
 		$this->skins[$id] = SKIN::getNameFromId($id);
 
@@ -508,30 +551,46 @@ class SKINEXPORT {
 		echo "\t<meta>\n";
 			// skins
 			foreach ($this->skins as $skinId => $skinName) {
-				echo "\t\t", '<skin name="',htmlspecialchars($skinName),'" />',"\n";
+				$skinName = htmlspecialchars($skinName, ENT_QUOTES);
+				echo "\t\t" . '<skin name="' . $skinName . '" />' . "\n";
 			}
 			// templates
 			foreach ($this->templates as $templateId => $templateName) {
-				echo "\t\t", '<template name="',htmlspecialchars($templateName),'" />',"\n";
+				$templateName = htmlspecialchars($templateName, ENT_QUOTES);
+				echo "\t\t" . '<template name="' . $templateName . '" />' . "\n";
 			}
 			// extra info
 			if ($this->info)
-				echo "\t\t<info><![CDATA[",$this->info,"]]></info>\n";
+				echo "\t\t<info><![CDATA[" . $this->info . "]]></info>\n";
 		echo "\t</meta>\n\n\n";
 
 		// contents skins
 		foreach ($this->skins as $skinId => $skinName) {
-			$skinId = intval($skinId);
-			$skinObj = new SKIN($skinId);
+			$skinId   = intval($skinId);
+			$skinObj  = new SKIN($skinId);
+			$skinName = htmlspecialchars($skinName, ENT_QUOTES);
+			$contentT = htmlspecialchars($skinObj->getContentType(), ENT_QUOTES);
+			$incMode  = htmlspecialchars($skinObj->getIncludeMode(), ENT_QUOTES);
+			$incPrefx = htmlspecialchars($skinObj->getIncludePrefix(), ENT_QUOTES);
+			$skinDesc = htmlspecialchars($skinObj->getDescription(), ENT_QUOTES);
 
-			echo "\t", '<skin name="',htmlspecialchars($skinName),'" type="',htmlspecialchars($skinObj->getContentType()),'" includeMode="',htmlspecialchars($skinObj->getIncludeMode()),'" includePrefix="',htmlspecialchars($skinObj->getIncludePrefix()),'">',"\n";
+			echo "\t" . '<skin name="' . $skinName . '" type="' . $contentT . '" includeMode="' . $incMode . '" includePrefix="' . $incPrefx . '">' . "\n";
 
-			echo "\t\t", '<description>',htmlspecialchars($skinObj->getDescription()),'</description>',"\n";
+			echo "\t\t" . '<description>' . $skinDesc . '</description>' . "\n";
 
-			$res = sql_query('SELECT stype, scontent FROM '.sql_table('skin').' WHERE sdesc='.$skinId);
+			$que = 'SELECT'
+				 . '    stype,'
+				 . '    scontent '
+				 . 'FROM '
+				 .      sql_table('skin')
+				 . ' WHERE'
+				 . '    sdesc = ' . $skinId;
+			$res = sql_query($que);
 			while ($partObj = mysql_fetch_object($res)) {
-				echo "\t\t",'<part name="',htmlspecialchars($partObj->stype),'">';
-				echo '<![CDATA[', $this->escapeCDATA($partObj->scontent),']]>';
+				$type  = htmlspecialchars($partObj->stype, ENT_QUOTES);
+				$cdata = $this->escapeCDATA($partObj->scontent);
+				echo "\t\t" . '<part name="' . $type . '">';
+				echo '<![CDATA[' . $cdata . ']]>';
 				echo "</part>\n\n";
 			}
 
@@ -540,17 +599,28 @@ class SKINEXPORT {
 
 		// contents templates
 		foreach ($this->templates as $templateId => $templateName) {
-			$templateId = intval($templateId);
+			$templateId   = intval($templateId);
+			$templateName = htmlspecialchars($templateName, ENT_QUOTES);
+			$templateDesc = htmlspecialchars(TEMPLATE::getDesc($templateId), ENT_QUOTES);
 
-			echo "\t",'<template name="',htmlspecialchars($templateName),'">',"\n";
+			echo "\t" . '<template name="' . $templateName . '">' . "\n";
 
-			echo "\t\t",'<description>',htmlspecialchars(TEMPLATE::getDesc($templateId)),'</description>',"\n";
+			echo "\t\t" . '<description>' . $templateDesc . "</description>\n";
 
-			$res = sql_query('SELECT tpartname, tcontent FROM '.sql_table('template').' WHERE tdesc='.$templateId);
+			$que =  'SELECT'
+				 .     ' tpartname,'
+				 .     ' tcontent'
+				 . ' FROM '
+				 .     sql_table('template')
+				 . ' WHERE'
+				 .     ' tdesc = ' . $templateId;
+			$res = sql_query($que);
 			while ($partObj = mysql_fetch_object($res)) {
-				echo "\t\t",'<part name="',htmlspecialchars($partObj->tpartname),'">';
-				echo '<![CDATA[', $this->escapeCDATA($partObj->tcontent) ,']]>';
-				echo '</part>',"\n\n";
+				$type  = htmlspecialchars($partObj->tpartname, ENT_QUOTES);
+				$cdata = $this->escapeCDATA($partObj->tcontent);
+				echo "\t\t" . '<part name="' . $type . '">';
+				echo '<![CDATA[' .  $cdata . ']]>';
+				echo '</part>' . "\n\n";
 			}
 
 			echo "\t</template>\n\n\n";

@@ -2,7 +2,7 @@
 // by Edd Dumbill (C) 1999-2002
 // <edd@usefulinc.com>
 // $Original: xmlrpc.inc,v 1.158 2007/03/01 21:21:02 ggiunta Exp $
-// $Id: xmlrpc.inc.php,v 1.7 2008-02-08 09:31:22 kimitake Exp $
+// $Id$
 // $NucleusJP: xmlrpc.inc.php,v 1.6.2.2 2007/09/07 07:04:24 kimitake Exp $
 
 

@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,8 +17,8 @@
  * SKIN::getAllowedActionsForType($type) method
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ACTIONS.php,v 1.9 2007-05-10 08:12:51 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * @version $NucleusJP: ACTIONS.php,v 1.8 2007/04/19 06:05:55 kimitake Exp $
  */
 
@@ -397,6 +397,25 @@ class ACTIONS extends BaseActions {
 	}
 	
 	/**
+	 * Parse skinvar addlink
+	 * A Link that allows to open a bookmarklet to add an item
+	 */
+	function parse_addlink() {
+		global $CONF, $member, $blog;
+		if ($member->isLoggedIn() && $member->isTeamMember($blog->blogid) ) {
+			echo $CONF['AdminURL'].'bookmarklet.php?blogid='.$blog->blogid;
+		}
+	}
+	
+	/**
+	 * Parse skinvar addpopupcode
+	 * Code that opens a bookmarklet in an popup window
+	 */
+	function parse_addpopupcode() {
+		echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
+	}
+	
+	/**
 	 * Parse skinvar adminurl
 	 * (shortcut for admin url)	 
 	 */
@@ -506,9 +525,11 @@ class ACTIONS extends BaseActions {
 	*	Parse skinvar bloglist
 	*	Shows a list of all blogs
 	*	bnametype: whether 'name' or 'shortname' is used for the link text 	  
+	*	orderby: order criteria
+	*	direction: order ascending or descending		  
 	*/
-	function parse_bloglist($template, $bnametype = '') {
-		BLOG::showBlogList($template, $bnametype);
+	function parse_bloglist($template, $bnametype = '', $orderby='number', $direction='asc') {
+		BLOG::showBlogList($template, $bnametype, $orderby, $direction);
 	}
 	
 	/**
@@ -600,7 +621,7 @@ class ACTIONS extends BaseActions {
 		if (stristr($destinationurl, 'action.php')) {
 			$args = func_get_args();
 			$destinationurl = $args[1];
-			ACTIONLOG::add(WARNING,'actionurl is not longer a parameter on commentform skinvars. Moved to be a global setting instead.');
+			ACTIONLOG::add(WARNING,_ACTIONURL_NOTLONGER_PARAMATER);
 		}
 
 		$actionurl = $CONF['ActionURL'];
@@ -1076,9 +1097,10 @@ class ACTIONS extends BaseActions {
 	function parse_plugin($pluginName) {
 		global $manager;
 
+		// should be already tested from the parser (PARSER.php)
 		// only continue when the plugin is really installed
-		if (!$manager->pluginInstalled('NP_' . $pluginName))
-			return;
+		/*if (!$manager->pluginInstalled('NP_' . $pluginName))
+			return;*/
 
 		$plugin =& $manager->getPlugin('NP_' . $pluginName);
 		if (!$plugin) return;

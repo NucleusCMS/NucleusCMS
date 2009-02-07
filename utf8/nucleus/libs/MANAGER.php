@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,8 +19,8 @@
  * active at all times. The object can be requested using MANAGER::instance()
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: MANAGER.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * $NucleusJP: MANAGER.php,v 1.8.2.1 2007/09/05 07:00:18 kimitake Exp $
  */
 class MANAGER {
@@ -132,6 +132,9 @@ class MANAGER {
 		return (quickQuery('SELECT COUNT(*) as result FROM '.sql_table('category').' WHERE catid='.intval($id)) > 0);
 	}
 
+	/**
+	  * Returns the blog object for a given blogid
+	  */
 	function &getBlog($blogid) {
 		$blog =& $this->blogs[$blogid];
 
@@ -145,11 +148,17 @@ class MANAGER {
 		return $blog;
 	}
 
+	/**
+	  * Checks if a blog exists
+	  */
 	function existsBlog($name) {
 		$this->_loadClass('BLOG','BLOG.php');
 		return BLOG::exists($name);
 	}
 
+	/**
+	  * Checks if a blog id exists
+	  */
 	function existsBlogID($id) {
 		$this->_loadClass('BLOG','BLOG.php');
 		return BLOG::existsID($id);
@@ -201,17 +210,23 @@ class MANAGER {
 	}
 
 	/**
-	 * Global parser preferences
+	 * Set the global parser preferences
 	 */
 	function setParserProperty($name, $value) {
 		$this->parserPrefs[$name] = $value;
 	}
+
+	/**
+	 * Get the global parser preferences
+	 */
 	function getParserProperty($name) {
 		return $this->parserPrefs[$name];
 	}
 
 	/**
-	  * A private helper class to load classes
+	  * A helper function to load a class
+	  * 
+	  * private
 	  */
 	function _loadClass($name, $filename) {
 		if (!class_exists($name)) {
@@ -220,6 +235,11 @@ class MANAGER {
 		}
 	}
 
+	/**
+	  * A helper function to load a plugin
+	  * 
+	  *	private
+	  */
 	function _loadPlugin($name) {
 		if (!class_exists($name)) {
 				global $DIR_PLUGINS;
@@ -228,7 +248,7 @@ class MANAGER {
 
 				if (!file_exists($fileName))
 				{
-					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (File not found)');
+					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name));
 					return 0;
 				}
 
@@ -238,7 +258,7 @@ class MANAGER {
 				// check if class exists (avoid errors in eval'd code)
 				if (!class_exists($name))
 				{
-					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (Class not found in file, possible parse error)');
+					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
 					return 0;
 				}
 
@@ -253,7 +273,7 @@ class MANAGER {
 				if (($MYSQL_PREFIX != '') && !$this->plugins[$name]->supportsFeature('SqlTablePrefix'))
 				{
 					unset($this->plugins[$name]);
-					ACTIONLOG::add(WARNING, 'Plugin ' . $name . ' was not loaded (does not support SqlTablePrefix)');
+					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
 					return 0;
 				}
 
@@ -263,7 +283,13 @@ class MANAGER {
 		}
 	}
 
+	/**
+	 * Returns a PLUGIN object
+	 */
 	function &getPlugin($name) {
+		// retrieve the name of the plugin in the right capitalisation
+		$name = $this->getUpperCaseName ($name);
+		// get the plugin	
 		$plugin =& $this->plugins[$name];
 
 		if (!$plugin) {
@@ -275,12 +301,13 @@ class MANAGER {
 	}
 
 	/**
-	  * checks if the given plugin IS loaded or not
+	  * Checks if the given plugin IS loaded or not
 	  */
 	function &pluginLoaded($name) {
 		$plugin =& $this->plugins[$name];
 		return $plugin;
 	}
+
 	function &pidLoaded($pid) {
 		$plugin=false;
 		reset($this->plugins);
@@ -299,19 +326,35 @@ class MANAGER {
 		$this->_initCacheInfo('installedPlugins');
 		return ($this->getPidFromName($name) != -1);
 	}
+
 	function pidInstalled($pid) {
 		$this->_initCacheInfo('installedPlugins');
 		return ($this->cachedInfo['installedPlugins'][$pid] != '');
 	}
+
 	function getPidFromName($name) {
 		$this->_initCacheInfo('installedPlugins');
 		foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
 		{
-			if ($pfile == $name)
+			if (strtolower($pfile) == strtolower($name))
 				return $pid;
 		}
 		return -1;
 	}
+
+	/**
+	  * Retrieve the name of a plugin in the right capitalisation
+	  */
+	function getUpperCaseName ($name) {
+		$this->_initCacheInfo('installedPlugins');
+		foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
+		{
+			if (strtolower($pfile) == strtolower($name))
+				return $pfile;
+		}
+		return -1;
+	}
+
 	function clearCachedInfo($what) {
 		unset($this->cachedInfo[$what]);
 	}

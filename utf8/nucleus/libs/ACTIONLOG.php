@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,8 +13,8 @@
  * Actionlog class for Nucleus
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ACTIONLOG.php,v 1.8 2007-04-19 05:49:29 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * $NucleusJP: ACTIONLOG.php,v 1.7 2007/03/13 05:18:32 shizuki Exp $
  */
 define('ERROR',1);		// only errors

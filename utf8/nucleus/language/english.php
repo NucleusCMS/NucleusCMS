@@ -1034,8 +1034,8 @@ define('_MOVE_BTN',									'Move Item');
 define('_OVERVIEW_SHOWALL',							'Show all blogs');	// <add by shizuki />
 
 // Edit skins
-define('_SKIN_ALLOWEDBLOGS',						'Short blog names:');			// <add by shizuki>
-define('_SKIN_ALLOWEDTEMPLATESS',					'Template names:');		// <add by shizuki>
+define('_SKINEDIT_ALLOWEDBLOGS',						'Short blog names:');			// <add by shizuki>
+define('_SKINEDIT_ALLOWEDTEMPLATESS',					'Template names:');		// <add by shizuki>
 
 // delete member
 define('_WARNINGTXT_NOTDELMEDIAFILES',				'Please note that media files will <b>NOT</b> be deleted. (At least not in this Nucleus version)');	// <add by shizuki />

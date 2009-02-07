@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,15 +12,15 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: globalfunctions.php,v 1.24 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * $NucleusJP: globalfunctions.php,v 1.23.2.7 2008/02/05 08:30:08 kimitake Exp $
  */
 
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.4';
+$nucleus['version'] = 'v3.40RC';
 $nucleus['codename'] = '';
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
@@ -30,11 +30,6 @@ if ($CONF['debug']) {
 	error_reporting(E_ALL);	// report all errors!
 } else {
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
-}
-
-// Avoid notices
-if (!isset($CONF['Self'])) {
-	$CONF['Self'] = htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES);
 }
 
 /*
@@ -51,15 +46,15 @@ if (!isset($CONF['Self'])) {
 		more of the installation files (install.php, install.sql, upgrades/
 		directory) are still on the server.
 */
-$CONF['alertOnHeadersSent'] = 1;
+$CONF['alertOnHeadersSent']  = 1;
 $CONF['alertOnSecurityRisk'] = 1;
-$CONF['ItemURL'] = $CONF['Self'];
-$CONF['ArchiveURL'] = $CONF['Self'];
-$CONF['ArchiveListURL'] = $CONF['Self'];
-$CONF['MemberURL'] = $CONF['Self'];
-$CONF['SearchURL'] = $CONF['Self'];
-$CONF['BlogURL'] = $CONF['Self'];
-$CONF['CategoryURL'] = $CONF['Self'];
+$CONF['ItemURL']             = $CONF['Self'];
+$CONF['ArchiveURL']          = $CONF['Self'];
+$CONF['ArchiveListURL']      = $CONF['Self'];
+$CONF['MemberURL']           = $CONF['Self'];
+$CONF['SearchURL']           = $CONF['Self'];
+$CONF['BlogURL']             = $CONF['Self'];
+$CONF['CategoryURL']         = $CONF['Self'];
 
 // switch URLMode back to normal when $CONF['Self'] ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
@@ -93,24 +88,24 @@ $orgRequestURI = serverVar('REQUEST_URI');
 sanitizeParams();
 
 // get all variables that can come from the request and put them in the global scope
-$blogid	= requestVar('blogid');
-$itemid	= intRequestVar('itemid');
-$catid = intRequestVar('catid');
-$skinid	= requestVar('skinid');
-$memberid = requestVar('memberid');
-$archivelist = requestVar('archivelist');
-$imagepopup = requestVar('imagepopup');
-$archive = requestVar('archive');
-$query = requestVar('query');
-$highlight = requestVar('highlight');
-$amount = requestVar('amount');
-$action = requestVar('action');
-$nextaction = requestVar('nextaction');
-$maxresults = requestVar('maxresults');
-$startpos = intRequestVar('startpos');
+$blogid       = requestVar('blogid');
+$itemid       = intRequestVar('itemid');
+$catid        = intRequestVar('catid');
+$skinid       = requestVar('skinid');
+$memberid     = requestVar('memberid');
+$archivelist  = requestVar('archivelist');
+$imagepopup   = requestVar('imagepopup');
+$archive      = requestVar('archive');
+$query        = requestVar('query');
+$highlight    = requestVar('highlight');
+$amount       = requestVar('amount');
+$action       = requestVar('action');
+$nextaction   = requestVar('nextaction');
+$maxresults   = requestVar('maxresults');
+$startpos     = intRequestVar('startpos');
 $errormessage = '';
-$error = '';
-$virtualpath = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
+$error        = '';
+$virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 if (!headers_sent() ) {
 	header('Generator: Nucleus CMS ' . $nucleus['version']);
@@ -160,6 +155,23 @@ register_shutdown_function('sql_disconnect');
 
 // read config
 getConfig();
+
+// Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
+if (!isset($CONF['Self'])) {
+	$CONF['Self'] = $CONF['IndexURL'];
+	// strip trailing /
+	if ($CONF['Self'][strlen($CONF['Self']) -1] == "/") {
+		$CONF['Self'] = substr($CONF['Self'], 0, strlen($CONF['Self']) -1);
+	}
+
+	$CONF['ItemURL']        = $CONF['Self'];
+	$CONF['ArchiveURL']     = $CONF['Self'];
+	$CONF['ArchiveListURL'] = $CONF['Self'];
+	$CONF['MemberURL']      = $CONF['Self'];
+	$CONF['SearchURL']      = $CONF['Self'];
+	$CONF['BlogURL']        = $CONF['Self'];
+	$CONF['CategoryURL']    = $CONF['Self'];
+}
 
 // automatically use simpler toolbar for mozilla
 if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0') && strstr(serverVar('HTTP_USER_AGENT'), 'Gecko') ) {
@@ -308,7 +320,7 @@ $language = getLanguageName();
 include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
 
 // check if valid charset
-if (!encoding_check(false,false,_CHARSET)) {
+if (!encoding_check(false, false, _CHARSET)) {
 	foreach(array($_REQUEST, $_SERVER) as $input) {
 		array_walk($input, 'encoding_check');
 	}
@@ -572,10 +584,10 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
  * Errors before the database connection has been made
  */
 function startUpError($msg, $title) {
-	if (!defined('_CHARSET')) define('_CHARSET','iso-8859-1');
+	if (!defined('_CHARSET')) define('_CHARSET', 'iso-8859-1');
 	header('Content-Type: text/html; charset=' . _CHARSET);
 	?>
-	<html xmlns="http://www.w3.org/1999/xhtml">
+	<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
 		<head><meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET?>" />
 		<title><?php echo htmlspecialchars($title)?></title></head>
 		<body>
@@ -929,11 +941,11 @@ function selector() {
 		global $startpos;
 		$type = 'search';
 		$query = stripslashes($query);
-		if(preg_match("/^(\xA1{2}|\xe3\x80{2}|\x20)+$/",$query)){
+		if(preg_match("/^(\xA1{2}|\xe3\x80{2}|\x20)+$/", $query)){
 					$type = 'index';
 		}
 		$order = (_CHARSET == 'EUC-JP') ? 'EUC-JP, UTF-8,' : 'UTF-8, EUC-JP,';
-		$query = mb_convert_encoding($query, _CHARSET, $order.' JIS, SJIS, ASCII');
+		$query = mb_convert_encoding($query, _CHARSET, $order . ' JIS, SJIS, ASCII');
 		if (is_numeric($blogid)) {
 			$blogid = intVal($blogid);
 		} else {
@@ -1085,7 +1097,7 @@ function shorten($text, $maxlength, $toadd) {
 //	$trans = get_html_translation_table(HTML_ENTITIES);
 	$trans = get_html_translation_table(HTML_SPECIALCHARS); // for Japanese
 	$trans = array_flip($trans);
-	$text = strtr($text, $trans);
+	$text  = strtr($text, $trans);
 
 	// 2. the actual shortening
 	if (strlen($text) > $maxlength)
@@ -1922,7 +1934,7 @@ function revertArrayForSanitizing($array, &$dst)
  * - the URL will be stripped of illegal or dangerous characters
  */
 function redirect($url) {
-	$url = preg_replace('|[^a-z0-9-~+_.?#=&;,/:@%]|i', '', $url);
+	$url = preg_replace('|[^a-z0-9-~+_.?#=&;,/:@%*]|i', '', $url);
 	header('Location: ' . $url);
 	exit;
 }
@@ -2024,10 +2036,10 @@ function encode_desc(&$data)
     {   //_$to_entities = get_html_translation_table(HTML_ENTITIES);
         $to_entities = get_html_translation_table(HTML_SPECIALCHARS);
         $from_entities = array_flip($to_entities);
-        $data = str_replace('<br />','\n',$data); //hack
+        $data = str_replace('<br />', '\n', $data); //hack
         $data = strtr($data,$from_entities);
         $data = strtr($data,$to_entities);
-        $data = str_replace('\n','<br />',$data); //hack
+        $data = str_replace('\n', '<br />', $data); //hack
         return $data;
     }
  

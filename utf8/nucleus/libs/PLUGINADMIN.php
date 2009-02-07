@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,8 +14,8 @@
  * code to make it easier to create plugin admin areas
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: PLUGINADMIN.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * $NucleusJP: PLUGINADMIN.php,v 1.8.2.2 2007/10/23 22:48:56 kmorimatsu Exp $
  */
 
@@ -69,13 +69,13 @@ class PluginAdmin {
 
 		// check if plugin exists and is installed
 		if (!$manager->pluginInstalled($this->strFullName))
-			doError('Invalid plugin');
+			doError(_ERROR_INVALID_PLUGIN);
 
 		$this->plugin =& $manager->getPlugin($this->strFullName);
 		$this->bValid = $this->plugin;
 
 		if (!$this->bValid)
-			doError('Invalid plugin');
+			doError(_ERROR_INVALID_PLUGIN);
 
 		$this->admin = new ADMIN();
 		$this->admin->action = 'plugin_' . $pluginName;
@@ -141,7 +141,7 @@ for (i=0;document.forms[i];i++){
       else document.forms[i].action+='&'+'ticket=<?php echo $ticket; ?>';
       continue;
     }
-    document.write('<p><b>Error occured during automatic addition of tickets.</b></p>');
+    document.write('<?php echo _PLUGINADMIN_TICKETS_JAVASCRIPT ?>');
     j=document.forms[i].outerHTML;
     while (j!=j.replace('<','&lt;')) j=j.replace('<','&lt;');
     document.write('<p>'+j+'</p>');

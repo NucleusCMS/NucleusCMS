@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,8 +14,8 @@
  * A class to parses plugin calls inside items
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BODYACTIONS.php,v 1.7 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * @version $NucleusJP: BODYACTIONS.php,v 1.6.2.1 2007/08/08 05:27:14 kimitake Exp $
  */
 
@@ -44,10 +44,11 @@ class BODYACTIONS extends BaseActions {
 	function parse_plugin($pluginName) {
 		global $manager;
 
+		// should be already tested from the parser (PARSER.php)
 		// only continue when the plugin is really installed
-		if (!$manager->pluginInstalled('NP_' . $pluginName)) {
+		/*if (!$manager->pluginInstalled('NP_' . $pluginName)) {
 			return;
-		}
+		}*/
 
 		$plugin =& $manager->getPlugin('NP_' . $pluginName);
 		if (!$plugin) return;

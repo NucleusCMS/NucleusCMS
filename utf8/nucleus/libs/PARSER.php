@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -11,8 +11,8 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: PARSER.php,v 1.8 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * $NucleusJP: PARSER.php,v 1.7.2.1 2007/09/05 07:35:59 kimitake Exp $
  */
 
@@ -79,7 +79,7 @@ class PARSER {
 	  * handle an action
 	  */
 	function doAction($action) {
-		global $manager;
+		global $manager, $CONF;
 
 		if (!$action) return;
 
@@ -114,10 +114,14 @@ class PARSER {
 			call_user_func_array(array(&$this->handler,'parse_' . $actionlc), $params);
 		} else {
 			// redirect to plugin action if possible
-			if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_'.$action))
+			if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_' . $action)) {
 				$this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
-			else
-				echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
+			} else {
+				if ($CONF['DebugVars']==true) {
+					echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
+				}
+			}
+
 		}
 
 	}

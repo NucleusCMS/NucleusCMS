@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,8 +15,8 @@
  * on the screen
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: BLOG.php,v 1.15 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * $NucleusJP: BLOG.php,v 1.12.2.2 2007/08/08 05:26:22 kimitake Exp $
  */
 
@@ -333,14 +333,14 @@ class BLOG {
 	  *		the new category-id in case of success.
 	  *		0 on failure
 	  */
-	function createNewCategory($catName = '', $catDescription = 'New category') {
+	function createNewCategory($catName = '', $catDescription = _CREATED_NEW_CATEGORY_DESC) {
 		global $member, $manager;
 
 		if ($member->blogAdminRights($this->getID())) {
 			// generate
 			if ($catName == '')
 			{
-				$catName = 'newcat';
+				$catName = _CREATED_NEW_CATEGORY_NAME;
 				$i = 1;
 
 				$res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
@@ -585,14 +585,22 @@ class BLOG {
 			$current->itime = strtotime($current->itime);	// string time -> unix timestamp
 
 			if ($mode == 'day') {
-				$archivedate = date('Y-m-d',$current->itime);
+				$archivedate    = date('Y-m-d',$current->itime);
 				$archive['day'] = date('d',$current->itime);
+				$data['day']    = date('d',$current->itime);
 			} else {
 				$archivedate = date('Y-m',$current->itime);
 			}
 			$data['month'] = date('m',$current->itime);
 			$data['year'] = date('Y',$current->itime);
 			$data['archivelink'] = createArchiveLink($this->getID(),$archivedate,$linkparams);
+
+			$manager->notify(
+				'PreArchiveListItem',
+				array(
+					'listitem' => &$data
+				)
+			);
 
 			$temp = TEMPLATE::fill($template['ARCHIVELIST_LISTITEM'],$data);
 			echo strftime($temp,$current->itime);
@@ -657,6 +665,13 @@ class BLOG {
 							   );
 			$data['self'] = $CONF['Self'];
 
+			$manager->notify(
+				'PreCategoryListItem',
+				array(
+					'listitem' => &$data
+				)
+			);
+			
 			echo TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
 			//$temp = TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
 			//echo strftime($temp, $current->itime);
@@ -675,9 +690,42 @@ class BLOG {
 	
 	/**
 	  * Shows a list of all blogs in the system using a given template
+	  * ordered by 	number, name, shortname or description
+	  * in ascending or descending order	    
 	  */
-	function showBlogList($template, $bnametype) {
+	function showBlogList($template, $bnametype, $orderby, $direction) {
 		global $CONF, $manager;
+		
+		switch ($orderby) {
+			case 'number':
+				$orderby='bnumber';
+				break;
+			case 'name':
+				$orderby='bname';
+				break;
+			case 'shortname':
+				$orderby='bshortname';
+				break;
+			case 'description':
+				$orderby='bdesc';
+				break;
+			default:
+				$orderby='bnumber';
+				break;
+		}
+		
+		$direction=strtolower($direction);
+		switch ($direction) {
+			case 'asc':
+				$direction='ASC';
+				break;
+			case 'desc':
+				$direction='DESC';
+				break;
+			default:
+				$direction='ASC';
+				break;
+		}
 		
 		$template =& $manager->getTemplate($template);
 		
@@ -687,7 +735,7 @@ class BLOG {
 								'siteurl' => $CONF['IndexURL']
 							));
 		
-		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY bnumber ASC';
+		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY '.$orderby.' '.$direction;
 		$res = sql_query($query);
 		
 		while ($data = mysql_fetch_assoc($res)) {
@@ -699,12 +747,21 @@ class BLOG {
 		
 			$list['blogdesc'] = $data['bdesc'];
 			
+			$list['blogurl'] = $data['burl'];
+			
 			if ($bnametype=='shortname') {
 				$list['blogname'] = $data['bshortname'];
 			}
 			else { // all other cases
 				$list['blogname'] = $data['bname'];
 			}
+			
+			$manager->notify(
+				'PreBlogListItem',
+				array(
+					'listitem' => &$list
+				)
+			);
 			
 			echo TEMPLATE::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
 			
@@ -1041,8 +1098,8 @@ class BLOG {
 
 		);
 
-		ACTIONLOG::add(INFO, 'Added ' . $tmem->getDisplayName() . ' (ID=' .
-					   $memberid .') to the team of blog "' . $this->getName() . '"');
+		$logMsg = sprintf(_TEAM_ADD_NEWTEAMMEMBER, $tmem->getDisplayName(), $memberid, $this->getName());
+		ACTIONLOG::add(INFO, $logMsg);
 
 		return 1;
 	}
@@ -1107,6 +1164,89 @@ class BLOG {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Shows the given list of items for this blog
+	 *
+	 * @param $itemarray
+	 *		array of item numbers to be displayed
+	 * @param $template
+	 *		String representing the template _NAME_ (!)	 
+	 * @param $highlight
+	 *		contains a query that should be highlighted
+	 * @param $comments
+	 *		1=show comments 0=don't show comments
+	 * @param $dateheads
+	 *		1=show dateheads 0=don't show dateheads
+	 * @returns int
+	 *		amount of items shown
+	 */
+	function readLogFromList($itemarray, $template, $highlight = '', $comments = 1, $dateheads = 1) {
+
+		$query = $this->getSqlItemList($itemarray);
+
+		return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
+	}
+	
+	/**
+	 * Returns the SQL query used to fill out templates for a list of items
+	 *
+	 * @param $itemarray
+	 *		an array holding the item numbers of the items to be displayed
+	 * @returns
+	 *		either a full SQL query, or an empty string
+	 * @note
+	 *		No LIMIT clause is added. (caller should add this if multiple pages are requested)
+	 */
+	function getSqlItemList($itemarray)
+	{
+		if (!is_array($itemarray)) return '';
+		$items = array();
+		foreach ($itemarray as $value) {
+			if (intval($value)) $items[] = intval($value);
+		}
+		if (!count($items)) return '';
+		//$itemlist = implode(',',$items);
+		$i = count($items);
+		$query = '';
+		foreach ($items as $value) {
+			$query .= '('
+					.   'SELECT'
+					.   ' i.inumber as itemid,'
+					.   ' i.ititle as title,'
+					.   ' i.ibody as body,'
+					.   ' m.mname as author,'
+					.   ' m.mrealname as authorname,'
+					.   ' i.itime,'
+					.   ' i.imore as more,'
+					.   ' m.mnumber as authorid,'
+					.   ' m.memail as authormail,'
+					.   ' m.murl as authorurl,'
+					.   ' c.cname as category,'
+					.   ' i.icat as catid,'
+					.   ' i.iclosed as closed';
+			
+			$query .= ' FROM '
+					. sql_table('item') . ' as i, '
+					. sql_table('member') . ' as m, '
+					. sql_table('category').' as c'
+				    . ' WHERE'
+					.     ' i.iblog   = ' . $this->blogid
+				    . ' and i.iauthor = m.mnumber'
+				    . ' and i.icat    = c.catid'
+				    . ' and i.idraft  = 0'	// exclude drafts
+						// don't show future items
+				    . ' and i.itime  <= ' . mysqldate($this->getCorrectTime());
+
+			//$query .= ' and i.inumber IN ('.$itemlist.')';
+			$query .= ' and i.inumber = '.intval($value);
+			$query .= ')';
+			$i--;
+			if ($i) $query .= ' UNION ';
+		}
+		
+		return $query;
 	}
 
 }

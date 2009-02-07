@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,8 +14,8 @@
  * Actions that can be called via action.php
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ACTION.php,v 1.11 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * $NucleusJP: ACTION.php,v 1.10 2007/05/31 07:23:39 kimitake Exp $
  */
 class ACTION
@@ -200,7 +200,8 @@ class ACTION
 
 		// evaluate content from FormExtra
 		$result = 1;
-		$manager->notify('ValidateForm', array('type' => 'membermail', 'error' => &$result));
+		$data = array('type' => 'membermail', 'error' => &$result);
+		$manager->notify('ValidateForm', &$data);
 
 		if ($result!=1) {
 			return $result;
@@ -212,7 +213,8 @@ class ACTION
 			$initialPwd = md5(uniqid(rand(), true));
 
 			// create member (non admin/can not login/no notes/random string as password)
-			$r = MEMBER::create(postVar('name'), postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
+			$name = shorten(postVar('name'),16,'');
+			$r = MEMBER::create($name, postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
 
 			if ($r != 1) {
 				return $r;
@@ -220,7 +222,7 @@ class ACTION
 
 			// send message containing password.
 			$newmem = new MEMBER();
-			$newmem->readFromName(postVar('name'));
+			$newmem->readFromName($name);
 			$newmem->sendActivationLink('register');
 
 			$manager->notify('PostRegister',array('member' => &$newmem));

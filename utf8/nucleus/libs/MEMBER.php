@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,8 +14,8 @@
  * A class representing site members
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: MEMBER.php,v 1.7 2007-02-04 06:28:46 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * $NucleusJP: MEMBER.php,v 1.6 2006/07/17 20:03:44 kimitake Exp $
  */
 class MEMBER {
@@ -36,20 +36,31 @@ class MEMBER {
 	var $admin = 0;			// (either 0 or 1)
 	var $canlogin = 0;		// (either 0 or 1)
 	var $notes;
+	var $autosave = 1;		// if the member use the autosave draft function
 
-	// (private)
+	/**
+	 * Constructor for a member object
+	 */	 	
 	function MEMBER() {
-
+		// do nothing
 	}
 
-	// (static)
+	/**
+	 * Create a member object for a given displayname
+	 *
+	 * @static
+	 */
 	function &createFromName($displayname) {
 		$mem =& new MEMBER();
 		$mem->readFromName($displayname);
 		return $mem;
 	}
 
-	// (static)
+	/**
+	 * Create a member object for a given ID
+	 *
+	 * @static
+	 */
 	function &createFromID($id) {
 		$mem =& new MEMBER();
 		$mem->readFromID($id);
@@ -65,20 +76,34 @@ class MEMBER {
 	}
 
 	/**
-	  * Tries to login as a given user. Returns true when succeeded,
-	  * returns false when failed
+	  * Tries to login as a given user.
+	  * Returns true when succeeded, returns false when failed
+	  * 3.40 adds CustomLogin event
 	  */
 	function login($login, $password) {
+		global $manager;
 		$this->loggedin = 0;
-		if (!$this->readFromName($login))
+		$success = 0;
+		$allowlocal = 1;
+		$manager->notify('CustomLogin', array('login' => &$login, 'password'=>&$password, 'success'=>&$success, 'allowlocal'=>&$allowlocal) );
+		if ($success && $this->readFromName($login)) {
+			$this->loggedin = 1;
+			return $this->isLoggedIn();
+		} elseif (!$success && $allowlocal) {
+			if (!$this->readFromName($login))
+				return 0;
+			if (!$this->checkPassword($password))
+				return 0;
+			$this->loggedin = 1;
+			return $this->isLoggedIn();
+		} else {
 			return 0;
-		if (!$this->checkPassword($password))
-			return 0;
-		$this->loggedin = 1;
-		return $this->isLoggedIn();
+		}
 	}
 
-	// login using cookie key
+	/**
+	 * Login using cookie key
+	 */	 	
 	function cookielogin($login, $cookiekey) {
 		$this->loggedin = 0;
 		if (!$this->readFromName($login))
@@ -97,6 +122,9 @@ class MEMBER {
 		return $this->loggedin;
 	}
 
+	/**
+	 * Read member information from the database 
+	 */	 	
 	function read($where) {
 		// read info
 		$query =  'SELECT * FROM '.sql_table('member') . ' WHERE ' . $where;
@@ -115,6 +143,7 @@ class MEMBER {
 		$this->setCanLogin($obj->mcanlogin);
 		$this->setNotes($obj->mnotes);
 		$this->setLanguage($obj->deflang);
+		$this->setAutosave($obj->mautosave);
 
 		return mysql_num_rows($res);
 	}
@@ -155,6 +184,30 @@ class MEMBER {
 		return (mysql_num_rows($res) != 0);
 	}
 
+	function canAddItem($catid) {
+		global $manager;
+
+		// if this is a 'newcat' style newcat
+		// no blog admin of destination blog -> NOK
+		// blog admin of destination blog -> OK
+		if (strstr($catid,'newcat')) {
+			// get blogid
+			list($blogid) = sscanf($catid,"newcat-%d");
+			return $this->blogAdminRights($blogid);
+		}
+
+		// category does not exist -> NOK
+		if (!$manager->existsCategory($catid)) return 0;
+
+		$blogid = getBlogIDFromCatID($catid);
+
+		// no team rights for blog -> NOK
+		if (!$this->teamRights($blogid)) return 0;
+
+		// all other cases: OK
+		return 1;
+	}
+
 	/**
 	  * Returns true if this member can edit/delete a commentitem. This can be in the
 	  * following cases:
@@ -188,6 +241,15 @@ class MEMBER {
 		$res = sql_query($query);
 		$obj = mysql_fetch_object($res);
 		return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
+	}
+
+	/**
+	  * Return true if member can be deleted. This means that there are no items
+	  * posted by the member left
+	  */
+	function canBeDeleted() {
+		$res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
+		return (mysql_num_rows($res) == 0);
 	}
 
 	/**
@@ -245,39 +307,6 @@ class MEMBER {
 		// all other cases: NOK
 		return 0;
 
-	}
-
-	function canAddItem($catid) {
-		global $manager;
-
-		// if this is a 'newcat' style newcat
-		// no blog admin of destination blog -> NOK
-		// blog admin of destination blog -> OK
-		if (strstr($catid,'newcat')) {
-			// get blogid
-			list($blogid) = sscanf($catid,"newcat-%d");
-			return $this->blogAdminRights($blogid);
-		}
-
-		// category does not exist -> NOK
-		if (!$manager->existsCategory($catid)) return 0;
-
-		$blogid = getBlogIDFromCatID($catid);
-
-		// no team rights for blog -> NOK
-		if (!$this->teamRights($blogid)) return 0;
-
-		// all other cases: OK
-		return 1;
-	}
-
-	/**
-	  * Return true if member can be deleted. This means that there are no items
-	  * posted by the member left
-	  */
-	function canBeDeleted() {
-		$res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
-		return (mysql_num_rows($res) == 0);
 	}
 
 	/**
@@ -403,17 +432,18 @@ class MEMBER {
 			   . "     madmin=" . $this->isAdmin() . ","
 			   . "     mnotes='" . addslashes($this->getNotes()) . "',"
 			   . "     mcanlogin=" . $this->canLogin() . ","
-			   . "	   deflang='" . addslashes($this->getLanguage()) . "'"
+			   . "	   deflang='" . addslashes($this->getLanguage()) . "',"
+			   . "	   mautosave=" . addslashes($this->getAutosave()) . ""
 			   . " WHERE mnumber=" . $this->getID();
 		sql_query($query);
 	}
 
-	function checkPassword($pw) {
-		return (md5($pw) == $this->getPassword());
-	}
-
 	function checkCookieKey($key) {
 		return (($key != '') && ($key == $this->getCookieKey()));
+	}
+
+	function checkPassword($pw) {
+		return (md5($pw) == $this->getPassword());
 	}
 
 	function getRealName() {
@@ -506,23 +536,42 @@ class MEMBER {
 		$this->notes = $val;
 	}
 
+	function getAutosave() {
+		return $this->autosave;
+	}
+
+	function setAutosave($val) {
+		$this->autosave = $val;
+	}
+
 	function getID() {
 		return $this->id;
 	}
 
-	// returns true if there is a member with the given login name (static)
+	/**
+	 * Returns true if there is a member with the given login name
+	 * 
+	 * @static
+	 */
 	function exists($name) {
 		$r = sql_query('select * FROM '.sql_table('member')." WHERE mname='".addslashes($name)."'");
 		return (mysql_num_rows($r) != 0);
 	}
 
-	// returns true if there is a member with the given ID (static)
+	/**
+	 * Returns true if there is a member with the given ID
+	 *
+	 * @static
+	 */
 	function existsID($id) {
 		$r = sql_query('select * FROM '.sql_table('member')." WHERE mnumber='".intval($id)."'");
 		return (mysql_num_rows($r) != 0);
 	}
 
-	// checks if a username is protected. If so, it can not be used on anonymous comments
+	/**
+	 *  Checks if a username is protected. 
+	 *  If so, it can not be used on anonymous comments
+	 */
 	function isNameProtected($name) {
 
 		// extract name
@@ -532,7 +581,11 @@ class MEMBER {
 		return MEMBER::exists($name);
 	}
 
-	// adds a new member (static)
+	/**
+	 * Adds a new member
+	 * 
+	 * @static
+	 */
 	function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes) {
 		if (!isValidMailAddress($email))
 			return _ERROR_BADMAILADDRESS;

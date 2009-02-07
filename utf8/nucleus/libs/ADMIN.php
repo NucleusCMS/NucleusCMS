@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,8 +13,8 @@
  * The code for the Nucleus admin area
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ADMIN.php,v 1.24 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * @version $NucleusJP: ADMIN.php,v 1.21.2.4 2007/10/30 19:04:24 kmorimatsu Exp $
  */
 
@@ -62,7 +62,57 @@ class ADMIN {
 		// check ticket. All actions need a ticket, unless they are considered to be safe (a safe action
 		// is an action that requires user interaction before something is actually done)
 		// all safe actions are in this array:
-		$aActionsNotToCheck = array('showlogin', 'login', 'overview', 'itemlist', 'blogcommentlist', 'bookmarklet', 'blogsettings', 'banlist', 'deleteblog', 'editmembersettings', 'browseownitems', 'browseowncomments', 'createitem', 'itemedit', 'itemmove', 'categoryedit', 'categorydelete', 'manage', 'actionlog', 'settingsedit', 'backupoverview', 'pluginlist', 'createnewlog', 'usermanagement', 'skinoverview', 'templateoverview', 'skinieoverview', 'itemcommentlist', 'commentedit', 'commentdelete', 'banlistnewfromitem', 'banlistdelete', 'itemdelete', 'manageteam', 'teamdelete', 'banlistnew', 'memberedit', 'memberdelete', 'pluginhelp', 'pluginoptions', 'plugindelete', 'skinedittype', 'skinremovetype', 'skindelete', 'skinedit', 'templateedit', 'templatedelete', 'activate');
+		$aActionsNotToCheck = array(
+			'showlogin',
+			'login',
+			'overview',
+			'itemlist',
+			'blogcommentlist',
+			'bookmarklet',
+			'blogsettings',
+			'banlist',
+			'deleteblog',
+			'editmembersettings',
+			'browseownitems',
+			'browseowncomments',
+			'createitem',
+			'itemedit',
+			'itemmove',
+			'categoryedit',
+			'categorydelete',
+			'manage',
+			'actionlog',
+			'settingsedit',
+			'backupoverview',
+			'pluginlist',
+			'createnewlog',
+			'usermanagement',
+			'skinoverview',
+			'templateoverview',
+			'skinieoverview',
+			'itemcommentlist',
+			'commentedit',
+			'commentdelete',
+			'banlistnewfromitem',
+			'banlistdelete',
+			'itemdelete',
+			'manageteam',
+			'teamdelete',
+			'banlistnew',
+			'memberedit',
+			'memberdelete',
+			'pluginhelp',
+			'pluginoptions',
+			'plugindelete',
+			'skinedittype',
+			'skinremovetype',
+			'skindelete',
+			'skinedit',
+			'templateedit',
+			'templatedelete',
+			'activate',
+			'systemoverview'
+		);
 /*
 		// the rest of the actions needs to be checked
 		$aActionsToCheck = array('additem', 'itemupdate', 'itemmoveto', 'categoryupdate', 'categorydeleteconfirm', 'itemdeleteconfirm', 'commentdeleteconfirm', 'teamdeleteconfirm', 'memberdeleteconfirm', 'templatedeleteconfirm', 'skindeleteconfirm', 'banlistdeleteconfirm', 'plugindeleteconfirm', 'batchitem', 'batchcomment', 'batchmember', 'batchcategory', 'batchteam', 'regfile', 'commentupdate', 'banlistadd', 'changemembersettings', 'clearactionlog', 'settingsupdate', 'blogsettingsupdate', 'categorynew', 'teamchangeadmin', 'teamaddmember', 'memberadd', 'addnewlog', 'addnewlog2', 'backupcreate', 'backuprestore', 'pluginup', 'plugindown', 'pluginupdate', 'pluginadd', 'pluginoptionsupdate', 'skinupdate', 'skinclone', 'skineditgeneral', 'templateclone', 'templatenew', 'templateupdate', 'skinieimport', 'skinieexport', 'skiniedoimport', 'skinnew', 'deleteblogconfirm', 'sendping', 'rawping', 'activatesetpwd');
@@ -168,7 +218,7 @@ class ADMIN {
 		if (($showAll != 'yes') && ($member->isAdmin())) {
 			$total = quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('blog'));
 			if ($total > $amount)
-				echo '<p><a href="index.php?action=overview&amp;showall=yes">Show all blogs</a></p>';
+				echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
 		}
 
 		if ($amount == 0)
@@ -258,7 +308,7 @@ class ADMIN {
 	 * @todo document this
 	 */
 	function action_itemlist($blogid = '') {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		if ($blogid == '')
 			$blogid = intRequestVar('blogid');
@@ -283,8 +333,11 @@ class ADMIN {
 		// amount of items to show
 		if (postVar('amount'))
 			$amount = intPostVar('amount');
-		else
-			$amount = 10;
+		else {
+			$amount = intval($CONF['DefaultListSize']);
+			if ($amount < 1) 
+				$amount = 10;
+		}
 
 		$search = postVar('search');	// search through items
 
@@ -831,7 +884,7 @@ class ADMIN {
 	 * @todo document this
 	 */
 	function action_browseownitems() {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		$this->pagehead();
 
@@ -847,8 +900,11 @@ class ADMIN {
 		// amount of items to show
 		if (postVar('amount'))
 			$amount = intPostVar('amount');
-		else
-			$amount = 10;
+		else {
+			$amount = intval($CONF['DefaultListSize']);
+			if ($amount < 1) 
+				$amount = 10;
+		}
 
 		$search = postVar('search');	// search through items
 
@@ -878,7 +934,7 @@ class ADMIN {
 	 * @param int $itemid
 	 */
 	function action_itemcommentlist($itemid = '') {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		if ($itemid == '')
 			$itemid = intRequestVar('itemid');
@@ -899,15 +955,18 @@ class ADMIN {
 		// amount of items to show
 		if (postVar('amount'))
 			$amount = intPostVar('amount');
-		else
-			$amount = 10;
+		else {
+			$amount = intval($CONF['DefaultListSize']);
+			if ($amount < 1) 
+				$amount = 10;
+		}
 
 		$search = postVar('search');
 
 		echo '<p>(<a href="index.php?action=itemlist&amp;blogid=',$blogid,'">',_BACKTOOVERVIEW,'</a>)</p>';
 		echo '<h2>',_COMMENTS,'</h2>';
 
-		$query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE citem=' . $itemid;
+		$query = 'SELECT cbody, cuser, cmail, cemail, mname, ctime, chost, cnumber, cip, citem FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
 
 		if ($search)
 			$query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
@@ -929,7 +988,7 @@ class ADMIN {
 	 * Browse own comments
 	 */
 	function action_browseowncomments() {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		// start index
 		if (postVar('start'))
@@ -940,8 +999,11 @@ class ADMIN {
 		// amount of items to show
 		if (postVar('amount'))
 			$amount = intPostVar('amount');
-		else
-			$amount = 10;
+		else {
+			$amount = intval($CONF['DefaultListSize']);
+			if ($amount < 1) 
+				$amount = 10;
+		}
 
 		$search = postVar('search');
 
@@ -975,7 +1037,7 @@ class ADMIN {
 	 */
 	function action_blogcommentlist($blogid = '')
 	{
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		if ($blogid == '')
 			$blogid = intRequestVar('blogid');
@@ -993,8 +1055,11 @@ class ADMIN {
 		// amount of items to show
 		if (postVar('amount'))
 			$amount = intPostVar('amount');
-		else
-			$amount = 10;
+		else {
+			$amount = intval($CONF['DefaultListSize']);
+			if ($amount < 1) 
+				$amount = 10;
+		}
 
 		$search = postVar('search');		// search through comments
 
@@ -1134,6 +1199,7 @@ class ADMIN {
 				$wasdraft: set to 1 when the item used to be a draft item
 				$publish: set to 1 when the edited item is not a draft
 		*/
+/*<del by shizuki>
 		switch ($actiontype) {
 			case 'adddraft':
 				$publish = 0;
@@ -1143,7 +1209,7 @@ class ADMIN {
 			case 'addfuture':
 				$wasdraft = 1;
 				$publish = 1;
-				$timestamp = mktime(postVar('hour'), postVar('minutes'), 0, postVar('month'), postVar('day'), postVar('year'));
+				$timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year'));
 				break;
 			case 'addnow':
 				$wasdraft = 1;
@@ -1151,20 +1217,41 @@ class ADMIN {
 				$timestamp = 0;
 				break;
 			case 'changedate':
-				$timestamp = mktime(postVar('hour'), postVar('minutes'), 0, postVar('month'), postVar('day'), postVar('year'));
+				$timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year'));
 				$publish = 1;
 				$wasdraft = 0;
 				break;
+			case 'backtodrafts':
+				$wasdraft = 0;
+				$publish = 0;
+				$timestamp = 0;
+				break;			
 			case 'edit':
 			default:
 				$publish = 1;
 				$wasdraft = 0;
 				$timestamp = 0;
 		}
+</del by shizuki>*/
+// <add by shizuki>
+		$blogid =  getBlogIDFromItemID($itemid);
+		$blog   =& $manager->getBlog($blogid);
+
+		$wasdrafts = array('adddraft', 'addfuture', 'addnow');
+		$wasdraft  = in_array($actiontype, $wasdrafts) ? 1 : 0;
+		$publish   = ($actiontype != 'adddraft' && $actiontype != 'backtodrafts') ? 1 : 0;
+		if ($actiontype == 'addfuture' || $actiontype == 'changedate') {
+			$timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year'));
+		} else {
+			$timestamp =0;
+		}
+		$doping = ($publish && $timestamp < $blog->getCorrectTime() && postVar('dosendping')) ? 1 : 0;
+// </add by shizuki>
 
 		// edit the item for real
 		ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
 
+/* <del by shizuki>
 		$blogid = getBlogIDFromItemID($itemid);
 		$blog =& $manager->getBlog($blogid);
 
@@ -1173,6 +1260,7 @@ class ADMIN {
 			$isFuture = 1;
 		}
 
+</del by shizuki>*/
 		$this->updateFuturePosted($blogid);
 
 		if ($draftid > 0) {
@@ -1180,7 +1268,8 @@ class ADMIN {
 			ITEM::delete($draftid);
 		}
 
-		if (!$closed && $publish && $wasdraft && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0 && !$isFuture) {
+//		if (!$closed && $publish && $wasdraft && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0 && !$isFuture) {
+		if (!$closed && $doping && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0) {		//<mod by shizuki />
 			$this->action_sendping($blogid);
 			return;
 		}
@@ -1405,7 +1494,7 @@ class ADMIN {
 
 		$blogid = getBlogIDFromItemID($result['itemid']);
 		$blog =& $manager->getBlog($blogid);
-
+/* <del by shizuki>
 		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid));
 
 		if ($result['status'] == 'newcategory')
@@ -1418,6 +1507,27 @@ class ADMIN {
 			$this->action_sendping($blogid);
 		else
 			$this->action_itemlist($blogid);
+</del by shizuki>*/
+// <add by shizuki>
+		$btimestamp = $blog->getCorrectTime();
+		$bPingInfo  = ($blog->sendPing() && numberOfEventSubscriber('SendPing') > 0);
+		$item       = $manager->getItem(intval($result['itemid']), 1, 1);
+		$iPingInfo  = (!$item['draft'] && postVar('dosendping') && $item['timestamp'] < $btimestamp);
+		if ($iPingInfo && $bPingInfo) {
+			$nextAction = 'sendping';
+		} else {
+			$nextAction = 'itemlist';
+		}
+		if ($result['status'] == 'newcategory') {
+			$distURI = ($nextAction = 'sendping') ? $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action='
+					 . $nextAction . '&blogid=' . intval($blogid)) : 
+					   '';
+			$this->action_categoryedit($result['catid'], $blogid, $distURI);
+		} else {
+			$methodName = 'action_' . $nextAction;
+			call_user_func(array(&$this, $methodName), $blogid);
+		}
+//</add by shizuki>
 	}
 
 	/**
@@ -1438,17 +1548,12 @@ class ADMIN {
 		$rawPingUrl = $manager->addTicketToUrl('index.php?action=rawping&blogid=' . intval($blogid));
 
 		$this->pagehead('<meta http-equiv="refresh" content="1; url='.htmlspecialchars($rawPingUrl).'" />');
+		echo _UPDATEDPING_MESSAGE;
 		?>
-		<h2>Site Updated, Now pinging various weblog listing services...</h2>
-
-		<p>
-			This can take a while...
+		<a href="index.php?action=rawping&amp;blogid=<?php echo $blogid?>"><?php echo _UPDATEDPING_GOPINGPAGE ?></a>
 		</p>
-
-		<p>
-			If you aren't automatically passed through, <a href="index.php?action=rawping&amp;blogid=<?php echo $blogid?>">try again</a>
-		</p>
-		<?php		$this->pagefoot();
+		<?php
+		$this->pagefoot();
 	}
 
 	/**
@@ -1465,7 +1570,7 @@ class ADMIN {
 
 		?>
 
-		<h2>Pinging services, please wait...</h2>
+		<h2><?php echo _UPDATEDPING_PINGING ?></h2>
 		<div class='note'>
                 <?php
 
@@ -1476,8 +1581,8 @@ class ADMIN {
                 </div>
 
 		<ul>
-			<li><a href="index.php?action=itemlist&amp;blogid=<?php echo $blog->getID()?>">View list of recent items for <?php echo htmlspecialchars($blog->getName())?></a></li>
-			<li><a href="<?php echo $blog->getURL()?>">Visit your own site</a></li>
+			<li><a href="index.php?action=itemlist&amp;blogid=<?php echo $blog->getID()?>"><?php echo _UPDATEDPING_VIEWITEM . htmlspecialchars($blog->getName())?></a></li>
+			<li><a href="<?php echo $blog->getURL()?>"><?php echo _UPDATEDPING_VISITOWNSITE ?></a></li>
 		</ul>
 
 		<?php		$this->pagefoot();
@@ -1529,7 +1634,16 @@ class ADMIN {
 		</tr><tr>
 			<td><?php echo _EDITC_HOST?></td>
 			<td><?php echo  $comment['host']; ?></td>
-		</tr><tr>
+		</tr>
+		<tr>
+			<td><?php echo _EDITC_URL; ?></td>
+			<td><input type="text" name="url" size="30" tabindex="6" value="<?php echo $comment['userid']; ?>" /></td>
+		</tr>
+		<tr>
+			<td><?php echo _EDITC_EMAIL; ?></td>
+			<td><input type="text" name="email" size="30" tabindex="8" value="<?php echo $comment['email']; ?>" /></td>
+		</tr>
+		<tr>
 			<td><?php echo _EDITC_TEXT?></td>
 			<td>
 				<textarea name="body" tabindex="10" rows="10" cols="50"><?php					// htmlspecialchars not needed (things should be escaped already)
@@ -1556,6 +1670,8 @@ class ADMIN {
 
 		$member->canAlterComment($commentid) or $this->disallow();
 
+		$url = postVar('url');
+		$email = postVar('email');
 		$body = postVar('body');
 
 		// intercept words that are too long
@@ -1576,7 +1692,7 @@ class ADMIN {
 		$manager->notify('PreUpdateComment',array('body' => &$body));
 
 		$query =  'UPDATE '.sql_table('comment')
-			   . " SET cbody='" .addslashes($body). "'"
+			   . " SET cmail = '" . addslashes($url) . "', cemail = '" . addslashes($email) . "', cbody = '" . addslashes($body) . "'"
 			   . " WHERE cnumber=" . $commentid;
 		sql_query($query);
 
@@ -1868,6 +1984,10 @@ class ADMIN {
 
 			</td>
 		</tr>
+		<tr>
+			<td><?php echo _MEMBERS_USEAUTOSAVE?> <?php help('autosave'); ?></td>
+			<td><?php $this->input_yesno('autosave', $mem->getAutosave(), 87); ?></td>
+		</tr>
 		<?php
 			// plugin options
 			$this->_insertPluginOptions('member',$memberid);
@@ -1980,6 +2100,8 @@ class ADMIN {
 			$mem->setCanLogin($canlogin);
 		}
 
+		$autosave = postVar ('autosave'); 
+		$mem->setAutosave($autosave);
 
 		$mem->write();
 
@@ -2350,11 +2472,11 @@ class ADMIN {
 
 		// check if: - there remains at least one blog admin
 		//           - (there remains at least one team member)
-		$mem = MEMBER::createFromID($memberid);
+		$tmem = MEMBER::createFromID($memberid);
 
-		$manager->notify('PreDeleteTeamMember', array('member' => &$mem, 'blogid' => $blogid));
+		$manager->notify('PreDeleteTeamMember', array('member' => &$tmem, 'blogid' => $blogid));
 
-		if ($mem->isBlogAdmin($blogid)) {
+		if ($tmem->isBlogAdmin($blogid)) {
 			// check if there are more blog members left and at least one admin
 			// (check for at least two admins before deletion)
 			$query = 'SELECT * FROM '.sql_table('team') . ' WHERE tblog='.$blogid.' and tadmin=1';
@@ -3112,7 +3234,7 @@ class ADMIN {
 			</p>
 
 			<p>
-			Please note that media files will <b>NOT</b> be deleted. (At least not in this Nucleus version)
+			<?php echo _WARNINGTXT_NOTDELMEDIAFILES ?>
 			</p>
 
 			<form method="post" action="index.php"><div>
@@ -3161,9 +3283,11 @@ class ADMIN {
 		$manager->notify('PreDeleteMember', array('member' => &$mem));
 
 		/* unlink comments from memberid */
-		$query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. addslashes($mem->getDisplayName())
-					.'" WHERE cmember='.$memberid;
-		sql_query($query);
+		if ($memberid) {
+			$query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. addslashes($mem->getDisplayName())
+				   .'" WHERE cmember='.$memberid;
+			sql_query($query);
+		}
 
 		$query = 'DELETE FROM '.sql_table('member').' WHERE mnumber='.$memberid;
 		sql_query($query);
@@ -3197,18 +3321,18 @@ class ADMIN {
 		?>
 		<h2><?php echo _EBLOG_CREATE_TITLE?></h2>
 
-		<h3>注意事項</h3>
+		<h3><?php echo _ADMIN_NOTABILIA ?></h3>
 
-		<p>作成にあたって、下記の<strong>注意事項</strong> をまずお読み下さい</p>
+		<p><?php echo _ADMIN_PLEASE_READ ?></p>
 
-		<p>新しいweblogを作成した後に、このblogにアクセスするための方法を紹介しておきます。方法は2つあります:</p>
+		<p><?php echo _ADMIN_HOW_TO_ACCESS ?></p>
 
 		<ol>
-			<li><strong>簡単な方法:</strong> <code>index.php</code>の複製を作り、新しいblogを表示するように変更を加えます。 この変更の詳細は、作成後に表示されます。</li>
-			<li><strong>高度な方法:</strong> 現在のblogで使用しているスキンに<code>otherblog</code>というコードを使った記述を加えます。この方法では、同じページ内で複数のblogを展開することが可能となります。</li>
+			<li><?php echo _ADMIN_SIMPLE_WAY ?></li>
+			<li><?php echo _ADMIN_ADVANCED_WAY ?></li>
 		</ol>
 
-		<h3>Weblogの作成</h3>
+		<h3><?php echo _ADMIN_HOW_TO_CREATE ?></h3>
 
 		<p>
 		<?php echo _EBLOG_CREATE_TEXT?>
@@ -3290,9 +3414,9 @@ class ADMIN {
 		$manager->notify(
 			'PreAddBlog',
 			array(
-				'name' => &$bname,
-				'shortname' => &$bshortname,
-				'timeoffset' => &$btimeoffset,
+				'name'        => &$bname,
+				'shortname'   => &$bshortname,
+				'timeoffset'  => &$btimeoffset,
 				'description' => &$bdesc,
 				'defaultskin' => &$bdefskin
 			)
@@ -3300,11 +3424,11 @@ class ADMIN {
 
 
 		// add slashes for sql queries
-		$bname = 		addslashes($bname);
-		$bshortname = 	addslashes($bshortname);
-		$btimeoffset = 	addslashes($btimeoffset);
-		$bdesc = 		addslashes($bdesc);
-		$bdefskin = 	addslashes($bdefskin);
+		$bname       = addslashes($bname);
+		$bshortname  = addslashes($bshortname);
+		$btimeoffset = addslashes($btimeoffset);
+		$bdesc       = addslashes($bdesc);
+		$bdefskin    = addslashes($bdefskin);
 
 		// create blog
 		$query = 'INSERT INTO '.sql_table('blog')." (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', '$btimeoffset', '$bdefskin')";
@@ -3313,7 +3437,7 @@ class ADMIN {
 		$blog	=& $manager->getBlog($blogid);
 
 		// create new category
-		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, 'General','Items that do not fit in other categories')");
+		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
 		$catid = mysql_insert_id();
 
 		// set as default category
@@ -3326,7 +3450,7 @@ class ADMIN {
 		sql_query($query);
 
 
-		$blog->additem($blog->getDefaultCategory(),'First Item','これはあなたのweblogにおける最初のアイテムです。自由に削除していただいてかまいません。','',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
+		$blog->additem($blog->getDefaultCategory(),_EBLOG_FIRSTITEM_TITLE,_EBLOG_FIRSTITEM_BODY,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
 
 		$manager->notify(
 			'PostAddBlog',
@@ -3338,27 +3462,27 @@ class ADMIN {
 		$manager->notify(
 			'PostAddCategory',
 			array(
-				'blog' => &$blog,
-				'name' => 'General',
-				'description' => 'Items that do not fit in other categories',
-				'catid' => $catid
+				'blog'        => &$blog,
+				'name'        => _EBLOGDEFAULTCATEGORY_NAME,
+				'description' => _EBLOGDEFAULTCATEGORY_DESC,
+				'catid'       => $catid
 			)
 		);
 
 		$this->pagehead();
 		?>
-		<h2>新しいweblogが作成されました</h2>
+		<h2><?php echo _BLOGCREATED_TITLE ?></h2>
 
-		<p>新しいweblog 「<?php echo htmlspecialchars($bname)?>」が作成されました。続けて、これにアクセスするために以下のどちらかの手順に進んでください。</p>
+		<p><?php echo sprintf(_BLOGCREATED_ADDEDTXT, htmlspecialchars($bname)) ?></p>
 
 		<ol>
-			<li><a href="#index_php">簡単な方法: 下のコードを貼付けた <code><?php echo htmlspecialchars($bshortname)?>.php</code> というファイルを作成する</a></li>
-			<li><a href="#skins">高度な方法: 現在使用しているスキンに新しいweblogを展開させるための記述を加える</a></li>
+			<li><a href="#index_php"><?php sprintf(_BLOGCREATED_SIMPLEWAY, htmlspecialchars($bshortname)) ?></code></a></li>
+			<li><a href="#skins"><?php _BLOGCREATED_ADVANCEDWAY ?></a></li>
 		</ol>
 
-		<h3><a id="index_php">方法 1: <code><?php echo htmlspecialchars($bshortname)?>.php</code> というファイルを作成</a></h3>
+		<h3><a id="index_php"><?php sprintf(_BLOGCREATED_SIMPLEDESC1, htmlspecialchars($bshortname)) ?></a></h3>
 
-		<p><code><?php echo htmlspecialchars($bshortname)?>.php</code> というファイルを作成して、中身に以下のコードを貼り付ける:</p>
+		<p><?php sprintf(_BLOGCREATED_SIMPLEDESC2, htmlspecialchars($bshortname)) ?></p>
 <pre><code>&lt;?php
 
 $CONF['Self'] = '<b><?php echo htmlspecialchars($bshortname)?>.php</b>';
@@ -3370,9 +3494,9 @@ selector();
 
 ?&gt;</code></pre>
 
-		<p>すでにある<code>index.php</code>と同じディレクトリにアップロードします。</p>
+		<p><?php echo _BLOGCREATED_SIMPLEDESC3 ?></p>
 
-		<p>新しいweblogの作成を完了するためには、下にこのファイルのURLを入力してください。 (すでに用意した値で合っているとは思いますが保証はしません):</p>
+		<p><?php echo _BLOGCREATED_SIMPLEDESC4 ?></p>
 
 		<form action="index.php" method="post"><div>
 			<input type="hidden" name="action" value="addnewlog2" />
@@ -3387,9 +3511,9 @@ selector();
 			</tr></table>
 		</div></form>
 
-		<h3><a id="skins">方法 2: 現在使用しているスキンに新しいweblogを展開する記述を加える</a></h3>
+		<h3><a id="skins"><?php echo _BLOGCREATED_ADVANCEDWAY2 ?></a></h3>
 
-		<p>新しいweblogの作成を完了するためには、下にURLを入力してください。 (大抵は既存blogと同じURL)</p>
+		<p><?php echo _BLOGCREATED_ADVANCEDWAY3 ?></p>
 
 		<form action="index.php" method="post"><div>
 			<input type="hidden" name="action" value="addnewlog2" />
@@ -3842,36 +3966,51 @@ selector();
 ?>
 		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_CATEGORYLIST?> <?php help('templatecategorylists'); ?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 160);
-	$this->_templateEditRow($template, _TEMPLATE_CATITEM, 'CATLIST_LISTITEM', '', 170);
-	$this->_templateEditRow($template, _TEMPLATE_CATFOOTER, 'CATLIST_FOOTER', '', 180);
+<?php	$this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 190);
+	$this->_templateEditRow($template, _TEMPLATE_CATITEM, 'CATLIST_LISTITEM', '', 200);
+	$this->_templateEditRow($template, _TEMPLATE_CATFOOTER, 'CATLIST_FOOTER', '', 210);
 ?>
 		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_DATETIME?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_DHEADER, 'DATE_HEADER', 'dateheads', 190);
-	$this->_templateEditRow($template, _TEMPLATE_DFOOTER, 'DATE_FOOTER', 'dateheads', 200);
-	$this->_templateEditRow($template, _TEMPLATE_DFORMAT, 'FORMAT_DATE', 'datetime', 210);
-	$this->_templateEditRow($template, _TEMPLATE_TFORMAT, 'FORMAT_TIME', 'datetime', 220);
-	$this->_templateEditRow($template, _TEMPLATE_LOCALE, 'LOCALE', 'locale', 230);
+<?php	$this->_templateEditRow($template, _TEMPLATE_DHEADER, 'DATE_HEADER', 'dateheads', 220);
+	$this->_templateEditRow($template, _TEMPLATE_DFOOTER, 'DATE_FOOTER', 'dateheads', 230);
+	$this->_templateEditRow($template, _TEMPLATE_DFORMAT, 'FORMAT_DATE', 'datetime', 240);
+	$this->_templateEditRow($template, _TEMPLATE_TFORMAT, 'FORMAT_TIME', 'datetime', 250);
+	$this->_templateEditRow($template, _TEMPLATE_LOCALE, 'LOCALE', 'locale', 260);
 ?>
 		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_IMAGE?> <?php help('templatepopups'); ?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_PCODE, 'POPUP_CODE', '', 240);
-	$this->_templateEditRow($template, _TEMPLATE_ICODE, 'IMAGE_CODE', '', 250);
-	$this->_templateEditRow($template, _TEMPLATE_MCODE, 'MEDIA_CODE', '', 260);
+<?php	$this->_templateEditRow($template, _TEMPLATE_PCODE, 'POPUP_CODE', '', 270);
+	$this->_templateEditRow($template, _TEMPLATE_ICODE, 'IMAGE_CODE', '', 280);
+	$this->_templateEditRow($template, _TEMPLATE_MCODE, 'MEDIA_CODE', '', 290);
 ?>
 		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_SEARCH?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_SHIGHLIGHT, 'SEARCH_HIGHLIGHT', 'highlight',270);
-	$this->_templateEditRow($template, _TEMPLATE_SNOTFOUND, 'SEARCH_NOTHINGFOUND', 'nothingfound',280);
+<?php	$this->_templateEditRow($template, _TEMPLATE_SHIGHLIGHT, 'SEARCH_HIGHLIGHT', 'highlight',300);
+	$this->_templateEditRow($template, _TEMPLATE_SNOTFOUND, 'SEARCH_NOTHINGFOUND', 'nothingfound',310);
 ?>
+		</tr><tr>
+			<th colspan="2"><?php echo _TEMPLATE_PLUGIN_FIELDS?></th>
+<?php
+		$tab = 600;
+		$pluginfields = array();
+		$manager->notify('TemplateExtraFields',array('fields'=>&$pluginfields));
+
+		foreach ($pluginfields as $pfkey=>$pfvalue) {
+			echo "</tr><tr>\n";
+			echo '<th colspan="2">'.htmlentities($pfkey)."</th>\n";
+			foreach ($pfvalue as $pffield=>$pfdesc) {
+				$this->_templateEditRow($template, $pfdesc, $pffield, '',++$tab,0);
+			}
+		}
+?>			
 		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_UPDATE?></th>
 		</tr><tr>
 			<td><?php echo _TEMPLATE_UPDATE?></td>
 			<td>
-				<input type="submit" tabindex="290" value="<?php echo _TEMPLATE_UPDATE_BTN?>" onclick="return checkSubmit();" />
-				<input type="reset" tabindex="300" value="<?php echo _TEMPLATE_RESET_BTN?>" />
+				<input type="submit" tabindex="800" value="<?php echo _TEMPLATE_UPDATE_BTN?>" onclick="return checkSubmit();" />
+				<input type="reset" tabindex="810" value="<?php echo _TEMPLATE_RESET_BTN?>" />
 			</td>
 		</tr></table>
 
@@ -3897,7 +4036,7 @@ selector();
 	 * @todo document this
 	 */
 	function action_templateupdate() {
-		global $member;
+		global $member, $manager;
 
 		$templateid = intRequestVar('templateid');
 
@@ -3963,6 +4102,13 @@ selector();
 		$this->addToTemplate($templateid, 'MEDIA_CODE', postVar('MEDIA_CODE'));
 		$this->addToTemplate($templateid, 'IMAGE_CODE', postVar('IMAGE_CODE'));
 
+		$pluginfields = array();
+		$manager->notify('TemplateExtraFields',array('fields'=>&$pluginfields));
+		foreach ($pluginfields as $pfkey=>$pfvalue) {
+			foreach ($pfvalue as $pffield=>$pfdesc) {
+				$this->addToTemplate($templateid, $pffield, postVar($pffield));
+			}
+		}
 
 		// jump back to template edit
 		$this->action_templateedit(_TEMPLATE_UPDATED);
@@ -3983,7 +4129,7 @@ selector();
 
 		$query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
 			   . "VALUES ($id, '$partname', '$content')";
-		sql_query($query) or die("Query error: " . mysql_error());
+		sql_query($query) or exit(_ADMIN_SQLDIE_QUERYERROR . mysql_error());
 		return mysql_insert_id();
 	}
 
@@ -4370,25 +4516,14 @@ selector();
 				echo helplink('skinvar-' . $current) . "$current</a>";
 				if (count($actions) != 0) echo ", ";
 			}
-		?>
-		<br /><br />
-		Short blog names:
-		<?php			$query = 'SELECT bshortname, bname FROM '.sql_table('blog');
+		echo '<br /><br />' . _SKINEDIT_ALLOWEDBLOGS;
+		$query = 'SELECT bshortname, bname FROM '.sql_table('blog');
 			showlist($query,'table',array('content'=>'shortblognames'));
-		?>
-
-		<br />
-		Template names:
-		<?php			$query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
+		echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
+		$query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
 			showlist($query,'table',array('content'=>'shortnames'));
-		?>
-
-
-		</div>
-		</form>
-
-
-		<?php		$this->pagefoot();
+		echo '</div></form>';
+		$this->pagefoot();
 	}
 
 	/**
@@ -4723,7 +4858,7 @@ selector();
 			</td>
 			<td><?php $this->input_yesno('DisableSite',$CONF['DisableSite'],10060); ?>
 					<br />
-				URL: <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  htmlspecialchars($CONF['DisableSiteURL'])?>" />
+				<?php echo _SETTINGS_DISABLESITEURL ?> <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  htmlspecialchars($CONF['DisableSiteURL'])?>" />
 			</td>
 		</tr><tr>
 			<td><?php echo _SETTINGS_DIRS?></td>
@@ -4771,6 +4906,26 @@ selector();
 							 ?>
 
 					   </td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_DEBUGVARS?> <?php help('debugvars');?></td>
+					   <td><?php
+
+						$this->input_yesno('DebugVars',$CONF['DebugVars'],10078);
+						
+							 ?>
+
+					   </td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_DEFAULTLISTSIZE?> <?php help('defaultlistsize');?></td>
+			<td>
+			<?php 
+				if (!array_key_exists('DefaultListSize',$CONF)) {
+					sql_query("INSERT INTO ".sql_table('config')." VALUES ('DefaultListSize', '10')");
+					$CONF['DefaultListSize'] = 10;
+				}
+			?>
+				<input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  htmlspecialchars((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
+			</td>
 		</tr><tr>
 			<th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
 		</tr><tr>
@@ -4936,6 +5091,8 @@ selector();
 		$this->updateConfig('CookieSecure',		postVar('CookieSecure'));
 		$this->updateConfig('URLMode',			postVar('URLMode'));
 		$this->updateConfig('CookiePrefix',		postVar('CookiePrefix'));
+		$this->updateConfig('DebugVars',		postVar('DebugVars'));
+		$this->updateConfig('DefaultListSize',	postVar('DefaultListSize'));
 
 		// load new config and redirect (this way, the new language will be used is necessary)
 		// note that when changing cookie settings, this redirect might cause the user
@@ -4944,6 +5101,143 @@ selector();
 		redirect($CONF['AdminURL'] . '?action=manage');
 		exit;
 
+	}
+
+	/**
+	 *  Give an overview over the used system
+	 */	
+	function action_systemoverview() {
+		global $member, $nucleus, $CONF;
+
+		$this->pagehead();
+
+		echo '<h2>' . _ADMIN_SYSTEMOVERVIEW_HEADING . "</h2>\n";
+
+		if ($member->isLoggedIn() && $member->isAdmin()) {
+
+			// Information about the used PHP and MySQL installation
+			echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL . "</h3>\n";
+
+			// Version of PHP MySQL
+			echo "<table>\n";
+			echo "\t<tr>\n";
+			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_VERSIONS . "</th>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_PHPVERSION . "</td>\n";
+			echo "\t\t" . '<td>' . phpversion() . "</td>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td>' . _ADMIN_SYSTEMOVERVIEW_MYSQLVERSION . "</td>\n";
+			echo "\t\t" . '<td>' . mysql_get_server_info() . ' (' . mysql_get_client_info() . ')' . "</td>\n";
+			echo "\t</tr>";
+			echo "</table>\n";
+
+			// Important PHP settings
+			echo "<table>\n";
+			echo "\t<tr>\n";
+			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "</th>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">magic_quotes_gpc' . "</td>\n";
+			$mqg = get_magic_quotes_gpc() ? 'On' : 'Off';
+			echo "\t\t" . '<td>' . $mqg . "</td>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td>magic_quotes_runtime' . "</td>\n";
+			$mqr = get_magic_quotes_runtime() ? 'On' : 'Off';
+			echo "\t\t" . '<td>' . $mqr . "</td>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td>magic_quotes_runtime' . "</td>\n";
+			$rg = ini_get('register_globals') ? 'On' : 'Off';
+			echo "\t\t" . '<td>' . $rg . "</td>\n";
+			echo "\t</tr>";
+			echo "</table>\n";
+
+			// Information about GD library
+			$gdinfo = gd_info();
+			echo "<table>\n";
+			echo "\t<tr>";
+			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_GDLIBRALY . "</th>\n";
+			echo "\t</tr>\n";
+			foreach ($gdinfo as $key=>$value) {
+				if (is_bool($value)) {
+					$value = $value ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE;
+				} else {
+					$value = htmlspecialchars($value, ENT_QUOTES);
+				}
+				echo "\t<tr>";
+				echo "\t\t" . '<td width="50%">' . $key . "</td>\n";
+				echo "\t\t" . '<td>' . $value . "</td>\n";
+				echo "\t</tr>\n";
+			}
+			echo "</table>\n";
+
+			// Check if special modules are loaded
+			ob_start();
+			phpinfo(INFO_MODULES);
+			$im = ob_get_contents();
+			ob_clean();
+			echo "<table>\n";
+			echo "\t<tr>";
+			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_MODULES . "</th>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">mod_rewrite' . "</td>\n";
+			$modrewrite = (strstr($im, 'mod_rewrite') != '') ? 
+						_ADMIN_SYSTEMOVERVIEW_ENABLE :
+						_ADMIN_SYSTEMOVERVIEW_DISABLE;
+			echo "\t\t" . '<td>' . $modrewrite . "</td>\n";
+			echo "\t</tr>\n";
+			echo "</table>\n";
+
+			// Information about the used Nucleus CMS 
+			echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM . "</h3>\n";
+			global $nucleus;
+			$nv = getNucleusVersion() / 100 . '(' . $nucleus['version'] . ')';
+			$np = getNucleusPatchLevel();
+			echo "<table>\n";
+			echo "\t<tr>";
+			echo "\t\t" . '<th colspan="2">Nucleus CMS' . "</th>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION . "</td>\n";
+			echo "\t\t" . '<td>' . $nv . "</td>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL . "</td>\n";
+			echo "\t\t" . '<td>' . $np . "</td>\n";
+			echo "\t</tr>\n";
+			echo "</table>\n";
+
+			// Important settings of the installation
+			echo "<table>\n";
+			echo "\t<tr>";
+			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS . "</th>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">' . '$CONF[' . "'Self']</td>\n";
+			echo "\t\t" . '<td>' . $CONF['Self'] . "</td>\n";
+			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">' . '$CONF[' . "'alertOnHeadersSent']</td>\n";
+			$ohs = $CONF['alertOnHeadersSent'] ?
+						_ADMIN_SYSTEMOVERVIEW_ENABLE :
+						_ADMIN_SYSTEMOVERVIEW_DISABLE;
+			echo "\t\t" . '<td>' . $ohs . "</td>\n";
+			echo "\t</tr>\n";
+			echo "</table>\n";
+
+			// Link to the online version test at the Nucleus CMS website
+			echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK . "</h3>\n";
+			if ($nucleus['codename'] != '') {
+				$codenamestring = ' &quot;' . $nucleus['codename'] . '&quot;';
+			} else {
+				$codenamestring = '';
+			}
+			echo _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT;
+			$checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
+			echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">';
+			echo 'Nucleus CMS ' . $nv . $codenamestring;
+			echo '</a>';
+		//echo '<br />';
+		}
+		else {
+			echo _ADMIN_SYSTEMOVERVIEW_NOT_ADMIN;
+		}
+		
+		$this->pagefoot();
 	}
 
 	/**
@@ -5003,7 +5297,7 @@ selector();
 
 		?>
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-		<html xmlns="http://www.w3.org/1999/xhtml">
+		<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 			<title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>
@@ -5039,17 +5333,12 @@ selector();
 
 			echo '<br />(';
 
-			// Note(JP): disabled code name description
-/*
+			$codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
+
 			if ($member->isLoggedIn() && $member->isAdmin())
-				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nucleus['version'], ' &quot;', $nucleus['codename'], '&quot;</a>';
+				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nucleus['version'], $codenamestring, '</a>';
 			else
-				echo 'Nucleus CMS ', $nucleus['version'], ' &quot;', $nucleus['codename'], '&quot;';
-*/
-			if ($member->isLoggedIn() && $member->isAdmin())
-				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nucleus['version'], ' </a>';
-			else
-				echo 'Nucleus CMS ', $nucleus['version'];
+				echo 'Nucleus CMS ', $nucleus['version'], $codenamestring;
 			echo ')';
 		echo '</div>';
 	}
@@ -5077,9 +5366,9 @@ selector();
 			<?php		}
 		?>
 			<div class="foot">
-				<a href="http://nucleuscms.org/">Nucleus CMS</a> &copy; 2002-<?php echo date('Y'); ?> The Nucleus Group
+				<a href="<?php echo _ADMINPAGEFOOT_OFFICIALURL ?>">Nucleus CMS</a> &copy; 2002-<?php echo date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT; ?>
 				-
-				<a href="http://nucleuscms.org/donate.php">Donate!</a>
+				<a href="<?php echo _ADMINPAGEFOOT_DONATEURL ?>"><?php echo _ADMINPAGEFOOT_DONATE ?></a>
 			</div>
 
 			</div><!-- content -->
@@ -5121,9 +5410,9 @@ selector();
 
 					echo '<h2>' . $member->getDisplayName(). '</h2>';
 					echo '<ul>';
-					echo '<li><a href="index.php?action=editmembersettings">',_QMENU_USER_SETTINGS,'</a></li>';
-					echo '<li><a href="index.php?action=browseownitems">',_QMENU_USER_ITEMS,'</a></li>';
-					echo '<li><a href="index.php?action=browseowncomments">',_QMENU_USER_COMMENTS,'</a></li>';
+					echo '<li><a href="index.php?action=editmembersettings">' . _QMENU_USER_SETTINGS . '</a></li>';
+					echo '<li><a href="index.php?action=browseownitems">' . _QMENU_USER_ITEMS . '</a></li>';
+					echo '<li><a href="index.php?action=browseowncomments">' . _QMENU_USER_COMMENTS . '</a></li>';
 					echo '</ul>';
 
 
@@ -5135,19 +5424,20 @@ selector();
 						echo '<h2>',_QMENU_MANAGE,'</h2>';
 
 						echo '<ul>';
-						echo '<li><a href="index.php?action=actionlog">',_QMENU_MANAGE_LOG,'</a></li>';
-						echo '<li><a href="index.php?action=settingsedit">',_QMENU_MANAGE_SETTINGS,'</a></li>';
-						echo '<li><a href="index.php?action=usermanagement">',_QMENU_MANAGE_MEMBERS,'</a></li>';
-						echo '<li><a href="index.php?action=createnewlog">',_QMENU_MANAGE_NEWBLOG,'</a></li>';
-						echo '<li><a href="index.php?action=backupoverview">',_QMENU_MANAGE_BACKUPS,'</a></li>';
-						echo '<li><a href="index.php?action=pluginlist">',_QMENU_MANAGE_PLUGINS,'</a></li>';
+						echo '<li><a href="index.php?action=actionlog">' . _QMENU_MANAGE_LOG . '</a></li>';
+						echo '<li><a href="index.php?action=settingsedit">' . _QMENU_MANAGE_SETTINGS . '</a></li>';
+						echo '<li><a href="index.php?action=usermanagement">' . _QMENU_MANAGE_MEMBERS . '</a></li>';
+						echo '<li><a href="index.php?action=createnewlog">' . _QMENU_MANAGE_NEWBLOG . '</a></li>';
+						echo '<li><a href="index.php?action=backupoverview">' . _QMENU_MANAGE_BACKUPS . '</a></li>';
+						echo '<li><a href="index.php?action=pluginlist">' . _QMENU_MANAGE_PLUGINS . '</a></li>';
+						echo '<li><a href="index.php?action=systemoverview">' . _QMENU_MANAGE_SYSTEM . '</a></li>';
 						echo '</ul>';
 
 						echo '<h2>',_QMENU_LAYOUT,'</h2>';
 						echo '<ul>';
-						echo '<li><a href="index.php?action=skinoverview">',_QMENU_LAYOUT_SKINS,'</a></li>';
-						echo '<li><a href="index.php?action=templateoverview">',_QMENU_LAYOUT_TEMPL,'</a></li>';
-						echo '<li><a href="index.php?action=skinieoverview">',_QMENU_LAYOUT_IEXPORT,'</a></li>';
+						echo '<li><a href="index.php?action=skinoverview">' . _QMENU_LAYOUT_SKINS . '</a></li>';
+						echo '<li><a href="index.php?action=templateoverview">' . _QMENU_LAYOUT_TEMPL . '</a></li>';
+						echo '<li><a href="index.php?action=skinieoverview">' . _QMENU_LAYOUT_IEXPORT . '</a></li>';
 						echo '</ul>';
 
 					}
@@ -5201,7 +5491,7 @@ selector();
 		// header-code stolen from phpMyAdmin
 		// REGEDIT and bookmarklet code stolen from GreyMatter
 
-		$sjisBlogName = getBlogNameFromID($blogid);
+		$sjisBlogName = sprintf(_WINREGFILE_TEXT, getBlogNameFromID($blogid));
 		$sjisBlogName = mb_convert_encoding($sjisBlogName, "SJIS", "auto");
 
 		header('Content-Type: application/octetstream');
@@ -5210,7 +5500,7 @@ selector();
 		header('Expires: 0');
 
 		echo "REGEDIT4\n";
-		echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\Post To &Nucleus (".$sjisBlogName.")]\n";
+		echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\" . $sjisBlogName . "]\n";
 		echo '@="' . $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=".intval($blogid)."\"\n";
 		echo '"contexts"=hex:31';
 	}
@@ -5234,48 +5524,48 @@ selector();
 
 		?>
 
-		<h2>Bookmarklet<!-- and Right Click Menu --></h2>
+		<h2><?php echo _BOOKMARKLET_TITLE ?></h2>
 
 		<p>
-		Bookmarklet とは、クリック1回で記事の投稿ができるシステムです。 この Bookmarklet をインストールすると、ブラウザのツールバーの'add to weblog'ボタンが利用可能となり、Nucleusの新規アイテムの追加ウィンドウがポップアップします。任意のWebページを開いた状態でこのボタンを押せば、そのWebページのタイトルと、そのページへのリンクタグがすでに埋め込まれた状態でアイテム追加ウィンドウが開き、さらに、そのページ内に引用したい文を選択した状態であればその引用文も自動的に引用します。
+		<?php echo _BOOKMARKLET_DESC1 . _BOOKMARKLET_DESC2 . _BOOKMARKLET_DESC3 . _BOOKMARKLET_DESC4 . _BOOKMARKLET_DESC5 ?>
 		</p>
 
-		<h3>Bookmarklet</h3>
+		<h3><?php echo _BOOKMARKLET_BOOKARKLET ?></h3>
 		<p>
-			下のリンク部分を「お気に入り」もしくはツールバーにドラッグできます。<small>(その前にテストしてみたい場合は単純に下のリンクをクリックしてみてください)</small>
+			<?php echo _BOOKMARKLET_BMARKTEXT ?><small><?php echo _BOOKMARKLET_BMARKTEST ?></small>
 			<br />
 			<br />
-			<a href="<?php echo htmlspecialchars($bm)?>">Add to <?php echo $blog->getShortName()?></a> (ほとんどのブラウザで動作します)
+			<?php echo '<a href="' . htmlspecialchars($bm, ENT_QUOTES) . '">' . sprintf(_BOOKMARKLET_ANCHOR, htmlspecialchars($blog->getName(), ENT_QUOTES)) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
 		</p>
 
-		<h3>右クリックメニューにインストール (WindowsでIE使用時)</h3>
+		<h3><?php echo _BOOKMARKLET_RIGHTCLICK ?></h3>
 		<p>
 			<?php
 				$url = 'index.php?action=regfile&blogid=' . intval($blogid);
 				$url = $manager->addTicketToUrl($url);
 			?>
-			あるいは<a href="<?php echo htmlspecialchars($url) ?>">右クリックメニュー</a>にインストールすることもできます (「開く」を選択すれば直接レジストリに登録します)
+			<?php echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . htmlspecialchars($url, ENT_QUOTES, "SJIS") . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2; ?>
 		</p>
 
 		<p>
-			このインストールした右クリックメニューを表示するためにはIEの再起動が必要です。
+			<?php echo _BOOKMARKLET_RIGHTTEXT3 ?>
 		</p>
 
-		<h3>アンインストール</h3>
+		<h3><?php echo _BOOKMARKLET_UNINSTALLTT ?></h3>
 		<p>
-			「お気に入り」もしくはツールバーから消すには、単に削除するだけです。
+			<?php echo _BOOKMARKLET_DELETEBAR ?>
 		</p>
-		
+
 		<p>
-			右クリックメニューから消したい時は、以下の手順を踏んでください:
+			<?php echo _BOOKMARKLET_DELETERIGHTT ?>
 		</p>
 
 		<ol>
-			<li>スタートメニューから「ファイルを指定して実行...」を選択</li>
-			<li>"regedit" と入力</li>
-			<li>"OK" ボタンを押す</li>
-			<li>"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" をツリーの中から検索</li>
-			<li>"add to weblog" エントリを削除</li>				
+			<li><?php echo _BOOKMARKLET_DELETERIGHT1 ?></li>
+			<li><?php echo _BOOKMARKLET_DELETERIGHT2 ?></li>
+			<li><?php echo _BOOKMARKLET_DELETERIGHT3 ?></li>
+			<li><?php echo _BOOKMARKLET_DELETERIGHT4 ?></li>
+			<li><?php echo _BOOKMARKLET_DELETERIGHT5 ?></li>
 		</ol>
 
 		<?php
@@ -5356,6 +5646,7 @@ selector();
 		$member->blogAdminRights($blogid) or $this->disallow();
 
 		$blog =& $manager->getBlog($blogid);
+		$banBlogName =  htmlspecialchars($blog->getName(), ENT_QUOTES);
 
 		$this->pagehead();
 		?>
@@ -5374,7 +5665,8 @@ selector();
 
 			<div>
 				<input type="hidden" name="blogid" value="<?php echo $blogid?>" />
-				<input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">Only blog '<?php echo htmlspecialchars($blog->getName())?>'</label>
+				<input name="allblogs" type="radio" value="0" id="allblogs_one" />
+				<label for="allblogs_one"><?php echo sprintf(_BAN_BANBLOGNAME, $banBlogName) ?></label>
 				<br />
 				<input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?php echo _BAN_ALLBLOGS?></label>
 			</div>
@@ -5472,16 +5764,23 @@ selector();
 		<p><?php echo _BAN_IPRANGE_TEXT?></p>
 
 		<div class="note">
-		<b>An example</b>: "134.58.253.193" will only block one computer, while "134.58.253" will block 256 IP addresses, including the one from the first example.
+			<strong><?php echo _BAN_EXAMPLE_TITLE ?></strong>
+			<?php echo _BAN_EXAMPLE_TEXT ?>
 		</div>
 
 		<div>
-		<?php			if ($ip) {
+		<?php
+		if ($ip) {
+			$iprangeVal = htmlspecialchars($ip, ENT_QUOTES);
 		?>
-			<input name="iprange" type="radio" value="<?php echo htmlspecialchars($ip)?>" checked="checked" id="ip_fixed" /><label for="ip_fixed"><?php echo htmlspecialchars($ip)?></label>
+			<input name="iprange" type="radio" value="<?php echo $iprangeVal ?>" checked="checked" id="ip_fixed" />
+			<label for="ip_fixed"><?php echo $iprangeVal ?></label>
 			<br />
-			<input name="iprange" type="radio" value="custom" id="ip_custom" /><label for="ip_custom">Custom: </label><input name='customiprange' value='<?php echo htmlspecialchars($ip)?>' maxlength='15' size='15' />
-		<?php	} else {
+			<input name="iprange" type="radio" value="custom" id="ip_custom" />
+			<label for="ip_custom"><?php echo _BAN_IP_CUSTOM ?></label>
+			<input name='customiprange' value='<?php echo $iprangeVal ?>' maxlength='15' size='15' />
+		<?php
+		} else {
 				echo "<input name='iprange' value='custom' type='hidden' />";
 				echo "<input name='customiprange' value='' maxlength='15' size='15' />";
 			}
@@ -5636,7 +5935,8 @@ selector();
 		// (creating/restoring dumps might take a while)
 		@set_time_limit(1200);
 
-		do_backup($useGzip);
+		$bu = new Backup();
+		$bu->do_backup($useGzip);
 		exit;
 	}
 
@@ -5657,7 +5957,8 @@ selector();
 		// (creating/restoring dumps might take a while)
 		@set_time_limit(1200);
 
-		$message = do_restore();
+		$bu = new Backup();
+		$message = $bu->do_restore();
 		if ($message != '')
 			$this->error($message);
 
@@ -5858,7 +6159,7 @@ selector();
 				// uninstall plugin again...
 				$this->deleteOnePlugin($plugin->getID());
 
-				$this->error(_ERROR_INSREQPLUGIN . htmlspecialchars($pluginName));
+				$this->error(sprintf(_ERROR_INSREQPLUGIN, htmlspecialchars($pluginName, ENT_QUOTES)));
 			}
 		}
 
@@ -5901,7 +6202,8 @@ selector();
 			}
 		}
 
-		$this->action_pluginlist();
+		redirect('?action=pluginlist');
+//		$this->action_pluginlist();
 	}
 
 	/**
@@ -5949,7 +6251,8 @@ selector();
 			$this->error($error);
 		}
 
-		$this->action_pluginlist();
+		redirect('?action=pluginlist');
+//		$this->action_pluginlist();
 	}
 
 	/**
@@ -5965,11 +6268,11 @@ selector();
 
 		$name = quickQuery('SELECT pfile as result FROM '.sql_table('plugin').' WHERE pid='.$pid);
 
-		// call the unInstall method of the plugin
+/*		// call the unInstall method of the plugin
 		if ($callUninstall) {
 			$plugin =& $manager->getPlugin($name);
 			if ($plugin) $plugin->unInstall();
-		}
+		}*/
 
 		// check dependency before delete
 		$res = sql_query('SELECT pfile FROM '.sql_table('plugin'));
@@ -5982,13 +6285,19 @@ selector();
 				{
 					if ($name == $depName)
 					{
-						return _ERROR_DELREQPLUGIN . $o->pfile;
+						return sprintf(_ERROR_DELREQPLUGIN, $o->pfile);
 					}
 				}
 			}
 		}
 
 		$manager->notify('PreDeletePlugin', array('plugid' => $pid));
+
+		// call the unInstall method of the plugin
+		if ($callUninstall) {
+			$plugin =& $manager->getPlugin($name);
+			if ($plugin) $plugin->unInstall();
+		}
 
 		// delete all subscriptions
 		sql_query('DELETE FROM '.sql_table('plugin_event').' WHERE pid=' . $pid);
@@ -6098,12 +6407,13 @@ selector();
 			$this->error(_ERROR_NOSUCHPLUGIN);
 
 		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
+		$pluginName = htmlspecialchars(getPluginNameFromPid($pid), ENT_QUOTES);
 		$this->pagehead($extrahead);
 
 		?>
 			<p><a href="index.php?action=pluginlist">(<?php echo _PLUGS_BACK?>)</a></p>
 
-			<h2>Options for <?php echo htmlspecialchars(getPluginNameFromPid($pid))?></h2>
+			<h2><?php echo sprintf(_PLUGIN_OPTIONS_TITLE, $pluginName) ?></h2>
 
 			<?php if  ($message) echo $message?>
 
@@ -6229,9 +6539,12 @@ selector();
 				echo '<tr><th colspan="2">Options for ', htmlspecialchars($aOption['pfile']),'</th></tr>';
 			}
 
-			echo '<tr>';
-			listplug_plugOptionRow($aOption);
-			echo '</tr>';
+			$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
+			if (@$meta['access'] != 'hidden') {
+				echo '<tr>';
+				listplug_plugOptionRow($aOption);
+				echo '</tr>';
+			}
 
 		}
 
@@ -6267,7 +6580,7 @@ selector();
 			if ($checkedval != $value1)
 				echo "tabindex='$tabindex' checked='checked'";
 			if ($isAdmin && $name=="canlogin")
-				echo " disabled='true'";
+				echo ' disabled="disabled"';
 			echo ' id="'.$id2.'" /><label for="'.$id2.'">' . $noval . '</label>';
 	}
 

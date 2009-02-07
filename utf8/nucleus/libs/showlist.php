@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,8 +13,8 @@
  * Functions to create lists of things inside the admin are
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: showlist.php,v 1.8 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * @version $NucleusJP: showlist.php,v 1.7.2.3 2007/12/03 00:01:48 kmorimatsu Exp $
  */
 
@@ -196,11 +196,34 @@ function listplug_table_pluginlist($template, $type) {
 					if (!$plug->subscribtionListIsUptodate()) {
 						echo '<br /><br /><strong>',_LIST_PLUG_SUBS_NEEDUPDATE,'</strong>';
 					}
-					if (sizeof($plug->getPluginDep()) > 0)
+					if (sizeof($plug->getPluginDep()) > 0) {
 						echo '<br /><br />',_LIST_PLUGS_DEP,'<br />',htmlspecialchars(implode($plug->getPluginDep(),', '));
+					}
+// <add by shizuki>
+				// check dependency require
+				$req = array();
+				$res = sql_query('SELECT pfile FROM ' . sql_table('plugin'));
+				while($o = mysql_fetch_object($res)) {
+					$preq =& $manager->getPlugin($o->pfile);
+					if ($plug) {
+						$depList = $preq->getPluginDep();
+						foreach ($depList as $depName) {
+							if ($current->pfile == $depName) {
+								$req[] = $o->pfile;
+							}
+						}
+					}
+				}
+				if (count($req) > 0) {
+					echo '<h4 class="plugin_dependreq_title">' . _LIST_PLUGS_DEPREQ . "</h4>\n";
+					echo '<p class="plugin_dependreq_text">';
+					echo htmlspecialchars(implode(', ', $req), ENT_QUOTES);
+					echo "</p>\n";
+				}
+// </add by shizuki>
 				echo '</td>';
 			} else {
-				echo '<td colspan="2">Error: plugin file <b>',htmlspecialchars($current->pfile),'.php</b> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)</td>';
+				echo '<td colspan="2">' . sprintf(_PLUGINFILE_COULDNT_BELOADED, htmlspecialchars($current->pfile, ENT_QUOTES)) . '</td>';
 			}
 			echo '<td>';
 
@@ -335,10 +358,19 @@ function listplug_table_itemlist($template, $type) {
 			$current->ibody = strip_tags($current->ibody);
 			$current->ibody = htmlspecialchars(shorten($current->ibody,300,'...'));
 
+			$COMMENTS = new COMMENTS($current->inumber);
 			echo "$current->ibody</td>";
 			echo "<td  style=\"white-space:nowrap\" $cssclass>";
 			echo 	"<a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a>";
-			echo    "<br /><a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>"._LISTS_COMMENTS."</a>";
+			// evaluate amount of comments for the item
+			$camount = $COMMENTS->amountComments();
+			if ($camount>0) {
+				echo    "<br /><a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>"._LISTS_COMMENTS;
+				echo '(' . $COMMENTS->amountComments() . ')'."</a>";
+			}
+			else {
+				echo "<br />"._TEMPLATE_CNONE;
+			}
 			echo    "<br /><a href='index.php?action=itemmove&amp;itemid=$current->inumber'>"._LISTS_MOVE."</a>";
 			echo    "<br /><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"._LISTS_DELETE."</a>";
 			echo "</td>";
@@ -430,7 +462,7 @@ function listplug_table_bloglist($template, $type) {
 function listplug_table_shortblognames($template, $type) {
 	switch($type) {
 		case 'HEAD':
-			echo "<th>" . _NAME . "</th><th>" . _NAME. "</th>";
+			echo "<th>" . _EBLOG_SHORTNAME . "</th><th>" . _EBLOG_NAME. "</th>";
 			break;
 		case 'BODY':
 			$current = $template['current'];
@@ -534,16 +566,19 @@ function listplug_table_skinlist($template, $type) {
 
 				$hasEnlargement = @file_exists($DIR_SKINS . $current->sdincpref . 'preview-large.png');
 				if ($hasEnlargement)
-					echo '<a href="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview-large.png" title="View larger">';
+					echo '<a href="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview-large.png" title="' . _LIST_SKIN_PREVIEW_VIEWLARGER . '">';
 
-				echo '<img class="skinpreview" src="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview.png" width="100" height="75" alt="Preview for \'',htmlspecialchars($current->sdname),'\' skin" />';
+				$imgAlt = sprintf(_LIST_SKIN_PREVIEW, htmlspecialchars($current->sdname, ENT_QUOTES));
+				echo '<img class="skinpreview" src="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'preview.png" width="100" height="75" alt="' . $imgAlt . '" />';
 
 				if ($hasEnlargement)
 					echo '</a>';
 
 				if (@file_exists($DIR_SKINS . $current->sdincpref . 'readme.html'))
 				{
-					echo '<br /><a href="',$CONF['SkinsURL'], htmlspecialchars($current->sdincpref),'readme.html" title="More info on the \'',htmlspecialchars($current->sdname),'\' skin">Readme</a>';
+					$url         = $CONF['SkinsURL'] . htmlspecialchars($current->sdincpref, ENT_QUOTES) . 'readme.html';
+					$readmeTitle = sprintf(_LIST_SKIN_README, htmlspecialchars($current->sdname, ENT_QUOTES));
+					echo '<br /><a href="' . $url . '" title="' . $readmeTitle . '">' . _LIST_SKIN_README_TXT . '</a>';
 				}
 
 

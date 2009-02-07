@@ -1,7 +1,7 @@
 <?php
 	/*
 	 * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-	 * Copyright (C) 2002-2007 The Nucleus Group
+	 * Copyright (C) 2002-2009 The Nucleus Group
 	 *
 	 * This program is free software; you can redistribute it and/or
 	 * modify it under the terms of the GNU General Public License
@@ -16,8 +16,8 @@
 	 * plugins.html file that is included with the Nucleus documenation
 	 *
 	 * @license http://nucleuscms.org/license.txt GNU General Public License
-	 * @copyright Copyright (C) 2002-2007 The Nucleus Group
-	 * @version $Id: PLUGIN.php,v 1.13 2008-02-08 09:31:22 kimitake Exp $
+	 * @copyright Copyright (C) 2002-2009 The Nucleus Group
+	 * @version $Id$
 	 * $NucleusJP: PLUGIN.php,v 1.12.2.3 2007/12/03 02:22:42 kmorimatsu Exp $
 	 */
 	class NucleusPlugin {
@@ -57,7 +57,7 @@
 			array_unshift($args, 'template');
 			call_user_func_array(array(&$this,'doSkinVar'),$args);
 		}
-		function doAction($type) { return 'No Such Action'; }
+		function doAction($type) { return _ERROR_PLUGIN_NOSUCHACTION; }
 		function doIf($key,$value) { return false; }
 		function doItemVar () {}
 
@@ -226,6 +226,77 @@
 		}
 
 		/**
+		  * Returns the plugin ID
+		  * 
+		  * public		  		  
+		  */
+		function getID() {
+			return $this->plugid;
+		}
+
+		/**
+		  * Returns the URL of the admin area for this plugin (in case there's
+		  * no such area, the returned information is invalid)
+		  * 
+		  * public		  		  
+		  */
+		function getAdminURL() {
+			global $CONF;
+			return $CONF['PluginURL'] . $this->getShortName() . '/';
+		}
+
+		/**
+		  * Returns the directory where the admin directory is located and
+		  * where the plugin can maintain his extra files
+		  * 
+		  * public		  		  
+		  */
+		function getDirectory() {
+			global $DIR_PLUGINS;
+			return $DIR_PLUGINS . $this->getShortName() . '/';
+		}
+
+		/**
+		  * Derives the short name for the plugin from the classname (all 
+		  * lowercase)
+		  * 
+		  * public		  		  
+		  */
+		function getShortName() {
+			return str_replace('np_','',strtolower(get_class($this)));
+		}
+
+		/**
+		 *	Clears the option value cache which saves the option values during
+		 *	the plugin execution. This function is usefull if the options has 
+		 *	changed during the plugin execution (especially in association with
+		 *	the PrePluginOptionsUpdate and the PostPluginOptionsUpdate events)
+		 *	
+		 *  public		 		 
+		 **/		 		
+		function clearOptionValueCache(){
+			$this->_aOptionValues = array();
+			$this->plugin_options = 0;
+		}
+
+		// internal functions of the class starts here
+
+		var $_aOptionValues;	// oid_contextid => value
+		var $_aOptionToInfo;	// context_name => array('oid' => ..., 'default' => ...)
+		var $plugin_options;	// see getOption()
+		var $plugid;			// plugin id
+
+
+		/**
+		 * Class constructor: Initializes some internal data
+		 */		 		 		
+		function NucleusPlugin() {
+			$this->_aOptionValues = array();	// oid_contextid => value
+			$this->_aOptionToInfo = array();	// context_name => array('oid' => ..., 'default' => ...)
+			$this->plugin_options = 0;
+		}
+
+		/**
 		 * Retrieves an array of the top (or bottom) of an option from a plugin.
 		 * @author TeRanEX
 		 * @param  string $context the context for the option: item, blog, member,...
@@ -268,55 +339,10 @@
 		}
 
 		/**
-		  * Returns the plugin ID
-		  */
-		function getID() {
-			return $this->plugid;
-		}
-
-		/**
-		  * returns the URL of the admin area for this plugin (in case there's
-		  * no such area, the returned information is invalid)
-		  */
-		function getAdminURL() {
-			global $CONF;
-			return $CONF['PluginURL'] . $this->getShortName() . '/';
-		}
-
-		/**
-		  * Returns the directory where the admin directory is located and
-		  * where the plugin can maintain his extra files
-		  */
-		function getDirectory() {
-			global $DIR_PLUGINS;
-			return $DIR_PLUGINS . $this->getShortName() . '/';
-		}
-
-		/**
-		  * Derives the short name for the plugin from the classname (all lowercase)
-		  */
-		function getShortName() {
-			return str_replace('np_','',strtolower(get_class($this)));
-		}
-
-		var $_aOptionValues;	// oid_contextid => value
-		var $_aOptionToInfo;	// context_name => array('oid' => ..., 'default' => ...)
-		var $plugin_options;	// see getOption()
-		var $plugid;			// plugin id
-
-
-		// constructor. Initializes some internal data
-		function NucleusPlugin() {
-			$this->_aOptionValues = array();	// oid_contextid => value
-			$this->_aOptionToInfo = array();	// context_name => array('oid' => ..., 'default' => ...)
-			$this->plugin_options = 0;
-		}
-
-		function clearOptionValueCache(){
-			$this->_aOptionValues = array();
-		}
-
-		// private
+		 * Creates an option in the database table plugin_option_desc
+		 *		 
+		 * private
+		 */		 		 		
 		function _createOption($context, $name, $desc, $type, $defValue, $typeExtras = '') {
 			// create in plugin_option_desc
 			$query = 'INSERT INTO ' . sql_table('plugin_option_desc')
@@ -337,7 +363,12 @@
 		}
 
 
-		// private
+		/**
+		 * Deletes an option from the database tables
+		 * plugin_option and plugin_option_desc 
+		 *
+		 * private		 
+		 */		 		 		
 		function _deleteOption($context, $name) {
 			$oid = $this->_getOID($context, $name);
 			if (!$oid) return 0; // no such option
@@ -355,8 +386,10 @@
 		}
 
 		/**
-		 * private
+		 * Update an option in the database table plugin_option
+		 * 		 
 		 * returns: 1 on success, 0 on failure
+		 * private
 		 */
 		function _setOption($context, $contextid, $name, $value) {
 			global $manager;
@@ -394,7 +427,13 @@
 			return 1;
 		}
 
-		// private
+		/**
+		 * Get an option from Cache or database
+		 * 	 - if not in the option Cache read it from the database
+		 *   - if not in the database write default values into the database
+		 *   		  
+		 * private		 
+		 */		 		 		
 		function _getOption($context, $contextid, $name) {
 			$oid = $this->_getOID($context, $name);
 			if (!$oid) return '';
@@ -426,8 +465,10 @@
 		}
 
 		/**
-		 * Returns assoc array with all values for a given option (one option per
-		 * possible context id)
+		 * Returns assoc array with all values for a given option 
+		 * (one option per possible context id)
+		 * 
+		 * private		 		 
 		 */
 		function _getAllOptions($context, $name) {
 			$oid = $this->_getOID($context, $name);

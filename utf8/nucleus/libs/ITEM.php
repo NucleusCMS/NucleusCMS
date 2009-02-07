@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,21 +14,30 @@
  * A class representing an item
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: ITEM.php,v 1.8 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * $NucleusJP: ITEM.php,v 1.7.2.3 2008/02/07 06:13:30 kimitake Exp $
  */
 class ITEM {
 
 	var $itemid;
 
+	/**
+	  * Constructor of an ITEM object
+	  * 
+	  * @param integer $itemid id of the item
+	  */
 	function ITEM($itemid) {
 		$this->itemid = $itemid;
 	}
 
 	/**
 	  * Returns one item with the specific itemid
-	  * (static)
+	  * 
+	  * @param integer $itemid id of the item
+	  * @param boolean $allowdraft
+	  * @param boolean $allowfuture
+	  * @static
 	  */
 	function getitem($itemid, $allowdraft, $allowfuture) {
 		global $manager;
@@ -71,9 +80,10 @@ class ITEM {
 	 * Tries to create an item from the data in the current request (comes from
 	 * bookmarklet or admin area
 	 *
-	 * Returns an array with status info (status = 'added', 'error', 'newcategory')
+	 * Returns an array with status info:
+	 * status = 'added', 'error', 'newcategory'
 	 *
-	 * (static)
+	 * @static
 	 */
 	function createFromRequest() {
 		 global $member, $manager;
@@ -170,7 +180,9 @@ class ITEM {
 
 
 	/**
-	  * Updates an item (static)
+	  * Updates an item
+	  *
+	  * @static
 	  */
 	function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0) {
 		global $manager;
@@ -235,6 +247,13 @@ class ITEM {
 				$blog->sendNewItemNotification($itemid, $title, $body);
 		}
 
+		// save back to drafts		
+		if (!$wasdraft && !$publish) {
+			$query .= ', idraft=1';
+			// set timestamp back to zero for a draft
+			$query .= ", itime=" . mysqldate($timestamp);
+		}
+
 		// update timestamp when needed
 		if ($timestamp != 0)
 			$query .= ", itime=" . mysqldate($timestamp);
@@ -258,7 +277,11 @@ class ITEM {
 
 	}
 
-	// move an item to another blog (no checks, static)
+	/**
+	 * Move an item to another blog (no checks)
+	 *
+	 * @static
+	 */
 	function move($itemid, $new_catid) {
 		global $manager;
 
@@ -302,11 +325,13 @@ class ITEM {
 		global $manager, $member;
 
 		$itemid = intval($itemid);
+
 		// check to ensure only those allow to alter the item can
 		// proceed
 		if (!$member->canAlterItem($itemid)) {
 			return 1;
 		}
+
 
 		$manager->notify('PreDeleteItem', array('itemid' => $itemid));
 
@@ -322,9 +347,15 @@ class ITEM {
 		NucleusPlugin::_deleteOptionValues('item', $itemid);
 
 		$manager->notify('PostDeleteItem', array('itemid' => $itemid));
+
+		return 0;
 	}
 
-	// returns true if there is an item with the given ID (static)
+	/**
+	 * Returns true if there is an item with the given ID
+	 *
+	 * @static
+	 */
 	function exists($id,$future,$draft) {
 		global $manager;
 
@@ -349,9 +380,10 @@ class ITEM {
 	 * Tries to create an draft from the data in the current request (comes from
 	 * bookmarklet or admin area
 	 *
-	 * Returns an array with status info (status = 'added', 'error', 'newcategory')
+	 * Returns an array with status info:
+	 * status = 'added', 'error', 'newcategory'
 	 *
-	 * (static)
+	 * @static
 	 *
 	 * Used by xmlHTTPRequest AutoDraft
 	 */
@@ -364,9 +396,9 @@ class ITEM {
 		$i_more = postVar('more');
 
 		if(_CHARSET != 'UTF-8'){
-			$i_body = mb_convert_encoding($i_body, _CHARSET, "UTF-8");
+			$i_body  = mb_convert_encoding($i_body, _CHARSET, "UTF-8");
 			$i_title = mb_convert_encoding($i_title, _CHARSET, "UTF-8");
-			$i_more = mb_convert_encoding($i_more, _CHARSET, "UTF-8");
+			$i_more  = mb_convert_encoding($i_more, _CHARSET, "UTF-8");
 		}
 		//$i_actiontype = postVar('actiontype');
 		$i_closed = intPostVar('closed');

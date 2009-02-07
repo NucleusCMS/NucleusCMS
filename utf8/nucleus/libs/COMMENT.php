@@ -15,13 +15,15 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: COMMENT.php,v 1.5 2007-02-04 06:28:46 kimitake Exp $
+ * @version $Id$
  * $NucleusJP: COMMENT.php,v 1.4 2006/07/17 20:03:44 kimitake Exp $
  */
 class COMMENT {
 
 	/**
-	  * Returns the requested comment (static)
+	  * Returns the requested comment
+	  * 
+	  * @static
 	  */
 	function getComment($commentid) {
 		$query =  'SELECT cnumber as commentid, cbody as body, cuser as user, cmail as userid, cemail as email, cmember as memberid, ctime, chost as host, mname as member, cip as ip, cblog as blogid'
@@ -38,8 +40,9 @@ class COMMENT {
 	}
 
 	/**
-	  * prepares a comment to be saved
-	  * (static)
+	  * Prepares a comment to be saved
+	  * 	  
+	  * @static
 	  */
 	function prepare($comment) {
 		$comment['user'] = strip_tags($comment['user']);
@@ -56,7 +59,11 @@ class COMMENT {
 		return $comment;
 	}
 
-	// prepares the body of a comment (static)
+	/**
+	 * Prepares the body of a comment
+	 *
+	 * @ static
+	 */	 	
 	function prepareBody($body) {
 
 		// remove newlines when too many in a row
@@ -90,6 +97,11 @@ class COMMENT {
 		return $body;
 	}
 
+	/**
+	 * Creates a link code for unlinked URLs with different protocols
+	 *
+	 * @ static
+	 */	
 	function createLinkCode($pre, $url, $protocol = 'http') {
 		$post = '';
 

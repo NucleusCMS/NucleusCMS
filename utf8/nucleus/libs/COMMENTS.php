@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,8 +14,8 @@
  * A class representing the comments (all of them) for a certain post on a ceratin blog
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: COMMENTS.php,v 1.10 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * $NucleusJP: COMMENTS.php,v 1.9.2.1 2007/08/08 05:32:21 kimitake Exp $
  */
 
@@ -42,6 +42,7 @@ class COMMENTS {
 	function COMMENTS($itemid) {
 		$this->itemid = intval($itemid);
 	}
+
 	/**
 	 * Used when parsing comments
 	 *
@@ -131,7 +132,9 @@ class COMMENTS {
 		return $arr[0];
 	}
 
-
+	/**
+	 * Adds a new comment to the database
+	 */
 	function addComment($timestamp, $comment) {
 		global $CONF, $member, $manager;
 
@@ -246,7 +249,7 @@ class COMMENTS {
 			$item =& $manager->getItem($this->itemid, 0, 0);
 			$mailto_title = _NOTIFY_NC_TITLE . ' ' . strip_tags($item['title']) . ' (' . $this->itemid . ')';
 
-			$frommail = $member->getNotifyFromMailAddress($comment['userid']);
+			$frommail = $member->getNotifyFromMailAddress($comment['email']);
 
 			$notify =& new NOTIFICATION($settings->getNotifyAddress());
 			$notify->notify($mailto_title, $mailto_msg , $frommail);
@@ -266,6 +269,19 @@ class COMMENTS {
 		$timestamp	= date('Y-m-d H:i:s', $comment['timestamp']);
 		$itemid		= $this->itemid;
 
+		$qSql       = 'SELECT COUNT(*) AS result '
+					. 'FROM ' . sql_table('comment')
+					. ' WHERE '
+					.      'cmail   = "' . $url . '"'
+					. ' AND cmember = "' . $memberid . '"'
+					. ' AND cbody   = "' . $body . '"'
+					. ' AND citem   = "' . $itemid . '"'
+					. ' AND cblog   = "' . $blogid . '"';
+		$result     = (integer) quickQuery($qSql);
+		if ($result > 0) {
+			return _ERROR_BADACTION;
+		}
+
 		$query = 'INSERT INTO '.sql_table('comment').' (CUSER, CMAIL, CEMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CIP, CBLOG) '
 			   . "VALUES ('$name', '$url', '$email', $memberid, '$body', $itemid, '$timestamp', '$host', '$ip', '$blogid')";
 
@@ -279,8 +295,11 @@ class COMMENTS {
 		return true;
 	}
 
-
-	function isValidComment($comment, & $spamcheck) {
+	/**
+	 * Checks if a comment is valid and call plugins
+	 * that can check if the comment is a spam comment	  
+	 */
+	function isValidComment(&$comment, & $spamcheck) {
 		global $member, $manager;
 
 		// check if there exists a item for this date

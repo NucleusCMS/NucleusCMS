@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -11,8 +11,8 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: PAGEFACTORY.php,v 1.9 2008-02-08 09:31:22 kimitake Exp $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * $NucleusJP: PAGEFACTORY.php,v 1.8.2.2 2007/10/30 16:12:27 shizuki Exp $
  */
 
@@ -77,7 +77,10 @@ class PAGEFACTORY extends BaseActions {
 			'pluginextras',
 			'itemoptions',
 			'extrahead',
-			'ticket'
+			'ticket',
+			'autosave',
+			'autosaveinfo',
+			'ifautosave'
 		);
 
 		// TODO: maybe add 'skin' later on?
@@ -207,6 +210,11 @@ class PAGEFACTORY extends BaseActions {
 
 	function parse_ifitemproperty($name,$value=1) {
 		$this->_addIfCondition(($this->variables[$name] == $value));
+	}
+
+	function parse_ifautosave($name,$value=1) {
+		global $member;
+		$this->_addIfCondition($member->getAutosave() == $value);
 	}
 
 	function parse_helplink($topic) {
@@ -358,7 +366,7 @@ class PAGEFACTORY extends BaseActions {
 						foreach ($btns as $button) {
 							switch($button) {
 								case "media":
-									$this->_jsbutton('media',"addMedia()",'');
+									$this->_jsbutton('media',"addMedia()",_ADD_MEDIA_TT);
 									break;
 							}
 						}
