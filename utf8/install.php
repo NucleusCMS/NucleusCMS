@@ -18,7 +18,7 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id: install.php,v 1.8 2007-04-25 06:34:29 kimitake Exp $
+ * @version $Id$
  * $NucleusJP: install.php,v 1.7 2007/02/04 06:28:44 kimitake Exp $
  */
 
@@ -30,7 +30,7 @@
 	-- Start Of Configurable Part --
 */
 
-include('./install_lang_japanese.php');
+include('./install_lang_japanese-utf8.php');
 
 // array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
 // directory.
@@ -83,7 +83,7 @@ include_once('nucleus/libs/mysql.php');
 		showInstallForm();
 	}
 
-	exit;
+exit;
 
 function showInstallForm() {
 	// 0. pre check if all necessary files exist
@@ -93,7 +93,7 @@ function showInstallForm() {
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+		<meta http-equiv="content-type" content="application/xhtml+xml; charset=<?php echo _CHARSET; ?>" />
 		<title><?php echo _TITLE; ?></title>
 		<style type="text/css"><!--
 			@import url('nucleus/documentation/styles/manual.css');
@@ -132,9 +132,9 @@ function showInstallForm() {
 	$minVersion = '4.0.6';
 
 	if (phpversion() < $minVersion) {
-		echo ' <span class="warning">', _TEXT2_WARN , $minVersion, '</span>';
+		echo ' <span class="warning" style="display:block">' . sprintf(_TEXT2_WARN, $minVersion) . '</span>';
 	} elseif (phpversion() < '5') {
-		echo ' <span class="warning">' . _TEXT2_WARN3 . '</span>';
+		echo ' <span class="warning" style="display:block">' . _TEXT2_WARN3 . '</span>';
 	}
 ?>
 
@@ -146,13 +146,13 @@ function showInstallForm() {
 	$result = @mysql_query('SELECT VERSION() AS version');
 
 	if ($result != FALSE && @mysql_num_rows($result) > 0) {
-		$row = mysql_fetch_array($result);
+		$row   = mysql_fetch_array($result);
 		$match = explode('.', $row['version']);
 	} else {
 		$result = @mysql_query('SHOW VARIABLES LIKE \'version\'');
 
 		if ($result != FALSE && @mysql_num_rows($result) > 0) {
-			$row = mysql_fetch_row($result);
+			$row   = mysql_fetch_row($result);
 			$match = explode('.', $row[1]);
 		} else {
 			$output = shell_exec('mysql -V');
@@ -178,7 +178,7 @@ function showInstallForm() {
 	}
 
 	if ($mysqlVersion < $minVersion) {
-		echo ' <span class="warning">'._TEXT2_WARN2 , $minVersion.'</span>';
+		echo ' <span class="warning" style="display:block">' . sprintf(_TEXT2_WARN2, $minVersion) . '</span>';
 	}
 ?>
 
@@ -187,7 +187,7 @@ function showInstallForm() {
 
 <?php
 	// tell people how they can have their config file filled out automatically
-	if (@file_exists('config.php') && @!is_writable('config.php') ) {
+	if (@file_exists('config.php') && @!is_writable('config.php')) {
 ?>
 
 		<h1><?php echo _HEADER3; ?></h1>
@@ -204,20 +204,20 @@ function showInstallForm() {
 			<legend><?php echo _TEXT4_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><?php echo _TEXT4_TAB_FIELD1; ?>:</td>
+					<td><?php echo _TEXT4_TAB_FIELD1; ?></td>
 					<td><input name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host') )?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT4_TAB_FIELD2; ?>:</td>
+					<td><?php echo _TEXT4_TAB_FIELD2; ?></td>
 					<td><input name="mySQL_user" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT4_TAB_FIELD3; ?>:</td>
+					<td><?php echo _TEXT4_TAB_FIELD3; ?></td>
 					<td><input name="mySQL_password" type="password" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT4_TAB_FIELD4; ?>:</td>
-					<td><input name="mySQL_database" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create"><label for="mySQL_create" /><?php echo _TEXT4_TAB_FIELD4_ADD; ?></label>)</td>
+					<td><?php echo _TEXT4_TAB_FIELD4; ?></td>
+					<td><input name="mySQL_database" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create" /><label for="mySQL_create"><?php echo _TEXT4_TAB_FIELD4_ADD; ?></label>)</td>
 				</tr>
 			</table>
 		</fieldset>
@@ -226,7 +226,7 @@ function showInstallForm() {
 			<legend><?php echo _TEXT4_TAB2_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><input name="mySQL_usePrefix" value="1" type="checkbox" id="mySQL_usePrefix"><label for="mySQL_usePrefix" /><?php echo _TEXT4_TAB2_FIELD; ?>:</label></td>
+					<td><input name="mySQL_usePrefix" value="1" type="checkbox" id="mySQL_usePrefix" /><label for="mySQL_usePrefix"><?php echo _TEXT4_TAB2_FIELD; ?></label></td>
 					<td><input name="mySQL_tablePrefix" value="" /></td>
 				</tr>
 			</table>
@@ -267,7 +267,7 @@ function showInstallForm() {
 			<legend><?php echo _TEXT5_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD1;?>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD1; ?></td>
 					<td><input name="IndexURL" size="60" value="<?php
 						$url = 'http://' . serverVar('HTTP_HOST') . serverVar('PHP_SELF');
 						$url = str_replace('install.php', '', $url);
@@ -281,63 +281,63 @@ function showInstallForm() {
 						echo $url; ?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD2;?>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD2; ?></td>
 					<td><input name="AdminURL" size="60" value="<?php
 						if ($url) {
-							echo $url, 'nucleus/';
+							echo $url . 'nucleus/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD3;?>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD3; ?></td>
 					<td><input name="AdminPath" size="60" value="<?php
 						if($basePath) {
-							echo $basePath, 'nucleus/';
+							echo $basePath . 'nucleus/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD4;?>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD4; ?></td>
 					<td><input name="MediaURL" size="60" value="<?php
 						if ($url) {
-							echo $url, 'media/';
+							echo $url . 'media/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD5;?>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD5; ?></td>
 					<td><input name="MediaPath" size="60" value="<?php
 						if ($basePath) {
-							echo $basePath, 'media/';
+							echo $basePath . 'media/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD6;?>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD6; ?></td>
 					<td><input name="SkinsURL" size="60" value="<?php
 						if ($url) {
-							echo $url, 'skins/';
+							echo $url . 'skins/';
 						} ?>" />
-						<br />(used by imported skins)
+						<br />(<?php echo _TEXT5_TAB_FIELD7_2; ?>)
 					</td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD7;?>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD7; ?></td>
 					<td><input name="SkinsPath" size="60" value="<?php
 						if ($basePath) {
-							echo $basePath, 'skins/';
+							echo $basePath . 'skins/';
 						} ?>" />
-						<br />(<?php echo _TEXT5_TAB_FIELD7_2;?>)
+						<br />(<?php echo _TEXT5_TAB_FIELD7_2; ?>)
 					</td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD8;?>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD8; ?></td>
 					<td><input name="PluginURL" size="60" value="<?php
 						if ($url) {
-							echo $url, 'nucleus/plugins/';
+							echo $url . 'nucleus/plugins/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD9;?>:</td>
+					<td><?php echo _TEXT5_TAB_FIELD9; ?></td>
 					<td><input name="ActionURL" size="60" value="<?php
 						if ($url) {
-							echo $url, 'action.php';
+							echo $url . 'action.php';
 						} ?>" />
 						<br />(<?php echo _TEXT5_TAB_FIELD9_2;?>)
 					</td>
@@ -355,23 +355,23 @@ function showInstallForm() {
 			<legend><?php echo _TEXT6_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD1; ?>:</td>
+					<td><?php echo _TEXT6_TAB_FIELD1; ?></td>
 					<td><input name="User_name" value="" /> <small>(<?php echo _TEXT6_TAB_FIELD1_2; ?>)</small></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD2; ?>:</td>
+					<td><?php echo _TEXT6_TAB_FIELD2; ?></td>
 					<td><input name="User_realname" value="" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD3; ?>:</td>
+					<td><?php echo _TEXT6_TAB_FIELD3; ?></td>
 					<td><input name="User_password" type="password" value="" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD4; ?>:</td>
+					<td><?php echo _TEXT6_TAB_FIELD4; ?></td>
 					<td><input name="User_password2" type="password" value="" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD5; ?>:</td>
+					<td><?php echo _TEXT6_TAB_FIELD5; ?></td>
 					<td><input name="User_email" value="" /> <small>(<?php echo _TEXT6_TAB_FIELD5_2; ?>)</small></td>
 				</tr>
 			</table>
@@ -385,11 +385,11 @@ function showInstallForm() {
 			<legend><?php echo _TEXT7_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><?php echo _TEXT7_TAB_FIELD1; ?>:</td>
+					<td><?php echo _TEXT7_TAB_FIELD1; ?></td>
 					<td><input name="Blog_name" size="60" value="My Nucleus CMS" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT7_TAB_FIELD2; ?>:</td>
+					<td><?php echo _TEXT7_TAB_FIELD2; ?></td>
 					<td><input name="Blog_shortname" value="mynucleuscms" /> <small>(<?php echo _TEXT7_TAB_FIELD2_2; ?>)</small></td>
 				</tr>
 			</table>
@@ -432,42 +432,42 @@ function doInstall() {
 	global $mysql_usePrefix, $mysql_prefix, $weblog_ping;
 
 	// 0. put all POST-vars into vars
-	$mysql_host = postVar('mySQL_host');
-	$mysql_user = postVar('mySQL_user');
-	$mysql_password = postVar('mySQL_password');
-	$mysql_database = postVar('mySQL_database');
-	$mysql_create = postVar('mySQL_create');
-	$mysql_usePrefix = postVar('mySQL_usePrefix');
-	$mysql_prefix = postVar('mySQL_tablePrefix');
-	$config_indexurl = postVar('IndexURL');
-	$config_adminurl = postVar('AdminURL');
-	$config_adminpath = postVar('AdminPath');
-	$config_mediaurl = postVar('MediaURL');
-	$config_skinsurl = postVar('SkinsURL');
-	$config_pluginurl = postVar('PluginURL');
-	$config_actionurl = postVar('ActionURL');
-	$config_mediapath = postVar('MediaPath');
-	$config_skinspath = postVar('SkinsPath');
-	$user_name = postVar('User_name');
-	$user_realname = postVar('User_realname');
-	$user_password = postVar('User_password');
-	$user_password2 = postVar('User_password2');
-	$user_email = postVar('User_email');
-	$blog_name = postVar('Blog_name');
-	$blog_shortname = postVar('Blog_shortname');
+	$mysql_host        = postVar('mySQL_host');
+	$mysql_user        = postVar('mySQL_user');
+	$mysql_password    = postVar('mySQL_password');
+	$mysql_database    = postVar('mySQL_database');
+	$mysql_create      = postVar('mySQL_create');
+	$mysql_usePrefix   = postVar('mySQL_usePrefix');
+	$mysql_prefix      = postVar('mySQL_tablePrefix');
+	$config_indexurl   = postVar('IndexURL');
+	$config_adminurl   = postVar('AdminURL');
+	$config_adminpath  = postVar('AdminPath');
+	$config_mediaurl   = postVar('MediaURL');
+	$config_skinsurl   = postVar('SkinsURL');
+	$config_pluginurl  = postVar('PluginURL');
+	$config_actionurl  = postVar('ActionURL');
+	$config_mediapath  = postVar('MediaPath');
+	$config_skinspath  = postVar('SkinsPath');
+	$user_name         = postVar('User_name');
+	$user_realname     = postVar('User_realname');
+	$user_password     = postVar('User_password');
+	$user_password2    = postVar('User_password2');
+	$user_email        = postVar('User_email');
+	$blog_name         = postVar('Blog_name');
+	$blog_shortname    = postVar('Blog_shortname');
 	$config_adminemail = $user_email;
-	$config_sitename = $blog_name;
-	$weblog_ping = postVar('Weblog_ping');
+	$config_sitename   = $blog_name;
+	$weblog_ping       = postVar('Weblog_ping');
 
-	$config_indexurl = replaceDoubleBackslash($config_indexurl);
-	$config_adminurl = replaceDoubleBackslash($config_adminurl);
-	$config_mediaurl = replaceDoubleBackslash($config_mediaurl);
-	$config_skinsurl = replaceDoubleBackslash($config_skinsurl);
-	$config_pluginurl = replaceDoubleBackslash($config_pluginurl);
-	$config_actionurl = replaceDoubleBackslash($config_actionurl);
-	$config_adminpath = replaceDoubleBackslash($config_adminpath);
-	$config_skinspath = replaceDoubleBackslash($config_skinspath);
-	$config_mediapath = replaceDoubleBackslash($config_mediapath);
+	$config_indexurl   = replaceDoubleBackslash($config_indexurl);
+	$config_adminurl   = replaceDoubleBackslash($config_adminurl);
+	$config_mediaurl   = replaceDoubleBackslash($config_mediaurl);
+	$config_skinsurl   = replaceDoubleBackslash($config_skinsurl);
+	$config_pluginurl  = replaceDoubleBackslash($config_pluginurl);
+	$config_actionurl  = replaceDoubleBackslash($config_actionurl);
+	$config_adminpath  = replaceDoubleBackslash($config_adminpath);
+	$config_skinspath  = replaceDoubleBackslash($config_skinspath);
+	$config_mediapath  = replaceDoubleBackslash($config_mediapath);
 
 	// 1. check all the data
 	$errors = array();
@@ -569,7 +569,7 @@ function doInstall() {
 		'nucleus_team',
 		'nucleus_activation',
 		'nucleus_tickets'
-		);
+	);
 // these are unneeded (one of the replacements above takes care of them)
 //			'nucleus_plugin_event',
 //			'nucleus_plugin_option',
@@ -593,7 +593,7 @@ function doInstall() {
 		$mysql_prefix . 'nucleus_team',
 		$mysql_prefix . 'nucleus_activation',
 		$mysql_prefix . 'nucleus_tickets'
-		);
+	);
 // these are unneeded (one of the replacements above takes care of them)
 //			$mysql_prefix . 'nucleus_plugin_event',
 //			$mysql_prefix . 'nucleus_plugin_option',
@@ -618,44 +618,47 @@ function doInstall() {
 	}
 
 	// 5a make first post
-	$newpost = "INSERT INTO `nucleus_item` VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
+	$newpost = "INSERT INTO " . tableName('nucleus_item') . " VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
 	mysql_query($newpost) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . mysql_error() );
 
 	// 6. update global settings
-	updateConfig('IndexURL', $config_indexurl);
-	updateConfig('AdminURL', $config_adminurl);
-	updateConfig('MediaURL', $config_mediaurl);
-	updateConfig('SkinsURL', $config_skinsurl);
-	updateConfig('PluginURL', $config_pluginurl);
-	updateConfig('ActionURL', $config_actionurl);
+	updateConfig('IndexURL',   $config_indexurl);
+	updateConfig('AdminURL',   $config_adminurl);
+	updateConfig('MediaURL',   $config_mediaurl);
+	updateConfig('SkinsURL',   $config_skinsurl);
+	updateConfig('PluginURL',  $config_pluginurl);
+	updateConfig('ActionURL',  $config_actionurl);
 	updateConfig('AdminEmail', $config_adminemail);
-	updateConfig('SiteName', $config_sitename);
+	updateConfig('SiteName',   $config_sitename);
 
 	// 7. update GOD member
 	$query = 'UPDATE ' . tableName('nucleus_member')
-			. " SET mname='" . addslashes($user_name) . "',"
-			. " mrealname='" . addslashes($user_realname) . "',"
-			. " mpassword='" . md5(addslashes($user_password) ) . "',"
-			. " murl='" . addslashes($config_indexurl) . "',"
-			. " memail='" . addslashes($user_email) . "',"
-			. " madmin=1, mcanlogin=1"
-			. " WHERE mnumber=1";
+		   . " SET mname     = '" . addslashes($user_name) . "',"
+		   . " mrealname     = '" . addslashes($user_realname) . "',"
+		   . " mpassword     = '" . md5(addslashes($user_password) ) . "',"
+		   . " murl          = '" . addslashes($config_indexurl) . "',"
+		   . " memail        = '" . addslashes($user_email) . "',"
+		   . " madmin        = 1,"
+		   . " mcanlogin     = 1"
+		   . " WHERE"
+		   . " mnumber       = 1";
 
 	mysql_query($query) or _doError(_ERROR19 . ': ' . mysql_error() );
 
 	// 8. update weblog settings
 	$query = 'UPDATE ' . tableName('nucleus_blog')
-			. " SET bname='" . addslashes($blog_name) . "',"
-			. " bshortname='" . addslashes($blog_shortname) . "',"
-			. " burl='" . addslashes($config_indexurl) . "'"
-			. " WHERE bnumber=1";
+		   . " SET bname  = '" . addslashes($blog_name) . "',"
+		   . " bshortname = '" . addslashes($blog_shortname) . "',"
+		   . " burl       = '" . addslashes($config_indexurl) . "'"
+		   . " WHERE"
+		   . " bnumber    = 1";
 
 	mysql_query($query) or _doError(_ERROR20 . ': ' . mysql_error() );
 
 	// 9. update item date
 	$query = 'UPDATE ' . tableName('nucleus_item')
-			. " SET itime='" . date('Y-m-d H:i:s', time() ) ."'"
-			. " WHERE inumber=1";
+		   . " SET   itime   = '" . date('Y-m-d H:i:s', time() ) ."'"
+		   . " WHERE inumber = 1";
 
 	mysql_query($query) or _doError(_ERROR21 . ': ' . mysql_error() );
 
@@ -667,20 +670,20 @@ function doInstall() {
 		// 10. set global variables
 		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_PREFIX;
 
-		$MYSQL_HOST = $mysql_host;
-		$MYSQL_USER = $mysql_user;
+		$MYSQL_HOST     = $mysql_host;
+		$MYSQL_USER     = $mysql_user;
 		$MYSQL_PASSWORD = $mysql_password;
 		$MYSQL_DATABASE = $mysql_database;
-		$MYSQL_PREFIX = ($mysql_usePrefix == 1)?$mysql_prefix:'';
+		$MYSQL_PREFIX   = ($mysql_usePrefix == 1) ? $mysql_prefix : '';
 
 		global $DIR_NUCLEUS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
 
 		$DIR_NUCLEUS = $config_adminpath;
-		$DIR_MEDIA = $config_mediapath;
-		$DIR_SKINS = $config_skinspath;
+		$DIR_MEDIA   = $config_mediapath;
+		$DIR_SKINS   = $config_skinspath;
 		$DIR_PLUGINS = $DIR_NUCLEUS . 'plugins/';
-		$DIR_LANG = $DIR_NUCLEUS . 'language/';
-		$DIR_LIBS = $DIR_NUCLEUS . 'libs/';
+		$DIR_LANG    = $DIR_NUCLEUS . 'language/';
+		$DIR_LIBS    = $DIR_NUCLEUS . 'libs/';
 
 		// close database connection (needs to be closed if we want to include globalfunctions.php)
 		mysql_close();
@@ -708,31 +711,31 @@ function doInstall() {
 		$config_data = '<' . '?php' . "\n\n";
 		//$config_data .= "\n"; (extraneous, just added extra \n to previous line
 		$config_data .= "	// mySQL connection information\n";
-		$config_data .= "	\$MYSQL_HOST = '" . $mysql_host . "';\n";
-		$config_data .= "	\$MYSQL_USER = '" . $mysql_user . "';\n";
+		$config_data .= "	\$MYSQL_HOST     = '" . $mysql_host . "';\n";
+		$config_data .= "	\$MYSQL_USER     = '" . $mysql_user . "';\n";
 		$config_data .= "	\$MYSQL_PASSWORD = '" . $mysql_password . "';\n";
 		$config_data .= "	\$MYSQL_DATABASE = '" . $mysql_database . "';\n";
-		$config_data .= "	\$MYSQL_PREFIX = '" . (($mysql_usePrefix == 1)?$mysql_prefix:'') . "';\n";
+		$config_data .= "	\$MYSQL_PREFIX   = '" . (($mysql_usePrefix == 1) ? $mysql_prefix : '') . "';\n";
 		$config_data .= "\n";
 		$config_data .= "	// main nucleus directory\n";
 		$config_data .= "	\$DIR_NUCLEUS = '" . $config_adminpath . "';\n";
 		$config_data .= "\n";
 		$config_data .= "	// path to media dir\n";
-		$config_data .= "	\$DIR_MEDIA = '" . $config_mediapath . "';\n";
+		$config_data .= "	\$DIR_MEDIA   = '" . $config_mediapath . "';\n";
 		$config_data .= "\n";
 		$config_data .= "	// extra skin files for imported skins\n";
-		$config_data .= "	\$DIR_SKINS = '" . $config_skinspath . "';\n";
+		$config_data .= "	\$DIR_SKINS   = '" . $config_skinspath . "';\n";
 		$config_data .= "\n";
 		$config_data .= "	// these dirs are normally sub dirs of the nucleus dir, but \n";
 		$config_data .= "	// you can redefine them if you wish\n";
 		$config_data .= "	\$DIR_PLUGINS = \$DIR_NUCLEUS . 'plugins/';\n";
-		$config_data .= "	\$DIR_LANG = \$DIR_NUCLEUS . 'language/';\n";
-		$config_data .= "	\$DIR_LIBS = \$DIR_NUCLEUS . 'libs/';\n";
+		$config_data .= "	\$DIR_LANG    = \$DIR_NUCLEUS . 'language/';\n";
+		$config_data .= "	\$DIR_LIBS    = \$DIR_NUCLEUS . 'libs/';\n";
 		$config_data .= "\n";
 		$config_data .= "	// include libs\n";
-		$config_data .= "	include(\$DIR_LIBS.'globalfunctions.php');\n";
+		$config_data .= "	include(\$DIR_LIBS . 'globalfunctions.php');\n";
 		$config_data .= "	if (!extension_loaded('mbstring')) {\n";
-		$config_data .= "	include(\$DIR_LIBS.'mb_emulator/mb-emulator.php');\n";
+		$config_data .= "		include(\$DIR_LIBS . 'mb_emulator/mb-emulator.php');\n";
 		$config_data .= "	}\n";
 		$config_data .= "?" . ">";
 
@@ -748,7 +751,7 @@ function doInstall() {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET; ?>" />
 	<title><?php echo _TITLE; ?></title>
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>
@@ -770,31 +773,31 @@ function doInstall() {
 
 		<pre><code>&lt;?php
 	// mySQL connection information
-	$MYSQL_HOST = '<b><?php echo $mysql_host?></b>';
-	$MYSQL_USER = '<b><?php echo $mysql_user?></b>';
+	$MYSQL_HOST     = '<b><?php echo $mysql_host?></b>';
+	$MYSQL_USER     = '<b><?php echo $mysql_user?></b>';
 	$MYSQL_PASSWORD = '<i><b>xxxxxxxxxxx</b></i>';
 	$MYSQL_DATABASE = '<b><?php echo $mysql_database?></b>';
-	$MYSQL_PREFIX = '<b><?php echo ($mysql_usePrefix == 1)?$mysql_prefix:''?></b>';
+	$MYSQL_PREFIX   = '<b><?php echo ($mysql_usePrefix == 1)?$mysql_prefix:''?></b>';
 
 	// main nucleus directory
 	$DIR_NUCLEUS = '<b><?php echo $config_adminpath?></b>';
 
 	// path to media dir
-	$DIR_MEDIA = '<b><?php echo $config_mediapath?></b>';
+	$DIR_MEDIA   = '<b><?php echo $config_mediapath?></b>';
 
 	// extra skin files for imported skins
-	$DIR_SKINS = '<b><?php echo $config_skinspath?></b>';
+	$DIR_SKINS   = '<b><?php echo $config_skinspath?></b>';
 
 	// these dirs are normally sub dirs of the nucleus dir, but
 	// you can redefine them if you wish
 	$DIR_PLUGINS = $DIR_NUCLEUS . 'plugins/';
-	$DIR_LANG = $DIR_NUCLEUS . 'language/';
-	$DIR_LIBS = $DIR_NUCLEUS . 'libs/';
+	$DIR_LANG    = $DIR_NUCLEUS . 'language/';
+	$DIR_LIBS    = $DIR_NUCLEUS . 'libs/';
 
 	// include libs
-	include($DIR_LIBS.'globalfunctions.php');
+	include($DIR_LIBS . 'globalfunctions.php');
 	if (!extension_loaded('mbstring')) {
-		include($DIR_LIBS.'mb_emulator/mb-emulator.php');
+		include($DIR_LIBS . 'mb_emulator/mb-emulator.php');
 	}
 ?&gt;</code></pre>
 
@@ -821,11 +824,12 @@ function doInstall() {
 		<li><?php echo _TEXT14_L2; ?></li>
 	</ul>
 
-	<p>もしこれらのファイルを削除していなければ、管理領域を開くことが出来ません。</p>
+	<?php echo _TEXT14_EX; ?>
 
 	<h1><?php echo _HEADER10; ?></h1>
 
 	<?php echo _TEXT15; ?>
+
 		<ul>
 		<li><?php echo _TEXT15_L1; ?></li>
 		<li><?php echo _TEXT15_L2; ?></li>
@@ -887,7 +891,7 @@ function installCustomPlugs(&$manager) {
 	$res = sql_query('SELECT pid, pfile FROM ' . sql_table('plugin') );
 
 	while($o = mysql_fetch_object($res) ) {
-		$pid = $o->pid;
+		$pid  =  $o->pid;
 		$plug =& $manager->getPlugin($o->pfile);
 
 		if ($plug) {
@@ -963,7 +967,7 @@ function doCheckFiles() {
 		'nucleus/libs/MEDIA.php',
 		'nucleus/libs/ACTIONLOG.php',
 		'nucleus/media.php'
-		);
+	);
 
 	$count = count($files);
 
@@ -986,11 +990,11 @@ function doCheckFiles() {
 
 function updateConfig($name, $val) {
 	$name = addslashes($name);
-	$val = trim(addslashes($val) );
+	$val  = trim(addslashes($val) );
 
 	$query = 'UPDATE ' . tableName('nucleus_config')
-			. " SET value='$val'"
-			. " WHERE name='$name'";
+		   . " SET   value = '$val'"
+		   . " WHERE name  = '$name'";
 
 	mysql_query($query) or _doError(_ERROR26 . ': ' . mysql_error() );
 	return mysql_insert_id();
@@ -1044,7 +1048,7 @@ function _doError($msg) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 	<title><?php echo _TITLE; ?></title>
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>
@@ -1054,7 +1058,7 @@ function _doError($msg) {
 
 	<p><?php echo _ERROR28; ?>: "<?php echo $msg?>";</p>
 
-	<p><a href="install.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
+	<p><a href="install.php" onclick="history.back();"><?php echo _TEXT17; ?></a></p>
 </body>
 </html>
 
@@ -1067,7 +1071,7 @@ function showErrorMessages($errors) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 	<title><?php echo _TITLE; ?></title>
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>
@@ -1081,7 +1085,7 @@ function showErrorMessages($errors) {
 
 <?php
 	while($msg = array_shift($errors) ) {
-		echo '<li>', $msg, '</li>';
+		echo '<li>' . $msg . '</li>';
 	}
 ?>
 

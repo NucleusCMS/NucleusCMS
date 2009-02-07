@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
  * Copyright (C) 2002-2009 The Nucleus Group
@@ -31,10 +32,10 @@ $MYSQL_PREFIX   = '';
 $DIR_NUCLEUS = '/your/path/to/nucleus/';
 
 // media dir
-$DIR_MEDIA = '/your/path/to/media/';
+$DIR_MEDIA   = '/your/path/to/media/';
 
 // extra skin files for imported skins
-$DIR_SKINS = '/your/path/to/skins/';
+$DIR_SKINS   = '/your/path/to/skins/';
 
 // these dirs are normally subdirs of the nucleus dir, but
 // you can redefine them if you wish
@@ -48,7 +49,7 @@ if (!@file_exists($DIR_LIBS . 'globalfunctions.php')) {
 }
 
 // include libs
-include($DIR_LIBS . 'globalfunctions.php');
+include($DIR_LIBS.'globalfunctions.php');
 if (!extension_loaded('mbstring')) {
 	include($DIR_LIBS.'mb_emulator/mb-emulator.php');
 }

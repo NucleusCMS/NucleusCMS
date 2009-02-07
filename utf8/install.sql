@@ -1,50 +1,55 @@
 CREATE TABLE `nucleus_actionlog` (
-  `timestamp` datetime NOT NULL default '0000-00-00 00:00:00',
-  `message` varchar(255) NOT NULL default ''
+  `logid`      int(11)      NOT NULL auto_increment,
+  `timestamp`  datetime     NOT NULL default '0000-00-00 00:00:00',
+  `message`    varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`logid`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_activation` (
-  `vkey` varchar(40) NOT NULL default '',
-  `vtime` datetime NOT NULL default '0000-00-00 00:00:00',
-  `vmember` int(11) NOT NULL default '0',
-  `vtype` varchar(15) NOT NULL default '',
-  `vextra` varchar(128) NOT NULL default '',
+  `vkey`    varchar(40)  NOT NULL default '',
+  `vtime`   datetime     NOT NULL default '0000-00-00 00:00:00',
+  `vmember` int(11)      NOT NULL default '0',
+  `vtype`   varchar(15)  NOT NULL default '',
+  `vextra`  varchar(128) NOT NULL default '',
   PRIMARY KEY  (`vkey`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_ban` (
-  `iprange` varchar(15) NOT NULL default '',
-  `reason` varchar(255) NOT NULL default '',
-  `blogid` int(11) NOT NULL default '0'
+  `iprange` varchar(15)  NOT NULL default '',
+  `reason`  varchar(255) NOT NULL default '',
+  `blogid`  int(11)      NOT NULL default '0',
+  KEY `iprange` (`iprange`),
+  KEY `blogid`  (`blogid`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_blog` (
-  `bnumber` int(11) NOT NULL auto_increment,
-  `bname` varchar(60) NOT NULL default '',
-  `bshortname` varchar(15) NOT NULL default '',
-  `bdesc` varchar(200) default NULL,
-  `bcomments` tinyint(2) NOT NULL default '1',
-  `bmaxcomments` int(11) NOT NULL default '0',
-  `btimeoffset` decimal(3,1) NOT NULL default '0.0',
-  `bnotify` varchar(60) default NULL,
-  `burl` varchar(100) default NULL,
-  `bupdate` varchar(60) default NULL,
-  `bdefskin` int(11) NOT NULL default '1',
-  `bpublic` tinyint(2) NOT NULL default '1',
-  `bsendping` tinyint(2) NOT NULL default '0',
-  `bconvertbreaks` tinyint(2) NOT NULL default '1',
-  `bdefcat` int(11) default NULL,
-  `bnotifytype` int(11) NOT NULL default '15',
-  `ballowpast` tinyint(2) NOT NULL default '0',
-  `bincludesearch` tinyint(2) NOT NULL default '0',
-  `breqemail` TINYINT( 2 ) DEFAULT '0' NOT NULL,
-  `bfuturepost` TINYINT(2) DEFAULT '0' NOT NULL,
+  `bnumber`        int(11)      NOT NULL auto_increment,
+  `bname`          varchar(60)  NOT NULL default '',
+  `bshortname`     varchar(15)  NOT NULL default '',
+  `bdesc`          varchar(200)          default NULL,
+  `bcomments`      tinyint(2)   NOT NULL default '1',
+  `bmaxcomments`   int(11)      NOT NULL default '0',
+  `btimeoffset`    decimal(3,1) NOT NULL default '0.0',
+  `bnotify`        varchar(60)           default NULL,
+  `burl`           varchar(100)          default NULL,
+  `bupdate`        varchar(60)           default NULL,
+  `bdefskin`       int(11)      NOT NULL default '1',
+  `bpublic`        tinyint(2)   NOT NULL default '1',
+  `bsendping`      tinyint(2)   NOT NULL default '0',
+  `bconvertbreaks` tinyint(2)   NOT NULL default '1',
+  `bdefcat`        int(11)               default NULL,
+  `bnotifytype`    int(11)      NOT NULL default '15',
+  `ballowpast`     tinyint(2)   NOT NULL default '0',
+  `bincludesearch` tinyint(2)   NOT NULL default '0',
+  `breqemail`      tinyint(2)   NOT NULL default '0',
+  `bfuturepost`    tinyint(2)   NOT NULL default '0',
   PRIMARY KEY  (`bnumber`),
-  UNIQUE KEY `bnumber` (`bnumber`),
+-- UNIQUE KEY `bnumber` (`bnumber`),
   UNIQUE KEY `bshortname` (`bshortname`)
 ) TYPE=MyISAM;
 
 INSERT INTO `nucleus_blog` VALUES (1, 'My Nucleus CMS', 'mynucleuscms', '', 1, 0, 0.0, '', 'http://localhost:8080/nucleus/', '', 5, 1, 0, 1, 1, 1, 1, 0, 0, 0);
+
 
 CREATE TABLE `nucleus_category` (
   `catid` int(11) NOT NULL auto_increment,
@@ -57,148 +62,149 @@ CREATE TABLE `nucleus_category` (
 INSERT INTO `nucleus_category` VALUES (1, 1, 'General', 'Items that do not fit in other categories');
 
 CREATE TABLE `nucleus_comment` (
-  `cnumber` int(11) NOT NULL auto_increment,
-  `cbody` text NOT NULL,
-  `cuser` varchar(40) default NULL,
-  `cmail` varchar(100) default NULL,
-  `cemail` VARCHAR( 100 ),
-  `cmember` int(11) default NULL,
-  `citem` int(11) NOT NULL default '0',
-  `ctime` datetime NOT NULL default '0000-00-00 00:00:00',
-  `chost` varchar(60) default NULL,
-  `cip` varchar(15) NOT NULL default '',
-  `cblog` int(11) NOT NULL default '0',
+  `cnumber` int(11)      NOT NULL auto_increment,
+  `cbody`   text         NOT NULL,
+  `cuser`   varchar(40)           default NULL,
+  `cmail`   varchar(100)          default NULL,
+  `cemail`  varchar(100),
+  `cmember` int(11)               default NULL,
+  `citem`   int(11)      NOT NULL default '0',
+  `ctime`   datetime     NOT NULL default '0000-00-00 00:00:00',
+  `chost`   varchar(60)           default NULL,
+  `cip`     varchar(15)  NOT NULL default '',
+  `cblog`   int(11)      NOT NULL default '0',
   PRIMARY KEY  (`cnumber`),
-  UNIQUE KEY `cnumber` (`cnumber`),
+--  UNIQUE KEY `cnumber` (`cnumber`),
   KEY `citem` (`citem`),
   FULLTEXT KEY `cbody` (`cbody`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_config` (
-  `name` varchar(20) NOT NULL default '',
-  `value` varchar(128) default NULL,
+  `name`  varchar(20)  NOT NULL default '',
+  `value` varchar(128)          default NULL,
   PRIMARY KEY  (`name`)
 ) TYPE=MyISAM;
 
-INSERT INTO `nucleus_config` VALUES ('DefaultBlog', '1');
-INSERT INTO `nucleus_config` VALUES ('AdminEmail', 'example@example.org');
-INSERT INTO `nucleus_config` VALUES ('IndexURL', 'http://localhost:8080/nucleus/');
-INSERT INTO `nucleus_config` VALUES ('Language', 'japanese-utf8');
-INSERT INTO `nucleus_config` VALUES ('SessionCookie', '');
+INSERT INTO `nucleus_config` VALUES ('DefaultBlog',       '1');
+INSERT INTO `nucleus_config` VALUES ('AdminEmail',        'example@example.org');
+INSERT INTO `nucleus_config` VALUES ('IndexURL',          'http://localhost:8080/nucleus/');
+INSERT INTO `nucleus_config` VALUES ('Language',          'japanese-utf8');
+INSERT INTO `nucleus_config` VALUES ('SessionCookie',     '');
 INSERT INTO `nucleus_config` VALUES ('AllowMemberCreate', '');
-INSERT INTO `nucleus_config` VALUES ('AllowMemberMail', '1');
-INSERT INTO `nucleus_config` VALUES ('SiteName', 'My Nucleus CMS');
-INSERT INTO `nucleus_config` VALUES ('AdminURL', 'http://localhost:8080/nucleus/nucleus/');
+INSERT INTO `nucleus_config` VALUES ('AllowMemberMail',   '1');
+INSERT INTO `nucleus_config` VALUES ('SiteName',          'My Nucleus CMS');
+INSERT INTO `nucleus_config` VALUES ('AdminURL',          'http://localhost:8080/nucleus/nucleus/');
 INSERT INTO `nucleus_config` VALUES ('NewMemberCanLogon', '1');
-INSERT INTO `nucleus_config` VALUES ('DisableSite', '');
-INSERT INTO `nucleus_config` VALUES ('DisableSiteURL', 'http://www.this-page-intentionally-left-blank.org/');
-INSERT INTO `nucleus_config` VALUES ('LastVisit', '');
-INSERT INTO `nucleus_config` VALUES ('MediaURL', 'http://localhost:8080/nucleus/media/');
-INSERT INTO `nucleus_config` VALUES ('AllowedTypes', 'jpg,jpeg,gif,mpg,mpeg,avi,mov,mp3,swf,png');
-INSERT INTO `nucleus_config` VALUES ('AllowLoginEdit', '');
-INSERT INTO `nucleus_config` VALUES ('AllowUpload', '1');
-INSERT INTO `nucleus_config` VALUES ('DisableJsTools', '2');
-INSERT INTO `nucleus_config` VALUES ('CookiePath', '/');
-INSERT INTO `nucleus_config` VALUES ('CookieDomain', '');
-INSERT INTO `nucleus_config` VALUES ('CookieSecure', '');
-INSERT INTO `nucleus_config` VALUES ('CookiePrefix', '');
-INSERT INTO `nucleus_config` VALUES ('MediaPrefix', '1');
-INSERT INTO `nucleus_config` VALUES ('MaxUploadSize', '1048576');
-INSERT INTO `nucleus_config` VALUES ('NonmemberMail', '');
-INSERT INTO `nucleus_config` VALUES ('PluginURL', 'http://localhost:8080/nucleus/nucleus/plugins/');
-INSERT INTO `nucleus_config` VALUES ('ProtectMemNames', '1');
-INSERT INTO `nucleus_config` VALUES ('BaseSkin', '5');
-INSERT INTO `nucleus_config` VALUES ('SkinsURL', 'http://localhost:8080/nucleus/skins/');
-INSERT INTO `nucleus_config` VALUES ('ActionURL', 'http://localhost:8080/nucleus/action.php');
-INSERT INTO `nucleus_config` VALUES ('URLMode', 'normal');
-INSERT INTO `nucleus_config` VALUES ('DatabaseVersion', '330');
-INSERT INTO `nucleus_config` VALUES ('DebugVars', '0');
-INSERT INTO `nucleus_config` VALUES ('DefaultListSize', '10');
+INSERT INTO `nucleus_config` VALUES ('DisableSite',       '');
+INSERT INTO `nucleus_config` VALUES ('DisableSiteURL',    'http://www.this-page-intentionally-left-blank.org/');
+INSERT INTO `nucleus_config` VALUES ('LastVisit',         '');
+INSERT INTO `nucleus_config` VALUES ('MediaURL',          'http://localhost:8080/nucleus/media/');
+INSERT INTO `nucleus_config` VALUES ('AllowedTypes',      'jpg,jpeg,gif,mpg,mpeg,avi,mov,mp3,swf,png');
+INSERT INTO `nucleus_config` VALUES ('AllowLoginEdit',    '');
+INSERT INTO `nucleus_config` VALUES ('AllowUpload',       '1');
+INSERT INTO `nucleus_config` VALUES ('DisableJsTools',    '2');
+INSERT INTO `nucleus_config` VALUES ('CookiePath',        '/');
+INSERT INTO `nucleus_config` VALUES ('CookieDomain',      '');
+INSERT INTO `nucleus_config` VALUES ('CookieSecure',      '');
+INSERT INTO `nucleus_config` VALUES ('CookiePrefix',      '');
+INSERT INTO `nucleus_config` VALUES ('MediaPrefix',       '1');
+INSERT INTO `nucleus_config` VALUES ('MaxUploadSize',     '1048576');
+INSERT INTO `nucleus_config` VALUES ('NonmemberMail',     '');
+INSERT INTO `nucleus_config` VALUES ('PluginURL',         'http://localhost:8080/nucleus/nucleus/plugins/');
+INSERT INTO `nucleus_config` VALUES ('ProtectMemNames',   '1');
+INSERT INTO `nucleus_config` VALUES ('BaseSkin',          '5');
+INSERT INTO `nucleus_config` VALUES ('SkinsURL',          'http://localhost:8080/nucleus/skins/');
+INSERT INTO `nucleus_config` VALUES ('ActionURL',         'http://localhost:8080/nucleus/action.php');
+INSERT INTO `nucleus_config` VALUES ('URLMode',           'normal');
+INSERT INTO `nucleus_config` VALUES ('DatabaseVersion',   '340');
+INSERT INTO `nucleus_config` VALUES ('DebugVars',         '0');
+INSERT INTO `nucleus_config` VALUES ('DefaultListSize',   '10');
 
 CREATE TABLE `nucleus_item` (
-  `inumber` int(11) NOT NULL auto_increment,
-  `ititle` varchar(160) default NULL,
-  `ibody` text NOT NULL,
-  `imore` text,
-  `iblog` int(11) NOT NULL default '0',
-  `iauthor` int(11) NOT NULL default '0',
-  `itime` datetime NOT NULL default '0000-00-00 00:00:00',
-  `iclosed` tinyint(2) NOT NULL default '0',
-  `idraft` tinyint(2) NOT NULL default '0',
-  `ikarmapos` int(11) NOT NULL default '0',
-  `icat` int(11) default NULL,
-  `ikarmaneg` int(11) NOT NULL default '0',
-  `iposted` tinyint(2) NOT NULL default '1',
+  `inumber`   int(11)      NOT NULL auto_increment,
+  `ititle`    varchar(160)          default NULL,
+  `ibody`     text         NOT NULL,
+  `imore`     text,
+  `iblog`     int(11)      NOT NULL default '0',
+  `iauthor`   int(11)      NOT NULL default '0',
+  `itime`     datetime     NOT NULL default '0000-00-00 00:00:00',
+  `iclosed`   tinyint(2)   NOT NULL default '0',
+  `idraft`    tinyint(2)   NOT NULL default '0',
+  `ikarmapos` int(11)      NOT NULL default '0',
+  `icat`      int(11)               default NULL,
+  `ikarmaneg` int(11)      NOT NULL default '0',
+  `iposted`   tinyint(2)   NOT NULL default '1',
   PRIMARY KEY  (`inumber`),
-  UNIQUE KEY `inumber` (`inumber`),
+--  UNIQUE KEY `inumber` (`inumber`),
   KEY `itime` (`itime`),
-  FULLTEXT KEY `ibody` (`ibody`,`ititle`,`imore`)
+  FULLTEXT KEY `ibody` (`ibody`, `ititle`, `imore`)
 ) TYPE=MyISAM PACK_KEYS=0;
 
 CREATE TABLE `nucleus_karma` (
-  `itemid` int(11) NOT NULL default '0',
-  `ip` char(15) NOT NULL default ''
+  `itemid` int(11)  NOT NULL default '0',
+  `ip`     char(15) NOT NULL default '',
+  KEY      `itemid` (`itemid`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_member` (
-  `mnumber` int(11) NOT NULL auto_increment,
-  `mname` varchar(16) NOT NULL default '',
-  `mrealname` varchar(60) default NULL,
-  `mpassword` varchar(40) NOT NULL default '',
-  `memail` varchar(60) default NULL,
-  `murl` varchar(100) default NULL,
-  `mnotes` varchar(100) default NULL,
-  `madmin` tinyint(2) NOT NULL default '0',
-  `mcanlogin` tinyint(2) NOT NULL default '1',
-  `mcookiekey` varchar(40) default NULL,
-  `deflang` varchar(20) NOT NULL default '',
-  `mautosave` tinyint(2) NOT NULL default '1',
-  PRIMARY KEY  (`mnumber`),
-  UNIQUE KEY `mname` (`mname`),
-  UNIQUE KEY `mnumber` (`mnumber`)
+  `mnumber`    int(11)      NOT NULL auto_increment,
+  `mname`      varchar(16)  NOT NULL default '',
+  `mrealname`  varchar(60)           default NULL,
+  `mpassword`  varchar(40)  NOT NULL default '',
+  `memail`     varchar(60)           default NULL,
+  `murl`       varchar(100)          default NULL,
+  `mnotes`     varchar(100)          default NULL,
+  `madmin`     tinyint(2)   NOT NULL default '0',
+  `mcanlogin`  tinyint(2)   NOT NULL default '1',
+  `mcookiekey` varchar(40)           default NULL,
+  `deflang`    varchar(20)  NOT NULL default '',
+  `mautosave`  tinyint(2)   NOT NULL default '1',
+  PRIMARY KEY         (`mnumber`),
+--  UNIQUE KEY `mnumber` (`mnumber`),
+  UNIQUE  KEY `mname` (`mname`)
 ) TYPE=MyISAM;
 
 INSERT INTO `nucleus_member` VALUES (1, 'example', 'example', '1a79a4d60de6718e8e5b326e338ae533', 'example@example.org', 'http://localhost:8080/nucleus/', '', 1, 1, 'd767aefc60415859570d64c649257f19', '', 1);
 
 CREATE TABLE `nucleus_plugin` (
-  `pid` int(11) NOT NULL auto_increment,
-  `pfile` varchar(40) NOT NULL default '',
-  `porder` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`pid`),
-  KEY `pid` (`pid`),
-  KEY `porder` (`porder`)
+  `pid`    int(11)     NOT NULL auto_increment,
+  `pfile`  varchar(40) NOT NULL default '',
+  `porder` int(11)     NOT NULL default '0',
+  PRIMARY KEY     (`pid`),
+--  KEY `pid` (`pid`),
+  KEY    `porder` (`porder`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_plugin_event` (
-  `pid` int(11) NOT NULL default '0',
-  `event` varchar(40) default NULL,
+  `pid`   int(11)     NOT NULL default '0',
+  `event` varchar(40)          default NULL,
   KEY `pid` (`pid`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_plugin_option` (
-  `ovalue` text NOT NULL,
-  `oid` int(11) NOT NULL auto_increment,
+  `ovalue`     text    NOT NULL,
+  `oid`        int(11) NOT NULL auto_increment,
   `ocontextid` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`oid`,`ocontextid`)
+  PRIMARY KEY  (`oid`, `ocontextid`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_plugin_option_desc` (
-  `oid` int(11) NOT NULL auto_increment,
-  `opid` int(11) NOT NULL default '0',
-  `oname` varchar(20) NOT NULL default '',
+  `oid`      int(11)     NOT NULL auto_increment,
+  `opid`     int(11)     NOT NULL default '0',
+  `oname`    varchar(20) NOT NULL default '',
   `ocontext` varchar(20) NOT NULL default '',
-  `odesc` varchar(255) default NULL,
-  `otype` varchar(20) default NULL,
-  `odef` text,
-  `oextra` text,
-  PRIMARY KEY  (`opid`,`oname`,`ocontext`),
+  `odesc`    varchar(255)         default NULL,
+  `otype`    varchar(20)          default NULL,
+  `odef`     text,
+  `oextra`   text,
+  PRIMARY KEY  (`opid`, `oname`, `ocontext`),
   UNIQUE KEY `oid` (`oid`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_skin` (
-  `sdesc` int(11) NOT NULL default '0',
-  `stype` varchar(20) NOT NULL default '',
-  `scontent` text NOT NULL,
+  `sdesc`    int(11)     NOT NULL default '0',
+  `stype`    varchar(20) NOT NULL default '',
+  `scontent` text        NOT NULL,
   PRIMARY KEY  (`sdesc`,`stype`)
 ) TYPE=MyISAM;
 
@@ -207,15 +213,15 @@ INSERT INTO `nucleus_skin` VALUES (4, 'index', '<?xml version="1.0"?>\r\n<rsd ve
 INSERT INTO `nucleus_skin` VALUES (3, 'index', '<?xml version="1.0" encoding="UTF-8"?>\r\n<rss version="2.0">\r\n  <channel>\r\n    <title><%blogsetting(name)%></title>\r\n    <link><%blogsetting(url)%></link>\r\n    <description><%blogsetting(desc)%></description>\r\n    <language>ja</language>\r\n    <generator><%version%></generator>\r\n    <copyright>&#169;</copyright>\r\n    <category>Weblog</category>\r\n    <docs>http://backend.userland.com/rss</docs>\r\n    <image>\r\n      <url><%adminurl%>nucleus2.gif</url>\r\n      <title><%blogsetting(name)%></title>\r\n      <link><%blogsetting(url)%></link>\r\n    </image>\r\n    <%blog(feeds/rss20,10)%>\r\n  </channel>\r\n</rss>');
 
 CREATE TABLE `nucleus_skin_desc` (
-  `sdnumber` int(11) NOT NULL auto_increment,
-  `sdname` varchar(20) NOT NULL default '',
-  `sddesc` varchar(200) default NULL,
-  `sdtype` varchar(40) NOT NULL default 'text/html',
+  `sdnumber`  int(11)     NOT NULL auto_increment,
+  `sdname`    varchar(20) NOT NULL default '',
+  `sddesc`    varchar(200)         default NULL,
+  `sdtype`    varchar(40) NOT NULL default 'text/html',
   `sdincmode` varchar(10) NOT NULL default 'normal',
   `sdincpref` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`sdnumber`),
-  UNIQUE KEY `sdname` (`sdname`),
-  UNIQUE KEY `sdnumber` (`sdnumber`)
+--  UNIQUE KEY `sdnumber` (`sdnumber`),
+  UNIQUE KEY `sdname` (`sdname`)
 ) TYPE=MyISAM;
 
 INSERT INTO `nucleus_skin_desc` VALUES (2, 'feeds/atom', 'Atom 1.0 weblog syndication', 'application/atom+xml', 'normal', '');
@@ -224,19 +230,19 @@ INSERT INTO `nucleus_skin_desc` VALUES (4, 'xml/rsd', 'RSD (Really Simple Discov
 INSERT INTO `nucleus_skin_desc` VALUES (5, 'default', 'Nucleus CMS default skin', 'text/html', 'skindir', 'default/');
 
 CREATE TABLE `nucleus_team` (
-  `tmember` int(11) NOT NULL default '0',
-  `tblog` int(11) NOT NULL default '0',
-  `tadmin` tinyint(2) NOT NULL default '0',
-  PRIMARY KEY  (`tmember`,`tblog`)
+  `tmember` int(11)     NOT NULL default '0',
+  `tblog`   int(11)     NOT NULL default '0',
+  `tadmin`   tinyint(2) NOT NULL default '0',
+  PRIMARY KEY  (`tmember`, `tblog`)
 ) TYPE=MyISAM;
 
 INSERT INTO `nucleus_team` VALUES (1, 1, 1);
 
 CREATE TABLE `nucleus_template` (
-  `tdesc` int(11) NOT NULL default '0',
+  `tdesc`     int(11)     NOT NULL default '0',
   `tpartname` varchar(64) NOT NULL default '',
-  `tcontent` text NOT NULL,
-  PRIMARY KEY  (`tdesc`,`tpartname`)
+  `tcontent`  text        NOT NULL,
+  PRIMARY KEY  (`tdesc`, `tpartname`)
 ) TYPE=MyISAM;
 
 INSERT INTO `nucleus_template` VALUES (3, 'ITEM', '<item>\r\n <title><%title(xml)%></title>\r\n <link><%blogurl%>?itemid=<%itemid%></link>\r\n<description><![CDATA[<%body%><%more%>]]></description>\r\n <category><%category%></category>\r\n<comments><%blogurl%>?itemid=<%itemid%></comments>\r\n <pubDate><%date(rfc822)%></pubDate>\r\n</item>');
@@ -253,12 +259,12 @@ INSERT INTO `nucleus_template` VALUES (3, 'MEDIA_CODE', '<%media%>');
 INSERT INTO `nucleus_template` VALUES (3, 'IMAGE_CODE', '<%media%>');
 
 CREATE TABLE `nucleus_template_desc` (
-  `tdnumber` int(11) NOT NULL auto_increment,
-  `tdname` varchar(64) NOT NULL default '',
-  `tddesc` varchar(200) default NULL,
-  PRIMARY KEY  (`tdnumber`),
-  UNIQUE KEY `tdnumber` (`tdnumber`),
-  UNIQUE KEY `tdname` (`tdname`)
+  `tdnumber` int(11)     NOT NULL auto_increment,
+  `tdname`   varchar(64) NOT NULL default '',
+  `tddesc`   varchar(200)         default NULL,
+  PRIMARY KEY (`tdnumber`),
+--  UNIQUE KEY `tdnumber` (`tdnumber`),
+  UNIQUE  KEY `tdname` (`tdname`)
 ) TYPE=MyISAM;
 
 INSERT INTO `nucleus_template_desc` VALUES (4, 'feeds/atom/modified', 'Atom feeds: Inserts last modification date');
@@ -269,7 +275,7 @@ INSERT INTO `nucleus_template_desc` VALUES (9, 'default/item', 'Nucleus CMS defa
 
 CREATE TABLE `nucleus_tickets` (
   `ticket` varchar(40) NOT NULL default '',
-  `ctime` datetime NOT NULL default '0000-00-00 00:00:00',
-  `member` int(11) NOT NULL default '0',
+  `ctime` datetime     NOT NULL default '0000-00-00 00:00:00',
+  `member` int(11)     NOT NULL default '0',
   PRIMARY KEY  (`ticket`,`member`)
 ) TYPE=MyISAM;
