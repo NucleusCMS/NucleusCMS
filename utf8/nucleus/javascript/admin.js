@@ -15,7 +15,7 @@
   */
 
 function help(url) {
-	popup = window.open(url,'helpwindow','status=no,toolbar=yes,scrollbars=yes,resizable=yes,width=570,height=550,top=0,left=0');
+	popup = window.open(url,'helpwindow','status=no,toolbar=no,scrollbars=yes,resizable=yes,width=570,height=530,top=0,left=0');
 	if (popup.focus) popup.focus();
 	if (popup.GetAttention) popup.GetAttention();
 	return false;

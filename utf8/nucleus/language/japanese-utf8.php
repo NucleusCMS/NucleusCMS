@@ -36,7 +36,7 @@ define('_ADMIN_NOTABILIA',					'注意事項');
 define('_ADMIN_PLEASE_READ',				'作成にあたって、下記の<strong>注意事項</strong> をまずお読み下さい');
 define('_ADMIN_HOW_TO_ACCESS',				'新しいBlogを作成した後に、このBlogにアクセスするための方法を紹介しておきます。方法は2つあります:');
 define('_ADMIN_SIMPLE_WAY',					'<strong>簡単な方法:</strong> <code>index.php</code>の複製を作り、新しいBlogを表示するように変更を加えます。 この変更の詳細は、作成後に表示されます。');
-define('_ADMIN_ADVANCED_WAY',				'<strong>高度な方法:</strong> 現在のBlogで使用しているスキンに<code>&lt;%otherblog()%gt;</code>というコードを使った記述を加えます。この方法では、同じページ内で複数のBlogを表示することが可能となります。');
+define('_ADMIN_ADVANCED_WAY',				'<strong>高度な方法:</strong> 現在のBlogで使用しているスキンに<code>&lt;%otherblog()&gt;</code>というコードを使った記述を加えます。この方法では、同じページ内で複数のBlogを表示することが可能となります。');
 define('_ADMIN_HOW_TO_CREATE',				'Blogの作成');
 
 

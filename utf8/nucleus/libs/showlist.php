@@ -586,7 +586,7 @@ function listplug_table_skinlist($template, $type) {
 			echo "</td>";
 
 
-			echo "<td>" , htmlspecialchars($current->sddesc);
+			echo '<td class="availableSkinTypes">' . htmlspecialchars($current->sddesc);
 				// show list of defined parts
 				$r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber . ' ORDER BY stype');
 				$types = array();
@@ -597,9 +597,9 @@ function listplug_table_skinlist($template, $type) {
 					for ($i=0;$i<sizeof($types);$i++) {
 						$type = $types[$i];
 						if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
-							$types[$i] = '<li>' . helpHtml('skinpart'.$type) . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . "</a></li>";
+							$types[$i] = '<li> <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . helpHtml('skinpart'.$type) . "</a></li>";
 						} else {
-							$types[$i] = '<li>' . helpHtml('skinpartspecial') . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . "</a></li>";
+							$types[$i] = '<li> <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . helpHtml('skinpartspecial') . "</a></li>";
 						}
 					}
 					echo '<br /><br />',_LIST_SKINS_DEFINED,' <ul>',implode($types,'') ,'</ul>';

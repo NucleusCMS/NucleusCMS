@@ -2488,7 +2488,7 @@ class ADMIN {
 		$query = 'DELETE FROM '.sql_table('team')." WHERE tblog=$blogid and tmember=$memberid";
 		sql_query($query);
 
-		$manager->notify('PostDeleteTeamMember', array('member' => &$mem, 'blogid' => $blogid));
+		$manager->notify('PostDeleteTeamMember', array('member' => &$tmem, 'blogid' => $blogid));
 
 		return '';
 	}

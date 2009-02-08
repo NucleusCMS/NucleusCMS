@@ -32,7 +32,7 @@ define('_ADMIN_NOTABILIA',							'Some information');
 define('_ADMIN_PLEASE_READ',						"Before you start, here's some <strong>important information</strong>");
 define('_ADMIN_HOW_TO_ACCESS',						"After you've created a new weblog, you'll need to perform some actions to make your blog accessible. There are two possibilities:");
 define('_ADMIN_SIMPLE_WAY',							"<strong>Simple:</strong> Create a copy of <code>index.php</code> and modify it to display your new weblog. Further instructions on how to do this will be provided after you've submitted this first form.");
-define('_ADMIN_ADVANCED_WAY',						"<strong>Advanced:</strong> Insert the blog content into your current skins using skinvars like <code>otherblog</code>. This way, you can place multiple blogs on the same page.");
+define('_ADMIN_ADVANCED_WAY',						"<strong>Advanced:</strong> Insert the blog content into your current skins using skinvars like <code>&lt;%otherblog()&gt;</code>. This way, you can place multiple blogs on the same page.");
 define('_ADMIN_HOW_TO_CREATE',						'Create Weblog');
 
 

@@ -1,3 +1,4 @@
+@charset 'UTF-8';
 /* 
 	style definitions for the bookmarklet 
 	
@@ -9,11 +10,12 @@ body {
 	font-size: small;
 	background: #fff;
 	color: #000;
-    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;
+/*    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;*/
+	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 }		
 
 textarea {
-	font-family: "Hiragino Kaku Gothic Pro W3", "MS P Gothic", "Osaka", sans-serif;
+/*	font-family: "Hiragino Kaku Gothic Pro W3", "MS P Gothic", "Osaka", sans-serif;*/
 }
 
 h1 {
@@ -48,13 +50,13 @@ h1 {
     border-right: 2px solid #8E8EAB;
     border-bottom: 2px solid #8E8EAB;
     color: #000000;
-    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;
+/*    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;*/
     font-weight: bold;   
 }
 
 .contentblock {
 	/*background: #ddd;*/
-	height: 450px;
+	height: 500px;
 	overflow: auto; /* temporary removed, to make the select box work in Mozilla */
 	padding: 1px;
     margin: 0px;

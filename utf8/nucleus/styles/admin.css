@@ -1,3 +1,5 @@
+@charset 'UTF-8';
+
 /*
 	admin area style
 	
@@ -7,34 +9,103 @@
 
 body {
 	background: #ffffff; 
-}
-body, td, th, a, li, ul, textarea {
-	color: #000;
-	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+	background:url(background.png) repeat-x;
+
 }
 
+body, td, th, a, li, ul, textarea {
+/*	color: #000; modify */
+	color: #333
+/*	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;*/
+/*	font-family: "Hiragino Kaku Gothic Pro W3", "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif; */
+	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+}
+
+/* basic link appearance */
+a:link, a:visited {
+	color: #1D3565;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+/* textareas */
 textarea {
   font-size: small;
-  font-family: "Hiragino Kaku Gothic Pro W3", "MS PGothic", "Osaka", sans-serif;
+  
+	line-height:145%;/* add */
+	padding:5px;/* add */
+	
+/*  font-family: "Hiragino Kaku Gothic Pro W3", "MS PGothic", "Osaka", sans-serif;
 }
-*>textarea {
+
+*>textarea {*/
   width: 95%;
 }
 
 /* textareas for skin/template editing have monospace fonts */
-textarea.skinedit, textarea.templateedit
-{
-  font-family: "Hiragino Kaku Gothic Pro W3", "MS PGothic", "Osaka", monospace;
-/* except MacIE \*/
+textarea.skinedit, textarea.templateedit {
+/*	font-family: "Hiragino Kaku Gothic Pro W3", "MS PGothic", "Osaka", monospace;
+/* except MacIE \*//*
 	font-family: monospace;
 /* end */
 	font-size: medium;
 }
 
-img			{ border: none; }
-.skip 		{ display: none; }
-label		{ cursor: pointer; }
-.error 		{ color: red; font-size: 1.2em; }
+/* add start */
+textarea#inputbody,textarea#inputmore {
+	width:500px;
+	margin:5px 3px;
+}
+
+textarea.pluginoption {
+	width:420px;
+}
+/* add end */
+
+/* images */
+img {
+	border: none; 
+}
+
+img.skinpreview {
+	border: 1px solid #ccc;
+}
+
+/* forms */
+form {
+	margin-bottom: 0px;
+}
+
+label {
+	cursor: pointer; 
+}
+
+input.transparent {
+	background-color: transparent;
+}
+
+/* preformatted text */
+pre {
+	margin-left: 10px;
+}
+
+/* a div that has an indent */
+div.indent {
+	margin-left: 40px;
+}
+
+.skip {
+	display: none; 
+}
+
+.error {
+	color: red;
+	font-size: 1.2em; 
+}
 
 /* header */
 h1 {
@@ -48,28 +119,6 @@ h1 {
 	height: 35px;
 	/*display: none;	hide the header if you don't want it*/
 
-}
-
-/* page content */
-#content {
-   margin-left:155px;
-	font-style: normal;
-	text-decoration: none;
-	color: black;
-	text-align: justify;
-	line-height: 13pt;
-
-	border-width: 1px;
-	border-style: solid;
-	border-color: black;
-	
-	/* rounded borders in gecko-based browsers? why not :) */
-	-moz-border-radius: 10px;	
-
-	padding: 10px 10px 0 10px;	
-	
-	background-color: white;
-	
 }
 
 /* quick menu on left */
@@ -86,15 +135,17 @@ h1 {
 	top: 10px;
 	left: 10px;
 
-	width: 130px;
+	width: 150px;
 	margin: 0px;
 	padding: 0px;
 	
 	font-size: 70%;
+	color:#333;/* add */
 	
 	border-width: 1px;
 	border-style: solid;
-	border-color: black;
+/*	border-color: black; modify */
+	border-color: #bbb;
 
 	background: #ffffff url(quickb.jpg) top left fixed repeat-y; 
 }
@@ -104,32 +155,40 @@ h1 {
 	margin: 0;
 	padding: 0;
 }
-#quickmenu p {
-	padding: 5px;
-	margin: 0px;
-	text-align: justify;
-}
+
 #quickmenu li {
 	padding: 0;
 	margin: 0;
 	text-align: center;
 	border-bottom: 1px solid #ccc;
 }
+
+#quickmenu p {
+	padding: 5px;
+	margin: 0px;
+	text-align: justify;
+}
+
 #quickmenu a {
 	display: block;
 	padding: 5px;
 	font-size: 1em;
 	line-height: 1.5em;
 	text-decoration: none;
-	font-family: verdana, lucida, arial, helvetica, sans-serif;
+/*	font-family: verdana, lucida, arial, helvetica, sans-serif;
 }
+
 *>#quickmenu a {
 	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+*/
 }
+
 #quickmenu a:hover {
 	background: #ffffff url(quickb-hover.jpg) top left fixed repeat-y; 
-	color: #000;
+/*	color: #000; modify */
+	color: #333;
 	letter-spacing: 1px;
+	white-space: nowrap; /* add */
 }
 
 #quickmenu h2 {
@@ -139,13 +198,16 @@ h1 {
 	margin: 0px;
 	border-bottom: 1px solid #bbb; 	
 	background-color: #ddd;
-	color: #000;
+/*	color: #000; modify */
+	color: #333;
 }
+
 #quickmenu form {
 	margin: 0;
 	padding: 5px;
 	text-align: center;
 }
+
 #quickmenu option {
 	font-size: 0.9em;
 }
@@ -157,6 +219,36 @@ h1 {
 	line-height: normal;
 	padding-left: 5px;
 	background-color: white;
+}
+
+/* page content */
+#content {
+   margin-left:163px;
+	font-style: normal;
+	text-decoration: none;
+/*	color: black; modify */
+	color: #333;
+	text-align: justify;
+	line-height: 13pt;
+
+	border-width: 1px;
+	border-style: solid;
+/*	border-color: black; modify */
+	border-color: #bbb;
+	
+	/* rounded borders in gecko-based browsers? why not :) */
+	-moz-border-radius: 10px;
+
+	/* rounded borders in webkit-based browsers? why not :) */
+	-webkit-border-radius: 10px;
+
+	/* rounded borders in css3-based browsers? why not :) */
+	border-radius: 10px;
+
+	padding: 10px 10px 0 10px;
+
+	background-color: white;
+
 }
 
 #content h2 {
@@ -171,31 +263,67 @@ h1 {
 
 	text-decoration: none;
 	font-weight: bold; 
-
+	letter-spacing: 2px;/* add */
 }
 
 #content h3 {
-	border-color: gray;
+/*	border-color: gray;
 	border-style: dotted;
-	border-width: 0px 0px 1px 0px;
+	border-width: 0px 0px 1px 0px; modify */
+
+	border-color: #596d9d;
+	border-style: solid;
+	border-width: 0px 0px 0px 5px;
+
 	font-size: medium;
 	font-weight: normal;
 	line-height: 120%;
 
-	color: gray;
+/*	color: gray;
 	padding-left: 20px;
-	letter-spacing: 2;
+	letter-spacing: 2; modify */
+
+	color: #596d9d;
+	padding-left: 8px;
+	letter-spacing: 2px;
+	margin-left:5px;/* add */
 }
+
+/* add start */
+#content ul {
+	line-height:1.5em;
+/*	list-style-type:square;*/
+	margin:0 0 0.5em 30px;
+	padding:0;
+	list-style-image:url(bullet.gif);
+}
+/* add end */
 
 #content .note, pre {
 	background-color: #ddd;
 	padding: 5px;
 }
 
-pre {
-	margin-left: 10px;
-}
+/* 
+	font size tricks, to make it work in all browsers
 
+	See:
+	http://diveintoaccessibility.org/day_26_using_relative_font_sizes.html
+
+	(netscape 4 trick is left out, Nucleus doesn't work anyway in that browser)	
+	#content should be 'small' (in standard-compliant browsers)
+
+*/
+
+#content {
+  font-size: small;
+  voice-family: "\"}\"";
+  voice-family: inherit;
+  font-size: small;
+}
+html>body #content { font-size: small; }
+
+/* tables */
 table {
 	border: none;
 	width: 100%;
@@ -204,17 +332,13 @@ table {
 	margin-top: 10px;	
 }
 
-.batchoperations {
-	background-color: #eef;
-	width: auto;
-	padding: 5px;
-	text-align: right;
-}
-
 th {
-	background-color: #bbc;
-	color: #000;
+/*	background-color: #bbc; modify */
+	background-color: #ddd;
+/*	color: #000; modify */
+	color: #333;
 	font-size: small;
+	letter-spacing:1px;/* add */
 }
 
 th, td {
@@ -232,9 +356,11 @@ td {
 
 td a:link, td a:visited { 
 	text-decoration: underline;
-	color: black;
+/*	color: black; modify */
+	color: #333;
 	font-weight: normal;
 }
+
 td a:hover {
 	color: #1D3565;
 	text-decoration: underline;
@@ -248,60 +374,58 @@ tr.highlighted td {
 	background-color: green;
 }
 
-a:link, a:visited {
-	color: #1D3565;
-	font-weight: bold;
-	text-decoration: none;
-}
-a:hover {
-	text-decoration: underline;
-}
-
 table.navigation td, table.navigation th {
 	border: none;
 }
 
+.batchoperations {
+	background-color: #eef;
+	width: auto;
+	padding: 5px;
+	text-align: right;
+}
+
+/* plugin list */
+#content table ul.list_comment_info,
+#content table ul.list_item_info,
+#content table ul.list_item_action,
+#content table ul.plugin_info,
+#content table ul.pluginlist_actions {
+	list-style-type: none;
+	list-style-image: none;
+	margin: 0 0 0.5em 5px;
+	line-height:1.1em;
+}
+
+.plugin_name {
+	font-weight: bold;
+}
+
+.plugin_desc h4 {
+	margin: 0;
+}
+
+.plugin_desc p {
+	margin-top: 0;
+}
+
+/* item list */
+#content table label.list_item_title {
+	font-size: 1.1em;
+	font-weight: bold;
+}
+
+.list_item_info_th {
+	width: 130px;
+}
+
 /* footer */
 .foot {
-
  padding: 2px 0px 2px 10px;
  margin:10px -10px 0 -10px;
  text-align: center;
 }
 
-form {
-	margin-bottom: 0px;
-}
-
-input.transparent {
-	background-color: transparent;
-}
-
-/* a div that has an indent */
-div.indent {
-	margin-left: 40px;
-}
-
-/* 
-	font size tricks, to make it work in all browsers
-	
-	See: 
-	http://diveintoaccessibility.org/day_26_using_relative_font_sizes.html
-
-	(netscape 4 trick is left out, Nucleus doesn't work anyway in that browser)	
-	#content should be 'small' (in standard-compliant browsers)
-	
-*/
-
-#content {
-  font-size: small;
-  voice-family: "\"}\"";
-  voice-family: inherit;
-  font-size: small;
-}
-html>body #content { font-size: small; }
-
-
-img.skinpreview {
-	border: 1px solid #ccc;
+table .availableSkinTypes ul li {
+	list-style: none;
 }

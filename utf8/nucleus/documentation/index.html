@@ -19,8 +19,42 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Nucleus CMS マニュアル</title>
 		<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+	<script type="text/javascript">
+		function fontSizeChange(size) {
+			var elem = document.getElementsByTagName('body')[0];
+			var flrg = document.getElementById('fontLarge');
+			var fmdl = document.getElementById('fontMiddle');
+			var fsml = document.getElementById('fontSmall');
+			switch(size) {
+				case 'l':
+					elem.style.fontSize = 'large';
+					flrg.style.fontWeight = 'bold';
+					fmdl.style.fontWeight = 'normal';
+					fsml.style.fontWeight = 'normal';
+					break;
+				case 'm':
+					elem.style.fontSize = 'medium';
+					flrg.style.fontWeight = 'normal';
+					fmdl.style.fontWeight = 'bold';
+					fsml.style.fontWeight = 'normal';
+					break;
+				case 's':
+					elem.style.fontSize = 'small';
+					flrg.style.fontWeight = 'normal';
+					fmdl.style.fontWeight = 'normal';
+					fsml.style.fontWeight = 'bold';
+					break;
+			}
+			
+		}
+	</script>
 	</head>
 	<body>
+<div id="fontSizeCanger">
+<a href="#top" onClick="fontSizeChange('s');return false;" id="fontSmall">小</a>
+<a href="#top" onClick="fontSizeChange('m');return false;" id="fontMiddle">中</a>
+<a href="#top" onClick="fontSizeChange('l');return false;" id="fontLarge">大</a>
+</div>
 
 		<div class="heading">
 			Nucleus CMS マニュアル
@@ -148,20 +182,35 @@
 			ダウンロードしたパッケージファイルを解凍します。生成されるディレクトリ構成は以下のようになっているかをご確認下さい。(*はディレクトリ以下にファイルがある事を意味します)
 		</p>
 
-		<pre>/*                           (サイト表示用メインファイル)
-/nucleus/*                   (サイト管理用ファイル)
-/nucleus/javascript/*        (javascripts スクリプト)
-/nucleus/libs/*              (Nucleus のコアライブラリ)
-/nucleus/language/*          (言語ファイル)
-/nucleus/plugins/*           (プラグインファイル)
-/nucleus/xmlrpc/*            (XML-RPC インターフェイス用ファイル)
-/nucleus/documentation/*     (説明書)
-/nucleus/styles/*            (管理エリア専用cssファイル)
-/nucleus/forms/*             (入力フォーム部品ファイル)
-/extra/*                     (fancy URL用ファイルなど特殊なファイル)
-/skins/*                     (スキンファイル [読込み時にも使用])
-/media/*                     (添付ファイル [インストール時は空])
-		</pre>
+		<table id="files_index">
+			<tr>
+				<th>/*</th><td>(サイト表示用メインファイル)</td>
+			</tr><tr>
+				<th>/nucleus/*</th><td>(サイト管理用ファイル)</td>
+			</tr><tr>
+				<th>/nucleus/javascript/*</th><td>(javascripts スクリプト)</td>
+			</tr><tr>
+				<th>/nucleus/libs/*</th><td>(Nucleus のコアライブラリ)</td>
+			</tr><tr>
+				<th>/nucleus/language/*</th><td>(言語ファイル)</td>
+			</tr><tr>
+				<th>/nucleus/plugins/*</th><td>(プラグインファイル)</td>
+			</tr><tr>
+				<th>/nucleus/xmlrpc/*</th><td>(XML-RPC インターフェイス用ファイル)</td>
+			</tr><tr>
+				<th>/nucleus/documentation/*</th><td>(説明書)</td>
+			</tr><tr>
+				<th>/nucleus/styles/*</th><td>(管理エリア専用cssファイル)</td>
+			</tr><tr>
+				<th>/nucleus/forms/*</th><td>(入力フォーム部品ファイル)</td>
+			</tr><tr>
+				<th>/extra/*</th><td>(fancy URL用ファイルなど特殊なファイル)</td>
+			</tr><tr>
+				<th>/skins/*</th><td>(スキンファイル [読込み時にも使用])</td>
+			</tr><tr>
+				<th>/media/*</th><td>(添付ファイル [インストール時は空])</td>
+			</tr>
+		</table>
 
 		<div class="note">
 			<b>補足:</b>
@@ -199,9 +248,7 @@
 			ブラウザを開いてサーバに転送したinstall.phpにアクセスします。URLは下記のようになります。(<i>www.yoursite.com</i> と <i>yourpath</i>の部分は読み替えてください)
 		</p>
 
-		<pre>
-			http://www.yoursite.com/yourpath/install.php
-		</pre>
+		<pre>	http://www.yoursite.com/yourpath/install.php</pre>
 
 		<p>
 			表示されたページに必要入力事項を入力します。あらかじめ自動検知して入力済の部分がありますが確認をお願いします。送信後に次に行う手順が表示されますのでそれに従って作業してください。(最後にいくつかのファイルを手動でサーバから削除する作業が必要ですのでお忘れなく。)

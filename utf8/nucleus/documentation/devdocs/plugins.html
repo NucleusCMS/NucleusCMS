@@ -57,8 +57,42 @@
             margin:0;
         }
     </style>
+	<script type="text/javascript">
+		function fontSizeChange(size) {
+			var elem = document.getElementById('body');
+			var flrg = document.getElementById('fontLarge');
+			var fmdl = document.getElementById('fontMiddle');
+			var fsml = document.getElementById('fontSmall');
+			switch(size) {
+				case 'l':
+					elem.style.fontSize = 'large';
+					flrg.style.fontWeight = 'bold';
+					fmdl.style.fontWeight = 'normal';
+					fsml.style.fontWeight = 'normal';
+					break;
+				case 'm':
+					elem.style.fontSize = 'medium';
+					flrg.style.fontWeight = 'normal';
+					fmdl.style.fontWeight = 'bold';
+					fsml.style.fontWeight = 'normal';
+					break;
+				case 's':
+					elem.style.fontSize = 'small';
+					flrg.style.fontWeight = 'normal';
+					fmdl.style.fontWeight = 'normal';
+					fsml.style.fontWeight = 'bold';
+					break;
+			}
+			
+		}
+	</script>
 </head>
 <body>
+<div id="fontSizeCanger">
+<a href="#top" onClick="fontSizeChange('s');return false;" id="fontSmall">小</a>
+<a href="#top" onClick="fontSizeChange('m');return false;" id="fontMiddle">中</a>
+<a href="#top" onClick="fontSizeChange('l');return false;" id="fontLarge">大</a>
+</div>
 <div id="body">
 
 <div class="heading">
@@ -1977,9 +2011,9 @@ class NP_HelloWorld extends NucleusPlugin {
     <li>自分自身でデータベース接続をする必要はありません。PHPコマンド <code>mysql_query()</code> を使ってSQL命令を実行できます。</li>
     <li>自分でデータベース接続をする場合、後でNucleusデータベースへの接続を復元するようにしてください。自前処理の後で <code>sql_connect()</code>  を呼ぶことで可能です。頻繁な再接続を避けるために、コンストラクタでそれを行うのも良いです。<code>$this- &gt;db</code>のリンクIDを保持でき、各クエリにそれを渡すことができます。</li>
     <li>バックアップ機能を使う時は、独自テーブルもバックアップに含めるよう、<code>getTableList()</code> を再定義してください。</li>
-	<li>It's a good idea to make the removal of your database tables optional. This will allow your users to temporarily remove your plugin without losing the data. For instance, you may need to make changes to options or database tables requiring that the install() method be run to execute code neccessary to modify existing tables or options. This will require that your users uninstall the old version and then install the new version and losing their data in the process. To make the deletion of your tables optional, you can add an option like this in install():
+	<li>ユーザーがプラグインをアップデートする時や、何らかの理由で一時的にプラグインをアンインストールしなければならない時、やプラグイン独自のテーブルの内容が失われる事があります。そうならないように、テーブルを削除するか否かをプラグインオプションで設定できるようにしておくといいでしょう。テーブルの削除をオプションでコントロールするには、install()メソッドで次のようなオプションを作成します。
 	<pre class="example"><code>$this-&gt;createOption('del_uninstall', 'Delete NP_MyPlugin data tables on uninstall?', 'yesno','no');</code></pre>
-	and this snippet in uninstall():
+	そしてuninstall()メソッドで、次のようにします。
 	<pre class="example"><code>if ($this-&gt;getOption('del_uninstall') == 'yes')	{
 	foreach ($this-&gt;getTableList() as $table) {
 		sql_query("DROP TABLE $table");
@@ -2145,8 +2179,9 @@ NucleusはこのAPIによって、インストール前に依存関係を検知�
 
 <p>このプラグイン依存チェックは、他のプラグインが依存しているプラグインがアンインストールされることも防ぎます。</p>
 
-</div>
 <h1>プラグインの多国語化<a name="internationalization" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<h2>プラグインをより多くの人に使ってもらうために</h2>
 
 <p>あなたと同じ言葉を話さない世界中の人達がプラグインをより使いやすくするために、プラグインを多国語化できます。
 少し手間は増えますが、プラグインが出力する文章を翻訳するだけで可能です。
@@ -2202,11 +2237,13 @@ define('_ABCDEF_MESSAGENAME',                  '実際のメッセージ');
 <p>偉大なプラグインのいくつかは、様々なスキンや URL の生成において、必ずしもそのまま使用できるとはいえません。なぜなら、doSkinVar() メソッドによって出力されるものが、
 ユーザーのニーズに十二分に合致するものであるとは言いがたいからです。Nucleus では、出力をここのユーザーによっておのおののニーズに沿ったものにする為に、いくつかのツールを用意しています。</p>
 
+<h2>URLの出力</h2>
+
 <p>各ブログ・カテゴリー・アイテム・メンバー、それから action.php や管理エリア、または各プラグインの管理エリアなどの URL を出力する為に、Nucleus はコアの機能として
 いくつかのファンクションとグローバル変数を用意しています。：</p>
 
 <table summary="Nucleus の各ページへのリンクを生成する為に便利な変数とファンクション">
-	<caption>Functions and variables useful in creating links to Nucleus pages</caption>
+	<caption>Nucleus の各ページへのリンクを生成する為に便利な変数とファンクション</caption>
 	<tr>
 		<th>名前</th><th>種類</th><th>引数</th><th>説明</th>
 	</tr>
@@ -2345,7 +2382,9 @@ define('_ABCDEF_MESSAGENAME',                  '実際のメッセージ');
 	</tr>
 </table>
 
-<p>常に出力する文字列をテンプレートを使って整形するのは良い考えです。あなたが順不同のリストで出力したいと考えていたとしても、別のユーザーは同じデータを
+<h2>スキンへの出力にテンプレートを使う</h2>
+
+<p>出力する文字列をテンプレートを使って整形出来るようにしましょう。あなたが順不同のリストで出力したいと考えていたとしても、別のユーザーは同じデータを
 記号で区切ったり、特別な形で出力したいと考えるかもしれません。Nucleus にはテンプレートデータを作ったり定義したりする2種類の方法があります。
 次に上げるれいの両方において、<code>&lt;%foo%&gt;</code> と <code>&lt;%bar%&gt;</code> のふたつのテンプレート変数を使用します。</p>
 
@@ -2452,7 +2491,9 @@ foreach ($couples as $values) {
 </ol>
 
 
-<h1>Additional Reading <a name="additional-reading" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>この他にも…… <a name="additional-reading" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<h2>役立つドキュメントがたくさん！</h2>
 
 <p>このドキュメント以外にもあなたがプラグインを開発するにあたって、リンク先のページもきっと役立つことと思います。</p>
 <ul>
