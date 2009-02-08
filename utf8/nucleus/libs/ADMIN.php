@@ -157,9 +157,9 @@ class ADMIN {
 		?>
 
 		<form action="index.php" method="post"><p>
-		<?php echo _LOGIN_NAME?>: <br /><input name="login"  tabindex="10" />
+		<?php echo _LOGIN_NAME; ?> <br /><input name="login"  tabindex="10" />
 		<br />
-		<?php echo _LOGIN_PASSWORD?>: <br /><input name="password"  tabindex="20" type="password" />
+		<?php echo _LOGIN_PASSWORD; ?> <br /><input name="password"  tabindex="20" type="password" />
 		<br />
 		<input name="action" value="login" type="hidden" />
 		<br />

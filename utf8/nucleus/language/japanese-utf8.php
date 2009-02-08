@@ -1020,6 +1020,8 @@ define('_LIST_COMMENT_HOST',						'ホスト');
 // itemlist
 define('_LIST_ITEM_INFO',							'情報');
 define('_LIST_ITEM_CONTENT',						'タイトルと本文');
+define('_LIST_ITEM_NOCONTENT',						'コメントはありません');
+define('_LIST_ITEM_COMMENTS',						'コメント(%d)件');
 
 
 // teamlist

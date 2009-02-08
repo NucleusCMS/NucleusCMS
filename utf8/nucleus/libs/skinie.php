@@ -298,7 +298,7 @@ class SKINIMPORT {
 	 * Called by XML parser for each new start element encountered
 	 */
 	function startElement($parser, $name, $attrs) {
-		foreach($attrs as $key=>$value) [
+		foreach($attrs as $key=>$value) {
 			$attrs[$key] = htmlspecialchars($value, ENT_QUOTES);
 		}
 

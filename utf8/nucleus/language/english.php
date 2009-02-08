@@ -21,6 +21,10 @@
  * @version $Id$
  *  */
 
+// START changed/added after 3.33 START
+define('_MEMBERS_USEAUTOSAVE',						'Use the Autosave function?');
+// END changed/added after 3.33 END
+
 // START merge UTF-8 and EUC-JP
 
 // Create New blog
@@ -40,6 +44,7 @@ define('_BOOKMARKLET_SEND_PING',					'Item was added successfully. Now pinging w
 // END merge UTF-8 and EUC-JP
 
 // START changed/added for 3.34 START
+define('_TEMPLATE_PLUGIN_FIELDS',					'Custom Plugin Fields');
 define('_TEMPLATE_BLOGLIST',						'Template Blog List');
 define('_TEMPLATE_BLOGHEADER',						'Blog List Header');
 define('_TEMPLATE_BLOGITEM',						'Blog List Item');
@@ -197,6 +202,7 @@ define('_ERROR_PLUGNOHELPFILE',						'The helpfile for this plugin can not be fo
 define('_PLUGS_HELP_TITLE',							'Helppage for plugin');
 define('_LIST_PLUGS_HELP', 							'help');
 
+
 // END changed/started after 3.1
 
 // START changed/added after v2.5beta START
@@ -230,6 +236,7 @@ define('_MEDIA_COLLECTION_LABEL',					'Current collection: ');
 define('_ADD_ALIGNLEFT_TT',							'Align Left');
 define('_ADD_ALIGNRIGHT_TT',						'Align Right');
 define('_ADD_ALIGNCENTER_TT',						'Align Center');
+
 
 // generic upload failure
 define('_ERROR_UPLOADFAILED',						'Upload failed');
@@ -1006,6 +1013,8 @@ define('_LIST_COMMENT_HOST',						'Host');
 // itemlist
 define('_LIST_ITEM_INFO',							'Info');
 define('_LIST_ITEM_CONTENT',						'Title and Text');
+define('_LIST_ITEM_NOCONTENT',						'No Comment');
+define('_LIST_ITEM_COMMENTS',						'%d Comments');
 
 
 // teamlist
@@ -1046,6 +1055,7 @@ define('_UPDATEDPING_GOPINGPAGE',					'try again');
 define('_UPDATEDPING_PINGING',						'Pinging services, please wait...');
 define('_UPDATEDPING_VIEWITEM',						'View list of recent items for ');
 define('_UPDATEDPING_VISITOWNSITE',					'Visit your own site');
+define('_UPDATEDPING_GOSENDPING',					'Send Update ping');
 
 // General category
 define('_EBLOGDEFAULTCATEGORY_NAME',				'General');
@@ -1118,7 +1128,7 @@ define('_BAN_BANBLOGNAME',							'Only blog %s');
 define('_PLUGIN_OPTIONS_TITLE',							'Options for %s');
 
 // Plugin file loda error
-define('_PLUGINFILE_COULDNT_BELOADED1',				'Error: plugin file <strong>%s.php</strong> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)');
+define('_PLUGINFILE_COULDNT_BELOADED',				'Error: plugin file <strong>%s.php</strong> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)');
 
 //ITEM add/edit template (for japanese only)
 define('_ITEM_ADDEDITTEMPLATE_FORMAT',				'Format :');
@@ -1212,6 +1222,7 @@ define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			"You aren't logged in.");
 
 // MANAGER.php
 define('_MANAGER_PLUGINFILE_NOTFOUND',				"Plugin %s was not loaded (File not found)");
+define('_MANAGER_PLUGINFILE_NOCLASS',				"Plugin %s was not loaded (Class not found in file, possible parse error)");
 define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"Plugin %s was not loaded (does not support SqlTablePrefix)");
 
 // mysql.php
