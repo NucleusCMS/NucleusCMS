@@ -1081,7 +1081,7 @@ define('_ADMINPAGEFOOT_DONATE',						'Donate!');
 define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group');
 
 // Quick menu
-define('_QMENU_MANAGE_SYSTEM',						'System settings overview');
+define('_QMENU_MANAGE_SYSTEM',						'System info');
 
 // REG file
 define('_WINREGFILE_TEXT',							'Post To &Nucleus (%s)');
@@ -1189,7 +1189,7 @@ define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL version');
 define('_ADMIN_SYSTEMOVERVIEW_SETTINGS',			'Settings');
 define('_ADMIN_SYSTEMOVERVIEW_GDLIBRALY',			'GD Libraly');
 define('_ADMIN_SYSTEMOVERVIEW_MODULES',				'Modules');
-define('_ADMIN_SYSTEMOVERVIEW_ENABLE',				'enable');
+define('_ADMIN_SYSTEMOVERVIEW_ENABLE',				'enabled');
 define('_ADMIN_SYSTEMOVERVIEW_DISABLE',				'disabled');
 define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM',		'Your Nucleus CMS System');
 define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION',		'Nucleus CMS version');
