@@ -6,7 +6,7 @@
 	* Copyright 2005-2007 by Jeff MacMichael and Niels Leenheer
 	*
 	* @version $Id$
-	* @version $NucleusJP: index.php,v 1.6.2.1 2007/09/07 07:08:01 kimitake Exp $
+	* @version $NucleusJP: index.php,v 1.6 2007/03/20 19:32:47 kmorimatsu Exp $
 	*
 	* ==========================================================================================
 	* This program is free software and open source software; you can redistribute
@@ -30,7 +30,7 @@
 	require($strRel . 'config.php');
 	include($DIR_LIBS . 'PLUGINADMIN.php');
 
-	$language = ereg_replace( '[\\|/]', '', getLanguageName());
+	$language = preg_replace( '@\\|/@', '', getLanguageName());
 	$langfile = $language.'.php';
 	if (file_exists($langfile))
 		include_once($langfile);
@@ -45,7 +45,9 @@
 
 	if (!($member->isLoggedIn() && $member->isAdmin()))
 	{
+		/* begin modification by yama.kyms */
 		$oPluginAdmin->start();
+		/* end modification */
 		echo '<p>' . _ERROR_DISALLOWED . '</p>';
 		$oPluginAdmin->end();
 		exit;
@@ -84,69 +86,7 @@
 	  * Build admin area
 	  */
 
-	$oPluginAdmin->start("<style type='text/css'>
-	<!--
-	
-		div#content a {
-			text-decoration: none;
-		}
-		div#content img {
-			vertical-align: middle;
-			margin-top: -3px;
-		}
-		p.message {
-			font-weight: bold;
-		}
-		p.error {
-			font-size: 100%;
-			font-weight: bold;
-			color: #880000;
-		}
-		pre {
-			overflow: auto;
-			height: 400px;
-		}
-		iframe {
-			width: 100%;
-			height: 400px;
-			border: 1px solid gray;
-		}
-		div.dialogbox {
-			border: 1px solid #ddd;
-			background-color: #F6F6F6;
-			margin: 18px 0 1.5em 0;
-		}
-		div.dialogbox h4 {
-			background-color: #bbc;
-			color: #000;
-			margin: 0;
-			padding: 5px;
-		}
-		div.dialogbox h4.light {
-			background-color: #ddd;
-		}
-		div.dialogbox div {
-			margin: 0;
-			padding: 10px;
-		}
-		div.dialogbox button {
-			margin: 10px 0 0 6px;
-			float: right;
-		}
-		div.dialogbox p {
-			margin: 0;
-		}
-		div.dialogbox p.buttons {
-			text-align: right;
-			overflow: auto;
-		}
-		div.dialogbox textarea {
-			width: 100%;
-			margin: 0;
-		}
-	
-	-->
-	</style>");
+	$oPluginAdmin->start();
 	
 	echo "<h2>" . _SKINFILES_MANAGEMENT . "</h2>";
 	
@@ -161,7 +101,7 @@
 	{ 
 		if (!$manager->checkTicket())
 		{
-			echo '<p class="error">Error: ' . _ERROR_BADTICKET . '</p>';
+			echo '<p class="error">' . _ERROR . ': ' . _ERROR_BADTICKET . '</p>';
 			sfShowDirectory();
 			
 		} 
@@ -787,6 +727,17 @@
 				}
 	
 				echo "<p class='message'>" . _SKINFILES_ERR_DELETE_DIR5 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR6 . "</p>";
+
+				/* begin modification by katsumi */
+				$num=0;
+				$d = dir($directory);
+				while (false !== ($entry = $d->read())) {
+				    if ($entry!='.' && $entry!='..') $num++;
+				}
+				$d->close();
+				if ($num==0) _skinfiles_delbutton('dir',dirname(trim(requestVar('dir'))));
+				/* end modification */
+
 				sfShowDirectory($directory);
 			} 		
 			else
@@ -1139,9 +1090,9 @@
 			echo '<input type="hidden" name="file" value="' . htmlspecialchars(sfRelativePath($directory . $file)) . '" />';
 
 			echo '<h4>' . _SKINFILES_EDIT_FILE_MSG . ' &laquo;' . htmlspecialchars($file) . '&raquo;</h4><div>';
-			echo '<p><textarea class="skinedit" tabindex="8" rows="20" cols="80" name="content">';
+			echo '<p><label><textarea class="skinedit" tabindex="8" rows="20" cols="80" name="content">';
 			echo htmlspecialchars($content);
-			echo '</textarea></p>';
+			echo '</textarea></label></p>';
 			
 			echo '<p class="buttons">';
 			echo '<input type="hidden" name="sure" value="yes" /">';
@@ -1158,7 +1109,8 @@
 	}
 
 	function _skinfiles_editfile_process() {
-
+		global $manager;
+		$skinfiles            = $manager->getPlugin('NP_SkinFiles');
 		$file 	   = basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
@@ -1168,9 +1120,12 @@
 			if (sfValidPath($directory) && file_exists($directory . $file) && 
 				is_file($directory . $file) && is_writable($directory . $file) && sfAllowEditing($file)) 
 			{
+				if ($skinfiles->getOption('generate_backup') == 'yes')
+				{
+					copy($directory . $file,  $directory . $skinfiles->getOption('backup_prefix') . $file);
+				}
 				$content = postVar('content');
 				$success = false;
-				
 				if ($fh = @fopen($directory . $file, 'wb')) { 
 					
 					if (@fwrite($fh, $content) !== false)
@@ -1184,6 +1139,11 @@
 				else
 					echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE6 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE7 . "</p>";
 			
+				/* begin modification by katsumi */
+				if ($success && strlen($content)==0) {
+					_skinfiles_delbutton('file',trim(requestVar('file')));
+				}
+				/* end modification */
 				_skinfiles_editfile();
 			}
 			else
@@ -1432,6 +1392,17 @@
 				}
 	
 				echo "<p class='message'>" . _SKINFILES_ERR_DELETE_FILE5 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE6 . "</p>";
+
+				/* begin modification by katsumi */
+				$num=0;
+				$d = dir($directory);
+				while (false !== ($entry = $d->read())) {
+				    if ($entry!='.' && $entry!='..') $num++;
+				}
+				$d->close();
+				if ($num==0) _skinfiles_delbutton('dir',dirname(trim(requestVar('file'))));
+				/* end modification */
+
 				sfShowDirectory($directory);
 			} 		
 			else
@@ -1508,8 +1479,28 @@
 		}	
 	}
 
+/* begin modification by katsumi */
+	/* Delete file/directory buttons when empty *******************************************************************************************************************/
 
-
-
-	
+	function _skinfiles_delbutton($mode,$path){
+		global $pluginUrl,$manager;
+		echo '<p><form method="post" action="' . htmlspecialchars($pluginUrl) . '">';
+		$manager->addTicketHidden();
+		switch($mode){
+		case 'file':
+			echo _SKINFILES_02;
+			echo '<input type="hidden" name="action" value="delfile_process" />';
+			echo '<input type="hidden" name="file" value="'.htmlspecialchars($path).'" />';
+			break;
+		case 'dir':
+		default:
+			echo 'The directory is empty.';
+			echo '<input type="hidden" name="action" value="deldir_process" />';
+			echo '<input type="hidden" name="dir" value="'.htmlspecialchars($path).'" />';
+		}
+		echo '<input type="hidden" name="sure" value="yes" />';
+		echo '<input type="submit" value="'._SKINFILES_DELETE.'" />';
+		echo "</form></p>\n";
+	}
+/* end modification */
 ?>

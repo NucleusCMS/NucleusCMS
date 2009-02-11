@@ -2,10 +2,8 @@
 
    /*
 	* @version $Id$
-	* @version $NucleusJP: english.php,v 1.3.2.1 2007/10/24 09:35:07 kimitake Exp $
+	* @version $NucleusJP: english.php,v 1.3 2007/02/04 06:28:46 kimitake Exp $
 	*/
-
-define('_SKINFILES_DESC',				'A simple file manager for skins.');
 
 define('_SKINFILES_TITLE',				'Skin Files');
 define('_SKINFILES_TOOLTIP',			'Manage skin files');
@@ -177,5 +175,10 @@ define('_SKINFILES_ERR_UPLOAD_FILE8',			'has been uploaded.');
 define('_SKINFILES_ERR_UPLOAD_FILE9',			'Error: The directory ');
 define('_SKINFILES_ERR_UPLOAD_FILE10',			'does not exist ');
 define('_SKINFILES_ERR_UPLOAD_FILE11',			'or you do not have permission to access that directory.');
+
+
+define('_SKINFILES_01',				'A simple file manager for skins.');
+define('_SKINFILES_02',				'The file is empty. Do you delete this? ');
+
 
 ?>
