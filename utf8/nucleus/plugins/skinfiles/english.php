@@ -180,5 +180,6 @@ define('_SKINFILES_ERR_UPLOAD_FILE11',			'or you do not have permission to acces
 define('_SKINFILES_01',				'A simple file manager for skins.');
 define('_SKINFILES_02',				'The file is empty. Do you delete this? ');
 
-
+define('_SKINFILES_OPT_GENBACKUP',				'When editing, is back-up file generated?');
+definr('_SKINFILES_OPT_BACKUPPREFIX',			'Prefix of the file name of the backup');
 ?>

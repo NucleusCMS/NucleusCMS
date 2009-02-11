@@ -179,5 +179,6 @@ define('_SKINFILES_ERR_UPLOAD_FILE11',			'そのディレクトリにアクセスする権限があ
 define('_SKINFILES_01',				'FTPを使わずにNucleus管理画面でスキンの構成ファイルを管理。NP_LinkToSkinFilesと組み合わせると便利');
 define('_SKINFILES_02',				'ファイルの中身がありません。削除しますか？ ');
 
-
+define('_SKINFILES_OPT_GENBACKUP',				'編集時にバックアップファイルを生成しますか？');
+definr('_SKINFILES_OPT_BACKUPPREFIX',			'バックアップファイル名のプリフィックス');
 ?>
