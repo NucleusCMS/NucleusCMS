@@ -467,7 +467,7 @@ define('_MEMBERMAIL_MAIL',					'あなたのメールアドレス:');
 // file upload
 define('_ERROR_DISALLOWEDUPLOAD2',			'チームに参加しているどのブログも管理権限を持っていない為、ファイルのアップロードが出来ません。');
 
-// plugin list
+/* plugin list
 define('_LISTS_INFO',						'情報');
 define('_LIST_PLUGS_AUTHOR',				'作者:');
 define('_LIST_PLUGS_VER',					'バージョン:');
@@ -478,7 +478,18 @@ define('_LIST_PLUGS_UP',					'上へ');
 define('_LIST_PLUGS_DOWN',					'下へ');
 define('_LIST_PLUGS_UNINSTALL',				'削除');
 define('_LIST_PLUGS_ADMIN',					'管理');
-define('_LIST_PLUGS_OPTIONS',				'編集');
+define('_LIST_PLUGS_OPTIONS',				'編集');*/
+define('_LISTS_INFO',						'インフォメーション');
+define('_LIST_PLUGS_AUTHOR',				'製作者：');
+define('_LIST_PLUGS_VER',					'バージョン：');
+define('_LIST_PLUGS_SITE',					'入手サイト：');
+define('_LIST_PLUGS_DESC',					'概要：');
+define('_LIST_PLUGS_SUBS',					'登録済みイベント：');
+define('_LIST_PLUGS_UP',					'&uarr; ひとつ上へ');
+define('_LIST_PLUGS_DOWN',					'&darr; ひとつ下へ');
+define('_LIST_PLUGS_UNINSTALL',				'アンインストール');
+define('_LIST_PLUGS_ADMIN',					'管理');
+define('_LIST_PLUGS_OPTIONS',				'オプション編集');
 
 // plugin option list
 define('_LISTS_VALUE',						'値(内容)');

@@ -84,8 +84,8 @@ class NP_SkinFiles extends NucleusPlugin {
 			'yes'
 		);
 		$this->createOption(
+			'backup_prefix',
 			_SKINFILES_OPT_BACKUPPREFIX,
-			'prefix',
 			'text',
 			'bkup_'
 		);
