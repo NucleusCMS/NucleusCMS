@@ -156,9 +156,9 @@ class ADMIN {
 		?>
 
 		<form action="index.php" method="post"><p>
-		<?php echo _LOGIN_NAME?>: <br /><input name="login"  tabindex="10" />
+		<?php echo _LOGIN_NAME; ?> <br /><input name="login"  tabindex="10" />
 		<br />
-		<?php echo _LOGIN_PASSWORD?>: <br /><input name="password"  tabindex="20" type="password" />
+		<?php echo _LOGIN_PASSWORD; ?> <br /><input name="password"  tabindex="20" type="password" />
 		<br />
 		<input name="action" value="login" type="hidden" />
 		<br />
@@ -1511,16 +1511,17 @@ class ADMIN {
 		$btimestamp = $blog->getCorrectTime();
 		$bPingInfo  = ($blog->sendPing() && numberOfEventSubscriber('SendPing') > 0);
 		$item       = $manager->getItem(intval($result['itemid']), 1, 1);
-		$iPingInfo  = (!$item['draft'] && postVar('dosendping') && $item['timestamp'] < $btimestamp);
+		$iPingInfo  = (!$item['draft'] && postVar('dosendping') && $item['timestamp'] <= $btimestamp);
 		if ($iPingInfo && $bPingInfo) {
 			$nextAction = 'sendping';
 		} else {
 			$nextAction = 'itemlist';
 		}
 		if ($result['status'] == 'newcategory') {
-			$distURI = ($nextAction = 'sendping') ? $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action='
-					 . $nextAction . '&blogid=' . intval($blogid)) : 
-					   '';
+//			$distURI = ($nextAction == 'sendping') ? $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action='
+//					 . $nextAction . '&blogid=' . intval($blogid)) : 
+//					   '';
+			$distURI = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=' . $nextAction . '&blogid=' . intval($blogid));
 			$this->action_categoryedit($result['catid'], $blogid, $distURI);
 		} else {
 			$methodName = 'action_' . $nextAction;
@@ -2473,7 +2474,7 @@ class ADMIN {
 		//           - (there remains at least one team member)
 		$tmem = MEMBER::createFromID($memberid);
 
-		$manager->notify('PreDeleteTeamMember', array('member' => &$mem, 'blogid' => $blogid));
+		$manager->notify('PreDeleteTeamMember', array('member' => &$tmem, 'blogid' => $blogid));
 
 		if ($tmem->isBlogAdmin($blogid)) {
 			// check if there are more blog members left and at least one admin
@@ -2487,7 +2488,7 @@ class ADMIN {
 		$query = 'DELETE FROM '.sql_table('team')." WHERE tblog=$blogid and tmember=$memberid";
 		sql_query($query);
 
-		$manager->notify('PostDeleteTeamMember', array('member' => &$mem, 'blogid' => $blogid));
+		$manager->notify('PostDeleteTeamMember', array('member' => &$tmem, 'blogid' => $blogid));
 
 		return '';
 	}
@@ -2550,7 +2551,7 @@ class ADMIN {
 
 		<h3><?php echo _EBLOG_TEAM_TITLE?></h3>
 
-		<p>Members currently on your team:
+		<p><?php echo _EBLOG_CURRENT_TEAM_MEMBER; ?>
 		<?php
 			$res = sql_query('SELECT mname, mrealname FROM ' . sql_table('member') . ',' . sql_table('team') . ' WHERE mnumber=tmember AND tblog=' . intval($blogid));
 			$aMemberNames = array();
@@ -2641,13 +2642,13 @@ class ADMIN {
 				/><label for="notifyNewItem"><?php echo _EBLOG_NOTIFY_ITEM?></label>
 			</td>
 		</tr><tr>
-		<? 
+		<?php
 		if (numberOfEventSubscriber('SendPing') > 0) {
 		?>
 			<td><?php echo _EBLOG_PING?> <?php help('sendping'); ?></td>
 			<td><?php $this->input_yesno('sendping',$blog->sendPing(),85); ?></td>
 		</tr><tr>
-		<?
+		<?php
 		}
 		?>
 			<td><?php echo _EBLOG_MAXCOMMENTS?> <?php help('blogmaxcomments'); ?></td>
@@ -3416,7 +3417,7 @@ class ADMIN {
 				'name' => &$bname,
 				'shortname' => &$bshortname,
 				'timeoffset' => &$btimeoffset,
-				'description' => &$bdescription,
+				'description' => &$bdesc,
 				'defaultskin' => &$bdefskin
 			)
 		);
@@ -4515,10 +4516,10 @@ selector();
 				echo helplink('skinvar-' . $current) . "$current</a>";
 				if (count($actions) != 0) echo ", ";
 			}
-		echo '<br /><br />' . _SKIN_ALLOWEDBLOGS;
+		echo '<br /><br />' . _SKINEDIT_ALLOWEDBLOGS;
 		$query = 'SELECT bshortname, bname FROM '.sql_table('blog');
 		showlist($query,'table',array('content'=>'shortblognames'));
-		echo '<br />' . _SKIN_ALLOWEDTEMPLATESS;
+		echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
 		$query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
 		showlist($query,'table',array('content'=>'shortnames'));
 		echo '</div></form>';
@@ -5296,8 +5297,9 @@ selector();
 
 		?>
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-		<html xmlns="http://www.w3.org/1999/xhtml">
+		<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
 		<head>
+			<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 			<title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin.css" />
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
@@ -5408,9 +5410,9 @@ selector();
 
 					echo '<h2>' . $member->getDisplayName(). '</h2>';
 					echo '<ul>';
-					echo '<li><a href="index.php?action=editmembersettings">',_QMENU_USER_SETTINGS,'</a></li>';
-					echo '<li><a href="index.php?action=browseownitems">',_QMENU_USER_ITEMS,'</a></li>';
-					echo '<li><a href="index.php?action=browseowncomments">',_QMENU_USER_COMMENTS,'</a></li>';
+					echo '<li><a href="index.php?action=editmembersettings">' . _QMENU_USER_SETTINGS . '</a></li>';
+					echo '<li><a href="index.php?action=browseownitems">' . _QMENU_USER_ITEMS . '</a></li>';
+					echo '<li><a href="index.php?action=browseowncomments">' . _QMENU_USER_COMMENTS . '</a></li>';
 					echo '</ul>';
 
 
@@ -5422,20 +5424,20 @@ selector();
 						echo '<h2>',_QMENU_MANAGE,'</h2>';
 
 						echo '<ul>';
-						echo '<li><a href="index.php?action=actionlog">',_QMENU_MANAGE_LOG,'</a></li>';
-						echo '<li><a href="index.php?action=settingsedit">',_QMENU_MANAGE_SETTINGS,'</a></li>';
-						echo '<li><a href="index.php?action=systemoverview">',_QMENU_MANAGE_SYSTEM,'</a></li>';
-						echo '<li><a href="index.php?action=usermanagement">',_QMENU_MANAGE_MEMBERS,'</a></li>';
-						echo '<li><a href="index.php?action=createnewlog">',_QMENU_MANAGE_NEWBLOG,'</a></li>';
-						echo '<li><a href="index.php?action=backupoverview">',_QMENU_MANAGE_BACKUPS,'</a></li>';
-						echo '<li><a href="index.php?action=pluginlist">',_QMENU_MANAGE_PLUGINS,'</a></li>';
+						echo '<li><a href="index.php?action=actionlog">' . _QMENU_MANAGE_LOG . '</a></li>';
+						echo '<li><a href="index.php?action=settingsedit">' . _QMENU_MANAGE_SETTINGS . '</a></li>';
+						echo '<li><a href="index.php?action=systemoverview">' . _QMENU_MANAGE_SYSTEM . '</a></li>';
+						echo '<li><a href="index.php?action=usermanagement">' . _QMENU_MANAGE_MEMBERS . '</a></li>';
+						echo '<li><a href="index.php?action=createnewlog">' . _QMENU_MANAGE_NEWBLOG . '</a></li>';
+						echo '<li><a href="index.php?action=backupoverview">' . _QMENU_MANAGE_BACKUPS . '</a></li>';
+						echo '<li><a href="index.php?action=pluginlist">' . _QMENU_MANAGE_PLUGINS . '</a></li>';
 						echo '</ul>';
 
 						echo '<h2>',_QMENU_LAYOUT,'</h2>';
 						echo '<ul>';
-						echo '<li><a href="index.php?action=skinoverview">',_QMENU_LAYOUT_SKINS,'</a></li>';
-						echo '<li><a href="index.php?action=templateoverview">',_QMENU_LAYOUT_TEMPL,'</a></li>';
-						echo '<li><a href="index.php?action=skinieoverview">',_QMENU_LAYOUT_IEXPORT,'</a></li>';
+						echo '<li><a href="index.php?action=skinoverview">' . _QMENU_LAYOUT_SKINS . '</a></li>';
+						echo '<li><a href="index.php?action=templateoverview">' . _QMENU_LAYOUT_TEMPL . '</a></li>';
+						echo '<li><a href="index.php?action=skinieoverview">' . _QMENU_LAYOUT_IEXPORT . '</a></li>';
 						echo '</ul>';
 
 					}
@@ -6352,7 +6354,9 @@ selector();
 		sql_query('UPDATE '.sql_table('plugin').' SET porder='.$oldOrder.' WHERE porder='.$newOrder);
 		sql_query('UPDATE '.sql_table('plugin').' SET porder='.$newOrder.' WHERE pid='.$plugid);
 
-		$this->action_pluginlist();
+		//$this->action_pluginlist();
+		// To avoid showing ticket in the URL, redirect to pluginlist, instead.
+		redirect('?action=pluginlist');
 	}
 
 	/**
@@ -6383,7 +6387,9 @@ selector();
 		sql_query('UPDATE '.sql_table('plugin').' SET porder='.$oldOrder.' WHERE porder='.$newOrder);
 		sql_query('UPDATE '.sql_table('plugin').' SET porder='.$newOrder.' WHERE pid='.$plugid);
 
-		$this->action_pluginlist();
+		//$this->action_pluginlist();
+		// To avoid showing ticket in the URL, redirect to pluginlist, instead.
+		redirect('?action=pluginlist');
 	}
 
 	/**
