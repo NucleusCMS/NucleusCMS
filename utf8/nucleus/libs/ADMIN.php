@@ -1512,16 +1512,17 @@ class ADMIN {
 		$btimestamp = $blog->getCorrectTime();
 		$bPingInfo  = ($blog->sendPing() && numberOfEventSubscriber('SendPing') > 0);
 		$item       = $manager->getItem(intval($result['itemid']), 1, 1);
-		$iPingInfo  = (!$item['draft'] && postVar('dosendping') && $item['timestamp'] < $btimestamp);
+		$iPingInfo  = (!$item['draft'] && postVar('dosendping') && $item['timestamp'] <= $btimestamp);
 		if ($iPingInfo && $bPingInfo) {
 			$nextAction = 'sendping';
 		} else {
 			$nextAction = 'itemlist';
 		}
 		if ($result['status'] == 'newcategory') {
-			$distURI = ($nextAction = 'sendping') ? $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action='
-					 . $nextAction . '&blogid=' . intval($blogid)) : 
-					   '';
+//			$distURI = ($nextAction == 'sendping') ? $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action='
+//					 . $nextAction . '&blogid=' . intval($blogid)) : 
+//					   '';
+			$distURI = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=' . $nextAction . '&blogid=' . intval($blogid));
 			$this->action_categoryedit($result['catid'], $blogid, $distURI);
 		} else {
 			$methodName = 'action_' . $nextAction;
