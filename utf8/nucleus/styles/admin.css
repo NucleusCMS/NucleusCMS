@@ -139,7 +139,8 @@ h1 {
 	margin: 0px;
 	padding: 0px;
 	
-	font-size: 70%;
+/*	font-size: 70%;*/
+	font-size: small;
 	color:#333;/* add */
 	
 	border-width: 1px;
@@ -344,11 +345,12 @@ th {
 th, td {
 	padding: 4px;
 	empty-cells: show;	
+	border: 1px solid #ddd; /* add */
 }
 
 td {
 	background-color: #fff;
-	border: 1px solid #ddd;
+/*	border: 1px solid #ddd;*/
 	font-size: small;
 	vertical-align: top;
 	text-align: left;

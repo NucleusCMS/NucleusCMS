@@ -1252,6 +1252,9 @@ define('_LIST_SKIN_README_TXT',						'Read me');
 define('_CREATED_NEW_CATEGORY_NAME',				'新しいカテゴリ');
 define('_CREATED_NEW_CATEGORY_DESC',				'新しいカテゴリの説明');
 
+// ADMIN.php blog settings
+define('_EBLOG_CURRENT_TEAM_MEMBER',				'このブログチームの現在のメンバー：');
+
 // HTML outputs
 define('_HTML_XML_NAME_SPACE_AND_LANG_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"');
 

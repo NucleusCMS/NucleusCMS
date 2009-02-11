@@ -11,7 +11,7 @@ body {
 	background: #fff;
 	color: #000;
 /*    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;*/
-	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif !important;
 }		
 
 textarea {
@@ -27,13 +27,13 @@ h1 {
 /* 
 	Hide switch buttons initially, we'll enable them again if we are sure
 	the browser supports DOM
-*/
+*
 #switchbuttons {
 	display: none;
 }
 /*
 	Hide preview also when no DOM is supported
-*/
+*
 #preview {
 	display: none;
 }
@@ -50,17 +50,22 @@ h1 {
     border-right: 2px solid #8E8EAB;
     border-bottom: 2px solid #8E8EAB;
     color: #000000;
-/*    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;*/
+/*    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;*
     font-weight: bold;   
 }
-
+*/
 .contentblock {
 	/*background: #ddd;*/
-	height: 500px;
+/*	height: 500px;*/
+	height: 370px;
 	overflow: auto; /* temporary removed, to make the select box work in Mozilla */
-	padding: 1px;
+	padding: 1px !important;
     margin: 0px;
 	vertical-align: top;
+}
+
+*:first-child+html .contentblock {
+	height: 330px;
 }
 
 .shortcuts {
@@ -68,10 +73,10 @@ h1 {
 	text-align: right;
 	font-size: x-small;
 }
-
+/*
 #options {
    margin-top:-15px;
-   }
+   }*/
 #options h2 {
    margin:15px 0 0 0;
 }
@@ -107,10 +112,16 @@ label		{ cursor: pointer; }
 
 table {
 	border: none;
-	width: 95%;
+/*	width: 95%;*/
+	width: 98%;
 	border-collapse: collapse;
-	margin-bottom: 10px;
-	margin-top: 10px;	
+	margin: 10px auto;
+/*	margin-bottom: 10px;
+	margin-top: 10px;*/	
+}
+
+*:first-child+html .table {
+	width: 93%;
 }
 
 th {
@@ -155,3 +166,48 @@ ul.nobullets {
 	padding: 0;
 	margin: 0;
 }
+
+
+#body input[type=text],
+#body textarea,
+#body select,
+#more input[type=text],
+#more textarea,
+#more select {
+	margin: auto;
+	display: block;
+	width: 90%;
+}
+
+*:first-child+html #body input[type=text],
+*:first-child+html #body textarea,
+*:first-child+html #body select,
+*:first-child+html #more input[type=text],
+*:first-child+html #more textarea,
+*:first-child+html #more select {
+	display: inline;
+}
+
+textarea {
+	margin-top: 1px;
+}
+
+.submitbuttons {
+	line-height: 2em;
+	margin: 8px;
+}
+
+.submitbuttons input {
+	float: left;
+	width: 9em;
+	height: 2em;
+	margin: 0 3px;
+}
+
+.submitbuttons span.autosavestatus {
+	display: block;
+	clear: both;
+	height: 2em;
+	margin: 0 3px;
+}
+

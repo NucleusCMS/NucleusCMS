@@ -2551,7 +2551,7 @@ class ADMIN {
 
 		<h3><?php echo _EBLOG_TEAM_TITLE?></h3>
 
-		<p>Members currently on your team:
+		<p><?php echo _EBLOG_CURRENT_TEAM_MEMBER; ?>
 		<?php
 			$res = sql_query('SELECT mname, mrealname FROM ' . sql_table('member') . ',' . sql_table('team') . ' WHERE mnumber=tmember AND tblog=' . intval($blogid));
 			$aMemberNames = array();

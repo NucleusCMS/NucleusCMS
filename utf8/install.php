@@ -655,6 +655,15 @@ function doInstall() {
 
 	mysql_query($query) or _doError(_ERROR20 . ': ' . mysql_error() );
 
+	// 8-2. update category settings
+	$query = 'UPDATE ' . tableName('nucleus_category')
+		   . " SET cname  = '" . addslashes(_GENERALCAT_NAME) . "',"
+		   . " cdesc      = '" . addslashes(_GENERALCAT_DESC) . "'"
+		   . " WHERE"
+		   . " catid      = 1";
+
+	mysql_query($query) or _doError(_ERROR20 . ': ' . mysql_error() );
+
 	// 9. update item date
 	$query = 'UPDATE ' . tableName('nucleus_item')
 		   . " SET   itime   = '" . date('Y-m-d H:i:s', time() ) ."'"

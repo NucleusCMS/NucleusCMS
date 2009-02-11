@@ -122,6 +122,14 @@ class SKIN {
 	function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
 		global $manager;
 
+		// <temporary hack. for 3.4x ONLY !!>
+		global $CONF;
+		if (!$manager && $CONF['installscript']) {
+			include_once($DIR_LIBS . 'MANAGER.php');
+			$manager =& MANAGER::instance();
+		}
+		// </temporary hack. for 3.4x ONLY !!>
+
 		$manager->notify(
 			'PreAddSkin',
 			array(

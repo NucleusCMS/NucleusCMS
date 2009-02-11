@@ -19,52 +19,67 @@
 		<title><%text(_ADD_ADDTO)%> '<%blogname%>'</title>
 		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" /> 
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />		
+		<link rel="stylesheet" type="text/css" href="styles/jqueryui/ui.all.css" />
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
+		<script src="http://www.google.com/jsapi"></script>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
+			google.load("jquery", "1");
+			google.load("jqueryui", "1");
 			var nucleus_initbm_oldonload = window.onload;
 			function nucleus_initbm()
 			{
-				initStyles(); 
+//				initStyles(); 
 				updAllPreviews();
 
 				if (nucleus_initbm_oldonload)
 					nucleus_initbm_oldonload();
 			}
 			window.onload = nucleus_initbm;
+			google.setOnLoadCallback(function() {
+				$(function(){
+					$("#tabs > ul").tabs();
+					$("table tr td:first-child").css("width", "14%");
+				});
+			});
+			function preautoSaveDraft() {
+				$(".autosavestatus").text('(' + lastsavedtext + ' ' + formattedDate() + ')');
+				autoSaveDraft();
+			}
 		</script>
 	</head>
 	<body>
 		<h1><%text(_ADD_ADDTO)%> '<%bloglink%>'</h1>
+		<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+			<ul class=" ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+				<li class="ui-state-default ui-corner-top"><a href="#body"><%text(_BMLET_BODY)%> &gt;&gt;</a></li>
+				<li class="ui-state-default ui-corner-top"><a href="#more"><%text(_BMLET_MORE)%> &gt;&gt;</a></li>
+				<li class="ui-state-default ui-corner-top"><a href="#options"><%text(_BMLET_OPTIONS)%> &gt;&gt;</a></li>
+				<li class="ui-state-default ui-corner-top"><a href="#preview"><%text(_BMLET_PREVIEW)%> &gt;&gt;</a></li>
+			</ul>
 		<form id="addform" method="post" action="bookmarklet.php" ><div>
-			
 			<input name="action" type="hidden" value="additem" />
 			<input name="blogid" type="hidden" value="<%blogid%>" />
 			<input type="hidden" name="draftid" value="0" />
 			<%ticket%>
-			
-			<div id="submit" class="buttonbar">
-				<div id="switchbuttons">
-					<input type="button" onclick="flipBlock('body');" value="<%text(_BMLET_BODY)%> &gt;&gt;" />
-					<input type="button" onclick="flipBlock('more');" value="<%text(_BMLET_MORE)%> &gt;&gt;" />
-					<input type="button" onclick="flipBlock('options');" value="<%text(_BMLET_OPTIONS)%> &gt;&gt;" />
-					<input type="button" onclick="updAllPreviews(); flipBlock('preview');" value="<%text(_BMLET_PREVIEW)%> &gt;&gt;" />
-				</div>
-				<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
-				<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
-			</div>
+			<!-- div id="submit" class="buttonbar" -->
+				<!-- div id="switchbuttons" -->
+					<!-- input type="button" onclick="flipBlock('body');" value="<%text(_BMLET_BODY)%> &gt;&gt;" / -->
+					<!-- input type="button" onclick="flipBlock('more');" value="<%text(_BMLET_MORE)%> &gt;&gt;" / -->
+					<!-- input type="button" onclick="flipBlock('options');" value="<%text(_BMLET_OPTIONS)%> &gt;&gt;" / -->
+					<!-- input type="button" onclick="updAllPreviews(); flipBlock('preview');" value="<%text(_BMLET_PREVIEW)%> &gt;&gt;" / -->
+				<!-- /div -->
+				<!-- input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" / -->
+				<!-- input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" / -->
+			<!-- /div -->
 
-			<div id="body" class="contentblock">
+			<div id="body" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
 
 				<table>
-				<%ifautosave()%><tr>
-				<td><%text(_AUTOSAVEDRAFT)%></td>
-				<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
-				</tr><%endif%>
 				<tr>
 				<td><%text(_ADD_TITLE)%></td>
 				<td>
@@ -88,16 +103,16 @@
 				<%text(_ADD_CATEGORY)%></td>
 				<td><%categories%></td>
 				</tr>
-				<tr>
+				<!-- tr>
 				<%ifautosave()%><td><%text(_AUTOSAVEDRAFT_NOW)%></td>
 				<td><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="autoSaveDraft();" /></td><%endif%>
-				</tr>
+				</tr -->
 				</table>
 
 					
 			</div>
 			
-			<div id="more" class="contentblock">
+			<div id="more" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
 				<table>
 				<tr>
 				<td><%text(_ADD_MORE)%> <%helplink(extended)%></td>
@@ -109,7 +124,7 @@
 					rows="17"><%contents(more)%></textarea>
 				</td></tr></table>
 			</div>
-			<div id="options" class="contentblock">
+			<div id="options" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
 				<table>
 				<%ifblogsetting(bcomments)%>
 					<tr>
@@ -159,7 +174,7 @@
 
 			</div>
 			
-			<div id="preview" class="contentblock">
+			<div id="preview" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
 				<h2><%text(_ADD_PREVIEW)%></h2>
 				
 				<b><span id="prevtitle">&#160;</span></b>
@@ -170,6 +185,14 @@
 			</div>
 			
 		</div></form>
+		</div>
+
+			<div class="submitbuttons">
+				<input type="submit" value="<%text(_BMLET_EDIT)%>" onclick="return checkSubmit();" />
+				<%ifautosave()%><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="preautoSaveDraft();" /><%endif%>
+				<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
+				<%ifautosave()%><span class="autosavestatus">(<%text(_AUTOSAVEDRAFT)%>&nbsp;:&nbsp;<span class="lastsavedtime"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%>)</span></span><%endif%>
+			</div>
 
 	<%ifautosave()%><script type="text/javascript">
 		var xmlhttprequest = new Array();
@@ -186,3 +209,4 @@
 
 	</body>
 	</html>
+	

@@ -87,6 +87,14 @@ class TEMPLATE {
 	function createNew($name, $desc) {
 		global $manager;
 
+		// <temporary hack. for 3.4x ONLY !!>
+		global $CONF;
+		if (!$manager && $CONF['installscript']) {
+			include_once($DIR_LIBS . 'MANAGER.php');
+			$manager =& MANAGER::instance();
+		}
+		// </temporary hack. for 3.4x ONLY !!>
+
 		$manager->notify(
 			'PreAddTemplate',
 			array(
