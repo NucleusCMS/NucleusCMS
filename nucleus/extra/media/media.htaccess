@@ -1,0 +1,5 @@
+# You may modify following line to avoid script execution completely.
+# In environment where multiple users are using Nucleus,
+# be sure that any script cannot be executed due to your server setting.
+# Note that this isn't needed when all members are super-admin.
+RemoveHandler php cgi pl py rb shtml
