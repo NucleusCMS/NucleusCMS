@@ -76,6 +76,10 @@ It is suggested that you do so before upgrading the database in case things go w
 <p>Some changes need to be done manually. Instructions are given below (if any)</p>
 
 <?php
+$from = intGetVar('from');
+if (!$from) 
+	$from = $current;
+
 $sth = 0;
 if (!$DIR_MEDIA) {
   upgrade_manual_96();
@@ -92,6 +96,13 @@ if (phpversion() < '4.0.6') {
   upgrade_manual_php405();
   $sth = 1;
 }
+
+// upgrades from pre-340 version need to be told of recommended .htaccess files for the media and skins folders.
+// these .htaccess files are included in new installs of 340 or higher
+if (in_array($from,array(95,96)) || $from < 34) {
+  upgrade_manual_34();
+  $sth = 1;
+} 
 
 if ($sth == 0)
   echo "<p class='ok'>No manual changes needed. This must be your lucky day!</p>";
@@ -143,6 +154,26 @@ function upgrade_manual_20() {
   <h3>RSS 2.0 and RSD skin</h3>
 
   <p>When a fresh version of Nucleus 2.0 is installed, an RSS 2.0 (Really Simple Syndication) syndication skin is also installed, as well as an RSD skin (Really Simple Discovery). The files <code>xml-rss2.php</code> and <code>rsd.php</code> are available in the upgrade, however the skin itself needs to be installed manually. After you've uploaded the contents of the <code>upgrade-files</code>, open <code>admin area &gt; nucleus management &gt; skin import</code>. From there, you can install both skins. (Unless you don't want them installed, that is)</p>
+
+<?php }
+
+function upgrade_manual_34() {
+  global $DIR_NUCLEUS;
+
+?>
+  <h2>Changes needed for Nucleus 3.4</h2>
+  <p>
+	It is recommended that you apply some restrictions to what you allow the web server to do with files in the <i>media</i> and <i>skins</i> folders. These restrictions are not necessary to the functioning of the software, nor to the security of the software. However, they can be an important help under the security principle of denying any access that is not required.
+  </p>
+  
+  <p>
+    Instructions for applying the restrictions are found in the following two files on your server:
+	<ul>
+	   <li><a href="../../extra/media/readme.txt">extra/media/readme.txt</a></li>
+	   <li><a href="../../extra/skins/readme.txt">extra/skins/readme.txt</a></li>
+	</ul>
+  </p>
+  
 
 <?php }
 

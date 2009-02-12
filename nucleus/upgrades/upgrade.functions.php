@@ -201,6 +201,7 @@
 
 	function upgrade_end($msg = "") {
 		global $upgrade_failures;
+		$from = intGetVar('from');
 		if ($upgrade_failures > 0)
 			$msg = "Some queries have failed. Try reverting to a backup or reparing things manually, then rerun this script.";
 
@@ -211,7 +212,7 @@
 
 		<p><?php echo $msg?></p>
 
-		<p>Back to the <a href="index.php">Upgrades Overview</a></p>
+		<p>Back to the <a href="index.php?from=<?php echo $from; ?>">Upgrades Overview</a></p>
 
 		<?php
 		upgrade_foot();
