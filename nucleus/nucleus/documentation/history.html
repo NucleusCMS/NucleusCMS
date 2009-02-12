@@ -35,7 +35,7 @@
 			<li>CHANGED: Ease the solution for the new member option for autosave draft(kaigreve)</li>
 			<li>CHANGED: Move System overview in the menu of the admin area under the entry for the configuration (ADMIN.php)</li>
 			<li>CHANGED: Shorten menu entry to 'System info' and correct 'enable' to 'enabled' (english.php)</li>
-			<li>CHANGED: height of page class in help.html to avoid overlaps on long help topics. (ftruscot)
+			<li>CHANGED: height of page class in help.html to avoid overlaps on long help topics. (ftruscot)</li>
 			<li>ADDED: .htaccess file in skins/ and nucleus/libs/ to fight possible script execution due to certain apache configurations. (Code recommended by Katsumi, added to svn by ftruscot)</li>
 			<li>ADDED: .htaccess file in media/ to fight possible script execution due to certain apache configurations. (Code recommended by Katsumi, added to svn by ftruscot)</li>
 			<li>ADDED: New member option to decide whether the autosave draft function is used or not (kaigreve)</li>
@@ -68,7 +68,7 @@
 			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=76">#76(JP)</a>): [XHTML] Validate admin-area. (shizuki)</li>
 			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=67">#67(JP)</a>): Change isn't reflected on ValidateForm event. (shizuki)</li>
 			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=107">#107(JP)</a>): When editing an item, time generation will be an error. (kotorisan/yu/shizuki)</li>
-			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=108">#108(JP)</a>): Pop-up, for if a character string is the sky, nothing is indicated. (sato-na/shizuki)</li>
+			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=108">#108(JP)</a>): Pop-up, for if a character string is empty, nothing is indicated. (sato-na/shizuki)</li>
 			<li>FIXED: Fix history. (shizuki)</li>
 			<li>FIXED: "history.html" is XHTML 1.0 Strict. (shizuki)</li>
 			<li>FIXED: (<a href="http://dev.nucleuscms.org/tracker/index.php?id=142&amp;do=details">#142</a>): Plugin API: Incorrect operation order. (shizuki/Andrew Black)</li>
@@ -140,20 +140,20 @@
 			<li>
 				ADDED: Serveral changes and fixes from Nucleus Japan (details in the log files of the <a href="http://sourceforge.net/svn/?group_id=66479">Nucleus repository</a> at sourceforge.net)
 				<ul>
-					<li>ADDED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=68">#68(JP)</a>: Encrypted cookie key. (Katsumi)</li>
-					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=60">#60(JP)</a>: Item link in notification email is wrong. (shizuki)</li>
-					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=62">#62(JP)</a>: email address is not referred in &lt;%usermail%&gt;. (shizuki)</li>
-					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=66">#66(JP)</a>: Even if calling PostPluginOptionsUpdate, getOption does not returns correct value. (Katsumi)</li>
-					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=49">#49(JP)</a>: PLUGIN::getAllItemOptions does not work correctly. (NKJG)</li>
-					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=57">#57(JP)</a>: SQL error happens when updating plugin option. (Katsumi)</li>
-					<li>CHANGED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=48">#48(JP)</a>: Super-admin always can login to admin page (Kimitake)</li>
-					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=56">#56(JP)</a>: When creating db backup, the key length drops (Katsumi)</li>
-					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=41">#41(JP)</a>): fixed dropped info during backing up (Katsumi)</li>
-					<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=40">#40(JP)</a>): fixed PostAddCategory event (Kimitake)</li>
+					<li>ADDED(JP): (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=68">#68(JP)</a>): Encrypted cookie key. (Katsumi)</li>
+					<li>FIXED(JP): (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=60">#60(JP)</a>): Item link in notification email is wrong. (shizuki)</li>
+					<li>FIXED(JP): (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=62">#62(JP)</a>): email address is not referred in &lt;%usermail%&gt;. (shizuki)</li>
+					<li>FIXED(JP): (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=66">#66(JP)</a>): Even if calling PostPluginOptionsUpdate, getOption does not returns correct value. (Katsumi)</li>
+					<li>FIXED(JP): (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=49">#49(JP)</a>): PLUGIN::getAllItemOptions does not work correctly. (NKJG)</li>
+					<li>FIXED(JP): (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=57">#57(JP)</a>): SQL error happens when updating plugin option. (Katsumi)</li>
+					<li>FIXED(JP): (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=56">#56(JP)</a>): When creating db backup, the key length drops (Katsumi)</li>
+					<li>FIXED(JP): (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=41">#41(JP)</a>): fixed dropped info during backing up (Katsumi)</li>
+					<li>FIXED(JP): (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=40">#40(JP)</a>): fixed PostAddCategory event (Kimitake)</li>
+					<li>CHANGED(JP): (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=48">#48(JP)</a>): Super-admin always can login to admin page (Kimitake)</li>
+					<li>ADDED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=45">#45</a>  from the Japanese Tracker): include code from NP_0TicketForPlugin in the core (Changes from Nucleus Japan)(Katsumi)</li>
 				</ul>
 			</li>
 			<li>ADDED: Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc. to avoid XSS (from Nucleus Japan)</li>
-			<li>ADDED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/?do=details&amp;task_id=45">#45</a>  from the Japanese Tracker): include code from NP_0TicketForPlugin in the core (Changes from Nucleus Japan)</li>
 			<li>ADDED: new events for Media upload: PreMediaUpload and PostMediaUpload (kaigreve)</li>
 			<li>ADDED: new skinvar bloglist (kaigreve)</li>
 			<li>ADDED: new method for URL rewriting with the global variable virtualpath, new .htaccess file can be found in the folder extra/fancyurl-2, more information <a href="http://forum.nucleuscms.org/viewtopic.php?t=12241">forum(Another approach to Fancy URLs)</a> (kaigreve and Legolas)</li>
