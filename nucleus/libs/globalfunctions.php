@@ -795,6 +795,8 @@ function selector() {
 
 		if ($b->isValidCategory($catid) ) {
 			$catextra = ' and icat=' . $catid;
+		} else {
+			$catextra = '';
 		}
 
 		// get previous itemid and title
