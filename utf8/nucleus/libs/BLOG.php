@@ -187,7 +187,7 @@ class BLOG {
 					if ($old_date != 0) {
 						$oldTS = strtotime($old_date);
 						$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
-						$tmp_footer = strftime($template['DATE_FOOTER'], $oldTS);
+						$tmp_footer = strftime(isset($template['DATE_FOOTER'])?$template['DATE_FOOTER']:'', $oldTS);
 						$parser->parse($tmp_footer);
 						$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
 					}

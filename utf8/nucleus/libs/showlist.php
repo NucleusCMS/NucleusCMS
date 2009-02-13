@@ -366,7 +366,8 @@ function listplug_table_itemlist($template, $type) {
 			// evaluate amount of comments for the item
 			$camount = $COMMENTS->amountComments();
 			if ($camount>0) {
-				echo    "<br /><a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>".sprintf(_LIST_ITEM_COMMENTS, $COMMENTS->amountComments())."</a>";
+				echo "<br /><a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>";
+				echo "( " . sprintf(_LIST_ITEM_COMMENTS, $COMMENTS->amountComments())." )</a>";
 			}
 			else {
 				echo "<br />"._LIST_ITEM_NOCONTENT;
