@@ -31,42 +31,20 @@
             font-style: italic;
         }
     </style>
+	<script src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript">
-		function fontSizeChange(size) {
-			var elem = document.getElementById('body');
-			var flrg = document.getElementById('fontLarge');
-			var fmdl = document.getElementById('fontMiddle');
-			var fsml = document.getElementById('fontSmall');
-			switch(size) {
-				case 'l':
-					elem.style.fontSize = 'large';
-					flrg.style.fontWeight = 'bold';
-					fmdl.style.fontWeight = 'normal';
-					fsml.style.fontWeight = 'normal';
-					break;
-				case 'm':
-					elem.style.fontSize = 'medium';
-					flrg.style.fontWeight = 'normal';
-					fmdl.style.fontWeight = 'bold';
-					fsml.style.fontWeight = 'normal';
-					break;
-				case 's':
-					elem.style.fontSize = 'small';
-					flrg.style.fontWeight = 'normal';
-					fmdl.style.fontWeight = 'normal';
-					fsml.style.fontWeight = 'bold';
-					break;
-			}
-			
-		}
+		google.load("jquery", "1");
+		google.setOnLoadCallback(function() {
+			$.getScript("javascript/fontsizeChanger.js");
+		});
 	</script>
 </head>
 <body>
-<div id="fontSizeCanger">
-<a href="#top" onClick="fontSizeChange('s');return false;" id="fontSmall">小</a>
-<a href="#top" onClick="fontSizeChange('m');return false;" id="fontMiddle">中</a>
-<a href="#top" onClick="fontSizeChange('l');return false;" id="fontLarge">大</a>
-</div>
+	<div id="fontSizeChanger">
+	<a href="#top" id="f_small">小</a>
+	<a href="#top" id="f_medium">中</a>
+	<a href="#top" id="f_large">大</a>
+	</div>
 <div id="body">
 
 <div class="heading">

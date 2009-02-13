@@ -1,9 +1,17 @@
+@charset 'UTF-8';
+
+/**
+ * NucleusCMS Manual Style sheet
+ *
+ * $Id$
+ */
+
 body {
 	background-color: #fff;
 	background:url(background.png) repeat-x;
 	padding-top:13px;
 	color: #555;
-	font-family: "ÉÅÉCÉäÉI", "Meiryo", "ÉqÉâÉMÉmäpÉS Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ÇlÇr ÇoÉSÉVÉbÉN", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+	font-family: "„É°„Ç§„É™„Ç™", "Meiryo", "„Éí„É©„ÇÆ„ÉéËßí„Ç¥ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "Ôº≠Ôº≥ Ôº∞„Ç¥„Ç∑„ÉÉ„ÇØ", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 /*	font-family: verdana, arial;
 	font-family: "Hiragino Kaku Gothic Pro W3", "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif; */
 	font-size: small;
@@ -162,7 +170,7 @@ tt,
 code,
 samp {
 	font-size: small;
-		font-family: "ÉÅÉCÉäÉI", "Meiryo", "ÉqÉâÉMÉmäpÉS Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ÇlÇr ÇoÉSÉVÉbÉN", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+		font-family: "„É°„Ç§„É™„Ç™", "Meiryo", "„Éí„É©„ÇÆ„ÉéËßí„Ç¥ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "Ôº≠Ôº≥ Ôº∞„Ç¥„Ç∑„ÉÉ„ÇØ", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 /*	font-family: "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;*/
 }
 
@@ -210,30 +218,30 @@ dl {
 }
 
 dt {
-	font-family: "ÉÅÉCÉäÉI", "Meiryo", "ÉqÉâÉMÉmäpÉS Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ÇlÇr ÇoÉSÉVÉbÉN", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+	font-family: "„É°„Ç§„É™„Ç™", "Meiryo", "„Éí„É©„ÇÆ„ÉéËßí„Ç¥ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "Ôº≠Ôº≥ Ôº∞„Ç¥„Ç∑„ÉÉ„ÇØ", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 /*	font-family: "Hiragino Kaku Gothic Pro W3", "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif; */
 	font-weight:bold;
 	margin-top:7px;
 }
 
-#fontSizeCanger {
+#fontSizeChanger {
 	position: fixed;
 	top: 20px;
 	left: 50px;
 	font-size: medium;
 }
 
-#fontSizeCanger a {
+#fontSizeChanger a {
 	font-weight: normal;
 	border: 1px dotted gray;
 	padding: 0 3px;
 }
 
-#fontSizeCanger a#fontSmall {
+#fontSizeChanger a#fontSmall {
 	font-weight: bold;
 }
 
-#fontSizeCanger a:hover {
+#fontSizeChanger a:hover {
 	color: #fff;
 	background-color: #1D3565;
 }

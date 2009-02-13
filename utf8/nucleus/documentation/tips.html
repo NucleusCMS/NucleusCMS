@@ -32,43 +32,21 @@
             font-style: italic;
         }
     </style>
+	<script src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript">
-		function fontSizeChange(size) {
-			var elem = document.getElementsByTagName('body')[0];
-			var flrg = document.getElementById('fontLarge');
-			var fmdl = document.getElementById('fontMiddle');
-			var fsml = document.getElementById('fontSmall');
-			switch(size) {
-				case 'l':
-					elem.style.fontSize = 'large';
-					flrg.style.fontWeight = 'bold';
-					fmdl.style.fontWeight = 'normal';
-					fsml.style.fontWeight = 'normal';
-					break;
-				case 'm':
-					elem.style.fontSize = 'medium';
-					flrg.style.fontWeight = 'normal';
-					fmdl.style.fontWeight = 'bold';
-					fsml.style.fontWeight = 'normal';
-					break;
-				case 's':
-					elem.style.fontSize = 'small';
-					flrg.style.fontWeight = 'normal';
-					fmdl.style.fontWeight = 'normal';
-					fsml.style.fontWeight = 'bold';
-					break;
-			}
-			
-		}
+		google.load("jquery", "1");
+		google.setOnLoadCallback(function() {
+			$.getScript("devdocs/javascript/fontsizeChanger.js");
+		});
 	</script>
 </head>
 <body>
-<div id="fontSizeCanger">
-<a href="#top" onClick="fontSizeChange('s');return false;" id="fontSmall">小</a>
-<a href="#top" onClick="fontSizeChange('m');return false;" id="fontMiddle">中</a>
-<a href="#top" onClick="fontSizeChange('l');return false;" id="fontLarge">大</a>
-</div>
-
+	<div id="fontSizeChanger">
+	<a href="#top" id="f_small">小</a>
+	<a href="#top" id="f_medium">中</a>
+	<a href="#top" id="f_large">大</a>
+	</div>
+<div id="body">
 <div class="heading">
 Tips &amp; Suggestions
 </div>
@@ -541,6 +519,6 @@ selector();
 <p><strong>注意:</strong>もし、既に用意してある<code>About.html</code>を使いたい時は、ファイルを<code>skins/default/</code>ディレクトリ(デフォルトスキン使用時)に置き、スキンパーツに<code>&lt;%include(About.html)%&gt;</code>と書くだけで、その内容を取り込むことができます。そしてその内容はほぼ無制限です。</p>
 
 <p>(<a href="http://www.iai.com/">ftruscot</a>より)</p>
-
+</div>
 </body>
 </html>

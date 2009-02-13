@@ -31,8 +31,21 @@
             font-style: italic;
         }
     </style>
+	<script src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+		google.load("jquery", "1");
+		google.setOnLoadCallback(function() {
+			$.getScript("devdocs/javascript/fontsizeChanger.js");
+		});
+	</script>
 </head>
 <body>
+	<div id="fontSizeChanger">
+	<a href="#top" id="f_small">小</a>
+	<a href="#top" id="f_medium">中</a>
+	<a href="#top" id="f_large">大</a>
+	</div>
+<div id="body">
 
 <h1>更新履歴</h1>
 
@@ -959,6 +972,6 @@
 	</li>
 </ul>
 
-
+</div>
 </body>
 </html>
