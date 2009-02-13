@@ -55,9 +55,10 @@ upgrade_head();
   else  if (!upgrade_checkinstall(32)) $current = 31;
   else  if (!upgrade_checkinstall(33)) $current = 32;
   else  if (!upgrade_checkinstall(331)) $current = 33;
-  else  $current = 331;
+  else  if (!upgrade_checkinstall(34)) $current = 33;
+  else  $current = 34;
 
-  if ($current == 331) { 	 
+  if ($current == 34) { 	 
          ?> 	 
            <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p> 	 
          <?php 	 
@@ -77,6 +78,10 @@ upgrade_head();
 <p>いくつかの変更は手動で行う必要があります。下記にその手順を示します。</p>
 
 <?php
+$from = intGetVar('from');
+if (!$from) 
+	$from = $current;
+
 $sth = 0;
 if (!$DIR_MEDIA) {
   upgrade_manual_96();
@@ -96,6 +101,13 @@ if (phpversion() < '4.0.6') {
 
 // from v3.3, atom feed supports 1.0 and blogsetting is added
 $sth = upgrade_manual_atom1_0();
+
+// upgrades from pre-340 version need to be told of recommended .htaccess files for the media and skins folders.
+// these .htaccess files are included in new installs of 340 or higher
+if (in_array($from,array(95,96)) || $from < 34) {
+  upgrade_manual_34();
+  $sth = 1;
+} 
 
 if ($sth == 0)
   echo "<p class='ok'>手動変更は必要ありません。今日はラッキーな日ですね!</p>";
@@ -147,6 +159,26 @@ function upgrade_manual_20() {
   <h3>RSS 2.0 と RSD スキン</h3>
 
   <p>Nucleus 2.0 を新規にインストールしたとき、RSD(Really Simple Discovery) 用のスキンの他に、RSS 2.0(Really Simple Syndication)用のスキンもまたインストールされます。<code>xml-rss2.php</code> と <code>rsd.php</code> の両ファイルはアップグレードされますが、スキンに関しては手動でインストールする必要があります。<code>upgrade-files</code>の中身をアップロードしたあと、管理者画面を開き、管理ホームにあるスキンの「読込/書出」を開きます。そこから両スキンをインストールすることができます（もしインストールするつもりがなければ、しなくても結構です）。</p>
+
+<?php }
+
+function upgrade_manual_34() {
+  global $DIR_NUCLEUS;
+
+?>
+  <h2>Nucleus 3.4 用に必要な変更</h2>
+  <p>
+	<em>skins</em>ディレクトリと<em>media</em>ディレクトリに「.haccess」を設置して、アクセス制限をかけることが推奨されます。この変更は、Nucleusの機能やセキュリティに直接関係があるわけではありませんが、不正アクセスを防ぐ為の重要な助けになるでしょう。
+  </p>
+  
+  <p>
+    Instructions for applying the restrictions are found in the following two files on your server:
+	<ul>
+	   <li><a href="../../extra/htaccess/media/readme.txt">extra/htaccess/media/readme.txt</a></li>
+	   <li><a href="../../extra/htaccess/skins/readme.txt">extra/htaccess/skins/readme.txt</a></li>
+	</ul>
+  </p>
+  
 
 <?php }
 

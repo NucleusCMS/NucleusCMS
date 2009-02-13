@@ -103,6 +103,10 @@
 				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 331 LIMIT 1';
 				$minrows = 1;
 				break;
+			case '34':
+				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 340 LIMIT 1';
+				$minrows = 1;
+				break;
 		}
 
 		$res = mysql_query($query);
@@ -203,6 +207,7 @@
 
 	function upgrade_end($msg = "") {
 		global $upgrade_failures;
+		$from = intGetVar('from');
 		if ($upgrade_failures > 0)
 			$msg = "いくつかのデータベース操作に失敗しました。もし以前にこのアップグレードスクリプトを実行していたのであれば、問題ないと思われます。";
 
@@ -213,7 +218,7 @@
 
 		<p><?php echo $msg?></p>
 
-		<p><a href="index.php">アップグレード最初のページ</a>にもどる</p>
+		<p><a href="index.php?from=<?php echo $from; ?>">アップグレード最初のページ</a>にもどる</p>
 
 		<?php
 		upgrade_foot();

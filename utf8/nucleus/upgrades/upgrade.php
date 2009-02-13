@@ -24,7 +24,7 @@ if (!$member->isLoggedIn()) {
 }
 
 if (!$member->isAdmin()) {
-	upgrade_error('Only Super-Admins are allowed to perform upgrades');
+	upgrade_error('Super-admin（最高管理者）のみがアップグレードを実行できます。');
 }
 
 include('upgrade0.95.php');
@@ -39,6 +39,7 @@ include('upgrade3.1.php');
 include('upgrade3.2.php');
 include('upgrade3.3.php');
 include('upgrade3.31.php');
+include('upgrade3.4.php');
 
 $from = intGetVar('from');
 
@@ -64,12 +65,15 @@ switch($from) {
 		upgrade_do31();
 	case 31:
 		upgrade_do32();
-		break;
+//		break;
 	case 32:
 		upgrade_do33();
-		break;
+//		break;
 	case 33:
 		upgrade_do331();
+//		break;
+	case 331:
+		upgrade_do34();
 		break;
 	default:
 		echo "<li>エラー! 実行すべきアップデートはありません</li>";
