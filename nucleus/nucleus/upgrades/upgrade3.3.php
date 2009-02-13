@@ -18,6 +18,13 @@ function upgrade_do33() {
 		upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
 	}
 
+	// check cmail column to separate to URL and cemail
+	mysql_query(
+		'UPDATE ' . sql_table('comment') . ' ' . 
+		"SET cemail = cmail, cmail = '' " .
+		"WHERE cmail LIKE '%@%'"
+	);
+
 	if (!upgrade_checkIfColumnExists('item','iposted')) {
 		$query = "	ALTER TABLE `" . sql_table('item') . "`
                                 ADD `iposted` TINYINT(2) DEFAULT 1 NOT NULL ;";
