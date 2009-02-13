@@ -1219,7 +1219,7 @@ define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'重要な設定');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'バージョンチェック');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'より新しいバージョンのリリースが無いか、公式サイトでチェックできます: ');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://nucleuscms.org/version.php?v=%d&amp;pl=%d');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'バージョンチェック');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'最新のバージョンをチェック');
 define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			'この画面を閲覧する権限がありません');
 
 // ENCAPSULATE.php

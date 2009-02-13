@@ -5337,7 +5337,8 @@ selector();
 			$codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
 
 			if ($member->isLoggedIn() && $member->isAdmin())
-				echo '<a href="http://nucleuscms.org/version.php?v=',getNucleusVersion(),'&amp;pl=',getNucleusPatchLevel(),'" title="Check for upgrade">Nucleus CMS ', $nucleus['version'], $codenamestring, '</a>';
+				$checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
+				echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ', $nucleus['version'], $codenamestring, '</a>';
 			else
 				echo 'Nucleus CMS ', $nucleus['version'], $codenamestring;
 			echo ')';
