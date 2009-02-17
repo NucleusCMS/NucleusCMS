@@ -47,11 +47,6 @@ if ($CONF['debug']) {
 		directory) are still on the server.
 */
 
-// Avoid notices
-if (!isset($CONF['Self'])) {
-	$CONF['Self'] = 'index.php';
-}
-
 $CONF['alertOnHeadersSent'] = 1;
 $CONF['alertOnSecurityRisk'] = 1;
 $CONF['ItemURL'] = $CONF['Self'];
