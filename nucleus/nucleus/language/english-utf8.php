@@ -1012,7 +1012,8 @@ define('_LIST_COMMENT_HOST',		'Host');
 // itemlist
 define('_LIST_ITEM_INFO',			'Info');
 define('_LIST_ITEM_CONTENT',		'Title and Text');
-
+define('_LIST_ITEM_NOCONTENT',		'No Comment');
+define('_LIST_ITEM_COMMENTS',		'%d Comments');
 
 // teamlist
 define('_LIST_TEAM_ADMIN',			'Admin ');
