@@ -1,8 +1,8 @@
-﻿<?php
+<?php
 // English Nucleus Language File
 //
 // Author: Wouter Demuynck
-// Nucleus version: v1.0-v3.2
+// Nucleus version: v1.0-v3.4
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -16,7 +16,7 @@
  * English Nucleus Language File
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
 
@@ -31,7 +31,7 @@ define('_ADMIN_NOTABILIA',							'Some information');
 define('_ADMIN_PLEASE_READ',						"Before you start, here's some <strong>important information</strong>");
 define('_ADMIN_HOW_TO_ACCESS',						"After you've created a new weblog, you'll need to perform some actions to make your blog accessible. There are two possibilities:");
 define('_ADMIN_SIMPLE_WAY',							"<strong>Simple:</strong> Create a copy of <code>index.php</code> and modify it to display your new weblog. Further instructions on how to do this will be provided after you've submitted this first form.");
-define('_ADMIN_ADVANCED_WAY',						"<strong>Advanced:</strong> Insert the blog content into your current skins using skinvars like <code>otherblog</code>. This way, you can place multiple blogs on the same page.");
+define('_ADMIN_ADVANCED_WAY',						"<strong>Advanced:</strong> Insert the blog content into your current skins using skinvars like <code>&lt;%otherblog()&gt;</code>. This way, you can place multiple blogs on the same page.");
 define('_ADMIN_HOW_TO_CREATE',						'Create Weblog');
 
 
@@ -898,8 +898,8 @@ define('_BAN_ADD_BTN',				'Add Ban');
 
 // LOGIN screen
 define('_LOGIN_MESSAGE',			'Message');
-define('_LOGIN_NAME',				'Name');
-define('_LOGIN_PASSWORD',			'Password');
+define('_LOGIN_NAME',				'Name :');
+define('_LOGIN_PASSWORD',			'Password :');
 define('_LOGIN_SHARED',				_LOGINFORM_SHARED);
 define('_LOGIN_FORGOT',				'Forgot your password?');
 
@@ -1012,8 +1012,9 @@ define('_LIST_COMMENT_HOST',		'Host');
 // itemlist
 define('_LIST_ITEM_INFO',			'Info');
 define('_LIST_ITEM_CONTENT',		'Title and Text');
-define('_LIST_ITEM_NOCONTENT',		'No Comment');
-define('_LIST_ITEM_COMMENTS',		'%d Comments');
+define('_LIST_ITEM_NOCONTENT',						'No Comment');
+define('_LIST_ITEM_COMMENTS',						'%d Comments');
+
 
 // teamlist
 define('_LIST_TEAM_ADMIN',			'Admin ');
@@ -1041,8 +1042,8 @@ define('_MOVE_BTN',					'Move Item');
 define('_OVERVIEW_SHOWALL',							'Show all blogs');	// <add by shizuki />
 
 // Edit skins
-define('_SKIN_ALLOWEDBLOGS',						'Short blog names:');			// <add by shizuki>
-define('_SKIN_ALLOWEDTEMPLATESS',					'Template names:');		// <add by shizuki>
+define('_SKINEDIT_ALLOWEDBLOGS',						'Short blog names:');			// <add by shizuki>
+define('_SKINEDIT_ALLOWEDTEMPLATESS',					'Template names:');		// <add by shizuki>
 
 // delete member
 define('_WARNINGTXT_NOTDELMEDIAFILES',				'Please note that media files will <b>NOT</b> be deleted. (At least not in this Nucleus version)');	// <add by shizuki />
@@ -1082,7 +1083,7 @@ define('_ADMINPAGEFOOT_DONATE',						'Donate!');
 define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group');
 
 // Quick menu
-define('_QMENU_MANAGE_SYSTEM',						'System settings overview');
+define('_QMENU_MANAGE_SYSTEM',						'System info');
 
 // REG file
 define('_WINREGFILE_TEXT',							'Post To &Nucleus (%s)');
@@ -1190,7 +1191,7 @@ define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL version');
 define('_ADMIN_SYSTEMOVERVIEW_SETTINGS',			'Settings');
 define('_ADMIN_SYSTEMOVERVIEW_GDLIBRALY',			'GD Libraly');
 define('_ADMIN_SYSTEMOVERVIEW_MODULES',				'Modules');
-define('_ADMIN_SYSTEMOVERVIEW_ENABLE',				'enable');
+define('_ADMIN_SYSTEMOVERVIEW_ENABLE',				'enabled');
 define('_ADMIN_SYSTEMOVERVIEW_DISABLE',				'disabled');
 define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM',		'Your Nucleus CMS System');
 define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION',		'Nucleus CMS version');
@@ -1242,6 +1243,12 @@ define('_LIST_SKIN_README_TXT',						'Read me');
 // BLOG.php createNewCategory()
 define('_CREATED_NEW_CATEGORY_NAME',				'newcat');
 define('_CREATED_NEW_CATEGORY_DESC',				'New category');
+
+// ADMIN.php blog settings
+define('_EBLOG_CURRENT_TEAM_MEMBER',				'Members currently on your team:');
+
+// HTML outputs
+define('_HTML_XML_NAME_SPACE_AND_LANG_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us"');
 
 // Language Files
 define('_LANGUAGEFILES_JAPANESE-UTF8',				'Japanese - &#26085;&#26412;&#35486; (UTF-8)');
