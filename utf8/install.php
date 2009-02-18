@@ -833,8 +833,6 @@ function doInstall() {
 		<li><?php echo _TEXT14_L2; ?></li>
 	</ul>
 
-	<?php echo _TEXT14_EX; ?>
-
 	<h1><?php echo _HEADER10; ?></h1>
 
 	<?php echo _TEXT15; ?>
@@ -844,7 +842,7 @@ function doInstall() {
 		<li><?php echo _TEXT15_L2; ?></li>
 		</ul>
 
-	<?php echo _TEXT16; ?>
+	<?php echo _TEXT15_EX; ?>
 
 	<h1><?php echo _HEADER11; ?></h1>
 
