@@ -350,27 +350,27 @@ if (!defined('_ARCHIVETYPE_MONTH') ) {
 // decode path_info
 if ($CONF['URLMode'] == 'pathinfo') {
 	// initialize keywords if this hasn't been done before
-	if ($CONF['ItemKey'] == '') {
+	if (!isset($CONF['ItemKey']) || $CONF['ItemKey'] == '') {
 		$CONF['ItemKey'] = 'item';
 	}
 
-	if ($CONF['ArchiveKey'] == '') {
+	if (!isset($CONF['ArchiveKey']) || $CONF['ArchiveKey'] == '') {
 		$CONF['ArchiveKey'] = 'archive';
 	}
 
-	if ($CONF['ArchivesKey'] == '') {
+	if (!isset($CONF['ArchivesKey']) || $CONF['ArchivesKey'] == '') {
 		$CONF['ArchivesKey'] = 'archives';
 	}
 
-	if ($CONF['MemberKey'] == '') {
+	if (!isset($CONF['MemberKey']) || $CONF['MemberKey'] == '') {
 		$CONF['MemberKey'] = 'member';
 	}
 
-	if ($CONF['BlogKey'] == '') {
+	if (!isset($CONF['BlogKey']) || $CONF['BlogKey'] == '') {
 		$CONF['BlogKey'] = 'blog';
 	}
 
-	if ($CONF['CategoryKey'] == '') {
+	if (!isset($CONF['CategoryKey']) || $CONF['CategoryKey'] == '') {
 		$CONF['CategoryKey'] = 'category';
 	}
 

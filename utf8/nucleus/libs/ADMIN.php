@@ -5145,7 +5145,7 @@ selector();
 			$mqr = get_magic_quotes_runtime() ? 'On' : 'Off';
 			echo "\t\t" . '<td>' . $mqr . "</td>\n";
 			echo "\t</tr><tr>\n";
-			echo "\t\t" . '<td>magic_quotes_runtime' . "</td>\n";
+			echo "\t\t" . '<td>register_globals' . "</td>\n";
 			$rg = ini_get('register_globals') ? 'On' : 'Off';
 			echo "\t\t" . '<td>' . $rg . "</td>\n";
 			echo "\t</tr>";
@@ -5336,11 +5336,12 @@ selector();
 
 			$codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
 
-			if ($member->isLoggedIn() && $member->isAdmin())
+			if ($member->isLoggedIn() && $member->isAdmin()) {
 				$checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
 				echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ', $nucleus['version'], $codenamestring, '</a>';
-			else
+			} else {
 				echo 'Nucleus CMS ', $nucleus['version'], $codenamestring;
+			}
 			echo ')';
 		echo '</div>';
 	}

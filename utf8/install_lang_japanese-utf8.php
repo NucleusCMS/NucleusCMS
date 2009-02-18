@@ -137,7 +137,7 @@ define('_TEXT12',				'<b>付記:</b> <i>config.php</i>の最初や終わりに�
 define('_TEXT13',				'<p>Nucleusはインストールされ、<code>config.php</code>はアップデートされました。</p><p>セキュリティのため<code>config.php</code>のパーミッションを444に戻すことを忘れないでください(<a href="nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>)。</p>');
 define('_TEXT14',				'<p>Nucleusは誰でもブログにコメントを残す事が出来る様になっているので、このままではスパマーの温床になる危険があります。以下の方法のによってブログを保護することをお勧めします：</p>');
 define('_TEXT14_L1',			'あなたがコメントを必要としないのであれば、管理エリアから｢あなたのブログ｣ &gt; ｢ブログ設定｣ とたどり、 ｢コメントを許可しますか?｣ の設定を｢いいえ｣にする事で、コメント投稿フォームを非表示にする事が出来ます。');
-define('_TEXT14_L2',			'スパムを撃退・管理する為のプラグインをインストールすることも可能です：<a href="http://japan.nucleuscms.org/wiki/plugins_by_category#supamukanritsuru">Nucleus Japan wiki</a> (ブックマークをお勧めします)');
+define('_TEXT14_L2',			'スパムを撃退・管理する為のプラグインをインストールすることも可能です：<a href="http://japan.nucleuscms.org/wiki/plugins_by_category#section4">Nucleus Japan wiki</a> (ブックマークをお勧めします)');
 define('_HEADER10',				'インストールファイルの削除');
 define('_TEXT15',				'<p>ウェブサーバから次のファイルを削除してください：</p>');
 define('_TEXT15_L1',			'<b>install.sql</b>：テーブルの構造を内包するファイル');
