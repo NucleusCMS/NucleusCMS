@@ -1,6 +1,6 @@
 <?php
 // Japanese (UTF-8) Nucleus Language File
-// 
+//
 // Author: chrome (chrome@cgi.no-ip.org)
 // Modified by: Osamu Higuchi (osamu@higuchi.com)
 // Modified by: shizuki (shizuki@kinezumi.net)
@@ -8,7 +8,7 @@
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which 
+// might be deleted. Therefor, it's important to list the Nucleus version for which
 // the file was written in your document.
 //
 // Fully translated language file can be sent to us and will be made
@@ -153,7 +153,7 @@ define('_QMENU_ACTIVATE_TEXT',				'<p>アクティベーションを完了すれ
 
 define('_PLUGS_BTN_UPDATE',					'登録リストのアップデート');
 
-// global settings 
+// global settings
 define('_SETTINGS_JSTOOLBAR',				'Javascriptツールバーのスタイル');
 define('_SETTINGS_JSTOOLBAR_FULL',			'フル・ツールバー(IE)');
 define('_SETTINGS_JSTOOLBAR_SIMPLE',		'シンプル・ツールバー(IE以外)');
@@ -514,7 +514,7 @@ define('_BACKTOMANAGE',						'Nucleusの管理に戻る');
 
 
 
-// charset to use 
+// charset to use
 define('_CHARSET',							'UTF-8');
 
 // global stuff
@@ -1008,7 +1008,7 @@ define('_LISTS_COMMENTS',							'コメント');
 define('_LISTS_TYPE',								'タイプ');
 
 
-// member list 
+// member list
 define('_LIST_MEMBER_NAME',							'表示される名前(ログインID)');
 define('_LIST_MEMBER_RNAME',						'ハンドルネーム');
 define('_LIST_MEMBER_ADMIN',						'Super-admin権限 ');
@@ -1218,7 +1218,7 @@ define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus のパッチレベル
 define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'重要な設定');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'バージョンチェック');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'より新しいバージョンのリリースが無いか、公式サイトでチェックできます: ');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://nucleuscms.org/version.php?v=%d&amp;pl=%d');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://japan.nucleuscms.org/version.php?v=%d&amp;pl=%d');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'最新のバージョンをチェック');
 define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			'この画面を閲覧する権限がありません');
 
