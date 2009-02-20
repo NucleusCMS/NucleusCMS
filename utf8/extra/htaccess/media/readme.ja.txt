@@ -5,8 +5,8 @@
 下記の手順に従って、.htaccessを適用してください
 
 1. mediaディレクトリに他の.htaccessファイルがないことを確認します。
-2. 「mrdia.htaccess」ファイルを、Nucleusのmediaディレクトリにコピーします。
-3. ファイルを「mrdia.htaccess」から「.htaccess」にリネームします。
-4. もし、すでに.htaccessファイルがmediaディレクトリに存在した場合は、すでにある.htaccessファイルに「mrdia.htaccess」の内容を追記します。
+2. 「media.htaccess」ファイルを、Nucleusのmediaディレクトリにコピーします。
+3. ファイルを「media.htaccess」から「.htaccess」にリネームします。
+4. もし、すでに.htaccessファイルがmediaディレクトリに存在した場合は、すでにある.htaccessファイルに「media.htaccess」の内容を追記します。
 
 これでmediaディレクトリを、意図しないスクリプトの実行から保護することが出来ます。

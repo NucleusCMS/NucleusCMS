@@ -6,7 +6,7 @@
 下記の手順に従って、.htaccessを適用してください
 
 1. skinsディレクトリに他の.htaccessファイルがないことを確認します。
-2. 「mrdia.htaccess」ファイルを、Nucleusのskinsディレクトリにコピーします。
+2. 「skins.htaccess」ファイルを、Nucleusのskinsディレクトリにコピーします。
 3. ファイルを「skins.htaccess」から「.htaccess」にリネームします。
 4. もし、すでに.htaccessファイルがskinsディレクトリに存在した場合は、すでにある.htaccessファイルに「skins.htaccess」の内容を追記します。
 

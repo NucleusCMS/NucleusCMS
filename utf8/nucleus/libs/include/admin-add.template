@@ -75,13 +75,13 @@
 			<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="61" /><label for="act_future" ><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 			<div class="indent">
 				<%text(_ADD_PLACE_ON)%>
-				<input id="inputyear" name="year" tabindex="63" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" />年
-				<input id="inputmonth" name="month" tabindex="64" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" />月
-				<input id="inputday" name="day" tabindex="65" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" />日
+				<input id="inputyear" name="year" tabindex="63" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>
+				<input id="inputmonth" name="month" tabindex="64" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>
+				<input id="inputday" name="day" tabindex="65" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_DAY)%>
 				 
-				<input id="inputhour" name="hour" tabindex="66" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" />時
-				<input id="inputminutes" name="minutes" tabindex="67" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />分
-				<br />フォーマット：(yyyy)年(mm)月(dd)日 (hh)時(mm)分
+				<input id="inputhour" name="hour" tabindex="66" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>
+				<input id="inputminutes" name="minutes" tabindex="67" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
+				<br /><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>(dd)<%text(_ITEM_ADDEDITTEMPLATE_DAY)%> (hh)<%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
 				
 				<%ifblogsetting(ballowpast,0)%>
 					<br />

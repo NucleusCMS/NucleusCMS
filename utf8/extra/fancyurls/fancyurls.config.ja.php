@@ -23,7 +23,7 @@
 		   
 			$CONF = array();
 
-			include('./fancyurls.config.jp.php'); 
+			include('./fancyurls.config.ja.php'); 
 			include('./config.php');
 
 			selector();

@@ -174,8 +174,8 @@ function upgrade_manual_34() {
   <p>
     Instructions for applying the restrictions are found in the following two files on your server:
 	<ul>
-	   <li><a href="../../extra/htaccess/media/readme.ja.txt">extra/htaccess/media/readme.txt</a></li>
-	   <li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.txt</a></li>
+	   <li><a href="../../extra/htaccess/media/readme.ja.txt">extra/htaccess/media/readme.ja.txt</a></li>
+	   <li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>
 	</ul>
   </p>
   

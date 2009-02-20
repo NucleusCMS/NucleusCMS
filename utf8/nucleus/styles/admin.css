@@ -8,8 +8,7 @@
 */
 
 body {
-	background: #ffffff; 
-	background:url(background.png) repeat-x;
+	background: #fff url(background.png) repeat-x;
 
 }
 

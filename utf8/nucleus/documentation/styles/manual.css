@@ -7,9 +7,8 @@
  */
 
 body {
-	background-color: #fff;
-	background:url(background.png) repeat-x;
-	padding-top:13px;
+	background: #fff url(background.png) repeat-x;
+	padding-top: 13px;
 	color: #555;
 	/*font-family: verdana, arial;*/
 /*	font-family: "Hiragino Kaku Gothic Pro W3", "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif; */

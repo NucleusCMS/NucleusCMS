@@ -932,7 +932,7 @@ define('_MEMBERS_REALNAME',					'ハンドルネーム');
 define('_MEMBERS_PWD',						'パスワード');
 define('_MEMBERS_REPPWD',					'パスワード（確認）');
 define('_MEMBERS_EMAIL',					'メールアドレス');
-define('_MEMBERS_EMAIL_EDIT',				'(メールアドレスを変更すると、そのアドレスへ自動的に新しいパスワードが送信されます)');
+define('_MEMBERS_EMAIL_EDIT',				'(メールアドレスを変更すると、そのアドレスへ自動的に認証用リンクが送信されます)');
 define('_MEMBERS_URL',						'Web siteアドレス (URL)');
 define('_MEMBERS_SUPERADMIN',				'Super-admin(最高管理)権限を与える');
 define('_MEMBERS_CANLOGIN',					'管理者領域へのログインを可能にする');

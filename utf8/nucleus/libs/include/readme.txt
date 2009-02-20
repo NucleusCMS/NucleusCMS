@@ -1,7 +1,7 @@
 README for the libs/include directory
 -------------------------------------
 
-このディレクトリのファイルは管理エリア内で使用します。
-本来、これらのファイルはユーザーによって編集されることを意図していません。
-これらのファイルに関するドキュメントもサポートもありませんが、自己責任において
-どうしても改造したいというのなら止めはしません。
+This directory contains templates used by the admin-area. 
+They're not really intended to be edited by the people using Nucleus (i.e. there's 
+no documentation and little support). But if you really can't stop yourself,
+go ahead :)

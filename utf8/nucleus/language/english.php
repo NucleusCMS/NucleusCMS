@@ -914,7 +914,7 @@ define('_MEMBERS_REALNAME',							'Real Name');
 define('_MEMBERS_PWD',								'Password');
 define('_MEMBERS_REPPWD',							'Repeat Password');
 define('_MEMBERS_EMAIL',							'Email address');
-define('_MEMBERS_EMAIL_EDIT',						'(When you change the email address, a new password will be automatically sent out to that address)');
+define('_MEMBERS_EMAIL_EDIT',						'(When you change the email address, an activation link will be automatically sent out to that address)');
 define('_MEMBERS_URL',								'Website Address (URL)');
 define('_MEMBERS_SUPERADMIN',						'Administrator privileges');
 define('_MEMBERS_CANLOGIN',							'Can login to admin area');
