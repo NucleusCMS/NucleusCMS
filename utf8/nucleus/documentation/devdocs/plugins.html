@@ -1122,6 +1122,26 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         </dl></td>      
     </tr>   
     <tr>
+        <td>PreDeleteSkinPart</td>
+        <td>スペシャルスキンパーツがデータベースから削除される直前</td>
+        <td><dl>
+            <dt class="ro">skinid</dt>
+            <dd>削除されるスペシャルスキンパーツが含まれるスキンのID</dd>
+            <dt class="ro">skintype</dt>
+            <dd>削除されるスペシャルスキンパーツの名前</dd>
+        </dl></td>      
+    </tr>
+    <tr>
+        <td>PostDeleteSkin</td>
+        <td>スペシャルスキンパーツがデータベースから削除された直後</td>
+        <td><dl>
+            <dt class="ro">skinid</dt>
+            <dd>削除されたスペシャルスキンパーツが含まれるスキンのID</dd>
+            <dt class="ro">skintype</dt>
+            <dd>削除されたスペシャルスキンパーツの名前</dd>
+        </dl></td>      
+    </tr>   
+    <tr>
         <td>PreDeletePlugin</td>
         <td>(v2.0) プラグインがデータベースから削除される直前</td>
         <td><dl>
@@ -2058,7 +2078,7 @@ class NP_HelloWorld extends NucleusPlugin {
     return 1;
 }</code></pre>
   </li>
-  <li> Optional. Make the <code>QuickMenu</code> entry optional, and restrict who sees it. The following assumes that an option, of type <code>yesno</code> and called <code>quickmenu</code>, exists in install(). It also will restrict viewing of the <code>QuickMenu</code> entry to super-admins and to blog-admins.
+  <li> オプション。クイックメニュー登録のオプションを作成し、誰に表示するか制限します。<code>quickmenu</code>という<code>yesno</code>タイプのオプションがinstall()にあるとします。次のように、クイックメニュー登録の表示を最高管理者とブログ管理者に制限します。
 	<pre class="example"><code>function event_QuickMenu(&amp;$data) {
     // only show when option enabled
     if ($this-&gt;getOption('quickmenu') != 'yes') return;
