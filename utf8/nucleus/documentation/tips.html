@@ -34,10 +34,28 @@
     </style>
 	<script src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript">
-		google.load("jquery", "1");
+		google.load("jquery", "1", {uncompressed:true});
 		google.setOnLoadCallback(function() {
 			$.getScript("devdocs/javascript/fontsizeChanger.js");
+			var prm = 0;
+			$("#txtTotal").val("000");
+			$("input[type='checkbox']").click(function() {
+				if ($(this).attr("checked") == true)
+					prm += parseInt($(this).val());
+				else if (prm >= $(this).val())
+					prm -= parseInt($(this).val());
+				$("#txtTotal").val(zeroFormat(prm));
+			});
 		});
+		function zeroFormat(num) {
+			if (num < 1)
+				return "000";
+			var ret = String(num);
+			while(ret.length < 3){
+				ret = "0" + num;
+			}
+			return ret;
+		}
 	</script>
 </head>
 <body>
@@ -202,7 +220,7 @@ Windows版では、「FFFTP」というソフトを例に用いて説明させ�
 </p>
 
 <div class="screenshot">
-	<img src="pics/screen4.png" width="682" height="379" alt="menu" />
+	<img src="pics/screen4.png" width="370" height="257" alt="menu" />
 </div>
 
 <p>
@@ -227,84 +245,6 @@ MacOS上で動作する日本語が使えるFTPクライアントでは、「Fet
 または、下記の表にチェックを入れてみて指示されているパーミッション値になるようにテストしてみても良いかと思います。
 <!-- (上記のWindows版FTPソフトの設定画面とは縦軸と横軸が逆になっていますので混同しないように。) -->
 </p>
-<script type="text/javascript">
-
-//************************************************************
-//javascript by ＠うさ http://usagi-js.com/
-// mod by しづき
-//************************************************************/
-var nCurrentValue;
-function ResetValue()
-{
-	nCurrentValue = 0;
-}
-function CheckValue()
-{
-	var frm = document.getElementById('frmSample');
-	//リセット
-	ResetValue()
-	//全てをチェック
-//	if (document.frmSample.chkValue11.checked)
-	if (frm.chkValue11.checked)
-	{
-//		nCurrentValue = eval(document.frmSample.chkValue11.value);
-		nCurrentValue = eval(frm.chkValue11.value);
-	}
-//	if (document.frmSample.chkValue12.checked)
-	if (frm.chkValue12.checked)
-	{
-//		nCurrentValue += eval(document.frmSample.chkValue12.value);
-		nCurrentValue += eval(frm.chkValue12.value);
-	}
-//	if (document.frmSample.chkValue13.checked)
-	if (frm.chkValue13.checked)
-	{
-//		nCurrentValue += eval(document.frmSample.chkValue13.value);
-		nCurrentValue += eval(frm.chkValue13.value);
-	}
-//	if (document.frmSample.chkValue21.checked)
-	if (frm.chkValue21.checked)
-	{
-//		nCurrentValue += eval(document.frmSample.chkValue21.value);
-		nCurrentValue += eval(frm.chkValue21.value);
-	}
-//	if (document.frmSample.chkValue22.checked)
-	if (frm.chkValue22.checked)
-	{
-//		nCurrentValue += eval(document.frmSample.chkValue22.value);
-		nCurrentValue += eval(frm.chkValue22.value);
-	}
-//	if (document.frmSample.chkValue23.checked)
-	if (frm.chkValue23.checked)
-	{
-//		nCurrentValue += eval(document.frmSample.chkValue23.value);
-		nCurrentValue += eval(frm.chkValue23.value);
-	}
-//	if (document.frmSample.chkValue31.checked)
-	if (frm.chkValue31.checked)
-	{
-//		nCurrentValue += eval(document.frmSample.chkValue31.value);
-		nCurrentValue += eval(frm.chkValue31.value);
-	}
-//	if (document.frmSample.chkValue32.checked)
-	if (frm.chkValue32.checked)
-	{
-//		nCurrentValue += eval(document.frmSample.chkValue32.value);
-		nCurrentValue += eval(frm.chkValue32.value);
-	}
-//	if (document.frmSample.chkValue33.checked)
-	if (frm.chkValue33.checked)
-	{
-//		nCurrentValue += eval(document.frmSample.chkValue33.value);
-		nCurrentValue += eval(frm.chkValue33.value);
-	}
-	//表示
-//	document.frmSample.txtTotal.value=nCurrentValue;
-	frm.txtTotal.value=nCurrentValue;
-}
-
-</script>
-
 <form id="frmSample" action="#">
 <table style="margin:auto;text-align:center;" summary="パーミッション設定"><tr>
 <td> </td>
@@ -314,26 +254,26 @@ function CheckValue()
 </tr>
 <tr>
 <td>読む</td>
-<td><input type="checkbox" name="chkValue11" value="400" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10001" /></td>
-<td><input type="checkbox" name="chkValue21" value="40" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10004" /></td>
-<td><input type="checkbox" name="chkValue31" value="4" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10007" /></td>
+<td><input type="checkbox" id="chkValue11" name="chkValue11" value="400" tabindex="10001" /></td>
+<td><input type="checkbox" id="chkValue21" name="chkValue21" value="40" tabindex="10004" /></td>
+<td><input type="checkbox" id="chkValue31" name="chkValue31" value="4" tabindex="10007" /></td>
 </tr>
 <tr>
 <td>書込</td>
-<td><input type="checkbox" name="chkValue12" value="200" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10002" /></td>
-<td><input type="checkbox" name="chkValue22" value="20" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10005" /></td>
-<td><input type="checkbox" name="chkValue32" value="2" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10008" /></td>
+<td><input type="checkbox" id="chkValue12" name="chkValue12" value="200" tabindex="10002" /></td>
+<td><input type="checkbox" id="chkValue22" name="chkValue22" value="20" tabindex="10005" /></td>
+<td><input type="checkbox" id="chkValue32" name="chkValue32" value="2" tabindex="10008" /></td>
 </tr>
 <tr>
 <td>検索/実行</td>
-<td><input type="checkbox" name="chkValue13" value="100" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10003" /></td>
-<td><input type="checkbox" name="chkValue23" value="10" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10006" /></td>
-<td><input type="checkbox" name="chkValue33" value="1" onkeypress="CheckValue()" onclick="CheckValue()" tabindex="10009" /></td>
+<td><input type="checkbox" id="chkValue13" name="chkValue13" value="100" tabindex="10003" /></td>
+<td><input type="checkbox" id="chkValue23" name="chkValue23" value="10" tabindex="10006" /></td>
+<td><input type="checkbox" id="chkValue33" name="chkValue33" value="1" tabindex="10009" /></td>
 </tr>
 <tr>
 <td colspan="4" style="text-align:center;">
 パーミッション値(直接入力はできません)<br />
-<input type="text" name="txtTotal" readonly="readonly" value=""  tabindex="10010" />
+<input type="text" id="txtTotal" name="txtTotal" readonly="readonly" value=""  tabindex="10010" />
 
 </td>
 </tr></table>
@@ -491,8 +431,10 @@ selector();
 &lt;!-- page content --&gt;
 &lt;div id="container"&gt;
 &lt;div class="content"&gt;
-ここはハイキング好きの仲間たちのサイトです。私たちは、アメリカ、カナダ、ヨーロッパで、合計4000マイルを越えるハイキングをしてきました。
-このサイトを通じて、皆さんと経験を共有したいと思います。私たちはハイキングが、誰もノ楽しみの一つであると信じています。
+ここはハイキング好きの仲間たちのサイトです。
+私たちは、アメリカ、カナダ、ヨーロッパで、合計4000マイルを越えるハイキングをしてきました。
+このサイトを通じて、皆さんと経験を共有したいと思います。
+私たちはハイキングが、誰もの楽しみの一つであると信じています。
 &lt;br /&gt;&lt;br /&gt;
 コミュニティに参加したい人は -&gt; をクリック: (...アカウント発行ページへのリンク...)
 &lt;br /&gt;&lt;br /&gt;

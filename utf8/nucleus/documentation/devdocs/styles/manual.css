@@ -18,9 +18,9 @@ body {
 
 @media screen {
 	body {
-		margin-left: 10%;
+/*		margin-left: 10%;
 		margin-right: 10%;
-	}
+*/	}
 }
 
 @media print {
@@ -130,7 +130,18 @@ table {
 	border-collapse: collapse;
 	margin: 0 auto;
 	text-align: center;
-	width: 860px;
+}
+
+@media print {
+	table {
+		width: 860px;
+	}
+}
+
+@media screen {
+	table {
+		width: 85%;
+	}
 }
 
 th {
@@ -140,8 +151,16 @@ th {
 	border:1px solid linen;
 }
 
-th, td {
-	padding: 5px 8px;
+@media print {
+	th, td {
+		padding: 5px 8px;
+	}
+}
+
+@media screen {
+	th, td {
+		padding: 5px 0.8%;
+	}
 }
 
 td {
@@ -169,7 +188,7 @@ tt,
 code,
 samp {
 	font-size: small;
-		font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 /*	font-family: "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;*/
 }
 
@@ -195,13 +214,37 @@ em {
 }
 
 body div#body > .example {
-	width: 860px;
+	width: 85%;
 	margin: 0 auto;
 }
 
+@media print {
+	body div#body > .example {
+		width: 860px;
+	}
+}
+
+@media screen {
+	body div#body > .example {
+		width: 85%;
+	}
+}
+
 body div#body {
-	width: 900px;
 	margin: 0 auto;
+}
+
+@media print {
+	body div#body {
+		width: 900px;
+	}
+}
+
+@media screen {
+	body div#body {
+		max-width: 900px;
+		width: 80%;
+	}
 }
 
 ul {
@@ -212,7 +255,7 @@ ul {
 }
 
 dl {
-	margin:0 0 0.5em 20px;
+	margin:0 10% 0.5em 0;
 	padding:0;
 }
 
