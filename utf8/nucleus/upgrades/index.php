@@ -172,7 +172,7 @@ function upgrade_manual_34() {
   </p>
   
   <p>
-    Instructions for applying the restrictions are found in the following two files on your server:
+    手順は以下の2つのファイルに書いてありますので参考にしてください：
 	<ul>
 	   <li><a href="../../extra/htaccess/media/readme.ja.txt">extra/htaccess/media/readme.ja.txt</a></li>
 	   <li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>

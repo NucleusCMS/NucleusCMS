@@ -3438,7 +3438,9 @@ class ADMIN {
 		$blog	=& $manager->getBlog($blogid);
 
 		// create new category
-		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
+		$sql = 'INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, %s, %s)';
+		sql_query(sprintf($sql, sql_table('category'), $blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC));
+//		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
 		$catid = mysql_insert_id();
 
 		// set as default category
@@ -3477,13 +3479,13 @@ class ADMIN {
 		<p><?php echo sprintf(_BLOGCREATED_ADDEDTXT, htmlspecialchars($bname)) ?></p>
 
 		<ol>
-			<li><a href="#index_php"><?php sprintf(_BLOGCREATED_SIMPLEWAY, htmlspecialchars($bshortname)) ?></code></a></li>
-			<li><a href="#skins"><?php _BLOGCREATED_ADVANCEDWAY ?></a></li>
+			<li><a href="#index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEWAY, htmlspecialchars($bshortname)) ?></code></a></li>
+			<li><a href="#skins"><?php echo _BLOGCREATED_ADVANCEDWAY ?></a></li>
 		</ol>
 
-		<h3><a id="index_php"><?php sprintf(_BLOGCREATED_SIMPLEDESC1, htmlspecialchars($bshortname)) ?></a></h3>
+		<h3><a id="index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEDESC1, htmlspecialchars($bshortname)) ?></a></h3>
 
-		<p><?php sprintf(_BLOGCREATED_SIMPLEDESC2, htmlspecialchars($bshortname)) ?></p>
+		<p><?php echo sprintf(_BLOGCREATED_SIMPLEDESC2, htmlspecialchars($bshortname)) ?></p>
 <pre><code>&lt;?php
 
 $CONF['Self'] = '<b><?php echo htmlspecialchars($bshortname)?>.php</b>';
@@ -5338,9 +5340,9 @@ selector();
 
 			if ($member->isLoggedIn() && $member->isAdmin()) {
 				$checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-				echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ', $nucleus['version'], $codenamestring, '</a>';
+				echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
 			} else {
-				echo 'Nucleus CMS ', $nucleus['version'], $codenamestring;
+				echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
 			}
 			echo ')';
 		echo '</div>';
