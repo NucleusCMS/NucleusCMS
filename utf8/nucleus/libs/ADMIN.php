@@ -3438,7 +3438,7 @@ class ADMIN {
 		$blog	=& $manager->getBlog($blogid);
 
 		// create new category
-		$sql = 'INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, %s, %s)';
+		$sql = 'INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, "%s", "%s")';
 		sql_query(sprintf($sql, sql_table('category'), $blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC));
 //		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
 		$catid = mysql_insert_id();
@@ -3479,7 +3479,7 @@ class ADMIN {
 		<p><?php echo sprintf(_BLOGCREATED_ADDEDTXT, htmlspecialchars($bname)) ?></p>
 
 		<ol>
-			<li><a href="#index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEWAY, htmlspecialchars($bshortname)) ?></code></a></li>
+			<li><a href="#index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEWAY, htmlspecialchars($bshortname)) ?></a></li>
 			<li><a href="#skins"><?php echo _BLOGCREATED_ADVANCEDWAY ?></a></li>
 		</ol>
 
