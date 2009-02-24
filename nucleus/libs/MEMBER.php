@@ -399,6 +399,28 @@ class MEMBER {
 
 		return $blogs;
 	}
+	
+	/**
+	  * Returns an array of all blogids for which member has team rights
+	  */
+	function getTeamBlogs($incAdmin = 1) {
+		$incAdmin = intval($incAdmin);
+		$blogs = array();
+
+		if ($this->isAdmin() && $incAdmin)
+			$query = 'SELECT bnumber as blogid from '.sql_table('blog');
+		else
+			$query = 'SELECT tblog as blogid from '.sql_table('team').' where tmember=' . $this->getID();
+
+		$res = sql_query($query);
+		if (mysql_num_rows($res) > 0) {
+			while ($obj = mysql_fetch_object($res)) {
+				array_push($blogs, $obj->blogid);
+			}
+		}
+
+		return $blogs;
+	}
 
 	/**
 	  * Returns an email address from which notification of commenting/karma voting can
