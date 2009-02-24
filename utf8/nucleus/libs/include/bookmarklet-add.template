@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="<%text(_CHARSET)%>"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html <%text(_HTML_XML_NAME_SPACE_AND_LANG_CODE)%>>
 	<head>
@@ -18,16 +19,18 @@
 	-->
 		<title><%text(_ADD_ADDTO)%> '<%blogname%>'</title>
 		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" /> 
-		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />		
+		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />
 		<link rel="stylesheet" type="text/css" href="styles/jqueryui/ui.all.css" />
+		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
-		<script src="http://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
+		//<![CDATA[
 			google.load("jquery", "1");
 			google.load("jqueryui", "1");
 			var nucleus_initbm_oldonload = window.onload;
@@ -50,163 +53,117 @@
 				$(".autosavestatus").text('(' + lastsavedtext + ' ' + formattedDate() + ')');
 				autoSaveDraft();
 			}
+		//]]>
 		</script>
 	</head>
 	<body>
 		<h1><%text(_ADD_ADDTO)%> '<%bloglink%>'</h1>
-		<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
-			<ul class=" ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-				<li class="ui-state-default ui-corner-top"><a href="#body"><%text(_BMLET_BODY)%> &gt;&gt;</a></li>
-				<li class="ui-state-default ui-corner-top"><a href="#more"><%text(_BMLET_MORE)%> &gt;&gt;</a></li>
-				<li class="ui-state-default ui-corner-top"><a href="#options"><%text(_BMLET_OPTIONS)%> &gt;&gt;</a></li>
-				<li class="ui-state-default ui-corner-top"><a href="#preview"><%text(_BMLET_PREVIEW)%> &gt;&gt;</a></li>
-			</ul>
-		<form id="addform" method="post" action="bookmarklet.php" ><div>
-			<input name="action" type="hidden" value="additem" />
-			<input name="blogid" type="hidden" value="<%blogid%>" />
-			<input type="hidden" name="draftid" value="0" />
-			<%ticket%>
-			<!-- div id="submit" class="buttonbar" -->
-				<!-- div id="switchbuttons" -->
-					<!-- input type="button" onclick="flipBlock('body');" value="<%text(_BMLET_BODY)%> &gt;&gt;" / -->
-					<!-- input type="button" onclick="flipBlock('more');" value="<%text(_BMLET_MORE)%> &gt;&gt;" / -->
-					<!-- input type="button" onclick="flipBlock('options');" value="<%text(_BMLET_OPTIONS)%> &gt;&gt;" / -->
-					<!-- input type="button" onclick="updAllPreviews(); flipBlock('preview');" value="<%text(_BMLET_PREVIEW)%> &gt;&gt;" / -->
-				<!-- /div -->
-				<!-- input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" / -->
-				<!-- input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" / -->
-			<!-- /div -->
-
-			<div id="body" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
-
-				<table>
-				<tr>
-				<td><%text(_ADD_TITLE)%></td>
-				<td>
-				<input 
-					<%jsinput(title)%>
-					type="text" size="60" maxlength="160" 
-					value="<%contents(title)%>"
-				/></td>
-				</tr><tr>
-				<td>
-				<%text(_ADD_BODY)%> <%helplink(additem)%></td>
-				<td>
-				<%jsbuttonbar(media)%>
-				<textarea 
-					<%jsinput(body)%>
-					cols="58" 
-					rows="12"><%contents(body)%></textarea>
-					
-				</td></tr>
-				<tr><td>
-				<%text(_ADD_CATEGORY)%></td>
-				<td><%categories%></td>
-				</tr>
-				<!-- tr>
-				<%ifautosave()%><td><%text(_AUTOSAVEDRAFT_NOW)%></td>
-				<td><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="autoSaveDraft();" /></td><%endif%>
-				</tr -->
-				</table>
-
-					
-			</div>
-			
-			<div id="more" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
-				<table>
-				<tr>
-				<td><%text(_ADD_MORE)%> <%helplink(extended)%></td>
-				<td>
-				<%jsbuttonbar(media)%>
-				<textarea 
-					<%jsinput(more)%>
-					cols="58" 
-					rows="17"><%contents(more)%></textarea>
-				</td></tr></table>
-			</div>
-			<div id="options" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
-				<table>
-				<%ifblogsetting(bcomments)%>
-					<tr>
-					<td><%text(_ADD_DISABLE_COMMENTS)%></td>
-					<td>
-					<input type='radio' name='closed' value='1' id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
-					<input type='radio' name='closed' value='0' checked='checked' id="closed_no"/><label for="closed_no"><%text(_NO)%></label>
-					</td>
-					</tr>
-				<%endif%>
-				
-				<tr>
-				<td><%text(_ADD_DRAFTNFUTURE)%></td>
-				<td>
-					<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
+		<form id="addform" method="post" action="bookmarklet.php" >
+			<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+				<ul class=" ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+					<li class="ui-state-default ui-corner-top"><a href="#body"><%text(_BMLET_BODY)%> &gt;&gt;</a></li>
+					<li class="ui-state-default ui-corner-top"><a href="#more"><%text(_BMLET_MORE)%> &gt;&gt;</a></li>
+					<li class="ui-state-default ui-corner-top"><a href="#options"><%text(_BMLET_OPTIONS)%> &gt;&gt;</a></li>
+					<li class="ui-state-default ui-corner-top"><a href="#preview" onclick="updAllPreviews();"><%text(_BMLET_PREVIEW)%> &gt;&gt;</a></li>
+				</ul>
+				<input name="action" type="hidden" value="additem" />
+				<input name="blogid" type="hidden" value="<%blogid%>" />
+				<input type="hidden" name="draftid" value="0" />
+				<%ticket%>
+				<div id="body" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
+					<table summary="item body">
+						<tr>
+							<td><%text(_ADD_TITLE)%></td>
+							<td><input <%jsinput(title)%> type="text" size="60" maxlength="160" value="<%contents(title)%>" /></td>
+						</tr>
+						<tr>
+							<td><%text(_ADD_BODY)%> <%helplink(additem)%></td>
+							<td>
+								<%jsbuttonbar(media)%>
+								<textarea <%jsinput(body)%> cols="58" rows="12"><%contents(body)%></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td><%text(_ADD_CATEGORY)%></td>
+							<td><%categories%></td>
+						</tr>
+					</table>
+				</div>
+				<div id="more" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
+					<table summary="item more">
+						<tr>
+							<td><%text(_ADD_MORE)%> <%helplink(extended)%></td>
+							<td>
+								<%jsbuttonbar(media)%>
+								<textarea <%jsinput(more)%> cols="58" rows="17"><%contents(more)%></textarea>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="options" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
+					<table summary="item options">
+						<%ifblogsetting(bcomments)%><tr>
+							<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+							<td>
+								<input type='radio' name='closed' value='1' id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+								<input type='radio' name='closed' value='0' checked='checked' id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
+							</td>
+						</tr><%endif%>
+						<tr>
+							<td><%text(_ADD_DRAFTNFUTURE)%></td>
+							<td>
+								<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
+								<br />
+								<input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+								<div class="indent">
+									<%text(_ADD_PLACE_ON)%>
+									<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>
+									<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>
+									<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_DAY)%>
+									<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>
+									<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
+									<br />
+									<%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>(dd)<%text(_ITEM_ADDEDITTEMPLATE_DAY)%> (hh)<%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
+									<%ifblogsetting(ballowpast,0)%><br /><%text(_ADD_NOPASTDATES)%><%endif%>
+								</div>
+								<input name="actiontype" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%><br />
+								<input id="dosendping" name="dosendping" value="1" type="checkbox" checked="checked" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label>
+							</td>
+						</tr>
+						<tr>
+							<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+							<td><%pluginextras%></td>
+						</tr>
+						<%itemoptions%>
+					</table>
+				</div>
+				<div id="preview" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
+					<h2><%text(_ADD_PREVIEW)%></h2>
+					<strong><span id="prevtitle">&#160;</span></strong>
 					<br />
-					<input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
-					<div class="indent">
-						<%text(_ADD_PLACE_ON)%>
-						<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>
-						<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>
-						<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_DAY)%>
-
-						<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>
-						<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
-						<br /><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>(dd)<%text(_ITEM_ADDEDITTEMPLATE_DAY)%> (hh)<%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
-						<%ifblogsetting(ballowpast,0)%>
-							<br />
-							<%text(_ADD_NOPASTDATES)%>
-						<%endif%>
-					</div>
-					<input name="actiontype" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+					<span id="prevbody">&#160;</span>
 					<br />
-					<input id="dosendping" name="dosendping" value="1" type="checkbox" checked="checked"><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label>
-				</td>
-				</tr>
-				<tr>
-				<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
-				<td>
-				<%pluginextras%></td>
-				</tr>
-				
-				
-				  <%itemoptions%>
-				</table>
-				
-
+					<span id="prevmore">&#160;</span>
+				</div>
 			</div>
-			
-			<div id="preview" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
-				<h2><%text(_ADD_PREVIEW)%></h2>
-				
-				<b><span id="prevtitle">&#160;</span></b>
-				<br />
-				<span id="prevbody">&#160;</span>
-				<br />
-				<span id="prevmore">&#160;</span>
-			</div>
-			
-		</div></form>
-		</div>
-
 			<div class="submitbuttons">
 				<input type="submit" value="<%text(_BMLET_EDIT)%>" onclick="return checkSubmit();" />
 				<%ifautosave()%><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="preautoSaveDraft();" /><%endif%>
 				<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
 				<%ifautosave()%><span class="autosavestatus">(<%text(_AUTOSAVEDRAFT)%>&nbsp;:&nbsp;<span class="lastsavedtime"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%>)</span></span><%endif%>
 			</div>
-
-	<%ifautosave()%><script type="text/javascript">
-		var xmlhttprequest = new Array();
-		xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
-		xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
-		var seconds = now(); // Last AutoDraft time
-		var checks = 0; // Number of checks since last AutoDraft
-		var addform = document.getElementById('addform'); // The form id
-		var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
-		var goalurl = '../action.php'; // The PHP file where the content must be posted to
-		var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
-		var formtype = 'add'; // Add or edit form
-	</script><%endif%>
-
+		</form>
+		<%ifautosave()%><script type="text/javascript">
+			var xmlhttprequest = new Array();
+			xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
+			xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
+			var seconds = now(); // Last AutoDraft time
+			var checks = 0; // Number of checks since last AutoDraft
+			var addform = document.getElementById('addform'); // The form id
+			var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
+			var goalurl = '../action.php'; // The PHP file where the content must be posted to
+			var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
+			var formtype = 'add'; // Add or edit form
+		</script><%endif%>
 	</body>
-	</html>
-	
+</html>

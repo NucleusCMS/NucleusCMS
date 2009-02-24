@@ -272,35 +272,23 @@ class PAGEFACTORY extends BaseActions {
 
 	function parse_checkedonval($value, $name) {
 		if ($this->variables[$name] == $value)
-			echo "checked='checked'";
+			echo 'checked="checked"';
 	}
 
 	// extra javascript for input and textarea fields
 	function parse_jsinput($which) {
 		global $CONF;
-	?>
-			name="<?php echo $which?>"
-			id="input<?php echo $which?>"
-	<?php
+		$out = 'name="' . $which . '" id="input' . $which . '"';
 		if ($CONF['DisableJsTools'] != 1) {
-	?>
-			onkeyup="storeCaret(this); updPreview('<?php echo $which?>'); doMonitor();"
-			onclick="storeCaret(this);"
-			onselect="storeCaret(this);"
-
-	<?php
+			$out .= 'onkeyup="storeCaret(this); updPreview(' . $which . '); doMonitor();"'
+				  . 'onclick="storeCaret(this);"'
+				  . 'onselect="storeCaret(this);"';
+		} elseif ($CONF['DisableJsTools'] == 0) {
+			$out .= ' onkeyup="doMonitor();" onkeypress="shortCuts();"';
+		} else {
+			$out .= ' onkeyup="doMonitor();"';
 		}
-		else if ($CONF['DisableJsTools'] == 0) {
-	?>
-			onkeyup="doMonitor();"
-			onkeypress="shortCuts();"
-	<?php
-		}
-		else {
-	?>
-			onkeyup="doMonitor();"
-	<?php
-		}
+		echo $out;
 	}
 
 	// shows the javascript button bar
@@ -422,19 +410,18 @@ class PAGEFACTORY extends BaseActions {
 	 * convenience method
 	 */
 	function _jsbutton($type, $code ,$tooltip) {
-	?>
-			<span class="jsbutton"
-				onmouseover="BtnHighlight(this);"
-				onmouseout="BtnNormal(this);"
-				onclick="<?php echo $code?>" >
-				<img src="images/button-<?php echo $type?>.gif" alt="<?php echo $tooltip?>" width="16" height="16"/>
+		echo <<<__JSBUTTON__
+			<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="{$code}">
+				<img src="images/button-{$type}.gif" alt="{$tooltip}" width="16" height="16" />
 			</span>
-	<?php	}
+
+__JSBUTTON__;
+	}
 
 	function _jsbuttonspacer() {
-		echo '<span class="jsbuttonspacer"></span>';
+		echo '<span class="jsbuttonspacer">&nbsp;</span>';
 	}
 
 }
 
- ?>
+?>
