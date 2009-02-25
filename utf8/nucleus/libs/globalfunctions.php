@@ -1203,11 +1203,13 @@ function help($id) {
 }
 
 function helpHtml($id) {
-	return helplink($id) . '<img src="documentation/icon-help.gif" width="15" height="15" alt="' . _HELP_TT . '" /></a>';
+	global $CONF;
+	return helplink($id) . '<img src="' . $CONF['AdminURL'] . 'documentation/icon-help.gif" width="15" height="15" alt="' . _HELP_TT . '" /></a>';
 }
 
 function helplink($id) {
-	return '<a href="documentation/help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
+	global $CONF;
+	return '<a href="' . $CONF['AdminURL'] . 'documentation/help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
 }
 
 function getMailFooter() {

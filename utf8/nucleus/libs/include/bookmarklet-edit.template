@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="<%text(_CHARSET)%>"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<%xmldeclaration%><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html <%text(_HTML_XML_NAME_SPACE_AND_LANG_CODE)%>>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=<%text(_CHARSET)%>" />
@@ -71,7 +70,7 @@
 				<input type="hidden" name="draftid" value="0" />
 				<%ticket%>
 				<div id="body" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
-					<table>
+					<table summary="item body">
 						<tr>
 							<td><%text(_ADD_TITLE)%></td>
 							<td><input <%jsinput(title)%> type="text" size="60" maxlength="160" value="<%contents(title)%>" /></td>
@@ -90,7 +89,7 @@
 					</table>
 				</div>
 				<div id="more" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
-					<table>
+					<table summary="item more">
 						<tr>
 							<td><%text(_ADD_MORE)%> <%helplink(extended)%></td>
 							<td>
@@ -101,7 +100,7 @@
 					</table>
 				</div>
 				<div id="options" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
-					<table>
+					<table summary="item options">
 						<%ifblogsetting(bcomments)%><tr>
 							<td><%text(_ADD_DISABLE_COMMENTS)%></td>
 							<td>
@@ -130,11 +129,10 @@
 									<li>
 										<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="71" /><label for="act_backtodrafts"><%text(_BMLET_BACKTODRAFTS)%></label> <%helplink(draft)%>
 									</li><%endif%>
+									<li><input id="dosendping" name="dosendping" value="1" type="checkbox" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label></li>
 								</ul>
-								<br /><input id="dosendping" name="dosendping" value="1" type="checkbox" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label>
 							</td>
 						</tr>
-					
 						<tr>
 							<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
 							<td><%pluginextras%></td>
@@ -144,21 +142,20 @@
 				</div>
 				<div id="preview" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
 					<h2><%text(_ADD_PREVIEW)%></h2>
-					<b><span id="prevtitle">&#160;</span></b>
+					<strong><span id="prevtitle">&#160;</span></strong>
 					<br />
 					<span id="prevbody">&#160;</span>
 					<br />
 					<span id="prevmore">&#160;</span>
 				</div>
-				<div class="submitbuttons">
-					<input type="submit" value="<%text(_BMLET_EDIT)%>" onclick="return checkSubmit();" />
-					<%ifautosave()%><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="autoSaveDraft();" /><%endif%>
-					<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
-					<%ifautosave()%><span class="autosavestatus">(<%text(_AUTOSAVEDRAFT)%>&nbsp;:&nbsp;<span class="lastsavedtime"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%>)</span></span><%endif%>
-				</div>
+			</div>
+			<div class="submitbuttons">
+				<input type="submit" value="<%text(_BMLET_EDIT)%>" onclick="return checkSubmit();" />
+				<%ifautosave()%><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="autoSaveDraft();" /><%endif%>
+				<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
+				<%ifautosave()%><span class="autosavestatus">(<%text(_AUTOSAVEDRAFT)%>&nbsp;:&nbsp;<span class="lastsavedtime"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%>)</span></span><%endif%>
 			</div>
 		</form>
-
 		<%ifautosave()%><script type="text/javascript">
 			var xmlhttprequest = new Array();
 			xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
@@ -171,6 +168,5 @@
 			var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
 			var formtype = 'edit'; // Add or edit form
 		</script><%endif%>
-
 	</body>
 </html>

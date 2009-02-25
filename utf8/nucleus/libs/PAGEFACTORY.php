@@ -80,7 +80,8 @@ class PAGEFACTORY extends BaseActions {
 			'ticket',
 			'autosave',
 			'autosaveinfo',
-			'ifautosave'
+			'ifautosave',
+			'xmldeclaration'
 		);
 
 		// TODO: maybe add 'skin' later on?
@@ -171,6 +172,13 @@ class PAGEFACTORY extends BaseActions {
 				$catid = $this->blog->getDefaultCategory();		// on add item
 
 			ADMIN::selectBlogCategory('catid',$catid,$startidx,1,$this->blog->getID());
+	}
+
+	function parse_xmldeclaration() {
+		$ua = serverVar('HTTP_USER_AGENT');
+		if (!(ereg("Windows", $ua) && ereg("MSIE", $ua)) || ereg("MSIE 7", $ua)) {
+			echo '<' . '?xml version="1.0" encoding="' . _CHARSET .'"?' . '>' . "\n";
+		}
 	}
 
 	function parse_blogid() {

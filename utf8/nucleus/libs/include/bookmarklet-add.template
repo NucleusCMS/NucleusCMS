@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="<%text(_CHARSET)%>"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<%xmldeclaration%><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html <%text(_HTML_XML_NAME_SPACE_AND_LANG_CODE)%>>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=<%text(_CHARSET)%>" />
@@ -112,22 +111,26 @@
 						<tr>
 							<td><%text(_ADD_DRAFTNFUTURE)%></td>
 							<td>
-								<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
-								<br />
-								<input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
-								<div class="indent">
-									<%text(_ADD_PLACE_ON)%>
-									<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>
-									<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>
-									<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_DAY)%>
-									<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>
-									<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
-									<br />
-									<%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>(dd)<%text(_ITEM_ADDEDITTEMPLATE_DAY)%> (hh)<%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
-									<%ifblogsetting(ballowpast,0)%><br /><%text(_ADD_NOPASTDATES)%><%endif%>
-								</div>
-								<input name="actiontype" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%><br />
-								<input id="dosendping" name="dosendping" value="1" type="checkbox" checked="checked" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label>
+								<ul class="nobullets">
+									<li><input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" /><label for="act_now"><%text(_ADD_ADDNOW)%></label></li>
+									<li><input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%></li>
+									<li>
+										<div class="indent">
+											<%text(_ADD_PLACE_ON)%>
+											<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>
+											<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>
+											<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_DAY)%>
+											<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>
+											<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
+											<br /><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>(dd)<%text(_ITEM_ADDEDITTEMPLATE_DAY)%> (hh)<%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
+											<%ifblogsetting(ballowpast,0)%><br /><%text(_ADD_NOPASTDATES)%><%endif%>
+										</div>
+									</li>
+									<li>
+										<input name="actiontype" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+									</li>
+									<li><input id="dosendping" name="dosendping" value="1" type="checkbox" checked="checked" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label></li>
+								</ul>
 							</td>
 						</tr>
 						<tr>
