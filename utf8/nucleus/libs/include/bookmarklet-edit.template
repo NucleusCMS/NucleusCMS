@@ -19,7 +19,7 @@
 		<title><%text(_EDIT_ITEM)%></title>
 		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />
-		<link rel="stylesheet" type="text/css" href="styles/jqueryui/ui.all.css" />
+		<link rel="stylesheet" type="text/css" href="styles/jquery-ui/ui.all.css" />
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
@@ -31,7 +31,7 @@
 		<script type="text/javascript">
 		//<![CDATA[
 			google.load("jquery", "1");
-			google.load("jqueryui", "1");
+//			google.load("jqueryui", "1");
 			var nucleus_initbm_oldonload = window.onload;
 			function nucleus_initbm()
 			{
@@ -54,16 +54,17 @@
 			}
 		//]]>
 		</script>
+		<script type="text/javascript" src="javascript/jquery-ui-personalized-1.6rc6.min.js"></script>
 	</head>
 	<body>
 		<h1><%text(_EDIT_ITEM)%> (<%contents(itemid)%>)</h1>
 		<form id="editform" method="post" action="bookmarklet.php" >
-			<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
-				<ul class=" ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-					<li class="ui-state-default ui-corner-top"><a href="#body"><%text(_BMLET_BODY)%> &gt;&gt;</a></li>
-					<li class="ui-state-default ui-corner-top"><a href="#more"><%text(_BMLET_MORE)%> &gt;&gt;</a></li>
-					<li class="ui-state-default ui-corner-top"><a href="#options"><%text(_BMLET_OPTIONS)%> &gt;&gt;</a></li>
-					<li class="ui-state-default ui-corner-top"><a href="#preview" onclick="updAllPreviews();"><%text(_BMLET_PREVIEW)%> &gt;&gt;</a></li>
+			<div id="tabs" class="ui-tabs">
+				<ul>
+					<li><a href="#body"><%text(_BMLET_BODY)%> &gt;&gt;</a></li>
+					<li><a href="#more"><%text(_BMLET_MORE)%> &gt;&gt;</a></li>
+					<li><a href="#options"><%text(_BMLET_OPTIONS)%> &gt;&gt;</a></li>
+					<li><a href="#preview" onclick="updAllPreviews();"><%text(_BMLET_PREVIEW)%> &gt;&gt;</a></li>
 				</ul>
 				<input name="action" type="hidden" value="edititem" />
 				<input name="itemid" type="hidden" value="<%contents(itemid)%>" />
@@ -88,7 +89,7 @@
 						</tr>
 					</table>
 				</div>
-				<div id="more" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
+				<div id="more" class="contentblock">
 					<table summary="item more">
 						<tr>
 							<td><%text(_ADD_MORE)%> <%helplink(extended)%></td>
@@ -99,7 +100,7 @@
 						</tr>
 					</table>
 				</div>
-				<div id="options" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
+				<div id="options" class="contentblock">
 					<table summary="item options">
 						<%ifblogsetting(bcomments)%><tr>
 							<td><%text(_ADD_DISABLE_COMMENTS)%></td>
@@ -140,8 +141,8 @@
 						<%itemoptions%>
 					</table>
 				</div>
-				<div id="preview" class="contentblock ui-tabs-panel ui-widget-content ui-corner-bottom">
-					<h2><%text(_ADD_PREVIEW)%></h2>
+				<div id="preview" class="contentblock">
+					<!-- h2><%text(_ADD_PREVIEW)%></h2 -->
 					<strong><span id="prevtitle">&#160;</span></strong>
 					<br />
 					<span id="prevbody">&#160;</span>

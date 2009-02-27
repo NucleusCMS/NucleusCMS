@@ -24,6 +24,7 @@
 /* markup buttons */
 .jsbutton {
 	text-align: center; 
+	cursor: pointer;
 
 	padding: 3px;
 	border: 1px solid #dddddd;
@@ -35,6 +36,7 @@
 
 .jsbuttonbar {
 	padding: 3px;
-	cursor: default;
+/*	cursor: default;*/
+	margin: 3px auto;
 }
 

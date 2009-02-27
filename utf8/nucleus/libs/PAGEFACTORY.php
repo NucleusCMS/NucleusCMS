@@ -420,7 +420,7 @@ class PAGEFACTORY extends BaseActions {
 	function _jsbutton($type, $code ,$tooltip) {
 		echo <<<__JSBUTTON__
 			<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="{$code}">
-				<img src="images/button-{$type}.gif" alt="{$tooltip}" width="16" height="16" />
+				<img src="images/button-{$type}.gif" title="{$tooltip}" alt="{$tooltip}" width="16" height="16" />
 			</span>
 
 __JSBUTTON__;
