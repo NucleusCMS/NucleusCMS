@@ -1,7 +1,7 @@
 /*-------------------------------------------------
-  Nucleus CMS Stylesheet - bundled with version 3.2
+  Nucleus CMS Stylesheet - bundled with version 3.4
   Based on the Stanch skin by Ivan Fong
-  Mods by hcgtv and moraes
+  Mods by hcgtv and moraes and yama.kyms
 -------------------------------------------------*/
 
 /*-------------------------------------------------
@@ -12,7 +12,7 @@ body
 	background: #505050 url(images/bg.gif);
 	color: #494949;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", Trebuchet, Arial, sans-serif;
-	font-size: 11px;
+	font-size: 12px;
 	padding: 15px 0;
 	margin: 0;
 }
@@ -85,7 +85,7 @@ a:hover, a:active
 }
 .clearing
 {
-	width: 704px;
+	width: 784px;
 	height: 0;
 	clear: both;
 }
@@ -96,7 +96,7 @@ a:hover, a:active
 #header
 {
 	position: relative;
-	width: 704px;
+	width: 784px;
 	height: 168px;
 	/* large header image is defined below */
 	/* background: white url(images/header.jpg) no-repeat; */
@@ -110,13 +110,14 @@ a:hover, a:active
 {
 	/* small header image specific lines */
 	height: 168px;
-	width: 692px;
+	width: 772px;
 	background: white url(images/header_sm.jpg) repeat-x 0 6px;
 	margin: 0 6px;
 	/* end small header image specific lines */
 	font-size: 38px;
 	text-align: center;
 	line-height: 160px;
+	letter-spacing:5px;
 }
 
 /*-------------------------------------------------
@@ -124,7 +125,7 @@ a:hover, a:active
 -------------------------------------------------*/
 #mainwrapper
 {
-	width: 704px;
+	width: 784px;
 	background: white;
 	border-width: 0 2px;
 	border-style: solid;
@@ -133,7 +134,7 @@ a:hover, a:active
 }
 #wrapper
 {
-	width: 704px;
+	width: 784px;
 	background: white url(images/bgcontainer01.gif) repeat-y;
 	margin: auto;
 }
@@ -143,7 +144,7 @@ a:hover, a:active
 -------------------------------------------------*/
 #container
 {
-	width: 704px;
+	width: 784px;
 	height: 1%;
 	overflow: visible;
 	float: right;
@@ -163,7 +164,7 @@ a:hover, a:active
 {
 	clear: both;
 	background: url(images/dot.gif) bottom repeat-x;
-	font-size: 18px;
+	font-size: 15px;
 	padding: 0 0 6px 0;
 	margin: 0;
 }
@@ -172,6 +173,7 @@ a:hover, a:active
 	font-size:13px;
 	text-align: justify;
 	padding: 0 0 16px 0;
+	line-height:1.5;
 }
 
 /*-------------------------------------------------
@@ -180,28 +182,28 @@ a:hover, a:active
 .contentitemcategory
 {
 	background: url(images/bgcategory.gif) center left no-repeat;
-	font-size: 10px;
+	font-size: 12px;
 	line-height: 12px;
 	padding: 0 10px 0 14px;
 }
 .contentitempostedby
 {
 	background: url(images/bgpostedby.gif) center left no-repeat;
-	font-size: 10px;
+	font-size: 12px;
 	line-height: 12px;
 	padding: 0 10px 0 12px;
 }
 .contentitemcomments
 {
 	background: url(images/bgcomment.gif) center left no-repeat;
-	font-size: 10px;
+	font-size: 12px;
 	line-height: 12px;
 	padding: 0 10px 0 13px;
 }
 .contentitemedit
 {
 	background: url(images/bgedit.gif) center left no-repeat;
-	font-size: 10px;
+	font-size: 12px;
 	line-height: 12px;
 	padding: 0 10px 0 11px;
 }
@@ -294,6 +296,7 @@ a:hover, a:active
 	color: #3A3523;
 	font-size: 12px;
 	font-weight: bold;
+	letter-spacing:2px;
     font-family: "Georgia", "Lucida Grande", "Lucida Sans Unicode", Arial, "Trebuchet MS", sans-serif;
 	padding: 4px 10px;
 }
@@ -320,7 +323,7 @@ a:hover, a:active
 -------------------------------------------------*/
 #footer
 {
-	width: 704px;
+	width: 784px;
 	background: #FCD21B;
 	text-align: center;
 	padding: 10px 0 10px 0;
@@ -355,7 +358,7 @@ a:hover, a:active
 }
 .formfield
 {
-	font-size: 11px;
+	font-size: 12px;
 	background: white;
 	color: #494949;
 	border-top: 1px solid #868686;
@@ -363,10 +366,12 @@ a:hover, a:active
 	border-bottom: 1px solid #D4D2CF;
 	border-right: 1px solid #D4D2CF;
 	margin: 1px 0 0 0;
+	padding:5px;
+	line-height:1.5;
 }
 .formbutton
 {
-	font-size: 11px;
+	font-size: 12px;
 	background: white;
 	color: #494949;
 	border-top: 1px solid #D4D2CF;
@@ -436,6 +441,10 @@ a:hover, a:active
 	font-weight: bold;
 }
 
+textarea#nucleus_cf_body
+{
+	width:470px;
+}
 
 /*-------------------------------------------------
   Miscelaneous
