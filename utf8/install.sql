@@ -1,8 +1,6 @@
 CREATE TABLE `nucleus_actionlog` (
-  `logid`      int(11)      NOT NULL auto_increment,
   `timestamp`  datetime     NOT NULL default '0000-00-00 00:00:00',
-  `message`    varchar(255) NOT NULL default '',
-  PRIMARY KEY  (`logid`)
+  `message`    varchar(255) NOT NULL default ''
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_activation` (
