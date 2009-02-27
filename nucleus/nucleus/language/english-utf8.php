@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 // English Nucleus Language File
 //
 // Author: Wouter Demuynck
@@ -763,7 +763,7 @@ define('_BACKTOMANAGE',				'Back to Nucleus management');
 
 
 // charset to use
-define('_CHARSET',					'iso-8859-1');
+define('_CHARSET',					'UTF-8');
 
 // global stuff
 define('_LOGOUT',					'Log Out');
