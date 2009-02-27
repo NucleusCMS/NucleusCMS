@@ -871,7 +871,7 @@ function selector() {
 
 		// get next and prev month links ...
 		global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
-		
+
 		// sql queries for the timestamp of the first and the last published item
 		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 AND iblog=".(int)($blogid ? $blogid : $CONF['DefaultBlog'])." ORDER BY itime ASC";
 		$first_timestamp=quickQuery ($query);
@@ -883,18 +883,18 @@ function selector() {
 		if ($d != 0) {
 			$archivetype = _ARCHIVETYPE_DAY;
 			$t = mktime(0, 0, 0, $m, $d, $y);
-			// one day has 24 * 60 * 60 = 86400 seconds			
+			// one day has 24 * 60 * 60 = 86400 seconds
 			$archiveprev = strftime('%Y-%m-%d', $t - 86400 );
-			// check for published items			
+			// check for published items
 			if ($t > $first_timestamp) {
 				$archiveprevexists = true;
 			}
 			else {
 				$archiveprevexists = false;
 			}
-			
+
 			// one day later
-			$t += 86400; 
+			$t += 86400;
 			$archivenext = strftime('%Y-%m-%d', $t);
 			if ($t < $last_timestamp) {
 				$archivenextexists = true;
@@ -902,7 +902,7 @@ function selector() {
 			else {
 				$archivenextexists = false;
 			}
-			
+
 		} else {
 			$archivetype = _ARCHIVETYPE_MONTH;
 			$t = mktime(0, 0, 0, $m, 1, $y);
@@ -914,8 +914,8 @@ function selector() {
 			else {
 				$archiveprevexists = false;
 			}
-			
-			// timestamp for the next month			
+
+			// timestamp for the next month
 			$t = mktime(0, 0, 0, $m+1, 1, $y);
 			$archivenext = strftime('%Y-%m', $t);
 			if ($t < $last_timestamp) {
@@ -1204,7 +1204,7 @@ function help($id) {
 
 function helpHtml($id) {
 	global $CONF;
-	return helplink($id) . '<img src="' . $CONF['AdminURL'] . 'documentation/icon-help.gif" width="15" height="15" alt="' . _HELP_TT . '" /></a>';
+	return helplink($id) . '<img src="' . $CONF['AdminURL'] . 'documentation/icon-help.gif" width="15" height="15" alt="' . _HELP_TT . '" title="' . _HELP_TT . '" /></a>';
 }
 
 function helplink($id) {
@@ -1628,67 +1628,67 @@ function checkVars($aVars) {
 }
 
 
-/** 
+/**
  * Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc.
- * to avoid XSS 
+ * to avoid XSS
  */
 function sanitizeParams()
 {
 	global $HTTP_SERVER_VARS;
-	
+
 	$array = array();
 	$str = '';
 	$frontParam = '';
-	
+
 	// REQUEST_URI of $HTTP_SERVER_VARS
 	$str =& $HTTP_SERVER_VARS["REQUEST_URI"];
 	serverStringToArray($str, $array, $frontParam);
 	sanitizeArray($array);
 	arrayToServerString($array, $frontParam, $str);
-	
+
 	// QUERY_STRING of $HTTP_SERVER_VARS
 	$str =& $HTTP_SERVER_VARS["QUERY_STRING"];
 	serverStringToArray($str, $array, $frontParam);
 	sanitizeArray($array);
 	arrayToServerString($array, $frontParam, $str);
-	
+
 	if (phpversion() >= '4.1.0') {
 		// REQUEST_URI of $_SERVER
 		$str =& $_SERVER["REQUEST_URI"];
 		serverStringToArray($str, $array, $frontParam);
 		sanitizeArray($array);
 		arrayToServerString($array, $frontParam, $str);
-	
+
 		// QUERY_STRING of $_SERVER
 		$str =& $_SERVER["QUERY_STRING"];
 		serverStringToArray($str, $array, $frontParam);
 		sanitizeArray($array);
 		arrayToServerString($array, $frontParam, $str);
 	}
-	
+
 	// $_GET
 	convArrayForSanitizing($_GET, $array);
 	sanitizeArray($array);
 	revertArrayForSanitizing($array, $_GET);
-	
+
 	// $_REQUEST (only GET param)
 	convArrayForSanitizing($_REQUEST, $array);
 	sanitizeArray($array);
 	revertArrayForSanitizing($array, $_REQUEST);
 }
 
-/** 
+/**
  * Check ticket when not checked in plugin's admin page
  * to avoid CSRF.
  * Also avoid the access to plugin/index.php by guest user.
  */
 function ticketForPlugin(){
 	global $CONF,$DIR_PLUGINS,$member,$ticketforplugin;
-	
+
 	/* initialize */
 	$ticketforplugin=array();
 	$ticketforplugin['ticket']=false;
-	
+
 	/* Check if using plugin's php file. */
 	if ($p_translated=serverVar('PATH_TRANSLATED')) {
 		if (!file_exists($p_translated)) $p_translated='';
@@ -1703,13 +1703,13 @@ function ticketForPlugin(){
 	$p_translated=str_replace('\\','/',$p_translated);
 	$d_plugins=str_replace('\\','/',$DIR_PLUGINS);
 	if (strpos($p_translated,$d_plugins)!==0) return;// This isn't plugin php file.
-	
+
 	/* Solve the plugin php file or admin directory */
 	$phppath=substr($p_translated,strlen($d_plugins));
 	$phppath=preg_replace('!^/!','',$phppath);// Remove the first "/" if exists.
 	$path=preg_replace('/^NP_(.*)\.php$/','$1',$phppath); // Remove the first "NP_" and the last ".php" if exists.
 	$path=preg_replace('!^([^/]*)/(.*)$!','$1',$path); // Remove the "/" and beyond.
-	
+
 	/* Solve the plugin name. */
 	$plugins=array();
 	$query='SELECT pfile FROM '.sql_table('plugin');
@@ -1725,16 +1725,16 @@ function ticketForPlugin(){
 		header("HTTP/1.0 404 Not Found");
 		exit('');
 	}
-	
+
 	/* Return if not index.php */
 	if ( $phppath!=strtolower($plugin_name).'/'
 		&& $phppath!=strtolower($plugin_name).'/index.php' ) return;
-	
+
 	/* Exit if not logged in. */
 	if ( !$member->isLoggedIn() ) exit("You aren't logged in.");
-	
+
 	global $manager,$DIR_LIBS,$DIR_LANG,$HTTP_GET_VARS,$HTTP_POST_VARS;
-	
+
 	/* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
 	if (!($p_translated=serverVar('PATH_TRANSLATED'))) $p_translated=serverVar('SCRIPT_FILENAME');
 	if ($file=@file($p_translated)) {
@@ -1744,7 +1744,7 @@ function ticketForPlugin(){
 			$prevline=$line;
 		}
 	}
-	
+
 	/* Show a form if not valid ticket */
 	if ( ( strstr(serverVar('REQUEST_URI'),'?') || serverVar('QUERY_STRING')
 			|| strtoupper(serverVar('REQUEST_METHOD'))=='POST' )
@@ -1764,7 +1764,7 @@ function ticketForPlugin(){
 		$oPluginAdmin = new PluginAdmin($plugin_name);
 		$oPluginAdmin->start();
 		echo '<p>' . _ERROR_BADTICKET . "</p>\n";
-		
+
 		/* Show the form to confirm action */
 		// PHP 4.0.x support
 		$get=  (isset($_GET))  ? $_GET  : $HTTP_GET_VARS;
@@ -1795,11 +1795,11 @@ function ticketForPlugin(){
 		echo '<input type="submit" value="'._YES.'" />&nbsp;&nbsp;&nbsp;&nbsp;';
 		echo '<input type="button" value="'._NO.'" onclick="history.back(); return false;" />';
 		echo "</form>\n";
-		
+
 		$oPluginAdmin->end();
 		exit;
 	}
-	
+
 	/* Create new ticket */
 	$ticket=$manager->addTicketToUrl('');
 	$ticketforplugin['ticket']=substr($ticket,strpos($ticket,'ticket=')+7);
@@ -1817,7 +1817,7 @@ function _addInputTags(&$keys,$prefix=''){
 	}
 }
 
-/** 
+/**
  * Convert the server string such as $_SERVER['REQUEST_URI']
  * to arry like arry['blogid']=1 and array['page']=2 etc.
  */
@@ -1835,7 +1835,7 @@ function serverStringToArray($str, &$array, &$frontParam)
 		$args = $str;
 		$frontParam = "";
 	}
-	
+
 	// If there is no args like blogid=1&page=2, return
 	if (!strstr($str, "=") && !strlen($frontParam)) {
 		$frontParam = $str;
@@ -1845,7 +1845,7 @@ function serverStringToArray($str, &$array, &$frontParam)
 	$array = explode("&", $args);
 }
 
-/** 
+/**
  * Convert array like array['blogid'] to server string
  * such as $_SERVER['REQUEST_URI']
  */
@@ -1861,14 +1861,14 @@ function arrayToServerString($array, $frontParam, &$str)
 	}
 }
 
-/** 
+/**
  * Sanitize array parameters.
  * This function checks both key and value.
  * - check key if it inclues " (double quote),  remove from array
  * - check value if it includes \ (escape sequece), remove remaining string
  */
 function sanitizeArray(&$array)
-{	
+{
 	$excludeListForSanitization = array('query');
 //	$excludeListForSanitization = array();
 
@@ -1886,22 +1886,22 @@ function sanitizeArray(&$array)
 			$val = stripslashes($val);
 		}
 		$val = addslashes($val);
-		
+
 		// if $key is included in exclude list, skip this param
 		if (!in_array($key, $excludeListForSanitization)) {
-				
+
 			// check value
 			@list($val, $tmp) = explode('\\', $val);
-			
+
 			// remove control code etc.
 			$val = strtr($val, "\0\r\n<>'\"", "       ");
-				
+
 			// check key
 			if (preg_match('/\"/i', $key)) {
 				unset($array[$k]);
 				continue;
 			}
-				
+
 			// set sanitized info
 			$array[$k] = sprintf("%s=%s", $key, $val);
 		}
@@ -2046,7 +2046,7 @@ function encode_desc(&$data)
         $data = str_replace('\n', '<br />', $data); //hack
         return $data;
     }
- 
+
 /**
  * Returns the Javascript code for a bookmarklet that works on most modern browsers
  *
