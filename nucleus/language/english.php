@@ -26,12 +26,16 @@
 
 // START changed/added after 3.33 START
 define('_MEMBERS_USEAUTOSAVE',						'Use the Autosave function?');
+
 define('_TEMPLATE_PLUGIN_FIELDS',					'Custom Plugin Fields');
 define('_TEMPLATE_BLOGLIST',						'Template Blog List');
 define('_TEMPLATE_BLOGHEADER',						'Blog List Header');
 define('_TEMPLATE_BLOGITEM',						'Blog List Item');
 define('_TEMPLATE_BLOGFOOTER',						'Blog List Footer');
+
 define('_SETTINGS_DEFAULTLISTSIZE',					'Default Size of Lists in Admin Area');
+define('_SETTINGS_DEBUGVARS',		'Debug Vars');
+
 define('_CREATE_ACCOUNT_TITLE',						'Create Member Account');
 define('_CREATE_ACCOUNT0',							'Create Account');
 define('_CREATE_ACCOUNT1',							'Visitors are not allowed to create a Member Account.<br /><br />');
@@ -44,7 +48,26 @@ define('_CREATE_ACCOUNT_EMAIL',						'Email (required):');
 define('_CREATE_ACCOUNT_EMAIL2',					'(must be valid, because an activation link will be sent over there)');
 define('_CREATE_ACCOUNT_URL',						'URL:');
 define('_CREATE_ACCOUNT_SUBMIT',					'Create Account');
-define('_SETTINGS_DEBUGVARS',		'Debug Vars');
+
+define('_BMLET_BACKTODRAFTS',		'Move back to drafts');
+define('_BMLET_CANCEL',				'Cancel');
+
+define('_LIST_ITEM_NOCONTENT',						'No Comment');
+define('_LIST_ITEM_COMMENTS',						'%d Comments');
+
+define('_EDITC_URL',				'Web site');
+define('_EDITC_EMAIL',				'E-mail');
+
+/* changed */
+// plugin dependency 
+define('_ERROR_INSREQPLUGIN',		'Plugin installation failed, requires %s');
+define('_ERROR_DELREQPLUGIN',		'Plugin deletion failed, required by %s');
+
+//define('_ADD_ADDLATER',								'Add Later');
+define('_ADD_ADDLATER',								'Add the dates specified');
+
+define('_LOGIN_NAME',				'Name :');
+define('_LOGIN_PASSWORD',			'Password :');
 // END changed/added after 3.33 END
 
 // START merge UTF-8 and EUC-JP
@@ -363,10 +386,6 @@ define('_ARCHIVETYPE_MONTH',		'month');
 // tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
 define('_ERROR_BADTICKET',			'Invalid or expired ticket.');
 
-// plugin dependency
-define('_ERROR_INSREQPLUGIN',		'Plugin installation failed, requires %s');
-define('_ERROR_DELREQPLUGIN',		'Plugin deletion failed, required by %s');
-
 // cookie prefix
 define('_SETTINGS_COOKIEPREFIX',	'Cookie Prefix');
 
@@ -653,8 +672,6 @@ define('_MMAIL_MAIL',				'Message:');
 // bookmarklet buttons
 define('_BMLET_ADD',				'Add Item');
 define('_BMLET_EDIT',				'Edit Item');
-define('_BMLET_BACKTODRAFTS',		'Move back to drafts');
-define('_BMLET_CANCEL',				'Cancel');
 define('_BMLET_DELETE',				'Delete Item');
 define('_BMLET_BODY',				'Body');
 define('_BMLET_MORE',				'Extended');
@@ -803,8 +820,6 @@ define('_ADD_DISABLE_COMMENTS',		'Disable comments?');
 define('_ADD_DRAFTNFUTURE',			'Draft &amp; Future Items');
 define('_ADD_ADDITEM',				'Add Item');
 define('_ADD_ADDNOW',				'Add Now');
-//define('_ADD_ADDLATER',								'Add Later');
-define('_ADD_ADDLATER',								'Add the dates specified');
 define('_ADD_PLACE_ON',				'Place on');
 define('_ADD_ADDDRAFT',				'Add to drafts');
 define('_ADD_NOPASTDATES',			'(dates and times in the past are NOT valid, the current time will be used in that case)');
@@ -1148,8 +1163,6 @@ define('_BAN_ADD_BTN',				'Add Ban');
 
 // LOGIN screen
 define('_LOGIN_MESSAGE',			'Message');
-define('_LOGIN_NAME',				'Name :');
-define('_LOGIN_PASSWORD',			'Password :');
 define('_LOGIN_SHARED',				_LOGINFORM_SHARED);
 define('_LOGIN_FORGOT',				'Forgot your password?');
 
@@ -1262,8 +1275,6 @@ define('_LIST_COMMENT_HOST',		'Host');
 // itemlist
 define('_LIST_ITEM_INFO',			'Info');
 define('_LIST_ITEM_CONTENT',		'Title and Text');
-define('_LIST_ITEM_NOCONTENT',						'No Comment');
-define('_LIST_ITEM_COMMENTS',						'%d Comments');
 
 
 // teamlist
@@ -1275,8 +1286,6 @@ define('_EDITC_TITLE',				'Edit Comments');
 define('_EDITC_WHO',				'Author');
 define('_EDITC_HOST',				'From Where?');
 define('_EDITC_WHEN',				'When?');
-define('_EDITC_URL',				'Web site');
-define('_EDITC_EMAIL',				'E-mail');
 define('_EDITC_TEXT',				'Text');
 define('_EDITC_EDIT',				'Edit Comment');
 define('_EDITC_MEMBER',				'member');
