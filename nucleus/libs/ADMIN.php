@@ -334,7 +334,7 @@ class ADMIN {
 			$amount = intPostVar('amount');
 		else {
 			$amount = intval($CONF['DefaultListSize']);
-			if ($amount < 1) 
+			if ($amount < 1)
 				$amount = 10;
 		}
 
@@ -901,7 +901,7 @@ class ADMIN {
 			$amount = intPostVar('amount');
 		else {
 			$amount = intval($CONF['DefaultListSize']);
-			if ($amount < 1) 
+			if ($amount < 1)
 				$amount = 10;
 		}
 
@@ -956,7 +956,7 @@ class ADMIN {
 			$amount = intPostVar('amount');
 		else {
 			$amount = intval($CONF['DefaultListSize']);
-			if ($amount < 1) 
+			if ($amount < 1)
 				$amount = 10;
 		}
 
@@ -1000,7 +1000,7 @@ class ADMIN {
 			$amount = intPostVar('amount');
 		else {
 			$amount = intval($CONF['DefaultListSize']);
-			if ($amount < 1) 
+			if ($amount < 1)
 				$amount = 10;
 		}
 
@@ -1056,7 +1056,7 @@ class ADMIN {
 			$amount = intPostVar('amount');
 		else {
 			$amount = intval($CONF['DefaultListSize']);
-			if ($amount < 1) 
+			if ($amount < 1)
 				$amount = 10;
 		}
 
@@ -1224,7 +1224,7 @@ class ADMIN {
 				$wasdraft = 0;
 				$publish = 0;
 				$timestamp = 0;
-				break;			
+				break;
 			case 'edit':
 			default:
 				$publish = 1;
@@ -1519,7 +1519,7 @@ class ADMIN {
 		}
 		if ($result['status'] == 'newcategory') {
 //			$distURI = ($nextAction == 'sendping') ? $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action='
-//					 . $nextAction . '&blogid=' . intval($blogid)) : 
+//					 . $nextAction . '&blogid=' . intval($blogid)) :
 //					   '';
 			$distURI = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=' . $nextAction . '&blogid=' . intval($blogid));
 			$this->action_categoryedit($result['catid'], $blogid, $distURI);
@@ -2100,7 +2100,7 @@ class ADMIN {
 			$mem->setCanLogin($canlogin);
 		}
 
-		$autosave = postVar ('autosave'); 
+		$autosave = postVar ('autosave');
 		$mem->setAutosave($autosave);
 
 		$mem->write();
@@ -3437,7 +3437,7 @@ class ADMIN {
 		$blog	=& $manager->getBlog($blogid);
 
 		// create new category
-		$sql = 'INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, %s, %s)';
+		$sql = 'INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, "%s", "%s")';
 		sql_query(sprintf($sql, sql_table('category'), $blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC));
 //		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
 		$catid = mysql_insert_id();
@@ -3478,7 +3478,7 @@ class ADMIN {
 		<p><?php echo sprintf(_BLOGCREATED_ADDEDTXT, htmlspecialchars($bname)) ?></p>
 
 		<ol>
-			<li><a href="#index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEWAY, htmlspecialchars($bshortname)) ?></code></a></li>
+			<li><a href="#index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEWAY, htmlspecialchars($bshortname)) ?></a></li>
 			<li><a href="#skins"><?php echo _BLOGCREATED_ADVANCEDWAY ?></a></li>
 		</ol>
 
@@ -4005,7 +4005,7 @@ selector();
 				$this->_templateEditRow($template, $pfdesc, $pffield, '',++$tab,0);
 			}
 		}
-?>			
+?>
 		</tr><tr>
 			<th colspan="2"><?php echo _TEMPLATE_UPDATE?></th>
 		</tr><tr>
@@ -4913,14 +4913,14 @@ selector();
 					   <td><?php
 
 						$this->input_yesno('DebugVars',$CONF['DebugVars'],10078);
-						
+
 							 ?>
 
 					   </td>
 		</tr><tr>
 			<td><?php echo _SETTINGS_DEFAULTLISTSIZE?> <?php help('defaultlistsize');?></td>
 			<td>
-			<?php 
+			<?php
 				if (!array_key_exists('DefaultListSize',$CONF)) {
 					sql_query("INSERT INTO ".sql_table('config')." VALUES ('DefaultListSize', '10')");
 					$CONF['DefaultListSize'] = 10;
@@ -5104,10 +5104,10 @@ selector();
 		exit;
 
 	}
-	
+
 	/**
 	 *  Give an overview over the used system
-	 */	
+	 */
 	function action_systemoverview() {
 		global $member, $nucleus, $CONF;
 
@@ -5181,14 +5181,14 @@ selector();
 			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_MODULES . "</th>\n";
 			echo "\t</tr><tr>\n";
 			echo "\t\t" . '<td width="50%">mod_rewrite' . "</td>\n";
-			$modrewrite = (strstr($im, 'mod_rewrite') != '') ? 
+			$modrewrite = (strstr($im, 'mod_rewrite') != '') ?
 						_ADMIN_SYSTEMOVERVIEW_ENABLE :
 						_ADMIN_SYSTEMOVERVIEW_DISABLE;
 			echo "\t\t" . '<td>' . $modrewrite . "</td>\n";
 			echo "\t</tr>\n";
 			echo "</table>\n";
 
-			// Information about the used Nucleus CMS 
+			// Information about the used Nucleus CMS
 			echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM . "</h3>\n";
 			global $nucleus;
 			$nv = getNucleusVersion() / 100 . '(' . $nucleus['version'] . ')';
@@ -5238,7 +5238,7 @@ selector();
 		else {
 			echo _ADMIN_SYSTEMOVERVIEW_NOT_ADMIN;
 		}
-		
+
 		$this->pagefoot();
 	}
 
