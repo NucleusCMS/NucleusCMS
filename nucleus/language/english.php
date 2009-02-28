@@ -58,6 +58,7 @@ define('_LIST_ITEM_COMMENTS',						'%d Comments');
 define('_EDITC_URL',				'Web site');
 define('_EDITC_EMAIL',				'E-mail');
 
+define('_MANAGER_PLUGINFILE_NOTFOUND',				'Plugin file was not found');
 /* changed */
 // plugin dependency 
 define('_ERROR_INSREQPLUGIN',		'Plugin installation failed, requires %s');
