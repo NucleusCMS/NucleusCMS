@@ -4033,6 +4033,7 @@ selector();
 	 */
 	function _templateEditRow(&$template, $description, $name, $help = '', $tabindex = 0, $big = 0) {
 		static $count = 1;
+		if (!isset($template[$name])) $template[$name] = '';
 	?>
 		</tr><tr>
 			<td><?php echo $description?> <?php if ($help) help('template'.$help); ?></td>
