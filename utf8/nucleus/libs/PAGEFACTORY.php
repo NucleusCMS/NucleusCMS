@@ -275,10 +275,12 @@ class PAGEFACTORY extends BaseActions {
 	}
 
 	function parse_contents($which) {
+		if (!isset($this->variables[$which])) $this->variables[$which] = '';
 		echo htmlspecialchars($this->variables[$which],ENT_QUOTES);
 	}
 
 	function parse_checkedonval($value, $name) {
+		if (!isset($this->variables[$name])) $this->variables[$name] = '';
 		if ($this->variables[$name] == $value)
 			echo 'checked="checked"';
 	}

@@ -58,7 +58,7 @@ class ITEMACTIONS extends BaseActions {
 
 	/**
 	  * Returns an array with the actions that are defined
-	  * in the ITEMACTIONS class 
+	  * in the ITEMACTIONS class
 	  */
 	function getDefinedActions() {
 		return array(
@@ -115,23 +115,23 @@ class ITEMACTIONS extends BaseActions {
 	function setLastVisit($lastVisit) {
 		$this->lastVisit = $lastVisit;
 	}
-	
+
 	function setParser(&$parser) {
 		$this->parser =& $parser;
 	}
-	
+
 	function setCurrentItem(&$item) {
 		$this->currentItem =& $item;
 	}
-	
+
 	function setBlog(&$blog) {
 		$this->blog =& $blog;
 	}
-	
+
 	function setTemplate($template) {
 		$this->template =& $template;
 	}
-	
+
 	function setShowComments($val) {
 		$this->showComments = $val;
 	}
@@ -145,21 +145,21 @@ class ITEMACTIONS extends BaseActions {
 	function parse_blogid() {
 		echo $this->blog->getID();
 	}
-	
+
 	/**
 	 * Parse templatevar body
 	 */
 	function parse_body() {
 		$this->highlightAndParse($this->currentItem->body);
 	}
-	
+
 	/**
 	 * Parse templatevar more
 	 */
 	function parse_more() {
 		$this->highlightAndParse($this->currentItem->more);
 	}
-	
+
 	/**
 	 * Parse templatevar itemid
 	 */
@@ -169,32 +169,32 @@ class ITEMACTIONS extends BaseActions {
 
 	/**
 	 * Parse templatevar category
-	 */	
+	 */
 	function parse_category() {
 		echo $this->currentItem->category;
 	}
-	
+
 	/**
 	 * Parse templatevar categorylink
 	 */
 	function parse_categorylink() {
 		echo createLink('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category));
 	}
-	
+
 	/**
 	 * Parse templatevar catid
 	 */
 	function parse_catid() {
 		echo $this->currentItem->catid;
 	}
-	
+
 	/**
 	 * Parse templatevar authorid
 	 */
 	function parse_authorid() {
 		echo $this->currentItem->authorid;
 	}
-	
+
 	/**
 	 * Parse templatevar authorlink
 	 */
@@ -208,14 +208,14 @@ class ITEMACTIONS extends BaseActions {
 			)
 		);
 	}
-	
+
 	/**
 	 * Parse templatevar query
 	 */
 	function parse_query() {
 		echo $this->strHighlight;
 	}
-	
+
 	/**
 	 * Parse templatevar itemlink
 	 */
@@ -230,21 +230,21 @@ class ITEMACTIONS extends BaseActions {
 			)
 		);
 	}
-	
+
 	/**
 	 * Parse templatevar blogurl
 	 */
 	function parse_blogurl() {
 		echo $this->blog->getURL();
 	}
-	
+
 	/**
 	 * Parse templatevar closed
 	 */
 	function parse_closed() {
 		echo $this->currentItem->closed;
 	}
-	
+
 	/**
 	 * Parse templatevar relevance
 	 */
@@ -254,8 +254,8 @@ class ITEMACTIONS extends BaseActions {
 
 	/**
 	 * Parse templatevar title
-	 * 
-	 * @param string $format defines in which format the title is shown	 	 
+	 *
+	 * @param string $format defines in which format the title is shown
 	 */
 	function parse_title($format = '') {
 		if (is_array($this->currentItem)) {
@@ -363,19 +363,21 @@ class ITEMACTIONS extends BaseActions {
 
 	/**
 	 * Parse templatevar date
-	 * 
-	 * @param format optional strftime format	 	 
+	 *
+	 * @param format optional strftime format
 	 */
 	function parse_date($format = '') {
+		if (!isset($this->template['FORMAT_DATE'])) $this->template['FORMAT_DATE'] = '';
 		echo formatDate($format, $this->currentItem->timestamp, $this->template['FORMAT_DATE'], $this->blog);
 	}
 
 	/**
 	  * Parse templatevar time
-	  * 	  
+	  *
 	  * @param format optional strftime format
 	  */
 	function parse_time($format = '') {
+		if (!isset($this->template['FORMAT_TIME'])) $this->template['FORMAT_TIME'] = '';
 		echo strftime($format ? $format : $this->template['FORMAT_TIME'],$this->currentItem->timestamp);
 	}
 

@@ -143,7 +143,7 @@ class TEMPLATE {
 			$template[$obj->tpartname] = $obj->tcontent;
 
 		// set locale according to template:
-		if ($template['LOCALE'])
+		if (isset($template['LOCALE']))
 			setlocale(LC_TIME,$template['LOCALE']);
 		else
 			setlocale(LC_TIME,'');
