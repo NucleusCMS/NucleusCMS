@@ -210,7 +210,7 @@ class PAGEFACTORY extends BaseActions {
 	function parse_ifitemproperty($name,$value=1) {
 		$this->_addIfCondition(($this->variables[$name] == $value));
 	}
-	
+
 	function parse_ifautosave($name,$value=1) {
 		global $member;
 		$this->_addIfCondition($member->getAutosave() == $value);
@@ -237,7 +237,7 @@ class PAGEFACTORY extends BaseActions {
 		$authorid = ($this->method == 'edit') ? $this->variables['authorid'] : '';
 		$this->blog->insertJavaScriptInfo($authorid);
 	}
-	
+
 	// on bookmarklets only: insert extra html header information (by plugins)
 	function parse_extrahead() {
 		global $manager;
@@ -266,6 +266,7 @@ class PAGEFACTORY extends BaseActions {
 	}
 
 	function parse_contents($which) {
+		if (!isset($this->variables[$which])) $this->variables[$which] = '';
 		echo htmlspecialchars($this->variables[$which],ENT_QUOTES);
 	}
 

@@ -1,58 +1,42 @@
 <?php
-// Japanese (UTF-8) Nucleus Language File
-// 
+// Japanese (EUC-JP) Nucleus Language File
+//
 // Author: chrome (chrome@cgi.no-ip.org)
 // Modified by: Osamu Higuchi (osamu@higuchi.com)
 // Modified by: shizuki (shizuki@kinezumi.net)
-// Nucleus version: v1.0-v3.34
+// Nucleus version: v1.0-v3.4
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which 
+// might be deleted. Therefor, it's important to list the Nucleus version for which
 // the file was written in your document.
 //
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
 
 // Note for Japanese users
-// このファイルは Nucleus の EUC-JP 版日本語ランゲージファイルです。
+// このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
 /**
  * Japanese EUC-JP Nucleus Language File
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2008 The NucleusCMS Japanチーム
+ * @copyright Copyright (C) 2002-2009 The NucleusCMS Japanチーム
  * @version $Id$
  */
 
-// START merge UTF-8 and EUC-JP
+/********************************************
+ *        Start New for 3.40                *
+ ********************************************/
 
-// Create New blog
-define('_ADMIN_NOTABILIA',					'注意事項');
-define('_ADMIN_PLEASE_READ',				'作成にあたって、下記の<strong>注意事項</strong> をまずお読み下さい');
-define('_ADMIN_HOW_TO_ACCESS',				'新しいBlogを作成した後に、このBlogにアクセスするための方法を紹介しておきます。方法は2つあります:');
-define('_ADMIN_SIMPLE_WAY',					'<strong>簡単な方法:</strong> <code>index.php</code>の複製を作り、新しいBlogを表示するように変更を加えます。 この変更の詳細は、作成後に表示されます。');
-define('_ADMIN_ADVANCED_WAY',				'<strong>高度な方法:</strong> 現在のBlogで使用しているスキンに<code>&lt;%otherblog()%gt;</code>というコードを使った記述を加えます。この方法では、同じページ内で複数のBlogを表示することが可能となります。');
-define('_ADMIN_HOW_TO_CREATE',				'Blogの作成');
-
-
-define('_BOOKMARKLET_NEW_CATEGORY',			'アイテムは追加され、新しいカテゴリが作成されました。');
-define('_BOOKMARKLET_NEW_CATEGORY_EDIT',	'ここをクリックしてカテゴリーの名前と説明を編集してください。');
-define('_BOOKMARKLET_NEW_WINDOW',			'新しいウィンドウが開きます');
-define('_BOOKMARKLET_SEND_PING',			'アイテムの追加に成功しました。現在blog検索サービスに更新pingを送信します。');
-
-// END merge UTF-8 and EUC-JP
-
-// START changed/added for 3.34 START
-define('_TEMPLATE_PLUGIN_FIELDS',       'Custom Plugin Fields');
+// START changed/added after 3.33 START
+define('_MEMBERS_USEAUTOSAVE',				'下書きの自動保存機能を有効にしますか?');
+define('_TEMPLATE_PLUGIN_FIELDS',			'プラグインによる拡張フィールド');
 define('_TEMPLATE_BLOGLIST',				'Blog一覧');
 define('_TEMPLATE_BLOGHEADER',				'Blog一覧のヘッダー');
 define('_TEMPLATE_BLOGITEM',				'Blog一覧の本体');
 define('_TEMPLATE_BLOGFOOTER',				'Blog一覧のフッター');
 define('_SETTINGS_DEFAULTLISTSIZE',			'一覧の既定の表示数');
-// END changed/added for 3.34 END
-
-// START changed/added after 3.31 START
 define('_CREATE_ACCOUNT_TITLE',				'アカウントの新規作成');
 define('_CREATE_ACCOUNT0',					'アカウントの作成');
 define('_CREATE_ACCOUNT1',					'アカウントの作成は許可されていません。<br /><br />');
@@ -65,10 +49,280 @@ define('_CREATE_ACCOUNT_EMAIL',				'メールアドレス (必須)');
 define('_CREATE_ACCOUNT_EMAIL2',			'(アクティベーション用のリンクが送られるので有効なものを使用してください)');
 define('_CREATE_ACCOUNT_URL',				'(もしあれば)自分のサイトのURL');
 define('_CREATE_ACCOUNT_SUBMIT',			'アカウントの作成');
-
-// START changed/added for 3.32 START
 define('_SETTINGS_DEBUGVARS',				'デバッグモードを有効にする');
-// END changed/added for 3.32 END
+// END changed/added after 3.33 END
+
+// START merge UTF-8 and EUC-JP
+
+// Create New blog
+define('_ADMIN_NOTABILIA',					'注意事項');
+define('_ADMIN_PLEASE_READ',				'作成にあたって、下記の<strong>注意事項</strong> をまずお読み下さい');
+define('_ADMIN_HOW_TO_ACCESS',				'新しいBlogを作成した後に、このBlogにアクセスするための方法を紹介しておきます。方法は2つあります:');
+define('_ADMIN_SIMPLE_WAY',					'<strong>簡単な方法:</strong> <code>index.php</code>の複製を作り、新しいBlogを表示するように変更を加えます。 この変更の詳細は、作成後に表示されます。');
+define('_ADMIN_ADVANCED_WAY',				'<strong>高度な方法:</strong> 現在のBlogで使用しているスキンに<code>&lt;%otherblog()&gt;</code>というコードを使った記述を加えます。この方法では、同じページ内で複数のBlogを表示することが可能となります。');
+define('_ADMIN_HOW_TO_CREATE',				'Blogの作成');
+
+
+define('_BOOKMARKLET_NEW_CATEGORY',			'アイテムは追加され、新しいカテゴリが作成されました。');
+define('_BOOKMARKLET_NEW_CATEGORY_EDIT',	'ここをクリックしてカテゴリーの名前と説明を編集してください。');
+define('_BOOKMARKLET_NEW_WINDOW',			'新しいウィンドウが開きます');
+define('_BOOKMARKLET_SEND_PING',			'アイテムの追加に成功しました。現在blog検索サービスに更新pingを送信します。');
+
+// END merge UTF-8 and EUC-JP
+
+// <add by shizuki>
+// OVERVIEW screen
+define('_OVERVIEW_SHOWALL',							'全てのblogを表示');
+
+// Edit skins
+define('_SKINEDIT_ALLOWEDBLOGS',					'作成済みのblog:');
+define('_SKINEDIT_ALLOWEDTEMPLATESS',				'使用可能なテンプレート:');
+
+// delete member
+define('_WARNINGTXT_NOTDELMEDIAFILES',				'メンバーによってアップロードされたファイルは<b>削除されません</b>ので気をつけてください。(少なくともこのバージョン以下のNucleusではそうなっています)');	// <add by shizuki />
+
+// send Weblogupdate.ping
+define('_UPDATEDPING_MESSAGE',						'<h2>サイトが更新されました。Pingサーバに更新を通知します。</h2><p>しばらくお待ちください</p><p>自動的にページが切り替わらない場合は、表示されるリンクをクリックしてください。');
+define('_UPDATEDPING_GOPINGPAGE',					'更新Ping送信');
+define('_UPDATEDPING_PINGING',						'Pingサーバに送信中です');
+define('_UPDATEDPING_VIEWITEM',						'更新されたblog:');
+define('_UPDATEDPING_VISITOWNSITE',					'サイトへ行ってみる');
+define('_UPDATEDPING_GOSENDPING',					'更新Ping送信');
+
+// General category
+define('_EBLOGDEFAULTCATEGORY_NAME',				'総合');
+define('_EBLOGDEFAULTCATEGORY_DESC',				'投稿した記事に合うカテゴリが無い時にこのカテゴリを使用すると良いでしょう');
+
+// First ITEM
+define('_EBLOG_FIRSTITEM_TITLE',					'最初の記事(自動投稿)');
+define('_EBLOG_FIRSTITEM_BODY',						'これはあなたのblogにおける最初のアイテムです。自由に削除していただいてかまいません。');
+
+// New weblog was created
+define('_BLOGCREATED_TITLE',						'新しいblogが作成されました');
+define('_BLOGCREATED_ADDEDTXT',						'新しいblog 「%s」が作成されました。続けて、blogにアクセスするために以下のどちらかの手順に進んでください。');
+define('_BLOGCREATED_SIMPLEWAY',					'簡単な方法: 下のコードを貼付けた <code>%s.php</code> というファイルを作成する');
+define('_BLOGCREATED_ADVANCEDWAY',					'高度な方法: 現在使用しているスキンに新しいblogを展開させるための記述を加える');
+define('_BLOGCREATED_SIMPLEDESC1',					'方法 1 :簡単な方法: <code>%s.php</code> というファイルを作成');
+define('_BLOGCREATED_SIMPLEDESC2',					'<code>%s.php</code> というファイルを作成して、中身に以下のコードを貼り付けます:');
+define('_BLOGCREATED_SIMPLEDESC3',					'すでにある<code>index.php</code>と同じディレクトリにアップロードします。');
+define('_BLOGCREATED_SIMPLEDESC4',					'新しいblogの作成を完了するために、このファイルのURLを入力してください。(<em>多分</em>入力済みの値で合っているとは思いますが保証はできません):');
+define('_BLOGCREATED_ADVANCEDWAY2',					'方法 2 :高度な方法: 現在使用しているスキンに新しいblogを展開する記述を加える');
+define('_BLOGCREATED_ADVANCEDWAY3',					'新しいblogの作成を完了するためにURLを入力してください。(ほとんどの場合既存blogと同じURLになります)');
+
+// Donate!
+define('_ADMINPAGEFOOT_OFFICIALURL',				'http://japan.nucleuscms.org/');
+define('_ADMINPAGEFOOT_DONATEURL',					'http://japan.nucleuscms.org/donate.php');
+define('_ADMINPAGEFOOT_DONATE',						'寄付について');
+define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group &amp; Nucleus CMS Japanチーム');
+
+// Quick menu
+define('_QMENU_MANAGE_SYSTEM',						'システム環境');
+
+// REG file
+define('_WINREGFILE_TEXT',							'「%s」に記事を投稿');
+
+// Bookmarklet
+define('_BOOKMARKLET_TITLE',						'ブックマークレット<!-- と 右クリックメニュー -->');
+define('_BOOKMARKLET_DESC1',						'ブックマークレット（Bookmarklet）とは、Webブラウザのブックマークに登録して使うJavaScriptプログラムです。<br />');
+define('_BOOKMARKLET_DESC2',						'Nucleusには『お気に入り』または『ブックマークツールバー』に登録でき、クリックひとつで blog への投稿画面を開く機能をブラウザに追加することが出来ます。<br />');
+define('_BOOKMARKLET_DESC3',						'Webサイトを見ていてそのページにリンクを張った投稿をしたいと思った時にブックマークレットを使用すれば、そのサイト(ページ)へのリンクが書き込まれた状態で、');
+define('_BOOKMARKLET_DESC4',						'さらに、そのページ内で文章を選択した状態で使用した場合、選択されている文章が自動的に引用された状態で、Nucleusの新規アイテムの追加ウィンドウがポップアップします。<br />');
+define('_BOOKMARKLET_DESC5',						'またWindows Internet Explorerのみですが、この機能を右クリックメニューに登録することも出来ます。');
+define('_BOOKMARKLET_BOOKARKLET',					'ブックマークレット');
+define('_BOOKMARKLET_ANCHOR',						'「%s」に記事を投稿');
+define('_BOOKMARKLET_BMARKFOLLOW',					' (ほとんどのブラウザで動作します)');
+define('_BOOKMARKLET_BMARKTEXT',					' 下のリンクを「お気に入り」もしくは「ブックマーク」に追加してください。追加の仕方はそれぞれのブラウザのヘルプを参照してください。<br />');
+define('_BOOKMARKLET_BMARKTEST',					' (テストしてみたい場合は下のリンクをクリックしてみてください)');
+define('_BOOKMARKLET_RIGHTCLICK',					'右クリックメニューにインストール(Windows Internet Explorerのみ)');
+define('_BOOKMARKLET_RIGHTLABEL',					'右クリックメニュー');
+define('_BOOKMARKLET_RIGHTTEXT1',					'Windowsでインターネットエクスプローラーを使用している場合は、');
+define('_BOOKMARKLET_RIGHTTEXT2',					'にインストールすることも出来ます<br />(「開く」を選択すれば直接レジストリに登録します)');
+define('_BOOKMARKLET_RIGHTTEXT3',					'このインストールした右クリックメニューを表示するためにはIEの再起動が必要です。');
+define('_BOOKMARKLET_UNINSTALLTT',					'アンインストール');
+define('_BOOKMARKLET_DELETEBAR',					'「お気に入り」もしくはツールバーから消すには、単に削除するだけです。');
+define('_BOOKMARKLET_DELETERIGHTT',					'右クリックメニューから消したい時は、以下の手順を踏んでください:');
+define('_BOOKMARKLET_DELETERIGHT1',					'スタートメニューから「ファイルを指定して実行...」を選択');
+define('_BOOKMARKLET_DELETERIGHT2',					'"regedit" と入力');
+define('_BOOKMARKLET_DELETERIGHT3',					'"OK" ボタンを押す');
+define('_BOOKMARKLET_DELETERIGHT4',					'"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" をツリーの中から検索');
+define('_BOOKMARKLET_DELETERIGHT5',					'"「(あなたのblogの名前)」に記事を投稿" エントリを削除');
+
+define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'何かが間違っています');
+define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'新しいカテゴリを作ることが出来ませんでした');
+
+// BAN
+define('_BAN_EXAMPLE_TITLE',						'例');
+define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193"と入力した場合は、このIPアドレスを持つPC1台だけをブロックします。"134.58.253"と入力した場合は、"134.58.235.0~134.58.235.255"の範囲の256個のIPアドレスを持つPCを全てブロックします。これは、前者のIPアドレス(134.58.253.193)を含みます。');
+define('_BAN_IP_CUSTOM',							'ブロック指定: ');
+define('_BAN_BANBLOGNAME',							'%s のみ');
+
+// Plugin Options
+define('_PLUGIN_OPTIONS_TITLE',						'%s のオプション設定');
+
+// Plugin file loda error
+define('_PLUGINFILE_COULDNT_BELOADED',				'エラー: プラグインファイル <strong>%s.php</strong> を読み込めませんでした。ファイルが存在しない、もくは使用中の Nucleus 上で動作させるために必要な機能がプラグインでサポートされていません。(<a href="?action=actionlog">管理操作履歴</a>に詳細があります。)');
+
+//ITEM add/edit template (for japanese only)
+define('_ITEM_ADDEDITTEMPLATE_FORMAT',				'フォーマット：');
+define('_ITEM_ADDEDITTEMPLATE_YEAR',				'年');
+define('_ITEM_ADDEDITTEMPLATE_MONTH',				'月');
+define('_ITEM_ADDEDITTEMPLATE_DAY',					'日');
+define('_ITEM_ADDEDITTEMPLATE_HOUR',				'時');
+define('_ITEM_ADDEDITTEMPLATE_MINUTE',				'分');
+
+// Errors
+define('_ERRORS_INSTALLSQL',						'｢install.sql｣ファイルを削除してください');
+define('_ERRORS_INSTALLDIR',						'｢install｣ディレクトリを削除してください');  // <add by shizuki />
+define('_ERRORS_INSTALLPHP',						'｢install.php｣ファイルを削除してください');
+define('_ERRORS_UPGRADESDIR',						'｢nucleus/upgrades｣ディレクトリを削除してください');
+define('_ERRORS_CONVERTDIR',						'｢nucleus/convert｣ディレクトリを削除してください');
+define('_ERRORS_CONFIGPHP',							'｢config.php｣ファイルを読み取り専用(｢chmod 444｣等)にしてください');
+define('_ERRORS_STARTUPERROR1',						'<p>一つ、またはそれ以上のNucleusCMSのインストール(アップグレード)用ファイルがサーバ上に残っている、もしくは書き込み可能になっています。</p><p>これらのファイルを削除、またはパーミッションを変更してセキュリティを確保してください。Nucleusが見つけたファイルのいくつかを次に示します。</p> <ul><li>');
+define('_ERRORS_STARTUPERROR2',						'</li></ul><p>この警告を表示させたくない場合は、<code>globalfunctions.php</code>の<code>$CONF[\'alertOnSecurityRisk\']</code>の値を<code>0</code>にするか、同様の内容を<code>config.php</code>の最後に記述します(セキュリティレベルが下がります)</p>');
+define('_ERRORS_STARTUPERROR3',						'セキュリティ リスクの警告');
+
+// PluginAdmin tickets by javascript
+define('_PLUGINADMIN_TICKETS_JAVASCRIPT',			'<p><b>チケットの自動発行中にエラーが発生しました</b></p>');
+
+// Global settings disablesite URL
+define('_SETTINGS_DISABLESITEURL',					'転送先のURL:');
+
+// Skin import/export
+define('_SKINIE_SEELEMENT_UNEXPECTEDTAG',			'予期しないタグ');
+define('_SKINIE_ERROR_FAILEDOPEN_FILEURL',			'ファイル、またはURLを開く事が出来ません');
+define('_SKINIE_NAME_CLASHES_DETECTED',				'スキン/テンプレートに名前の同じものがあります。allowOverwriteを1に設定して、上書きモードで再度実行してください。');
+
+// ACTIONS.php parse_commentform
+define('_ACTIONURL_NOTLONGER_PARAMATER',			'｢action.php｣のURLはコメントフォーム用の変数のパラメーターではなくなっています。この設定は｢グローバル設定｣に移動しました');
+
+// ADMIN.php addToTemplate 'Query error: '
+define('_ADMIN_SQLDIE_QUERYERROR',					'クエリ エラー: ');
+
+// backyp.php Backup WARNING
+define('_BACKUP_BACKUPFILE_TITLE',					'Nucleus CMS のデータベースバックアップファイルです');
+define('_BACKUP_BACKUPFILE_BACKUPDATE',				'バックアップした日:');
+define('_BACKUP_BACKUPFILE_NUCLEUSVERSION',			'Nucleus CMS のバージョン:');
+define('_BACKUP_BACKUPFILE_DATABASE_NAME',			'Nucleus CMS のデータベースの名前:');
+define('_BACKUP_BACKUPFILE_TABLE_NAME',				'テーブルの構造 :');
+define('_BACKUP_BACKUPFILE_TABLEDATAFOR',			'%s テーブルのダンプデータ');
+define('_BACKUP_WARNING_NUCLEUSVERSION',				'注意！: バックアップからデータベースを復元する際は、Nucleusのバージョンがバックアップを作成した時と同じものかよく確認してください。');
+define('_BACKUP_RESTOR_NOFILEUPLOADED',				'ファイルがアップロードされていません');
+define('_BACKUP_RESTOR_UPLOAD_ERROR',				'アップロード中にエラーが発生しました');
+define('_BACKUP_RESTOR_UPLOAD_NOCORRECTTYPE',		'アップロードされたファイルの形式が不正です');
+define('_BACKUP_RESTOR_UPLOAD_NOZLIB',				'圧縮形式のバックアップファイルを解凍できませんでした(｢zlib｣ライブラリがインストールされていません)');
+define('_BACKUP_RESTOR_SQL_ERROR',					'SQL エラー: ');
+
+// BLOG.php addTeamMember
+define('_TEAM_ADD_NEWTEAMMEMBER',					'%s(ID=%d) を、ブログ "%s" のチームに加えました');
+
+// ADMIN.php systemoverview()
+define('_ADMIN_SYSTEMOVERVIEW_HEADING',				'システム環境一覧');
+define('_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL',			'PHP と MySQL');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONS',			'バージョン');
+define('_ADMIN_SYSTEMOVERVIEW_PHPVERSION',			'PHP のバージョン');
+define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL のバージョン');
+define('_ADMIN_SYSTEMOVERVIEW_SETTINGS',			'PHP の設定');
+define('_ADMIN_SYSTEMOVERVIEW_GDLIBRALY',			'GD ライブラリ');
+define('_ADMIN_SYSTEMOVERVIEW_MODULES',				'Apache モジュール');
+define('_ADMIN_SYSTEMOVERVIEW_ENABLE',				'有効');
+define('_ADMIN_SYSTEMOVERVIEW_DISABLE',				'無効');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM',		'Nucleus のシステムについて');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION',		'Nucleus のバージョン');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus のパッチレベル');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'重要な設定');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'バージョンチェック');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'より新しいバージョンのリリースが無いか、公式サイトでチェックできます: ');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://japan.nucleuscms.org/version.php?v=%d&amp;pl=%d');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'最新のバージョンをチェック');
+define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			'この画面を閲覧する権限がありません');
+
+// ENCAPSULATE.php
+define('_ENCAPSULATE_ENCAPSULATE_NOENTRY',			'エントリーがありません');
+
+// globalfunctions.php
+define('_GFUNCTIONS_LOGINPCSHARED_YES',				'共有PCからのログイン');
+define('_GFUNCTIONS_LOGINPCSHARED_NO',				'共有ではないPCからのログイン');
+define('_GFUNCTIONS_LOGINSUCCESSFUL_TXT',			'%s がログインしました (%s)');
+define('_GFUNCTIONS_LOGINFAILED_TXT',				'%s がログインに失敗しました');
+define('_GFUNCTIONS_LOGOUT_TXT',					'%s がログアウトしました');
+define('_GFUNCTIONS_HEADERSALREADYSENT_FILE',		'<code>%s</code> の <code>%s</code> 行目で');
+define('_GFUNCTIONS_HEADERSALREADYSENT_TITLE',		'HTTPヘッダは送信済みです');
+define('_GFUNCTIONS_HEADERSALREADYSENT_TXT',		'<p>%sすでにページのHTTPヘッダが送出されており、Nucleusが正常に動作しなくなる可能性があります。</p><p><code>config.php</code>やランゲージファイル、その他プラグインのファイルの終わりに、余分な改行や文字列がないか確認してもういちどアクセスしてみてください。</p><p>根本的な解決をせずにこのメッセージを表示させなくするには、<code>globalfunctions.php</code>の冒頭の<code>$CONF[\'alertOnHeadersSent\']</code>を<code>0</code>に設定します。</p>');
+define('_GFUNCTIONS_PARSEFILE_FILEMISSING',			'ファイルが見つかりません');
+define('_GFUNCTIONS_AN_ERROR_OCCURRED',				'エラーが発生しました');
+define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			'ログインしていません');
+
+// MANAGER.php
+define('_MANAGER_PLUGINFILE_NOTFOUND',				"プラグイン「%s」を読み込めませんでした(ファイルが見つかりません)");
+define('_MANAGER_PLUGINFILE_NOCLASS',				"プラグイン「%s」を読み込めませんでした(ファイル内にプラグインクラスが存在しません)");
+define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"プラグイン「%s」を読み込めませんでした(｢SqlTablePrefix｣をサポートしていません)");
+
+// mysql.php
+define('_NO_SUITABLE_MYSQL_LIBRARY',				"<p>Nucleusを動かすのに必要なmySQL用のライブラリがインストールされていません</p>");
+
+// PLUGIN.php
+define('_ERROR_PLUGIN_NOSUCHACTION',				'指定されたアクションは存在しません。');
+
+// PLUGINADMIN.php
+define('_ERROR_INVALID_PLUGIN',						'不正なプラグインです');
+
+// showlist.php
+define('_LIST_PLUGS_DEPREQ',						'このプラグインに依存するプラグイン:');
+define('_LIST_SKIN_PREVIEW',						"'%s' スキンのプレビュー");
+define('_LIST_SKIN_PREVIEW_VIEWLARGER',				"大きな画像を見る");
+define('_LIST_SKIN_README',							"'%s' スキンについてもっと詳しく");
+define('_LIST_SKIN_README_TXT',						'Read me');
+
+// BLOG.php createNewCategory()
+define('_CREATED_NEW_CATEGORY_NAME',				'新しいカテゴリ');
+define('_CREATED_NEW_CATEGORY_DESC',				'新しいカテゴリの説明');
+
+// ADMIN.php blog settings
+define('_EBLOG_CURRENT_TEAM_MEMBER',				'このブログチームの現在のメンバー：');
+
+// HTML outputs
+define('_HTML_XML_NAME_SPACE_AND_LANG_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"');
+
+// Language Files
+define('_LANGUAGEFILES_JAPANESE-UTF8',				'日本語 - 日本語 (UTF-8)');
+define('_LANGUAGEFILES_JAPANESE-EUC',				'日本語 - 日本語 (EUC)');
+define('_LANGUAGEFILES_JAPANESE-SJIS',				'日本語 - 日本語 (Shift-JIS)');
+define('_LANGUAGEFILES_ENGLISH-UTF8',				'英語 - English (UTF-8)');
+define('_LANGUAGEFILES_ENGLISH',					'英語 - English (iso-8859-1)');
+/*
+define('_LANGUAGEFILES_BULGARIAN',					'ブルガリア語 - &#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080; (iso-8859-5)');
+define('_LANGUAGEFILES_CATALAN',					'カタラン語 - Catal&agrave; (iso-8859-1)');
+define('_LANGUAGEFILES_CHINESE-GBK',				'簡体字中国語 - &#31777;&#20307;&#23383;&#20013;&#25991; (gbk)');
+define('_LANGUAGEFILES_SIMCHINESE',					'簡体字中国語 - &#31777;&#20307;&#23383;&#20013;&#25991; (gb2312)');
+define('_LANGUAGEFILES_CHINESE-UTF8',				'簡体字中国語 - &#31777;&#20307;&#23383;&#20013;&#25991; (utf-8)');
+define('_LANGUAGEFILES_CHINESEB5',					'繁体字中国語 - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
+define('_LANGUAGEFILES_CHINESEB5-UTF8',				'繁体字中国語 - &#32321;&#20307;&#23383;&#20013;&#25991; (utf-8)');
+define('_LANGUAGEFILES_TRADITIONAL_CHINESE',		'繁体字中国語 - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
+define('_LANGUAGEFILES_TRADITIONAL_CHINESE-UTF-8',	'繁体字中国語 - &#32321;&#20307;&#23383;&#20013;&#25991; (utf-8)');
+define('_LANGUAGEFILES_CZECH',						'チェコ語 - &#268;esky (windows-1250)');
+define('_LANGUAGEFILES_FINNISH',					'フィンランド語 - Suomi (iso-8859-1)');
+define('_LANGUAGEFILES_FRENCH',						'フランス語 - Fran&ccedil;ais (iso-8859-1)');
+define('_LANGUAGEFILES_GALEGO',						'ガリシア語 - Galego (iso-8859-1)');
+define('_LANGUAGEFILES_GERMAN',						'ドイツ語 - Deutsch (iso-8859-1)');
+define('_LANGUAGEFILES_HUNGARIAN',					'ハンガリー語 - Magyar (iso-8859-2)');
+define('_LANGUAGEFILES_ITALIANO',					'イタリア語 - Italiano (iso-8859-1)');
+define('_LANGUAGEFILES_KOREAN-EUC-KR',				'韓国語 - &#54620;&#44397;&#50612; (euc-kr)');
+define('_LANGUAGEFILES_KOREAN-UTF',					'韓国語 - &#54620;&#44397;&#50612; (utf-8)');
+define('_LANGUAGEFILES_LATVIAN',					'ラトビア語 - Latvie&scaron;u (windows-1257)');
+define('_LANGUAGEFILES_NEDERLANDS',					'オランダ語 - Nederlands (iso-8859-15)');
+define('_LANGUAGEFILES_PERSIAN',					'ペルシア語 - &#1601;&#1575;&#1585;&#1587;&#1740; (utf-8)');
+define('_LANGUAGEFILES_PORTUGUESE_BRAZIL',			'ブラジル-ポルトガル語 - Portugu&ecirc;s (iso-8859-1)');
+define('_LANGUAGEFILES_RUSSIAN',					'ロシア語 - &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; (windows-1251)');
+define('_LANGUAGEFILES_SLOVAK',						'スロベキア語 - Sloven&#269;ina (ISO-8859-2)');
+define('_LANGUAGEFILES_SPANISH-UTF8',				'スペイン語 - Espa&ntilde;ol (utf-8)');
+define('_LANGUAGEFILES_SPANISH',					'スペイン語 - Espa&ntilde;ol (iso-8859-1)');
+*/
+
+// </add by shizuki>
+
+/********************************************
+ *        End New for 3.40                  *
+ ********************************************/
 
 // START changed/added after 3.3 START
 define('_AUTOSAVEDRAFT',					'ドラフト保存状況');
@@ -149,7 +403,7 @@ define('_QMENU_ACTIVATE_TEXT',				'<p>アクティベーションを完了すれば、<a href="i
 
 define('_PLUGS_BTN_UPDATE',					'登録リストのアップデート');
 
-// global settings 
+// global settings
 define('_SETTINGS_JSTOOLBAR',				'Javascriptツールバーのスタイル');
 define('_SETTINGS_JSTOOLBAR_FULL',			'フル・ツールバー(IE)');
 define('_SETTINGS_JSTOOLBAR_SIMPLE',		'シンプル・ツールバー(IE以外)');
@@ -205,6 +459,7 @@ define('_ERROR_PLUGNOHELPFILE',				'このプラグイン用のヘルプファイルが見つかりま
 define('_PLUGS_HELP_TITLE',					'プラグインのヘルプページ');
 define('_LIST_PLUGS_HELP', 					'ヘルプ');
 
+
 // END changed/started after 3.1
 
 // START changed/added after v2.5beta START
@@ -238,6 +493,7 @@ define('_MEDIA_COLLECTION_LABEL',			'現在のコレクション: ');
 define('_ADD_ALIGNLEFT_TT',					'左寄せ');
 define('_ADD_ALIGNRIGHT_TT',				'右寄せ');
 define('_ADD_ALIGNCENTER_TT',				'中央寄せ');
+
 
 // generic upload failure
 define('_ERROR_UPLOADFAILED',				'アップロードに失敗しました');
@@ -461,7 +717,7 @@ define('_MEMBERMAIL_MAIL',					'あなたのメールアドレス:');
 // file upload
 define('_ERROR_DISALLOWEDUPLOAD2',			'チームに参加しているどのブログも管理権限を持っていない為、ファイルのアップロードが出来ません。');
 
-// plugin list
+/* plugin list
 define('_LISTS_INFO',						'情報');
 define('_LIST_PLUGS_AUTHOR',				'作者:');
 define('_LIST_PLUGS_VER',					'バージョン:');
@@ -472,7 +728,18 @@ define('_LIST_PLUGS_UP',					'上へ');
 define('_LIST_PLUGS_DOWN',					'下へ');
 define('_LIST_PLUGS_UNINSTALL',				'削除');
 define('_LIST_PLUGS_ADMIN',					'管理');
-define('_LIST_PLUGS_OPTIONS',				'編集');
+define('_LIST_PLUGS_OPTIONS',				'編集');*/
+define('_LISTS_INFO',						'インフォメーション');
+define('_LIST_PLUGS_AUTHOR',				'製作者：');
+define('_LIST_PLUGS_VER',					'バージョン：');
+define('_LIST_PLUGS_SITE',					'入手サイト：');
+define('_LIST_PLUGS_DESC',					'概要：');
+define('_LIST_PLUGS_SUBS',					'登録済みイベント：');
+define('_LIST_PLUGS_UP',					'&uarr; ひとつ上へ');
+define('_LIST_PLUGS_DOWN',					'&darr; ひとつ下へ');
+define('_LIST_PLUGS_UNINSTALL',				'アンインストール');
+define('_LIST_PLUGS_ADMIN',					'管理');
+define('_LIST_PLUGS_OPTIONS',				'オプション編集');
 
 // plugin option list
 define('_LISTS_VALUE',						'値(内容)');
@@ -497,8 +764,8 @@ define('_BACKTOMANAGE',						'Nucleusの管理に戻る');
 
 
 
-// charset to use 
-define('_CHARSET',							'EUC-JP');
+// charset to use
+define('_CHARSET',							'UTF-8');
 
 // global stuff
 define('_LOGOUT',							'ログアウト');
@@ -796,7 +1063,7 @@ define('_TEMPLATE_DHEADER',					'日付のヘッダー');
 define('_TEMPLATE_DFOOTER',					'日付のフッター');
 define('_TEMPLATE_DFORMAT',					'日付フォーマット');
 define('_TEMPLATE_TFORMAT',					'時刻フォーマット');
-define('_TEMPLATE_LOCALE',					'Locale');
+define('_TEMPLATE_LOCALE',					'ロケール');
 define('_TEMPLATE_IMAGE',					'画像とメディアのポップアップ');
 define('_TEMPLATE_PCODE',					'ポップアップ画像へのリンクコード');
 define('_TEMPLATE_ICODE',					'インライン画像のコード');
@@ -915,7 +1182,7 @@ define('_MEMBERS_REALNAME',					'ハンドルネーム');
 define('_MEMBERS_PWD',						'パスワード');
 define('_MEMBERS_REPPWD',					'パスワード（確認）');
 define('_MEMBERS_EMAIL',					'メールアドレス');
-define('_MEMBERS_EMAIL_EDIT',				'(メールアドレスを変更すると、そのアドレスへ自動的に新しいパスワードが送信されます)');
+define('_MEMBERS_EMAIL_EDIT',				'(メールアドレスを変更すると、そのアドレスへ自動的に認証用リンクが送信されます)');
 define('_MEMBERS_URL',						'Web siteアドレス (URL)');
 define('_MEMBERS_SUPERADMIN',				'Super-admin(最高管理)権限を与える');
 define('_MEMBERS_CANLOGIN',					'管理者領域へのログインを可能にする');
@@ -991,12 +1258,12 @@ define('_LISTS_COMMENTS',							'コメント');
 define('_LISTS_TYPE',								'タイプ');
 
 
-// member list 
+// member list
 define('_LIST_MEMBER_NAME',							'表示される名前(ログインID)');
 define('_LIST_MEMBER_RNAME',						'ハンドルネーム');
 define('_LIST_MEMBER_ADMIN',						'Super-admin権限 ');
 define('_LIST_MEMBER_LOGIN',						'ログイン可能');
-define('_LIST_MEMBER_URL',							'Web site');
+define('_LIST_MEMBER_URL',							'ウェブサイト');
 
 // banlist
 define('_LIST_BAN_IPRANGE',							'規制中のIPアドレスの範囲');
@@ -1014,6 +1281,8 @@ define('_LIST_COMMENT_HOST',						'ホスト');
 // itemlist
 define('_LIST_ITEM_INFO',							'情報');
 define('_LIST_ITEM_CONTENT',						'タイトルと本文');
+define('_LIST_ITEM_NOCONTENT',						'コメントはありません');
+define('_LIST_ITEM_COMMENTS',						'コメント(%d)件');
 
 
 // teamlist
@@ -1036,249 +1305,4 @@ define('_EDITC_NONMEMBER',							'非メンバー');
 define('_MOVE_TITLE',								'どのBlogに移動しますか？');
 define('_MOVE_BTN',									'アイテムを移動する');
 
-
-// <add by shizuki>
-// OVERVIEW screen
-define('_OVERVIEW_SHOWALL',							'全てのblogを表示');
-
-// Edit skins
-define('_SKINEDIT_ALLOWEDBLOGS',					'作成済みのblog:');
-define('_SKINEDIT_ALLOWEDTEMPLATESS',				'使用可能なテンプレート:');
-
-// delete member
-define('_WARNINGTXT_NOTDELMEDIAFILES',				'メンバーによってアップロードされたファイルは<b>削除されません</b>ので気をつけてください。(少なくともこのバージョン以下のNucleusではそうなっています)');	// <add by shizuki />
-
-// send Weblogupdate.ping
-define('_UPDATEDPING_MESSAGE',						'<h2>サイトが更新されました。Pingサーバに更新を通知します。</h2><p>しばらくお待ちください</p><p>自動的にページが切り替わらない場合は、表示されるリンクをクリックしてください。');
-define('_UPDATEDPING_GOPINGPAGE',					'更新Ping送信');
-define('_UPDATEDPING_PINGING',						'Pingサーバに送信中です');
-define('_UPDATEDPING_VIEWITEM',						'更新されたblog:');
-define('_UPDATEDPING_VISITOWNSITE',					'サイトへ行ってみる');
-define('_UPDATEDPING_GOSENDPING',					'更新Ping送信');
-
-// General category
-define('_EBLOGDEFAULTCATEGORY_NAME',				'総合');
-define('_EBLOGDEFAULTCATEGORY_DESC',				'投稿した記事に合うカテゴリが無い時にこのカテゴリを使用すると良いでしょう');
-
-// First ITEM
-define('_EBLOG_FIRSTITEM_TITLE',					'最初の記事(自動投稿)');
-define('_EBLOG_FIRSTITEM_BODY',						'これはあなたのblogにおける最初のアイテムです。自由に削除していただいてかまいません。');
-
-// New weblog was created
-define('_BLOGCREATED_TITLE',						'新しいblogが作成されました');
-define('_BLOGCREATED_ADDEDTXT',						'新しいblog 「%s」が作成されました。続けて、blogにアクセスするために以下のどちらかの手順に進んでください。');
-define('_BLOGCREATED_SIMPLEWAY',					'簡単な方法: 下のコードを貼付けた <code>%s.php</code> というファイルを作成する');
-define('_BLOGCREATED_ADVANCEDWAY',					'高度な方法: 現在使用しているスキンに新しいblogを展開させるための記述を加える');
-define('_BLOGCREATED_SIMPLEDESC1',					'方法 1 :簡単な方法: <code>%s.php</code> というファイルを作成');
-define('_BLOGCREATED_SIMPLEDESC2',					'<code>%s.php</code> というファイルを作成して、中身に以下のコードを貼り付けます:');
-define('_BLOGCREATED_SIMPLEDESC3',					'すでにある<code>index.php</code>と同じディレクトリにアップロードします。');
-define('_BLOGCREATED_SIMPLEDESC4',					'新しいblogの作成を完了するために、このファイルのURLを入力してください。(<em>多分</em>入力済みの値で合っているとは思いますが保証はできません):');
-define('_BLOGCREATED_ADVANCEDWAY2',					'方法 2 :高度な方法: 現在使用しているスキンに新しいblogを展開する記述を加える');
-define('_BLOGCREATED_ADVANCEDWAY3',					'新しいblogの作成を完了するためにURLを入力してください。(ほとんどの場合既存blogと同じURLになります)');
-
-// Donate!
-define('_ADMINPAGEFOOT_OFFICIALURL',				'http://japan.nucleuscms.org/');
-define('_ADMINPAGEFOOT_DONATEURL',					'http://japan.nucleuscms.org/donate.php');
-define('_ADMINPAGEFOOT_DONATE',						'寄付について');
-define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group &amp; Nucleus CMS Japanチーム');
-
-// Quick menu
-define('_QMENU_MANAGE_SYSTEM',						'システム環境');
-
-// REG file
-define('_WINREGFILE_TEXT',							'「%s」に記事を投稿');
-
-// Bookmarklet
-define('_BOOKMARKLET_TITLE',						'ブックマークレット<!-- と 右クリックメニュー -->');
-define('_BOOKMARKLET_DESC1',						'ブックマークレット（Bookmarklet）とは、Webブラウザのブックマークに登録して使うJavaScriptプログラムです。<br />');
-define('_BOOKMARKLET_DESC2',						'Nucleusには『お気に入り』または『ブックマークツールバー』に登録でき、クリックひとつで blog への投稿画面を開く機能をブラウザに追加することが出来ます。<br />');
-define('_BOOKMARKLET_DESC3',						'Webサイトを見ていてそのページにリンクを張った投稿をしたいと思った時にブックマークレットを使用すれば、そのサイト(ページ)へのリンクが書き込まれた状態で、');
-define('_BOOKMARKLET_DESC4',						'さらに、そのページ内で文章を選択した状態で使用した場合、選択されている文章が自動的に引用された状態で、Nucleusの新規アイテムの追加ウィンドウがポップアップします。<br />');
-define('_BOOKMARKLET_DESC5',						'またWindows Internet Explorerのみですが、この機能を右クリックメニューに登録することも出来ます。');
-define('_BOOKMARKLET_BOOKARKLET',					'ブックマークレット');
-define('_BOOKMARKLET_ANCHOR',						'「%s」に記事を投稿');
-define('_BOOKMARKLET_BMARKFOLLOW',					' (ほとんどのブラウザで動作します)');
-define('_BOOKMARKLET_BMARKTEXT',					' 下のリンクを「お気に入り」もしくは「ブックマーク」に追加してください。追加の仕方はそれぞれのブラウザのヘルプを参照してください。<br />');
-define('_BOOKMARKLET_BMARKTEST',					' (テストしてみたい場合は下のリンクをクリックしてみてください)');
-define('_BOOKMARKLET_RIGHTCLICK',					'右クリックメニューにインストール(Windows Internet Explorerのみ)');
-define('_BOOKMARKLET_RIGHTLABEL',					'右クリックメニュー');
-define('_BOOKMARKLET_RIGHTTEXT1',					'Windowsでインターネットエクスプローラーを使用している場合は、');
-define('_BOOKMARKLET_RIGHTTEXT2',					'にインストールすることも出来ます<br />(「開く」を選択すれば直接レジストリに登録します)');
-define('_BOOKMARKLET_RIGHTTEXT3',					'このインストールした右クリックメニューを表示するためにはIEの再起動が必要です。');
-define('_BOOKMARKLET_UNINSTALLTT',					'アンインストール');
-define('_BOOKMARKLET_DELETEBAR',					'「お気に入り」もしくはツールバーから消すには、単に削除するだけです。');
-define('_BOOKMARKLET_DELETERIGHTT',					'右クリックメニューから消したい時は、以下の手順を踏んでください:');
-define('_BOOKMARKLET_DELETERIGHT1',					'スタートメニューから「ファイルを指定して実行...」を選択');
-define('_BOOKMARKLET_DELETERIGHT2',					'"regedit" と入力');
-define('_BOOKMARKLET_DELETERIGHT3',					'"OK" ボタンを押す');
-define('_BOOKMARKLET_DELETERIGHT4',					'"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" をツリーの中から検索');
-define('_BOOKMARKLET_DELETERIGHT5',					'"「(あなたのblogの名前)」に記事を投稿" エントリを削除');
-
-define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'何かが間違っています');
-define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'新しいカテゴリを作ることが出来ませんでした');
-
-// BAN
-define('_BAN_EXAMPLE_TITLE',						'例');
-define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193"と入力した場合は、このIPアドレスを持つPC1台だけをブロックします。"134.58.253"と入力した場合は、"134.58.235.0~134.58.235.255"の範囲の256個のIPアドレスを持つPCを全てブロックします。これは、前者のIPアドレス(134.58.253.193)を含みます。');
-define('_BAN_IP_CUSTOM',							'ブロック指定: ');
-define('_BAN_BANBLOGNAME',							'%s のみ');
-
-// Plugin Options
-define('_PLUGIN_OPTIONS_TITLE',						'%s のオプション設定');
-
-// Plugin file loda error
-define('_PLUGINFILE_COULDNT_BELOADED',				'エラー: プラグインファイル <strong>%s.php</strong> を読み込めませんでした。ファイルが存在しない、もくは使用中の Nucleus 上で動作させるために必要な機能がプラグインでサポートされていません。(<a href="?action=actionlog">管理操作履歴</a>に詳細があります。)');
-
-//ITEM add/edit template (for japanese only)
-define('_ITEM_ADDEDITTEMPLATE_FORMAT',				'フォーマット：');
-define('_ITEM_ADDEDITTEMPLATE_YEAR',				'年');
-define('_ITEM_ADDEDITTEMPLATE_MONTH',				'月');
-define('_ITEM_ADDEDITTEMPLATE_DAY',					'日');
-define('_ITEM_ADDEDITTEMPLATE_HOUR',				'時');
-define('_ITEM_ADDEDITTEMPLATE_MINUTE',				'分');
-
-// Errors
-define('_ERRORS_INSTALLSQL',						'｢install.sql｣ファイルを削除してください');
-define('_ERRORS_INSTALLDIR',						'｢install｣ディレクトリを削除してください');  // <add by shizuki />
-define('_ERRORS_INSTALLPHP',						'｢install.php｣ファイルを削除してください');
-define('_ERRORS_UPGRADESDIR',						'｢nucleus/upgrades｣ディレクトリを削除してください');
-define('_ERRORS_CONVERTDIR',						'｢nucleus/convert｣ディレクトリを削除してください');
-define('_ERRORS_CONFIGPHP',							'｢config.php｣ファイルを読み取り専用(｢chmod 444｣等)にしてください');
-define('_ERRORS_STARTUPERROR1',						'<p>一つ、またはそれ以上のNucleusCMSのインストール(アップグレード)用ファイルがサーバ上に残っている、もしくは書き込み可能になっています。</p><p>これらのファイルを削除、またはパーミッションを変更してセキュリティを確保してください。Nucleusが見つけたファイルのいくつかを次に示します。</p> <ul><li>');
-define('_ERRORS_STARTUPERROR2',						'</li></ul><p>この警告を表示させたくない場合は、<code>globalfunctions.php</code>の<code>$CONF[\'alertOnSecurityRisk\']</code>の値を<code>0</code>にするか、同様の内容を<code>config.php</code>の最後に記述します(セキュリティレベルが下がります)</p>');
-define('_ERRORS_STARTUPERROR3',						'セキュリティ リスクの警告');
-
-// PluginAdmin tickets by javascript
-define('_PLUGINADMIN_TICKETS_JAVASCRIPT',			'<p><b>チケットの自動発行中にエラーが発生しました</b></p>');
-
-// Global settings disablesite URL
-define('_SETTINGS_DISABLESITEURL',					'転送先のURL:');
-
-// Skin import/export
-define('_SKINIE_SEELEMENT_UNEXPECTEDTAG',			'予期しないタグ');
-define('_SKINIE_ERROR_FAILEDOPEN_FILEURL',			'ファイル、またはURLを開く事が出来ません');
-define('_SKINIE_NAME_CLASHES_DETECTED',				'スキン/テンプレートに名前の同じものがあります。allowOverwriteを1に設定して、上書きモードで再度実行してください。');
-
-// ACTIONS.php parse_commentform
-define('_ACTIONURL_NOTLONGER_PARAMATER',			'｢action.php｣のURLはコメントフォーム用の変数のパラメーターではなくなっています。この設定は｢グローバル設定｣に移動しました');
-
-// ADMIN.php addToTemplate 'Query error: '
-define('_ADMIN_SQLDIE_QUERYERROR',					'クエリ エラー: ');
-
-// backyp.php Backup WARNING
-define('_BACKUP_BACKUPFILE_TITLE',					'Nucleus CMS のデータベースバックアップファイルです');
-define('_BACKUP_BACKUPFILE_BACKUPDATE',				'バックアップした日:');
-define('_BACKUP_BACKUPFILE_NUCLEUSVERSION',			'Nucleus CMS のバージョン:');
-define('_BACKUP_BACKUPFILE_DATABASE_NAME',			'Nucleus CMS のデータベースの名前:');
-define('_BACKUP_BACKUPFILE_TABLE_NAME',				'テーブルの構造 :');
-define('_BACKUP_BACKUPFILE_TABLEDATAFOR',			'%s テーブルのダンプデータ');
-define('_BACKUP_WARNING_NUCLEUSVERSION',				'注意！: バックアップからデータベースを復元する際は、Nucleusのバージョンがバックアップを作成した時と同じものかよく確認してください。');
-define('_BACKUP_RESTOR_NOFILEUPLOADED',				'ファイルがアップロードされていません');
-define('_BACKUP_RESTOR_UPLOAD_ERROR',				'アップロード中にエラーが発生しました');
-define('_BACKUP_RESTOR_UPLOAD_NOCORRECTTYPE',		'アップロードされたファイルの形式が不正です');
-define('_BACKUP_RESTOR_UPLOAD_NOZLIB',				'圧縮形式のバックアップファイルを解凍できませんでした(｢zlib｣ライブラリがインストールされていません)');
-define('_BACKUP_RESTOR_SQL_ERROR',					'SQL エラー: ');
-
-// BLOG.php addTeamMember
-define('_TEAM_ADD_NEWTEAMMEMBER',					'%s(ID=%d) を、ブログ "%s" のチームに加えました');
-
-// ADMIN.php systemoverview()
-define('_ADMIN_SYSTEMOVERVIEW_HEADING',				'システム環境一覧');
-define('_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL',			'PHP と MySQL');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONS',			'バージョン');
-define('_ADMIN_SYSTEMOVERVIEW_PHPVERSION',			'PHP のバージョン');
-define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL のバージョン');
-define('_ADMIN_SYSTEMOVERVIEW_SETTINGS',			'PHP の設定');
-define('_ADMIN_SYSTEMOVERVIEW_GDLIBRALY',			'GD ライブラリ');
-define('_ADMIN_SYSTEMOVERVIEW_MODULES',				'Apache モジュール');
-define('_ADMIN_SYSTEMOVERVIEW_ENABLE',				'有効');
-define('_ADMIN_SYSTEMOVERVIEW_DISABLE',				'無効');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM',		'Nucleus のシステムについて');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION',		'Nucleus のバージョン');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus のパッチレベル');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'重要な設定');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'バージョンチェック');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'より新しいバージョンのリリースが無いか、公式サイトでチェックできます: ');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://nucleuscms.org/version.php?v=%d&amp;pl=%d');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'バージョンチェック');
-define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			'この画面を閲覧する権限がありません');
-
-// ENCAPSULATE.php
-define('_ENCAPSULATE_ENCAPSULATE_NOENTRY',			'エントリーがありません');
-
-// globalfunctions.php
-define('_GFUNCTIONS_LOGINPCSHARED_YES',				'共有PCからのログイン');
-define('_GFUNCTIONS_LOGINPCSHARED_NO',				'共有ではないPCからのログイン');
-define('_GFUNCTIONS_LOGINSUCCESSFUL_TXT',			'%s がログインしました (%s)');
-define('_GFUNCTIONS_LOGINFAILED_TXT',				'%s がログインに失敗しました');
-define('_GFUNCTIONS_LOGOUT_TXT',					'%s がログアウトしました');
-define('_GFUNCTIONS_HEADERSALREADYSENT_FILE',		'<code>%s</code> の <code>%s</code> 行目で');
-define('_GFUNCTIONS_HEADERSALREADYSENT_TITLE',		'HTTPヘッダは送信済みです');
-define('_GFUNCTIONS_HEADERSALREADYSENT_TXT',		'<p>%sすでにページのHTTPヘッダが送出されており、Nucleusが正常に動作しなくなる可能性があります。</p><p><code>config.php</code>やランゲージファイル、その他プラグインのファイルの終わりに、余分な改行や文字列がないか確認してもういちどアクセスしてみてください。</p><p>根本的な解決をせずにこのメッセージを表示させなくするには、<code>globalfunctions.php</code>の冒頭の<code>$CONF[\'alertOnHeadersSent\']</code>を<code>0</code>に設定します。</p>');
-define('_GFUNCTIONS_PARSEFILE_FILEMISSING',			'ファイルが見つかりません');
-define('_GFUNCTIONS_AN_ERROR_OCCURRED',				'エラーが発生しました');
-define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			'ログインしていません');
-
-// MANAGER.php
-define('_MANAGER_PLUGINFILE_NOTFOUND',				"プラグイン「%s」を読み込めませんでした(ファイルが見つかりません)");
-define('_MANAGER_PLUGINFILE_NOCLASS',				"プラグイン「%s」を読み込めませんでした(プラグインクラスが存在しません)");
-define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"プラグイン「%s」を読み込めませんでした(｢SqlTablePrefix｣をサポートしていません)");
-
-// mysql.php
-define('_NO_SUITABLE_MYSQL_LIBRARY',				"<p>Nucleusを動かすのに必要なmySQL用のライブラリがインストールされていません</p>");
-
-// PLUGIN.php
-define('_ERROR_PLUGIN_NOSUCHACTION',				'指定されたアクションは存在しません。');
-
-// PLUGINADMIN.php
-define('_ERROR_INVALID_PLUGIN',						'不正なプラグインです');
-
-// showlist.php
-define('_LIST_PLUGS_DEPREQ',						'このプラグインに依存するプラグイン:');
-define('_LIST_SKIN_PREVIEW',						"'%s' スキンのプレビュー");
-define('_LIST_SKIN_PREVIEW_VIEWLARGER',				"大きな画像を見る");
-define('_LIST_SKIN_README',							"'%s' スキンについてもっと詳しく");
-define('_LIST_SKIN_README_TXT',						'Read me');
-
-// BLOG.php createNewCategory()
-define('_CREATED_NEW_CATEGORY_NAME',				'新しいカテゴリ');
-define('_CREATED_NEW_CATEGORY_DESC',				'新しいカテゴリの説明');
-
-// Language Files
-define('_LANGUAGEFILES_JAPANESE-UTF8',				'日本語 - 日本語 (UTF-8)');
-define('_LANGUAGEFILES_JAPANESE-EUC',				'日本語 - 日本語 (EUC)');
-define('_LANGUAGEFILES_JAPANESE-SJIS',				'日本語 - 日本語 (Shift-JIS)');
-define('_LANGUAGEFILES_ENGLISH-UTF8',				'英語 - English (UTF-8)');
-define('_LANGUAGEFILES_ENGLISH',					'英語 - English (iso-8859-1)');
-/*
-define('_LANGUAGEFILES_BULGARIAN',					'ブルガリア語 - &#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080; (iso-8859-5)');
-define('_LANGUAGEFILES_CATALAN',					'カタラン語 - Catal&agrave; (iso-8859-1)');
-define('_LANGUAGEFILES_CHINESE-GBK',				'簡体字中国語 - &#31777;&#20307;&#23383;&#20013;&#25991; (gbk)');
-define('_LANGUAGEFILES_SIMCHINESE',					'簡体字中国語 - &#31777;&#20307;&#23383;&#20013;&#25991; (gb2312)');
-define('_LANGUAGEFILES_CHINESE-UTF8',				'簡体字中国語 - &#31777;&#20307;&#23383;&#20013;&#25991; (utf-8)');
-define('_LANGUAGEFILES_CHINESEB5',					'繁体字中国語 - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
-define('_LANGUAGEFILES_CHINESEB5-UTF8',				'繁体字中国語 - &#32321;&#20307;&#23383;&#20013;&#25991; (utf-8)');
-define('_LANGUAGEFILES_TRADITIONAL_CHINESE',		'繁体字中国語 - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
-define('_LANGUAGEFILES_TRADITIONAL_CHINESE-UTF-8',	'繁体字中国語 - &#32321;&#20307;&#23383;&#20013;&#25991; (utf-8)');
-define('_LANGUAGEFILES_CZECH',						'チェコ語 - &#268;esky (windows-1250)');
-define('_LANGUAGEFILES_FINNISH',					'フィンランド語 - Suomi (iso-8859-1)');
-define('_LANGUAGEFILES_FRENCH',						'フランス語 - Fran&ccedil;ais (iso-8859-1)');
-define('_LANGUAGEFILES_GALEGO',						'ガリシア語 - Galego (iso-8859-1)');
-define('_LANGUAGEFILES_GERMAN',						'ドイツ語 - Deutsch (iso-8859-1)');
-define('_LANGUAGEFILES_HUNGARIAN',					'ハンガリー語 - Magyar (iso-8859-2)');
-define('_LANGUAGEFILES_ITALIANO',					'イタリア語 - Italiano (iso-8859-1)');
-define('_LANGUAGEFILES_KOREAN-EUC-KR',				'韓国語 - &#54620;&#44397;&#50612; (euc-kr)');
-define('_LANGUAGEFILES_KOREAN-UTF',					'韓国語 - &#54620;&#44397;&#50612; (utf-8)');
-define('_LANGUAGEFILES_LATVIAN',					'ラトビア語 - Latvie&scaron;u (windows-1257)');
-define('_LANGUAGEFILES_NEDERLANDS',					'オランダ語 - Nederlands (iso-8859-15)');
-define('_LANGUAGEFILES_PERSIAN',					'ペルシア語 - &#1601;&#1575;&#1585;&#1587;&#1740; (utf-8)');
-define('_LANGUAGEFILES_PORTUGUESE_BRAZIL',			'ブラジル-ポルトガル語 - Portugu&ecirc;s (iso-8859-1)');
-define('_LANGUAGEFILES_RUSSIAN',					'ロシア語 - &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; (windows-1251)');
-define('_LANGUAGEFILES_SLOVAK',						'スロベキア語 - Sloven&#269;ina (ISO-8859-2)');
-define('_LANGUAGEFILES_SPANISH-UTF8',				'スペイン語 - Espa&ntilde;ol (utf-8)');
-define('_LANGUAGEFILES_SPANISH',					'スペイン語 - Espa&ntilde;ol (iso-8859-1)');
-*/
-
-
-// </add by shizuki>
-
+?>

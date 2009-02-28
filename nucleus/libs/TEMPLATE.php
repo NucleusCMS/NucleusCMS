@@ -125,7 +125,7 @@ class TEMPLATE {
 				'template' => &$name
 			)
 		);
-			
+
 		$query = 'SELECT tpartname, tcontent'
 			   . ' FROM '.sql_table('template_desc').', '.sql_table('template')
 			   . ' WHERE tdesc=tdnumber and tdname="' . addslashes($name) . '"';
@@ -134,7 +134,7 @@ class TEMPLATE {
 			$template[$obj->tpartname] = $obj->tcontent;
 
 		// set locale according to template:
-		if ($template['LOCALE'])
+		if (isset($template['LOCALE']))
 			setlocale(LC_TIME,$template['LOCALE']);
 		else
 			setlocale(LC_TIME,'');
