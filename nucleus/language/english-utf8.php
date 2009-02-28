@@ -68,6 +68,9 @@ define('_ADD_ADDLATER',								'Add the dates specified');
 
 define('_LOGIN_NAME',				'Name :');
 define('_LOGIN_PASSWORD',			'Password :');
+
+// changed from _BOOKMARLET_BMARKLFOLLOW
+define('_BOOKMARKLET_BMARKLFOLLOW',					' (Nearly all browsers)');
 // END changed/added after 3.33 END
 
 // START merge UTF-8 and EUC-JP

@@ -68,6 +68,9 @@ define('_ADD_ADDLATER',								'Add the dates specified');
 
 define('_LOGIN_NAME',				'Name :');
 define('_LOGIN_PASSWORD',			'Password :');
+
+// changed from _BOOKMARLET_BMARKLFOLLOW
+define('_BOOKMARKLET_BMARKLFOLLOW',					' (Nearly all browsers)');
 // END changed/added after 3.33 END
 
 // START merge UTF-8 and EUC-JP
@@ -148,7 +151,6 @@ define('_BOOKMARKLET_DESC4',						'containing the link and title of the page you
 define('_BOOKMARKLET_DESC5',						'plus any text you might have selected.');
 define('_BOOKMARKLET_BOOKARKLET',					'bookmarklet');
 define('_BOOKMARKLET_ANCHOR',						'Add to %s');
-define('_BOOKMARKLET_BMARLFOLLOW',					' (Nearly all browsers)');
 define('_BOOKMARKLET_BMARKTEXT',					'You can drag the following link to your favorites, or your browsers toolbar: ');
 define('_BOOKMARKLET_BMARKTEST',					'(if you want to test the bookmarklet first, click the link)');
 define('_BOOKMARKLET_RIGHTCLICK',					'Right Click Menu Access (IE &amp; Windows)');
