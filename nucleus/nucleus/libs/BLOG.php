@@ -552,8 +552,10 @@ class BLOG {
 	function showArchiveList($template, $mode = 'month', $limit = 0) {
 		global $CONF, $catid, $manager;
 
-		if ($catid)
+		$linkparams = array();
+		if ($catid) {
 			$linkparams = array('catid' => $catid);
+		}
 
 		$template =& $manager->getTemplate($template);
 		$data['blogid'] = $this->getID();
@@ -593,7 +595,7 @@ class BLOG {
 			$data['month'] = date('m',$current->itime);
 			$data['year'] = date('Y',$current->itime);
 			$data['archivelink'] = createArchiveLink($this->getID(),$archivedate,$linkparams);
-			
+
 			$manager->notify(
 				'PreArchiveListItem',
 				array(
@@ -670,7 +672,7 @@ class BLOG {
 					'listitem' => &$data
 				)
 			);
-			
+
 			echo TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
 			//$temp = TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
 			//echo strftime($temp, $current->itime);
@@ -686,15 +688,15 @@ class BLOG {
 								'self' => $CONF['Self']
 							));
 	}
-	
+
 	/**
 	  * Shows a list of all blogs in the system using a given template
 	  * ordered by 	number, name, shortname or description
-	  * in ascending or descending order	    
+	  * in ascending or descending order
 	  */
 	function showBlogList($template, $bnametype, $orderby, $direction) {
 		global $CONF, $manager;
-		
+
 		switch ($orderby) {
 			case 'number': $orderby='bnumber'; break;
 			case 'name': $orderby='bname'; break;
@@ -702,56 +704,56 @@ class BLOG {
 			case 'description': $orderby='bdesc'; break;
 			default: $orderby='bnumber';	break;
 		}
-		
+
 		$direction=strtolower($direction);
 		switch ($direction) {
 			case 'asc': $direction='ASC';  break;
 			case 'desc': $direction='DESC'; break;
 			default: $direction='ASC';	break;
 		}
-		
+
 		$template =& $manager->getTemplate($template);
-		
+
 		echo TEMPLATE::fill((isset($template['BLOGLIST_HEADER']) ? $template['BLOGLIST_HEADER'] : null),
 							array(
 								'sitename' => $CONF['SiteName'],
 								'siteurl' => $CONF['IndexURL']
 							));
-		
+
 		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY '.$orderby.' '.$direction;
 		$res = sql_query($query);
-		
+
 		while ($data = mysql_fetch_assoc($res)) {
-		
+
 			$list = array();
-		
+
 //			$list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
 			$list['bloglink'] = createBlogidLink($data['bnumber']);
-		
+
 			$list['blogdesc'] = $data['bdesc'];
-			
+
 			$list['blogurl'] = $data['burl'];
-			
+
 			if ($bnametype=='shortname') {
 				$list['blogname'] = $data['bshortname'];
 			}
 			else { // all other cases
 				$list['blogname'] = $data['bname'];
 			}
-			
+
 			$manager->notify(
 				'PreBlogListItem',
 				array(
 					'listitem' => &$list
 				)
 			);
-			
+
 			echo TEMPLATE::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
-			
+
 		}
-		
+
 		mysql_free_result($res);
-		
+
 		echo TEMPLATE::fill((isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
 							array(
 								'sitename' => $CONF['SiteName'],
@@ -1083,7 +1085,7 @@ class BLOG {
 
 		$logMsg = sprintf(_TEAM_ADD_NEWTEAMMEMBER, $tmem->getDisplayName(), $memberid, $this->getName());
 		ACTIONLOG::add(INFO, $logMsg);
-		
+
 		return 1;
 	}
 
@@ -1139,8 +1141,8 @@ class BLOG {
 				// clear all expired future posts
 				sql_query("UPDATE " . sql_table('item') . " SET iposted='1' WHERE iblog=" . $blogid . " AND itime<NOW()");
 
-				// check to see any pending future post, clear the flag is none 
-				$result = sql_query("SELECT * FROM " . sql_table('item') 
+				// check to see any pending future post, clear the flag is none
+				$result = sql_query("SELECT * FROM " . sql_table('item')
 				          . " WHERE iposted=0 AND iblog=" . $blogid);
 				if (mysql_num_rows($result) == 0) {
 					$this->clearFuturePost();
@@ -1148,14 +1150,14 @@ class BLOG {
 			}
 		}
 	}
-	
+
 	/**
 	 * Shows the given list of items for this blog
 	 *
 	 * @param $itemarray
 	 *		array of item numbers to be displayed
 	 * @param $template
-	 *		String representing the template _NAME_ (!)	 
+	 *		String representing the template _NAME_ (!)
 	 * @param $highlight
 	 *		contains a query that should be highlighted
 	 * @param $comments
@@ -1171,7 +1173,7 @@ class BLOG {
 
 		return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
 	}
-	
+
 	/**
 	 * Returns the SQL query used to fill out templates for a list of items
 	 *
@@ -1195,7 +1197,7 @@ class BLOG {
 		$query = '';
 		foreach ($items as $value) {
 			$query .= '(SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
-			
+
 			$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
 				   . ' WHERE i.iblog='.$this->blogid
 				   . ' and i.iauthor=m.mnumber'
@@ -1210,7 +1212,7 @@ class BLOG {
 			$i--;
 			if ($i) $query .= ' UNION ';
 		}
-		
+
 		return $query;
 	}
 
