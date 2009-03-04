@@ -6549,7 +6549,7 @@ selector();
 				echo '<tr><th colspan="2">Options for ', htmlspecialchars($aOption['pfile']),'</th></tr>';
 			}
 
-			$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
+			$meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
 			if (@$meta['access'] != 'hidden') {
 				echo '<tr>';
 				listplug_plugOptionRow($aOption);
