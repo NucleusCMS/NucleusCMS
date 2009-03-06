@@ -453,7 +453,7 @@ class MEMBER {
 			   . "     mnotes='" . addslashes($this->getNotes()) . "',"
 			   . "     mcanlogin=" . $this->canLogin() . ","
 			   . "	   deflang='" . addslashes($this->getLanguage()) . "',"
-			   . "	   mautosave=" . addslashes($this->getAutosave()) . ""			   
+			   . "	   mautosave=" . intval($this->getAutosave()) . ""			   
 			   . " WHERE mnumber=" . $this->getID();
 		sql_query($query);
 	}
