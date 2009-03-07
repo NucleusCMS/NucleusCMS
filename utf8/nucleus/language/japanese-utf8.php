@@ -31,12 +31,16 @@
 
 // START changed/added after 3.33 START
 define('_MEMBERS_USEAUTOSAVE',				'下書きの自動保存機能を有効にしますか?');
+
 define('_TEMPLATE_PLUGIN_FIELDS',			'プラグインによる拡張フィールド');
 define('_TEMPLATE_BLOGLIST',				'Blog一覧');
 define('_TEMPLATE_BLOGHEADER',				'Blog一覧のヘッダー');
 define('_TEMPLATE_BLOGITEM',				'Blog一覧の本体');
 define('_TEMPLATE_BLOGFOOTER',				'Blog一覧のフッター');
+
 define('_SETTINGS_DEFAULTLISTSIZE',			'一覧の既定の表示数');
+define('_SETTINGS_DEBUGVARS',				'デバッグモードを有効にする');
+
 define('_CREATE_ACCOUNT_TITLE',				'アカウントの新規作成');
 define('_CREATE_ACCOUNT0',					'アカウントの作成');
 define('_CREATE_ACCOUNT1',					'アカウントの作成は許可されていません。<br /><br />');
@@ -49,7 +53,30 @@ define('_CREATE_ACCOUNT_EMAIL',				'メールアドレス (必須)');
 define('_CREATE_ACCOUNT_EMAIL2',			'(アクティベーション用のリンクが送られるので有効なものを使用してください)');
 define('_CREATE_ACCOUNT_URL',				'(もしあれば)自分のサイトのURL');
 define('_CREATE_ACCOUNT_SUBMIT',			'アカウントの作成');
-define('_SETTINGS_DEBUGVARS',				'デバッグモードを有効にする');
+
+define('_BMLET_BACKTODRAFTS',				'ドラフトに戻す');
+define('_BMLET_CANCEL',						'キャンセル');
+
+define('_LIST_ITEM_NOCONTENT',						'コメントはありません');
+define('_LIST_ITEM_COMMENTS',						'コメント(%d)件');
+
+define('_EDITC_URL',								'Web site');
+define('_EDITC_EMAIL',								'E-mail');
+
+define('_MANAGER_PLUGINFILE_NOTFOUND',				"プラグイン「%s」を読み込めませんでした(ファイルが見つかりません)");
+/* changed */
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',				'プラグイン %s がインストールされていないためにインストールすることができませんでした。');
+define('_ERROR_DELREQPLUGIN',				'プラグイン %s がこのプラグインに依存している為に削除できません。');
+
+//define('_ADD_ADDLATER',						'後で追加');
+define('_ADD_ADDLATER',						'日時を指定して追加');	// <mod by shizuki />
+
+define('_LOGIN_NAME',						'ログインID:');
+define('_LOGIN_PASSWORD',					'パスワード:');
+
+// changed from _BOOKMARLET_BMARKLFOLLOW
+define('_BOOKMARKLET_BMARKFOLLOW',					' (ほとんどのブラウザで動作します)');
 // END changed/added after 3.33 END
 
 // START merge UTF-8 and EUC-JP
@@ -130,7 +157,6 @@ define('_BOOKMARKLET_DESC4',						'さらに、そのページ内で文章を選
 define('_BOOKMARKLET_DESC5',						'またWindows Internet Explorerのみですが、この機能を右クリックメニューに登録することも出来ます。');
 define('_BOOKMARKLET_BOOKARKLET',					'ブックマークレット');
 define('_BOOKMARKLET_ANCHOR',						'「%s」に記事を投稿');
-define('_BOOKMARKLET_BMARKFOLLOW',					' (ほとんどのブラウザで動作します)');
 define('_BOOKMARKLET_BMARKTEXT',					' 下のリンクを「お気に入り」もしくは「ブックマーク」に追加してください。追加の仕方はそれぞれのブラウザのヘルプを参照してください。<br />');
 define('_BOOKMARKLET_BMARKTEST',					' (テストしてみたい場合は下のリンクをクリックしてみてください)');
 define('_BOOKMARKLET_RIGHTCLICK',					'右クリックメニューにインストール(Windows Internet Explorerのみ)');
@@ -253,7 +279,6 @@ define('_GFUNCTIONS_AN_ERROR_OCCURRED',				'エラーが発生しました');
 define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			'ログインしていません');
 
 // MANAGER.php
-define('_MANAGER_PLUGINFILE_NOTFOUND',				"プラグイン「%s」を読み込めませんでした(ファイルが見つかりません)");
 define('_MANAGER_PLUGINFILE_NOCLASS',				"プラグイン「%s」を読み込めませんでした(ファイル内にプラグインクラスが存在しません)");
 define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"プラグイン「%s」を読み込めませんでした(｢SqlTablePrefix｣をサポートしていません)");
 
@@ -367,10 +392,6 @@ define('_ARCHIVETYPE_MONTH',				'月');
 
 // tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
 define('_ERROR_BADTICKET',					'チケットが不正、もしくは期限切れです');
-
-// plugin dependency
-define('_ERROR_INSREQPLUGIN',				'プラグイン %s がインストールされていないためにインストールすることができませんでした。');
-define('_ERROR_DELREQPLUGIN',				'プラグイン %s がこのプラグインに依存している為に削除できません。');
 
 // cookie prefix
 define('_SETTINGS_COOKIEPREFIX',			'Cookie プレフィックス');
@@ -661,8 +682,6 @@ define('_MMAIL_MAIL',						'メッセージ:');
 // bookmarklet buttons
 define('_BMLET_ADD',						'アイテムの追加');
 define('_BMLET_EDIT',						'保存');
-define('_BMLET_BACKTODRAFTS',				'ドラフトに戻す');
-define('_BMLET_CANCEL',						'キャンセル');
 define('_BMLET_DELETE',						'アイテムの削除');
 define('_BMLET_BODY',						'本文');
 define('_BMLET_MORE',						'続き');
@@ -822,8 +841,6 @@ define('_ADD_DISABLE_COMMENTS',				'コメントを受け付けない');
 define('_ADD_DRAFTNFUTURE',					'ドラフトと未来の記事');
 define('_ADD_ADDITEM',						'アイテムを追加');
 define('_ADD_ADDNOW',						'今すぐ追加');
-//define('_ADD_ADDLATER',						'後で追加');
-define('_ADD_ADDLATER',						'日時を指定して追加');	// <mod by shizuki />
 define('_ADD_PLACE_ON',						'日時:');
 define('_ADD_ADDDRAFT',						'ドラフトに追加');
 define('_ADD_NOPASTDATES',					'(過去の日時は指定できません。指定された場合は現在の日時が使用されます)');
@@ -1167,8 +1184,6 @@ define('_BAN_ADD_BTN',						'規制するIPアドレスの追加');
 
 // LOGIN screen
 define('_LOGIN_MESSAGE',					'メッセージ');
-define('_LOGIN_NAME',						'ログインID:');
-define('_LOGIN_PASSWORD',					'パスワード:');
 define('_LOGIN_SHARED',						_LOGINFORM_SHARED);
 define('_LOGIN_FORGOT',						'パスワードを忘れた');
 
@@ -1281,8 +1296,6 @@ define('_LIST_COMMENT_HOST',						'ホスト');
 // itemlist
 define('_LIST_ITEM_INFO',							'情報');
 define('_LIST_ITEM_CONTENT',						'タイトルと本文');
-define('_LIST_ITEM_NOCONTENT',						'コメントはありません');
-define('_LIST_ITEM_COMMENTS',						'コメント(%d)件');
 
 
 // teamlist
@@ -1294,8 +1307,6 @@ define('_EDITC_TITLE',								'コメントの編集');
 define('_EDITC_WHO',								'作者');
 define('_EDITC_HOST',								'ホスト');
 define('_EDITC_WHEN',								'日時');
-define('_EDITC_URL',								'Web site');
-define('_EDITC_EMAIL',								'E-mail');
 define('_EDITC_TEXT',								'本文');
 define('_EDITC_EDIT',								'コメントの編集');
 define('_EDITC_MEMBER',								'メンバー');

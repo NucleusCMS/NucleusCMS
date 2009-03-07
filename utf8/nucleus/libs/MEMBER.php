@@ -40,7 +40,7 @@ class MEMBER {
 
 	/**
 	 * Constructor for a member object
-	 */	 	
+	 */
 	function MEMBER() {
 		// do nothing
 	}
@@ -103,7 +103,7 @@ class MEMBER {
 
 	/**
 	 * Login using cookie key
-	 */	 	
+	 */
 	function cookielogin($login, $cookiekey) {
 		$this->loggedin = 0;
 		if (!$this->readFromName($login))
@@ -123,8 +123,8 @@ class MEMBER {
 	}
 
 	/**
-	 * Read member information from the database 
-	 */	 	
+	 * Read member information from the database
+	 */
 	function read($where) {
 		// read info
 		$query =  'SELECT * FROM '.sql_table('member') . ' WHERE ' . $where;
@@ -403,6 +403,28 @@ class MEMBER {
 	}
 
 	/**
+	  * Returns an array of all blogids for which member has team rights
+	  */
+	function getTeamBlogs($incAdmin = 1) {
+		$incAdmin = intval($incAdmin);
+		$blogs = array();
+
+		if ($this->isAdmin() && $incAdmin)
+			$query = 'SELECT bnumber as blogid from '.sql_table('blog');
+		else
+			$query = 'SELECT tblog as blogid from '.sql_table('team').' where tmember=' . $this->getID();
+
+		$res = sql_query($query);
+		if (mysql_num_rows($res) > 0) {
+			while ($obj = mysql_fetch_object($res)) {
+				array_push($blogs, $obj->blogid);
+			}
+		}
+
+		return $blogs;
+	}
+
+	/**
 	  * Returns an email address from which notification of commenting/karma voting can
 	  * be sent. A suggestion can be given for when the member is not logged in
 	  */
@@ -433,7 +455,7 @@ class MEMBER {
 			   . "     mnotes='" . addslashes($this->getNotes()) . "',"
 			   . "     mcanlogin=" . $this->canLogin() . ","
 			   . "	   deflang='" . addslashes($this->getLanguage()) . "',"
-			   . "	   mautosave=" . addslashes($this->getAutosave()) . ""
+			   . "	   mautosave=" . intval($this->getAutosave()) . ""
 			   . " WHERE mnumber=" . $this->getID();
 		sql_query($query);
 	}
@@ -550,7 +572,7 @@ class MEMBER {
 
 	/**
 	 * Returns true if there is a member with the given login name
-	 * 
+	 *
 	 * @static
 	 */
 	function exists($name) {
@@ -569,7 +591,7 @@ class MEMBER {
 	}
 
 	/**
-	 *  Checks if a username is protected. 
+	 *  Checks if a username is protected.
 	 *  If so, it can not be used on anonymous comments
 	 */
 	function isNameProtected($name) {
@@ -583,7 +605,7 @@ class MEMBER {
 
 	/**
 	 * Adds a new member
-	 * 
+	 *
 	 * @static
 	 */
 	function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes) {
