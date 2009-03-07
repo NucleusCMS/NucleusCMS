@@ -892,7 +892,7 @@ define('_ERROR_NOEMPTYITEMS',				'本文が空のアイテムは投稿できま�
 define('_ERROR_BADMAILADDRESS',				'メールアドレスが不正です。');
 define('_ERROR_BADNOTIFY',					'通知メールアドレスの中に不正なものが混じっています。');
 define('_ERROR_BADNAME',					'使用できない名前です。( a-z 、0-9 の英数字しか使えません)');
-define('_ERROR_NICKNAMEINUSE',				'他のメンバーが同じハンドルを使用しています。');
+define('_ERROR_NICKNAMEINUSE',				'他のメンバーが同じログインIDを使用しています。');
 define('_ERROR_PASSWORDMISMATCH',			'入力されたパスワードが同一ではありません。');
 define('_ERROR_PASSWORDTOOSHORT',			'パスワードは6文字以上でなければなりません。');
 define('_ERROR_PASSWORDMISSING',			'パスワードが空です。');

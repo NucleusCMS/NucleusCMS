@@ -186,7 +186,7 @@ function listplug_table_pluginlist($template, $type) {
 					echo _LIST_PLUGS_VER, ' ' , htmlspecialchars($plug->getVersion()) , '<br />';
 					if ($plug->getURL())
 					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
-					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">'.htmlspecialchars($plug->getURL()),'</a><br />';
+					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">'.htmlspecialchars(shorten($plug->getURL(), 10, '...')),'</a><br />';
 				echo '</td>';
 				echo '<td>';
 					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
@@ -226,7 +226,7 @@ function listplug_table_pluginlist($template, $type) {
 			} else {
 				echo '<td colspan="2">' . sprintf(_PLUGINFILE_COULDNT_BELOADED, htmlspecialchars($current->pfile, ENT_QUOTES)) . '</td>';
 			}
-			echo '<td>';
+			echo '<td style="white-space:nowrap">';
 
 				$baseUrl = 'index.php?plugid=' . intval($current->pid) . '&action=';
 				$url = $manager->addTicketToUrl($baseUrl . 'pluginup');
