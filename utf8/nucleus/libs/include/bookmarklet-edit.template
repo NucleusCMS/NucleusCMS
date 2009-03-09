@@ -31,35 +31,27 @@
 		<script type="text/javascript">
 		//<![CDATA[
 			google.load("jquery", "1");
-//			google.load("jqueryui", "1");
-			var nucleus_initbm_oldonload = window.onload;
-			function nucleus_initbm()
-			{
-//				initStyles(); 
-				updAllPreviews();
-
-				if (nucleus_initbm_oldonload)
-					nucleus_initbm_oldonload();
-			}
-			window.onload = nucleus_initbm;
+			google.load("jqueryui", "1");
 			google.setOnLoadCallback(function() {
 				$(function(){
-					$("#tabs > ul").tabs();
+					$("#tabs").tabs();
 					$("table tr td:first-child").css("width", "14%");
+					var contentBlock = $("textarea").parents(".contentblock");
+					$("textarea").resizable({alsoResize: contentBlock});
+					function preautoSaveDraft() {
+						$(".autosavestatus").text('(' + lastsavedtext + ' ' + formattedDate() + ')');
+						autoSaveDraft();
+					}
+					updAllPreviews();
 				});
 			});
-			function preautoSaveDraft() {
-				$(".autosavestatus").text('(' + lastsavedtext + ' ' + formattedDate() + ')');
-				autoSaveDraft();
-			}
 		//]]>
 		</script>
-		<script type="text/javascript" src="javascript/jquery-ui-personalized-1.6rc6.min.js"></script>
 	</head>
 	<body>
 		<h1><%text(_EDIT_ITEM)%> (<%contents(itemid)%>)</h1>
 		<form id="editform" method="post" action="bookmarklet.php" >
-			<div id="tabs" class="ui-tabs">
+			<div id="tabs">
 				<ul>
 					<li><a href="#body"><%text(_BMLET_BODY)%> &gt;&gt;</a></li>
 					<li><a href="#more"><%text(_BMLET_MORE)%> &gt;&gt;</a></li>
