@@ -14,9 +14,9 @@ body {
 	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif !important;
 }		
 
-textarea {
-/*	font-family: "Hiragino Kaku Gothic Pro W3", "MS P Gothic", "Osaka", sans-serif;*/
-}
+/*textarea {
+	font-family: "Hiragino Kaku Gothic Pro W3", "MS P Gothic", "Osaka", sans-serif;
+}*/
 
 h1 {
 	border-bottom: 1px dotted gray;
@@ -54,10 +54,12 @@ h1 {
     font-weight: bold;   
 }
 */
+
 .contentblock {
 	/*background: #ddd;*/
 /*	height: 500px;*/
-	height: 370px;
+/*	height: 370px;*/
+	height: 410px;/*mod 090309*/
 	overflow: auto; /* temporary removed, to make the select box work in Mozilla */
 	padding: 1px !important;
     margin: 0px;
@@ -65,7 +67,14 @@ h1 {
 }
 
 *:first-child+html .contentblock {
-	height: 330px;
+/*	height: 330px;*/
+	height: 380px;	/*mod 090309*/
+}
+*html body .contentblock {	/*add 090309*/
+	height: 380px;
+}
+body:last-child .contentblock {	/*add 090309*/
+	height: 390px;
 }
 
 .shortcuts {
@@ -118,10 +127,20 @@ table {
 	margin: 10px auto;
 /*	margin-bottom: 10px;
 	margin-top: 10px;*/	
+	height: 95%;	/* add 090309*/
 }
 
-*:first-child+html .table {
+*:first-child+html table {
 	width: 93%;
+	height: 90%;	/* add 090309*/
+}
+*html body table {	/* add 090309*/
+	width: 93%;
+	height: 90%;
+}
+body:last-child table {	/* add 090309*/
+	width: 93%;
+	height: 93%;
 }
 
 th {
@@ -141,6 +160,7 @@ td {
 	font-size: small;
 	vertical-align: top;
 	text-align: left;
+	white-space: nowrap;	/*add 090309*/
 }
 
 td a:link, td a:visited { 
@@ -167,7 +187,6 @@ ul.nobullets {
 	margin: 0;
 }
 
-
 .jsbuttonbar,
 #body input[type=text],
 #body textarea,
@@ -177,16 +196,35 @@ ul.nobullets {
 #more select {
 	margin: auto;
 	display: block;
-	width: 90%;
+/*	width: 90%;*/
+	width: 98%	/*mod 090309*/
 }
 
 *:first-child+html #body input[type=text],
 *:first-child+html #body textarea,
 *:first-child+html #body select,
 *:first-child+html #more input[type=text],
-*:first-child+html #more textarea,
-*:first-child+html #more select {
+*:first-child+html #more select,
+*html body #body input[type=text],	/*add 090309*/
+*html body #body textarea,
+*html body #body select,
+*html body #more input[type=text],
+*html body #more select {
 	display: inline;
+	width: 98%;	/*add 090309*/
+}
+
+*:first-child+html #more textarea {	/*add 090309*/
+	display: block;
+	width: 95%;
+}
+*html body #more textarea {	/*add 090309*/
+	display: block;
+	width: 95%;
+}
+body:last-child #more textarea {	/*add 090309*/
+	display: block;
+	width: 95%;
 }
 
 textarea {

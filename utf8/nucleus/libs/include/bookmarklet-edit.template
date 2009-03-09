@@ -34,15 +34,14 @@
 			google.load("jqueryui", "1");
 			google.setOnLoadCallback(function() {
 				$(function(){
-					$("#tabs").tabs();
+					updAllPreviews();
 					$("table tr td:first-child").css("width", "14%");
-					var contentBlock = $("textarea").parents(".contentblock");
-					$("textarea").resizable({alsoResize: contentBlock});
-					function preautoSaveDraft() {
+					$("textarea").resizable({ containment: 'parent' });
+					$("#tabs").tabs();
+					$("input[name=autosavenow]").click(function() {
 						$(".autosavestatus").text('(' + lastsavedtext + ' ' + formattedDate() + ')');
 						autoSaveDraft();
-					}
-					updAllPreviews();
+					});
 				});
 			});
 		//]]>
@@ -144,7 +143,7 @@
 			</div>
 			<div class="submitbuttons">
 				<input type="submit" value="<%text(_BMLET_EDIT)%>" onclick="return checkSubmit();" />
-				<%ifautosave()%><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="preautoSaveDraft();" /><%endif%>
+				<%ifautosave()%><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" /><%endif%>
 				<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
 				<%ifautosave()%><span class="autosavestatus">(<%text(_AUTOSAVEDRAFT)%>&nbsp;:&nbsp;<span class="lastsavedtime"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%>)</span></span><%endif%>
 			</div>
