@@ -186,7 +186,7 @@ function listplug_table_pluginlist($template, $type) {
 					echo _LIST_PLUGS_VER, ' ' , htmlspecialchars($plug->getVersion()) , '<br />';
 					if ($plug->getURL())
 					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
-					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">'.htmlspecialchars(shorten($plug->getURL(), 10, '...')),'</a><br />';
+					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">'.htmlspecialchars(shorten($plug->getURL(), 25, '...')),'</a><br />';
 				echo '</td>';
 				echo '<td>';
 					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
