@@ -204,7 +204,7 @@ function listplug_table_pluginlist($template, $type) {
 				$res = sql_query('SELECT pfile FROM ' . sql_table('plugin'));
 				while($o = mysql_fetch_object($res)) {
 					$preq =& $manager->getPlugin($o->pfile);
-					if ($plug) {
+					if ($preq) {
 						$depList = $preq->getPluginDep();
 						foreach ($depList as $depName) {
 							if ($current->pfile == $depName) {
