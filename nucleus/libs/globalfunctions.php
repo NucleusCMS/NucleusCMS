@@ -1778,8 +1778,10 @@ function sanitizeArray(&$array)
 		if (!in_array($key, $excludeListForSanitization)) {
 
 			// check value
-			list($val, $tmp) = explode('\\', $val);
-
+			if (strpos($val, '\\')) {
+				list($val, $tmp) = explode('\\', $val);
+			}
+			
 			// remove control code etc.
 			$val = strtr($val, "\0\r\n<>'\"", "       ");
 
