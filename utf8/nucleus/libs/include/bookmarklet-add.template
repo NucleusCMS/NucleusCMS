@@ -17,7 +17,7 @@
 		$Id$
 	-->
 		<title><%text(_ADD_ADDTO)%> '<%blogname%>'</title>
-		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" /> 
+		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />
 		<link rel="stylesheet" type="text/css" href="styles/jquery-ui/ui.all.css" />
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
@@ -34,13 +34,26 @@
 			google.load("jqueryui", "1");
 			google.setOnLoadCallback(function() {
 				$(function(){
+//					var IE = '\v'=='v';
 					updAllPreviews();
-					$("table tr td:first-child").css("width", "14%");
-					$("textarea").resizable({ containment: 'parent' });
+//					$("table tr td:first-child").css("width", "14%");
+//					if (!IE)
+						$("#body textarea, #more textarea").resizable({ containment: 'parent' });
 					$("#tabs").tabs();
-					$("input[name=autosavenow]").click(function() {
+					$(".addFuture").change(function() {
+						$("#act_future").attr('checked', 'checked');
+					});
+					$("#showPreview").click(function() {updAllPreviews();});
+					$("#goSubmit").click(function() {checkSubmit();});
+					$("#canselButton").click(function() {window.close();});
+					$("#saveDraft").click(function() {
 						$(".autosavestatus").text('(' + lastsavedtext + ' ' + formattedDate() + ')');
 						autoSaveDraft();
+					});
+//					$("#options tr td:nth-child(2)").css("width", "80% !important");
+					$("#options tr th").css({
+						width: "25%",
+						whiteSpace: "normal"
 					});
 				});
 			});
@@ -52,10 +65,10 @@
 		<form id="addform" method="post" action="bookmarklet.php" >
 			<div id="tabs">
 				<ul>
-					<li><a href="#body"><%text(_BMLET_BODY)%> &gt;&gt;</a></li>
-					<li><a href="#more"><%text(_BMLET_MORE)%> &gt;&gt;</a></li>
-					<li><a href="#options"><%text(_BMLET_OPTIONS)%> &gt;&gt;</a></li>
-					<li><a href="#preview" onclick="updAllPreviews();"><%text(_BMLET_PREVIEW)%> &gt;&gt;</a></li>
+					<li><a href="#body" tabindex="300"><%text(_BMLET_BODY)%> &gt;&gt;</a></li>
+					<li><a href="#more" tabindex="310"><%text(_BMLET_MORE)%> &gt;&gt;</a></li>
+					<li><a href="#options" tabindex="320"><%text(_BMLET_OPTIONS)%> &gt;&gt;</a></li>
+					<li><a href="#preview" id="showPreview" tabindex="330"><%text(_BMLET_PREVIEW)%> &gt;&gt;</a></li>
 				</ul>
 				<input name="action" type="hidden" value="additem" />
 				<input name="blogid" type="hidden" value="<%blogid%>" />
@@ -64,29 +77,29 @@
 				<div id="body" class="contentblock">
 					<table summary="item body">
 						<tr>
-							<td><%text(_ADD_TITLE)%></td>
-							<td><input <%jsinput(title)%> type="text" size="60" maxlength="160" value="<%contents(title)%>" /></td>
+							<th><%text(_ADD_TITLE)%></th>
+							<td><input <%jsinput(title)%> type="text" size="60" maxlength="160" value="<%contents(title)%>" tabindex="10" /></td>
 						</tr>
 						<tr>
-							<td><%text(_ADD_BODY)%> <%helplink(additem)%></td>
+							<th><%text(_ADD_BODY)%> <%helplink(additem)%></th>
 							<td>
 								<%jsbuttonbar(media)%>
-								<textarea <%jsinput(body)%> cols="58" rows="12"><%contents(body)%></textarea>
+								<textarea <%jsinput(body)%> cols="58" rows="12" tabindex="20"><%contents(body)%></textarea>
 							</td>
 						</tr>
 						<tr>
-							<td><%text(_ADD_CATEGORY)%></td>
-							<td><%categories%></td>
+							<th><%text(_ADD_CATEGORY)%></th>
+							<td><%categories(30)%></td>
 						</tr>
 					</table>
 				</div>
 				<div id="more" class="contentblock">
 					<table summary="item more">
 						<tr>
-							<td><%text(_ADD_MORE)%> <%helplink(extended)%></td>
+							<th><%text(_ADD_MORE)%> <%helplink(extended)%></th>
 							<td>
 								<%jsbuttonbar(media)%>
-								<textarea <%jsinput(more)%> cols="58" rows="17"><%contents(more)%></textarea>
+								<textarea <%jsinput(more)%> cols="58" rows="17" tabindex="40"><%contents(more)%></textarea>
 							</td>
 						</tr>
 					</table>
@@ -94,39 +107,39 @@
 				<div id="options" class="contentblock">
 					<table summary="item options">
 						<%ifblogsetting(bcomments)%><tr>
-							<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+							<th><%text(_ADD_DISABLE_COMMENTS)%></th>
 							<td>
-								<input type='radio' name='closed' value='1' id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
-								<input type='radio' name='closed' value='0' checked='checked' id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
+								<input type='radio' name='closed' value='1' id="closed_yes" tabindex="50" /><label for="closed_yes"><%text(_YES)%></label>
+								<input type='radio' name='closed' value='0' checked='checked' id="closed_no" tabindex="50" /><label for="closed_no"><%text(_NO)%></label>
 							</td>
 						</tr><%endif%>
 						<tr>
-							<td><%text(_ADD_DRAFTNFUTURE)%></td>
+							<th><%text(_ADD_DRAFTNFUTURE)%></th>
 							<td>
 								<ul class="nobullets">
-									<li><input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" /><label for="act_now"><%text(_ADD_ADDNOW)%></label></li>
-									<li><input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%></li>
+									<li><input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="60" /><label for="act_now"><%text(_ADD_ADDNOW)%></label></li>
+									<li><input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="60" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%></li>
 									<li>
 										<div class="indent">
 											<%text(_ADD_PLACE_ON)%>
-											<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>
-											<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>
-											<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_DAY)%>
-											<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>
-											<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
+											<input class="addFuture" id="inputyear" name="year" size="4" value="<%currenttime(year)%>" tabindex="70" /><%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>
+											<input class="addFuture" id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" tabindex="80" /><%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>
+											<input class="addFuture" id="inputday" name="day" size="2" value="<%currenttime(mday)%>" tabindex="90" /><%text(_ITEM_ADDEDITTEMPLATE_DAY)%>
+											<input class="addFuture" id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" tabindex="100" /><%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>
+											<input class="addFuture" id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" tabindex="110" /><%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
 											<br /><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>(dd)<%text(_ITEM_ADDEDITTEMPLATE_DAY)%> (hh)<%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
 											<%ifblogsetting(ballowpast,0)%><br /><%text(_ADD_NOPASTDATES)%><%endif%>
 										</div>
 									</li>
 									<li>
-										<input name="actiontype" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+										<input name="actiontype" value="adddraft" type="radio" id="act_draft" tabindex="60" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
 									</li>
-									<li><input id="dosendping" name="dosendping" value="1" type="checkbox" checked="checked" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label></li>
+									<li><input id="dosendping" name="dosendping" value="1" type="checkbox" checked="checked" tabindex="120" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label></li>
 								</ul>
 							</td>
 						</tr>
 						<tr>
-							<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+							<th><%text(_ADD_PLUGIN_EXTRAS)%></th>
 							<td><%pluginextras%></td>
 						</tr>
 						<%itemoptions%>
@@ -142,9 +155,9 @@
 				</div>
 			</div>
 			<div class="submitbuttons">
-				<input type="submit" value="<%text(_BMLET_EDIT)%>" onclick="return checkSubmit();" />
-				<%ifautosave()%><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" /><%endif%>
-				<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
+				<input id="goSubmit" type="submit" value="<%text(_BMLET_EDIT)%>" tabindex="200" />
+				<%ifautosave()%><input id="saveDraft" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" tabindex="400" /><%endif%>
+				<input id="canselButton" type="button" value="<%text(_BMLET_CANCEL)%>" tabindex="410" />
 				<%ifautosave()%><span class="autosavestatus">(<%text(_AUTOSAVEDRAFT)%>&nbsp;:&nbsp;<span class="lastsavedtime"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%>)</span></span><%endif%>
 			</div>
 		</form>

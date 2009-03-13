@@ -1,7 +1,7 @@
 @charset 'UTF-8';
 /* 
 	style definitions for the bookmarklet 
-	
+
 	$Id$
 	$NucleusJP: bookmarklet.css,v 1.6 2007/01/30 07:35:20 kimitake Exp $
 */
@@ -10,9 +10,11 @@ body {
 	font-size: small;
 	background: #fff;
 	color: #000;
-/*    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;*/
+/*	font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;*/
 	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif !important;
-}		
+	margin:0;/* add 090313 */
+	padding:5px;/* add 090313 */
+}
 
 /*textarea {
 	font-family: "Hiragino Kaku Gothic Pro W3", "MS P Gothic", "Osaka", sans-serif;
@@ -22,6 +24,8 @@ h1 {
 	border-bottom: 1px dotted gray;
 	font-size: medium;
 	color: #596d9d;
+	margin:0;/* add 090313 */
+	padding:5px;/* add 090313 */
 }
 
 /* 
@@ -64,17 +68,6 @@ h1 {
 	padding: 1px !important;
     margin: 0px;
 	vertical-align: top;
-}
-
-*:first-child+html .contentblock {
-/*	height: 330px;*/
-	height: 380px;	/*mod 090309*/
-}
-*html body .contentblock {	/*add 090309*/
-	height: 380px;
-}
-body:last-child .contentblock {	/*add 090309*/
-	height: 390px;
 }
 
 .shortcuts {
@@ -124,42 +117,37 @@ table {
 /*	width: 95%;*/
 	width: 98%;
 	border-collapse: collapse;
-	margin: 10px auto;
+/*	margin: 10px auto; */
+	margin: auto;/* mod 090313 */
 /*	margin-bottom: 10px;
-	margin-top: 10px;*/	
+	margin-top: 10px;*/
 	height: 95%;	/* add 090309*/
-}
-
-*:first-child+html table {
-	width: 93%;
-	height: 90%;	/* add 090309*/
-}
-*html body table {	/* add 090309*/
-	width: 93%;
-	height: 90%;
-}
-body:last-child table {	/* add 090309*/
-	width: 93%;
-	height: 93%;
+	table-layout:fixed;/* add 090313 */
 }
 
 th {
-	background: #bbc;
+/*	background: #bbc;
 	color: #000;
-	font-size: small;
+	font-size: small;*//* mod 090313 */
+	width:130px;/* add 090313 */
+	font-weight:normal;/* add 090313 */
 }
 
 th, td {
 	padding: 4px;
-	empty-cells: show;	
-}
+	empty-cells: show;
+/*}
 
-td {
+td {*//* mod 090313 */
 	background: #fff;
 	border: 1px solid #ddd;
 	font-size: small;
 	vertical-align: top;
 	text-align: left;
+/*}
+
+#body td,
+#more td {*//* mod 090313 */
 	white-space: nowrap;	/*add 090309*/
 }
 
@@ -187,49 +175,37 @@ ul.nobullets {
 	margin: 0;
 }
 
+form {/* add 090313 */
+		margin:0;
+		padding:0;
+}
+
 .jsbuttonbar,
-#body input[type=text],
+/*#body input[type=text],*//* mod 090313 */
+#inputtitle,/* add 090313 */
 #body textarea,
 #body select,
-#more input[type=text],
+/*#more input[type=text],*//* mod 090313 */
 #more textarea,
 #more select {
 	margin: auto;
+	padding:0;/* add 090313 */
 	display: block;
 /*	width: 90%;*/
 	width: 98%	/*mod 090309*/
 }
 
-*:first-child+html #body input[type=text],
-*:first-child+html #body textarea,
-*:first-child+html #body select,
-*:first-child+html #more input[type=text],
-*:first-child+html #more select,
-*html body #body input[type=text],	/*add 090309*/
-*html body #body textarea,
-*html body #body select,
-*html body #more input[type=text],
-*html body #more select {
-	display: inline;
-	width: 98%;	/*add 090309*/
+#body textarea {/* add 090313 */
+	margin-top: 4px;
+}
+#more textarea {/* add 090313 */
+	height: 300px;
+	margin-top: 4px;
 }
 
-*:first-child+html #more textarea {	/*add 090309*/
-	display: block;
-	width: 95%;
-}
-*html body #more textarea {	/*add 090309*/
-	display: block;
-	width: 95%;
-}
-body:last-child #more textarea {	/*add 090309*/
-	display: block;
-	width: 95%;
-}
-
-textarea {
+/*textarea {/*mod 090313 /
 	margin-top: 1px;
-}
+}*/
 
 .submitbuttons {
 	line-height: 2em;
