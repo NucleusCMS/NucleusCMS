@@ -186,7 +186,7 @@ function listplug_table_pluginlist($template, $type) {
 					echo _LIST_PLUGS_VER, ' ' , htmlspecialchars($plug->getVersion()) , '<br />';
 					if ($plug->getURL())
 					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
-					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">'.htmlspecialchars(shorten($plug->getURL(), 25, '...')),'</a><br />';
+//					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">'.htmlspecialchars(shorten($plug->getURL(), 25, '...')),'</a><br />';
 				echo '</td>';
 				echo '<td>';
 					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
@@ -206,7 +206,7 @@ function listplug_table_pluginlist($template, $type) {
 				$res = sql_query('SELECT pfile FROM ' . sql_table('plugin'));
 				while($o = mysql_fetch_object($res)) {
 					$preq =& $manager->getPlugin($o->pfile);
-					if ($plug) {
+					if ($preq) {
 						$depList = $preq->getPluginDep();
 						foreach ($depList as $depName) {
 							if ($current->pfile == $depName) {
@@ -599,9 +599,9 @@ function listplug_table_skinlist($template, $type) {
 					for ($i=0;$i<sizeof($types);$i++) {
 						$type = $types[$i];
 						if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
-							$types[$i] = '<li> <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . helpHtml('skinpart'.$type) . "</a></li>";
+							$types[$i] = '<li>' . helpHtml('skinpart'.$type) . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . "</a></li>";
 						} else {
-							$types[$i] = '<li> <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . helpHtml('skinpartspecial') . "</a></li>";
+							$types[$i] = '<li>' . helpHtml('skinpartspecial') . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . "</a></li>";
 						}
 					}
 					echo '<br /><br />',_LIST_SKINS_DEFINED,' <ul>',implode($types,'') ,'</ul>';

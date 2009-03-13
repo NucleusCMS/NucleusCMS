@@ -64,6 +64,7 @@
 			<li>CHANGED: NP_SkinFilesオプション用言語定義追加(NP_SkinFiles option word update via language file)(shizuki)</li>
 			<li>UPDATED: NP_SkinFiles 2.03に差し替え(code:yama/commit:shizuki)(NP_SkinFiles update to 2.03)(code:yama,katsumi/commit:shizuki)</li>
 			<li>FIXED: 「General」カテゴリのUPDATE漏れ修正(install.php)(preinstall default category name is not localize)(shizuki)</li>
+			<li>FIXED: bug in showlist.php for displaying plugin dependency. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18594">Manage Plugins error in Nucleus 3.40</a> (ftruscot, thanks ajmiller)</li>
 			<li>FIXED: SQL error in MEMBER::write() where mautosave not forced to be integer. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18575">Problem with 3.40</a>. (ftruscot)</li>
 			<li>CHANGED: Modify Fix SQL error when new blog add by shizuki, to give a default english value for category name, category desc, first item title, and first item body in case where user does not have updated language file. (ftruscot)</li>
 			<li>FIXED: Fix SQL Error when new blog add. (shizuki)</li>
@@ -148,6 +149,8 @@
 			<li>ADDED: new event in ADMIN.php called TemplateExtraFields to allow plugin developers to add fields to templates. This should encourage plugin authors to make use of the core template storage to provide formatting for their output. This event just presents the extra fields on the template edit form and stores data entered there into the nucleus_template table. It is the responsibility of the plugin authors to use the template fields they add and to provide the variables used in those fields. Plugins should also document their variables and provide for a default, either in the code or through a plugin option. (ftruscot)</li> 
 			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=73">#73(JP)</a>): スキン読み込みの改良. (kotorisan/yu/shizuki)</li>
 			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=74">#74(JP)</a>): スキン編集画面の日本語化漏れ. (shizuki)</li>
+			<li>CHANGED: プラグイン一覧画面の｢入手元URL｣を本家にあわせて表示しないようにした。</li>
+			<li>CHANGED: スキンタイプ一覧のヘルプアイコンの位置を本家にあわせて名前の前に移動。</li>
 			<li>CHANGED: 管理画面CSS差し替え(code:yama/commit:shizuki)</li>
 			<li>FIXED: スキン差し替えによる問題修正(PHP4のみ。PHP5オンリーになったら戻す。SKIN.php、TEMPLATE.php)(shizuki)</li>
 			<li>CHANGED: デフォルトスキンを日本語版に差し替え(coded:yama/commit:shizuki)</li>
