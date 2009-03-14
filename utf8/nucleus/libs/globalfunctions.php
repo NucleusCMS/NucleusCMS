@@ -46,9 +46,10 @@ if ($CONF['debug']) {
 		more of the installation files (install.php, install.sql, upgrades/
 		directory) are still on the server.
 */
+
 $CONF['alertOnHeadersSent']  = 1;
 $CONF['alertOnSecurityRisk'] = 1;
-$CONF['ItemURL']             = $CONF['Self'];
+/*$CONF['ItemURL']             = $CONF['Self'];
 $CONF['ArchiveURL']          = $CONF['Self'];
 $CONF['ArchiveListURL']      = $CONF['Self'];
 $CONF['MemberURL']           = $CONF['Self'];
@@ -60,7 +61,7 @@ $CONF['CategoryURL']         = $CONF['Self'];
 // this avoids urls like index.php/item/13/index.php/item/15
 if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php'))) {
 	$CONF['URLMode'] = 'normal';
-}
+}*/
 
 if (getNucleusPatchLevel() > 0) {
 	$nucleus['version'] .= '/' . getNucleusPatchLevel();
@@ -164,13 +165,27 @@ if (!isset($CONF['Self'])) {
 		$CONF['Self'] = substr($CONF['Self'], 0, strlen($CONF['Self']) -1);
 	}
 
-	$CONF['ItemURL']        = $CONF['Self'];
+/*	$CONF['ItemURL']        = $CONF['Self'];
 	$CONF['ArchiveURL']     = $CONF['Self'];
 	$CONF['ArchiveListURL'] = $CONF['Self'];
 	$CONF['MemberURL']      = $CONF['Self'];
 	$CONF['SearchURL']      = $CONF['Self'];
 	$CONF['BlogURL']        = $CONF['Self'];
-	$CONF['CategoryURL']    = $CONF['Self'];
+	$CONF['CategoryURL']    = $CONF['Self'];*/
+}
+
+$CONF['ItemURL'] = $CONF['Self'];
+$CONF['ArchiveURL'] = $CONF['Self'];
+$CONF['ArchiveListURL'] = $CONF['Self'];
+$CONF['MemberURL'] = $CONF['Self'];
+$CONF['SearchURL'] = $CONF['Self'];
+$CONF['BlogURL'] = $CONF['Self'];
+$CONF['CategoryURL'] = $CONF['Self'];
+
+// switch URLMode back to normal when $CONF['Self'] ends in .php
+// this avoids urls like index.php/item/13/index.php/item/15
+if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php'))) {
+	$CONF['URLMode'] = 'normal';
 }
 
 // automatically use simpler toolbar for mozilla
@@ -374,7 +389,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
 		$CONF['CategoryKey'] = 'category';
 	}
 
-	if ($CONF['SpecialskinKey'] == '') {
+	if (!isset($CONF['SpecialskinKey']) || $CONF['SpecialskinKey'] == '') {
 		$CONF['SpecialskinKey'] = 'special';
 	}
 
@@ -1891,7 +1906,9 @@ function sanitizeArray(&$array)
 		if (!in_array($key, $excludeListForSanitization)) {
 
 			// check value
-			@list($val, $tmp) = explode('\\', $val);
+			if (strpos($val, '\\')) {
+				list($val, $tmp) = explode('\\', $val);
+			}
 
 			// remove control code etc.
 			$val = strtr($val, "\0\r\n<>'\"", "       ");

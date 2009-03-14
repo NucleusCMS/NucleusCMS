@@ -63,7 +63,7 @@ define('_LIST_ITEM_COMMENTS',						'%d Comments');
 define('_EDITC_URL',								'Web site');
 define('_EDITC_EMAIL',								'E-mail');
 
-define('_MANAGER_PLUGINFILE_NOTFOUND',				'Plugin file was not found');
+define('_MANAGER_PLUGINFILE_NOTFOUND',				'Plugin %s was not loaded (File not found)');
 /* changed */
 // plugin dependency
 define('_ERROR_INSREQPLUGIN',						'Plugin installation failed, requires %s');
@@ -279,7 +279,6 @@ define('_GFUNCTIONS_AN_ERROR_OCCURRED',				'Sorry. An error occurred.');
 define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			"You aren't logged in.");
 
 // MANAGER.php
-define('_MANAGER_PLUGINFILE_NOTFOUND',				"Plugin %s was not loaded (File not found)");
 define('_MANAGER_PLUGINFILE_NOCLASS',				"Plugin %s was not loaded (Class not found in file, possible parse error)");
 define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"Plugin %s was not loaded (does not support SqlTablePrefix)");
 

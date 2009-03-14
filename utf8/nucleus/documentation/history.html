@@ -64,6 +64,10 @@
 			<li>CHANGED: NP_SkinFilesオプション用言語定義追加(NP_SkinFiles option word update via language file)(shizuki)</li>
 			<li>UPDATED: NP_SkinFiles 2.03に差し替え(code:yama/commit:shizuki)(NP_SkinFiles update to 2.03)(code:yama,katsumi/commit:shizuki)</li>
 			<li>FIXED: 「General」カテゴリのUPDATE漏れ修正(install.php)(preinstall default category name is not localize)(shizuki)</li>
+			<li>ADDED: debug info in System info to show if $CONF['ItemURL'] is broken in admin panel (admun)</li>
+			<li>FIXED: Reorder the setting of config vars ($CONF) to avoid notices (should have no side effects)(kaigreve)</li>
+			<li>FIXED: Avoid notices caused by explode because the string '\\' is not a part of the $val and no array is returned(kaigreve)</li>
+			<li>FIXED: remove one redundant definition of the constant _MANAGER_PLUGINFILE_NOTFOUND(kaigreve)</li>
 			<li>FIXED: bug in showlist.php for displaying plugin dependency. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18594">Manage Plugins error in Nucleus 3.40</a> (ftruscot, thanks ajmiller)</li>
 			<li>FIXED: SQL error in MEMBER::write() where mautosave not forced to be integer. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18575">Problem with 3.40</a>. (ftruscot)</li>
 			<li>CHANGED: Modify Fix SQL error when new blog add by shizuki, to give a default english value for category name, category desc, first item title, and first item body in case where user does not have updated language file. (ftruscot)</li>
