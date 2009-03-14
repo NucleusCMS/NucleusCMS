@@ -28,11 +28,11 @@
 
 <ul>
 	<li>
-		<strong>Nucleus SVN</strong>
+		<strong>Nucleus v3.41 RC (March 14, 2009)</strong>
 		<ul>
-			<li>ADDED: debug info in System info to show if $CONF['ItemURL'] is broken in admin panel (admun)</li>
-			<li>FIXED: bug in showlist.php for displaying plugin dependency. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18594">Manage Plugins error in Nucleus 3.40</a> (ftruscot, thanks ajmiller)</li>
-			<li>FIXED: SQL error in MEMBER::write() where mautosave not forced to be integer. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18575">Problem with 3.40</a>. (ftruscot)</li>
+			<li>FIXED: Reduce PHP Notices caused by undefined variables and wrong offsets (shizuki, kaigreve)</li>
+			<li>FIXED: additional changes in the language files english.php and english-utf8.php to reflect modifications since version 3.30 (kaigreve)</li>
+			<li>FIXED: SQL error in MEMBER::write() where mautosave not forced to be integer. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18575">Problem with 3.40</a>. (ftruscot)
 			<li>CHANGED: Modify Fix SQL error when new blog add by shizuki, to give a default english value for category name, category desc, first item title, and first item body in case where user does not have updated language file. (ftruscot)</li>
 			<li>FIXED: Fix SQL Error when new blog add. (shizuki)</li>
 			<li>CHANGED: Mod Change link URI of 'help icon' to full URI (documentation/help.html to $CONF['AdminURL'].'documentation/help.html') (shizuki)</li>
