@@ -5220,6 +5220,9 @@ selector();
 			echo "\t\t" . '<td width="50%">' . '$CONF[' . "'Self']</td>\n";
 			echo "\t\t" . '<td>' . $CONF['Self'] . "</td>\n";
 			echo "\t</tr><tr>\n";
+			echo "\t\t" . '<td width="50%">' . '$CONF[' . "'ItemURL']</td>\n";
+			echo "\t\t" . '<td>' . $CONF['ItemURL'] . "</td>\n";
+			echo "\t</tr><tr>\n";
 			echo "\t\t" . '<td width="50%">' . '$CONF[' . "'alertOnHeadersSent']</td>\n";
 			$ohs = $CONF['alertOnHeadersSent'] ?
 						_ADMIN_SYSTEMOVERVIEW_ENABLE :
