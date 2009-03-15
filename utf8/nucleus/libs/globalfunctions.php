@@ -20,7 +20,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.40RC';
+$nucleus['version'] = 'v3.41RC';
 $nucleus['codename'] = '';
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
@@ -497,7 +497,7 @@ function intCookieVar($name) {
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 340;
+	return 341;
 }
 
 /**
@@ -1117,8 +1117,10 @@ function shorten($text, $maxlength, $toadd) {
 	$text  = strtr($text, $trans);
 
 	// 2. the actual shortening
-	if (strlen($text) > $maxlength)
-		$text = mb_strimwidth($text, 0, $maxlength, $toadd, _CHARSET);
+	if (strlen($text) > $maxlength) {
+//		$text = substr($text, 0, $maxlength - strlen($toadd) ) . $toadd;
+		$text = mb_strimwidth($text, 0, $maxlength, $toadd, _CHARSET); // for Japanese
+	}
 	return $text;
 }
 
@@ -2054,15 +2056,16 @@ function _links_list() {
  * @todo document this
  */
 function encode_desc(&$data)
-    {   //_$to_entities = get_html_translation_table(HTML_ENTITIES);
-        $to_entities = get_html_translation_table(HTML_SPECIALCHARS);
-        $from_entities = array_flip($to_entities);
-        $data = str_replace('<br />', '\n', $data); //hack
-        $data = strtr($data,$from_entities);
-        $data = strtr($data,$to_entities);
-        $data = str_replace('\n', '<br />', $data); //hack
-        return $data;
-    }
+{
+//	_$to_entities = get_html_translation_table(HTML_ENTITIES);
+	$to_entities = get_html_translation_table(HTML_SPECIALCHARS); // for Japanese
+	$from_entities = array_flip($to_entities);
+	$data = str_replace('<br />', '\n', $data); //hack
+	$data = strtr($data,$from_entities);
+	$data = strtr($data,$to_entities);
+	$data = str_replace('\n', '<br />', $data); //hack
+	return $data;
+}
 
 /**
  * Returns the Javascript code for a bookmarklet that works on most modern browsers
