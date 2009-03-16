@@ -353,7 +353,7 @@ wingm.focus();
 }
 
 function uniDecode($str,$charcode){
-  $text = preg_replace_callback("/%u[0-9A-Za-z]{4}/",toUtf8,$str);
+  $text = preg_replace_callback("/%u[0-9A-Za-z]{4}/", 'toUtf8', $str);
   return mb_convert_encoding($text, $charcode, 'UTF-8');
 }
 function toUtf8($ar){
