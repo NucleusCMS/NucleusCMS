@@ -336,7 +336,7 @@ include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
 
 // check if valid charset
 if (!encoding_check(false, false, _CHARSET)) {
-	foreach(array($_REQUEST, $_SERVER) as $input) {
+	foreach(array($_GET, $_POST) as $input) {
 		array_walk($input, 'encoding_check');
 	}
 }
@@ -588,7 +588,7 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 
 		// check if valid charset
 		if (!encoding_check(false,false,$charset)) {
-			foreach(array($_REQUEST, $_SERVER) as $input) {
+			foreach(array($_GET, $_POST) as $input) {
 				array_walk($input, 'encoding_check');
 			}
 		}
@@ -1545,6 +1545,12 @@ function formatDate($format, $timestamp, $defaultFormat, &$blog) {
 }
 
 function encoding_check($val, $key, $encoding=false, $exclude=false) {
+	/*
+	  Set $CONF['DisableEncodingCheck']=1 only for special occasion, e.g. install script.
+	  Don't set this permanently in nucleus_config table.
+	*/
+	global $CONF;
+	if (!empty($CONF['DisableEncodingCheck'])) return true;
 	/*
 	  When 3rd argument is set, return if checked already.
 	  When 4th argument is set, set the excluded key(s).
