@@ -19,6 +19,12 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
+ 
+/********************************************
+ *        Start New for 3.50                *
+ ********************************************/
+define('_ARCHIVETYPE_YEAR', 'year');
+
 
 /********************************************
  *        Start New for 3.40                *

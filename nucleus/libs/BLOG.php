@@ -78,13 +78,18 @@ class BLOG {
 	 * @param $template
 	 *		String representing the template name to be used
 	 */
-	function showArchive($templatename, $year, $month, $day=0) {
+	function showArchive($templatename, $year, $month=0, $day=0) {
 
 		// create extra where clause for select query
-		if ($day == 0) {
+		if ($day == 0 && $month != 0) {
 			$timestamp_start = mktime(0,0,0,$month,1,$year);
 			$timestamp_end = mktime(0,0,0,$month+1,1,$year);  // also works when $month==12
-		} else {
+		} 
+		elseif ($month == 0) {
+			$timestamp_start = mktime(0,0,0,1,1,$year);
+			$timestamp_end = mktime(0,0,0,12,31,$year);  // also works when $month==12
+		}
+		else {
 			$timestamp_start = mktime(0,0,0,$month,$day,$year);
 			$timestamp_end = mktime(0,0,0,$month,$day+1,$year);
 		}
@@ -573,10 +578,11 @@ class BLOG {
 		if ($catid)
 			$query .= ' and icat=' . intval($catid);
 
-		$query .= ' GROUP BY Year, Month';
+		$query .= ' GROUP BY Year';
+		if ($mode == 'month' || $mode == 'day')
+			$query .= ', Month';
 		if ($mode == 'day')
 			$query .= ', Day';
-
 
 		$query .= ' ORDER BY itime DESC';
 
@@ -592,11 +598,24 @@ class BLOG {
 				$archivedate = date('Y-m-d',$current->itime);
 				$archive['day'] = date('d',$current->itime);
 				$data['day'] = date('d',$current->itime);
+				$data['month'] = date('m',$current->itime);
+				$archive['month'] = $data['month'];
+			} elseif ($mode == 'year') {
+				$archivedate = date('Y',$current->itime);
+				$data['day'] = '';
+				$data['month'] = '';
+				$archive['day'] = '';
+				$archive['month'] = '';
 			} else {
 				$archivedate = date('Y-m',$current->itime);
+				$data['month'] = date('m',$current->itime);
+				$archive['month'] = $data['month'];
+				$data['day'] = '';
+				$archive['day'] = '';
 			}
-			$data['month'] = date('m',$current->itime);
+
 			$data['year'] = date('Y',$current->itime);
+			$archive['year'] = $data['year'];
 			$data['archivelink'] = createArchiveLink($this->getID(),$archivedate,$linkparams);
 
 			$manager->notify(

@@ -353,6 +353,7 @@ if (!defined('_MEMBERS_BYPASS'))
 if (!defined('_ARCHIVETYPE_MONTH') ) {
 	define('_ARCHIVETYPE_DAY', 'day');
 	define('_ARCHIVETYPE_MONTH', 'month');
+	define('_ARCHIVETYPE_YEAR', 'year');
 }
 
 // decode path_info
@@ -874,6 +875,27 @@ function selector() {
 				$archivenextexists = false;
 			}
 
+		} elseif ($m == 0) {
+			$archivetype = _ARCHIVETYPE_YEAR;
+			$t = mktime(0, 0, 0, 12, 31, $y - 1);
+			// one day before is in the previous year
+			$archiveprev = strftime('%Y', $t);
+			if ($t > $first_timestamp) {
+				$archiveprevexists = true;
+			}
+			else {
+				$archiveprevexists = false;
+			}
+
+			// timestamp for the next year
+			$t = mktime(0, 0, 0, 1, 1, $y + 1);
+			$archivenext = strftime('%Y', $t);
+			if ($t < $last_timestamp) {
+				$archivenextexists = true;
+			}
+			else {
+				$archivenextexists = false;
+			}
 		} else {
 			$archivetype = _ARCHIVETYPE_MONTH;
 			$t = mktime(0, 0, 0, $m, 1, $y);
