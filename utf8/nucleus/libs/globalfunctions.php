@@ -1558,12 +1558,6 @@ function formatDate($format, $timestamp, $defaultFormat, &$blog) {
 
 function encoding_check($val, $key, $encoding=false, $exclude=false) {
 	/*
-	  Set $CONF['DisableEncodingCheck']=1 only for special occasion, e.g. install script.
-	  Don't set this permanently in nucleus_config table.
-	*/
-	global $CONF;
-//	if (!empty($CONF['DisableEncodingCheck'])) return true;
-	/*
 	  When 3rd argument is set, return if checked already.
 	  When 4th argument is set, set the excluded key(s).
 	*/
