@@ -662,9 +662,11 @@ function doInstall() {
 			if ($mysql_usePrefix == 1) {
 					$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
 			}
+/*/ <add for garble measure>
 			if ($mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0) {
 				$query .= ' DEFAULT CHARACTER SET ' . $charset . ' COLLATE ' . $collation;
 			}
+// </add for garble measure>*/
 
 			mysql_query($query) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query) . '</small>): ' . mysql_error() );
 		}
