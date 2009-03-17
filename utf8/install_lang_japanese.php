@@ -15,7 +15,10 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
-define('_CHARSET',				'UTF-8');
+define('_HEADER1_2',			'使用するキャラクタセット');
+define('_TEXT1_2',				'NucleusCMSで使用するキャラクタセットを選択します。｢UTF-8｣か｢EUC-JP｣かを、セレクトボックスから選択してください。');
+define('_TEXT1_2_TAB_HEAD',		'キャラクタセットの選択');
+define('_TEXT1_2_TAB_FIELD1',	'キャラクタセット');
 
 define('_ERROR1',				'使用中のPHPはMySQLをサポートしていません :(');
 define('_ERROR2',				'データベース名が見つかりません');

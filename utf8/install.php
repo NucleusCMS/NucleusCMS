@@ -30,7 +30,7 @@
 	-- Start Of Configurable Part --
 */
 
-include('./install_lang_japanese-utf8.php');
+include('./install_lang_japanese.php');
 
 // array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
 // directory.
@@ -93,7 +93,7 @@ function showInstallForm() {
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-		<meta http-equiv="content-type" content="application/xhtml+xml; charset=<?php echo _CHARSET; ?>" />
+		<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
 		<title><?php echo _TITLE; ?></title>
 		<style type="text/css"><!--
 			@import url('nucleus/documentation/styles/manual.css');
@@ -119,6 +119,25 @@ function showInstallForm() {
 		<h1><?php echo _HEADER1; ?></h1>
 
 		<?php echo _TEXT1; ?>
+
+		<h1><?php echo _HEADER1_2 ?></h1>
+
+		<?php echo _TEXT1_2; ?>
+
+		<fieldset>
+			<legend><?php echo _TEXT1_2_TAB_HEAD; ?></legend>
+			<table>
+				<tr>
+					<td><?php echo _TEXT1_2_TAB_FIELD1; ?></td>
+					<td>
+						<select name="charset" tabindex="10000">
+							<option value="utf8" selected="selected">UTF-8</option>
+							<option value="ujis" >EUC-JP</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
 
 		<h1><?php echo _HEADER2; ?></h1>
 
@@ -205,7 +224,7 @@ function showInstallForm() {
 			<table>
 				<tr>
 					<td><?php echo _TEXT4_TAB_FIELD1; ?></td>
-					<td><input name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host') )?>" /></td>
+					<td><input name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host') )?>" tabindex="10010" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT4_TAB_FIELD2; ?></td>
@@ -213,11 +232,11 @@ function showInstallForm() {
 				</tr>
 				<tr>
 					<td><?php echo _TEXT4_TAB_FIELD3; ?></td>
-					<td><input name="mySQL_password" type="password" /></td>
+					<td><input name="mySQL_password" type="password" tabindex="10030" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT4_TAB_FIELD4; ?></td>
-					<td><input name="mySQL_database" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create" /><label for="mySQL_create"><?php echo _TEXT4_TAB_FIELD4_ADD; ?></label>)</td>
+					<td><input name="mySQL_database" tabindex="10040" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create" tabindex="10050" /><label for="mySQL_create"><?php echo _TEXT4_TAB_FIELD4_ADD; ?></label>)</td>
 				</tr>
 			</table>
 		</fieldset>
@@ -226,8 +245,8 @@ function showInstallForm() {
 			<legend><?php echo _TEXT4_TAB2_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><input name="mySQL_usePrefix" value="1" type="checkbox" id="mySQL_usePrefix" /><label for="mySQL_usePrefix"><?php echo _TEXT4_TAB2_FIELD; ?></label></td>
-					<td><input name="mySQL_tablePrefix" value="" /></td>
+					<td><input name="mySQL_usePrefix" value="1" type="checkbox" id="mySQL_usePrefix" tabindex="10060" /><label for="mySQL_usePrefix"><?php echo _TEXT4_TAB2_FIELD; ?></label></td>
+					<td><input name="mySQL_tablePrefix" value="" tabindex="10070" /></td>
 				</tr>
 			</table>
 
@@ -278,42 +297,42 @@ function showInstallForm() {
 							$url .= '/';
 						}
 
-						echo $url; ?>" /></td>
+						echo $url; ?>" tabindex="10080" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT5_TAB_FIELD2; ?></td>
 					<td><input name="AdminURL" size="60" value="<?php
 						if ($url) {
 							echo $url . 'nucleus/';
-						} ?>" /></td>
+						} ?>" tabindex="10090" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT5_TAB_FIELD3; ?></td>
 					<td><input name="AdminPath" size="60" value="<?php
 						if($basePath) {
 							echo $basePath . 'nucleus/';
-						} ?>" /></td>
+						} ?>" tabindex="10100" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT5_TAB_FIELD4; ?></td>
 					<td><input name="MediaURL" size="60" value="<?php
 						if ($url) {
 							echo $url . 'media/';
-						} ?>" /></td>
+						} ?>" tabindex="10110" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT5_TAB_FIELD5; ?></td>
 					<td><input name="MediaPath" size="60" value="<?php
 						if ($basePath) {
 							echo $basePath . 'media/';
-						} ?>" /></td>
+						} ?>" tabindex="10120" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT5_TAB_FIELD6; ?></td>
 					<td><input name="SkinsURL" size="60" value="<?php
 						if ($url) {
 							echo $url . 'skins/';
-						} ?>" />
+						} ?>" tabindex="10130" />
 						<br />(<?php echo _TEXT5_TAB_FIELD7_2; ?>)
 					</td>
 				</tr>
@@ -322,7 +341,7 @@ function showInstallForm() {
 					<td><input name="SkinsPath" size="60" value="<?php
 						if ($basePath) {
 							echo $basePath . 'skins/';
-						} ?>" />
+						} ?>" tabindex="10140" />
 						<br />(<?php echo _TEXT5_TAB_FIELD7_2; ?>)
 					</td>
 				</tr>
@@ -331,14 +350,14 @@ function showInstallForm() {
 					<td><input name="PluginURL" size="60" value="<?php
 						if ($url) {
 							echo $url . 'nucleus/plugins/';
-						} ?>" /></td>
+						} ?>" tabindex="10150" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT5_TAB_FIELD9; ?></td>
 					<td><input name="ActionURL" size="60" value="<?php
 						if ($url) {
 							echo $url . 'action.php';
-						} ?>" />
+						} ?>" tabindex="10160" />
 						<br />(<?php echo _TEXT5_TAB_FIELD9_2;?>)
 					</td>
 				</tr>
@@ -356,23 +375,23 @@ function showInstallForm() {
 			<table>
 				<tr>
 					<td><?php echo _TEXT6_TAB_FIELD1; ?></td>
-					<td><input name="User_name" value="" /> <small>(<?php echo _TEXT6_TAB_FIELD1_2; ?>)</small></td>
+					<td><input name="User_name" value="" tabindex="10170" /> <small>(<?php echo _TEXT6_TAB_FIELD1_2; ?>)</small></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT6_TAB_FIELD2; ?></td>
-					<td><input name="User_realname" value="" /></td>
+					<td><input name="User_realname" value="" tabindex="10180" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT6_TAB_FIELD3; ?></td>
-					<td><input name="User_password" type="password" value="" /></td>
+					<td><input name="User_password" type="password" value="" tabindex="10190" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT6_TAB_FIELD4; ?></td>
-					<td><input name="User_password2" type="password" value="" /></td>
+					<td><input name="User_password2" type="password" value="" tabindex="10200" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT6_TAB_FIELD5; ?></td>
-					<td><input name="User_email" value="" /> <small>(<?php echo _TEXT6_TAB_FIELD5_2; ?>)</small></td>
+					<td><input name="User_email" value="" tabindex="10210" /> <small>(<?php echo _TEXT6_TAB_FIELD5_2; ?>)</small></td>
 				</tr>
 			</table>
 		</fieldset>
@@ -386,11 +405,11 @@ function showInstallForm() {
 			<table>
 				<tr>
 					<td><?php echo _TEXT7_TAB_FIELD1; ?></td>
-					<td><input name="Blog_name" size="60" value="My Nucleus CMS" /></td>
+					<td><input name="Blog_name" size="60" value="My Nucleus CMS" tabindex="10220" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT7_TAB_FIELD2; ?></td>
-					<td><input name="Blog_shortname" value="mynucleuscms" /> <small>(<?php echo _TEXT7_TAB_FIELD2_2; ?>)</small></td>
+					<td><input name="Blog_shortname" value="mynucleuscms" tabindex="10230" /> <small>(<?php echo _TEXT7_TAB_FIELD2_2; ?>)</small></td>
 				</tr>
 			</table>
 		</fieldset>
@@ -401,7 +420,7 @@ function showInstallForm() {
 			<legend><?php echo _TEXT8_TAB_HEADER; ?></legend>
 			<table>
 				<tr>
-					<td><input name="Weblog_ping" value="1" type="checkbox" id="Weblog_ping" /><?php echo _TEXT8_TAB_FIELD1; ?></td>
+					<td><input name="Weblog_ping" value="1" type="checkbox" id="Weblog_ping" tabindex="10240" /><?php echo _TEXT8_TAB_FIELD1; ?></td>
 				</tr>
 			</table>
 		</fieldset>
@@ -410,7 +429,7 @@ function showInstallForm() {
 
 		<?php echo _TEXT9; ?>
 
-		<p><input name="action" value="go" type="hidden" /> <input type="submit" value="<?php echo _BUTTON1; ?>" onclick="return checkSubmit();" /></p>
+		<p><input name="action" value="go" type="hidden" /> <input type="submit" value="<?php echo _BUTTON1; ?>" onclick="return checkSubmit();" tabindex="10250" /></p>
 
 		</form>
 	</body>
@@ -455,9 +474,20 @@ function doInstall() {
 	$user_email        = postVar('User_email');
 	$blog_name         = postVar('Blog_name');
 	$blog_shortname    = postVar('Blog_shortname');
+	$charset           = postVar('charset');
 	$config_adminemail = $user_email;
 	$config_sitename   = $blog_name;
 	$weblog_ping       = postVar('Weblog_ping');
+
+	$_POST = array();
+	if ($charset == 'ujis') {
+		define('_CHARSET', 'EUC-JP');
+		$config_sitename = mb_convert_encoding($config_sitename, _CHARSET, 'UTF-8');
+		$user_realname  = mb_convert_encoding($user_realname, _CHARSET, 'UTF-8');
+		$blog_name      = mb_convert_encoding($blog_name, _CHARSET, 'UTF-8');
+	} else {
+		define('_CHARSET', 'UTF-8');
+	}
 
 	$config_indexurl   = replaceDoubleBackslash($config_indexurl);
 	$config_adminurl   = replaceDoubleBackslash($config_adminurl);
@@ -529,7 +559,7 @@ function doInstall() {
 		showErrorMessages($errors);
 	}
 
-	// 2. try to log in to mySQL
+	// 2-1. try to log in to mySQL
 	global $MYSQL_CONN;
 	$MYSQL_CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password);
 
@@ -537,9 +567,29 @@ function doInstall() {
 		_doError(_ERROR15 . ': ' . mysql_error() );
 	}
 
+/*/ <add for garble measure>
+	// 2-2. set DEFAULT CHARSET and COLLATE
+	$mySqlVer = implode('.', array_map('intval', explode('.', mysql_get_server_info($MYSQL_CONN))));
+	if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {
+		mysql_set_charset($charset);
+	} else {
+		mysql_query("SET NAMES " . $charset);
+	}
+	$collation = ($charset == 'utf8') ? 'utf8_unicode_ci' : 'ujis_japanese_ci';
+// </add for garble measure>*/
+
 	// 3. try to create database (if needed)
 	if ($mysql_create == 1) {
-		mysql_query('CREATE DATABASE ' . $mysql_database) or _doError(_ERROR16 . ': ' . mysql_error() );
+		$sql = 'CREATE DATABASE '
+			 .     $mysql_database
+/*/ <add for garble measure>
+			 . ' DEFAULT CHARACTER SET '
+			 .     $charset
+			 . ' COLLATE '
+			 .     $collation
+// </add for garble measure>*/
+			 . '';
+		mysql_query($sql) or _doError(_ERROR16 . ': ' . mysql_error());
 	}
 
 	// 4. try to select database
@@ -612,13 +662,32 @@ function doInstall() {
 			if ($mysql_usePrefix == 1) {
 					$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
 			}
+			if ($mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0) {
+				$query .= ' DEFAULT CHARACTER SET ' . $charset . ' COLLATE ' . $collation;
+			}
 
 			mysql_query($query) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query) . '</small>): ' . mysql_error() );
 		}
 	}
 
 	// 5a make first post
-	$newpost = "INSERT INTO " . tableName('nucleus_item') . " VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
+	if ($charset == 'ujis') {
+		$itm_title = mb_convert_encoding(_1ST_POST_TITLE, _CHARSET, 'UTF-8');
+		$itm_body  = mb_convert_encoding(_1ST_POST, _CHARSET, 'UTF-8');
+		$itm_more  = mb_convert_encoding(_1ST_POST2, _CHARSET, 'UTF-8');
+	} else {
+		$itm_title = _1ST_POST_TITLE;
+		$itm_body  = _1ST_POST;
+		$itm_more  = _1ST_POST2;
+	}
+	$newpost = "INSERT INTO "
+			 . tableName('nucleus_item')
+			 . " VALUES ("
+			 . "1, "
+			 . "'" . $itm_title . "',"
+			 . " '" . $itm_body . "',"
+			 . " '" . $itm_more . "',"
+			 . " 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
 	mysql_query($newpost) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . mysql_error() );
 
 	// 6. update global settings
@@ -630,6 +699,9 @@ function doInstall() {
 	updateConfig('ActionURL',  $config_actionurl);
 	updateConfig('AdminEmail', $config_adminemail);
 	updateConfig('SiteName',   $config_sitename);
+	if ($charset == 'ujis') {
+		updateConfig('Language',   'japanese-euc');
+	}
 
 	// 7. update GOD member
 	$query = 'UPDATE ' . tableName('nucleus_member')
@@ -656,9 +728,16 @@ function doInstall() {
 	mysql_query($query) or _doError(_ERROR20 . ': ' . mysql_error() );
 
 	// 8-2. update category settings
+	if ($charset == 'ujis') {
+		$cat_name = mb_convert_encoding(_GENERALCAT_NAME, _CHARSET, 'UTF-8');
+		$cat_desc = mb_convert_encoding(_GENERALCAT_DESC, _CHARSET, 'UTF-8');
+	} else {
+		$cat_name = _GENERALCAT_NAME;
+		$cat_desc = _GENERALCAT_DESC;
+	}
 	$query = 'UPDATE ' . tableName('nucleus_category')
-		   . " SET cname  = '" . addslashes(_GENERALCAT_NAME) . "',"
-		   . " cdesc      = '" . addslashes(_GENERALCAT_DESC) . "'"
+		   . " SET cname  = '" . $cat_name . "',"
+		   . " cdesc      = '" . $cat_desc . "'"
 		   . " WHERE"
 		   . " catid      = 1";
 
@@ -760,7 +839,7 @@ function doInstall() {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET; ?>" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?php echo _TITLE; ?></title>
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>

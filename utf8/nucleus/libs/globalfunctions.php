@@ -518,6 +518,18 @@ function sql_connect() {
 	$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
 	mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
 
+/*/ <add for garble measure>
+	$resource = sql_query("show variables LIKE 'character_set_database'");
+	$fetchDat = mysql_fetch_assoc($resource);
+	$charset  = $fetchDat['Value'];
+	$mySqlVer = implode('.', array_map('intval', explode('.', mysql_get_server_info($MYSQL_CONN))));
+	if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {
+		mysql_set_charset($charset);
+	} else {
+		sql_query("SET NAMES " . $charset);
+	}
+// </add for garble measure>*/
+
 	return $MYSQL_CONN;
 }
 
@@ -1550,7 +1562,7 @@ function encoding_check($val, $key, $encoding=false, $exclude=false) {
 	  Don't set this permanently in nucleus_config table.
 	*/
 	global $CONF;
-	if (!empty($CONF['DisableEncodingCheck'])) return true;
+//	if (!empty($CONF['DisableEncodingCheck'])) return true;
 	/*
 	  When 3rd argument is set, return if checked already.
 	  When 4th argument is set, set the excluded key(s).
