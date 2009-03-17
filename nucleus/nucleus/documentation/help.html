@@ -1936,6 +1936,81 @@ all
 
 </div>
 
+<div class="page">
+<a name="skinvar-archiveyearlist"></a>
+<h1>Skinvar: archiveyearlist</h1>
+
+<p>
+The same as the <a href="#skinvar-archivelist">archivelist</a> skinvar, but shows an entry for each <em>year</em> instead of for each <em>month</em>
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required
+	<ul>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional
+	<ul>
+		<li><strong><em>category</em></strong> name of the category to show</li>
+		<li><strong><em>limit</em></strong>: limits the amount of links shown (e.g. if you only want to show links to the past 3 years)</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+index, archive, archivelist, search, item
+</p>
+
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%archiveyearlist(mytemplate)%&gt;
+&lt;%archiveyearlist(mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+<div class="page">
+<a name="skinvar-otherarchiveyearlist"></a>
+<h1>Skinvar: otherarchiveyearlist</h1>
+
+<p>
+The same as the <a href="#skinvar-otherarchivelist">otherarchivelist</a> skinvar, but shows an entry for each <em>year</em> instead of for each <em>month</em>
+
+</p>
+
+<h2>Arguments</h2>
+<p>
+	Required
+	<ul>
+		<li><strong>blogname</strong>: name of the blog</li>
+		<li><strong>template</strong>: name of the template to use</li>
+	</ul>
+	Optional
+	<ul>
+		<li><strong><em>category</em></strong>: name of the category to show</li>
+	</ul>
+</p>
+
+<h2>Skintypes</h2>
+
+<p>
+all
+</p>
+
+<h2>Examples</h2>
+
+<pre>
+&lt;%otherarchiveyearlist(yourblog,mytemplate)%&gt;
+&lt;%otherarchiveyearlist(yourblog,mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
 
 
 <div class="page">

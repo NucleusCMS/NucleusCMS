@@ -278,6 +278,7 @@ class SKIN {
 								'sitevar',
 								'otherarchivelist',
 								'otherarchivedaylist',
+								'otherarchiveyearlist',
 								'self',
 								'adminurl',
 								'todaylink',
@@ -314,6 +315,7 @@ class SKIN {
 								'categorylist',
 								'archivelist',
 								'archivedaylist',
+								'archiveyearlist',
 								'nextlink',
 								'prevlink'
 								);
@@ -325,6 +327,7 @@ class SKIN {
 								'categorylist',
 								'archivelist',
 								'archivedaylist',
+								'archiveyearlist',
 								'blogsetting',
 								'archivedate',
 								'nextarchive',
@@ -338,6 +341,7 @@ class SKIN {
 				$extraActions = array('blog',
 								'archivelist',
 								'archivedaylist',
+								'archiveyearlist',
 								'categorylist',
 								'blogsetting',
 							   );
@@ -346,6 +350,7 @@ class SKIN {
 				$extraActions = array('blog',
 								'archivelist',
 								'archivedaylist',
+								'archiveyearlist',
 								'categorylist',
 								'searchresults',
 								'othersearchresults',
@@ -383,6 +388,7 @@ class SKIN {
 								'categorylist',
 								'archivelist',
 								'archivedaylist',
+								'archiveyearlist',
 								'itemtitle',
 								'itemid',
 								'itemlink',
@@ -403,9 +409,8 @@ class SKIN {
 						'categorylist',
 						'archivelist',
 						'archivedaylist',
+						'archiveyearlist',
 						'nextlink',
-						'archivelist',
-						'archivedaylist',
 						'prevlink',
 						'membermailform',
 						'nucleusbutton'
