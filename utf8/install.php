@@ -480,6 +480,9 @@ function doInstall() {
 	$weblog_ping       = postVar('Weblog_ping');
 
 	$_POST = array();
+	if (!extension_loaded('mbstring')) {
+		include('nucleus/libs/mb_emulator/mb-emulator.php');
+	}
 	if ($charset == 'ujis') {
 		define('_CHARSET', 'EUC-JP');
 		$config_sitename = mb_convert_encoding($config_sitename, _CHARSET, 'UTF-8');
