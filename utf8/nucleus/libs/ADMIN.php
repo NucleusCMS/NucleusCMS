@@ -6190,7 +6190,7 @@ selector();
 	 * @todo document this
 	 */
 	function action_pluginupdate() {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
@@ -6211,7 +6211,7 @@ selector();
 			}
 		}
 
-		redirect('?action=pluginlist');
+		redirect($CONF['AdminURL'] . '?action=pluginlist');
 //		$this->action_pluginlist();
 	}
 
@@ -6241,14 +6241,15 @@ selector();
 			<input type="hidden" name="plugid" value="<?php echo $pid; ?>" />
 			<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
-		<?php		$this->pagefoot();
+		<?php
+		$this->pagefoot();
 	}
 
 	/**
 	 * @todo document this
 	 */
 	function action_plugindeleteconfirm() {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
@@ -6260,7 +6261,7 @@ selector();
 			$this->error($error);
 		}
 
-		redirect('?action=pluginlist');
+		redirect($CONF['AdminURL'] . '?action=pluginlist');
 //		$this->action_pluginlist();
 	}
 
@@ -6342,7 +6343,7 @@ selector();
 	 * @todo document this
 	 */
 	function action_pluginup() {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
@@ -6366,14 +6367,14 @@ selector();
 
 		//$this->action_pluginlist();
 		// To avoid showing ticket in the URL, redirect to pluginlist, instead.
-		redirect('?action=pluginlist');
+		redirect($CONF['AdminURL'] . '?action=pluginlist');
 	}
 
 	/**
 	 * @todo document this
 	 */
 	function action_plugindown() {
-		global $member, $manager;
+		global $member, $manager, $CONF;
 
 		// check if allowed
 		$member->isAdmin() or $this->disallow();
@@ -6399,7 +6400,7 @@ selector();
 
 		//$this->action_pluginlist();
 		// To avoid showing ticket in the URL, redirect to pluginlist, instead.
-		redirect('?action=pluginlist');
+		redirect($CONF['AdminURL'] . '?action=pluginlist');
 	}
 
 	/**

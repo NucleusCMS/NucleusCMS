@@ -10,5 +10,6 @@ if (!function_exists('getmtime'))
 
   global $StartTime, $SQLCount;
   $loadtime = getmtime() - $StartTime;
-  printf("%.3f 秒/%d クエリ", $loadtime, $SQLCount);
+  $var = mb_convert_encoding("%.3f 秒/%d クエリ", _CHARSET, 'UTF-8');
+  printf($var, $loadtime, $SQLCount);
 ?>

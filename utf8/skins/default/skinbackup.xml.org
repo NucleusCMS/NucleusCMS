@@ -8,33 +8,21 @@
 		<template name="default/commentlist" />
 		<template name="default/searchlist" />
 		<template name="default/bloglist" />
-		<info><![CDATA[日本語版デフォルトスキン データベースバージョン。
-*.inc ファイルをスペシャルスキンパーツ化したバージョンです。
-<%parsedinclude%>でスペシャルスキンパーツを読み込んで、スキン内のパーツとして使用できます。
-*.incファイルを使用したバージョンは、同じディレクトリにある｢skinbackup.xml.org｣をリネームして読み込むことで使用できるようになります。]]></info>
+		<info><![CDATA[Nucleus CMS default skin (日本語版)]]></info>
 	</meta>
 
 
 	<skin name="default" type="text/html" includeMode="skindir" includePrefix="default/">
 		<description>Nucleus CMS default skin (日本語版)</description>
-		<part name="additemform"><![CDATA[<%if(loggedin)%>
-<div id="edit" style="display:none;">
-<div class="contenttitle">
-<h2>新規投稿</h2></div>
-<div class="contentbody">
-<%additemform%></div>
-</div>
-<%endif%>]]></part>
-
 		<part name="archive"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja-JP" lang="ja-JP">
 <head>
-<%parsedinclude(head)%>
-<%parsedinclude(navigation)%>
+<%parsedinclude(inc/head.inc)%>
+<%parsedinclude(inc/navigation.inc)%>
 </head>
 <body>
 <!-- page header -->
-<%parsedinclude(header)%>
+<%parsedinclude(inc/header.inc)%>
 <!-- begin wrapper divs -->
 <div id="mainwrapper"><div id="wrapper">
 
@@ -54,7 +42,7 @@
 <!-- page menu -->
 <h2 class="hidden">Sidebar</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(sidebar)%>
+<%parsedinclude(inc/sidebar.inc)%>
 </div>
 
 <div class="clearing">&nbsp;</div>
@@ -63,7 +51,7 @@
 
 <!-- page footer, copyrights, etc. -->
 <div id="footer">
-<%parsedinclude(footer)%>
+<%parsedinclude(inc/footer.inc)%>
 </div>
 
 </body>
@@ -72,12 +60,12 @@
 		<part name="archivelist"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja-JP" lang="ja-JP">
 <head>
-<%parsedinclude(head)%>
-<%parsedinclude(navigation)%>
+<%parsedinclude(inc/head.inc)%>
+<%parsedinclude(inc/navigation.inc)%>
 </head>
 <body>
 <!-- page header -->
-<%parsedinclude(header)%>
+<%parsedinclude(inc/header.inc)%>
 <!-- begin wrapper divs -->
 <div id="mainwrapper">
 <div id="wrapper">
@@ -98,7 +86,7 @@
 <!-- page menu -->
 <h2 class="hidden">サイドバー</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(sidebar)%>
+<%parsedinclude(inc/sidebar.inc)%>
 </div>
 
 <div class="clearing">&nbsp;</div>
@@ -108,7 +96,7 @@
 
 <!-- page footer, copyrights, etc. -->
 <div id="footer">
-<%parsedinclude(footer)%>
+<%parsedinclude(inc/footer.inc)%>
 </div>
 
 </body>
@@ -117,12 +105,12 @@
 		<part name="error"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja-JP" lang="ja-JP">
 <head>
-<%parsedinclude(head)%>
-<%parsedinclude(navigation)%>
+<%parsedinclude(inc/head.inc)%>
+<%parsedinclude(inc/navigation.inc)%>
 </head>
 <body>
 <!-- page header -->
-<%parsedinclude(header)%>
+<%parsedinclude(inc/header.inc)%>
 
 <!-- begin wrapper divs -->
 <div id="mainwrapper">
@@ -142,7 +130,7 @@
 <!-- page menu -->
 <h2 class="hidden">サイドバー</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(sidebar)%>
+<%parsedinclude(inc/sidebar.inc)%>
 </div>
 
 <div class="clearing">&nbsp;</div>
@@ -152,66 +140,11 @@
 
 <!-- page footer, copyrights, etc. -->
 <div id="footer">
-<%parsedinclude(footer)%>
+<%parsedinclude(inc/footer.inc)%>
 </div>
 
 </body>
 </html>]]></part>
-
-		<part name="footer"><![CDATA[<div id="copyrights">
-	<small>Copyright | <a href="http://nucleuscms.org"><%version%></a> | 
-	<a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0 Strict</a> | 
-	<a href="http://jigsaw.w3.org/css-validator/">Valid CSS</a> | 
-	<a href="#top">ページの先頭に戻る</a></small>
-</div>]]></part>
-
-		<part name="head"><![CDATA[<meta http-equiv="Content-Type" content="text/html; charset=<%charset%>" />
-<%phpinclude(benchmark)%>
-
-<!-- meta information for search engines -->
-<meta name="generator" content="<%version%>" />
-<meta name="name" content="<%blogsetting(name)%>" />
-<meta name="description" content="<%blogsetting(desc)%>" />
-
-<!-- prevent caching (効果については不明。削除してもかまいません) -->
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
-<meta http-equiv="Expires" content="-1" />
-
-<!-- site stylesheet (site colors and layout definitions：サイドバー左用) -->
-<link rel="stylesheet" type="text/css" href="<%skinfile(default_left.css)%>" />
-<!-- site stylesheet (site colors and layout definitions：サイドバー右用) -->
-<link rel="alternate stylesheet" type="text/css" href="<%skinfile(default_right.css)%>" />
-
-<!-- site stylesheet ADDED (some adjustment) -->
-<link rel="stylesheet" type="text/css" href="<%skinfile(jlocal.css)%>" />
-
-<!-- tooltips & stylesheet (activated by title="" on links) -->
-<link rel="stylesheet" type="text/css" href="<%skinfile(nicetitle.css)%>" />
-<script type="text/javascript" src="<%skinfile(nicetitle.js)%>"></script>
-
-<!-- ATOM support --> 
-<link rel="alternate" type="application/atom+xml" title="ATOM" href="atom.php" /> 
-
-<!-- RSS 2.0 feed -->
-<link rel="alternate" type="application/rss+xml" title="RSS" href="<%sitevar(url)%>xml-rss2.php" />
-
-<!-- favorite icon -->
-<link rel="shortcut icon" href="<%skinfile(favicon.ico)%>" />
-<link rel="icon" href="<%skinfile(favicon.ico)%>" />]]></part>
-
-		<part name="header"><![CDATA[<!-- page header -->
-<div id="header"><a name="top"></a>
-<h1>
-	<%if(skintype,error)%>
-		<a href="<%sitevar(url)%>"><%sitevar(name)%></a>
-	<%elseif(skintype,member)%>
-		<a href="<%sitevar(url)%>"><%sitevar(name)%></a>
-	<%else%>
-		<a href="<%blogsetting(url)%>"><%blogsetting(name)%></a>
-	<%endif%>
-</h1>
-</div>]]></part>
 
 		<part name="imagepopup"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -233,12 +166,12 @@ body { margin: 0px; }
 		<part name="index"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja-JP" lang="ja-JP">
 <head>
-<%parsedinclude(head)%>
-<%parsedinclude(navigation)%>
+<%parsedinclude(inc/head.inc)%>
+<%parsedinclude(inc/navigation.inc)%>
 </head>
 <body>
 <!-- page header -->
-<%parsedinclude(header)%>
+<%parsedinclude(inc/header.inc)%>
 
 <!-- begin wrapper divs -->
 <div id="mainwrapper"><div id="wrapper">
@@ -246,7 +179,7 @@ body { margin: 0px; }
 <!-- page content -->
 <div id="container">
 <div class="content">
-<%parsedinclude(additemform)%>
+<%parsedinclude(inc/additemform.inc)%>
 <%blog(default/index,10)%>
 </div>
 </div>
@@ -254,7 +187,7 @@ body { margin: 0px; }
 <!-- page menu -->
 <h2 class="hidden">サイドバー</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(sidebar)%>
+<%parsedinclude(inc/sidebar.inc)%>
 </div>
 
 <div class="clearing">&nbsp;</div>
@@ -263,7 +196,7 @@ body { margin: 0px; }
 
 <!-- page footer, copyrights, etc. -->
 <div id="footer">
-<%parsedinclude(footer)%>
+<%parsedinclude(inc/footer.inc)%>
 </div>
 
 </body>
@@ -272,12 +205,12 @@ body { margin: 0px; }
 		<part name="item"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja-JP" lang="ja-JP">
 <head>
-<%parsedinclude(head)%>
-<%parsedinclude(navigation)%>
+<%parsedinclude(inc/head.inc)%>
+<%parsedinclude(inc/navigation.inc)%>
 </head>
 <body>
 <!-- page header -->
-<%parsedinclude(header)%>
+<%parsedinclude(inc/header.inc)%>
 
 <!-- begin wrapper divs -->
 <div id="mainwrapper"><div id="wrapper">
@@ -302,7 +235,7 @@ body { margin: 0px; }
 <!-- page menu -->
 <h2 class="hidden">サイドバー</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(sidebar)%>
+<%parsedinclude(inc/sidebar.inc)%>
 </div>
 
 <div class="clearing">&nbsp;</div>
@@ -311,31 +244,21 @@ body { margin: 0px; }
 
 <!-- page footer, copyrights, etc. -->
 <div id="footer">
-<%parsedinclude(footer)%>
+<%parsedinclude(inc/footer.inc)%>
 </div>
 
 </body>
 </html>]]></part>
 
-		<part name="linklist"><![CDATA[<dd><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org(本家サイト)</a></dd>
-<dd><a href="http://japan.nucleuscms.org/" title="Nucleus CMS Japan Home">nucleuscms 日本公式</a></dd>
-<dd><a href="http://japan.nucleuscms.org/documentation/" title="Nucleus CMS Documentation">Nucleus管理マニュアル</a></dd>
-<dd><a href="http://japan.nucleuscms.org/bb/" title="Nucleus CMS Support Forum">Nucleus日本公式フォーラム</a></dd>
-<dd><a href="http://japan.nucleuscms.org/wiki/" title="Nucleus CMS Wiki">Nucleus日本公式wiki</a></dd>
-<dd><a href="http://skins.nucleuscms.org/" title="Nucleus CMS Skins">skins.nucleuscms.org</a></dd>
-<dd><a href="http://japan.nucleuscms.org/wiki/plugins" title="Nucleus CMS Plugins">Nucleusプラグイン紹介</a></dd>
-<dd><a href="http://japan.nucleuscms.org/documentation/devdocs/plugins.html" title="Nucleus CMS Plugins">プラグインを自作</a></dd>
-<dd><a href="http://dev.nucleuscms.org/" title="Nucleus Developer Network">dev.nucleuscms.org</a></dd>]]></part>
-
 		<part name="member"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja-JP" lang="ja-JP">
 <head>
-<%parsedinclude(head)%>
-<%parsedinclude(navigation)%>
+<%parsedinclude(inc/head.inc)%>
+<%parsedinclude(inc/navigation.inc)%>
 </head>
 
 <!-- page header -->
-<%parsedinclude(header)%>
+<%parsedinclude(inc/header.inc)%>
 <!-- begin wrapper divs -->
 <div id="mainwrapper">
 <div id="wrapper">
@@ -361,7 +284,7 @@ WEBサイト: <a href="<%member(url)%>"><%member(url)%></a>
 <!-- page menu -->
 <h2 class="hidden">サイドバー</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(sidebar)%>
+<%parsedinclude(inc/sidebar.inc)%>
 </div>
 
 <div class="clearing">&nbsp;</div>
@@ -371,81 +294,21 @@ WEBサイト: <a href="<%member(url)%>"><%member(url)%></a>
 
 <!-- page footer, copyrights, etc. -->
 <div id="footer">
-<%parsedinclude(footer)%>
+<%parsedinclude(inc/footer.inc)%>
 </div>
 
 </body>
 </html>]]></part>
 
-		<part name="navigation"><![CDATA[<!-- navigation & page titles -->
-<%if(skintype,index)%>
-<!-- index: page title and extra navigational links -->
-<title><%blogsetting(name)%></title>
-<link rel="bookmark" title="Nucleus" href="http://nucleuscms.org/" />
-<link rel="archives" title="Archives" href="<%archivelink%>" />
-<link rel="top" title="Today" href="<%todaylink%>" />
-
-<%elseif(skintype,item)%>
-<!-- item: page title and extra navigational links -->
-<title><%itemtitle(attribute)%> &raquo; <%blogsetting(name)%></title>
-<link rel="archives" title="過去ログ" href="<%archivelink%>" />
-<link rel="top" title="今日の投稿" href="<%sitevar(url)%>" />
-<link rel="next" href="<%nextlink%>" title="次の記事" />
-<link rel="prev" href="<%prevlink%>" title="前の記事" />
-<link rel="up" href="<%todaylink%>" title="今日の投稿" />
-<meta name="robots" content="all,noodp,noydir" />
-
-<%elseif(skintype,archive)%>
-<!-- archive: page title and extra navigational links -->
-<title><%blogsetting(name)%> &raquo; 過去ログ</title>
-<link rel="archives" title="Archives" href="<%archivelink%>" />
-<link rel="top" title="Today" href="<%sitevar(url)%>" />
-<link rel="up" href="<%todaylink%>" title="Today" />
-<meta name="robots" content="all,noodp,noydir,NOINDEX,NOFOLLOW" />
-
-<%elseif(skintype,archivelist)%>
-<!-- archivelist: page title and extra navigational links -->
-<title><%blogsetting(name)%> &raquo; 過去ログリスト</title>
-<link rel="archives" title="Archives" href="<%archivelink%>" />
-<link rel="top" title="Today" href="<%sitevar(url)%>" />
-<link rel="up" href="<%todaylink%>" title="Today" />
-<meta name="robots" content="all,noodp,noydir,NOINDEX,NOFOLLOW" />
-
-<%elseif(skintype,error)%>
-<!-- error: page title and extra navigational links -->
-<title><%sitevar(name)%> &raquo; エラー!</title>
-<link rel="top" title="Today" href="<%todaylink%>" />
-<link rel="up" href="<%todaylink%>" title="Today" />
-<meta name="robots" content="all,noodp,noydir,NOINDEX,NOFOLLOW" />
-
-<%elseif(skintype,member)%>
-<!-- member: page title and extra navigational links -->
-<title><%blogsetting(name)%> &raquo; メンバー詳細</title>
-<link rel="top" title="Today" href="<%todaylink%>" />
-<link rel="up" href="<%todaylink%>" title="Today" />
-<meta name="robots" content="all,noodp,noydir,NOINDEX,NOFOLLOW" />
-
-<%elseif(skintype,search)%>
-<!-- search: page title and extra navigational links -->
-<title><%blogsetting(name)%> &raquo; 検索</title>
-<link rel="archives" title="過去ログ" href="<%archivelink%>" />
-<link rel="top" title="Today" href="<%sitevar(url)%>" />
-<link rel="up" href="<%todaylink%>" title="Today" />
-<%endif%>
-
-<%if(loggedin)%>
-<script type="text/javascript" src="<%adminurl%>javascript/edit.js"></script>
-<%endif%>]]></part>
-
 		<part name="search"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja-JP" lang="ja-JP">
 <head>
-<%parsedinclude(head)%>
-<%parsedinclude(navigation)%>
+<%parsedinclude(inc/head.inc)%>
+<%parsedinclude(inc/navigation.inc)%>
 </head>
 <body>
 <!-- page header -->
-<%parsedinclude(header)%>
+<%parsedinclude(inc/header.inc)%>
 <!-- begin wrapper divs -->
 <div id="mainwrapper">
 <div id="wrapper">
@@ -466,7 +329,7 @@ WEBサイト: <a href="<%member(url)%>"><%member(url)%></a>
 <!-- page menu -->
 <h2 class="hidden">サイドバー</h2>
 <div id="sidebarcontainer">
-<%parsedinclude(sidebar)%>
+<%parsedinclude(inc/sidebar.inc)%>
 </div>
 
 <div class="clearing">&nbsp;</div>
@@ -476,123 +339,11 @@ WEBサイト: <a href="<%member(url)%>"><%member(url)%></a>
 
 <!-- page footer, copyrights, etc. -->
 <div id="footer">
-<%parsedinclude(footer)%>
+<%parsedinclude(inc/footer.inc)%>
 </div>
 
 </body>
 </html>]]></part>
-
-		<part name="sidebar"><![CDATA[<!-- page menu -->
-<div class="sidebar">
-<dl class="sidebardl">
-<dt>ナビゲーション</dt>
-
-<%if(skintype,archive)%>
-<!-- archive: navigation -->
-<dd><a href="<%prevlink%>" title="前の月">前の<%archivetype%></a></dd>
-<dd><a href="<%nextlink%>" title="次の月">次の<%archivetype%></a></dd>
-<dd><a href="<%todaylink%>" title="今日の登録">最新の投稿</a></dd>
-<dd><a href="<%archivelink%>" title="過去の投稿">過去の投稿</a></dd>
-
-<%elseif(skintype,archivelist)%>
-<!-- archivelist: navigation -->
-<dd><a href="<%todaylink%>" title="最新の投稿">最新の投稿</a></dd>
-<dd><a href="<%archivelink%>" title="過去の投稿">過去の投稿</a></dd>
-
-<%elseif(skintype,error)%>
-<!-- error: navigation -->
-<dd><a href="<%todaylink%>" title="最新の投稿">最新の投稿</a></dd>
-
-<%elseif(skintype,index)%>
-<!-- index: navigation -->
-<dd><a href="<%todaylink%>" title="最新の投稿">最新の投稿</a></dd>
-<dd><a href="<%archivelink%>" title="過去の投稿">過去の投稿</a></dd>
-
-<!-- item: navigation -->
-<%elseif(skintype,item)%>
-<%if(previtem)%><dd><a href="<%prevlink%>" title="前の投稿">前の投稿</a></dd><%endif%>
-<%if(nextitem)%><dd><a href="<%nextlink%>" title="次の投稿">次の投稿</a></dd><%endif%>
-<dd><a href="<%todaylink%>" title="最新順の投稿一覧">最新順の投稿一覧</a></dd>
-<dd><a href="<%archivelink%>" title="過去の投稿">過去の投稿一覧</a></dd>
-
-<!-- member: navigation -->
-<%elseif(skintype,member)%>
-<dd><a href="<%todaylink%>" title="最新の投稿">最新の投稿</a></dd>
-
-<!-- search: navigation -->
-<%elseif(skintype,search)%>
-<dd><a href="<%todaylink%>" title="最新の投稿">最新の投稿</a></dd>
-<dd><a href="<%archivelink%>" title="過去の投稿">過去の投稿</a></dd>
-<%endif%>
-
-<%if(loggedin)%>
-<!-- admin link, only visible if logged in -->
-<%if(skintype,index)%>
-<dd><a href="javascript:showedit();">クイック投稿</a></dd>
-<%endif%>
-<dd><a href="<%addlink%>" onclick="<%addpopupcode%>" title="ブログに記事を投稿(新規投稿ウィンドウが開きます)">新規投稿(ポップアップ)</a></dd>
-<dd><a href="<%adminurl%>" title="管理画面">管理画面</a></dd>
-<%endif%>
-</dl>
-</div>
-
-<%if(skintype,error)%>
-<%elseifnot(skintype,member)%>
-<!-- category list, not on error or member page -->
-<div class="sidebar">
-<dl class="sidebardl">
-<dt>カテゴリ</dt>
-<%categorylist(default/categorylist)%>
-</dl>
-</div>
-<%endif%>
-
-<!-- bloglist-->
-<div class="sidebar">
-<dl class="sidebardl">
-<dt>Blogs</dt>
-<%bloglist(default/bloglist)%>
-</dl>
-</div>
-
-<!-- search form -->
-<div class="sidebar">
-<dl class="sidebardl">
-<dt>検索</dt>
-<dd><%searchform%></dd>
-</dl>
-</div>
-
-<!-- login form -->
-<div class="sidebar">
-<dl class="sidebardl">
-<dt>ログイン</dt>
-<dd><%loginform%></dd>
-</dl>
-</div>
-
-<!-- links -->
-<div class="sidebar">
-<dl class="sidebardl">
-<dt>リンク</dt>
-<%parsedinclude(linklist)%>
-</dl>
-</div>
-
-<!-- Powered by -->
-<div class="sidebar">
-<div class="sidebardl centerize">
-<%nucleusbutton(images/nucleus.gif,85,31)%>
-</div>
-</div>
-
-<!-- benchimark -->
-<div class="sidebar">
-<dl class="sidebardl">
-<dt>ページ生成時間</dt>
-<dd><%phpinclude(inc/show_benchmark.inc)%></dd>
-</dl>
-</div>]]></part>
 
 	</skin>
 

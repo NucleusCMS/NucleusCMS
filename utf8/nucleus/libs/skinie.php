@@ -127,10 +127,6 @@ class SKINIMPORT {
 			$tempbuffer .= fread($this->fp, 4096);
 		}
 		fclose($this->fp);
-		$tempcharset = mb_detect_encoding($tempbuffer);
-		if ($tempcharset != 'UTF-8') {
-			$tempbuffer = mb_convert_encoding($tempbuffer, 'UTF-8', $tempcharset);
-		}
 
 /*
 	[2004-08-04] dekarma - Took this out since it messes up good XML if it has skins/templates
@@ -150,7 +146,18 @@ class SKINIMPORT {
 		);
 */
 		$temp = tmpfile();
-		fwrite($temp, $tempbuffer);
+//		fwrite($temp, $tempbuffer);
+		if (!function_exists('mb_convert_encoding')) {
+			fwrite($temp, $tempbuffer);
+		} else {
+			if (strtoupper(_CHARSET) == 'ISO-8859-1') {
+				fwrite($temp, $tempbuffer);
+			} else {
+				mb_detect_order("ASCII, JIS, SJIS, UTF-8, EUC-JP, ISO-8859-1");
+				$temp_encode = mb_detect_encoding($tempbuffer);
+				fwrite($temp, mb_convert_encoding($tempbuffer, 'UTF-8', $temp_encode));
+			}
+		}
 		rewind($temp);
 
 		while ( ($buffer = fread($temp, 4096) ) && (!$metaOnly || ($metaOnly && !$this->metaDataRead))) {
@@ -420,10 +427,13 @@ class SKINIMPORT {
 	 * Returns the data collected so far
 	 */
 	function getCharacterData() {
-		if (_CHARSET != 'UTF-8') {
-			return mb_convert_encoding($this->cdata, _CHARSET, 'UTF-8');
-		} else {
+//		echo $this->cdata;
+		if ( (strtoupper(_CHARSET) == 'UTF-8')
+			or (strtoupper(_CHARSET) == 'ISO-8859-1')
+			or (!function_exists('mb_convert_encoding')) ) {
 			return $this->cdata;
+		} else {
+			return mb_convert_encoding($this->cdata, _CHARSET ,'UTF-8');
 		}
 	}
 
@@ -552,16 +562,28 @@ class SKINEXPORT {
 			// skins
 			foreach ($this->skins as $skinId => $skinName) {
 				$skinName = htmlspecialchars($skinName, ENT_QUOTES);
+				if (_CHARSET != 'UTF-8') {
+					$skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
+				}
 				echo "\t\t" . '<skin name="' . $skinName . '" />' . "\n";
 			}
 			// templates
 			foreach ($this->templates as $templateId => $templateName) {
 				$templateName = htmlspecialchars($templateName, ENT_QUOTES);
+				if (_CHARSET != 'UTF-8') {
+					$templateName = mb_convert_encoding($templateName, 'UTF-8', _CHARSET);
+				}
 				echo "\t\t" . '<template name="' . $templateName . '" />' . "\n";
 			}
 			// extra info
-			if ($this->info)
-				echo "\t\t<info><![CDATA[" . $this->info . "]]></info>\n";
+			if ($this->info) {
+				if (_CHARSET != 'UTF-8') {
+					$skin_info = mb_convert_encoding($this->info, 'UTF-8', _CHARSET);
+				} else {
+					$skin_info = $this->info;
+				}
+				echo "\t\t<info><![CDATA[" . $skin_info . "]]></info>\n";
+			}
 		echo "\t</meta>\n\n\n";
 
 		// contents skins
@@ -573,6 +595,13 @@ class SKINEXPORT {
 			$incMode  = htmlspecialchars($skinObj->getIncludeMode(), ENT_QUOTES);
 			$incPrefx = htmlspecialchars($skinObj->getIncludePrefix(), ENT_QUOTES);
 			$skinDesc = htmlspecialchars($skinObj->getDescription(), ENT_QUOTES);
+			if (_CHARSET != 'UTF-8') {
+				$skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
+				$contentT = mb_convert_encoding($contentT, 'UTF-8', _CHARSET);
+				$incMode  = mb_convert_encoding($incMode,  'UTF-8', _CHARSET);
+				$incPrefx = mb_convert_encoding($incPrefx, 'UTF-8', _CHARSET);
+				$skinDesc = mb_convert_encoding($skinDesc, 'UTF-8', _CHARSET);
+			}
 
 			echo "\t" . '<skin name="' . $skinName . '" type="' . $contentT . '" includeMode="' . $incMode . '" includePrefix="' . $incPrefx . '">' . "\n";
 
@@ -589,6 +618,10 @@ class SKINEXPORT {
 			while ($partObj = mysql_fetch_object($res)) {
 				$type  = htmlspecialchars($partObj->stype, ENT_QUOTES);
 				$cdata = $this->escapeCDATA($partObj->scontent);
+				if (_CHARSET != 'UTF-8') {
+					$type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
+					$cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
+				}
 				echo "\t\t" . '<part name="' . $type . '">';
 				echo '<![CDATA[' . $cdata . ']]>';
 				echo "</part>\n\n";
@@ -602,6 +635,10 @@ class SKINEXPORT {
 			$templateId   = intval($templateId);
 			$templateName = htmlspecialchars($templateName, ENT_QUOTES);
 			$templateDesc = htmlspecialchars(TEMPLATE::getDesc($templateId), ENT_QUOTES);
+			if (_CHARSET != 'UTF-8') {
+				$templateName = mb_convert_encoding($templateName, 'UTF-8', _CHARSET);
+				$templateDesc = mb_convert_encoding($templateDesc, 'UTF-8', _CHARSET);
+			}
 
 			echo "\t" . '<template name="' . $templateName . '">' . "\n";
 
@@ -618,6 +655,10 @@ class SKINEXPORT {
 			while ($partObj = mysql_fetch_object($res)) {
 				$type  = htmlspecialchars($partObj->tpartname, ENT_QUOTES);
 				$cdata = $this->escapeCDATA($partObj->tcontent);
+				if (_CHARSET != 'UTF-8') {
+					$type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
+					$cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
+				}
 				echo "\t\t" . '<part name="' . $type . '">';
 				echo '<![CDATA[' .  $cdata . ']]>';
 				echo '</part>' . "\n\n";
