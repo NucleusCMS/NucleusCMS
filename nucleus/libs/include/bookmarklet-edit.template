@@ -126,9 +126,7 @@
 							<li>
 								<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="71" /><label for="act_backtodrafts"><%text(_BMLET_BACKTODRAFTS)%></label> <%helplink(draft)%>
 							</li>
-					<%endif%>						
-				</ul>
-				<input id="dosendping" name="dosendping" value="1" type="checkbox"><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label>
+					<%endif%>
 				</td></tr>
 				
 				<tr>

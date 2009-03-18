@@ -116,9 +116,6 @@
 	<br />
 	<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="72" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
 <%endif%>
-	<br />
-	<input id="dosendping" name="dosendping" value="1" type="checkbox"><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label>
-
 	</td>
 </tr><tr>
 	<td><%text(_ADD_PLUGIN_EXTRAS)%></td>

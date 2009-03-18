@@ -13,4 +13,6 @@
 	define('_PING_PHP_ERROR', 'PHP Error: ');
 	define('_PING_PHP_PING_ERROR', 'Error while trying to send ping. Sorry about that.');
 	define('_PING_SUCCESS', 'Success');
+	define('_UPDATEDPING_GOSENDPING', 'Send Update ping'); 
+	define('_PING_EXTRA_PLUGIN_OPTION', 'Blog Tracking Ping Service');
 ?>

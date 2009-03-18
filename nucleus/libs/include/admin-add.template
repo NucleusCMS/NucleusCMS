@@ -89,8 +89,6 @@
 				<%endif%>
 			</div>
 			<input name="actiontype" tabindex="61" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
-			<br />
-			<input id="dosendping" name="dosendping" value="1" type="checkbox" checked="checked"><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label>
 		</td>
 	</tr><tr>
 		<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
