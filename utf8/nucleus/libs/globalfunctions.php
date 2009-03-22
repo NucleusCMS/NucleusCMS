@@ -1073,6 +1073,7 @@ function doError($msg, $skin = '') {
 
 	}
 
+	$skinid = $skin->id;
 	$errormessage = $msg;
 	$skin->parse('error');
 	exit;

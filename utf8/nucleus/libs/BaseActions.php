@@ -77,15 +77,6 @@ class BaseActions {
 		// check current level
 		if ($this->level > 3) return;	// max. depth reached (avoid endless loop)
 		global $skinid;
-		if (!$skinid) {
-			global $manager, $blogid;
-			if (!$blogid) {
-				global $CONF;
-				$blogid = $CONF['DefaultBlog'];
-			}
-			$blog   = &$manager->getBlog($blogid);
-			$skinid =  $blog->getDefaultSkin();
-		}
 		$skin = new SKIN($skinid);
 		$file = $this->getIncludeFileName($filename);
 		if (!$skin->isValid && !file_exists($file)) {
