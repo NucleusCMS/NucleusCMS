@@ -662,7 +662,7 @@ function parseHighlight($query) {
 	// get rid of quotes
 	$query = preg_replace('/\'|"/', '', $query);
 
-	if (!query) {
+	if (!$query) {
 		return array();
 	}
 
