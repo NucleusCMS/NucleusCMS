@@ -228,7 +228,7 @@ function showInstallForm() {
 				</tr>
 				<tr>
 					<td><?php echo _TEXT4_TAB_FIELD2; ?></td>
-					<td><input name="mySQL_user" /></td>
+					<td><input name="mySQL_user" tabindex="10020" /></td>
 				</tr>
 				<tr>
 					<td><?php echo _TEXT4_TAB_FIELD3; ?></td>
