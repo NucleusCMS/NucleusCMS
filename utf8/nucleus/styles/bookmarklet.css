@@ -7,7 +7,8 @@
 */
 
 body {
-	font-size: small;
+/*  font-size: small;*//*mod yotaka 090323*/
+	font-size: 9pt;/*add yotaka 090323*/
 	background: #fff;
 	color: #000;
 /*	font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;*/
@@ -22,7 +23,8 @@ body {
 
 h1 {
 	border-bottom: 1px dotted gray;
-	font-size: medium;
+/*  	font-size: medium;*//*mod yotaka 090323*/
+	font-size: 10pt;/*add yotaka 090323*/
 	color: #596d9d;
 	margin:0;/* add 090313 */
 	padding:5px;/* add 090313 */
@@ -66,14 +68,15 @@ h1 {
 	height: 410px;/*mod 090309*/
 	overflow: auto; /* temporary removed, to make the select box work in Mozilla */
 	padding: 1px !important;
-    margin: 0px;
+	margin: 0px;
 	vertical-align: top;
 }
 
 .shortcuts {
 	float: right; 
 	text-align: right;
-	font-size: x-small;
+/*	font-size: x-small;*//*mod yotaka 090323*/
+	font-size: 8pt;/*add yotaka 090323*/
 }
 /*
 #options {
@@ -84,12 +87,13 @@ h1 {
 }
 
 h2 {
-   font-size: 1.5em;
-   color: gray;
-    margin-top: 0px;
-    padding-top: 0px;
-    padding-bottom: 0px;
-    margin-top: 0px;
+/*	font-size: 1.5em;*//*mod yotaka 090323*/
+	font-size: 10pt;/*add yotaka 090323*/
+	color: gray;
+	margin-top: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	margin-top: 0px;
 }
 
 a:link, a:visited {
@@ -141,14 +145,15 @@ th, td {
 td {*//* mod 090313 */
 	background: #fff;
 	border: 1px solid #ddd;
-	font-size: small;
+/*	font-size: small;*//*mod yotaka 090323*/
+	font-size: 9pt;/*add yotaka 090323*/
 	vertical-align: top;
 	text-align: left;
 /*}
 
 #body td,
 #more td {*//* mod 090313 */
-	white-space: nowrap;	/*add 090309*/
+	white-space: nowrap;/*add 090309*/
 }
 
 td a:link, td a:visited { 
