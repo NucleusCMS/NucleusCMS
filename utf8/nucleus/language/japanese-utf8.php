@@ -1219,7 +1219,7 @@ define('_BLOGLIST_BMLET',					'ブックマークレット');
 define('_BLOGLIST_TT_BMLET',				'ブックマークレットのインストール');
 define('_BLOGLIST_SETTINGS',				'ブログ設定');
 define('_BLOGLIST_TT_SETTINGS',				'ブログの設定とブログチームの管理');
-define('_BLOGLIST_BANS',					'アク禁');
+define('_BLOGLIST_BANS',					'アクセス規制');
 define('_BLOGLIST_TT_BANS',					'アクセス規制の確認/追加/削除');
 define('_BLOGLIST_DELETE',					'全て削除');
 define('_BLOGLIST_TT_DELETE',				'このBlogを削除');

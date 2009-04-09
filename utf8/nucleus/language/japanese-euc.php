@@ -178,7 +178,7 @@ define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'新しいカテゴリを作ることが出来ませ
 
 // BAN
 define('_BAN_EXAMPLE_TITLE',						'例');
-define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193"と入力した場合は、このIPアドレスを持つPC1台だけをブロックします。"134.58.253"と入力した場合は、"134.58.235.0~134.58.235.255"の範囲の256個のIPアドレスを持つPCを全てブロックします。これは、前者のIPアドレス(134.58.253.193)を含みます。');
+define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193"と入力した場合は、このIPアドレスを持つPC1台だけをブロックします。"134.58.253"と入力した場合は、"134.58.235.0潤ｵ134.58.235.255"の範囲の256個のIPアドレスを持つPCを全てブロックします。これは、前者のIPアドレス(134.58.253.193)を含みます。');
 define('_BAN_IP_CUSTOM',							'ブロック指定: ');
 define('_BAN_BANBLOGNAME',							'%s のみ');
 
@@ -1219,7 +1219,7 @@ define('_BLOGLIST_BMLET',					'ブックマークレット');
 define('_BLOGLIST_TT_BMLET',				'ブックマークレットのインストール');
 define('_BLOGLIST_SETTINGS',				'ブログ設定');
 define('_BLOGLIST_TT_SETTINGS',				'ブログの設定とブログチームの管理');
-define('_BLOGLIST_BANS',					'アク禁');
+define('_BLOGLIST_BANS',					'アクセス規制');
 define('_BLOGLIST_TT_BANS',					'アクセス規制の確認/追加/削除');
 define('_BLOGLIST_DELETE',					'全て削除');
 define('_BLOGLIST_TT_DELETE',				'このBlogを削除');
