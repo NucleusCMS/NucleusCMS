@@ -233,6 +233,7 @@ class ACTION
 				// header has been already sent, so deleted the line below
 				//header ("Content-Type: text/html; charset="._CHARSET);
 				echo _MSG_ACTIVATION_SENT;
+				echo "\n</body>\n</html>";
 			}
 			exit;
 		}
@@ -307,7 +308,13 @@ class ACTION
 		if ($blog->getNotifyAddress() && $blog->notifyOnVote()) {
 
 			$mailto_msg = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
-			$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
+			if ($CONF['URLMode'] == 'pathinfo') {
+				$itemLink = createItemLink(intval($itemid));
+			} else {
+				$itemLink = $CONF['IndexURL'] . createItemLink(intval($itemid));
+			}
+//			$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
+			$mailto_msg .= $itemLink;
 			if ($member->isLoggedIn()) {
 				$mailto_msg .= _NOTIFY_MEMBER . ' ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
 			}
@@ -326,10 +333,12 @@ class ACTION
 
 
 		$refererUrl = serverVar('HTTP_REFERER');
-		if ($refererUrl)
+		if ($refererUrl) {
 			$url = $refererUrl;
-		else
-			$url = $CONF['IndexURL'] . 'index.php?itemid=' . $itemid;
+		} else {
+//			$url = $CONF['IndexURL'] . 'index.php?itemid=' . $itemid;
+			$url = $itemLink;
+		}
 
 		redirect($url);
 		exit;
