@@ -322,7 +322,7 @@ super-adminとなるのは通常サイトの管理者ただ一人でしょう。
 <div class="page"><a name="canlogin" id="canlogin"><span class="invisible">canlogin</span></a>
 <h1>管理者領域へのログイン</h1>
 <p>
-<a href="#superadmin" title="Administrator Privileges">super-admin</a>はそれぞれのメンバーを、管理領域へのログインを許可しないよう設定できます。 
+<a href="#superadmin" title="Administrator Privileges">super-admin</a>はそれぞれのメンバーを、管理領域へのログインを許可しないよう設定できます。
 </p>
 </div>
 
@@ -391,7 +391,7 @@ Nucleusが生成する個々のメンバー用のコンテンツを作成する�
 <div class="page"><a name="allowaccountcreation" id="allowaccountcreation"><span class="invisible">allowaccountcreation</span></a>
 <h1>アカウントの作成</h1>
 <p>
-訪問者に自身のメンバーアカウント作成を許可することができます。新規メンバーは管理者がチームに加えるまでは、ブログにアイテムを追加することはできませんが、自分のコメントを削除したり変更したりすることが可能です。<a href="#allowaccountcreation">新規メンバーのログイン許可</a>を許可している場合、管理領域にログインして自分の設定を変更することもできます。
+訪問者に自身のメンバーアカウント作成を許可することができます。新規メンバーは管理者がチームに加えるまでは、ブログにアイテムを追加することはできませんが、自分のコメントを削除したり変更したりすることが可能です。<a href="#allownewmemberlogin">新規メンバーのログイン許可</a>を許可している場合、管理領域にログインして自分の設定を変更することもできます。
 </p>
 </div>
 
@@ -825,7 +825,7 @@ locale は<a href="#templatedatetime">日付と時刻のフォーマット</a>�
 日付のヘッダーと日付のフッターは、日付と時刻の変数を入力することができます。利用できる変数の詳細情報は<a href="#strftime">こちらにあります</a>。もし手っ取り早く始めたいのなら、日付フォーマットとして"%x"を使ってください。日付フォーマットで使われる言語は、テンプレートの<a href="#templatelocale">Locale</a>で設定できます。</p>
 
 <p>
-日付のヘッダーにテンプレート変数&lt;%%daylink%%&gt;を含めることによって、その日のアーカイブへのリンクを挿入できます。<strong>'%'が二つ続けてあることに注意！変数として展開される%dを無効にするために必要な措置です。 </strong>同様に、このテンプレート内で'%'という文字を使いたい場合は、二つ重ねて"%%"と記述しないとサイトには表示されません。 
+日付のヘッダーにテンプレート変数&lt;%%daylink%%&gt;を含めることによって、その日のアーカイブへのリンクを挿入できます。<strong>'%'が二つ続けてあることに注意！変数として展開される%dを無効にするために必要な措置です。 </strong>同様に、このテンプレート内で'%'という文字を使いたい場合は、二つ重ねて"%%"と記述しないとサイトには表示されません。
 </p>
 
 <p>
@@ -1327,7 +1327,7 @@ locale は<a href="#templatedatetime">日付と時刻のフォーマット</a>�
 </p>
 <code>http://www.yoursite.tld/index.php?special=fred</code>
 
-<p>このスキンタイプに関するさらなる議論は、NucleusCMS本家サポートフォーラムで行われています。: 
+<p>このスキンタイプに関するさらなる議論は、NucleusCMS本家サポートフォーラムで行われています。:
 <a href="http://forum.nucleuscms.org/viewtopic.php?t=16501" title="Special Skin Parts">Nucleus 3.31 and Static Pages</a>
 </p>
 
@@ -1343,9 +1343,9 @@ locale は<a href="#templatedatetime">日付と時刻のフォーマット</a>�
   &lt;body&gt;
 
     &lt;h1&gt;このサイトについて&lt;/h1&gt;
-    &lt;p&gt;This page was published in order 
-	to provide a platform to publicize the plight 
-	of the peeping-polly parrot whose present 
+    &lt;p&gt;This page was published in order
+	to provide a platform to publicize the plight
+	of the peeping-polly parrot whose present
 	prognosis is perturbingly pessimistic.&lt;/p&gt;
 
   &lt;/body&gt;
@@ -1773,9 +1773,9 @@ Nucleusで管理しているブログのリストを、指定されたテンプ�
 標準。「mytemplate」を使って、ブログの一覧を｢ブログ名｣で表示します
 &lt;%bloglist(mytemplate,shortname)%&gt;
 「mytemplate」を使って、ブログの一覧を｢ブログの短縮名｣で表示します
-&lt;%bloglist(default/index,name,description)%&gt; 
+&lt;%bloglist(default/index,name,description)%&gt;
 「default/index」を使って、ブログの一覧を｢ブログの説明｣で並べ替えて｢ブログ名｣で表示します。
-&lt;%bloglist(default/index,shortname,,desc)%&gt; 
+&lt;%bloglist(default/index,shortname,,desc)%&gt;
 「default/index」を使って、ブログの一覧を｢ブログ名｣の降順で並べ替えて｢ブログ短縮名｣で表示します。
 </pre>
 
