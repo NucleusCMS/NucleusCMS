@@ -13,4 +13,6 @@
 	define('_PING_PHP_ERROR', 'PHP エラー: ');
 	define('_PING_PHP_PING_ERROR', '申し訳ありません。ping を送信中にエラーが発生しました。');
 	define('_PING_SUCCESS', '成功');
+	define('_UPDATEDPING_GOSENDPING', 'pingを送信する'); 
+	define('_PING_EXTRA_PLUGIN_OPTION', '更新ping');
 ?>

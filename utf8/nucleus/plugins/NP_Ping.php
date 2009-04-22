@@ -9,6 +9,7 @@
     v1.3 - pinged variable support
     v1.4 - language file support
     v1.5 - remove arg1 in exec() call
+    v1.6 - move send update ping override option to plugin
  */
 
 class NP_Ping extends NucleusPlugin {
@@ -17,7 +18,7 @@ class NP_Ping extends NucleusPlugin {
 
 	function getAuthor() { return 'admun (Edmond Hui)'; }
 	function getURL()    { return 'http://edmondhui.homeip.net/nudn'; }
-	function getVersion() { return '1.5'; }
+	function getVersion() { return '1.6'; }
 
 	function getMinNucleusVersion() { return '330'; }
 
@@ -56,7 +57,11 @@ class NP_Ping extends NucleusPlugin {
 	}
 
 	function getEventList() {
-		return array('SendPing', 'JustPosted');
+		return array(
+			'SendPing',
+			'JustPosted'
+			'AddItemFormExtras',
+			'EditItemFormExtras');
 	}
 
 	function event_JustPosted($data) {
@@ -81,6 +86,26 @@ class NP_Ping extends NucleusPlugin {
 
 	function event_SendPing($data) {
                 $this->sendPings($data);
+	}
+
+	function DisplayFormOptions($sendping) {
+		if ($sendping) {
+			$check = 'checked="checked"';
+		} else {
+			$check = '';
+		}
+                $output = '<h3>' . _PING_EXTRA_PLUGIN_OPTION . '</h3>
+                <p><input id="dosendping" name="dosendping" value="1" type="checkbox" ' . $check . '><label for="dosendping">' . _UPDATEDPING_GOSENDPING . '</label> </p>';
+                echo $output;
+	}
+
+        function event_AddItemFormExtras($data){
+		$this->DisplayFormOptions($data['blog']->sendPing());
+	}
+
+        function event_EditItemFormExtras($data){
+		// we are not sending ping by default after edit an item
+		$this->DisplayFormOptions(0);
 	}
 
         function sendPings($data) {
