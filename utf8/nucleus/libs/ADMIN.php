@@ -1199,41 +1199,6 @@ class ADMIN {
 				$wasdraft: set to 1 when the item used to be a draft item
 				$publish: set to 1 when the edited item is not a draft
 		*/
-/*<del by shizuki>
-		switch ($actiontype) {
-			case 'adddraft':
-				$publish = 0;
-				$wasdraft = 1;
-				$timestamp = 0;
-				break;
-			case 'addfuture':
-				$wasdraft = 1;
-				$publish = 1;
-				$timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year'));
-				break;
-			case 'addnow':
-				$wasdraft = 1;
-				$publish = 1;
-				$timestamp = 0;
-				break;
-			case 'changedate':
-				$timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year'));
-				$publish = 1;
-				$wasdraft = 0;
-				break;
-			case 'backtodrafts':
-				$wasdraft = 0;
-				$publish = 0;
-				$timestamp = 0;
-				break;
-			case 'edit':
-			default:
-				$publish = 1;
-				$wasdraft = 0;
-				$timestamp = 0;
-		}
-</del by shizuki>*/
-// <add by shizuki>
 		$blogid =  getBlogIDFromItemID($itemid);
 		$blog   =& $manager->getBlog($blogid);
 
@@ -1246,21 +1211,10 @@ class ADMIN {
 			$timestamp =0;
 		}
 		$doping = ($publish && $timestamp < $blog->getCorrectTime() && postVar('dosendping')) ? 1 : 0;
-// </add by shizuki>
 
 		// edit the item for real
 		ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
 
-/* <del by shizuki>
-		$blogid = getBlogIDFromItemID($itemid);
-		$blog =& $manager->getBlog($blogid);
-
-		$isFuture = 0;
-		if ($timestamp > $blog->getCorrectTime(time())) {
-			$isFuture = 1;
-		}
-
-</del by shizuki>*/
 		$this->updateFuturePosted($blogid);
 
 		if ($draftid > 0) {
@@ -1494,23 +1448,7 @@ class ADMIN {
 
 		$blogid = getBlogIDFromItemID($result['itemid']);
 		$blog =& $manager->getBlog($blogid);
-/* <del by shizuki>
-		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid));
-
-		if ($result['status'] == 'newcategory')
-			$this->action_categoryedit(
-				$result['catid'],
-				$blogid,
-				$blog->sendPing() && numberOfEventSubscriber('SendPing') > 0 ? $pingUrl : ''
-			);
-		elseif ((postVar('actiontype') == 'addnow') && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0)
-			$this->action_sendping($blogid);
-		else
-			$this->action_itemlist($blogid);
-</del by shizuki>*/
-// <add by shizuki>
 		$btimestamp = $blog->getCorrectTime();
-		$bPingInfo  = ($blog->sendPing() && numberOfEventSubscriber('SendPing') > 0);
 		$item       = $manager->getItem(intval($result['itemid']), 1, 1);
 		$iPingInfo  = (!$item['draft'] && postVar('dosendping') && $item['timestamp'] <= $btimestamp);
 		if ($iPingInfo && $bPingInfo) {
@@ -1519,16 +1457,12 @@ class ADMIN {
 			$nextAction = 'itemlist';
 		}
 		if ($result['status'] == 'newcategory') {
-//			$distURI = ($nextAction == 'sendping') ? $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action='
-//					 . $nextAction . '&blogid=' . intval($blogid)) :
-//					   '';
 			$distURI = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=' . $nextAction . '&blogid=' . intval($blogid));
 			$this->action_categoryedit($result['catid'], $blogid, $distURI);
 		} else {
 			$methodName = 'action_' . $nextAction;
 			call_user_func(array(&$this, $methodName), $blogid);
 		}
-//</add by shizuki>
 	}
 
 	/**
