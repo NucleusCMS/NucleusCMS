@@ -30,6 +30,10 @@
 	<li>
 		<strong>Nucleus v3.5 (SVN)</strong>
 		<ul>
+			<li>ADDED: NP_SecurityEnforcer plugin to core installation. It can be set to enforce password length and complexity rules, as well as maximum failed login attempts. Put in plugin so can be superceded later by better techniques. (ftruscot)</li>
+			<li>CHANGED: LoginSuccess event in globalfunctions.php to inlcude <i>username</i> in the data array to specify the login name entered by the user. (ftruscot)</li>
+			<li>FIXED: backup.php, _backup_dump_structure() function, to use SHOW CREATE TABLE <i>name</i>, to generate table creation SQL. Adds ENGINE, AUTO_INCREMENT, and DEFAULT CHARSET. (ftruscot)</li>
+			<li>ADDED: PrePasswordSet event in ADMIN.php to allow plugin to enforce any password length or complexity rules for improved security. (ftruscot)</li>
 			<li>FIXED: When inclusion tried to do the special skin type by skin of error types, $skinid wasn't set.(yu/shizuki)</li>
 			<li>CHANGED: move send update ping option override to NP_Ping</li>
 			<li>ADDED: Year-based archives and archivelists, adds archiveyearlist and otherarchiveyearlist skin vars (ftruscot)</li>
