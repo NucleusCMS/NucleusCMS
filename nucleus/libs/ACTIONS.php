@@ -1347,6 +1347,22 @@ class ACTIONS extends BaseActions {
 		global $nucleus;
 		echo 'Nucleus CMS ' . $nucleus['version'];
 	}
+	
+		/**
+	 * Parse skinvar otherblog
+	 */
+	function parse_sticky($itemnumber = 0, $template = '') {
+		global $manager;
+		
+		$itemnumber = intval($itemnumber);
+		$itemarray = array($itemnumber);
+
+		$b =& $manager->getBlog(getBlogIDFromItemID($itemnumber));
+		$this->_preBlogContent('sticky',$b);
+		$this->amountfound = $b->readLogFromList($itemarray, $template);
+		$this->_postBlogContent('sticky',$b);
+	}
+
 
 }
 ?>

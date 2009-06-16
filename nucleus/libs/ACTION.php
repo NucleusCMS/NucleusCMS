@@ -243,9 +243,11 @@ class ACTION
 		if (!MEMBER::exists($membername))
 			doError(_ERROR_NOSUCHMEMBER);
 		$mem = MEMBER::createFromName($membername);
-
-		if (!$mem->canLogin())
-			doError(_ERROR_NOLOGON_NOACTIVATE);
+		
+		/* below keeps regular users from resetting passwords using forgot password feature
+		     Removing for now until clear why it is required.*/
+		/*if (!$mem->canLogin())
+			doError(_ERROR_NOLOGON_NOACTIVATE);*/
 
 		// check if e-mail address is correct
 		if (!($mem->getEmail() == postVar('email')))
