@@ -5274,6 +5274,7 @@ selector();
 			<?php echo $extrahead?>
 		</head>
 		<body>
+		<div id="adminwrapper">
 		<div class="header">
 		<h1><?php echo htmlspecialchars($CONF['SiteName'])?></h1>
 		</div>
@@ -5431,10 +5432,12 @@ selector();
 			</div>
 
 			<!-- content / quickmenu container -->
+			<div class="clear"></div>    <!-- new -->
 			</div>
 
-
-			</body>
+			<!-- adminwrapper -->    <!-- new -->
+			</div>     <!-- new -->
+			</body> 
 			</html>
 		<?php	}
 

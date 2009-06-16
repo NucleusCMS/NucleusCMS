@@ -30,6 +30,9 @@
 	<li>
 		<strong>Nucleus v3.5 (SVN)</strong>
 		<ul>
+			<li>ADDED: skinvar for all skin types to display a sticky item from any blog anywhere. (ftruscot)</li>
+			<li>REMOVED: check on canlogin during forgotpassword process. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18753" title="forgotpassword">this thread</a>. Suggestion by phillip_r. (ftruscot)</li>
+			<li>ADDED: div with id of adminwrapper around contents of admin page for improved control of admin page look. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18551" title="adminwrapper">this thread</a>. Suggestion by monkeybrain. (ftruscot)</li>
 			<li>ADDED: NP_SecurityEnforcer plugin to core installation. It can be set to enforce password length and complexity rules, as well as maximum failed login attempts. Put in plugin so can be superceded later by better techniques. (ftruscot)</li>
 			<li>CHANGED: LoginSuccess event in globalfunctions.php to inlcude <i>username</i> in the data array to specify the login name entered by the user. (ftruscot)</li>
 			<li>FIXED: backup.php, _backup_dump_structure() function, to use SHOW CREATE TABLE <i>name</i>, to generate table creation SQL. Adds ENGINE, AUTO_INCREMENT, and DEFAULT CHARSET. (ftruscot)</li>

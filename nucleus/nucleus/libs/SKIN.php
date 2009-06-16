@@ -300,7 +300,8 @@ class SKIN {
 								'charset',
 								'bloglist',
 								'addlink',
-								'addpopupcode'
+								'addpopupcode',
+								'sticky'
 								);
 
 		// extra actions specific for a certain skin type
