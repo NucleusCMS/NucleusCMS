@@ -630,6 +630,8 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 		<td><dl>
 			<dt class="obj ref">member</dt>
 			<dd><code>MEMBER</code> object</dd>
+			<dt class="ro">username</dt>
+			<dd>login name that was used in the login attempt</dd>
 		</dl></td>
 	</tr>
 	<tr>
@@ -1568,16 +1570,20 @@ your stuff
 			<dd>Integer indicating whether local authentication should be tried after an unsuccessful authentication by your plugin. 1 means yes, 0 means no. 1 is the default.</dd>
 		</dl></td>
 	</tr>
-<!--
+
 	<tr>
-		<td></td>
-		<td></td>
+		<td>PrePasswordSet</td>
+		<td>(v3.50)  Called when user tries to set password in admin area or during activation. Allows for plugins to enforce password complexity rules.</td>
 		<td><dl>
-			<dt></dt>
-			<dd></dd>
+			<dt class="ro">password</dt>
+			<dd>String containing the user-entered password.</dd>
+			<dt class="ref">errormessage</dt>
+			<dd>String containing the error message the user should see upon failure. Should be left blank if no validation error occurs.</dd>
+			<dt class="ref">valid</dt>
+			<dd>Boolean indicating whether the proposed password is valid. Default is true. Plugin code should check this value to verify it is not already false before processing a password</dd>
 		</dl></td>
 	</tr>
-	<tr>
+<!--	<tr>
 		<td></td>
 		<td></td>
 		<td><dl>

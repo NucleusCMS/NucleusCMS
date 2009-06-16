@@ -158,6 +158,20 @@ class Backup
 	
 		// add command to drop table on restore
 		echo "DROP TABLE IF EXISTS $tablename;\n";
+		$result = sql_query("SHOW CREATE TABLE $tablename");
+		$create = mysql_fetch_assoc($result);
+		echo $create['Create Table'];
+		echo ";\n\n";
+	}
+	
+	/**
+	  * Creates a dump of the table structure for one table
+	  */
+/* replaced by code above in 3.5
+	function _backup_dump_structure($tablename) {
+	
+		// add command to drop table on restore
+		echo "DROP TABLE IF EXISTS $tablename;\n";
 		echo "CREATE TABLE $tablename(\n";
 	
 		//
@@ -220,6 +234,7 @@ class Backup
 	
 		echo "\n);\n\n";
 	}
+*/
 
 	/**
 	 * Returns the field named for the given table in the 

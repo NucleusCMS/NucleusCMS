@@ -240,7 +240,7 @@ if ($action == 'login') {
 			$action = $nextaction;
 		}
 
-		$manager->notify('LoginSuccess', array('member' => &$member) );
+		$manager->notify('LoginSuccess', array('member' => &$member, 'username' => $login) );
 		$errormessage = '';
 		ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
 	} else {
