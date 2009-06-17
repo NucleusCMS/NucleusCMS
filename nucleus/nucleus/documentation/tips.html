@@ -257,6 +257,13 @@ selector();
 </tr><tr>
 	<td><code>selectLanguage('french');</code></td>
 	<td>Makes sure a certain language gets used (note: might produce PHP warnings)</td>
+</tr><tr>
+	<td><code>selectSpecialSkinType('construction');</code></td>
+	<td>Makes sure a certain special skin type gets used (note: if used by itself, it will only show that special skin type). Try this to show the special page only to non-members: <pre><code>if (!$member->isLoggedIn()) {
+	selectSpecialSkinType('login');
+}</code></pre> or this to show the special skin type only for the main page: <pre><code>if (empty($blogid) && empty($catid) && empty($itemid)&& empty($archive) && empty($archivelist)) {
+	selectSpecialSkinType('welcome');
+}</code></pre></td>
 </tr></table>
 
 <p>

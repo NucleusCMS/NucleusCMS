@@ -106,6 +106,7 @@ $maxresults = requestVar('maxresults');
 $startpos = intRequestVar('startpos');
 $errormessage = '';
 $error = '';
+$special = requestVar('special');
 $virtualpath = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 if (!headers_sent() ) {
@@ -754,7 +755,7 @@ function getPluginNameFromPid($pid) {
 function selector() {
 	global $itemid, $blogid, $memberid, $query, $amount, $archivelist, $maxresults;
 	global $archive, $skinid, $blog, $memberinfo, $CONF, $member;
-	global $imagepopup, $catid;
+	global $imagepopup, $catid, $special;
 	global $manager;
 
 	$actionNames = array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin');
@@ -1013,7 +1014,7 @@ function selector() {
 		$skinid = $blog->getDefaultSkin();
 	}
 
-	$special = requestVar('special');
+	//$special = requestVar('special'); //get at top of file as global
 	if (!empty($special) && isValidShortName($special)) {
 		$type = strtolower($special);
 	}
@@ -2031,6 +2032,11 @@ function numberOfEventSubscriber($event) {
 	$res = sql_query($query);
 	$obj = mysql_fetch_object($res);
 	return $obj->count;
+}
+
+function selectSpecialSkinType($id) {
+	global $special;
+	$special = strtolower($id);
 }
 
 ?>
