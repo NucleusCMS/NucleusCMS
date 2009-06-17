@@ -504,6 +504,25 @@ function getNucleusPatchLevel() {
 }
 
 /**
+ * returns the latest version available for download from nucleuscms.org 
+ * or false if unable to attain data
+ * format will be major.minor/patachlevel
+ * e.g. 3.41 or 3.41/02
+ */
+function getLatestVersion() {
+	if (!function_exists('curl_init')) return false;
+	$crl = curl_init();
+	$timeout = 5;
+	curl_setopt ($crl, CURLOPT_URL,'http://nucleuscms.org/version_check.php');
+	curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
+	$ret = curl_exec($crl);
+	curl_close($crl);
+	return $ret;
+
+}
+
+/**
   * Connects to mysql server
   */
 function sql_connect() {
