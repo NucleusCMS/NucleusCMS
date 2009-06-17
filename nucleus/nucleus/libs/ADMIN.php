@@ -5297,6 +5297,12 @@ selector();
 			if ($member->isLoggedIn() && $member->isAdmin()) {
 				$checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
 				echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
+				$newestVersion = getLatestVersion();
+				$newestCompare = str_replace('/','.',$newestVersion);
+				$currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
+				if ($newestVersion && version_compare($newestCompare,$currentVersion)) {
+					echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
+				}
 			} else {
 				echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
 			}

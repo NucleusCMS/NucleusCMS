@@ -24,7 +24,8 @@
  *        Start New for 3.50                *
  ********************************************/
 define('_ARCHIVETYPE_YEAR', 'year');
-
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'Newer Version Available');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'Upgrade available: v');
 
 /********************************************
  *        Start New for 3.40                *
