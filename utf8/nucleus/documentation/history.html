@@ -55,7 +55,23 @@
 
 <ul>
 	<li>
-		<strong>Nucleus v3.41 RC (March 14, 2009)</strong>
+		<strong>Nucleus v3.5 (SVN)</strong>
+		<ul>
+			<li>ADDED: selectSpecialSkinType() function to globalfunctions.php. (ftruscot)</li>
+			<li>ADDED: Check in ADMIN.php pagehead() function to display alert if newer version is available. new function, getLatestVersion() in globalfunctions.php, and new files on nucleuscms.org, version_check.php, to serve latest version. (ftruscot)</li>
+			<li>ADDED: skinvar for all skin types to display a sticky item from any blog anywhere. (ftruscot)</li>
+			<li>REMOVED: check on canlogin during forgotpassword process. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18753" title="forgotpassword">this thread</a>. Suggestion by phillip_r. (ftruscot)</li>
+			<li>ADDED: div with id of adminwrapper around contents of admin page for improved control of admin page look. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18551" title="adminwrapper">this thread</a>. Suggestion by monkeybrain. (ftruscot)</li>
+			<li>ADDED: NP_SecurityEnforcer plugin to core installation. It can be set to enforce password length and complexity rules, as well as maximum failed login attempts. Put in plugin so can be superceded later by better techniques. (ftruscot)</li>
+			<li>CHANGED: LoginSuccess event in globalfunctions.php to inlcude <i>username</i> in the data array to specify the login name entered by the user. (ftruscot)</li>
+			<li>FIXED: backup.php, _backup_dump_structure() function, to use SHOW CREATE TABLE <i>name</i>, to generate table creation SQL. Adds ENGINE, AUTO_INCREMENT, and DEFAULT CHARSET. (ftruscot)</li>
+			<li>ADDED: PrePasswordSet event in ADMIN.php to allow plugin to enforce any password length or complexity rules for improved security. (ftruscot)</li>
+			<li>CHANGED: move send update ping option override to NP_Ping</li>
+			<li>ADDED: Year-based archives and archivelists, adds archiveyearlist and otherarchiveyearlist skin vars (ftruscot)</li>
+		</ul>
+	</li>
+	<li>
+		<strong>Nucleus v3.41(March 14, 2009)</strong>
 		<ul>
 			<li>CHANGED: ドキュメントの文字サイズを可変に(jQuery使用)(character size of the document, variably via jQuery.) (shizuki)</li>
 			<li>FIXED: (<a href="http://nucleus-jp.sourceforge.jp/tracker/index.php?do=details&amp;task_id=89">#89(JP)</a>): metaWeblog.newPostにおけるコメント可否. (shizuki/NKJG)</li>

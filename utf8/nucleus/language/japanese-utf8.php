@@ -26,6 +26,14 @@
  */
 
 /********************************************
+ *        Start New for 3.50                *
+ ********************************************/
+define('_ARCHIVETYPE_YEAR', '年');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'新しいバージョンが入手可能です');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'アップグレードが入手可能です： v');
+
+
+/********************************************
  *        Start New for 3.40                *
  ********************************************/
 
@@ -114,7 +122,6 @@ define('_UPDATEDPING_GOPINGPAGE',					'更新Ping送信');
 define('_UPDATEDPING_PINGING',						'Pingサーバに送信中です');
 define('_UPDATEDPING_VIEWITEM',						'更新されたblog:');
 define('_UPDATEDPING_VISITOWNSITE',					'サイトへ行ってみる');
-define('_UPDATEDPING_GOSENDPING',					'更新Ping送信');
 
 // General category
 define('_EBLOGDEFAULTCATEGORY_NAME',				'総合');

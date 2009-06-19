@@ -122,14 +122,6 @@ class SKIN {
 	function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
 		global $manager;
 
-		// <temporary hack. for 3.4x ONLY !!>
-		global $CONF;
-		if (!$manager && $CONF['installscript']) {
-			include_once($DIR_LIBS . 'MANAGER.php');
-			$manager =& MANAGER::instance();
-		}
-		// </temporary hack. for 3.4x ONLY !!>
-
 		$manager->notify(
 			'PreAddSkin',
 			array(
@@ -287,6 +279,7 @@ class SKIN {
 								'sitevar',
 								'otherarchivelist',
 								'otherarchivedaylist',
+								'otherarchiveyearlist',
 								'self',
 								'adminurl',
 								'todaylink',
@@ -308,7 +301,8 @@ class SKIN {
 								'charset',
 								'bloglist',
 								'addlink',
-								'addpopupcode'
+								'addpopupcode',
+								'sticky'
 								);
 
 		// extra actions specific for a certain skin type
@@ -323,6 +317,7 @@ class SKIN {
 								'categorylist',
 								'archivelist',
 								'archivedaylist',
+								'archiveyearlist',
 								'nextlink',
 								'prevlink'
 								);
@@ -334,6 +329,7 @@ class SKIN {
 								'categorylist',
 								'archivelist',
 								'archivedaylist',
+								'archiveyearlist',
 								'blogsetting',
 								'archivedate',
 								'nextarchive',
@@ -347,6 +343,7 @@ class SKIN {
 				$extraActions = array('blog',
 								'archivelist',
 								'archivedaylist',
+								'archiveyearlist',
 								'categorylist',
 								'blogsetting',
 							   );
@@ -355,6 +352,7 @@ class SKIN {
 				$extraActions = array('blog',
 								'archivelist',
 								'archivedaylist',
+								'archiveyearlist',
 								'categorylist',
 								'searchresults',
 								'othersearchresults',
@@ -392,6 +390,7 @@ class SKIN {
 								'categorylist',
 								'archivelist',
 								'archivedaylist',
+								'archiveyearlist',
 								'itemtitle',
 								'itemid',
 								'itemlink',
@@ -412,9 +411,8 @@ class SKIN {
 						'categorylist',
 						'archivelist',
 						'archivedaylist',
+						'archiveyearlist',
 						'nextlink',
-						'archivelist',
-						'archivedaylist',
 						'prevlink',
 						'membermailform',
 						'nucleusbutton'

@@ -26,6 +26,14 @@
  */
 
 /********************************************
+ *        Start New for 3.50                *
+ ********************************************/
+define('_ARCHIVETYPE_YEAR', 'year');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'Newer Version Available');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'Upgrade available: v');
+
+
+/********************************************
  *        Start New for 3.40                *
  ********************************************/
 
@@ -114,7 +122,6 @@ define('_UPDATEDPING_GOPINGPAGE',					'try again');
 define('_UPDATEDPING_PINGING',						'Pinging services, please wait...');
 define('_UPDATEDPING_VIEWITEM',						'View list of recent items for ');
 define('_UPDATEDPING_VISITOWNSITE',					'Visit your own site');
-define('_UPDATEDPING_GOSENDPING',					'Send Update ping');
 
 // General category
 define('_EBLOGDEFAULTCATEGORY_NAME',				'General');

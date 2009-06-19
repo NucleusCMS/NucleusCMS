@@ -26,6 +26,14 @@
  */
 
 /********************************************
+ *        Start New for 3.50                *
+ ********************************************/
+define('_ARCHIVETYPE_YEAR', '年');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'新しいバージョンが入手可能です');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'アップグレードが入手可能です： v');
+
+
+/********************************************
  *        Start New for 3.40                *
  ********************************************/
 

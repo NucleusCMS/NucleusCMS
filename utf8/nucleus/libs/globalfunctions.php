@@ -106,6 +106,7 @@ $maxresults   = requestVar('maxresults');
 $startpos     = intRequestVar('startpos');
 $errormessage = '';
 $error        = '';
+$special = requestVar('special');
 $virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 if (!headers_sent() ) {
@@ -240,7 +241,7 @@ if ($action == 'login') {
 			$action = $nextaction;
 		}
 
-		$manager->notify('LoginSuccess', array('member' => &$member) );
+		$manager->notify('LoginSuccess', array('member' => &$member, 'username' => $login) );
 		$errormessage = '';
 		ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
 	} else {
@@ -360,6 +361,7 @@ if (!defined('_MEMBERS_BYPASS'))
 if (!defined('_ARCHIVETYPE_MONTH') ) {
 	define('_ARCHIVETYPE_DAY', 'day');
 	define('_ARCHIVETYPE_MONTH', 'month');
+	define('_ARCHIVETYPE_YEAR', 'year');
 }
 
 // decode path_info
@@ -507,6 +509,25 @@ function getNucleusVersion() {
  */
 function getNucleusPatchLevel() {
 	return 0;
+}
+
+/**
+ * returns the latest version available for download from nucleuscms.org 
+ * or false if unable to attain data
+ * format will be major.minor/patachlevel
+ * e.g. 3.41 or 3.41/02
+ */
+function getLatestVersion() {
+	if (!function_exists('curl_init')) return false;
+	$crl = curl_init();
+	$timeout = 5;
+	curl_setopt ($crl, CURLOPT_URL,'http://nucleuscms.org/version_check.php');
+	curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
+	$ret = curl_exec($crl);
+	curl_close($crl);
+	return $ret;
+
 }
 
 /**
@@ -777,7 +798,7 @@ function getPluginNameFromPid($pid) {
 function selector() {
 	global $itemid, $blogid, $memberid, $query, $amount, $archivelist, $maxresults;
 	global $archive, $skinid, $blog, $memberinfo, $CONF, $member;
-	global $imagepopup, $catid;
+	global $imagepopup, $catid, $special;
 	global $manager;
 
 	$actionNames = array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin');
@@ -930,6 +951,27 @@ function selector() {
 				$archivenextexists = false;
 			}
 
+		} elseif ($m == 0) {
+			$archivetype = _ARCHIVETYPE_YEAR;
+			$t = mktime(0, 0, 0, 12, 31, $y - 1);
+			// one day before is in the previous year
+			$archiveprev = strftime('%Y', $t);
+			if ($t > $first_timestamp) {
+				$archiveprevexists = true;
+			}
+			else {
+				$archiveprevexists = false;
+			}
+
+			// timestamp for the next year
+			$t = mktime(0, 0, 0, 1, 1, $y + 1);
+			$archivenext = strftime('%Y', $t);
+			if ($t < $last_timestamp) {
+				$archivenextexists = true;
+			}
+			else {
+				$archivenextexists = false;
+			}
 		} else {
 			$archivetype = _ARCHIVETYPE_MONTH;
 			$t = mktime(0, 0, 0, $m, 1, $y);
@@ -1032,7 +1074,7 @@ function selector() {
 		$skinid = $blog->getDefaultSkin();
 	}
 
-	$special = requestVar('special');
+	//$special = requestVar('special'); //get at top of file as global
 	if (!empty($special) && isValidShortName($special)) {
 		$type = strtolower($special);
 	}
@@ -2123,6 +2165,11 @@ function numberOfEventSubscriber($event) {
 	$res = sql_query($query);
 	$obj = mysql_fetch_object($res);
 	return $obj->count;
+}
+
+function selectSpecialSkinType($id) {
+	global $special;
+	$special = strtolower($id);
 }
 
 ?>

@@ -373,6 +373,13 @@ selector();
 	<td><code>selectLanguage('french');</code></td>
 	<td>言語を「french」にしてページ表示する
 	 (PHPエラーが出る可能性がありますので注意してください)</td>
+</tr><tr>
+	<td><code>selectSpecialSkinType('construction');</code></td>
+	<td>指定されたスペシャルスキンタイプを使用します (note: 指定されたスペシャルスキンタイプの内容が表示されます). 次のコードはログインしていない時のみスペシャルスキンを表示します: <pre><code>if (!$member->isLoggedIn()) {
+	selectSpecialSkinType('login');
+}</code></pre> また次のコードではサイトのトップページの時にスペシャルスキンを表示します: <pre><code>if (empty($blogid) && empty($catid) && empty($itemid)&& empty($archive) && empty($archivelist)) {
+	selectSpecialSkinType('welcome');
+}</code></pre></td>
 </tr></table>
 
 <p>
@@ -460,7 +467,7 @@ selector();
 
 <p><strong>注意:</strong>もし、既に用意してある<code>About.html</code>を使いたい時は、ファイルを<code>skins/default/</code>ディレクトリ(デフォルトスキン使用時)に置き、スキンパーツに<code>&lt;%include(About.html)%&gt;</code>と書くだけで、その内容を取り込むことができます。そしてその内容はほぼ無制限です。</p>
 
-<p>(<a href="http://www.iai.com/">ftruscot</a>より)</p>
+<p>(Tip from  <a href="http://revcetera.com/ftruscot">ftruscot</a>)</p>
 </div>
 </body>
 </html>

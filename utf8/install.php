@@ -37,7 +37,7 @@ include('./install_lang_japanese.php');
 //
 // example:
 //     array('NP_TrackBack', 'NP_MemberGoodies')
-$aConfPlugsToInstall = array('NP_SkinFiles');
+$aConfPlugsToInstall = array('NP_SkinFiles', 'NP_SecurityEnforcer');
 
 
 // array with skins to install. skins must be present under the skins/ directory with
@@ -570,7 +570,7 @@ function doInstall() {
 		_doError(_ERROR15 . ': ' . mysql_error() );
 	}
 
-/*/ <add for garble measure>
+// <add for garble measure>
 	// 2-2. set DEFAULT CHARSET and COLLATE
 	$mySqlVer = implode('.', array_map('intval', explode('.', mysql_get_server_info($MYSQL_CONN))));
 	if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {
@@ -585,7 +585,7 @@ function doInstall() {
 	if ($mysql_create == 1) {
 		$sql = 'CREATE DATABASE '
 			 .     $mysql_database
-/*/ <add for garble measure>
+// <add for garble measure>
 			 . ' DEFAULT CHARACTER SET '
 			 .     $charset
 			 . ' COLLATE '
@@ -665,7 +665,7 @@ function doInstall() {
 			if ($mysql_usePrefix == 1) {
 					$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
 			}
-/*/ <add for garble measure>
+// <add for garble measure>
 			if ($mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0) {
 				$query .= ' DEFAULT CHARACTER SET ' . $charset . ' COLLATE ' . $collation;
 			}

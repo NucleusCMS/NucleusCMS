@@ -1222,7 +1222,6 @@ class ADMIN {
 			ITEM::delete($draftid);
 		}
 
-//		if (!$closed && $publish && $wasdraft && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0 && !$isFuture) {
 		if (!$closed && $doping && $blog->sendPing() && numberOfEventSubscriber('SendPing') > 0) {		//<mod by shizuki />
 			$this->action_sendping($blogid);
 			return;
@@ -1450,8 +1449,7 @@ class ADMIN {
 		$blog =& $manager->getBlog($blogid);
 		$btimestamp = $blog->getCorrectTime();
 		$item       = $manager->getItem(intval($result['itemid']), 1, 1);
-		$iPingInfo  = (!$item['draft'] && postVar('dosendping') && $item['timestamp'] <= $btimestamp);
-		if ($iPingInfo && $bPingInfo) {
+		if (!$item['draft'] && postVar('dosendping') && $item['timestamp'] <= $btimestamp) {
 			$nextAction = 'sendping';
 		} else {
 			$nextAction = 'itemlist';
@@ -1991,6 +1989,13 @@ class ADMIN {
 
 			if ($password && (strlen($password) < 6))
 				$this->error(_ERROR_PASSWORDTOOSHORT);
+
+			$pwdvalid = true;
+			$pwderror = '';
+			$manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
+			if (!pwdvalid) {
+				$this->error($pwderror);
+			}
 		}
 
 		if (!isValidMailAddress($email))
@@ -2235,6 +2240,13 @@ class ADMIN {
 
 		if ($password && (strlen($password) < 6))
 			return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
+
+		$pwdvalid = true;
+		$pwderror = '';
+		$manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
+		if (!pwdvalid) {
+			return $this->_showActivationPage($key,$pwderror);
+		}
 
 		$error = '';
 		global $manager;
@@ -5257,6 +5269,7 @@ selector();
 			<?php echo $extrahead?>
 		</head>
 		<body>
+		<div id="adminwrapper">
 		<div class="header">
 		<h1><?php echo htmlspecialchars($CONF['SiteName'])?></h1>
 		</div>
@@ -5279,6 +5292,12 @@ selector();
 			if ($member->isLoggedIn() && $member->isAdmin()) {
 				$checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
 				echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
+				$newestVersion = getLatestVersion();
+				$newestCompare = str_replace('/','.',$newestVersion);
+				$currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
+				if ($newestVersion && version_compare($newestCompare,$currentVersion)) {
+					echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
+				}
 			} else {
 				echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
 			}
@@ -5414,9 +5433,11 @@ selector();
 			</div>
 
 			<!-- content / quickmenu container -->
+			<div class="clear"></div>    <!-- new -->
 			</div>
 
-
+			<!-- adminwrapper -->    <!-- new -->
+			</div>     <!-- new -->
 			</body>
 			</html>
 		<?php	}

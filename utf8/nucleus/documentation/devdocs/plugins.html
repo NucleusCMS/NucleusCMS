@@ -688,7 +688,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>BLOG</code> オブジェクト</dd>
             <dt class="ro">timestamp</dt>
             <dd>日付フッターのタイムスタンプ</dd>
-        </dl></td>      
+        </dl></td>
     </tr>   
     <tr>
         <td>LoginSuccess</td>
@@ -696,6 +696,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="obj ref">member</dt>
             <dd><code>MEMBER</code> オブジェクト</dd>
+			<dt class="ro">username</dt>
+			<dd>ログ印字に使用されたログイン名</dd>
         </dl></td>      
     </tr>
     <tr>
@@ -1654,6 +1656,18 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 			<dd>認証が成功したかどうかのフラグ。｢1｣が成功。失敗だと｢0｣。初期値は｢0｣。プラグイン側でセットします。</dd>
 			<dt class="ref">allowlocal</dt>
 			<dd>整数値。プラグイン側で外部認証に失敗した後に、Nucleus のログインを試すかどうかのフラグ。｢1｣が試す｢0｣が試さない。初期値は｢1｣プラグイン側でセットします。</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>PrePasswordSet</td>
+		<td>(v3.50)パスワードを設定する時に呼び出されます。パスワードの強度をプラグインで設定することが出来ます。</td>
+		<td><dl>
+			<dt class="ro">password</dt>
+			<dd>ユーザーが入力したパスワード文字列</dd>
+			<dt class="ref">errormessage</dt>
+			<dd>エラーメッセージ。エラーが起きない場合は空白に設定します。</dd>
+			<dt class="ref">valid</dt>
+			<dd>設定しようとしているパスワードが妥当かどうかのフラグ。デフォルトは｢真｣。プラグインはこの値の妥当性を審査するべきです。</dd>
 		</dl></td>
 	</tr>
 <!--

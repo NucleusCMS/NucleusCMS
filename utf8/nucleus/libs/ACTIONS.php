@@ -459,13 +459,15 @@ class ACTIONS extends BaseActions {
 			array_shift($args);
 			// implode
 			$format=implode(',',$args);
-		} elseif ($d == 0) {
+		} elseif ($d == 0 && $m !=0) {
 			$format = '%B %Y';
+		} elseif ($m == 0) {
+			$format = '%Y';
 		} else {
 			$format = '%d %B %Y';
 		}
 
-		echo strftime($format,mktime(0,0,0,$m,$d?$d:1,$y));
+		echo strftime($format,mktime(0,0,0,$m?$m:1,$d?$d:1,$y));
 	}
 
 	/**
@@ -497,6 +499,15 @@ class ACTIONS extends BaseActions {
 		$this->_preBlogContent('archivelist',$blog);
 		$this->_setBlogCategory($blog, $category);
 		$blog->showArchiveList($template, 'month', $limit);
+		$this->_postBlogContent('archivelist',$blog);
+	}
+
+	function parse_archiveyearlist($template, $category = 'all', $limit = 0) {
+		global $blog;
+		if ($category == 'all') $category = '';
+		$this->_preBlogContent('archivelist',$blog);
+		$this->_setBlogCategory($blog, $category);
+		$blog->showArchiveList($template, 'year', $limit);
 		$this->_postBlogContent('archivelist',$blog);
 	}
 
@@ -1059,7 +1070,20 @@ class ACTIONS extends BaseActions {
 		$b->showArchiveList($template, 'month', $limit);
 		$this->_postBlogContent('otherarchivelist',$b);
 	}
-	
+
+	/**
+	 * Parse skinvar otherarchiveyearlist
+	 */
+	function parse_otherarchiveyearlist($blogname, $template, $category = 'all', $limit = 0) {
+		global $manager;
+		if ($category == 'all') $category = '';
+		$b =& $manager->getBlog(getBlogIDFromName($blogname));
+		$this->_setBlogCategory($b, $category);
+		$this->_preBlogContent('otherarchivelist',$b);
+		$b->showArchiveList($template, 'year', $limit);
+		$this->_postBlogContent('otherarchivelist',$b);
+	}
+
 	/**
 	 * Parse skinvar otherblog
 	 */
@@ -1324,6 +1348,22 @@ class ACTIONS extends BaseActions {
 		global $nucleus;
 		echo 'Nucleus CMS ' . $nucleus['version'];
 	}
+
+	/**
+	 * Parse skinvar sticky
+	 */
+	function parse_sticky($itemnumber = 0, $template = '') {
+		global $manager;
+		
+		$itemnumber = intval($itemnumber);
+		$itemarray = array($itemnumber);
+
+		$b =& $manager->getBlog(getBlogIDFromItemID($itemnumber));
+		$this->_preBlogContent('sticky',$b);
+		$this->amountfound = $b->readLogFromList($itemarray, $template);
+		$this->_postBlogContent('sticky',$b);
+	}
+
 
 }
 ?>
