@@ -5948,7 +5948,7 @@ selector();
 
 		echo '<h2>' , _PLUGS_TITLE_MANAGE , ' ', help('plugins'), '</h2>';
 
-		echo '<h3>' , _PLUGS_TITLE_INSTALLED , '</h3>';
+		echo '<h3>' , _PLUGS_TITLE_INSTALLED , ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
 
 
 		$query =  'SELECT * FROM '.sql_table('plugin').' ORDER BY porder ASC';
