@@ -80,7 +80,7 @@ switch ($action) {
 
 	// on login, 'action' gets changed to 'nextaction'
 	case 'login':
-		bm_doError('Something went wrong');
+		bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG);
 		break;
 
 	// shows the fill in form
@@ -157,7 +157,7 @@ function bm_doEditItem() {
 
 		// show error when sth goes wrong
 		if (!$catid) {
-			bm_doError('Could not create new category');
+			bm_doError(_BOOKMARKLET_ERROR_COULDNTNEWCAT);
 		}
 	}
 
@@ -179,7 +179,7 @@ function bm_doEditItem() {
 			$timestamp = 0;
 			break;
 		default:
-			bm_doError('Something went wrong');
+			bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG);
 	}
 
 	// update item for real
@@ -227,9 +227,9 @@ function bm_loginAndPassThrough() {
 		<input name="logtext" value="<?php echo htmlspecialchars($log_text); ?>" type="hidden" />
 		<input name="loglink" value="<?php echo htmlspecialchars($log_link); ?>" type="hidden" />
 		<input name="loglinktitle" value="<?php echo htmlspecialchars($log_linktitle); ?>" type="hidden" />
-		<?php echo _LOGINFORM_NAME ?>:
+		<?php echo _LOGINFORM_NAME ?>
 		<br /><input name="login" />
-		<br /><?php echo _LOGINFORM_PWD ?>:
+		<br /><?php echo _LOGINFORM_PWD ?>
 		<br /><input name="password" type="password" />
 		<br /><br />
 		<br /><input type="submit" value="<?php echo _LOGIN ?>" />

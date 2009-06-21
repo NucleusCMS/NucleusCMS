@@ -57,6 +57,16 @@
 	<li>
 		<strong>Nucleus v3.5 (SVN)</strong>
 		<ul>
+			<li>FIXED: atom.phpとxml-rss2.phpで_CHARSETをチェックして文字コード変換(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4376" target="_blank" class="postlink">Nicleus3.41 へアップグレード後 xml-rss2.php でエラー</a>)(きゃしゃ)</li>
+			<li>CHANGED: SEARCH.php改良(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4370" target="_blank" class="postlink">&lt;%relevance%&gt;対応SEARCH.php</a>、<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=3824" target="_blank" class="postlink">検索結果の正確さ</a>)(きゃしゃ)</li>
+			<li>CHANGED: _CHARSETチェックのときにstrtoupper(きゃしゃ)</li>
+			<li>CHANGED: インストーラの文字化け対策部分をデフォルトで有効に。globalfunctions.phpの方は、状況に応じて。(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4385" target="_blank" class="postlink">インストール後管理画面は正常表示、サイトが真っ白</a>)(きゃしゃ)</li>
+			<li>CHANGED: インストーラエラーページをUTF-8固定に。(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=25024#25024" target="_blank" class="postlink">3.41インストール－＞スキンエラー</a>(きゃしゃ)</li>
+			<li>CHANGED: 言語ファイルの反映漏れ修正。ただし、言語ファイル読み込み前に表示される可能性のあるメッセージは定数定義前なのでそのまま(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=24903#24903" target="_blank" class="postlink">インストール後管理画面は正常表示、サイトが真っ白</a>)(きゃしゃ)</li>
+			<li>FIXED: pingオプションのチェックボックス削除(きゃしゃ)</li>
+			<li>FIXED: parsedincludeの無限ループ対策、NP_includespecialからの移植時仕様変更に伴うコード修正。(きゃしゃ)</li>
+			<li>FIXED: karma通知修正(きゃしゃ)</li>
+			<li>FIXED: catidのみがURLで指定された場合、blogidを補完する(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4417" target="_blank" class="postlink">ShowBlogsのページ送りにblogidの付加をするには？</a>)(きゃしゃ)</li>
 			<li>ADDED: NP_Text plugin to core installation. Makes distribution of internationalised plugins easier. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=15005" title="forgotpassword">this thread</a>. (ftruscot)</li>
 			<li>ADDED: links in plugins help of help.html to link to two main plugin repositories. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18214" title="forgotpassword">this thread</a>. (ftruscot)</li>
 			<li>ADDED: selectSpecialSkinType() function to globalfunctions.php. (ftruscot)</li>

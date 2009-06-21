@@ -395,7 +395,7 @@ class ITEM {
 		$i_title = postVar('title');
 		$i_more = postVar('more');
 
-		if(_CHARSET != 'UTF-8'){
+		if(strtoupper(_CHARSET) != 'UTF-8'){
 			$i_body  = mb_convert_encoding($i_body, _CHARSET, "UTF-8");
 			$i_title = mb_convert_encoding($i_title, _CHARSET, "UTF-8");
 			$i_more  = mb_convert_encoding($i_more, _CHARSET, "UTF-8");

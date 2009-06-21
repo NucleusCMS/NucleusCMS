@@ -82,7 +82,16 @@ class BaseActions {
 		if (!$skin->isValid && !file_exists($file)) {
 			return;
 		}
-		$parts = explode('|', $filename, 2);
+		$contents = $skin->getContent($filename);
+		if (!$contents) {
+			if (!file_exists($file)) return;
+			// nothing to include
+			if ($fsize <= 0) return;
+			$fd = fopen ($file, 'r');
+			$contents = fread ($fd, $fsize);
+			fclose ($fd);
+		}
+/*		$parts = explode('|', $filename, 2);
 		if ($skin->getContent($parts[0])) {
 			$contents = $skin->getContent($parts[0]);
 		} else {
@@ -101,7 +110,7 @@ class BaseActions {
 			$contents = fread ($fd, $fsize);
 			fclose ($fd);
 		}
-
+*/
 		// parse file contents
 		$this->parser->parse($contents);
 

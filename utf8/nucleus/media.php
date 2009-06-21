@@ -357,8 +357,8 @@ function media_loginAndPassThrough() {
 		<div>
 			<input name="action" value="login" type="hidden" />
 			<input name="collection" value="<?php echo htmlspecialchars(requestVar('collection'))?>" type="hidden" />
-			<?php echo _LOGINFORM_NAME?>: <input name="login" />
-			<br /><?php echo _LOGINFORM_PWD?>: <input name="password" type="password" />
+			<?php echo _LOGINFORM_NAME?> <input name="login" />
+			<br /><?php echo _LOGINFORM_PWD?> <input name="password" type="password" />
 			<br /><input type="submit" value="<?php echo _LOGIN?>" />
 		</div>
 		</form>

@@ -54,12 +54,12 @@ define('_CREATE_ACCOUNT0',					'¥¢¥«¥¦¥ó¥È¤ÎºîÀ®');
 define('_CREATE_ACCOUNT1',					'¥¢¥«¥¦¥ó¥È¤ÎºîÀ®¤Ïµö²Ä¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£<br /><br />');
 define('_CREATE_ACCOUNT2',					'¾ÜºÙ¤Ï¥¦¥§¥Ö¥µ¥¤¥È¤Î´ÉÍý¼Ô¤Ë¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤µ¤¤¡£');
 define('_CREATE_ACCOUNT_USER_DATA',			'¿·µ¬¥¢¥«¥¦¥ó¥È¤Î¾ðÊó');
-define('_CREATE_ACCOUNT_LOGIN_NAME',		'¥í¥°¥¤¥óID (É¬¿Ü)');
+define('_CREATE_ACCOUNT_LOGIN_NAME',		'¥í¥°¥¤¥óID (É¬¿Ü)¡§');
 define('_CREATE_ACCOUNT_LOGIN_NAME_VALID',	' a-z ¤Î±Ñ¾®Ê¸»ú¤È 0-9 ¤Î¿ô»ú¤Î¤ß»ÈÍÑ¤Ç¤­¤Þ¤¹');
-define('_CREATE_ACCOUNT_REAL_NAME',			'¥Ï¥ó¥É¥ë (É¬¿Ü)');
-define('_CREATE_ACCOUNT_EMAIL',				'¥á¡¼¥ë¥¢¥É¥ì¥¹ (É¬¿Ü)');
+define('_CREATE_ACCOUNT_REAL_NAME',			'¥Ï¥ó¥É¥ë (É¬¿Ü)¡§');
+define('_CREATE_ACCOUNT_EMAIL',				'¥á¡¼¥ë¥¢¥É¥ì¥¹ (É¬¿Ü)¡§');
 define('_CREATE_ACCOUNT_EMAIL2',			'(¥¢¥¯¥Æ¥£¥Ù¡¼¥·¥ç¥óÍÑ¤Î¥ê¥ó¥¯¤¬Á÷¤é¤ì¤ë¤Î¤ÇÍ­¸ú¤Ê¤â¤Î¤ò»ÈÍÑ¤·¤Æ¤¯¤À¤µ¤¤)');
-define('_CREATE_ACCOUNT_URL',				'(¤â¤·¤¢¤ì¤Ð)¼«Ê¬¤Î¥µ¥¤¥È¤ÎURL');
+define('_CREATE_ACCOUNT_URL',				'(¤â¤·¤¢¤ì¤Ð)¼«Ê¬¤Î¥µ¥¤¥È¤ÎURL¡§');
 define('_CREATE_ACCOUNT_SUBMIT',			'¥¢¥«¥¦¥ó¥È¤ÎºîÀ®');
 
 define('_BMLET_BACKTODRAFTS',				'¥É¥é¥Õ¥È¤ËÌá¤¹');
@@ -122,7 +122,6 @@ define('_UPDATEDPING_GOPINGPAGE',					'¹¹¿·PingÁ÷¿®');
 define('_UPDATEDPING_PINGING',						'Ping¥µ¡¼¥Ð¤ËÁ÷¿®Ãæ¤Ç¤¹');
 define('_UPDATEDPING_VIEWITEM',						'¹¹¿·¤µ¤ì¤¿blog:');
 define('_UPDATEDPING_VISITOWNSITE',					'¥µ¥¤¥È¤Ø¹Ô¤Ã¤Æ¤ß¤ë');
-define('_UPDATEDPING_GOSENDPING',					'¹¹¿·PingÁ÷¿®');
 
 // General category
 define('_EBLOGDEFAULTCATEGORY_NAME',				'Áí¹ç');
@@ -232,7 +231,7 @@ define('_ACTIONURL_NOTLONGER_PARAMATER',			'Ž¢action.phpŽ£¤ÎURL¤Ï¥³¥á¥ó¥È¥Õ¥©¡¼¥
 // ADMIN.php addToTemplate 'Query error: '
 define('_ADMIN_SQLDIE_QUERYERROR',					'¥¯¥¨¥ê ¥¨¥é¡¼: ');
 
-// backyp.php Backup WARNING
+// backup.php Backup WARNING
 define('_BACKUP_BACKUPFILE_TITLE',					'Nucleus CMS ¤Î¥Ç¡¼¥¿¥Ù¡¼¥¹¥Ð¥Ã¥¯¥¢¥Ã¥×¥Õ¥¡¥¤¥ë¤Ç¤¹');
 define('_BACKUP_BACKUPFILE_BACKUPDATE',				'¥Ð¥Ã¥¯¥¢¥Ã¥×¤·¤¿Æü:');
 define('_BACKUP_BACKUPFILE_NUCLEUSVERSION',			'Nucleus CMS ¤Î¥Ð¡¼¥¸¥ç¥ó:');
@@ -661,9 +660,9 @@ define('_RESTORE_COMPLETE',					'¥ê¥¹¥È¥¢´°Î»');
 // new item notification
 define('_NOTIFY_NI_MSG',					'¿·¤·¤¤¥¢¥¤¥Æ¥à¤¬Åê¹Æ¤µ¤ì¤Þ¤·¤¿:');
 define('_NOTIFY_NI_TITLE',					'¿·¤·¤¤¥¢¥¤¥Æ¥à!');
-define('_NOTIFY_KV_MSG',					'¥«¥ë¥Þ¤ÎÅêÉ¼¤¬¤¢¤ê¤Þ¤·¤¿:');
+define('_NOTIFY_KV_MSG',					'¥¢¥¤¥Æ¥à¤Ë¥«¥ë¥Þ¤ÎÅêÉ¼¤¬¤¢¤ê¤Þ¤·¤¿:');
 define('_NOTIFY_KV_TITLE',					'Nucleus¥«¥ë¥Þ:');
-define('_NOTIFY_NC_MSG',					'¥¢¥¤¥Æ¥à¤Ë¥³¥á¥ó¥È¤¹¤ë:');
+define('_NOTIFY_NC_MSG',					'¥¢¥¤¥Æ¥à¤Ë¥³¥á¥ó¥È¤¬¤¢¤ê¤Þ¤·¤¿:');
 define('_NOTIFY_NC_TITLE',					'Nucleus¥³¥á¥ó¥È:');
 define('_NOTIFY_USERID',					'¥æ¡¼¥¶¡¼ID:');
 define('_NOTIFY_USER',						'¥æ¡¼¥¶¡¼:');

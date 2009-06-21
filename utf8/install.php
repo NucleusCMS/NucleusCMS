@@ -175,6 +175,7 @@ function showInstallForm() {
 			$match = explode('.', $row[1]);
 		} else {
 			$output = shell_exec('mysql -V');
+			$output = (function_exists('shell_exec')) ? @shell_exec('mysql -V') : '0.0.0';
 			preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
 			$match = explode('.', $version[0]);
 
@@ -575,7 +576,7 @@ function doInstall() {
 	$mySqlVer = implode('.', array_map('intval', explode('.', mysql_get_server_info($MYSQL_CONN))));
 	if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {
 		mysql_set_charset($charset);
-	} else {
+	} elseif ($mySqlVer >= '4.1.0') {
 		mysql_query("SET NAMES " . $charset);
 	}
 	$collation = ($charset == 'utf8') ? 'utf8_unicode_ci' : 'ujis_japanese_ci';
@@ -584,14 +585,15 @@ function doInstall() {
 	// 3. try to create database (if needed)
 	if ($mysql_create == 1) {
 		$sql = 'CREATE DATABASE '
-			 .     $mysql_database
+			 .     $mysql_database;
 // <add for garble measure>
-			 . ' DEFAULT CHARACTER SET '
-			 .     $charset
-			 . ' COLLATE '
-			 .     $collation
+	if ($mySqlVer >= '4.1.0') {
+		$sql .= ' DEFAULT CHARACTER SET '
+			  .     $charset
+			  . ' COLLATE '
+			  .     $collation;
+	}
 // </add for garble measure>*/
-			 . '';
 		mysql_query($sql) or _doError(_ERROR16 . ': ' . mysql_error());
 	}
 
@@ -666,7 +668,7 @@ function doInstall() {
 					$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
 			}
 // <add for garble measure>
-			if ($mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0) {
+			if ($mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0 && $mySqlVer >= '4.1.0') {
 				$query .= ' DEFAULT CHARACTER SET ' . $charset . ' COLLATE ' . $collation;
 			}
 // </add for garble measure>*/
@@ -924,6 +926,7 @@ function doInstall() {
 		<ul>
 		<li><?php echo _TEXT15_L1; ?></li>
 		<li><?php echo _TEXT15_L2; ?></li>
+		<li><?php echo _TEXT15_L3; ?></li>
 		</ul>
 
 	<?php echo _TEXT15_EX; ?>
@@ -1139,7 +1142,7 @@ function _doError($msg) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?php echo _TITLE; ?></title>
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>
@@ -1147,7 +1150,7 @@ function _doError($msg) {
 	<div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
 	<h1><?php echo _ERROR27; ?></h1>
 
-	<p><?php echo _ERROR28; ?>: "<?php echo $msg?>";</p>
+	<p><?php echo _ERROR28; ?> "<?php echo $msg; ?>";</p>
 
 	<p><a href="install.php" onclick="history.back();"><?php echo _TEXT17; ?></a></p>
 </body>
@@ -1162,7 +1165,7 @@ function showErrorMessages($errors) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><?php echo _TITLE; ?></title>
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>

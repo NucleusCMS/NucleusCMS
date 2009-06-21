@@ -54,12 +54,12 @@ define('_CREATE_ACCOUNT0',					'アカウントの作成');
 define('_CREATE_ACCOUNT1',					'アカウントの作成は許可されていません。<br /><br />');
 define('_CREATE_ACCOUNT2',					'詳細はウェブサイトの管理者にお問い合わせください。');
 define('_CREATE_ACCOUNT_USER_DATA',			'新規アカウントの情報');
-define('_CREATE_ACCOUNT_LOGIN_NAME',		'ログインID (必須)');
+define('_CREATE_ACCOUNT_LOGIN_NAME',		'ログインID (必須)：');
 define('_CREATE_ACCOUNT_LOGIN_NAME_VALID',	' a-z の英小文字と 0-9 の数字のみ使用できます');
-define('_CREATE_ACCOUNT_REAL_NAME',			'ハンドル (必須)');
-define('_CREATE_ACCOUNT_EMAIL',				'メールアドレス (必須)');
+define('_CREATE_ACCOUNT_REAL_NAME',			'ハンドル (必須)：');
+define('_CREATE_ACCOUNT_EMAIL',				'メールアドレス (必須)：');
 define('_CREATE_ACCOUNT_EMAIL2',			'(アクティベーション用のリンクが送られるので有効なものを使用してください)');
-define('_CREATE_ACCOUNT_URL',				'(もしあれば)自分のサイトのURL');
+define('_CREATE_ACCOUNT_URL',				'(もしあれば)自分のサイトのURL：');
 define('_CREATE_ACCOUNT_SUBMIT',			'アカウントの作成');
 
 define('_BMLET_BACKTODRAFTS',				'ドラフトに戻す');
@@ -231,7 +231,7 @@ define('_ACTIONURL_NOTLONGER_PARAMATER',			'｢action.php｣のURLはコメン�
 // ADMIN.php addToTemplate 'Query error: '
 define('_ADMIN_SQLDIE_QUERYERROR',					'クエリ エラー: ');
 
-// backyp.php Backup WARNING
+// backup.php Backup WARNING
 define('_BACKUP_BACKUPFILE_TITLE',					'Nucleus CMS のデータベースバックアップファイルです');
 define('_BACKUP_BACKUPFILE_BACKUPDATE',				'バックアップした日:');
 define('_BACKUP_BACKUPFILE_NUCLEUSVERSION',			'Nucleus CMS のバージョン:');
@@ -660,9 +660,9 @@ define('_RESTORE_COMPLETE',					'リストア完了');
 // new item notification
 define('_NOTIFY_NI_MSG',					'新しいアイテムが投稿されました:');
 define('_NOTIFY_NI_TITLE',					'新しいアイテム!');
-define('_NOTIFY_KV_MSG',					'カルマの投票がありました:');
+define('_NOTIFY_KV_MSG',					'アイテムにカルマの投票がありました:');
 define('_NOTIFY_KV_TITLE',					'Nucleusカルマ:');
-define('_NOTIFY_NC_MSG',					'アイテムにコメントする:');
+define('_NOTIFY_NC_MSG',					'アイテムにコメントがありました:');
 define('_NOTIFY_NC_TITLE',					'Nucleusコメント:');
 define('_NOTIFY_USERID',					'ユーザーID:');
 define('_NOTIFY_USER',						'ユーザー:');

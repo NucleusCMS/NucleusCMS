@@ -20,7 +20,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.41RC';
+$nucleus['version'] = 'v3.5SVN';
 $nucleus['codename'] = '';
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
@@ -106,7 +106,7 @@ $maxresults   = requestVar('maxresults');
 $startpos     = intRequestVar('startpos');
 $errormessage = '';
 $error        = '';
-$special = requestVar('special');
+$special      = requestVar('special');
 $virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 if (!headers_sent() ) {
@@ -120,7 +120,7 @@ include($DIR_LIBS . 'ACTIONLOG.php');
 include($DIR_LIBS . 'MANAGER.php');
 include($DIR_LIBS . 'PLUGIN.php');
 
-$manager =& MANAGER::instance();
+$manager = MANAGER::instance();
 
 // make sure there's no unnecessary escaping:
 set_magic_quotes_runtime(0);
@@ -546,7 +546,7 @@ function sql_connect() {
 	$mySqlVer = implode('.', array_map('intval', explode('.', mysql_get_server_info($MYSQL_CONN))));
 	if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {
 		mysql_set_charset($charset);
-	} else {
+	} elseif ($mySqlVer >= '4.1.0') {
 		sql_query("SET NAMES " . $charset);
 	}
 // </add for garble measure>*/
@@ -734,9 +734,9 @@ function parseHighlight($query) {
 	for ($i = 0; $i < count($aHighlight); $i++) {
 		$aHighlight[$i] = trim($aHighlight[$i]);
 
-		if (strlen($aHighlight[$i]) < 3) {
-			unset($aHighlight[$i]);
-		}
+//		if (strlen($aHighlight[$i]) < 3) {
+//			unset($aHighlight[$i]);
+//		}
 	}
 
 	if (count($aHighlight) == 1) {
@@ -821,14 +821,14 @@ function selector() {
 		// try to get line number/filename (extra headers_sent params only exists in PHP 4.3+)
 		if (function_exists('version_compare') && version_compare('4.3.0', phpversion(), '<=') ) {
 			headers_sent($hsFile, $hsLine);
-			$extraInfo = ' in <code>' . $hsFile . '</code> line <code>' . $hsLine . '</code>';
+			$extraInfo = sprintf(_GFUNCTIONS_HEADERSALREADYSENT_FILE,$hsFile,$hsLine);
 		} else {
 			$extraInfo = '';
 		}
 
 		startUpError(
-			'<p>The page headers have already been sent out' . $extraInfo . '. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, at the end of the language file or at the end of a plugin file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>',
-			'Page headers already sent'
+			sprintf(_GFUNCTIONS_HEADERSALREADYSENT_TXT,$extraInfo),
+			_GFUNCTIONS_HEADERSALREADYSENT_TITLE
 		);
 		exit;
 	}
@@ -1015,8 +1015,26 @@ function selector() {
 		if(preg_match("/^(\xA1{2}|\xe3\x80{2}|\x20)+$/", $query)){
 					$type = 'index';
 		}
-		$order = (_CHARSET == 'EUC-JP') ? 'EUC-JP, UTF-8,' : 'UTF-8, EUC-JP,';
-		$query = mb_convert_encoding($query, _CHARSET, $order . ' JIS, SJIS, ASCII');
+//		$order = (_CHARSET == 'EUC-JP') ? 'EUC-JP, UTF-8,' : 'UTF-8, EUC-JP,';
+//		$query = mb_convert_encoding($query, _CHARSET, $order . ' JIS, SJIS, ASCII');
+		switch(strtolower(_CHARSET)){
+			case 'utf-8':
+				$order = 'ASCII, UTF-8, EUC-JP, JIS, SJIS, EUC-CN, ISO-8859-1';
+				break;
+			case 'gb2312':
+				$order = 'ASCII, EUC-CN, EUC-JP, UTF-8, JIS, SJIS, ISO-8859-1';
+				break;
+			case 'shift_jis':
+				// Note that shift_jis is only supported for output.
+				// Using shift_jis in DB is prohibited.
+				$order = 'ASCII, SJIS, EUC-JP, UTF-8, JIS, EUC-CN, ISO-8859-1';
+				break;
+			default:
+				// euc-jp,iso-8859-x,windows-125x
+				$order = 'ASCII, EUC-JP, UTF-8, JIS, SJIS, EUC-CN, ISO-8859-1';
+				break;
+		}
+		$query = mb_convert_encoding($query, _CHARSET, $order);
 		if (is_numeric($blogid)) {
 			$blogid = intVal($blogid);
 		} else {
@@ -1048,6 +1066,11 @@ function selector() {
 		$type = 'index';
 	}
 
+	// any type of skin with catid
+	if ($catid && !$blogid) {
+		$blogid = getBlogIDFromCatID($catid);
+	}
+
 	// decide which blog should be displayed
 	if (!$blogid) {
 		$blogid = $CONF['DefaultBlog'];
@@ -1062,7 +1085,12 @@ function selector() {
 
 	// set catid if necessary
 	if ($catid) {
-		$blog->setSelectedCategory($catid);
+		// check if the category is valid
+		if (!$blog->isValidCategory($catid)) {
+			doError(_ERROR_NOSUCHCATEGORY);
+		} else {
+			$blog->setSelectedCategory($catid);
+		}
 	}
 
 	// decide which skin should be used
@@ -1239,7 +1267,7 @@ function parseFile($filename, $includeMode = 'normal', $includePrefix = '') {
 	PARSER::setProperty('IncludePrefix', $includePrefix);
 
 	if (!file_exists($filename) ) {
-		doError('A file is missing');
+		doError(_GFUNCTIONS_PARSEFILE_FILEMISSING);
 	}
 
 	$fsize = filesize($filename);
@@ -1803,7 +1831,7 @@ function ticketForPlugin(){
 		&& $phppath!=strtolower($plugin_name).'/index.php' ) return;
 
 	/* Exit if not logged in. */
-	if ( !$member->isLoggedIn() ) exit("You aren't logged in.");
+	if ( !$member->isLoggedIn() ) exit(_GFUNCTIONS_YOU_AERNT_LOGGEDIN);
 
 	global $manager,$DIR_LIBS,$DIR_LANG,$HTTP_GET_VARS,$HTTP_POST_VARS;
 
@@ -2044,7 +2072,7 @@ function stringToAttribute ($string) {
 	$string = entity::named_to_numeric($string);
 	$string = entity::normalize_numeric($string);
 
-	if (_CHARSET == 'UTF-8') {
+	if (strtoupper(_CHARSET) == 'UTF-8') {
 		$string = entity::numeric_to_utf8($string);
 	}
 
@@ -2063,7 +2091,7 @@ function stringToXML ($string) {
 	$string = entity::named_to_numeric($string);
 	$string = entity::normalize_numeric($string);
 
-	if (_CHARSET == 'UTF-8') {
+	if (strtoupper(_CHARSET) == 'UTF-8') {
 		$string = entity::numeric_to_utf8($string);
 	}
 

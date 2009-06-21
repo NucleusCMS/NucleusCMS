@@ -303,7 +303,7 @@ class ACTION
 				break;
 		}
 
-		$blogid = getBlogIDFromItemID($itemid);
+//		$blogid = getBlogIDFromItemID($itemid);
 		$blog =& $manager->getBlog($blogid);
 
 		// send email to notification address, if any
@@ -313,10 +313,12 @@ class ACTION
 			if ($CONF['URLMode'] == 'pathinfo') {
 				$itemLink = createItemLink(intval($itemid));
 			} else {
-				$itemLink = $CONF['IndexURL'] . createItemLink(intval($itemid));
+				$itemLink = createItemLink(intval($itemid));
+				if (strpos($itemLink, 'http') === false) {
+					$itemLink = $CONF['IndexURL'] . $itemLink;
+				}
 			}
-//			$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
-			$mailto_msg .= $itemLink;
+			$mailto_msg .= $itemLink . "\n\n";
 			if ($member->isLoggedIn()) {
 				$mailto_msg .= _NOTIFY_MEMBER . ' ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
 			}
@@ -397,7 +399,7 @@ class ACTION
 			echo $manager->getNewTicket();
 		}
 		else {
-			echo 'err:' . _ERROR_BADTICKET;
+			echo _ERROR . ':' . _ERROR_BADTICKET;
 		}
 		return false;
 	}
@@ -418,7 +420,7 @@ class ACTION
 			}
 		}
 		else {
-			echo 'err:' . _ERROR_BADTICKET;
+			echo _ERROR . ':' . _ERROR_BADTICKET;
 		}
 		return false;
 	}

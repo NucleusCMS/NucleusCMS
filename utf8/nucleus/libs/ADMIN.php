@@ -677,7 +677,7 @@ class ADMIN {
 					$error = _BATCH_UNKNOWN . htmlspecialchars($action);
 			}
 
-			echo '<b>',($error ? 'Error: '.$error : _BATCH_SUCCESS),'</b>';
+			echo '<b>',($error ? _ERROR . ': '.$error : _BATCH_SUCCESS),'</b>';
 			echo '</li>';
 		}
 
@@ -4426,6 +4426,7 @@ selector();
 		?>
 
 
+		<div style="width:100%;">
 		<form method="post" action="index.php">
 		<div>
 
@@ -4472,7 +4473,7 @@ selector();
 		echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
 		$query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
 			showlist($query,'table',array('content'=>'shortnames'));
-		echo '</div></form>';
+		echo '</div></form></div>';
 		$this->pagefoot();
 	}
 
@@ -5204,7 +5205,7 @@ selector();
 			   . " SET value='$val'"
 			   . " WHERE name='$name'";
 
-		sql_query($query) or die("Query error: " . mysql_error());
+		sql_query($query) or die(_ADMIN_SQLDIE_QUERYERROR . mysql_error());
 		return mysql_insert_id();
 	}
 
@@ -6037,7 +6038,7 @@ selector();
 		if (($plug->supportsFeature('HelpPage') > 0) && (@file_exists($helpFile))) {
 			@readfile($helpFile);
 		} else {
-			echo '<p>Error: ', _ERROR_PLUGNOHELPFILE,'</p>';
+			echo '<p>' . _ERROR .': ', _ERROR_PLUGNOHELPFILE,'</p>';
 			echo '<p><a href="index.php?action=pluginlist">(',_BACK,')</a></p>';
 		}
 
@@ -6502,6 +6503,7 @@ selector();
 				$iPrevPid = $aOption['pid'];
 
 				echo '<tr><th colspan="2">Options for ', htmlspecialchars($aOption['pfile']),'</th></tr>';
+				echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, htmlspecialchars($aOption['pfile']. ENT_QUOTES)).'</th></tr>';
 			}
 
 			$meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);

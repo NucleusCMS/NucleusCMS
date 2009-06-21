@@ -182,7 +182,7 @@
 </div>
 
 
-<div class="page"><a name="autosave"></a>
+<div class="page"><a name="autosave" id="autosave"><span class="invisible">autosave</span></a>
 <h1>自動保存</h1>
 <p>最後に変更を加えてから10分後に、自動的に<a href="#draft">ドラフト</a>として保存する機能です。投稿、または編集途中に他の用事が出来て、記事を保存するのを忘れてしまった時などに、不用意に編集内容を失わずにすみます。</p>
 <p>もし、10分待たずに下書きを保存したくなったら、フォームの下の方にある｢<em>ドラフト保存</em>｣ボタンをクリックします。</p>
@@ -721,7 +721,7 @@ Nucleusのサイト全体を閉鎖することが可能です。なんらかの�
     <td>ブログのURL（Nucleusコアによって与えられた引数から生成されるもの）<code>&lt;a href="&lt;%bloglink%&gt;"&gt;</code>のように使用します。</td>
 </tr><tr>
 	<td>blogurl</td>
-	<td>ブログのURL（「Blog設定」の「URL」で設定されているもの）<code>&lt;a href="&lt;%bloglink%&gt;"&gt;</code>のように使用します。</td>
+	<td>ブログのURL（「Blog設定」の「URL」で設定されているもの）<code>&lt;a href="&lt;%blogurl%&gt;"&gt;</code>のように使用します。</td>
 </tr><tr>
     <td>blogdesc</td>
     <td>ブログの説明</td>
@@ -2156,7 +2156,7 @@ Nucleusで管理しているブログのリストを、指定されたテンプ�
             </tr>
             <tr>
                 <td><strong><em>limit</em></strong></td>
-                <td>表示するリンク数の制限（例えば、過去3ヶ月分へのリンクしか表示させたくないときなど）</td>
+                <td>表示するリンク数の制限（例えば、過去3日分へのリンクしか表示させたくないときなど）</td>
             </tr>
         </table>
     </li>
@@ -3655,7 +3655,7 @@ $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE
 <h1>スキン/テンプレート変数：parsedinclude</h1>
 
 <p>
-Webページ出力時に、指定されたファイルを取り込んで挿入します。このファイルのは、取り込み時にNucleusのスキン/テンプレートによる構文解析にかけられるので、スキン/テンプレート変数が使用できます。同じような変数に、取り込んだファイルのPHPを実行する<a href="#skinvar-phpinclude">phpinclude</a>や、ファイルの中身をそのまま表示する<a href="#skinvar-include">include</a>があります。
+Webページ出力時に、指定されたスペシャルスキンもしくはファイルを取り込んで挿入します。スペシャルスキンが優先されます。このファイルのは、取り込み時にNucleusのスキン/テンプレートによる構文解析にかけられるので、スキン/テンプレート変数が使用できます。同じような変数に、取り込んだファイルのPHPを実行する<a href="#skinvar-phpinclude">phpinclude</a>や、ファイルの中身をそのまま表示する<a href="#skinvar-include">include</a>があります。
 </p>
 
 <h2>引数</h2>
@@ -3668,7 +3668,7 @@ Webページ出力時に、指定されたファイルを取り込んで挿入�
             </tr>
             <tr>
                 <td><strong>filename</strong></td>
-                <td>取り込むファイルの名前（index.phpからの相対位置でも絶対位置でもかまいません。URLを指定することもできます）</td>
+                <td>取り込むスペシャルスキンもしくはファイルの名前（index.phpからの相対位置でも絶対位置でもかまいません。URLを指定することもできます）</td>
             </tr>
         </table>
     </li>
@@ -3678,7 +3678,7 @@ Webページ出力時に、指定されたファイルを取り込んで挿入�
 <h2>注意</h2>
 <ul>
     <li>この変数は<a href="#parser-properties">パーサー設定の<code>IncludeMode</code> と<code>IncludePrefix</code></a>に影響を受けます。</li>
-    <li>インクルードしたファイルの中からでも、再び<code>&lt;%parsedinclude (filename)%&gt;</code>を呼び出すことができますが、無限ループを避けるために最大で3段階までとなります。</li>
+    <li>インクルードしたパーツの中からでも、再び<code>&lt;%parsedinclude (filename)%&gt;</code>を呼び出すことができますが、無限ループを避けるために最大で3段階までとなります。</li>
 </ul>
 
 
@@ -3691,6 +3691,7 @@ Webページ出力時に、指定されたファイルを取り込んで挿入�
 <h2>例</h2>
 
 <pre>
+&lt;%parsedinclude(specialskinname)%&gt;
 &lt;%parsedinclude(filename.txt)%&gt;
 &lt;%parsedinclude(/home/user/myself/filename.txt)%&gt;
 </pre>
@@ -4497,7 +4498,7 @@ Webページ出力時に、指定されたファイルを取り込んで挿入�
     <td>editlink用のウィンドウをポップアップするjavascriptコード</td>
 </tr><tr>
     <td><a href="#skinvar-skinfile">skinfile</a></td>
-    <td>使用中のスキンのあるディレクトリに存在するファイルへのを使う時に使用</td>
+    <td>インポートされたスキンに属しているファイルへの正確なURLを挿入</td>
 </tr><tr>
     <td><a href="#skinvar-set">set</a></td>
     <td><a href="#parser-properties">パーサーのプロパティ</a>を設定</td>
@@ -4512,7 +4513,7 @@ Webページ出力時に、指定されたファイルを取り込んで挿入�
     <td>メディア・ディレクトリの他のメディア・オブジェクト</td>
 </tr><tr>
     <td>relevance</td>
-    <td>検索結果を表示するテンプレートに'search hit relevance'をインクルードする（2.5より）</td>
+    <td>検索結果を表示するテンプレートに「検索関連度」を挿入する（2.5より）</td>
 </tr></table>
 
 <p><a href="#templatevars-overview">テンプレート変数の概略...</a></p>
@@ -4629,7 +4630,7 @@ Webページ出力時に、指定されたファイルを取り込んで挿入�
     <td>プラグインを実行</td>
 </tr><tr>
     <td><a href="#skinvar-skinfile">skinfile</a></td>
-    <td>使用中のスキンのあるディレクトリに存在するファイルへのを使う時に使用</td>
+    <td>インポートされたスキンに属しているファイルへの正確なURLを挿入</td>
 </tr><tr>
     <td><a href="#skinvar-set">set</a></td>
     <td><a href="#parser-properties">パーサーのプロパティ</a>を設定</td>
@@ -4985,7 +4986,7 @@ HTMLタグを取り除き、指定された長さにまで縮めたアイテム�
 <h1>テンプレート変数：syndicate_description</h1>
 
 <p>
-HTMLタグを取り除き、指定された幅にまで縮めたアイテムのタイトルを挿入します（指定が無い時は250）。テキストが縮められた場合は、末尾に"..."が追加される。
+HTMLタグを取り除き、指定された幅にまで縮めたアイテムの本文を挿入します（指定が無い時は250）。テキストが縮められた場合は、末尾に"..."が追加される。
 </p>
 
 <p>
@@ -5226,7 +5227,7 @@ Nucleusでは機能を追加するために、プラグインをインストー�
 <ol>
     <li>スキン変数のように振舞う</li>
     <li>テンプレート変数のように振舞う</li>
-    <li>Nucleusによって生成されたイベントのフック。「プラグインの管理」画面での「上へ」と「下へ」リンクは、イベント発生時にプラグインを呼び出す順番を決定するために用いられます。最初のプラグインは最初に呼び出され、最後のプラグインは最後に呼び出されます。</li>
+    <li>Nucleusによって生成されたイベントのフック。「プラグインの管理」画面での「&uarr; ひとつ上へ」と「&darr; ひとつ下へ」リンクは、イベント発生時にプラグインを呼び出す順番を決定するために用いられます。最初のプラグインは最初に呼び出され、最後のプラグインは最後に呼び出されます。</li>
     <li><code>action.php</code>を通して呼び出されたときにアクタのように振舞う</li>
 </ol>
 <p>
