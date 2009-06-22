@@ -40,7 +40,7 @@ class TEMPLATE {
 			   . ' FROM '.sql_table('template_desc')
 			   . ' WHERE tdname="'.addslashes($name).'"';
 		$res = sql_query($query);
-		$obj = mysql_fetch_object($res);
+		$obj = sql_fetch_object($res);
 		return $obj->tdnumber;
 	}
 
@@ -95,7 +95,7 @@ class TEMPLATE {
 		);
 
 		sql_query('INSERT INTO '.sql_table('template_desc')." (tdname, tddesc) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "')");
-		$newId = mysql_insert_id();
+		$newId = sql_insert_id();
 
 		$manager->notify(
 			'PostAddTemplate',
@@ -130,7 +130,7 @@ class TEMPLATE {
 			   . ' FROM '.sql_table('template_desc').', '.sql_table('template')
 			   . ' WHERE tdesc=tdnumber and tdname="' . addslashes($name) . '"';
 		$res = sql_query($query);
-		while ($obj = mysql_fetch_object($res))
+		while ($obj = sql_fetch_object($res))
 			$template[$obj->tpartname] = $obj->tcontent;
 
 		// set locale according to template:
@@ -168,14 +168,14 @@ class TEMPLATE {
 	// (static)
 	function exists($name) {
 		$r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdname="'.addslashes($name).'"');
-		return (mysql_num_rows($r) != 0);
+		return (sql_num_rows($r) != 0);
 	}
 
 	// returns true if there is a template with the given ID
 	// (static)
 	function existsID($id) {
 		$r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdnumber='.intval($id));
-		return (mysql_num_rows($r) != 0);
+		return (sql_num_rows($r) != 0);
 	}
 
 	// (static)
@@ -187,7 +187,7 @@ class TEMPLATE {
 	function getDesc($id) {
 		$query = 'SELECT tddesc FROM '.sql_table('template_desc').' WHERE tdnumber='. intval($id);
 		$res = sql_query($query);
-		$obj = mysql_fetch_object($res);
+		$obj = sql_fetch_object($res);
 		return $obj->tddesc;
 	}
 

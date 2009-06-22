@@ -153,14 +153,14 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 			$ip = $_SERVER['REMOTE_ADDR'];
 			//sql_table('plug_securityenforcer')
 			$lres = sql_query("SELECT * FROM ".sql_table('plug_securityenforcer')." WHERE login='".addslashes($login)."'");
-			if (mysql_num_rows($lres)) {
+			if (sql_num_rows($lres)) {
 				sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login='".addslashes($login)."'");
 			}
 			else {
 				sql_query("INSERT INTO ".sql_table('plug_securityenforcer')." (login,fails,lastfail) VALUES ('".addslashes($login)."',1,".time().")");
 			}
 			$lres = sql_query("SELECT * FROM ".sql_table('plug_securityenforcer')." WHERE login='".addslashes($ip)."'");
-			if (mysql_num_rows($lres)) {
+			if (sql_num_rows($lres)) {
 				sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login='".addslashes($ip)."'");
 			}
 			else {

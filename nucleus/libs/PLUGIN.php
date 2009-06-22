@@ -168,7 +168,7 @@
 					 sql_table('plugin_option_desc').' d '.
 					 'WHERE d.opid='. intval($this->getID()).' AND d.oid=o.oid'
 				);
-				while ($row = mysql_fetch_object($query))
+				while ($row = sql_fetch_object($query))
 					$this->plugin_options[strtolower($row->name)] = $row->value;
 		  }
 		  if (isset($this->plugin_options[strtolower($name)]))
@@ -316,7 +316,7 @@
 			$q = 'SELECT otype, oextra FROM '.sql_table('plugin_option_desc').' WHERE oid = '.$oid;
 			$query = sql_query($q);
 
-			$o = mysql_fetch_array($query);
+			$o = sql_fetch_array($query);
 
 			if (($this->optionCanBeNumeric($o['otype'])) && ($o['oextra'] == 'number' )) {
 				$orderby = 'CAST(ovalue AS SIGNED)';
@@ -329,7 +329,7 @@
 			// create the array
 			$i = 0;
 			$top = array();
-			while($row = mysql_fetch_array($query)) {
+			while($row = sql_fetch_array($query)) {
 				$top[$i++] = $row;
 			}
 
@@ -354,7 +354,7 @@
 							 .', \''.addslashes($defValue).'\''
 							 .', \''.addslashes($typeExtras).'\')';
 			sql_query($query);
-			$oid = mysql_insert_id();
+			$oid = sql_insert_id();
 
 			$key = $context . '_' . $name;
 			$this->_aOptionToInfo[$key] = array('oid' => $oid, 'default' => $defValue);
@@ -446,7 +446,7 @@
 			// get from DB
 			$res = sql_query('SELECT ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid).' and ocontextid=' . intval($contextid));
 
-			if (!$res || (mysql_num_rows($res) == 0)) {
+			if (!$res || (sql_num_rows($res) == 0)) {
 				$defVal = $this->_getDefVal($context, $name);
 				$this->_aOptionValues[$key] = $defVal;
 
@@ -456,7 +456,7 @@
 				sql_query($query);
 			}
 			else {
-				$o = mysql_fetch_object($res);
+				$o = sql_fetch_object($res);
 				$this->_aOptionValues[$key] = $o->ovalue;
 			}
 
@@ -490,12 +490,12 @@
 					break;
 			}
 			if ($r) {
-				while ($o = mysql_fetch_object($r))
+				while ($o = sql_fetch_object($r))
 					$aOptions[$o->contextid] = $defVal;
 			}
 
 			$res = sql_query('SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid);
-			while ($o = mysql_fetch_object($res))
+			while ($o = sql_fetch_object($res))
 				$aOptions[$o->ocontextid] = $o->ovalue;
 
 			return $aOptions;
@@ -515,11 +515,11 @@
 			$this->_aOptionToInfo = array();
 			$query = 'SELECT oid, oname, ocontext, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE opid=' . intval($this->plugid);
 			$res = sql_query($query);
-			while ($o = mysql_fetch_object($res)) {
+			while ($o = sql_fetch_object($res)) {
 				$k = $o->ocontext . '_' . $o->oname;
 				$this->_aOptionToInfo[$k] = array('oid' => $o->oid, 'default' => $o->odef);
 			}
-			mysql_free_result($res);
+			sql_free_result($res);
 
 			return $this->_aOptionToInfo[$key]['oid'];
 		}
@@ -542,9 +542,9 @@
 				// find ids
 			$query = 'SELECT oid FROM '.sql_table('plugin_option_desc') . ' WHERE ocontext=\''.addslashes($context).'\'';
 			$res = sql_query($query);
-			while ($o = mysql_fetch_object($res))
+			while ($o = sql_fetch_object($res))
 				array_push($aOIDs, $o->oid);
-			mysql_free_result($res);
+			sql_free_result($res);
 				// delete those options. go go go
 			if (count($aOIDs) > 0) {
 				$query = 'DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).') and ocontextid=' . intval($contextid);
@@ -594,7 +594,7 @@
 		function subscribtionListIsUptodate() {
 			$res = sql_query('SELECT event FROM '.sql_table('plugin_event').' WHERE pid = '.$this->getID());
 			$ev = array();
-			while($a = mysql_fetch_array($res)) {
+			while($a = sql_fetch_array($res)) {
 				array_push($ev, $a['event']);
 			}
 			if (count($ev) != count($this->getEventList())) {
@@ -625,7 +625,7 @@
 				// get option type info
 				$query = 'SELECT opid, oname, ocontext, otype, oextra, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . intval($oid);
 				$res = sql_query($query);
-				if ($o = mysql_fetch_object($res))
+				if ($o = sql_fetch_object($res))
 				{
 					foreach ($values as $key => $value) {
 						// avoid overriding the key used by foreach statement

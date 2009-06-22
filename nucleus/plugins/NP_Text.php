@@ -122,8 +122,8 @@ class NP_Text extends NucleusPlugin {
 	function skin_incmodepref() {
 		global $currentSkinName;
 		$sql = "SELECT * FROM ".sql_table("skin_desc")." WHERE sdname = '".$currentSkinName."'";
-		$result = mysql_query($sql);
-		$row = mysql_fetch_array($result, MYSQL_ASSOC);
+		$result = sql_query($sql);
+		$row = sql_fetch_array($result, MYSQL_ASSOC);
 		return array($row['sdincmode'], $row['sdincpref']);
 	}
 	

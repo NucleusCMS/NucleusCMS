@@ -287,7 +287,7 @@
 			   ." LIMIT $amount";
 		$r = sql_query($query);
 
-		while ($row = mysql_fetch_assoc($r)) {
+		while ($row = sql_fetch_assoc($r)) {
 
 			// remove linebreaks if needed
 			if ($blog->convertBreaks()) {
@@ -402,7 +402,7 @@
 				. " ORDER BY cname";
 		$r = sql_query($query);
 
-		while ($obj = mysql_fetch_object($r)) {
+		while ($obj = sql_fetch_object($r)) {
 
 			$categorystruct[$obj->cname] = new xmlrpcval(
 				array(

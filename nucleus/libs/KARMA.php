@@ -87,7 +87,7 @@ class KARMA {
 	function readFromDatabase() {
 		$query = 'SELECT ikarmapos, ikarmaneg FROM '.sql_table('item').' WHERE inumber=' . $this->itemid;
 		$res = sql_query($query);
-		$obj = mysql_fetch_object($res);
+		$obj = sql_fetch_object($res);
 
 		$this->karmapos = $obj->ikarmapos;
 		$this->karmaneg = $obj->ikarmaneg;
@@ -104,7 +104,7 @@ class KARMA {
 	function isVoteAllowed($ip) {
 		$query = 'SELECT * FROM '.sql_table('karma')." WHERE itemid=$this->itemid and ip='".addslashes($ip)."'";
 		$res = sql_query($query);
-		return (mysql_num_rows($res) == 0);
+		return (sql_num_rows($res) == 0);
 	}
 
 	// save IP in database so no multiple votes are possible
