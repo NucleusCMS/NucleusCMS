@@ -637,6 +637,8 @@ class MEMBER {
 		$canlogin = intval($canlogin);
 		$notes = addslashes($notes);
 
+		if (($admin) && !($canlogin)) {return _ERROR;}
+
 		$query = 'INSERT INTO '.sql_table('member')." (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
 			   . "VALUES ('$name','$realname','$password','$email','$url',$admin, $canlogin, '$notes')";
 		sql_query($query);

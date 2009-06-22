@@ -6502,7 +6502,6 @@ selector();
 			if ($iPrevPid != $aOption['pid']) {
 				$iPrevPid = $aOption['pid'];
 
-				echo '<tr><th colspan="2">Options for ', htmlspecialchars($aOption['pfile']),'</th></tr>';
 				echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, htmlspecialchars($aOption['pfile']. ENT_QUOTES)).'</th></tr>';
 			}
 

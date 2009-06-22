@@ -91,6 +91,7 @@ class BaseActions {
 			$contents = fread ($fd, $fsize);
 			fclose ($fd);
 		}
+		$this->level = $this->level + 1;
 /*		$parts = explode('|', $filename, 2);
 		if ($skin->getContent($parts[0])) {
 			$contents = $skin->getContent($parts[0]);

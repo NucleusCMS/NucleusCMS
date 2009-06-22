@@ -310,13 +310,10 @@ class ACTION
 		if ($blog->getNotifyAddress() && $blog->notifyOnVote()) {
 
 			$mailto_msg = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
-			if ($CONF['URLMode'] == 'pathinfo') {
-				$itemLink = createItemLink(intval($itemid));
-			} else {
-				$itemLink = createItemLink(intval($itemid));
-				if (strpos($itemLink, 'http') === false) {
-					$itemLink = $CONF['IndexURL'] . $itemLink;
-				}
+			$itemLink = createItemLink(intval($itemid));
+			$temp = parse_url($itemLink);
+			if (!$temp['scheme']) {
+				$itemLink = $CONF['IndexURL'] . $itemLink;
 			}
 			$mailto_msg .= $itemLink . "\n\n";
 			if ($member->isLoggedIn()) {
