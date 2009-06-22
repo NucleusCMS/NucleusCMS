@@ -352,7 +352,7 @@
 				. " ORDER BY cname";
 		$r = sql_query($query);
 
-		while ($obj = mysql_fetch_object($r)) {
+		while ($obj = sql_fetch_object($r)) {
 
 			$categorystruct[] = new xmlrpcval(
 				array(
@@ -401,7 +401,7 @@
 			   ." LIMIT $iAmount";
 		$r = sql_query($query);
 
-		while ($row = mysql_fetch_assoc($r)) {
+		while ($row = sql_fetch_assoc($r)) {
 
 			$newstruct = new xmlrpcval(array(
 				"dateCreated" => new xmlrpcval(iso8601_encode(strtotime($row['itime'])),"dateTime.iso8601"),

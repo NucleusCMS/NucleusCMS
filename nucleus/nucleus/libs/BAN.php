@@ -29,7 +29,7 @@ class BAN {
 		$blogid = intval($blogid);
 		$query = 'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid;
 		$res = sql_query($query);
-		while ($obj = mysql_fetch_object($res)) {
+		while ($obj = sql_fetch_object($res)) {
 			$found = strpos ($ip, $obj->iprange);
 			if (!($found === false))
 				// found a match!
@@ -84,7 +84,7 @@ class BAN {
 		$query = 'DELETE FROM '.sql_table('ban')." WHERE blogid=$blogid and iprange='" .addslashes($iprange). "'";
 		sql_query($query);
 
-		$result = (mysql_affected_rows() > 0);
+		$result = (sql_affected_rows() > 0);
 
 		$manager->notify('PostDeleteBan', array('blogid' => $blogid, 'range' => $iprange));
 

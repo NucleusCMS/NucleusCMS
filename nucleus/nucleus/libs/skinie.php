@@ -528,7 +528,7 @@ class SKINEXPORT {
 			echo "\t\t", '<description>',htmlspecialchars($skinObj->getDescription()),'</description>',"\n";
 
 			$res = sql_query('SELECT stype, scontent FROM '.sql_table('skin').' WHERE sdesc='.$skinId);
-			while ($partObj = mysql_fetch_object($res)) {
+			while ($partObj = sql_fetch_object($res)) {
 				echo "\t\t",'<part name="',htmlspecialchars($partObj->stype),'">';
 				echo '<![CDATA[', $this->escapeCDATA($partObj->scontent),']]>';
 				echo "</part>\n\n";
@@ -546,7 +546,7 @@ class SKINEXPORT {
 			echo "\t\t",'<description>',htmlspecialchars(TEMPLATE::getDesc($templateId)),'</description>',"\n";
 
 			$res = sql_query('SELECT tpartname, tcontent FROM '.sql_table('template').' WHERE tdesc='.$templateId);
-			while ($partObj = mysql_fetch_object($res)) {
+			while ($partObj = sql_fetch_object($res)) {
 				echo "\t\t",'<part name="',htmlspecialchars($partObj->tpartname),'">';
 				echo '<![CDATA[', $this->escapeCDATA($partObj->tcontent) ,']]>';
 				echo '</part>',"\n\n";

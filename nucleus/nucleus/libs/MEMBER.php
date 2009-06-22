@@ -130,7 +130,7 @@ class MEMBER {
 		$query =  'SELECT * FROM '.sql_table('member') . ' WHERE ' . $where;
 
 		$res = sql_query($query);
-		$obj = mysql_fetch_object($res);
+		$obj = sql_fetch_object($res);
 
 		$this->setRealName($obj->mrealname);
 		$this->setEmail($obj->memail);
@@ -145,7 +145,7 @@ class MEMBER {
 		$this->setLanguage($obj->deflang);
 		$this->setAutosave($obj->mautosave);
 
-		return mysql_num_rows($res);
+		return sql_num_rows($res);
 	}
 
 
@@ -158,10 +158,10 @@ class MEMBER {
 			   . ' tblog=' . intval($blogid)
 			   . ' and tmember='. $this->getID();
 		$res = sql_query($query);
-		if (mysql_num_rows($res) == 0)
+		if (sql_num_rows($res) == 0)
 			return 0;
 		else
-			return (mysql_result($res,0,0) == 1) ;
+			return (sql_result($res,0,0) == 1) ;
 	}
 
 	function blogAdminRights($blogid) {
@@ -181,7 +181,7 @@ class MEMBER {
 			   . ' tblog=' . intval($blogid)
 			   . ' and tmember='. $this->getID();
 		$res = sql_query($query);
-		return (mysql_num_rows($res) != 0);
+		return (sql_num_rows($res) != 0);
 	}
 
 	function canAddItem($catid) {
@@ -223,7 +223,7 @@ class MEMBER {
 			   . ' FROM '.sql_table('comment') .', '.sql_table('item').', '.sql_table('blog')
 			   . ' WHERE citem=inumber and iblog=bnumber and cnumber=' . intval($commentid);
 		$res = sql_query($query);
-		$obj = mysql_fetch_object($res);
+		$obj = sql_fetch_object($res);
 
 		return ($obj->cauthor == $this->getID()) or $this->isBlogAdmin($obj->blogid) or ($obj->iauthor == $this->getID());
 	}
@@ -239,7 +239,7 @@ class MEMBER {
 
 		$query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
 		$res = sql_query($query);
-		$obj = mysql_fetch_object($res);
+		$obj = sql_fetch_object($res);
 		return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
 	}
 
@@ -249,7 +249,7 @@ class MEMBER {
 	  */
 	function canBeDeleted() {
 		$res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
-		return (mysql_num_rows($res) == 0);
+		return (sql_num_rows($res) == 0);
 	}
 
 	/**
@@ -391,8 +391,8 @@ class MEMBER {
 			$query = 'SELECT tblog as blogid from '.sql_table('team').' where tadmin=1 and tmember=' . $this->getID();
 
 		$res = sql_query($query);
-		if (mysql_num_rows($res) > 0) {
-			while ($obj = mysql_fetch_object($res)) {
+		if (sql_num_rows($res) > 0) {
+			while ($obj = sql_fetch_object($res)) {
 				array_push($blogs, $obj->blogid);
 			}
 		}
@@ -413,8 +413,8 @@ class MEMBER {
 			$query = 'SELECT tblog as blogid from '.sql_table('team').' where tmember=' . $this->getID();
 
 		$res = sql_query($query);
-		if (mysql_num_rows($res) > 0) {
-			while ($obj = mysql_fetch_object($res)) {
+		if (sql_num_rows($res) > 0) {
+			while ($obj = sql_fetch_object($res)) {
 				array_push($blogs, $obj->blogid);
 			}
 		}
@@ -575,7 +575,7 @@ class MEMBER {
 	 */	 	
 	function exists($name) {
 		$r = sql_query('select * FROM '.sql_table('member')." WHERE mname='".addslashes($name)."'");
-		return (mysql_num_rows($r) != 0);
+		return (sql_num_rows($r) != 0);
 	}
 
 	/**
@@ -585,7 +585,7 @@ class MEMBER {
 	 */	 	 	
 	function existsID($id) {
 		$r = sql_query('select * FROM '.sql_table('member')." WHERE mnumber='".intval($id)."'");
-		return (mysql_num_rows($r) != 0);
+		return (sql_num_rows($r) != 0);
 	}
 
 	/**
@@ -655,10 +655,10 @@ class MEMBER {
 		$query = 'SELECT * FROM ' . sql_table('activation') . ' WHERE vkey=\'' . addslashes($key). '\'';
 		$res = sql_query($query);
 
-		if (!$res || (mysql_num_rows($res) == 0))
+		if (!$res || (sql_num_rows($res) == 0))
 			return 0;
 		else
-			return mysql_fetch_object($res);
+			return sql_fetch_object($res);
 	}
 
 	/**
@@ -771,7 +771,7 @@ class MEMBER {
 		// 1. walk over all entries, and see if special actions need to be performed
 		$res = sql_query('SELECT * FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
 
-		while ($o = mysql_fetch_object($res))
+		while ($o = sql_fetch_object($res))
 		{
 			switch ($o->vtype)
 			{

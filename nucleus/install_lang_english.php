@@ -139,7 +139,7 @@ define('_TEXT15_L2',	'<b>install.php</b>: this file');
 define('_TEXT16',	'<p>If you don\\\'t delete these files, you won\\\'t be able to open the admin area</p>');
 
 define('_HEADER11',	'Visit your web site');
-define('_TEXT16',	'Your web site is now ready to use.');
+define('_TEXT16_H',	'Your web site is now ready to use.');
 define('_TEXT16_L1',	'Login to the admin area to configure your site');
 define('_TEXT16_L2',	'Visit your site now');
 

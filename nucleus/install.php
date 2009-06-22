@@ -69,9 +69,17 @@ if (phpversion() >= '4.1.0') {
 	include_once('nucleus/libs/vars4.0.6.php');
 }
 
-include_once('nucleus/libs/mysql.php');
+// include core classes that are needed for login & plugin handling
+// added for 3.5 sql_* wrapper
+global $MYSQL_HANDLER;
+if (!isset($MYSQL_HANDLER))
+	$MYSQL_HANDLER = array('mysql','');
+include_once(str_replace("install.php","",__FILE__).'nucleus/libs/sql/'.$MYSQL_HANDLER[0].'.php');
+// end new for 3.5 sql_* wrapper
+include_once(str_replace("install.php","",__FILE__).'/nucleus/libs/mysql.php');
 
 // check if mysql support is installed
+// this check may not make sense, as is, in a version past 3.5x
 	if (!function_exists('mysql_query') ) {
 		_doError(_ERROR1);
 	}
@@ -141,16 +149,16 @@ function showInstallForm() {
 
 <?php
 	// note: this piece of code is taken from phpMyAdmin
-	$result = @mysql_query('SELECT VERSION() AS version');
+	$result = @sql_query('SELECT VERSION() AS version');
 
-	if ($result != FALSE && mysql_num_rows($result) > 0) {
-		$row = mysql_fetch_array($result);
+	if ($result != FALSE && sql_num_rows($result) > 0) {
+		$row = sql_fetch_array($result);
 		$match = explode('.', $row['version']);
 	} else {
-		$result = @mysql_query('SHOW VARIABLES LIKE \'version\'');
+		$result = @sql_query('SHOW VARIABLES LIKE \'version\'');
 
-		if ($result != FALSE && @mysql_num_rows($result) > 0) {
-			$row = mysql_fetch_row($result);
+		if ($result != FALSE && @sql_num_rows($result) > 0) {
+			$row = sql_fetch_row($result);
 			$match = explode('.', $row[1]);
 		} else {
 			$output = shell_exec('mysql -V');
@@ -527,20 +535,22 @@ function doInstall() {
 	}
 
 	// 2. try to log in to mySQL
+
 	global $MYSQL_CONN;
-	$MYSQL_CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password);
+	// this will need to be changed if we ever allow
+	$MYSQL_CONN = @sql_connect_args($mysql_host, $mysql_user, $mysql_password);
 
 	if ($MYSQL_CONN == false) {
-		_doError(_ERROR15 . ': ' . mysql_error() );
+		_doError(_ERROR15 . ': ' . sql_error() );
 	}
 
 	// 3. try to create database (if needed)
 	if ($mysql_create == 1) {
-		mysql_query('CREATE DATABASE ' . $mysql_database) or _doError(_ERROR16 . ': ' . mysql_error() );
+		sql_query('CREATE DATABASE ' . $mysql_database) or _doError(_ERROR16 . ': ' . sql_error() );
 	}
 
 	// 4. try to select database
-	mysql_select_db($mysql_database) or _doError(_ERROR17);
+	sql_select_db($mysql_database) or _doError(_ERROR17);
 
 	// 5. execute queries
 	$filename = 'install.sql';
@@ -610,13 +620,13 @@ function doInstall() {
 					$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
 			}
 
-			mysql_query($query) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query) . '</small>): ' . mysql_error() );
+			sql_query($query) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query) . '</small>): ' . sql_error() );
 		}
 	}
 
 	// 5a make first post
 	$newpost = "INSERT INTO ". tableName('nucleus_item') ." VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
-	mysql_query($newpost) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . mysql_error() );
+	sql_query($newpost) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . sql_error() );
 
 	// 6. update global settings
 	updateConfig('IndexURL', $config_indexurl);
@@ -638,7 +648,7 @@ function doInstall() {
 			. " madmin=1, mcanlogin=1"
 			. " WHERE mnumber=1";
 
-	mysql_query($query) or _doError(_ERROR19 . ': ' . mysql_error() );
+	sql_query($query) or _doError(_ERROR19 . ': ' . sql_error() );
 
 	// 8. update weblog settings
 	$query = 'UPDATE ' . tableName('nucleus_blog')
@@ -647,14 +657,14 @@ function doInstall() {
 			. " burl='" . addslashes($config_indexurl) . "'"
 			. " WHERE bnumber=1";
 
-	mysql_query($query) or _doError(_ERROR20 . ': ' . mysql_error() );
+	sql_query($query) or _doError(_ERROR20 . ': ' . sql_error() );
 
 	// 9. update item date
 	$query = 'UPDATE ' . tableName('nucleus_item')
 			. " SET itime='" . date('Y-m-d H:i:s', time() ) ."'"
 			. " WHERE inumber=1";
 
-	mysql_query($query) or _doError(_ERROR21 . ': ' . mysql_error() );
+	sql_query($query) or _doError(_ERROR21 . ': ' . sql_error() );
 
 	global $aConfPlugsToInstall, $aConfSkinsToImport;
 	$aSkinErrors = array();
@@ -680,7 +690,7 @@ function doInstall() {
 		$DIR_LIBS = $DIR_NUCLEUS . 'libs/';
 
 		// close database connection (needs to be closed if we want to include globalfunctions.php)
-		mysql_close();
+		sql_close();
 
 		$manager = '';
 		include_once($DIR_LIBS . 'globalfunctions.php');
@@ -710,6 +720,10 @@ function doInstall() {
 		$config_data .= "	\$MYSQL_PASSWORD = '" . $mysql_password . "';\n";
 		$config_data .= "	\$MYSQL_DATABASE = '" . $mysql_database . "';\n";
 		$config_data .= "	\$MYSQL_PREFIX = '" . (($mysql_usePrefix == 1)?$mysql_prefix:'') . "';\n";
+		$config_data .= "	// new in 3.50. first element is db handler, the second is the db driver used by the handler\n";
+		$config_data .= "	// default is \$MYSQL_HANDLER = array('mysql','mysql');\n";
+		$config_data .= "	\$MYSQL_HANDLER = array('mysql','mysql');\n";
+		$config_data .= "	//\$MYSQL_HANDLER = array('pdo','mysql');\n";
 		$config_data .= "\n";
 		$config_data .= "	// main nucleus directory\n";
 		$config_data .= "	\$DIR_NUCLEUS = '" . $config_adminpath . "';\n";
@@ -824,7 +838,7 @@ function doInstall() {
 
 	<h1><?php echo _HEADER11; ?></h1>
 
-	<p><?php echo _TEXT16; ?>
+	<p><?php echo _TEXT16_H; ?>
 		<ul>
 			<li><a href="<?php echo $config_adminurl?>"><?php echo _TEXT16_L1; ?></a></li>
 			<li><a href="<?php echo $config_indexurl?>"><?php echo _TEXT16_L2; ?></a></li>
@@ -847,7 +861,7 @@ function installCustomPlugs(&$manager) {
 	}
 
 	$res = sql_query('SELECT * FROM ' . sql_table('plugin') );
-	$numCurrent = mysql_num_rows($res);
+	$numCurrent = sql_num_rows($res);
 
 	foreach ($aConfPlugsToInstall as $plugName) {
 		// do this before calling getPlugin (in case the plugin id is used there)
@@ -875,7 +889,7 @@ function installCustomPlugs(&$manager) {
 	// loop over all installed plugins
 	$res = sql_query('SELECT pid, pfile FROM ' . sql_table('plugin') );
 
-	while($o = mysql_fetch_object($res) ) {
+	while($o = sql_fetch_object($res) ) {
 		$pid = $o->pid;
 		$plug =& $manager->getPlugin($o->pfile);
 
@@ -981,8 +995,8 @@ function updateConfig($name, $val) {
 			. " SET value='$val'"
 			. " WHERE name='$name'";
 
-	mysql_query($query) or _doError(_ERROR26 . ': ' . mysql_error() );
-	return mysql_insert_id();
+	sql_query($query) or _doError(_ERROR26 . ': ' . sql_error() );
+	return sql_insert_id();
 }
 
 function replaceDoubleBackslash($input) {
