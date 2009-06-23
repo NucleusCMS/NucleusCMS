@@ -180,7 +180,7 @@ function _getUsersBlogs($username, $password) {
 			. " ORDER BY bname";
 	$r = sql_query($query);
 
-	while ($obj = mysql_fetch_object($r)) {
+	while ($obj = sql_fetch_object($r)) {
 		if ($obj->burl)
 			$blogurl = $obj->burl;
 		else

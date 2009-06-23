@@ -27,6 +27,10 @@ $MYSQL_USER     = 'username';
 $MYSQL_PASSWORD = 'password';
 $MYSQL_DATABASE = 'databasename';
 $MYSQL_PREFIX   = '';
+// new in 3.50. first element is db handler, the second is the db driver used by the handler
+// default is $MYSQL_HANDLER = array('mysql','mysql');
+$MYSQL_HANDLER = array('mysql','mysql');
+//$MYSQL_HANDLER = array('pdo','mysql');
 
 // main nucleus directory
 $DIR_NUCLEUS = '/your/path/to/nucleus/';

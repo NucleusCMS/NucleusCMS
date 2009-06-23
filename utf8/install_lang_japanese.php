@@ -150,7 +150,7 @@ define('_TEXT15_L3',			'<b>install_lang_japanese.php</b>：インストーラの
 define('_TEXT15_EX',			'<p>もしこれらのファイルを削除していなければ、管理領域を開くことが出来ません。</p>');
 
 define('_HEADER11',				'ウェブサイトの確認');
-define('_TEXT16',				'ウェブサイトを使う準備が整いました。');
+define('_TEXT16_H',				'ウェブサイトを使う準備が整いました。');
 define('_TEXT16_L1',			'管理領域にログインしてサイトの設定を行う');
 define('_TEXT16_L2',			'すぐにサイトへ行ってみる');
 

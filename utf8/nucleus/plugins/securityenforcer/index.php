@@ -64,8 +64,8 @@ Admin area for NP_SecurityEnforcer
 	echo '<tr><td colspan="2" class="submit"><input type="submit" value="'._SECURITYENFORCER_UNLOCK.'" /></td></tr>';
 	// do query to get all entries, loop
 	$result = sql_query("SELECT * FROM ".sql_table("plug_securityenforcer")." WHERE fails >= ".$plug->max_failed_login);
-	if(mysql_num_rows($result)) {
-		while($row = mysql_fetch_assoc($result)) {
+	if(sql_num_rows($result)) {
+		while($row = sql_fetch_assoc($result)) {
 			echo '<tr>';
   				echo '<td>'.htmlspecialchars($row['login']).'</td>';
   				echo '<td><input type="checkbox" name="unlock[]" value="'.htmlspecialchars($row['login']).'" />'._SECURITYENFORCER_UNLOCK.'</td>';

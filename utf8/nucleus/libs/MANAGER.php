@@ -372,7 +372,7 @@ class MANAGER {
 			case 'installedPlugins':
 				$this->cachedInfo['installedPlugins'] = array();
 				$res = sql_query('SELECT pid, pfile FROM ' . sql_table('plugin'));
-				while ($o = mysql_fetch_object($res))
+				while ($o = sql_fetch_object($res))
 				{
 					$this->cachedInfo['installedPlugins'][$o->pid] = $o->pfile;
 				}
@@ -425,7 +425,7 @@ class MANAGER {
 		$this->subscriptions = array();
 
 		$res = sql_query('SELECT p.pfile as pfile, e.event as event FROM '.sql_table('plugin_event').' as e, '.sql_table('plugin').' as p WHERE e.pid=p.pid ORDER BY p.porder ASC');
-		while ($o = mysql_fetch_object($res)) {
+		while ($o = sql_fetch_object($res)) {
 			$pluginName = $o->pfile;
 			$eventName = $o->event;
 			$this->subscriptions[$eventName][] = $pluginName;

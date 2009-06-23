@@ -233,7 +233,7 @@
 			   ." ORDER BY itime DESC"
 			   ." LIMIT $amount";
 		$r = sql_query($query);
-		while ($obj = mysql_fetch_object($r)) {
+		while ($obj = sql_fetch_object($r)) {
 			$newstruct = new xmlrpcval(array(
 				"publishDate" => new xmlrpcval(iso8601_encode(strtotime($obj->itime)),"dateTime.iso8601"),
 				"userid" => new xmlrpcval($obj->iauthor,"string"),

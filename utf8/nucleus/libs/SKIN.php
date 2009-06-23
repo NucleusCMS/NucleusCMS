@@ -39,8 +39,8 @@ class SKIN {
 
 		// read skin name/description/content type
 		$res = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $this->id);
-		$obj = mysql_fetch_object($res);
-		$this->isValid = (mysql_num_rows($res) > 0);
+		$obj = sql_fetch_object($res);
+		$this->isValid = (sql_num_rows($res) > 0);
 		if (!$this->isValid)
 			return;
 
@@ -100,7 +100,7 @@ class SKIN {
 			   . ' FROM '.sql_table('skin_desc')
 			   . ' WHERE sdname="'.addslashes($name).'"';
 		$res = sql_query($query);
-		$obj = mysql_fetch_object($res);
+		$obj = sql_fetch_object($res);
 		return $obj->sdnumber;
 	}
 
@@ -134,7 +134,7 @@ class SKIN {
 		);
 
 		sql_query('INSERT INTO '.sql_table('skin_desc')." (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "','".addslashes($type)."','".addslashes($includeMode)."','".addslashes($includePrefix)."')");
-		$newid = mysql_insert_id();
+		$newid = sql_insert_id();
 
 		$manager->notify(
 			'PostAddSkin',
@@ -198,10 +198,10 @@ class SKIN {
 		$query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". addslashes($type) ."'";
 		$res = sql_query($query);
 
-		if (mysql_num_rows($res) == 0)
+		if (sql_num_rows($res) == 0)
 			return '';
 		else
-			return mysql_result($res, 0, 0);
+			return sql_result($res, 0, 0);
 	}
 
 	/**
@@ -257,7 +257,7 @@ class SKIN {
 
 		$query = "SELECT stype FROM " . sql_table('skin') . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member')";
 		$res = sql_query($query);
-		while ($row = mysql_fetch_array($res)) {
+		while ($row = sql_fetch_array($res)) {
 			$skintypes[strtolower($row['stype'])] = ucfirst($row['stype']);
 		}
 

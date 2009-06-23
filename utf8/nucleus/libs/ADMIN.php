@@ -534,7 +534,7 @@ class ADMIN {
 				case 'unsetadmin':
 					// there should always remain at least one super-admin
 					$r = sql_query('SELECT * FROM '.sql_table('member'). ' WHERE madmin=1 and mcanlogin=1');
-					if (mysql_num_rows($r) < 2)
+					if (sql_num_rows($r) < 2)
 						$error = _ERROR_ATLEASTONEADMIN;
 					else
 						sql_query('UPDATE ' . sql_table('member') .' SET madmin=0 WHERE mnumber='.$memberid);
@@ -604,7 +604,7 @@ class ADMIN {
 				case 'unsetadmin':
 					// there should always remain at least one admin
 					$r = sql_query('SELECT * FROM '.sql_table('team').' WHERE tadmin=1 and tblog='.$blogid);
-					if (mysql_num_rows($r) < 2)
+					if (sql_num_rows($r) < 2)
 						$error = _ERROR_ATLEASTONEBLOGADMIN;
 					else
 						sql_query('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
@@ -826,7 +826,7 @@ class ADMIN {
 		else
 			$queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').', '.sql_table('team').' WHERE tblog=bnumber and tmember=' . $member->getID();
 		$rblogids = sql_query($queryBlogs);
-		while ($o = mysql_fetch_object($rblogids))
+		while ($o = sql_fetch_object($rblogids))
 			if ($o->bnumber != $iForcedBlogInclude)
 				$aBlogIds[] = intval($o->bnumber);
 
@@ -840,10 +840,10 @@ class ADMIN {
 		$queryBlogs =  'SELECT bnumber, bname FROM '.sql_table('blog').' WHERE bnumber in ('.implode(',',$aBlogIds).') ORDER BY bname';
 		$blogs = sql_query($queryBlogs);
 		if ($mode == 'category') {
-			if (mysql_num_rows($blogs) > 1)
+			if (sql_num_rows($blogs) > 1)
 				$multipleBlogs = 1;
 
-			while ($oBlog = mysql_fetch_object($blogs)) {
+			while ($oBlog = sql_fetch_object($blogs)) {
 				if ($multipleBlogs)
 					echo '<optgroup label="',htmlspecialchars($oBlog->bname),'">';
 
@@ -856,7 +856,7 @@ class ADMIN {
 
 				// 2. for each category in that blog
 				$categories = sql_query('SELECT cname, catid FROM '.sql_table('category').' WHERE cblog=' . $oBlog->bnumber . ' ORDER BY cname ASC');
-				while ($oCat = mysql_fetch_object($categories)) {
+				while ($oCat = sql_fetch_object($categories)) {
 					if ($oCat->catid == $selected)
 						$selectText = ' selected="selected" ';
 					else
@@ -869,7 +869,7 @@ class ADMIN {
 			}
 		} else {
 			// blog mode
-			while ($oBlog = mysql_fetch_object($blogs)) {
+			while ($oBlog = sql_fetch_object($blogs)) {
 				echo '<option value="',$oBlog->bnumber,'"';
 				if ($oBlog->bnumber == $selected)
 					echo ' selected="selected"';
@@ -1334,7 +1334,7 @@ class ADMIN {
 		$currenttime = $blog->getCorrectTime(time());
 		$result = sql_query("SELECT * FROM ".sql_table('item').
 			" WHERE iblog='".$blogid."' AND iposted=0 AND itime>".mysqldate($currenttime));
-		if (mysql_num_rows($result) > 0) {
+		if (sql_num_rows($result) > 0) {
 				$blog->setFuturePost();
 		}
 		else {
@@ -1631,7 +1631,7 @@ class ADMIN {
 
 		// get itemid
 		$res = sql_query('SELECT citem FROM '.sql_table('comment').' WHERE cnumber=' . $commentid);
-		$o = mysql_fetch_object($res);
+		$o = sql_fetch_object($res);
 		$itemid = $o->citem;
 
 		if ($member->canAlterItem($itemid))
@@ -1694,7 +1694,7 @@ class ADMIN {
 
 		// get item id first
 		$res = sql_query('SELECT citem FROM '.sql_table('comment') .' WHERE cnumber=' . $commentid);
-		$o = mysql_fetch_object($res);
+		$o = sql_fetch_object($res);
 		$itemid = $o->citem;
 
 		$error = $this->deleteOneComment($commentid);
@@ -2015,7 +2015,7 @@ class ADMIN {
 		   )
 		{
 			$r = sql_query('SELECT * FROM '.sql_table('member').' WHERE madmin=1 and mcanlogin=1');
-			if (mysql_num_rows($r) < 2)
+			if (sql_num_rows($r) < 2)
 				$this->error(_ERROR_ATLEASTONEADMIN);
 		}
 
@@ -2428,7 +2428,7 @@ class ADMIN {
 			// (check for at least two admins before deletion)
 			$query = 'SELECT * FROM '.sql_table('team') . ' WHERE tblog='.$blogid.' and tadmin=1';
 			$r = sql_query($query);
-			if (mysql_num_rows($r) < 2)
+			if (sql_num_rows($r) < 2)
 				return _ERROR_ATLEASTONEBLOGADMIN;
 		}
 
@@ -2457,7 +2457,7 @@ class ADMIN {
 		// don't allow when there is only one admin at this moment
 		if ($mem->isBlogAdmin($blogid)) {
 			$r = sql_query('SELECT * FROM '.sql_table('team') . " WHERE tblog=$blogid and tadmin=1");
-			if (mysql_num_rows($r) == 1)
+			if (sql_num_rows($r) == 1)
 				$this->error(_ERROR_ATLEASTONEBLOGADMIN);
 		}
 
@@ -2502,7 +2502,7 @@ class ADMIN {
 		<?php
 			$res = sql_query('SELECT mname, mrealname FROM ' . sql_table('member') . ',' . sql_table('team') . ' WHERE mnumber=tmember AND tblog=' . intval($blogid));
 			$aMemberNames = array();
-			while ($o = mysql_fetch_object($res))
+			while ($o = sql_fetch_object($res))
 				array_push($aMemberNames, htmlspecialchars($o->mname) . ' (' . htmlspecialchars($o->mrealname). ')');
 			echo implode(',', $aMemberNames);
 		?>
@@ -2706,7 +2706,7 @@ class ADMIN {
 
 		$query = 'SELECT * FROM '.sql_table('category') . ' WHERE cname=\'' . addslashes($cname).'\' and cblog=' . intval($blogid);
 		$res = sql_query($query);
-		if (mysql_num_rows($res) > 0)
+		if (sql_num_rows($res) > 0)
 			$this->error(_ERROR_DUPCATEGORYNAME);
 
 		$blog 		=& $manager->getBlog($blogid);
@@ -2733,7 +2733,7 @@ class ADMIN {
 		$member->blogAdminRights($blogid) or $this->disallow();
 
 		$res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cblog=$blogid AND catid=$catid");
-		$obj = mysql_fetch_object($res);
+		$obj = sql_fetch_object($res);
 
 		$cname = $obj->cname;
 		$cdesc = $obj->cdesc;
@@ -2796,7 +2796,7 @@ class ADMIN {
 
 		$query = 'SELECT * FROM '.sql_table('category').' WHERE cname=\'' . addslashes($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
 		$res = sql_query($query);
-		if (mysql_num_rows($res) > 0)
+		if (sql_num_rows($res) > 0)
 			$this->error(_ERROR_DUPCATEGORYNAME);
 
 		$query =  'UPDATE '.sql_table('category').' SET'
@@ -2844,7 +2844,7 @@ class ADMIN {
 		// check if catid is the only category left for blogid
 		$query = 'SELECT catid FROM '.sql_table('category').' WHERE cblog=' . $blogid;
 		$res = sql_query($query);
-		if (mysql_num_rows($res) == 1)
+		if (sql_num_rows($res) == 1)
 			$this->error(_ERROR_DELETELASTCATEGORY);
 
 
@@ -2916,7 +2916,7 @@ class ADMIN {
 		// check if catid is the only category left for blogid
 		$query = 'SELECT catid FROM '.sql_table('category').' WHERE cblog=' . $blogid;
 		$res = sql_query($query);
-		if (mysql_num_rows($res) == 1)
+		if (sql_num_rows($res) == 1)
 			return _ERROR_DELETELASTCATEGORY;
 
 		// change category for all items to the default category
@@ -2979,7 +2979,7 @@ class ADMIN {
 		// update comments table (cblog)
 		$query = 'SELECT inumber FROM '.sql_table('item').' WHERE icat='.$catid;
 		$items = sql_query($query);
-		while ($oItem = mysql_fetch_object($items)) {
+		while ($oItem = sql_fetch_object($items)) {
 			sql_query('UPDATE '.sql_table('comment').' SET cblog='.$destblogid.' WHERE citem='.$oItem->inumber);
 		}
 
@@ -3380,14 +3380,14 @@ class ADMIN {
 		// create blog
 		$query = 'INSERT INTO '.sql_table('blog')." (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', '$btimeoffset', '$bdefskin')";
 		sql_query($query);
-		$blogid	= mysql_insert_id();
+		$blogid	= sql_insert_id();
 		$blog	=& $manager->getBlog($blogid);
 
 		// create new category
 		$sql = 'INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, "%s", "%s")';
 		sql_query(sprintf($sql, sql_table('category'), $blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC));
 //		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
-		$catid = mysql_insert_id();
+		$catid = sql_insert_id();
 
 		// set as default category
 		$blog->setDefaultCategory($catid);
@@ -3567,7 +3567,7 @@ selector();
 			</tr><tr>
 	<?php		// show list of skins
 		$res = sql_query('SELECT * FROM '.sql_table('skin_desc'));
-		while ($skinObj = mysql_fetch_object($res)) {
+		while ($skinObj = sql_fetch_object($res)) {
 			$id = 'skinexp' . $skinObj->sdnumber;
 			echo '<td><input type="checkbox" name="skin[',$skinObj->sdnumber,']"  id="',$id,'" />';
 			echo '<label for="',$id,'">',htmlspecialchars($skinObj->sdname),'</label></td>';
@@ -3579,7 +3579,7 @@ selector();
 
 		// show list of templates
 		$res = sql_query('SELECT * FROM '.sql_table('template_desc'));
-		while ($templateObj = mysql_fetch_object($res)) {
+		while ($templateObj = sql_fetch_object($res)) {
 			$id = 'templateexp' . $templateObj->tdnumber;
 			echo '<td><input type="checkbox" name="template[',$templateObj->tdnumber,']" id="',$id,'" />';
 			echo '<label for="',$id,'">',htmlspecialchars($templateObj->tdname),'</label></td>';
@@ -4079,8 +4079,8 @@ selector();
 
 		$query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
 			   . "VALUES ($id, '$partname', '$content')";
-		sql_query($query) or exit(_ADMIN_SQLDIE_QUERYERROR . mysql_error());
-		return mysql_insert_id();
+		sql_query($query) or exit(_ADMIN_SQLDIE_QUERYERROR . sql_error());
+		return sql_insert_id();
 	}
 
 	/**
@@ -4191,7 +4191,7 @@ selector();
 		// 3. create clone
 		// go through parts of old template and add them to the new one
 		$res = sql_query('SELECT tpartname, tcontent FROM '.sql_table('template').' WHERE tdesc=' . $templateid);
-		while ($o = mysql_fetch_object($res)) {
+		while ($o = sql_fetch_object($res)) {
 			$this->addToTemplate($newid, $o->tpartname, $o->tcontent);
 		}
 
@@ -4312,11 +4312,11 @@ selector();
 		echo '<input type="submit" tabindex="140" value="' . _SKIN_CREATE . '" onclick="return checkSubmit();" />' . "\r\n";
 		echo '</form>' . "\r\n";
 
-		if ($res && mysql_num_rows($res) > 0) {
+		if ($res && sql_num_rows($res) > 0) {
 			echo '<ul>';
 			$tabstart = 75;
 
-			while ($row = mysql_fetch_assoc($res)) {
+			while ($row = sql_fetch_assoc($res)) {
 				echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype'])) . '">' . htmlspecialchars(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype'])) . '">remove</a>)</li>';
 			}
 
@@ -4512,7 +4512,7 @@ selector();
 		// don't allow deletion of default skins for blogs
 		$query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
 		$r = sql_query($query);
-		if ($o = mysql_fetch_object($r))
+		if ($o = sql_fetch_object($r))
 			$this->error(_ERROR_SKINDEFDELETE . htmlspecialchars($o->bname));
 
 		$this->pagehead();
@@ -4555,7 +4555,7 @@ selector();
 		// don't allow deletion of default skins for blogs
 		$query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
 		$r = sql_query($query);
-		if ($o = mysql_fetch_object($r))
+		if ($o = sql_fetch_object($r))
 			$this->error(_ERROR_SKINDEFDELETE .$o->bname);
 
 		$manager->notify('PreDeleteSkin', array('skinid' => $skinid));
@@ -4692,7 +4692,7 @@ selector();
 
 		$query = "SELECT stype FROM " . sql_table('skin') . " WHERE sdesc = " . $skinid;
 		$res = sql_query($query);
-		while ($row = mysql_fetch_assoc($res)) {
+		while ($row = sql_fetch_assoc($res)) {
 			$this->skinclonetype($skin, $newid, $row['stype']);
 		}
 
@@ -5078,7 +5078,7 @@ selector();
 			echo "\t\t" . '<td>' . phpversion() . "</td>\n";
 			echo "\t</tr><tr>\n";
 			echo "\t\t" . '<td>' . _ADMIN_SYSTEMOVERVIEW_MYSQLVERSION . "</td>\n";
-			echo "\t\t" . '<td>' . mysql_get_server_info() . ' (' . mysql_get_client_info() . ')' . "</td>\n";
+			echo "\t\t" . '<td>' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
 			echo "\t</tr>";
 			echo "</table>\n";
 
@@ -5205,8 +5205,8 @@ selector();
 			   . " SET value='$val'"
 			   . " WHERE name='$name'";
 
-		sql_query($query) or die(_ADMIN_SQLDIE_QUERYERROR . mysql_error());
-		return mysql_insert_id();
+		sql_query($query) or die(_ADMIN_SQLDIE_QUERYERROR . sql_error());
+		return sql_insert_id();
 	}
 
 	/**
@@ -5980,7 +5980,7 @@ selector();
 						$name = $matches[1];
 						// only show in list when not yet installed
 						$res = sql_query('SELECT * FROM '.sql_table('plugin').' WHERE pfile="NP_'.addslashes($name).'"');
-						if (mysql_num_rows($res) == 0)
+						if (sql_num_rows($res) == 0)
 							array_push($candidates,$name);
 					}
 				}
@@ -6064,7 +6064,7 @@ selector();
 
 		// get number of currently installed plugins
 		$res = sql_query('SELECT * FROM '.sql_table('plugin'));
-		$numCurrent = mysql_num_rows($res);
+		$numCurrent = sql_num_rows($res);
 
 		// plugin will be added as last one in the list
 		$newOrder = $numCurrent + 1;
@@ -6079,7 +6079,7 @@ selector();
 		// do this before calling getPlugin (in case the plugin id is used there)
 		$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.addslashes($name).'")';
 		sql_query($query);
-		$iPid = mysql_insert_id();
+		$iPid = sql_insert_id();
 
 		$manager->clearCachedInfo('installedPlugins');
 
@@ -6119,7 +6119,7 @@ selector();
 		{
 
 			$res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
-			if (mysql_num_rows($res) == 0)
+			if (sql_num_rows($res) == 0)
 			{
 				// uninstall plugin again...
 				$this->deleteOnePlugin($plugin->getID());
@@ -6156,7 +6156,7 @@ selector();
 
 		// loop over all installed plugins
 		$res = sql_query('SELECT pid, pfile FROM '.sql_table('plugin'));
-		while($o = mysql_fetch_object($res)) {
+		while($o = sql_fetch_object($res)) {
 			$pid = $o->pid;
 			$plug =& $manager->getPlugin($o->pfile);
 			if ($plug)
@@ -6242,7 +6242,7 @@ selector();
 
 		// check dependency before delete
 		$res = sql_query('SELECT pfile FROM '.sql_table('plugin'));
-		while($o = mysql_fetch_object($res)) {
+		while($o = sql_fetch_object($res)) {
 			$plug =& $manager->getPlugin($o->pfile);
 			if ($plug)
 			{
@@ -6272,7 +6272,7 @@ selector();
 		// get OIDs from plugin_option_desc
 		$res = sql_query('SELECT oid FROM ' . sql_table('plugin_option_desc') . ' WHERE opid=' . $pid);
 		$aOIDs = array();
-		while ($o = mysql_fetch_object($res)) {
+		while ($o = sql_fetch_object($res)) {
 			array_push($aOIDs, $o->oid);
 		}
 
@@ -6283,7 +6283,7 @@ selector();
 
 		// update order numbers
 		$res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid=' . $pid);
-		$o = mysql_fetch_object($res);
+		$o = sql_fetch_object($res);
 		sql_query('UPDATE '.sql_table('plugin').' SET porder=(porder - 1) WHERE porder>'.$o->porder);
 
 		// delete row
@@ -6311,7 +6311,7 @@ selector();
 
 		// 1. get old order number
 		$res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
-		$o = mysql_fetch_object($res);
+		$o = sql_fetch_object($res);
 		$oldOrder = $o->porder;
 
 		// 2. calculate new order number
@@ -6341,11 +6341,11 @@ selector();
 
 		// 1. get old order number
 		$res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
-		$o = mysql_fetch_object($res);
+		$o = sql_fetch_object($res);
 		$oldOrder = $o->porder;
 
 		$res = sql_query('SELECT * FROM '.sql_table('plugin'));
-		$maxOrder = mysql_num_rows($res);
+		$maxOrder = sql_num_rows($res);
 
 		// 2. calculate new order number
 		$newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;
@@ -6396,7 +6396,7 @@ selector();
 		$aOIDs = array();
 		$query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ' WHERE ocontext=\'global\' and opid=' . $pid . ' ORDER BY oid ASC';
 		$r = sql_query($query);
-		while ($o = mysql_fetch_object($r)) {
+		while ($o = sql_fetch_object($r)) {
 			array_push($aOIDs, $o->oid);
 			$aOptions[$o->oid] = array(
 						'oid' => $o->oid,
@@ -6411,7 +6411,7 @@ selector();
 		// fill out actual values
 		if (count($aOIDs) > 0) {
 			$r = sql_query('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).')');
-			while ($o = mysql_fetch_object($r))
+			while ($o = sql_fetch_object($r))
 				$aOptions[$o->oid]['value'] = $o->ovalue;
 		}
 
@@ -6462,7 +6462,7 @@ selector();
 		// (note: this might contain doubles for overlapping contextids)
 		$aIdToValue = array();
 		$res = sql_query('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE ocontextid=' . intval($contextid));
-		while ($o = mysql_fetch_object($res)) {
+		while ($o = sql_fetch_object($res)) {
 			$aIdToValue[$o->oid] = $o->ovalue;
 		}
 
@@ -6471,7 +6471,7 @@ selector();
 			   . ' WHERE opid=pid and ocontext=\''.addslashes($context).'\' ORDER BY porder, oid ASC';
 		$res = sql_query($query);
 		$aOptions = array();
-		while ($o = mysql_fetch_object($res)) {
+		while ($o = sql_fetch_object($res)) {
 			if (in_array($o->oid, array_keys($aIdToValue)))
 				$value = $aIdToValue[$o->oid];
 			else

@@ -65,9 +65,9 @@ class ITEM {
 
 		$res = sql_query($query);
 
-		if (mysql_num_rows($res) == 1)
+		if (sql_num_rows($res) == 1)
 		{
-			$aItemInfo = mysql_fetch_assoc($res);
+			$aItemInfo = sql_fetch_assoc($res);
 			$aItemInfo['timestamp'] = strtotime($aItemInfo['itime']);
 			return $aItemInfo;
 		} else {
@@ -373,7 +373,7 @@ class ITEM {
 		}
 		$r = sql_query($r);
 
-		return (mysql_num_rows($r) != 0);
+		return (sql_num_rows($r) != 0);
 	}
 
 	/**

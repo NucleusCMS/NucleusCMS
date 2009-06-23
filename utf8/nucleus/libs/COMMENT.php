@@ -31,7 +31,7 @@ class COMMENT {
 			   . ' WHERE cnumber=' . intval($commentid);
 		$comments = sql_query($query);
 
-		$aCommentInfo = mysql_fetch_assoc($comments);
+		$aCommentInfo = sql_fetch_assoc($comments);
 		if ($aCommentInfo)
 		{
 			$aCommentInfo['timestamp'] = strtotime($aCommentInfo['ctime']);

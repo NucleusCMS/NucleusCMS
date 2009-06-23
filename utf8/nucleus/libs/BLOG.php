@@ -171,7 +171,7 @@ class BLOG {
 
 		// loop over all items
 		$old_date = 0;
-		while ($item = mysql_fetch_object($items)) {
+		while ($item = sql_fetch_object($items)) {
 
 			$item->timestamp = strtotime($item->itime);	// string timestamp -> unix timestamp
 
@@ -210,7 +210,7 @@ class BLOG {
 
 		}
 
-		$numrows = mysql_num_rows($items);
+		$numrows = sql_num_rows($items);
 
 		// add another date footer if there was at least one item
 		if (($numrows > 0) && $dateheads) {
@@ -219,7 +219,7 @@ class BLOG {
 			$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));
 		}
 
-		mysql_free_result($items);	// free memory
+		sql_free_result($items);	// free memory
 
 		return $numrows;
 
@@ -271,7 +271,7 @@ class BLOG {
 		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
 			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
 		sql_query($query);
-		$itemid = mysql_insert_id();
+		$itemid = sql_insert_id();
 
 		$manager->notify('PostAddItem',array('itemid' => $itemid));
 
@@ -344,7 +344,7 @@ class BLOG {
 				$i = 1;
 
 				$res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
-				while (mysql_num_rows($res) > 0)
+				while (sql_num_rows($res) > 0)
 				{
 					$i++;
 					$res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
@@ -364,7 +364,7 @@ class BLOG {
 
 			$query = 'INSERT INTO '.sql_table('category').' (cblog, cname, cdesc) VALUES (' . $this->getID() . ", '" . addslashes($catName) . "', '" . addslashes($catDescription) . "')";
 			sql_query($query);
-			$catid = mysql_insert_id();
+			$catid = sql_insert_id();
 
 			$manager->notify(
 				'PostAddCategory',
@@ -574,7 +574,9 @@ class BLOG {
 		if ($catid)
 			$query .= ' and icat=' . intval($catid);
 
-		$query .= ' GROUP BY Year, Month';
+		$query .= ' GROUP BY Year';
+		if ($mode == 'month' || $mode == 'day')
+			$query .= ', Month';
 		if ($mode == 'day')
 			$query .= ', Day';
 
@@ -586,18 +588,30 @@ class BLOG {
 
 		$res = sql_query($query);
 
-		while ($current = mysql_fetch_object($res)) {
+		while ($current = sql_fetch_object($res)) {
 			$current->itime = strtotime($current->itime);	// string time -> unix timestamp
 
 			if ($mode == 'day') {
-				$archivedate    = date('Y-m-d',$current->itime);
-				$archive['day'] = date('d',$current->itime);
-				$data['day']    = date('d',$current->itime);
+				$archivedate      = date('Y-m-d',$current->itime);
+				$archive['day']   = date('d',$current->itime);
+				$data['day']      = date('d',$current->itime);
+				$data['month']    = date('m',$current->itime);
+				$archive['month'] = $data['month'];
+			} elseif ($mode == 'year') {
+				$archivedate      = date('Y',$current->itime);
+				$data['day']      = '';
+				$data['month']    = '';
+				$archive['day']   = '';
+				$archive['month'] = '';
 			} else {
 				$archivedate = date('Y-m',$current->itime);
+				$data['month'] = date('m',$current->itime);
+				$archive['month'] = $data['month'];
+				$data['day'] = '';
+				$archive['day'] = '';
 			}
-			$data['month'] = date('m',$current->itime);
 			$data['year'] = date('Y',$current->itime);
+			$archive['year'] = $data['year'];
 			$data['archivelink'] = createArchiveLink($this->getID(),$archivedate,$linkparams);
 
 			$manager->notify(
@@ -612,7 +626,7 @@ class BLOG {
 
 		}
 
-		mysql_free_result($res);
+		sql_free_result($res);
 
 		echo TEMPLATE::fill($template['ARCHIVELIST_FOOTER'],$data);
 	}
@@ -657,7 +671,7 @@ class BLOG {
 		$res = sql_query($query);
 
 
-		while ($data = mysql_fetch_assoc($res)) {
+		while ($data = sql_fetch_assoc($res)) {
 			$data['blogid'] = $this->getID();
 			$data['blogurl'] = $blogurl;
 			$data['catlink'] = createLink(
@@ -683,7 +697,7 @@ class BLOG {
 
 		}
 
-		mysql_free_result($res);
+		sql_free_result($res);
 
 		echo TEMPLATE::fill((isset($template['CATLIST_FOOTER']) ? $template['CATLIST_FOOTER'] : null),
 							array(
@@ -743,7 +757,7 @@ class BLOG {
 		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY '.$orderby.' '.$direction;
 		$res = sql_query($query);
 
-		while ($data = mysql_fetch_assoc($res)) {
+		while ($data = sql_fetch_assoc($res)) {
 
 			$list = array();
 
@@ -772,7 +786,7 @@ class BLOG {
 
 		}
 
-		mysql_free_result($res);
+		sql_free_result($res);
 
 		echo TEMPLATE::fill((isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
 							array(
@@ -792,11 +806,11 @@ class BLOG {
 			   . ' WHERE bnumber=' . $this->blogid;
 		$res = sql_query($query);
 
-		$this->isValid = (mysql_num_rows($res) > 0);
+		$this->isValid = (sql_num_rows($res) > 0);
 		if (!$this->isValid)
 			return;
 
-		$this->settings = mysql_fetch_assoc($res);
+		$this->settings = sql_fetch_assoc($res);
 	}
 
 	function writeSettings() {
@@ -845,25 +859,25 @@ class BLOG {
 	function isValidCategory($catid) {
 		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
 		$res = sql_query($query);
-		return (mysql_num_rows($res) != 0);
+		return (sql_num_rows($res) != 0);
 	}
 
 	function getCategoryName($catid) {
 		$res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
-		$o = mysql_fetch_object($res);
+		$o = sql_fetch_object($res);
 		return $o->cname;
 	}
 
 	function getCategoryDesc($catid) {
 		$res = sql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
-		$o = mysql_fetch_object($res);
+		$o = sql_fetch_object($res);
 		return $o->cdesc;
 	}
 
 	function getCategoryIdFromName($name) {
 		$res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . addslashes($name) . '"');
-		if (mysql_num_rows($res) > 0) {
-			$o = mysql_fetch_object($res);
+		if (sql_num_rows($res) > 0) {
+			$o = sql_fetch_object($res);
 			return $o->catid;
 		} else {
 			return $this->getDefaultCategory();
@@ -1116,13 +1130,13 @@ class BLOG {
 	// returns true if there is a blog with the given shortname (static)
 	function exists($name) {
 		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bshortname="'.addslashes($name).'"');
-		return (mysql_num_rows($r) != 0);
+		return (sql_num_rows($r) != 0);
 	}
 
 	// returns true if there is a blog with the given ID (static)
 	function existsID($id) {
 		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
-		return (mysql_num_rows($r) != 0);
+		return (sql_num_rows($r) != 0);
 	}
 
         // flag there is a future post pending
@@ -1147,7 +1161,7 @@ class BLOG {
 			$blogid = $this->getID();
 			$result = sql_query("SELECT * FROM " . sql_table('item')
 			          . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()");
-			if (mysql_num_rows($result) > 0) {
+			if (sql_num_rows($result) > 0) {
 				// This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
 				// Note that the plugins's calling order is subject to thri order in the plugin list
 				$pinged = false;
@@ -1164,7 +1178,7 @@ class BLOG {
 				// check to see any pending future post, clear the flag is none
 				$result = sql_query("SELECT * FROM " . sql_table('item')
 				          . " WHERE iposted=0 AND iblog=" . $blogid);
-				if (mysql_num_rows($result) == 0) {
+				if (sql_num_rows($result) == 0) {
 					$this->clearFuturePost();
 				}
 			}

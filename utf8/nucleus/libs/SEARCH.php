@@ -61,7 +61,7 @@ class SEARCH {
 
 		// get all public searchable blogs, no matter what, include the current blog allways.
 		$res = sql_query('SELECT bnumber FROM '.sql_table('blog').' WHERE bincludesearch=1 ');
-		while ($obj = mysql_fetch_object($res)) 
+		while ($obj = sql_fetch_object($res)) 
 			$this->blogs[] = intval($obj->bnumber);
 		}
 

@@ -114,13 +114,19 @@ if (!headers_sent() ) {
 }
 
 // include core classes that are needed for login & plugin handling
-include($DIR_LIBS . 'mysql.php');
+// added for 3.5 sql_* wrapper
+global $MYSQL_HANDLER;
+if (!isset($MYSQL_HANDLER))
+	$MYSQL_HANDLER = array('mysql','');
+include_once($DIR_LIBS . 'sql/'.$MYSQL_HANDLER[0].'.php');
+// end new for 3.5 sql_* wrapper
+include_once($DIR_LIBS . 'mysql.php');
 include($DIR_LIBS . 'MEMBER.php');
 include($DIR_LIBS . 'ACTIONLOG.php');
 include($DIR_LIBS . 'MANAGER.php');
 include($DIR_LIBS . 'PLUGIN.php');
 
-$manager = MANAGER::instance();
+$manager =& MANAGER::instance();
 
 // make sure there's no unnecessary escaping:
 set_magic_quotes_runtime(0);
@@ -533,26 +539,15 @@ function getLatestVersion() {
 /**
   * Connects to mysql server
   */
+/* moved to $DIR_LIBS/sql/*.php handler files
 function sql_connect() {
 	global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN;
 
 	$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
 	mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
 
-/*/ <add for garble measure>
-	$resource = sql_query("show variables LIKE 'character_set_database'");
-	$fetchDat = mysql_fetch_assoc($resource);
-	$charset  = $fetchDat['Value'];
-	$mySqlVer = implode('.', array_map('intval', explode('.', mysql_get_server_info($MYSQL_CONN))));
-	if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {
-		mysql_set_charset($charset);
-	} elseif ($mySqlVer >= '4.1.0') {
-		sql_query("SET NAMES " . $charset);
-	}
-// </add for garble measure>*/
-
 	return $MYSQL_CONN;
-}
+}*/
 
 /**
  * returns a prefixed nucleus table name
@@ -649,19 +644,21 @@ function startUpError($msg, $title) {
 /**
   * disconnects from SQL server
   */
+/* moved to $DIR_LIBS/sql/*.php handler files
 function sql_disconnect() {
 	@mysql_close();
-}
+}*/
 
 /**
   * executes an SQL query
   */
+/* moved to $DIR_LIBS/sql/*.php handler files
 function sql_query($query) {
 	global $SQLCount;
 	$SQLCount++;
 	$res = mysql_query($query) or print("mySQL error with query $query: " . mysql_error() . '<p />');
 	return $res;
-}
+}*/
 
 
 /**
@@ -785,13 +782,13 @@ function getCatIDFromName($name) {
 
 function quickQuery($q) {
 	$res = sql_query($q);
-	$obj = mysql_fetch_object($res);
+	$obj = sql_fetch_object($res);
 	return $obj->result;
 }
 
 function getPluginNameFromPid($pid) {
 	$res = sql_query('SELECT pfile FROM ' . sql_table('plugin') . ' WHERE pid=' . intval($pid) );
-	$obj = mysql_fetch_object($res);
+	$obj = sql_fetch_object($res);
 	return $obj->pfile;
 }
 
@@ -853,7 +850,7 @@ function selector() {
 		// 1. get timestamp, blogid and catid for item
 		$query = 'SELECT itime, iblog, icat FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid);
 		$res = sql_query($query);
-		$obj = mysql_fetch_object($res);
+		$obj = sql_fetch_object($res);
 
 		// if a different blog id has been set through the request or selectBlog(),
 		// deny access
@@ -895,7 +892,7 @@ function selector() {
 		$query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime<' . mysqldate($timestamp) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime DESC LIMIT 1';
 		$res = sql_query($query);
 
-		$obj = mysql_fetch_object($res);
+		$obj = sql_fetch_object($res);
 
 		if ($obj) {
 			$itemidprev = $obj->inumber;
@@ -906,7 +903,7 @@ function selector() {
 		$query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate($b->getCorrectTime()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
 		$res = sql_query($query);
 
-		$obj = mysql_fetch_object($res);
+		$obj = sql_fetch_object($res);
 
 		if ($obj) {
 			$itemidnext = $obj->inumber;
@@ -1155,7 +1152,7 @@ function getConfig() {
 	$query = 'SELECT * FROM ' . sql_table('config');
 	$res = sql_query($query);
 
-	while ($obj = mysql_fetch_object($res) ) {
+	while ($obj = sql_fetch_object($res) ) {
 		$CONF[$obj->name] = $obj->value;
 	}
 }
@@ -1814,11 +1811,11 @@ function ticketForPlugin(){
 	$plugins=array();
 	$query='SELECT pfile FROM '.sql_table('plugin');
 	$res=sql_query($query);
-	while($row=mysql_fetch_row($res)) {
+	while($row=sql_fetch_row($res)) {
 		$name=substr($row[0],3);
 		$plugins[strtolower($name)]=$name;
 	}
-	mysql_free_result($res);
+	sql_free_result($res);
 	if ($plugins[$path]) $plugin_name=$plugins[$path];
 	else if (in_array($path,$plugins)) $plugin_name=$path;
 	else {
@@ -2191,7 +2188,7 @@ function ifset(&$var) {
 function numberOfEventSubscriber($event) {
 	$query = 'SELECT COUNT(*) as count FROM ' . sql_table('plugin_event') . ' WHERE event=\'' . $event . '\'';
 	$res = sql_query($query);
-	$obj = mysql_fetch_object($res);
+	$obj = sql_fetch_object($res);
 	return $obj->count;
 }
 

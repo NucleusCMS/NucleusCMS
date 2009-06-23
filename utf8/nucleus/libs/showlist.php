@@ -41,18 +41,18 @@ function showlist($query, $type, $template) {
 		$res = sql_query($query);
 
 		// don't do anything if there are no results
-		$numrows = mysql_num_rows($res);
+		$numrows = sql_num_rows($res);
 		if ($numrows == 0)
 			return 0;
 
 		call_user_func('listplug_' . $type, $template, 'HEAD');
 
-		while($template['current'] = mysql_fetch_object($res))
+		while($template['current'] = sql_fetch_object($res))
 			call_user_func('listplug_' . $type, $template, 'BODY');
 
 		call_user_func('listplug_' . $type, $template, 'FOOT');
 
-		mysql_free_result($res);
+		sql_free_result($res);
 
 		// return amount of results
 		return $numrows;
@@ -204,7 +204,7 @@ function listplug_table_pluginlist($template, $type) {
 				// check dependency require
 				$req = array();
 				$res = sql_query('SELECT pfile FROM ' . sql_table('plugin'));
-				while($o = mysql_fetch_object($res)) {
+				while($o = sql_fetch_object($res)) {
 					$preq =& $manager->getPlugin($o->pfile);
 					if ($preq) {
 						$depList = $preq->getPluginDep();
@@ -592,7 +592,7 @@ function listplug_table_skinlist($template, $type) {
 				// show list of defined parts
 				$r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber . ' ORDER BY stype');
 				$types = array();
-				while ($o = mysql_fetch_object($r))
+				while ($o = sql_fetch_object($r))
 					array_push($types,$o->stype);
 				if (sizeof($types) > 0) {
 					$friendlyNames = SKIN::getFriendlyNames();

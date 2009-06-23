@@ -300,7 +300,7 @@
 			   ." LIMIT $amount";
 		$r = sql_query($query);
 
-		while ($row = mysql_fetch_assoc($r)) {
+		while ($row = sql_fetch_assoc($r)) {
 
 			// remove linebreaks if needed
 			if ($blog->convertBreaks())

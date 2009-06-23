@@ -615,7 +615,7 @@ class SKINEXPORT {
 				 . ' WHERE'
 				 . '    sdesc = ' . $skinId;
 			$res = sql_query($que);
-			while ($partObj = mysql_fetch_object($res)) {
+			while ($partObj = sql_fetch_object($res)) {
 				$type  = htmlspecialchars($partObj->stype, ENT_QUOTES);
 				$cdata = $this->escapeCDATA($partObj->scontent);
 				if (_CHARSET != 'UTF-8') {
@@ -652,7 +652,7 @@ class SKINEXPORT {
 				 . ' WHERE'
 				 .     ' tdesc = ' . $templateId;
 			$res = sql_query($que);
-			while ($partObj = mysql_fetch_object($res)) {
+			while ($partObj = sql_fetch_object($res)) {
 				$type  = htmlspecialchars($partObj->tpartname, ENT_QUOTES);
 				$cdata = $this->escapeCDATA($partObj->tcontent);
 				if (_CHARSET != 'UTF-8') {

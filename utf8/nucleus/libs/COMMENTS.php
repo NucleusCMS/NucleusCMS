@@ -85,7 +85,7 @@ class COMMENTS {
 				   . ' ORDER BY c.ctime';
 
 			$comments = sql_query($query);
-			$this->commentcount = mysql_num_rows($comments);
+			$this->commentcount = sql_num_rows($comments);
 		}
 
 		// if no result was found
@@ -103,7 +103,7 @@ class COMMENTS {
 
 		$parser->parse($template['COMMENTS_HEADER']);
 
-		while ( $comment = mysql_fetch_assoc($comments) ) {
+		while ( $comment = sql_fetch_assoc($comments) ) {
 			$comment['timestamp'] = strtotime($comment['ctime']);
 			$actions->setCurrentComment($comment);
 			$actions->setHighlight($highlight);
@@ -114,7 +114,7 @@ class COMMENTS {
 
 		$parser->parse($template['COMMENTS_FOOTER']);
 
-		mysql_free_result($comments);
+		sql_free_result($comments);
 
 		return $this->commentcount;
 	}
@@ -127,7 +127,7 @@ class COMMENTS {
 			   . ' FROM '.sql_table('comment').' as c'
 			   . ' WHERE c.citem='. $this->itemid;
 		$res = sql_query($query);
-		$arr = mysql_fetch_row($res);
+		$arr = sql_fetch_row($res);
 
 		return $arr[0];
 	}
@@ -288,7 +288,7 @@ class COMMENTS {
 		sql_query($query);
 
 		// post add comment
-		$commentid = mysql_insert_id();
+		$commentid = sql_insert_id();
 		$manager->notify('PostAddComment',array('comment' => &$comment, 'commentid' => &$commentid, 'spamcheck' => &$spamcheck));
 
 		// succeeded !
