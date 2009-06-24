@@ -596,8 +596,9 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 }
 
 /**
- * Errors before the database connection has been made
+ * Errors before the database connection has been made - moved to 
  */
+/* moved to $DIR_LIBS/sql/*.php handler files
 function startUpError($msg, $title) {
 	?>
 	<html xmlns="http://www.w3.org/1999/xhtml">
@@ -608,7 +609,7 @@ function startUpError($msg, $title) {
 		</body>
 	</html>
 	<?php	exit;
-}
+}*/
 
 /**
   * disconnects from SQL server

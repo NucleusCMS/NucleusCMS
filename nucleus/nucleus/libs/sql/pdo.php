@@ -22,16 +22,32 @@
  * functions moved from globalfunctions.php: sql_connect, sql_disconnect, sql_query
  */
  
+
 $MYSQL_CONN = 0;
 global $SQL_DBH;
 $SQL_DBH = NULL;
 
-if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
+if (!function_exists('sql_fetch_assoc'))
 {
+	/**
+	 * Errors before the database connection has been made
+	 */
+	function startUpError($msg, $title) {
+		?>
+		<html xmlns="http://www.w3.org/1999/xhtml">
+			<head><title><?php echo htmlspecialchars($title)?></title></head>
+			<body>
+				<h1><?php echo htmlspecialchars($title)?></h1>
+				<?php echo $msg?>
+			</body>
+		</html>
+		<?php	exit;
+	}
+	
 	/**
 	  * Connects to mysql server
 	  */
-	function sql_connect_args($mysql_host, $mysql_user, $mysql_password) {
+	function sql_connect_args($mysql_host = 'localhost', $mysql_user = '', $mysql_password = '', $mysql_database = '') {
 		global $MYSQL_HANDLER;
 		
 		try {
@@ -46,15 +62,15 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 				else
 					$port = '';
 			}
-			
-			$DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port, $mysql_user, $mysql_password);
+	
+			$DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$mysql_database, $mysql_user, $mysql_password);
 						
 		} catch (PDOException $e) {
+			$DBH =NULL;
 			startUpError('<p>Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
 		}
-		
+//echo '<hr />DBH: '.print_r($DBH,true).'<hr />';		
 		return $DBH;
-
 	}
 	
 	/**
@@ -62,7 +78,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	  */
 	function sql_connect() {
 		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN, $MYSQL_HANDLER, $SQL_DBH;
-		
+		$SQL_DBH = NULL;
 		try {
 			if (strpos($MYSQL_HOST,':') === false) {
 				$host = $MYSQL_HOST;
@@ -79,35 +95,47 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 			$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$MYSQL_DATABASE, $MYSQL_USER, $MYSQL_PASSWORD);
 						
 		} catch (PDOException $e) {
+			$SQL_DBH = NULL;
 			startUpError('<p>Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
 		}
-		
-		return $MYSQL_CONN;
+//		echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';		
+		$MYSQL_CONN &= $SQL_DBH;
+		return $SQL_DBH;
 
 	}
 
 	/**
 	  * disconnects from SQL server
 	  */
-	function sql_disconnect() {
+	function sql_disconnect(&$dbh=NULL) {
 		global $SQL_DBH;
-		$SQL_DBH = NULL;
+		if (is_null($dbh)) $SQL_DBH = NULL;
+		else $dbh = NULL;
 	}
 	
-	function sql_close() {
+	function sql_close(&$dbh=NULL) {
 		global $SQL_DBH;
-		$SQL_DBH = NULL;
+		if (is_null($dbh)) $SQL_DBH = NULL;
+		else $dbh = NULL;
 	}
 	
 	/**
 	  * executes an SQL query
 	  */
-	function sql_query($query) {
+	function sql_query($query,$dbh=NULL) {
 		global $SQLCount,$SQL_DBH;
 		$SQLCount++;
-		$res = $SQL_DBH->query($query);
+//echo '<hr />SQL_DBH: ';
+//print_r($SQL_DBH);
+//echo '<hr />DBH: ';
+//print_r($dbh);
+//echo '<hr />';
+//echo $query.'<hr />';
+		if (is_null($dbh)) $res = $SQL_DBH->query($query);
+		else $res = $dbh->query($query);
 		if ($res->errorCode() != '00000') {
 			$errors = $res->errorInfo();
+			print("SQL error with query $query: " . $errors[0].'-'.$errors[1].' '.$errors[2] . '<p />');
 		}
 		
 		return $res;
@@ -116,35 +144,48 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	/**
 	  * executes an SQL error
 	  */
-	function sql_error()
+	function sql_error($dbh=NULL)
 	{
-		return '';
+		global $SQL_DBH;
+		if (is_null($dbh)) $error = $SQL_DBH->errorInfo();
+		else $error = $dbh->errorInfo();
+		if ($error[0] != '00000') {
+			return $error[0].'-'.$error[1].' '.$error[2];
+		}
+		else return '';
 	}
 	
 	/**
 	  * executes an SQL db select
 	  */
-	function sql_select_db($db)
+	function sql_select_db($db,&$dbh=NULL)
 	{
 		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN, $MYSQL_HANDLER, $SQL_DBH;
-		$SQL_DBH = NULL;
-		try {
-			list($host,$port) = explode(":",$MYSQL_HOST);
-			if (isset($port)) 
-				$port = ';port='.trim($port);
-			else
-				$port = '';
-			$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.trim($host).$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
-			
-		} catch (PDOException $e) {
-			startUpError('<p>Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
+		if (is_null($dbh)) { 
+			try {
+				$SQL_DBH = NULL;
+				list($host,$port) = explode(":",$MYSQL_HOST);
+				if (isset($port)) 
+					$port = ';port='.trim($port);
+				else
+					$port = '';
+				$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.trim($host).$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+				return 1;
+			} catch (PDOException $e) {
+				startUpError('<p>Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
+				return 0;
+			}
+		}
+		else {
+			if ($dbh->exec("USE $db") !== false) return 1;
+			else return 0;
 		}
 	}
 	
 	/**
 	  * executes an SQL real escape 
 	  */
-	function sql_real_escape_string($val)
+	function sql_real_escape_string($val,$dbh=NULL)
 	{
 		return addslashes($val);
 	}
@@ -152,11 +193,13 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	/**
 	  * executes an SQL insert id
 	  */
-	function sql_insert_id()
+	function sql_insert_id($dbh=NULL)
 	{	
 		global $SQL_DBH;
-		
-		return $SQL_DBH->lastInsertId();
+		if (is_null($dbh))
+			return $SQL_DBH->lastInsertId();
+		else
+			return $dbh->lastInsertId();
 	}
 	
 	/**
@@ -268,19 +311,27 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	/**
 	  * Get current system status (returns string)
 	  */
-	function sql_stat()
+	function sql_stat($dbh=NULL)
 	{
 		//not implemented
-		return '';
+		global $SQL_DBH;
+		if (is_null($dbh))
+			return '';
+		else
+			return '';
 	}
 	
 	/**
 	  * Returns the name of the character set
 	  */
-	function sql_client_encoding()
+	function sql_client_encoding($dbh=NULL)
 	{
 		//not implemented
-		return '';
+		global $SQL_DBH;
+		if (is_null($dbh))
+			return '';
+		else
+			return '';
 	}
 	
 	/**
@@ -295,27 +346,38 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	/**
 	  * Get SQL server version
 	  */
-	function sql_get_server_info()
+	function sql_get_server_info($dbh=NULL)
 	{
 		global $SQL_DBH;
-		return $SQL_DBH->getAttribute(constant("PDO::ATTR_SERVER_VERSION"));
+		if (is_null($dbh))
+			return $SQL_DBH->getAttribute(constant("PDO::ATTR_SERVER_VERSION"));
+		else
+			return $dbh->getAttribute(constant("PDO::ATTR_SERVER_VERSION"));
 	}
 	
 	/**
 	  * Returns a string describing the type of SQL connection in use for the connection or FALSE on failure
 	  */
-	function sql_get_host_info()
+	function sql_get_host_info($dbh=NULL)
 	{
 		global $SQL_DBH;
-		return $SQL_DBH->getAttribute(constant("PDO::ATTR_SERVER_INFO"));
+		if (is_null($dbh))
+			return $SQL_DBH->getAttribute(constant("PDO::ATTR_SERVER_INFO"));
+		else
+			return $dbh->getAttribute(constant("PDO::ATTR_SERVER_INFO"));
 	}
 	
 	/**
 	  * Returns the SQL protocol on success, or FALSE on failure. 
 	  */
-	function sql_get_proto_info()
+	function sql_get_proto_info($dbh=NULL)
 	{
 		//not implemented
+		global $SQL_DBH;
+		if (is_null($dbh))
+			return false;
+		else
+			return false;
 		return '';
 	}
 
