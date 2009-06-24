@@ -72,11 +72,13 @@ if (phpversion() >= '4.1.0') {
 // include core classes that are needed for login & plugin handling
 // added for 3.5 sql_* wrapper
 global $MYSQL_HANDLER;
+//set the handler if different from mysql (or mysqli)
+//$MYSQL_HANDLER = array('pdo','mysql');
 if (!isset($MYSQL_HANDLER))
 	$MYSQL_HANDLER = array('mysql','');
-include_once(str_replace("install.php","",__FILE__).'nucleus/libs/sql/'.$MYSQL_HANDLER[0].'.php');
+include_once('nucleus/libs/sql/'.$MYSQL_HANDLER[0].'.php');
 // end new for 3.5 sql_* wrapper
-include_once(str_replace("install.php","",__FILE__).'/nucleus/libs/mysql.php');
+include_once('nucleus/libs/mysql.php');
 
 // check if mysql support is installed
 // this check may not make sense, as is, in a version past 3.5x
@@ -149,13 +151,14 @@ function showInstallForm() {
 
 <?php
 	// note: this piece of code is taken from phpMyAdmin
-	$result = @sql_query('SELECT VERSION() AS version');
+	$conn = sql_connect_args('localhost','','');
+	$result = @sql_query('SELECT VERSION() AS version',$conn);
 
 	if ($result != FALSE && sql_num_rows($result) > 0) {
 		$row = sql_fetch_array($result);
 		$match = explode('.', $row['version']);
 	} else {
-		$result = @sql_query('SHOW VARIABLES LIKE \'version\'');
+		$result = @sql_query('SHOW VARIABLES LIKE \'version\'',$conn);
 
 		if ($result != FALSE && @sql_num_rows($result) > 0) {
 			$row = sql_fetch_row($result);
@@ -172,7 +175,7 @@ function showInstallForm() {
 			}
 		}
 	}
-
+	sql_disconnect($conn);
 	$mysqlVersion = implode($match, '.');
 	$minVersion = '3.23';
 
