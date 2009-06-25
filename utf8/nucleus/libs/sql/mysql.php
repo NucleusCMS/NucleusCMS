@@ -21,17 +21,35 @@
  *
  * functions moved from globalfunctions.php: sql_connect, sql_disconnect, sql_query
  */
- 
+
+
 $MYSQL_CONN = 0;
 
 if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 {
 	/**
+	 *Errors before the database connection has been made
+	 */
+	function startUpError($msg, $title) {
+		?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head><title><?php echo htmlspecialchars($title)?></title></head>
+	<body>
+		<h1><?php echo htmlspecialchars($title)?></h1>
+		<?php echo $msg?>
+	</body>
+</html>
+<?php
+		exit;
+	}
+
+	/**
 	  * Connects to mysql server with arguments
 	  */
-	function sql_connect_args($mysql_host, $mysql_user, $mysql_password) {
+	function sql_connect_args($mysql_host = 'localhost', $mysql_user = '', $mysql_password = '', $mysql_database = '') {
 		
-		$CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password); 
+		$CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password);
+		if ($mysql_database) mysql_select_db($mysql_database,$CONN);
 
 		return $CONN;
 	}
@@ -53,7 +71,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {
 			mysql_set_charset($charset);
 		} elseif ($mySqlVer >= '4.1.0') {
-			sql_query("SET NAMES " . $charset);
+			sql_query("SET CHARACTER SET " . $charset);
 		}
 // </add for garble measure>*/
 
@@ -63,60 +81,67 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	/**
 	  * disconnects from SQL server
 	  */
-	function sql_disconnect() {
+	function sql_disconnect($conn = false) {
 		global $MYSQL_CONN;
-		@mysql_close($MYSQL_CONN);
+		if (!$conn) $conn = $MYSQL_CONN;
+		@mysql_close($conn);
 	}
 	
-	function sql_close() {
+	function sql_close($conn = false) {
 		global $MYSQL_CONN;
-		@mysql_close($MYSQL_CONN);
+		if (!$conn) $conn = $MYSQL_CONN;
+		@mysql_close($conn);
 	}
 	
 	/**
 	  * executes an SQL query
 	  */
-	function sql_query($query) {
+	function sql_query($query, $conn = false) {
 		global $SQLCount,$MYSQL_CONN;
+		if (!$conn) $conn = $MYSQL_CONN;
 		$SQLCount++;
-		$res = mysql_query($query,$MYSQL_CONN) or print("mySQL error with query $query: " . mysql_error() . '<p />');
+		$res = mysql_query($query,$conn) or print("mySQL error with query $query: " . mysql_error($conn) . '<p />');
 		return $res;
 	}
 	
 	/**
 	  * executes an SQL error
 	  */
-	function sql_error()
+	function sql_error($conn = false)
 	{
 		global $MYSQL_CONN;
-		return mysql_error($MYSQL_CONN);
+		if (!$conn) $conn = $MYSQL_CONN;
+		return mysql_error($conn);
 	}
 	
 	/**
 	  * executes an SQL db select
 	  */
-	function sql_select_db($db)
+	function sql_select_db($db,$conn = false)
 	{
 		global $MYSQL_CONN;
-		return mysql_select_db($db,$MYSQL_CONN);
+		if (!$conn) $conn = $MYSQL_CONN;
+		return mysql_select_db($db,$conn);
 	}
 	
 	/**
 	  * executes an SQL real escape 
 	  */
-	function sql_real_escape_string($val)
+	function sql_real_escape_string($val,$conn = false)
 	{
 		global $MYSQL_CONN;
-		return mysql_real_escape_string($val,$MYSQL_CONN);
+		if (!$conn) $conn = $MYSQL_CONN;
+		return mysql_real_escape_string($val,$conn);
 	}
 	
 	/**
 	  * executes an SQL insert id
 	  */
-	function sql_insert_id()
+	function sql_insert_id($conn = false)
 	{
 		global $MYSQL_CONN;
-		return mysql_insert_id($MYSQL_CONN);
+		if (!$conn) $conn = $MYSQL_CONN;
+		return mysql_insert_id($conn);
 	}
 	
 	/**
@@ -202,19 +227,21 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	/**
 	  * Get current system status (returns string)
 	  */
-	function sql_stat()
+	function sql_stat($conn=false)
 	{
 		global $MYSQL_CONN;
-		return mysql_stat();
+		if (!$conn) $conn = $MYSQL_CONN;
+		return mysql_stat($conn);
 	}
 	
 	/**
 	  * Returns the name of the character set
 	  */
-	function sql_client_encoding()
+	function sql_client_encoding($conn=false)
 	{
 		global $MYSQL_CONN;
-		return mysql_client_encoding();
+		if (!$conn) $conn = $MYSQL_CONN;
+		return mysql_client_encoding($conn);
 	}
 	
 	/**
@@ -228,28 +255,31 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	/**
 	  * Get SQL server version
 	  */
-	function sql_get_server_info()
+	function sql_get_server_info($conn=false)
 	{
 		global $MYSQL_CONN;
-		return mysql_get_server_info($MYSQL_CONN);
+		if (!$conn) $conn = $MYSQL_CONN;
+		return mysql_get_server_info($conn);
 	}
 	
 	/**
 	  * Returns a string describing the type of SQL connection in use for the connection or FALSE on failure
 	  */
-	function sql_get_host_info()
+	function sql_get_host_info($conn=false)
 	{
 		global $MYSQL_CONN;
-		return mysql_get_host_info($MYSQL_CONN);
+		if (!$conn) $conn = $MYSQL_CONN;
+		return mysql_get_host_info($conn);
 	}
 	
 	/**
 	  * Returns the SQL protocol on success, or FALSE on failure. 
 	  */
-	function sql_get_proto_info()
+	function sql_get_proto_info($conn=false)
 	{
 		global $MYSQL_CONN;
-		return mysql_get_proto_info($MYSQL_CONN);
+		if (!$conn) $conn = $MYSQL_CONN;
+		return mysql_get_proto_info($conn);
 	}
 
 }
