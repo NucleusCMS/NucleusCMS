@@ -608,11 +608,11 @@ function doInstall() {
 			  .     $collation;
 	}
 // </add for garble measure>*/
-		sql_query($sql) or _doError(_ERROR16 . ': ' . sql_error());
+		sql_query($sql,$MYSQL_CONN) or _doError(_ERROR16 . ': ' . sql_error($MYSQL_CONN));
 	}
 
 	// 4. try to select database
-	sql_select_db($mysql_database) or _doError(_ERROR17);
+	sql_select_db($mysql_database,$MYSQL_CONN) or _doError(_ERROR17);
 
 	// 5. execute queries
 	$filename = 'install.sql';
@@ -687,7 +687,7 @@ function doInstall() {
 			}
 // </add for garble measure>*/
 
-			sql_query($query) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query) . '</small>): ' . sql_error() );
+			sql_query($query,$MYSQL_CONN) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query) . '</small>): ' . sql_error($MYSQL_CONN) );
 		}
 	}
 
@@ -709,7 +709,7 @@ function doInstall() {
 			 . " '" . $itm_body . "',"
 			 . " '" . $itm_more . "',"
 			 . " 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
-	sql_query($newpost) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . sql_error() );
+	sql_query($newpost,$MYSQL_CONN) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . sql_error($MYSQL_CONN) );
 
 	// 6. update global settings
 	updateConfig('IndexURL',   $config_indexurl);
@@ -736,7 +736,7 @@ function doInstall() {
 		   . " WHERE"
 		   . " mnumber       = 1";
 
-	sql_query($query) or _doError(_ERROR19 . ': ' . sql_error() );
+	sql_query($query,$MYSQL_CONN) or _doError(_ERROR19 . ': ' . sql_error($MYSQL_CONN) );
 
 	// 8. update weblog settings
 	$query = 'UPDATE ' . tableName('nucleus_blog')
@@ -746,7 +746,7 @@ function doInstall() {
 		   . " WHERE"
 		   . " bnumber    = 1";
 
-	sql_query($query) or _doError(_ERROR20 . ': ' . sql_error() );
+	sql_query($query,$MYSQL_CONN) or _doError(_ERROR20 . ': ' . sql_error($MYSQL_CONN) );
 
 	// 8-2. update category settings
 	if ($charset == 'ujis') {
@@ -762,14 +762,14 @@ function doInstall() {
 		   . " WHERE"
 		   . " catid      = 1";
 
-	sql_query($query) or _doError(_ERROR20 . ': ' . sql_error() );
+	sql_query($query,$MYSQL_CONN) or _doError(_ERROR20 . ': ' . sql_error($MYSQL_CONN) );
 
 	// 9. update item date
 	$query = 'UPDATE ' . tableName('nucleus_item')
 		   . " SET   itime   = '" . date('Y-m-d H:i:s', time() ) ."'"
 		   . " WHERE inumber = 1";
 
-	sql_query($query) or _doError(_ERROR21 . ': ' . sql_error() );
+	sql_query($query,$MYSQL_CONN) or _doError(_ERROR21 . ': ' . sql_error($MYSQL_CONN) );
 
 	global $aConfPlugsToInstall, $aConfSkinsToImport;
 	$aSkinErrors = array();
@@ -795,7 +795,7 @@ function doInstall() {
 		$DIR_LIBS    = $DIR_NUCLEUS . 'libs/';
 
 		// close database connection (needs to be closed if we want to include globalfunctions.php)
-		sql_close();
+		sql_close($MYSQL_CONN);
 
 		$manager = '';
 		include_once($DIR_LIBS . 'globalfunctions.php');
@@ -827,8 +827,9 @@ function doInstall() {
 		$config_data .= "	\$MYSQL_PREFIX   = '" . (($mysql_usePrefix == 1) ? $mysql_prefix : '') . "';\n";
 		$config_data .= "	// new in 3.50. first element is db handler, the second is the db driver used by the handler\n";
 		$config_data .= "	// default is \$MYSQL_HANDLER = array('mysql','mysql');\n";
-		$config_data .= "	\$MYSQL_HANDLER = array('mysql','mysql');\n";
+		$config_data .= "	//\$MYSQL_HANDLER = array('mysql','mysql');\n";
 		$config_data .= "	//\$MYSQL_HANDLER = array('pdo','mysql');\n";
+		$config_data .= "	\$MYSQL_HANDLER = array('".$MYSQL_HANDLER[0]."','".$MYSQL_HANDLER[1]."');\n";
 		$config_data .= "\n";
 		$config_data .= "	// main nucleus directory\n";
 		$config_data .= "	\$DIR_NUCLEUS = '" . $config_adminpath . "';\n";
@@ -1101,6 +1102,7 @@ function doCheckFiles() {
 }
 
 function updateConfig($name, $val) {
+	global $MYSQL_CONN;
 	$name = addslashes($name);
 	$val  = trim(addslashes($val) );
 
@@ -1108,8 +1110,8 @@ function updateConfig($name, $val) {
 		   . " SET   value = '$val'"
 		   . " WHERE name  = '$name'";
 
-	sql_query($query) or _doError(_ERROR26 . ': ' . mysql_error() );
-	return sql_insert_id();
+	sql_query($query,$MYSQL_CONN) or _doError(_ERROR26 . ': ' . mysql_error($MYSQL_CONN) );
+	return sql_insert_id($MYSQL_CONN);
 }
 
 function replaceDoubleBackslash($input) {

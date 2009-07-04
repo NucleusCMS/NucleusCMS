@@ -67,7 +67,7 @@ if (!function_exists('sql_fetch_assoc'))
 						
 		} catch (PDOException $e) {
 			$DBH =NULL;
-			startUpError('<p>Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
+			startUpError('<p>a1 Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
 		}
 //echo '<hr />DBH: '.print_r($DBH,true).'<hr />';		
 		return $DBH;
@@ -103,7 +103,7 @@ if (!function_exists('sql_fetch_assoc'))
 // </add for garble measure>*/
 		} catch (PDOException $e) {
 			$SQL_DBH = NULL;
-			startUpError('<p>Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
+			startUpError('<p>a2 Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
 		}
 //		echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';		
 		$MYSQL_CONN &= $SQL_DBH;
@@ -168,6 +168,8 @@ if (!function_exists('sql_fetch_assoc'))
 	function sql_select_db($db,&$dbh=NULL)
 	{
 		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN, $MYSQL_HANDLER, $SQL_DBH;
+//echo '<hr />'.print_r($dbh,true).'<hr />';
+//exit;
 		if (is_null($dbh)) { 
 			try {
 				$SQL_DBH = NULL;
@@ -179,7 +181,7 @@ if (!function_exists('sql_fetch_assoc'))
 				$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.trim($host).$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
 				return 1;
 			} catch (PDOException $e) {
-				startUpError('<p>Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
+				startUpError('<p>a3 Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
 				return 0;
 			}
 		}
@@ -195,6 +197,17 @@ if (!function_exists('sql_fetch_assoc'))
 	function sql_real_escape_string($val,$dbh=NULL)
 	{
 		return addslashes($val);
+	}
+	
+	/**
+	  * executes an PDO::quote() like escape, ie adds quotes arround the string and escapes chars as needed 
+	  */
+	function sql_quote_string($val,$dbh=NULL) {
+		global $SQL_DBH;
+		if (is_null($dbh))
+			return $SQL_DBH->quote($val);
+		else
+			return $dbh->quote($val);
 	}
 	
 	/**

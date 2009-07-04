@@ -135,6 +135,15 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	}
 	
 	/**
+	  * executes an PDO::quote() like escape, ie adds quotes arround the string and escapes chars as needed 
+	  */
+	function sql_quote_string($val,$conn = false) {
+		global $MYSQL_CONN;
+		if (!$conn) $conn = $MYSQL_CONN;
+		return "'".mysql_real_escape_string($val,$conn)."'";
+	}
+	
+	/**
 	  * executes an SQL insert id
 	  */
 	function sql_insert_id($conn = false)
