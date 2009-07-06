@@ -54,16 +54,61 @@ if (!function_exists('sql_fetch_assoc'))
 			if (strpos($mysql_host,':') === false) {
 				$host = $mysql_host;
 				$port = '';
+				$portnum = '';
 			}
 			else {
 				list($host,$port) = explode(":",$mysql_host);
-				if (isset($port)) 
+				if (isset($port)) {
+					$portnum = $port;
 					$port = ';port='.trim($port);
-				else
+				}
+				else {
 					$port = '';
+					$portnum = '';
+				}
+			}
+			
+			switch ($MYSQL_HANDLER[1]) {
+				case 'sybase':
+				case 'dblib':
+					if (is_numeric($portnum)) $port = ':'.intval($portnum);
+					else $port = '';
+					$DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$mysql_database, $mysql_user, $mysql_password);
+				break;
+				case 'mssql':
+					if (is_numeric($portnum)) $port = ','.intval($portnum);
+					else $port = '';
+					$DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$mysql_database, $mysql_user, $mysql_password);
+				break;
+				case 'oci':
+					if (is_numeric($portnum)) $port = ':'.intval($portnum);
+					else $port = '';
+					$DBH = new PDO($MYSQL_HANDLER[1].':dbname=//'.$host.$port.'/'.$mysql_database, $mysql_user, $mysql_password);
+				break;
+				case 'odbc':
+					if (is_numeric($portnum)) $port = ';PORT='.intval($portnum);
+					else $port = '';
+					$DBH = new PDO($MYSQL_HANDLER[1].':DRIVER={IBM DB2 ODBC DRIVER};HOSTNAME='.$host.$port.';DATABASE='.$mysql_database.';PROTOCOL=TCPIP;UID='.$mysql_user.';PWD='.$mysql_password);
+
+				break;
+				case 'pgsql':
+					if (is_numeric($portnum)) $port = ';port='.intval($portnum);
+					else $port = '';
+					$DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$mysql_database, $mysql_user, $mysql_password);
+				break;
+				case 'sqlite':
+				case 'sqlite2':
+					if (is_numeric($portnum)) $port = ':'.intval($portnum);
+					else $port = '';
+					$DBH = new PDO($MYSQL_HANDLER[1].':'.$mysql_database, $mysql_user, $mysql_password);
+				break;
+				default:
+					//mysql
+					$DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$mysql_database, $mysql_user, $mysql_password);
+				break;
 			}
 	
-			$DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$mysql_database, $mysql_user, $mysql_password);
+			
 						
 		} catch (PDOException $e) {
 			$DBH =NULL;
@@ -86,13 +131,57 @@ if (!function_exists('sql_fetch_assoc'))
 			}
 			else {
 				list($host,$port) = explode(":",$MYSQL_HOST);
-				if (isset($port)) 
+				if (isset($port)) {
+					$portnum = $port;
 					$port = ';port='.trim($port);
-				else
+				}
+				else {
 					$port = '';
+					$portnum = '';
+				}
 			}
 			
-			$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$MYSQL_DATABASE, $MYSQL_USER, $MYSQL_PASSWORD);
+			switch ($MYSQL_HANDLER[1]) {
+				case 'sybase':
+				case 'dblib':
+					if (is_numeric($portnum)) $port = ':'.intval($portnum);
+					else $port = '';
+					$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$MYSQL_DATABASE, $MYSQL_USER, $MYSQL_PASSWORD);
+				break;
+				case 'mssql':
+					if (is_numeric($portnum)) $port = ','.intval($portnum);
+					else $port = '';
+					$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$MYSQL_DATABASE, $MYSQL_USER, $MYSQL_PASSWORD);
+				break;
+				case 'oci':
+					if (is_numeric($portnum)) $port = ':'.intval($portnum);
+					else $port = '';
+					$SQL_DBH = new PDO($MYSQL_HANDLER[1].':dbname=//'.$host.$port.'/'.$MYSQL_DATABASE, $MYSQL_USER, $MYSQL_PASSWORD);
+				break;
+				case 'odbc':
+					if (is_numeric($portnum)) $port = ';PORT='.intval($portnum);
+					else $port = '';
+					$SQL_DBH = new PDO($MYSQL_HANDLER[1].':DRIVER={IBM DB2 ODBC DRIVER};HOSTNAME='.$host.$port.';DATABASE='.$MYSQL_DATABASE.';PROTOCOL=TCPIP;UID='.$MYSQL_USER.';PWD='.$MYSQL_PASSWORD);
+
+				break;
+				case 'pgsql':
+					if (is_numeric($portnum)) $port = ';port='.intval($portnum);
+					else $port = '';
+					$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$MYSQL_DATABASE, $MYSQL_USER, $MYSQL_PASSWORD);
+				break;
+				case 'sqlite':
+				case 'sqlite2':
+					if (is_numeric($portnum)) $port = ':'.intval($portnum);
+					else $port = '';
+					$SQL_DBH = new PDO($MYSQL_HANDLER[1].':'.$MYSQL_DATABASE, $MYSQL_USER, $MYSQL_PASSWORD);
+				break;
+				default:
+					//mysql
+					$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$MYSQL_DATABASE, $MYSQL_USER, $MYSQL_PASSWORD);
+				break;
+			}
+			
+			//$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$MYSQL_DATABASE, $MYSQL_USER, $MYSQL_PASSWORD);
 						
 		} catch (PDOException $e) {
 			$SQL_DBH = NULL;
@@ -167,11 +256,55 @@ if (!function_exists('sql_fetch_assoc'))
 			try {
 				$SQL_DBH = NULL;
 				list($host,$port) = explode(":",$MYSQL_HOST);
-				if (isset($port)) 
+				if (isset($port)) {
+					$portnum = $port;
 					$port = ';port='.trim($port);
-				else
+				}
+				else {
 					$port = '';
-				$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.trim($host).$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+					$portnum = '';
+				}
+				//$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.trim($host).$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+				//$SQL_DBH = sql_connect();
+				switch ($MYSQL_HANDLER[1]) {
+					case 'sybase':
+					case 'dblib':
+						if (is_numeric($portnum)) $port = ':'.intval($portnum);
+						else $port = '';
+						$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+					break;
+					case 'mssql':
+						if (is_numeric($portnum)) $port = ','.intval($portnum);
+						else $port = '';
+						$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+					break;
+					case 'oci':
+						if (is_numeric($portnum)) $port = ':'.intval($portnum);
+						else $port = '';
+						$SQL_DBH = new PDO($MYSQL_HANDLER[1].':dbname=//'.$host.$port.'/'.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+					break;
+					case 'odbc':
+						if (is_numeric($portnum)) $port = ';PORT='.intval($portnum);
+						else $port = '';
+						$SQL_DBH = new PDO($MYSQL_HANDLER[1].':DRIVER={IBM DB2 ODBC DRIVER};HOSTNAME='.$host.$port.';DATABASE='.$db.';PROTOCOL=TCPIP;UID='.$MYSQL_USER.';PWD='.$MYSQL_PASSWORD);
+
+					break;
+					case 'pgsql':
+						if (is_numeric($portnum)) $port = ';port='.intval($portnum);
+						else $port = '';
+						$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+					break;
+					case 'sqlite':
+					case 'sqlite2':
+						if (is_numeric($portnum)) $port = ':'.intval($portnum);
+						else $port = '';
+						$SQL_DBH = new PDO($MYSQL_HANDLER[1].':'.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+					break;
+					default:
+						//mysql
+						$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+					break;
+				}
 				return 1;
 			} catch (PDOException $e) {
 				startUpError('<p>a3 Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
