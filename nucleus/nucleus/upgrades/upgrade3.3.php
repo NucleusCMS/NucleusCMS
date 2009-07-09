@@ -1,7 +1,7 @@
 <?php
-function upgrade_do33() {
+function upgrade_do330() {
 
-	if (upgrade_checkinstall(33))
+	if (upgrade_checkinstall(330))
 		return 'already installed';
 
 	if (!upgrade_checkIfColumnExists('comment','cemail')) {

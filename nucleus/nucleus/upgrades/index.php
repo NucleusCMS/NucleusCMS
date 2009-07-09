@@ -43,25 +43,26 @@ When upgrading from an older Nucleus version, upgrades to the database tables ar
 
 <?php  // calculate current version
 	  if (!upgrade_checkinstall(96)) $current = 95;
-  else  if (!upgrade_checkinstall(10)) $current = 96;
-  else  if (!upgrade_checkinstall(11)) $current = 10;
-  else  if (!upgrade_checkinstall(15)) $current = 11;
-  else  if (!upgrade_checkinstall(20)) $current = 15;
-  else  if (!upgrade_checkinstall(25)) $current = 20;
-  else  if (!upgrade_checkinstall(30)) $current = 25;
-  else  if (!upgrade_checkinstall(31)) $current = 30;
-  else  if (!upgrade_checkinstall(32)) $current = 31;
-  else  if (!upgrade_checkinstall(33)) $current = 32;
-  else  if (!upgrade_checkinstall(34)) $current = 33;
-  else  $current = 34;
+  else  if (!upgrade_checkinstall(100)) $current = 96;
+  else  if (!upgrade_checkinstall(110)) $current = 100;
+  else  if (!upgrade_checkinstall(150)) $current = 110;
+  else  if (!upgrade_checkinstall(200)) $current = 150;
+  else  if (!upgrade_checkinstall(250)) $current = 200;
+  else  if (!upgrade_checkinstall(300)) $current = 250;
+  else  if (!upgrade_checkinstall(310)) $current = 300;
+  else  if (!upgrade_checkinstall(320)) $current = 310;
+  else  if (!upgrade_checkinstall(330)) $current = 320;
+  else  if (!upgrade_checkinstall(340)) $current = 330;
+  else  if (!upgrade_checkinstall(350)) $current = 340;
+  else  $current = 350;
 
-  if ($current == 34) {
+  if ($current == 350) {
 	?>
 	  <p class="ok">No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.</p>
 	<?php
   } else {
 	?>
-	  <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.4</a></p>
+	  <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.5</a></p>
 	<?php
   }
 ?>
@@ -86,7 +87,7 @@ if (!$DIR_MEDIA) {
   $sth = 1;
 }
 if (!$DIR_SKINS) {
-  upgrade_manual_20();
+  upgrade_manual_200();
   $sth = 1;
 }
 
@@ -99,8 +100,15 @@ if (phpversion() < '4.0.6') {
 
 // upgrades from pre-340 version need to be told of recommended .htaccess files for the media and skins folders.
 // these .htaccess files are included in new installs of 340 or higher
-if (in_array($from,array(95,96)) || $from < 34) {
-  upgrade_manual_34();
+if (in_array($from,array(95,96)) || $from < 340) {
+  upgrade_manual_340();
+  $sth = 1;
+} 
+
+// upgrades from pre-350 version need to be told of deprecation of PHP4 support and two new plugins 
+// included with 3.5 and higher
+if (in_array($from,array(95,96)) || $from < 350) {
+  upgrade_manual_350();
   $sth = 1;
 } 
 
@@ -135,7 +143,7 @@ function upgrade_manual_96() {
 
 <?php }
 
-function upgrade_manual_20() {
+function upgrade_manual_200() {
   global $DIR_NUCLEUS;
 
   $guess = str_replace("/nucleus/","/skins/",$DIR_NUCLEUS);
@@ -157,7 +165,7 @@ function upgrade_manual_20() {
 
 <?php }
 
-function upgrade_manual_34() {
+function upgrade_manual_340() {
   global $DIR_NUCLEUS;
 
 ?>
@@ -174,6 +182,27 @@ function upgrade_manual_34() {
 	</ul>
   </p>
   
+<?php }
+
+function upgrade_manual_350() {
+  global $DIR_NUCLEUS;
+
+?>
+  <h2>Important Notices for Nucleus 3.5</h2>
+  
+<?php	// Give user warning if they are running old version of PHP
+        if (phpversion() < '5') {
+                echo '<p>WARNING: You are running NucleusCMS on a older version of PHP that is no longer supported by NucleusCMS. Please upgrade to PHP5!</p>';
+        }
+?>  
+  
+  <p>
+    Two new plugins have been included with version 3.5. You may want to consider installing them from the Plugins page of the admin area.
+	<ul>
+	   <li><strong>NP_Text</strong>: Allows you to use internationalized skins to simplify translation.</li>
+	   <li><strong>NP_SecurityEnforcer</strong>: Enforces some security properties like password complexity and maximum failed login attempts. Note that it is disabled by default and must be enabled after installation.</li>
+	</ul>
+  </p>
 
 <?php }
 

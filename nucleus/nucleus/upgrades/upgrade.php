@@ -38,6 +38,7 @@ include('upgrade3.1.php');
 include('upgrade3.2.php');
 include('upgrade3.3.php');
 include('upgrade3.4.php');
+include('upgrade3.5.php');
 
 $from = intGetVar('from');
 
@@ -48,27 +49,30 @@ switch($from) {
 		upgrade_do95();
 		upgrade_do96();
 	case 96:
-		upgrade_do10();
-	case 10:
-		upgrade_do11();
-	case 11:
-		upgrade_do15();
-	case 15:
-		upgrade_do20();
-	case 20:
-		upgrade_do25();
-	case 25:
-		upgrade_do30();
-	case 30:
-		upgrade_do31();
-	case 31:
-		upgrade_do32();
+		upgrade_do100();
+	case 100:
+		upgrade_do110();
+	case 110:
+		upgrade_do150();
+	case 150:
+		upgrade_do200();
+	case 200:
+		upgrade_do250();
+	case 250:
+		upgrade_do300();
+	case 300:
+		upgrade_do310();
+	case 310:
+		upgrade_do320();
 		//break;
-	case 32:
-		upgrade_do33();
+	case 320:
+		upgrade_do330();
 		//break;
-	case 33:
-		upgrade_do34();
+	case 330:
+		upgrade_do340();
+		//break;
+	case 340:
+		upgrade_do350();
 		break;
 	default:
 		echo "<li>Error! No updates to execute</li>";

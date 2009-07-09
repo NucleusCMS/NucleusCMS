@@ -1,7 +1,7 @@
 <?php
-function upgrade_do31() {
+function upgrade_do310() {
 
-	if (upgrade_checkinstall(31))
+	if (upgrade_checkinstall(310))
 		return 'already installed';
 
 	// 3.0 -> 3.1

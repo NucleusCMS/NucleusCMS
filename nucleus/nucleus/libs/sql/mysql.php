@@ -278,39 +278,42 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		return mysql_get_proto_info($conn);
 	}
 
-}
-
-/**************************************************************************
-	Unimplemented mysql_* functions
 	
-# mysql_ change_ user
-# mysql_ create_ db
-# mysql_ data_ seek
-# mysql_ db_ name
-# mysql_ db_ query
-# mysql_ drop_ db
-# mysql_ errno
-# mysql_ escape_ string
-# mysql_ fetch_ lengths
-# mysql_ field_ flags
-# mysql_ field_ len
-# mysql_ field_ name
-# mysql_ field_ seek
-# mysql_ field_ table
-# mysql_ field_ type
-# mysql_ info
-# mysql_ list_ dbs
-# mysql_ list_ fields
-# mysql_ list_ processes
-# mysql_ list_ tables
-# mysql_ pconnect
-# mysql_ ping
-# mysql_ set_ charset
-# mysql_ tablename
-# mysql_ thread_ id
-# mysql_ unbuffered_ query
+/**************************************************************************
+Unimplemented mysql_* functions
+
+# mysql_ data_ seek (maybe useful)
+# mysql_ errno (maybe useful)
+# mysql_ fetch_ lengths (maybe useful)
+# mysql_ field_ flags (maybe useful)
+# mysql_ field_ len (maybe useful)
+# mysql_ field_ name (maybe useful)
+# mysql_ field_ seek (maybe useful)
+# mysql_ field_ table (maybe useful)
+# mysql_ field_ type (maybe useful)
+# mysql_ info (maybe useful)
+# mysql_ list_ processes (maybe useful)
+# mysql_ ping (maybe useful)
+# mysql_ set_ charset (maybe useful, requires php >=5.2.3 and mysql >=5.0.7)
+# mysql_ thread_ id (maybe useful)
+
+# mysql_ db_ name (useful only if working on multiple dbs which we do not do)
+# mysql_ list_ dbs (useful only if working on multiple dbs which we do not do)
+
+# mysql_ pconnect (probably not useful and could cause some unintended performance issues)
+# mysql_ unbuffered_ query (possibly useful, but complicated and not supported by all database drivers (pdo))
+
+# mysql_ change_ user (deprecated)
+# mysql_ create_ db (deprecated)
+# mysql_ db_ query (deprecated)
+# mysql_ drop_ db (deprecated)
+# mysql_ escape_ string (deprecated)
+# mysql_ list_ fields (deprecated)
+# mysql_ list_ tables (deprecated)
+# mysql_ tablename (deprecated)
+
 *******************************************************************/
 
 
-
+}
 ?>

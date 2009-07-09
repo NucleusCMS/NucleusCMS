@@ -1,7 +1,7 @@
 <?php
-function upgrade_do15() {
+function upgrade_do150() {
 
-	if (upgrade_checkinstall(15))
+	if (upgrade_checkinstall(150))
 		return "already installed";
 	
 	// create nucleus_plugin_event

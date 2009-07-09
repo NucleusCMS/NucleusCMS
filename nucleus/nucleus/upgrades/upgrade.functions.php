@@ -17,6 +17,10 @@
 	 * @copyright Copyright (C) 2002-2006 The Nucleus Group
 	 * @version $Id$
 	 */
+	 
+/*************************************************************
+ *     NOTE: With upgrade to 3.6, need to set this to use sql_* API           *
+ **************************************************************/
 
 	include('../../config.php');
 
@@ -52,54 +56,58 @@
 				$query = 'SELECT cip FROM '.sql_table('comment').' LIMIT 1';
 				$minrows = -1;
 				break;
-			case '10':
+			case '100':
 				$query = 'SELECT mcookiekey FROM '.sql_table('member').' LIMIT 1';
 				$minrows = -1;
 				break;
-			case '11':
+			case '110':
 				$query = 'SELECT bnotifytype FROM '.sql_table('blog').' LIMIT 1';
 				$minrows = -1;
 				break;
-			case '15':
+			case '150':
 				$query = 'SELECT * FROM '.sql_table('plugin_option').' LIMIT 1';
 				$minrows = -1;
 				break;
-			case '20':
+			case '200':
 				$query = 'SELECT sdincpref FROM '.sql_table('skin_desc').' LIMIT 1';
 				$minrows = -1;
 				break;
 			// dev only (v2.2)
-			case '22':
+			case '220':
 				$query = 'SELECT oid FROM '.sql_table('plugin_option_desc').' LIMIT 1';
 				$minrows = -1;
 				break;
 			// v2.5 beta
-			case '24':
+			case '240':
 				$query = 'SELECT bincludesearch FROM ' . sql_table('blog') . ' LIMIT 1';
 				$minrows = -1;
 				break;
-			case '25':
+			case '250':
 				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 250 LIMIT 1';
 				$minrows = 1;
 				break;
-			case '30':
+			case '300':
 				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 300 LIMIT 1';
 				$minrows = 1;
 				break;
-			case '31':
+			case '310':
 				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 310 LIMIT 1';
 				$minrows = 1;
 				break;
-			case '32':
+			case '320':
 				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 320 LIMIT 1';
 				$minrows = 1;
 				break;
-			case '33':
+			case '330':
 				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 330 LIMIT 1';
 				$minrows = 1;
 				break;
-			case '34':
+			case '340':
 				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 340 LIMIT 1';
+				$minrows = 1;
+				break;
+			case '350':
+				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 350 LIMIT 1';
 				$minrows = 1;
 				break;
 		}
