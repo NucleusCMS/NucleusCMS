@@ -1,14 +1,14 @@
 <?php
-function upgrade_do25() {
+function upgrade_do250() {
 	global $upgrade_failures;
 		//needed as some queries depend on the success of others
 
-	if (upgrade_checkinstall(25))
+	if (upgrade_checkinstall(250))
 		return 'already installed';
 
 	// -------------------- 2.0 -> 2.2 (dev only) --------------------
 	// (avoid doing this twice :))
-	if (!upgrade_checkinstall(22))	{
+	if (!upgrade_checkinstall(220))	{
 		// 1. create nucleus_plugin_option_desc table
 		// create new table: nucleus_plugin_option
 		if (!upgrade_checkIfTableExists('plugin_option_desc')) {
@@ -97,7 +97,7 @@ function upgrade_do25() {
 		upgrade_query('Repairing comment table', 'REPAIR TABLE ' . sql_table('comment'));	
 	}	
 	
-	if (!upgrade_checkinstall(24))	{
+	if (!upgrade_checkinstall(240))	{
 	    $query = ' ALTER TABLE ' . sql_table('blog') . ' ADD bincludesearch TINYINT(2) DEFAULT 0';
 		upgrade_query('Adding bincludesearch column to blog', $query);
 	}

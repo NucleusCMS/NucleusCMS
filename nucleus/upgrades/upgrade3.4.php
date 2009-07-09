@@ -1,7 +1,7 @@
 <?php
-function upgrade_do34() {
+function upgrade_do340() {
 
-	if (upgrade_checkinstall(34))
+	if (upgrade_checkinstall(340))
 		return 'already installed';
 	
 	// Give user warning if they are running old version of PHP

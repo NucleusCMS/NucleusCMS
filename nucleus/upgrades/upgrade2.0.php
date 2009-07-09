@@ -1,7 +1,7 @@
 <?php
-function upgrade_do20() {
+function upgrade_do200() {
 
-	if (upgrade_checkinstall(20))
+	if (upgrade_checkinstall(200))
 		return "already installed";
 
 	// queries come here

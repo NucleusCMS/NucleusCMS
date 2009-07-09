@@ -1,8 +1,8 @@
 <?php
-function upgrade_do11() {
+function upgrade_do110() {
 	global $upgrade_failures;
 
-	if (upgrade_checkinstall(11))
+	if (upgrade_checkinstall(110))
 		return "already installed";
 	
 	// 1. add some options to nucleus_config

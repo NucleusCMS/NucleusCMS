@@ -1,7 +1,7 @@
 <?php
-function upgrade_do10() {
+function upgrade_do100() {
 	
-	if (upgrade_checkinstall(10))
+	if (upgrade_checkinstall(100))
 		return "already installed";
 	
 	// 1. add extra indices to tables

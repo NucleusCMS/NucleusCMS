@@ -1769,7 +1769,7 @@ class ADMIN {
 				<td><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
 				<br /><small><?php echo _MEMBERS_DISPLAY_INFO?></small>
 				</td>
-				<td><input tabindex="10010" name="name" size="16" maxlength="16" /></td>
+				<td><input tabindex="10010" name="name" size="32" maxlength="32" /></td>
 			</tr><tr>
 				<td><?php echo _MEMBERS_REALNAME?></td>
 				<td><input name="realname" tabindex="10020" size="40" maxlength="60" /></td>
@@ -1851,7 +1851,7 @@ class ADMIN {
 			</td>
 			<td>
 			<?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
-				<input name="name" tabindex="10" maxlength="16" size="16" value="<?php echo  htmlspecialchars($mem->getDisplayName()); ?>" />
+				<input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  htmlspecialchars($mem->getDisplayName()); ?>" />
 			<?php } else {
 				echo htmlspecialchars($member->getDisplayName());
 			   }

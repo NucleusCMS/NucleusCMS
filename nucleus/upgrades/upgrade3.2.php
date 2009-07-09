@@ -1,7 +1,7 @@
 <?php
-function upgrade_do32() {
+function upgrade_do320() {
 
-	if (upgrade_checkinstall(32))
+	if (upgrade_checkinstall(320))
 		return 'already installed';
 
 	// create nucleus_activation table
