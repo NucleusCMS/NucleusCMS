@@ -79,12 +79,15 @@ class BLOG {
 	 * @param $template
 	 *		String representing the template name to be used
 	 */
-	function showArchive($templatename, $year, $month, $day=0) {
+	function showArchive($templatename, $year, $month = 0, $day = 0) {
 
 		// create extra where clause for select query
-		if ($day == 0) {
+		if ($day == 0 && $month != 0) {
 			$timestamp_start = mktime(0,0,0,$month,1,$year);
 			$timestamp_end = mktime(0,0,0,$month+1,1,$year);  // also works when $month==12
+		} elseif ($month == 0) {
+			$timestamp_start = mktime(0,0,0,1,1,$year);
+			$timestamp_end = mktime(0,0,0,12,31,$year);  // also works when $month==12
 		} else {
 			$timestamp_start = mktime(0,0,0,$month,$day,$year);
 			$timestamp_end = mktime(0,0,0,$month,$day+1,$year);
@@ -580,7 +583,6 @@ class BLOG {
 		if ($mode == 'day')
 			$query .= ', Day';
 
-
 		$query .= ' ORDER BY itime DESC';
 
 		if ($limit > 0)
@@ -610,6 +612,7 @@ class BLOG {
 				$data['day'] = '';
 				$archive['day'] = '';
 			}
+
 			$data['year'] = date('Y',$current->itime);
 			$archive['year'] = $data['year'];
 			$data['archivelink'] = createArchiveLink($this->getID(),$archivedate,$linkparams);
@@ -828,7 +831,6 @@ class BLOG {
 			   . "     btimeoffset=" . $offset . ","
 			   . "     bpublic=" . intval($this->isPublic()) . ","
 			   . "     breqemail=" . intval($this->emailRequired()) . ","
-			   . "     bsendping=" . intval($this->sendPing()) . ","
 			   . "     bconvertbreaks=" . intval($this->convertBreaks()) . ","
 			   . "     ballowpast=" . intval($this->allowPastPosting()) . ","
 			   . "     bnotify='" . addslashes($this->getNotifyAddress()) . "',"
@@ -882,14 +884,6 @@ class BLOG {
 		} else {
 			return $this->getDefaultCategory();
 		}
-	}
-
-	function sendPing() {
-		return $this->getSetting('bsendping');
-	}
-
-	function setPingUserland($val) {
-		$this->setSetting('bsendping',$val);
 	}
 
 	function convertBreaks() {

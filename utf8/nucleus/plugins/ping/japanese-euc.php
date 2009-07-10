@@ -15,4 +15,5 @@
 	define('_PING_SUCCESS', '成功');
 	define('_UPDATEDPING_GOSENDPING', 'pingを送信する'); 
 	define('_PING_EXTRA_PLUGIN_OPTION', '更新ping');
+	define('_PING_SENDPING', '新しく記事が投稿された時に更新pingを送信しますか？');
 ?>

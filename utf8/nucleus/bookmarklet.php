@@ -110,7 +110,7 @@ function bm_doAddItem() {
 		$aTag      = ' <a href="' . $href . '" onclick="' . $onclick . '" title="' . $title . '">';
 		$message   = _BOOKMARKLET_NEW_CATEGORY . $aTag . _BOOKMARKLET_NEW_CATEGORY_EDIT . '</a>';
 		$extrahead = '';
-	} elseif ( (postVar('actiontype') == 'addnow') && $blog->sendPing() ) {
+	} elseif ( (postVar('actiontype') == 'addnow')) {
 		$message = _BOOKMARKLET_SEND_PING;
 		$pingUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=sendping&blogid=' . intval($blogid) );
 		$extrahead = '<meta http-equiv="refresh" content="1; url=' . htmlspecialchars($pingUrl) . '" />';

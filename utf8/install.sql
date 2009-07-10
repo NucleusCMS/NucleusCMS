@@ -15,9 +15,9 @@ CREATE TABLE `nucleus_activation` (
 CREATE TABLE `nucleus_ban` (
   `iprange` varchar(15)  NOT NULL default '',
   `reason`  varchar(255) NOT NULL default '',
-  `blogid`  int(11)      NOT NULL default '0',
-  KEY `iprange` (`iprange`),
-  KEY `blogid`  (`blogid`)
+  `blogid`  int(11)      NOT NULL default '0'
+--  KEY `iprange` (`iprange`),
+--  KEY `blogid`  (`blogid`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_blog` (
@@ -33,7 +33,7 @@ CREATE TABLE `nucleus_blog` (
   `bupdate`        varchar(60)           default NULL,
   `bdefskin`       int(11)      NOT NULL default '1',
   `bpublic`        tinyint(2)   NOT NULL default '1',
-  `bsendping`      tinyint(2)   NOT NULL default '0',
+--  `bsendping`      tinyint(2)   NOT NULL default '0',
   `bconvertbreaks` tinyint(2)   NOT NULL default '1',
   `bdefcat`        int(11)               default NULL,
   `bnotifytype`    int(11)      NOT NULL default '15',
@@ -47,7 +47,6 @@ CREATE TABLE `nucleus_blog` (
 ) TYPE=MyISAM;
 
 INSERT INTO `nucleus_blog` VALUES (1, 'My Nucleus CMS', 'mynucleuscms', '', 1, 0, 0.0, '', 'http://localhost:8080/nucleus/', '', 5, 1, 0, 1, 1, 1, 1, 0, 0, 0);
-
 
 CREATE TABLE `nucleus_category` (
   `catid` int(11) NOT NULL auto_increment,
@@ -140,8 +139,8 @@ CREATE TABLE `nucleus_item` (
 
 CREATE TABLE `nucleus_karma` (
   `itemid` int(11)  NOT NULL default '0',
-  `ip`     char(15) NOT NULL default '',
-  KEY      `itemid` (`itemid`)
+  `ip`     char(15) NOT NULL default ''
+--,  KEY      `itemid` (`itemid`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_member` (
