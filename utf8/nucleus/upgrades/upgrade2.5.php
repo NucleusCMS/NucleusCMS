@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -11,21 +11,22 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  * $NucleusJP: upgrade2.5.php,v 1.3.2.1 2007/10/24 05:39:16 kimitake Exp $
  *
  */
 
-function upgrade_do25() {
+function upgrade_do250() {
 	global $upgrade_failures;
 		//needed as some queries depend on the success of others
 
-	if (upgrade_checkinstall(25))
+	if (upgrade_checkinstall(250))
 		return 'already installed';
 
 	// -------------------- 2.0 -> 2.2 (dev only) --------------------
 	// (avoid doing this twice :))
-	if (!upgrade_checkinstall(22))	{
+	if (!upgrade_checkinstall(220))	{
 		// 1. create nucleus_plugin_option_desc table
 		// create new table: nucleus_plugin_option
 		if (!upgrade_checkIfTableExists('plugin_option_desc')) {
@@ -114,7 +115,7 @@ function upgrade_do25() {
 		upgrade_query('Repairing comment table', 'REPAIR TABLE ' . sql_table('comment'));	
 	}	
 	
-	if (!upgrade_checkinstall(24))	{
+	if (!upgrade_checkinstall(240))	{
 	    $query = ' ALTER TABLE ' . sql_table('blog') . ' ADD bincludesearch TINYINT(2) DEFAULT 0';
 		upgrade_query('Adding bincludesearch column to blog', $query);
 	}

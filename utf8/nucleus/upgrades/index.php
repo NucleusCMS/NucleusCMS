@@ -44,33 +44,35 @@ upgrade_head();
 </p>
 
 <?php  // calculate current version
-	  if (!upgrade_checkinstall(96)) $current = 95;
-  else  if (!upgrade_checkinstall(10)) $current = 96;
-  else  if (!upgrade_checkinstall(11)) $current = 10;
-  else  if (!upgrade_checkinstall(15)) $current = 11;
-  else  if (!upgrade_checkinstall(20)) $current = 15;
-  else  if (!upgrade_checkinstall(25)) $current = 20;
-  else  if (!upgrade_checkinstall(30)) $current = 25;
-  else  if (!upgrade_checkinstall(31)) $current = 30;
-  else  if (!upgrade_checkinstall(32)) $current = 31;
-  else  if (!upgrade_checkinstall(33)) $current = 32;
-  else  if (!upgrade_checkinstall(331)) $current = 33;
-  else  if (!upgrade_checkinstall(34)) $current = 33;
-  else  $current = 34;
+      if (!upgrade_checkinstall(96)) $current = 95;
+  else  if (!upgrade_checkinstall(100)) $current = 96;
+  else  if (!upgrade_checkinstall(110)) $current = 100;
+  else  if (!upgrade_checkinstall(150)) $current = 110;
+  else  if (!upgrade_checkinstall(200)) $current = 150;
+  else  if (!upgrade_checkinstall(250)) $current = 200;
+  else  if (!upgrade_checkinstall(300)) $current = 250;
+  else  if (!upgrade_checkinstall(310)) $current = 300;
+  else  if (!upgrade_checkinstall(320)) $current = 310;
+  else  if (!upgrade_checkinstall(330)) $current = 320;
+  else  if (!upgrade_checkinstall(331)) $current = 330;
+  else  if (!upgrade_checkinstall(340)) $current = 331;
+  else  if (!upgrade_checkinstall(350)) $current = 340;
+  else  $current = 350;
 
-  if ($current == 34) { 	 
+  if ($current == 350) { 	 
          ?> 	 
            <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p> 	 
          <?php 	 
    } else {
-	?>
-	  <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.4 用にアップグレードします</a></p>
+    ?>
+      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.4 用にアップグレードします</a></p>
          <?php 	 
    } 	 
  ?> 	 
 
 <div class="note">
 <b>注意:</b> 作業中、各ステップごとにデータベースのバックアップを忘れないようにして下さい。
+
 </div>
 
 <h1>手動変更</h1>
@@ -80,7 +82,7 @@ upgrade_head();
 <?php
 $from = intGetVar('from');
 if (!$from) 
-	$from = $current;
+    $from = $current;
 
 $sth = 0;
 if (!$DIR_MEDIA) {
@@ -104,8 +106,15 @@ $sth = upgrade_manual_atom1_0();
 
 // upgrades from pre-340 version need to be told of recommended .htaccess files for the media and skins folders.
 // these .htaccess files are included in new installs of 340 or higher
-if (in_array($from,array(95,96)) || $from < 34) {
-  upgrade_manual_34();
+if (in_array($from,array(95,96)) || $from < 340) {
+  upgrade_manual_340();
+  $sth = 1;
+} 
+
+// upgrades from pre-350 version need to be told of deprecation of PHP4 support and two new plugins 
+// included with 3.5 and higher
+if (in_array($from,array(95,96)) || $from < 350) {
+  upgrade_manual_350();
   $sth = 1;
 } 
 
@@ -140,7 +149,7 @@ function upgrade_manual_96() {
 
 <?php }
 
-function upgrade_manual_20() {
+function upgrade_manual_200() {
   global $DIR_NUCLEUS;
 
   $guess = str_replace("/nucleus/","/skins/",$DIR_NUCLEUS);
@@ -162,23 +171,44 @@ function upgrade_manual_20() {
 
 <?php }
 
-function upgrade_manual_34() {
+function upgrade_manual_340() {
   global $DIR_NUCLEUS;
 
 ?>
   <h2>Nucleus 3.4 用に必要な変更</h2>
   <p>
-	<em>skins</em>ディレクトリと<em>media</em>ディレクトリに「.haccess」を設置して、アクセス制限をかけることが推奨されます。この変更は、Nucleusの機能やセキュリティに直接関係があるわけではありませんが、不正アクセスを防ぐ為の重要な助けになるでしょう。
+    <em>skins</em>ディレクトリと<em>media</em>ディレクトリに「.haccess」を設置して、アクセス制限をかけることが推奨されます。この変更は、Nucleusの機能やセキュリティに直接関係があるわけではありませんが、不正アクセスを防ぐ為の重要な助けになるでしょう。
   </p>
   
   <p>
     手順は以下の2つのファイルに書いてありますので参考にしてください：
-	<ul>
-	   <li><a href="../../extra/htaccess/media/readme.ja.txt">extra/htaccess/media/readme.ja.txt</a></li>
-	   <li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>
-	</ul>
+    <ul>
+       <li><a href="../../extra/htaccess/media/readme.ja.txt">extra/htaccess/media/readme.ja.txt</a></li>
+       <li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>
+    </ul>
   </p>
   
+<?php }
+
+function upgrade_manual_350() {
+  global $DIR_NUCLEUS;
+
+?>
+  <h2>Nucleus 3.5に関する重要なお知らせ</h2>
+  
+<?php	// Give user warning if they are running old version of PHP
+        if (phpversion() < '5') {
+                echo '<p>警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！</p>';
+        }
+?>  
+  
+  <p>
+    バージョン3.5から、さらに二つのプラグインが同梱になりました。管理エリアからこれらをインストールできます。
+    <ul>
+       <li><strong>NP_Text</strong>：スキンで記述するテキストを、簡単に他国語対応に出来るようにするプラグインです。</li>
+       <li><strong>NP_SecurityEnforcer</strong>：ログインの失敗が許される回数やパスワード強度を設定することが出来ます。設定はプラグインのインストール後に有効化されます。</li>
+    </ul>
+  </p>
 
 <?php }
 
@@ -190,46 +220,46 @@ function upgrade_manual_php405() {
 </p>
 <ul>
   <li>nucleus/libs/PARSER.php のコードが下記のようになっていることを確認して下さい。（84行目から）:
-	<pre>
+    <pre>
 
   if (in_array($actionlc, $this-&gt;actions) || $this-&gt;norestrictions ) {
-	<strong>$this-&gt;call_using_array($action, $this-&gt;handler, $params);</strong>
+    <strong>$this-&gt;call_using_array($action, $this-&gt;handler, $params);</strong>
   } else {
-	// redirect to plugin action if possible
-	if (in_array('plugin', $this-&gt;actions)
-	  && $manager-&gt;pluginInstalled('NP_'.$action))
-	  $this-&gt;doAction('plugin('.$action.
-		$this-&gt;pdelim.implode($this-&gt;pdelim,$params).')');
-	else
-	  echo '&lt;b&gt;DISALLOWED (' , $action , ')&lt;/b&gt;';
+    // redirect to plugin action if possible
+    if (in_array('plugin', $this-&gt;actions)
+      && $manager-&gt;pluginInstalled('NP_'.$action))
+      $this-&gt;doAction('plugin('.$action.
+        $this-&gt;pdelim.implode($this-&gt;pdelim,$params).')');
+    else
+      echo '&lt;b&gt;DISALLOWED (' , $action , ')&lt;/b&gt;';
   }
 
 
 }
-	 </pre>
-	</li>
-	<li>nucleus/libs/PARSER.php のコードが下記のようになっていることを確認して下さい。（75行目から）:
-	<pre>
+     </pre>
+    </li>
+    <li>nucleus/libs/PARSER.php のコードが下記のようになっていることを確認して下さい。（75行目から）:
+    <pre>
 // $params = array_map('trim',$params);
 foreach ($params as $key =&gt; $value) { $params[$key] = trim($value); }
-	</pre>
-	</li>
+    </pre>
+    </li>
   </ul>
 
 <?php }
 
 function upgrade_manual_atom1_0() {
 
-	$sth = 0;
+    $sth = 0;
 
-	// atom 1.0
-	$query = 'SELECT sddesc FROM ' . sql_table('skin_desc')
-		. ' WHERE sdname="feeds/atom"';
-	$res = mysql_query($query);
-	while ($o = mysql_fetch_object($res)) {
-		if ($o->sddesc=='Atom 0.3 weblog syndication')
-		{
-			$sth = 1;
+    // atom 1.0
+    $query = 'SELECT sddesc FROM ' . sql_table('skin_desc')
+        . ' WHERE sdname="feeds/atom"';
+    $res = mysql_query($query);
+    while ($o = mysql_fetch_object($res)) {
+        if ($o->sddesc=='Atom 0.3 weblog syndication')
+        {
+            $sth = 1;
 ?>
 <h2>Atom 1.0</h2>
 <p>Nucleus 3.3 から atom feed が 1.0 対応になりましたので、次の手順でスキン・テンプレートのアップグレードをして下さい。</p>
@@ -239,25 +269,25 @@ function upgrade_manual_atom1_0() {
 <p>もし atom のスキンやテンプレートを変更している場合は、既存の内容をファイルに書き出して（skinbackup.xml というファイルが作成されます）、/skins/atom/skinbackup.xml （これが新しいファイル）と比較し、この新しいファイルを更新します。その後、前述の通り管理者画面からスキンの「読込/書出」を開いて同様にして上書きインストールして下さい。</p>
 
 <?php
-		}
-	}
+        }
+    }
 
-	// default skin
-	$query = 'SELECT tdnumber FROM ' . sql_table('template_desc')
-		   . ' WHERE tdname="default/index"';
-	$res = mysql_query($query);
-	$tdnumber = 0;
-	while ($o = mysql_fetch_object($res)) {
-		$tdnumber = $o->tdnumber;
-	}
-	if ($tdnumber>0)
-	{
-		$query = 'SELECT tpartname FROM ' . sql_table('template')
-			   . ' WHERE tdesc=' . $tdnumber . ' AND tpartname="BLOGLIST_LISTITEM"';
-		$res = mysql_query($query);
-		if (!mysql_fetch_object($res)) {
+    // default skin
+    $query = 'SELECT tdnumber FROM ' . sql_table('template_desc')
+           . ' WHERE tdname="default/index"';
+    $res = mysql_query($query);
+    $tdnumber = 0;
+    while ($o = mysql_fetch_object($res)) {
+        $tdnumber = $o->tdnumber;
+    }
+    if ($tdnumber>0)
+    {
+        $query = 'SELECT tpartname FROM ' . sql_table('template')
+               . ' WHERE tdesc=' . $tdnumber . ' AND tpartname="BLOGLIST_LISTITEM"';
+        $res = mysql_query($query);
+        if (!mysql_fetch_object($res)) {
 
-			$sth = 1;
+            $sth = 1;
 ?>
 <h2>Default スキン</h2>
 <p>Nucleus 3.3 からいくつかのフォームの CSS が変更になっています。たとえば最初のページのログインフォームや、コメント投稿のためのフォームなど。このためフォームの表示が崩れるので、次の手順でDefault スキンのアップグレードをして下さい。</p>
@@ -266,10 +296,10 @@ function upgrade_manual_atom1_0() {
 
 <p>もし default のスキンやテンプレートを変更している場合は、既存の内容をファイルに書き出して（skinbackup.xml というファイルが作成されます）、/skins/default/skinbackup.xml （これが新しいファイル）と比較し、この新しいファイルを更新します。その後、前述の通り管理者画面からスキンの「読込/書出」を開いて同様にして上書きインストールして下さい。</p>
 <?php
-		}
-	}
+        }
+    }
 
-	return $sth;
+    return $sth;
 }
 
 ?>
