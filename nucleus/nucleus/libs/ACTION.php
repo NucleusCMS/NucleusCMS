@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * Actions that can be called via action.php
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
 class ACTION
@@ -299,20 +299,25 @@ class ACTION
 				break;
 		}
 
-		$blogid = getBlogIDFromItemID($itemid);
+//		$blogid = getBlogIDFromItemID($itemid);
 		$blog =& $manager->getBlog($blogid);
 
 		// send email to notification address, if any
 		if ($blog->getNotifyAddress() && $blog->notifyOnVote()) {
 
 			$mailto_msg = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
-			if ($CONF['URLMode'] == 'pathinfo') {
-				$itemLink = createItemLink(intval($itemid));
-			} else {
-				$itemLink = $CONF['IndexURL'] . createItemLink(intval($itemid));
-			}
+//			if ($CONF['URLMode'] == 'pathinfo') {
+//				$itemLink = createItemLink(intval($itemid));
+//			} else {
+//				$itemLink = $CONF['IndexURL'] . createItemLink(intval($itemid));
+//			}
 //			$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
-			$mailto_msg .= $itemLink;
+            $itemLink = createItemLink(intval($itemid));
+            $temp = parse_url($itemLink);
+            if (!$temp['scheme']) {
+                $itemLink = $CONF['IndexURL'] . $itemLink;
+            }
+			$mailto_msg .= $itemLink . "\n\n";
 			if ($member->isLoggedIn()) {
 				$mailto_msg .= _NOTIFY_MEMBER . ' ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
 			}
@@ -392,7 +397,7 @@ class ACTION
 			echo $manager->getNewTicket();
 		}
 		else {
-			echo 'err:' . _ERROR_BADTICKET;
+            echo _ERROR . ':' . _ERROR_BADTICKET;
 		}
 		return false;
 	}
@@ -413,7 +418,7 @@ class ACTION
 			}
 		}
 		else {
-			echo 'err:' . _ERROR_BADTICKET;
+            echo _ERROR . ':' . _ERROR_BADTICKET;
 		}
 		return false;
 	}

@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -15,7 +15,7 @@
  * on the screen
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
 
@@ -84,12 +84,10 @@ class BLOG {
 		if ($day == 0 && $month != 0) {
 			$timestamp_start = mktime(0,0,0,$month,1,$year);
 			$timestamp_end = mktime(0,0,0,$month+1,1,$year);  // also works when $month==12
-		} 
-		elseif ($month == 0) {
+		} elseif ($month == 0) {
 			$timestamp_start = mktime(0,0,0,1,1,$year);
 			$timestamp_end = mktime(0,0,0,12,31,$year);  // also works when $month==12
-		}
-		else {
+		} else {
 			$timestamp_start = mktime(0,0,0,$month,$day,$year);
 			$timestamp_end = mktime(0,0,0,$month,$day+1,$year);
 		}
@@ -720,18 +718,34 @@ class BLOG {
 		global $CONF, $manager;
 
 		switch ($orderby) {
-			case 'number': $orderby='bnumber'; break;
-			case 'name': $orderby='bname'; break;
-			case 'shortname': $orderby='bshortname'; break;
-			case 'description': $orderby='bdesc'; break;
-			default: $orderby='bnumber';	break;
+			case 'number':
+				$orderby='bnumber';
+				break;
+			case 'name':
+				$orderby='bname';
+				break;
+			case 'shortname':
+				$orderby='bshortname';
+				break;
+			case 'description':
+				$orderby='bdesc';
+				break;
+			default:
+				$orderby='bnumber';
+				break;
 		}
 
 		$direction=strtolower($direction);
 		switch ($direction) {
-			case 'asc': $direction='ASC';  break;
-			case 'desc': $direction='DESC'; break;
-			default: $direction='ASC';	break;
+			case 'asc':
+				$direction='ASC';
+				break;
+			case 'desc':
+				$direction='DESC';
+				break;
+			default:
+				$direction='ASC';
+				break;
 		}
 
 		$template =& $manager->getTemplate($template);
@@ -1209,10 +1223,28 @@ class BLOG {
 		$i = count($items);
 		$query = '';
 		foreach ($items as $value) {
-			$query .= '(SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
+			$query .= '('
+					.	'SELECT'
+					.	' i.inumber as itemid,'
+					.	' i.ititle as title,'
+					.	' i.ibody as body,'
+					.	' m.mname as author,'
+					.	' m.mrealname as authorname,'
+					.	' i.itime,'
+					.	' i.imore as more,'
+					.	' m.mnumber as authorid,'
+					.	' m.memail as authormail,'
+					.	' m.murl as authorurl,'
+					.	' c.cname as category,'
+					.	' i.icat as catid,'
+					.	' i.iclosed as closed';
 
-			$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
-				   . ' WHERE i.iblog='.$this->blogid
+			$query .= ' FROM '
+					. sql_table('item') . ' as i, '
+					. sql_table('member') . ' as m, '
+					. sql_table('category') . ' as c'
+					. ' WHERE'
+				    .    ' i.iblog='.$this->blogid
 				   . ' and i.iauthor=m.mnumber'
 				   . ' and i.icat=c.catid'
 				   . ' and i.idraft=0'	// exclude drafts

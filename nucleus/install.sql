@@ -31,7 +31,7 @@ CREATE TABLE `nucleus_blog` (
   `bupdate` varchar(60) default NULL,
   `bdefskin` int(11) NOT NULL default '1',
   `bpublic` tinyint(2) NOT NULL default '1',
-  `bsendping` tinyint(2) NOT NULL default '0',
+--  `bsendping` tinyint(2) NOT NULL default '0',
   `bconvertbreaks` tinyint(2) NOT NULL default '1',
   `bdefcat` int(11) default NULL,
   `bnotifytype` int(11) NOT NULL default '15',
@@ -40,7 +40,7 @@ CREATE TABLE `nucleus_blog` (
   `breqemail` TINYINT( 2 ) DEFAULT '0' NOT NULL,
   `bfuturepost` TINYINT(2) DEFAULT '0' NOT NULL,
   PRIMARY KEY  (`bnumber`),
-  UNIQUE KEY `bnumber` (`bnumber`),
+--  UNIQUE KEY `bnumber` (`bnumber`),
   UNIQUE KEY `bshortname` (`bshortname`)
 ) TYPE=MyISAM;
 
@@ -69,7 +69,7 @@ CREATE TABLE `nucleus_comment` (
   `cip` varchar(15) NOT NULL default '',
   `cblog` int(11) NOT NULL default '0',
   PRIMARY KEY  (`cnumber`),
-  UNIQUE KEY `cnumber` (`cnumber`),
+--  UNIQUE KEY `cnumber` (`cnumber`),
   KEY `citem` (`citem`),
   FULLTEXT KEY `cbody` (`cbody`)
 ) TYPE=MyISAM;
@@ -111,7 +111,7 @@ INSERT INTO `nucleus_config` VALUES ('BaseSkin', '5');
 INSERT INTO `nucleus_config` VALUES ('SkinsURL', 'http://localhost:8080/nucleus/skins/');
 INSERT INTO `nucleus_config` VALUES ('ActionURL', 'http://localhost:8080/nucleus/action.php');
 INSERT INTO `nucleus_config` VALUES ('URLMode', 'normal');
-INSERT INTO `nucleus_config` VALUES ('DatabaseVersion', '330');
+INSERT INTO `nucleus_config` VALUES ('DatabaseVersion', '350');
 INSERT INTO `nucleus_config` VALUES ('DebugVars', '0');
 INSERT INTO `nucleus_config` VALUES ('DefaultListSize', '10');
 
@@ -130,7 +130,7 @@ CREATE TABLE `nucleus_item` (
   `ikarmaneg` int(11) NOT NULL default '0',
   `iposted` tinyint(2) NOT NULL default '1',
   PRIMARY KEY  (`inumber`),
-  UNIQUE KEY `inumber` (`inumber`),
+--  UNIQUE KEY `inumber` (`inumber`),
   KEY `itime` (`itime`),
   FULLTEXT KEY `ibody` (`ibody`,`ititle`,`imore`)
 ) TYPE=MyISAM PACK_KEYS=0;
@@ -154,8 +154,8 @@ CREATE TABLE `nucleus_member` (
   `deflang` varchar(20) NOT NULL default '',
   `mautosave` tinyint(2) NOT NULL default '1',
   PRIMARY KEY  (`mnumber`),
-  UNIQUE KEY `mname` (`mname`),
-  UNIQUE KEY `mnumber` (`mnumber`)
+--  UNIQUE KEY `mnumber` (`mnumber`),
+  UNIQUE KEY `mname` (`mname`)
 ) TYPE=MyISAM;
 
 INSERT INTO `nucleus_member` VALUES (1, 'example', 'example', '1a79a4d60de6718e8e5b326e338ae533', 'example@example.org', 'http://localhost:8080/nucleus/', '', 1, 1, 'd767aefc60415859570d64c649257f19', '', 1);
@@ -165,7 +165,7 @@ CREATE TABLE `nucleus_plugin` (
   `pfile` varchar(40) NOT NULL default '',
   `porder` int(11) NOT NULL default '0',
   PRIMARY KEY  (`pid`),
-  KEY `pid` (`pid`),
+--  KEY `pid` (`pid`),
   KEY `porder` (`porder`)
 ) TYPE=MyISAM;
 
@@ -204,7 +204,7 @@ CREATE TABLE `nucleus_skin` (
 
 INSERT INTO `nucleus_skin` VALUES (2, 'index', '<?xml version=\"1.0\" encoding=\"<%charset%>\"?>\n\n<feed xml:lang=\"en-us\" xmlns=\"http://www.w3.org/2005/Atom\">\n    <title><%blogsetting(name)%></title>\n    <id><%blogsetting(url)%>:<%blogsetting(id)%></id>\n\n    <link rel=\"alternate\" type=\"text/html\" href=\"<%blogsetting(url)%>\" />\n    <link rel=\"self\" type=\"application/atom+xml\" href=\"<%blogsetting(url)%><%self%>\" />\n    <generator uri=\"http://nucleuscms.org/\"><%version%></generator>\n    <updated><%blog(feeds/atom/modified,1)%></updated>\n\n    <%blog(feeds/atom/entries,10)%>\n</feed>');
 INSERT INTO `nucleus_skin` VALUES (4, 'index', '<?xml version="1.0"?>\r\n<rsd version="1.0">\r\n <service>\r\n  <engineName><%version%></engineName>\r\n  <engineLink>http://nucleuscms.org/</engineLink>\r\n  <homepageLink><%sitevar(url)%></homepageLink>\r\n  <apis>\r\n   <api name="MetaWeblog" preferred="true" apiLink="<%adminurl%>xmlrpc/server.php" blogID="<%blogsetting(id)%>">\r\n    <docs>http://nucleuscms.org/documentation/devdocs/xmlrpc.html</docs>\r\n   </api>\r\n   <api name="Blogger" preferred="false" apiLink="<%adminurl%>xmlrpc/server.php" blogID="<%blogsetting(id)%>">\r\n    <docs>http://nucleuscms.org/documentation/devdocs/xmlrpc.html</docs>\r\n   </api>\r\n  </apis>\r\n </service>\r\n</rsd>');
-INSERT INTO `nucleus_skin` VALUES (3, 'index', '<?xml version="1.0" encoding="<%charset%>"?>\r\n<rss version="2.0">\r\n  <channel>\r\n    <title><%blogsetting(name)%></title>\r\n    <link><%blogsetting(url)%></link>\r\n    <description><%blogsetting(desc)%></description>\r\n    <language>en-us</language>           \r\n    <generator><%version%></generator>\r\n    <copyright>�</copyright>             \r\n    <category>Weblog</category>\r\n    <docs>http://backend.userland.com/rss</docs>\r\n    <image>\r\n      <url><%blogsetting(url)%>/nucleus/nucleus2.gif</url>\r\n      <title><%blogsetting(name)%></title>\r\n      <link><%blogsetting(url)%></link>\r\n    </image>\r\n    <%blog(feeds/rss20,10)%>\r\n  </channel>\r\n</rss>');
+INSERT INTO `nucleus_skin` VALUES (3, 'index', '<?xml version="1.0" encoding="<%charset%>"?>\r\n<rss version="2.0">\r\n  <channel>\r\n    <title><%blogsetting(name)%></title>\r\n    <link><%blogsetting(url)%></link>\r\n    <description><%blogsetting(desc)%></description>\r\n    <language>en-us</language>           \r\n    <generator><%version%></generator>\r\n    <copyright>?</copyright>             \r\n    <category>Weblog</category>\r\n    <docs>http://backend.userland.com/rss</docs>\r\n    <image>\r\n      <url><%blogsetting(url)%>/nucleus/nucleus2.gif</url>\r\n      <title><%blogsetting(name)%></title>\r\n      <link><%blogsetting(url)%></link>\r\n    </image>\r\n    <%blog(feeds/rss20,10)%>\r\n  </channel>\r\n</rss>');
 
 CREATE TABLE `nucleus_skin_desc` (
   `sdnumber` int(11) NOT NULL auto_increment,
@@ -214,8 +214,8 @@ CREATE TABLE `nucleus_skin_desc` (
   `sdincmode` varchar(10) NOT NULL default 'normal',
   `sdincpref` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`sdnumber`),
-  UNIQUE KEY `sdname` (`sdname`),
-  UNIQUE KEY `sdnumber` (`sdnumber`)
+--  UNIQUE KEY `sdnumber` (`sdnumber`),
+  UNIQUE KEY `sdname` (`sdname`)
 ) TYPE=MyISAM;
 
 INSERT INTO `nucleus_skin_desc` VALUES (2, 'feeds/atom', 'Atom 1.0 weblog syndication', 'application/atom+xml', 'normal', '');
@@ -257,7 +257,7 @@ CREATE TABLE `nucleus_template_desc` (
   `tdname` varchar(64) NOT NULL default '',
   `tddesc` varchar(200) default NULL,
   PRIMARY KEY  (`tdnumber`),
-  UNIQUE KEY `tdnumber` (`tdnumber`),
+--  UNIQUE KEY `tdnumber` (`tdnumber`),
   UNIQUE KEY `tdname` (`tdname`)
 ) TYPE=MyISAM;
 

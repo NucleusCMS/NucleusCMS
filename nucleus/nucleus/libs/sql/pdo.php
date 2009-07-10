@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,8 +12,8 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
- * @version $Id: mysql.php 1279 2008-10-23 08:18:26Z shizuki $
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
  */
  
 /*
@@ -526,6 +526,18 @@ if (!function_exists('sql_fetch_assoc'))
 			return false;
 		return '';
 	}
+
+    /**
+     * Get the name of the specified field in a result
+     */
+    function sql_field_name($res, $offset = 0)
+    {
+        $column = $res->getColumnMeta($offset);
+        if ($column) {
+            return $column['name'];
+        }
+        return false;
+    }
 
 /**************************************************************************
 Unimplemented mysql_* functions
