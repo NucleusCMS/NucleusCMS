@@ -291,6 +291,13 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         return mysql_get_proto_info($conn);
     }
 
+    /**
+     * Get the name of the specified field in a result
+     */
+    function sql_field_name($res, $offset = 0)
+    {
+        return mysql_field_name($res, $offset);
+    }
 
 /**************************************************************************
     Unimplemented mysql_* functions

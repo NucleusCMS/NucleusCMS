@@ -535,8 +535,17 @@ if (!function_exists('sql_fetch_assoc'))
         return '';
     }
 
-}
-
+    /**
+     * Get the name of the specified field in a result
+     */
+    function sql_field_name($res, $offset = 0)
+    {
+        $column = $res->getColumnMeta($offset);
+        if ($column) {
+            return $column['name'];
+        }
+        return false;
+    }
 
 /**************************************************************************
     Unimplemented mysql_* functions
