@@ -1209,7 +1209,7 @@ class ADMIN {
 		} else {
 			$timestamp =0;
 		}
-		$doping = ($publish && $timestamp < $blog->getCorrectTime() && postVar('dosendping')) ? 1 : 0;
+		$doping = ($publish && $timestamp < $blog->getCorrectTime()) ? 1 : 0;
 
 		// edit the item for real
 		ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
@@ -1448,11 +1448,14 @@ class ADMIN {
 		$blog =& $manager->getBlog($blogid);
 		$btimestamp = $blog->getCorrectTime();
 		$item       = $manager->getItem(intval($result['itemid']), 1, 1);
-		if (!$item['draft'] && postVar('dosendping') && $item['timestamp'] <= $btimestamp) {
+
+		// TODO: ED$ should be skipping to itemlist always eventually
+		if (!$item['draft'] && $item['timestamp'] <= $btimestamp) {
 			$nextAction = 'sendping';
 		} else {
 			$nextAction = 'itemlist';
 		}
+
 		if ($result['status'] == 'newcategory') {
 			$distURI = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=' . $nextAction . '&blogid=' . intval($blogid));
 			$this->action_categoryedit($result['catid'], $blogid, $distURI);
@@ -2588,15 +2591,6 @@ class ADMIN {
 				/><label for="notifyNewItem"><?php echo _EBLOG_NOTIFY_ITEM?></label>
 			</td>
 		</tr><tr>
-		<?php
-		if (numberOfEventSubscriber('SendPing') > 0) {
-		?>
-			<td><?php echo _EBLOG_PING?> <?php help('sendping'); ?></td>
-			<td><?php $this->input_yesno('sendping',$blog->sendPing(),85); ?></td>
-		</tr><tr>
-		<?php
-		}
-		?>
 			<td><?php echo _EBLOG_MAXCOMMENTS?> <?php help('blogmaxcomments'); ?></td>
 			<td><input name="maxcomments" tabindex="90" size="3" value="<?php echo  htmlspecialchars($blog->getMaxComments()); ?>" /></td>
 		</tr><tr>

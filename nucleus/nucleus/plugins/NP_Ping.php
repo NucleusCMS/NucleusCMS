@@ -10,6 +10,8 @@
     v1.4 - language file support
     v1.5 - remove arg1 in exec() call
     v1.6 - move send update ping override option to plugin
+    v1.7 - move send ping option from blog to plugin/blog level
+         - remove ping override option
  */
 
 class NP_Ping extends NucleusPlugin {
@@ -18,7 +20,7 @@ class NP_Ping extends NucleusPlugin {
 
 	function getAuthor() { return 'admun (Edmond Hui)'; }
 	function getURL()    { return 'http://edmondhui.homeip.net/nudn'; }
-	function getVersion() { return '1.6'; }
+	function getVersion() { return '1.7'; }
 
 	function getMinNucleusVersion() { return '330'; }
 
@@ -53,16 +55,16 @@ class NP_Ping extends NucleusPlugin {
 		$this->createOption('pingpong_blogs',_PING_BLOGS,'yesno','no'); // http://blo.gs
 		$this->createOption('pingpong_weblogues',_PING_WEBLOGUES,'yesno','no'); // http://weblogues.com/
 		$this->createOption('pingpong_bloggde',_PING_BLOGGDE,'yesno','no'); // http://blogg.de
-		$this->createOption('ping_background',_PING_BG,'yesno','yes');
+		$this->createOption('ping_background',_PING_BG,'yesno','no');
+
+		$this->createBlogOption('ping_sendping', _PING_SENDPING, 'yesno', 'yes');
 	}
 
 	function getEventList() {
 		return array(
 			'SendPing', 
-			'JustPosted',
-			'AddItemFormExtras',
-                        'EditItemFormExtras'
-);
+			'JustPosted'
+		);
 	}
 
 	function event_JustPosted($data) {
@@ -73,12 +75,11 @@ class NP_Ping extends NucleusPlugin {
 			return;
 		}
 
-		if ($this->getOption('ping_background') == "yes") {
+		if ($this->getBlogOption('ping_sendping') == "yes") {
 			exec("php $DIR_PLUGINS/ping/ping.php " . $data['blogid'] . " &");
 		} else {
 			$this->sendPings($data['blogid']);
 
-        		ACTIONLOG::add(INFO, 'NP_Ping: Sending ping (from foreground)');
 		}
 
 		// mark the ping has been sent
@@ -89,27 +90,8 @@ class NP_Ping extends NucleusPlugin {
                 $this->sendPings($data);
 	}
 
-	function DisplayFormOptions($sendping) {
-		if ($sendping) {
-			$check = 'checked="checked"';
-		} else {
-			$check = '';
-		}
-                $output = '<h3>' . _PING_EXTRA_PLUGIN_OPTION . '</h3>
-                <p><input id="dosendping" name="dosendping" value="1" type="checkbox" ' . $check . '><label for="dosendping">' . _UPDATEDPING_GOSENDPING . '</label> </p>';
-                echo $output;
-	}
-
-        function event_AddItemFormExtras($data){
-		$this->DisplayFormOptions($data['blog']->sendPing());
-	}
-
-        function event_EditItemFormExtras($data){
-		// we are not sending ping by default after edit an item
-		$this->DisplayFormOptions(0);
-	}
-
         function sendPings($data) {
+
 		if (!class_exists('xmlrpcmsg')) {
 			global $DIR_LIBS;
 			include($DIR_LIBS . 'xmlrpc.inc.php');
@@ -158,6 +140,8 @@ class NP_Ping extends NucleusPlugin {
 			echo $this->pingBloggDe();
 			echo "<br/>";
 		}
+
+		ACTIONLOG::add(INFO, 'NP_Ping: ping sent');
         }
 
 	function pingPingomatic() {
