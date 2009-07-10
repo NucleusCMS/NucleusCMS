@@ -1,4 +1,4 @@
-<?
+<?php
 /*
   Note: based on NP_PingPong, adapt for the new ping mechanism
 
