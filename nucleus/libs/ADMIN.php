@@ -3051,7 +3051,6 @@ class ADMIN {
 		$blog->setDefaultSkin(intPostVar('defskin'));
 		$blog->setDescription(trim(postVar('desc')));
 		$blog->setPublic(postVar('public'));
-		$blog->setPingUserland(postVar('sendping'));
 		$blog->setConvertBreaks(intPostVar('convertbreaks'));
 		$blog->setAllowPastPosting(intPostVar('allowpastposting'));
 		$blog->setDefaultCategory(intPostVar('defcat'));
