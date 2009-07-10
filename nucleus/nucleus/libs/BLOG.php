@@ -816,7 +816,6 @@ class BLOG {
 			   . "     btimeoffset=" . $offset . ","
 			   . "     bpublic=" . intval($this->isPublic()) . ","
 			   . "     breqemail=" . intval($this->emailRequired()) . ","
-			   . "     bsendping=" . intval($this->sendPing()) . ","
 			   . "     bconvertbreaks=" . intval($this->convertBreaks()) . ","
 			   . "     ballowpast=" . intval($this->allowPastPosting()) . ","
 			   . "     bnotify='" . addslashes($this->getNotifyAddress()) . "',"
@@ -870,14 +869,6 @@ class BLOG {
 		} else {
 			return $this->getDefaultCategory();
 		}
-	}
-
-	function sendPing() {
-		return $this->getSetting('bsendping');
-	}
-
-	function setPingUserland($val) {
-		$this->setSetting('bsendping',$val);
 	}
 
 	function convertBreaks() {
