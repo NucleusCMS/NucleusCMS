@@ -15,4 +15,5 @@
 	define('_PING_SUCCESS', 'Success');
 	define('_UPDATEDPING_GOSENDPING', 'Send Update ping'); 
 	define('_PING_EXTRA_PLUGIN_OPTION', 'Blog Tracking Ping Service');
+	define('_PING_SENDPING', 'Notify ping service when new post is added?');
 ?>
