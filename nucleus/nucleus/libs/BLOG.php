@@ -566,7 +566,9 @@ class BLOG {
 		$template =& $manager->getTemplate($template);
 		$data['blogid'] = $this->getID();
 
-		echo TEMPLATE::fill($template['ARCHIVELIST_HEADER'],$data);
+		$tplt = isset($template['ARCHIVELIST_HEADER']) ? $template['ARCHIVELIST_HEADER']
+		                                               : '';
+		echo TEMPLATE::fill($tplt, $data);
 
 		$query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM '.sql_table('item')
 		. ' WHERE iblog=' . $this->getID()
@@ -630,7 +632,9 @@ class BLOG {
 
 		sql_free_result($res);
 
-		echo TEMPLATE::fill($template['ARCHIVELIST_FOOTER'],$data);
+		$tplt = isset($template['ARCHIVELIST_FOOTER']) ? $template['ARCHIVELIST_FOOTER']
+		                                               : '';
+		echo TEMPLATE::fill($tplt, $data);
 	}
 
 
