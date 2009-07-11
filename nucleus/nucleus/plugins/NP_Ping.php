@@ -12,6 +12,7 @@
     v1.6 - move send update ping override option to plugin
     v1.7 - move send ping option from blog to plugin/blog level
          - remove ping override option
+	 - remove sendPing event handle, switch to use PostAddItem and PostUpdateItem event for new item ping
  */
 
 class NP_Ping extends NucleusPlugin {
@@ -62,8 +63,9 @@ class NP_Ping extends NucleusPlugin {
 
 	function getEventList() {
 		return array(
-			'SendPing', 
-			'JustPosted'
+			'JustPosted',
+			'PostAddItem',
+			'PostUpdateItem'
 		);
 	}
 
@@ -75,7 +77,7 @@ class NP_Ping extends NucleusPlugin {
 			return;
 		}
 
-		if ($this->getBlogOption('ping_sendping') == "yes") {
+		if ($this->getOption('ping_background') == "yes") {
 			exec("php $DIR_PLUGINS/ping/ping.php " . $data['blogid'] . " &");
 		} else {
 			$this->sendPings($data['blogid']);
@@ -86,8 +88,31 @@ class NP_Ping extends NucleusPlugin {
 		$data['pinged'] = true;
         }
 
-	function event_SendPing($data) {
-                $this->sendPings($data);
+	function event_PostAddItem($data) {
+
+		$blogId = getBlogIDFromItemID($data['itemid']);
+		global $manager;
+		$item = &ITEM::getitem($data['itemid'], 0, 0); // draft or future post return 0
+
+		if ($item != 0) {
+			if ($this->getBlogOption($blogId,'ping_sendping') == "yes") {
+				$this->sendPings(array('blogid' => $blogId));
+			}
+		}
+	}
+
+	function event_PostUpdateItem($data) {
+
+		$blogId = getBlogIDFromItemID($data['itemid']);
+		global $manager;
+		$b = &$manager->getBlog($blogId);
+		$item = &ITEM::getitem($data['itemid'], 0, 0); // draft or future post return 0
+
+		if ($item != 0) {
+			if ($this->getBlogOption($blogId,'ping_sendping') == "yes" ) {
+				$this->sendPings(array('blogid' => $blogId));
+			}
+		}
 	}
 
         function sendPings($data) {
@@ -97,51 +122,54 @@ class NP_Ping extends NucleusPlugin {
 			include($DIR_LIBS . 'xmlrpc.inc.php');
 		}
 
+
                 $this->myBlogId = $data['blogid'];
 
+		$ping_result = '';
+
 		if ($this->getOption('pingpong_pingomatic')=='yes') {
-			echo _PINGING . "Ping-o-matic:<br/>";
-			echo $this->pingPingomatic();
-			echo "<br/>";
+			$ping_result .= _PINGING . "Ping-o-matic:\n";
+			$ping_result .= $this->pingPingomatic();
+			$ping_result .= " | ";
 		}
 
 		if ($this->getOption('pingpong_weblogs')=='yes') { 
-			echo _PINGING . "Weblogs.com:<br/>";
-			echo $this->pingWeblogs();
-			echo "<br/>";
+			$ping_result .= _PINGING . "Weblogs.com:\n";
+			$ping_result .= $this->pingWeblogs();
+			$ping_result .= " | ";
 		}
 
 		if ($this->getOption('pingpong_technorati')=='yes') {
-			echo _PINGING . "Technorati:<br/>";
-			echo $this->pingTechnorati();
-			echo "<br/>";
+			$ping_result .= _PINGING . "Technorati:\n";
+			$ping_result .= $this->pingTechnorati();
+			$ping_result .= " | ";
 		}
 
 		if ($this->getOption('pingpong_blogrolling')=='yes') {
-			echo _PINGING . "Blogrolling.com:<br/>";
-			echo $this->pingBlogRollingDotCom();
-			echo "<br/>";
+			$ping_result .= _PINGING . "Blogrolling.com:\n";
+			$ping_result .= $this->pingBlogRollingDotCom();
+			$ping_result .= " | ";
 		}
 
 		if ($this->getOption('pingpong_blogs')=='yes') {
-			echo _PINGING . "Blog.gs:<br/>";
-			echo $this->pingBloGs();
-			echo "<br/>";
+			$ping_result .= _PINGING . "Blog.gs:\n";
+			$ping_result .= $this->pingBloGs();
+			$ping_result .= " | ";
 		}
 
 		if ($this->getOption('pingpong_weblogues')=='yes') {
-			echo _PINGING . "Weblogues.com:<br/>";
-			echo $this->pingWebloguesDotCom();
-			echo "<br/>";
+			$ping_result .= _PINGING . "Weblogues.com:\n";
+			$ping_result .= $this->pingWebloguesDotCom();
+			$ping_result .= " | ";
 		}
 
 		if ($this->getOption('pingpong_bloggde')=='yes') {
-			echo _PINGING . "Blog.de:<br/>";
-			echo $this->pingBloggDe();
-			echo "<br/>";
+			$ping_result .= _PINGING . "Blog.de:\n";
+			$ping_result .= $this->pingBloggDe();
+			$ping_result .= " | ";
 		}
 
-		ACTIONLOG::add(INFO, 'NP_Ping: ping sent');
+		ACTIONLOG::add(INFO, $ping_result);
         }
 
 	function pingPingomatic() {
