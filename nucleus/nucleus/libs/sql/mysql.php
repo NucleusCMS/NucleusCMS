@@ -295,7 +295,6 @@ Unimplemented mysql_* functions
 # mysql_ fetch_ lengths (maybe useful)
 # mysql_ field_ flags (maybe useful)
 # mysql_ field_ len (maybe useful)
-# mysql_ field_ name (maybe useful)
 # mysql_ field_ seek (maybe useful)
 # mysql_ field_ table (maybe useful)
 # mysql_ field_ type (maybe useful)

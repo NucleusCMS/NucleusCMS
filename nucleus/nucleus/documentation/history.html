@@ -30,6 +30,11 @@
 	<li>
 		<strong>Nucleus v3.5 (SVN)</strong>
 		<ul>
+			<li>ADD: $CONF['ActivationDays'] variable to control days before activation expire. Manually set in config.php if needed (no admin interface). (ftruscot)</li>
+			<li>CHANGE:Notify ITEM link after karma votes(ACTION.php). (shizuki)</li>
+			<li>CHANGE:Remove bsendping col from nucleus_blog table(install.sql/upgrade3.5.php). (shizuki)</li>
+			<li>ADD:sql_field_name function for backup class(mysql.php/pdo.php). (shizuki)</li>
+			<li>FIX:Fix short open tag(NP_Ping.php). (shizuki)</li>
 			<li>CHANGED: NP_Ping and related infrastructure changes. (admun)</li>
 			<li>ADDED: upgrade code for 3.5 in upgrades folder. Includes notices about end of PHP4 support and info on 2 new plugins included in plugins folder. (ftruscot)</li>
 			<li>CHANGED: modified upgrade functions to use 3 digit version indicators everywhere. i.e. 340 instead of 34. (ftruscot)</li>
