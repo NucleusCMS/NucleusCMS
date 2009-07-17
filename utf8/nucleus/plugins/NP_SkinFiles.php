@@ -114,7 +114,7 @@ class NP_SkinFiles extends NucleusPlugin {
             include_once($this->getDirectory().'english.php');
     }
     
-    function event_QuickMenu(&$data) {
+    function event_QuickMenu($data) {
         global $member;
 
         // only show to admins
