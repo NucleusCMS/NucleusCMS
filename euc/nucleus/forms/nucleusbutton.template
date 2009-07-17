@@ -1,3 +1,0 @@
-<div class="nucleusbutton">
-	<a href="http://nucleuscms.org/"><img src="<%formdata(imgurl)%>" width="<%formdata(imgwidth)%>" height="<%formdata(imgheight)%>" alt="Powered by Nucleus CMS" title="Powered by Nucleus CMS" /></a>
-</div>
