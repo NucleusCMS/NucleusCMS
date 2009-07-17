@@ -31,7 +31,6 @@ CREATE TABLE `nucleus_blog` (
   `bupdate` varchar(60) default NULL,
   `bdefskin` int(11) NOT NULL default '1',
   `bpublic` tinyint(2) NOT NULL default '1',
---  `bsendping` tinyint(2) NOT NULL default '0',
   `bconvertbreaks` tinyint(2) NOT NULL default '1',
   `bdefcat` int(11) default NULL,
   `bnotifytype` int(11) NOT NULL default '15',
@@ -44,7 +43,7 @@ CREATE TABLE `nucleus_blog` (
   UNIQUE KEY `bshortname` (`bshortname`)
 ) TYPE=MyISAM;
 
-INSERT INTO `nucleus_blog` VALUES (1, 'My Nucleus CMS', 'mynucleuscms', '', 1, 0, 0.0, '', 'http://localhost:8080/nucleus/', '', 5, 1, 0, 1, 1, 1, 1, 0, 0, 0);
+INSERT INTO `nucleus_blog` VALUES (1, 'My Nucleus CMS', 'mynucleuscms', '', 1, 0, 0.0, '', 'http://localhost:8080/nucleus/', '', 5, 1, 1, 1, 1, 1, 0, 0, 0);
 
 CREATE TABLE `nucleus_category` (
   `catid` int(11) NOT NULL auto_increment,
