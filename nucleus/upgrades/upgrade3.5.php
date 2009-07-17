@@ -27,7 +27,7 @@ function upgrade_do350() {
 	update_version('350');
 
 	// Remind user to re-install NP_Ping 
-	echo 'Note: There are new changes to NP_Ping in v3.50. If it is already installed, please go to Admin Panel uninstall and re-install the plugin';
+	echo '<p>Note: There are new changes to NP_Ping in v3.50. If it is already installed, please go to Admin Panel uninstall and re-install the plugin</p>';
 	
 }
 ?>
