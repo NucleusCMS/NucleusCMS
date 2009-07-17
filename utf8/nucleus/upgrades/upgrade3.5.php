@@ -44,7 +44,7 @@ function upgrade_do350() {
     update_version('350');
 
     // Remind user to re-install NP_Ping 
-    echo '注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。';
+    echo '<p>注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。</p>';
 
 }
 ?>
