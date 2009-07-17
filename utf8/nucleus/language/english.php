@@ -33,6 +33,7 @@ define('_ARCHIVETYPE_YEAR', 'year');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'Newer Version Available');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'Upgrade available: v');
 
+
 /********************************************
  *        Start New for 3.40                *
  ********************************************/
@@ -101,7 +102,7 @@ define('_ADMIN_HOW_TO_CREATE',						'Create Weblog');
 define('_BOOKMARKLET_NEW_CATEGORY',					'Item was added, and a new category was created. ');
 define('_BOOKMARKLET_NEW_CATEGORY_EDIT',			'Click here to edit the name and description of the category.');
 define('_BOOKMARKLET_NEW_WINDOW',					'Opens in new window');
-define('_BOOKMARKLET_SEND_PING',					'Item was added successfully. Now pinging weblogs.com. Please hold on... (can take a while)');
+define('_BOOKMARKLET_SEND_PING',					'Item was added successfully. Now pinging weblogs.com. Please hold on... (can take a while)'); // NOTE: This string is no longer in used
 
 // END merge UTF-8 and EUC-JP
 
@@ -117,11 +118,11 @@ define('_SKINEDIT_ALLOWEDTEMPLATESS',					'Template names:');		// <add by shizuk
 define('_WARNINGTXT_NOTDELMEDIAFILES',				'Please note that media files will <b>NOT</b> be deleted. (At least not in this Nucleus version)');	// <add by shizuki />
 
 // send Weblogupdate.ping
-define('_UPDATEDPING_MESSAGE',						'<h2>Site Updated, Now pinging various weblog listing services...</h2><p>This can take a while...</p><p>If you aren\'t automatically passed through, ');
-define('_UPDATEDPING_GOPINGPAGE',					'try again');
-define('_UPDATEDPING_PINGING',						'Pinging services, please wait...');
-define('_UPDATEDPING_VIEWITEM',						'View list of recent items for ');
-define('_UPDATEDPING_VISITOWNSITE',					'Visit your own site');
+define('_UPDATEDPING_MESSAGE',						'<h2>Site Updated, Now pinging various weblog listing services...</h2><p>This can take a while...</p><p>If you aren\'t automatically passed through, '); // NOTE: This string is no longer in used
+define('_UPDATEDPING_GOPINGPAGE',					'try again'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_PINGING',						'Pinging services, please wait...'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_VIEWITEM',						'View list of recent items for '); // NOTE: This string is no longer in used
+define('_UPDATEDPING_VISITOWNSITE',					'Visit your own site'); // NOTE: This string is no longer in used
 
 // General category
 define('_EBLOGDEFAULTCATEGORY_NAME',				'General');
@@ -1013,7 +1014,7 @@ define('_EBLOG_NOTIFY_ON',							'Notify on');
 define('_EBLOG_NOTIFY_COMMENT',						'New comments');
 define('_EBLOG_NOTIFY_KARMA',						'New karma votes');
 define('_EBLOG_NOTIFY_ITEM',						'New weblog items');
-define('_EBLOG_PING',								'Ping weblog listing service on update?');
+define('_EBLOG_PING',				'Ping weblog listing service on update?'); // NOTE: This string is no longer in used
 define('_EBLOG_MAXCOMMENTS',						'Max Amount of comments');
 define('_EBLOG_UPDATE',								'Update file');
 define('_EBLOG_OFFSET',								'Time Offset');

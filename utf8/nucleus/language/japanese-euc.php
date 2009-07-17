@@ -17,6 +17,8 @@
 // Note for Japanese users
 // このファイルは Nucleus の EUC-JP 版日本語ランゲージファイルです。
 
+
+
 /**
  * Japanese EUC-JP Nucleus Language File
  *
@@ -32,6 +34,7 @@ define('_PLUGS_TITLE_GETPLUGINS',		'プラグインを入手…');
 define('_ARCHIVETYPE_YEAR', '年');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'新しいバージョンが入手可能です');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'アップグレードが入手可能です： v');
+
 
 /********************************************
  *        Start New for 3.40                *
@@ -101,7 +104,7 @@ define('_ADMIN_HOW_TO_CREATE',				'Blogの作成');
 define('_BOOKMARKLET_NEW_CATEGORY',			'アイテムは追加され、新しいカテゴリが作成されました。');
 define('_BOOKMARKLET_NEW_CATEGORY_EDIT',	'ここをクリックしてカテゴリーの名前と説明を編集してください。');
 define('_BOOKMARKLET_NEW_WINDOW',			'新しいウィンドウが開きます');
-define('_BOOKMARKLET_SEND_PING',			'アイテムの追加に成功しました。現在blog検索サービスに更新pingを送信します。');
+define('_BOOKMARKLET_SEND_PING',			'アイテムの追加に成功しました。現在blog検索サービスに更新pingを送信します。'); // NOTE: This string is no longer in used
 
 // END merge UTF-8 and EUC-JP
 
@@ -117,11 +120,11 @@ define('_SKINEDIT_ALLOWEDTEMPLATESS',				'使用可能なテンプレート:');
 define('_WARNINGTXT_NOTDELMEDIAFILES',				'メンバーによってアップロードされたファイルは<b>削除されません</b>ので気をつけてください。(少なくともこのバージョン以下のNucleusではそうなっています)');	// <add by shizuki />
 
 // send Weblogupdate.ping
-define('_UPDATEDPING_MESSAGE',						'<h2>サイトが更新されました。Pingサーバに更新を通知します。</h2><p>しばらくお待ちください</p><p>自動的にページが切り替わらない場合は、表示されるリンクをクリックしてください。');
-define('_UPDATEDPING_GOPINGPAGE',					'更新Ping送信');
-define('_UPDATEDPING_PINGING',						'Pingサーバに送信中です');
-define('_UPDATEDPING_VIEWITEM',						'更新されたblog:');
-define('_UPDATEDPING_VISITOWNSITE',					'サイトへ行ってみる');
+define('_UPDATEDPING_MESSAGE',						'<h2>サイトが更新されました。Pingサーバに更新を通知します。</h2><p>しばらくお待ちください</p><p>自動的にページが切り替わらない場合は、表示されるリンクをクリックしてください。'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_GOPINGPAGE',					'更新Ping送信'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_PINGING',						'Pingサーバに送信中です'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_VIEWITEM',						'更新されたblog:'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_VISITOWNSITE',					'サイトへ行ってみる'); // NOTE: This string is no longer in used
 
 // General category
 define('_EBLOGDEFAULTCATEGORY_NAME',				'総合');
@@ -1027,7 +1030,7 @@ define('_EBLOG_NOTIFY_ON',					'以下を通知する');
 define('_EBLOG_NOTIFY_COMMENT',				'新しいコメント');
 define('_EBLOG_NOTIFY_KARMA',				'新しいカルマ投票');
 define('_EBLOG_NOTIFY_ITEM',				'新しいBlogアイテム');
-define('_EBLOG_PING',						'更新時にBlog検索サービスに更新を通知する');
+define('_EBLOG_PING',						'更新時にBlog検索サービスに更新を通知する'); // NOTE: This string is no longer in used
 define('_EBLOG_MAXCOMMENTS',				'一覧に表示するコメントの最大数');
 define('_EBLOG_UPDATE',						'自動更新するファイル');
 define('_EBLOG_OFFSET',						'サーバ時刻との時差');

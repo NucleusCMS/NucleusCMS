@@ -33,16 +33,18 @@ function upgrade_do350() {
 
     upgrade_query('Altering ' . sql_table('member') . ' table', $query);
 
-	// changing the blog table to remove bsendping flag
+    // changing the blog table to remove bsendping flag
     $query = "	ALTER TABLE `" . sql_table('blog') . "`
-					DROP `bsendping`;";
+                    DROP `bsendping`;";
 
-	upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+    upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
 
     // 3.4 -> 3.5
     // update database version
     update_version('350');
-    
-}
 
+    // Remind user to re-install NP_Ping 
+    echo '注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。';
+
+}
 ?>

@@ -115,7 +115,7 @@ class ADMIN {
         );
 /*
         // the rest of the actions needs to be checked
-        $aActionsToCheck = array('additem', 'itemupdate', 'itemmoveto', 'categoryupdate', 'categorydeleteconfirm', 'itemdeleteconfirm', 'commentdeleteconfirm', 'teamdeleteconfirm', 'memberdeleteconfirm', 'templatedeleteconfirm', 'skindeleteconfirm', 'banlistdeleteconfirm', 'plugindeleteconfirm', 'batchitem', 'batchcomment', 'batchmember', 'batchcategory', 'batchteam', 'regfile', 'commentupdate', 'banlistadd', 'changemembersettings', 'clearactionlog', 'settingsupdate', 'blogsettingsupdate', 'categorynew', 'teamchangeadmin', 'teamaddmember', 'memberadd', 'addnewlog', 'addnewlog2', 'backupcreate', 'backuprestore', 'pluginup', 'plugindown', 'pluginupdate', 'pluginadd', 'pluginoptionsupdate', 'skinupdate', 'skinclone', 'skineditgeneral', 'templateclone', 'templatenew', 'templateupdate', 'skinieimport', 'skinieexport', 'skiniedoimport', 'skinnew', 'deleteblogconfirm', 'sendping', 'rawping', 'activatesetpwd');
+        $aActionsToCheck = array('additem', 'itemupdate', 'itemmoveto', 'categoryupdate', 'categorydeleteconfirm', 'itemdeleteconfirm', 'commentdeleteconfirm', 'teamdeleteconfirm', 'memberdeleteconfirm', 'templatedeleteconfirm', 'skindeleteconfirm', 'banlistdeleteconfirm', 'plugindeleteconfirm', 'batchitem', 'batchcomment', 'batchmember', 'batchcategory', 'batchteam', 'regfile', 'commentupdate', 'banlistadd', 'changemembersettings', 'clearactionlog', 'settingsupdate', 'blogsettingsupdate', 'categorynew', 'teamchangeadmin', 'teamaddmember', 'memberadd', 'addnewlog', 'addnewlog2', 'backupcreate', 'backuprestore', 'pluginup', 'plugindown', 'pluginupdate', 'pluginadd', 'pluginoptionsupdate', 'skinupdate', 'skinclone', 'skineditgeneral', 'templateclone', 'templatenew', 'templateupdate', 'skinieimport', 'skinieexport', 'skiniedoimport', 'skinnew', 'deleteblogconfirm', 'activatesetpwd');
 */
         if (!in_array($this->action, $aActionsNotToCheck))
         {
@@ -1210,7 +1210,6 @@ class ADMIN {
         } else {
             $timestamp =0;
         }
-        $doping = ($publish && $timestamp < $blog->getCorrectTime()) ? 1 : 0;
 
         // edit the item for real
         ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
@@ -1220,11 +1219,6 @@ class ADMIN {
         if ($draftid > 0) {
             // delete permission is checked inside ITEM::delete()
             ITEM::delete($draftid);
-        }
-
-        if (!$closed && $doping && numberOfEventSubscriber('SendPing') > 0) {
-            $this->action_sendping($blogid);
-            return;
         }
 
         // show category edit window when we created a new category
@@ -1436,7 +1430,7 @@ class ADMIN {
      * Adds a item to the chosen blog
      */
     function action_additem() {
-        global $member, $manager, $CONF;
+        global $manager, $CONF;
 
         $manager->loadClass('ITEM');
 
@@ -1450,78 +1444,13 @@ class ADMIN {
         $btimestamp = $blog->getCorrectTime();
         $item       = $manager->getItem(intval($result['itemid']), 1, 1);
 
-		// TODO: ED$ should be skipping to itemlist always eventually
-        if (!$item['draft'] && $item['timestamp'] <= $btimestamp) {
-            $nextAction = 'sendping';
-        } else {
-            $nextAction = 'itemlist';
-        }
-
         if ($result['status'] == 'newcategory') {
-            $distURI = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=' . $nextAction . '&blogid=' . intval($blogid));
+            $distURI = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=itemList&blogid=' . intval($blogid));
             $this->action_categoryedit($result['catid'], $blogid, $distURI);
         } else {
-            $methodName = 'action_' . $nextAction;
+            $methodName = 'action_itemList';
             call_user_func(array(&$this, $methodName), $blogid);
         }
-    }
-
-    /**
-     * Shows a window that says we're about to ping.
-     * immediately refresh to the real pinging page, which will
-     * show an error, or redirect to the blog.
-     *
-     * @param int $blogid ID of blog for which ping needs to be sent out
-     */
-    function action_sendping($blogid = -1) {
-        global $member, $manager;
-
-        if ($blogid == -1)
-            $blogid = intRequestVar('blogid');
-
-        $member->isLoggedIn() or $this->disallow();
-
-        $rawPingUrl = $manager->addTicketToUrl('index.php?action=rawping&blogid=' . intval($blogid));
-
-        $this->pagehead('<meta http-equiv="refresh" content="1; url='.htmlspecialchars($rawPingUrl).'" />');
-        echo _UPDATEDPING_MESSAGE;
-        ?>
-        <a href="index.php?action=rawping&amp;blogid=<?php echo $blogid?>"><?php echo _UPDATEDPING_GOPINGPAGE ?></a>
-        </p>
-        <?php
-        $this->pagefoot();
-    }
-
-    /**
-     * Sends the real ping (can take up to 10 seconds!)
-     */
-    function action_rawping() {
-        global $manager;
-        // TODO: checks?
-
-        $blogid = intRequestVar('blogid');
-        $blog =& $manager->getBlog($blogid);
-
-        $this->pagehead();
-
-        ?>
-
-        <h2><?php echo _UPDATEDPING_PINGING ?></h2>
-        <div class='note'>
-                <?php
-
-        // send sendPing event
-        $manager->notify('SendPing', array('blogid' => $blogid));
-
-                ?>
-                </div>
-
-        <ul>
-            <li><a href="index.php?action=itemlist&amp;blogid=<?php echo $blog->getID()?>"><?php echo _UPDATEDPING_VIEWITEM . htmlspecialchars($blog->getName())?></a></li>
-            <li><a href="<?php echo $blog->getURL()?>"><?php echo _UPDATEDPING_VISITOWNSITE ?></a></li>
-        </ul>
-
-        <?php       $this->pagefoot();
     }
 
     /**
@@ -3377,8 +3306,11 @@ class ADMIN {
         $blog   =& $manager->getBlog($blogid);
 
         // create new category
+
+
         $sql = 'INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, "%s", "%s")';
         sql_query(sprintf($sql, sql_table('category'), $blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC));
+
 //		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
         $catid = sql_insert_id();
 
@@ -3392,7 +3324,10 @@ class ADMIN {
         sql_query($query);
 
 
+
+
         $blog->additem($blog->getDefaultCategory(),_EBLOG_FIRSTITEM_TITLE,_EBLOG_FIRSTITEM_BODY,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
+
 
         $manager->notify(
             'PostAddBlog',
@@ -4419,7 +4354,6 @@ selector();
         ?>
 
 
-        <div style="width:100%;">
         <form method="post" action="index.php">
         <div>
 
@@ -4466,7 +4400,7 @@ selector();
         echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
         $query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
             showlist($query,'table',array('content'=>'shortnames'));
-        echo '</div></form></div>';
+        echo '</div></form>';
         $this->pagefoot();
     }
 
