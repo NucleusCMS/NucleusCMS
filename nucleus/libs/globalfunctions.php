@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,15 +12,14 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
-
  */
 
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.41';
+$nucleus['version'] = 'v3.5SVN';
 $nucleus['codename'] = '';
 
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
@@ -998,6 +997,11 @@ function selector() {
 		$type = 'index';
 	}
 
+	// any type of skin with catid
+	if ($catid && !$blogid) {
+		$blogid = getBlogIDFromCatID($catid);
+	}
+
 	// decide which blog should be displayed
 	if (!$blogid) {
 		$blogid = $CONF['DefaultBlog'];
@@ -1012,7 +1016,12 @@ function selector() {
 
 	// set catid if necessary
 	if ($catid) {
-		$blog->setSelectedCategory($catid);
+		// check if the category is valid
+		if (!$blog->isValidCategory($catid)) {
+			doError(_ERROR_NOSUCHCATEGORY);
+		} else {
+	    	$blog->setSelectedCategory($catid);
+	    }
 	}
 
 	// decide which skin should be used
@@ -1065,6 +1074,7 @@ function doError($msg, $skin = '') {
 
 	}
 
+	$skinid = $skin->id;
 	$errormessage = $msg;
 	$skin->parse('error');
 	exit;
@@ -1925,7 +1935,7 @@ function stringToAttribute ($string) {
 	$string = entity::named_to_numeric($string);
 	$string = entity::normalize_numeric($string);
 
-	if (_CHARSET == 'UTF-8') {
+	if (strtoupper(_CHARSET) == 'UTF-8') {
 		$string = entity::numeric_to_utf8($string);
 	}
 
@@ -1944,7 +1954,7 @@ function stringToXML ($string) {
 	$string = entity::named_to_numeric($string);
 	$string = entity::normalize_numeric($string);
 
-	if (_CHARSET == 'UTF-8') {
+	if (strtoupper(_CHARSET) == 'UTF-8') {
 		$string = entity::numeric_to_utf8($string);
 	}
 
@@ -1992,12 +2002,13 @@ function _links_list() {
  * @todo document this
  */
 function encode_desc($data)
-	{   $to_entities = get_html_translation_table(HTML_ENTITIES);
-		$from_entities = array_flip($to_entities);
-		$data = strtr($data,$from_entities);
-		$data = strtr($data,$to_entities);
-		return $data;
-	}
+{
+    $to_entities = get_html_translation_table(HTML_ENTITIES);
+    $from_entities = array_flip($to_entities);
+	$data = strtr($data,$from_entities);
+	$data = strtr($data,$to_entities);
+	return $data;
+}
 
 /**
  * Returns the Javascript code for a bookmarklet that works on most modern browsers

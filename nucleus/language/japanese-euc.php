@@ -4,7 +4,7 @@
 // Author: chrome (chrome@cgi.no-ip.org)
 // Modified by: Osamu Higuchi (osamu@higuchi.com)
 // Modified by: shizuki (shizuki@kinezumi.net)
-// Nucleus version: v1.0-v3.4
+// Nucleus version: v1.0-v3.5
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -15,7 +15,9 @@
 // available for download (with proper credit to the author, of course)
 
 // Note for Japanese users
-// д│д╬е╒ебедеыд╧ Nucleus д╬ UTF-8 ╚╟╞№╦▄╕ьещеєе▓б╝е╕е╒ебедеыд╟д╣бг
+// д│д╬е╒ебедеыд╧ Nucleus д╬ EUC-JP ╚╟╞№╦▄╕ьещеєе▓б╝е╕е╒ебедеыд╟д╣бг
+
+
 
 /**
  * Japanese EUC-JP Nucleus Language File
@@ -26,30 +28,66 @@
  */
 
 /********************************************
+ *        Start New for 3.50                *
+ ********************************************/
+define('_PLUGS_TITLE_GETPLUGINS',		'е╫еще░едеєдЄ╞■╝ъб─');
+define('_ARCHIVETYPE_YEAR', '╟п');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'┐╖д╖дде╨б╝е╕ечеєдм╞■╝ъ▓─╟╜д╟д╣');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'еве├е╫е░еьб╝е╔дм╞■╝ъ▓─╟╜д╟д╣бз v');
+
+
+/********************************************
  *        Start New for 3.40                *
  ********************************************/
 
 // START changed/added after 3.33 START
 define('_MEMBERS_USEAUTOSAVE',				'▓╝╜ёднд╬╝л╞░╩▌┬╕╡б╟╜дЄ═н╕·д╦д╖д▐д╣дл?');
+
 define('_TEMPLATE_PLUGIN_FIELDS',			'е╫еще░едеєд╦дшды│╚─ее╒егб╝еые╔');
 define('_TEMPLATE_BLOGLIST',				'Blog░ь═ў');
 define('_TEMPLATE_BLOGHEADER',				'Blog░ь═ўд╬е╪е├е└б╝');
 define('_TEMPLATE_BLOGITEM',				'Blog░ь═ўд╬╦▄┬╬');
 define('_TEMPLATE_BLOGFOOTER',				'Blog░ь═ўд╬е╒е├е┐б╝');
+
 define('_SETTINGS_DEFAULTLISTSIZE',			'░ь═ўд╬┤√─ъд╬╔╜╝и┐Ї');
+define('_SETTINGS_DEBUGVARS',				'е╟е╨е├е░етб╝е╔дЄ═н╕·д╦д╣ды');
+
 define('_CREATE_ACCOUNT_TITLE',				'евележеєе╚д╬┐╖╡м║ю└о');
 define('_CREATE_ACCOUNT0',					'евележеєе╚д╬║ю└о');
 define('_CREATE_ACCOUNT1',					'евележеєе╚д╬║ю└од╧╡Ў▓─д╡дьд╞ддд▐д╗дєбг<br /><br />');
 define('_CREATE_ACCOUNT2',					'╛▄║┘д╧ежезе╓е╡еде╚д╬┤╔═¤╝╘д╦дк╠фдд╣чдяд╗дпд└д╡ддбг');
 define('_CREATE_ACCOUNT_USER_DATA',			'┐╖╡мевележеєе╚д╬╛Ё╩є');
-define('_CREATE_ACCOUNT_LOGIN_NAME',		'еэе░едеєID (╔м┐▄)');
+define('_CREATE_ACCOUNT_LOGIN_NAME',		'еэе░едеєID (╔м┐▄)бз');
 define('_CREATE_ACCOUNT_LOGIN_NAME_VALID',	' a-z д╬▒╤╛о╩╕╗·д╚ 0-9 д╬┐Ї╗·д╬д▀╗╚═╤д╟днд▐д╣');
-define('_CREATE_ACCOUNT_REAL_NAME',			'е╧еєе╔еы (╔м┐▄)');
-define('_CREATE_ACCOUNT_EMAIL',				'есб╝еыеве╔еье╣ (╔м┐▄)');
+define('_CREATE_ACCOUNT_REAL_NAME',			'е╧еєе╔еы (╔м┐▄)бз');
+define('_CREATE_ACCOUNT_EMAIL',				'есб╝еыеве╔еье╣ (╔м┐▄)бз');
 define('_CREATE_ACCOUNT_EMAIL2',			'(евепе╞еге┘б╝е╖ечеє═╤д╬еъеєепдм┴ўдщдьдыд╬д╟═н╕·д╩дтд╬дЄ╗╚═╤д╖д╞дпд└д╡дд)');
-define('_CREATE_ACCOUNT_URL',				'(дтд╖двдьд╨)╝л╩мд╬е╡еде╚д╬URL');
+define('_CREATE_ACCOUNT_URL',				'(дтд╖двдьд╨)╝л╩мд╬е╡еде╚д╬URLбз');
 define('_CREATE_ACCOUNT_SUBMIT',			'евележеєе╚д╬║ю└о');
-define('_SETTINGS_DEBUGVARS',				'е╟е╨е├е░етб╝е╔дЄ═н╕·д╦д╣ды');
+
+define('_BMLET_BACKTODRAFTS',				'е╔еще╒е╚д╦╠сд╣');
+define('_BMLET_CANCEL',						'енеуеєе╗еы');
+
+define('_LIST_ITEM_NOCONTENT',						'е│есеєе╚д╧двдъд▐д╗дє');
+define('_LIST_ITEM_COMMENTS',						'е│есеєе╚(%d)╖я');
+
+define('_EDITC_URL',								'Web site');
+define('_EDITC_EMAIL',								'E-mail');
+
+define('_MANAGER_PLUGINFILE_NOTFOUND',				"е╫еще░едеєб╓%sб╫дЄ╞╔д▀╣■дсд▐д╗дєд╟д╖д┐(е╒ебедеыдм╕лд─длдъд▐д╗дє)");
+/* changed */
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',				'е╫еще░едеє %s дмедеєе╣е╚б╝еыд╡дьд╞ддд╩ддд┐дсд╦едеєе╣е╚б╝еыд╣дыд│д╚дмд╟днд▐д╗дєд╟д╖д┐бг');
+define('_ERROR_DELREQPLUGIN',				'е╫еще░едеє %s дмд│д╬е╫еще░едеєд╦░═┬╕д╖д╞ддды░┘д╦║я╜№д╟днд▐д╗дєбг');
+
+//define('_ADD_ADDLATER',						'╕хд╟─╔▓├');
+define('_ADD_ADDLATER',						'╞№╗■дЄ╗╪─ъд╖д╞─╔▓├');	// <mod by shizuki />
+
+define('_LOGIN_NAME',						'еэе░едеєID:');
+define('_LOGIN_PASSWORD',					'е╤е╣еяб╝е╔:');
+
+// changed from _BOOKMARLET_BMARKLFOLLOW
+define('_BOOKMARKLET_BMARKFOLLOW',					' (д█д╚дєд╔д╬е╓ещеже╢д╟╞░║юд╖д▐д╣)');
 // END changed/added after 3.33 END
 
 // START merge UTF-8 and EUC-JP
@@ -66,7 +104,7 @@ define('_ADMIN_HOW_TO_CREATE',				'Blogд╬║ю└о');
 define('_BOOKMARKLET_NEW_CATEGORY',			'еведе╞ерд╧─╔▓├д╡дьбв┐╖д╖дделе╞е┤еъдм║ю└од╡дьд▐д╖д┐бг');
 define('_BOOKMARKLET_NEW_CATEGORY_EDIT',	'д│д│дЄепеъе├епд╖д╞еле╞е┤еъб╝д╬╠╛┴░д╚└т╠└дЄ╩╘╜╕д╖д╞дпд└д╡ддбг');
 define('_BOOKMARKLET_NEW_WINDOW',			'┐╖д╖ддежегеєе╔еждм│лднд▐д╣');
-define('_BOOKMARKLET_SEND_PING',			'еведе╞ерд╬─╔▓├д╦└о╕∙д╖д▐д╖д┐бг╕╜║▀blog╕б║ўе╡б╝е╙е╣д╦╣╣┐╖pingдЄ┴ў┐од╖д▐д╣бг');
+define('_BOOKMARKLET_SEND_PING',			'еведе╞ерд╬─╔▓├д╦└о╕∙д╖д▐д╖д┐бг╕╜║▀blog╕б║ўе╡б╝е╙е╣д╦╣╣┐╖pingдЄ┴ў┐од╖д▐д╣бг'); // NOTE: This string is no longer in used
 
 // END merge UTF-8 and EUC-JP
 
@@ -82,12 +120,11 @@ define('_SKINEDIT_ALLOWEDTEMPLATESS',				'╗╚═╤▓─╟╜д╩е╞еєе╫еьб╝е╚:');
 define('_WARNINGTXT_NOTDELMEDIAFILES',				'есеєе╨б╝д╦дшд├д╞еве├е╫еэб╝е╔д╡дьд┐е╒ебедеыд╧<b>║я╜№д╡дьд▐д╗дє</b>д╬д╟╡ддЄд─д▒д╞дпд└д╡ддбг(╛пд╩дпд╚дтд│д╬е╨б╝е╕ечеє░╩▓╝д╬Nucleusд╟д╧д╜джд╩д├д╞ддд▐д╣)');	// <add by shizuki />
 
 // send Weblogupdate.ping
-define('_UPDATEDPING_MESSAGE',						'<h2>е╡еде╚дм╣╣┐╖д╡дьд▐д╖д┐бгPingе╡б╝е╨д╦╣╣┐╖дЄ─╠├╬д╖д▐д╣бг</h2><p>д╖д╨дщдпдк┬╘д┴дпд└д╡дд</p><p>╝л╞░┼кд╦е┌б╝е╕дм└┌дъ┬╪дядщд╩дд╛ь╣чд╧бв╔╜╝ид╡дьдыеъеєепдЄепеъе├епд╖д╞дпд└д╡ддбг');
-define('_UPDATEDPING_GOPINGPAGE',					'╣╣┐╖Ping┴ў┐о');
-define('_UPDATEDPING_PINGING',						'Pingе╡б╝е╨д╦┴ў┐о├цд╟д╣');
-define('_UPDATEDPING_VIEWITEM',						'╣╣┐╖д╡дьд┐blog:');
-define('_UPDATEDPING_VISITOWNSITE',					'е╡еде╚д╪╣╘д├д╞д▀ды');
-define('_UPDATEDPING_GOSENDPING',					'╣╣┐╖Ping┴ў┐о');
+define('_UPDATEDPING_MESSAGE',						'<h2>е╡еде╚дм╣╣┐╖д╡дьд▐д╖д┐бгPingе╡б╝е╨д╦╣╣┐╖дЄ─╠├╬д╖д▐д╣бг</h2><p>д╖д╨дщдпдк┬╘д┴дпд└д╡дд</p><p>╝л╞░┼кд╦е┌б╝е╕дм└┌дъ┬╪дядщд╩дд╛ь╣чд╧бв╔╜╝ид╡дьдыеъеєепдЄепеъе├епд╖д╞дпд└д╡ддбг'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_GOPINGPAGE',					'╣╣┐╖Ping┴ў┐о'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_PINGING',						'Pingе╡б╝е╨д╦┴ў┐о├цд╟д╣'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_VIEWITEM',						'╣╣┐╖д╡дьд┐blog:'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_VISITOWNSITE',					'е╡еде╚д╪╣╘д├д╞д▀ды'); // NOTE: This string is no longer in used
 
 // General category
 define('_EBLOGDEFAULTCATEGORY_NAME',				'┴э╣ч');
@@ -130,7 +167,6 @@ define('_BOOKMARKLET_DESC4',						'д╡дщд╦бвд╜д╬е┌б╝е╕╞тд╟╩╕╛╧дЄ┴к┬Єд╖д┐╛ї┬╓д╟╗╚═
 define('_BOOKMARKLET_DESC5',						'д▐д┐Windows Internet Explorerд╬д▀д╟д╣дмбвд│д╬╡б╟╜дЄ▒жепеъе├епесе╦ехб╝д╦┼╨╧┐д╣дыд│д╚дт╜╨═шд▐д╣бг');
 define('_BOOKMARKLET_BOOKARKLET',					'е╓е├епе▐б╝епеье├е╚');
 define('_BOOKMARKLET_ANCHOR',						'б╓%sб╫д╦╡н╗ЎдЄ┼ъ╣╞');
-define('_BOOKMARKLET_BMARKFOLLOW',					' (д█д╚дєд╔д╬е╓ещеже╢д╟╞░║юд╖д▐д╣)');
 define('_BOOKMARKLET_BMARKTEXT',					' ▓╝д╬еъеєепдЄб╓дк╡дд╦╞■дъб╫дтд╖дпд╧б╓е╓е├епе▐б╝епб╫д╦─╔▓├д╖д╞дпд└д╡ддбг─╔▓├д╬╗┼╩¤д╧д╜дьд╛дьд╬е╓ещеже╢д╬е╪еые╫дЄ╗▓╛╚д╖д╞дпд└д╡ддбг<br />');
 define('_BOOKMARKLET_BMARKTEST',					' (е╞е╣е╚д╖д╞д▀д┐дд╛ь╣чд╧▓╝д╬еъеєепдЄепеъе├епд╖д╞д▀д╞дпд└д╡дд)');
 define('_BOOKMARKLET_RIGHTCLICK',					'▒жепеъе├епесе╦ехб╝д╦едеєе╣е╚б╝еы(Windows Internet Explorerд╬д▀)');
@@ -152,7 +188,7 @@ define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'┐╖д╖дделе╞е┤еъдЄ║юдыд│д╚дм╜╨═шд▐д╗
 
 // BAN
 define('_BAN_EXAMPLE_TITLE',						'╬у');
-define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193"д╚╞■╬╧д╖д┐╛ь╣чд╧бвд│д╬IPеве╔еье╣дЄ╗¤д─PC1┬цд└д▒дЄе╓еэе├епд╖д▐д╣бг"134.58.253"д╚╞■╬╧д╖д┐╛ь╣чд╧бв"134.58.235.0Пв╖134.58.235.255"д╬╚╧░╧д╬256╕─д╬IPеве╔еье╣дЄ╗¤д─PCдЄ┴┤д╞е╓еэе├епд╖д▐д╣бгд│дьд╧бв┴░╝╘д╬IPеве╔еье╣(134.58.253.193)дЄ┤▐д▀д▐д╣бг');
+define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193"д╚╞■╬╧д╖д┐╛ь╣чд╧бвд│д╬IPеве╔еье╣дЄ╗¤д─PC1┬цд└д▒дЄе╓еэе├епд╖д▐д╣бг"134.58.253"д╚╞■╬╧д╖д┐╛ь╣чд╧бв"134.58.235.0б┴134.58.235.255"д╬╚╧░╧д╬256╕─д╬IPеве╔еье╣дЄ╗¤д─PCдЄ┴┤д╞е╓еэе├епд╖д▐д╣бгд│дьд╧бв┴░╝╘д╬IPеве╔еье╣(134.58.253.193)дЄ┤▐д▀д▐д╣бг');
 define('_BAN_IP_CUSTOM',							'е╓еэе├еп╗╪─ъ: ');
 define('_BAN_BANBLOGNAME',							'%s д╬д▀');
 
@@ -198,7 +234,7 @@ define('_ACTIONURL_NOTLONGER_PARAMATER',			'Овaction.phpОгд╬URLд╧е│есеєе╚е╒ейб╝е
 // ADMIN.php addToTemplate 'Query error: '
 define('_ADMIN_SQLDIE_QUERYERROR',					'епеиеъ еиещб╝: ');
 
-// backyp.php Backup WARNING
+// backup.php Backup WARNING
 define('_BACKUP_BACKUPFILE_TITLE',					'Nucleus CMS д╬е╟б╝е┐е┘б╝е╣е╨е├епеве├е╫е╒ебедеыд╟д╣');
 define('_BACKUP_BACKUPFILE_BACKUPDATE',				'е╨е├епеве├е╫д╖д┐╞№:');
 define('_BACKUP_BACKUPFILE_NUCLEUSVERSION',			'Nucleus CMS д╬е╨б╝е╕ечеє:');
@@ -253,7 +289,6 @@ define('_GFUNCTIONS_AN_ERROR_OCCURRED',				'еиещб╝дм╚п└╕д╖д▐д╖д┐');
 define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			'еэе░едеєд╖д╞ддд▐д╗дє');
 
 // MANAGER.php
-define('_MANAGER_PLUGINFILE_NOTFOUND',				"е╫еще░едеєб╓%sб╫дЄ╞╔д▀╣■дсд▐д╗дєд╟д╖д┐(е╒ебедеыдм╕лд─длдъд▐д╗дє)");
 define('_MANAGER_PLUGINFILE_NOCLASS',				"е╫еще░едеєб╓%sб╫дЄ╞╔д▀╣■дсд▐д╗дєд╟д╖д┐(е╒ебедеы╞тд╦е╫еще░едеєепеще╣дм┬╕║▀д╖д▐д╗дє)");
 define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"е╫еще░едеєб╓%sб╫дЄ╞╔д▀╣■дсд▐д╗дєд╟д╖д┐(ОвSqlTablePrefixОгдЄе╡е▌б╝е╚д╖д╞ддд▐д╗дє)");
 
@@ -367,10 +402,6 @@ define('_ARCHIVETYPE_MONTH',				'╖ю');
 
 // tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
 define('_ERROR_BADTICKET',					'е┴е▒е├е╚дм╔╘└╡бвдтд╖дпд╧┤№╕┬└┌дьд╟д╣');
-
-// plugin dependency
-define('_ERROR_INSREQPLUGIN',				'е╫еще░едеє %s дмедеєе╣е╚б╝еыд╡дьд╞ддд╩ддд┐дсд╦едеєе╣е╚б╝еыд╣дыд│д╚дмд╟днд▐д╗дєд╟д╖д┐бг');
-define('_ERROR_DELREQPLUGIN',				'е╫еще░едеє %s дмд│д╬е╫еще░едеєд╦░═┬╕д╖д╞ддды░┘д╦║я╜№д╟днд▐д╗дєбг');
 
 // cookie prefix
 define('_SETTINGS_COOKIEPREFIX',			'Cookie е╫еье╒еге├епе╣');
@@ -632,9 +663,9 @@ define('_RESTORE_COMPLETE',					'еъе╣е╚ев┤░╬╗');
 // new item notification
 define('_NOTIFY_NI_MSG',					'┐╖д╖ддеведе╞ердм┼ъ╣╞д╡дьд▐д╖д┐:');
 define('_NOTIFY_NI_TITLE',					'┐╖д╖ддеведе╞ер!');
-define('_NOTIFY_KV_MSG',					'елеые▐д╬┼ъ╔╝дмдвдъд▐д╖д┐:');
+define('_NOTIFY_KV_MSG',					'еведе╞ерд╦елеые▐д╬┼ъ╔╝дмдвдъд▐д╖д┐:');
 define('_NOTIFY_KV_TITLE',					'Nucleusелеые▐:');
-define('_NOTIFY_NC_MSG',					'еведе╞ерд╦е│есеєе╚д╣ды:');
+define('_NOTIFY_NC_MSG',					'еведе╞ерд╦е│есеєе╚дмдвдъд▐д╖д┐:');
 define('_NOTIFY_NC_TITLE',					'Nucleusе│есеєе╚:');
 define('_NOTIFY_USERID',					'ецб╝е╢б╝ID:');
 define('_NOTIFY_USER',						'ецб╝е╢б╝:');
@@ -661,8 +692,6 @@ define('_MMAIL_MAIL',						'есе├е╗б╝е╕:');
 // bookmarklet buttons
 define('_BMLET_ADD',						'еведе╞ерд╬─╔▓├');
 define('_BMLET_EDIT',						'╩▌┬╕');
-define('_BMLET_BACKTODRAFTS',				'е╔еще╒е╚д╦╠сд╣');
-define('_BMLET_CANCEL',						'енеуеєе╗еы');
 define('_BMLET_DELETE',						'еведе╞ерд╬║я╜№');
 define('_BMLET_BODY',						'╦▄╩╕');
 define('_BMLET_MORE',						'┬│дн');
@@ -765,7 +794,7 @@ define('_BACKTOMANAGE',						'Nucleusд╬┤╔═¤д╦╠сды');
 
 
 // charset to use
-define('_CHARSET',							'UTF-8');
+define('_CHARSET',							'EUC-JP');
 
 // global stuff
 define('_LOGOUT',							'еэе░евеже╚');
@@ -822,8 +851,6 @@ define('_ADD_DISABLE_COMMENTS',				'е│есеєе╚дЄ╝їд▒╔╒д▒д╩дд');
 define('_ADD_DRAFTNFUTURE',					'е╔еще╒е╚д╚╠д═шд╬╡н╗Ў');
 define('_ADD_ADDITEM',						'еведе╞ердЄ─╔▓├');
 define('_ADD_ADDNOW',						'║гд╣д░─╔▓├');
-//define('_ADD_ADDLATER',						'╕хд╟─╔▓├');
-define('_ADD_ADDLATER',						'╞№╗■дЄ╗╪─ъд╖д╞─╔▓├');	// <mod by shizuki />
 define('_ADD_PLACE_ON',						'╞№╗■:');
 define('_ADD_ADDDRAFT',						'е╔еще╒е╚д╦─╔▓├');
 define('_ADD_NOPASTDATES',					'(▓с╡юд╬╞№╗■д╧╗╪─ъд╟днд▐д╗дєбг╗╪─ъд╡дьд┐╛ь╣чд╧╕╜║▀д╬╞№╗■дм╗╚═╤д╡дьд▐д╣)');
@@ -892,7 +919,7 @@ define('_ERROR_NOEMPTYITEMS',				'╦▄╩╕дм╢їд╬еведе╞ерд╧┼ъ╣╞д╟днд▐д╗дєбк');
 define('_ERROR_BADMAILADDRESS',				'есб╝еыеве╔еье╣дм╔╘└╡д╟д╣бг');
 define('_ERROR_BADNOTIFY',					'─╠├╬есб╝еыеве╔еье╣д╬├цд╦╔╘└╡д╩дтд╬дм║од╕д├д╞ддд▐д╣бг');
 define('_ERROR_BADNAME',					'╗╚═╤д╟днд╩дд╠╛┴░д╟д╣бг( a-z бв0-9 д╬▒╤┐Ї╗·д╖дл╗╚дид▐д╗дє)');
-define('_ERROR_NICKNAMEINUSE',				'┬╛д╬есеєе╨б╝дм╞▒д╕е╧еєе╔еыдЄ╗╚═╤д╖д╞ддд▐д╣бг');
+define('_ERROR_NICKNAMEINUSE',				'┬╛д╬есеєе╨б╝дм╞▒д╕еэе░едеєIDдЄ╗╚═╤д╖д╞ддд▐д╣бг');
 define('_ERROR_PASSWORDMISMATCH',			'╞■╬╧д╡дьд┐е╤е╣еяб╝е╔дм╞▒░ьд╟д╧двдъд▐д╗дєбг');
 define('_ERROR_PASSWORDTOOSHORT',			'е╤е╣еяб╝е╔д╧6╩╕╗·░╩╛хд╟д╩д▒дьд╨д╩дъд▐д╗дєбг');
 define('_ERROR_PASSWORDMISSING',			'е╤е╣еяб╝е╔дм╢їд╟д╣бг');
@@ -1003,7 +1030,7 @@ define('_EBLOG_NOTIFY_ON',					'░╩▓╝дЄ─╠├╬д╣ды');
 define('_EBLOG_NOTIFY_COMMENT',				'┐╖д╖дде│есеєе╚');
 define('_EBLOG_NOTIFY_KARMA',				'┐╖д╖дделеые▐┼ъ╔╝');
 define('_EBLOG_NOTIFY_ITEM',				'┐╖д╖ддBlogеведе╞ер');
-define('_EBLOG_PING',						'╣╣┐╖╗■д╦Blog╕б║ўе╡б╝е╙е╣д╦╣╣┐╖дЄ─╠├╬д╣ды');
+define('_EBLOG_PING',						'╣╣┐╖╗■д╦Blog╕б║ўе╡б╝е╙е╣д╦╣╣┐╖дЄ─╠├╬д╣ды'); // NOTE: This string is no longer in used
 define('_EBLOG_MAXCOMMENTS',				'░ь═ўд╦╔╜╝ид╣дые│есеєе╚д╬║╟┬ч┐Ї');
 define('_EBLOG_UPDATE',						'╝л╞░╣╣┐╖д╣дые╒ебедеы');
 define('_EBLOG_OFFSET',						'е╡б╝е╨╗■╣яд╚д╬╗■║╣');
@@ -1167,8 +1194,6 @@ define('_BAN_ADD_BTN',						'╡м└йд╣дыIPеве╔еье╣д╬─╔▓├');
 
 // LOGIN screen
 define('_LOGIN_MESSAGE',					'есе├е╗б╝е╕');
-define('_LOGIN_NAME',						'еэе░едеєID:');
-define('_LOGIN_PASSWORD',					'е╤е╣еяб╝е╔:');
 define('_LOGIN_SHARED',						_LOGINFORM_SHARED);
 define('_LOGIN_FORGOT',						'е╤е╣еяб╝е╔дЄ╦║дьд┐');
 
@@ -1204,7 +1229,7 @@ define('_BLOGLIST_BMLET',					'е╓е├епе▐б╝епеье├е╚');
 define('_BLOGLIST_TT_BMLET',				'е╓е├епе▐б╝епеье├е╚д╬едеєе╣е╚б╝еы');
 define('_BLOGLIST_SETTINGS',				'е╓еэе░└▀─ъ');
 define('_BLOGLIST_TT_SETTINGS',				'е╓еэе░д╬└▀─ъд╚е╓еэе░е┴б╝ерд╬┤╔═¤');
-define('_BLOGLIST_BANS',					'евеп╢╪');
+define('_BLOGLIST_BANS',					'евепе╗е╣╡м└й');
 define('_BLOGLIST_TT_BANS',					'евепе╗е╣╡м└йд╬│╬╟з/─╔▓├/║я╜№');
 define('_BLOGLIST_DELETE',					'┴┤д╞║я╜№');
 define('_BLOGLIST_TT_DELETE',				'д│д╬BlogдЄ║я╜№');
@@ -1281,8 +1306,6 @@ define('_LIST_COMMENT_HOST',						'е█е╣е╚');
 // itemlist
 define('_LIST_ITEM_INFO',							'╛Ё╩є');
 define('_LIST_ITEM_CONTENT',						'е┐еде╚еыд╚╦▄╩╕');
-define('_LIST_ITEM_NOCONTENT',						'е│есеєе╚д╧двдъд▐д╗дє');
-define('_LIST_ITEM_COMMENTS',						'е│есеєе╚(%d)╖я');
 
 
 // teamlist
@@ -1294,8 +1317,6 @@ define('_EDITC_TITLE',								'е│есеєе╚д╬╩╘╜╕');
 define('_EDITC_WHO',								'║ю╝╘');
 define('_EDITC_HOST',								'е█е╣е╚');
 define('_EDITC_WHEN',								'╞№╗■');
-define('_EDITC_URL',								'Web site');
-define('_EDITC_EMAIL',								'E-mail');
 define('_EDITC_TEXT',								'╦▄╩╕');
 define('_EDITC_EDIT',								'е│есеєе╚д╬╩╘╜╕');
 define('_EDITC_MEMBER',								'есеєе╨б╝');

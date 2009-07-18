@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@
  * SKIN::getAllowedActionsForType($type) method
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
 
@@ -1348,8 +1348,8 @@ class ACTIONS extends BaseActions {
 		echo 'Nucleus CMS ' . $nucleus['version'];
 	}
 	
-		/**
-	 * Parse skinvar otherblog
+	/**
+	 * Parse skinvar sticky
 	 */
 	function parse_sticky($itemnumber = 0, $template = '') {
 		global $manager;

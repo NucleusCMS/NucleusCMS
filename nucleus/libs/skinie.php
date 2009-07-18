@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  *	exporting Nucleus skins: SKINIMPORT and SKINEXPORT
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
 
@@ -113,7 +113,9 @@ class SKINIMPORT {
 	function readFile($filename, $metaOnly = 0) {
 		// open file
 		$this->fp = @fopen($filename, 'r');
-		if (!$this->fp) return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
+		if (!$this->fp) {
+		    return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
+		}
 
 		// here we go!
 		$this->inXml = 1;
@@ -148,8 +150,9 @@ class SKINIMPORT {
 
 		while ( ($buffer = fread($temp, 4096) ) && (!$metaOnly || ($metaOnly && !$this->metaDataRead))) {
 			$err = xml_parse( $this->parser, $buffer, feof($temp) );
-			if (!$err && $this->debug)
+			if (!$err && $this->debug) {
 				echo 'ERROR: ', xml_error_string(xml_get_error_code($this->parser)), '<br />';
+			}
 		}
 
 		// all done
@@ -191,8 +194,9 @@ class SKINIMPORT {
 
 		// if not allowed to overwrite, check if any nameclashes exists
 		if (!$allowOverwrite) {
-			if ((sizeof($existingSkins) > 0) || (sizeof($existingTemplates) > 0))
+			if ((sizeof($existingSkins) > 0) || (sizeof($existingTemplates) > 0)) {
 				return _SKINIE_NAME_CLASHES_DETECTED;
+			}
 		}
 
 		foreach ($this->skins as $skinName => $data) {
@@ -206,7 +210,7 @@ class SKINIMPORT {
 
 				// update general info
 				$skinObj->updateGeneralInfo($skinName, $data['description'], $data['type'], $data['includeMode'], $data['includePrefix']);
-			} else {
+
 				$skinid = SKIN::createNew($skinName, $data['description'], $data['type'], $data['includeMode'], $data['includePrefix']);
 				$skinObj = new SKIN($skinid);
 			}
@@ -249,8 +253,9 @@ class SKINIMPORT {
 		$clashes = array();
 
 		foreach ($this->skins as $skinName => $data) {
-			if (SKIN::exists($skinName))
+			if (SKIN::exists($skinName)) {
 				array_push($clashes, $skinName);
+			}
 		}
 
 		return $clashes;
@@ -264,8 +269,9 @@ class SKINIMPORT {
 		$clashes = array();
 
 		foreach ($this->templates as $templateName => $data) {
-			if (TEMPLATE::exists($templateName))
+			if (TEMPLATE::exists($templateName)) {
 				array_push($clashes, $templateName);
+			}
 		}
 
 		return $clashes;
@@ -275,9 +281,13 @@ class SKINIMPORT {
 	 * Called by XML parser for each new start element encountered
 	 */
 	function startElement($parser, $name, $attrs) {
-		foreach($attrs as $key=>$value) $attrs[$key]=htmlspecialchars($value,ENT_QUOTES);
+		foreach($attrs as $key=>$value) {
+		    $attrs[$key]=htmlspecialchars($value,ENT_QUOTES);
+		}
 
-		if ($this->debug) echo 'START: ', htmlspecialchars($name), '<br />';
+		if ($this->debug) {
+		    echo 'START: ', htmlspecialchars($name), '<br />';
+		}
 
 		switch ($name) {
 			case 'nucleusskin':
@@ -319,7 +329,7 @@ class SKINIMPORT {
 				$this->currentPartName = $attrs['name'];
 				break;
 			default:
-				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . htmlspecialchars($name) , '<br />';
+				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . htmlspecialchars($name, ENT_QUOTES) , '<br />';
 				break;
 		}
 
@@ -332,7 +342,9 @@ class SKINIMPORT {
 	  * Called by the XML parser for each closing tag encountered
 	  */
 	function endElement($parser, $name) {
-		if ($this->debug) echo 'END: ', htmlspecialchars($name), '<br />';
+		if ($this->debug) {
+			echo 'END: ' . htmlspecialchars($name, ENT_QUOTES) . '<br />';
+		}
 
 		switch ($name) {
 			case 'nucleusskin':
@@ -346,10 +358,14 @@ class SKINIMPORT {
 			case 'info':
 				$this->info = $this->getCharacterData();
 			case 'skin':
-				if (!$this->inMeta) $this->inSkin = 0;
+				if (!$this->inMeta) {
+				    $this->inSkin = 0;
+				}
 				break;
 			case 'template':
-				if (!$this->inMeta) $this->inTemplate = 0;
+				if (!$this->inMeta) {
+				    $this->inTemplate = 0;
+				}
 				break;
 			case 'description':
 				if ($this->inSkin) {
@@ -366,7 +382,7 @@ class SKINIMPORT {
 				}
 				break;
 			default:
-				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . htmlspecialchars($name), '<br />';
+				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . htmlspecialchars($name, ENT_QUOTES) . '<br />';
 				break;
 		}
 		$this->clearCharacterData();
@@ -377,7 +393,9 @@ class SKINIMPORT {
 	 * Called by XML parser for data inside elements
 	 */
 	function characterData ($parser, $data) {
-		if ($this->debug) echo 'NEW DATA: ', htmlspecialchars($data), '<br />';
+		if ($this->debug) {
+			echo 'NEW DATA: ' . htmlspecialchars($data, ENT_QUOTES) . '<br />';
+		}
 		$this->cdata .= $data;
 	}
 
@@ -454,7 +472,10 @@ class SKINEXPORT {
 	 * @result false when no such ID exists
 	 */
 	function addTemplate($id) {
-		if (!TEMPLATE::existsID($id)) return 0;
+		if (!TEMPLATE::existsID($id)) {
+		    return 0;
+		}
+
 
 		$this->templates[$id] = TEMPLATE::getNameFromId($id);
 
@@ -469,7 +490,9 @@ class SKINEXPORT {
 	 * @result false when no such ID exists
 	 */
 	function addSkin($id) {
-		if (!SKIN::existsID($id)) return 0;
+		if (!SKIN::existsID($id)) {
+		    return 0;
+		}
 
 		$this->skins[$id] = SKIN::getNameFromId($id);
 
@@ -507,11 +530,11 @@ class SKINEXPORT {
 		echo "\t<meta>\n";
 			// skins
 			foreach ($this->skins as $skinId => $skinName) {
-				echo "\t\t", '<skin name="',htmlspecialchars($skinName),'" />',"\n";
+				echo "\t\t", '<skin name="',htmlspecialchars($skinName, ENT_QUOTES),'" />',"\n";
 			}
 			// templates
 			foreach ($this->templates as $templateId => $templateName) {
-				echo "\t\t", '<template name="',htmlspecialchars($templateName),'" />',"\n";
+				echo "\t\t", '<template name="',htmlspecialchars($templateName, ENT_QUOTES),'" />',"\n";
 			}
 			// extra info
 			if ($this->info)

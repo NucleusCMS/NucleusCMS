@@ -6122,7 +6122,8 @@ selector();
 			<input type="hidden" name="plugid" value="<?php echo $pid; ?>" />
 			<input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
 			</div></form>
-		<?php		$this->pagefoot();
+		<?php
+		$this->pagefoot();
 	}
 
 	/**
@@ -6425,8 +6426,10 @@ selector();
 			// new plugin?
 			if ($iPrevPid != $aOption['pid']) {
 				$iPrevPid = $aOption['pid'];
-
-				echo '<tr><th colspan="2">Options for ', htmlspecialchars($aOption['pfile']),'</th></tr>';
+                if (!defined('_PLUGIN_OPTIONS_TITLE') {
+                    define('_PLUGIN_OPTIONS_TITLE', 'Options for %s');
+                }
+                echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, htmlspecialchars($aOption['pfile']. ENT_QUOTES)).'</th></tr>';
 			}
 
 			$meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
