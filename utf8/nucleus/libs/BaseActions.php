@@ -84,34 +84,11 @@ class BaseActions {
 		}
 		$contents = $skin->getContent($filename);
 		if (!$contents) {
-			if (!file_exists($file)) return;
-			// nothing to include
-			if ($fsize <= 0) return;
-			$fd = fopen ($file, 'r');
-			$contents = fread ($fd, $fsize);
-			fclose ($fd);
+            if (!file_exists($file)) return;
+            $contents = file_get_contents($file);
+            if (empty($contents)) return;
 		}
 		$this->level = $this->level + 1;
-/*		$parts = explode('|', $filename, 2);
-		if ($skin->getContent($parts[0])) {
-			$contents = $skin->getContent($parts[0]);
-		} else {
-			$filename = $this->getIncludeFileName($filename);
-			if (!file_exists($filename)) return '';
-
-			$fsize = filesize($filename);
-
-			// nothing to include
-			if ($fsize <= 0) return;
-
-			$this->level = $this->level + 1;
-
-			// read file
-			$fd = fopen ($filename, 'r');
-			$contents = fread ($fd, $fsize);
-			fclose ($fd);
-		}
-*/
 		// parse file contents
 		$this->parser->parse($contents);
 

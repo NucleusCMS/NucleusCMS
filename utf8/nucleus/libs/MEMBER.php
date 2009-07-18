@@ -770,7 +770,11 @@ class MEMBER {
 	 */
 	function cleanupActivationTable()
 	{
-		$boundary = time() - (60 * 60 * 24 * 2);
+		$actdays = 2;
+		if (isset($CONF['ActivationDays']) && intval($CONF['ActivationDays']) > 0) {
+		    $actdays = intval($CONF['ActivationDays']);
+		}
+		$boundary = time() - (60 * 60 * 24 * $actdays);
 
 		// 1. walk over all entries, and see if special actions need to be performed
 		$res = sql_query('SELECT * FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');

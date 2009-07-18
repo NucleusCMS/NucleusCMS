@@ -45,7 +45,9 @@ if (!$CONF['DisableSite']) {
 		header('HTTP/1.0 304 Not Modified');
 		header('Content-Length: 0');
 	} else {
-		if (strtolower(_CHARSET) != 'utf-8') {$feed = mb_convert_encoding($feed, "UTF-8", _CHARSET);}
+		if (strtolower(_CHARSET) != 'utf-8') {
+		    $feed = mb_convert_encoding($feed, "UTF-8", _CHARSET);
+		}
 		header("Content-Type: application/xml");
 		// dump feed
 		echo $feed;
