@@ -201,9 +201,9 @@ CREATE TABLE `nucleus_skin` (
   PRIMARY KEY  (`sdesc`,`stype`)
 ) TYPE=MyISAM;
 
-INSERT INTO `nucleus_skin` VALUES (2, 'index', '<?xml version=\"1.0\" encoding=\"<%charset%>\"?>\n\n<feed xml:lang=\"en-us\" xmlns=\"http://www.w3.org/2005/Atom\">\n    <title><%blogsetting(name)%></title>\n    <id><%blogsetting(url)%>:<%blogsetting(id)%></id>\n\n    <link rel=\"alternate\" type=\"text/html\" href=\"<%blogsetting(url)%>\" />\n    <link rel=\"self\" type=\"application/atom+xml\" href=\"<%blogsetting(url)%><%self%>\" />\n    <generator uri=\"http://nucleuscms.org/\"><%version%></generator>\n    <updated><%blog(feeds/atom/modified,1)%></updated>\n\n    <%blog(feeds/atom/entries,10)%>\n</feed>');
-INSERT INTO `nucleus_skin` VALUES (4, 'index', '<?xml version="1.0"?>\r\n<rsd version="1.0">\r\n <service>\r\n  <engineName><%version%></engineName>\r\n  <engineLink>http://nucleuscms.org/</engineLink>\r\n  <homepageLink><%sitevar(url)%></homepageLink>\r\n  <apis>\r\n   <api name="MetaWeblog" preferred="true" apiLink="<%adminurl%>xmlrpc/server.php" blogID="<%blogsetting(id)%>">\r\n    <docs>http://nucleuscms.org/documentation/devdocs/xmlrpc.html</docs>\r\n   </api>\r\n   <api name="Blogger" preferred="false" apiLink="<%adminurl%>xmlrpc/server.php" blogID="<%blogsetting(id)%>">\r\n    <docs>http://nucleuscms.org/documentation/devdocs/xmlrpc.html</docs>\r\n   </api>\r\n  </apis>\r\n </service>\r\n</rsd>');
-INSERT INTO `nucleus_skin` VALUES (3, 'index', '<?xml version="1.0" encoding="<%charset%>"?>\r\n<rss version="2.0">\r\n  <channel>\r\n    <title><%blogsetting(name)%></title>\r\n    <link><%blogsetting(url)%></link>\r\n    <description><%blogsetting(desc)%></description>\r\n    <language>en-us</language>           \r\n    <generator><%version%></generator>\r\n    <copyright>?</copyright>             \r\n    <category>Weblog</category>\r\n    <docs>http://backend.userland.com/rss</docs>\r\n    <image>\r\n      <url><%blogsetting(url)%>/nucleus/nucleus2.gif</url>\r\n      <title><%blogsetting(name)%></title>\r\n      <link><%blogsetting(url)%></link>\r\n    </image>\r\n    <%blog(feeds/rss20,10)%>\r\n  </channel>\r\n</rss>');
+-- INSERT INTO `nucleus_skin` VALUES (2, 'index', '<?xml version=\"1.0\" encoding=\"<%charset%>\"?>\n\n<feed xml:lang=\"en-us\" xmlns=\"http://www.w3.org/2005/Atom\">\n    <title><%blogsetting(name)%></title>\n    <id><%blogsetting(url)%>:<%blogsetting(id)%></id>\n\n    <link rel=\"alternate\" type=\"text/html\" href=\"<%blogsetting(url)%>\" />\n    <link rel=\"self\" type=\"application/atom+xml\" href=\"<%blogsetting(url)%><%self%>\" />\n    <generator uri=\"http://nucleuscms.org/\"><%version%></generator>\n    <updated><%blog(feeds/atom/modified,1)%></updated>\n\n    <%blog(feeds/atom/entries,10)%>\n</feed>');
+-- INSERT INTO `nucleus_skin` VALUES (4, 'index', '<?xml version="1.0"?>\r\n<rsd version="1.0">\r\n <service>\r\n  <engineName><%version%></engineName>\r\n  <engineLink>http://nucleuscms.org/</engineLink>\r\n  <homepageLink><%sitevar(url)%></homepageLink>\r\n  <apis>\r\n   <api name="MetaWeblog" preferred="true" apiLink="<%adminurl%>xmlrpc/server.php" blogID="<%blogsetting(id)%>">\r\n    <docs>http://nucleuscms.org/documentation/devdocs/xmlrpc.html</docs>\r\n   </api>\r\n   <api name="Blogger" preferred="false" apiLink="<%adminurl%>xmlrpc/server.php" blogID="<%blogsetting(id)%>">\r\n    <docs>http://nucleuscms.org/documentation/devdocs/xmlrpc.html</docs>\r\n   </api>\r\n  </apis>\r\n </service>\r\n</rsd>');
+-- INSERT INTO `nucleus_skin` VALUES (3, 'index', '<?xml version="1.0" encoding="<%charset%>"?>\r\n<rss version="2.0">\r\n  <channel>\r\n    <title><%blogsetting(name)%></title>\r\n    <link><%blogsetting(url)%></link>\r\n    <description><%blogsetting(desc)%></description>\r\n    <language>en-us</language>           \r\n    <generator><%version%></generator>\r\n    <copyright>?</copyright>             \r\n    <category>Weblog</category>\r\n    <docs>http://backend.userland.com/rss</docs>\r\n    <image>\r\n      <url><%blogsetting(url)%>/nucleus/nucleus2.gif</url>\r\n      <title><%blogsetting(name)%></title>\r\n      <link><%blogsetting(url)%></link>\r\n    </image>\r\n    <%blog(feeds/rss20,10)%>\r\n  </channel>\r\n</rss>');
 
 CREATE TABLE `nucleus_skin_desc` (
   `sdnumber` int(11) NOT NULL auto_increment,
@@ -217,10 +217,10 @@ CREATE TABLE `nucleus_skin_desc` (
   UNIQUE KEY `sdname` (`sdname`)
 ) TYPE=MyISAM;
 
-INSERT INTO `nucleus_skin_desc` VALUES (2, 'feeds/atom', 'Atom 1.0 weblog syndication', 'application/atom+xml', 'normal', '');
-INSERT INTO `nucleus_skin_desc` VALUES (3, 'feeds/rss20', 'RSS 2.0 syndication of weblogs', 'text/xml', 'normal', '');
-INSERT INTO `nucleus_skin_desc` VALUES (4, 'xml/rsd', 'RSD (Really Simple Discovery) information for weblog clients', 'text/xml', 'normal', '');
-INSERT INTO `nucleus_skin_desc` VALUES (5, 'default', 'Nucleus CMS default skin', 'text/html', 'skindir', 'default/');
+-- INSERT INTO `nucleus_skin_desc` VALUES (2, 'feeds/atom', 'Atom 1.0 weblog syndication', 'application/atom+xml', 'normal', '');
+-- INSERT INTO `nucleus_skin_desc` VALUES (3, 'feeds/rss20', 'RSS 2.0 syndication of weblogs', 'text/xml', 'normal', '');
+-- INSERT INTO `nucleus_skin_desc` VALUES (4, 'xml/rsd', 'RSD (Really Simple Discovery) information for weblog clients', 'text/xml', 'normal', '');
+-- INSERT INTO `nucleus_skin_desc` VALUES (5, 'default', 'Nucleus CMS default skin', 'text/html', 'skindir', 'default/');
 
 CREATE TABLE `nucleus_team` (
   `tmember` int(11) NOT NULL default '0',
@@ -238,18 +238,18 @@ CREATE TABLE `nucleus_template` (
   PRIMARY KEY  (`tdesc`,`tpartname`)
 ) TYPE=MyISAM;
 
-INSERT INTO `nucleus_template` VALUES (3, 'ITEM', '<item>\r\n <title><%title(xml)%></title>\r\n <link><%blogurl%>index.php?itemid=<%itemid%></link>\r\n<description><![CDATA[<%body%><%more%>]]></description>\r\n <category><%category%></category>\r\n<comments><%blogurl%>index.php?itemid=<%itemid%></comments>\r\n <pubDate><%date(rfc822)%></pubDate>\r\n</item>');
-INSERT INTO `nucleus_template` VALUES (3, 'EDITLINK', '<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>');
-INSERT INTO `nucleus_template` VALUES (3, 'FORMAT_DATE', '%x');
-INSERT INTO `nucleus_template` VALUES (3, 'FORMAT_TIME', '%X');
-INSERT INTO `nucleus_template` VALUES (4, 'ITEM', '<%date(utc)%>');
-INSERT INTO `nucleus_template` VALUES (5, 'ITEM', '<entry>\n <title type=\"html\"><![CDATA[<%title%>]]></title>\n <link rel=\"alternate\" type=\"text/html\" href=\"<%blogurl%>index.php?itemid=<%itemid%>\" />\n <author>\n  <name><%author%></name>\n </author>\n <updated><%date(utc)%></updated>\n <published><%date(iso8601)%></published>\n <content type=\"html\"><![CDATA[<%body%><%more%>]]></content>\n <id><%blogurl%>:<%blogid%>:<%itemid%></id>\n</entry>');
-INSERT INTO `nucleus_template` VALUES (5, 'POPUP_CODE', '<%media%>');
-INSERT INTO `nucleus_template` VALUES (5, 'IMAGE_CODE', '<%image%>');
-INSERT INTO `nucleus_template` VALUES (5, 'MEDIA_CODE', '<%media%>');
-INSERT INTO `nucleus_template` VALUES (3, 'POPUP_CODE', '<%image%>');
-INSERT INTO `nucleus_template` VALUES (3, 'MEDIA_CODE', '<%media%>');
-INSERT INTO `nucleus_template` VALUES (3, 'IMAGE_CODE', '<%media%>');
+-- INSERT INTO `nucleus_template` VALUES (3, 'ITEM', '<item>\r\n <title><%title(xml)%></title>\r\n <link><%blogurl%>index.php?itemid=<%itemid%></link>\r\n<description><![CDATA[<%body%><%more%>]]></description>\r\n <category><%category%></category>\r\n<comments><%blogurl%>index.php?itemid=<%itemid%></comments>\r\n <pubDate><%date(rfc822)%></pubDate>\r\n</item>');
+-- INSERT INTO `nucleus_template` VALUES (3, 'EDITLINK', '<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>');
+-- INSERT INTO `nucleus_template` VALUES (3, 'FORMAT_DATE', '%x');
+-- INSERT INTO `nucleus_template` VALUES (3, 'FORMAT_TIME', '%X');
+-- INSERT INTO `nucleus_template` VALUES (4, 'ITEM', '<%date(utc)%>');
+-- INSERT INTO `nucleus_template` VALUES (5, 'ITEM', '<entry>\n <title type=\"html\"><![CDATA[<%title%>]]></title>\n <link rel=\"alternate\" type=\"text/html\" href=\"<%blogurl%>index.php?itemid=<%itemid%>\" />\n <author>\n  <name><%author%></name>\n </author>\n <updated><%date(utc)%></updated>\n <published><%date(iso8601)%></published>\n <content type=\"html\"><![CDATA[<%body%><%more%>]]></content>\n <id><%blogurl%>:<%blogid%>:<%itemid%></id>\n</entry>');
+-- INSERT INTO `nucleus_template` VALUES (5, 'POPUP_CODE', '<%media%>');
+-- INSERT INTO `nucleus_template` VALUES (5, 'IMAGE_CODE', '<%image%>');
+-- INSERT INTO `nucleus_template` VALUES (5, 'MEDIA_CODE', '<%media%>');
+-- INSERT INTO `nucleus_template` VALUES (3, 'POPUP_CODE', '<%image%>');
+-- INSERT INTO `nucleus_template` VALUES (3, 'MEDIA_CODE', '<%media%>');
+-- INSERT INTO `nucleus_template` VALUES (3, 'IMAGE_CODE', '<%media%>');
 
 CREATE TABLE `nucleus_template_desc` (
   `tdnumber` int(11) NOT NULL auto_increment,
@@ -260,11 +260,11 @@ CREATE TABLE `nucleus_template_desc` (
   UNIQUE KEY `tdname` (`tdname`)
 ) TYPE=MyISAM;
 
-INSERT INTO `nucleus_template_desc` VALUES (4, 'feeds/atom/modified', 'Atom feeds: Inserts last modification date');
-INSERT INTO `nucleus_template_desc` VALUES (5, 'feeds/atom/entries', 'Atom feeds: Feed items');
-INSERT INTO `nucleus_template_desc` VALUES (3, 'feeds/rss20', 'Used for RSS 2.0 syndication of your blog');
-INSERT INTO `nucleus_template_desc` VALUES (8, 'default/index', 'Nucleus CMS default index template');
-INSERT INTO `nucleus_template_desc` VALUES (9, 'default/item', 'Nucleus CMS default item template');
+-- INSERT INTO `nucleus_template_desc` VALUES (4, 'feeds/atom/modified', 'Atom feeds: Inserts last modification date');
+-- INSERT INTO `nucleus_template_desc` VALUES (5, 'feeds/atom/entries', 'Atom feeds: Feed items');
+-- INSERT INTO `nucleus_template_desc` VALUES (3, 'feeds/rss20', 'Used for RSS 2.0 syndication of your blog');
+-- INSERT INTO `nucleus_template_desc` VALUES (8, 'default/index', 'Nucleus CMS default index template');
+-- INSERT INTO `nucleus_template_desc` VALUES (9, 'default/item', 'Nucleus CMS default item template');
 
 CREATE TABLE `nucleus_tickets` (
   `ticket` varchar(40) NOT NULL default '',

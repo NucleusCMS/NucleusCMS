@@ -6426,7 +6426,7 @@ selector();
 			// new plugin?
 			if ($iPrevPid != $aOption['pid']) {
 				$iPrevPid = $aOption['pid'];
-                if (!defined('_PLUGIN_OPTIONS_TITLE') {
+                if (!defined('_PLUGIN_OPTIONS_TITLE')) {
                     define('_PLUGIN_OPTIONS_TITLE', 'Options for %s');
                 }
                 echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, htmlspecialchars($aOption['pfile']. ENT_QUOTES)).'</th></tr>';

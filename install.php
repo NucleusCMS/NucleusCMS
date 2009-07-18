@@ -44,7 +44,12 @@ $aConfPlugsToInstall = array('NP_SkinFiles','NP_SecurityEnforcer','NP_Text');
 //
 // example:
 //     array('base','rsd')
-$aConfSkinsToImport = array('default');
+$aConfSkinsToImport = array(
+    'atom',
+    'rss2.0',
+    'rsd',
+    'default',
+);
 
 /*
 	-- End Of Configurable Part --
@@ -700,6 +705,10 @@ function doInstall() {
 
 		// 11. install custom skins
 		$aSkinErrors = installCustomSkins($manager);
+        $defskinQue  = 'SELECT `sdnumber` as result FROM ' . sql_table('skin_desc') . ' WHERE `sdname` = "default"';
+        $defSkinID   = quickQuery($defskinQue);
+        $updateQuery = 'UPDATE ' . sql_table('blog') . ' SET `bdefskin` = ' . intval($defSkinID) . ' WHERE `bnumber` = 1';
+        sql_query($updateQuery);
 
 		// 12. install NP_Ping, if decided
 		if ($weblog_ping == 1) {
@@ -913,6 +922,10 @@ function installCustomSkins(&$manager) {
 	global $aConfSkinsToImport, $DIR_LIBS, $DIR_SKINS;
 
 	$aErrors = array();
+	global $manager;
+	if (empty($manager)) {
+	    $manager = new MANAGER;
+	}
 
 	if (count($aConfSkinsToImport) == 0) {
 		return $aErrors;
