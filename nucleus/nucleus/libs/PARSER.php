@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -11,7 +11,7 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
 
@@ -115,8 +115,7 @@ class PARSER {
 			// redirect to plugin action if possible
 			if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_'.$action)) {
 				$this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
-			}
-			else {
+			} else {
 				if ($CONF['DebugVars']==true) {
 				echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
 		}

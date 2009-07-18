@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
  * It should never be used on it's own
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
 
@@ -76,40 +76,18 @@ class BaseActions {
 		// check current level
 		if ($this->level > 3) return;	// max. depth reached (avoid endless loop)
 		global $skinid;
-		if (!$skinid) {
-			global $manager, $blogid;
-			if (!$blogid) {
-				global $CONF;
-				$blogid = $CONF['DefaultBlog'];
-			}
-			$blog   = &$manager->getBlog($blogid);
-			$skinid =  $blog->getDefaultSkin();
-		}
 		$skin = new SKIN($skinid);
 		$file = $this->getIncludeFileName($filename);
 		if (!$skin->isValid && !file_exists($file)) {
 			return;
 		}
-		$parts = explode('|', $filename, 2);
-		if ($skin->getContent($parts[0])) {
-			$contents = $skin->getContent($parts[0]);
-		} else {
-			$filename = $this->getIncludeFileName($filename);
-			if (!file_exists($filename)) return '';
-
-			$fsize = filesize($filename);
-
-			// nothing to include
-			if ($fsize <= 0) return;
-
-			$this->level = $this->level + 1;
-
-			// read file
-			$fd = fopen ($filename, 'r');
-			$contents = fread ($fd, $fsize);
-			fclose ($fd);
+		$contents = $skin->getContent($filename);
+		if (!$contents) {
+            if (!file_exists($file)) return;
+            $contents = file_get_contents($file);
+            if (empty($contents)) return;
 		}
-
+		$this->level = $this->level + 1;
 		// parse file contents
 		$this->parser->parse($contents);
 

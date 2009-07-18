@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2007 The Nucleus Group
+ * Copyright (C) 2002-2009 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * A class representing site members
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
 class MEMBER {
@@ -88,17 +88,16 @@ class MEMBER {
 		if ($success && $this->readFromName($login)) {
 			$this->loggedin = 1;
 			return $this->isLoggedIn();
-		}
-		elseif (!$success && $allowlocal) {
+		} elseif (!$success && $allowlocal) {
 			if (!$this->readFromName($login))
 				return 0;
 			if (!$this->checkPassword($password))
 				return 0;
 			$this->loggedin = 1;
 			return $this->isLoggedIn();
-		}
-		else 
+		} else {
 			return 0;
+		}
 	}
 
 	/**
@@ -605,7 +604,7 @@ class MEMBER {
 	 * Adds a new member
 	 * 
 	 * @static
-	 */	 	 	
+	 */
 	function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes) {
 		if (!isValidMailAddress($email))
 			return _ERROR_BADMAILADDRESS;
@@ -767,7 +766,9 @@ class MEMBER {
 	function cleanupActivationTable()
 	{
 		$actdays = 2;
-		if (intval($CONF['ActivationDays']) >0) $actdays = intval($CONF['ActivationDays']);
+		if (isset($CONF['ActivationDays']) && intval($CONF['ActivationDays']) > 0) {
+		    $actdays = intval($CONF['ActivationDays']);
+		}
 		$boundary = time() - (60 * 60 * 24 * $actdays);
 
 		// 1. walk over all entries, and see if special actions need to be performed
