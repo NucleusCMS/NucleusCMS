@@ -51,9 +51,9 @@ $aConfPlugsToInstall = array(
 //     array('base','rsd')
 $aConfSkinsToImport = array(
     'atom',
-    'default',
-    'rsd',
     'rss2.0',
+    'rsd',
+    'default',
 );
 
 /*
@@ -596,7 +596,7 @@ function doInstall() {
 
 // <add for garble measure>
     // 2-2. set DEFAULT CHARSET and COLLATE
-    $mySqlVer = implode('.', array_map('intval', explode('.', mysql_get_server_info($MYSQL_CONN))));
+    $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info($MYSQL_CONN))));
     if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {
         mysql_set_charset($charset);
     } elseif ($mySqlVer >= '4.1.0') {
@@ -811,6 +811,10 @@ function doInstall() {
 
         // 11. install custom skins
         $aSkinErrors = installCustomSkins($manager);
+        $defskinQue  = 'SELECT `sdnumber` as result FROM ' . sql_table('skin_desc') . ' WHERE `sdname` = "default"';
+        $defSkinID   = quickQuery($defskinQue);
+        $updateQuery = 'UPDATE ' . sql_table('blog') . ' SET `bdefskin` = ' . intval($defSkinID) . ' WHERE `bnumber` = 1';
+        sql_query($updateQuery);
 
         // 12. install NP_Ping, if decided
         if ($weblog_ping == 1) {
@@ -1028,11 +1032,14 @@ function installCustomPlugs(&$manager) {
     return $aErrors;
 }
 
-//function installCustomSkins(&$manager) {
-function installCustomSkins(&$mngr) {
-    global $aConfSkinsToImport, $DIR_LIBS, $DIR_SKINS, $manager;
-    $manager = new MANAGER;
-    $aErrors = array();
+function installCustomSkins(&$manager) {
+    global $aConfSkinsToImport, $DIR_LIBS, $DIR_SKINS;
+
+	$aErrors = array();
+	global $manager;
+	if (empty($manager)) {
+	    $manager = new MANAGER;
+	}
 
     if (count($aConfSkinsToImport) == 0) {
         return $aErrors;
@@ -1120,7 +1127,7 @@ function updateConfig($name, $val) {
            . " SET   value = '$val'"
            . " WHERE name  = '$name'";
 
-    sql_query($query,$MYSQL_CONN) or _doError(_ERROR26 . ': ' . mysql_error($MYSQL_CONN) );
+    sql_query($query,$MYSQL_CONN) or _doError(_ERROR26 . ': ' . sql_error($MYSQL_CONN) );
     return sql_insert_id($MYSQL_CONN);
 }
 
