@@ -209,9 +209,21 @@ class SKINIMPORT {
 				$skinObj->deleteAllParts();
 
 				// update general info
-				$skinObj->updateGeneralInfo($skinName, $data['description'], $data['type'], $data['includeMode'], $data['includePrefix']);
-
-				$skinid = SKIN::createNew($skinName, $data['description'], $data['type'], $data['includeMode'], $data['includePrefix']);
+				$skinObj->updateGeneralInfo(
+				    $skinName,
+				    $data['description'],
+				    $data['type'],
+				    $data['includeMode'],
+				    $data['includePrefix']
+				);
+			} else {
+				$skinid = SKIN::createNew(
+				    $skinName,
+				    $data['description'],
+				    $data['type'],
+				    $data['includeMode'],
+				    $data['includePrefix']
+				);
 				$skinObj = new SKIN($skinid);
 			}
 
