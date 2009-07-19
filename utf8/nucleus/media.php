@@ -48,7 +48,7 @@ if (!$member->isLoggedIn()) {
 // check if member is on at least one teamlist
 $query = 'SELECT * FROM ' . sql_table('team'). ' WHERE tmember=' . $member->getID();
 $teams = sql_query($query);
-if (sql_num_rows($teams) == 0)
+if (sql_num_rows($teams) == 0 && !$member->isAdmin())
 	media_doError(_ERROR_DISALLOWEDUPLOAD);
 
 // get action
