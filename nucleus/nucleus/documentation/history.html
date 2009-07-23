@@ -30,6 +30,8 @@
 	<li>
 		<strong>Nucleus v3.5 (SVN)</strong>
 		<ul>
+			<li>CHANGE: set php setting, display_errors, to 0 when not in debug mode to keep users with poorly configured servers from displaying errors on the page. (ftruscot)</li>
+			<li>FIX: PHP5.3 warning caused by MANAGER::notify(). See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18997" title="php 5.3 Error">this thread</a>. (ftruscot)</li>
 			<li>FIX: bookmarklet unaware of character set being used. Fix suggested by wgroleau. (ftruscot)</li>
 			<li>FIX: super-admin disallowed from uploading files if not on any teamlists. (ftruscot)</li>
 			<li>ADD: $CONF['ActivationDays'] variable to control days before activation expire. Manually set in config.php if needed (no admin interface). (ftruscot)</li>

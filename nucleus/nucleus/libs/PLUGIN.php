@@ -58,7 +58,7 @@
 		}
 		function doAction($type) { return _ERROR_PLUGIN_NOSUCHACTION; }
 		function doIf($key,$value) { return false; }
-		function doItemVar () {}
+		function doItemVar (&$item) {}
 
 		/**
 		 * Checks if a plugin supports a certain feature.

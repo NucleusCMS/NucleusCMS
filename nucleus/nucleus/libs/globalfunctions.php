@@ -28,6 +28,7 @@ $CONF['debug'] = 0;
 if ($CONF['debug']) {
 	error_reporting(E_ALL);	// report all errors!
 } else {
+	ini_set('display_errors','0');
 	error_reporting(E_ERROR | E_WARNING | E_PARSE);
 }
 
