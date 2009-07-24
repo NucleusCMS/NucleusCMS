@@ -118,6 +118,8 @@ if (!headers_sent() ) {
 global $MYSQL_HANDLER;
 if (!isset($MYSQL_HANDLER))
 	$MYSQL_HANDLER = array('mysql','');
+if ($MYSQL_HANDLER[0] == '')
+	$MYSQL_HANDLER[0] = 'mysql';
 include_once($DIR_LIBS . 'sql/'.$MYSQL_HANDLER[0].'.php');
 // end new for 3.5 sql_* wrapper
 include_once($DIR_LIBS . 'mysql.php');
