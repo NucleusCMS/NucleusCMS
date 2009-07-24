@@ -27,6 +27,7 @@ define('_PLUGS_TITLE_GETPLUGINS',		'get more plugins...');
 define('_ARCHIVETYPE_YEAR', 'year');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'Newer Version Available');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'Upgrade available: v');
+define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "Plugin %s was not loaded (does not support SqlApi and you are trying to use a non-mysql db)");
 
 /********************************************
  *        Start New for 3.40                *

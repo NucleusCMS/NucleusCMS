@@ -153,6 +153,8 @@ class NP_HelloWorld extends NucleusPlugin
 		{
 			case 'SqlTablePrefix':
 				return 1;
+			case 'SqlApi':
+				return 1;
 			default:
 				return 0;
 		}
@@ -1894,9 +1896,14 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 
 <p>Up to v2.0, accessing the nucleus tables was just a matter of performing an SQL query on one of the <code>nucleus_</code> tables. Since it is possible to use a custom table name in Nucleus versions >2.0, some precautions are needed in plugin development:</p>
 
+<p>As of v3.5, Nucleus is moving toward support for database handlers different from MySQL, such as PDO. Though, this support is beta in version 3.5, plugin developers need to start making their plugins compatible with the new sql_* api used to implement the generic database calls. 
+Essentially, you need onnly replace any mysql_* functions with sql_*, e.g. <code>mysql_fetch_assoc($result)</code> becomes <code>sql_fetch_assoc($result)</code>. 
+you must do this for every interaction with the database. Be sure to indicate that you support the SqlApi feature as indicated below, and that you set the minNucleusVersion to 350, like this: <br /><code>function getMinNucleusVersion( return '350';)</code></p>
+
 <ol>
 	<li>Instead of using a fixed tablename like <code>nucleus_item</code>, use the global function <code>sql_table('item')</code> to generate the prefixed tablename</li>
 	<li>Make sure your plugin returns <code>1</code> (<code>true</code>) when <code>supportsFeature('SqlTablePrefix')</code> is called on it. If it doesn't, you won't be able to load the plugin on Nucleus versions > 2.0 when a custom prefix has been set (as a precaution)</li>
+	<li>v3.5+. Make sure your plugin returns <code>1</code> (<code>true</code>) when <code>supportsFeature('SqlApi')</code> is called on it. If it doesn't, you won't be able to load the plugin on Nucleus versions > 3.5 when a user is using a non-mysql database backend (as a precaution)</li>
 </ol>
 
 <p class="note">Note that the <code>sql_table</code> global function in not available in Nucleus versions up to v2.0. If you use this method and want your plugin to work on Nucleus versions &lt;= 2.0, add the following snippet of code on top of your plugin class:</p>

@@ -275,6 +275,15 @@ class MANAGER {
 					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
 					return 0;
 				}
+				
+				// unload plugin if using non-mysql handler and plugin does not support it 
+				global $MYSQL_HANDLER;
+				if ((!in_array('mysql',$MYSQL_HANDLER)) && !$this->plugins[$name]->supportsFeature('SqlApi'))
+				{
+					unset($this->plugins[$name]);
+					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
+					return 0;
+				}
 
 				// call init method
 				$this->plugins[$name]->init();
