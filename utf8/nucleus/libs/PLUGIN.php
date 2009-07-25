@@ -59,7 +59,7 @@
 		}
 		function doAction($type) { return _ERROR_PLUGIN_NOSUCHACTION; }
 		function doIf($key,$value) { return false; }
-		function doItemVar () {}
+		function doItemVar (&$item) {}
 
 		/**
 		 * Checks if a plugin supports a certain feature.
@@ -69,6 +69,7 @@
 		 *		Name of the feature. See plugin documentation for more info
 		 *			'SqlTablePrefix' -> if the plugin uses the sql_table() method to get table names
 		 *			'HelpPage' -> if the plugin provides a helppage
+		 *                              'SqlApi' -> if the plugin uses the complete sql_* api (must also require nucleuscms 3.5)
 		 */
 		function supportsFeature($feature) {
 			return 0;

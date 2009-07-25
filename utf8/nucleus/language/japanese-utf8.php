@@ -34,6 +34,7 @@ define('_PLUGS_TITLE_GETPLUGINS',		'プラグインを入手…');
 define('_ARCHIVETYPE_YEAR', '年');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'新しいバージョンが入手可能です');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'アップグレードが入手可能です： v');
+define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "プラグイン %s を読み込めませんでした。(このプラグインはSqlAPIをサポートしていません。データベースの接続方法を見直してください)");
 
 
 /********************************************

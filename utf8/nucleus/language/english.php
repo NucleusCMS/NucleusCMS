@@ -8,7 +8,7 @@
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which
+// might be deleted. Therefore, it's important to list the Nucleus version for which
 // the file was written in your document.
 //
 // Fully translated language file can be sent to us and will be made
@@ -32,6 +32,7 @@ define('_PLUGS_TITLE_GETPLUGINS',		'get more plugins...');
 define('_ARCHIVETYPE_YEAR', 'year');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'Newer Version Available');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'Upgrade available: v');
+define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "Plugin %s was not loaded (does not support SqlApi and you are trying to use a non-mysql db)");
 
 
 /********************************************
