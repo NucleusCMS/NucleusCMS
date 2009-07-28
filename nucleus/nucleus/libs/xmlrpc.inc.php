@@ -41,7 +41,9 @@
 	{
 		// For PHP 4 onward, XML functionality is always compiled-in on windows:
 		// no more need to dl-open it. It might have been compiled out on *nix...
-		if(strtoupper(substr(PHP_OS, 0, 3) != 'WIN'))
+		//if(strtoupper(substr(PHP_OS, 0, 3) != 'WIN'))
+		$phpver = phpversion();
+		if (!extension_loaded('xml') && version_compare($phpver,'5.3.0','<'))
 		{
 			dl('xml.so');
 		}
@@ -2271,7 +2273,8 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 					}
 				}
 				// be tolerant to line endings, and extra empty lines
-				$ar = split("\r?\n", trim(substr($data, 0, $pos)));
+				//$ar = split("\r?\n", trim(substr($data, 0, $pos))); //split() is deprecated
+				$ar = preg_split("/\r?\n/", trim(substr($data, 0, $pos)));
 				while(list(,$line) = @each($ar))
 				{
 					// take care of multi-line headers and cookies
