@@ -418,7 +418,7 @@ class MANAGER {
 				// load class if needed
 				$this->_loadPlugin($listener);
 				// do notify (if method exists)
-				if (method_exists($this->plugins[$listener], 'event_' . $eventName))
+                if (isset($this->plugins[$listener]) && method_exists($this->plugins[$listener], 'event_' . $eventName))
 					call_user_func(array(&$this->plugins[$listener],'event_' . $eventName), &$data);
 			}
 		}

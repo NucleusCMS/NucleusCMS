@@ -75,7 +75,8 @@ class NP_Ping extends NucleusPlugin
 
     function init()
     {
-        $language = ereg_replace( '[\\|/]', '', getLanguageName());
+//        $language = ereg_replace( '[\\|/]', '', getLanguageName());
+        $language = preg_replace( '@\\|/@', '', getLanguageName());
         if (file_exists($this->getDirectory()  . $language . '.php')) {
             include_once($this->getDirectory() . $language . '.php');
         } else {
