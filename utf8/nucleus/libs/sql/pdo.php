@@ -183,7 +183,7 @@ if (!function_exists('sql_fetch_assoc'))
 
             //$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$MYSQL_DATABASE, $MYSQL_USER, $MYSQL_PASSWORD);
             
-/*/ <add for garble measure>
+// <add for garble measure>
             if (strpos($MYSQL_HANDLER[1], 'mysql') === 0) {
                 $resource = $SQL_DBH->query("show variables LIKE 'character_set_database'");
                 $resource->bindColumn('Value', $charset);

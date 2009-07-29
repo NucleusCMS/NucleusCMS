@@ -33,7 +33,7 @@ class NP_Text extends NucleusPlugin {
         }
     }
      
-    function doSkinVar(&$skinType, $constant) {
+    function doSkinVar($skinType, $constant) {
         global $member, $CONF;
         
         $language = getLanguageName();
@@ -57,7 +57,7 @@ class NP_Text extends NucleusPlugin {
         
     }
     
-    function doTemplateVar($item, $constant) {
+    function doTemplateVar(&$item, $constant) {
         global $member, $CONF;
         
         $language = getLanguageName();
