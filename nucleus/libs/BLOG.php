@@ -689,6 +689,33 @@ class BLOG {
 								)
 							   );
 			$data['self'] = $CONF['Self'];
+			
+			//catiscurrent
+			if ($this->getSelectedCategory()) {
+				if ($this->getSelectedCategory() == $data['catid']) {
+					$data['catiscurrent'] = 'yes';
+					$data['currentcat'] = 'yes';
+				}
+				else {
+					$data['catiscurrent'] = 'no';
+					$data['currentcat'] = 'no';
+				}
+			}
+			else {
+				global $itemid;
+				if (intval($itemid) && $manager->existsItem(intval($itemid),0,0)) {
+					$iobj =& $manager->getItem(intval($itemid),0,0);
+					$cid = $iobj['catid'];
+					if ($cid == $data['catid']) {
+						$data['catiscurrent'] = 'yes';
+						$data['currentcat'] = 'yes';
+					}
+					else {
+						$data['catiscurrent'] = 'no';
+						$data['currentcat'] = 'no';
+					}
+				}
+			}
 
 			$manager->notify(
 				'PreCategoryListItem',
