@@ -1925,7 +1925,7 @@ class ADMIN {
             $pwdvalid = true;
             $pwderror = '';
             $manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
-            if (!pwdvalid) {
+            if (!$pwdvalid) {
                 $this->error($pwderror);
             }
         }
@@ -2176,7 +2176,7 @@ class ADMIN {
         $pwdvalid = true;
         $pwderror = '';
         $manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
-        if (!pwdvalid) {
+        if (!$pwdvalid) {
             return $this->_showActivationPage($key,$pwderror);
         }
 

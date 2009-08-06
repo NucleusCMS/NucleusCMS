@@ -57,15 +57,17 @@
     <li>
         <strong>Nucleus v3.5 (SVN)</strong>
         <ul>
-			<li>ADD: code to warn if using a non-mysql database handler and a plugin does not supportsFeature 'SqlApi'. (ftruscot)</li>
-			<li>CHANGE: set php setting, display_errors, to 0 when not in debug mode to keep users with poorly configured servers from displaying errors on the page. (ftruscot)</li>
-			<li>FIX: PHP5.3 warning caused by MANAGER::notify(). See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18997" title="php 5.3 Error">this thread</a>. (ftruscot)</li>
-	        <li>FIX: super-admin disallowed from uploading files if not on any teamlists. (ftruscot)</li>
-			<li>ADD: $CONF['ActivationDays'] variable to control days before activation expire. Manually set in config.php if needed (no admin interface). (ftruscot)</li>
-			<li>CHANGE:Notify ITEM link after karma votes(ACTION.php). (shizuki)</li>
-			<li>CHANGE:Remove bsendping col from nucleus_blog table(install.sql/upgrade3.5.php). (shizuki)</li>
-			<li>ADD:sql_field_name function for backup class(mysql.php/pdo.php). (shizuki)</li>
-			<li>FIX:Fix short open tag(NP_Ping.php). (shizuki)</li>
+            <li>ADD: 2 Category List template variables, catiscurrent and its synonym, currentcat. (ftruscot)</li>
+            <li>ADD: code to warn if using a non-mysql database handler and a plugin does not supportsFeature 'SqlApi'. (ftruscot)</li>
+            <li>CHANGE: set php setting, display_errors, to 0 when not in debug mode to keep users with poorly configured servers from displaying errors on the page. (ftruscot)</li>
+            <li>FIX: PHP5.3 warning caused by MANAGER::notify(). See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18997" title="php 5.3 Error">this thread</a>. (ftruscot)</li>
+            <li>FIX: bookmarklet unaware of character set being used. Fix suggested by wgroleau. (ftruscot)</li>
+            <li>FIX: super-admin disallowed from uploading files if not on any teamlists. (ftruscot)</li>
+            <li>ADD: $CONF['ActivationDays'] variable to control days before activation expire. Manually set in config.php if needed (no admin interface). (ftruscot)</li>
+            <li>CHANGE:Notify ITEM link after karma votes(ACTION.php). (shizuki)</li>
+            <li>CHANGE:Remove bsendping col from nucleus_blog table(install.sql/upgrade3.5.php). (shizuki)</li>
+            <li>ADD:sql_field_name function for backup class(mysql.php/pdo.php). (shizuki)</li>
+            <li>FIX:Fix short open tag(NP_Ping.php). (shizuki)</li>
             <li>CHANGED: NP_Ping and related infrastructure changes. (admun)</li>
             <li>ADDED: upgrade code for 3.5 in upgrades folder. Includes notices about end of PHP4 support and info on 2 new plugins included in plugins folder. (ftruscot)</li>
             <li>CHANGED: modified upgrade functions to use 3 digit version indicators everywhere. i.e. 340 instead of 34. (ftruscot)</li>
@@ -243,6 +245,8 @@
         <strong>Nucleus v3.3 (May 1, 2007)</strong>
         <ul>
             <li>ADDED: check cmail column to separate to URL and cemail when Nucleus upgrade to 3.3 or later. (kimitake/katsumi)</li>
+
+
             <li>
                 ADDED: Serveral changes and fixes from Nucleus Japan (details in the log files of the <a href="http://sourceforge.net/svn/?group_id=66479">Nucleus repository</a> at sourceforge.net)
                 <ul>

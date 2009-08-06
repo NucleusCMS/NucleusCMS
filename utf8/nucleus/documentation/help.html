@@ -2,20 +2,20 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 <head>
-	<!--
-		Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-		Copyright (C) 2002-2009 The Nucleus Group
+    <!--
+        Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+        Copyright (C) 2002-2009 The Nucleus Group
 
-		This program is free software; you can redistribute it and/or
-		modify it under the terms of the GNU General Public License
-		as published by the Free Software Foundation; either version 2
-		of the License, or (at your option) any later version.
-		(see nucleus/documentation/index.html#license for more info)
+        This program is free software; you can redistribute it and/or
+        modify it under the terms of the GNU General Public License
+        as published by the Free Software Foundation; either version 2
+        of the License, or (at your option) any later version.
+        (see nucleus/documentation/index.html#license for more info)
 
-		@license http://nucleuscms.org/license.txt GNU General Public License
-		@copyright Copyright (C) 2002-2009 The Nucleus Group
-	-->
-	<!-- $Id$ -->
+        @license http://nucleuscms.org/license.txt GNU General Public License
+        @copyright Copyright (C) 2002-2009 The Nucleus Group
+    -->
+    <!-- $Id$ -->
     <!-- $NucleusJP: help.html,v 1.15 2007/04/19 08:58:40 kimitake Exp $ -->
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -670,6 +670,12 @@ Nucleusのサイト全体を閉鎖することが可能です。なんらかの�
 </tr><tr>
     <td>catdesc</td>
     <td>カテゴリーの説明</td>
+</tr><tr>
+    <td>catiscurrent</td>
+    <td>カテゴリが選択中、もしくは表示中のアイテムが所属するカテゴリの場合｢yes｣が、そうでなければ｢no｣が出力される</td>
+</tr><tr>
+    <td>currentcat</td>
+    <td>&lt;%catiscurrent%&gt;のシノニム</td>
 </tr></table>
 
 <p><a href="#categorylistexample">カテゴリーリストの例を見る</a></p>
@@ -720,8 +726,8 @@ Nucleusのサイト全体を閉鎖することが可能です。なんらかの�
     <td>bloglink</td>
     <td>ブログのURL（Nucleusコアによって与えられた引数から生成されるもの）<code>&lt;a href="&lt;%bloglink%&gt;"&gt;</code>のように使用します。</td>
 </tr><tr>
-	<td>blogurl</td>
-	<td>ブログのURL（「Blog設定」の「URL」で設定されているもの）<code>&lt;a href="&lt;%blogurl%&gt;"&gt;</code>のように使用します。</td>
+    <td>blogurl</td>
+    <td>ブログのURL（「Blog設定」の「URL」で設定されているもの）<code>&lt;a href="&lt;%blogurl%&gt;"&gt;</code>のように使用します。</td>
 </tr><tr>
     <td>blogdesc</td>
     <td>ブログの説明</td>
@@ -1086,8 +1092,8 @@ locale は<a href="#templatedatetime">日付と時刻のフォーマット</a>�
 </pre>
 
 <p>
-	このスキンでは、選択中のブログのアイテムが、タイムスタンプの新しいものから20個、'mytemplate'というテンプレートを使用して表示されます。
-	</p>
+    このスキンでは、選択中のブログのアイテムが、タイムスタンプの新しいものから20個、'mytemplate'というテンプレートを使用して表示されます。
+    </p>
 </div>
 
 
@@ -1122,7 +1128,7 @@ locale は<a href="#templatedatetime">日付と時刻のフォーマット</a>�
 </pre>
 
 <p>
-	このスキンでは、'detailed'テンプレートを使用してアイテムとコメント、そして標準のコメントフォームが表示されます。
+    このスキンでは、'detailed'テンプレートを使用してアイテムとコメント、そして標準のコメントフォームが表示されます。
 </p>
 
 
@@ -1153,7 +1159,7 @@ locale は<a href="#templatedatetime">日付と時刻のフォーマット</a>�
 </pre>
 
 <p>
-	このスキンでは、'default'テンプレートを使用して、選択中のブログのアーカイブが存在する全ての月のリストが表示されます。
+    このスキンでは、'default'テンプレートを使用して、選択中のブログのアーカイブが存在する全ての月のリストが表示されます。
 </p>
 
 </div>
@@ -1183,7 +1189,7 @@ locale は<a href="#templatedatetime">日付と時刻のフォーマット</a>�
 </pre>
 
 <p>
-	このスキンでは、'default'テンプレートを使用して、選択中のブログの要求されたアーカイブが表示されます。
+    このスキンでは、'default'テンプレートを使用して、選択中のブログの要求されたアーカイブが表示されます。
 </p>
 
 
@@ -1218,7 +1224,7 @@ locale は<a href="#templatedatetime">日付と時刻のフォーマット</a>�
 </pre>
 
 <p>
-	このスキンでは、'default'テンプレートを使用して検索の結果が表示されます。
+    このスキンでは、'default'テンプレートを使用して検索の結果が表示されます。
 </p>
 
 </div>
@@ -1251,7 +1257,7 @@ locale は<a href="#templatedatetime">日付と時刻のフォーマット</a>�
 </pre>
 
 <p>
-	このスキンでは、エラーメッセージと、元のページへ戻るためのリンクが表示されます。
+    このスキンでは、エラーメッセージと、元のページへ戻るためのリンクが表示されます。
 </p>
 
 </div>
@@ -1285,7 +1291,7 @@ locale は<a href="#templatedatetime">日付と時刻のフォーマット</a>�
 </pre>
 
 <p>
-	このスキンでは、メンバー名とメンバーのウェブサイトのアドレス、そしてメール送信フォームが表示されます。
+    このスキンでは、メンバー名とメンバーのウェブサイトのアドレス、そしてメール送信フォームが表示されます。
 </p>
 
 </div>
@@ -1344,17 +1350,17 @@ locale は<a href="#templatedatetime">日付と時刻のフォーマット</a>�
 
     &lt;h1&gt;このサイトについて&lt;/h1&gt;
     &lt;p&gt;This page was published in order
-	to provide a platform to publicize the plight
-	of the peeping-polly parrot whose present
-	prognosis is perturbingly pessimistic.&lt;/p&gt;
+    to provide a platform to publicize the plight
+    of the peeping-polly parrot whose present
+    prognosis is perturbingly pessimistic.&lt;/p&gt;
 
   &lt;/body&gt;
 &lt;/html&gt;
 </pre>
 
 <p>
-	この例は、ごく一般的なHTML文書として表示されます。
-	また、標準的なスキン変数が使えるので、ブログとの連系を持たせた静的ページを持たせたいときなどに役立つでしょう。
+    この例は、ごく一般的なHTML文書として表示されます。
+    また、標準的なスキン変数が使えるので、ブログとの連系を持たせた静的ページを持たせたいときなどに役立つでしょう。
 </p>
 </div>
 
@@ -3725,7 +3731,7 @@ Webページ出力時に、指定されたスペシャルスキンもしくは�
             </tr>
         </table>
     </li>
-	<li><p>この他、プラグインごとに引数が定義・追加されます。</p></li>
+    <li><p>この他、プラグインごとに引数が定義・追加されます。</p></li>
 </ul>
 
 <h2>注意</h2>
@@ -3760,7 +3766,7 @@ Webページ出力時に、指定されたスペシャルスキンもしくは�
 
 <h2>引数</h2>
 <p>
-	なし
+    なし
 </p>
 
 <h2>スキンタイプ</h2>
@@ -4005,10 +4011,10 @@ Webページ出力時に、指定されたスペシャルスキンもしくは�
         </ul>
     </li>
     <li><strong>if拡張対応プラグイン名</strong>：第1引数には、'NP_'を取ったプラグイン名を指定します。第1引数で指定したプラグインに、第2引数、第3引数を渡した結果が真なら真
-		<ul>
-			<li><strong><em>プラグイン名</em>,<em>属性名</em></strong>: 使用法 <em>プラグイン名</em> プラグインが <em>属性名</em> をチェックします</li>
-			<li><strong><em>プラグイン名</em>,<em>属性名</em>,<em>属性値</em></strong>: 使用法 <em>プラグイン名</em> プラグインが <em>属性名</em> の値が <em>属性値</em> かどうかチェックします</li>
-		</ul>
+        <ul>
+            <li><strong><em>プラグイン名</em>,<em>属性名</em></strong>: 使用法 <em>プラグイン名</em> プラグインが <em>属性名</em> をチェックします</li>
+            <li><strong><em>プラグイン名</em>,<em>属性名</em>,<em>属性値</em></strong>: 使用法 <em>プラグイン名</em> プラグインが <em>属性名</em> の値が <em>属性値</em> かどうかチェックします</li>
+        </ul>
     </li>
 </ul>
 
@@ -5053,7 +5059,7 @@ HTMLタグを取り除き、指定された幅にまで縮めたアイテムの�
             </tr>
         </table>
     </li>
-	<li><strong>注意:</strong>画像、ポップアップ、メディアタグでは、引数は<em>コンマではなく '|'で</em>区切られなければなりません。</li>
+    <li><strong>注意:</strong>画像、ポップアップ、メディアタグでは、引数は<em>コンマではなく '|'で</em>区切られなければなりません。</li>
 </ul>
 
 <h2>例</h2>
@@ -5101,7 +5107,7 @@ HTMLタグを取り除き、指定された幅にまで縮めたアイテムの�
             </tr>
         </table>
     </li>
-	<li><strong>注意:</strong>画像、ポップアップ、メディアタグでは、引数は<em>コンマではなく '|'で</em>区切られなければなりません。</li>
+    <li><strong>注意:</strong>画像、ポップアップ、メディアタグでは、引数は<em>コンマではなく '|'で</em>区切られなければなりません。</li>
 </ul>
 
 <h2>例</h2>
@@ -5141,7 +5147,7 @@ HTMLタグを取り除き、指定された幅にまで縮めたアイテムの�
             </tr>
         </table>
     </li>
-	<li><strong>注意:</strong>画像、ポップアップ、メディアタグでは、引数は<em>コンマではなく '|'で</em>区切られなければなりません。</li>
+    <li><strong>注意:</strong>画像、ポップアップ、メディアタグでは、引数は<em>コンマではなく '|'で</em>区切られなければなりません。</li>
 </ul>
 
 <h2>例</h2>
@@ -5238,8 +5244,8 @@ Nucleusでは機能を追加するために、プラグインをインストー�
 NucleusCMSのプラグインの主だったものは、以下の二つのページから見つけ出すことが出来ます。
 </p>
 <ul>
-	<li><a href="http://wiki.nucleuscms.org/plugin" title="本家プラグインリスト">本家プラグインリスト</a></li>
-	<li><a href="http://japan.nucleuscms.org/wiki/plugins" title="日本公式プラグインWiki">日本公式プラグインWiki</a></li>
+    <li><a href="http://wiki.nucleuscms.org/plugin" title="本家プラグインリスト">本家プラグインリスト</a></li>
+    <li><a href="http://japan.nucleuscms.org/wiki/plugins" title="日本公式プラグインWiki">日本公式プラグインWiki</a></li>
 </ul>
 <p>
 どちらのページも全てのプラグインを網羅しているわけではありませんが、これらのページのどちらかであなたが必要としているプラグインを見つけることが出来るでしょう。
