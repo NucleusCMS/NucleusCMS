@@ -2816,8 +2816,6 @@ class ADMIN {
 
         $catid = intval($catid);
 
-        $manager->notify('PreDeleteCategory', array('catid' => $catid));
-
         $blogid = getBlogIDFromCatID($catid);
 
         if (!$member->blogAdminRights($blogid))
@@ -2841,6 +2839,8 @@ class ADMIN {
         $res = sql_query($query);
         if (sql_num_rows($res) == 1)
             return _ERROR_DELETELASTCATEGORY;
+
+        $manager->notify('PreDeleteCategory', array('catid' => $catid));
 
         // change category for all items to the default category
         $query = 'UPDATE '.sql_table('item')." SET icat=$destcatid WHERE icat=$catid";
@@ -3322,6 +3322,8 @@ class ADMIN {
         $memberid = $member->getID();
         $query = 'INSERT INTO '.sql_table('team')." (tmember, tblog, tadmin) VALUES ($memberid, $blogid, 1)";
         sql_query($query);
+
+
 
 
 
@@ -6428,6 +6430,8 @@ selector();
             // new plugin?
             if ($iPrevPid != $aOption['pid']) {
                 $iPrevPid = $aOption['pid'];
+
+
 
                 echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, htmlspecialchars($aOption['pfile']. ENT_QUOTES)).'</th></tr>';
             }
