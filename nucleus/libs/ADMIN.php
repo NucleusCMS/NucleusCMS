@@ -15,6 +15,7 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
+
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -2815,8 +2816,6 @@ class ADMIN {
 
         $catid = intval($catid);
 
-        $manager->notify('PreDeleteCategory', array('catid' => $catid));
-
         $blogid = getBlogIDFromCatID($catid);
 
         if (!$member->blogAdminRights($blogid))
@@ -2840,6 +2839,8 @@ class ADMIN {
         $res = sql_query($query);
         if (sql_num_rows($res) == 1)
             return _ERROR_DELETELASTCATEGORY;
+
+        $manager->notify('PreDeleteCategory', array('catid' => $catid));
 
         // change category for all items to the default category
         $query = 'UPDATE '.sql_table('item')." SET icat=$destcatid WHERE icat=$catid";
@@ -3327,6 +3328,8 @@ class ADMIN {
 
         $blog->additem($blog->getDefaultCategory(),$itemdeftitle,$itemdefbody,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
         //$blog->additem($blog->getDefaultCategory(),_EBLOG_FIRSTITEM_TITLE,_EBLOG_FIRSTITEM_BODY,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
+
+
 
         $manager->notify(
             'PostAddBlog',
@@ -5383,6 +5386,7 @@ selector();
         // REGEDIT and bookmarklet code stolen from GreyMatter
 
         $sjisBlogName = sprintf(_WINREGFILE_TEXT, getBlogNameFromID($blogid));
+
 
         header('Content-Type: application/octetstream');
         header('Content-Disposition: filename="nucleus.reg"');
