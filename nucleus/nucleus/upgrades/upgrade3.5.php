@@ -24,7 +24,6 @@ function upgrade_do350() {
         if (phpversion() < '5') {
                 echo 'WARNING: You are running NucleusCMS on a older version of PHP that is no longer supported by NucleusCMS. Please upgrade to PHP5!';
         }
-	}
 	
 	// changing the member table to lengthen display name (mname)
     $query = "	ALTER TABLE `" . sql_table('member') . "`
