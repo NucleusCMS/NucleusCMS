@@ -761,8 +761,7 @@ function getCatIDFromName($name) {
 function quickQuery($q) {
     $res = sql_query($q);
     $obj = sql_fetch_object($res);
-//    return $obj->pfile;
-    return isset($obj->pfile) ? $obj->pfile : false;
+	return $obj->result;
 }
 
 function getPluginNameFromPid($pid) {
