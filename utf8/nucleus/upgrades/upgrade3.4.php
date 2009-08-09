@@ -20,7 +20,7 @@
 function upgrade_do340() {
 
     if (upgrade_checkinstall(340))
-        return 'already installed';
+        return 'インストール済みです';
     
     // Give user warning if they are running old version of PHP
         if (phpversion() < '5') {

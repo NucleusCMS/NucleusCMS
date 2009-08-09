@@ -20,7 +20,7 @@
 function upgrade_do310() {
 
     if (upgrade_checkinstall(310))
-        return 'already installed';
+        return 'インストール済みです';
 
     // 3.0 -> 3.1
     // update database version  

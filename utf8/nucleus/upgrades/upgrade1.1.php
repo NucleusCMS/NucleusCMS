@@ -21,7 +21,7 @@ function upgrade_do110() {
     global $upgrade_failures;
 
     if (upgrade_checkinstall(110))
-        return "already installed";
+        return 'インストール済みです';
     
     // 1. add some options to nucleus_config
     if (!upgrade_checkIfCVExists('CookiePath')) {

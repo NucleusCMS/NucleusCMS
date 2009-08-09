@@ -20,7 +20,7 @@
 function upgrade_do100() {
     
     if (upgrade_checkinstall(100))
-        return "already installed";
+        return 'インストール済みです';
     
     // 1. add extra indices to tables
     if (!upgrade_checkIfIndexExists('item', array('iblog', 'itime'))) {

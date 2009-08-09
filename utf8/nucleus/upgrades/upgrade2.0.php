@@ -20,7 +20,7 @@
 function upgrade_do200() {
 
     if (upgrade_checkinstall(200))
-        return "already installed";
+        return 'インストール済みです';
 
     // queries come here
     

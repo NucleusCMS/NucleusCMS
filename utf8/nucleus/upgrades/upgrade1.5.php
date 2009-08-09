@@ -20,7 +20,7 @@
 function upgrade_do150() {
 
     if (upgrade_checkinstall(150))
-        return "already installed";
+        return 'インストール済みです';
     
     // create nucleus_plugin_event
     if (upgrade_checkIfTableExists('plugin_events')) {//present in dev version

@@ -19,7 +19,7 @@
 function upgrade_do96() {
 
 	if (upgrade_checkinstall(96))
-		return "already installed";
+        return 'インストール済みです';
 
 	// 1. create nucleus_actionlog
 	if (!upgrade_checkIfTableExists('actionlog')) {

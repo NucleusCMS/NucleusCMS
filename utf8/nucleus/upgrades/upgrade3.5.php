@@ -19,13 +19,12 @@
 function upgrade_do350() {
 
     if (upgrade_checkinstall(350))
-        return 'already installed';
+        return 'インストール済みです';
     
     // Give user warning if they are running old version of PHP
         if (phpversion() < '5') {
                 echo '警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！';
         }
-    }
     
     // changing the member table to lengthen display name (mname)
     $query = "	ALTER TABLE `" . sql_table('member') . "`

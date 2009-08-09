@@ -20,7 +20,7 @@
 function upgrade_do331() {
 
     if (upgrade_checkinstall(331))
-        return 'already installed';
+        return 'インストール済みです';
 
     if (!upgrade_checkIfColumnExists('item','iposted')) {
         $query = "  ALTER TABLE `" . sql_table('item') . "`

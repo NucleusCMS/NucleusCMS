@@ -19,7 +19,7 @@
 function upgrade_do95() {
 
 	if (upgrade_checkinstall(95))
-		return "already installed";
+        return 'インストール済みです';
 
 	if(!upgrade_checkIfColumnExists('blog', 'bconvertbreaks')){
 		$query =  'ALTER TABLE '.sql_table('blog')

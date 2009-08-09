@@ -20,7 +20,7 @@
 function upgrade_do320() {
 
     if (upgrade_checkinstall(320))
-        return 'already installed';
+        return 'インストール済みです';
 
     // create nucleus_activation table
     if (!upgrade_checkIfTableExists('tickets')) {
