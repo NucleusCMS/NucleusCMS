@@ -5225,7 +5225,7 @@ selector();
                 $newestVersion = getLatestVersion();
                 $newestCompare = str_replace('/','.',$newestVersion);
                 $currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
-                if ($newestVersion && version_compare($newestCompare,$currentVersion)) {
+                if ($newestVersion && version_compare($newestCompare,$currentVersion) > 0) {
                     echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
                 }
             } else {
