@@ -147,7 +147,7 @@ define('_TEXT15_L1',			'<b>install.sql</b>：テーブルの構造を内包す�
 define('_TEXT15_L2',			'<b>install.php</b>：このファイル');
 
 define('_TEXT15_L3',			'<b>install_lang_japanese.php</b>：インストーラの言語ファイル');
-define('_TEXT15_EX',			'<p>もしこれらのファイルを削除していなければ、管理領域を開くことが出来ません。</p>');
+define('_TEXT16',			'<p>もしこれらのファイルを削除していなければ、管理領域を開くことが出来ません。</p>');
 
 define('_HEADER11',				'ウェブサイトの確認');
 define('_TEXT16_H',				'ウェブサイトを使う準備が整いました。');
@@ -162,7 +162,7 @@ define('_BUTTON1',				'Nucleus CMSのインストール');
 define('_GENERALCAT_NAME',		'総合');
 define('_GENERALCAT_DESC',		'投稿した記事に合うカテゴリが無い時にこのカテゴリを使用すると良いでしょう');
 
-define('_1ST_POST_TITLE',		'Nucleus CMS バージョン3.5へようこそ');
+define('_1ST_POST_TITLE',		'Nucleus CMS バージョン3.50へようこそ');
 define('_1ST_POST',				'ウェブページの作成を補助する積み木がここにあります。それは心躍るblogになるかもしれませんし、観るものを和ませる家族のページになるかもしれませんし、実り多き趣味のサイトになるかもしれません。あるいは現在のあなたには想像がつかないものになることだってあるでしょう。<br />
 <br />用途が思いつきませんでしたか？　それならここへ来て正解です。なぜならあなた同様私たちにもわからないのですから。');
 define('_1ST_POST2',			'これはサイトにおける最初のエントリーです。スタートを切りやすいように、リンクと情報を入れておきました。<br />
@@ -273,7 +273,7 @@ Then visit the plugin repository at <a href="http://plugins.nucleuscms.org/">plu
     <li><a href="http://www.winscp.net/">WinSCP FTP cient</a></li>
     <li><a href="http://blogs.waytorussia.net/">Way to Russia Guides</a></li>
     <li><a href="http://blog.gilmalonzo.com/">Gil Malonzo</a></li>
-    <li><a href="http://www.yosiah.com/blog/">Yosiah\'s Blog</a></li>
+    <li><a href="http://www.yosiah.com/blog/">Yosiah\\\'s Blog</a></li>
 
     <li><a href="http://www.kritische-masse.de/">Kritische Masse</a></li>
     <li><a href="http://www.grid8400.nl/">grid8400</a></li>
@@ -284,7 +284,7 @@ Then visit the plugin repository at <a href="http://plugins.nucleuscms.org/">plu
 
     <li><a href="http://www.p2p-blog.com/">P2P Blog</a></li>
     <li><a href="http://www.l-word.org/">The L Word Fansite</a></li>
-    <li><a href="http://www.3gz.com/nb3/">NEUT\'s BUTT 3G\'Z</a></li>
+    <li><a href="http://www.3gz.com/nb3/">NEUT\\\'s BUTT 3G\\\'Z</a></li>
     <li><a href="http://www.bloghouston.net/">blogHOUSTON</a></li>
     <li><a href="http://www.osalt.com/">Open Source as Alternative</a></li> 
     <li><a href="http://www.yetanotherblog.de/">Yet Another Blog</a></li>
@@ -338,15 +338,15 @@ Then visit the plugin repository at <a href="http://plugins.nucleuscms.org/">plu
     <li><a href="http://www.nieuwevoordeur.be/">nieuwevoordeur.be</a></li>
 
     <li><a href="http://www.scene24.net/">Scene24</a></li>
-    <li><a href="http://www.eug.be/">Eug\'s Weblog</a></li>
+    <li><a href="http://www.eug.be/">Eug\\\'s Weblog</a></li>
     <li><a href="http://www.bloggard.com/">The Adventures of Bloggard</a></li>
     <li><a href="http://www.voltos.com/">Arthur Cronos from Voltos</a></li>
-    <li><a href="http://www.domilog.be/">Domi\'s Weblog</a></li>
+    <li><a href="http://www.domilog.be/">Domi\\\'s Weblog</a></li>
     <li>Infodoma</li>       
     <li><a href="http://carvingcode.com/">carvingCode.com</a></li>
 
     <li><a href="http://www.traweb.com/">Traweb</a></li>
-    <li><a href="http://gene.mm2u.com/">Gene\'s MoBlog</a></li>
+    <li><a href="http://gene.mm2u.com/">Gene\\\'s MoBlog</a></li>
     <li><a href="http://interfacethis.com/">InterfaceThis</a></li>
     <li><a href="http://www.thefinsters.com/flog/">The Finster Log</a></li>
     <li><a href="http://www.mrhop.com/">Hop Nguyen</a></li>
@@ -435,7 +435,7 @@ Then visit the plugin repository at <a href="http://plugins.nucleuscms.org/">plu
     <li><a href="http://www.heinecke.com/blog">Hasko Heinecke</a></li>
     <li><a href="http://matthewblog.com/">Matthew Wilson</a></li>
 
-    <li><a href="http://www.pokeefe.com/">Patrick O\'Keefe</a></li>
+    <li><a href="http://www.pokeefe.com/">Patrick O\\\'Keefe</a></li>
     <li><a href="http://carfilhiot.co.uk/">Carfilhiot</a></li>
     <li>Markus Kunz</li>
     <li><a href="http://www.cphere.net/">Nadim Kobeissi</a></li>
@@ -450,7 +450,7 @@ Then visit the plugin repository at <a href="http://plugins.nucleuscms.org/">plu
     <li>Andy Fuchs</li>
 
     <li><a href="http://www.sumoforce.com/">Sumoforce</a></li>
-    <li><a href="http://love.silverindigo.com/">Al\'ky\'mie</a></li>
+    <li><a href="http://love.silverindigo.com/">Al\\\'ky\\\'mie</a></li>
     <li><a href="http://www.pejo.us/">Peter Johnson</a></li>
     <li><a href="http://www.triv.nl/">TriV Internet Solutions</a></li>
     <li>Margaret Stowe</li>
