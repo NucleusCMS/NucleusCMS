@@ -62,6 +62,7 @@ class COMMENTACTIONS extends BaseActions {
 			'userlink',
 			'useremail',
 			'userwebsite',
+			'userwebsitelink',
 			'excerpt',
 			'short',
 			'skinfile',
@@ -387,6 +388,17 @@ class COMMENTACTIONS extends BaseActions {
 	function parse_userwebsite() {
 		if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false))
 			echo $this->currentComment['userlinkraw'];
+	}
+	
+	/**
+	 * Parse templatevar userwebsitelink
+	 */
+	function parse_userwebsitelink() {
+		if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false)) {
+			echo '<a href="'.$this->currentComment['userlinkraw'].'" rel="nofollow">'.$this->currentComment['user'].'</a>';
+		} else {
+			echo $this->currentComment['user'];
+		}
 	}
 
 }
