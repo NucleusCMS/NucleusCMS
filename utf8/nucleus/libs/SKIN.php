@@ -152,9 +152,10 @@ class SKIN {
 	}
 
 	function parse($type) {
-		global $manager, $CONF;
+		global $manager, $CONF, $skinid;
 
 		$manager->notify('InitSkinParse',array('skin' => &$this, 'type' => $type));
+        $skinid = $this->id;
 
 		// set output type
 		sendContentType($this->getContentType(), 'skin', _CHARSET);
@@ -178,6 +179,7 @@ class SKIN {
 		$actions = $this->getAllowedActionsForType($type);
 
 		$manager->notify('PreSkinParse',array('skin' => &$this, 'type' => $type, 'contents' => &$contents));
+        $skinid = $this->id;
 
 		// set IncludeMode properties of parser
 		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
@@ -190,6 +192,7 @@ class SKIN {
 		$parser->parse($contents);
 
 		$manager->notify('PostSkinParse',array('skin' => &$this, 'type' => $type));
+        $skinid = $this->id;
 
 
 	}

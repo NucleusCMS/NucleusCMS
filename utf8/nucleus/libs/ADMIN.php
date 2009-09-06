@@ -6433,7 +6433,7 @@ selector();
 
 
 
-                echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, htmlspecialchars($aOption['pfile']. ENT_QUOTES)).'</th></tr>';
+                echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, htmlspecialchars($aOption['pfile'], ENT_QUOTES)).'</th></tr>';
             }
 
             $meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
