@@ -709,6 +709,8 @@ function doInstall() {
         $defSkinID   = quickQuery($defskinQue);
         $updateQuery = 'UPDATE ' . sql_table('blog') . ' SET `bdefskin` = ' . intval($defSkinID) . ' WHERE `bnumber` = 1';
         sql_query($updateQuery);
+        $updateQuery = 'UPDATE ' . sql_table('config') . ' SET `value` = ' . intval($defSkinID). ' WHERE `name` = "BaseSkin"';
+        sql_query($updateQuery);
 
 		// 12. install NP_Ping, if decided
 		if ($weblog_ping == 1) {
