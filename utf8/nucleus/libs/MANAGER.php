@@ -248,6 +248,9 @@ class MANAGER {
 
                 if (!file_exists($fileName))
                 {
+                    if (!defined('_MANAGER_PLUGINFILE_NOTFOUND')) {
+                        define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
+                    }
                     ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name));
                     return 0;
                 }
@@ -258,6 +261,9 @@ class MANAGER {
                 // check if class exists (avoid errors in eval'd code)
                 if (!class_exists($name))
                 {
+                    if (!defined('_MANAGER_PLUGINFILE_NOCLASS')) {
+                        define('_MANAGER_PLUGINFILE_NOCLASS', "Plugin %s was not loaded (Class not found in file, possible parse error)");
+                    }
                     ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
                     return 0;
                 }

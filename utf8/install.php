@@ -194,7 +194,6 @@ function showInstallForm() {
             $row   = sql_fetch_row($result);
             $match = explode('.', $row[1]);
         } else {
-            $output = shell_exec('mysql -V');
             $output = (function_exists('shell_exec')) ? @shell_exec('mysql -V') : '0.0.0';
             preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
             $match = explode('.', $version[0]);
@@ -814,6 +813,8 @@ function doInstall() {
         $defskinQue  = 'SELECT `sdnumber` as result FROM ' . sql_table('skin_desc') . ' WHERE `sdname` = "default"';
         $defSkinID   = quickQuery($defskinQue);
         $updateQuery = 'UPDATE ' . sql_table('blog') . ' SET `bdefskin` = ' . intval($defSkinID) . ' WHERE `bnumber` = 1';
+        sql_query($updateQuery);
+        $updateQuery = 'UPDATE ' . sql_table('config') . ' SET `value` = ' . intval($defSkinID). ' WHERE `name` = "BaseSkin"';
         sql_query($updateQuery);
 
         // 12. install NP_Ping, if decided

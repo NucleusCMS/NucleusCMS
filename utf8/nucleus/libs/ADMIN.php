@@ -4247,7 +4247,7 @@ selector();
             $tabstart = 75;
 
             while ($row = sql_fetch_assoc($res)) {
-                echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype'])) . '">' . htmlspecialchars(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype'])) . '">remove</a>)</li>';
+                echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype'])) . '">' . htmlspecialchars(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype'])) . '">'._LISTS_DELETE.'</a>)</li>';
             }
 
             echo '</ul>';

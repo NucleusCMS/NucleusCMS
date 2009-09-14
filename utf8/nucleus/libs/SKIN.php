@@ -374,7 +374,7 @@ class SKIN {
 				$extraActions = array(
 								'membermailform',
 								'blogsetting',
-								'nucleusbutton'
+//								'nucleusbutton'
 				);
 				break;
 			case 'item':
@@ -418,7 +418,7 @@ class SKIN {
 						'nextlink',
 						'prevlink',
 						'membermailform',
-						'nucleusbutton'
+//						'nucleusbutton'
 					);
 				}
 				break;

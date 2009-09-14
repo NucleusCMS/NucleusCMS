@@ -937,7 +937,7 @@ define('_ERROR_BADTEMPLATENAME',			'不正なテンプレート名です。(a-z 
 define('_ERROR_DUPTEMPLATENAME',			'同じ名前のテンプレートが既に存在します');
 define('_ERROR_BADSKINNAME',				'不正なスキン名です。(a-z 、0-9 の英数字のみ使用可。スペースは使用不可)');
 define('_ERROR_DUPSKINNAME',				'同じ名前のスキンが既に存在します。');
-define('_ERROR_DEFAULTSKIN',				'常に "default" という名前のスキンが存在しなければいけません。');
+define('_ERROR_DEFAULTSKIN',				'このスキンは標準のスキンに設定されているため削除できません。');
 define('_ERROR_SKINDEFDELETE',				'以下のBlogの既定のスキンに指定されているため、スキンを削除できません。: ');
 define('_ERROR_DISALLOWED',					'このアクションの実行が許可されていません。');
 define('_ERROR_DELETEBAN',					'禁止者の削除中にエラーが発生しました(禁止者が存在しません)');

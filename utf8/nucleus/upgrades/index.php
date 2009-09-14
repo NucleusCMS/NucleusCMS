@@ -65,7 +65,7 @@ upgrade_head();
          <?php 	 
    } else {
     ?>
-      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.4 用にアップグレードします</a></p>
+      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.50 用にアップグレードします</a></p>
          <?php 	 
    } 	 
  ?> 	 
