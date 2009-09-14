@@ -22,10 +22,10 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 
 	function getURL()   { return 'http://revcetera.com/ftruscot';	}
 
-	function getVersion() {	return '1.0'; }
+	function getVersion() {	return '1.01'; }
 
 	function getDescription() {
-		return 'Enforces some password complexity rules and sets a maximum number of failed logins.';
+		return _SECURITYENFORCER_DESCRIPTION;
 	}
 	
 	function getMinNucleusVersion() { return 350; }
@@ -122,15 +122,19 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 			$ip = $_SERVER['REMOTE_ADDR'];
 			sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE lastfail < ".(time() - ($this->login_lockout * 60)));
 			$query = "SELECT fails as result FROM ".sql_table('plug_securityenforcer')." ";
-			$query .= "WHERE login='".addslashes($login)."'";
+			//$query .= "WHERE login='".addslashes($login)."'";
+			$query .= "WHERE login='".sql_real_escape_string($login)."'";
 			$flogin = quickQuery($query); 
 			$query = "SELECT fails as result FROM ".sql_table('plug_securityenforcer')." ";
-			$query .= "WHERE login='".addslashes($ip)."'";
+			//$query .= "WHERE login='".addslashes($ip)."'";
+			$query .= "WHERE login='".sql_real_escape_string($ip)."'";
 			$fip = quickQuery($query); 
 			if ($flogin >= $this->max_failed_login || $fip >= $this->max_failed_login) {
 				$data['success'] = 0;
 				$data['allowlocal'] = 0;
-				ACTIONLOG::add(INFO, 'login disallowed by NP_SecurityEnforcer. login: '.htmlentities($login).', ip: '.htmlentities($ip) );
+				//ACTIONLOG::add(INFO, 'login disallowed by NP_SecurityEnforcer. login: '.htmlentities($login).', ip: '.htmlentities($ip) );
+				$info = sprintf(_SECURITYENFORCER_LOGIN_DISALLOWED, htmlspecialchars($login), htmlspecialchars($ip));
+                ACTIONLOG::add(INFO, $info);
 			}
 		}
 	}
@@ -141,8 +145,10 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 			global $_SERVER;
 			$login = $data['username'];
 			$ip = $_SERVER['REMOTE_ADDR'];
-			sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login='".addslashes($login)."'");
-			sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login='".addslashes($ip)."'");			
+			//sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login='".addslashes($login)."'");
+			sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login='".sql_real_escape_string($login)."'");
+			//sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login='".addslashes($ip)."'");			
+			sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login='".sql_real_escape_string($ip)."'");
 		}
 	}
 	
@@ -153,19 +159,25 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 			$login = $data['username'];
 			$ip = $_SERVER['REMOTE_ADDR'];
 			//sql_table('plug_securityenforcer')
-			$lres = sql_query("SELECT * FROM ".sql_table('plug_securityenforcer')." WHERE login='".addslashes($login)."'");
+			//$lres = sql_query("SELECT * FROM ".sql_table('plug_securityenforcer')." WHERE login='".addslashes($login)."'");
+			$lres = sql_query("SELECT * FROM ".sql_table('plug_securityenforcer')." WHERE login='".sql_real_escape_string($login)."'");
 			if (sql_num_rows($lres)) {
-				sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login='".addslashes($login)."'");
+				//sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login='".addslashes($login)."'");
+				sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login='".sql_real_escape_string($login)."'");
 			}
 			else {
-				sql_query("INSERT INTO ".sql_table('plug_securityenforcer')." (login,fails,lastfail) VALUES ('".addslashes($login)."',1,".time().")");
+				//sql_query("INSERT INTO ".sql_table('plug_securityenforcer')." (login,fails,lastfail) VALUES ('".addslashes($login)."',1,".time().")");
+				sql_query("INSERT INTO ".sql_table('plug_securityenforcer')." (login,fails,lastfail) VALUES ('".sql_real_escape_string($login)."',1,".time().")");
 			}
-			$lres = sql_query("SELECT * FROM ".sql_table('plug_securityenforcer')." WHERE login='".addslashes($ip)."'");
+			//$lres = sql_query("SELECT * FROM ".sql_table('plug_securityenforcer')." WHERE login='".addslashes($ip)."'");
+			$lres = sql_query("SELECT * FROM ".sql_table('plug_securityenforcer')." WHERE login='".sql_real_escape_string($ip)."'");
 			if (sql_num_rows($lres)) {
-				sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login='".addslashes($ip)."'");
+				//sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login='".addslashes($ip)."'");
+				sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login='".sql_real_escape_string($ip)."'");
 			}
 			else {
-				sql_query("INSERT INTO ".sql_table('plug_securityenforcer')." (login,fails,lastfail) VALUES ('".addslashes($ip)."',1,".time().")");
+				//sql_query("INSERT INTO ".sql_table('plug_securityenforcer')." (login,fails,lastfail) VALUES ('".addslashes($ip)."',1,".time().")");
+				sql_query("INSERT INTO ".sql_table('plug_securityenforcer')." (login,fails,lastfail) VALUES ('".sql_real_escape_string($ip)."',1,".time().")");
 			}
 		}		
 	}
