@@ -247,7 +247,10 @@ class MANAGER {
 
 				if (!file_exists($fileName))
 				{
-					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name));
+					if (!defined('_MANAGER_PLUGINFILE_NOTFOUND')) {
+                        define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
+                    }
+                    ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name)); 
 					return 0;
 				}
 
