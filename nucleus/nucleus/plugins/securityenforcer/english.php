@@ -32,4 +32,12 @@ define('_SECURITYENFORCER_UNLOCK',		   'Unlock');
 define('_SECURITYENFORCER_ENTITY',		   'Entity');
 define('_SECURITYENFORCER_LOCKED_ENTITIES',		   'Currently Locked Entities');
 
+// Plugin desc
+define('_SECURITYENFORCER_DESCRIPTION',				'Enforces some password complexity rules and sets a maximum number of failed logins.');
+// Log info
+define('_SECURITYENFORCER_LOGIN_DISALLOWED',		'login disallowed by NP_SecurityEnforcer. login: %1$s, ip: %2$s');
+// QuickMenu title
+define('_SECURITYENFORCER_ADMIN_TITLE',				'Security Enforcer Administration');
+
+
 ?>

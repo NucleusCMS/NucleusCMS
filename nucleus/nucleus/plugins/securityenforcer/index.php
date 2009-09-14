@@ -49,7 +49,7 @@ Admin area for NP_SecurityEnforcer
 	$plug =& $oPluginAdmin->plugin;
 
 	// page title
-	echo '<h2>Security Enforcer Administration</h2>';
+	echo '<h2>'._SECURITYENFORCER_ADMIN_TITLE.'</h2>';
 	
 	// error output
 	if($message) { echo "<p><strong>"; echo $message; echo "</strong></p>"; }
@@ -60,7 +60,7 @@ Admin area for NP_SecurityEnforcer
 	echo '<input type="hidden" name="action" value="unlock" />';
 	$manager->addTicketHidden();
 	echo '<table>';
-	echo '<tr><th>'._SECURITYENFORCER_ENTITY.'</th><th>Unlock?</th></tr>';
+	echo '<tr><th>'._SECURITYENFORCER_ENTITY.'</th><th>'._SECURITYENFORCER_UNLOCK.'?</th></tr>';
 	echo '<tr><td colspan="2" class="submit"><input type="submit" value="'._SECURITYENFORCER_UNLOCK.'" /></td></tr>';
 	// do query to get all entries, loop
 	$result = sql_query("SELECT * FROM ".sql_table("plug_securityenforcer")." WHERE fails >= ".$plug->max_failed_login);
