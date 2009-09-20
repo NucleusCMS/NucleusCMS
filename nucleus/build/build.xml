@@ -8,15 +8,15 @@
 
 <target name="init">
 
-    <property name="version" value="3.40RC" />
+    <property name="version" value="3.50" />
     
-    <property name="src.home" value=".." />
-    <property name="build.home" value="." />    
+    <property name="src.home" value="source/Nucleus-3-50" />
+    <property name="build.home" value="release/" />    
 
 	<property name="tempdir" value="${build.home}/temp" />
 	
     <property name="release.home" value="${tempdir}/nucleus${version}" />
-    <property name="upgrade.home" value="${tempdir}" />
+    <property name="upgrade.home" value="${tempdir}/upgrade-files" />
     <property name="upgradescripts.home" value="${tempdir}/upgrades" />    
     <property name="convert.home" value="${tempdir}/convert" />
     <property name="apidocs.home" value="${build.home}/api" />
@@ -125,6 +125,9 @@
     		<!-- DO include NP_Ping in the upgrade -->
     		<exclude name="NP_Ping.php" />
     		<exclude name="ping/*.*" />
+    		<!-- DO include NP_SecurityEnforcer in the upgrade -->
+    		<exclude name="NP_SecurityEnforcer.php" />
+    		<exclude name="securityenforcer/*.*" />
     	</fileset>
     </delete>    
     
