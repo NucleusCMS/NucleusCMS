@@ -2175,13 +2175,14 @@ class ADMIN {
             
         $pwdvalid = true;
         $pwderror = '';
+		global $manager;
         $manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
         if (!$pwdvalid) {
             return $this->_showActivationPage($key,$pwderror);
         }
 
         $error = '';
-        global $manager;
+        
         $manager->notify('ValidateForm', array('type' => 'activation', 'member' => $mem, 'error' => &$error));
         if ($error != '')
             return $this->_showActivationPage($key, $error);
