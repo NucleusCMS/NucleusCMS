@@ -50,8 +50,10 @@ function upgrade_do340() {
 	}
 	
 	// changing the member table
-    $query = ' ALTER TABLE ' . sql_table('member') . ' ADD mautosave TINYINT(2) DEFAULT 1';
-	upgrade_query('Adding a new row for the autosave member option', $query);
+	if (!upgrade_checkIfColumnExists('member', 'mautosave')) {
+		$query = ' ALTER TABLE ' . sql_table('member') . ' ADD mautosave TINYINT(2) DEFAULT 1';
+		upgrade_query('Adding a new row for the autosave member option', $query);
+	}
 
 	// 3.3 -> 3.4
 	// update database version

@@ -32,10 +32,12 @@ function upgrade_do350() {
 	upgrade_query('Altering ' . sql_table('member') . ' table', $query);
 
 	// changing the blog table to remove bsendping flag
-    $query = "	ALTER TABLE `" . sql_table('blog') . "`
+    if (upgrade_checkIfColumnExists('blog', 'bsendping')) {
+		$query = "	ALTER TABLE `" . sql_table('blog') . "`
 					DROP `bsendping`;";
-
-	upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+	
+		upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+	}
 
 	// 3.4 -> 3.5
 	// update database version
