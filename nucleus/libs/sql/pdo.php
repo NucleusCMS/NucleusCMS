@@ -524,7 +524,6 @@ if (!function_exists('sql_fetch_assoc'))
 			return false;
 		else
 			return false;
-		return '';
 	}
 
     /**
