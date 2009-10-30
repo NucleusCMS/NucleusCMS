@@ -126,7 +126,7 @@ class NP_Ping extends NucleusPlugin
         }
 
         $bid = intval($data['blogid']);
-        if ($this->getBlogOption($bod, 'ping_sendping') == "yes") {
+        if ($this->getBlogOption($bid, 'ping_sendping') == "yes") {
             if ($this->getOption('ping_background') == "yes") {
                 exec("php $DIR_PLUGINS/ping/ping.php " . $data['blogid'] . " &");
             } else {
