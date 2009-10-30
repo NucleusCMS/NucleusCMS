@@ -74,7 +74,7 @@ class NP_ItemOptionTestCase3 extends NucleusPlugin {
 	  echo '$data: '.$data.'<br/>';
 	  echo 'context: '.$data['context'].'<br/>';
 	  echo 'contextid: '.$data['contextid'].'<br/>';
-	  for ($i == 0; $i < count($data['options']); $i++) {
+	  for ($i = 0; $i < count($data['options']); $i++) {
 		  echo 'option-name: '.$data['options'][$i]['name'].' value: '.$data['options'][$i]['value'].'<br/>';
 	  }
   }
