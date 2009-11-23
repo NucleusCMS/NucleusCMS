@@ -725,7 +725,8 @@ function parseHighlight($query) {
   * Checks if email address is valid
   */
 function isValidMailAddress($address) {
-    if (preg_match('/^[a-zA-Z+0-9\._-]+@[a-zA-Z0-9\._-]+\.[A-Za-z]{2,5}$/', $address)) {
+	// enhancement made in 3.6x based on code by Quandary.
+	if (preg_match('/^(?!\\.)(?:\\.?[-a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~]+)+@(?!\\.)(?:\\.?(?!-)[-a-zA-Z0-9]+(?<!-)){2,}$/', $address)) {
         return 1;
     } else {
         return 0;
