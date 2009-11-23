@@ -154,7 +154,7 @@ function bc_assignMembers() {
 			<td>
 		<?php
 			$query =  "SELECT mname as text, mnumber as value"
-				   . " FROM nucleus_member";
+				   . " FROM ".sql_table('member');
 
 			$template['name'] = 'memberid[' . $idx . ']';
 			showlist($query,'select',$template);
@@ -184,7 +184,7 @@ function bc_assignMembers() {
 
 			<?php
 					$query =  "SELECT bname as text, bnumber as value"
-						   . " FROM nucleus_blog";
+						   . " FROM ".sql_table('blog');
 					$template['name'] = 'blogid';
 					$template['selected'] = $CONF['DefaultBlog'];
 					showlist($query,'select',$template);
@@ -197,7 +197,7 @@ function bc_assignMembers() {
 				<li>Blog owner:
 				<?php
 					$query =  "SELECT mname as text, mnumber as value"
-						   . " FROM nucleus_member";
+						   . " FROM ".sql_table('member');
 
 					$template['name'] = 'newowner';
 					showlist($query,'select',$template);
