@@ -1209,7 +1209,7 @@ class BLOG {
 		}
 	}
 
-	/**
+/**
 	 * Shows the given list of items for this blog
 	 *
 	 * @param $itemarray
@@ -1222,12 +1222,16 @@ class BLOG {
 	 *		1=show comments 0=don't show comments
 	 * @param $dateheads
 	 *		1=show dateheads 0=don't show dateheads
+	 * @param $showDrafts
+	 *		0=do not show drafts 1=show drafts
+	 * @param $showFuture
+	 *		0=do not show future posts 1=show future posts
 	 * @returns int
 	 *		amount of items shown
 	 */
-	function readLogFromList($itemarray, $template, $highlight = '', $comments = 1, $dateheads = 1) {
+	function readLogFromList($itemarray, $template, $highlight = '', $comments = 1, $dateheads = 1,$showDrafts = 0, $showFuture = 0) {
 
-		$query = $this->getSqlItemList($itemarray);
+		$query = $this->getSqlItemList($itemarray,$showDrafts,$showFuture);
 
 		return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
 	}
@@ -1237,14 +1241,20 @@ class BLOG {
 	 *
 	 * @param $itemarray
 	 *		an array holding the item numbers of the items to be displayed
+	 * @param $showDrafts
+	 *		0=do not show drafts 1=show drafts
+	 * @param $showFuture
+	 *		0=do not show future posts 1=show future posts
 	 * @returns
 	 *		either a full SQL query, or an empty string
 	 * @note
 	 *		No LIMIT clause is added. (caller should add this if multiple pages are requested)
 	 */
-	function getSqlItemList($itemarray)
+	function getSqlItemList($itemarray,$showDrafts = 0,$showFuture = 0)
 	{
 		if (!is_array($itemarray)) return '';
+		$showDrafts = intval($showDrafts);
+		$showFuture = intval($showFuture);
 		$items = array();
 		foreach ($itemarray as $value) {
 			if (intval($value)) $items[] = intval($value);
@@ -1277,10 +1287,9 @@ class BLOG {
 					. ' WHERE'
 				    .    ' i.iblog='.$this->blogid
 				   . ' and i.iauthor=m.mnumber'
-				   . ' and i.icat=c.catid'
-				   . ' and i.idraft=0'	// exclude drafts
-						// don't show future items
-				   . ' and i.itime<=' . mysqldate($this->getCorrectTime());
+				   . ' and i.icat=c.catid';
+			if (!$showDrafts) $query .= ' and i.idraft=0';	// exclude drafts						
+			if (!$showFuture) $query .= ' and i.itime<=' . mysqldate($this->getCorrectTime()); // don't show future items
 
 			//$query .= ' and i.inumber IN ('.$itemlist.')';
 			$query .= ' and i.inumber='.intval($value);
