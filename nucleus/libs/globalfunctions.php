@@ -64,6 +64,15 @@ if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CO
     $CONF['URLMode'] = 'normal';
 }*/
 
+/*
+	Set these to 1 to allow viewing of future items or draft items 
+	Should really never do this, but can be useful for some plugins that might need to
+	Could cause some other issues if you use future posts otr drafts
+	So use with care
+*/
+$CONF['allowDrafts'] = 0;
+$CONF['allowFuture'] = 0;
+
 if (getNucleusPatchLevel() > 0) {
     $nucleus['version'] .= '/' . getNucleusPatchLevel();
 }
@@ -821,7 +830,7 @@ function selector() {
         // itemid given -> only show that item
         $type = 'item';
 
-        if (!$manager->existsItem($itemid,0,0) ) {
+        if (!$manager->existsItem($itemid,intval($CONF['allowFuture']),intval($CONF['allowDrafts'])) ) {
             doError(_ERROR_NOSUCHITEM);
         }
 
@@ -838,17 +847,7 @@ function selector() {
 
 
         if ($blogid && (intval($blogid) != $obj->iblog) ) {
-
-
-
-
-
-
-
-
-
             doError(_ERROR_NOSUCHITEM);
-
         }
 
         // if a category has been selected which doesn't match the item, ignore the
