@@ -30,6 +30,7 @@
 	<li>
 	<strong>Nucleus v3.60 (SVN)</strong>
 	<ul>
+		<li>ADD: PostParseURL event to globalfunctions. Triggers right after url is fully parsed (by ParseURL and globalfunctions). Useful to tweak global variables before selector() runs or to set something based on path-related globals. Used by new version of NP_EventBlog (min 3.60) to display future posts (events) on item pages skin part. (ftruscot)</li>
 		<li>CHANGE: selector() itemid, change itemexits check to be aware of allowDrafts and allowFuture. (ftruscot)</li>
 		<li>ADD: $CONF settings for allowDrafts and allowFuture so can set selector to permit showing of these items if needed. Can be set in config.php or in plugin event (probably authentication related for timing. (ftruscot)</li>
 		<li>CHANGE: BLOG::readLogFromList() and BLOG::getSqlItemList() methods to add parameters permitting drafts or future items to be shown. (ftruscot)</li>
