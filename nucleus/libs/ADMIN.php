@@ -1922,12 +1922,14 @@ class ADMIN {
             if ($password && (strlen($password) < 6))
                 $this->error(_ERROR_PASSWORDTOOSHORT);
                 
-            $pwdvalid = true;
-            $pwderror = '';
-            $manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
-            if (!$pwdvalid) {
-                $this->error($pwderror);
-            }
+            if ($password) {
+				$pwdvalid = true;
+				$pwderror = '';
+				$manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
+				if (!$pwdvalid) {
+					$this->error($pwderror);
+				}
+			}
         }
 
         if (!isValidMailAddress($email))
