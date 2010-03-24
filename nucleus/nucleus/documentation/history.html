@@ -30,6 +30,7 @@
 	<li>
 	<strong>Nucleus v3.60 (SVN)</strong>
 	<ul>
+		<li>FIX: Fixes to NP_SecurityEnforcer suggested by cacher at <a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4502" title="Fixes to NP_SecurityEnforcer">Japanese Forum</a>. (ftruscot)</li>
 		<li>FIX: When changing settings for a member, call to PrePasswordSet event was happening even if password not being changed. Admin.php, action_changemembersettings() method. (ftruscot)</li>
 		<li>ADD: PostParseURL event to globalfunctions. Triggers right after url is fully parsed (by ParseURL and globalfunctions). Useful to tweak global variables before selector() runs or to set something based on path-related globals. Used by new version of NP_EventBlog (min 3.60) to display future posts (events) on item pages skin part. (ftruscot)</li>
 		<li>CHANGE: selector() itemid, change itemexits check to be aware of allowDrafts and allowFuture. (ftruscot)</li>

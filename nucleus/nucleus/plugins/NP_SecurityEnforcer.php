@@ -18,11 +18,11 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 
 	function getName() { return 'SecurityEnforcer'; }
 
-	function getAuthor()  {	return 'Frank Truscott';	}
+	function getAuthor()  {	return 'Frank Truscott + Cacher';	}
 
 	function getURL()   { return 'http://revcetera.com/ftruscot';	}
 
-	function getVersion() {	return '1.01'; }
+	function getVersion() {	return '1.02'; }
 
 	function getDescription() {
 		return _SECURITYENFORCER_DESCRIPTION;
@@ -42,7 +42,7 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 	}
 
 	function getTableList() { return array(sql_table('plug_securityenforcer')); }
-	function getEventList() { return array('QuickMenu','PrePasswordSet','CustomLogin','LoginSuccess','LoginFailed'); }
+	function getEventList() { return array('QuickMenu','PrePasswordSet','CustomLogin','LoginSuccess','LoginFailed','PostRegister','PrePluginOptionsEdit'); }
 	
 	function install() {
 		global $CONF;
@@ -105,11 +105,32 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 	function event_PrePasswordSet(&$data) {
 		//password, errormessage, valid
 		if ($this->enable_security == 'yes') {
-			if (!$this->_validate_passwd($data['password'],$this->pwd_min_length, $this->pwd_complexity)) {
-				$data['errormessage'] = _SECURITYENFORCER_INSUFFICIENT_COMPLEXITY;
-				$data['errormessage'] .= _SECURITYENFORCER_MIN_PWD_LENGTH . $this->pwd_min_length; 
-				$data['errormessage'] .= _SECURITYENFORCER_PWD_COMPLEXITY . $this->pwd_complexity . "<br /><br />\n"; 
-				$data['valid'] = false;
+			$password = $data['password'];
+			// conditional below not needed in 3.60 or higher. Used to keep from setting off error when password not being changed
+			if (postVar('action') == 'changemembersettings')
+				$emptyAllowed = true;
+			else
+				$emptyAllowed = false;
+			if ((!$emptyAllowed)||$password){
+				$message = $this->_validate_and_messsage($password,$this->pwd_min_length, $this->pwd_complexity);
+				if ($message) {
+					$data['errormessage'] = _SECURITYENFORCER_INSUFFICIENT_COMPLEXITY . $message. "<br /><br />\n";
+					$data['valid'] = false;
+				}
+			}
+		}
+	}
+	
+	function event_PostRegister(&$data) {
+		if ($this->enable_security == 'yes') {
+			$password = postVar('password');
+			if(postVar('action') == 'memberadd'){
+				$message = $this->_validate_and_messsage($password,$this->pwd_min_length, $this->pwd_complexity);
+				if ($message) {
+					$errormessage = _SECURITYENFORCER_ACCOUNT_CREATED. $message. "<br /><br />\n";
+					global $admin;
+					$admin->error($errormessage);
+				}
 			}
 		}
 	}
@@ -182,6 +203,19 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 		}		
 	}
 	
+	function event_PrePluginOptionsEdit($data) {
+		if ($data['plugid'] === $this->getID()) {
+			foreach($data['options'] as $key => $value){
+				if (defined($value['description'])) {
+					$data['options'][$key]['description'] = constant($value['description']);
+				}
+				if (!strcmp($value['type'], 'select') && defined($value['typeinfo'])) {
+					$data['options'][$key]['typeinfo'] = constant($value['typeinfo']);
+				}
+			}
+		}
+	}
+	
 	/* Helper Functions */
 	
 	function _validate_passwd($passwd,$minlength = 6,$complexity = 0) {
@@ -206,6 +240,34 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 
 		if (array_sum($tot) >= $complexity) return true;
 		else return false;
+	}
+	
+	function _validate_and_messsage($passwd,$minlength = 6,$complexity = 0) {
+		$minlength = intval($minlength);
+		$complexity = intval($complexity);
+
+		if ($minlength < 6 ) $minlength = 6;
+		if (strlen($passwd) < $minlength) {
+			$message = _SECURITYENFORCER_MIN_PWD_LENGTH . $this->pwd_min_length;
+		}
+
+		if ($complexity > 4) $complexity = 4;
+		$ucchars = "[A-Z]";
+		$lcchars = "[a-z]";
+		$numchars = "[0-9]";
+		$ochars = "[-~!@#$%^&*()_+=,.<>?:;|]";
+		$chartypes = array($ucchars, $lcchars, $numchars, $ochars);
+		$tot = array(0,0,0,0);
+		$i = 0;
+		foreach ($chartypes as $value) {
+			$tot[$i] = preg_match("/".$value."/", $passwd);
+			$i = $i + 1;
+		}
+
+		if (array_sum($tot) < $complexity) {
+			$message .= _SECURITYENFORCER_PWD_COMPLEXITY . $this->pwd_complexity;
+		}
+		return $message;
 	}
 }
 ?>

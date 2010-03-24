@@ -2175,13 +2175,15 @@ class ADMIN {
         if ($password && (strlen($password) < 6))
             return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
             
-        $pwdvalid = true;
-        $pwderror = '';
-		global $manager;
-        $manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
-        if (!$pwdvalid) {
-            return $this->_showActivationPage($key,$pwderror);
-        }
+        if ($password) {
+			$pwdvalid = true;
+			$pwderror = '';
+			global $manager;
+			$manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
+			if (!$pwdvalid) {
+				return $this->_showActivationPage($key,$pwderror);
+			}
+		}
 
         $error = '';
         
