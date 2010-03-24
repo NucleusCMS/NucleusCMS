@@ -94,7 +94,7 @@ class NP_SecurityEnforcer extends NucleusPlugin {
     	// only show when option enabled
 		global $member;
     	if ($this->getOption('quickmenu') != 'yes' || !$member->isAdmin()) return;
-    	global $member;
+    	//global $member;
     	if (!($member->isLoggedIn())) return;
     	array_push($data['options'],
       		array('title' => 'Security Enforcer',
