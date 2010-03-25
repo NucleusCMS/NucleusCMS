@@ -52,7 +52,8 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 		$this->createOption('del_uninstall_data', _SECURITYENFORCER_OPT_DEL_UNINSTALL_DATA, 'yesno','no');
 		$this->createOption('enable_security', _SECURITYENFORCER_OPT_ENABLE, 'yesno','yes');
 		$this->createOption('pwd_min_length', _SECURITYENFORCER_OPT_PWD_MIN_LENGTH, 'text','8');
-		$this->createOption('pwd_complexity', _SECURITYENFORCER_OPT_PWD_COMPLEXITY, 'select','0',_SECURITYENFORCER_OPT_SELECT_OFF_COMP.'|0|'._SECURITYENFORCER_OPT_SELECT_ONE_COMP.'|1|'._SECURITYENFORCER_OPT_SELECT_TWO_COMP.'|2|'._SECURITYENFORCER_OPT_SELECT_THREE_COMP.'|3|'._SECURITYENFORCER_OPT_SELECT_FOUR_COMP.'|4');
+		//$this->createOption('pwd_complexity', _SECURITYENFORCER_OPT_PWD_COMPLEXITY, 'select','0',_SECURITYENFORCER_OPT_SELECT_OFF_COMP.'|0|'._SECURITYENFORCER_OPT_SELECT_ONE_COMP.'|1|'._SECURITYENFORCER_OPT_SELECT_TWO_COMP.'|2|'._SECURITYENFORCER_OPT_SELECT_THREE_COMP.'|3|'._SECURITYENFORCER_OPT_SELECT_FOUR_COMP.'|4');
+		$this->createOption('pwd_complexity', '_SECURITYENFORCER_OPT_PWD_COMPLEXITY', 'select','0','_SECURITYENFORCER_OPT_SELECT');
 		$this->createOption('max_failed_login', _SECURITYENFORCER_OPT_MAX_FAILED_LOGIN, 'text', '5');
 		$this->createOption('login_lockout', _SECURITYENFORCER_OPT_LOGIN_LOCKOUT, 'text', '15');
 		
