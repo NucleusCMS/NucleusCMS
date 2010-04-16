@@ -1002,28 +1002,6 @@ function selector() {
         $type = 'search';
         $query = stripslashes($query);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         if (is_numeric($blogid)) {
             $blogid = intVal($blogid);
         } else {
