@@ -867,7 +867,7 @@ class ACTIONS extends BaseActions {
 	 * (includes a member info thingie)	 
 	 */
 	function parse_member($what) {
-		global $memberinfo, $member;
+		global $memberinfo, $member, $CONF;
 
 		// 1. only allow the member-details-page specific variables on member pages
 		if ($this->skintype == 'member') {
@@ -915,6 +915,12 @@ class ACTIONS extends BaseActions {
 					break;
 				case 'yourid':
 					echo $member->getID();
+					break;
+				case 'yourprofileurl':
+					if ($CONF['URLMode'] == 'pathinfo')
+						echo createMemberLink($member->getID());
+					else
+						echo $CONF['IndexURL'] . createMemberLink($member->getID());
 					break;
 			}
 		}
