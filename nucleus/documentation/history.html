@@ -30,11 +30,12 @@
 	<li>
 	<strong>Nucleus v3.60 (SVN)</strong>
 	<ul>
+		<li>ADD: yourprofileurl parameter value to member skinvar to produce url to logged on member's profile for use in link to member profile. (ftruscot)</li>
 		<li>FIX: Fixes to NP_SecurityEnforcer suggested by cacher at <a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4502" title="Fixes to NP_SecurityEnforcer">Japanese Forum</a>. (ftruscot)</li>
 		<li>FIX: When changing settings for a member, call to PrePasswordSet event was happening even if password not being changed. Admin.php, action_changemembersettings() method. (ftruscot)</li>
 		<li>ADD: PostParseURL event to globalfunctions. Triggers right after url is fully parsed (by ParseURL and globalfunctions). Useful to tweak global variables before selector() runs or to set something based on path-related globals. Used by new version of NP_EventBlog (min 3.60) to display future posts (events) on item pages skin part. (ftruscot)</li>
-		<li>CHANGE: selector() itemid, change itemexits check to be aware of allowDrafts and allowFuture. (ftruscot)</li>
-		<li>ADD: $CONF settings for allowDrafts and allowFuture so can set selector to permit showing of these items if needed. Can be set in config.php or in plugin event (probably authentication related for timing. (ftruscot)</li>
+		<li>CHANGE: selector() itemid, change itemexists check to be aware of allowDrafts and allowFuture. (ftruscot)</li>
+		<li>ADD: $CONF settings for allowDrafts and allowFuture so can set selector to permit showing of these items if needed. Can be set in config.php or in plugin event (probably authentication related for timing). (ftruscot)</li>
 		<li>CHANGE: BLOG::readLogFromList() and BLOG::getSqlItemList() methods to add parameters permitting drafts or future items to be shown. (ftruscot)</li>
 		<li>FIX: unloaded ITEM class error casued by NP_Ping when creating new weblog. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=19411" title="Error on New Weblog">here</a> (ftruscot)</li>
 		<li>FIX: convert/livejournal.php set to use sql_table for prefixes. suggested by quandary (see <a href="http://forum.nucleuscms.org/viewtopic.php?t=19366" title="livejournal converter fix">here</a>). (ftruscot)</li>
