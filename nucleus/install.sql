@@ -131,6 +131,8 @@ CREATE TABLE `nucleus_item` (
   PRIMARY KEY  (`inumber`),
 --  UNIQUE KEY `inumber` (`inumber`),
   KEY `itime` (`itime`),
+  INDEX `iblog` (`iblog`),
+  INDEX `idraft` (`idraft`),
   FULLTEXT KEY `ibody` (`ibody`,`ititle`,`imore`)
 ) TYPE=MyISAM PACK_KEYS=0;
 
