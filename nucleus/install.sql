@@ -70,7 +70,8 @@ CREATE TABLE `nucleus_comment` (
   PRIMARY KEY  (`cnumber`),
 --  UNIQUE KEY `cnumber` (`cnumber`),
   KEY `citem` (`citem`),
-  FULLTEXT KEY `cbody` (`cbody`)
+  FULLTEXT KEY `cbody` (`cbody`),
+  INDEX `cblog` (`cblog`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_config` (
@@ -133,6 +134,7 @@ CREATE TABLE `nucleus_item` (
   KEY `itime` (`itime`),
   INDEX `iblog` (`iblog`),
   INDEX `idraft` (`idraft`),
+  INDEX `icat` (`icat`),
   FULLTEXT KEY `ibody` (`ibody`,`ititle`,`imore`)
 ) TYPE=MyISAM PACK_KEYS=0;
 
