@@ -508,6 +508,24 @@ if ($CONF['URLMode'] == 'pathinfo') {
 	);
 }
 
+function include_libs($file,$once=true,$require=true){
+       global $DIR_LIBS;
+       if (!is_dir($DIR_LIBS)) exit;
+       if ($once && $require) require_once($DIR_LIBS.$file);
+       elseif ($once && !$require) include_once($DIR_LIBS.$file);
+       elseif ($require) require($DIR_LIBS.$file);
+       else include($DIR_LIBS.$file);
+}
+
+function include_plugins($file,$once=true,$require=true){
+       global $DIR_PLUGINS;
+       if (!is_dir($DIR_PLUGINS)) exit;
+       if ($once && $require) require_once($DIR_PLUGINS.$file);
+       elseif ($once && !$require) include_once($DIR_PLUGINS.$file);
+       elseif ($require) require($DIR_PLUGINS.$file);
+       else include($DIR_PLUGINS.$file);
+}
+
 function intPostVar($name) {
     return intval(postVar($name) );
 }
