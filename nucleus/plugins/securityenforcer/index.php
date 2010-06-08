@@ -15,8 +15,8 @@ Admin area for NP_SecurityEnforcer
 	if (!$member->isAdmin())
 		doError('Insufficient Permissions.');
 		
+	include_libs('PLUGINADMIN.php');
 
-	include($DIR_LIBS . 'PLUGINADMIN.php');
 	// some functions
 	
 	function SE_unlockLogin($login) {
