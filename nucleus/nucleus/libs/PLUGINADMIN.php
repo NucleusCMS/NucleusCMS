@@ -18,43 +18,6 @@
  * @version $Id$
  */
 
-global $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_COOKIE_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_SESSION_VARS;
-$aVarsToCheck = array('HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS',
-'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION',
-'_SERVER', '_FILES', 'DIR_LIBS', 'DIR_LANG', 'DIR_PLUGINS');
-
-foreach ($aVarsToCheck as $varName)
-{
-	if (phpversion() >= '4.1.0')
-	{
-		if (   isset($_GET[$varName])
-			|| isset($_POST[$varName])
-			|| isset($_COOKIE[$varName])
-			|| isset($_ENV[$varName])
-			|| isset($_SESSION[$varName])
-			|| isset($_FILES[$varName])
-		){
-			die('Sorry. An error occurred.');
-		}
-	} else {
-		if (   isset($HTTP_GET_VARS[$varName])
-			|| isset($HTTP_POST_VARS[$varName])
-			|| isset($HTTP_COOKIE_VARS[$varName])
-			|| isset($HTTP_ENV_VARS[$varName])
-			|| isset($HTTP_SESSION_VARS[$varName])
-			|| isset($HTTP_POST_FILES[$varName])
-		){
-			die('Sorry. An error occurred.');
-		}
-	}
-}
-
-if (!isset($DIR_LIBS)) {
-	die('Sorry.');
-}
-
-include($DIR_LIBS . 'ADMIN.php');
-
 class PluginAdmin {
 
 	var $strFullName;		// NP_SomeThing
@@ -65,6 +28,7 @@ class PluginAdmin {
 	function PluginAdmin($pluginName)
 	{
 		global $manager;
+                include($DIR_LIBS . 'ADMIN.php');
 
 		$this->strFullName = 'NP_' . $pluginName;
 
