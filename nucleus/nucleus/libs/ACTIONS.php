@@ -282,23 +282,28 @@ class ACTIONS extends BaseActions {
 	 *		When present, the output will be a full <a href...> link. When empty,
 	 *		only a raw link will be outputted
 	 */
-	function _searchlink($maxresults, $startpos, $direction, $linktext = '') {
+	function _searchlink($maxresults, $startpos, $direction, $linktext = '', $recount = '') {
 		global $CONF, $blog, $query, $amount;
 		// TODO: Move request uri to linkparams. this is ugly. sorry for that.
 		$startpos	= intval($startpos);		// will be 0 when empty.
 		$parsed		= parse_url(serverVar('REQUEST_URI'));
 		$parsed		= $parsed['query'];
 		$url		= '';
-
+		
 		switch ($direction) {
 			case 'prev':
 				if ( intval($startpos) - intval($maxresults) >= 0) {
 					$startpos 	= intval($startpos) - intval($maxresults);
 					$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
 				}
+				
 				break;
 			case 'next':
-				$iAmountOnPage = $this->amountfound;
+				if ($recount)
+					$iAmountOnPage = 0;
+				else 
+					$iAmountOnPage = $this->amountfound;
+				
 				if ($iAmountOnPage == 0)
 				{
 					// [%nextlink%] or [%prevlink%] probably called before [%blog%] or [%searchresults%]
@@ -1005,12 +1010,12 @@ class ACTIONS extends BaseActions {
 	/**
 	 * Parse skinvar nextlink
 	 */
-	function parse_nextlink($linktext = '', $amount = 10) {
+	function parse_nextlink($linktext = '', $amount = 10, $recount = '') {
 		global $itemidnext, $archivenext, $startpos;
 		if ($this->skintype == 'item')
 			$this->_itemlink($itemidnext, $linktext);
 		else if ($this->skintype == 'search' || $this->skintype == 'index')
-			$this->_searchlink($amount, $startpos, 'next', $linktext);
+			$this->_searchlink($amount, $startpos, 'next', $linktext, $recount);
 		else
 			$this->_archivelink($archivenext, $linktext);
 	}
