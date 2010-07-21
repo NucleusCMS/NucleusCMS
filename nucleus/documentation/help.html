@@ -2611,6 +2611,9 @@ Inserts a link to the next item (on item pages) or to the next archive (on archi
 	<ul>
 		<li><strong><em>linktext</em></strong>: when present, a full <code>&lt;a href...</code> tag will be outputted, rather than a raw link</li>
 		<li><strong><em>amount</em></strong>: for search and index skins: the amount of items to go forward/backward</li>
+		<li><strong><em>recount</em></strong>: for search and index skins: set to yes to force extra query to recount items on page. 
+		This is useful for more complex pages where the blog skinvar may be called multiple times because of the use of the offset. 
+		Try setting this if nextlink seems to be not advancing the expected number of items.</li>
 	</ul>
 </p>
 
@@ -2625,6 +2628,9 @@ item, archive, search, index
 
 <pre>
 &lt;%nextlink%&gt;
+&lt;%nextlink(Next Page,10)%&gt;
+&lt;%nextlink(,10)%&gt;
+&lt;%nextlink(,10,yes)%&gt;
 </pre>
 
 </div>
