@@ -2509,7 +2509,7 @@ class ADMIN {
          <td><?php $this->input_yesno('reqemail',$blog->emailRequired(),72); ?></td>
       </tr><tr>
             <td><?php echo _EBLOG_NOTIFY?> <?php help('blognotify'); ?></td>
-            <td><input name="notify" tabindex="80" maxlength="60" size="40" value="<?php echo  htmlspecialchars($blog->getNotifyAddress()); ?>" /></td>
+            <td><input name="notify" tabindex="80" maxlength="128" size="40" value="<?php echo  htmlspecialchars($blog->getNotifyAddress()); ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_NOTIFY_ON?></td>
             <td>
