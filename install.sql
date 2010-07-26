@@ -26,7 +26,7 @@ CREATE TABLE `nucleus_blog` (
   `bcomments` tinyint(2) NOT NULL default '1',
   `bmaxcomments` int(11) NOT NULL default '0',
   `btimeoffset` decimal(3,1) NOT NULL default '0.0',
-  `bnotify` varchar(60) default NULL,
+  `bnotify` varchar(128) default NULL,
   `burl` varchar(100) default NULL,
   `bupdate` varchar(60) default NULL,
   `bdefskin` int(11) NOT NULL default '1',
