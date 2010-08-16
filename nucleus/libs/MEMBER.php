@@ -334,6 +334,8 @@ class MEMBER {
 	function sendActivationLink($type, $extra='')
 	{
 		global $CONF;
+		
+		if (!isset($CONF['ActivationDays'])) $CONF['ActivationDays'] = 2;
 
 		// generate key and URL
 		$key = $this->generateActivationEntry($type, $extra);
@@ -363,7 +365,8 @@ class MEMBER {
 			'siteName' => $CONF['SiteName'],
 			'siteUrl' => $CONF['IndexURL'],
 			'memberName' => $this->getDisplayName(),
-			'activationUrl' => $url
+			'activationUrl' => $url,
+			'activationDays' => $CONF['ActivationDays']
 		);
 
 		$message = TEMPLATE::fill($message, $aVars);
@@ -768,6 +771,9 @@ class MEMBER {
 		$actdays = 2;
 		if (isset($CONF['ActivationDays']) && intval($CONF['ActivationDays']) > 0) {
 		    $actdays = intval($CONF['ActivationDays']);
+		}
+		else {
+			$CONF['ActivationDays'] = 2;
 		}
 		$boundary = time() - (60 * 60 * 24 * $actdays);
 

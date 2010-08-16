@@ -406,15 +406,15 @@ define('_ACTIONLOG_ACTIVATIONLINK', 'Activation link sent');
 define('_MSG_ACTIVATION_SENT',		'An activation link has been sent by e-mail.');
 
 // activation link emails
-define('_ACTIVATE_REGISTER_MAIL',	"Hi <%memberName%>,\n\nYou need to activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_REGISTER_MAIL',	"Hi <%memberName%>,\n\nYou need to activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have <%activationDays%> days to do this. After this, the activation link becomes invalid.");
 define('_ACTIVATE_REGISTER_MAILTITLE',	"Activate your '<%memberName%>' account");
 define('_ACTIVATE_REGISTER_TITLE',	'Welcome <%memberName%>');
 define('_ACTIVATE_REGISTER_TEXT',	'You\'re almost there. Please choose a password for your account below.');
-define('_ACTIVATE_FORGOT_MAIL',		"Hi <%memberName%>,\n\nUsing the link below, you can choose a new password for your account at <%siteName%> (<%siteUrl%>) by choosing a new password.\n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_FORGOT_MAIL',		"Hi <%memberName%>,\n\nUsing the link below, you can choose a new password for your account at <%siteName%> (<%siteUrl%>) by choosing a new password.\n\n\t<%activationUrl%>\n\nYou have <%activationDays%> days to do this. After this, the activation link becomes invalid.");
 define('_ACTIVATE_FORGOT_MAILTITLE',"Re-activate your '<%memberName%>' account");
 define('_ACTIVATE_FORGOT_TITLE',	'Welcome <%memberName%>');
 define('_ACTIVATE_FORGOT_TEXT',		'You can choose a new password for your account below:');
-define('_ACTIVATE_CHANGE_MAIL',		"Hi <%memberName%>,\n\nSince your e-mail address has changed, you'll need to re-activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_CHANGE_MAIL',		"Hi <%memberName%>,\n\nSince your e-mail address has changed, you'll need to re-activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have <%activationDays%> days to do this. After this, the activation link becomes invalid.");
 define('_ACTIVATE_CHANGE_MAILTITLE',"Re-activate your '<%memberName%>' account");
 define('_ACTIVATE_CHANGE_TITLE',	'Welcome <%memberName%>');
 define('_ACTIVATE_CHANGE_TEXT',		'Your address change has been verified. Thanks!');
