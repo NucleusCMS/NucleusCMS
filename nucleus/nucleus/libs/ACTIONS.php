@@ -647,6 +647,11 @@ class ACTIONS extends BaseActions {
 			$this->doForm('commentform-closed');
 			return;
 		}
+		
+		if (!$blog->isPublic() && !$member->isLoggedIn()) {
+			$this->doForm('commentform-closedtopublic');
+			return;
+		}
 
 		if (!$destinationurl)
 		{
