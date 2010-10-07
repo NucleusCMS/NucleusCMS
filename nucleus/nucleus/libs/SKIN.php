@@ -370,7 +370,8 @@ class SKIN {
 				$extraActions = array(
 								'membermailform',
 								'blogsetting',
-								'nucleusbutton'
+								'nucleusbutton',
+								'categorylist'
 				);
 				break;
 			case 'item':
@@ -397,7 +398,8 @@ class SKIN {
 				break;
 			case 'error':
 				$extraActions = array(
-								'errormessage'
+								'errormessage',
+								'categorylist'
 				);
 				break;
 			default:
@@ -414,7 +416,8 @@ class SKIN {
 						'nextlink',
 						'prevlink',
 						'membermailform',
-						'nucleusbutton'
+						'nucleusbutton',
+						'categorylist'
 					);
 				}
 				break;

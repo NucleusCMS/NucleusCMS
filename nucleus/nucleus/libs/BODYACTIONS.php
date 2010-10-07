@@ -30,6 +30,8 @@ class BODYACTIONS extends BaseActions {
 	
 	function setCurrentItem(&$item) {
 		$this->currentItem =& $item;
+		global $currentitemid;
+		$currentitemid = $this->currentItem->itemid;
 	}
 	
 	function setTemplate($template) {

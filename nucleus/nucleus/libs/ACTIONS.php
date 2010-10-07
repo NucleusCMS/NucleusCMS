@@ -607,6 +607,10 @@ class ACTIONS extends BaseActions {
 	function parse_categorylist($template, $blogname = '') {
 		global $blog, $manager;
 
+		// when no blog found
+		if (($blogName == '') && (!is_object($blog)))
+			return 0;
+			
 		if ($blogname == '') {
 			$this->_preBlogContent('categorylist',$blog);
 			$blog->showCategoryList($template);

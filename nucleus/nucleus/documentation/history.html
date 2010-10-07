@@ -30,9 +30,16 @@
 	<li>
 	<strong>Nucleus v3.60 (SVN)</strong>
 	<ul>
+		<li>ADD: global $currentitemid during item template processing so can get item info in phpinclude called from item template. (ftruscot)</li>
+		<li>ADD: if-else-elseif-ifnot-ifelsenot-endif to the item field templates. see help.html for details. (ftruscot)</li>
+		<li>FIX: bug where categorylist with blogname parameter did not work on member, error, or special skin parts. (ftruscot)</li>
 		<li>FIX: bug in commentform skinvar where form showing to nonmembers when bpublic=0. Thanks WillyP. (ftruscot)</li>
 		<li>CHANGE: length of bnotify column in blog table to 128 characters to allow for longer lists of notification recipients. (ftruscot)</li>
 		<li>ADD: recount parameter to nextlink skinvar to force recalculation of iAmountOnPage for nextlink instead of using amountfound from last blog skinvar. Helpful in more advanced situations where multiple blog skinvars used on single page. (ftruscot)</li>
+		<li>FIX: tightened security around includes in PLUGINADMIN class. (ehui)</li>
+		<li>ADD: globalfunctions: include_libs() and include_plugins() to be used to safely include libs and plugins. (ehui).</li>
+		<li>REMOVE: config.php. rename to config.php.sample to avoid overwrite during upgrade. config.php created by install.php. (ehui)</li>
+		<li>FIX: tune db tables in sqlinstall. (ehui)</li>
 		<li>ADD: yourprofileurl parameter value to member skinvar to produce url to logged on member's profile for use in link to member profile. (ftruscot)</li>
 		<li>FIX: Fixes to NP_SecurityEnforcer suggested by cacher at <a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4502" title="Fixes to NP_SecurityEnforcer">Japanese Forum</a>. (ftruscot)</li>
 		<li>FIX: When changing settings for a member, call to PrePasswordSet event was happening even if password not being changed. Admin.php, action_changemembersettings() method. (ftruscot)</li>

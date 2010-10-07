@@ -2080,7 +2080,7 @@ Inserts a list of categories for a blog (defaults to the currently selected blog
 <h2>Skintypes</h2>
 
 <p>
-index, archive, archivelist, search, item
+index, archive, archivelist, search, item, [error, member, special if blogname parameter specified]
 </p>
 
 <h2>Examples</h2>
@@ -3389,7 +3389,7 @@ all
 <a name="skinvar-elseif"></a>
 <h1>Skinvars: if/ifnot/else/elseif/elseifnot/endif</h1>
 
-<p>Inserts a content block only when certain conditions are fullfilled</p>
+<p>Inserts a content block only when certain conditions are fullfilled. Can be used in the item fields of templates as of 3.60</p>
 
 <h2>Arguments</h2>
 <p>Only the <code>if</code>, <code>ifnot</code>, <code>elseif</code>, and <code>elseifnot</code> skinvars have options</p>
@@ -3433,6 +3433,22 @@ all
 			<li><strong><em>PluginName</em>,<em>AttributeName</em>,<em>AttributeValue</em></strong>: uses <em>PluginName</em> plugin to check if <em>AttributeName</em> is <em>AttributeValue</em></li>
 		</ul>
 	</li>
+	<li><strong>itemcategory</strong>: checks conditions related to the category of the current item (item templates fields only)
+		<ul>
+			<li><strong>itemcategory</strong>: checks if current item has a category (always true)</li>
+			<li><strong>itemcategory,catname,<em>CategoryName</em></strong>: checks if the category of the current item is <em>CategoryName</em></li>
+			<li><strong>itemcategory,catid,<em>CategoryId</em></strong>: checks if the id of the item's category is <em>CategoryId</em></li>
+		</ul>
+	</li>
+	<li><strong>itemblogsetting</strong>: checks if the value <em>name</em> blogsetting of the current item's blog equals <em>value</em> (the name is the column name from the nucleus_blog sql table) (item templates fields only)</li>
+	<li><strong>author</strong>: checks conditions related to the author of the current item (item templates fields only)
+		<ul>
+			<li><strong>author</strong>: checks if the current visitor is the author of the item</li>
+			<li><strong>author,isadmin</strong>: checks if the author of the item is an admin of the blog</li>
+			<li><strong>author,name,<em>AuthorName</em></strong>: checks if the user name of the item's author is <em>AuthorName</em></li>
+		</ul>
+	</li>
+	
 </ul>
 
 <h2>Skintypes</h2>
@@ -3851,6 +3867,9 @@ These template variables be used in the following template-parts: <tt>item heade
 </tr><tr>
 	<td><a href="#skinvar-phpinclude">phpinclude</a></td>
 	<td>includes a file, parsing by PHP</td>
+</tr><tr>
+	<td><a href="#skinvar-if">if-ifnot-else-elseif-elseifnot-endif</a></td>
+	<td>performs condition statements in templates (3.60)</td>
 </tr><tr>
 	<td><a href="#skinvar-plugin">plugin</a></td>
 	<td>executes a plugin</td>
