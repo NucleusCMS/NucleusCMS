@@ -655,7 +655,7 @@ class ITEMACTIONS extends BaseActions {
 		if (($name == 'isadmin')) {			
 			$aid = intval($this->currentItem->authorid);
 			$blogid = intval($b->getID());			
-			$amember = $manager->getMember($aid);
+			$amember =& $manager->getMember($aid);
 			if ($amember->isAdmin())
 				return true;
 				
