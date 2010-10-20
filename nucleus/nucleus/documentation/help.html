@@ -3433,19 +3433,21 @@ all
 			<li><strong><em>PluginName</em>,<em>AttributeName</em>,<em>AttributeValue</em></strong>: uses <em>PluginName</em> plugin to check if <em>AttributeName</em> is <em>AttributeValue</em></li>
 		</ul>
 	</li>
-	<li><strong>itemcategory</strong>: checks conditions related to the category of the current item (item templates fields only)
+	<li><strong>itemcategory</strong>: checks conditions related to the category of the current item (item and comment template fields only)
 		<ul>
 			<li><strong>itemcategory</strong>: checks if current item has a category (always true)</li>
 			<li><strong>itemcategory,catname,<em>CategoryName</em></strong>: checks if the category of the current item is <em>CategoryName</em></li>
 			<li><strong>itemcategory,catid,<em>CategoryId</em></strong>: checks if the id of the item's category is <em>CategoryId</em></li>
 		</ul>
 	</li>
-	<li><strong>itemblogsetting</strong>: checks if the value <em>name</em> blogsetting of the current item's blog equals <em>value</em> (the name is the column name from the nucleus_blog sql table) (item templates fields only)</li>
-	<li><strong>author</strong>: checks conditions related to the author of the current item (item templates fields only)
+	<li><strong>itemblogsetting</strong>: checks if the value <em>name</em> blogsetting of the current item's blog equals <em>value</em> (the name is the column name from the nucleus_blog sql table) (item and comment template fields only)</li>
+	<li><strong>author</strong>: checks conditions related to the author of the current item (item and comment template fields only)
 		<ul>
 			<li><strong>author</strong>: checks if the current visitor is the author of the item</li>
 			<li><strong>author,isadmin</strong>: checks if the author of the item is an admin of the blog</li>
 			<li><strong>author,name,<em>AuthorName</em></strong>: checks if the user name of the item's author is <em>AuthorName</em></li>
+			<li><strong>author,isauthor</strong>: checks if the comment author is also the author of the item. (comment template fields only)</li>
+			<li><strong>author,isonteam</strong>: checks if the comment author is a member of blog team of current item. (comment template fields only)</li>
 		</ul>
 	</li>
 	

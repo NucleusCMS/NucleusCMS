@@ -133,8 +133,9 @@ class COMMENTACTIONS extends BaseActions {
 		}
 
 		$this->currentComment =& $comment;
-		global $currentcommentid;
+		global $currentcommentid, $currentcommentarray;
 		$currentcommentid = $comment['commentid'];
+		$currentcommentarray = $comment;
 	}
 
 	/**
