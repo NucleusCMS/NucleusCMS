@@ -560,7 +560,7 @@ class ITEMACTIONS extends BaseActions {
 				$condition = ($blog && $this->_ifCategory($name,$value));
 				break;
 			case 'itemcategory':
-				$condition = ($this->_ifCategory($name,$value));
+				$condition = ($this->_ifItemCategory($name,$value));
 				break;
 			case 'blogsetting':
 				$condition = ($blog && ($blog->getSetting($name) == $value));
@@ -640,7 +640,7 @@ class ITEMACTIONS extends BaseActions {
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
 		// when no parameter is defined, just check if author is current visitor
-		if (($name != 'isadmin' && $name != 'name') || ($value == '')) {
+		if (($name != 'isadmin' && $name != 'name') || ($name == 'name' && $value == '')) {
 			return (intval($member->getID()) > 0 && intval($member->getID()) == intval($this->currentItem->authorid));
 		}
 
