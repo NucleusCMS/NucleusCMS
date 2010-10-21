@@ -798,6 +798,12 @@ function doInstall() {
 	$MYSQL_PASSWORD = '<i><b>xxxxxxxxxxx</b></i>';
 	$MYSQL_DATABASE = '<b><?php echo $mysql_database?></b>';
 	$MYSQL_PREFIX = '<b><?php echo ($mysql_usePrefix == 1)?$mysql_prefix:''?></b>';
+	
+	// new in 3.50. first element is db handler, the second is the db driver used by the handler
+	// default is $MYSQL_HANDLER = array('mysql','mysql');
+	//$MYSQL_HANDLER = array('mysql','mysql');
+	//$MYSQL_HANDLER = array('pdo','mysql');
+	$MYSQL_HANDLER = array('mysql','');
 
 	// main nucleus directory
 	$DIR_NUCLEUS = '<b><?php echo $config_adminpath?></b>';

@@ -428,13 +428,13 @@ class COMMENTACTIONS extends BaseActions {
 				$condition = ($blog && $this->_ifCategory($name,$value));
 				break;
 			case 'itemcategory':
-				$condition = ($this->_ifCategory($name,$value));
+				$condition = ($this->_ifItemCategory($name,$value));
 				break;
 			case 'blogsetting':
 				$condition = ($blog && ($blog->getSetting($name) == $value));
 				break;
 			case 'itemblogsetting':
-				$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+				$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
 				$condition = ($b && ($b->getSetting($name) == $value));
 				break;
 			case 'loggedin':
@@ -509,16 +509,18 @@ class COMMENTACTIONS extends BaseActions {
 		
 		$mem =& $manager->getMember($this->currentComment['memberid']);
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
-		$citem =& $manager->getItem($this->currentComment['itemid']);
+		$citem =& $manager->getItem($this->currentComment['itemid'],1,1);
 
 		// when no parameter is defined, just check if item author is current visitor
-		if (($name != 'isadmin' && $name != 'name' && $name != 'isauthor' && $name != 'isonteam') || ($value == '')) {
+		if (($name != 'isadmin' && $name != 'name' && $name != 'isauthor' && $name != 'isonteam')) {
 			return (intval($member->getID()) > 0 && intval($member->getID()) == intval($citem['authorid']));
 		}
 
 		// check comment author name
 		if ($name == 'name') {
-			$value = strtolower($value);
+			$value = trim(strtolower($value));
+			if ($value == '') 
+				return false;
 			if ($value == strtolower($mem->getDisplayName()))
 				return true;
 		}
@@ -552,15 +554,13 @@ class COMMENTACTIONS extends BaseActions {
 		global $catid, $manager;
 		
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
-		$citem =& $manager->getItem($this->currentComment['itemid']);
+		$citem =& $manager->getItem($this->currentComment['itemid'],1,1);
+		$icatid = $citem['catid'];
 
 		// when no parameter is defined, just check if a category is selected
 		if (($name != 'catname' && $name != 'catid') || ($value == ''))
-			return $b->isValidCategory($catid);
+			return $b->isValidCategory($icatid);
 			
-		$icatid = $citem['catid'];
-		//$icategory = $this->currentItem->category;
-
 		// check category name
 		if ($name == 'catname') {
 			$value = $b->getCategoryIdFromName($value);
