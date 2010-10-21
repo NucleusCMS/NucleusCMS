@@ -1575,7 +1575,7 @@ your stuff
 
 	<tr>
 		<td>PrePasswordSet</td>
-		<td>(v3.50)  Called when user tries to set password in admin area or during activation. Allows for plugins to enforce password complexity rules.</td>
+		<td>(v3.50) Called when user tries to set password in admin area or during activation. Allows for plugins to enforce password complexity rules.</td>
 		<td><dl>
 			<dt class="ro">password</dt>
 			<dd>String containing the user-entered password.</dd>
@@ -1583,6 +1583,17 @@ your stuff
 			<dd>String containing the error message the user should see upon failure. Should be left blank if no validation error occurs.</dd>
 			<dt class="ref">valid</dt>
 			<dd>Boolean indicating whether the proposed password is valid. Default is true. Plugin code should check this value to verify it is not already false before processing a password</dd>
+		</dl></td>
+	</tr>
+	
+	<tr>
+		<td>PostParseURL</td>
+		<td>(v3.60) Triggers right after the url is fully parsed (by ParseURL in globalfunctions). Useful to tweak global variables before selector() runs or to set something based on path-related globals.</td>
+		<td><dl>
+			<dt class="ro">type</dt>
+			<dd>Type of the page, e.g. item, blog, ...</dd>
+			<dt class="ro">info</dt>
+			<dd>The full URL which should be resolved (the name is derived from the old fashion variable <code>pathinfo</code>).</dd>
 		</dl></td>
 	</tr>
 <!--	<tr>

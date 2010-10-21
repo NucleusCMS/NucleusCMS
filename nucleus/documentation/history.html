@@ -40,12 +40,12 @@
 		<li>ADD: recount parameter to nextlink skinvar to force recalculation of iAmountOnPage for nextlink instead of using amountfound from last blog skinvar. Helpful in more advanced situations where multiple blog skinvars used on single page. (ftruscot)</li>
 		<li>FIX: tightened security around includes in PLUGINADMIN class. (ehui)</li>
 		<li>ADD: globalfunctions: include_libs() and include_plugins() to be used to safely include libs and plugins. (ehui).</li>
-		<li>REMOVE: config.php. rename to config.php.sample to avoid overwrite during upgrade. config.php created by install.php. (ehui)</li>
+		<li>REMOVE: config.php. rename to config.php.sample to avoid overwrite during upgrade. config.php created by build.xml during generation of full install package and modified by install.php. (ehui)</li>
 		<li>FIX: tune db tables in sqlinstall. (ehui)</li>
 		<li>ADD: yourprofileurl parameter value to member skinvar to produce url to logged on member's profile for use in link to member profile. (ftruscot)</li>
 		<li>FIX: Fixes to NP_SecurityEnforcer suggested by cacher at <a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4502" title="Fixes to NP_SecurityEnforcer">Japanese Forum</a>. (ftruscot)</li>
 		<li>FIX: When changing settings for a member, call to PrePasswordSet event was happening even if password not being changed. Admin.php, action_changemembersettings() method. (ftruscot)</li>
-		<li>ADD: PostParseURL event to globalfunctions. Triggers right after url is fully parsed (by ParseURL and globalfunctions). Useful to tweak global variables before selector() runs or to set something based on path-related globals. Used by new version of NP_EventBlog (min 3.60) to display future posts (events) on item pages skin part. (ftruscot)</li>
+		<li>ADD: PostParseURL event to globalfunctions. Triggers right after url is fully parsed (by ParseURL in globalfunctions). Useful to tweak global variables before selector() runs or to set something based on path-related globals. Used by new version of NP_EventBlog (min 3.60) to display future posts (events) on item pages skin part. (ftruscot)</li>
 		<li>CHANGE: selector() itemid, change itemexists check to be aware of allowDrafts and allowFuture. (ftruscot)</li>
 		<li>ADD: $CONF settings for allowDrafts and allowFuture so can set selector to permit showing of these items if needed. Can be set in config.php or in plugin event (probably authentication related for timing). (ftruscot)</li>
 		<li>CHANGE: BLOG::readLogFromList() and BLOG::getSqlItemList() methods to add parameters permitting drafts or future items to be shown. (ftruscot)</li>
