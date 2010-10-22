@@ -2146,14 +2146,14 @@ function cleanFileName($str) {
 	$cleaner[] = array('expression'=>"/[ç]/",'replace'=>"c");
 
 	$str = strtolower($str);
-	$ext_point = strripos($str,”.”); // Changed to strripos to avoid issues with ‘.’ Thanks nico.
+	$ext_point = strripos($str,"."); // Changed to strripos to avoid issues with ‘.’ Thanks nico.
 	if ($ext_point===false) return false;
 	$ext = substr($str,$ext_point,strlen($str));
 	$str = substr($str,0,$ext_point);
 
 	foreach( $cleaner as $cv ) $str = preg_replace($cv["expression"],$cv["replace"],$str);
 
-	return preg_replace(”/[^a-z0-9-]/”,”_”,$str).$ext;
+	return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
 }
 
 ?>
