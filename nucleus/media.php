@@ -302,6 +302,11 @@ function media_upload() {
 	$filetempname = $uploadInfo['tmp_name'];
 	$fileerror = intval($uploadInfo['error']);
 	
+	// clean filename of characters that may cause trouble in a filename using cleanFileName() function from globalfunctions.php
+	$filename = cleanFileName($filename);
+	if ($filename === false) 
+		media_doError(_ERROR_BADFILETYPE);
+	
 	switch ($fileerror)
 	{
 		case 0: // = UPLOAD_ERR_OK
