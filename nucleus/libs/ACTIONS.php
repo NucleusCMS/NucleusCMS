@@ -287,6 +287,7 @@ class ACTIONS extends BaseActions {
 		// TODO: Move request uri to linkparams. this is ugly. sorry for that.
 		$startpos	= intval($startpos);		// will be 0 when empty.
 		$parsed		= parse_url(serverVar('REQUEST_URI'));
+		$path		= $parsed['path'];
 		$parsed		= $parsed['query'];
 		$url		= '';
 		
@@ -294,17 +295,22 @@ class ACTIONS extends BaseActions {
 			case 'prev':
 				if ( intval($startpos) - intval($maxresults) >= 0) {
 					$startpos 	= intval($startpos) - intval($maxresults);
-					$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
+					//$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
+					$url		= $path.'?'.alterQueryStr($parsed,'startpos',$startpos);
 				}
 				
 				break;
 			case 'next':
+				global $navigationItems;
 				if ($recount)
 					$iAmountOnPage = 0;
 				else 
 					$iAmountOnPage = $this->amountfound;
 				
-				if ($iAmountOnPage == 0)
+				if (intval($navigationItems) > 0) {
+					$iAmountOnPage = intval($navigationItems) - intval($startpos);
+				}
+				elseif ($iAmountOnPage == 0)
 				{
 					// [%nextlink%] or [%prevlink%] probably called before [%blog%] or [%searchresults%]
 					// try a count query
@@ -314,15 +320,18 @@ class ACTIONS extends BaseActions {
 							$sqlquery = $blog->getSqlBlog('', 'count');
 							break;
 						case 'search':
+							$unused_highlight = '';
 							$sqlquery = $blog->getSqlSearch($query, $amount, $unused_highlight, 'count');
 							break;
 					}
 					if ($sqlquery)
 						$iAmountOnPage = intval(quickQuery($sqlquery)) - intval($startpos);
 				}
+				
 				if (intval($iAmountOnPage) >= intval($maxresults)) {
 					$startpos 	= intval($startpos) + intval($maxresults);
-					$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
+					//$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
+					$url		= $path.'?'.alterQueryStr($parsed,'startpos',$startpos);
 				}
 				break;
 			default:
