@@ -1098,6 +1098,10 @@ function selector() {
     if (!$skin->isValid) {
         doError(_ERROR_NOSUCHSKIN);
     }
+	
+	// set global skinpart variable so can determine quickly what is being parsed from any plugin or phpinclude
+	global $skinpart;
+	$skinpart = $type;
 
     // parse the skin
     $skin->parse($type);
