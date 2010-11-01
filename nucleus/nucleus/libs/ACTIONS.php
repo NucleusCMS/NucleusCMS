@@ -296,12 +296,23 @@ class ACTIONS extends BaseActions {
 				if ( intval($startpos) - intval($maxresults) >= 0) {
 					$startpos 	= intval($startpos) - intval($maxresults);
 					//$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
-					$url		= $path.'?'.alterQueryStr($parsed,'startpos',$startpos);
+					switch ($this->skintype)
+					{
+						case 'index':
+							$url = $path;
+							break;
+						case 'search':
+							$url = $CONF['SearchURL'];
+							break;
+					}
+					$url .= '?'.alterQueryStr($parsed,'startpos',$startpos);
 				}
 				
 				break;
 			case 'next':
 				global $navigationItems;
+				if (!isset($navigationItems)) $navigationItems = 0;
+				
 				if ($recount)
 					$iAmountOnPage = 0;
 				else 
@@ -318,10 +329,12 @@ class ACTIONS extends BaseActions {
 					{
 						case 'index':
 							$sqlquery = $blog->getSqlBlog('', 'count');
+							$url = $path;
 							break;
 						case 'search':
 							$unused_highlight = '';
 							$sqlquery = $blog->getSqlSearch($query, $amount, $unused_highlight, 'count');
+							$url = $CONF['SearchURL'];
 							break;
 					}
 					if ($sqlquery)
@@ -331,8 +344,9 @@ class ACTIONS extends BaseActions {
 				if (intval($iAmountOnPage) >= intval($maxresults)) {
 					$startpos 	= intval($startpos) + intval($maxresults);
 					//$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
-					$url		= $path.'?'.alterQueryStr($parsed,'startpos',$startpos);
+					$url		.= '?'.alterQueryStr($parsed,'startpos',$startpos);
 				}
+				else $url = '';
 				break;
 			default:
 				break;
