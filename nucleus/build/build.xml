@@ -8,9 +8,9 @@
 
 <target name="init">
 
-    <property name="version" value="3.50" />
+    <property name="version" value="3.60RC1" />
     
-    <property name="src.home" value="source/Nucleus-3-50" />
+    <property name="src.home" value="source/nucleus/" />
     <property name="build.home" value="release/" />    
 
 	<property name="tempdir" value="${build.home}/temp" />
