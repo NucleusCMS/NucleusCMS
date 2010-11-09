@@ -30,6 +30,7 @@
 	<li>
 	<strong>Nucleus v3.60 (RC1)</strong>
 	<ul>
+		<li>FIX: sql_affected_rows() function in nucleus/libs/sql/mysql.php. Was causing error in ban deletion. (ftruscot)</li>
 		<li>CHANGE: ACTIONS::_searchlink() to improve creation of next/prev link for index skin parts. Also, add $navigationItems global that can be set by plugin to affect next/prev link when plugin lists items on index page, see NP_Ordered 1.37. (ftruscot)</li>
 		<li>ADD: if-else-elseif-ifnot-ifelsenot-endif to the Item Body actions. Same as in Item Templates. see help.html for details. (ftruscot)</li>
 		<li>ADD: cleanFileName() function to globalfunctions.php and then use in nucleus/media and in MEDIA.php to clean up filenames of uploaded files to avoid problems with spaces and other characters. Thanks WillyP. (ftruscot)</li>
