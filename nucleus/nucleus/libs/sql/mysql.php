@@ -168,9 +168,11 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	/**
 	  * returns number of rows affected by SQL query
 	  */
-	function sql_affected_rows($res)
+	function sql_affected_rows($conn = false)
 	{
-		return mysql_affected_rows($res);
+		global $MYSQL_CONN;
+		if (!$conn) $conn = $MYSQL_CONN;
+		return mysql_affected_rows($conn);
 	}
 	
 	/**
