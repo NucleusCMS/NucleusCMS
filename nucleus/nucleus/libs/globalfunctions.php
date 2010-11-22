@@ -493,20 +493,20 @@ if ($CONF['URLMode'] == 'pathinfo') {
             }
         }
     }
-	/* 	PostParseURL is a place to cleanup any of the path-related global variables before the selector function is run.
-		It has 2 values in the data in case the original virtualpath is needed, but most the use will be in tweaking 
-		global variables to clean up (scrub out catid or add catid) or to set someother global variable based on 
-		the values of something like catid or itemid
-		New in 3.60
-	*/
-	$manager->notify(
-		'PostParseURL',
-		array(
-			'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
-			'info' => $virtualpath
-		)
-	);
 }
+/* 	PostParseURL is a place to cleanup any of the path-related global variables before the selector function is run.
+	It has 2 values in the data in case the original virtualpath is needed, but most the use will be in tweaking 
+	global variables to clean up (scrub out catid or add catid) or to set someother global variable based on 
+	the values of something like catid or itemid
+	New in 3.60
+*/
+$manager->notify(
+	'PostParseURL',
+	array(
+		'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
+		'info' => $virtualpath
+	)
+);
 
 function include_libs($file,$once=true,$require=true){
        global $DIR_LIBS;
