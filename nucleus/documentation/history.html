@@ -30,6 +30,7 @@
 	<li>
 	<strong>Nucleus v3.60 (RC2)</strong>
 	<ul>
+		<li>ADD: mysql_real_escape_string() function to wrapper for mysqli (libs/mysql.php). (ftruscot)</li>
 		<li>FIX: globalfunctions.php. PostParseUrl event only firing when using urlmode=pathinfo (fancyurls). (ftruscot)</li>
 		<li>FIX: sql_affected_rows() function in nucleus/libs/sql/mysql.php. Was causing error in ban deletion. (ftruscot)</li>
 		<li>CHANGE: ACTIONS::_searchlink() to improve creation of next/prev link for index skin parts. Also, add $navigationItems global that can be set by plugin to affect next/prev link when plugin lists items on index page, see NP_Ordered 1.37. (ftruscot)</li>
