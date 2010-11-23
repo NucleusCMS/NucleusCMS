@@ -21,26 +21,27 @@ class COMMENT {
 
 	/**
 	  * Returns the requested comment
-	  * 
+	  *
 	  * @static
 	  */
 	function getComment($commentid) {
-		$query =  'SELECT cnumber as commentid, cbody as body, cuser as user, cmail as userid, cemail as email, cmember as memberid, ctime, chost as host, mname as member, cip as ip, cblog as blogid'
-			   . ' FROM '.sql_table('comment').' left outer join '.sql_table('member').' on cmember=mnumber'
-			   . ' WHERE cnumber=' . intval($commentid);
+		$query = 'SELECT `cnumber` AS commentid, `cbody` AS body, `cuser` AS user, `cmail` AS userid, `cemail` AS email, `cmember` AS memberid, `ctime`, `chost` AS host, `mname` AS member, `cip` AS ip, `cblog` AS blogid'
+					. ' FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON `cmember` = `mnumber`'
+					. ' WHERE `cnumber` = ' . intval($commentid);
 		$comments = sql_query($query);
 
 		$aCommentInfo = sql_fetch_assoc($comments);
-		if ($aCommentInfo)
-		{
+
+		if ($aCommentInfo) {
 			$aCommentInfo['timestamp'] = strtotime($aCommentInfo['ctime']);
 		}
+
 		return $aCommentInfo;
 	}
 
 	/**
 	  * Prepares a comment to be saved
-	  * 	  
+	  *
 	  * @static
 	  */
 	function prepare($comment) {
@@ -62,11 +63,11 @@ class COMMENT {
 	 * Prepares the body of a comment
 	 *
 	 * @ static
-	 */	 	
+	 */
 	function prepareBody($body) {
 
 		// remove newlines when too many in a row
-		$body = ereg_replace("\n.\n.\n","\n",$body);
+		$body = ereg_replace("\n.\n.\n", "\n", $body);
 
 		// encode special characters as entities
 		$body = htmlspecialchars($body);
@@ -100,7 +101,7 @@ class COMMENT {
 	 * Creates a link code for unlinked URLs with different protocols
 	 *
 	 * @ static
-	 */	
+	 */
 	function createLinkCode($pre, $url, $protocol = 'http') {
 		$post = '';
 
@@ -108,41 +109,42 @@ class COMMENT {
 		// since htmlspecialchars is applied _before_ URL linking
 		// move the part of URL, starting from the disallowed entity to the 'post' link part
 		$aBadEntities = array('&quot;', '&gt;', '&lt;');
-		foreach ($aBadEntities as $entity)
-		{
+		foreach ($aBadEntities as $entity) {
+
 			$pos = strpos($url, $entity);
-			if ($pos)
-			{
+
+			if ($pos) {
 				$post = substr($url, $pos) . $post;
 				$url = substr($url, 0, $pos);
-
 			}
+
 		}
 
 		// remove entities at end (&&&&)
-		if (preg_match('/(&\w+;)+$/i', $url, $matches)) {
+		if (preg_match('/(&\w+;)+$/i', $url, $matches) ) {
 			$post = $matches[0] . $post;	// found entities (1 or more)
-			$url = substr($url, 0, strlen($url) - strlen($post));
+			$url = substr($url, 0, strlen($url) - strlen($post) );
 		}
 
 		// move ending comma from url to 'post' part
-		if (substr($url, strlen($url) - 1) == ',')
-		{
+		if (substr($url, strlen($url) - 1) == ',') {
 			$url = substr($url, 0, strlen($url) - 1);
 			$post = ',' . $post;
 		}
 
-		if (!ereg('^'.$protocol.'://',$url))
-			$linkedUrl = $protocol . (($protocol == 'mailto') ? ':' : '://') . $url;
-		else
+		if (!ereg('^' . $protocol . '://', $url) ) {
+			$linkedUrl = $protocol . ( ($protocol == 'mailto') ? ':' : '://') . $url;
+		} else {
 			$linkedUrl = $url;
+		}
 
-
-		if ($protocol != 'mailto')
+		if ($protocol != 'mailto') {
 			$displayedUrl = $linkedUrl;
-		else
+		} else {
 			$displayedUrl = $url;
-		return $pre . '<a href="'.$linkedUrl.'" rel="nofollow">'.shorten($displayedUrl,30,'...').'</a>' . $post;
+		}
+
+		return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . shorten($displayedUrl,30,'...') . '</a>' . $post;
 	}
 
 }
