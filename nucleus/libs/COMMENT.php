@@ -48,10 +48,10 @@ class COMMENT {
 		$comment['userid'] = strip_tags($comment['userid']);
 		$comment['email'] = strip_tags($comment['email']);
 
-		// remove quotes and newlines from user and userid
-		$comment['user'] = strtr($comment['user'], "\'\"\n",'-- ');
-		$comment['userid'] = strtr($comment['userid'], "\'\"\n",'-- ');
-		$comment['email'] = strtr($comment['email'], "\'\"\n",'-- ');
+		// remove newlines from user; remove quotes and newlines from userid and email
+		$comment['user'] = strtr($comment['user'], "\n", ' ');
+		$comment['userid'] = strtr($comment['userid'], "\'\"\n", '-- ');
+		$comment['email'] = strtr($comment['email'], "\'\"\n", '-- ');
 
 		$comment['body'] = COMMENT::prepareBody($comment['body']);
 
