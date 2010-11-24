@@ -346,7 +346,7 @@ class ADMIN {
                . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=' . $blogid;
 
         if ($search)
-            $query .= ' and ((ititle LIKE "%' . addslashes($search) . '%") or (ibody LIKE "%' . addslashes($search) . '%") or (imore LIKE "%' . addslashes($search) . '%"))';
+            $query .= ' and ((ititle LIKE "%' . sql_real_escape_string($search) . '%") or (ibody LIKE "%' . sql_real_escape_string($search) . '%") or (imore LIKE "%' . sql_real_escape_string($search) . '%"))';
 
         // non-blog-admins can only edit/delete their own items
         if (!$member->blogAdminRights($blogid))
@@ -913,7 +913,7 @@ class ADMIN {
                . ' WHERE iauthor='. $member->getID() .' and iauthor=mnumber and iblog=bnumber and icat=catid';
 
         if ($search)
-            $query .= ' and ((ititle LIKE "%' . addslashes($search) . '%") or (ibody LIKE "%' . addslashes($search) . '%") or (imore LIKE "%' . addslashes($search) . '%"))';
+            $query .= ' and ((ititle LIKE "%' . sql_real_escape_string($search) . '%") or (ibody LIKE "%' . sql_real_escape_string($search) . '%") or (imore LIKE "%' . sql_real_escape_string($search) . '%"))';
 
         $query .= ' ORDER BY itime DESC'
                 . " LIMIT $start,$amount";
@@ -969,7 +969,7 @@ class ADMIN {
         $query = 'SELECT cbody, cuser, cmail, cemail, mname, ctime, chost, cnumber, cip, citem FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
 
         if ($search)
-            $query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
+            $query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
 
         $query .= ' ORDER BY ctime ASC'
                 . " LIMIT $start,$amount";
@@ -1011,7 +1011,7 @@ class ADMIN {
         $query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cmember=' . $member->getID();
 
         if ($search)
-            $query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
+            $query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
 
         $query .= ' ORDER BY ctime DESC'
                 . " LIMIT $start,$amount";
@@ -1067,7 +1067,7 @@ class ADMIN {
         $query =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
 
         if ($search != '')
-            $query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
+            $query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
 
 
         $query .= ' ORDER BY ctime DESC'
@@ -1557,7 +1557,7 @@ class ADMIN {
         $manager->notify('PreUpdateComment',array('body' => &$body));
 
         $query = 'UPDATE ' . sql_table('comment')
-               . " SET cmail = '" . addslashes($url) . "', cemail = '" . addslashes($email) . "', cbody = '" . addslashes($body) . "'"
+               . " SET cmail = '" . sql_real_escape_string($url) . "', cemail = '" . sql_real_escape_string($email) . "', cbody = '" . sql_real_escape_string($body) . "'"
                . " WHERE cnumber = " . $commentid;
         sql_query($query);
 
@@ -2632,7 +2632,7 @@ class ADMIN {
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
-        $query = 'SELECT * FROM '.sql_table('category') . ' WHERE cname=\'' . addslashes($cname).'\' and cblog=' . intval($blogid);
+        $query = 'SELECT * FROM '.sql_table('category') . ' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid);
         $res = sql_query($query);
         if (sql_num_rows($res) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
@@ -2722,14 +2722,14 @@ class ADMIN {
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
-        $query = 'SELECT * FROM '.sql_table('category').' WHERE cname=\'' . addslashes($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
+        $query = 'SELECT * FROM '.sql_table('category').' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
         $res = sql_query($query);
         if (sql_num_rows($res) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $query =  'UPDATE '.sql_table('category').' SET'
-               . " cname='" . addslashes($cname) . "',"
-               . " cdesc='" . addslashes($cdesc) . "'"
+               . " cname='" . sql_real_escape_string($cname) . "',"
+               . " cdesc='" . sql_real_escape_string($cdesc) . "'"
                . " WHERE catid=" . $catid;
 
         sql_query($query);
@@ -3158,7 +3158,7 @@ class ADMIN {
 
         /* unlink comments from memberid */
         if ($memberid) {
-            $query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. addslashes($mem->getDisplayName())
+            $query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. sql_real_escape_string($mem->getDisplayName())
                         .'" WHERE cmember='.$memberid;
             sql_query($query);
         }
@@ -3298,11 +3298,11 @@ class ADMIN {
 
 
         // add slashes for sql queries
-        $bname =        addslashes($bname);
-        $bshortname =   addslashes($bshortname);
-        $btimeoffset =  addslashes($btimeoffset);
-        $bdesc =        addslashes($bdesc);
-        $bdefskin =     addslashes($bdefskin);
+        $bname =        sql_real_escape_string($bname);
+        $bshortname =   sql_real_escape_string($bshortname);
+        $btimeoffset =  sql_real_escape_string($btimeoffset);
+        $bdesc =        sql_real_escape_string($bdesc);
+        $bdefskin =     sql_real_escape_string($bdefskin);
 
         // create blog
         $query = 'INSERT INTO '.sql_table('blog')." (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', '$btimeoffset', '$bdefskin')";
@@ -3765,7 +3765,7 @@ selector();
         $member->isAdmin() or $this->disallow();
 
         $extrahead = '<script type="text/javascript" src="javascript/templateEdit.js"></script>';
-        $extrahead .= '<script type="text/javascript">setTemplateEditText("'.addslashes(_EDITTEMPLATE_EMPTY).'");</script>';
+        $extrahead .= '<script type="text/javascript">setTemplateEditText("'.sql_real_escape_string(_EDITTEMPLATE_EMPTY).'");</script>';
 
         $this->pagehead($extrahead);
 
@@ -3937,8 +3937,8 @@ selector();
             $this->error(_ERROR_DUPTEMPLATENAME);
 
 
-        $name = addslashes($name);
-        $desc = addslashes($desc);
+        $name = sql_real_escape_string($name);
+        $desc = sql_real_escape_string($desc);
 
         // 1. Remove all template parts
         $query = 'DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid;
@@ -4004,8 +4004,8 @@ selector();
      * @todo document this
      */
     function addToTemplate($id, $partname, $content) {
-        $partname = addslashes($partname);
-        $content = addslashes($content);
+        $partname = sql_real_escape_string($partname);
+        $content = sql_real_escape_string($content);
 
         $id = intval($id);
 
@@ -4641,7 +4641,7 @@ selector();
         $newid = intval($newid);
         $content = $skin->getContent($type);
         if ($content) {
-            $query = 'INSERT INTO '.sql_table('skin')." (sdesc, scontent, stype) VALUES ($newid,'". addslashes($content)."', '". addslashes($type)."')";
+            $query = 'INSERT INTO '.sql_table('skin')." (sdesc, scontent, stype) VALUES ($newid,'". sql_real_escape_string($content)."', '". sql_real_escape_string($type)."')";
             sql_query($query);
         }
     }
@@ -5132,8 +5132,8 @@ selector();
      * @todo document this
      */
     function updateConfig($name, $val) {
-        $name = addslashes($name);
-        $val = trim(addslashes($val));
+        $name = sql_real_escape_string($name);
+        $val = trim(sql_real_escape_string($val));
 
         $query = 'UPDATE '.sql_table('config')
                . " SET value='$val'"
@@ -5913,7 +5913,7 @@ selector();
                     if (ereg('^NP_(.*)\.php$',$filename,$matches)) {
                         $name = $matches[1];
                         // only show in list when not yet installed
-                        $res = sql_query('SELECT * FROM '.sql_table('plugin').' WHERE pfile="NP_'.addslashes($name).'"');
+                        $res = sql_query('SELECT * FROM '.sql_table('plugin').' WHERE pfile="NP_'.sql_real_escape_string($name).'"');
                         if (sql_num_rows($res) == 0)
                             array_push($candidates,$name);
                     }
@@ -6011,7 +6011,7 @@ selector();
         );
 
         // do this before calling getPlugin (in case the plugin id is used there)
-        $query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.addslashes($name).'")';
+        $query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.sql_real_escape_string($name).'")';
         sql_query($query);
         $iPid = sql_insert_id();
 
@@ -6097,7 +6097,7 @@ selector();
             {
                 $eventList = $plug->getEventList();
                 foreach ($eventList as $eventName)
-                    sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.addslashes($eventName).'\')');
+                    sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.sql_real_escape_string($eventName).'\')');
             }
         }
 
@@ -6402,7 +6402,7 @@ selector();
 
         // get list of oids per pid
         $query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ',' . sql_table('plugin')
-               . ' WHERE opid=pid and ocontext=\''.addslashes($context).'\' ORDER BY porder, oid ASC';
+               . ' WHERE opid=pid and ocontext=\''.sql_real_escape_string($context).'\' ORDER BY porder, oid ASC';
         $res = sql_query($query);
         $aOptions = array();
         while ($o = sql_fetch_object($res)) {

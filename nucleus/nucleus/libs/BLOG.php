@@ -266,9 +266,9 @@ class BLOG {
 
 		$manager->notify('PreAddItem',array('title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => &$this, 'authorid' => &$authorid, 'timestamp' => &$timestamp, 'closed' => &$closed, 'draft' => &$draft, 'catid' => &$catid));
 
-		$title = addslashes($title);
-		$body = addslashes($body);
-		$more = addslashes($more);
+		$title = sql_real_escape_string($title);
+		$body = sql_real_escape_string($body);
+		$more = sql_real_escape_string($more);
 
 		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
 			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
@@ -364,7 +364,7 @@ class BLOG {
 				)
 			);
 
-			$query = 'INSERT INTO '.sql_table('category').' (cblog, cname, cdesc) VALUES (' . $this->getID() . ", '" . addslashes($catName) . "', '" . addslashes($catDescription) . "')";
+			$query = 'INSERT INTO '.sql_table('category').' (cblog, cname, cdesc) VALUES (' . $this->getID() . ", '" . sql_real_escape_string($catName) . "', '" . sql_real_escape_string($catDescription) . "')";
 			sql_query($query);
 			$catid = sql_insert_id();
 
@@ -854,8 +854,8 @@ class BLOG {
 			$offset = intval($offset);
 
 		$query =  'UPDATE '.sql_table('blog')
-			   . " SET bname='" . addslashes($this->getName()) . "',"
-			   . "     bshortname='". addslashes($this->getShortName()) . "',"
+			   . " SET bname='" . sql_real_escape_string($this->getName()) . "',"
+			   . "     bshortname='". sql_real_escape_string($this->getShortName()) . "',"
 			   . "     bcomments=". intval($this->commentsEnabled()) . ","
 			   . "     bmaxcomments=" . intval($this->getMaxComments()) . ","
 			   . "     btimeoffset=" . $offset . ","
@@ -863,11 +863,11 @@ class BLOG {
 			   . "     breqemail=" . intval($this->emailRequired()) . ","
 			   . "     bconvertbreaks=" . intval($this->convertBreaks()) . ","
 			   . "     ballowpast=" . intval($this->allowPastPosting()) . ","
-			   . "     bnotify='" . addslashes($this->getNotifyAddress()) . "',"
+			   . "     bnotify='" . sql_real_escape_string($this->getNotifyAddress()) . "',"
 			   . "     bnotifytype=" . intval($this->getNotifyType()) . ","
-			   . "     burl='" . addslashes($this->getURL()) . "',"
-			   . "     bupdate='" . addslashes($this->getUpdateFile()) . "',"
-			   . "     bdesc='" . addslashes($this->getDescription()) . "',"
+			   . "     burl='" . sql_real_escape_string($this->getURL()) . "',"
+			   . "     bupdate='" . sql_real_escape_string($this->getUpdateFile()) . "',"
+			   . "     bdesc='" . sql_real_escape_string($this->getDescription()) . "',"
 			   . "     bdefcat=" . intval($this->getDefaultCategory()) . ","
 			   . "     bdefskin=" . intval($this->getDefaultSkin()) . ","
 			   . "     bincludesearch=" . intval($this->getSearchable())
@@ -907,7 +907,7 @@ class BLOG {
 	}
 
 	function getCategoryIdFromName($name) {
-		$res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . addslashes($name) . '"');
+		$res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . sql_real_escape_string($name) . '"');
 		if (sql_num_rows($res) > 0) {
 			$o = sql_fetch_object($res);
 			return $o->catid;
@@ -1153,7 +1153,7 @@ class BLOG {
 
 	// returns true if there is a blog with the given shortname (static)
 	function exists($name) {
-		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bshortname="'.addslashes($name).'"');
+		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bshortname="'.sql_real_escape_string($name).'"');
 		return (sql_num_rows($r) != 0);
 	}
 
