@@ -125,6 +125,7 @@ if (!headers_sent() ) {
 }
 
 // include core classes that are needed for login & plugin handling
+include_once($DIR_LIBS . 'mysql.php');
 // added for 3.5 sql_* wrapper
 global $MYSQL_HANDLER;
 if (!isset($MYSQL_HANDLER))
@@ -133,7 +134,6 @@ if ($MYSQL_HANDLER[0] == '')
     $MYSQL_HANDLER[0] = 'mysql';
 include_once($DIR_LIBS . 'sql/'.$MYSQL_HANDLER[0].'.php');
 // end new for 3.5 sql_* wrapper
-include_once($DIR_LIBS . 'mysql.php');
 include($DIR_LIBS . 'MEMBER.php');
 include($DIR_LIBS . 'ACTIONLOG.php');
 include($DIR_LIBS . 'MANAGER.php');
@@ -777,7 +777,7 @@ function isValidMailAddress($address) {
 
 // some helper functions
 function getBlogIDFromName($name) {
-    return quickQuery('SELECT bnumber as result FROM ' . sql_table('blog') . ' WHERE bshortname="' . addslashes($name) . '"');
+    return quickQuery('SELECT bnumber as result FROM ' . sql_table('blog') . ' WHERE bshortname="' . sql_real_escape_string($name) . '"');
 }
 
 function getBlogNameFromID($id) {
@@ -797,7 +797,7 @@ function getBlogIDFromCatID($catid) {
 }
 
 function getCatIDFromName($name) {
-    return quickQuery('SELECT catid as result FROM ' . sql_table('category') . ' WHERE cname="' . addslashes($name) . '"');
+    return quickQuery('SELECT catid as result FROM ' . sql_table('category') . ' WHERE cname="' . sql_real_escape_string($name) . '"');
 }
 
 function quickQuery($q) {
@@ -1912,6 +1912,8 @@ function sanitizeArray(&$array)
         if (get_magic_quotes_gpc()) {
             $val = stripslashes($val);
         }
+		// note that we must use addslashes here because this function is called before the db connection is made 
+		// and sql_real_escape_string needs a db connection
         $val = addslashes($val);
 
         // if $key is included in exclude list, skip this param
