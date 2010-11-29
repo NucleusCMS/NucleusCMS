@@ -60,7 +60,7 @@ class SEARCH {
 		   }
 
 		   if(strlen($stringsum_long)>0){
-				$stringsum_long = addslashes($stringsum_long);
+				$stringsum_long = sql_real_escape_string($stringsum_long);
 				$stringsum_a[] = " match ($match) against ('$stringsum_long') ";
 		   }
 
@@ -131,7 +131,7 @@ class SEARCH {
 
         if (!is_array($matches)) $match=$matches;
 
-        else return ' match ('.$match.') against (\''.addslashes($matches[1]).'\') > 0 ';
+        else return ' match ('.$match.') against (\''.sql_real_escape_string($matches[1]).'\') > 0 ';
 
     }
 
@@ -141,7 +141,7 @@ class SEARCH {
 
         if (!is_array($matches)) $match=$matches;
 
-        else return ' ('.$this->boolean_sql_where_short(addslashes($mathes[1]),$match).') ';
+        else return ' ('.$this->boolean_sql_where_short(sql_real_escape_string($mathes[1]),$match).') ';
 
     }	
 
@@ -201,9 +201,9 @@ class SEARCH {
 		for($ith=0;$ith<count($match_a);$ith++){
 			$score_a[$ith] =
 						   " $score_unit_weight*(
-						   LENGTH(" . addslashes($match_a[$ith]) . ") -
-						   LENGTH(REPLACE(LOWER(" . addslashes($match_a[$ith]) . "),LOWER('" . addslashes($string) . "'),'')))
-						   /LENGTH('" . addslashes($string) . "') ";
+						   LENGTH(" . sql_real_escape_string($match_a[$ith]) . ") -
+						   LENGTH(REPLACE(LOWER(" . sql_real_escape_string($match_a[$ith]) . "),LOWER('" . sql_real_escape_string($string) . "'),'')))
+						   /LENGTH('" . sql_real_escape_string($string) . "') ";
 		}
 		$score = implode(" + ",$score_a);
 
