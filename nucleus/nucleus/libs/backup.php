@@ -297,7 +297,7 @@ class Backup
 					echo ' NULL';
 				} elseif ($row[$j] != '') {
 					// data
-					echo " '" . addslashes($row[$j]) . "'";
+					echo " '" . sql_real_escape_string($row[$j]) . "'";
 				} else {
 					// empty column (!= no data!)
 					echo "''";

@@ -20,7 +20,7 @@ Admin area for NP_SecurityEnforcer
 	// some functions
 	
 	function SE_unlockLogin($login) {
-		sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login='".addslashes($login)."'");
+		sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login='".sql_real_escape_string($login)."'");
 	}
 	
 		

@@ -258,12 +258,12 @@ class COMMENTS {
 
 		$manager->notify('PreAddComment',array('comment' => &$comment, 'spamcheck' => &$spamcheck));
 
-		$name		= addslashes($comment['user']);
-		$url		= addslashes($comment['userid']);
-		$email      = addslashes($comment['email']);
-		$body		= addslashes($comment['body']);
-		$host		= addslashes($comment['host']);
-		$ip			= addslashes($comment['ip']);
+		$name		= sql_real_escape_string($comment['user']);
+		$url		= sql_real_escape_string($comment['userid']);
+		$email      = sql_real_escape_string($comment['email']);
+		$body		= sql_real_escape_string($comment['body']);
+		$host		= sql_real_escape_string($comment['host']);
+		$ip			= sql_real_escape_string($comment['ip']);
 		$memberid	= intval($comment['memberid']);
 		$timestamp	= date('Y-m-d H:i:s', $comment['timestamp']);
 		$itemid		= $this->itemid;

@@ -36,7 +36,7 @@ class ACTIONLOG {
 		if ($member && $member->isLoggedIn())
 			$message = "[" . $member->getDisplayName() . "] " . $message;
 
-		$message = addslashes($message);		// add slashes
+		$message = sql_real_escape_string($message);		// add slashes
 		$timestamp = date("Y-m-d H:i:s",time());	// format timestamp
 		$query = "INSERT INTO " . sql_table('actionlog') . " (timestamp, message) VALUES ('$timestamp', '$message')";
 

@@ -212,9 +212,9 @@ class ITEM {
 		// update item itsself
 		$query =  'UPDATE '.sql_table('item')
 			   . ' SET'
-			   . " ibody='". addslashes($body) ."',"
-			   . " ititle='" . addslashes($title) . "',"
-			   . " imore='" . addslashes($more) . "',"
+			   . " ibody='". sql_real_escape_string($body) ."',"
+			   . " ititle='" . sql_real_escape_string($title) . "',"
+			   . " imore='" . sql_real_escape_string($more) . "',"
 			   . " iclosed=" . intval($closed) . ","
 			   . " icat=" . intval($catid);
 

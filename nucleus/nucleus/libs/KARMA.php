@@ -102,14 +102,14 @@ class KARMA {
 
 	// checks if a vote is still allowed for an IP
 	function isVoteAllowed($ip) {
-		$query = 'SELECT * FROM '.sql_table('karma')." WHERE itemid=$this->itemid and ip='".addslashes($ip)."'";
+		$query = 'SELECT * FROM '.sql_table('karma')." WHERE itemid=$this->itemid and ip='".sql_real_escape_string($ip)."'";
 		$res = sql_query($query);
 		return (sql_num_rows($res) == 0);
 	}
 
 	// save IP in database so no multiple votes are possible
 	function saveIP() {
-		$query = 'INSERT INTO '.sql_table('karma').' (itemid, ip) VALUES ('.$this->itemid.",'".addslashes(serverVar('REMOTE_ADDR'))."')";
+		$query = 'INSERT INTO '.sql_table('karma').' (itemid, ip) VALUES ('.$this->itemid.",'".sql_real_escape_string(serverVar('REMOTE_ADDR'))."')";
 		sql_query($query);
 	}
 }

@@ -38,7 +38,7 @@ class TEMPLATE {
 	function getIdFromName($name) {
 		$query =  'SELECT tdnumber'
 			   . ' FROM '.sql_table('template_desc')
-			   . ' WHERE tdname="'.addslashes($name).'"';
+			   . ' WHERE tdname="'.sql_real_escape_string($name).'"';
 		$res = sql_query($query);
 		$obj = sql_fetch_object($res);
 		return $obj->tdnumber;
@@ -49,8 +49,8 @@ class TEMPLATE {
 	 */
 	function updateGeneralInfo($name, $desc) {
 		$query =  'UPDATE '.sql_table('template_desc').' SET'
-			   . " tdname='" . addslashes($name) . "',"
-			   . " tddesc='" . addslashes($desc) . "'"
+			   . " tdname='" . sql_real_escape_string($name) . "',"
+			   . " tddesc='" . sql_real_escape_string($desc) . "'"
 			   . " WHERE tdnumber=" . $this->getID();
 		sql_query($query);
 	}
@@ -62,11 +62,11 @@ class TEMPLATE {
 		$id = $this->getID();
 
 		// delete old thingie
-		sql_query('DELETE FROM '.sql_table('template')." WHERE tpartname='". addslashes($type) ."' and tdesc=" . intval($id));
+		sql_query('DELETE FROM '.sql_table('template')." WHERE tpartname='". sql_real_escape_string($type) ."' and tdesc=" . intval($id));
 
 		// write new thingie
 		if ($content) {
-			sql_query('INSERT INTO '.sql_table('template')." SET tcontent='" . addslashes($content) . "', tpartname='" . addslashes($type) . "', tdesc=" . intval($id));
+			sql_query('INSERT INTO '.sql_table('template')." SET tcontent='" . sql_real_escape_string($content) . "', tpartname='" . sql_real_escape_string($type) . "', tdesc=" . intval($id));
 		}
 	}
 
@@ -94,7 +94,7 @@ class TEMPLATE {
 			)
 		);
 
-		sql_query('INSERT INTO '.sql_table('template_desc')." (tdname, tddesc) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "')");
+		sql_query('INSERT INTO '.sql_table('template_desc')." (tdname, tddesc) VALUES ('" . sql_real_escape_string($name) . "','" . sql_real_escape_string($desc) . "')");
 		$newId = sql_insert_id();
 
 		$manager->notify(
@@ -128,7 +128,7 @@ class TEMPLATE {
 
 		$query = 'SELECT tpartname, tcontent'
 			   . ' FROM '.sql_table('template_desc').', '.sql_table('template')
-			   . ' WHERE tdesc=tdnumber and tdname="' . addslashes($name) . '"';
+			   . ' WHERE tdesc=tdnumber and tdname="' . sql_real_escape_string($name) . '"';
 		$res = sql_query($query);
 		while ($obj = sql_fetch_object($res))
 			$template[$obj->tpartname] = $obj->tcontent;
@@ -167,7 +167,7 @@ class TEMPLATE {
 	// returns true if there is a template with the given shortname
 	// (static)
 	function exists($name) {
-		$r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdname="'.addslashes($name).'"');
+		$r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdname="'.sql_real_escape_string($name).'"');
 		return (sql_num_rows($r) != 0);
 	}
 
