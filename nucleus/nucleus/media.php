@@ -278,6 +278,13 @@ function media_choose() {
 		<input name="collection" type="hidden" value="<?php echo htmlspecialchars(requestVar('collection'))?>" />
 	<?php		} // if sizeof
 	?>
+	<br /><br />
+	<?php
+	$manager->notify(
+                'MediaUploadFormExtras',
+                array()
+            );
+	?>
 	  <br /><br />
 	  <input type="submit" value="<?php echo _UPLOAD_BUTTON?>" />
 	</div>
