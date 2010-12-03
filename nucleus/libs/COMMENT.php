@@ -49,10 +49,15 @@ class COMMENT {
 		$comment['userid'] = strip_tags($comment['userid']);
 		$comment['email'] = strip_tags($comment['email']);
 
-		// remove newlines from user; remove quotes and newlines from userid and email
-		$comment['user'] = strtr($comment['user'], "\n", ' ');
-		$comment['userid'] = strtr($comment['userid'], "\'\"\n", '-- ');
-		$comment['email'] = strtr($comment['email'], "\'\"\n", '-- ');
+		// remove newlines from user; remove quotes and newlines from userid and email; trim whitespace from beginning and end
+		$comment['user'] = trim(strtr($comment['user'], "\n", ' ') );
+		$comment['userid'] = trim(strtr($comment['userid'], "\'\"\n", '-- ') );
+		$comment['email'] = trim(strtr($comment['email'], "\'\"\n", '-- ') );
+
+		// begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
+		if ( !empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos($comment['userid'], 'https://') !== 0) ) {
+			$comment['userid'] = 'http://' . $comment['userid'];
+		} // end if
 
 		$comment['body'] = COMMENT::prepareBody($comment['body']);
 
