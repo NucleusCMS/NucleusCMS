@@ -30,6 +30,7 @@
 	<li>
 	<strong>Nucleus v3.60 (RC2)</strong>
 	<ul>
+		<li>ADD: MediaUploadFormExtras event to nucleus/media.php to allow plugin to add extra fields to media uploader form. See NP_ImageLimitSize (0.20+) for example of using event. (ftruscot)</li>
 		<li>CHANGE: use sql_real_escape_string() function in place of addslashes() in all but 2 places where sql_real_escape_string() doesn't make sense. (ftruscot)</li>
 		<li>ADD: mysql_real_escape_string() function to wrapper for mysqli (libs/mysql.php). (ftruscot)</li>
 		<li>FIX: globalfunctions.php. PostParseUrl event only firing when using urlmode=pathinfo (fancyurls). (ftruscot)</li>
