@@ -93,16 +93,27 @@ class COMMENTACTIONS extends BaseActions {
 	}
 	
 	function setCurrentComment(&$comment) {
+
 		global $manager;
-		if ($comment['memberid'] != 0) {
+
+		// begin if: member comment
+		if ($comment['memberid'] != 0)
+		{
 			$comment['authtext'] = $template['COMMENTS_AUTH'];
 
 			$mem =& $manager->getMember($comment['memberid']);
 			$comment['user'] = $mem->getDisplayName();
-			if ($mem->getURL())
+
+			// begin if: member URL exists, set it as the userid
+			if ($mem->getURL() )
+			{
 				$comment['userid'] = $mem->getURL();
+			}
+			// else: set the email as the userid
 			else
+			{
 				$comment['userid'] = $mem->getEmail();
+			} // end if
 
 			$comment['userlinkraw'] = createLink(
 										'member',
@@ -111,26 +122,43 @@ class COMMENTACTIONS extends BaseActions {
 											'name' => $mem->getDisplayName(),
 											'extra' => $this->commentsObj->itemActions->linkparams
 										)
-									  );
+									);
 
-		} else {
+		}
+		// else: non-member comment
+		else
+		{
 
 			// create smart links
-/*			if (isValidMailAddress($comment['userid']))
-				$comment['userlinkraw'] = 'mailto:'.$comment['userid'];
-			elseif (strstr($comment['userid'],'http://') != false)
-				$comment['userlinkraw'] = $comment['userid'];
-			elseif (strstr($comment['userid'],'www') != false)
-				$comment['userlinkraw'] = 'http://'.$comment['userid'];*/
-			if (strstr($comment['userid'],'http://') != false)
-				$comment['userlinkraw'] = $comment['userid'];
-			elseif (strstr($comment['userid'],'www') != false)
-				$comment['userlinkraw'] = 'http://'.$comment['userid'];
-			elseif (isValidMailAddress($comment['email']))
-				$comment['userlinkraw'] = 'mailto:'.$comment['email'];
-			elseif (isValidMailAddress($comment['userid']))
-				$comment['userlinkraw'] = 'mailto:'.$comment['userid'];
-		}
+
+			// begin if: comment userid is not empty
+			if (!empty($comment['userid']) )
+			{
+
+				// begin if: comment userid has either "http://" or "https://" at the beginning
+				if ( (strpos($comment['userid'], 'http://') === 0) || (strpos($comment['userid'], 'https://') === 0) )
+				{
+					$comment['userlinkraw'] = $comment['userid'];
+				}
+				// else: prepend the "http://" (backwards compatibility before rev 1471)
+				else
+				{
+					$comment['userlinkraw'] = 'http://' . $comment['userid'];
+				} // end if
+
+			}
+			// else if: comment email is valid
+			else if (isValidMailAddress($comment['email']) )
+			{
+				$comment['userlinkraw'] = 'mailto:' . $comment['email'];
+			}
+			// else if: comment userid is a valid email
+			else if (isValidMailAddress($comment['userid']) )
+			{
+				$comment['userlinkraw'] = 'mailto:' . $comment['userid'];
+			} // end if
+
+		} // end if
 
 		$this->currentComment =& $comment;
 		global $currentcommentid, $currentcommentarray;
