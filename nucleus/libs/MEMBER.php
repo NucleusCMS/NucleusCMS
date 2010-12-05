@@ -609,24 +609,40 @@ class MEMBER {
 	 * @static
 	 */
 	function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes) {
-		if (!isValidMailAddress($email))
+
+		if (!isValidMailAddress($email) )
+		{
 			return _ERROR_BADMAILADDRESS;
+		}
 
-		if (!isValidDisplayName($name))
+		if (!isValidDisplayName($name) )
+		{
 			return _ERROR_BADNAME;
+		}
 
-		if (MEMBER::exists($name))
+		if (MEMBER::exists($name) )
+		{
 			return _ERROR_NICKNAMEINUSE;
+		}
 
 		if (!$realname)
+		{
 			return _ERROR_REALNAMEMISSING;
+		}
 
 		if (!$password)
+		{
 			return _ERROR_PASSWORDMISSING;
+		}
 
-		// Sometimes user didn't prefix the URL with http://, this cause a malformed URL. Let's fix it.
-		if (!eregi("^https?://", $url))
-			$url = "http://".$url;
+		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+		# original eregi: !eregi("^https?://", $url)
+
+		// begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
+		if (!preg_match('#^https?://#', $url) )
+		{
+			$url = 'http://' . $url;
+		} // end if
 
 		$name = sql_real_escape_string($name);
 		$realname = sql_real_escape_string($realname);
