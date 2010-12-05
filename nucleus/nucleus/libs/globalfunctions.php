@@ -66,7 +66,7 @@ if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CO
 }*/
 
 /*
-	Set these to 1 to allow viewing of future items or draft items 
+	Set these to 1 to allow viewing of future items or draft items
 	Should really never do this, but can be useful for some plugins that might need to
 	Could cause some other issues if you use future posts otr drafts
 	So use with care
@@ -355,8 +355,12 @@ if (!headers_sent() ) {
 
 // read language file, only after user has been initialized
 $language = getLanguageName();
-//include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
-include($DIR_LANG . preg_replace( '@\\|/@', '', $language) . '.php');
+
+# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+# original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
+# important note that '\' must be matched with '\\\\' in preg* expressions
+
+include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
 
 /*
     Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
@@ -374,10 +378,11 @@ if (!defined('_MEMBERS_BYPASS'))
 */
 
 // make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
-if (!defined('_ARCHIVETYPE_MONTH') ) {
-    define('_ARCHIVETYPE_DAY', 'day');
-    define('_ARCHIVETYPE_MONTH', 'month');
-    define('_ARCHIVETYPE_YEAR', 'year');
+if (!defined('_ARCHIVETYPE_MONTH') )
+{
+	define('_ARCHIVETYPE_DAY', 'day');
+	define('_ARCHIVETYPE_MONTH', 'month');
+	define('_ARCHIVETYPE_YEAR', 'year');
 }
 
 // decode path_info
@@ -495,8 +500,8 @@ if ($CONF['URLMode'] == 'pathinfo') {
     }
 }
 /* 	PostParseURL is a place to cleanup any of the path-related global variables before the selector function is run.
-	It has 2 values in the data in case the original virtualpath is needed, but most the use will be in tweaking 
-	global variables to clean up (scrub out catid or add catid) or to set someother global variable based on 
+	It has 2 values in the data in case the original virtualpath is needed, but most the use will be in tweaking
+	global variables to clean up (scrub out catid or add catid) or to set someother global variable based on
 	the values of something like catid or itemid
 	New in 3.60
 */
@@ -559,7 +564,7 @@ function getNucleusPatchLevel() {
 }
 
 /**
- * returns the latest version available for download from nucleuscms.org 
+ * returns the latest version available for download from nucleuscms.org
  * or false if unable to attain data
  * format will be major.minor/patachlevel
  * e.g. 3.41 or 3.41/02
@@ -642,7 +647,7 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 }
 
 /**
- * Errors before the database connection has been made - moved to 
+ * Errors before the database connection has been made - moved to
  */
 /* moved to $DIR_LIBS/sql/*.php handler files
 function startUpError($msg, $title) {
@@ -682,54 +687,69 @@ function sql_query($query) {
 
 /**
  * Highlights a specific query in a given HTML text (not within HTML tags) and returns it
- *
- * @param $text
- *		text to be highlighted
- * @param $expression
- *		regular expression to be matched (can be an array of expressions as well)
- * @param $highlight
- *		highlight to be used (use \\0 to indicate the matched expression)
- *
- */
+ * @param string $text text to be highlighted
+ * @param string $expression regular expression to be matched (can be an array of expressions as well)
+ * @param string $highlight highlight to be used (use \\0 to indicate the matched expression)
+ * @return string
+ **/
 function highlight($text, $expression, $highlight) {
-    if (!$highlight || !$expression) {
-        return $text;
-    }
 
-    if (is_array($expression) && (count($expression) == 0) ) {
-        return $text;
-    }
+	if (!$highlight || !$expression)
+	{
+		return $text;
+	}
 
-    // add a tag in front (is needed for preg_match_all to work correct)
-    $text = '<!--h-->' . $text;
+	if (is_array($expression) && (count($expression) == 0) )
+	{
+		return $text;
+	}
 
-    // split the HTML up so we have HTML tags
-    // $matches[0][i] = HTML + text
-    // $matches[1][i] = HTML
-    // $matches[2][i] = text
-    preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
+	// add a tag in front (is needed for preg_match_all to work correct)
+	$text = '<!--h-->' . $text;
 
-    // throw it all together again while applying the highlight to the text pieces
-    $result = '';
-    for ($i = 0; $i < sizeof($matches[2]); $i++) {
-        if ($i != 0) {
-            $result .= $matches[1][$i];
-        }
+	// split the HTML up so we have HTML tags
+	// $matches[0][i] = HTML + text
+	// $matches[1][i] = HTML
+	// $matches[2][i] = text
+	preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
 
-        if (is_array($expression) ) {
-            foreach ($expression as $regex) {
-                if ($regex) {
-                    $matches[2][$i] = @eregi_replace($regex, $highlight, $matches[2][$i]);
-                }
-            }
+	// throw it all together again while applying the highlight to the text pieces
+	$result = '';
 
-            $result .= $matches[2][$i];
-        } else {
-            $result .= @eregi_replace($expression, $highlight, $matches[2][$i]);
-        }
-    }
+	$count_matches = count($matches[2]);
 
-    return $result;
+	for ($i = 0; $i < $count_matches; $i++) {
+
+		if ($i != 0)
+		{
+			$result .= $matches[1][$i];
+		}
+
+		if (is_array($expression) )
+		{
+
+			foreach ($expression as $regex)
+			{
+
+				if ($regex)
+				{
+					$matches[2][$i] = @preg_replace($regex, $highlight, $matches[2][$i]);
+				}
+
+			}
+
+			$result .= $matches[2][$i];
+
+		}
+		else
+		{
+			$result .= @preg_replace($expression, $highlight, $matches[2][$i]);
+		}
+
+	}
+
+	return $result;
+
 }
 
 /**
@@ -1098,7 +1118,7 @@ function selector() {
     if (!$skin->isValid) {
         doError(_ERROR_NOSUCHSKIN);
     }
-	
+
 	// set global skinpart variable so can determine quickly what is being parsed from any plugin or phpinclude
 	global $skinpart;
 	$skinpart = $type;
@@ -1152,11 +1172,21 @@ function getConfig() {
 
 // some checks for names of blogs, categories, templates, members, ...
 function isValidShortName($name) {
-    return eregi('^[a-z0-9]+$', $name);
+
+	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+	# original eregi: eregi('^[a-z0-9]+$', $name)
+
+	return preg_match('#^[a-z0-9]+$#i', $name);
+
 }
 
 function isValidDisplayName($name) {
-    return eregi('^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$', $name);
+
+	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+	# original eregi: eregi('^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$', $name)
+
+	return preg_match('#^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$#i', $name);
+
 }
 
 function isValidCategoryName($name) {
@@ -1164,11 +1194,21 @@ function isValidCategoryName($name) {
 }
 
 function isValidTemplateName($name) {
-    return eregi('^[a-z0-9/]+$', $name);
+
+	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+	# original eregi: eregi('^[a-z0-9/]+$', $name)
+
+	return preg_match('#^[a-z0-9/]+$#i', $name);
+
 }
 
 function isValidSkinName($name) {
-    return eregi('^[a-z0-9/]+$', $name);
+
+	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+	# original eregi: eregi('^[a-z0-9/]+$', $name);
+
+	return preg_match('#^[a-z0-9/]+$#i', $name);
+
 }
 
 // add and remove linebreaks
@@ -1244,9 +1284,15 @@ function selectItem($id) {
 
 // force the use of a language file (warning: can cause warnings)
 function selectLanguage($language) {
-    global $DIR_LANG;
-//    include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
-    include($DIR_LANG . preg_replace( '@\\|/@', '', $language) . '.php');
+
+	global $DIR_LANG;
+
+	# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+	# original ereg_replace: preg_replace( '@\\|/@', '', $language) . '.php')
+	# important note that '\' must be matched with '\\\\' in preg* expressions
+
+	include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
+
 }
 
 function parseFile($filename, $includeMode = 'normal', $includePrefix = '') {
@@ -1366,18 +1412,37 @@ function includephp($filename) {
 }
 
 /**
-  * Checks if a certain language/plugin exists
-  */
+ * Checks if a certain language exists
+ * @param string $lang
+ * @return bool
+ **/
 function checkLanguage($lang) {
-    global $DIR_LANG ;
-//    return file_exists($DIR_LANG . ereg_replace( '[\\|/]', '', $lang) . '.php');
-    return file_exists($DIR_LANG . preg_replace( '@\\|/@', '', $lang) . '.php');
+
+	global $DIR_LANG;
+
+	# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+	# original ereg_replace: ereg_replace( '[\\|/]', '', $lang) . '.php')
+	# important note that '\' must be matched with '\\\\' in preg* expressions
+
+	return file_exists($DIR_LANG . preg_replace('#[\\\\|/]#', '', $lang) . '.php');
+
 }
 
+/**
+ * Checks if a certain plugin exists
+ * @param string $plug
+ * @return bool
+ **/
 function checkPlugin($plug) {
-    global $DIR_PLUGINS;
-    return file_exists($DIR_PLUGINS . ereg_replace( '[\\|/]', '', $plug) . '.php');
-//    return file_exists($DIR_PLUGINS . preg_replace( '@\\|/@', '', $plug) . '.php');
+
+	global $DIR_PLUGINS;
+
+	# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+	# original ereg_replace: ereg_replace( '[\\|/]', '', $plug) . '.php')
+	# important note that '\' must be matched with '\\\\' in preg* expressions
+
+	return file_exists($DIR_PLUGINS . preg_replace('#[\\\\|/]#', '', $plug) . '.php');
+
 }
 
 /**
@@ -1708,124 +1773,203 @@ function sanitizeParams()
  * to avoid CSRF.
  * Also avoid the access to plugin/index.php by guest user.
  */
-function ticketForPlugin(){
-    global $CONF,$DIR_PLUGINS,$member,$ticketforplugin;
+function ticketForPlugin() {
 
-    /* initialize */
-    $ticketforplugin=array();
-    $ticketforplugin['ticket']=false;
+	global $CONF, $DIR_PLUGINS, $member, $ticketforplugin;
 
-    /* Check if using plugin's php file. */
-    if ($p_translated=serverVar('PATH_TRANSLATED')) {
-        if (!file_exists($p_translated)) $p_translated='';
-    }
-    if (!$p_translated) {
-        $p_translated=serverVar('SCRIPT_FILENAME');
-        if (!file_exists($p_translated)) {
-            header("HTTP/1.0 404 Not Found");
-            exit('');
-        }
-    }
-    $p_translated=str_replace('\\','/',$p_translated);
-    $d_plugins=str_replace('\\','/',$DIR_PLUGINS);
-    if (strpos($p_translated,$d_plugins)!==0) return;// This isn't plugin php file.
+	/* initialize */
+	$ticketforplugin = array();
+	$ticketforplugin['ticket'] = FALSE;
 
-    /* Solve the plugin php file or admin directory */
-    $phppath=substr($p_translated,strlen($d_plugins));
-    $phppath=preg_replace('!^/!','',$phppath);// Remove the first "/" if exists.
-    $path=preg_replace('/^NP_(.*)\.php$/','$1',$phppath); // Remove the first "NP_" and the last ".php" if exists.
-    $path=preg_replace('!^([^/]*)/(.*)$!','$1',$path); // Remove the "/" and beyond.
+	/* Check if using plugin's php file. */
+	if ($p_translated = serverVar('PATH_TRANSLATED') )
+	{
 
-    /* Solve the plugin name. */
-    $plugins=array();
-    $query='SELECT pfile FROM '.sql_table('plugin');
-    $res=sql_query($query);
-    while($row=sql_fetch_row($res)) {
-        $name=substr($row[0],3);
-        $plugins[strtolower($name)]=$name;
-    }
-    sql_free_result($res);
-    if ($plugins[$path]) $plugin_name=$plugins[$path];
-    else if (in_array($path,$plugins)) $plugin_name=$path;
-    else {
-        header("HTTP/1.0 404 Not Found");
-        exit('');
+		if (!file_exists($p_translated) )
+		{
+			$p_translated = '';
+		}
+
     }
 
-    /* Return if not index.php */
-    if ( $phppath!=strtolower($plugin_name).'/'
-        && $phppath!=strtolower($plugin_name).'/index.php' ) return;
+	if (!$p_translated)
+	{
+		$p_translated = serverVar('SCRIPT_FILENAME');
+
+		if (!file_exists($p_translated) )
+		{
+			header("HTTP/1.0 404 Not Found");
+			exit('');
+		}
+
+	}
+
+	$p_translated = str_replace('\\', '/', $p_translated);
+	$d_plugins = str_replace('\\', '/', $DIR_PLUGINS);
+
+    if (strpos($p_translated, $d_plugins) !== 0)
+	{
+		return;// This isn't plugin php file.
+	}
+
+	/* Solve the plugin php file or admin directory */
+	$phppath = substr($p_translated, strlen($d_plugins) );
+	$phppath = preg_replace('#^/#', '', $phppath); // Remove the first "/" if exists.
+	$path = preg_replace('#^NP_(.*)\.php$#', '$1', $phppath); // Remove the first "NP_" and the last ".php" if exists.
+	$path = preg_replace('#^([^/]*)/(.*)$#', '$1', $path); // Remove the "/" and beyond.
+
+	/* Solve the plugin name. */
+	$plugins = array();
+	$query = 'SELECT `pfile` FROM '.sql_table('plugin');
+	$res = sql_query($query);
+
+	while($row = sql_fetch_row($res) )
+	{
+		$name = substr($row[0], 3);
+		$plugins[strtolower($name)] = $name;
+    }
+
+	sql_free_result($res);
+
+	if ($plugins[$path])
+	{
+		$plugin_name = $plugins[$path];
+	}
+	else if (in_array($path, $plugins))
+	{
+		$plugin_name = $path;
+	}
+	else
+	{
+		header("HTTP/1.0 404 Not Found");
+		exit('');
+	}
+
+	/* Return if not index.php */
+	if ( ($phppath != strtolower($plugin_name) . '/') && ($phppath != strtolower($plugin_name) . '/index.php') )
+	{
+		return;
+	}
 
     /* Exit if not logged in. */
-    if ( !$member->isLoggedIn() ) exit("You aren't logged in.");
+	if ( !$member->isLoggedIn() )
+	{
+		exit('You aren\'t logged in.');
+	}
 
-    global $manager,$DIR_LIBS,$DIR_LANG,$HTTP_GET_VARS,$HTTP_POST_VARS;
+	global $manager, $DIR_LIBS, $DIR_LANG, $HTTP_GET_VARS, $HTTP_POST_VARS;
 
-    /* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
-    if (!($p_translated=serverVar('PATH_TRANSLATED'))) $p_translated=serverVar('SCRIPT_FILENAME');
-    if ($file=@file($p_translated)) {
-        $prevline='';
-        foreach($file as $line) {
-            if (preg_match('/[\$]manager([\s]*)[\-]>([\s]*)checkTicket([\s]*)[\(]/i',$prevline.$line)) return;
-            $prevline=$line;
-        }
-    }
+	/* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
+	if (!($p_translated = serverVar('PATH_TRANSLATED') ) )
+	{
+		$p_translated = serverVar('SCRIPT_FILENAME');
+	}
+
+	if ($file = @file($p_translated) )
+	{
+		$prevline = '';
+
+		foreach($file as $line)
+		{
+
+			if (preg_match('/[\$]manager([\s]*)[\-]>([\s]*)checkTicket([\s]*)[\(]/i', $prevline . $line) )
+			{
+				return;
+			}
+
+			$prevline = $line;
+
+		}
+
+	}
 
     /* Show a form if not valid ticket */
-    if ( ( strstr(serverVar('REQUEST_URI'),'?') || serverVar('QUERY_STRING')
-            || strtoupper(serverVar('REQUEST_METHOD'))=='POST' )
-                && (!$manager->checkTicket()) ){
+    if ( ( strstr(serverVar('REQUEST_URI'), '?') || serverVar('QUERY_STRING')
+			|| strtoupper(serverVar('REQUEST_METHOD') ) == 'POST')
+				&& (!$manager->checkTicket() ) )
+	{
 
-        if (!class_exists('PluginAdmin')) {
-            $language = getLanguageName();
-//            include($DIR_LANG . ereg_replace( '[\\|/]', '', $language) . '.php');
-            include($DIR_LANG . preg_replace( '@\\|/@', '', $language) . '.php');
-            include($DIR_LIBS . 'PLUGINADMIN.php');
-        }
-        if (!(function_exists('mb_strimwidth') || extension_loaded('mbstring'))) {
-            if (file_exists($DIR_LIBS.'mb_emulator/mb-emulator.php')) {
-                global $mbemu_internals;
-                include_once($DIR_LIBS.'mb_emulator/mb-emulator.php');
-            }
-        }
-        $oPluginAdmin = new PluginAdmin($plugin_name);
-        $oPluginAdmin->start();
-        echo '<p>' . _ERROR_BADTICKET . "</p>\n";
+		if (!class_exists('PluginAdmin') )
+		{
+			$language = getLanguageName();
 
-        /* Show the form to confirm action */
-        // PHP 4.0.x support
-        $get=  (isset($_GET))  ? $_GET  : $HTTP_GET_VARS;
-        $post= (isset($_POST)) ? $_POST : $HTTP_POST_VARS;
-        // Resolve URI and QUERY_STRING
-        if ($uri=serverVar('REQUEST_URI')) {
-            list($uri,$qstring)=explode('?',$uri);
-        } else {
-            if ( !($uri=serverVar('PHP_SELF')) ) $uri=serverVar('SCRIPT_NAME');
-            $qstring=serverVar('QUERY_STRING');
-        }
-        if ($qstring) $qstring='?'.$qstring;
-        echo '<p>'._SETTINGS_UPDATE.' : '._QMENU_PLUGINS.' <span style="color:red;">'.
-            htmlspecialchars($plugin_name)."</span> ?</p>\n";
-        switch(strtoupper(serverVar('REQUEST_METHOD'))){
-        case 'POST':
-            echo '<form method="POST" action="'.htmlspecialchars($uri.$qstring).'">';
-            $manager->addTicketHidden();
-            _addInputTags($post);
-            break;
-        case 'GET':
-            echo '<form method="GET" action="'.htmlspecialchars($uri).'">';
-            $manager->addTicketHidden();
-            _addInputTags($get);
-        default:
-            break;
-        }
-        echo '<input type="submit" value="'._YES.'" />&nbsp;&nbsp;&nbsp;&nbsp;';
-        echo '<input type="button" value="'._NO.'" onclick="history.back(); return false;" />';
-        echo "</form>\n";
+			# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+			# original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
+			# important note that '\' must be matched with '\\\\' in preg* expressions
 
-        $oPluginAdmin->end();
-        exit;
-    }
+			include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
+			include($DIR_LIBS . 'PLUGINADMIN.php');
+		}
+
+		if (!(function_exists('mb_strimwidth') || extension_loaded('mbstring')))
+		{
+
+			if (file_exists($DIR_LIBS.'mb_emulator/mb-emulator.php'))
+			{
+				global $mbemu_internals;
+				include_once($DIR_LIBS.'mb_emulator/mb-emulator.php');
+			}
+
+		}
+
+		$oPluginAdmin = new PluginAdmin($plugin_name);
+		$oPluginAdmin->start();
+		echo '<p>' . _ERROR_BADTICKET . "</p>\n";
+
+		/* Show the form to confirm action */
+		// PHP 4.0.x support
+		$get = (isset($_GET) ) ? $_GET : $HTTP_GET_VARS;
+		$post = (isset($_POST) ) ? $_POST : $HTTP_POST_VARS;
+
+		// Resolve URI and QUERY_STRING
+		if ($uri = serverVar('REQUEST_URI') )
+		{
+			list($uri, $qstring) = explode('?', $uri);
+		}
+		else
+		{
+
+			if ( !($uri = serverVar('PHP_SELF') ) )
+			{
+				$uri = serverVar('SCRIPT_NAME');
+			}
+
+            $qstring = serverVar('QUERY_STRING');
+
+        }
+
+        if ($qstring)
+		{
+			$qstring = '?' . $qstring;
+		}
+
+        echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . htmlspecialchars($plugin_name) . "</span> ?</p>\n";
+
+		switch(strtoupper(serverVar('REQUEST_METHOD') ) )
+		{
+			case 'POST':
+				echo '<form method="POST" action="'.htmlspecialchars($uri.$qstring).'">';
+				$manager->addTicketHidden();
+				_addInputTags($post);
+				break;
+
+			case 'GET':
+				echo '<form method="GET" action="'.htmlspecialchars($uri).'">';
+				$manager->addTicketHidden();
+				_addInputTags($get);
+
+			default:
+				break;
+		}
+
+		echo '<input type="submit" value="' . _YES . '" />&nbsp;&nbsp;&nbsp;&nbsp;';
+		echo '<input type="button" value="' . _NO . '" onclick="history.back(); return false;" />';
+		echo "</form>\n";
+
+		$oPluginAdmin->end();
+		exit;
+
+	}
 
     /* Create new ticket */
     $ticket=$manager->addTicketToUrl('');
@@ -1912,7 +2056,7 @@ function sanitizeArray(&$array)
         if (get_magic_quotes_gpc()) {
             $val = stripslashes($val);
         }
-		// note that we must use addslashes here because this function is called before the db connection is made 
+		// note that we must use addslashes here because this function is called before the db connection is made
 		// and sql_real_escape_string needs a db connection
         $val = addslashes($val);
 
@@ -1923,7 +2067,7 @@ function sanitizeArray(&$array)
             if (strpos($val, '\\')) {
                 list($val, $tmp) = explode('\\', $val);
             }
-            
+
             // remove control code etc.
             $val = strtr($val, "\0\r\n<>'\"", "       ");
 
@@ -2143,16 +2287,16 @@ function selectSpecialSkinType($id) {
  */
 function cleanFileName($str) {
 	$cleaner = array();
-	$cleaner[] = array('expression'=>"/[àáäãâª]/",'replace'=>"a");
-	$cleaner[] = array('expression'=>"/[èéêë]/",'replace'=>"e");
-	$cleaner[] = array('expression'=>"/[ìíîï]/",'replace'=>"i");
-	$cleaner[] = array('expression'=>"/[òóõôö]/",'replace'=>"o");
-	$cleaner[] = array('expression'=>"/[ùúûü]/",'replace'=>"u");
-	$cleaner[] = array('expression'=>"/[ñ]/",'replace'=>"n");
-	$cleaner[] = array('expression'=>"/[ç]/",'replace'=>"c");
+	$cleaner[] = array('expression'=>"/[]/",'replace'=>"a");
+	$cleaner[] = array('expression'=>"/[]/",'replace'=>"e");
+	$cleaner[] = array('expression'=>"/[]/",'replace'=>"i");
+	$cleaner[] = array('expression'=>"/[]/",'replace'=>"o");
+	$cleaner[] = array('expression'=>"/[]/",'replace'=>"u");
+	$cleaner[] = array('expression'=>"/[]/",'replace'=>"n");
+	$cleaner[] = array('expression'=>"/[]/",'replace'=>"c");
 
 	$str = strtolower($str);
-	$ext_point = strripos($str,"."); // Changed to strripos to avoid issues with ‘.’ Thanks nico.
+	$ext_point = strripos($str,"."); // Changed to strripos to avoid issues with . Thanks nico.
 	if ($ext_point===false) return false;
 	$ext = substr($str,$ext_point,strlen($str));
 	$str = substr($str,0,$ext_point);
