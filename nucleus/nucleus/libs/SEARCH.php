@@ -70,29 +70,32 @@ class SEARCH {
 	}
 
 	function boolean_inclusive_atoms($string){
-		$result=trim($string);
-		$result=preg_replace("/([[:space:]]{2,})/",' ',$result);
+		$result = trim($string);
+		$result = preg_replace("#([[:space:]]{2,})#", ' ', $result);
+
+		# replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+		# just added delimiters to regex and the 'i' for case-insensitive matching
 
 		/* convert normal boolean operators to shortened syntax */
-		$result=eregi_replace(' not ',' -',$result);
-		$result=eregi_replace(' and ',' ',$result);
-		$result=eregi_replace(' or ',',',$result);
+		$result = preg_replace('# not #i', ' -', $result);
+		$result = preg_replace('# and #i', ' ', $result);
+		$result = preg_replace('# or #i', ',', $result);
 
 		/* drop unnecessary spaces */
-		$result=str_replace(' ,',',',$result);
-		$result=str_replace(', ',',',$result);
-		$result=str_replace('- ','-',$result);
-		$result=str_replace('+','',$result);
+		$result = str_replace(' ,', ',', $result);
+		$result = str_replace(', ', ',', $result);
+		$result = str_replace('- ', '-', $result);
+		$result = str_replace('+', '', $result);
 
 		/* strip exlusive atoms */
-		$result=preg_replace(
-			"(\-\([A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_\,]{0,}\))",
+		$result = preg_replace(
+			"#\-\([A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_\,]{0,}\)#",
 			'',
 			$result);
 
-		$result=str_replace('(',' ',$result);
-		$result=str_replace(')',' ',$result);
-		$result=str_replace(',',' ',$result);
+		$result = str_replace('(', ' ', $result);
+		$result = str_replace(')', ' ', $result);
+		$result = str_replace(',', ' ', $result);
 
 		return $result;
 	}
@@ -146,43 +149,48 @@ class SEARCH {
     }	
 
 	function boolean_mark_atoms($string){
-		$result=trim($string);
-		$result=preg_replace("/([[:space:]]{2,})/",' ',$result);
+		$result = trim($string);
+		$result = preg_replace("/([[:space:]]{2,})/",' ',$result);
+
+		# replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+		# just added delimiters to regex and the 'i' for case-insensitive matching
 
 		/* convert normal boolean operators to shortened syntax */
-		$result=eregi_replace(' not ',' -',$result);
-		$result=eregi_replace(' and ',' ',$result);
-		$result=eregi_replace(' or ',',',$result);
-
+		$result = preg_replace('# not #i', ' -', $result);
+		$result = preg_replace('# and #i', ' ', $result);
+		$result = preg_replace('# or #i', ',', $result);
 
 		/* strip excessive whitespace */
-		$result=str_replace('( ','(',$result);
-		$result=str_replace(' )',')',$result);
-		$result=str_replace(', ',',',$result);
-		$result=str_replace(' ,',',',$result);
-		$result=str_replace('- ','-',$result);
-		$result=str_replace('+','',$result);
+		$result = str_replace('( ', '(', $result);
+		$result = str_replace(' )', ')', $result);
+		$result = str_replace(', ', ',', $result);
+		$result = str_replace(' ,', ',', $result);
+		$result = str_replace('- ', '-', $result);
+		$result = str_replace('+', '', $result);
 
 		// remove double spaces (we might have introduced some new ones above)
-		$result=trim($result);
-		$result=preg_replace("/([[:space:]]{2,})/",' ',$result);
+		$result = trim($result);
+		$result = preg_replace("#([[:space:]]{2,})#", ' ', $result);
 
 		/* apply arbitrary function to all 'word' atoms */
 
-		$result_a = explode(" ",$result);
-		for($word=0;$word<count($result_a);$word++){
-			$result_a[$word] = "foo[('".$result_a[$word]."')]bar";
+		$result_a = explode(' ', $result);
+
+		for($word = 0;$word<count($result_a);$word++)
+		{
+			$result_a[$word] = "foo[('" . $result_a[$word] . "')]bar";
 		}
-		$result = implode(" ",$result_a);
+
+		$result = implode(' ', $result_a);
 
 		/* dispatch ' ' to ' AND ' */
-		$result=str_replace(' ',' AND ',$result);
+		$result = str_replace(' ', ' AND ', $result);
 
 		/* dispatch ',' to ' OR ' */
-		$result=str_replace(',',' OR ',$result);
+		$result = str_replace(',', ' OR ', $result);
 
 		/* dispatch '-' to ' NOT ' */
-		$result=str_replace(' -',' NOT ',$result);
+		$result = str_replace(' -', ' NOT ', $result);
 		return $result;
 	}
 
