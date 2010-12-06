@@ -1453,24 +1453,28 @@ class ADMIN {
         }
     }
 
-    /**
-     * Allows to edit previously made comments
-     */
-    function action_commentedit() {
-        global $member, $manager;
+	/**
+	 * Allows to edit previously made comments
+	 **/
+	function action_commentedit() {
 
-        $commentid = intRequestVar('commentid');
+		global $member, $manager;
 
-        $member->canAlterComment($commentid) or $this->disallow();
+		$commentid = intRequestVar('commentid');
 
-        $comment = COMMENT::getComment($commentid);
+		$member->canAlterComment($commentid) or $this->disallow();
 
-        $manager->notify('PrepareCommentForEdit',array('comment' => &$comment));
+		$comment = COMMENT::getComment($commentid);
 
-        // change <br /> to \n
-        $comment['body'] = str_replace('<br />','',$comment['body']);
+		$manager->notify('PrepareCommentForEdit', array('comment' => &$comment) );
 
-        $comment['body'] = eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>","\\1",$comment['body']);
+		// change <br /> to \n
+		$comment['body'] = str_replace('<br />', '', $comment['body']);
+
+		# replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+		# original eregi_replace: eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>", "\\1", $comment['body'])
+
+        $comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#I", "\\1", $comment['body']);
 
         $this->pagehead();
 
@@ -1539,16 +1543,26 @@ class ADMIN {
         $email = postVar('email');
         $body = postVar('body');
 
-        // intercept words that are too long
-        if (eregi("[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}",$body) != false)
-            $this->error(_ERROR_COMMENT_LONGWORD);
+		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+		# original eregi: eregi("[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}", $body) != FALSE
+		# important note that '\' must be matched with '\\\\' in preg* expressions
 
-        // check length
-        if (strlen($body)<3)
-            $this->error(_ERROR_COMMENT_NOCOMMENT);
-        if (strlen($body)>5000)
-            $this->error(_ERROR_COMMENT_TOOLONG);
+		// intercept words that are too long
+		if (preg_match('#[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}#', $body) != FALSE)
+		{
+			$this->error(_ERROR_COMMENT_LONGWORD);
+		}
 
+		// check length
+		if (strlen($body) < 3)
+		{
+			$this->error(_ERROR_COMMENT_NOCOMMENT);
+		}
+
+		if (strlen($body) > 5000)
+		{
+			$this->error(_ERROR_COMMENT_TOOLONG);
+		}
 
         // prepare body
         $body = COMMENT::prepareBody($body);
@@ -1833,19 +1847,34 @@ class ADMIN {
                 <?php               // show a dropdown list of all available languages
                 global $DIR_LANG;
                 $dirhandle = opendir($DIR_LANG);
-                while ($filename = readdir($dirhandle)) {
-                    if (ereg("^(.*)\.php$",$filename,$matches)) {
-                        $name = $matches[1];
-                        echo "<option value='$name'";
-                        if ($name == $mem->getLanguage())
-                            echo " selected='selected'";
-                        echo ">$name</option>";
-                    }
-                }
-                closedir($dirhandle);
 
-                ?>
-                </select>
+				while ($filename = readdir($dirhandle))
+				{
+
+					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+					# original ereg: ereg("^(.*)\.php$", $filename, $matches)
+
+					if (preg_match('#^(.*)\.php$#', $filename, $matches) )
+					{
+
+						$name = $matches[1];
+						echo "<option value=\"$name\"";
+
+						if ($name == $mem->getLanguage() )
+						{
+							echo " selected=\"selected\"";
+						}
+
+						echo ">$name</option>";
+
+					}
+
+				}
+
+				closedir($dirhandle);
+
+				?>
+				</select>
 
             </td>
         </tr>
@@ -1897,9 +1926,14 @@ class ADMIN {
         $email          = strip_tags(postVar('email'));
         $url            = strip_tags(postVar('url'));
 
-        // Sometimes user didn't prefix the URL with http://, this cause a malformed URL. Let's fix it.
-        if (!eregi("^https?://", $url))
-            $url = "http://".$url;
+		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+		# original eregi: !eregi("^https?://", $url)
+
+		// begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
+		if (!preg_match('#^https?://#', $url) )
+		{
+			$url = 'http://' . $url;
+		}
 
         $admin          = postVar('admin');
         $canlogin       = postVar('canlogin');
@@ -4723,19 +4757,34 @@ selector();
                 <?php               // show a dropdown list of all available languages
                 global $DIR_LANG;
                 $dirhandle = opendir($DIR_LANG);
-                while ($filename = readdir($dirhandle)) {
-                    if (ereg("^(.*)\.php$",$filename,$matches)) {
-                        $name = $matches[1];
-                        echo "<option value='$name'";
-                        if ($name == $CONF['Language'])
-                            echo " selected='selected'";
-                        echo ">$name</option>";
-                    }
-                }
-                closedir($dirhandle);
 
-                ?>
-                </select>
+				while ($filename = readdir($dirhandle) )
+				{
+
+					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+					# original ereg: ereg("^(.*)\.php$",$filename,$matches)
+
+					if (preg_match('#^(.*)\.php$#', $filename, $matches) )
+					{
+
+						$name = $matches[1];
+						echo "<option value=\"$name\"";
+
+						if ($name == $CONF['Language'])
+						{
+							echo " selected=\"selected\"";
+						}
+
+						echo ">$name</option>";
+
+					}
+
+				}
+
+				closedir($dirhandle);
+
+				?>
+				</select>
 
             </td>
         </tr><tr>
@@ -5892,57 +5941,80 @@ selector();
         $template['tabindex'] = 10;
         showlist($query, 'table', $template);
 
-        ?>
-            <h3><?php echo _PLUGS_TITLE_UPDATE?></h3>
+?>
+			<h3><?php echo _PLUGS_TITLE_UPDATE?></h3>
 
-            <p><?php echo _PLUGS_TEXT_UPDATE?></p>
+			<p><?php echo _PLUGS_TEXT_UPDATE?></p>
 
-            <form method="post" action="index.php"><div>
-                <input type="hidden" name="action" value="pluginupdate" />
-                <?php $manager->addTicketHidden() ?>
-                <input type="submit" value="<?php echo _PLUGS_BTN_UPDATE ?>" tabindex="20" />
-            </div></form>
+			<form method="post" action="index.php"><div>
+				<input type="hidden" name="action" value="pluginupdate" />
+				<?php $manager->addTicketHidden() ?>
+				<input type="submit" value="<?php echo _PLUGS_BTN_UPDATE ?>" tabindex="20" />
+			</div></form>
 
-            <h3><?php echo _PLUGS_TITLE_NEW?></h3>
+			<h3><?php echo _PLUGS_TITLE_NEW?></h3>
 
-            <?php               // find a list of possibly non-installed plugins
-                $candidates = array();
-                global $DIR_PLUGINS;
-                $dirhandle = opendir($DIR_PLUGINS);
-                while ($filename = readdir($dirhandle)) {
-                    if (ereg('^NP_(.*)\.php$',$filename,$matches)) {
-                        $name = $matches[1];
-                        // only show in list when not yet installed
-                        $res = sql_query('SELECT * FROM '.sql_table('plugin').' WHERE pfile="NP_'.sql_real_escape_string($name).'"');
-                        if (sql_num_rows($res) == 0)
-                            array_push($candidates,$name);
-                    }
-                }
-                closedir($dirhandle);
+<?php
+		// find a list of possibly non-installed plugins
+		$candidates = array();
 
-                if (sizeof($candidates) > 0) {
-            ?>
+		global $DIR_PLUGINS;
 
-            <p><?php echo _PLUGS_ADD_TEXT?></p>
+		$dirhandle = opendir($DIR_PLUGINS);
 
+		while ($filename = readdir($dirhandle) )
+		{
 
-            <form method='post' action='index.php'><div>
-                <input type='hidden' name='action' value='pluginadd' />
-                <?php $manager->addTicketHidden() ?>
-                <select name="filename" tabindex="30">
-                <?php                   foreach($candidates as $name)
-                        echo '<option value="NP_',$name,'">',htmlspecialchars($name),'</option>';
-                ?>
-                </select>
-                <input type='submit' tabindex="40" value='<?php echo _PLUGS_BTN_INSTALL?>' />
-            </div></form>
+			# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+			# original ereg: ereg('^NP_(.*)\.php$',$filename,$matches)
 
-        <?php           } else {    // sizeof(candidates) == 0
-                echo '<p>',_PLUGS_NOCANDIDATES,'</p>';
-            }
+			if (preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
+			{
 
-        $this->pagefoot();
-    }
+				$name = $matches[1];
+				// only show in list when not yet installed
+				$res = sql_query('SELECT * FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '"');
+
+				if (sql_num_rows($res) == 0)
+				{
+					array_push($candidates, $name);
+				}
+
+			}
+
+		}
+
+		closedir($dirhandle);
+
+		if (sizeof($candidates) > 0)
+		{
+?>
+			<p><?php echo _PLUGS_ADD_TEXT?></p>
+
+			<form method='post' action='index.php'><div>
+				<input type='hidden' name='action' value='pluginadd' />
+				<?php $manager->addTicketHidden() ?>
+				<select name="filename" tabindex="30">
+<?php
+			foreach($candidates as $name)
+			{
+				echo '<option value="NP_',$name,'">',htmlspecialchars($name),'</option>';
+			}
+?>
+				</select>
+				<input type='submit' tabindex="40" value='<?php echo _PLUGS_BTN_INSTALL?>' />
+			</div></form>
+
+<?php
+		}
+		else
+		{
+			echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
+		}
+
+		$this->pagefoot();
+
+	}
 
     /**
      * @todo document this
