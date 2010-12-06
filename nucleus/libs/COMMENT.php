@@ -71,8 +71,11 @@ class COMMENT {
 	 */
 	function prepareBody($body) {
 
+		# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+		# original ereg_replace: ereg_replace("\n.\n.\n", "\n", $body);
+
 		// remove newlines when too many in a row
-		$body = ereg_replace("\n.\n.\n", "\n", $body);
+		$body = preg_replace("\n\n\n", "\n", $body);
 
 		// encode special characters as entities
 		$body = htmlspecialchars($body);
@@ -92,10 +95,10 @@ class COMMENT {
 			'/([^:\/\/\w]|^)(mailto:(([a-zA-Z\@\%\.\-\+_])+))/ie'
 		);
 		$replaceTo = array(
-			'COMMENT::createLinkCode("\\1", "\\2","https")',
-			'COMMENT::createLinkCode("\\1", "\\2","http")',
-			'COMMENT::createLinkCode("\\1", "\\2","ftp")',
-			'COMMENT::createLinkCode("\\1", "\\3","mailto")'
+			'COMMENT::createLinkCode("\\1", "\\2", "https")',
+			'COMMENT::createLinkCode("\\1", "\\2", "http")',
+			'COMMENT::createLinkCode("\\1", "\\2", "ftp")',
+			'COMMENT::createLinkCode("\\1", "\\3", "mailto")'
 		);
 		$body = preg_replace($replaceFrom, $replaceTo, $body);
 
@@ -137,9 +140,15 @@ class COMMENT {
 			$post = ',' . $post;
 		}
 
-		if (!ereg('^' . $protocol . '://', $url) ) {
+		# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+		# original ereg: ereg('^' . $protocol . '://', $url)
+
+		if (!preg_match('#^' . $protocol . '://#', $url) )
+		{
 			$linkedUrl = $protocol . ( ($protocol == 'mailto') ? ':' : '://') . $url;
-		} else {
+		}
+		else
+		{
 			$linkedUrl = $url;
 		}
 
