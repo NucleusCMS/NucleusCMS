@@ -2287,14 +2287,14 @@ function selectSpecialSkinType($id) {
  */
 function cleanFileName($str) {
 	$cleaner = array();
-	$cleaner[] = array('expression'=>"/[]/",'replace'=>"a");
-	$cleaner[] = array('expression'=>"/[]/",'replace'=>"e");
-	$cleaner[] = array('expression'=>"/[]/",'replace'=>"i");
-	$cleaner[] = array('expression'=>"/[]/",'replace'=>"o");
-	$cleaner[] = array('expression'=>"/[]/",'replace'=>"u");
-	$cleaner[] = array('expression'=>"/[]/",'replace'=>"n");
-	$cleaner[] = array('expression'=>"/[]/",'replace'=>"c");
-
+	$cleaner[] = array('expression'=>"/[àáäãâª]/",'replace'=>"a");
+	$cleaner[] = array('expression'=>"/[èéêë]/",'replace'=>"e");
+	$cleaner[] = array('expression'=>"/[ìíîï]/",'replace'=>"i");
+	$cleaner[] = array('expression'=>"/[òóõôö]/",'replace'=>"o");
+	$cleaner[] = array('expression'=>"/[ùúûü]/",'replace'=>"u");
+	$cleaner[] = array('expression'=>"/[ñ]/",'replace'=>"n");
+	$cleaner[] = array('expression'=>"/[ç]/",'replace'=>"c");
+	
 	$str = strtolower($str);
 	$ext_point = strripos($str,"."); // Changed to strripos to avoid issues with . Thanks nico.
 	if ($ext_point===false) return false;
