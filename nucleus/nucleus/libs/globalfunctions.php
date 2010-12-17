@@ -20,7 +20,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.60-RC-1';
+$nucleus['version'] = 'v3.60';
 $nucleus['codename'] = '';
 
 // check and die if someone is trying to override internal globals (when register_globals turn on)
@@ -2296,7 +2296,7 @@ function cleanFileName($str) {
 	$cleaner[] = array('expression'=>"/[ç]/",'replace'=>"c");
 	
 	$str = strtolower($str);
-	$ext_point = strripos($str,"."); // Changed to strripos to avoid issues with . Thanks nico.
+	$ext_point = strripos($str,".");
 	if ($ext_point===false) return false;
 	$ext = substr($str,$ext_point,strlen($str));
 	$str = substr($str,0,$ext_point);
