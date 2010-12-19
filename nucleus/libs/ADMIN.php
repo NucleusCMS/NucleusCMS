@@ -1474,7 +1474,7 @@ class ADMIN {
 		// replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
 		/* original eregi_replace: eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>", "\\1", $comment['body']) */
 
-        $comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#I", "\\1", $comment['body']);
+        $comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#i", "\\1", $comment['body']);
 
         $this->pagehead();
 
