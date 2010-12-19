@@ -20,7 +20,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.60';
+$nucleus['version'] = 'v3.61';
 $nucleus['codename'] = '';
 
 // check and die if someone is trying to override internal globals (when register_globals turn on)
@@ -551,7 +551,7 @@ function intCookieVar($name) {
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-    return 360;
+    return 361;
 }
 
 /**
@@ -733,7 +733,7 @@ function highlight($text, $expression, $highlight) {
 
 				if ($regex)
 				{
-					$matches[2][$i] = @preg_replace($regex, $highlight, $matches[2][$i]);
+					$matches[2][$i] = @eregi_replace($regex, $highlight, $matches[2][$i]);
 				}
 
 			}
@@ -743,7 +743,7 @@ function highlight($text, $expression, $highlight) {
 		}
 		else
 		{
-			$result .= @preg_replace($expression, $highlight, $matches[2][$i]);
+			$result .= @eregi_replace($expression, $highlight, $matches[2][$i]);
 		}
 
 	}
