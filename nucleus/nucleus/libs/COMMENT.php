@@ -74,9 +74,12 @@ class COMMENT {
 		# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
 		# original ereg_replace: ereg_replace("\n.\n.\n", "\n", $body);
 
-		// remove newlines when too many in a row		
+		// convert Windows and Mac style 'returns' to *nix newlines
 		$body = preg_replace("/\r\n/", "\n", $body);
-		$body = preg_replace("/\n+/", "\n", $body);
+		$body = preg_replace("/\r/", "\n", $body);
+
+		// then remove newlines when too many in a row (3 or more newlines get converted to 1 newline)
+		$body = preg_replace("/\n{3,}/", "\n", $body);
 
 		// encode special characters as entities
 		$body = htmlspecialchars($body);
