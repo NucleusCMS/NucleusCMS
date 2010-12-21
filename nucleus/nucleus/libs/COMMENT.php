@@ -79,7 +79,7 @@ class COMMENT {
 		$body = preg_replace("/\r/", "\n", $body);
 
 		// then remove newlines when too many in a row (3 or more newlines get converted to 1 newline)
-		$body = preg_replace("/\n{3,}/", "\n", $body);
+		$body = preg_replace("/\n{3,}/", "\n\n", $body);
 
 		// encode special characters as entities
 		$body = htmlspecialchars($body);
