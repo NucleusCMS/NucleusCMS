@@ -733,7 +733,8 @@ function highlight($text, $expression, $highlight) {
 
 				if ($regex)
 				{
-					$matches[2][$i] = @eregi_replace($regex, $highlight, $matches[2][$i]);
+					//$matches[2][$i] = @eregi_replace($regex, $highlight, $matches[2][$i]);
+					$matches[2][$i] = @preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
 				}
 
 			}
@@ -743,7 +744,8 @@ function highlight($text, $expression, $highlight) {
 		}
 		else
 		{
-			$result .= @eregi_replace($expression, $highlight, $matches[2][$i]);
+			//$result .= @eregi_replace($expression, $highlight, $matches[2][$i]);
+			$result .= @preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
 		}
 
 	}
@@ -2286,22 +2288,23 @@ function selectSpecialSkinType($id) {
  * @return String cleaned filename ready for use
  */
 function cleanFileName($str) {
-	$cleaner = array();
+	// below commented out because of issues with UTF-8 compatibility
+	/*$cleaner = array();
 	$cleaner[] = array('expression'=>"/[àáäãâª]/",'replace'=>"a");
 	$cleaner[] = array('expression'=>"/[èéêë]/",'replace'=>"e");
 	$cleaner[] = array('expression'=>"/[ìíîï]/",'replace'=>"i");
 	$cleaner[] = array('expression'=>"/[òóõôö]/",'replace'=>"o");
 	$cleaner[] = array('expression'=>"/[ùúûü]/",'replace'=>"u");
 	$cleaner[] = array('expression'=>"/[ñ]/",'replace'=>"n");
-	$cleaner[] = array('expression'=>"/[ç]/",'replace'=>"c");
+	$cleaner[] = array('expression'=>"/[ç]/",'replace'=>"c");*/
 	
 	$str = strtolower($str);
 	$ext_point = strripos($str,".");
 	if ($ext_point===false) return false;
 	$ext = substr($str,$ext_point,strlen($str));
 	$str = substr($str,0,$ext_point);
-
-	foreach( $cleaner as $cv ) $str = preg_replace($cv["expression"],$cv["replace"],$str);
+	
+	//foreach( $cleaner as $cv ) $str = preg_replace($cv["expression"],$cv["replace"],$str);
 
 	return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
 }
