@@ -4861,6 +4861,49 @@ selector();
                 <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  htmlspecialchars((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
             </td>
         </tr><tr>
+            <td><?php echo _SETTINGS_ADMINCSS?> 
+            </td>
+            <td>
+
+                <select name="AdminCSS" tabindex="10080">
+                <?php               // show a dropdown list of all available admin css files
+                global $DIR_NUCLEUS;
+				if (!isset($CONF['AdminCSS']) || $CONF['AdminCSS'] == '')
+				{
+					$CONF['AdminCSS'] = 'original';
+				}
+                $dirhandle = opendir($DIR_NUCLEUS."styles/");
+
+				while ($filename = readdir($dirhandle) )
+				{
+
+					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+					# original ereg: ereg("^(.*)\.php$",$filename,$matches)
+
+					if (preg_match('#^admin_(.*)\.css$#', $filename, $matches) )
+					{
+
+						$name = $matches[1];
+						echo "<option value=\"$name\"";
+
+						if ($name == $CONF['AdminCSS'])
+						{
+							echo " selected=\"selected\"";
+						}
+
+						echo ">$name</option>";
+
+					}
+
+				}
+
+				closedir($dirhandle);
+
+				?>
+				</select>
+
+            </td>
+        </tr><tr>
             <th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
         </tr><tr>
             <td><?php echo _SETTINGS_MEDIADIR?></td>
@@ -4877,7 +4920,7 @@ selector();
         </tr><tr>
             <td><?php echo _SETTINGS_MEDIAURL?></td>
             <td>
-                <input name="MediaURL" tabindex="10080" size="40" value="<?php echo  htmlspecialchars($CONF['MediaURL']) ?>" />
+                <input name="MediaURL" tabindex="10090" size="40" value="<?php echo  htmlspecialchars($CONF['MediaURL']) ?>" />
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_ALLOWUPLOAD?></td>
@@ -5027,6 +5070,7 @@ selector();
         $this->updateConfig('CookiePrefix',     postVar('CookiePrefix'));
         $this->updateConfig('DebugVars',            postVar('DebugVars'));
         $this->updateConfig('DefaultListSize',          postVar('DefaultListSize'));
+		$this->updateConfig('AdminCSS',          postVar('AdminCSS'));
 
         // load new config and redirect (this way, the new language will be used is necessary)
         // note that when changing cookie settings, this redirect might cause the user
@@ -5231,6 +5275,10 @@ selector();
         );
 
         $baseUrl = htmlspecialchars($CONF['AdminURL']);
+		if (!isset($CONF['AdminCSS']) || $CONF['AdminCSS'] == '')
+		{
+			$CONF['AdminCSS'] = 'original';
+		}
 
         ?>
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -5238,7 +5286,7 @@ selector();
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
             <title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>
-            <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin.css" />
+            <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
             <link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
             href="<?php echo $baseUrl?>styles/addedit.css" />
 

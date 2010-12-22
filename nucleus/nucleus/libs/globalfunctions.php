@@ -2299,7 +2299,7 @@ function cleanFileName($str) {
 	$cleaner[] = array('expression'=>"/[ç]/",'replace'=>"c");*/
 	
 	$str = strtolower($str);
-	$ext_point = strripos($str,".");
+	$ext_point = strrpos($str,".");
 	if ($ext_point===false) return false;
 	$ext = substr($str,$ext_point,strlen($str));
 	$str = substr($str,0,$ext_point);
