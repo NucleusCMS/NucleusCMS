@@ -114,6 +114,7 @@ INSERT INTO `nucleus_config` VALUES ('URLMode', 'normal');
 INSERT INTO `nucleus_config` VALUES ('DatabaseVersion', '350');
 INSERT INTO `nucleus_config` VALUES ('DebugVars', '0');
 INSERT INTO `nucleus_config` VALUES ('DefaultListSize', '10');
+INSERT INTO `nucleus_config` VALUES ('AdminCSS', 'original');
 
 CREATE TABLE `nucleus_item` (
   `inumber` int(11) NOT NULL auto_increment,
