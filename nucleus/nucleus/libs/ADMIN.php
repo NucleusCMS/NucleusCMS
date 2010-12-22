@@ -4868,10 +4868,7 @@ selector();
                 <select name="AdminCSS" tabindex="10080">
                 <?php               // show a dropdown list of all available admin css files
                 global $DIR_NUCLEUS;
-				if (!isset($CONF['AdminCSS']) || $CONF['AdminCSS'] == '')
-				{
-					$CONF['AdminCSS'] = 'original';
-				}
+				
                 $dirhandle = opendir($DIR_NUCLEUS."styles/");
 
 				while ($filename = readdir($dirhandle) )
@@ -5275,8 +5272,9 @@ selector();
         );
 
         $baseUrl = htmlspecialchars($CONF['AdminURL']);
-		if (!isset($CONF['AdminCSS']) || $CONF['AdminCSS'] == '')
+		if (!array_key_exists('AdminCSS',$CONF)) 
 		{
+			sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'original')");
 			$CONF['AdminCSS'] = 'original';
 		}
 
