@@ -30,11 +30,14 @@
 	<li>
 		<strong>Nucleus v3.62 SVN</strong>
 		<ul>
-			<li>FIX: install problem when only mysqli _* is available. (ftruscot)</li>
-			<li>FIX: fix comment body text not appearing on Edit Comment form (gRegor)</li>
+			<li>CHANGE: make CONF variable, AdminCSS, to hold name of admin area style to use. default to original. (ftruscot)</li>
+			<li>FIX: use of strripos in cleanFileName() not PHP4 compatible, switched to use of strrpos() since no functionality lost. (ftruscot)</li>
+			<li>FIX: replace ereg* functions in remaining core files, including core plugins. (ftruscot).</li>
 			<li>FIX: multiple newlines in comment body being reduced to only one newline. (gRegor)</li>
 			<li>FIX: highlight() function still using ereg* functions. (ftruscot)</li>
 			<li>CHANGE: cleanFileName() function simplified to replace all but a-z0-9-. (ftruscot)</li>
+			<li>FIX: install problem when only mysqli _* is available. (ftruscot)</li>
+			<li>FIX: fix comment body text not appearing on Edit Comment form (gRegor)</li>
 		</ul>
 	</li>
 	<li>

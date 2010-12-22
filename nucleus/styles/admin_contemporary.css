@@ -1,0 +1,327 @@
+/*@charset 'UTF-8';*/
+
+/*
+	admin area style
+	
+	$Id: admin.css 1261 2008-05-22 20:32:43Z kaigreve $
+*/
+
+body {
+	background: #fff url(contemporary/background.png) repeat-x;
+}
+
+body, td, th, a, li, ul, textarea {
+	color: #333
+	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+}
+
+/* basic link appearance */
+a:link, a:visited {
+	color: #1D3565;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+/* textareas */
+textarea {
+	font-size: small;
+	width: 95%;
+}
+
+/* textareas for skin/template editing have monospace fonts */
+textarea.skinedit, textarea.templateedit {
+	font-family: monospace;
+	font-size: medium;
+}
+
+/* images */
+img	{
+	border: none;
+}
+
+img.skinpreview {
+	border: 1px solid #ccc;
+}
+
+/* forms */
+form {
+	margin-bottom: 0px;
+}
+
+label {
+	cursor: pointer;
+}
+
+input.transparent {
+	background-color: transparent;
+}
+
+/* preformatted text */
+pre {
+	margin-left: 10px;
+}
+
+/* a div that has an indent */
+div.indent {
+	margin-left: 40px;
+}
+
+.skip {
+	display: none;
+}
+
+.error {
+	color: red;
+	font-size: 1.2em;
+}
+
+/* header */
+h1 {
+	text-align: right;
+	font-size: 30px;
+	font-weight: 900;
+	letter-spacing: 0.1em;
+	/*color: #0001AA;	*/
+	color: #596d9d;
+	margin: 0 0 5px 135px;
+	height: 35px;
+	/*display: none;	hide the header if you don't want it*/
+
+}
+
+/* quick menu on left */
+/* 
+	It's a real pain getting this absolute positioning to work correctly
+	in all browsers. IE in particular seems to have a lot of trouble, even
+	when a valid doctype is present. Because of the way it is solved currently,
+	the top of the quickmenu and the contents will not line up
+*/
+#quickmenu {
+	position: absolute;
+	overflow: hidden;
+	
+	top: 10px;
+	left: 10px;
+
+	width: 150px;
+	margin: 0px;
+	padding: 0px;
+	
+	font-size:9pt;/*add yotaka 090323*/
+	color:#333;/* add */
+	
+	border-width: 1px;
+	border-style: solid;
+	border-color: #bbb;
+
+	background: #ffffff url(quickb.jpg) top left fixed repeat-y; 
+}
+
+#quickmenu ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#quickmenu li {
+	padding: 0;
+	margin: 0;
+	text-align: center;
+	border-bottom: 1px solid #ccc;
+}
+
+#quickmenu p {
+	padding: 5px;
+	margin: 0px;
+	text-align: justify;
+}
+
+#quickmenu a {
+	display: block;
+	padding: 5px;
+	font-size: 1em;
+	line-height: 1.5;
+	text-decoration: none;
+}
+
+#quickmenu a:hover {
+	background: #ffffff url(quickb-hover.jpg) top left fixed repeat-y; 
+	color: #333;
+	letter-spacing: 1px;
+}
+
+#quickmenu h2 {
+	font-size: small;
+	text-align: center;
+	padding: 1px 0px 1px 0px;
+	margin: 0px;
+	border-bottom: 1px solid #bbb; 	
+	background-color: #ddd;
+	color: #333;
+}
+
+#quickmenu form {
+	margin: 0;
+	padding: 5px;
+	text-align: center;
+}
+
+#quickmenu option {
+	font-size: 0.9em;
+}
+
+.loginname {
+	float: right;
+	font-size: small;
+	text-align: right;
+	line-height: normal;
+	padding-left: 5px;
+	background-color: white;
+}
+
+/* page content */
+#content {
+	margin-left: 163px;
+	font-style: normal;
+	text-decoration: none;
+	color: #333;
+	text-align: justify;
+	line-height: 13pt;
+
+	border-width: 1px;
+	border-style: solid;
+	border-color: #bbb;
+	
+	/* rounded borders in gecko-based browsers? why not :) */
+	-moz-border-radius: 10px;	
+
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	padding: 10px 10px 0 10px;	
+	
+	background-color: white;
+	
+}
+
+#content h2 {
+	color: #596d9d; 
+
+	border-color: gray;
+	border-style: dashed;
+	border-width: 0px 0px 1px 0px;
+
+	font-size: large;
+	line-height: 120%;
+
+	text-decoration: none;
+	font-weight: bold; 
+}
+
+#content h3 {
+	border-color: gray;
+	border-style: dotted;
+	border-width: 0px 0px 1px 0px;
+	font-size: medium;
+	font-weight: normal;
+	line-height: 120%;
+
+	color: gray;
+	padding-left: 20px;
+}
+
+#content .note, pre {
+	background-color: #ddd;
+	padding: 5px;
+}
+
+/* 
+	font size tricks, to make it work in all browsers
+	
+	See: 
+	http://diveintoaccessibility.org/day_26_using_relative_font_sizes.html
+
+	(netscape 4 trick is left out, Nucleus doesn't work anyway in that browser)	
+	#content should be 'small' (in standard-compliant browsers)
+	
+*/
+
+#content {
+  font-size: small;
+  voice-family: "\"}\"";
+  voice-family: inherit;
+  font-size: small;
+}
+html>body #content { font-size: small; }
+
+/* tables */
+table {
+	border: none;
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 10px;
+	margin-top: 10px;	
+}
+
+th {
+	background-color: #ddd;
+	color: #000;
+	font-size: small;
+}
+
+th, td {
+	padding: 4px;
+	empty-cells: show;	
+	border: 1px solid #ddd; /* add */
+}
+
+td {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	font-size: small;
+	vertical-align: top;
+	text-align: left;
+}
+
+td a:link, td a:visited { 
+	text-decoration: underline;
+	color: black;
+	font-weight: normal;
+}
+
+td a:hover {
+	color: #1D3565;
+	text-decoration: underline;
+}
+
+td.draft {
+	background-color: #ffe;
+}
+td.future {
+	background-color: #fff7f1;
+}
+
+tr.highlighted td {
+	background-color: green;
+}
+
+table.navigation td, table.navigation th {
+	border: none;
+}
+
+.batchoperations {
+	background-color: #ebebf2;
+	width: auto;
+	padding: 5px;
+	text-align: right;
+}
+
+/* footer */
+.foot {
+	padding: 2px 0px 2px 10px;
+	margin:10px -10px 0 -10px;
+	text-align: center;
+}
