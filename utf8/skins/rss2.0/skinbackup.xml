@@ -35,10 +35,10 @@
 		<part name="FORMAT_TIME"><![CDATA[%H:%M:%S]]></part>
 		<part name="ITEM"><![CDATA[<item>
 <title><![CDATA[<%title(xml)%>]]]]><![CDATA[></title>
-<link><%blogurl%>?itemid=<%itemid%></link>
+<link><%itemlink%></link>
 <description><![CDATA[<%body%><%more%>]]]]><![CDATA[></description>
 <category><%category%></category>
-<comments><%blogurl%>?itemid=<%itemid%></comments>
+<comments><%itemlink%></comments>
 <pubDate><%date(rfc822)%></pubDate>
 </item>]]></part>
 

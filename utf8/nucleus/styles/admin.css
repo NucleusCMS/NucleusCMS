@@ -390,11 +390,12 @@ td a:hover {
 	color: #1D3565;
 	text-decoration: underline;
 }
-
-td.draft, td.future {
+td.draft {
 	background-color: #ffe;
 }
-
+td.future {
+	background-color: #fff7f1;
+}
 tr.highlighted td {
 	background-color: green;
 }
@@ -404,7 +405,7 @@ table.navigation td, table.navigation th {
 }
 
 .batchoperations {
-	background-color: #eef;
+	background-color: #ebebf2;
 	width: auto;
 	padding: 5px;
 	text-align: right;

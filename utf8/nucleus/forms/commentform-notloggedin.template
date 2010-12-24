@@ -7,16 +7,16 @@
 		<%errordiv%>
 
 		<label for="nucleus_cf_body"><%text(_COMMENTFORM_COMMENT)%></label>
-		<textarea name="body" class="formfield" cols="40" rows="10" id="nucleus_cf_body"><%formdata(body)%></textarea>
+		<textarea name="body" class="formfield" cols="40" rows="10" id="nucleus_cf_body" style="display:block;"><%formdata(body)%></textarea>
 
 		<label for="nucleus_cf_name"><%text(_COMMENTFORM_NAME)%></label>
-		<input name="user" size="40" maxlength="40" value="<%formdata(user)%>" class="formfield" id="nucleus_cf_name" />
+		<input name="user" size="40" maxlength="40" value="<%formdata(user)%>" class="formfield" id="nucleus_cf_name" style="display:block;" />
 
 		<label for="nucleus_cf_mail"><%text(_COMMENTFORM_MAIL)%></label>
-		<input name="userid" size="40" maxlength="60" value="<%formdata(userid)%>" class="formfield" id="nucleus_cf_mail" />
+		<input name="userid" size="40" maxlength="60" value="<%formdata(userid)%>" class="formfield" id="nucleus_cf_mail" style="display:block;" />
 
 		<label for="nucleus_cf_email"><%text(_COMMENTFORM_EMAIL)%></label>
-		<input name="email" size="40" maxlength="100" value="<%formdata(email)%>" class="formfield" id="nucleus_cf_email" />
+		<input name="email" size="40" maxlength="100" value="<%formdata(email)%>" class="formfield" id="nucleus_cf_email" style="display:block;" />
 
 		<%callback(FormExtra,commentform-notloggedin)%>
 

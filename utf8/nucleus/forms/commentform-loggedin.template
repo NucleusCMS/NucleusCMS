@@ -6,7 +6,7 @@
 <input type="hidden" name="itemid" value="<%itemid%>" />
 		<%errordiv%>
 		<label for="nucleus_cf_body"><%text(_COMMENTFORM_COMMENT)%></label>
-		<textarea name="body" class="formfield" cols="40" rows="10" id="nucleus_cf_body"><%formdata(body)%></textarea>
+		<textarea name="body" class="formfield" cols="40" rows="10" id="nucleus_cf_body" style="display:block;"><%formdata(body)%></textarea>
 
 		<%text(_COMMENTFORM_YOUARE)%> <%formdata(membername)%>
 		<small>(<a href="<%self%>?action=logout" title="<%text(_LOGOUT)%>"><%text(_LOGOUT)%></a>)</small>

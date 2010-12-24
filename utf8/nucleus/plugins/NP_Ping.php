@@ -28,6 +28,7 @@
  *   v1.7 - move send ping option from blog to plugin/blog level
  *        - remove ping override option
  *   v1.8 - remove sendPing event handle, switch to use PostAddItem and PostUpdateItem event for new item ping
+ *   v1.81 - fix bug in _sendPingCheck() where ITEM class not found when creating new weblog
  */
 
 class NP_Ping extends NucleusPlugin
@@ -50,7 +51,7 @@ class NP_Ping extends NucleusPlugin
 
     function getVersion()
     {
-        return '1.8';
+        return '1.81';
     }
 
     function getMinNucleusVersion()
@@ -126,7 +127,7 @@ class NP_Ping extends NucleusPlugin
         }
 
         $bid = intval($data['blogid']);
-        if ($this->getBlogOption($bod, 'ping_sendping') == "yes") {
+        if ($this->getBlogOption($bid, 'ping_sendping') == "yes") {
             if ($this->getOption('ping_background') == "yes") {
                 exec("php $DIR_PLUGINS/ping/ping.php " . $data['blogid'] . " &");
             } else {
@@ -167,7 +168,8 @@ class NP_Ping extends NucleusPlugin
     function _sendPingCheck($itemid)
     {
         $iid  = intval($itemid);
-        $item = ITEM::getitem($iid, 0, 0); // draft or future post return 0
+        global $manager;
+		$item = $manager->getItem($iid,0,0);
         if ($item) {
             $bid = intval(getBlogIDFromItemID($iid));
             if ($this->getBlogOption($bid, 'ping_sendping') == "yes" ) {

@@ -226,7 +226,7 @@ function listplug_table_pluginlist($template, $type) {
 			} else {
 				echo '<td colspan="2">' . sprintf(_PLUGINFILE_COULDNT_BELOADED, htmlspecialchars($current->pfile, ENT_QUOTES)) . '</td>';
 			}
-			echo '<td style="white-space:nowrap">';
+			echo '<td>';
 
 				$baseUrl = 'index.php?plugid=' . intval($current->pid) . '&action=';
 				$url = $manager->addTicketToUrl($baseUrl . 'pluginup');
@@ -338,12 +338,16 @@ function listplug_table_itemlist($template, $type) {
 			// (can't use offset time since offsets might vary between blogs)
 			if ($current->itime > $template['now'])
 				$cssclass = "class='future'";
-
-			echo "<td $cssclass>",_LIST_ITEM_BLOG,' ', htmlspecialchars($current->bshortname);
-			echo "    <br />",_LIST_ITEM_CAT,' ', htmlspecialchars($current->cname);
-			echo "    <br />",_LIST_ITEM_AUTHOR, ' ', htmlspecialchars($current->mname);
-			echo "    <br />",_LIST_ITEM_DATE," " . date("Y-m-d",$current->itime);
-			echo "<br />",_LIST_ITEM_TIME," " . date("H:i",$current->itime);
+			
+			$action = requestVar('action');
+			
+			echo '<td ' . $cssclass . ' style="white-space:nowrap;">';
+			if ($action !== 'itemlist')
+			echo _LIST_ITEM_BLOG . ' ', htmlspecialchars($current->bshortname) . '    <br />';
+			echo _LIST_ITEM_CAT,' ', htmlspecialchars($current->cname) . '    <br />';
+			if ($action !== 'browseownitems')
+			echo _LIST_ITEM_AUTHOR, ' ', htmlspecialchars($current->mname) . '    <br />';
+			echo date("Y-m-d",$current->itime) , " " . date("H:i",$current->itime);
 			echo "</td>";
 			echo "<td $cssclass>";
 
@@ -357,23 +361,25 @@ function listplug_table_itemlist($template, $type) {
 
 
 			$current->ibody = strip_tags($current->ibody);
-			$current->ibody = htmlspecialchars(shorten($current->ibody,300,'...'));
+			$current->ibody = htmlspecialchars(shorten($current->ibody,200,'...'));
 
 			$COMMENTS = new COMMENTS($current->inumber);
 			echo "$current->ibody</td>";
 			echo "<td  style=\"white-space:nowrap\" $cssclass>";
-			echo 	"<a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a>";
+			echo "<a href='index.php?action=itemedit&amp;itemid={$current->inumber}'>" . _LISTS_EDIT . "</a>";
+			echo " / <a href='index.php?action=itemmove&amp;itemid={$current->inumber}'>" . _LISTS_MOVE . "</a>";
+			echo " / <a href='index.php?action=itemdelete&amp;itemid={$current->inumber}'>" . _LISTS_DELETE . "</a><br />";
 			// evaluate amount of comments for the item
 			$camount = $COMMENTS->amountComments();
-			if ($camount>0) {
-				echo "<br /><a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>";
+			if ($camount>0)
+			{
+				echo "<a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>";
 				echo "( " . sprintf(_LIST_ITEM_COMMENTS, $COMMENTS->amountComments())." )</a>";
 			}
-			else {
-				echo "<br />"._LIST_ITEM_NOCONTENT;
+			else
+			{
+				echo _LIST_ITEM_NOCONTENT;
 			}
-			echo    "<br /><a href='index.php?action=itemmove&amp;itemid=$current->inumber'>"._LISTS_MOVE."</a>";
-			echo    "<br /><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"._LISTS_DELETE."</a>";
 			echo "</td>";
 			break;
 	}

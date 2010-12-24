@@ -1,2 +1,6 @@
-@import "ui.base.css";
+@import url("ui.core.css");
+
+@import url("ui.resizable.css");
+@import url("ui.tabs.css");
+
 @import "ui.theme.css";

@@ -43,6 +43,8 @@ class NP_SkinFiles extends NucleusPlugin {
     * v2.01 yama  - modified form button for IE
     * v2.02 kimitake - multilingual support, modified form button for IE
     * v2.03 yama - CSS out source. and textarea width bug fix for IE. And some lang add.And add routine empty file delete.
+	* v2.031 cacher - replace function 'basename' (PHP BUG)
+	                  add help
     */
 
 
@@ -59,7 +61,7 @@ class NP_SkinFiles extends NucleusPlugin {
     }
 
     function getVersion() {
-        return '2.03test';
+		return '2.031';
     }
 
     function getDescription() {
@@ -79,13 +81,13 @@ class NP_SkinFiles extends NucleusPlugin {
     function install() {
         $this->createOption(
             'generate_backup',
-            _SKINFILES_OPT_GENBACKUP,
+			'_SKINFILES_OPT_GENBACKUP',
             'yesno',
-            'yes'
+            'no'
         );
         $this->createOption(
             'backup_prefix',
-            _SKINFILES_OPT_BACKUPPREFIX,
+			'_SKINFILES_OPT_BACKUPPREFIX',
             'text',
             'bkup_'
         );
@@ -97,7 +99,8 @@ class NP_SkinFiles extends NucleusPlugin {
     function getEventList() {
         return array(
             'QuickMenu',
-            'AdminPrePageHead'
+			'AdminPrePageHead',
+			'PrePluginOptionsEdit'
         );
     }
     
@@ -114,7 +117,7 @@ class NP_SkinFiles extends NucleusPlugin {
             include_once($this->getDirectory().'english.php');
     }
     
-    function event_QuickMenu($data) {
+	function event_QuickMenu(&$data) {
         global $member;
 
         // only show to admins
@@ -132,24 +135,28 @@ class NP_SkinFiles extends NucleusPlugin {
 
 
 // start add yama.kyms
-    function event_AdminPrePageHead($data) {
+	function event_AdminPrePageHead(&$data) {
         global $CONF;
         $path = $CONF['PluginURL'];
         if ($data['action'] != 'plugin_SkinFiles') return;
         
             $data['extrahead'] .= <<< EOS
-
 <link rel="stylesheet" type="text/css" href="{$path}skinfiles/style.css" />
-
-
 EOS;
         }
         
-
-
 // end add yama.kyms
 
-
+	function event_PrePluginOptionsEdit($data)
+	{
+		if ($data['plugid'] === $this->getID()) {
+			foreach($data['options'] as $key => $value){
+				if (defined($value['description'])) {
+					$data['options'][$key]['description'] = constant($value['description']);
+				}
+			}
+		}
+	}
 }
 
 ?>

@@ -510,7 +510,7 @@ class ITEMACTIONS extends BaseActions {
 	  * Parse templatevar editpopupcode
 	  */
 	function parse_editpopupcode() {
-		echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=no,width=600,height=550,left=10,top=10,status=no,resizable=yes');winbm.focus();return false;";
+		echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=no,width=710,height=550,left=10,top=10,status=no,resizable=yes');winbm.focus();return false;";
 	}
 
 	// helper functions

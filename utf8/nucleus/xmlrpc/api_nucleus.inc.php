@@ -289,7 +289,7 @@
 			"body" => new xmlrpcval($item['body'],"string"),
 			"more" => new xmlrpcval($item['more'],"string"),
 			"draft" => new xmlrpcval($item['draft'],"boolean"),
-			"closed" => new xmlrpcval($ite['closed'],"boolean"),
+			"closed" => new xmlrpcval($item['closed'],"boolean"),
 		),'struct');
 
 		return new xmlrpcresp($newstruct);

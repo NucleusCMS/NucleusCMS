@@ -2,14 +2,8 @@
 <%phpinclude(inc/benchmark.inc)%>
 
 <!-- meta information for search engines -->
-<meta name="generator" content="<%version%>" />
 <meta name="name" content="<%blogsetting(name)%>" />
 <meta name="description" content="<%blogsetting(desc)%>" />
-
-<!-- prevent caching (効果については不明。削除してもかまいません) -->
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
-<meta http-equiv="Expires" content="-1" />
 
 <!-- site stylesheet (site colors and layout definitions) -->
 <link rel="stylesheet" type="text/css" href="<%skinfile(default_left.css)%>" />

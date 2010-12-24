@@ -502,7 +502,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = trim(basename(requestVar('dir')));
+		$file      = trim(_skinfikes_basename(requestVar('dir')));
 		$directory = trim(dirname(requestVar('dir')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -542,7 +542,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = trim(basename(requestVar('dir')));
+		$file      = trim(_skinfikes_basename(requestVar('dir')));
 		$directory = trim(dirname(requestVar('dir')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -655,7 +655,7 @@
 		} 		
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR9 . "&laquo;" . htmlspecialchars(basename($directory)) . "&raquo; " .  _SKINFILES_ERR_COULD_NOT_CREATE_DIR10;
+			echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR9 . "&laquo;" . htmlspecialchars(_skinfikes_basename($directory)) . "&raquo; " .  _SKINFILES_ERR_COULD_NOT_CREATE_DIR10;
 			echo _SKINFILES_ERR_COULD_NOT_CREATE_DIR11 . "</p>";
 		}
 	}
@@ -669,7 +669,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = trim(basename(requestVar('dir')));
+		$file      = trim(_skinfikes_basename(requestVar('dir')));
 		$directory = trim(dirname(requestVar('dir')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -709,7 +709,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = trim(basename(requestVar('dir')));
+		$file      = trim(_skinfikes_basename(requestVar('dir')));
 		$directory = trim(dirname(requestVar('dir')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -762,7 +762,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = trim(basename(requestVar('dir')));
+		$file      = trim(_skinfikes_basename(requestVar('dir')));
 		$directory = trim(dirname(requestVar('dir')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -832,7 +832,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = trim(basename(requestVar('dir')));
+		$file      = trim(_skinfikes_basename(requestVar('dir')));
 		$directory = trim(dirname(requestVar('dir')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -881,7 +881,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file = basename(trim(requestVar('file')));
+		$file = _skinfikes_basename(trim(requestVar('file')));
 
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
@@ -927,7 +927,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file 	   = basename(trim(requestVar('file')));
+		$file 	   = _skinfikes_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1067,7 +1067,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file 	   = basename(trim(requestVar('file')));
+		$file 	   = _skinfikes_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1111,7 +1111,7 @@
 	function _skinfiles_editfile_process() {
 		global $manager;
 		$skinfiles            = $manager->getPlugin('NP_SkinFiles');
-		$file 	   = basename(trim(requestVar('file')));
+		$file 	   = _skinfikes_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1167,7 +1167,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file 	   = basename(trim(requestVar('file')));
+		$file 	   = _skinfikes_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1207,7 +1207,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file 	   = basename(trim(requestVar('file')));
+		$file 	   = _skinfikes_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1322,7 +1322,7 @@
 		} 		
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE11 . "&laquo;" . htmlspecialchars(basename($directory)) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE12;
+			echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE11 . "&laquo;" . htmlspecialchars(_skinfikes_basename($directory)) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE12;
 			echo _SKINFILES_ERR_CREATE_FILE13 . "</p>";
 		}
 	}
@@ -1336,7 +1336,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file 	   = basename(trim(requestVar('file')));
+		$file 	   = _skinfikes_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1375,7 +1375,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = basename(trim(requestVar('file')));
+		$file      = _skinfikes_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1474,7 +1474,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE9 . "&laquo;" . htmlspecialchars(basename($directory)) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE10;
+			echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE9 . "&laquo;" . htmlspecialchars(_skinfikes_basename($directory)) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE10;
 			echo _SKINFILES_ERR_UPLOAD_FILE11 . "</p>";
 		}	
 	}
@@ -1503,4 +1503,12 @@
 		echo "</form></p>\n";
 	}
 /* end modification */
+
+	function _skinfikes_basename($name) {
+		if ((strtolower(_CHARSET) != 'utf-8') && function_exists('mb_convert_encoding')) {$name = mb_convert_encoding($name , "UTF-8" , _CHARSET);}
+		$name = str_replace('\\','/',$name); // Avoid using "\" in Windows.
+		$name = (function_exists('mb_split')) ? end(mb_split("/",$name)) : end(explode("/",$name));
+		if ((strtolower(_CHARSET) != 'utf-8') && function_exists('mb_convert_encoding')) {$name = mb_convert_encoding($name , _CHARSET , "UTF-8");}
+		return $name;
+	}
 ?>

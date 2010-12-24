@@ -1,4 +1,6 @@
-<%xmldeclaration%><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?xml version="1.0" encoding="<%text(_CHARSET)%>"?>
+<!-- %xmldeclaration% -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html <%text(_HTML_XML_NAME_SPACE_AND_LANG_CODE)%>>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=<%text(_CHARSET)%>" />
@@ -38,7 +40,7 @@
 					updAllPreviews();
 //					$("table tr td:first-child").css("width", "14%");
 //					if (!IE)
-						$("#body textarea, #more textarea").resizable({ containment: 'parent' });
+//						$("#body textarea, #more textarea").resizable({ containment: 'parent' });
 					$("#tabs").tabs();
 					$(".addFuture").change(function() {
 						$("#act_future").attr('checked', 'checked');
@@ -51,10 +53,10 @@
 						autoSaveDraft();
 					});
 //					$("#options tr td:nth-child(2)").css("width", "80% !important");
-					$("#options tr th").css({
-						width: "25%",
-						whiteSpace: "normal"
-					});
+//					$("#options tr th").css({
+//						width: "25%",
+//						whiteSpace: "normal"
+//					});
 				});
 			});
 		//]]>
@@ -68,7 +70,7 @@
 					<li><a href="#body" tabindex="300"><%text(_BMLET_BODY)%> &gt;&gt;</a></li>
 					<li><a href="#more" tabindex="310"><%text(_BMLET_MORE)%> &gt;&gt;</a></li>
 					<li><a href="#options" tabindex="320"><%text(_BMLET_OPTIONS)%> &gt;&gt;</a></li>
-					<li><a href="#preview" id="showPreview" tabindex="330"><%text(_BMLET_PREVIEW)%> &gt;&gt;</a></li>
+					<li><a href="#preview" id="showPreview" name="showPreview" tabindex="330"><%text(_BMLET_PREVIEW)%> &gt;&gt;</a></li>
 				</ul>
 				<input name="action" type="hidden" value="additem" />
 				<input name="blogid" type="hidden" value="<%blogid%>" />
@@ -77,18 +79,18 @@
 				<div id="body" class="contentblock">
 					<table summary="item body">
 						<tr>
-							<th><%text(_ADD_TITLE)%></th>
+							<td style="width:20%"><%text(_ADD_TITLE)%></td>
 							<td><input <%jsinput(title)%> type="text" size="60" maxlength="160" value="<%contents(title)%>" tabindex="10" /></td>
 						</tr>
 						<tr>
-							<th><%text(_ADD_BODY)%> <%helplink(additem)%></th>
+							<td><%text(_ADD_BODY)%> <%helplink(additem)%></td>
 							<td>
 								<%jsbuttonbar(media)%>
-								<textarea <%jsinput(body)%> cols="58" rows="12" tabindex="20"><%contents(body)%></textarea>
+								<textarea <%jsinput(body)%> cols="60" rows="20" tabindex="20"><%contents(body)%></textarea>
 							</td>
 						</tr>
 						<tr>
-							<th><%text(_ADD_CATEGORY)%></th>
+							<td><%text(_ADD_CATEGORY)%></td>
 							<td><%categories(30)%></td>
 						</tr>
 					</table>
@@ -96,10 +98,10 @@
 				<div id="more" class="contentblock">
 					<table summary="item more">
 						<tr>
-							<th><%text(_ADD_MORE)%> <%helplink(extended)%></th>
+							<td style="width:20%"><%text(_ADD_MORE)%> <%helplink(extended)%></td>
 							<td>
 								<%jsbuttonbar(media)%>
-								<textarea <%jsinput(more)%> cols="58" rows="17" tabindex="40"><%contents(more)%></textarea>
+								<textarea <%jsinput(more)%> cols="60" rows="22" tabindex="40"><%contents(more)%></textarea>
 							</td>
 						</tr>
 					</table>
@@ -107,14 +109,14 @@
 				<div id="options" class="contentblock">
 					<table summary="item options">
 						<%ifblogsetting(bcomments)%><tr>
-							<th><%text(_ADD_DISABLE_COMMENTS)%></th>
+							<td style="width:20%"><%text(_ADD_DISABLE_COMMENTS)%></td>
 							<td>
 								<input type='radio' name='closed' value='1' id="closed_yes" tabindex="50" /><label for="closed_yes"><%text(_YES)%></label>
 								<input type='radio' name='closed' value='0' checked='checked' id="closed_no" tabindex="50" /><label for="closed_no"><%text(_NO)%></label>
 							</td>
 						</tr><%endif%>
 						<tr>
-							<th><%text(_ADD_DRAFTNFUTURE)%></th>
+							<td style="width:20%"><%text(_ADD_DRAFTNFUTURE)%></td>
 							<td>
 								<ul class="nobullets">
 									<li><input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="60" /><label for="act_now"><%text(_ADD_ADDNOW)%></label></li>
@@ -134,11 +136,12 @@
 									<li>
 										<input name="actiontype" value="adddraft" type="radio" id="act_draft" tabindex="60" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
 									</li>
+									<!-- li><input id="dosendping" name="dosendping" value="1" type="checkbox" checked="checked" tabindex="120" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label></li -->
 								</ul>
 							</td>
 						</tr>
 						<tr>
-							<th><%text(_ADD_PLUGIN_EXTRAS)%></th>
+							<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
 							<td><%pluginextras%></td>
 						</tr>
 						<%itemoptions%>
