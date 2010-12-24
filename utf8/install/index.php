@@ -302,7 +302,7 @@ function showInstallForm() {
 	}
 	*/
 
-	$basePath = str_replace('install/index.php', '', dirname(__FILE__));
+	$basePath = str_replace('install', '', dirname(__FILE__));
 ?>
 
 		<fieldset>
