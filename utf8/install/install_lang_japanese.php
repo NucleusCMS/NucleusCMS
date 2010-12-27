@@ -143,7 +143,7 @@ define('_TEXT14_L1',			'あなたがコメントを必要としないのであ�
 define('_TEXT14_L2',			'スパムを撃退・管理する為のプラグインをインストールすることも可能です：<a href="http://japan.nucleuscms.org/wiki/plugins_by_category#supamutsuru">Nucleus Japan wiki</a> (ブックマークをお勧めします)');
 define('_HEADER10',				'インストールファイルの削除');
 define('_TEXT15',				'<p>ウェブサーバから /install/ ディレクトリを削除してください：</p>');
-define('_TEXT15_L1',			'<b>install.sql</b>：テーブルの構造を内包するファイル');
+define('_TEXT15_L1',			'<b>install/install.sql</b>：テーブルの構造を内包するファイル');
 define('_TEXT15_L2',			'<b>install/index.php</b>：このファイル');
 
 define('_TEXT15_L3',			'<b>install_lang_japanese.php</b>：インストーラの言語ファイル');
