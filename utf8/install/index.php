@@ -39,8 +39,6 @@ include('./install_lang_japanese.php');
 //	 array('NP_TrackBack', 'NP_MemberGoodies')
 $aConfPlugsToInstall = array(
 	'NP_SkinFiles',
-	'NP_SecurityEnforcer',
-	'NP_Text'
 );
 
 
@@ -136,15 +134,15 @@ function showInstallForm() {
 	<body>
 		<div style="text-align:center"><img src="../nucleus/styles/logo.gif" /></div> <!-- Nucleus logo -->
 		<form method="post" action="index.php">
-
+		
 		<h1><?php echo _HEADER1; ?></h1>
-
+		
 		<?php echo _TEXT1; ?>
-
+		
 		<h1><?php echo _HEADER1_2 ?></h1>
-
+		
 		<?php echo _TEXT1_2; ?>
-
+		
 		<fieldset>
 			<legend><?php echo _TEXT1_2_TAB_HEAD; ?></legend>
 			<table>
@@ -159,11 +157,11 @@ function showInstallForm() {
 				</tr>
 			</table>
 		</fieldset>
-
+		
 		<h1><?php echo _HEADER2; ?></h1>
-
+		
 		<?php echo _TEXT2; ?>
-
+		
 		<ul>
 			<li>PHP:
 
