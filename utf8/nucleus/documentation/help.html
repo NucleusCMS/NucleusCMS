@@ -2306,6 +2306,119 @@ Nucleusで管理しているブログのリストを、指定されたテンプ�
 
 
 <div class="page">
+<a name="skinvar-archiveyearlist" id="skinvar-archiveyearlist"><span class="invisible">skinvar-archiveyearlist</span></a>
+<h1>スキン変数：archiveyearlist</h1>
+
+<p>スキン変数<a href="#skinvar-archivelist">archivelist</a>と同様にアーカイブのリストを挿入しますが、<em>月</em>ごとの代わりに<em>年</em>ごとのアーカイブのリストを挿入します。</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Archive Day list::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Archive Day list::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>category</em></strong></td>
+                <td>表示するカテゴリーの名前</td>
+            </tr>
+            <tr>
+                <td><strong><em>limit</em></strong></td>
+                <td>表示するリンク数の制限（例えば、過去3年分へのリンクしか表示させたくないときなど）</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+<p>メインの目次、月別アーカイブ、月別アーカイブ一覧、検索、個別アイテム</p>
+
+<h2>例</h2>
+<pre>
+&lt;%archiveyearlist(mytemplate)%&gt;
+&lt;%archiveyearlist(mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
+<a name="skinvar-otherarchiveyearlist" id="skinvar-otherarchiveyearlist"><span class="invisible">skinvar-otherarchiveyearlist</span></a>
+<h1>スキン変数：otherarchiveyearlist</h1>
+
+<p>
+スキン変数<a href="#skinvar-otherarchivelist">otherarchivelist</a>と同様に、指定されたブログのアーカイブのリストを挿入しますが、 <em>月</em>ごとの代わりに<em>年</em>ごとのアーカイブを挿入します。
+
+</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+    <li>必須：
+        <table summary="Skin var::Other archive day list::Require">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong>blogname</strong></td>
+                <td>表示するブログの短縮名</td>
+            </tr>
+            <tr>
+                <td><strong>template</strong></td>
+                <td>使用するテンプレート名</td>
+            </tr>
+        </table>
+    </li>
+    <li>オプション
+        <table summary="Skin var::Other archive day list::Optional">
+            <tr>
+                <th abbr="名前">名前</th>
+                <th abbr="値">値</th>
+            </tr>
+            <tr>
+                <td><strong><em>category</em></strong></td>
+                <td>表示するカテゴリーの名前</td>
+            </tr>
+        </table>
+    </li>
+</ul>
+</div>
+
+<h2>スキンタイプ</h2>
+
+<p>
+全て
+</p>
+
+<h2>例</h2>
+
+<pre>
+&lt;%otherarchiveyearlist(yourblog,mytemplate)%&gt;
+&lt;%otherarchiveyearlist(yourblog,mytemplate,mycategory)%&gt;
+</pre>
+
+</div>
+
+
+
+<div class="page">
 <a name="skinvar-categorylist" id="skinvar-categorylist"><span class="invisible">skinvar-categorylist</span></a>
 <h1>スキン変数：categorylist</h1>
 
