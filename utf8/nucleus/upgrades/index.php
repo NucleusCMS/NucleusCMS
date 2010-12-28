@@ -65,7 +65,7 @@ upgrade_head();
          <?php 	 
    } else {
     ?>
-      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.50 用にアップグレードします</a></p>
+      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.51 用にアップグレードします</a></p>
          <?php 	 
    } 	 
  ?> 	 
@@ -112,7 +112,7 @@ if (in_array($from,array(95,96)) || $from < 340) {
 } 
 
 // upgrades from pre-350 version need to be told of deprecation of PHP4 support and two new plugins 
-// included with 3.5 and higher
+// included with 3.51 and higher
 if (in_array($from,array(95,96)) || $from < 350) {
   upgrade_manual_350();
   $sth = 1;
@@ -194,23 +194,13 @@ function upgrade_manual_350() {
   global $DIR_NUCLEUS;
 
 ?>
-  <h2>Nucleus 3.5に関する重要なお知らせ</h2>
+  <h2>Nucleus 3.51に関する重要なお知らせ</h2>
   
 <?php	// Give user warning if they are running old version of PHP
         if (phpversion() < '5') {
                 echo '<p>警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！</p>';
         }
-?>  
-  
-  <p>
-    バージョン3.5から、さらに二つのプラグインが同梱になりました。管理エリアからこれらをインストールできます。
-    <ul>
-       <li><strong>NP_Text</strong>：スキンで記述するテキストを、簡単に他国語対応に出来るようにするプラグインです。</li>
-       <li><strong>NP_SecurityEnforcer</strong>：ログインの失敗が許される回数やパスワード強度を設定することが出来ます。設定はプラグインのインストール後に有効化されます。</li>
-    </ul>
-  </p>
-
-<?php }
+}
 
 function upgrade_manual_php405() {
 ?>
