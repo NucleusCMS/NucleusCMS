@@ -23,7 +23,7 @@
  * Japanese UTF-8 Nucleus Language File
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2009 The NucleusCMS Japanチーム
+ * @copyright Copyright (C) 2002-2010 The NucleusCMS Japanチーム
  * @version $Id$
  */
 

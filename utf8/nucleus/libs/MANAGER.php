@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2009 The Nucleus Group
+ * Copyright (C) 2002-2010 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
  * active at all times. The object can be requested using MANAGER::instance()
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @copyright Copyright (C) 2002-2010 The Nucleus Group
  * @version $Id$
  * $NucleusJP: MANAGER.php,v 1.8.2.1 2007/09/05 07:00:18 kimitake Exp $
  */
