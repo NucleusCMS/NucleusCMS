@@ -1,15 +1,17 @@
-Nucleus Media Directory
+Nucleus Media ディレクトリ
 -----------------------
 
-Uploaded images will end up in the media directory.
+アップロードされた画像等のファイルは、最終的にこのディレクトリに移動されます。
 
-Subdirectories work as follows:
 
-* numeric (e.g. /media/1/)
+サブディレクトリについて：
 
-Media files for a certain member (directory name is the memberid)
+* 数字 (例 /media/1/)
 
-* other directories (e.g. /media/common/)
+アップロードしたメンバーだけがファイルを使用できます。(ディレクトリ名はメンバーIDになります)
 
-Global media collections that can be used by any member that is on a team. In order to create a new collection, simply create a new directory and assure write access is enabled for it.
+* 数字以外 (例 /media/common/)
+
+誰が使ってもいいファイルを保存しておく為のディレクトリ。
+ディレクトリを作ってパーミッションを777等にしておくだけで、新しいコレクションとして追加されます。
 
