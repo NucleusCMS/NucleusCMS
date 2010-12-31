@@ -259,12 +259,12 @@ class COMMENTS {
 
 		$manager->notify('PreAddComment',array('comment' => &$comment, 'spamcheck' => &$spamcheck));
 
-		$name		= addslashes($comment['user']);
-		$url		= addslashes($comment['userid']);
-		$email      = addslashes($comment['email']);
-		$body		= addslashes($comment['body']);
-		$host		= addslashes($comment['host']);
-		$ip			= addslashes($comment['ip']);
+		$name		= sql_real_escape_string($comment['user']);
+		$url		= sql_real_escape_string($comment['userid']);
+		$email      = sql_real_escape_string($comment['email']);
+		$body		= sql_real_escape_string($comment['body']);
+		$host		= sql_real_escape_string($comment['host']);
+		$ip			= sql_real_escape_string($comment['ip']);
 		$memberid	= intval($comment['memberid']);
 		$timestamp	= date('Y-m-d H:i:s', $comment['timestamp']);
 		$itemid		= $this->itemid;
@@ -301,36 +301,46 @@ class COMMENTS {
 	 */
 	function isValidComment(&$comment, & $spamcheck) {
 		global $member, $manager;
-
+		
 		// check if there exists a item for this date
 		$item =& $manager->getItem($this->itemid,0,0);
-
-		if (!$item)
+		
+		if (!$item) {
 			return _ERROR_NOSUCHITEM;
-
-		if ($item['closed'])
+		}
+		
+		if ($item['closed']) {
 			return _ERROR_ITEMCLOSED;
-
+		}
+		
+		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+		# original eregi comparison: eregi('[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}', $comment['body']) != FALSE
+		
 		// don't allow words that are too long
-		if (eregi('[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}',$comment['body']) != false)
+		if (preg_match('/[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}/', $comment['body']) != 0)
+		{
 			return _ERROR_COMMENT_LONGWORD;
-
+		}
+		
 		// check lengths of comment
-		if (strlen($comment['body'])<3)
+		if (strlen($comment['body'])<3) {
 			return _ERROR_COMMENT_NOCOMMENT;
-
-		if (strlen($comment['body'])>5000)
+		}
+		
+		if (strlen($comment['body'])>5000) {
 			return _ERROR_COMMENT_TOOLONG;
-
+		}
+		
 		// only check username if no member logged in
-		if (!$member->isLoggedIn())
+		if (!$member->isLoggedIn()) {
 			if (strlen($comment['user'])<2)
 				return _ERROR_COMMENT_NOUSERNAME;
-
-		if ((strlen($comment['email']) != 0) && !(isValidMailAddress($comment['email']))) {
+		}
+		
+		if ((strlen($comment['email']) != 0) && !(isValidMailAddress(trim($comment['email']) ) ) )
 			return _ERROR_BADMAILADDRESS;
 		}
-
+		
 		// let plugins do verification (any plugin which thinks the comment is invalid
 		// can change 'error' to something other than '1')
 		$result = 1;

@@ -142,9 +142,15 @@ class MEDIA {
 	  */
 	function addMediaObject($collection, $uploadfile, $filename) {
 		global $DIR_MEDIA, $manager;
-
+		
+		// clean filename of characters that may cause trouble in a filename using cleanFileName() function from globalfunctions.php
+		$filename = cleanFileName($filename);
+		// should already have tested for allowable types before calling this method. This will only catch files with no extension at all
+		if ($filename === false) 
+			return _ERROR_BADFILETYPE;
+		
 		$manager->notify('PreMediaUpload',array('collection' => &$collection, 'uploadfile' => $uploadfile, 'filename' => &$filename));
-
+		
 		// don't allow uploads to unknown or forbidden collections
 		$exceptReadOnly = true;
 		if (!MEDIA::isValidCollection($collection,$exceptReadOnly))

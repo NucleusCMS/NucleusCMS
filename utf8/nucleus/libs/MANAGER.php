@@ -511,7 +511,7 @@ class MANAGER {
             $memberId = $member->getID();
 
         // check if ticket is a valid one
-        $query = 'SELECT COUNT(*) as result FROM ' . sql_table('tickets') . ' WHERE member=' . intval($memberId). ' and ticket=\''.addslashes($ticket).'\'';
+        $query = 'SELECT COUNT(*) as result FROM ' . sql_table('tickets') . ' WHERE member=' . intval($memberId). ' and ticket=\''.sql_real_escape_string($ticket).'\'';
         if (quickQuery($query) == 1)
         {
             // [in the original implementation, the checked ticket was deleted. This would lead to invalid
@@ -519,7 +519,7 @@ class MANAGER {
             //  leaving the keys in the database is not a real problem, since they're member-specific and
             //  only valid for a period of one hour
             // ]
-            // sql_query('DELETE FROM '.sql_table('tickets').' WHERE member=' . intval($memberId). ' and ticket=\''.addslashes($ticket).'\'');
+            // sql_query('DELETE FROM '.sql_table('tickets').' WHERE member=' . intval($memberId). ' and ticket=\''.sql_real_escape_string($ticket).'\'');
             return true;
         } else {
             // not a valid ticket
@@ -564,7 +564,7 @@ class MANAGER {
 
                 // add in database as non-active
                 $query = 'INSERT INTO ' . sql_table('tickets') . ' (ticket, member, ctime) ';
-                $query .= 'VALUES (\'' . addslashes($ticket). '\', \'' . intval($memberId). '\', \'' . date('Y-m-d H:i:s',time()) . '\')';
+                $query .= 'VALUES (\'' . sql_real_escape_string($ticket). '\', \'' . intval($memberId). '\', \'' . date('Y-m-d H:i:s',time()) . '\')';
                 if (sql_query($query))
                     $ok = true;
             }

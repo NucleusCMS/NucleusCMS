@@ -349,12 +349,12 @@
 			$query = 'INSERT INTO ' . sql_table('plugin_option_desc')
 				   .' (opid, oname, ocontext, odesc, otype, odef, oextra)'
 				   .' VALUES ('.intval($this->plugid)
-							 .', \''.addslashes($name).'\''
-							 .', \''.addslashes($context).'\''
-							 .', \''.addslashes($desc).'\''
-							 .', \''.addslashes($type).'\''
-							 .', \''.addslashes($defValue).'\''
-							 .', \''.addslashes($typeExtras).'\')';
+							 .', \''.sql_real_escape_string($name).'\''
+							 .', \''.sql_real_escape_string($context).'\''
+							 .', \''.sql_real_escape_string($desc).'\''
+							 .', \''.sql_real_escape_string($type).'\''
+							 .', \''.sql_real_escape_string($defValue).'\''
+							 .', \''.sql_real_escape_string($typeExtras).'\')';
 			sql_query($query);
 			$oid = sql_insert_id();
 
@@ -420,7 +420,7 @@
 
 			// update plugin_option
 			sql_query('DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid) . ' and ocontextid='. intval($contextid));
-			sql_query('INSERT INTO ' . sql_table('plugin_option') . ' (ovalue, oid, ocontextid) VALUES (\''.addslashes($value).'\', '. intval($oid) . ', ' . intval($contextid) . ')');
+			sql_query('INSERT INTO ' . sql_table('plugin_option') . ' (ovalue, oid, ocontextid) VALUES (\''.sql_real_escape_string($value).'\', '. intval($oid) . ', ' . intval($contextid) . ')');
 
 			// update cache
 			$this->_aOptionValues[$oid . '_' . $contextid] = $value;
@@ -454,7 +454,7 @@
 
 				// fill DB with default value
 				$query = 'INSERT INTO ' . sql_table('plugin_option') . ' (oid,ocontextid,ovalue)'
-					   .' VALUES ('.intval($oid).', '.intval($contextid).', \''.addslashes($defVal).'\')';
+					   .' VALUES ('.intval($oid).', '.intval($contextid).', \''.sql_real_escape_string($defVal).'\')';
 				sql_query($query);
 			}
 			else {
@@ -510,7 +510,7 @@
 		 */
 		function _getOID($context, $name) {
 			$key = $context . '_' . $name;
-			$info = @$this->_aOptionToInfo[$key];
+			$info = $this->_aOptionToInfo[$key];
 			if (is_array($info)) return $info['oid'];
 
 			// load all OIDs for this plugin from the database
@@ -523,7 +523,7 @@
 			}
 			sql_free_result($res);
 
-			return @$this->_aOptionToInfo[$key]['oid'];
+			return $this->_aOptionToInfo[$key]['oid'];
 		}
 		function _getDefVal($context, $name) {
 			$key = $context . '_' . $name;
@@ -542,7 +542,7 @@
 			// delete all associated plugin options
 			$aOIDs = array();
 				// find ids
-			$query = 'SELECT oid FROM '.sql_table('plugin_option_desc') . ' WHERE ocontext=\''.addslashes($context).'\'';
+			$query = 'SELECT oid FROM '.sql_table('plugin_option_desc') . ' WHERE ocontext=\''.sql_real_escape_string($context).'\'';
 			$res = sql_query($query);
 			while ($o = sql_fetch_object($res))
 				array_push($aOIDs, $o->oid);
@@ -637,7 +637,7 @@
 						$meta = NucleusPlugin::getOptionMeta($o->oextra);
 
 						// if the option is readonly or hidden it may not be saved
-						if ((@$meta['access'] != 'readonly') && (@$meta['access'] != 'hidden')) {
+						if (($meta['access'] != 'readonly') && ($meta['access'] != 'hidden')) {
 
 							$value = undoMagic($value);	// value comes from request
 
@@ -650,7 +650,7 @@
 							}
 
 							// check the validity of numerical options
-							if ((@$meta['datatype'] == 'numerical') && (!is_numeric($value))) {
+							if (($meta['datatype'] == 'numerical') && (!is_numeric($value))) {
 								//the option must be numeric, but the it isn't
 								//use the default for this option
 								$value = $o->odef;
@@ -667,7 +667,7 @@
 
 							// delete the old value for the option
 							sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));
-							sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . addslashes($value) . "')");
+							sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . sql_real_escape_string($value) . "')");
 						}
 					}
 				}

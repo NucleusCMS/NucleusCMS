@@ -71,7 +71,13 @@ class COMMENTACTIONS extends BaseActions {
 			'plugin',
 			'include',
 			'phpinclude',
-			'parsedinclude'
+			'parsedinclude',
+			'if',
+			'else',
+			'endif',
+			'elseif',
+			'ifnot',
+			'elseifnot'
 		);
 	}
 
@@ -89,16 +95,25 @@ class COMMENTACTIONS extends BaseActions {
 	
 	function setCurrentComment(&$comment) {
 		global $manager;
-		if ($comment['memberid'] != 0) {
+		// begin if: member comment
+		if ($comment['memberid'] != 0)
+		{
 			$comment['authtext'] = $template['COMMENTS_AUTH'];
 
 			$mem =& $manager->getMember($comment['memberid']);
 			$comment['user'] = $mem->getDisplayName();
+			
+			// begin if: member URL exists, set it as the userid
 			if ($mem->getURL())
+			{
 				$comment['userid'] = $mem->getURL();
+			}
+			// else: set the email as the userid
 			else
+			{
 				$comment['userid'] = $mem->getEmail();
-
+			} // end if
+			
 			$comment['userlinkraw'] = createLink(
 										'member',
 										array(
@@ -107,27 +122,40 @@ class COMMENTACTIONS extends BaseActions {
 											'extra' => $this->commentsObj->itemActions->linkparams
 										)
 									  );
-
-		} else {
-
-			// create smart links
-/*			if (isValidMailAddress($comment['userid']))
-				$comment['userlinkraw'] = 'mailto:'.$comment['userid'];
-			elseif (strstr($comment['userid'],'http://') != false)
-				$comment['userlinkraw'] = $comment['userid'];
-			elseif (strstr($comment['userid'],'www') != false)
-				$comment['userlinkraw'] = 'http://'.$comment['userid'];*/
-			if (strstr($comment['userid'],'http://') != false)
-				$comment['userlinkraw'] = $comment['userid'];
-			elseif (strstr($comment['userid'],'www') != false)
-				$comment['userlinkraw'] = 'http://'.$comment['userid'];
-			elseif (isValidMailAddress($comment['email']))
-				$comment['userlinkraw'] = 'mailto:'.$comment['email'];
-			elseif (isValidMailAddress($comment['userid']))
-				$comment['userlinkraw'] = 'mailto:'.$comment['userid'];
+		// else: non-member comment
 		}
-
+		else
+		{
+			// create smart links
+			// begin if: comment userid is not empty
+			if (!empty($comment['userid']) )
+			{
+				// begin if: comment userid has either "http://" or "https://" at the beginning
+				if ( (strpos($comment['userid'], 'http://') === 0) || (strpos($comment['userid'], 'https://') === 0) )
+				{
+					$comment['userlinkraw'] = $comment['userid'];
+				}
+				// else: prepend the "http://" (backwards compatibility before rev 1471)
+				else
+				{
+					$comment['userlinkraw'] = 'http://' . $comment['userid'];
+				} // end if
+			}
+			// else if: comment email is valid
+			else if (isValidMailAddress($comment['email']) )
+			{
+				$comment['userlinkraw'] = 'mailto:' . $comment['email'];
+			}
+			// else if: comment userid is a valid email
+			else if (isValidMailAddress($comment['userid']) )
+			{
+				$comment['userlinkraw'] = 'mailto:' . $comment['userid'];
+			} // end if
+		} // end if
 		$this->currentComment =& $comment;
+		global $currentcommentid, $currentcommentarray;
+		$currentcommentid = $comment['commentid'];
+		$currentcommentarray = $comment;
 	}
 
 	/**
@@ -401,6 +429,263 @@ class COMMENTACTIONS extends BaseActions {
 			echo $this->currentComment['user'];
 		}
 	}
+	
+	// function to enable if-else-elseif-elseifnot-ifnot-endif to comment template fields
+	
+	/**
+	 * Checks conditions for if statements
+	 *
+	 * @param string $field type of <%if%>
+	 * @param string $name property of field
+	 * @param string $value value of property
+	 */
+	function checkCondition($field, $name='', $value = '') {
+		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
 
+		$condition = 0;
+		switch($field) {
+			case 'category':
+				$condition = ($blog && $this->_ifCategory($name,$value));
+				break;
+			case 'itemcategory':
+				$condition = ($this->_ifItemCategory($name,$value));
+				break;
+			case 'blogsetting':
+				$condition = ($blog && ($blog->getSetting($name) == $value));
+				break;
+			case 'itemblogsetting':
+				$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+				$condition = ($b && ($b->getSetting($name) == $value));
+				break;
+			case 'loggedin':
+				$condition = $member->isLoggedIn();
+				break;
+			case 'onteam':
+				$condition = $member->isLoggedIn() && $this->_ifOnTeam($name);
+				break;
+			case 'admin':
+				$condition = $member->isLoggedIn() && $this->_ifAdmin($name);
+				break;
+			case 'author':
+				$condition = ($this->_ifAuthor($name,$value));
+				break;
+/*			case 'nextitem':
+				$condition = ($itemidnext != '');
+				break;
+			case 'previtem':
+				$condition = ($itemidprev != '');
+				break;
+			case 'archiveprevexists':
+				$condition = ($archiveprevexists == true);
+				break;
+			case 'archivenextexists':
+				$condition = ($archivenextexists == true);
+				break; 
+			case 'skintype':
+				$condition = ($name == $this->skintype);
+				break; */
+			case 'hasplugin':
+				$condition = $this->_ifHasPlugin($name, $value);
+				break;
+			default:
+				$condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
+				break;
+		}
+		return $condition;
+	}	
+	
+	/**
+	 *  Different checks for a category
+	 */
+	function _ifCategory($name = '', $value='') {
+		global $blog, $catid;
+
+		// when no parameter is defined, just check if a category is selected
+		if (($name != 'catname' && $name != 'catid') || ($value == ''))
+			return $blog->isValidCategory($catid);
+
+		// check category name
+		if ($name == 'catname') {
+			$value = $blog->getCategoryIdFromName($value);
+			if ($value == $catid)
+				return $blog->isValidCategory($catid);
+		}
+
+		// check category id
+		if (($name == 'catid') && ($value == $catid))
+			return $blog->isValidCategory($catid);
+
+		return false;
+	}
+	
+		
+	/**
+	 *  Different checks for an author
+	 */
+	function _ifAuthor($name = '', $value='') {
+		global $member, $manager;
+		
+		if ($this->currentComment['memberid'] == 0) return false;
+		
+		$mem =& $manager->getMember($this->currentComment['memberid']);
+		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+		$citem =& $manager->getItem($this->currentComment['itemid'],1,1);
+
+		// when no parameter is defined, just check if item author is current visitor
+		if (($name != 'isadmin' && $name != 'name' && $name != 'isauthor' && $name != 'isonteam')) {
+			return (intval($member->getID()) > 0 && intval($member->getID()) == intval($citem['authorid']));
+		}
+
+		// check comment author name
+		if ($name == 'name') {
+			$value = trim(strtolower($value));
+			if ($value == '') 
+				return false;
+			if ($value == strtolower($mem->getDisplayName()))
+				return true;
+		}
+
+		// check if comment author is admin
+		if ($name == 'isadmin') {			
+			$blogid = intval($b->getID());			
+			if ($mem->isAdmin())
+				return true;
+				
+			return $mem->isBlogAdmin($blogid);
+		}
+		
+		// check if comment author is item author
+		if ($name == 'isauthor') {			
+			return (intval($citem['authorid']) == intval($this->currentComment['memberid']));
+		}
+		
+		// check if comment author is on team
+		if ($name == 'isonteam') {
+			return $mem->teamRights(intval($b->getID()));
+		}
+
+		return false;
+	}
+	
+	/**
+	 *  Different checks for a category
+	 */
+	function _ifItemCategory($name = '', $value='') {
+		global $catid, $manager;
+		
+		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+		$citem =& $manager->getItem($this->currentComment['itemid'],1,1);
+		$icatid = $citem['catid'];
+
+		// when no parameter is defined, just check if a category is selected
+		if (($name != 'catname' && $name != 'catid') || ($value == ''))
+			return $b->isValidCategory($icatid);
+			
+		// check category name
+		if ($name == 'catname') {
+			$value = $b->getCategoryIdFromName($value);
+			if ($value == $icatid)
+				return $b->isValidCategory($icatid);
+		}
+
+		// check category id
+		if (($name == 'catid') && ($value == $icatid))
+			return $b->isValidCategory($icatid);
+
+		return false;
+	}
+
+	
+	/**
+	 *  Checks if a member is on the team of a blog and return his rights
+	 */
+	function _ifOnTeam($blogName = '') {
+		global $blog, $member, $manager;
+		
+		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+		
+		// when no blog found
+		if (($blogName == '') && (!is_object($b)))
+			return 0;
+
+		// explicit blog selection
+		if ($blogName != '')
+			$blogid = getBlogIDFromName($blogName);
+
+		if (($blogName == '') || !$manager->existsBlogID($blogid))
+			// use current blog
+			$blogid = $b->getID();
+
+		return $member->teamRights($blogid);
+	}
+
+	/**
+	 *  Checks if a member is admin of a blog
+	 */
+	function _ifAdmin($blogName = '') {
+		global $blog, $member, $manager;
+
+		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+		
+		// when no blog found
+		if (($blogName == '') && (!is_object($b)))
+			return 0;
+
+		// explicit blog selection
+		if ($blogName != '')
+			$blogid = getBlogIDFromName($blogName);
+
+		if (($blogName == '') || !$manager->existsBlogID($blogid))
+			// use current blog
+			$blogid = $b->getID();
+
+		return $member->isBlogAdmin($blogid);
+	}
+
+	
+	/**
+	 *	hasplugin,PlugName
+	 *	   -> checks if plugin exists
+	 *	hasplugin,PlugName,OptionName
+	 *	   -> checks if the option OptionName from plugin PlugName is not set to 'no'
+	 *	hasplugin,PlugName,OptionName=value
+	 *	   -> checks if the option OptionName from plugin PlugName is set to value
+	 */
+	function _ifHasPlugin($name, $value) {
+		global $manager;
+		$condition = false;
+		// (pluginInstalled method won't write a message in the actionlog on failure)
+		if ($manager->pluginInstalled('NP_'.$name)) {
+			$plugin =& $manager->getPlugin('NP_' . $name);
+			if ($plugin != NULL) {
+				if ($value == "") {
+					$condition = true;
+				} else {
+					list($name2, $value2) = explode('=', $value, 2);
+					if ($value2 == "" && $plugin->getOption($name2) != 'no') {
+						$condition = true;
+					} else if ($plugin->getOption($name2) == $value2) {
+						$condition = true;
+					}
+				}
+			}
+		}
+		return $condition;
+	}
+
+	/**
+	 * Checks if a plugin exists and call its doIf function
+	 */
+	function _ifPlugin($name, $key = '', $value = '') {
+		global $manager;
+
+		$plugin =& $manager->getPlugin('NP_' . $name);
+		if (!$plugin) return;
+
+		$params = func_get_args();
+		array_shift($params);
+
+		return call_user_func_array(array(&$plugin, 'doIf'), $params);
+	}
 }
 ?>

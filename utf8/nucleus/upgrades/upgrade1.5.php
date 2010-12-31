@@ -87,7 +87,7 @@ function upgrade_do150() {
     $res = sql_query('SELECT * FROM '.sql_table('template').' WHERE tpartname=\'DATE_HEADER\'');
     while ($o = mysql_fetch_object($res)) {
         $newval = str_replace('<%daylink%>','<%%daylink%%>',$o->tcontent);
-        $query = 'UPDATE '.sql_table('template').' SET tcontent=\''. addslashes($newval).'\' WHERE tdesc=' . $o->tdesc . ' AND tpartname=\'DATE_HEADER\'';
+        $query = 'UPDATE '.sql_table('template').' SET tcontent=\''. sql_real_escape_string($newval).'\' WHERE tdesc=' . $o->tdesc . ' AND tpartname=\'DATE_HEADER\'';
         upgrade_query('Updating DATE_HEADER part in template ' . $o->tdesc, $query);
     }
     
@@ -96,7 +96,7 @@ function upgrade_do150() {
     while ($o = mysql_fetch_object($res)) {
         if (!strstr($o->tcontent,'<%comments%>')) {
             $newval = $o->tcontent . '<%comments%>';
-            $query = 'UPDATE '.sql_table('template').' SET tcontent=\''. addslashes($newval).'\' WHERE tdesc=' . $o->tdesc . ' AND tpartname=\'ITEM\'';
+            $query = 'UPDATE '.sql_table('template').' SET tcontent=\''. sql_real_escape_string($newval).'\' WHERE tdesc=' . $o->tdesc . ' AND tpartname=\'ITEM\'';
             upgrade_query('Updating ITEM part in template ' . $o->tdesc, $query);
         }
     }

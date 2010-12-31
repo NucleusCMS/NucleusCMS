@@ -283,24 +283,45 @@ class ACTIONS extends BaseActions {
 	 *		When present, the output will be a full <a href...> link. When empty,
 	 *		only a raw link will be outputted
 	 */
-	function _searchlink($maxresults, $startpos, $direction, $linktext = '') {
+	function _searchlink($maxresults, $startpos, $direction, $linktext = '', $recount = '') {
 		global $CONF, $blog, $query, $amount;
 		// TODO: Move request uri to linkparams. this is ugly. sorry for that.
 		$startpos	= intval($startpos);		// will be 0 when empty.
+		$path			= $parsed['path'];
 		$parsed		= parse_url(serverVar('REQUEST_URI'));
 		$parsed		= $parsed['query'];
-		$url		= '';
+		$url			= '';
 
 		switch ($direction) {
 			case 'prev':
 				if ( intval($startpos) - intval($maxresults) >= 0) {
 					$startpos 	= intval($startpos) - intval($maxresults);
-					$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
+					//$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
+					switch ($this->skintype)
+					{
+						case 'index':
+							$url = $path;
+							break;
+						case 'search':
+							$url = $CONF['SearchURL'];
+							break;
+					}
+					$url .= '?'.alterQueryStr($parsed,'startpos',$startpos);
 				}
 				break;
 			case 'next':
-				$iAmountOnPage = $this->amountfound;
-				if ($iAmountOnPage == 0)
+				global $navigationItems;
+				if (!isset($navigationItems)) $navigationItems = 0;
+				
+				if ($recount)
+					$iAmountOnPage = 0;
+				else 
+					$iAmountOnPage = $this->amountfound;
+				
+				if (intval($navigationItems) > 0) {
+					$iAmountOnPage = intval($navigationItems) - intval($startpos);
+				}
+				elseif ($iAmountOnPage == 0)
 				{
 					// [%nextlink%] or [%prevlink%] probably called before [%blog%] or [%searchresults%]
 					// try a count query
@@ -310,7 +331,9 @@ class ACTIONS extends BaseActions {
 							$sqlquery = $blog->getSqlBlog('', 'count');
 							break;
 						case 'search':
+							$unused_highlight = '';
 							$sqlquery = $blog->getSqlSearch($query, $amount, $unused_highlight, 'count');
+							$url = $CONF['SearchURL'];
 							break;
 					}
 					if ($sqlquery)
@@ -318,8 +341,10 @@ class ACTIONS extends BaseActions {
 				}
 				if (intval($iAmountOnPage) >= intval($maxresults)) {
 					$startpos 	= intval($startpos) + intval($maxresults);
-					$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
+					//$url		= $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
+					$url		.= '?'.alterQueryStr($parsed,'startpos',$startpos);
 				}
+				else $url	= '';
 				break;
 			default:
 				break;
@@ -602,7 +627,11 @@ class ACTIONS extends BaseActions {
 	 */
 	function parse_categorylist($template, $blogname = '') {
 		global $blog, $manager;
-
+		
+		// when no blog found
+		if (($blogName == '') && (!is_object($blog)))
+			return 0;
+			
 		if ($blogname == '') {
 			$this->_preBlogContent('categorylist',$blog);
 			$blog->showCategoryList($template);
@@ -643,7 +672,12 @@ class ACTIONS extends BaseActions {
 			$this->doForm('commentform-closed');
 			return;
 		}
-
+		
+		if (!$blog->isPublic() && !$member->isLoggedIn()) {
+			$this->doForm('commentform-closedtopublic');
+			return;
+		}
+		
 		if (!$destinationurl)
 		{
 			$destinationurl = createLink(
@@ -868,7 +902,7 @@ class ACTIONS extends BaseActions {
 	 * (includes a member info thingie)	 
 	 */
 	function parse_member($what) {
-		global $memberinfo, $member;
+		global $memberinfo, $member, $CONF;
 
 		// 1. only allow the member-details-page specific variables on member pages
 		if ($this->skintype == 'member') {
@@ -917,11 +951,16 @@ class ACTIONS extends BaseActions {
 				case 'yourid':
 					echo $member->getID();
 					break;
+				case 'yourprofileurl':
+					if ($CONF['URLMode'] == 'pathinfo')
+						echo createMemberLink($member->getID());
+					else
+						echo $CONF['IndexURL'] . createMemberLink($member->getID());
+					break;
 			}
 		}
-
 	}
-
+	
 	/**
 	 * Parse skinvar membermailform
 	 */
@@ -1000,12 +1039,12 @@ class ACTIONS extends BaseActions {
 	/**
 	 * Parse skinvar nextlink
 	 */
-	function parse_nextlink($linktext = '', $amount = 10) {
+	function parse_nextlink($linktext = '', $amount = 10, $recount = '') {
 		global $itemidnext, $archivenext, $startpos;
 		if ($this->skintype == 'item')
 			$this->_itemlink($itemidnext, $linktext);
 		else if ($this->skintype == 'search' || $this->skintype == 'index')
-			$this->_searchlink($amount, $startpos, 'next', $linktext);
+			$this->_searchlink($amount, $startpos, 'next', $linktext, $recount);
 		else
 			$this->_archivelink($archivenext, $linktext);
 	}

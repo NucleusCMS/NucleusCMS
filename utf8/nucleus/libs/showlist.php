@@ -186,7 +186,6 @@ function listplug_table_pluginlist($template, $type) {
 					echo _LIST_PLUGS_VER, ' ' , htmlspecialchars($plug->getVersion()) , '<br />';
 					if ($plug->getURL())
 					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
-//					echo '<a href="',htmlspecialchars($plug->getURL()),'" tabindex="'.$template['tabindex'].'">'.htmlspecialchars(shorten($plug->getURL(), 25, '...')),'</a><br />';
 				echo '</td>';
 				echo '<td>';
 					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
@@ -273,7 +272,7 @@ function listplug_plugOptionRow($current) {
 	$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 
 	// only if it is not a hidden option write the controls to the page
-	if (@$meta['access'] != 'hidden') {
+	if ($meta['access'] != 'hidden') {
 		echo '<td>',htmlspecialchars($current['description']?$current['description']:$current['name']),'</td>';
 		echo '<td>';
 		switch($current['type']) {
@@ -298,7 +297,7 @@ function listplug_plugOptionRow($current) {
 			case 'textarea':
 				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 				echo '<textarea class="pluginoption" cols="30" rows="5" name="',htmlspecialchars($varname),'"';
-				if (@$meta['access'] == 'readonly') {
+				if ($meta['access'] == 'readonly') {
 					echo ' readonly="readonly"';
 				}
 				echo '>',htmlspecialchars($current['value']),'</textarea>';
@@ -308,15 +307,15 @@ function listplug_plugOptionRow($current) {
 				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 
 				echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'"';
-				if (@$meta['datatype'] == 'numerical') {
+				if ($meta['datatype'] == 'numerical') {
 					echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
 				}
-				if (@$meta['access'] == 'readonly') {
+				if ($meta['access'] == 'readonly') {
 					echo ' readonly="readonly"';
 				}
 				echo ' />';
 		}
-		echo @$current['extra'];
+		echo $current['extra'];
 		echo '</td>';
 	}
 }
@@ -371,8 +370,7 @@ function listplug_table_itemlist($template, $type) {
 			echo " / <a href='index.php?action=itemdelete&amp;itemid={$current->inumber}'>" . _LISTS_DELETE . "</a><br />";
 			// evaluate amount of comments for the item
 			$camount = $COMMENTS->amountComments();
-			if ($camount>0)
-			{
+			if ($camount>0) {
 				echo "<a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>";
 				echo "( " . sprintf(_LIST_ITEM_COMMENTS, $COMMENTS->amountComments())." )</a>";
 			}

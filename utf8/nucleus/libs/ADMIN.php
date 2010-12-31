@@ -346,7 +346,7 @@ class ADMIN {
 			   . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=' . $blogid;
 
 		if ($search)
-			$query .= ' and ((ititle LIKE "%' . addslashes($search) . '%") or (ibody LIKE "%' . addslashes($search) . '%") or (imore LIKE "%' . addslashes($search) . '%"))';
+			$query .= ' and ((ititle LIKE "%' . sql_real_escape_string($search) . '%") or (ibody LIKE "%' . sql_real_escape_string($search) . '%") or (imore LIKE "%' . sql_real_escape_string($search) . '%"))';
 
 		// non-blog-admins can only edit/delete their own items
 		if (!$member->blogAdminRights($blogid))
@@ -913,7 +913,7 @@ class ADMIN {
 			   . ' WHERE iauthor='. $member->getID() .' and iauthor=mnumber and iblog=bnumber and icat=catid';
 
 		if ($search)
-			$query .= ' and ((ititle LIKE "%' . addslashes($search) . '%") or (ibody LIKE "%' . addslashes($search) . '%") or (imore LIKE "%' . addslashes($search) . '%"))';
+			$query .= ' and ((ititle LIKE "%' . sql_real_escape_string($search) . '%") or (ibody LIKE "%' . sql_real_escape_string($search) . '%") or (imore LIKE "%' . sql_real_escape_string($search) . '%"))';
 
 		$query .= ' ORDER BY itime DESC'
 				. " LIMIT $start,$amount";
@@ -969,7 +969,7 @@ class ADMIN {
 		$query = 'SELECT cbody, cuser, cmail, cemail, mname, ctime, chost, cnumber, cip, citem FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
 
 		if ($search)
-			$query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
+			$query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
 
 		$query .= ' ORDER BY ctime ASC'
 				. " LIMIT $start,$amount";
@@ -1011,7 +1011,7 @@ class ADMIN {
 		$query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cmember=' . $member->getID();
 
 		if ($search)
-			$query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
+			$query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
 
 		$query .= ' ORDER BY ctime DESC'
 				. " LIMIT $start,$amount";
@@ -1067,7 +1067,7 @@ class ADMIN {
 		$query =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
 
 		if ($search != '')
-			$query .= ' and cbody LIKE "%' . addslashes($search) . '%"';
+			$query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
 
 
 		$query .= ' ORDER BY ctime DESC'
@@ -1469,9 +1469,11 @@ class ADMIN {
 
 		// change <br /> to \n
 		$comment['body'] = str_replace('<br />','',$comment['body']);
-
-		$comment['body'] = eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>","\\1",$comment['body']);
-
+		
+		// replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+		/* original eregi_replace: eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>", "\\1", $comment['body']) */
+		$comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#I", "\\1", $comment['body']);
+		
 		$this->pagehead();
 
 		?>
@@ -1538,18 +1540,25 @@ class ADMIN {
 		$url = postVar('url');
 		$email = postVar('email');
 		$body = postVar('body');
-
+		
+		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+		# original eregi: eregi("[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}", $body) != FALSE
+		# important note that '\' must be matched with '\\\\' in preg* expressions
 		// intercept words that are too long
-		if (eregi("[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}",$body) != false)
+		if (preg_match('#[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}#', $body) != FALSE)
+		{
 			$this->error(_ERROR_COMMENT_LONGWORD);
-
+		}
+		
 		// check length
-		if (strlen($body)<3)
+		if (strlen($body) < 3) {
 			$this->error(_ERROR_COMMENT_NOCOMMENT);
+		}
 		if (strlen($body)>5000)
+		{
 			$this->error(_ERROR_COMMENT_TOOLONG);
-
-
+		}
+		
 		// prepare body
 		$body = COMMENT::prepareBody($body);
 
@@ -1557,7 +1566,7 @@ class ADMIN {
 		$manager->notify('PreUpdateComment',array('body' => &$body));
 
 		$query =  'UPDATE '.sql_table('comment')
-			   . " SET cmail = '" . addslashes($url) . "', cemail = '" . addslashes($email) . "', cbody = '" . addslashes($body) . "'"
+			   . " SET cmail = '" . sql_real_escape_string($url) . "', cemail = '" . sql_real_escape_string($email) . "', cbody = '" . sql_real_escape_string($body) . "'"
 			   . " WHERE cnumber=" . $commentid;
 		sql_query($query);
 
@@ -1833,17 +1842,23 @@ class ADMIN {
 				<?php			   // show a dropdown list of all available languages
 				global $DIR_LANG;
 				$dirhandle = opendir($DIR_LANG);
-				while ($filename = readdir($dirhandle)) {
-					if (ereg("^(.*)\.php$",$filename,$matches)) {
+				while ($filename = readdir($dirhandle))
+				{
+					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+					# original ereg: ereg("^(.*)\.php$", $filename, $matches)
+					if (preg_match('#^(.*)\.php$#', $filename, $matches) )
+					{
 						$name = $matches[1];
-						echo "<option value='$name'";
-						if ($name == $mem->getLanguage())
-							echo " selected='selected'";
+						echo "<option value=\"$name\"";
+						if ($name == $mem->getLanguage() )
+						{
+							echo " selected=\"selected\"";
+						}
 						echo ">$name</option>";
 					}
 				}
 				closedir($dirhandle);
-
+				
 				?>
 				</select>
 
@@ -1897,10 +1912,13 @@ class ADMIN {
 		$email		  = strip_tags(postVar('email'));
 		$url			= strip_tags(postVar('url'));
 
-		// Sometimes user didn't prefix the URL with http://, this cause a malformed URL. Let's fix it.
-		if (!eregi("^https?://", $url))
-			$url = "http://".$url;
-
+		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+		# original eregi: !eregi("^https?://", $url)
+		// begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
+		if (!preg_match('#^https?://#', $url) )
+		{
+			$url = "http://" . $url;
+		}
 		$admin		  = postVar('admin');
 		$canlogin	   = postVar('canlogin');
 		$notes		  = strip_tags(postVar('notes'));
@@ -2174,15 +2192,16 @@ class ADMIN {
 
 		if ($password && (strlen($password) < 6))
 			return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
-
-		$pwdvalid = true;
-		$pwderror = '';
-		global $manager;
-		$manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
-		if (!$pwdvalid) {
-			return $this->_showActivationPage($key,$pwderror);
+		
+		if ($password) {
+			$pwdvalid = true;
+			$pwderror = '';
+			global $manager;
+			$manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
+			if (!$pwdvalid) {
+				return $this->_showActivationPage($key,$pwderror);
+			}
 		}
-
 		$error = '';
 		$manager->notify('ValidateForm', array('type' => 'activation', 'member' => $mem, 'error' => &$error));
 		if ($error != '')
@@ -2506,7 +2525,7 @@ class ADMIN {
 		 <td><?php $this->input_yesno('reqemail',$blog->emailRequired(),72); ?></td>
 	  </tr><tr>
 			<td><?php echo _EBLOG_NOTIFY?> <?php help('blognotify'); ?></td>
-			<td><input name="notify" tabindex="80" maxlength="60" size="40" value="<?php echo  htmlspecialchars($blog->getNotifyAddress()); ?>" /></td>
+			<td><input name="notify" tabindex="80" maxlength="128" size="40" value="<?php echo  htmlspecialchars($blog->getNotifyAddress()); ?>" /></td>
 		</tr><tr>
 			<td><?php echo _EBLOG_NOTIFY_ON?></td>
 			<td>
@@ -2629,7 +2648,7 @@ class ADMIN {
 		if (!isValidCategoryName($cname))
 			$this->error(_ERROR_BADCATEGORYNAME);
 
-		$query = 'SELECT * FROM '.sql_table('category') . ' WHERE cname=\'' . addslashes($cname).'\' and cblog=' . intval($blogid);
+		$query = 'SELECT * FROM '.sql_table('category') . ' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid);
 		$res = sql_query($query);
 		if (sql_num_rows($res) > 0)
 			$this->error(_ERROR_DUPCATEGORYNAME);
@@ -2719,14 +2738,14 @@ class ADMIN {
 		if (!isValidCategoryName($cname))
 			$this->error(_ERROR_BADCATEGORYNAME);
 
-		$query = 'SELECT * FROM '.sql_table('category').' WHERE cname=\'' . addslashes($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
+		$query = 'SELECT * FROM '.sql_table('category').' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
 		$res = sql_query($query);
 		if (sql_num_rows($res) > 0)
 			$this->error(_ERROR_DUPCATEGORYNAME);
 
 		$query =  'UPDATE '.sql_table('category').' SET'
-			   . " cname='" . addslashes($cname) . "',"
-			   . " cdesc='" . addslashes($cdesc) . "'"
+			   . " cname='" . sql_real_escape_string($cname) . "',"
+			   . " cdesc='" . sql_real_escape_string($cdesc) . "'"
 			   . " WHERE catid=" . $catid;
 
 		sql_query($query);
@@ -3155,7 +3174,7 @@ class ADMIN {
 
 		/* unlink comments from memberid */
 		if ($memberid) {
-			$query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. addslashes($mem->getDisplayName())
+			$query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. sql_real_escape_string($mem->getDisplayName())
 				   .'" WHERE cmember='.$memberid;
 			sql_query($query);
 		}
@@ -3295,11 +3314,11 @@ class ADMIN {
 
 
 		// add slashes for sql queries
-		$bname	   = addslashes($bname);
-		$bshortname  = addslashes($bshortname);
-		$btimeoffset = addslashes($btimeoffset);
-		$bdesc	   = addslashes($bdesc);
-		$bdefskin	= addslashes($bdefskin);
+		$bname	   = sql_real_escape_string($bname);
+		$bshortname  = sql_real_escape_string($bshortname);
+		$btimeoffset = sql_real_escape_string($btimeoffset);
+		$bdesc	   = sql_real_escape_string($bdesc);
+		$bdefskin	= sql_real_escape_string($bdefskin);
 
 		// create blog
 		$query = 'INSERT INTO '.sql_table('blog')." (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', '$btimeoffset', '$bdefskin')";
@@ -3308,11 +3327,10 @@ class ADMIN {
 		$blog   =& $manager->getBlog($blogid);
 
 		// create new category
-
-
+		$catdefname = (defined('_EBLOGDEFAULTCATEGORY_NAME') ? _EBLOGDEFAULTCATEGORY_NAME : 'General');
+		$catdefdesc = (defined('_EBLOGDEFAULTCATEGORY_DESC') ? _EBLOGDEFAULTCATEGORY_DESC : 'Items that do not fit in other categories');
 		$sql = 'INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, "%s", "%s")';
-		sql_query(sprintf($sql, sql_table('category'), $blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC));
-
+		sql_query(sprintf($sql, sql_table('category'), $blogid, $catdefname, $catdefdesc));
 //		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
 		$catid = sql_insert_id();
 
@@ -3324,15 +3342,15 @@ class ADMIN {
 		$memberid = $member->getID();
 		$query = 'INSERT INTO '.sql_table('team')." (tmember, tblog, tadmin) VALUES ($memberid, $blogid, 1)";
 		sql_query($query);
-
-
-
-
-
-
-		$blog->additem($blog->getDefaultCategory(),_EBLOG_FIRSTITEM_TITLE,_EBLOG_FIRSTITEM_BODY,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
-
-
+		
+		$itemdeftitle = (defined('_EBLOG_FIRSTITEM_TITLE') ? _EBLOG_FIRSTITEM_TITLE : 'First Item');
+		$itemdefbody = (defined('_EBLOG_FIRSTITEM_BODY') ? _EBLOG_FIRSTITEM_BODY : 'This is the first item in your weblog. Feel free to delete it.');
+		
+		$blog->additem($blog->getDefaultCategory(),$itemdeftitle,$itemdefbody,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
+		//$blog->additem($blog->getDefaultCategory(),_EBLOG_FIRSTITEM_TITLE,_EBLOG_FIRSTITEM_BODY,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
+		
+		
+		
 		$manager->notify(
 			'PostAddBlog',
 			array(
@@ -3762,7 +3780,7 @@ selector();
 		$member->isAdmin() or $this->disallow();
 
 		$extrahead = '<script type="text/javascript" src="javascript/templateEdit.js"></script>';
-		$extrahead .= '<script type="text/javascript">setTemplateEditText("'.addslashes(_EDITTEMPLATE_EMPTY).'");</script>';
+		$extrahead .= '<script type="text/javascript">setTemplateEditText("'.sql_real_escape_string(_EDITTEMPLATE_EMPTY).'");</script>';
 
 		$this->pagehead($extrahead);
 
@@ -3934,8 +3952,8 @@ selector();
 			$this->error(_ERROR_DUPTEMPLATENAME);
 
 
-		$name = addslashes($name);
-		$desc = addslashes($desc);
+		$name = sql_real_escape_string($name);
+		$desc = sql_real_escape_string($desc);
 
 		// 1. Remove all template parts
 		$query = 'DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid;
@@ -4001,8 +4019,8 @@ selector();
 	 * @todo document this
 	 */
 	function addToTemplate($id, $partname, $content) {
-		$partname = addslashes($partname);
-		$content = addslashes($content);
+		$partname = sql_real_escape_string($partname);
+		$content = sql_real_escape_string($content);
 
 		$id = intval($id);
 
@@ -4638,7 +4656,7 @@ selector();
 		$newid = intval($newid);
 		$content = $skin->getContent($type);
 		if ($content) {
-			$query = 'INSERT INTO '.sql_table('skin')." (sdesc, scontent, stype) VALUES ($newid,'". addslashes($content)."', '". addslashes($type)."')";
+			$query = 'INSERT INTO '.sql_table('skin')." (sdesc, scontent, stype) VALUES ($newid,'". sql_real_escape_string($content)."', '". sql_real_escape_string($type)."')";
 			sql_query($query);
 		}
 	}
@@ -4720,12 +4738,18 @@ selector();
 				<?php			   // show a dropdown list of all available languages
 				global $DIR_LANG;
 				$dirhandle = opendir($DIR_LANG);
-				while ($filename = readdir($dirhandle)) {
-					if (ereg("^(.*)\.php$",$filename,$matches)) {
+				while ($filename = readdir($dirhandle) )
+				{
+					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+					# original ereg: ereg("^(.*)\.php$",$filename,$matches)
+					if (preg_match('#^(.*)\.php$#', $filename, $matches) )
+					{
 						$name = $matches[1];
-						echo "<option value='$name'";
+						echo "<option value=\"$name\"";
 						if ($name == $CONF['Language'])
-							echo " selected='selected'";
+						{
+							echo " selected=\"selected\"";
+						}
 						echo ">$name</option>";
 					}
 				}
@@ -5129,8 +5153,8 @@ selector();
 	 * @todo document this
 	 */
 	function updateConfig($name, $val) {
-		$name = addslashes($name);
-		$val = trim(addslashes($val));
+		$name = sql_real_escape_string($name);
+		$val = trim(sql_real_escape_string($val));
 
 		$query = 'UPDATE '.sql_table('config')
 			   . " SET value='$val'"
@@ -5180,7 +5204,8 @@ selector();
 
 		$baseUrl = htmlspecialchars($CONF['AdminURL']);
 
-		?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+		?>
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
@@ -5901,23 +5926,31 @@ selector();
 			</div></form>
 
 			<h3><?php echo _PLUGS_TITLE_NEW?></h3>
-
-			<?php			   // find a list of possibly non-installed plugins
+			
+			<?php
+			// find a list of possibly non-installed plugins
 				$candidates = array();
 				global $DIR_PLUGINS;
 				$dirhandle = opendir($DIR_PLUGINS);
-				while ($filename = readdir($dirhandle)) {
-					if (ereg('^NP_(.*)\.php$',$filename,$matches)) {
+				while ($filename = readdir($dirhandle) )
+				{
+					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+					# original ereg: ereg('^NP_(.*)\.php$',$filename,$matches)
+					if (preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
+					{
 						$name = $matches[1];
 						// only show in list when not yet installed
-						$res = sql_query('SELECT * FROM '.sql_table('plugin').' WHERE pfile="NP_'.addslashes($name).'"');
+						$res = sql_query('SELECT * FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '"');
 						if (sql_num_rows($res) == 0)
-							array_push($candidates,$name);
+						{
+							array_push($candidates, $name);
+						}
 					}
 				}
 				closedir($dirhandle);
-
-				if (sizeof($candidates) > 0) {
+				
+				if (sizeof($candidates) > 0)
+				{
 			?>
 
 			<p><?php echo _PLUGS_ADD_TEXT?></p>
@@ -5927,14 +5960,20 @@ selector();
 				<input type='hidden' name='action' value='pluginadd' />
 				<?php $manager->addTicketHidden() ?>
 				<select name="filename" tabindex="30">
-				<?php				   foreach($candidates as $name)
-						echo '<option value="NP_',$name,'">',htmlspecialchars($name),'</option>';
+				<?php	
+				foreach($candidates as $name)
+				{
+					echo '<option value="NP_',$name,'">',htmlspecialchars($name),'</option>';
+				}
 				?>
 				</select>
 				<input type='submit' tabindex="40" value='<?php echo _PLUGS_BTN_INSTALL?>' />
 			</div></form>
 
-		<?php		   } else {	// sizeof(candidates) == 0
+		<?php
+				}
+				else
+				{
 				echo '<p>',_PLUGS_NOCANDIDATES,'</p>';
 			}
 
@@ -5969,7 +6008,7 @@ selector();
 		if (($plug->supportsFeature('HelpPage') > 0) && (@file_exists($helpFile))) {
 			@readfile($helpFile);
 		} else {
-			echo '<p>' . _ERROR .': ', _ERROR_PLUGNOHELPFILE,'</p>';
+			echo '<p>Error: ', _ERROR_PLUGNOHELPFILE,'</p>';
 			echo '<p><a href="index.php?action=pluginlist">(',_BACK,')</a></p>';
 		}
 
@@ -6008,7 +6047,7 @@ selector();
 		);
 
 		// do this before calling getPlugin (in case the plugin id is used there)
-		$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.addslashes($name).'")';
+		$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.sql_real_escape_string($name).'")';
 		sql_query($query);
 		$iPid = sql_insert_id();
 
@@ -6094,7 +6133,7 @@ selector();
 			{
 				$eventList = $plug->getEventList();
 				foreach ($eventList as $eventName)
-					sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.addslashes($eventName).'\')');
+					sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.sql_real_escape_string($eventName).'\')');
 			}
 		}
 
@@ -6399,7 +6438,7 @@ selector();
 
 		// get list of oids per pid
 		$query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ',' . sql_table('plugin')
-			   . ' WHERE opid=pid and ocontext=\''.addslashes($context).'\' ORDER BY porder, oid ASC';
+			   . ' WHERE opid=pid and ocontext=\''.sql_real_escape_string($context).'\' ORDER BY porder, oid ASC';
 		$res = sql_query($query);
 		$aOptions = array();
 		while ($o = sql_fetch_object($res)) {
@@ -6432,22 +6471,19 @@ selector();
 			// new plugin?
 			if ($iPrevPid != $aOption['pid']) {
 				$iPrevPid = $aOption['pid'];
-
-
-
+				if (!defined('_PLUGIN_OPTIONS_TITLE')) {
+					define('_PLUGIN_OPTIONS_TITLE', 'Options for %s');
+				}
 				echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, htmlspecialchars($aOption['pfile'], ENT_QUOTES)).'</th></tr>';
 			}
-
+			
 			$meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
 			if (@$meta['access'] != 'hidden') {
 				echo '<tr>';
 				listplug_plugOptionRow($aOption);
 				echo '</tr>';
 			}
-
 		}
-
-
 	}
 
 	/**

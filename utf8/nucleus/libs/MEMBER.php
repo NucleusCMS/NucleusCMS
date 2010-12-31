@@ -68,7 +68,7 @@ class MEMBER {
 	}
 
 	function readFromName($displayname) {
-		return $this->read("mname='".addslashes($displayname)."'");
+		return $this->read("mname='".sql_real_escape_string($displayname)."'");
 	}
 
 	function readFromID($id) {
@@ -335,7 +335,9 @@ class MEMBER {
 	function sendActivationLink($type, $extra='')
 	{
 		global $CONF;
-
+		
+		if (!isset($CONF['ActivationDays'])) $CONF['ActivationDays'] = 2;
+		
 		// generate key and URL
 		$key = $this->generateActivationEntry($type, $extra);
 		$url = $CONF['AdminURL'] . 'index.php?action=activate&key=' . $key;
@@ -364,7 +366,8 @@ class MEMBER {
 			'siteName' => $CONF['SiteName'],
 			'siteUrl' => $CONF['IndexURL'],
 			'memberName' => $this->getDisplayName(),
-			'activationUrl' => $url
+			'activationUrl' => $url,
+			'activationDays' => $CONF['ActivationDays']
 		);
 
 		$message = TEMPLATE::fill($message, $aVars);
@@ -445,16 +448,16 @@ class MEMBER {
 	function write() {
 
 		$query =  'UPDATE '.sql_table('member')
-			   . " SET mname='" . addslashes($this->getDisplayName()) . "',"
-			   . "     mrealname='". addslashes($this->getRealName()) . "',"
-			   . "     mpassword='". addslashes($this->getPassword()) . "',"
-			   . "     mcookiekey='". addslashes($this->getCookieKey()) . "',"
-			   . "     murl='" . addslashes($this->getURL()) . "',"
-			   . "     memail='" . addslashes($this->getEmail()) . "',"
+			   . " SET mname='" . sql_real_escape_string($this->getDisplayName()) . "',"
+			   . "     mrealname='". sql_real_escape_string($this->getRealName()) . "',"
+			   . "     mpassword='". sql_real_escape_string($this->getPassword()) . "',"
+			   . "     mcookiekey='". sql_real_escape_string($this->getCookieKey()) . "',"
+			   . "     murl='" . sql_real_escape_string($this->getURL()) . "',"
+			   . "     memail='" . sql_real_escape_string($this->getEmail()) . "',"
 			   . "     madmin=" . $this->isAdmin() . ","
-			   . "     mnotes='" . addslashes($this->getNotes()) . "',"
+			   . "     mnotes='" . sql_real_escape_string($this->getNotes()) . "',"
 			   . "     mcanlogin=" . $this->canLogin() . ","
-			   . "	   deflang='" . addslashes($this->getLanguage()) . "',"
+			   . "	   deflang='" . sql_real_escape_string($this->getLanguage()) . "',"
 			   . "	   mautosave=" . intval($this->getAutosave()) . ""
 			   . " WHERE mnumber=" . $this->getID();
 		sql_query($query);
@@ -576,7 +579,7 @@ class MEMBER {
 	 * @static
 	 */
 	function exists($name) {
-		$r = sql_query('select * FROM '.sql_table('member')." WHERE mname='".addslashes($name)."'");
+		$r = sql_query('select * FROM '.sql_table('member')." WHERE mname='".sql_real_escape_string($name)."'");
 		return (sql_num_rows($r) != 0);
 	}
 
@@ -613,32 +616,43 @@ class MEMBER {
 			return _ERROR_BADMAILADDRESS;
 
 		if (!isValidDisplayName($name))
+		{
 			return _ERROR_BADNAME;
-
+		}
 		if (MEMBER::exists($name))
+		{
 			return _ERROR_NICKNAMEINUSE;
-
+		}
 		if (!$realname)
+		{
 			return _ERROR_REALNAMEMISSING;
-
+		}
 		if (!$password)
+		{
 			return _ERROR_PASSWORDMISSING;
-
-		// Sometimes user didn't prefix the URL with http://, this cause a malformed URL. Let's fix it.
-		if (!eregi("^https?://", $url))
-			$url = "http://".$url;
-
-		$name = addslashes($name);
-		$realname = addslashes($realname);
-		$password = addslashes(md5($password));
-		$email = addslashes($email);
-		$url = addslashes($url);
+		}
+		
+		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+		# original eregi: !eregi("^https?://", $url)
+		// begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
+		if (!preg_match('#^https?://#', $url) )
+		{
+			$url = 'http://' . $url;
+		} // end if
+		
+		$name = sql_real_escape_string($name);
+		$realname = sql_real_escape_string($realname);
+		$password = sql_real_escape_string(md5($password));
+		$email = sql_real_escape_string($email);
+		$url = sql_real_escape_string($url);
 		$admin = intval($admin);
 		$canlogin = intval($canlogin);
-		$notes = addslashes($notes);
-
-		if (($admin) && !($canlogin)) {return _ERROR;}
-
+		$notes = sql_real_escape_string($notes);
+		
+		if (($admin) && !($canlogin)) {
+			return _ERROR;
+		}
+		
 		$query = 'INSERT INTO '.sql_table('member')." (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
 			   . "VALUES ('$name','$realname','$password','$email','$url',$admin, $canlogin, '$notes')";
 		sql_query($query);
@@ -656,7 +670,7 @@ class MEMBER {
 	 */
 	function getActivationInfo($key)
 	{
-		$query = 'SELECT * FROM ' . sql_table('activation') . ' WHERE vkey=\'' . addslashes($key). '\'';
+		$query = 'SELECT * FROM ' . sql_table('activation') . ' WHERE vkey=\'' . sql_real_escape_string($key). '\'';
 		$res = sql_query($query);
 
 		if (!$res || (sql_num_rows($res) == 0))
@@ -708,7 +722,7 @@ class MEMBER {
 			// attempt to add entry in database
 			// add in database as non-active
 			$query = 'INSERT INTO ' . sql_table('activation'). ' (vkey, vtime, vmember, vtype, vextra) ';
-			$query .= 'VALUES (\'' . addslashes($key). '\', \'' . date('Y-m-d H:i:s',time()) . '\', \'' . intval($this->getID()). '\', \'' . addslashes($type). '\', \'' . addslashes($extra). '\')';
+			$query .= 'VALUES (\'' . sql_real_escape_string($key). '\', \'' . date('Y-m-d H:i:s',time()) . '\', \'' . intval($this->getID()). '\', \'' . sql_real_escape_string($type). '\', \'' . sql_real_escape_string($extra). '\')';
 			if (sql_query($query))
 				$ok = true;
 		}
@@ -756,7 +770,7 @@ class MEMBER {
 		}
 
 		// delete from activation table
-		sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vkey=\'' . addslashes($key) . '\'');
+		sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vkey=\'' . sql_real_escape_string($key) . '\'');
 
 		// success!
 		return true;
@@ -773,6 +787,9 @@ class MEMBER {
 		$actdays = 2;
 		if (isset($CONF['ActivationDays']) && intval($CONF['ActivationDays']) > 0) {
 		    $actdays = intval($CONF['ActivationDays']);
+		}
+		else {
+			$CONF['ActivationDays'] = 2;
 		}
 		$boundary = time() - (60 * 60 * 24 * $actdays);
 
@@ -792,7 +809,7 @@ class MEMBER {
 				case 'addresschange':
 					// revert the e-mail address of the member back to old address
 					list($oldEmail, $oldCanLogin) = explode('/', $o->vextra);
-					sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin). ', memail=\'' . addslashes($oldEmail). '\' WHERE mnumber=' . intval($o->vmember));
+					sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin). ', memail=\'' . sql_real_escape_string($oldEmail). '\' WHERE mnumber=' . intval($o->vmember));
 					break;
 				case 'forgot':
 					// delete the activation link and ignore. member can request a new password using the

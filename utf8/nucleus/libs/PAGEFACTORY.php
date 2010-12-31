@@ -80,8 +80,7 @@ class PAGEFACTORY extends BaseActions {
 			'ticket',
 			'autosave',
 			'autosaveinfo',
-			'ifautosave',
-			'xmldeclaration'
+			'ifautosave'
 		);
 
 		// TODO: maybe add 'skin' later on?
@@ -172,13 +171,6 @@ class PAGEFACTORY extends BaseActions {
 				$catid = $this->blog->getDefaultCategory();		// on add item
 
 			ADMIN::selectBlogCategory('catid',$catid,$startidx,1,$this->blog->getID());
-	}
-
-	function parse_xmldeclaration() {
-		$ua = serverVar('HTTP_USER_AGENT');
-		if (!(ereg("Windows", $ua) && ereg("MSIE", $ua)) || ereg("MSIE 7", $ua)) {
-			echo '<' . '?xml version="1.0" encoding="' . _CHARSET .'"?' . '>' . "\n";
-		}
 	}
 
 	function parse_blogid() {
@@ -288,17 +280,29 @@ class PAGEFACTORY extends BaseActions {
 	// extra javascript for input and textarea fields
 	function parse_jsinput($which) {
 		global $CONF;
-		$out = 'name="' . $which . '" id="input' . $which . '"';
+	?>
+			name="<?php echo $which?>"
+			id="input<?php echo $which?>"
+	<?php
 		if ($CONF['DisableJsTools'] != 1) {
-			$out .= 'onkeyup="storeCaret(this); updPreview(' . $which . '); doMonitor();"'
-				  . 'onclick="storeCaret(this);"'
-				  . 'onselect="storeCaret(this);"';
-		} elseif ($CONF['DisableJsTools'] == 0) {
-			$out .= ' onkeyup="doMonitor();" onkeypress="shortCuts();"';
-		} else {
-			$out .= ' onkeyup="doMonitor();"';
+	?>
+			onkeyup="storeCaret(this); updPreview('<?php echo $which?>'); doMonitor();"
+			onclick="storeCaret(this);"
+			onselect="storeCaret(this);"
+
+	<?php
 		}
-		echo $out;
+		else if ($CONF['DisableJsTools'] == 0) {
+	?>
+			onkeyup="doMonitor();"
+			onkeypress="shortCuts();"
+	<?php
+		}
+		else {
+	?>
+			onkeyup="doMonitor();"
+	<?php
+		}
 	}
 
 	// shows the javascript button bar
@@ -420,14 +424,15 @@ class PAGEFACTORY extends BaseActions {
 	 * convenience method
 	 */
 	function _jsbutton($type, $code ,$tooltip) {
-		echo <<<__JSBUTTON__
-			<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="{$code}">
-				<img src="images/button-{$type}.gif" title="{$tooltip}" alt="{$tooltip}" width="16" height="16" />
+	?>
+			<span class="jsbutton"
+				onmouseover="BtnHighlight(this);"
+				onmouseout="BtnNormal(this);"
+				onclick="<?php echo $code?>" >
+				<img src="images/button-<?php echo $type?>.gif" alt="<?php echo $tooltip?>" title="<?php echo $tooltip?>" width="16" height="16"/>
 			</span>
-
-__JSBUTTON__;
-	}
-
+	<?php	}
+	
 	function _jsbuttonspacer() {
 		echo '<span class="jsbuttonspacer">&nbsp;</span>';
 	}

@@ -57,7 +57,7 @@ class BAN {
 		);
 
 		$query = 'INSERT INTO '.sql_table('ban')." (blogid, iprange, reason) VALUES "
-			   . "($blogid,'".addslashes($iprange)."','".addslashes($reason)."')";
+			   . "($blogid,'".sql_real_escape_string($iprange)."','".sql_real_escape_string($reason)."')";
 		$res = sql_query($query);
 
 		$manager->notify(
@@ -82,7 +82,7 @@ class BAN {
 
 		$manager->notify('PreDeleteBan', array('blogid' => $blogid, 'range' => $iprange));
 
-		$query = 'DELETE FROM '.sql_table('ban')." WHERE blogid=$blogid and iprange='" .addslashes($iprange). "'";
+		$query = 'DELETE FROM '.sql_table('ban')." WHERE blogid=$blogid and iprange='" .sql_real_escape_string($iprange). "'";
 		sql_query($query);
 
 		$result = (sql_affected_rows() > 0);

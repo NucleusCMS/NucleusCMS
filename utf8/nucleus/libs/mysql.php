@@ -115,8 +115,11 @@ if (!function_exists('mysql_query'))
 		global $MYSQL_CONN;
 		return mysqli_affected_rows($MYSQL_CONN);
 	}
+
+	function mysql_real_escape_string($val)
+	{
+		global $MYSQL_CONN;
+		return mysqli_real_escape_string($MYSQL_CONN,$val);
+	}
 }
-
-
-
 ?>

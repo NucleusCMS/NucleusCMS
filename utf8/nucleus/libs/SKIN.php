@@ -66,7 +66,7 @@ class SKIN {
 	 * @static
 	 */
 	function exists($name) {
-		return quickQuery('select count(*) as result FROM '.sql_table('skin_desc').' WHERE sdname="'.addslashes($name).'"') > 0;
+		return quickQuery('select count(*) as result FROM '.sql_table('skin_desc').' WHERE sdname="'.sql_real_escape_string($name).'"') > 0;
 	}
 
 	/**
@@ -98,7 +98,7 @@ class SKIN {
 	function getIdFromName($name) {
 		$query =  'SELECT sdnumber'
 			   . ' FROM '.sql_table('skin_desc')
-			   . ' WHERE sdname="'.addslashes($name).'"';
+			   . ' WHERE sdname="'.sql_real_escape_string($name).'"';
 		$res = sql_query($query);
 		$obj = sql_fetch_object($res);
 		return $obj->sdnumber;
@@ -133,7 +133,7 @@ class SKIN {
 			)
 		);
 
-		sql_query('INSERT INTO '.sql_table('skin_desc')." (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('" . addslashes($name) . "','" . addslashes($desc) . "','".addslashes($type)."','".addslashes($includeMode)."','".addslashes($includePrefix)."')");
+		sql_query('INSERT INTO '.sql_table('skin_desc')." (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('" . sql_real_escape_string($name) . "','" . sql_real_escape_string($desc) . "','".sql_real_escape_string($type)."','".sql_real_escape_string($includeMode)."','".sql_real_escape_string($includePrefix)."')");
 		$newid = sql_insert_id();
 
 		$manager->notify(
@@ -153,19 +153,19 @@ class SKIN {
 
 	function parse($type) {
 		global $manager, $CONF, $skinid;
-
+		
 		$manager->notify('InitSkinParse',array('skin' => &$this, 'type' => $type));
-        $skinid = $this->id;
-
+		$skinid = $this->id;
+		
 		// set output type
 		sendContentType($this->getContentType(), 'skin', _CHARSET);
-
+		
 		// set skin name as global var (so plugins can access it)
 		global $currentSkinName;
 		$currentSkinName = $this->getName();
-
+		
 		$contents = $this->getContent($type);
-
+		
 		if (!$contents) {
 			// use base skin if this skin does not have contents
 			$defskin =& new SKIN($CONF['BaseSkin']);
@@ -175,30 +175,30 @@ class SKIN {
 				return;
 			}
 		}
-
+		
 		$actions = $this->getAllowedActionsForType($type);
-
+		
 		$manager->notify('PreSkinParse',array('skin' => &$this, 'type' => $type, 'contents' => &$contents));
-        $skinid = $this->id;
-
+		$skinid = $this->id;
+		
 		// set IncludeMode properties of parser
 		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
 		PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());
-
+		
 		$handler =& new ACTIONS($type, $this);
 		$parser =& new PARSER($actions, $handler);
 		$handler->setParser($parser);
 		$handler->setSkin($this);
 		$parser->parse($contents);
-
+		
 		$manager->notify('PostSkinParse',array('skin' => &$this, 'type' => $type));
-        $skinid = $this->id;
+		$skinid = $this->id;
 
 
 	}
 
 	function getContent($type) {
-		$query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". addslashes($type) ."'";
+		$query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". sql_real_escape_string($type) ."'";
 		$res = sql_query($query);
 
 		if (sql_num_rows($res) == 0)
@@ -214,11 +214,11 @@ class SKIN {
 		$skinid = $this->id;
 
 		// delete old thingie
-		sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='".addslashes($type)."' and sdesc=" . intval($skinid));
+		sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='".sql_real_escape_string($type)."' and sdesc=" . intval($skinid));
 
 		// write new thingie
 		if ($content) {
-			sql_query('INSERT INTO '.sql_table('skin')." SET scontent='" . addslashes($content) . "', stype='" . addslashes($type) . "', sdesc=" . intval($skinid));
+			sql_query('INSERT INTO '.sql_table('skin')." SET scontent='" . sql_real_escape_string($content) . "', stype='" . sql_real_escape_string($type) . "', sdesc=" . intval($skinid));
 		}
 	}
 
@@ -234,11 +234,11 @@ class SKIN {
 	 */
 	function updateGeneralInfo($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
 		$query =  'UPDATE '.sql_table('skin_desc').' SET'
-			   . " sdname='" . addslashes($name) . "',"
-			   . " sddesc='" . addslashes($desc) . "',"
-			   . " sdtype='" . addslashes($type) . "',"
-			   . " sdincmode='" . addslashes($includeMode) . "',"
-			   . " sdincpref='" . addslashes($includePrefix) . "'"
+			   . " sdname='" . sql_real_escape_string($name) . "',"
+			   . " sddesc='" . sql_real_escape_string($desc) . "',"
+			   . " sdtype='" . sql_real_escape_string($type) . "',"
+			   . " sdincmode='" . sql_real_escape_string($includeMode) . "',"
+			   . " sdincpref='" . sql_real_escape_string($includePrefix) . "'"
 			   . " WHERE sdnumber=" . $this->getID();
 		sql_query($query);
 	}
@@ -375,6 +375,7 @@ class SKIN {
 								'membermailform',
 								'blogsetting',
 //								'nucleusbutton'
+								'categorylist'
 				);
 				break;
 			case 'item':
@@ -401,7 +402,8 @@ class SKIN {
 				break;
 			case 'error':
 				$extraActions = array(
-								'errormessage'
+								'errormessage',
+								'categorylist'
 				);
 				break;
 			default:
@@ -419,6 +421,7 @@ class SKIN {
 						'prevlink',
 						'membermailform',
 //						'nucleusbutton'
+						'categorylist'
 					);
 				}
 				break;
