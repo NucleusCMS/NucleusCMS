@@ -55,11 +55,11 @@ function upgrade_do250() {
 				$query = 'INSERT INTO ' . sql_table('plugin_option_desc')
 					   .' (opid, oname, ocontext, odesc, otype)'
 					   ." VALUES ("
-							."'".sql_real_escape_string($o->opid)."',"
-							."'".sql_real_escape_string($o->oname) ."',"
+							."'".addslashes($o->opid)."',"
+							."'".addslashes($o->oname) ."',"
 							."'global',"
-							."'".sql_real_escape_string($o->odesc) ."',"
-							."'".sql_real_escape_string($o->otype) ."')";
+							."'".addslashes($o->odesc) ."',"
+							."'".addslashes($o->otype) ."')";
 				upgrade_query('Moving option description for '.htmlspecialchars($o->oname).' to ' . sql_table('plugin_option_desc'), $query);
 	
 				// store new id
@@ -92,7 +92,7 @@ function upgrade_do250() {
 				foreach ($aValues as $aInfo) {
 					$query = 'INSERT INTO ' . sql_table('plugin_option') 
 						   .' (oid, ocontextid, ovalue)'
-						   ." VALUES (".$aInfo['id'].",'0','".sql_real_escape_string($aInfo['value'])."')";
+						   ." VALUES (".$aInfo['id'].",'0','".addslashes($aInfo['value'])."')";
 					upgrade_query('Re-filling ' . sql_table('plugin_option') . ' ('.$aInfo['id'].')', $query);
 				}
 			}	

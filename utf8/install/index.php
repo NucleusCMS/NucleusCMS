@@ -184,7 +184,7 @@ function showInstallForm() {
 	$conn   = sql_connect_args('localhost','','');
 	$result = @sql_query('SELECT VERSION() AS version', $conn);
 
-	if ($result != FALSE && @sql_num_rows($result) > 0) {
+	if ($result != FALSE && sql_num_rows($result) > 0) {
 		$row   = sql_fetch_array($result);
 		$match = explode('.', $row['version']);
 	} else {
@@ -737,11 +737,11 @@ function doInstall() {
 
 	// 7. update GOD member
 	$query = 'UPDATE ' . tableName('nucleus_member')
-		   . " SET mname	 = '" . sql_real_escape_string($user_name) . "',"
-		   . " mrealname	 = '" . sql_real_escape_string($user_realname) . "',"
-		   . " mpassword	 = '" . md5(sql_real_escape_string($user_password) ) . "',"
-		   . " murl		  = '" . sql_real_escape_string($config_indexurl) . "',"
-		   . " memail		= '" . sql_real_escape_string($user_email) . "',"
+		   . " SET mname	 = '" . addslashes($user_name) . "',"
+		   . " mrealname	 = '" . addslashes($user_realname) . "',"
+		   . " mpassword	 = '" . md5(addslashes($user_password) ) . "',"
+		   . " murl		  = '" . addslashes($config_indexurl) . "',"
+		   . " memail		= '" . addslashes($user_email) . "',"
 		   . " madmin		= 1,"
 		   . " mcanlogin	 = 1"
 		   . " WHERE"
@@ -751,9 +751,9 @@ function doInstall() {
 
 	// 8. update weblog settings
 	$query = 'UPDATE ' . tableName('nucleus_blog')
-		   . " SET bname  = '" . sql_real_escape_string($blog_name) . "',"
-		   . " bshortname = '" . sql_real_escape_string($blog_shortname) . "',"
-		   . " burl	   = '" . sql_real_escape_string($config_indexurl) . "'"
+		   . " SET bname  = '" . addslashes($blog_name) . "',"
+		   . " bshortname = '" . addslashes($blog_shortname) . "',"
+		   . " burl	   = '" . addslashes($config_indexurl) . "'"
 		   . " WHERE"
 		   . " bnumber	= 1";
 
@@ -996,7 +996,7 @@ function installCustomPlugs(&$manager) {
 
 	foreach ($aConfPlugsToInstall as $plugName) {
 		// do this before calling getPlugin (in case the plugin id is used there)
-		$query = 'INSERT INTO ' . sql_table('plugin') . ' (porder, pfile) VALUES (' . (++$numCurrent) . ', "' . sql_real_escape_string($plugName) . '")';
+		$query = 'INSERT INTO ' . sql_table('plugin') . ' (porder, pfile) VALUES (' . (++$numCurrent) . ', "' . addslashes($plugName) . '")';
 		sql_query($query);
 
 		// get and install the plugin
@@ -1005,7 +1005,7 @@ function installCustomPlugs(&$manager) {
 		$plugin->plugid = $numCurrent;
 
 		if (!$plugin) {
-			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pfile=\'' . sql_real_escape_string($plugName) . '\'');
+			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pfile=\'' . addslashes($plugName) . '\'');
 			$numCurrent--;
 			array_push($aErrors, _ERROR22 . $plugName);
 			continue;
@@ -1124,8 +1124,8 @@ function doCheckFiles() {
 
 function updateConfig($name, $val) {
 	global $MYSQL_CONN;
-	$name = sql_real_escape_string($name);
-	$val  = trim(sql_real_escape_string($val) );
+	$name = addslashes($name);
+	$val  = trim(addslashes($val) );
 
 	$query = 'UPDATE ' . tableName('nucleus_config')
 		   . " SET   value = '$val'"

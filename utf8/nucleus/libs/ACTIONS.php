@@ -287,7 +287,7 @@ class ACTIONS extends BaseActions {
 		global $CONF, $blog, $query, $amount;
 		// TODO: Move request uri to linkparams. this is ugly. sorry for that.
 		$startpos	= intval($startpos);		// will be 0 when empty.
-		$path			= $parsed['path'];
+		$path		= $parsed['path'];
 		$parsed		= parse_url(serverVar('REQUEST_URI'));
 		$parsed		= $parsed['query'];
 		$url			= '';

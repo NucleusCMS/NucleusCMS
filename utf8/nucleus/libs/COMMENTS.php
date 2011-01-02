@@ -305,11 +305,13 @@ class COMMENTS {
 		// check if there exists a item for this date
 		$item =& $manager->getItem($this->itemid,0,0);
 		
-		if (!$item) {
+		if (!$item)
+		{
 			return _ERROR_NOSUCHITEM;
 		}
 		
-		if ($item['closed']) {
+		if ($item['closed'])
+		{
 			return _ERROR_ITEMCLOSED;
 		}
 		
@@ -323,21 +325,25 @@ class COMMENTS {
 		}
 		
 		// check lengths of comment
-		if (strlen($comment['body'])<3) {
+		if (strlen($comment['body'])<3)
+		{
 			return _ERROR_COMMENT_NOCOMMENT;
 		}
 		
-		if (strlen($comment['body'])>5000) {
+		if (strlen($comment['body'])>5000)
+		{
 			return _ERROR_COMMENT_TOOLONG;
 		}
 		
 		// only check username if no member logged in
-		if (!$member->isLoggedIn()) {
+		if (!$member->isLoggedIn())
+		{
 			if (strlen($comment['user'])<2)
 				return _ERROR_COMMENT_NOUSERNAME;
 		}
 		
 		if ((strlen($comment['email']) != 0) && !(isValidMailAddress(trim($comment['email']) ) ) )
+		{
 			return _ERROR_BADMAILADDRESS;
 		}
 		
@@ -345,10 +351,7 @@ class COMMENTS {
 		// can change 'error' to something other than '1')
 		$result = 1;
 		$manager->notify('ValidateForm', array('type' => 'comment', 'comment' => &$comment, 'error' => &$result, 'spamcheck' => &$spamcheck));
-
 		return $result;
 	}
-
 }
-
 ?>

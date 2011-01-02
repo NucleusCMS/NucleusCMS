@@ -519,7 +519,7 @@ class MANAGER {
             //  leaving the keys in the database is not a real problem, since they're member-specific and
             //  only valid for a period of one hour
             // ]
-            // sql_query('DELETE FROM '.sql_table('tickets').' WHERE member=' . intval($memberId). ' and ticket=\''.sql_real_escape_string($ticket).'\'');
+            // sql_query('DELETE FROM '.sql_table('tickets').' WHERE member=' . intval($memberId). ' and ticket=\''.addslashes($ticket).'\'');
             return true;
         } else {
             // not a valid ticket

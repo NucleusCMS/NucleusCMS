@@ -1551,7 +1551,8 @@ class ADMIN {
 		}
 		
 		// check length
-		if (strlen($body) < 3) {
+		if (strlen($body) < 3)
+		{
 			$this->error(_ERROR_COMMENT_NOCOMMENT);
 		}
 		if (strlen($body)>5000)
@@ -1917,7 +1918,7 @@ class ADMIN {
 		// begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
 		if (!preg_match('#^https?://#', $url) )
 		{
-			$url = "http://" . $url;
+			$url = 'http://' . $url;
 		}
 		$admin		  = postVar('admin');
 		$canlogin	   = postVar('canlogin');

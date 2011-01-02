@@ -1937,19 +1937,22 @@ function ticketForPlugin(){
 	}
 	
 	/* Return if not index.php */
-	if ( $phppath!=strtolower($plugin_name).'/' && $phppath!=strtolower($plugin_name).'/index.php' ) {
+	if ( ($phppath != strtolower($plugin_name) . '/') && ($phppath != strtolower($plugin_name) . '/index.php') )
+	{
 		return;
 	}
 
 	/* Exit if not logged in. */
-	if ( !$member->isLoggedIn() ) {
+	if ( !$member->isLoggedIn() )
+	{
 		exit(_GFUNCTIONS_YOU_AERNT_LOGGEDIN);
 	}
 
 	global $manager,$DIR_LIBS,$DIR_LANG,$HTTP_GET_VARS,$HTTP_POST_VARS;
 
 	/* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
-	if (!($p_translated=serverVar('PATH_TRANSLATED'))) {
+	if (!($p_translated=serverVar('PATH_TRANSLATED')))
+	{
 		$p_translated=serverVar('SCRIPT_FILENAME');
 	}
 	if ($file=@file($p_translated))
@@ -1957,7 +1960,8 @@ function ticketForPlugin(){
 		$prevline='';
 		foreach($file as $line)
 		{
-			if (preg_match('/[\$]manager([\s]*)[\-]>([\s]*)checkTicket([\s]*)[\(]/i',$prevline.$line)) {
+			if (preg_match('/[\$]manager([\s]*)[\-]>([\s]*)checkTicket([\s]*)[\(]/i',$prevline.$line))
+			{
 				return;
 			}
 			$prevline=$line;
@@ -1999,13 +2003,16 @@ function ticketForPlugin(){
 		if ($uri=serverVar('REQUEST_URI'))
 		{
 			list($uri,$qstring)=explode('?',$uri);
-		} else {
+		}
+		else
+		{
 			if ( !($uri=serverVar('PHP_SELF')) ) {
 				$uri=serverVar('SCRIPT_NAME');
 			}
 			$qstring=serverVar('QUERY_STRING');
 		}
-		if ($qstring) {
+		if ($qstring)
+		{
 			$qstring='?'.$qstring;
 		}
 		echo '<p>'._SETTINGS_UPDATE.' : '._QMENU_PLUGINS.' <span style="color:red;">'.htmlspecialchars($plugin_name)."</span> ?</p>\n";

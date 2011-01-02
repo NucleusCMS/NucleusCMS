@@ -57,14 +57,14 @@ function upgrade_do200() {
     // add SkinsURL setting
     if (!upgrade_checkIfCVExists('SkinsURL')) {
         $skinsurl = str_replace('/media/','/skins/',$CONF['MediaURL']);
-        $query = 'INSERT INTO '.sql_table('config')." VALUES ('SkinsURL', '".sql_real_escape_string($skinsurl)."');";
+        $query = 'INSERT INTO '.sql_table('config')." VALUES ('SkinsURL', '".addslashes($skinsurl)."');";
         upgrade_query("Adding setting SkinsURL",$query);
     }
 
     // add ActionURL setting
     if (!upgrade_checkIfCVExists('ActionURL')) {
         $actionurl = str_replace('/media/','/action.php',$CONF['MediaURL']);
-        $query = 'INSERT INTO '.sql_table('config')." VALUES ('ActionURL', '".sql_real_escape_string($actionurl)."');";
+        $query = 'INSERT INTO '.sql_table('config')." VALUES ('ActionURL', '".addslashes($actionurl)."');";
         upgrade_query("Adding setting ActionURL",$query);
     }
     

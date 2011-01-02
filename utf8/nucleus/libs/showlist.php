@@ -374,8 +374,7 @@ function listplug_table_itemlist($template, $type) {
 				echo "<a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>";
 				echo "( " . sprintf(_LIST_ITEM_COMMENTS, $COMMENTS->amountComments())." )</a>";
 			}
-			else
-			{
+			else {
 				echo _LIST_ITEM_NOCONTENT;
 			}
 			echo "</td>";

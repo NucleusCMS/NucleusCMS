@@ -279,8 +279,15 @@ function media_choose() {
 		<input name="collection" type="hidden" value="<?php echo htmlspecialchars(requestVar('collection'))?>" />
 	<?php		} // if sizeof
 	?>
-	  <br /><br />
-	  <input type="submit" value="<?php echo _UPLOAD_BUTTON?>" />
+	<br /><br />
+	<?php
+	$manager->notify(
+		'MediaUploadFormExtras',
+		array()
+	);
+	?>
+	<br /><br />
+	<input type="submit" value="<?php echo _UPLOAD_BUTTON?>" />
 	</div>
 	</form>
 
@@ -294,15 +301,20 @@ function media_choose() {
   */
 function media_upload() {
 	global $DIR_MEDIA, $member, $CONF;
-
+	
 	$uploadInfo = postFileInfo('uploadfile');
-
+	
 	$filename = $uploadInfo['name'];
 	$filetype = $uploadInfo['type'];
 	$filesize = $uploadInfo['size'];
 	$filetempname = $uploadInfo['tmp_name'];
 	$fileerror = intval($uploadInfo['error']);
-
+	
+	// clean filename of characters that may cause trouble in a filename using cleanFileName() function from globalfunctions.php
+	$filename = cleanFileName($filename);
+	if ($filename === false) 
+		media_doError(_ERROR_BADFILETYPE);
+	
 	switch ($fileerror)
 	{
 		case 0: // = UPLOAD_ERR_OK
@@ -357,8 +369,8 @@ function media_loginAndPassThrough() {
 		<div>
 			<input name="action" value="login" type="hidden" />
 			<input name="collection" value="<?php echo htmlspecialchars(requestVar('collection'))?>" type="hidden" />
-			<?php echo _LOGINFORM_NAME?> <input name="login" />
-			<br /><?php echo _LOGINFORM_PWD?> <input name="password" type="password" />
+			<?php echo _LOGINFORM_NAME?>: <input name="login" />
+			<br /><?php echo _LOGINFORM_PWD?>: <input name="password" type="password" />
 			<br /><input type="submit" value="<?php echo _LOGIN?>" />
 		</div>
 		</form>

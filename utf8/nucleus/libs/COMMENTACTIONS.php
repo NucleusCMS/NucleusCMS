@@ -122,8 +122,8 @@ class COMMENTACTIONS extends BaseActions {
 											'extra' => $this->commentsObj->itemActions->linkparams
 										)
 									  );
-		// else: non-member comment
 		}
+		// else: non-member comment
 		else
 		{
 			// create smart links
