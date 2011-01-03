@@ -19,7 +19,7 @@
 	$CONF['UsingAdminArea'] = 1;
 
 	// include the admin code
-	include('../config.php');
+	require_once('../config.php');
 
 	if ($CONF['alertOnSecurityRisk'] == 1)
 	{

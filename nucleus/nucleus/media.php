@@ -33,8 +33,10 @@ $CONF = array();
 $CONF['MediaPerPage'] = 10;
 
 // include all classes and config data
-require('../config.php');
-include($DIR_LIBS . 'MEDIA.php');	// media classes
+$DIR_LIBS = '';
+require_once('../config.php');
+//include($DIR_LIBS . 'MEDIA.php');	// media classes
+include_libs('MEDIA.php',false,false);
 
 sendContentType('application/xhtml+xml', 'media');
 
