@@ -361,7 +361,8 @@
 			_error(8, 'Filetype is not allowed');
 
 		// - add file to media library
-		include_once($DIR_LIBS . 'MEDIA.php');	// media classes
+		//include_once($DIR_LIBS . 'MEDIA.php');	// media classes
+		include_libs('MEDIA.php',true,false);
 
 		// always use private media library of member
 		$collection = $mem->getID();

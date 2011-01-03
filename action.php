@@ -22,7 +22,8 @@ $CONF = array();
 require('./config.php');
 
 // common functions
-include_once($DIR_LIBS . 'ACTION.php');
+//include_once($DIR_LIBS . 'ACTION.php');
+include_libs('ACTION.php',true,false);
 
 $action = requestVar('action');
 $a =& new ACTION();

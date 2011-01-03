@@ -30,6 +30,7 @@
 	<li>
 		<strong>Nucleus v3.62 SVN</strong>
 		<ul>
+			<li>CHANGE: add redundant safeguards against security issues caused by case where register_globals is on and the config.php file is missing (Rare!!!) (ftruscot)</li>
 			<li>CHANGE: make CONF variable, AdminCSS, to hold name of admin area style to use. default to original. (ftruscot)</li>
 			<li>FIX: use of strripos in cleanFileName() not PHP4 compatible, switched to use of strrpos() since no functionality lost. (ftruscot)</li>
 			<li>FIX: replace ereg* functions in remaining core files, including core plugins. (ftruscot).</li>

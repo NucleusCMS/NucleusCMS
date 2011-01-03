@@ -1,6 +1,7 @@
 <?php
-	include "./config.php";
-	include $DIR_LIBS."ACTION.php";
+	require_once "./config.php";
+	//include $DIR_LIBS."ACTION.php";
+	include_libs('ACTION.php',false,false);
 	
 	if (isset ($_POST['showform'])&&$_POST['showform']==1) {
 		$showform = 1;
