@@ -267,8 +267,15 @@ if ($action == 'login') {
         $errormessage = '';
         ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
     } else {
-        // errormessage for [%errordiv%]
-        $errormessage = 'Login failed for ' . $login;
+		// errormessage for [%errordiv%]
+		if (empty(trim($login)))
+		{
+			$errormessage = "Please enter a username.";
+		}
+		else 
+		{
+			$errormessage = 'Login failed for ' . $login;
+		} 
 
         $manager->notify('LoginFailed', array('username' => $login) );
         ACTIONLOG::add(INFO, $errormessage);
