@@ -181,8 +181,7 @@ class NP_Ping extends NucleusPlugin
     function sendPings($data) {
 
         if (!class_exists('xmlrpcmsg')) {
-            global $DIR_LIBS;
-            include($DIR_LIBS . 'xmlrpc.inc.php');
+            include_libs('xmlrpc.inc.php');
         }
         $this->myBlogId = $data['blogid'];
 

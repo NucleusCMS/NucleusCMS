@@ -363,12 +363,16 @@
 		$ok = 0;
 		$allowedtypes = explode (',', $CONF['AllowedTypes']);
 		foreach ( $allowedtypes as $type )
-			if (eregi("\." .$type. "$",$filename)) $ok = 1;
+		{
+			//if (eregi("\." .$type. "$",$filename)) $ok = 1;
+			if (preg_match("#\." .$type. "$#i",$filename)) $ok = 1;
+		}
 		if (!$ok)
 			_error(8, 'Filetype is not allowed');
 
 		// - add file to media library
-		include_once($DIR_LIBS . 'MEDIA.php');	// media classes
+		//include_once($DIR_LIBS . 'MEDIA.php');	// media classes
+		include_libs('MEDIA.php',true,false);
 
 		// always use private media library of member
 		$collection = $mem->getID();

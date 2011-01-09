@@ -94,7 +94,7 @@ class SEARCH {
 
 	function boolean_inclusive_atoms($string) {
 		$result = trim($string);
-		$result = preg_replace("/([[:space:]]{2,})/", ' ', $result);
+		$result = preg_replace("#([[:space:]]{2,})#", ' ', $result);
 		
 		# replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
 		# just added delimiters to regex and the 'i' for case-insensitive matching
@@ -112,7 +112,7 @@ class SEARCH {
 		
 		/* strip exlusive atoms */
 		$result = preg_replace(
-			"(\-\(([A-Za-z0-9]|$this->two|$this->three){1,}([A-Za-z0-9\-\.\_\,]|$this->two|$this->three){0,}\))",
+			"#\-\(([A-Za-z0-9]|$this->two|$this->three){1,}([A-Za-z0-9\-\.\_\,]|$this->two|$this->three){0,}\)#",
 			'',
 			$result);
 		
@@ -155,10 +155,12 @@ class SEARCH {
 		$result=trim($string);
 		$result=preg_replace("/([[:space:]]{2,})/",' ',$result);
 
-		// convert normal boolean operators to shortened syntax
-		$result=eregi_replace(' not ',' -',$result);
-		$result=eregi_replace(' and ',' ',$result);
-		$result=eregi_replace(' or ',',',$result);
+		# replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+		# just added delimiters to regex and the 'i' for case-insensitive matching
+
+		$result = preg_replace('# not #i', ' -', $result);
+		$result = preg_replace('# and #i', ' ', $result);
+		$result = preg_replace('# or #i', ',', $result);
 
 		// strip excessive whitespace
 		$result=str_replace('( ','(',$result);
@@ -170,12 +172,13 @@ class SEARCH {
 
 		// remove double spaces (we might have introduced some new ones above)
 		$result=trim($result);
-		$result=preg_replace("/([[:space:]]{2,})/",' ',$result);
+		$result=preg_replace("#([[:space:]]{2,})#",' ',$result);
 
 		// apply arbitrary function to all 'word' atoms
 
-		$result_a = explode(" ",$result);
-		for($word=0;$word<count($result_a);$word++){
+		$result_a = explode(' ',$result);
+		for($word=0;$word<count($result_a);$word++)
+		{
 			$result_a[$word] = "foo[('".$result_a[$word]."')]bar";
 		}
 		$result = implode(" ",$result_a);

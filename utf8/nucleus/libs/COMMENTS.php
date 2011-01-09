@@ -339,7 +339,9 @@ class COMMENTS {
 		if (!$member->isLoggedIn())
 		{
 			if (strlen($comment['user'])<2)
+			{
 				return _ERROR_COMMENT_NOUSERNAME;
+			}
 		}
 		
 		if ((strlen($comment['email']) != 0) && !(isValidMailAddress(trim($comment['email']) ) ) )

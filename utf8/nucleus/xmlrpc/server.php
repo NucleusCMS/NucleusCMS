@@ -67,8 +67,10 @@
  */
 $CONF = array();
 require("../../config.php");	// include Nucleus libs and code
-include($DIR_LIBS . "xmlrpc.inc.php");
-include($DIR_LIBS . "xmlrpcs.inc.php");
+//include($DIR_LIBS . "xmlrpc.inc.php");
+//include($DIR_LIBS . "xmlrpcs.inc.php");
+include_libs('xmlrpc.inc.php',false,false);
+include_libs('xmlrpcs.inc.php',false,false);
 
 /* define xmlrpc settings */
 $xmlrpc_internalencoding = _CHARSET;

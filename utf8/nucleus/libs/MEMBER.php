@@ -613,8 +613,9 @@ class MEMBER {
 	 */
 	function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes) {
 		if (!isValidMailAddress($email))
+		{
 			return _ERROR_BADMAILADDRESS;
-
+		}
 		if (!isValidDisplayName($name))
 		{
 			return _ERROR_BADNAME;

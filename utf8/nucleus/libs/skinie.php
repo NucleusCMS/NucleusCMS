@@ -565,7 +565,7 @@ class SKINEXPORT {
 				if (strtoupper(_CHARSET) != 'UTF-8') {
 					$skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
 				}
-				echo "\t\t" . '<skin name="' . $skinName . '" />' . "\n";
+				echo "\t\t" . '<skin name="' . htmlspecialchars($skinName, ENT_QUOTES) . '" />' . "\n";
 			}
 			// templates
 			foreach ($this->templates as $templateId => $templateName) {
@@ -573,7 +573,7 @@ class SKINEXPORT {
 				if (strtoupper(_CHARSET) != 'UTF-8') {
 					$templateName = mb_convert_encoding($templateName, 'UTF-8', _CHARSET);
 				}
-				echo "\t\t" . '<template name="' . $templateName . '" />' . "\n";
+				echo "\t\t" . '<template name="' . htmlspecialchars($templateName, ENT_QUOTES) . '" />' . "\n";
 			}
 			// extra info
 			if ($this->info) {

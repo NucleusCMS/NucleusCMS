@@ -34,8 +34,10 @@ $CONF = array();
 $CONF['MediaPerPage'] = 10;
 
 // include all classes and config data
-require('../config.php');
-include($DIR_LIBS . 'MEDIA.php');	// media classes
+$DIR_LIBS = '';
+require_once('../config.php');
+//include($DIR_LIBS . 'MEDIA.php');	// media classes
+include_libs('MEDIA.php',false,false);
 
 sendContentType('application/xhtml+xml', 'media');
 
@@ -331,20 +333,23 @@ function media_upload() {
 			// (see http://www.php.net/manual/en/features.file-upload.errors.php)
 			media_doError(_ERROR_BADREQUEST . ' (' . $fileerror . ')');
 	}
-
+	
 	if ($filesize > $CONF['MaxUploadSize'])
 		media_doError(_ERROR_FILE_TOO_BIG);
-
+	
 	// check file type against allowed types
 	$ok = 0;
 	$allowedtypes = explode (',', $CONF['AllowedTypes']);
 	foreach ( $allowedtypes as $type )
-		if (eregi("\." .$type. "$",$filename)) $ok = 1;
+	{
+		//if (eregi("\." .$type. "$",$filename)) $ok = 1;
+		if (preg_match("#\." .$type. "$#i",$filename)) $ok = 1;
+	}
 	if (!$ok) media_doError(_ERROR_BADFILETYPE);
-
+	
 	if (!is_uploaded_file($filetempname))
 		media_doError(_ERROR_BADREQUEST);
-
+	
 	// prefix filename with current date (YYYY-MM-DD-)
 	// this to avoid nameclashes
 	if ($CONF['MediaPrefix'])

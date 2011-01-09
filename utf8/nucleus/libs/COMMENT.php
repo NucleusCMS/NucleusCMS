@@ -71,19 +71,23 @@ class COMMENT {
 	function prepareBody($body) {
 		# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
 		# original ereg_replace: ereg_replace("\n.\n.\n", "\n", $body);
-		// remove newlines when too many in a row		
+		
+		// convert Windows and Mac style 'returns' to *nix newlines
 		$body = preg_replace("/\r\n/", "\n", $body);
-		$body = preg_replace("/\n+/", "\n", $body);
+		$body = preg_replace("/\r/", "\n", $body);
+		
+		// then remove newlines when too many in a row (3 or more newlines get converted to 1 newline)
+		$body = preg_replace("/\n{3,}/", "\n\n", $body);
 		
 		// encode special characters as entities
 		$body = htmlspecialchars($body);
-
+		
 		// trim away whitespace and newlines at beginning and end
 		$body = trim($body);
-
+		
 		// add <br /> tags
 		$body = addBreaks($body);
-
+		
 		// create hyperlinks for http:// addresses
 		// there's a testcase for this in /build/testcases/urllinking.txt
 		$replaceFrom = array(
@@ -99,7 +103,7 @@ class COMMENT {
 			'COMMENT::createLinkCode("\\1", "\\3","mailto")'
 		);
 		$body = preg_replace($replaceFrom, $replaceTo, $body);
-
+		
 		return $body;
 	}
 

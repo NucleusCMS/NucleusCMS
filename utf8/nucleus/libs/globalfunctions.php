@@ -20,7 +20,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.61';
+$nucleus['version'] = 'v3.62';
 $nucleus['codename'] = '';
 
 // check and die if someone is trying to override internal globals (when register_globals turn on)
@@ -268,8 +268,15 @@ if ($action == 'login') {
 		ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
 	} else {
 		// errormessage for [%errordiv%]
-		$errormessage = 'Login failed for ' . $login;
-
+		$trimlogin = trim($login);
+		if (empty($trimlogin))
+		{
+			$errormessage = "Please enter a username.";
+		}
+		else 
+		{
+			$errormessage = 'Login failed for ' . $login;
+		} 
 		$manager->notify('LoginFailed', array('username' => $login) );
 		ACTIONLOG::add(INFO, $errormessage);
 	}
@@ -557,7 +564,7 @@ function intCookieVar($name) {
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 361;
+	return 362;
 }
 
 /**
@@ -725,21 +732,21 @@ function highlight($text, $expression, $highlight) {
 	{
 		return $text;
 	}
-
+	
 	if (is_array($expression) && (count($expression) == 0) )
 	{
 		return $text;
 	}
-
+	
 	// add a tag in front (is needed for preg_match_all to work correct)
 	$text = '<!--h-->' . $text;
-
+	
 	// split the HTML up so we have HTML tags
 	// $matches[0][i] = HTML + text
 	// $matches[1][i] = HTML
 	// $matches[2][i] = text
 	preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
-
+	
 	// throw it all together again while applying the highlight to the text pieces
 	$result = '';
 	$count_matches = count($matches[2]);
@@ -748,25 +755,27 @@ function highlight($text, $expression, $highlight) {
 		{
 			$result .= $matches[1][$i];
 		}
-
+		
 		if (is_array($expression) )
 		{
 			foreach ($expression as $regex)
 			{
 				if ($regex)
 				{
-					$matches[2][$i] = @eregi_replace($regex, $highlight, $matches[2][$i]);
+					//$matches[2][$i] = @eregi_replace($regex, $highlight, $matches[2][$i]);
+					$matches[2][$i] = @preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
 				}
 			}
-
+			
 			$result .= $matches[2][$i];
 		}
 		else
 		{
-			$result .= @eregi_replace($expression, $highlight, $matches[2][$i]);
+			//$result .= @eregi_replace($expression, $highlight, $matches[2][$i]);
+			$result .= @preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
 		}
 	}
-
+	
 	return $result;
 }
 
@@ -2006,7 +2015,8 @@ function ticketForPlugin(){
 		}
 		else
 		{
-			if ( !($uri=serverVar('PHP_SELF')) ) {
+			if ( !($uri=serverVar('PHP_SELF')) )
+			{
 				$uri=serverVar('SCRIPT_NAME');
 			}
 			$qstring=serverVar('QUERY_STRING');
@@ -2363,12 +2373,12 @@ function cleanFileName($str) {
 	$cleaner[] = array('expression'=>"/[ç]/",'replace'=>"c");
 	
 	$str = strtolower($str);
-	$ext_point = strripos($str,".");
+	$ext_point = strrpos($str,".");
 	if ($ext_point===false) return false;
 	$ext = substr($str,$ext_point,strlen($str));
 	$str = substr($str,0,$ext_point);
 	
-	foreach( $cleaner as $cv ) $str = preg_replace($cv["expression"],$cv["replace"],$str);
+	//foreach( $cleaner as $cv ) $str = preg_replace($cv["expression"],$cv["replace"],$str);
 	
 	return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
 }

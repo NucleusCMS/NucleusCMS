@@ -1472,7 +1472,7 @@ class ADMIN {
 		
 		// replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
 		/* original eregi_replace: eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>", "\\1", $comment['body']) */
-		$comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#I", "\\1", $comment['body']);
+		$comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#i", "\\1", $comment['body']);
 		
 		$this->pagehead();
 
@@ -4834,6 +4834,33 @@ selector();
 				<input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  htmlspecialchars((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
 			</td>
 		</tr><tr>
+			<td><?php echo _SETTINGS_ADMINCSS?> 
+			</td>
+			<td>
+				<select name="AdminCSS" tabindex="10080">
+				<?php		// show a dropdown list of all available admin css files
+					global $DIR_NUCLEUS;
+					$dirhandle = opendir($DIR_NUCLEUS."styles/");
+				while ($filename = readdir($dirhandle) )
+				{
+					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+					# original ereg: ereg("^(.*)\.php$",$filename,$matches)
+					if (preg_match('#^admin_(.*)\.css$#', $filename, $matches) )
+					{
+						$name = $matches[1];
+						echo "<option value=\"$name\"";
+						if ($name == $CONF['AdminCSS'])
+						{
+							echo " selected=\"selected\"";
+						}
+						echo ">$name</option>";
+					}
+				}
+				closedir($dirhandle);
+				?>
+				</select>
+			</td>
+		</tr><tr>
 			<th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
 		</tr><tr>
 			<td><?php echo _SETTINGS_MEDIADIR?></td>
@@ -4850,7 +4877,7 @@ selector();
 		</tr><tr>
 			<td><?php echo _SETTINGS_MEDIAURL?></td>
 			<td>
-				<input name="MediaURL" tabindex="10080" size="40" value="<?php echo  htmlspecialchars($CONF['MediaURL']) ?>" />
+				<input name="MediaURL" tabindex="10090" size="40" value="<?php echo  htmlspecialchars($CONF['MediaURL']) ?>" />
 			</td>
 		</tr><tr>
 			<td><?php echo _SETTINGS_ALLOWUPLOAD?></td>
@@ -5204,7 +5231,12 @@ selector();
 		);
 
 		$baseUrl = htmlspecialchars($CONF['AdminURL']);
-
+		if (!array_key_exists('AdminCSS',$CONF)) 
+		{
+			sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'original')");
+			$CONF['AdminCSS'] = 'original';
+		}
+		
 		?>
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 		<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>

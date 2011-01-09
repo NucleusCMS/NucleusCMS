@@ -78,6 +78,7 @@ if (phpversion() >= '4.1.0') {
 }
 
 // include core classes that are needed for login & plugin handling
+include_once('../nucleus/libs/mysql.php');
 // added for 3.5 sql_* wrapper
 global $MYSQL_HANDLER;
 //set the handler if different from mysql (or mysqli)
@@ -85,10 +86,8 @@ global $MYSQL_HANDLER;
 if (!isset($MYSQL_HANDLER)) {
 	$MYSQL_HANDLER = array('mysql','');
 }
-
 include_once('../nucleus/libs/sql/'.$MYSQL_HANDLER[0].'.php');
 // end new for 3.5 sql_* wrapper
-include_once('../nucleus/libs/mysql.php');
 
 // check if mysql support is installed
 // this check may not make sense, as is, in a version past 3.5x

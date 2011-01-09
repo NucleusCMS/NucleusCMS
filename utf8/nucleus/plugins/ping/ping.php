@@ -1,7 +1,7 @@
 <?php
 require(dirname(__FILE__).'/../../../config.php');
 
-include($DIR_LIBS . 'PLUGINADMIN.php');
+include_libs('PLUGINADMIN.php');
 
 // create a object of the plugin via Plugin Admin
 $oPluginAdmin = new PluginAdmin('Ping');

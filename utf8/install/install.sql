@@ -88,7 +88,8 @@ CREATE TABLE `nucleus_comment` (
   `cblog`   int(11)      NOT NULL default '0',
   PRIMARY KEY  (`cnumber`),
   KEY `citem` (`citem`),
-  FULLTEXT KEY `cbody` (`cbody`)
+  FULLTEXT KEY `cbody` (`cbody`),
+  INDEX `cblog` (`cblog`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `nucleus_config` (
@@ -131,7 +132,8 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('URLMode',           'normal'),
     ('DatabaseVersion',   '350'),
     ('DebugVars',         '0'),
-    ('DefaultListSize',   '10');
+    ('DefaultListSize',   '10'),
+    ('AdminCSS',          'original');
 
 CREATE TABLE `nucleus_item` (
   `inumber`   int(11)      NOT NULL auto_increment,
