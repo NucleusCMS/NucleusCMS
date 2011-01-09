@@ -18,32 +18,34 @@
 
 function upgrade_do350() {
 
-    if (upgrade_checkinstall(350))
-        return 'インストール済みです';
-    
-    // Give user warning if they are running old version of PHP
-        if (phpversion() < '5') {
-                echo '警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！';
-        }
-    
-    // changing the member table to lengthen display name (mname)
-    $query = "	ALTER TABLE `" . sql_table('member') . "`
-                    MODIFY `mname` varchar(32) NOT NULL default '' ;";
+	if (upgrade_checkinstall(350))
+		return 'インストール済みです';
+	
+	// Give user warning if they are running old version of PHP
+		if (phpversion() < '5') {
+				echo '警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！';
+		}
+	
+	// changing the member table to lengthen display name (mname)
+	$query = "	ALTER TABLE `" . sql_table('member') . "`
+					MODIFY `mname` varchar(32) NOT NULL default '' ;";
 
-    upgrade_query('Altering ' . sql_table('member') . ' table', $query);
+	upgrade_query('Altering ' . sql_table('member') . ' table', $query);
 
-    // changing the blog table to remove bsendping flag
-    $query = "	ALTER TABLE `" . sql_table('blog') . "`
-                    DROP `bsendping`;";
+	// changing the blog table to remove bsendping flag
+	if (upgrade_checkIfColumnExists('blog', 'bsendping')) {
+		$query = "	ALTER TABLE `" . sql_table('blog') . "`
+					DROP `bsendping`;";
+	
+		upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+	}
 
-    upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+	// 3.4 -> 3.5
+	// update database version
+	update_version('350');
 
-    // 3.4 -> 3.5
-    // update database version
-    update_version('350');
-
-    // Remind user to re-install NP_Ping 
-    echo '<p>注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。</p>';
+	// Remind user to re-install NP_Ping 
+	echo '<p>注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。</p>';
 
 }
 ?>
