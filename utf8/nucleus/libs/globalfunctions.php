@@ -898,7 +898,7 @@ function selector() {
 		// itemid given -> only show that item
 		$type = 'item';
 
-		if (!$manager->existsItem($itemid,intval($CONF['allowFuture']),intval($CONF['allowDrafts']) ) {
+		if (!$manager->existsItem($itemid,intval($CONF['allowFuture']),intval($CONF['allowDrafts']))) {
 			doError(_ERROR_NOSUCHITEM);
 		}
 
