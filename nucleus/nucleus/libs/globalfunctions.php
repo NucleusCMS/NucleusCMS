@@ -20,7 +20,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.62';
+$nucleus['version'] = 'v3.70 SVN';
 $nucleus['codename'] = '';
 
 // check and die if someone is trying to override internal globals (when register_globals turn on)
@@ -559,7 +559,7 @@ function intCookieVar($name) {
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-    return 362;
+    return 370;
 }
 
 /**
@@ -2296,23 +2296,11 @@ function selectSpecialSkinType($id) {
  * @return String cleaned filename ready for use
  */
 function cleanFileName($str) {
-	// below commented out because of issues with UTF-8 compatibility
-	/*$cleaner = array();
-	$cleaner[] = array('expression'=>"/[àáäãâª]/",'replace'=>"a");
-	$cleaner[] = array('expression'=>"/[èéêë]/",'replace'=>"e");
-	$cleaner[] = array('expression'=>"/[ìíîï]/",'replace'=>"i");
-	$cleaner[] = array('expression'=>"/[òóõôö]/",'replace'=>"o");
-	$cleaner[] = array('expression'=>"/[ùúûü]/",'replace'=>"u");
-	$cleaner[] = array('expression'=>"/[ñ]/",'replace'=>"n");
-	$cleaner[] = array('expression'=>"/[ç]/",'replace'=>"c");*/
-	
 	$str = strtolower($str);
 	$ext_point = strrpos($str,".");
 	if ($ext_point===false) return false;
 	$ext = substr($str,$ext_point,strlen($str));
 	$str = substr($str,0,$ext_point);
-	
-	//foreach( $cleaner as $cv ) $str = preg_replace($cv["expression"],$cv["replace"],$str);
 
 	return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
 }
