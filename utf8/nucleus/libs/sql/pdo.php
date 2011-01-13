@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2010 The Nucleus Group
+ * Copyright (C) 2002-2011 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,7 +12,7 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2010 The Nucleus Group
+ * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
  */
  
@@ -581,6 +581,20 @@ if (!function_exists('sql_fetch_assoc'))
 
 *******************************************************************/
 
-
+	/**
+	  * for JP installer only
+	  */
+	function at_sql_query($query,$dbh=NULL) {
+		global $SQLCount,$SQL_DBH;
+		$SQLCount++;
+		if (is_null($dbh)) $res = $SQL_DBH->query($query);
+		else $res = $dbh->query($query);
+/*		if ($res->errorCode() != '00000') {
+			$errors = $res->errorInfo();
+			print("SQL error with query $query: " . $errors[0].'-'.$errors[1].' '.$errors[2] . '<p />');
+		}
+*/
+		return $res;
+	}
 }
 ?>

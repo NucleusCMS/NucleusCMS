@@ -208,9 +208,9 @@ define('_ITEM_ADDEDITTEMPLATE_HOUR',				'時');
 define('_ITEM_ADDEDITTEMPLATE_MINUTE',				'分');
 
 // Errors
-define('_ERRORS_INSTALLSQL',						'｢install.sql｣ファイルを削除してください');
+define('_ERRORS_INSTALLSQL',						'｢install/install.sql｣ファイルを削除してください');
 define('_ERRORS_INSTALLDIR',						'｢install｣ディレクトリを削除してください');  // <add by shizuki />
-define('_ERRORS_INSTALLPHP',						'｢install.php｣ファイルを削除してください');
+define('_ERRORS_INSTALLPHP',						'｢install/index.php｣ファイルを削除してください');
 define('_ERRORS_UPGRADESDIR',						'｢nucleus/upgrades｣ディレクトリを削除してください');
 define('_ERRORS_CONVERTDIR',						'｢nucleus/convert｣ディレクトリを削除してください');
 define('_ERRORS_CONFIGPHP',							'｢config.php｣ファイルを読み取り専用(｢chmod 444｣等)にしてください');

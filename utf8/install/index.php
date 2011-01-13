@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2010 The Nucleus Group
+ * Copyright (C) 2002-2011 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,18 +12,18 @@
  * those tables.
  *
  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
- * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php
+ * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>/install/</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php
  */
 
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2010 The Nucleus Group
+ * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
- * $NucleusJP: install.php,v 1.7 2007/02/04 06:28:44 kimitake Exp $
+ * $NucleusJP: index.php,v 1.7 2007/02/04 06:28:44 kimitake Exp $
  */
 
 /*
-	This part of the install.php code allows for customization of the install process.
+	This part of the index.php code allows for customization of the install process.
 	When distributing plugins or skins together with a Nucleus installation, the
 	configuration below will instruct to install them
 
@@ -173,20 +173,20 @@ function showInstallForm() {
 	} elseif (phpversion() < '5') {
 		echo ' <span class="warning" style="display:block">' . _TEXT2_WARN3 . '</span>';
 	}
-	
-	echo "</li>\n";
-	/*
+?>
+
+			</li>
+			<li>MySQL:
+
+<?php
 	// note: this piece of code is taken from phpMyAdmin
-	echo "<li>MySQL\n";
 	$conn   = sql_connect_args('localhost','','');
-	$result = @sql_query('SELECT VERSION() AS version', $conn);
-	
+	$result = @at_sql_query('SELECT VERSION() AS version', $conn);
 	if ($result != FALSE && sql_num_rows($result) > 0) {
 		$row   = sql_fetch_array($result);
 		$match = explode('.', $row['version']);
 	} else {
-		$result = @sql_query('SHOW VARIABLES LIKE \'version\'', $conn);
-
+		$result = @at_sql_query('SHOW VARIABLES LIKE \'version\'', $conn);
 		if ($result != FALSE && @sql_num_rows($result) > 0) {
 			$row   = sql_fetch_row($result);
 			$match = explode('.', $row[1]);
@@ -202,22 +202,27 @@ function showInstallForm() {
 			}
 		}
 	}
+
 	sql_disconnect($conn);
 	$mysqlVersion = implode($match, '.');
 	$minVersion   = '3.23';
+
 	if ($mysqlVersion == '0.0.0') {
 		echo _NOTIFICATION1;
 	}
 	else {
 		echo $mysqlVersion;
 	}
+
 	if ($mysqlVersion < $minVersion) {
 		echo ' <span class="warning" style="display:block">' . sprintf(_TEXT2_WARN2, $minVersion) . '</span>';
 	}
-	echo "</li>\n";
-	*/
-	echo "</ul>\n";
+?>
 
+			</li>
+		</ul>
+
+<?php
 	// tell people how they can have their config file filled out automatically
 	if (@file_exists('../config.php') && @!is_writable('../config.php')) {
 ?>
@@ -591,12 +596,13 @@ function doInstall() {
 // <add for garble measure>
 	// 2-2. set DEFAULT CHARSET and COLLATE
 	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info($MYSQL_CONN))));
-	if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {
+//	if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {//}
+	if ($mySqlVer >= '5.0.7' && function_exists('mysql_set_charset')) {
 		mysql_set_charset($charset);
 	} elseif ($mySqlVer >= '4.1.0') {
-		sql_query("SET NAMES " . $charset);
+		sql_query("SET CHARACTER SET " . $charset);
 	}
-	$collation = ($charset == 'utf8') ? 'utf8_unicode_ci' : 'ujis_japanese_ci';
+	$collation = ($charset == 'utf8') ? 'utf8_general_ci' : 'ujis_japanese_ci';
 // </add for garble measure>*/
 
 	// 3. try to create database (if needed)
@@ -695,7 +701,7 @@ function doInstall() {
 	}
 
 	// 5a make first post
-	if ($charset == 'ujis') {
+	if (strtoupper(_CHARSET) != 'UTF-8') {
 		$itm_title = mb_convert_encoding(_1ST_POST_TITLE, _CHARSET, 'UTF-8');
 		$itm_body  = mb_convert_encoding(_1ST_POST, _CHARSET, 'UTF-8');
 		$itm_more  = mb_convert_encoding(_1ST_POST2, _CHARSET, 'UTF-8');
@@ -752,7 +758,7 @@ function doInstall() {
 	sql_query($query,$MYSQL_CONN) or _doError(_ERROR20 . ': ' . sql_error($MYSQL_CONN) );
 
 	// 8-2. update category settings
-	if ($charset == 'ujis') {
+	if (strtoupper(_CHARSET) != 'UTF-8') {
 		$cat_name = mb_convert_encoding(_GENERALCAT_NAME, _CHARSET, 'UTF-8');
 		$cat_desc = mb_convert_encoding(_GENERALCAT_DESC, _CHARSET, 'UTF-8');
 	} else {

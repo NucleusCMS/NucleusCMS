@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2010 The Nucleus Group
+ * Copyright (C) 2002-2011 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,7 +12,7 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2010 The Nucleus Group
+ * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
  */
  
@@ -68,7 +68,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		$fetchDat = sql_fetch_assoc($resource);
 		$charset  = $fetchDat['Value'];
 		$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info($MYSQL_CONN))));
-		if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {
+		if ($mySqlVer >= '5.0.7' && function_exists('mysql_set_charset')) {
 			mysql_set_charset($charset);
 		} elseif ($mySqlVer >= '4.1.0') {
 			sql_query("SET CHARACTER SET " . $charset);
@@ -335,6 +335,15 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 
 *******************************************************************/
 
-
+	/**
+	  * for JP installer only
+	  */
+	function at_sql_query($query, $conn = false) {
+		global $SQLCount,$MYSQL_CONN;
+		if (!$conn) $conn = $MYSQL_CONN;
+		$SQLCount++;
+		$res = mysql_query($query,$conn);
+		return $res;
+	}
 }
 ?>

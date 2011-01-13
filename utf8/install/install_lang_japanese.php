@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2010 The Nucleus Group
+ * Copyright (C) 2002-2011 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,7 +12,7 @@
 
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2010 The Nucleus Group
+ * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
  */
 define('_HEADER1_2',			'キャラクタセット');
@@ -145,8 +145,8 @@ define('_HEADER10',				'インストールファイルの削除');
 define('_TEXT15',				'<p>ウェブサーバから /install/ ディレクトリを削除してください：</p>');
 define('_TEXT15_L1',			'<b>install/install.sql</b>：テーブルの構造を内包するファイル');
 define('_TEXT15_L2',			'<b>install/index.php</b>：このファイル');
-
-define('_TEXT15_L3',			'<b>install_lang_japanese.php</b>：インストーラの言語ファイル');
+//define('_TEXT15_L3',			'<b>install_lang_japanese.php</b>：インストーラの言語ファイル');
+define('_TEXT15_L3',			'<b>install/install_lang_japanese.php</b>：インストーラの言語ファイル');
 define('_TEXT16',			'<p>もしこのディレクトリを削除していなければ、管理領域を開くことができません。</p>');
 
 define('_HEADER11',				'ウェブサイトの確認');
@@ -161,8 +161,8 @@ define('_BUTTON1',				'インストールを実行する');
 // General category
 define('_GENERALCAT_NAME',		'総合');
 define('_GENERALCAT_DESC',		'投稿した記事に合うカテゴリが無い時にこのカテゴリを使用すると良いでしょう');
-
-define('_1ST_POST_TITLE',		'Nucleus CMS バージョン3.51へようこそ');
+//define('_1ST_POST_TITLE',		'Nucleus CMS バージョン3.51へようこそ');
+define('_1ST_POST_TITLE',		'Nucleus CMS バージョン3.62へようこそ');
 define('_1ST_POST',				'ウェブサイトの作成を補助する積み木がここにあります。それは心躍るブログになるかもしれませんし、見る人を和ませる家族のサイトになるかもしれませんし、実り多い趣味のサイトになるかもしれません。あるいは現在のあなたには想像がつかないものになることだってあるでしょう。<br />
 <br />用途が思いつきませんでしたか？ それならここへ来て正解です。なぜならあなた同様私たちにもわからないのですから。');
 define('_1ST_POST2',			'これはサイトにおける最初のエントリーです。スタートを切りやすいように、リンクと情報を入れておきました。<br />

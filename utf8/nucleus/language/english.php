@@ -212,9 +212,9 @@ define('_ITEM_ADDEDITTEMPLATE_HOUR',				'Hour');
 define('_ITEM_ADDEDITTEMPLATE_MINUTE',				'Minute');
 
 // Errors
-define('_ERRORS_INSTALLSQL',						'install.sql should be deleted');
+define('_ERRORS_INSTALLSQL',						'install/install.sql should be deleted');
 define('_ERRORS_INSTALLDIR',						'install directory should be deleted');  // <add by shizuki />
-define('_ERRORS_INSTALLPHP',						'install.php should be deleted');
+define('_ERRORS_INSTALLPHP',						'install/index.php should be deleted');
 define('_ERRORS_UPGRADESDIR',						'nucleus/upgrades directory should be deleted');
 define('_ERRORS_CONVERTDIR',						'nucleus/convert directory should be deleted');
 define('_ERRORS_CONFIGPHP',							'config.php should be non-writable (chmod to 444)');
