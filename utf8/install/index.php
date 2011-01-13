@@ -173,16 +173,14 @@ function showInstallForm() {
 	} elseif (phpversion() < '5') {
 		echo ' <span class="warning" style="display:block">' . _TEXT2_WARN3 . '</span>';
 	}
-?>
-
-			</li>
-			<li>MySQL:
-
-<?php
+	
+	echo "</li>\n";
+	/*
 	// note: this piece of code is taken from phpMyAdmin
+	echo "<li>MySQL\n";
 	$conn   = sql_connect_args('localhost','','');
 	$result = @sql_query('SELECT VERSION() AS version', $conn);
-
+	
 	if ($result != FALSE && sql_num_rows($result) > 0) {
 		$row   = sql_fetch_array($result);
 		$match = explode('.', $row['version']);
@@ -204,27 +202,22 @@ function showInstallForm() {
 			}
 		}
 	}
-
 	sql_disconnect($conn);
 	$mysqlVersion = implode($match, '.');
 	$minVersion   = '3.23';
-
 	if ($mysqlVersion == '0.0.0') {
 		echo _NOTIFICATION1;
 	}
 	else {
 		echo $mysqlVersion;
 	}
-
 	if ($mysqlVersion < $minVersion) {
 		echo ' <span class="warning" style="display:block">' . sprintf(_TEXT2_WARN2, $minVersion) . '</span>';
 	}
-?>
+	echo "</li>\n";
+	*/
+	echo "</ul>\n";
 
-			</li>
-		</ul>
-
-<?php
 	// tell people how they can have their config file filled out automatically
 	if (@file_exists('../config.php') && @!is_writable('../config.php')) {
 ?>
