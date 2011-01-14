@@ -15,7 +15,7 @@
  * Nucleus configration file
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2010 The Nucleus Group
- * @version $Id$
+ * @version $Id: config.php 1084 2011-01-09 12:30:50Z sakamocchi $
  */
 
 // このファイルはサーバ内のディレクトリに対するパスと
