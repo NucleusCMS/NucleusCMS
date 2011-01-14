@@ -1,0 +1,237 @@
+/*
+	This is the CSS stylesheet that is used for the default Nucleus skin.
+	
+	Here's how the pages are built up:
+
+	(Note: the format outlined below is NOT mandatory. If you want your 
+	 site to use another structure, edit skins and templates, and define 
+	 your own stylesheet. The default skins and templates only serves as 
+	 an example of how a site running Nucleus can look.)
+
+	MAIN PAGE
+	---------
+
+	body
+	  div.contents
+	    h1 (site title)
+	      h2 (date header)
+	        h3 (item title)
+	          div.itembody (item text)
+	          span.iteminfo (time / author / editlink / amount of comments)
+	  div.logo
+	  div.menu
+	    h1 (navigation, hidden link)
+	      h2 (menu titles)
+	
+	DETAILED PAGE
+	-------------
+	body
+	  div.contents
+	    h1 (site title)
+	      h2 (item title)
+	        div.itembody (item text)
+	        div.iteminfo (item info)
+	      h2 (comments)
+	        h3 (commentor name)
+  	          div.commentbody
+	      h2 (add comment)
+	  div.logo
+	  div.menu	
+	    h1 (navigation, hidden link)
+	      h2 (menu titles)
+
+	OTHER PAGES
+	-----------
+	
+	other pages are similar, having a .contents and a .menu part
+*/
+ 
+
+/*
+	The body definitions define how the page should globally look:
+	- a small verdana, arial or font from the sans-serif family
+	- black text on a white background
+*/
+
+
+body {
+	font-family: verdana, arial, sans-serif;
+	font-size: small;	
+	background-color: #fff;
+	color: #000;
+}
+
+/* 
+	The definitions below determine how the page looks.
+	
+	There are 3 main div-elements, which are all positioned absolute
+	(relative to the upper left corner of the screen):
+	
+	.contents: contains the main contents of the page.
+	.menu: sidebar with menu
+	.logo: logo to be displayed above the sidebar
+
+*/
+
+/* definitions applying to the contents block */
+.contents {
+	position: absolute;
+
+	left: 200px;
+	width: 550px;
+}
+
+/* definitions applying to the logo */
+.logo {
+	position: absolute;
+
+	top: 20px;
+	left: 20px;
+}
+
+.menu {
+	position: absolute;
+
+	top: 175px;
+	left: 30px;
+	width: 110px;
+
+	/* use a lighter text color (grey) and a smaller font */
+	color: #777;
+	font-size: small;	
+}
+
+/*
+	Definitions for headers in the menu (.menu h2), page titles (h1) 
+	and dateheads (.contents h2):
+	- page titles are centered (within the .contents div)
+	- menu headers (h2) use a small font
+	- dateheads use a large font and are in a box
+*/
+
+h1 {
+	text-align: center;
+}
+
+.menu h2 {
+	font-size: small;
+}
+
+.contents h2 {
+	background-color: whitesmoke;
+	border: 1px solid #ccc;
+
+	padding: 5px; 
+	
+	font-size: large;
+
+	margin-bottom: 5px;
+}
+
+/* 
+	Definitions for the item listings like they are done on the main page and in archives
+	- h3.item is the title of an item (<h3 class="item">)
+	- .itembody is the item contents
+	- .iteminfo contains the time of posting and the name of the author, and the amount of comments
+	
+	anchors in the iteminfo (.iteminfo a) are not underlined and bold
+*/
+
+/* item title */
+h3.item {
+	font-size: medium;
+	margin: 0px;
+	margin-top: 10px;
+}
+
+.itembody {	
+	margin-top: 5px;	
+	margin-bottom: 5px;
+}
+
+.iteminfo {	
+	font-size: x-small;
+	color: gray;
+}
+
+.iteminfo a {
+	font-weight: bolder;
+	color: #555;
+	text-decoration: none;
+}
+
+/*
+	Definitions of how comments listings look like on item pages
+	- h3.comment contains the name of the comment author
+	- .commentbody contains the text from the comment
+	- .commentinfo contains the time of commenting
+*/
+
+/* comment title */
+h3.comment {
+	font-size: medium;
+	margin-bottom: 10px;
+}
+
+.commentbody {
+	text-align: justify;
+}
+
+.commentinfo {	
+	font-size: x-small;
+	color: gray;
+}
+
+
+/*
+	Some rules that apply to contents generated using the markup buttons 
+	"add left box" and "add right box"
+	
+	both boxes have slightly larger text, and take a maximum of 20% of 
+	the width of the contents.
+*/
+
+.leftbox, .rightbox {
+	margin: 3px;
+	padding: 3px;
+	font-size: larger;
+	width: 20%;
+}
+.leftbox {
+	float: left;
+	border-right: 2px solid #ccc;	
+}
+.rightbox {
+	float: right;
+	border-left: 2px solid #ccc;	
+}
+
+
+/*
+	Some general rules:
+	- images never have a border (even when they are inside a hyperlink)
+	- elements having class="skip" are not shown
+	- item lists using <ul class="nobullets"> have no list-item bullets
+	- highlighted text (in search results) have a yellow background
+*/
+
+img {
+	border: none;
+}
+
+.skip {
+	display: none;
+}
+
+ul.nobullets {
+	list-style: none;
+	margin-left: 0px;
+	padding-left: 0px;
+}
+
+.highlight {
+	background-color: yellow;
+}
+
+
+
