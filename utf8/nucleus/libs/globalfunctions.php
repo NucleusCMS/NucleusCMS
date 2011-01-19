@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2010 The Nucleus Group
+ * Copyright (C) 2002-2011 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,7 +12,7 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2010 The Nucleus Group
+ * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
  * $NucleusJP: globalfunctions.php,v 1.23.2.7 2008/02/05 08:30:08 kimitake Exp $
  */
@@ -20,7 +20,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.62';
+$nucleus['version'] = 'v3.62_Beta-jp';
 $nucleus['codename'] = '';
 
 // check and die if someone is trying to override internal globals (when register_globals turn on)
@@ -502,7 +502,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
 					$i++;
 
 					if ($i < sizeof($data) ) {
-						$_REQUEST['special'] = $data[$i];
+						$special = $data[$i];
 					}
 					break;
 
@@ -884,7 +884,7 @@ function selector() {
 		// try to get line number/filename (extra headers_sent params only exists in PHP 4.3+)
 		if (function_exists('version_compare') && version_compare('4.3.0', phpversion(), '<=') ) {
 			headers_sent($hsFile, $hsLine);
-			$extraInfo = ' in <code>' . $hsFile . '</code> line <code>' . $hsLine . '</code>';
+			$extraInfo = sprintf(_GFUNCTIONS_HEADERSALREADYSENT_FILE,$hsFile,$hsLine);
 		} else {
 			$extraInfo = '';
 		}
@@ -1294,7 +1294,9 @@ function mysqldate($timestamp) {
   */
 function selectBlog($shortname) {
 	global $blogid, $archivelist;
-	$blogid = getBlogIDFromName($shortname);
+	if (!$blogid) {
+		$blogid = getBlogIDFromName($shortname);
+	}
 
 	// also force archivelist variable, if it is set
 	if ($archivelist) {
@@ -1304,7 +1306,9 @@ function selectBlog($shortname) {
 
 function selectSkin($skinname) {
 	global $skinid;
-	$skinid = SKIN::getIdFromName($skinname);
+	if (!$skinid) {
+		$skinid = SKIN::getIdFromName($skinname);
+	}
 }
 
 /**
@@ -1313,16 +1317,20 @@ function selectSkin($skinname) {
  */
 function selectCategory($cat) {
 	global $catid;
-	if (is_numeric($cat) ) {
-		$catid = intval($cat);
-	} else {
-		$catid = getCatIDFromName($cat);
+	if (!$catid) {
+		if (is_numeric($cat) ) {
+			$catid = intval($cat);
+		} else {
+			$catid = getCatIDFromName($cat);
+		}
 	}
 }
 
 function selectItem($id) {
 	global $itemid;
-	$itemid = intval($id);
+	if (!$itemid) {
+		$itemid = intval($id);
+	}
 }
 
 // force the use of a language file (warning: can cause warnings)
@@ -2312,7 +2320,7 @@ function getBookmarklet($blogid) {
 	$document = 'document';
 	$bookmarkletline = "javascript:Q='';x=".$document.";y=window;if(x.selection){Q=x.selection.createRange().text;}else if(y.getSelection){Q=y.getSelection();}else if(x.getSelection){Q=x.getSelection();}wingm=window.open('";
 	$bookmarkletline .= $CONF['AdminURL'] . "bookmarklet.php?blogid=$blogid";
-	$bookmarkletline .="&logtext='+escape(Q)+'&loglink='+escape(x.location.href)+'&loglinktitle='+escape(x.title),'nucleusbm','toolbar=no,scrollbars=no,width=710,height=550,left=10,top=10,status=no,resizable=yes');wingm.focus();";
+	$bookmarkletline .="&logtext='+escape(Q)+'&loglink='+encodeURIComponent(x.location.href)+'&loglinktitle='+escape(x.title),'nucleusbm','toolbar=no,scrollbars=no,width=600,height=550,left=10,top=10,status=no,resizable=yes');wingm.focus();";
 
 	return $bookmarkletline;
 }
