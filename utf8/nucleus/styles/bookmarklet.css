@@ -126,15 +126,15 @@ table {
 /*	margin-bottom: 10px;
 	margin-top: 10px;*/
 	height: 95%;	/* add 090309*/
-	table-layout:fixed;/* add 090313 */
+/*	table-layout:fixed;*//* mod 090528 */
 }
 
 th {
 /*	background: #bbc;
 	color: #000;
 	font-size: small;*//* mod 090313 */
-	width:130px;/* add 090313 */
-	font-weight:normal;/* add 090313 */
+/*	width:130px;*//* mod 090606 */
+/*	font-weight:normal;*//* mod 090606 */
 }
 
 th, td {
@@ -153,7 +153,7 @@ td {*//* mod 090313 */
 
 #body td,
 #more td {*//* mod 090313 */
-	white-space: nowrap;/*add 090309*/
+/*	white-space: nowrap;*//*mod 090606*/
 }
 
 td a:link, td a:visited { 
@@ -201,6 +201,7 @@ form {/* add 090313 */
 }
 
 #body textarea {/* add 090313 */
+	height: 270px;/*add 090316*/
 	margin-top: 4px;
 }
 #more textarea {/* add 090313 */
@@ -230,4 +231,3 @@ form {/* add 090313 */
 	height: 2em;
 	margin: 0 3px;
 }
-
