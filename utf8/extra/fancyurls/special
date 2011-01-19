@@ -8,7 +8,8 @@ if (!requestVar('special'))
        $data = explode("/",serverVar('PATH_INFO'));
        if (count($data) > 1)
        {
-               $_REQUEST['special'] = $data[1];
+//               $_REQUEST['special'] = $data[1];
+				$special = $data[1];
        }
 }
 
