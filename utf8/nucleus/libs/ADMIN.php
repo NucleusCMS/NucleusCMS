@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2010 The Nucleus Group
+ * Copyright (C) 2002-2011 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,7 +13,7 @@
  * The code for the Nucleus admin area
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2010 The Nucleus Group
+ * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
  * @version $NucleusJP: ADMIN.php,v 1.21.2.4 2007/10/30 19:04:24 kmorimatsu Exp $
  */
@@ -2188,21 +2188,28 @@ class ADMIN {
 		$password	   = postVar('password');
 		$repeatpassword = postVar('repeatpassword');
 
-		if ($password != $repeatpassword)
-			return $this->_showActivationPage($key, _ERROR_PASSWORDMISMATCH);
-
-		if ($password && (strlen($password) < 6))
-			return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
-		
-		if ($password) {
-			$pwdvalid = true;
-			$pwderror = '';
-			global $manager;
-			$manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
-			if (!$pwdvalid) {
-				return $this->_showActivationPage($key,$pwderror);
-			}
+		if (!$password) {
+			return $this->_showActivationPage($key, _ERROR_PASSWORDMISSING);
 		}
+		
+		if ($password != $repeatpassword) {
+			return $this->_showActivationPage($key, _ERROR_PASSWORDMISMATCH);
+		}
+		
+		if (strlen($password) < 6) {
+			return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
+		}
+		
+		$pwdvalid = true;
+		$pwderror = '';
+		
+		global $manager;
+		$manager->notify('PrePasswordSet',array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid));
+		
+		if (!$pwdvalid) {
+			return $this->_showActivationPage($key,$pwderror);
+		}
+		
 		$error = '';
 		$manager->notify('ValidateForm', array('type' => 'activation', 'member' => $mem, 'error' => &$error));
 		if ($error != '')
@@ -4376,7 +4383,7 @@ selector();
 		<?php		   if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
 		?>
 
-
+		<div style="width:100%;">
 		<form method="post" action="index.php">
 		<div>
 
@@ -4423,7 +4430,7 @@ selector();
 		echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
 		$query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
 			showlist($query,'table',array('content'=>'shortnames'));
-		echo '</div></form>';
+		echo '</div></form></div>';
 		$this->pagefoot();
 	}
 
@@ -5027,6 +5034,7 @@ selector();
 		$this->updateConfig('CookiePrefix',	 postVar('CookiePrefix'));
 		$this->updateConfig('DebugVars',		postVar('DebugVars'));
 		$this->updateConfig('DefaultListSize',  postVar('DefaultListSize'));
+		$this->updateConfig('AdminCSS',          postVar('AdminCSS'));
 
 		// load new config and redirect (this way, the new language will be used is necessary)
 		// note that when changing cookie settings, this redirect might cause the user
@@ -5243,7 +5251,7 @@ selector();
 		<head>
 			<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
 			<title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>
-			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin.css" />
+			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
 			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
 			href="<?php echo $baseUrl?>styles/addedit.css" />
 
@@ -5283,10 +5291,9 @@ selector();
 				echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
 				$newestVersion = getLatestVersion();
 				$newestCompare = str_replace('/','.',$newestVersion);
-				$newestCompare = intval($newestCompare);
 				$currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
 				if ($newestVersion && version_compare($newestCompare,$currentVersion) > 0) {
-					echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
+					echo '<br /><a style="color:red" href="'._ADMINPAGEFOOT_OFFICIALURL.'upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
 				}
 			} else {
 				echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
@@ -5923,9 +5930,9 @@ selector();
 
 	}
 
-	/**
-	 * @todo document this
-	 */
+/*
+ * @todo document this
+ */
 	function action_pluginlist() {
 		global $member, $manager;
 
@@ -6041,7 +6048,7 @@ selector();
 		if (($plug->supportsFeature('HelpPage') > 0) && (@file_exists($helpFile))) {
 			@readfile($helpFile);
 		} else {
-			echo '<p>Error: ', _ERROR_PLUGNOHELPFILE,'</p>';
+			echo '<p>' . _ERROR .': ', _ERROR_PLUGNOHELPFILE,'</p>';
 			echo '<p><a href="index.php?action=pluginlist">(',_BACK,')</a></p>';
 		}
 
