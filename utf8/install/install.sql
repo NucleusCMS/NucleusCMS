@@ -133,7 +133,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('DatabaseVersion',   '350'),
     ('DebugVars',         '0'),
     ('DefaultListSize',   '10'),
-    ('AdminCSS',          'original');
+    ('AdminCSS',          'contemporary_jp');
 
 CREATE TABLE `nucleus_item` (
   `inumber`   int(11)      NOT NULL auto_increment,
@@ -151,6 +151,9 @@ CREATE TABLE `nucleus_item` (
   `iposted`   tinyint(2)   NOT NULL default '1',
   PRIMARY KEY  (`inumber`),
   KEY `itime` (`itime`),
+  INDEX `iblog` (`iblog`),
+  INDEX `idraft` (`idraft`),
+  INDEX `icat` (`icat`),
   FULLTEXT KEY `ibody` (`ibody`, `ititle`, `imore`)
 ) TYPE=MyISAM PACK_KEYS=0;
 

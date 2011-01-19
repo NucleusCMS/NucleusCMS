@@ -73,7 +73,7 @@ define('_TEXT2_WARN2',			' 注意: Nucleusの動作には少なくともバー�
 define('_TEXT2_WARN3',			'警告！ 動作しているPHPのバージョンが古いようです！次にリリースされるNucleusCMSではPHP4はサポートされません！早急にPHP5にアップグレードしてください！');
 
 define('_HEADER3',				'config.phpの自動設定');
-define('_TEXT3',				'<strong style="color:red;">config.phpへの書き込みができません。</strong>config.phpのパーミッションを<strong>666</strong>にしておけば、スクリプトが自動で設定情報を書き込みます。ただし、Nucleusのインストール完了後、<strong><em style="font-color:#f00;">必ず</em></strong>パーミッションを<strong>444</strong>に変更してください(<a href="nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>)。</p>');
+define('_TEXT3',				'<strong style="color:red;">config.phpへの書き込みができません。</strong>config.phpのパーミッションを<strong>666</strong>にしておけば、スクリプトが自動で設定情報を書き込みます。ただし、Nucleusのインストール完了後、<strong><em style="font-color:#f00;">必ず</em></strong>パーミッションを<strong>444</strong>に変更してください(<a href="../nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>)。</p>');
 
 define('_HEADER4',				'MySQLのログイン情報');
 define('_TEXT4',				'<p>データベースのログイン情報を入力してください。この情報が分からない場合は、システム管理者かホスティング元に確認をとってください。ほとんどの場合、ホスト名は｢localhost｣です。もしNucleusがあなたのサーバのPHP設定から｢default MySQL host｣を検出していれば｢ホスト名｣に既に記入されているはずですが、この情報が正確であるという保証はありません。</p>');
@@ -137,7 +137,7 @@ define('_TEXT9',				'<p>上に書いてきたデータが正しいか確かめ�
 define('_TEXT10',				'<p>データベーステーブルの初期値入力が成功しました。後は<i>config.php</i>を書き換えるだけです。以下に書き換えるべき内容を表示します（mysqlのパスワードはマスクされています。ここは実際のものに書き換えてください）</p>');
 define('_TEXT11',				'<p>あなたのコンピュータ上のファイルを書き換えたら、FTPを使ってウェブサーバにアップロードしてください。ASCIIモードで送信してファイルを上書きします。</p>');
 define('_TEXT12',				'<b>付記:</b> <i>config.php</i>の最初や終わりにスペースを空けないようにしましょう。実行時にエラーを引き起こす原因となります。<br />したがって、config.phpの最初の文字は "&lt;"で最後の文字は"&gt;"としなければなりません。');
-define('_TEXT13',				'<p>Nucleusはインストールされ、<code>config.php</code>はアップデートされました。</p><p>セキュリティのため<code>config.php</code>のパーミッションを444に戻すことを忘れないでください(<a href="nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>)。</p>');
+define('_TEXT13',				'<p>Nucleusはインストールされ、<code>config.php</code>はアップデートされました。</p><p>セキュリティのため<code>config.php</code>のパーミッションを444に戻すことを忘れないでください(<a href="../nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>)。</p>');
 define('_TEXT14',				'<p>Nucleusは誰でもブログにコメントを残すことができる様になっているので、このままではスパムの温床になる危険があります。以下の方法によってブログを保護することをお勧めします：</p>');
 define('_TEXT14_L1',			'あなたがコメントを必要としないのであれば、管理エリアから｢あなたのブログ｣ &gt; ｢ブログ設定｣ とたどり、 ｢コメントを許可しますか?｣ の設定を｢いいえ｣にすることで、コメント投稿フォームを非表示にすることができます。');
 define('_TEXT14_L2',			'スパムを撃退・管理する為のプラグインをインストールすることも可能です：<a href="http://japan.nucleuscms.org/wiki/plugins_by_category#supamutsuru">Nucleus Japan wiki</a> (ブックマークをお勧めします)');

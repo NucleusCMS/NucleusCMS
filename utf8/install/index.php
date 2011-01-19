@@ -841,7 +841,7 @@ function doInstall() {
 		$config_data .= "   \$MYSQL_DATABASE = '" . $mysql_database . "';\n";
 		$config_data .= "   \$MYSQL_PREFIX   = '" . (($mysql_usePrefix == 1) ? $mysql_prefix : '') . "';\n";
 		$config_data .= "   // new in 3.50. first element is db handler, the second is the db driver used by the handler\n";
-		$config_data .= "   // default is \$MYSQL_HANDLER = array('mysql','mysql');\n";
+		$config_data .= "   // default is \$MYSQL_HANDLER = array('mysql','');\n";
 		$config_data .= "   //\$MYSQL_HANDLER = array('mysql','mysql');\n";
 		$config_data .= "   //\$MYSQL_HANDLER = array('pdo','mysql');\n";
 		$config_data .= "   \$MYSQL_HANDLER = array('".$MYSQL_HANDLER[0]."','".$MYSQL_HANDLER[1]."');\n";
@@ -907,6 +907,10 @@ function doInstall() {
 	$MYSQL_PASSWORD = '<i><b>xxxxxxxxxxx</b></i>';
 	$MYSQL_DATABASE = '<b><?php echo $mysql_database?></b>';
 	$MYSQL_PREFIX   = '<b><?php echo ($mysql_usePrefix == 1)?$mysql_prefix:''?></b>';
+
+	// new in 3.50. first element is db handler, the second is the db driver used by the handler
+	// default is $MYSQL_HANDLER = array('mysql','');
+	$MYSQL_HANDLER = array('<?php echo $MYSQL_HANDLER[0];?>','<?php echo $MYSQL_HANDLER[1];?>');
 
 	// main nucleus directory
 	$DIR_NUCLEUS = '<b><?php echo $config_adminpath?></b>';
