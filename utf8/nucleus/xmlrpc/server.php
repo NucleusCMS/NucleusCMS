@@ -73,7 +73,8 @@ include_libs('xmlrpc.inc.php',false,false);
 include_libs('xmlrpcs.inc.php',false,false);
 
 /* define xmlrpc settings */
-$xmlrpc_internalencoding = _CHARSET;
+//$xmlrpc_internalencoding = _CHARSET;
+$xmlrpc_internalencoding = 'UTF-8';
 $xmlrpc_defencoding = 'UTF-8';
 
 /* definition of available methods */
@@ -133,6 +134,12 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
 	if ($closed != 1)
 		$closed = 0;
 
+	if (strtolower(_CHARSET) != 'utf-8') {
+		$title = mb_convert_encoding($title, _CHARSET, "UTF-8");
+		$body = mb_convert_encoding($body, _CHARSET, "UTF-8");
+		$more = mb_convert_encoding($more, _CHARSET, "UTF-8");
+	}
+
 	// 4. add to blog
 	$itemid = $blog->additem($catid, $title, $body, $more, $blogid, $mem->getID(), $timestamp, $closed, $draft);
 
@@ -157,6 +164,12 @@ function _edititem($itemid, $username, $password, $catid, $title, $body, $more, 
 		return _error(6,"No such item ($itemid)");
 	if (!$mem->canAlterItem($itemid))
 		return _error(7,"Not allowed to alter item");
+
+	if (strtolower(_CHARSET) != 'utf-8') {
+		$title = mb_convert_encoding($title, _CHARSET, _CHARSET.",UTF-8");
+		$body = mb_convert_encoding($body, _CHARSET, _CHARSET.",UTF-8");
+		$more = mb_convert_encoding($more, _CHARSET, _CHARSET.",UTF-8");
+	}
 
 	// 3. update item
 	ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, 0);
