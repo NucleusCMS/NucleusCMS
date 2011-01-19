@@ -74,7 +74,7 @@ class NP_Ping extends NucleusPlugin {
 		return;
 	}
 	
-	public function unInstall {
+	public function unInstall() {
 		return;
 	}
 	

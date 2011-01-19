@@ -39,7 +39,7 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 					`login` varchar(255),
 					`fails` int(11) NOT NULL default '0',					  
 					`lastfail` bigint NOT NULL default '0',
-					KEY `login` (`login`)) TYPE=MyISAM");
+					KEY `login` (`login`)) TYPE=MyISAM";
 		sql_query($query);
 		return;
 	}
