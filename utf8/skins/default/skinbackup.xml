@@ -620,7 +620,7 @@ WEBサイト: <a href="<%member(url)%>"><%member(url)%></a>
 		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
 
 		<part name="ITEM"><![CDATA[<div class="contenttitle">
-<h2><a href="<%itemlink%>" title="投稿を読む: <%title(attribute)%>"><%title%> (<%date(%Y/%m/%d)%>)</a></h2>
+<h2><a href="<%itemlink%>" title="投稿を読む: <%title(attribute)%>"><%title%> (<%date(%Y)%>年<%date(%m)%>月</a><%date(%d)%>日)</a></h2>
 </div>
 <div class="contentitem">
 <div class="contentitem1">
@@ -663,7 +663,7 @@ WEBサイト: <a href="<%member(url)%>"><%member(url)%></a>
 		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
 
 		<part name="ITEM"><![CDATA[<div class="contenttitle">
-<h2><%title%> (<%date(%Y/%m/%d)%>)</h2>
+<h2><%title%> (<%date(%Y)%>年<%date(%m)%>月</a><%date(%d)%>日)</h2>
 </div>
 <div class="contentitem">
 <div class="contentitem1">
@@ -722,7 +722,7 @@ title="<%user%>さんにメールを送るかサイトを訪れる。">
 <%body%>
 </div>
 <div class="commentinfo">
-<%date%> <%time%>
+<%date(%Y)%>年<%date(%m)%>月</a><%date(%d)%>日 <%time(%H)%>時<%time(%M)%>分<%time(%S)%>秒
 </div>
 </div>
 ]]></part>
@@ -769,7 +769,7 @@ title="<%user%>さんにメールを送るかサイトを訪れる。">
 		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
 
 		<part name="ITEM"><![CDATA[<div class="contenttitle">
-<h2><a href="<%itemlink%>" title="投稿を読む: <%title(attribute)%>"><%title%> (<%date(%Y/%m/%d)%>)</a></h2>
+<h2><a href="<%itemlink%>" title="投稿を読む: <%title(attribute)%>"><%title%> (<%date(%Y)%>年<%date(%m)%>月</a><%date(%d)%>日)</a></h2>
 </div>
 <div class="contentitem">
 <div class="contentitem1">
