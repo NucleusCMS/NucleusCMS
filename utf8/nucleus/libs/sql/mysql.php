@@ -62,7 +62,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 
 		$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
 		mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
-
+/*
 // <add for garble measure>
 		$resource = sql_query("show variables LIKE 'character_set_database'");
 		$fetchDat = sql_fetch_assoc($resource);
@@ -74,7 +74,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 			sql_query("SET CHARACTER SET " . $charset);
 		}
 // </add for garble measure>*/
-
+*/
 		return $MYSQL_CONN;
 	}
 
