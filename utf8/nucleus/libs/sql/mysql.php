@@ -73,7 +73,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		} elseif ($mySqlVer >= '4.1.0') {
 			sql_query("SET CHARACTER SET " . $charset);
 		}
-// </add for garble measure>*/
+// </add for garble measure>
 */
 		return $MYSQL_CONN;
 	}
