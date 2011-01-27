@@ -35,6 +35,21 @@ if ($CONF['debug']) {
 }
 
 /*
+ * Set default time zone
+ * By Japanese Packaging Team, Jan.27, 2011
+ * For private server which has no condition for default time zone
+ */
+
+if (function_exists('date_default_timezone_get')) {
+	if (FALSE == ($timezone = @date_default_timezone_get()) {
+		$timezone = 'UTC';
+	}
+}
+if (function_exists('date_default_timezone_set')) {
+	 @date_default_timezone_set($timezone);
+}
+
+/*
 	Indicates when Nucleus should display startup errors. Set to 1 if you want
 	the error enabled (default), false otherwise
 
