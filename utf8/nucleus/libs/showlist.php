@@ -225,7 +225,7 @@ function listplug_table_pluginlist($template, $type) {
 			} else {
 				echo '<td colspan="2">' . sprintf(_PLUGINFILE_COULDNT_BELOADED, htmlspecialchars($current->pfile, ENT_QUOTES)) . '</td>';
 			}
-			echo '<td>';
+			echo '<td style="white-space:nowrap">';
 
 				$baseUrl = 'index.php?plugid=' . intval($current->pid) . '&action=';
 				$url = $manager->addTicketToUrl($baseUrl . 'pluginup');
