@@ -190,14 +190,14 @@ class BLOG {
 					if ($old_date != 0) {
 						$oldTS = strtotime($old_date);
 						$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
-						$tmp_footer = strftime(isset($template['DATE_FOOTER'])?$template['DATE_FOOTER']:'', $oldTS);
+						$tmp_footer = strftimejp(isset($template['DATE_FOOTER'])?$template['DATE_FOOTER']:'', $oldTS);
 						$parser->parse($tmp_footer);
 						$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
 					}
 					$manager->notify('PreDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
 					// note, to use templatvars in the dateheader, the %-characters need to be doubled in
 					// order to be preserved by strftime
-					$tmp_header = strftime((isset($template['DATE_HEADER']) ? $template['DATE_HEADER'] : null), $timestamp);
+					$tmp_header = strftimejp((isset($template['DATE_HEADER']) ? $template['DATE_HEADER'] : null), $timestamp);
 					$parser->parse($tmp_header);
 					$manager->notify('PostDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
 				}
@@ -627,7 +627,7 @@ class BLOG {
 			);
 
 			$temp = TEMPLATE::fill($template['ARCHIVELIST_LISTITEM'],$data);
-			echo strftime($temp,$current->itime);
+			echo strftimejp($temp,$current->itime);
 
 		}
 

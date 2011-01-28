@@ -490,7 +490,7 @@ class ACTIONS extends BaseActions {
 			$format = '%d %B %Y';
 		}
 
-		echo strftime($format,mktime(0,0,0,$m?$m:1,$d?$d:1,$y));
+		echo strftimejp($format,mktime(0,0,0,$m?$m:1,$d?$d:1,$y));
 	}
 
 	/**

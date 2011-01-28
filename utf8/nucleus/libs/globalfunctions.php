@@ -1782,7 +1782,7 @@ function formatDate($format, $timestamp, $defaultFormat, &$blog) {
 			return date('Y-m-d\TH:i:s', $timestamp) . $tz;
 
 		default :
-			return strftime($format ? $format : $defaultFormat, $timestamp);
+			return strftimejp($format ? $format : $defaultFormat, $timestamp);
 	}
 }
 
@@ -2442,5 +2442,19 @@ function cleanFileName($str) {
 	//foreach( $cleaner as $cv ) $str = preg_replace($cv["expression"],$cv["replace"],$str);
 	
 	return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
+}
+
+/**
+ * generate correct timecode with the format includes Japanese charactors
+ * 
+ * @param	String	$format	standard format string. Allowd to include Japanese charactors
+ * @param	Integer	$timestamp	Unix Timestamp formated integer
+ * @return	String	Formatted timestamp
+ */
+function strftimejp($format,$timestamp = ''){
+	return (setlocale(LC_CTYPE, 0) == 'Japanese_Japan.932')
+		? iconv('CP932', _CHARSET, strftime(iconv(_CHARSET, 'CP932', $format),$timestamp))
+		: strftime($format,$timestamp)
+	;
 }
 ?>
