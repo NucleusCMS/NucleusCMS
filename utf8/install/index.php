@@ -384,7 +384,7 @@ function showInstallForm() {
 
 		<?php echo _TEXT5_2; ?>
 
-		<h1><? echo _HEADER6; ?></h1>
+		<h1><?php echo _HEADER6; ?></h1>
 
 		<?php echo _TEXT6; ?>
 
@@ -898,7 +898,7 @@ function doInstall() {
 	if (!$bConfigWritten) { ?>
 		<h1><?php echo _TITLE3; ?></h1>
 
-		<? echo _TEXT10; ?>
+		<?php echo _TEXT10; ?>
 
 		<pre><code>&lt;?php
 	// mySQL connection information
