@@ -5210,7 +5210,7 @@ selector();
 		<h2>Error!</h2>
 		<?php	   echo $msg;
 		echo "<br />";
-		echo "<a href='index.php' onclick='history.back()'>"._BACK."</a>";
+		echo "<a href='index.php' onclick='history.back(); return false;'>"._BACK."</a>";
 		$this->pagefoot();
 		exit;
 	}
