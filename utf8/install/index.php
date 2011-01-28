@@ -499,20 +499,9 @@ function doInstall() {
 	$config_adminemail = $user_email;
 	$config_sitename   = $blog_name;
 	$weblog_ping	   = postVar('Weblog_ping');
-
+	
 	$_POST = array();
-	if (!extension_loaded('mbstring')) {
-		include('../nucleus/libs/mb_emulator/mb-emulator.php');
-	}
-	if ($charset == 'ujis') {
-		define('_CHARSET', 'EUC-JP');
-		$config_sitename = mb_convert_encoding($config_sitename, _CHARSET, 'UTF-8');
-		$user_realname  = mb_convert_encoding($user_realname, _CHARSET, 'UTF-8');
-		$blog_name	  = mb_convert_encoding($blog_name, _CHARSET, 'UTF-8');
-	} else {
-		define('_CHARSET', 'UTF-8');
-	}
-
+	
 	$config_indexurl   = replaceDoubleBackslash($config_indexurl);
 	$config_adminurl   = replaceDoubleBackslash($config_adminurl);
 	$config_mediaurl   = replaceDoubleBackslash($config_mediaurl);
@@ -523,6 +512,29 @@ function doInstall() {
 	$config_skinspath  = replaceDoubleBackslash($config_skinspath);
 	$config_mediapath  = replaceDoubleBackslash($config_mediapath);
 
+/**
+ * Include and initialize multibyte functions as a replacement for mbstring extension
+ *  if mbstring extension is not loaded.
+ * Jan.28, 2011. Japanese Package Release Team
+ */ 
+	if (!function_exists('mb_convert_encoding')){
+		global $mbemu_internals;
+		include_once($config_adminpath.'libs/mb_emulator/mb-emulator.php');
+	}
+	if (function_exists('date_default_timezone_set')){
+		 @date_default_timezone_set((function_exists('date_default_timezone_get')) ? @date_default_timezone_get() : 'UTC');
+	}
+	
+	if ($charset == 'ujis') {
+		define('_CHARSET', 'EUC-JP');
+		$config_sitename = mb_convert_encoding($config_sitename, _CHARSET, 'UTF-8');
+		$user_realname  = mb_convert_encoding($user_realname, _CHARSET, 'UTF-8');
+		$blog_name	  = mb_convert_encoding($blog_name, _CHARSET, 'UTF-8');
+	} else {
+		define('_CHARSET', 'UTF-8');
+	}
+	
+	
 	// 1. check all the data
 	$errors = array();
 
@@ -863,9 +875,6 @@ function doInstall() {
 		$config_data .= "\n";
 		$config_data .= "   // include libs\n";
 		$config_data .= "   include(\$DIR_LIBS . 'globalfunctions.php');\n";
-		$config_data .= "   if (!extension_loaded('mbstring')) {\n";
-		$config_data .= "	   include(\$DIR_LIBS . 'mb_emulator/mb-emulator.php');\n";
-		$config_data .= "   }\n";
 		$config_data .= "?" . ">";
 
 		$result = @fputs($fp, $config_data, strlen($config_data) );
@@ -929,9 +938,6 @@ function doInstall() {
 
 	// include libs
 	include($DIR_LIBS . 'globalfunctions.php');
-	if (!extension_loaded('mbstring')) {
-		include($DIR_LIBS . 'mb_emulator/mb-emulator.php');
-	}
 ?&gt;</code></pre>
 
 	<?php echo _TEXT11; ?>
