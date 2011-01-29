@@ -41,7 +41,7 @@ if ($CONF['debug']) {
  */
 
 if (function_exists('date_default_timezone_get')) {
-	if (FALSE == ($timezone = @date_default_timezone_get()) {
+	if (FALSE == ($timezone = @date_default_timezone_get())) {
 		$timezone = 'UTC';
 	}
 }
