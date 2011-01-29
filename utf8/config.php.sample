@@ -52,6 +52,7 @@ $DIR_LANG    = $DIR_NUCLEUS . 'language/';
 $DIR_LIBS    = $DIR_NUCLEUS . 'libs/';
 
 if (!@file_exists($DIR_LIBS . 'globalfunctions.php')) {
+	header('Content-type: text/html; charset=utf-8');
 	echo '設定がおかしいです。<a href="./install/index.php">インストール用スクリプト</a>を起動するか、config.phpの設定値を変更して下さい。';
 	exit;
 }
