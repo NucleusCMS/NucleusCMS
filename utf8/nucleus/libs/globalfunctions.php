@@ -98,6 +98,15 @@ if (!isset($CONF['installscript'])) {
 	$CONF['installscript'] = 0;
 }
 
+/*
+ * Include multibyte function if some functions related to  mbstring are not loaded.
+ * By Japanese Packaging Team, Jan.31, 2011
+ */
+if (!function_exists('mb_convert_encoding')){
+	global $mbemu_internals;
+	include_once($DIR_LIBS.'mb_emulator/mb-emulator.php');
+}
+
 // we will use postVar, getVar, ... methods instead of HTTP_GET_VARS or _GET
 if ($CONF['installscript'] != 1) { // vars were already included in install.php
 	if (phpversion() >= '4.1.0') {
@@ -2053,14 +2062,7 @@ function ticketForPlugin(){
 			include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
 			include($DIR_LIBS . 'PLUGINADMIN.php');
 		}
-		if (!(function_exists('mb_strimwidth') || extension_loaded('mbstring')))
-		{
-			if (file_exists($DIR_LIBS.'mb_emulator/mb-emulator.php'))
-			{
-				global $mbemu_internals;
-				include_once($DIR_LIBS.'mb_emulator/mb-emulator.php');
-			}
-		}
+		
 		$oPluginAdmin = new PluginAdmin($plugin_name);
 		$oPluginAdmin->start();
 		echo '<p>' . _ERROR_BADTICKET . "</p>\n";
