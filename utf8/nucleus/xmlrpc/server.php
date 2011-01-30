@@ -66,6 +66,7 @@
  * @version $NucleusJP: server.php,v 1.8.2.1 2007/09/07 07:12:42 kimitake Exp $
  */
 $CONF = array();
+$DIR_LIBS = '';
 require("../../config.php");	// include Nucleus libs and code
 //include($DIR_LIBS . "xmlrpc.inc.php");
 //include($DIR_LIBS . "xmlrpcs.inc.php");
