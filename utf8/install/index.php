@@ -211,7 +211,7 @@ function showInstallForm() {
 			</li>
 		</ul>
 <?php
-	if (phpversion() < '6.0.0') {
+	if (phpversion() < '5.0.0') {
 		echo ' <p class="deprecated">' . _TEXT2_WARN2 . '</p>';
 ?>
 </form>
