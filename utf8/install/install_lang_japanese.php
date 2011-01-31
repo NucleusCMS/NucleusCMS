@@ -68,9 +68,8 @@ define('_TEXT1',				'<p>MySQLテーブルのセットアップと、config.php �
 
 define('_HEADER2',				'PHP と MySQL のバージョン');
 define('_TEXT2',				'<p>以下はあなたのウェブホストにおけるPHPとMySQLサーバーのバージョンです。Nucleusのサポートフォーラムに問題を報告する時は、この情報を書き添えてください。</p>');
-define('_TEXT2_WARN',			' 注意: Nucleusの動作には少なくともバージョン %s が必要です');
-define('_TEXT2_WARN2',			' 注意: Nucleusの動作には少なくともバージョン %s が必要です');
-define('_TEXT2_WARN3',			'警告！ 動作しているPHPのバージョンが古いようです！次にリリースされるNucleusCMSではPHP4はサポートされません！早急にPHP5にアップグレードしてください！');
+define('_TEXT2_WARN1',			' 注意: Nucleusの動作には少なくともバージョン %s が必要です');
+define('_TEXT2_WARN2',			'警告！ 動作しているPHPのバージョンが古く、正常な動作を保証できません。インストール作業を中止します。PHP5以上が使えないかどうか、サーバ管理者に確認して下さい。');
 
 define('_HEADER3',				'config.phpの自動設定');
 define('_TEXT3',				'<strong style="color:red;">config.phpへの書き込みができません。</strong>config.phpのパーミッションを<strong>666</strong>にしておけば、スクリプトが自動で設定情報を書き込みます。ただし、Nucleusのインストール完了後、<strong><em style="font-color:#f00;">必ず</em></strong>パーミッションを<strong>444</strong>に変更してください(<a href="../nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>)。</p>');

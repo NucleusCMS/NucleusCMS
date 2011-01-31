@@ -163,21 +163,11 @@ function showInstallForm() {
 		
 		<ul>
 			<li>PHP:
-
 <?php
 	echo phpversion();
-	$minVersion = '4.0.6';
-
-	if (phpversion() < $minVersion) {
-		echo ' <span class="warning" style="display:block">' . sprintf(_TEXT2_WARN, $minVersion) . '</span>';
-	} elseif (phpversion() < '5') {
-		echo ' <span class="warning" style="display:block">' . _TEXT2_WARN3 . '</span>';
-	}
 ?>
-
 			</li>
 			<li>MySQL:
-
 <?php
 	// note: this piece of code is taken from phpMyAdmin
 	$conn   = sql_connect_args('localhost','','');
@@ -215,14 +205,22 @@ function showInstallForm() {
 	}
 
 	if ($mysqlVersion < $minVersion) {
-		echo ' <span class="warning" style="display:block">' . sprintf(_TEXT2_WARN2, $minVersion) . '</span>';
+		echo ' <span class="warning" style="display:block">' . sprintf(_TEXT2_WARN1, $minVersion) . '</span>';
 	}
 ?>
-
 			</li>
 		</ul>
-
 <?php
+	if (phpversion() < '6.0.0') {
+		echo ' <p class="deprecated">' . _TEXT2_WARN2 . '</p>';
+?>
+</form>
+</body>
+</html>
+<?php
+		exit;
+	}
+
 	// tell people how they can have their config file filled out automatically
 	if (@file_exists('../config.php') && @!is_writable('../config.php')) {
 ?>

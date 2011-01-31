@@ -38,10 +38,7 @@ upgrade_head();
 <b>Note:</b> もし古いバージョンの Nuclues からアップグレードしようとしているのでなければ（つまりまっさらな状態からインストールしたのであれば）、これらのスクリプト集は必要ありません。
 </div>
 
-<p>
-古いバージョンの Nucleus からアップグレードするとき、データベーステーブルのアップグレードが必要です。
-このアップグレードスクリプトを実行することでそれが可能となります。
-</p>
+<p>Nucleus CMSはバージョンアップ毎に、データベースのテーブル構造を少しずつ変えています。このスクリプト集は、古いバージョンの Nucleus からアップグレードする際に必要な、データベーステーブルのアップグレードを行います。</p>
 
 <?php	// calculate current version
 	if (!upgrade_checkinstall(96)) $current = 95;
@@ -64,6 +61,10 @@ upgrade_head();
 ?>
 <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p> 	 
 <?php
+	} else if (phpversion() < '5') {
+?>		
+<p class="deprecated">警告！ 動作しているPHPのバージョンが古く、正常な動作を保証できません。アップグレード作業を中止して、PHP5以上が使えないかどうか、サーバ管理者に確認して下さい。</p>
+<?php		
 	} else {
 ?>
 <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.62 用にアップグレードします</a></p>
