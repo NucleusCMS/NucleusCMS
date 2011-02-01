@@ -368,10 +368,14 @@ WEBサイト: <a href="<%member(url)%>"><%member(url)%></a>
 </small>
 </div>]]></part>
 
+		<part name="FORMAT_DATE"><![CDATA[%Y年%m月%d日]]></part>
+
+		<part name="FORMAT_TIME"><![CDATA[%H時%M分%S秒]]></part>
+
 		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
 
 		<part name="ITEM"><![CDATA[<div class="contenttitle">
-<h2><a href="<%itemlink%>" title="投稿を読む: <%title(attribute)%>"><%title%> (<%date(%Y/%m/%d)%>)</a></h2>
+<h2><a href="<%itemlink%>" title="投稿を読む: <%title(attribute)%>"><%title%> (<%date%>)</a></h2>
 </div>
 <div class="contentitem">
 <div class="contentitem1">
@@ -411,10 +415,14 @@ WEBサイト: <a href="<%member(url)%>"><%member(url)%></a>
 </small>
 </div>]]></part>
 
+		<part name="FORMAT_DATE"><![CDATA[%Y年%m月%d日]]></part>
+
+		<part name="FORMAT_TIME"><![CDATA[%H時%M分%S秒]]></part>
+
 		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
 
 		<part name="ITEM"><![CDATA[<div class="contenttitle">
-<h2><%title%> (<%date(%Y/%m/%d)%>)</h2>
+<h2><%title%> (<%date%>)</h2>
 </div>
 <div class="contentitem">
 <div class="contentitem1">
@@ -494,6 +502,10 @@ title="<%user%>さんにメールを送るかサイトを訪れる。">
 
 ]]></part>
 
+		<part name="FORMAT_DATE"><![CDATA[%Y年%m月%d日]]></part>
+
+		<part name="FORMAT_TIME"><![CDATA[%H時%M分%S秒]]></part>
+
 	</template>
 
 
@@ -517,10 +529,14 @@ title="<%user%>さんにメールを送るかサイトを訪れる。">
 </small>
 </div>]]></part>
 
+		<part name="FORMAT_DATE"><![CDATA[%Y年%m月%d日]]></part>
+
+		<part name="FORMAT_TIME"><![CDATA[%H時%M分%S秒]]></part>
+
 		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
 
 		<part name="ITEM"><![CDATA[<div class="contenttitle">
-<h2><a href="<%itemlink%>" title="投稿を読む: <%title(attribute)%>"><%title%> (<%date(%Y/%m/%d)%>)</a></h2>
+<h2><a href="<%itemlink%>" title="投稿を読む: <%title(attribute)%>"><%title%> (<%date%>)</a></h2>
 </div>
 <div class="contentitem">
 <div class="contentitem1">
