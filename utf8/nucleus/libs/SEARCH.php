@@ -19,7 +19,7 @@
  * http://davidaltherr.net/web/php_functions/boolean/funcs.mysql.boolean.txt
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2010 The Nucleus Group
+ * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
  * @version $NucleusJP: SEARCH.php,v 1.7 2006/07/20 08:01:52 kimitake Exp $
  */

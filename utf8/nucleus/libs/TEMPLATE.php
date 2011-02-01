@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2010 The Nucleus Group
+ * Copyright (C) 2002-2011 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * A class representing a template
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2010 The Nucleus Group
+ * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
  * @version $NucleusJP: TEMPLATE.php,v 1.6 2006/07/20 08:01:52 kimitake Exp $
  */
