@@ -4,7 +4,7 @@
 <head>
 	<!--
 		Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-		Copyright (C) 2002-2010 The Nucleus Group
+		Copyright (C) 2002-2011 The Nucleus Group
 
 		This program is free software; you can redistribute it and/or
 		modify it under the terms of the GNU General Public License
@@ -13,7 +13,7 @@
 		(see nucleus/documentation/index.html#license for more info)
 
 		@license http://nucleuscms.org/license.txt GNU General Public License
-		@copyright Copyright (C) 2002-2010 The Nucleus Group
+		@copyright Copyright (C) 2002-2011 The Nucleus Group
 	-->
 	<!-- $Id$ -->
 	<!-- $NucleusJP: plugins.html,v 1.9 2007/02/04 06:28:45 kimitake Exp $ -->
@@ -75,10 +75,10 @@
 
 <div class="heading">
 <a id="top" name="top">プラグイン API</a>
-<em>2009年2月6日</em>
+<em>2011年2月3日</em>
 </div>
 
-<div class="note-trans"><strong>訳者注：</strong> 
+<div class="note-trans"><strong>訳者注：</strong>
     <ul>
         <li>このドキュメントの原文は以下のURLにあります。<br />
          <a href="http://nucleuscms.org/documentation/devdocs/plugins.html">http://nucleuscms.org/documentation/devdocs/plugins.html</a></li>
@@ -86,7 +86,7 @@
     </ul>
 </div>
 
-<div class="note"><strong>注：</strong> 
+<div class="note"><strong>注：</strong>
     <ul>
         <li>このドキュメントは基本的なプラグインの書き方についての情報を提供しています。さらに質問がある方は <a href="http://forum.nucleuscms.org/viewforum.php?f=10">Plugin
       Development Forum</a> （<a href="http://japan.nucleuscms.org/bb/viewforum.php?f=5">日本語フォーラム</a>）をご覧ください。</li>
@@ -101,7 +101,7 @@
 </p>
 
 <p>
-このドキュメントはNucleusプラグインの作り方についての解説です。 
+このドキュメントはNucleusプラグインの作り方についての解説です。
 </p>
 
 <h1><a id="toc" name="toc">目次</a></h1>
@@ -111,7 +111,7 @@
     <li><a href="#firstplug">はじめてプラグインを書いてみる</a></li>
     <li><a href="#nucleusplugin"><code>NucleusPlugin</code> クラスの概要</a></li>
     <li><a href="#skinvars"><code>&lt;%plugin(...)%&gt;</code> スキン変数</a></li>
-    <li><a href="#templatevars"><code>&lt;%plugin(...)%&gt;</code> テンプレート変数</a></li>    
+    <li><a href="#templatevars"><code>&lt;%plugin(...)%&gt;</code> テンプレート変数</a></li>
     <li><a href="#actions"><code>action.php</code> を使ったアクション</a></li>
     <li><a href="#events">イベントとイベント登録の仕方</a></li>
     <li><a href="#options">オプションを保存する</a></li>
@@ -206,8 +206,8 @@ class NP_HelloWorld extends NucleusPlugin
         {
             case 'SqlTablePrefix':
                 return 1;
-			case 'SqlApi':
-				return 1;
+            case 'SqlApi':
+                return 1;
             default:
                 return 0;
         }
@@ -253,23 +253,23 @@ class NP_HelloWorld extends NucleusPlugin
     </tr>
     <tr>
         <td><code>getName()</code></td>
-        <td>プラグイン名を返します。インストール済みプラグインリストに表示されます。デフォルトの実装では <code>Undefined</code> を返すため、必ず再定義されないといけません。</td>       
+        <td>プラグイン名を返します。インストール済みプラグインリストに表示されます。デフォルトの実装では <code>Undefined</code> を返すため、必ず再定義されないといけません。</td>
     </tr>
     <tr>
         <td><code>getAuthor()</code></td>
-        <td>プラグインの作者名を返します。インストール済みプラグインリストに表示されます。デフォルトの実装では <code>Undefined</code> を返すため、必ず再定義されないといけません。</td>     
+        <td>プラグインの作者名を返します。インストール済みプラグインリストに表示されます。デフォルトの実装では <code>Undefined</code> を返すため、必ず再定義されないといけません。</td>
     </tr>
     <tr>
         <td><code>getURL()</code></td>
-        <td>プラグインをダウンロード可能な、またはプラグインの追加情報のあるサイトのURLを返します。そのようなサイトがない場合は作者のメールアドレスへの mailto:リンクが適切です。デフォルトの実装では <code>Undefined</code> を返すため、必ず再定義されないといけません。</td>      
+        <td>プラグインをダウンロード可能な、またはプラグインの追加情報のあるサイトのURLを返します。そのようなサイトがない場合は作者のメールアドレスへの mailto:リンクが適切です。デフォルトの実装では <code>Undefined</code> を返すため、必ず再定義されないといけません。</td>
     </tr>
     <tr>
         <td><code>getDescription()</code></td>
-        <td>プラグインに関する説明文（長文）を返します。インストール済みプラグインリストに表示されます。デフォルトの実装では <code>Undefined</code> を返します。</td>       
+        <td>プラグインに関する説明文（長文）を返します。インストール済みプラグインリストに表示されます。デフォルトの実装では <code>Undefined</code> を返します。</td>
     </tr>
     <tr>
         <td><code>getVersion()</code></td>
-        <td>プラグインの現在のバージョンを返します。デフォルトは <code>0.0</code> を返します。</td>     
+        <td>プラグインの現在のバージョンを返します。デフォルトは <code>0.0</code> を返します。</td>
     </tr>
     <tr>
         <td><code>getMinNucleusVersion()</code></td>
@@ -285,11 +285,11 @@ class NP_HelloWorld extends NucleusPlugin
     </tr>
     <tr>
         <td><code>doSkinVar($skinType)</code></td>
-        <td><code>&lt;%plugin(...)%&gt;</code> スキン変数によってプラグインが呼び出されたときにこのメソッドが呼ばれます。<code>$skinType</code> パラメータはプラグインが呼ばれた場所のスキンタイプに該当します（<code>item</code>, <code>archive</code>, ...）。パラメータが一つしかないことに混乱しないでください。複数パラメータを渡すことも<strong>可能</strong>です。<a href="#skinvars"><code>doSkinVar</code> メソッドの実装に関する詳細情報はこちら</a>。デフォルトではこのメソッドはなにも出力しません。</td>       
+        <td><code>&lt;%plugin(...)%&gt;</code> スキン変数によってプラグインが呼び出されたときにこのメソッドが呼ばれます。<code>$skinType</code> パラメータはプラグインが呼ばれた場所のスキンタイプに該当します（<code>item</code>, <code>archive</code>, ...）。パラメータが一つしかないことに混乱しないでください。複数パラメータを渡すことも<strong>可能</strong>です。<a href="#skinvars"><code>doSkinVar</code> メソッドの実装に関する詳細情報はこちら</a>。デフォルトではこのメソッドはなにも出力しません。</td>
     </tr>
     <tr>
         <td><code>doTemplateVar(&amp;$item)</code></td>
-        <td>基本的に <code>doSkinVar</code> と同じですが、今度は<em>テンプレート</em>内（<code>item header/body/footer</code> と <code>dateheader/footer</code>）での<code>&lt;%plugin(...)%&gt;</code> 変数からの呼び出しになります。デフォルトではこのメソッドはテンプレートをスキンタイプとみなして<code>doSkinVar</code> メソッドに処理を渡します。<a href="#templatevars"><code>doTemplateVar</code> メソッドの実装に関する詳細情報はこちら</a></td>       
+        <td>基本的に <code>doSkinVar</code> と同じですが、今度は<em>テンプレート</em>内（<code>item header/body/footer</code> と <code>dateheader/footer</code>）での<code>&lt;%plugin(...)%&gt;</code> 変数からの呼び出しになります。デフォルトではこのメソッドはテンプレートをスキンタイプとみなして<code>doSkinVar</code> メソッドに処理を渡します。<a href="#templatevars"><code>doTemplateVar</code> メソッドの実装に関する詳細情報はこちら</a></td>
     </tr>
     <tr>
         <td><code>doTemplateCommentsVar(&amp;$item, &amp;$comment)</code></td>
@@ -305,7 +305,7 @@ class NP_HelloWorld extends NucleusPlugin
     </tr>
     <tr>
         <td><code>doAction($type)</code></td>
-        <td>プラグインがユーザーインタラクションを求めたとき、 <code>action.php</code>を介してこのメソッドがそれを与えます。これはNucleus自身が新しいコメントや投票を処理するのに使用するスクリプトです。正しいパラメータを用いることで、プラグインからの <code>doAction</code> メソッドを呼び出せます。<code>$type</code> はオプションのメッセージタイプに該当します。<code>doAction</code> メソッド内で、リクエストからの追加の変数にアクセスできます。デフォルトではこのメソッドがエラーメッセージをトリガーすると<code>'No Such Action'</code>という文字列を返します。<a href="#actions"><code>doAction</code> に関する詳細情報はこちら</a></td>        
+        <td>プラグインがユーザーインタラクションを求めたとき、 <code>action.php</code>を介してこのメソッドがそれを与えます。これはNucleus自身が新しいコメントや投票を処理するのに使用するスクリプトです。正しいパラメータを用いることで、プラグインからの <code>doAction</code> メソッドを呼び出せます。<code>$type</code> はオプションのメッセージタイプに該当します。<code>doAction</code> メソッド内で、リクエストからの追加の変数にアクセスできます。デフォルトではこのメソッドがエラーメッセージをトリガーすると<code>'No Such Action'</code>という文字列を返します。<a href="#actions"><code>doAction</code> に関する詳細情報はこちら</a></td>
     </tr>
     <tr>
         <td><code>install()</code></td>
@@ -317,7 +317,7 @@ class NP_HelloWorld extends NucleusPlugin
     </tr>
     <tr>
         <td><code>getEventList()</code></td>
-        <td>プラグインはイベント登録が可能です。イベントはNucleusが何かアクションを起こすたびに生成されます。たとえば、<code>AddItem</code> イベントは、このイベントを登録しているすべてのプラグインを呼び出します。呼び出されるメソッドは <code>event_AddItem($params)</code>になります。 <code>$params</code> パラメータは、例えば <code>AddItem</code>     の <code>itemid</code> のような、情報フィールドを複数持つ連想配列です。デフォルトではどのイベントにも登録されていないことを示す空の配列を返します。<a href="#events">イベントに関する詳細情報はこちら</a></td>        
+        <td>プラグインはイベント登録が可能です。イベントはNucleusが何かアクションを起こすたびに生成されます。たとえば、<code>AddItem</code> イベントは、このイベントを登録しているすべてのプラグインを呼び出します。呼び出されるメソッドは <code>event_AddItem($params)</code>になります。 <code>$params</code> パラメータは、例えば <code>AddItem</code>     の <code>itemid</code> のような、情報フィールドを複数持つ連想配列です。デフォルトではどのイベントにも登録されていないことを示す空の配列を返します。<a href="#events">イベントに関する詳細情報はこちら</a></td>
     </tr>
     <tr>
         <td><code>getTableList()</code></td>
@@ -350,7 +350,7 @@ class NP_HelloWorld extends NucleusPlugin
                 <li><code>createItemOption(...)</code>(v3.2)</li>
             </ul>
         </td>
-        <td><a href="#options" title="More info on options">新しいオプションを生成します。</a></td>     
+        <td><a href="#options" title="More info on options">新しいオプションを生成します。</a></td>
     </tr>
     <tr>
         <td>
@@ -362,7 +362,7 @@ class NP_HelloWorld extends NucleusPlugin
                 <li><code>deleteItemOption(...)</code>(v3.2)</li>
             </ul>
         </td>
-        <td><a href="#options" title="More info on options">オプションを削除します。</a></td>       
+        <td><a href="#options" title="More info on options">オプションを削除します。</a></td>
     </tr>
     <tr>
         <td>
@@ -374,7 +374,7 @@ class NP_HelloWorld extends NucleusPlugin
                 <li><code>setItemOption(...)</code>(v3.2)</li>
             </ul>
         </td>
-        <td><a href="#options" title="More info on options">オプションに値をセットします。</a></td>     
+        <td><a href="#options" title="More info on options">オプションに値をセットします。</a></td>
     </tr>
     <tr>
         <td>
@@ -386,7 +386,7 @@ class NP_HelloWorld extends NucleusPlugin
                 <li><code>getItemOption(...)</code>(v3.2)</li>
             </ul>
         </td>
-        <td><a href="#options" title="More info on options">オプションの値を取得します。</a></td>       
+        <td><a href="#options" title="More info on options">オプションの値を取得します。</a></td>
     </tr>
     <tr>
         <td>
@@ -397,7 +397,7 @@ class NP_HelloWorld extends NucleusPlugin
                 <li><code>getAllItemOptions(...)</code>(v3.2)</li>
             </ul>
         </td>
-        <td><a href="#options" title="More info on options">与えられたオプションにより、すべての値（コンテクストごとの一つの値）の連想配列を返します。</a></td>     
+        <td><a href="#options" title="More info on options">与えられたオプションにより、すべての値（コンテクストごとの一つの値）の連想配列を返します。</a></td>
     </tr>
 
     <tr>
@@ -413,19 +413,19 @@ class NP_HelloWorld extends NucleusPlugin
     </tr>
     <tr>
         <td><code>getID()</code></td>
-        <td>このプラグインのIDを返します（このIDはNucleus内部で利用されるものです）。</td>      
+        <td>このプラグインのIDを返します（このIDはNucleus内部で利用されるものです）。</td>
     </tr>
     <tr>
         <td><code>getAdminURL()</code></td>
-        <td>プラグインの管理エリアが置かれたURLを返します（そのような管理エリアがない場合は、この情報は無効です）。</td>        
+        <td>プラグインの管理エリアが置かれたURLを返します（そのような管理エリアがない場合は、この情報は無効です）。</td>
     </tr>
     <tr>
         <td><code>getDirectory()</code></td>
-        <td>プラグインの追加ファイルが格納されたサーバーのファイルシステムのパスを返します（そのようなファイルがない場合は、この情報は無効です）。結果は&quot;<code>.../nucleus/plugins/<em>plugname</em>/</code>&quot;のようになります。</td>      
+        <td>プラグインの追加ファイルが格納されたサーバーのファイルシステムのパスを返します（そのようなファイルがない場合は、この情報は無効です）。結果は&quot;<code>.../nucleus/plugins/<em>plugname</em>/</code>&quot;のようになります。</td>
     </tr>
     <tr>
         <td><code>getShortName()</code></td>
-        <td>"NP_"部分を省き、全てを小文字にしたプラグインのクラス名を返します。この情報は <code>getAdminURL</code> と <code>getDirectory</code> で使用されます。</td>       
+        <td>"NP_"部分を省き、全てを小文字にしたプラグインのクラス名を返します。この情報は <code>getAdminURL</code> と <code>getDirectory</code> で使用されます。</td>
     </tr>
 
 </table>
@@ -479,7 +479,7 @@ function doSkinVar($skinType, $skinVar, $param1 = 'default value')</code></pre>
         <strong>&amp;マークに注意！</strong>
     </li>
 </ol>
-    
+
 <p>テンプレート変数はスキン変数と同じ要領で呼ばれます（<code>&lt;%plugin(PlugName,parameters)%&gt;</code> または <code>&lt;%PlugName(parameters)%&gt;</code>）。
 </p>
 
@@ -542,7 +542,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
   ...
   function event_PreAddComment(&amp;$data) {
     // 頭字語 HTML を置き換え
-    $data['comment']['body'] = 
+    $data['comment']['body'] =
         strreplace('HTML',
                    '&lt;acronym title="HyperText Markup Language"&gt;HTML&lt;/acronym&gt;',
                    $data['comment']['body']);
@@ -603,7 +603,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>スキンタイプ（'index', 'item', 'archive', 'archivelist', 'member', 'error', 'search', 'imagepopup', 'fileparser'のいずれか）</dd>
             <dt class="ref">contents</dt>
             <dd>スキンの内容</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostSkinParse</td>
@@ -623,7 +623,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>BLOG</code> オブジェクト</dd>
             <dt class="ref obj">item</dt>
             <dd>アイテムデータを持つオブジェクト</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostItem</td>
@@ -633,7 +633,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>BLOG</code> オブジェクト</dd>
             <dt class="ref obj">item</dt>
             <dd>アイテムデータを持つオブジェクト</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PreComment</td>
@@ -641,7 +641,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ref">comment</dt>
             <dd>コメントデータを持つ連想配列</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostComment</td>
@@ -649,7 +649,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ref">comment</dt>
             <dd>コメントデータを持つ連想配列</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PreDateHead</td>
@@ -659,7 +659,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>BLOG</code> オブジェクト</dd>
             <dt class="ro">timestamp</dt>
             <dd>日付ヘッダーのタイムスタンプ</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostDateHead</td>
@@ -669,7 +669,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>BLOG</code> オブジェクト</dd>
             <dt class="ro">timestamp</dt>
             <dd>日付ヘッダーのタイムスタンプ</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PreDateFoot</td>
@@ -679,7 +679,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>BLOG</code> オブジェクト</dd>
             <dt class="ro">timestamp</dt>
             <dd>日付フッターのタイムスタンプ</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostDateFoot</td>
@@ -690,7 +690,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ro">timestamp</dt>
             <dd>日付フッターのタイムスタンプ</dd>
         </dl></td>
-    </tr>   
+    </tr>
     <tr>
         <td>LoginSuccess</td>
         <td>ログイン成功後</td>
@@ -699,7 +699,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>MEMBER</code> オブジェクト</dd>
 			<dt class="ro">username</dt>
 			<dd>ログ印字に使用されたログイン名</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>LoginFailed</td>
@@ -707,7 +707,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">username</dt>
             <dd>ログイン時に使われたユーザー名</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>Logout</td>
@@ -715,7 +715,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">username</dt>
             <dd>ログアウト時のユーザー名</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PreBlogContent</td>
@@ -725,7 +725,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>BLOG</code> オブジェクト</dd>
             <dt class="ro">type</dt>
             <dd>呼び出されたスキン変数 ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults', 'othersearchresults', 'categorylist', 'otherarchive', 'otherarchivelist')</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostBlogContent</td>
@@ -735,7 +735,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>BLOG</code> オブジェクト</dd>
             <dt class="ro">type</dt>
             <dd>呼び出されたスキン変数 ('blog', 'otherblog', 'archive', 'archivelist', 'item', 'searchresults', 'othersearchresults', 'categorylist', 'otherarchive', 'otherarchivelist')</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PreAddComment</td>
@@ -745,7 +745,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>コメントデータ（連想配列）</dd>
             <dt class="ref">spamcheck</dt>
             <dd>(v3.3) <em>SpamCheck</em>イベントの結果として返されるデータ構造（連想配列）</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostAddComment</td>
@@ -757,7 +757,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>コメントのID</dd>
             <dt class="ref">spamcheck</dt>
             <dd>(v3.3) <em>SpamCheck</em>イベントの結果として返されるデータ構造（連想配列）</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostRegister</td>
@@ -765,7 +765,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="obj ref">member</dt>
             <dd>新しい<code>MEMBER</code> オブジェクト</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostAddItem</td>
@@ -773,7 +773,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">itemid</dt>
             <dd>データベースに出来た新しい itemid</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostUpdateItem</td>
@@ -805,8 +805,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>1 （ドラフト） or 0 （非ドラフト）</dd>
             <dt class="ref">catid</dt>
             <dd>カテゴリーID</dd>
-        </dl></td>      
-    </tr>   
+        </dl></td>
+    </tr>
     <tr>
         <td>PreUpdateItem</td>
         <td>データベースにあるアイテムが更新される直前</td>
@@ -825,7 +825,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>1 （コメント不可） or 0 （コメント可）</dd>
             <dt class="ref">catid</dt>
             <dd>カテゴリーID</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PrepareItemForEdit</td>
@@ -833,7 +833,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ref">item</dt>
             <dd>アイテムデータを持つ連想配列</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PreUpdateComment</td>
@@ -841,7 +841,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ref">body</dt>
             <dd>コメント本文</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PrepareCommentForEdit</td>
@@ -849,7 +849,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ref">comment</dt>
             <dd>コメントデータ（連想配列）</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PrePluginOptionsEdit</td>
@@ -871,8 +871,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ro">contextid</dt>
             <dd>コンテクスト ID (blogid, memberid, catid, itemid コンテクストによる)</dd>
 
-        </dl></td>      
-    </tr>   
+        </dl></td>
+    </tr>
     <tr>
         <td>PrePluginOptionsUpdate</td>
         <td>
@@ -907,30 +907,30 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ro">plugid</dt>
             <dd>プラグイン ID （これが気になるなら、<code>GetID()</code>を見ると理解できる）（globalコンテクスト）</dd>
             <dt class="ro">blogid</dt>
-            <dd>(v2.2) blog ID (blog コンテクスト)</dd>         
+            <dd>(v2.2) blog ID (blog コンテクスト)</dd>
             <dt class="ref obj">blog</dt>
-            <dd>(v2.2) BLOG オブジェクト (blog コンテクスト)</dd>           
+            <dd>(v2.2) BLOG オブジェクト (blog コンテクスト)</dd>
             <dt class="ro">memberid</dt>
-            <dd>(v2.2) member ID (member コンテクスト)</dd>         
+            <dd>(v2.2) member ID (member コンテクスト)</dd>
             <dt class="ref obj">member</dt>
-            <dd>(v2.2) MEMBER オブジェクト (member コンテクスト)</dd>           
+            <dd>(v2.2) MEMBER オブジェクト (member コンテクスト)</dd>
             <dt class="ro">catid</dt>
-            <dd>(v2.2) category ID (category コンテクスト)</dd>         
+            <dd>(v2.2) category ID (category コンテクスト)</dd>
             <dt class="ro">itemid</dt>
             <dd>(v2.2) item ID (item コンテクスト)</dd>
             <dt class="ref obj">member</dt>
             <dd>(v2.2) ITEM オブジェクト (item コンテクスト)</dd>
-        </dl></td>      
-        
-    </tr>   
+        </dl></td>
+
+    </tr>
     <tr>
         <td>PostAuthentication</td>
         <td>(v2.0b) ログイン処理の完了後。ページリクエストごとに発生</td>
         <td><dl>
             <dt class="ro">loggedIn</dt>
             <dd><code>$member-&gt;isLoggedIn()</code>の戻り値</dd>
-        </dl></td>      
-    </tr>       
+        </dl></td>
+    </tr>
     <tr>
         <td>PreAddItemForm</td>
         <td>(v2.0b) アイテム追加フォーム（ブックマークレットまたは管理エリア）が生成される直前</td>
@@ -939,16 +939,16 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>連想配列への参照。そのうちの'title', 'body', 'more'にはフォームフィールドへの初期値を与えることができます。複数のプラグイン間でこれらの値の変更を避けるには、処理後に'hasBeenSet'の値を1にセットします（かつ処理前にこの値をチェックするようにします）</dd>
             <dt class="ref obj">blog</dt>
             <dd><code>BLOG</code> オブジェクトへの参照</dd>
-        </dl></td>      
-    </tr>       
+        </dl></td>
+    </tr>
     <tr>
         <td>AddItemFormExtras</td>
         <td>(v2.0b) アイテム追加ページまたはブックマークレット内部のどこか。<code>template</code> ファイルの類を別に用意しなくても、ここでプラグインがカスタムフィールドを追加できる。</td>
         <td><dl>
             <dt class="ref obj">blog</dt>
             <dd><code>BLOG</code> オブジェクトへの参照</dd>
-        </dl></td>      
-    </tr>           
+        </dl></td>
+    </tr>
     <tr>
         <td>EditItemFormExtras</td>
         <td>
@@ -965,11 +965,11 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ro">variables</dt>
             <dd>
                 (read-only) 編集されるアイテムに関する全ての情報を持つ連想配列： 'itemid', 'draft', 'closed', 'title', 'body', 'more', 'author', 'authorid', 'timestamp', 'karmapos', 'karmaneg', 'catid'
-            </dd>           
+            </dd>
             <dt class="ro">itemid</dt>
             <dd>アイテム IDへのショートカット</dd>
-        </dl></td>      
-    </tr>               
+        </dl></td>
+    </tr>
     <tr>
         <td>BlogSettingsFormExtras</td>
         <td>(v2.0) blog設定ページにフォームを追加可能
@@ -980,12 +980,12 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 追加フォームの内容
 &lt;/p&gt;&lt;/form&gt;</code></pre>
             このようにして、正しい構造を保ちつつ複数のプラグインがオプションを保持できます。またフィールド名の重複を避けるためにプレフィックスを用いてください（例 <code>plug_tb_url</code>）。
-        
+
         </td>
         <td><dl>
             <dt class="obj ref">blog</dt>
             <dd><code>BLOG</code> オブジェクトへの参照</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PreDeleteItem</td>
@@ -993,7 +993,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">itemid</dt>
             <dd>削除されるアイテムID</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostDeleteItem</td>
@@ -1001,7 +1001,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">itemid</dt>
             <dd>削除されたアイテムID</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PreDeleteCategory</td>
@@ -1009,7 +1009,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">catid</dt>
             <dd>削除されるカテゴリー ID</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostDeleteCategory</td>
@@ -1017,15 +1017,15 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">catid</dt>
             <dd>削除されたカテゴリー ID</dd>
-        </dl></td>      
-    </tr>   
+        </dl></td>
+    </tr>
     <tr>
         <td>PreDeleteBlog</td>
         <td>(v2.0) blogがデータベースから削除される直前</td>
         <td><dl>
             <dt class="ro">blogid</dt>
             <dd>削除されるblogID</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostDeleteBlog</td>
@@ -1033,15 +1033,15 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">blogid</dt>
             <dd>削除されたblogID</dd>
-        </dl></td>      
-    </tr>   
+        </dl></td>
+    </tr>
     <tr>
         <td>PreDeleteMember</td>
         <td>(v2.0) メンバーがデータベースから削除される直前</td>
         <td><dl>
             <dt class="ref obj">member</dt>
             <dd><code>削除されるメンバーに関するMEMBER</code> オブジェクトへの参照</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostDeleteMember</td>
@@ -1049,8 +1049,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ref obj">member</dt>
             <dd><code>削除されるメンバーに関するMEMBER</code> オブジェクトへの参照</dd>
-        </dl></td>      
-    </tr>   
+        </dl></td>
+    </tr>
     <tr>
         <td>PreDeleteTeamMember</td>
         <td>(v2.0) メンバーがweblogチームから削除される直前</td>
@@ -1059,7 +1059,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>MEMBER</code> オブジェクトへの参照</dd>
             <dt class="ro">blogid</dt>
             <dd>blogID</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostDeleteTeamMember</td>
@@ -1069,7 +1069,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>MEMBER</code> オブジェクトへの参照</dd>
             <dt class="ro">blogid</dt>
             <dd>blogID</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PreDeleteComment</td>
@@ -1077,7 +1077,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">commentid</dt>
             <dd>削除されるコメントID</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostDeleteComment</td>
@@ -1085,12 +1085,12 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">commentid</dt>
             <dd>削除されたコメントID</dd>
-        </dl></td>      
-    </tr>       
+        </dl></td>
+    </tr>
     <tr>
         <td>ActionLogCleared</td>
         <td>(v2.0) アクションログが消去された後</td>
-        <td>なし</td>       
+        <td>なし</td>
     </tr>
     <tr>
         <td>PreDeleteTemplate</td>
@@ -1098,7 +1098,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">templateid</dt>
             <dd>削除されるテンプレートID</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostDeleteTemplate</td>
@@ -1106,15 +1106,15 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">templateid</dt>
             <dd>削除されたテンプレートID</dd>
-        </dl></td>      
-    </tr>       
+        </dl></td>
+    </tr>
     <tr>
         <td>PreDeleteSkin</td>
         <td>(v2.0) スキンがデータベースから削除される直前</td>
         <td><dl>
             <dt class="ro">skinid</dt>
             <dd>削除されるスキンID</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostDeleteSkin</td>
@@ -1122,8 +1122,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">skinid</dt>
             <dd>削除されたスキンID</dd>
-        </dl></td>      
-    </tr>   
+        </dl></td>
+    </tr>
     <tr>
         <td>PreDeleteSkinPart</td>
         <td>スペシャルスキンパーツがデータベースから削除される直前</td>
@@ -1132,7 +1132,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>削除されるスペシャルスキンパーツが含まれるスキンのID</dd>
             <dt class="ro">skintype</dt>
             <dd>削除されるスペシャルスキンパーツの名前</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostDeleteSkin</td>
@@ -1142,15 +1142,15 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>削除されたスペシャルスキンパーツが含まれるスキンのID</dd>
             <dt class="ro">skintype</dt>
             <dd>削除されたスペシャルスキンパーツの名前</dd>
-        </dl></td>      
-    </tr>   
+        </dl></td>
+    </tr>
     <tr>
         <td>PreDeletePlugin</td>
         <td>(v2.0) プラグインがデータベースから削除される直前</td>
         <td><dl>
             <dt class="ro">plugid</dt>
             <dd>削除されるプラグインID</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostDeletePlugin</td>
@@ -1158,8 +1158,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ro">plugid</dt>
             <dd>削除されたプラグインID</dd>
-        </dl></td>      
-    </tr>       
+        </dl></td>
+    </tr>
     <tr>
         <td>PreDeleteBan</td>
         <td>(v2.0) 禁止IPがデータベースから削除される直前</td>
@@ -1167,8 +1167,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ro">blogid</dt>
             <dd>禁止IPが削除されるblogのID</dd>
             <dt class="ro">iprange</dt>
-            <dd>禁止されたIPレンジ</dd>         
-        </dl></td>      
+            <dd>禁止されたIPレンジ</dd>
+        </dl></td>
     </tr>
     <tr>
         <td>PostDeleteBan</td>
@@ -1177,9 +1177,9 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ro">blogid</dt>
             <dd>禁止IPが削除されたblogのID</dd>
             <dt class="ro">iprange</dt>
-            <dd>禁止されたIPレンジ</dd>         
-        </dl></td>      
-    </tr>           
+            <dd>禁止されたIPレンジ</dd>
+        </dl></td>
+    </tr>
     <tr>
         <td>PreAddCategory</td>
         <td>(v2.0) 新しいカテゴリーがデータベースに生成される直前</td>
@@ -1187,10 +1187,10 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ref obj">blog</dt>
             <dd><code>BLOG</code> オブジェクトの参照</dd>
             <dt class="ref">name</dt>
-            <dd>新しいカテゴリー名</dd>         
+            <dd>新しいカテゴリー名</dd>
             <dt class="ref">description</dt>
             <dd>新しいカテゴリーの説明</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostAddCategory</td>
@@ -1199,12 +1199,12 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ref obj">blog</dt>
             <dd><code>BLOG</code> オブジェクトへの参照</dd>
             <dt class="ro">name</dt>
-            <dd>新しいカテゴリー名</dd>         
+            <dd>新しいカテゴリー名</dd>
             <dt class="ro">description</dt>
             <dd>新しいカテゴリーの説明</dd>
             <dt class="ro">catid</dt>
-            <dd>新しいカテゴリー ID</dd>            
-        </dl></td>      
+            <dd>新しいカテゴリー ID</dd>
+        </dl></td>
     </tr>
     <tr>
         <td>PreAddBlog</td>
@@ -1220,7 +1220,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>新しい blogの説明</dd>
             <dt class="ref">defaultskin</dt>
             <dd>新しいblogのデフォルトスキンのID</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostAddBlog</td>
@@ -1228,7 +1228,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ref obj">blog</dt>
             <dd>新しい<code>BLOG</code> オブジェクト</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PreAddPlugin</td>
@@ -1236,7 +1236,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ref">file</dt>
             <dd>新しいプラグインのファイル名</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostAddPlugin</td>
@@ -1244,7 +1244,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td><dl>
             <dt class="ref obj">plugin</dt>
             <dd>新しく追加されたプラグインのオブジェクト</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PreAddTeamMember</td>
@@ -1256,7 +1256,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>MEMBER</code> オブジェクト</dd>
             <dt class="ref">admin</dt>
             <dd>新しく追加されたメンバーが管理権限を持っているかどうかを示すブール値</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostAddTeamMember</td>
@@ -1268,7 +1268,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd><code>MEMBER</code> オブジェクト</dd>
             <dt class="ro">admin</dt>
             <dd>新しく追加されたメンバーが管理権限を持っているかどうかを示すブール値</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PreAddTemplate</td>
@@ -1278,7 +1278,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>新しいテンプレート名</dd>
             <dt class="ref">description</dt>
             <dd>新しいテンプレートの説明</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostAddTemplate</td>
@@ -1290,8 +1290,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>新しいテンプレートの説明</dd>
             <dt class="ro">templateid</dt>
             <dd>新しいテンプレートID</dd>
-        </dl></td>      
-    </tr>   
+        </dl></td>
+    </tr>
     <tr>
         <td>PreAddSkin</td>
         <td>(v2.0) 新しいスキンが生成される直前（注：スキンが複製されたときも呼ばれる）</td>
@@ -1306,7 +1306,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>新しいスキンのインクルードモード</dd>
             <dt class="ref">includePrefix</dt>
             <dd>新しいスキンのインクルードプレフィックス</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostAddSkin</td>
@@ -1324,8 +1324,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>新しいスキンのインクルードプレフィックス</dd>
             <dt class="ro">skinid</dt>
             <dd>新しいスキンID</dd>
-        </dl></td>      
-    </tr>       
+        </dl></td>
+    </tr>
     <tr>
         <td>PreAddBan</td>
         <td>(v2.0) 新しい禁止IPが追加される直前</td>
@@ -1336,7 +1336,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>禁止されたIPレンジ</dd>
             <dt class="ref">reason</dt>
             <dd>禁止された理由を記述したテキストメッセージ</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>PostAddBan</td>
@@ -1348,8 +1348,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dd>禁止されたIPレンジ</dd>
             <dt class="ro">reason</dt>
             <dd>禁止された理由を記述したテキストメッセージ</dd>
-        </dl></td>      
-    </tr>       
+        </dl></td>
+    </tr>
 
     <tr>
         <td>PreMoveItem</td>
@@ -1360,8 +1360,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ref">destblogid</dt>
             <dd>移動先のblogID</dd>
             <dt class="ref">destcatid</dt>
-            <dd>移動先のカテゴリーID</dd>           
-        </dl></td>      
+            <dd>移動先のカテゴリーID</dd>
+        </dl></td>
     </tr>
     <tr>
         <td>PostMoveItem</td>
@@ -1372,8 +1372,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ro">destblogid</dt>
             <dd>新しいblogID</dd>
             <dt class="ro">destcatid</dt>
-            <dd>新しいカテゴリーID</dd> 
-        </dl></td>      
+            <dd>新しいカテゴリーID</dd>
+        </dl></td>
     </tr>
     <tr>
         <td>PreMoveCategory</td>
@@ -1384,8 +1384,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ref obj">sourceblog</dt>
             <dd>移動元の<code>BLOG</code> オブジェクト</dd>
             <dt class="ref obj">destblog</dt>
-            <dd>移動先の<code>BLOG</code> オブジェクト</dd>         
-        </dl></td>      
+            <dd>移動先の<code>BLOG</code> オブジェクト</dd>
+        </dl></td>
     </tr>
     <tr>
         <td>PostMoveCategory</td>
@@ -1396,24 +1396,24 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ref obj">sourceblog</dt>
             <dd>移動元の<code>BLOG</code> オブジェクト</dd>
             <dt class="ref obj">destblog</dt>
-            <dd>移動先の<code>BLOG</code> オブジェクト</dd>         
-        </dl></td>      
-    </tr>   
+            <dd>移動先の<code>BLOG</code> オブジェクト</dd>
+        </dl></td>
+    </tr>
     <tr>
         <td>MemberSettingsFormExtras</td>
-        <td><span style="display:block;margin-bottom:1.5em;">(v2.0) メンバー設定ページにフォームを追加可能</span>            
+        <td><span style="display:block;margin-bottom:1.5em;">(v2.0) メンバー設定ページにフォームを追加可能</span>
             あまり多くのデータを追加しないこと。また以下のように<strong>正しいXHTML</strong>を生成してください。
 <pre class="example"><code>&lt;h4&gt;プラグイン名&lt;/h4&gt;
 &lt;form method="post" action="..."&gt;&lt;p&gt;
 追加フォームの内容
 &lt;/p&gt;&lt;/form&gt;</code></pre>
             このようにして、正しい構造を保ちつつ複数のプラグインがオプションを保持できます。またフィールド名の重複を避けるためにプレフィックスを用いてください（例 <code>plug_tb_url</code>）。
-        
+
         </td>
         <td><dl>
             <dt class="ref obj">member</dt>
             <dd><code>MEMBER</code> オブジェクトへの参照</dd>
-        </dl></td>      
+        </dl></td>
     </tr>
     <tr>
         <td>GeneralSettingsFormExtras</td>
@@ -1424,9 +1424,9 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 追加フォームの内容
 &lt;/p&gt;&lt;/form&gt;</code></pre>
             このようにして、正しい構造を保ちつつ複数のプラグインがオプションを保持できます。またフィールド名の重複を避けるためにプレフィックスを用いてください（例 <code>plug_tb_url</code>）。
-            
+
         </td>
-        <td>なし</td>       
+        <td>なし</td>
     </tr>
     <tr>
         <td>AdminPrePageHead</td>
@@ -1591,7 +1591,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
     </tr>
 	<tr>
 		<td>RegistrationFormExtraFields</td>
-		<td>(v3.33) createaccount.php からビジターに表示されるアカウント作成フォームが表示され、FormExtra イベントが起きる前。プラグインはこのイベントによって、アカウント作成フォームに独自のフィールドを付け加える事が出来ます。PostRegister イベントに同時に登録すると、付け加えたフィールドの値を評価する事が出来る様になります。渡されるパラメータは、付け加えられたフィールドを、元々のフィールドと違和感無く表示させる為に使用されます。</td>
+		<td>(v3.40) createaccount.php からビジターに表示されるアカウント作成フォームが表示され、FormExtra イベントが起きる前。プラグインはこのイベントによって、アカウント作成フォームに独自のフィールドを付け加える事が出来ます。PostRegister イベントに同時に登録すると、付け加えたフィールドの値を評価する事が出来る様になります。渡されるパラメータは、付け加えられたフィールドを、元々のフィールドと違和感無く表示させる為に使用されます。このイベントの使用例はNP_Profileプラグインを参照してください。</td>
 		<td><dl>
 			<dt class="ro">type</dt>
 			<dd>アカウント作成フォームのタイプ。通常は <code>createaccount.php</code>。</dd>
@@ -1671,6 +1671,22 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 			<dd>設定しようとしているパスワードが妥当かどうかのフラグ。デフォルトは｢真｣。プラグインはこの値の妥当性を審査するべきです。</dd>
 		</dl></td>
 	</tr>
+	<tr>
+		<td>PostParseURL</td>
+		<td>(v3.60) URLが完全にパースされた後( globalfunctions の ParseURL による)。selector() が実行されたりpath関連のglobal変数に何かがセットされる前にglobal変数を調整するのに便利。</td>
+		<td><dl>
+			<dt class="ro">type</dt>
+			<dd>生成するURLのタイプ(item, blog, ...)</dd>
+			<dt class="ro">info</dt>
+			<dd>解決される前のURL(この名前は以前の変数名である<code>pathinfo</code>から来ています).</dd>).</dd>
+		</dl></td>
+	</tr>
+
+	<tr>
+		<td>MediaUploadFormExtras</td>
+		<td>(v3.60) Nucleusメディアマネージャのファイルアップロードページにフィールドを追加します。すべての出力が正しいXHTML 1.0 でなければなりません。PreMediaUpload イベントに同時に登録し、requestVar()を使って追加したフィールドから値を得ます。</td>
+		<td>データは渡されません。</td>
+	</tr>
 <!--
     <tr>
         <td></td>
@@ -1749,7 +1765,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 <ol>
     <li><strong>グローバルオプション</strong>：管理エリアのプラグインセクションで編集可能</li>
     <li><strong>blogオプション</strong>：blog設定ページで編集可能</li>
-    <li><strong>カテゴリーオプション</strong>：blog設定ページ（のカテゴリー編集ページ）で編集可能</li>  
+    <li><strong>カテゴリーオプション</strong>：blog設定ページ（のカテゴリー編集ページ）で編集可能</li>
     <li><strong>メンバーオプション</strong>：メンバー編集ページで編集可能</li>
     <li><strong>アイテムオプション</strong>：アイテムの追加、およびアイテムの編集ページで編集可能</li>
 </ol>
@@ -1768,7 +1784,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
     <dt>textarea (v2.2)</dt>
     <dd>複数行のテキストフィールド</dd>
     <dt>select (v2.2)</dt>
-    <dd>ドロップダウンメニュー。次のような形式の追加情報が必要です： Option 1|value1|Option 2|value2|Option 3|value3 
+    <dd>ドロップダウンメニュー。次のような形式の追加情報が必要です： Option 1|value1|Option 2|value2|Option 3|value3
     </dd>
 </dl>
 
@@ -1855,7 +1871,7 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 <table summary="setOption"><tr>
     <th abbr="param">パラメータ</th>
     <th abbr="value">値</th>
-</tr><tr>       
+</tr><tr>
     <td>$name</td>
     <td>オプション名</td>
 </tr><tr>
@@ -1886,7 +1902,7 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 <table summary="getOption"><tr>
     <th abbr="param">パラメータ</th>
     <th abbr="value">値</th>
-</tr><tr>       
+</tr><tr>
     <td>$name</td>
     <td>オプション名</td>
 </tr></table>
@@ -1914,7 +1930,7 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 <table summary="deleteOption"><tr>
     <th abbr="param">パラメータ</th>
     <th abbr="value">値</th>
-</tr><tr>       
+</tr><tr>
     <td>$name</td>
     <td>オプション名</td>
 </tr></table>
@@ -2026,7 +2042,7 @@ class NP_HelloWorld extends NucleusPlugin {
 <p>いくつかの注意点</p>
 <ul>
     <li><code>nucleus_plug_<em>plugname</em></code> のように、他のプラグインと競合しないテーブル名を考えてください。カスタムプレフィックスに対応するため、テーブル名を<code>sql_table('plug_plugname')</code> で生成してください。</li>
-    <li>自分自身でデータベース接続をする必要はありません。PHPコマンド <code>mysql_query()</code> を使ってSQL命令を実行できます。</li>
+    <li>自分自身でデータベース接続をする必要はありません。PHPコマンド <code>mysql_query()</code> のラッパーであるNucleus関数 <code>sql_query()</code> を使ってSQL命令を実行できます。</li>
     <li>自分でデータベース接続をする場合、後でNucleusデータベースへの接続を復元するようにしてください。自前処理の後で <code>sql_connect()</code>  を呼ぶことで可能です。頻繁な再接続を避けるために、コンストラクタでそれを行うのも良いです。<code>$this- &gt;db</code>のリンクIDを保持でき、各クエリにそれを渡すことができます。</li>
     <li>バックアップ機能を使う時は、独自テーブルもバックアップに含めるよう、<code>getTableList()</code> を再定義してください。</li>
 	<li>ユーザーがプラグインをアップデートする時や、何らかの理由で一時的にプラグインをアンインストールしなければならない時、やプラグイン独自のテーブルの内容が失われる事があります。そうならないように、テーブルを削除するか否かをプラグインオプションで設定できるようにしておくといいでしょう。テーブルの削除をオプションでコントロールするには、install()メソッドで次のようなオプションを作成します。
@@ -2085,7 +2101,7 @@ class NP_HelloWorld extends NucleusPlugin {
             $data['options'],
             array(
                 'title'   =&gt; '<strong>プラグイン名</strong>',
-                'url'     =&gt; $this-%gt;getAdminURL(),
+                'url'     =&gt; $this-&gt;getAdminURL(),
                 'tooltip' =&gt; '<strong>ツールチップテキスト</strong>'
             )
         );
@@ -2235,7 +2251,7 @@ define('_ABCDEF_MESSAGENAME',                  '実際のメッセージ');
 
 <pre class="example"><code>   function init() {
       // include language file for this plugin
-      $language = ereg_replace( '[\\|/]', '', getLanguageName());
+      $language = preg_replace( '#\\\\|/#', '', getLanguageName());
       if (file_exists($this-&gt;getDirectory().$language.'.php'))
          include_once($this-&gt;getDirectory().$language.'.php');
       else
@@ -2255,7 +2271,7 @@ define('_ABCDEF_MESSAGENAME',                  '実際のメッセージ');
 <p>偉大なプラグインのいくつかは、様々なスキンや URL の生成において、必ずしもそのまま使用できるとはいえません。なぜなら、doSkinVar() メソッドによって出力されるものが、
 ユーザーのニーズに十二分に合致するものであるとは言いがたいからです。Nucleus では、出力をここのユーザーによっておのおののニーズに沿ったものにする為に、いくつかのツールを用意しています。</p>
 
-<h2>URLの出力</h2>
+<!--<h2>URLの出力</h2>-->
 
 <p>各ブログ・カテゴリー・アイテム・メンバー、それから action.php や管理エリア、または各プラグインの管理エリアなどの URL を出力する為に、Nucleus はコアの機能として
 いくつかのファンクションとグローバル変数を用意しています。：</p>
@@ -2400,7 +2416,7 @@ define('_ABCDEF_MESSAGENAME',                  '実際のメッセージ');
 	</tr>
 </table>
 
-<h2>スキンへの出力にテンプレートを使う</h2>
+<!--<h2>スキンへの出力にテンプレートを使う</h2>-->
 
 <p>出力する文字列をテンプレートを使って整形出来るようにしましょう。あなたが順不同のリストで出力したいと考えていたとしても、別のユーザーは同じデータを
 記号で区切ったり、特別な形で出力したいと考えるかもしれません。Nucleus にはテンプレートデータを作ったり定義したりする2種類の方法があります。
@@ -2410,9 +2426,9 @@ define('_ABCDEF_MESSAGENAME',                  '実際のメッセージ');
 	<li><strong>プラグインのオプションを使う方法。</strong>この方法は v3.2 以降で使用でき、次のように <code>install()</code> メソッド
 	に記述する事によって簡単に作成する事が出来ますが、アップグレードのためにプラグインを削除した時に、ユーザーは同時にカスタマイズした
 	テンプレートを失ってしまうという大きなデメリットがあります。
-	<pre class="example"><code>$this-&gt;createOption('my_template', 
-		'プラグインの出力の為のテンプレート', 
-		'textarea', 
+	<pre class="example"><code>$this-&gt;createOption('my_template',
+		'プラグインの出力の為のテンプレート',
+		'textarea',
 		'&lt;li&gt;&lt;%foo%&gt; loves &lt;%bar%&gt;&lt;/li&gt;');</code></pre>
 	<code>doSkinVar()</code> メソッドで、<code>foo</code> と <code>bar</code> を次のように定義して、テンプレートを埋めます。
 	<pre class="example"><code>$mytemplate = $this-&gt;getOption('my_template');
@@ -2435,7 +2451,7 @@ foreach ($couples as $values) {
 &lt;li&gt;Sid loves Nancy&lt;/li&gt;
 &lt;li&gt;Mickey loves Minnie&lt;/li&gt;</code></pre>
 	</li>
-	
+
 	<li><strong>Nucleus コアのテンプレートシステムを使う方法。</strong>この方法は v3.4以降で使用できます。この方法の利点は、他のテンプレートと
 	同じようにデータベースに格納され、配布用にテンプレートをエクスポートできるところにあります。この API を使用したプラグインのサンプルが、
 	フォーラムの<a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=24401#24401" title="Sample">新API「TemplateExtraFields」を使ったプラグインの見本</a>に
@@ -2443,17 +2459,17 @@ foreach ($couples as $values) {
 	にあります。細かな点は本家フォーラムの <a href="http://forum.nucleuscms.org/viewtopic.php?p=87672#87672" title="Sample">Skin specific values for Plugins</a> スレッド
 	を参照してください。ここでは要約のみ書いてあります。
 	まず、<code>install()</code> メソッド中でプラグインオプションを作成し、ここでテンプレートのデフォルトの内容を定義します。
-	<pre class="example"><code>$this-&gt;createOption('my_template', 
-		'Template used to format output of plugin.', 
-		'textarea', 
+	<pre class="example"><code>$this-&gt;createOption('my_template',
+		'Template used to format output of plugin.',
+		'textarea',
 		'&lt;li&gt;&lt;%foo%&gt; loves &lt;%bar%&gt;&lt;/li&gt;');</code></pre>
 	次に割り込みをかけるイベントのリストに <code>TemplateExtraFields</code> を登録します。
 	<pre class="example"><code>function getEventList() { return array('TemplateExtraFields'); }</code></pre>
 	そして、<code>event_TemplateExtraFields</code> メソッドを作成します。
 	<pre class="example"><code>function event_TemplateExtraFields(&amp;$data) {
-    /* Add an element in the $data['fields'] array using your plugin name as the key 
+    /* Add an element in the $data['fields'] array using your plugin name as the key
 	and an associative array containing the field name and field label*/
-    /* note that your field names should be lowercase and include the name 
+    /* note that your field names should be lowercase and include the name
 	of your template as shown below. This will ensure that all template field names are unique. */
     $data['fields']['NP_TemplateTest'] = array(
         'templatetest_body'=&gt;'TemplateTest Body'
@@ -2466,7 +2482,7 @@ foreach ($couples as $values) {
 	$template =&amp; $manager-&gt;getTemplate($template);
 	if (trim($template['templatetest_body']) == '')
 		$template['templatetest_body'] = $this-&gt;getOption('my_template');
-		
+
 	$couples = array(
 			array(
 				'foo'=&gt;'Ricky',
@@ -2480,7 +2496,7 @@ foreach ($couples as $values) {
 			);
 	foreach ($couples as $values) {
 		echo TEMPLATE::fill($template['templatetest_body'],$values);
-	}	
+	}
 }</code></pre>
 	ユーザーは『テンプレート編集』画面で、「TemplateTest Body」フィールドに出力したい形式でテンプレートを編集します。
 	例えば「default/index」テンプレートを使って、こんな風にテンプレートを編集します。
@@ -2490,10 +2506,10 @@ foreach ($couples as $values) {
 &lt;li&gt;Sid loves Nancy!!!&lt;/li&gt;
 &lt;li&gt;Mickey loves Minnie!!!&lt;/li&gt;</code></pre>と表示されます。<br />
 	</li>
-	
+
 	<li><strong>通常のテンプレートを使って書式化。</strong>この方法は v3.4 以降で、アイテムを出力するプラグインで使用できます。
-	この方法にはコアのテンプレートシステムの既存の｢アイテム｣フィールドを使うというアドバンテージがあり、スキン変数の <code>&lt;%blog%&gt;</code> 
-	の様に使用します。スキン変数の引数として、一つ以上のアイテムの ID と使用するテンプレート名を、また、BLOG クラスの <code>readLogFromList()</code> 
+	この方法にはコアのテンプレートシステムの既存の｢アイテム｣フィールドを使うというアドバンテージがあり、スキン変数の <code>&lt;%blog%&gt;</code>
+	の様に使用します。スキン変数の引数として、一つ以上のアイテムの ID と使用するテンプレート名を、また、BLOG クラスの <code>readLogFromList()</code>
 	メソッドを呼び出せることが条件です。テンプレート変数として使用したい場合は、<code>doTemplateVar()</code> メソッドで使用することも出来ます。
 	例として <code>doSkinVar()</code> メソッドでこのテクニックを使う方法を示しておきます。
 	4つのアイテムの ID を引数として受け取り、「default/index」テンプレートを使って出力します。
@@ -2504,7 +2520,7 @@ foreach ($couples as $values) {
 	$item_array = array($item1,$item2,$item3,$item4);
 	$blog-&gt;readLogFromList($item_array, $template);
 }</code></pre>
-	
+
 	</li>
 </ol>
 

@@ -3,7 +3,7 @@
 <head>
 	<!--
 		Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-		Copyright (C) 2002-2010 The Nucleus Group
+		Copyright (C) 2002-2011 The Nucleus Group
 
 		This program is free software; you can redistribute it and/or
 		modify it under the terms of the GNU General Public License
@@ -12,7 +12,7 @@
 		(see nucleus/documentation/index.html#license for more info)
 
 		@license http://nucleuscms.org/license.txt GNU General Public License
-		@copyright Copyright (C) 2002-2010 The Nucleus Group
+		@copyright Copyright (C) 2002-2011 The Nucleus Group
 	-->
 	<!-- $Id$ -->
 	<!-- $NucleusJP: skins.html,v 1.5 2006/07/12 07:11:46 kimitake Exp $ -->
@@ -38,7 +38,7 @@
 スキン &amp; テンプレート
 </div>
 
-<h1>Introduction</h1>
+<h1>イントロダクション</h1>
 
 <p>
 <a href="index.html">Nucleusマニュアルに戻る</a>
@@ -49,6 +49,7 @@
 	<li>標準でインストールされるスキン／テンプレートの編集画面に入ります(又はこれを複製した物を編集すればいつでも標準表示に戻れます)</li>
 	<li>標準でインストールされるスキン／テンプレートを元に、希望通りの修正を行います</li>
 	<li>自分で編集したスキン／テンプレートを元に、スタイルシートを定義します</li>
+	<li>または無料で多数スキンをダウンロードできます。<a href="http://skins.nucleuscms.org/" title="Nucleus CMS skins">Nucleus Skins site(英語)</a>|<a href="http://japan.nucleuscms.org/wiki/skins" title="skins [Nucleus CMS Japan Wiki]">skins [Nucleus CMS Japan Wiki](日本語)</a></li>
 </ol>
 <p>このドキュメントは、これらの作業を行うにあたりヒントになる事項を紹介します。</p>
 
@@ -90,20 +91,21 @@
 
 
 
-<h1>標準のデザインで使用するファイル <a id="defaultskin" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>「grey」スキンについて <a id="defaultskin" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>このセクションでは、標準のスキンで使用しているファイル名と、編集の注意点を説明します。</p>
+<p>このセクションでは、同梱の「grey」スキンが使用しているファイルと、編集の注意点を説明します。(新規インストール時にはgreyスキン/テンプレートはインストールされていません。「読み込み」を行ってください。)</p>
 
-<p>標準のスキンは以下の3つのファイルを使用しています:</p>
+<p>「grey」スキンは以下のファイルを使用しています:</p>
 <ol>
-	<li><tt>default.css</tt> (v3.0は <tt>grey.css</tt>): ページのデザインを定義するCSS(カスケーディング・スタイルシート)ファイル。色指定やレイアウト指定などを定義します。</li>
-	<li><tt>atom.gif</tt>: ページの左上に表示されるロゴ。</li>
-	<li><tt>nucleus2.gif</tt>: Nucleus ロゴ。</li>
+	<li><tt>grey.css</tt>: ページのデザインを定義するCSS(カスケーディング・スタイルシート)ファイル。色指定やレイアウト指定などを定義します。</li>
+	<li><tt>atom3.png</tt>: ページの左上に表示されるロゴ。</li>
+	<li><tt>nucleus.png</tt>: Nucleus ロゴ。</li>
+	<li><tt>pagefoot.inc , pagehead.inc</tt>: スキンの一部に置き換えられるインクルードファイル(後述します)。</li>
 </ol>
 
-<p>CSSファイル (<tt>default.css</tt> / <tt>grey.css</tt>) には、標準のスキン／テンプレートを使用した際のページ構成(ブロック構造)を書き入れています。 基本的には<tt>.contents</tt>、 <tt>.logo</tt>、<tt>.menu</tt>の3つのdivブロックとなっています。</p>
+<p>CSSファイル (<tt>grey.css</tt>) には、標準のスキン／テンプレートを使用した際のページ構成(ブロック構造)を書き入れています。 基本的には<tt>.contents</tt>、 <tt>.logo</tt>、<tt>.menu</tt>の3つのdivブロックとなっています。</p>
 
-<p><tt>default.css</tt> / <tt>grey.css</tt>を編集するにあたっては、テキストエディタを使用してください。 例えばWindowsに標準添付されている「Notepad」やemacs や TextPadなどです。「WordPad」、「Word」、「OpenOffice Writer」などは余計なデータが混入しますので、<strong>絶対に使用しないでください</strong>。</p>
+<p><tt>grey.css</tt>を編集するにあたっては、テキストエディタを使用してください。 例えばWindowsに標準添付されている「Notepad」やemacs や TextPadなどです。「WordPad」、「Word」、「OpenOffice Writer」などは余計なデータが混入しますので、<strong>絶対に使用しないでください</strong>。</p>
 
 
 
@@ -357,7 +359,7 @@ Nucleus ではblogページに新規投稿フォームを埋め込む機能を�
 
 <h2>1. 表示に使用する「メインの目次ページ」タイプで指定したテンプレートの編集画面を開く</h2>
 
-<p><tt>'default'</tt> ( v3.0では <tt>'grey/short'</tt> ) という名前のテンプレートの編集画面を開きます。(このテンプレート名はあくまでも新規インストール直後の状態で適用されているものです。複製や新規作成などにより変更している場合は読み替えてください。)</p>
+<p><tt>'grey/short'</tt> という名前のテンプレートの編集画面を開きます。(新規インストール時にはgreyスキン/テンプレートはインストールされていません。「読み込み」を行ってください。)</p>
 
 <h2>2. アイテムの本体部分の書換え</h2>
 
@@ -380,7 +382,7 @@ Nucleus ではblogページに新規投稿フォームを埋め込む機能を�
 
 <h2>3. アイテムの個別ページのテンプレート</h2>
 
-<p>上記の編集作業ではメインページでのみ投票スコアが表示される状態です。アイテムの個別ページでも同様に投票を表示したい場合は、スキンの「アイテムの個別ページ」で使用しているテンプレートに同様の修正を行ってください。新規インストール直後の状態では<tt>'detailed'</tt> ( v3.0では <tt>'grey/full'</tt> ) という名前のテンプレートがそれに該当します。</p>
+<p>上記の編集作業ではメインページでのみ投票スコアが表示される状態です。アイテムの個別ページでも同様に投票を表示したい場合は、スキンの「アイテムの個別ページ」で使用しているテンプレートに同様の修正を行ってください。greyスキンでは <tt>'grey/full'</tt> という名前のテンプレートがそれに該当します。</p>
 
 
 
@@ -518,7 +520,7 @@ http://example.org/skins/vista/</code></pre>
 
 &lt;%parsedinclude(pagefoot.inc)%&gt;</code></pre>
 
-<p>上のサンプルでは使用するテンプレート名を「<strong>vista/main</strong>」 、 「<strong>vista/detailed</strong>」と指定していることに注意してください。テンプレート名はスキン名と揃えて置いた方が後々編集する時にわかりやすくて便利です。単純に標準添付の 「<strong>default</strong>」 と 「<strong>detailed</strong>」(v3.0 では「<strong>grey/short</strong>」 と 「<strong>grey/full</strong>」) をそれぞれ複製して名前を付け替えただけの物でも構いません。</p>
+<p>上のサンプルでは使用するテンプレート名を「<strong>vista/main</strong>」 、 「<strong>vista/detailed</strong>」と指定していることに注意してください。テンプレート名はスキン名と揃えて置いた方が後々編集する時にわかりやすくて便利です。単純に標準添付の 「<strong>grey/short</strong>」 と 「<strong>grey/full</strong>」をそれぞれ複製して名前を付け替えただけの物でも構いません。</p>
 
 <h3>アーカイブ一覧ページ</h3>
 

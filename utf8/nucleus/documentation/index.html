@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
 	<head>
 		<!--
 			Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-			Copyright (C) 2002-2010 The Nucleus Group
+			Copyright (C) 2002-2011 The Nucleus Group
 
 			This program is free software; you can redistribute it and/or
 			modify it under the terms of the GNU General Public License
@@ -12,11 +13,12 @@
 			(see nucleus/documentation/index.html#license for more info)
 
 			@license http://nucleuscms.org/license.txt GNU General Public License
-			@copyright Copyright (C) 2002-2010 The Nucleus Group
+			@copyright Copyright (C) 2002-2011 The Nucleus Group
 		-->
 		<!-- $Id$ -->
 		<!-- $NucleusJP: index.html,v 1.7 2007/01/31 10:02:57 kimitake Exp $ -->
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<title>Nucleus CMS マニュアル</title>
 		<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 		<script src="http://www.google.com/jsapi"></script>
@@ -38,7 +40,7 @@
 
 		<div class="heading">
 			Nucleus CMS マニュアル
-			<i>(v3.4)</i>
+			<i>(v3.62)</i>
 		</div>
 
 		<div class="note">
@@ -62,7 +64,7 @@
 			<li><a href="#comments">コメント受付時のルール</a></li>
 			<li><a href="#xmlrpc">XML-RPC インターフェイスについて</a></li>
 			<li><a href="#trouble">困った時は (FAQ)</a></li>
-			<li><a href="tips.html">Tips &amp; Suggestions</a> (別ファイル)</li>
+			<li><a href="tips.html">便利な使い方のヒント</a> (別ファイル)</li>
 			<li><a href="#known">現在指摘されている問題点</a></li>
 			<li><a href="history.html">履歴</a> (別ファイル)</li>
 			<li><a href="#credits">謝辞</a></li>
@@ -104,8 +106,8 @@
 		</p>
 
 		<ul>
-			<li><a href="http://jp.php.net/manual/ja/">PHP</a> (バージョン 4.0.6 以降)</li>
-			<li><a href="http://dev.mysql.com/doc/mysql/ja/">MySQL</a> データベース (バージョン 3.23.38 以降)</li>
+			<li><a href="http://jp.php.net/manual/ja/">PHP</a> (バージョン 5.0.6 以降)</li>
+			<li><a href="http://dev.mysql.com/doc/mysql/ja/">MySQL</a> データベース (バージョン 4 以降)</li>
 			<li>デザインのカスタマイズをする場合は、<acronym title="Hypertext Markup Language">HTML</acronym> と <acronym title="Cascading Style Sheets">CSS</acronym> の基礎知識</li>
 		</ul>
 
@@ -124,7 +126,7 @@
 		<p>
 			Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
 			<br />
-			Copyright (C) 2002-2007 The Nucleus Group
+			Copyright (C) 2002-2011 The Nucleus Group
 		</p>
 
 		<p>このプログラムはフリーウェアです。
@@ -166,31 +168,34 @@
 			<tr>
 				<th>/*</th><td>(サイト表示用メインファイル)</td>
 			</tr><tr>
+				<th>/extra/*</th><td>(fancy URL用ファイルなど特殊なファイル)</td>
+			</tr><tr>
+				<th>/install/*</th><td>(インストール用ファイル)</td>
+			</tr><tr>
+				<th>/media/*</th><td>(添付ファイル)</td>
+			</tr><tr>
 				<th>/nucleus/*</th><td>(サイト管理用ファイル)</td>
-			</tr><tr>
-				<th>/nucleus/javascript/*</th><td>(javascripts スクリプト)</td>
-			</tr><tr>
-				<th>/nucleus/libs/*</th><td>(Nucleus のコアライブラリ)</td>
-			</tr><tr>
-				<th>/nucleus/language/*</th><td>(言語ファイル)</td>
-			</tr><tr>
-				<th>/nucleus/plugins/*</th><td>(プラグインファイル)</td>
-			</tr><tr>
-				<th>/nucleus/xmlrpc/*</th><td>(XML-RPC インターフェイス用ファイル)</td>
 			</tr><tr>
 				<th>/nucleus/documentation/*</th><td>(説明書)</td>
 			</tr><tr>
-				<th>/nucleus/styles/*</th><td>(管理エリア専用cssファイル)</td>
+				<th>/nucleus/forms/*</th><td>(入力フォーム部品ファイル)</td>
 			</tr><tr>
 				<th>/nucleus/images/*</th><td>(管理エリア専用画像ファイル)</td>
 			</tr><tr>
-				<th>/nucleus/forms/*</th><td>(入力フォーム部品ファイル)</td>
+				<th>/nucleus/javascript/*</th><td>(javascripts スクリプト)</td>
 			</tr><tr>
-				<th>/extra/*</th><td>(fancy URL用ファイルなど特殊なファイル)</td>
+				<th>/nucleus/language/*</th><td>(言語ファイル)</td>
+			</tr><tr>
+				<th>/nucleus/libs/*</th><td>(Nucleus のコアライブラリ)</td>
+			</tr><tr>
+				<th>/nucleus/plugins/*</th><td>(プラグインファイル)</td>
+			</tr><tr>
+				<th>/nucleus/styles/*</th><td>(管理エリア専用cssファイル)</td>
+			</tr><tr>
+				<th>/nucleus/xmlrpc/*</th><td>(XML-RPC インターフェイス用ファイル)</td>
 			</tr><tr>
 				<th>/skins/*</th><td>(スキンファイル [読込み時にも使用])</td>
-			</tr><tr>
-				<th>/media/*</th><td>(添付ファイル [インストール時は空])</td>
+
 			</tr>
 		</table>
 
@@ -224,20 +229,20 @@
 		</ol>
 
 
-		<h2>3. install.phpにアクセス</h2>
+		<h2>3. /install/ディレクトリにアクセス</h2>
 
 		<p>
-			ブラウザを開いてサーバに転送したinstall.phpにアクセスします。URLは下記のようになります。(<i>www.yoursite.com</i> と <i>yourpath</i>の部分は読み替えてください)
+			ブラウザを開いてサーバに転送した/install/ディレクトリにアクセスします。URLは下記のようになります。(<i>www.yoursite.com</i> と <i>yourpath</i>の部分は読み替えてください)
 		</p>
 
-		<pre>	http://www.yoursite.com/yourpath/install.php</pre>
+		<pre>	http://www.yoursite.com/yourpath/install/</pre>
 
 		<p>
 			表示されたページに必要入力事項を入力します。あらかじめ自動検知して入力済の部分がありますが確認をお願いします。送信後に次に行う手順が表示されますのでそれに従って作業してください。(最後にいくつかのファイルを手動でサーバから削除する作業が必要ですのでお忘れなく。)
 		</p>
 
 		<div class="note">
-			<b>注意:</b> <i>install.php</i> にアクセスした際、「If you see this text in your browser...」というテキストが表示されたり、 install.phpのダウンロードが促されたりした場合は、そのサーバではphpスクリプトは動作しません。当然、残念ながらphpスクリプトであるNucleusを運用することができません。
+			<b>注意:</b> <i>/install/</i> ディレクトリにアクセスした際、「If you see this text in your browser...」というテキストが表示されたり、 install.phpのダウンロードが促されたりした場合は、そのサーバではphpスクリプトは動作しません。当然、残念ながらphpスクリプトであるNucleusを運用することができません。
 		</div>
 
 		<h2>4. 完了</h2>
@@ -336,7 +341,7 @@ More information is available on the <a href="http://www.nucleuscms.org/convert.
 		<h1>XML-RPC インターフェイス <a name="xmlrpc" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 		<div class="note">
-			Nucleusの XML-RPC インターフェイスにつきましては下記URL参照:
+			Nucleusの XML-RPC インターフェイスのURL:
 			<br />
 			<b>http://www.yourserver.com/yourpath/nucleus/xmlrpc/server.php</b>
 		</div>
@@ -346,7 +351,7 @@ More information is available on the <a href="http://www.nucleuscms.org/convert.
 		</p>
 
 		<p>
-			現在の所、<a href="http://plant.blogger.com/api/">Blogger API</a>、<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>と<a href="http://www.movabletype.org/docs/mtmanual_programmatic.html#xmlrpc%20api">Movable Type API</a>の3つの規格を充足しています。この規格を使用した記事投稿ツールに興味のある方は、 <a href="http://www.cweblogs.com/wbeditor/">WB Editor</a> (Windows版:日本語対応) または <a href="http://www.kung-foo.tv/ecto/">Ecto</a> (MacOS版:日本語対応不明) を使ってみてください。
+			現在の所、<a href="http://plant.blogger.com/api/">Blogger API</a>、<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>と<a href="http://www.movabletype.org/docs/mtmanual_programmatic.html#xmlrpc%20api">Movable Type API</a>の3つの規格をサポートしています。この規格を使用した記事投稿ツールに興味のある方は、 <a href="http://www.cweblogs.com/wbeditor/">WB Editor</a> (Windows版:日本語対応) または <a href="http://www.kung-foo.tv/ecto/">Ecto</a> (MacOS版:日本語対応不明) を使ってみてください。
 		</p>
 
 		<p>
@@ -358,18 +363,18 @@ More information is available on the <a href="http://www.nucleuscms.org/convert.
 
 		<h1>困った時は (FAQ) <a name="trouble" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-		<p>Nuleusについて良く聞かれる質問をFAQとしてまとめました。質問される前にご一読下さい。大概のケースでは解決できるのではないでしょうか。
+		<p>Nuleusについて良く聞かれる質問をFAQとしてまとめました。質問される前にご一読下さい。大抵のケースでは解決できるのではないでしょうか。
 		</p>
 
 		<div class="faq">
 			<div class="question">このようなエラーが表示されるのですが: <q>Cannot send headers. Headers already sent...</q></div>
 			<div class="answer">
-				<code>config.php</code>の冒頭と末尾に空白(スペース)が入っている場合によく起こります。<tt>&lt;?</tt> の前、あるいは <tt>?&gt;</tt>よりも後にスペースが挿入されていないかどうか確認してください。このスペースを削除するとエラーは解消されます。また、同様に言語ファイルやインストールしているプラグインのファイルについても同じ事が起きますので確認してみてください。
+				<code>config.php</code>の冒頭と末尾に空白(スペース)が入っている場合によく起こります。<tt>&lt;?</tt> の前、あるいは <tt>?&gt;</tt>よりも後にスペースが挿入されていないかどうか確認してください。このスペースを削除するとエラーは解消されます。また、同様に言語ファイルやインストールしているプラグインのファイルについても同じ事が起きますので確認してみてください。UTF-8で保存する場合はBOMを付けないでください。
 			</div>
 		</div>
 
 		<div class="faq">
-			<div class="question">インストール時にinstall.phpにアクセスするとダウンロードを促されるのですが。</div>
+			<div class="question">インストール時に/install/ディレクトリにアクセスするとダウンロードを促されるのですが。</div>
 			<div class="answer">そのサーバはPHPプログラムに対応していません。残念ながらそのサーバでNucleusを運用することはできません。</div>
 		</div>
 
@@ -404,7 +409,7 @@ More information is available on the <a href="http://www.nucleuscms.org/convert.
 		</p>
 
 		<ul>
-			<li>このリリース時点においては、Nucleus 3.0への公式なログ移行ツールはありません。今後のログ移行ツールの情報は<a href="http://nucleuscms.org/convert.php">ログ移行ツール情報(英語:最新情報)</a> (<a href="http://japan.nucleuscms.org/convert.php">ログ移行ツール情報(日本語)</a>)に掲載していきます。</li>
+			<li>このリリース時点においては、Nucleus 3.xへの公式なログ移行ツールがあります。ログ移行ツールのプログラムと、他のログ移行ツールの情報は<a href="http://nucleuscms.org/convert.php">ログ移行ツール情報(英語:最新情報)</a> (<a href="http://japan.nucleuscms.org/wiki/convert">ログ移行ツール情報(日本語)</a>)に掲載しています。ログ移行のポイントはNucleus Forum の <a href="http://forum.nucleuscms.org/viewforum.php?f=17">Import Questions (英語)</a> セクションを参照してください。すべてのブログシステムは異なる構造を持っているため、情報が欠落する可能性なしに別のシステムへ変換することはできません。スクリプト作者は、トラブルや情報の欠落を最小限にするよう努力しています。</li>
 			<li>Ctrl + Shift + A ショートカットキーは ICQ/Trillian と衝突します。</li>
 			<li>サーバのPHPの設定がセーフモードonの場合、添付ファイルの使用時に問題が生じます。(画像ファイルのサイズが自動判定できない、アップロードがうまくいかない、など) <br />*あらかじめmediaディレクトリに「1」、「2」など記事投稿者の数だけ数字のディレクトリを作成しておいて書き込み可能にしておくことで回避できます。</li>
 			<li>RSSの表示が乱れることがあります。(特殊文字変換が原因。&amp;amp; が &amp;amp;amp; となるなど)</li>
@@ -465,7 +470,7 @@ More information is available on the <a href="http://www.nucleuscms.org/convert.
 
 		<ul>
 			<li>NucleusのWebサイトにて<a href="http://nucleuscms.org/donators.php">寄付者のリスト</a>を掲示しております。</li>
-			<li><a href="http://forum.nucleuscms.org/groupcp.php?g=3">フォーラムを取り仕切ってくださっている方々</a> や <a href="http://forum.nucleuscms.org/memberlist.php?mode=posts&amp;order=DESC">フォーラムに来てくださっている方々</a>にも厚く御礼申し上げます。</li>
+			<li><a href="http://forum.nucleuscms.org/groupcp.php?g=3">フォーラムを取り仕切ってくださっている方々</a> <a href="http://japan.nucleuscms.org/bb/groupcp.php?g=871">(日本)</a> や <a href="http://forum.nucleuscms.org/memberlist.php?mode=posts&amp;order=DESC">フォーラムに来てくださっている方々</a> <a href="http://japan.nucleuscms.org/bb/memberlist.php?mode=posts&amp;order=DESC">(日本)</a>にも厚く御礼申し上げます。</li>
 		</ul>
 
 	</div>
