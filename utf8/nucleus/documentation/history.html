@@ -55,6 +55,50 @@
 
 <ul>
 	<li>
+		<strong>Nucleus v3.62 Japanese Package (February 3, 2011)</strong> SVN is based on <a href="http://sourceforge.jp/projects/nucleus-jp/svn/view/nucleus-jp/trunk/utf8/?root=nucleus-jp">nucleus-jp</a>, hosted in sourceforge.jp.
+		<ul>
+		<li>REMOVE: Unsupport PHP4 in install and upgrade scripts (SVN2226, 1127, 1128)</li>
+		<li>FIX: Move the codes including mb_emulator from config.php to globalfunctions.php. Put some arragement into install script according to this (SVN1119, 1125)</li>
+		<li>FIX: Modify JavaScript parse error in item edit page when the login user turn it off to save the edited item automatically, refer to <a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=26631#26631">hetemlテスト結果</a> (SVN1123)</li>
+		<li>ADD: Add Content-Type field for HTTP header to tell its language charactor to the web browser if the configuration is wrong.</li>
+		<li>FIX: Modify short open tag for php codes (SVN1118)</li>
+		<li>FIX: modify undoSybaseQuotes_array function, refering to <a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4013">vars4.1.0.phpで気になったところ</a> (SVN1117)</li>
+		<li>Add inline stylesheet for better calculation of size by browser, refering to <a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=24545#24545">プラグイン管理画面のテーブルが窮屈な件</a> (SVN1116)</li>
+		<li>FIX: Convert the string indicating current version into float for comparing versions. (SVN1115)</li>
+		<li>ADD: strftime function for globalfunctions.php. This make it possible to use timestamp formatted timestamp with Japanese charactors <a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4769">日付表示の文字化けについての相談です</a> (SVN1101, 1114)</li>
+		<li>FIX: Modify JavaScript code for return, refering to <a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4562">管理画面でのエラー時の「戻る」リンクの挙動について</a> (SVN1112)</li>
+		<li>ADD: Modify startUpError function to indicate correct charset encoding in its HTTP header. (SVN1111)</li>
+		<li>ADD: For private server which has no condition for default time zone, refering to the post below, <a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=26632#26632">XAMPP上でのテスト結果</a> (SVN1108)</li>
+		<li>FIX: Change its direction of href for anchor with defined url. (SVN1110)</li>
+		<li>ADD: Preventing I/O strings from auto-detecting the charactor encodings by MySQL, refering to their conversation, <a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=26581">dbのcharset提案</a> (SVN1103)</li>
+		<li>CHANGE: Include plugins which the original release includes and Mocchi modified these codes according to 'petit' strict grammer of PHP 5. (AVN1100)</li>
+		<li>Fix: global variable $special and modify the value for special skin parts. (SVN1091, 1099)</li>
+		<li>CHANGE: Revise 'Header Already Sent Message'. (SVN1099)</li>
+		<li>FIX: Confirm to transition to the URL for requested blog, refering to <a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4405">&lt;%bloglink%&gt;再び</a> (SVN1099)</li>
+		<li>FIX: Change bookmarklet URL, <a href="refering to http://japan.nucleuscms.org/bb/viewtopic.php?t=4347">ブックマークレットで日本語URLが文字化け</a> (SVN1099)</li>
+		<li>FIX: Modify Japanese and English language file because some lines are missed. (SVN1098)</li>
+		<li>FIX: Enforce password checking. Revise the deference between the installed and the latest. (SVN1097)</li>
+		<li>Fix: Put div element for keeping expected box layout in Microsoft (R) Internet Explore 6. (SVN1095, 1097)</li>
+		<li>ADD: Put some codes for contemporary admin skins. (SVN1097)</li>
+		<li>FIX: Replace some of 'isBlogAdmin' to 'blogAdminRights' for giving correct rights for Super-Admin always. (SVN1096)</li>
+		<li>Fix importing skin error in detecting charactor encoding, refering to <a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4416">【強引に解決？】　3.41インストール－＞スキンエラー</a> (SVN1094)</li>
+		<li>Fix: Include UTF-8 multibyte processing in install/index.php and server.php. (SVN1090, 1092)</li>
+		<li>Fix: Install process according to Cacher's work. Now the auto-detecting function (3 ways) of install script does not generate error messages if failed. (SVN1087)</li>
+		</ul>
+		<strong>Nucleus v3.62 (January 6, 2011)</strong>
+		<ul>
+			<li>CHANGE: add redundant safeguards against security issues caused by case where register_globals is on and the config.php file is missing (Rare!!!) (ftruscot)</li>
+			<li>CHANGE: make CONF variable, AdminCSS, to hold name of admin area style to use. default to original. (ftruscot)</li>
+			<li>FIX: use of strripos in cleanFileName() not PHP4 compatible, switched to use of strrpos() since no functionality lost. (ftruscot)</li>
+			<li>FIX: replace ereg* functions in remaining core files, including core plugins. (ftruscot).</li>
+			<li>FIX: multiple newlines in comment body being reduced to only one newline. (gRegor)</li>
+			<li>FIX: highlight() function still using ereg* functions. (ftruscot)</li>
+			<li>CHANGE: cleanFileName() function simplified to replace all but a-z0-9-. (ftruscot)</li>
+			<li>FIX: install problem when only mysqli _* is available. (ftruscot)</li>
+			<li>FIX: fix comment body text not appearing on Edit Comment form (gRegor)</li>
+		</ul>
+	</li>
+	<li>
 		<strong>Nucleus v3.51 (November 1, 2009)</strong>
 		<ul>
 			<li>FIX: fix warning caused by unreachable code in PDO (admun)</li>
@@ -85,16 +129,16 @@
 			<li>CHANGED: increased length of displayname, mname, to 32 characters. (ftruscot)</li>
 			<li>CHANGED: modified install.php and sql_* handlers to allow installation using PDO. Activation is manual and not intended for public consumption in 3.50. Only tested for pdo-mysql handler. (ftruscot)</li>
 			<li>ADDED/CHANGED: extended sql_* api to cover all mysql_* functions used in core. Functions loaded from nucleus/libs/sql/ folder. See <a href="http://wakka.xiffy.nl/planning:3.50#mysql_api_warning" title="sql API">here</a>. (ftruscot)</li>
-			<li>FIXED: atom.phpとxml-rss2.phpで_CHARSETをチェックして文字コード変換(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4376" target="_blank" class="postlink">Nicleus3.41 へアップグレード後 xml-rss2.php でエラー</a>)(きゃしゃ)</li>
-			<li>CHANGED: SEARCH.php改良(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4370" target="_blank" class="postlink">&lt;%relevance%&gt;対応SEARCH.php</a>、<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=3824" target="_blank" class="postlink">検索結果の正確さ</a>)(きゃしゃ)</li>
+			<li>FIXED: atom.phpとxml-rss2.phpで_CHARSETをチェックして文字コード変換(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4376" class="postlink">Nicleus3.41 へアップグレード後 xml-rss2.php でエラー</a>)(きゃしゃ)</li>
+			<li>CHANGED: SEARCH.php改良(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4370" class="postlink">&lt;%relevance%&gt;対応SEARCH.php</a>、<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=3824" class="postlink">検索結果の正確さ</a>)(きゃしゃ)</li>
 			<li>CHANGED: _CHARSETチェックのときにstrtoupper(きゃしゃ)</li>
-			<li>CHANGED: インストーラの文字化け対策部分をデフォルトで有効に。globalfunctions.phpの方は、状況に応じて。(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4385" target="_blank" class="postlink">インストール後管理画面は正常表示、サイトが真っ白</a>)(きゃしゃ)</li>
-			<li>CHANGED: インストーラエラーページをUTF-8固定に。(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=25024#25024" target="_blank" class="postlink">3.41インストール－＞スキンエラー</a>(きゃしゃ)</li>
-			<li>CHANGED: 言語ファイルの反映漏れ修正。ただし、言語ファイル読み込み前に表示される可能性のあるメッセージは定数定義前なのでそのまま(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=24903#24903" target="_blank" class="postlink">インストール後管理画面は正常表示、サイトが真っ白</a>)(きゃしゃ)</li>
+			<li>CHANGED: インストーラの文字化け対策部分をデフォルトで有効に。globalfunctions.phpの方は、状況に応じて。(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4385" class="postlink">インストール後管理画面は正常表示、サイトが真っ白</a>)(きゃしゃ)</li>
+			<li>CHANGED: インストーラエラーページをUTF-8固定に。(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=25024#25024" class="postlink">3.41インストール－＞スキンエラー</a>(きゃしゃ)</li>
+			<li>CHANGED: 言語ファイルの反映漏れ修正。ただし、言語ファイル読み込み前に表示される可能性のあるメッセージは定数定義前なのでそのまま(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=24903#24903" class="postlink">インストール後管理画面は正常表示、サイトが真っ白</a>)(きゃしゃ)</li>
 			<li>FIXED: pingオプションのチェックボックス削除(きゃしゃ)</li>
 			<li>FIXED: parsedincludeの無限ループ対策、NP_includespecialからの移植時仕様変更に伴うコード修正。(きゃしゃ)</li>
 			<li>FIXED: karma通知修正(きゃしゃ)</li>
-			<li>FIXED: catidのみがURLで指定された場合、blogidを補完する(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4417" target="_blank" class="postlink">ShowBlogsのページ送りにblogidの付加をするには？</a>)(きゃしゃ)</li>
+			<li>FIXED: catidのみがURLで指定された場合、blogidを補完する(<a href="http://japan.nucleuscms.org/bb/viewtopic.php?t=4417" class="postlink">ShowBlogsのページ送りにblogidの付加をするには？</a>)(きゃしゃ)</li>
 			<li>ADDED: NP_Text plugin to core installation. Makes distribution of internationalised plugins easier. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=15005" title="forgotpassword">this thread</a>. (ftruscot)</li>
 			<li>ADDED: links in plugins help of help.html to link to two main plugin repositories. See <a href="http://forum.nucleuscms.org/viewtopic.php?t=18214" title="forgotpassword">this thread</a>. (ftruscot)</li>
 			<li>ADDED: selectSpecialSkinType() function to globalfunctions.php. (ftruscot)</li>
