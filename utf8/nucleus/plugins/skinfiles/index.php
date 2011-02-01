@@ -25,12 +25,12 @@
 	* http://www.gnu.org/licenses/gpl.html
 	* ==========================================================================================
 	*/
-
+	$DIR_LIBS = '';
  	$strRel = '../../../'; 
 	require($strRel . 'config.php');
-	include($DIR_LIBS . 'PLUGINADMIN.php');
+	include_libs('PLUGINADMIN.php');
 
-	$language = preg_replace( '@\\|/@', '', getLanguageName());
+	$language = preg_replace( '#\\\\|/#', '', getLanguageName());
 	$langfile = $language.'.php';
 	if (file_exists($langfile))
 		include_once($langfile);
