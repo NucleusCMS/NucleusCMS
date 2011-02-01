@@ -61,11 +61,12 @@ upgrade_head();
 ?>
 <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p> 	 
 <?php
-	} else if (phpversion() < '5.0.0') {
+	} else {
+		if (phpversion() < '5.0.0') {
 ?>		
 <p class="deprecated">警告！ 動作しているPHPのバージョンが古く、正常な動作を保証できません。アップグレード作業を中止して、PHP5以上が使えないかどうか、サーバ管理者に確認して下さい。</p>
 <?php		
-	} else {
+		}
 ?>
 <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.62 用にアップグレードします</a></p>
 <?php
