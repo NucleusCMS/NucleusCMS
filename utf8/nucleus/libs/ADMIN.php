@@ -5241,8 +5241,8 @@ selector();
 		$baseUrl = htmlspecialchars($CONF['AdminURL']);
 		if (!array_key_exists('AdminCSS',$CONF)) 
 		{
-			sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'original')");
-			$CONF['AdminCSS'] = 'original';
+			sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'contemporary_jp')");
+			$CONF['AdminCSS'] = 'contemporary_jp';
 		}
 		
 		?>
