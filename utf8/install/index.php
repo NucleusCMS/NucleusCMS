@@ -182,7 +182,7 @@ function showInstallForm() {
 			$match = explode('.', $row[1]);
 		} else {
 			$output = (function_exists('shell_exec')) ? @shell_exec('mysql -V') : '0.0.0';
-			preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
+			preg_match('#[0-9]+\.[0-9]+\.[0-9]+#', $output, $version);
 			$match = explode('.', $version[0]);
 
 			if ($match[0] == '') {
@@ -544,7 +544,7 @@ function doInstall() {
 		array_push($errors, _ERROR3);
 	}
 
-	if (($mysql_usePrefix == 1) && (!eregi('^[a-zA-Z0-9_]+$', $mysql_prefix) ) ) {
+	if (($mysql_usePrefix == 1) && (!preg_match('#^[a-zA-Z0-9_]+$#', $mysql_prefix) ) ) {
 		array_push($errors, _ERROR4);
 	}
 
@@ -1153,7 +1153,7 @@ function endsWithSlash($s) {
  * Checks if email address is valid
  */
 function _isValidMailAddress($address) {
-	if (preg_match("/^[a-zA-Z0-9\._-]+@+[A-Za-z0-9\._-]+\.+[A-Za-z]{2,4}$/", $address) ) {
+	if (preg_match("#^[a-zA-Z0-9\._-]+@+[A-Za-z0-9\._-]+\.+[A-Za-z]{2,4}$#", $address) ) {
 		return 1;
 	} else {
 		return 0;
@@ -1165,7 +1165,7 @@ function _isValidMailAddress($address) {
 // logic: starts and ends with a non space, can contain spaces in between
 //		min 2 chars
 function _isValidShortName($name) {
-	if (eregi("^[a-z0-9]+$", $name) ) {
+	if (preg_match("#^[a-zA-Z0-9]+$#", $name) ) {
 		return 1;
 	} else {
 		return 0;
@@ -1177,7 +1177,7 @@ function _isValidShortName($name) {
 // returns true if the given string is a valid display name
 // (to check nicknames)
 function _isValidDisplayName($name) {
-	if (eregi("^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$", $name) ) {
+	if (preg_match("#^[a-zA-Z0-9]+[a-zA-Z0-9 ]*[a-zA-Z0-9]+$#", $name) ) {
 		return 1;
 	} else {
 		return 0;
