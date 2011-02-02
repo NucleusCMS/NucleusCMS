@@ -4044,7 +4044,6 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 </div>
 
 <script type="text/javascript">
-var count = 0;
 var elements = window.document.getElementsByTagName('p');
 var width = 1000;
 var height = 800;
@@ -4058,9 +4057,9 @@ if (window.opener) {
 	}
 }
 for (var index=0; index < elements.length; index++) {
-	if (elements[index].getAttribute('class') == 'comment') {
+	if (elements[index].className == 'comment') {
 		elements[index].firstChild.onclick = function () {
-			window.open(this.getAttribute('href'), 'Online Helppage for Japanese Users', 'width='+width+',height='+height+',locationbar=1,menubar=1,scrollbars=1,statusbar=1,toolbar=1');
+			window.open(this.getAttribute('href'), 'OnlineHelp', 'width='+width+',height='+height+',locationbar=1,menubar=1,scrollbars=1,statusbar=1,toolbar=1');
 			return false;
 		};
 	}
