@@ -4048,7 +4048,7 @@ var elements = window.document.getElementsByTagName('p');
 var width = 1000;
 var height = 800;
 if (window.opener) {
-	if(window.innerWidth) {
+	if(window.opener.innerWidth) {
 		width = window.opener.innerWidth;
 		height = window.opener.innerHeight;
 	} else {
