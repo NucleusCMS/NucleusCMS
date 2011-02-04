@@ -15,7 +15,7 @@
 // available for download (with proper credit to the author, of course)
 
 // Note for Japanese users
-// я┐╜я┐╜я┐╜╬е╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ Nucleus я┐╜я┐╜ EUC-JP я┐╜я┐╜я┐╜я┐╜я┐╜▄╕я┐╜я┐╜єе▓бя┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜
+// д│д╬е╒ебедеыд╧ Nucleus д╬ EUC-JP ╚╟╞№╦▄╕ьещеєе▓б╝е╕е╒ебедеыд╟д╣бг
 
 
 
@@ -23,24 +23,24 @@
  * Japanese EUC-JP Nucleus Language File
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2011 The NucleusCMS Japanя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜
+ * @copyright Copyright (C) 2002-2011 The NucleusCMS Japanе┴б╝ер
  * @version $Id$
  */
 
 /********************************************
  *        Start New for 3.62                *
  ********************************************/
-define('_SETTINGS_ADMINCSS',		'я┐╜я┐╜я┐╜я┐╜я┐╜╬░я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ые╖я┐╜я┐╜я┐╜я┐╜');
+define('_SETTINGS_ADMINCSS',		'┤╔═¤╬╬░шд╬е╣е┐едеые╖б╝е╚');
 
 
 /********************************************
  *        Start New for 3.50                *
  ********************************************/
-define('_PLUGS_TITLE_GETPLUGINS',		'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_PLUGS_TITLE_GETPLUGINS',		'е╫еще░едеєдЄ╞■╝ъб─');
 define('_ARCHIVETYPE_YEAR', '╟п');
-define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟╜я┐╜я┐╜я┐╜тд╖я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'я┐╜я┐╜я┐╜├е╫ея┐╜я┐╜ьб╝я┐╜╔дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟╜я┐╜я┐╜я┐╜тд╖я┐╜я┐╜▐дя┐╜я┐╜я┐╜ v');
-define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜ %s я┐╜я┐╜я┐╜╔д▀╣я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜я┐╜я┐╜(я┐╜я┐╜я┐╜╬е╫еще░я┐╜я┐╜я┐╜я┐╜я┐╜SqlAPIя┐╜Єе╡е▌бя┐╜я┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜єбге╟бя┐╜я┐╜я┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┬│я┐╜я┐╜╦бя┐╜я┐╜─╛я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜)");
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'┐╖д╖дде╨б╝е╕ечеєдм╞■╝ъ▓─╟╜длдтд╖дьд▐д╗дє');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'еве├е╫е░еьб╝е╔дм╞■╝ъ▓─╟╜длдтд╖дьд▐д╗дєбз v');
+define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "е╫еще░едеє %s дЄ╞╔д▀╣■дсд▐д╗дєд╟д╖д┐бг(д│д╬е╫еще░едеєд╧SqlAPIдЄе╡е▌б╝е╚д╖д╞ддд▐д╗дєбге╟б╝е┐е┘б╝е╣д╬└▄┬│╩¤╦бдЄ╕л─╛д╖д╞дпд└д╡дд)");
 
 
 /********************************************
@@ -48,316 +48,316 @@ define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜ %s я┐╜я┐╜я┐╜╔д▀
  ********************************************/
 
 // START changed/added after 3.33 START
-define('_MEMBERS_USEAUTOSAVE',				'я┐╜я┐╜я┐╜ёднд╬╝я┐╜╞░я┐╜я┐╜┬╕я┐╜я┐╜╟╜я┐╜я┐╜═ня┐╜я┐╜╦дя┐╜я┐╜▐дя┐╜я┐╜я┐╜?');
+define('_MEMBERS_USEAUTOSAVE',				'▓╝╜ёднд╬╝л╞░╩▌┬╕╡б╟╜дЄ═н╕·д╦д╖д▐д╣дл?');
 
-define('_TEMPLATE_PLUGIN_FIELDS',			'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╦дя┐╜я┐╜я┐╜─ея┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_BLOGLIST',				'Blogя┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_BLOGHEADER',				'Blogя┐╜я┐╜я┐╜я┐╜я┐╜╬е╪е├ея┐╜я┐╜я┐╜');
-define('_TEMPLATE_BLOGITEM',				'Blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_BLOGFOOTER',				'Blogя┐╜я┐╜я┐╜я┐╜я┐╜╬е╒е├ея┐╜я┐╜я┐╜');
+define('_TEMPLATE_PLUGIN_FIELDS',			'е╫еще░едеєд╦дшды│╚─ее╒егб╝еые╔');
+define('_TEMPLATE_BLOGLIST',				'Blog░ь═ў');
+define('_TEMPLATE_BLOGHEADER',				'Blog░ь═ўд╬е╪е├е└б╝');
+define('_TEMPLATE_BLOGITEM',				'Blog░ь═ўд╬╦▄┬╬');
+define('_TEMPLATE_BLOGFOOTER',				'Blog░ь═ўд╬е╒е├е┐б╝');
 
-define('_SETTINGS_DEFAULTLISTSIZE',			'я┐╜я┐╜я┐╜я┐╜я┐╜╬┤я┐╜я┐╜я┐╜я┐╜╔╜я┐╜я┐╜я┐╜я┐╜');
-define('_SETTINGS_DEBUGVARS',				'я┐╜╟е╨е├ея┐╜я┐╜тб╝я┐╜╔дя┐╜═ня┐╜я┐╜╦дя┐╜я┐╜я┐╜');
+define('_SETTINGS_DEFAULTLISTSIZE',			'░ь═ўд╬┤√─ъд╬╔╜╝и┐Ї');
+define('_SETTINGS_DEBUGVARS',				'е╟е╨е├е░етб╝е╔дЄ═н╕·д╦д╣ды');
 
-define('_CREATE_ACCOUNT_TITLE',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚д╬┐я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_CREATE_ACCOUNT0',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚д╬║я┐╜я┐╜я┐╜');
-define('_CREATE_ACCOUNT1',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚д╬║я┐╜я┐╜я┐╜я┐╜╧╡я┐╜я┐╜─дя┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜<br /><br />');
-define('_CREATE_ACCOUNT2',					'я┐╜▄║┘д╧ея┐╜я┐╜я┐╜я┐╜╓ея┐╜я┐╜я┐╜я┐╜╚д╬┤я┐╜я┐╜я┐╜╘д╦дя┐╜я┐╜фддя┐╜я┐╜яд╗я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_CREATE_ACCOUNT_USER_DATA',			'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚д╬╛я┐╜я┐╜я┐╜');
-define('_CREATE_ACCOUNT_LOGIN_NAME',		'я┐╜?я┐╜я┐╜я┐╜я┐╜ID (╔мя┐╜я┐╜)я┐╜я┐╜');
-define('_CREATE_ACCOUNT_LOGIN_NAME_VALID',	' a-z я┐╜╬▒╤╛я┐╜╩╕я┐╜я┐╜я┐╜ 0-9 я┐╜╬┐я┐╜я┐╜я┐╜╬д▀╗я┐╜я┐╜╤д╟дя┐╜я┐╜▐дя┐╜');
-define('_CREATE_ACCOUNT_REAL_NAME',			'я┐╜╧ея┐╜╔ея┐╜ (╔мя┐╜я┐╜)я┐╜я┐╜');
-define('_CREATE_ACCOUNT_EMAIL',				'я┐╜сб╝я┐╜ыевя┐╜╔еье╣ (╔мя┐╜я┐╜)я┐╜я┐╜');
-define('_CREATE_ACCOUNT_EMAIL2',			'(я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤д╬ея┐╜єепдя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬дя┐╜═ня┐╜я┐╜╩дя┐╜╬дя┐╜я┐╜я┐╜╤дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜)');
-define('_CREATE_ACCOUNT_URL',				'(я┐╜тд╖я┐╜я┐╜я┐╜я┐╜я┐╜)я┐╜я┐╜╩мя┐╜╬ея┐╜я┐╜я┐╜я┐╜╚дя┐╜URLя┐╜я┐╜');
-define('_CREATE_ACCOUNT_SUBMIT',			'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚д╬║я┐╜я┐╜я┐╜');
+define('_CREATE_ACCOUNT_TITLE',				'евележеєе╚д╬┐╖╡м║ю└о');
+define('_CREATE_ACCOUNT0',					'евележеєе╚д╬║ю└о');
+define('_CREATE_ACCOUNT1',					'евележеєе╚д╬║ю└од╧╡Ў▓─д╡дьд╞ддд▐д╗дєбг<br /><br />');
+define('_CREATE_ACCOUNT2',					'╛▄║┘д╧ежезе╓е╡еде╚д╬┤╔═¤╝╘д╦дк╠фдд╣чдяд╗дпд└д╡ддбг');
+define('_CREATE_ACCOUNT_USER_DATA',			'┐╖╡мевележеєе╚д╬╛Ё╩є');
+define('_CREATE_ACCOUNT_LOGIN_NAME',		'еэе░едеєID (╔м┐▄)бз');
+define('_CREATE_ACCOUNT_LOGIN_NAME_VALID',	' a-z д╬▒╤╛о╩╕╗·д╚ 0-9 д╬┐Ї╗·д╬д▀╗╚═╤д╟днд▐д╣');
+define('_CREATE_ACCOUNT_REAL_NAME',			'е╧еєе╔еы (╔м┐▄)бз');
+define('_CREATE_ACCOUNT_EMAIL',				'есб╝еыеве╔еье╣ (╔м┐▄)бз');
+define('_CREATE_ACCOUNT_EMAIL2',			'(евепе╞еге┘б╝е╖ечеє═╤д╬еъеєепдм┴ўдщдьдыд╬д╟═н╕·д╩дтд╬дЄ╗╚═╤д╖д╞дпд└д╡дд)');
+define('_CREATE_ACCOUNT_URL',				'(дтд╖двдьд╨)╝л╩мд╬е╡еде╚д╬URLбз');
+define('_CREATE_ACCOUNT_SUBMIT',			'евележеєе╚д╬║ю└о');
 
-define('_BMLET_BACKTODRAFTS',				'я┐╜╔ея┐╜╒е╚дя┐╜я┐╜сд╣');
-define('_BMLET_CANCEL',						'я┐╜я┐╜я┐╜я┐╜єе╗ея┐╜');
+define('_BMLET_BACKTODRAFTS',				'е╔еще╒е╚д╦╠сд╣');
+define('_BMLET_CANCEL',						'енеуеєе╗еы');
 
-define('_LIST_ITEM_NOCONTENT',						'я┐╜я┐╜я┐╜я┐╜я┐╜╚д╧дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_LIST_ITEM_COMMENTS',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜(%d)я┐╜я┐╜');
+define('_LIST_ITEM_NOCONTENT',						'е│есеєе╚д╧двдъд▐д╗дє');
+define('_LIST_ITEM_COMMENTS',						'е│есеєе╚(%d)╖я');
 
 define('_EDITC_URL',								'Web site');
 define('_EDITC_EMAIL',								'E-mail');
 
-define('_MANAGER_PLUGINFILE_NOTFOUND',				"я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜я┐╜%sя┐╜╫дя┐╜я┐╜╔д▀╣я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜(я┐╜╒ея┐╜я┐╜я┐╜я┐╜ыдмя┐╜я┐╜я┐╜─дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜)");
+define('_MANAGER_PLUGINFILE_NOTFOUND',				"е╫еще░едеєб╓%sб╫дЄ╞╔д▀╣■дсд▐д╗дєд╟д╖д┐(е╒ебедеыдм╕лд─длдъд▐д╗дє)");
 /* changed */
 // plugin dependency
-define('_ERROR_INSREQPLUGIN',				'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜ %s я┐╜я┐╜я┐╜я┐╜я┐╜єе╣е╚бя┐╜я┐╜ыд╡я┐╜я┐╜╞дя┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜╦ея┐╜я┐╜єе╣е╚бя┐╜я┐╜ыд╣я┐╜ыд│я┐╜╚дя┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_DELREQPLUGIN',				'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜ %s я┐╜я┐╜я┐╜я┐╜я┐╜╬е╫еще░я┐╜я┐╜я┐╜я┐╜╦░я┐╜┬╕я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜┘д╦║я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_ERROR_INSREQPLUGIN',				'е╫еще░едеє %s дмедеєе╣е╚б╝еыд╡дьд╞ддд╩ддд┐дсд╦едеєе╣е╚б╝еыд╣дыд│д╚дмд╟днд▐д╗дєд╟д╖д┐бг');
+define('_ERROR_DELREQPLUGIN',				'е╫еще░едеє %s дмд│д╬е╫еще░едеєд╦░═┬╕д╖д╞ддды░┘д╦║я╜№д╟днд▐д╗дєбг');
 
-//define('_ADD_ADDLATER',						'я┐╜я┐╜я┐╜я┐╜╔▓я┐╜');
-define('_ADD_ADDLATER',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ъд╖я┐╜я┐╜я┐╜╔▓я┐╜');	// <mod by shizuki />
+//define('_ADD_ADDLATER',						'╕хд╟─╔▓├');
+define('_ADD_ADDLATER',						'╞№╗■дЄ╗╪─ъд╖д╞─╔▓├');	// <mod by shizuki />
 
-define('_LOGIN_NAME',						'я┐╜?я┐╜я┐╜я┐╜я┐╜ID:');
-define('_LOGIN_PASSWORD',					'я┐╜╤ея┐╜я┐╜яб╝я┐╜я┐╜:');
+define('_LOGIN_NAME',						'еэе░едеєID:');
+define('_LOGIN_PASSWORD',					'е╤е╣еяб╝е╔:');
 
 // changed from _BOOKMARLET_BMARKLFOLLOW
-define('_BOOKMARKLET_BMARKFOLLOW',					' (я┐╜█д╚дя┐╜╔д╬е╓ещежя┐╜я┐╜я┐╜я┐╜╞░я┐╜юд╖я┐╜▐дя┐╜)');
+define('_BOOKMARKLET_BMARKFOLLOW',					' (д█д╚дєд╔д╬е╓ещеже╢д╟╞░║юд╖д▐д╣)');
 // END changed/added after 3.33 END
 
-// START merge EUC-JP and EUC-JP
+// START merge UTF-8 and EUC-JP
 
 // Create New blog
-define('_ADMIN_NOTABILIA',					'я┐╜я┐╜╒╗я┐╜я┐╜я┐╜');
-define('_ADMIN_PLEASE_READ',				'я┐╜я┐╜я┐╜я┐╜я┐╜╦дя┐╜я┐╜я┐╜я┐╜├д╞бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜<strong>я┐╜я┐╜╒╗я┐╜я┐╜я┐╜</strong> я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜╔д▀▓я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ADMIN_HOW_TO_ACCESS',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╦бя┐╜я┐╜я┐╜я┐╜я┐╜Blogя┐╜╦ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ыд┐я┐╜я┐╜я┐╜я┐╜я┐╜╦бя┐╜я┐╜╥▓Ёд╖д╞дя┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜╦бя┐╜я┐╜2я┐╜─дя┐╜я┐╜я┐╜▐дя┐╜:');
-define('_ADMIN_SIMPLE_WAY',					'<strong>я┐╜я┐╜├▒я┐╜я┐╜я┐╜я┐╜╦б:</strong> <code>index.php</code>я┐╜я┐╜╩гя┐╜я┐╜я┐╜я┐╜я┐╜ъбвя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜╔╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜шджя┐╜я┐╜я┐╜╤╣я┐╜я┐╜я┐╜├дя┐╜я┐╜▐дя┐╜я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜╤╣я┐╜я┐╜╬╛▄║┘д╧бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ADMIN_ADVANCED_WAY',				'<strong>я┐╜я┐╜я┐╜┘дя┐╜я┐╜я┐╜╦б:</strong> я┐╜я┐╜я┐╜▀дя┐╜Blogя┐╜╟╗я┐╜я┐╜╤дя┐╜я┐╜╞дя┐╜я┐╜ые╣я┐╜я┐╜я┐╜я┐╜я┐╜<code>&lt;%otherblog()&gt;</code>я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔дя┐╜╚д├дя┐╜я┐╜я┐╜я┐╜╥дя┐╜├дя┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╦бя┐╜╟д╧бя┐╜╞▒я┐╜я┐╜я┐╜┌бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩гя┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜╔╜я┐╜я┐╜я┐╜я┐╜я┐╜ыд│я┐╜╚дя┐╜я┐╜я┐╜╟╜я┐╜╚д╩дя┐╜▐дя┐╜я┐╜я┐╜');
-define('_ADMIN_HOW_TO_CREATE',				'Blogя┐╜╬║я┐╜я┐╜я┐╜');
+define('_ADMIN_NOTABILIA',					'├э░╒╗Ў╣р');
+define('_ADMIN_PLEASE_READ',				'║ю└од╦двд┐д├д╞бв▓╝╡нд╬<strong>├э░╒╗Ў╣р</strong> дЄд▐д║дк╞╔д▀▓╝д╡дд');
+define('_ADMIN_HOW_TO_ACCESS',				'┐╖д╖ддBlogдЄ║ю└од╖д┐╕хд╦бвд│д╬Blogд╦евепе╗е╣д╣дыд┐дсд╬╩¤╦бдЄ╛╥▓Ёд╖д╞дкднд▐д╣бг╩¤╦бд╧2д─двдъд▐д╣:');
+define('_ADMIN_SIMPLE_WAY',					'<strong>┤╩├▒д╩╩¤╦б:</strong> <code>index.php</code>д╬╩г└╜дЄ║юдъбв┐╖д╖ддBlogдЄ╔╜╝ид╣дыдшджд╦╩╤╣╣дЄ▓├дид▐д╣бг д│д╬╩╤╣╣д╬╛▄║┘д╧бв║ю└о╕хд╦╔╜╝ид╡дьд▐д╣бг');
+define('_ADMIN_ADVANCED_WAY',				'<strong>╣т┼┘д╩╩¤╦б:</strong> ╕╜║▀д╬Blogд╟╗╚═╤д╖д╞дддые╣енеєд╦<code>&lt;%otherblog()&gt;</code>д╚дддже│б╝е╔дЄ╗╚д├д┐╡н╜╥дЄ▓├дид▐д╣бгд│д╬╩¤╦бд╟д╧бв╞▒д╕е┌б╝е╕╞тд╟╩г┐Їд╬BlogдЄ╔╜╝ид╣дыд│д╚дм▓─╟╜д╚д╩дъд▐д╣бг');
+define('_ADMIN_HOW_TO_CREATE',				'Blogд╬║ю└о');
 
 
-define('_BOOKMARKLET_NEW_CATEGORY',			'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╔▓├дя┐╜я┐╜ьбвя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъдмя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BOOKMARKLET_NEW_CATEGORY_EDIT',	'я┐╜я┐╜я┐╜я┐╜я┐╜Єепея┐╜├ея┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜╠╛я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BOOKMARKLET_NEW_WINDOW',			'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜');
-define('_BOOKMARKLET_SEND_PING',			'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╔▓├дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╙ея┐╜я┐╜╦╣я┐╜я┐╜я┐╜pingя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜'); // NOTE: This string is no longer in used
+define('_BOOKMARKLET_NEW_CATEGORY',			'еведе╞ерд╧─╔▓├д╡дьбв┐╖д╖дделе╞е┤еъдм║ю└од╡дьд▐д╖д┐бг');
+define('_BOOKMARKLET_NEW_CATEGORY_EDIT',	'д│д│дЄепеъе├епд╖д╞еле╞е┤еъб╝д╬╠╛┴░д╚└т╠└дЄ╩╘╜╕д╖д╞дпд└д╡ддбг');
+define('_BOOKMARKLET_NEW_WINDOW',			'┐╖д╖ддежегеєе╔еждм│лднд▐д╣');
+define('_BOOKMARKLET_SEND_PING',			'еведе╞ерд╬─╔▓├д╦└о╕∙д╖д▐д╖д┐бг╕╜║▀blog╕б║ўе╡б╝е╙е╣д╦╣╣┐╖pingдЄ┴ў┐од╖д▐д╣бг'); // NOTE: This string is no longer in used
 
-// END merge EUC-JP and EUC-JP
+// END merge UTF-8 and EUC-JP
 
 // <add by shizuki>
 // OVERVIEW screen
-define('_OVERVIEW_SHOWALL',							'я┐╜я┐╜я┐╜╞дя┐╜blogя┐╜я┐╜╔╜я┐╜я┐╜');
+define('_OVERVIEW_SHOWALL',							'┴┤д╞д╬blogдЄ╔╜╝и');
 
 // Edit skins
-define('_SKINEDIT_ALLOWEDBLOGS',					'я┐╜я┐╜я┐╜я┐╜я┐╜╤д▀дя┐╜blog:');
-define('_SKINEDIT_ALLOWEDTEMPLATESS',				'я┐╜я┐╜я┐╜╤▓я┐╜╟╜я┐╜╩е╞ея┐╜╫еьб╝я┐╜я┐╜:');
+define('_SKINEDIT_ALLOWEDBLOGS',					'║ю└о║╤д▀д╬blog:');
+define('_SKINEDIT_ALLOWEDTEMPLATESS',				'╗╚═╤▓─╟╜д╩е╞еєе╫еьб╝е╚:');
 
 // delete member
-define('_WARNINGTXT_NOTDELMEDIAFILES',				'я┐╜я┐╜я┐╜╨бя┐╜я┐╜╦дя┐╜├д╞ея┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜ьд┐я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜<b>я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜</b>я┐╜╬д╟╡я┐╜я┐╜я┐╜─дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜(я┐╜я┐╜я┐╜╩дя┐╜я┐╜╚дтд│я┐╜╬е╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩▓я┐╜я┐╜я┐╜Nucleusя┐╜╟д╧дя┐╜я┐╜я┐╜я┐╜╩д├д╞дя┐╜я┐╜▐дя┐╜)');	// <add by shizuki />
+define('_WARNINGTXT_NOTDELMEDIAFILES',				'есеєе╨б╝д╦дшд├д╞еве├е╫еэб╝е╔д╡дьд┐е╒ебедеыд╧<b>║я╜№д╡дьд▐д╗дє</b>д╬д╟╡ддЄд─д▒д╞дпд└д╡ддбг(╛пд╩дпд╚дтд│д╬е╨б╝е╕ечеє░╩▓╝д╬Nucleusд╟д╧д╜джд╩д├д╞ддд▐д╣)');	// <add by shizuki />
 
 // send Weblogupdate.ping
-define('_UPDATEDPING_MESSAGE',						'<h2>я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜Pingя┐╜я┐╜я┐╜я┐╜я┐╜╨д╦╣я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬дя┐╜я┐╜▐дя┐╜я┐╜я┐╜</h2><p>я┐╜я┐╜я┐╜╨дщдпя┐╜я┐╜я┐╜╘дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜</p><p>я┐╜я┐╜╞░┼кя┐╜╦е┌бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┌дя┐╜я┐╜╪дя┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜╧бя┐╜╔╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜єепдЄепея┐╜├ея┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜'); // NOTE: This string is no longer in used
-define('_UPDATEDPING_GOPINGPAGE',					'я┐╜я┐╜я┐╜я┐╜Pingя┐╜я┐╜я┐╜я┐╜'); // NOTE: This string is no longer in used
-define('_UPDATEDPING_PINGING',						'Pingя┐╜я┐╜я┐╜я┐╜я┐╜╨дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜'); // NOTE: This string is no longer in used
-define('_UPDATEDPING_VIEWITEM',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ьд┐blog:'); // NOTE: This string is no longer in used
-define('_UPDATEDPING_VISITOWNSITE',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚д╪╣╘д├д╞д▀дя┐╜'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_MESSAGE',						'<h2>е╡еде╚дм╣╣┐╖д╡дьд▐д╖д┐бгPingе╡б╝е╨д╦╣╣┐╖дЄ─╠├╬д╖д▐д╣бг</h2><p>д╖д╨дщдпдк┬╘д┴дпд└д╡дд</p><p>╝л╞░┼кд╦е┌б╝е╕дм└┌дъ┬╪дядщд╩дд╛ь╣чд╧бв╔╜╝ид╡дьдыеъеєепдЄепеъе├епд╖д╞дпд└д╡ддбг'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_GOPINGPAGE',					'╣╣┐╖Ping┴ў┐о'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_PINGING',						'Pingе╡б╝е╨д╦┴ў┐о├цд╟д╣'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_VIEWITEM',						'╣╣┐╖д╡дьд┐blog:'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_VISITOWNSITE',					'е╡еде╚д╪╣╘д├д╞д▀ды'); // NOTE: This string is no longer in used
 
 // General category
-define('_EBLOGDEFAULTCATEGORY_NAME',				'я┐╜я┐╜я┐╜');
-define('_EBLOGDEFAULTCATEGORY_DESC',				'я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╦╣чджя┐╜я┐╜я┐╜╞ея┐╜я┐╜ъдм╠╡я┐╜я┐╜я┐╜я┐╜я┐╜╦дя┐╜я┐╜╬ея┐╜я┐╜╞ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤дя┐╜я┐╜я┐╜я┐╜я┐╜╔дя┐╜я┐╜╟дя┐╜я┐╜чдж');
+define('_EBLOGDEFAULTCATEGORY_NAME',				'┴э╣ч');
+define('_EBLOGDEFAULTCATEGORY_DESC',				'┼ъ╣╞д╖д┐╡н╗Ўд╦╣чджеле╞е┤еъдм╠╡дд╗■д╦д│д╬еле╞е┤еъдЄ╗╚═╤д╣дыд╚╬╔ддд╟д╖дчдж');
 
 // First ITEM
-define('_EBLOG_FIRSTITEM_TITLE',					'я┐╜╟╜я┐╜╬╡я┐╜я┐╜я┐╜(я┐╜я┐╜╞░я┐╜я┐╜я┐╜)');
-define('_EBLOG_FIRSTITEM_BODY',						'я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜╩дя┐╜я┐╜я┐╜blogя┐╜╦дя┐╜я┐╜я┐╜я┐╜я┐╜╟╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜╟дя┐╜я┐╜я┐╜я┐╜я┐╜═│я┐╜╦║я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_EBLOG_FIRSTITEM_TITLE',					'║╟╜щд╬╡н╗Ў(╝л╞░┼ъ╣╞)');
+define('_EBLOG_FIRSTITEM_BODY',						'д│дьд╧двд╩д┐д╬blogд╦дкд▒ды║╟╜щд╬еведе╞ерд╟д╣бг╝л═│д╦║я╜№д╖д╞ддд┐д└ддд╞длд▐ддд▐д╗дєбг');
 
 // New weblog was created
-define('_BLOGCREATED_TITLE',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_BLOGCREATED_ADDEDTXT',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜blog я┐╜я┐╜%sя┐╜╫дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜┬│я┐╜я┐╜я┐╜╞бя┐╜blogя┐╜╦ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ыд┐я┐╜я┐╜╦░╩▓я┐╜я┐╜╬д╔дя┐╜я┐╜щдля┐╜╬╝я┐╜я┐╜╦┐╩дя┐╜╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BLOGCREATED_SIMPLEWAY',					'я┐╜я┐╜├▒я┐╜я┐╜я┐╜я┐╜╦б: я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╔дя┐╜┼╜я┐╜╒дя┐╜я┐╜я┐╜ <code>%s.php</code> я┐╜╚дя┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BLOGCREATED_ADVANCEDWAY',					'я┐╜я┐╜я┐╜┘дя┐╜я┐╜я┐╜╦б: я┐╜я┐╜я┐╜▀╗я┐╜я┐╜╤дя┐╜я┐╜╞дя┐╜я┐╜ые╣я┐╜я┐╜я┐╜я┐╜╦┐я┐╜я┐╜я┐╜я┐╜я┐╜blogя┐╜я┐╜┼╕я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ыд┐я┐╜я┐╜╬╡я┐╜я┐╜╥дя┐╜├дя┐╜я┐╜я┐╜');
-define('_BLOGCREATED_SIMPLEDESC1',					'я┐╜я┐╜╦б 1 :я┐╜я┐╜├▒я┐╜я┐╜я┐╜я┐╜╦б: <code>%s.php</code> я┐╜╚дя┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BLOGCREATED_SIMPLEDESC2',					'<code>%s.php</code> я┐╜╚дя┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞бя┐╜я┐╜я┐╜╚д╦░╩▓я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╔дя┐╜┼╜я┐╜я┐╜я┐╜╒дя┐╜я┐╜▐дя┐╜:');
-define('_BLOGCREATED_SIMPLEDESC3',					'я┐╜я┐╜я┐╜╟д╦дя┐╜я┐╜я┐╜<code>index.php</code>я┐╜я┐╜╞▒я┐╜я┐╜я┐╜╟ея┐╜я┐╜ьепя┐╜╚ея┐╜╦ея┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_BLOGCREATED_SIMPLEDESC4',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜blogя┐╜╬║я┐╜я┐╜я┐╜я┐╜я┐╜╬╗я┐╜я┐╜я┐╜ыд┐я┐╜я┐╜╦бя┐╜я┐╜я┐╜я┐╜╬е╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜URLя┐╜я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜(<em>┬┐╩м</em>я┐╜я┐╜я┐╜╧║╤д▀дя┐╜я┐╜═д╟╣я┐╜├д╞дя┐╜я┐╜я┐╜╚д╧╗╫дя┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜▌╛┌д╧д╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜):');
-define('_BLOGCREATED_ADVANCEDWAY2',					'я┐╜я┐╜╦б 2 :я┐╜я┐╜я┐╜┘дя┐╜я┐╜я┐╜╦б: я┐╜я┐╜я┐╜▀╗я┐╜я┐╜╤дя┐╜я┐╜╞дя┐╜я┐╜ые╣я┐╜я┐╜я┐╜я┐╜╦┐я┐╜я┐╜я┐╜я┐╜я┐╜blogя┐╜я┐╜┼╕я┐╜я┐╜я┐╜я┐╜я┐╜ы╡ня┐╜╥дя┐╜├дя┐╜я┐╜я┐╜');
-define('_BLOGCREATED_ADVANCEDWAY3',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜blogя┐╜╬║я┐╜я┐╜я┐╜я┐╜я┐╜╬╗я┐╜я┐╜я┐╜ыд┐я┐╜я┐╜я┐╜URLя┐╜я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜(я┐╜█д╚дя┐╜╔д╬╛я┐╜я┐╜я┐╜┬╕blogя┐╜я┐╜╞▒я┐╜я┐╜URLя┐╜╦д╩дя┐╜▐дя┐╜)');
+define('_BLOGCREATED_TITLE',						'┐╖д╖ддblogдм║ю└од╡дьд▐д╖д┐');
+define('_BLOGCREATED_ADDEDTXT',						'┐╖д╖ддblog б╓%sб╫дм║ю└од╡дьд▐д╖д┐бг┬│д▒д╞бвblogд╦евепе╗е╣д╣дыд┐дсд╦░╩▓╝д╬д╔д┴дщдлд╬╝ъ╜чд╦┐╩дєд╟дпд└д╡ддбг');
+define('_BLOGCREATED_SIMPLEWAY',					'┤╩├▒д╩╩¤╦б: ▓╝д╬е│б╝е╔дЄ┼╜╔╒д▒д┐ <code>%s.php</code> д╚дддже╒ебедеыдЄ║ю└од╣ды');
+define('_BLOGCREATED_ADVANCEDWAY',					'╣т┼┘д╩╩¤╦б: ╕╜║▀╗╚═╤д╖д╞дддые╣енеєд╦┐╖д╖ддblogдЄ┼╕│лд╡д╗дыд┐дсд╬╡н╜╥дЄ▓├диды');
+define('_BLOGCREATED_SIMPLEDESC1',					'╩¤╦б 1 :┤╩├▒д╩╩¤╦б: <code>%s.php</code> д╚дддже╒ебедеыдЄ║ю└о');
+define('_BLOGCREATED_SIMPLEDESC2',					'<code>%s.php</code> д╚дддже╒ебедеыдЄ║ю└од╖д╞бв├ц┐╚д╦░╩▓╝д╬е│б╝е╔дЄ┼╜дъ╔╒д▒д▐д╣:');
+define('_BLOGCREATED_SIMPLEDESC3',					'д╣д╟д╦двды<code>index.php</code>д╚╞▒д╕е╟егеьепе╚еъд╦еве├е╫еэб╝е╔д╖д▐д╣бг');
+define('_BLOGCREATED_SIMPLEDESC4',					'┐╖д╖ддblogд╬║ю└одЄ┤░╬╗д╣дыд┐дсд╦бвд│д╬е╒ебедеыд╬URLдЄ╞■╬╧д╖д╞дпд└д╡ддбг(<em>┬┐╩м</em>╞■╬╧║╤д▀д╬├═д╟╣чд├д╞дддыд╚д╧╗╫ддд▐д╣дм╩▌╛┌д╧д╟днд▐д╗дє):');
+define('_BLOGCREATED_ADVANCEDWAY2',					'╩¤╦б 2 :╣т┼┘д╩╩¤╦б: ╕╜║▀╗╚═╤д╖д╞дддые╣енеєд╦┐╖д╖ддblogдЄ┼╕│лд╣ды╡н╜╥дЄ▓├диды');
+define('_BLOGCREATED_ADVANCEDWAY3',					'┐╖д╖ддblogд╬║ю└одЄ┤░╬╗д╣дыд┐дсд╦URLдЄ╞■╬╧д╖д╞дпд└д╡ддбг(д█д╚дєд╔д╬╛ь╣ч┤√┬╕blogд╚╞▒д╕URLд╦д╩дъд▐д╣)');
 
 // Donate!
 define('_ADMINPAGEFOOT_OFFICIALURL',				'http://japan.nucleuscms.org/');
 define('_ADMINPAGEFOOT_DONATEURL',					'http://japan.nucleuscms.org/donate.php');
-define('_ADMINPAGEFOOT_DONATE',						'я┐╜я┐╜я┐╜╒д╦д─дя┐╜я┐╜я┐╜');
-define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group &amp; Nucleus CMS Japanя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_ADMINPAGEFOOT_DONATE',						'┤є╔╒д╦д─ддд╞');
+define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group &amp; Nucleus CMS Japanе┴б╝ер');
 
 // Quick menu
-define('_QMENU_MANAGE_SYSTEM',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜─╢я┐╜');
+define('_QMENU_MANAGE_SYSTEM',						'е╖е╣е╞ер┤─╢н');
 
 // REG file
-define('_WINREGFILE_TEXT',							'я┐╜я┐╜%sя┐╜╫д╦╡я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_WINREGFILE_TEXT',							'б╓%sб╫д╦╡н╗ЎдЄ┼ъ╣╞');
 
 // Bookmarklet
-define('_BOOKMARKLET_TITLE',						'я┐╜╓е├ея┐╜я┐╜▐бя┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜<!-- я┐╜я┐╜ я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜╦ехб╝ -->');
-define('_BOOKMARKLET_DESC1',						'я┐╜╓е├ея┐╜я┐╜▐бя┐╜я┐╜я┐╜я┐╜я┐╜├е╚бя┐╜Bookmarkletя┐╜╦д╚д╧бя┐╜Webя┐╜╓ещежя┐╜я┐╜я┐╜╬е╓е├ея┐╜я┐╜▐бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧┐я┐╜я┐╜я┐╜╞╗╚дя┐╜JavaScriptя┐╜╫е?я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜<br />');
-define('_BOOKMARKLET_DESC2',						'Nucleusя┐╜╦д╧б╪дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┘д▐дя┐╜я┐╜╧б╪е╓е├ея┐╜я┐╜▐бя┐╜я┐╜я┐╜я┐╜─бя┐╜я┐╜я┐╜╨бя┐╜я┐╜┘дя┐╜я┐╜я┐╜╧┐я┐╜╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜я┐╜╥д╚д─дя┐╜ blog я┐╜╪дя┐╜я┐╜я┐╜╞▓я┐╜я┐╜╠дЄ│лдя┐╜я┐╜я┐╜╟╜я┐╜я┐╜╓ещежя┐╜я┐╜я┐╜я┐╜я┐╜╔▓├дя┐╜я┐╜ыд│я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜<br />');
-define('_BOOKMARKLET_DESC3',						'Webя┐╜я┐╜я┐╜я┐╜я┐╜╚дЄ╕лд╞дя┐╜я┐╜╞дя┐╜я┐╜╬е┌бя┐╜я┐╜я┐╜я┐╜╦ея┐╜єепдя┐╜─ея┐╜├дя┐╜я┐╜я┐╜╞дЄд╖дя┐╜я┐╜я┐╜я┐╜╚╗╫д├дя┐╜я┐╜я┐╜я┐╜╦е╓е├ея┐╜я┐╜▐бя┐╜я┐╜я┐╜я┐╜я┐╜├е╚дя┐╜я┐╜я┐╜╤дя┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜(я┐╜┌бя┐╜я┐╜я┐╜)я┐╜╪д╬ея┐╜єепдя┐╜я┐╜ёдн╣я┐╜я┐╜▐дьд┐я┐╜я┐╜я┐╜╓д╟бя┐╜');
-define('_BOOKMARKLET_DESC4',						'я┐╜я┐╜я┐╜я┐╜╦бя┐╜я┐╜я┐╜я┐╜╬е┌бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩╕я┐╜╧дя┐╜я┐╜я┐╜я┐╜Єд╖дя┐╜я┐╜я┐╜я┐╜╓д╟╗я┐╜я┐╜╤дя┐╜я┐╜я┐╜я┐╜я┐╜чбвя┐╜я┐╜я┐╜Єд╡дя┐╜╞дя┐╜я┐╜я┐╜╩╕я┐╜╧дя┐╜я┐╜я┐╜╞░┼кя┐╜╦░я┐╜я┐╜╤дя┐╜я┐╜ьд┐я┐╜я┐╜я┐╜╓д╟бя┐╜Nucleusя┐╜╬┐я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╔▓├ея┐╜я┐╜я┐╜я┐╜я┐╜╔ея┐╜я┐╜я┐╜я┐╜▌е├е╫ея┐╜я┐╜├е╫дя┐╜я┐╜▐дя┐╜я┐╜я┐╜<br />');
-define('_BOOKMARKLET_DESC5',						'я┐╜▐дя┐╜Windows Internet Explorerя┐╜╬д▀д╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬╡я┐╜╟╜я┐╜Є▒жея┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜╦ехб╝я┐╜я┐╜я┐╜я┐╜╧┐я┐╜я┐╜я┐╜ыд│я┐╜╚дя┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_BOOKMARKLET_BOOKARKLET',					'я┐╜╓е├ея┐╜я┐╜▐бя┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜');
-define('_BOOKMARKLET_ANCHOR',						'я┐╜я┐╜%sя┐╜╫д╦╡я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BOOKMARKLET_BMARKTEXT',					' я┐╜я┐╜я┐╜╬ея┐╜єепдя┐╜╓дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╫дтд╖я┐╜я┐╜я┐╜╧б╓е╓е├ея┐╜я┐╜▐бя┐╜я┐╜я┐╜я┐╜╫дя┐╜я┐╜╔▓├дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔▓├д╬╗я┐╜я┐╜я┐╜╧дя┐╜я┐╜ьд╛я┐╜я┐╜╬е╓ещежя┐╜я┐╜я┐╜╬е╪ея┐╜╫дЄ╗▓╛╚дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜<br />');
-define('_BOOKMARKLET_BMARKTEST',					' (я┐╜╞ея┐╜я┐╜╚дя┐╜я┐╜╞д▀дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧▓я┐╜я┐╜╬ея┐╜єепдЄепея┐╜├ея┐╜я┐╜я┐╜я┐╜╞д▀д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜)');
-define('_BOOKMARKLET_RIGHTCLICK',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜╦ехб╝я┐╜╦ея┐╜я┐╜єе╣е╚бя┐╜я┐╜я┐╜(Windows Internet Explorerя┐╜╬дя┐╜)');
-define('_BOOKMARKLET_RIGHTLABEL',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜╦ехб╝');
-define('_BOOKMARKLET_RIGHTTEXT1',					'Windowsя┐╜╟ея┐╜я┐╜єе┐бя┐╜я┐╜═е├е╚ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╫е?я┐╜щб╝я┐╜я┐╜я┐╜я┐╜╤дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜╧бя┐╜');
-define('_BOOKMARKLET_RIGHTTEXT2',					'я┐╜╦ея┐╜я┐╜єе╣е╚бя┐╜я┐╜ыд╣я┐╜ыд│я┐╜╚дя┐╜я┐╜я┐╜я┐╜▐дя┐╜<br />(я┐╜╓│я┐╜я┐╜я┐╜я┐╜╫дя┐╜я┐╜я┐╜я┐╜Єд╣дя┐╜я┐╜─╛я┐╜▄еье╕я┐╜я┐╜я┐╜╚ея┐╜я┐╜я┐╜я┐╜╧┐я┐╜я┐╜я┐╜▐дя┐╜)');
-define('_BOOKMARKLET_RIGHTTEXT3',					'я┐╜я┐╜я┐╜╬ея┐╜я┐╜єе╣е╚бя┐╜я┐╜ыд╖я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜╦ехб╝я┐╜я┐╜╔╜я┐╜я┐╜я┐╜я┐╜я┐╜ыд┐я┐╜я┐╜╦дя┐╜IEя┐╜╬║╞╡я┐╜╞░я┐╜я┐╜╔мя┐╜╫д╟дя┐╜я┐╜я┐╜');
-define('_BOOKMARKLET_UNINSTALLTT',					'я┐╜я┐╜я┐╜єедеєе╣е╚бя┐╜я┐╜я┐╜');
-define('_BOOKMARKLET_DELETEBAR',					'я┐╜╓дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╫дтд╖я┐╜я┐╜я┐╜╧е─бя┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜├дя┐╜я┐╜╦д╧бя┐╜├▒я┐╜╦║я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜');
-define('_BOOKMARKLET_DELETERIGHTT',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜╦ехб╝я┐╜я┐╜я┐╜я┐╜├дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧бя┐╜я┐╜╩▓я┐╜я┐╜╬╝я┐╜я┐╜я┐╜╞зя┐╜я┐╜╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜:');
-define('_BOOKMARKLET_DELETERIGHT1',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚ея┐╜╦ехб╝я┐╜я┐╜я┐╜я┐╜╓е╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ъд╖я┐╜╞╝┬╣я┐╜...я┐╜╫дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BOOKMARKLET_DELETERIGHT2',					'"regedit" я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BOOKMARKLET_DELETERIGHT3',					'"OK" я┐╜▄ея┐╜я┐╜я┐╜Є▓бдя┐╜');
-define('_BOOKMARKLET_DELETERIGHT4',					'"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" я┐╜я┐╜─еъб╝я┐╜я┐╜я┐╜цдля┐╜щ╕бя┐╜я┐╜');
-define('_BOOKMARKLET_DELETERIGHT5',					'"я┐╜я┐╜(я┐╜я┐╜я┐╜╩дя┐╜я┐╜я┐╜blogя┐╜я┐╜╠╛я┐╜я┐╜)я┐╜╫д╦╡я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜" я┐╜я┐╜я┐╜я┐╜╚ея┐╜я┐╜я┐╜я┐╜');
+define('_BOOKMARKLET_TITLE',						'е╓е├епе▐б╝епеье├е╚<!-- д╚ ▒жепеъе├епесе╦ехб╝ -->');
+define('_BOOKMARKLET_DESC1',						'е╓е├епе▐б╝епеье├е╚б╩Bookmarkletб╦д╚д╧бвWebе╓ещеже╢д╬е╓е├епе▐б╝епд╦┼╨╧┐д╖д╞╗╚джJavaScriptе╫еэе░ещерд╟д╣бг<br />');
+define('_BOOKMARKLET_DESC2',						'Nucleusд╦д╧б╪дк╡дд╦╞■дъб┘д▐д┐д╧б╪е╓е├епе▐б╝епе─б╝еые╨б╝б┘д╦┼╨╧┐д╟днбвепеъе├епд╥д╚д─д╟ blog д╪д╬┼ъ╣╞▓ш╠╠дЄ│лдп╡б╟╜дЄе╓ещеже╢д╦─╔▓├д╣дыд│д╚дм╜╨═шд▐д╣бг<br />');
+define('_BOOKMARKLET_DESC3',						'Webе╡еде╚дЄ╕лд╞ддд╞д╜д╬е┌б╝е╕д╦еъеєепдЄ─ед├д┐┼ъ╣╞дЄд╖д┐ддд╚╗╫д├д┐╗■д╦е╓е├епе▐б╝епеье├е╚дЄ╗╚═╤д╣дьд╨бвд╜д╬е╡еде╚(е┌б╝е╕)д╪д╬еъеєепдм╜ёдн╣■д▐дьд┐╛ї┬╓д╟бв');
+define('_BOOKMARKLET_DESC4',						'д╡дщд╦бвд╜д╬е┌б╝е╕╞тд╟╩╕╛╧дЄ┴к┬Єд╖д┐╛ї┬╓д╟╗╚═╤д╖д┐╛ь╣чбв┴к┬Єд╡дьд╞ддды╩╕╛╧дм╝л╞░┼кд╦░·═╤д╡дьд┐╛ї┬╓д╟бвNucleusд╬┐╖╡меведе╞ерд╬─╔▓├ежегеєе╔еждме▌е├е╫еве├е╫д╖д▐д╣бг<br />');
+define('_BOOKMARKLET_DESC5',						'д▐д┐Windows Internet Explorerд╬д▀д╟д╣дмбвд│д╬╡б╟╜дЄ▒жепеъе├епесе╦ехб╝д╦┼╨╧┐д╣дыд│д╚дт╜╨═шд▐д╣бг');
+define('_BOOKMARKLET_BOOKARKLET',					'е╓е├епе▐б╝епеье├е╚');
+define('_BOOKMARKLET_ANCHOR',						'б╓%sб╫д╦╡н╗ЎдЄ┼ъ╣╞');
+define('_BOOKMARKLET_BMARKTEXT',					' ▓╝д╬еъеєепдЄб╓дк╡дд╦╞■дъб╫дтд╖дпд╧б╓е╓е├епе▐б╝епб╫д╦─╔▓├д╖д╞дпд└д╡ддбг─╔▓├д╬╗┼╩¤д╧д╜дьд╛дьд╬е╓ещеже╢д╬е╪еые╫дЄ╗▓╛╚д╖д╞дпд└д╡ддбг<br />');
+define('_BOOKMARKLET_BMARKTEST',					' (е╞е╣е╚д╖д╞д▀д┐дд╛ь╣чд╧▓╝д╬еъеєепдЄепеъе├епд╖д╞д▀д╞дпд└д╡дд)');
+define('_BOOKMARKLET_RIGHTCLICK',					'▒жепеъе├епесе╦ехб╝д╦едеєе╣е╚б╝еы(Windows Internet Explorerд╬д▀)');
+define('_BOOKMARKLET_RIGHTLABEL',					'▒жепеъе├епесе╦ехб╝');
+define('_BOOKMARKLET_RIGHTTEXT1',					'Windowsд╟едеєе┐б╝е═е├е╚еиепе╣е╫еэб╝ещб╝дЄ╗╚═╤д╖д╞ддды╛ь╣чд╧бв');
+define('_BOOKMARKLET_RIGHTTEXT2',					'д╦едеєе╣е╚б╝еыд╣дыд│д╚дт╜╨═шд▐д╣<br />(б╓│лдпб╫дЄ┴к┬Єд╣дьд╨─╛└▄еье╕е╣е╚еъд╦┼╨╧┐д╖д▐д╣)');
+define('_BOOKMARKLET_RIGHTTEXT3',					'д│д╬едеєе╣е╚б╝еыд╖д┐▒жепеъе├епесе╦ехб╝дЄ╔╜╝ид╣дыд┐дсд╦д╧IEд╬║╞╡п╞░дм╔м═╫д╟д╣бг');
+define('_BOOKMARKLET_UNINSTALLTT',					'евеєедеєе╣е╚б╝еы');
+define('_BOOKMARKLET_DELETEBAR',					'б╓дк╡дд╦╞■дъб╫дтд╖дпд╧е─б╝еые╨б╝длдщ╛├д╣д╦д╧бв├▒д╦║я╜№д╣дыд└д▒д╟д╣бг');
+define('_BOOKMARKLET_DELETERIGHTT',					'▒жепеъе├епесе╦ехб╝длдщ╛├д╖д┐дд╗■д╧бв░╩▓╝д╬╝ъ╜чдЄ╞здєд╟дпд└д╡дд:');
+define('_BOOKMARKLET_DELETERIGHT1',					'е╣е┐б╝е╚есе╦ехб╝длдщб╓е╒ебедеыдЄ╗╪─ъд╖д╞╝┬╣╘...б╫дЄ┴к┬Є');
+define('_BOOKMARKLET_DELETERIGHT2',					'"regedit" д╚╞■╬╧');
+define('_BOOKMARKLET_DELETERIGHT3',					'"OK" е▄е┐еєдЄ▓бд╣');
+define('_BOOKMARKLET_DELETERIGHT4',					'"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" дЄе─еъб╝д╬├цдлдщ╕б║ў');
+define('_BOOKMARKLET_DELETERIGHT5',					'"б╓(двд╩д┐д╬blogд╬╠╛┴░)б╫д╦╡н╗ЎдЄ┼ъ╣╞" еиеєе╚еъдЄ║я╜№');
 
-define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╓░я┐╜├д╞дя┐╜я┐╜▐дя┐╜');
-define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜я┐╜я┐╜ыд│я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜');
+define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'▓┐длдм┤╓░уд├д╞ддд▐д╣');
+define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'┐╖д╖дделе╞е┤еъдЄ║юдыд│д╚дм╜╨═шд▐д╗дєд╟д╖д┐');
 
 // BAN
-define('_BAN_EXAMPLE_TITLE',						'я┐╜я┐╜');
-define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193"я┐╜я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧бя┐╜я┐╜я┐╜я┐╜я┐╜IPя┐╜я┐╜я┐╜╔еье╣я┐╜я┐╜я┐╜я┐╜PC1я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╓ея┐╜├ея┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜"134.58.253"я┐╜я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧бя┐╜"134.58.235.0я┐╜я┐╜я┐╜я┐╜134.58.235.255"я┐╜я┐╜я┐╜╧░╧дя┐╜256я┐╜─дя┐╜IPя┐╜я┐╜я┐╜╔еье╣я┐╜я┐╜я┐╜я┐╜PCя┐╜я┐╜я┐╜я┐╜я┐╜╞е╓ея┐╜├ея┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧бя┐╜я┐╜я┐╜я┐╜╘дя┐╜IPя┐╜я┐╜я┐╜╔еье╣(134.58.253.193)я┐╜я┐╜▐д▀д▐дя┐╜я┐╜я┐╜');
-define('_BAN_IP_CUSTOM',							'я┐╜╓ея┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜: ');
-define('_BAN_BANBLOGNAME',							'%s я┐╜╬дя┐╜');
+define('_BAN_EXAMPLE_TITLE',						'╬у');
+define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193"д╚╞■╬╧д╖д┐╛ь╣чд╧бвд│д╬IPеве╔еье╣дЄ╗¤д─PC1┬цд└д▒дЄе╓еэе├епд╖д▐д╣бг"134.58.253"д╚╞■╬╧д╖д┐╛ь╣чд╧бв"134.58.235.0Пв╖134.58.235.255"д╬╚╧░╧д╬256╕─д╬IPеве╔еье╣дЄ╗¤д─PCдЄ┴┤д╞е╓еэе├епд╖д▐д╣бгд│дьд╧бв┴░╝╘д╬IPеве╔еье╣(134.58.253.193)дЄ┤▐д▀д▐д╣бг');
+define('_BAN_IP_CUSTOM',							'е╓еэе├еп╗╪─ъ: ');
+define('_BAN_BANBLOGNAME',							'%s д╬д▀');
 
 // Plugin Options
-define('_PLUGIN_OPTIONS_TITLE',						'%s я┐╜╬ея┐╜я┐╜╫ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_PLUGIN_OPTIONS_TITLE',						'%s д╬еке╫е╖ечеє└▀─ъ');
 
 // Plugin file loda error
-define('_PLUGINFILE_COULDNT_BELOADED',				'я┐╜я┐╜я┐╜щб╝: я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜ <strong>%s.php</strong> я┐╜я┐╜я┐╜╔д▀╣я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜ыдм┬╕я┐╜▀дя┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜тдпя┐╜╧╗я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ Nucleus я┐╜я┐╜я┐╜╞░я┐╜юд╡я┐╜я┐╜я┐╜ыд┐я┐╜я┐╜я┐╜╔мя┐╜╫д╩╡я┐╜╟╜я┐╜я┐╜я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╟ея┐╜я┐╜▌бя┐╜я┐╜╚дя┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜(<a href="?action=actionlog">я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜</a>я┐╜╦╛▄║┘дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜)');
+define('_PLUGINFILE_COULDNT_BELOADED',				'еиещб╝: е╫еще░едеєе╒ебедеы <strong>%s.php</strong> дЄ╞╔д▀╣■дсд▐д╗дєд╟д╖д┐бге╒ебедеыдм┬╕║▀д╖д╩ддбвдтдпд╧╗╚═╤├цд╬ Nucleus ╛хд╟╞░║юд╡д╗дыд┐дсд╦╔м═╫д╩╡б╟╜дме╫еще░едеєд╟е╡е▌б╝е╚д╡дьд╞ддд▐д╗дєбг(<a href="?action=actionlog">┤╔═¤┴р║ю═·╬Є</a>д╦╛▄║┘дмдвдъд▐д╣бг)');
 
 //ITEM add/edit template (for japanese only)
-define('_ITEM_ADDEDITTEMPLATE_FORMAT',				'я┐╜╒ея┐╜я┐╜я┐╜я┐╜▐е├е╚бя┐╜');
+define('_ITEM_ADDEDITTEMPLATE_FORMAT',				'е╒ейб╝е▐е├е╚бз');
 define('_ITEM_ADDEDITTEMPLATE_YEAR',				'╟п');
-define('_ITEM_ADDEDITTEMPLATE_MONTH',				'я┐╜я┐╜');
-define('_ITEM_ADDEDITTEMPLATE_DAY',					'я┐╜я┐╜');
-define('_ITEM_ADDEDITTEMPLATE_HOUR',				'я┐╜я┐╜');
+define('_ITEM_ADDEDITTEMPLATE_MONTH',				'╖ю');
+define('_ITEM_ADDEDITTEMPLATE_DAY',					'╞№');
+define('_ITEM_ADDEDITTEMPLATE_HOUR',				'╗■');
 define('_ITEM_ADDEDITTEMPLATE_MINUTE',				'╩м');
 
 // Errors
-define('_ERRORS_INSTALLSQL',						'я┐╜я┐╜install/install.sqlя┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERRORS_INSTALLDIR',						'я┐╜я┐╜installя┐╜я┐╜я┐╜╟ея┐╜я┐╜ьепя┐╜╚ея┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');  // <add by shizuki />
-define('_ERRORS_INSTALLPHP',						'я┐╜я┐╜install/index.phpя┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERRORS_UPGRADESDIR',						'я┐╜я┐╜nucleus/upgradesя┐╜я┐╜я┐╜╟ея┐╜я┐╜ьепя┐╜╚ея┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERRORS_CONVERTDIR',						'я┐╜я┐╜nucleus/convertя┐╜я┐╜я┐╜╟ея┐╜я┐╜ьепя┐╜╚ея┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERRORS_CONFIGPHP',							'я┐╜я┐╜config.phpя┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔д▀╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜(я┐╜я┐╜chmod 444я┐╜я┐╜я┐╜я┐╜)я┐╜╦дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERRORS_STARTUPERROR1',						'<p>я┐╜я┐╜─бя┐╜я┐╜▐дя┐╜я┐╜╧дя┐╜я┐╜я┐╜╩╛я┐╜я┐╜NucleusCMSя┐╜╬ея┐╜я┐╜єе╣е╚бя┐╜я┐╜я┐╜(я┐╜я┐╜я┐╜├е╫ея┐╜я┐╜ьб╝я┐╜я┐╜)я┐╜╤е╒ея┐╜я┐╜я┐╜я┐╜ыдмя┐╜я┐╜я┐╜я┐╜я┐╜╨╛я┐╜╦╗─д├д╞дя┐╜я┐╜ыбвя┐╜тд╖я┐╜я┐╜я┐╜╧╜ёдн╣я┐╜я┐╜▀▓я┐╜╟╜я┐╜╦д╩д├д╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜</p><p>я┐╜я┐╜я┐╜я┐╜я┐╜╬е╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜╧е╤бя┐╜я┐╜▀е├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤╣я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜я┐╜я┐╜▌дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Nucleusя┐╜я┐╜я┐╜я┐╜я┐╜─дя┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╬дя┐╜я┐╜я┐╜я┐╜─дя┐╜я┐╜Є╝бд╦╝я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜</p> <ul><li>');
-define('_ERRORS_STARTUPERROR2',						'</li></ul><p>я┐╜я┐╜я┐╜╬╖┘╣я┐╜я┐╜╔╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜╧бя┐╜<code>globalfunctions.php</code>я┐╜я┐╜<code>$CONF[\'alertOnSecurityRisk\']</code>я┐╜я┐╜я┐╜═дя┐╜<code>0</code>я┐╜╦дя┐╜я┐╜ыдля┐╜я┐╜╞▒я┐╜═дя┐╜я┐╜я┐╜я┐╜╞дя┐╜<code>config.php</code>я┐╜╬║╟╕я┐╜╦╡я┐╜я┐╜╥дя┐╜я┐╜▐дя┐╜(я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜┘еыдмя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜)</p>');
-define('_ERRORS_STARTUPERROR3',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜ я┐╜ъе╣я┐╜я┐╜я┐╜╬╖┘╣я┐╜');
+define('_ERRORS_INSTALLSQL',						'Овinstall/install.sqlОге╒ебедеыдЄ║я╜№д╖д╞дпд└д╡дд');
+define('_ERRORS_INSTALLDIR',						'ОвinstallОге╟егеьепе╚еъдЄ║я╜№д╖д╞дпд└д╡дд');  // <add by shizuki />
+define('_ERRORS_INSTALLPHP',						'Овinstall/index.phpОге╒ебедеыдЄ║я╜№д╖д╞дпд└д╡дд');
+define('_ERRORS_UPGRADESDIR',						'Овnucleus/upgradesОге╟егеьепе╚еъдЄ║я╜№д╖д╞дпд└д╡дд');
+define('_ERRORS_CONVERTDIR',						'Овnucleus/convertОге╟егеьепе╚еъдЄ║я╜№д╖д╞дпд└д╡дд');
+define('_ERRORS_CONFIGPHP',							'Овconfig.phpОге╒ебедеыдЄ╞╔д▀╝шдъ└ь═╤(Овchmod 444Ог┼∙)д╦д╖д╞дпд└д╡дд');
+define('_ERRORS_STARTUPERROR1',						'<p>░ьд─бвд▐д┐д╧д╜дь░╩╛хд╬NucleusCMSд╬едеєе╣е╚б╝еы(еве├е╫е░еьб╝е╔)═╤е╒ебедеыдме╡б╝е╨╛хд╦╗─д├д╞дддыбвдтд╖дпд╧╜ёдн╣■д▀▓─╟╜д╦д╩д├д╞ддд▐д╣бг</p><p>д│дьдщд╬е╒ебедеыдЄ║я╜№бвд▐д┐д╧е╤б╝е▀е├е╖ечеєдЄ╩╤╣╣д╖д╞е╗енехеъе╞егдЄ│╬╩▌д╖д╞дпд└д╡ддбгNucleusдм╕лд─д▒д┐е╒ебедеыд╬дддпд─длдЄ╝бд╦╝ид╖д▐д╣бг</p> <ul><li>');
+define('_ERRORS_STARTUPERROR2',						'</li></ul><p>д│д╬╖┘╣ЁдЄ╔╜╝ид╡д╗д┐дпд╩дд╛ь╣чд╧бв<code>globalfunctions.php</code>д╬<code>$CONF[\'alertOnSecurityRisk\']</code>д╬├═дЄ<code>0</code>д╦д╣дыдлбв╞▒══д╬╞т═╞дЄ<code>config.php</code>д╬║╟╕хд╦╡н╜╥д╖д▐д╣(е╗енехеъе╞егеье┘еыдм▓╝дмдъд▐д╣)</p>');
+define('_ERRORS_STARTUPERROR3',						'е╗енехеъе╞ег еъе╣епд╬╖┘╣Ё');
 
 // PluginAdmin tickets by javascript
-define('_PLUGINADMIN_TICKETS_JAVASCRIPT',			'<p><b>я┐╜я┐╜я┐╜я┐╜я┐╜├е╚д╬╝я┐╜╞░╚пя┐╜я┐╜я┐╜я┐╜╦ея┐╜я┐╜щб╝я┐╜я┐╜╚пя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜</b></p>');
+define('_PLUGINADMIN_TICKETS_JAVASCRIPT',			'<p><b>е┴е▒е├е╚д╬╝л╞░╚п╣╘├цд╦еиещб╝дм╚п└╕д╖д▐д╖д┐</b></p>');
 
 // Global settings disablesite URL
-define('_SETTINGS_DISABLESITEURL',					'┼╛я┐╜я┐╜я┐╜я┐╜я┐╜URL:');
+define('_SETTINGS_DISABLESITEURL',					'┼╛┴ў└шд╬URL:');
 
 // Skin import/export
-define('_SKINIE_SEELEMENT_UNEXPECTEDTAG',			'═╜я┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SKINIE_ERROR_FAILEDOPEN_FILEURL',			'я┐╜╒ея┐╜я┐╜я┐╜я┐╜ыбвя┐╜▐дя┐╜я┐╜я┐╜URLя┐╜Є│лдя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_SKINIE_NAME_CLASHES_DETECTED',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜/я┐╜╞ея┐╜╫еьб╝я┐╜╚дя┐╜╠╛я┐╜я┐╜я┐╜я┐╜╞▒я┐╜я┐╜я┐╜я┐╜╬дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜allowOverwriteя┐╜я┐╜1я┐╜я┐╜я┐╜я┐╜я┐╜ъд╖я┐╜╞бя┐╜я┐╜я┐╜ёднетб╝я┐╜╔д╟║я┐╜я┐╜┘╝┬╣╘дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_SKINIE_SEELEMENT_UNEXPECTEDTAG',			'═╜┤№д╖д╩дде┐е░');
+define('_SKINIE_ERROR_FAILEDOPEN_FILEURL',			'е╒ебедеыбвд▐д┐д╧URLдЄ│лдп╗Ўдм╜╨═шд▐д╗дє');
+define('_SKINIE_NAME_CLASHES_DETECTED',				'е╣енеє/е╞еєе╫еьб╝е╚д╦╠╛┴░д╬╞▒д╕дтд╬дмдвдъд▐д╣бгallowOverwriteдЄ1д╦└▀─ъд╖д╞бв╛х╜ёднетб╝е╔д╟║╞┼┘╝┬╣╘д╖д╞дпд└д╡ддбг');
 
 // ACTIONS.php parse_commentform
-define('_ACTIONURL_NOTLONGER_PARAMATER',			'я┐╜я┐╜action.phpя┐╜я┐╜я┐╜я┐╜URLя┐╜╧ея┐╜я┐╜я┐╜я┐╜╚е╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤дя┐╜я┐╜╤┐я┐╜я┐╜╬е╤ея┐╜сб╝я┐╜я┐╜я┐╜я┐╜я┐╜╟д╧д╩дя┐╜я┐╜╩д├д╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧Оя┐╜я┐╜я┐╜я┐╜?я┐╜╨ея┐╜я┐╜я┐╜я┐╜ъОгя┐╜╦░я┐╜╞░я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_ACTIONURL_NOTLONGER_PARAMATER',			'Овaction.phpОгд╬URLд╧е│есеєе╚е╒ейб╝ер═╤д╬╩╤┐Їд╬е╤ещесб╝е┐б╝д╟д╧д╩дпд╩д├д╞ддд▐д╣бгд│д╬└▀─ъд╧Ове░еэб╝е╨еы└▀─ъОгд╦░▄╞░д╖д▐д╖д┐');
 
 // ADMIN.php addToTemplate 'Query error: '
-define('_ADMIN_SQLDIE_QUERYERROR',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜я┐╜щб╝: ');
+define('_ADMIN_SQLDIE_QUERYERROR',					'епеиеъ еиещб╝: ');
 
 // backup.php Backup WARNING
-define('_BACKUP_BACKUPFILE_TITLE',					'Nucleus CMS я┐╜╬е╟бя┐╜я┐╜я┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├е╫е╒ея┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜');
-define('_BACKUP_BACKUPFILE_BACKUPDATE',				'я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├е╫дя┐╜я┐╜я┐╜я┐╜я┐╜:');
-define('_BACKUP_BACKUPFILE_NUCLEUSVERSION',			'Nucleus CMS я┐╜╬е╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜:');
-define('_BACKUP_BACKUPFILE_DATABASE_NAME',			'Nucleus CMS я┐╜╬е╟бя┐╜я┐╜я┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜╠╛я┐╜я┐╜:');
-define('_BACKUP_BACKUPFILE_TABLE_NAME',				'я┐╜╞бя┐╜я┐╜╓ея┐╜╬╣я┐╜┬д :');
-define('_BACKUP_BACKUPFILE_TABLEDATAFOR',			'%s я┐╜╞бя┐╜я┐╜╓ея┐╜╬ея┐╜я┐╜я┐╜╫е╟бя┐╜я┐╜я┐╜');
-define('_BACKUP_WARNING_NUCLEUSVERSION',				'я┐╜я┐╜╒бя┐╜: я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├е╫дя┐╜я┐╜я┐╜╟бя┐╜я┐╜я┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▌д╧бя┐╜Nucleusя┐╜╬е╨бя┐╜я┐╜я┐╜я┐╜я┐╜єдме╨е├ея┐╜я┐╜я┐╜я┐╜├е╫дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞▒я┐╜я┐╜я┐╜я┐╜╬дя┐╜я┐╜шдпя┐╜я┐╜╟зя┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BACKUP_RESTOR_NOFILEUPLOADED',				'я┐╜╒ея┐╜я┐╜я┐╜я┐╜ыдмя┐╜я┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_BACKUP_RESTOR_UPLOAD_ERROR',				'я┐╜я┐╜я┐╜├е╫е?я┐╜я┐╜я┐╜я┐╜╦ея┐╜я┐╜щб╝я┐╜я┐╜╚пя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_BACKUP_RESTOR_UPLOAD_NOCORRECTTYPE',		'я┐╜я┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜ьд┐я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╬╖я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜');
-define('_BACKUP_RESTOR_UPLOAD_NOZLIB',				'я┐╜я┐╜я┐╜╠╖я┐╜я┐╜я┐╜я┐╜╬е╨е├ея┐╜я┐╜я┐╜я┐╜├е╫е╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜(я┐╜я┐╜zlibя┐╜я┐╜я┐╜щедя┐╜╓ея┐╜ъдмя┐╜я┐╜я┐╜єе╣е╚бя┐╜я┐╜ыд╡я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜)');
-define('_BACKUP_RESTOR_SQL_ERROR',					'SQL я┐╜я┐╜я┐╜щб╝: ');
+define('_BACKUP_BACKUPFILE_TITLE',					'Nucleus CMS д╬е╟б╝е┐е┘б╝е╣е╨е├епеве├е╫е╒ебедеыд╟д╣');
+define('_BACKUP_BACKUPFILE_BACKUPDATE',				'е╨е├епеве├е╫д╖д┐╞№:');
+define('_BACKUP_BACKUPFILE_NUCLEUSVERSION',			'Nucleus CMS д╬е╨б╝е╕ечеє:');
+define('_BACKUP_BACKUPFILE_DATABASE_NAME',			'Nucleus CMS д╬е╟б╝е┐е┘б╝е╣д╬╠╛┴░:');
+define('_BACKUP_BACKUPFILE_TABLE_NAME',				'е╞б╝е╓еыд╬╣╜┬д :');
+define('_BACKUP_BACKUPFILE_TABLEDATAFOR',			'%s е╞б╝е╓еыд╬е└еєе╫е╟б╝е┐');
+define('_BACKUP_WARNING_NUCLEUSVERSION',				'├э░╒бк: е╨е├епеве├е╫длдще╟б╝е┐е┘б╝е╣дЄ╔№╕╡д╣ды║▌д╧бвNucleusд╬е╨б╝е╕ечеєдме╨е├епеве├е╫дЄ║ю└од╖д┐╗■д╚╞▒д╕дтд╬длдшдп│╬╟зд╖д╞дпд└д╡ддбг');
+define('_BACKUP_RESTOR_NOFILEUPLOADED',				'е╒ебедеыдмеве├е╫еэб╝е╔д╡дьд╞ддд▐д╗дє');
+define('_BACKUP_RESTOR_UPLOAD_ERROR',				'еве├е╫еэб╝е╔├цд╦еиещб╝дм╚п└╕д╖д▐д╖д┐');
+define('_BACKUP_RESTOR_UPLOAD_NOCORRECTTYPE',		'еве├е╫еэб╝е╔д╡дьд┐е╒ебедеыд╬╖┴╝░дм╔╘└╡д╟д╣');
+define('_BACKUP_RESTOR_UPLOAD_NOZLIB',				'░╡╜╠╖┴╝░д╬е╨е├епеве├е╫е╒ебедеыдЄ▓Є┼рд╟днд▐д╗дєд╟д╖д┐(ОвzlibОгещеде╓ещеъдмедеєе╣е╚б╝еыд╡дьд╞ддд▐д╗дє)');
+define('_BACKUP_RESTOR_SQL_ERROR',					'SQL еиещб╝: ');
 
 // BLOG.php addTeamMember
-define('_TEAM_ADD_NEWTEAMMEMBER',					'%s(ID=%d) я┐╜Єбве╓е? "%s" я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜╦▓├дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_TEAM_ADD_NEWTEAMMEMBER',					'%s(ID=%d) дЄбве╓еэе░ "%s" д╬е┴б╝ерд╦▓├дид▐д╖д┐');
 
 // ADMIN.php systemoverview()
-define('_ADMIN_SYSTEMOVERVIEW_HEADING',				'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜─╢я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL',			'PHP я┐╜я┐╜ MySQL');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONS',			'я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_PHPVERSION',			'PHP я┐╜╬е╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL я┐╜╬е╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_SETTINGS',			'PHP я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_GDLIBRALY',			'GD я┐╜щедя┐╜╓ея┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_MODULES',				'Apache я┐╜те╕я┐╜хб╝я┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_ENABLE',				'═ня┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_DISABLE',				'╠╡я┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM',		'Nucleus я┐╜╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜╦д─дя┐╜я┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION',		'Nucleus я┐╜╬е╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus я┐╜╬е╤е├ея┐╜я┐╜я┐╜┘ея┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'я┐╜я┐╜я┐╜╫дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'я┐╜я┐╜ъ┐╖я┐╜я┐╜я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬ея┐╜ъб╝я┐╜я┐╜я┐╜я┐╜╠╡я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚д╟ея┐╜я┐╜я┐╜я┐╜├ея┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜: ');
+define('_ADMIN_SYSTEMOVERVIEW_HEADING',				'е╖е╣е╞ер┤─╢н░ь═ў');
+define('_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL',			'PHP д╚ MySQL');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONS',			'е╨б╝е╕ечеє');
+define('_ADMIN_SYSTEMOVERVIEW_PHPVERSION',			'PHP д╬е╨б╝е╕ечеє');
+define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL д╬е╨б╝е╕ечеє');
+define('_ADMIN_SYSTEMOVERVIEW_SETTINGS',			'PHP д╬└▀─ъ');
+define('_ADMIN_SYSTEMOVERVIEW_GDLIBRALY',			'GD ещеде╓ещеъ');
+define('_ADMIN_SYSTEMOVERVIEW_MODULES',				'Apache ете╕ехб╝еы');
+define('_ADMIN_SYSTEMOVERVIEW_ENABLE',				'═н╕·');
+define('_ADMIN_SYSTEMOVERVIEW_DISABLE',				'╠╡╕·');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM',		'Nucleus д╬е╖е╣е╞ерд╦д─ддд╞');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION',		'Nucleus д╬е╨б╝е╕ечеє');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus д╬е╤е├е┴еье┘еы');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'╜┼═╫д╩└▀─ъ');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'е╨б╝е╕ечеєе┴езе├еп');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'дшдъ┐╖д╖дде╨б╝е╕ечеєд╬еъеъб╝е╣дм╠╡дддлбв╕°╝░е╡еде╚д╟е┴езе├епд╟днд▐д╣: ');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://japan.nucleuscms.org/version.php?v=%d&amp;pl=%d');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'я┐╜╟┐я┐╜я┐╜╬е╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜');
-define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			'я┐╜я┐╜я┐╜╬▓я┐╜я┐╜╠дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ы╕вя┐╜┬дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'║╟┐╖д╬е╨б╝е╕ечеєдЄе┴езе├еп');
+define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			'д│д╬▓ш╠╠дЄ▒▄═ўд╣ды╕в╕┬дмдвдъд▐д╗дє');
 
 // ENCAPSULATE.php
-define('_ENCAPSULATE_ENCAPSULATE_NOENTRY',			'я┐╜я┐╜я┐╜я┐╜╚еъб╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_ENCAPSULATE_ENCAPSULATE_NOENTRY',			'еиеєе╚еъб╝дмдвдъд▐д╗дє');
 
 // globalfunctions.php
-define('_GFUNCTIONS_LOGINPCSHARED_YES',				'я┐╜я┐╜═нPCя┐╜я┐╜я┐╜я┐╜╬е?я┐╜я┐╜я┐╜я┐╜');
-define('_GFUNCTIONS_LOGINPCSHARED_NO',				'я┐╜я┐╜═ня┐╜╟д╧д╩дя┐╜PCя┐╜я┐╜я┐╜я┐╜╬е?я┐╜я┐╜я┐╜я┐╜');
-define('_GFUNCTIONS_LOGINSUCCESSFUL_TXT',			'%s я┐╜я┐╜я┐╜?я┐╜я┐╜я┐╜єд╖д▐дя┐╜я┐╜я┐╜ (%s)');
-define('_GFUNCTIONS_LOGINFAILED_TXT',				'%s я┐╜я┐╜я┐╜?я┐╜я┐╜я┐╜я┐╜╦╝я┐╜я┐╜╘дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_GFUNCTIONS_LOGOUT_TXT',					'%s я┐╜я┐╜я┐╜?я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_GFUNCTIONS_HEADERSALREADYSENT_FILE',		'<code>%s</code> я┐╜я┐╜ <code>%s</code> я┐╜я┐╜я┐╜▄дя┐╜');
-define('_GFUNCTIONS_HEADERSALREADYSENT_TITLE',		'HTTPя┐╜╪е├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤д▀д╟дя┐╜');
-define('_GFUNCTIONS_HEADERSALREADYSENT_TXT',		'<p>%sя┐╜я┐╜я┐╜╟д╦е┌бя┐╜я┐╜я┐╜я┐╜я┐╜HTTPя┐╜╪е├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨дя┐╜я┐╜я┐╜╞дя┐╜я┐╜ъбвNucleusя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞░я┐╜юд╖я┐╜╩дя┐╜я┐╜╩дя┐╜я┐╜╟╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜</p><p><code>config.php</code>я┐╜я┐╜я┐╜єе▓бя┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜ыбвя┐╜я┐╜я┐╜я┐╜┬╛я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╬е╒ея┐╜я┐╜я┐╜я┐╜я┐╜╬╜я┐╜я┐╜я┐╜я┐╜╦бя┐╜═╛╩мя┐╜╩▓я┐╜я┐╜╘дя┐╜╩╕я┐╜я┐╜я┐╜єдмд╩дя┐╜я┐╜я┐╜я┐╜я┐╜╟зя┐╜я┐╜я┐╜╞дтджя┐╜я┐╜я┐╜я┐╜я┐╜╔ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞д▀д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜</p><p>я┐╜я┐╜я┐╜я┐╜┼кя┐╜╩▓я┐╜я┐╜Єд╗дя┐╜я┐╜╦дя┐╜я┐╜╬ея┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜╦д╧бя┐╜<code>globalfunctions.php</code>я┐╜я┐╜я┐╜я┐╜╞мя┐╜я┐╜<code>$CONF[\'alertOnHeadersSent\']</code>я┐╜я┐╜<code>0</code>я┐╜я┐╜я┐╜я┐╜я┐╜ъд╖я┐╜▐дя┐╜я┐╜я┐╜</p>');
-define('_GFUNCTIONS_PARSEFILE_FILEMISSING',			'я┐╜╒ея┐╜я┐╜я┐╜я┐╜ыдмя┐╜я┐╜я┐╜─дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_GFUNCTIONS_AN_ERROR_OCCURRED',				'я┐╜я┐╜я┐╜щб╝я┐╜я┐╜╚пя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			'я┐╜?я┐╜я┐╜я┐╜єд╖д╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_GFUNCTIONS_LOGINPCSHARED_YES',				'╢ж═нPCдлдщд╬еэе░едеє');
+define('_GFUNCTIONS_LOGINPCSHARED_NO',				'╢ж═нд╟д╧д╩ддPCдлдщд╬еэе░едеє');
+define('_GFUNCTIONS_LOGINSUCCESSFUL_TXT',			'%s дмеэе░едеєд╖д▐д╖д┐ (%s)');
+define('_GFUNCTIONS_LOGINFAILED_TXT',				'%s дмеэе░едеєд╦╝║╟╘д╖д▐д╖д┐');
+define('_GFUNCTIONS_LOGOUT_TXT',					'%s дмеэе░евеже╚д╖д▐д╖д┐');
+define('_GFUNCTIONS_HEADERSALREADYSENT_FILE',		'<code>%s</code> д╬ <code>%s</code> ╣╘╠▄д╟');
+define('_GFUNCTIONS_HEADERSALREADYSENT_TITLE',		'HTTPе╪е├е└д╧┴ў┐о║╤д▀д╟д╣');
+define('_GFUNCTIONS_HEADERSALREADYSENT_TXT',		'<p>%sд╣д╟д╦е┌б╝е╕д╬HTTPе╪е├е└дм┴ў╜╨д╡дьд╞дкдъбвNucleusдм└╡╛яд╦╞░║юд╖д╩дпд╩ды▓─╟╜└ндмдвдъд▐д╣бг</p><p><code>config.php</code>дфещеєе▓б╝е╕е╒ебедеыбвд╜д╬┬╛е╫еще░едеєд╬е╒ебедеыд╬╜кдядъд╦бв═╛╩мд╩▓■╣╘дф╩╕╗·╬єдмд╩дддл│╬╟зд╖д╞дтджддд┴д╔евепе╗е╣д╖д╞д▀д╞дпд└д╡ддбг</p><p>║м╦▄┼кд╩▓Є╖шдЄд╗д║д╦д│д╬есе├е╗б╝е╕дЄ╔╜╝ид╡д╗д╩дпд╣дыд╦д╧бв<code>globalfunctions.php</code>д╬╦┴╞мд╬<code>$CONF[\'alertOnHeadersSent\']</code>дЄ<code>0</code>д╦└▀─ъд╖д▐д╣бг</p>');
+define('_GFUNCTIONS_PARSEFILE_FILEMISSING',			'е╒ебедеыдм╕лд─длдъд▐д╗дє');
+define('_GFUNCTIONS_AN_ERROR_OCCURRED',				'еиещб╝дм╚п└╕д╖д▐д╖д┐');
+define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			'еэе░едеєд╖д╞ддд▐д╗дє');
 
 // MANAGER.php
-define('_MANAGER_PLUGINFILE_NOCLASS',				"я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜я┐╜%sя┐╜╫дя┐╜я┐╜╔д▀╣я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜(я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╦е╫еще░я┐╜я┐╜я┐╜єепеще╣я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜)");
-define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜я┐╜%sя┐╜╫дя┐╜я┐╜╔д▀╣я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜(я┐╜я┐╜SqlTablePrefixя┐╜я┐╜я┐╜Єе╡е▌бя┐╜я┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜)");
+define('_MANAGER_PLUGINFILE_NOCLASS',				"е╫еще░едеєб╓%sб╫дЄ╞╔д▀╣■дсд▐д╗дєд╟д╖д┐(е╒ебедеы╞тд╦е╫еще░едеєепеще╣дм┬╕║▀д╖д▐д╗дє)");
+define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"е╫еще░едеєб╓%sб╫дЄ╞╔д▀╣■дсд▐д╗дєд╟д╖д┐(ОвSqlTablePrefixОгдЄе╡е▌б╝е╚д╖д╞ддд▐д╗дє)");
 
 // mysql.php
-define('_NO_SUITABLE_MYSQL_LIBRARY',				"<p>Nucleusя┐╜я┐╜╞░я┐╜я┐╜я┐╜я┐╜я┐╜╬дя┐╜╔мя┐╜╫дя┐╜mySQLя┐╜╤д╬ещедя┐╜╓ея┐╜ъдмя┐╜я┐╜я┐╜єе╣е╚бя┐╜я┐╜ыд╡я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜</p>");
+define('_NO_SUITABLE_MYSQL_LIBRARY',				"<p>NucleusдЄ╞░длд╣д╬д╦╔м═╫д╩mySQL═╤д╬ещеде╓ещеъдмедеєе╣е╚б╝еыд╡дьд╞ддд▐д╗дє</p>");
 
 // PLUGIN.php
-define('_ERROR_PLUGIN_NOSUCHACTION',				'я┐╜я┐╜я┐╜ъд╡я┐╜ьд┐я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_ERROR_PLUGIN_NOSUCHACTION',				'╗╪─ъд╡дьд┐евепе╖ечеєд╧┬╕║▀д╖д▐д╗дєбг');
 
 // PLUGINADMIN.php
-define('_ERROR_INVALID_PLUGIN',						'я┐╜я┐╜я┐╜я┐╜я┐╜╩е╫еще░я┐╜я┐╜я┐╜я┐╜╟дя┐╜');
+define('_ERROR_INVALID_PLUGIN',						'╔╘└╡д╩е╫еще░едеєд╟д╣');
 
 // showlist.php
-define('_LIST_PLUGS_DEPREQ',						'я┐╜я┐╜я┐╜╬е╫еще░я┐╜я┐╜я┐╜я┐╜╦░я┐╜┬╕я┐╜я┐╜я┐╜я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜:');
-define('_LIST_SKIN_PREVIEW',						"'%s' я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬е╫ея┐╜╙ехб╝");
-define('_LIST_SKIN_PREVIEW_VIEWLARGER',				"я┐╜чдня┐╜╩▓я┐╜я┐╜я┐╜Є╕лдя┐╜");
-define('_LIST_SKIN_README',							"'%s' я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╦д─дя┐╜я┐╜╞дя┐╜├д╚╛▄дя┐╜я┐╜я┐╜");
+define('_LIST_PLUGS_DEPREQ',						'д│д╬е╫еще░едеєд╦░═┬╕д╣дые╫еще░едеє:');
+define('_LIST_SKIN_PREVIEW',						"'%s' е╣енеєд╬е╫еье╙ехб╝");
+define('_LIST_SKIN_PREVIEW_VIEWLARGER',				"┬чднд╩▓ш┴№дЄ╕лды");
+define('_LIST_SKIN_README',							"'%s' е╣енеєд╦д─ддд╞дтд├д╚╛▄д╖дп");
 define('_LIST_SKIN_README_TXT',						'Read me');
 
 // BLOG.php createNewCategory()
-define('_CREATED_NEW_CATEGORY_NAME',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜');
-define('_CREATED_NEW_CATEGORY_DESC',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_CREATED_NEW_CATEGORY_NAME',				'┐╖д╖дделе╞е┤еъ');
+define('_CREATED_NEW_CATEGORY_DESC',				'┐╖д╖дделе╞е┤еъд╬└т╠└');
 
 // ADMIN.php blog settings
-define('_EBLOG_CURRENT_TEAM_MEMBER',				'я┐╜я┐╜я┐╜╬е╓е?я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬╕я┐╜я┐╜▀д╬ея┐╜я┐╜╨бя┐╜я┐╜я┐╜');
+define('_EBLOG_CURRENT_TEAM_MEMBER',				'д│д╬е╓еэе░е┴б╝ерд╬╕╜║▀д╬есеєе╨б╝бз');
 
 // HTML outputs
 define('_HTML_XML_NAME_SPACE_AND_LANG_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"');
 
 // Language Files
-define('_LANGUAGEFILES_JAPANESE-UTF8',				'я┐╜я┐╜я┐╜▄╕я┐╜ - я┐╜я┐╜я┐╜▄╕я┐╜ (EUC-JP)');
-define('_LANGUAGEFILES_JAPANESE-EUC',				'я┐╜я┐╜я┐╜▄╕я┐╜ - я┐╜я┐╜я┐╜▄╕я┐╜ (EUC)');
-define('_LANGUAGEFILES_JAPANESE-SJIS',				'я┐╜я┐╜я┐╜▄╕я┐╜ - я┐╜я┐╜я┐╜▄╕я┐╜ (Shift-JIS)');
-define('_LANGUAGEFILES_ENGLISH-UTF8',				'я┐╜╤╕я┐╜ - English (EUC-JP)');
-define('_LANGUAGEFILES_ENGLISH',					'я┐╜╤╕я┐╜ - English (iso-8859-1)');
+define('_LANGUAGEFILES_JAPANESE-UTF8',				'╞№╦▄╕ь - ╞№╦▄╕ь (UTF-8)');
+define('_LANGUAGEFILES_JAPANESE-EUC',				'╞№╦▄╕ь - ╞№╦▄╕ь (EUC)');
+define('_LANGUAGEFILES_JAPANESE-SJIS',				'╞№╦▄╕ь - ╞№╦▄╕ь (Shift-JIS)');
+define('_LANGUAGEFILES_ENGLISH-UTF8',				'▒╤╕ь - English (UTF-8)');
+define('_LANGUAGEFILES_ENGLISH',					'▒╤╕ь - English (iso-8859-1)');
 /*
-define('_LANGUAGEFILES_BULGARIAN',					'я┐╜╓еыемя┐╜ъевя┐╜я┐╜ - &#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080; (iso-8859-5)');
-define('_LANGUAGEFILES_CATALAN',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ - Catal&agrave; (iso-8859-1)');
-define('_LANGUAGEFILES_CHINESE-GBK',				'я┐╜я┐╜я┐╜╬╗я┐╜я┐╜я┐╜я┐╜я┐╜ - &#31777;&#20307;&#23383;&#20013;&#25991; (gbk)');
-define('_LANGUAGEFILES_SIMCHINESE',					'я┐╜я┐╜я┐╜╬╗я┐╜я┐╜я┐╜я┐╜я┐╜ - &#31777;&#20307;&#23383;&#20013;&#25991; (gb2312)');
-define('_LANGUAGEFILES_CHINESE-UTF8',				'я┐╜я┐╜я┐╜╬╗я┐╜я┐╜я┐╜я┐╜я┐╜ - &#31777;&#20307;&#23383;&#20013;&#25991; (EUC-JP)');
-define('_LANGUAGEFILES_CHINESEB5',					'я┐╜я┐╜я┐╜╬╗я┐╜я┐╜я┐╜я┐╜я┐╜ - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
-define('_LANGUAGEFILES_CHINESEB5-UTF8',				'я┐╜я┐╜я┐╜╬╗я┐╜я┐╜я┐╜я┐╜я┐╜ - &#32321;&#20307;&#23383;&#20013;&#25991; (EUC-JP)');
-define('_LANGUAGEFILES_TRADITIONAL_CHINESE',		'я┐╜я┐╜я┐╜╬╗я┐╜я┐╜я┐╜я┐╜я┐╜ - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
-define('_LANGUAGEFILES_TRADITIONAL_CHINESE-EUC-JP',	'я┐╜я┐╜я┐╜╬╗я┐╜я┐╜я┐╜я┐╜я┐╜ - &#32321;&#20307;&#23383;&#20013;&#25991; (EUC-JP)');
-define('_LANGUAGEFILES_CZECH',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ - &#268;esky (windows-1250)');
-define('_LANGUAGEFILES_FINNISH',					'я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╔╕я┐╜ - Suomi (iso-8859-1)');
-define('_LANGUAGEFILES_FRENCH',						'я┐╜╒ея┐╜єе╣╕я┐╜ - Fran&ccedil;ais (iso-8859-1)');
-define('_LANGUAGEFILES_GALEGO',						'я┐╜я┐╜я┐╜ъе╖я┐╜я┐╜я┐╜я┐╜ - Galego (iso-8859-1)');
-define('_LANGUAGEFILES_GERMAN',						'я┐╜╔ея┐╜я┐╜─╕я┐╜ - Deutsch (iso-8859-1)');
-define('_LANGUAGEFILES_HUNGARIAN',					'я┐╜╧еєемеъб╝я┐╜я┐╜ - Magyar (iso-8859-2)');
-define('_LANGUAGEFILES_ITALIANO',					'я┐╜я┐╜я┐╜я┐╜я┐╜ъевя┐╜я┐╜ - Italiano (iso-8859-1)');
-define('_LANGUAGEFILES_KOREAN-EUC-KR',				'я┐╜┌╣я┐╜я┐╜ - &#54620;&#44397;&#50612; (euc-kr)');
-define('_LANGUAGEFILES_KOREAN-UTF',					'я┐╜┌╣я┐╜я┐╜ - &#54620;&#44397;&#50612; (EUC-JP)');
-define('_LANGUAGEFILES_LATVIAN',					'я┐╜я┐╜╚е╙ея┐╜я┐╜я┐╜ - Latvie&scaron;u (windows-1257)');
-define('_LANGUAGEFILES_NEDERLANDS',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ - Nederlands (iso-8859-15)');
-define('_LANGUAGEFILES_PERSIAN',					'я┐╜┌еые╖я┐╜я┐╜я┐╜я┐╜ - &#1601;&#1575;&#1585;&#1587;&#1740; (EUC-JP)');
-define('_LANGUAGEFILES_PORTUGUESE_BRAZIL',			'я┐╜╓еще╕я┐╜я┐╜-я┐╜▌ея┐╜╚ея┐╜я┐╜я┐╜я┐╜ - Portugu&ecirc;s (iso-8859-1)');
-define('_LANGUAGEFILES_RUSSIAN',					'я┐╜?я┐╜я┐╜я┐╜я┐╜ - &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; (windows-1251)');
-define('_LANGUAGEFILES_SLOVAK',						'я┐╜я┐╜я┐╜я┐╜┘ея┐╜я┐╜я┐╜я┐╜я┐╜ - Sloven&#269;ina (ISO-8859-2)');
-define('_LANGUAGEFILES_SPANISH-UTF8',				'я┐╜я┐╜я┐╜┌ея┐╜я┐╜я┐╜я┐╜ - Espa&ntilde;ol (EUC-JP)');
-define('_LANGUAGEFILES_SPANISH',					'я┐╜я┐╜я┐╜┌ея┐╜я┐╜я┐╜я┐╜ - Espa&ntilde;ol (iso-8859-1)');
+define('_LANGUAGEFILES_BULGARIAN',					'е╓еыемеъев╕ь - &#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080; (iso-8859-5)');
+define('_LANGUAGEFILES_CATALAN',					'еле┐ещеє╕ь - Catal&agrave; (iso-8859-1)');
+define('_LANGUAGEFILES_CHINESE-GBK',				'┤╩┬╬╗·├ц╣ё╕ь - &#31777;&#20307;&#23383;&#20013;&#25991; (gbk)');
+define('_LANGUAGEFILES_SIMCHINESE',					'┤╩┬╬╗·├ц╣ё╕ь - &#31777;&#20307;&#23383;&#20013;&#25991; (gb2312)');
+define('_LANGUAGEFILES_CHINESE-UTF8',				'┤╩┬╬╗·├ц╣ё╕ь - &#31777;&#20307;&#23383;&#20013;&#25991; (utf-8)');
+define('_LANGUAGEFILES_CHINESEB5',					'╚╦┬╬╗·├ц╣ё╕ь - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
+define('_LANGUAGEFILES_CHINESEB5-UTF8',				'╚╦┬╬╗·├ц╣ё╕ь - &#32321;&#20307;&#23383;&#20013;&#25991; (utf-8)');
+define('_LANGUAGEFILES_TRADITIONAL_CHINESE',		'╚╦┬╬╗·├ц╣ё╕ь - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
+define('_LANGUAGEFILES_TRADITIONAL_CHINESE-UTF-8',	'╚╦┬╬╗·├ц╣ё╕ь - &#32321;&#20307;&#23383;&#20013;&#25991; (utf-8)');
+define('_LANGUAGEFILES_CZECH',						'е┴езе│╕ь - &#268;esky (windows-1250)');
+define('_LANGUAGEFILES_FINNISH',					'е╒егеєещеєе╔╕ь - Suomi (iso-8859-1)');
+define('_LANGUAGEFILES_FRENCH',						'е╒ещеєе╣╕ь - Fran&ccedil;ais (iso-8859-1)');
+define('_LANGUAGEFILES_GALEGO',						'емеъе╖ев╕ь - Galego (iso-8859-1)');
+define('_LANGUAGEFILES_GERMAN',						'е╔еде─╕ь - Deutsch (iso-8859-1)');
+define('_LANGUAGEFILES_HUNGARIAN',					'е╧еєемеъб╝╕ь - Magyar (iso-8859-2)');
+define('_LANGUAGEFILES_ITALIANO',					'еде┐еъев╕ь - Italiano (iso-8859-1)');
+define('_LANGUAGEFILES_KOREAN-EUC-KR',				'┤┌╣ё╕ь - &#54620;&#44397;&#50612; (euc-kr)');
+define('_LANGUAGEFILES_KOREAN-UTF',					'┤┌╣ё╕ь - &#54620;&#44397;&#50612; (utf-8)');
+define('_LANGUAGEFILES_LATVIAN',					'еще╚е╙ев╕ь - Latvie&scaron;u (windows-1257)');
+define('_LANGUAGEFILES_NEDERLANDS',					'екещеєе└╕ь - Nederlands (iso-8859-15)');
+define('_LANGUAGEFILES_PERSIAN',					'е┌еые╖ев╕ь - &#1601;&#1575;&#1585;&#1587;&#1740; (utf-8)');
+define('_LANGUAGEFILES_PORTUGUESE_BRAZIL',			'е╓еще╕еы-е▌еые╚емеы╕ь - Portugu&ecirc;s (iso-8859-1)');
+define('_LANGUAGEFILES_RUSSIAN',					'еэе╖ев╕ь - &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; (windows-1251)');
+define('_LANGUAGEFILES_SLOVAK',						'е╣еэе┘енев╕ь - Sloven&#269;ina (ISO-8859-2)');
+define('_LANGUAGEFILES_SPANISH-UTF8',				'е╣е┌едеє╕ь - Espa&ntilde;ol (utf-8)');
+define('_LANGUAGEFILES_SPANISH',					'е╣е┌едеє╕ь - Espa&ntilde;ol (iso-8859-1)');
 */
 
 // </add by shizuki>
@@ -367,135 +367,135 @@ define('_LANGUAGEFILES_SPANISH',					'я┐╜я┐╜я┐╜┌ея┐╜я┐╜я┐╜я┐╜ - Espa&ntilde;ol (
  ********************************************/
 
 // START changed/added after 3.3 START
-define('_AUTOSAVEDRAFT',					'я┐╜╔ея┐╜╒ея┐╜я┐╜я┐╜┬╕я┐╜я┐╜я┐╜я┐╜');
-define('_AUTOSAVEDRAFT_LASTSAVED',			'я┐╜╟╜я┐╜я┐╜╔ея┐╜╒ея┐╜я┐╜я┐╜┬╕я┐╜я┐╜я┐╜: ');
-define('_AUTOSAVEDRAFT_NOTYETSAVED',		'я┐╜я┐╜┬╕я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_AUTOSAVEDRAFT_NOW',				'я┐╜╔ея┐╜╒ея┐╜я┐╜я┐╜┬╕');
-define('_SKIN_PARTS_SPECIAL',				'я┐╜я┐╜я┐╜┌ея┐╜я┐╜я┐╜ые╣я┐╜я┐╜я┐╜я┐╜╤бя┐╜я┐╜я┐╜');
-define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',	'я┐╜╤┐я┐╜я┐╜я┐╜╩│я┐╜я┐╜я┐╜╩╕я┐╜я┐╜╧╗╚дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',	'я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜╤бя┐╜я┐╜─дя┐╜я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',	'я┐╜я┐╜я┐╜я┐╜я┐╜╦дя┐╜я┐╜╬ея┐╜я┐╜┌ея┐╜я┐╜я┐╜ые╣я┐╜я┐╜я┐╜я┐╜╤бя┐╜я┐╜─дя┐╜я┐╜я┐╜╞дтддя┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_PLUGIN_LOAD',				'Nucleusя┐╜╬е╫еще░я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜╔мя┐╜╫д╩есе╜я┐╜├е╔дя┐╜я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╟ея┐╜я┐╜▌бя┐╜я┐╜╚дя┐╜я┐╜я┐╜╞дя┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜ыдмя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜(<a href="?action=actionlog">я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜</a>я┐╜╦╛▄║┘дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜)');
+define('_AUTOSAVEDRAFT',					'е╔еще╒е╚╩▌┬╕╛ї╢╖');
+define('_AUTOSAVEDRAFT_LASTSAVED',			'║╟╜ке╔еще╒е╚╩▌┬╕╞№╗■: ');
+define('_AUTOSAVEDRAFT_NOTYETSAVED',		'╩▌┬╕д╡дьд╞ддд▐д╗дє');
+define('_AUTOSAVEDRAFT_NOW',				'е╔еще╒е╚╩▌┬╕');
+define('_SKIN_PARTS_SPECIAL',				'е╣е┌е╖еуеые╣енеєе╤б╝е─');
+define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',	'▒╤┐Ї╗·░╩│░д╬╩╕╗·д╧╗╚дид▐д╗дє');
+define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',	'д│д╬е╣енеєе╤б╝е─дЄ║я╜№д╟днд▐д╗дє');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',	'╦▄┼Ўд╦д│д╬е╣е┌е╖еуеые╣енеєе╤б╝е─дЄ║я╜№д╖д╞дтддддд╟д╣длбй');
+define('_ERROR_PLUGIN_LOAD',				'Nucleusд╬е╫еще░едеєд╚д╖д╞╔м═╫д╩есе╜е├е╔дме╫еще░едеєд╟е╡е▌б╝е╚д╡дьд╞ддд╩дддлбве╫еще░едеєе╒ебедеыдм╕л┼Ўд┐дъд▐д╗дєбг(<a href="?action=actionlog">┤╔═¤┴р║ю═·╬Є</a>д╦╛▄║┘дмдвдъд▐д╣бг)');
 // END changed/added after 3.3 END
 
 // START changed/added after 3.22 START
-define('_SEARCHFORM_QUERY',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜яб╝я┐╜я┐╜');
-define('_ERROR_EMAIL_REQUIRED',				'я┐╜сб╝я┐╜ыевя┐╜╔еье╣я┐╜я┐╜╔мя┐╜╫д╟дя┐╜');
-define('_COMMENTFORM_MAIL',					'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╚дя┐╜URL:');
-define('_COMMENTFORM_EMAIL',				'я┐╜сб╝я┐╜ыевя┐╜╔еье╣:');
-define('_EBLOG_REQUIREDEMAIL',				'я┐╜я┐╜я┐╜я┐╜я┐╜╚╗я┐╜я┐╜╦есб╝я┐╜ыевя┐╜╔еье╣я┐╜я┐╜я┐╜╫╡сд╣я┐╜я┐╜');
-define('_ERROR_COMMENTS_SPAM',              'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╚д╧бя┐╜я┐╜я┐╜я┐╜╤ея┐╜╞ея┐╜я┐╜╚д╬╖я┐╜╠╡я┐╜я┐╜▌дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_SEARCHFORM_QUERY',					'╕б║ўенб╝еяб╝е╔');
+define('_ERROR_EMAIL_REQUIRED',				'есб╝еыеве╔еье╣дм╔м═╫д╟д╣');
+define('_COMMENTFORM_MAIL',					'двд╩д┐д╬е╡еде╚д╬URL:');
+define('_COMMENTFORM_EMAIL',				'есб╝еыеве╔еье╣:');
+define('_EBLOG_REQUIREDEMAIL',				'е│есеєе╚╗■д╦есб╝еыеве╔еье╣дЄ═╫╡сд╣ды');
+define('_ERROR_COMMENTS_SPAM',              'двд╩д┐д╬е│есеєе╚д╧бве╣е╤ере╞е╣е╚д╬╖ы▓╠╡ё╚▌д╡дьд▐д╖д┐');
 // END changed/added after 3.22 END
 
 // START changed/added after 3.15 START
 
-define('_LIST_PLUG_SUBS_NEEDUPDATE',		'я┐╜я┐╜я┐╜я┐╜╧┐я┐╜ъе╣я┐╜╚д╬ея┐╜я┐╜├е╫е╟бя┐╜я┐╜╚Оя┐╜я┐╜▄ея┐╜я┐╜я┐╜Єепея┐╜├ея┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┘ея┐╜╚╛я┐╜я┐╜я┐╜Є╣╣┐я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_DEP',					'я┐╜я┐╜┬╕я┐╜я┐╜я┐╜я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜:');
+define('_LIST_PLUG_SUBS_NEEDUPDATE',		'Ов┼╨╧┐еъе╣е╚д╬еве├е╫е╟б╝е╚Оге▄е┐еєдЄепеъе├епд╖д╞еде┘еєе╚╛Ё╩єдЄ╣╣┐╖д╖д╞дпд└д╡дд');
+define('_LIST_PLUGS_DEP',					'░═┬╕д╣дые╫еще░едеє:');
 
 // END changed/added after 3.15
 
 // START changed/added after 3.1 START
 
 // comments list per weblog
-define('_COMMENTS_BLOG',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚д╬еъе╣я┐╜я┐╜:');
-define('_NOCOMMENTS_BLOG',					'я┐╜я┐╜я┐╜я┐╜blogя┐╜╦д╧д▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜─дя┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_BLOGLIST_COMMENTS',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BLOGLIST_TT_COMMENTS',				'я┐╜я┐╜я┐╜я┐╜blogя┐╜╦д─дя┐╜я┐╜я┐╜ьд┐я┐╜я┐╜я┐╜я┐╜я┐╜╚д╬еъе╣я┐╜я┐╜');
+define('_COMMENTS_BLOG',					'е│есеєе╚д╬еъе╣е╚:');
+define('_NOCOMMENTS_BLOG',					'д│д╬blogд╦д╧д▐д└е│есеєе╚дмд─д▒дщдьд╞ддд▐д╗дє');
+define('_BLOGLIST_COMMENTS',				'е│есеєе╚');
+define('_BLOGLIST_TT_COMMENTS',				'д│д╬blogд╦д─д▒дщдьд┐е│есеєе╚д╬еъе╣е╚');
 
 
 // for use in archivetype-skinvar
-define('_ARCHIVETYPE_DAY',					'я┐╜я┐╜');
-define('_ARCHIVETYPE_MONTH',				'я┐╜я┐╜');
+define('_ARCHIVETYPE_DAY',					'╞№');
+define('_ARCHIVETYPE_MONTH',				'╖ю');
 
 // tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
-define('_ERROR_BADTICKET',					'я┐╜я┐╜я┐╜я┐╜я┐╜├е╚дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜тд╖я┐╜я┐╜я┐╜╧┤я┐╜я┐╜я┐╜┌дя┐╜╟дя┐╜');
+define('_ERROR_BADTICKET',					'е┴е▒е├е╚дм╔╘└╡бвдтд╖дпд╧┤№╕┬└┌дьд╟д╣');
 
 // cookie prefix
-define('_SETTINGS_COOKIEPREFIX',			'Cookie я┐╜╫ея┐╜╒ея┐╜я┐╜├ея┐╜я┐╜я┐╜');
+define('_SETTINGS_COOKIEPREFIX',			'Cookie е╫еье╒еге├епе╣');
 
 // account activation
-define('_ERROR_NOLOGON_NOACTIVATE',			'╟зя┐╜я┐╜я┐╜╤ея┐╜єепдя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜єбгдя┐╜я┐╜╩дя┐╜я┐╜╬е?я┐╜я┐╜я┐╜я┐╜╧╡я┐╜я┐╜─дя┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_ACTIVATE',					'╟зя┐╜┌ея┐╜я┐╜я┐╜я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜╠╡я┐╜я┐╜я┐╜я┐╜я┐╜ыддя┐╜╧┤я┐╜я┐╜я┐╜┌дя┐╜╟дя┐╜я┐╜я┐╜');
-define('_ACTIONLOG_ACTIVATIONLINK',			'╟зя┐╜я┐╜я┐╜╤ея┐╜єепдя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_MSG_ACTIVATION_SENT',				'╟зя┐╜я┐╜я┐╜╤ея┐╜єепдя┐╜сб╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_ERROR_NOLOGON_NOACTIVATE',			'╟з╛┌═╤еъеєепдЄ┴ў┐од╟днд▐д╗дєбгдвд╩д┐д╬еэе░едеєд╧╡Ў▓─д╡дьд╞ддд▐д╗дєбг');
+define('_ERROR_ACTIVATE',					'╟з╛┌енб╝д╧┬╕║▀д╖д╩дддлбв╠╡╕·длбвдвдыддд╧┤№╕┬└┌дьд╟д╣бг');
+define('_ACTIONLOG_ACTIVATIONLINK',			'╟з╛┌═╤еъеєепдм┴ў┐од╡дьд▐д╖д┐бг');
+define('_MSG_ACTIVATION_SENT',				'╟з╛┌═╤еъеєепдЄесб╝еыд╟┴ў┐од╖д▐д╖д┐бг');
 
 // activation link emails
-define('_ACTIVATE_REGISTER_MAIL',			"я┐╜я┐╜я┐╜я┐╜╦дя┐╜я┐╜я┐╜ <%memberName%>\n\n<%siteName%> (<%siteUrl%>)я┐╜╦дя┐╜я┐╜я┐╜я┐╜ыевя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜═ня┐╜я┐╜╦дя┐╜я┐╜╩дя┐╜я┐╜я┐╜╨д╩дя┐╜▐дя┐╜я┐╜я┐╜\nя┐╜я┐╜я┐╜╬ея┐╜єепдЄепея┐╜├ея┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘д├д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜\n\n\t<%activationUrl%>\n\nя┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤дя┐╜URLя┐╜я┐╜═ня┐╜я┐╜я┐╜┬дя┐╜2я┐╜я┐╜╓д╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩╣▀дя┐╜╠╡я┐╜я┐╜╦д╩дя┐╜▐дя┐╜я┐╜╬дя┐╜я┐╜я┐╜я┐╜╦╣╘д├д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜");
-define('_ACTIVATE_REGISTER_MAILTITLE',		"я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜'<%memberName%>'я┐╜╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜");
-define('_ACTIVATE_REGISTER_TITLE',			'я┐╜шджя┐╜я┐╜я┐╜я┐╜ <%memberName%>');
-define('_ACTIVATE_REGISTER_TEXT',			'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚║я┐╜я┐╜я┐╜я┐╜╧д█д▄┤я┐╜╬╗я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬е╒ея┐╜я┐╜я┐╜я┐╜я┐╜╟ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚д╬е╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜я┐╜я┐╜я┐╜ъд╖я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ACTIVATE_FORGOT_MAIL',				"я┐╜я┐╜я┐╜я┐╜╦дя┐╜я┐╜я┐╜ <%memberName%>\n\nя┐╜я┐╜я┐╜╬ея┐╜єепдя┐╜я┐╜щбвя┐╜я┐╜я┐╜я┐╜<%siteName%> (<%siteUrl%>)я┐╜╦дя┐╜я┐╜я┐╜я┐╜ы┐╖я┐╜я┐╜я┐╜я┐╜я┐╜╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜я┐╜я┐╜я┐╜ъд╣я┐╜ыд│я┐╜╚дя┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜\n\n\t<%activationUrl%>\n\nя┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤дя┐╜URLя┐╜я┐╜═ня┐╜я┐╜я┐╜┬дя┐╜2я┐╜я┐╜╓д╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩╣▀дя┐╜╠╡я┐╜я┐╜╦д╩дя┐╜▐дя┐╜я┐╜╬дя┐╜я┐╜я┐╜я┐╜╦╣╘д├д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜");
-define('_ACTIVATE_FORGOT_MAILTITLE',		"я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜'<%memberName%>'я┐╜╬║я┐╜╟зя┐╜я┐╜");
-define('_ACTIVATE_FORGOT_TITLE',			'я┐╜шджя┐╜я┐╜я┐╜я┐╜ <%memberName%>');
-define('_ACTIVATE_FORGOT_TEXT',				'я┐╜я┐╜я┐╜╬е╒ея┐╜я┐╜я┐╜я┐╜я┐╜╟┐я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ACTIVATE_CHANGE_MAIL',				"я┐╜я┐╜я┐╜я┐╜╦дя┐╜я┐╜я┐╜ <%memberName%>\n\nя┐╜сб╝я┐╜ыевя┐╜╔еье╣я┐╜я┐╜я┐╜╤╣я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜\n\n<%siteName%> (<%siteUrl%>)я┐╜╦дя┐╜я┐╜я┐╜я┐╜ыевя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜╟зя┐╜┌дя┐╜я┐╜я┐╜╔мя┐╜╫дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜\nя┐╜я┐╜я┐╜╬ея┐╜єепдЄепея┐╜├ея┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘д├д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜\n\n\t<%activationUrl%>\n\nя┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤дя┐╜URLя┐╜я┐╜═ня┐╜я┐╜я┐╜┬дя┐╜2я┐╜я┐╜╓д╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩╣▀дя┐╜╠╡я┐╜я┐╜╦д╩дя┐╜▐дя┐╜я┐╜╬дя┐╜я┐╜я┐╜я┐╜╦╣╘д├д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜");
-define('_ACTIVATE_CHANGE_MAILTITLE',		"я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜'<%memberName%>'я┐╜╬║я┐╜╟зя┐╜я┐╜");
-define('_ACTIVATE_CHANGE_TITLE',			'я┐╜шджя┐╜я┐╜я┐╜я┐╜ <%memberName%>');
-define('_ACTIVATE_CHANGE_TEXT',				'я┐╜сб╝я┐╜ыевя┐╜╔еье╣я┐╜я┐╜я┐╜╤╣я┐╜я┐╜я┐╜я┐╜я┐╜╟зя┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ACTIVATE_SUCCESS_TITLE',			'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ACTIVATE_SUCCESS_TEXT',			'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_MEMBERS_SETPWD',					'я┐╜╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜я┐╜я┐╜я┐╜ъд╣я┐╜я┐╜');
-define('_MEMBERS_SETPWD_BTN',				'я┐╜╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_QMENU_ACTIVATE',					'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_QMENU_ACTIVATE_TEXT',				'<p>я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬╗я┐╜я┐╜я┐╜я┐╜╨бя┐╜<a href="index.php?action=showlogin">я┐╜?я┐╜я┐╜я┐╜я┐╜</a>я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤д╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜</p>');
+define('_ACTIVATE_REGISTER_MAIL',			"д│дєд╦д┴д╧ <%memberName%>\n\n<%siteName%> (<%siteUrl%>)д╦дкд▒дыевележеєе╚дЄ═н╕·д╦д╖д╩д▒дьд╨д╩дъд▐д╗дєбг\n▓╝д╬еъеєепдЄепеъе├епд╖д╞евепе╞еге┘б╝е╖ечеєдЄ╣╘д├д╞дпд└д╡ддбгбз\n\n\t<%activationUrl%>\n\nевепе╞еге┘б╝е╖ечеє═╤д╬URLд╬═н╕·┤№╕┬д╧2╞№┤╓д╟д╣бгд╜дь░╩╣▀д╧╠╡╕·д╦д╩дъд▐д╣д╬д╟┴сдсд╦╣╘д├д╞дпд└д╡ддбг");
+define('_ACTIVATE_REGISTER_MAILTITLE',		"евележеєе╚'<%memberName%>'д╬евепе╞еге┘б╝е╖ечеє");
+define('_ACTIVATE_REGISTER_TITLE',			'дшджд│д╜ <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',			'евележеєе╚║ю└од╧д█д▄┤░╬╗д╖д▐д╖д┐бг▓╝д╬е╒ейб╝ерд╟евележеєе╚д╬е╤е╣еяб╝е╔дЄ└▀─ъд╖д╞дпд└д╡ддбг');
+define('_ACTIVATE_FORGOT_MAIL',				"д│дєд╦д┴д╧ <%memberName%>\n\n▓╝д╬еъеєепдлдщбвд│д╬<%siteName%> (<%siteUrl%>)д╦дкд▒ды┐╖д╖дде╤е╣еяб╝е╔дЄ└▀─ъд╣дыд│д╚дмд╟днд▐д╣бг\n\n\t<%activationUrl%>\n\nевепе╞еге┘б╝е╖ечеє═╤д╬URLд╬═н╕·┤№╕┬д╧2╞№┤╓д╟д╣бгд╜дь░╩╣▀д╧╠╡╕·д╦д╩дъд▐д╣д╬д╟┴сдсд╦╣╘д├д╞дпд└д╡ддбг");
+define('_ACTIVATE_FORGOT_MAILTITLE',		"евележеєе╚'<%memberName%>'д╬║╞╟з╛┌");
+define('_ACTIVATE_FORGOT_TITLE',			'дшджд│д╜ <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',				'▓╝д╬е╒ейб╝ерд╟┐╖д╖дде╤е╣еяб╝е╔дм└▀─ъд╟днд▐д╣бг');
+define('_ACTIVATE_CHANGE_MAIL',				"д│дєд╦д┴д╧ <%memberName%>\n\nесб╝еыеве╔еье╣дм╩╤╣╣д╡дьд▐д╖д┐бг\n\n<%siteName%> (<%siteUrl%>)д╦дкд▒дыевележеєе╚дЄ║╞╟з╛┌д╣ды╔м═╫дмдвдъд▐д╣бг\n▓╝д╬еъеєепдЄепеъе├епд╖д╞евепе╞еге┘б╝е╖ечеєдЄ╣╘д├д╞дпд└д╡ддбгбз\n\n\t<%activationUrl%>\n\nевепе╞еге┘б╝е╖ечеє═╤д╬URLд╬═н╕·┤№╕┬д╧2╞№┤╓д╟д╣бгд╜дь░╩╣▀д╧╠╡╕·д╦д╩дъд▐д╣д╬д╟┴сдсд╦╣╘д├д╞дпд└д╡ддбг");
+define('_ACTIVATE_CHANGE_MAILTITLE',		"евележеєе╚'<%memberName%>'д╬║╞╟з╛┌");
+define('_ACTIVATE_CHANGE_TITLE',			'дшджд│д╜ <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',				'есб╝еыеве╔еье╣д╬╩╤╣╣дм│╬╟зд╡дьд▐д╖д┐бг');
+define('_ACTIVATE_SUCCESS_TITLE',			'евепе╞еге┘б╝е╖ечеєд╦└о╕∙д╖д▐д╖д┐');
+define('_ACTIVATE_SUCCESS_TEXT',			'евепе╞еге┘б╝е╖ечеєд╦└о╕∙д╖д▐д╖д┐бг');
+define('_MEMBERS_SETPWD',					'е╤е╣еяб╝е╔дЄ└▀─ъд╣ды');
+define('_MEMBERS_SETPWD_BTN',				'е╤е╣еяб╝е╔дЄ└▀─ъ');
+define('_QMENU_ACTIVATE',					'евепе╞еге┘б╝е╖ечеє');
+define('_QMENU_ACTIVATE_TEXT',				'<p>евепе╞еге┘б╝е╖ечеєдЄ┤░╬╗д╣дьд╨бв<a href="index.php?action=showlogin">еэе░едеє</a>д╖д╞длдщ═°═╤д╟днд▐д╣бг</p>');
 
-define('_PLUGS_BTN_UPDATE',					'я┐╜я┐╜╧┐я┐╜ъе╣я┐╜╚д╬ея┐╜я┐╜├е╫е╟бя┐╜я┐╜я┐╜');
+define('_PLUGS_BTN_UPDATE',					'┼╨╧┐еъе╣е╚д╬еве├е╫е╟б╝е╚');
 
 // global settings
-define('_SETTINGS_JSTOOLBAR',				'Javascriptя┐╜─бя┐╜я┐╜я┐╜╨бя┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SETTINGS_JSTOOLBAR_FULL',			'я┐╜╒еыбжя┐╜─бя┐╜я┐╜я┐╜╨бя┐╜(IE)');
-define('_SETTINGS_JSTOOLBAR_SIMPLE',		'я┐╜я┐╜я┐╜я┐╜╫еыбжя┐╜─бя┐╜я┐╜я┐╜╨бя┐╜(IEя┐╜╩│я┐╜)');
-define('_SETTINGS_JSTOOLBAR_NONE',			'я┐╜─бя┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜╚дя┐╜╩дя┐╜');
-define('_SETTINGS_URLMODE_HELP',			'(я┐╜я┐╜я┐╜═бя┐╜<a href="documentation/tips.html#searchengines-fancyurls">FancyURLя┐╜я┐╜═ня┐╜я┐╜╦дя┐╜я┐╜я┐╜я┐╜я┐╜╦б</a>)');
+define('_SETTINGS_JSTOOLBAR',				'Javascriptе─б╝еые╨б╝д╬е╣е┐едеы');
+define('_SETTINGS_JSTOOLBAR_FULL',			'е╒еыбже─б╝еые╨б╝(IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE',		'е╖еєе╫еыбже─б╝еые╨б╝(IE░╩│░)');
+define('_SETTINGS_JSTOOLBAR_NONE',			'е─б╝еые╨б╝дЄ╗╚дяд╩дд');
+define('_SETTINGS_URLMODE_HELP',			'(╗▓╣═бз<a href="documentation/tips.html#searchengines-fancyurls">FancyURLдЄ═н╕·д╦д╣ды╩¤╦б</a>)');
 
 // extra plugin settings part when editing categories/members/blogs/...
-define('_PLUGINS_EXTRA',					'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╦дя┐╜я┐╜я┐╜╔▓я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_PLUGINS_EXTRA',					'е╫еще░едеєд╦дшды─╔▓├└▀─ъ');
 
 // itemlist info column keys
 define('_LIST_ITEM_BLOG',					'blog:');
 define('_LIST_ITEM_CAT',					'cat:');
-define('_LIST_ITEM_AUTHOR',					'я┐╜я┐╜я┐╜:');
-define('_LIST_ITEM_DATE',					'я┐╜я┐╜я┐╜я┐╜:');
-define('_LIST_ITEM_TIME',					'я┐╜я┐╜я┐╜я┐╜:');
+define('_LIST_ITEM_AUTHOR',					'├°╝╘:');
+define('_LIST_ITEM_DATE',					'╞№╔╒:');
+define('_LIST_ITEM_TIME',					'╗■┤╓:');
 
 // indication of registered members in comments list
-define('_LIST_COMMENTS_MEMBER', 			'(я┐╜я┐╜я┐╜╨бя┐╜)');
+define('_LIST_COMMENTS_MEMBER', 			'(есеєе╨б╝)');
 
 // batch operations
-define('_BATCH_WITH_SEL',					'я┐╜я┐╜я┐╜Єд╡дьд┐я┐╜я┐╜╬дя┐╜');
-define('_BATCH_EXEC',						'я┐╜┬╣я┐╜');
+define('_BATCH_WITH_SEL',					'┴к┬Єд╡дьд┐дтд╬дЄбз');
+define('_BATCH_EXEC',						'╝┬╣╘');
 
 // quickmenu
-// Note: _USER_SETTINGS я┐╜я┐╜ _MANAGE_SETTINGS я┐╜я┐╜ 3.3 я┐╜╩╣▀бя┐╜я┐╜я┐╜я┐╜ъе╕я┐╜╩ея┐╜я┐╜╟дя┐╜
-// я┐╜╤╣я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▄╕я┐╜я┐╜╟дя┐╜╔╜я┐╜я┐╜я┐╜Єд╜д╬д▐д▐д╚дя┐╜я┐╜▐дя┐╜я┐╜я┐╜
-// я┐╜╓░я┐╜├д╞╣я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩дя┐╜я┐╜шджя┐╜я┐╜!!
-define('_QMENU_HOME',						'я┐╜я┐╜я┐╜я┐╜█бя┐╜я┐╜я┐╜');
-define('_QMENU_ADD',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜╔▓я┐╜');
-define('_QMENU_ADD_SELECT',					'- blogя┐╜я┐╜я┐╜я┐╜ -');
-define('_QMENU_USER_SETTINGS',				'я┐╜я┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_QMENU_USER_ITEMS',					'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜');
-define('_QMENU_USER_COMMENTS',				'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_QMENU_MANAGE',						'я┐╜я┐╜я┐╜я┐╜я┐╜╚┤я┐╜я┐╜я┐╜');
-define('_QMENU_MANAGE_LOG',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_QMENU_MANAGE_SETTINGS',			'я┐╜я┐╜я┐╜?я┐╜╨ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_QMENU_MANAGE_MEMBERS',				'я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_QMENU_MANAGE_NEWBLOG',				'я┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜я┐╜я┐╜');
-define('_QMENU_MANAGE_BACKUPS',				'DBя┐╜я┐╜┬╕/я┐╜я┐╜');
-define('_QMENU_MANAGE_PLUGINS',				'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_QMENU_LAYOUT',						'я┐╜ьедя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_QMENU_LAYOUT_SKINS',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘╜я┐╜');
-define('_QMENU_LAYOUT_TEMPL',				'я┐╜╞ея┐╜╫еьб╝я┐╜я┐╜я┐╜╘╜я┐╜');
-define('_QMENU_LAYOUT_IEXPORT',				'я┐╜╔╣я┐╜/я┐╜я┐╜я┐╜');
-define('_QMENU_PLUGINS',					'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜');
+// Note: _USER_SETTINGS д╚ _MANAGE_SETTINGS д╧ 3.3 ░╩╣▀бвекеъе╕е╩еы╚╟д╧
+// ╩╤╣╣д╡дьд▐д╖д┐дмбв╞№╦▄╕ь╚╟д╧╔╜╡ндЄд╜д╬д▐д▐д╚д╖д▐д╣бг
+// ┤╓░уд├д╞╣╣┐╖д╖д╩дддшджд╦!!
+define('_QMENU_HOME',						'┤╔═¤е█б╝ер');
+define('_QMENU_ADD',						'еведе╞ер─╔▓├');
+define('_QMENU_ADD_SELECT',					'- blog┴к┬Є -');
+define('_QMENU_USER_SETTINGS',				'двд╩д┐д╬└▀─ъ');
+define('_QMENU_USER_ITEMS',					'двд╩д┐д╬еведе╞ер');
+define('_QMENU_USER_COMMENTS',				'двд╩д┐д╬е│есеєе╚');
+define('_QMENU_MANAGE',						'е╡еде╚┤╔═¤');
+define('_QMENU_MANAGE_LOG',					'┤╔═¤┴р║ю═·╬Є');
+define('_QMENU_MANAGE_SETTINGS',			'е░еэб╝е╨еы└▀─ъ');
+define('_QMENU_MANAGE_MEMBERS',				'есеєе╨б╝┤╔═¤');
+define('_QMENU_MANAGE_NEWBLOG',				'┐╖╡мBlog║ю└о');
+define('_QMENU_MANAGE_BACKUPS',				'DB╩▌┬╕/╔№╕╡');
+define('_QMENU_MANAGE_PLUGINS',				'е╫еще░едеє┤╔═¤');
+define('_QMENU_LAYOUT',						'еьедевеже╚└▀─ъ');
+define('_QMENU_LAYOUT_SKINS',				'е╣енеє╩╘╜╕');
+define('_QMENU_LAYOUT_TEMPL',				'е╞еєе╫еьб╝е╚╩╘╜╕');
+define('_QMENU_LAYOUT_IEXPORT',				'╞╔╣■/╜ё╜╨');
+define('_QMENU_PLUGINS',					'е╫еще░едеє');
 
 // quickmenu on logon screen
-define('_QMENU_INTRO',						'╞│я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_QMENU_INTRO_TEXT',					'<p>я┐╜я┐╜я┐╜я┐╜я┐╜╧ея┐╜я┐╜я┐╜я┐╜╓ея┐╜я┐╜я┐╜я┐╜╚д╬┤я┐╜я┐╜я┐╜я┐╜╘дя┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜─┤я┐╜я┐╜я┐╜╞ербвя┐╜я┐╜Nucleus CMSя┐╜╫д╬е?я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╠д╟дя┐╜я┐╜я┐╜</p><p>я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜├д╞дя┐╜я┐╜я┐╜╨е?я┐╜я┐╜я┐╜єд╖д╞┐я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜</p>');
+define('_QMENU_INTRO',						'╞│╞■емеде╔');
+define('_QMENU_INTRO_TEXT',					'<p>д│д│д╧ежезе╓е╡еде╚д╬┤╔═¤дЄ╣╘дже│еєе╞еєе─┤╔═¤е╖е╣е╞ербвб╓Nucleus CMSб╫д╬еэе░едеє▓ш╠╠д╟д╣бг</p><p>евележеєе╚дЄ╗¤д├д╞дддьд╨еэе░едеєд╖д╞┐╖д╖дд╡н╗Ўд╬┼ъ╣╞дмд╟днд▐д╣бг</p>');
 
 // helppages for plugins
-define('_ERROR_PLUGNOHELPFILE',				'я┐╜я┐╜я┐╜╬е╫еще░я┐╜я┐╜я┐╜я┐╜я┐╜╤д╬е╪ея┐╜╫е╒ея┐╜я┐╜я┐╜я┐╜ыдмя┐╜я┐╜я┐╜─дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_PLUGS_HELP_TITLE',					'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╬е╪ея┐╜╫е┌бя┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_HELP', 					'я┐╜╪ея┐╜я┐╜');
+define('_ERROR_PLUGNOHELPFILE',				'д│д╬е╫еще░едеє═╤д╬е╪еые╫е╒ебедеыдм╕лд─длдъд▐д╗дє');
+define('_PLUGS_HELP_TITLE',					'е╫еще░едеєд╬е╪еые╫е┌б╝е╕');
+define('_LIST_PLUGS_HELP', 					'е╪еые╫');
 
 
 // END changed/started after 3.1
@@ -503,193 +503,193 @@ define('_LIST_PLUGS_HELP', 					'я┐╜╪ея┐╜я┐╜');
 // START changed/added after v2.5beta START
 
 // general settings (security)
-define('_SETTINGS_EXTAUTH',					'я┐╜я┐╜я┐╜я┐╜╟зя┐╜┌дя┐╜═ня┐╜я┐╜');
-define('_WARNING_EXTAUTH',					'я┐╜┘╣я┐╜:╔мя┐╜╫д╩╗я┐╜я┐╜╩│я┐╜я┐╜я┐╜═ня┐╜я┐╜╦дя┐╜я┐╜╩дя┐╜');
+define('_SETTINGS_EXTAUTH',					'│░╔Ї╟з╛┌д╬═н╕·▓╜');
+define('_WARNING_EXTAUTH',					'╖┘╣Ё:╔м═╫д╩╗■░╩│░д╧═н╕·д╦д╖д╩дд');
 
 // member profile
-define('_MEMBERS_BYPASS',					'я┐╜я┐╜я┐╜я┐╜╟зя┐╜┌дя┐╜я┐╜я┐╜╤дя┐╜я┐╜я┐╜');
+define('_MEMBERS_BYPASS',					'│░╔Ї╟з╛┌дЄ╗╚═╤д╣ды');
 
 // 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
-define('_EBLOG_SEARCH',						'<em>я┐╜я┐╜я┐╜</em>я┐╜я┐╜я┐╜я┐╜я┐╜╨╛▌д╦дя┐╜я┐╜я┐╜');
+define('_EBLOG_SEARCH',						'<em>╛яд╦</em>╕б║ў┬╨╛▌д╦д╣ды');
 
 // END changed/added after v2.5beta
 
 // START introduced after v2.0 START
 
 // media library
-define('_MEDIA_VIEW',						'╔╜я┐╜я┐╜');
-define('_MEDIA_VIEW_TT',					'я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╔╜я┐╜я┐╜ (я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜)');
-define('_MEDIA_FILTER_APPLY',				'я┐╜╒ея┐╜я┐╜ые┐я┐╜я┐╜┼мя┐╜я┐╜');
-define('_MEDIA_FILTER_LABEL',				'я┐╜╒ея┐╜я┐╜ые┐я┐╜я┐╜: ');
-define('_MEDIA_UPLOAD_TO',					'я┐╜я┐╜я┐╜├е╫е?я┐╜я┐╜я┐╜я┐╜...');
-define('_MEDIA_UPLOAD_NEW',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├е╫е?я┐╜я┐╜...');
-define('_MEDIA_COLLECTION_SELECT',			'я┐╜я┐╜я┐╜я┐╜');
-define('_MEDIA_COLLECTION_TT',				'я┐╜я┐╜я┐╜╬ея┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜┌дя┐╜я┐╜╪дя┐╜');
-define('_MEDIA_COLLECTION_LABEL',			'я┐╜я┐╜я┐╜▀д╬ея┐╜я┐╜ьепя┐╜я┐╜я┐╜я┐╜я┐╜: ');
+define('_MEDIA_VIEW',						'╔╜╝и');
+define('_MEDIA_VIEW_TT',					'е╒ебедеы╔╜╝и (┐╖д╖ддежегеєе╔еждм│лднд▐д╣)');
+define('_MEDIA_FILTER_APPLY',				'е╒егеые┐б╝┼м═╤');
+define('_MEDIA_FILTER_LABEL',				'е╒егеые┐б╝: ');
+define('_MEDIA_UPLOAD_TO',					'еве├е╫еэб╝е╔└ш...');
+define('_MEDIA_UPLOAD_NEW',					'┐╖╡меве├е╫еэб╝е╔...');
+define('_MEDIA_COLLECTION_SELECT',			'┴к┬Є');
+define('_MEDIA_COLLECTION_TT',				'д│д╬еле╞е┤еъб╝д╦└┌дъ┬╪ди');
+define('_MEDIA_COLLECTION_LABEL',			'╕╜║▀д╬е│еьепе╖ечеє: ');
 
 // tooltips on toolbar
-define('_ADD_ALIGNLEFT_TT',					'я┐╜я┐╜я┐╜я┐╜');
-define('_ADD_ALIGNRIGHT_TT',				'я┐╜я┐╜я┐╜я┐╜');
-define('_ADD_ALIGNCENTER_TT',				'я┐╜я┐╜я┐╜я┐╜');
+define('_ADD_ALIGNLEFT_TT',					'║╕┤єд╗');
+define('_ADD_ALIGNRIGHT_TT',				'▒ж┤єд╗');
+define('_ADD_ALIGNCENTER_TT',				'├ц▒√┤єд╗');
 
 
 // generic upload failure
-define('_ERROR_UPLOADFAILED',				'я┐╜я┐╜я┐╜├е╫е?я┐╜╔д╦╝я┐╜я┐╜╘дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_ERROR_UPLOADFAILED',				'еве├е╫еэб╝е╔д╦╝║╟╘д╖д▐д╖д┐');
 
 // END introduced after v2.0 END
 
 // START introduced after v1.5 START
 
 // posting to the past/edit timestamps
-define('_EBLOG_ALLOWPASTPOSTING',			'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜─дя┐╜я┐╜я┐╜');
-define('_ADD_CHANGEDATE',					'я┐╜я┐╜я┐╜я┐╜я┐╜ре╣я┐╜я┐╜я┐╜я┐╜╫дЄ╣╣┐я┐╜');
-define('_BMLET_CHANGEDATE',					'я┐╜я┐╜я┐╜я┐╜я┐╜ре╣я┐╜я┐╜я┐╜я┐╜╫дЄ╣╣┐я┐╜');
+define('_EBLOG_ALLOWPASTPOSTING',			'▓с╡юд╬╞№╗■д╟д╬┼ъ╣╞дЄ╡Ў▓─д╣ды');
+define('_ADD_CHANGEDATE',					'е┐едере╣е┐еєе╫дЄ╣╣┐╖');
+define('_BMLET_CHANGEDATE',					'е┐едере╣е┐еєе╫дЄ╣╣┐╖');
 
 // skin import/export
-define('_OVERVIEW_SKINIMPORT',				'я┐╜╔╣я┐╜/я┐╜я┐╜я┐╜');
+define('_OVERVIEW_SKINIMPORT',				'╞╔╣■/╜ё╜╨');
 
 // skin settings
-define('_PARSER_INCMODE_NORMAL',			'я┐╜╬бя┐╜я┐╜▐ея┐╜');
-define('_PARSER_INCMODE_SKINDIR',			'skindirя┐╜я┐╜╚дя┐╜');
-define('_SKIN_INCLUDE_MODE',				'Includeя┐╜тб╝я┐╜я┐╜');
-define('_SKIN_INCLUDE_PREFIX',				'Includeя┐╜╫ея┐╜╒ея┐╜я┐╜├ея┐╜я┐╜я┐╜');
+define('_PARSER_INCMODE_NORMAL',			'е╬б╝е▐еы');
+define('_PARSER_INCMODE_SKINDIR',			'skindirдЄ╗╚дж');
+define('_SKIN_INCLUDE_MODE',				'Includeетб╝е╔');
+define('_SKIN_INCLUDE_PREFIX',				'Includeе╫еъе╒еге├епе╣');
 
 // global settings
-define('_SETTINGS_BASESKIN',				'я┐╜я┐╜я┐╜▄д╬ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SETTINGS_SKINSURL',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜URL');
-define('_SETTINGS_ACTIONSURL',				'я┐╜я┐╜http://я┐╜╫дя┐╜я┐╜я┐╜╧д▐дя┐╜ action.php я┐╜я┐╜URL');
+define('_SETTINGS_BASESKIN',				'┤Ё╦▄д╬е╣енеє');
+define('_SETTINGS_SKINSURL',				'е╣енеєURL');
+define('_SETTINGS_ACTIONSURL',				'б╓http://б╫длдщ╗╧д▐ды action.php д╬URL');
 
 // category moves (batch)
-define('_ERROR_MOVEDEFCATEGORY',			'я┐╜╟е╒ея┐╜я┐╜я┐╜╚д╬ея┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜╧░я┐╜╞░я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_MOVETOSELF',					'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜╞░я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜ (я┐╜я┐╜╞░я┐╜я┐╜я┐╜Blogя┐╜я┐╜я┐╜я┐╜╞░я┐╜я┐╜я┐╜я┐╜╞▒я┐╜я┐╜я┐╜╟дя┐╜)');
-define('_MOVECAT_TITLE',					'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜╞░я┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜я┐╜я┐╜я┐╜Єд╖д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_MOVECAT_BTN',						'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜╞░');
+define('_ERROR_MOVEDEFCATEGORY',			'е╟е╒ейеые╚д╬еле╞е┤еъб╝д╧░▄╞░д╟днд▐д╗дє');
+define('_ERROR_MOVETOSELF',					'еле╞е┤еъб╝дЄ░▄╞░д╟днд▐д╗дє (░▄╞░└шд╬Blogдм░▄╞░╕╡д╚╞▒д╕д╟д╣)');
+define('_MOVECAT_TITLE',					'еле╞е┤еъб╝дЄ░▄╞░д╣дыBlogдЄ┴к┬Єд╖д╞дпд└д╡дд');
+define('_MOVECAT_BTN',						'еле╞е┤еъб╝дЄ░▄╞░');
 
 // URLMode setting
-define('_SETTINGS_URLMODE',					'URL я┐╜тб╝я┐╜я┐╜');
+define('_SETTINGS_URLMODE',					'URL етб╝е╔');
 define('_SETTINGS_URLMODE_NORMAL',			'Normal');
 define('_SETTINGS_URLMODE_PATHINFO',		'Fancy');
 
 // Batch operations
-define('_BATCH_NOSELECTION',				'я┐╜╨╛▌дя┐╜я┐╜я┐╜я┐╜Єд╡дя┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_BATCH_ITEMS',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ерббя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨дя┐╜я┐╜╞д╬е╨е├ея┐╜я┐╜я┐╜я┐╜');
-define('_BATCH_CATEGORIES',					'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨дя┐╜я┐╜╞д╬е╨е├ея┐╜я┐╜я┐╜я┐╜');
-define('_BATCH_MEMBERS',					'я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨дя┐╜я┐╜╞д╬е╨е├ея┐╜я┐╜я┐╜я┐╜');
-define('_BATCH_TEAM',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜╨дя┐╜я┐╜╞д╬е╨е├ея┐╜я┐╜я┐╜я┐╜');
-define('_BATCH_COMMENTS',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨дя┐╜я┐╜╞д╬е╨е├ея┐╜я┐╜я┐╜я┐╜');
-define('_BATCH_UNKNOWN',					'╠дя┐╜╬д╬е╨е├ея┐╜я┐╜я┐╜я┐╜: ');
-define('_BATCH_EXECUTING',					'я┐╜┬╣я┐╜я┐╜я┐╜');
-define('_BATCH_ONCATEGORY',					'- я┐╜╨╛▌ея┐╜я┐╜╞ея┐╜я┐╜ъб╝');
-define('_BATCH_ONITEM',						'- я┐╜╨╛▌ея┐╜я┐╜я┐╜я┐╜╞ея┐╜');
-define('_BATCH_ONCOMMENT',					'- я┐╜╨╛▌ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BATCH_ONMEMBER',					'- я┐╜╨╛▌ея┐╜я┐╜╨бя┐╜');
-define('_BATCH_ONTEAM',						'- я┐╜╨╛▌ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨бя┐╜');
-define('_BATCH_SUCCESS',					'я┐╜я┐╜я┐╜я┐╜!');
-define('_BATCH_DONE',						'я┐╜я┐╜╬╗!');
-define('_BATCH_DELETE_CONFIRM',				'я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜╬│я┐╜╟з');
-define('_BATCH_DELETE_CONFIRM_BTN',			'я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜╬│я┐╜╟з');
-define('_BATCH_SELECTALL',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BATCH_DESELECTALL',				'я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_BATCH_NOSELECTION',				'┬╨╛▌дм┴к┬Єд╡дьд╞ддд▐д╗дє');
+define('_BATCH_ITEMS',						'еведе╞ерббббббд╦┬╨д╖д╞д╬е╨е├е┴┴р║ю');
+define('_BATCH_CATEGORIES',					'еле╞е┤еъб╝ббббд╦┬╨д╖д╞д╬е╨е├е┴┴р║ю');
+define('_BATCH_MEMBERS',					'есеєе╨б╝ббббббд╦┬╨д╖д╞д╬е╨е├е┴┴р║ю');
+define('_BATCH_TEAM',						'е┴б╝ересеєе╨б╝д╦┬╨д╖д╞д╬е╨е├е┴┴р║ю');
+define('_BATCH_COMMENTS',					'е│есеєе╚ббббббд╦┬╨д╖д╞д╬е╨е├е┴┴р║ю');
+define('_BATCH_UNKNOWN',					'╠д├╬д╬е╨е├е┴┴р║ю: ');
+define('_BATCH_EXECUTING',					'╝┬╣╘├ц');
+define('_BATCH_ONCATEGORY',					'- ┬╨╛▌еле╞е┤еъб╝');
+define('_BATCH_ONITEM',						'- ┬╨╛▌еведе╞ер');
+define('_BATCH_ONCOMMENT',					'- ┬╨╛▌е│есеєе╚');
+define('_BATCH_ONMEMBER',					'- ┬╨╛▌есеєе╨б╝');
+define('_BATCH_ONTEAM',						'- ┬╨╛▌е┴б╝ересеєе╨б╝');
+define('_BATCH_SUCCESS',					'└о╕∙!');
+define('_BATCH_DONE',						'╜к╬╗!');
+define('_BATCH_DELETE_CONFIRM',				'е╨е├е┴║я╜№д╬│╬╟з');
+define('_BATCH_DELETE_CONFIRM_BTN',			'е╨е├е┴║я╜№д╬│╬╟з');
+define('_BATCH_SELECTALL',					'┴┤д╞┴к┬Є');
+define('_BATCH_DESELECTALL',				'┴┤д╞д╬┴к┬ЄдЄ▓Є╜№');
 
 // batch operations: options in dropdowns
-define('_BATCH_ITEM_DELETE',				'я┐╜я┐╜я┐╜');
-define('_BATCH_ITEM_MOVE',					'я┐╜я┐╜╞░');
-define('_BATCH_MEMBER_DELETE',				'я┐╜я┐╜я┐╜');
-define('_BATCH_MEMBER_SET_ADM',				'я┐╜я┐╜я┐╜я┐╜╘╕я┐╜я┐╜┬дя┐╜═┐я┐╜я┐╜я┐╜я┐╜');
-define('_BATCH_MEMBER_UNSET_ADM',			'я┐╜я┐╜я┐╜я┐╜╘╕я┐╜я┐╜┬дЄ│░дя┐╜');
-define('_BATCH_TEAM_DELETE',				'я┐╜я┐╜я┐╜я┐╜я┐╜рдля┐╜я┐╜я┐╜я┐╜');
-define('_BATCH_TEAM_SET_ADM',				'я┐╜я┐╜я┐╜я┐╜╘╕я┐╜я┐╜┬дя┐╜═┐я┐╜я┐╜я┐╜я┐╜');
-define('_BATCH_TEAM_UNSET_ADM',				'я┐╜я┐╜я┐╜я┐╜╘╕я┐╜я┐╜┬дЄ│░дя┐╜');
-define('_BATCH_CAT_DELETE',					'я┐╜я┐╜я┐╜');
-define('_BATCH_CAT_MOVE',					'┬╛я┐╜я┐╜Blogя┐╜╦░я┐╜╞░');
-define('_BATCH_COMMENT_DELETE',				'я┐╜я┐╜я┐╜');
+define('_BATCH_ITEM_DELETE',				'║я╜№');
+define('_BATCH_ITEM_MOVE',					'░▄╞░');
+define('_BATCH_MEMBER_DELETE',				'║я╜№');
+define('_BATCH_MEMBER_SET_ADM',				'┤╔═¤╝╘╕в╕┬дЄ═┐диды');
+define('_BATCH_MEMBER_UNSET_ADM',			'┤╔═¤╝╘╕в╕┬дЄ│░д╣');
+define('_BATCH_TEAM_DELETE',				'е┴б╝ердлдщ║я╜№');
+define('_BATCH_TEAM_SET_ADM',				'┤╔═¤╝╘╕в╕┬дЄ═┐диды');
+define('_BATCH_TEAM_UNSET_ADM',				'┤╔═¤╝╘╕в╕┬дЄ│░д╣');
+define('_BATCH_CAT_DELETE',					'║я╜№');
+define('_BATCH_CAT_MOVE',					'┬╛д╬Blogд╦░▄╞░');
+define('_BATCH_COMMENT_DELETE',				'║я╜№');
 
 // itemlist: Add new item...
-define('_ITEMLIST_ADDNEW',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╔▓я┐╜...');
-define('_ADD_PLUGIN_EXTRAS',				'я┐╜╔▓├е╫еще░я┐╜я┐╜я┐╜єеке╫ея┐╜я┐╜я┐╜я┐╜');
+define('_ITEMLIST_ADDNEW',					'┐╖д╖ддеведе╞ерд╬─╔▓├...');
+define('_ADD_PLUGIN_EXTRAS',				'─╔▓├е╫еще░едеєеке╫е╖ечеє');
 
 // errors
-define('_ERROR_CATCREATEFAIL',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_NUCLEUSVERSIONREQ',			'я┐╜я┐╜я┐╜╬е╫еще░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤дя┐╜я┐╜я┐╜╦д╧бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ Nucleus я┐╜я┐╜╔мя┐╜╫д╟дя┐╜: ');
+define('_ERROR_CATCREATEFAIL',				'┐╖д╖дделе╞е┤еъб╝дЄ║ю└од╟днд▐д╗дє');
+define('_ERROR_NUCLEUSVERSIONREQ',			'д│д╬е╫еще░едеєдЄ╗╚═╤д╣дыд╦д╧бв┐╖д╖дде╨б╝е╕ечеєд╬ Nucleus дм╔м═╫д╟д╣: ');
 
 // backlinks
-define('_BACK_TO_BLOGSETTINGS',				'Blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_BACK_TO_BLOGSETTINGS',				'Blogд╬└▀─ъд╦╠сды');
 
 // skin import export
-define('_SKINIE_TITLE_IMPORT',				'я┐╜╔д▀╣я┐╜я┐╜я┐╜');
-define('_SKINIE_TITLE_EXPORT',				'я┐╜ёдн╜╨дя┐╜');
-define('_SKINIE_BTN_IMPORT',				'я┐╜╔д▀╣я┐╜я┐╜я┐╜');
-define('_SKINIE_BTN_EXPORT',				'я┐╜я┐╜я┐╜Єд╡дьд┐я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜/я┐╜╞ея┐╜╫еьб╝я┐╜╚дя┐╜ёдн╜╨дя┐╜');
-define('_SKINIE_LOCAL',						'я┐╜?я┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜ыдля┐╜я┐╜я┐╜╔д▀╣я┐╜я┐╜я┐╜:');
-define('_SKINIE_NOCANDIDATES',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟ея┐╜я┐╜ьепя┐╜╚ея┐╜я┐╜я┐╜я┐╜я┐╜╔д▀╣я┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜ыдмя┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_SKINIE_FROMURL',					'URLя┐╜я┐╜я┐╜я┐╜ъд╖я┐╜я┐╜я┐╜╔д▀╣я┐╜я┐╜я┐╜:');
-define('_SKINIE_EXPORT_INTRO',				'я┐╜ёдн╜╨дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜/я┐╜╞ея┐╜╫еьб╝я┐╜╚дя┐╜╩▓я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Єд╖д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SKINIE_EXPORT_SKINS',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SKINIE_EXPORT_TEMPLATES',			'я┐╜╞ея┐╜╫еьб╝я┐╜я┐╜');
-define('_SKINIE_EXPORT_EXTRA',				'я┐╜╔▓├╛я┐╜я┐╜я┐╜╩╜ёдн╜╨дя┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔▓├дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜═бя┐╜');
-define('_SKINIE_CONFIRM_OVERWRITE',			'я┐╜я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜ые╣я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ёдндя┐╜я┐╜я┐╜ (я┐╜╓д─дя┐╜я┐╜ые╣я┐╜я┐╜я┐╜я┐╜╠╛я┐╜Є╗▓╛я┐╜)');
-define('_SKINIE_CONFIRM_IMPORT',			'я┐╜╧дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔д▀╣я┐╜я┐╜▀д▐дя┐╜');
-define('_SKINIE_CONFIRM_TITLE',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚е╞ея┐╜╫еьб╝я┐╜╚дя┐╜я┐╜╔д▀╣я┐╜я┐╜тджя┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜');
-define('_SKINIE_INFO_SKINS',				'я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜:');
-define('_SKINIE_INFO_TEMPLATES',			'я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬е╞ея┐╜╫еьб╝я┐╜я┐╜:');
-define('_SKINIE_INFO_GENERAL',				'я┐╜я┐╜я┐╜я┐╜:');
-define('_SKINIE_INFO_SKINCLASH',			'я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜╠╛я┐╜я┐╜я┐╜╓д─дя┐╜я┐╜я┐╜▐дя┐╜:');
-define('_SKINIE_INFO_TEMPLCLASH',			'я┐╜я┐╜я┐╜╬е╞ея┐╜╫еьб╝я┐╜я┐╜╠╛я┐╜я┐╜я┐╜╓д─дя┐╜я┐╜я┐╜▐дя┐╜:');
-define('_SKINIE_INFO_IMPORTEDSKINS',		'я┐╜╔д▀╣я┐╜я┐╜▐дьд┐я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜:');
-define('_SKINIE_INFO_IMPORTEDTEMPLS',		'я┐╜╔д▀╣я┐╜я┐╜▐дьд┐я┐╜╞ея┐╜╫еьб╝я┐╜я┐╜:');
-define('_SKINIE_DONE',						'я┐╜╔д▀╣я┐╜я┐╜▀┤я┐╜╬╗');
+define('_SKINIE_TITLE_IMPORT',				'╞╔д▀╣■д▀');
+define('_SKINIE_TITLE_EXPORT',				'╜ёдн╜╨д╖');
+define('_SKINIE_BTN_IMPORT',				'╞╔д▀╣■д▀');
+define('_SKINIE_BTN_EXPORT',				'┴к┬Єд╡дьд┐е╣енеє/е╞еєе╫еьб╝е╚дЄ╜ёдн╜╨д╖');
+define('_SKINIE_LOCAL',						'еэб╝елеые╒ебедеыдлдщ╞╔д▀╣■д▀:');
+define('_SKINIE_NOCANDIDATES',				'е╣енеєе╟егеьепе╚еъ╞тд╦╞╔д▀╣■дсдые╒ебедеыдмдвдъд▐д╗дє');
+define('_SKINIE_FROMURL',					'URLдЄ╗╪─ъд╖д╞╞╔д▀╣■д▀:');
+define('_SKINIE_EXPORT_INTRO',				'╜ёдн╜╨д╣е╣енеє/е╞еєе╫еьб╝е╚дЄ░╩▓╝длдщ┴к┬Єд╖д╞дпд└д╡дд');
+define('_SKINIE_EXPORT_SKINS',				'е╣енеє');
+define('_SKINIE_EXPORT_TEMPLATES',			'е╞еєе╫еьб╝е╚');
+define('_SKINIE_EXPORT_EXTRA',				'─╔▓├╛Ё╩єб╩╜ёдн╜╨д╖е╒ебедеыд╦─╔▓├д╣ды╚ў╣═б╦');
+define('_SKINIE_CONFIRM_OVERWRITE',			'┤√д╦┬╕║▀д╣дые╣енеєдЄ╛х╜ёднд╣ды (д╓д─длдые╣енеє╠╛дЄ╗▓╛╚)');
+define('_SKINIE_CONFIRM_IMPORT',			'д╧ддбвд│дьдЄ╞╔д▀╣■д▀д▐д╣');
+define('_SKINIE_CONFIRM_TITLE',				'е╣енеєд╚е╞еєе╫еьб╝е╚дЄ╞╔д▀╣■дтджд╚д╖д╞ддд▐д╣');
+define('_SKINIE_INFO_SKINS',				'е╒ебедеы╞тд╬е╣енеє:');
+define('_SKINIE_INFO_TEMPLATES',			'е╒ебедеы╞тд╬е╞еєе╫еьб╝е╚:');
+define('_SKINIE_INFO_GENERAL',				'╛Ё╩є:');
+define('_SKINIE_INFO_SKINCLASH',			'╝бд╬е╣енеє╠╛дмд╓д─длдъд▐д╣:');
+define('_SKINIE_INFO_TEMPLCLASH',			'╝бд╬е╞еєе╫еьб╝е╚╠╛дмд╓д─длдъд▐д╣:');
+define('_SKINIE_INFO_IMPORTEDSKINS',		'╞╔д▀╣■д▐дьд┐е╣енеє:');
+define('_SKINIE_INFO_IMPORTEDTEMPLS',		'╞╔д▀╣■д▐дьд┐е╞еєе╫еьб╝е╚:');
+define('_SKINIE_DONE',						'╞╔д▀╣■д▀┤░╬╗');
 
 define('_AND',								'and');
 define('_OR',								'or');
 
 // empty fields on template edit
-define('_EDITTEMPLATE_EMPTY',				'╠╡я┐╜я┐╜(я┐╜я┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜╚е╒ея┐╜я┐╜я┐╜я┐╜рдмя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜)');
+define('_EDITTEMPLATE_EMPTY',				'╠╡д╖(епеъе├епд╣дыд╚е╒ейб╝ердм│лднд▐д╣)');
 
 // skin overview list
-define('_LIST_SKINS_INCMODE',				'Includeя┐╜тб╝я┐╜я┐╜:');
-define('_LIST_SKINS_INCPREFIX',				'Includeя┐╜╫ея┐╜╒ея┐╜я┐╜├ея┐╜я┐╜я┐╜:');
-define('_LIST_SKINS_DEFINED',				'я┐╜я┐╜я┐╜я┐╜╤д▀е╤бя┐╜я┐╜я┐╜:');
+define('_LIST_SKINS_INCMODE',				'Includeетб╝е╔:');
+define('_LIST_SKINS_INCPREFIX',				'Includeе╫еъе╒еге├епе╣:');
+define('_LIST_SKINS_DEFINED',				'─ъ╡┴║╤д▀е╤б╝е─:');
 
 // backup
-define('_BACKUPS_TITLE',					'я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├ея┐╜ / я┐╜ъе╣я┐╜╚ея┐╜');
-define('_BACKUP_TITLE',						'я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├ея┐╜');
-define('_BACKUP_INTRO',						'я┐╜я┐╜я┐╜╬е▄ея┐╜я┐╜я┐╜Є▓бдя┐╜я┐╜╚бя┐╜Nucleusя┐╜я┐╜я┐╜я┐╜я┐╜╤дя┐╜я┐╜╞дя┐╜я┐╜я┐╜╟бя┐╜я┐╜я┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├е╫д╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├е╫е╒ея┐╜я┐╜я┐╜я┐╜я┐╜╧░я┐╜я┐╜я┐╜я┐╜╩╛я┐╜я┐╜я┐╜я┐╜я┐╜┬╕я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚дЄдк┤я┐╜я┐╜сд╖я┐╜▐дя┐╜я┐╜я┐╜');
-define('_BACKUP_ZIP_YES',					'я┐╜я┐╜я┐╜╠дя┐╜я┐╜я┐╜');
-define('_BACKUP_ZIP_NO',					'я┐╜я┐╜я┐╜╠дя┐╜я┐╜╩дя┐╜');
-define('_BACKUP_BTN',						'я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├е╫дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BACKUP_NOTE',						'<b style="color:#f00;">я┐╜я┐╜я┐╜:</b> я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├е╫дя┐╜я┐╜я┐╜я┐╜╬д╧е╟бя┐╜я┐╜я┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ config.php я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧е╨е├ея┐╜я┐╜я┐╜я┐╜├ея┐╜<b style="color:#f00;">я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜</b>я┐╜я┐╜');
-define('_RESTORE_TITLE',					'я┐╜ъе╣я┐╜╚ея┐╜');
-define('_RESTORE_NOTE',						'<b style="color:#f00;">я┐╜┘╣я┐╜:</b> я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├е╫дя┐╜я┐╜я┐╜╬еъе╣я┐╜╚ея┐╜я┐╜╧╕я┐╜я┐╜▀д╬е╟бя┐╜я┐╜я┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ Nucleus я┐╜╟бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜<b style="color:#f00;">я┐╜я┐╜я┐╜</b>я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜╔дя┐╜я┐╜я┐╜╒дя┐╜я┐╜╞╗я┐╜я┐╜╤дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜<br /><b style="color:#f00;">я┐╜я┐╜я┐╜:</b> я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├е╫дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ Nucleus я┐╜╬е╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ я┐╜я┐╜я┐╜▀╗я┐╜я┐╜╤дя┐╜я┐╜╞дя┐╜я┐╜я┐╜ Nucleus я┐╜╬е╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞▒я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟зя┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟д╩дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞░я┐╜юд╖я┐╜▐дя┐╜я┐╜я┐╜');
-define('_RESTORE_INTRO',					'я┐╜╩▓я┐╜я┐╜я┐╜я┐╜я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├е╫е╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩ея┐╜я┐╜я┐╜я┐╜╨д╦ея┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜я┐╜▐дя┐╜я┐╜╦дя┐╜я┐╜я┐╜"я┐╜ъе╣я┐╜╚ея┐╜"я┐╜▄ея┐╜я┐╜я┐╜Є▓бдя┐╜я┐╜╚│я┐╜я┐╜╧дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_RESTORE_IMSURE',					'я┐╜╧дя┐╜я┐╜я┐╜я┐╜╬дя┐╜я┐╜╦дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬╝┬╣╘дя┐╜╟зя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_RESTORE_BTN',						'я┐╜╒ея┐╜я┐╜я┐╜я┐╜ыдля┐╜я┐╜ъе╣я┐╜╚ея┐╜');
-define('_RESTORE_WARNING',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨е├ея┐╜я┐╜я┐╜я┐╜├е╫дя┐╜ъе╣я┐╜╚ея┐╜я┐╜я┐╜я┐╜шджя┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜ыдля┐╜я┐╜╟зя┐╜я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜я┐╜я┐╜я┐╜╦╕я┐╜я┐╜▀д╬е╨е├ея┐╜я┐╜я┐╜я┐╜├е╫дя┐╜я┐╜├д╞дя┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_BACKUP_NOTSURE',				'"я┐╜я┐╜╟з"я┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜я┐╜▄е├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜╔мя┐╜╫дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜');
-define('_RESTORE_COMPLETE',					'я┐╜ъе╣я┐╜╚ея┐╜я┐╜я┐╜╬╗');
+define('_BACKUPS_TITLE',					'е╨е├епеве├е╫ / еъе╣е╚ев');
+define('_BACKUP_TITLE',						'е╨е├епеве├е╫');
+define('_BACKUP_INTRO',						'▓╝д╬е▄е┐еєдЄ▓бд╣д╚бвNucleusдм╗╚═╤д╖д╞дддые╟б╝е┐е┘б╝е╣дЄе╨е├епеве├е╫д╟днд▐д╣бге╨е├епеве├е╫е╒ебедеыд╧░┬┴┤д╩╛ь╜ъд╦╩▌┬╕д╖д╞дкдпд│д╚дЄдк┤лдсд╖д▐д╣бг');
+define('_BACKUP_ZIP_YES',					'░╡╜╠д╣ды');
+define('_BACKUP_ZIP_NO',					'░╡╜╠д╖д╩дд');
+define('_BACKUP_BTN',						'е╨е├епеве├е╫дЄ║ю└од╣ды');
+define('_BACKUP_NOTE',						'<b style="color:#f00;">├э░╒:</b> е╨е├епеве├е╫д╡дьдыд╬д╧е╟б╝е┐е┘б╝е╣д╬╞т═╞д└д▒д╟д╣бгеве├е╫еэб╝е╔д╖д┐е╒ебедеыдф config.php ╞тд╬└▀─ъд╧е╨е├епеве├е╫<b style="color:#f00;">д╡дьд▐д╗дє</b>бг');
+define('_RESTORE_TITLE',					'еъе╣е╚ев');
+define('_RESTORE_NOTE',						'<b style="color:#f00;">╖┘╣Ё:</b> е╨е├епеве├е╫длдщд╬еъе╣е╚евд╧╕╜║▀д╬е╟б╝е┐е┘б╝е╣╞тд╬ Nucleus е╟б╝е┐дЄ┴┤д╞<b style="color:#f00;">║я╜№</b>д╖д▐д╣бк╬╔дп├э░╒д╖д╞╗╚═╤д╖д╞дпд└д╡ддбк<br /><b style="color:#f00;">├э░╒:</b> е╨е├епеве├е╫дЄ║ю└од╖д┐ Nucleus д╬е╨б╝е╕ечеєдм ╕╜║▀╗╚═╤д╖д╞ддды Nucleus д╬е╨б╝е╕ечеєд╚╞▒д╕дл│╬╟зд╖д╞дпд└д╡ддбкд╜джд╟д╩д▒дьд╨└╡д╖дп╞░║юд╖д▐д╗дєбг');
+define('_RESTORE_INTRO',					'░╩▓╝длдще╨е├епеве├е╫е╒ебедеыдЄ┴к┬Єб╩е╡б╝е╨д╦еве├е╫еэб╝е╔д╡дьд▐д╣б╦д╖д╞"еъе╣е╚ев"е▄е┐еєдЄ▓бд╣д╚│л╗╧д╖д▐д╣бг');
+define('_RESTORE_IMSURE',					'д╧ддбв│╬длд╦д│д╬┴р║юд╬╝┬╣╘дЄ╛╡╟зд╖д▐д╣бк');
+define('_RESTORE_BTN',						'е╒ебедеыдлдщеъе╣е╚ев');
+define('_RESTORE_WARNING',					'б╩└╡д╖дде╨е├епеве├е╫дЄеъе╣е╚евд╖дшджд╚д╖д╞дддыдл│╬╟зд╖бв╗╧дсды┴░д╦╕╜║▀д╬е╨е├епеве├е╫дЄ║юд├д╞дкддд╞дпд└д╡ддб╦');
+define('_ERROR_BACKUP_NOTSURE',				'"╛╡╟з"е┴езе├епе▄е├епе╣дЄе┴езе├епд╣ды╔м═╫дмдвдъд▐д╣');
+define('_RESTORE_COMPLETE',					'еъе╣е╚ев┤░╬╗');
 
 // new item notification
-define('_NOTIFY_NI_MSG',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ердмя┐╜я┐╜╞дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜:');
-define('_NOTIFY_NI_TITLE',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜!');
-define('_NOTIFY_KV_MSG',					'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜╦ея┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜╔╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜:');
-define('_NOTIFY_KV_TITLE',					'Nucleusя┐╜я┐╜я┐╜я┐╜я┐╜:');
-define('_NOTIFY_NC_MSG',					'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜╦ея┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜:');
-define('_NOTIFY_NC_TITLE',					'Nucleusя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜:');
-define('_NOTIFY_USERID',					'я┐╜цб╝я┐╜я┐╜я┐╜я┐╜ID:');
-define('_NOTIFY_USER',						'я┐╜цб╝я┐╜я┐╜я┐╜я┐╜:');
-define('_NOTIFY_COMMENT',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜:');
-define('_NOTIFY_VOTE',						'я┐╜я┐╜╔╝:');
-define('_NOTIFY_HOST',						'я┐╜█ея┐╜я┐╜я┐╜:');
-define('_NOTIFY_IP',						'IPя┐╜я┐╜я┐╜╔еье╣:');
-define('_NOTIFY_MEMBER',					'я┐╜я┐╜я┐╜╨бя┐╜:');
-define('_NOTIFY_TITLE',						'я┐╜я┐╜я┐╜я┐╜я┐╜╚ея┐╜:');
-define('_NOTIFY_CONTENTS',					'я┐╜я┐╜я┐╜я┐╜:');
+define('_NOTIFY_NI_MSG',					'┐╖д╖ддеведе╞ердм┼ъ╣╞д╡дьд▐д╖д┐:');
+define('_NOTIFY_NI_TITLE',					'┐╖д╖ддеведе╞ер!');
+define('_NOTIFY_KV_MSG',					'еведе╞ерд╦елеые▐д╬┼ъ╔╝дмдвдъд▐д╖д┐:');
+define('_NOTIFY_KV_TITLE',					'Nucleusелеые▐:');
+define('_NOTIFY_NC_MSG',					'еведе╞ерд╦е│есеєе╚дмдвдъд▐д╖д┐:');
+define('_NOTIFY_NC_TITLE',					'Nucleusе│есеєе╚:');
+define('_NOTIFY_USERID',					'ецб╝е╢б╝ID:');
+define('_NOTIFY_USER',						'ецб╝е╢б╝:');
+define('_NOTIFY_COMMENT',					'е│есеєе╚:');
+define('_NOTIFY_VOTE',						'┼ъ╔╝:');
+define('_NOTIFY_HOST',						'е█е╣е╚:');
+define('_NOTIFY_IP',						'IPеве╔еье╣:');
+define('_NOTIFY_MEMBER',					'есеєе╨б╝:');
+define('_NOTIFY_TITLE',						'е┐еде╚еы:');
+define('_NOTIFY_CONTENTS',					'╞т═╞:');
 
 // member mail message
-define('_MMAIL_MSG',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜щдвя┐╜╩дя┐╜я┐╜я┐╜я┐╜╬ея┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_MMAIL_FROMANON',					'╞┐╠╛я┐╜╬е╙ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_MMAIL_FROMNUC',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Nucleus Blog');
-define('_MMAIL_TITLE',						'я┐╜я┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜ from');
-define('_MMAIL_MAIL',						'я┐╜я┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜:');
+define('_MMAIL_MSG',						'╝бд╬╩¤длдщдвд╩д┐░╕д╬есе├е╗б╝е╕дм┴ўдщдьд╞днд▐д╖д┐');
+define('_MMAIL_FROMANON',					'╞┐╠╛д╬е╙е╕е┐б╝');
+define('_MMAIL_FROMNUC',					'┴ў┐о╕╡д╬Nucleus Blog');
+define('_MMAIL_TITLE',						'есе├е╗б╝е╕ from');
+define('_MMAIL_MAIL',						'есе├е╗б╝е╕:');
 
 // END introduced after v1.5 END
 
@@ -697,102 +697,102 @@ define('_MMAIL_MAIL',						'я┐╜я┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜:');
 // START introduced after v1.1 START
 
 // bookmarklet buttons
-define('_BMLET_ADD',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╔▓я┐╜');
-define('_BMLET_EDIT',						'я┐╜я┐╜┬╕');
-define('_BMLET_DELETE',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜╬║я┐╜я┐╜');
-define('_BMLET_BODY',						'я┐╜я┐╜╩╕');
-define('_BMLET_MORE',						'┬│я┐╜я┐╜');
-define('_BMLET_OPTIONS',					'я┐╜я┐╜я┐╜╫ея┐╜я┐╜я┐╜я┐╜');
-define('_BMLET_PREVIEW',					'я┐╜╫ея┐╜╙ехб╝');
+define('_BMLET_ADD',						'еведе╞ерд╬─╔▓├');
+define('_BMLET_EDIT',						'╩▌┬╕');
+define('_BMLET_DELETE',						'еведе╞ерд╬║я╜№');
+define('_BMLET_BODY',						'╦▄╩╕');
+define('_BMLET_MORE',						'┬│дн');
+define('_BMLET_OPTIONS',					'еке╫е╖ечеє');
+define('_BMLET_PREVIEW',					'е╫еье╙ехб╝');
 
 // used in bookmarklet
-define('_ITEM_UPDATED',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ердмя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ITEM_DELETED',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ердмя┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_ITEM_UPDATED',						'еведе╞ердм╣╣┐╖д╡дьд▐д╖д┐');
+define('_ITEM_DELETED',						'еведе╞ердм║я╜№д╡дьд▐д╖д┐');
 
 // plugins
-define('_CONFIRMTXT_PLUGIN',				'я┐╜я┐╜я┐╜╬е╫еще░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_NOSUCHPLUGIN',				'я┐╜я┐╜я┐╜ъд╡я┐╜ьд┐я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_DUPPLUGIN',					'я┐╜я┐╜я┐╜╬е╫еще░я┐╜я┐╜я┐╜я┐╜╧┤я┐╜╦ея┐╜я┐╜єе╣е╚бя┐╜я┐╜ыд╡я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜');
-define('_ERROR_PLUGFILEERROR',				'я┐╜я┐╜я┐╜ъд╡я┐╜ьд┐я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤бя┐╜я┐╜▀е├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ъд╡я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_PLUGS_NOCANDIDATES',				'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜єе╣е╚бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_CONFIRMTXT_PLUGIN',				'д│д╬е╫еще░едеєдЄ║я╜№д╖д▐д╣длбй');
+define('_ERROR_NOSUCHPLUGIN',				'╗╪─ъд╡дьд┐е╫еще░едеєд╧двдъд▐д╗дє');
+define('_ERROR_DUPPLUGIN',					'д╜д╬е╫еще░едеєд╧┤√д╦едеєе╣е╚б╝еыд╡дьд╞ддд▐д╣');
+define('_ERROR_PLUGFILEERROR',				'╗╪─ъд╡дьд┐е╫еще░едеєд╧┬╕║▀д╖д╩дддлбве╤б╝е▀е├е╖ечеєдм└╡д╖дп└▀─ъд╡дьд╞ддд▐д╗дє');
+define('_PLUGS_NOCANDIDATES',				'е╫еще░едеєд╬едеєе╣е╚б╝еы╕ї╩фд╧двдъд▐д╗дєбг');
 
-define('_PLUGS_TITLE_MANAGE',				'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╬┤я┐╜я┐╜я┐╜');
-define('_PLUGS_TITLE_INSTALLED',			'я┐╜я┐╜я┐╜єе╣е╚бя┐╜я┐╜я┐╜╤дя┐╜');
-define('_PLUGS_TITLE_UPDATE',				'я┐╜я┐╜╧┐я┐╜ъе╣я┐╜╚д╬ея┐╜я┐╜├е╫е╟бя┐╜я┐╜я┐╜');
-define('_PLUGS_TEXT_UPDATE',				'Nucleusя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜╞е╫еще░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧┐я┐╜я┐╜╬ея┐╜я┐╜┘ея┐╜╚╛я┐╜я┐╜єдмбя┐╜я┐╜я┐╜я┐╜щдля┐╜╬╕я┐╜я┐╜я┐╜(я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╬е╨бя┐╜я┐╜я┐╜я┐╜я┐╜єеве├е╫дя┐╜╚╝я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╬╛я┐╜я┐╜я┐╜я┐╜)я┐╜╦дя┐╜├дя┐╜я┐╜я┐╜я┐╜я┐╜╟д╧д╩дя┐╜я┐╜я┐╜я┐╜╓д╦д╩д├дя┐╜я┐╜я┐╜я┐╜╦б╓ея┐╜я┐╜├е╫е╟бя┐╜я┐╜╚б╫е▄ея┐╜я┐╜я┐╜Єепея┐╜├ея┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_PLUGS_TITLE_NEW',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜Єедеєе╣е╚бя┐╜я┐╜я┐╜');
-define('_PLUGS_ADD_TEXT',					'я┐╜╩▓я┐╜я┐╜я┐╜pluginsя┐╜╟ея┐╜я┐╜ьепя┐╜╚ея┐╜я┐╜я┐╜╦дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞д╬б╓ея┐╜я┐╜єе╣е╚бя┐╜я┐╜ыд╡я┐╜я┐╜╞дя┐╜я┐╜╩дя┐╜я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╫д╬▓я┐╜╟╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╬еъе╣я┐╜╚д╟дя┐╜я┐╜я┐╜я┐╜╔▓├дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╦е╫еще░я┐╜я┐╜я┐╜єдлд╔дя┐╜я┐╜я┐╜я┐╜я┐╜<strong>я┐╜я┐╜я┐╜├дя┐╜я┐╜я┐╜я┐╜╟з</strong>я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_PLUGS_BTN_INSTALL',				'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜єе╣е╚бя┐╜я┐╜я┐╜');
-define('_BACKTOOVERVIEW',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_PLUGS_TITLE_MANAGE',				'е╫еще░едеєд╬┤╔═¤');
+define('_PLUGS_TITLE_INSTALLED',			'едеєе╣е╚б╝еы║╤д▀');
+define('_PLUGS_TITLE_UPDATE',				'┼╨╧┐еъе╣е╚д╬еве├е╫е╟б╝е╚');
+define('_PLUGS_TEXT_UPDATE',				'Nucleusдм┤╔═¤д╖д╞ддды│╞е╫еще░едеєдм┼╨╧┐├цд╬еде┘еєе╚╛Ё╩єдмбв▓┐дщдлд╬╕╢░°(е╫еще░едеєд╬е╨б╝е╕ечеєеве├е╫д╦╚╝дже╒ебедеыд╬╛х╜ёдн┼∙)д╦дшд├д╞└╡╛яд╟д╧д╩дд╛ї┬╓д╦д╩д├д┐╗■д╦б╓еве├е╫е╟б╝е╚б╫е▄е┐еєдЄепеъе├епд╖д╞дпд└д╡ддбг');
+define('_PLUGS_TITLE_NEW',					'┐╖д╖дде╫еще░едеєдЄедеєе╣е╚б╝еы');
+define('_PLUGS_ADD_TEXT',					'░╩▓╝д╧pluginsе╟егеьепе╚еъ╞тд╦двды┴┤д╞д╬б╓едеєе╣е╚б╝еыд╡дьд╞ддд╩дде╫еще░едеєб╫д╬▓─╟╜└ндмдвдые╒ебедеыд╬еъе╣е╚д╟д╣бг─╔▓├д╣ды┴░д╦е╫еще░едеєдлд╔дждлдЄ<strong>д╖д├длдъ│╬╟з</strong>д╖д╞дпд└д╡ддбг');
+define('_PLUGS_BTN_INSTALL',				'е╫еще░едеєд╬едеєе╣е╚б╝еы');
+define('_BACKTOOVERVIEW',					'░ь═ўд╦╠сды');
 
 // editlink
-define('_TEMPLATE_EDITLINK',				'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╘╜я┐╜я┐╜я┐╜я┐╜ыд┐я┐╜я┐╜╬ея┐╜я┐╜');
+define('_TEMPLATE_EDITLINK',				'еведе╞ердЄ╩╘╜╕д╣дыд┐дсд╬еъеєеп');
 
 // add left / add right tooltips
-define('_ADD_LEFT_TT',						'left boxя┐╜я┐╜я┐╜╔▓я┐╜');
-define('_ADD_RIGHT_TT',						'right boxя┐╜я┐╜я┐╜╔▓я┐╜');
+define('_ADD_LEFT_TT',						'left boxдЄ─╔▓├');
+define('_ADD_RIGHT_TT',						'right boxдЄ─╔▓├');
 
 // add/edit item: new category (in dropdown box)
-define('_ADD_NEWCAT',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜╔▓я┐╜...');
+define('_ADD_NEWCAT',						'┐╖д╖дделе╞е┤еъб╝дЄ─╔▓├...');
 
 // new settings
-define('_SETTINGS_PLUGINURL',				'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╟ея┐╜я┐╜ьепя┐╜╚ея┐╜я┐╜URL');
-define('_SETTINGS_MAXUPLOADSIZE',			'я┐╜я┐╜я┐╜├е╫е?я┐╜╔д╟дя┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╬║я┐╜я┐╜че╡я┐╜я┐╜я┐╜я┐╜ (bytes)');
-define('_SETTINGS_NONMEMBERMSGS',			'я┐╜я┐╜я┐╜╨бя┐╜я┐╜╩│я┐╜я┐╜я┐╜я┐╜я┐╜╬ея┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╒дя┐╜я┐╜я┐╜');
-define('_SETTINGS_PROTECTMEMNAMES',			'я┐╜я┐╜я┐╜╨бя┐╜╠╛я┐╜я┐╜я┐╜▌╕я┐╜');
+define('_SETTINGS_PLUGINURL',				'е╫еще░едеєе╟егеьепе╚еъд╬URL');
+define('_SETTINGS_MAXUPLOADSIZE',			'еве├е╫еэб╝е╔д╟дндые╒ебедеыд╬║╟┬че╡еде║ (bytes)');
+define('_SETTINGS_NONMEMBERMSGS',			'есеєе╨б╝░╩│░длдщд╬есе├е╗б╝е╕дЄ╝їд▒╔╒д▒ды');
+define('_SETTINGS_PROTECTMEMNAMES',			'есеєе╨б╝╠╛д╬╩▌╕ю');
 
 // overview screen
-define('_OVERVIEW_PLUGINS',					'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_OVERVIEW_PLUGINS',					'е╫еще░едеє┤╔═¤');
 
 // actionlog
-define('_ACTIONLOG_NEWMEMBER',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜╧┐:');
+define('_ACTIONLOG_NEWMEMBER',				'┐╖д╖ддесеєе╨б╝д╬┼╨╧┐:');
 
 // membermail (when not logged in)
-define('_MEMBERMAIL_MAIL',					'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╬есб╝я┐╜ыевя┐╜╔еье╣:');
+define('_MEMBERMAIL_MAIL',					'двд╩д┐д╬есб╝еыеве╔еье╣:');
 
 // file upload
-define('_ERROR_DISALLOWEDUPLOAD2',			'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╦╗я┐╜я┐╜├дя┐╜я┐╜╞дя┐╜я┐╜я┐╜╔д╬е╓е?я┐╜я┐╜я┐╜я┐╜я┐╜┬дя┐╜я┐╜├д╞дя┐╜я┐╜╩дя┐╜я┐╜┘бя┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_ERROR_DISALLOWEDUPLOAD2',			'е┴б╝ерд╦╗▓▓├д╖д╞дддыд╔д╬е╓еэе░дт┤╔═¤╕в╕┬дЄ╗¤д├д╞ддд╩дд░┘бве╒ебедеыд╬еве├е╫еэб╝е╔дм╜╨═шд▐д╗дєбг');
 
 /* plugin list
-define('_LISTS_INFO',						'я┐╜я┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_AUTHOR',				'я┐╜я┐╜я┐╜:');
-define('_LIST_PLUGS_VER',					'я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜:');
-define('_LIST_PLUGS_SITE',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_DESC',					'я┐╜я┐╜я┐╜я┐╜:');
-define('_LIST_PLUGS_SUBS',					'я┐╜╩▓я┐╜я┐╜╬ея┐╜я┐╜┘ея┐╜╚дя┐╜я┐╜я┐╜╧┐:');
-define('_LIST_PLUGS_UP',					'я┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_DOWN',					'я┐╜я┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_UNINSTALL',				'я┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_ADMIN',					'я┐╜я┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_OPTIONS',				'я┐╜╘╜я┐╜');*/
-define('_LISTS_INFO',						'я┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜сб╝я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_AUTHOR',				'я┐╜я┐╜я┐╜я┐╜╘бя┐╜');
-define('_LIST_PLUGS_VER',					'я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_SITE',					'я┐╜я┐╜я┐╜ъе╡я┐╜я┐╜я┐╜╚бя┐╜');
-define('_LIST_PLUGS_DESC',					'я┐╜я┐╜я┐╜╫бя┐╜');
-define('_LIST_PLUGS_SUBS',					'я┐╜я┐╜╧┐я┐╜╤д▀ея┐╜я┐╜┘ея┐╜╚бя┐╜');
-define('_LIST_PLUGS_UP',					'&uarr; я┐╜╥д╚д─╛я┐╜я┐╜');
-define('_LIST_PLUGS_DOWN',					'&darr; я┐╜╥д╚д─▓я┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_UNINSTALL',				'я┐╜я┐╜я┐╜єедеєе╣е╚бя┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_ADMIN',					'я┐╜я┐╜я┐╜я┐╜');
-define('_LIST_PLUGS_OPTIONS',				'я┐╜я┐╜я┐╜╫ея┐╜я┐╜я┐╜я┐╜я┐╜╘╜я┐╜');
+define('_LISTS_INFO',						'╛Ё╩є');
+define('_LIST_PLUGS_AUTHOR',				'║ю╝╘:');
+define('_LIST_PLUGS_VER',					'е╨б╝е╕ечеє:');
+define('_LIST_PLUGS_SITE',					'е╡еде╚');
+define('_LIST_PLUGS_DESC',					'└т╠└:');
+define('_LIST_PLUGS_SUBS',					'░╩▓╝д╬еде┘еєе╚д╦┼╨╧┐:');
+define('_LIST_PLUGS_UP',					'╛хд╪');
+define('_LIST_PLUGS_DOWN',					'▓╝д╪');
+define('_LIST_PLUGS_UNINSTALL',				'║я╜№');
+define('_LIST_PLUGS_ADMIN',					'┤╔═¤');
+define('_LIST_PLUGS_OPTIONS',				'╩╘╜╕');*/
+define('_LISTS_INFO',						'едеєе╒ейесб╝е╖ечеє');
+define('_LIST_PLUGS_AUTHOR',				'└╜║ю╝╘бз');
+define('_LIST_PLUGS_VER',					'е╨б╝е╕ечеєбз');
+define('_LIST_PLUGS_SITE',					'╞■╝ъе╡еде╚бз');
+define('_LIST_PLUGS_DESC',					'│╡═╫бз');
+define('_LIST_PLUGS_SUBS',					'┼╨╧┐║╤д▀еде┘еєе╚бз');
+define('_LIST_PLUGS_UP',					'&uarr; д╥д╚д─╛хд╪');
+define('_LIST_PLUGS_DOWN',					'&darr; д╥д╚д─▓╝д╪');
+define('_LIST_PLUGS_UNINSTALL',				'евеєедеєе╣е╚б╝еы');
+define('_LIST_PLUGS_ADMIN',					'┤╔═¤');
+define('_LIST_PLUGS_OPTIONS',				'еке╫е╖ечеє╩╘╜╕');
 
 // plugin option list
-define('_LISTS_VALUE',						'я┐╜я┐╜(я┐╜я┐╜я┐╜я┐╜)');
+define('_LISTS_VALUE',						'├═(╞т═╞)');
 
 // plugin options
-define('_ERROR_NOPLUGOPTIONS',				'я┐╜я┐╜я┐╜╬е╫еще░я┐╜я┐╜я┐╜я┐╜╦д╧ея┐╜я┐╜╫ея┐╜я┐╜я┐╜єдмдя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_PLUGS_BACK',						'я┐╜╫еще░я┐╜я┐╜я┐╜я┐╜╬░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_PLUGS_SAVE',						'я┐╜я┐╜я┐╜╫ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┬╕');
-define('_PLUGS_OPTIONS_UPDATED',			'я┐╜╫еще░я┐╜я┐╜я┐╜єеке╫ея┐╜я┐╜я┐╜єдм╣я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_ERROR_NOPLUGOPTIONS',				'д│д╬е╫еще░едеєд╦д╧еке╫е╖ечеєдмдвдъд▐д╗дє');
+define('_PLUGS_BACK',						'е╫еще░едеєд╬░ь═ўд╦╠сды');
+define('_PLUGS_SAVE',						'еке╫е╖ечеєд╬╩▌┬╕');
+define('_PLUGS_OPTIONS_UPDATED',			'е╫еще░едеєеке╫е╖ечеєдм╣╣┐╖д╡дьд▐д╖д┐');
 
-define('_OVERVIEW_MANAGEMENT',				'я┐╜я┐╜я┐╜я┐╜');
-define('_OVERVIEW_MANAGE',					'Nucleusя┐╜╬┤я┐╜я┐╜я┐╜');
-define('_MANAGE_GENERAL',					'я┐╜я┐╜я┐╜я┐╜');
-define('_MANAGE_SKINS',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜/я┐╜╞ея┐╜╫еьб╝я┐╜я┐╜');
-define('_MANAGE_EXTRA',						'я┐╜╔▓├╡я┐╜╟╜');
+define('_OVERVIEW_MANAGEMENT',				'┤╔═¤');
+define('_OVERVIEW_MANAGE',					'Nucleusд╬┤╔═¤');
+define('_MANAGE_GENERAL',					'┤╔═¤');
+define('_MANAGE_SKINS',						'е╣енеє/е╞еєе╫еьб╝е╚');
+define('_MANAGE_EXTRA',						'─╔▓├╡б╟╜');
 
-define('_BACKTOMANAGE',						'Nucleusя┐╜╬┤я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_BACKTOMANAGE',						'Nucleusд╬┤╔═¤д╦╠сды');
 
 
 // END introduced after v1.1 END
@@ -804,533 +804,533 @@ define('_BACKTOMANAGE',						'Nucleusя┐╜╬┤я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
 define('_CHARSET',							'EUC-JP');
 
 // global stuff
-define('_LOGOUT',							'я┐╜?я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_LOGIN',							'я┐╜?я┐╜я┐╜я┐╜я┐╜');
-define('_YES',								'я┐╜╧дя┐╜');
-define('_NO',								'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SUBMIT',							'я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR',							'я┐╜я┐╜я┐╜щб╝');
-define('_ERRORMSG',							'я┐╜я┐╜я┐╜щб╝я┐╜я┐╜╚пя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BACK',								'я┐╜я┐╜я┐╜');
-define('_NOTLOGGEDIN',						'я┐╜?я┐╜я┐╜я┐╜єд╖д╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_LOGGEDINAS',						'я┐╜?я┐╜я┐╜я┐╜я┐╜:');
-define('_ADMINHOME',						'я┐╜я┐╜я┐╜я┐╜█бя┐╜я┐╜я┐╜');
-define('_NAME',								'╠╛я┐╜я┐╜');
-define('_BACKHOME',							'я┐╜я┐╜я┐╜я┐╜█бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BADACTION',						'┬╕я┐╜▀дя┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╫╡сд╡я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_MESSAGE',							'я┐╜я┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_HELP_TT',							'я┐╜╪ея┐╜╫бя┐╜');
-define('_YOURSITE',							'я┐╜я┐╜я┐╜я┐╜я┐╜╚д╬│я┐╜╟з');
+define('_LOGOUT',							'еэе░евеже╚');
+define('_LOGIN',							'еэе░едеє');
+define('_YES',								'д╧дд');
+define('_NO',								'ддддди');
+define('_SUBMIT',							'┴ў┐о');
+define('_ERROR',							'еиещб╝');
+define('_ERRORMSG',							'еиещб╝дм╚п└╕д╖д▐д╖д┐бк');
+define('_BACK',								'╠сды');
+define('_NOTLOGGEDIN',						'еэе░едеєд╖д╞ддд▐д╗дє');
+define('_LOGGEDINAS',						'еэе░едеє:');
+define('_ADMINHOME',						'┤╔═¤е█б╝ер');
+define('_NAME',								'╠╛┴░');
+define('_BACKHOME',							'┤╔═¤е█б╝ерд╦╠сды');
+define('_BADACTION',						'┬╕║▀д╖д╩ддевепе╖ечеєдм═╫╡сд╡дьд▐д╖д┐');
+define('_MESSAGE',							'есе├е╗б╝е╕');
+define('_HELP_TT',							'е╪еые╫бк');
+define('_YOURSITE',							'е╡еде╚д╬│╬╟з');
 
 
-define('_POPUP_CLOSE',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔ея┐╜я┐╜я┐╜я┐╜─дя┐╜я┐╜я┐╜');
+define('_POPUP_CLOSE',						'ежегеєе╔еждЄ╩─д╕ды');
 
-define('_LOGIN_PLEASE',						'я┐╜▐дя┐╜я┐╜?я┐╜я┐╜я┐╜єд╖д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_LOGIN_PLEASE',						'д▐д║еэе░едеєд╖д╞дпд└д╡дд');
 
 // commentform
-define('_COMMENTFORM_YOUARE',				'я┐╜цб╝я┐╜я┐╜я┐╜я┐╜╠╛: ');
-define('_COMMENTFORM_SUBMIT',				'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜╔▓я┐╜');
-define('_COMMENTFORM_COMMENT',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜:');
-define('_COMMENTFORM_NAME',					'я┐╜я┐╜╠╛я┐╜я┐╜:');
-define('_COMMENTFORM_REMEMBER',				'я┐╜я┐╜я┐╜я┐╜Є╡н▓я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜');
+define('_COMMENTFORM_YOUARE',				'ецб╝е╢б╝╠╛: ');
+define('_COMMENTFORM_SUBMIT',				'е│есеєе╚дЄ─╔▓├');
+define('_COMMENTFORM_COMMENT',				'е│есеєе╚:');
+define('_COMMENTFORM_NAME',					'дк╠╛┴░:');
+define('_COMMENTFORM_REMEMBER',				'╛Ё╩єдЄ╡н▓▒д╖д╞дкдп');
 
 // loginform
-define('_LOGINFORM_NAME',					'я┐╜?я┐╜я┐╜я┐╜я┐╜ID:');
-define('_LOGINFORM_PWD',					'я┐╜╤ея┐╜я┐╜яб╝я┐╜я┐╜:');
-define('_LOGINFORM_YOUARE',					'я┐╜?я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜:');
-define('_LOGINFORM_SHARED',					'я┐╜я┐╜я┐╜я┐╜PCя┐╜я┐╜┬╛я┐╜╬┐═д╚╢я┐╜я┐╜╤дя┐╜я┐╜я┐╜');
+define('_LOGINFORM_NAME',					'еэе░едеєID:');
+define('_LOGINFORM_PWD',					'е╤е╣еяб╝е╔:');
+define('_LOGINFORM_YOUARE',					'еэе░едеє├ц:');
+define('_LOGINFORM_SHARED',					'д│д╬PCдЄ┬╛д╬┐═д╚╢ж═╤д╣ды');
 
 // member mailform
-define('_MEMBERMAIL_SUBMIT',				'я┐╜я┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_MEMBERMAIL_SUBMIT',				'есе├е╗б╝е╕┴ў┐о');
 
 // search form
-define('_SEARCHFORM_SUBMIT',				'я┐╜я┐╜я┐╜я┐╜');
+define('_SEARCHFORM_SUBMIT',				'╕б║ў');
 
 // add item form
-define('_ADD_ADDTO',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╔▓я┐╜:');
-define('_ADD_CREATENEW',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜');
-define('_ADD_BODY',							'я┐╜я┐╜╩╕');
-define('_ADD_TITLE',						'я┐╜я┐╜я┐╜я┐╜я┐╜╚ея┐╜');
-define('_ADD_MORE',							'┬│я┐╜я┐╜ (я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜)');
-define('_ADD_CATEGORY',						'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝');
-define('_ADD_PREVIEW',						'я┐╜╫ея┐╜╙ехб╝');
-define('_ADD_DISABLE_COMMENTS',				'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜╒дя┐╜я┐╜╩дя┐╜');
-define('_ADD_DRAFTNFUTURE',					'я┐╜╔ея┐╜╒е╚дя┐╜╠дя┐╜я┐╜╬╡я┐╜я┐╜я┐╜');
-define('_ADD_ADDITEM',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╔▓я┐╜');
-define('_ADD_ADDNOW',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔▓я┐╜');
-define('_ADD_PLACE_ON',						'я┐╜я┐╜я┐╜:');
-define('_ADD_ADDDRAFT',						'я┐╜╔ея┐╜╒е╚дя┐╜я┐╜╔▓я┐╜');
-define('_ADD_NOPASTDATES',					'(я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧╗я┐╜я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜єбг╗я┐╜я┐╜ъд╡я┐╜ьд┐я┐╜я┐╜я┐╜╧╕я┐╜я┐╜▀дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤дя┐╜я┐╜я┐╜▐дя┐╜)');
-define('_ADD_BOLD_TT',						'я┐╜я┐╜я┐╜я┐╜');
-define('_ADD_ITALIC_TT',					'я┐╜я┐╜я┐╜я┐╜');
-define('_ADD_HREF_TT',						'я┐╜я┐╜єеп║я┐╜я┐╜я┐╜');
-define('_ADD_MEDIA_TT',						'я┐╜я┐╜╟ея┐╜я┐╜я┐╜(я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜)я┐╜я┐╜я┐╜╔▓я┐╜');
-define('_ADD_PREVIEW_TT',					'я┐╜╫ея┐╜╙ехб╝я┐╜я┐╜╔╜я┐╜я┐╜/я┐╜я┐╜╔╜я┐╜я┐╜');
-define('_ADD_CUT_TT',						'я┐╜я┐╜я┐╜├ея┐╜');
-define('_ADD_COPY_TT',						'я┐╜я┐╜я┐╜╘бя┐╜');
-define('_ADD_PASTE_TT',						'я┐╜┌бя┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_ADD_ADDTO',						'еведе╞ерд╬─╔▓├:');
+define('_ADD_CREATENEW',					'┐╖д╖ддеведе╞ер');
+define('_ADD_BODY',							'╦▄╩╕');
+define('_ADD_TITLE',						'е┐еде╚еы');
+define('_ADD_MORE',							'┬│дн (╢ї═єд╟дт▓─)');
+define('_ADD_CATEGORY',						'еле╞е┤еъб╝');
+define('_ADD_PREVIEW',						'е╫еье╙ехб╝');
+define('_ADD_DISABLE_COMMENTS',				'е│есеєе╚дЄ╝їд▒╔╒д▒д╩дд');
+define('_ADD_DRAFTNFUTURE',					'е╔еще╒е╚д╚╠д═шд╬╡н╗Ў');
+define('_ADD_ADDITEM',						'еведе╞ердЄ─╔▓├');
+define('_ADD_ADDNOW',						'║гд╣д░─╔▓├');
+define('_ADD_PLACE_ON',						'╞№╗■:');
+define('_ADD_ADDDRAFT',						'е╔еще╒е╚д╦─╔▓├');
+define('_ADD_NOPASTDATES',					'(▓с╡юд╬╞№╗■д╧╗╪─ъд╟днд▐д╗дєбг╗╪─ъд╡дьд┐╛ь╣чд╧╕╜║▀д╬╞№╗■дм╗╚═╤д╡дьд▐д╣)');
+define('_ADD_BOLD_TT',						'┬└╗·');
+define('_ADD_ITALIC_TT',					'╝╨┬╬');
+define('_ADD_HREF_TT',						'еъеєеп║ю└о');
+define('_ADD_MEDIA_TT',						'есе╟егев(▓ш┴№бж▓╗└╝)д╬─╔▓├');
+define('_ADD_PREVIEW_TT',					'е╫еье╙ехб╝д╬╔╜╝и/╚є╔╜╝и');
+define('_ADD_CUT_TT',						'еле├е╚');
+define('_ADD_COPY_TT',						'е│е╘б╝');
+define('_ADD_PASTE_TT',						'е┌б╝е╣е╚');
 
 
 // edit item form
-define('_EDIT_ITEM',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╘╜я┐╜');
-define('_EDIT_SUBMIT',						'я┐╜я┐╜┬╕');
-define('_EDIT_ORIG_AUTHOR',					'я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_EDIT_BACKTODRAFTS',				'я┐╜я┐╜я┐╜┘е╔ея┐╜╒е╚д╚дя┐╜я┐╜я┐╜я┐╜я┐╜┬╕');
-define('_EDIT_COMMENTSNOTE',				'(я┐╜я┐╜я┐╜: я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜╔╜я┐╜я┐╜я┐╜╧░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔▓├дя┐╜я┐╜ьд┐я┐╜я┐╜я┐╜я┐╜я┐╜╚дЄ▒гдя┐╜я┐╜╧дя┐╜я┐╜▐дя┐╜я┐╜я┐╜)');
+define('_EDIT_ITEM',						'еведе╞ерд╬╩╘╜╕');
+define('_EDIT_SUBMIT',						'╩▌┬╕');
+define('_EDIT_ORIG_AUTHOR',					'╕╢║ю╝╘');
+define('_EDIT_BACKTODRAFTS',				'║╞┼┘е╔еще╒е╚д╚д╖д╞╩▌┬╕');
+define('_EDIT_COMMENTSNOTE',				'(├э░╒: е│есеєе╚д╬╚є╔╜╝ид╧░╩┴░д╦─╔▓├д╡дьд┐е│есеєе╚дЄ▒гд╖д╧д╖д▐д╗дє)');
 
 // used on delete screens
-define('_DELETE_CONFIRM',					'я┐╜я┐╜я┐╜╬│я┐╜╟зя┐╜Єд╖д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_DELETE_CONFIRM_BTN',				'я┐╜я┐╜я┐╜╬│я┐╜╟з');
-define('_CONFIRMTXT_ITEM',					'я┐╜╩▓я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜я┐╜шджя┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜:');
-define('_CONFIRMTXT_COMMENT',				'я┐╜╩▓я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜шджя┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜:');
-define('_CONFIRMTXT_TEAM1',					'я┐╜я┐╜я┐╜я┐╜blogя┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜ъе╣я┐╜╚дя┐╜я┐╜я┐╜');
-define('_CONFIRMTXT_TEAM2',					'я┐╜я┐╜я┐╜шджя┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜');
-define('_CONFIRMTXT_BLOG',					'я┐╜я┐╜я┐╜я┐╜Blog: ');
-define('_WARNINGTXT_BLOGDEL',				'я┐╜┘╣я┐╜ Blogя┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜╦┤▐д▐дя┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞д╬ея┐╜я┐╜я┐╜я┐╜╞ербвя┐╜я┐╜я┐╜я┐╜я┐╜╚д╧║я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟зя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟╣╘д├д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜<br />я┐╜я┐╜я┐╜я┐╜╦бя┐╜Blogя┐╜╬║я┐╜я┐╜я┐╜я┐╜я┐╜Nucleusя┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜я┐╜╩дя┐╜я┐╜╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_CONFIRMTXT_MEMBER',				'я┐╜╩▓я┐╜я┐╜╬ея┐╜я┐╜╨бя┐╜я┐╜╫ея┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜шджя┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜: ');
-define('_CONFIRMTXT_TEMPLATE',				'я┐╜я┐╜я┐╜╬е╞ея┐╜╫еьб╝я┐╜╚дя┐╜я┐╜я┐╜шджя┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜: ');
-define('_CONFIRMTXT_SKIN',					'я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜шджя┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜: ');
-define('_CONFIRMTXT_BAN',					'я┐╜я┐╜я┐╜╬╢╪╗я┐╜IPя┐╜╧░╧дя┐╜я┐╜я┐╜шджя┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜: ');
-define('_CONFIRMTXT_CATEGORY',				'я┐╜я┐╜я┐╜╬ея┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜я┐╜шджя┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜: ');
+define('_DELETE_CONFIRM',					'║я╜№д╬│╬╟здЄд╖д╞дпд└д╡дд');
+define('_DELETE_CONFIRM_BTN',				'║я╜№д╬│╬╟з');
+define('_CONFIRMTXT_ITEM',					'░╩▓╝д╬еведе╞ердЄ║я╜№д╖дшджд╚д╖д╞ддд▐д╣:');
+define('_CONFIRMTXT_COMMENT',				'░╩▓╝д╬е│есеєе╚дЄ║я╜№д╖дшджд╚д╖д╞ддд▐д╣:');
+define('_CONFIRMTXT_TEAM1',					'д│д╬blogд╬е┴б╝ереъе╣е╚длдщ');
+define('_CONFIRMTXT_TEAM2',					'║я╜№д╖дшджд╚д╖д╞ддд▐д╣');
+define('_CONFIRMTXT_BLOG',					'║я╜№д╣дыBlog: ');
+define('_WARNINGTXT_BLOGDEL',				'╖┘╣Ёбк BlogдЄ║я╜№д╣дыд╚д╜дьд╦┤▐д▐дьд╞ддды┴┤д╞д╬еведе╞ербве│есеєе╚д╧║я╜№д╡дьд▐д╣бгд╜д╬┼└дЄ│╬╟зд╖д┐╛хд╟╣╘д├д╞дпд└д╡ддбг<br />д╡дщд╦бвBlogд╬║я╜№├цд╦NucleusдЄ├ц├╟д╡д╗д╩ддд╟дпд└д╡ддбг');
+define('_CONFIRMTXT_MEMBER',				'░╩▓╝д╬есеєе╨б╝е╫еэе╒ебедеыдЄ║я╜№д╖дшджд╚д╖д╞ддд▐д╣: ');
+define('_CONFIRMTXT_TEMPLATE',				'╝бд╬е╞еєе╫еьб╝е╚дЄ║я╜№д╖дшджд╚д╖д╞ддд▐д╣: ');
+define('_CONFIRMTXT_SKIN',					'╝бд╬е╣енеєдЄ║я╜№д╖дшджд╚д╖д╞ддд▐д╣: ');
+define('_CONFIRMTXT_BAN',					'╝бд╬╢╪╗▀IP╚╧░╧дЄ║я╜№д╖дшджд╚д╖д╞ддд▐д╣: ');
+define('_CONFIRMTXT_CATEGORY',				'╝бд╬еле╞е┤еъб╝дЄ║я╜№д╖дшджд╚д╖д╞ддд▐д╣: ');
 
 // some status messages
-define('_DELETED_ITEM',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ердмя┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_DELETED_MEMBER',					'я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_DELETED_COMMENT',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_DELETED_BLOG',						'Blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_DELETED_CATEGORY',					'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ITEM_MOVED',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ердмя┐╜я┐╜╞░я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ITEM_ADDED',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ердмя┐╜╔▓├дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_COMMENT_UPDATED',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_SKIN_UPDATED',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┬╕я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_TEMPLATE_UPDATED',					'я┐╜╞ея┐╜╫еьб╝я┐╜╚е╟бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┬╕я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_DELETED_ITEM',						'еведе╞ердм║я╜№д╡дьд▐д╖д┐');
+define('_DELETED_MEMBER',					'есеєе╨б╝дм║я╜№д╡дьд▐д╖д┐');
+define('_DELETED_COMMENT',					'е│есеєе╚дм║я╜№д╡дьд▐д╖д┐');
+define('_DELETED_BLOG',						'Blogдм║я╜№д╡дьд▐д╖д┐');
+define('_DELETED_CATEGORY',					'еле╞е┤еъб╝дм║я╜№д╡дьд▐д╖д┐');
+define('_ITEM_MOVED',						'еведе╞ердм░▄╞░д╡дьд▐д╖д┐');
+define('_ITEM_ADDED',						'еведе╞ердм─╔▓├д╡дьд▐д╖д┐');
+define('_COMMENT_UPDATED',					'е│есеєе╚дм╣╣┐╖д╡дьд▐д╖д┐');
+define('_SKIN_UPDATED',						'е╣енеєе╟б╝е┐дм╩▌┬╕д╡дьд▐д╖д┐');
+define('_TEMPLATE_UPDATED',					'е╞еєе╫еьб╝е╚е╟б╝е┐дм╩▌┬╕д╡дьд▐д╖д┐');
 
 // errors
-define('_ERROR_COMMENT_LONGWORD',			'я┐╜я┐╜я┐╜я┐╜я┐╜╚д╦дя┐╜╚╛я┐╜╤дя┐╜90╩╕я┐╜я┐╜╩╛я┐╜я┐╜├▒я┐╜я┐╜я┐╜╚дя┐╜╩дя┐╜я┐╜╟▓я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_COMMENT_NOCOMMENT',			'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_COMMENT_NOUSERNAME',			'я┐╜я┐╜я┐╜╤д╟дя┐╜я┐╜╩дя┐╜╠╛я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜');
-define('_ERROR_COMMENT_TOOLONG',			'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜─╣я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜(╚╛я┐╜╤дя┐╜5000╩╕я┐╜я┐╜▐дя┐╜)');
-define('_ERROR_COMMENTS_DISABLED',			'я┐╜я┐╜я┐╜▀дя┐╜я┐╜я┐╜Blogя┐╜╟д╧ея┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜╒дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_COMMENTS_NONPUBLIC',			'я┐╜я┐╜я┐╜я┐╜Blogя┐╜╪ея┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜╔▓├дя┐╜я┐╜я┐╜╦д╧ея┐╜я┐╜╨бя┐╜я┐╜╚дя┐╜я┐╜╞е?я┐╜я┐╜я┐╜єд╖д╩дя┐╜я┐╜я┐╜╨дя┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_COMMENTS_MEMBERNICK',		'я┐╜я┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜╠╛я┐╜я┐╜я┐╜╧┤я┐╜╦╗╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜┬╛я┐╜я┐╜╠╛я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_SKIN',						'я┐╜я┐╜я┐╜я┐╜я┐╜єббея┐╜я┐╜щб╝');
-define('_ERROR_ITEMCLOSED',					'я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜╧▒я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤д╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜╞бя┐╜я┐╜я┐╜╔╝я┐╜╧д╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_NOSUCHITEM',					'я┐╜я┐╜я┐╜╬дшджя┐╜╩ея┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_NOSUCHBLOG',					'я┐╜я┐╜я┐╜╬дшджя┐╜я┐╜Blogя┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_NOSUCHSKIN',					'я┐╜я┐╜я┐╜╬дшджя┐╜╩ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_NOSUCHMEMBER',				'я┐╜я┐╜я┐╜╬дшджя┐╜╩ея┐╜я┐╜╨бя┐╜я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_NOTONTEAM',					'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╧дя┐╜я┐╜я┐╜Blogя┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜╦┤▐д▐дя┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_BADDESTBLOG',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_NOTONDESTTEAM',				'я┐╜я┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Blogя┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├д╞дя┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜севя┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╞░я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_NOEMPTYITEMS',				'я┐╜я┐╜╩╕я┐╜я┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜я┐╜╞д╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_BADMAILADDRESS',				'я┐╜сб╝я┐╜ыевя┐╜╔еье╣я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜');
-define('_ERROR_BADNOTIFY',					'я┐╜я┐╜я┐╜╬есб╝я┐╜ыевя┐╜╔еье╣я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩дя┐╜╬дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├д╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_BADNAME',					'я┐╜я┐╜я┐╜╤д╟дя┐╜я┐╜╩дя┐╜╠╛я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜( a-z я┐╜я┐╜0-9 я┐╜╬▒╤┐я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜▐дя┐╜я┐╜я┐╜)');
-define('_ERROR_NICKNAMEINUSE',				'┬╛я┐╜╬ея┐╜я┐╜╨бя┐╜я┐╜я┐╜╞▒я┐╜я┐╜я┐╜?я┐╜я┐╜я┐╜я┐╜IDя┐╜я┐╜я┐╜я┐╜╤дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_PASSWORDMISMATCH',			'я┐╜я┐╜я┐╜╧дя┐╜я┐╜ьд┐я┐╜╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜╞▒я┐╜я┐╜╟д╧дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_PASSWORDTOOSHORT',			'я┐╜╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜6╩╕я┐╜я┐╜╩╛я┐╜╟д╩дя┐╜я┐╜я┐╜╨д╩дя┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_PASSWORDMISSING',			'я┐╜╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜');
-define('_ERROR_REALNAMEMISSING',			'я┐╜╧ея┐╜╔ея┐╜я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_ATLEASTONEADMIN',			'я┐╜я┐╜я┐╜я┐╜я┐╜╬░я┐╜╦е?я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜super-adminя┐╜я┐╜я┐╜я┐╜я┐╜╩дя┐╜я┐╜╚дя┐╜1я┐╜═д╧дя┐╜я┐╜╩дя┐╜я┐╜╞д╧дя┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_ATLEASTONEBLOGADMIN',		'я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┬╣╘дя┐╜я┐╜я┐╜╚дя┐╜я┐╜╩дя┐╜я┐╜я┐╜Blogя┐╜╧ея┐╜я┐╜╞е╩ея┐╜я┐╜я┐╜╟╜я┐╜╦д╩дя┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩дя┐╜я┐╜╚дя┐╜1я┐╜═д╬┤я┐╜я┐╜я┐╜╘дя┐╜я┐╜я┐╜я┐╜я┐╜шджя┐╜╦дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_ALREADYONTEAM',				'я┐╜я┐╜╦ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├д╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_BADSHORTBLOGNAME',			'Blogя┐╜я┐╜├╗я┐╜я┐╜╠╛(╬мя┐╜я┐╜)я┐╜╦дя┐╜ a-z я┐╜я┐╜0-9я┐╜я┐╜я┐╜╬▒╤┐я┐╜я┐╜я┐╜╬д▀╗я┐╜я┐╜╤д╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┌бя┐╜я┐╜я┐╜я┐╜╧╗я┐╜я┐╜╤д╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_DUPSHORTBLOGNAME',			'┬╛я┐╜я┐╜Blogя┐╜я┐╜╞▒я┐╜я┐╜├╗я┐╜я┐╜╠╛(╬мя┐╜я┐╜)я┐╜я┐╜я┐╜╚дя┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜╠дя┐╜├╗я┐╜я┐╜╠╛(╬мя┐╜я┐╜)я┐╜я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_UPDATEFILE',					'я┐╜я┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╦╜ёдн╣я┐╜я┐╜я┐╜▐дя┐╜я┐╜єбге╒ея┐╜я┐╜я┐╜я┐╜я┐╜╬е╤бя┐╜я┐╜▀е├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├е╚дя┐╜я┐╜я┐╜╞дя┐╜я┐╜ыдля┐╜я┐╜╟зя┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ (chmod 666 я┐╜я┐╜юд╖я┐╜╞д▀д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜)я┐╜я┐╜я┐╜тд╖я┐╜я┐╜я┐╜╨е╤ея┐╜я┐╜╟╗я┐╜я┐╜ъд╡я┐╜я┐╜╞дя┐╜я┐╜я┐╜╩дщбвя┐╜я┐╜я┐╜╨е╤ея┐╜я┐╜╟╗я┐╜я┐╜ъд╖я┐╜╞д▀д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜(/your/path/to/nucleus/ я┐╜╬дшджя┐╜я┐╜)');
-define('_ERROR_DELDEFBLOG',					'я┐╜я┐╜я┐╜я┐╜я┐╜Blogя┐╜╧║я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_DELETEMEMBER',				'я┐╜я┐╜я┐╜я┐╜я┐╜щдпя┐╜я┐╜я┐╜╬ея┐╜я┐╜╨бя┐╜я┐╜╧гя┐╜я┐╜─░╩╛я┐╜╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜я┐╜╘д╟дя┐╜я┐╜ыд┐я┐╜сбвя┐╜я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_BADTEMPLATENAME',			'я┐╜я┐╜я┐╜я┐╜я┐╜╩е╞ея┐╜╫еьб╝я┐╜я┐╜╠╛я┐╜╟дя┐╜я┐╜я┐╜(a-z я┐╜я┐╜0-9 я┐╜╬▒╤┐я┐╜я┐╜я┐╜╬д▀╗я┐╜я┐╜╤▓─бя┐╜я┐╜я┐╜я┐╜┌бя┐╜я┐╜я┐╜я┐╜╧╗я┐╜я┐╜я┐╜я┐╜╘▓я┐╜)');
-define('_ERROR_DUPTEMPLATENAME',			'╞▒я┐╜я┐╜╠╛я┐╜я┐╜я┐╜╬е╞ея┐╜╫еьб╝я┐╜╚дя┐╜я┐╜я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜');
-define('_ERROR_BADSKINNAME',				'я┐╜я┐╜я┐╜я┐╜я┐╜╩ея┐╜я┐╜я┐╜я┐╜я┐╜╠╛я┐╜╟дя┐╜я┐╜я┐╜(a-z я┐╜я┐╜0-9 я┐╜╬▒╤┐я┐╜я┐╜я┐╜╬д▀╗я┐╜я┐╜╤▓─бя┐╜я┐╜я┐╜я┐╜┌бя┐╜я┐╜я┐╜я┐╜╧╗я┐╜я┐╜я┐╜я┐╜╘▓я┐╜)');
-define('_ERROR_DUPSKINNAME',				'╞▒я┐╜я┐╜╠╛я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜єдм┤я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_DEFAULTSKIN',				'я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔╕я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ъд╡я┐╜я┐╜╞дя┐╜я┐╜ыд┐я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_SKINDEFDELETE',				'я┐╜╩▓я┐╜я┐╜я┐╜Blogя┐╜╬┤я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜╦╗я┐╜я┐╜ъд╡я┐╜я┐╜╞дя┐╜я┐╜ыд┐я┐╜сбвя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜: ');
-define('_ERROR_DISALLOWED',					'я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬╝┬╣╘дя┐╜я┐╜я┐╜я┐╜─дя┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_DELETEBAN',					'я┐╜╪╗▀╝╘д╬║я┐╜я┐╜я┐╜я┐╜╦ея┐╜я┐╜щб╝я┐╜я┐╜╚пя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜(я┐╜╪╗▀╝╘дя┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜)');
-define('_ERROR_ADDBAN',						'я┐╜╪╗▀╝╘дя┐╜я┐╜╔▓я┐╜я┐╜я┐╜╦ея┐╜я┐╜щб╝я┐╜я┐╜╚пя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔▓├дя┐╜я┐╜я┐╜╞дя┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜тд╖я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_BADACTION',					'я┐╜╫╡сд╡я┐╜ьд┐я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_MEMBERMAILDISABLED',			'я┐╜я┐╜я┐╜╨бя┐╜я┐╜╓д╬есб╝я┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘▓─д╦д╩д├д╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_MEMBERCREATEDISABLED',		'я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╪╗▀дя┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_INCORRECTEMAIL',				'я┐╜я┐╜я┐╜я┐╜я┐╜╩есб╝я┐╜ыевя┐╜╔еье╣я┐╜╟дя┐╜я┐╜я┐╜');
-define('_ERROR_VOTEDBEFORE',				'я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜╦д╧┤я┐╜я┐╜я┐╜я┐╜╔╝я┐╜╤д▀д╟дя┐╜я┐╜я┐╜');
-define('_ERROR_BANNED1',					'я┐╜я┐╜я┐╜╩дя┐╜ (IPя┐╜╧░я┐╜ ');
-define('_ERROR_BANNED2',					') я┐╜╧дя┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬╝┬╣╘дя┐╜я┐╜╪╗▀дя┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜: \'');
+define('_ERROR_COMMENT_LONGWORD',			'е│есеєе╚д╦д╧╚╛│╤д╟90╩╕╗·░╩╛хд╬├▒╕ьдЄ╗╚дяд╩ддд╟▓╝д╡ддбг');
+define('_ERROR_COMMENT_NOCOMMENT',			'е│есеєе╚дЄ╞■╬╧д╖д╞дпд└д╡ддбг');
+define('_ERROR_COMMENT_NOUSERNAME',			'╗╚═╤д╟днд╩дд╠╛┴░д╟д╣бг');
+define('_ERROR_COMMENT_TOOLONG',			'е│есеєе╚дм─╣д╣дод▐д╣бг(╚╛│╤д╟5000╩╕╗·д▐д╟)');
+define('_ERROR_COMMENTS_DISABLED',			'╕╜║▀д│д╬Blogд╟д╧е│есеєе╚дЄ╝їд▒╔╒д▒д╞ддд▐д╗дєбг');
+define('_ERROR_COMMENTS_NONPUBLIC',			'д│д╬Blogд╪е│есеєе╚дЄ─╔▓├д╣дыд╦д╧есеєе╨б╝д╚д╖д╞еэе░едеєд╖д╩д▒дьд╨ддд▒д▐д╗дєбг');
+define('_ERROR_COMMENTS_MEMBERNICK',		'двд╩д┐дм╗╚дкджд╚д╖д┐╠╛┴░д╧┤√д╦╗╚дядьд╞ддд▐д╣бг┬╛д╬╠╛┴░дЄ╞■╬╧д╖д╞дпд└д╡ддбг');
+define('_ERROR_SKIN',						'е╣енеєббеиещб╝');
+define('_ERROR_ITEMCLOSED',					'д│д╬еведе╞ерд╧▒▄═ў└ь═╤д╟д╣бге│есеєе╚д╬┼ъ╣╞бв┼ъ╔╝д╧д╟днд▐д╗дєбг');
+define('_ERROR_NOSUCHITEM',					'д╜д╬дшджд╩еведе╞ерд╧┬╕║▀д╖д▐д╗дєбг');
+define('_ERROR_NOSUCHBLOG',					'д╜д╬дшджд╩Blogд╧┬╕║▀д╖д▐д╗дєбг');
+define('_ERROR_NOSUCHSKIN',					'д╜д╬дшджд╩е╣енеєд╧┬╕║▀д╖д▐д╗дєбг');
+define('_ERROR_NOSUCHMEMBER',				'д╜д╬дшджд╩есеєе╨б╝д╧┬╕║▀д╖д▐д╗дєбг');
+define('_ERROR_NOTONTEAM',					'двд╩д┐д╧д│д╬Blogд╬е┴б╝ерд╦┤▐д▐дьд╞ддд▐д╗дєбг');
+define('_ERROR_BADDESTBLOG',				'┴ўдъ└шд╬Blogдм┬╕║▀д╖д▐д╗дєбг');
+define('_ERROR_NOTONDESTTEAM',				'двд╩д┐дм┴ўдъ└шд╬Blogд╬е┴б╝ерд╦╞■д├д╞ддд╩ддд┐дсеведе╞ердЄ░▄╞░д╟днд▐д╗дєбг');
+define('_ERROR_NOEMPTYITEMS',				'╦▄╩╕дм╢їд╬еведе╞ерд╧┼ъ╣╞д╟днд▐д╗дєбк');
+define('_ERROR_BADMAILADDRESS',				'есб╝еыеве╔еье╣дм╔╘└╡д╟д╣бг');
+define('_ERROR_BADNOTIFY',					'─╠├╬есб╝еыеве╔еье╣д╬├цд╦╔╘└╡д╩дтд╬дм║од╕д├д╞ддд▐д╣бг');
+define('_ERROR_BADNAME',					'╗╚═╤д╟днд╩дд╠╛┴░д╟д╣бг( a-z бв0-9 д╬▒╤┐Ї╗·д╖дл╗╚дид▐д╗дє)');
+define('_ERROR_NICKNAMEINUSE',				'┬╛д╬есеєе╨б╝дм╞▒д╕еэе░едеєIDдЄ╗╚═╤д╖д╞ддд▐д╣бг');
+define('_ERROR_PASSWORDMISMATCH',			'╞■╬╧д╡дьд┐е╤е╣еяб╝е╔дм╞▒░ьд╟д╧двдъд▐д╗дєбг');
+define('_ERROR_PASSWORDTOOSHORT',			'е╤е╣еяб╝е╔д╧6╩╕╗·░╩╛хд╟д╩д▒дьд╨д╩дъд▐д╗дєбг');
+define('_ERROR_PASSWORDMISSING',			'е╤е╣еяб╝е╔дм╢їд╟д╣бг');
+define('_ERROR_REALNAMEMISSING',			'е╧еєе╔еыдЄ╞■╬╧д╖д╞дпд└д╡ддбг');
+define('_ERROR_ATLEASTONEADMIN',			'┤╔═¤╬╬░шд╦еэе░едеєд╟дндыsuper-adminдм╛пд╩дпд╚дт1┐═д╧ддд╩дпд╞д╧ддд▒д▐д╗дєбг');
+define('_ERROR_ATLEASTONEBLOGADMIN',		'д│д╬евепе╖ечеєдЄ╝┬╣╘д╣дыд╚двд╩д┐д╬Blogд╧есеєе╞е╩еєе╣╔╘╟╜д╦д╩дъд▐д╣бг╛пд╩дпд╚дт1┐═д╬┤╔═¤╝╘дмдддыдшджд╦д╖д╞дпд└д╡ддбг');
+define('_ERROR_ALREADYONTEAM',				'┤√д╦е┴б╝ерд╦╞■д├д╞ддд▐д╣бг');
+define('_ERROR_BADSHORTBLOGNAME',			'Blogд╬├╗╜╠╠╛(╬м╛╬)д╦д╧ a-z бв0-9бвд╬▒╤┐Ї╗·д╬д▀╗╚═╤д╟днд▐д╣бге╣е┌б╝е╣д╧╗╚═╤д╟днд▐д╗дєбг');
+define('_ERROR_DUPSHORTBLOGNAME',			'┬╛д╬Blogд╟╞▒д╕├╗╜╠╠╛(╬м╛╬)дм╗╚дядьд╞ддд▐д╣бг╩╠д╬├╗╜╠╠╛(╬м╛╬)дЄ╞■╬╧д╖д╞дпд└д╡ддбг');
+define('_ERROR_UPDATEFILE',					'╣╣┐╖е╒ебедеыд╦╜ёдн╣■дсд▐д╗дєбге╒ебедеыд╬е╤б╝е▀е├е╖ечеєдм└╡д╖дпе╗е├е╚д╡дьд╞дддыдл│╬╟зд╖д╞дпд└д╡дд (chmod 666 дЄ╗юд╖д╞д▀д╞дпд└д╡дд)бгдтд╖┴ъ┬╨е╤е╣д╟╗╪─ъд╡дьд╞дддыд╩дщбв└ф┬╨е╤е╣д╟╗╪─ъд╖д╞д▀д╞дпд└д╡ддбг(/your/path/to/nucleus/ д╬дшджд╦)');
+define('_ERROR_DELDEFBLOG',					'┤√─ъд╬Blogд╧║я╜№д╟днд▐д╗дє');
+define('_ERROR_DELETEMEMBER',				'дкд╜дщдпд│д╬есеєе╨б╝д╧г▒д─░╩╛хд╬еведе╞ерд╬├°╝╘д╟двдыд┐дсбв║я╜№д╟днд▐д╗дєбг');
+define('_ERROR_BADTEMPLATENAME',			'╔╘└╡д╩е╞еєе╫еьб╝е╚╠╛д╟д╣бг(a-z бв0-9 д╬▒╤┐Ї╗·д╬д▀╗╚═╤▓─бге╣е┌б╝е╣д╧╗╚═╤╔╘▓─)');
+define('_ERROR_DUPTEMPLATENAME',			'╞▒д╕╠╛┴░д╬е╞еєе╫еьб╝е╚дм┤√д╦┬╕║▀д╖д▐д╣');
+define('_ERROR_BADSKINNAME',				'╔╘└╡д╩е╣енеє╠╛д╟д╣бг(a-z бв0-9 д╬▒╤┐Ї╗·д╬д▀╗╚═╤▓─бге╣е┌б╝е╣д╧╗╚═╤╔╘▓─)');
+define('_ERROR_DUPSKINNAME',				'╞▒д╕╠╛┴░д╬е╣енеєдм┤√д╦┬╕║▀д╖д▐д╣бг');
+define('_ERROR_DEFAULTSKIN',				'д│д╬е╣енеєд╧╔╕╜рд╬е╣енеєд╦└▀─ъд╡дьд╞дддыд┐дс║я╜№д╟днд▐д╗дєбг');
+define('_ERROR_SKINDEFDELETE',				'░╩▓╝д╬Blogд╬┤√─ъд╬е╣енеєд╦╗╪─ъд╡дьд╞дддыд┐дсбве╣енеєдЄ║я╜№д╟днд▐д╗дєбг: ');
+define('_ERROR_DISALLOWED',					'д│д╬евепе╖ечеєд╬╝┬╣╘дм╡Ў▓─д╡дьд╞ддд▐д╗дєбг');
+define('_ERROR_DELETEBAN',					'╢╪╗▀╝╘д╬║я╜№├цд╦еиещб╝дм╚п└╕д╖д▐д╖д┐(╢╪╗▀╝╘дм┬╕║▀д╖д▐д╗дє)');
+define('_ERROR_ADDBAN',						'╢╪╗▀╝╘д╬─╔▓├├цд╦еиещб╝дм╚п└╕д╖д▐д╖д┐бг┴┤д╞д╬blogд╦└╡д╖дп─╔▓├д╡дьд╞ддд╩дддлдтд╖дьд▐д╗дєбг');
+define('_ERROR_BADACTION',					'═╫╡сд╡дьд┐евепе╖ечеєдм┬╕║▀д╖д▐д╗дєбг');
+define('_ERROR_MEMBERMAILDISABLED',			'есеєе╨б╝┤╓д╬есб╝еыесе├е╗б╝е╕дм╗╚═╤╔╘▓─д╦д╩д├д╞ддд▐д╣бг');
+define('_ERROR_MEMBERCREATEDISABLED',		'есеєе╨б╝║ю└одм╢╪╗▀д╡дьд╞ддд▐д╣бг');
+define('_ERROR_INCORRECTEMAIL',				'╔╘└╡д╩есб╝еыеве╔еье╣д╟д╣бг');
+define('_ERROR_VOTEDBEFORE',				'д│д╬еведе╞ерд╦д╧┤√д╦┼ъ╔╝║╤д▀д╟д╣бг');
+define('_ERROR_BANNED1',					'двд╩д┐ (IP╚╧░╧ ');
+define('_ERROR_BANNED2',					') д╧д│д╬евепе╖ечеєд╬╝┬╣╘дм╢╪╗▀д╡дьд╞ддд▐д╣бгесе├е╗б╝е╕: \'');
 define('_ERROR_BANNED3',					'\'');
-define('_ERROR_LOGINNEEDED',				'я┐╜┬╣╘дя┐╜я┐╜я┐╜╦д╧е?я┐╜я┐╜я┐╜я┐╜╔мя┐╜╫д╟дя┐╜я┐╜я┐╜');
-define('_ERROR_CONNECT',					'я┐╜я┐╜┬│я┐╜я┐╜я┐╜щб╝');
-define('_ERROR_FILE_TOO_BIG',				'я┐╜╒ея┐╜я┐╜я┐╜я┐╜ыдмя┐╜чдня┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_BADFILETYPE',				'я┐╜я┐╜я┐╜├е╫е?я┐╜╔дя┐╜╟зя┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜╩дя┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜ые┐я┐╜я┐╜я┐╜╫д╟дя┐╜я┐╜я┐╜');
-define('_ERROR_BADREQUEST',					'я┐╜я┐╜я┐╜я┐╜я┐╜╩ея┐╜я┐╜├е╫е?я┐╜я┐╜я┐╜╫╡я┐╜╟дя┐╜');
-define('_ERROR_DISALLOWEDUPLOAD',			'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╧д╔дя┐╜Blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╦дя┐╜я┐╜я┐╜я┐╜├д╞дя┐╜я┐╜╩дя┐╜я┐╜╬д╟е╒ея┐╜я┐╜я┐╜я┐╜я┐╜Єеве├е╫е?я┐╜╔д╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_BADPERMISSIONS',				'я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜/я┐╜╟ея┐╜я┐╜ьепя┐╜╚ея┐╜╬е╤бя┐╜я┐╜▀е├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├е╚дя┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_UPLOADMOVEP',				'я┐╜я┐╜я┐╜├е╫е?я┐╜╔е╒ея┐╜я┐╜я┐╜я┐╜я┐╜╬░я┐╜╞░я┐╜я┐╜╦ея┐╜я┐╜щб╝я┐╜я┐╜╚пя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_UPLOADCOPY',					'я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜╘бя┐╜я┐╜я┐╜╦ея┐╜я┐╜щб╝я┐╜я┐╜╚пя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_UPLOADDUPLICATE',			'╞▒я┐╜я┐╜╠╛я┐╜я┐╜я┐╜╬е╒ея┐╜я┐╜я┐╜я┐╜ыдмя┐╜я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╠╛я┐╜я┐╜я┐╜я┐╜я┐╜╤╣я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_LOGINDISALLOWED',			'я┐╜я┐╜я┐╜я┐╜я┐╜╬░я┐╜╪д╬е?я┐╜я┐╜я┐╜я┐╜╟зя┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜єбгдтд╖я┐╜я┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜цб╝я┐╜я┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜├д╞дя┐╜я┐╜я┐╜╬д╩дщбвя┐╜я┐╜я┐╜я┐╜цб╝я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜╞е?я┐╜я┐╜я┐╜єд╖д╩дя┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_DBCONNECT',					'MySQLя┐╜я┐╜я┐╜я┐╜я┐╜╨дя┐╜я┐╜я┐╜┬│я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_DBSELECT',					'Nucleusя┐╜я┐╜я┐╜я┐╜я┐╜╤дя┐╜я┐╜я┐╜╟бя┐╜я┐╜я┐╜я┐╜┘бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_NOSUCHLANGUAGE',				'я┐╜я┐╜я┐╜ъд╡я┐╜ьд┐я┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_NOSUCHCATEGORY',				'я┐╜я┐╜я┐╜ъд╡я┐╜ьд┐я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_DELETELASTCATEGORY',			'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜─дя┐╜я┐╜я┐╜я┐╜ъд╖я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ERROR_DELETEDEFCATEGORY',			'я┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜╧║я┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_BADCATEGORYNAME',			'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝╠╛я┐╜╚дя┐╜я┐╜╞╗╚дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_ERROR_DUPCATEGORYNAME',			'╞▒я┐╜я┐╜╠╛я┐╜я┐╜я┐╜╬ея┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜я┐╜я┐╜┬╕я┐╜▀дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_ERROR_LOGINNEEDED',				'╝┬╣╘д╣дыд╦д╧еэе░едеєдм╔м═╫д╟д╣бг');
+define('_ERROR_CONNECT',					'└▄┬│еиещб╝');
+define('_ERROR_FILE_TOO_BIG',				'е╒ебедеыдм┬чднд╣дод▐д╣бк');
+define('_ERROR_BADFILETYPE',				'еве├е╫еэб╝е╔дм╟здсдщдьд╞ддд╩дде╒ебедеые┐еде╫д╟д╣бг');
+define('_ERROR_BADREQUEST',					'╔╘└╡д╩еве├е╫еэб╝е╔═╫╡сд╟д╣');
+define('_ERROR_DISALLOWEDUPLOAD',			'двд╩д┐д╧д╔д╬Blogе┴б╝ерд╦дт╞■д├д╞ддд╩ддд╬д╟е╒ебедеыдЄеве├е╫еэб╝е╔д╟днд▐д╗дєбг');
+define('_ERROR_BADPERMISSIONS',				'е╒ебедеы/е╟егеьепе╚еъд╬е╤б╝е▀е├е╖ечеєдм└╡д╖дпе╗е├е╚д╡дьд╞ддд▐д╗дєбг');
+define('_ERROR_UPLOADMOVEP',				'еве├е╫еэб╝е╔е╒ебедеыд╬░▄╞░├цд╦еиещб╝дм╚п└╕д╖д▐д╖д┐бг');
+define('_ERROR_UPLOADCOPY',					'е╒ебедеыд╬е│е╘б╝├цд╦еиещб╝дм╚п└╕д╖д▐д╖д┐бг');
+define('_ERROR_UPLOADDUPLICATE',			'╞▒д╕╠╛┴░д╬е╒ебедеыдм┤√д╦┬╕║▀д╖д▐д╣бгеве├е╫еэб╝е╔д╣ды┴░д╦╠╛┴░дЄ╩╤╣╣д╖д╞д╖д╞дпд└д╡ддбг');
+define('_ERROR_LOGINDISALLOWED',			'┤╔═¤╬╬░шд╪д╬еэе░едеєдм╟здсдщдьд╞ддд▐д╗дєбгдтд╖двд╩д┐дм┤╔═¤ецб╝е╢б╝д╬евележеєе╚дЄ╗¤д├д╞дддыд╬д╩дщбв┤╔═¤ецб╝е╢б╝д╚д╖д╞еэе░едеєд╖д╩дкд╖д╞дпд└д╡ддбг');
+define('_ERROR_DBCONNECT',					'MySQLе╡б╝е╨д╦└▄┬│д╟днд▐д╗дє');
+define('_ERROR_DBSELECT',					'Nucleusдм╗╚═╤д╣дые╟б╝е┐е┘б╝е╣дЄ┴к┬Єд╟днд▐д╗дєбг');
+define('_ERROR_NOSUCHLANGUAGE',				'╗╪─ъд╡дьд┐╕└╕ье╒ебедеыд╧┬╕║▀д╖д▐д╗дєбг');
+define('_ERROR_NOSUCHCATEGORY',				'╗╪─ъд╡дьд┐еле╞е┤еъб╝д╧┬╕║▀д╖д▐д╗дєбг');
+define('_ERROR_DELETELASTCATEGORY',			'еле╞е┤еъб╝дЄ║╟─у░ьд─д╧└▀─ъд╖д╞дпд└д╡ддбг');
+define('_ERROR_DELETEDEFCATEGORY',			'┤√─ъд╬еле╞е┤еъб╝д╧║я╜№д╟днд▐д╗дєбг');
+define('_ERROR_BADCATEGORYNAME',			'еле╞е┤еъб╝╠╛д╚д╖д╞╗╚дид▐д╗дє');
+define('_ERROR_DUPCATEGORYNAME',			'╞▒д╕╠╛┴░д╬еле╞е┤еъб╝дм┤√д╦┬╕║▀д╖д▐д╣бг');
 
 // some warnings (used for mediadir setting)
-define('_WARNING_NOTADIR',					'я┐╜┘╣я┐╜: я┐╜╟ея┐╜я┐╜ьепя┐╜╚ея┐╜╟д╧дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_WARNING_NOTREADABLE',				'я┐╜┘╣я┐╜: я┐╜╔д▀╝я┐╜я┐╜я┐╜╘▓я┐╜╟╜я┐╜╩е╟ея┐╜я┐╜ьепя┐╜╚ея┐╜╟дя┐╜я┐╜я┐╜');
-define('_WARNING_NOTWRITABLE',				'я┐╜┘╣я┐╜: я┐╜ёдн╣я┐╜я┐╜я┐╜я┐╜╘▓я┐╜╟╜я┐╜╩е╟ея┐╜я┐╜ьепя┐╜╚ея┐╜╟дя┐╜я┐╜я┐╜');
+define('_WARNING_NOTADIR',					'╖┘╣Ё: е╟егеьепе╚еъд╟д╧двдъд▐д╗дєбк');
+define('_WARNING_NOTREADABLE',				'╖┘╣Ё: ╞╔д▀╝шдъ╔╘▓─╟╜д╩е╟егеьепе╚еъд╟д╣бк');
+define('_WARNING_NOTWRITABLE',				'╖┘╣Ё: ╜ёдн╣■д▀╔╘▓─╟╜д╩е╟егеьепе╚еъд╟д╣бк');
 
 // media and upload
-define('_MEDIA_UPLOADLINK',					'я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜├е╫е?я┐╜я┐╜');
-define('_MEDIA_MODIFIED',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_MEDIA_FILENAME',					'я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╠╛');
-define('_MEDIA_DIMENSIONS',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_MEDIA_INLINE',						'я┐╜я┐╜я┐╜я┐╜я┐╜▀╖я┐╜');
-define('_MEDIA_POPUP',						'я┐╜▌е├е╫ея┐╜я┐╜├е╫╖я┐╜');
-define('_UPLOAD_TITLE',						'я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_UPLOAD_MSG',						'я┐╜я┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Єд╖д╞б╓ея┐╜я┐╜├е╫е?я┐╜╔б╫е▄ея┐╜я┐╜я┐╜Є▓бдя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_UPLOAD_BUTTON',					'я┐╜я┐╜я┐╜├е╫е?я┐╜я┐╜');
+define('_MEDIA_UPLOADLINK',					'е╒ебедеыд╬еве├е╫еэб╝е╔');
+define('_MEDIA_MODIFIED',					'╣╣┐╖╞№');
+define('_MEDIA_FILENAME',					'е╒ебедеы╠╛');
+define('_MEDIA_DIMENSIONS',					'е╡еде║');
+define('_MEDIA_INLINE',						'╦фдс╣■д▀╖┐');
+define('_MEDIA_POPUP',						'е▌е├е╫еве├е╫╖┐');
+define('_UPLOAD_TITLE',						'е╒ебедеы┴к┬Є');
+define('_UPLOAD_MSG',						'еве├е╫еэб╝е╔д╣дые╒ебедеыдЄ┴к┬Єд╖д╞б╓еве├е╫еэб╝е╔б╫е▄е┐еєдЄ▓бд╖д╞дпд└д╡дд');
+define('_UPLOAD_BUTTON',					'еве├е╫еэб╝е╔');
 
 // some status messages
-//define('_MSG_ACCOUNTCREATED',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜я┐╜сб╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜');
-//define('_MSG_PASSWORDSENT',				'я┐╜╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜я┐╜сб╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_MSG_LOGINAGAIN',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚╛я┐╜я┐╜я┐╜я┐╜╤╣я┐╜я┐╜я┐╜я┐╜ьд┐я┐╜┘бя┐╜я┐╜?я┐╜я┐╜я┐╜єд╖д╩дя┐╜я┐╜я┐╜╔мя┐╜╫дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜');
-define('_MSG_SETTINGSCHANGED',				'я┐╜я┐╜я┐╜ъдмя┐╜╤╣я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_MSG_ADMINCHANGED',					'я┐╜я┐╜я┐╜я┐╜╘╕я┐╜я┐╜┬дя┐╜я┐╜╤╣я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_MSG_NEWBLOG',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_MSG_ACTIONLOGCLEARED',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Єдм╛├╡юд╡я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+//define('_MSG_ACCOUNTCREATED',				'евележеєе╚дм║ю└од╡дьд▐д╖д┐бге╤е╣еяб╝е╔дмесб╝еыд╟┴ў┐од╡дьд▐д╣');
+//define('_MSG_PASSWORDSENT',				'е╤е╣еяб╝е╔дмесб╝еыд╟┴ў┐од╡дьд▐д╖д┐бг');
+define('_MSG_LOGINAGAIN',					'евележеєе╚╛Ё╩єдм╩╤╣╣д╡дьд┐░┘бвеэе░едеєд╖д╩дкд╣╔м═╫дмдвдъд▐д╣');
+define('_MSG_SETTINGSCHANGED',				'└▀─ъдм╩╤╣╣д╡дьд▐д╖д┐');
+define('_MSG_ADMINCHANGED',					'┤╔═¤╝╘╕в╕┬дм╩╤╣╣д╡дьд▐д╖д┐');
+define('_MSG_NEWBLOG',						'┐╖д╖ддBlogдм║ю└од╡дьд▐д╖д┐');
+define('_MSG_ACTIONLOGCLEARED',				'┤╔═¤┴р║ю═·╬Єдм╛├╡юд╡дьд▐д╖д┐');
 
 // actionlog in admin area
-define('_ACTIONLOG_DISALLOWED',				'я┐╜я┐╜я┐╜─дя┐╜я┐╜я┐╜╞дя┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜: ');
-define('_ACTIONLOG_PWDREMINDERSENT',		'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜: ');
-define('_ACTIONLOG_TITLE',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_ACTIONLOG_CLEAR_TITLE',			'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬╛├╡я┐╜');
-define('_ACTIONLOG_CLEAR_TEXT',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Є║гдя┐╜я┐╜я┐╜я┐╜├╡я┐╜');
+define('_ACTIONLOG_DISALLOWED',				'╡Ў▓─д╡дьд╞ддд╩ддевепе╖ечеє: ');
+define('_ACTIONLOG_PWDREMINDERSENT',		'┐╖д╖дде╤е╣еяб╝е╔д╬┴ў┐о└ш: ');
+define('_ACTIONLOG_TITLE',					'┤╔═¤┴р║ю═·╬Є');
+define('_ACTIONLOG_CLEAR_TITLE',			'┤╔═¤┴р║ю═·╬Єд╬╛├╡ю');
+define('_ACTIONLOG_CLEAR_TEXT',				'┤╔═¤┴р║ю═·╬ЄдЄ║гд╣д░╛├╡ю');
 
 // team management
-define('_TEAM_TITLE',						'Blogя┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ ');
-define('_TEAM_CURRENT',						'я┐╜я┐╜я┐╜▀д╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨бя┐╜');
-define('_TEAM_ADDNEW',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╦┐я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜╔▓├дя┐╜я┐╜я┐╜');
-define('_TEAM_CHOOSEMEMBER',				'я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEAM_ADMIN',						'я┐╜я┐╜я┐╜я┐╜╘╕я┐╜я┐╜┬дя┐╜═┐я┐╜я┐╜я┐╜я┐╜ ');
-define('_TEAM_ADD',							'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔▓я┐╜');
-define('_TEAM_ADD_BTN',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔▓я┐╜');
+define('_TEAM_TITLE',						'Blogд╬е┴б╝ердЄ┤╔═¤д╣ды ');
+define('_TEAM_CURRENT',						'╕╜║▀д╬е┴б╝ересеєе╨б╝');
+define('_TEAM_ADDNEW',						'е┴б╝ерд╦┐╖д╖ддесеєе╨б╝дЄ─╔▓├д╣ды');
+define('_TEAM_CHOOSEMEMBER',				'есеєе╨б╝дЄ┴кд╓');
+define('_TEAM_ADMIN',						'┤╔═¤╝╘╕в╕┬дЄ═┐диды ');
+define('_TEAM_ADD',							'е┴б╝ерд╦─╔▓├');
+define('_TEAM_ADD_BTN',						'е┴б╝ерд╦─╔▓├');
 
 // blogsettings
-define('_EBLOG_TITLE',						'Blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘╜я┐╜');
-define('_EBLOG_TEAM_TITLE',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬┤я┐╜я┐╜я┐╜');
-define('_EBLOG_TEAM_TEXT',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬┤я┐╜я┐╜я┐╜...');
-define('_EBLOG_SETTINGS_TITLE',				'Blogя┐╜я┐╜я┐╜я┐╜');
-define('_EBLOG_NAME',						'Blogя┐╜я┐╜╠╛я┐╜я┐╜');
-define('_EBLOG_SHORTNAME',					'Blogя┐╜я┐╜├╗я┐╜я┐╜╠╛(╬мя┐╜я┐╜)');
-define('_EBLOG_SHORTNAME_EXTRA',			'<br />(a-zя┐╜╬▒╤╛я┐╜╩╕я┐╜я┐╜╬д▀дя┐╜я┐╜я┐╜я┐╜╤д╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╧╗я┐╜я┐╜╤д╟дя┐╜я┐╜▐дя┐╜я┐╜я┐╜)');
-define('_EBLOG_DESC',						'Blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_EBLOG_URL',						'Blogя┐╜я┐╜URL');
-define('_EBLOG_DEFSKIN',					'Blogя┐╜я┐╜╔╕я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_EBLOG_DEFCAT',						'Blogя┐╜я┐╜╔╕я┐╜я┐╜╬ея┐╜я┐╜╞ея┐╜я┐╜я┐╜');
-define('_EBLOG_LINEBREAKS',					'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜╬▓я┐╜я┐╜╘дя┐╜я┐╜╤┤я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_EBLOG_DISABLECOMMENTS',			'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜╒дя┐╜я┐╜я┐╜<br /><small>(я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜╪╗▀дя┐╜я┐╜я┐╜╚ея┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜╔▓├д╧д╟дя┐╜я┐╜╩дя┐╜я┐╜╩дя┐╜▐дя┐╜я┐╜я┐╜)</small>');
-define('_EBLOG_ANONYMOUS',					'я┐╜я┐╜я┐╜╨бя┐╜я┐╜╩│я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜╒дя┐╜я┐╜я┐╜');
-define('_EBLOG_NOTIFY',						'я┐╜я┐╜я┐╜╬дя┐╜я┐╜я┐╜сб╝я┐╜ыевя┐╜╔еье╣ ( ; я┐╜╟╢я┐╜я┐╜┌д├д╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜)');
-define('_EBLOG_NOTIFY_ON',					'я┐╜╩▓я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬дя┐╜я┐╜я┐╜');
-define('_EBLOG_NOTIFY_COMMENT',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_EBLOG_NOTIFY_KARMA',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔╝');
-define('_EBLOG_NOTIFY_ITEM',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜');
-define('_EBLOG_PING',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╙ея┐╜я┐╜╦╣я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬дя┐╜я┐╜я┐╜'); // NOTE: This string is no longer in used
-define('_EBLOG_MAXCOMMENTS',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔╜я┐╜я┐╜я┐╜я┐╜я┐╜ые│я┐╜я┐╜я┐╜╚д╬║я┐╜я┐╜я┐╜я┐╜');
-define('_EBLOG_UPDATE',						'я┐╜я┐╜╞░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_EBLOG_OFFSET',						'я┐╜я┐╜я┐╜я┐╜я┐╜╨╗я┐╜я┐╜я┐╜╚д╬╗я┐╜я┐╜я┐╜');
-define('_EBLOG_STIME',						'я┐╜я┐╜я┐╜▀д╬ея┐╜я┐╜я┐╜я┐╜╨╗я┐╜я┐╜я┐╜: ');
-define('_EBLOG_BTIME',						'я┐╜я┐╜я┐╜▀дя┐╜Blogя┐╜я┐╜я┐╜я┐╜: ');
-define('_EBLOG_CHANGE',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤╣я┐╜');
-define('_EBLOG_CHANGE_BTN',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤╣я┐╜');
-define('_EBLOG_ADMIN',						'Blogя┐╜я┐╜я┐╜я┐╜╘╕я┐╜я┐╜я┐╜');
-define('_EBLOG_ADMIN_MSG',					'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╦д╧┤я┐╜я┐╜я┐╜╘╕я┐╜я┐╜┬дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜');
-define('_EBLOG_CREATE_TITLE',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Blogя┐╜╬║я┐╜я┐╜я┐╜');
-define('_EBLOG_CREATE_TEXT',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┘д╦░╩▓я┐╜я┐╜╬е╒ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜<br /><br /> <b>я┐╜я┐╜я┐╜:</b> ╔мя┐╜╫д╩ея┐╜я┐╜╫ея┐╜я┐╜я┐╜я┐╜╬д▀дя┐╜╔╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜╔▓├д╬ея┐╜я┐╜╫ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ъд╖я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜хбвBlogя┐╜я┐╜я┐╜я┐╜┌бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ъд╖я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_EBLOG_CREATE',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_EBLOG_CREATE_BTN',					'Blogя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_EBLOG_CAT_TITLE',					'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝');
-define('_EBLOG_CAT_NAME',					'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝╠╛');
-define('_EBLOG_CAT_DESC',					'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_EBLOG_CAT_CREATE',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜я┐╜');
-define('_EBLOG_CAT_UPDATE',					'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜╬╣я┐╜я┐╜я┐╜');
-define('_EBLOG_CAT_UPDATE_BTN',				'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜Є╣╣┐я┐╜');
+define('_EBLOG_TITLE',						'Blog└▀─ъд╬╩╘╜╕');
+define('_EBLOG_TEAM_TITLE',					'е┴б╝ерд╬┤╔═¤');
+define('_EBLOG_TEAM_TEXT',					'е┴б╝ерд╬┤╔═¤...');
+define('_EBLOG_SETTINGS_TITLE',				'Blog└▀─ъ');
+define('_EBLOG_NAME',						'Blogд╬╠╛┴░');
+define('_EBLOG_SHORTNAME',					'Blogд╬├╗╜╠╠╛(╬м╛╬)');
+define('_EBLOG_SHORTNAME_EXTRA',			'<br />(a-zд╬▒╤╛о╩╕╗·д╬д▀дм╗╚═╤д╟днд▐д╣бг╢ї╟Єд╧╗╚═╤д╟днд▐д╗дє)');
+define('_EBLOG_DESC',						'Blogд╬└т╠└');
+define('_EBLOG_URL',						'Blogд╬URL');
+define('_EBLOG_DEFSKIN',					'Blogд╬╔╕╜рд╬е╣енеє');
+define('_EBLOG_DEFCAT',						'Blogд╬╔╕╜рд╬еле╞е┤еъ');
+define('_EBLOG_LINEBREAKS',					'еведе╞ерд╬▓■╣╘дЄ╩╤┤╣д╣ды');
+define('_EBLOG_DISABLECOMMENTS',			'е│есеєе╚дЄ╝їд▒╔╒д▒ды<br /><small>(е│есеєе╚дЄ╢╪╗▀д╣дыд╚е│есеєе╚д╬─╔▓├д╧д╟днд╩дпд╩дъд▐д╣бг)</small>');
+define('_EBLOG_ANONYMOUS',					'есеєе╨б╝░╩│░д╬е│есеєе╚дЄ╝їд▒╔╒д▒ды');
+define('_EBLOG_NOTIFY',						'─╠├╬д╣дыесб╝еыеве╔еье╣ ( ; д╟╢ш└┌д├д╞дпд└д╡дд)');
+define('_EBLOG_NOTIFY_ON',					'░╩▓╝дЄ─╠├╬д╣ды');
+define('_EBLOG_NOTIFY_COMMENT',				'┐╖д╖дде│есеєе╚');
+define('_EBLOG_NOTIFY_KARMA',				'┐╖д╖дделеые▐┼ъ╔╝');
+define('_EBLOG_NOTIFY_ITEM',				'┐╖д╖ддBlogеведе╞ер');
+define('_EBLOG_PING',						'╣╣┐╖╗■д╦Blog╕б║ўе╡б╝е╙е╣д╦╣╣┐╖дЄ─╠├╬д╣ды'); // NOTE: This string is no longer in used
+define('_EBLOG_MAXCOMMENTS',				'░ь═ўд╦╔╜╝ид╣дые│есеєе╚д╬║╟┬ч┐Ї');
+define('_EBLOG_UPDATE',						'╝л╞░╣╣┐╖д╣дые╒ебедеы');
+define('_EBLOG_OFFSET',						'е╡б╝е╨╗■╣яд╚д╬╗■║╣');
+define('_EBLOG_STIME',						'╕╜║▀д╬е╡б╝е╨╗■╣я: ');
+define('_EBLOG_BTIME',						'╕╜║▀д╬Blog╗■╣я: ');
+define('_EBLOG_CHANGE',						'└▀─ъд╬╩╤╣╣');
+define('_EBLOG_CHANGE_BTN',					'└▀─ъд╬╩╤╣╣');
+define('_EBLOG_ADMIN',						'Blog┤╔═¤╝╘╕в╕┬');
+define('_EBLOG_ADMIN_MSG',					'двд╩д┐д╦д╧┤╔═¤╝╘╕в╕┬дм│фдъ┼Ўд╞дщдьд▐д╣');
+define('_EBLOG_CREATE_TITLE',				'┐╖д╖ддBlogд╬║ю└о');
+define('_EBLOG_CREATE_TEXT',				'┐╖д╖ддBlogдЄ║ю└од╣ды░┘д╦░╩▓╝д╬е╒ейб╝ердЄ╦фдсд╞дпд└д╡ддбг<br /><br /> <b>├э░╒:</b> ╔м═╫д╩еке╫е╖ечеєд╬д▀дм╔╜╝ид╡дьд╞ддд▐д╣бг─╔▓├д╬еке╫е╖ечеєдЄ└▀─ъд╖д┐дд╛ь╣чд╧BlogдЄ║ю└од╖д┐╕хбвBlog└▀─ъе┌б╝е╕д╟└▀─ъд╖д╞дпд└д╡ддбг');
+define('_EBLOG_CREATE',						'║ю└обк');
+define('_EBLOG_CREATE_BTN',					'BlogдЄ║ю└о');
+define('_EBLOG_CAT_TITLE',					'еле╞е┤еъб╝');
+define('_EBLOG_CAT_NAME',					'еле╞е┤еъб╝╠╛');
+define('_EBLOG_CAT_DESC',					'еле╞е┤еъб╝д╬└т╠└');
+define('_EBLOG_CAT_CREATE',					'┐╖д╖дделе╞е┤еъб╝дЄ║юды');
+define('_EBLOG_CAT_UPDATE',					'еле╞е┤еъб╝д╬╣╣┐╖');
+define('_EBLOG_CAT_UPDATE_BTN',				'еле╞е┤еъб╝дЄ╣╣┐╖');
 
 // templates
-define('_TEMPLATE_TITLE',					'я┐╜╞ея┐╜╫еьб╝я┐╜╚дя┐╜я┐╜╘╜я┐╜');
-define('_TEMPLATE_AVAILABLE_TITLE',			'я┐╜я┐╜я┐╜╤▓я┐╜╟╜я┐╜╩е╞ея┐╜╫еьб╝я┐╜я┐╜');
-define('_TEMPLATE_NEW_TITLE',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜╫еьб╝я┐╜я┐╜');
-define('_TEMPLATE_NAME',					'я┐╜╞ея┐╜╫еьб╝я┐╜я┐╜╠╛');
-define('_TEMPLATE_DESC',					'я┐╜╞ея┐╜╫еьб╝я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_CREATE',					'я┐╜╞ея┐╜╫еьб╝я┐╜╚д╬║я┐╜я┐╜я┐╜');
-define('_TEMPLATE_CREATE_BTN',				'я┐╜╞ея┐╜╫еьб╝я┐╜╚дя┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_EDIT_TITLE',				'я┐╜╞ея┐╜╫еьб╝я┐╜╚дя┐╜я┐╜╘╜я┐╜');
-define('_TEMPLATE_BACK',					'я┐╜╞ея┐╜╫еьб╝я┐╜╚д╬░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_EDIT_MSG',				'я┐╜я┐╜я┐╜╞д╬е╞ея┐╜╫еьб╝я┐╜╚е╤бя┐╜я┐╜─дя┐╜╔мя┐╜╫дя┐╜я┐╜я┐╜я┐╜╟д╧дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜╔мя┐╜╫д╩дя┐╜я┐╜я┐╜я┐╜╧╢я┐╜я┐╜я┐╜╬д▐д▐д╦дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_SETTINGS',				'я┐╜╞ея┐╜╫еьб╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_ITEMS',					'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜');
-define('_TEMPLATE_ITEMHEADER',				'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜╬е╪е├ея┐╜я┐╜я┐╜');
-define('_TEMPLATE_ITEMBODY',				'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_ITEMFOOTER',				'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜╬е╒е├ея┐╜я┐╜я┐╜');
-define('_TEMPLATE_MORELINK',				'┬│я┐╜я┐╜я┐╜╪д╬ея┐╜я┐╜');
-define('_TEMPLATE_NEW',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╒дя┐╜я┐╜я┐╜▐бя┐╜я┐╜я┐╜');
-define('_TEMPLATE_COMMENTS_ANY',			'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ (я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜)');
-define('_TEMPLATE_CHEADER',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚д╬е╪е├ея┐╜я┐╜я┐╜');
-define('_TEMPLATE_CBODY',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_CFOOTER',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚д╬е╒е├ея┐╜я┐╜я┐╜');
-define('_TEMPLATE_CONE',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜1я┐╜─д╬╗я┐╜');
-define('_TEMPLATE_CMANY',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜2я┐╜─░╩╛я┐╜╬╗я┐╜');
-define('_TEMPLATE_CMORE',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜┬│я┐╜я┐╜я┐╜я┐╜я┐╜╔дя┐╜');
-define('_TEMPLATE_CMEXTRA',					'я┐╜я┐╜╧┐я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╚д╪дя┐╜я┐╜╔▓я┐╜╔╜я┐╜я┐╜');
-define('_TEMPLATE_COMMENTS_NONE',			'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ (╠╡я┐╜я┐╜я┐╜я┐╜я┐╜)');
-define('_TEMPLATE_CNONE',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜╠╡я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_COMMENTS_TOOMUCH',		'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ (я┐╜я┐╜я┐╜я┐╜╔╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜┬┐я┐╜я┐╜я┐╜я┐╜я┐╜)');
-define('_TEMPLATE_CTOOMUCH',				'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜┬┐я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_ARCHIVELIST',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╓░я┐╜я┐╜я┐╜');
-define('_TEMPLATE_AHEADER',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╓░я┐╜я┐╜я┐╜я┐╜╬е╪е├ея┐╜я┐╜я┐╜');
-define('_TEMPLATE_AITEM',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╓░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_AFOOTER',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╓░я┐╜я┐╜я┐╜я┐╜╬е╒е├ея┐╜я┐╜я┐╜');
-define('_TEMPLATE_DATETIME',				'я┐╜я┐╜я┐╜╒д╚╗я┐╜я┐╜я┐╜');
-define('_TEMPLATE_DHEADER',					'я┐╜я┐╜я┐╜╒д╬е╪е├ея┐╜я┐╜я┐╜');
-define('_TEMPLATE_DFOOTER',					'я┐╜я┐╜я┐╜╒д╬е╒е├ея┐╜я┐╜я┐╜');
-define('_TEMPLATE_DFORMAT',					'я┐╜я┐╜я┐╜╒е╒ея┐╜я┐╜я┐╜я┐╜▐е├ея┐╜');
-define('_TEMPLATE_TFORMAT',					'я┐╜я┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜▐е├ея┐╜');
-define('_TEMPLATE_LOCALE',					'я┐╜?я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_IMAGE',					'я┐╜я┐╜я┐╜я┐╜╚ея┐╜╟ея┐╜я┐╜я┐╜я┐╜╬е▌е├е╫ея┐╜я┐╜├ея┐╜');
-define('_TEMPLATE_PCODE',					'я┐╜▌е├е╫ея┐╜я┐╜├е╫▓я┐╜я┐╜я┐╜╪д╬ея┐╜єепея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_ICODE',					'я┐╜я┐╜я┐╜я┐╜щедя┐╜я┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_MCODE',					'я┐╜я┐╜╟ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╓ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚д╪д╬ея┐╜єепея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_SEARCH',					'я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_SHIGHLIGHT',				'я┐╜╧ея┐╜я┐╜щедя┐╜я┐╜╔╜я┐╜я┐╜');
-define('_TEMPLATE_SNOTFOUND',				'я┐╜я┐╜я┐╜я┐╜я┐╜╟▓я┐╜я┐╜т╕ля┐╜─дя┐╜я┐╜я┐╜╩дя┐╜я┐╜├дя┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_UPDATE',					'я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_UPDATE_BTN',				'я┐╜╞ея┐╜╫еьб╝я┐╜╚д╬╣я┐╜я┐╜я┐╜');
-define('_TEMPLATE_RESET_BTN',				'я┐╜ъе╗я┐╜├ея┐╜');
-define('_TEMPLATE_CATEGORYLIST',			'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_CATHEADER',				'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜я┐╜я┐╜╬е╪е├ея┐╜я┐╜я┐╜');
-define('_TEMPLATE_CATITEM',					'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_TEMPLATE_CATFOOTER',				'я┐╜я┐╜я┐╜╞ея┐╜я┐╜ъб╝я┐╜я┐╜я┐╜я┐╜я┐╜╬е╒е├ея┐╜я┐╜я┐╜');
+define('_TEMPLATE_TITLE',					'е╞еєе╫еьб╝е╚д╬╩╘╜╕');
+define('_TEMPLATE_AVAILABLE_TITLE',			'╗╚═╤▓─╟╜д╩е╞еєе╫еьб╝е╚');
+define('_TEMPLATE_NEW_TITLE',				'┐╖д╖дде╞еєе╫еьб╝е╚');
+define('_TEMPLATE_NAME',					'е╞еєе╫еьб╝е╚╠╛');
+define('_TEMPLATE_DESC',					'е╞еєе╫еьб╝е╚д╬└т╠└');
+define('_TEMPLATE_CREATE',					'е╞еєе╫еьб╝е╚д╬║ю└о');
+define('_TEMPLATE_CREATE_BTN',				'е╞еєе╫еьб╝е╚дЄ║ю└о');
+define('_TEMPLATE_EDIT_TITLE',				'е╞еєе╫еьб╝е╚д╬╩╘╜╕');
+define('_TEMPLATE_BACK',					'е╞еєе╫еьб╝е╚д╬░ь═ўд╦╠сды');
+define('_TEMPLATE_EDIT_MSG',				'┴┤д╞д╬е╞еєе╫еьб╝е╚е╤б╝е─дм╔м═╫д╩╠їд╟д╧двдъд▐д╗дєбг╔м═╫д╩дд╛ь╣чд╧╢ї═єд╬д▐д▐д╦д╖д╞дкддд╞дпд└д╡ддбг');
+define('_TEMPLATE_SETTINGS',				'е╞еєе╫еьб╝е╚└▀─ъ');
+define('_TEMPLATE_ITEMS',					'еведе╞ер');
+define('_TEMPLATE_ITEMHEADER',				'еведе╞ерд╬е╪е├е└б╝');
+define('_TEMPLATE_ITEMBODY',				'еведе╞ерд╬╦▄┬╬');
+define('_TEMPLATE_ITEMFOOTER',				'еведе╞ерд╬е╒е├е┐б╝');
+define('_TEMPLATE_MORELINK',				'┬│днд╪д╬еъеєеп');
+define('_TEMPLATE_NEW',						'┐╖д╖ддеведе╞ерд╦╔╒д▒дые▐б╝еп');
+define('_TEMPLATE_COMMENTS_ANY',			'е│есеєе╚ (двды╛ь╣ч)');
+define('_TEMPLATE_CHEADER',					'е│есеєе╚д╬е╪е├е└б╝');
+define('_TEMPLATE_CBODY',					'е│есеєе╚д╬╦▄┬╬');
+define('_TEMPLATE_CFOOTER',					'е│есеєе╚д╬е╒е├е┐б╝');
+define('_TEMPLATE_CONE',					'е│есеєе╚дм1д─д╬╗■');
+define('_TEMPLATE_CMANY',					'е│есеєе╚дм2д─░╩╛хд╬╗■');
+define('_TEMPLATE_CMORE',					'е│есеєе╚д╬┬│дндЄ╞╔др');
+define('_TEMPLATE_CMEXTRA',					'┼╨╧┐есеєе╨б╝длдщд╬е│есеєе╚д╪д╬─╔▓├╔╜╝и');
+define('_TEMPLATE_COMMENTS_NONE',			'е│есеєе╚ (╠╡дд╛ь╣ч)');
+define('_TEMPLATE_CNONE',					'е│есеєе╚дм╠╡дд╗■');
+define('_TEMPLATE_COMMENTS_TOOMUCH',		'е│есеєе╚ (║╟┬ч╔╜╝и┐Їдшдъ┬┐дд╛ь╣ч)');
+define('_TEMPLATE_CTOOMUCH',				'е│есеєе╚дм┬┐д╣доды╗■');
+define('_TEMPLATE_ARCHIVELIST',				'евб╝еледе╓░ь═ў');
+define('_TEMPLATE_AHEADER',					'евб╝еледе╓░ь═ўд╬е╪е├е└б╝');
+define('_TEMPLATE_AITEM',					'евб╝еледе╓░ь═ўд╬╦▄┬╬');
+define('_TEMPLATE_AFOOTER',					'евб╝еледе╓░ь═ўд╬е╒е├е┐б╝');
+define('_TEMPLATE_DATETIME',				'╞№╔╒д╚╗■╣я');
+define('_TEMPLATE_DHEADER',					'╞№╔╒д╬е╪е├е└б╝');
+define('_TEMPLATE_DFOOTER',					'╞№╔╒д╬е╒е├е┐б╝');
+define('_TEMPLATE_DFORMAT',					'╞№╔╒е╒ейб╝е▐е├е╚');
+define('_TEMPLATE_TFORMAT',					'╗■╣яе╒ейб╝е▐е├е╚');
+define('_TEMPLATE_LOCALE',					'еэе▒б╝еы');
+define('_TEMPLATE_IMAGE',					'▓ш┴№д╚есе╟егевд╬е▌е├е╫еве├е╫');
+define('_TEMPLATE_PCODE',					'е▌е├е╫еве├е╫▓ш┴№д╪д╬еъеєепе│б╝е╔');
+define('_TEMPLATE_ICODE',					'едеєещедеє▓ш┴№д╬е│б╝е╔');
+define('_TEMPLATE_MCODE',					'есе╟егевеке╓е╕езепе╚д╪д╬еъеєепе│б╝е╔');
+define('_TEMPLATE_SEARCH',					'╕б║ў');
+define('_TEMPLATE_SHIGHLIGHT',				'е╧едещеде╚╔╜╝и');
+define('_TEMPLATE_SNOTFOUND',				'╕б║ўд╟▓┐дт╕лд─длдщд╩длд├д┐╛ь╣ч');
+define('_TEMPLATE_UPDATE',					'╣╣┐╖');
+define('_TEMPLATE_UPDATE_BTN',				'е╞еєе╫еьб╝е╚д╬╣╣┐╖');
+define('_TEMPLATE_RESET_BTN',				'еъе╗е├е╚');
+define('_TEMPLATE_CATEGORYLIST',			'еле╞е┤еъб╝░ь═ў');
+define('_TEMPLATE_CATHEADER',				'еле╞е┤еъб╝░ь═ўд╬е╪е├е└б╝');
+define('_TEMPLATE_CATITEM',					'еле╞е┤еъб╝░ь═ўд╬╦▄┬╬');
+define('_TEMPLATE_CATFOOTER',				'еле╞е┤еъб╝░ь═ўд╬е╒е├е┐б╝');
 
 // skins
-define('_SKIN_EDIT_TITLE',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘╜я┐╜');
-define('_SKIN_AVAILABLE_TITLE',				'я┐╜я┐╜я┐╜╤▓я┐╜╟╜я┐╜╩ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SKIN_NEW_TITLE',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SKIN_NAME',						'╠╛я┐╜я┐╜');
-define('_SKIN_DESC',						'я┐╜я┐╜я┐╜я┐╜');
+define('_SKIN_EDIT_TITLE',					'е╣енеєд╬╩╘╜╕');
+define('_SKIN_AVAILABLE_TITLE',				'╗╚═╤▓─╟╜д╩е╣енеє');
+define('_SKIN_NEW_TITLE',					'┐╖д╖дде╣енеє');
+define('_SKIN_NAME',						'╠╛┴░');
+define('_SKIN_DESC',						'└т╠└');
 define('_SKIN_TYPE',						'Content Type');
-define('_SKIN_CREATE',						'я┐╜я┐╜я┐╜я┐╜');
-define('_SKIN_CREATE_BTN',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬║я┐╜я┐╜я┐╜');
-define('_SKIN_EDITONE_TITLE',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘╜я┐╜');
-define('_SKIN_BACK',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SKIN_PARTS_TITLE',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤бя┐╜я┐╜я┐╜');
-define('_SKIN_PARTS_MSG',					'я┐╜я┐╜я┐╜ьд╛я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞д╬ея┐╜я┐╜я┐╜я┐╜╫дя┐╜╔мя┐╜╫д╚д╧╕┬дя┐╜▐дя┐╜я┐╜я┐╜╔мя┐╜╫д╩дя┐╜я┐╜я┐╜я┐╜╧╢я┐╜я┐╜я┐╜╬д▐д▐д╦дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╩▓я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘╜я┐╜я┐╜я┐╜я┐╜ые╣я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜:');
-define('_SKIN_PART_MAIN',					'я┐╜седя┐╜я┐╜я┐╜я┐╜▄╝я┐╜я┐╜┌бя┐╜я┐╜я┐╜');
-define('_SKIN_PART_ITEM',					'я┐╜я┐╜я┐╜╠ея┐╜я┐╜я┐╜я┐╜╞ея┐╜┌бя┐╜я┐╜я┐╜');
-define('_SKIN_PART_ALIST',					'я┐╜я┐╜я┐╜╠ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╓░я┐╜я┐╜я┐╜я┐╜┌бя┐╜я┐╜я┐╜');
-define('_SKIN_PART_ARCHIVE',				'я┐╜я┐╜я┐╜╠ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╓е┌бя┐╜я┐╜я┐╜');
-define('_SKIN_PART_SEARCH',					'я┐╜я┐╜я┐╜я┐╜я┐╜┌бя┐╜я┐╜я┐╜');
-define('_SKIN_PART_ERROR',					'я┐╜я┐╜я┐╜щб╝я┐╜┌бя┐╜я┐╜я┐╜');
-define('_SKIN_PART_MEMBER',					'я┐╜я┐╜я┐╜╨бя┐╜я┐╜▄║┘е┌бя┐╜я┐╜я┐╜');
-define('_SKIN_PART_POPUP',					'я┐╜я┐╜я┐╜я┐╜▌е├е╫ея┐╜я┐╜├е╫ея┐╜я┐╜я┐╜я┐╜я┐╜╔ея┐╜');
-define('_SKIN_GENSETTINGS_TITLE',			'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SKIN_CHANGE',						'я┐╜╤╣я┐╜');
-define('_SKIN_CHANGE_BTN',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤╣я┐╜');
-define('_SKIN_UPDATE_BTN',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬╣я┐╜я┐╜я┐╜');
-define('_SKIN_RESET_BTN',					'я┐╜ъе╗я┐╜├ея┐╜');
-define('_SKIN_EDITPART_TITLE',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘╜я┐╜');
-define('_SKIN_GOBACK',						'я┐╜я┐╜я┐╜');
-define('_SKIN_ALLOWEDVARS',					'я┐╜я┐╜я┐╜╤▓я┐╜╟╜я┐╜я┐╜я┐╜╤┐я┐╜ (я┐╜я┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔╜я┐╜я┐╜):');
+define('_SKIN_CREATE',						'║ю└о');
+define('_SKIN_CREATE_BTN',					'е╣енеєд╬║ю└о');
+define('_SKIN_EDITONE_TITLE',				'е╣енеєд╬╩╘╜╕');
+define('_SKIN_BACK',						'е╣енеєд╬░ь═ўд╦╠сды');
+define('_SKIN_PARTS_TITLE',					'е╣енеєе╤б╝е─');
+define('_SKIN_PARTS_MSG',					'д╜дьд╛дьд╬е╣енеєд╦┴┤д╞д╬е┐еде╫дм╔м═╫д╚д╧╕┬дъд▐д╗дєбг╔м═╫д╩дд╛ь╣чд╧╢ї═єд╬д▐д▐д╦д╖д╞дкддд╞дпд└д╡ддбг░╩▓╝длдщ╩╘╜╕д╣дые╣енеєдЄ┴кдєд╟дпд└д╡дд:');
+define('_SKIN_PART_MAIN',					'еседеєд╬╠▄╝бе┌б╝е╕');
+define('_SKIN_PART_ITEM',					'╕─╩╠еведе╞ере┌б╝е╕');
+define('_SKIN_PART_ALIST',					'╖ю╩╠евб╝еледе╓░ь═ўе┌б╝е╕');
+define('_SKIN_PART_ARCHIVE',				'╖ю╩╠евб╝еледе╓е┌б╝е╕');
+define('_SKIN_PART_SEARCH',					'╕б║ўе┌б╝е╕');
+define('_SKIN_PART_ERROR',					'еиещб╝е┌б╝е╕');
+define('_SKIN_PART_MEMBER',					'есеєе╨б╝╛▄║┘е┌б╝е╕');
+define('_SKIN_PART_POPUP',					'▓ш┴№е▌е├е╫еве├е╫ежегеєе╔еж');
+define('_SKIN_GENSETTINGS_TITLE',			'░ь╚╠└▀─ъ');
+define('_SKIN_CHANGE',						'╩╤╣╣');
+define('_SKIN_CHANGE_BTN',					'└▀─ъд╬╩╤╣╣');
+define('_SKIN_UPDATE_BTN',					'е╣енеєд╬╣╣┐╖');
+define('_SKIN_RESET_BTN',					'еъе╗е├е╚');
+define('_SKIN_EDITPART_TITLE',				'е╣енеєд╬╩╘╜╕');
+define('_SKIN_GOBACK',						'╠сды');
+define('_SKIN_ALLOWEDVARS',					'╗╚═╤▓─╟╜д╩╩╤┐Ї (епеъе├епд╟└т╠└╔╜╝и):');
 
 // global settings
-define('_SETTINGS_TITLE',					'я┐╜я┐╜я┐╜?я┐╜╨ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SETTINGS_SUB_GENERAL',				'я┐╜я┐╜я┐╜?я┐╜╨ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SETTINGS_DEFBLOG',					'я┐╜я┐╜я┐╜я┐╜я┐╜Blog');
-define('_SETTINGS_ADMINMAIL',				'я┐╜я┐╜я┐╜я┐╜╘д╬есб╝я┐╜ыевя┐╜╔еье╣');
-define('_SETTINGS_SITENAME',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╠╛');
-define('_SETTINGS_SITEURL',					'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜URL (я┐╜╟╕я┐╜╦ея┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜ "/" я┐╜я┐╜я┐╜╒дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜)');
-define('_SETTINGS_ADMINURL',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬░я┐╜я┐╜URL (я┐╜╟╕я┐╜╦ея┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜ "/" я┐╜я┐╜я┐╜╒дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜)');
-define('_SETTINGS_DIRS',					'Nucleusя┐╜╟ея┐╜я┐╜ьепя┐╜╚ея┐╜');
-define('_SETTINGS_MEDIADIR',				'я┐╜я┐╜╟ея┐╜я┐╜я┐╜(я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜)я┐╜я┐╜я┐╜я┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜я┐╜я┐╜╟ея┐╜я┐╜ьепя┐╜╚ея┐╜');
-define('_SETTINGS_SEECONFIGPHP',			'(config.php я┐╜Є╗▓╛я┐╜)');
-define('_SETTINGS_MEDIAURL',				'я┐╜я┐╜╟ея┐╜я┐╜я┐╜URL (я┐╜╟╕я┐╜╦ея┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜ "/" я┐╜я┐╜я┐╜╒дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜)');
-define('_SETTINGS_ALLOWUPLOAD',				'я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜╟╜я┐╜╦дя┐╜я┐╜я┐╜');
-define('_SETTINGS_ALLOWUPLOADTYPES',		'я┐╜я┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜я┐╜─дя┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜ые┐я┐╜я┐╜я┐╜я┐╜');
-define('_SETTINGS_CHANGELOGIN',				'я┐╜я┐╜я┐╜╨бя┐╜я┐╜╦дя┐╜я┐╜?я┐╜я┐╜я┐╜я┐╜╠╛/я┐╜╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜я┐╜╤╣я┐╜я┐╜я┐╜я┐╜╟╜я┐╜╦дя┐╜я┐╜я┐╜');
-define('_SETTINGS_COOKIES_TITLE',			'Cookie я┐╜я┐╜я┐╜я┐╜');
-define('_SETTINGS_COOKIELIFE',				'я┐╜?я┐╜я┐╜я┐╜я┐╜ Cookie я┐╜я┐╜═ня┐╜я┐╜я┐╜я┐╜');
-define('_SETTINGS_COOKIESESSION',			'я┐╜я┐╜я┐╜├ея┐╜я┐╜я┐╜єд┤дя┐╜');
-define('_SETTINGS_COOKIEMONTH',				'я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SETTINGS_COOKIEPATH',				'Cookie я┐╜╤ея┐╜ (я┐╜я┐╜щекя┐╜╫ея┐╜я┐╜я┐╜я┐╜)');
-define('_SETTINGS_COOKIEDOMAIN',			'Cookie я┐╜╔еседя┐╜я┐╜ (я┐╜я┐╜щекя┐╜╫ея┐╜я┐╜я┐╜я┐╜)');
-define('_SETTINGS_COOKIESECURE',			'я┐╜я┐╜я┐╜я┐╜я┐╜хев Cookie (я┐╜я┐╜щекя┐╜╫ея┐╜я┐╜я┐╜я┐╜)');
-define('_SETTINGS_LASTVISIT',				'я┐╜╟╜я┐╜╦мя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Cookieя┐╜я┐╜я┐╜я┐╜┬╕я┐╜я┐╜я┐╜я┐╜');
-define('_SETTINGS_ALLOWCREATE',				'я┐╜╙ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╦дя┐╜я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚║я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟╜я┐╜╦дя┐╜я┐╜я┐╜');
-define('_SETTINGS_NEWLOGIN',				'я┐╜╙ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚д╟д╬е?я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜─╛я┐╜я┐╜╦▓я┐╜╟╜я┐╜╦дя┐╜я┐╜я┐╜');
-define('_SETTINGS_NEWLOGIN2',				'(я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ьд┐я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚д╬дя┐╜)');
-define('_SETTINGS_MEMBERMSGS',				'я┐╜я┐╜я┐╜╨бя┐╜я┐╜╓ея┐╜я┐╜я┐╜я┐╜╙ея┐╜я┐╜я┐╜я┐╜╟╜я┐╜╦дя┐╜я┐╜я┐╜');
-define('_SETTINGS_LANGUAGE',				'я┐╜я┐╜я┐╜╤дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SETTINGS_DISABLESITE',				'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜─║я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜URLя┐╜я┐╜┼╛я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤бя┐╜');
-define('_SETTINGS_DBLOGIN',					'MySQL я┐╜?я┐╜я┐╜я┐╜я┐╜ &amp; я┐╜╟бя┐╜я┐╜я┐╜я┐╜┘бя┐╜я┐╜я┐╜');
-define('_SETTINGS_UPDATE',					'я┐╜я┐╜я┐╜я┐╜╬╣я┐╜я┐╜я┐╜');
-define('_SETTINGS_UPDATE_BTN',				'я┐╜я┐╜я┐╜я┐╜Є╣╣┐я┐╜');
-define('_SETTINGS_DISABLEJS',				'JavaScriptя┐╜─бя┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜╠╡я┐╜я┐╜╦дя┐╜я┐╜я┐╜');
-define('_SETTINGS_MEDIA',					'я┐╜я┐╜╟ея┐╜я┐╜я┐╜/я┐╜я┐╜я┐╜├е╫е?я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_SETTINGS_MEDIAPREFIX',				'я┐╜я┐╜я┐╜├е╫е?я┐╜╔дя┐╜я┐╜я┐╜╒ея┐╜я┐╜я┐╜я┐╜я┐╜╠╛я┐╜я┐╜╞мя┐╜я┐╜я┐╜я┐╜я┐╜╒дя┐╜я┐╜╒▓├дя┐╜я┐╜я┐╜');
-define('_SETTINGS_MEMBERS',					'я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_SETTINGS_TITLE',					'е░еэб╝е╨еы└▀─ъ');
+define('_SETTINGS_SUB_GENERAL',				'е░еэб╝е╨еы└▀─ъ');
+define('_SETTINGS_DEFBLOG',					'┤√─ъд╬Blog');
+define('_SETTINGS_ADMINMAIL',				'┤╔═¤╝╘д╬есб╝еыеве╔еье╣');
+define('_SETTINGS_SITENAME',				'е╡еде╚╠╛');
+define('_SETTINGS_SITEURL',					'е╡еде╚д╬URL (║╟╕хд╦е╣еще├е╖ех "/" дЄ╔╒д▒д╞дпд└д╡дд)');
+define('_SETTINGS_ADMINURL',				'┤╔═¤╝╘╬╬░шд╬URL (║╟╕хд╦е╣еще├е╖ех "/" дЄ╔╒д▒д╞дпд└д╡дд)');
+define('_SETTINGS_DIRS',					'Nucleusе╟егеьепе╚еъ');
+define('_SETTINGS_MEDIADIR',				'есе╟егев(▓ш┴№бж▓╗└╝)дмеве├е╫еэб╝е╔д╡дьдые╟егеьепе╚еъ');
+define('_SETTINGS_SEECONFIGPHP',			'(config.php дЄ╗▓╛╚)');
+define('_SETTINGS_MEDIAURL',				'есе╟егевURL (║╟╕хд╦е╣еще├е╖ех "/" дЄ╔╒д▒д╞дпд└д╡дд)');
+define('_SETTINGS_ALLOWUPLOAD',				'е╒ебедеыд╬еве├е╫еэб╝е╔дЄ▓─╟╜д╦д╣ды');
+define('_SETTINGS_ALLOWUPLOADTYPES',		'еве├е╫еэб╝е╔дЄ╡Ў▓─д╣дые╒ебедеые┐еде╫');
+define('_SETTINGS_CHANGELOGIN',				'есеєе╨б╝д╦дшдыеэе░едеє╠╛/е╤е╣еяб╝е╔д╬╩╤╣╣дЄ▓─╟╜д╦д╣ды');
+define('_SETTINGS_COOKIES_TITLE',			'Cookie └▀─ъ');
+define('_SETTINGS_COOKIELIFE',				'еэе░едеє Cookie д╬═н╕·┤№┤╓');
+define('_SETTINGS_COOKIESESSION',			'е╗е├е╖ечеєд┤д╚');
+define('_SETTINGS_COOKIEMONTH',				'░ьеЎ╖ю');
+define('_SETTINGS_COOKIEPATH',				'Cookie е╤е╣ (╛х╡щеке╫е╖ечеє)');
+define('_SETTINGS_COOKIEDOMAIN',			'Cookie е╔еседеє (╛х╡щеке╫е╖ечеє)');
+define('_SETTINGS_COOKIESECURE',			'е╗енехев Cookie (╛х╡щеке╫е╖ечеє)');
+define('_SETTINGS_LASTVISIT',				'║╟╜к╦м╠ф╞№╗■дЄCookieд╦╩▌┬╕д╣ды');
+define('_SETTINGS_ALLOWCREATE',				'е╙е╕е┐б╝д╦дшдыесеєе╨б╝евележеєе╚║ю└одЄ▓─╟╜д╦д╣ды');
+define('_SETTINGS_NEWLOGIN',				'е╙е╕е┐б╝дм║ю└од╖д┐евележеєе╚д╟д╬еэе░едеєдЄ║ю└о─╛╕хд╦▓─╟╜д╦д╣ды');
+define('_SETTINGS_NEWLOGIN2',				'(┐╖д╖дп║ю└од╡дьд┐евележеєе╚д╬д▀)');
+define('_SETTINGS_MEMBERMSGS',				'есеєе╨б╝┤╓е╡б╝е╙е╣дЄ▓─╟╜д╦д╣ды');
+define('_SETTINGS_LANGUAGE',				'╗╚═╤д╣ды╕└╕ь');
+define('_SETTINGS_DISABLESITE',				'е╡еде╚дЄ╩─║┐д╖бв╗╪─ъд╬URLд╦┼╛┴ўд╣дыб╩╚є╛я╗■═╤б╦');
+define('_SETTINGS_DBLOGIN',					'MySQL еэе░едеє &amp; е╟б╝е┐е┘б╝е╣');
+define('_SETTINGS_UPDATE',					'└▀─ъд╬╣╣┐╖');
+define('_SETTINGS_UPDATE_BTN',				'└▀─ъдЄ╣╣┐╖');
+define('_SETTINGS_DISABLEJS',				'JavaScriptе─б╝еые╨б╝дЄ╠╡╕·д╦д╣ды');
+define('_SETTINGS_MEDIA',					'есе╟егев/еве├е╫еэб╝е╔└▀─ъ');
+define('_SETTINGS_MEDIAPREFIX',				'еве├е╫еэб╝е╔д╣дые╒ебедеы╠╛д╬╞мд╦╞№╔╒дЄ╔╒▓├д╣ды');
+define('_SETTINGS_MEMBERS',					'есеєе╨б╝└▀─ъ');
 
 // bans
-define('_BAN_TITLE',						'я┐╜я┐╜я┐╜я┐╜я┐╜╪еъе╣я┐╜я┐╜:');
-define('_BAN_NONE',							'я┐╜я┐╜я┐╜я┐╜Blogя┐╜╧ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_BAN_NEW_TITLE',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜IPя┐╜я┐╜я┐╜╔еье╣я┐╜я┐╜я┐╜╔▓я┐╜');
-define('_BAN_NEW_TEXT',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╔еье╣я┐╜я┐╜я┐╜╔▓├дя┐╜я┐╜я┐╜');
-define('_BAN_REMOVE_TITLE',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬▓я┐╜я┐╜');
-define('_BAN_IPRANGE',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜IPя┐╜я┐╜я┐╜╔еье╣я┐╜я┐╜я┐╜╧░я┐╜');
-define('_BAN_BLOGS',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜Blog: ');
-define('_BAN_DELETE_TITLE',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬▓я┐╜я┐╜');
-define('_BAN_ALLBLOGS',						'я┐╜я┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘╕я┐╜я┐╜┬дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜Blog');
-define('_BAN_REMOVED_TITLE',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_BAN_REMOVED_TEXT',					'я┐╜╩▓я┐╜я┐╜я┐╜Blogя┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜:');
-define('_BAN_ADD_TITLE',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜IPя┐╜я┐╜я┐╜╔еье╣я┐╜я┐╜я┐╜╔▓я┐╜');
-define('_BAN_IPRANGE_TEXT',					'я┐╜╩▓я┐╜я┐╜╦е╓ея┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜IPя┐╜я┐╜я┐╜╔еье╣я┐╜я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BAN_BLOGS_TEXT',					'1я┐╜─дя┐╜Blogя┐╜╬д▀д╟╡я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ыдля┐╜я┐╜я┐╜я┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘╕я┐╜я┐╜┬дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞дя┐╜Blogя┐╜╟╡я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ыдля┐╜я┐╜я┐╜я┐╜я┐╜Єд╣дыд│я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜╩▓я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BAN_REASON_TITLE',					'я┐╜я┐╜═│');
-define('_BAN_REASON_TEXT',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜IPя┐╜я┐╜я┐╜╔еье╣я┐╜я┐╜я┐╜╧░я┐╜я┐╜я┐╜я┐╜HOSTя┐╜я┐╜я┐╜ще│я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜╞дя┐╜я┐╜я┐╜я┐╜ъеля┐╜я┐╜я┐╜я┐╜я┐╜╔╝я┐╜Єд╖дшджя┐╜╚дя┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜╔╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ы╡мя┐╜я┐╜я┐╜я┐╜═│я┐╜я┐╜ёддд╞дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜╟дя┐╜я┐╜▐дя┐╜ (я┐╜я┐╜я┐╜256╩╕я┐╜я┐╜)я┐╜я┐╜');
-define('_BAN_ADD_BTN',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜IPя┐╜я┐╜я┐╜╔еье╣я┐╜я┐╜я┐╜╔▓я┐╜');
+define('_BAN_TITLE',						'евеп╢╪еъе╣е╚:');
+define('_BAN_NONE',							'д│д╬Blogд╧евепе╗е╣╡м└йд╡дьд╞ддд▐д╗дє');
+define('_BAN_NEW_TITLE',					'╡м└йд╣дыIPеве╔еье╣д╬─╔▓├');
+define('_BAN_NEW_TEXT',						'║гд╣д░╡м└йеве╔еье╣дЄ─╔▓├д╣ды');
+define('_BAN_REMOVE_TITLE',					'евепе╗е╣╡м└йд╬▓Є╜№');
+define('_BAN_IPRANGE',						'евепе╗е╣╡м└йд╣дыIPеве╔еье╣д╬╚╧░╧');
+define('_BAN_BLOGS',						'евепе╗е╣╡м└йд╣дыBlog: ');
+define('_BAN_DELETE_TITLE',					'евепе╗е╣╡м└йд╬▓Є╜№');
+define('_BAN_ALLBLOGS',						'двд╩д┐дм┤╔═¤╝╘╕в╕┬дЄ╗¤д─┴┤д╞д╬Blog');
+define('_BAN_REMOVED_TITLE',				'евепе╗е╣╡м└йдЄ▓Є╜№д╖д▐д╖д┐');
+define('_BAN_REMOVED_TEXT',					'░╩▓╝д╬Blogд╬евепе╗е╣╡м└йдЄ▓Є╜№д╖д▐д╖д┐:');
+define('_BAN_ADD_TITLE',					'╡м└йд╣дыIPеве╔еье╣д╬─╔▓├');
+define('_BAN_IPRANGE_TEXT',					'░╩▓╝д╦е╓еэе├епд╖д┐ддIPеве╔еье╣дЄ╞■╬╧д╖д╞дпд└д╡ддбг');
+define('_BAN_BLOGS_TEXT',					'1д─д╬Blogд╬д▀д╟╡м└йд╣дыдлбвдвд╩д┐дм┤╔═¤╝╘╕в╕┬дЄ╗¤д─┴┤д╞д╬Blogд╟╡м└йд╣дыдлдЄ┴к┬Єд╣дыд│д╚дм╜╨═шд▐д╣бг░╩▓╝длдщ┴кдєд╟дпд└д╡ддбг');
+define('_BAN_REASON_TITLE',					'═¤═│');
+define('_BAN_REASON_TEXT',					'╡м└й├цд╬IPеве╔еье╣д╬╚╧░╧╞тд╬HOSTдлдще│есеєе╚дЄ┼ъ╣╞д╖д┐дъелеые▐┼ъ╔╝дЄд╖дшджд╚д╖д┐д╚днд╦╔╜╝ид╡дьды╡м└й═¤═│дЄ╜ёддд╞дкдпд│д╚дмд╟днд▐д╣ (╛х╕┬256╩╕╗·)бг');
+define('_BAN_ADD_BTN',						'╡м└йд╣дыIPеве╔еье╣д╬─╔▓├');
 
 // LOGIN screen
-define('_LOGIN_MESSAGE',					'я┐╜я┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_LOGIN_MESSAGE',					'есе├е╗б╝е╕');
 define('_LOGIN_SHARED',						_LOGINFORM_SHARED);
-define('_LOGIN_FORGOT',						'я┐╜╤ея┐╜я┐╜яб╝я┐╜╔дя┐╜╦║я┐╜ьд┐');
+define('_LOGIN_FORGOT',						'е╤е╣еяб╝е╔дЄ╦║дьд┐');
 
 // membermanagement
-define('_MEMBERS_TITLE',					'я┐╜я┐╜я┐╜╨бя┐╜я┐╜╬┤я┐╜я┐╜я┐╜');
-define('_MEMBERS_CURRENT',					'я┐╜я┐╜я┐╜▀д╬ея┐╜я┐╜╨бя┐╜');
-define('_MEMBERS_NEW',						'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜╔▓я┐╜');
-define('_MEMBERS_DISPLAY',					'╔╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╠╛я┐╜я┐╜(я┐╜?я┐╜я┐╜я┐╜я┐╜ID)');
-define('_MEMBERS_DISPLAY_INFO',				'(я┐╜я┐╜я┐╜я┐╜╠╛я┐╜я┐╜я┐╜╧е?я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╦╗╚дя┐╜я┐╜▐дя┐╜)');
-define('_MEMBERS_REALNAME',					'я┐╜╧ея┐╜╔ея┐╜═бя┐╜я┐╜я┐╜');
-define('_MEMBERS_PWD',						'я┐╜╤ея┐╜я┐╜яб╝я┐╜я┐╜');
-define('_MEMBERS_REPPWD',					'я┐╜╤ея┐╜я┐╜яб╝я┐╜╔б╩│я┐╜╟зя┐╜я┐╜');
-define('_MEMBERS_EMAIL',					'я┐╜сб╝я┐╜ыевя┐╜╔еье╣');
-define('_MEMBERS_EMAIL_EDIT',				'(я┐╜сб╝я┐╜ыевя┐╜╔еье╣я┐╜я┐╜я┐╜╤╣я┐╜я┐╜я┐╜я┐╜я┐╜╚бя┐╜я┐╜я┐╜я┐╜╬ея┐╜я┐╜╔еье╣я┐╜╪╝я┐╜╞░┼кя┐╜я┐╜╟зя┐╜я┐╜я┐╜╤ея┐╜єепдя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜▐дя┐╜)');
-define('_MEMBERS_URL',						'Web siteя┐╜я┐╜я┐╜╔еье╣ (URL)');
-define('_MEMBERS_SUPERADMIN',				'Super-admin(я┐╜╟╣я┐╜я┐╜я┐╜я┐╜)я┐╜я┐╜я┐╜┬дя┐╜═┐я┐╜я┐╜я┐╜я┐╜');
-define('_MEMBERS_CANLOGIN',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬░я┐╜╪д╬е?я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╟╜я┐╜╦дя┐╜я┐╜я┐╜');
-define('_MEMBERS_NOTES',					'я┐╜я┐╜я┐╜я┐╜');
-define('_MEMBERS_NEW_BTN',					'я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜╔▓я┐╜');
-define('_MEMBERS_EDIT',						'я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜╘╜я┐╜');
-define('_MEMBERS_EDIT_BTN',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╤╣я┐╜');
-define('_MEMBERS_BACKTOOVERVIEW',			'я┐╜я┐╜я┐╜╨бя┐╜я┐╜╬░я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_MEMBERS_DEFLANG',					'я┐╜я┐╜я┐╜╤дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_MEMBERS_USESITELANG',				'- я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜ -');
+define('_MEMBERS_TITLE',					'есеєе╨б╝д╬┤╔═¤');
+define('_MEMBERS_CURRENT',					'╕╜║▀д╬есеєе╨б╝');
+define('_MEMBERS_NEW',						'┐╖д╖ддесеєе╨б╝д╬─╔▓├');
+define('_MEMBERS_DISPLAY',					'╔╜╝ид╡дьды╠╛┴░(еэе░едеєID)');
+define('_MEMBERS_DISPLAY_INFO',				'(д│д╬╠╛┴░д╧еэе░едеє╗■д╦╗╚дядьд▐д╣)');
+define('_MEMBERS_REALNAME',					'е╧еєе╔еые═б╝ер');
+define('_MEMBERS_PWD',						'е╤е╣еяб╝е╔');
+define('_MEMBERS_REPPWD',					'е╤е╣еяб╝е╔б╩│╬╟зб╦');
+define('_MEMBERS_EMAIL',					'есб╝еыеве╔еье╣');
+define('_MEMBERS_EMAIL_EDIT',				'(есб╝еыеве╔еье╣дЄ╩╤╣╣д╣дыд╚бвд╜д╬еве╔еье╣д╪╝л╞░┼кд╦╟з╛┌═╤еъеєепдм┴ў┐од╡дьд▐д╣)');
+define('_MEMBERS_URL',						'Web siteеве╔еье╣ (URL)');
+define('_MEMBERS_SUPERADMIN',				'Super-admin(║╟╣т┤╔═¤)╕в╕┬дЄ═┐диды');
+define('_MEMBERS_CANLOGIN',					'┤╔═¤╝╘╬╬░шд╪д╬еэе░едеєдЄ▓─╟╜д╦д╣ды');
+define('_MEMBERS_NOTES',					'╚ў╣═');
+define('_MEMBERS_NEW_BTN',					'есеєе╨б╝д╬─╔▓├');
+define('_MEMBERS_EDIT',						'есеєе╨б╝д╬╩╘╜╕');
+define('_MEMBERS_EDIT_BTN',					'└▀─ъд╬╩╤╣╣');
+define('_MEMBERS_BACKTOOVERVIEW',			'есеєе╨б╝д╬░ь═ўд╦╠сды');
+define('_MEMBERS_DEFLANG',					'╗╚═╤д╣ды╕└╕ь');
+define('_MEMBERS_USESITELANG',				'- е╡еде╚д╬└▀─ъдЄ╗╚дж -');
 
 // List of blogs (TT = tooltip)
-define('_BLOGLIST_TT_VISIT',				'я┐╜я┐╜я┐╜я┐╜я┐╜╚дЄ╕лдя┐╜');
-define('_BLOGLIST_ADD',						'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╔▓я┐╜');
-define('_BLOGLIST_TT_ADD',					'я┐╜я┐╜я┐╜я┐╜Blogя┐╜╦┐я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╔▓├дя┐╜я┐╜▐дя┐╜');
-define('_BLOGLIST_EDIT',					'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╘╜я┐╜/я┐╜я┐╜я┐╜');
-define('_BLOGLIST_TT_EDIT',					'я┐╜я┐╜╤д▀д╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╘╜я┐╜я┐╜╚║я┐╜я┐╜');
-define('_BLOGLIST_BMLET',					'я┐╜╓е├ея┐╜я┐╜▐бя┐╜я┐╜я┐╜я┐╜я┐╜├ея┐╜');
-define('_BLOGLIST_TT_BMLET',				'я┐╜╓е├ея┐╜я┐╜▐бя┐╜я┐╜я┐╜я┐╜я┐╜├е╚д╬ея┐╜я┐╜єе╣е╚бя┐╜я┐╜я┐╜');
-define('_BLOGLIST_SETTINGS',				'я┐╜╓е?я┐╜я┐╜я┐╜я┐╜');
-define('_BLOGLIST_TT_SETTINGS',				'я┐╜╓е?я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╚е╓е?я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬┤я┐╜я┐╜я┐╜');
-define('_BLOGLIST_BANS',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_BLOGLIST_TT_BANS',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╬│я┐╜╟з/я┐╜╔▓я┐╜/я┐╜я┐╜я┐╜');
-define('_BLOGLIST_DELETE',					'я┐╜я┐╜я┐╜╞║я┐╜я┐╜');
-define('_BLOGLIST_TT_DELETE',				'я┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜я┐╜я┐╜');
+define('_BLOGLIST_TT_VISIT',				'е╡еде╚дЄ╕лды');
+define('_BLOGLIST_ADD',						'еведе╞ерд╬─╔▓├');
+define('_BLOGLIST_TT_ADD',					'д│д╬Blogд╦┐╖д╖ддеведе╞ердЄ─╔▓├д╖д▐д╣');
+define('_BLOGLIST_EDIT',					'еведе╞ерд╬╩╘╜╕/║я╜№');
+define('_BLOGLIST_TT_EDIT',					'╕°│л║╤д▀д╬еведе╞ердЄ╩╘╜╕д╚║я╜№');
+define('_BLOGLIST_BMLET',					'е╓е├епе▐б╝епеье├е╚');
+define('_BLOGLIST_TT_BMLET',				'е╓е├епе▐б╝епеье├е╚д╬едеєе╣е╚б╝еы');
+define('_BLOGLIST_SETTINGS',				'е╓еэе░└▀─ъ');
+define('_BLOGLIST_TT_SETTINGS',				'е╓еэе░д╬└▀─ъд╚е╓еэе░е┴б╝ерд╬┤╔═¤');
+define('_BLOGLIST_BANS',					'евепе╗е╣╡м└й');
+define('_BLOGLIST_TT_BANS',					'евепе╗е╣╡м└йд╬│╬╟з/─╔▓├/║я╜№');
+define('_BLOGLIST_DELETE',					'┴┤д╞║я╜№');
+define('_BLOGLIST_TT_DELETE',				'д│д╬BlogдЄ║я╜№');
 
 // OVERVIEW screen
-define('_OVERVIEW_YRBLOGS',					'я┐╜я┐╜я┐╜╩дя┐╜я┐╜я┐╜Blog');
-define('_OVERVIEW_YRDRAFTS',				'я┐╜╔ея┐╜╒ея┐╜(я┐╜я┐╜я┐╜я┐╜)');
-define('_OVERVIEW_YRSETTINGS',				'я┐╜я┐╜я┐╜я┐╜');
-define('_OVERVIEW_GSETTINGS',				'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_OVERVIEW_NOBLOGS',					'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╧д╔дя┐╜Blogя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜ъе╣я┐╜╚д╦дя┐╜я┐╜я┐╜я┐╜├д╞дя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_OVERVIEW_NODRAFTS',				'я┐╜╔ея┐╜╒ея┐╜(я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜)я┐╜╬╡я┐╜я┐╜я┐╜я┐╜╧дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_OVERVIEW_EDITSETTINGS',			'я┐╜я┐╜я┐╜╩дя┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_OVERVIEW_BROWSEITEMS',				'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜');
-define('_OVERVIEW_BROWSECOMM',				'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_OVERVIEW_VIEWLOG',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_OVERVIEW_MEMBERS',					'я┐╜я┐╜я┐╜╨бя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_OVERVIEW_NEWLOG',					'я┐╜я┐╜я┐╜я┐╜Blogя┐╜я┐╜я┐╜я┐╜');
-define('_OVERVIEW_SETTINGS',				'я┐╜я┐╜я┐╜?я┐╜╨ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_OVERVIEW_TEMPLATES',				'я┐╜╞ея┐╜╫еьб╝я┐╜я┐╜я┐╜╘╜я┐╜');
-define('_OVERVIEW_SKINS',					'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╘╜я┐╜');
-define('_OVERVIEW_BACKUP',					'DBя┐╜я┐╜┬╕/я┐╜я┐╜');
+define('_OVERVIEW_YRBLOGS',					'двд╩д┐д╬Blog');
+define('_OVERVIEW_YRDRAFTS',				'е╔еще╒е╚(▓╝╜ёдн)');
+define('_OVERVIEW_YRSETTINGS',				'└▀─ъ');
+define('_OVERVIEW_GSETTINGS',				'┤Ё╦▄└▀─ъ');
+define('_OVERVIEW_NOBLOGS',					'двд╩д┐д╧д╔д╬Blogе┴б╝ереъе╣е╚д╦дт╞■д├д╞ддд▐д╗дє');
+define('_OVERVIEW_NODRAFTS',				'е╔еще╒е╚(▓╝╜ёдн├ц)д╬╡н╗Ўд╧двдъд▐д╗дє');
+define('_OVERVIEW_EDITSETTINGS',			'двд╩д┐д╬└▀─ъ');
+define('_OVERVIEW_BROWSEITEMS',				'двд╩д┐д╬еведе╞ер');
+define('_OVERVIEW_BROWSECOMM',				'двд╩д┐д╬е│есеєе╚');
+define('_OVERVIEW_VIEWLOG',					'┤╔═¤┴р║ю═·╬Є');
+define('_OVERVIEW_MEMBERS',					'есеєе╨б╝┤╔═¤');
+define('_OVERVIEW_NEWLOG',					'┐╖╡мBlog║ю└о');
+define('_OVERVIEW_SETTINGS',				'е░еэб╝е╨еы└▀─ъ');
+define('_OVERVIEW_TEMPLATES',				'е╞еєе╫еьб╝е╚╩╘╜╕');
+define('_OVERVIEW_SKINS',					'е╣енеє╩╘╜╕');
+define('_OVERVIEW_BACKUP',					'DB╩▌┬╕/╔№╕╡');
 
 // ITEMLIST
-define('_ITEMLIST_BLOG',							'Blogя┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╘╜я┐╜: ');
-define('_ITEMLIST_YOUR',							'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜');
+define('_ITEMLIST_BLOG',							'Blogеведе╞ерд╬╩╘╜╕: ');
+define('_ITEMLIST_YOUR',							'двд╩д┐д╬еведе╞ер');
 
 // Comments
-define('_COMMENTS',									'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_NOCOMMENTS',								'я┐╜я┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╞ея┐╜╪д╬ея┐╜я┐╜я┐╜я┐╜╚д╧дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_COMMENTS_YOUR',							'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_NOCOMMENTS_YOUR',							'я┐╜я┐╜я┐╜╩дя┐╜я┐╜╬ея┐╜я┐╜я┐╜я┐╜╚д╧дя┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜');
+define('_COMMENTS',									'е│есеєе╚');
+define('_NOCOMMENTS',								'д│д╬еведе╞ерд╪д╬е│есеєе╚д╧двдъд▐д╗дє');
+define('_COMMENTS_YOUR',							'двд╩д┐д╬е│есеєе╚');
+define('_NOCOMMENTS_YOUR',							'двд╩д┐д╬е│есеєе╚д╧двдъд▐д╗дє');
 
 // LISTS (general)
-define('_LISTS_NOMORE',								'я┐╜я┐╜я┐╜тдвя┐╜я┐╜▐дя┐╜я┐╜я┐╜');
-define('_LISTS_PREV',								'я┐╜я┐╜я┐╜я┐╜');
-define('_LISTS_NEXT',								'я┐╜я┐╜я┐╜я┐╜');
-define('_LISTS_SEARCH',								'я┐╜я┐╜я┐╜я┐╜');
-define('_LISTS_CHANGE',								'я┐╜╤╣я┐╜');
-define('_LISTS_PERPAGE',							'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜/я┐╜┌бя┐╜я┐╜я┐╜');
-define('_LISTS_ACTIONS',							'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_LISTS_DELETE',								'я┐╜я┐╜я┐╜');
-define('_LISTS_EDIT',								'я┐╜╘╜я┐╜');
-define('_LISTS_MOVE',								'я┐╜я┐╜╞░');
-define('_LISTS_CLONE',								'╩гя┐╜я┐╜');
-define('_LISTS_TITLE',								'я┐╜я┐╜я┐╜я┐╜я┐╜╚ея┐╜');
+define('_LISTS_NOMORE',								'▓┐дтдвдъд▐д╗дє');
+define('_LISTS_PREV',								'┴░д╪');
+define('_LISTS_NEXT',								'╝бд╪');
+define('_LISTS_SEARCH',								'╕б║ў');
+define('_LISTS_CHANGE',								'╩╤╣╣');
+define('_LISTS_PERPAGE',							'еведе╞ер/е┌б╝е╕');
+define('_LISTS_ACTIONS',							'евепе╖ечеє');
+define('_LISTS_DELETE',								'║я╜№');
+define('_LISTS_EDIT',								'╩╘╜╕');
+define('_LISTS_MOVE',								'░▄╞░');
+define('_LISTS_CLONE',								'╩г└╜');
+define('_LISTS_TITLE',								'е┐еде╚еы');
 define('_LISTS_BLOG',								'Blog');
-define('_LISTS_NAME',								'╠╛я┐╜я┐╜');
-define('_LISTS_DESC',								'я┐╜я┐╜я┐╜я┐╜');
-define('_LISTS_TIME',								'я┐╜я┐╜я┐╜я┐╜');
-define('_LISTS_COMMENTS',							'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_LISTS_TYPE',								'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_LISTS_NAME',								'╠╛┴░');
+define('_LISTS_DESC',								'└т╠└');
+define('_LISTS_TIME',								'╗■┤╓');
+define('_LISTS_COMMENTS',							'е│есеєе╚');
+define('_LISTS_TYPE',								'е┐еде╫');
 
 
 // member list
-define('_LIST_MEMBER_NAME',							'╔╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜╠╛я┐╜я┐╜(я┐╜?я┐╜я┐╜я┐╜я┐╜ID)');
-define('_LIST_MEMBER_RNAME',						'я┐╜╧ея┐╜╔ея┐╜═бя┐╜я┐╜я┐╜');
-define('_LIST_MEMBER_ADMIN',						'Super-adminя┐╜я┐╜я┐╜я┐╜ ');
-define('_LIST_MEMBER_LOGIN',						'я┐╜?я┐╜я┐╜я┐╜я┐╜я┐╜╟╜');
-define('_LIST_MEMBER_URL',							'я┐╜я┐╜я┐╜я┐╜я┐╜╓ея┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_LIST_MEMBER_NAME',							'╔╜╝ид╡дьды╠╛┴░(еэе░едеєID)');
+define('_LIST_MEMBER_RNAME',						'е╧еєе╔еые═б╝ер');
+define('_LIST_MEMBER_ADMIN',						'Super-admin╕в╕┬ ');
+define('_LIST_MEMBER_LOGIN',						'еэе░едеє▓─╟╜');
+define('_LIST_MEMBER_URL',							'ежезе╓е╡еде╚');
 
 // banlist
-define('_LIST_BAN_IPRANGE',							'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜IPя┐╜я┐╜я┐╜╔еье╣я┐╜я┐╜я┐╜╧░я┐╜');
-define('_LIST_BAN_REASON',							'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜═│');
+define('_LIST_BAN_IPRANGE',							'╡м└й├цд╬IPеве╔еье╣д╬╚╧░╧');
+define('_LIST_BAN_REASON',							'╡м└йд╬═¤═│');
 
 // actionlist
-define('_LIST_ACTION_MSG',							'я┐╜я┐╜├ея┐╜я┐╜я┐╜я┐╜я┐╜');
+define('_LIST_ACTION_MSG',							'есе├е╗б╝е╕');
 
 // commentlist
-define('_LIST_COMMENT_BANIP',						'IPя┐╜я┐╜я┐╜╔еье╣я┐╜я┐╜я┐╜я┐╜');
-define('_LIST_COMMENT_WHO',							'я┐╜я┐╜я┐╜');
-define('_LIST_COMMENT',								'я┐╜я┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_LIST_COMMENT_HOST',						'я┐╜█ея┐╜я┐╜я┐╜');
+define('_LIST_COMMENT_BANIP',						'IPеве╔еье╣дЄ╡м└й');
+define('_LIST_COMMENT_WHO',							'║ю╝╘');
+define('_LIST_COMMENT',								'е│есеєе╚');
+define('_LIST_COMMENT_HOST',						'е█е╣е╚');
 
 // itemlist
-define('_LIST_ITEM_INFO',							'я┐╜я┐╜я┐╜я┐╜');
-define('_LIST_ITEM_CONTENT',						'я┐╜я┐╜я┐╜я┐╜я┐╜╚ея┐╜я┐╜я┐╜я┐╜╩╕');
+define('_LIST_ITEM_INFO',							'╛Ё╩є');
+define('_LIST_ITEM_CONTENT',						'е┐еде╚еыд╚╦▄╩╕');
 
 
 // teamlist
-define('_LIST_TEAM_ADMIN',							'я┐╜я┐╜я┐╜я┐╜╘╕я┐╜я┐╜я┐╜ ');
-define('_LIST_TEAM_CHADMIN',						'я┐╜я┐╜я┐╜я┐╜╘╕я┐╜я┐╜┬дя┐╜я┐╜╤╣я┐╜');
+define('_LIST_TEAM_ADMIN',							'┤╔═¤╝╘╕в╕┬ ');
+define('_LIST_TEAM_CHADMIN',						'┤╔═¤╝╘╕в╕┬д╬╩╤╣╣');
 
 // edit comments
-define('_EDITC_TITLE',								'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜╘╜я┐╜');
-define('_EDITC_WHO',								'я┐╜я┐╜я┐╜');
-define('_EDITC_HOST',								'я┐╜█ея┐╜я┐╜я┐╜');
-define('_EDITC_WHEN',								'я┐╜я┐╜я┐╜');
-define('_EDITC_TEXT',								'я┐╜я┐╜╩╕');
-define('_EDITC_EDIT',								'я┐╜я┐╜я┐╜я┐╜я┐╜╚дя┐╜я┐╜╘╜я┐╜');
-define('_EDITC_MEMBER',								'я┐╜я┐╜я┐╜╨бя┐╜');
-define('_EDITC_NONMEMBER',							'я┐╜я┐╜я┐╜я┐╜╨бя┐╜');
+define('_EDITC_TITLE',								'е│есеєе╚д╬╩╘╜╕');
+define('_EDITC_WHO',								'║ю╝╘');
+define('_EDITC_HOST',								'е█е╣е╚');
+define('_EDITC_WHEN',								'╞№╗■');
+define('_EDITC_TEXT',								'╦▄╩╕');
+define('_EDITC_EDIT',								'е│есеєе╚д╬╩╘╜╕');
+define('_EDITC_MEMBER',								'есеєе╨б╝');
+define('_EDITC_NONMEMBER',							'╚єесеєе╨б╝');
 
 // move item
-define('_MOVE_TITLE',								'я┐╜╔дя┐╜Blogя┐╜╦░я┐╜╞░я┐╜я┐╜я┐╜▐дя┐╜я┐╜я┐╜я┐╜я┐╜');
-define('_MOVE_BTN',									'я┐╜я┐╜я┐╜я┐╜я┐╜╞ея┐╜я┐╜я┐╜╞░я┐╜я┐╜я┐╜я┐╜');
+define('_MOVE_TITLE',								'д╔д╬Blogд╦░▄╞░д╖д▐д╣длбй');
+define('_MOVE_BTN',									'еведе╞ердЄ░▄╞░д╣ды');
 
 ?>
