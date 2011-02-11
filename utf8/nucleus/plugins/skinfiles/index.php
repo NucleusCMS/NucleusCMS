@@ -1,30 +1,30 @@
 <?php
 
-   /* ==========================================================================================
-	* Nucleus SkinFiles Plugin
-	*
-	* Copyright 2005-2007 by Jeff MacMichael and Niels Leenheer
-	*
-	* @version $Id$
-	* @version $NucleusJP: index.php,v 1.6 2007/03/20 19:32:47 kmorimatsu Exp $
-	*
-	* ==========================================================================================
-	* This program is free software and open source software; you can redistribute
-	* it and/or modify it under the terms of the GNU General Public License as
-	* published by the Free Software Foundation; either version 2 of the License,
-	* or (at your option) any later version.
-	*
-	* This program is distributed in the hope that it will be useful, but WITHOUT
-	* ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-	* FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-	* more details.
-	*
-	* You should have received a copy of the GNU General Public License along
-	* with this program; if not, write to the Free Software Foundation, Inc.,
-	* 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA  or visit
-	* http://www.gnu.org/licenses/gpl.html
-	* ==========================================================================================
-	*/
+/* ==========================================================================================
+ * Nucleus SkinFiles Plugin
+ *
+ * Copyright 2005-2007 by Jeff MacMichael and Niels Leenheer
+ *
+ * @version $Id$
+ * @version $NucleusJP: index.php,v 1.6 2007/03/20 19:32:47 kmorimatsu Exp $
+ *
+ * ==========================================================================================
+ * This program is free software and open source software; you can redistribute
+ * it and/or modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of the License,
+ * or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+ * more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA  or visit
+ * http://www.gnu.org/licenses/gpl.html
+ * ==========================================================================================
+ */
 	$DIR_LIBS = '';
  	$strRel = '../../../'; 
 	require($strRel . 'config.php');
@@ -502,7 +502,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = trim(_skinfikes_basename(requestVar('dir')));
+		$file      = trim(_skinfiles_basename(requestVar('dir')));
 		$directory = trim(dirname(requestVar('dir')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -542,7 +542,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = trim(_skinfikes_basename(requestVar('dir')));
+		$file      = trim(_skinfiles_basename(requestVar('dir')));
 		$directory = trim(dirname(requestVar('dir')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -655,7 +655,7 @@
 		} 		
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR9 . "&laquo;" . htmlspecialchars(_skinfikes_basename($directory)) . "&raquo; " .  _SKINFILES_ERR_COULD_NOT_CREATE_DIR10;
+			echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR9 . "&laquo;" . htmlspecialchars(_skinfiles_basename($directory)) . "&raquo; " .  _SKINFILES_ERR_COULD_NOT_CREATE_DIR10;
 			echo _SKINFILES_ERR_COULD_NOT_CREATE_DIR11 . "</p>";
 		}
 	}
@@ -669,7 +669,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = trim(_skinfikes_basename(requestVar('dir')));
+		$file      = trim(_skinfiles_basename(requestVar('dir')));
 		$directory = trim(dirname(requestVar('dir')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -709,7 +709,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = trim(_skinfikes_basename(requestVar('dir')));
+		$file      = trim(_skinfiles_basename(requestVar('dir')));
 		$directory = trim(dirname(requestVar('dir')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -762,7 +762,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = trim(_skinfikes_basename(requestVar('dir')));
+		$file      = trim(_skinfiles_basename(requestVar('dir')));
 		$directory = trim(dirname(requestVar('dir')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -832,7 +832,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = trim(_skinfikes_basename(requestVar('dir')));
+		$file      = trim(_skinfiles_basename(requestVar('dir')));
 		$directory = trim(dirname(requestVar('dir')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -881,7 +881,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file = _skinfikes_basename(trim(requestVar('file')));
+		$file = _skinfiles_basename(trim(requestVar('file')));
 
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
@@ -927,7 +927,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file 	   = _skinfikes_basename(trim(requestVar('file')));
+		$file 	   = _skinfiles_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1067,7 +1067,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file 	   = _skinfikes_basename(trim(requestVar('file')));
+		$file 	   = _skinfiles_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1111,7 +1111,7 @@
 	function _skinfiles_editfile_process() {
 		global $manager;
 		$skinfiles            = $manager->getPlugin('NP_SkinFiles');
-		$file 	   = _skinfikes_basename(trim(requestVar('file')));
+		$file 	   = _skinfiles_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1167,7 +1167,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file 	   = _skinfikes_basename(trim(requestVar('file')));
+		$file 	   = _skinfiles_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1207,7 +1207,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file 	   = _skinfikes_basename(trim(requestVar('file')));
+		$file 	   = _skinfiles_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1322,7 +1322,7 @@
 		} 		
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE11 . "&laquo;" . htmlspecialchars(_skinfikes_basename($directory)) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE12;
+			echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE11 . "&laquo;" . htmlspecialchars(_skinfiles_basename($directory)) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE12;
 			echo _SKINFILES_ERR_CREATE_FILE13 . "</p>";
 		}
 	}
@@ -1336,7 +1336,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file 	   = _skinfikes_basename(trim(requestVar('file')));
+		$file 	   = _skinfiles_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1375,7 +1375,7 @@
 
 		global $pluginUrl, $manager;
 		
-		$file      = _skinfikes_basename(trim(requestVar('file')));
+		$file      = _skinfiles_basename(trim(requestVar('file')));
 		$directory = dirname(trim(requestVar('file')));
 		$directory = sfExpandDirectory ($directory);
 		
@@ -1474,7 +1474,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE9 . "&laquo;" . htmlspecialchars(_skinfikes_basename($directory)) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE10;
+			echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE9 . "&laquo;" . htmlspecialchars(_skinfiles_basename($directory)) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE10;
 			echo _SKINFILES_ERR_UPLOAD_FILE11 . "</p>";
 		}	
 	}
@@ -1504,11 +1504,16 @@
 	}
 /* end modification */
 
-	function _skinfikes_basename($name) {
-		if ((strtolower(_CHARSET) != 'utf-8') && function_exists('mb_convert_encoding')) {$name = mb_convert_encoding($name , "UTF-8" , _CHARSET);}
+	function _skinfiles_basename($name) {
+		if ((strtolower(_CHARSET) != 'utf-8') && function_exists('mb_convert_encoding')) {
+			$name = mb_convert_encoding($name , "UTF-8" , _CHARSET);
+		}
 		$name = str_replace('\\','/',$name); // Avoid using "\" in Windows.
+		$name = rtrim($name, '/'); 
 		$name = (function_exists('mb_split')) ? end(mb_split("/",$name)) : end(explode("/",$name));
-		if ((strtolower(_CHARSET) != 'utf-8') && function_exists('mb_convert_encoding')) {$name = mb_convert_encoding($name , _CHARSET , "UTF-8");}
+		if ((strtolower(_CHARSET) != 'utf-8') && function_exists('mb_convert_encoding')) {
+			$name = mb_convert_encoding($name , _CHARSET , "UTF-8");
+		}
 		return $name;
 	}
 ?>

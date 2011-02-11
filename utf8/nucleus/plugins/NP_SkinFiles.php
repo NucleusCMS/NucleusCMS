@@ -25,31 +25,31 @@
  * ==========================================================================================
  *
  * Changes:
- * v0.91 ged		- added ICO, PHPx files, fixed/added some icons
+ * v0.91	ged			- added ICO, PHPx files, fixed/added some icons
  *						- changed perms on file or folder creation or upload to 0755 from 0640
  *						- changed 'cancel' links for delete actions to $parent dir from http_referer
  *						- changed order of links next to files... moved 'del' over a bit.  ;)
- * v0.92 ged		- changed order of links next to dirs
+ * v0.92	ged			- changed order of links next to dirs
  *						- $privateskins = FALSE by default
- * v1.0  ged		- fixed security catch so it actually quits the script
+ * v1.0	ged			- fixed security catch so it actually quits the script
  *						- "columnated" the files & dirs display for easier viewing
  *						- Made the edit cancel link more intuitive
- * v1.01 ged		- fixed event_QuickMenu to properly skip for non-admins
+ * v1.01	ged			- fixed event_QuickMenu to properly skip for non-admins
  *						- lined up columns for directories & added <tr> highlights
  * v2.00	rakaz		- Almost complete rewrite
  * v2.01	yama		- modified form button for IE
  * v2.02	kimitake	- multilingual support, modified form button for IE
  * v2.03	yama		- CSS out source. and textarea width bug fix for IE. And some lang add.And add routine empty file delete.
- * 		cacher	- replace function 'basename' (PHP BUG)
+ * 			cacher		- replace function 'basename' (PHP BUG)
  *						- add help
- *			Mocchi	- arrange codes for PHP5
+ *			Mocchi		- arrange codes for PHP5
  */
 
 class NP_SkinFiles extends NucleusPlugin {
 	public function getName() { return 'SkinFiles'; }
 	public function getAuthor() { return 'Misc authors'; }
 	public function getURL() { return 'http://wakka.xiffy.nl/skinfiles'; }
-	public function getVersion() { return '2.031'; }
+	public function getVersion() { return '2.032'; }
 	public function getDescription() { return _SKINFILES_01; }
 	public function supportsFeature($feature)	{ return in_array ($feature, array ('SqlTablePrefix', 'SqlApi', 'HelpPage'));}
 	public function hasAdminArea() { return 1; }
