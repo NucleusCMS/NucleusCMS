@@ -3,12 +3,13 @@
 	//include $DIR_LIBS."ACTION.php";
 	include_libs('ACTION.php',false,false);
 	
-	if (isset ($_POST['showform'])&&$_POST['showform']==1) {
+	if (isset ($_POST['showform']) && $_POST['showform']==1) {
 		$showform = 1;
 	}
 	else {
 		$showform = 0;
 	}
+	sendContentType('text/html', 'createaccount', _CHARSET);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
@@ -88,22 +89,22 @@
 	
 		Login Name (required): 
 		<br />
-		<input name="name" size="32" maxlength="32" <?php if(isset($_POST['name'])){echo 'value="'.$_POST['name'].'"';}?>/> <small>(only a-z, 0-9)</small>
+		<input name="name" size="32" maxlength="32" <?php if(isset($_POST['name'])){echo 'value="'.htmlspecialchars($_POST['name']).'"';}?>/> <small>(only a-z, 0-9)</small>
 		<br />
 		<br />		
 		Real Name (required): 
 		<br />
-		<input name="realname" size="40" <?php if(isset($_POST['realname'])){echo 'value="'.$_POST['realname'].'"';}?>/>
+		<input name="realname" size="40" <?php if(isset($_POST['realname'])){echo 'value="'.htmlspecialchars($_POST['realname']).'"';}?>/>
 		<br />
 		<br />		
 		Email (required):
 		<br />
-		<input name="email" size="40" <?php if(isset($_POST['email'])){echo 'value="'.$_POST['email'].'"';}?>/> <small>(must be valid, because an activation link will be sent over there)</small>
+		<input name="email" size="40" <?php if(isset($_POST['email'])){echo 'value="'.htmlspecialchars($_POST['email']).'"';}?>/> <small>(must be valid, because an activation link will be sent over there)</small>
 		<br />
 		<br />		
 		URL: 
 		<br />
-		<input name="url" size="60" <?php if(isset($_POST['url'])){echo 'value="'.$_POST['url'].'"';}?>/>
+		<input name="url" size="60" <?php if(isset($_POST['url'])){echo 'value="'.htmlspecialchars($_POST['url']).'"';}?>/>
 		<br />
 		<?php
 		// add extra fields from plugin, like NP_Profile
