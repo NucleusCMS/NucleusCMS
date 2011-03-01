@@ -20,7 +20,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.62';
+$nucleus['version'] = 'v3.63';
 $nucleus['codename'] = '';
 
 // check and die if someone is trying to override internal globals (when register_globals turn on)
@@ -560,7 +560,7 @@ function intCookieVar($name) {
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-    return 362;
+    return 363;
 }
 
 /**
@@ -1590,7 +1590,37 @@ function addLinkParams($link, $params) {
         if ($CONF['URLMode'] == 'pathinfo') {
 
             foreach ($params as $param => $value) {
-                $link .= '/' . $param . '/' . urlencode($value);
+                // change in 3.63 to fix problem where URL generated with extra params mike look like category/4/blogid/1
+				// but they should use the URL keys like this: category/4/blog/1
+				// if user wants old urls back, set $CONF['NoURLKeysInExtraParams'] = 1; in config.php
+                if (isset($CONF['NoURLKeysInExtraParams']) && $CONF['NoURLKeysInExtraParams'] == 1) 
+				{
+					$link .= '/' . $param . '/' . urlencode($value);
+				} else {
+					switch ($param) {
+						case 'itemid':
+							$link .= '/' . $CONF['ItemKey'] . '/' . urlencode($value);
+						break;
+						case 'memberid':
+							$link .= '/' . $CONF['MemberKey'] . '/' . urlencode($value);
+						break;
+						case 'catid':
+							$link .= '/' . $CONF['CategoryKey'] . '/' . urlencode($value);
+						break;
+						case 'archivelist':
+							$link .= '/' . $CONF['ArchivesKey'] . '/' . urlencode($value);
+						break;
+						case 'archive':
+							$link .= '/' . $CONF['ArchiveKey'] . '/' . urlencode($value);
+						break;
+						case 'blogid':
+							$link .= '/' . $CONF['BlogKey'] . '/' . urlencode($value);
+						break;
+						default:
+							$link .= '/' . $param . '/' . urlencode($value);
+						break;
+					}
+				}
             }
 
         } else {
