@@ -22,45 +22,32 @@ require_once "./config.php";
 //include $DIR_LIBS."ACTION.php";
 include_libs('ACTION.php',false,false);
 
-if (isset ($_POST['showform'])&&$_POST['showform']==1) {
-	$showform = 1;
-}
-else {
-	$showform = 0;
-}
+sendContentType('text/html', 'createaccount', _CHARSET);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET; ?>" />
-		<title><?php echo _CREATE_ACCOUNT_TITLE ?></title>
-		<style type="text/css">@import url(nucleus/styles/manual.css);</style>
-	</head>
-	<body>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET; ?>" />
+	<title><?php echo _CREATE_ACCOUNT_TITLE; ?></title>
+	<style type="text/css">@import url(nucleus/styles/manual.css);</style>
+</head>
+<body>
 
 	<h1><?php echo _CREATE_ACCOUNT0; ?></h1>
 <?php
 // show form only if Visitors are allowed to create a Member Account
 if ($CONF['AllowMemberCreate']==1) { 
 	if (isset($_POST['showform']) && $_POST['showform'] == 1) {
-		include $DIR_LIBS . 'ACTION.php';
 		// after the from is sent it will be validated
 		// POST data will be added as value to treat the user with care (;-))
+	
 		$a = new ACTION();
+
 		// if createAccount fails it returns an error message 
-		$message = '<span style="font-weight:bold; color:red;">' . htmlspecialchars($a->createAccount()) . '</span><br /><br />';
-		if (isset($_POST['name']))
-			$name	 = 'value="' . htmlspecialchars($_POST['name']) . '" ';
-		if (isset($_POST['realname']))
-			$realname = 'value="' . htmlspecialchars($_POST['realname']) . '" ';
-		if (isset($_POST['email']))
-			$email	= 'value="' . htmlspecialchars($_POST['email']) . '" ';
-		if (isset($_POST['url']))
-			$url	  = 'value="' . htmlspecialchars($_POST['url']) . '" ';
-//		$showform = 1;
-//	} else {
-//		$showform = 0;
-		echo $message;
+		$message = $a->createAccount();
+
+		echo '<span style="font-weight:bold; color:red;">'.$message.'</span><br /><br />'; 
 	}
 ?>
 		<form method="post" action="createaccount.php">
@@ -69,46 +56,37 @@ if ($CONF['AllowMemberCreate']==1) {
 				<input type="hidden" name="action" value="createaccount" />
 				<?php echo _CREATE_ACCOUNT_LOGIN_NAME; ?>
 				<br />
-				<input name="name" size="32" maxlength="32" <?php echo $name; ?>/> <small><?php echo _CREATE_ACCOUNT_LOGIN_NAME_VALID; ?></small>
+				<input name="name" size="32" maxlength="32" value="<?php echo htmlspecialchars(postVar('name')); ?>" /> <small><?php echo _CREATE_ACCOUNT_LOGIN_NAME_VALID; ?></small>
 				<br />
 				<br />
 				<?php echo _CREATE_ACCOUNT_REAL_NAME; ?>
 				<br />
-				<input name="realname" size="40" <?php echo $realname; ?>/>
+				<input name="realname" size="40" value="<?php echo htmlspecialchars(postVar('realname')); ?>" />
 				<br />
 				<br />
 				<?php echo _CREATE_ACCOUNT_EMAIL; ?>
 				<br />
-				<input name="email" size="40" <?php echo $email; ?>/> <small><?php echo _CREATE_ACCOUNT_EMAIL2; ?></small>
+				<input name="email" size="40" value="<?php echo htmlspecialchars(postVar('email')); ?>" /> <small><?php echo _CREATE_ACCOUNT_EMAIL2; ?></small>
 				<br />
 				<br />
 				<?php echo _CREATE_ACCOUNT_URL; ?>
 				<br />
-				<input name="url" size="60" <?php echo $url; ?>/>
+				<input name="url" size="60" value="<?php echo htmlspecialchars(postVar('url')); ?>" />
 				<br />
-<?php
-		global $manager;
+		<?php
 		// add extra fields from Plugins, like NP_Profile
-		$data = array(
-			'type'	  => 'createaccount.php',
-			'prelabel'  => '',
-			'postlabel' => '<br />',
-			'prefield'  => '',
-			'postfield' => '<br /><br />'
-		);
-		$manager->notify('RegistrationFormExtraFields', $data);
+		$manager->notify('RegistrationFormExtraFields', array('type' => 'createaccount.php', 'prelabel' => '', 'postlabel' => '<br />', 'prefield' => '', 'postfield' => '<br /><br />'));
 		// add a Captcha challenge or something else
 		$manager->notify('FormExtra', array('type' => 'membermailform-notloggedin'));
-?>
-				<br />
-				<br />
-				<input type="submit" value="<?php echo _CREATE_ACCOUNT_SUBMIT; ?>" />
-			</div>
-		</form>
+		?>
+		<br />
+		<br />
+		<input type="submit" value="<?php echo _CREATE_ACCOUNT_SUBMIT; ?>" />
+	</div>
+
+	</form>
 <?php
-	}	// close else showform ...
-}
-else {
+} else {
 	echo _CREATE_ACCOUNT1;
 	echo _CREATE_ACCOUNT2;
 }
