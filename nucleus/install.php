@@ -873,6 +873,9 @@ function doInstall() {
 <?php
 }
 
+/**
+ *  Install custom plugins
+ */
 function installCustomPlugs(&$manager) {
 	global $aConfPlugsToInstall, $DIR_LIBS;
 
@@ -927,6 +930,10 @@ function installCustomPlugs(&$manager) {
 	return $aErrors;
 }
 
+/**
+ *  Install custom skins
+ *  Prepares the installation of custom skins
+ */
 function installCustomSkins(&$manager) {
 	global $aConfSkinsToImport, $DIR_LIBS, $DIR_SKINS;
 
@@ -972,7 +979,10 @@ function installCustomSkins(&$manager) {
 	return $aErrors;
 }
 
-// give an error if one or more nucleus are not accessible
+/**
+ *  Check if some important files of the Nucleus CMS installation are available
+ *  Give an error if one or more files are not accessible
+ */
 function doCheckFiles() {
 	$missingfiles = array();
 	$files = array(
@@ -1002,17 +1012,19 @@ function doCheckFiles() {
 		}
 	}
 
-// The above code replaces several if statements of the form:
-
-//	if (!is_readable('install.sql') ) {
-//		array_push($missingfiles, 'File <b>install.sql</b> is missing or not readable');
-//	}
-
 	if (count($missingfiles) > 0) {
 		showErrorMessages($missingfiles);
 	}
 }
 
+/**
+ *  Updates the configuration in the database
+ * 
+ *  @param	$name
+ * 			name of the config var
+ *  @param	$val
+ * 			new value of the config var	
+ */
 function updateConfig($name, $val) {
 	global $MYSQL_CONN;
 	$name = addslashes($name);
@@ -1026,16 +1038,31 @@ function updateConfig($name, $val) {
 	return sql_insert_id($MYSQL_CONN);
 }
 
+/**
+ *  Replaces doubled backslashs
+ * 
+ *  @param	$input
+ * 			string that could have double backslashs	
+ */
 function replaceDoubleBackslash($input) {
 	return str_replace('\\', '/', $input);
 }
 
+/**
+ * Checks if a string ends with a slash 
+ * 
+ *  @param	$s
+ * 			string	
+ */
 function endsWithSlash($s) {
 	return (strrpos($s, '/') == strlen($s) - 1);
 }
 
 /**
  * Checks if email address is valid
+ * 
+ *  @param	$address
+ * 			address which should be tested	
  */
 function _isValidMailAddress($address) {
 	if (preg_match("/^[a-zA-Z0-9\._-]+@+[A-Za-z0-9\._-]+\.+[A-Za-z]{2,4}$/", $address) ) {
@@ -1045,10 +1072,16 @@ function _isValidMailAddress($address) {
 	}
 }
 
-// returns true if the given string is a valid shortname
-// (to check short blog names and nicknames)
-// logic: starts and ends with a non space, can contain spaces in between
-//        min 2 chars
+/*
+ * Check if short blog names and nicknames are allowed
+ * Returns true if the given string is a valid shortname
+ * logic: only letters and numbers are allowed, no spaces allowed
+ * 
+ * FIX: function eregi is deprecated since PHP 5.3.0
+ * 
+ * @param	$name
+ * 			name which should be tested	
+ */
 function _isValidShortName($name) {
 	if (eregi("^[a-z0-9]+$", $name) ) {
 		return 1;
@@ -1057,10 +1090,15 @@ function _isValidShortName($name) {
 	}
 }
 
-
-
-// returns true if the given string is a valid display name
-// (to check nicknames)
+/*
+ * Check if a display name is allowed
+ * Returns true if the given string is a valid display name
+ * 
+ * FIX: function eregi is deprecated since PHP 5.3.0
+ * 
+ * @param	$name
+ * 			name which should be tested	
+ */
 function _isValidDisplayName($name) {
 	if (eregi("^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$", $name) ) {
 		return 1;
@@ -1069,6 +1107,12 @@ function _isValidDisplayName($name) {
 	}
 }
 
+/*
+ * Shows error message
+ * 
+ * @param	$msg
+ * 			error message
+ */
 function _doError($msg) {
 	?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -1091,6 +1135,12 @@ function _doError($msg) {
 	exit;
 }
 
+/*
+ * Shows error messages
+ * 
+ * @param	$errors
+ * 			array with error messages
+ */
 function showErrorMessages($errors) {
 	?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
