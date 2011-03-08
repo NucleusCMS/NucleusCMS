@@ -8,8 +8,9 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- * This script will install the Nucleus tables in your SQL-database, and initialize the data in
- * those tables.
+ * 
+ * This script will install the Nucleus tables in your SQL-database, 
+ * and initialize the data in those tables.
  *
  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
  * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php
@@ -68,6 +69,8 @@ if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
 	$CONF['installscript'] = 1;
 }
 
+// compatibility script for php < 4.1.0
+// ToDo: remove this here and from the core
 if (phpversion() >= '4.1.0') {
 	include_once('nucleus/libs/vars4.1.0.php');
 } else {
@@ -98,7 +101,10 @@ include_once('nucleus/libs/sql/'.$MYSQL_HANDLER[0].'.php');
 	}
 
 	exit;
-
+	
+/*
+ * Show the form for the installation settings
+ */	
 function showInstallForm() {
 	// 0. pre check if all necessary files exist
 	doCheckFiles();
@@ -155,6 +161,10 @@ function showInstallForm() {
 			<li>MySQL:
 
 <?php
+	// Tturn on output buffer
+	// Needed to repress the output of the sql function that are
+	// not part of php (in this case the @ operator doesn't work) 
+	ob_start();
 	// note: this piece of code is taken from phpMyAdmin
 	$conn = sql_connect_args('localhost','','');
 	$result = @sql_query('SELECT VERSION() AS version',$conn);
@@ -181,7 +191,9 @@ function showInstallForm() {
 			}
 		}
 	}
-	sql_disconnect($conn);
+	@sql_disconnect($conn);
+	//End and clean output buffer
+	ob_end_clean();
 	$mysqlVersion = implode($match, '.');
 	$minVersion = '3.23';
 
@@ -433,6 +445,12 @@ function showInstallForm() {
 
 <?php }
 
+/*
+ * Add a table prefix if it is used
+ * 
+ * @param 	$unPrefixed
+ * 			table name with prefix
+ */	
 function tableName($unPrefixed) {
 	global $mysql_usePrefix, $mysql_prefix;
 
@@ -443,6 +461,9 @@ function tableName($unPrefixed) {
 	}
 }
 
+/*
+ * The installation process itself
+ */	
 function doInstall() {
 	global $mysql_usePrefix, $mysql_prefix, $weblog_ping;
 
