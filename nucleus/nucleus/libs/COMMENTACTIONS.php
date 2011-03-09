@@ -83,15 +83,15 @@ class COMMENTACTIONS extends BaseActions {
 	function setParser(&$parser) {
 		$this->parser =& $parser;
 	}
-	
+
 	function setCommentsObj(&$commentsObj) {
 		$this->commentsObj =& $commentsObj;
 	}
-	
+
 	function setTemplate($template) {
 		$this->template =& $template;
 	}
-	
+
 	function setCurrentComment(&$comment) {
 
 		global $manager;
@@ -204,7 +204,7 @@ class COMMENTACTIONS extends BaseActions {
 	function parse_commentcount() {
 			echo $this->commentsObj->commentcount;
 	}
-	
+
 	/**
 	 * Parse templatevar commentid
 	 */
@@ -245,7 +245,7 @@ class COMMENTACTIONS extends BaseActions {
 	function parse_excerpt() {
 		echo stringToXML(shorten($this->currentComment['body'], 60, '...'));
 	}
-	
+
 	/**
 	 * Parse templatevar host
 	 */
@@ -319,7 +319,7 @@ class COMMENTACTIONS extends BaseActions {
 				$this->currentComment['timestamp']
 			);
 	}
-	
+
 	/**
 	 * Parse templatevar timestamp
 	 */
@@ -359,17 +359,23 @@ class COMMENTACTIONS extends BaseActions {
 
 	/**
 	 * Parse templatevar user
+	 * @param string $mode
 	 */
-	function parse_user($mode='') {
+	function parse_user($mode = '')
+	{
 		global $manager;
-		if ($mode == 'realname' && $this->currentComment['memberid'] > 0) {
+
+		if ( $mode == 'realname' && $this->currentComment['memberid'] > 0 )
+		{
 			$member =& $manager->getMember($this->currentComment['memberid']);
 			echo $member->getRealName();
-		} else {
-			echo $this->currentComment['user'];
+		}
+		else
+		{
+			echo htmlspecialchars($this->currentComment['user'], ENT_QUOTES);
 		}
 	}
-	
+
 	/**
 	 * Parse templatevar useremail
 	 */
@@ -392,14 +398,14 @@ class COMMENTACTIONS extends BaseActions {
 //				echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
 		}
 	}
-	
+
 	/**
 	 * Parse templatevar userid
 	 */
 	function parse_userid() {
 			echo $this->currentComment['userid'];
 	}
-	
+
 
 	/**
 	 * Parse templatevar userlink
@@ -411,7 +417,7 @@ class COMMENTACTIONS extends BaseActions {
 			echo $this->currentComment['user'];
 		}
 	}
-	
+
 	/**
 	 * Parse templatevar userlinkraw
 	 */
@@ -426,7 +432,7 @@ class COMMENTACTIONS extends BaseActions {
 		if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false))
 			echo $this->currentComment['userlinkraw'];
 	}
-	
+
 	/**
 	 * Parse templatevar userwebsitelink
 	 */
@@ -437,9 +443,9 @@ class COMMENTACTIONS extends BaseActions {
 			echo $this->currentComment['user'];
 		}
 	}
-	
+
 	// function to enable if-else-elseif-elseifnot-ifnot-endif to comment template fields
-	
+
 	/**
 	 * Checks conditions for if statements
 	 *
@@ -488,7 +494,7 @@ class COMMENTACTIONS extends BaseActions {
 				break;
 			case 'archivenextexists':
 				$condition = ($archivenextexists == true);
-				break; 
+				break;
 			case 'skintype':
 				$condition = ($name == $this->skintype);
 				break; */
@@ -500,8 +506,8 @@ class COMMENTACTIONS extends BaseActions {
 				break;
 		}
 		return $condition;
-	}	
-	
+	}
+
 	/**
 	 *  Different checks for a category
 	 */
@@ -525,16 +531,16 @@ class COMMENTACTIONS extends BaseActions {
 
 		return false;
 	}
-	
-		
+
+
 	/**
 	 *  Different checks for an author
 	 */
 	function _ifAuthor($name = '', $value='') {
 		global $member, $manager;
-		
+
 		if ($this->currentComment['memberid'] == 0) return false;
-		
+
 		$mem =& $manager->getMember($this->currentComment['memberid']);
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
 		$citem =& $manager->getItem($this->currentComment['itemid'],1,1);
@@ -547,26 +553,26 @@ class COMMENTACTIONS extends BaseActions {
 		// check comment author name
 		if ($name == 'name') {
 			$value = trim(strtolower($value));
-			if ($value == '') 
+			if ($value == '')
 				return false;
 			if ($value == strtolower($mem->getDisplayName()))
 				return true;
 		}
 
 		// check if comment author is admin
-		if ($name == 'isadmin') {			
-			$blogid = intval($b->getID());			
+		if ($name == 'isadmin') {
+			$blogid = intval($b->getID());
 			if ($mem->isAdmin())
 				return true;
-				
+
 			return $mem->isBlogAdmin($blogid);
 		}
-		
+
 		// check if comment author is item author
-		if ($name == 'isauthor') {			
+		if ($name == 'isauthor') {
 			return (intval($citem['authorid']) == intval($this->currentComment['memberid']));
 		}
-		
+
 		// check if comment author is on team
 		if ($name == 'isonteam') {
 			return $mem->teamRights(intval($b->getID()));
@@ -574,13 +580,13 @@ class COMMENTACTIONS extends BaseActions {
 
 		return false;
 	}
-	
+
 	/**
 	 *  Different checks for a category
 	 */
 	function _ifItemCategory($name = '', $value='') {
 		global $catid, $manager;
-		
+
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
 		$citem =& $manager->getItem($this->currentComment['itemid'],1,1);
 		$icatid = $citem['catid'];
@@ -588,7 +594,7 @@ class COMMENTACTIONS extends BaseActions {
 		// when no parameter is defined, just check if a category is selected
 		if (($name != 'catname' && $name != 'catid') || ($value == ''))
 			return $b->isValidCategory($icatid);
-			
+
 		// check category name
 		if ($name == 'catname') {
 			$value = $b->getCategoryIdFromName($value);
@@ -603,15 +609,15 @@ class COMMENTACTIONS extends BaseActions {
 		return false;
 	}
 
-	
+
 	/**
 	 *  Checks if a member is on the team of a blog and return his rights
 	 */
 	function _ifOnTeam($blogName = '') {
 		global $blog, $member, $manager;
-		
+
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
-		
+
 		// when no blog found
 		if (($blogName == '') && (!is_object($b)))
 			return 0;
@@ -634,7 +640,7 @@ class COMMENTACTIONS extends BaseActions {
 		global $blog, $member, $manager;
 
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
-		
+
 		// when no blog found
 		if (($blogName == '') && (!is_object($b)))
 			return 0;
@@ -650,7 +656,7 @@ class COMMENTACTIONS extends BaseActions {
 		return $member->isBlogAdmin($blogid);
 	}
 
-	
+
 	/**
 	 *	hasplugin,PlugName
 	 *	   -> checks if plugin exists

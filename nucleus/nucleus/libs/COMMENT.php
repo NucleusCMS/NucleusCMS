@@ -44,7 +44,8 @@ class COMMENT {
 	  *
 	  * @static
 	  */
-	function prepare($comment) {
+	function prepare($comment)
+	{
 		$comment['user'] = strip_tags($comment['user']);
 		$comment['userid'] = strip_tags($comment['userid']);
 		$comment['email'] = strip_tags($comment['email']);
@@ -55,7 +56,8 @@ class COMMENT {
 		$comment['email'] = trim(strtr($comment['email'], "\'\"\n", '-- ') );
 
 		// begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
-		if ( !empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos($comment['userid'], 'https://') !== 0) ) {
+		if ( !empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos($comment['userid'], 'https://') !== 0) )
+		{
 			$comment['userid'] = 'http://' . $comment['userid'];
 		} // end if
 
