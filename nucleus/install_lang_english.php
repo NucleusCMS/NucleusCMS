@@ -51,6 +51,7 @@ define('_ERROR30',	'Error while executing query');
 
 define('_NOTIFICATION1',	'Not available');
 
+define('_ALT_NUCLEUS_CMS_LOGO',	'Logo of Nucleus CMS');
 define('_TITLE',	'Nucleus Install');
 define('_TITLE2',	'Skin/Plugin Install Errors');
 define('_TITLE3',	'Installation Almost Complete!');
