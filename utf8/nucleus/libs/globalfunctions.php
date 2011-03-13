@@ -565,6 +565,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
 
 					if ($i < sizeof($data) ) {
 						$special = $data[$i];
+						$_REQUEST['special'] = $special;
 					}
 					break;
 
