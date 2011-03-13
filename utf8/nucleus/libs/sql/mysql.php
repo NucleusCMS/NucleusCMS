@@ -70,15 +70,18 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 
 		$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
 		mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
+		
+		version_compare($mySqlVer, '5.0.7', '>=')
+		
 /*
 // <add for garble measure>
 		$resource = sql_query("show variables LIKE 'character_set_database'");
 		$fetchDat = sql_fetch_assoc($resource);
 		$charset  = $fetchDat['Value'];
 		$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info($MYSQL_CONN))));
-		if ($mySqlVer >= '5.0.7' && function_exists('mysql_set_charset')) {
+		if (version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset')) {
 			mysql_set_charset($charset);
-		} elseif ($mySqlVer >= '4.1.0') {
+		} elseif (version_compare($mySqlVer, '4.1.0', '>=')) {
 			sql_query("SET CHARACTER SET " . $charset);
 		}
 // </add for garble measure>
