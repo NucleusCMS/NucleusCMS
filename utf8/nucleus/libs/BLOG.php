@@ -667,11 +667,22 @@ class BLOG {
 
 		$template =& $manager->getTemplate($template);
 
+		//: Change: Set nocatselected variable
+		if ($this->getSelectedCategory()) {
+			$nocatselected = 'no';
+		}
+		else {
+			$nocatselected = 'yes';
+		} 
+
 		echo TEMPLATE::fill((isset($template['CATLIST_HEADER']) ? $template['CATLIST_HEADER'] : null),
 							array(
 								'blogid' => $this->getID(),
 								'blogurl' => $blogurl,
-								'self' => $CONF['Self']
+								'self' => $CONF['Self'],
+								//: Change: Set catiscurrent template variable for header
+								'catiscurrent' => $nocatselected,
+								'currentcat' => $nocatselected 
 							));
 
 		$query = 'SELECT catid, cdesc as catdesc, cname as catname FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' ORDER BY cname ASC';
@@ -688,19 +699,22 @@ class BLOG {
 									'name' => $data['catname'],
 									'extra' => $linkparams
 								)
-							   );
+							);
 			$data['self'] = $CONF['Self'];
 			
 			//catiscurrent
+			//: Change: Bugfix for catiscurrent logic so it gives catiscurrent = no when no category is selected.
+			$data['catiscurrent'] = 'no';
+			$data['currentcat'] = 'no'; 
 			if ($this->getSelectedCategory()) {
 				if ($this->getSelectedCategory() == $data['catid']) {
 					$data['catiscurrent'] = 'yes';
 					$data['currentcat'] = 'yes';
 				}
-				else {
+				/*else {
 					$data['catiscurrent'] = 'no';
 					$data['currentcat'] = 'no';
-				}
+				}*/
 			}
 			else {
 				global $itemid;
@@ -711,10 +725,10 @@ class BLOG {
 						$data['catiscurrent'] = 'yes';
 						$data['currentcat'] = 'yes';
 					}
-					else {
+					/*else {
 						$data['catiscurrent'] = 'no';
 						$data['currentcat'] = 'no';
-					}
+					}*/
 				}
 			}
 
