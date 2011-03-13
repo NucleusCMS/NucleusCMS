@@ -267,6 +267,10 @@ class BLOG {
 
 		$manager->notify('PreAddItem',array('title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => &$this, 'authorid' => &$authorid, 'timestamp' => &$timestamp, 'closed' => &$closed, 'draft' => &$draft, 'catid' => &$catid));
 
+		// send notification mail
+		if (!$draft && !$isFuture && $this->getNotifyAddress() && $this->notifyOnNewItem())
+			$this->sendNewItemNotification($itemid, $title, $body);
+
 		$title = sql_real_escape_string($title);
 		$body = sql_real_escape_string($body);
 		$more = sql_real_escape_string($more);
@@ -280,10 +284,6 @@ class BLOG {
 
 		if (!$draft)
 			$this->updateUpdateFile();
-
-		// send notification mail
-		if (!$draft && !$isFuture && $this->getNotifyAddress() && $this->notifyOnNewItem())
-			$this->sendNewItemNotification($itemid, stripslashes($title), stripslashes($body));
 
 		return $itemid;
 	}
