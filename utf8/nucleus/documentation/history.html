@@ -57,6 +57,20 @@
 	<li>
 		<strong>Nucleus v3.62 Japanese Package (February 3, 2011)</strong> SVN is based on <a href="http://sourceforge.jp/projects/nucleus-jp/svn/view/nucleus-jp/trunk/utf8/?root=nucleus-jp">nucleus-jp</a>, hosted in sourceforge.jp.
 		<ul>
+		<li>/nucleus/libs/mysql/mysql.phpの修正: <a href="http://sourceforge.jp/projects/nucleus-jp/lists/archive/developers/2011-March/000315.html">http://sourceforge.jp/projects/nucleus-jp/lists/archive/developers/2011-March/000315.html</a></li>
+		<li>/nucleus/libs/BLOG.phpの修正: <a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=26741.">3.62 新しいアイテムの通知で改行がrnと表示される</a></li>
+		</ul>
+		<strong>Nucleus v3.63 (March 1, 2011)</strong>
+		<ul>
+		<li>FIX: security issue in createaccount.php. Thanks Katsumi. (ftruscot)</li>
+		<li>FIX: call of special skin parts using fancy url scheme like special/specialname was not working. Thanks slightlysome. (ftruscot)</li>
+		<li>FIX: extra params in generated links with fancy urls on were not using the designated keys. Thanks slightlysome. (ftruscot)</li>
+		<li>ADD: catiscurrent variable to Category List Header and Footer. Thanks slightlysome. (ftruscot)</li>
+		</ul>
+		</li>
+		<li>
+		<strong>Nucleus v3.62 Japanese Package (February 3, 2011)</strong> SVN is based on <a href="http://sourceforge.jp/projects/nucleus-jp/svn/view/nucleus-jp/trunk/utf8/?root=nucleus-jp">nucleus-jp</a>, hosted in sourceforge.jp.
+		<ul>
 		<li>REMOVE: Unsupport PHP4 in install and upgrade scripts (SVN2226, 1127, 1128)</li>
 		<li>FIX: Move the codes including mb_emulator from config.php to globalfunctions.php. Put some arragement into install script according to this (SVN1119, 1125)</li>
 		<li>FIX: Modify JavaScript parse error in item edit page when the login user turn it off to save the edited item automatically, refer to <a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=26631#26631">hetemlテスト結果</a> (SVN1123)</li>
