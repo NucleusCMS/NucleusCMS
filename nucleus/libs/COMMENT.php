@@ -44,7 +44,8 @@ class COMMENT {
 	  *
 	  * @static
 	  */
-	function prepare($comment) {
+	function prepare($comment)
+	{
 		$comment['user'] = strip_tags($comment['user']);
 		$comment['userid'] = strip_tags($comment['userid']);
 		$comment['email'] = strip_tags($comment['email']);
@@ -55,7 +56,8 @@ class COMMENT {
 		$comment['email'] = trim(strtr($comment['email'], "\'\"\n", '-- ') );
 
 		// begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
-		if ( !empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos($comment['userid'], 'https://') !== 0) ) {
+		if ( !empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos($comment['userid'], 'https://') !== 0) )
+		{
 			$comment['userid'] = 'http://' . $comment['userid'];
 		} // end if
 
@@ -92,22 +94,20 @@ class COMMENT {
 
 		// create hyperlinks for http:// addresses
 		// there's a testcase for this in /build/testcases/urllinking.txt
-		$replaceFrom = array(
-			'/([^:\/\/\w]|^)((https:\/\/)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie',
-			'/([^:\/\/\w]|^)((http:\/\/|www\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie',
-			'/([^:\/\/\w]|^)((ftp:\/\/|ftp\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/ie',
-			'/([^:\/\/\w]|^)(mailto:(([a-zA-Z\@\%\.\-\+_])+))/ie'
+
+		$replace_from = array(
+			'/([^:\/\/\w]|^)((https:\/\/)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/i',
+			'/([^:\/\/\w]|^)((http:\/\/|www\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/i',
+			'/([^:\/\/\w]|^)((ftp:\/\/|ftp\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/i',
+			'/([^:\/\/\w]|^)(mailto:(([a-zA-Z\@\%\.\-\+_])+))/i'
 		);
-		$replaceTo = array(
-			'COMMENT::createLinkCode("\\1", "\\2", "https")',
-			'COMMENT::createLinkCode("\\1", "\\2", "http")',
-			'COMMENT::createLinkCode("\\1", "\\2", "ftp")',
-			'COMMENT::createLinkCode("\\1", "\\3", "mailto")'
-		);
-		$body = preg_replace($replaceFrom, $replaceTo, $body);
+
+		$body = preg_replace_callback($replace_from, array('self', 'prepareBody_cb'), $body);
 
 		return $body;
 	}
+
+
 
 	/**
 	 * Creates a link code for unlinked URLs with different protocols
@@ -163,6 +163,39 @@ class COMMENT {
 		}
 
 		return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . shorten($displayedUrl,30,'...') . '</a>' . $post;
+	}
+
+
+	/**
+	 * This method is a callback for creating link codes
+	 * @param array $match
+	 * @return string
+	 */
+	function prepareBody_cb($match)
+	{
+		if ( !preg_match('/^[a-z]+/i', $match[2], $protocol) )
+		{
+			return $match[0];
+		}
+
+		switch( strtolower($protocol[0]) )
+		{
+			case 'https':
+				return self::createLinkCode($match[1], $match[2], 'https');
+			break;
+
+			case 'ftp':
+				return self::createLinkCode($match[1], $match[2], 'ftp');
+			break;
+
+			case 'mailto':
+				return self::createLinkCode($match[1], $match[3], 'mailto');
+			break;
+
+			default:
+				return self::createLinkCode($match[1], $match[2], 'http');
+			break;
+		}
 	}
 
 }

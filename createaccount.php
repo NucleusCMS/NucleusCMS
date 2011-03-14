@@ -3,7 +3,7 @@
 	//include $DIR_LIBS."ACTION.php";
 	include_libs('ACTION.php',false,false);
 	
-	if (isset ($_POST['showform'])&&$_POST['showform']==1) {
+	if (isset ($_POST['showform']) && $_POST['showform']==1) {
 		$showform = 1;
 	}
 	else {

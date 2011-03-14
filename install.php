@@ -8,8 +8,9 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- * This script will install the Nucleus tables in your SQL-database, and initialize the data in
- * those tables.
+ * 
+ * This script will install the Nucleus tables in your SQL-database, 
+ * and initialize the data in those tables.
  *
  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
  * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php
@@ -68,6 +69,8 @@ if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
 	$CONF['installscript'] = 1;
 }
 
+// compatibility script for php < 4.1.0
+// ToDo: remove this here and from the core
 if (phpversion() >= '4.1.0') {
 	include_once('nucleus/libs/vars4.1.0.php');
 } else {
@@ -98,7 +101,10 @@ include_once('nucleus/libs/sql/'.$MYSQL_HANDLER[0].'.php');
 	}
 
 	exit;
-
+	
+/*
+ * Show the form for the installation settings
+ */	
 function showInstallForm() {
 	// 0. pre check if all necessary files exist
 	doCheckFiles();
@@ -126,7 +132,7 @@ function showInstallForm() {
 		--></script>
 	</head>
 	<body>
-		<div style="text-align:center"><img src="./nucleus/styles/logo.gif" /></div> <!-- Nucleus logo -->
+		<div style="text-align:center"><img src="./nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
 		<form method="post" action="install.php">
 
 		<h1><?php echo _HEADER1; ?></h1>
@@ -155,6 +161,10 @@ function showInstallForm() {
 			<li>MySQL:
 
 <?php
+	// Tturn on output buffer
+	// Needed to repress the output of the sql function that are
+	// not part of php (in this case the @ operator doesn't work) 
+	ob_start();
 	// note: this piece of code is taken from phpMyAdmin
 	$conn = sql_connect_args('localhost','','');
 	$result = @sql_query('SELECT VERSION() AS version',$conn);
@@ -181,7 +191,9 @@ function showInstallForm() {
 			}
 		}
 	}
-	sql_disconnect($conn);
+	@sql_disconnect($conn);
+	//End and clean output buffer
+	ob_end_clean();
 	$mysqlVersion = implode($match, '.');
 	$minVersion = '3.23';
 
@@ -219,20 +231,20 @@ function showInstallForm() {
 			<legend><?php echo _TEXT4_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><?php echo _TEXT4_TAB_FIELD1; ?>:</td>
-					<td><input name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host') )?>" /></td>
+					<td><label for="if_mySQL_host"><?php echo _TEXT4_TAB_FIELD1; ?>:</label></td>
+					<td><input id="if_mySQL_host" name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host') )?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT4_TAB_FIELD2; ?>:</td>
-					<td><input name="mySQL_user" /></td>
+					<td><label for="if_mySQL_user"><?php echo _TEXT4_TAB_FIELD2; ?>:</label></td>
+					<td><input id="if_mySQL_user" name="mySQL_user" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT4_TAB_FIELD3; ?>:</td>
-					<td><input name="mySQL_password" type="password" /></td>
+					<td><label for="if_mySQL_password"><?php echo _TEXT4_TAB_FIELD3; ?>:</label></td>
+					<td><input id="if_mySQL_password" name="mySQL_password" type="password" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT4_TAB_FIELD4; ?>:</td>
-					<td><input name="mySQL_database" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create"><label for="mySQL_create" /><?php echo _TEXT4_TAB_FIELD4_ADD; ?></label>)</td>
+					<td><label for="if_mySQL_database"><?php echo _TEXT4_TAB_FIELD4; ?>:</label></td>
+					<td><input id="if_mySQL_database" name="mySQL_database" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create" /><label for="mySQL_create"><?php echo _TEXT4_TAB_FIELD4_ADD; ?></label>)</td>
 				</tr>
 			</table>
 		</fieldset>
@@ -241,7 +253,7 @@ function showInstallForm() {
 			<legend><?php echo _TEXT4_TAB2_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><input name="mySQL_usePrefix" value="1" type="checkbox" id="mySQL_usePrefix"><label for="mySQL_usePrefix" /><?php echo _TEXT4_TAB2_FIELD; ?>:</label></td>
+					<td><input name="mySQL_usePrefix" value="1" type="checkbox" id="mySQL_usePrefix" /><label for="mySQL_usePrefix"><?php echo _TEXT4_TAB2_FIELD; ?>:</label></td>
 					<td><input name="mySQL_tablePrefix" value="" /></td>
 				</tr>
 			</table>
@@ -282,8 +294,8 @@ function showInstallForm() {
 			<legend><?php echo _TEXT5_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD1;?>:</td>
-					<td><input name="IndexURL" size="60" value="<?php
+					<td><label for="if_IndexURL"><?php echo _TEXT5_TAB_FIELD1;?>:</label></td>
+					<td><input id="if_IndexURL" name="IndexURL" size="60" value="<?php
 						$url = 'http://' . serverVar('HTTP_HOST') . serverVar('PHP_SELF');
 						$url = str_replace('install.php', '', $url);
 						$url = replaceDoubleBackslash($url);
@@ -296,36 +308,36 @@ function showInstallForm() {
 						echo $url; ?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD2;?>:</td>
-					<td><input name="AdminURL" size="60" value="<?php
+					<td><label for="if_AdminURL"><?php echo _TEXT5_TAB_FIELD2;?>:</label></td>
+					<td><input id="if_AdminURL" name="AdminURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'nucleus/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD3;?>:</td>
-					<td><input name="AdminPath" size="60" value="<?php
+					<td><label for="if_AdminPath"><?php echo _TEXT5_TAB_FIELD3;?>:</label></td>
+					<td><input id="if_AdminPath" name="AdminPath" size="60" value="<?php
 						if($basePath) {
 							echo $basePath, 'nucleus/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD4;?>:</td>
-					<td><input name="MediaURL" size="60" value="<?php
+					<td><label for="if_MediaURL"><?php echo _TEXT5_TAB_FIELD4;?>:</label></td>
+					<td><input id="if_MediaURL" name="MediaURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'media/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD5;?>:</td>
-					<td><input name="MediaPath" size="60" value="<?php
+					<td><label for="if_MediaPath"><?php echo _TEXT5_TAB_FIELD5;?>:</label></td>
+					<td><input id="if_MediaPath" name="MediaPath" size="60" value="<?php
 						if ($basePath) {
 							echo $basePath, 'media/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD6;?>:</td>
-					<td><input name="SkinsURL" size="60" value="<?php
+					<td><label for="if_SkinsURL"><?php echo _TEXT5_TAB_FIELD6;?>:</label></td>
+					<td><input id="if_SkinsURL" name="SkinsURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'skins/';
 						} ?>" />
@@ -333,8 +345,8 @@ function showInstallForm() {
 					</td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD7;?>:</td>
-					<td><input name="SkinsPath" size="60" value="<?php
+					<td><label for="if_SkinsPath"><?php echo _TEXT5_TAB_FIELD7;?>:</label></td>
+					<td><input id="if_SkinsPath" name="SkinsPath" size="60" value="<?php
 						if ($basePath) {
 							echo $basePath, 'skins/';
 						} ?>" />
@@ -342,15 +354,15 @@ function showInstallForm() {
 					</td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD8;?>:</td>
-					<td><input name="PluginURL" size="60" value="<?php
+					<td><label for="if_PluginURL"><?php echo _TEXT5_TAB_FIELD8;?>:</label></td>
+					<td><input id="if_PluginURL" name="PluginURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'nucleus/plugins/';
 						} ?>" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD9;?>:</td>
-					<td><input name="ActionURL" size="60" value="<?php
+					<td><label for="if_ActionURL"><?php echo _TEXT5_TAB_FIELD9;?>:</label></td>
+					<td><input id="if_ActionURL" name="ActionURL" size="60" value="<?php
 						if ($url) {
 							echo $url, 'action.php';
 						} ?>" />
@@ -362,7 +374,7 @@ function showInstallForm() {
 
 		<?php echo _TEXT5_2; ?>
 
-		<h1><? echo _HEADER6; ?></h1>
+		<h1><?php echo _HEADER6; ?></h1>
 
 		<?php echo _TEXT6; ?>
 
@@ -370,24 +382,24 @@ function showInstallForm() {
 			<legend><?php echo _TEXT6_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD1; ?>:</td>
-					<td><input name="User_name" value="" /> <small>(<?php echo _TEXT6_TAB_FIELD1_2; ?>)</small></td>
+					<td><label for="if_User_name"><?php echo _TEXT6_TAB_FIELD1; ?>:</label></td>
+					<td><input id="if_User_name" name="User_name" value="" /> <small>(<?php echo _TEXT6_TAB_FIELD1_2; ?>)</small></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD2; ?>:</td>
-					<td><input name="User_realname" value="" /></td>
+					<td><label for="if_User_realname"><?php echo _TEXT6_TAB_FIELD2; ?>:</label></td>
+					<td><input id="if_User_realname" name="User_realname" value="" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD3; ?>:</td>
-					<td><input name="User_password" type="password" value="" /></td>
+					<td><label for="if_User_password"><?php echo _TEXT6_TAB_FIELD3; ?>:</label></td>
+					<td><input id="if_User_password" name="User_password" type="password" value="" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD4; ?>:</td>
-					<td><input name="User_password2" type="password" value="" /></td>
+					<td><label for="if_User_password2"><?php echo _TEXT6_TAB_FIELD4; ?>:</label></td>
+					<td><input id="if_User_password2" name="User_password2" type="password" value="" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD5; ?>:</td>
-					<td><input name="User_email" value="" /> <small>(<?php echo _TEXT6_TAB_FIELD5_2; ?>)</small></td>
+					<td><label for="if_User_email"><?php echo _TEXT6_TAB_FIELD5; ?>:</label></td>
+					<td><input id="if_User_email" name="User_email" value="" /> <small>(<?php echo _TEXT6_TAB_FIELD5_2; ?>)</small></td>
 				</tr>
 			</table>
 		</fieldset>
@@ -400,12 +412,12 @@ function showInstallForm() {
 			<legend><?php echo _TEXT7_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><?php echo _TEXT7_TAB_FIELD1; ?>:</td>
-					<td><input name="Blog_name" size="60" value="My Nucleus CMS" /></td>
+					<td><label for="if_Blog_name"><?php echo _TEXT7_TAB_FIELD1; ?>:</label></td>
+					<td><input id="if_Blog_name" name="Blog_name" size="60" value="My Nucleus CMS" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT7_TAB_FIELD2; ?>:</td>
-					<td><input name="Blog_shortname" value="mynucleuscms" /> <small>(<?php echo _TEXT7_TAB_FIELD2_2; ?>)</small></td>
+					<td><label for="if_Blog_shortname"><?php echo _TEXT7_TAB_FIELD2; ?>:</label></td>
+					<td><input id="if_Blog_shortname" name="Blog_shortname" value="mynucleuscms" /> <small>(<?php echo _TEXT7_TAB_FIELD2_2; ?>)</small></td>
 				</tr>
 			</table>
 		</fieldset>
@@ -416,7 +428,7 @@ function showInstallForm() {
 			<legend><?php echo _TEXT8_TAB_HEADER; ?></legend>
 			<table>
 				<tr>
-					<td><input name="Weblog_ping" value="1" type="checkbox" id="Weblog_ping" /><?php echo _TEXT8_TAB_FIELD1; ?></td>
+					<td><input name="Weblog_ping" value="1" type="checkbox" id="Weblog_ping" /><label for="Weblog_ping"><?php echo _TEXT8_TAB_FIELD1; ?></label></td>
 				</tr>
 			</table>
 		</fieldset>
@@ -433,6 +445,12 @@ function showInstallForm() {
 
 <?php }
 
+/*
+ * Add a table prefix if it is used
+ * 
+ * @param 	$unPrefixed
+ * 			table name with prefix
+ */	
 function tableName($unPrefixed) {
 	global $mysql_usePrefix, $mysql_prefix;
 
@@ -443,6 +461,9 @@ function tableName($unPrefixed) {
 	}
 }
 
+/*
+ * The installation process itself
+ */	
 function doInstall() {
 	global $mysql_usePrefix, $mysql_prefix, $weblog_ping;
 
@@ -873,6 +894,9 @@ function doInstall() {
 <?php
 }
 
+/**
+ *  Install custom plugins
+ */
 function installCustomPlugs(&$manager) {
 	global $aConfPlugsToInstall, $DIR_LIBS;
 
@@ -927,6 +951,10 @@ function installCustomPlugs(&$manager) {
 	return $aErrors;
 }
 
+/**
+ *  Install custom skins
+ *  Prepares the installation of custom skins
+ */
 function installCustomSkins(&$manager) {
 	global $aConfSkinsToImport, $DIR_LIBS, $DIR_SKINS;
 
@@ -972,7 +1000,10 @@ function installCustomSkins(&$manager) {
 	return $aErrors;
 }
 
-// give an error if one or more nucleus are not accessible
+/**
+ *  Check if some important files of the Nucleus CMS installation are available
+ *  Give an error if one or more files are not accessible
+ */
 function doCheckFiles() {
 	$missingfiles = array();
 	$files = array(
@@ -1002,17 +1033,19 @@ function doCheckFiles() {
 		}
 	}
 
-// The above code replaces several if statements of the form:
-
-//	if (!is_readable('install.sql') ) {
-//		array_push($missingfiles, 'File <b>install.sql</b> is missing or not readable');
-//	}
-
 	if (count($missingfiles) > 0) {
 		showErrorMessages($missingfiles);
 	}
 }
 
+/**
+ *  Updates the configuration in the database
+ * 
+ *  @param	$name
+ * 			name of the config var
+ *  @param	$val
+ * 			new value of the config var	
+ */
 function updateConfig($name, $val) {
 	global $MYSQL_CONN;
 	$name = addslashes($name);
@@ -1026,16 +1059,31 @@ function updateConfig($name, $val) {
 	return sql_insert_id($MYSQL_CONN);
 }
 
+/**
+ *  Replaces doubled backslashs
+ * 
+ *  @param	$input
+ * 			string that could have double backslashs	
+ */
 function replaceDoubleBackslash($input) {
 	return str_replace('\\', '/', $input);
 }
 
+/**
+ * Checks if a string ends with a slash 
+ * 
+ *  @param	$s
+ * 			string	
+ */
 function endsWithSlash($s) {
 	return (strrpos($s, '/') == strlen($s) - 1);
 }
 
 /**
  * Checks if email address is valid
+ * 
+ *  @param	$address
+ * 			address which should be tested	
  */
 function _isValidMailAddress($address) {
 	if (preg_match("/^[a-zA-Z0-9\._-]+@+[A-Za-z0-9\._-]+\.+[A-Za-z]{2,4}$/", $address) ) {
@@ -1045,10 +1093,16 @@ function _isValidMailAddress($address) {
 	}
 }
 
-// returns true if the given string is a valid shortname
-// (to check short blog names and nicknames)
-// logic: starts and ends with a non space, can contain spaces in between
-//        min 2 chars
+/*
+ * Check if short blog names and nicknames are allowed
+ * Returns true if the given string is a valid shortname
+ * logic: only letters and numbers are allowed, no spaces allowed
+ * 
+ * FIX: function eregi is deprecated since PHP 5.3.0
+ * 
+ * @param	$name
+ * 			name which should be tested	
+ */
 function _isValidShortName($name) {
 	if (eregi("^[a-z0-9]+$", $name) ) {
 		return 1;
@@ -1057,10 +1111,15 @@ function _isValidShortName($name) {
 	}
 }
 
-
-
-// returns true if the given string is a valid display name
-// (to check nicknames)
+/*
+ * Check if a display name is allowed
+ * Returns true if the given string is a valid display name
+ * 
+ * FIX: function eregi is deprecated since PHP 5.3.0
+ * 
+ * @param	$name
+ * 			name which should be tested	
+ */
 function _isValidDisplayName($name) {
 	if (eregi("^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$", $name) ) {
 		return 1;
@@ -1069,6 +1128,12 @@ function _isValidDisplayName($name) {
 	}
 }
 
+/*
+ * Shows error message
+ * 
+ * @param	$msg
+ * 			error message
+ */
 function _doError($msg) {
 	?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -1091,6 +1156,12 @@ function _doError($msg) {
 	exit;
 }
 
+/*
+ * Shows error messages
+ * 
+ * @param	$errors
+ * 			array with error messages
+ */
 function showErrorMessages($errors) {
 	?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
