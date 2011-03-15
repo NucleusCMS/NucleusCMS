@@ -358,7 +358,7 @@ class COMMENTACTIONS extends BaseActions {
 			$member =& $manager->getMember($this->currentComment['memberid']);
 			echo $member->getRealName();
 		} else {
-			echo $this->currentComment['user'];
+			echo htmlspecialchars($this->currentComment['user'],ENT_QUOTES);
 		}
 	}
 
