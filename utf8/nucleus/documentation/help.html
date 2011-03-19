@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja" xml:lang="ja">
 <head>
-<!--
-	Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-	Copyright (C) 2002-2011 The Nucleus Group
-	@license http://nucleuscms.org/license.txt GNU General Public License
-	@copyright Copyright (C) 2002-2011 The Nucleus Group
-	$Id$
--->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <link rel="index" href="./index.html" />
@@ -110,6 +103,7 @@ small{font-size:1em;}
 
 <div class="page">
 <h1>Nucleusポップアップ・ヘルプ</h1>
+
 <p>ファイル読み込み中、しばらくお待ちください（ファイルサイズはおよそ180KBです）。</p>
 </div>
 
@@ -121,7 +115,9 @@ small{font-size:1em;}
 <pre>http://example.jp/actions.php</pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/actionurl">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="additem"></a>
 <h1>アイテムの追加</h1>
@@ -130,6 +126,7 @@ small{font-size:1em;}
 <ul>
 <li><a href="#templatevar-popup">&lt;%popup(...)%&gt;</a> ポップアップ画像の挿入</li>
 <li><a href="#templatevar-image">&lt;%image(...)%&gt;</a> インライン画像の挿入</li>
+
 <li><a href="#templatevar-media">&lt;%media(...)%&gt;</a> メディアオブジェクトの挿入</li>
 <li><a href="#skinvar-plugin">&lt;%plugin(...)%&gt;</a> プラグインによる処理</li>
 </ul>
@@ -137,41 +134,47 @@ small{font-size:1em;}
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/additem">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="allowaccountcreation"></a>
 <h1>アカウントの作成</h1>
-
-<p>訪問者に自身のメンバーアカウント作成を許可することができます。新規メンバーは管理者がチームに加えるまでは、ブログにアイテムを追加することはできませんが、自分のコメントを削除したり変更したりすることが可能です。<a href="#allownewmemberlogin">新規メンバーのログイン許可</a>を許可している場合、管理領域にログインして自分の設定を変更することもできます。</p>
+<p>訪問者に自身のメンバーアカウント作成を許可することができます。新規メンバーは管理者がチームに加えるまでは、ブログにアイテムを追加することはできませんが、自分のコメントを削除したり変更したりすることが可能です。<a href="#allownewmemberlogin">新規メンバーのログイン許可</a>を「はい」にしている場合、管理領域にログインして自分の設定を変更することもできます。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/allowaccountcreation">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="allownewmemberlogin"></a>
-<h1>新規メンバーのログイン許可</h1>
+<h1>ビジターが作成したアカウントでのログインを作成直後に可能にする</h1>
 
 <p>この設定は、訪問者による<a href="#allowaccountcreation">アカウントの作成</a>を許可している場合に、その方法で作られたアカウントを使用して<a href="#canlogin">管理領域にログイン</a>できるかどうかを設定します。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/allownewmemberlogin">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="autosave"></a>
 <h1>自動保存</h1>
 
 <p>最後に変更を加えてから10分後に、自動的に<a href="#draft">ドラフト</a>として保存する機能です。投稿、または編集途中に他の用事が出来て、記事を保存するのを忘れてしまった時などに、不用意に編集内容を失わずにすみます。</p>
+
 <p>もし、10分待たずに下書きを保存したくなったら、フォームの下の方にある｢<em>ドラフト保存</em>｣ボタンをクリックします。</p>
 <p>この機能は、メンバーごとの設定でオン、オフを切り替える事が出来ます。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/autosave">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="baseskin"></a>
 <h1>基本のスキン</h1>
 
 <p>適用すべきスキンが見つからなかった時に代用するスキンを設定します。これはスキン・パーツが設定されていなかったり、スキンが明確に指定されていなかったりした時に起こります。</p>
+
 <p>ほとんどのユーザーは、この設定を気にする必要がありません。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/baseskin">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="blogdefaultskin"></a>
 <h1>標準のスキン</h1>
@@ -179,7 +182,9 @@ small{font-size:1em;}
 <p>ブログが表示される時には、ブログごとの「設定」で選択された「標準のスキン」が使用されます。選択できるのは一つだけです。（URLの引数として指定することで、別のスキンで表示させることは可能です）</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/blogdefaultskin">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="bloglistexample"></a>
 <h1>テンプレート：ブログリストの例</h1>
@@ -188,11 +193,13 @@ small{font-size:1em;}
 <h2>ブログリストヘッダー</h2>
 <pre><code>&lt;ul&gt;
 &lt;li&gt;&lt;a href="&lt;%siteurl%&gt;"&gt;&lt;%sitename%&gt;&lt;/a&gt;&lt;/li&gt;</code></pre>
+
 <h2>ブログリストアイテム</h2>
 <pre><code>&lt;li&gt;&lt;a href="&lt;%bloglink%&gt;" title="&lt;%blogdesc%&gt;"&gt;&lt;%blogname%&gt;&lt;/a&gt;&lt;/li&gt;</code></pre>
 <h2>ブログリストフッター</h2>
 <pre><code>&lt;/ul&gt;</code></pre>
 <h2>表示は次のようになります</h2>
+
 <ul class="example">
 <li><a href="#bloglistexample">あなたのサイト</a></li>
 <li><a href="#bloglistexample" title="あなたのブログの説明">あなたのブログ</a></li>
@@ -201,16 +208,20 @@ small{font-size:1em;}
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/bloglistexample">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="blogmaxcomments"></a>
-<h1>コメントの最大量</h1>
+<h1>コメントの最大数</h1>
 
-<p><em>メインの目次ページ</em>に表示するコメントの最大数です。<strong>これはコメント可能な最大数を制限するものではありません</strong>。個別アイテムページでは、設定した最大数を超えていても全てのコメントが表示されます。</p>
+<p><strong>メインの目次ページ</strong>に表示するコメントの最大数です。<strong>これはコメント可能な最大数を制限するものではありません</strong>。<br />
+<strong>個別アイテムページ</strong>では、設定した最大数を超えていても全てのコメントが表示されます。</p>
 <p class="note"><strong>注意：</strong>
 テンプレート内部では、テンプレート変数<a href="#templatevar-comments">comments</a>の引数によってここでの値が上書きされます。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/blogmaxcomments">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="blognotify"></a>
 <h1>通知するメールアドレス</h1>
@@ -219,6 +230,7 @@ small{font-size:1em;}
 <p>複数のメールアドレスを設定する場合には、各メールアドレスをセミコロン(<strong>;</strong>)で区切ってください。</p>
 <div class="note">
 <strong>注意：</strong>設定フィールドの最大長は128文字です。セミコロン(<strong>;</strong>)を含んだ合計の文字数が128文字を超えない限り、メールアドレスはいくつでも設定することができます。
+
 </div>
 <div class="note">
 <strong>注意：</strong>通知先に、メンバー登録に使われているメールアドレスを設定した場合、自分で書いたアイテムやコメントの通知はされません。自分で書いたことは知っているはずですから、問題にはならないでしょう。
@@ -226,15 +238,17 @@ small{font-size:1em;}
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/blognotify">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="blogsearchable"></a>
-<h1>常に検索対象に含める</h1>
+<h1>常に検索対象にする</h1>
+<p>「常に検索対象にする」オプションが選択されていると、同じNucleusでのすべての検索において、<strong>常に</strong>検索対象に含まれます。</p>
 
-<p>「常に検索対象にする」オプションが選択されていると、同一のNucleus内で行われたすべてのブログ内検索において、<strong>常に</strong>検索対象に含まれます。</p>
-<p>例として、"lifelog"と"linkdump"という2つのブログを持ち、"linkdump"の「常に検索対象にする」が「はい」、"lifelog"は「いいえ」にになっていると仮定しましょう。そうすると、"lifelog"で検索した場合は"linkdump"も検索するのに対して、"linkdump"での検索では、"linkdump"のエントリーしか検索しません。</p>
+<p>「ブログ1」と「ブログ2」があって、「ブログ2」の「常に検索対象にする」が「はい」、「ブログ1」は「いいえ」にになっていると、「ブログ1」での検索は「ブログ2」も対象に含まれますが、「ブログ2」での検索は「ブログ1」は対象にふくまれません。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/blogsearchable">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="blogtimeoffset"></a>
 <h1>サーバ時刻との時差</h1>
@@ -242,20 +256,25 @@ small{font-size:1em;}
 <p>もしサーバの時刻とあなたの住んでいる地域の時刻とが一致していなければ、ここにサーバとの時差を入力することで、Nucleus内部の時刻をあなたの住んでいる地域の時刻に合わせることができます（マイナス時差の地域に住んでいる場合は、マイナス記号付きで入力します）。参考のために現在のサーバの時刻が表示されています。</p>
 <h2>実例</h2>
 <p>あなたの住んでいる地域の時刻が20:35で、表示されているサーバの時刻が14:35のとき、ブログの時刻を20:35にするためには「サーバ時刻との時差」を6.0に設定します。</p>
+
 <p class="note"><strong>注意：</strong>30分刻みでの時差のある地域のために、0.5刻みで設定することができます。例えば「サーバ時刻との時差」を<strong>1.5</strong>に設定すると、1時間30分の補正となります。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/blogtimeoffset">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="blogupdatefile"></a>
 <h1>自動更新するファイル</h1>
+<p>ブログに新しいアイテムが追加された時に、自動更新するファイルのパスを入力します。このファイルは、新しいアイテムが追加されるたびに最終変更時のタイムスタンプが上書きされ、外部からはこのファイルを参照することで、ブログに更新があったかどうかをチェックすることができます。<br />
+訪問者によるコメントが追加された時や、スキン/テンプレートに変更を加えた時には更新されず、アイテムが追加されてブログの記事に変更があったときに更新されるので、「ブログの更新状況」等を作成するサービスに使うことができます。</p>
 
-<p>ブログに新しいアイテムが追加された時に、上書きするファイルのパスを入力します。このファイルは、新しいアイテムが追加されるたびに最終変更時のタイムスタンプが上書きされ、外部からはこのファイルを参照することで、ブログに更新があったかどうかをチェックすることができます。このファイルは訪問者によるコメントが追加された時や、スキン/テンプレートに変更を加えた時には更新されません。アイテムが追加されてブログの記事に変更があったときに更新されるので、「Weblogの更新状況」等を作成するサービスに使うことができます。</p>
-<p>自動更新されるファイルが必要ないときは、フィールドを空っぽにしておいてください。</p>
-<p>自動更新されるファイルの場所は管理領域からの相対パスでも指定することが可能ですが、<code> /path/to/your/website/update.txt</code> のようにより確実な絶対パスを使った方が良いでしょう。また自動更新されるファイルを作成し、かつそのファイルに書き込みができるように、自動更新ファイルとそれを作成するディレクトリの<a href="tips.html#filepermissions" onclick="window.open(this.href),return false;" onkeypress="window.open(this.href),return false;" class="out" title="quick guide on changing file permissions">パーミッションを0666</a>にしてください。</p>
+<p>自動更新するファイルがないときは、フィールドを空っぽにしておいてください。</p>
+<p>ファイルの場所は管理領域からの相対パスでも指定できますが、<code> /path /to /your /website /update.txt</code> のようにより確実な絶対パスを使った方が良いでしょう。<br />
+あらかじめファイルを作成し、書き込みができるように、ファイルとディレクトリの<a href="tips.html#filepermissions" onclick="window.open(this.href),return false;" onkeypress="window.open(this.href),return false;" class="out" title="quick guide on changing file permissions">パーミッションを0666</a>にしてください。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/blogupdatefile">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="canlogin"></a>
 <h1>管理者領域へのログイン</h1>
@@ -264,6 +283,7 @@ small{font-size:1em;}
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/canlogin">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="categorylistexample"></a>
 <h1>テンプレート：カテゴリーリストの例</h1>
@@ -273,32 +293,37 @@ small{font-size:1em;}
 <pre><code>&lt;ul&gt;
 &lt;li&gt;&lt;a href="&lt;blogurl%&gt;"&gt;まとめて表示&lt;/a&gt;&lt; /li&gt;</code></pre>
 <h2>カテゴリーリストアイテム</h2>
+
 <pre><code>&lt;li&gt;&lt;a href="&lt;%catlink%&gt;"&gt;&lt;%catname%&gt;&lt;/a&gt;&lt;/li&gt;</code></pre>
 <h2>カテゴリーリストフッター</h2>
 <pre><code>&lt;/ul&gt;</code></pre>
 <h2>結果はこうなります：</h2>
 <ul class="example">
 <li><a href="#categorylistexample">まとめて表示</a></li>
+
 <li><a href="#categorylistexample">あなたのカテゴリー</a></li>
 <li><a href="#categorylistexample">わたしのカテゴリー</a></li>
 </ul>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/categorylistexample">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="convertbreaks"></a>
-<h1>改行を変換する</h1>
+<h1>アイテムの改行を変換する</h1>
 <p>Nucleusはアイテム内の改行を、デフォルトで<code>&lt;br/&gt;</code>タグに変換します。この設定によって、アイテム内の改行箇所を出力後の(X)HTMLに反映させることができます。</p>
-<p>手馴れたユーザーや、Semantic Web（<code>br</code>タグは情報を付加せず、ただ記述のためにのみ使われる）のために努力するユーザーの中には、この機能が迷惑だと感じるかもしれません。その場合はこのオプションを「いいえ」に設定してください。</p>
+
+<p>なれたユーザーや、Semantic Web（<code>br</code>タグは情報を付加せず、ただ記述のためにのみ使われる）を意識しているユーザーは、この機能が迷惑かもしれません。「アイテムの改行を変換する」オプションを「いいえ」に設定してください。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/convertbreaks">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="cookies"></a>
 <h1>Cookie設定</h1>
-
 <h2>ログインCookieの有効期間</h2>
-<p>デフォルトでは、メンバーがログインするとブラウザにcookieが保存され、翌日に戻ってきたときに再びログインする必要がなくなります。クッキーの有効期間によって、いつ無効になるか決定されます。</p>
+<p>デフォルトでは、メンバーがログインするとブラウザにcookieが保存され、翌日に戻ってきたときに再びログインする必要がなくなります。クッキーの有効期間によって、再ログインが不要な期間が決まります。</p>
+
 <ul>
 <li><strong>セッションごと</strong> ブラウザを終了させるとcookieは削除されます。</li>
 <li><strong>一ヶ月</strong> 一ヶ月続けてサイトか管理領域を訪れないというようなことが無い限り、cookieはコンピュータに残り続けます。このオプションを使えば、おそらく再ログインする必要はなくなるでしょう。（自分でログアウトしたときや、他のコンピュータからログインするときは別ですが）</li>
@@ -307,11 +332,13 @@ small{font-size:1em;}
 <p>これらは高度な設定です。通常は、cookieパスは単純にスラッシュ（"/"）、cookieドメインは空っぽの状態から変更する必要はありません。</p>
 <h2>セキュアCookie</h2>
 <p>通常は「いいえ」に設定してください。HTTPSのurlを用いており、cookieの送受信をhttps接続を通してのみに限定したい時だけ、この設定を「はい」にします。</p>
+
 <h2>最終訪問日時Cookieの保存</h2>
 <p>訪問者が最後に訪れた時間をcookieに保存させるように設定することができます。これによって、<a href="#templatenew">新規アイテム</a>の隣にマークを付けることができます。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/cookies">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="debugvars"></a>
 <h1>デバッグモード</h1>
@@ -320,6 +347,7 @@ small{font-size:1em;}
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/debugvars">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="defaultblog"></a>
 <h1>既定のBlog</h1>
@@ -328,6 +356,7 @@ small{font-size:1em;}
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/defaultblog">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="defaultlistsize"></a>
 <h1>一覧の既定の表示数</h1>
@@ -336,6 +365,7 @@ small{font-size:1em;}
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/defaultlistsize">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="disablesite"></a>
 <h1>サイトの閉鎖</h1>
@@ -346,24 +376,27 @@ small{font-size:1em;}
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/disablesite">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="draft"></a>
-<h1>ドラフト(Drafts/草稿)</h1>
 
-<p>ドラフト状態のアイテムはブログの公開されたところでは閲覧することができません。推敲に時間をかけたい時や、、実際に投稿するまでに、少し時間を空けたいときなどに役に立つでしょう。ドラフト状態のアイテムは「管理ホーム」にリストとして表示されるので、時間があるときに、いつでも作業を再開することが可能です。</p>
+<h1>ドラフト（下書き）</h1>
+<p>ドラフト状態のアイテムは公開されたブログであっても閲覧できません。推敲に時間をかけたい時や、少し時間を空けたいときなどに役に立つでしょう。ドラフト状態のアイテムは「管理ホーム」にリストとして表示されるので、時間があるときに作業を再開することが可能です。</p>
 <p>ドラフト状態のアイテムを編集する際に、「<strong>今すぐ追加</strong>」のラジオボタンを選んで「保存」ボタンを押すと、ドラフト状態が解除されてブログに公開されます。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/draft">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="extended"></a>
 <h1>「続き」部分</h1>
 
 <p>アイテムには、長文記事を分割して表示するために、オプションとして「続き」部分があります。例えば、記事がブログのメインページに置くには長すぎる場合、導入を「本文」部分に、残りを「続き」部分に書くことができます。テンプレートによって、表示の形態は変わってきますが、ブログのメインページを閲覧すると「続きを読む」というリンクが出現します。</p>
-<p>もしアイテムの単なる<em>概略</em>として導入部分を書きたいのなら、<a href="#templatevar-smartbody">smartbody</a>というテンプレート変数を用いることで、「本文」と「続き」の表示を分けることも可能です。</p>
+<p>「続き」を優先して表示させる、テンプレート変数 <a href="#templatevar-smartbody">smartbody</a> を使えば「続き」に、アイテムの概略を記入して導入部分に使えます。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/extended">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="future"></a>
 <a name="allowpastposting"></a>
@@ -377,36 +410,39 @@ small{font-size:1em;}
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/future">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="language"></a>
 <h1>言語</h1>
-
-<p>Nucleusが生成する個々のメンバー用のコンテンツを作成するときに用いられる言語を選択することができます。Nucleusによって生成されるコンテンツには、管理領域、エラーメッセージ、スキンにおけるフォームなどが含まれます。</p>
-<p>言語の選択を行う場所は二ヶ所あります。一箇所目は「グローバル設定」で、デフォルトで用いられる「既定の言語」を設定します。もう一箇所は、各「メンバーの編集」ページの設定でメンバー毎ログイン時の使用言語を設定することができます。</p>
+<p>Nucleusが個々のメンバー用のコンテンツを作成するときに用いられる言語を選択することができます。生成されるコンテンツには、管理領域、エラーメッセージ、スキンにおけるフォームなどが含まれます。</p>
+<p>言語の選択を行う場所は２ヶ所あり、まず「グローバル設定／使用する言語」でデフォルトの言語を設定します。次に「メンバーの管理／（メンバー）編集／使用する言語」でメンバー毎にログイン時の使用言語を設定することができます。</p>
 <p>これら両方の設定が無効の場合、英語がデフォルトの言語として用いられます</p>
 <p class="note"><strong>注意：</strong> 追加の言語ファイルは<a href="http://www.nucleuscms.org/" onclick="window.open(this.href),return false;" onkeypress="window.open(this.href),return false;" class="out" title="Nucleus CMS Website">Nucleusのウェブサイト</a>からダウンロードできます。（新規ウィンドウが開きます）</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/language">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="media"></a>
 <h1>メディア</h1>
-
 <p>Nucleusはメディアファイル（画像、動画、音楽など）をウェブサイトにアップロードすることができます。</p>
-<p>このためにいくつかの設定が必要となります：</p>
+<p>このためにいくつかの設定が必要です：</p>
 <ul>
-<li><strong>メディア(画像・音声)ディレクトリ</strong>：メディアファイルが保存されるサーバー上の場所（サーバのファイルシステム上のパス）</li>
+<li><strong>メディア(画像・音声)ディレクトリ</strong>：メディアファイルが保存されるサーバー上の場所。（サーバーのファイルシステム上のパス）</li>
+
 <li><strong>メディアURL</strong>：メディアファイルのURL上の場所</li>
-<li><strong>ファイルのアップロードを許可しますか?</strong>：ファイルのアップロードを不許可にすることができます</li>
+<li><strong>ファイルのアップロードを許可しますか?</strong>：ファイルのアップロードを禁止できます。</li>
 <li><strong>アップロードを許可するファイルタイプ</strong>：アップロードできるファイルの拡張子（複数必要な場合は、コンマで区切る）</li>
-<li><strong>アップロードファイルの最大サイズ</strong>：ここで設定したものよりファイルサイズの大きなものはアップロードすることができません。</li>
-<li><strong>アップロードするファイル名の頭に日付を付加する</strong>：アップロードされたファイルのファイル名の先頭に、現在の日付を付加するかどうかを選択します。このオプションで「はい」を選んでいると、例えば "bunny.jpg"という名前のファイルを2008年9月5日にアップロードしたなら、"20080905-bunny.jpg"というファイル名になります。何故こんな機能があるかというと、大量のファイルをアップロードしているときについ同じ名前を用いてしまう問題を避けるためです。</li>
+<li><strong>アップロードファイルの最大サイズ</strong>：ここで設定したサイズより大きなファイルはアップロードできません。</li>
+<li><strong>アップロードするファイル名の頭に日付を付加する</strong>：アップロードされたファイルのファイル名の先頭に、現在の日付を付加するかどうかを選択します。このオプションで「はい」を選んでいると、例えば "bunny.jpg"という名前のファイルを20011年9月5日にアップロードしたなら、"20110905-bunny.jpg"というファイル名になります。この機能によって、ファイル名の重複をある程度、心配しなくて済みます。 </li>
 </ul>
 <p>メンバーはそれぞれ、自身のメディアファイルのプライベートなコレクションを持ちます。また、それ以外のメディア・ディレクトリ下のサブディレクトリはグローバルなコレクション（メンバー間で共有）とみなされます。</p>
+
 <p>アップロードは悪用を予防するため、少なくとも一つのブログチームに入っているメンバーでなくては行えません。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/media">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="messageservice"></a>
 <h1>メッセージサービス</h1>
@@ -414,25 +450,29 @@ small{font-size:1em;}
 <h2>メンバー間メッセージサービス</h2>
 <p>メンバーのプライバシーのために、メールアドレスを隠したままで、スクリプトを通してメンバー同士でメールメッセージの送信ができます。送信されたメッセージには両ユーザーのメールアドレスが含まれますので、その後は通常のメールを用いた連絡を続けることができます。このサービスは無効にすることが可能です。</p>
 <h2>メンバー以外のメッセージサービス</h2>
+
 <p>デフォルトでは非メンバーは、入力されたメールアドレスが有効なものかチェックする方法が無いために、メッセージサービスを使用できません。「メンバー以外からのメッセージ送付を許可」することによってこの制限を緩和できます。非メンバーはメッセージの投函時にメールアドレスを尋ねられ、そのアドレスがメールのヘッダー<code>From:</code>に表示されることになります。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/messageservice">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="parser-properties"></a>
 <a name="includemode"></a>
 <a name="includeprefix"></a>
 <h1>パーサーのプロパティ</h1>
 <p>利用可能なパーサーオプションを以下に記述します。</p>
+
 <table>
 <caption>パーサーのプロパティ</caption>
 <tr><th>オプション名</th><th>値</th></tr>
 <tr>
-<td>IncludeMode<br />Includeモード</td>
+<td>IIncludeモード</td>
 <td>
-<p><strong>normal</strong>：通常の動作。ページを作成する「.php」ファイルのディレクトリ/URLから相対位置のファイルを取り出しインクルードします。</p>
-<p><strong>skindir</strong>：スキンディレクトリ/スキンURLから相対位置のファイルを取り出しインクルードします。</p>
-<p><b>影響を与えるスキン変数</b></p>
+<p><strong>ノーマル</strong>：通常は、ページを生成する「.php」ファイルのディレクトリ/URLから相対位置にあるファイルをインクルードします。</p>
+<p><strong>skindirを使う</strong>：スキンディレクトリ/スキンURLから相対位置にあるファイルををインクルードします。</p>
+<p><strong>影響を与えるスキン変数</strong></p>
+
 <ul>
 <li><a href="#skinvar-include">include</a></li>
 <li><a href="#skinvar-phpinclude">phpinclude</a></li>
@@ -442,35 +482,39 @@ small{font-size:1em;}
 </td>
 </tr>
 <tr>
-<td>IncludePrefix<br />Includeプレフィックス</td>
+<td>Includeプリフィックス</td>
 <td>
-<p>このプロパティはインクルードするファイルそれぞれの頭に追加されるプリフィックスです。<br />例えば、プリフィックスが <code>base/</code> でインクルードするファイルが <code>somefile.txt</code> なら、最終的には <code>base/somefile.txt</code> をインクルードすることになります。</p>
-<p>このプロパティはIncludeModeのプロパティと共に使われることが意図されています。<br />この方法で、 skindir/somename/ にインポートされたスキンは、 <code>IncludeMode</code> を <code>skindirを使う</code> に <code> IncludePrefix</code> を <code>somename/</code> に設定しておくことができます。 </p>
-<p><b>影響を与えるスキン変数</b></p>
+<p>これはインクルードするファイル名それぞれの先頭に付けるプリフィックス文字列です。<br />プリフィックスが <code>base/</code> でインクルードするファイルが <code>somefile.txt</code> ならば、 実際には、<code>base/somefile.txt</code> をインクルードすることになります。</p>
+
+<p>このプロパティは「Includeモード」のプロパティと一緒に使われ、スキンを <code>skindir/somename/</code> にインポートしたのなら、「Includeモード」を「skindirを使う」に「ncludeプリフィックス」を「<code>somename/</code>」に設定します。 </p>
+<p><strong>影響を与えるスキン変数</strong></p>
 <ul>
 <li><a href="#skinvar-include">include</a></li>
 <li><a href="#skinvar-phpinclude">phpinclude</a></li>
 <li><a href="#skinvar-parsedinclude">parsedinclude</a></li>
 <li><a href="#skinvar-nucleusbutton">nucleusbutton</a></li>
+
 </ul>
 </td>
 </tr>
 </table>
-<p><code>Includeプリフィックス</code> と <code>Includeモード</code> のプロパティは、「スキンの一般的設定」において該当スキンでの包括的な設定が可能です。<br />なお、プロパティが設定されてしまうと、例えばテンプレートも含めたすべてのパースデータにそれが適用されることを心にとめておいてください。</p>
+<p>「Includeモード」と「Includeプリフィックス」は、スキン毎の「一般設定」でそのスキンの包括的な設定を行います。<br />なお、これらのプロパティが設定されると、テンプレートも含めてすべてのパースデータに適用されます。 </p>
 <p class="comment"><a href="http://japan.nucleuscms.org/help/parser-properties">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="plugins"></a>
 <h1>プラグイン</h1>
+<p>Nucleusには、機能を拡張するためのプラグインをインストールできます。プラグインは次のように振る舞って、Nucleus本体だけでは実現できない様々な機能を提供してくれるでしょう。</p>
 
-<p>Nucleusでは機能を追加するために、プラグインをインストールすることができます。プラグインは次のリストの様に働き、Nucleus本体だけでは実現できな様々な機能を提供してくれるでしょう。</p>
 <ol>
 <li>スキン変数のように振舞う</li>
 <li>テンプレート変数のように振舞う</li>
-<li>Nucleusによって生成されたイベントのフック。「プラグインの管理」画面での「&uarr; ひとつ上へ」と「&darr; ひとつ下へ」リンクは、イベント発生時にプラグインを呼び出す順番を決定するために用いられます。最初のプラグインは最初に呼び出され、最後のプラグインは最後に呼び出されます。</li>
-<li><code>action.php</code>を通して呼び出されたときにアクタのように振舞う</li>
+<li>Nucleusが生成したイベントをフックする。イベント発生時にプラグインを呼び出す順番を決めるために、「プラグインの管理」画面の「&uarr; ひとつ上へ」と「&darr; ひとつ下へ」リンクを使用できます。リスト先頭のプラグインが最初に呼び出され、最後のプラグインは最後に呼び出されます。</li>
+<li><code>action.php</code>を通して呼び出されたときにアクションを実行する。 </li>
 </ol>
 <p>プラグインに対する責任は、完全にプラグインの作者にあることをお忘れなく。プラグイン作者は、プラグインが問題なく動くように作らなければなりません。</p>
+
 <a name="getplugins"></a>
 <p>NucleusCMSのプラグインの主だったものは、以下の二つのページから見つけ出すことが出来ます。</p>
 <ul>
@@ -483,7 +527,9 @@ small{font-size:1em;}
 これらのフォーラムの中でも、プラグインリストに掲載されていない小さなプラグインを見つけることが出来るでしょう。
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/plugins">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="pluginurl"></a>
 <h1>プラグインURL</h1>
@@ -493,7 +539,9 @@ small{font-size:1em;}
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/pluginurl">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
+
 <a name="protectmemnames"></a>
 <h1>メンバー名の保護</h1>
 
@@ -501,21 +549,25 @@ small{font-size:1em;}
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/protectmemnames">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="sendping"></a>
 <h1>Pingサーバに更新通知を送信する</h1>
+<p>ブログを更新した時に、ブログ検索サイト等が公開しているいくつかのpingサーバーへ更新pingを送信することができます。
+これらのサイﾄは、リクエストに応じて最近更新されたブログのリストを提示し、このデータを利用した新着記事のリスト等のサービスを、多くのウェブサイトが提供していますので、このオプションを「はい」に設定することで、訪問者を増やす事ができるかもしれません。</p>
 
-<p>ブログを更新した時に、ブログ検索サイト等の公開している複数のpingサーバに更新pingを送信することができます。これらのpingサーバを用意しているサイﾄでは、リクエストに応じて最近更新されたブログのリストを提示してくれます。このデータを利用した新着記事のリスト等のサービスを、数多くのウェブサイトが提供していますので、このオプションを「はい」に設定することで、あなたのブログは新しい訪問者を得ることになるでしょう。</p>
 <p class="note"><strong>注意:</strong>この機能を正しく動かすために、blogごとの「設定」にあるweblogの「URL」と「Blogの名前」を埋める必要があります。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/sendping">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="shortblogname"></a>
 <h1>Blogの短縮名</h1>
 
 <p>「Blogの短縮名」は主に管理領域で、どのアイテムがどのブログと結びついているのか示すために使われます。</p>
 <p>また、新規ブログを有効にするための代替indexファイルでも用いられます（以下は「Blogの短縮名」が「myshortblogname」の時の呼び出しファイルの例）：</p>
+
 <pre>
 &lt;?php
 include("./config.php"),
@@ -526,23 +578,26 @@ selector(),
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/shortblogname">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="shortnames"></a>
 <h1>短縮名と表示される名前</h1>
 
 <p>ブログ、テンプレート、そしてスキンは名前や説明の他に短縮名を持たなくてはなりません。</p>
 <p>短縮名はa～zと0～9<strong>のみ</strong>で構成され、スペースを含むことは<strong>できません</strong>。</p>
+
 <p>訳注：テンプレートの名前には"/"が利用できたりするので、実際にはこの限りではないようです。</p>
 <p>メンバーの場合、「表示される名前」はログイン名として使われます。a～z、 A～Z、0～9とスペース（半角）が使用できます。ただし、名前の最初や最後にスペースを付けることはできません。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/shortnames">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinpartarchive"></a>
 <h1>スキン：月別アーカイブページ</h1>
-
-<p>このスキンパーツは「メインの目次ページ」と似た振る舞いをしますが、該当月の全てのアイテムを表示します。</p>
+<p>「メインの目次ページ」と似た振る舞いをする、「１ヶ月分のアーカイブ」で、該当する１ヶ月分のアイテムを全て表示します。</p>
 <p>「月別アーカイブページ」の基本的な形：</p>
+
 <pre>
 &lt;html&gt;
 &lt;head&gt;
@@ -550,6 +605,7 @@ selector(),
 &lt;/head&gt;
 &lt;body&gt;
 &lt;h1&gt;アーカイブ&lt;/h1&gt;
+
 &lt;%archive(default)%&gt;
 &lt;/body&gt;
 &lt;/html&gt;
@@ -558,6 +614,7 @@ selector(),
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinpartarchive">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinpartarchivelist"></a>
 <h1>スキン：月別アーカイブ一覧ページ</h1>
@@ -570,6 +627,7 @@ selector(),
 &lt;title&gt;私のウェブログ :: アーカイブ集&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
+
 &lt;h1&gt;アーカイブ集&lt;/h1&gt;
 &lt;%archivelist(default)%&gt;
 &lt;/body&gt;
@@ -579,6 +637,7 @@ selector(),
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinpartarchivelist">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinparterror"></a>
 <h1>スキン：エラーページ</h1>
@@ -589,12 +648,14 @@ selector(),
 &lt;html&gt;
 &lt;head&gt;
 &lt;title&gt;私のウェブログ :: エラー&lt;/title&gt;
+
 &lt;/head&gt;
 &lt;body&gt;
 &lt;h1&gt;エラーが発生しました！&lt;/h1&gt;
 &lt;%errormessage%&gt;
 &lt;br /&gt;&lt;br /&gt;
 &lt;a href="javascript:history.back(),"&gt;戻る&lt;/a&gt;
+
 &lt;/body&gt;
 &lt;/html&gt;
 </pre>
@@ -602,6 +663,7 @@ selector(),
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinparterror">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinpartimagepopup"></a>
 <h1>スキン：画像ポップアップウィンドウ</h1>
@@ -615,6 +677,7 @@ selector(),
 &lt;style type="text/css"&gt;
 img { border: none; }
 &lt;/style&gt;
+
 &lt;/head&gt;
 &lt;body&gt;
 &lt;a href="javascript:window.close(),"&gt;&lt;%image%&gt;&lt;/a&gt;
@@ -624,6 +687,7 @@ img { border: none; }
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinpartimagepopup">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinpartindex"></a>
 <h1>スキン：メインの目次ページ</h1>
@@ -634,6 +698,7 @@ img { border: none; }
 &lt;html&gt;
 &lt;head&gt;
 &lt;title&gt;私のウェブログ&lt;/title&gt;
+
 &lt;/head&gt;
 &lt;body&gt;
 &lt;h1&gt;私のウェブログ&lt;/h1&gt;
@@ -642,18 +707,20 @@ img { border: none; }
 &lt;/html&gt;
 </pre>
 <p>    このスキンでは、選択中のブログのアイテムが、タイムスタンプの新しいものから20個、"mytemplate"というテンプレートを使用して表示されます。
+
 </p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinpartindex">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinpartitem"></a>
-<h1>個別アイテムページ</h1>
-
+<h1>スキン：個別アイテムページ</h1>
 <p>このスキンパーツは個別のアイテムを表示するために使われます。アイテムに付けられた全てのコメントと、コメント追加フォームを含めたものになります。</p>
 <p>「個別アイテムページ」の基本的な形：</p>
 <pre>
 &lt;html&gt;
+
 &lt;head&gt;
 &lt;title&gt;私のウェブログ :: アイテム&lt;/title&gt;
 &lt;/head&gt;
@@ -661,6 +728,7 @@ img { border: none; }
 &lt;h1&gt;アイテム&lt;/h1&gt;
 &lt;%item(detailed)%&gt;
 &lt;h1&gt;コメント&lt;/h1&gt;
+
 &lt;%comments(detailed)%&gt;
 &lt;h1&gt;コメントを追加&lt;/h1&gt;
 &lt;%commentform%&gt;
@@ -670,7 +738,9 @@ img { border: none; }
 <p>このスキンでは、"detailed"テンプレートを使用してアイテムとコメント、そして標準のコメントフォームが表示されます。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinpartitem">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="skinpartmember"></a>
 <h1>スキン：メンバー詳細ページ</h1>
@@ -681,11 +751,13 @@ img { border: none; }
 &lt;html&gt;
 &lt;head&gt;
 &lt;title&gt;私のウェブログ :: メンバーの詳細&lt;/title&gt;
+
 &lt;/head&gt;
 &lt;body&gt;
 &lt;h1&gt;&lt;%member(name)%&gt; の情報&lt;/h1&gt;
 ウェブサイト：
 &lt;a href="&lt;%member(url)%&gt;"&gt;&lt;%member(url)%&gt;&lt;/a&gt;
+
 &lt;h1&gt;メッセージを送る&lt;/h1&gt;
 &lt;%membermailform%&gt;
 &lt;/body&gt;
@@ -695,6 +767,7 @@ img { border: none; }
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinpartmember">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinpartsearch"></a>
 <h1>スキン：検索ページ</h1>
@@ -705,6 +778,7 @@ img { border: none; }
 &lt;html&gt;
 &lt;head&gt;
 &lt;title&gt;私のウェブログ :: 検索&lt;/title&gt;
+
 &lt;/head&gt;
 &lt;body&gt;
 &lt;h1&gt;検索&lt;/h1&gt;
@@ -712,20 +786,23 @@ img { border: none; }
 &lt;h1&gt;検索結果&lt;/h1&gt;
 &lt;%searchresults(default)%&gt;
 &lt;/body&gt;
+
 &lt;/html&gt;
 </pre>
 <p>このスキンでは、"default"テンプレートを使用して検索の結果が表示されます。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinpartsearch">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="changedate"></a>
 <h1>投稿日時の変更</h1>
-<p>「タイムスタンプを更新」オプションにより、アイテムの投稿された日付や時間を変更することができます。アイテムの内容を変更した時に、「タイムスタンプを更新」することで記事をブログののトップに戻すことができます。</p>
-<p>しかし、そのアイテム独自のIDは変更されませんので、訪問者はアイテムのIDから、そのアイテムが編集後に投稿時間が変更されたものだと気づくことができます。</p>
+<p>「タイムスタンプを更新」オプションにより、アイテムが投稿された日時を変更することができます。アイテムの内容を変更した時に「タイムスタンプを更新」することで記事をブログののトップに戻せます。</p>
+<p>しかし、アイテムIDは変更されませんので、訪問者はアイテムIDから、投稿日時が変更されたものだと見分けることができます。 </p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/changedate">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinpartspecial"></a>
 <h1>スキン：スペシャルスキンパーツ</h1>
@@ -735,6 +812,7 @@ img { border: none; }
 (<code>fred</code>という名前でスペシャルスキンパーツを作った場合)</p>
 <code>http://www.yoursite.tld/index.php?special=fred</code>
 <p>このスキンタイプに関するさらなる議論は、NucleusCMS本家サポートフォーラムで行われています。:
+
 <a href="http://forum.nucleuscms.org/viewtopic.php?t=16501" title="Special Skin Parts">Nucleus 3.31 and Static Pages</a></p>
 <p>標準的なスペシャルスキンパーツ:</p>
 <pre>
@@ -743,6 +821,7 @@ img { border: none; }
 &lt;title&gt;私のブログ&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
+
 &lt;h1&gt;このサイトについて&lt;/h1&gt;
 &lt;p&gt;This page was published in order
 to provide a platform to publicize the plight
@@ -756,6 +835,7 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinpartspecial">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinsurl"></a>
 <h1>スキンURL</h1>
@@ -765,6 +845,7 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinsurl">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-additemform"></a>
 <h1>スキン変数：additemform</h1>
@@ -774,6 +855,7 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 <p>なし</p>
 <h2>スキンタイプ</h2>
 <p>メインの目次</p>
+
 <h2>例</h2>
 <pre>
 &lt;%additemform%&gt;
@@ -781,11 +863,13 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-additemform">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-addlink"></a>
 <h1>スキン変数：addlink</h1>
 
 <p>表示中のブログにアイテムを追加するためのブックマークレットのURLを出力します</p>
+
 <h2>引数</h2>
 <p>なし</p>
 <h2>スキンタイプ</h2>
@@ -793,10 +877,12 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 <h2>例</h2>
 <pre>
 &lt;dd&gt;&lt;a href="&lt;%addlink%&gt;" onclick="&lt;%addpopupcode%&gt;" title="ブログにアイテムを追加する"&gt;アイテムを投稿する&lt;/a&gt;&lt;/dd&gt;
+
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-addlink">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-addpopupcode"></a>
 <h1>スキン変数：addpopupcode</h1>
@@ -804,15 +890,18 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 <p>アイテムを追加するブックマークレットをポップアップさせるためのJavascriptコードを出力します</p>
 <h2>引数</h2>
 <p>なし</p>
+
 <h2>スキンタイプ</h2>
 <p>全て</p>
 <h2>例</h2>
 <pre>
 &lt;dd&gt;&lt;a href="&lt;%addlink%&gt;" onclick="&lt;%addpopupcode%&gt;" title="ブログにアイテムを追加する"&gt;アイテムを投稿する&lt;/a&gt;&lt;/dd&gt;
+
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-addpopupcode">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-adminurl"></a>
 <h1>スキン変数：adminurl</h1>
@@ -820,6 +909,7 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 <p>管理領域のURLを挿入します。</p>
 <h2>引数</h2>
 <p>なし</p>
+
 <h2>スキンタイプ</h2>
 <p>全て</p>
 <h2>例</h2>
@@ -828,7 +918,9 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-adminurl">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="skinvar-archive"></a>
 <h1>スキン変数：archive</h1>
@@ -841,6 +933,7 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 <table summary="Skin var::Archive::Require">
 <tr>
 <th abbr="名前">名前</th>
+
 <th abbr="値">値</th>
 </tr>
 <tr>
@@ -854,6 +947,7 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
+
 </tr>
 <tr>
 <td><strong><em>category</em></strong></td>
@@ -866,6 +960,7 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 <h2>スキンタイプ</h2>
 <p>月別アーカイブ</p>
 <h2>例</h2>
+
 <pre>
 &lt;%archive(mytemplate)%&gt;
 &lt;%archive(mytemplate,mycategory)%&gt;
@@ -873,11 +968,13 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-archive">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-archivedate"></a>
 <h1>スキン変数：archivedate</h1>
 
 <p>アーカイブの日付としてフォーマット済みの日付を挿入します。パラメーターなしで使うと、例えばアーカイブが2008年9月のものなら、"05 september 2008"か"september 2008"のどちらかが挿入されることになります。</p>
+
 <h2>引数</h2>
 <ul>
 <li>オプション：
@@ -889,6 +986,7 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 <td>日付がフォーマットされるときに用いられる<a href="#templatelocale">Locale</a></td>
 </tr><tr>
 <td>Format</td>
+
 <td>日付のフォーマット（<a href="#strftime">strftime変数</a>）</td>
 </tr></table>
 </li>
@@ -898,12 +996,14 @@ prognosis is perturbingly pessimistic.&lt;/p&gt;
 <h2>例</h2>
 <pre>
 Archive for &lt;%archivedate%&gt;
+
 Archive for &lt;%archivedate(dutch)%&gt;
 Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-archivedate">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-archivedaylist"></a>
 <h1>スキン変数：archivedaylist</h1>
@@ -916,6 +1016,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <table summary="Skin var::Archive Day list::Require">
 <tr>
 <th abbr="名前">名前</th>
+
 <th abbr="値">値</th>
 </tr>
 <tr>
@@ -929,6 +1030,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
+
 </tr>
 <tr>
 <td><strong><em>category</em></strong></td>
@@ -942,6 +1044,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </li>
 </ul>
 </div>
+
 <h2>スキンタイプ</h2>
 <p>メインの目次、月別アーカイブ、月別アーカイブ一覧、検索、個別アイテム</p>
 <h2>例</h2>
@@ -952,6 +1055,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-archivedaylist">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-archivelink"></a>
 <h1>スキン変数：archivelink</h1>
@@ -965,6 +1069,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
+
 </tr>
 <tr>
 <td><strong><em>linktext</em></strong></td>
@@ -976,6 +1081,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </div>
 <h2>スキンタイプ</h2>
 <p>全て</p>
+
 <h2>例</h2>
 <pre>
 &lt;%archivelink%&gt;
@@ -983,11 +1089,13 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-archivelink">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-archivelist"></a>
 <h1>スキン変数：archivelist</h1>
 
 <p>現在選択しているブログに存在するアーカイブの月ごとのリストを、指定されたテンプレートを使って挿入します。</p>
+
 <h2>引数</h2>
 <div>
 <ul>
@@ -1000,6 +1108,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong>template</strong></td>
 <td>使用するテンプレート名</td>
+
 </tr>
 </table>
 </li>
@@ -1013,6 +1122,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <td><strong><em>category</em></strong></td>
 <td>表示するカテゴリーの名前</td>
 </tr>
+
 <tr>
 <td><strong><em>limit</em></strong></td>
 <td>表示するリンク数の制限（例えば、過去3ヶ月分へのリンクしか表示させたくないときなど）</td>
@@ -1025,17 +1135,20 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <p>メインの目次、月別アーカイブ、月別アーカイブ一覧、検索、個別アイテム</p>
 <h2>例</h2>
 <pre>
+
 &lt;%archivelist(mytemplate)%&gt;
 &lt;%archivelist(mytemplate,mycategory)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-archivelist">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-archivetype"></a>
 <h1>スキン変数：archivetype</h1>
 
 <p><code>日単位</code>か<code>月単位</code>、どちらのアーカイブタイプが現在表示されているのか示す。</p>
+
 <h2>引数</h2>
 <p>なし</p>
 <h2>スキンタイプ</h2>
@@ -1043,6 +1156,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-archivetype">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-archiveyearlist"></a>
 <h1>スキン変数：archiveyearlist</h1>
@@ -1055,6 +1169,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <table summary="Skin var::Archive Day list::Require">
 <tr>
 <th abbr="名前">名前</th>
+
 <th abbr="値">値</th>
 </tr>
 <tr>
@@ -1068,6 +1183,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
+
 </tr>
 <tr>
 <td><strong><em>category</em></strong></td>
@@ -1081,6 +1197,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </li>
 </ul>
 </div>
+
 <h2>スキンタイプ</h2>
 <p>メインの目次、月別アーカイブ、月別アーカイブ一覧、検索、個別アイテム</p>
 <h2>例</h2>
@@ -1091,6 +1208,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-archiveyearlist">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-blog"></a>
 <h1>スキン変数：blog</h1>
@@ -1104,6 +1222,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
+
 </tr>
 <tr>
 <td><strong>template</strong></td>
@@ -1117,6 +1236,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
 </tr>
+
 <tr>
 <td><strong><em>amount</em></strong></td>
 <td>表示するアイテムの数（デフォルトは10）。何番目のアイテムから始めるかというオフセットを含めることもできます。例えば<code>10(5) </code>と記述すると5番目から始めて10個のアイテムを表示します。</td>
@@ -1128,6 +1248,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </table>
 </li>
 </ul>
+
 </div>
 <h2>スキンタイプ</h2>
 <p>メインの目次、個別アイテム、月別アーカイブ、月別アーカイブ一覧、検索</p>
@@ -1141,6 +1262,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-blog">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-bloglist"></a>
 <h1>スキン変数：bloglist</h1>
@@ -1150,6 +1272,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <ul>
 <li>必須：
 <table summary="Skin var::Blog list::Require">
+
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
@@ -1163,6 +1286,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <li>オプション
 <table summary="Skin var::Blog list::Optional">
 <tr>
+
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
 <th abbr="初期値">初期値</th>
@@ -1174,6 +1298,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </tr>
 <tr>
 <td><strong><em>orderby</em></strong></td>
+
 <td>並べ替えのキーを指定します。指定可能なキーは「number(ブログID)」「name(ブログ名)」「shortnameブログの短縮名)」「description(ブログの説明)」です。</td>
 <td>number</td>
 </tr>
@@ -1185,6 +1310,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </table>
 途中の引数を省略する時は｢,(カンマ)｣のみ記述します。
 </li>
+
 </ul>
 </div>
 <h2>スキンタイプ</h2>
@@ -1196,10 +1322,12 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 「mytemplate」を使って、ブログの一覧を｢ブログの短縮名｣で表示します。
 <pre>&lt;%bloglist(default/index,name,description)%&gt;</pre>
 「default/index」を使って、ブログの一覧を｢ブログの説明｣で並べ替えて｢ブログ名｣で表示します。
+
 <pre>&lt;%bloglist(default/index,shortname,,desc)%&gt;</pre>
 「default/index」を使って、ブログの一覧を｢ブログ名｣の降順で並べ替えて｢ブログ短縮名｣で表示します。
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-bloglist">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-blogsetting"></a>
 <h1>スキン変数：blogsetting</h1>
@@ -1207,6 +1335,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <h2>引数</h2>
 <ul>
 <li>必須：
+
 <table summary="Skin var::Blog setting::Require">
 <tr>
 <th abbr="名前">名前</th>
@@ -1219,6 +1348,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><em>url</em></td>
 <td>ブログのURL</td>
+
 </tr>
 <tr>
 <td><em>name</em></td>
@@ -1231,6 +1361,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><em>short</em></td>
 <td>ブログの短縮名</td>
+
 </tr>
 </table>
 </li>
@@ -1242,15 +1373,18 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 &lt;%blogsetting(name)%&gt;
 &lt;%blogsetting(id)%&gt;
 &lt;%blogsetting(desc)%&gt;
+
 &lt;a href="&lt;%blogsetting(url)%&gt;"&gt;...&lt;/a&gt;
 </pre>
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-blogsetting">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-category"></a>
 <h1>スキン変数：category</h1>
 
 <p>現在選択されているカテゴリーに関する情報を挿入します。カテゴリーが選択されていないときは何も挿入されません。</p>
+
 <h2>引数</h2>
 <div>
 <ul>
@@ -1263,6 +1397,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><em>name</em></td>
 <td>カテゴリー名（デフォルト）</td>
+
 </tr>
 <tr>
 <td><em>desc</em></td>
@@ -1276,6 +1411,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </li>
 </ul>
 </div>
+
 <h2>スキンタイプ</h2>
 <p>全て</p>
 <h2>例</h2>
@@ -1288,6 +1424,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-category">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-categorylist"></a>
 <h1>スキン変数：categorylist</h1>
@@ -1298,6 +1435,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <li>必須：
 <table summary="Skin var::Category list::Require">
 <tr>
+
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
 </tr>
@@ -1311,6 +1449,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <table summary="Skin var::Category list::Optional">
 <tr>
 <th abbr="名前">名前</th>
+
 <th abbr="値">値</th>
 </tr>
 <tr>
@@ -1323,6 +1462,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </div>
 <h2>スキンタイプ</h2>
 <p>メインの目次、月別アーカイブ、月別アーカイブ一覧、検索、個別アイテム<br />
+
 （※<em>blogname</em> が指定されている場合、エラーページ・メンバー詳細ページ・スペシャルスキンパーツでも利用できます。）</p>
 <h2>例</h2>
 <pre>
@@ -1332,6 +1472,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-categorylist">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-charset"></a>
 <h1>スキン変数：charset</h1>
@@ -1342,17 +1483,20 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <h2>スキンタイプ</h2>
 <p>全て</p>
 <h2>例</h2>
+
 <pre>
 &lt;meta http-equiv="Content-Type" content="text/html; charset=&lt;%charset%&gt;" /&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-charset">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-commentform"></a>
 <h1>スキン変数：commentform</h1>
 
 <p>アイテムページにコメントフォームを挿入します。</p>
+
 <h2>引数</h2>
 <div>
 <ul>
@@ -1365,6 +1509,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong><em>destinationurl</em></strong></td>
 <td>コメント追加後にリダイレクトさせるURL（デフォルトでは、投稿したアイテムの「個別アイテムページ」にリダイレクトされます）</td>
+
 </tr>
 </table>
 </li>
@@ -1380,6 +1525,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-commentform">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-comments"></a>
 <h1>スキン変数：comments</h1>
@@ -1389,6 +1535,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <ul>
 <li>必須：
 <table summary="Skin var::Comments::Require">
+
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
@@ -1401,6 +1548,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </li>
 </ul>
 <h2>スキンタイプ</h2>
+
 <p>個別アイテム</p>
 <h2>例</h2>
 <pre>
@@ -1409,6 +1557,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-comments">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-errormessage"></a>
 <h1>スキン変数：errormessage</h1>
@@ -1422,8 +1571,10 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <pre>
 &lt;%errormessage%&gt;
 </pre>
+
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-errormessage">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-ifcat"></a>
 <h1>スキン変数：ifcat</h1>
@@ -1432,6 +1583,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <div>
 なし
 <ul>
+
 <li><em>text</em>：表示するテキスト</li>
 </ul>
 </div>
@@ -1442,7 +1594,9 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 &lt;%ifcat(Current Category: )%&gt;&lt;%category%&gt;
 </pre>
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-ifcat">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="skinvar-image"></a>
 <h1>スキン変数：image</h1>
@@ -1454,6 +1608,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <table summary="Skin var::Image::Optional">
 <tr>
 <th abbr="名前">名前</th>
+
 <th abbr="値">値</th>
 </tr>
 <tr>
@@ -1463,6 +1618,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong>url</strong></td>
 <td>画像ファイルへのURL</td>
+
 </tr>
 <tr>
 <td><strong>width</strong></td>
@@ -1475,6 +1631,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong>caption</strong></td>
 <td>画像の見出し（画像と共に表示されるテキスト）</td>
+
 </tr>
 </table>
 </li>
@@ -1487,6 +1644,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </pre>
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-image">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-imagetext"></a>
 <h1>スキン変数：imagetext</h1>
@@ -1495,6 +1653,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <h2>引数</h2>
 <p>なし</p>
 <h2>スキンタイプ</h2>
+
 <p>画像ポップアップウィンドウ</p>
 <h2>例</h2>
 <pre>
@@ -1502,11 +1661,12 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </pre>
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-imagetext">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-include"></a>
 <h1>スキン/テンプレート変数：include</h1>
-
 <p>Webページ出力時に、指定されたテキストファイルを取り込んで挿入します。ファイルの中身がそのまま出力されるので、スキン/テンプレート変数やPHPコードを使っても反映されません。同じような変数に、取り込み時にスキン/テンプレート変数を展開する<a href="#skinvar-parsedinclude">parsedinclude</a>や、PHPコードを実行する<a href="#skinvar-phpinclude">phpinclude</a>があります。</p>
+
 <h2>引数</h2>
 <ul>
 <li>必須：
@@ -1519,17 +1679,19 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <td><strong>filename</strong></td>
 <td>取り込むファイルの名前（index.phpからの相対位置でも絶対位置でもかまいません。URLを指定することもできます）</td>
 </tr>
+
 </table>
 </li>
 </ul>
 <h2>注意</h2>
 <ul>
-<li>この変数は<a href="#parser-properties">パーサー設定の<code>IncludeMode</code> と<code>IncludePrefix</code></a>に影響を受けます。</li>
+<li>この変数は、<a href="#parser-properties">スキンの「一般設定」にある「Includeモード」と「Includeプリフィックス」の影響を受けます。</a></li>
 </ul>
 <h2>スキンタイプ</h2>
 <p>全て</p>
 <h2>例</h2>
 <pre>
+
 &lt;%include(filename.txt)%&gt;
 &lt;%include(/home/user/myself/filename.txt)%&gt;
 &lt;%include(http://example.jp/filename.html)%&gt;
@@ -1537,6 +1699,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-include">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-item"></a>
 <h1>スキン変数：item</h1>
@@ -1553,6 +1716,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong>template</strong></td>
 <td>使用するテンプレート名</td>
+
 </tr>
 </table>
 </li>
@@ -1565,7 +1729,9 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-item">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="skinvar-itemid"></a>
 <h1>スキン変数：itemid</h1>
@@ -1575,6 +1741,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <p>なし</p>
 <h2>スキンタイプ</h2>
 <p>個別アイテム</p>
+
 <h2>例</h2>
 <pre>
 &lt;%itemid%&gt;
@@ -1582,11 +1749,13 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-itemid">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-itemlink"></a>
 <h1>スキン変数：itemlink</h1>
 
 <p>アイテムのURL（permanent link）を挿入します。</p>
+
 <h2>引数</h2>
 <div>
 <ul>
@@ -1599,6 +1768,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong><em>linktext</em></strong></td>
 <td>記述されていると、URLの代わりに<code>&lt;a href...</code>タグによるリンクが挿入されます。</td>
+
 </tr>
 </table>
 </li>
@@ -1612,7 +1782,9 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-itemlink">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="skinvar-itemtitle"></a>
 <h1>スキン変数：itemtitle</h1>
@@ -1622,6 +1794,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <p>なし</p>
 <h2>スキンタイプ</h2>
 <p>個別アイテム</p>
+
 <h2>例</h2>
 <pre>
 &lt;%itemtitle%&gt;
@@ -1629,11 +1802,13 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-itemtitle">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-loginform"></a>
 <h1>スキン変数：loginform</h1>
 
 <p>ログインフォームまたは、ログイン中メッセージ（"ログイン中:ketsunet (ログアウト)"）を挿入します</p>
+
 <h2>引数</h2>
 <p>なし</p>
 <h2>スキンタイプ</h2>
@@ -1643,6 +1818,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-loginform">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-member"></a>
 <h1>スキン変数：member</h1>
@@ -1654,11 +1830,13 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <ul>
 <li>ログインしたメンバーの情報（全てのスキンタイプで使用可能）：
 <table>
+
 <tr><th abbr="名前">名前</th><th abbr="挿入される設定">挿入される設定</th></tr>
 <tr><td><em>yourname</em></td><td>訪問メンバーの<a href="#shortnames">表示される名前</a>（ログインID）</td></tr>
 <tr><td><em>yourrealname</em></td><td>訪問メンバーのハンドルネーム(本名)</td></tr>
 <tr><td><em>yournotes</em></td><td>訪問メンバーが自身のために設定できるその他の情報（備考欄）</td></tr>
 <tr><td><em>yoururl</em></td><td>訪問メンバーのウェブサイトURL</td></tr>
+
 <tr><td><em>youremail</em></td><td>訪問メンバーのメールアドレス</td></tr>
 <tr><td><em>yourid</em></td><td>訪問メンバーのID</td></tr>
 <tr><td><em>yourprofileurl</em></td><td>訪問メンバーの「メンバーの詳細ページ」アドレス</td></tr>
@@ -1668,6 +1846,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <table>
 <tr><th abbr="名前">名前</th><th abbr="挿入される設定">挿入される設定</th></tr>
 <tr><td><em>name</em></td><td>指定されたメンバーの<a href="#shortnames">表示される名前</a>（ログインID）</td></tr>
+
 <tr><td><em>realname</em></td><td>指定されたメンバーのハンドルネーム(本名)</td></tr>
 <tr><td><em>notes</em></td><td>指定されたメンバーが自身のために設定できるその他の情報（備考欄）</td></tr>
 <tr><td><em>url</em></td><td>指定されたメンバーのウェブサイトURL</td></tr>
@@ -1675,6 +1854,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr><td><em>id</em></td><td>指定されたメンバーのID</td></tr>
 </table>
 </li>
+
 </ul>
 </li>
 </ul>
@@ -1685,10 +1865,12 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 &lt;%if(loggedin)%&gt;
 こんにちは&lt;%member(yourrealname)%&gt;さん
 &lt;%endif%&gt;
+
 </code></pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-member">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-membermailform"></a>
 <h1>スキン変数：membermailform</h1>
@@ -1697,6 +1879,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <h2>引数</h2>
 <div>
 <ul>
+
 <li>オプション：
 <table summary="Skin var::Member mail form::Optional">
 <tr>
@@ -1709,6 +1892,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </tr>
 <tr>
 <td><strong><em>cols</em></strong></td>
+
 <td>ボックスの縦列の数値（デフォルトは40）</td>
 </tr>
 <tr>
@@ -1721,6 +1905,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </div>
 <h2>スキンタイプ</h2>
 <p>メンバー詳細</p>
+
 <h2>例</h2>
 <pre>
 &lt;%membermailform%&gt;
@@ -1728,11 +1913,13 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-membermailform">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-nextarchive"></a>
 <h1>スキン変数：nextarchive</h1>
 
 <p>表示中のアーカイブの形式に応じて、一つ新しいアーカイブの月、または日を挿入します。</p>
+
 <table summary="Skin var::Next archive">
 <tr>
 <th abbr="表示中の形式">表示中の形式</th>
@@ -1745,6 +1932,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td>月単位で表示している時</td>
 <td><code>YYYY-MM</code></td>
+
 </tr>
 </table>
 <h2>引数</h2>
@@ -1756,6 +1944,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-nextarchive">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-nextitem"></a>
 <h1>スキン変数：nextitem</h1>
@@ -1765,6 +1954,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <h2>引数</h2>
 <p>なし</p>
 <h2>スキンタイプ</h2>
+
 <p>個別アイテム</p>
 <h2>例</h2>
 <pre>
@@ -1773,6 +1963,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-nextitem">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-nextitemtitle"></a>
 <h1>スキン変数：nextitemtitle</h1>
@@ -1789,15 +1980,16 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-nextitemtitle">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-nucleusbutton"></a>
 <h1>スキン変数：nucleusbutton</h1>
-
 <p><a href="http://nucleuscms.org/" class="out" onclick="window.open(this.href),return false;" onkeypress="window.open(this.href),return false;" title="Nucleus website (opens in new window)">本家Nucleusウェブサイト（英語）</a>へのリンクが付いたボタン、あるいはバナーを挿入します。</p>
 <h2>引数</h2>
 <div>
 <ul>
 <li>オプション：
+
 <table summary="Skin var::Nucleus button::Optional">
 <tr>
 <th abbr="名前">名前</th>
@@ -1810,6 +2002,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong><em>imgwidth</em></strong></td>
 <td>画像の横幅（ピクセル単位）</td>
+
 </tr>
 <tr>
 <td><strong><em>imgheight</em></strong></td>
@@ -1821,7 +2014,8 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </div>
 <h2>注意</h2>
 <ul>
-<li>このタグは<a href="#parser-properties">パーサー設定の<code>IncludeMode</code> と<code>IncludePrefix</code></a>に影響を受けます。</li>
+<li>このタグは、<a href="#parser-properties">スキンの「一般設定」にある「Includeモード」と「Includeプリフィックス」の影響を受けます。</a></li>
+
 </ul>
 <h2>スキンタイプ</h2>
 <p>全て</p>
@@ -1833,6 +2027,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-nucleusbutton">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-otherarchive"></a>
 <h1>スキン変数：otherarchive</h1>
@@ -1845,6 +2040,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <table summary="Skin var::Other archive::Require">
 <tr>
 <th abbr="名前">名前</th>
+
 <th abbr="値">値</th>
 </tr>
 <tr>
@@ -1857,6 +2053,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </tr>
 </table>
 </li>
+
 <li>オプション
 <table summary="Skin var::Other archive::Optional">
 <tr>
@@ -1870,6 +2067,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </table>
 </li>
 </ul>
+
 </div>
 <h2>スキンタイプ</h2>
 <p>月別アーカイブ</p>
@@ -1881,6 +2079,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-otherarchive">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-otherarchivedaylist"></a>
 <h1>スキン変数：otherarchivedaylist</h1>
@@ -1888,6 +2087,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <p>スキン変数<a href="#skinvar-otherarchivelist">otherarchivelist</a>と同様に、指定されたブログのアーカイブのリストを挿入しますが、 <em>月</em>ごとの代わりに<em>日</em>ごとのアーカイブを挿入します。</p>
 <h2>引数</h2>
 <div>
+
 <ul>
 <li>必須：
 <table summary="Skin var::Other archive day list::Require">
@@ -1901,6 +2101,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </tr>
 <tr>
 <td><strong>template</strong></td>
+
 <td>使用するテンプレート名</td>
 </tr>
 </table>
@@ -1914,6 +2115,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong><em>category</em></strong></td>
 <td>表示するカテゴリーの名前</td>
+
 </tr>
 </table>
 </li>
@@ -1929,6 +2131,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-otherarchivedaylist">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-otherarchivelist"></a>
 <h1>スキン変数：otherarchivelist</h1>
@@ -1938,6 +2141,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <div>
 <ul>
 <li>必須：
+
 <table summary="Skin var::Other archive list::Require">
 <tr>
 <th abbr="名前">名前</th>
@@ -1950,6 +2154,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong>template</strong></td>
 <td>使用するテンプレート名</td>
+
 </tr>
 </table>
 </li>
@@ -1963,6 +2168,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <td><strong><em>category</em></strong></td>
 <td>表示するカテゴリーの名前</td>
 </tr>
+
 </table>
 </li>
 </ul>
@@ -1977,11 +2183,13 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-otherarchivelist">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-otherarchiveyearlist"></a>
 <h1>スキン変数：otherarchiveyearlist</h1>
 
 <p>スキン変数<a href="#skinvar-otherarchivelist">otherarchivelist</a>と同様に、指定されたブログのアーカイブのリストを挿入しますが、 <em>月</em>ごとの代わりに<em>年</em>ごとのアーカイブを挿入します。</p>
+
 <h2>引数</h2>
 <div>
 <ul>
@@ -1994,6 +2202,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong>blogname</strong></td>
 <td>表示するブログの短縮名</td>
+
 </tr>
 <tr>
 <td><strong>template</strong></td>
@@ -2007,6 +2216,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
 </tr>
+
 <tr>
 <td><strong><em>category</em></strong></td>
 <td>表示するカテゴリーの名前</td>
@@ -2019,17 +2229,20 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <p>全て</p>
 <h2>例</h2>
 <pre>
+
 &lt;%otherarchiveyearlist(yourblog,mytemplate)%&gt;
 &lt;%otherarchiveyearlist(yourblog,mytemplate,mycategory)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-otherarchiveyearlist">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-otherblog"></a>
 <h1>スキン変数：otherblog</h1>
 
 <p>指定されたブログの、タイムスタンプの新しいアイテム群を挿入します。</p>
+
 <h2>引数</h2>
 <div>
 <ul>
@@ -2042,6 +2255,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong>blogname</strong></td>
 <td>表示するブログの短縮名</td>
+
 </tr>
 <tr>
 <td><strong>template</strong></td>
@@ -2055,6 +2269,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
 </tr>
+
 <tr>
 <td><strong><em>amount</em></strong></td>
 <td>表示するアイテムの数（デフォルトは10）。何番目のアイテムから始めるかというオフセットを含めることもできます。例えば<code>10(5) </code>と記述すると5番目から始めて10個のアイテムを表示します。</td>
@@ -2066,6 +2281,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </table>
 </li>
 </ul>
+
 </div>
 <h2>スキンタイプ</h2>
 <p>全て</p>
@@ -2079,6 +2295,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-otherblog">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-othersearchresults"></a>
 <h1>スキン変数：othersearchresults</h1>
@@ -2088,6 +2305,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <div>
 <ul>
 <li>必須：
+
 <table summary="Skin var::Other sezrch results::Require">
 <tr>
 <th abbr="名前">名前</th>
@@ -2100,6 +2318,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong>template</strong></td>
 <td>使用するテンプレート名</td>
+
 </tr>
 </table>
 </li>
@@ -2113,6 +2332,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <td><strong><em>maxresults</em></strong></td>
 <td>表示する結果の最大数</td>
 </tr>
+
 </table>
 </li>
 </ul>
@@ -2125,16 +2345,18 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-othersearchresults">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="skinvar-parsedinclude"></a>
 <h1>スキン/テンプレート変数：parsedinclude</h1>
-
 <p>Webページ出力時に、指定されたスペシャルスキンもしくはファイルを取り込んで挿入します。スペシャルスキンが優先されます。このファイルのは、取り込み時にNucleusのスキン/テンプレートによる構文解析にかけられるので、スキン/テンプレート変数が使用できます。同じような変数に、取り込んだファイルのPHPを実行する<a href="#skinvar-phpinclude">phpinclude</a>や、ファイルの中身をそのまま表示する<a href="#skinvar-include">include</a>があります。</p>
 <h2>引数</h2>
 <ul>
 <li>必須：
 <table summary="Skin var::Parsed include::Require">
+
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
@@ -2147,8 +2369,9 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </li>
 </ul>
 <h2>注意</h2>
+
 <ul>
-<li>この変数は<a href="#parser-properties">パーサー設定の<code>IncludeMode</code> と<code>IncludePrefix</code></a>に影響を受けます。</li>
+<li>この変数は、<a href="#parser-properties">スキンの「一般設定」にある「Includeモード」と「Includeプリフィックス」の影響を受けます。</a></li>
 <li>インクルードしたパーツの中からでも、再び<code>&lt;%parsedinclude (filename)%&gt;</code>を呼び出すことができますが、無限ループを避けるために最大で3段階までとなります。</li>
 </ul>
 <h2>スキンタイプ</h2>
@@ -2156,17 +2379,19 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <h2>例</h2>
 <pre>
 &lt;%parsedinclude(specialskinname)%&gt;
+
 &lt;%parsedinclude(filename.txt)%&gt;
 &lt;%parsedinclude(/home/user/myself/filename.txt)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-parsedinclude">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-phpinclude"></a>
 <h1>スキン/テンプレート変数：phpinclude</h1>
-
 <p>Webページ出力時に、指定されたPHPファイルを実行し、その結果を挿入します。ファイルの中身はPHPとして解釈され、実行されるので注意が必要です。また、Nucleusのスキン/テンプレート変数は展開<strong>されません</strong>。同じような変数に、取り込み時にスキン/テンプレート変数を展開する<a href="#skinvar-parsedinclude">parsedinclude</a>や、ファイルの中身をそのまま表示する<a href="#skinvar-include">include</a>があります。</p>
+
 <h2>引数</h2>
 <ul>
 <li>必須：
@@ -2179,13 +2404,15 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <td><strong>filename</strong></td>
 <td>取り込むファイルの名前（index.phpからの相対位置でも絶対位置でもかまいません。）</td>
 </tr>
+
 </table>
 </li>
 </ul>
 <h2>注意</h2>
 <ul>
-<li>この変数は<a href="#parser-properties">パーサー設定の<code>IncludeMode</code> と<code>IncludePrefix</code></a>に影響を受けます。</li>
+<li>この変数は、<a href="#parser-properties">スキンの「一般設定」にある「Includeモード」と「Includeプリフィックス」の影響を受けます。</a></li>
 <li>ファイルはphpのコマンド<code>include()</code>を使ってインクルードされます。このコマンドは<em>内部の</em>クラス・メソッドから呼び出されるので、Nucleus内部やプラグインで使用されているグローバル変数にアクセスしたい時は、<strong>自身でグローバル変数を宣言する必要があります</strong>。多くの<a href="#skinvar-phpinclude-vars">標準的な変数</a>はNucleusによって自動的にグローバルが宣言されます。</li>
+
 </ul>
 <h2>スキンタイプ</h2>
 <p>全て</p>
@@ -2195,28 +2422,31 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-phpinclude">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
+
 <a name="skinvar-phpinclude-vars"></a>
 <h1>スキン/テンプレート変数：phpinclude：vars</h1>
-
 <p>次のグローバル変数は、スキン/テンプレート変数の<a href="#skinvar-phpinclude">phpinclude</a>によってインクルードされたファイルからアクセスできるものです：</p>
-<p>$GATEWAY_INTERFACE,$SERVER_NAME,$SERVER_SOFTWARE
-<br />$SERVER_PROTOCOL,$REQUEST_METHOD,$QUERY_STRING
-<br />$DOCUMENT_ROOT,$HTTP_ACCEPT,$HTTP_ACCEPT_CHARSET
-<br />$HTTP_ACCEPT_ENCODING,$HTTP_ACCEPT_LANGUAGE
-<br />$HTTP_CONNECTION,$HTTP_HOST,$HTTP_REFERER
-<br />$HTTP_USER_AGENT,$REMOTE_ADDR,$REMOTE_PORT
-<br />$SCRIPT_FILENAME,$SERVER_ADMIN,$SERVER_PORT
-<br />$SERVER_SIGNATURE,$PATH_TRANSLATED,$SCRIPT_NAME
-<br />$REQUEST_URI,$argv,$argc,$PHP_SELF
-<br />$HTTP_COOKIE_VARS,$HTTP_GET_VARS,$HTTP_POST_VARS
-<br />$HTTP_POST_FILES,$HTTP_ENV_VARS,$HTTP_SERVER_VARS
-<br />$HTTP_SESSION_VARS,$PATH_INFO,$HTTPS
-<br />$HTTP_RAW_POST_DATA,$HTTP_X_FORWARDED_FOR</p>
+<p>$GATEWAY_INTERFACE,$SERVER_NAME,$SERVER_SOFTWARE,<br />
+$SERVER_PROTOCOL,$REQUEST_METHOD,$QUERY_STRING,<br />
+$DOCUMENT_ROOT,$HTTP_ACCEPT,$HTTP_ACCEPT_CHARSET,<br />
+$HTTP_ACCEPT_ENCODING,$HTTP_ACCEPT_LANGUAGE,<br />
+$HTTP_CONNECTION,$HTTP_HOST,$HTTP_REFERER,<br />
+
+$HTTP_USER_AGENT,$REMOTE_ADDR,$REMOTE_PORT,<br />
+$SCRIPT_FILENAME,$SERVER_ADMIN,$SERVER_PORT,<br />
+$SERVER_SIGNATURE,$PATH_TRANSLATED,$SCRIPT_NAME,<br />
+$REQUEST_URI,$argv,$argc,$PHP_SELF,<br />
+$HTTP_COOKIE_VARS,$HTTP_GET_VARS,$HTTP_POST_VARS,<br />
+$HTTP_POST_FILES,$HTTP_ENV_VARS,$HTTP_SERVER_VARS,<br />
+$HTTP_SESSION_VARS,$PATH_INFO,$HTTPS,<br />
+$HTTP_RAW_POST_DATA,$HTTP_X_FORWARDED_FOR</p>
 <p>他の変数に関しては、"<code>global $varname;</code>"をきっちりとコードに加える必要があります。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-phpinclude-vars">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-plugin"></a>
 <h1>スキン/テンプレート変数：plugin</h1>
@@ -2226,6 +2456,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <ul>
 <li>必須：
 <table summary="Skin/Template var::Plugin::Require">
+
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
@@ -2237,6 +2468,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </table>
 </li>
 <li><p>この他、プラグインごとに引数が定義・追加されます。</p></li>
+
 </ul>
 <h2>注意</h2>
 <ul>
@@ -2245,6 +2477,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <h2>スキンタイプ</h2>
 <p>全て</p>
 <h2>例</h2>
+
 <pre>
 &lt;%plugin(Calendar)%&gt;
 &lt;%plugin(LastComments,myweblog)%&gt;
@@ -2253,6 +2486,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-plugin">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-prevarchive"></a>
 <h1>スキン変数：prevarchive</h1>
@@ -2268,6 +2502,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <td><code>YYYY-MM-DD</code></td>
 </tr>
 <tr>
+
 <td>月単位で表示している時</td>
 <td><code>YYYY-MM</code></td>
 </tr>
@@ -2281,6 +2516,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-prevarchive">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-if"></a>
 <a name="skinvar-else"></a>
@@ -2291,6 +2527,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <h1>スキン変数：if/ifnot/else/elseif/elseifnot/endif</h1>
 <p>決まった条件を満たしている時にのみ、コンテンツ・ブロックを挿入します。3.6以降では、テンプレートの「アイテムの本体」と「コメントの本体」でも同じ様に使う事ができます。</p>
 <h2>引数</h2>
+
 <p>スキン変数 <code>if/ifnot/elseif/elseifnot</code> に対してのみ、引数が必須になります</p>
 <ul>
 <li>必須：
@@ -2299,6 +2536,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr><td><strong>type</strong></td><td colspan="3"><a href="#if_condition">条件の種類</a></td></tr>
 <tr><td colspan="4">typeによって、以下のオプションをとることがあります</td></tr>
 <tr><td></td><td><em>name</em></td><td>条件の名前</td></tr>
+
 <tr><td></td><td><em>value</em></td><td>条件の名前の値</td></tr>
 </table>
 </li>
@@ -2310,28 +2548,35 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <li><strong>category</strong>：カテゴリーを選択しているか、また、カテゴリの設定と比較した結果を返します。
 <ul>
 <li><strong>category</strong>：カテゴリが選択されているか調べます。</li>
+
 <li><strong>category,catname,<em>CategoryName</em> </strong>：現在のカテゴリ名と <em>CategoryName</em> が一致するかどうかを返します。</li>
 <li><strong>category,catid,<em>CategoryID</em></strong>：現在のカテゴリのIDと <em>CategoryId</em> が一致するかどうかを返します。</li>
 </ul>
 </li>
+
 <li><strong>blogsetting</strong>：Blog設定の <em> name</em> 項目の値と <em>value</em> を 比較します。
 <ul>
 <li><strong>blogsetting,<em>name,value</em> </strong>： <em> name</em> (SQLテーブル nucleus_blogにあるカラム名）が <em>value</em> と一致するかどうかを返します。</li>
+
 </ul>
 </li>
 <li><strong>loggedin</strong>：訪問者がログインしているか調べます。</li>
 <li><strong>onteam</strong>：訪問者がログインし、現在のブログ、または、<em>name</em> で指示されたブログのチームに入っているか調べます。</li>
 <li><strong>admin</strong>：訪問者がログインし、現在のブログ、または<em>name</em> で指示されたブログの管理権限があるか調べます。</li>
+
 <li><strong>nextitem</strong>：個別アイテムページにおいて、現在のブログにより古いアイテムがあるか調べます。</li>
 <li><strong>previtem</strong>：個別アイテムページにおいて、現在のブログにより新しいアイテムがあるか調べます。</li>
 <li><strong>archivenextexists</strong>：月別アーカイブページにおいて、現在のブログに、現在表示しているものより古い月、または古い日のアーカイブがあるか調べます。</li>
 <li><strong>archiveprevexists</strong>：月別アーカイブページにおいて、現在のブログに、現在表示しているものより新しい月、または新しい日のアーカイブがあるか調べます。</li>
 <li><strong>skintype</strong>：現在のスキンタイプが <em> value</em> （index, search, item, archive, archivelist など…）と一致するか、URLによって判別します。<br />スペシャルスキンパーツの場合は、スペシャルスキンパーツの名前が <em> value</em> と一致するか、URLによって判別します。</li>
+
 <li><strong>hasplugin</strong>：<em>PluginName</em> で指定されたプラグインがインストールされているか、または、プラグインのオプションの値と一致するかどうかを返します。
 <ul>
 <li><strong>hasplugin,<em>PluginName</em></strong>：<em>PluginName</em> で指定されたプラグインが存在するか調べます。</li>
 <li><strong>hasplugin,<em>PluginName</em>,<em> OptionName</em></strong>：<em>PluginName</em> で指定されたプラグインの <em> OptionName</em> の値の存在を確認した結果を返します。</li>
+
 <li><strong>hasplugin,<em>PluginName</em>,<em> OptionName=value</em></strong>：<em>PluginName</em> で指定されたプラグインの <em> OptionName</em> の値と、<em> value</em> が一致するかどうかを返します。</li>
+
 </ul>
 </li>
 <li><strong>if拡張対応プラグイン名</strong>：第1引数には、"NP_"を取ったプラグイン名を指定します。第1引数で指定したプラグインに、第2引数、第3引数を渡し確認した結果を返します。
@@ -2343,16 +2588,17 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <li><strong>itemcategory</strong>: テンプレートの「アイテム本体」と「コメント本体」において、現在のアイテムのカテゴリを調べます。
 <ul>
 <li><strong>itemcategory</strong>: 現在のアイテムがカテゴリに属しているかどうか調べます。常にtrueを返します。</li>
+
 <li><strong>itemcategory,catname,<em>CategoryName</em></strong>: 現在のアイテムのカテゴリが <em>CategoryName</em> と一致するかどうかを返します。</li>
 <li><strong>itemcategory,catid,<em>CategoryId</em></strong>: 現在のアイテムのカテゴリIDが <em>CategoryId</em> と一致するかどうかを返します。</li>
 </ul>
 </li>
 <li><strong>itemblogsetting</strong>：テンプレートの「アイテム本体」と「コメント本体」において、現在のアイテムのBlog設定の <em> name</em> 項目の値と <em>value</em> を 比較します。
+
 <ul>
 <li><strong>itemblogsetting,<em>name</em></strong>: 現在のアイテムの属するウェブログの名前が<em>name</em>と一致するかどうかを返します</li>
 <li><strong>itemblogsetting,<em>name,value</em> </strong>： <em> name</em> (SQLテーブル nucleus_blogにあるカラム名）が <em>value</em> と一致するかどうかを返します。</li>
-</ul>
-<ul>
+
 </ul>
 </li>
 <li><strong>author</strong>：テンプレートの「アイテム本体」と「コメント本体」において、現在のアイテムの投稿者について調べます。
@@ -2360,11 +2606,13 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <li><strong>author</strong>：訪問者が現在のアイテムの投稿者かどうかを調べます。</li>
 <li><strong>author,isadmin</strong>：アイテムの投稿者がブログの管理権限、またはsuper-admin権限があるか調べます。</li>
 <li><strong>author,name,<em>AuthorName</em></strong>：アイテムの投稿者のユーザー名が<em>AuthorName</em>と一致するかどうかを返します。</li>
+
 <li><strong>author,isauthor</strong>：テンプレートの「コメント本体」において、コメントの投稿者が、アイテムの投稿者と一致するかどうかを調べます。</li>
 <li><strong>author,isonteam</strong>：テンプレートの「コメント本体」において、コメントの投稿者が、現在のアイテムのブログチームのメンバーであるかどうか調べます。</li>
 <li><strong>loggedin</strong>：訪問者がログインしているか調べます。</li>
 <li><strong>onteam</strong>：訪問者がログインし、現在のブログ、または、<em>name</em> で指示されたブログのチームに入っているか調べます。</li>
 <li><strong>admin</strong>：訪問者がログインし、現在のブログ、または<em>name</em> で指示されたブログの管理権限があるか調べます。</li>
+
 </ul>
 </li>
 </ul>
@@ -2372,48 +2620,24 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <h2>スキンタイプ</h2>
 <p>全て</p>
 <h2>例</h2>
-<pre>
-&lt;%if(loggedin)%&gt;
-おかえりなさい！
-&lt;%else%&gt;
-ようこそ！
-&lt;%endif%&gt;
-</pre>
-<pre>
-&lt;%if(category,catname,Off Topic)%&gt;
-"Off Topic" カテゴリへようこそ。
-&lt;%endif%&gt;
-</pre>
-<pre>
-&lt;%if(category,catid,1)%&gt;
-"ID１"のカテゴリです。
-&lt;%endif%&gt;
-</pre>
-<pre>
-&lt;%ifnot(loggedin)%&gt;
-アクセス禁止！
-&lt;%elseif(admin)%&gt;
-管理者さんようこそ！
-&lt;%elseif(onteam)%&gt;
-チームメンバーさんようこそ！
-&lt;%else%&gt;
-サイトメンバーさんようこそ！
-&lt;%endif%&gt;
-</pre>
+<pre>&lt;%if(loggedin)%&gt;おかえりなさい！&lt;%else%&gt;ようこそ！&lt;%endif%&gt;</pre>
+<pre>&lt;%if(category,catname,Off Topic)%&gt;"Off Topic" カテゴリへようこそ。&lt;%endif%&gt;</pre>
+
+<pre>&lt;%if(category,catid,1)%&gt;"ID１"のカテゴリです。&lt;%endif%&gt;</pre>
+<pre>&lt;%ifnot(loggedin)%&gt;アクセス禁止！&lt;%elseif(admin)%&gt;管理者さんようこそ！&lt;%elseif(onteam)%&gt;チームメンバーさんようこそ！&lt;%else%&gt;サイトメンバーさんようこそ！&lt;%endif%&gt;</pre>
 <h2>注意</h2>
 <p>条件が満たされない時にだけ何らかの表示を行いたい場合は、次のようにすることができます</p>
-<pre>
-&lt;%ifnot(skintype,error)%&gt;
-&lt;%blogsetting(name)%&gt;
-&lt;%endif%&gt;
-</pre>
+
+<pre>&lt;%ifnot(skintype,error)%&gt;&lt;%blogsetting(name)%&gt;&lt;%endif%&gt;</pre>
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-if">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-preview"></a>
 <h1>スキン変数：preview</h1>
 
 <p>指定されたテンプレートを用いて、ページ内にアイテムのプレビューを挿入します。（<a href="#skinvar-additemform">additemform</a>と一緒に使われることが多いようです）</p>
+
 <h2>引数</h2>
 <ul>
 <li>必須：
@@ -2426,6 +2650,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <td><strong>template</strong></td>
 <td>使用するテンプレート名</td>
 </tr>
+
 </table>
 </li>
 </ul>
@@ -2438,6 +2663,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-preview">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-previtem"></a>
 <h1>スキン変数：previtem</h1>
@@ -2448,18 +2674,21 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <h2>スキンタイプ</h2>
 <p>個別アイテム</p>
 <h2>例</h2>
+
 <pre>
 &lt;%previtem%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-previtem">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-previtemtitle"></a>
 <h1>スキン変数：previtemtitle</h1>
 
 <p>そのブログにおける一つ古いアイテムのタイトルを挿入します。</p>
 <h2>引数</h2>
+
 <p>なし</p>
 <h2>スキンタイプ</h2>
 <p>個別アイテム</p>
@@ -2470,6 +2699,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-previtemtitle">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-prevlink"></a>
 <h1>スキン変数：prevlink</h1>
@@ -2483,6 +2713,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
+
 </tr>
 <tr>
 <td><strong><em>linktext</em></strong></td>
@@ -2494,6 +2725,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </tr>
 </table>
 </li>
+
 </ul>
 </div>
 <h2>スキンタイプ</h2>
@@ -2505,6 +2737,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-prevlink">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-query"></a>
 <h1>スキン変数：query</h1>
@@ -2515,18 +2748,21 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <h2>スキンタイプ</h2>
 <p>検索</p>
 <h2>例</h2>
+
 <pre>
 &lt;%query%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-query">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-referer"></a>
 <h1>スキン変数：referer</h1>
 
 <p>リンク元のURLを挿入します。アクセス方法や、ブラウザ、ファイアウォール等の設定によって、空白の時があります。</p>
 <h2>引数</h2>
+
 <p>なし</p>
 <h2>スキンタイプ</h2>
 <p>全て</p>
@@ -2537,6 +2773,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-referer">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-searchform"></a>
 <h1>スキン変数：searchform</h1>
@@ -2547,6 +2784,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <ul>
 <li>オプション：
 <table summary="Skin var::Sezrch form::Optional">
+
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
@@ -2558,6 +2796,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </table>
 </li>
 </ul>
+
 </div>
 <h2>スキンタイプ</h2>
 <p>メインの目次、月別アーカイブ、月別アーカイブ一覧、個別アイテム</p>
@@ -2569,6 +2808,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-searchform">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-searchresults"></a>
 <h1>スキン変数：searchresults</h1>
@@ -2581,6 +2821,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <table summary="Skin var::Search results::Require">
 <tr>
 <th abbr="名前">名前</th>
+
 <th abbr="値">値</th>
 </tr>
 <tr>
@@ -2594,6 +2835,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
+
 </tr>
 <tr>
 <td><strong><em>maxresults</em></strong></td>
@@ -2606,18 +2848,21 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <h2>スキンタイプ</h2>
 <p>検索</p>
 <h2>例</h2>
+
 <pre>
 &lt;%searchresults(mytemplate)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-searchresults">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-self"></a>
 <h1>スキン変数：self</h1>
 
 <p>現在表示しているページのファイル名を挿入します（index.php等で記述した「$CONF["Self"]」の値です）。</p>
 <h2>引数</h2>
+
 <p>なし</p>
 <h2>スキンタイプ</h2>
 <p>全て</p>
@@ -2628,6 +2873,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-self">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-set"></a>
 <h1>スキン/テンプレート変数 set</h1>
@@ -2640,6 +2886,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <table summary="Skin/Template var::Set::Require">
 <tr>
 <th abbr="名前">名前</th>
+
 <th abbr="値">値</th>
 </tr>
 <tr>
@@ -2652,6 +2899,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </tr>
 </table>
 </li>
+
 </ul>
 </div>
 <h2>スキンタイプ</h2>
@@ -2663,7 +2911,9 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-set">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="skinvar-sitevar"></a>
 <h1>スキン変数：sitevar</h1>
@@ -2675,6 +2925,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <table summary="Skin var::Site var::Require">
 <tr>
 <th abbr="名前">名前</th>
+
 <th abbr="挿入される設定">挿入される設定</th>
 </tr>
 <tr>
@@ -2687,6 +2938,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </tr>
 <tr>
 <td><em>admin</em></td>
+
 <td>管理者のメールアドレス</td>
 </tr>
 </table>
@@ -2698,11 +2950,13 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <pre>
 &lt;%sitevar(name)%&gt;
 &lt;%sitevar(url)%&gt;
+
 &lt;a href="mailto:&lt;%sitevar(email)%&gt;"&gt;管理人&lt;/a&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-sitevar">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-skinfile"></a>
 <h1>スキン/テンプレート変数：skinfile</h1>
@@ -2717,6 +2971,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
 </tr>
+
 <tr>
 <td><strong>filename</strong></td>
 <td>ファイルの名前（「http://～」から始まるURLに変換されます）</td>
@@ -2729,17 +2984,20 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <p>全て</p>
 <h2>例</h2>
 <pre>
+
 &lt;%skinfile(mystyle.css)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-skinfile">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-skinname"></a>
 <h1>スキン/テンプレート変数：skinname</h1>
 
 <p>現在使用しているスキンの名前を挿入します。</p>
 <h2>引数</h2>
+
 <p>なし</p>
 <h2>スキンタイプ</h2>
 <p>全て</p>
@@ -2750,6 +3008,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-skinname">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-sticky"></a>
 <h1>スキン変数：sticky</h1>
@@ -2762,6 +3021,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
+
 </tr>
 <tr>
 <td><strong>itemid</strong></td>
@@ -2775,6 +3035,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </li>
 </ul>
 <h2>スキンタイプ</h2>
+
 <p>全て</p>
 <h2>例</h2>
 <pre>
@@ -2783,9 +3044,11 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-sticky">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-nextlink"></a>
 <h1>スキン変数：nextlink</h1>
+
 <p>「個別アイテムページ」では１つ新しいアイテムへ、「アーカイブページ」では１つ新しいアーカイブへのURLを挿入します。<br />「検索ページ」と「メインの目次ページ」で使用したときは、「次のページ」へのURLを挿入します。</p>
 <h2>引数</h2>
 <div>
@@ -2796,6 +3059,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong><em>linktext</em></strong></td>
 <td>記述されていると、URLの代わりに<code>&lt;a href...</code>タグによるリンクが挿入されます。</td>
+
 </tr>
 <tr>
 <td><strong><em>amount</em></strong></td>
@@ -2804,6 +3068,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong><em>recount</em></strong></td>
 <td>「検索ページ」と「メインの目次ページ」で、２ページ目以降、アイテムの数が正確にスキップされない場合、 <em>recount</em> に「yes」を設定してください。<br />ページを進む毎に再計算されますので、正確なアイテムの数だけスキップして表示されます。</td>
+
 </tr>
 </table>
 </li>
@@ -2816,17 +3081,20 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 &lt;%nextlink%&gt;
 &lt;%nextlink(次のページ,10)%&gt;
 &lt;%nextlink(,10)%&gt;
+
 &lt;%nextlink(,10,yes)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-nextlink">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-todaylink"></a>
 <h1>スキン変数：todaylink</h1>
 
 <p>選択中のブログ、あるいはカテゴリーのトップページのURLを挿入します。</p>
 <h2>引数</h2>
+
 <div>
 <ul>
 <li>オプション
@@ -2838,6 +3106,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <tr>
 <td><strong><em>linktext</em></strong></td>
 <td>記述されていると、URLの代わりに<code>&lt;a href...</code>タグによるリンクが挿入されます。</td>
+
 </tr>
 </table>
 </li>
@@ -2851,7 +3120,9 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-todaylink">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="skinvar-vars"></a>
 <h1>スキン変数：vars</h1>
@@ -2859,16 +3130,19 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <p>itemid入りの隠しフォームのインプット欄を挿入。</p>
 <code>&lt;input type="hidden" name="itemid" value="<strong>1234</strong>" /&gt;</code>
 <h2>引数</h2>
+
 <p>なし</p>
 <h2>スキンタイプ</h2>
 <p>個別アイテム</p>
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-vars">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="skinvar-version"></a>
 <h1>スキン変数：version</h1>
 
 <p>現在使用しているNucleusのバージョンを挿入します。</p>
+
 <h2>引数</h2>
 <p>なし</p>
 <h2>スキンタイプ</h2>
@@ -2879,7 +3153,9 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/skinvar-version">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="strftime"></a>
 <h1>時間変数の概要</h1>
@@ -2887,49 +3163,59 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <p>次の変換記述は文字列フォーマットに基づきます<small>（PHPドキュメントの<a href="http://jp.php.net/manual/ja/function.strftime.php" onclick="window.open(this.href),return false;" onkeypress="window.open(this.href),return false;" class="out">strftime関数</a>から持ってきたものです）</small>。より詳しい情報は <a href="http://www.opengroup.org/onlinepubs/7908799/xsh/strftime.html" onclick="window.open(this.href),return false;" onkeypress="window.open(this.href),return false;" class="out" title="Open Group specification">Open Group Specification</a>にあります。</p>
 <ul>
 <li><strong>%a</strong> - 現在のロケールに基づく短縮された曜日の名前</li>
+
 <li><strong>%A</strong> - 現在のロケールに基づく完全な曜日の名前</li>
 <li><strong>%b</strong> - 現在のロケールに基づく短縮された月の名前</li>
 <li><strong>%B</strong> - 現在のロケールに基づく完全な月の名前</li>
 <li><strong>%c</strong> - 現在のロケールに基づく適当な日付と時間の表現</li>
 <li><strong>%d</strong> - 日付を10進数で(01から31) </li>
+
 <li><strong>%H</strong> - 時間を24時間表示の10進数で(00から23まで)</li>
 <li><strong>%I</strong> - 時間を12時間表示の10進数で(01から12までの範囲)</li>
 <li><strong>%j</strong> - 年間での日付を10進数で表現 (001から366)</li>
 <li><strong>%m</strong> - 月を10進数で表現 (01から12)</li>
 <li><strong>%M</strong> - 分を10進数で表現</li>
+
 <li><strong>%p</strong> - 指定した時間により "am" または "pm" 、または 現在のロケールに対応した文字列</li>
 <li><strong>%S</strong> - 秒を10進数で表現</li>
 <li><strong>%U</strong> - 年間で何番目の週であるかを 10 進数で表現。 年間で最初の日曜を最初の週の最初の日として数えます。</li>
 <li><strong>%W</strong> - 現在の年で何番目の週であるかを10進数で表現。 年間で最初の月曜を最初の週の最初の日として数えます。</li>
 <li><strong>%w</strong> - 曜日を10進数で表現。日曜は0になります。</li>
+
 <li><strong>%x</strong> - 時間を除いた日付を現在のロケールに基づき表現します。</li>
 <li><strong>%X</strong> - 日付を除いた時間を現在のロケールに基づき表現します。</li>
 <li><strong>%y</strong> - 世紀の部分を除いた年を10進数として表現。(00から99までの範囲) </li>
 <li><strong>%Y</strong> - 世紀を含む年を 10進数で表現</li>
 <li><strong>%Z</strong> - タイムゾーンまたはその名前または短縮形</li>
+
 <li><strong>%%</strong> - 文字リテラル"%" </li>
 </ul>
 <p>以下はサーバによって対応が異なりますので、参考程度にお試しください。</p>
 <ul>
 <li><strong>%-d</strong>または<strong>%#d</strong> - 日付を10進数で(1から31) </li>
 <li><strong>%-H</strong>または<strong>%#H</strong> - 時間を24時間表示の10進数で(0から23まで)</li>
+
 <li><strong>%-I</strong>または<strong>%#I</strong> - 時間を12時間表示の10進数で(1から12までの範囲)</li>
 <li><strong>%-m</strong>または<strong>%#m</strong> - 月を10進数で表現 (1から12)</li>
 <li><strong>%-M</strong>または<strong>%#M</strong> - 分を10進数で表現(0から59まで)</li>
+
 </ul>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/strftime">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="superadmin"></a>
 <h1>管理者の特権</h1>
 
 <p><em>super-admin（最高管理者）</em>と呼ばれ、ブログのチームへの所属とは無関係に、全ての機能と全てのブログに<strong>フルアクセス</strong>できます。</p>
 <p>またsuper-adminは、ブログの作成、グローバル設定の変更、テンプレートの書き換え、スキンの書き換え、メンバーの操作（メンバーの作成/編集/削除）を行う権限があります。</p>
+
 <p>super-adminとなるのは通常サイトの管理者ただ一人でしょう。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/superadmin">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="teamadmin"></a>
 <h1>Blogの管理者</h1>
@@ -2937,6 +3223,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <p>Blogの管理者は次のような追加権限をもちます：</p>
 <ul>
 <li>チームの操作</li>
+
 <li>Blog設定の変更</li>
 <li>投稿者に関係なく、該当Blogのどのアイテムでも編集や削除が可能</li>
 <li>Blogの削除</li>
@@ -2945,6 +3232,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/teamadmin">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatearchivelists"></a>
 <h1>テンプレート：アーカイブリスト</h1>
@@ -2959,6 +3247,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <th abbr="説明">説明</th>
 </tr><tr>
 <td>blogid</td>
+
 <td>weblogのID</td>
 </tr><tr>
 <td>archivelink</td>
@@ -2967,6 +3256,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <td>month</td>
 <td>月の数値（01-12の2文字表記）</td>
 </tr><tr>
+
 <td>year</td>
 <td>年（西暦の4文字表記）</td>
 </tr><tr>
@@ -2975,10 +3265,12 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </tr></table>
 <p><a href="#strftime">strftime</a>変数を使用することで、日付の表記を自由にカスタマイズすることができます。この変数が複雑すぎると感じるなら、次のように記述すると良いでしょう。</p>
 <pre><code>&lt;a href="&lt;%archivelink%&gt;"&gt;%B,%Y&lt;/a&gt;&lt;br /&gt;</code></pre>
+
 <p>出力される時刻と言語をあなたの住んでいる地域にあわせるために、<a href="#templatelocale">locale</a>を適切に設定してください。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatearchivelists">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatebloglists"></a>
 <h1>テンプレート：ブログリスト</h1>
@@ -2987,6 +3279,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <pre>ブログリストヘッダー
 ブログリストアイテム（存在するブログの数だけ繰り返し）
 ブログリストフッター</pre>
+
 <p>ブログリストアイテムで利用可能な変数：</p>
 <table summary="Template::Blog lists item"><tr>
 <th abbr="名前">名前</th>
@@ -2995,6 +3288,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <td>bloglink</td>
 <td>ブログのURL（Nucleusコアによって与えられた引数から生成されるもの）<code>&lt;a href="&lt;%bloglink%&gt;"&gt;</code>のように使用します。</td>
 </tr><tr>
+
 <td>blogurl</td>
 <td>ブログのURL（「Blog設定」の「URL」で設定されているもの）<code>&lt;a href="&lt;%blogurl%&gt;"&gt;</code>のように使用します。</td>
 </tr><tr>
@@ -3003,6 +3297,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </tr><tr>
 <td>blogname</td>
 <td>ブログ名(第二引数に『shortname』が指定された場合は『ブログの短縮名』)</td>
+
 </tr></table>
 <p>ヘッダーとフッターでのみ使用できる変数：</p>
 <table summary="Template::Blog lists header/footer"><tr>
@@ -3014,20 +3309,22 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </tr><tr>
 <td>sitename</td>
 <td>グローバル設定の「サイト名」</td>
+
 </tr></table>
 <p><a href="#bloglistexample">ブログリストの例を見る</a></p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatebloglists">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatecategorylists"></a>
 <h1>テンプレート：カテゴリーリスト</h1>
-
 <p>カテゴリーリストは下の表のようにフォーマットされます：</p>
 <pre>カテゴリーリストヘッダー
 カテゴリーリストアイテム（繰り返し）
 カテゴリーリストフッター</pre>
-<p>利用可能な変数：（ヘッダーとフッターでは<code>blogid</code>、<code> blogurl</code>、<code>self</code>、<code>catiscurernt</code>、<code>currentcat</code>のみが許可されています）</p>
+<p>利用可能な変数：（ヘッダーとフッターでは<code>blogid</code>, <code> blogurl</code>, <code>self</code>, <code>catiscurrent</code>,  <code>currentcat</code>のみが許可されています）</p>
+
 <table summary="Template::Category lists"><tr>
 <th abbr="名前">名前</th>
 <th abbr="説明">説明</th>
@@ -3039,6 +3336,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <td>blogのURL（blogごとの「設定」で定義される）</td>
 </tr><tr>
 <td>self</td>
+
 <td>パラメーター無しの現在のページ（例えば<code>index.php</code>）</td>
 </tr><tr>
 <td>catlink</td>
@@ -3047,6 +3345,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <td>catid</td>
 <td>カテゴリーのID</td>
 </tr><tr>
+
 <td>catname</td>
 <td>カテゴリー名</td>
 </tr><tr>
@@ -3057,22 +3356,26 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <td>カテゴリが選択中、もしくは表示中のアイテムが所属するカテゴリの場合｢yes｣が、そうでなければ｢no｣が出力される</td>
 </tr><tr>
 <td>currentcat</td>
+
 <td>&lt;%catiscurrent%&gt;のシノニム</td>
 </tr></table>
 <p><a href="#categorylistexample">カテゴリーリストの例を見る</a></p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatecategorylists">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatecommentbody"></a>
 <h1>テンプレート：コメントの本体</h1>
 
 <p>このテンプレート・パーツは単独のコメント表示に使われます。このテンプレートでは、<a href="#templatevars-comments" title="Overview of comments-related template variables">コメント関連テンプレート変数</a>が利用できます。</p>
+
 <h2>例</h2>
 <pre><code>&lt;h2&gt;&lt;%userlink%&gt;さんによるコメント：&lt;/h2&gt;
 &lt;p&gt;&lt;%body%&gt;&lt;/p&gt;
 &lt;div class="metadata"&gt;
 （接続元：&lt;%host%&gt; 投稿日時：&lt;%date%&gt; &lt;%time%&gt;）
+
 &lt;/div&gt;</code></pre>
 <p>結果は次のようになります：</p>
 <div class="example">
@@ -3083,12 +3386,14 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatecommentbody">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatecommentcontinued"></a>
 <h1>テンプレート：コメントの続きを読む</h1>
 
 <p>このテンプレートの内容は、<a href="#templatecommentbody">コメントの本体</a>で使われる変数<code>&lt;%short%&gt;</code>に追加されます。</p>
 <p>このテンプレート内部では、<code>&lt;%short%&gt;</code>以外の<a href="#templatevars-comments" title="Overview of comments-related template variables">コメント関連テンプレート変数</a>が利用できます。</p>
+
 <p>例：</p>
 <pre>
 &lt;a href="&lt;%itemlink%&gt;"&gt;[続き]&lt;/a&gt;
@@ -3096,8 +3401,10 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatecommentcontinued">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatecommentheaders"></a>
+
 <a name="templatecommentfooters"></a>
 <h1>テンプレート：コメントのヘッダーとフッター</h1>
 
@@ -3111,6 +3418,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 コメントのフッター</pre>
 <p>これらのテンプレート内では、<a href="#templatevars-comments" title="Overview of comments-related template variables">コメント関連テンプレート変数</a>が利用できます。</p>
 <h2>例</h2>
+
 <p>コメントのヘッダー:</p>
 <pre>&lt;ul&gt;</pre>
 <p>コメントの本体:</p>
@@ -3118,6 +3426,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <p>コメントのフッター</p>
 <pre>&lt;/ul&gt;</pre>
 <p>結果は次のようになります</p>
+
 <ul class="example">
 <li>hsur: そうでしたね。なんでソコ抱き合ってんの・・・っていう感じで</li>
 <li>satona: ぼくは、センセーとしましたよ。ハグ。</li>
@@ -3126,6 +3435,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatecommentheaders">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatecomments"></a>
 <h1>テンプレート：コメント</h1>
@@ -3144,6 +3454,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 コメントが無い時
 </pre>
 </li>
+
 <li>
 コメントがあるが、許可されている最大数を上回っているとき（個別アイテムページでのみ表示されます）
 <pre>
@@ -3155,7 +3466,9 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatecomments">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
+
 <a name="templatecommentwords"></a>
 <h1>テンプレート：コメントの数え方</h1>
 
@@ -3166,12 +3479,14 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatecommentwords">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatedateheads"></a>
 <h1>テンプレート：日付のヘッダー/フッター</h1>
 
 <p>日付のヘッダーと日付のフッターは、日付と時刻の変数を入力することができます。利用できる変数の詳細情報は<a href="#strftime">こちらにあります</a>。もし手っ取り早く始めたいのなら、日付フォーマットとして"%x"を使ってください。日付フォーマットで使われる言語は、テンプレートの<a href="#templatelocale">Locale</a>で設定できます。</p>
 <p>日付のヘッダーにテンプレート変数&lt;%%daylink%%&gt;を含めることによって、その日のアーカイブへのリンクを挿入できます。<strong>"%"が二つ続けてあることに注意！変数として展開される%dを無効にするために必要な措置です。 </strong>同様に、このテンプレート内で"%"という文字を使いたい場合は、二つ重ねて"%%"と記述しないとサイトには表示されません。</p>
+
 <p>日付のヘッダーのサンプル：</p>
 <pre>
 &lt;div class="day"&gt;
@@ -3182,6 +3497,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 &lt;/div&gt;
 </pre>
 <p>daylinkを用いた日付ヘッダーの例：</p>
+
 <pre>
 &lt;div class="day"&gt;
 &lt;h1&gt;%d %B&lt;/h1&gt;
@@ -3189,29 +3505,36 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatedateheads">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="templatedatetime"></a>
 <h1>テンプレート：日付と時刻のフォーマット</h1>
 
 <p>これらは<code>&lt;%date%&gt;</code>と<code> &lt;%time%&gt;</code>という変数（詳細は<a href="#templatevars-overview">テンプレート変数</a>を参照）の日付と時刻の表示方法を設定します。フォーマットは<a href="#templatelocale">Locale</a>にも左右されます。</p>
+
 <p>利用できる変数の<a href="#strftime">詳細な情報はこちら</a>。もし手っ取り早く始めたいのなら、日付フォーマットに"%x"を、時刻フォーマットに"%X"をお使いください。</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatedatetime">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templateeditlink"></a>
 <h1>テンプレート：アイテムを編集するためのリンク </h1>
 
 <p>このテンプレートは<a href="#templatevar-edit">テンプレート変数"edit"</a>がどのように表示されるかを決めるものです。このテンプレートではすべての<a href="#templatevars-overview">テンプレート変数</a>が使用できます。</p>
+
 <h2>例：</h2>
 <pre><code>&lt;a href="&lt;%editlink%&gt;"
 onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt;</code></pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templateeditlink">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatehighlight"></a>
+
 <h1>テンプレート：ハイライト表示</h1>
 
 <p>検索結果をハイライト表示するために、検索文字列を挟み込む(X)HTMLタグを入力します。" "と記述した場所が、検索文字列に置き換えられます。また、ここで入力された文字列は、プログラム中で<a href="http://jp.php.net/manual/ja/reference.pcre.pattern.syntax.php" onclick="window.open(this.href),return false;" onkeypress="window.open(this.href),return false;" class="out">正規表現のパターン構文数</a>（新しいウィンドウが開きます）としてそのまま使用されますので、いくつかの記号はバックスラッシュを直前に置くことでエスケープしなければなりません。</p>
@@ -3220,6 +3543,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt;</code></pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatehighlight">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templateitems"></a>
 <h1>テンプレート：アイテム</h1>
@@ -3233,20 +3557,24 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt;</code></pre>
 <p>「ヘッダー」、「本体」「フッター」の3つのブロックは、それぞれテンプレートの一部として、どのような見た目になるのかを定義します。</p>
 <h2>変数</h2>
 <p>これらのテンプレート内では、アイテムのデータを挿入するのに<a href="#templatevars-overview" title="Find out which variables are available">テンプレート変数</a>とよばれる系列が利用できます。</p>
+
 <h2>例</h2>
 <p><a href="#templateitemsexample">テンプレート：アイテムの例</a></p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templateitems">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templateitemsexample"></a>
 <h1>テンプレート：アイテムの例</h1>
 <p>「アイテムの本体」テンプレートの一例です：</p>
 <pre>&lt;h1&gt;&lt;%title%&gt;&lt;/h1&gt;
+
 &lt;p&gt;&lt;%body%&gt;&lt;/p&gt;
 &lt;div class="metadata"&gt;
 &lt;a href="&lt;%itemlink%&gt;"&gt;link&lt;/a&gt; -
 &lt;%date%&gt; &lt;%time%&gt; -
+
 &lt;a href="&lt;%authorlink%&gt;"&gt;&lt;%author%&gt;&lt;/a&gt; -
 &lt;%comments%&gt;
 &lt;/div&gt;</pre>
@@ -3254,6 +3582,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt;</code></pre>
 <div class="example">
 <span class="heading_example">ここはアイテムのタイトルです</span>
 <p style="margin: 2px; padding: 0px;">ここはアイテムのテキスト部分です</p>
+
 <div style="font-style: italic; margin: 2px;">
 <a href="#templateitemsexample">link</a> -
 September 5th 2008 18:51 -
@@ -3264,7 +3593,9 @@ September 5th 2008 18:51 -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templateitemsexample">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
+
 <a name="templateitemtitle"></a>
 <h1>テンプレート変数：itemtitle</h1>
 <p>コメント関連テンプレート変数で、元記事のタイトルを挿入します。</p>
@@ -3277,6 +3608,7 @@ September 5th 2008 18:51 -
 <th abbr="値">値</th>
 </tr>
 <tr>
+
 <td><strong><em>maxlength</em></strong></td>
 <td>maxlengthで指定された数値で、アイテムのタイトル省略。</td>
 </tr>
@@ -3287,7 +3619,9 @@ September 5th 2008 18:51 -
 <pre><code>&lt;%itemtitle%&gt;</code></pre>
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templateitemtitle">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
+
 <a name="templatelocale"></a>
 <h1>テンプレート：Locale</h1>
 <p>これは実際のところテンプレートの部品というより設定です。設定することによって、日付と時刻のローカライズを選択できます。月や曜日などは要求された言語での表示になるでしょう。</p>
@@ -3296,6 +3630,7 @@ September 5th 2008 18:51 -
 <li><strong>en</strong>：英語</li>
 <li><strong>dutch</strong>：オランダ語</li>
 <li><strong>ja_JP</strong>：日本語</li>
+
 <li><strong>ja_JP.UTF-8</strong>：日本語、UTF-8環境</li>
 <li>...</li>
 </ul>
@@ -3304,6 +3639,7 @@ September 5th 2008 18:51 -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatelocale">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatememberextra"></a>
 <h1>テンプレート：登録メンバーからのコメントへの追加表示</h1>
@@ -3313,17 +3649,20 @@ September 5th 2008 18:51 -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatememberextra">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatemorelink"></a>
 <h1>テンプレート：続きへのリンク</h1>
 
 <p>これはアイテムのテンプレート（アイテムのヘッダー、アイテムの本体、アイテムのフッターの3つ）で利用できるテンプレート変数、"morelink"がどのように表示されるかを決めるものです。<a href="#templatevars-overview">利用可能な変数</a>はアイテムのテンプレートと同じです。</p>
 <p>もしアイテムに「続き」の部分が存在しない場合、テンプレート変数<code>&lt;%morelink%&gt;</code>は無視されます。</p>
+
 <h2>例</h2>
 <pre><code>&lt;a href="&lt;%itemlink%&gt;"&gt;[続きを読む！]&lt;/a&gt;</code></pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatemorelink">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatenew"></a>
 <h1>テンプレート：新しいアイテムに付けるマーク</h1>
@@ -3333,7 +3672,9 @@ September 5th 2008 18:51 -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatenew">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
+
 <a name="templatenothingfound"></a>
 <h1>テンプレート：検索で何も見つからなかった場合</h1>
 
@@ -3345,6 +3686,7 @@ September 5th 2008 18:51 -
 </tr><tr>
 <td>blogid</td>
 <td>ブログのID</td>
+
 </tr><tr>
 <td>query</td>
 <td>検索に用いられた文字列</td>
@@ -3354,83 +3696,54 @@ September 5th 2008 18:51 -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatenothingfound">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatepopups"></a>
 <h1>テンプレート：メディアとポップアップ</h1>
-
 <p>これらのテンプレートは、画像のポップアップウィンドウへのリンクと画像以外のメディア・オブジェクトのフォーマットに用いられます。それぞれのテンプレートで利用可能な変数は以下の通りです。</p>
 <h2>ポップアップ画像へのリンクコード</h2>
-<table summary="Template::Popup kink code"><tr>
-<th abbr="名前">名前</th>
-<th abbr="説明">説明</th>
-</tr><tr>
-<td>popuplink</td>
-<td>画像へのポップアップ・リンク</td>
-</tr><tr>
-<td>rawpopuplink</td>
-<td>popuplinkのジャンプ先URL</td>
-</tr><tr>
-<td>popupcode</td>
-<td>ポップアップウィンドウを開くjavascriptコード</td>
-</tr><tr>
-<td>text</td>
-<td>代替テキスト（リンクテキスト）</td>
-</tr><tr>
-<td>width</td>
-<td>イメージの幅</td>
-</tr><tr>
-<td>height</td>
-<td>イメージの高さ</td>
-</tr><tr>
-<td>popuptext</td>
-<td>textと同じだが、htmlエンティティ変換される</td>
-</tr><tr>
-<td>link</td>
-<td>画像の直接のURL</td>
-</tr><tr>
-<td>media</td>
-<td>画像への直接リンク</td>
-</tr></table>
+<table summary="Template::Popup kink code">
+<tr><th abbr="名前">名前</th><th abbr="説明">説明</th></tr>
+<tr><td>popuplink</td><td>画像へのポップアップ・リンク</td></tr>
+<tr><td>rawpopuplink</td><td>popuplinkのジャンプ先URL</td></tr>
+
+<tr><td>popupcode</td><td>ポップアップウィンドウを開くjavascriptコード</td></tr>
+<tr><td>text</td><td>代替テキスト（リンクテキスト）</td></tr>
+<tr><td>width</td><td>イメージの幅</td></tr>
+<tr><td>height</td><td>イメージの高さ</td></tr>
+<tr><td>popuptext</td><td>textと同じだが、htmlエンティティ変換される</td></tr>
+<tr><td>link</td><td>画像の直接のURL</td></tr>
+
+<tr><td>media</td><td>画像への直接リンク</td>
+</tr>
+</table>
 <h2>インライン画像のコード</h2>
 <table summary="Template::Inline image"><tr>
 <th abbr="名前">名前</th>
-<th abbr="説明">説明</th>
-</tr><tr>
-<td>image</td>
-<td>(x)htmlのimgタグ</td>
-</tr><tr>
-<td>link</td>
-<td>画像の直接のURL</td>
-</tr><tr>
-<td>text</td>
-<td>代替テキスト（リンクテキスト。htmlエンティティ変換される）</td>
-</tr><tr>
-<td>width</td>
-<td>イメージの幅</td>
-</tr><tr>
-<td>height</td>
-<td>イメージの高さ</td>
-</tr><tr>
-<td>media</td>
-<td>画像への直接リンク</td>
-</tr></table>
+<th abbr="説明">説明</th></tr>
+<tr><td>image</td><td>(x)htmlのimgタグ</td></tr>
+<tr><td>link</td><td>画像の直接のURL</td></tr>
+
+<tr><td>text</td><td>代替テキスト（リンクテキスト。htmlエンティティ変換される）</td></tr>
+<tr><td>width</td><td>イメージの幅</td></tr>
+<tr><td>height</td><td>イメージの高さ</td></tr>
+<tr><td>media</td><td>画像への直接リンク</td>
+</tr>
+</table>
 <h2>メディアオブジェクトへのリンクコード</h2>
 <table summary="Template::Media objects"><tr>
-<th abbr="名前">名前</th>
-<th abbr="説明">説明</th>
-</tr><tr>
-<td>media</td>
-<td>ファイルへの直接リンク</td>
-</tr><tr>
-<td>link</td>
-<td>ファイルの直接のURL</td>
-</tr><tr>
-<td>text</td>
-<td>代替テキスト（リンクテキスト。htmlエンティティ変換される）</td>
-</tr></table>
 
+<th abbr="名前">名前</th>
+<th abbr="説明">説明</th></tr>
+<tr><td>media</td><td>ファイルへの直接リンク</td></tr>
+<tr><td>link</td><td>ファイルの直接のURL</td></tr>
+<tr><td>text</td><td>代替テキスト（リンクテキスト。htmlエンティティ変換される）</td>
+</tr>
+</table>
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatepopups">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="templatevar-author"></a>
 <h1>テンプレート変数：author</h1>
@@ -3442,6 +3755,7 @@ September 5th 2008 18:51 -
 <table summary="Template var::Author::Optional">
 <tr>
 <th abbr="名前">名前</th>
+
 <th abbr="挿入される情報の種類">挿入される情報の種類</th>
 </tr>
 <tr>
@@ -3452,6 +3766,7 @@ September 5th 2008 18:51 -
 <td><strong><em>realname</em></strong></td>
 <td>投稿者のハンドルネーム(本名)</td>
 </tr>
+
 <tr>
 <td><strong><em>id</em></strong></td>
 <td>投稿者のメンバーID</td>
@@ -3463,6 +3778,7 @@ September 5th 2008 18:51 -
 <tr>
 <td><strong><em>email</em></strong></td>
 <td>投稿者の登録メールアドレス（使うのは避けるべき）</td>
+
 </tr>
 </table>
 </li>
@@ -3474,6 +3790,7 @@ September 5th 2008 18:51 -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-author">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevar-comments"></a>
 <h1>テンプレート変数：comments</h1>
@@ -3482,6 +3799,7 @@ September 5th 2008 18:51 -
 <h2>引数</h2>
 <ul>
 <li>オプション：
+
 <table summary="Template var::Comments::Optional">
 <tr>
 <th abbr="名前">名前</th>
@@ -3493,6 +3811,7 @@ September 5th 2008 18:51 -
 </tr>
 </table>
 </li>
+
 </ul>
 <h2>例</h2>
 <pre>
@@ -3502,6 +3821,7 @@ September 5th 2008 18:51 -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-comments">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevar-date"></a>
 <h1>テンプレート変数：date</h1>
@@ -3515,6 +3835,7 @@ September 5th 2008 18:51 -
 <th abbr="名前">名前</th>
 <th abbr="値">値</th>
 </tr>
+
 <tr>
 <td><strong><em>format</em></strong></td>
 <td>日付のフォーマットに用いる形式</td>
@@ -3527,6 +3848,7 @@ September 5th 2008 18:51 -
 <td>LocaleにあわせたRFC822フォーマットの日付</td>
 </tr>
 <tr>
+
 <td><strong><em><code>rfc822GMT</code></em></strong></td>
 <td>GMTにあわせたRFCフォーマットの日付</td>
 </tr>
@@ -3537,6 +3859,7 @@ September 5th 2008 18:51 -
 <tr>
 <td><strong><em><code>utc</code></em></strong></td>
 <td>iso8601と同じ。ただし、タイムゾーンの表示として"Z"を使うUTCで表現される。</td>
+
 </tr>
 </table>
 </li>
@@ -3551,18 +3874,21 @@ September 5th 2008 18:51 -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-date">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevar-edit"></a>
 <h1>テンプレート変数：edit</h1>
 
 <p><a href="#templateeditlink">テンプレート：アイテムを編集するためのリンク</a>の内容を挿入します。</p>
 <p><strong>注意：</strong>ログイン状態のメンバーが、閲覧中のアイテムの編集を許可されている時のみ、この変数が働きます。それ以外の場合は、テンプレート変数&lt;%edit%&gt;は何も表示しません。</p>
+
 <h2>例</h2>
 <p>「アイテムの本体」テンプレートの一例</p>
 <pre><code>&lt;h1&gt;&lt;%title%&gt;&lt;/h1&gt;
 &lt;p&gt;&lt;%body%&gt; &lt;%morelink%&gt;&lt;/p&gt;
 &lt;div class="metadata"&gt;
 &lt;%edit%&gt; &lt;%comments%&gt;
+
 &lt;/div&gt;</code></pre>
 <h2>結果は次のようになります</h2>
 <div class="example">
@@ -3572,7 +3898,9 @@ September 5th 2008 18:51 -
 </div>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-edit">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="templatevar-editlink"></a>
 <h1>テンプレート変数：editlink</h1>
@@ -3580,6 +3908,7 @@ September 5th 2008 18:51 -
 <p>アイテムを編集するためのbookmarkletのURLを挿入します。この変数は<a href="#templateeditlink">テンプレート：アイテムを編集するためのリンク</a>内で使用することができます。</p>
 <h2>例</h2>
 <p>「<a href="#templateeditlink">アイテムを編集するためのリンク</a>」テンプレートの一例</p>
+
 <pre>
 &lt;a href="&lt;%editlink%&gt;"
 onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
@@ -3587,7 +3916,9 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-editlink">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
+
 <a name="templatevar-editpopupcode"></a>
 <h1>テンプレート変数：editpopupcode</h1>
 
@@ -3596,16 +3927,19 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <p>「<a href="#templateeditlink">アイテムを編集するためのリンク</a>」テンプレートの一例</p>
 <pre>
 &lt;a href="&lt;%editlink%&gt;" onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
+
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-editpopupcode">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevar-image"></a>
 <h1>テンプレート変数：image</h1>
 
 <p>アイテム本体やテンプレートにインライン画像を挿入します。</p>
 <p>通常テンプレート変数&lt;%image%&gt;はアイテムに画像を挿入するときに自動的に生成されますが、テンプレート内部で直接呼び出すこともできます。その場合は、メディア・ディレクトリにある、現在のアイテムの投稿者のプライベート・コレクションから画像が持って来られるので注意が必要です。</p>
+
 <h2>引数</h2>
 <ul>
 <li>必須：
@@ -3618,6 +3952,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <td><strong>filename</strong></td>
 <td>画像ファイルの名前</td>
 </tr>
+
 <tr>
 <td><strong>width</strong></td>
 <td>画像の横幅（ピクセルかパーセンテージ）</td>
@@ -3629,6 +3964,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <tr>
 <td><strong>text</strong></td>
 <td>画像の代用テキスト</td>
+
 </tr>
 </table>
 </li>
@@ -3642,6 +3978,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-image">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevar-karma"></a>
 <h1>テンプレート変数：karma</h1>
@@ -3651,6 +3988,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <ul>
 <li>オプション：
 <table summary="Template var::Karma::Optional">
+
 <tr>
 <th abbr="名前">名前</th>
 <th abbr="挿入される情報の種類">挿入される情報の種類</th>
@@ -3662,6 +4000,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <tr>
 <td><strong><em>pos</em></strong></td>
 <td>正の投票の総計</td>
+
 </tr>
 <tr>
 <td><strong><em>neg</em></strong></td>
@@ -3674,6 +4013,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <tr>
 <td><strong><em>posp</em></strong></td>
 <td>正に投じられたパーセンテージ</td>
+
 </tr>
 <tr>
 <td><strong><em>negp</em></strong></td>
@@ -3687,6 +4027,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-karma">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevar-media"></a>
 <h1>テンプレート変数：media</h1>
@@ -3694,6 +4035,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <p>アイテム本体やテンプレートにメディアオブジェクトを挿入します。</p>
 <p>通常テンプレート変数&lt;%media%&gt;はアイテムにメディアファイルを挿入するときに自動的に生成されますが、テンプレート内部で直接呼び出すこともできます。その場合は、メディア・ディレクトリにある、現在のアイテムの投稿者のプライベート・コレクションから画像が持って来られるので注意が必要です。</p>
 <h2>引数</h2>
+
 <ul>
 <li>必須：
 <table summary="Template var::Media::Require">
@@ -3707,6 +4049,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 </tr>
 <tr>
 <td><strong>text</strong></td>
+
 <td>オブジェクトの説明テキスト</td>
 </tr>
 </table>
@@ -3717,24 +4060,29 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <pre><code>&lt;%media(mysong.mp3|新曲を聞いてみてください)%&gt;</code></pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-media">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="templatevar-morelink"></a>
 <h1>テンプレート変数：morelink</h1>
 
 <p>テンプレート<a href="#templatemorelink">続きへのリンク</a>で定義されているリンクを挿入します。「続き」に何も入力されていない時は無視されます。</p>
 <p>テンプレート部品"<a href="#templatemorelink">続きへのリンク</a>"の中身もまたパースされるので、同様に<a href="#templatevars-overview">テンプレート変数</a>を含むことができることに注意してください（例：<a href="#templatemorelink">続きへのリンク</a>に&lt;%morelink%&gt;を記述することは可能ですが、無限ループを起こします）。</p>
+
 <h2>引数</h2>
 <p>なし</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-morelink">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevar-popup"></a>
 <h1>テンプレート変数：popup</h1>
 
 <p>アイテム本体やテンプレートにポップアップ画像を挿入します。</p>
 <p>通常テンプレート変数&lt;%popup%&gt;はアイテムに画像を挿入するときに自動的に生成されますが、テンプレート内部で直接呼び出すこともできます。その場合は、メディア・ディレクトリにある、現在のアイテムの投稿者のプライベート・コレクションから画像が持って来られるので注意が必要です。</p>
+
 <h2>引数</h2>
 <ul>
 <li>必須：
@@ -3747,6 +4095,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <td><strong>filename</strong></td>
 <td>画像ファイルの名前</td>
 </tr>
+
 <tr>
 <td><strong>width</strong></td>
 <td>画像の横幅（ピクセルかパーセンテージ）</td>
@@ -3758,6 +4107,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <tr>
 <td><strong>text</strong></td>
 <td>画像の代用テキスト</td>
+
 </tr>
 </table>
 </li>
@@ -3771,6 +4121,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-popup">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevar-smartbody"></a>
 <h1>テンプレート変数：smartbody</h1>
@@ -3778,14 +4129,17 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <table style="text-align: center;">
 <tr><th abbr="部分名">部分名</th><th colspan="2" abbr="何か入力されている？">何か入力されている？</th></tr>
 <tr><td>本文</td><td>入力あり</td><td>入力あり</td></tr>
+
 <tr><td>続き</td><td>入力なし</td><td>入力あり</td></tr>
 <tr><th>smartbodyで<br />挿入される部分</th><th abbr="「本文」部分">「本文」部分</th><th abbr="「続き」部分">「続き」部分</th></tr>
 </table>
 <h2>使用例</h2>
 <p>「本文」に詳しい内容を入力し、「続き」には"紹介"、"抜粋"といった内容のものを入力し、「メインの目次ページ」で使用するテンプレートには<code>&lt;%smartbody%&gt;</code>を使い、抜粋が存在するときにはそれを、無い時は「本文」を使用するような使い方をします。</p>
 <p>この時、「個別アイテムページ」で使うテンプレートには、<code> &lt;%body%&gt;</code> + <code>&lt;%more%&gt;</code>のかわりに<code>&lt;%body% &gt;</code>だけを記述するようにすると、より効果的に使えるでしょう。</p>
+
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-smartbody">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevar-syndicate_description"></a>
 <h1>テンプレート変数：syndicate_description</h1>
@@ -3795,6 +4149,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <h2>引数</h2>
 <ul>
 <li>オプション：
+
 <table summary="Template var::Syndicate description::Optional">
 <tr>
 <th abbr="名前">名前</th>
@@ -3808,6 +4163,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 </li>
 </ul>
 <h2>例</h2>
+
 <pre>
 &lt;%syndicate_description%&gt;
 &lt;%syndicate_description(25)%&gt;
@@ -3815,11 +4171,13 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-syndicate_description">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevar-syndicate_title"></a>
 <h1>テンプレート変数：syndicate_title</h1>
 
 <p>HTMLタグを取り除き、指定された長さにまで縮めたアイテムのタイトルを挿入します（指定が無い時は100）。省略された場合、末尾に"..."が追加されます。</p>
+
 <p>この変数はRSS等のために使うことが意図されていましたが、他にも便利な使い方があるでしょう。</p>
 <h2>引数</h2>
 <ul>
@@ -3832,6 +4190,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <tr>
 <td><strong><em>MaxChars</em></strong></td>
 <td>省略せずに残す最大の幅（デフォルトは100）</td>
+
 </tr>
 </table>
 </li>
@@ -3844,6 +4203,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-syndicate_title">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevar-time"></a>
 <h1>テンプレート変数：time</h1>
@@ -3855,6 +4215,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <table summary="Template var::Time:::Optional">
 <tr>
 <th abbr="名前">名前</th>
+
 <th abbr="値">値</th>
 </tr>
 <tr>
@@ -3867,35 +4228,41 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <h2>例</h2>
 <pre>
 &lt;%time%&gt;
+
 &lt;%time(%X)%&gt;
 </pre>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevar-time">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevars-advanced"></a>
 <h1>テンプレート変数：上級の変数</h1>
 <table summary="Template var::Advanced vars">
 <tr><th abbr="名前">名前</th><th abbr="説明">説明</th></tr>
 <tr><td>authorid</td><td>現在のアイテムの投稿者のID</td></tr>
+
 <tr><td>blogid</td><td>アイテムが所属するブログのID</td></tr>
 <tr><td>catid</td><td>アイテムが所属するカテゴリーのID</td></tr>
 <tr><td>query</td><td>存在していれば、検索文字列</td></tr>
 <tr><td><a href="#templatevar-syndicate_title">syndicate_title</a></td><td>RSSなどの配信用に、指定文字数以上を省略したアイテムのタイトル</td></tr>
 <tr><td><a href="#templatevar-syndicate_description">syndicate_description</a></td><td>RSSなどの配信用に、指定文字数以上を省略した「本文」テキスト</td></tr>
 <tr><td>karmaposlink</td><td>投票用のURL</td></tr>
+
 <tr><td>karmaneglink</td><td>投票用のURL</td></tr>
 <tr><td>new</td><td>前回訪問時意向に追加されたアイテムを示すテキストなど</td></tr>
 <tr><td><a href="#skinvar-include">include</a></td><td>指定されたファイルの内容をそのまま挿入</td></tr>
 <tr><td><a href="#skinvar-parsedinclude">parsedinclude</a></td><td>指定されたファイル内のスキン/テンプレート変数を展開して、その結果を挿入</td></tr>
 <tr><td><a href="#skinvar-phpinclude">phpinclude</a></td><td>指定されたファイルをPHPとして実行した結果を挿入</td></tr>
 <tr><td><a href="#skinvar-if">if-ifnot-else-elseif-elseifnot-endif</a></td><td>3.60より、テンプレートでif（条件分岐）が使用できます。（オプションの「nextitem, previtem, archiveprevexists, archivenextexists, skintype」は利用できません。)</td></tr>
+
 <tr><td><a href="#skinvar-plugin">plugin</a></td><td>プラグインを実行</td></tr>
 <tr><td><a href="#templatevar-edit">edit</a></td><td>テンプレート「アイテムを編集するためのリンク」の内容を挿入</td></tr>
 <tr><td><a href="#templatevar-editlink">editlink</a></td><td>アイテム編集画面（bookmarklet）のURL</td></tr>
 <tr><td><a href="#templatevar-editpopupcode">editpopupcode</a></td><td>editlink用のウィンドウをポップアップするjavascriptコード</td></tr>
 <tr><td><a href="#skinvar-skinfile">skinfile</a></td><td>インポートされたスキンに属しているファイルへの正確なURLを挿入</td></tr>
 <tr><td><a href="#skinvar-set">set</a></td><td><a href="#parser-properties">パーサーのプロパティ</a>を設定</td></tr>
+
 <tr><td><a href="#templatevar-image">image</a></td><td>メディア・ライブラリの画像をインライン表示</td></tr>
 <tr><td><a href="#templatevar-popup">popup</a></td><td>メディア・ディレクトリの画像をポップアップ</td></tr>
 <tr><td><a href="#templatevar-media">media</a></td><td>メディア・ディレクトリの他のメディア・オブジェクト</td></tr>
@@ -3903,7 +4270,9 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 </table>
 <p><a href="#templatevars-overview">テンプレート変数の概略...</a></p>
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevars-advanced">内容について気がついた事があればご連絡ください。</a></p>
+
 </div>
+
 <div class="page">
 <a name="templatevars-basic"></a>
 <h1>テンプレート変数：基本の変数</h1>
@@ -3914,6 +4283,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <th abbr="説明">説明</th>
 </tr><tr>
 <td>title</td>
+
 <td>アイテムのタイトル</td>
 </tr><tr>
 <td>body</td>
@@ -3924,6 +4294,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 </tr><tr>
 <td>category</td>
 <td>アイテムが所属しているカテゴリーの名前</td>
+
 </tr><tr>
 <td>categorylink</td>
 <td>アイテムが所属しているカテゴリーのURL</td>
@@ -3935,6 +4306,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <td>投稿者の「メンバーの詳細ページ」のURL</td>
 </tr><tr>
 <td>itemlink</td>
+
 <td>アイテムのURL（permanent）</td>
 </tr><tr>
 <td><a href="#templatevar-author">author</a></td>
@@ -3944,6 +4316,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <td>本文か続きのどちらか</td>
 </tr><tr>
 <td><a href="#templatevar-morelink">morelink</a></td>
+
 <td>「続き」部分のURL</td>
 </tr><tr>
 <td><a href="#templatevar-date">date</a></td>
@@ -3954,6 +4327,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 </tr><tr>
 <td>daylink</td>
 <td>アイテムが投稿された日付のアーカイブのURL</td>
+
 </tr><tr>
 <td><a href="#templatevar-comments">comments</a></td>
 <td>コメント・ブロック、もしくはコメント数</td>
@@ -3968,6 +4342,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevars-basic">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevars-comments"></a>
 <h1>テンプレート変数：コメント関連</h1>
@@ -3975,51 +4350,61 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <tr><th abbr="名前">名前</th><th abbr="説明">説明</th></tr>
 <tr><td>body</td><td>コメントの本体</td></tr>
 <tr><td>user</td><td>コメントした人の名前</td></tr>
+
 <tr><td>userid</td><td>コメントした人のWebサイトのURL、もしくはコメントした人のメールアドレス（入力されたままのものが挿入されます）</td></tr>
 <tr><td>email</td><td>コメントした人のメールアドレス（スパム対策として、"@"は"(at)"に、".(ピリオド)"は"(dot)"に変換されます）</td></tr>
 <tr><td>userlink</td><td>コメントした人がログイン中の登録メンバーの時はメンバー詳細ページに、それ以外の時は入力されたWebサイトのURL、もしくはメールアドレスに対する&lt;a href="..."&gt;タグ付きのリンク（有効なURLかメールアドレスが入力されていない場合は、コメントした人の名前のみが表示されます）</td></tr>
 <tr><td>userlinkraw</td><td>userlinkと同じ。ただし、aタグの付いたリンクではなくURL、もしくはmailto:メールアドレスのみの表記。（入力されたURLやメールアドレスがいずれも文法的に有効でない場合は空になります）</td></tr>
 <tr><td>useremail</td><td>ユーザーのメールアドレス。もしコメントした人によって入力されていない場合は空</td></tr>
+
 <tr><td>userwebsite</td><td>ユーザーのwebsiteのURL。もしコメントした人によって入力されていない場合は空</td></tr>
 <tr><td>userwebsitelink</td><td>コメントした人が登録メンバーの時はメンバー詳細ページに、それ以外の時は入力されたWebサイトのURLに対する&lt;a href="..."&gt;タグ付きのリンク（有効なURLが入力されていない場合は、コメントした人の名前のみが表示されます）</td></tr>
 <tr><td>memberid</td><td>メンバーのID（コメントした人がログイン中の登録メンバーでない時は0になります）</td></tr>
 <tr><td>commentcount</td><td>該当アイテムに付けられたコメントの総数</td></tr>
 <tr><td><a href="#templatecommentwords" title="commentword()">commentword</a></td><td>アイテムに付けられたコメントの件数の数え方の表記</td></tr>
+
 <tr><td><a href="#templatevar-date" title="date([format])">date</a></td><td>コメントが追加された時の日付</td></tr>
 <tr><td><a href="#templatevar-time" title="time([format])">time</a></td><td>コメントが追加された時の時刻</td></tr>
 <tr><td>host</td><td>コメントが投稿されたホスト名</td></tr>
 <tr><td>ip</td><td>コメントが投稿されたIPアドレス</td></tr>
 <tr><td>commentid</td><td>現在のコメントのID</td></tr>
 <tr><td>itemid</td><td>現在のアイテムのID</td></tr>
+
 <tr><td>itemlink</td><td>アイテムの詳細ページへのリンク</td></tr>
 <tr><td><a href="#templateitemtitle" title="itemtitle([maxlength])">itemtitle</a></td><td>現在のアイテムのタイトル</td></tr>
 <tr><td>blogid</td><td>ブログのID</td></tr>
 <tr><td>blogurl</td><td>ブログのURL</td></tr>
 <tr><td><a href="#templatememberextra" title="authtext()">authtext</a></td><td>コメントした人がログイン中の登録メンバーの時は「<a href="#templatememberextra">登録メンバーからのコメントへの追加表示</a>」テンプレートで設定した内容、それ以外は空</td></tr>
+
 <tr><td>short</td><td>最初の改行部分から先が省略されたコメントの本体。テンプレートによっては末尾に<a href="#templatecommentcontinued">リンクが追加</a>されます。</td></tr>
 <tr><td>excerpt</td><td>コメントの本体。60文字でカットし"..."を追加</td></tr>
 <tr><td>timestamp</td><td>コメントが追加された時のタイムスタンプ</td></tr>
 <tr><td><a href="#skinvar-if">if-ifnot-else-elseif-elseifnot-endif</a></td><td>3.60より、テンプレートでif（条件分岐）が使用できます。（オプションの「nextitem, previtem, archiveprevexists, archivenextexists, skintype」は利用できません。)</td></tr>
 <tr><td><a href="#skinvar-include">include</a></td><td>指定されたファイルの内容をそのまま挿入</td></tr>
+
 <tr><td><a href="#skinvar-parsedinclude">parsedinclude</a></td><td>指定されたファイル内のスキン/テンプレート変数を展開して、その結果を挿入</td></tr>
 <tr><td><a href="#skinvar-phpinclude">phpinclude</a></td><td>指定されたファイルをPHPとして実行した結果を挿入</td></tr>
 <tr><td><a href="#skinvar-plugin">plugin</a></td><td>プラグインを実行</td></tr>
 <tr><td><a href="#skinvar-skinfile">skinfile</a></td><td>インポートされたスキンに属しているファイルへの正確なURLを挿入</td></tr>
 <tr><td><a href="#skinvar-set">set</a></td><td><a href="#parser-properties">パーサーのプロパティ</a>を設定</td></tr>
 </table>
+
 <p><a href="#templatevars-overview">テンプレート変数の概略...</a></p>
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevars-comments">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="templatevars-overview"></a>
 <h1>テンプレート変数：概略</h1>
 
 <h2>どういったものなのか？</h2>
 <p>テンプレート変数はスキン変数と同じ方法で広く働きますが、テンプレート内部で利用できる点でスキン変数と区別されます。変数は <code>&lt;%<em style="font-style:italic;">変数名</em>%&gt;</code>という形で呼び出され、変数の機能によってはテキストを挿入します。また、その他のオプションパラメーターを持つ変数もあります。</p>
+
 <h2>利用可能な変数</h2>
 <p>テンプレート変数は、<code>「アイテムのヘッダー」、「アイテムの本体」、「アイテムのフッター」、「日付ヘッダー」、「日付フッター」、「続きへのリンク」、「アイテムリンクの編集」</code>といった、テンプレート・パーツの中で使用できます。（変数<code>image</code>、 <code>popup</code>、<code>media</code>、<code> plugin</code>はブログアイテムの中でも使用できます。）</p>
 <ul>
 <li><a href="#templatevars-basic">基本の変数･･･</a>（title、bodyなど...）</li>
+
 <li><a href="#templatevars-advanced">上級の変数･･･</a>（include、pluginなど...）</li>
 </ul>
 <p>コメント関連のテンプレート・パーツ（<code>「コメントのヘッダー」、「コメントの本体」、「コメントのフッター」、「コメントが1 つの時」、「コメントが2つ以上の時」、「コメントの続きを読む」、「コメントが無い時」、「長すぎるコメントの時」</code>）では、利用可能な変数のセットが異なります：</p>
@@ -4029,6 +4414,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/templatevars-overview">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 <div class="page">
 <a name="urlmode"></a>
 <h1>URLモード</h1>
@@ -4038,10 +4424,12 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <li><strong>Normal</strong>: URLは次のようになります <code>http://example.jp/index.php?itemid=1234</code></li>
 <li><strong>Fancy</strong>: URLは次のようになります <code>http://example.jp/item/1234</code></li>
 </ul>
+
 <p class="note"><strong>注意：</strong>「Fancy URL」モードで動作するようにするためには、この設定のほかにもいくつかの作業が必要になります。詳しい解説は<a href="tips.html" class="out" onclick="window.open(this.href),return false;" onkeypress="window.open(this.href),return false;">Tips &amp; Suggestions</a>に記述されています。（新規ウィンドウが開きます）</p>
 
 <p class="comment"><a href="http://japan.nucleuscms.org/help/urlmode">内容について気がついた事があればご連絡ください。</a></p>
 </div>
+
 
 <script type="text/javascript">
 var elements = window.document.getElementsByTagName('p');
@@ -4067,3 +4455,4 @@ for (var index=0; index < elements.length; index++) {
 </script>
 </body>
 </html>
+
