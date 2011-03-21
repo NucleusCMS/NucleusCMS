@@ -1,26 +1,25 @@
 <?php
 	/*
-		About
-		-----
+		このディレクトリについて：
+		---------------------------
 		
-		This directory contains extra files to make the 'fancy urls' feature even more
-		fancier, by eliminating the 'index.php'-part of the URL
+		このディレクトリには、URLから「index.php」の部分を取り除いて、ユーザーフレンドリーなURL表記を実現する
+		「fancy urls」に関連するファイルが収められています。
 	
-		Installation
-		------------
+		導入：
+		-------
 		
-		1. Copy all files in this directory (except for index.html) to your main nucleus dir
-		   (where your index.php and action.php file are)
+		1. このディレクトリにおいてある全てのファイルを、Nucleusのindex.php、action.phpが置いてあるディレクトリに
+		   コピーします。
 		   
-		   If you have an already existing .htaccess file (most ftp-programs don't show hidden files
-		   by default, so don't start uploading it without checking your server). If you do, download
-		   that old one first, and copy the contents of the new .htaccess file (from the fancyurls
-		   folder) in your old one, and upload that... 
+		   すでに.htaccessファイルがディレクトリに用意してある時は、元の.htaccessファイルにこのディレクトリにある
+		   .htaccessファイルの内容を追記します。(ほとんどのFTPクライアントは、初期状態で.htaccess等のファイルが表
+		   されないように設定されているので、各ソフトの設定でこれらのファイルを扱えるようにしなければなりません)
 
-		2. Edit fancyurls.config.php so that $CONF['Self'] points to your main directory. 
-			NOTE: this time, and only this time, the URL should NOT end in a slash
+		2. このファイルを編集して、$CONF['Self']に、index.phpのあるディレクトリを指定します。
+		   注：このとき、URLの最後に「/(スラッシュ)」をつけないように！！
 
-		3. Edit index.php to look like this: 
+		3. index.php を次のように編集します。
 		   
 			$CONF = array();
 
@@ -29,32 +28,33 @@
 
 			selector();
 			
-		4. Enable 'Fancy URLs' in the Nucleus admin area (nucleus management / edit settings)
+		4. Nucleusの管理エリアの「グローバル設定」のページで、「Fancy URLs」を有効にします。
 
-		5. Off you go!
+		5. 以上！
 		
-		If it doesn't work:
-		-------------------
+		動かない時は:
+		---------------
 		
-		Remove the files again (don't forget the hidden file .htaccess). Voila.
+		残念。コピーしたファイルを削除します。(.htaccessファイルも忘れずに)
 		
 	*/
 
 	
-	// remember: this URL should _NOT_ end with a slash. 
+	// 注：このとき、URLの最後に「/(スラッシュ)」をつけないように！！ 
 	$CONF['Self'] = 'http://www.yourhost.com/yourpath';
 
     /*
-    	Advanced: keywords to use in fancy URLs. 
+    	高度な設定：FancyURLのキーワード
     	
-    	If you want to change these, you'll also need to rename the stub files 
-    	and update the contents of the .htaccess file accordingly
+    	FancyURLに使用するキーワードを変更することが出来ます。
+    	この設定を変更する場合は、拡張し無しファイルのファイル名と、.htaccessファイルに書かれた
+		キーワードも忘れずに変更する必要があります。
     */
-    $CONF['ItemKey']        = 'item';
-    $CONF['ArchiveKey']     = 'archive';
-    $CONF['ArchivesKey']    = 'archives';
-    $CONF['MemberKey']      = 'member';
-    $CONF['BlogKey']        = 'blog';
-    $CONF['CategoryKey']    = 'category';
-    $CONF['SpecialskinKey'] = 'special';
+    $CONF['ItemKey']        = 'item';		// 個別記事にアクセスするキーワード
+    $CONF['ArchiveKey']     = 'archive';	// アーカイブにアクセスするキーワード
+    $CONF['ArchivesKey']    = 'archives';	// アーカイブ一覧にアクセスするキーワード
+    $CONF['MemberKey']      = 'member';		// メンバーページにアクセスするキーワード
+    $CONF['BlogKey']        = 'blog';		// ブログ別にアクセスするキーワード
+    $CONF['CategoryKey']    = 'category';	// カテゴリ別にアクセスするキーワード
+    $CONF['SpecialskinKey'] = 'special';	// スペシャルスキンパーツで作ったページにアクセスするキーワード
 ?>
