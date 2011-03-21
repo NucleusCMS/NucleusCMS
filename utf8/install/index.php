@@ -207,15 +207,15 @@ function showInstallForm() {
 	ob_end_clean();
 	$mysqlVersion = implode($match, '.');
 	$minVersion   = '3.23';
-
-	if ($mysqlVersion == '0.0.0') {
+	
+	if (version_compare($mySqlVersion, '0.0.0', '==')) {
 		echo _NOTIFICATION1;
 	}
 	else {
 		echo $mysqlVersion;
 	}
 
-	if ($mysqlVersion < $minVersion) {
+	if (version_compare($mySqlVersion, $minVersion, '<')) {
 		echo ' <span class="warning" style="display:block">' . sprintf(_TEXT2_WARN1, $minVersion) . '</span>';
 	}
 ?>
@@ -627,9 +627,9 @@ function doInstall() {
 	// 2-2. set DEFAULT CHARSET and COLLATE
 	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info($MYSQL_CONN))));
 //	if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {//}
-	if ($mySqlVer >= '5.0.7' && function_exists('mysql_set_charset')) {
+	if (version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset')) {
 		mysql_set_charset($charset);
-	} elseif ($mySqlVer >= '4.1.0') {
+	} elseif (version_compare($mySqlVer, '4.1.0', '>=')) {
 		sql_query("SET CHARACTER SET " . $charset);
 	}
 	$collation = ($charset == 'utf8') ? 'utf8_general_ci' : 'ujis_japanese_ci';
@@ -640,7 +640,7 @@ function doInstall() {
 		$sql = 'CREATE DATABASE '
 			 .	 $mysql_database;
 // <add for garble measure>
-	if ($mySqlVer >= '4.1.0') {
+	if (version_compare($mySqlVer, '4.1.0', '>=')) {
 		$sql .= ' DEFAULT CHARACTER SET '
 			  .	 $charset
 			  . ' COLLATE '
