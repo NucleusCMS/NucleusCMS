@@ -31,7 +31,7 @@
 			font-style: italic;
 		}
 	</style>
-	<script src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	<script type="text/javascript">
 		google.load("jquery", "1");
 		google.setOnLoadCallback(function() {
@@ -55,11 +55,28 @@
 
 <ul>
 	<li>
-		<strong>Nucleus v3.62 Japanese Package (February 3, 2011)</strong> SVN is based on <a href="http://sourceforge.jp/projects/nucleus-jp/svn/view/nucleus-jp/trunk/utf8/?root=nucleus-jp">nucleus-jp</a>, hosted in sourceforge.jp.
+		<strong>Nucleus v3.64 Japanese Package (March 21, 2011)</strong> SVN is based on <a href="http://sourceforge.jp/projects/nucleus-jp/svn/view/nucleus-jp/trunk/utf8/?root=nucleus-jp">nucleus-jp</a>, hosted in sourceforge.jp.
 		<ul>
-		<li>/nucleus/libs/mysql/mysql.phpの修正: <a href="http://sourceforge.jp/projects/nucleus-jp/lists/archive/developers/2011-March/000315.html">http://sourceforge.jp/projects/nucleus-jp/lists/archive/developers/2011-March/000315.html</a></li>
-		<li>/nucleus/libs/BLOG.phpの修正: <a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=26741.">3.62 新しいアイテムの通知で改行がrnと表示される</a></li>
+		<li>ヘルプファイルの更新: <a href="http://japan.nucleuscms.org/help/index.php">みんなで作る「ヘルプファイル」プロジェクト</a>（Yotaka, gblsm）</li>
+		<li>/extra/fancyurls/fancyurls.config.phpの日本語化（cacher）</li>
+		<li>/nucleus/libs/showlist.phpの修正: <a href="http://japan.nucleuscms.org/bb/viewtopic.php?f=1&t=4794">機能の要望(v3.62):スキンの編集を見栄えよくしてしてほしい</a>と<a href="http://forum.nucleuscms.org/viewtopic.php?t=20302">display:how to separate SKIN_PARTS and SKIN_PARTS_SPECIAL on</a> (kotorisan)</li>
+		<li>/nucleus/libs/mysql/mysql.phpとpdo.phpの修正: <a href="http://sourceforge.jp/projects/nucleus-jp/lists/archive/developers/2011-March/000315.html">http://sourceforge.jp/projects/nucleus-jp/lists/archive/developers/2011-March/000315.html</a>（yama.kyms）</li>
+		<li>/nucleus/libs/mysql/mysql.phpとpdo.phpの修正: <a href="http://japan.nucleuscms.org/bb/viewtopic.php?f=3&t=4789">3.62のPDOハンドラエラー</a>（kotorisan, cacher）</li>
+		<li>/nucleus/libs/BLOG.phpの修正: <a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=26741">3.62 新しいアイテムの通知で改行がrnと表示される</a>（cruiseyan）</li>
+		<li>/nucleus/libs/BLOG.phpの修正: <a href="http://lists.sourceforge.jp/mailman/private/nucleus-jp-security/2011-March/000029.html">1292行目から1294行目が余計</a>（NKJG）</li>
+		<li>benchmarkに関する修正: <a href="http://japan.nucleuscms.org/bb/viewtopic.php?f=1&t=4791">改善の要望(V3.62):skins/default/skinbackup.xml</a>（kotorisan）</li>
 		</ul>
+		<strong>Nucleus v3.64 (March 14, 2011)</strong>
+		<ul>
+			<li>/install/index.phpのMySQLバージョン取得の際のエラー出力をバッファ制御で廃棄</li>
+			<li>/nucleus/libs/globalfunctions.phpの関数「cleanFileName」に関する修正</li>
+			<li>FIX: security issue in comments. Thanks Katsumi and John Leitch of AutoSec Tools. (gRegorlove)</li>
+			<li>ADD: labels in the installation form (kg)</li>
+			<li>FIX: minor problems with invalid XHTML in the installation form (kg)</li>
+			<li>CHANGE: Clean up and improvements in comment handling. (gRegorlove)</li>
+		</ul>
+	</li>
+	<li>
 		<strong>Nucleus v3.63 (March 1, 2011)</strong>
 		<ul>
 		<li>FIX: security issue in createaccount.php. Thanks Katsumi. (ftruscot)</li>
