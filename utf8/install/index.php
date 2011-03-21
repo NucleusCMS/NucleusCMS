@@ -625,13 +625,8 @@ function doInstall() {
 
 // <add for garble measure>
 	// 2-2. set DEFAULT CHARSET and COLLATE
-	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info($MYSQL_CONN))));
-//	if ($mySqlVer >= '5.0.7' && phpversion() >= '5.2.3') {//}
-	if (version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset')) {
-		mysql_set_charset($charset);
-	} elseif (version_compare($mySqlVer, '4.1.0', '>=')) {
-		sql_query("SET CHARACTER SET " . $charset);
-	}
+	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
+	sql_set_charset_jp($charset);
 	$collation = ($charset == 'utf8') ? 'utf8_general_ci' : 'ujis_japanese_ci';
 // </add for garble measure>*/
 
@@ -721,7 +716,7 @@ function doInstall() {
 					$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
 			}
 // <add for garble measure>
-			if ($mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0 && $mySqlVer >= '4.1.0') {
+			if ($mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0 && version_compare($mySqlVer, '4.1.0', '>=')) {
 				$query .= ' DEFAULT CHARACTER SET ' . $charset . ' COLLATE ' . $collation;
 			}
 // </add for garble measure>*/

@@ -402,43 +402,7 @@ if (!encoding_check(false, false, _CHARSET)) {
 	}
 }
 
-/*
- * for preventing I/O strings from auto-detecting the charactor encodings by MySQL
- * since 3.62_beta-jp
- * Jan.20, 2011 by kotorisan and cacher
- * refering to their conversation below,
- * http://japan.nucleuscms.org/bb/viewtopic.php?p=26581
- * 
- * NOTE: 	shift_jis is only supported for output. Using shift_jis in DB is prohibited.
- * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
- */
-if (in_array('mysql',$MYSQL_HANDLER)) {
-	switch(strtolower(_CHARSET)){
-		case 'utf-8':
-			$charset = 'utf8';
-			break;
-		case 'euc-jp':
-			$charset = 'ujis';
-			break;
-		case 'gb2312':
-			$charset = 'gb2312';
-			break;
-		case 'shift_jis':
-			$charset = 'sjis';
-			break;
-		default:
-			$resource = sql_query("show variables LIKE 'character_set_database'");
-			$fetchDat = sql_fetch_assoc($resource);
-			$charset  = $fetchDat['Value'];
-			break;
-	}
-	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info($MYSQL_CONN))));
-	if ($mySqlVer >= '5.0.7' && function_exists('mysql_set_charset')) {
-		mysql_set_charset($charset);
-	} elseif ($mySqlVer >= '4.1.0') {
-		sql_query("SET CHARACTER SET " . $charset);
-	}
-}
+sql_set_charset_jp(_CHARSET);
 
 /*
 	Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details

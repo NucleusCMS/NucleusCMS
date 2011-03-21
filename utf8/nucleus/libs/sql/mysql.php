@@ -70,20 +70,21 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 
 		$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
 		mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
-		
-/*
+
 // <add for garble measure>
-		$resource = sql_query("show variables LIKE 'character_set_database'");
-		$fetchDat = sql_fetch_assoc($resource);
-		$charset  = $fetchDat['Value'];
-		$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info($MYSQL_CONN))));
-		if (version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset')) {
-			mysql_set_charset($charset);
-		} elseif (version_compare($mySqlVer, '4.1.0', '>=')) {
-			sql_query("SET CHARACTER SET " . $charset);
+		if (defined(_CHARSET)){
+			$charset  = _CHARSET;
+		}else{
+			$resource = sql_query("show variables LIKE 'character_set_database'");
+			$fetchDat = sql_fetch_assoc($resource);
+			$charset  = $fetchDat['Value'];
+			// in trouble of encoding,uncomment the following line.
+			// $charset = "ujis";
+			// $charset = "utf8";
 		}
-// </add for garble measure>
-*/
+		sql_set_charset_jp($charset);
+// </add for garble measure>*/
+
 		return $MYSQL_CONN;
 	}
 
@@ -343,4 +344,40 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 # mysql_ tablename (deprecated)
 
 *******************************************************************/
+
+	/*
+	 * for preventing I/O strings from auto-detecting the charactor encodings by MySQL
+	 * since 3.62_beta-jp
+	 * Jan.20, 2011 by kotorisan and cacher
+	 * refering to their conversation below,
+	 * http://japan.nucleuscms.org/bb/viewtopic.php?p=26581
+	 * 
+	 * NOTE: 	shift_jis is only supported for output. Using shift_jis in DB is prohibited.
+	 * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
+	 */
+	function sql_set_charset_jp($charset) {
+		switch(strtolower($charset)){
+			case 'utf-8':
+				$charset = 'utf8';
+				break;
+			case 'euc-jp':
+				$charset = 'ujis';
+				break;
+			case 'gb2312':
+				$charset = 'gb2312';
+				break;
+			case 'shift_jis':
+				$charset = 'sjis';
+				break;
+			default:
+				break;
+		}
+		$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
+		if (version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset')) {
+			$res = mysql_set_charset($charset);
+		} elseif (version_compare($mySqlVer, '4.1.0', '>=')) {
+			$res = sql_query("SET CHARACTER SET " . $charset);
+		}
+		return $res;
+	}
 }
