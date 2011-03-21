@@ -22,7 +22,7 @@ class COMMENT {
 
 	/**
 	  * Returns the requested comment
-	  * 
+	  *
 	  * @static
 	  */
 	function getComment($commentid) {
@@ -32,18 +32,21 @@ class COMMENT {
 		$comments = sql_query($query);
 
 		$aCommentInfo = sql_fetch_assoc($comments);
+
 		if ($aCommentInfo) {
 			$aCommentInfo['timestamp'] = strtotime($aCommentInfo['ctime']);
 		}
+
 		return $aCommentInfo;
 	}
 
 	/**
 	  * Prepares a comment to be saved
-	  * 	  
+	  *
 	  * @static
 	  */
-	function prepare($comment) {
+	function prepare($comment)
+	{
 		$comment['user'] = strip_tags($comment['user']);
 		$comment['userid'] = strip_tags($comment['userid']);
 		$comment['email'] = strip_tags($comment['email']);
@@ -52,14 +55,15 @@ class COMMENT {
 		$comment['user'] = trim(strtr($comment['user'], "\n", ' ') );
 		$comment['userid'] = trim(strtr($comment['userid'], "\'\"\n", '-- ') );
 		$comment['email'] = trim(strtr($comment['email'], "\'\"\n", '-- ') );
-		
+
 		// begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
-		if ( !empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos($comment['userid'], 'https://') !== 0) ) {
+		if ( !empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos($comment['userid'], 'https://') !== 0) )
+		{
 			$comment['userid'] = 'http://' . $comment['userid'];
 		} // end if
-		
+
 		$comment['body'] = COMMENT::prepareBody($comment['body']);
-		
+
 		return $comment;
 	}
 
@@ -67,27 +71,28 @@ class COMMENT {
 	 * Prepares the body of a comment
 	 *
 	 * @ static
-	 */	 	
+	 */
 	function prepareBody($body) {
+
 		# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
 		# original ereg_replace: ereg_replace("\n.\n.\n", "\n", $body);
-		
+
 		// convert Windows and Mac style 'returns' to *nix newlines
 		$body = preg_replace("/\r\n/", "\n", $body);
 		$body = preg_replace("/\r/", "\n", $body);
-		
+
 		// then remove newlines when too many in a row (3 or more newlines get converted to 1 newline)
 		$body = preg_replace("/\n{3,}/", "\n\n", $body);
-		
+
 		// encode special characters as entities
 		$body = htmlspecialchars($body);
-		
+
 		// trim away whitespace and newlines at beginning and end
 		$body = trim($body);
-		
+
 		// add <br /> tags
 		$body = addBreaks($body);
-		
+
 		// create hyperlinks for http:// addresses
 		// there's a testcase for this in /build/testcases/urllinking.txt
 		$replaceFrom = array(
@@ -107,11 +112,13 @@ class COMMENT {
 		return $body;
 	}
 
+
+
 	/**
 	 * Creates a link code for unlinked URLs with different protocols
 	 *
 	 * @ static
-	 */	
+	 */
 	function createLinkCode($pre, $url, $protocol = 'http') {
 		$post = '';
 
@@ -120,18 +127,20 @@ class COMMENT {
 		// move the part of URL, starting from the disallowed entity to the 'post' link part
 		$aBadEntities = array('&quot;', '&gt;', '&lt;');
 		foreach ($aBadEntities as $entity) {
+
 			$pos = strpos($url, $entity);
+
 			if ($pos) {
 				$post = substr($url, $pos) . $post;
 				$url = substr($url, 0, $pos);
-
 			}
+
 		}
 
 		// remove entities at end (&&&&)
-		if (preg_match('/(&\w+;)+$/i', $url, $matches)) {
+		if (preg_match('/(&\w+;)+$/i', $url, $matches) ) {
 			$post = $matches[0] . $post;	// found entities (1 or more)
-			$url = substr($url, 0, strlen($url) - strlen($post));
+			$url = substr($url, 0, strlen($url) - strlen($post) );
 		}
 
 		// move ending comma from url to 'post' part
@@ -142,21 +151,23 @@ class COMMENT {
 
 		# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
 		# original ereg: ereg('^' . $protocol . '://', $url)
+
 		if (!preg_match('#^' . $protocol . '://#', $url) )
 		{
-			$linkedUrl = $protocol . (($protocol == 'mailto') ? ':' : '://') . $url;
+			$linkedUrl = $protocol . ( ($protocol == 'mailto') ? ':' : '://') . $url;
 		}
 		else
 		{
 			$linkedUrl = $url;
 		}
-		
+
 		if ($protocol != 'mailto') {
 			$displayedUrl = $linkedUrl;
 		} else {
 			$displayedUrl = $url;
 		}
-		return $pre . '<a href="'.$linkedUrl.'" rel="nofollow">'.shorten($displayedUrl,30,'...').'</a>' . $post;
+
+		return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . shorten($displayedUrl,30,'...') . '</a>' . $post;
 	}
 }
 ?>
