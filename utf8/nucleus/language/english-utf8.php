@@ -4,7 +4,7 @@
 // Author: Wouter Demuynck
 //
 // Modified by: shizuki (shizuki@kinezumi.net)
-// Nucleus version: v1.0-v3.4
+// Nucleus version: v1.0-v3.6
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -24,6 +24,19 @@
  * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
  */
+
+/********************************************
+ *        Start New for 3.6x                *
+ ********************************************/
+define('_ERROR_USER_TOO_LONG', 'Please enter a name shorter than 40 characters.');
+define('_ERROR_EMAIL_TOO_LONG', 'Please enter an email shorter than 100 characters.');
+define('_ERROR_URL_TOO_LONG', 'Please enter a website shorter than 100 characters.');
+
+/********************************************
+ *        Start New for 3.62                *
+ ********************************************/
+define('_SETTINGS_ADMINCSS',		'Admin Area Style');
+
 
 /********************************************
  *        Start New for 3.50                *
@@ -73,7 +86,7 @@ define('_LIST_ITEM_COMMENTS',						'%d Comments');
 define('_EDITC_URL',								'Web site');
 define('_EDITC_EMAIL',								'E-mail');
 
-define('_MANAGER_PLUGINFILE_NOTFOUND',				'Plugin %s was not loaded (File not found)');
+define('_MANAGER_PLUGINFILE_NOTFOUND',				"Plugin %s was not loaded (File not found)");
 /* changed */
 // plugin dependency
 define('_ERROR_INSREQPLUGIN',						'Plugin installation failed, requires %s');
@@ -412,15 +425,15 @@ define('_ACTIONLOG_ACTIVATIONLINK', 				'Activation link sent');
 define('_MSG_ACTIVATION_SENT',						'An activation link has been sent by e-mail.');
 
 // activation link emails
-define('_ACTIVATE_REGISTER_MAIL',					"Hi <%memberName%>,\n\nYou need to activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_REGISTER_MAIL',					"Hi <%memberName%>,\n\nYou need to activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have <%activationDays%> days to do this. After this, the activation link becomes invalid.");
 define('_ACTIVATE_REGISTER_MAILTITLE',				"Activate your '<%memberName%>' account");
 define('_ACTIVATE_REGISTER_TITLE',					'Welcome <%memberName%>');
 define('_ACTIVATE_REGISTER_TEXT',					'You\'re almost there. Please choose a password for your account below.');
-define('_ACTIVATE_FORGOT_MAIL',						"Hi <%memberName%>,\n\nUsing the link below, you can choose a new password for your account at <%siteName%> (<%siteUrl%>) by choosing a new password.\n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_FORGOT_MAIL',						"Hi <%memberName%>,\n\nUsing the link below, you can choose a new password for your account at <%siteName%> (<%siteUrl%>) by choosing a new password.\n\n\t<%activationUrl%>\n\nYou have <%activationDays%> days to do this. After this, the activation link becomes invalid.");
 define('_ACTIVATE_FORGOT_MAILTITLE',				"Re-activate your '<%memberName%>' account");
 define('_ACTIVATE_FORGOT_TITLE',					'Welcome <%memberName%>');
 define('_ACTIVATE_FORGOT_TEXT',						'You can choose a new password for your account below:');
-define('_ACTIVATE_CHANGE_MAIL',						"Hi <%memberName%>,\n\nSince your e-mail address has changed, you'll need to re-activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have 2 days to do this. After this, the activation link becomes invalid.");
+define('_ACTIVATE_CHANGE_MAIL',						"Hi <%memberName%>,\n\nSince your e-mail address has changed, you'll need to re-activate your account at <%siteName%> (<%siteUrl%>).\nYou can do this by visiting the link below: \n\n\t<%activationUrl%>\n\nYou have <%activationDays%> days to do this. After this, the activation link becomes invalid.");
 define('_ACTIVATE_CHANGE_MAILTITLE',				"Re-activate your '<%memberName%>' account");
 define('_ACTIVATE_CHANGE_TITLE',					'Welcome <%memberName%>');
 define('_ACTIVATE_CHANGE_TEXT',						'Your address change has been verified. Thanks!');
@@ -1192,7 +1205,7 @@ define('_MEMBERS_REALNAME',							'Real Name');
 define('_MEMBERS_PWD',								'Password');
 define('_MEMBERS_REPPWD',							'Repeat Password');
 define('_MEMBERS_EMAIL',							'Email address');
-define('_MEMBERS_EMAIL_EDIT',						'(When you change the email address, an activation link will be automatically sent out to that address)');
+define('_MEMBERS_EMAIL_EDIT',						'(When you change the email address, a new password will be automatically sent out to that address)');
 define('_MEMBERS_URL',								'Website Address (URL)');
 define('_MEMBERS_SUPERADMIN',						'Administrator privileges');
 define('_MEMBERS_CANLOGIN',							'Can login to admin area');

@@ -4,7 +4,7 @@
 // Author: Wouter Demuynck
 //
 // Modified by: shizuki (shizuki@kinezumi.net)
-// Nucleus version: v1.0-v3.4
+// Nucleus version: v1.0-v3.6
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -24,6 +24,13 @@
  * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
  */
+
+/********************************************
+ *        Start New for 3.6x                *
+ ********************************************/
+define('_ERROR_USER_TOO_LONG', 'Please enter a name shorter than 40 characters.');
+define('_ERROR_EMAIL_TOO_LONG', 'Please enter an email shorter than 100 characters.');
+define('_ERROR_URL_TOO_LONG', 'Please enter a website shorter than 100 characters.');
 
 /********************************************
  *        Start New for 3.62                *
