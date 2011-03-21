@@ -8,8 +8,9 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- * This script will install the Nucleus tables in your SQL-database, and initialize the data in
- * those tables.
+ * 
+ * This script will install the Nucleus tables in your SQL-database, 
+ * and initialize the data in those tables.
  *
  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
  * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>/install/</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php
@@ -71,6 +72,8 @@ if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
 	$CONF['installscript'] = 1;
 }
 
+// compatibility script for php < 4.1.0
+// ToDo: remove this here and from the core
 if (phpversion() >= '4.1.0') {
 	include_once('../nucleus/libs/vars4.1.0.php');
 } else {
@@ -103,6 +106,9 @@ if (postVar('action') == 'go') {
 
 exit;
 
+/*
+ * Show the form for the installation settings
+ */
 function showInstallForm() {
 	// 0. pre check if all necessary files exist
 	doCheckFiles();
@@ -461,6 +467,12 @@ function showInstallForm() {
 
 <?php }
 
+/*
+ * Add a table prefix if it is used
+ * 
+ * @param 	$unPrefixed
+ * 			table name with prefix
+ */
 function tableName($unPrefixed) {
 	global $mysql_usePrefix, $mysql_prefix;
 
@@ -471,6 +483,9 @@ function tableName($unPrefixed) {
 	}
 }
 
+/*
+ * The installation process itself
+ */
 function doInstall() {
 	global $mysql_usePrefix, $mysql_prefix, $weblog_ping;
 
@@ -993,6 +1008,9 @@ function doInstall() {
 <?php
 }
 
+/**
+ *  Install custom plugins
+ */
 function installCustomPlugs(&$manager) {
 	global $aConfPlugsToInstall, $DIR_LIBS;
 
@@ -1047,6 +1065,10 @@ function installCustomPlugs(&$manager) {
 	return $aErrors;
 }
 
+/**
+ *  Install custom skins
+ *  Prepares the installation of custom skins
+ */
 function installCustomSkins(&$manager) {
 	global $aConfSkinsToImport, $DIR_LIBS, $DIR_SKINS;
 
@@ -1092,7 +1114,10 @@ function installCustomSkins(&$manager) {
 	return $aErrors;
 }
 
-// give an error if one or more nucleus are not accessible
+/**
+ *  Check if some important files of the Nucleus CMS installation are available
+ *  Give an error if one or more files are not accessible
+ */
 function doCheckFiles() {
 	$missingfiles = array();
 	$files = array(
@@ -1127,6 +1152,14 @@ function doCheckFiles() {
 	}
 }
 
+/**
+ *  Updates the configuration in the database
+ * 
+ *  @param	$name
+ * 			name of the config var
+ *  @param	$val
+ * 			new value of the config var
+ */
 function updateConfig($name, $val) {
 	global $MYSQL_CONN;
 	$name = addslashes($name);
@@ -1140,16 +1173,31 @@ function updateConfig($name, $val) {
 	return sql_insert_id($MYSQL_CONN);
 }
 
+/**
+ *  Replaces doubled backslashs
+ * 
+ *  @param	$input
+ * 			string that could have double backslashs
+ */
 function replaceDoubleBackslash($input) {
 	return str_replace('\\', '/', $input);
 }
 
+/**
+ * Checks if a string ends with a slash 
+ * 
+ *  @param	$s
+ * 			string
+ */
 function endsWithSlash($s) {
 	return (strrpos($s, '/') == strlen($s) - 1);
 }
 
 /**
  * Checks if email address is valid
+ * 
+ *  @param	$address
+ * 			address which should be tested
  */
 function _isValidMailAddress($address) {
 	if (preg_match("#^[a-zA-Z0-9\._-]+@+[A-Za-z0-9\._-]+\.+[A-Za-z]{2,4}$#", $address) ) {
@@ -1159,10 +1207,16 @@ function _isValidMailAddress($address) {
 	}
 }
 
-// returns true if the given string is a valid shortname
-// (to check short blog names and nicknames)
-// logic: starts and ends with a non space, can contain spaces in between
-//		min 2 chars
+/*
+ * Check if short blog names and nicknames are allowed
+ * Returns true if the given string is a valid shortname
+ * logic: only letters and numbers are allowed, no spaces allowed
+ * 
+ * FIX: function eregi is deprecated since PHP 5.3.0
+ * 
+ * @param	$name
+ * 			name which should be tested	
+ */
 function _isValidShortName($name) {
 	if (preg_match("#^[a-zA-Z0-9]+$#", $name) ) {
 		return 1;
@@ -1171,10 +1225,15 @@ function _isValidShortName($name) {
 	}
 }
 
-
-
-// returns true if the given string is a valid display name
-// (to check nicknames)
+/*
+ * Check if a display name is allowed
+ * Returns true if the given string is a valid display name
+ * 
+ * FIX: function eregi is deprecated since PHP 5.3.0
+ * 
+ * @param	$name
+ * 			name which should be tested
+ */
 function _isValidDisplayName($name) {
 	if (preg_match("#^[a-zA-Z0-9]+[a-zA-Z0-9 ]*[a-zA-Z0-9]+$#", $name) ) {
 		return 1;
@@ -1183,6 +1242,12 @@ function _isValidDisplayName($name) {
 	}
 }
 
+/*
+ * Shows error message
+ * 
+ * @param	$msg
+ * 			error message
+ */
 function _doError($msg) {
 	?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -1206,6 +1271,12 @@ function _doError($msg) {
 	exit;
 }
 
+/*
+ * Shows error messages
+ * 
+ * @param	$errors
+ * 			array with error messages
+ */
 function showErrorMessages($errors) {
 	?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
