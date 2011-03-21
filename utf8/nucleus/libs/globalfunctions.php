@@ -64,7 +64,10 @@ if (function_exists('date_default_timezone_set')) {
 		directory) are still on the server.
 */
 
-$CONF['alertOnHeadersSent']  = 1;
+if (!isset($CONF['alertOnHeadersSent']) || (isset($CONF['alertOnHeadersSent'])&& $CONF['alertOnHeadersSent'] !== 0))
+{
+	$CONF['alertOnHeadersSent']  = 1;
+}
 $CONF['alertOnSecurityRisk'] = 1;
 /*$CONF['ItemURL']		   = $CONF['Self'];
 $CONF['ArchiveURL']		  = $CONF['Self'];
