@@ -244,20 +244,20 @@ function showInstallForm() {
 			<legend><?php echo _TEXT4_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><?php echo _TEXT4_TAB_FIELD1; ?></td>
-					<td><input name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host') )?>" tabindex="10010" /></td>
+					<td><label for="if_mySQL_host"><?php echo _TEXT4_TAB_FIELD1; ?>:</label></td>
+					<td><input id="if_mySQL_host" name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host') )?>" tabindex="10010" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT4_TAB_FIELD2; ?></td>
-					<td><input name="mySQL_user" tabindex="10020" /></td>
+					<td><label for="if_mySQL_user"><?php echo _TEXT4_TAB_FIELD2; ?>:</label></td>
+					<td><input id="if_mySQL_user" name="mySQL_user" tabindex="10020" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT4_TAB_FIELD3; ?></td>
-					<td><input name="mySQL_password" type="password" tabindex="10030" /></td>
+					<td><label for="if_mySQL_password"><?php echo _TEXT4_TAB_FIELD3; ?>:</label></td>
+					<td><input id="if_mySQL_password" name="mySQL_password" type="password" tabindex="10030" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT4_TAB_FIELD4; ?></td>
-					<td><input name="mySQL_database" tabindex="10040" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create" tabindex="10050" /><label for="mySQL_create"><?php echo _TEXT4_TAB_FIELD4_ADD; ?></label>)</td>
+					<td><label for="if_mySQL_database"><?php echo _TEXT4_TAB_FIELD4; ?>:</label></td>
+					<td><input id="if_mySQL_database" name="mySQL_database" tabindex="10040" /> (<input name="mySQL_create" value="1" type="checkbox" id="mySQL_create" tabindex="10050" /><label for="mySQL_create"><?php echo _TEXT4_TAB_FIELD4_ADD; ?></label>)</td>
 				</tr>
 			</table>
 		</fieldset>
@@ -266,7 +266,7 @@ function showInstallForm() {
 			<legend><?php echo _TEXT4_TAB2_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><input name="mySQL_usePrefix" value="1" type="checkbox" id="mySQL_usePrefix" tabindex="10060" /><label for="mySQL_usePrefix"><?php echo _TEXT4_TAB2_FIELD; ?></label></td>
+					<td><input name="mySQL_usePrefix" value="1" type="checkbox" id="mySQL_usePrefix" tabindex="10060" /><label for="mySQL_usePrefix"><?php echo _TEXT4_TAB2_FIELD; ?>:</label></td>
 					<td><input name="mySQL_tablePrefix" value="" tabindex="10070" /></td>
 				</tr>
 			</table>
@@ -307,8 +307,8 @@ function showInstallForm() {
 			<legend><?php echo _TEXT5_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD1; ?></td>
-					<td><input name="IndexURL" size="60" value="<?php
+					<td><label for="if_IndexURL"><?php echo _TEXT5_TAB_FIELD1;?>:</label></td>
+					<td><input id="if_IndexURL" name="IndexURL" size="60" value="<?php
 						$url = 'http://' . serverVar('HTTP_HOST') . serverVar('PHP_SELF');
 						$url = str_replace('install/index.php', '', $url);
 						$url = replaceDoubleBackslash($url);
@@ -321,36 +321,36 @@ function showInstallForm() {
 						echo $url; ?>" tabindex="10080" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD2; ?></td>
-					<td><input name="AdminURL" size="60" value="<?php
+					<td><label for="if_AdminURL"><?php echo _TEXT5_TAB_FIELD2;?>:</label></td>
+					<td><input id="if_AdminURL" name="AdminURL" size="60" value="<?php
 						if ($url) {
 							echo $url . 'nucleus/';
 						} ?>" tabindex="10090" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD3; ?></td>
-					<td><input name="AdminPath" size="60" value="<?php
+					<td><label for="if_AdminPath"><?php echo _TEXT5_TAB_FIELD3;?>:</label></td>
+					<td><input id="if_AdminPath" name="AdminPath" size="60" value="<?php
 						if($basePath) {
 							echo $basePath . 'nucleus/';
 						} ?>" tabindex="10100" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD4; ?></td>
-					<td><input name="MediaURL" size="60" value="<?php
+					<td><label for="if_MediaURL"><?php echo _TEXT5_TAB_FIELD4;?>:</label></td>
+					<td><input id="if_MediaURL" name="MediaURL" size="60" value="<?php
 						if ($url) {
 							echo $url . 'media/';
 						} ?>" tabindex="10110" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD5; ?></td>
-					<td><input name="MediaPath" size="60" value="<?php
+					<td><label for="if_MediaPath"><?php echo _TEXT5_TAB_FIELD5;?>:</label></td>
+					<td><input id="if_MediaPath" name="MediaPath" size="60" value="<?php
 						if ($basePath) {
 							echo $basePath . 'media/';
 						} ?>" tabindex="10120" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD6; ?></td>
-					<td><input name="SkinsURL" size="60" value="<?php
+					<td><label for="if_SkinsURL"><?php echo _TEXT5_TAB_FIELD6;?>:</label></td>
+					<td><input id="if_SkinsURL" name="SkinsURL" size="60" value="<?php
 						if ($url) {
 							echo $url . 'skins/';
 						} ?>" tabindex="10130" />
@@ -358,8 +358,8 @@ function showInstallForm() {
 					</td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD7; ?></td>
-					<td><input name="SkinsPath" size="60" value="<?php
+					<td><label for="if_SkinsPath"><?php echo _TEXT5_TAB_FIELD7;?>:</label></td>
+					<td><input id="if_SkinsPath" name="SkinsPath" size="60" value="<?php
 						if ($basePath) {
 							echo $basePath . 'skins/';
 						} ?>" tabindex="10140" />
@@ -367,15 +367,15 @@ function showInstallForm() {
 					</td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD8; ?></td>
-					<td><input name="PluginURL" size="60" value="<?php
+					<td><label for="if_PluginURL"><?php echo _TEXT5_TAB_FIELD8;?>:</label></td>
+					<td><input id="if_PluginURL" name="PluginURL" size="60" value="<?php
 						if ($url) {
 							echo $url . 'nucleus/plugins/';
 						} ?>" tabindex="10150" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT5_TAB_FIELD9; ?></td>
-					<td><input name="ActionURL" size="60" value="<?php
+					<td><label for="if_ActionURL"><?php echo _TEXT5_TAB_FIELD9;?>:</label></td>
+					<td><input id="if_ActionURL" name="ActionURL" size="60" value="<?php
 						if ($url) {
 							echo $url . 'action.php';
 						} ?>" tabindex="10160" />
@@ -395,24 +395,24 @@ function showInstallForm() {
 			<legend><?php echo _TEXT6_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD1; ?></td>
-					<td><input name="User_name" value="" tabindex="10170" /> (<?php echo _TEXT6_TAB_FIELD1_2; ?>)</td>
+					<td><label for="if_User_name"><?php echo _TEXT6_TAB_FIELD1; ?>:</label></td>
+					<td><input id="if_User_name" name="User_name" value="" tabindex="10170" /> <small>(<?php echo _TEXT6_TAB_FIELD1_2; ?>)</small></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD2; ?></td>
-					<td><input name="User_realname" value="" tabindex="10180" /></td>
+					<td><label for="if_User_realname"><?php echo _TEXT6_TAB_FIELD2; ?>:</label></td>
+					<td><input id="if_User_realname" name="User_realname" value="" tabindex="10180" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD3; ?></td>
-					<td><input name="User_password" type="password" value="" tabindex="10190" /></td>
+					<td><label for="if_User_password"><?php echo _TEXT6_TAB_FIELD3; ?>:</label></td>
+					<td><input id="if_User_password" name="User_password" type="password" value="" tabindex="10190" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD4; ?></td>
-					<td><input name="User_password2" type="password" value="" tabindex="10200" /></td>
+					<td><label for="if_User_password2"><?php echo _TEXT6_TAB_FIELD4; ?>:</label></td>
+					<td><input id="if_User_password2" name="User_password2" type="password" value="" tabindex="10200" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT6_TAB_FIELD5; ?></td>
-					<td><input name="User_email" value="" tabindex="10210" /> (<?php echo _TEXT6_TAB_FIELD5_2; ?>)</td>
+					<td><label for="if_User_email"><?php echo _TEXT6_TAB_FIELD5; ?>:</label></td>
+					<td><input id="if_User_email" name="User_email" value="" tabindex="10210" /> <small>(<?php echo _TEXT6_TAB_FIELD5_2; ?>)</small></td>
 				</tr>
 			</table>
 		</fieldset>
@@ -425,12 +425,12 @@ function showInstallForm() {
 			<legend><?php echo _TEXT7_TAB_HEAD; ?></legend>
 			<table>
 				<tr>
-					<td><?php echo _TEXT7_TAB_FIELD1; ?></td>
-					<td><input name="Blog_name" size="60" value="My Nucleus CMS" tabindex="10220" /></td>
+					<td><label for="if_Blog_name"><?php echo _TEXT7_TAB_FIELD1; ?>:</label></td>
+					<td><input id="if_Blog_name" name="Blog_name" size="60" value="My Nucleus CMS" tabindex="10220" /></td>
 				</tr>
 				<tr>
-					<td><?php echo _TEXT7_TAB_FIELD2; ?></td>
-					<td><input name="Blog_shortname" value="mynucleuscms" tabindex="10230" /> (<?php echo _TEXT7_TAB_FIELD2_2; ?>)</td>
+					<td><label for="if_Blog_shortname"><?php echo _TEXT7_TAB_FIELD2; ?>:</label></td>
+					<td><input id="if_Blog_shortname" name="Blog_shortname" value="mynucleuscms" tabindex="10230" /> <small>(<?php echo _TEXT7_TAB_FIELD2_2; ?>)</small></td>
 				</tr>
 			</table>
 		</fieldset>
@@ -441,7 +441,7 @@ function showInstallForm() {
 			<legend><?php echo _TEXT8_TAB_HEADER; ?></legend>
 			<table>
 				<tr>
-					<td><input name="Weblog_ping" value="1" type="checkbox" id="Weblog_ping" tabindex="10240" /><?php echo _TEXT8_TAB_FIELD1; ?></td>
+					<td><input name="Weblog_ping" value="1" type="checkbox" id="Weblog_ping" tabindex="10240" /><label for="Weblog_ping"><?php echo _TEXT8_TAB_FIELD1; ?></label></td>
 				</tr>
 			</table>
 		</fieldset>
