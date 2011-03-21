@@ -343,16 +343,4 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 # mysql_ tablename (deprecated)
 
 *******************************************************************/
-
-	/**
-	  * for JP installer only
-	  */
-	function at_sql_query($query, $conn = false) {
-		global $SQLCount,$MYSQL_CONN;
-		if (!$conn) $conn = $MYSQL_CONN;
-		$SQLCount++;
-		$res = mysql_query($query,$conn);
-		return $res;
-	}
 }
-?>

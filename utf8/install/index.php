@@ -169,14 +169,18 @@ function showInstallForm() {
 			</li>
 			<li>MySQL:
 <?php
+	// Turn on output buffer
+	// Needed to repress the output of the sql function that are
+	// not part of php (in this case the @ operator doesn't work) 
+	ob_start();
 	// note: this piece of code is taken from phpMyAdmin
 	$conn   = sql_connect_args('localhost','','');
-	$result = @at_sql_query('SELECT VERSION() AS version', $conn);
+	$result = @sql_query('SELECT VERSION() AS version', $conn);
 	if ($result != FALSE && sql_num_rows($result) > 0) {
 		$row   = sql_fetch_array($result);
 		$match = explode('.', $row['version']);
 	} else {
-		$result = @at_sql_query('SHOW VARIABLES LIKE \'version\'', $conn);
+		$result = @sql_query('SHOW VARIABLES LIKE \'version\'', $conn);
 		if ($result != FALSE && @sql_num_rows($result) > 0) {
 			$row   = sql_fetch_row($result);
 			$match = explode('.', $row[1]);
@@ -192,8 +196,9 @@ function showInstallForm() {
 			}
 		}
 	}
-
-	sql_disconnect($conn);
+	@sql_disconnect($conn);
+	//End and clean output buffer
+	ob_end_clean();
 	$mysqlVersion = implode($match, '.');
 	$minVersion   = '3.23';
 

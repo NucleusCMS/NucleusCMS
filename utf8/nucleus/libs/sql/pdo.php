@@ -589,21 +589,4 @@ if (!function_exists('sql_fetch_assoc'))
 # mysql_ tablename (deprecated)
 
 *******************************************************************/
-
-	/**
-	  * for JP installer only
-	  */
-	function at_sql_query($query,$dbh=NULL) {
-		global $SQLCount,$SQL_DBH;
-		$SQLCount++;
-		if (is_null($dbh)) $res = $SQL_DBH->query($query);
-		else $res = $dbh->query($query);
-/*		if ($res->errorCode() != '00000') {
-			$errors = $res->errorInfo();
-			print("SQL error with query $query: " . $errors[0].'-'.$errors[1].' '.$errors[2] . '<p />');
-		}
-*/
-		return $res;
-	}
 }
-?>
