@@ -1198,7 +1198,7 @@ function _doError($msg) {
 
 	<p><?php echo _ERROR28; ?> "<?php echo $msg; ?>";</p>
 
-	<p><a href="index.php" onclick="history.back();"><?php echo _TEXT17; ?></a></p>
+	<p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
 </body>
 </html>
 
