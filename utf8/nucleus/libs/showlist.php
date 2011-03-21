@@ -593,7 +593,10 @@ function listplug_table_skinlist($template, $type) {
 
 			echo '<td class="availableSkinTypes">' . htmlspecialchars($current->sddesc);
 				// show list of defined parts
-				$r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber . ' ORDER BY stype');
+				$r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber
+					. ' ORDER BY '
+					." stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member') ASC , "
+					.' stype ASC' );
 				$types = array();
 				while ($o = sql_fetch_object($r))
 					array_push($types,$o->stype);
