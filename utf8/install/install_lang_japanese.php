@@ -57,6 +57,7 @@ define('_ERROR30',				'クエリの実行中にエラーが発生しました：
 
 define('_NOTIFICATION1',		'判別不能');
 
+define('_ALT_NUCLEUS_CMS_LOGO',	'Nucleus CMS ロゴ');
 define('_TITLE',				'Nucleusのインストール');
 define('_TITLE2',				'テーマ・プラグインのインストールエラー');
 define('_TITLE3',				'インストールはほぼ完了しました！');

@@ -131,7 +131,7 @@ function showInstallForm() {
 		--></script>
 	</head>
 	<body>
-		<div style="text-align:center"><img src="../nucleus/styles/logo.gif" /></div> <!-- Nucleus logo -->
+		<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
 		<form method="post" action="index.php">
 		
 		<h1><?php echo _HEADER1; ?></h1>
@@ -897,7 +897,7 @@ function doInstall() {
 	<style>@import url('../nucleus/styles/manual.css');</style>
 </head>
 <body>
-	<div style='text-align:center'><img src='../nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
+	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
 
 <?php
 	$aAllErrors = array_merge($aSkinErrors, $aPlugErrors);
@@ -1199,7 +1199,7 @@ function _doError($msg) {
 	<style>@import url('../nucleus/styles/manual.css');</style>
 </head>
 <body>
-	<div style='text-align:center'><img src='../nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
+	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
 	<h1><?php echo _ERROR27; ?></h1>
 
 	<p><?php echo _ERROR28; ?> "<?php echo $msg; ?>";</p>
@@ -1222,7 +1222,7 @@ function showErrorMessages($errors) {
 	<style>@import url('../nucleus/styles/manual.css');</style>
 </head>
 <body>
-	<div style='text-align:center'><img src='../nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
+	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
 	<h1><?php echo _ERROR27; ?></h1>
 
 	<p><?php echo _ERROR29; ?>:</p>
