@@ -1122,12 +1122,6 @@ function doCheckFiles() {
 		}
 	}
 
-// The above code replaces several if statements of the form:
-
-//	if (!is_readable('install.sql') ) {
-//		array_push($missingfiles, 'File <b>install.sql</b> is missing or not readable');
-//	}
-
 	if (count($missingfiles) > 0) {
 		showErrorMessages($missingfiles);
 	}
