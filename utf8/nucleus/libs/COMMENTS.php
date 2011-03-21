@@ -16,7 +16,6 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
- * $NucleusJP: COMMENTS.php,v 1.9.2.1 2007/08/08 05:32:21 kimitake Exp $
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -134,6 +133,9 @@ class COMMENTS {
 
 	/**
 	 * Adds a new comment to the database
+	 * @param string $timestamp
+	 * @param array $comment
+	 * @return mixed
 	 */
 	function addComment($timestamp, $comment)
 	{
@@ -144,33 +146,55 @@ class COMMENTS {
 		$settings =& $manager->getBlog($blogid);
 		$settings->readSettings();
 
+		// begin if: comments disabled
 		if ( !$settings->commentsEnabled() )
 		{
 			return _ERROR_COMMENTS_DISABLED;
-		}
+		} // end if
 
+		// begin if: public cannot comment
 		if ( !$settings->isPublic() && !$member->isLoggedIn() )
 		{
 			return _ERROR_COMMENTS_NONPUBLIC;
-		}
+		} // end if
 
-		// member name protection
+		// begin if: comment uses a protected member name
 		if ( $CONF['ProtectMemNames'] && !$member->isLoggedIn() && MEMBER::isNameProtected($comment['user']) )
 		{
 			return _ERROR_COMMENTS_MEMBERNICK;
-		}
+		} // end if
 
-		// email required protection
+		// begin if: email required, but missing (doesn't apply to members)
 		if ( $settings->emailRequired() && strlen($comment['email']) == 0 && !$member->isLoggedIn() )
 		{
 			return _ERROR_EMAIL_REQUIRED;
-		}
+		} // end if
+
+		## Note usage of mb_strlen() vs strlen() below ##
+
+		// begin if: commenter's name is too long
+		if ( mb_strlen($comment['user']) > 40 )
+		{
+			return _ERROR_USER_TOO_LONG;
+		} // end if
+
+		// begin if: commenter's email is too long
+		if ( mb_strlen($comment['email']) > 100 )
+		{
+			return _ERROR_EMAIL_TOO_LONG;
+		} // end if
+
+		// begin if: commenter's url is too long
+		if ( mb_strlen($comment['userid']) > 100 )
+		{
+			return _ERROR_URL_TOO_LONG;
+		} // end if
 
 		$comment['timestamp'] = $timestamp;
 		$comment['host'] = gethostbyaddr(serverVar('REMOTE_ADDR') );
 		$comment['ip'] = serverVar('REMOTE_ADDR');
 
-		// if member is logged in, use that data
+		// begin if: member is logged in, use that data
 		if ( $member->isLoggedIn() )
 		{
 			$comment['memberid'] = $member->getID();
@@ -218,17 +242,19 @@ class COMMENTS {
 			'return'	=> $continue
 		);
 
+		// begin if: member logged in
 		if ( $member->isLoggedIn() )
 		{
 			$spamcheck['author'] = $member->displayname;
 			$spamcheck['email'] = $member->email;
 		}
+		// else: public
 		else
 		{
 			$spamcheck['author'] = $comment['user'];
 			$spamcheck['email'] = $comment['email'];
 			$spamcheck['url'] = $comment['userid'];
-		}
+		} // end if
 
 		$manager->notify('SpamCheck', array('spamcheck' => &$spamcheck) );
 
@@ -245,7 +271,7 @@ class COMMENTS {
 			return $isvalid;
 		}
 
-		// send email to notification address, if any
+		// begin if: send email to notification address
 		if ( $settings->getNotifyAddress() && $settings->notifyOnComment() )
 		{
 
@@ -401,5 +427,7 @@ class COMMENTS {
 
 		return $result;
 	}
+
 }
+
 ?>
