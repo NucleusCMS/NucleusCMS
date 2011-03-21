@@ -166,7 +166,7 @@
 </div>]]></part>
 
 		<part name="head"><![CDATA[<meta http-equiv="Content-Type" content="text/html; charset=<%charset%>" />
-<%phpinclude(benchmark)%>
+<%phpinclude(inc/benchmark.inc)%>
 
 <!-- meta information for search engines -->
 <meta name="generator" content="<%version%>" />

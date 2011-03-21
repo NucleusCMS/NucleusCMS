@@ -3391,7 +3391,8 @@ class ADMIN {
 
 		<p><?php echo sprintf(_BLOGCREATED_SIMPLEDESC2, htmlspecialchars($bshortname)) ?></p>
 <pre><code>&lt;?php
-
+include('./benchmark.inc');
+$CONF = array();
 $CONF['Self'] = '<b><?php echo htmlspecialchars($bshortname)?>.php</b>';
 
 include('<i>./config.php</i>');
