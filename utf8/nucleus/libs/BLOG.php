@@ -1302,13 +1302,11 @@ class BLOG {
 					. ' WHERE'
 					.	 ' i.iblog   = ' . $this->blogid
 					. ' and i.iauthor = m.mnumber'
-					. ' and i.icat	= c.catid'
-					. ' and i.idraft  = 0'  // exclude drafts
-						// don't show future items
-					. ' and i.itime  <= ' . mysqldate($this->getCorrectTime());
-			if (!$showDrafts) $query .= ' and i.idraft=0';	// exclude drafts						
-			if (!$showFuture) $query .= ' and i.itime<=' . mysqldate($this->getCorrectTime()); // don't show future items
+					. ' and i.icat	= c.catid';
 			
+			if (!$showDrafts) $query .= ' and i.idraft=0';	// exclude drafts
+			if (!$showFuture) $query .= ' and i.itime<=' . mysqldate($this->getCorrectTime()); // don't show future items
+
 			//$query .= ' and i.inumber IN ('.$itemlist.')';
 			$query .= ' and i.inumber = '.intval($value);
 			$query .= ')';
