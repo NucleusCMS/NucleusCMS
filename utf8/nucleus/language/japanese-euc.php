@@ -28,6 +28,13 @@
  */
 
 /********************************************
+ *        Start New for 3.64                *
+ ********************************************/
+define('_ERROR_USER_TOO_LONG',				'名前を40文字以内で入力してください。');
+define('_ERROR_EMAIL_TOO_LONG',				'eメールを40文字以内で入力してください。');
+define('_ERROR_URL_TOO_LONG',				'ウェブサイトを40文字以内で入力してください。');
+
+/********************************************
  *        Start New for 3.62                *
  ********************************************/
 define('_SETTINGS_ADMINCSS',		'管理領域のスタイルシート');
@@ -195,7 +202,7 @@ define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'新しいカテゴリを作ることが出来ませ
 
 // BAN
 define('_BAN_EXAMPLE_TITLE',						'例');
-define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193"と入力した場合は、このIPアドレスを持つPC1台だけをブロックします。"134.58.253"と入力した場合は、"134.58.235.0~134.58.235.255"の範囲の256個のIPアドレスを持つPCを全てブロックします。これは、前者のIPアドレス(134.58.253.193)を含みます。');
+define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193"と入力した場合は、このIPアドレスを持つPC1台だけをブロックします。"134.58.253"と入力した場合は、"134.58.235.0潤ｵ134.58.235.255"の範囲の256個のIPアドレスを持つPCを全てブロックします。これは、前者のIPアドレス(134.58.253.193)を含みます。');
 define('_BAN_IP_CUSTOM',							'ブロック指定: ');
 define('_BAN_BANBLOGNAME',							'%s のみ');
 
@@ -420,15 +427,15 @@ define('_ACTIONLOG_ACTIVATIONLINK',			'認証用リンクが送信されました。');
 define('_MSG_ACTIVATION_SENT',				'認証用リンクをメールで送信しました。');
 
 // activation link emails
-define('_ACTIVATE_REGISTER_MAIL',			"こんにちは <%memberName%>\n\n<%siteName%> (<%siteUrl%>)におけるアカウントを有効にしなければなりません。\n下のリンクをクリックしてアクティベーションを行ってください。：\n\n\t<%activationUrl%>\n\nアクティベーション用のURLの有効期限は2日間です。それ以降は無効になりますので早めに行ってください。");
+define('_ACTIVATE_REGISTER_MAIL',			"こんにちは <%memberName%>\n\n<%siteName%> (<%siteUrl%>)におけるアカウントを有効にしなければなりません。\n下のリンクをクリックしてアクティベーションを行ってください。：\n\n\t<%activationUrl%>\n\nアクティベーション用のURLの有効期限は<%activationDays%>日間です。それ以降は無効になりますので早めに行ってください。");
 define('_ACTIVATE_REGISTER_MAILTITLE',		"アカウント'<%memberName%>'のアクティベーション");
 define('_ACTIVATE_REGISTER_TITLE',			'ようこそ <%memberName%>');
 define('_ACTIVATE_REGISTER_TEXT',			'アカウント作成はほぼ完了しました。下のフォームでアカウントのパスワードを設定してください。');
-define('_ACTIVATE_FORGOT_MAIL',				"こんにちは <%memberName%>\n\n下のリンクから、この<%siteName%> (<%siteUrl%>)における新しいパスワードを設定することができます。\n\n\t<%activationUrl%>\n\nアクティベーション用のURLの有効期限は2日間です。それ以降は無効になりますので早めに行ってください。");
+define('_ACTIVATE_FORGOT_MAIL',				"こんにちは <%memberName%>\n\n下のリンクから、この<%siteName%> (<%siteUrl%>)における新しいパスワードを設定することができます。\n\n\t<%activationUrl%>\n\nアクティベーション用のURLの有効期限は<%activationDays%>日間です。それ以降は無効になりますので早めに行ってください。");
 define('_ACTIVATE_FORGOT_MAILTITLE',		"アカウント'<%memberName%>'の再認証");
 define('_ACTIVATE_FORGOT_TITLE',			'ようこそ <%memberName%>');
 define('_ACTIVATE_FORGOT_TEXT',				'下のフォームで新しいパスワードが設定できます。');
-define('_ACTIVATE_CHANGE_MAIL',				"こんにちは <%memberName%>\n\nメールアドレスが変更されました。\n\n<%siteName%> (<%siteUrl%>)におけるアカウントを再認証する必要があります。\n下のリンクをクリックしてアクティベーションを行ってください。：\n\n\t<%activationUrl%>\n\nアクティベーション用のURLの有効期限は2日間です。それ以降は無効になりますので早めに行ってください。");
+define('_ACTIVATE_CHANGE_MAIL',				"こんにちは <%memberName%>\n\nメールアドレスが変更されました。\n\n<%siteName%> (<%siteUrl%>)におけるアカウントを再認証する必要があります。\n下のリンクをクリックしてアクティベーションを行ってください。：\n\n\t<%activationUrl%>\n\nアクティベーション用のURLの有効期限は<%activationDays%>日間です。それ以降は無効になりますので早めに行ってください。");
 define('_ACTIVATE_CHANGE_MAILTITLE',		"アカウント'<%memberName%>'の再認証");
 define('_ACTIVATE_CHANGE_TITLE',			'ようこそ <%memberName%>');
 define('_ACTIVATE_CHANGE_TEXT',				'メールアドレスの変更が確認されました。');
@@ -1214,7 +1221,7 @@ define('_MEMBERS_REALNAME',					'ハンドルネーム');
 define('_MEMBERS_PWD',						'パスワード');
 define('_MEMBERS_REPPWD',					'パスワード（確認）');
 define('_MEMBERS_EMAIL',					'メールアドレス');
-define('_MEMBERS_EMAIL_EDIT',				'(メールアドレスを変更すると、そのアドレスへ自動的に認証用リンクが送信されます)');
+define('_MEMBERS_EMAIL_EDIT',				'(メールアドレスを変更すると、そのアドレスへ自動的に新しいパスワードが送信されます)');
 define('_MEMBERS_URL',						'Web siteアドレス (URL)');
 define('_MEMBERS_SUPERADMIN',				'Super-admin(最高管理)権限を与える');
 define('_MEMBERS_CANLOGIN',					'管理者領域へのログインを可能にする');
