@@ -608,6 +608,7 @@ if (!function_exists('sql_fetch_assoc'))
 	 * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
 	 */
 	function sql_set_charset_jp($charset) {
+		global $MYSQL_HANDLER,$SQL_DBH;
 		if (strpos($MYSQL_HANDLER[1], 'mysql') === 0) {
 			switch(strtolower($charset)){
 				case 'utf-8':
