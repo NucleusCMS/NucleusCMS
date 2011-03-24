@@ -267,16 +267,12 @@ class BLOG {
 
 		$manager->notify('PreAddItem',array('title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => &$this, 'authorid' => &$authorid, 'timestamp' => &$timestamp, 'closed' => &$closed, 'draft' => &$draft, 'catid' => &$catid));
 
-		// send notification mail
-		if (!$draft && !$isFuture && $this->getNotifyAddress() && $this->notifyOnNewItem())
-			$this->sendNewItemNotification($itemid, $title, $body);
-
-		$title = sql_real_escape_string($title);
-		$body = sql_real_escape_string($body);
-		$more = sql_real_escape_string($more);
+		$ititle = sql_real_escape_string($title);
+		$ibody = sql_real_escape_string($body);
+		$imore = sql_real_escape_string($more);
 
 		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
-			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
+			   . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
 		sql_query($query);
 		$itemid = sql_insert_id();
 
@@ -285,7 +281,11 @@ class BLOG {
 		if (!$draft)
 			$this->updateUpdateFile();
 
-		return $itemid;
+		// send notification mail
+		if (!$draft && !$isFuture && $this->getNotifyAddress() && $this->notifyOnNewItem())
+			$this->sendNewItemNotification($itemid, $title, $body);
+
+			return $itemid;
 	}
 
 	function sendNewItemNotification($itemid, $title, $body) {
