@@ -205,14 +205,14 @@ function showInstallForm() {
 	@sql_disconnect($conn);
 	//End and clean output buffer
 	ob_end_clean();
-	$mysqlVersion = implode($match, '.');
+	$mySqlVersion = implode($match, '.');
 	$minVersion   = '3.23';
 	
 	if (version_compare($mySqlVersion, '0.0.0', '==')) {
 		echo _NOTIFICATION1;
 	}
 	else {
-		echo $mysqlVersion;
+		echo $mySqlVersion;
 	}
 
 	if (version_compare($mySqlVersion, $minVersion, '<')) {
