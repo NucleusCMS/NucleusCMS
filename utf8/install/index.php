@@ -647,7 +647,7 @@ function doInstall() {
 	 * 4.5. set character set to this database in MySQL server
 	 * This processing is added by Nucleus CMS Japanese Package Release Team as of Mar.30, 2011
 	*/
-	sql_set_charset_jp($charset,'NAMES');
+	sql_set_charset_jp($charset);
 	
 
 	// 5. execute queries
