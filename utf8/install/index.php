@@ -626,7 +626,7 @@ function doInstall() {
 // <add for garble measure>
 	// 2-2. set DEFAULT CHARSET and COLLATE
 	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
-	sql_set_charset_jp($charset);
+	sql_set_charset_jp($charset,'NAMES');
 	$collation = ($charset == 'utf8') ? 'utf8_general_ci' : 'ujis_japanese_ci';
 // </add for garble measure>*/
 
