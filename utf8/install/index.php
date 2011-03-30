@@ -613,7 +613,7 @@ function doInstall() {
 		showErrorMessages($errors);
 	}
 
-	// 2-1. try to log in to mySQL
+	// 2. try to log in to mySQL
 
 	global $MYSQL_CONN;
 	// this will need to be changed if we ever allow
@@ -623,14 +623,9 @@ function doInstall() {
 		_doError(_ERROR15 . ': ' . sql_error() );
 	}
 
-// <add for garble measure>
-	// 2-2. set DEFAULT CHARSET and COLLATE
-	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
-	sql_set_charset_jp($charset,'NAMES');
-	$collation = ($charset == 'utf8') ? 'utf8_general_ci' : 'ujis_japanese_ci';
-// </add for garble measure>*/
-
 	// 3. try to create database (if needed)
+	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
+	$collation = ($charset == 'utf8') ? 'utf8_general_ci' : 'ujis_japanese_ci';
 	if ($mysql_create == 1) {
 		$sql = 'CREATE DATABASE '
 			 .	 $mysql_database;
@@ -647,6 +642,13 @@ function doInstall() {
 
 	// 4. try to select database
 	sql_select_db($mysql_database,$MYSQL_CONN) or _doError(_ERROR17);
+
+	/*
+	 * 4.5. set character set to this database in MySQL server
+	 * This processing is added by Nucleus CMS Japanese Package Release Team as of Mar.30, 2011
+	*/
+	sql_set_charset_jp($charset,'NAMES');
+	
 
 	// 5. execute queries
 	$filename = 'install.sql';

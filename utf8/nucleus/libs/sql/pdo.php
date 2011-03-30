@@ -607,7 +607,7 @@ if (!function_exists('sql_fetch_assoc'))
 	 * NOTE: 	shift_jis is only supported for output. Using shift_jis in DB is prohibited.
 	 * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
 	 */
-	function sql_set_charset_jp($charset,$mode = NULL) {
+	function sql_set_charset_jp($charset) {
 		global $MYSQL_HANDLER,$SQL_DBH;
 		if (strpos($MYSQL_HANDLER[1], 'mysql') === 0) {
 			switch(strtolower($charset)){
@@ -634,10 +634,7 @@ if (!function_exists('sql_fetch_assoc'))
 			}
 			$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
 			if (version_compare($mySqlVer, '4.1.0', '>=')) {
-				$res = ($mode == 'NAMES')
-					?$SQL_DBH->exec("SET NAMES " . $charset)
-					:$SQL_DBH->exec("SET CHARACTER SET " . $charset)
-				;
+				$res = $SQL_DBH->exec("SET CHARACTER SET " . $charset);
 			}
 		}
 		return $res;

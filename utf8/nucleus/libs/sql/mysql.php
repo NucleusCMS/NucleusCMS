@@ -355,7 +355,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	 * NOTE: 	shift_jis is only supported for output. Using shift_jis in DB is prohibited.
 	 * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
 	 */
-	function sql_set_charset_jp($charset,$mode = NULL) {
+	function sql_set_charset_jp($charset) {
 		switch(strtolower($charset)){
 			case 'utf-8':
 			case 'utf8':
@@ -382,10 +382,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if (version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset')) {
 			$res = mysql_set_charset($charset);
 		} elseif (version_compare($mySqlVer, '4.1.0', '>=')) {
-			$res = ($mode == 'NAMES')
-				?sql_query("SET NAMES " . $charset)
-				:sql_query("SET CHARACTER SET " . $charset)
-			;
+			$res = sql_query("SET CHARACTER SET " . $charset);
 		}
 		return $res;
 	}
