@@ -72,7 +72,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
 
 // <add for garble measure>
-		if (defined(_CHARSET)){
+		if (defined('_CHARSET')){
 			$charset  = _CHARSET;
 		}else{
 			$resource = sql_query("show variables LIKE 'character_set_database'");

@@ -194,7 +194,7 @@ if (!function_exists('sql_fetch_assoc'))
 			
 // <add for garble measure>
 			if (strpos($MYSQL_HANDLER[1], 'mysql') === 0) {
-				if (defined(_CHARSET)){
+				if (defined('_CHARSET')){
 					$charset  = _CHARSET;
 				}else{
 					$resource = $SQL_DBH->query("show variables LIKE 'character_set_database'");
