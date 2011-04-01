@@ -389,7 +389,7 @@ function media_doError($msg) {
 	?>
 	<h1><?php echo _ERROR?></h1>
 	<p><?php echo $msg?></p>
-	<p><a href="media.php" onclick='history.back(); return false;"><?php echo _BACK?></a></p>
+	<p><a href="media.php" onclick="history.back(); return false;"><?php echo _BACK?></a></p>
 	<?php	media_foot();
 	exit;
 }
