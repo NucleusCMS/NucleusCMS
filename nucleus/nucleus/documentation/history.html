@@ -34,7 +34,15 @@
 		</ul>
 	</li>
 	<li>
-		<strong>Nucleus v3.64 SVN</strong>
+		<strong>Nucleus v3.65 (SVN)</strong>
+		<ul>
+			<li>FIX: Replaced deprecated <i>$variable =& new CLASS()</i> with <i>$variable = new CLASS()</i> to work for PHP 5.3 in strict mode. May break PHP4 installs, but nucleus ended support for PHP4 in 3.50. (ftruscot)</li>
+			<li>FIX: Escaped newline characters in New Item Notification. Use fix from Japanese team (Mocchi). </li>
+			<li>FIX: Javascript parse error when autosave is turned off. Use fix from Japanese team (Mocchi). </li>
+		</ul>
+	</li>
+	<li>
+		<strong>Nucleus v3.64 (March 14, 2011)</strong>
 		<ul>
 			<li>ADD: labels in the installation form (kg)</li>
 			<li>FIX: minor problems with invalid XHTML in the installation form (kg)</li>

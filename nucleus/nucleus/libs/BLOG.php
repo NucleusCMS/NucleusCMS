@@ -160,8 +160,8 @@ class BLOG {
 		$template =& $manager->getTemplate($templateName);
 
 		// create parser object & action handler
-		$actions =& new ITEMACTIONS($this);
-		$parser =& new PARSER($actions->getDefinedActions(),$actions);
+		$actions = new ITEMACTIONS($this);
+		$parser = new PARSER($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setHighlight($highlight);
 		$actions->setLastVisit($lastVisit);
@@ -266,12 +266,12 @@ class BLOG {
 
 		$manager->notify('PreAddItem',array('title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => &$this, 'authorid' => &$authorid, 'timestamp' => &$timestamp, 'closed' => &$closed, 'draft' => &$draft, 'catid' => &$catid));
 
-		$title = sql_real_escape_string($title);
-		$body = sql_real_escape_string($body);
-		$more = sql_real_escape_string($more);
+		$ititle = sql_real_escape_string($title);
+		$ibody = sql_real_escape_string($body);
+		$imore = sql_real_escape_string($more);
 
 		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
-			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
+			   . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
 		sql_query($query);
 		$itemid = sql_insert_id();
 
@@ -282,7 +282,7 @@ class BLOG {
 
 		// send notification mail
 		if (!$draft && !$isFuture && $this->getNotifyAddress() && $this->notifyOnNewItem())
-			$this->sendNewItemNotification($itemid, stripslashes($title), stripslashes($body));
+			$this->sendNewItemNotification($itemid, $title, $body);
 
 		return $itemid;
 	}
@@ -314,7 +314,7 @@ class BLOG {
 
 		$frommail = $member->getNotifyFromMailAddress();
 
-		$notify =& new NOTIFICATION($this->getNotifyAddress());
+		$notify = new NOTIFICATION($this->getNotifyAddress());
 		$notify->notify($mailto_title, $mailto_msg , $frommail);
 
 
@@ -455,7 +455,7 @@ class BLOG {
 	 */
 	function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
 	{
-		$searchclass =& new SEARCH($query);
+		$searchclass = new SEARCH($query);
 
 		$highlight	  = $searchclass->inclusive;
 

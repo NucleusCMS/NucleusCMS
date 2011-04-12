@@ -453,7 +453,7 @@ class ITEMACTIONS extends BaseActions {
 
 		// add comments
 		if ($this->showComments && $this->blog->commentsEnabled()) {
-			$comments =& new COMMENTS($this->currentItem->itemid);
+			$comments = new COMMENTS($this->currentItem->itemid);
 			$comments->setItemActions($this);
 			$comments->showComments($this->template, $maxToShow, $this->currentItem->closed ? 0 : 1, $this->strHighlight);
 		}
@@ -522,8 +522,8 @@ class ITEMACTIONS extends BaseActions {
 	 * 'plugin variables in items' implementation by Andy
 	 */
 	function highlightAndParse(&$data) {
-		$actions =& new BODYACTIONS($this->blog);
-		$parser =& new PARSER($actions->getDefinedActions(), $actions);
+		$actions = new BODYACTIONS($this->blog);
+		$parser = new PARSER($actions->getDefinedActions(), $actions);
 		$actions->setTemplate($this->template);
 		$actions->setHighlight($this->strHighlight);
 		$actions->setCurrentItem($this->currentItem);
