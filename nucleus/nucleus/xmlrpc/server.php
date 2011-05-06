@@ -105,7 +105,7 @@ function _addItem($blogid, $username, $password, $title, $body, $more, $publish,
 /**
   * Adds item to blog, with time of item given
   */
-function _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $timestamp, $future, $catname = "") {
+function _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed = '0', $timestamp, $future, $catname = "") {
 	// 1. login
 	$mem = new MEMBER();
 
@@ -126,12 +126,16 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
 	// get category id (or id for default category when false category)
 	$catid = $blog->getCategoryIdFromName($catname);
 
-	if ($publish == 1)
+	if ($publish == 1) {
 		$draft = 0;
-	else
+	}
+	else {
 		$draft = 1;
-	if ($closed != 1)
-		$closed = 0;
+	}
+	
+	// not needed because BLOG:additem has the same code
+	/*if ($closed != 1)
+	{$closed = 0;}*/
 
 	// 4. add to blog
 	$itemid = $blog->additem($catid, $title, $body, $more, $blogid, $mem->getID(), $timestamp, $closed, $draft);

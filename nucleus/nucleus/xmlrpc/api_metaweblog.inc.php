@@ -51,8 +51,15 @@
 		if ($catlist && ($catlist->kindOf() == "array") && ($catlist->arraysize() > 0))
 			$category = _getArrayVal($catlist, 0);
 		
+		//  mt_allow_comments is optional (thus: be careful)!
+		$c = (int) _getStructVal($struct, 'mt_allow_comments');
+		if ($c==''){
+			$comments =	0;
+		}
+		else {
+			$comments = $c;
+		}
 		
-		$comments = (int) _getStructVal($struct, 'mt_allow_comments') ? 0 : 1;
 		$publish = _getScalar($m,4);
 
 
