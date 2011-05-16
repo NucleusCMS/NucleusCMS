@@ -19,7 +19,20 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
+
+ /********************************************
+ *        Start New for 3.65                *
+ ********************************************/
+define('_LISTS_AUTHOR', 'Author');
+define('_OVERVIEW_OTHER_DRAFTS', 'Other Drafts');
  
+/********************************************
+ *        Start New for 3.6x                *
+ ********************************************/
+define('_ERROR_USER_TOO_LONG', 'Please enter a name shorter than 40 characters.');
+define('_ERROR_EMAIL_TOO_LONG', 'Please enter an email shorter than 100 characters.');
+define('_ERROR_URL_TOO_LONG', 'Please enter a website shorter than 100 characters.');
+
 /********************************************
  *        Start New for 3.62                *
  ********************************************/

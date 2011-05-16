@@ -234,6 +234,31 @@ class ADMIN {
             if ($amountdrafts == 0)
                 echo _OVERVIEW_NODRAFTS;
         }
+				
+		if ($amount != 0) {
+			$yrBlogs = $member->getAdminBlogs();
+			if (!$showAll == 'yes') {
+				$admBlogs = array();
+				foreach ($yrBlogs as $value) {
+					if ($member->isBlogAdmin(intval($value))) {
+						$admBlogs[] = intval($value);
+					}
+				}
+				$yrBlogs = $admBlogs;
+			}
+			
+			if (count($yrBlogs) > 0) {
+				echo '<h2>' . _OVERVIEW_OTHER_DRAFTS . '</h2>';
+				$query =  'SELECT ititle, inumber, bshortname, mname'
+					   . ' FROM ' . sql_table('item'). ', ' . sql_table('blog'). ', ' . sql_table('member')
+					   . ' WHERE iauthor<>'.$member->getID().' and iblog IN ('.implode(",",$yrBlogs).') and iblog=bnumber and iauthor=mnumber and idraft=1'
+					   . ' ORDER BY iblog ASC';
+				$template['content'] = 'otherdraftlist';
+				$amountdrafts = showlist($query, 'table', $template);
+				if ($amountdrafts == 0)
+					echo _OVERVIEW_NODRAFTS;
+			}
+        }
 
         /* ---- user settings ---- */
         echo '<h2>' . _OVERVIEW_YRSETTINGS . '</h2>';

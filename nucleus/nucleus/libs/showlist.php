@@ -632,6 +632,23 @@ function listplug_table_draftlist($template, $type) {
 	}
 }
 
+function listplug_table_otherdraftlist($template, $type) {
+	switch($type) {
+		case 'HEAD':
+			echo "<th>"._LISTS_BLOG."</th><th>"._LISTS_TITLE."</th><th>"._LISTS_AUTHOR."</th><th colspan='2'>"._LISTS_ACTIONS."</th>";
+			break;
+		case 'BODY':
+			$current = $template['current'];
+
+			echo '<td>', htmlspecialchars($current->bshortname) , '</td>';
+			echo '<td>', htmlspecialchars(strip_tags($current->ititle)) , '</td>';
+			echo '<td>', htmlspecialchars($current->mname) , '</td>';
+			echo "<td><a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a></td>";
+			echo "<td><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"._LISTS_DELETE."</a></td>";
+
+			break;
+	}
+}
 
 function listplug_table_actionlist($template, $type) {
 	switch($type) {
