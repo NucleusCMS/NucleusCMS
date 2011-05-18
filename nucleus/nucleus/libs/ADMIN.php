@@ -237,7 +237,7 @@ class ADMIN {
 				
 		if ($amount != 0) {
 			$yrBlogs = $member->getAdminBlogs();
-			if (!$showAll == 'yes') {
+			if ($showAll != 'yes') {
 				$admBlogs = array();
 				foreach ($yrBlogs as $value) {
 					if ($member->isBlogAdmin(intval($value))) {
