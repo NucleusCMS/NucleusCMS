@@ -1,13 +1,9 @@
 <?php
 /*
  * i18n class
- * written by Takashi Sakamoto as of Apr.18, 2011
+ * written by Takashi Sakamoto as of Jun.5, 2011
  * This is wrapper functions of iconv and mbstring
  * for multibyte processing.
- * 
- * Usage: Firstly i18n::initialize($charset),
- *  then access to each static functions.
- * 
  */
 
 class i18n {
@@ -15,7 +11,7 @@ class i18n {
 	private static $iconv = FALSE;
 	private static $mbstring = FALSE;
 	
-	public static function initialize ($charset) {
+	public static function init ($charset) {
 		if (extension_loaded('iconv')) {
 			self::$iconv = TRUE;
 			if (iconv_set_encoding ('output_encoding', $charset)
@@ -37,16 +33,16 @@ class i18n {
 			$return =FALSE;
 		}
 		self::$charset = $charset;
-		return $return;
+		return (boolean) $return;
 	}
 	
-	public static function hsc ($string, $quotation) {
-		return htmlspecialchars($string, $quotation, self::$charset);
+	public static function hsc ($string, $quotation=ENT_QUOTES) {
+		return (string) htmlspecialchars($string, $quotation, self::$charset);
 	}
 	
 	public static function convert ($target, $from, $to='') {
 		$string = '';
-		if (!$to) {
+		if ($to == '') {
 			$to = self::$charset;
 		}
 		if (self::$iconv) {
@@ -54,7 +50,7 @@ class i18n {
 		} else if (self::$mbstring) {
 			$string = mb_convert_encoding($string, $to, $from);
 		}
-		return $string;
+		return (string) $string;
 	}
 	
 	public static function strlen ($string) {
@@ -66,7 +62,7 @@ class i18n {
 		} else {
 			$length = strlen ($string);
 		}
-		return $length;
+		return (integer) $length;
 	}
 	
 	public static function strpos ($haystack, $needle, $offset=0) {
@@ -78,7 +74,7 @@ class i18n {
 		} else {
 			$position = strpos ($haystack, $needle, $offset);
 		}
-		return $position;
+		return (integer) $position;
 	}
 	
 	public static function strrpos ($haystack, $needle) {
@@ -90,11 +86,11 @@ class i18n {
 		} else {
 			$position = strrpos ($haystack, $needle, 0);
 		}
-		return $position;
+		return (integer) $position;
 	}
 	
 	public static function substr ($string, $start, $length=0) {
-		$return = 0;
+		$return = '';
 		if (self::$iconv) {
 			$return = iconv_substr ($string, $start, $length, self::$charset);
 		} else if (self::$mbstring) {
@@ -102,35 +98,69 @@ class i18n {
 		} else {
 			$return = strrpos ($string, $start, $length);
 		}
-		return $return;
+		return (string) $return;
 	}
 	
-	/*
-	 * we should use preg_split function instead of this, I think.
-	 */
 	public static function explode ($delimiter, $target, $limit=0) {
 		$array = array();
+		if (preg_match("#$delimiter#", $target) === 0) {
+			return $target;
+		}
 		for ($count=0; $limit == 0 || $count < $limit; $count++) {
 			$offset = self::strpos($target, $delimiter);
-			if ($offset == 0) {
-					$array[] = $target;
+			if ($array != array() && $offset == 0) {
+				$array[] = $target;
 				break;
 			}
-			$before = self::substr($target, 0, $offset);
-			$array[] = $before;
-			$length = self::strlen($target) - self::strlen($before);
+			$array[] = self::substr($target, 0, $offset);
+			$length = self::strlen($target) - $offset;
 			$target = self::substr($target, $offset+1, $length);
+			continue;
 		}
-		return $array;
+		return (array) $array;
 	}
 	
 	public static function strftime ($format, $timestamp='') {
 		$formatted = '';
-		if (setlocale(LC_CTYPE, 0) == 'Japanese_Japan.932') {
-			$formatted = iconv('CP932', self::$charset, strftime(iconv(self::$charset, 'CP932', $format),$timestamp));
-		} else {
-			$formatted = strftime($format,$timestamp);
+		$elements = array();
+		if (preg_match('#%#', $format) === 0) {
+			return $format;
 		}
-		return $formatted;
+		$format = trim(preg_replace('#(%.)#', ',$1,', $format), ',');
+		$elements = self::explode(',', $format);
+		
+		foreach ($elements as $element) {
+			if (preg_match('#^%.$#', $element)) {
+				$formatted .= strftime($element, $timestamp);
+			} else {
+				$formatted .= $element;
+			}
+		}
+		
+		return (string) $formatted;
+	}
+	
+	/*
+	 * This function is experimental, need to be tested in various PHP environment
+	 */
+	public static function mail($to, $subject, $message, $from) {
+		if (self::$iconv) {
+			$options = array(
+			 'scheme' => 'B',
+			 'input-charset' => self::$charset,
+			 'output-charset' => self::$charset,
+			 'line-length' => 76,
+			 'line-break-chars' => "\r\n");
+			
+			$subject = iconv_mime_encode('Subject', $subject, $options);
+			$addition = iconv_mime_encode('From', $from, $options);
+			
+			$result = mail($to, $subject, $message, $addition);
+		} else if (self::$mbstring) {
+			$result = mb_send_mail ($to, $subject, $message, "From: $from");
+		} else {
+			$result = mail ($to, $subject, $message, "From: $from");
+		}
+		return (boolean) $result;
 	}
 }
