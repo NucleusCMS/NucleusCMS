@@ -33,6 +33,12 @@ class SKIN {
 	var $includePrefix;
 	var $name;
 
+	/**
+	 * Constructor for a new SKIN object
+	 * 
+	 * @param $id 
+	 * 			id of the skin
+	 */
 	function SKIN($id) {
 		$this->id = intval($id);
 
@@ -51,12 +57,56 @@ class SKIN {
 
 	}
 
-	function getID() {				return $this->id; }
-	function getName() { 			return $this->name; }
-	function getDescription() { 	return $this->description; }
-	function getContentType() { 	return $this->contentType; }
-	function getIncludeMode() { 	return $this->includeMode; }
-	function getIncludePrefix() { 	return $this->includePrefix; }
+	/**
+	 * Get SKIN id
+	 */
+	function getID() {
+		return $this->id;
+	}
+
+	/**
+	 * Get SKIN name
+	 */
+	function getName() {
+		return $this->name;
+	}
+	
+	/**
+	 * Get SKIN description
+	 */
+	function getDescription() {
+		return $this->description;
+	}
+	
+	/**
+	 * Get SKIN content type
+	 * 
+	 * e.g. text/xml, text/html, application/atom+xml
+	 */
+	function getContentType() {
+		return $this->contentType;
+	}
+	
+	/**
+	 * Get include mode of the SKIN
+	 * 
+	 * Returns either 'normal' or 'skindir':
+	 * 'normal': if a all data of the skin can be found in the databse
+	 * 'skindir': if the skin has data in the it's skin driectory
+	 */
+	function getIncludeMode() {
+		return $this->includeMode;
+	}
+	
+	/**
+	 * Get include prefix of the SKIN
+	 * 
+	 * Get name of the subdirectory (with trailing slash) where
+	 * the files of the current skin can be found (e.g. 'default/')
+	 */
+	function getIncludePrefix() {
+		return $this->includePrefix;
+	}
 
 	/**
 	 * Checks if a skin with a given shortname exists
@@ -150,6 +200,11 @@ class SKIN {
 		return $newid;
 	}
 
+	/**
+	 * Parse a SKIN
+	 * 
+	 * @param string $type
+	 */
 	function parse($type) {
 		global $manager, $CONF;
 
@@ -166,7 +221,7 @@ class SKIN {
 
 		if (!$contents) {
 			// use base skin if this skin does not have contents
-			$defskin =& new SKIN($CONF['BaseSkin']);
+			$defskin = new SKIN($CONF['BaseSkin']);
 			$contents = $defskin->getContent($type);
 			if (!$contents) {
 				echo _ERROR_SKIN;
@@ -182,8 +237,8 @@ class SKIN {
 		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
 		PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());
 
-		$handler =& new ACTIONS($type, $this);
-		$parser =& new PARSER($actions, $handler);
+		$handler = new ACTIONS($type, $this);
+		$parser = new PARSER($actions, $handler);
 		$handler->setParser($parser);
 		$handler->setSkin($this);
 		$parser->parse($contents);
@@ -193,6 +248,11 @@ class SKIN {
 
 	}
 
+	/**
+	 * Get content of the skin part from the database
+	 * 
+	 * @param $type type of the skin (e.g. index, item, search ...)
+	 */
 	function getContent($type) {
 		$query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". sql_real_escape_string($type) ."'";
 		$res = sql_query($query);
@@ -204,7 +264,10 @@ class SKIN {
 	}
 
 	/**
-	 * Updates the contents of one part of the skin
+	 * Updates the contents for one part of the skin in the database
+	 * 
+	 * @param $type type of the skin part (e.g. index, item, search ...) 
+	 * @param $content new content for this skin part
 	 */
 	function update($type, $content) {
 		$skinid = $this->id;
@@ -240,6 +303,9 @@ class SKIN {
 	}
 
 	/**
+	 * Get an array with the names of possible skin parts
+	 * Used to show all possible parts of a skin in the administration backend
+	 * 
 	 * static: returns an array of friendly names
 	 */
 	function getFriendlyNames() {
@@ -263,6 +329,12 @@ class SKIN {
 		return $skintypes;
 	}
 
+	/**
+	 * Get the allowed actions for a skin type
+	 * returns an array with the allowed actions
+	 * 
+	 * @param $type type of the skin (e.g. index, item, search ...)
+	 */
 	function getAllowedActionsForType($type) {
 		global $blogid;
 

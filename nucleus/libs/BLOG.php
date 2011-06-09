@@ -99,17 +99,24 @@ class BLOG {
 
 	}
 
-
-	// sets/gets current category (only when category exists)
+	/**
+	 * Sets the selected category by id (only when category exists)
+	 */
 	function setSelectedCategory($catid) {
 		if ($this->isValidCategory($catid) || (intval($catid) == 0))
 			$this->selectedcatid = intval($catid);
 	}
 
+	/**
+	 * Sets the selected category by name
+	 */
 	function setSelectedCategoryByName($catname) {
 		$this->setSelectedCategory($this->getCategoryIdFromName($catname));
 	}
 
+	/**
+	 * Returns the selected category
+	 */
 	function getSelectedCategory() {
 		return $this->selectedcatid;
 	}
@@ -146,6 +153,9 @@ class BLOG {
 		return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
 	}
 
+	/**
+	 * Do the job for readLogAmmount
+	 */	
 	function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1) {
 		global $CONF, $manager;
 
@@ -160,8 +170,8 @@ class BLOG {
 		$template =& $manager->getTemplate($templateName);
 
 		// create parser object & action handler
-		$actions =& new ITEMACTIONS($this);
-		$parser =& new PARSER($actions->getDefinedActions(),$actions);
+		$actions = new ITEMACTIONS($this);
+		$parser = new PARSER($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setHighlight($highlight);
 		$actions->setLastVisit($lastVisit);
@@ -227,6 +237,9 @@ class BLOG {
 
 	}
 
+	/**
+	 * Simplified function for showing only one item
+	 */
 	function showOneitem($itemid, $template, $highlight) {
 		$extraQuery = ' and inumber=' . intval($itemid);
 
@@ -266,12 +279,12 @@ class BLOG {
 
 		$manager->notify('PreAddItem',array('title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => &$this, 'authorid' => &$authorid, 'timestamp' => &$timestamp, 'closed' => &$closed, 'draft' => &$draft, 'catid' => &$catid));
 
-		$title = sql_real_escape_string($title);
-		$body = sql_real_escape_string($body);
-		$more = sql_real_escape_string($more);
+		$ititle = sql_real_escape_string($title);
+		$ibody = sql_real_escape_string($body);
+		$imore = sql_real_escape_string($more);
 
 		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
-			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
+			   . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
 		sql_query($query);
 		$itemid = sql_insert_id();
 
@@ -282,11 +295,21 @@ class BLOG {
 
 		// send notification mail
 		if (!$draft && !$isFuture && $this->getNotifyAddress() && $this->notifyOnNewItem())
-			$this->sendNewItemNotification($itemid, stripslashes($title), stripslashes($body));
+			$this->sendNewItemNotification($itemid, $title, $body);
 
 		return $itemid;
 	}
 
+	/**
+	 * Send a new item notification to the notification list
+	 * 
+	 * @param $itemid
+	 *        ID of the item
+	 * @param $title
+	 *        title of the item
+	 * @param $body
+	 *        body of the item
+	 */
 	function sendNewItemNotification($itemid, $title, $body) {
 		global $CONF, $member;
 
@@ -314,11 +337,8 @@ class BLOG {
 
 		$frommail = $member->getNotifyFromMailAddress();
 
-		$notify =& new NOTIFICATION($this->getNotifyAddress());
+		$notify = new NOTIFICATION($this->getNotifyAddress());
 		$notify->notify($mailto_title, $mailto_msg , $frommail);
-
-
-
 	}
 
 
@@ -455,7 +475,7 @@ class BLOG {
 	 */
 	function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
 	{
-		$searchclass =& new SEARCH($query);
+		$searchclass = new SEARCH($query);
 
 		$highlight	  = $searchclass->inclusive;
 
@@ -759,7 +779,7 @@ class BLOG {
 
 	/**
 	  * Shows a list of all blogs in the system using a given template
-	  * ordered by 	number, name, shortname or description
+	  * ordered by number, name, shortname or description
 	  * in ascending or descending order
 	  */
 	function showBlogList($template, $bnametype, $orderby, $direction) {
@@ -847,9 +867,8 @@ class BLOG {
 	}
 
 	/**
-	  * Blogsettings functions
+	  * Read the blog settings
 	  */
-
 	function readSettings() {
 		$query =  'SELECT *'
 			   . ' FROM '.sql_table('blog')
@@ -863,6 +882,9 @@ class BLOG {
 		$this->settings = sql_fetch_assoc($res);
 	}
 
+	/**
+	  * Write the blog settings
+	  */
 	function writeSettings() {
 
 		// (can't use floatval since not available prior to PHP 4.2)
@@ -893,9 +915,9 @@ class BLOG {
 
 	}
 
-
-
-	// update update file if requested
+	/**
+	  * Update the update file if requested
+	  */	
 	function updateUpdatefile() {
 		 if ($this->getUpdateFile()) {
 			$f_update = fopen($this->getUpdateFile(),'w');
@@ -905,24 +927,48 @@ class BLOG {
 
 	}
 
+	/**
+	  * Check if a category with a given catid is valid
+	  * 
+	  * @param $catid
+	  * 	category id
+	  */
 	function isValidCategory($catid) {
 		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
 		$res = sql_query($query);
 		return (sql_num_rows($res) != 0);
 	}
 
+	/**
+	  * Get the category name for a given catid
+	  * 
+	  * @param $catid
+	  * 	category id
+	  */
 	function getCategoryName($catid) {
 		$res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
 		$o = sql_fetch_object($res);
 		return $o->cname;
 	}
 
+	/**
+	  * Get the category description for a given catid
+	  * 
+	  * @param $catid
+	  * 	category id
+	  */
 	function getCategoryDesc($catid) {
 		$res = sql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
 		$o = sql_fetch_object($res);
 		return $o->cdesc;
 	}
 
+	/**
+	  * Get the category id for a given category name
+	  * 
+	  * @param $name
+	  * 	category name
+	  */
 	function getCategoryIdFromName($name) {
 		$res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . sql_real_escape_string($name) . '"');
 		if (sql_num_rows($res) > 0) {
@@ -933,10 +979,31 @@ class BLOG {
 		}
 	}
 
+	/**
+	  * Get the the setting for the line break handling
+	  * [should be named as getConvertBreaks()]
+	  */
 	function convertBreaks() {
 		return $this->getSetting('bconvertbreaks');
 	}
+	
+	/**
+	  * Set the the setting for the line break handling
+	  * 
+	  * @param $val
+	  * 	new value for bconvertbreaks
+	  */
+	function setConvertBreaks($val) {
+		$this->setSetting('bconvertbreaks',$val);
+	}
 
+	/**
+	  * Insert a javascript that includes information about the settings
+	  * of an author:  ConvertBreaks, MediaUrl and AuthorId
+	  * 
+	  * @param $authorid
+	  * 	id of the author
+	  */	
 	function insertJavaScriptInfo($authorid = '') {
 		global $member, $CONF;
 
@@ -948,14 +1015,23 @@ class BLOG {
 			setConvertBreaks(<?php echo  $this->convertBreaks() ? 'true' : 'false' ?>);
 			setMediaUrl("<?php echo $CONF['MediaURL']?>");
 			setAuthorId(<?php echo $authorid?>);
-		</script><?php	}
-
-	function setConvertBreaks($val) {
-		$this->setSetting('bconvertbreaks',$val);
+		</script><?php	
 	}
+
+	/**
+	  * Set the the setting for allowing to publish postings in the past
+	  * 
+	  * @param $val
+	  * 	new value for ballowpast
+	  */
 	function setAllowPastPosting($val) {
 		$this->setSetting('ballowpast',$val);
 	}
+	
+	/**
+	  * Get the the setting if it is allowed to publish postings in the past
+	  * [should be named as getAllowPastPosting()]
+	  */
 	function allowPastPosting() {
 		return $this->getSetting('ballowpast');
 	}
@@ -1119,9 +1195,10 @@ class BLOG {
 		$this->settings[$key] = $value;
 	}
 
-
-	// tries to add a member to the team. Returns false if the member was already on
-	// the team
+	/**
+	  * Tries to add a member to the team. 
+	  * Returns false if the member was already on the team
+	  */
 	function addTeamMember($memberid, $admin) {
 		global $manager;
 
@@ -1168,33 +1245,51 @@ class BLOG {
 		return intVal($this->blogid);
 	}
 
-	// returns true if there is a blog with the given shortname (static)
+	/**
+	  * Checks if a blog with a given shortname exists 
+	  * Returns true if there is a blog with the given shortname (static)
+	  * 
+	  * @param $name
+	  * 	blog shortname
+	  */
 	function exists($name) {
 		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bshortname="'.sql_real_escape_string($name).'"');
 		return (sql_num_rows($r) != 0);
 	}
 
-	// returns true if there is a blog with the given ID (static)
+	/**
+	  * Checks if a blog with a given id exists 
+	  * Returns true if there is a blog with the given ID (static)
+	  * 
+	  * @param $id
+	  * 	blog id
+	  */
 	function existsID($id) {
 		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
 		return (sql_num_rows($r) != 0);
 	}
 
-        // flag there is a future post pending
-        function setFuturePost() {
+	/**
+	  * flag there is a future post pending 
+	  */
+	function setFuturePost() {
 		$query =  'UPDATE '.sql_table('blog')
-			   . " SET bfuturepost='1' WHERE bnumber=" . $this->getID();
+			    . " SET bfuturepost='1' WHERE bnumber=" . $this->getID();
 		sql_query($query);
-        }
+	}
 
-	// clear there is a future post pending
+	/**
+	  * clear there is a future post pending 
+	  */
 	function clearFuturePost() {
 		$query =  'UPDATE '.sql_table('blog')
 			   . " SET bfuturepost='0' WHERE bnumber=" . $this->getID();
 		sql_query($query);
 	}
 
-	// check if we should throw justPosted event
+	/**
+	  * check if we should throw justPosted event 
+	  */
 	function checkJustPosted() {
 		global $manager;
 
@@ -1226,7 +1321,7 @@ class BLOG {
 		}
 	}
 
-/**
+	/**
 	 * Shows the given list of items for this blog
 	 *
 	 * @param $itemarray

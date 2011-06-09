@@ -134,7 +134,7 @@ class PAGEFACTORY extends BaseActions {
 		$template = $this->getTemplateFor($this->type);
 
 		// use the PARSER engine to parse that template
-		$parser =& new PARSER($this->actions, $this);
+		$parser = new PARSER($this->actions, $this);
 		$parser->parse($template);
 	}
 
@@ -278,30 +278,29 @@ class PAGEFACTORY extends BaseActions {
 
 	// extra javascript for input and textarea fields
 	function parse_jsinput($which) {
-		global $CONF;
-	?>
-			name="<?php echo $which?>"
-			id="input<?php echo $which?>"
-	<?php
+		global $CONF, $member;
+		
+		$attributes  = " name=\"{$which}\"";
+		$attributes .= " id=\"input{$which}\"";
+		
 		if ($CONF['DisableJsTools'] != 1) {
-	?>
-			onkeyup="storeCaret(this); updPreview('<?php echo $which?>'); doMonitor();"
-			onclick="storeCaret(this);"
-			onselect="storeCaret(this);"
-
-	<?php
-		}
-		else if ($CONF['DisableJsTools'] == 0) {
-	?>
-			onkeyup="doMonitor();"
-			onkeypress="shortCuts();"
-	<?php
+			$attributes .= ' onclick="storeCaret(this);"';
+			$attributes .= ' onselect="storeCaret(this);"';
+			if ($member->getAutosave()) {
+				$attributes .= " onkeyup=\"storeCaret(this); updPreview('{$which}'); doMonitor();\"";
+			} else {
+				$attributes .= " onkeyup=\"storeCaret(this); updPreview('{$which}');\"";
+			}
 		}
 		else {
-	?>
-			onkeyup="doMonitor();"
-	<?php
+			if ($CONF['DisableJsTools'] == 0) {
+				$attributes .= ' onkeypress="shortCuts();"';
+			}
+			if ($member->getAutosave()) {
+				$attributes .= ' onkeyup="doMonitor();"';
+			}
 		}
+		echo $attributes;
 	}
 
 	// shows the javascript button bar

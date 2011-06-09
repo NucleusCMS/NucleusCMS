@@ -75,7 +75,9 @@ class PARSER {
 
 
 	/**
-	  * handle an action
+	  * Called from the parser to handle an action
+	  * 
+	  * @param $action name of the action (e.g. blog, image ...)
 	  */
 	function doAction($action) {
 		global $manager, $CONF;
@@ -144,11 +146,22 @@ class PARSER {
 		eval($command);	// execute the correct method
 	}
 
+	/**
+	 * Set a property of the parser in the manager
+	 * 
+	 * @param $property additional parser property (e.g. include prefix of the skin)
+	 * @param $value new value
+	 */
 	function setProperty($property, $value) {
 		global $manager;
 		$manager->setParserProperty($property, $value);
 	}
 
+	/**
+	 * Get a property of the parser from the manager
+	 * 
+	 * @param $name name of the property
+	 */
 	function getProperty($name) {
 		global $manager;
 		return $manager->getParserProperty($name);
