@@ -17,34 +17,79 @@
  * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2011 The Nucleus Group
- * @version $Id$
+ * @version $Id: $
  */
 class Link {
 
+	/**
+	 * Create an link to an item
+	 * @param $itemid	item id
+	 * @param $extra	extra parameter
+	 */
 	function createItemLink($itemid, $extra = '') {
-	    return Link::createLink('item', array('itemid' => $itemid, 'extra' => $extra) );
+		return Link::createLink('item', array('itemid' => $itemid, 'extra' => $extra) );
 	}
 
+	/**
+	 * Create an link to a member
+	 * 
+	 * @param $memberid	member id
+	 * @param $extra	extra parameter
+	 */
 	function createMemberLink($memberid, $extra = '') {
-	    return Link::createLink('member', array('memberid' => $memberid, 'extra' => $extra) );
+		return Link::createLink('member', array('memberid' => $memberid, 'extra' => $extra) );
 	}
-
+	
+	/**
+	 * Create an link to a category
+	 * 
+	 * @param $catid	category id
+	 * @param $extra	extra parameter
+	 */
 	function createCategoryLink($catid, $extra = '') {
-	    return Link::createLink('category', array('catid' => $catid, 'extra' => $extra) );
+		return Link::createLink('category', array('catid' => $catid, 'extra' => $extra) );
 	}
 
+	/**
+	 * Create an link to an archive
+	 * 
+	 * @param $blogid	blog id
+	 * @param $archive	archive identifier
+	 * @param $extra	extra parameter
+	 */
 	function createArchiveLink($blogid, $archive, $extra = '') {
-	    return Link::createLink('archive', array('blogid' => $blogid, 'archive' => $archive, 'extra' => $extra) );
+		return Link::createLink('archive', array('blogid' => $blogid, 'archive' => $archive, 'extra' => $extra) );
 	}
 
+	/**
+	 * Create an link to an archive list
+	 * 
+	 * @param $blogid	blog id
+	 * @param $extra	extra parameter
+	 */
 	function createArchiveListLink($blogid = '', $extra = '') {
-	    return Link::createLink('archivelist', array('blogid' => $blogid, 'extra' => $extra) );
+		return Link::createLink('archivelist', array('blogid' => $blogid, 'extra' => $extra) );
 	}
 
+	/**
+	 * Create an link to a blog
+	 * 
+	 * @param $blogid	blog id
+	 * @param $extra	extra parameter
+	 */
 	function createBlogidLink($blogid, $params = '') {
-	    return Link::createLink('blog', array('blogid' => $blogid, 'extra' => $params) );
+		return Link::createLink('blog', array('blogid' => $blogid, 'extra' => $params) );
 	}
 
+	/**
+	 * Create an link
+	 * 
+	 * Universell function that creates link of different types (like item, blog ...)
+	 * and with an array of parameters
+	 * 
+	 * @param $type		type of the link
+	 * @param $params	array with parameters
+	 */
 	function createLink($type, $params) {
 	    global $manager, $CONF;
 	
@@ -182,6 +227,14 @@ class Link {
 	    return $link;
 	}
 
+	/**
+	 * Create an link to a blog
+	 * 
+	 * This function considers the URLMode of the blog
+	 * 
+	 * @param $url		url
+	 * @param $params	parameters
+	 */
 	function createBlogLink($url, $params) {
 	    global $CONF;
 	    if ($CONF['URLMode'] == 'normal') {
