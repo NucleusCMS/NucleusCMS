@@ -1804,17 +1804,6 @@ function ticketForPlugin() {
 			include($DIR_LIBS . 'PLUGINADMIN.php');
 		}
 
-		if (!(function_exists('mb_strimwidth') || extension_loaded('mbstring')))
-		{
-
-			if (file_exists($DIR_LIBS.'mb_emulator/mb-emulator.php'))
-			{
-				global $mbemu_internals;
-				include_once($DIR_LIBS.'mb_emulator/mb-emulator.php');
-			}
-
-		}
-
 		$oPluginAdmin = new PluginAdmin($plugin_name);
 		$oPluginAdmin->start();
 		echo '<p>' . _ERROR_BADTICKET . "</p>\n";
