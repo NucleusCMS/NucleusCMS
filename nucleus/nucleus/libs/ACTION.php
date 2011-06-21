@@ -148,14 +148,14 @@ class ACTION
 	function sendMessage()
 	{
 		global $CONF, $member;
-
+		
 		$error = $this->validateMessage();
-
+		
 		if ( $error != '' )
 		{
 			return array('message' => $error);
 		}
-
+		
 		if ( !$member->isLoggedIn() )
 		{
 			$fromMail = postVar('frommail');
@@ -166,7 +166,7 @@ class ACTION
 			$fromMail = $member->getEmail();
 			$fromName = $member->getDisplayName();
 		}
-
+		
 		$tomem = new MEMBER();
 		$tomem->readFromId(postVar('memberid') );
 
@@ -175,10 +175,10 @@ class ACTION
 			  . _MMAIL_MAIL . " \n\n"
 			  . postVar('message');
 		$message .= getMailFooter();
-
+		
 		$title = _MMAIL_TITLE . ' ' . $fromName;
-		mail($tomem->getEmail(), $title, $message, 'From: '. $fromMail);
-
+		i18n::mail($tomem->getEmail(), $title, $message, $fromMail);
+		
 		if ( postVar('url') )
 		{
 			redirect(postVar('url') );
@@ -186,7 +186,7 @@ class ACTION
 		else
 		{
 			$CONF['MemberURL'] = $CONF['IndexURL'];
-
+			
 			if ( $CONF['URLMode'] == 'pathinfo' )
 			{
 				$url = createLink('member', array('memberid' => $tomem->getID(), 'name' => $tomem->getDisplayName() ) );
@@ -195,14 +195,13 @@ class ACTION
 			{
 				$url = $CONF['IndexURL'] . createMemberLink($tomem->getID());
 			}
-
+			
 			redirect($url);
 		}
-
 		exit;
 	}
-
-
+	
+	
 	/**
 	 *  Checks if a mail to a member is allowed
 	 *  Returns a string with the error message if the mail is disallowed
@@ -511,7 +510,7 @@ class ACTION
 		}
 		else
 		{
-            echo _ERROR . ':' . _ERROR_BADTICKET;
+			echo _ERROR . ':' . _ERROR_BADTICKET;
 		}
 
 		return FALSE;
@@ -549,4 +548,3 @@ class ACTION
 
 }
 
-?>

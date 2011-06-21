@@ -45,22 +45,22 @@ class NOTIFICATION {
 	/**
 	  * Sends email messages to all the email addresses
 	  */
-	function notify($title, $message, $from) {
+	function notify($title, $message, $from)
+	{
 		global $member;
-
-		foreach ( $this->addresses as $address ) {
-			$address = trim($address);
-
-			if (!$address)
+		$addresses = array();
+		
+		foreach ($this->addresses as $address)
+		{
+			if ( $member->isLoggedIn() && ($member->getEmail() == $address) )
+			{
 				continue;
-
-			// don't send messages to yourself
-			if ($member->isLoggedIn() && ($member->getEmail() == $address))
-				continue;
-
-			@mail($address, $title, $message , "From: ". $from . "\nContent-Type: text/plain; charset=utf-8");
+			}
+			$addresses[] = $address;
 		}
+		
+		i18n::mail(implode(',', $addresses), $title, $message , $from);
+		return;
 	}
 }
 
-?>

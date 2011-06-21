@@ -373,9 +373,8 @@ class MEMBER {
 		$title = TEMPLATE::fill($title, $aVars);
 
 		// send mail
-
-		@mail($this->getEmail(), $title ,$message,'From: ' . $CONF['AdminEmail']);
-
+		i18n::mail($this->getEmail(), $title ,$message, $CONF['AdminEmail']);
+		
 		ACTIONLOG::add(INFO, _ACTIONLOG_ACTIVATIONLINK . ' (' . $this->getDisplayName() . ' / type: ' . $type . ')');
 
 
@@ -824,4 +823,3 @@ class MEMBER {
 
 }
 
-?>
