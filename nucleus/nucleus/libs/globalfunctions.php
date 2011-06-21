@@ -35,6 +35,15 @@ if ($CONF['debug']) {
 }
 
 /*
+ * load i18n class for internationalization
+ */
+include($DIR_LIBS . 'i18n.php');
+if ( !i18n::init('UTF-8') )
+{
+	exit('Fail to initialize iconv or mbstring extension. Would you please contact to administrator of your PHP server?');
+}
+
+/*
     Indicates when Nucleus should display startup errors. Set to 1 if you want
     the error enabled (default), false otherwise
 
