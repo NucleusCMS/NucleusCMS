@@ -2176,7 +2176,7 @@ function selectSpecialSkinType($id) {
  */
 function cleanFileName($str) {
 	$str = strtolower($str);
-	$ext_point = strrpos($str,".");
+	$ext_point = i18n::strrpos($str,".");
 	if ($ext_point===false) return false;
 	$ext = substr($str,$ext_point,i18n::strlen($str));
 	$str = substr($str,0,$ext_point);
