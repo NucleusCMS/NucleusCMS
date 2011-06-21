@@ -136,7 +136,7 @@ class COMMENTACTIONS extends BaseActions {
 			{
 
 				// begin if: comment userid has either "http://" or "https://" at the beginning
-				if ( (strpos($comment['userid'], 'http://') === 0) || (strpos($comment['userid'], 'https://') === 0) )
+				if ( (i18n::strpos($comment['userid'], 'http://') === 0) || (i18n::strpos($comment['userid'], 'https://') === 0) )
 				{
 					$comment['userlinkraw'] = $comment['userid'];
 				}
@@ -394,7 +394,7 @@ class COMMENTACTIONS extends BaseActions {
 				echo $this->currentComment['email'];
 			elseif (isValidMailAddress($this->currentComment['userid']))
 				echo $this->currentComment['userid'];
-//			if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
+//			if (!(i18n::strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
 //				echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
 		}
 	}
@@ -429,7 +429,7 @@ class COMMENTACTIONS extends BaseActions {
 	 * Parse templatevar userwebsite
 	 */
 	function parse_userwebsite() {
-		if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false))
+		if (!(i18n::strpos($this->currentComment['userlinkraw'], 'http://') === false))
 			echo $this->currentComment['userlinkraw'];
 	}
 
@@ -437,7 +437,7 @@ class COMMENTACTIONS extends BaseActions {
 	 * Parse templatevar userwebsitelink
 	 */
 	function parse_userwebsitelink() {
-		if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false)) {
+		if (!(i18n::strpos($this->currentComment['userlinkraw'], 'http://') === false)) {
 			echo '<a href="'.$this->currentComment['userlinkraw'].'" rel="nofollow">'.$this->currentComment['user'].'</a>';
 		} else {
 			echo $this->currentComment['user'];

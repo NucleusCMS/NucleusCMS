@@ -56,7 +56,7 @@ class COMMENT {
 		$comment['email'] = trim(strtr($comment['email'], "\'\"\n", '-- ') );
 
 		// begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
-		if ( !empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos($comment['userid'], 'https://') !== 0) )
+		if ( !empty($comment['userid']) && (i18n::strpos($comment['userid'], 'http://') !== 0) && (i18n::strpos($comment['userid'], 'https://') !== 0) )
 		{
 			$comment['userid'] = 'http://' . $comment['userid'];
 		} // end if
@@ -123,7 +123,7 @@ class COMMENT {
 		$aBadEntities = array('&quot;', '&gt;', '&lt;');
 		foreach ($aBadEntities as $entity) {
 
-			$pos = strpos($url, $entity);
+			$pos = i18n::strpos($url, $entity);
 
 			if ($pos) {
 				$post = substr($url, $pos) . $post;

@@ -1716,7 +1716,7 @@ function ticketForPlugin()
 	$p_translated = str_replace('\\', '/', $p_translated);
 	$d_plugins = str_replace('\\', '/', $DIR_PLUGINS);
 	
-	if (strpos($p_translated, $d_plugins) !== 0)
+	if (i18n::strpos($p_translated, $d_plugins) !== 0)
 	{
 		return;// This isn't plugin php file.
 	}
@@ -1861,7 +1861,7 @@ function ticketForPlugin()
 	
 	/* Create new ticket */
 	$ticket=$manager->addTicketToUrl('');
-	$ticketforplugin['ticket']=substr($ticket,strpos($ticket,'ticket=')+7);
+	$ticketforplugin['ticket']=substr($ticket,i18n::strpos($ticket,'ticket=')+7);
 }
 
 function _addInputTags(&$keys,$prefix=''){
@@ -1953,7 +1953,7 @@ function sanitizeArray(&$array)
         if (!in_array($key, $excludeListForSanitization)) {
 
             // check value
-            if (strpos($val, '\\')) {
+            if (i18n::strpos($val, '\\')) {
                 list($val, $tmp) = explode('\\', $val);
             }
 

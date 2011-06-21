@@ -113,7 +113,7 @@
 		{
 			$methName=$m;
 		}
-		if(strpos($methName, "system.") === 0)
+		if(i18n::strpos($methName, "system.") === 0)
 		{
 			$dmap=$GLOBALS['_xmlrpcs_dmap']; $sysCall=1;
 		}
@@ -166,7 +166,7 @@
 		{
 			$methName=$m;
 		}
-		if(strpos($methName, "system.") === 0)
+		if(i18n::strpos($methName, "system.") === 0)
 		{
 			$dmap=$GLOBALS['_xmlrpcs_dmap']; $sysCall=1;
 		}
@@ -627,13 +627,13 @@
 				if($this->compress_response && function_exists('gzencode') && $resp_encoding != ''
 					&& $php_no_self_compress)
 				{
-					if(strpos($resp_encoding, 'gzip') !== false)
+					if(i18n::strpos($resp_encoding, 'gzip') !== false)
 					{
 						$payload = gzencode($payload);
 						header("Content-Encoding: gzip");
 						header("Vary: Accept-Encoding");
 					}
-					elseif (strpos($resp_encoding, 'deflate') !== false)
+					elseif (i18n::strpos($resp_encoding, 'deflate') !== false)
 					{
 						$payload = gzcompress($payload);
 						header("Content-Encoding: deflate");
@@ -834,7 +834,7 @@
 					foreach ($known_charsets as $charset)
 					{
 						foreach ($client_accepted_charsets as $accepted)
-							if (strpos($accepted, $charset) === 0)
+							if (i18n::strpos($accepted, $charset) === 0)
 							{
 								$resp_encoding = $charset;
 								break;
@@ -995,7 +995,7 @@
 			{
 				$methName = $m;
 			}
-			$sysCall = $this->allow_system_funcs && (strpos($methName, "system.") === 0);
+			$sysCall = $this->allow_system_funcs && (i18n::strpos($methName, "system.") === 0);
 			$dmap = $sysCall ? $GLOBALS['_xmlrpcs_dmap'] : $this->dmap;
 
 			if(!isset($dmap[$methName]['function']))
@@ -1031,7 +1031,7 @@
 
 			$func = $dmap[$methName]['function'];
 			// let the 'class::function' syntax be accepted in dispatch maps
-			if(is_string($func) && strpos($func, '::'))
+			if(is_string($func) && i18n::strpos($func, '::'))
 			{
 				$func = explode('::', $func);
 			}

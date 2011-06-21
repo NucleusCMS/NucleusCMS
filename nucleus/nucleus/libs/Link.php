@@ -238,7 +238,7 @@ class Link {
 	function createBlogLink($url, $params) {
 		global $CONF;
 		if ($CONF['URLMode'] == 'normal') {
-			if (strpos($url, '?') === FALSE && is_array($params)) {
+			if (i18n::strpos($url, '?') === FALSE && is_array($params)) {
 				$fParam = reset($params);
 				$fKey   = key($params);
 				array_shift($params);

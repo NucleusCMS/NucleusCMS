@@ -51,7 +51,7 @@ if (!function_exists('sql_fetch_assoc'))
 		global $MYSQL_HANDLER;
 		
 		try {
-			if (strpos($mysql_host,':') === false) {
+			if (i18n::strpos($mysql_host,':') === false) {
 				$host = $mysql_host;
 				$port = '';
 				$portnum = '';
@@ -125,7 +125,7 @@ if (!function_exists('sql_fetch_assoc'))
 		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN, $MYSQL_HANDLER, $SQL_DBH;
 		$SQL_DBH = NULL;
 		try {
-			if (strpos($MYSQL_HOST,':') === false) {
+			if (i18n::strpos($MYSQL_HOST,':') === false) {
 				$host = $MYSQL_HOST;
 				$port = '';
 			}

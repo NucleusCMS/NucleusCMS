@@ -912,7 +912,7 @@ $cp1252_to_xmlent =
 			// if ZLIB is enabled, let the client by default accept compressed responses
 			if(function_exists('gzinflate') || (
 				function_exists('curl_init') && (($info = curl_version()) &&
-				((is_string($info) && strpos($info, 'zlib') !== null) || isset($info['libz_version'])))
+				((is_string($info) && i18n::strpos($info, 'zlib') !== null) || isset($info['libz_version'])))
 			))
 			{
 				$this->accepted_compression = array('gzip', 'deflate');
@@ -1408,7 +1408,7 @@ $cp1252_to_xmlent =
 			if($method == 'https')
 			{
 				if(($info = curl_version()) &&
-					((is_string($info) && strpos($info, 'OpenSSL') === null) || (is_array($info) && !isset($info['ssl_version']))))
+					((is_string($info) && i18n::strpos($info, 'OpenSSL') === null) || (is_array($info) && !isset($info['ssl_version']))))
 				{
 					$this->errstr='SSL unavailable on this install';
 					$r=&new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['no_ssl'], $GLOBALS['xmlrpcstr']['no_ssl']);
@@ -2196,14 +2196,14 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				{
 					// Look for CR/LF or simple LF as line separator,
 					// (even though it is not valid http)
-					$pos = strpos($data,"\r\n\r\n");
+					$pos = i18n::strpos($data,"\r\n\r\n");
 					if($pos || is_int($pos))
 					{
 						$bd = $pos+4;
 					}
 					else
 					{
-						$pos = strpos($data,"\n\n");
+						$pos = i18n::strpos($data,"\n\n");
 						if($pos || is_int($pos))
 						{
 							$bd = $pos+2;
@@ -2231,7 +2231,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				// Strip HTTP 1.1 100 Continue header if present
 				while(preg_match('/^HTTP\/1\.1 1[0-9]{2} /', $data))
 				{
-					$pos = strpos($data, 'HTTP', 12);
+					$pos = i18n::strpos($data, 'HTTP', 12);
 					// server sent a Continue header without any (valid) content following...
 					// give the client a chance to know it
 					if(!$pos && !is_int($pos)) // works fine in php 3, 4 and 5
@@ -2242,7 +2242,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				}
 				if(!preg_match('/^HTTP\/[0-9.]+ 200 /', $data))
 				{
-					$errstr= substr($data, 0, strpos($data, "\n")-1);
+					$errstr= substr($data, 0, i18n::strpos($data, "\n")-1);
 					error_log('XML-RPC: xmlrpcmsg::parseResponse: HTTP error, got response: ' .$errstr);
 					$r=&new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['http_error'], $GLOBALS['xmlrpcstr']['http_error']. ' (' . $errstr . ')');
 					return $r;
@@ -2253,14 +2253,14 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 
 				// be tolerant to usage of \n instead of \r\n to separate headers and data
 				// (even though it is not valid http)
-				$pos = strpos($data,"\r\n\r\n");
+				$pos = i18n::strpos($data,"\r\n\r\n");
 				if($pos || is_int($pos))
 				{
 					$bd = $pos+4;
 				}
 				else
 				{
-					$pos = strpos($data,"\n\n");
+					$pos = i18n::strpos($data,"\n\n");
 					if($pos || is_int($pos))
 					{
 						$bd = $pos+2;
@@ -2462,11 +2462,11 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 
 			if($this->debug)
 			{
-				$start = strpos($data, '<!-- SERVER DEBUG INFO (BASE64 ENCODED):');
+				$start = i18n::strpos($data, '<!-- SERVER DEBUG INFO (BASE64 ENCODED):');
 				if ($start)
 				{
 					$start += i18n::strlen('<!-- SERVER DEBUG INFO (BASE64 ENCODED):');
-					$end = strpos($data, '-->', $start);
+					$end = i18n::strpos($data, '-->', $start);
 					$comments = substr($data, $start, $end-$start);
 					print "<PRE>---SERVER DEBUG INFO (DECODED) ---\n\t".htmlentities(str_replace("\n", "\n\t", base64_decode($comments)))."\n---END---\n</PRE>";
 				}
@@ -2481,11 +2481,11 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 			// idea from Luca Mariano <luca.mariano@email.it> originally in PEARified version of the lib
 			$bd = false;
 			// Poor man's version of strrpos for php 4...
-			$pos = strpos($data, '</methodResponse>');
+			$pos = i18n::strpos($data, '</methodResponse>');
 			while($pos || is_int($pos))
 			{
 				$bd = $pos+17;
-				$pos = strpos($data, '</methodResponse>', $bd);
+				$pos = i18n::strpos($data, '</methodResponse>', $bd);
 			}
 			if($bd)
 			{
@@ -3479,13 +3479,13 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 
 		// read chunk-size, chunk-extension (if any) and crlf
 		// get the position of the linebreak
-		$chunkend = strpos($buffer,"\r\n") + 2;
+		$chunkend = i18n::strpos($buffer,"\r\n") + 2;
 		$temp = substr($buffer,0,$chunkend);
 		$chunk_size = hexdec( trim($temp) );
 		$chunkstart = $chunkend;
 		while($chunk_size > 0)
 		{
-			$chunkend = strpos($buffer, "\r\n", $chunkstart + $chunk_size);
+			$chunkend = i18n::strpos($buffer, "\r\n", $chunkstart + $chunk_size);
 
 			// just in case we got a broken connection
 			if($chunkend == false)
@@ -3506,7 +3506,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 			// read chunk-size and crlf
 			$chunkstart = $chunkend + 2;
 
-			$chunkend = strpos($buffer,"\r\n",$chunkstart)+2;
+			$chunkend = i18n::strpos($buffer,"\r\n",$chunkstart)+2;
 			if($chunkend == false)
 			{
 				break; //just in case we got a broken connection

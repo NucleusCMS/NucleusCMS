@@ -100,7 +100,7 @@ class MEDIA {
 		if ($strFilter == '')
 			return 1;
 		else
-			return is_integer(strpos(strtolower($strText), strtolower($strFilter)));
+			return is_integer(i18n::strpos(strtolower($strText), strtolower($strFilter)));
 	}
 
 	/**
