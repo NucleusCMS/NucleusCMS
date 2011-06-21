@@ -87,7 +87,7 @@ class PARSER {
 		// split into action name + arguments
 		if (strstr($action,'(')) {
 			$paramStartPos = strpos($action, '(');
-			$params = substr($action, $paramStartPos + 1, strlen($action) - $paramStartPos - 2);
+			$params = substr($action, $paramStartPos + 1, i18n::strlen($action) - $paramStartPos - 2);
 			$action = substr($action, 0, $paramStartPos);
 			$params = explode ($this->pdelim, $params);
 

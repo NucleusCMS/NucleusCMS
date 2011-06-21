@@ -48,18 +48,18 @@ class SEARCH {
 	}
 
 	function  boolean_sql_select($match){
-		if (strlen($this->inclusive) > 0) {
+		if (i18n::strlen($this->inclusive) > 0) {
 		   /* build sql for determining score for each record */
 		   $result=explode(" ",$this->inclusive);
 		   for($cth=0;$cth<count($result);$cth++){
-			   if(strlen($result[$cth])>=4){
+			   if(i18n::strlen($result[$cth])>=4){
 				   $stringsum_long .=  " $result[$cth] ";
 			   }else{
 				   $stringsum_a[] = ' '.$this->boolean_sql_select_short($result[$cth],$match).' ';
 			   }
 		   }
 
-		   if(strlen($stringsum_long)>0){
+		   if(i18n::strlen($stringsum_long)>0){
 				$stringsum_long = sql_real_escape_string($stringsum_long);
 				$stringsum_a[] = " match ($match) against ('$stringsum_long') ";
 		   }

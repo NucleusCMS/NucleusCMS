@@ -187,8 +187,8 @@ getConfig();
 if (!isset($CONF['Self'])) {
     $CONF['Self'] = $CONF['IndexURL'];
     // strip trailing /
-    if ($CONF['Self'][strlen($CONF['Self']) -1] == "/") {
-        $CONF['Self'] = substr($CONF['Self'], 0, strlen($CONF['Self']) -1);
+    if ($CONF['Self'][i18n::strlen($CONF['Self']) -1] == "/") {
+        $CONF['Self'] = substr($CONF['Self'], 0, i18n::strlen($CONF['Self']) -1);
     }
 
 /*	$CONF['ItemURL']        = $CONF['Self'];
@@ -210,7 +210,7 @@ $CONF['CategoryURL'] = $CONF['Self'];
 
 // switch URLMode back to normal when $CONF['Self'] ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
-if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php'))) {
+if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], i18n::strlen($CONF['Self']) - 4) == '.php'))) {
     $CONF['URLMode'] = 'normal';
 }
 
@@ -769,31 +769,38 @@ function highlight($text, $expression, $highlight) {
 /**
  * Parses a query into an array of expressions that can be passed on to the highlight method
  */
-function parseHighlight($query) {
-    // TODO: add more intelligent splitting logic
-
-    // get rid of quotes
-    $query = preg_replace('/\'|"/', '', $query);
-
-    if (!$query) {
-        return array();
-    }
-
-    $aHighlight = explode(' ', $query);
-
-    for ($i = 0; $i < count($aHighlight); $i++) {
-        $aHighlight[$i] = trim($aHighlight[$i]);
-
-        if (strlen($aHighlight[$i]) < 3) {
-            unset($aHighlight[$i]);
-        }
-    }
-
-    if (count($aHighlight) == 1) {
-        return $aHighlight[0];
-    } else {
-        return $aHighlight;
-    }
+function parseHighlight($query)
+{
+	// TODO: add more intelligent splitting logic
+	
+	// get rid of quotes
+	$query = preg_replace('/\'|"/', '', $query);
+	
+	if ( !$query )
+	{
+		return array();
+	}
+	
+	$aHighlight = explode(' ', $query);
+	
+	for ( $i = 0; $i < count($aHighlight); $i++ )
+	{
+		$aHighlight[$i] = trim($aHighlight[$i]);
+		
+		if ( i18n::strlen($aHighlight[$i]) < 3 )
+		{
+			unset($aHighlight[$i]);
+		}
+	}
+	
+	if ( count($aHighlight) == 1 )
+	{
+		return $aHighlight[0];
+	}
+	else
+	{
+		return $aHighlight;
+	}
 }
 
 /**
@@ -1236,20 +1243,21 @@ function removeBreaks($var) {
 
 // shortens a text string to maxlength ($toadd) is what needs to be added
 // at the end (end length is <= $maxlength)
-function shorten($text, $maxlength, $toadd) {
-    // 1. remove entities...
-    $trans = get_html_translation_table(HTML_ENTITIES);
-
-    $trans = array_flip($trans);
-    $text = strtr($text, $trans);
-
-    // 2. the actual shortening
-    if (strlen($text) > $maxlength) {
-        $text = substr($text, 0, $maxlength - strlen($toadd) ) . $toadd;
-
-    }
-
-    return $text;
+function shorten($text, $maxlength, $toadd)
+{
+	// 1. remove entities...
+	$trans = get_html_translation_table(HTML_ENTITIES);
+	$trans = array_flip($trans);
+	$text = strtr($text, $trans);
+	
+	// 2. the actual shortening
+	if (i18n::strlen($text) > $maxlength)
+	{
+		$text = substr($text, 0, $maxlength - i18n::strlen($toadd) ) . $toadd;
+	
+	}
+	
+	return $text;
 }
 
 /**
@@ -1676,64 +1684,62 @@ function sanitizeParams()
  * to avoid CSRF.
  * Also avoid the access to plugin/index.php by guest user.
  */
-function ticketForPlugin() {
-
+function ticketForPlugin()
+{
 	global $CONF, $DIR_PLUGINS, $member, $ticketforplugin;
-
+	
 	/* initialize */
 	$ticketforplugin = array();
 	$ticketforplugin['ticket'] = FALSE;
-
+	
 	/* Check if using plugin's php file. */
 	if ($p_translated = serverVar('PATH_TRANSLATED') )
 	{
-
 		if (!file_exists($p_translated) )
 		{
 			$p_translated = '';
 		}
-
-    }
-
+	
+	}
+	
 	if (!$p_translated)
 	{
 		$p_translated = serverVar('SCRIPT_FILENAME');
-
+		
 		if (!file_exists($p_translated) )
 		{
 			header("HTTP/1.0 404 Not Found");
 			exit('');
 		}
-
 	}
-
+	
 	$p_translated = str_replace('\\', '/', $p_translated);
 	$d_plugins = str_replace('\\', '/', $DIR_PLUGINS);
-
-    if (strpos($p_translated, $d_plugins) !== 0)
+	
+	if (strpos($p_translated, $d_plugins) !== 0)
 	{
 		return;// This isn't plugin php file.
 	}
 
 	/* Solve the plugin php file or admin directory */
-	$phppath = substr($p_translated, strlen($d_plugins) );
+	$phppath = substr($p_translated, i18n::strlen($d_plugins) );
 	$phppath = preg_replace('#^/#', '', $phppath); // Remove the first "/" if exists.
 	$path = preg_replace('#^NP_(.*)\.php$#', '$1', $phppath); // Remove the first "NP_" and the last ".php" if exists.
 	$path = preg_replace('#^([^/]*)/(.*)$#', '$1', $path); // Remove the "/" and beyond.
-
+	
 	/* Solve the plugin name. */
 	$plugins = array();
 	$query = 'SELECT `pfile` FROM '.sql_table('plugin');
 	$res = sql_query($query);
-
+	
 	while($row = sql_fetch_row($res) )
 	{
 		$name = substr($row[0], 3);
 		$plugins[strtolower($name)] = $name;
-    }
-
+	}
+	
 	sql_free_result($res);
-
+	
 	if ($plugins[$path])
 	{
 		$plugin_name = $plugins[$path];
@@ -1747,51 +1753,47 @@ function ticketForPlugin() {
 		header("HTTP/1.0 404 Not Found");
 		exit('');
 	}
-
+	
 	/* Return if not index.php */
 	if ( ($phppath != strtolower($plugin_name) . '/') && ($phppath != strtolower($plugin_name) . '/index.php') )
 	{
 		return;
 	}
-
-    /* Exit if not logged in. */
+	
+	/* Exit if not logged in. */
 	if ( !$member->isLoggedIn() )
 	{
 		exit('You aren\'t logged in.');
 	}
-
+	
 	global $manager, $DIR_LIBS, $DIR_LANG, $HTTP_GET_VARS, $HTTP_POST_VARS;
-
+	
 	/* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
 	if (!($p_translated = serverVar('PATH_TRANSLATED') ) )
 	{
 		$p_translated = serverVar('SCRIPT_FILENAME');
 	}
-
+	
 	if ($file = @file($p_translated) )
 	{
 		$prevline = '';
-
+		
 		foreach($file as $line)
 		{
-
 			if (preg_match('/[\$]manager([\s]*)[\-]>([\s]*)checkTicket([\s]*)[\(]/i', $prevline . $line) )
 			{
 				return;
 			}
-
+			
 			$prevline = $line;
-
 		}
-
 	}
-
-    /* Show a form if not valid ticket */
-    if ( ( strstr(serverVar('REQUEST_URI'), '?') || serverVar('QUERY_STRING')
-			|| strtoupper(serverVar('REQUEST_METHOD') ) == 'POST')
-				&& (!$manager->checkTicket() ) )
+	
+	/* Show a form if not valid ticket */
+	if ( ( strstr(serverVar('REQUEST_URI'), '?') || serverVar('QUERY_STRING')
+	 || strtoupper(serverVar('REQUEST_METHOD') ) == 'POST')
+	 && (!$manager->checkTicket() ) )
 	{
-
 		if (!class_exists('PluginAdmin') )
 		{
 			$language = getLanguageName();
@@ -1799,20 +1801,19 @@ function ticketForPlugin() {
 			# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
 			# original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
 			# important note that '\' must be matched with '\\\\' in preg* expressions
-
 			include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
 			include($DIR_LIBS . 'PLUGINADMIN.php');
 		}
-
+		
 		$oPluginAdmin = new PluginAdmin($plugin_name);
 		$oPluginAdmin->start();
 		echo '<p>' . _ERROR_BADTICKET . "</p>\n";
-
+		
 		/* Show the form to confirm action */
 		// PHP 4.0.x support
 		$get = (isset($_GET) ) ? $_GET : $HTTP_GET_VARS;
 		$post = (isset($_POST) ) ? $_POST : $HTTP_POST_VARS;
-
+		
 		// Resolve URI and QUERY_STRING
 		if ($uri = serverVar('REQUEST_URI') )
 		{
@@ -1820,23 +1821,19 @@ function ticketForPlugin() {
 		}
 		else
 		{
-
 			if ( !($uri = serverVar('PHP_SELF') ) )
 			{
 				$uri = serverVar('SCRIPT_NAME');
 			}
-
-            $qstring = serverVar('QUERY_STRING');
-
-        }
-
-        if ($qstring)
+			$qstring = serverVar('QUERY_STRING');
+		}
+		if ($qstring)
 		{
 			$qstring = '?' . $qstring;
 		}
-
-        echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . htmlspecialchars($plugin_name) . "</span> ?</p>\n";
-
+		
+		echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . htmlspecialchars($plugin_name) . "</span> ?</p>\n";
+		
 		switch(strtoupper(serverVar('REQUEST_METHOD') ) )
 		{
 			case 'POST':
@@ -1844,29 +1841,29 @@ function ticketForPlugin() {
 				$manager->addTicketHidden();
 				_addInputTags($post);
 				break;
-
+			
 			case 'GET':
 				echo '<form method="GET" action="'.htmlspecialchars($uri).'">';
 				$manager->addTicketHidden();
 				_addInputTags($get);
-
+			
 			default:
 				break;
 		}
-
+		
 		echo '<input type="submit" value="' . _YES . '" />&nbsp;&nbsp;&nbsp;&nbsp;';
 		echo '<input type="button" value="' . _NO . '" onclick="history.back(); return false;" />';
 		echo "</form>\n";
-
+		
 		$oPluginAdmin->end();
 		exit;
-
 	}
-
-    /* Create new ticket */
-    $ticket=$manager->addTicketToUrl('');
-    $ticketforplugin['ticket']=substr($ticket,strpos($ticket,'ticket=')+7);
+	
+	/* Create new ticket */
+	$ticket=$manager->addTicketToUrl('');
+	$ticketforplugin['ticket']=substr($ticket,strpos($ticket,'ticket=')+7);
 }
+
 function _addInputTags(&$keys,$prefix=''){
     foreach($keys as $key=>$value){
         if ($prefix) $key=$prefix.'['.$key.']';
@@ -1900,7 +1897,7 @@ function serverStringToArray($str, &$array, &$frontParam)
     }
 
     // If there is no args like blogid=1&page=2, return
-    if (!strstr($str, "=") && !strlen($frontParam)) {
+    if (!strstr($str, "=") && !i18n::strlen($frontParam)) {
         $frontParam = $str;
         return;
     }
@@ -2181,7 +2178,7 @@ function cleanFileName($str) {
 	$str = strtolower($str);
 	$ext_point = strrpos($str,".");
 	if ($ext_point===false) return false;
-	$ext = substr($str,$ext_point,strlen($str));
+	$ext = substr($str,$ext_point,i18n::strlen($str));
 	$str = substr($str,0,$ext_point);
 
 	return preg_replace("/[^a-z0-9-]/","_",$str).$ext;

@@ -1579,12 +1579,12 @@ class ADMIN {
 		}
 
 		// check length
-		if (strlen($body) < 3)
+		if (i18n::strlen($body) < 3)
 		{
 			$this->error(_ERROR_COMMENT_NOCOMMENT);
 		}
 
-		if (strlen($body) > 5000)
+		if (i18n::strlen($body) > 5000)
 		{
 			$this->error(_ERROR_COMMENT_TOOLONG);
 		}
@@ -1978,7 +1978,7 @@ class ADMIN {
             if ($password != $repeatpassword)
                 $this->error(_ERROR_PASSWORDMISMATCH);
 
-            if ($password && (strlen($password) < 6))
+            if ($password && (i18n::strlen($password) < 6))
                 $this->error(_ERROR_PASSWORDTOOSHORT);
                 
             if ($password) {
@@ -2080,7 +2080,7 @@ class ADMIN {
 
         if (postVar('password') != postVar('repeatpassword'))
             $this->error(_ERROR_PASSWORDMISMATCH);
-        if (strlen(postVar('password')) < 6)
+        if (i18n::strlen(postVar('password')) < 6)
             $this->error(_ERROR_PASSWORDTOOSHORT);
 
         $res = MEMBER::create(postVar('name'), postVar('realname'), postVar('password'), postVar('email'), postVar('url'), postVar('admin'), postVar('canlogin'), postVar('notes'));
@@ -2231,7 +2231,7 @@ class ADMIN {
         if ($password != $repeatpassword)
             return $this->_showActivationPage($key, _ERROR_PASSWORDMISMATCH);
 
-        if ($password && (strlen($password) < 6))
+        if ($password && (i18n::strlen($password) < 6))
             return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
             
         if ($password) {

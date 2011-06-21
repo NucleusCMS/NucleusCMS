@@ -165,35 +165,33 @@ class COMMENTS {
 		} // end if
 
 		// begin if: email required, but missing (doesn't apply to members)
-		if ( $settings->emailRequired() && strlen($comment['email']) == 0 && !$member->isLoggedIn() )
+		if ( $settings->emailRequired() && i18n::strlen($comment['email']) == 0 && !$member->isLoggedIn() )
 		{
 			return _ERROR_EMAIL_REQUIRED;
 		} // end if
-
-		## Note usage of mb_strlen() vs strlen() below ##
-
+		
 		// begin if: commenter's name is too long
-		if ( mb_strlen($comment['user']) > 40 )
+		if ( i18n::strlen($comment['user']) > 40 )
 		{
 			return _ERROR_USER_TOO_LONG;
 		} // end if
-
+		
 		// begin if: commenter's email is too long
-		if ( mb_strlen($comment['email']) > 100 )
+		if ( i18n::strlen($comment['email']) > 100 )
 		{
 			return _ERROR_EMAIL_TOO_LONG;
 		} // end if
-
+		
 		// begin if: commenter's url is too long
-		if ( mb_strlen($comment['userid']) > 100 )
+		if ( i18n::strlen($comment['userid']) > 100 )
 		{
 			return _ERROR_URL_TOO_LONG;
 		} // end if
-
+		
 		$comment['timestamp'] = $timestamp;
 		$comment['host'] = gethostbyaddr(serverVar('REMOTE_ADDR') );
 		$comment['ip'] = serverVar('REMOTE_ADDR');
-
+		
 		// begin if: member is logged in, use that data
 		if ( $member->isLoggedIn() )
 		{
@@ -206,28 +204,28 @@ class COMMENTS {
 		{
 			$comment['memberid'] = 0;
 		}
-
+		
 		// spam check
 		$continue = FALSE;
 		$plugins = array();
-
+		
 		if ( isset($manager->subscriptions['ValidateForm']) )
 		{
 			$plugins = array_merge($plugins, $manager->subscriptions['ValidateForm']);
 		}
-
+		
 		if ( isset($manager->subscriptions['PreAddComment']) )
 		{
 			$plugins = array_merge($plugins, $manager->subscriptions['PreAddComment']);
 		}
-
+		
 		if ( isset($manager->subscriptions['PostAddComment']) )
 		{
 			$plugins = array_merge($plugins, $manager->subscriptions['PostAddComment']);
 		}
-
+		
 		$plugins = array_unique($plugins);
-
+		
 		while ( list(, $plugin) = each($plugins) )
 		{
 			$p = $manager->getPlugin($plugin);
@@ -394,12 +392,12 @@ class COMMENTS {
 		}
 
 		// check lengths of comment
-		if (strlen($comment['body']) < 3)
+		if (i18n::strlen($comment['body']) < 3)
 		{
 			return _ERROR_COMMENT_NOCOMMENT;
 		}
 
-		if (strlen($comment['body']) > 5000)
+		if (i18n::strlen($comment['body']) > 5000)
 		{
 			return _ERROR_COMMENT_TOOLONG;
 		}
@@ -408,14 +406,14 @@ class COMMENTS {
 		if (!$member->isLoggedIn() )
 		{
 
-			if (strlen($comment['user']) < 2)
+			if (i18n::strlen($comment['user']) < 2)
 			{
 				return _ERROR_COMMENT_NOUSERNAME;
 			}
 
 		}
 
-		if ((strlen($comment['email']) != 0) && !(isValidMailAddress(trim($comment['email']) ) ) )
+		if ((i18n::strlen($comment['email']) != 0) && !(isValidMailAddress(trim($comment['email']) ) ) )
 		{
 			return _ERROR_BADMAILADDRESS;
 		}

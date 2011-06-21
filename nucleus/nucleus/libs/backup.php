@@ -126,7 +126,7 @@ class Backup
 			$Crc = crc32(ob_get_contents());
 			$contents = gzcompress(ob_get_contents());
 			ob_end_clean();
-			echo "\x1f\x8b\x08\x00\x00\x00\x00\x00".substr($contents, 0, strlen($contents) - 4).$this->gzip_PrintFourChars($Crc).$this->gzip_PrintFourChars($Size);
+			echo "\x1f\x8b\x08\x00\x00\x00\x00\x00".substr($contents, 0, i18n::strlen($contents) - 4).$this->gzip_PrintFourChars($Crc).$this->gzip_PrintFourChars($Size);
 		}
 		
 		exit;
@@ -427,7 +427,7 @@ class Backup
 	
 		for ($i = 0; $i < $linecount; $i++)
 		{
-			if (($i != ($linecount - 1)) || (strlen($lines[$i]) > 0))
+			if (($i != ($linecount - 1)) || (i18n::strlen($lines[$i]) > 0))
 			{
 				if ($lines[$i][0] != "#")
 				{
@@ -470,7 +470,7 @@ class Backup
 		for ($i = 0; $i < $token_count; $i++)
 		{
 			// Don't wanna add an empty string as the last thing in the array.
-			if (($i != ($token_count - 1)) || (strlen($tokens[$i] > 0)))
+			if (($i != ($token_count - 1)) || (i18n::strlen($tokens[$i] > 0)))
 			{
 	
 				// even number of quotes means a complete SQL statement

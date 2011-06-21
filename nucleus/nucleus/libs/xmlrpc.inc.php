@@ -302,7 +302,7 @@ $cp1252_to_xmlent =
 	$escaped_data = '';
 	// be kind to users creating string xmlrpcvals out of different php types
 	$data = (string) $data;
-	$ns = strlen ($data);
+	$ns = i18n::strlen ($data);
 	for ($nn = 0; $nn < $ns; $nn++)
 	{
 		$ch = $data[$nn];
@@ -1316,7 +1316,7 @@ $cp1252_to_xmlent =
 				'Accept-Charset: ' . implode(',', $this->accepted_charset_encodings) . "\r\n" .
 				$cookieheader .
 				'Content-Type: ' . $msg->content_type . "\r\nContent-Length: " .
-				strlen($payload) . "\r\n\r\n" .
+				i18n::strlen($payload) . "\r\n\r\n" .
 				$payload;
 
 			if($this->debug > 1)
@@ -1348,7 +1348,7 @@ $cp1252_to_xmlent =
 				return $r;
 			}
 
-			if(!fputs($fp, $op, strlen($op)))
+			if(!fputs($fp, $op, i18n::strlen($op)))
 			{
 				$this->errstr='Write error';
 				$r=&new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['http_error'], $this->errstr);
@@ -2385,13 +2385,13 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 								{
 									$data = $degzdata;
 									if($this->debug)
-									print "<PRE>---INFLATED RESPONSE---[".strlen($data)." chars]---\n" . htmlentities($data) . "\n---END---</PRE>";
+									print "<PRE>---INFLATED RESPONSE---[".i18n::strlen($data)." chars]---\n" . htmlentities($data) . "\n---END---</PRE>";
 								}
 								elseif($GLOBALS['_xh']['headers']['content-encoding'] == 'gzip' && $degzdata = @gzinflate(substr($data, 10)))
 								{
 									$data = $degzdata;
 									if($this->debug)
-									print "<PRE>---INFLATED RESPONSE---[".strlen($data)." chars]---\n" . htmlentities($data) . "\n---END---</PRE>";
+									print "<PRE>---INFLATED RESPONSE---[".i18n::strlen($data)." chars]---\n" . htmlentities($data) . "\n---END---</PRE>";
 								}
 								else
 								{
@@ -2465,7 +2465,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				$start = strpos($data, '<!-- SERVER DEBUG INFO (BASE64 ENCODED):');
 				if ($start)
 				{
-					$start += strlen('<!-- SERVER DEBUG INFO (BASE64 ENCODED):');
+					$start += i18n::strlen('<!-- SERVER DEBUG INFO (BASE64 ENCODED):');
 					$end = strpos($data, '-->', $start);
 					$comments = substr($data, $start, $end-$start);
 					print "<PRE>---SERVER DEBUG INFO (DECODED) ---\n\t".htmlentities(str_replace("\n", "\n\t", base64_decode($comments)))."\n---END---\n</PRE>";
@@ -3493,7 +3493,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				$chunk = substr($buffer,$chunkstart);
 				// append chunk-data to entity-body
 				$new .= $chunk;
-				$length += strlen($chunk);
+				$length += i18n::strlen($chunk);
 				break;
 			}
 
@@ -3502,7 +3502,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 			// append chunk-data to entity-body
 			$new .= $chunk;
 			// length := length + chunk-size
-			$length += strlen($chunk);
+			$length += i18n::strlen($chunk);
 			// read chunk-size and crlf
 			$chunkstart = $chunkend + 2;
 

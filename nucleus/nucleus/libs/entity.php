@@ -71,7 +71,7 @@ class entity {
 		
 		if ($extra == '=') return $entity . '=';
 		
-		$length = strlen($entity);
+		$length = i18n::strlen($entity);
 
 		while ($length > 0) {
 			$check = substr($entity, 0, $length);

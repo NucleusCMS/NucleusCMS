@@ -203,7 +203,7 @@
 
 		$path = realpath($path);
 		$path = str_replace('\\', '/', $path);	
-		$path = substr($path, strlen($path) - 1) != '/' ? $path . '/' : $path;
+		$path = substr($path, i18n::strlen($path) - 1) != '/' ? $path . '/' : $path;
 		return $path;
 	}
 
@@ -226,7 +226,7 @@
 		*/
 
 		global $rootDirectory;
-		return substr($path, 0, strlen($rootDirectory)) == $rootDirectory;
+		return substr($path, 0, i18n::strlen($rootDirectory)) == $rootDirectory;
 	}
 	
 	function sfRelativePath ($path) {

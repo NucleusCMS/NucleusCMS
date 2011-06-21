@@ -351,7 +351,7 @@
 		$data = $info['bits']; // decoding was done transparantly by xmlrpclib
 
 		// - check filesize
-		if (strlen($data) > $CONF['MaxUploadSize'])
+		if (i18n::strlen($data) > $CONF['MaxUploadSize'])
 			return _error(9, 'filesize is too big');
 
 
