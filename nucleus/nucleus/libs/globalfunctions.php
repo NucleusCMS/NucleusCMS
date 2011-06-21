@@ -188,7 +188,7 @@ if (!isset($CONF['Self'])) {
     $CONF['Self'] = $CONF['IndexURL'];
     // strip trailing /
     if ($CONF['Self'][i18n::strlen($CONF['Self']) -1] == "/") {
-        $CONF['Self'] = substr($CONF['Self'], 0, i18n::strlen($CONF['Self']) -1);
+        $CONF['Self'] = i18n::substr($CONF['Self'], 0, i18n::strlen($CONF['Self']) -1);
     }
 
 /*	$CONF['ItemURL']        = $CONF['Self'];
@@ -210,7 +210,7 @@ $CONF['CategoryURL'] = $CONF['Self'];
 
 // switch URLMode back to normal when $CONF['Self'] ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
-if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], i18n::strlen($CONF['Self']) - 4) == '.php'))) {
+if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (i18n::substr($CONF['Self'], i18n::strlen($CONF['Self']) - 4) == '.php'))) {
     $CONF['URLMode'] = 'normal';
 }
 
@@ -248,7 +248,7 @@ if ($action == 'login') {
     $pw = postVar('password');
     $shared = intPostVar('shared'); // shared computer or not
 
-    $pw=substr($pw,0,40); // avoid md5 collision by using a long key
+    $pw=i18n::substr($pw,0,40); // avoid md5 collision by using a long key
 
     if ($member->login($login, $pw) ) {
 
@@ -317,7 +317,7 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
     // Cookie Authentication
     $ck=cookieVar($CONF['CookiePrefix'] . 'loginkey');
     // secure cookie key
-    $ck=substr($ck,0,32); // avoid md5 collision by using a long key
+    $ck=i18n::substr($ck,0,32); // avoid md5 collision by using a long key
     if ($CONF['secureCookieKey']!=='none') $ck=md5($ck.$CONF['secureCookieKeyIP']);
     $res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] . 'user'), $ck );
     unset($ck);
@@ -1253,7 +1253,7 @@ function shorten($text, $maxlength, $toadd)
 	// 2. the actual shortening
 	if (i18n::strlen($text) > $maxlength)
 	{
-		$text = substr($text, 0, $maxlength - i18n::strlen($toadd) ) . $toadd;
+		$text = i18n::substr($text, 0, $maxlength - i18n::strlen($toadd) ) . $toadd;
 	
 	}
 	
@@ -1722,7 +1722,7 @@ function ticketForPlugin()
 	}
 
 	/* Solve the plugin php file or admin directory */
-	$phppath = substr($p_translated, i18n::strlen($d_plugins) );
+	$phppath = i18n::substr($p_translated, i18n::strlen($d_plugins) );
 	$phppath = preg_replace('#^/#', '', $phppath); // Remove the first "/" if exists.
 	$path = preg_replace('#^NP_(.*)\.php$#', '$1', $phppath); // Remove the first "NP_" and the last ".php" if exists.
 	$path = preg_replace('#^([^/]*)/(.*)$#', '$1', $path); // Remove the "/" and beyond.
@@ -1734,7 +1734,7 @@ function ticketForPlugin()
 	
 	while($row = sql_fetch_row($res) )
 	{
-		$name = substr($row[0], 3);
+		$name = i18n::substr($row[0], 3);
 		$plugins[strtolower($name)] = $name;
 	}
 	
@@ -1861,7 +1861,7 @@ function ticketForPlugin()
 	
 	/* Create new ticket */
 	$ticket=$manager->addTicketToUrl('');
-	$ticketforplugin['ticket']=substr($ticket,i18n::strpos($ticket,'ticket=')+7);
+	$ticketforplugin['ticket']=i18n::substr($ticket,i18n::strpos($ticket,'ticket=')+7);
 }
 
 function _addInputTags(&$keys,$prefix=''){
@@ -2178,8 +2178,8 @@ function cleanFileName($str) {
 	$str = strtolower($str);
 	$ext_point = i18n::strrpos($str,".");
 	if ($ext_point===false) return false;
-	$ext = substr($str,$ext_point,i18n::strlen($str));
-	$str = substr($str,0,$ext_point);
+	$ext = i18n::substr($str,$ext_point,i18n::strlen($str));
+	$str = i18n::substr($str,0,$ext_point);
 
 	return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
 }

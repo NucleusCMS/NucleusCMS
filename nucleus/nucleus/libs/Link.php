@@ -244,8 +244,8 @@ class Link {
 				array_shift($params);
 				$url .= '?' . $fKey . '=' . $fParam;
 			}
-		} elseif ($CONF['URLMode'] == 'pathinfo' && substr($url, -1) == '/') {
-			$url = substr($url, 0, -1);
+		} elseif ($CONF['URLMode'] == 'pathinfo' && i18n::substr($url, -1) == '/') {
+			$url = i18n::substr($url, 0, -1);
 		}
 		return addLinkParams($url, $params);
 	}

@@ -74,8 +74,8 @@ class entity {
 		$length = i18n::strlen($entity);
 
 		while ($length > 0) {
-			$check = substr($entity, 0, $length);
-			if (isset($_entities['named'][$check])) return $_entities['named'][$check] . ';' . substr($entity, $length);
+			$check = i18n::substr($entity, 0, $length);
+			if (isset($_entities['named'][$check])) return $_entities['named'][$check] . ';' . i18n::substr($entity, $length);
 			$length--;
 		}
 		

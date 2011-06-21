@@ -126,7 +126,7 @@ class Backup
 			$Crc = crc32(ob_get_contents());
 			$contents = gzcompress(ob_get_contents());
 			ob_end_clean();
-			echo "\x1f\x8b\x08\x00\x00\x00\x00\x00".substr($contents, 0, i18n::strlen($contents) - 4).$this->gzip_PrintFourChars($Crc).$this->gzip_PrintFourChars($Size);
+			echo "\x1f\x8b\x08\x00\x00\x00\x00\x00".i18n::substr($contents, 0, i18n::strlen($contents) - 4).$this->gzip_PrintFourChars($Crc).$this->gzip_PrintFourChars($Size);
 		}
 		
 		exit;

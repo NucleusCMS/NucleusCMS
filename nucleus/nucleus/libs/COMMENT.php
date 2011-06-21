@@ -126,8 +126,8 @@ class COMMENT {
 			$pos = i18n::strpos($url, $entity);
 
 			if ($pos) {
-				$post = substr($url, $pos) . $post;
-				$url = substr($url, 0, $pos);
+				$post = i18n::substr($url, $pos) . $post;
+				$url = i18n::substr($url, 0, $pos);
 			}
 
 		}
@@ -135,12 +135,12 @@ class COMMENT {
 		// remove entities at end (&&&&)
 		if (preg_match('/(&\w+;)+$/i', $url, $matches) ) {
 			$post = $matches[0] . $post;	// found entities (1 or more)
-			$url = substr($url, 0, i18n::strlen($url) - i18n::strlen($post) );
+			$url = i18n::substr($url, 0, i18n::strlen($url) - i18n::strlen($post) );
 		}
 
 		// move ending comma from url to 'post' part
-		if (substr($url, i18n::strlen($url) - 1) == ',') {
-			$url = substr($url, 0, i18n::strlen($url) - 1);
+		if (i18n::substr($url, i18n::strlen($url) - 1) == ',') {
+			$url = i18n::substr($url, 0, i18n::strlen($url) - 1);
 			$post = ',' . $post;
 		}
 

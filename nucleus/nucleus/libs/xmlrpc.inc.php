@@ -780,7 +780,7 @@ $cp1252_to_xmlent =
 		// skip processing if xml fault already detected
 		if ($GLOBALS['_xh']['isf'] < 2)
 		{
-			if(substr($data, 0, 1) == '&' && substr($data, -1, 1) == ';')
+			if(i18n::substr($data, 0, 1) == '&' && i18n::substr($data, -1, 1) == ';')
 			{
 				// G. Giunta 2006-08-25: useless change of 'lv' from 1 to 2
 				//if($GLOBALS['_xh']['lv']==1)
@@ -1298,7 +1298,7 @@ $cp1252_to_xmlent =
 						$cookieheader .= ' $Domain="' . $cookie['domain'] . '";';
 					if ($cookie['port'])
 						$cookieheader .= ' $Port="' . $cookie['domain'] . '";';
-					$cookieheader = substr($cookieheader, 0, -1) . "\r\n";
+					$cookieheader = i18n::substr($cookieheader, 0, -1) . "\r\n";
 				}
 				else
 				{
@@ -1616,7 +1616,7 @@ $cp1252_to_xmlent =
 				{
 					$cookieheader .= $name . '=' . $cookie['value'] . ', ';
 				}
-				curl_setopt($curl, CURLOPT_COOKIE, substr($cookieheader, 0, -2));
+				curl_setopt($curl, CURLOPT_COOKIE, i18n::substr($cookieheader, 0, -2));
 			}
 
 			$result = curl_exec($curl);
@@ -2218,7 +2218,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 					{
 						// this filters out all http headers from proxy.
 						// maybe we could take them into account, too?
-						$data = substr($data, $bd);
+						$data = i18n::substr($data, $bd);
 					}
 					else
 					{
@@ -2238,11 +2238,11 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 					{
 						break;
 					}
-					$data = substr($data, $pos);
+					$data = i18n::substr($data, $pos);
 				}
 				if(!preg_match('/^HTTP\/[0-9.]+ 200 /', $data))
 				{
-					$errstr= substr($data, 0, i18n::strpos($data, "\n")-1);
+					$errstr= i18n::substr($data, 0, i18n::strpos($data, "\n")-1);
 					error_log('XML-RPC: xmlrpcmsg::parseResponse: HTTP error, got response: ' .$errstr);
 					$r=&new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['http_error'], $GLOBALS['xmlrpcstr']['http_error']. ' (' . $errstr . ')');
 					return $r;
@@ -2274,7 +2274,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				}
 				// be tolerant to line endings, and extra empty lines
 				//$ar = split("\r?\n", trim(substr($data, 0, $pos))); //split() is deprecated
-				$ar = preg_split("/\r?\n/", trim(substr($data, 0, $pos)));
+				$ar = preg_split("/\r?\n/", trim(i18n::substr($data, 0, $pos)));
 				while(list(,$line) = @each($ar))
 				{
 					// take care of multi-line headers and cookies
@@ -2340,7 +2340,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 					}
 				}
 
-				$data = substr($data, $bd);
+				$data = i18n::substr($data, $bd);
 
 				if($this->debug && count($GLOBALS['_xh']['headers']))
 				{
@@ -2387,7 +2387,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 									if($this->debug)
 									print "<PRE>---INFLATED RESPONSE---[".i18n::strlen($data)." chars]---\n" . htmlentities($data) . "\n---END---</PRE>";
 								}
-								elseif($GLOBALS['_xh']['headers']['content-encoding'] == 'gzip' && $degzdata = @gzinflate(substr($data, 10)))
+								elseif($GLOBALS['_xh']['headers']['content-encoding'] == 'gzip' && $degzdata = @gzinflate(i18n::substr($data, 10)))
 								{
 									$data = $degzdata;
 									if($this->debug)
@@ -2443,7 +2443,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 
 			$raw_data = $data;
 			// parse the HTTP headers of the response, if present, and separate them from data
-			if(substr($data, 0, 4) == 'HTTP')
+			if(i18n::substr($data, 0, 4) == 'HTTP')
 			{
 				$r =& $this->parseResponseHeaders($data, $headers_processed);
 				if ($r)
@@ -2467,7 +2467,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				{
 					$start += i18n::strlen('<!-- SERVER DEBUG INFO (BASE64 ENCODED):');
 					$end = i18n::strpos($data, '-->', $start);
-					$comments = substr($data, $start, $end-$start);
+					$comments = i18n::substr($data, $start, $end-$start);
 					print "<PRE>---SERVER DEBUG INFO (DECODED) ---\n\t".htmlentities(str_replace("\n", "\n\t", base64_decode($comments)))."\n---END---\n</PRE>";
 				}
 			}
@@ -2489,7 +2489,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 			}
 			if($bd)
 			{
-				$data = substr($data, 0, $bd);
+				$data = i18n::substr($data, 0, $bd);
 			}
 
 			// if user wants back raw xml, give it to him
@@ -3480,7 +3480,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 		// read chunk-size, chunk-extension (if any) and crlf
 		// get the position of the linebreak
 		$chunkend = i18n::strpos($buffer,"\r\n") + 2;
-		$temp = substr($buffer,0,$chunkend);
+		$temp = i18n::substr($buffer,0,$chunkend);
 		$chunk_size = hexdec( trim($temp) );
 		$chunkstart = $chunkend;
 		while($chunk_size > 0)
@@ -3490,7 +3490,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 			// just in case we got a broken connection
 			if($chunkend == false)
 			{
-				$chunk = substr($buffer,$chunkstart);
+				$chunk = i18n::substr($buffer,$chunkstart);
 				// append chunk-data to entity-body
 				$new .= $chunk;
 				$length += i18n::strlen($chunk);
@@ -3498,7 +3498,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 			}
 
 			// read chunk-data and crlf
-			$chunk = substr($buffer,$chunkstart,$chunkend-$chunkstart);
+			$chunk = i18n::substr($buffer,$chunkstart,$chunkend-$chunkstart);
 			// append chunk-data to entity-body
 			$new .= $chunk;
 			// length := length + chunk-size
@@ -3511,7 +3511,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 			{
 				break; //just in case we got a broken connection
 			}
-			$temp = substr($buffer,$chunkstart,$chunkend-$chunkstart);
+			$temp = i18n::substr($buffer,$chunkstart,$chunkend-$chunkstart);
 			$chunk_size = hexdec( trim($temp) );
 			$chunkstart = $chunkend;
 		}
@@ -3580,7 +3580,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 			'\s+encoding\s*=\s*' . "((?:\"[A-Za-z][A-Za-z0-9._-]*\")|(?:'[A-Za-z][A-Za-z0-9._-]*'))/",
 			$xmlchunk, $matches))
 		{
-			return strtoupper(substr($matches[2], 1, -1));
+			return strtoupper(i18n::substr($matches[2], 1, -1));
 		}
 
 		// 4 - if mbstring is available, let it do the guesswork

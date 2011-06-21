@@ -87,8 +87,8 @@ class PARSER {
 		// split into action name + arguments
 		if (strstr($action,'(')) {
 			$paramStartPos = i18n::strpos($action, '(');
-			$params = substr($action, $paramStartPos + 1, i18n::strlen($action) - $paramStartPos - 2);
-			$action = substr($action, 0, $paramStartPos);
+			$params = i18n::substr($action, $paramStartPos + 1, i18n::strlen($action) - $paramStartPos - 2);
+			$action = i18n::substr($action, 0, $paramStartPos);
 			$params = explode ($this->pdelim, $params);
 
 			// trim parameters
@@ -105,7 +105,7 @@ class PARSER {
 		$actionlc = strtolower($action);
 
 		// skip execution of skinvars while inside an if condition which hides this part of the page
-		if (!$this->handler->if_currentlevel && ($actionlc != 'else') && ($actionlc != 'elseif') && ($actionlc != 'endif') && ($actionlc != 'ifnot') && ($actionlc != 'elseifnot') && (substr($actionlc,0,2) != 'if'))
+		if (!$this->handler->if_currentlevel && ($actionlc != 'else') && ($actionlc != 'elseif') && ($actionlc != 'endif') && ($actionlc != 'ifnot') && ($actionlc != 'elseifnot') && (i18n::substr($actionlc,0,2) != 'if'))
 			return;
 
 		if (in_array($actionlc, $this->actions) || $this->norestrictions ) {

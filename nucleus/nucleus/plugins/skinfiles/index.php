@@ -203,7 +203,7 @@
 
 		$path = realpath($path);
 		$path = str_replace('\\', '/', $path);	
-		$path = substr($path, i18n::strlen($path) - 1) != '/' ? $path . '/' : $path;
+		$path = i18n::substr($path, i18n::strlen($path) - 1) != '/' ? $path . '/' : $path;
 		return $path;
 	}
 
@@ -226,7 +226,7 @@
 		*/
 
 		global $rootDirectory;
-		return substr($path, 0, i18n::strlen($rootDirectory)) == $rootDirectory;
+		return i18n::substr($path, 0, i18n::strlen($rootDirectory)) == $rootDirectory;
 	}
 	
 	function sfRelativePath ($path) {
@@ -241,7 +241,7 @@
 	function sfIsFileType ($type, $file) {
 
 		global $filetypes;
-		return isset($filetypes[$type]) && in_array(strtolower(substr(strrchr($file, "."), 1)), $filetypes[$type]);
+		return isset($filetypes[$type]) && in_array(strtolower(i18n::substr(strrchr($file, "."), 1)), $filetypes[$type]);
 	}
 
 	function sfAllowEditing ($file) {
@@ -281,7 +281,7 @@
 	
 		global $pluginUrl;
 	
-		$ext = strtolower(substr(strrchr($file, "."), 1));
+		$ext = strtolower(i18n::substr(strrchr($file, "."), 1));
 		
 		switch ($ext) {
 			case 'htm':

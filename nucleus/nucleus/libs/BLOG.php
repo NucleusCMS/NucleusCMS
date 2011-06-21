@@ -323,7 +323,7 @@ class BLOG {
 			$mailto_msg .= createItemLink($itemid) . "\n\n";
 		} else {
 			$tempurl = $this->getURL();
-			if (substr($tempurl, -1) == '/' || substr($tempurl, -4) == '.php') {
+			if (i18n::substr($tempurl, -1) == '/' || i18n::substr($tempurl, -4) == '.php') {
 				$mailto_msg .= $tempurl . '?itemid=' . $itemid . "\n\n";
 			} else {
 				$mailto_msg .= $tempurl . '/?itemid=' . $itemid . "\n\n";
