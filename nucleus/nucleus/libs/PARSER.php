@@ -89,7 +89,7 @@ class PARSER {
 			$paramStartPos = i18n::strpos($action, '(');
 			$params = i18n::substr($action, $paramStartPos + 1, i18n::strlen($action) - $paramStartPos - 2);
 			$action = i18n::substr($action, 0, $paramStartPos);
-			$params = explode ($this->pdelim, $params);
+			$params = preg_split ('#' . $this->pdelim . '#', $params);
 
 			// trim parameters
 			// for PHP versions lower than 4.0.6:
