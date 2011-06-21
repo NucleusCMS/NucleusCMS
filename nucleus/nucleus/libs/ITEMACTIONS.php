@@ -379,7 +379,7 @@ class ITEMACTIONS extends BaseActions {
 	  */
 	function parse_time($format = '') {
 		if (!isset($this->template['FORMAT_TIME'])) $this->template['FORMAT_TIME'] = '';
-		echo strftime($format ? $format : $this->template['FORMAT_TIME'],$this->currentItem->timestamp);
+		echo i18n::strftime($format ? $format : $this->template['FORMAT_TIME'],$this->currentItem->timestamp);
 	}
 
 	/**

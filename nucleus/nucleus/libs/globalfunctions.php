@@ -1584,7 +1584,7 @@ function formatDate($format, $timestamp, $defaultFormat, &$blog) {
             return date('Y-m-d\TH:i:s', $timestamp) . $tz;
 
         default :
-            return strftime($format ? $format : $defaultFormat, $timestamp);
+            return i18n::strftime($format ? $format : $defaultFormat, $timestamp);
     }
 }
 
