@@ -202,7 +202,7 @@ class i18n {
 			{
 				$name = self::seven_bit_encoder(self::$charset, 'B', trim($match[1]));
 				$address = trim($match[2]) . '@' . trim($match[3]);
-				$receivers[] = "{$name <$address>}";
+				$receivers[] = "{$name} <{$address}>";
 			}
 			else if ( preg_match("#([^,]+)?@([^,]+)?#", $element) )
 			{
@@ -223,7 +223,7 @@ class i18n {
 		{
 			$name = self::seven_bit_encoder(self::$charset, 'B', trim($match[1]));
 			$address = trim($match[2]) . '@' . trim($match[3]);
-			$sender = "{$name <$address>}";
+			$sender = "{$name} <{$address}>";
 		}
 		else if ( preg_match("#([^,]+)?@([^,]+)?#", $from) )
 		{
