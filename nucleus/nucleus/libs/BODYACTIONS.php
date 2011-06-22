@@ -97,7 +97,7 @@ class BODYACTIONS extends BaseActions {
 	function parse_image() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
-		$args = explode('|',implode($args,', '));
+		$args = i18n::explode('|',implode($args,', '));
 		call_user_func_array(array(&$this,'createImageCode'),$args);
 	}
 	
@@ -134,7 +134,7 @@ class BODYACTIONS extends BaseActions {
 	function parse_media() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
-		$args = explode('|',implode($args,', '));
+		$args = i18n::explode('|',implode($args,', '));
 		call_user_func_array(array(&$this,'createMediaCode'),$args);
 	}
 
@@ -163,7 +163,7 @@ class BODYACTIONS extends BaseActions {
 	function parse_popup() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
-		$args = explode('|',implode($args,', '));
+		$args = i18n::explode('|',implode($args,', '));
 		call_user_func_array(array(&$this,'createPopupCode'),$args);
 	}
 
@@ -408,7 +408,7 @@ class BODYACTIONS extends BaseActions {
 				if ($value == "") {
 					$condition = true;
 				} else {
-					list($name2, $value2) = explode('=', $value, 2);
+					list($name2, $value2) = i18n::explode('=', $value, 2);
 					if ($value2 == "" && $plugin->getOption($name2) != 'no') {
 						$condition = true;
 					} else if ($plugin->getOption($name2) == $value2) {

@@ -561,14 +561,14 @@
 		 * @static
 		 */
 		function getOptionMeta($typeExtra) {
-			$tmpMeta = explode(';', $typeExtra);
+			$tmpMeta = i18n::explode(';', $typeExtra);
 			$meta = array();
 			for ($i = 0; $i < count($tmpMeta); $i++) {
 				if (($i == 0) && (!strstr($tmpMeta[0], '='))) {
 					// we have the select-list
 					$meta['select'] = $tmpMeta[0];
 				} else {
-					$tmp = explode('=', $tmpMeta[$i]);
+					$tmp = i18n::explode('=', $tmpMeta[$i]);
 					$meta[$tmp[0]] = $tmp[1];
 				}
 			}

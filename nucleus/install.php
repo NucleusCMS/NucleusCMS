@@ -171,18 +171,18 @@ function showInstallForm() {
 
 	if ($result != FALSE && sql_num_rows($result) > 0) {
 		$row = sql_fetch_array($result);
-		$match = explode('.', $row['version']);
+		$match = i18n::explode('.', $row['version']);
 	} else {
 		$result = @sql_query('SHOW VARIABLES LIKE \'version\'',$conn);
 
 		if ($result != FALSE && @sql_num_rows($result) > 0) {
 			$row = sql_fetch_row($result);
-			$match = explode('.', $row[1]);
+			$match = i18n::explode('.', $row[1]);
 		} else {
 			//$output = shell_exec('mysql -V');
 			$output = (function_exists('shell_exec')) ? @shell_exec('mysql -V') : '0.0.0';
    			preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
-			$match = explode('.', $version[0]);
+			$match = i18n::explode('.', $version[0]);
 
 			if ($match[0] == '') {
 				$match[0] = '0';

@@ -7,7 +7,7 @@ include('./config.php');
 // if blogid was not filled out by plugins
 if (($blogid == 0) && ($archive == ''))
 {
-	$data = explode("/",serverVar('PATH_INFO'));
+	$data = i18n::explode("/",serverVar('PATH_INFO'));
 	if (count($data) > 2)
 	{
 		$blogid = intval($data[1]);

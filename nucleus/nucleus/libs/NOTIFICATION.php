@@ -28,7 +28,7 @@ class NOTIFICATION {
 	  * eg: site@demuynck.org;nucleus@demuynck.org;foo@bar.com
 	  */
 	function NOTIFICATION($addresses) {
-		$this->addresses = explode(';' , $addresses);
+		$this->addresses = i18n::explode(';' , $addresses);
 	}
 
 	/**

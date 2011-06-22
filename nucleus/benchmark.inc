@@ -4,7 +4,7 @@ if (!function_exists('getmtime'))
 {
   function getmtime()
   {
-    $a = explode (' ',microtime());
+    $a = i18n::explode (' ',microtime());
     return(double) $a[0] + $a[1];
   }
 }

@@ -160,7 +160,7 @@ class ACTIONS extends BaseActions {
 				if ($value == "") {
 					$condition = true;
 				} else {
-					list($name2, $value2) = explode('=', $value, 2);
+					list($name2, $value2) = i18n::explode('=', $value, 2);
 					if ($value2 == "" && $plugin->getOption($name2) != 'no') {
 						$condition = true;
 					} else if ($plugin->getOption($name2) == $value2) {

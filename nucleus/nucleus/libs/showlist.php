@@ -284,7 +284,7 @@ function listplug_plugOptionRow($current) {
 			case 'select':
 				echo '<select name="'.htmlspecialchars($varname).'">';
 				$aOptions = NucleusPlugin::getOptionSelectValues($current['typeinfo']);
-				$aOptions = explode('|', $aOptions);
+				$aOptions = i18n::explode('|', $aOptions);
 				for ($i=0; $i<(count($aOptions)-1); $i+=2) {
 					echo '<option value="'.htmlspecialchars($aOptions[$i+1]).'"';
 					if ($aOptions[$i+1] == $current['value'])

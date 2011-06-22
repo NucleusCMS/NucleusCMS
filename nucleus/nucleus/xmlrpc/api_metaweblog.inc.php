@@ -358,7 +358,7 @@
 		// - check if filetype is allowed (check filename)
 		$filename = $info['name'];
 		$ok = 0;
-		$allowedtypes = explode (',', $CONF['AllowedTypes']);
+		$allowedtypes = i18n::explode (',', $CONF['AllowedTypes']);
 		foreach ( $allowedtypes as $type )
 		{
 			//if (eregi("\." .$type. "$",$filename)) $ok = 1;

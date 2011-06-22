@@ -5,7 +5,7 @@ include('./config.php');
 
 if (!requestVar('special'))
 {
-       $data = explode("/",serverVar('PATH_INFO'));
+       $data = i18n::explode("/",serverVar('PATH_INFO'));
        if (count($data) > 1)
        {
                $_REQUEST['special'] = $data[1];

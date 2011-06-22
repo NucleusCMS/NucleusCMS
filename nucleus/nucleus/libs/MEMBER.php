@@ -763,7 +763,7 @@ class MEMBER {
 				break;
 			case 'addresschange':
 				// reset old 'canlogin' value
-				list($oldEmail, $oldCanLogin) = explode('/', $info->vextra);
+				list($oldEmail, $oldCanLogin) = i18n::explode('/', $info->vextra);
 				sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin). ' WHERE mnumber=' . intval($info->vmember));
 				break;
 		}
@@ -807,7 +807,7 @@ class MEMBER {
 					break;
 				case 'addresschange':
 					// revert the e-mail address of the member back to old address
-					list($oldEmail, $oldCanLogin) = explode('/', $o->vextra);
+					list($oldEmail, $oldCanLogin) = i18n::explode('/', $o->vextra);
 					sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin). ', memail=\'' . sql_real_escape_string($oldEmail). '\' WHERE mnumber=' . intval($o->vmember));
 					break;
 				case 'forgot':

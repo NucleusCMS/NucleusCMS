@@ -448,7 +448,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
 
     if (!$parsed) {
         // default implementation
-        $data = explode("/", $virtualpath );
+        $data = i18n::explode("/", $virtualpath );
         for ($i = 0; $i < sizeof($data); $i++) {
             switch ($data[$i]) {
                 case $CONF['ItemKey']: // item/1 (blogid)
@@ -790,7 +790,7 @@ function parseHighlight($query)
 		return array();
 	}
 	
-	$aHighlight = explode(' ', $query);
+	$aHighlight = i18n::explode(' ', $query);
 	
 	for ( $i = 0; $i < count($aHighlight); $i++ )
 	{
@@ -1525,11 +1525,11 @@ function createBlogLink($url, $params) {
  *		altered query string (for the examples above: foo=3&bar=2&x=y)
  */
 function alterQueryStr($querystr, $param, $value) {
-    $vars = explode('&', $querystr);
+    $vars = i18n::explode('&', $querystr);
     $set  = false;
 
     for ($i = 0; $i < count($vars); $i++) {
-        $v = explode('=', $vars[$i]);
+        $v = i18n::explode('=', $vars[$i]);
 
         if ($v[0] == $param) {
             $v[1] = $value;
@@ -1826,7 +1826,7 @@ function ticketForPlugin()
 		// Resolve URI and QUERY_STRING
 		if ($uri = serverVar('REQUEST_URI') )
 		{
-			list($uri, $qstring) = explode('?', $uri);
+			list($uri, $qstring) = i18n::explode('?', $uri);
 		}
 		else
 		{
@@ -1911,7 +1911,7 @@ function serverStringToArray($str, &$array, &$frontParam)
         return;
     }
 
-    $array = explode("&", $args);
+    $array = i18n::explode("&", $args);
 }
 
 /**
@@ -1963,7 +1963,7 @@ function sanitizeArray(&$array)
 
             // check value
             if (i18n::strpos($val, '\\')) {
-                list($val, $tmp) = explode('\\', $val);
+                list($val, $tmp) = i18n::explode('\\', $val);
             }
 
             // remove control code etc.

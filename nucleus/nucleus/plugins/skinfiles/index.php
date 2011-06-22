@@ -260,7 +260,7 @@
 		$result  = '<a href="' . htmlspecialchars($pluginUrl) . '" title="Go back to &laquo;skins&raquo;">';
 		$result .= '<img src="' . htmlspecialchars($pluginUrl . 'home.gif') . '" alt="" /> skins</a> / ';
 
-		$parts = explode('/', $relative);
+		$parts = i18n::explode('/', $relative);
 		$part = '';
 		
 		while (list(,$v) = each ($parts)) {

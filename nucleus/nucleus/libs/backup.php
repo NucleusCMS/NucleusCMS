@@ -417,7 +417,7 @@ class Backup
 	 */	
 	function remove_remarks($sql)
 	{
-		$lines = explode("\n", $sql);
+		$lines = i18n::explode("\n", $sql);
 	
 		// try to keep mem. use down
 		$sql = "";
@@ -456,7 +456,7 @@ class Backup
 	function split_sql_file($sql)
 	{
 		// Split up our string into "possible" SQL statements.
-		$tokens = explode( ";", $sql);
+		$tokens = i18n::explode( ";", $sql);
 	
 		// try to save mem.
 		$sql = "";
