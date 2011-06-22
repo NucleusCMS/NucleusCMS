@@ -249,43 +249,49 @@ class i18n {
 	 * 
 	 * @param	string	$charset	Character set encoding
 	 * @param	string	$type	type of 7 bit encoding, should be 'B' or 'Q'
-	 * @param	string	$target	Target string
+	 * @param	string	$target	Target string with header field
 	 * @return	string	encoded string
 	 * 
 	 */
-	public function seven_bit_encoder($charset, $type='B', $target)
+	public static function seven_bit_encoder($charset, $scheme, $target)
 	{
-		$string ='';
-		
-		if ($scheme == 'Q')
+		if ( $scheme != 'Q' )
 		{
-			$target = self::q_type_encoder($target);
-		}
-		else
-		{
-			$scheme == 'B';
-			$target = base64_encode($target);
+			$scheme = 'B';
 		}
 		
 		$header = "=?{$charset}?{$scheme}?";
 		$footer = "?=";
-		$max = 75 - strlen($header) - strlen($footer);
 		
-		// a 'encoded-word is limited to 75 characters
-		// multiple 'encoded-word' should be used
-		$string .= $header;
-		for ( $i = 0; $i < strlen($target); $i++ )
+		$multiple_encoded_words = array();
+		$encoded_text = $header;
+		for ( $i = 0; $i < i18n::strlen($target); $i++ )
 		{
-			if ( ($i != 0) && ($i % $max == 0) )
+			$letter = i18n::substr($target, $i, 1);
+			
+			if ($scheme == 'Q')
 			{
-				$string .= $footer . char(13). char(10) . char(32) . $header;
+				$encoded_letter = self::q_type_encoder($letter);
+			}
+			else
+			{
+				$encoded_letter = base64_encode($letter);
 			}
 			
-			$string .= substr($target, $i, 1);
-			
+			if ( (strlen($encoded_text) + strlen($encoded_letter) > 75 - strlen($footer))
+			 || $i - 1 == i18n::strlen($target))
+			{
+				$multiple_encoded_words[] = "{$encoded_text}{$footer}";
+				$encoded_text = $header . $encoded_letter;
+				echo $i;
+			}
+			else
+			{
+				$encoded_text .= $encoded_letter;
+			}
 		}
-		$string .= $footer;
-		return $string;
+		var_dump($multiple_encoded_words);
+//		return implode(chr(13).chr(10).chr(32), $multiple_encoded_words);
 	}
 	
 	/*
@@ -300,7 +306,7 @@ class i18n {
 	 * @return	string	encoded string
 	 * 
 	 */
-	public function q_type_encoder($target)
+	public static function q_type_encoder($target)
 	{
 		$string = '';
 		
@@ -337,7 +343,7 @@ class i18n {
 				}
 			}
 			
-			$string .= $str_line . char(13) . char(10);
+			$string .= $str_line . chr(13) . chr(10);
 		}
 		return $string;
 	}
