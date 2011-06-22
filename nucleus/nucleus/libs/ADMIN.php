@@ -2605,8 +2605,8 @@ class ADMIN {
             </td>
         </tr><tr>
             <td><?php echo _EBLOG_OFFSET?> <?php help('blogtimeoffset'); ?>
-                <br /><?php echo _EBLOG_STIME?> <b><?php echo  strftime("%H:%M",time()); ?></b>
-                <br /><?php echo _EBLOG_BTIME?> <b><?php echo  strftime("%H:%M",$blog->getCorrectTime()); ?></b>
+                <br /><?php echo _EBLOG_STIME?> <b><?php echo  i18n::strftime("%H:%M",time()); ?></b>
+                <br /><?php echo _EBLOG_BTIME?> <b><?php echo  i18n::strftime("%H:%M",$blog->getCorrectTime()); ?></b>
                 </td>
             <td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  htmlspecialchars($blog->getTimeOffset()); ?>" /></td>
         </tr><tr>
@@ -3305,7 +3305,7 @@ class ADMIN {
         </tr><tr>
             <td><?php echo _EBLOG_OFFSET?>
                 <?php help('blogtimeoffset'); ?>
-                <br /><?php echo _EBLOG_STIME?> <b><?php echo  strftime("%H:%M",time()); ?></b>
+                <br /><?php echo _EBLOG_STIME?> <b><?php echo i18n::strftime("%H:%M",time()); ?></b>
             </td>
             <td><input name="timeoffset" tabindex="110" size="3" value="0" /></td>
         </tr><tr>

@@ -990,7 +990,7 @@ function selector() {
             $archivetype = _ARCHIVETYPE_DAY;
             $t = mktime(0, 0, 0, $m, $d, $y);
             // one day has 24 * 60 * 60 = 86400 seconds
-            $archiveprev = strftime('%Y-%m-%d', $t - 86400 );
+            $archiveprev = i18n::strftime('%Y-%m-%d', $t - 86400 );
             // check for published items
             if ($t > $first_timestamp) {
                 $archiveprevexists = true;
@@ -1001,7 +1001,7 @@ function selector() {
 
             // one day later
             $t += 86400;
-            $archivenext = strftime('%Y-%m-%d', $t);
+            $archivenext = i18n::strftime('%Y-%m-%d', $t);
             if ($t < $last_timestamp) {
                 $archivenextexists = true;
             }
@@ -1013,7 +1013,7 @@ function selector() {
             $archivetype = _ARCHIVETYPE_YEAR;
             $t = mktime(0, 0, 0, 12, 31, $y - 1);
             // one day before is in the previous year
-            $archiveprev = strftime('%Y', $t);
+            $archiveprev = i18n::strftime('%Y', $t);
             if ($t > $first_timestamp) {
                 $archiveprevexists = true;
             }
@@ -1023,7 +1023,7 @@ function selector() {
 
             // timestamp for the next year
             $t = mktime(0, 0, 0, 1, 1, $y + 1);
-            $archivenext = strftime('%Y', $t);
+            $archivenext = i18n::strftime('%Y', $t);
             if ($t < $last_timestamp) {
                 $archivenextexists = true;
             }
@@ -1034,7 +1034,7 @@ function selector() {
             $archivetype = _ARCHIVETYPE_MONTH;
             $t = mktime(0, 0, 0, $m, 1, $y);
             // one day before is in the previous month
-            $archiveprev = strftime('%Y-%m', $t - 86400);
+            $archiveprev = i18n::strftime('%Y-%m', $t - 86400);
             if ($t > $first_timestamp) {
                 $archiveprevexists = true;
             }
@@ -1044,7 +1044,7 @@ function selector() {
 
             // timestamp for the next month
             $t = mktime(0, 0, 0, $m+1, 1, $y);
-            $archivenext = strftime('%Y-%m', $t);
+            $archivenext = i18n::strftime('%Y-%m', $t);
             if ($t < $last_timestamp) {
                 $archivenextexists = true;
             }

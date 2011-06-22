@@ -377,7 +377,7 @@
 		// prefix filename with current date (YYYY-MM-DD-)
 		// this to avoid nameclashes
 		if ($CONF['MediaPrefix'])
-			$filename = strftime("%Y%m%d-", time()) . $filename;
+			$filename = i18n::strftime("%Y%m%d-", time()) . $filename;
 
 		$res = MEDIA::addMediaObjectRaw($collection, $filename, $data);
 		if ($res)

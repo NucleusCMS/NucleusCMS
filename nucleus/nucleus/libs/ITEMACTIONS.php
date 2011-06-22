@@ -441,7 +441,7 @@ class ITEMACTIONS extends BaseActions {
 	  * Parse templatevar daylink
 	  */
 	function parse_daylink() {
-		echo createArchiveLink($this->blog->getID(), strftime('%Y-%m-%d',$this->currentItem->timestamp), $this->linkparams);
+		echo createArchiveLink($this->blog->getID(), i18n::strftime('%Y-%m-%d',$this->currentItem->timestamp), $this->linkparams);
 	}
 
 	/**

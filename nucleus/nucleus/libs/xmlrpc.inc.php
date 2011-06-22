@@ -3128,7 +3128,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 	{
 		if(!$utc)
 		{
-			$t=strftime("%Y%m%dT%H:%M:%S", $timet);
+			$t=i18n::strftime("%Y%m%dT%H:%M:%S", $timet);
 		}
 		else
 		{
@@ -3140,7 +3140,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 			}
 			else
 			{
-				$t=strftime("%Y%m%dT%H:%M:%S", $timet-date('Z'));
+				$t=i18n::strftime("%Y%m%dT%H:%M:%S", $timet-date('Z'));
 			}
 		}
 		return $t;
