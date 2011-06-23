@@ -35,12 +35,15 @@ if ($CONF['debug']) {
 }
 
 /*
- * load i18n class for internationalization
+ * load i18n class and initializing
  */
-include($DIR_LIBS . 'i18n.php');
+if (!class_exists('i18n', FALSE))
+{
+	include($DIR_LIBS . 'i18n.php');
+}
 if ( !i18n::init('UTF-8') )
 {
-	exit('Fail to initialize iconv or mbstring extension. Would you please contact to administrator of your PHP server?');
+	exit('Fail to initialize iconv or mbstring extension.');
 }
 
 /*
