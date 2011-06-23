@@ -1704,42 +1704,45 @@ function ticketForPlugin()
 	$ticketforplugin = array();
 	$ticketforplugin['ticket'] = FALSE;
 	
+	/* $_SERVER['PATH_TRANSLATED']
+	 * http://www.php.net/manual/en/reserved.variables.server.php
+	 * Note: As of PHP 4.3.2, PATH_TRANSLATED is no longer set implicitly
+	 * under the Apache 2 SAPI in contrast to the situation in Apache 1,
+	 * where it's set to the same value as the SCRIPT_FILENAME server variable
+	 * when it's not populated by Apache.
+	 * This change was made to comply with the CGI specification
+	 * that PATH_TRANSLATED should only exist if PATH_INFO is defined.
+	 * Apache 2 users may use AcceptPathInfo = On inside httpd.conf to define PATH_INFO. 
+	 */
+	
 	/* Check if using plugin's php file. */
-	if ($p_translated = serverVar('PATH_TRANSLATED') )
-	{
-		if (!file_exists($p_translated) )
-		{
-			$p_translated = '';
-		}
+	$p_translated = serverVar('SCRIPT_FILENAME');
 	
-	}
-	
-	if (!$p_translated)
+	if (!file_exists($p_translated) )
 	{
-		$p_translated = serverVar('SCRIPT_FILENAME');
-		
-		if (!file_exists($p_translated) )
-		{
-			header("HTTP/1.0 404 Not Found");
-			exit('');
-		}
+		header("HTTP/1.0 404 Not Found");
+		exit('');
 	}
 	
 	$p_translated = str_replace('\\', '/', $p_translated);
 	$d_plugins = str_replace('\\', '/', $DIR_PLUGINS);
 	
-	if (i18n::strpos($p_translated, $d_plugins) !== 0)
+	// This isn't plugin php file.
+	if ( i18n::strpos($p_translated, $d_plugins) !== 0 )
 	{
-		return;// This isn't plugin php file.
+		return;
 	}
 
-	/* Solve the plugin php file or admin directory */
+	// Solve the plugin php file or admin directory
 	$phppath = i18n::substr($p_translated, i18n::strlen($d_plugins) );
-	$phppath = preg_replace('#^/#', '', $phppath); // Remove the first "/" if exists.
-	$path = preg_replace('#^NP_(.*)\.php$#', '$1', $phppath); // Remove the first "NP_" and the last ".php" if exists.
-	$path = preg_replace('#^([^/]*)/(.*)$#', '$1', $path); // Remove the "/" and beyond.
+	// Remove the first "/" if exists.
+	$phppath = preg_replace('#^/#', '', $phppath);
+	// Remove the first "NP_" and the last ".php" if exists.
+	$path = preg_replace('#^NP_(.*)\.php$#', '$1', $phppath);
+	// Remove the "/" and beyond.
+	$path = preg_replace('#^([^/]*)/(.*)$#', '$1', $path);
 	
-	/* Solve the plugin name. */
+	// Solve the plugin name.
 	$plugins = array();
 	$query = 'SELECT `pfile` FROM '.sql_table('plugin');
 	$res = sql_query($query);
@@ -1752,7 +1755,7 @@ function ticketForPlugin()
 	
 	sql_free_result($res);
 	
-	if ($plugins[$path])
+	if (array_key_exists($path, $plugins))
 	{
 		$plugin_name = $plugins[$path];
 	}
