@@ -17,7 +17,7 @@ class i18n {
 	 */
 	public static function init($charset)
 	{
-		if ( !self::$mode )
+		if ( self::$mode )
 		{
 			$return = TRUE;
 		}
@@ -42,11 +42,26 @@ class i18n {
 		return (boolean) $return;
 	}
 	
+	/*
+	 * i18n::hsc
+	 * htmlspecialchars wrapper
+	 * @param	string	$string	target string
+	 * @param	string	$quotation	quotation mode
+	 * @return	string	escaped string
+	 */
 	public static function hsc($string, $quotation=ENT_QUOTES)
 	{
 		return (string) htmlspecialchars($string, $quotation, self::$charset);
 	}
 	
+	/*
+	 * i18n::convert
+	 * character set converter
+	 * @param	string	$string	target string binary
+	 * @param	string	$from	original character set encoding
+	 * @param	string	$to	target character set encoding
+	 * @return	string	converted string
+	 */
 	public static function convert($string, $from, $to='')
 	{
 		if ( $to == '' )
@@ -65,6 +80,12 @@ class i18n {
 		return (string) $string;
 	}
 	
+	/*
+	 * i18n::strlen
+	 * strlen wrapper
+	 * @param	string	$string	target string
+	 * @return	integer	the number of letters
+	 */
 	public static function strlen($string)
 	{
 		$length = 0;
@@ -83,6 +104,14 @@ class i18n {
 		return (integer) $length;
 	}
 	
+	/*
+	 * i18n::strpos
+	 * strpos wrapper
+	 * @param	string	$haystack	string to search
+	 * @param	string	$needle	string for search
+	 * @param	string	$offset	the position from which the search should be performed. 
+	 * @return	integer	the numeric position of the first occurrence of needle in haystack
+	 */
 	public static function strpos($haystack, $needle, $offset=0)
 	{
 		$position = 0;
@@ -101,6 +130,13 @@ class i18n {
 		return (integer) $position;
 	}
 	
+	/*
+	 * i18n::strrpos
+	 * strrpos wrapper
+	 * @param	string	$haystack	string to search
+	 * @param	string	$needle	string for search
+	 * @return	integer	the numeric position of the last occurrence of needle in haystack
+	 */
 	public static function strrpos ($haystack, $needle)
 	{
 		$position = 0;
@@ -119,6 +155,14 @@ class i18n {
 		return (integer) $position;
 	}
 	
+	/*
+	 * i18n::substr
+	 * substr wrapper
+	 * @param	string	$string	string to be cut
+	 * @param	string	$start	the position of starting
+	 * @param	integer	$length	the length to be cut
+	 * @return	string	the extracted part of string
+	 */
 	public static function substr($string, $start, $length=0)
 	{
 		$return = '';
@@ -137,6 +181,15 @@ class i18n {
 		return (string) $return;
 	}
 	
+	/*
+	 * i18n::explode
+	 * explode function based on multibyte processing
+	 * we SHOULD use preg_split function instead of this
+	 * @param	string	$delimiter	singlebyte or multibyte delimiter
+	 * @param	string	$target	target string
+	 * @param	integer	$limit	the number of index for returned array
+	 * @return	array	array splitted by $delimiter
+	 */
 	public static function explode($delimiter, $target, $limit=0)
 	{
 		$array = array();
@@ -160,6 +213,13 @@ class i18n {
 		return (array) $array;
 	}
 	
+	/*
+	 * i18n::strftime
+	 * strftime function based on multibyte processing
+	 * @param	string	$format	format with singlebyte or multibyte
+	 * @param	timestamp	$timestamp	UNIT timestamp
+	 * @return	string	formatted timestamp
+	 */
 	public static function strftime($format, $timestamp='')
 	{
 		$formatted = '';
@@ -187,10 +247,16 @@ class i18n {
 	}
 	
 	/*
-	 * This function is still experimental,
-	 * need to be tested in various PHP environment
+	 * i18n::mail
+	 * Send mails with headers including 7bit-encoded multibyte string
+	 * @param	string	$to		receivers including singlebyte and multibyte strings, based on RFC 2822
+	 * @param	string	$subject	subject including singlebyte and multibyte strings
+	 * @param	string	$message	message including singlebyte and multibyte strings
+	 * @param	string	$from		senders including singlebyte and multibyte strings, based on RFC 2822
+	 * @param	string(B/Q)	$scheme	7bit-encoder scheme based on RFC 2047
+	 * @return	boolean	accepted delivery or not
 	 */
-	public static function mail($to, $subject, $message, $from)
+	public static function mail($to, $subject, $message, $from, $scheme='B')
 	{
 		$senders = array();
 		$receivers = array();
@@ -200,7 +266,7 @@ class i18n {
 		{
 			if ( preg_match("#^([^,]+)?<([^,]+)?@([^,]+)?>$#", $element, $match) )
 			{
-				$name = self::seven_bit_encoder(self::$charset, 'B', trim($match[1]));
+				$name = self::seven_bit_encoder(self::$charset, $scheme, trim($match[1]));
 				$address = trim($match[2]) . '@' . trim($match[3]);
 				$receivers[] = "{$name} <{$address}>";
 			}
@@ -221,7 +287,7 @@ class i18n {
 		
 		if ( preg_match("#^([^,]+)?<([^,]+)?@([^,]+)?>$#", $from, $match) )
 		{
-			$name = self::seven_bit_encoder(self::$charset, 'B', trim($match[1]));
+			$name = self::seven_bit_encoder(self::$charset, $scheme, trim($match[1]));
 			$address = trim($match[2]) . '@' . trim($match[3]);
 			$sender = "{$name} <{$address}>";
 		}
@@ -231,7 +297,7 @@ class i18n {
 		}
 		$from = "From: {$sender}\n";
 		
-		$subject = self::seven_bit_encoder(self::$charset, 'B', $subject);
+		$subject = self::seven_bit_encoder(self::$charset, $scheme, $subject);
 		
 		$headers = "Content-Type: text/html; charset=UTF-8; format=flowed\n"
 		. "MIME-Version: 1.0\n"
@@ -253,7 +319,7 @@ class i18n {
 	 * @return	string	encoded string
 	 * 
 	 */
-	public static function seven_bit_encoder($charset, $scheme, $target)
+	private static function seven_bit_encoder($charset, $scheme, $target)
 	{
 		if ( $scheme != 'Q' )
 		{
@@ -271,33 +337,50 @@ class i18n {
 			
 			if ($scheme == 'Q')
 			{
-				$encoded_letter = self::q_type_encoder($letter);
+				$encoded_letter = self::q_encoder($letter);
 			}
 			else
 			{
-				$encoded_letter = base64_encode($letter);
+				$encoded_letter = self::b_encoder($letter);
 			}
 			
-			if ( (strlen($encoded_text) + strlen($encoded_letter) > 75 - strlen($footer))
-			 || $i - 1 == i18n::strlen($target))
+			if ( strlen($encoded_text) + strlen($encoded_letter) > 75 - strlen($footer) )
 			{
 				$multiple_encoded_words[] = "{$encoded_text}{$footer}";
 				$encoded_text = $header . $encoded_letter;
-				echo $i;
+			}
+			else if ( $i == i18n::strlen($target) - 1 )
+			{
+				$multiple_encoded_words[] = "{$encoded_text}{$encoded_letter}{$footer}";
 			}
 			else
 			{
 				$encoded_text .= $encoded_letter;
 			}
 		}
-		var_dump($multiple_encoded_words);
-//		return implode(chr(13).chr(10).chr(32), $multiple_encoded_words);
+		
+		return implode(chr(13).chr(10).chr(32), $multiple_encoded_words);
 	}
 	
 	/*
-	 * Encoder for Q type based on RFC 2047.
-	 * The "Q" encoding is similar to the "Quoted-Printable" content-transfer-encoding
-	 * defined in RFC 2045.
+	 * B encoder based on RFC 2047.
+	 * The "B" encoding is identical to the "BASE64" encoding defined by RFC 2045.
+	 * 
+	 * @link http://www.faqs.org/rfcs/rfc2045.html
+	 * @see 6.8. Base64 Content-Transfer-Encoding
+	 * 
+	 * @param	string	$target	targetted string
+	 * @return	string	encoded string
+	 * 
+	 */
+	private static function b_encoder($target)
+	{
+		return base64_encode($target);
+	}
+	
+	/*
+	 * Q encoder based on RFC 2047.
+	 * The "Q" encoding is similar to the "Quoted-Printable" content-transfer-encoding defined in RFC 2045.
 	 * 
 	 * @link http://www.faqs.org/rfcs/rfc2047.html
 	 * @see 4.2. The "Q" encoding
@@ -306,45 +389,36 @@ class i18n {
 	 * @return	string	encoded string
 	 * 
 	 */
-	public static function q_type_encoder($target)
+	private static function q_encoder($target)
 	{
 		$string = '';
 		
-		$lines = preg_split("#\r?\n#", $target);
-		$count = 0;
-		
-		foreach ( $lines as $line )
+		// this strlen() and substr() should be based on single byte!
+		for ( $i = 0; $i < strlen($target); $i++ )
 		{
-			$str_line = '';
+			$letter = substr ($target, $i, 1);
+			$order = ord($letter);
 			
-			for ( $j = 0; $j < strlen($line); $j++ )
+			// Printable ASCII characters without "=", "?", "_"
+			if ((33 <= $order && $order <= 60)
+			 || (62 == $order)
+			 || (64 <= $order && $order <= 94)
+			 || (96 <= $order && $order <= 126))
 			{
-				// this substr() should be based on single byte!
-				$letter = substr ($line, $j, 1);
-				$order = ord($letter);
-				
-				// Printable ASCII characters without "=", "?", "_"
-				if ((33 <= $order && $order <= 60)
-				 || (62 == $order)
-				 || (64 <= $order && $order <= 94)
-				 || (96 <= $order && $order <= 126))
-				{
-					$str_line .= strtoupper(dechex($order));
-				}
-				// Space shuold be encoded as the same strings as "_"
-				else if ($order == 32)
-				{
-					$str_line .= '_';
-				}
-				// Other characters
-				else
-				{
-					$str_line .= '=' . strtoupper(dechex($order));
-				}
+				$string .= strtoupper(dechex($order));
 			}
-			
-			$string .= $str_line . chr(13) . chr(10);
+			// Space shuold be encoded as the same strings as "_"
+			else if ($order == 32)
+			{
+				$string .= '_';
+			}
+			// Other characters
+			else
+			{
+				$string .= '=' . strtoupper(dechex($order));
+			}
 		}
+		
 		return $string;
 	}
 }
