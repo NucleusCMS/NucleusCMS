@@ -69,6 +69,15 @@ if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
 	$CONF['installscript'] = 1;
 }
 
+if (!class_exists('i18n', FALSE))
+{
+	include('nucleus/libs/i18n.php');
+	if ( !i18n::init('UTF-8') )
+	{
+		exit('Fail to initialize iconv or mbstring extension. Would you please contact to administrator of your PHP server?');
+	}
+}
+
 // compatibility script for php < 4.1.0
 // ToDo: remove this here and from the core
 if (phpversion() >= '4.1.0') {
