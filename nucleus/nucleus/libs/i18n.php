@@ -110,7 +110,7 @@ class i18n {
 	 * @param	string	$haystack	string to search
 	 * @param	string	$needle	string for search
 	 * @param	string	$offset	the position from which the search should be performed. 
-	 * @return	integer	the numeric position of the first occurrence of needle in haystack
+	 * @return	integer/FALSE	the numeric position of the first occurrence of needle in haystack
 	 */
 	public static function strpos($haystack, $needle, $offset=0)
 	{
@@ -127,7 +127,12 @@ class i18n {
 		{
 			$position = strpos($haystack, $needle, $offset);
 		}
-		return (integer) $position;
+		
+		if ( $position !== FALSE)
+		{
+			$position = (integer) $position;
+		}
+		return $position;
 	}
 	
 	/*
@@ -135,7 +140,7 @@ class i18n {
 	 * strrpos wrapper
 	 * @param	string	$haystack	string to search
 	 * @param	string	$needle	string for search
-	 * @return	integer	the numeric position of the last occurrence of needle in haystack
+	 * @return	integer/FALSE	the numeric position of the last occurrence of needle in haystack
 	 */
 	public static function strrpos ($haystack, $needle)
 	{
@@ -152,7 +157,12 @@ class i18n {
 		{
 			$position = strrpos($haystack, $needle, 0);
 		}
-		return (integer) $position;
+		
+		if ( $position !== FALSE)
+		{
+			$position = (integer) $position;
+		}
+		return $position;
 	}
 	
 	/*
