@@ -16,6 +16,14 @@
  * @version $Id$
  */
 
+/**
+ * Return the value of $_GET for the variable $name
+ * 
+ * If the variable is set the function returns the value,
+ * if it is not set it returns null (which is equal to false).
+ * 
+ * @param unknown_type $name
+ */
 function getVar($name) {
 	if (!isset($_GET[$name])) {
 		return;
@@ -24,6 +32,14 @@ function getVar($name) {
 	return undoMagic($_GET[$name]);
 }
 
+/**
+ * Return the value of $_POST for the variable $name
+ * 
+ * If the variable is set the function returns the value,
+ * if it is not set it returns null (which is equal to false).
+ * 
+ * @param unknown_type $name
+ */
 function postVar($name) {
 	if (!isset($_POST[$name])) {
 		return;
@@ -32,6 +48,14 @@ function postVar($name) {
 	return undoMagic($_POST[$name]);
 }
 
+/**
+ * Return the value of $_COOKIE for the variable $name
+ * 
+ * If the variable is set the function returns the value,
+ * if it is not set it returns null (which is equal to false).
+ * 
+ * @param unknown_type $name
+ */
 function cookieVar($name) {
 	if (!isset($_COOKIE[$name])) {
 		return;
@@ -40,6 +64,15 @@ function cookieVar($name) {
 	return undoMagic($_COOKIE[$name]);
 }
 
+/**
+ * Return the request var for the variable $name
+ * 
+ * If the variable is set the function returns the value,
+ * if it is not set it returns null (which is equal to false).
+ * Trys to resolve also $_GET and $_POST
+ * 
+ * @param unknown_type $name
+ */
 function requestVar($name) {
 	if(array_key_exists($name,$_REQUEST))
 		return undoMagic($_REQUEST[$name]);
@@ -51,6 +84,14 @@ function requestVar($name) {
 		return;
 }
 
+/**
+ * Return the value of $_SERVER for the variable $name
+ * 
+ * If the variable is set the function returns the value,
+ * if it is not set it returns null (which is equal to false)
+ * 
+ * @param unknown_type $name
+ */
 function serverVar($name) {
 	if (!isset($_SERVER[$name])) {
 		return false;
@@ -59,7 +100,11 @@ function serverVar($name) {
 	return $_SERVER[$name];
 }
 
-// removes magic quotes if that option is enabled
+/**
+ * Removes magic quotes if that option is enabled
+ * 
+ * @param $data
+ */
 function undoMagic($data) {
 	if (!get_magic_quotes_gpc())
 		return $data;
@@ -69,19 +114,38 @@ function undoMagic($data) {
 		return undoSybaseQuotes_array($data);
 }
 
+/**
+ * Strip slashes from a variable or an array
+ * 
+ * @param $data
+ */
 function stripslashes_array($data) {
 	return is_array($data) ? array_map('stripslashes_array', $data) : stripslashes($data);
 }
 
+/**
+ * Undo Sybase Quotes from an array
+ * 
+ * @param $data
+ */
 function undoSybaseQuotes_array($data) {
 	return is_array($data) ? array_map('undoSybaseQuotes', $data) : stripslashes($data);
 }
 
+/**
+ * Undo Sybase Quotes from a variable
+ * 
+ * @param $data
+ */
 function undoSybaseQuotes($data) {
 	return str_replace("''", "'", $data);
 }
 
-// integer array from request
+/**
+ * Integer array from request
+ * 
+ * @param unknown_type $name
+ */
 function requestIntArray($name) {
 	if (!isset($_REQUEST[$name])) {
 		return;
@@ -90,7 +154,11 @@ function requestIntArray($name) {
 	return $_REQUEST[$name];
 }
 
-// array from request. Be sure to call undoMagic on the strings inside
+/**
+ * Array from request. Be sure to call undoMagic on the strings inside.
+ * 
+ * @param $name
+ */
 function requestArray($name) {
 	if (!isset($_REQUEST[$name])) {
 		return;
@@ -99,8 +167,11 @@ function requestArray($name) {
 	return $_REQUEST[$name];
 }
 
-// add all the variables from the request as hidden input field
-// @see globalfunctions.php#passVar
+/**
+ *  add all the variables from the request as hidden input field
+ *  @see globalfunctions.php#passVar
+ * 
+ */
 function passRequestVars() {
 	foreach ($_REQUEST as $key => $value) {
 		if (($key == 'action') && ($value != requestVar('nextaction')))
@@ -115,6 +186,14 @@ function passRequestVars() {
 	}
 }
 
+/**
+ * Return the value of $_FILES for the variable $name
+ * 
+ * If the variable is set the function returns the value,
+ * if it is not set it returns null (which is equal to false)
+ * 
+ * @param $name
+ */
 function postFileInfo($name) {
 	if (!isset($_FILES[$name])) {
 		return;
@@ -123,9 +202,13 @@ function postFileInfo($name) {
 	return $_FILES[$name];
 }
 
+/**
+ * Sets the $_POST variable oldaction to the given value
+ * 
+ * @param $value
+ */
 function setOldAction($value) {
 	$_POST['oldaction'] = $value;
 }
-
 
 ?>
