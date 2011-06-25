@@ -98,13 +98,9 @@ if (!isset($CONF['installscript'])) {
     $CONF['installscript'] = 0;
 }
 
-// we will use postVar, getVar, ... methods instead of HTTP_GET_VARS or _GET
+// we will use postVar, getVar, ... methods instead of $_GET, $_POST ...
 if ($CONF['installscript'] != 1) { // vars were already included in install.php
-    if (phpversion() >= '4.1.0') {
-        include_once($DIR_LIBS . 'vars4.1.0.php');
-    } else {
-        include_once($DIR_LIBS . 'vars4.0.6.php');
-    }
+         include_once($DIR_LIBS . 'vars4.1.0.php');
 }
 
 // sanitize option

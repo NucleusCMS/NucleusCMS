@@ -78,13 +78,8 @@ if (!class_exists('i18n', FALSE))
 	}
 }
 
-// compatibility script for php < 4.1.0
-// ToDo: remove this here and from the core
-if (phpversion() >= '4.1.0') {
-	include_once('nucleus/libs/vars4.1.0.php');
-} else {
-	include_once('nucleus/libs/vars4.0.6.php');
-}
+// we will use postVar, getVar, ... methods instead of $_GET, $_POST ...
+include_once('nucleus/libs/vars4.1.0.php');
 
 // include core classes that are needed for login & plugin handling
 include_once('nucleus/libs/mysql.php');
