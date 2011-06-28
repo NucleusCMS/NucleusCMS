@@ -269,15 +269,95 @@ class SKIN {
 	 * @param $type type of the skin part (e.g. index, item, search ...) 
 	 * @param $content new content for this skin part
 	 */
+
 	function update($type, $content) {
+		global $manager;
+	   
 		$skinid = $this->id;
 
+		$query = 'SELECT sdesc FROM '.sql_table('skin')." WHERE stype='".sql_real_escape_string($type)."' and sdesc=".intval($skinid);
+		$res = sql_query($query);
+		$skintypeexists = sql_fetch_object($res);
+		$skintypevalue = ($content == true);
+	   
+		if($skintypevalue && $skintypeexists)
+		{
+			// PreUpdateSkinPart event
+			$manager->notify(
+				'PreUpdateSkinPart',
+				array(
+					'skinid' => $skinid,
+					'type' => $type,
+					'content' => &$content
+				)
+			);
+		}
+		else if($skintypevalue && (!$skintypeexists))
+		{
+			// PreAddSkinPart event
+			$manager->notify(
+				'PreAddSkinPart',
+				array(
+					'skinid' => $skinid,
+					'type' => $type,
+					'content' => &$content
+				)
+			);
+		}
+		else if((!$skintypevalue) && $skintypeexists)
+		{
+			// PreDeleteSkinPart event
+			$manager->notify(
+				'PreDeleteSkinPart',
+				array(
+					'skinid' => $skinid,
+					'type' => $type
+				)
+			);
+		}
+		  
 		// delete old thingie
 		sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='".sql_real_escape_string($type)."' and sdesc=" . intval($skinid));
 
 		// write new thingie
 		if ($content) {
 			sql_query('INSERT INTO '.sql_table('skin')." SET scontent='" . sql_real_escape_string($content) . "', stype='" . sql_real_escape_string($type) . "', sdesc=" . intval($skinid));
+		}
+
+		if($skintypevalue && $skintypeexists)
+		{
+			// PostUpdateSkinPart event
+			$manager->notify(
+			'PostUpdateSkinPart',
+				array(
+					'skinid' => $skinid,
+					'type' => $type,
+					'content' => &$content
+				)
+			);
+		}
+		else if($skintypevalue && (!$skintypeexists))
+		{
+			// PostAddSkinPart event
+			$manager->notify(
+				'PostAddSkinPart',
+				array(
+					'skinid' => $skinid,
+					'type' => $type,
+					'content' => &$content
+				)
+			);
+		}
+		else if((!$skintypevalue) && $skintypeexists)
+		{
+			// PostDeleteSkinPart event
+			$manager->notify(
+				'PostDeleteSkinPart',
+				array(
+					'skinid' => $skinid,
+					'type' => $type
+				)
+			);
 		}
 	}
 

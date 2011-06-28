@@ -60,7 +60,10 @@ $aConfSkinsToImport = array(
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 // make sure there's no unnecessary escaping:
-set_magic_quotes_runtime(0);
+//set_magic_quotes_runtime(0);
+if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+    ini_set('magic_quotes_runtime', '0');
+}
 
 // if there are some plugins or skins to import, do not include vars
 // in globalfunctions.php again... so set a flag
@@ -74,7 +77,7 @@ if (!class_exists('i18n', FALSE))
 	include('nucleus/libs/i18n.php');
 	if ( !i18n::init('UTF-8') )
 	{
-		exit('Fail to initialize iconv or mbstring extension. Would you please contact to administrator of your PHP server?');
+		exit('Fail to initialize iconv or mbstring extension. Would you please contact the administrator of your PHP server?');
 	}
 }
 
@@ -515,11 +518,11 @@ function doInstall() {
 		array_push($errors, _ERROR2);
 	}
 
-	if (($mysql_usePrefix == 1) && (strlen($mysql_prefix) == 0) ) {
+	if (($mysql_usePrefix == 1) && (i18n::strlen($mysql_prefix) == 0) ) {
 		array_push($errors, _ERROR3);
 	}
 
-	if (($mysql_usePrefix == 1) && (!eregi('^[a-zA-Z0-9_]+$', $mysql_prefix) ) ) {
+	if (($mysql_usePrefix == 1) && (!preg_match('/^[a-zA-Z0-9_]+$/i', $mysql_prefix) ) ) {
 		array_push($errors, _ERROR4);
 	}
 
@@ -785,7 +788,7 @@ function doInstall() {
 		$config_data .= "	include(\$DIR_LIBS.'globalfunctions.php');\n";
 		$config_data .= "?" . ">";
 
-		$result = @fputs($fp, $config_data, strlen($config_data) );
+		$result = @fputs($fp, $config_data, i18n::strlen($config_data) );
 		fclose($fp);
 
 		if ($result) {
@@ -1080,7 +1083,7 @@ function replaceDoubleBackslash($input) {
  * 			string	
  */
 function endsWithSlash($s) {
-	return (strrpos($s, '/') == strlen($s) - 1);
+	return (i18n::strrpos($s, '/') == i18n::strlen($s) - 1);
 }
 
 /**
@@ -1108,7 +1111,7 @@ function _isValidMailAddress($address) {
  * 			name which should be tested	
  */
 function _isValidShortName($name) {
-	if (eregi("^[a-z0-9]+$", $name) ) {
+	if (preg_match("/^[a-z0-9]+$/i", $name) ) {
 		return 1;
 	} else {
 		return 0;
@@ -1125,7 +1128,7 @@ function _isValidShortName($name) {
  * 			name which should be tested	
  */
 function _isValidDisplayName($name) {
-	if (eregi("^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$", $name) ) {
+	if (preg_match("/^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$/i", $name) ) {
 		return 1;
 	} else {
 		return 0;

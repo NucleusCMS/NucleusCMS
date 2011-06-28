@@ -76,7 +76,7 @@ class NP_SkinFiles extends NucleusPlugin {
 	function init()
 	{
 		// include language file for this plugin
-		$language = ereg_replace( '[\\|/]', '', getLanguageName());
+		$language = preg_replace( '#[\\|/]#', '', getLanguageName());
 		if (file_exists($this->getDirectory().$language.'.php'))
 			include_once($this->getDirectory().$language.'.php');
 		else

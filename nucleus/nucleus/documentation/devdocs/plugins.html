@@ -1602,6 +1602,74 @@ your stuff
 		<td>(v3.60) Add fields to File Upload page of Nucleus Media Manager. All output should be valid XHTML 1.0. You must also subscribe to the PreMediaUpload event and get values from your added fields using requestVar(). </td>
 		<td>No Data is passed.</td>
 	</tr>
+	<tr>
+		<td>PreUpdateSkinPart</td>
+		<td>(v4.00) Triggers right before a skin part is updated.</td>
+		<td><dl>
+			<dt class="ro">skinid</dt>
+			<dd>The id of the skin whose part is being updated</dd>
+			<dt class="ro">type</dt>
+			<dd>The type of skin part being updated, e.g. index, item, member, error, archive, archivelist, etc... For special skin parts, the type is the name of the special skin part.</dd>
+			<dt class="ref">content</dt>
+			<dd>The new contents of the skin part that is being updated.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>PreAddSkinPart</td>
+		<td>(v4.00) Triggers right before a new skin part is added.</td>
+		<td><dl>
+			<dt class="ro">skinid</dt>
+			<dd>The id of the skin whose part is being added</dd>
+			<dt class="ro">type</dt>
+			<dd>The type of skin part being added, e.g. index, item, member, error, archive, archivelist, etc... For special skin parts, the type is the name of the special skin part.</dd>
+			<dt class="ref">content</dt>
+			<dd>The contents of the skin part that is being added.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>PreDeleteSkinPart</td>
+		<td>(v4.00) Triggers right before a skin part is deleted.</td>
+		<td><dl>
+			<dt class="ro">skinid</dt>
+			<dd>The id of the skin whose part is being deleted</dd>
+			<dt class="ro">type</dt>
+			<dd>The type of skin part being deleted, e.g. index, item, member, error, archive, archivelist, etc... For special skin parts, the type is the name of the special skin part.</dd>
+		</dl></td>
+	</tr>
+		<tr>
+		<td>PostUpdateSkinPart</td>
+		<td>(v4.00) Triggers right after a skin part is updated in the database.</td>
+		<td><dl>
+			<dt class="ro">skinid</dt>
+			<dd>The id of the skin whose part was updated</dd>
+			<dt class="ro">type</dt>
+			<dd>The type of skin part that was updated, e.g. index, item, member, error, archive, archivelist, etc... For special skin parts, the type is the name of the special skin part.</dd>
+			<dt class="ref">content</dt>
+			<dd>The new contents of the skin part that was updated.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>PreAddSkinPart</td>
+		<td>(v4.00) Triggers right after a new skin part was added to the database.</td>
+		<td><dl>
+			<dt class="ro">skinid</dt>
+			<dd>The id of the skin whose part was added</dd>
+			<dt class="ro">type</dt>
+			<dd>The type of skin part that was added, e.g. index, item, member, error, archive, archivelist, etc... For special skin parts, the type is the name of the special skin part.</dd>
+			<dt class="ref">content</dt>
+			<dd>The contents of the skin part that was added.</dd>
+		</dl></td>
+	</tr>
+	<tr>
+		<td>PreDeleteSkinPart</td>
+		<td>(v4.00) Triggers right after a skin part was deleted from the database.</td>
+		<td><dl>
+			<dt class="ro">skinid</dt>
+			<dd>The id of the skin whose part was deleted</dd>
+			<dt class="ro">type</dt>
+			<dd>The type of skin part that was deleted, e.g. index, item, member, error, archive, archivelist, etc... For special skin parts, the type is the name of the special skin part.</dd>
+		</dl></td>
+	</tr>
 <!--	<tr>
 		<td></td>
 		<td></td>
