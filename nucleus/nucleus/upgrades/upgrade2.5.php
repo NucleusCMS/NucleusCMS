@@ -38,7 +38,7 @@ function upgrade_do250() {
 				   ." odef text,"
 				   ." oextra text,"
 				   ." PRIMARY KEY(opid, oname, ocontext)"
-				   .") TYPE=MyISAM;";
+				   .") ENGINE=MyISAM;";
 			upgrade_query('Creating ' . sql_table('plugin_option_desc') . ' table',$query);
 		}
 

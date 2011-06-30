@@ -22,13 +22,13 @@ function upgrade_do96() {
 
 	// 1. create nucleus_actionlog
 	if (!upgrade_checkIfTableExists('actionlog')) {
-		$query = 'CREATE TABLE '.sql_table('actionlog')." (timestamp datetime NOT NULL default '0000-00-00 00:00:00', message varchar(255) NOT NULL default '', PRIMARY KEY  (timestamp)) TYPE=MyISAM;";
+		$query = 'CREATE TABLE '.sql_table('actionlog')." (timestamp datetime NOT NULL default '0000-00-00 00:00:00', message varchar(255) NOT NULL default '', PRIMARY KEY  (timestamp)) ENGINE=MyISAM;";
 		upgrade_query("Creating nucleus_actionlog table",$query);
 	}
 	
 	// 2. create nucleus_ban
 	if (!upgrade_checkIfTableExists('ban')) {
-		$query = 'CREATE TABLE '.sql_table('ban')." (  iprange varchar(15) NOT NULL default '',  reason varchar(255) NOT NULL default '',  blogid int(11) NOT NULL default '0') TYPE=MyISAM;";
+		$query = 'CREATE TABLE '.sql_table('ban')." (  iprange varchar(15) NOT NULL default '',  reason varchar(255) NOT NULL default '',  blogid int(11) NOT NULL default '0') ENGINE=MyISAM;";
 		upgrade_query("Creating nucleus_ban table",$query);
 	}
 	
@@ -44,7 +44,7 @@ function upgrade_do96() {
 		$query = 'CREATE TABLE '.sql_table('karma')." ("
 			."  itemid int(11) NOT NULL default '0',"
 			."  ip char(15) NOT NULL default ''"
-			.") TYPE=MyISAM;";
+			.") ENGINE=MyISAM;";
 		upgrade_query("Creating nucleus_karma table",$query);
 	}
 	
