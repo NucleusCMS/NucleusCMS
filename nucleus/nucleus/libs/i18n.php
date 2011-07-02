@@ -1,8 +1,9 @@
 <?php
 /*
  * i18n class
- * written by Takashi Sakamoto as of Jun.5, 2011
+ * written by Takashi Sakamoto as of Jul.02, 2011
  * This is wrapper functions of iconv and mbstring
+ * and mail function with 7bit characters encoder
  * for multibyte processing.
  */
 class i18n {
@@ -193,8 +194,11 @@ class i18n {
 	
 	/*
 	 * i18n::explode
-	 * explode function based on multibyte processing
-	 * we SHOULD use preg_split function instead of this
+	 * explode function based on multibyte processing with non-pcre regular expressions
+	 * 
+	 * NOTE: we SHOULD use preg_split function instead of this,
+	 *  and I hope this is obsoleted near future...
+	 * 
 	 * @param	string	$delimiter	singlebyte or multibyte delimiter
 	 * @param	string	$target	target string
 	 * @param	integer	$limit	the number of index for returned array
@@ -239,7 +243,7 @@ class i18n {
 			return $format;
 		}
 		$format		= trim(preg_replace('#(%.)#', ',$1,', $format), ',');
-		$elements	= self::explode(',', $format);
+		$elements	= preg_split('#,#', $format);
 		
 		foreach ( $elements as $element )
 		{
@@ -259,128 +263,189 @@ class i18n {
 	/*
 	 * i18n::mail
 	 * Send mails with headers including 7bit-encoded multibyte string
-	 * @param	string	$to		receivers including singlebyte and multibyte strings, based on RFC 2822
+	 * @param	string	$to		receivers including singlebyte and multibyte strings, based on RFC 5322
 	 * @param	string	$subject	subject including singlebyte and multibyte strings
 	 * @param	string	$message	message including singlebyte and multibyte strings
-	 * @param	string	$from		senders including singlebyte and multibyte strings, based on RFC 2822
+	 * @param	string	$from		senders including singlebyte and multibyte strings, based on RFC 5322
 	 * @param	string(B/Q)	$scheme	7bit-encoder scheme based on RFC 2047
 	 * @return	boolean	accepted delivery or not
 	 */
 	public static function mail($to, $subject, $message, $from, $scheme='B')
 	{
-		$senders = array();
-		$receivers = array();
 		
-		$elements = self::explode(',', $to);
-		foreach ( $elements as $element )
+		$to = self::mailbox_list_encoder($to, $scheme);
+		$subject = self::seven_bit_characters_encoder($subject, $scheme);
+		$from = 'From: ' . self::mailbox_list_encoder($from, $scheme);
+		
+		/*
+		 * All of 7bit character encoding derives from ISO/IEC 646
+		 * So we can decide the body's encoding bit count by this regular expression.
+		 * 
+		 */
+		$bitcount = '8bit';
+		if ( preg_match('#\A[\x00-\x7f]*\z#', $message) )
 		{
-			if ( preg_match("#^([^,]+)?<([^,]+)?@([^,]+)?>$#", $element, $match) )
+			$bitcount = '7bit';
+		}
+		
+		$headers = 'Content-Type: text/html; charset=' . self::$charset . "; format=flowed; delsp=yes\n"
+		. "Content-Transfer-Encoding: {$bitcount}\n"
+		. "X-Mailer: Nucleus CMS i18n class\n";
+		
+		return mail($to, $subject, $message, "{$from}\n{$headers}");
+	}
+	
+	/*
+	 * i18n::mailbox_list_encoder
+	 * Encode multi byte strings included in mailbox.
+	 * The format of mailbox is based on RFC 5322, which obsoletes RFC 2822
+	 * 
+	 * @param	string	$mailbox_list		mailbox list
+	 * @return	string	encoded string	
+	 * @link	http://www.faqs.org/rfcs/rfc5322.html
+	 * @see		3.4. Address Specification
+	 * 
+	 */
+	private static function mailbox_list_encoder ($mailbox_list, $scheme='B')
+	{
+		$encoded_mailboxes = array();
+		$mailboxes = preg_split('#,#', $mailbox_list);
+		foreach ( $mailboxes as $mailbox )
+		{
+			if ( preg_match("#^([^,]+)?<([^,]+)?@([^,]+)?>$#", $mailbox, $match) )
 			{
-				$name = self::seven_bit_encoder(self::$charset, $scheme, trim($match[1]));
-				$address = trim($match[2]) . '@' . trim($match[3]);
-				$receivers[] = "{$name} <{$address}>";
+				$display_name = self::seven_bit_characters_encoder(trim($match[1]), $scheme);
+				$local_part = trim($match[2]);
+				$domain = trim($match[3]);
+				$encoded_mailboxes[] = "{$name} <{$local_part}@{$domain}>";
 			}
-			else if ( preg_match("#([^,]+)?@([^,]+)?#", $element) )
+			else if ( preg_match("#([^,]+)?@([^,]+)?#", $mailbox) )
 			{
-				$receivers[] = $element;
+				$encoded_mailboxes[] = $mailbox;
 			}
 			else
 			{
 				continue;
 			}
 		}
-		if ( $receivers == array() )
+		if ( $encoded_mailboxes == array() )
 		{
 			return FALSE;
 		}
-		$to = implode(',', $receivers);
-		
-		if ( preg_match("#^([^,]+)?<([^,]+)?@([^,]+)?>$#", $from, $match) )
-		{
-			$name = self::seven_bit_encoder(self::$charset, $scheme, trim($match[1]));
-			$address = trim($match[2]) . '@' . trim($match[3]);
-			$sender = "{$name} <{$address}>";
-		}
-		else if ( preg_match("#([^,]+)?@([^,]+)?#", $from) )
-		{
-			$sender = trim($element);
-		}
-		$from = "From: {$sender}\n";
-		
-		$subject = self::seven_bit_encoder(self::$charset, $scheme, $subject);
-		
-		$headers = "Content-Type: text/html; charset=UTF-8; format=flowed\n"
-		. "MIME-Version: 1.0\n"
-		. "Content-Transfer-Encoding: 8bit\n"
-		. "X-Mailer: Nucleus CMS\n";
-		
-		return mail($to, $subject, $message, $from . $headers);
+		return implode(',', $encoded_mailboxes);
 	}
 	
 	/*
+	 * i18n::seven_bit_characters_encoder
 	 * Encoder into 7bit ASCII expression for Non-ASCII Text based on RFC 2047.
 	 * 
 	 * @link http://www.faqs.org/rfcs/rfc2047.html
 	 * @see 2. Syntax of encoded-words
-	 * 
 	 * @param	string	$charset	Character set encoding
 	 * @param	string	$type	type of 7 bit encoding, should be 'B' or 'Q'
-	 * @param	string	$target	Target string with header field
+	 * @param	string	$string	Target string with header field
 	 * @return	string	encoded string
 	 * 
+	 * NOTE: iconv extension give the same functions as this and each encoder in PHP5
+	 * So this should be replaced with it near future, maybe PHP6.
+	 * 
+	 * NOTE: RFC 2047 has a ambiguousity for dealing with 'linear-white-space'.
+	 *  This causes a trouble related to line breaking between single byte and multi byte strings.
+	 *  To avoid this, single byte string is encoded as well as multi byte string here.
+	 * 
+	 * NOTE: RFC 2231 allows the specification of the language to be used
+	 *  for display as well as the character set but isn't applied here.
+	 * 
 	 */
-	private static function seven_bit_encoder($charset, $scheme, $target)
+	private static function seven_bit_characters_encoder($string, $scheme='B')
 	{
 		if ( $scheme != 'Q' )
 		{
 			$scheme = 'B';
 		}
-		
-		$header = "=?{$charset}?{$scheme}?";
+		$header = chr(13) . chr(10) . chr(32) . '=?' . self::$charset . "?{$scheme}?";
 		$footer = "?=";
+		$restriction = 78 - strlen($header) - strlen($footer) ;
 		
-		$multiple_encoded_words = array();
-		$encoded_text = $header;
-		for ( $i = 0; $i < i18n::strlen($target); $i++ )
+		$encoded_words = array();
+		for ( $i = 0; $i < i18n::strlen($string); $i++ )
 		{
-			$letter = i18n::substr($target, $i, 1);
-			
-			if ($scheme == 'Q')
+			if ( $scheme == 'B' )
 			{
-				$encoded_letter = self::q_encoder($letter);
+				if ( $i == 0 )
+				{
+					$letters = '';
+				}
+				
+				$letter = i18n::substr($string, $i, 1);
+				$expected_length = strlen($letters) + strlen($letter) * 4 / 3;
+				
+				if ( $expected_length > $restriction )
+				{
+					$encoded_text = self::b_encoder($letters);
+					$encoded_words[] = "{$header}{$encoded_text}{$footer}";
+					$letters = '';
+				}
+				
+				$letters .= $letter;
+				
+				if ( $i == i18n::strlen($string) - 1 )
+				{
+					$encoded_text = self::b_encoder($letters);
+					$encoded_words[] = "{$header}{$encoded_text}{$footer}";
+					break;
+				}
+				continue;
 			}
 			else
 			{
-				$encoded_letter = self::b_encoder($letter);
-			}
-			
-			if ( strlen($encoded_text) + strlen($encoded_letter) > 75 - strlen($footer) )
-			{
-				$multiple_encoded_words[] = "{$encoded_text}{$footer}";
-				$encoded_text = $header . $encoded_letter;
-			}
-			else if ( $i == i18n::strlen($target) - 1 )
-			{
-				$multiple_encoded_words[] = "{$encoded_text}{$encoded_letter}{$footer}";
-			}
-			else
-			{
+				if ( $i == 0 )
+				{
+					$encoded_text = '';
+				}
+				
+				$encoded_letter = self::q_encoder(i18n::substr($string, $i, 1));
+				$expected_length = strlen($encoded_text) + strlen($encoded_letter);
+				
+				if ( $expected_length > $restriction )
+				{
+					$encoded_words[] = "{$header}{$encoded_text}{$footer}";
+					$letters = '';
+				}
+				
 				$encoded_text .= $encoded_letter;
+				
+				if ( $i == i18n::strlen($string) - 1 )
+				{
+					$encoded_words[] = "{$header}{$encoded_text}{$footer}";
+					break;
+				}
+				continue;
 			}
 		}
 		
-		return implode(chr(13).chr(10).chr(32), $multiple_encoded_words);
+		return implode('', $encoded_words);
 	}
 	
 	/*
-	 * B encoder based on RFC 2047.
-	 * The "B" encoding is identical to the "BASE64" encoding defined by RFC 2045.
+	 * B encoder according to RFC 2047.
+	 * The "B" encoding is identical to the "BASE64" encoding defined by RFC 4648.
 	 * 
-	 * @link http://www.faqs.org/rfcs/rfc2045.html
+	 * @link http://tools.ietf.org/html/rfc4648
 	 * @see 6.8. Base64 Content-Transfer-Encoding
-	 * 
 	 * @param	string	$target	targetted string
 	 * @return	string	encoded string
+	 * 
+	 * NOTE: According to RFC 4648
+	 * (1)	The final quantum of encoding input is an integral multiple of 24 bits;
+	 * 		here, the final unit of encoded output will be an integral multiple
+	 * 		of 4 characters with no "=" padding.
+	 * (2)	The final quantum of encoding input is exactly 8 bits; here,
+	 * 		the final unit of encoded output will be two characters followed
+	 * 		by two "=" padding characters.
+	 * (3)	The final quantum of encoding input is exactly 16 bits; here,
+	 * 		the final unit of encoded output will be three characters followed
+	 * 		by one "=" padding character.
 	 * 
 	 */
 	private static function b_encoder($target)
@@ -389,21 +454,38 @@ class i18n {
 	}
 	
 	/*
-	 * Q encoder based on RFC 2047.
-	 * The "Q" encoding is similar to the "Quoted-Printable" content-transfer-encoding defined in RFC 2045.
+	 * Q encoder according to RFC 2047.
+	 * The "Q" encoding is similar to "Quoted-Printable" content-transfer-encoding defined in RFC 2045,
+	 *  but the "Q" encoding and the "Quoted-Printable" are different a bit.
 	 * 
 	 * @link http://www.faqs.org/rfcs/rfc2047.html
 	 * @see 4.2. The "Q" encoding
-	 * 
 	 * @param	string	$target	targetted string
 	 * @return	string	encoded string
+	 * 
+	 * NOTE: According to RFC 2047
+	 * (1)	Any 8-bit value may be represented by a "=" followed by two hexadecimal digits.
+	 * 		For example, if the character set in use were ISO-8859-1,
+	 * 		the "=" character would thus be encoded as "=3D", and a SPACE by "=20".
+	 * 		(Upper case should be used for hexadecimal digits "A" through "F".)
+	 * (2)	The 8-bit hexadecimal value 20 (e.g., ISO-8859-1 SPACE) may be
+	 * 		represented as "_" (underscore, ASCII 95.).
+	 * 		(This character may not pass through some internetwork mail gateways,
+	 * 		but its use will greatly enhance readability of "Q" encoded data
+	 * 		with mail readers that do not support this encoding.)
+	 * 		Note that the "_" always represents hexadecimal 20,
+	 * 		even if the SPACE character occupies a different code position
+	 * 		in the character set in use.
+	 * (3)	8-bit values which correspond to printable ASCII characters
+	 * 		other than "=", "?", and "_" (underscore), MAY be represented as those characters.
+	 * 		(But see section 5 for restrictions.)
+	 * 		In particular, SPACE and TAB MUST NOT be represented as themselves within encoded words.
 	 * 
 	 */
 	private static function q_encoder($target)
 	{
 		$string = '';
 		
-		// this strlen() and substr() should be based on single byte!
 		for ( $i = 0; $i < strlen($target); $i++ )
 		{
 			$letter = substr ($target, $i, 1);
