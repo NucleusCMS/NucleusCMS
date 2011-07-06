@@ -108,7 +108,7 @@ a:hover{text-decoration:underline}
 <?php
   if (!isset($_POST['convert'])) {
 ?>
-  <p>This tool will convert your <a href='http://wordpress.org/'>WordPress blog</a>, into <a href='http://nucleuscms.org'> Nucleus CMS weblog</a>. First, install Nucleus, in a default install, and only after that run this tool. It will transfer all categories, posts, and comments into blog #1.</p>
+  <p>This tool will convert your <a href='http://wordpress.org/'>WordPress blog</a> (tested w/ 3.1.x), into <a href='http://nucleuscms.org'> Nucleus CMS weblog</a>. First, install Nucleus, in a default install, and only after that run this tool. It will transfer all categories, posts, and comments into blog #1.</p>
 <?php
   } else {
 
@@ -157,18 +157,18 @@ a:hover{text-decoration:underline}
       $catdd = $total_num;
       $total_num++;
 
-      $query="select cat_ID, cat_name from ".$prefixwp."categories order by cat_ID";
+      $query="SELECT * FROM `".$prefixwp."term_taxonomy` , `".$prefixwp."terms` WHERE ".$prefixwp."term_taxonomy.term_taxonomy_id = ".$prefixwp."terms.term_id AND ".$prefixwp."term_taxonomy.taxonomy='category'";
       $querywp=mysql_query($query,$linkwp) or die($query);
       echo "<p>rows to transfer: ".mysql_num_rows($querywp)."</p>";
       echo "<p>";
-      $i=1;
+	  $cate_map = array();
       while ($row=mysql_fetch_object($querywp)) {
-        echo $i++.", ";
+        echo $total_num.", ";
+		$cate_map[$row->term_id] = $total_num;
         $query=
           "insert into " . sql_table('category') .
           " (catid,cblog,cname,cdesc)  values (".
-          intval($total_num).",1,'".encoding($row->cat_name)."','@wordpress')";
-        // echo $queryi . "<br/>";
+          intval($total_num).",1,'".encoding($row->name)."','@wordpress')";
         $result = mysql_query($query,$linkblogcms) or die($query);
         $total_num++;
       }
@@ -177,27 +177,30 @@ a:hover{text-decoration:underline}
       /* *********************************************** */
       echo "<h2>Transfering posts and comments...</h2>";
       mysql_query("delete from " . sql_table('comment') . " where chost='@wordpress'",$linkblogcms);
-      $query="select ID,post_date,post_content,post_title from ".$prefixwp."posts where post_status='publish' order by ID";
+      $query="select * from ".$prefixwp."posts where post_status='publish' order by ID";
       $querywp=mysql_query($query,$linkwp) or die($query);
       echo "<p>rows to transfer: ".mysql_num_rows($querywp)."</p>";
       echo "<p>";
       $i=1;
       while ($row=mysql_fetch_object($querywp)) {
         echo $i++.", ";
-        // category id
-        $query="select category_id from ".$prefixwp."post2cat where post_id=".$row->ID;
-        $querywp_detail=mysql_query($query,$linkwp) or die($query);
-        if ($row_detail=mysql_fetch_object($querywp_detail)) $cat=intval($row_detail->category_id)+$catdd; else $cat=1;
+		// find category
+		$query = 'select * from '.$prefixwp.'term_relationships, '.$prefixwp.'term_taxonomy where '.$prefixwp.'term_relationships.term_taxonomy_id='.$prefixwp.'term_taxonomy.term_taxonomy_id and object_id='.$row->ID.' and '.$prefixwp.'term_taxonomy.taxonomy=\'category\' limit 1';
+		$catwp = mysql_query($query, $linkwp) or die($query);
+		$category = mysql_fetch_object($catwp);
+		$cat = $cate_map[$category->term_id];
+		if (empty($cat)) $cat = 1;
+
         // insert post
         $query=
           "insert into " . sql_table('item') . " ".
           "(ititle,ibody,iblog,iauthor,itime,icat) values (".
           "'".addslashes(encoding($row->post_title))."','".addslashes(paragraph(encoding(stripslashes($row->post_content)),false))."',1,1,'".$row->post_date."',$cat)";
-        //echo $query . "<br/>";
         $result = mysql_query($query,$linkblogcms) or die($query);
         $itemid=mysql_insert_id($linkblogcms);
+
         // insert comments
-        $query="select comment_author,comment_author_email,comment_author_url,comment_author_IP,comment_date,comment_content from ".$prefixwp."comments where comment_post_ID=".$row->ID;
+        $query="select * from ".$prefixwp."comments where comment_post_ID=".$row->ID;
         $querywp_detail=mysql_query($query,$linkwp) or die($query);
         while ($row_detail=mysql_fetch_object($querywp_detail)) {
           $url=$row_detail->comment_author_email;
@@ -228,7 +231,7 @@ a:hover{text-decoration:underline}
 ?>
   <form method='post' action='./wordpress.php'>
 
-    <h2>WordPress (v1.0-1.5.1.3) Database Info</h2>
+    <h2>WordPress (v3.1.x) Database Info</h2>
     <fieldset><legend>WP info</legend>
       <label>Host: <input type='text' name='wphost' size='50' value='<?php def('wphost'); ?>' /></label><br />
       <label>Username: <input type='text' name='wpusername' size='50' value='<?php def('wpusername'); ?>' /></label><br />
