@@ -101,6 +101,11 @@ if (!function_exists('sql_fetch_assoc'))
 					if (is_numeric($portnum)) $port = ':'.intval($portnum);
 					else $port = '';
 					$DBH = new PDO($MYSQL_HANDLER[1].':'.$mysql_database, $mysql_user, $mysql_password);
+					if ($DBH)
+					{
+						$DBH->sqliteCreateFunction('SUBSTRING', 'substr', 3);
+						$DBH->sqliteCreateFunction('UNIX_TIMESTAMP', 'strtotime', 1);
+					} 
 				break;
 				default:
 					//mysql
@@ -174,6 +179,11 @@ if (!function_exists('sql_fetch_assoc'))
 					if (is_numeric($portnum)) $port = ':'.intval($portnum);
 					else $port = '';
 					$SQL_DBH = new PDO($MYSQL_HANDLER[1].':'.$MYSQL_DATABASE, $MYSQL_USER, $MYSQL_PASSWORD);
+					if ($DBH)
+					{
+						$DBH->sqliteCreateFunction('SUBSTRING', 'substr', 3);
+						$DBH->sqliteCreateFunction('UNIX_TIMESTAMP', 'strtotime', 1);
+					} 
 				break;
 				default:
 					//mysql
@@ -222,8 +232,10 @@ if (!function_exists('sql_fetch_assoc'))
 //echo $query.'<hr />';
 		if (is_null($dbh)) $res = $SQL_DBH->query($query);
 		else $res = $dbh->query($query);
-		if ($res->errorCode() != '00000') {
-			$errors = $res->errorInfo();
+		//if ($res->errorCode() != '00000') {
+		//	$errors = $res->errorInfo();
+		if (($res === false) || ($res->errorCode() != '00000') ) {
+			$errors = ($res !== false) ? $res->errorInfo() : ( is_object($dbh) ? $dbh->errorInfo() : $SQL_DBH->errorInfo());
 			print("SQL error with query $query: " . $errors[0].'-'.$errors[1].' '.$errors[2] . '<p />');
 		}
 		
@@ -322,7 +334,15 @@ if (!function_exists('sql_fetch_assoc'))
 	  */
 	function sql_real_escape_string($val,$dbh=NULL)
 	{
-		return addslashes($val);
+		global $MYSQL_HANDLER;
+		if (stripos($MYSQL_HANDLER[1] , 'sqlite') !== false)
+		{
+			return sqlite_escape_string($val); 
+		}
+		else 
+		{
+			return addslashes($val);
+		}
 	}
 	
 	/**
