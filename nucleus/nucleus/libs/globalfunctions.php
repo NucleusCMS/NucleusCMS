@@ -1896,7 +1896,7 @@ function serverStringToArray($str, &$array, &$frontParam)
 {
     // init param
     $array = array();
-    $fronParam = "";
+    $frontParam = "";
 
     // split front param, e.g. /index.php, and others, e.g. blogid=1&page=2
     if (strstr($str, "?")){
