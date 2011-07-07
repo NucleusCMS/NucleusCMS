@@ -1242,7 +1242,7 @@ class BLOG {
 	}
 
 	function getID() {
-		return intVal($this->blogid);
+		return intval($this->blogid);
 	}
 
 	/**
