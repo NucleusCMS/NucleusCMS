@@ -207,7 +207,8 @@ class i18n {
 	public static function explode($delimiter, $target, $limit=0)
 	{
 		$array = array();
-		if ( preg_match("#$delimiter#", $target) === 0 )
+		$delimiter = '#' . preg_quote($delimiter, '#') . '#';
+		if ( preg_match($delimiter, $target) === 0 )
 		{
 			return (array) $target;
 		}
