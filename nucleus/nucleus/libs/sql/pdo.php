@@ -119,7 +119,22 @@ if (!function_exists('sql_fetch_assoc'))
 			$DBH =NULL;
 			startUpError('<p>a1 Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
 		}
-//echo '<hr />DBH: '.print_r($DBH,true).'<hr />';		
+		
+		if ( $mysql_database )
+		{
+			sql_set_charset('utf8');
+		}
+		
+		/*
+		// For debugging
+		echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';
+		$result = sql_query('SHOW VARIABLES LIKE \'char%\';');
+		while(FALSE !== ($row = sql_fetch_row($result)))
+		{
+			echo "{$row[0]}: {$row[1]}\n";
+		}
+		*/
+		
 		return $DBH;
 	}
 	
@@ -198,6 +213,23 @@ if (!function_exists('sql_fetch_assoc'))
 			$SQL_DBH = NULL;
 			startUpError('<p>a2 Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
 		}
+		
+		if ( $MYSQL_DATABASE )
+		{
+			sql_set_charset('utf8');
+		}
+		
+		/*
+		// For debugging
+		echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';
+		$result = sql_query('SHOW VARIABLES LIKE \'char%\';');
+		while(FALSE !== ($row = sql_fetch_row($result)))
+		{
+			echo "{$row[0]}: {$row[1]}\n";
+		}
+		*/
+		
+		$MYSQL_CONN =& $SQL_DBH;
 //		echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';		
 		$MYSQL_CONN =& $SQL_DBH;
 		return $SQL_DBH;
@@ -547,18 +579,40 @@ if (!function_exists('sql_fetch_assoc'))
 			return false;
 	}
 
-    /**
-     * Get the name of the specified field in a result
-     */
-    function sql_field_name($res, $offset = 0)
-    {
-        $column = $res->getColumnMeta($offset);
-        if ($column) {
-            return $column['name'];
-        }
-        return false;
-    }
-
+	/**
+	 * Get the name of the specified field in a result
+	 */
+	function sql_field_name($res, $offset = 0)
+	{
+		$column = $res->getColumnMeta($offset);
+		if ($column) {
+			return $column['name'];
+		}
+		return false;
+	}
+	
+	/**
+	 * Set character encodings in each fields
+	 */
+	function sql_set_charset($charset)
+	{
+		global $MYSQL_HANDLER, $SQL_DBH;
+		
+		$result = TRUE;
+		
+		if ( $MYSQL_HANDLER[0] == '' || in_array('mysql', $MYSQL_HANDLER) )
+		{
+			/*
+			 * NOTE:
+			 * It's great help to you refering the same function in mysql.php.
+			 * PDO::MySQL has no function as same as mysql_set_charset().
+			 */
+			$charset = strtolower($charset);
+			$SQL_DBH->exec("SET CHARACTER SET {$charset};");
+		}
+		return;
+	}
+	
 /**************************************************************************
 Unimplemented mysql_* functions
 
@@ -594,5 +648,3 @@ Unimplemented mysql_* functions
 *******************************************************************/
 
 }
-
-?>

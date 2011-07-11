@@ -49,8 +49,22 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	function sql_connect_args($mysql_host = 'localhost', $mysql_user = '', $mysql_password = '', $mysql_database = '') {
 		
 		$CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password); 
-		if ($mysql_database) mysql_select_db($mysql_database,$CONN);
-
+		
+		if ( $mysql_database )
+		{
+			mysql_select_db($mysql_database,$CONN);
+			sql_set_charset('utf8');
+		}
+		
+		/*
+		// For debugging
+		$result = sql_query('SHOW VARIABLES LIKE \'char%\';');
+		while(FALSE !== ($row = sql_fetch_row($result)))
+		{
+			echo "{$row[0]}: {$row[1]}\n";
+		}
+		*/
+		
 		return $CONN;
 	}
 	
@@ -62,7 +76,18 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 
 		$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
 		mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
-
+		
+		sql_set_charset('utf8');
+		
+		/*
+		// For debugging
+		$result = sql_query('SHOW VARIABLES LIKE \'char%\';');
+		while(FALSE !== ($row = sql_fetch_row($result)))
+		{
+			echo "{$row[0]}: {$row[1]}\n";
+		}
+		*/
+		
 		return $MYSQL_CONN;
 	}
 
@@ -112,14 +137,17 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		return mysql_select_db($db,$conn);
 	}
 	
-	/**
-	  * executes an SQL real escape 
-	  */
-	function sql_real_escape_string($val,$conn = false)
+	/*
+	 * executes an SQL real escape 
+	 */
+	function sql_real_escape_string($val, $conn = false)
 	{
 		global $MYSQL_CONN;
-		if (!$conn) $conn = $MYSQL_CONN;
-		return mysql_real_escape_string($val,$conn);
+		if (!$conn)
+		{
+			$conn =& $MYSQL_CONN;
+		}
+		return mysql_real_escape_string($val, $conn);
 	}
 	
 	/**
@@ -281,13 +309,53 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		return mysql_get_proto_info($conn);
 	}
 
-    /**
-     * Get the name of the specified field in a result
-     */
-    function sql_field_name($res, $offset = 0)
-    {
-        return mysql_field_name($res, $offset);
-    }
+	/**
+	 * Get the name of the specified field in a result
+	 */
+	function sql_field_name($res, $offset = 0)
+	{
+		return mysql_field_name($res, $offset);
+	}
+	
+	/**
+	 * Set character encodings in each fields related to MySQL connection.
+	 */
+	function sql_set_charset($charset)
+	{
+		global $MYSQL_CONN;
+		
+		/*
+		 * NOTE:
+		 * mysql_set_charset() execute "SET NAMES xxx;" internally and set mysql->charset as xxx.
+		 *  refering to  MySQL C API.
+		 * http://dev.mysql.com/doc/refman/5.1/ja/mysql-set-character-set.html
+		 * 
+		 * And mysql_real_escape_string() is affected by mysql->charset,
+		 *  refering to  MySQL C API.
+		 * http://dev.mysql.com/doc/refman/5.1/en/mysql-real-escape-string.html
+		 * 
+		 * But the same character encoding in character_set_client and the strings is
+		 *  more important than mysql->charset
+		 *  because mysql_real_escape_string() escape some characters in ASCII character set.
+		 *  
+		 * Here, we decided to use "SET CHARACTER SET xxx;" statement for upper-compatibility.
+		 *  because with this statement collation_connection corresponds to collation_database.
+		 *  It's possible to use the database with latin1 collation.
+		 * http://dev.mysql.com/doc/refman/5.1/en/charset-connection.html
+		 * 
+		 * But apparently, if collations of each fields are not same as database collation.
+		 * the MySQL auto-conversion during its connection may work wrong.
+		 * In this case, if target field's collation is same as character_set_client (maybe utf8),
+		 * we should use mysql_set_charset() instead of this
+		 *  because it call "SET NAMES xxx;".
+		 * 
+		 */
+		
+		$charset = strtolower($charset);
+		sql_query("SET CHARACTER SET {$charset};");
+		
+		return;
+	}
 	
 /**************************************************************************
 Unimplemented mysql_* functions
@@ -323,6 +391,4 @@ Unimplemented mysql_* functions
 
 *******************************************************************/
 
-
 }
-?>
