@@ -133,6 +133,7 @@ if (!function_exists('sql_fetch_assoc'))
 			if (i18n::strpos($MYSQL_HOST,':') === false) {
 				$host = $MYSQL_HOST;
 				$port = '';
+				$portnum = ''; 
 			}
 			else {
 				list($host,$port) = i18n::explode(":",$MYSQL_HOST);
@@ -179,10 +180,10 @@ if (!function_exists('sql_fetch_assoc'))
 					if (is_numeric($portnum)) $port = ':'.intval($portnum);
 					else $port = '';
 					$SQL_DBH = new PDO($MYSQL_HANDLER[1].':'.$MYSQL_DATABASE, $MYSQL_USER, $MYSQL_PASSWORD);
-					if ($DBH)
+					if ($SQL_DBH)
 					{
-						$DBH->sqliteCreateFunction('SUBSTRING', 'substr', 3);
-						$DBH->sqliteCreateFunction('UNIX_TIMESTAMP', 'strtotime', 1);
+						$SQL_DBH->sqliteCreateFunction('SUBSTRING', 'substr', 3);
+						$SQL_DBH->sqliteCreateFunction('UNIX_TIMESTAMP', 'strtotime', 1);
 					} 
 				break;
 				default:
@@ -198,7 +199,7 @@ if (!function_exists('sql_fetch_assoc'))
 			startUpError('<p>a2 Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
 		}
 //		echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';		
-		$MYSQL_CONN &= $SQL_DBH;
+		$MYSQL_CONN =& $SQL_DBH;
 		return $SQL_DBH;
 
 	}

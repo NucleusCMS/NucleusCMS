@@ -144,7 +144,7 @@ class SEARCH {
 
         if (!is_array($matches)) $match=$matches;
 
-        else return ' ('.$this->boolean_sql_where_short(sql_real_escape_string($mathes[1]),$match).') ';
+        else return ' ('.$this->boolean_sql_where_short(sql_real_escape_string($matches[1]),$match).') ';
 
     }	
 
