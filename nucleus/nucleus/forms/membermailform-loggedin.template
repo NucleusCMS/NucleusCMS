@@ -6,7 +6,7 @@
 <input type="hidden" name="url" value="<%formdata(url)%>" />
 		<%errordiv%>
 
-		<textarea alt="<%text(_MMAIL_MAIL)%>" name="message" class="formfield" rows="<%formdata(rows)%>" cols="<%formdata(cols)%>"><%formdata(message)%></textarea>
+		<textarea title="<%text(_MMAIL_MAIL)%>" name="message" class="formfield" rows="<%formdata(rows)%>" cols="<%formdata(cols)%>"><%formdata(message)%></textarea>
 
 		<%callback(FormExtra,membermailform-loggedin)%>
 

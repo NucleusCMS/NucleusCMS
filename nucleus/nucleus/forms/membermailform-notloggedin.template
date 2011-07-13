@@ -6,7 +6,7 @@
 <input type="hidden" name="url" value="<%formdata(url)%>" />
 		<%errordiv%>
 
-		<textarea alt="<%text(_MMAIL_MAIL)%>" name="message" class="formfield" rows="<%formdata(rows)%>" cols="<%formdata(cols)%>"><%formdata(message)%></textarea>
+		<textarea title="<%text(_MMAIL_MAIL)%>" name="message" class="formfield" rows="<%formdata(rows)%>" cols="<%formdata(cols)%>"><%formdata(message)%></textarea>
 
 		<label for="nucleus_mmf_frommail"><%text(_MEMBERMAIL_MAIL)%></label>
 		<input id="nucleus_mmf_frommail" type="text" name="frommail" class="formfield" value="<%formdata(frommail)%>" />
