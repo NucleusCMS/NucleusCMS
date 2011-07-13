@@ -8,8 +8,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- * 
- * This script will install the Nucleus tables in your SQL-database, 
+ *
+ * This script will install the Nucleus tables in your SQL-database,
  * and initialize the data in those tables.
  *
  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
@@ -190,7 +190,7 @@
 <?php
 		// Turn on output buffer
 		// Needed to repress the output of the sql function that are
-		// not part of php (in this case the @ operator doesn't work) 
+		// not part of php (in this case the @ operator doesn't work)
 		ob_start();
 
 		// note: this piece of code is taken from phpMyAdmin
@@ -245,7 +245,7 @@
 		{
 			echo $mysqlVersion;
 		}
-		
+
 		if ( $mysqlVersion < $minVersion )
 		{
 			echo ' <strong>', _TEXT2_WARN2 , $minVersion, '</strong>';
@@ -513,10 +513,10 @@
 
 	/**
 	 * Add a table prefix if it is used
-	 * 
+	 *
 	 * @param string $input table name with prefix
 	 * @return string
-	 */	
+	 */
 	function tableName($input)
 	{
 		global $mysql_usePrefix, $mysql_prefix;
@@ -535,7 +535,7 @@
 
 	/**
 	 * The installation process itself
-	 */	
+	 */
 	function doInstall()
 	{
 		global $mysql_usePrefix, $mysql_prefix, $weblog_ping;
@@ -923,7 +923,7 @@
 	$MYSQL_PASSWORD = '<i><b>xxxxxxxxxxx</b></i>';
 	$MYSQL_DATABASE = '<b><?php echo $mysql_database?></b>';
 	$MYSQL_PREFIX = '<b><?php echo ($mysql_usePrefix == 1)?$mysql_prefix:''?></b>';
-	
+
 	// new in 3.50. first element is db handler, the second is the db driver used by the handler
 	// default is $MYSQL_HANDLER = array('mysql','mysql');
 	//$MYSQL_HANDLER = array('mysql','mysql');
@@ -971,14 +971,14 @@
 ?>
 
 	<h1><?php echo _TITLE5; ?></h1>
-	
+
 	<?php echo _TEXT14; ?>
 
 	<ul>
 		<li><?php echo _TEXT14_L1; ?></li>
 		<li><?php echo _TEXT14_L2; ?></li>
 	</ul>
-	
+
 	<h1><?php echo _HEADER10; ?></h1>
 
 	<?php echo _TEXT15; ?>
@@ -1073,117 +1073,135 @@
 	} // end function installCustomPlugs()
 
 
-/**
- *  Install custom skins
- *  Prepares the installation of custom skins
- */
-function installCustomSkins(&$manager) {
-	global $aConfSkinsToImport, $DIR_LIBS, $DIR_SKINS;
+	/**
+	 * Install custom skins
+	 * Prepares the installation of custom skins
+	 */
+	function installCustomSkins(&$manager)
+	{
+		global $aConfSkinsToImport, $DIR_LIBS, $DIR_SKINS, $manager;
 
-	$aErrors = array();
-	global $manager;
-	if (empty($manager)) {
-	    $manager = new MANAGER;
-	}
+		$aErrors = array();
 
-	if (count($aConfSkinsToImport) == 0) {
+		if ( empty($manager) )
+		{
+			$manager = new MANAGER;
+		}
+
+		if ( count($aConfSkinsToImport) == 0 )
+		{
+			return $aErrors;
+		}
+
+		// load skinie class
+		include_once($DIR_LIBS . 'skinie.php');
+
+		$importer = new SKINIMPORT();
+
+		foreach ( $aConfSkinsToImport as $skinName )
+		{
+			$importer->reset();
+			$skinFile = $DIR_SKINS . $skinName . '/skinbackup.xml';
+
+			if ( !@file_exists($skinFile) )
+			{
+				array_push($aErrors, _ERROR23_1 . $skinFile . ' : ' . _ERROR23_2);
+				continue;
+			} // end if
+
+			$error = $importer->readFile($skinFile);
+
+			if ( $error )
+			{
+				array_push($aErrors, _ERROR24 . $skinName . ' : ' . $error);
+				continue;
+			} // end if
+
+			$error = $importer->writeToDatabase(1);
+
+			if ( $error )
+			{
+				array_push($aErrors, _ERROR24 . $skinName . ' : ' . $error);
+				continue;
+			} // end if
+
+		} // end loop
+
 		return $aErrors;
-	}
+	} // end function installCustomSkins()
 
-	// load skinie class
-	include_once($DIR_LIBS . 'skinie.php');
 
-	$importer = new SKINIMPORT();
-
-	foreach ($aConfSkinsToImport as $skinName) {
-		$importer->reset();
-		$skinFile = $DIR_SKINS . $skinName . '/skinbackup.xml';
-
-		if (!@file_exists($skinFile) ) {
-			array_push($aErrors, _ERROR23_1 . $skinFile . ' : ' . _ERROR23_2);
-			continue;
-		}
-
-		$error = $importer->readFile($skinFile);
-
-		if ($error) {
-			array_push($aErrors, _ERROR24 . $skinName . ' : ' . $error);
-			continue;
-		}
-
-		$error = $importer->writeToDatabase(1);
-
-		if ($error) {
-			array_push($aErrors, _ERROR24 . $skinName . ' : ' . $error);
-			continue;
-		}
-	}
-
-	return $aErrors;
-}
-
-/**
- *  Check if some important files of the Nucleus CMS installation are available
- *  Give an error if one or more files are not accessible
- */
-function doCheckFiles() {
-	$missingfiles = array();
-	$files = array(
-		'install.sql',
-		'index.php',
-		'action.php',
-		'nucleus/index.php',
-		'nucleus/libs/globalfunctions.php',
-		'nucleus/libs/ADMIN.php',
-		'nucleus/libs/BLOG.php',
-		'nucleus/libs/COMMENT.php',
-		'nucleus/libs/COMMENTS.php',
-		'nucleus/libs/ITEM.php',
-		'nucleus/libs/MEMBER.php',
-		'nucleus/libs/SKIN.php',
-		'nucleus/libs/TEMPLATE.php',
-		'nucleus/libs/MEDIA.php',
-		'nucleus/libs/ACTIONLOG.php',
-		'nucleus/media.php'
+	/**
+	 * Check if some important files of the Nucleus CMS installation are available
+	 * Give an error if one or more files are not accessible
+	 */
+	function doCheckFiles()
+	{
+		$missingfiles = array();
+		$files = array(
+			'install.sql',
+			'index.php',
+			'action.php',
+			'nucleus/index.php',
+			'nucleus/libs/globalfunctions.php',
+			'nucleus/libs/ADMIN.php',
+			'nucleus/libs/BLOG.php',
+			'nucleus/libs/COMMENT.php',
+			'nucleus/libs/COMMENTS.php',
+			'nucleus/libs/ITEM.php',
+			'nucleus/libs/MEMBER.php',
+			'nucleus/libs/SKIN.php',
+			'nucleus/libs/TEMPLATE.php',
+			'nucleus/libs/MEDIA.php',
+			'nucleus/libs/ACTIONLOG.php',
+			'nucleus/media.php'
 		);
 
-	$count = count($files);
+		$count = count($files);
 
-	for ($i = 0; $i < $count; $i++) {
-		if (!is_readable($files[$i]) ) {
-			array_push($missingfiles, _ERROR25_1 . $files[$i] . _ERROR25_2);
-		}
+		for ( $i = 0; $i < $count; $i++ )
+		{
+
+			if ( !is_readable($files[$i]) )
+			{
+				array_push($missingfiles, _ERROR25_1 . $files[$i] . _ERROR25_2);
+			} // end if
+
+		} // end loop
+
+		if ( count($missingfiles) > 0 )
+		{
+			showErrorMessages($missingfiles);
+		} // end if
+
+	} // end function doCheckFiles()
+
+
+	/**
+	 * Updates the configuration in the database
+	 *
+	 * @param string $name name of the config var
+	 * @param string $value new value of the config var
+	 * @return int
+	 */
+	function updateConfig($name, $value)
+	{
+		global $MYSQL_CONN;
+		$name = addslashes($name);
+		$value = trim(addslashes($value) );
+
+		$query = 'UPDATE ' . tableName('nucleus_config')
+				. " SET `value` = '$value'"
+				. " WHERE `name` = '$name'";
+
+		sql_query($query, $MYSQL_CONN) or _doError(_ERROR26 . ': ' . sql_error($MYSQL_CONN) );
+		return sql_insert_id($MYSQL_CONN);
 	}
 
-	if (count($missingfiles) > 0) {
-		showErrorMessages($missingfiles);
-	}
-}
-
-/**
- *  Updates the configuration in the database
- * 
- *  @param	$name
- * 			name of the config var
- *  @param	$val
- * 			new value of the config var	
- */
-function updateConfig($name, $val) {
-	global $MYSQL_CONN;
-	$name = addslashes($name);
-	$val = trim(addslashes($val) );
-
-	$query = 'UPDATE ' . tableName('nucleus_config')
-			. " SET value='$val'"
-			. " WHERE name='$name'";
-
-	sql_query($query,$MYSQL_CONN) or _doError(_ERROR26 . ': ' . sql_error($MYSQL_CONN) );
-	return sql_insert_id($MYSQL_CONN);
-}
 
 	/**
 	 * Replaces double backslashs
-	 * 
+	 *
 	 * @param string $input string that could have double backslashs
 	 * @return string
 	 */
@@ -1192,9 +1210,10 @@ function updateConfig($name, $val) {
 		return str_replace('\\', '/', $input);
 	}
 
+
 	/**
-	 * Checks if a string ends with a slash 
-	 * 
+	 * Checks if a string ends with a slash
+	 *
 	 * @param string $input
 	 * @return string
 	 */
@@ -1203,63 +1222,85 @@ function updateConfig($name, $val) {
 		return ( i18n::strrpos($input, '/') == i18n::strlen($input) - 1);
 	}
 
-/**
- * Checks if email address is valid
- * 
- *  @param	$address
- * 			address which should be tested	
- */
-function _isValidMailAddress($address) {
-	if (preg_match("/^[a-zA-Z0-9\._-]+@+[A-Za-z0-9\._-]+\.+[A-Za-z]{2,4}$/", $address) ) {
-		return 1;
-	} else {
-		return 0;
-	}
-}
 
-/*
- * Check if short blog names and nicknames are allowed
- * Returns true if the given string is a valid shortname
- * logic: only letters and numbers are allowed, no spaces allowed
- * 
- * FIX: function eregi is deprecated since PHP 5.3.0
- * 
- * @param	$name
- * 			name which should be tested	
- */
-function _isValidShortName($name) {
-	if (preg_match("/^[a-z0-9]+$/i", $name) ) {
-		return 1;
-	} else {
-		return 0;
-	}
-}
+	/**
+	 * Checks if email address is valid
+	 *
+	 * @param string $address address which should be tested
+	 * @return bool
+	 */
+	function _isValidMailAddress($address)
+	{
 
-/*
- * Check if a display name is allowed
- * Returns true if the given string is a valid display name
- * 
- * FIX: function eregi is deprecated since PHP 5.3.0
- * 
- * @param	$name
- * 			name which should be tested	
- */
-function _isValidDisplayName($name) {
-	if (preg_match("/^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$/i", $name) ) {
-		return 1;
-	} else {
-		return 0;
-	}
-}
+		if ( preg_match("/^[a-zA-Z0-9\._-]+@+[A-Za-z0-9\._-]+\.+[A-Za-z]{2,4}$/", $address) )
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		} // end if
 
-/*
- * Shows error message
- * 
- * @param	$msg
- * 			error message
- */
-function _doError($msg) {
-	?>
+	}
+
+
+	/*
+	 * Check if short blog names and nicknames are allowed
+	 * Returns true if the given string is a valid shortname
+	 * logic: only letters and numbers are allowed, no spaces allowed
+	 *
+	 * FIX: function eregi is deprecated since PHP 5.3.0
+	 *
+	 * @param string $name name which should be tested
+	 * @return bool
+	 */
+	function _isValidShortName($name)
+	{
+
+		if ( preg_match("/^[a-z0-9]+$/i", $name) )
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		} // end if
+
+	}
+
+
+	/*
+	 * Check if a display name is allowed
+	 * Returns true if the given string is a valid display name
+	 *
+	 * FIX: function eregi is deprecated since PHP 5.3.0
+	 *
+	 * @param string $name name which should be tested
+	 * @return bool
+	 */
+	function _isValidDisplayName($name)
+	{
+	
+		if ( preg_match("/^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$/i", $name) )
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		} // end if
+
+	}
+
+
+	/**
+	 * Shows error message
+	 *
+	 * @param string $msg error message
+	 */
+	function _doError($msg)
+	{
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -1278,16 +1319,17 @@ function _doError($msg) {
 
 <?php
 	exit;
-}
+	}
 
-/*
- * Shows error messages
- * 
- * @param	$errors
- * 			array with error messages
- */
-function showErrorMessages($errors) {
-	?>
+
+	/*
+	 * Shows error messages
+	 *
+	 * @param array $errors array with error messages
+	 */
+	function showErrorMessages($errors)
+	{
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -1303,7 +1345,8 @@ function showErrorMessages($errors) {
 	<ul>
 
 <?php
-	while($msg = array_shift($errors) ) {
+	while ( $msg = array_shift($errors) )
+	{
 		echo '<li>', $msg, '</li>';
 	}
 ?>
@@ -1316,9 +1359,11 @@ function showErrorMessages($errors) {
 
 <?php
 	exit;
-}
+	}
 
-/* for the non-php systems that decide to show the contents:
-?></div><?php	*/
 
+	/* for the non-php systems that decide to show the contents:
+?></div>
+<?php
+*/
 ?>
