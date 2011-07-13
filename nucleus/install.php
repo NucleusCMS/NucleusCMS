@@ -119,7 +119,7 @@
 
 	/**
 	 * Display the form for installation settings
-	 **/
+	 */
 	function showInstallForm()
 	{
 		// 0. pre check if all necessary files exist
@@ -508,352 +508,387 @@
 </html>
 
 <?php
+	} // end function showInstallForm()
+
+
+	/**
+	 * Add a table prefix if it is used
+	 * 
+	 * @param string $input table name with prefix
+	 * @return string
+	 */	
+	function tableName($input)
+	{
+		global $mysql_usePrefix, $mysql_prefix;
+
+		if ( $mysql_usePrefix == 1 )
+		{
+			return $mysql_prefix . $input;
+		}
+		else
+		{
+			return $input;
+		} // end if
+
 	}
 
-/*
- * Add a table prefix if it is used
- * 
- * @param 	$unPrefixed
- * 			table name with prefix
- */	
-function tableName($unPrefixed) {
-	global $mysql_usePrefix, $mysql_prefix;
 
-	if ($mysql_usePrefix == 1) {
-		return $mysql_prefix . $unPrefixed;
-	} else {
-		return $unPrefixed;
-	}
-}
+	/**
+	 * The installation process itself
+	 */	
+	function doInstall()
+	{
+		global $mysql_usePrefix, $mysql_prefix, $weblog_ping;
 
-/*
- * The installation process itself
- */	
-function doInstall() {
-	global $mysql_usePrefix, $mysql_prefix, $weblog_ping;
+		// 0. put all POST-vars into vars
+		$mysql_host = postVar('mySQL_host');
+		$mysql_user = postVar('mySQL_user');
+		$mysql_password = postVar('mySQL_password');
+		$mysql_database = postVar('mySQL_database');
+		$mysql_create = postVar('mySQL_create');
+		$mysql_usePrefix = postVar('mySQL_usePrefix');
+		$mysql_prefix = postVar('mySQL_tablePrefix');
+		$config_indexurl = postVar('IndexURL');
+		$config_adminurl = postVar('AdminURL');
+		$config_adminpath = postVar('AdminPath');
+		$config_mediaurl = postVar('MediaURL');
+		$config_skinsurl = postVar('SkinsURL');
+		$config_pluginurl = postVar('PluginURL');
+		$config_actionurl = postVar('ActionURL');
+		$config_mediapath = postVar('MediaPath');
+		$config_skinspath = postVar('SkinsPath');
+		$user_name = postVar('User_name');
+		$user_realname = postVar('User_realname');
+		$user_password = postVar('User_password');
+		$user_password2 = postVar('User_password2');
+		$user_email = postVar('User_email');
+		$blog_name = postVar('Blog_name');
+		$blog_shortname = postVar('Blog_shortname');
+		$config_adminemail = $user_email;
+		$config_sitename = $blog_name;
+		$weblog_ping = postVar('Weblog_ping');
 
-	// 0. put all POST-vars into vars
-	$mysql_host = postVar('mySQL_host');
-	$mysql_user = postVar('mySQL_user');
-	$mysql_password = postVar('mySQL_password');
-	$mysql_database = postVar('mySQL_database');
-	$mysql_create = postVar('mySQL_create');
-	$mysql_usePrefix = postVar('mySQL_usePrefix');
-	$mysql_prefix = postVar('mySQL_tablePrefix');
-	$config_indexurl = postVar('IndexURL');
-	$config_adminurl = postVar('AdminURL');
-	$config_adminpath = postVar('AdminPath');
-	$config_mediaurl = postVar('MediaURL');
-	$config_skinsurl = postVar('SkinsURL');
-	$config_pluginurl = postVar('PluginURL');
-	$config_actionurl = postVar('ActionURL');
-	$config_mediapath = postVar('MediaPath');
-	$config_skinspath = postVar('SkinsPath');
-	$user_name = postVar('User_name');
-	$user_realname = postVar('User_realname');
-	$user_password = postVar('User_password');
-	$user_password2 = postVar('User_password2');
-	$user_email = postVar('User_email');
-	$blog_name = postVar('Blog_name');
-	$blog_shortname = postVar('Blog_shortname');
-	$config_adminemail = $user_email;
-	$config_sitename = $blog_name;
-	$weblog_ping = postVar('Weblog_ping');
+		$config_indexurl = replace_double_backslash($config_indexurl);
+		$config_adminurl = replace_double_backslash($config_adminurl);
+		$config_mediaurl = replace_double_backslash($config_mediaurl);
+		$config_skinsurl = replace_double_backslash($config_skinsurl);
+		$config_pluginurl = replace_double_backslash($config_pluginurl);
+		$config_actionurl = replace_double_backslash($config_actionurl);
+		$config_adminpath = replace_double_backslash($config_adminpath);
+		$config_skinspath = replace_double_backslash($config_skinspath);
 
-	$config_indexurl = replace_double_backslash($config_indexurl);
-	$config_adminurl = replace_double_backslash($config_adminurl);
-	$config_mediaurl = replace_double_backslash($config_mediaurl);
-	$config_skinsurl = replace_double_backslash($config_skinsurl);
-	$config_pluginurl = replace_double_backslash($config_pluginurl);
-	$config_actionurl = replace_double_backslash($config_actionurl);
-	$config_adminpath = replace_double_backslash($config_adminpath);
-	$config_skinspath = replace_double_backslash($config_skinspath);
+		// 1. check all the data
+		$errors = array();
 
-	// 1. check all the data
-	$errors = array();
+		if ( !$mysql_database )
+		{
+			array_push($errors, _ERROR2);
+		}
 
-	if (!$mysql_database) {
-		array_push($errors, _ERROR2);
-	}
+		if ( ($mysql_usePrefix == 1) && (i18n::strlen($mysql_prefix) == 0) )
+		{
+			array_push($errors, _ERROR3);
+		}
 
-	if (($mysql_usePrefix == 1) && (i18n::strlen($mysql_prefix) == 0) ) {
-		array_push($errors, _ERROR3);
-	}
+		if ( ($mysql_usePrefix == 1) && (!preg_match('/^[a-zA-Z0-9_]+$/i', $mysql_prefix) ) )
+		{
+			array_push($errors, _ERROR4);
+		}
 
-	if (($mysql_usePrefix == 1) && (!preg_match('/^[a-zA-Z0-9_]+$/i', $mysql_prefix) ) ) {
-		array_push($errors, _ERROR4);
-	}
+		// TODO: add action.php check
+		if ( !ends_with_slash($config_indexurl) || !ends_with_slash($config_adminurl) || !ends_with_slash($config_mediaurl) || !ends_with_slash($config_pluginurl) || !ends_with_slash($config_skinsurl) )
+		{
+			array_push($errors, _ERROR5);
+		}
 
-	// TODO: add action.php check
-	if (!ends_with_slash($config_indexurl) || !ends_with_slash($config_adminurl) || !ends_with_slash($config_mediaurl) || !ends_with_slash($config_pluginurl) || !ends_with_slash($config_skinsurl) ) {
-		array_push($errors, _ERROR5);
-	}
+		if ( !ends_with_slash($config_adminpath) )
+		{
+			array_push($errors, _ERROR6);
+		}
 
-	if (!ends_with_slash($config_adminpath) ) {
-		array_push($errors, _ERROR6);
-	}
+		if ( !ends_with_slash($config_mediapath) )
+		{
+			array_push($errors, _ERROR7);
+		}
 
-	if (!ends_with_slash($config_mediapath) ) {
-		array_push($errors, _ERROR7);
-	}
+		if ( !ends_with_slash($config_skinspath) )
+		{
+			array_push($errors, _ERROR8);
+		}
 
-	if (!ends_with_slash($config_skinspath) ) {
-		array_push($errors, _ERROR8);
-	}
+		if ( !is_dir($config_adminpath) )
+		{
+			array_push($errors, _ERROR9);
+		}
 
-	if (!is_dir($config_adminpath) ) {
-		array_push($errors, _ERROR9);
-	}
+		if ( !_isValidMailAddress($user_email) )
+		{
+			array_push($errors, _ERROR10);
+		}
 
-	if (!_isValidMailAddress($user_email) ) {
-		array_push($errors, _ERROR10);
-	}
+		if ( !_isValidDisplayName($user_name) )
+		{
+			array_push($errors, _ERROR11);
+		}
 
-	if (!_isValidDisplayName($user_name) ) {
-		array_push($errors, _ERROR11);
-	}
+		if ( !$user_password || !$user_password2 )
+		{
+			array_push($errors, _ERROR12);
+		}
 
-	if (!$user_password || !$user_password2) {
-		array_push($errors, _ERROR12);
-	}
+		if ( $user_password != $user_password2 )
+		{
+			array_push($errors, _ERROR13);
+		}
 
-	if ($user_password != $user_password2) {
-		array_push($errors, _ERROR13);
-	}
+		if ( !_isValidShortName($blog_shortname) )
+		{
+			array_push($errors, _ERROR14);
+		}
 
-	if (!_isValidShortName($blog_shortname) ) {
-		array_push($errors, _ERROR14);
-	}
+		if ( sizeof($errors) > 0 )
+		{
+			showErrorMessages($errors);
+		}
 
-	if (sizeof($errors) > 0) {
-		showErrorMessages($errors);
-	}
+		// 2. try to log in to mySQL
 
-	// 2. try to log in to mySQL
+		global $MYSQL_CONN;
 
-	global $MYSQL_CONN;
-	// this will need to be changed if we ever allow
-	$MYSQL_CONN = @sql_connect_args($mysql_host, $mysql_user, $mysql_password);
+		// this will need to be changed if we ever allow
+		$MYSQL_CONN = @sql_connect_args($mysql_host, $mysql_user, $mysql_password);
 
-	if ($MYSQL_CONN == false) {
-		_doError(_ERROR15 . ': ' . sql_error() );
-	}
+		if ( $MYSQL_CONN == FALSE )
+		{
+			_doError(_ERROR15 . ': ' . sql_error() );
+		}
 
-	// 3. try to create database (if needed)
-	if ($mysql_create == 1) {
-		sql_query('CREATE DATABASE ' . $mysql_database,$MYSQL_CONN) or _doError(_ERROR16 . ': ' . sql_error($MYSQL_CONN) );
-	}
+		// 3. try to create database (if needed)
+		if ( $mysql_create == 1 )
+		{
+			sql_query('CREATE DATABASE ' . $mysql_database, $MYSQL_CONN) or _doError(_ERROR16 . ': ' . sql_error($MYSQL_CONN) );
+		}
 
-	// 4. try to select database
-	sql_select_db($mysql_database,$MYSQL_CONN) or _doError(_ERROR17);
+		// 4. try to select database
+		sql_select_db($mysql_database, $MYSQL_CONN) or _doError(_ERROR17);
 
-	// 5. execute queries
-	$filename = 'install.sql';
-	$fd = fopen($filename, 'r');
-	$queries = fread($fd, filesize($filename) );
-	fclose($fd);
+		// 5. execute queries
+		$filename = 'install.sql';
+		$fd = fopen($filename, 'r');
+		$queries = fread($fd, filesize($filename) );
+		fclose($fd);
 
-	$queries = preg_split('#(;\n|;\r)#', $queries);
+		$queries = preg_split('#(;\n|;\r)#', $queries);
 
-	$aTableNames = array(
-		'nucleus_actionlog',
-		'nucleus_ban',
-		'nucleus_blog',
-		'nucleus_category',
-		'nucleus_comment',
-		'nucleus_config',
-		'nucleus_item',
-		'nucleus_karma',
-		'nucleus_member',
-		'nucleus_plugin',
-		'nucleus_skin',
-		'nucleus_template',
-		'nucleus_team',
-		'nucleus_activation',
-		'nucleus_tickets'
+		$aTableNames = array(
+			'nucleus_actionlog',
+			'nucleus_ban',
+			'nucleus_blog',
+			'nucleus_category',
+			'nucleus_comment',
+			'nucleus_config',
+			'nucleus_item',
+			'nucleus_karma',
+			'nucleus_member',
+			'nucleus_plugin',
+			'nucleus_skin',
+			'nucleus_template',
+			'nucleus_team',
+			'nucleus_activation',
+			'nucleus_tickets'
 		);
-// these are unneeded (one of the replacements above takes care of them)
-//			'nucleus_plugin_event',
-//			'nucleus_plugin_option',
-//			'nucleus_plugin_option_desc',
-//			'nucleus_skin_desc',
-//			'nucleus_template_desc',
 
-	$aTableNamesPrefixed = array(
-		$mysql_prefix . 'nucleus_actionlog',
-		$mysql_prefix . 'nucleus_ban',
-		$mysql_prefix . 'nucleus_blog',
-		$mysql_prefix . 'nucleus_category',
-		$mysql_prefix . 'nucleus_comment',
-		$mysql_prefix . 'nucleus_config',
-		$mysql_prefix . 'nucleus_item',
-		$mysql_prefix . 'nucleus_karma',
-		$mysql_prefix . 'nucleus_member',
-		$mysql_prefix . 'nucleus_plugin',
-		$mysql_prefix . 'nucleus_skin',
-		$mysql_prefix . 'nucleus_template',
-		$mysql_prefix . 'nucleus_team',
-		$mysql_prefix . 'nucleus_activation',
-		$mysql_prefix . 'nucleus_tickets'
+		// these are unneeded (one of the replacements above takes care of them)
+		//			'nucleus_plugin_event',
+		//			'nucleus_plugin_option',
+		//			'nucleus_plugin_option_desc',
+		//			'nucleus_skin_desc',
+		//			'nucleus_template_desc',
+
+		$aTableNamesPrefixed = array(
+			$mysql_prefix . 'nucleus_actionlog',
+			$mysql_prefix . 'nucleus_ban',
+			$mysql_prefix . 'nucleus_blog',
+			$mysql_prefix . 'nucleus_category',
+			$mysql_prefix . 'nucleus_comment',
+			$mysql_prefix . 'nucleus_config',
+			$mysql_prefix . 'nucleus_item',
+			$mysql_prefix . 'nucleus_karma',
+			$mysql_prefix . 'nucleus_member',
+			$mysql_prefix . 'nucleus_plugin',
+			$mysql_prefix . 'nucleus_skin',
+			$mysql_prefix . 'nucleus_template',
+			$mysql_prefix . 'nucleus_team',
+			$mysql_prefix . 'nucleus_activation',
+			$mysql_prefix . 'nucleus_tickets'
 		);
-// these are unneeded (one of the replacements above takes care of them)
-//			$mysql_prefix . 'nucleus_plugin_event',
-//			$mysql_prefix . 'nucleus_plugin_option',
-//			$mysql_prefix . 'nucleus_plugin_option_desc',
-//			$mysql_prefix . 'nucleus_skin_desc',
-//			$mysql_prefix . 'nucleus_template_desc',
 
-	$count = count($queries);
+		// these are unneeded (one of the replacements above takes care of them)
+		//			$mysql_prefix . 'nucleus_plugin_event',
+		//			$mysql_prefix . 'nucleus_plugin_option',
+		//			$mysql_prefix . 'nucleus_plugin_option_desc',
+		//			$mysql_prefix . 'nucleus_skin_desc',
+		//			$mysql_prefix . 'nucleus_template_desc',
 
-	for ($idx = 0; $idx < $count; $idx++) {
-		$query = trim($queries[$idx]);
-		// echo "QUERY = <small>" . htmlspecialchars($query) . "</small><p>";
+		$count = count($queries);
 
-		if ($query) {
+		for ( $idx = 0; $idx < $count; $idx++ )
+		{
+			$query = trim($queries[$idx]);
+			// echo "QUERY = <small>" . htmlspecialchars($query) . "</small><p>";
 
-			if ($mysql_usePrefix == 1) {
+			if ( $query )
+			{
+
+				if ( $mysql_usePrefix == 1 )
+				{
 					$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
+				} // end if
+
+				sql_query($query, $MYSQL_CONN) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query) . '</small>): ' . sql_error($MYSQL_CONN) );
+			} // end if
+
+		} // end loop
+
+		// 5a make first post
+		$newpost = "INSERT INTO ". tableName('nucleus_item') ." VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
+		sql_query($newpost,$MYSQL_CONN) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . sql_error($MYSQL_CONN) );
+
+		// 6. update global settings
+		updateConfig('IndexURL', $config_indexurl);
+		updateConfig('AdminURL', $config_adminurl);
+		updateConfig('MediaURL', $config_mediaurl);
+		updateConfig('SkinsURL', $config_skinsurl);
+		updateConfig('PluginURL', $config_pluginurl);
+		updateConfig('ActionURL', $config_actionurl);
+		updateConfig('AdminEmail', $config_adminemail);
+		updateConfig('SiteName', $config_sitename);
+
+		// 7. update GOD member
+		$query = 'UPDATE ' . tableName('nucleus_member')
+				. " SET mname='" . addslashes($user_name) . "',"
+				. " mrealname='" . addslashes($user_realname) . "',"
+				. " mpassword='" . md5(addslashes($user_password) ) . "',"
+				. " murl='" . addslashes($config_indexurl) . "',"
+				. " memail='" . addslashes($user_email) . "',"
+				. " madmin=1, mcanlogin=1"
+				. " WHERE mnumber=1";
+
+		sql_query($query,$MYSQL_CONN) or _doError(_ERROR19 . ': ' . sql_error($MYSQL_CONN) );
+
+		// 8. update weblog settings
+		$query = 'UPDATE ' . tableName('nucleus_blog')
+				. " SET bname='" . addslashes($blog_name) . "',"
+				. " bshortname='" . addslashes($blog_shortname) . "',"
+				. " burl='" . addslashes($config_indexurl) . "'"
+				. " WHERE bnumber=1";
+
+		sql_query($query, $MYSQL_CONN) or _doError(_ERROR20 . ': ' . sql_error($MYSQL_CONN) );
+
+		// 9. update item date
+		$query = 'UPDATE ' . tableName('nucleus_item')
+				. " SET itime='" . date('Y-m-d H:i:s', time() ) ."'"
+				. " WHERE inumber=1";
+
+		sql_query($query,$MYSQL_CONN) or _doError(_ERROR21 . ': ' . sql_error($MYSQL_CONN) );
+
+		global $aConfPlugsToInstall, $aConfSkinsToImport;
+		$aSkinErrors = array();
+		$aPlugErrors = array();
+
+		if ( (count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) )
+		{
+			// 10. set global variables
+			global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_PREFIX;
+
+			$MYSQL_HOST = $mysql_host;
+			$MYSQL_USER = $mysql_user;
+			$MYSQL_PASSWORD = $mysql_password;
+			$MYSQL_DATABASE = $mysql_database;
+			$MYSQL_PREFIX = ( $mysql_usePrefix == 1 ) ? $mysql_prefix : '';
+
+			global $DIR_NUCLEUS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
+
+			$DIR_NUCLEUS = $config_adminpath;
+			$DIR_MEDIA = $config_mediapath;
+			$DIR_SKINS = $config_skinspath;
+			$DIR_PLUGINS = $DIR_NUCLEUS . 'plugins/';
+			$DIR_LANG = $DIR_NUCLEUS . 'language/';
+			$DIR_LIBS = $DIR_NUCLEUS . 'libs/';
+
+			// close database connection (needs to be closed if we want to include globalfunctions.php)
+			sql_close($MYSQL_CONN);
+
+			$manager = '';
+			include_once($DIR_LIBS . 'globalfunctions.php');
+
+			// 11. install custom skins
+			$aSkinErrors = installCustomSkins($manager);
+			$defskinQue  = 'SELECT `sdnumber` as result FROM ' . sql_table('skin_desc') . ' WHERE `sdname` = "default"';
+			$defSkinID   = quickQuery($defskinQue);
+			$updateQuery = 'UPDATE ' . sql_table('blog') . ' SET `bdefskin` = ' . intval($defSkinID) . ' WHERE `bnumber` = 1';
+			sql_query($updateQuery);
+			$updateQuery = 'UPDATE ' . sql_table('config') . ' SET `value` = ' . intval($defSkinID). ' WHERE `name` = "BaseSkin"';
+			sql_query($updateQuery);
+
+			// 12. install NP_Ping, if decided
+			if ( $weblog_ping == 1 )
+			{
+				global $aConfPlugsToInstall;
+				array_push($aConfPlugsToInstall, 'NP_Ping');
 			}
 
-			sql_query($query,$MYSQL_CONN) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query) . '</small>): ' . sql_error($MYSQL_CONN) );
-		}
-	}
-
-	// 5a make first post
-	$newpost = "INSERT INTO ". tableName('nucleus_item') ." VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
-	sql_query($newpost,$MYSQL_CONN) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . sql_error($MYSQL_CONN) );
-
-	// 6. update global settings
-	updateConfig('IndexURL', $config_indexurl);
-	updateConfig('AdminURL', $config_adminurl);
-	updateConfig('MediaURL', $config_mediaurl);
-	updateConfig('SkinsURL', $config_skinsurl);
-	updateConfig('PluginURL', $config_pluginurl);
-	updateConfig('ActionURL', $config_actionurl);
-	updateConfig('AdminEmail', $config_adminemail);
-	updateConfig('SiteName', $config_sitename);
-
-	// 7. update GOD member
-	$query = 'UPDATE ' . tableName('nucleus_member')
-			. " SET mname='" . addslashes($user_name) . "',"
-			. " mrealname='" . addslashes($user_realname) . "',"
-			. " mpassword='" . md5(addslashes($user_password) ) . "',"
-			. " murl='" . addslashes($config_indexurl) . "',"
-			. " memail='" . addslashes($user_email) . "',"
-			. " madmin=1, mcanlogin=1"
-			. " WHERE mnumber=1";
-
-	sql_query($query,$MYSQL_CONN) or _doError(_ERROR19 . ': ' . sql_error($MYSQL_CONN) );
-
-	// 8. update weblog settings
-	$query = 'UPDATE ' . tableName('nucleus_blog')
-			. " SET bname='" . addslashes($blog_name) . "',"
-			. " bshortname='" . addslashes($blog_shortname) . "',"
-			. " burl='" . addslashes($config_indexurl) . "'"
-			. " WHERE bnumber=1";
-
-	sql_query($query,$MYSQL_CONN) or _doError(_ERROR20 . ': ' . sql_error($MYSQL_CONN) );
-
-	// 9. update item date
-	$query = 'UPDATE ' . tableName('nucleus_item')
-			. " SET itime='" . date('Y-m-d H:i:s', time() ) ."'"
-			. " WHERE inumber=1";
-
-	sql_query($query,$MYSQL_CONN) or _doError(_ERROR21 . ': ' . sql_error($MYSQL_CONN) );
-
-	global $aConfPlugsToInstall, $aConfSkinsToImport;
-	$aSkinErrors = array();
-	$aPlugErrors = array();
-
-	if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
-		// 10. set global variables
-		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_PREFIX;
-
-		$MYSQL_HOST = $mysql_host;
-		$MYSQL_USER = $mysql_user;
-		$MYSQL_PASSWORD = $mysql_password;
-		$MYSQL_DATABASE = $mysql_database;
-		$MYSQL_PREFIX = ($mysql_usePrefix == 1)?$mysql_prefix:'';
-
-		global $DIR_NUCLEUS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
-
-		$DIR_NUCLEUS = $config_adminpath;
-		$DIR_MEDIA = $config_mediapath;
-		$DIR_SKINS = $config_skinspath;
-		$DIR_PLUGINS = $DIR_NUCLEUS . 'plugins/';
-		$DIR_LANG = $DIR_NUCLEUS . 'language/';
-		$DIR_LIBS = $DIR_NUCLEUS . 'libs/';
-
-		// close database connection (needs to be closed if we want to include globalfunctions.php)
-		sql_close($MYSQL_CONN);
-
-		$manager = '';
-		include_once($DIR_LIBS . 'globalfunctions.php');
-
-		// 11. install custom skins
-		$aSkinErrors = installCustomSkins($manager);
-        $defskinQue  = 'SELECT `sdnumber` as result FROM ' . sql_table('skin_desc') . ' WHERE `sdname` = "default"';
-        $defSkinID   = quickQuery($defskinQue);
-        $updateQuery = 'UPDATE ' . sql_table('blog') . ' SET `bdefskin` = ' . intval($defSkinID) . ' WHERE `bnumber` = 1';
-        sql_query($updateQuery);
-        $updateQuery = 'UPDATE ' . sql_table('config') . ' SET `value` = ' . intval($defSkinID). ' WHERE `name` = "BaseSkin"';
-        sql_query($updateQuery);
-
-		// 12. install NP_Ping, if decided
-		if ($weblog_ping == 1) {
-			global $aConfPlugsToInstall;
-			array_push($aConfPlugsToInstall, "NP_Ping");
+			// 13. install custom plugins
+			$aPlugErrors = installCustomPlugs($manager);
 		}
 
-		// 13. install custom plugins
-		$aPlugErrors = installCustomPlugs($manager);
-	}
+		// 14. Write config file ourselves (if possible)
+		$bConfigWritten = 0;
 
-	// 14. Write config file ourselves (if possible)
-	$bConfigWritten = 0;
+		if ( @file_exists('config.php') && is_writable('config.php') && $fp = @fopen('config.php', 'w') )
+		{
+			$config_data = '<' . '?php' . "\n\n";
+			//$config_data .= "\n"; (extraneous, just added extra \n to previous line
+			$config_data .= "	// mySQL connection information\n";
+			$config_data .= "	\$MYSQL_HOST = '" . $mysql_host . "';\n";
+			$config_data .= "	\$MYSQL_USER = '" . $mysql_user . "';\n";
+			$config_data .= "	\$MYSQL_PASSWORD = '" . $mysql_password . "';\n";
+			$config_data .= "	\$MYSQL_DATABASE = '" . $mysql_database . "';\n";
+			$config_data .= "	\$MYSQL_PREFIX = '" . (($mysql_usePrefix == 1)?$mysql_prefix:'') . "';\n";
+			$config_data .= "	// new in 3.50. first element is db handler, the second is the db driver used by the handler\n";
+			$config_data .= "	// default is \$MYSQL_HANDLER = array('mysql','mysql');\n";
+			$config_data .= "	//\$MYSQL_HANDLER = array('mysql','mysql');\n";
+			$config_data .= "	//\$MYSQL_HANDLER = array('pdo','mysql');\n";
+			$config_data .= "	\$MYSQL_HANDLER = array('".$MYSQL_HANDLER[0]."','".$MYSQL_HANDLER[1]."');\n";
+			$config_data .= "\n";
+			$config_data .= "	// main nucleus directory\n";
+			$config_data .= "	\$DIR_NUCLEUS = '" . $config_adminpath . "';\n";
+			$config_data .= "\n";
+			$config_data .= "	// path to media dir\n";
+			$config_data .= "	\$DIR_MEDIA = '" . $config_mediapath . "';\n";
+			$config_data .= "\n";
+			$config_data .= "	// extra skin files for imported skins\n";
+			$config_data .= "	\$DIR_SKINS = '" . $config_skinspath . "';\n";
+			$config_data .= "\n";
+			$config_data .= "	// these dirs are normally sub dirs of the nucleus dir, but \n";
+			$config_data .= "	// you can redefine them if you wish\n";
+			$config_data .= "	\$DIR_PLUGINS = \$DIR_NUCLEUS . 'plugins/';\n";
+			$config_data .= "	\$DIR_LANG = \$DIR_NUCLEUS . 'language/';\n";
+			$config_data .= "	\$DIR_LIBS = \$DIR_NUCLEUS . 'libs/';\n";
+			$config_data .= "\n";
+			$config_data .= "	// include libs\n";
+			$config_data .= "	include(\$DIR_LIBS.'globalfunctions.php');\n";
+			$config_data .= "?" . ">";
 
-	if (@file_exists('config.php') && is_writable('config.php') && $fp = @fopen('config.php', 'w') ) {
-		$config_data = '<' . '?php' . "\n\n";
-		//$config_data .= "\n"; (extraneous, just added extra \n to previous line
-		$config_data .= "	// mySQL connection information\n";
-		$config_data .= "	\$MYSQL_HOST = '" . $mysql_host . "';\n";
-		$config_data .= "	\$MYSQL_USER = '" . $mysql_user . "';\n";
-		$config_data .= "	\$MYSQL_PASSWORD = '" . $mysql_password . "';\n";
-		$config_data .= "	\$MYSQL_DATABASE = '" . $mysql_database . "';\n";
-		$config_data .= "	\$MYSQL_PREFIX = '" . (($mysql_usePrefix == 1)?$mysql_prefix:'') . "';\n";
-		$config_data .= "	// new in 3.50. first element is db handler, the second is the db driver used by the handler\n";
-		$config_data .= "	// default is \$MYSQL_HANDLER = array('mysql','mysql');\n";
-		$config_data .= "	//\$MYSQL_HANDLER = array('mysql','mysql');\n";
-		$config_data .= "	//\$MYSQL_HANDLER = array('pdo','mysql');\n";
-		$config_data .= "	\$MYSQL_HANDLER = array('".$MYSQL_HANDLER[0]."','".$MYSQL_HANDLER[1]."');\n";
-		$config_data .= "\n";
-		$config_data .= "	// main nucleus directory\n";
-		$config_data .= "	\$DIR_NUCLEUS = '" . $config_adminpath . "';\n";
-		$config_data .= "\n";
-		$config_data .= "	// path to media dir\n";
-		$config_data .= "	\$DIR_MEDIA = '" . $config_mediapath . "';\n";
-		$config_data .= "\n";
-		$config_data .= "	// extra skin files for imported skins\n";
-		$config_data .= "	\$DIR_SKINS = '" . $config_skinspath . "';\n";
-		$config_data .= "\n";
-		$config_data .= "	// these dirs are normally sub dirs of the nucleus dir, but \n";
-		$config_data .= "	// you can redefine them if you wish\n";
-		$config_data .= "	\$DIR_PLUGINS = \$DIR_NUCLEUS . 'plugins/';\n";
-		$config_data .= "	\$DIR_LANG = \$DIR_NUCLEUS . 'language/';\n";
-		$config_data .= "	\$DIR_LIBS = \$DIR_NUCLEUS . 'libs/';\n";
-		$config_data .= "\n";
-		$config_data .= "	// include libs\n";
-		$config_data .= "	include(\$DIR_LIBS.'globalfunctions.php');\n";
-		$config_data .= "?" . ">";
+			$result = @fputs($fp, $config_data, i18n::strlen($config_data) );
+			fclose($fp);
 
-		$result = @fputs($fp, $config_data, i18n::strlen($config_data) );
-		fclose($fp);
+			if ( $result )
+			{
+				$bConfigWritten = 1;
+			} // end if
 
-		if ($result) {
-			$bConfigWritten = 1;
-		}
-	}
-
+		} // end if
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -865,17 +900,21 @@ function doInstall() {
 	<div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
 
 <?php
-	$aAllErrors = array_merge($aSkinErrors, $aPlugErrors);
+		$aAllErrors = array_merge($aSkinErrors, $aPlugErrors);
 
-	if (count($aAllErrors) > 0) {
-		echo '<h1>' . _TITLE2 . '</h1>';
-		echo '<ul><li>' . implode('</li><li>', $aAllErrors) . '</li></ul>';
-	}
+		if ( count($aAllErrors) > 0 )
+		{
+			echo '<h1>' . _TITLE2 . '</h1>';
+			echo '<ul><li>' . implode('</li><li>', $aAllErrors) . '</li></ul>';
+		}
 
-	if (!$bConfigWritten) { ?>
+		// begin if: config file not written
+		if ( !$bConfigWritten )
+		{
+?>
 		<h1><?php echo _TITLE3; ?></h1>
 
-		<? echo _TEXT10; ?>
+		<?php echo _TEXT10; ?>
 
 		<pre><code>&lt;?php
 	// mySQL connection information
@@ -916,13 +955,20 @@ function doInstall() {
 	<?php echo _TEXT12; ?>
 	</div>
 
-<?php } else { ?>
+<?php
+		}
+		// else: config file written
+		else
+		{
+?>
 
 	<h1><?php echo _TITLE4; ?></h1>
 
 	<?php echo _TEXT13; ?>
 
-<?php } ?>
+<?php
+		} // end if
+?>
 
 	<h1><?php echo _TITLE5; ?></h1>
 	
@@ -957,7 +1003,8 @@ function doInstall() {
 </html>
 
 <?php
-}
+	} // end function doInstall()
+
 
 /**
  *  Install custom plugins
