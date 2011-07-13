@@ -13,7 +13,7 @@
  * and initialize the data in those tables.
  *
  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
- * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php
+ * ?><div style="font-size: xx-large;"> Your web server is not properly configured to run PHP scripts and will not be able to install Nucleus. </div> <div style="display: none"><?php
  */
 
 /**
@@ -22,88 +22,95 @@
  * @version $Id$
  */
 
-/*
-	This part of the install.php code allows for customization of the install process.
-	When distributing plugins or skins together with a Nucleus installation, the
-	configuration below will instruct to install them
+	/**
+	 *
+	 * This part of the install.php code allows for customization of the install process.
+	 * When distributing plugins or skins together with a Nucleus installation, the
+	 * configuration below will instruct to install them
+	 *
+	 * -- Start Of Configurable Part --
+	 **/
 
-	-- Start Of Configurable Part --
-*/
+	include('./install_lang_english.php');
 
-include('./install_lang_english.php');
+	/**
+	 * array with names of plugins to install. Plugin files must be present in the nucleus/plugin/ directory
+	 *
+	 * example:
+	 *		array('NP_TrackBack', 'NP_MemberGoodies')
+	 **/
+	$aConfPlugsToInstall = array('NP_SkinFiles', 'NP_SecurityEnforcer', 'NP_Text');
 
-// array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
-// directory.
-//
-// example:
-//     array('NP_TrackBack', 'NP_MemberGoodies')
-$aConfPlugsToInstall = array('NP_SkinFiles','NP_SecurityEnforcer','NP_Text');
+	/**
+	 * array with skins to install. skins must be present under the skins/ directory with
+	 * a subdirectory having the same name that contains a skinbackup.xml file
+	 *
+	 * example:
+	 *		array('base', 'rsd')
+	 **/
+	$aConfSkinsToImport = array('atom', 'rss2.0', 'rsd', 'default');
 
+	/**
+	 * -- End Of Configurable Part --
+	 **/
 
-// array with skins to install. skins must be present under the skins/ directory with
-// a subdirectory having the same name that contains a skinbackup.xml file
-//
-// example:
-//     array('base','rsd')
-$aConfSkinsToImport = array(
-    'atom',
-    'rss2.0',
-    'rsd',
-    'default',
-);
+	// don't give warnings for uninitialized vars
+	error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-/*
-	-- End Of Configurable Part --
-*/
-
-// don't give warnings for uninitialized vars
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
-
-// make sure there's no unnecessary escaping:
-//set_magic_quotes_runtime(0);
-if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-    ini_set('magic_quotes_runtime', '0');
-}
-
-// if there are some plugins or skins to import, do not include vars
-// in globalfunctions.php again... so set a flag
-if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
-	global $CONF;
-	$CONF['installscript'] = 1;
-}
-
-if (!class_exists('i18n', FALSE))
-{
-	include('nucleus/libs/i18n.php');
-	if ( !i18n::init('UTF-8') )
+	// make sure there's no unnecessary escaping: # set_magic_quotes_runtime(0);
+	if ( version_compare(PHP_VERSION, '5.3.0', '<') )
 	{
-		exit('Fail to initialize iconv or mbstring extension. Would you please contact the administrator of your PHP server?');
-	}
-}
+	    ini_set('magic_quotes_runtime', '0');
+	} // end if
 
-// we will use postVar, getVar, ... methods instead of $_GET, $_POST ...
-include_once('nucleus/libs/vars4.1.0.php');
+	// if there are some plugins or skins to import, do not include vars in globalfunctions.php again... so set a flag
+	if ( (count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) )
+	{
+		global $CONF;
+		$CONF['installscript'] = 1;
+	} // end if
 
-// include core classes that are needed for login & plugin handling
-include_once('nucleus/libs/mysql.php');
-// added for 3.5 sql_* wrapper
-global $MYSQL_HANDLER;
-//set the handler if different from mysql (or mysqli)
-//$MYSQL_HANDLER = array('pdo','mysql');
-if (!isset($MYSQL_HANDLER))
-	$MYSQL_HANDLER = array('mysql','');
-include_once('nucleus/libs/sql/'.$MYSQL_HANDLER[0].'.php');
-// end new for 3.5 sql_* wrapper
+	if ( !class_exists('i18n', FALSE) )
+	{
+		include('nucleus/libs/i18n.php');
 
-// check if mysql support is installed
-// this check may not make sense, as is, in a version past 3.5x
-	if (!function_exists('mysql_query') ) {
+		if ( !i18n::init('UTF-8') )
+		{
+			exit('Failed to initialize iconv or mbstring extension. Would you please contact the administrator of your PHP server?');
+		} // end if
+
+	} // end if
+
+	// we will use postVar, getVar, ... methods instead of $_GET, $_POST ...
+	include_once('nucleus/libs/vars4.1.0.php');
+
+	// include core classes that are needed for login & plugin handling
+	include_once('nucleus/libs/mysql.php');
+
+	## added for 3.5 sql_* wrapper
+	global $MYSQL_HANDLER;
+
+	//set the handler if different from mysql (or mysqli) # $MYSQL_HANDLER = array('pdo','mysql');
+	if ( !isset($MYSQL_HANDLER) )
+	{
+		$MYSQL_HANDLER = array('mysql', '');
+	} // end if
+
+	include_once('nucleus/libs/sql/' . $MYSQL_HANDLER[0] . '.php');
+	## end new for 3.5 sql_* wrapper
+
+	// check if mysql support is installed; this check may not make sense, as is, in a version past 3.5x
+	if ( !function_exists('mysql_query') )
+	{
 		_doError(_ERROR1);
-	}
+	} // end if
 
-	if (postVar('action') == 'go') {
+	if ( postVar('action') == 'go' )
+	{
 		doInstall();
-	} else {
+	}
+	else
+	{
 		showInstallForm();
 	}
 
