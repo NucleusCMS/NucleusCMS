@@ -1006,62 +1006,72 @@
 	} // end function doInstall()
 
 
-/**
- *  Install custom plugins
- */
-function installCustomPlugs(&$manager) {
-	global $aConfPlugsToInstall, $DIR_LIBS;
+	/**
+	 * Install custom plugins
+	 */
+	function installCustomPlugs(&$manager)
+	{
+		global $aConfPlugsToInstall, $DIR_LIBS;
 
-	$aErrors = array();
+		$aErrors = array();
 
-	if (count($aConfPlugsToInstall) == 0) {
+		if ( count($aConfPlugsToInstall) == 0 )
+		{
+			return $aErrors;
+		}
+
+		$res = sql_query('SELECT * FROM ' . sql_table('plugin') );
+		$numCurrent = sql_num_rows($res);
+
+		foreach ( $aConfPlugsToInstall as $plugName )
+		{
+			// do this before calling getPlugin (in case the plugin id is used there)
+			$query = 'INSERT INTO ' . sql_table('plugin') . ' (`porder`, `pfile`) VALUES (' . (++$numCurrent) . ', "' . addslashes($plugName) . '")';
+			sql_query($query);
+
+			// get and install the plugin
+			$manager->clearCachedInfo('installedPlugins');
+			$plugin =& $manager->getPlugin($plugName);
+			$plugin->plugid = $numCurrent;
+
+			if ( !$plugin )
+			{
+				sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE `pfile` = \'' . addslashes($plugName) . '\'');
+				$numCurrent--;
+				array_push($aErrors, _ERROR22 . $plugName);
+				continue;
+			} // end if
+
+			$plugin->install();
+		} // end loop
+
+		// SYNC PLUGIN EVENT LIST
+		sql_query('DELETE FROM ' . sql_table('plugin_event') );
+
+		// loop over all installed plugins
+		$res = sql_query('SELECT `pid`, `pfile` FROM ' . sql_table('plugin') );
+
+		while ( $o = sql_fetch_object($res) )
+		{
+			$pid = $o->pid;
+			$plug =& $manager->getPlugin($o->pfile);
+
+			if ( $plug )
+			{
+				$eventList = $plug->getEventList();
+
+				foreach ( $eventList as $eventName )
+				{
+					sql_query('INSERT INTO ' . sql_table('plugin_event') . ' (`pid`, `event`) VALUES (' . $pid . ', \'' . $eventName . '\')');
+				} // end loop
+
+			} // end if
+
+		} // end loop
+
 		return $aErrors;
-	}
+	} // end function installCustomPlugs()
 
-	$res = sql_query('SELECT * FROM ' . sql_table('plugin') );
-	$numCurrent = sql_num_rows($res);
-
-	foreach ($aConfPlugsToInstall as $plugName) {
-		// do this before calling getPlugin (in case the plugin id is used there)
-		$query = 'INSERT INTO ' . sql_table('plugin') . ' (porder, pfile) VALUES (' . (++$numCurrent) . ', "' . addslashes($plugName) . '")';
-		sql_query($query);
-
-		// get and install the plugin
-		$manager->clearCachedInfo('installedPlugins');
-		$plugin =& $manager->getPlugin($plugName);
-		$plugin->plugid = $numCurrent;
-
-		if (!$plugin) {
-			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pfile=\'' . addslashes($plugName) . '\'');
-			$numCurrent--;
-			array_push($aErrors, _ERROR22 . $plugName);
-			continue;
-		}
-
-		$plugin->install();
-	}
-
-	// SYNC PLUGIN EVENT LIST
-	sql_query('DELETE FROM ' . sql_table('plugin_event') );
-
-	// loop over all installed plugins
-	$res = sql_query('SELECT pid, pfile FROM ' . sql_table('plugin') );
-
-	while($o = sql_fetch_object($res) ) {
-		$pid = $o->pid;
-		$plug =& $manager->getPlugin($o->pfile);
-
-		if ($plug) {
-			$eventList = $plug->getEventList();
-
-			foreach ($eventList as $eventName) {
-				sql_query('INSERT INTO ' . sql_table('plugin_event') . ' (pid, event) VALUES (' . $pid . ', \'' . $eventName . '\')');
-			}
-		}
-	}
-
-	return $aErrors;
-}
 
 /**
  *  Install custom skins
