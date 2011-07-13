@@ -115,17 +115,19 @@
 	}
 
 	exit;
-	
-/*
- * Show the form for the installation settings
- */	
-function showInstallForm() {
-	// 0. pre check if all necessary files exist
-	doCheckFiles();
+
+
+	/**
+	 * Display the form for installation settings
+	 **/
+	function showInstallForm()
+	{
+		// 0. pre check if all necessary files exist
+		doCheckFiles();
 
 	?>
-	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title><?php echo _TITLE; ?></title>
 		<style type="text/css"><!--
@@ -135,13 +137,19 @@ function showInstallForm() {
 			var submitcount = 0;
 
 			// function to make sure the submit button only gets pressed once
-			function checkSubmit() {
-				if (submitcount == 0) {
+			function checkSubmit()
+			{
+
+				if ( submitcount == 0 )
+				{
 					submitcount++;
 					return true;
-				} else {
+				}
+				else
+				{
 					return false;
 				}
+
 			}
 		--></script>
 	</head>
@@ -161,81 +169,105 @@ function showInstallForm() {
 			<li>PHP:
 
 <?php
-	echo phpversion();
-	$minVersion = '4.0.6';
+		echo phpversion();
+		$minVersion = '4.0.6';
 
-	if (phpversion() < $minVersion) {
-		echo ' <span class="warning">', _TEXT2_WARN , $minVersion, '</span>';
-	} elseif (phpversion() < '5') {
-		echo ' <span class="warning">' . _TEXT2_WARN3 . '</span>';
-	}
+		// begin if: below minimum required PHP version
+		if ( phpversion() < $minVersion )
+		{
+			echo ' <span class="warning">', _TEXT2_WARN , $minVersion, '</span>';
+		}
+		// else if: PHP4.x
+		else if ( phpversion() < '5' )
+		{
+			echo ' <span class="warning">' . _TEXT2_WARN3 . '</span>';
+		} // end if
 ?>
 
 			</li>
 			<li>MySQL:
 
 <?php
-	// Tturn on output buffer
-	// Needed to repress the output of the sql function that are
-	// not part of php (in this case the @ operator doesn't work) 
-	ob_start();
-	// note: this piece of code is taken from phpMyAdmin
-	$conn = sql_connect_args('localhost','','');
-	$result = @sql_query('SELECT VERSION() AS version',$conn);
+		// Turn on output buffer
+		// Needed to repress the output of the sql function that are
+		// not part of php (in this case the @ operator doesn't work) 
+		ob_start();
 
-	if ($result != FALSE && sql_num_rows($result) > 0) {
-		$row = sql_fetch_array($result);
-		$match = i18n::explode('.', $row['version']);
-	} else {
-		$result = @sql_query('SHOW VARIABLES LIKE \'version\'',$conn);
+		// note: this piece of code is taken from phpMyAdmin
+		$conn = sql_connect_args('localhost', '', '');
+		$result = @sql_query('SELECT VERSION() AS version', $conn);
 
-		if ($result != FALSE && @sql_num_rows($result) > 0) {
-			$row = sql_fetch_row($result);
-			$match = i18n::explode('.', $row[1]);
-		} else {
-			//$output = shell_exec('mysql -V');
-			$output = (function_exists('shell_exec')) ? @shell_exec('mysql -V') : '0.0.0';
-   			preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
-			$match = i18n::explode('.', $version[0]);
-
-			if ($match[0] == '') {
-				$match[0] = '0';
-				$match[1] = '0';
-				$match[2] = '0';
-			}
+		if ( $result != FALSE && sql_num_rows($result) > 0 )
+		{
+			$row = sql_fetch_array($result);
+			$match = i18n::explode('.', $row['version']);
 		}
-	}
-	@sql_disconnect($conn);
-	//End and clean output buffer
-	ob_end_clean();
-	$mysqlVersion = implode($match, '.');
-	$minVersion = '3.23';
+		else
+		{
+			$result = @sql_query('SHOW VARIABLES LIKE \'version\'', $conn);
 
-	if ($mysqlVersion == '0.0.0') {
-		echo _NOTIFICATION1;
-	}
-	else {
-		echo $mysqlVersion;
-	}
-	
-	if ($mysqlVersion < $minVersion) {
-		echo ' <strong>', _TEXT2_WARN2 , $minVersion, '</strong>';
-	}
+			if ( $result != FALSE && @sql_num_rows($result) > 0 )
+			{
+				$row = sql_fetch_row($result);
+				$match = i18n::explode('.', $row[1]);
+			}
+			else
+			{
+				//$output = shell_exec('mysql -V');
+				$output = ( function_exists('shell_exec') ) ? @shell_exec('mysql -V') : '0.0.0';
+				preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
+				$match = i18n::explode('.', $version[0]);
+
+				if ( $match[0] == '' )
+				{
+					$match[0] = '0';
+					$match[1] = '0';
+					$match[2] = '0';
+				} // end if
+
+			} // end if
+
+		} // end if
+
+		@sql_disconnect($conn);
+
+		//End and clean output buffer
+		ob_end_clean();
+
+		$mysqlVersion = implode($match, '.');
+		$minVersion = '3.23';
+
+		if ( $mysqlVersion == '0.0.0' )
+		{
+			echo _NOTIFICATION1;
+		}
+		else
+		{
+			echo $mysqlVersion;
+		}
+		
+		if ( $mysqlVersion < $minVersion )
+		{
+			echo ' <strong>', _TEXT2_WARN2 , $minVersion, '</strong>';
+		}
 ?>
 
 			</li>
 		</ul>
 
 <?php
-	// tell people how they can have their config file filled out automatically
-	if (@file_exists('config.php') && @!is_writable('config.php') ) {
+		// tell people how they can have their config file filled out automatically
+		if ( @file_exists('config.php') && @!is_writable('config.php') )
+		{
 ?>
 
 		<h1><?php echo _HEADER3; ?></h1>
 
-		<?php echo _TEXT3;
+<?php
+		echo _TEXT3;
 
-} ?>
+		} // end if
+?>
 
 		<h1><?php echo _HEADER4; ?></h1>
 
@@ -281,27 +313,79 @@ function showInstallForm() {
 		<?php echo _TEXT5; ?>
 
 <?php
+		// no need to this all! dirname(__FILE__) is all we need -- moraes
+		/*
+		// discover full path
+		$fullPath = serverVar('PATH_TRANSLATED');
 
-	// no need to this all! dirname(__FILE__) is all we need -- moraes
-	/*
-	// discover full path
-	$fullPath = serverVar('PATH_TRANSLATED');
+		if ($fullPath == '') {
+			$fullPath = serverVar('SCRIPT_FILENAME');
+		}
 
-	if ($fullPath == '') {
-		$fullPath = serverVar('SCRIPT_FILENAME');
-	}
+		$basePath = str_replace('install.php', '', $fullPath);
+		$basePath = replace_double_backslash($basePath);
+		$basePath = replace_double_backslash($basePath);
 
-	$basePath = str_replace('install.php', '', $fullPath);
-	$basePath = replaceDoubleBackslash($basePath);
-	$basePath = replaceDoubleBackslash($basePath);
+		// add slash at end if necessary
+		if (!ends_with_slash($basePath) ) {
+			$basePath .= '/';
+		}
+		*/
 
-	// add slash at end if necessary
-	if (!endsWithSlash($basePath) ) {
-		$basePath .= '/';
-	}
-	*/
+		/**
+		 * In the code below, there used to be if conditions within the form's HTML that conditionally echoed the URLs.
+		 *
+		 * For example:
+		 *		if ($basePath) . . .
+		 * Or:
+		 *		if ($url) . . .
+		 *
+		 * I removed this and simplified below, because PHP's type casting will make these always evaluate to TRUE.
+		 * At least currently, $basePath will always be non-empty, since the trailing slash is appended to it.
+		 * Similarly, $index_url will always be non-empty, since the 'http://' is prepended to it.
+		 * Non-empty, non-zero strings evaluated in if conditions are always cast to boolean TRUE.
+		 * The if conditions were accomplishing nothing (currently) and we should avoid using such comparisons, anyway.
+		 * If we need to check for a blank/empty string, use empty().
+		 *
+		 * I was initially replacing those if conditions with ternary operators for empty(), but then I realized
+		 * they will never be empty.
+		 *
+		 * In addition, I decided to remove the PHP logic from within the form and set up separate variables (they were
+		 * all just $url before), so the form just echos the values as needed.
+		 * - gregorlove 7/13/2011 5:56 PM
+		 */
 
-	$basePath = dirname(__FILE__) . '/';
+		$basePath = dirname(__FILE__) . '/';
+
+		# Index URL
+		$index_url = 'http://' . serverVar('HTTP_HOST') . serverVar('PHP_SELF');
+		$index_url = str_replace('install.php', '', $index_url);
+		$index_url = replace_double_backslash($index_url);
+
+		// add slash at end if necessary
+		if ( !ends_with_slash($index_url) )
+		{
+			$index_url .= '/';
+		} // end if
+
+		# Admin URL and path
+		$admin_url = $index_url . 'nucleus/';
+		$admin_path = $basePath . 'nucleus/';
+
+		# Media URL and path
+		$media_url = $index_url . 'media/';
+		$media_path = $basePath . 'media/';
+
+		# Skins URL and path
+		$skins_url = $index_url . 'skins/';
+		$skins_path = $basePath . 'skins/';
+
+		# Plugins URL
+		$plugins_url = $admin_url . 'plugins/';
+
+		# Action URL
+		$action_url = $index_url . 'action.php';
+
 ?>
 
 		<fieldset>
@@ -309,77 +393,43 @@ function showInstallForm() {
 			<table>
 				<tr>
 					<td><label for="if_IndexURL"><?php echo _TEXT5_TAB_FIELD1;?>:</label></td>
-					<td><input id="if_IndexURL" name="IndexURL" size="60" value="<?php
-						$url = 'http://' . serverVar('HTTP_HOST') . serverVar('PHP_SELF');
-						$url = str_replace('install.php', '', $url);
-						$url = replaceDoubleBackslash($url);
-
-						// add slash at end if necessary
-						if (!endsWithSlash($url) ) {
-							$url .= '/';
-						}
-
-						echo $url; ?>" /></td>
+					<td><input id="if_IndexURL" name="IndexURL" size="60" value="<?php echo $index_url; ?>" /></td>
 				</tr>
 				<tr>
 					<td><label for="if_AdminURL"><?php echo _TEXT5_TAB_FIELD2;?>:</label></td>
-					<td><input id="if_AdminURL" name="AdminURL" size="60" value="<?php
-						if ($url) {
-							echo $url, 'nucleus/';
-						} ?>" /></td>
+					<td><input id="if_AdminURL" name="AdminURL" size="60" value="<?php echo $admin_url; ?>" /></td>
 				</tr>
 				<tr>
 					<td><label for="if_AdminPath"><?php echo _TEXT5_TAB_FIELD3;?>:</label></td>
-					<td><input id="if_AdminPath" name="AdminPath" size="60" value="<?php
-						if($basePath) {
-							echo $basePath, 'nucleus/';
-						} ?>" /></td>
+					<td><input id="if_AdminPath" name="AdminPath" size="60" value="<?php echo $admin_path; ?>" /></td>
 				</tr>
 				<tr>
 					<td><label for="if_MediaURL"><?php echo _TEXT5_TAB_FIELD4;?>:</label></td>
-					<td><input id="if_MediaURL" name="MediaURL" size="60" value="<?php
-						if ($url) {
-							echo $url, 'media/';
-						} ?>" /></td>
+					<td><input id="if_MediaURL" name="MediaURL" size="60" value="<?php echo $media_url; ?>" /></td>
 				</tr>
 				<tr>
 					<td><label for="if_MediaPath"><?php echo _TEXT5_TAB_FIELD5;?>:</label></td>
-					<td><input id="if_MediaPath" name="MediaPath" size="60" value="<?php
-						if ($basePath) {
-							echo $basePath, 'media/';
-						} ?>" /></td>
+					<td><input id="if_MediaPath" name="MediaPath" size="60" value="<?php echo $media_path; ?>" /></td>
 				</tr>
 				<tr>
 					<td><label for="if_SkinsURL"><?php echo _TEXT5_TAB_FIELD6;?>:</label></td>
-					<td><input id="if_SkinsURL" name="SkinsURL" size="60" value="<?php
-						if ($url) {
-							echo $url, 'skins/';
-						} ?>" />
+					<td><input id="if_SkinsURL" name="SkinsURL" size="60" value="<?php echo $skins_url; ?>" />
 						<br />(used by imported skins)
 					</td>
 				</tr>
 				<tr>
 					<td><label for="if_SkinsPath"><?php echo _TEXT5_TAB_FIELD7;?>:</label></td>
-					<td><input id="if_SkinsPath" name="SkinsPath" size="60" value="<?php
-						if ($basePath) {
-							echo $basePath, 'skins/';
-						} ?>" />
+					<td><input id="if_SkinsPath" name="SkinsPath" size="60" value="<?php echo $skins_path; ?>" />
 						<br />(<?php echo _TEXT5_TAB_FIELD7_2;?>)
 					</td>
 				</tr>
 				<tr>
 					<td><label for="if_PluginURL"><?php echo _TEXT5_TAB_FIELD8;?>:</label></td>
-					<td><input id="if_PluginURL" name="PluginURL" size="60" value="<?php
-						if ($url) {
-							echo $url, 'nucleus/plugins/';
-						} ?>" /></td>
+					<td><input id="if_PluginURL" name="PluginURL" size="60" value="<?php echo $plugins_url; ?>" /></td>
 				</tr>
 				<tr>
 					<td><label for="if_ActionURL"><?php echo _TEXT5_TAB_FIELD9;?>:</label></td>
-					<td><input id="if_ActionURL" name="ActionURL" size="60" value="<?php
-						if ($url) {
-							echo $url, 'action.php';
-						} ?>" />
+					<td><input id="if_ActionURL" name="ActionURL" size="60" value="<?php echo $action_url; ?>" />
 						<br />(<?php echo _TEXT5_TAB_FIELD9_2;?>)
 					</td>
 				</tr>
@@ -457,7 +507,8 @@ function showInstallForm() {
 	</body>
 </html>
 
-<?php }
+<?php
+	}
 
 /*
  * Add a table prefix if it is used
@@ -509,14 +560,14 @@ function doInstall() {
 	$config_sitename = $blog_name;
 	$weblog_ping = postVar('Weblog_ping');
 
-	$config_indexurl = replaceDoubleBackslash($config_indexurl);
-	$config_adminurl = replaceDoubleBackslash($config_adminurl);
-	$config_mediaurl = replaceDoubleBackslash($config_mediaurl);
-	$config_skinsurl = replaceDoubleBackslash($config_skinsurl);
-	$config_pluginurl = replaceDoubleBackslash($config_pluginurl);
-	$config_actionurl = replaceDoubleBackslash($config_actionurl);
-	$config_adminpath = replaceDoubleBackslash($config_adminpath);
-	$config_skinspath = replaceDoubleBackslash($config_skinspath);
+	$config_indexurl = replace_double_backslash($config_indexurl);
+	$config_adminurl = replace_double_backslash($config_adminurl);
+	$config_mediaurl = replace_double_backslash($config_mediaurl);
+	$config_skinsurl = replace_double_backslash($config_skinsurl);
+	$config_pluginurl = replace_double_backslash($config_pluginurl);
+	$config_actionurl = replace_double_backslash($config_actionurl);
+	$config_adminpath = replace_double_backslash($config_adminpath);
+	$config_skinspath = replace_double_backslash($config_skinspath);
 
 	// 1. check all the data
 	$errors = array();
@@ -534,19 +585,19 @@ function doInstall() {
 	}
 
 	// TODO: add action.php check
-	if (!endsWithSlash($config_indexurl) || !endsWithSlash($config_adminurl) || !endsWithSlash($config_mediaurl) || !endsWithSlash($config_pluginurl) || !endsWithSlash($config_skinsurl) ) {
+	if (!ends_with_slash($config_indexurl) || !ends_with_slash($config_adminurl) || !ends_with_slash($config_mediaurl) || !ends_with_slash($config_pluginurl) || !ends_with_slash($config_skinsurl) ) {
 		array_push($errors, _ERROR5);
 	}
 
-	if (!endsWithSlash($config_adminpath) ) {
+	if (!ends_with_slash($config_adminpath) ) {
 		array_push($errors, _ERROR6);
 	}
 
-	if (!endsWithSlash($config_mediapath) ) {
+	if (!ends_with_slash($config_mediapath) ) {
 		array_push($errors, _ERROR7);
 	}
 
-	if (!endsWithSlash($config_skinspath) ) {
+	if (!ends_with_slash($config_skinspath) ) {
 		array_push($errors, _ERROR8);
 	}
 
@@ -1073,25 +1124,27 @@ function updateConfig($name, $val) {
 	return sql_insert_id($MYSQL_CONN);
 }
 
-/**
- *  Replaces doubled backslashs
- * 
- *  @param	$input
- * 			string that could have double backslashs	
- */
-function replaceDoubleBackslash($input) {
-	return str_replace('\\', '/', $input);
-}
+	/**
+	 * Replaces double backslashs
+	 * 
+	 * @param string $input string that could have double backslashs
+	 * @return string
+	 */
+	function replace_double_backslash($input)
+	{
+		return str_replace('\\', '/', $input);
+	}
 
-/**
- * Checks if a string ends with a slash 
- * 
- *  @param	$s
- * 			string	
- */
-function endsWithSlash($s) {
-	return (i18n::strrpos($s, '/') == i18n::strlen($s) - 1);
-}
+	/**
+	 * Checks if a string ends with a slash 
+	 * 
+	 * @param string $input
+	 * @return string
+	 */
+	function ends_with_slash($input)
+	{
+		return ( i18n::strrpos($input, '/') == i18n::strlen($input) - 1);
+	}
 
 /**
  * Checks if email address is valid
