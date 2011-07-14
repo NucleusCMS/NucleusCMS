@@ -326,35 +326,46 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		
 		/*
 		 * NOTE:
-		 * mysql_set_charset() execute "SET NAMES xxx;" internally and set mysql->charset as xxx.
-		 *  refering to  MySQL C API.
-		 * http://dev.mysql.com/doc/refman/5.1/ja/mysql-set-character-set.html
 		 * 
-		 * And mysql_real_escape_string() is affected by mysql->charset,
-		 *  refering to  MySQL C API.
-		 * http://dev.mysql.com/doc/refman/5.1/en/mysql-real-escape-string.html
+		 * We decided to ignore which character encodings is set in each text field of MySQL table!
 		 * 
-		 * But the same character encoding in character_set_client and the strings is
-		 *  more important than mysql->charset
-		 *  because mysql_real_escape_string() escape some characters in ASCII character set.
-		 *  
-		 * Here, we decided to use "SET CHARACTER SET xxx;" statement for upper-compatibility.
-		 *  because with this statement collation_connection corresponds to collation_database.
-		 *  It's possible to use the database with latin1 collation.
+		 * There are differences between "SET NAMES xxx;" and "SET CHARACTER SET xxx;"
+		 *  according MySQL version.
+		 * http://dev.mysql.com/doc/refman/4.1/en/charset-connection.html
 		 * http://dev.mysql.com/doc/refman/5.1/en/charset-connection.html
 		 * 
-		 * But apparently, if collations of each fields are not same as database collation.
-		 * the MySQL auto-conversion during its connection may work wrong.
-		 * In this case, if target field's collation is same as character_set_client (maybe utf8),
-		 * we should use mysql_set_charset() instead of this
-		 *  because it call "SET NAMES xxx;".
+		 * And mysql_set_charset() execute "SET NAMES xxx;" internally and set mysql->charset as xxx.
+		 *  refering to  MySQL C API.
+		 * http://dev.mysql.com/doc/refman/5.1/ja/mysql-set-character-set.html
+		 * http://php.net/manual/en/function.mysql-set-charset.php
+		 * 
+		 * mysql_real_escape_string() is affected by mysql->charset,
+		 *  refering to  MySQL C API.
+		 * http://dev.mysql.com/doc/refman/5.1/en/mysql-real-escape-string.html
+		 * http://php.net/manual/en/function.mysql-real-escape-string.php
+		 * 
+		 * But using the same character encoding in character_set_client and the strings is
+		 *  more important than mysql->charset
+		 *  because mysql_real_escape_string() escape some characters in ASCII character set.
 		 * 
 		 */
-		
 		$charset = strtolower($charset);
-		sql_query("SET CHARACTER SET {$charset};");
+		$mysql_version = preg_replace('#^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{1,2})(.*)$#', '$1.$2.$3', sql_get_server_info($MYSQL_CONN));
 		
-		return;
+		if ( version_compare($mysql_version, '5.0.7', '>=') && function_exists('mysql_set_charset') )
+		{
+			$result = mysql_set_charset($charset);
+		}
+		else if ( version_compare($mysql_version, '5.0.7', '<') )
+		{
+			$result = sql_query("SET CHARACTER SET {$charset};");
+		}
+		else
+		{
+			$result = sql_query("SET NAMES {$charset};");
+		}
+		
+		return $result;
 	}
 	
 /**************************************************************************

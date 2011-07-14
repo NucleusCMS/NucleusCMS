@@ -608,9 +608,18 @@ if (!function_exists('sql_fetch_assoc'))
 			 * PDO::MySQL has no function as same as mysql_set_charset().
 			 */
 			$charset = strtolower($charset);
-			$SQL_DBH->exec("SET CHARACTER SET {$charset};");
+			$mysql_version = preg_replace('#^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{1,2})(.*)$#', '$1.$2.$3', sql_get_server_info($MYSQL_CONN));
+			
+			if ( version_compare($mysql_version, '5.0.7', '<') )
+			{
+				$result = sql_query("SET CHARACTER SET {$charset};");
+			}
+			else
+			{
+				$result = sql_query("SET NAMES {$charset};");
+			}
 		}
-		return;
+		return $result;
 	}
 	
 /**************************************************************************
