@@ -608,7 +608,7 @@ if (!function_exists('sql_fetch_assoc'))
 			 * PDO::MySQL has no function as same as mysql_set_charset().
 			 */
 			$charset = strtolower($charset);
-			$mysql_version = preg_replace('#^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{1,2})(.*)$#', '$1.$2.$3', sql_get_server_info($MYSQL_CONN));
+			$mysql_version = preg_replace('#^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{1,2})(.*)$#', '$1.$2.$3', sql_get_server_info($SQL_DBH));
 			
 			if ( version_compare($mysql_version, '5.0.7', '<') )
 			{
