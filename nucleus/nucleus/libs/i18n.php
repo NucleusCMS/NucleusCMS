@@ -9,6 +9,7 @@
 class i18n {
 	private static $charset = '';
 	private static $mode = FALSE;
+	private static $timezone = 'UTC';
 	
 	/*
 	 * i18n::init
@@ -39,8 +40,33 @@ class i18n {
 		{
 			$return = TRUE;
 		}
+		
+		self::confirm_default_date_timezone();
+		
 		self::$charset = $charset;
 		return (boolean) $return;
+	}
+	
+	/*
+	 * i18n::confirm_default_date_timezone
+	 * to avoid E_NOTICE or E_WARNING generated when every calling to a date/time function.
+	 * Some private servers are lack of its timezone setting
+	 * http://www.php.net/manual/en/function.date-default-timezone-set.php
+	 * @param	void
+	 * @return	void
+	 */
+	public static function confirm_default_date_timezone()
+	{
+		if ( function_exists('date_default_timezone_get') 
+		 && FALSE !== ($timezone = @date_default_timezone_get()))
+		{
+			self::$timezone = $timezone;
+		}
+		if (function_exists('date_default_timezone_set')) {
+			 @date_default_timezone_set(self::$timezone);
+		}
+		
+		return;
 	}
 	
 	/*
@@ -232,25 +258,39 @@ class i18n {
 	 * i18n::strftime
 	 * strftime function based on multibyte processing
 	 * @param	string	$format	format with singlebyte or multibyte
-	 * @param	timestamp	$timestamp	UNIT timestamp
+	 * @param	timestamp	$timestamp	UNIX timestamp
 	 * @return	string	formatted timestamp
 	 */
 	public static function strftime($format, $timestamp='')
 	{
 		$formatted = '';
-		$elements = array();
-		if ( preg_match('#%#', $format) === 0 )
+		
+		if ( $timestamp == '' )
+		{
+			$timestamp = time();
+		}
+		
+		if ( $format == '%%' )
+		{
+			return '%';
+		}
+		else if ( preg_match('#%[^%]#', $format) === 0 )
 		{
 			return $format;
 		}
-		$format		= trim(preg_replace('#(%.)#', ',$1,', $format), ',');
+		
+		$format		= trim(preg_replace('#(%[^%])#', ',$1,', $format), ',');
 		$elements	= preg_split('#,#', $format);
 		
 		foreach ( $elements as $element )
 		{
-			if ( preg_match('#^%.$#', $element) )
+			if ( preg_match('#(%[^%])#', $element) )
 			{
 				$formatted .= strftime($element, $timestamp);
+			}
+			else if ( $element == '%%' )
+			{
+				$formatted .= '%';
 			}
 			else
 			{
@@ -348,7 +388,7 @@ class i18n {
 	 * @return	string	encoded string
 	 * 
 	 * NOTE: iconv extension give the same functions as this and each encoder in PHP5
-	 * So this should be replaced with it near future, maybe PHP6.
+	 * These implementation are for the servers which is lack of iconv extension
 	 * 
 	 * NOTE: RFC 2047 has a ambiguousity for dealing with 'linear-white-space'.
 	 *  This causes a trouble related to line breaking between single byte and multi byte strings.
