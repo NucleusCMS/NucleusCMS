@@ -121,6 +121,8 @@
 		/**
 		 * This function is a wrapper for mysqli_free_result
 		 * @param resource $result
+		 * @param int $row
+		 * @param int $column
 		 * @return string
 		 */
 		function mysql_result($result, $row, $column)
@@ -138,16 +140,21 @@
 
 
 		/**
-		 *
+		 * This function is a wrapper for mysqli_connect
+		 * @param string $host
+		 * @param string $username
+		 * @param string $password
+		 * @return object
 		 */
-		function mysql_connect($host, $username, $pwd)
+		function mysql_connect($host, $username, $password)
 		{
-			return mysqli_connect($host, $username, $pwd);
+			return mysqli_connect($host, $username, $password);
 		}
 
 
 		/**
-		 *
+		 * This function is a wrapper for mysqli_error
+		 * @return string
 		 */
 		function mysql_error()
 		{
@@ -157,17 +164,20 @@
 
 
 		/**
-		 *
+		 * This function is a wrapper for mysqli_select_db
+		 * @param string $database
+		 * @return bool
 		 */
-		function mysql_select_db($db)
+		function mysql_select_db($database)
 		{
 			global $MYSQL_CONN;
-			return mysqli_select_db($MYSQL_CONN, $db);
+			return mysqli_select_db($MYSQL_CONN, $database);
 		}
 
 
 		/**
-		 *
+		 * This function is a wrapper for mysqli_close
+		 * @return bool
 		 */
 		function mysql_close()
 		{
@@ -177,7 +187,8 @@
 
 
 		/**
-		 *
+		 * This function is a wrapper for mysqli_insert_id
+		 * @return int|string
 		 */
 		function mysql_insert_id()
 		{
@@ -187,7 +198,8 @@
 
 
 		/**
-		 *
+		 * This function is a wrapper for mysqli_affected_rows
+		 * @return int|string
 		 */
 		function mysql_affected_rows()
 		{
@@ -197,16 +209,14 @@
 
 
 		/**
-		 *
+		 * This function is a wrapper for mysqli_real_escape_string
+		 * @param string $value
+		 * @return string
 		 */
-		function mysql_real_escape_string($val)
+		function mysql_real_escape_string($value)
 		{
 			global $MYSQL_CONN;
-			return mysqli_real_escape_string($MYSQL_CONN,$val);
+			return mysqli_real_escape_string($MYSQL_CONN, $value);
 		}
 
-	}
-
-
-
-?>
+	} // end if: no mysql_* functions exist
