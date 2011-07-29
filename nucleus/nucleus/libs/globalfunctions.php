@@ -533,138 +533,257 @@ $manager->notify(
 	)
 );
 
-function include_libs($file,$once=true,$require=true){
-       global $DIR_LIBS;
-       if (!is_dir($DIR_LIBS)) exit;
-       if ($once && $require) require_once($DIR_LIBS.$file);
-       elseif ($once && !$require) include_once($DIR_LIBS.$file);
-       elseif ($require) require($DIR_LIBS.$file);
-       else include($DIR_LIBS.$file);
-}
 
-function include_plugins($file,$once=true,$require=true){
-       global $DIR_PLUGINS;
-       if (!is_dir($DIR_PLUGINS)) exit;
-       if ($once && $require) require_once($DIR_PLUGINS.$file);
-       elseif ($once && !$require) include_once($DIR_PLUGINS.$file);
-       elseif ($require) require($DIR_PLUGINS.$file);
-       else include($DIR_PLUGINS.$file);
-}
+	/**
+	 * This function includes or requires the specified library file
+	 * @param string $file
+	 * @param bool $once use the _once() version
+	 * @param bool $require use require() instead of include()
+	 */
+	function include_libs($file, $once = TRUE, $require = TRUE)
+	{
+		global $DIR_LIBS;
 
-function intPostVar($name) {
-    return intval(postVar($name) );
-}
+		// begin if: $DIR_LIBS isn't a directory
+		if ( !is_dir($DIR_LIBS) )
+		{
+			exit;
+		} // end if
 
-function intGetVar($name) {
-    return intval(getVar($name) );
-}
+		$lib_path = $DIR_LIBS . $file;
 
-function intRequestVar($name) {
-    return intval(requestVar($name) );
-}
+		// begin if: 
+		if ( $once && $require )
+		{
+			require_once($lib_path);
+		}
+		else if ( $once && !$require )
+		{
+			include_once($lib_path);
+		}
+		else if ( $require )
+		{
+			require($lib_path);
+		}
+		else
+		{
+			include($lib_path);
+		} // end if
 
-function intCookieVar($name) {
-    return intval(cookieVar($name) );
-}
+	}
 
-/**
-  * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
-  */
-function getNucleusVersion() {
-    return 400;
-}
 
-/**
- * power users can install patches in between nucleus releases. These patches
- * usually add new functionality in the plugin API and allow those to
- * be tested without having to install CVS.
- */
-function getNucleusPatchLevel() {
-    return 0;
-}
+	/**
+	 * This function includes or requires the specified plugin file
+	 * @param string $file
+	 * @param bool $once use the _once() version
+	 * @param bool $require use require() instead of include()
+	 */
+	function include_plugins($file, $once = TRUE, $require = TRUE)
+	{
+		global $DIR_PLUGINS;
 
-/**
- * returns the latest version available for download from nucleuscms.org
- * or false if unable to attain data
- * format will be major.minor/patachlevel
- * e.g. 3.41 or 3.41/02
- */
-function getLatestVersion() {
-    if (!function_exists('curl_init')) return false;
-    $crl = curl_init();
-    $timeout = 5;
-    curl_setopt ($crl, CURLOPT_URL,'http://nucleuscms.org/version_check.php');
-    curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
-    $ret = curl_exec($crl);
-    curl_close($crl);
-    return $ret;
+		// begin if: $DIR_LIBS isn't a directory
+		if ( !is_dir($DIR_PLUGINS) )
+		{
+			exit;
+		} // end if
 
-}
+		$plugin_path = $DIR_PLUGINS . $file;
 
-/**
-  * Connects to mysql server
-  */
-/* moved to $DIR_LIBS/sql/*.php handler files
-function sql_connect() {
-    global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN;
+		// begin if: 
+		if ( $once && $require )
+		{
+			require_once($plugin_path);
+		}
+		else if ( $once && !$require )
+		{
+			include_once($plugin_path);
+		}
+		elseif ( $require )
+		{
+			require($plugin_path);
+		}
+		else
+		{
+			include($plugin_path);
+		} // end if
 
-    $MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
-    mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
+	}
 
-    return $MYSQL_CONN;
-}*/
 
-/**
- * returns a prefixed nucleus table name
- */
-function sql_table($name) {
-    global $MYSQL_PREFIX;
+	/**
+	 * This function returns the integer value of $_POST for the variable $name
+	 * @param string $name field to get the integer value of
+	 * @return int
+	 */
+	function intPostVar($name)
+	{
+		return intval(postVar($name));
+	}
 
-    if ($MYSQL_PREFIX) {
-        return $MYSQL_PREFIX . 'nucleus_' . $name;
-    } else {
-        return 'nucleus_' . $name;
-    }
-}
 
-function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
-    global $manager, $CONF;
+	/**
+	 * This function returns the integer value of $_GET for the variable $name
+	 * @param string $name field to get the integer value of
+	 * @return int
+	 */
+	function intGetVar($name)
+	{
+		return intval(getVar($name));
+	}
 
-    if (!headers_sent() ) {
-        // if content type is application/xhtml+xml, only send it to browsers
-        // that can handle it (IE6 cannot). Otherwise, send text/html
 
-        // v2.5: For admin area pages, keep sending text/html (unless it's a debug version)
-        //       application/xhtml+xml still causes too much problems with the javascript implementations
+	/**
+	 * This function returns the integer value of $_REQUEST for the variable $name. Also checks $_GET and $_POST if not found in $_REQUEST
+	 * @param string $name field to get the integer value of
+	 * @return int
+	 */
+	function intRequestVar($name)
+	{
+		return intval(requestVar($name));
+	}
 
-        // v3.3: ($CONF['UsingAdminArea'] && !$CONF['debug']) gets removed,
-        //       application/xhtml+xml seems to be working, so we're going to use it if we can.
-        if (
-                ($contenttype == 'application/xhtml+xml')
-            &&  (!stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml') )
-            ) {
-            $contenttype = 'text/html';
-        }
-        $manager->notify(
-            'PreSendContentType',
-            array(
-                'contentType' => &$contenttype,
-                'charset' => &$charset,
-                'pageType' => $pagetype
-            )
-        );
-        // strip strange characters
-        $contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
-        $charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
 
-        if ($charset != '') {
-            header('Content-Type: ' . $contenttype . '; charset=' . $charset);
-        } else {
-            header('Content-Type: ' . $contenttype);
-        }
-    }
-}
+	/**
+	 * This function returns the integer value of $_COOKIE for the variable $name
+	 * @param string $name field to get the integer value of
+	 * @return int
+	 */
+	function intCookieVar($name)
+	{
+		return intval(cookieVar($name));
+	}
+
+
+	/**
+	 * This function returns the current Nucleus version (100 = 1.00, 101 = 1.01, etc...)
+	 * @return int
+	 */
+	function getNucleusVersion()
+	{
+		return 400;
+	}
+
+
+	/**
+	 * TODO: Better description of this function.
+	 *
+	 * Power users can install patches in between nucleus releases. These patches
+	 * usually add new functionality in the plugin API and allow those to
+	 * be tested without having to install CVS.
+	 *
+	 * @return int
+	 */
+	function getNucleusPatchLevel()
+	{
+		return 0;
+	}
+
+
+	/**
+	 * This function returns the latest Nucleus version available for download from nucleuscms.org or FALSE if unable to attain data
+	 * Format will be major.minor/patachlevel e.g. 3.41 or 3.41/02
+	 * @return string|bool
+	 */
+	function getLatestVersion()
+	{
+		// begin if: cURL is not available in this PHP installation
+		if ( !function_exists('curl_init') )
+		{
+			return FALSE;
+		} // end if
+
+		$curl = curl_init();
+		$timeout = 5;
+		curl_setopt ($curl, CURLOPT_URL, 'http://nucleuscms.org/version_check.php');
+		curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt ($curl, CURLOPT_CONNECTTIMEOUT, $timeout);
+		$return = curl_exec($curl);
+		curl_close($curl);
+		return $return;
+	}
+
+
+	/**
+	 * This function returns a Nucleus table name with the appropriate prefix
+	 * @param string $name
+	 * @return string
+	 */
+	function sql_table($name)
+	{
+		global $MYSQL_PREFIX;
+
+		// begin if: no MySQL prefix
+		if ( empty($MYSQL_PREFIX) )
+		{
+			return 'nucleus_' . $name;
+		}
+		// else: use MySQL prefix
+		else
+		{
+			return $MYSQL_PREFIX . 'nucleus_' . $name;
+		} // end if
+
+	}
+
+
+	/**
+	 * TODO: This function should be changed to send_content_type() per the Coding Guidelines. Ensure this change is compatible with rest of core.
+	 *
+	 * This function sends the Content-Type header if headers have not already been sent
+	 * It also determines if the browser can accept application/xhtml+xml and sends it only to those that can.
+	 * @param string $content_type
+	 * @param string $page_type
+	 * @param string $charset
+	 */
+	function sendContentType($content_type, $page_type = '', $charset = _CHARSET)
+	{
+		global $manager, $CONF;
+
+		if ( !headers_sent() )
+		{
+			// if content type is application/xhtml+xml, only send it to browsers
+			// that can handle it (IE6 cannot). Otherwise, send text/html
+
+			// v2.5: For admin area pages, keep sending text/html (unless it's a debug version)
+			//       application/xhtml+xml still causes too much problems with the javascript implementations
+
+			// v3.3: ($CONF['UsingAdminArea'] && !$CONF['debug']) gets removed,
+			//       application/xhtml+xml seems to be working, so we're going to use it if we can.
+
+			if ( ($content_type == 'application/xhtml+xml')
+				&& (!stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml') ) )
+			{
+				$content_type = 'text/html';
+			} // end if
+
+			$manager->notify(
+				'PreSendContentType',
+				array(
+					'contentType' => &$content_type,
+					'charset' => &$charset,
+					'pageType' => $page_type
+				)
+			);
+
+			// strip strange characters
+			$content_type = preg_replace('|[^a-z0-9-+./]|i', '', $content_type);
+			$charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
+
+			if ($charset != '')
+			{
+				header('Content-Type: ' . $content_type . '; charset=' . $charset);
+			}
+			else
+			{
+				header('Content-Type: ' . $content_type);
+			} // end if
+
+		} // end if
+
+	}
+
 
 /**
  * Errors before the database connection has been made - moved to
