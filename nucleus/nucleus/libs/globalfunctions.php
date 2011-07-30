@@ -785,194 +785,214 @@ $manager->notify(
 	}
 
 
-/**
- * Errors before the database connection has been made - moved to
- */
-/* moved to $DIR_LIBS/sql/*.php handler files
-function startUpError($msg, $title) {
-
-
-    ?>
-    <html xmlns="http://www.w3.org/1999/xhtml">
-        <head><title><?php echo htmlspecialchars($title)?></title></head>
-
-        <body>
-            <h1><?php echo htmlspecialchars($title)?></h1>
-            <?php echo $msg?>
-        </body>
-    </html>
-    <?php   exit;
-}*/
-
-/**
-  * disconnects from SQL server
-  */
-/* moved to $DIR_LIBS/sql/*.php handler files
-function sql_disconnect() {
-    @mysql_close();
-}*/
-
-/**
-  * executes an SQL query
-  */
-/* moved to $DIR_LIBS/sql/*.php handler files
-function sql_query($query) {
-    global $SQLCount;
-    $SQLCount++;
-    $res = mysql_query($query) or print("mySQL error with query $query: " . mysql_error() . '<p />');
-    return $res;
-}*/
-
-
-/**
- * Highlights a specific query in a given HTML text (not within HTML tags) and returns it
- * @param string $text text to be highlighted
- * @param string $expression regular expression to be matched (can be an array of expressions as well)
- * @param string $highlight highlight to be used (use \\0 to indicate the matched expression)
- * @return string
- **/
-function highlight($text, $expression, $highlight) {
-
-	if (!$highlight || !$expression)
+	/**
+	 * This function highlights a specific query in a given HTML text (not within HTML tags) and returns it
+	 * @param string $text text to be highlighted
+	 * @param string $expression regular expression to be matched (can be an array of expressions as well)
+	 * @param string $highlight highlight to be used (use \\0 to indicate the matched expression)
+	 * @return string
+	 */
+	function highlight($text, $expression, $highlight)
 	{
-		return $text;
-	}
 
-	if (is_array($expression) && (count($expression) == 0) )
-	{
-		return $text;
-	}
-
-	// add a tag in front (is needed for preg_match_all to work correct)
-	$text = '<!--h-->' . $text;
-
-	// split the HTML up so we have HTML tags
-	// $matches[0][i] = HTML + text
-	// $matches[1][i] = HTML
-	// $matches[2][i] = text
-	preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
-
-	// throw it all together again while applying the highlight to the text pieces
-	$result = '';
-
-	$count_matches = count($matches[2]);
-
-	for ($i = 0; $i < $count_matches; $i++) {
-
-		if ($i != 0)
+		if ( !$highlight || !$expression )
 		{
-			$result .= $matches[1][$i];
+			return $text;
 		}
 
-		if (is_array($expression) )
+		if ( is_array($expression) && (count($expression) == 0) )
+		{
+			return $text;
+		}
+
+		// add a tag in front (is needed for preg_match_all to work correctly)
+		$text = '<!--h-->' . $text;
+
+		// split the HTML up so we have HTML tags
+		// $matches[0][i] = HTML + text
+		// $matches[1][i] = HTML
+		// $matches[2][i] = text
+		preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
+
+		// throw it all together again while applying the highlight to the text pieces
+		$result = '';
+
+		$count_matches = count($matches[2]);
+
+		for ( $i = 0; $i < $count_matches; $i++ )
 		{
 
-			foreach ($expression as $regex)
+			if ( $i != 0 )
 			{
-
-				if ($regex)
-				{
-					//$matches[2][$i] = @eregi_replace($regex, $highlight, $matches[2][$i]);
-					$matches[2][$i] = @preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
-				}
-
+				$result .= $matches[1][$i];
 			}
 
-			$result .= $matches[2][$i];
+			if ( is_array($expression) )
+			{
 
+				foreach ( $expression as $regex )
+				{
+
+					if ( $regex )
+					{
+						//$matches[2][$i] = @eregi_replace($regex, $highlight, $matches[2][$i]);
+						$matches[2][$i] = @preg_replace('#' . $regex . '#i', $highlight, $matches[2][$i]);
+					}
+
+				}
+
+				$result .= $matches[2][$i];
+
+			}
+			else
+			{
+				//$result .= @eregi_replace($expression, $highlight, $matches[2][$i]);
+				$result .= @preg_replace('#' . $expression . '#i', $highlight, $matches[2][$i]);
+			}
+
+		}
+
+		return $result;
+
+	}
+
+
+	/**
+	 * This function parses a query into an array of expressions that can be passed on to the highlight method
+	 * @param string $query
+	 */
+	function parseHighlight($query)
+	{
+		// TODO: add more intelligent splitting logic
+		
+		// get rid of quotes
+		$query = preg_replace('/\'|"/', '', $query);
+		
+		if ( !$query )
+		{
+			return array();
+		}
+		
+		$aHighlight = i18n::explode(' ', $query);
+		
+		for ( $i = 0; $i < count($aHighlight); $i++ )
+		{
+			$aHighlight[$i] = trim($aHighlight[$i]);
+			
+			if ( i18n::strlen($aHighlight[$i]) < 3 )
+			{
+				unset($aHighlight[$i]);
+			}
+		}
+		
+		if ( count($aHighlight) == 1 )
+		{
+			return $aHighlight[0];
 		}
 		else
 		{
-			//$result .= @eregi_replace($expression, $highlight, $matches[2][$i]);
-			$result .= @preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
+			return $aHighlight;
 		}
-
 	}
 
-	return $result;
 
-}
-
-/**
- * Parses a query into an array of expressions that can be passed on to the highlight method
- */
-function parseHighlight($query)
-{
-	// TODO: add more intelligent splitting logic
-	
-	// get rid of quotes
-	$query = preg_replace('/\'|"/', '', $query);
-	
-	if ( !$query )
+	/**
+	 * This function checks if an email address is valid
+	 * @param string $address
+	 * @return int
+	 */
+	function isValidMailAddress($address)
 	{
-		return array();
-	}
-	
-	$aHighlight = i18n::explode(' ', $query);
-	
-	for ( $i = 0; $i < count($aHighlight); $i++ )
-	{
-		$aHighlight[$i] = trim($aHighlight[$i]);
-		
-		if ( i18n::strlen($aHighlight[$i]) < 3 )
+		// enhancement made in 3.6x based on code by Quandary.
+		if ( preg_match('/^(?!\\.)(?:\\.?[-a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~]+)+@(?!\\.)(?:\\.?(?!-)[-a-zA-Z0-9]+(?<!-)){2,}$/', $address) )
 		{
-			unset($aHighlight[$i]);
+			return 1;
 		}
+		else
+		{
+			return 0;
+		} // end if
+
 	}
-	
-	if ( count($aHighlight) == 1 )
+
+
+	/**
+	 * This function gets the blog ID from the blog name
+	 * @param string $name
+	 * @return
+	 */
+	function getBlogIDFromName($name)
 	{
-		return $aHighlight[0];
+		return quickQuery('SELECT `bnumber` AS `result` FROM `' . sql_table('blog') . '` WHERE `bshortname` = "' . sql_real_escape_string($name) . '"');
 	}
-	else
+
+
+	/**
+	 * This function gets the blog name from the blog ID
+	 * @param int $id
+	 * @return object
+	 */
+	function getBlogNameFromID($id)
 	{
-		return $aHighlight;
+		return quickQuery('SELECT `bname` AS `result` FROM `' . sql_table('blog') . '` WHERE `bnumber` = ' . intval($id));
 	}
-}
-
-/**
-  * Checks if email address is valid
-  */
-function isValidMailAddress($address) {
-	// enhancement made in 3.6x based on code by Quandary.
-	if (preg_match('/^(?!\\.)(?:\\.?[-a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~]+)+@(?!\\.)(?:\\.?(?!-)[-a-zA-Z0-9]+(?<!-)){2,}$/', $address)) {
-        return 1;
-    } else {
-        return 0;
-    }
-}
 
 
-// some helper functions
-function getBlogIDFromName($name) {
-    return quickQuery('SELECT bnumber as result FROM ' . sql_table('blog') . ' WHERE bshortname="' . sql_real_escape_string($name) . '"');
-}
+	/**
+	 * This function gets the blog ID from the item ID
+	 * @param int $item_id
+	 * @return object
+	 */
+	function getBlogIDFromItemID($item_id)
+	{
+		return quickQuery('SELECT `iblog` AS `result` FROM `' . sql_table('item') . '` WHERE `inumber` = ' . intval($item_id));
+	}
 
-function getBlogNameFromID($id) {
-    return quickQuery('SELECT bname as result FROM ' . sql_table('blog') . ' WHERE bnumber=' . intval($id) );
-}
 
-function getBlogIDFromItemID($itemid) {
-    return quickQuery('SELECT iblog as result FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid) );
-}
+	/**
+	 * This function gets the blog ID from the comment ID
+	 * @param int $comment_id
+	 * @return object
+	 */
+	function getBlogIDFromCommentID($comment_id)
+	{
+		return quickQuery('SELECT `cblog` AS `result` FROM `' . sql_table('comment') . '` WHERE `cnumber` = ' . intval($comment_id));
+	}
 
-function getBlogIDFromCommentID($commentid) {
-    return quickQuery('SELECT cblog as result FROM ' . sql_table('comment') . ' WHERE cnumber=' . intval($commentid) );
-}
 
-function getBlogIDFromCatID($catid) {
-    return quickQuery('SELECT cblog as result FROM ' . sql_table('category') . ' WHERE catid=' . intval($catid) );
-}
+	/**
+	 * This function gets the blog ID from the category ID
+	 * @param int $category_id
+	 * @return object
+	 */
+	function getBlogIDFromCatID($category_id)
+	{
+		return quickQuery('SELECT `cblog` AS `result` FROM `' . sql_table('category') . '` WHERE `catid` = ' . intval($category_id));
+	}
 
-function getCatIDFromName($name) {
-    return quickQuery('SELECT catid as result FROM ' . sql_table('category') . ' WHERE cname="' . sql_real_escape_string($name) . '"');
-}
 
-function quickQuery($q) {
-    $res = sql_query($q);
-    $obj = sql_fetch_object($res);
-	return $obj->result;
-}
+	/**
+	 * This function gets the category ID from the category name
+	 * @param int $name
+	 * @return object
+	 */
+	function getCatIDFromName($name)
+	{
+		return quickQuery('SELECT `catid` AS `result` FROM `' . sql_table('category') . '` WHERE `cname` = "' . sql_real_escape_string($name) . '"');
+	}
+
+
+	/**
+	 * This function performs a quick SQL query
+	 * @param string $query
+	 * @return object
+	 */
+	function quickQuery($query)
+	{
+		$res = sql_query($q);
+		$obj = sql_fetch_object($res);
+		return $obj->result;
+	}
 
 function getPluginNameFromPid($pid) {
     $res = sql_query('SELECT pfile FROM ' . sql_table('plugin') . ' WHERE pid=' . intval($pid) );
