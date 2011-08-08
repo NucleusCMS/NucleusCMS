@@ -1,11 +1,11 @@
 /*
 	admin area style
-	
+
 	$Id$
 */
 
 body {
-	background: #ffffff; 
+	background: #ffffff;
 }
 
 body, td, th, a, li, ul, textarea {
@@ -88,11 +88,10 @@ h1 {
 	margin: 0 0 5px 135px;
 	height: 35px;
 	/*display: none;	hide the header if you don't want it*/
-
 }
 
 /* quick menu on left */
-/* 
+/*
 	It's a real pain getting this absolute positioning to work correctly
 	in all browsers. IE in particular seems to have a lot of trouble, even
 	when a valid doctype is present. Because of the way it is solved currently,
@@ -101,21 +100,21 @@ h1 {
 #quickmenu {
 	position: absolute;
 	overflow: hidden;
-	
+
 	top: 10px;
 	left: 10px;
 
 	width: 110px;
 	margin: 0px;
 	padding: 0px;
-	
+
 	font-size: 70%;
-	
+
 	border-width: 1px;
 	border-style: solid;
 	border-color: black;
 
-	background: #ffffff url(quickb.jpg) top left fixed repeat-y; 
+	background: #ffffff url(quickb.jpg) top left fixed repeat-y;
 }
 
 #quickmenu ul {
@@ -146,7 +145,7 @@ h1 {
 }
 
 #quickmenu a:hover {
-	background: #ffffff url(quickb-hover.jpg) top left fixed repeat-y; 
+	background: #ffffff url(quickb-hover.jpg) top left fixed repeat-y;
 	color: #000;
 	letter-spacing: 1px;
 }
@@ -156,7 +155,7 @@ h1 {
 	text-align: center;
 	padding: 1px 0px 1px 0px;
 	margin: 0px;
-	border-bottom: 1px solid #bbb; 	
+	border-bottom: 1px solid #bbb;
 	background-color: #ddd;
 	color: #000;
 }
@@ -192,18 +191,19 @@ h1 {
 	border-width: 1px;
 	border-style: solid;
 	border-color: black;
-	
-	/* rounded borders in gecko-based browsers? why not :) */
-	-moz-border-radius: 10px;	
 
-	padding: 10px 10px 0 10px;	
-	
+	/* rounded borders */
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+
+	padding: 10px 10px 0 10px;
+
 	background-color: white;
-	
 }
 
 #content h2 {
-	color: #596d9d; 
+	color: #596d9d;
 
 	border-color: gray;
 	border-style: dashed;
@@ -213,7 +213,7 @@ h1 {
 	line-height: 120%;
 
 	text-decoration: none;
-	font-weight: bold; 
+	font-weight: bold;
 }
 
 #content h3 {
@@ -233,15 +233,15 @@ h1 {
 	padding: 5px;
 }
 
-/* 
+/*
 	font size tricks, to make it work in all browsers
-	
-	See: 
+
+	See:
 	http://diveintoaccessibility.org/day_26_using_relative_font_sizes.html
 
-	(netscape 4 trick is left out, Nucleus doesn't work anyway in that browser)	
+	(netscape 4 trick is left out, Nucleus doesn't work anyway in that browser)
 	#content should be 'small' (in standard-compliant browsers)
-	
+
 */
 
 #content {
@@ -258,7 +258,7 @@ table {
 	width: 100%;
 	border-collapse: collapse;
 	margin-bottom: 10px;
-	margin-top: 10px;	
+	margin-top: 10px;
 }
 
 th {
@@ -269,7 +269,7 @@ th {
 
 th, td {
 	padding: 4px;
-	empty-cells: show;	
+	empty-cells: show;
 }
 
 td {
@@ -280,7 +280,7 @@ td {
 	text-align: left;
 }
 
-td a:link, td a:visited { 
+td a:link, td a:visited {
 	text-decoration: underline;
 	color: black;
 	font-weight: normal;
