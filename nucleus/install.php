@@ -13,7 +13,7 @@
  * and initialize the data in those tables.
  *
  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
- * ?><div style="font-size: xx-large;"> Your web server is not properly configured to run PHP scripts and will not be able to install Nucleus. </div> <div style="display: none"><?php
+ * ?><div style="font-size: xx-large;"> Your web server is not properly configured to run PHP scripts and will not be able to install Nucleus. </div> <div style="display: none;"><?php
  */
 
 /**
@@ -22,8 +22,16 @@
  * @version $Id$
  */
 
+	$minimum_php_version = '5.0.6';
+	$minimum_mysql_version = '3.23';
+
+	// begin if: server's PHP version is below the minimum; halt installation
+	if ( phpversion() < $minimum_php_version )
+	{
+		_doError(_ERROR31);
+	} // end if
+
 	/**
-	 *
 	 * This part of the install.php code allows for customization of the install process.
 	 * When distributing plugins or skins together with a Nucleus installation, the
 	 * configuration below will instruct to install them
@@ -125,7 +133,7 @@
 		// 0. pre check if all necessary files exist
 		doCheckFiles();
 
-	?>
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -154,8 +162,8 @@
 		--></script>
 	</head>
 	<body>
-		<div style="text-align:center"><img src="./nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
-		<form method="post" action="install.php">
+		<div style="text-align: center;"><img src="./nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div>
+		<form method="POST" action="install.php">
 
 		<h1><?php echo _HEADER1; ?></h1>
 
@@ -166,26 +174,8 @@
 		<?php echo _TEXT2; ?>
 
 		<ul>
-			<li>PHP:
-
-<?php
-		echo phpversion();
-		$minVersion = '4.0.6';
-
-		// begin if: below minimum required PHP version
-		if ( phpversion() < $minVersion )
-		{
-			echo ' <span class="warning">', _TEXT2_WARN , $minVersion, '</span>';
-		}
-		// else if: PHP4.x
-		else if ( phpversion() < '5' )
-		{
-			echo ' <span class="warning">' . _TEXT2_WARN3 . '</span>';
-		} // end if
-?>
-
-			</li>
-			<li>MySQL:
+			<li> PHP: <?php echo phpversion(); ?> </li>
+			<li> MySQL:
 
 <?php
 		// Turn on output buffer
@@ -1298,7 +1288,7 @@
 	 *
 	 * @param string $msg error message
 	 */
-	function _doError($msg)
+	function _doError($message)
 	{
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -1308,17 +1298,16 @@
 	<style>@import url('nucleus/styles/manual.css');</style>
 </head>
 <body>
-	<div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
+	<div style="text-align: center;"><img src="./nucleus/styles/logo.gif" /></div>
 	<h1><?php echo _ERROR27; ?></h1>
 
-	<p><?php echo _ERROR28; ?>: "<?php echo $msg?>";</p>
-
-	<p><a href="install.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
+	<p> <?php echo _ERROR28; ?>: "<?php echo $message; ?>" </p>
+	<p> <a href="install.php" onclick="history.back(); return false;"><?php echo _TEXT17; ?></a> </p>
 </body>
 </html>
 
 <?php
-	exit;
+		exit;
 	}
 
 
