@@ -106,7 +106,7 @@ class PAGEFACTORY extends BaseActions
 
 
 	/**
-	 * Creates a "add item" form for a given type of page
+	 * Creates an "add item" form for a given type of page
 	 * @param string $type - 'admin' or 'bookmarklet'
 	 * @param array $contents
 	 */
@@ -130,22 +130,24 @@ class PAGEFACTORY extends BaseActions
 
 
 	/**
-	 * creates a "add item" form for a given type of page
-	 *
-	 * @param type
-	 *		'admin' or 'bookmarklet'
-	 * @param contents
-	 *		An associative array
-	 *			'author' => author
-	 *			'' =>
+	 * Creates an "edit item" form for a given type of page
+	 * @param string $type 'admin' or 'bookmarklet'
+	 * @param array $contents
 	 */
-	function createEditForm($type, $contents) {
-		if (!in_array($type, $this->allowedTypes))
+	function createEditForm($type, $contents)
+	{
+
+		// begin if: the $type is not in the allowed types array
+		if ( !in_array($type, $this->allowedTypes) )
+		{
 			return;
+		} // end if
+
 		$this->type = $type;
 		$this->method = 'edit';
 		$this->createForm($contents);
 	}
+
 
 	/**
 	 * (private) creates a form for a given type of page
