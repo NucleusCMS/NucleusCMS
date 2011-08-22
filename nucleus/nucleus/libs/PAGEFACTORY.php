@@ -20,37 +20,54 @@
  * admin area, bookmarklet, skins or any other places where such a form
  * might be needed
  */
-class PAGEFACTORY extends BaseActions {
-
-	// ref to the blog object for which an add:edit form is created
-	var $blog;
-
-	// allowed actions (for parser)
-	var $actions;
-
-	// allowed types of forms (bookmarklet/admin)
-	var $allowedTypes;
-	var $type;		// one of the types in $allowedTypes
-
-	// 'add' or 'edit'
-	var $method;
-
-	// info to fill out in the form (e.g. catid, itemid, ...)
-	var $variables;
+class PAGEFACTORY extends BaseActions
+{
 
 	/**
-	 * creates a new PAGEFACTORY object
+	 * reference to the blog object for which an add:edit form is created
 	 */
-	function PAGEFACTORY($blogid) {
-		// call constructor of superclass first
+	var $blog;
+
+	/**
+	 * allowed actions (for parser)
+	 */
+	var $actions;
+
+	/**
+	 * allowed types of forms (bookmarklet/admin)
+	 */
+	var $allowedTypes;
+
+	/**
+	 * one of the types in $allowedTypes
+	 */
+	var $type;
+
+	/**
+	 * 'add' or 'edit'
+	 */
+	var $method;
+
+	/**
+	 * info to fill out in the form (e.g. catid, itemid, ...)
+	 */
+	var $variables;
+
+
+	/**
+	 * Creates a new PAGEFACTORY object
+	 * @param int $blog_id
+	 */
+	function PAGEFACTORY($blog_id)
+	{
+		# Call constructor of superclass first
 		$this->BaseActions();
 
 		global $manager;
-		$this->blog =& $manager->getBlog($blogid);
+		$this->blog =& $manager->getBlog($blog_id);
 
-		// TODO: move the definition of actions to the createXForm
-		// methods
-		$this->actions = Array(
+		// TODO: move the definition of actions to the createXForm methods
+		$this->actions = array(
 			'actionurl',
 			'title',
 			'body',
@@ -82,20 +99,26 @@ class PAGEFACTORY extends BaseActions {
 			'ifautosave',
 		);
 
-		// TODO: maybe add 'skin' later on?
-		// TODO: maybe add other pages from admin area
-		$this->allowedTypes = Array('bookmarklet','admin');
+		# TODO: maybe add 'skin' later on?
+		# TODO: maybe add other pages from admin area
+		$this->allowedTypes = array('bookmarklet', 'admin');
 	}
 
+
 	/**
-	 * creates a "add item" form for a given type of page
-	 *
-	 * @param type
-	 *		'admin' or 'bookmarklet'
+	 * Creates a "add item" form for a given type of page
+	 * @param string $type - 'admin' or 'bookmarklet'
+	 * @param array $contents
 	 */
-	function createAddForm($type, $contents = array()) {
-		if (!in_array($type, $this->allowedTypes))
+	function createAddForm($type, $contents = array())
+	{
+
+		// begin if: the $type is not in the allowed types array
+		if ( !in_array($type, $this->allowedTypes) )
+		{
 			return;
+		} // end if
+
 		$this->type = $type;
 		$this->method = 'add';
 
@@ -104,6 +127,7 @@ class PAGEFACTORY extends BaseActions {
 
 		$this->createForm($contents);
 	}
+
 
 	/**
 	 * creates a "add item" form for a given type of page
@@ -279,10 +303,10 @@ class PAGEFACTORY extends BaseActions {
 	// extra javascript for input and textarea fields
 	function parse_jsinput($which) {
 		global $CONF, $member;
-		
+
 		$attributes  = " name=\"{$which}\"";
 		$attributes .= " id=\"input{$which}\"";
-		
+
 		if ($CONF['DisableJsTools'] != 1) {
 			$attributes .= ' onclick="storeCaret(this);"';
 			$attributes .= ' onselect="storeCaret(this);"';
