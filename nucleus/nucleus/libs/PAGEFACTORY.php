@@ -24,44 +24,44 @@ class PAGEFACTORY extends BaseActions
 {
 
 	/**
-	 * reference to the blog object for which an add:edit form is created
+	 * Reference to the blog object for which an add:edit form is created
 	 */
-	var $blog;
+	private $blog;
 
 	/**
-	 * allowed actions (for parser)
+	 * Allowed actions (for parser)
 	 */
-	var $actions;
+	private $actions;
 
 	/**
-	 * allowed types of forms (bookmarklet/admin)
+	 * Allowed types of forms (bookmarklet/admin)
 	 */
-	var $allowedTypes;
+	private $allowed_types;
 
 	/**
-	 * one of the types in $allowedTypes
+	 * One of the types in $allowed_types
 	 */
-	var $type;
+	private $type;
 
 	/**
 	 * 'add' or 'edit'
 	 */
-	var $method;
+	private $method;
 
 	/**
-	 * info to fill out in the form (e.g. catid, itemid, ...)
+	 * Info to fill out in the form (e.g. catid, itemid, ...)
 	 */
-	var $variables;
+	private $variables;
 
 
 	/**
 	 * Creates a new PAGEFACTORY object
 	 * @param int $blog_id
 	 */
-	function PAGEFACTORY($blog_id)
+	public function __construct($blog_id)
 	{
 		# Call constructor of superclass first
-		$this->BaseActions();
+		parent::__construct();
 
 		global $manager;
 		$this->blog =& $manager->getBlog($blog_id);
@@ -101,7 +101,7 @@ class PAGEFACTORY extends BaseActions
 
 		# TODO: maybe add 'skin' later on?
 		# TODO: maybe add other pages from admin area
-		$this->allowedTypes = array('bookmarklet', 'admin');
+		$this->allowed_types = array('bookmarklet', 'admin');
 	}
 
 
@@ -110,11 +110,11 @@ class PAGEFACTORY extends BaseActions
 	 * @param string $type - 'admin' or 'bookmarklet'
 	 * @param array $contents
 	 */
-	function createAddForm($type, $contents = array())
+	public function createAddForm($type, $contents = array())
 	{
 
 		// begin if: the $type is not in the allowed types array
-		if ( !in_array($type, $this->allowedTypes) )
+		if ( !in_array($type, $this->allowed_types) )
 		{
 			return;
 		} // end if
@@ -134,11 +134,11 @@ class PAGEFACTORY extends BaseActions
 	 * @param string $type 'admin' or 'bookmarklet'
 	 * @param array $contents
 	 */
-	function createEditForm($type, $contents)
+	public function createEditForm($type, $contents)
 	{
 
 		// begin if: the $type is not in the allowed types array
-		if ( !in_array($type, $this->allowedTypes) )
+		if ( !in_array($type, $this->allowed_types) )
 		{
 			return;
 		} // end if
@@ -151,74 +151,123 @@ class PAGEFACTORY extends BaseActions
 
 	/**
 	 * (private) creates a form for a given type of page
+	 * @param array $contents
 	 */
-	function createForm($contents) {
-		// save contents
+	private function createForm($contents)
+	{
+		# save contents
 		$this->variables = $contents;
 
-		// get template to use
+		# get template to use
 		$template = $this->getTemplateFor($this->type);
 
-		// use the PARSER engine to parse that template
+		# use the PARSER engine to parse that template
 		$parser = new PARSER($this->actions, $this);
 		$parser->parse($template);
 	}
 
+
 	/**
-	 * returns an appropriate template
+	 * Returns an appropriate template
+	 * @param string $type
 	 */
-	function getTemplateFor($type) {
+	private function getTemplateFor($type)
+	{
 		global $DIR_LIBS;
 
 		$filename = $DIR_LIBS . 'include/' . $this->type . '-' . $this->method . '.template';
 
-		if (!file_exists($filename))
+		// begin if: file doesn't exist
+		if ( !file_exists($filename) )
+		{
 			return '';
+		} // end if
 
-		$fsize = filesize($filename);
-		if ($fsize <= 0)
+		$filesize = filesize($filename);
+
+		// begin if: filesize is LTE zero
+		if ( $filesize <= 0 )
+		{
 			return '';
+		} // end if
 
-		// read file and return it
+		# read file and return it
 		$fd = fopen ($filename, 'r');
-		$contents = fread ($fd, $fsize);
+		$contents = fread ($fd, $filesize);
 		fclose ($fd);
 
 		return $contents;
-
 	}
 
-	// create category dropdown box
-	function parse_categories($startidx = 0) {
-			if ($this->variables['catid'])
-				$catid = $this->variables['catid'];				// on edit item
-			else
-				$catid = $this->blog->getDefaultCategory();		// on add item
 
-			ADMIN::selectBlogCategory('catid',$catid,$startidx,1,$this->blog->getID());
+	/**
+	 * Create category dropdown box
+	 * @param int $start_index
+	 */
+	function parse_categories($start_index = 0)
+	{
+
+		// begin if: catid variable is set; use it to select the category
+		if ( $this->variables['catid'] )
+		{
+			$category_id = $this->variables['catid'];
+		}
+		// else: get the default category
+		else
+		{
+			$category_id = $this->blog->getDefaultCategory();
+		} // end if
+
+		ADMIN::selectBlogCategory('catid', $category_id, $start_index, 1, $this->blog->getID());
 	}
 
-	function parse_blogid() {
+
+	/**
+	 * Displays the blog ID
+	 */
+	function parse_blogid()
+	{
 		echo $this->blog->getID();
 	}
 
-	function parse_blogname() {
+
+	/**
+	 * Displays the blog name
+	 */
+	function parse_blogname()
+	{
 		echo $this->blog->getName();
 	}
 
-	function parse_bloglink() {
-		echo '<a href="'.htmlspecialchars($this->blog->getURL()).'">'.htmlspecialchars($this->blog->getName()).'</a>';
+
+	/**
+	 * Displays the blog link
+	 */
+	function parse_bloglink()
+	{
+		echo '<a href="', htmlspecialchars($this->blog->getURL()), '">', htmlspecialchars($this->blog->getName()), '</a>';
 	}
 
-	function parse_authorname() {
+
+	/**
+	 * Displays the author's name
+	 */
+	function parse_authorname()
+	{
 		// don't use on add item?
 		global $member;
 		echo $member->getDisplayName();
 	}
 
-	function parse_title() {
+
+	/**
+	 * Displays the title
+	 */
+	function parse_title()
+	{
 		echo $this->contents['title'];
 	}
+
 
 	/**
 	 * Indicates the start of a conditional block of data. It will be added to
@@ -229,43 +278,76 @@ class PAGEFACTORY extends BaseActions
 	 *
 	 * the conditional block ends with an <endif> var
 	 */
-	function parse_ifblogsetting($name,$value=1) {
+	function parse_ifblogsetting($name,$value=1)
+	{
 		$this->_addIfCondition(($this->blog->getSetting($name) == $value));
 	}
 
-	function parse_ifitemproperty($name,$value=1) {
+
+	/**
+	 *
+	 */
+	function parse_ifitemproperty($name,$value=1)
+	{
 		$this->_addIfCondition(($this->variables[$name] == $value));
 	}
 
-	function parse_ifautosave($name,$value=1) {
+
+	/**
+	 *
+	 */
+	function parse_ifautosave($name,$value=1)
+	{
 		global $member;
 		$this->_addIfCondition($member->getAutosave() == $value);
 	}
 
-	function parse_helplink($topic) {
+
+	/**
+	 *
+	 */
+	function parse_helplink($topic)
+	{
 		help($topic);
 	}
 
-	// for future items
-	function parse_currenttime($what) {
+
+	/**
+	 * for future items
+	 */
+	function parse_currenttime($what)
+	{
 		$nu = getdate($this->blog->getCorrectTime());
 		echo $nu[$what];
 	}
 
+
+	/**
+	 *
+	 */
 	// date change on edit item
-	function parse_itemtime($what) {
+	function parse_itemtime($what)
+	{
 		$itemtime = getdate($this->variables['timestamp']);
 		echo $itemtime[$what];
 	}
 
-	// some init stuff for all forms
-	function parse_init() {
+
+	/**
+	 * some init stuff for all forms
+	 */
+	function parse_init()
+	{
 		$authorid = ($this->method == 'edit') ? $this->variables['authorid'] : '';
 		$this->blog->insertJavaScriptInfo($authorid);
 	}
 
-	// on bookmarklets only: insert extra html header information (by plugins)
-	function parse_extrahead() {
+
+	/**
+	 * on bookmarklets only: insert extra html header information (by plugins)
+	 */
+	function parse_extrahead()
+	{
 		global $manager;
 
 		$extrahead = '';
@@ -280,8 +362,12 @@ class PAGEFACTORY extends BaseActions
 		echo $extrahead;
 	}
 
-	// inserts some localized text
-	function parse_text($which) {
+
+	/**
+	 * inserts some localized text
+	 */
+	function parse_text($which)
+	{
 		// constant($which) only available from 4.0.4 :(
 		if (defined($which)) {
 			eval("echo $which;");
@@ -291,19 +377,33 @@ class PAGEFACTORY extends BaseActions
 
 	}
 
-	function parse_contents($which) {
+
+	/**
+	 *
+	 */
+	function parse_contents($which)
+	{
 		if (!isset($this->variables[$which])) $this->variables[$which] = '';
 		echo htmlspecialchars($this->variables[$which],ENT_QUOTES);
 	}
 
-	function parse_checkedonval($value, $name) {
+
+	/**
+	 *
+	 */
+	function parse_checkedonval($value, $name)
+	{
 		if (!isset($this->variables[$name])) $this->variables[$name] = '';
 		if ($this->variables[$name] == $value)
 			echo "checked='checked'";
 	}
 
-	// extra javascript for input and textarea fields
-	function parse_jsinput($which) {
+
+	/**
+	 * extra javascript for input and textarea fields
+	 */
+	function parse_jsinput($which)
+	{
 		global $CONF, $member;
 
 		$attributes  = " name=\"{$which}\"";
@@ -329,8 +429,12 @@ class PAGEFACTORY extends BaseActions
 		echo $attributes;
 	}
 
-	// shows the javascript button bar
-	function parse_jsbuttonbar($extrabuttons = "") {
+
+	/**
+	 * shows the javascript button bar
+	 */
+	function parse_jsbuttonbar($extrabuttons = "")
+	{
 		global $CONF;
 		switch($CONF['DisableJsTools'])	{
 
@@ -404,10 +508,12 @@ class PAGEFACTORY extends BaseActions
 		}
 	}
 
+
 	/**
 	 * Allows plugins to add their own custom fields
 	 */
-	function parse_pluginextras() {
+	function parse_pluginextras()
+	{
 		global $manager;
 
 		switch ($this->method) {
@@ -430,24 +536,33 @@ class PAGEFACTORY extends BaseActions
 		}
 	}
 
+
 	/**
 	 * Adds the itemOptions of a plugin to a page
 	 * @author TeRanEX
 	 */
-	function parse_itemoptions() {
+	function parse_itemoptions()
+	{
 		global $itemid;
 		ADMIN::_insertPluginOptions('item', $itemid);
 	}
 
-	function parse_ticket() {
+
+	/**
+	 *
+	 */
+	function parse_ticket()
+	{
 		global $manager;
 		$manager->addTicketHidden();
 	}
 
+
 	/**
 	 * convenience method
 	 */
-	function _jsbutton($type, $code ,$tooltip) {
+	function _jsbutton($type, $code, $tooltip)
+	{
 	?>
 			<span class="jsbutton"
 				onmouseover="BtnHighlight(this);"
@@ -457,10 +572,13 @@ class PAGEFACTORY extends BaseActions
 			</span>
 	<?php	}
 
-	function _jsbuttonspacer() {
+
+	/**
+	 *
+	 */
+	function _jsbuttonspacer()
+	{
 		echo '<span class="jsbuttonspacer"></span>';
 	}
 
 }
-
- ?>
