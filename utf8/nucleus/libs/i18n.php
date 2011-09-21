@@ -1,7 +1,7 @@
 <?php
 /*
  * i18n class
- * written by Takashi Sakamoto as of Jun.5, 2011
+ * written by Takashi Sakamoto as of Sep.21, 2011
  * This is wrapper functions of iconv and mbstring
  * for multibyte processing.
  */
