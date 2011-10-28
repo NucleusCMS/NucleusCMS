@@ -1143,29 +1143,31 @@ class ADMIN {
     /**
      * @todo document this
      */
-    function action_itemedit() {
-        global $member, $manager;
+    function action_itemedit()
+	{
+		global $member, $manager;
 
-        $itemid = intRequestVar('itemid');
+		$itemid = intRequestVar('itemid');
 
-        // only allow if user is allowed to alter item
-        $member->canAlterItem($itemid) or $this->disallow();
+		// only allow if user is allowed to alter item
+		$member->canAlterItem($itemid) or $this->disallow();
 
-        $item =& $manager->getItem($itemid,1,1);
-        $blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
+		$item =& $manager->getItem($itemid, 1, 1);
+		$blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
 
-        $manager->notify('PrepareItemForEdit', array('item' => &$item));
+		$manager->notify('PrepareItemForEdit', array('item' => &$item));
 
-        if ($blog->convertBreaks()) {
-            $item['body'] = removeBreaks($item['body']);
-            $item['more'] = removeBreaks($item['more']);
-        }
+		if ($blog->convertBreaks())
+		{
+			$item['body'] = removeBreaks($item['body']);
+			$item['more'] = removeBreaks($item['more']);
+		}
 
-        // form to edit blog items
-        $this->pagehead();
-        $formfactory = new PAGEFACTORY($blog->getID());
-        $formfactory->createEditForm('admin',$item);
-        $this->pagefoot();
+		// form to edit blog items
+		$this->pagehead();
+		$formfactory = new PAGEFACTORY($blog->getID());
+		$formfactory->createEditForm('admin', $item);
+		$this->pagefoot();
     }
 
     /**
