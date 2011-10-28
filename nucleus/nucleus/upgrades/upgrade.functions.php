@@ -153,35 +153,43 @@
 	 * function does not exist yet
 	 * return 96 for all versions < 100
 	 */
-	function upgrade_getNucleusVersion() {
-		if (!function_exists('getNucleusVersion')) return 96;
+	function upgrade_getNucleusVersion()
+	{
+		if ( !function_exists('getNucleusVersion') )
+		{
+			return 96;
+		}
+
 		return getNucleusVersion();
 	}
 
-	function upgrade_showLogin($type) {
+
+	function upgrade_showLogin($type)
+	{
 		upgrade_head();
-	?>
-		<h1>Please Log in First</h1>
-		<p>Enter your data below:</p>
+?>
+	<h1> Please Log in First </h1>
+	<p> Enter your data below: </p>
 
-		<form method="post" action="<?php echo $type?>">
+	<form method="POST" action="<?php echo $type?>">
 
-			<ul>
-				<li>Name: <input name="login" /></li>
-				<li>Password <input name="password" type="password" /></li>
-			</ul>
+	<ul>
+		<li> <label for="i_login">Name:</label> <input type="text" name="login" id="i_login" size="20" /> </li>
+		<li> <label for="i_password">Password:</label> <input type="password" name="password" id="i_password" size="20" /> </li>
+	</ul>
 
-			<p>
-				<input name="action" value="login" type="hidden" />
-				<input type="submit" value="Log in" />
-			</p>
+	<p> <input type="submit" value="Log In" /> </p>
+	<input name="action" value="login" type="hidden" />
+	</form>
 
-		</form>
-	<?php		upgrade_foot();
+<?php
+		upgrade_foot();
 		exit;
-	}
+	} // end function upgrade_showLogin()
 
-	function upgrade_head() {
+
+	function upgrade_head()
+	{
 	?>
 			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 			<html xmlns="http://www.w3.org/1999/xhtml">
