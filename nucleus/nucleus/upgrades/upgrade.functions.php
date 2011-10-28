@@ -1,123 +1,149 @@
 <?php
 
-	/*
-	 * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-	 * Copyright (C) 2002-2009 The Nucleus Group
-	 *
-	 * This program is free software; you can redistribute it and/or
-	 * modify it under the terms of the GNU General Public License
-	 * as published by the Free Software Foundation; either version 2
-	 * of the License, or (at your option) any later version.
-	 * (see nucleus/documentation/index.html#license for more info)
-	 */
+/**
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2009 The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ */
+/**
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @version $Id$
+ */
+
 	/**
 	 * Some functions common to all upgrade scripts
-	 *
-	 * @license http://nucleuscms.org/license.txt GNU General Public License
-	 * @copyright Copyright (C) 2002-2009 The Nucleus Group
-	 * @version $Id$
 	 */
-	 
-/*************************************************************
- *     NOTE: With upgrade to 3.6, need to set this to use sql_* API           *
- **************************************************************/
+
+	/*************************************************************
+	 *     NOTE: With upgrade to 3.6, need to set this to use sql_* API
+	 **************************************************************/
 
 	include('../../config.php');
 
 	// sql_table function did not exists in nucleus <= 2.0
-	if (!function_exists('sql_table'))
+	if ( !function_exists('sql_table') )
 	{
-		function sql_table($name) {
+		function sql_table($name)
+		{
 			return 'nucleus_' . $name;
 		}
 	}
 
 	//intGetVar did not exist in very early versions
-	if (!function_exists('intGetVar')) {
-		function intGetVar($name) {
-			if (defined($_GET)) {
+	if ( !function_exists('intGetVar') )
+	{
+		function intGetVar($name)
+		{
+			if ( defined($_GET) )
+			{
 				return intval($_GET[$name]);
-			} else {
+			}
+			else
+			{
 				global $HTTP_GET_VARS;
 				return intval($HTTP_GET_VARS[$name]);
 			}
 		}
 	}
 
-	function upgrade_checkinstall($version) {
+
+	function upgrade_checkinstall($version)
+	{
 		$installed = 0;
 
-		switch($version) {
+		switch( $version )
+		{
 			case '95':
-				$query = 'SELECT bconvertbreaks FROM '.sql_table('blog').' LIMIT 1';
+				$query = 'SELECT bconvertbreaks FROM ' . sql_table('blog') . ' LIMIT 1';
 				$minrows = -1;
-				break;
+			break;
+
 			case '96':
-				$query = 'SELECT cip FROM '.sql_table('comment').' LIMIT 1';
+				$query = 'SELECT cip FROM ' . sql_table('comment') . ' LIMIT 1';
 				$minrows = -1;
-				break;
+			break;
+
 			case '100':
-				$query = 'SELECT mcookiekey FROM '.sql_table('member').' LIMIT 1';
+				$query = 'SELECT mcookiekey FROM ' . sql_table('member') . ' LIMIT 1';
 				$minrows = -1;
-				break;
+			break;
+
 			case '110':
-				$query = 'SELECT bnotifytype FROM '.sql_table('blog').' LIMIT 1';
+				$query = 'SELECT bnotifytype FROM ' . sql_table('blog') . ' LIMIT 1';
 				$minrows = -1;
-				break;
+			break;
+
 			case '150':
-				$query = 'SELECT * FROM '.sql_table('plugin_option').' LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('plugin_option') . ' LIMIT 1';
 				$minrows = -1;
-				break;
+			break;
+
 			case '200':
-				$query = 'SELECT sdincpref FROM '.sql_table('skin_desc').' LIMIT 1';
+				$query = 'SELECT sdincpref FROM ' . sql_table('skin_desc') . ' LIMIT 1';
 				$minrows = -1;
-				break;
+			break;
+
 			// dev only (v2.2)
 			case '220':
-				$query = 'SELECT oid FROM '.sql_table('plugin_option_desc').' LIMIT 1';
+				$query = 'SELECT oid FROM ' . sql_table('plugin_option_desc') . ' LIMIT 1';
 				$minrows = -1;
-				break;
+			break;
+
 			// v2.5 beta
 			case '240':
 				$query = 'SELECT bincludesearch FROM ' . sql_table('blog') . ' LIMIT 1';
 				$minrows = -1;
-				break;
+			break;
+
 			case '250':
-				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 250 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 250 LIMIT 1';
 				$minrows = 1;
-				break;
+			break;
+
 			case '300':
-				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 300 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 300 LIMIT 1';
 				$minrows = 1;
-				break;
+			break;
+
 			case '310':
-				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 310 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 310 LIMIT 1';
 				$minrows = 1;
-				break;
+			break;
+
 			case '320':
-				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 320 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 320 LIMIT 1';
 				$minrows = 1;
-				break;
+			break;
+
 			case '330':
-				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 330 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 330 LIMIT 1';
 				$minrows = 1;
-				break;
+			break;
+
 			case '340':
-				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 340 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 340 LIMIT 1';
 				$minrows = 1;
-				break;
+			break;
+
 			case '350':
-				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 350 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 350 LIMIT 1';
 				$minrows = 1;
-				break;
+			break;
+
 			case '360':
-				$query = 'SELECT * FROM '.sql_table('config').' WHERE name=\'DatabaseVersion\' and value >= 360 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 360 LIMIT 1';
 				$minrows = 1;
-				break;
+			break;
 		}
 
-		$res = mysql_query($query);
-		$installed = ($res != 0) && (mysql_num_rows($res) >= $minrows);
+		$result = mysql_query($query);
+		$installed = ( $result != 0 ) && (mysql_num_rows($result) >= $minrows);
 
 		return $installed;
 	}

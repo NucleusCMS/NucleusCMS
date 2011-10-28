@@ -126,7 +126,7 @@
 <?php
 	$from = intGetVar('from');
 
-	if (!$from) 
+	if (!$from)
 		$from = $current;
 
 	$sth = 0;
@@ -224,13 +224,13 @@
 ?>
 	<h2> Changes needed for Nucleus 3.4 </h2>
 	<p> It is recommended that you apply some restrictions to what you allow the web server to do with files in the <i>media</i> and <i>skins</i> folders. These restrictions are not necessary to the functioning of the software, nor to the security of the software. However, they can be an important help under the security principle of denying any access that is not required. </p>
-  
+
 	<p> Instructions for applying the restrictions are found in the following two files on your server: </p>
 	<ul>
 		<li> <a href="../../extra/media/readme.txt">extra/media/readme.txt</a> </li>
 		<li> <a href="../../extra/skins/readme.txt">extra/skins/readme.txt</a> </li>
 	</ul>
-  
+
 <?php
 	} // end function upgrade_manual_340()
 
@@ -239,7 +239,7 @@
 		global $DIR_NUCLEUS;
 ?>
 	<h2> Important Notices for Nucleus 3.5 </h2>
-  
+
 <?php
 	// Give user warning if they are running old version of PHP
 	if ( phpversion() < '5' )
