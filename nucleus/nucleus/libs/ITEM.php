@@ -11,69 +11,96 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 /**
- * A class representing an item
- *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
-class ITEM {
 
-	var $itemid;
+/**
+ * A class representing an item
+ *
+ */
+class ITEM
+{
 
 	/**
-	  * Constructor of an ITEM object
-	  * 
-	  * @param integer $itemid id of the item
-	  */
-	function ITEM($itemid) {
-		$this->itemid = $itemid;
+	 * Item ID (int)
+	 */
+	public $itemid;
+
+
+	/**
+	 * Creates a new ITEM object
+	 * @param int $item_id
+	 */
+	public function __construct($item_id)
+	{
+		$this->itemid = $item_id;
 	}
 
+
 	/**
-	  * Returns one item with the specific itemid
-	  * 
-	  * @param integer $itemid id of the item
-	  * @param boolean $allowdraft
-	  * @param boolean $allowfuture	  	  	  	  
-	  * @static
-	  */
-	function getitem($itemid, $allowdraft, $allowfuture) {
+	 * Returns one item with the specific itemid
+	 *
+	 * @param int $item_id
+	 * @param bool $allow_draft
+	 * @param bool $allow_future
+	 * @return mixed
+	 */
+	public function getitem($item_id, $allow_draft, $allow_future)
+	{
 		global $manager;
 
-		$itemid = intval($itemid);
+		$item_id = intval($item_id);
 
-		$query =  'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, '
-			   . ' i.ititle as title, i.ibody as body, m.mname as author, '
-			   . ' i.iauthor as authorid, i.itime, i.imore as more, i.ikarmapos as karmapos, '
-			   . ' i.ikarmaneg as karmaneg, i.icat as catid, i.iblog as blogid '
-			   . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, ' . sql_table('blog') . ' as b '
-			   . ' WHERE i.inumber=' . $itemid
-			   . ' and i.iauthor=m.mnumber '
-			   . ' and i.iblog=b.bnumber';
+		$query = 'SELECT ' .
+			'`i`.`idraft` AS `draft`, ' .
+			'`i`.`inumber` AS `itemid`, ' .
+			'`i`.`iclosed` AS `closed`, ' .
+			'`i`.`ititle` AS `title`, ' .
+			'`i`.`ibody` AS `body`, ' .
+			'`m`.`mname` AS `author`, ' .
+			'`i`.`iauthor` AS `authorid`, ' .
+			'`i`.`itime`, ' .
+			'`i`.`imore` AS `more`, ' .
+			'`i`.`ikarmapos` AS `karmapos`, ' .
+			'`i`.`ikarmaneg` AS `karmaneg`, ' .
+			'`i`.`icat` AS `catid`, ' .
+			'`i`.`iblog` AS `blogid` ' .
+			'FROM `%s` AS `i`, `%s` AS `m`, `%s` AS `b` ' .
+			'WHERE `i`.`inumber` = %d ' .
+			'AND `i`.`iauthor` = `m`.`mnumber` ' .
+			'AND `i`.`iblog` = `b`.`bnumber` ';
 
-		if (!$allowdraft)
-			$query .= ' and i.idraft=0';
+		$query = sprintf($query, sql_table('item'), sql_table('member'), sql_table('blog'), $item_id);
 
-		if (!$allowfuture) {
-			$blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
-			$query .= ' and i.itime <=' . mysqldate($blog->getCorrectTime());
+		if ( !$allow_draft )
+		{
+			$query .= 'AND `i`.`idraft` = 0 ';
+		}
+
+		if ( !$allow_future )
+		{
+			$blog =& $manager->getBlog(getBlogIDFromItemID($item_id));
+			$query .= 'AND `i`.`itime` <= ' . mysqldate($blog->getCorrectTime());
 		}
 
 		$query .= ' LIMIT 1';
+		$result = sql_query($query);
 
-		$res = sql_query($query);
-
-		if (sql_num_rows($res) == 1)
+		if ( sql_num_rows($result) == 1 )
 		{
-			$aItemInfo = sql_fetch_assoc($res);
+			$aItemInfo = sql_fetch_assoc($result);
 			$aItemInfo['timestamp'] = strtotime($aItemInfo['itime']);
 			return $aItemInfo;
-		} else {
+		}
+		else
+		{
 			return 0;
 		}
 
 	}
+
 
 	/**
 	 * Tries to create an item from the data in the current request (comes from
@@ -180,7 +207,7 @@ class ITEM {
 
 	/**
 	  * Updates an item
-	  * 
+	  *
 	  * @static
 	  */
 	function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0)
@@ -272,8 +299,8 @@ class ITEM {
 			}
 
 		} // end if
-		
-		// save back to drafts		
+
+		// save back to drafts
 		if ( !$wasdraft && !$publish )
 		{
 			$query .= ', idraft = 1';
@@ -323,7 +350,7 @@ class ITEM {
 	 * Move an item to another blog (no checks)
 	 *
 	 * @static
-	 */	 	 	 	
+	 */
 	function move($itemid, $new_catid) {
 		global $manager;
 
@@ -397,7 +424,7 @@ class ITEM {
 	 * Returns true if there is an item with the given ID
 	 *
 	 * @static
-	 */	 	 	
+	 */
 	function exists($id,$future,$draft) {
 		global $manager;
 
