@@ -183,98 +183,141 @@ class ITEM {
 	  * 
 	  * @static
 	  */
-	function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0) {
+	function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0)
+	{
 		global $manager;
 
 		$itemid = intval($itemid);
 
 		// make sure value is 1 or 0
-		if ($closed != 1) $closed = 0;
+		if ( $closed != 1 )
+		{
+			$closed = 0;
+		}
 
 		// get destination blogid
 		$new_blogid = getBlogIDFromCatID($catid);
 		$old_blogid = getBlogIDFromItemID($itemid);
 
 		// move will be done on end of method
-		if ($new_blogid != $old_blogid)
+		if ( $new_blogid != $old_blogid )
+		{
 			$moveNeeded = 1;
+		}
 
-		// add <br /> before newlines
 		$blog =& $manager->getBlog($new_blogid);
-		if ($blog->convertBreaks()) {
+
+		// begin if: convert line breaks to <br/>
+		if ( $blog->convertBreaks() )
+		{
 			$body = addBreaks($body);
 			$more = addBreaks($more);
-		}
+		} // end if
 
 		// call plugins
-		$manager->notify('PreUpdateItem',array('itemid' => $itemid, 'title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => &$blog, 'closed' => &$closed, 'catid' => &$catid));
+		$manager->notify('PreUpdateItem', array(
+			'itemid' => $itemid,
+			'title' => &$title,
+			'body' => &$body,
+			'more' => &$more,
+			'blog' => &$blog,
+			'closed' => &$closed,
+			'catid' => &$catid
+			)
+		);
 
-		// update item itsself
-		$query =  'UPDATE '.sql_table('item')
+		// update item itself
+		$query =  'UPDATE ' . sql_table('item')
 			   . ' SET'
-			   . " ibody='". sql_real_escape_string($body) ."',"
-			   . " ititle='" . sql_real_escape_string($title) . "',"
-			   . " imore='" . sql_real_escape_string($more) . "',"
-			   . " iclosed=" . intval($closed) . ","
-			   . " icat=" . intval($catid);
+			   . " ibody = '" . sql_real_escape_string($body) . "',"
+			   . " ititle = '" . sql_real_escape_string($title) . "',"
+			   . " imore = '" . sql_real_escape_string($more) . "',"
+			   . " iclosed = " . intval($closed) . ","
+			   . " icat = " . intval($catid);
 
-		// if we received an updated timestamp in the past, but past posting is not allowed,
-		// reject that date change (timestamp = 0 will make sure the current date is kept)
-		if ( (!$blog->allowPastPosting()) && ($timestamp < $blog->getCorrectTime()))
-				$timestamp = 0;
+		// if we received an updated timestamp that is in the past, but past posting is not allowed, reject that date change (timestamp = 0 will make sure the current date is kept)
+		if ( (!$blog->allowPastPosting()) && ($timestamp < $blog->getCorrectTime()) )
+		{
+			$timestamp = 0;
+		} // end if
 
-		if ($timestamp > $blog->getCorrectTime(time())) {
+		// begin if: post is in the future
+		if ( $timestamp > $blog->getCorrectTime(time()) )
+		{
 			$isFuture = 1;
-			$query .= ', iposted=0';
+			$query .= ', iposted = 0';
 		}
-		else {
+		else
+		{
 			$isFuture = 0;
-			$query .= ', iposted=1';
-		}
+			$query .= ', iposted = 1';
+		} // end if
 
-		if ($wasdraft && $publish) {
+		if ( $wasdraft && $publish )
+		{
 			// set timestamp to current date only if it's not a future item
 			// draft items have timestamp == 0
 			// don't allow timestamps in the past (unless otherwise defined in blogsettings)
-			$query .= ', idraft=0';
+			$query .= ', idraft = 0';
 
-			if ($timestamp == 0)
+			if ( $timestamp == 0 )
+			{
 				$timestamp = $blog->getCorrectTime();
+			}
 
 			// send new item notification
-			if (!$isFuture && $blog->getNotifyAddress() && $blog->notifyOnNewItem())
+			if ( !$isFuture && $blog->getNotifyAddress() && $blog->notifyOnNewItem() )
+			{
 				$blog->sendNewItemNotification($itemid, $title, $body);
-		}
+			}
+
+		} // end if
 		
 		// save back to drafts		
-		if (!$wasdraft && !$publish) {
-			$query .= ', idraft=1';
+		if ( !$wasdraft && !$publish )
+		{
+			$query .= ', idraft = 1';
 			// set timestamp back to zero for a draft
-			$query .= ", itime=" . mysqldate($timestamp);
+			$query .= ', itime = ' . mysqldate($timestamp);
 		}
 
 		// update timestamp when needed
-		if ($timestamp != 0)
-			$query .= ", itime=" . mysqldate($timestamp);
+		if ( $timestamp != 0 )
+		{
+			$query .= ', itime = ' . mysqldate($timestamp);
+		}
 
 		// make sure the correct item is updated
-		$query .= ' WHERE inumber=' . $itemid;
+		$query .= ' WHERE inumber = ' . $itemid;
 
 		// off we go!
 		sql_query($query);
 
-		$manager->notify('PostUpdateItem',array('itemid' => $itemid));
+		$manager->notify('PostUpdateItem', array('itemid' => $itemid));
 
 		// when needed, move item and comments to new blog
-		if ($moveNeeded)
+		if ( $moveNeeded )
+		{
 			ITEM::move($itemid, $catid);
+		}
 
 		//update the itemOptions
 		$aOptions = requestArray('plugoption');
 		NucleusPlugin::_applyPluginOptions($aOptions);
-		$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $title, 'body' => $body, 'more' => $more, 'closed' => $closed, 'catid' => $catid)));
-
+		$manager->notify('PostPluginOptionsUpdate', array(
+			'context' => 'item',
+			'itemid' => $itemid,
+			'item' => array(
+				'title' => $title,
+				'body' => $body,
+				'more' => $more,
+				'closed' => $closed,
+				'catid' => $catid
+				)
+			)
+		);
 	}
+
 
 	/**
 	 * Move an item to another blog (no checks)
