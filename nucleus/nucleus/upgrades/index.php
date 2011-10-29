@@ -27,19 +27,19 @@
 	// begin if: make sure user is an admin
 	if ( !$member->isAdmin() )
 	{
-		upgrade_error('Only Super-Admins are allowed to perform upgrades');
+		upgrade_error('Only super administrators are allowed to perform upgrades');
 	} // end if
 
 	upgrade_head();
 ?>
 
-	<h1> Upgrade Scripts </h1>
+	<h1> Upgrade Nucleus </h1>
 
 	<div class="note">
-		<p> <strong>Note:</strong> If you aren't upgrading from an old Nucleus version (you installed Nucleus from scratch), you won't need these files. </p>
+		<p> <strong>Note:</strong> If you just installed Nucleus for the first time and are not upgrading from an earlier version, you will not need these files. </p>
 	</div>
 
-	<p> When upgrading from an older Nucleus version, upgrades to the database tables are required. This upgrade script allows you to automate these changes. </p>
+	<p> Database updates may be required when upgrading from an earlier version of Nucleus. This tool allows you to automate these updates. </p>
 
 <?php
 	// calculate current version
@@ -103,7 +103,7 @@
 	if ( $current == 360 )
 	{
 ?>
-	<p class="ok"> No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus. </p>
+	<p class="ok"> No database updates required! The database has already been updated to the latest version of Nucleus. </p>
 <?php
 	}
 	else
@@ -115,13 +115,11 @@
 ?>
 
 	<div class="note">
-		<p> <strong>Note:</strong> Don't forget to make a backup of your database every once in a while! </p>
-		<p> It is suggested that you do so before upgrading the database in case things go wrong. </p>
+		<p> <strong>Note:</strong> It is strongly recommended that you create a database backup <em>before</em> performing upgrades. </p>
 	</div>
 
-	<h1> Manual changes </h1>
-
-	<p> Some changes need to be done manually. Instructions are given below (if any) </p>
+	<h1> Manual Updates </h1>
+	<p> Some updates need to be performed manually. Instructions are given below (if any). </p>
 
 <?php
 	$from = intGetVar('from');
