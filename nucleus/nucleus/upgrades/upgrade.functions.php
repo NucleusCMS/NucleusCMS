@@ -423,7 +423,7 @@
 		// else: query error or no results returned
 		else
 		{
-			return FALSE
+			return FALSE;
 		} // end if
 
 	}
@@ -448,7 +448,7 @@
 		// else: query error or no results returned
 		else
 		{
-			return FALSE
+			return FALSE;
 		} // end if
 
 	}
@@ -474,7 +474,7 @@
 		// else: query error or no results returned
 		else
 		{
-			return FALSE
+			return FALSE;
 		} // end if
 
 	}
