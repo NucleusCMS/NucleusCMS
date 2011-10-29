@@ -145,13 +145,6 @@
 		$sth = 1;
 	}
 
-	// some manual code changes are needed in order to get Nucleus to work on php version lower than 4.0.6
-	if ( phpversion() < '4.0.6' )
-	{
-		upgrade_manual_php405();
-		$sth = 1;
-	}
-
 	// upgrades from pre-340 version need to be told of recommended .htaccess files for the media and skins folders. these .htaccess files are included in new installs of 340 or higher
 	if ( in_array($from, array(95, 96)) || $from < 340 )
 	{
@@ -277,51 +270,3 @@
 
 <?php
 	} // end function upgrade_manual_350()
-
-
-	/**
-	 * Manual update instructions for PHP 4.0.5 and before
-	 */
-	function upgrade_manual_php405()
-	{
-?>
-	<h2> Changes needed when running PHP versions 4.0.3, 4.0.4 and 4.0.5 </h2>
-
-	<p> There are two files that need to be changed when running PHP versions lower than 4.0.6. Even better would be to upgrade to PHP 4.0.6 or PHP 4.2.2+ (there are security issues with all PHP versions &lt; 4.0.6 and 4.2.2). If you're not able or not willing to upgrade, here's what to change: </p>
-	<ul>
-		<li> Make sure the code in nucleus/libs/PARSER.php is as follows (starting from line 84):
-	<pre>
-		if ( in_array($actionlc, $this-&gt;actions) || $this-&gt;norestrictions )
-		{
-			<strong>$this-&gt;call_using_array($action, $this-&gt;handler, $params);</strong>
-		}
-		else
-		{
-			// redirect to plugin action if possible
-			if ( in_array('plugin', $this-&gt;actions) && $manager-&gt;pluginInstalled('NP_' . $action) )
-			{
-				$this-&gt;doAction('plugin(' . $action . $this-&gt;pdelim . implode($this-&gt;pdelim, $params) . ')');
-			}
-			else
-			{
-				echo '&lt;strong&gt;DISALLOWED (' , $action , ')&lt;/strong&gt;';
-			}
-		}
-
-	}
-	</pre>
-
-		</li>
-		<li> Make sure the code in nucleus/libs/PARSER.php is as follows (starting from line 75):
-	<pre>
-	// $params = array_map('trim', $params);
-	foreach ( $params as $key =&gt; $value )
-	{
-		$params[$key] = trim($value);
-	}
-	</pre>
-		</li>
-	</ul>
-
-<?php
-	} // end function upgrade_manual_php405()
