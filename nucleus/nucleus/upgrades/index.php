@@ -126,8 +126,10 @@
 <?php
 	$from = intGetVar('from');
 
-	if (!$from)
+	if ( !$from )
+	{
 		$from = $current;
+	}
 
 	$sth = 0;
 
@@ -165,25 +167,34 @@
 	}
 
 	if ( $sth == 0 )
-		echo "<p class='ok'>No manual changes needed. This must be your lucky day!</p>";
+	{
+		echo '<p class="ok"> No manual changes needed. This must be your lucky day! </p>';
+	}
 
 	upgrade_foot();
 
 
-	function upgrade_todo($ver)
+	/**
+	 * 
+	 * @param int $version
+	 */
+	function upgrade_todo($version)
 	{
-		return upgrade_checkinstall($ver) ? "(<span class='ok'>installed</span>)" : "(<span class='warning'>not yet installed</span>)";
+		return upgrade_checkinstall($version) ? "(<span class='ok'>installed</span>)" : "(<span class='warning'>not yet installed</span>)";
 	}
 
 
+	/**
+	 * Manual update instructions for version 0.96
+	 */
 	function upgrade_manual_96()
 	{
 		global $DIR_NUCLEUS;
 
-		$guess = str_replace("/nucleus/", "/media/", $DIR_NUCLEUS);
+		$guess = str_replace('/nucleus/', '/media/', $DIR_NUCLEUS);
 ?>
 	<h2> Changes needed for Nucleus 0.96 </h2>
-	<p> A manual addition needs to be made to <i>config.php</i>, in order to get the media functions to work. Here's what to add: </p>
+	<p> A manual addition needs to be made to <em>config.php</em>, in order to get the media functions to work. Here's what to add: </p>
 	<pre>
 	// path to media dir
 	$DIR_MEDIA = '<strong><?php echo htmlspecialchars($guess)?></strong>';
@@ -195,6 +206,9 @@
 	} // end function upgrade_manual_96()
 
 
+	/**
+	 * Manual update instructions for version 2.0 and before
+	 */
 	function upgrade_manual_200()
 	{
 		global $DIR_NUCLEUS;
@@ -218,6 +232,9 @@
 	} // end function upgrade_manual_200()
 
 
+	/**
+	 * Manual update instructions for version 3.4 and before
+	 */
 	function upgrade_manual_340()
 	{
 		global $DIR_NUCLEUS;
@@ -234,6 +251,10 @@
 <?php
 	} // end function upgrade_manual_340()
 
+
+	/**
+	 * Manual update instructions for version 3.5 and before
+	 */
 	function upgrade_manual_350()
 	{
 		global $DIR_NUCLEUS;
@@ -258,6 +279,9 @@
 	} // end function upgrade_manual_350()
 
 
+	/**
+	 * Manual update instructions for PHP 4.0.5 and before
+	 */
 	function upgrade_manual_php405()
 	{
 ?>
