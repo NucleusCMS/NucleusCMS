@@ -149,9 +149,9 @@
 	}
 
 
-	/** this function gets the nucleus version, even if the getNucleusVersion
-	 * function does not exist yet
-	 * return 96 for all versions < 100
+	/**
+	 * Get the Nucleus version. If getNucleusVersion() doesn't exist, default to version 0.96
+	 * @return int
 	 */
 	function upgrade_getNucleusVersion()
 	{
@@ -164,20 +164,22 @@
 	}
 
 
-	function upgrade_showLogin($type)
+	/**
+	 * Show the login form
+	 * @param string $action
+	 */
+	function upgrade_showLogin($action)
 	{
 		upgrade_head();
 ?>
-	<h1> Please Log in First </h1>
-	<p> Enter your data below: </p>
+	<h1> Log In </h1>
+	<p> Please enter your login name and password. </p>
 
-	<form method="POST" action="<?php echo $type?>">
-
+	<form method="POST" action="<?php echo $action; ?>">
 	<ul>
 		<li> <label for="i_login">Name:</label> <input type="text" name="login" id="i_login" size="20" /> </li>
 		<li> <label for="i_password">Password:</label> <input type="password" name="password" id="i_password" size="20" /> </li>
 	</ul>
-
 	<p> <input type="submit" value="Log In" /> </p>
 	<input name="action" value="login" type="hidden" />
 	</form>
@@ -188,104 +190,144 @@
 	} // end function upgrade_showLogin()
 
 
+	/**
+	 * Display the HTML header
+	 */
 	function upgrade_head()
 	{
-	?>
-			<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-			<html xmlns="http://www.w3.org/1999/xhtml">
-			<head>
-				<title>Nucleus Upgrade</title>
-<?php if (file_exists("../styles/manual.css")) { ?>
-				<link rel="stylesheet" href="../styles/manual.css" type="text/css" />
-<?php }else{ ?>
-				<style type="text/css"><!--
-					.warning {
-						color: red;
-					}
-					.ok {
-						color: green;
-					}
-				--></style>
-<?php } ?>
-			</head>
-			<body>
-	<?php	}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title> Nucleus Upgrade </title>
+<?php
+	// begin if: manual.css exists - <link> it
+	if ( file_exists('../styles/manual.css') )
+	{
+?>
+		<link rel="stylesheet" href="../styles/manual.css" type="text/css" />
+<?php
+	}
+	// else: include some CSS
+	else
+	{
+?>
+		<style type="text/css">
+			.warning { color: red; }
+			.ok { color: green; }
+		</style>
+<?php
+	} // end if
+?>
+	</head>
+	<body>
 
-	function upgrade_foot() {
-	?>
-			</body>
-			</html>
-	<?php	}
+<?php
+	} // end function upgrade_head()
 
-	function upgrade_error($msg) {
+
+	/**
+	 * Display the HTML footer
+	 */
+	function upgrade_foot()
+	{
+		echo '</body></html>';
+	}
+
+
+	/**
+	 * Display an error page
+	 * @param string $message
+	 */
+	function upgrade_error($message)
+	{
 		upgrade_head();
-		?>
-		<h1>Error!</h1>
+?>
+		<h1> Error </h1>
 
-		<p>Message was:</p>
+		<p> The following message was returned: </p>
+		<p> <?php echo $message?> </p>
+		<p> <a href="index.php" onclick="history.back(); return false;">Go Back</a> </p>
 
-		<blockquote><div>
-		<?php echo $msg?>
-		</div></blockquote>
-
-		<p><a href="index.php" onclick="history.back();">Go Back</a></p>
-		<?php
+<?php
 		upgrade_foot();
 		exit;
 	}
 
 
-	function upgrade_start() {
+	function upgrade_start()
+	{
 		global $upgrade_failures;
 		$upgrade_failures = 0;
 
 		upgrade_head();
-		?>
-		<h1>Executing Upgrades</h1>
+?>
+		<h1> Executing Upgrades </h1>
+
 		<ul>
-		<?php	}
+<?php
+	}
 
-	function upgrade_end($msg = "") {
+
+	function upgrade_end($message = '')
+	{
 		global $upgrade_failures;
-		$from = intGetVar('from');
-		if ($upgrade_failures > 0)
-			$msg = "Some queries have failed. Try reverting to a backup or reparing things manually, then rerun this script.";
 
-		?>
+		$from = intGetVar('from');
+
+		if ( $upgrade_failures > 0 )
+		{
+			$message = 'Some queries have failed. Try reverting to a backup or reparing things manually, then re-run this script.';
+		}
+?>
 		</ul>
 
-		<h1>Upgrade Completed!</h1>
+		<h1> Upgrade Completed! </h1>
 
-		<p><?php echo $msg?></p>
+		<p> <?php echo $message?> </p>
 
-		<p>Back to the <a href="index.php?from=<?php echo $from; ?>">Upgrades Overview</a></p>
+		<p> Back to the <a href="index.php?from=<?php echo $from; ?>">Upgrades Overview</a> </p>
 
-		<?php
+<?php
 		upgrade_foot();
 		exit;
 	}
 
+
 	/**
-	  * Tries to execute a query, gives a message when failed
-	  *
-	  * @param friendly name
-	  * @param query
-	  */
-	function upgrade_query($friendly, $query) {
+	 * Executes a query, displaying the user-friendly explanation and a success / fail message. Query errors are displayed, too.
+	 *
+	 * @param string $friendly
+	 * @param string $query
+	 * @return resource (is this return necessary?)
+	 */
+	function upgrade_query($friendly, $query)
+	{
 		global $upgrade_failures;
 
-		echo "<li>$friendly ... ";
-		$res = mysql_query($query);
-		if (!$res) {
-			echo "<span class='warning'>FAILED</span>\n";
-			echo "<blockquote>Error was: " . mysql_error() . " </blockquote>";
+		# output the friendly message
+		echo "<li> $friendly &mdash; ";
+
+		# execute the query
+		$result = @mysql_query($query);
+
+		// begin if: error executing query
+		if ( $result === FALSE )
+		{
+			echo '<span class="warning"> FAILED </span> <br />';
+			echo 'Error: <code>', mysql_error(), '</code>';
 			$upgrade_failures++;
-		} else {
-			echo "<span class='ok'>SUCCESS!</span><br />\n";
 		}
-		echo "</li>";
-		return $res;
+		// else: query was successful
+		else
+		{
+			echo '<span class="ok"> SUCCESS! </span>';
+		} // end if
+
+		echo '</li>', "\n";
+		return $result;
 	}
+
 
 	/**
 	  * Tries to update database version, gives a message when failed
@@ -293,86 +335,146 @@
 	  * @param $version
 	  * 	Schema version the database has been upgraded to
 	  */
-	function update_version($version) {
+	function update_version($version)
+	{
 		global $upgrade_failures;
-		$message='Updating DatabaseVersion in config table to '.$version;
-		if(0==$upgrade_failures){
-			$query = 'UPDATE ' . sql_table('config') . ' set value=\''.$version.'\' where name=\'DatabaseVersion\'';
+
+		$message = 'Updating DatabaseVersion in config table to ' . $version;
+
+		// begin if: no upgrade failures; update the database version in the config table
+		if ( $upgrade_failures == 0 )
+		{
+			$query = 'UPDATE `%s` ' .
+				'SET `value` = "%s" ' .
+				'WHERE `name` = "DatabaseVersion"';
+
+			$query = sprintf($query, sql_table('config'), $version);
 			upgrade_query($message, $query);
-		}else
-			echo '<li>'.$message.' ... <span class="warning">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>';
+		}
+		// else: display 'not executed' message
+		else
+		{
+			echo '<li>', $message, ' &mdash; <span class="warning">NOT EXECUTED</span> Errors occurred during upgrade process. </li>';
+		} // end if
+
 	}
 
-	/**
-	 * @param $table
-	 *		table to check (without prefix)
-	 * @param $aColumns
-	 *		array of column names included
-	 */
-	function upgrade_checkIfIndexExists($table, $aColumns) {
-		// get info for indices from database
 
-		$aIndices = array();
-		$query = 'show index from ' . sql_table($table);
-		$res = mysql_query($query);
-		while ($o = mysql_fetch_object($res)) {
-			if (!$aIndices[$o->Key_name]) {
-				$aIndices[$o->Key_name] = array();
-			}
-			array_push($aIndices[$o->Key_name], $o->Column_name);
+	/**
+	 * 
+	 *
+	 * @param string $table table to check (without prefix)
+	 * @param array $columns array of column names included
+	 * @return int
+	 */
+	function upgrade_checkIfIndexExists($table, $columns)
+	{
+		// get info for indices from database
+		$indices = array();
+
+		$query = 'SHOW INDEX FROM `' . sql_table($table) . '`';
+		$result = @mysql_query($query);
+
+		// begin loop: each result object
+		while ( $object = mysql_fetch_object($result) )
+		{
+
+			// begin if: key has not been added to the indeces array yet
+			if ( !isset($indices[$object->Key_name]) )
+			{
+				$indices[$object->Key_name] = array();
+			} // end if
+
+			array_push($indices[$object->Key_name], $object->Column_name);
 		}
 
 		// compare each index with parameter
-		foreach ($aIndices as $keyName => $aIndexColumns) {
-			$aDiff = array_diff($aIndexColumns, $aColumns);
-			if (count($aDiff) == 0) return 1;
-		}
+		foreach ( $indices as $key_name => $index_columns )
+		{
+			$diff = array_diff($index_columns, $columns);
+
+			if ( count($diff) == 0 )
+			{
+				return 1;
+			} // end if
+
+		} // end loop
 
 		return 0;
-
 	}
+
 
 	/**
-	  * Checks to see if a given table exists
-	  *
-	  * @param $table
-	  * 	Name of table to check for existance of
-	  * 	Uses sql_table internally
-	  * @return true if table exists, false otherwise.
-	  */
-	function upgrade_checkIfTableExists($table){
-		$query = 'SHOW TABLES LIKE \''.sql_table($table).'\'';
-		$res = mysql_query($query);
-		return ($res != 0) && (mysql_num_rows($res) == 1);
+	 * Checks to see if a given table exists
+	 *
+	 * @param string $table name of table to check existence of
+	 * @return bool TRUE if table exists, FALSE otherwise.
+	 */
+	function upgrade_checkIfTableExists($table)
+	{
+		$query = 'SHOW TABLES LIKE `' . sql_table($table) . '`';
+		$result = @mysql_query($query);
+
+		// begin if: query executed successfully and one row was returned
+		if ( ($result !== FALSE) && (@mysql_num_rows($result) == 1) )
+		{
+			return TRUE;
+		}
+		// else: query error or no results returned
+		else
+		{
+			return FALSE
+		} // end if
+
 	}
+
 
 	/**
 	  * Checks to see if a given configuration value exists
 	  *
-	  * @param $value
-	  * 	Config value to check for existance of.
-	  * 	Paramater must be MySQL escaped
-	  * @return true if configuration value exists, false otherwise.
+	  * @param string $value config value to check for existance of (paramater must be MySQL escaped already)
+	  * @return bool TRUE if configuration value exists, FALSE otherwise.
 	  */
-	function upgrade_checkIfCVExists($value){
-		$query = 'SELECT name from '.sql_table('config').' WHERE name = \''.$value.'\'';
-		$res = mysql_query($query);
-		return ($res != 0) && (mysql_num_rows($res) == 1);
+	function upgrade_checkIfCVExists($value)
+	{
+		$query = 'SELECT `name` FROM `' . sql_table('config') . '` WHERE `name` = "' . $value . '"';
+		$result = @mysql_query($query);
+
+		// begin if: query executed successfully and one row was returned
+		if ( ($result !== FALSE) && (@mysql_num_rows($result) == 1) )
+		{
+			return TRUE;
+		}
+		// else: query error or no results returned
+		else
+		{
+			return FALSE
+		} // end if
+
 	}
+
 
 	/**
 	  * Checks to see if a given column exists
 	  *
-	  * @param $table
-	  * 	Name of table to check for column in
-	  * 	Uses sql_table internally
-	  * @param $col
-	  * 	Name of column to check for existance of
-	  * @return true if column exists, false otherwise.
+	  * @param string $table name of table to check for column in
+	  * @param string $column name of column to check for existance of
+	  * @return bool TRUE if column exists, FALSE otherwise.
 	  */
-	function upgrade_checkIfColumnExists($table, $col){
-		$query = 'DESC `'.sql_table($table).'` `'.$col.'`';
-		$res = mysql_query($query);
-		return ($res != 0) && (mysql_num_rows($res) == 1);
+	function upgrade_checkIfColumnExists($table, $column)
+	{
+		$query = 'DESC `' . sql_table($table) . '` `' . $column . '`';
+		$result = @mysql_query($query);
+
+		// begin if: query executed successfully and one row was returned
+		if ( ($result !== FALSE) && (@mysql_num_rows($result) == 1) )
+		{
+			return TRUE;
+		}
+		// else: query error or no results returned
+		else
+		{
+			return FALSE
+		} // end if
+
 	}
-?>
