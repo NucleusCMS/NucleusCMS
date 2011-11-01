@@ -204,6 +204,25 @@ class SKINIMPORT {
 	{
 		$existingSkins = $this->checkSkinNameClashes();
 		$existingTemplates = $this->checkTemplateNameClashes();
+		$invalidSkinNames = $this->checkSkinNamesValid();
+		$invalidTemplateNames = $this->checkTemplateNamesValid();
+		
+		// if there are invalid skin or template names, stop executioin and return and error
+		if ( (sizeof($invalidSkinNames) > 0) || (sizeof($invalidTemplateNames) > 0) )
+		{
+			$inames_error = "<p>"._SKINIE_INVALID_NAMES_DETECTED."</p>\n";
+			$inames_error .= "<ul>";
+			foreach( $invalidSkinNames as $sName )
+			{
+				$inames_error .= "<li>".htmlspecialchars($sName)."</li>";
+			}
+			foreach( $invalidTemplateNames as $sName )
+			{
+				$inames_error .= "<li>".htmlspecialchars($sName)."</li>";
+			}
+			$inames_error .= "</ul>";
+			return $inames_error;
+		}
 		
 		// if not allowed to overwrite, check if any nameclashes exists
 		if ( !$allowOverwrite )
@@ -314,6 +333,40 @@ class SKINIMPORT {
 			}
 		}
 		return $clashes;
+	}
+	
+	/**
+	  * returns an array of all the invalid skin names (empty array when no invalid names )
+	  */
+	function checkSkinNamesValid()
+	{
+		$notValid = array();
+		
+		foreach ( $this->skins as $skinName => $data )
+		{
+			if ( !isValidSkinName($skinName) )
+			{
+				array_push($notValid, $skinName);
+			}
+		}
+		return $notValid;
+	}
+	
+	/**
+	  * returns an array of all the invalid template names (empty array when no invalid names )
+	  */
+	function checkTemplateNamesValid()
+	{
+		$notValid = array();
+		
+		foreach ( $this->templates as $templateName => $data )
+		{
+			if ( !isValidTemplateName($templateName) )
+			{
+				array_push($notValid, $templateName);
+			}
+		}
+		return $notValid;
 	}
 	
 	/**

@@ -1365,8 +1365,9 @@ function isValidTemplateName($name) {
 
 	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
 	# original eregi: eregi('^[a-z0-9/]+$', $name)
+	// added - and _ to valid characters as of 4.00
 
-	return preg_match('#^[a-z0-9/]+$#i', $name);
+	return preg_match('#^[a-z0-9/_\-]+$#i', $name);
 
 }
 
@@ -1374,8 +1375,9 @@ function isValidSkinName($name) {
 
 	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
 	# original eregi: eregi('^[a-z0-9/]+$', $name);
+	// added - and _ to valid characters as of 4.00
 
-	return preg_match('#^[a-z0-9/]+$#i', $name);
+	return preg_match('#^[a-z0-9/_\-]+$#i', $name);
 
 }
 

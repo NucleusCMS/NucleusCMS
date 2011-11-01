@@ -20,9 +20,10 @@
  * @version $Id$
  */
 
- /********************************************
- *        Start New for 3.65                *
+  /********************************************
+ *        Start New for 4.0                 *
  ********************************************/
+define('_SKINIE_INVALID_NAMES_DETECTED', 'Invalid skin or templates names detected. Valid names consist of only a-z, A-Z, 0-9, -, and _'); 
 define('_LISTS_AUTHOR', 'Author');
 define('_OVERVIEW_OTHER_DRAFTS', 'Other Drafts');
  

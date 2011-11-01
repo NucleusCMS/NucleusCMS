@@ -128,6 +128,7 @@
 								<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="71" /><label for="act_backtodrafts"><%text(_BMLET_BACKTODRAFTS)%></label> <%helplink(draft)%>
 							</li>
 					<%endif%>
+				</ul>
 				</td></tr>
 				
 				<tr>
