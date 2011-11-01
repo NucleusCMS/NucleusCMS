@@ -111,97 +111,135 @@ class ITEM
 	 *
 	 * @static
 	 */
-	function createFromRequest() {
-		 global $member, $manager;
+	function createFromRequest()
+	{
+		global $member, $manager;
 
-		 $i_author = 		$member->getID();
-		 $i_body = 			postVar('body');
-		 $i_title =			postVar('title');
-		 $i_more = 			postVar('more');
-		 $i_actiontype = 	postVar('actiontype');
-		 $i_closed = 		intPostVar('closed');
-		 $i_hour = 			intPostVar('hour');
-		 $i_minutes = 		intPostVar('minutes');
-		 $i_month = 		intPostVar('month');
-		 $i_day = 			intPostVar('day');
-		 $i_year = 			intPostVar('year');
+		$i_author = $member->getID();
+		$i_body = postVar('body');
+		$i_title = postVar('title');
+		$i_more = postVar('more');
+		$i_actiontype = postVar('actiontype');
+		$i_closed = intPostVar('closed');
+		$i_hour = intPostVar('hour');
+		$i_minutes = intPostVar('minutes');
+		$i_month = intPostVar('month');
+		$i_day = intPostVar('day');
+		$i_year = intPostVar('year');
+		$i_catid = postVar('catid');
+		$i_draftid = intPostVar('draftid');
 
-		 $i_catid = 		postVar('catid');
-
-		 $i_draftid = 		intPostVar('draftid');
-
-		 if (!$member->canAddItem($i_catid))
+		if ( !$member->canAddItem($i_catid) )
+		{
 			return array('status' => 'error', 'message' => _ERROR_DISALLOWED);
+		}
 
-		 if (!$i_actiontype) $i_actiontype = 'addnow';
+		if (!$i_actiontype)
+			$i_actiontype = 'addnow';
 
-		 switch ($i_actiontype) {
+		switch ( $i_actiontype )
+		{
 			case 'adddraft':
 				$i_draft = 1;
-				break;
+			break;
+
 			case 'addfuture':
 			case 'addnow':
 			default:
 				$i_draft = 0;
-		 }
+			break;
+		}
 
-		 if (!trim($i_body))
+		if ( !trim($i_body) )
+		{
 			return array('status' => 'error', 'message' => _ERROR_NOEMPTYITEMS);
+		}
 
 		// create new category if needed
-		if (strstr($i_catid,'newcat')) {
+		if ( strstr($i_catid,'newcat') )
+		{
 			// get blogid
-			list($i_blogid) = sscanf($i_catid,"newcat-%d");
+			list($i_blogid) = sscanf($i_catid, "newcat-%d");
 
 			// create
 			$blog =& $manager->getBlog($i_blogid);
 			$i_catid = $blog->createNewCategory();
 
 			// show error when sth goes wrong
-			if (!$i_catid)
+			if ( !$i_catid )
+			{
 				return array('status' => 'error','message' => 'Could not create new category');
-		} else {
+			}
+
+		}
+		else
+		{
 			// force blogid (must be same as category id)
 			$i_blogid = getBlogIDFromCatID($i_catid);
 			$blog =& $manager->getBlog($i_blogid);
 		}
 
-		if ($i_actiontype == 'addfuture') {
+		if ( $i_actiontype == 'addfuture' )
+		{
 			$posttime = mktime($i_hour, $i_minutes, 0, $i_month, $i_day, $i_year);
 
 			// make sure the date is in the future, unless we allow past dates
-			if ((!$blog->allowPastPosting()) && ($posttime < $blog->getCorrectTime()))
+			if ( (!$blog->allowPastPosting()) && ($posttime < $blog->getCorrectTime()) )
+			{
 				$posttime = $blog->getCorrectTime();
-		} else {
+			}
+
+		}
+		else
+		{
 			// time with offset, or 0 for drafts
 			$posttime = $i_draft ? 0 : $blog->getCorrectTime();
 		}
 
-		if ($posttime > $blog->getCorrectTime()) {
+		if ( $posttime > $blog->getCorrectTime() )
+		{
 			$posted = 0;
 			$blog->setFuturePost();
 		}
-		else {
+		else
+		{
 			$posted = 1;
 		}
 
-		$itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft,$posted);
+		$itemid = $blog->additem($i_catid, $i_title, $i_body, $i_more, $i_blogid, $i_author, $posttime, $i_closed, $i_draft, $posted);
 
 		//Setting the itemOptions
 		$aOptions = requestArray('plugoption');
 		NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
-		$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $i_title, 'body' => $i_body, 'more' => $i_more, 'closed' => $i_closed, 'catid' => $i_catid)));
+		$manager->notify('PostPluginOptionsUpdate', array(
+			'context' => 'item',
+			'itemid' => $itemid,
+			'item' => array(
+				'title' => $i_title,
+				'body' => $i_body,
+				'more' => $i_more,
+				'closed' => $i_closed,
+				'catid' => $i_catid
+				)
+			)
+		);
 
-		if ($i_draftid > 0) {
+		if ( $i_draftid > 0 )
+		{
 			// delete permission is checked inside ITEM::delete()
 			ITEM::delete($i_draftid);
 		}
 
 		// success
-		if ($i_catid != intRequestVar('catid'))
+		if ( $i_catid != intRequestVar('catid') )
+		{
 			return array('status' => 'newcategory', 'itemid' => $itemid, 'catid' => $i_catid);
+		}
 		else
+		{
 			return array('status' => 'added', 'itemid' => $itemid);
+		}
+
 	}
 
 
