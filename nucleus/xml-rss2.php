@@ -21,7 +21,9 @@
 header('Pragma: no-cache');
 
 $CONF = array();
-$CONF['Self'] = 'xml-rss2.php';
+// removed $CONF['Self'] to let it be set in globalfunctions.php. 
+// Having value here makes all links (normal or fancy urlmodes) look like xml-rss2.php?itemid=#
+//$CONF['Self'] = 'xml-rss2.php';
 
 include('./config.php');
 
