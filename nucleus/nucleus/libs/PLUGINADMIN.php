@@ -29,7 +29,7 @@ class PluginAdmin {
 	{
 		global $manager;
         //include_once($DIR_LIBS . 'ADMIN.php');
-		include_libs('ADMIN.php',true,true)
+		include_libs('ADMIN.php',true,true);
 
 		$this->strFullName = 'NP_' . $pluginName;
 
