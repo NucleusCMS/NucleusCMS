@@ -31,11 +31,16 @@ class MEMBER {
 	public $displayname;
 	public $email;
 	public $url;
-	public $language = '';		// name of the language file to use (e.g. 'english' -> english.php)
 	public $admin = 0;			// (either 0 or 1)
 	public $canlogin = 0;		// (either 0 or 1)
 	public $notes;
 	public $autosave = 1;		// if the member use the autosave draft function
+	
+	/*
+	 * NOTE: $locale value obsoleted $language value since version 4.0
+	 */
+	public $language = '';
+	public $locale = '';
 	
 	/**
 	 * Constructor for a member object
@@ -145,7 +150,10 @@ class MEMBER {
 		$this->id = $obj->mnumber;
 		$this->setCanLogin($obj->mcanlogin);
 		$this->setNotes($obj->mnotes);
-		$this->setLanguage($obj->deflang);
+		/*
+		 * FIXME: the name of this field should be 'mlocale', not deflang.
+		 */
+		$this->setLocale($obj->deflang);
 		$this->setAutosave($obj->mautosave);
 		
 		return sql_num_rows($res);
@@ -524,8 +532,8 @@ class MEMBER {
 			   . "     madmin=" . $this->isAdmin() . ","
 			   . "     mnotes='" . sql_real_escape_string($this->getNotes()) . "',"
 			   . "     mcanlogin=" . $this->canLogin() . ","
-			   . "	   deflang='" . sql_real_escape_string($this->getLanguage()) . "',"
-			   . "	   mautosave=" . intval($this->getAutosave()) . ""			   
+			   . "	    deflang='" . sql_real_escape_string($this->getLocale()) . "',"
+			   . "	    mautosave=" . intval($this->getAutosave()) . ""			   
 			   . " WHERE mnumber=" . $this->getID();
 		sql_query($query);
 		return;
@@ -602,14 +610,36 @@ class MEMBER {
 		$this->url = $site;
 	}
 	
+	/*
+	 * FIXME: $this->locale is always correct or not?
+	 * NOTE: Deprecated, this will be obsoleted soon.
+	 */
 	public function getLanguage()
 	{
-		return $this->language;
+		if ( ($language = i18n::convert_locale_to_old_language_file_name($this->locale)) === FALSE )
+		{
+			$language = '';
+		}
+		return $language;
 	}
 	
-	public function setLanguage($lang)
+	public function getLocale()
 	{
-		$this->language = $lang;
+		return $this->locale;
+	}
+	
+	/*
+	 * FIXME: $locale value should obsolete $language value near future
+	 */
+	public function setLocale($locale)
+	{
+		if ( !in_array($locale, i18n::get_locale_list())
+		 && ($locale = i18n::convert_old_language_file_name_to_locale($locale)) === FALSE )
+		{
+			$locale = '';
+		}
+		$this->locale = $locale;
+		return;
 	}
 	
 	public function setDisplayName($nick)

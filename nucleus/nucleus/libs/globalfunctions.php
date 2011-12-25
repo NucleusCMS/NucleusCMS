@@ -14,7 +14,6 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
-
  */
 
 // needed if we include globalfunctions from install.php
@@ -35,15 +34,15 @@ if ($CONF['debug']) {
 }
 
 /*
- * load i18n class and initializing
+ * load and initialize i18n class
  */
 if (!class_exists('i18n', FALSE))
 {
 	include($DIR_LIBS . 'i18n.php');
 }
-if ( !i18n::init('UTF-8') )
+if ( !i18n::init('UTF-8', $DIR_LANG) )
 {
-	exit('Fail to initialize iconv or mbstring extension.');
+	exit('Fail to initialize i18n class.');
 }
 
 /*
@@ -190,6 +189,16 @@ register_shutdown_function('sql_disconnect');
 
 // read config
 getConfig();
+
+/*
+ * New rule for locale instead of language
+ * TODO: this lines should be obsoleted near future.
+ */
+if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Language'])
+  && ($CONF['Language'] = i18n::convert_old_language_file_name_to_locale($CONF['Language'])) === FALSE )
+{
+	$CONF['Language'] = 'en_Latn_US';
+}
 
 // Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
 if (!isset($CONF['Self'])) {
@@ -339,6 +348,34 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 
 // login completed
 $manager->notify('PostAuthentication', array('loggedIn' => $member->isLoggedIn() ) );
+
+/*
+ * Decide which locale is used in this session.
+ * NOTE: For lower compatibility, 'en_Latn_us' is used if there is no equivalent value in i18n object.
+ * TODO: Use $locale instead of $language
+ * TODO: it's ok to set date_timezone?
+ */
+$locale ='';
+
+if ($member && $member->isLoggedIn() )
+{
+	$locale = $member->getLocale();
+}
+if ( !$locale )
+{
+	$locale = $CONF['Language'];
+}
+if ( !in_array($locale, i18n::get_locale_list()) )
+{
+	$locale = 'en_Latn_US';
+}
+
+include($DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php');
+i18n::set_current_locale($locale);
+
+/*
+ * Release ticket for plugin
+ */
 ticketForPlugin();
 
 // first, let's see if the site is disabled or not. always allow admin area access.
@@ -371,15 +408,6 @@ if (!headers_sent() ) {
         setcookie($CONF['CookiePrefix'] . 'lastVisit', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
     }
 }
-
-// read language file, only after user has been initialized
-$language = getLanguageName();
-
-# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-# original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
-# important note that '\' must be matched with '\\\\' in preg* expressions
-
-include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
 
 /*
     Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
@@ -607,11 +635,10 @@ $manager->notify(
 		else
 		{
 			include($plugin_path);
-		} // end if
-
+		}
 	}
-
-
+	
+	
 	/**
 	 * This function returns the integer value of $_POST for the variable $name
 	 * @param string $name field to get the integer value of
@@ -762,24 +789,14 @@ $manager->notify(
 				'PreSendContentType',
 				array(
 					'contentType' => &$content_type,
-					'charset' => &$charset,
+					'charset' => i18n::get_current_charset(),
 					'pageType' => $page_type
 				)
 			);
 
 			// strip strange characters
 			$content_type = preg_replace('|[^a-z0-9-+./]|i', '', $content_type);
-			$charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
-
-			if ($charset != '')
-			{
-				header('Content-Type: ' . $content_type . '; charset=' . $charset);
-			}
-			else
-			{
-				header('Content-Type: ' . $content_type);
-			} // end if
-
+			header('Content-Type: ' . $content_type . '; charset=' . i18n::get_current_charset());
 		} // end if
 
 	}
@@ -989,7 +1006,7 @@ $manager->notify(
 	 */
 	function quickQuery($query)
 	{
-		$res = sql_query($q);
+		$res = sql_query($query);
 		$obj = sql_fetch_object($res);
 		return $obj->result;
 	}
@@ -1528,31 +1545,21 @@ function getMailFooter() {
     return $message;
 }
 
-/**
-  * Returns the name of the language to use
-  * preference priority: member - site
-  * defaults to english when no good language found
-  *
-  * checks if file exists, etc...
-  */
-function getLanguageName() {
-    global $CONF, $member;
-
-    if ($member && $member->isLoggedIn() ) {
-        // try to use members language
-        $memlang = $member->getLanguage();
-
-        if (($memlang != '') && (checkLanguage($memlang) ) ) {
-            return $memlang;
-        }
-    }
-
-    // use default language
-    if (checkLanguage($CONF['Language']) ) {
-        return $CONF['Language'];
-    } else {
-        return 'english';
-    }
+/*
+ * Returns the name of the language to use
+ * preference priority: member - site
+ * defaults to english-utf8 when no good language found
+ *
+ * NOTE: Deprecated, plugins to use this function should be re-worked as soon as possible!
+ * TODO: this will be obsoleted soon.
+ */
+function getLanguageName()
+{
+	if( ($language = i18n::convert_locale_to_old_language_file_name(i18n::get_current_locale())) === FALSE )
+	{
+		$language ='english';
+	}
+	return $language;
 }
 
 /**
@@ -1586,17 +1593,21 @@ function includephp($filename) {
  * Checks if a certain language exists
  * @param string $lang
  * @return bool
+ * 
+ * NOTE: Deprecated, plugins to use this function should be re-worked as soon as possible!
+ * TODO: this will be obsoleted soon.
  **/
-function checkLanguage($lang) {
-
-	global $DIR_LANG;
-
-	# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-	# original ereg_replace: ereg_replace( '[\\|/]', '', $lang) . '.php')
-	# important note that '\' must be matched with '\\\\' in preg* expressions
-
-	return file_exists($DIR_LANG . preg_replace('#[\\\\|/]#', '', $lang) . '.php');
-
+function checkLanguage($lang)
+{
+	if ( !in_array($lang, i18n::get_locale_list()) )
+	{
+		if ( ($locale = i18n::convert_old_language_file_name_to_locale($lang) === FALSE) || !in_array($locale, i18n::get_locale_list()) )
+		{
+			return FALSE;
+		}
+	}
+	
+	return TRUE;
 }
 
 /**
@@ -1946,17 +1957,6 @@ function ticketForPlugin()
 	 || strtoupper(serverVar('REQUEST_METHOD') ) == 'POST')
 	 && (!$manager->checkTicket() ) )
 	{
-		if (!class_exists('PluginAdmin') )
-		{
-			$language = getLanguageName();
-
-			# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-			# original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
-			# important note that '\' must be matched with '\\\\' in preg* expressions
-			include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
-			include($DIR_LIBS . 'PLUGINADMIN.php');
-		}
-		
 		$oPluginAdmin = new PluginAdmin($plugin_name);
 		$oPluginAdmin->start();
 		echo '<p>' . _ERROR_BADTICKET . "</p>\n";
@@ -2264,9 +2264,8 @@ function encode_desc(&$data)
     return $data;
 }
 
-/**
+/*
  * Returns the Javascript code for a bookmarklet that works on most modern browsers
- *
  * @param blogid
  */
 function getBookmarklet($blogid) {

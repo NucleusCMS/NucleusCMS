@@ -1785,156 +1785,151 @@ class ADMIN {
         $this->action_editmembersettings(intRequestVar('memberid'));
     }
 
-    /**
-     * @todo document this
-     */
-    function action_editmembersettings($memberid = '') {
-        global $member, $manager, $CONF;
-
-        if ($memberid == '')
-            $memberid = $member->getID();
-
-        // check if allowed
-        ($member->getID() == $memberid) or $member->isAdmin() or $this->disallow();
-
-        $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
-        $this->pagehead($extrahead);
-
-        // show message to go back to member overview (only for admins)
-        if ($member->isAdmin())
-            echo '<a href="index.php?action=usermanagement">(' ._MEMBERS_BACKTOOVERVIEW. ')</a>';
-        else
-            echo '<a href="index.php?action=overview">(' ._BACKHOME. ')</a>';
-
-        echo '<h2>' . _MEMBERS_EDIT . '</h2>';
-
-        $mem = MEMBER::createFromID($memberid);
-
-        ?>
-        <form method="post" action="index.php" name="memberedit"><div>
-
-        <input type="hidden" name="action" value="changemembersettings" />
-        <input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
-        <?php $manager->addTicketHidden() ?>
-
-        <table><tr>
-            <th colspan="2"><?php echo _MEMBERS_EDIT?></th>
-        </tr><tr>
-            <td><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
-                <br /><small><?php echo _MEMBERS_DISPLAY_INFO?></small>
-            </td>
-            <td>
-            <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
-                <input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  htmlspecialchars($mem->getDisplayName()); ?>" />
-            <?php } else {
-                echo htmlspecialchars($member->getDisplayName());
-               }
-            ?>
-            </td>
-        </tr><tr>
-            <td><?php echo _MEMBERS_REALNAME?></td>
-            <td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  htmlspecialchars($mem->getRealName()); ?>" /></td>
-        </tr><tr>
-        <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
-            <td><?php echo _MEMBERS_PWD?></td>
-            <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" /></td>
-        </tr><tr>
-            <td><?php echo _MEMBERS_REPPWD?></td>
-            <td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" /></td>
-        <?php } ?>
-        </tr><tr>
-            <td><?php echo _MEMBERS_EMAIL?>
-                <br /><small><?php echo _MEMBERS_EMAIL_EDIT?></small>
-            </td>
-            <td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  htmlspecialchars($mem->getEmail()); ?>" /></td>
-        </tr><tr>
-            <td><?php echo _MEMBERS_URL?></td>
-            <td><input name="url" tabindex="50" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getURL()); ?>" /></td>
-        <?php // only allow to change this by super-admins
-           // we don't want normal users to 'upgrade' themselves to super-admins, do we? ;-)
-           if ($member->isAdmin()) {
-        ?>
-            </tr><tr>
-                <td><?php echo _MEMBERS_SUPERADMIN?> <?php help('superadmin'); ?></td>
-                <td><?php $this->input_yesno('admin',$mem->isAdmin(),60); ?></td>
-            </tr><tr>
-                <td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
-                <td><?php $this->input_yesno('canlogin',$mem->canLogin(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
-        <?php } ?>
-        </tr><tr>
-            <td><?php echo _MEMBERS_NOTES?></td>
-            <td><input name="notes" tabindex="80" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getNotes()); ?>" /></td>
-        </tr><tr>
-            <td><?php echo _MEMBERS_DEFLANG?> <?php help('language'); ?>
-            </td>
-            <td>
-
-                <select name="deflang" tabindex="85">
-                    <option value=""><?php echo _MEMBERS_USESITELANG?></option>
-                <?php               // show a dropdown list of all available languages
-                global $DIR_LANG;
-                $dirhandle = opendir($DIR_LANG);
-
-				while ($filename = readdir($dirhandle))
+	/**
+	 * @todo document this
+	 */
+	function action_editmembersettings($memberid = '') {
+		global $member, $manager, $CONF;
+		
+		if ($memberid == '')
+		{
+			$memberid = $member->getID();
+		}
+		
+		// check if allowed
+		($member->getID() == $memberid) or $member->isAdmin() or $this->disallow();
+		
+		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
+		$this->pagehead($extrahead);
+		
+		// show message to go back to member overview (only for admins)
+		if ($member->isAdmin())
+		{
+			echo '<a href="index.php?action=usermanagement">(' ._MEMBERS_BACKTOOVERVIEW. ')</a>';
+		}
+		else
+		{
+			echo '<a href="index.php?action=overview">(' ._BACKHOME. ')</a>';
+		}
+		echo '<h2>' . _MEMBERS_EDIT . '</h2>';
+		
+		$mem = MEMBER::createFromID($memberid);
+		?>
+		<form method="post" action="index.php" name="memberedit"><div>
+		
+		<input type="hidden" name="action" value="changemembersettings" />
+		<input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
+		<?php $manager->addTicketHidden() ?>
+		
+		<table><tr>
+			<th colspan="2"><?php echo _MEMBERS_EDIT?></th>
+		</tr><tr>
+			<td><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
+				<br /><small><?php echo _MEMBERS_DISPLAY_INFO?></small>
+			</td>
+			<td>
+			<?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
+				<input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  htmlspecialchars($mem->getDisplayName()); ?>" />
+			<?php } else {
+				echo htmlspecialchars($member->getDisplayName());
+			   }
+			?>
+			</td>
+		</tr><tr>
+			<td><?php echo _MEMBERS_REALNAME?></td>
+			<td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  htmlspecialchars($mem->getRealName()); ?>" /></td>
+		</tr><tr>
+		<?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
+			<td><?php echo _MEMBERS_PWD?></td>
+			<td><input type="password" tabindex="30" maxlength="40" size="16" name="password" /></td>
+		</tr><tr>
+			<td><?php echo _MEMBERS_REPPWD?></td>
+			<td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" /></td>
+		<?php } ?>
+		</tr><tr>
+			<td><?php echo _MEMBERS_EMAIL?>
+				<br /><small><?php echo _MEMBERS_EMAIL_EDIT?></small>
+			</td>
+			<td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  htmlspecialchars($mem->getEmail()); ?>" /></td>
+		</tr><tr>
+			<td><?php echo _MEMBERS_URL?></td>
+			<td><input name="url" tabindex="50" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getURL()); ?>" /></td>
+		<?php // only allow to change this by super-admins
+		   // we don't want normal users to 'upgrade' themselves to super-admins, do we? ;-)
+		   if ($member->isAdmin()) {
+		?>
+			</tr><tr>
+				<td><?php echo _MEMBERS_SUPERADMIN?> <?php help('superadmin'); ?></td>
+				<td><?php $this->input_yesno('admin',$mem->isAdmin(),60); ?></td>
+			</tr><tr>
+				<td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
+				<td><?php $this->input_yesno('canlogin',$mem->canLogin(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
+		<?php } ?>
+		</tr><tr>
+			<td><?php echo _MEMBERS_NOTES?></td>
+			<td><input name="notes" tabindex="80" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getNotes()); ?>" /></td>
+		</tr><tr>
+			<td><?php echo _MEMBERS_DEFLANG?> <?php help('language'); ?>
+			</td>
+			<td>
+			
+				<select name="deflang" tabindex="85">
+				<?php
+				if ( !$mem->getLocale() )
 				{
-
-					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-					# original ereg: ereg("^(.*)\.php$", $filename, $matches)
-
-					if (preg_match('#^(.*)\.php$#', $filename, $matches) )
-					{
-
-						$name = $matches[1];
-						echo "<option value=\"$name\"";
-
-						if ($name == $mem->getLanguage() )
-						{
-							echo " selected=\"selected\"";
-						}
-
-						echo ">$name</option>";
-
-					}
-
+					echo "<option value=\"\" selected=\"selected\">" . i18n::hsc(_MEMBERS_USESITELANG) . "</option>\n";
 				}
-
-				closedir($dirhandle);
-
+				else
+				{
+					echo "<option value=\"\">" . i18n::hsc(_MEMBERS_USESITELANG) . "</option>\n";
+				}
+				
+				$locales = i18n::get_locale_list();
+				foreach( $locales as $locale )
+				{
+					if( $locale == $mem->getLocale() )
+					{
+						echo "<option value=\"{$locale}\" selected=\"selected\">{$locale}</option>\n";
+					}
+					else
+					{
+						echo "<option value=\"{$locale}\">{$locale}</option>\n";
+					}
+				}
 				?>
 				</select>
-
-            </td>
-        </tr>
-        <tr>
-            <td><?php echo _MEMBERS_USEAUTOSAVE?> <?php help('autosave'); ?></td>
-            <td><?php $this->input_yesno('autosave', $mem->getAutosave(), 87); ?></td>
-        </tr>
-        <?php
-            // plugin options
-            $this->_insertPluginOptions('member',$memberid);
-        ?>
-        <tr>
-            <th colspan="2"><?php echo _MEMBERS_EDIT ?></th>
-        </tr><tr>
-            <td><?php echo _MEMBERS_EDIT?></td>
-            <td><input type="submit" tabindex="90" value="<?php echo _MEMBERS_EDIT_BTN?>" onclick="return checkSubmit();" /></td>
-        </tr></table>
-
-        </div></form>
-
-        <?php
-            echo '<h3>',_PLUGINS_EXTRA,'</h3>';
-
-            $manager->notify(
-                'MemberSettingsFormExtras',
-                array(
-                    'member' => &$mem
-                )
-            );
-
-        $this->pagefoot();
-    }
-
+				
+			</td>
+		</tr>
+		<tr>
+			<td><?php echo _MEMBERS_USEAUTOSAVE?> <?php help('autosave'); ?></td>
+			<td><?php $this->input_yesno('autosave', $mem->getAutosave(), 87); ?></td>
+		</tr>
+		<?php
+			// plugin options
+			$this->_insertPluginOptions('member',$memberid);
+		?>
+		<tr>
+			<th colspan="2"><?php echo _MEMBERS_EDIT ?></th>
+		</tr><tr>
+			<td><?php echo _MEMBERS_EDIT?></td>
+			<td><input type="submit" tabindex="90" value="<?php echo _MEMBERS_EDIT_BTN?>" onclick="return checkSubmit();" /></td>
+		</tr></table>
+		
+		</div></form>
+		
+		<?php
+			echo '<h3>',_PLUGINS_EXTRA,'</h3>';
+			
+			$manager->notify(
+				'MemberSettingsFormExtras',
+				array(
+					'member' => &$mem
+				)
+			);
+		$this->pagefoot();
+	}
+	
     /**
      * @todo document this
      */
@@ -2026,7 +2021,7 @@ class ADMIN {
         $mem->setEmail($email);
         $mem->setURL($url);
         $mem->setNotes($notes);
-        $mem->setLanguage($deflang);
+        $mem->setLocale($deflang);
 
 
         // only allow super-admins to make changes to the admin status
@@ -2991,78 +2986,91 @@ class ADMIN {
 
     }
 
-    /**
-     * @todo document this
-     */
-    function action_blogsettingsupdate() {
-        global $member, $manager;
-
-        $blogid = intRequestVar('blogid');
-
-        $member->blogAdminRights($blogid) or $this->disallow();
-
-        $blog =& $manager->getBlog($blogid);
-
-        $notify         = trim(postVar('notify'));
-        $shortname      = trim(postVar('shortname'));
-        $updatefile     = trim(postVar('update'));
-
-        $notifyComment  = intPostVar('notifyComment');
-        $notifyVote     = intPostVar('notifyVote');
-        $notifyNewItem  = intPostVar('notifyNewItem');
-
-        if ($notifyComment == 0)    $notifyComment = 1;
-        if ($notifyVote == 0)       $notifyVote = 1;
-        if ($notifyNewItem == 0)    $notifyNewItem = 1;
-
-        $notifyType = $notifyComment * $notifyVote * $notifyNewItem;
-
-
-        if ($notify) {
-            $not = new NOTIFICATION($notify);
-            if (!$not->validAddresses())
-                $this->error(_ERROR_BADNOTIFY);
-
-        }
-
-        if (!isValidShortName($shortname))
-            $this->error(_ERROR_BADSHORTBLOGNAME);
-
-        if (($blog->getShortName() != $shortname) && $manager->existsBlog($shortname))
-            $this->error(_ERROR_DUPSHORTBLOGNAME);
-
-        // check if update file is writable
-        if ($updatefile && !is_writeable($updatefile))
-            $this->error(_ERROR_UPDATEFILE);
-
-        $blog->setName(trim(postVar('name')));
-        $blog->setShortName($shortname);
-        $blog->setNotifyAddress($notify);
-        $blog->setNotifyType($notifyType);
-        $blog->setMaxComments(postVar('maxcomments'));
-        $blog->setCommentsEnabled(postVar('comments'));
-        $blog->setTimeOffset(postVar('timeoffset'));
-        $blog->setUpdateFile($updatefile);
-        $blog->setURL(trim(postVar('url')));
-        $blog->setDefaultSkin(intPostVar('defskin'));
-        $blog->setDescription(trim(postVar('desc')));
-        $blog->setPublic(postVar('public'));
-        $blog->setConvertBreaks(intPostVar('convertbreaks'));
-        $blog->setAllowPastPosting(intPostVar('allowpastposting'));
-        $blog->setDefaultCategory(intPostVar('defcat'));
-        $blog->setSearchable(intPostVar('searchable'));
-        $blog->setEmailRequired(intPostVar('reqemail'));
-
-        $blog->writeSettings();
-
-        // store plugin options
-        $aOptions = requestArray('plugoption');
-        NucleusPlugin::_applyPluginOptions($aOptions);
-        $manager->notify('PostPluginOptionsUpdate',array('context' => 'blog', 'blogid' => $blogid, 'blog' => &$blog));
-
-
-        $this->action_overview(_MSG_SETTINGSCHANGED);
-    }
+	/**
+	 * @todo document this
+	 */
+	function action_blogsettingsupdate()
+	{
+		global $member, $manager;
+	
+		$blogid = intRequestVar('blogid');
+		
+		$member->blogAdminRights($blogid) or $this->disallow();
+		
+		$blog =& $manager->getBlog($blogid);
+		
+		$notify		= trim(postVar('notify'));
+		$shortname	 	= trim(postVar('shortname'));
+		$updatefile	= trim(postVar('update'));
+		
+		$notifyComment	= intPostVar('notifyComment');
+		$notifyVote		= intPostVar('notifyVote');
+		$notifyNewItem	= intPostVar('notifyNewItem');
+		
+		if ($notifyComment == 0)
+		{
+			$notifyComment = 1;
+		}
+		if ($notifyVote == 0)
+		{
+			$notifyVote = 1;
+		}
+		if ($notifyNewItem == 0)
+		{
+			$notifyNewItem = 1;
+		}
+		$notifyType = $notifyComment * $notifyVote * $notifyNewItem;
+		
+		if ($notify)
+		{
+			$not = new NOTIFICATION($notify);
+			if (!$not->validAddresses())
+			{
+				$this->error(_ERROR_BADNOTIFY);
+			}
+		}
+		
+		if (!isValidShortName($shortname))
+		{
+			$this->error(_ERROR_BADSHORTBLOGNAME);
+		}
+		
+		if (($blog->getShortName() != $shortname) && $manager->existsBlog($shortname))
+		{
+			$this->error(_ERROR_DUPSHORTBLOGNAME);
+		}
+		// check if update file is writable
+		if ($updatefile && !is_writeable($updatefile))
+		{
+			$this->error(_ERROR_UPDATEFILE);
+		}
+		
+		$blog->setName(trim(postVar('name')));
+		$blog->setShortName($shortname);
+		$blog->setNotifyAddress($notify);
+		$blog->setNotifyType($notifyType);
+		$blog->setMaxComments(postVar('maxcomments'));
+		$blog->setCommentsEnabled(postVar('comments'));
+		$blog->setTimeOffset(postVar('timeoffset'));
+		$blog->setUpdateFile($updatefile);
+		$blog->setURL(trim(postVar('url')));
+		$blog->setDefaultSkin(intPostVar('defskin'));
+		$blog->setDescription(trim(postVar('desc')));
+		$blog->setPublic(postVar('public'));
+		$blog->setConvertBreaks(intPostVar('convertbreaks'));
+		$blog->setAllowPastPosting(intPostVar('allowpastposting'));
+		$blog->setDefaultCategory(intPostVar('defcat'));
+		$blog->setSearchable(intPostVar('searchable'));
+		$blog->setEmailRequired(intPostVar('reqemail'));
+		$blog->writeSettings();
+		
+		// store plugin options
+		$aOptions = requestArray('plugoption');
+		NucleusPlugin::_applyPluginOptions($aOptions);
+		$manager->notify('PostPluginOptionsUpdate',array('context' => 'blog', 'blogid' => $blogid, 'blog' => &$blog));
+		
+		$this->action_overview(_MSG_SETTINGSCHANGED);
+	}
 
     /**
      * @todo document this
@@ -4779,39 +4787,22 @@ selector();
             <td><?php echo _SETTINGS_LANGUAGE?> <?php help('language'); ?>
             </td>
             <td>
-
                 <select name="Language" tabindex="10050">
-                <?php               // show a dropdown list of all available languages
-                global $DIR_LANG;
-                $dirhandle = opendir($DIR_LANG);
-
-				while ($filename = readdir($dirhandle) )
+			<?php
+				$locales = i18n::get_locale_list();
+				foreach ( $locales as $locale )
 				{
-
-					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-					# original ereg: ereg("^(.*)\.php$",$filename,$matches)
-
-					if (preg_match('#^(.*)\.php$#', $filename, $matches) )
+					if( $locale == i18n::get_current_locale() )
 					{
-
-						$name = $matches[1];
-						echo "<option value=\"$name\"";
-
-						if ($name == $CONF['Language'])
-						{
-							echo " selected=\"selected\"";
-						}
-
-						echo ">$name</option>";
-
+						echo "<option value=\"{$locale}\" selected=\"selected\">{$locale}</option>\n";
 					}
-
+					else
+					{
+						echo "<option value=\"{$locale}\">{$locale}</option>\n";
+					}
 				}
-
-				closedir($dirhandle);
-
-				?>
-				</select>
+			?>
+			</select>
 
             </td>
         </tr><tr>
@@ -5047,63 +5038,63 @@ selector();
         $this->pagefoot();
     }
 
-    /**
-     * @todo document this
-     */
-    function action_settingsupdate() {
-        global $member, $CONF;
-
-        $member->isAdmin() or $this->disallow();
-
-        // check if email address for admin is valid
-        if (!isValidMailAddress(postVar('AdminEmail')))
-            $this->error(_ERROR_BADMAILADDRESS);
-
-
-        // save settings
-        $this->updateConfig('DefaultBlog',      postVar('DefaultBlog'));
-        $this->updateConfig('BaseSkin',         postVar('BaseSkin'));
-        $this->updateConfig('IndexURL',         postVar('IndexURL'));
-        $this->updateConfig('AdminURL',         postVar('AdminURL'));
-        $this->updateConfig('PluginURL',        postVar('PluginURL'));
-        $this->updateConfig('SkinsURL',         postVar('SkinsURL'));
-        $this->updateConfig('ActionURL',        postVar('ActionURL'));
-        $this->updateConfig('Language',         postVar('Language'));
-        $this->updateConfig('AdminEmail',       postVar('AdminEmail'));
-        $this->updateConfig('SessionCookie',    postVar('SessionCookie'));
-        $this->updateConfig('AllowMemberCreate',postVar('AllowMemberCreate'));
-        $this->updateConfig('AllowMemberMail',  postVar('AllowMemberMail'));
-        $this->updateConfig('NonmemberMail',    postVar('NonmemberMail'));
-        $this->updateConfig('ProtectMemNames',  postVar('ProtectMemNames'));
-        $this->updateConfig('SiteName',         postVar('SiteName'));
-        $this->updateConfig('NewMemberCanLogon',postVar('NewMemberCanLogon'));
-        $this->updateConfig('DisableSite',      postVar('DisableSite'));
-        $this->updateConfig('DisableSiteURL',   postVar('DisableSiteURL'));
-        $this->updateConfig('LastVisit',        postVar('LastVisit'));
-        $this->updateConfig('MediaURL',         postVar('MediaURL'));
-        $this->updateConfig('AllowedTypes',     postVar('AllowedTypes'));
-        $this->updateConfig('AllowUpload',      postVar('AllowUpload'));
-        $this->updateConfig('MaxUploadSize',    postVar('MaxUploadSize'));
-        $this->updateConfig('MediaPrefix',      postVar('MediaPrefix'));
-        $this->updateConfig('AllowLoginEdit',   postVar('AllowLoginEdit'));
-        $this->updateConfig('DisableJsTools',   postVar('DisableJsTools'));
-        $this->updateConfig('CookieDomain',     postVar('CookieDomain'));
-        $this->updateConfig('CookiePath',       postVar('CookiePath'));
-        $this->updateConfig('CookieSecure',     postVar('CookieSecure'));
-        $this->updateConfig('URLMode',          postVar('URLMode'));
-        $this->updateConfig('CookiePrefix',     postVar('CookiePrefix'));
-        $this->updateConfig('DebugVars',            postVar('DebugVars'));
-        $this->updateConfig('DefaultListSize',          postVar('DefaultListSize'));
-		$this->updateConfig('AdminCSS',          postVar('AdminCSS'));
-
-        // load new config and redirect (this way, the new language will be used is necessary)
-        // note that when changing cookie settings, this redirect might cause the user
-        // to have to log in again.
-        getConfig();
-        redirect($CONF['AdminURL'] . '?action=manage');
-        exit;
-
-    }
+	/**
+	 * @todo document this
+	 */
+	function action_settingsupdate() {
+		global $member, $CONF;
+		
+		$member->isAdmin() or $this->disallow();
+		
+		// check if email address for admin is valid
+		if ( !isValidMailAddress(postVar('AdminEmail')) )
+		{
+			$this->error(_ERROR_BADMAILADDRESS);
+		}
+		
+		// save settings
+		$this->updateConfig('DefaultBlog',	  postVar('DefaultBlog'));
+		$this->updateConfig('BaseSkin',		 postVar('BaseSkin'));
+		$this->updateConfig('IndexURL',		 postVar('IndexURL'));
+		$this->updateConfig('AdminURL',		 postVar('AdminURL'));
+		$this->updateConfig('PluginURL',		postVar('PluginURL'));
+		$this->updateConfig('SkinsURL',		 postVar('SkinsURL'));
+		$this->updateConfig('ActionURL',		postVar('ActionURL'));
+		$this->updateConfig('Language',		   postVar('Language'));
+		$this->updateConfig('AdminEmail',	   postVar('AdminEmail'));
+		$this->updateConfig('SessionCookie',	postVar('SessionCookie'));
+		$this->updateConfig('AllowMemberCreate',postVar('AllowMemberCreate'));
+		$this->updateConfig('AllowMemberMail',  postVar('AllowMemberMail'));
+		$this->updateConfig('NonmemberMail',	postVar('NonmemberMail'));
+		$this->updateConfig('ProtectMemNames',  postVar('ProtectMemNames'));
+		$this->updateConfig('SiteName',		 postVar('SiteName'));
+		$this->updateConfig('NewMemberCanLogon',postVar('NewMemberCanLogon'));
+		$this->updateConfig('DisableSite',	  postVar('DisableSite'));
+		$this->updateConfig('DisableSiteURL',   postVar('DisableSiteURL'));
+		$this->updateConfig('LastVisit',		postVar('LastVisit'));
+		$this->updateConfig('MediaURL',		 postVar('MediaURL'));
+		$this->updateConfig('AllowedTypes',	 postVar('AllowedTypes'));
+		$this->updateConfig('AllowUpload',	  postVar('AllowUpload'));
+		$this->updateConfig('MaxUploadSize',	postVar('MaxUploadSize'));
+		$this->updateConfig('MediaPrefix',	  postVar('MediaPrefix'));
+		$this->updateConfig('AllowLoginEdit',   postVar('AllowLoginEdit'));
+		$this->updateConfig('DisableJsTools',   postVar('DisableJsTools'));
+		$this->updateConfig('CookieDomain',	 postVar('CookieDomain'));
+		$this->updateConfig('CookiePath',	   postVar('CookiePath'));
+		$this->updateConfig('CookieSecure',	 postVar('CookieSecure'));
+		$this->updateConfig('URLMode',		  postVar('URLMode'));
+		$this->updateConfig('CookiePrefix',	 postVar('CookiePrefix'));
+		$this->updateConfig('DebugVars',			postVar('DebugVars'));
+		$this->updateConfig('DefaultListSize',		  postVar('DefaultListSize'));
+		$this->updateConfig('AdminCSS',		  postVar('AdminCSS'));
+		
+		// load new config and redirect (this way, the new language will be used is necessary)
+		// note that when changing cookie settings, this redirect might cause the user
+		// to have to log in again.
+		getConfig();
+		redirect($CONF['AdminURL'] . '?action=manage');
+		exit;
+	}
 
     /**
      *  Give an overview over the used system

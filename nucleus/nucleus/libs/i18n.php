@@ -1,14 +1,20 @@
 <?php
 /*
  * i18n class
- * written by Takashi Sakamoto as of Jul.02, 2011
+ * written by Takashi Sakamoto as of Dec.24, 2011
  * This is wrapper functions of iconv and mbstring
  * and mail function with 7bit characters encoder
- * for multibyte processing.
+ * for multibyte processing
+ * and includes members related to locale.
  */
 class i18n {
-	private static $charset = '';
 	private static $mode = FALSE;
+	
+	private static $charset = '';
+	private static $language = '';
+	private static $script = '';
+	private static $region = '';
+	private static $locale_list = array();
 	private static $timezone = 'UTC';
 	
 	/*
@@ -17,34 +23,100 @@ class i18n {
 	 * @param	string	$charset	character set
 	 * @return	boolean	
 	 */
-	public static function init($charset)
+	public static function init($charset, $dir)
 	{
+		/* i18n is already initialized */
 		if ( self::$mode )
 		{
-			$return = TRUE;
+			return TRUE;
 		}
-		else if ( extension_loaded('iconv') )
+		
+		/* make locale list in this Nucleus CMS */
+		if ( ($handle = opendir($dir)) === FALSE )
 		{
-			self::$mode = 'iconv';
-			$return = ( iconv_set_encoding('output_encoding', $charset)
-			 && iconv_set_encoding('internal_encoding', $charset) );
+			return FALSE;
+		}
+		while ($filename = readdir($handle))
+		{
+			if (preg_match("#^(.+_.+_.+)\.{$charset}\.php$#", $filename, $matches) )
+			{
+				if ( !in_array($matches[1], self::$locale_list) )
+				{
+					self::$locale_list[] = $matches[1];
+				}
+			}
+		}
+		closedir($handle);
+		
+		/* set i18n backend and validate character set */
+		if ( extension_loaded('iconv') )
+		{
+			/* this is just for checking the charset. */
+			if ( iconv_set_encoding('internal_encoding', $charset)
+			 && iconv_set_encoding('output_encoding', $charset)
+			 && iconv_set_encoding('internal_encoding', $charset) )
+			{
+				self::$charset = $charset;
+				self::$mode = 'iconv';
+			}
 		}
 		else if ( extension_loaded('mbstring') )
 		{
-			self::$mode = 'mbstring';
-			$return = ( mb_http_output($charset)
+			/* this is just for checking the charset. */
+			if ( mb_http_output($charset)
 			 && mb_internal_encoding($charset)
-			 && mb_regex_encoding($charset));
-		}
-		else
-		{
-			$return = TRUE;
+			 && mb_regex_encoding($charset) )
+			{
+				self::$charset = $charset;
+				self::$mode = 'mbstring';
+			}
 		}
 		
-		self::confirm_default_date_timezone();
-		
-		self::$charset = $charset;
-		return (boolean) $return;
+		return TRUE;
+	}
+	
+	static public function get_locale_list()
+	{
+		return self::$locale_list;
+	}
+	
+	/*
+	 * i18n::get_current_charset
+	 * return current charset
+	 * @param	void
+	 * @return	string	$charset	current character set
+	 */
+	public static function get_current_charset()
+	{
+		return self::$charset;
+	}
+	
+	/*
+	 * i18n::set_locale
+	 * Set current locale
+	 * NOTE: naming rule is "$language_$script_$region.$charset.php".
+	 * @param	string	$locale
+	 * @return	bool	TRUE/FALSE
+	 */
+	static public function set_current_locale($locale)
+	{
+		preg_match('#^(.+)_(.+)_(.+)$#', $locale, $match);
+		self::$language = $match[1];
+		self::$script   = $match[2];
+		self::$region   = $match[3];
+		return TRUE;
+	}
+	
+	/*
+	 * i18n::get_locale
+	 * Get current locale
+	 * @param	void
+	 * @return	$locale
+	 */
+	static public function get_current_locale()
+	{
+		$elements = array(self::$language, self::$script, self::$region);
+		return implode('_', $elements);
 	}
 	
 	/*
@@ -65,8 +137,18 @@ class i18n {
 		if (function_exists('date_default_timezone_set')) {
 			 @date_default_timezone_set(self::$timezone);
 		}
-		
 		return;
+	}
+	
+	/*
+	 * i18n::get_current_date_timezone()
+	 * get current timezone
+	 * @param	void
+	 * @return	$timezone
+	 */
+	public static function get_date_timezone()
+	{
+		return self::$timezone;
 	}
 	
 	/*
@@ -409,7 +491,7 @@ class i18n {
 		$restriction = 78 - strlen($header) - strlen($footer) ;
 		
 		$encoded_words = array();
-		for ( $i = 0; $i < i18n::strlen($string); $i++ )
+		for ( $i = 0; $i < self::strlen($string); $i++ )
 		{
 			if ( $scheme == 'B' )
 			{
@@ -418,7 +500,7 @@ class i18n {
 					$letters = '';
 				}
 				
-				$letter = i18n::substr($string, $i, 1);
+				$letter = self::substr($string, $i, 1);
 				$expected_length = strlen($letters) + strlen($letter) * 4 / 3;
 				
 				if ( $expected_length > $restriction )
@@ -430,7 +512,7 @@ class i18n {
 				
 				$letters .= $letter;
 				
-				if ( $i == i18n::strlen($string) - 1 )
+				if ( $i == self::strlen($string) - 1 )
 				{
 					$encoded_text = self::b_encoder($letters);
 					$encoded_words[] = "{$header}{$encoded_text}{$footer}";
@@ -445,7 +527,7 @@ class i18n {
 					$encoded_text = '';
 				}
 				
-				$encoded_letter = self::q_encoder(i18n::substr($string, $i, 1));
+				$encoded_letter = self::q_encoder(self::substr($string, $i, 1));
 				$expected_length = strlen($encoded_text) + strlen($encoded_letter);
 				
 				if ( $expected_length > $restriction )
@@ -456,7 +538,7 @@ class i18n {
 				
 				$encoded_text .= $encoded_letter;
 				
-				if ( $i == i18n::strlen($string) - 1 )
+				if ( $i == self::strlen($string) - 1 )
 				{
 					$encoded_words[] = "{$header}{$encoded_text}{$footer}";
 					break;
@@ -554,4 +636,76 @@ class i18n {
 		
 		return $string;
 	}
+	
+	/*
+	 * i18n::convert_locale_to_old_language_file_name()
+	 * NOTE: this should be obsoleted near future.
+	 * @param	string	$locale	locale name as language_script_region
+	 * @return	string	$language	old language file name
+	 */
+	static public function convert_locale_to_old_language_file_name($target_locale)
+	{
+		foreach ( self::$lang_refs as $language => $locale )
+		{
+			if ( $target_locale == $locale )
+			{
+				return $language;
+			}
+		}
+		return FALSE;
+	}
+	
+	/*
+	 * i18n::convert_old_language_file_name_to_locale()
+	 * NOTE: this should be obsoleted near future.
+	 * @param	string	$name		old language file name
+	 * @return	string	$language	locale name as language_script_region
+	 */
+	static public function convert_old_language_file_name_to_locale($target_language)
+	{
+		foreach ( self::$lang_refs as $language => $locale )
+		{
+			if ( $target_language == $language )
+			{
+				return $locale;
+			}
+		}
+		return FALSE;
+	}
+	
+	/*
+	 * i18n::$lang_refs
+	 * reference table to convert old and new way to name language files
+	 * NOTE: this should be obsoleted as soon as possible.
+	 */
+	private static $lang_refs = array(
+		"english"		=>	"en_Latn_US",
+		"english-utf8"	=>	"en_Latn_US",
+		"bulgarian"	=>	"bg_Cyrl_BG",
+		"finnish"		=>	"fi_Latn_FU",
+		"catalan"		=>	"ca_Latn_ES",
+		"french"		=>	"fr_Latn_FR",
+		"russian"		=>	"ru_Cyrl_RU",
+		"chinese"		=>	"zh_Hans_CN",
+		"simchinese"	=>	"zh_Hans_CN",
+		"chineseb5"	=>	"zh_Hant_TW",
+		"traditional_chinese"	=>	"zh_Hant_TW",
+		"galego"		=>	"gl_Latn_ES",
+		"german"		=>	"de_Latn_DE",
+		"korean-utf"	=>	"ko_Kore_KR",
+		"korean-euc-kr"	=>	"ko_Kore_KR",
+		"slovak"		=>	"sk_Latn_SK",
+		"czech"		=>	"cs_Latn_CZ",
+		"hungarian"	=>	"hu_Latn_HU",
+		"latvian"		=>	"lv_Latn_LV",
+		"nederlands"	=>	"nl_Latn_NL",
+		"spanish"		=>	"es_Latn_ES",
+		"italiano"		=>	"it_Latn_IT",
+		"persian"		=>	"fa_Arab_IR",
+		"japanese-euc"	=>	"ja_Jpan_JP",
+		"japanese-utf8"	=>	"ja_Jpan_JP",
+		"spanish-utf8"	=>	"es_Latn_ES",
+		"english-utf8"	=>	"en_Latn_ES",
+		"portuguese_brazil"	=>	"pt_Latn_BR"
+	);
 }
