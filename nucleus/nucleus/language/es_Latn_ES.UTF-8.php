@@ -1,16 +1,144 @@
 <?php
-// Spanish (UTF-8) Nucleus Language File
+// Spanish Nucleus Language File
 // 
-// Author: Héctor Akamine (hecaka@yahoo.co.jp)
-// Nucleus version: v2.5beta 
+// Author: Alfonso Sanchez 
+// Nucleus version: v1.0-v3.2
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefore, it's important to list the Nucleus version for which 
+// might be deleted. Therefor, it's important to list the Nucleus version for which 
 // the file was written in your document.
 //
-// Fully translated language file can be sent to Wouter Demuynck (nucleus@demuynck.org)
-// and will be available for download (with proper credit to the author, of course)
+// Fully translated language file can be sent to us and will be made
+// available for download (with proper credit to the author, of course)
+
+// START changed/added after 315 START
+
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Por favor, usa el botón de la \'lista de suscripción de actualizaciones\' para actualizar la lista de suscripciones de los plugin\'s.');
+define('_LIST_PLUGS_DEP',			'Plugin(s) requires:');
+
+// END changed/added after 3.15
+
+// START changed/added after 3.1 START
+
+// comments list per weblog
+define('_COMMENTS_BLOG',			'Todos los comentarios para la bitácora');
+define('_NOCOMMENTS_BLOG',			'No se hicieron comentarios en los elementos de esta bitácora');
+define('_BLOGLIST_COMMENTS',		'Comentarios');
+define('_BLOGLIST_TT_COMMENTS',		'Una lista de los comentarios hechos en los elementos de esta bitácora');
+
+
+// for use in archivetype-skinvar
+define('_ARCHIVETYPE_DAY',			'dia');
+define('_ARCHIVETYPE_MONTH',		'mes');
+
+// tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
+define('_ERROR_BADTICKET',			'Ticket inválido o caducado.');
+
+// plugin dependency
+define('_ERROR_INSREQPLUGIN',		'Fracasó la instalación del plugin, requiere ');
+define('_ERROR_DELREQPLUGIN',		'Fracasó la eliminación del plugin, es requerido por ');
+
+// cookie prefix
+define('_SETTINGS_COOKIEPREFIX',	'Prefijo de la Cookie');
+
+// account activation
+define('_ERROR_NOLOGON_NOACTIVATE',	'No se puede enviar el enlace de activación. No tienes permitido el acceso.');
+define('_ERROR_ACTIVATE',			'La clave de activación no existe, es inválida, o ha caducado.');
+define('_ACTIONLOG_ACTIVATIONLINK', 'Enlace de activación enviado');
+define('_MSG_ACTIVATION_SENT',		'Un enlace de activación ha sido enviado por correo electrónico.');
+
+// activation link emails
+define('_ACTIVATE_REGISTER_MAIL',	"Hola <%memberName%>,\n\nNecesitas activar tu cuenta en <%siteName%> (<%siteUrl%>).\nPuedes hacerlo visitando el siguiente enlace: \n\n\t<%activationUrl%>\n\nTienes 2 dias para hacerlo. Después, el enlace de activación pierde su validez.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Activa tu cuenta '<%memberName%>'");
+define('_ACTIVATE_REGISTER_TITLE',	'Bienvenido <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',	'Ya casi está. Por favor, selecciona una clave para tu cuenta aquí.');
+define('_ACTIVATE_FORGOT_MAIL',		"Hola <%memberName%>,\n\nUsando el enlace inferior, puedes seleccionar una nueva clave para tu cuenta en <%siteName%> (<%siteUrl%>).\n\n\t<%activationUrl%>\n\nTienes 2 dias para hacerlo. Después, el enlace de activación pierde su validez.");
+define('_ACTIVATE_FORGOT_MAILTITLE',"Reactiva tu cuenta '<%memberName%>'");
+define('_ACTIVATE_FORGOT_TITLE',	'Bienvenido <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'Puedes elegir una nueva clave para tu cuenta aquí:');
+define('_ACTIVATE_CHANGE_MAIL',		"Hola <%memberName%>,\n\nPuesto que tu dirección de correo electrónico ha cambiado, necesitarás reactivar tu cuenta en <%siteName%> (<%siteUrl%>).\nPuedes hacerlo visitando el siguiente enlace: \n\n\t<%activationUrl%>\n\nTienes 2 dias para hacerlo. Después, el enlace de activación pierde su validez.");
+define('_ACTIVATE_CHANGE_MAILTITLE',"Reactiva tu cuenta '<%memberName%>'");
+define('_ACTIVATE_CHANGE_TITLE',	'Bienvenido <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'Tu cambio de dirección ha sido verificado. ¡Gracias!');
+define('_ACTIVATE_SUCCESS_TITLE',	'Activation Succeeded');
+define('_ACTIVATE_SUCCESS_TEXT',	'Tu cuenta ha sido activada con éxito.');
+define('_MEMBERS_SETPWD',			'Introduce clave');
+define('_MEMBERS_SETPWD_BTN',		'Introduce clave');
+define('_QMENU_ACTIVATE',			'Activación de la cuenta');
+define('_QMENU_ACTIVATE_TEXT',		'<p>Después de que hayas activado tu cuenta, puedes empezar a usarla <a href="index.php?action=showlogin">accediendo</a>.</p>');
+
+define('_PLUGS_BTN_UPDATE',			'Lista de suscripción de actualizaciones');
+
+// global settings 
+define('_SETTINGS_JSTOOLBAR',		'Estilo de barra de herramientas Javascript');
+define('_SETTINGS_JSTOOLBAR_FULL',	'Barra de herramientas completa (IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE','Barra de herramientas simple (No IE)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Deshabilita la barra de herramientas');
+define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">Cómo activar URLs atractivas</a>)');
+
+// extra plugin settings part when editing categories/members/blogs/...
+define('_PLUGINS_EXTRA',			'Configuración Extra de Plugins');
+
+// itemlist info column keys
+define('_LIST_ITEM_BLOG',			'bitácora:');
+define('_LIST_ITEM_CAT',			'cat:');
+define('_LIST_ITEM_AUTHOR',			'autor:');
+define('_LIST_ITEM_DATE',			'fecha:');
+define('_LIST_ITEM_TIME',			'hora:');
+
+// indication of registered members in comments list
+define('_LIST_COMMENTS_MEMBER', 	'(miembro)');
+
+// batch operations
+define('_BATCH_WITH_SEL',			'con los seleccionados:');
+define('_BATCH_EXEC',				'Ejecutar');
+
+// quickmenu
+define('_QMENU_HOME',				'Inicio');
+define('_QMENU_ADD',				'Agregar elemento');
+define('_QMENU_ADD_SELECT',			'-- seleccionar --');
+define('_QMENU_USER_SETTINGS',		'Configuración');
+define('_QMENU_USER_ITEMS',			'Elementos');
+define('_QMENU_USER_COMMENTS',		'Comentarios');
+define('_QMENU_MANAGE',				'Gestión');
+define('_QMENU_MANAGE_LOG',			'Historial de acciones');
+define('_QMENU_MANAGE_SETTINGS',	'Configuración global');
+define('_QMENU_MANAGE_MEMBERS',		'Miembros');
+define('_QMENU_MANAGE_NEWBLOG',		'Nueva bitácora');
+define('_QMENU_MANAGE_BACKUPS',		'Copias de seguridad');
+define('_QMENU_MANAGE_PLUGINS',		'Plugins');
+define('_QMENU_LAYOUT',				'Distribución');
+define('_QMENU_LAYOUT_SKINS',		'Pieles');
+define('_QMENU_LAYOUT_TEMPL',		'Plantillas');
+define('_QMENU_LAYOUT_IEXPORT',		'Import/Export');
+define('_QMENU_PLUGINS',			'Plugins');
+
+// quickmenu on logon screen
+define('_QMENU_INTRO',				'Introducción');
+define('_QMENU_INTRO_TEXT',			'<p>Esta es la pantalla de entrada de Nucleus CMS, el sistema de gestión de contenido usado para mantener este sitio.</p><p>Si tienes una cuenta, puedes acceder e introducir nuevos elementos (historias o posts).</p>');
+
+// helppages for plugins
+define('_ERROR_PLUGNOHELPFILE',		'El archivo de ayuda de este plugin no se encuentra');
+define('_PLUGS_HELP_TITLE',			'Página de ayuda del plugin');
+define('_LIST_PLUGS_HELP', 			'ayuda');
+
+
+// END changed/started after 3.1
+
+// START changed/added after v2.5beta START
+
+// general settings (security)
+define('_SETTINGS_EXTAUTH',			'Habilita la autenticación externa');
+define('_WARNING_EXTAUTH',			'Aviso: Habilita sólo si es necesario.');
+
+// member profile
+define('_MEMBERS_BYPASS',			'Usar Autenticación Externa');
+
+// 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
+define('_EBLOG_SEARCH',				'<em>Siempre</em> incluir en la búsqueda');
+
+// END changed/added after v2.5beta
 
 // START introduced after v2.0 START
 
@@ -22,7 +150,7 @@ define('_MEDIA_FILTER_LABEL',		'Filtro: ');
 define('_MEDIA_UPLOAD_TO',			'Subir a...');
 define('_MEDIA_UPLOAD_NEW',			'Subir nuevo archivo...');
 define('_MEDIA_COLLECTION_SELECT',	'Seleccionar');
-define('_MEDIA_COLLECTION_TT',		'Cambiar a esta categor�a');
+define('_MEDIA_COLLECTION_TT',		'Cambiar a esta categoría');
 define('_MEDIA_COLLECTION_LABEL',	'Colección actual: ');
 
 // tooltips on toolbar
@@ -46,23 +174,23 @@ define('_ADD_CHANGEDATE',			'Actualizar fecha y hora');
 define('_BMLET_CHANGEDATE',			'Actualizar fecha y hora');
 
 // skin import/export
-define('_OVERVIEW_SKINIMPORT',		'Importar/exportar piel (skin)...');
+define('_OVERVIEW_SKINIMPORT',		'Importar/exportar piel...');
 
 // skin settings
 define('_PARSER_INCMODE_NORMAL',	'Normal');
-define('_PARSER_INCMODE_SKINDIR',	'Usar el directorio de pieles (skins)');
+define('_PARSER_INCMODE_SKINDIR',	'Usar el directorio de pieles');
 define('_SKIN_INCLUDE_MODE',		'Incluir modo');
 define('_SKIN_INCLUDE_PREFIX',		'Incluir prefijo');
 
 // global settings
-define('_SETTINGS_BASESKIN',		'Piel (skin) base');
-define('_SETTINGS_SKINSURL',		'URL de pieles (skins)');
+define('_SETTINGS_BASESKIN',		'Piel base');
+define('_SETTINGS_SKINSURL',		'URL de pieles');
 define('_SETTINGS_ACTIONSURL',		'URL completa para action.php');
 
 // category moves (batch)
 define('_ERROR_MOVEDEFCATEGORY',	'No se puede mover la categoría por defecto');
-define('_ERROR_MOVETOSELF',			'No se puede mover la categoría (la bitácora (blog) de destino es la misma que la de origen)');
-define('_MOVECAT_TITLE',			'Seleccionar la bitácora (blog) a la que mover la categoría');
+define('_ERROR_MOVETOSELF',			'No se puede mover la categoría (la bitácora de destino es la misma que la de origen)');
+define('_MOVECAT_TITLE',			'Seleccionar la bitácora a la que mover la categoría');
 define('_MOVECAT_BTN',				'Mover categoría');
 
 // URLMode setting
@@ -113,7 +241,7 @@ define('_ERROR_CATCREATEFAIL',		'No se puede crear una nueva categoría');
 define('_ERROR_NUCLEUSVERSIONREQ',	'Este plugin necesita una versión más reciente de Nucleus: ');
 
 // backlinks
-define('_BACK_TO_BLOGSETTINGS',		'Volver a preferencias de bitácora (blog)');
+define('_BACK_TO_BLOGSETTINGS',		'Volver a preferencias de bitácora');
 
 // skin import export
 define('_SKINIE_TITLE_IMPORT',		'Importar');
@@ -128,7 +256,7 @@ define('_SKINIE_EXPORT_SKINS',		'Pieles');
 define('_SKINIE_EXPORT_TEMPLATES',	'Plantillas');
 define('_SKINIE_EXPORT_EXTRA',		'Información Extra');
 define('_SKINIE_CONFIRM_OVERWRITE',	'Sobreescribe pieles que ya existan (ver conflictos de nombre)');
-define('_SKINIE_CONFIRM_IMPORT',	'Sí, quiero importar esto');
+define('_SKINIE_CONFIRM_IMPORT',	'Sí, quiero importar ésto');
 define('_SKINIE_CONFIRM_TITLE',		'Sobre importar pieles y plantillas');
 define('_SKINIE_INFO_SKINS',		'Pieles en archivo:');
 define('_SKINIE_INFO_TEMPLATES',	'Plantillas en archivo:');
@@ -159,7 +287,7 @@ define('_BACKUP_ZIP_NO',			'No use compresión');
 define('_BACKUP_BTN',				'Crear copia de seguridad');
 define('_BACKUP_NOTE',				'<b>Nota:</b> Sólo los contenidos de la base de datos se guardan en la copia de seguridad. Archivos de medios, imágenes y preferencias de config.php <b>NO</b> se incluyen en la copia de seguridad.');
 define('_RESTORE_TITLE',			'Restaurar');
-define('_RESTORE_NOTE',				'<b>AVISO:</b> Restaurar desde una copia de seguridad <b>BORRAR</b> todos los datos de Nucleus actuales! ¡Hacer esto sólo si está totalmente seguro!	<br />	<b>Nota:</b> Comprobar que la versión de Nucleus en la que se creó la copia es la misma que la versión que se está usando ahora! No funcionará si no es así');
+define('_RESTORE_NOTE',				'<b>AVISO:</b> Restaurar desde una copia de seguridad <b>BORRARÁ</b> todos los datos de Nucleus actuales! ¡Hacer ésto sólo se esté totalmente seguro!	<br />	<b>Nota:</b> Comprobar que la versión de Nucleus en la que se creó la copia es la misma que la versión que se está usando ahora! No funcionará si no es así');
 define('_RESTORE_INTRO',			'Seleccionar el archivo de copia de seguridad (será enviado al servidor) y haga clic sobre el botón "Restaurar" para empezar.');
 define('_RESTORE_IMSURE',			'¡Sí, estoy seguro de que quiero hacer eso!');
 define('_RESTORE_BTN',				'Restaurar desde archivo');
@@ -221,7 +349,7 @@ define('_PLUGS_TITLE_INSTALLED',	'Actualmente instalado');
 define('_PLUGS_TITLE_UPDATE',		'Actualizar la lista de suscripción');
 define('_PLUGS_TEXT_UPDATE',		'Nucleus mantiene una caché de las suscripciones a eventos de los plugins. Cuando se actualiza un plugin sustituyendo su archivo, se debe ejecutar esta actualización para asegurar que las suscripciones de la caché son correctas');
 define('_PLUGS_TITLE_NEW',			'Instalar un nuevo plugin');
-define('_PLUGS_ADD_TEXT',			'A continuación hay una lista de todos los archivos de tu directorio de plugins, algunos podráan ser plugins sin instalación. Asegúrate de estar <strong>totalmente seguro</strong> de que se trata de un plugin antes de introducirlo.');
+define('_PLUGS_ADD_TEXT',			'A continuación hay una lista de todos los archivos de tu directorio de plugins, algunos podrían ser plugins sin instalación. Asegúrate de estar <strong>totalmente seguro</strong> de que se trata de un plugin antes de introducirlo.');
 define('_PLUGS_BTN_INSTALL',		'Instalar plugin');
 define('_BACKTOOVERVIEW',			'Volver a principal');
 
@@ -290,7 +418,7 @@ define('_BACKTOMANAGE',				'Volver a la gestión de Nucleus');
 
 
 // charset to use 
-define('_CHARSET',					'UTF-8');
+define('_CHARSET',					'iso-8859-1');
 
 // global stuff
 define('_LOGOUT',					'Salir');
@@ -314,7 +442,7 @@ define('_YOURSITE',					'Ver web');
 
 define('_POPUP_CLOSE',				'Cerrar ventana');
 
-define('_LOGIN_PLEASE',				'Es necesario registrarse primero');
+define('_LOGIN_PLEASE',				'Es necesario regístrarse primero');
 
 // commentform
 define('_COMMENTFORM_YOUARE',		'Eres');
@@ -351,7 +479,7 @@ define('_ADD_ADDNOW',				'Introducir ahora');
 define('_ADD_ADDLATER',				'Introducir luego');
 define('_ADD_PLACE_ON',				'Colocar en');
 define('_ADD_ADDDRAFT',				'Introducir en el borrador');
-define('_ADD_NOPASTDATES',			'(las fechas y horas pasadas no son válidas, se usar� el momento actual)');
+define('_ADD_NOPASTDATES',			'(las fechas y horas pasadas no son válidas, se usará el momento actual)');
 define('_ADD_BOLD_TT',				'Negrita');
 define('_ADD_ITALIC_TT',			'Itálica');
 define('_ADD_HREF_TT',				'Crear enlace');
@@ -397,10 +525,10 @@ define('_SKIN_UPDATED',				'Datos de la piel actualizados');
 define('_TEMPLATE_UPDATED',			'Datos de la plantilla guardados');
 
 // errors
-define('_ERROR_COMMENT_LONGWORD',	'No usar palabras de longitud mayor a 90 caracteres en los comentarios');
+define('_ERROR_COMMENT_LONGWORD',	'No usar palabras de longitud mayor a 90 carácteres en los comentarios');
 define('_ERROR_COMMENT_NOCOMMENT',	'Introducir el comentario');
 define('_ERROR_COMMENT_NOUSERNAME',	'Usuario incorrecto');
-define('_ERROR_COMMENT_TOOLONG',	'Comentario  demasiado largo (máximo : 5000 caracteres)');
+define('_ERROR_COMMENT_TOOLONG',	'Comentario  demasiado largo (máximo : 5000 carácteres)');
 define('_ERROR_COMMENTS_DISABLED',	'Comentarios deshabilitados para esta bitácora.');
 define('_ERROR_COMMENTS_NONPUBLIC',	'Registrarse primero como miembro para introducir comentarios a esta bitácora');
 define('_ERROR_COMMENTS_MEMBERNICK','El nombre indicado para introducir comentarios está siendo usado por otro miembro. Probar con otro distinto.');
@@ -419,8 +547,8 @@ define('_ERROR_BADNOTIFY',			'Una o más de las direcciones de notificación no 
 define('_ERROR_BADNAME',			'El nombre no es válido (sólo a-z y 0-9 permitidos, sin espacios al principio ni al final)');
 define('_ERROR_NICKNAMEINUSE',		'Otro miembro está usando ya ese nombre');
 define('_ERROR_PASSWORDMISMATCH',	'Las claves deben coincidir');
-define('_ERROR_PASSWORDTOOSHORT',	'La clave debe tener al menos 6 caracteres');
-define('_ERROR_PASSWORDMISSING',	'La clave no puede estar vacía');
+define('_ERROR_PASSWORDTOOSHORT',	'La clave debe tener al menos 6 carácteres');
+define('_ERROR_PASSWORDMISSING',	'La clave no puede estar vacia');
 define('_ERROR_REALNAMEMISSING',	'El nombre real introducido no es válido');
 define('_ERROR_ATLEASTONEADMIN',	'Debe existir siempre al menos un superadministrador que pueda registrarse en la zona de administración.');
 define('_ERROR_ATLEASTONEBLOGADMIN','Ejecutar esta acción dejaría la bitácora inmantenible. Debe existir siempre al menos un administrador.');
@@ -432,7 +560,7 @@ define('_ERROR_DELDEFBLOG',			'No es posible eliminar la bitácora principal');
 define('_ERROR_DELETEMEMBER',		'Este miembro no puede ser eliminado, probablemente porque es el autor de entradas o comentarios');
 define('_ERROR_BADTEMPLATENAME',	'Nombre incorrecto para la plantilla, usar sólo a-z y 0-9, y sin espacios');
 define('_ERROR_DUPTEMPLATENAME',	'Ya existe otra plantilla con ese nombre');
-define('_ERROR_BADSKINNAME',		'Nombre incorrecto para la piel (sólo a-z, 0-9 est�n permitidos, y sin espacios)');
+define('_ERROR_BADSKINNAME',		'Nombre incorrecto para la piel (sólo a-z, 0-9 están permitidos, y sin espacios)');
 define('_ERROR_DUPSKINNAME',		'Ya existe otra piel con ese nombre');
 define('_ERROR_DEFAULTSKIN',		'Siempre debe existir una piel llamada "default"');
 define('_ERROR_SKINDEFDELETE',		'No es posible eliminar la piel ya que es la piel predeterminada para la siguiente bitácora: ');
@@ -480,7 +608,7 @@ define('_MEDIA_DIMENSIONS',			'dimensiones');
 define('_MEDIA_INLINE',				'Conectado');
 define('_MEDIA_POPUP',				'Ventana popup');
 define('_UPLOAD_TITLE',				'Seleccionar archivo');
-define('_UPLOAD_MSG',				'Seleccionar el archivo a enviar, y pulsar el bot�n \'Enviar\'.');
+define('_UPLOAD_MSG',				'Seleccionar el archivo a enviar, y pulsar el botón \'Enviar\'.');
 define('_UPLOAD_BUTTON',			'Enviar');
 
 // some status messages
@@ -536,7 +664,7 @@ define('_EBLOG_STIME',				'La hora actual del servidor es');
 define('_EBLOG_BTIME',				'La hora actual de la bitácora es');
 define('_EBLOG_CHANGE',				'Modificar las preferencias');
 define('_EBLOG_CHANGE_BTN',			'Modificar preferencias');
-define('_EBLOG_ADMIN',				'Administración de la bit�cora');
+define('_EBLOG_ADMIN',				'Administración de la bitácora');
 define('_EBLOG_ADMIN_MSG',			'Se asignarán privilegios de administrador al usuario');
 define('_EBLOG_CREATE_TITLE',		'Crear nueva bitácora');
 define('_EBLOG_CREATE_TEXT',		'Rellenar el siguiente formulario para crear una nueva bitácora. <br /><br /> <b>Nota:</b> Sólo las opciones necesarios están listadas. Para opciones extra, entrar en la página de preferencias de la bitácora después de crearla.');
@@ -595,7 +723,7 @@ define('_TEMPLATE_ICODE',			'Código de imagen insertada');
 define('_TEMPLATE_MCODE',			'Código de enlace a imagen o multimedia');
 define('_TEMPLATE_SEARCH',			'Buscar');
 define('_TEMPLATE_SHIGHLIGHT',		'Resaltar');
-define('_TEMPLATE_SNOTFOUND',		'Nada encontrado en la b�squeda');
+define('_TEMPLATE_SNOTFOUND',		'Nada encontrado en la búsqueda');
 define('_TEMPLATE_UPDATE',			'Actualizar');
 define('_TEMPLATE_UPDATE_BTN',		'Actualizar plantilla');
 define('_TEMPLATE_RESET_BTN',		'Inicializar datos');
@@ -617,7 +745,7 @@ define('_SKIN_EDITONE_TITLE',		'Modificar piel');
 define('_SKIN_BACK',				'Volver a la página de la piel');
 define('_SKIN_PARTS_TITLE',			'Partes de la piel');
 define('_SKIN_PARTS_MSG',			'No todos los tipos son necesarios para cada piel. Dejar en blanco los innecesarios. Selecciona el tipo de piel a modificar:');
-define('_SKIN_PART_MAIN',			'índice principal');
+define('_SKIN_PART_MAIN',			'Índice principal');
 define('_SKIN_PART_ITEM',			'Páginas del elemento');
 define('_SKIN_PART_ALIST',			'Lista de archivo');
 define('_SKIN_PART_ARCHIVE',		'Archivo');
@@ -632,7 +760,7 @@ define('_SKIN_UPDATE_BTN',			'Actualizar piel');
 define('_SKIN_RESET_BTN',			'Inicializar datos');
 define('_SKIN_EDITPART_TITLE',		'Modificar piel');
 define('_SKIN_GOBACK',				'Volver');
-define('_SKIN_ALLOWEDVARS',			'Variables permitidas (hacer clic para mayor informaci�n):');
+define('_SKIN_ALLOWEDVARS',			'Variables permitidas (hacer clic para mayor información):');
 
 // global settings
 define('_SETTINGS_TITLE',			'Preferencias generales');
@@ -682,12 +810,12 @@ define('_BAN_BLOGS',				'Qué bitácoras?');
 define('_BAN_DELETE_TITLE',			'Eliminar restricción');
 define('_BAN_ALLBLOGS',				'Bitácoras para las que el usuario tiene privilegios de administrador.');
 define('_BAN_REMOVED_TITLE',		'Restricción eliminada');
-define('_BAN_REMOVED_TEXT',			'Restricción eliminada para las siguientes bit�coras:');
+define('_BAN_REMOVED_TEXT',			'Restricción eliminada para las siguientes bitácoras:');
 define('_BAN_ADD_TITLE',			'Introducir restricción');
 define('_BAN_IPRANGE_TEXT',			'Seleccionar el rango IP a restringir. A menor cantidad de números, más direcciones restringidas.');
-define('_BAN_BLOGS_TEXT',			'Es posible optar por restringir la IP para una sola bitácora, o restringir la IP en todas las bitácoras en las que el usuario tenga privilegios de administrador.');
+define('_BAN_BLOGS_TEXT',			'Es posible optar por restringir la IP para una sóla bitácora, o restringir la IP en todas las bitácoras en las que el usuario tenga privilegios de administrador.');
 define('_BAN_REASON_TITLE',			'Razón');
-define('_BAN_REASON_TEXT',			'Es posible incluir una razón para la restricción, que será mostrada cuando el usuario con esa IP intente añadir un comentario o votar. La longitud máxima es de 256 caracteres.');
+define('_BAN_REASON_TEXT',			'Es posible incluir una razón para la restricción, que será mostrada cuando el usuario con esa IP intente añadir un comentario o votar. La longitud máxima es de 256 carácteres.');
 define('_BAN_ADD_BTN',				'Introducir restricción');
 
 // LOGIN screen
@@ -722,7 +850,7 @@ define('_MEMBERS_USESITELANG',		'- usar las preferencias de la web -');
 // List of blogs (TT = tooltip)
 define('_BLOGLIST_TT_VISIT',		'Visitar web');
 define('_BLOGLIST_ADD',				'Introducir entrada');
-define('_BLOGLIST_TT_ADD',			'Introducir una nueva entrada en esta bit�cora');
+define('_BLOGLIST_TT_ADD',			'Introducir una nueva entrada en esta bitácora');
 define('_BLOGLIST_EDIT',			'Modificar/Eliminar entradas');
 define('_BLOGLIST_TT_EDIT',			'');
 define('_BLOGLIST_BMLET',			'Bookmarklet');

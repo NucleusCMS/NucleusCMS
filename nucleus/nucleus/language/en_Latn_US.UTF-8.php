@@ -17,10 +17,10 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id$
+ * @version $Id: english.php 1594 2011-11-01 20:18:32Z ftruscot $
  */
 
-  /********************************************
+ /********************************************
  *        Start New for 4.0                 *
  ********************************************/
 define('_SKINIE_INVALID_NAMES_DETECTED', 'Invalid skin or templates names detected. Valid names consist of only a-z, A-Z, 0-9, -, and _'); 
@@ -38,6 +38,7 @@ define('_ERROR_URL_TOO_LONG', 'Please enter a website shorter than 100 character
  *        Start New for 3.62                *
  ********************************************/
 define('_SETTINGS_ADMINCSS',		'Admin Area Style');
+
  
 /********************************************
  *        Start New for 3.50                *
@@ -47,6 +48,7 @@ define('_ARCHIVETYPE_YEAR', 'year');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'Newer Version Available');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'Upgrade available: v');
 define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "Plugin %s was not loaded (does not support SqlApi and you are trying to use a non-mysql db)");
+
 
 /********************************************
  *        Start New for 3.40                *
@@ -792,7 +794,7 @@ define('_BACKTOMANAGE',				'Back to Nucleus management');
 
 
 // charset to use
-define('_CHARSET',					'UTF-8');
+define('_CHARSET',					'iso-8859-1');
 
 // global stuff
 define('_LOGOUT',					'Log Out');

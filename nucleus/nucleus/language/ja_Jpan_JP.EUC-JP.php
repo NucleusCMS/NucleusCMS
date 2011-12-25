@@ -24,7 +24,7 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The NucleusCMS Japan¥Á¡¼¥à
- * @version $Id$
+ * @version $Id: japanese-euc.php 1555 2011-07-09 09:10:35Z sakamocchi $
  */
 
  /********************************************
