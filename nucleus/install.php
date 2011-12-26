@@ -82,7 +82,7 @@
 	{
 		include('nucleus/libs/i18n.php');
 
-		if ( !i18n::init('UTF-8') )
+		if ( !i18n::init('UTF-8', './nucleus/language') )
 		{
 			exit('Failed to initialize iconv or mbstring extension. Would you please contact the administrator of your PHP server?');
 		} // end if
