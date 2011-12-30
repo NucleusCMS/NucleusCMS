@@ -705,7 +705,6 @@ class i18n {
 		"japanese-euc"	=>	"ja_Jpan_JP",
 		"japanese-utf8"	=>	"ja_Jpan_JP",
 		"spanish-utf8"	=>	"es_Latn_ES",
-		"english-utf8"	=>	"en_Latn_ES",
 		"portuguese_brazil"	=>	"pt_Latn_BR"
 	);
 }
