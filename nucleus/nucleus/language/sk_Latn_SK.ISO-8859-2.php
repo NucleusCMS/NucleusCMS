@@ -825,5 +825,3 @@ define('_EDITC_NONMEMBER',			'nie je èlenom');
 // move item
 define('_MOVE_TITLE',				'Presunú» do akého blogu?');
 define('_MOVE_BTN',					'Presunú» èlánok');
-
-?>

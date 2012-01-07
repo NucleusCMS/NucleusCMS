@@ -1034,5 +1034,3 @@ define('_EDITC_NONMEMBER',			'kein Mitglied');
 // move item
 define('_MOVE_TITLE',				'In welchen Hauptpunkt verschieben?');
 define('_MOVE_BTN',					'Artikel verschieben');
-
-?>

@@ -914,5 +914,3 @@ define('_EDITC_NONMEMBER',			'비회원');
 // move item
 define('_MOVE_TITLE',				'어느 블로그로 이동할까요?');
 define('_MOVE_BTN',					'아이템 이동');
-
-?>

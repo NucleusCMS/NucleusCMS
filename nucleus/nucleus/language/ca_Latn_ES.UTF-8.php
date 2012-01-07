@@ -956,5 +956,3 @@ define('_EDITC_NONMEMBER',			'usuari no registrat');
 // move item
 define('_MOVE_TITLE',				'Moure a quin weblog?');
 define('_MOVE_BTN',					'Moure l\'article');
-
-?>

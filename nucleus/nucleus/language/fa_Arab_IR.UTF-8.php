@@ -825,5 +825,3 @@ define('_EDITC_NONMEMBER',			'غير كاربر');
 // move item
 define('_MOVE_TITLE',				'انتقال به كدام وبلاگ؟');
 define('_MOVE_BTN',					'جابجايي نوشته');
-
-?>

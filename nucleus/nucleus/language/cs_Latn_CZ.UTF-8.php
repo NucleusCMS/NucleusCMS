@@ -825,5 +825,3 @@ define('_EDITC_NONMEMBER',			'není člen');
 // move item
 define('_MOVE_TITLE',				'Přesunout do jakého blogu?');
 define('_MOVE_BTN',					'Přesunout článek');
-
-?>

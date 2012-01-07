@@ -894,5 +894,3 @@ define('_EDITC_NONMEMBER',			'non member');
 // move item
 define('_MOVE_TITLE',				'Я№хьхёђш ъњь ъющ blog?');
 define('_MOVE_BTN',					'Я№хьхёђш Item');
-
-?>

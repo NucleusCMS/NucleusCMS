@@ -825,5 +825,3 @@ define('_EDITC_NONMEMBER',			'非会员');
 // move item
 define('_MOVE_TITLE',				'移动到哪个日志？');
 define('_MOVE_BTN',					'移动文章');
-
-?>

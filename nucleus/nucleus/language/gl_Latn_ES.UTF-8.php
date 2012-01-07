@@ -825,5 +825,3 @@ define('_EDITC_NONMEMBER',			'Non membro');
 // move item
 define('_MOVE_TITLE',				'Mover a qué bitácora?');
 define('_MOVE_BTN',					'Mover entrada');
-
-?>

@@ -957,6 +957,3 @@ define('_EDITC_NONMEMBER',			'ei-käyttäjä');
 // move item
 define('_MOVE_TITLE',				'Siirrä mihin blogiin?');
 define('_MOVE_BTN',					'Siirrä artikkeli');
-
-?>
-

@@ -841,5 +841,3 @@ define('_EDITC_NONMEMBER',            'ciemiņš');
 // move item
 define('_MOVE_TITLE',                'Uz kuru blogu?');
 define('_MOVE_BTN',                    'Pārvietot...');
-
-?>

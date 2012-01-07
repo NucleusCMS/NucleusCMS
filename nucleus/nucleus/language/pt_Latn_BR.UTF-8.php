@@ -822,5 +822,3 @@ define('_EDITC_NONMEMBER',			'não membro');
 // move item
 define('_MOVE_TITLE',				'Mover o post para qual blog?');
 define('_MOVE_BTN',					'Mover');
-
-?>

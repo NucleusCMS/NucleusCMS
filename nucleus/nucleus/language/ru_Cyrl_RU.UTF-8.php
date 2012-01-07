@@ -947,5 +947,3 @@ define('_EDITC_NONMEMBER',			'гость');
 // move item
 define('_MOVE_TITLE',				'Выберите раздел для перемещения');
 define('_MOVE_BTN',					'Переместить сообщение');
-
-?>

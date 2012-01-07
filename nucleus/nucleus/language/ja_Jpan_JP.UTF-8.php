@@ -1344,5 +1344,3 @@ define('_EDITC_NONMEMBER',							'非メンバー');
 // move item
 define('_MOVE_TITLE',								'どのBlogに移動しますか？');
 define('_MOVE_BTN',									'アイテムを移動する');
-
-?>

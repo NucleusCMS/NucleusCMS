@@ -962,4 +962,3 @@ define('_EDITC_NONMEMBER',			'niet geregistreerd');
 // move item
 define('_MOVE_TITLE',				'Verplaatsen naar welk blog?');
 define('_MOVE_BTN',					'Verplaats');
-

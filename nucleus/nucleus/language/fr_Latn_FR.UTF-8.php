@@ -951,7 +951,3 @@ define('_EDITC_NONMEMBER',		'non participant');
 // move item
 define('_MOVE_TITLE',			'Déplacer dans quel blog?');
 define('_MOVE_BTN',			'Déplacer le billet');
-
-?>
-
-

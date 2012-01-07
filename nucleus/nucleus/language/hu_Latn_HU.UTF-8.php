@@ -944,5 +944,3 @@ define('_EDITC_NONMEMBER',			'Nem tag');
 // move item
 define('_MOVE_TITLE',				'Melyik blogba mozgassam?');
 define('_MOVE_BTN',					'Elem áthelyezése');
-
-?>

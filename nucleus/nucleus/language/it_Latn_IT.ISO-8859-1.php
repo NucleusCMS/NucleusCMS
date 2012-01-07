@@ -953,5 +953,3 @@ define('_EDITC_NONMEMBER',			'utente non registrato');
 // move item
 define('_MOVE_TITLE',				'Sposta in quale blog?');
 define('_MOVE_BTN',					'Sposta articolo');
-
-?>
