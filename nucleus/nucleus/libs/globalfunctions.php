@@ -16,21 +16,25 @@
  * @version $Id$
  */
 
-// needed if we include globalfunctions from install.php
+/* needed if we include globalfunctions from install.php */
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
 $nucleus['version'] = 'v4.00 SVN';
 $nucleus['codename'] = '';
 
-// check and die if someone is trying to override internal globals (when register_globals turn on)
+/* check and die if someone is trying to override internal globals (when register_globals turn on) */
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
 
 $CONF['debug'] = 0;
-if ($CONF['debug']) {
-    error_reporting(E_ALL); // report all errors!
-} else {
-    ini_set('display_errors','0');
-    error_reporting(E_ERROR | E_WARNING | E_PARSE);
+if ( $CONF['debug'] )
+{
+	/* report all errors! */
+	error_reporting(E_ALL);
+}
+else
+{
+	ini_set('display_errors','0');
+	error_reporting(E_ERROR | E_WARNING | E_PARSE);
 }
 
 /*
@@ -50,70 +54,81 @@ if ( !i18n::init('UTF-8', $DIR_LANG) )
 define('_CHARSET', i18n::get_current_charset());
 
 /*
-    Indicates when Nucleus should display startup errors. Set to 1 if you want
-    the error enabled (default), false otherwise
-
-    alertOnHeadersSent
-        Displays an error when visiting a public Nucleus page and headers have
-        been sent out to early. This usually indicates an error in either a
-        configuration file or a language file, and could cause Nucleus to
-        malfunction
-    alertOnSecurityRisk
-        Displays an error only when visiting the admin area, and when one or
-        more of the installation files (install.php, install.sql, upgrades/
-        directory) are still on the server.
+	Indicates when Nucleus should display startup errors. Set to 1 if you want
+	the error enabled (default), false otherwise
+	
+	alertOnHeadersSent
+		Displays an error when visiting a public Nucleus page and headers have
+		been sent out to early. This usually indicates an error in either a
+		configuration file or a language file, and could cause Nucleus to
+		malfunction
+	alertOnSecurityRisk
+		Displays an error only when visiting the admin area, and when one or
+		more of the installation files (install.php, install.sql, upgrades/
+		directory) are still on the server.
 */
 
-if (!isset($CONF['alertOnHeadersSent']) || (isset($CONF['alertOnHeadersSent'])&& $CONF['alertOnHeadersSent'] !== 0))
+if ( !isset($CONF['alertOnHeadersSent'])
+  || (isset($CONF['alertOnHeadersSent'])
+  && $CONF['alertOnHeadersSent'] !== 0) )
 {
-	$CONF['alertOnHeadersSent']  = 1;
+	$CONF['alertOnHeadersSent'] = 1;
 }
 $CONF['alertOnSecurityRisk'] = 1;
-/*$CONF['ItemURL']           = $CONF['Self'];
+/*
+$CONF['ItemURL']           = $CONF['Self'];
 $CONF['ArchiveURL']          = $CONF['Self'];
 $CONF['ArchiveListURL']      = $CONF['Self'];
 $CONF['MemberURL']           = $CONF['Self'];
 $CONF['SearchURL']           = $CONF['Self'];
 $CONF['BlogURL']             = $CONF['Self'];
 $CONF['CategoryURL']         = $CONF['Self'];
+*/
 
-// switch URLMode back to normal when $CONF['Self'] ends in .php
-// this avoids urls like index.php/item/13/index.php/item/15
+/*
+ * switch URLMode back to normal when $CONF['Self'] ends in .php
+ * this avoids urls like index.php/item/13/index.php/item/15
+ */
+/*
 if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php'))) {
     $CONF['URLMode'] = 'normal';
 }*/
 
 /*
-	Set these to 1 to allow viewing of future items or draft items
-	Should really never do this, but can be useful for some plugins that might need to
-	Could cause some other issues if you use future posts otr drafts
-	So use with care
-*/
+ * Set these to 1 to allow viewing of future items or draft items
+ * Should really never do this, but can be useful for some plugins that might need to
+ * Could cause some other issues if you use future posts otr drafts
+ * So use with care
+ */
 $CONF['allowDrafts'] = 0;
 $CONF['allowFuture'] = 0;
 
-if (getNucleusPatchLevel() > 0) {
-    $nucleus['version'] .= '/' . getNucleusPatchLevel();
+if ( getNucleusPatchLevel() > 0 )
+{
+	$nucleus['version'] .= '/' . getNucleusPatchLevel();
 }
 
-// Avoid notices
-if (!isset($CONF['installscript'])) {
-    $CONF['installscript'] = 0;
+/* Avoid notices */
+if ( !isset($CONF['installscript']) )
+{
+	$CONF['installscript'] = 0;
 }
 
-// we will use postVar, getVar, ... methods instead of $_GET, $_POST ...
-if ($CONF['installscript'] != 1) { // vars were already included in install.php
-         include_once($DIR_LIBS . 'vars4.1.0.php');
+/* we will use postVar, getVar, ... methods instead of $_GET, $_POST ...*/
+if ($CONF['installscript'] != 1)
+{
+	/* vars were already included in install.php */
+	include_once($DIR_LIBS . 'vars4.1.0.php');
 }
 
-// sanitize option
+/* sanitize option */
 $bLoggingSanitizedResult=0;
 $bSanitizeAndContinue=0;
 
 $orgRequestURI = serverVar('REQUEST_URI');
 sanitizeParams();
 
-// get all variables that can come from the request and put them in the global scope
+/* get all variables that can come from the request and put them in the global scope */
 $blogid       = requestVar('blogid');
 $itemid       = intRequestVar('itemid');
 $catid        = intRequestVar('catid');
@@ -134,20 +149,25 @@ $error        = '';
 $special      = requestVar('special');
 $virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
-if (!headers_sent() ) {
-    header('Generator: Nucleus CMS ' . $nucleus['version']);
+if ( !headers_sent() )
+{
+	header('Generator: Nucleus CMS ' . $nucleus['version']);
 }
 
-// include core classes that are needed for login & plugin handling
+/* include core classes that are needed for login & plugin handling */
 include_once($DIR_LIBS . 'mysql.php');
-// added for 3.5 sql_* wrapper
+/* added for 3.5 sql_* wrapper */
 global $MYSQL_HANDLER;
-if (!isset($MYSQL_HANDLER))
-    $MYSQL_HANDLER = array('mysql','');
-if ($MYSQL_HANDLER[0] == '')
-    $MYSQL_HANDLER[0] = 'mysql';
+if ( !isset($MYSQL_HANDLER) )
+{
+	$MYSQL_HANDLER = array('mysql','');
+}
+if ( $MYSQL_HANDLER[0] == '' )
+{
+	$MYSQL_HANDLER[0] = 'mysql';
+}
 include_once($DIR_LIBS . 'sql/'.$MYSQL_HANDLER[0].'.php');
-// end new for 3.5 sql_* wrapper
+/* end new for 3.5 sql_* wrapper */
 include($DIR_LIBS . 'MEMBER.php');
 include($DIR_LIBS . 'ACTIONLOG.php');
 include($DIR_LIBS . 'MANAGER.php');
@@ -155,43 +175,52 @@ include($DIR_LIBS . 'PLUGIN.php');
 
 $manager =& MANAGER::instance();
 
-// make sure there's no unnecessary escaping:
-//set_magic_quotes_runtime(0);
-if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-    ini_set('magic_quotes_runtime', '0');
+/*
+ * make sure there's no unnecessary escaping:
+ * set_magic_quotes_runtime(0);
+ */
+if ( version_compare(PHP_VERSION, '5.3.0', '<') )
+{
+	ini_set('magic_quotes_runtime', '0');
 }
 
-// Avoid notices
-if (!isset($CONF['UsingAdminArea'])) {
-    $CONF['UsingAdminArea'] = 0;
+/* Avoid notices */
+if ( !isset($CONF['UsingAdminArea']) )
+{
+	$CONF['UsingAdminArea'] = 0;
 }
 
-// only needed when updating logs
-if ($CONF['UsingAdminArea']) {
-    include($DIR_LIBS . 'xmlrpc.inc.php');  // XML-RPC client classes
-    include_once($DIR_LIBS . 'ADMIN.php');
+/* only needed when updating logs */
+if ( $CONF['UsingAdminArea'] )
+{
+	/* XML-RPC client classes */
+	include($DIR_LIBS . 'xmlrpc.inc.php');
+	include_once($DIR_LIBS . 'ADMIN.php');
 }
 
-// connect to database
+/* connect to database */
 sql_connect();
 $SQLCount = 0;
 
-// logs sanitized result if need
-if ($orgRequestURI!==serverVar('REQUEST_URI')) {
-    $msg = "Sanitized [" . serverVar('REMOTE_ADDR') . "] ";
-    $msg .= $orgRequestURI . " -> " . serverVar('REQUEST_URI');
-    if ($bLoggingSanitizedResult) {
-        addToLog(WARNING, $msg);
-    }
-    if (!$bSanitizeAndContinue) {
-        die("");
-    }
+/* logs sanitized result if need */
+if ( $orgRequestURI!==serverVar('REQUEST_URI') )
+{
+	$msg = "Sanitized [" . serverVar('REMOTE_ADDR') . "] ";
+	$msg .= $orgRequestURI . " -> " . serverVar('REQUEST_URI');
+	if ( $bLoggingSanitizedResult )
+	{
+	addToLog(WARNING, $msg);
+	}
+	if ( !$bSanitizeAndContinue )
+	{
+		die("");
+	}
 }
 
-// makes sure database connection gets closed on script termination
+/* makes sure database connection gets closed on script termination */
 register_shutdown_function('sql_disconnect');
 
-// read config
+/* read config */
 getConfig();
 
 /*
@@ -204,21 +233,17 @@ if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Language'])
 	$CONF['Language'] = 'en_Latn_US';
 }
 
-// Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
-if (!isset($CONF['Self'])) {
-    $CONF['Self'] = $CONF['IndexURL'];
-    // strip trailing /
-    if ($CONF['Self'][i18n::strlen($CONF['Self']) -1] == "/") {
-        $CONF['Self'] = i18n::substr($CONF['Self'], 0, i18n::strlen($CONF['Self']) -1);
-    }
-
-/*	$CONF['ItemURL']        = $CONF['Self'];
-    $CONF['ArchiveURL']     = $CONF['Self'];
-    $CONF['ArchiveListURL'] = $CONF['Self'];
-    $CONF['MemberURL']      = $CONF['Self'];
-    $CONF['SearchURL']      = $CONF['Self'];
-    $CONF['BlogURL']        = $CONF['Self'];
-    $CONF['CategoryURL']    = $CONF['Self'];*/
+/* Properly set $CONF['Self'] and others if it's not set...
+ * usually when we are access from admin menu
+ */
+if ( !isset($CONF['Self']) )
+{
+	$CONF['Self'] = $CONF['IndexURL'];
+	/* strip trailing */
+	if ( $CONF['Self'][i18n::strlen($CONF['Self']) -1] == "/" )
+	{
+		$CONF['Self'] = i18n::substr($CONF['Self'], 0, i18n::strlen($CONF['Self']) -1);
+	}
 }
 
 $CONF['ItemURL'] = $CONF['Self'];
@@ -229,71 +254,89 @@ $CONF['SearchURL'] = $CONF['Self'];
 $CONF['BlogURL'] = $CONF['Self'];
 $CONF['CategoryURL'] = $CONF['Self'];
 
-// switch URLMode back to normal when $CONF['Self'] ends in .php
-// this avoids urls like index.php/item/13/index.php/item/15
-if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (i18n::substr($CONF['Self'], i18n::strlen($CONF['Self']) - 4) == '.php'))) {
-    $CONF['URLMode'] = 'normal';
+/*
+ *switch URLMode back to normal when $CONF['Self'] ends in .php
+ * this avoids urls like index.php/item/13/index.php/item/15
+ */
+if ( !isset($CONF['URLMode'])
+ || (($CONF['URLMode'] == 'pathinfo')
+  && (i18n::substr($CONF['Self'], i18n::strlen($CONF['Self']) - 4) == '.php')) )
+{
+	$CONF['URLMode'] = 'normal';
 }
 
-// automatically use simpler toolbar for mozilla
-if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0') && strstr(serverVar('HTTP_USER_AGENT'), 'Gecko') ) {
-    $CONF['DisableJsTools'] = 2;
+/* automatically use simpler toolbar for mozilla */
+if ( ($CONF['DisableJsTools'] == 0)
+   && strstr(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0')
+   && strstr(serverVar('HTTP_USER_AGENT'), 'Gecko') )
+{
+	$CONF['DisableJsTools'] = 2;
 }
 
-// login if cookies set
+/* login if cookies set*/
 $member = new MEMBER();
 
-// secure cookie key settings (either 'none', 0, 8, 16, 24, or 32)
-if (!isset($CONF['secureCookieKey'])) $CONF['secureCookieKey']=24;
-switch($CONF['secureCookieKey']){
-case 8:
-    $CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-    break;
-case 16:
-    $CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-    break;
-case 24:
-    $CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-    break;
-case 32:
-    $CONF['secureCookieKeyIP']=serverVar('REMOTE_ADDR');
-    break;
-default:
-    $CONF['secureCookieKeyIP']='';
+/* secure cookie key settings (either 'none', 0, 8, 16, 24, or 32) */
+if ( !isset($CONF['secureCookieKey']) )
+{
+	$CONF['secureCookieKey'] = 24;
+}
+switch( $CONF['secureCookieKey'] )
+{
+	case 8:
+		$CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
+		break;
+	case 16:
+		$CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
+		break;
+	case 24:
+		$CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
+		break;
+	case 32:
+		$CONF['secureCookieKeyIP'] = serverVar('REMOTE_ADDR');
+		break;
+	default:
+		$CONF['secureCookieKeyIP'] = '';
 }
 
-// login/logout when required or renew cookies
-if ($action == 'login') {
-    // Form Authentication
-    $login = postVar('login');
-    $pw = postVar('password');
-    $shared = intPostVar('shared'); // shared computer or not
-
-    $pw=i18n::substr($pw,0,40); // avoid md5 collision by using a long key
-
-    if ($member->login($login, $pw) ) {
-
-        $member->newCookieKey();
-        $member->setCookies($shared);
-
-        if ($CONF['secureCookieKey']!=='none') {
-            // secure cookie key
-            $member->setCookieKey(md5($member->getCookieKey().$CONF['secureCookieKeyIP']));
-            $member->write();
-        }
-
-        // allows direct access to parts of the admin area after logging in
-        if ($nextaction) {
-            $action = $nextaction;
-        }
-
-        $manager->notify('LoginSuccess', array('member' => &$member, 'username' => $login) );
-        $errormessage = '';
-        ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
-    } else {
-		// errormessage for [%errordiv%]
+/* login/logout when required or renew cookies */
+if ( $action == 'login' )
+{
+	/* Form Authentication */
+	$login = postVar('login');
+	$pw = postVar('password');
+	/* shared computer or not */
+	$shared = intPostVar('shared');
+	/* avoid md5 collision by using a long key */
+	$pw=i18n::substr($pw,0,40);
+	
+	if ( $member->login($login, $pw) )
+	{
+		$member->newCookieKey();
+		$member->setCookies($shared);
+		
+		if ( $CONF['secureCookieKey']!=='none' )
+		{
+			/* secure cookie key */
+			$member->setCookieKey(md5($member->getCookieKey().$CONF['secureCookieKeyIP']));
+			$member->write();
+		}
+		
+		/* allows direct access to parts of the admin area after logging in */
+		if ( $nextaction )
+		{
+			$action = $nextaction;
+		}
+		
+		$manager->notify('LoginSuccess', array('member' => &$member, 'username' => $login) );
+		$errormessage = '';
+		ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
+	}
+	else
+	{
+		/* errormessage for [%errordiv%] */
 		$trimlogin = trim($login);
-		if (empty($trimlogin))
+		if ( empty($trimlogin) )
 		{
 			$errormessage = "Please enter a username.";
 		}
@@ -301,56 +344,76 @@ if ($action == 'login') {
 		{
 			$errormessage = 'Login failed for ' . $login;
 		} 
+		
+		$manager->notify('LoginFailed', array('username' => $login) );
+		ACTIONLOG::add(INFO, $errormessage);
+	}
 
-        $manager->notify('LoginFailed', array('username' => $login) );
-        ACTIONLOG::add(INFO, $errormessage);
-    }
-/*
-
-Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
-
-} elseif (serverVar('PHP_AUTH_USER') && serverVar('PHP_AUTH_PW')) {
-    // HTTP Authentication
-    $login  = serverVar('PHP_AUTH_USER');
-    $pw     = serverVar('PHP_AUTH_PW');
-
-    if ($member->login($login, $pw) ) {
-        $manager->notify('LoginSuccess',array('member' => &$member));
-        ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
-    } else {
-        $manager->notify('LoginFailed',array('username' => $login));
-        ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
-
-        //Since bad credentials, generate an apropriate error page
-        header("WWW-Authenticate: Basic realm=\"Nucleus CMS {$nucleus['version']}\"");
-        header('HTTP/1.0 401 Unauthorized');
-        echo 'Invalid username or password';
-        exit;
-    }
-*/
-
-} elseif (($action == 'logout') && (!headers_sent() ) && cookieVar($CONF['CookiePrefix'] . 'user') ) {
-    // remove cookies on logout
-    setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-    setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-    $manager->notify('Logout', array('username' => cookieVar($CONF['CookiePrefix'] . 'user') ) );
-} elseif (cookieVar($CONF['CookiePrefix'] . 'user') ) {
-    // Cookie Authentication
-    $ck=cookieVar($CONF['CookiePrefix'] . 'loginkey');
-    // secure cookie key
-    $ck=i18n::substr($ck,0,32); // avoid md5 collision by using a long key
-    if ($CONF['secureCookieKey']!=='none') $ck=md5($ck.$CONF['secureCookieKeyIP']);
-    $res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] . 'user'), $ck );
-    unset($ck);
-
-    // renew cookies when not on a shared computer
-    if ($res && (cookieVar($CONF['CookiePrefix'] . 'sharedpc') != 1) && (!headers_sent() ) ) {
-        $member->setCookieKey(cookieVar($CONF['CookiePrefix'] . 'loginkey'));
-        $member->setCookies();
-    }
 }
 
-// login completed
+/*
+Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
+elseif ( serverVar('PHP_AUTH_USER') && serverVar('PHP_AUTH_PW') )
+{
+	// HTTP Authentication
+	$login  = serverVar('PHP_AUTH_USER');
+	$pw     = serverVar('PHP_AUTH_PW');
+	
+	if ( $member->login($login, $pw) )
+	{
+		$manager->notify('LoginSuccess',array('member' => &$member));
+		ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
+	}
+	else
+	{
+		$manager->notify('LoginFailed',array('username' => $login));
+		ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
+		
+		//Since bad credentials, generate an apropriate error page
+		header("WWW-Authenticate: Basic realm=\"Nucleus CMS {$nucleus['version']}\"");
+		header('HTTP/1.0 401 Unauthorized');
+		echo 'Invalid username or password';
+		exit;
+	}
+}
+*/
+
+elseif ( ($action == 'logout')
+      && (!headers_sent())
+      && cookieVar($CONF['CookiePrefix'] . 'user') )
+{
+	/* remove cookies on logout */
+	setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+	setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+	$manager->notify('Logout', array('username' => cookieVar($CONF['CookiePrefix'] . 'user') ) );
+}
+elseif ( cookieVar($CONF['CookiePrefix'] . 'user') )
+{
+	/* Cookie Authentication */
+	$ck=cookieVar($CONF['CookiePrefix'] . 'loginkey');
+	/* 
+	 * secure cookie key
+	 * avoid md5 collision by using a long key
+	 */
+	$ck = i18n::substr($ck,0,32);
+	if ( $CONF['secureCookieKey']!=='none' )
+	{
+		$ck = md5($ck.$CONF['secureCookieKeyIP']);
+	}
+	$res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] . 'user'), $ck );
+	unset($ck);
+	
+	/* renew cookies when not on a shared computer */
+	if ( $res
+	  && (cookieVar($CONF['CookiePrefix'] . 'sharedpc') != 1)
+	  && (!headers_sent() ) )
+	{
+		$member->setCookieKey(cookieVar($CONF['CookiePrefix'] . 'loginkey'));
+		$member->setCookies();
+	}
+}
+
+/* login completed */
 $manager->notify('PostAuthentication', array('loggedIn' => $member->isLoggedIn() ) );
 
 /*
@@ -382,13 +445,14 @@ i18n::set_current_locale($locale);
  */
 ticketForPlugin();
 
-// first, let's see if the site is disabled or not. always allow admin area access.
-if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
-    redirect($CONF['DisableSiteURL']);
-    exit;
+/* first, let's see if the site is disabled or not. always allow admin area access. */
+if ( $CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea'] )
+{
+	redirect($CONF['DisableSiteURL']);
+	exit;
 }
 
-// load other classes
+/* load other classes */
 include($DIR_LIBS . 'PARSER.php');
 include($DIR_LIBS . 'SKIN.php');
 include($DIR_LIBS . 'TEMPLATE.php');
@@ -396,7 +460,7 @@ include($DIR_LIBS . 'BLOG.php');
 include($DIR_LIBS . 'BODYACTIONS.php');
 include($DIR_LIBS . 'COMMENTS.php');
 include($DIR_LIBS . 'COMMENT.php');
-//include($DIR_LIBS . 'ITEM.php');
+/* include($DIR_LIBS . 'ITEM.php'); */
 include($DIR_LIBS . 'NOTIFICATION.php');
 include($DIR_LIBS . 'BAN.php');
 include($DIR_LIBS . 'PAGEFACTORY.php');
@@ -404,17 +468,21 @@ include($DIR_LIBS . 'SEARCH.php');
 include($DIR_LIBS . 'entity.php');
 include($DIR_LIBS . 'Link.php');
 
-// set lastVisit cookie (if allowed)
-if (!headers_sent() ) {
-    if ($CONF['LastVisit']) {
-        setcookie($CONF['CookiePrefix'] . 'lastVisit', time(), time() + 2592000, $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-    } else {
-        setcookie($CONF['CookiePrefix'] . 'lastVisit', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-    }
+/* set lastVisit cookie (if allowed) */
+if ( !headers_sent() )
+{
+	if ( $CONF['LastVisit'] )
+	{
+		setcookie($CONF['CookiePrefix'] . 'lastVisit', time(), time() + 2592000, $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+	}
+	else
+	{
+		setcookie($CONF['CookiePrefix'] . 'lastVisit', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+	}
 }
 
 /*
-    Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
+Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
 
 // To remove after v2.5 is released and language files have been updated.
 // Including this makes sure that language files for v2.5beta can still be used for v2.5final
@@ -425,146 +493,169 @@ if (!defined('_MEMBERS_BYPASS'))
     define('_WARNING_EXTAUTH',          'Warning: Enable only if needed.');
     define('_MEMBERS_BYPASS',           'Use External Authentication');
 }
-
 */
 
-// make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
-if (!defined('_ARCHIVETYPE_MONTH') )
+/* make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined */
+if ( !defined('_ARCHIVETYPE_MONTH') )
 {
 	define('_ARCHIVETYPE_DAY', 'day');
 	define('_ARCHIVETYPE_MONTH', 'month');
 	define('_ARCHIVETYPE_YEAR', 'year');
 }
 
-// decode path_info
-if ($CONF['URLMode'] == 'pathinfo') {
-    // initialize keywords if this hasn't been done before
-    if (!isset($CONF['ItemKey']) || $CONF['ItemKey'] == '') {
-        $CONF['ItemKey'] = 'item';
-    }
-
-    if (!isset($CONF['ArchiveKey']) || $CONF['ArchiveKey'] == '') {
-        $CONF['ArchiveKey'] = 'archive';
-    }
-
-    if (!isset($CONF['ArchivesKey']) || $CONF['ArchivesKey'] == '') {
-        $CONF['ArchivesKey'] = 'archives';
-    }
-
-    if (!isset($CONF['MemberKey']) || $CONF['MemberKey'] == '') {
-        $CONF['MemberKey'] = 'member';
-    }
-
-    if (!isset($CONF['BlogKey']) || $CONF['BlogKey'] == '') {
-        $CONF['BlogKey'] = 'blog';
-    }
-
-    if (!isset($CONF['CategoryKey']) || $CONF['CategoryKey'] == '') {
-        $CONF['CategoryKey'] = 'category';
-    }
-
-    if (!isset($CONF['SpecialskinKey']) || $CONF['SpecialskinKey'] == '') {
-        $CONF['SpecialskinKey'] = 'special';
-    }
-
-    $parsed = false;
-    $manager->notify(
-        'ParseURL',
-        array(
-            'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
-            'info' => $virtualpath,
-            'complete' => &$parsed
-        )
-    );
-
-    if (!$parsed) {
-        // default implementation
-        $data = i18n::explode("/", $virtualpath );
-        for ($i = 0; $i < sizeof($data); $i++) {
-            switch ($data[$i]) {
-                case $CONF['ItemKey']: // item/1 (blogid)
-                    $i++;
-
-                    if ($i < sizeof($data) ) {
-                        $itemid = intval($data[$i]);
-                    }
-                    break;
-
-                case $CONF['ArchivesKey']: // archives/1 (blogid)
-                    $i++;
-
-                    if ($i < sizeof($data) ) {
-                        $archivelist = intval($data[$i]);
-                    }
-                    break;
-
-                case $CONF['ArchiveKey']: // two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
-                    if ((($i + 1) < sizeof($data) ) && (!strstr($data[$i + 1], '-') ) ) {
-                        $blogid = intval($data[++$i]);
-                    }
-
-                    $i++;
-
-                    if ($i < sizeof($data) ) {
-                        $archive = $data[$i];
-                    }
-                    break;
-
-                case 'blogid': // blogid/1
-                case $CONF['BlogKey']: // blog/1
-                    $i++;
-
-                    if ($i < sizeof($data) ) {
-                        $blogid = intval($data[$i]);
-                    }
-                    break;
-
-                case $CONF['CategoryKey']: // category/1 (catid)
-                case 'catid':
-                    $i++;
-
-                    if ($i < sizeof($data) ) {
-                        $catid = intval($data[$i]);
-                    }
-                    break;
-
-                case $CONF['MemberKey']:
-                    $i++;
-
-                    if ($i < sizeof($data) ) {
-                        $memberid = intval($data[$i]);
-                    }
-                    break;
-
-                case $CONF['SpecialskinKey']:
-                    $i++;
-
-                    if ($i < sizeof($data) ) {
-                        $special = $data[$i];
-						$_REQUEST['special'] = $special;	
-                    }
-                    break;
-
-                default:
-                    // skip...
-            }
-        }
-    }
+/* decode path_info */
+if ( $CONF['URLMode'] == 'pathinfo' )
+{
+	/* initialize keywords if this hasn't been done before */
+	if ( !isset($CONF['ItemKey']) || $CONF['ItemKey'] == '' )
+	{
+		$CONF['ItemKey'] = 'item';
+	}
+	
+	if ( !isset($CONF['ArchiveKey']) || $CONF['ArchiveKey'] == '' )
+	{
+		$CONF['ArchiveKey'] = 'archive';
+	}
+	
+	if ( !isset($CONF['ArchivesKey']) || $CONF['ArchivesKey'] == '' )
+	{
+		$CONF['ArchivesKey'] = 'archives';
+	}
+	
+	if ( !isset($CONF['MemberKey']) || $CONF['MemberKey'] == '' )
+	{
+		$CONF['MemberKey'] = 'member';
+	}
+	
+	if ( !isset($CONF['BlogKey']) || $CONF['BlogKey'] == '' )
+	{
+		$CONF['BlogKey'] = 'blog';
+	}
+	
+	if ( !isset($CONF['CategoryKey']) || $CONF['CategoryKey'] == '' )
+	{
+		$CONF['CategoryKey'] = 'category';
+	}
+	
+	if ( !isset($CONF['SpecialskinKey']) || $CONF['SpecialskinKey'] == '' )
+	{
+		$CONF['SpecialskinKey'] = 'special';
+	}
+	
+	$parsed = false;
+	$manager->notify(
+		'ParseURL',
+		array(
+			/* e.g. item, blog, ... */
+			'type' => basename(serverVar('SCRIPT_NAME') ),
+			'info' => $virtualpath,
+			'complete' => &$parsed
+		)
+	);
+	
+	if ( !$parsed )
+	{
+		/* default implementation */
+		$data = i18n::explode("/", $virtualpath );
+		for ( $i = 0; $i < sizeof($data); $i++ )
+		{
+			switch ( $data[$i] )
+			{
+				/* item/1 (blogid) */
+				case $CONF['ItemKey']:
+					$i++;
+					
+					if ( $i < sizeof($data) )
+					{
+						$itemid = intval($data[$i]);
+					}
+					break;
+				
+				/* archives/1 (blogid) */
+				case $CONF['ArchivesKey']:
+						$i++;
+						if ( $i < sizeof($data) )
+						{
+							$archivelist = intval($data[$i]);
+						}
+						break;
+					
+				/* two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid) */
+				case $CONF['ArchiveKey']:
+					if ( (($i + 1) < sizeof($data) ) && (!strstr($data[$i + 1], '-') ) )
+					{
+						$blogid = intval($data[++$i]);
+					}
+					$i++;
+					if ( $i < sizeof($data) ) 
+					{
+						$archive = $data[$i];
+					}
+					break;
+					
+				/* blogid/1 */
+				case 'blogid':
+				/* blog/1 */
+				case $CONF['BlogKey']:
+					$i++;
+					if ( $i < sizeof($data) )
+					{
+						$blogid = intval($data[$i]);
+					}
+					break;
+				
+				/* category/1 (catid) */
+				case $CONF['CategoryKey']:
+				case 'catid':
+					$i++;
+					if ( $i < sizeof($data) )
+					{
+						$catid = intval($data[$i]);
+					}
+					break;
+				
+				case $CONF['MemberKey']:
+					$i++;
+					if ( $i < sizeof($data) )
+					{
+						$memberid = intval($data[$i]);
+					}
+					break;
+				
+				case $CONF['SpecialskinKey']:
+					$i++;
+					if ( $i < sizeof($data) )
+					{
+						$special = $data[$i];
+						$_REQUEST['special'] = $special;
+					}
+					break;
+				
+				default:
+					// skip...
+			}
+		}
+	}
 }
-/* 	PostParseURL is a place to cleanup any of the path-related global variables before the selector function is run.
-	It has 2 values in the data in case the original virtualpath is needed, but most the use will be in tweaking
-	global variables to clean up (scrub out catid or add catid) or to set someother global variable based on
-	the values of something like catid or itemid
-	New in 3.60
-*/
+/*
+ * PostParseURL is a place to cleanup any of the path-related global variables before the selector function is run.
+ * It has 2 values in the data in case the original virtualpath is needed, but most the use will be in tweaking
+ * global variables to clean up (scrub out catid or add catid) or to set someother global variable based on
+ * the values of something like catid or itemid
+ * New in 3.60
+ */
 $manager->notify(
 	'PostParseURL',
 	array(
-		'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
+		/* e.g. item, blog, ... */
+		'type' => basename(serverVar('SCRIPT_NAME') ),
 		'info' => $virtualpath
 	)
 );
 
+/*
+ * NOTE: Here is the end of initialization
+ */
 
 	/**
 	 * This function includes or requires the specified library file
