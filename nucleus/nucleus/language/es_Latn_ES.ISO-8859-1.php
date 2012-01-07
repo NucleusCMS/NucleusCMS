@@ -417,8 +417,6 @@ define('_BACKTOMANAGE',				'Volver a la gestión de Nucleus');
 
 
 
-// charset to use 
-define('_CHARSET',					'iso-8859-1');
 
 // global stuff
 define('_LOGOUT',					'Salir');

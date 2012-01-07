@@ -423,8 +423,6 @@ define('_BACKTOMANAGE',				'Terug naar Nucleus beheer');
 // END introduced after v1.1 END
 
 
-// charset to use (iso-8859-15 = latin9)
-define('_CHARSET',					'iso-8859-15');
 
 // global stuff
 define('_LOGOUT',					'Uitloggen');

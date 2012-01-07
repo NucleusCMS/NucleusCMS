@@ -378,8 +378,6 @@ define('_BACKTOMANAGE',				'Nucleus 관리화면으로 돌아가기');
 
 
 
-// charset to use 
-define('_CHARSET',					'utf-8');
 
 // global stuff
 define('_LOGOUT',					'로그아웃');

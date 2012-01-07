@@ -301,8 +301,6 @@ define('_BACKTOMANAGE',                'Atpakaï uz Nucleus menedþmentu');
 
 
 
-// charset to use
-define('_CHARSET',                    'windows-1257');
 
 // global stuff
 define('_LOGOUT',                    'Atslçgties');

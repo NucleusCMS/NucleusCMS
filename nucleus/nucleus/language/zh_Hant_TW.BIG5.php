@@ -289,8 +289,6 @@ define('_BACKTOMANAGE',				'返回系統管理');
 
 
 
-// charset to use 
-define('_CHARSET',					'big5');
 
 // global stuff
 define('_LOGOUT',					'登出');

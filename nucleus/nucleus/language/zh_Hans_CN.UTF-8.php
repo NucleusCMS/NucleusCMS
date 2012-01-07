@@ -289,8 +289,6 @@ define('_BACKTOMANAGE',				'返回系统管理');
 
 
 
-// charset to use 
-define('_CHARSET',					'gb2312');
 
 // global stuff
 define('_LOGOUT',					'注销');

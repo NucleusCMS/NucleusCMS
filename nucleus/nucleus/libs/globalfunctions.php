@@ -44,6 +44,10 @@ if ( !i18n::init('UTF-8', $DIR_LANG) )
 {
 	exit('Fail to initialize i18n class.');
 }
+/*
+ * FIXME: This is for compatibility, should be obsoleted near future.
+ */
+define('_CHARSET', i18n::get_current_charset());
 
 /*
     Indicates when Nucleus should display startup errors. Set to 1 if you want

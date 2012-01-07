@@ -411,8 +411,6 @@ define('_BACKTOMANAGE',				'Вернуться к управлению сайт�
 
 
 
-// charset to use
-define('_CHARSET',					'windows-1251');
 
 // global stuff
 define('_LOGOUT',					'Выход');

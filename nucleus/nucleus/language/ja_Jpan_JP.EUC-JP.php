@@ -812,8 +812,6 @@ define('_BACKTOMANAGE',						'Nucleusの管理に戻る');
 
 
 
-// charset to use
-define('_CHARSET',							'EUC-JP');
 
 // global stuff
 define('_LOGOUT',							'ログアウト');

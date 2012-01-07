@@ -408,8 +408,6 @@ define('_BACKTOMANAGE',				'Vissza a Nucleus menedzseléséhez');
 
 
 
-// charset to use 
-define('_CHARSET',					'iso-8859-2');
 
 // global stuff
 define('_LOGOUT',					'Kilépés');

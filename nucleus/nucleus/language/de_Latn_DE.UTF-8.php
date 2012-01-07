@@ -498,8 +498,6 @@ define('_BACKTOMANAGE',				'Zurü;ck zur Nucleus Verwaltung');
 
 // END introduced after v1.1 END
 
-// charset to use
-define('_CHARSET',					'iso-8859-1');
 
 // global stuff
 define('_LOGOUT',					'Abmelden');

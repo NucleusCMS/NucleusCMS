@@ -286,8 +286,6 @@ define('_BACKTOMANAGE',				'Volta para a Administração do Nucleus');
 
 // END introduced after v1.1 END
 
-// charset to use 
-define('_CHARSET',					'iso-8859-1');
 
 // global stuff
 define('_LOGOUT',					'Sair');

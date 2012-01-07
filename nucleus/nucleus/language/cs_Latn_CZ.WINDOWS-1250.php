@@ -289,8 +289,6 @@ define('_BACKTOMANAGE',				'Zpìt na správu Nucleusu');
 
 
 
-// charset to use 
-define('_CHARSET',					'windows-1250');
 
 // global stuff
 define('_LOGOUT',					'Odhlásit se');

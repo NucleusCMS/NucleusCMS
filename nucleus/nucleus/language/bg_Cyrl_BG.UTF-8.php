@@ -358,8 +358,6 @@ define('_BACKTOMANAGE',				'Юс№рђэю ъњь Nucleus ѓя№ртыхэшх
 
 
 
-// charset to use 
-define('_CHARSET',					'iso-8859-5');
 
 // global stuff
 define('_LOGOUT',					'Log Out');

@@ -289,8 +289,6 @@ define('_BACKTOMANAGE',				'Späť na správu Nucleusu');
 
 
 
-// charset to use 
-define('_CHARSET',					'ISO-8859-2');
 
 // global stuff
 define('_LOGOUT',					'Odhlásiť sa');

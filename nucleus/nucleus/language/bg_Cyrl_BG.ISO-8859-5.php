@@ -358,8 +358,6 @@ define('_BACKTOMANAGE',				'Обратно към Nucleus управление');
 
 
 
-// charset to use 
-define('_CHARSET',					'iso-8859-5');
 
 // global stuff
 define('_LOGOUT',					'Log Out');

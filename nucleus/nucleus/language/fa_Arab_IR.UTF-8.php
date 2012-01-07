@@ -289,8 +289,6 @@ define('_BACKTOMANAGE',				'Nucleusبازگشت به بخش مديريت');
 
 
 
-// charset to use 
-define('_CHARSET',					'utf-8');
 
 // global stuff
 define('_LOGOUT',					'خروج');
