@@ -76,6 +76,7 @@ if ( !isset($CONF['alertOnHeadersSent'])
 }
 $CONF['alertOnSecurityRisk'] = 1;
 /*
+ * NOTE: this should be removed when releasing 4.0
 $CONF['ItemURL']           = $CONF['Self'];
 $CONF['ArchiveURL']          = $CONF['Self'];
 $CONF['ArchiveListURL']      = $CONF['Self'];
@@ -86,10 +87,9 @@ $CONF['CategoryURL']         = $CONF['Self'];
 */
 
 /*
+ * NOTE: this should be removed when releasing 4.0
  * switch URLMode back to normal when $CONF['Self'] ends in .php
  * this avoids urls like index.php/item/13/index.php/item/15
- */
-/*
 if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php'))) {
     $CONF['URLMode'] = 'normal';
 }*/
@@ -224,14 +224,16 @@ register_shutdown_function('sql_disconnect');
 getConfig();
 
 /*
- * New rule for locale instead of language
- * TODO: this lines should be obsoleted near future.
+ * Nucleus CMS 4.0 uses 'locale' instead of 'language'
+ * TODO: these lines should be obsoleted near future.
  */
 if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Language'])
-  && ($CONF['Language'] = i18n::convert_old_language_file_name_to_locale($CONF['Language'])) === FALSE )
+  && ($CONF['Language'] = i18n::convert_old_language_file_name_to_locale($CONF['Language'])) === FALSE
+  && !in_array($CONF['Language'], i18n::get_locale_list()) )
 {
 	$CONF['Language'] = 'en_Latn_US';
 }
+$locale = $CONF['Language'];
 
 /* Properly set $CONF['Self'] and others if it's not set...
  * usually when we are access from admin menu
@@ -299,7 +301,10 @@ switch( $CONF['secureCookieKey'] )
 		$CONF['secureCookieKeyIP'] = '';
 }
 
-/* login/logout when required or renew cookies */
+/* 
+ * login/logout when required or renew cookies
+ *  and decide locale on this session before plugin event generates
+ */
 if ( $action == 'login' )
 {
 	/* Form Authentication */
@@ -328,6 +333,14 @@ if ( $action == 'login' )
 			$action = $nextaction;
 		}
 		
+		/* user's locale is used if set, else system default is used. */
+		if ( in_array($member->getLocale(), i18n::get_locale_list()) )
+		{
+			$locale = $member->getLocale();
+		}
+		include($DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php');
+		i18n::set_current_locale($locale);
+		
 		$manager->notify('LoginSuccess', array('member' => &$member, 'username' => $login) );
 		$errormessage = '';
 		ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
@@ -345,13 +358,17 @@ if ( $action == 'login' )
 			$errormessage = 'Login failed for ' . $login;
 		} 
 		
+		/* system default locale is used */
+		include($DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php');
+		i18n::set_current_locale($locale);
+		
 		$manager->notify('LoginFailed', array('username' => $login) );
 		ACTIONLOG::add(INFO, $errormessage);
 	}
-
 }
 
 /*
+ * TODO: this should be removed when releasing 4.0
 Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
 elseif ( serverVar('PHP_AUTH_USER') && serverVar('PHP_AUTH_PW') )
 {
@@ -385,6 +402,11 @@ elseif ( ($action == 'logout')
 	/* remove cookies on logout */
 	setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
 	setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+	
+	/* system default locale is used */
+	include($DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php');
+	i18n::set_current_locale($locale);
+		
 	$manager->notify('Logout', array('username' => cookieVar($CONF['CookiePrefix'] . 'user') ) );
 }
 elseif ( cookieVar($CONF['CookiePrefix'] . 'user') )
@@ -411,34 +433,24 @@ elseif ( cookieVar($CONF['CookiePrefix'] . 'user') )
 		$member->setCookieKey(cookieVar($CONF['CookiePrefix'] . 'loginkey'));
 		$member->setCookies();
 	}
+	
+	/* user's locale is used if set, else system default is used. */
+	if ( in_array($member->getLocale(), i18n::get_locale_list()) )
+	{
+		$locale = $member->getLocale();
+	}
+	include($DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php');
+	i18n::set_current_locale($locale);
+}
+else
+{
+	/* system default locale is used */
+	include($DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php');
+	i18n::set_current_locale($locale);
 }
 
 /* login completed */
 $manager->notify('PostAuthentication', array('loggedIn' => $member->isLoggedIn() ) );
-
-/*
- * Decide which locale is used in this session.
- * NOTE: For lower compatibility, 'en_Latn_us' is used if there is no equivalent value in i18n object.
- * TODO: Use $locale instead of $language
- * TODO: it's ok to set date_timezone?
- */
-$locale ='';
-
-if ($member && $member->isLoggedIn() )
-{
-	$locale = $member->getLocale();
-}
-if ( !$locale )
-{
-	$locale = $CONF['Language'];
-}
-if ( !in_array($locale, i18n::get_locale_list()) )
-{
-	$locale = 'en_Latn_US';
-}
-
-include($DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php');
-i18n::set_current_locale($locale);
 
 /*
  * Release ticket for plugin
