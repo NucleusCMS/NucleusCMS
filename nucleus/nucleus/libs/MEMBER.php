@@ -633,7 +633,7 @@ class MEMBER {
 	 */
 	public function setLocale($locale)
 	{
-		if ( !in_array($locale, i18n::get_locale_list())
+		if ( !!preg_match('#^(.+)_(.+)_(.+)$#', $locale)
 		 && ($locale = i18n::convert_old_language_file_name_to_locale($locale)) === FALSE )
 		{
 			$locale = '';

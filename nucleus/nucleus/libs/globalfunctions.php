@@ -224,14 +224,14 @@ register_shutdown_function('sql_disconnect');
 getConfig();
 
 /*
- * Nucleus CMS 4.0 uses 'locale' instead of 'language'
- * TODO: these lines should be obsoleted near future.
+ * Nucleus CMS 4.0 uses 'locale' instead of 'language' to decide which translation file used
+ * Here simply convert old name to new name without checking translation file existance
+ * FIXME: This is for compatibility, should be obsoleted near future.
  */
 if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Language'])
-  && ($CONF['Language'] = i18n::convert_old_language_file_name_to_locale($CONF['Language'])) === FALSE
-  || !in_array($CONF['Language'], i18n::get_locale_list()) )
+  && ($CONF['Language'] = i18n::convert_old_language_file_name_to_locale($CONF['Language'])) === FALSE )
 {
-	$CONF['Language'] = 'en_Latn_US';
+	$CONF['Language'] = '';
 }
 $locale = $CONF['Language'];
 
@@ -333,12 +333,8 @@ if ( $action == 'login' )
 			$action = $nextaction;
 		}
 		
-		/* user's locale is used if set, else system default is used. */
-		if ( in_array($member->getLocale(), i18n::get_locale_list()) )
-		{
-			$locale = $member->getLocale();
-		}
-		include($DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php');
+		/* NOTE: include translation file and set locale */
+		$locale = include_translation($locale, $member);
 		i18n::set_current_locale($locale);
 		
 		$manager->notify('LoginSuccess', array('member' => &$member, 'username' => $login) );
@@ -358,8 +354,8 @@ if ( $action == 'login' )
 			$errormessage = 'Login failed for ' . $login;
 		} 
 		
-		/* system default locale is used */
-		include($DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php');
+		/* NOTE: include translation file and set locale */
+		$locale = include_translation($locale);
 		i18n::set_current_locale($locale);
 		
 		$manager->notify('LoginFailed', array('username' => $login) );
@@ -403,10 +399,10 @@ elseif ( ($action == 'logout')
 	setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
 	setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
 	
-	/* system default locale is used */
-	include($DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php');
+	/* NOTE: include translation file and set locale */
+	$locale = include_translation($locale);
 	i18n::set_current_locale($locale);
-		
+	
 	$manager->notify('Logout', array('username' => cookieVar($CONF['CookiePrefix'] . 'user') ) );
 }
 elseif ( cookieVar($CONF['CookiePrefix'] . 'user') )
@@ -434,18 +430,14 @@ elseif ( cookieVar($CONF['CookiePrefix'] . 'user') )
 		$member->setCookies();
 	}
 	
-	/* user's locale is used if set, else system default is used. */
-	if ( in_array($member->getLocale(), i18n::get_locale_list()) )
-	{
-		$locale = $member->getLocale();
-	}
-	include($DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php');
+	/* NOTE: include translation file and set locale */
+	$locale = include_translation($locale, $member);
 	i18n::set_current_locale($locale);
 }
 else
 {
-	/* system default locale is used */
-	include($DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php');
+	/* NOTE: include translation file and set locale */
+	$locale = include_translation($locale);
 	i18n::set_current_locale($locale);
 }
 
@@ -745,6 +737,35 @@ $manager->notify(
 		}
 	}
 	
+	/**
+	 * This function decide which locale is used and include translation
+	 * @param	string	$locale	locale name referring to 'language tags' defined in RFC 5646
+	 * @param mixed	$member	member object
+	 */
+	function include_translation($locale, $member = FALSE)
+	{
+		global $CONF, $DIR_LANG;
+		
+		/* 
+		 * 1. user's locale is used if set
+		 * 2. system default is used if it is not empty
+		 * 3. else 'en_Latn_US.ISO-8859-1.php' is included
+		 *     because this translation file is expected to include only 7bit ASCII characters
+		 *      which common in whole character coding scheme
+		 */
+		if ( $member && $member->getLocale() )
+		{
+			$locale = $member->getLocale();
+		}
+		$translation_file = $DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php';
+		if ( !file_exists($translation_file) )
+		{
+			$CONF['Language'] = 'en_Latn_US';
+			$translation_file = $DIR_LANG . 'en_Latn_US.ISO-8859-1.php';
+		}
+		include($translation_file);
+		return $locale;
+	}
 	
 	/**
 	 * This function returns the integer value of $_POST for the variable $name
@@ -1706,15 +1727,8 @@ function includephp($filename) {
  **/
 function checkLanguage($lang)
 {
-	if ( !in_array($lang, i18n::get_locale_list()) )
-	{
-		if ( ($locale = i18n::convert_old_language_file_name_to_locale($lang) === FALSE) || !in_array($locale, i18n::get_locale_list()) )
-		{
-			return FALSE;
-		}
-	}
-	
-	return TRUE;
+	return ( preg_match('#^(.+)_(.+)_(.+)$#', $lang)
+	  || i18n::convert_old_language_file_name_to_locale($lang) );
 }
 
 /**

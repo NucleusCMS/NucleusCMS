@@ -75,7 +75,13 @@ class i18n {
 		return TRUE;
 	}
 	
-	static public function get_locale_list()
+	/**
+	 * i18n::get_available_locale_list
+	 * return available locale list with current charset
+	 * @param	void
+	 * @return	array	available locale list
+	 */
+	static public function get_available_locale_list()
 	{
 		return self::$locale_list;
 	}
@@ -100,11 +106,14 @@ class i18n {
 	 */
 	static public function set_current_locale($locale)
 	{
-		preg_match('#^(.+)_(.+)_(.+)$#', $locale, $match);
-		self::$language = $match[1];
-		self::$script   = $match[2];
-		self::$region   = $match[3];
-		return TRUE;
+		if ( preg_match('#^(.+)_(.+)_(.+)$#', $locale, $match) )
+		{
+			self::$language = $match[1];
+			self::$script   = $match[2];
+			self::$region   = $match[3];
+			return TRUE;
+		}
+		return FALSE;
 	}
 	
 	/*

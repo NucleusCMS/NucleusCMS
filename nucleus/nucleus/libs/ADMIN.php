@@ -1875,7 +1875,8 @@ class ADMIN {
 			
 				<select name="deflang" tabindex="85">
 				<?php
-				if ( !$mem->getLocale() )
+				$locales = i18n::get_available_locale_list();
+				if ( !$mem->getLocale() || !in_array($mem->getLocale(), $locales) )
 				{
 					echo "<option value=\"\" selected=\"selected\">" . i18n::hsc(_MEMBERS_USESITELANG) . "</option>\n";
 				}
@@ -1884,7 +1885,6 @@ class ADMIN {
 					echo "<option value=\"\">" . i18n::hsc(_MEMBERS_USESITELANG) . "</option>\n";
 				}
 				
-				$locales = i18n::get_locale_list();
 				foreach( $locales as $locale )
 				{
 					if( $locale == $mem->getLocale() )
@@ -1960,7 +1960,7 @@ class ADMIN {
         $admin          = postVar('admin');
         $canlogin       = postVar('canlogin');
         $notes          = strip_tags(postVar('notes'));
-        $deflang        = postVar('deflang');
+        $locale        = postVar('deflang');
 
         $mem = MEMBER::createFromID($memberid);
 
@@ -1986,16 +1986,17 @@ class ADMIN {
 					$this->error($pwderror);
 				}
 			}
-        }
-
-        if (!isValidMailAddress($email))
-            $this->error(_ERROR_BADMAILADDRESS);
-
-
-        if (!$realname)
-            $this->error(_ERROR_REALNAMEMISSING);
-
-        if (($deflang != '') && (!checkLanguage($deflang)))
+		}
+		
+		if ( !isValidMailAddress($email) )
+		{
+			$this->error(_ERROR_BADMAILADDRESS);
+		}
+		if ( !$realname )
+		{
+			$this->error(_ERROR_REALNAMEMISSING);
+		}
+        if ( ($locale != '') && (!in_array($locale, i18n::get_available_locale_list())) )
             $this->error(_ERROR_NOSUCHLANGUAGE);
 
         // check if there will remain at least one site member with both the logon and admin rights
@@ -2021,7 +2022,7 @@ class ADMIN {
         $mem->setEmail($email);
         $mem->setURL($url);
         $mem->setNotes($notes);
-        $mem->setLocale($deflang);
+        $mem->setLocale($locale);
 
 
         // only allow super-admins to make changes to the admin status
@@ -4789,10 +4790,23 @@ selector();
             <td>
                 <select name="Language" tabindex="10050">
 			<?php
-				$locales = i18n::get_locale_list();
+				$locales = i18n::get_available_locale_list();
+				if ( !i18n::get_current_locale() || !in_array(i18n::get_current_locale(), $locales) )
+				{
+					echo "<option value=\"\" selected=\"selected\">en_Latn_US</option>\n";
+				}
+				else
+				{
+					echo "<option value=\"\">en_Latn_US</option>\n";
+				}
+				
 				foreach ( $locales as $locale )
 				{
-					if( $locale == i18n::get_current_locale() )
+					if ( $locale == 'en_Latn_US' )
+					{
+						continue;
+					}
+					if ( $locale == i18n::get_current_locale() )
 					{
 						echo "<option value=\"{$locale}\" selected=\"selected\">{$locale}</option>\n";
 					}
