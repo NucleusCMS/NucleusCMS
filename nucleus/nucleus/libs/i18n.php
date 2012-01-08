@@ -161,15 +161,30 @@ class i18n {
 	}
 	
 	/*
+	 * i18n::hen
+	 * htmlentities wrapper
+	 * @param	string	$string	target string
+	 * @param	string	$quotation	quotation mode. please refer to the argument of PHP built-in htmlentities
+	 * @return	string	escaped string
+	 */
+	public static function hen($string, $quotation=ENT_QUOTES)
+	{
+		$string = html_entity_decode($string, $quotation, self::$charset);
+		return (string) htmlentities($string, $quotation, self::$charset);
+	}
+	
+	/*
 	 * i18n::hsc
 	 * htmlspecialchars wrapper
 	 * @param	string	$string	target string
-	 * @param	string	$quotation	quotation mode
+	 * @param	string	$quotation	quotation mode. please refer to the argument of PHP built-in htmlspecialchars
 	 * @return	string	escaped string
 	 */
+	
 	public static function hsc($string, $quotation=ENT_QUOTES)
 	{
-		return (string) htmlspecialchars($string, $quotation, self::$charset);
+		$string = htmlspecialchars_decode($string, $quotation, self::$charset);
+		return (string)  htmlspecialchars($string, $quotation, self::$charset);
 	}
 	
 	/*

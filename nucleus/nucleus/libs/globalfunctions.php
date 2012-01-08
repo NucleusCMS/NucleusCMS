@@ -2371,18 +2371,15 @@ function _links_list() {
 
 // START: functions from the end of file ADMIN.php
 /**
- * @todo document this
+ * 
+ * replace html entities for plugin description, but available for the other strings
+ * NOTE: we can use i18n::hen() or i18n::hsc() alternatively and this is deprecated.
+ * @param string $data	target string
+ * @return	 string
  */
-function encode_desc(&$data)
+function encode_desc($data)
 {
-    $to_entities = get_html_translation_table(HTML_ENTITIES);
-
-    $from_entities = array_flip($to_entities);
-
-    $data = strtr($data,$from_entities);
-    $data = strtr($data,$to_entities);
-
-    return $data;
+	return i18n::hen($data);
 }
 
 /*
