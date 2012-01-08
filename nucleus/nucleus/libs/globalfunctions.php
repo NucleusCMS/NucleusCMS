@@ -229,7 +229,7 @@ getConfig();
  */
 if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Language'])
   && ($CONF['Language'] = i18n::convert_old_language_file_name_to_locale($CONF['Language'])) === FALSE
-  && !in_array($CONF['Language'], i18n::get_locale_list()) )
+  || !in_array($CONF['Language'], i18n::get_locale_list()) )
 {
 	$CONF['Language'] = 'en_Latn_US';
 }
