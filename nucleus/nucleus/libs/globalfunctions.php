@@ -890,12 +890,12 @@ $manager->notify(
 	 * It also determines if the browser can accept application/xhtml+xml and sends it only to those that can.
 	 * @param string $content_type
 	 * @param string $page_type
-	 * @param string $charset
+	 * @param string $charset Deprecated. This has no meaning.
 	 */
 	function sendContentType($content_type, $page_type = '', $charset = _CHARSET)
 	{
 		global $manager, $CONF;
-
+		
 		if ( !headers_sent() )
 		{
 			// if content type is application/xhtml+xml, only send it to browsers

@@ -229,7 +229,7 @@ class SKIN {
 		$manager->notify('InitSkinParse',array('skin' => &$this, 'type' => $type));
 		
 		// set output type
-		sendContentType($this->getContentType(), 'skin', _CHARSET);
+		sendContentType($this->getContentType(), 'skin');
 		
 		// set skin name as global var (so plugins can access it)
 		global $currentSkinName;
