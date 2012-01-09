@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * i18n class
  * written by Takashi Sakamoto as of Dec.24, 2011
  * This is wrapper functions of iconv and mbstring
@@ -17,7 +17,7 @@ class i18n {
 	private static $locale_list = array();
 	private static $timezone = 'UTC';
 	
-	/*
+	/**
 	 * i18n::init
 	 * Initializing i18n class
 	 * @param	string	$charset	character set
@@ -86,7 +86,7 @@ class i18n {
 		return self::$locale_list;
 	}
 	
-	/*
+	/**
 	 * i18n::get_current_charset
 	 * return current charset
 	 * @param	void
@@ -97,7 +97,7 @@ class i18n {
 		return self::$charset;
 	}
 	
-	/*
+	/**
 	 * i18n::set_locale
 	 * Set current locale
 	 * NOTE: naming rule is "$language_$script_$region.$charset.php".
@@ -116,7 +116,7 @@ class i18n {
 		return FALSE;
 	}
 	
-	/*
+	/**
 	 * i18n::get_locale
 	 * Get current locale
 	 * @param	void
@@ -128,7 +128,7 @@ class i18n {
 		return implode('_', $elements);
 	}
 	
-	/*
+	/**
 	 * i18n::confirm_default_date_timezone
 	 * to avoid E_NOTICE or E_WARNING generated when every calling to a date/time function.
 	 * Some private servers are lack of its timezone setting
@@ -149,7 +149,7 @@ class i18n {
 		return;
 	}
 	
-	/*
+	/**
 	 * i18n::get_current_date_timezone()
 	 * get current timezone
 	 * @param	void
@@ -160,7 +160,7 @@ class i18n {
 		return self::$timezone;
 	}
 	
-	/*
+	/**
 	 * i18n::hen
 	 * htmlentities wrapper
 	 * @param	string	$string	target string
@@ -173,7 +173,7 @@ class i18n {
 		return (string) htmlentities($string, $quotation, self::$charset);
 	}
 	
-	/*
+	/**
 	 * i18n::hsc
 	 * htmlspecialchars wrapper
 	 * @param	string	$string	target string
@@ -187,7 +187,7 @@ class i18n {
 		return (string)  htmlspecialchars($string, $quotation, self::$charset);
 	}
 	
-	/*
+	/**
 	 * i18n::convert
 	 * character set converter
 	 * @param	string	$string	target string binary
@@ -213,7 +213,7 @@ class i18n {
 		return (string) $string;
 	}
 	
-	/*
+	/**
 	 * i18n::strlen
 	 * strlen wrapper
 	 * @param	string	$string	target string
@@ -237,7 +237,7 @@ class i18n {
 		return (integer) $length;
 	}
 	
-	/*
+	/**
 	 * i18n::strpos
 	 * strpos wrapper
 	 * @param	string	$haystack	string to search
@@ -268,7 +268,7 @@ class i18n {
 		return $position;
 	}
 	
-	/*
+	/**
 	 * i18n::strrpos
 	 * strrpos wrapper
 	 * @param	string	$haystack	string to search
@@ -298,7 +298,7 @@ class i18n {
 		return $position;
 	}
 	
-	/*
+	/**
 	 * i18n::substr
 	 * substr wrapper
 	 * @param	string	$string	string to be cut
@@ -324,7 +324,7 @@ class i18n {
 		return (string) $return;
 	}
 	
-	/*
+	/**
 	 * i18n::explode
 	 * explode function based on multibyte processing with non-pcre regular expressions
 	 * 
@@ -360,7 +360,7 @@ class i18n {
 		return (array) $array;
 	}
 	
-	/*
+	/**
 	 * i18n::strftime
 	 * strftime function based on multibyte processing
 	 * @param	string	$format	format with singlebyte or multibyte
@@ -407,7 +407,7 @@ class i18n {
 		return (string) $formatted;
 	}
 	
-	/*
+	/**
 	 * i18n::mail
 	 * Send mails with headers including 7bit-encoded multibyte string
 	 * @param	string	$to		receivers including singlebyte and multibyte strings, based on RFC 5322
@@ -442,7 +442,7 @@ class i18n {
 		return mail($to, $subject, $message, "{$from}\n{$headers}");
 	}
 	
-	/*
+	/**
 	 * i18n::mailbox_list_encoder
 	 * Encode multi byte strings included in mailbox.
 	 * The format of mailbox is based on RFC 5322, which obsoletes RFC 2822
@@ -482,7 +482,7 @@ class i18n {
 		return implode(',', $encoded_mailboxes);
 	}
 	
-	/*
+	/**
 	 * i18n::seven_bit_characters_encoder
 	 * Encoder into 7bit ASCII expression for Non-ASCII Text based on RFC 2047.
 	 * 
@@ -574,7 +574,7 @@ class i18n {
 		return implode('', $encoded_words);
 	}
 	
-	/*
+	/**
 	 * B encoder according to RFC 2047.
 	 * The "B" encoding is identical to the "BASE64" encoding defined by RFC 4648.
 	 * 
@@ -600,7 +600,7 @@ class i18n {
 		return base64_encode($target);
 	}
 	
-	/*
+	/**
 	 * Q encoder according to RFC 2047.
 	 * The "Q" encoding is similar to "Quoted-Printable" content-transfer-encoding defined in RFC 2045,
 	 *  but the "Q" encoding and the "Quoted-Printable" are different a bit.
@@ -661,7 +661,7 @@ class i18n {
 		return $string;
 	}
 	
-	/*
+	/**
 	* i18n::convert_locale_to_old_language_file_name()
 	* NOTE: this should be obsoleted near future.
 	* @param	string	$target_locale	locale name as language_script_region
@@ -688,7 +688,7 @@ class i18n {
 		return $target_language;
 	}
 	
-	/*
+	/**
 	 * i18n::convert_old_language_file_name_to_locale()
 	 * NOTE: this should be obsoleted near future.
 	 * @param	string	$target_language	old language file name
@@ -715,7 +715,7 @@ class i18n {
 		return $target_locale;
 	}
 	
-	/*
+	/**
 	 * i18n::$lang_refs
 	 * reference table to convert old and new way to name language files.
 	 * NOTE: this should be obsoleted as soon as possible.
