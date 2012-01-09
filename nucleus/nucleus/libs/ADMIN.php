@@ -3952,7 +3952,7 @@ selector();
 
         foreach ($pluginfields as $pfkey=>$pfvalue) {
             echo "</tr><tr>\n";
-            echo '<th colspan="2">'.htmlentities($pfkey)."</th>\n";
+            echo '<th colspan="2">' . i18n::hen($pfkey) . "</th>\n";
             foreach ($pfvalue as $pffield=>$pfdesc) {
                 $this->_templateEditRow($template, $pfdesc, $pffield, '',++$tab,0);
             }
