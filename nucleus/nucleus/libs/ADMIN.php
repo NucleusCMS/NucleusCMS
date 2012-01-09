@@ -5314,7 +5314,7 @@ selector();
         <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
         <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
         <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
+            <meta http-equiv="Content-Type" content="text/html; charset=<?php echo i18n::get_current_charset() ?>" />
             <title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>
             <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
             <link rel="stylesheet" title="Nucleus Admin Default" type="text/css"

@@ -73,7 +73,7 @@ include_libs('xmlrpc.inc.php',false,false);
 include_libs('xmlrpcs.inc.php',false,false);
 
 /* define xmlrpc settings */
-$xmlrpc_internalencoding = _CHARSET;
+$xmlrpc_internalencoding = i18n::get_current_charset();
 $xmlrpc_defencoding = 'UTF-8';
 
 /* definition of available methods */

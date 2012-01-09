@@ -650,7 +650,7 @@ class ACTIONS extends BaseActions {
 	 * Parse skinvar charset
 	 */
 	function parse_charset() {
-		echo _CHARSET;
+		echo i18n::get_current_charset();
 	}
 	
 	/**

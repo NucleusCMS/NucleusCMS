@@ -54,7 +54,7 @@ if (!$CONF['DisableSite']) {
 	// output empty RSS file...
 	// (because site is disabled)
 
-	echo '<' . '?xml version="1.0" encoding="' . _CHARSET . '"?' . '>';
+	echo '<' . '?xml version="1.0" encoding="' . i18n::get_current_charset() . '"?' . '>';
 
 	?>
 	<rss version="2.0">

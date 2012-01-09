@@ -2302,18 +2302,20 @@ function stringStripTags ($string) {
  * Make a string containing HTML safe for use in a HTML attribute
  * Tags are stripped and entities are normalized
  */
-function stringToAttribute ($string) {
-    $string = stringStripTags($string);
-    $string = entity::named_to_numeric($string);
-    $string = entity::normalize_numeric($string);
-
-    if (strtoupper(_CHARSET) == 'UTF-8') {
-        $string = entity::numeric_to_utf8($string);
-    }
-
-    $string = entity::specialchars($string, 'html');
-    $string = entity::numeric_to_named($string);
-    return $string;
+function stringToAttribute ($string)
+{
+	$string = stringStripTags($string);
+	$string = entity::named_to_numeric($string);
+	$string = entity::normalize_numeric($string);
+	
+	if ( i18n::get_current_charset() == 'UTF-8' )
+	{
+		$string = entity::numeric_to_utf8($string);
+	}
+	
+	$string = entity::specialchars($string, 'html');
+	$string = entity::numeric_to_named($string);
+	return $string;
 }
 
 /**
@@ -2321,17 +2323,19 @@ function stringToAttribute ($string) {
  * Tags are stripped, entities are normalized and named entities are
  * converted to numeric entities.
  */
-function stringToXML ($string) {
-    $string = stringStripTags($string);
-    $string = entity::named_to_numeric($string);
-    $string = entity::normalize_numeric($string);
-
-    if (strtoupper(_CHARSET) == 'UTF-8') {
-        $string = entity::numeric_to_utf8($string);
-    }
-
-    $string = entity::specialchars($string, 'xml');
-    return $string;
+function stringToXML ($string)
+{
+	$string = stringStripTags($string);
+	$string = entity::named_to_numeric($string);
+	$string = entity::normalize_numeric($string);
+	
+	if ( i18n::get_current_charset() == 'UTF-8' )
+	{
+		$string = entity::numeric_to_utf8($string);
+	}
+	
+	$string = entity::specialchars($string, 'xml');
+	return $string;
 }
 
 // START: functions from the end of file BLOG.php
