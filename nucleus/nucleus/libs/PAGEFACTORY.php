@@ -384,7 +384,7 @@ class PAGEFACTORY extends BaseActions
 	function parse_contents($which)
 	{
 		if (!isset($this->variables[$which])) $this->variables[$which] = '';
-		echo i18n::hsc($this->variables[$which],ENT_QUOTES);
+		echo i18n::hsc($this->variables[$which]);
 	}
 
 

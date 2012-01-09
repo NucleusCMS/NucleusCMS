@@ -77,7 +77,7 @@ class PluginAdmin {
 			//echo "\n<!--TicketForPlugin skipped-->\n";
 			return;
 		}
-		$ticket=i18n::hsc($ticket,ENT_QUOTES);
+		$ticket=i18n::hsc($ticket);
  
 ?><script type="text/javascript">
 /*<![CDATA[*/

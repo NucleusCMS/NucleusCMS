@@ -389,7 +389,7 @@ class ITEMACTIONS extends BaseActions {
 	  */
 	function parse_syndicate_title($maxLength = 100) {
 		$syndicated = strip_tags($this->currentItem->title);
-		echo i18n::hsc(shorten($syndicated,$maxLength,'...'),ENT_QUOTES);
+		echo i18n::hsc(shorten($syndicated,$maxLength,'...'));
 	}
 
 	/**
@@ -400,10 +400,10 @@ class ITEMACTIONS extends BaseActions {
 	function parse_syndicate_description($maxLength = 250, $addHighlight = 0) {
 		$syndicated = strip_tags($this->currentItem->body);
 		if ($addHighlight) {
-			$tmp_highlight = i18n::hsc(shorten($syndicated,$maxLength,'...'),ENT_QUOTES);
+			$tmp_highlight = i18n::hsc(shorten($syndicated,$maxLength,'...'));
 			echo $this->highlightAndParse($tmp_highlight);
 		} else {
-			echo i18n::hsc(shorten($syndicated,$maxLength,'...'),ENT_QUOTES);
+			echo i18n::hsc(shorten($syndicated,$maxLength,'...'));
 		}
 	}
 

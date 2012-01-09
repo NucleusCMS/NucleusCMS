@@ -5167,7 +5167,7 @@ selector();
                 if (is_bool($value)) {
                     $value = $value ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE;
                 } else {
-                    $value = i18n::hsc($value, ENT_QUOTES);
+                    $value = i18n::hsc($value);
                 }
                 echo "\t<tr>";
                 echo "\t\t" . '<td width="50%">' . $key . "</td>\n";
@@ -5561,7 +5561,7 @@ selector();
             <?php echo _BOOKMARKLET_BMARKTEXT ?><small><?php echo _BOOKMARKLET_BMARKTEST ?></small>
             <br />
             <br />
-            <?php echo '<a href="' . i18n::hsc($bm, ENT_QUOTES) . '">' . sprintf(_BOOKMARKLET_ANCHOR, i18n::hsc($blog->getName(), ENT_QUOTES)) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
+            <?php echo '<a href="' . i18n::hsc($bm) . '">' . sprintf(_BOOKMARKLET_ANCHOR, i18n::hsc($blog->getName())) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
         </p>
 
         <h3><?php echo _BOOKMARKLET_RIGHTCLICK ?></h3>
@@ -5672,7 +5672,7 @@ selector();
         $member->blogAdminRights($blogid) or $this->disallow();
 
         $blog =& $manager->getBlog($blogid);
-        $banBlogName =  i18n::hsc($blog->getName(), ENT_QUOTES);
+        $banBlogName =  i18n::hsc($blog->getName());
 
         $this->pagehead();
         ?>
@@ -5797,7 +5797,7 @@ selector();
         <div>
         <?php
         if ($ip) {
-            $iprangeVal = i18n::hsc($ip, ENT_QUOTES);
+            $iprangeVal = i18n::hsc($ip);
         ?>
             <input name="iprange" type="radio" value="<?php echo $iprangeVal ?>" checked="checked" id="ip_fixed" />
             <label for="ip_fixed"><?php echo $iprangeVal ?></label>
@@ -6208,7 +6208,7 @@ selector();
                 // uninstall plugin again...
                 $this->deleteOnePlugin($plugin->getID());
 
-                $this->error(sprintf(_ERROR_INSREQPLUGIN, i18n::hsc($pluginName, ENT_QUOTES)));
+                $this->error(sprintf(_ERROR_INSREQPLUGIN, i18n::hsc($pluginName)));
             }
         }
 
@@ -6457,7 +6457,7 @@ selector();
             $this->error(_ERROR_NOSUCHPLUGIN);
 
         $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
-        $pluginName = i18n::hsc(getPluginNameFromPid($pid), ENT_QUOTES);
+        $pluginName = i18n::hsc(getPluginNameFromPid($pid));
         $this->pagehead($extrahead);
 
         ?>
@@ -6588,7 +6588,7 @@ selector();
                 if (!defined('_PLUGIN_OPTIONS_TITLE')) {
                     define('_PLUGIN_OPTIONS_TITLE', 'Options for %s');
                 }
-                echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, i18n::hsc($aOption['pfile'], ENT_QUOTES)).'</th></tr>';
+                echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, i18n::hsc($aOption['pfile'])).'</th></tr>';
             }
 
             $meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
