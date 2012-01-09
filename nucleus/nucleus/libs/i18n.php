@@ -662,49 +662,67 @@ class i18n {
 	}
 	
 	/*
-	 * i18n::convert_locale_to_old_language_file_name()
-	 * NOTE: this should be obsoleted near future.
-	 * @param	string	$locale	locale name as language_script_region
-	 * @return	string	$language	old language file name
-	 */
+	* i18n::convert_locale_to_old_language_file_name()
+	* NOTE: this should be obsoleted near future.
+	* @param	string	$target_locale	locale name as language_script_region
+	* @return	string	old language file name
+	*/
 	static public function convert_locale_to_old_language_file_name($target_locale)
 	{
+		$target_language = '';
 		foreach ( self::$lang_refs as $language => $locale )
 		{
-			if ( $target_locale == $locale )
+			if ( preg_match('#-#', $language) )
 			{
-				return $language;
+				if ( $target_locale . '.' . self::$charset == $locale )
+				{
+					$target_language = $language;
+					break;
+				}
+			}
+			else if ( $target_locale == $locale )
+			{
+				$target_language = $language;
 			}
 		}
-		return FALSE;
+		return $target_language;
 	}
 	
 	/*
 	 * i18n::convert_old_language_file_name_to_locale()
 	 * NOTE: this should be obsoleted near future.
-	 * @param	string	$name		old language file name
-	 * @return	string	$language	locale name as language_script_region
+	 * @param	string	$target_language	old language file name
+	 * @return	string	locale name as language_script_region
 	 */
 	static public function convert_old_language_file_name_to_locale($target_language)
 	{
+		$target_locale = '';
 		foreach ( self::$lang_refs as $language => $locale )
 		{
 			if ( $target_language == $language )
 			{
-				return $locale;
+				if ( preg_match('#^(.+)\.(.+)$#', $locale, $match) )
+				{
+					$target_locale = $match[1];
+				}
+				else
+				{
+					$target_locale = $locale;
+				}
+				break;
 			}
 		}
-		return FALSE;
+		return $target_locale;
 	}
 	
 	/*
 	 * i18n::$lang_refs
-	 * reference table to convert old and new way to name language files
+	 * reference table to convert old and new way to name language files.
 	 * NOTE: this should be obsoleted as soon as possible.
 	 */
 	private static $lang_refs = array(
 		"english"		=>	"en_Latn_US",
-		"english-utf8"	=>	"en_Latn_US",
+		"english-utf8"	=>	"en_Latn_US.UTF-8",
 		"bulgarian"	=>	"bg_Cyrl_BG",
 		"finnish"		=>	"fi_Latn_FU",
 		"catalan"		=>	"ca_Latn_ES",
@@ -716,19 +734,19 @@ class i18n {
 		"traditional_chinese"	=>	"zh_Hant_TW",
 		"galego"		=>	"gl_Latn_ES",
 		"german"		=>	"de_Latn_DE",
-		"korean-utf"	=>	"ko_Kore_KR",
-		"korean-euc-kr"	=>	"ko_Kore_KR",
+		"korean-utf"	=>	"ko_Kore_KR.UTF-8",
+		"korean-euc-kr"	=>	"ko_Kore_KR.EUC-KR",
 		"slovak"		=>	"sk_Latn_SK",
 		"czech"		=>	"cs_Latn_CZ",
 		"hungarian"	=>	"hu_Latn_HU",
 		"latvian"		=>	"lv_Latn_LV",
 		"nederlands"	=>	"nl_Latn_NL",
-		"spanish"		=>	"es_Latn_ES",
 		"italiano"		=>	"it_Latn_IT",
 		"persian"		=>	"fa_Arab_IR",
-		"japanese-euc"	=>	"ja_Jpan_JP",
-		"japanese-utf8"	=>	"ja_Jpan_JP",
-		"spanish-utf8"	=>	"es_Latn_ES",
+		"spanish"		=>	"es_Latn_ES",
+		"spanish-utf8"	=>	"es_Latn_ES.UTF-8",
+		"japanese-euc"	=>	"ja_Jpan_JP.EUC-JP",
+		"japanese-utf8"	=>	"ja_Jpan_JP.UTF-8",
 		"portuguese_brazil"	=>	"pt_Latn_BR"
 	);
 }
