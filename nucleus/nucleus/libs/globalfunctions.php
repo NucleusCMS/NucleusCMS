@@ -744,7 +744,7 @@ $manager->notify(
 	 */
 	function include_translation($locale, $member = FALSE)
 	{
-		global $CONF, $DIR_LANG;
+		global $DIR_LANG;
 		
 		/* 
 		 * 1. user's locale is used if set
@@ -760,7 +760,7 @@ $manager->notify(
 		$translation_file = $DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php';
 		if ( !file_exists($translation_file) )
 		{
-			$CONF['Language'] = 'en_Latn_US';
+			$locale = 'en_Latn_US';
 			$translation_file = $DIR_LANG . 'en_Latn_US.ISO-8859-1.php';
 		}
 		include($translation_file);
