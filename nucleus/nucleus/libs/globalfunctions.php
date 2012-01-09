@@ -1831,7 +1831,7 @@ function passVar($key, $value) {
     }
 
     // other values: do stripslashes if needed
-    ?><input type="hidden" name="<?php echo htmlspecialchars($key)?>" value="<?php echo htmlspecialchars(undoMagic($value) )?>" /><?php
+    ?><input type="hidden" name="<?php echo i18n::hsc($key)?>" value="<?php echo i18n::hsc(undoMagic($value) )?>" /><?php
 }
 
 /*
@@ -2105,18 +2105,18 @@ function ticketForPlugin()
 			$qstring = '?' . $qstring;
 		}
 		
-		echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . htmlspecialchars($plugin_name) . "</span> ?</p>\n";
+		echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . i18n::hsc($plugin_name) . "</span> ?</p>\n";
 		
 		switch(strtoupper(serverVar('REQUEST_METHOD') ) )
 		{
 			case 'POST':
-				echo '<form method="POST" action="'.htmlspecialchars($uri.$qstring).'">';
+				echo '<form method="POST" action="'.i18n::hsc($uri.$qstring).'">';
 				$manager->addTicketHidden();
 				_addInputTags($post);
 				break;
 			
 			case 'GET':
-				echo '<form method="GET" action="'.htmlspecialchars($uri).'">';
+				echo '<form method="GET" action="'.i18n::hsc($uri).'">';
 				$manager->addTicketHidden();
 				_addInputTags($get);
 			
@@ -2144,8 +2144,8 @@ function _addInputTags(&$keys,$prefix=''){
         else {
             if (get_magic_quotes_gpc()) $value=stripslashes($value);
             if ($key=='ticket') continue;
-            echo '<input type="hidden" name="'.htmlspecialchars($key).
-                '" value="'.htmlspecialchars($value).'" />'."\n";
+            echo '<input type="hidden" name="'.i18n::hsc($key).
+                '" value="'.i18n::hsc($value).'" />'."\n";
         }
     }
 }

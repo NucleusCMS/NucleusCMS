@@ -327,7 +327,7 @@ function bc_convertOneItem($row, $memberid, $nucleus_blogid) {
 	$timestamp = date("Y-m-d H:i:s",bc_transformDate($row['eventtime']));
 
 	echo "<pre>";
-	echo "<b>entry</b>:" .  htmlspecialchars(substr($row['event'],0,20)) . "...(time: " . $timestamp . ") \n";
+	echo "<b>entry</b>:" .  i18n::hsc(substr($row['event'],0,20)) . "...(time: " . $timestamp . ") \n";
 	echo "<b>author</b>: " . $row['author'] ;
 	echo " (nucleus-id: " . $nucl_id . ")";
 	echo "</pre>";

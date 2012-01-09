@@ -372,7 +372,7 @@ class COMMENTACTIONS extends BaseActions {
 		}
 		else
 		{
-			echo htmlspecialchars($this->currentComment['user'], ENT_QUOTES);
+			echo i18n::hsc($this->currentComment['user'], ENT_QUOTES);
 		}
 	}
 

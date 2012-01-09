@@ -67,8 +67,8 @@ Admin area for NP_SecurityEnforcer
 	if(sql_num_rows($result)) {
 		while($row = sql_fetch_assoc($result)) {
 			echo '<tr>';
-  				echo '<td>'.htmlspecialchars($row['login']).'</td>';
-  				echo '<td><input type="checkbox" name="unlock[]" value="'.htmlspecialchars($row['login']).'" />'._SECURITYENFORCER_UNLOCK.'</td>';
+  				echo '<td>'.i18n::hsc($row['login']).'</td>';
+  				echo '<td><input type="checkbox" name="unlock[]" value="'.i18n::hsc($row['login']).'" />'._SECURITYENFORCER_UNLOCK.'</td>';
 			echo '</tr>';
 		}
 	}

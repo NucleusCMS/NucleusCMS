@@ -179,12 +179,14 @@ class i18n {
 	 * @param	string	$string	target string
 	 * @param	string	$quotation	quotation mode. please refer to the argument of PHP built-in htmlspecialchars
 	 * @return	string	escaped string
+	 * 
+	 * NOTE: htmlspecialchars_decode() is ASCII-to-ACII conversion, no need charset.
 	 */
 	
 	public static function hsc($string, $quotation=ENT_QUOTES)
 	{
-		$string = htmlspecialchars_decode($string, $quotation, self::$charset);
-		return (string)  htmlspecialchars($string, $quotation, self::$charset);
+		$string = htmlspecialchars_decode($string, $quotation);
+		return (string) htmlspecialchars($string, $quotation, self::$charset);
 	}
 	
 	/**

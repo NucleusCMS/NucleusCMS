@@ -214,7 +214,7 @@ while ($a_name = array_pop($authors)) {
 		<tr>
 			<td>
 				<b><?php echo $a_name?></b>
-				<input name="author[<?php echo $idx?>]" value="<?php echo htmlspecialchars($a_name)?>" type="hidden"
+				<input name="author[<?php echo $idx?>]" value="<?php echo i18n::hsc($a_name)?>" type="hidden"
 			</td>
 			<td>
 		<?php			$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
@@ -392,7 +392,7 @@ function bc_convertOneItem($row, $memberid, $nucleus_blogid) {
 
 	echo "<ul>";
 	echo "<li>Blogger ID: $bloggerid </li>";
-	echo "<li>Body:" .  htmlspecialchars(substr($row['body'],0,20)) . "...(time: " . $timestamp . ") </li>";
+	echo "<li>Body:" .  i18n::hsc(substr($row['body'],0,20)) . "...(time: " . $timestamp . ") </li>";
 	echo "<li>author: " . $row['author'] ;
 	echo " (nucleus-id: " . $nucl_id . ")</li>";
 
@@ -456,7 +456,7 @@ function bc_addComment($nucleus_itemid, $data) {
 	else
 		$c_userid = $c_email;
 
-	echo '<div>',htmlspecialchars(shorten($c_text,50,'...')),'</div><ul>';
+	echo '<div>',i18n::hsc(shorten($c_text,50,'...')),'</div><ul>';
 //	echo '<li>Date: ',strftime('%x %X',$c_timestamp),'</li>';
 	echo "<li>Name: $c_name</li>";
 //	echo "<li>Email: $c_email</li>";

@@ -268,7 +268,7 @@
 			<table>
 				<tr>
 					<td><label for="if_mySQL_host"><?php echo _TEXT4_TAB_FIELD1; ?>:</label></td>
-					<td><input id="if_mySQL_host" name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host') )?>" /></td>
+					<td><input id="if_mySQL_host" name="mySQL_host" value="<?php echo i18n::hsc(@ini_get('mysql.default_host') )?>" /></td>
 				</tr>
 				<tr>
 					<td><label for="if_mySQL_user"><?php echo _TEXT4_TAB_FIELD2; ?>:</label></td>
@@ -725,7 +725,7 @@
 		for ( $idx = 0; $idx < $count; $idx++ )
 		{
 			$query = trim($queries[$idx]);
-			// echo "QUERY = <small>" . htmlspecialchars($query) . "</small><p>";
+			// echo "QUERY = <small>" . i18n::hsc($query) . "</small><p>";
 
 			if ( $query )
 			{
@@ -735,14 +735,14 @@
 					$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
 				} // end if
 
-				sql_query($query, $MYSQL_CONN) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query) . '</small>): ' . sql_error($MYSQL_CONN) );
+				sql_query($query, $MYSQL_CONN) or _doError(_ERROR30 . ' (<small>' . i18n::hsc($query) . '</small>): ' . sql_error($MYSQL_CONN) );
 			} // end if
 
 		} // end loop
 
 		// 5a make first post
 		$newpost = "INSERT INTO ". tableName('nucleus_item') ." VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
-		sql_query($newpost,$MYSQL_CONN) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . sql_error($MYSQL_CONN) );
+		sql_query($newpost,$MYSQL_CONN) or _doError(_ERROR18 . ' (<small>' . i18n::hsc($newpost) . '</small>): ' . sql_error($MYSQL_CONN) );
 
 		// 6. update global settings
 		updateConfig('IndexURL', $config_indexurl);
