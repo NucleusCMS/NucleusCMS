@@ -77,7 +77,7 @@ function listplug_select($template, $type) {
 				echo ' selected="selected" ';
 			if (isset($template['shorten']) && $template['shorten'] > 0) {
 				echo ' title="'. i18n::hsc($current->text).'"';
-				$current->text = shorten($current->text, $template['shorten'], $template['shortenel']);
+				$current->text = i18n::hsc(shorten($current->text, $template['shorten'], $template['shortenel']));
 			}
 			echo '>' . i18n::hsc($current->text) . '</option>';
 			break;

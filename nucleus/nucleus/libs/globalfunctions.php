@@ -1535,23 +1535,63 @@ function removeBreaks($var) {
     return preg_replace("/<br \/>([\r\n])/", "$1", $var);
 }
 
-// shortens a text string to maxlength ($toadd) is what needs to be added
-// at the end (end length is <= $maxlength)
-function shorten($text, $maxlength, $toadd)
+/**
+ * shortens a text string to maxlength.
+ * $suffix is what needs to be added at the end (end length is <= $maxlength)
+ *
+ * The purpose is to limit the width of string for rendered screen in web browser.
+ * So it depends on style sheet, browser's rendering scheme, client's system font.
+ *
+ * NOTE: In general, non-Latin font such as Japanese, Chinese, Cyrillic have two times as width as Latin fonts,
+ *  but this is not always correct, for example, rendered by proportional font.
+ *
+ * @param string $escaped_string target string
+ * @param integer $maxlength maximum length of return string which includes suffix
+ * @param string $suffix added in the end of shortened-string
+ * @return string
+*/
+function shorten($string, $maxlength, $suffix)
 {
-	// 1. remove entities...
-	$trans = get_html_translation_table(HTML_ENTITIES);
-	$trans = array_flip($trans);
-	$text = strtr($text, $trans);
+	static $flag;
 	
-	// 2. the actual shortening
-	if (i18n::strlen($text) > $maxlength)
+	$decoded_entities_pcre = array();
+	$encoded_entities = array();
+	
+	/* 1. store html entities */
+	preg_match('#&[^&]+?;#', $string, $encoded_entities);
+	if ( !$encoded_entities )
 	{
-		$text = i18n::substr($text, 0, $maxlength - i18n::strlen($toadd) ) . $toadd;
-	
+		$flag = FALSE;
+	}
+	else
+	{
+		$flag = TRUE;
+	}
+	if ( $flag )
+	{
+		foreach ( $encoded_entities as $encoded_entity )
+		{
+			$decoded_entities_pcre[] = '#' . html_entity_decode($encoded_entity, ENT_QUOTES, i18n::get_current_charset()) . '#';
+		}
 	}
 	
-	return $text;
+	/* 2. decode string */
+	$string = html_entity_decode($string, ENT_QUOTES, i18n::get_current_charset());
+	
+	/* 3. shorten string and add suffix if string length is longer */
+	if ( i18n::strlen($string) > $maxlength - i18n::strlen($suffix) )
+	{
+		$string = i18n::substr($string, 0, $maxlength - i18n::strlen($suffix) );
+		$string .= $suffix;
+	}
+	
+	/* 4. recover entities */
+	if ( $flag )
+	{
+		$string = preg_replace($decoded_entities_pcre, $encoded_entities, $string);
+	}
+	
+	return $string;
 }
 
 /**

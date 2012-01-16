@@ -162,7 +162,7 @@ class COMMENT {
 			$displayedUrl = $url;
 		}
 
-		return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . shorten($displayedUrl,30,'...') . '</a>' . $post;
+		return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . i18n::hsc(shorten($displayedUrl,30,'...')) . '</a>' . $post;
 	}
 
 
