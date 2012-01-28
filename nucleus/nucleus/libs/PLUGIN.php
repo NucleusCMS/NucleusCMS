@@ -676,17 +676,24 @@ class NucleusPlugin
 	}
 	
 	/**
+	 * NucleusPlugin::_getOID
+	 * 
 	 * Gets the 'option identifier' that corresponds to a given option name.
 	 * When this method is called for the first time, all the OIDs for the plugin
 	 * are loaded into memory, to avoid re-doing the same query all over.
+	 * 
+	 * @param	string	$context	option context
+	 * @param	string	$name		plugin name
+	 * @return		integer	option id
 	 */
 	function _getOID($context, $name)
 	{
 		$key = $context . '_' . $name;
-		$info = $this->_aOptionToInfo[$key];
-		if ( is_array($info) )
+		
+		if ( array_key_exists($key, $this->_aOptionToInfo)
+		 && array_key_exists('oid', $this->_aOptionToInfo[$key]) )
 		{
-			return $info['oid'];
+			return $this->_aOptionToInfo[$key]['oid'];
 		}
 		
 		// load all OIDs for this plugin from the database
@@ -705,11 +712,13 @@ class NucleusPlugin
 	function _getDefVal($context, $name)
 	{
 		$key = $context . '_' . $name;
-		$info = $this->_aOptionToInfo[$key];
-		if ( is_array($info) )
+		
+		if ( array_key_exists($key, $this->_aOptionToInfo)
+		 && array_key_exists('default', $this->_aOptionToInfo[$key]) )
 		{
-			return $info['default'];
+			return $this->_aOptionToInfo[$key]['default'];
 		}
+		return;
 	}
 	
 	/**
@@ -739,43 +748,56 @@ class NucleusPlugin
 	}
 	
 	/**
+	 * NucleusPlugin::getOptionMeta()
 	 * splits the option's typeextra field (at ;'s) to split the meta collection
+	 * 
+	 * @static
 	 * @param string $typeExtra the value of the typeExtra field of an option
 	 * @return array array of the meta-key/value-pairs
-	 * @author TeRanEX
-	 * @static
 	 */
 	function getOptionMeta($typeExtra)
 	{
-		$tmpMeta = i18n::explode(';', $typeExtra);
 		$meta = array();
-		for ( $i = 0; $i < count($tmpMeta); $i++ )
+		
+		/* 1. if $typeExtra includes delimiter ';', split it to tokens */
+		$tokens = i18n::explode(';', $typeExtra);
+		
+		/*
+		 * 2. if each of tokens includes "=", it consists of key => value
+		 *    else it's 'select' option
+		 */
+		foreach ( $tokens as $token )
 		{
-			if ( ($i == 0) && (!strstr($tmpMeta[0], '=')) )
+			$matches = array();
+			if ( preg_match("#^([^=]+)?=([^=]+)?$#", $token, $matches) )
 			{
-				// we have the select-list
-				$meta['select'] = $tmpMeta[0];
+				$meta[$matches[1]] = $matches[2];
 			}
 			else
 			{
-				$tmp = i18n::explode('=', $tmpMeta[$i]);
-				$meta[$tmp[0]] = $tmp[1];
+				$meta['select'] = $token;
 			}
 		}
 		return $meta;
 	}
 	
 	/**
+	 * NucleusPlugin::getOptionSelectValues()
 	 * filters the selectlists out of the meta collection
+	 * 
+	 * @static
 	 * @param string $typeExtra the value of the typeExtra field of an option
 	 * @return string the selectlist
-	 * @author TeRanEX
 	 */
 	function getOptionSelectValues($typeExtra)
 	{
 		$meta = NucleusPlugin::getOptionMeta($typeExtra);
-		//the select list must always be the first part
-		return $meta['select'];
+		
+		if ( array_key_exists('select', $meta) )
+		{
+			return $meta['select'];
+		}
+		return;
 	}
 	
 	/**
@@ -805,12 +827,16 @@ class NucleusPlugin
 	}
 	
 	/**
-	 * @param $aOptions: array ( 'oid' => array( 'contextid' => 'value'))
-	 *        (taken from request using requestVar())
-	 * @param $newContextid: integer (accepts a contextid when it is for a new
-	 *        contextid there was no id available at the moment of writing the
-	 *        formcontrols into the page (by ex: itemOptions for new item)
+	 * NucleusPlugin::_applyPluginOptions()
+	 * Update its entry in database table
+	 * 
 	 * @static
+	 * @param	$aOptions: array ( 'oid' => array( 'contextid' => 'value'))
+	 * 			 (taken from request using requestVar())
+	 * @param	$newContextid: integer (accepts a contextid when it is for a new
+	 *			 contextid there was no id available at the moment of writing the
+	 *			  formcontrols into the page (by ex: itemOptions for new item)
+	 * @return void
 	 */
 	function _applyPluginOptions(&$aOptions, $newContextid = 0)
 	{
@@ -819,74 +845,93 @@ class NucleusPlugin
 		{
 			return;
 		}
-
+		
 		foreach ( $aOptions as $oid => $values )
 		{
-
 			// get option type info
-			$query = 'SELECT opid, oname, ocontext, otype, oextra, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . intval($oid);
-			$res = sql_query($query);
-			if ( $o = sql_fetch_object($res) )
+			$query = "SELECT opid, oname, ocontext, otype, oextra, odef FROM %s WHERE oid=%d";
+			$query = sprintf($query, sql_table('plugin_option_desc'), (integer) $oid);
+			$result = sql_query($query);
+			if ( $info = sql_fetch_object($result) )
 			{
 				foreach ( $values as $key => $value )
 				{
 					// avoid overriding the key used by foreach statement
 					$contextid=$key;
-
-					// retreive any metadata
-					$meta = NucleusPlugin::getOptionMeta($o->oextra);
-
-					// if the option is readonly or hidden it may not be saved
-					if ( ($meta['access'] != 'readonly') && ($meta['access'] != 'hidden') )
-					{
 					
-						$value = undoMagic($value);	// value comes from request
-						
-						switch ( $o->otype )
-						{
-							case 'yesno':
-								if ( ($value != 'yes') && ($value != 'no') )
-								{
-									$value = 'no';
-								}
-								break;
-							default:
-								break;
-						}
-						
-						// check the validity of numerical options
-						if ( ($meta['datatype'] == 'numerical') && (!is_numeric($value)) )
-						{
-							//the option must be numeric, but the it isn't
-							//use the default for this option
-							$value = $o->odef;
-						}
-						
-						// decide wether we are using the contextid of newContextid
-						if ( $newContextid != 0 )
-						{
-							$contextid = $newContextid;
-						}
-						
-						//trigger event PrePluginOptionsUpdate to give the plugin the
-						//possibility to change/validate the new value for the option
-						$manager->notify('PrePluginOptionsUpdate',array('context' => $o->ocontext, 'plugid' => $o->opid, 'optionname' => $o->oname, 'contextid' => $contextid, 'value' => &$value));
-						
-						// delete the old value for the option
-						sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));
-						sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . sql_real_escape_string($value) . "')");
+					// retreive any metadata
+					$meta = NucleusPlugin::getOptionMeta($info->oextra);
+					
+					// if the option is readonly or hidden it may not be saved
+					if ( array_key_exists('access', $meta)
+					 && in_array($meta['access'], array('readonly', 'hidden')) )
+					{
+						return;
 					}
+					
+					// value comes from request
+					$value = undoMagic($value);
+					
+					/* validation the value according to its type */
+					switch ( $info->otype )
+					{
+						case 'yesno':
+							if ( ($value != 'yes') && ($value != 'no') )
+							{
+								$value = 'no';
+							}
+							break;
+						case 'text':
+						case 'select':
+							if ( array_key_exists('datatype', $meta)
+							 && ($meta['datatype'] == 'numerical') && ($value != (integer) $value) )
+							{
+								$value = (integer) $info->odef;
+							}
+							break;
+						case 'password':
+						case 'textarea':
+						default:
+							break;
+					}
+					
+					// decide wether we are using the contextid of newContextid
+					if ( $newContextid != 0 )
+					{
+						$contextid = $newContextid;
+					}
+					
+					/*
+					 * trigger event PrePluginOptionsUpdate to give the plugin the
+					 * possibility to change/validate the new value for the option
+					 */
+					$data = array(
+						'context'		=> $info->ocontext,
+						'plugid'		=> $info->opid,
+						'optionname'	=> $info->oname,
+						'contextid'	=> $contextid,
+						'value'		=> &$value);
+					$manager->notify('PrePluginOptionsUpdate', $data);
+					
+					// delete and insert its fields of table in database
+					$query = "DELETE FROM %s WHERE oid=%d AND ocontextid=%d;";
+					$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid);
+					sql_query($query);
+					$query = "INSERT INTO %s (oid, ocontextid, ovalue) VALUES (%d, %d, '%s');";
+					$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid, sql_real_escape_string($value));
+					sql_query($query);
 				}
 			}
 			// clear option value cache if the plugin object is already loaded
-			if ( is_object($o) )
+			if ( is_object($info) )
 			{
-				$plugin=& $manager->pidLoaded($o->opid);
+				$plugin=& $manager->pidLoaded($info->opid);
 				if ( $plugin )
 				{
 					$plugin->clearOptionValueCache();
 				}
 			}
 		}
+		return;
 	}
 }
