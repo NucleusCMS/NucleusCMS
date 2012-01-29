@@ -1,8 +1,8 @@
 <?php
 
-   /*
-	* @version $Id$
-	*/
+/*
+ * @version $Id$
+ */
 
 define('_SKINFILES_TITLE',				'Skin Files');
 define('_SKINFILES_TOOLTIP',			'Manage skin files');

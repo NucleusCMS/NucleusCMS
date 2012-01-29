@@ -43,61 +43,58 @@ class NP_SkinFiles extends NucleusPlugin {
 	* v2.01 yama  - modified form button for IE
 	* v2.02 kimitake - multilingual support, modified form button for IE
 	*/
-
-
-	function getName() 		  { return 'SkinFiles'; }
-	function getAuthor()  	  { return 'Misc authors'; }
-	function getURL()  		  { return 'http://www.nucleuscms.org/'; }
-	function getVersion() 	  { return '2.02'; }
-	function getDescription() { return 'A simple file manager for skins.';	}
-
-	function supportsFeature($what) {
-		switch($what)
-		{ case 'SqlTablePrefix':
-				return 1;
-			default:
-				return 0; }
-	}
-
-	function install() {
+	
+	public function getName()			{ return 'SkinFiles'; }
+	public function getAuthor()			{ return 'Misc authors'; }
+	public function getURL()			{ return 'http://www.nucleuscms.org/'; }
+	public function getVersion()		{ return '2.02'; }
+	public function getDescription()	{ return 'A simple file manager for skins.';	}
+	public function hasAdminArea()		{ return 1; }
+	public function getEventList()		{ return array('QuickMenu'); }
+	
+	public function supportsFeature($what)
+	{
+		if ( $what == 'SqlTablePrefix' )
+		{
+			return 1;
+		}
+		return 0;
 	}
 	
-	function unInstall() {
-	}
-
-	function getEventList() {
-		return array('QuickMenu');
-	}
+	public function install()		{ return; }
+	public function unInstall()		{ return; }
 	
-	function hasAdminArea() {
-		return 1;
-	}
-
-	function init()
+	public function init()
 	{
 		// include language file for this plugin
-		$language = preg_replace( '#[\\|/]#', '', getLanguageName());
-		if (file_exists($this->getDirectory().$language.'.php'))
-			include_once($this->getDirectory().$language.'.php');
+		if ( file_exists($this->getDirectory() . i18n::get_current_locale() . '.' . i18n::get_current_charset() . '.php') )
+		{
+			include_once($this->getDirectory() . i18n::get_current_locale() . '.' . i18n::get_current_charset() . '.php');
+		}
 		else
-			include_once($this->getDirectory().'english.php');
+		{
+			include_once($this->getDirectory().'en_Latn_US.UTF-8.php');
+		}
+		return;
 	}
 	
-	function event_QuickMenu(&$data) {
+	public function event_QuickMenu($data)
+	{
 		global $member;
-
+		
 		// only show to admins
-		if (!($member->isLoggedIn() && $member->isAdmin())) return;
-
+		if ( !($member->isLoggedIn() && $member->isAdmin()) )
+		{
+			return;
+		}
+		
 		array_push(
 			$data['options'], 
 			array(
 				'title' => _SKINFILES_TITLE,
 				'url' => $this->getAdminURL(),
 				'tooltip' => _SKINFILES_TOOLTIP
-			)
-		);
+			));
+		return;
 	}
 }
-
-?>

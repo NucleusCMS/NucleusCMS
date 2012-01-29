@@ -26,18 +26,10 @@
 	* ==========================================================================================
 	*/
 
- 	$strRel = '../../../'; 
+	$strRel = '../../../'; 
 	require($strRel . 'config.php');
 	include_libs('PLUGINADMIN.php');
-
-	//$language = ereg_replace( '[\\|/]', '', getLanguageName());
-	$language = preg_replace( '#[\\|/]#', '', getLanguageName());
-	$langfile = $language.'.php';
-	if (file_exists($langfile))
-		include_once($langfile);
-	else
-		include_once('english.php');
-
+	
 	/**
 	  * Create admin area
 	  */
