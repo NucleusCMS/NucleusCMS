@@ -6442,166 +6442,206 @@ selector();
         // To avoid showing ticket in the URL, redirect to pluginlist, instead.
         redirect($CONF['AdminURL'] . '?action=pluginlist');
     }
-
-    /**
-     * @todo document this
-     */
-    function action_pluginoptions($message = '') {
-        global $member, $manager;
-
-        // check if allowed
-        $member->isAdmin() or $this->disallow();
-
-        $pid = intRequestVar('plugid');
-        if (!$manager->pidInstalled($pid))
-            $this->error(_ERROR_NOSUCHPLUGIN);
-
-        $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
-        $pluginName = i18n::hsc(getPluginNameFromPid($pid));
-        $this->pagehead($extrahead);
-
-        ?>
-            <p><a href="index.php?action=pluginlist">(<?php echo _PLUGS_BACK?>)</a></p>
-
-            <h2><?php echo sprintf(_PLUGIN_OPTIONS_TITLE, $pluginName) ?></h2>
-
-            <?php if  ($message) echo $message?>
-
-            <form action="index.php" method="post">
-            <div>
-                <input type="hidden" name="action" value="pluginoptionsupdate" />
-                <input type="hidden" name="plugid" value="<?php echo $pid?>" />
-
-        <?php
-
-        $manager->addTicketHidden();
-
-        $aOptions = array();
-        $aOIDs = array();
-        $query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ' WHERE ocontext=\'global\' and opid=' . $pid . ' ORDER BY oid ASC';
-        $r = sql_query($query);
-        while ($o = sql_fetch_object($r)) {
-            array_push($aOIDs, $o->oid);
-            $aOptions[$o->oid] = array(
-                        'oid' => $o->oid,
-                        'value' => $o->odef,
-                        'name' => $o->oname,
-                        'description' => $o->odesc,
-                        'type' => $o->otype,
-                        'typeinfo' => $o->oextra,
-                        'contextid' => 0
-            );
-        }
-        // fill out actual values
-        if (count($aOIDs) > 0) {
-            $r = sql_query('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).')');
-            while ($o = sql_fetch_object($r))
-                $aOptions[$o->oid]['value'] = $o->ovalue;
-        }
-
-        // call plugins
-        $manager->notify('PrePluginOptionsEdit',array('context' => 'global', 'plugid' => $pid, 'options'=>&$aOptions));
-
-        $template['content'] = 'plugoptionlist';
-        $amount = showlist($aOptions,'table',$template);
-        if ($amount == 0)
-            echo '<p>',_ERROR_NOPLUGOPTIONS,'</p>';
-
-        ?>
-            </div>
-            </form>
-        <?php       $this->pagefoot();
-
-
-
-    }
-
-    /**
-     * @todo document this
-     */
-    function action_pluginoptionsupdate() {
-        global $member, $manager;
-
-        // check if allowed
-        $member->isAdmin() or $this->disallow();
-
-        $pid = intRequestVar('plugid');
-        if (!$manager->pidInstalled($pid))
-            $this->error(_ERROR_NOSUCHPLUGIN);
-
-        $aOptions = requestArray('plugoption');
-        NucleusPlugin::_applyPluginOptions($aOptions);
-
-        $manager->notify('PostPluginOptionsUpdate',array('context' => 'global', 'plugid' => $pid));
-
-        $this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
-    }
-
-    /**
-     * @static
-     * @todo document this
-     */
-    function _insertPluginOptions($context, $contextid = 0) {
-        // get all current values for this contextid
-        // (note: this might contain doubles for overlapping contextids)
-        $aIdToValue = array();
-        $res = sql_query('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE ocontextid=' . intval($contextid));
-        while ($o = sql_fetch_object($res)) {
-            $aIdToValue[$o->oid] = $o->ovalue;
-        }
-
-        // get list of oids per pid
-        $query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ',' . sql_table('plugin')
-               . ' WHERE opid=pid and ocontext=\''.sql_real_escape_string($context).'\' ORDER BY porder, oid ASC';
-        $res = sql_query($query);
-        $aOptions = array();
-        while ($o = sql_fetch_object($res)) {
-            if (in_array($o->oid, array_keys($aIdToValue)))
-                $value = $aIdToValue[$o->oid];
-            else
-                $value = $o->odef;
-
-            array_push($aOptions, array(
-                'pid' => $o->pid,
-                'pfile' => $o->pfile,
-                'oid' => $o->oid,
-                'value' => $value,
-                'name' => $o->oname,
-                'description' => $o->odesc,
-                'type' => $o->otype,
-                'typeinfo' => $o->oextra,
-                'contextid' => $contextid,
-                'extra' => ''
-            ));
-        }
-
-        global $manager;
-        $manager->notify('PrePluginOptionsEdit',array('context' => $context, 'contextid' => $contextid, 'options'=>&$aOptions));
-
-
-        $iPrevPid = -1;
-        foreach ($aOptions as $aOption) {
-
-            // new plugin?
-            if ($iPrevPid != $aOption['pid']) {
-                $iPrevPid = $aOption['pid'];
-                if (!defined('_PLUGIN_OPTIONS_TITLE')) {
-                    define('_PLUGIN_OPTIONS_TITLE', 'Options for %s');
-                }
-                echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, i18n::hsc($aOption['pfile'])).'</th></tr>';
-            }
-
-            $meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
-            if (@$meta['access'] != 'hidden') {
-                echo '<tr>';
-                listplug_plugOptionRow($aOption);
-                echo '</tr>';
-            }
-
-        }
-
-
-    }
+	
+	/**
+	 * ADMIN::action_pluginoptions()
+	 * 
+	 * Output Plugin option page
+	 * 
+	 * @access	public
+	 * @param	string $message	message when fallbacked
+	 * @return	void
+	 * 
+	 */
+	public function action_pluginoptions($message = '')
+	{
+		global $member, $manager;
+		
+		// check if allowed
+		$member->isAdmin() or $this->disallow();
+		
+		$pid = (integer) requestVar('plugid');
+		if ( !$manager->pidInstalled($pid) )
+		{
+			$this->error(_ERROR_NOSUCHPLUGIN);
+		}
+		
+		$pname = getPluginNameFromPid($pid);
+		
+		/* just for including translation */
+		$manager->getPlugin($pname);
+		
+		$extrahead = "<script type=\"text/javascript\" src=\"javascript/numbercheck.js\"></script>\n";
+		$this->pagehead($extrahead);
+		echo '<p><a href="index.php?action=pluginlist">(' . _PLUGS_BACK . ")</a></p>\n";
+		echo '<h2>' . sprintf(_PLUGIN_OPTIONS_TITLE, i18n::hsc($pname)) . "</h2>\n";
+		
+		if ( isset($message) )
+		{
+			echo $message;
+		}
+		
+		echo "<form action=\"index.php\" method=\"post\">\n";
+		echo "<div>\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"pluginoptionsupdate\" />\n";
+		echo "<input type=\"hidden\" name=\"plugid\" value=\"{$pid}\" />\n";
+		$manager->addTicketHidden();
+		
+		$aOptions = array();
+		$aOIDs = array();
+		$query = "SELECT * FROM %s WHERE ocontext='global' and opid=%d ORDER BY oid ASC";
+		$query = sprintf($query, sql_table('plugin_option_desc'), $pid);
+		$result = sql_query($query);
+		while ( $object = sql_fetch_object($result) )
+		{
+			array_push($aOIDs, $object->oid);
+			$aOptions[$object->oid] = array(
+						'oid' => $object->oid,
+						'value' => $object->odef,
+						'name' => $object->oname,
+						'description' => $object->odesc,
+						'type' => $object->otype,
+						'typeinfo' => $object->oextra,
+						'contextid' => 0
+			);
+		}
+		// fill out actual values
+		if ( count($aOIDs) > 0 )
+		{
+			$query = "SELECT oid, ovalue FROM %s WHERE oid in (%s)";
+			$query = sprintf($query, sql_table('plugin_option'), implode(',',$aOIDs));
+			$result = sql_query($query);
+			while ( $object = sql_fetch_object($result) )
+			{
+				$aOptions[$object->oid]['value'] = $object->ovalue;
+			}
+		}
+		
+		// call plugins
+		$data = array('context' => 'global', 'plugid' => $pid, 'options'=>&$aOptions);
+		$manager->notify('PrePluginOptionsEdit',$data);
+		
+		$template['content'] = 'plugoptionlist';
+		$amount = showlist($aOptions,'table',$template);
+		if ( $amount == 0 )
+		{
+			echo '<p>',_ERROR_NOPLUGOPTIONS,'</p>';
+		}
+		echo "</div>\n";
+		echo "</form>\n";
+		$this->pagefoot();
+		
+		return;
+	}
+	
+	/**
+	 * ADMIN::action_pluginoptionsupdate()
+	 * 
+	 * Update plugin options and fallback to plugin option page
+	 * 
+	 * @access	public
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_pluginoptionsupdate()
+	{
+		global $member, $manager;
+		
+		// check if allowed
+		$member->isAdmin() or $this->disallow();
+		
+		$pid = (integer) requestVar('plugid');
+		if ( !$manager->pidInstalled($pid) )
+		{
+			$this->error(_ERROR_NOSUCHPLUGIN);
+		}
+		
+		$aOptions = requestArray('plugoption');
+		NucleusPlugin::_applyPluginOptions($aOptions);
+		
+		$manager->notify('PostPluginOptionsUpdate',array('context' => 'global', 'plugid' => $pid));
+		
+		$this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
+		return;
+	}
+	
+	/**
+	 * ADMIN::_insertPluginOptions()
+	 * 
+	 * Output plugin option field
+	 * 
+	 * @access	public
+	 * @param string	$context	plugin option context
+	 * @param integer	$contextid	plugin option context id
+	 * @return	void
+	 */
+	public function _insertPluginOptions($context, $contextid = 0)
+	{
+		// get all current values for this contextid
+		// (note: this might contain doubles for overlapping contextids)
+		$aIdToValue = array();
+		$res = sql_query('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE ocontextid=' . intval($contextid));
+		while ( $object = sql_fetch_object($res) )
+		{
+			$aIdToValue[$object->oid] = $object->ovalue;
+		}
+		
+		// get list of oids per pid
+		$query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ',' . sql_table('plugin')
+			   . ' WHERE opid=pid and ocontext=\''.sql_real_escape_string($context).'\' ORDER BY porder, oid ASC';
+		$res = sql_query($query);
+		$aOptions = array();
+		while ( $object = sql_fetch_object($res) )
+		{
+			if (in_array($object->oid, array_keys($aIdToValue)))
+			{
+				$value = $aIdToValue[$object->oid];
+			}
+			else
+			{
+				$value = $object->odef;
+			}
+			
+			array_push($aOptions, array(
+				'pid' => $object->pid,
+				'pfile' => $object->pfile,
+				'oid' => $object->oid,
+				'value' => $value,
+				'name' => $object->oname,
+				'description' => $object->odesc,
+				'type' => $object->otype,
+				'typeinfo' => $object->oextra,
+				'contextid' => $contextid,
+				'extra' => ''));
+		}
+		
+		global $manager;
+		$manager->notify('PrePluginOptionsEdit',array('context' => $context, 'contextid' => $contextid, 'options'=>&$aOptions));
+		
+		$iPrevPid = -1;
+		foreach ($aOptions as $aOption)
+		{
+			// new plugin?
+			if ( $iPrevPid != $aOption['pid'] )
+			{
+				$iPrevPid = $aOption['pid'];
+				if ( !defined('_PLUGIN_OPTIONS_TITLE') )
+				{
+					define('_PLUGIN_OPTIONS_TITLE', 'Options for %s');
+				}
+				echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, i18n::hsc($aOption['pfile'])).'</th></tr>';
+			}
+			
+			$meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
+			if ( @$meta['access'] != 'hidden' )
+			{
+				echo '<tr>';
+				listplug_plugOptionRow($aOption);
+				echo '</tr>';
+			}
+		}
+		return;
+	}
 	
 	/**
 	 * ADMIN::input_yesno()
