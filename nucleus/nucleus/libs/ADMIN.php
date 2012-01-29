@@ -6606,42 +6606,43 @@ selector();
 	/**
 	 * ADMIN::input_yesno()
 	 * Output input elements with radio attribute for yes/no options
+	 * 
 	 * @param	string	$name	name attribute
-	 * @param	string	$checkedval	current value attribute
+	 * @param	string	$value_current	current value attribute
 	 * @param	integer	$tabindex	tab index
 	 * @param	string	$value_yes	value attribute for yes option
 	 * @param	string	$value_no	value attribute for no option
-	 * @param	string	$yesval	child text element for yes option
-	 * @param	string	$noval	child text element for no option
+	 * @param	string	$text_yes	child text element for yes option
+	 * @param	string	$text_no	child text element for no option
 	 * @param	boolean	$isAdmin	have admin right or not
 	 * @return	void
 	 */
-	function input_yesno($name, $checkedval, $tabindex = 0, $value_yes = 1, $value_no = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0)
+	function input_yesno($name, $value_current, $tabindex = 0, $value_yes = 1, $value_no = 0, $text_yes = _YES, $text_no = _NO, $isAdmin = 0)
 	{
 		$id = preg_replace('#\[|\]#', '-', $name);
 		$id_yes = $id . $value_yes;
 		$id_no  = $id . $value_no;
 		
-		echo '<input type="radio" id="' . $id_yes . '" name="' . i18n::hsc($name) . '" value="' . i18n::hsc($value_yes) . '"';
+		/* yes option */
+		echo '<input type="radio" id="' . i18n::hsc($id_yes) . '" name="' . i18n::hsc($name) . '" value="' . i18n::hsc($value_yes) . '"';
 		if ( $name=="admin" )
 		{
 			echo ' onclick="selectCanLogin(true);"';
 		}
-		if ( $checkedval == $value_yes )
+		if ( $value_current == $value_yes )
 		{
 			echo " tabindex='$tabindex' checked='checked'";
 		}
 		echo " />\n";
-		echo "<label for=\"{$id_yes}\">{$yesval}</label>\n";
+		echo '<label for="' . i18n::hsc($id_yes) . '">' . i18n::hsc($text_yes) . "</label>\n";
 		
-		echo ' ';
-		
-		echo '<input type="radio" id="' . $id_no . '" name="' . i18n::hsc($name) . '" value="' . i18n::hsc($value_no) . '"';
+		/* no option */
+		echo '<input type="radio" id="' . i18n::hsc($id_no) . '" name="' . i18n::hsc($name) . '" value="' . i18n::hsc($value_no) . '"';
 		if ( $name=="admin" )
 		{
 			echo ' onclick="selectCanLogin(false);"';
 		}
-		if ( $checkedval != $value_yes )
+		if ( $value_current != $value_yes )
 		{
 			echo " tabindex='$tabindex' checked='checked'";
 		}
@@ -6650,7 +6651,8 @@ selector();
 			echo ' disabled="disabled"';
 		}
 		echo " />\n";
-		echo "<label for=\"{$id_no}\">{$noval}</label>\n";
+		echo '<label for="' . i18n::hsc($id_no) . '">' . i18n::hsc($text_no) . "</label>\n";
+		
 		return;
 	}
 }
