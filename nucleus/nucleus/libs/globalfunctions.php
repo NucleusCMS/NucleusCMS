@@ -1147,300 +1147,356 @@ function getPluginNameFromPid($pid) {
 }
 
 function selector() {
-    global $itemid, $blogid, $memberid, $query, $amount, $archivelist, $maxresults;
-    global $archive, $skinid, $blog, $memberinfo, $CONF, $member;
-    global $imagepopup, $catid, $special;
-    global $manager;
+	global $itemid, $blogid, $memberid, $query, $amount, $archivelist, $maxresults;
+	global $archive, $skinid, $blog, $memberinfo, $CONF, $member;
+	global $imagepopup, $catid, $special;
+	global $manager;
+	
+	$actionNames = array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin');
+	$action = requestVar('action');
+	
+	if ( in_array($action, $actionNames) )
+	{
+		global $DIR_LIBS, $errormessage;
+		include_once($DIR_LIBS . 'ACTION.php');
+		$a = new ACTION();
+		$errorInfo = $a->doAction($action);
+		
+		if ( $errorInfo )
+		{
+			$errormessage = $errorInfo['message'];
+		}
+	}
+	
+	// show error when headers already sent out
+	if ( headers_sent() && $CONF['alertOnHeadersSent'] )
+	{
+		// try to get line number/filename (extra headers_sent params only exists in PHP 4.3+)
+		if ( function_exists('version_compare') && version_compare('4.3.0', phpversion(), '<=') )
+		{
+			headers_sent($hsFile, $hsLine);
+			$extraInfo = ' in <code>' . $hsFile . '</code> line <code>' . $hsLine . '</code>';
+		}
+		else
+		{
+			$extraInfo = '';
+		}
+		
+		startUpError(
+			'<p>The page headers have already been sent out' . $extraInfo . '. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, at the end of the language file or at the end of a plugin file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>',
+			'Page headers already sent'
+		);
+		exit;
+	}
+	
+	// make is so ?archivelist without blogname or blogid shows the archivelist
+	// for the default weblog
+	if ( serverVar('QUERY_STRING') == 'archivelist' )
+	{
+		$archivelist = $CONF['DefaultBlog'];
+	}
+	
+	// now decide which type of skin we need
+	if ( $itemid )
+	{
+		// itemid given -> only show that item
+		$type = 'item';
+		
+		if ( !$manager->existsItem($itemid,intval($CONF['allowFuture']),intval($CONF['allowDrafts'])) )
+		{
+			doError(_ERROR_NOSUCHITEM);
+		}
+		
+		global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
+		
+		// 1. get timestamp, blogid and catid for item
+		$query = 'SELECT itime, iblog, icat FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid);
+		$res = sql_query($query);
+		$obj = sql_fetch_object($res);
+		
+		// if a different blog id has been set through the request or selectBlog(),
+		// deny access
+		
+		if ( $blogid && (intval($blogid) != $obj->iblog) )
+		{
+			doError(_ERROR_NOSUCHITEM);
+		}
+		
+		// if a category has been selected which doesn't match the item, ignore the
+		// category. #85
+		if ( ($catid != 0) && ($catid != $obj->icat) )
+		{
+			$catid = 0;
+		}
+		
+		$blogid = $obj->iblog;
+		$timestamp = strtotime($obj->itime);
+		
+		$b =& $manager->getBlog($blogid);
+		
+		if ( $b->isValidCategory($catid) )
+		{
+			$catextra = ' and icat=' . $catid;
+		}
+		else
+		{
+			$catextra = '';
+		}
+		
+		// get previous itemid and title
+		$query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime<' . mysqldate($timestamp) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime DESC LIMIT 1';
+		$res = sql_query($query);
+		
+		$obj = sql_fetch_object($res);
+		
+		if ( $obj )
+		{
+			$itemidprev = $obj->inumber;
+			$itemtitleprev = $obj->ititle;
+		}
+		
+		// get next itemid and title
+		$query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate($b->getCorrectTime()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
+		$res = sql_query($query);
+		
+		$obj = sql_fetch_object($res);
+		
+		if ( $obj )
+		{
+			$itemidnext = $obj->inumber;
+			$itemtitlenext = $obj->ititle;
+		}
+	}
+	elseif ($archive)
+	{
+		// show archive
+		$type = 'archive';
+		
+		// get next and prev month links ...
+		global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
+		
+		// sql queries for the timestamp of the first and the last published item
+		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime ASC";
+		$first_timestamp=quickQuery ($query);
+		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime DESC";
+		$last_timestamp=quickQuery ($query);
+		
+		sscanf($archive, '%d-%d-%d', $y, $m, $d);
+		
+		if ( $d != 0 )
+		{
+			$archivetype = _ARCHIVETYPE_DAY;
+			$t = mktime(0, 0, 0, $m, $d, $y);
+			// one day has 24 * 60 * 60 = 86400 seconds
+			$archiveprev = i18n::strftime('%Y-%m-%d', $t - 86400 );
+			// check for published items
+			if ( $t > $first_timestamp )
+			{
+				$archiveprevexists = true;
+			}
+			else
+			{
+				$archiveprevexists = false;
+			}
+			
+			// one day later
+			$t += 86400;
+			$archivenext = i18n::strftime('%Y-%m-%d', $t);
+			if ( $t < $last_timestamp )
+			{
+				$archivenextexists = true;
+			}
+			else
+			{
+				$archivenextexists = false;
+			}
+		}
+		elseif ( $m == 0 )
+		{
+			$archivetype = _ARCHIVETYPE_YEAR;
+			$t = mktime(0, 0, 0, 12, 31, $y - 1);
+			// one day before is in the previous year
+			$archiveprev = i18n::strftime('%Y', $t);
+			if ( $t > $first_timestamp )
+			{
+				$archiveprevexists = true;
+			}
+			else
+			{
+				$archiveprevexists = false;
+			}
 
-    $actionNames = array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin');
-    $action = requestVar('action');
-
-    if (in_array($action, $actionNames) ) {
-        global $DIR_LIBS, $errormessage;
-        include_once($DIR_LIBS . 'ACTION.php');
-        $a = new ACTION();
-        $errorInfo = $a->doAction($action);
-
-        if ($errorInfo) {
-            $errormessage = $errorInfo['message'];
-        }
-    }
-
-    // show error when headers already sent out
-    if (headers_sent() && $CONF['alertOnHeadersSent']) {
-
-        // try to get line number/filename (extra headers_sent params only exists in PHP 4.3+)
-        if (function_exists('version_compare') && version_compare('4.3.0', phpversion(), '<=') ) {
-            headers_sent($hsFile, $hsLine);
-            $extraInfo = ' in <code>' . $hsFile . '</code> line <code>' . $hsLine . '</code>';
-        } else {
-            $extraInfo = '';
-        }
-
-        startUpError(
-            '<p>The page headers have already been sent out' . $extraInfo . '. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, at the end of the language file or at the end of a plugin file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>',
-            'Page headers already sent'
-        );
-        exit;
-    }
-
-    // make is so ?archivelist without blogname or blogid shows the archivelist
-    // for the default weblog
-    if (serverVar('QUERY_STRING') == 'archivelist') {
-        $archivelist = $CONF['DefaultBlog'];
-    }
-
-    // now decide which type of skin we need
-    if ($itemid) {
-        // itemid given -> only show that item
-        $type = 'item';
-
-        if (!$manager->existsItem($itemid,intval($CONF['allowFuture']),intval($CONF['allowDrafts'])) ) {
-            doError(_ERROR_NOSUCHITEM);
-        }
-
-        global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
-
-        // 1. get timestamp, blogid and catid for item
-        $query = 'SELECT itime, iblog, icat FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid);
-        $res = sql_query($query);
-        $obj = sql_fetch_object($res);
-
-        // if a different blog id has been set through the request or selectBlog(),
-        // deny access
-
-
-
-        if ($blogid && (intval($blogid) != $obj->iblog) ) {
-            doError(_ERROR_NOSUCHITEM);
-        }
-
-        // if a category has been selected which doesn't match the item, ignore the
-        // category. #85
-        if (($catid != 0) && ($catid != $obj->icat) ) {
-            $catid = 0;
-        }
-
-        $blogid = $obj->iblog;
-        $timestamp = strtotime($obj->itime);
-
-        $b =& $manager->getBlog($blogid);
-
-        if ($b->isValidCategory($catid) ) {
-            $catextra = ' and icat=' . $catid;
-        } else {
-            $catextra = '';
-        }
-
-        // get previous itemid and title
-        $query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime<' . mysqldate($timestamp) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime DESC LIMIT 1';
-        $res = sql_query($query);
-
-        $obj = sql_fetch_object($res);
-
-        if ($obj) {
-            $itemidprev = $obj->inumber;
-            $itemtitleprev = $obj->ititle;
-        }
-
-        // get next itemid and title
-        $query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate($b->getCorrectTime()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
-        $res = sql_query($query);
-
-        $obj = sql_fetch_object($res);
-
-        if ($obj) {
-            $itemidnext = $obj->inumber;
-            $itemtitlenext = $obj->ititle;
-        }
-
-    } elseif ($archive) {
-        // show archive
-        $type = 'archive';
-
-        // get next and prev month links ...
-        global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
-
-        // sql queries for the timestamp of the first and the last published item
-        $query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime ASC";
-        $first_timestamp=quickQuery ($query);
-        $query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime DESC";
-        $last_timestamp=quickQuery ($query);
-
-        sscanf($archive, '%d-%d-%d', $y, $m, $d);
-
-        if ($d != 0) {
-            $archivetype = _ARCHIVETYPE_DAY;
-            $t = mktime(0, 0, 0, $m, $d, $y);
-            // one day has 24 * 60 * 60 = 86400 seconds
-            $archiveprev = i18n::strftime('%Y-%m-%d', $t - 86400 );
-            // check for published items
-            if ($t > $first_timestamp) {
-                $archiveprevexists = true;
-            }
-            else {
-                $archiveprevexists = false;
-            }
-
-            // one day later
-            $t += 86400;
-            $archivenext = i18n::strftime('%Y-%m-%d', $t);
-            if ($t < $last_timestamp) {
-                $archivenextexists = true;
-            }
-            else {
-                $archivenextexists = false;
-            }
-
-        } elseif ($m == 0) {
-            $archivetype = _ARCHIVETYPE_YEAR;
-            $t = mktime(0, 0, 0, 12, 31, $y - 1);
-            // one day before is in the previous year
-            $archiveprev = i18n::strftime('%Y', $t);
-            if ($t > $first_timestamp) {
-                $archiveprevexists = true;
-            }
-            else {
-                $archiveprevexists = false;
-            }
-
-            // timestamp for the next year
-            $t = mktime(0, 0, 0, 1, 1, $y + 1);
-            $archivenext = i18n::strftime('%Y', $t);
-            if ($t < $last_timestamp) {
-                $archivenextexists = true;
-            }
-            else {
-                $archivenextexists = false;
-            }
-        } else {
-            $archivetype = _ARCHIVETYPE_MONTH;
-            $t = mktime(0, 0, 0, $m, 1, $y);
-            // one day before is in the previous month
-            $archiveprev = i18n::strftime('%Y-%m', $t - 86400);
-            if ($t > $first_timestamp) {
-                $archiveprevexists = true;
-            }
-            else {
-                $archiveprevexists = false;
-            }
-
-            // timestamp for the next month
-            $t = mktime(0, 0, 0, $m+1, 1, $y);
-            $archivenext = i18n::strftime('%Y-%m', $t);
-            if ($t < $last_timestamp) {
-                $archivenextexists = true;
-            }
-            else {
-                $archivenextexists = false;
-            }
-        }
-
-    } elseif ($archivelist) {
-        $type = 'archivelist';
-
-        if (is_numeric($archivelist)) {
-            $blogid = intVal($archivelist);
-        } else {
-            $blogid = getBlogIDFromName($archivelist);
-        }
-
-        if (!$blogid) {
-            doError(_ERROR_NOSUCHBLOG);
-        }
-
-    } elseif ($query) {
-        global $startpos;
-        $type = 'search';
-        $query = stripslashes($query);
-
-        if (is_numeric($blogid)) {
-            $blogid = intVal($blogid);
-        } else {
-            $blogid = getBlogIDFromName($blogid);
-        }
-
-        if (!$blogid) {
-            doError(_ERROR_NOSUCHBLOG);
-        }
-
-    } elseif ($memberid) {
-        $type = 'member';
-
-        if (!MEMBER::existsID($memberid) ) {
-            doError(_ERROR_NOSUCHMEMBER);
-        }
-
-        $memberinfo = $manager->getMember($memberid);
-
-    } elseif ($imagepopup) {
-        // media object (images etc.)
-        $type = 'imagepopup';
-
-        // TODO: check if media-object exists
-        // TODO: set some vars?
-    } else {
-        // show regular index page
-        global $startpos;
-        $type = 'index';
-    }
-
-    // any type of skin with catid
-    if ($catid && !$blogid) {
-        $blogid = getBlogIDFromCatID($catid);
-    }
-
-    // decide which blog should be displayed
-    if (!$blogid) {
-        $blogid = $CONF['DefaultBlog'];
-    }
-
-    $b =& $manager->getBlog($blogid);
-    $blog = $b; // references can't be placed in global variables?
-
-    if (!$blog->isValid) {
-        doError(_ERROR_NOSUCHBLOG);
-    }
-
-    // set catid if necessary
-    if ($catid) {
-        // check if the category is valid
-        if (!$blog->isValidCategory($catid)) {
-            doError(_ERROR_NOSUCHCATEGORY);
-        } else {
-            $blog->setSelectedCategory($catid);
-        }
-    }
-
-    // decide which skin should be used
-    if ($skinid != '' && ($skinid == 0) ) {
-        selectSkin($skinid);
-    }
-
-    if (!$skinid) {
-        $skinid = $blog->getDefaultSkin();
-    }
-
-    //$special = requestVar('special'); //get at top of file as global
-    if (!empty($special) && isValidShortName($special)) {
-        $type = strtolower($special);
-    }
-
-    $skin = new SKIN($skinid);
-
-    if (!$skin->isValid) {
-        doError(_ERROR_NOSUCHSKIN);
-    }
-
+			// timestamp for the next year
+			$t = mktime(0, 0, 0, 1, 1, $y + 1);
+			$archivenext = i18n::strftime('%Y', $t);
+			if ( $t < $last_timestamp )
+			{
+				$archivenextexists = true;
+			}
+			else
+			{
+				$archivenextexists = false;
+			}
+		}
+		else
+		{
+			$archivetype = _ARCHIVETYPE_MONTH;
+			$t = mktime(0, 0, 0, $m, 1, $y);
+			// one day before is in the previous month
+			$archiveprev = i18n::strftime('%Y-%m', $t - 86400);
+			if ( $t > $first_timestamp )
+			{
+				$archiveprevexists = true;
+			}
+			else
+			{
+				$archiveprevexists = false;
+			}
+			
+			// timestamp for the next month
+			$t = mktime(0, 0, 0, $m+1, 1, $y);
+			$archivenext = i18n::strftime('%Y-%m', $t);
+			if ( $t < $last_timestamp )
+			{
+				$archivenextexists = true;
+			}
+			else
+			{
+				$archivenextexists = false;
+			}
+		}
+	}
+	elseif ($archivelist)
+	{
+		$type = 'archivelist';
+		
+		if ( is_numeric($archivelist) )
+		{
+			$blogid = intVal($archivelist);
+		}
+		else
+		{
+			$blogid = getBlogIDFromName($archivelist);
+		}
+	
+		if ( !$blogid )
+		{
+			doError(_ERROR_NOSUCHBLOG);
+		}
+	}
+	elseif ( $query )
+	{
+		global $startpos;
+		$type = 'search';
+		$query = stripslashes($query);
+		
+		if ( is_numeric($blogid) )
+		{
+			$blogid = intVal($blogid);
+		}
+		else
+		{
+			$blogid = getBlogIDFromName($blogid);
+		}
+		
+		if ( !$blogid )
+		{
+			doError(_ERROR_NOSUCHBLOG);
+		}
+	}
+	elseif ( $memberid )
+	{
+		$type = 'member';
+		
+		if ( !MEMBER::existsID($memberid) )
+		{
+			doError(_ERROR_NOSUCHMEMBER);
+		}
+		$memberinfo = $manager->getMember($memberid);
+	}
+	elseif ( $imagepopup )
+	{
+		// media object (images etc.)
+		$type = 'imagepopup';
+		
+		// TODO: check if media-object exists
+		// TODO: set some vars?
+	}
+	else
+	{
+		// show regular index page
+		global $startpos;
+		$type = 'index';
+	}
+	
+	// any type of skin with catid
+	if ( $catid && !$blogid )
+	{
+		$blogid = getBlogIDFromCatID($catid);
+	}
+	
+	// decide which blog should be displayed
+	if ( !$blogid )
+	{
+		$blogid = $CONF['DefaultBlog'];
+	}
+	
+	$b =& $manager->getBlog($blogid);
+	$blog = $b; // references can't be placed in global variables?
+	
+	if ( !$blog->isValid )
+	{
+		doError(_ERROR_NOSUCHBLOG);
+	}
+	
+	// set catid if necessary
+	if ( $catid )
+	{
+		// check if the category is valid
+		if ( !$blog->isValidCategory($catid) )
+		{
+			doError(_ERROR_NOSUCHCATEGORY);
+		}
+		else
+		{
+			$blog->setSelectedCategory($catid);
+		}
+	}
+	
+	// decide which skin should be used
+	if ( $skinid != '' && ($skinid == 0) )
+	{
+		selectSkin($skinid);
+	}
+	
+	if ( !$skinid )
+	{
+		$skinid = $blog->getDefaultSkin();
+	}
+	
+	//$special = requestVar('special'); //get at top of file as global
+	if ( !empty($special) && isValidShortName($special) )
+	{
+		$type = strtolower($special);
+	}
+	
+	$skin = new SKIN($skinid);
+	
+	if ( !$skin->isValid )
+	{
+		doError(_ERROR_NOSUCHSKIN);
+	}
+	
 	// set global skinpart variable so can determine quickly what is being parsed from any plugin or phpinclude
 	global $skinpart;
 	$skinpart = $type;
-
-    // parse the skin
-    $skin->parse($type);
-
-    // check to see we should throw JustPosted event
-    $blog->checkJustPosted();
+	
+	// parse the skin
+	$skin->parse($type);
+	
+	// check to see we should throw JustPosted event
+	$blog->checkJustPosted();
+	return;
 }
 
 /**
