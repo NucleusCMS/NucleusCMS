@@ -265,58 +265,105 @@ function listplug_table_plugoptionlist($template, $type) {
 	}
 }
 
-function listplug_plugOptionRow($current) {
+function listplug_plugOptionRow($current)
+{
 	$varname = 'plugoption['.$current['oid'].']['.$current['contextid'].']';
+	
 	// retreive the optionmeta
 	$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-
+	
 	// only if it is not a hidden option write the controls to the page
-	if ($meta['access'] != 'hidden') {
-		echo '<td>',i18n::hsc($current['description']?$current['description']:$current['name']),'</td>';
-		echo '<td>';
-		switch($current['type']) {
-			case 'yesno':
-				ADMIN::input_yesno($varname, $current['value'], 0, 'yes', 'no');
-				break;
-			case 'password':
-				echo '<input type="password" size="40" maxlength="128" name="',i18n::hsc($varname),'" value="',i18n::hsc($current['value']),'" />';
-				break;
-			case 'select':
-				echo '<select name="'.i18n::hsc($varname).'">';
-				$aOptions = NucleusPlugin::getOptionSelectValues($current['typeinfo']);
-				$aOptions = i18n::explode('|', $aOptions);
-				for ($i=0; $i<(count($aOptions)-1); $i+=2) {
-					echo '<option value="'.i18n::hsc($aOptions[$i+1]).'"';
-					if ($aOptions[$i+1] == $current['value'])
-						echo ' selected="selected"';
-					echo '>'.i18n::hsc($aOptions[$i]).'</option>';
-				}
-				echo '</select>';
-				break;
-			case 'textarea':
-				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-				echo '<textarea class="pluginoption" cols="30" rows="5" name="',i18n::hsc($varname),'"';
-				if ($meta['access'] == 'readonly') {
-					echo ' readonly="readonly"';
-				}
-				echo '>',i18n::hsc($current['value']),'</textarea>';
-				break;
-			case 'text':
-			default:
-				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-
-				echo '<input type="text" size="40" maxlength="128" name="',i18n::hsc($varname),'" value="',i18n::hsc($current['value']),'"';
-				if ($meta['datatype'] == 'numerical') {
-					echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
-				}
-				if ($meta['access'] == 'readonly') {
-					echo ' readonly="readonly"';
-				}
-				echo ' />';
-		}
-		echo $current['extra'];
-		echo '</td>';
+	if ( in_array('access', $meta) && $meta['access'] == 'hidden' )
+	{
+		return;
 	}
+	
+	if ( !$current['description'] )
+	{
+		echo '<td>' , i18n::hsc($current['name']) . "</td>\n";
+	}
+	else
+	{
+		if ( !defined($current['description']) )
+		{
+			echo '<td>' , i18n::hsc($current['description']) . "</td>\n";
+		}
+		else
+		{
+			echo '<td>' , i18n::hsc(constant($current['description'])) . "</td>\n";
+		}
+	}
+	echo "<td>\n";
+	switch($current['type'])
+	{
+		case 'yesno':
+			ADMIN::input_yesno($varname, $current['value'], 0, 'yes', 'no');
+			break;
+		case 'password':
+			echo '<input type="password" size="40" maxlength="128" name="',i18n::hsc($varname),'" value="',i18n::hsc($current['value']),"\" />\n";
+			break;
+		case 'select':
+			echo '<select name="'.i18n::hsc($varname)."\">\n";
+			$aOptions = NucleusPlugin::getOptionSelectValues($current['typeinfo']);
+			$aOptions = i18n::explode('|', $aOptions);
+			
+			for ( $i=0; $i<(count($aOptions)-1); $i+=2 )
+			{
+				if ($aOptions[$i+1] == $current['value'])
+				{
+					echo '<option value="' . i18n::hsc($aOptions[$i+1]) . '" selected="selected">';
+				}
+				else
+				{
+					echo '<option value="' . i18n::hsc($aOptions[$i+1]) . '">';
+				}
+				if ( defined($aOptions[$i]) )
+				{
+					echo i18n::hsc(constant($aOptions[$i]));
+				}
+				else
+				{
+					echo i18n::hsc($aOptions[$i]);
+				}
+				echo "</option>\n";
+			}
+			echo "</select>\n";
+			
+			break;
+		case 'textarea':
+			//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
+			if ( array_key_exists('access', $meta) && $meta['access'] == 'readonly' )
+			{
+				echo '<textarea class="pluginoption" cols="30" rows="5" name="' . i18n::hsc($varname) . "\" readonly=\"readonly\">\n";
+			}
+			else
+			{
+				echo '<textarea class="pluginoption" cols="30" rows="5" name="' . i18n::hsc($varname) . "\">\n";
+			}
+			echo i18n::hsc($current['value']) . "\n";
+			echo "</textarea>\n";
+			break;
+		case 'text':
+		default:
+			//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
+			echo '<input type="text" size="40" maxlength="128" name="',i18n::hsc($varname),'" value="',i18n::hsc($current['value']),'"';
+			if ( array_key_exists('datatype', $meta) && $meta['datatype'] == 'numerical' )
+			{
+				echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
+			}
+			if ( array_key_exists('access', $current) && $meta['access'] == 'readonly')
+			{
+				echo ' readonly="readonly"';
+			}
+			echo " />\n";
+	}
+	if ( array_key_exists('extra', $current) )
+	{
+		echo $current['extra'];
+	}
+	echo "</td>\n";
+	
+	return;
 }
 
 function listplug_table_itemlist($template, $type) {

@@ -6602,40 +6602,55 @@ selector();
 
 
     }
-
-    /**
-     * Helper functions to create option forms etc.
-     * @todo document parameters
-     */
-    function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0) {
-        $id = i18n::hsc($name);
-        $id = str_replace('[','-',$id);
-        $id = str_replace(']','-',$id);
-        $id1 = $id . i18n::hsc($value1);
-        $id2 = $id . i18n::hsc($value2);
-
-        if ($name=="admin") {
-            echo '<input onclick="selectCanLogin(true);" type="radio" name="', i18n::hsc($name),'" value="', i18n::hsc($value1),'" ';
-        } else {
-            echo '<input type="radio" name="', i18n::hsc($name),'" value="', i18n::hsc($value1),'" ';
-        }
-
-            if ($checkedval == $value1)
-                echo "tabindex='$tabindex' checked='checked'";
-            echo ' id="'.$id1.'" /><label for="'.$id1.'">' . $yesval . '</label>';
-        echo ' ';
-        if ($name=="admin") {
-            echo '<input onclick="selectCanLogin(false);" type="radio" name="', i18n::hsc($name),'" value="', i18n::hsc($value2),'" ';
-        } else {
-            echo '<input type="radio" name="', i18n::hsc($name),'" value="', i18n::hsc($value2),'" ';
-        }
-            if ($checkedval != $value1)
-                echo "tabindex='$tabindex' checked='checked'";
-            if ($isAdmin && $name=="canlogin")
-                echo ' disabled="disabled"';
-            echo ' id="'.$id2.'" /><label for="'.$id2.'">' . $noval . '</label>';
-    }
-
-} // class ADMIN
-
-?>
+	
+	/**
+	 * ADMIN::input_yesno()
+	 * Output input elements with radio attribute for yes/no options
+	 * @param	string	$name	name attribute
+	 * @param	string	$checkedval	current value attribute
+	 * @param	integer	$tabindex	tab index
+	 * @param	string	$value_yes	value attribute for yes option
+	 * @param	string	$value_no	value attribute for no option
+	 * @param	string	$yesval	child text element for yes option
+	 * @param	string	$noval	child text element for no option
+	 * @param	boolean	$isAdmin	have admin right or not
+	 * @return	void
+	 */
+	function input_yesno($name, $checkedval, $tabindex = 0, $value_yes = 1, $value_no = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0)
+	{
+		$id = preg_replace('#\[|\]#', '-', $name);
+		$id_yes = $id . $value_yes;
+		$id_no  = $id . $value_no;
+		
+		echo '<input type="radio" id="' . $id_yes . '" name="' . i18n::hsc($name) . '" value="' . i18n::hsc($value_yes) . '"';
+		if ( $name=="admin" )
+		{
+			echo ' onclick="selectCanLogin(true);"';
+		}
+		if ( $checkedval == $value_yes )
+		{
+			echo " tabindex='$tabindex' checked='checked'";
+		}
+		echo " />\n";
+		echo "<label for=\"{$id_yes}\">{$yesval}</label>\n";
+		
+		echo ' ';
+		
+		echo '<input type="radio" id="' . $id_no . '" name="' . i18n::hsc($name) . '" value="' . i18n::hsc($value_no) . '"';
+		if ( $name=="admin" )
+		{
+			echo ' onclick="selectCanLogin(false);"';
+		}
+		if ( $checkedval != $value_yes )
+		{
+			echo " tabindex='$tabindex' checked='checked'";
+		}
+		if ($isAdmin && $name=="canlogin")
+		{
+			echo ' disabled="disabled"';
+		}
+		echo " />\n";
+		echo "<label for=\"{$id_no}\">{$noval}</label>\n";
+		return;
+	}
+}
