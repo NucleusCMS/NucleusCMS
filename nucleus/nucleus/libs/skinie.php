@@ -457,7 +457,7 @@ class SKINIMPORT
 	/**
 	  * Called by the XML parser for each closing tag encountered
 	  */
-	private function end_elment($parser, $name)
+	private function end_element($parser, $name)
 	{
 		if ( $this->debug )
 		{
