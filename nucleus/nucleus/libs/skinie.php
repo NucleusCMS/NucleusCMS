@@ -18,7 +18,8 @@
  * @version $Id$
  */
 
-class SKINIMPORT {
+class SKINIMPORT
+{
 	// hardcoded value (see constructor). When 1, interesting info about the
 	// parsing process is sent to the output
 	private $debug;
@@ -467,6 +468,10 @@ class SKINIMPORT {
 		{
 			$name = i18n::convert($name, $this->parse_charset, i18n::get_current_charset());
 			$charset_data = i18n::convert($this->get_character_data(), $this->parse_charset, i18n::get_current_charset());
+		}
+		else
+		{
+			$charset_data = $this->get_character_data();
 		}
 		
 		switch ( $name )
