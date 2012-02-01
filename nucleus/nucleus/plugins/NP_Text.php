@@ -12,7 +12,7 @@ class NP_Text extends NucleusPlugin
 	public function getVersion()		{ return '0.53'; }
 	public function getDescription()	{ return 'Display constants from language files: <%Text(CONSTANT)%>'; }
 	public function getEventList()		{ return array('PreSkinParse'); }
-	public function supportsFeature($feature)	{ return ( $feature == 'SqlTablePrefix' ) }
+	public function supportsFeature($feature)	{ return ( $feature == 'SqlTablePrefix' ); }
 	public function install()			{ return; }
 	public function uninstall()			{ return; }
 	public function init()
