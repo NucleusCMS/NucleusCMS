@@ -1,29 +1,39 @@
 <?php
 /**
- * i18n class
- * written by Takashi Sakamoto as of Dec.24, 2011
- * This is wrapper functions of iconv and mbstring
+ * i18n class for Nucleus CMS
+ * written by Takashi Sakamoto as of Feb 03, 2012
+ * 
+ * This includes wrapper functions of iconv and mbstring
  * and mail function with 7bit characters encoder
- * for multibyte processing
- * and includes members related to locale.
+ * for multibyte processing and includes members related to locale.
+ * 
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
  */
-class i18n {
-	private static $mode = FALSE;
+class i18n
+{
+	static private $mode = FALSE;
 	
-	private static $charset = '';
-	private static $language = '';
-	private static $script = '';
-	private static $region = '';
-	private static $locale_list = array();
-	private static $timezone = 'UTC';
+	static private $charset = '';
+	static private $language = '';
+	static private $script = '';
+	static private $region = '';
+	static private $locale_list = array();
+	static private $timezone = 'UTC';
 	
 	/**
 	 * i18n::init
 	 * Initializing i18n class
+	 * 
+	 * @static
+	 * @access public
 	 * @param	string	$charset	character set
 	 * @return	boolean	
 	 */
-	public static function init($charset, $dir)
+	static public function init($charset, $dir)
 	{
 		/* i18n is already initialized */
 		if ( self::$mode )
@@ -78,6 +88,9 @@ class i18n {
 	/**
 	 * i18n::get_available_locale_list
 	 * return available locale list with current charset
+	 * 
+	 * @static
+	 * @access public
 	 * @param	void
 	 * @return	array	available locale list
 	 */
@@ -89,10 +102,13 @@ class i18n {
 	/**
 	 * i18n::get_current_charset
 	 * return current charset
+	 * 
+	 * @static
+	 * @access public
 	 * @param	void
 	 * @return	string	$charset	current character set
 	 */
-	public static function get_current_charset()
+	static public function get_current_charset()
 	{
 		return self::$charset;
 	}
@@ -100,9 +116,17 @@ class i18n {
 	/**
 	 * i18n::set_locale
 	 * Set current locale
-	 * NOTE: naming rule is "$language_$script_$region.$charset.php".
+	 * 
+	 * NOTE:
+	 * naming rule is "$language_$script_$region.$charset.php", refer to RFC 5646.
+	 * @link http://www.ietf.org/rfc/rfc5646.txt
+	 * @see 2.  The Language Tag
+	 * 
+	 * @static
+	 * @access public
 	 * @param	string	$locale
 	 * @return	bool	TRUE/FALSE
+	 * 
 	 */
 	static public function set_current_locale($locale)
 	{
@@ -119,6 +143,9 @@ class i18n {
 	/**
 	 * i18n::get_locale
 	 * Get current locale
+	 * 
+	 * @static
+	 * @access public
 	 * @param	void
 	 * @return	$locale
 	 */
@@ -131,12 +158,17 @@ class i18n {
 	/**
 	 * i18n::confirm_default_date_timezone
 	 * to avoid E_NOTICE or E_WARNING generated when every calling to a date/time function.
+	 * 
+	 * NOTE:
 	 * Some private servers are lack of its timezone setting
 	 * http://www.php.net/manual/en/function.date-default-timezone-set.php
+	 * 
+	 * @static
+	 * @access public
 	 * @param	void
 	 * @return	void
 	 */
-	public static function confirm_default_date_timezone()
+	static public function confirm_default_date_timezone()
 	{
 		if ( function_exists('date_default_timezone_get') 
 		 && FALSE !== ($timezone = @date_default_timezone_get()))
@@ -152,10 +184,13 @@ class i18n {
 	/**
 	 * i18n::get_current_date_timezone()
 	 * get current timezone
+	 * 
+	 * @static
+	 * @access public
 	 * @param	void
 	 * @return	$timezone
 	 */
-	public static function get_date_timezone()
+	static public function get_date_timezone()
 	{
 		return self::$timezone;
 	}
@@ -163,11 +198,14 @@ class i18n {
 	/**
 	 * i18n::hen
 	 * htmlentities wrapper
+	 * 
+	 * @static
+	 * @access public
 	 * @param	string	$string	target string
 	 * @param	string	$quotation	quotation mode. please refer to the argument of PHP built-in htmlentities
 	 * @return	string	escaped string
 	 */
-	public static function hen($string, $quotation=ENT_QUOTES)
+	static public function hen($string, $quotation=ENT_QUOTES)
 	{
 		$string = html_entity_decode($string, $quotation, self::$charset);
 		return (string) htmlentities($string, $quotation, self::$charset);
@@ -176,16 +214,20 @@ class i18n {
 	/**
 	 * i18n::hsc
 	 * htmlspecialchars wrapper
-	 * @param	string	$string	target string
-	 * @param	string	$quotation	quotation mode. please refer to the argument of PHP built-in htmlspecialchars
-	 * @return	string	escaped string
 	 * 
 	 * NOTE: htmlspecialchars_decode() is ASCII-to-ACII conversion
 	 *  and its target string consists of several letters.
 	 *   There are no problems.
+	 * 
+	 * @static
+	 * @access public
+	 * @param	string	$string	target string
+	 * @param	string	$quotation	quotation mode. please refer to the argument of PHP built-in htmlspecialchars
+	 * @return	string	escaped string
+	 * 
 	 */
 	
-	public static function hsc($string, $quotation=ENT_QUOTES)
+	static public function hsc($string, $quotation=ENT_QUOTES)
 	{
 		$string = htmlspecialchars_decode($string, $quotation);
 		return (string) htmlspecialchars($string, $quotation, self::$charset);
@@ -194,12 +236,15 @@ class i18n {
 	/**
 	 * i18n::convert
 	 * character set converter
+	 * 
+	 * @static
+	 * @access public
 	 * @param	string	$string	target string binary
 	 * @param	string	$from	original character set encoding
 	 * @param	string	$to	target character set encoding
 	 * @return	string	converted string
 	 */
-	public static function convert($string, $from, $to='')
+	static public function convert($string, $from, $to='')
 	{
 		if ( $to == '' )
 		{
@@ -220,10 +265,13 @@ class i18n {
 	/**
 	 * i18n::strlen
 	 * strlen wrapper
+	 * 
+	 * @static
+	 * @access public
 	 * @param	string	$string	target string
 	 * @return	integer	the number of letters
 	 */
-	public static function strlen($string)
+	static public function strlen($string)
 	{
 		$length = 0;
 		if ( self::$mode == 'iconv' )
@@ -244,12 +292,15 @@ class i18n {
 	/**
 	 * i18n::strpos
 	 * strpos wrapper
+	 * 
+	 * @static
+	 * @access public
 	 * @param	string	$haystack	string to search
 	 * @param	string	$needle	string for search
 	 * @param	string	$offset	the position from which the search should be performed. 
 	 * @return	integer/FALSE	the numeric position of the first occurrence of needle in haystack
 	 */
-	public static function strpos($haystack, $needle, $offset=0)
+	static public function strpos($haystack, $needle, $offset=0)
 	{
 		$position = 0;
 		if ( self::$mode == 'iconv' )
@@ -275,11 +326,14 @@ class i18n {
 	/**
 	 * i18n::strrpos
 	 * strrpos wrapper
+	 * 
+	 * @static
+	 * @access public
 	 * @param	string	$haystack	string to search
 	 * @param	string	$needle	string for search
 	 * @return	integer/FALSE	the numeric position of the last occurrence of needle in haystack
 	 */
-	public static function strrpos ($haystack, $needle)
+	static public function strrpos ($haystack, $needle)
 	{
 		$position = 0;
 		if ( self::$mode == 'iconv' )
@@ -305,12 +359,15 @@ class i18n {
 	/**
 	 * i18n::substr
 	 * substr wrapper
+	 * 
+	 * @static
+	 * @access public
 	 * @param	string	$string	string to be cut
 	 * @param	string	$start	the position of starting
 	 * @param	integer	$length	the length to be cut
 	 * @return	string	the extracted part of string
 	 */
-	public static function substr($string, $start, $length=0)
+	static public function substr($string, $start, $length=0)
 	{
 		$return = '';
 		if ( self::$mode == 'iconv' )
@@ -329,18 +386,23 @@ class i18n {
 	}
 	
 	/**
-	 * i18n::explode
+	 * i18n::explode()
 	 * explode function based on multibyte processing with non-pcre regular expressions
 	 * 
 	 * NOTE: we SHOULD use preg_split function instead of this,
 	 *  and I hope this is obsoleted near future...
+	 *  
+	 *  preg_split()
+	 *  http://www.php.net/manual/en/function.preg-split.php
 	 * 
+	 * @static
+	 * @access public
 	 * @param	string	$delimiter	singlebyte or multibyte delimiter
 	 * @param	string	$target	target string
 	 * @param	integer	$limit	the number of index for returned array
 	 * @return	array	array splitted by $delimiter
 	 */
-	public static function explode($delimiter, $target, $limit=0)
+	static public function explode($delimiter, $target, $limit=0)
 	{
 		$array = array();
 		$preg_delimiter = '#' . preg_quote($delimiter, '#') . '#';
@@ -367,11 +429,14 @@ class i18n {
 	/**
 	 * i18n::strftime
 	 * strftime function based on multibyte processing
+	 * 
+	 * @static
+	 * @access public
 	 * @param	string	$format	format with singlebyte or multibyte
 	 * @param	timestamp	$timestamp	UNIX timestamp
 	 * @return	string	formatted timestamp
 	 */
-	public static function strftime($format, $timestamp='')
+	static public function strftime($format, $timestamp='')
 	{
 		$formatted = '';
 		
@@ -414,6 +479,9 @@ class i18n {
 	/**
 	 * i18n::mail
 	 * Send mails with headers including 7bit-encoded multibyte string
+	 * 
+	 * @static
+	 * @access public
 	 * @param	string	$to		receivers including singlebyte and multibyte strings, based on RFC 5322
 	 * @param	string	$subject	subject including singlebyte and multibyte strings
 	 * @param	string	$message	message including singlebyte and multibyte strings
@@ -421,7 +489,7 @@ class i18n {
 	 * @param	string(B/Q)	$scheme	7bit-encoder scheme based on RFC 2047
 	 * @return	boolean	accepted delivery or not
 	 */
-	public static function mail($to, $subject, $message, $from, $scheme='B')
+	static public function mail($to, $subject, $message, $from, $scheme='B')
 	{
 		
 		$to = self::mailbox_list_encoder($to, $scheme);
@@ -451,13 +519,16 @@ class i18n {
 	 * Encode multi byte strings included in mailbox.
 	 * The format of mailbox is based on RFC 5322, which obsoletes RFC 2822
 	 * 
-	 * @param	string	$mailbox_list		mailbox list
-	 * @return	string	encoded string	
-	 * @link	http://www.faqs.org/rfcs/rfc5322.html
+	 * @link	http://www.ietf.org/rfc/rfc5322.txt
 	 * @see		3.4. Address Specification
 	 * 
+	 * @static
+	 * @access private
+	 * @param	string	$mailbox_list		mailbox list
+	 * @return	string	encoded string	
+	 * 
 	 */
-	private static function mailbox_list_encoder ($mailbox_list, $scheme='B')
+	static private function mailbox_list_encoder ($mailbox_list, $scheme='B')
 	{
 		$encoded_mailboxes = array();
 		$mailboxes = preg_split('#,#', $mailbox_list);
@@ -490,25 +561,29 @@ class i18n {
 	 * i18n::seven_bit_characters_encoder
 	 * Encoder into 7bit ASCII expression for Non-ASCII Text based on RFC 2047.
 	 * 
-	 * @link http://www.faqs.org/rfcs/rfc2047.html
+	 * @link http://www.ietf.org/rfc/rfc2047.txt
 	 * @see 2. Syntax of encoded-words
+	 * 
+	 * NOTE: RFC 2047 has a ambiguousity for dealing with 'linear-white-space'.
+	 *  This causes a trouble related to line breaking between single byte and multi-byte strings.
+	 *  To avoid this, single byte string is encoded as well as multi byte string here.
+	 * 
+	 * NOTE: RFC 2231 also defines the way to use non-ASCII characters in MIME header.
+	 * http://www.ietf.org/rfc/rfc2231.txt
+	 * 
+	 * NOTE: iconv extension give the same functions as this in PHP5
+	 * iconv_mime_encode():
+	 * http://www.php.net/manual/en/function.iconv-mime-encode.php
+	 * 
+	 * @static
+	 * @access private
 	 * @param	string	$charset	Character set encoding
 	 * @param	string	$type	type of 7 bit encoding, should be 'B' or 'Q'
 	 * @param	string	$string	Target string with header field
 	 * @return	string	encoded string
 	 * 
-	 * NOTE: iconv extension give the same functions as this and each encoder in PHP5
-	 * These implementation are for the servers which is lack of iconv extension
-	 * 
-	 * NOTE: RFC 2047 has a ambiguousity for dealing with 'linear-white-space'.
-	 *  This causes a trouble related to line breaking between single byte and multi byte strings.
-	 *  To avoid this, single byte string is encoded as well as multi byte string here.
-	 * 
-	 * NOTE: RFC 2231 allows the specification of the language to be used
-	 *  for display as well as the character set but isn't applied here.
-	 * 
 	 */
-	private static function seven_bit_characters_encoder($string, $scheme='B')
+	static private function seven_bit_characters_encoder($string, $scheme='B')
 	{
 		if ( $scheme != 'Q' )
 		{
@@ -582,10 +657,8 @@ class i18n {
 	 * B encoder according to RFC 2047.
 	 * The "B" encoding is identical to the "BASE64" encoding defined by RFC 4648.
 	 * 
-	 * @link http://tools.ietf.org/html/rfc4648
+	 * @link http://www.ietf.org/rfc/rfc4648.txt
 	 * @see 6.8. Base64 Content-Transfer-Encoding
-	 * @param	string	$target	targetted string
-	 * @return	string	encoded string
 	 * 
 	 * NOTE: According to RFC 4648
 	 * (1)	The final quantum of encoding input is an integral multiple of 24 bits;
@@ -598,8 +671,12 @@ class i18n {
 	 * 		the final unit of encoded output will be three characters followed
 	 * 		by one "=" padding character.
 	 * 
+	 * @static
+	 * @access private
+	 * @param	string	$target	targetted string
+	 * @return	string	encoded string
 	 */
-	private static function b_encoder($target)
+	static private function b_encoder($target)
 	{
 		return base64_encode($target);
 	}
@@ -609,10 +686,8 @@ class i18n {
 	 * The "Q" encoding is similar to "Quoted-Printable" content-transfer-encoding defined in RFC 2045,
 	 *  but the "Q" encoding and the "Quoted-Printable" are different a bit.
 	 * 
-	 * @link http://www.faqs.org/rfcs/rfc2047.html
+	 * @link http://www.ietf.org/rfc/rfc2047.txt
 	 * @see 4.2. The "Q" encoding
-	 * @param	string	$target	targetted string
-	 * @return	string	encoded string
 	 * 
 	 * NOTE: According to RFC 2047
 	 * (1)	Any 8-bit value may be represented by a "=" followed by two hexadecimal digits.
@@ -632,8 +707,12 @@ class i18n {
 	 * 		(But see section 5 for restrictions.)
 	 * 		In particular, SPACE and TAB MUST NOT be represented as themselves within encoded words.
 	 * 
+	 * @static
+	 * @access private
+	 * @param	string	$target	targetted string
+	 * @return	string	encoded string
 	 */
-	private static function q_encoder($target)
+	static private function q_encoder($target)
 	{
 		$string = '';
 		
@@ -666,11 +745,14 @@ class i18n {
 	}
 	
 	/**
-	* i18n::convert_locale_to_old_language_file_name()
-	* NOTE: this should be obsoleted near future.
-	* @param	string	$target_locale	locale name as language_script_region
-	* @return	string	old language file name
-	*/
+	 * i18n::convert_locale_to_old_language_file_name()
+	 * NOTE: this should be obsoleted near future.
+	 * 
+	 * @static
+	 * @access public
+	 * @param	string	$target_locale	locale name as language_script_region
+	 * @return	string	old language file name
+	 */
 	static public function convert_locale_to_old_language_file_name($target_locale)
 	{
 		$target_language = '';
@@ -695,6 +777,9 @@ class i18n {
 	/**
 	 * i18n::convert_old_language_file_name_to_locale()
 	 * NOTE: this should be obsoleted near future.
+	 * 
+	 * @static
+	 * @access public
 	 * @param	string	$target_language	old language file name
 	 * @return	string	locale name as language_script_region
 	 */
@@ -723,34 +808,37 @@ class i18n {
 	 * i18n::$lang_refs
 	 * reference table to convert old and new way to name language files.
 	 * NOTE: this should be obsoleted as soon as possible.
+	 * 
+	 * @static
+	 * @access private
 	 */
-	private static $lang_refs = array(
-		"english"		=>	"en_Latn_US",
-		"english-utf8"	=>	"en_Latn_US.UTF-8",
-		"bulgarian"	=>	"bg_Cyrl_BG",
-		"finnish"		=>	"fi_Latn_FU",
-		"catalan"		=>	"ca_Latn_ES",
-		"french"		=>	"fr_Latn_FR",
-		"russian"		=>	"ru_Cyrl_RU",
-		"chinese"		=>	"zh_Hans_CN",
-		"simchinese"	=>	"zh_Hans_CN",
-		"chineseb5"	=>	"zh_Hant_TW",
+	static private $lang_refs = array(
+		"english"		=> "en_Latn_US",
+		"english-utf8"	=> "en_Latn_US.UTF-8",
+		"bulgarian"	=> "bg_Cyrl_BG",
+		"finnish"		=> "fi_Latn_FU",
+		"catalan"		=> "ca_Latn_ES",
+		"french"		=> "fr_Latn_FR",
+		"russian"		=> "ru_Cyrl_RU",
+		"chinese"		=> "zh_Hans_CN",
+		"simchinese"	=> "zh_Hans_CN",
+		"chineseb5"	=> "zh_Hant_TW",
 		"traditional_chinese"	=>	"zh_Hant_TW",
-		"galego"		=>	"gl_Latn_ES",
-		"german"		=>	"de_Latn_DE",
-		"korean-utf"	=>	"ko_Kore_KR.UTF-8",
-		"korean-euc-kr"	=>	"ko_Kore_KR.EUC-KR",
-		"slovak"		=>	"sk_Latn_SK",
-		"czech"		=>	"cs_Latn_CZ",
-		"hungarian"	=>	"hu_Latn_HU",
-		"latvian"		=>	"lv_Latn_LV",
-		"nederlands"	=>	"nl_Latn_NL",
-		"italiano"		=>	"it_Latn_IT",
-		"persian"		=>	"fa_Arab_IR",
-		"spanish"		=>	"es_Latn_ES",
-		"spanish-utf8"	=>	"es_Latn_ES.UTF-8",
-		"japanese-euc"	=>	"ja_Jpan_JP.EUC-JP",
-		"japanese-utf8"	=>	"ja_Jpan_JP.UTF-8",
-		"portuguese_brazil"	=>	"pt_Latn_BR"
+		"galego"		=> "gl_Latn_ES",
+		"german"		=> "de_Latn_DE",
+		"korean-utf"	=> "ko_Kore_KR.UTF-8",
+		"korean-euc-kr"	=> "ko_Kore_KR.EUC-KR",
+		"slovak"		=> "sk_Latn_SK",
+		"czech"		=> "cs_Latn_CZ",
+		"hungarian"	=> "hu_Latn_HU",
+		"latvian"		=> "lv_Latn_LV",
+		"nederlands"	=> "nl_Latn_NL",
+		"italiano"		=> "it_Latn_IT",
+		"persian"		=> "fa_Arab_IR",
+		"spanish"		=> "es_Latn_ES",
+		"spanish-utf8"	=> "es_Latn_ES.UTF-8",
+		"japanese-euc"	=> "ja_Jpan_JP.EUC-JP",
+		"japanese-utf8"	=> "ja_Jpan_JP.UTF-8",
+		"portuguese_brazil"	=> "pt_Latn_BR"
 	);
 }
