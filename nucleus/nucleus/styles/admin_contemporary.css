@@ -258,62 +258,117 @@ h1 {
 html>body #content { font-size: small; }
 
 /* tables */
-table {
+div#content table {
 	border: none;
 	width: 100%;
 	border-collapse: collapse;
 	margin-bottom: 10px;
-	margin-top: 10px;	
+	margin-top: 10px;
 }
 
-th {
-	background-color: #ddd;
-	color: #000;
+div#content table tbody tr {
+	background-color: #FFFFFF;
+}
+
+div#content table tbody tr:hover {
+	background-color:	#F5F5F5;
+}
+
+div#content table thead tr th {
+	border: none;
+	background-color: #BBBBCC;
+	color: #000000;
 	font-size: small;
 }
 
-th, td {
+div#content table thead th,
+div#content table tbody td {
 	padding: 4px;
-	empty-cells: show;	
-	border: 1px solid #ddd; /* add */
+	empty-cells: show;
 }
 
-td {
-	background-color: #fff;
+div#content table tbody tr td {
 	border: 1px solid #ddd;
 	font-size: small;
 	vertical-align: top;
 	text-align: left;
 }
 
-td a:link, td a:visited { 
+div#content table tbody tr td a:link,
+div#content table tbody tr td a:visited {
 	text-decoration: underline;
 	color: black;
 	font-weight: normal;
 }
 
-td a:hover {
+div#content table tbody tr td a:hover {
 	color: #1D3565;
 	text-decoration: underline;
 }
 
-td.draft {
-	background-color: #ffe;
-}
-td.future {
-	background-color: #fff7f1;
+div#content table tbody tr td.draft,
+div#content table tbody tr td.future {
+	background-color: #FFFFEE;
 }
 
-tr.highlighted td {
-	background-color: green;
-}
-
-table.navigation td, table.navigation th {
+div#content table.navigation td,
+div#content table.navigation th {
 	border: none;
 }
 
+div#content table tbody td h3 {
+	padding:	0px;
+	margin:	0px 0px 2em 0px;
+	border:	0px;
+	color:	#000000;
+	font-size:	small;
+	font-weight:	normal;
+	line-height:	13pt;
+}
+
+div#content table tbody td h3#base_skin {
+	font-weight:	bold;
+}
+
+/* definitive list */
+div#content table tbody tr td dl {
+	margin:	0px;
+	padding:	0px;
+}
+
+div#content table tbody tr td:first-child dl dt {
+	margin:	0px;
+	padding:	0px 5px 0px 0px;
+	display:	inline;
+	float:	left;
+	clear:	both;
+}
+
+div#content table tbody tr td:first-child dl dd {
+	margin:	0px;
+	padding:	0px;
+	display:	block;
+}
+
+div#content table tbody tr td dl dd {
+	margin:	0px 0px 1em 0px;
+}
+
+/* unorderd list */
+div#content table tbody tr td ul {
+	margin:	0px;
+	padding:	0px;
+	list-style:	none;
+}
+
+div#content table tbody tr td ul li {
+	margin:	0px;
+	padding:	0px;
+	white-space:	nowrap;
+}
+
 .batchoperations {
-	background-color: #ebebf2;
+	background-color: #EEEEFF;
 	width: auto;
 	padding: 5px;
 	text-align: right;
