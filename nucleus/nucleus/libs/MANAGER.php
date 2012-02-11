@@ -264,18 +264,20 @@ class MANAGER
 	}
 
 	/**
-	  * A helper function to load a plugin
-	  * 
-	  *	private
-	  */
+	 * MANAGER::_loadPlugin()
+	 * loading a certain plugin
+	 * 
+	 * @param	string $name plugin name
+	 * @return	void
+	 */
 	function _loadPlugin($name)
 	{
 		if ( !class_exists($name) )
 		{
 				global $DIR_PLUGINS;
-
+				
 				$fileName = $DIR_PLUGINS . $name . '.php';
-
+				
 				if ( !file_exists($fileName) )
 				{
 					if ( !defined('_MANAGER_PLUGINFILE_NOTFOUND') )
@@ -285,23 +287,23 @@ class MANAGER
 					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name)); 
 					return 0;
 				}
-
+				
 				// load plugin
 				include($fileName);
-
+				
 				// check if class exists (avoid errors in eval'd code)
 				if ( !class_exists($name) )
 				{
 					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
 					return 0;
 				}
-
+				
 				// add to plugin array
 				eval('$this->plugins[$name] = new ' . $name . '();');
-
+				
 				// get plugid
-				$this->plugins[$name]->plugid = $this->getPidFromName($name);
-
+				$this->plugins[$name]->setID($this->getPidFromName($name));
+				
 				// unload plugin if a prefix is used and the plugin cannot handle this^
 				global $MYSQL_PREFIX;
 				if ( ($MYSQL_PREFIX != '')
@@ -321,7 +323,7 @@ class MANAGER
 					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
 					return 0;
 				}
-
+				
 				// call init method
 				$this->plugins[$name]->init();
 		}
