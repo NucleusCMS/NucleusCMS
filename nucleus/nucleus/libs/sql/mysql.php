@@ -15,7 +15,7 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
- 
+
 /*
  * complete sql_* wrappers for mysql functions
  *
@@ -30,32 +30,33 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	/**
 	 * Errors before the database connection has been made
 	 */
-	function startUpError($msg, $title) {
-		?>
-		<html xmlns="http://www.w3.org/1999/xhtml">
-			<head><title><?php echo i18n::hsc($title)?></title></head>
-			<body>
-				<h1><?php echo i18n::hsc($title)?></h1>
-				<?php echo $msg?>
-			</body>
-		</html>
+	function startUpError($msg, $title)
+	{
+?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head><title><?php echo i18n::hsc($title)?></title></head>
+	<body>
+		<h1><?php echo i18n::hsc($title)?></h1>
+		<?php echo $msg?>
+	</body>
+</html>
 <?php
 		exit;
 	}
-	
+
 	/**
-	  * Connects to mysql server with arguments
-	  */
-	function sql_connect_args($mysql_host = 'localhost', $mysql_user = '', $mysql_password = '', $mysql_database = '') {
-		
-		$CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password); 
-		
+	 * Connects to mysql server with arguments
+	 */
+	function sql_connect_args($mysql_host = 'localhost', $mysql_user = '', $mysql_password = '', $mysql_database = '', $new_link = FALSE)
+	{
+		$CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password, $new_link);
+
 		if ( $mysql_database )
 		{
 			mysql_select_db($mysql_database,$CONN);
 			sql_set_charset('utf8');
 		}
-		
+
 		/*
 		// For debugging
 		$result = sql_query('SHOW VARIABLES LIKE \'char%\';');
@@ -64,21 +65,23 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 			echo "{$row[0]}: {$row[1]}\n";
 		}
 		*/
-		
+
 		return $CONN;
 	}
-	
+
+
 	/**
-	  * Connects to mysql server
-	  */
-	function sql_connect() {
+	 * Connects to mysql server
+	 */
+	function sql_connect()
+	{
 		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN;
 
 		$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
 		mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
-		
+
 		sql_set_charset('utf8');
-		
+
 		/*
 		// For debugging
 		$result = sql_query('SHOW VARIABLES LIKE \'char%\';');
@@ -87,9 +90,10 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 			echo "{$row[0]}: {$row[1]}\n";
 		}
 		*/
-		
+
 		return $MYSQL_CONN;
 	}
+
 
 	/**
 	  * disconnects from SQL server
@@ -99,13 +103,13 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if (!$conn) $conn = $MYSQL_CONN;
 		@mysql_close($conn);
 	}
-	
+
 	function sql_close($conn = false) {
 		global $MYSQL_CONN;
 		if (!$conn) $conn = $MYSQL_CONN;
 		@mysql_close($conn);
 	}
-	
+
 	/**
 	  * executes an SQL query
 	  */
@@ -116,7 +120,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		$res = mysql_query($query,$conn) or print("mySQL error with query $query: " . mysql_error($conn) . '<p />');
 		return $res;
 	}
-	
+
 	/**
 	  * executes an SQL error
 	  */
@@ -126,7 +130,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if (!$conn) $conn = $MYSQL_CONN;
 		return mysql_error($conn);
 	}
-	
+
 	/**
 	  * executes an SQL db select
 	  */
@@ -136,9 +140,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if (!$conn) $conn = $MYSQL_CONN;
 		return mysql_select_db($db,$conn);
 	}
-	
+
 	/*
-	 * executes an SQL real escape 
+	 * executes an SQL real escape
 	 */
 	function sql_real_escape_string($val, $conn = false)
 	{
@@ -149,16 +153,16 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		}
 		return mysql_real_escape_string($val, $conn);
 	}
-	
+
 	/**
-	  * executes an PDO::quote() like escape, ie adds quotes arround the string and escapes chars as needed 
+	  * executes an PDO::quote() like escape, ie adds quotes arround the string and escapes chars as needed
 	  */
 	function sql_quote_string($val,$conn = false) {
 		global $MYSQL_CONN;
 		if (!$conn) $conn = $MYSQL_CONN;
 		return "'".mysql_real_escape_string($val,$conn)."'";
 	}
-	
+
 	/**
 	  * executes an SQL insert id
 	  */
@@ -168,7 +172,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if (!$conn) $conn = $MYSQL_CONN;
 		return mysql_insert_id($conn);
 	}
-	
+
 	/**
 	  * executes an SQL result request
 	  */
@@ -176,7 +180,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	{
 		return mysql_result($res,$row,$col);
 	}
-	
+
 	/**
 	  * frees sql result resources
 	  */
@@ -184,7 +188,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	{
 		return mysql_free_result($res);
 	}
-	
+
 	/**
 	  * returns number of rows in SQL result
 	  */
@@ -192,7 +196,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	{
 		return mysql_num_rows($res);
 	}
-	
+
 	/**
 	  * returns number of rows affected by SQL query
 	  */
@@ -202,7 +206,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if (!$conn) $conn = $MYSQL_CONN;
 		return mysql_affected_rows($conn);
 	}
-	
+
 	/**
 	  * Get number of fields in result
 	  */
@@ -210,7 +214,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	{
 		return mysql_num_fields($res);
 	}
-	
+
 	/**
 	  * fetches next row of SQL result as an associative array
 	  */
@@ -218,7 +222,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	{
 		return mysql_fetch_assoc($res);
 	}
-	
+
 	/**
 	  * Fetch a result row as an associative array, a numeric array, or both
 	  */
@@ -226,7 +230,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	{
 		return mysql_fetch_array($res);
 	}
-	
+
 	/**
 	  * fetches next row of SQL result as an object
 	  */
@@ -234,7 +238,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	{
 		return mysql_fetch_object($res);
 	}
-	
+
 	/**
 	  * Get a result row as an enumerated array
 	  */
@@ -242,7 +246,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	{
 		return mysql_fetch_row($res);
 	}
-	
+
 	/**
 	  * Get column information from a result and return as an object
 	  */
@@ -250,7 +254,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	{
 		return mysql_fetch_field($res,$offset);
 	}
-	
+
 	/**
 	  * Get current system status (returns string)
 	  */
@@ -260,7 +264,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if (!$conn) $conn = $MYSQL_CONN;
 		return mysql_stat($conn);
 	}
-	
+
 	/**
 	  * Returns the name of the character set
 	  */
@@ -270,7 +274,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if (!$conn) $conn = $MYSQL_CONN;
 		return mysql_client_encoding($conn);
 	}
-	
+
 	/**
 	  * Get SQL client version
 	  */
@@ -278,7 +282,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	{
 		return mysql_get_client_info();
 	}
-	
+
 	/**
 	  * Get SQL server version
 	  */
@@ -288,7 +292,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if (!$conn) $conn = $MYSQL_CONN;
 		return mysql_get_server_info($conn);
 	}
-	
+
 	/**
 	  * Returns a string describing the type of SQL connection in use for the connection or FALSE on failure
 	  */
@@ -298,9 +302,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if (!$conn) $conn = $MYSQL_CONN;
 		return mysql_get_host_info($conn);
 	}
-	
+
 	/**
-	  * Returns the SQL protocol on success, or FALSE on failure. 
+	  * Returns the SQL protocol on success, or FALSE on failure.
 	  */
 	function sql_get_proto_info($conn=false)
 	{
@@ -316,42 +320,42 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	{
 		return mysql_field_name($res, $offset);
 	}
-	
+
 	/**
 	 * Set character encodings in each fields related to MySQL connection.
 	 */
 	function sql_set_charset($charset)
 	{
 		global $MYSQL_CONN;
-		
+
 		/*
 		 * NOTE:
-		 * 
+		 *
 		 * We decided to ignore which character encodings is set in each text field of MySQL table!
-		 * 
+		 *
 		 * There are differences between "SET NAMES xxx;" and "SET CHARACTER SET xxx;"
 		 *  according MySQL version.
 		 * http://dev.mysql.com/doc/refman/4.1/en/charset-connection.html
 		 * http://dev.mysql.com/doc/refman/5.1/en/charset-connection.html
-		 * 
+		 *
 		 * And mysql_set_charset() execute "SET NAMES xxx;" internally and set mysql->charset as xxx.
 		 *  refering to  MySQL C API.
 		 * http://dev.mysql.com/doc/refman/5.1/ja/mysql-set-character-set.html
 		 * http://php.net/manual/en/function.mysql-set-charset.php
-		 * 
+		 *
 		 * mysql_real_escape_string() is affected by mysql->charset,
 		 *  refering to  MySQL C API.
 		 * http://dev.mysql.com/doc/refman/5.1/en/mysql-real-escape-string.html
 		 * http://php.net/manual/en/function.mysql-real-escape-string.php
-		 * 
+		 *
 		 * But using the same character encoding in character_set_client and the strings is
 		 *  more important than mysql->charset
 		 *  because mysql_real_escape_string() escape some characters in ASCII character set.
-		 * 
+		 *
 		 */
 		$charset = strtolower($charset);
 		$mysql_version = preg_replace('#^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{1,2})(.*)$#', '$1.$2.$3', sql_get_server_info($MYSQL_CONN));
-		
+
 		if ( version_compare($mysql_version, '5.0.7', '>=') && function_exists('mysql_set_charset') )
 		{
 			$result = mysql_set_charset($charset);
@@ -364,10 +368,10 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		{
 			$result = sql_query("SET NAMES {$charset};");
 		}
-		
+
 		return $result;
 	}
-	
+
 /**************************************************************************
 Unimplemented mysql_* functions
 
