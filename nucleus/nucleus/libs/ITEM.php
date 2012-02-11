@@ -210,7 +210,7 @@ class ITEM
 
 		//Setting the itemOptions
 		$aOptions = requestArray('plugoption');
-		NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
+		NucleusPlugin::apply_plugin_options($aOptions, $itemid);
 		$manager->notify('PostPluginOptionsUpdate', array(
 			'context' => 'item',
 			'itemid' => $itemid,
@@ -368,7 +368,7 @@ class ITEM
 
 		//update the itemOptions
 		$aOptions = requestArray('plugoption');
-		NucleusPlugin::_applyPluginOptions($aOptions);
+		NucleusPlugin::apply_plugin_options($aOptions);
 		$manager->notify('PostPluginOptionsUpdate', array(
 			'context' => 'item',
 			'itemid' => $itemid,
@@ -552,7 +552,7 @@ class ITEM
 		// No plugin support in AutoSaveDraft yet
 		//Setting the itemOptions
 		//$aOptions = requestArray('plugoption');
-		//NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
+		//NucleusPlugin::apply_plugin_options($aOptions, $itemid);
 		//$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $i_title, 'body' => $i_body, 'more' => $i_more, 'closed' => $i_closed, 'catid' => $i_catid)));
 
 		// success

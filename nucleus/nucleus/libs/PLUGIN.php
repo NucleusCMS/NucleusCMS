@@ -19,106 +19,113 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
-class NucleusPlugin
+abstract class NucleusPlugin
 {
-	// these functions _have_ to be redefined in your plugin
-	function getName()
+	// these final public functions _have_ to be redefined in your plugin
+	public function getName()
+	{
+		return __CLASS__;
+	}
+	
+	public function getAuthor()
 	{
 		return 'Undefined';
 	}
 	
-	function getAuthor()
+	public function getURL()
 	{
 		return 'Undefined';
 	}
 	
-	function getURL()
-	{
-		return 'Undefined';
-	}
-	
-	function getVersion()
+	public function getVersion()
 	{
 		return '0.0';
 	}
 	
-	function getDescription()
+	public function getDescription()
 	{
 		return 'Undefined';
 	}
 	
-	// these function _may_ be redefined in your plugin
+	// these final public function _may_ be redefined in your plugin
 	
-	function getMinNucleusVersion()
+	public function getMinNucleusVersion()
 	{
 		return 150;
 	}
 	
-	function getMinNucleusPatchLevel()
+	public function getMinNucleusPatchLevel()
 	{
 		return 0;
 	}
 	
-	function getEventList()
+	public function getEventList()
 	{
 		return array();
 	}
 	
-	function getTableList()
+	public function getTableList()
 	{
 		return array();
 	}
 	
-	function hasAdminArea()
+	public function hasAdminArea()
 	{
 		return 0;
 	}
 	
-	function install()
+	public function install()
 	{
+		return;
 	}
 	
-	function unInstall()
+	public function unInstall()
 	{
+		return;
 	}
 	
-	function init()
+	public function init()
 	{
+		return;
 	}
 	
-	function doSkinVar($skinType)
+	public function doSkinVar($skinType)
 	{
+		return;
 	}
 	
-	function doTemplateVar(&$item)
+	public function doTemplateVar(&$item)
 	{
 		$args = func_get_args();
 		array_shift($args);
 		array_unshift($args, 'template');
 		call_user_func_array(array(&$this,'doSkinVar'),$args);
+		return;
 	}
 	
-	function doTemplateCommentsVar(&$item, &$comment)
+	public function doTemplateCommentsVar(&$item, &$comment)
 	{
 		$args = func_get_args();
 		array_shift($args);
 		array_shift($args);
 		array_unshift($args, 'template');
 		call_user_func_array(array(&$this,'doSkinVar'),$args);
+		return;
 	}
 	
-	function doAction($type)
+	public function doAction($type)
 	{
 		return _ERROR_PLUGIN_NOSUCHACTION;
 	}
 	
-	function doIf($key,$value)
+	public function doIf($key,$value)
 	{
 		return false;
 	}
 	
-	function doItemVar (&$item)
+	public function doItemVar (&$item)
 	{
+		return;
 	}
 	
 	/**
@@ -126,27 +133,27 @@ class NucleusPlugin
 	 *
 	 * @returns 1 if the feature is reported, 0 if not
 	 * @param $feature
-	 *		Name of the feature. See plugin documentation for more info
-	 *			'SqlTablePrefix' -> if the plugin uses the sql_table() method to get table names
-	 *			'HelpPage' -> if the plugin provides a helppage
-	 *			'SqlApi' -> if the plugin uses the complete sql_* api (must also require nucleuscms 3.5)
+	 *  Name of the feature. See plugin documentation for more info
+	 *   'SqlTablePrefix' -> if the plugin uses the sql_table() method to get table names
+	 *   'HelpPage' -> if the plugin provides a helppage
+	 *   'SqlApi' -> if the plugin uses the complete sql_* api (must also require nucleuscms 3.5)
 	 */
-	function supportsFeature($feature)
+	public function supportsFeature($feature)
 	{
 		return 0;
 	}
 	
 	/**
-	 * Report a list of plugin that is required to function
+	 * Report a list of plugin that is required to final public function
 	 *
 	 * @returns an array of names of plugin, an empty array indicates no dependency
 	 */
-	function getPluginDep()
+	public function getPluginDep()
 	{
 		return array();
 	}
 	
-	// these helper functions should not be redefined in your plugin
+	// these helper final public functions should not be redefined in your plugin
 	
 	/**
 	 * Creates a new option for this plugin
@@ -161,29 +168,29 @@ class NucleusPlugin
 	 * @param value
 	 *		Initial value for the option (max. value length is 128 characters)
 	 */
-	function createOption($name, $desc, $type, $defValue = '', $typeExtras = '')
+	final public function createOption($name, $desc, $type, $defValue = '', $typeExtras = '')
 	{
-		return $this->_createOption('global', $name, $desc, $type, $defValue, $typeExtras);
+		return $this->create_option('global', $name, $desc, $type, $defValue, $typeExtras);
 	}
 	
-	function createBlogOption($name, $desc, $type, $defValue = '', $typeExtras = '')
+	final public function createBlogOption($name, $desc, $type, $defValue = '', $typeExtras = '')
 	{
-		return $this->_createOption('blog', $name, $desc, $type, $defValue, $typeExtras);
+		return $this->create_option('blog', $name, $desc, $type, $defValue, $typeExtras);
 	}
 	
-	function createMemberOption($name, $desc, $type, $defValue = '', $typeExtras = '')
+	final public function createMemberOption($name, $desc, $type, $defValue = '', $typeExtras = '')
 	{
-		return $this->_createOption('member', $name, $desc, $type, $defValue, $typeExtras);
+		return $this->create_option('member', $name, $desc, $type, $defValue, $typeExtras);
 	}
 	
-	function createCategoryOption($name, $desc, $type, $defValue = '', $typeExtras = '')
+	final public function createCategoryOption($name, $desc, $type, $defValue = '', $typeExtras = '')
 	{
-		return $this->_createOption('category', $name, $desc, $type, $defValue, $typeExtras);
+		return $this->create_option('category', $name, $desc, $type, $defValue, $typeExtras);
 	}
 	
-	function createItemOption($name, $desc, $type, $defValue = '', $typeExtras = '')
+	final public function createItemOption($name, $desc, $type, $defValue = '', $typeExtras = '')
 	{
-		return $this->_createOption('item', $name, $desc, $type, $defValue, $typeExtras);
+		return $this->create_option('item', $name, $desc, $type, $defValue, $typeExtras);
 	}
 	
 	/**
@@ -191,76 +198,73 @@ class NucleusPlugin
 	 *
 	 * Note: Options get erased automatically on plugin uninstall
 	 */
-	function deleteOption($name)
+	final public function deleteOption($name)
 	{
-		return $this->_deleteOption('global', $name);
+		return $this->delete_option('global', $name);
 	}
 	
-	function deleteBlogOption($name)
+	final public function deleteBlogOption($name)
 	{
-		return $this->_deleteOption('blog', $name);
+		return $this->delete_option('blog', $name);
 	}
 	
-	function deleteMemberOption($name)
+	final public function deleteMemberOption($name)
 	{
-		return $this->_deleteOption('member', $name);
+		return $this->delete_option('member', $name);
 	}
 	
-	function deleteCategoryOption($name)
+	final public function deleteCategoryOption($name)
 	{
-		return $this->_deleteOption('category', $name);
+		return $this->delete_option('category', $name);
 	}
 	
-	function deleteItemOption($name)
+	final public function deleteItemOption($name)
 	{
-		return $this->_deleteOption('item', $name);
+		return $this->delete_option('item', $name);
 	}
 	
 	/**
 	 * Sets the value of an option to something new
 	 */
-	function setOption($name, $value)
+	final public function setOption($name, $value)
 	{
-		return $this->_setOption('global', 0, $name, $value);
+		return $this->set_option('global', 0, $name, $value);
 	}
 	
-	function setBlogOption($blogid, $name, $value)
+	final public function setBlogOption($blogid, $name, $value)
 	{
-		return $this->_setOption('blog', $blogid, $name, $value);
+		return $this->set_option('blog', $blogid, $name, $value);
 	}
 	
-	function setMemberOption($memberid, $name, $value)
+	final public function setMemberOption($memberid, $name, $value)
 	{
-		return $this->_setOption('member', $memberid, $name, $value);
+		return $this->set_option('member', $memberid, $name, $value);
 	}
 	
-	function setCategoryOption($catid, $name, $value)
+	final public function setCategoryOption($catid, $name, $value)
 	{
-		return $this->_setOption('category', $catid, $name, $value);
+		return $this->set_option('category', $catid, $name, $value);
 	}
 	
-	function setItemOption($itemid, $name, $value) {
-		return $this->_setOption('item', $itemid, $name, $value);
+	final public function setItemOption($itemid, $name, $value) {
+		return $this->set_option('item', $itemid, $name, $value);
 	}
 	
 	/**
 	 * Retrieves the current value for an option
 	 */
-	function getOption($name)
+	final public function getOption($name)
 	{
 		// only request the options the very first time. On subsequent requests
 		// the static collection is used to save SQL queries.
 		if ( $this->plugin_options == 0 )
 		{
 			$this->plugin_options = array();
-			$query = sql_query(
-				 'SELECT d.oname as name, o.ovalue as value '.
-				 'FROM '.
-				 sql_table('plugin_option').' o, '.
-				 sql_table('plugin_option_desc').' d '.
-				 'WHERE d.opid='. intval($this->getID()).' AND d.oid=o.oid'
-			);
-			while ( $row = sql_fetch_object($query) )
+			
+			$query =  "SELECT d.oname as name, o.ovalue as value FROM %s o, %s d WHERE d.opid=%d AND d.oid=o.oid;";
+			$query = sprintf($query, sql_table('plugin_option'), sql_table('plugin_option_desc'), (integer) $this->plugid);
+			$result = sql_query($query);
+			while ( $row = sql_fetch_object($result) )
 			{
 				$this->plugin_options[strtolower($row->name)] = $row->value;
 			}
@@ -271,86 +275,103 @@ class NucleusPlugin
 		}
 		else
 		{
-			return $this->_getOption('global', 0, $name);
+			return $this->get_option('global', 0, $name);
 		}
 	}
 	
-	function getBlogOption($blogid, $name)
+	final public function getBlogOption($blogid, $name)
 	{
-		return $this->_getOption('blog', $blogid, $name);
+		return $this->get_option('blog', $blogid, $name);
 	}
 	
-	function getMemberOption($memberid, $name)
+	final public function getMemberOption($memberid, $name)
 	{
-		return $this->_getOption('member', $memberid, $name);
+		return $this->get_option('member', $memberid, $name);
 	}
 	
-	function getCategoryOption($catid, $name)
+	final public function getCategoryOption($catid, $name)
 	{
-		return $this->_getOption('category', $catid, $name);
+		return $this->get_option('category', $catid, $name);
 	}
 	
-	function getItemOption($itemid, $name)
+	final public function getItemOption($itemid, $name)
 	{
-		return $this->_getOption('item', $itemid, $name);
+		return $this->get_option('item', $itemid, $name);
 	}
 	
 	/**
 	 * Retrieves an associative array with the option value for each
 	 * context id
 	 */
-	function getAllBlogOptions($name)
+	final public function getAllBlogOptions($name)
 	{
-		return $this->_getAllOptions('blog', $name);
+		return $this->get_all_options('blog', $name);
 	}
 	
-	function getAllMemberOptions($name)
+	final public function getAllMemberOptions($name)
 	{
-		return $this->_getAllOptions('member', $name);
+		return $this->get_all_options('member', $name);
 	}
 	
-	function getAllCategoryOptions($name)
+	final public function getAllCategoryOptions($name)
 	{
-		return $this->_getAllOptions('category', $name);
+		return $this->get_all_options('category', $name);
 	}
 	
-	function getAllItemOptions($name)
+	final public function getAllItemOptions($name)
 	{
-		return $this->_getAllOptions('item', $name);
+		return $this->get_all_options('item', $name);
 	}
 	
 	/**
 	 * Retrieves an indexed array with the top (or bottom) of an option
-	 * (delegates to _getOptionTop())
+	 * (delegates to getOptionTop())
 	 */
-	function getBlogOptionTop($name, $amount = 10, $sort = 'desc')
+	final public function getBlogOptionTop($name, $amount = 10, $sort = 'desc')
 	{
-		return $this->_getOptionTop('blog', $name, $amount, $sort);
+		return $this->get_option_top('blog', $name, $amount, $sort);
 	}
 	
-	function getMemberOptionTop($name, $amount = 10, $sort = 'desc')
+	final public function getMemberOptionTop($name, $amount = 10, $sort = 'desc')
 	{
-		return $this->_getOptionTop('member', $name, $amount, $sort);
+		return $this->get_option_top('member', $name, $amount, $sort);
 	}
 	
-	function getCategoryOptionTop($name, $amount = 10, $sort = 'desc')
+	final public function getCategoryOptionTop($name, $amount = 10, $sort = 'desc')
 	{
-		return $this->_getOptionTop('category', $name, $amount, $sort);
+		return $this->get_option_top('category', $name, $amount, $sort);
 	}
 	
-	function getItemOptionTop($name, $amount = 10, $sort = 'desc')
+	final public function getItemOptionTop($name, $amount = 10, $sort = 'desc')
 	{
-		return $this->_getOptionTop('item', $name, $amount, $sort);
+		return $this->get_option_top('item', $name, $amount, $sort);
 	}
 	
 	/**
-	 * Returns the plugin ID
-	 *
-	 * public
+	 * NucleusPlugin::getID()
+	 * get id for this plugin
+	 * 
+	 * @access	public
+	 * @param	void
+	 * @return	integer	this plugid id
 	 */
-	function getID()
+	final public function getID()
 	{
-		return $this->plugid;
+		return (integer) $this->plugid;
+	}
+	
+	/**
+	 * NucleusPlugin::setID()
+	 * set favorite id for this plugin
+	 * 
+	 * @access	public
+	 * @param	integer	$plugid	favorite id for plugin
+	 * @return	void
+	 */
+	final public function setID($plugid)
+	{
+		$this->plugid = (integer) $plugid;
+		return;
 	}
 	
 	/**
@@ -359,7 +380,7 @@ class NucleusPlugin
 	 *
 	 * public
 	 */
-	function getAdminURL()
+	final public function getAdminURL()
 	{
 		global $CONF;
 		return $CONF['PluginURL'] . $this->getShortName() . '/';
@@ -371,7 +392,7 @@ class NucleusPlugin
 	 *
 	 * public
 	 */
-	function getDirectory()
+	final public function getDirectory()
 	{
 		global $DIR_PLUGINS;
 		return $DIR_PLUGINS . $this->getShortName() . '/';
@@ -383,7 +404,7 @@ class NucleusPlugin
 	 *
 	 * public
 	 */
-	function getShortName()
+	final public function getShortName()
 	{
 		return str_replace('np_','',strtolower(get_class($this)));
 	}
@@ -396,26 +417,26 @@ class NucleusPlugin
 	 *	
 	 *  public
 	 **/
-	function clearOptionValueCache()
+	final public function clearOptionValueCache()
 	{
-		$this->_aOptionValues = array();
+		$this->option_values = array();
 		$this->plugin_options = 0;
+		return;
 	}
 	
 	// internal functions of the class starts here
-	
-	var $_aOptionValues;	// oid_contextid => value
-	var $_aOptionToInfo;	// context_name => array('oid' => ..., 'default' => ...)
-	var $plugin_options;	// see getOption()
-	var $plugid;			// plugin id
+	protected $option_values;	// oid_contextid => value
+	protected $option_info;		// context_name => array('oid' => ..., 'default' => ...)
+	protected $plugin_options;	// see getOption()
+	protected $plugid;			// plugin id
 	
 	/**
 	 * Class constructor: Initializes some internal data
 	 */
-	function NucleusPlugin()
+	public function __construct()
 	{
-		$this->_aOptionValues = array();	// oid_contextid => value
-		$this->_aOptionToInfo = array();	// context_name => array('oid' => ..., 'default' => ...)
+		$this->option_values = array();	// oid_contextid => value
+		$this->option_info = array();	// context_name => array('oid' => ..., 'default' => ...)
 		$this->plugin_options = 0;
 	}
 	
@@ -429,20 +450,21 @@ class NucleusPlugin
 	 * @return array           array with both values and contextid's
 	 * @access private
 	 */
-	function _getOptionTop($context, $name, $amount = 10, $sort = 'desc')
+	final protected function get_option_top($context, $name, $amount = 10, $sort = 'desc')
 	{
 		if ( ($sort != 'desc') && ($sort != 'asc') )
 		{
 			$sort= 'desc';
 		}
 		
-		$oid = $this->_getOID($context, $name);
+		$oid = $this->get_option_id($context, $name);
 		
 		// retrieve the data and return
-		$q = 'SELECT otype, oextra FROM '.sql_table('plugin_option_desc').' WHERE oid = '.$oid;
-		$query = sql_query($q);
+		$query = "SELECT otype, oextra FROM %s WHERE oid = %d;";
+		$query = sprintf($query, sql_table('plugin_option_desc'), $oid);
+		$result = sql_query($query);
 		
-		$o = sql_fetch_array($query);
+		$o = sql_fetch_array($result);
 		
 		if ( ($this->optionCanBeNumeric($o['otype'])) && ($o['oextra'] == 'number' ) )
 		{
@@ -452,13 +474,14 @@ class NucleusPlugin
 		{
 			$orderby = 'ovalue';
 		}
-		$q = 'SELECT ovalue value, ocontextid id FROM '.sql_table('plugin_option').' WHERE oid = '.$oid.' ORDER BY '.$orderby.' '.$sort.' LIMIT 0,'.intval($amount);
-		$query = sql_query($q);
+		$query = "SELECT ovalue value, ocontextid id FROM %s WHERE oid = %d ORDER BY %s %s LIMIT 0,%d;";
+		$query = sprintf($query, sql_table('plugin_option'), $oid, $orderby, $sort, (integer) $amount);
+		$result = sql_query($query);
 		
 		// create the array
 		$i = 0;
 		$top = array();
-		while( $row = sql_fetch_array($query) )
+		while( $row = sql_fetch_array($result) )
 		{
 			$top[$i++] = $row;
 		}
@@ -472,7 +495,7 @@ class NucleusPlugin
 	 *	
 	 * private
 	 */
-	function _createOption($context, $name, $desc, $type, $defValue, $typeExtras = '')
+	final protected function create_option($context, $name, $desc, $type, $defValue, $typeExtras = '')
 	{
 		// create in plugin_option_desc
 		$query = 'INSERT INTO ' . sql_table('plugin_option_desc')
@@ -483,12 +506,12 @@ class NucleusPlugin
 					.', \''.sql_real_escape_string($desc).'\''
 					.', \''.sql_real_escape_string($type).'\''
 					.', \''.sql_real_escape_string($defValue).'\''
-					.', \''.sql_real_escape_string($typeExtras).'\')';
+					.', \''.sql_real_escape_string($typeExtras).'\');';
 		sql_query($query);
 		$oid = sql_insert_id();
 		
 		$key = $context . '_' . $name;
-		$this->_aOptionToInfo[$key] = array('oid' => $oid, 'default' => $defValue);
+		$this->option_info[$key] = array('oid' => $oid, 'default' => $defValue);
 		return 1;
 	}
 	
@@ -498,23 +521,27 @@ class NucleusPlugin
 	 *
 	 * private
 	 */
-	function _deleteOption($context, $name)
+	final protected function delete_option($context, $name)
 	{
-		$oid = $this->_getOID($context, $name);
+		$oid = $this->get_option_id($context, $name);
 		if ( !$oid )
 		{
 			return 0; // no such option
 		}
 		
 		// delete all things from plugin_option
-		sql_query('DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid);
+		$query = "DELETE FROM %s WHERE oid=%d;";
+		$query = sprintf($query, sql_table('plugin_option'), (integer) $oid);
+		sql_query($query);
 		
 		// delete entry from plugin_option_desc
-		sql_query('DELETE FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . $oid);
+		$query = "DELETE FROM %s WHERE oid=%d;";
+		$query = sprintf($query, sql_table('plugin_option_desc'), $oid);
+		sql_query($query);
 		
 		// clear from cache
-		unset($this->_aOptionToInfo[$context . '_' . $name]);
-		$this->_aOptionValues = array();
+		unset($this->option_info["{$context}_{$name}"]);
+		$this->option_values = array();
 		return 1;
 	}
 	
@@ -524,11 +551,11 @@ class NucleusPlugin
 	 * returns: 1 on success, 0 on failure
 	 * private
 	 */
-	function _setOption($context, $contextid, $name, $value)
+	final protected function set_option($context, $contextid, $name, $value)
 	{
 		global $manager;
 		
-		$oid = $this->_getOID($context, $name);
+		$oid = $this->get_option_id($context, $name);
 		if ( !$oid )
 		{
 			return 0;
@@ -570,16 +597,21 @@ class NucleusPlugin
 		}
 		
 		// update plugin_option
-		sql_query('DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid) . ' and ocontextid='. intval($contextid));
-		sql_query('INSERT INTO ' . sql_table('plugin_option') . ' (ovalue, oid, ocontextid) VALUES (\''.sql_real_escape_string($value).'\', '. intval($oid) . ', ' . intval($contextid) . ')');
+		$query = "DELETE FROM %s WHERE oid=%d and ocontextid=%d;";
+		$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid);
+		sql_query($query);
+		
+		$query = "INSERT INTO %s (ovalue, oid, ocontextid) VALUES ('%s', %d, %d);";
+		$query = sprintf($query, sql_table('plugin_option'), sql_real_escape_string($value), $oid, $contextid);
+		sql_query($query);
 		
 		// update cache
-		$this->_aOptionValues[$oid . '_' . $contextid] = $value;
+		$this->option_values["{$oid}_{$contextid}"] = $value;
 		if ( $context == 'global' )
 		{
 			$this->plugin_options[strtolower($name)] = $value;
 		}
-
+		
 		return 1;
 	}
 	
@@ -590,41 +622,41 @@ class NucleusPlugin
 	 *   		
 	 * private		
 	 */		 		 		
-	function _getOption($context, $contextid, $name)
+	final protected function get_option($context, $contextid, $name)
 	{
-		$oid = $this->_getOID($context, $name);
+		$oid = $this->get_option_id($context, $name);
 		if ( !$oid )
 		{
 			return '';
 		}
 		
-		$key = $oid . '_' . $contextid;
+		$key = "{$oid}_{$contextid}";
 		
-		if ( isset($this->_aOptionValues[$key]) )
+		if ( isset($this->option_values[$key]) )
 		{
-			return $this->_aOptionValues[$key];
+			return $this->option_values[$key];
 		}
 		
 		// get from DB
-		$res = sql_query('SELECT ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid).' and ocontextid=' . intval($contextid));
+		$query = "SELECT ovalue FROM %s WHERE oid=%d and ocontextid=%d;";
+		$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid);
+		$result = sql_query($query);
 		
-		if ( !$res || (sql_num_rows($res) == 0) )
+		if ( !$result || (sql_num_rows($result) == 0) )
 		{
-			$defVal = $this->_getDefVal($context, $name);
-			$this->_aOptionValues[$key] = $defVal;
-			
 			// fill DB with default value
-			$query = 'INSERT INTO ' . sql_table('plugin_option') . ' (oid,ocontextid,ovalue)'
-					.' VALUES ('.intval($oid).', '.intval($contextid).', \''.sql_real_escape_string($defVal).'\')';
+			$this->option_values[$key] = $this->get_default_value($context, $name);
+			$query = "INSERT INTO %s (oid, ocontextid, ovalue) VALUES (%d, %d, '%s');";
+			$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid, sql_real_escape_string($defVal));
 			sql_query($query);
 		}
 		else
 		{
-			$o = sql_fetch_object($res);
-			$this->_aOptionValues[$key] = $o->ovalue;
+			$o = sql_fetch_object($result);
+			$this->option_values[$key] = $o->ovalue;
 		}
 		
-		return $this->_aOptionValues[$key];
+		return $this->option_values[$key];
 	}
 	
 	/**
@@ -633,50 +665,55 @@ class NucleusPlugin
 	 *
 	 * private		 		
 	 */
-	function _getAllOptions($context, $name)
+	final protected function get_all_options($context, $name)
 	{
-		$oid = $this->_getOID($context, $name);
+		$oid = $this->get_option_id($context, $name);
 		if ( !$oid )
 		{
 			return array();
 		}
-		$defVal = $this->_getDefVal($context, $name);
+		$default_value = $this->get_default_value($context, $name);
 		
-		$aOptions = array();
+		$options = array();
+		$query = "SELECT %s as contextid FROM %s;";
 		switch ( $context )
 		{
 			case 'blog':
-				$r = sql_query('SELECT bnumber as contextid FROM ' . sql_table('blog'));
+				$query = sprintf($query, 'bnumber', sql_table('blog'));
 				break;
 			case 'category':
-				$r = sql_query('SELECT catid as contextid FROM ' . sql_table('category'));
+				$query = sprintf($query, 'catid', sql_table('category'));
 				break;
 			case 'member':
-				$r = sql_query('SELECT mnumber as contextid FROM ' . sql_table('member'));
+				$query = sprintf($query, 'mnumber', sql_table('member'));
 				break;
 			case 'item':
-				$r = sql_query('SELECT inumber as contextid FROM ' . sql_table('item'));
+				$query = sprintf($query, 'inumber', sql_table('item'));
 				break;
 		}
-		if ( $r )
+		
+		$result = sql_query($query);
+		if ( $result )
 		{
 			while ( $o = sql_fetch_object($r) )
 			{
-				$aOptions[$o->contextid] = $defVal;
+				$options[$o->contextid] = $default_value;
 			}
 		}
 		
-		$res = sql_query('SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid);
-		while ( $o = sql_fetch_object($res) )
+		$query = "SELECT ocontextid, ovalue FROM %s WHERE oid=%d;";
+		$query = sprintf($query, sql_table('plugin_option'), $oid);
+		$result = sql_query($query);
+		while ( $o = sql_fetch_object($result) )
 		{
-			$aOptions[$o->ocontextid] = $o->ovalue;
+			$options[$o->ocontextid] = $o->ovalue;
 		}
 
-		return $aOptions;
+		return $options;
 	}
 	
 	/**
-	 * NucleusPlugin::_getOID
+	 * NucleusPlugin::get_option_id
 	 * 
 	 * Gets the 'option identifier' that corresponds to a given option name.
 	 * When this method is called for the first time, all the OIDs for the plugin
@@ -686,37 +723,38 @@ class NucleusPlugin
 	 * @param	string	$name		plugin name
 	 * @return		integer	option id
 	 */
-	function _getOID($context, $name)
+	final protected function get_option_id($context, $name)
 	{
-		$key = $context . '_' . $name;
+		$key = "{$context}_{$name}";
 		
-		if ( array_key_exists($key, $this->_aOptionToInfo)
-		 && array_key_exists('oid', $this->_aOptionToInfo[$key]) )
+		if ( array_key_exists($key, $this->option_info)
+		 && array_key_exists('oid', $this->option_info[$key]) )
 		{
-			return $this->_aOptionToInfo[$key]['oid'];
+			return $this->option_info[$key]['oid'];
 		}
 		
 		// load all OIDs for this plugin from the database
-		$this->_aOptionToInfo = array();
-		$query = 'SELECT oid, oname, ocontext, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE opid=' . intval($this->plugid);
-		$res = sql_query($query);
-		while ( $o = sql_fetch_object($res) )
+		$this->option_info = array();
+		$query = "SELECT oid, oname, ocontext, odef FROM %s WHERE opid=%d;";
+		$query = sprintf($query, sql_table('plugin_option_desc'), $this->plugid);
+		$result = sql_query($query);
+		while ( $o = sql_fetch_object($result) )
 		{
 			$k = $o->ocontext . '_' . $o->oname;
-			$this->_aOptionToInfo[$k] = array('oid' => $o->oid, 'default' => $o->odef);
+			$this->option_info[$k] = array('oid' => $o->oid, 'default' => $o->odef);
 		}
-		sql_free_result($res);
+		sql_free_result($result);
 		
-		return $this->_aOptionToInfo[$key]['oid'];
+		return $this->option_info[$key]['oid'];
 	}
-	function _getDefVal($context, $name)
+	final protected function get_default_value($context, $name)
 	{
 		$key = $context . '_' . $name;
 		
-		if ( array_key_exists($key, $this->_aOptionToInfo)
-		 && array_key_exists('default', $this->_aOptionToInfo[$key]) )
+		if ( array_key_exists($key, $this->option_info)
+		 && array_key_exists('default', $this->option_info[$key]) )
 		{
-			return $this->_aOptionToInfo[$key]['default'];
+			return $this->option_info[$key]['default'];
 		}
 		return;
 	}
@@ -727,24 +765,28 @@ class NucleusPlugin
 	 *
 	 * (static method)
 	 */
-	function _deleteOptionValues($context, $contextid)
+	final protected function delete_option_values($context, $contextid)
 	{
 		// delete all associated plugin options
 		$aOIDs = array();
 		// find ids
-		$query = 'SELECT oid FROM '.sql_table('plugin_option_desc') . ' WHERE ocontext=\''.sql_real_escape_string($context).'\'';
-		$res = sql_query($query);
-		while ( $o = sql_fetch_object($res) )
+		$query = "SELECT oid FROM %s WHERE ocontext='%s';";
+		$query = sprintf($query, sql_table('plugin_option_desc'), sql_real_escape_string($context));
+		
+		$result = sql_query($query);
+		while ( $o = sql_fetch_object($result) )
 		{
 			array_push($aOIDs, $o->oid);
 		}
-		sql_free_result($res);
+		sql_free_result($result);
 		// delete those options. go go go
 		if ( count($aOIDs) > 0 )
 		{
-			$query = 'DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).') and ocontextid=' . intval($contextid);
+			$query = "DELETE FROM %s WHERE oid in (%s) and ocontextid=%d;";
+			$query = sprintf($query, sql_table('plugin_option'), implode(',',$aOIDs), (integer) $contextid);
 			sql_query($query);
 		}
+		return;
 	}
 	
 	/**
@@ -755,7 +797,7 @@ class NucleusPlugin
 	 * @param string $typeExtra the value of the typeExtra field of an option
 	 * @return array array of the meta-key/value-pairs
 	 */
-	function getOptionMeta($typeExtra)
+	static public function getOptionMeta($typeExtra)
 	{
 		$meta = array();
 		
@@ -789,7 +831,7 @@ class NucleusPlugin
 	 * @param string $typeExtra the value of the typeExtra field of an option
 	 * @return string the selectlist
 	 */
-	function getOptionSelectValues($typeExtra)
+	static public function getOptionSelectValues($typeExtra)
 	{
 		$meta = NucleusPlugin::getOptionMeta($typeExtra);
 		
@@ -805,9 +847,9 @@ class NucleusPlugin
 	 * @return bool if it is up-to-date it return true, else false
 	 * @author TeRanEX
 	 */
-	function subscribtionListIsUptodate()
+	public function subscribtionListIsUptodate()
 	{
-		$res = sql_query('SELECT event FROM '.sql_table('plugin_event').' WHERE pid = '.$this->getID());
+		$res = sql_query('SELECT event FROM '.sql_table('plugin_event').' WHERE pid = '.$this->plugid);
 		$ev = array();
 		while( $a = sql_fetch_array($res) )
 		{
@@ -827,37 +869,45 @@ class NucleusPlugin
 	}
 	
 	/**
-	 * NucleusPlugin::_applyPluginOptions()
+	 * NucleusPlugin::apply_plugin_options()
 	 * Update its entry in database table
 	 * 
 	 * @static
-	 * @param	$aOptions: array ( 'oid' => array( 'contextid' => 'value'))
+	 * @param	$options: array ( 'oid' => array( 'contextid' => 'value'))
 	 * 			 (taken from request using requestVar())
-	 * @param	$newContextid: integer (accepts a contextid when it is for a new
+	 * @param	$new_contextid: integer (accepts a contextid when it is for a new
 	 *			 contextid there was no id available at the moment of writing the
 	 *			  formcontrols into the page (by ex: itemOptions for new item)
 	 * @return void
 	 */
-	function _applyPluginOptions(&$aOptions, $newContextid = 0)
+	static public function apply_plugin_options(&$options, $new_contextid = 0)
 	{
 		global $manager;
-		if ( !is_array($aOptions) )
+		
+		if ( !is_array($options) )
 		{
 			return;
 		}
 		
-		foreach ( $aOptions as $oid => $values )
+		foreach ( $options as $oid => $values )
 		{
 			// get option type info
-			$query = "SELECT opid, oname, ocontext, otype, oextra, odef FROM %s WHERE oid=%d";
+			$query = "SELECT opid, oname, ocontext, otype, oextra, odef FROM %s WHERE oid=%d;";
 			$query = sprintf($query, sql_table('plugin_option_desc'), (integer) $oid);
 			$result = sql_query($query);
 			if ( $info = sql_fetch_object($result) )
 			{
-				foreach ( $values as $key => $value )
+				foreach ( $values as $id => $value )
 				{
-					// avoid overriding the key used by foreach statement
-					$contextid=$key;
+					// decide wether we are using the contextid of newContextid
+					if ( $new_contextid != 0 )
+					{
+						$contextid = $new_contextid;
+					}
+					else
+					{
+						$contextid = $id;
+					}
 					
 					// retreive any metadata
 					$meta = NucleusPlugin::getOptionMeta($info->oextra);
@@ -893,12 +943,6 @@ class NucleusPlugin
 						case 'textarea':
 						default:
 							break;
-					}
-					
-					// decide wether we are using the contextid of newContextid
-					if ( $newContextid != 0 )
-					{
-						$contextid = $newContextid;
 					}
 					
 					/*

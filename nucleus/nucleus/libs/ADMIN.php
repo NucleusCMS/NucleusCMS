@@ -2038,7 +2038,7 @@ class ADMIN {
 
         // store plugin options
         $aOptions = requestArray('plugoption');
-        NucleusPlugin::_applyPluginOptions($aOptions);
+        NucleusPlugin::apply_plugin_options($aOptions);
         $manager->notify('PostPluginOptionsUpdate',array('context' => 'member', 'memberid' => $memberid, 'member' => &$mem));
 
         // if email changed, generate new password
@@ -2793,7 +2793,7 @@ class ADMIN {
 
         // store plugin options
         $aOptions = requestArray('plugoption');
-        NucleusPlugin::_applyPluginOptions($aOptions);
+        NucleusPlugin::apply_plugin_options($aOptions);
         $manager->notify('PostPluginOptionsUpdate',array('context' => 'category', 'catid' => $catid));
 
 
@@ -3067,7 +3067,7 @@ class ADMIN {
 		
 		// store plugin options
 		$aOptions = requestArray('plugoption');
-		NucleusPlugin::_applyPluginOptions($aOptions);
+		NucleusPlugin::apply_plugin_options($aOptions);
 		$manager->notify('PostPluginOptionsUpdate',array('context' => 'blog', 'blogid' => $blogid, 'blog' => &$blog));
 		
 		$this->action_overview(_MSG_SETTINGSCHANGED);
@@ -6557,7 +6557,7 @@ selector();
 		}
 		
 		$aOptions = requestArray('plugoption');
-		NucleusPlugin::_applyPluginOptions($aOptions);
+		NucleusPlugin::apply_plugin_options($aOptions);
 		
 		$manager->notify('PostPluginOptionsUpdate',array('context' => 'global', 'plugid' => $pid));
 		
