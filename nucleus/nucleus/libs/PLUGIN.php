@@ -21,7 +21,7 @@
  */
 abstract class NucleusPlugin
 {
-	// these final public functions _have_ to be redefined in your plugin
+	// these public functions should to be redefined in your plugin
 	public function getName()
 	{
 		return __CLASS__;
