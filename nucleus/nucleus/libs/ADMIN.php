@@ -24,8 +24,13 @@ require_once dirname(__FILE__) . '/showlist.php';
 /**
  * Builds the admin area and executes admin actions
  */
-class ADMIN {
-
+class ADMIN
+{
+	private $xml_version_info = '1.0';
+	private $formal_public_identifier = '-//W3C//DTD XHTML 1.0 Strict//EN';
+	private $system_identifier = 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd';
+	private $xhtml_namespace = 'http://www.w3.org/1999/xhtml';
+	
     /**
      * @var string $action action currently being executed ($action=xxxx -> action_xxxx method)
      */
@@ -5053,7 +5058,11 @@ selector();
     }
 
 	/**
-	 * @todo document this
+	 * ADMIN::action_settingsupdate()
+	 * Update $CONFIG and redirect
+	 * 
+	 * @param	void
+	 * @return	void
 	 */
 	function action_settingsupdate() {
 		global $member, $CONF;
@@ -5110,400 +5119,484 @@ selector();
 		exit;
 	}
 
-    /**
-     *  Give an overview over the used system
-     */
-    function action_systemoverview() {
-        global $member, $nucleus, $CONF;
+	/**
+	 * ADMIN::action_systemoverview()
+	 * Output system overview
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	function action_systemoverview()
+	{
+		global $member, $nucleus, $CONF;
+		
+		$this->pagehead();
+		
+		echo '<h2>' . _ADMIN_SYSTEMOVERVIEW_HEADING . "</h2>\n";
+		
+		if ( $member->isLoggedIn() && $member->isAdmin() )
+		{
+			// Information about the used PHP and MySQL installation
+			echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL . "</h3>\n\n";
+			
+			// Version of PHP MySQL
+			echo '<table frame="box" rules="all" summary="' . _ADMIN_SYSTEMOVERVIEW_VERSIONS . "\" class=\"systemoverview\">\n";
+			echo "<thead>\n";
+			echo "<tr>\n";
+			echo '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_VERSIONS . "</th>\n";
+			echo "</tr>\n";
+			echo "</thead>\n";
+			echo "<tbody>\n";
+			echo "<tr>\n";
+			echo '<td>' . _ADMIN_SYSTEMOVERVIEW_PHPVERSION . "</td>\n";
+			echo '<td>' . phpversion() . "</td>\n";
+			echo "</tr>\n";
+			echo "<tr>\n";
+			echo '<td>' . _ADMIN_SYSTEMOVERVIEW_MYSQLVERSION . "</td>\n";
+			echo '<td>' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
+			echo "</tr>\n";
+			echo "</tbody>\n";
+			echo "</table>\n\n";
+			
+			// Important PHP settings
+			echo '<table frame="box" rules="all" summary="' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "\" class=\"systemoverview\">\n";
+			echo "<thead>\n";
+			echo "<tr>\n";
+			echo '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "</th>\n";
+			echo "</tr>\n";
+			echo "</thead>\n";
+			echo "<tbody>\n";
+			echo "<tr>\n";
+			echo '<td>magic_quotes_gpc' . "</td>\n";
+			$mqg = get_magic_quotes_gpc() ? 'On' : 'Off';
+			echo '<td>' . $mqg . "</td>\n";
+			echo "</tr>\n";
+			echo "<tr>\n";
+			echo '<td>magic_quotes_runtime' . "</td>\n";
+			$mqr = get_magic_quotes_runtime() ? 'On' : 'Off';
+			echo '<td>' . $mqr . "</td>\n";
+			echo "</tr>\n";
+			echo "<tr>\n";
+			echo '<td>register_globals' . "</td>\n";
+			$rg = ini_get('register_globals') ? 'On' : 'Off';
+			echo '<td>' . $rg . "</td>\n";
+			echo "</tr>\n";
+			echo "</tbody>\n";
+			echo "</table>\n\n";
+			
+			// Information about GD library
+			$gdinfo = gd_info();
+			echo '<table frame="box" rules="all" summary="' . _ADMIN_SYSTEMOVERVIEW_GDLIBRALY . "\" class=\"systemoverview\">\n";
+			echo "<thead>\n";
+			echo "<tr>\n";
+			echo '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_GDLIBRALY . "</th>\n";
+			echo "</tr>\n";
+			echo "</thead>\n";
+			echo "<tbody>\n";
+			foreach ( $gdinfo as $key=>$value )
+			{
+				if ( is_bool($value) )
+				{
+					$value = $value ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE;
+				}
+				else
+				{
+					$value = i18n::hsc($value);
+				}
+				echo "<tr>\n";
+				echo '<td>' . $key . "</td>\n";
+				echo '<td>' . $value . "</td>\n";
+				echo "</tr>\n";
+			}
+			echo "</tbody>\n";
+			echo "</table>\n\n";
 
-        $this->pagehead();
+			// Check if special modules are loaded
+			ob_start();
+			phpinfo(INFO_MODULES);
+			$im = ob_get_contents();
+			ob_clean();
+			echo '<table frame="box" rules="all" summary="' . _ADMIN_SYSTEMOVERVIEW_MODULES . "\" class=\"systemoverview\">\n";
+			echo "<thead>\n";
+			echo "<tr>";
+			echo '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_MODULES . "</th>\n";
+			echo "</tr>\n";
+			echo "<tbody>\n";
+			echo "<tr>\n";
+			echo '<td>mod_rewrite' . "</td>\n";
+			$modrewrite = (strstr($im, 'mod_rewrite') != '') ?
+						_ADMIN_SYSTEMOVERVIEW_ENABLE :
+						_ADMIN_SYSTEMOVERVIEW_DISABLE;
+			echo '<td>' . $modrewrite . "</td>\n";
+			echo "</tr>\n";
+			echo "</tbody>\n";
+			echo "</table>\n\n";
 
-        echo '<h2>' . _ADMIN_SYSTEMOVERVIEW_HEADING . "</h2>\n";
+			// Information about the used Nucleus CMS
+			echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM . "</h3>\n";
+			global $nucleus;
+			$nv = getNucleusVersion() / 100 . '(' . $nucleus['version'] . ')';
+			$np = getNucleusPatchLevel();
+			echo "<table frame=\"box\" rules=\"all\" summary=\"Nucleus CMS\" class=\"systemoverview\" class=\"systemoverview\">\n";
+			echo "<thead>\n";
+			echo "<tr>\n";
+			echo '<th colspan="2">Nucleus CMS' . "</th>\n";
+			echo "</tr>\n";
+			echo "</thead>\n";
+			echo "<tbody>\n";
+			echo "<tr>\n";
+			echo '<td>' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION . "</td>\n";
+			echo '<td>' . $nv . "</td>\n";
+			echo "</tr>\n";
+			echo "<tr>\n";
+			echo '<td>' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL . "</td>\n";
+			echo '<td>' . $np . "</td>\n";
+			echo "</tr>\n";
+			echo "</tbody>\n";
+			echo "</table>\n\n";
 
-        if ($member->isLoggedIn() && $member->isAdmin()) {
+			// Important settings of the installation
+			echo '<table frame="box" rules="all" summary="' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS . "\" class=\"systemoverview\">\n";
+			echo "<thead>\n";
+			echo "<tr>\n";
+			echo '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS . "</th>\n";
+			echo "</tr>\n";
+			echo "</thead>\n";
+			echo "<tbody>\n";
+			echo "<tr>\n";
+			echo '<td>' . '$CONF[' . "'Self']</td>\n";
+			echo '<td>' . $CONF['Self'] . "</td>\n";
+			echo "</tr>\n";
+			echo "<tr>\n";
+			echo '<td>' . '$CONF[' . "'ItemURL']</td>\n";
+			echo '<td>' . $CONF['ItemURL'] . "</td>\n";
+			echo "</tr>\n";
+			echo "<tr>\n";
+			echo '<td>' . '$CONF[' . "'alertOnHeadersSent']</td>\n";
+			$ohs = $CONF['alertOnHeadersSent'] ?
+						_ADMIN_SYSTEMOVERVIEW_ENABLE :
+						_ADMIN_SYSTEMOVERVIEW_DISABLE;
+			echo '<td>' . $ohs . "</td>\n";
+			echo "</tr>\n";
+			echo "<tr>\n";
+			echo "<td>i18n::get_current_charset()</td>\n";
+			echo '<td>' . i18n::get_current_charset() . "</td>\n";
+			echo "</tr>\n";
+			echo "</tbody>\n";
+			echo "</table>\n\n";
 
-            // Information about the used PHP and MySQL installation
-            echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL . "</h3>\n";
+			// Link to the online version test at the Nucleus CMS website
+			echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK . "</h3>\n";
+			if ( $nucleus['codename'] != '')
+			{
+				$codenamestring = ' &quot;' . $nucleus['codename'] . '&quot;';
+			}
+			else
+			{
+				$codenamestring = '';
+			}
+			echo _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT;
+			$checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
+			echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">';
+			echo 'Nucleus CMS ' . $nv . $codenamestring;
+			echo '</a>';
+		}
+		else
+		{
+			echo _ADMIN_SYSTEMOVERVIEW_NOT_ADMIN;
+		}
+		$this->pagefoot();
+	}
 
-            // Version of PHP MySQL
-            echo "<table>\n";
-            echo "\t<tr>\n";
-            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_VERSIONS . "</th>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_PHPVERSION . "</td>\n";
-            echo "\t\t" . '<td>' . phpversion() . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td>' . _ADMIN_SYSTEMOVERVIEW_MYSQLVERSION . "</td>\n";
-            echo "\t\t" . '<td>' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
-            echo "\t</tr>";
-            echo "</table>\n";
-
-            // Important PHP settings
-            echo "<table>\n";
-            echo "\t<tr>\n";
-            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "</th>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">magic_quotes_gpc' . "</td>\n";
-            $mqg = get_magic_quotes_gpc() ? 'On' : 'Off';
-            echo "\t\t" . '<td>' . $mqg . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td>magic_quotes_runtime' . "</td>\n";
-            $mqr = get_magic_quotes_runtime() ? 'On' : 'Off';
-            echo "\t\t" . '<td>' . $mqr . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td>register_globals' . "</td>\n";
-            $rg = ini_get('register_globals') ? 'On' : 'Off';
-            echo "\t\t" . '<td>' . $rg . "</td>\n";
-            echo "\t</tr>";
-            echo "</table>\n";
-
-            // Information about GD library
-            $gdinfo = gd_info();
-            echo "<table>\n";
-            echo "\t<tr>";
-            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_GDLIBRALY . "</th>\n";
-            echo "\t</tr>\n";
-            foreach ($gdinfo as $key=>$value) {
-                if (is_bool($value)) {
-                    $value = $value ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE;
-                } else {
-                    $value = i18n::hsc($value);
-                }
-                echo "\t<tr>";
-                echo "\t\t" . '<td width="50%">' . $key . "</td>\n";
-                echo "\t\t" . '<td>' . $value . "</td>\n";
-                echo "\t</tr>\n";
-            }
-            echo "</table>\n";
-
-            // Check if special modules are loaded
-            ob_start();
-            phpinfo(INFO_MODULES);
-            $im = ob_get_contents();
-            ob_clean();
-            echo "<table>\n";
-            echo "\t<tr>";
-            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_MODULES . "</th>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">mod_rewrite' . "</td>\n";
-            $modrewrite = (strstr($im, 'mod_rewrite') != '') ?
-                        _ADMIN_SYSTEMOVERVIEW_ENABLE :
-                        _ADMIN_SYSTEMOVERVIEW_DISABLE;
-            echo "\t\t" . '<td>' . $modrewrite . "</td>\n";
-            echo "\t</tr>\n";
-            echo "</table>\n";
-
-            // Information about the used Nucleus CMS
-            echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM . "</h3>\n";
-            global $nucleus;
-            $nv = getNucleusVersion() / 100 . '(' . $nucleus['version'] . ')';
-            $np = getNucleusPatchLevel();
-            echo "<table>\n";
-            echo "\t<tr>";
-            echo "\t\t" . '<th colspan="2">Nucleus CMS' . "</th>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION . "</td>\n";
-            echo "\t\t" . '<td>' . $nv . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL . "</td>\n";
-            echo "\t\t" . '<td>' . $np . "</td>\n";
-            echo "\t</tr>\n";
-            echo "</table>\n";
-
-            // Important settings of the installation
-            echo "<table>\n";
-            echo "\t<tr>";
-            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS . "</th>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . '$CONF[' . "'Self']</td>\n";
-            echo "\t\t" . '<td>' . $CONF['Self'] . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . '$CONF[' . "'ItemURL']</td>\n";
-            echo "\t\t" . '<td>' . $CONF['ItemURL'] . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . '$CONF[' . "'alertOnHeadersSent']</td>\n";
-            $ohs = $CONF['alertOnHeadersSent'] ?
-                        _ADMIN_SYSTEMOVERVIEW_ENABLE :
-                        _ADMIN_SYSTEMOVERVIEW_DISABLE;
-            echo "\t\t" . '<td>' . $ohs . "</td>\n";
-            echo "\t</tr>\n";
-            echo "</table>\n";
-
-            // Link to the online version test at the Nucleus CMS website
-            echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK . "</h3>\n";
-            if ($nucleus['codename'] != '') {
-                $codenamestring = ' &quot;' . $nucleus['codename'] . '&quot;';
-            } else {
-                $codenamestring = '';
-            }
-            echo _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT;
-            $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-            echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">';
-            echo 'Nucleus CMS ' . $nv . $codenamestring;
-            echo '</a>';
-        //echo '<br />';
-        }
-        else {
-            echo _ADMIN_SYSTEMOVERVIEW_NOT_ADMIN;
-        }
-
-        $this->pagefoot();
-    }
-
-    /**
-     * @todo document this
-     */
-    function updateConfig($name, $val) {
-        $name = sql_real_escape_string($name);
-        $val = trim(sql_real_escape_string($val));
-
-        $query = 'UPDATE '.sql_table('config')
-               . " SET value='$val'"
-               . " WHERE name='$name'";
-
-        sql_query($query) or die("Query error: " . sql_error());
-        return sql_insert_id();
-    }
-
-    /**
-     * Error message
-     * @param string $msg message that will be shown
-     */
-    function error($msg) {
-        $this->pagehead();
-        ?>
-        <h2>Error!</h2>
-        <?php       echo $msg;
-        echo "<br />";
-        echo "<a href='index.php' onclick='history.back()'>"._BACK."</a>";
-        $this->pagefoot();
-        exit;
-    }
-
-    /**
-     * @todo document this
-     */
-    function disallow() {
-        ACTIONLOG::add(WARNING, _ACTIONLOG_DISALLOWED . serverVar('REQUEST_URI'));
-
-        $this->error(_ERROR_DISALLOWED);
-    }
-
-    /**
-     * @todo document this
-     */
-    function pagehead($extrahead = '') {
-        global $member, $nucleus, $CONF, $manager;
-
-        $manager->notify(
-            'AdminPrePageHead',
-            array(
-                'extrahead' => &$extrahead,
-                'action' => $this->action
-            )
-        );
-
-        $baseUrl = i18n::hsc($CONF['AdminURL']);
-		if (!array_key_exists('AdminCSS',$CONF)) 
+	/**
+	 * ADMIN::updateConfig()
+	 * 
+	 * @param	string	$name	
+	 * @param	string	$val	
+	 * @return	integer	return the ID in which the latest query posted
+	 */
+	function updateConfig($name, $val)
+	{
+		$name = sql_real_escape_string($name);
+		$val = trim(sql_real_escape_string($val));
+		
+		$query = "UPDATE %s SET value='%s' WHERE name='%s'";
+		$query = sprintf($query, sql_table('config'), $val, $name);
+		sql_query($query) or die("Query error: " . sql_error());
+		return sql_insert_id();
+	}
+	
+	/**
+	 * Error message
+	 * @param string $msg message that will be shown
+	 */
+	function error($msg)
+	{
+		$this->pagehead();
+		
+		echo "<h2>Error!</h2>\n";
+		echo $msg;
+		echo "<br />\n";
+		echo '<a href="index.php" onclick="history.back()">' . _BACK . "</a>\n";
+		$this->pagefoot();
+		exit;
+	}
+	
+	/**
+	 * ADMIN::disallow()
+	 * add error log and show error page 
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	function disallow()
+	{
+		ACTIONLOG::add(WARNING, _ACTIONLOG_DISALLOWED . serverVar('REQUEST_URI'));
+		$this->error(_ERROR_DISALLOWED);
+	}
+	
+	/**
+	 * ADMIN::pagehead()
+	 * Output admin page head
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	function pagehead($extrahead = '')
+	{
+		global $member, $nucleus, $CONF, $manager;
+		
+		$manager->notify(
+			'AdminPrePageHead',
+			array(
+				'extrahead' => &$extrahead,
+				'action' => $this->action));
+		
+		$baseUrl = i18n::hsc($CONF['AdminURL']);
+		if ( !array_key_exists('AdminCSS',$CONF) )
 		{
 			sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'original')");
 			$CONF['AdminCSS'] = 'original';
 		}
-
-        ?>
-        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-        <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=<?php echo i18n::get_current_charset() ?>" />
-            <title><?php echo i18n::hsc($CONF['SiteName'])?> - Admin</title>
-            <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
-            <link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
-            href="<?php echo $baseUrl?>styles/addedit.css" />
-
-            <script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit.js"></script>
-            <script type="text/javascript" src="<?php echo $baseUrl?>javascript/admin.js"></script>
-            <script type="text/javascript" src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
-
-      <meta http-equiv='Pragma' content='no-cache' />
-      <meta http-equiv='Cache-Control' content='no-cache, must-revalidate' />
-      <meta http-equiv='Expires' content='-1' />
-
-            <?php echo $extrahead?>
-        </head>
-        <body>
-        <div id="adminwrapper">
-        <div class="header">
-        <h1><?php echo i18n::hsc($CONF['SiteName'])?></h1>
-        </div>
-        <div id="container">
-        <div id="content">
-        <div class="loginname">
-        <?php           if ($member->isLoggedIn())
-                echo _LOGGEDINAS . ' ' . $member->getDisplayName()
-                    ." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
-                    . "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> - ";
-            else
-                echo '<a href="index.php?action=showlogin" title="Log in">' , _NOTLOGGEDIN , '</a> <br />';
-
-            echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
-
-            echo '<br />(';
-
-            $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
-
-            if ($member->isLoggedIn() && $member->isAdmin()) {
-                $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-                echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
-                $newestVersion = getLatestVersion();
-                $newestCompare = str_replace('/','.',$newestVersion);
-                $currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
-                if ($newestVersion && version_compare($newestCompare,$currentVersion) > 0) {
-                    echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
-                }
-            } else {
-                echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
-            }
-            echo ')';
-        echo '</div>';
-    }
-
-    /**
-     * @todo document this
-     */
-    function pagefoot() {
-        global $action, $member, $manager;
-
-        $manager->notify(
-            'AdminPrePageFoot',
-            array(
-                'action' => $this->action
-            )
-        );
-
-        if ($member->isLoggedIn() && ($action != 'showlogin')) {
-            ?>
-            <h2><?php echo  _LOGOUT ?></h2>
-            <ul>
-                <li><a href="index.php?action=overview"><?php echo  _BACKHOME?></a></li>
-                <li><a href='index.php?action=logout'><?php echo  _LOGOUT?></a></li>
-            </ul>
-            <?php       }
-        ?>
-            <div class="foot">
-                <a href="<?php echo _ADMINPAGEFOOT_OFFICIALURL ?>">Nucleus CMS</a> &copy; 2002-<?php echo date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT; ?>
-                -
-                <a href="<?php echo _ADMINPAGEFOOT_DONATEURL ?>"><?php echo _ADMINPAGEFOOT_DONATE ?></a>
-            </div>
-
-            </div><!-- content -->
-
-            <div id="quickmenu">
-
-                <?php               // ---- user settings ----
-                if (($action != 'showlogin') && ($member->isLoggedIn())) {
-                    echo '<ul>';
-                    echo '<li><a href="index.php?action=overview">',_QMENU_HOME,'</a></li>';
-                    echo '</ul>';
-
-                    echo '<h2>',_QMENU_ADD,'</h2>';
-                    echo '<form method="get" action="index.php"><div>';
-                    echo '<input type="hidden" name="action" value="createitem" />';
-
-                        $showAll = requestVar('showall');
-                        if (($member->isAdmin()) && ($showAll == 'yes')) {
-                            // Super-Admins have access to all blogs! (no add item support though)
-                            $query =  'SELECT bnumber as value, bname as text'
-                                   . ' FROM ' . sql_table('blog')
-                                   . ' ORDER BY bname';
-                        } else {
-                            $query =  'SELECT bnumber as value, bname as text'
-                                   . ' FROM ' . sql_table('blog') . ', ' . sql_table('team')
-                                   . ' WHERE tblog=bnumber and tmember=' . $member->getID()
-                                   . ' ORDER BY bname';
-                        }
-                        $template['name'] = 'blogid';
-                        $template['tabindex'] = 15000;
-                        $template['extra'] = _QMENU_ADD_SELECT;
-                        $template['selected'] = -1;
-                        $template['shorten'] = 10;
-                        $template['shortenel'] = '';
-                        $template['javascript'] = 'onchange="return form.submit()"';
-                        showlist($query,'select',$template);
-
-                    echo '</div></form>';
-
-                    echo '<h2>' . $member->getDisplayName(). '</h2>';
-                    echo '<ul>';
-                    echo '<li><a href="index.php?action=editmembersettings">' . _QMENU_USER_SETTINGS . '</a></li>';
-                    echo '<li><a href="index.php?action=browseownitems">' . _QMENU_USER_ITEMS . '</a></li>';
-                    echo '<li><a href="index.php?action=browseowncomments">' . _QMENU_USER_COMMENTS . '</a></li>';
-                    echo '</ul>';
-
-
-
-
-                    // ---- general settings ----
-                    if ($member->isAdmin()) {
-
-                        echo '<h2>',_QMENU_MANAGE,'</h2>';
-
-                        echo '<ul>';
-                        echo '<li><a href="index.php?action=actionlog">' . _QMENU_MANAGE_LOG . '</a></li>';
-                        echo '<li><a href="index.php?action=settingsedit">' . _QMENU_MANAGE_SETTINGS . '</a></li>';
-                        echo '<li><a href="index.php?action=systemoverview">' . _QMENU_MANAGE_SYSTEM . '</a></li>';
-                        echo '<li><a href="index.php?action=usermanagement">' . _QMENU_MANAGE_MEMBERS . '</a></li>';
-                        echo '<li><a href="index.php?action=createnewlog">' . _QMENU_MANAGE_NEWBLOG . '</a></li>';
-                        echo '<li><a href="index.php?action=backupoverview">' . _QMENU_MANAGE_BACKUPS . '</a></li>';
-                        echo '<li><a href="index.php?action=pluginlist">' . _QMENU_MANAGE_PLUGINS . '</a></li>';
-                        echo '</ul>';
-
-                        echo '<h2>',_QMENU_LAYOUT,'</h2>';
-                        echo '<ul>';
-                        echo '<li><a href="index.php?action=skinoverview">' . _QMENU_LAYOUT_SKINS . '</a></li>';
-                        echo '<li><a href="index.php?action=templateoverview">' . _QMENU_LAYOUT_TEMPL . '</a></li>';
-                        echo '<li><a href="index.php?action=skinieoverview">' . _QMENU_LAYOUT_IEXPORT . '</a></li>';
-                        echo '</ul>';
-
-                    }
-
-                    $aPluginExtras = array();
-                    $manager->notify(
-                        'QuickMenu',
-                        array(
-                            'options' => &$aPluginExtras
-                        )
-                    );
-                    if (count($aPluginExtras) > 0)
-                    {
-                        echo '<h2>', _QMENU_PLUGINS, '</h2>';
-                        echo '<ul>';
-                        foreach ($aPluginExtras as $aInfo)
-                        {
-                            echo '<li><a href="'.i18n::hsc($aInfo['url']).'" title="'.i18n::hsc($aInfo['tooltip']).'">'.i18n::hsc($aInfo['title']).'</a></li>';
-                        }
-                        echo '</ul>';
-                    }
-
-                } else if (($action == 'activate') || ($action == 'activatesetpwd')) {
-
-                    echo '<h2>', _QMENU_ACTIVATE, '</h2>', _QMENU_ACTIVATE_TEXT;
-                } else {
-                    // introduction text on login screen
-                    echo '<h2>', _QMENU_INTRO, '</h2>', _QMENU_INTRO_TEXT;
-                }
-                ?>
-            </div>
-
-            <!-- content / quickmenu container -->
-            <div class="clear"></div>    <!-- new -->
-            </div>
-
-            <!-- adminwrapper -->    <!-- new -->
-            </div>     <!-- new -->
-            </body> 
-            </html>
-        <?php   }
-
+		
+		/* HTTP 1.1 application for no caching */
+		header("Cache-Control: no-cache, must-revalidate");
+		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
+		
+		$root_element = 'html';
+		$charset = i18n::get_current_charset();
+		$locale = preg_replace('#_#', '-', i18n::get_current_locale());
+		
+		echo "<?xml version=\"{$this->xml_version_info}\" encoding=\"{$charset}\" ?>\n";
+		echo "<!DOCTYPE {$root_element} PUBLIC \"{$this->formal_public_identifier}\" \"{$this->system_identifier}\">\n";
+		echo "<{$root_element} xmlns=\"{$this->xhtml_namespace}\" xml:lang=\"{$locale}\" lang=\"{$locale}\">\n";
+		echo "<head>\n";
+		echo '<title>' . i18n::hsc($CONF['SiteName']) . " - Admin</title>\n";
+		echo "<link rel=\"stylesheet\" title=\"Nucleus Admin Default\" type=\"text/css\" href=\"{$baseUrl}styles/admin_{$CONF["AdminCSS"]}.css\" />\n";
+		echo "<link rel=\"stylesheet\" title=\"Nucleus Admin Default\" type=\"text/css\" href=\"{$baseUrl}styles/addedit.css\" />\n";
+		echo "<script type=\"text/javascript\" src=\"{$baseUrl}javascript/edit.js\"></script>\n";
+		echo "<script type=\"text/javascript\" src=\"{$baseUrl}javascript/admin.js\"></script>\n";
+		echo "<script type=\"text/javascript\" src=\"{$baseUrl}javascript/compatibility.js\"></script>\n";
+		echo "{$extrahead}\n";
+		echo "</head>\n\n";
+		echo "<body>\n";
+		echo "<div id=\"adminwrapper\">\n";
+		echo "<div class=\"header\">\n";
+		echo '<h1>' . i18n::hsc($CONF['SiteName']) . "</h1>\n";
+		echo "</div>\n";
+		echo "<div id=\"container\">\n";
+		echo "<div id=\"content\">\n";
+		echo "<div class=\"loginname\">\n";
+		if ( $member->isLoggedIn() )
+		{
+			echo _LOGGEDINAS . ' ' . $member->getDisplayName() ." - <a href='index.php?action=logout'>" . _LOGOUT. "</a><br />\n";
+			echo "<a href='index.php?action=overview'>" . _ADMINHOME . "</a> - ";
+		}
+		else
+		{
+			echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . "</a><br />\n";
+		}
+		echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a><br />\n";
+		echo '(';
+		
+		if (array_key_exists('codename', $nucleus) && $nucleus['codename'] != '' )
+		{
+			$codenamestring = ' &quot;' . $nucleus['codename'].'&quot;';
+		}
+		else
+		{
+			$codenamestring = '';
+		}
+		
+		if ( $member->isLoggedIn() && $member->isAdmin() )
+		{
+			$checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
+			echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
+			
+			$newestVersion = getLatestVersion();
+			$newestCompare = str_replace('/','.',$newestVersion);
+			$currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
+			if ( $newestVersion && version_compare($newestCompare, $currentVersion) > 0 )
+			{
+				echo "<br />\n";
+				echo '<a style="color:red" href="http://nucleuscms.org/upgrade.php" title="' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE . '">';
+				echo _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT . $newestVersion;
+				echo "</a>";
+			}
+		}
+		else
+		{
+			echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
+		}
+		echo ')';
+		echo '</div>';
+		return;
+	}
+	
+	/**
+	 * ADMIN::pagefoot()
+	 * Output admin page foot include quickmenu
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	function pagefoot()
+	{
+		global $action, $member, $manager;
+		
+		$manager->notify(
+			'AdminPrePageFoot',
+			array('action' => $this->action)
+		);
+		
+		if ( $member->isLoggedIn() && ($action != 'showlogin') )
+		{
+			echo '<h2>' . _LOGOUT . "</h2>\n";
+			echo "<ul>\n";
+			echo '<li><a href="index.php?action=overview">' . _BACKHOME . "</a></li>\n";
+			echo '<li><a href="index.php?action=logout">' .  _LOGOUT . "</a></li>\n";
+			echo "</ul>\n";
+		}
+		
+		echo "<div class=\"foot\">\n";
+		echo '<a href=\"' . _ADMINPAGEFOOT_OFFICIALURL . '">Nucleus CMS</a> &copy; 2002-' . date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT;
+		echo '-';
+		echo '<a href="' . _ADMINPAGEFOOT_DONATEURL . '">' . _ADMINPAGEFOOT_DONATE . "</a>\n";
+		echo "</div>\n";
+		
+		echo "<!-- content -->\n";
+		echo "<div id=\"quickmenu\">\n";
+		
+		if ( ($action != 'showlogin') && ($member->isLoggedIn()) )
+		{
+			echo "<ul>\n";
+			echo '<li><a href="index.php?action=overview">' . _QMENU_HOME . "</a></li>\n";
+			echo "</ul>\n";
+			
+			echo '<h2>' . _QMENU_ADD . "</h2>\n";
+			echo "<form method=\"get\" action=\"index.php\">\n";
+			echo "<p>\n";
+			echo "<input type=\"hidden\" name=\"action\" value=\"createitem\" />\n";
+			
+			$showAll = requestVar('showall');
+			
+			if ( ($member->isAdmin()) && ($showAll == 'yes') )
+			{
+				// Super-Admins have access to all blogs! (no add item support though)
+				$query =  'SELECT bnumber as value, bname as text'
+						. ' FROM ' . sql_table('blog')
+						. ' ORDER BY bname';
+			}
+			else
+			{
+				$query =  'SELECT bnumber as value, bname as text'
+						. ' FROM ' . sql_table('blog') . ', ' . sql_table('team')
+						. ' WHERE tblog=bnumber and tmember=' . $member->getID()
+						. ' ORDER BY bname';
+			}
+			$template['name'] = 'blogid';
+			$template['tabindex'] = 15000;
+			$template['extra'] = _QMENU_ADD_SELECT;
+			$template['selected'] = -1;
+			$template['shorten'] = 10;
+			$template['shortenel'] = '';
+			$template['javascript'] = 'onchange="return form.submit()"';
+			showlist($query,'select',$template);
+			
+			echo "</p>\n";
+			echo "</form>\n";
+			
+			echo "<h2>{$member->getDisplayName()}</h2>\n";
+			echo "<ul>\n";
+			echo '<li><a href="index.php?action=editmembersettings">' . _QMENU_USER_SETTINGS . "</a></li>\n";
+			echo '<li><a href="index.php?action=browseownitems">' . _QMENU_USER_ITEMS . "</a></li>\n";
+			echo '<li><a href="index.php?action=browseowncomments">' . _QMENU_USER_COMMENTS . "</a></li>\n";
+			echo "</ul>\n";
+			
+			// ---- general settings ----
+			if ( $member->isAdmin() )
+			{
+				echo '<h2>' . _QMENU_MANAGE . "</h2>\n";
+				echo "<ul>\n";
+				echo '<li><a href="index.php?action=actionlog">' . _QMENU_MANAGE_LOG . "</a></li>\n";
+				echo '<li><a href="index.php?action=settingsedit">' . _QMENU_MANAGE_SETTINGS . "</a></li>\n";
+				echo '<li><a href="index.php?action=systemoverview">' . _QMENU_MANAGE_SYSTEM . "</a></li>\n";
+				echo '<li><a href="index.php?action=usermanagement">' . _QMENU_MANAGE_MEMBERS . "</a></li>\n";
+				echo '<li><a href="index.php?action=createnewlog">' . _QMENU_MANAGE_NEWBLOG . "</a></li>\n";
+				echo '<li><a href="index.php?action=backupoverview">' . _QMENU_MANAGE_BACKUPS . "</a></li>\n";
+				echo '<li><a href="index.php?action=pluginlist">' . _QMENU_MANAGE_PLUGINS . "</a></li>\n";
+				echo "</ul>\n";
+				
+				echo "<h2>" . _QMENU_LAYOUT . "</h2>\n";
+				echo "<ul>\n";
+				echo '<li><a href="index.php?action=skinoverview">' . _QMENU_LAYOUT_SKINS . "</a></li>\n";
+				echo '<li><a href="index.php?action=templateoverview">' . _QMENU_LAYOUT_TEMPL . "</a></li>\n";
+				echo '<li><a href="index.php?action=skinieoverview">' . _QMENU_LAYOUT_IEXPORT . "</a></li>\n";
+				echo "</ul>\n";
+			}
+			
+			$aPluginExtras = array();
+			$manager->notify(
+				'QuickMenu',
+				array(
+					'options' => &$aPluginExtras));
+			
+			if ( count($aPluginExtras) > 0 )
+			{
+				echo "<h2>" . _QMENU_PLUGINS . "</h2>\n";
+				echo "<ul>\n";
+				foreach ( $aPluginExtras as $aInfo )
+				{
+					echo '<li><a href="' . i18n::hsc($aInfo['url']) . '" title="' . i18n::hsc($aInfo['tooltip']) . '">' . i18n::hsc($aInfo['title']) . "</a></li>\n";
+				}
+				echo "</ul>\n";
+			}
+		}
+		else if ( ($action == 'activate') || ($action == 'activatesetpwd') )
+		{
+		
+			echo '<h2>' . _QMENU_ACTIVATE . '</h2>' . _QMENU_ACTIVATE_TEXT;
+		}
+		else
+		{
+			// introduction text on login screen
+			echo '<h2>' . _QMENU_INTRO . '</h2>' . _QMENU_INTRO_TEXT;
+		}
+		
+		echo "<!-- content -->\n";
+		echo "</div>\n";
+		
+		echo "<!-- container -->\n";
+		echo "</div>\n";
+		
+		echo "<!-- adminwrapper -->\n";
+		echo "</div>\n";
+		
+		echo "</body>\n";
+		echo "</html>\n";
+		return;
+	}
+	
     /**
      * @todo document this
      */

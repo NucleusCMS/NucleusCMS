@@ -287,6 +287,11 @@ div#content table tbody td {
 	empty-cells: show;
 }
 
+div#content table.systemoverview thead th,
+div#content table.systemoverview tbody td {
+	width:	50%;
+}
+
 div#content table tbody tr td {
 	border: 1px solid #ddd;
 	font-size: small;
@@ -375,7 +380,7 @@ div#content table tbody tr td ul li {
 }
 
 /* footer */
-.foot {
+div.foot {
 	padding: 2px 0px 2px 10px;
 	margin:10px -10px 0 -10px;
 	text-align: center;
