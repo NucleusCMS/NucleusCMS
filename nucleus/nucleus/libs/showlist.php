@@ -108,7 +108,7 @@ function listplug_table($template, $type)
 	{
 		case 'HEAD':
 			echo "\n\n";
-			echo "<table frame=\"frames\" rules=\"all\" summary=\"{$template['content']}\">\n";
+			echo "<table frame=\"box\" rules=\"all\" summary=\"{$template['content']}\">\n";
 			echo "<thead>\n";
 			echo "<tr>\n";
 			// print head

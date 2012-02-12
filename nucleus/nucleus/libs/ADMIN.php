@@ -5479,7 +5479,7 @@ selector();
 		}
 		
 		echo "<div class=\"foot\">\n";
-		echo '<a href=\"' . _ADMINPAGEFOOT_OFFICIALURL . '">Nucleus CMS</a> &copy; 2002-' . date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT;
+		echo '<a href="' . _ADMINPAGEFOOT_OFFICIALURL . '">Nucleus CMS</a> &copy; 2002-' . date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT;
 		echo '-';
 		echo '<a href="' . _ADMINPAGEFOOT_DONATEURL . '">' . _ADMINPAGEFOOT_DONATE . "</a>\n";
 		echo "</div>\n";
@@ -5582,6 +5582,9 @@ selector();
 			// introduction text on login screen
 			echo '<h2>' . _QMENU_INTRO . '</h2>' . _QMENU_INTRO_TEXT;
 		}
+		
+		echo "<!-- quickmenu -->\n";
+		echo "</div>\n";
 		
 		echo "<!-- content -->\n";
 		echo "</div>\n";
