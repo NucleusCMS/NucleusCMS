@@ -247,17 +247,17 @@ function listplug_table_pluginlist($template, $type)
 				echo "<td>\n";
 				echo "<dl>\n";
 				echo '<dt>' . _LIST_PLUGS_DESC ."</dt>\n";
-				echo '<dd>' . i18n::hen($plug->getDescription()) ."</dt>\n";
+				echo '<dd>' . i18n::hen($plug->getDescription()) ."</dd>\n";
 				if ( sizeof($plug->getEventList()) > 0 )
 				{
 					echo '<dt>' . _LIST_PLUGS_SUBS ."</dt>\n";
-					echo '<dd>' . i18n::hsc(implode(', ', $plug->getEventList())) ."</dt>\n";
+					echo '<dd>' . i18n::hsc(implode(', ', $plug->getEventList())) ."</dd>\n";
 				}
 				
 				if ( sizeof($plug->getPluginDep()) > 0 )
 				{
 					echo '<dt>' . _LIST_PLUGS_DEP ."</dt>\n";
-					echo '<dd>' . i18n::hsc(implode(', ', $plug->getPluginDep())) ."</dt>\n";
+					echo '<dd>' . i18n::hsc(implode(', ', $plug->getPluginDep())) ."</dd>\n";
 				}
 				
 				/* check dependency */
@@ -462,7 +462,7 @@ function listplug_plugOptionRow($current)
 
 function listplug_table_itemlist($template, $type)
 {
-	$cssclass = null;
+	$cssclass = '';
 	
 	switch( $type )
 	{
@@ -478,31 +478,33 @@ function listplug_table_itemlist($template, $type)
 			
 			if ( $current->idraft == 1 )
 			{
-				$cssclass = "class='draft'";
+				$cssclass = " class='draft'";
 			}
 			
 			// (can't use offset time since offsets might vary between blogs)
 			if ( $current->itime > $template['now'] )
 			{
-				$cssclass = "class='future'";
+				$cssclass = " class='future'";
 			}
 			
-			echo "<td {$cssclass}>\n";
+			echo "<td{$cssclass}>\n";
+			echo "<dl>\n";
 			echo '<dt>' . _LIST_ITEM_BLOG . "</dt>\n";
-			echo i18n::hsc($current->bshortname) . "</dd>\n";
+			echo '<dd>' . i18n::hsc($current->bshortname) . "</dd>\n";
 			echo '<dt>' . _LIST_ITEM_CAT . "</dt>\n";
-			echo i18n::hsc($current->cname) . "</dd>\n";
+			echo '<dd>' . i18n::hsc($current->cname) . "</dd>\n";
 			echo '<dt>' . _LIST_ITEM_AUTHOR . "</dt>\n";
-			echo i18n::hsc($current->mname) . "</dd>\n";
+			echo '<dd>' . i18n::hsc($current->mname) . "</dd>\n";
 			echo '<dt>' . _LIST_ITEM_DATE . "</dt>\n";
-			echo date("Y-m-d",$current->itime) . "</dd>\n";
+			echo '<dd>' . date("Y-m-d",$current->itime) . "</dd>\n";
 			echo '<dt>' . _LIST_ITEM_TIME . "</dt>\n";
-			echo date("H:i",$current->itime) . "</dd>\n";
+			echo '<dd>' . date("H:i",$current->itime) . "</dd>\n";
+			echo "</dl>\n";
 			echo "</td>\n";
 			
 			$id = listplug_nextBatchId();
 			
-			echo "<td {$cssclass}>\n";
+			echo "<td{$cssclass}>\n";
 			echo "<h3>\n";
 			echo "<input type=\"checkbox\" id=\"batch{$id}\" name=\"batch[{$id}]\" value=\"{$current->inumber}\" />\n";
 			echo "<label for=\"batch{$id}\">" . i18n::hsc(strip_tags($current->ititle)) . "</label>\n";
@@ -513,7 +515,7 @@ function listplug_table_itemlist($template, $type)
 			echo "<p>$current->ibody</p>\n";
 			echo "</td>\n";
 			
-			echo "<td {$cssclass}>\n";
+			echo "<td{$cssclass}>\n";
 			echo "<ul>\n";
 			echo "<li><a href=\"index.php?action=itemedit&amp;itemid={$current->inumber}\">" . _LISTS_EDIT . "</a></li>\n";
 			
