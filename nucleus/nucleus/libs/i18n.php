@@ -12,6 +12,10 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2011 The Nucleus Group
+ * @version $Id$
  */
 class i18n
 {

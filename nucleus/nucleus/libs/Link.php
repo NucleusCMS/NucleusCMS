@@ -17,7 +17,7 @@
  * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2011 The Nucleus Group
- * @version $Id: $
+ * @version $Id$
  */
 class Link {
 
