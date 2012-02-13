@@ -12,7 +12,7 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id: upgrade3.5.php 1416 2009-09-24 15:58:08Z ftruscot $
+ * @version $Id$
  */
 
 function upgrade_do360() {

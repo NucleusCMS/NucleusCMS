@@ -1,4 +1,7 @@
 <?php
+/* 
+* @version $Id$
+*/
 
 /*
  * Admin area for NP_SecurityEnforcer
