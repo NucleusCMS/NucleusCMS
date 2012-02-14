@@ -14,7 +14,386 @@
 
 // Data language
 
+/**
+ * Nucleus Language File
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2012 The Nucleus Group
+ * @version $Id$
+ */
+
+
 @setlocale(LC_TIME, 'ca_ES@euro'); 
+ /********************************************
+ *        Start New for 4.0                 *
+ ********************************************/
+define('_SKINIE_INVALID_NAMES_DETECTED', 'Invalid skin or templates names detected. Valid names consist of only a-z, A-Z, 0-9, -, and _'); 
+define('_LISTS_AUTHOR', 'Author');
+define('_OVERVIEW_OTHER_DRAFTS', 'Other Drafts');
+ 
+/********************************************
+ *        Start New for 3.6x                *
+ ********************************************/
+define('_ERROR_USER_TOO_LONG', 'Please enter a name shorter than 40 characters.');
+define('_ERROR_EMAIL_TOO_LONG', 'Please enter an email shorter than 100 characters.');
+define('_ERROR_URL_TOO_LONG', 'Please enter a website shorter than 100 characters.');
+
+/********************************************
+ *        Start New for 3.62                *
+ ********************************************/
+define('_SETTINGS_ADMINCSS',		'Admin Area Style');
+
+ 
+/********************************************
+ *        Start New for 3.50                *
+ ********************************************/
+define('_PLUGS_TITLE_GETPLUGINS',		'get more plugins...');
+define('_ARCHIVETYPE_YEAR', 'year');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'Newer Version Available');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'Upgrade available: v');
+define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "Plugin %s was not loaded (does not support SqlApi and you are trying to use a non-mysql db)");
+
+
+/********************************************
+ *        Start New for 3.40                *
+ ********************************************/
+
+// START changed/added after 3.33 START
+define('_MEMBERS_USEAUTOSAVE',						'Use the Autosave function?');
+
+define('_TEMPLATE_PLUGIN_FIELDS',					'Custom Plugin Fields');
+define('_TEMPLATE_BLOGLIST',						'Template Blog List');
+define('_TEMPLATE_BLOGHEADER',						'Blog List Header');
+define('_TEMPLATE_BLOGITEM',						'Blog List Item');
+define('_TEMPLATE_BLOGFOOTER',						'Blog List Footer');
+
+define('_SETTINGS_DEFAULTLISTSIZE',					'Default Size of Lists in Admin Area');
+define('_SETTINGS_DEBUGVARS',		'Debug Vars');
+
+define('_CREATE_ACCOUNT_TITLE',						'Create Member Account');
+define('_CREATE_ACCOUNT0',							'Create Account');
+define('_CREATE_ACCOUNT1',							'Visitors are not allowed to create a Member Account.<br /><br />');
+define('_CREATE_ACCOUNT2',							'Please contact the website administrator for more information.');
+define('_CREATE_ACCOUNT_USER_DATA',					'Account Info.');
+define('_CREATE_ACCOUNT_LOGIN_NAME',				'Login Name (required):');
+define('_CREATE_ACCOUNT_LOGIN_NAME_VALID',			'only a-z and 0-9 allowed, no spaces at start/end');
+define('_CREATE_ACCOUNT_REAL_NAME',					'Real Name (required):');
+define('_CREATE_ACCOUNT_EMAIL',						'Email (required):');
+define('_CREATE_ACCOUNT_EMAIL2',					'(must be valid, because an activation link will be sent over there)');
+define('_CREATE_ACCOUNT_URL',						'URL:');
+define('_CREATE_ACCOUNT_SUBMIT',					'Create Account');
+
+define('_BMLET_BACKTODRAFTS',		'Move back to drafts');
+define('_BMLET_CANCEL',				'Cancel');
+
+define('_LIST_ITEM_NOCONTENT',						'No Comment');
+define('_LIST_ITEM_COMMENTS',						'%d Comments');
+
+define('_EDITC_URL',				'Web site');
+define('_EDITC_EMAIL',				'E-mail');
+
+define('_MANAGER_PLUGINFILE_NOTFOUND',				"Plugin %s was not loaded (File not found)");
+/* changed */
+// plugin dependency 
+define('_ERROR_INSREQPLUGIN',		'Plugin installation failed, requires %s');
+define('_ERROR_DELREQPLUGIN',		'Plugin deletion failed, required by %s');
+
+//define('_ADD_ADDLATER',								'Add Later');
+define('_ADD_ADDLATER',								'Add the dates specified');
+
+define('_LOGIN_NAME',				'Name:');
+define('_LOGIN_PASSWORD',			'Password:');
+
+// changed from _BOOKMARLET_BMARKLFOLLOW
+define('_BOOKMARKLET_BMARKFOLLOW',					' (Works with nearly all browsers)');
+// END changed/added after 3.33 END
+
+// START merge UTF-8 and EUC-JP
+
+// Create New blog
+define('_ADMIN_NOTABILIA',							'Some information');
+define('_ADMIN_PLEASE_READ',						"Before you start, here's some <strong>important information</strong>");
+define('_ADMIN_HOW_TO_ACCESS',						"After you've created a new weblog, you'll need to perform some actions to make your blog accessible. There are two possibilities:");
+define('_ADMIN_SIMPLE_WAY',							"<strong>Simple:</strong> Create a copy of <code>index.php</code> and modify it to display your new weblog. Further instructions on how to do this will be provided after you've submitted this first form.");
+define('_ADMIN_ADVANCED_WAY',						"<strong>Advanced:</strong> Insert the blog content into your current skins using skinvars like <code>&lt;%otherblog()&gt;</code>. This way, you can place multiple blogs on the same page.");
+define('_ADMIN_HOW_TO_CREATE',						'Create Weblog');
+
+
+define('_BOOKMARKLET_NEW_CATEGORY',					'Item was added, and a new category was created. ');
+define('_BOOKMARKLET_NEW_CATEGORY_EDIT',			'Click here to edit the name and description of the category.');
+define('_BOOKMARKLET_NEW_WINDOW',					'Opens in new window');
+define('_BOOKMARKLET_SEND_PING',					'Item was added successfully. Now pinging weblogs.com. Please hold on... (can take a while)'); // NOTE: This string is no longer in used
+
+// END merge UTF-8 and EUC-JP
+
+// <add by shizuki>
+// OVERVIEW screen
+define('_OVERVIEW_SHOWALL',							'Show all blogs');	// <add by shizuki />
+
+// Edit skins
+define('_SKINEDIT_ALLOWEDBLOGS',						'Short blog names:');			// <add by shizuki>
+define('_SKINEDIT_ALLOWEDTEMPLATESS',					'Template names:');		// <add by shizuki>
+
+// delete member
+define('_WARNINGTXT_NOTDELMEDIAFILES',				'Please note that media files will <b>NOT</b> be deleted. (At least not in this Nucleus version)');	// <add by shizuki />
+
+// send Weblogupdate.ping
+define('_UPDATEDPING_MESSAGE',						'<h2>Site Updated, Now pinging various weblog listing services...</h2><p>This can take a while...</p><p>If you aren\'t automatically passed through, '); // NOTE: This string is no longer in used
+define('_UPDATEDPING_GOPINGPAGE',					'try again'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_PINGING',						'Pinging services, please wait...'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_VIEWITEM',						'View list of recent items for '); // NOTE: This string is no longer in used
+define('_UPDATEDPING_VISITOWNSITE',					'Visit your own site'); // NOTE: This string is no longer in used
+
+// General category
+define('_EBLOGDEFAULTCATEGORY_NAME',				'General');
+define('_EBLOGDEFAULTCATEGORY_DESC',				'Items that do not fit in other categories');
+
+// First ITEM
+define('_EBLOG_FIRSTITEM_TITLE',					'First Item');
+define('_EBLOG_FIRSTITEM_BODY',						'This is the first item in your weblog. Feel free to delete it.');
+
+// New weblog was created
+define('_BLOGCREATED_TITLE',						'New weblog created');
+define('_BLOGCREATED_ADDEDTXT',						"Your new weblog (%s) has been created. To continue, choose the way you'll want to make it viewable:");
+define('_BLOGCREATED_SIMPLEWAY',					"Easiest: A copy of <code>%s.php</code>");
+define('_BLOGCREATED_ADVANCEDWAY',					"Advanced: Call the weblog from existing skins");
+define('_BLOGCREATED_SIMPLEDESC1',					"Method 1: Create an extra <code>%s.php</code> file");
+define('_BLOGCREATED_SIMPLEDESC2',					"Create a file called <code>%s.php</code>, and copy-paste the following code into it:");
+define('_BLOGCREATED_SIMPLEDESC3',					"Upload the file next to your existing <code>index.php</code> file, and you should be all set.");
+define('_BLOGCREATED_SIMPLEDESC4',					"To finish the weblog creation process, please fill out the final URL for your weblog (the proposed value is a <em>guess</em>, don't take it for granted):");
+define('_BLOGCREATED_ADVANCEDWAY2',					"Method 2: Call the weblog from existing skins");
+define('_BLOGCREATED_ADVANCEDWAY3',					"To finish the weblog creation process, simply please fill out the final URL for your weblog: (might be the same as another already existing weblog)");
+
+// Donate!
+define('_ADMINPAGEFOOT_OFFICIALURL',				'http://nucleuscms.org/');
+define('_ADMINPAGEFOOT_DONATEURL',					'http://nucleuscms.org/donate.php');
+define('_ADMINPAGEFOOT_DONATE',						'Donate!');
+define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group');
+
+// Quick menu
+define('_QMENU_MANAGE_SYSTEM',						'System info');
+
+// REG file
+define('_WINREGFILE_TEXT',							'Post To &Nucleus (%s)');
+
+// Bookmarklet
+define('_BOOKMARKLET_TITLE',						'Bookmarklet<!-- and Right Click Menu -->');
+define('_BOOKMARKLET_DESC1',						'Bookmarklets allow adding items to your weblog with just one single click. ');
+define('_BOOKMARKLET_DESC2',						'After installing these bookmarklets, you\'ll be able to click the \'add to weblog\' button on your browser toolbar, ');
+define('_BOOKMARKLET_DESC3',						'and a Nucleus add-item window will popup, ');
+define('_BOOKMARKLET_DESC4',						'containing the link and title of the page you were visiting, ');
+define('_BOOKMARKLET_DESC5',						'plus any text you might have selected.');
+define('_BOOKMARKLET_BOOKARKLET',					'bookmarklet');
+define('_BOOKMARKLET_ANCHOR',						'Add to %s');
+define('_BOOKMARKLET_BMARKTEXT',					'You can drag the following link to your favorites, or your browsers toolbar: ');
+define('_BOOKMARKLET_BMARKTEST',					'(if you want to test the bookmarklet first, click the link)');
+define('_BOOKMARKLET_RIGHTCLICK',					'Right Click Menu Access (IE &amp; Windows)');
+define('_BOOKMARKLET_RIGHTLABEL',					'right click menu item');
+define('_BOOKMARKLET_RIGHTTEXT1',					'Or you can install the ');
+define('_BOOKMARKLET_RIGHTTEXT2',					' (choose \'open file\' and add to registry)');
+define('_BOOKMARKLET_RIGHTTEXT3',					'You\'ll have to restart Internet Explorer before the option shows up in the context menus.');
+define('_BOOKMARKLET_UNINSTALLTT',					'Uninstalling');
+define('_BOOKMARKLET_DELETEBAR',					'For the bookmarklet, you can just delete it.');
+define('_BOOKMARKLET_DELETERIGHTT',					'For the right click menu item, follow the procedure listed below:');
+define('_BOOKMARKLET_DELETERIGHT1',					'Select "Run..." from the Start Menu');
+define('_BOOKMARKLET_DELETERIGHT2',					'Type: "regedit"');
+define('_BOOKMARKLET_DELETERIGHT3',					'Click the "OK" button');
+define('_BOOKMARKLET_DELETERIGHT4',					'Search for "\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" in the tree');
+define('_BOOKMARKLET_DELETERIGHT5',					'Delete the "add to \'Your weblog\'" item');
+
+define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'Something went wrong');
+define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'Could not create new category');
+
+// BAN
+define('_BAN_EXAMPLE_TITLE',						'An example');
+define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193" will only block one computer, while "134.58.253" will block 256 IP addresses, including the one from the first example.');
+define('_BAN_IP_CUSTOM',							'Custom: ');
+define('_BAN_BANBLOGNAME',							'Only blog %s');
+
+// Plugin Options
+define('_PLUGIN_OPTIONS_TITLE',							'Options for %s');
+
+// Plugin file loda error
+define('_PLUGINFILE_COULDNT_BELOADED',				'Error: plugin file <strong>%s.php</strong> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)');
+
+//ITEM add/edit template (for japanese only)
+define('_ITEM_ADDEDITTEMPLATE_FORMAT',				'Format :');
+define('_ITEM_ADDEDITTEMPLATE_YEAR',				'Year');
+define('_ITEM_ADDEDITTEMPLATE_MONTH',				'Month');
+define('_ITEM_ADDEDITTEMPLATE_DAY',					'Day');
+define('_ITEM_ADDEDITTEMPLATE_HOUR',				'Hour');
+define('_ITEM_ADDEDITTEMPLATE_MINUTE',				'Minute');
+
+// Errors
+define('_ERRORS_INSTALLSQL',						'install.sql should be deleted');
+define('_ERRORS_INSTALLDIR',						'install directory should be deleted');  // <add by shizuki />
+define('_ERRORS_INSTALLPHP',						'install.php should be deleted');
+define('_ERRORS_UPGRADESDIR',						'nucleus/upgrades directory should be deleted');
+define('_ERRORS_CONVERTDIR',						'nucleus/convert directory should be deleted');
+define('_ERRORS_CONFIGPHP',							'config.php should be non-writable (chmod to 444)');
+define('_ERRORS_STARTUPERROR1',						'<p>One or more of the Nucleus installation files are still present on the webserver, or are writable.</p><p>You should remove these files or change their permissions to ensure security. Here are the files that were found by Nucleus</p> <ul><li>');
+define('_ERRORS_STARTUPERROR2',						'</li></ul><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnSecurityRisk\']</code> in <code>globalfunctions.php</code> to <code>0</code>, or do this at the end of <code>config.php</code>.</p>');
+define('_ERRORS_STARTUPERROR3',						'Security Risk');
+
+// PluginAdmin tickets by javascript
+define('_PLUGINADMIN_TICKETS_JAVASCRIPT',			'<p><b>Error occured during automatic addition of tickets.</b></p>');
+
+// Global settings disablesite URL
+define('_SETTINGS_DISABLESITEURL',					'Redirect URL:');
+
+// Skin import/export
+define('_SKINIE_SEELEMENT_UNEXPECTEDTAG',			'UNEXPECTED TAG');
+define('_SKINIE_ERROR_FAILEDOPEN_FILEURL',			'Failed to open file/URL');
+define('_SKINIE_NAME_CLASHES_DETECTED',				'Name clashes detected, re-run with allowOverwrite = 1 to force overwrite');
+
+// ACTIONS.php parse_commentform
+define('_ACTIONURL_NOTLONGER_PARAMATER',			'actionurl is not longer a parameter on commentform skinvars. Moved to be a global setting instead.');
+
+// ADMIN.php addToTemplate 'Query error: '
+define('_ADMIN_SQLDIE_QUERYERROR',					'Query error: ');
+
+// backyp.php Backup WARNING
+define('_BACKUP_BACKUPFILE_TITLE',					'This is a backup file generated by Nucleus');
+define('_BACKUP_BACKUPFILE_BACKUPDATE',				'backup-date:');
+define('_BACKUP_BACKUPFILE_NUCLEUSVERSION',			'Nucleus CMS version:');
+define('_BACKUP_BACKUPFILE_DATABASE_NAME',			'Nucleus CMS Database name:');
+define('_BACKUP_BACKUPFILE_TABLE_NAME',				'TABLE:');
+define('_BACKUP_BACKUPFILE_TABLEDATAFOR',			'Table Data for %s');
+define('_BACKUP_WARNING_NUCLEUSVERSION',			'WARNING: Only try to restore on servers running the exact same version of Nucleus');
+define('_BACKUP_RESTOR_NOFILEUPLOADED',				'No file uploaded');
+define('_BACKUP_RESTOR_UPLOAD_ERROR',				'File Upload Error');
+define('_BACKUP_RESTOR_UPLOAD_NOCORRECTTYPE',		'The uploaded file is not of the correct type');
+define('_BACKUP_RESTOR_UPLOAD_NOZLIB',				'Cannot decompress gzipped backup (zlib package not installed)');
+define('_BACKUP_RESTOR_SQL_ERROR',					'SQL Error: ');
+
+// BLOG.php addTeamMember
+define('_TEAM_ADD_NEWTEAMMEMBER',					'Added %s (ID=%d) to the team of blog "%s"');
+
+// ADMIN.php systemoverview()
+define('_ADMIN_SYSTEMOVERVIEW_HEADING',				'System Overview');
+define('_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL',			'PHP and MySQL');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONS',			'Versions');
+define('_ADMIN_SYSTEMOVERVIEW_PHPVERSION',			'PHP version');
+define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL version');
+define('_ADMIN_SYSTEMOVERVIEW_SETTINGS',			'Settings');
+define('_ADMIN_SYSTEMOVERVIEW_GDLIBRALY',			'GD Libraly');
+define('_ADMIN_SYSTEMOVERVIEW_MODULES',				'Modules');
+define('_ADMIN_SYSTEMOVERVIEW_ENABLE',				'enabled');
+define('_ADMIN_SYSTEMOVERVIEW_DISABLE',				'disabled');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM',		'Your Nucleus CMS System');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION',		'Nucleus CMS version');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus CMS patch level');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'Important settings');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'Check for a new version');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'Check on nucleuscms.org if a new version is available: ');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://nucleuscms.org/version.php?v=%d&amp;pl=%d');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'Check for upgrade');
+define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			"You haven't enough rights to see the system informations.");
+
+// ENCAPSULATE.php
+define('_ENCAPSULATE_ENCAPSULATE_NOENTRY',			'No entries');
+
+// globalfunctions.php
+define('_GFUNCTIONS_LOGINPCSHARED_YES',				'on shared PC');
+define('_GFUNCTIONS_LOGINPCSHARED_NO',				'on not shared PC');
+define('_GFUNCTIONS_LOGINSUCCESSFUL_TXT',			'Login successful for %s (%s)');
+define('_GFUNCTIONS_LOGINFAILED_TXT',				'Login failed for %s');
+define('_GFUNCTIONS_LOGOUT_TXT',					'%s is logouted');
+define('_GFUNCTIONS_HEADERSALREADYSENT_FILE',		' in <code>%s</code> line <code>%s</code>');
+define('_GFUNCTIONS_HEADERSALREADYSENT_TITLE',		' Page headers already sent');
+define('_GFUNCTIONS_HEADERSALREADYSENT_TXT',		'<p>The page headers have already been sent out%s. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, at the end of the language file or at the end of a plugin file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>');
+define('_GFUNCTIONS_PARSEFILE_FILEMISSING',			'A file is missing');
+define('_GFUNCTIONS_AN_ERROR_OCCURRED',				'Sorry. An error occurred.');
+define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			"You aren't logged in.");
+
+// MANAGER.php
+define('_MANAGER_PLUGINFILE_NOCLASS',				"Plugin %s was not loaded (Class not found in file, possible parse error)");
+define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"Plugin %s was not loaded (does not support SqlTablePrefix)");
+
+// mysql.php
+define('_NO_SUITABLE_MYSQL_LIBRARY',				"<p>No suitable mySQL library was found to run Nucleus</p>");
+
+// PLUGIN.php
+define('_ERROR_PLUGIN_NOSUCHACTION',				'No Such Action');
+
+// PLUGINADMIN.php
+define('_ERROR_INVALID_PLUGIN',						'Invalid plugin');
+
+// showlist.php
+define('_LIST_PLUGS_DEPREQ',						'Plugin(s) requires:');
+define('_LIST_SKIN_PREVIEW',						"Preview for '%s' skin");
+define('_LIST_SKIN_PREVIEW_VIEWLARGER',				"View larger");
+define('_LIST_SKIN_README',							"More info on the '%s' skin");
+define('_LIST_SKIN_README_TXT',						'Read me');
+
+// BLOG.php createNewCategory()
+define('_CREATED_NEW_CATEGORY_NAME',				'newcat');
+define('_CREATED_NEW_CATEGORY_DESC',				'New category');
+
+// ADMIN.php blog settings
+define('_EBLOG_CURRENT_TEAM_MEMBER',				'Members currently on your team:');
+
+// Language Files
+define('_LANGUAGEFILES_JAPANESE-UTF8',				'Japanese - &#26085;&#26412;&#35486; (UTF-8)');
+define('_LANGUAGEFILES_JAPANESE-EUC',				'Japanese - &#26085;&#26412;&#35486; (EUC)');
+define('_LANGUAGEFILES_JAPANESE-SJIS',				'Japanese - &#26085;&#26412;&#35486; (Shift-JIS)');
+define('_LANGUAGEFILES_ENGLISH-UTF8',				'English - English (UTF-8)');
+define('_LANGUAGEFILES_ENGLISH',					'English - English (iso-8859-1)');
+/*
+define('_LANGUAGEFILES_BULGARIAN',					'Bulgarian - &#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080; (iso-8859-5)');
+define('_LANGUAGEFILES_CATALAN',					'Catalan - Catal&agrave; (iso-8859-1)');
+define('_LANGUAGEFILES_CHINESE-GBK',				'Simplified Chinese - &#31777;&#20307;&#23383;&#20013;&#25991; (gbk)');
+define('_LANGUAGEFILES_SIMCHINESE',					'Simplified Chinese - &#31777;&#20307;&#23383;&#20013;&#25991; (gb2312)');
+define('_LANGUAGEFILES_CHINESE-UTF8',				'Simplified Chinese - &#31777;&#20307;&#23383;&#20013;&#25991; (utf-8)');
+define('_LANGUAGEFILES_CHINESEB5',					'Tranditional Chinese - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
+define('_LANGUAGEFILES_CHINESEB5-UTF8',				'Tranditional Chinese - &#32321;&#20307;&#23383;&#20013;&#25991; (utf-8)');
+define('_LANGUAGEFILES_TRADITIONAL_CHINESE',		'Tranditional Chinese - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
+define('_LANGUAGEFILES_TRADITIONAL_CHINESE-UTF-8',	'Tranditional Chinese - &#32321;&#20307;&#23383;&#20013;&#25991; (utf-8)');
+define('_LANGUAGEFILES_CZECH',						'Czech - &#268;esky (windows-1250)');
+define('_LANGUAGEFILES_FINNISH',					'Finnish - Suomi (iso-8859-1)');
+define('_LANGUAGEFILES_FRENCH',						'French - Fran&ccedil;ais (iso-8859-1)');
+define('_LANGUAGEFILES_GALEGO',						'Galego - Galego (iso-8859-1)');
+define('_LANGUAGEFILES_GERMAN',						'German - Deutsch (iso-8859-1)');
+define('_LANGUAGEFILES_HUNGARIAN',					'Hungarian - Magyar (iso-8859-2)');
+define('_LANGUAGEFILES_ITALIANO',					'Italiano - Italiano (iso-8859-1)');
+define('_LANGUAGEFILES_KOREAN-EUC-KR',				'Korean - &#54620;&#44397;&#50612; (euc-kr)');
+define('_LANGUAGEFILES_KOREAN-UTF',					'Korean - &#54620;&#44397;&#50612; (utf-8)');
+define('_LANGUAGEFILES_LATVIAN',					'Latvian - Latvie&scaron;u (windows-1257)');
+define('_LANGUAGEFILES_NEDERLANDS',					'Duch - Nederlands (iso-8859-15)');
+define('_LANGUAGEFILES_PERSIAN',					'Persian - &#1601;&#1575;&#1585;&#1587;&#1740; (utf-8)');
+define('_LANGUAGEFILES_PORTUGUESE_BRAZIL',			'Portuguese Brazil - Portugu&ecirc;s (iso-8859-1)');
+define('_LANGUAGEFILES_RUSSIAN',					'Russian - &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; (windows-1251)');
+define('_LANGUAGEFILES_SLOVAK',						'Slovak - Sloven&#269;ina (ISO-8859-2)');
+define('_LANGUAGEFILES_SPANISH-UTF8',				'Spanish - Espa&ntilde;ol (utf-8)');
+define('_LANGUAGEFILES_SPANISH',					'Spanish - Espa&ntilde;ol (iso-8859-1)');
+*/
+
+// </add by shizuki>
+
+/********************************************
+ *        End New for 3.40                  *
+ ********************************************/
+
+// START changed/added after 3.3 START
+define('_AUTOSAVEDRAFT',		'Auto save draft');
+define('_AUTOSAVEDRAFT_LASTSAVED',	'Last saved: ');
+define('_AUTOSAVEDRAFT_NOTYETSAVED',	'No saves have been made yet');
+define('_AUTOSAVEDRAFT_NOW',		'Auto save now');
+define('_SKIN_PARTS_SPECIAL',		'Special skin parts');
+define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',		'You must enter a name that exists only out of lowercase letters and digits');
+define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',		'Can\'t delete this skin part');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',		'Do you really want to delete this special skin part?');
+define('_ERROR_PLUGIN_LOAD',		'Plugin could not be loaded, or does not support certain features that are required for it to run on your Nucleus installation (you might want to check the <a href="?action=actionlog">actionlog</a> for more info)');
+// END changed/added after 3.3 END
+
+// START changed/added after 3.22 START
+define('_SEARCHFORM_QUERY',			'Keywords to search');
+define('_ERROR_EMAIL_REQUIRED',		'Email address is required');
+define('_COMMENTFORM_MAIL',			'Website:');
+define('_COMMENTFORM_EMAIL',		'E-mail:');
+define('_EBLOG_REQUIREDEMAIL',		'Require E-mail address with comments?');
+define('_ERROR_COMMENTS_SPAM',      'Your comment was rejected because it did not pass the spam test');
+// END changed/added after 3.22 END
 
 // START changed/added after 315 START
 

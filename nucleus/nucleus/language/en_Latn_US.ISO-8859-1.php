@@ -17,10 +17,10 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id: english.php 1594 2011-11-01 20:18:32Z ftruscot $
+ * @version $Id$
  */
 
- /********************************************
+/********************************************
  *        Start New for 4.0                 *
  ********************************************/
 define('_SKINIE_INVALID_NAMES_DETECTED', 'Invalid skin or templates names detected. Valid names consist of only a-z, A-Z, 0-9, -, and _'); 

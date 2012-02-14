@@ -24,12 +24,13 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The NucleusCMS Japanチーム
- * @version $Id: japanese-utf8.php 1555 2011-07-09 09:10:35Z sakamocchi $
+ * @version $Id$
  */
 
  /********************************************
- *        Start New for 3.65                *
+ *        Start New for 4.0                *
  ********************************************/
+define('_SKINIE_INVALID_NAMES_DETECTED', 'Invalid skin or templates names detected. Valid names consist of only a-z, A-Z, 0-9, -, and _'); 
 define('_LISTS_AUTHOR', '著者');
 define('_OVERVIEW_OTHER_DRAFTS', 'その他のドラフト');
  

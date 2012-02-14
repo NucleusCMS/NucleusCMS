@@ -12,6 +12,43 @@
 //
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
+/**
+ * Nucleus Language File
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2012 The Nucleus Group
+ * @version $Id$
+ */
+
+ /********************************************
+ *        Start New for 4.0                 *
+ ********************************************/
+define('_SKINIE_INVALID_NAMES_DETECTED', 'Invalid skin or templates names detected. Valid names consist of only a-z, A-Z, 0-9, -, and _'); 
+define('_LISTS_AUTHOR', 'Author');
+define('_OVERVIEW_OTHER_DRAFTS', 'Other Drafts');
+ 
+/********************************************
+ *        Start New for 3.6x                *
+ ********************************************/
+define('_ERROR_USER_TOO_LONG', 'Please enter a name shorter than 40 characters.');
+define('_ERROR_EMAIL_TOO_LONG', 'Please enter an email shorter than 100 characters.');
+define('_ERROR_URL_TOO_LONG', 'Please enter a website shorter than 100 characters.');
+
+/********************************************
+ *        Start New for 3.62                *
+ ********************************************/
+define('_SETTINGS_ADMINCSS',		'Admin Area Style');
+
+ 
+/********************************************
+ *        Start New for 3.50                *
+ ********************************************/
+define('_PLUGS_TITLE_GETPLUGINS',		'get more plugins...');
+define('_ARCHIVETYPE_YEAR', 'year');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'Newer Version Available');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'Upgrade available: v');
+define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "Plugin %s was not loaded (does not support SqlApi and you are trying to use a non-mysql db)");
+
 
 // START additional added for the german translation of Nucleus CMS 3.40
 define('_QMENU_MANAGE_SYSTEM',						'System info');
