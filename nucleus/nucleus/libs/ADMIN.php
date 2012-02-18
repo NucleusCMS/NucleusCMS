@@ -14,7 +14,7 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id$
+ * @version $Id: ADMIN.php 1661 2012-02-12 11:55:39Z sakamocchi $
 
  */
 
@@ -2993,12 +2993,16 @@ class ADMIN
     }
 
 	/**
-	 * @todo document this
+	 * ADMIN::action_blogsettingsupdate
+	 * Updating blog settings
+	 * 
+	 * @param	Void
+	 * @return	Void
 	 */
 	function action_blogsettingsupdate()
 	{
 		global $member, $manager;
-	
+		
 		$blogid = intRequestVar('blogid');
 		
 		$member->blogAdminRights($blogid) or $this->disallow();
@@ -3076,6 +3080,7 @@ class ADMIN
 		$manager->notify('PostPluginOptionsUpdate',array('context' => 'blog', 'blogid' => $blogid, 'blog' => &$blog));
 		
 		$this->action_overview(_MSG_SETTINGSCHANGED);
+		return;
 	}
 
     /**

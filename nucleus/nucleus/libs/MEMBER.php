@@ -15,7 +15,7 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id$
+ * @version $Id: MEMBER.php 1616 2012-01-08 09:48:15Z sakamocchi $
  */
 class MEMBER {
 	
@@ -391,11 +391,19 @@ class MEMBER {
 		return;
 	}
 	
+	/**
+	 * MEMBER::sendActivationLink()
+	 * Send activation mail
+	 * 
+	 * @param	String	$type	activation type
+	 * @param	String	$extra	extra info
+	 * @return	Void
+	 */
 	public function sendActivationLink($type, $extra='')
 	{
 		global $CONF;
 		
-		if (!isset($CONF['ActivationDays']))
+		if ( !isset($CONF['ActivationDays']) )
 		{
 			$CONF['ActivationDays'] = 2;
 		}
@@ -496,9 +504,14 @@ class MEMBER {
 		return $blogs;
 	}
 	
-	/*
+	/**
+	 * MEMBER::getNotifyFromMailAddress()
+	 * 
 	 * Returns an email address from which notification of commenting/karma voting can
 	 * be sent. A suggestion can be given for when the member is not logged in
+	 * 
+	 * @param	String	$suggest	
+	 * @return	String	mail address or suggestion
 	 */
 	public function getNotifyFromMailAddress($suggest = "")
 	{
@@ -731,10 +744,21 @@ class MEMBER {
 		return MEMBER::exists($name);
 	}
 	
-	/*
+	/**
+	 * MEMBER::create()
+	 * 
 	 * Adds a new member
 	 * 
 	 * @static
+	 * @param	String	$name
+	 * @param	String	$realname
+	 * @param	String	$password
+	 * @param	String	$email
+	 * @param	String	$url
+	 * @param	String	$admin
+	 * @param	String	$canlogin
+	 * @param	String	$notes
+	 * @return	String	1 if success, others if fail
 	 */
 	public static function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes)
 	{
@@ -763,11 +787,15 @@ class MEMBER {
 			return _ERROR_PASSWORDMISSING;
 		}
 		
-		// begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
-		if (!preg_match('#^https?://#', $url) )
+		/*
+		 *  begin if: sometimes user didn't prefix the URL with http:// or https://,
+		 *  this cause a malformed URL. Let's fix it.
+		 */
+		
+		if ( !preg_match('#^https?://#', $url) )
 		{
 			$url = 'http://' . $url;
-		} // end if
+		}
 		
 		$name = sql_real_escape_string($name);
 		$realname = sql_real_escape_string($realname);

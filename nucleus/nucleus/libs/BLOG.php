@@ -16,7 +16,7 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id$
+ * @version $Id: BLOG.php 1624 2012-01-09 11:36:20Z sakamocchi $
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -301,44 +301,51 @@ class BLOG {
 	}
 
 	/**
+	 * BLOG::sendNewItemNotification()
 	 * Send a new item notification to the notification list
 	 * 
-	 * @param $itemid
-	 *        ID of the item
-	 * @param $title
-	 *        title of the item
-	 * @param $body
-	 *        body of the item
+	 * @param String	$itemid	ID of the item
+	 * @param String	$title	title of the item
+	 * @param String	$body	body of the item
+	 * @return	Void
 	 */
-	function sendNewItemNotification($itemid, $title, $body) {
+	function sendNewItemNotification($itemid, $title, $body)
+	{
 		global $CONF, $member;
-
+		
 		// create text version of html post
 		$ascii = toAscii($body);
-
+		
 		$mailto_msg = _NOTIFY_NI_MSG . " \n";
 //		$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
 		$temp = parse_url($CONF['Self']);
-		if ($temp['scheme']) {
+		if ( $temp['scheme'] )
+		{
 			$mailto_msg .= createItemLink($itemid) . "\n\n";
-		} else {
+		}
+		else
+		{
 			$tempurl = $this->getURL();
-			if (i18n::substr($tempurl, -1) == '/' || i18n::substr($tempurl, -4) == '.php') {
+			if ( i18n::substr($tempurl, -1) == '/' || i18n::substr($tempurl, -4) == '.php' )
+			{
 				$mailto_msg .= $tempurl . '?itemid=' . $itemid . "\n\n";
-			} else {
+			}
+			else
+			{
 				$mailto_msg .= $tempurl . '/?itemid=' . $itemid . "\n\n";
 			}
 		}
 		$mailto_msg .= _NOTIFY_TITLE . ' ' . strip_tags($title) . "\n";
 		$mailto_msg .= _NOTIFY_CONTENTS . "\n " . $ascii . "\n";
 		$mailto_msg .= getMailFooter();
-
+		
 		$mailto_title = $this->getName() . ': ' . _NOTIFY_NI_TITLE;
-
+		
 		$frommail = $member->getNotifyFromMailAddress();
-
+		
 		$notify = new NOTIFICATION($this->getNotifyAddress());
 		$notify->notify($mailto_title, $mailto_msg , $frommail);
+		return;
 	}
 
 

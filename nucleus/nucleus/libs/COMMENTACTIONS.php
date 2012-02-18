@@ -14,7 +14,7 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id$
+ * @version $Id: COMMENTACTIONS.php 1626 2012-01-09 15:46:54Z sakamocchi $
  */
 
 class COMMENTACTIONS extends BaseActions {
@@ -91,30 +91,34 @@ class COMMENTACTIONS extends BaseActions {
 	function setTemplate($template) {
 		$this->template =& $template;
 	}
-
-	function setCurrentComment(&$comment) {
-
+	
+	/**
+	 * COMMENTACTIONS::setCurrentComment()
+	 * Set $currentcommentid and $currentcommentarray
+	 * 
+	 * @param	Array	$comment	array with comment elements
+	 * @return	void
+	 * 
+	 */
+	function setCurrentComment(&$comment)
+	{
 		global $manager;
-
-		// begin if: member comment
-		if ($comment['memberid'] != 0)
+		
+		if ( $comment['memberid'] != 0)
 		{
 			$comment['authtext'] = $template['COMMENTS_AUTH'];
-
 			$mem =& $manager->getMember($comment['memberid']);
 			$comment['user'] = $mem->getDisplayName();
-
-			// begin if: member URL exists, set it as the userid
-			if ($mem->getURL() )
+			
+			if ( $mem->getURL() )
 			{
 				$comment['userid'] = $mem->getURL();
 			}
-			// else: set the email as the userid
 			else
 			{
 				$comment['userid'] = $mem->getEmail();
-			} // end if
-
+			}
+			
 			$comment['userlinkraw'] = createLink(
 										'member',
 										array(
@@ -123,47 +127,36 @@ class COMMENTACTIONS extends BaseActions {
 											'extra' => $this->commentsObj->itemActions->linkparams
 										)
 									);
-
 		}
-		// else: non-member comment
 		else
 		{
-
 			// create smart links
-
-			// begin if: comment userid is not empty
-			if (!empty($comment['userid']) )
+			if ( !empty($comment['userid']) )
 			{
-
-				// begin if: comment userid has either "http://" or "https://" at the beginning
 				if ( (i18n::strpos($comment['userid'], 'http://') === 0) || (i18n::strpos($comment['userid'], 'https://') === 0) )
 				{
 					$comment['userlinkraw'] = $comment['userid'];
 				}
-				// else: prepend the "http://" (backwards compatibility before rev 1471)
 				else
 				{
 					$comment['userlinkraw'] = 'http://' . $comment['userid'];
-				} // end if
-
+				}
 			}
-			// else if: comment email is valid
-			else if (isValidMailAddress($comment['email']) )
+			else if ( isValidMailAddress($comment['email']) )
 			{
 				$comment['userlinkraw'] = 'mailto:' . $comment['email'];
 			}
-			// else if: comment userid is a valid email
-			else if (isValidMailAddress($comment['userid']) )
+			else if ( isValidMailAddress($comment['userid']) )
 			{
 				$comment['userlinkraw'] = 'mailto:' . $comment['userid'];
-			} // end if
-
-		} // end if
-
+			}
+		}
+		
 		$this->currentComment =& $comment;
 		global $currentcommentid, $currentcommentarray;
 		$currentcommentid = $comment['commentid'];
 		$currentcommentarray = $comment;
+		return;
 	}
 
 	/**
@@ -240,9 +233,14 @@ class COMMENTACTIONS extends BaseActions {
 	}
 
 	/**
+	 * COMMENTACTIONS::parse_excerpt()
 	 * Parse templatevar excerpt
+	 * 
+	 * @param	Void
+	 * @return	String	templatevar excerpt
 	 */
-	function parse_excerpt() {
+	function parse_excerpt()
+	{
 		echo stringToXML(shorten($this->currentComment['body'], 60, '...'));
 	}
 
@@ -377,28 +375,37 @@ class COMMENTACTIONS extends BaseActions {
 	}
 
 	/**
-	 * Parse templatevar useremail
+	 * COMMENTACTIONS::parse_useremail()
+	 * Output mail address
+	 * 
+	 * @param	void
+	 * @return	void
 	 */
 	function parse_useremail() {
 		global $manager;
-		if ($this->currentComment['memberid'] > 0)
+		if ( $this->currentComment['memberid'] > 0 )
 		{
 			$member =& $manager->getMember($this->currentComment['memberid']);
-
-			if ($member->email != '')
+			
+			if ( $member->email != '' )
+			{
 				echo $member->email;
+			}
 		}
 		else
 		{
-			if (isValidMailAddress($this->currentComment['email']))
+			if ( isValidMailAddress($this->currentComment['email']) )
+			{
 				echo $this->currentComment['email'];
-			elseif (isValidMailAddress($this->currentComment['userid']))
+			}
+			elseif ( isValidMailAddress($this->currentComment['userid']) )
+			{
 				echo $this->currentComment['userid'];
-//			if (!(i18n::strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
-//				echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
+			}
 		}
+		return;
 	}
-
+	
 	/**
 	 * Parse templatevar userid
 	 */

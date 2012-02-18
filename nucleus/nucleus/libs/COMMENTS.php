@@ -15,7 +15,7 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id$
+ * @version $Id: COMMENTS.php 1527 2011-06-21 10:43:44Z sakamocchi $
  */
 
 if ( !function_exists('requestVar') ) exit;
@@ -132,7 +132,9 @@ class COMMENTS {
 	}
 
 	/**
+	 * COMMENTS::addComment()
 	 * Adds a new comment to the database
+	 * 
 	 * @param string $timestamp
 	 * @param array $comment
 	 * @return mixed
@@ -140,53 +142,53 @@ class COMMENTS {
 	function addComment($timestamp, $comment)
 	{
 		global $CONF, $member, $manager;
-
+		
 		$blogid = getBlogIDFromItemID($this->itemid);
-
+		
 		$settings =& $manager->getBlog($blogid);
 		$settings->readSettings();
-
+		
 		// begin if: comments disabled
 		if ( !$settings->commentsEnabled() )
 		{
 			return _ERROR_COMMENTS_DISABLED;
-		} // end if
-
+		}
+		
 		// begin if: public cannot comment
 		if ( !$settings->isPublic() && !$member->isLoggedIn() )
 		{
 			return _ERROR_COMMENTS_NONPUBLIC;
-		} // end if
-
+		}
+		
 		// begin if: comment uses a protected member name
 		if ( $CONF['ProtectMemNames'] && !$member->isLoggedIn() && MEMBER::isNameProtected($comment['user']) )
 		{
 			return _ERROR_COMMENTS_MEMBERNICK;
-		} // end if
-
+		}
+		
 		// begin if: email required, but missing (doesn't apply to members)
 		if ( $settings->emailRequired() && i18n::strlen($comment['email']) == 0 && !$member->isLoggedIn() )
 		{
 			return _ERROR_EMAIL_REQUIRED;
-		} // end if
+		}
 		
 		// begin if: commenter's name is too long
 		if ( i18n::strlen($comment['user']) > 40 )
 		{
 			return _ERROR_USER_TOO_LONG;
-		} // end if
+		}
 		
 		// begin if: commenter's email is too long
 		if ( i18n::strlen($comment['email']) > 100 )
 		{
 			return _ERROR_EMAIL_TOO_LONG;
-		} // end if
+		}
 		
 		// begin if: commenter's url is too long
 		if ( i18n::strlen($comment['userid']) > 100 )
 		{
 			return _ERROR_URL_TOO_LONG;
-		} // end if
+		}
 		
 		$comment['timestamp'] = $timestamp;
 		$comment['host'] = gethostbyaddr(serverVar('REMOTE_ADDR') );
@@ -239,7 +241,7 @@ class COMMENTS {
 			'live'   	=> TRUE,
 			'return'	=> $continue
 		);
-
+		
 		// begin if: member logged in
 		if ( $member->isLoggedIn() )
 		{
@@ -252,31 +254,29 @@ class COMMENTS {
 			$spamcheck['author'] = $comment['user'];
 			$spamcheck['email'] = $comment['email'];
 			$spamcheck['url'] = $comment['userid'];
-		} // end if
-
+		}
+		
 		$manager->notify('SpamCheck', array('spamcheck' => &$spamcheck) );
-
+		
 		if ( !$continue && isset($spamcheck['result']) && $spamcheck['result'] == TRUE )
 		{
 			return _ERROR_COMMENTS_SPAM;
 		}
-
+		
 		// isValidComment returns either "1" or an error message
 		$isvalid = $this->isValidComment($comment, $spamcheck);
-
+		
 		if ( $isvalid != 1 )
 		{
 			return $isvalid;
 		}
-
+		
 		// begin if: send email to notification address
 		if ( $settings->getNotifyAddress() && $settings->notifyOnComment() )
 		{
-
 			$mailto_msg = _NOTIFY_NC_MSG . ' ' . $this->itemid . "\n";
-//			$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $this->itemid . "\n\n";
 			$temp = parse_url($CONF['Self']);
-
+			
 			if ( $temp['scheme'] )
 			{
 				$mailto_msg .= createItemLink($this->itemid) . "\n\n";
@@ -284,7 +284,7 @@ class COMMENTS {
 			else
 			{
 				$tempurl = $settings->getURL();
-
+				
 				if ( i18n::substr($tempurl, -1) == '/' || i18n::substr($tempurl, -4) == '.php' )
 				{
 					$mailto_msg .= $tempurl . '?itemid=' . $this->itemid . "\n\n";
@@ -294,7 +294,7 @@ class COMMENTS {
 					$mailto_msg .= $tempurl . '/?itemid=' . $this->itemid . "\n\n";
 				}
 			}
-
+			
 			if ( $comment['memberid'] == 0 )
 			{
 				$mailto_msg .= _NOTIFY_USER . ' ' . $comment['user'] . "\n";
@@ -304,24 +304,24 @@ class COMMENTS {
 			{
 				$mailto_msg .= _NOTIFY_MEMBER .' ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
 			}
-
+			
 			$mailto_msg .= _NOTIFY_HOST . ' ' . $comment['host'] . "\n";
 			$mailto_msg .= _NOTIFY_COMMENT . "\n " . $comment['body'] . "\n";
 			$mailto_msg .= getMailFooter();
-
+			
 			$item =& $manager->getItem($this->itemid, 0, 0);
 			$mailto_title = _NOTIFY_NC_TITLE . ' ' . strip_tags($item['title']) . ' (' . $this->itemid . ')';
-
+			
 			$frommail = $member->getNotifyFromMailAddress($comment['email']);
-
+			
 			$notify = new NOTIFICATION($settings->getNotifyAddress() );
 			$notify->notify($mailto_title, $mailto_msg , $frommail);
 		}
-
+		
 		$comment = COMMENT::prepare($comment);
-
+		
 		$manager->notify('PreAddComment', array('comment' => &$comment, 'spamcheck' => &$spamcheck) );
-
+		
 		$name		= sql_real_escape_string($comment['user']);
 		$url		= sql_real_escape_string($comment['userid']);
 		$email      = sql_real_escape_string($comment['email']);
@@ -331,7 +331,7 @@ class COMMENTS {
 		$memberid	= intval($comment['memberid']);
 		$timestamp	= date('Y-m-d H:i:s', $comment['timestamp']);
 		$itemid		= $this->itemid;
-
+		
 		$qSql       = 'SELECT COUNT(*) AS result '
 					. 'FROM ' . sql_table('comment')
 					. ' WHERE '
@@ -341,91 +341,84 @@ class COMMENTS {
 					. ' AND citem   = "' . $itemid . '"'
 					. ' AND cblog   = "' . $blogid . '"';
 		$result     = (integer) quickQuery($qSql);
-
+		
 		if ( $result > 0 )
 		{
 			return _ERROR_BADACTION;
 		}
-
+		
 		$query = 'INSERT INTO '.sql_table('comment').' (CUSER, CMAIL, CEMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CIP, CBLOG) '
 			   . "VALUES ('$name', '$url', '$email', $memberid, '$body', $itemid, '$timestamp', '$host', '$ip', '$blogid')";
-
+		
 		sql_query($query);
-
+		
 		// post add comment
 		$commentid = sql_insert_id();
 		$manager->notify('PostAddComment', array('comment' => &$comment, 'commentid' => &$commentid, 'spamcheck' => &$spamcheck) );
-
+		
 		// succeeded !
 		return TRUE;
 	}
 
 
 	/**
+	 * COMMENTS::isValidComment()
 	 * Checks if a comment is valid and call plugins
 	 * that can check if the comment is a spam comment	  
+	 * 
+	 * @param	Array	$comment	array with comment elements
+	 * @param	Array	$spamcheck	array with spamcheck elements
 	 */
-	function isValidComment(&$comment, &$spamcheck) {
-
+	function isValidComment(&$comment, &$spamcheck)
+	{
 		global $member, $manager;
-
+		
 		// check if there exists a item for this date
 		$item =& $manager->getItem($this->itemid, 0, 0);
-
-		if (!$item)
+		
+		if ( !$item )
 		{
 			return _ERROR_NOSUCHITEM;
 		}
-
-		if ($item['closed'])
+		
+		if ( $item['closed'] )
 		{
 			return _ERROR_ITEMCLOSED;
 		}
-
-		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-		# original eregi comparison: eregi('[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}', $comment['body']) != FALSE
-
+		
 		// don't allow words that are too long
-		if (preg_match('/[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}/', $comment['body']) != 0)
+		if ( preg_match('/[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}/', $comment['body']) != 0 )
 		{
 			return _ERROR_COMMENT_LONGWORD;
 		}
-
+		
 		// check lengths of comment
-		if (i18n::strlen($comment['body']) < 3)
+		if ( i18n::strlen($comment['body']) < 3 )
 		{
 			return _ERROR_COMMENT_NOCOMMENT;
 		}
-
-		if (i18n::strlen($comment['body']) > 5000)
+		
+		if ( i18n::strlen($comment['body']) > 5000 )
 		{
 			return _ERROR_COMMENT_TOOLONG;
 		}
-
+		
 		// only check username if no member logged in
-		if (!$member->isLoggedIn() )
+		if ( !$member->isLoggedIn() && (i18n::strlen($comment['user']) < 2) )
 		{
-
-			if (i18n::strlen($comment['user']) < 2)
-			{
-				return _ERROR_COMMENT_NOUSERNAME;
-			}
-
+			return _ERROR_COMMENT_NOUSERNAME;
 		}
-
-		if ((i18n::strlen($comment['email']) != 0) && !(isValidMailAddress(trim($comment['email']) ) ) )
+		
+		if ( (i18n::strlen($comment['email']) != 0) && !isValidMailAddress(trim($comment['email'])) )
 		{
 			return _ERROR_BADMAILADDRESS;
 		}
-
+		
 		// let plugins do verification (any plugin which thinks the comment is invalid
 		// can change 'error' to something other than '1')
 		$result = 1;
 		$manager->notify('ValidateForm', array('type' => 'comment', 'comment' => &$comment, 'error' => &$result, 'spamcheck' => &$spamcheck) );
-
+		
 		return $result;
 	}
-
 }
-
-?>
