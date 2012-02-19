@@ -2874,7 +2874,7 @@ class ADMIN
 
         $this->action_blogsettings();
     }
-
+	
 	/**
 	 * ADMIN::deleteOneCategory()
 	 * Delete a category by its id
@@ -2936,74 +2936,6 @@ class ADMIN
 		return;
 	}
 	
-    /**
-     * @todo document this
-     */
-    function moveOneCategory($catid, $destblogid) {
-        global $manager, $member;
-
-        $catid = intval($catid);
-        $destblogid = intval($destblogid);
-
-        $blogid = getBlogIDFromCatID($catid);
-
-        // mover should have admin rights on both blogs
-        if (!$member->blogAdminRights($blogid))
-            return _ERROR_DISALLOWED;
-        if (!$member->blogAdminRights($destblogid))
-            return _ERROR_DISALLOWED;
-
-        // cannot move to self
-        if ($blogid == $destblogid)
-            return _ERROR_MOVETOSELF;
-
-        // get blogs
-        $blog =& $manager->getBlog($blogid);
-        $destblog =& $manager->getBlog($destblogid);
-
-        // check if the category is valid
-        if (!$blog || !$blog->isValidCategory($catid))
-            return _ERROR_NOSUCHCATEGORY;
-
-        // don't allow default category to be moved
-        if ($blog->getDefaultCategory() == $catid)
-            return _ERROR_MOVEDEFCATEGORY;
-
-        $manager->notify(
-            'PreMoveCategory',
-            array(
-                'catid' => &$catid,
-                'sourceblog' => &$blog,
-                'destblog' => &$destblog
-            )
-        );
-
-        // update comments table (cblog)
-        $query = 'SELECT inumber FROM '.sql_table('item').' WHERE icat='.$catid;
-        $items = sql_query($query);
-        while ($oItem = sql_fetch_object($items)) {
-            sql_query('UPDATE '.sql_table('comment').' SET cblog='.$destblogid.' WHERE citem='.$oItem->inumber);
-        }
-
-        // update items (iblog)
-        $query = 'UPDATE '.sql_table('item').' SET iblog='.$destblogid.' WHERE icat='.$catid;
-        sql_query($query);
-
-        // move category
-        $query = 'UPDATE '.sql_table('category').' SET cblog='.$destblogid.' WHERE catid='.$catid;
-        sql_query($query);
-
-        $manager->notify(
-            'PostMoveCategory',
-            array(
-                'catid' => &$catid,
-                'sourceblog' => &$blog,
-                'destblog' => $destblog
-            )
-        );
-
-    }
-
 	/**
 	 * ADMIN::action_blogsettingsupdate
 	 * Updating blog settings
