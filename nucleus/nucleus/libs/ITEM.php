@@ -424,40 +424,45 @@ class ITEM
 			)
 		);
 	}
-
+	
 	/**
-	  * Deletes an item
-	  */
-	function delete($itemid) {
+	 * ITEM::delete()
+	 * Deletes an item
+	 * 
+	 * @param	Void
+	 * @return	Void
+	 */
+	function delete($itemid)
+	{
 		global $manager, $member;
-
-		$itemid = intval($itemid);
-
+		
+		$itemid = (integer) $itemid;
+		
 		// check to ensure only those allow to alter the item can
 		// proceed
-		if (!$member->canAlterItem($itemid)) {
+		if ( !$member->canAlterItem($itemid) )
+		{
 			return 1;
 		}
-
-
+		
 		$manager->notify('PreDeleteItem', array('itemid' => $itemid));
-
+		
 		// delete item
 		$query = 'DELETE FROM '.sql_table('item').' WHERE inumber=' . $itemid;
 		sql_query($query);
-
+		
 		// delete the comments associated with the item
 		$query = 'DELETE FROM '.sql_table('comment').' WHERE citem=' . $itemid;
 		sql_query($query);
-
+		
 		// delete all associated plugin options
-		NucleusPlugin::_deleteOptionValues('item', $itemid);
-
+		NucleusPlugin::delete_option_values('item', $itemid);
+		
 		$manager->notify('PostDeleteItem', array('itemid' => $itemid));
-
+		
 		return 0;
 	}
-
+	
 	/**
 	 * Returns true if there is an item with the given ID
 	 *

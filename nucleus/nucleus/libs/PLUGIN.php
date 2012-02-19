@@ -760,12 +760,16 @@ abstract class NucleusPlugin
 	}
 	
 	/**
+	 * NucleusPlugin::delete_option_values()
 	 * Deletes all option values for a given context and contextid
 	 * (used when e.g. a blog, member or category is deleted)
 	 *
-	 * (static method)
+	 *@static
+	 *@param	String	$context	global/blog/category/item/member
+	 *@param	Integer	$contextid		ID
+	 *@return	Void
 	 */
-	final protected function delete_option_values($context, $contextid)
+	static public function delete_option_values($context, $contextid)
 	{
 		// delete all associated plugin options
 		$aOIDs = array();

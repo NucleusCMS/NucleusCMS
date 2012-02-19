@@ -2875,55 +2875,67 @@ class ADMIN
         $this->action_blogsettings();
     }
 
-    /**
-     * @todo document this
-     */
-    function deleteOneCategory($catid) {
-        global $manager, $member;
-
-        $catid = intval($catid);
-
-        $blogid = getBlogIDFromCatID($catid);
-
-        if (!$member->blogAdminRights($blogid))
-            return ERROR_DISALLOWED;
-
-        // get blog
-        $blog =& $manager->getBlog($blogid);
-
-        // check if the category is valid
-        if (!$blog || !$blog->isValidCategory($catid))
-            return _ERROR_NOSUCHCATEGORY;
-
-        $destcatid = $blog->getDefaultCategory();
-
-        // don't allow deletion of default category
-        if ($blog->getDefaultCategory() == $catid)
-            return _ERROR_DELETEDEFCATEGORY;
-
-        // check if catid is the only category left for blogid
-        $query = 'SELECT catid FROM '.sql_table('category').' WHERE cblog=' . $blogid;
-        $res = sql_query($query);
-        if (sql_num_rows($res) == 1)
-            return _ERROR_DELETELASTCATEGORY;
-
-        $manager->notify('PreDeleteCategory', array('catid' => $catid));
-
-        // change category for all items to the default category
-        $query = 'UPDATE '.sql_table('item')." SET icat=$destcatid WHERE icat=$catid";
-        sql_query($query);
-
-        // delete all associated plugin options
-        NucleusPlugin::_deleteOptionValues('category', $catid);
-
-        // delete category
-        $query = 'DELETE FROM '.sql_table('category').' WHERE catid=' .$catid;
-        sql_query($query);
-
-        $manager->notify('PostDeleteCategory', array('catid' => $catid));
-
-    }
-
+	/**
+	 * ADMIN::deleteOneCategory()
+	 * Delete a category by its id
+	 * 
+	 * @param	String	$catid	category id for deleting
+	 * @return	Void
+	 */
+	function deleteOneCategory($catid)
+	{
+		global $manager, $member;
+		
+		$catid = intval($catid);
+		$blogid = getBlogIDFromCatID($catid);
+		
+		if ( !$member->blogAdminRights($blogid) )
+		{
+			return ERROR_DISALLOWED;
+		}
+		
+		// get blog
+		$blog =& $manager->getBlog($blogid);
+		
+		// check if the category is valid
+		if ( !$blog || !$blog->isValidCategory($catid) )
+		{
+			return _ERROR_NOSUCHCATEGORY;
+		}
+		
+		$destcatid = $blog->getDefaultCategory();
+		
+		// don't allow deletion of default category
+		if ( $blog->getDefaultCategory() == $catid )
+		{
+			return _ERROR_DELETEDEFCATEGORY;
+		}
+		
+		// check if catid is the only category left for blogid
+		$query = 'SELECT catid FROM '.sql_table('category').' WHERE cblog=' . $blogid;
+		$res = sql_query($query);
+		if ( sql_num_rows($res) == 1 )
+		{
+			return _ERROR_DELETELASTCATEGORY;
+		}
+		
+		$manager->notify('PreDeleteCategory', array('catid' => $catid));
+		
+		// change category for all items to the default category
+		$query = 'UPDATE '.sql_table('item')." SET icat=$destcatid WHERE icat=$catid";
+		sql_query($query);
+		
+		// delete all associated plugin options
+		NucleusPlugin::delete_option_values('category', $catid);
+		
+		// delete category
+		$query = 'DELETE FROM '.sql_table('category').' WHERE catid=' .$catid;
+		sql_query($query);
+		
+		$manager->notify('PostDeleteCategory', array('catid' => $catid));
+		return;
+	}
+	
     /**
      * @todo document this
      */
@@ -3119,55 +3131,61 @@ class ADMIN
         <?php
         $this->pagefoot();
     }
-
-    /**
-     * @todo document this
-     */
-    function action_deleteblogconfirm() {
-        global $member, $CONF, $manager;
-
-        $blogid = intRequestVar('blogid');
-
-        $manager->notify('PreDeleteBlog', array('blogid' => $blogid));
-
-        $member->blogAdminRights($blogid) or $this->disallow();
-
-        // check if blog is default blog
-        if ($CONF['DefaultBlog'] == $blogid)
-            $this->error(_ERROR_DELDEFBLOG);
-
-        // delete all comments
-        $query = 'DELETE FROM '.sql_table('comment').' WHERE cblog='.$blogid;
-        sql_query($query);
-
-        // delete all items
-        $query = 'DELETE FROM '.sql_table('item').' WHERE iblog='.$blogid;
-        sql_query($query);
-
-        // delete all team members
-        $query = 'DELETE FROM '.sql_table('team').' WHERE tblog='.$blogid;
-        sql_query($query);
-
-        // delete all bans
-        $query = 'DELETE FROM '.sql_table('ban').' WHERE blogid='.$blogid;
-        sql_query($query);
-
-        // delete all categories
-        $query = 'DELETE FROM '.sql_table('category').' WHERE cblog='.$blogid;
-        sql_query($query);
-
-        // delete all associated plugin options
-        NucleusPlugin::_deleteOptionValues('blog', $blogid);
-
-        // delete the blog itself
-        $query = 'DELETE FROM '.sql_table('blog').' WHERE bnumber='.$blogid;
-        sql_query($query);
-
-        $manager->notify('PostDeleteBlog', array('blogid' => $blogid));
-
-        $this->action_overview(_DELETED_BLOG);
-    }
-
+	
+	/**
+	 * ADMIN::action_deleteblogconfirm()
+	 * Delete Blog
+	 * 
+	 * @param	Void
+	 * @return	Void
+	 */
+	function action_deleteblogconfirm()
+	{
+		global $member, $CONF, $manager;
+		
+		$blogid = intRequestVar('blogid');
+		$manager->notify('PreDeleteBlog', array('blogid' => $blogid));
+		$member->blogAdminRights($blogid) or $this->disallow();
+		
+		// check if blog is default blog
+		if ( $CONF['DefaultBlog'] == $blogid )
+		{
+			$this->error(_ERROR_DELDEFBLOG);
+		}
+		
+		// delete all comments
+		$query = 'DELETE FROM '.sql_table('comment').' WHERE cblog='.$blogid;
+		sql_query($query);
+		
+		// delete all items
+		$query = 'DELETE FROM '.sql_table('item').' WHERE iblog='.$blogid;
+		sql_query($query);
+		
+		// delete all team members
+		$query = 'DELETE FROM '.sql_table('team').' WHERE tblog='.$blogid;
+		sql_query($query);
+		
+		// delete all bans
+		$query = 'DELETE FROM '.sql_table('ban').' WHERE blogid='.$blogid;
+		sql_query($query);
+		
+		// delete all categories
+		$query = 'DELETE FROM '.sql_table('category').' WHERE cblog='.$blogid;
+		sql_query($query);
+		
+		// delete all associated plugin options
+		NucleusPlugin::delete_option_values('blog', $blogid);
+		
+		// delete the blog itself
+		$query = 'DELETE FROM '.sql_table('blog').' WHERE bnumber='.$blogid;
+		sql_query($query);
+		
+		$manager->notify('PostDeleteBlog', array('blogid' => $blogid));
+		
+		$this->action_overview(_DELETED_BLOG);
+		return;
+	}
+	
     /**
      * @todo document this
      */
@@ -3220,46 +3238,54 @@ class ADMIN
         else
             $this->action_overview(_DELETED_MEMBER);
     }
-
-    /**
-     * @static
-     * @todo document this
-     */
-    function deleteOneMember($memberid) {
-        global $manager;
-
-        $memberid = intval($memberid);
-        $mem = MEMBER::createFromID($memberid);
-
-        if (!$mem->canBeDeleted())
-            return _ERROR_DELETEMEMBER;
-
-        $manager->notify('PreDeleteMember', array('member' => &$mem));
-
-        /* unlink comments from memberid */
-        if ($memberid) {
-            $query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. sql_real_escape_string($mem->getDisplayName())
-                        .'" WHERE cmember='.$memberid;
-            sql_query($query);
-        }
-
-        $query = 'DELETE FROM '.sql_table('member').' WHERE mnumber='.$memberid;
-        sql_query($query);
-
-        $query = 'DELETE FROM '.sql_table('team').' WHERE tmember='.$memberid;
-        sql_query($query);
-
-        $query = 'DELETE FROM '.sql_table('activation').' WHERE vmember='.$memberid;
-        sql_query($query);
-
-        // delete all associated plugin options
-        NucleusPlugin::_deleteOptionValues('member', $memberid);
-
-        $manager->notify('PostDeleteMember', array('member' => &$mem));
-
-        return '';
-    }
-
+	
+	/**
+	 * ADMIN::deleteOneMember()
+	 * Delete a member by id
+	 * 
+	 * @static
+	 * @params	Integer	$memberid	member id
+	 * @return	String	null string or error messages
+	 */
+	function deleteOneMember($memberid)
+	{
+		global $manager;
+		
+		$memberid = intval($memberid);
+		$mem = MEMBER::createFromID($memberid);
+		
+		if ( !$mem->canBeDeleted() )
+		{
+			return _ERROR_DELETEMEMBER;
+		}
+		
+		$manager->notify('PreDeleteMember', array('member' => &$mem));
+		
+		/* unlink comments from memberid */
+		if ( $memberid )
+		{
+			$query = "UPDATE %s SET cmember=0, cuser='%s' WHERE cmember=%d";
+			$query = sprintf($query, sql_table('comment'), sql_real_escape_string($mem->getDisplayName()), $memberid);
+			sql_query($query);
+		}
+		
+		$query = 'DELETE FROM '.sql_table('member').' WHERE mnumber='.$memberid;
+		sql_query($query);
+		
+		$query = 'DELETE FROM '.sql_table('team').' WHERE tmember='.$memberid;
+		sql_query($query);
+		
+		$query = 'DELETE FROM '.sql_table('activation').' WHERE vmember='.$memberid;
+		sql_query($query);
+		
+		// delete all associated plugin options
+		NucleusPlugin::delete_option_values('member', $memberid);
+		
+		$manager->notify('PostDeleteMember', array('member' => &$mem));
+		
+		return '';
+	}
+	
     /**
      * @todo document this
      */
