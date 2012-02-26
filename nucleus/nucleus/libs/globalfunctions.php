@@ -470,7 +470,7 @@ include($DIR_LIBS . 'BAN.php');
 include($DIR_LIBS . 'PAGEFACTORY.php');
 include($DIR_LIBS . 'SEARCH.php');
 include($DIR_LIBS . 'ENTITY.php');
-include($DIR_LIBS . 'Link.php');
+include($DIR_LIBS . 'LINK.php');
 
 /* set lastVisit cookie (if allowed) */
 if ( !headers_sent() )
