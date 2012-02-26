@@ -1717,49 +1717,6 @@ function passVar($key, $value) {
     ?><input type="hidden" name="<?php echo ENTITY::hsc($key)?>" value="<?php echo ENTITY::hsc(undoMagic($value) )?>" /><?php
 }
 
-/*
-    Date format functions (to be used from [%date(..)%] skinvars
-*/
-function formatDate($format, $timestamp, $defaultFormat, &$blog) {
-    // apply blog offset (#42)
-    $boffset = $blog ? $blog->getTimeOffset() * 3600 : 0;
-    $offset = date('Z', $timestamp) + $boffset;
-
-    switch ($format) {
-        case 'rfc822':
-            if ($offset >= 0) {
-                $tz = '+';
-            } else {
-                $tz = '-';
-                $offset = -$offset;
-            }
-
-            $tz .= sprintf("%02d%02d", floor($offset / 3600), round(($offset % 3600) / 60) );
-            return date('D, j M Y H:i:s ', $timestamp) . $tz;
-
-        case 'rfc822GMT':
-            $timestamp -= $offset;
-            return date('D, j M Y H:i:s ', $timestamp) . 'GMT';
-
-        case 'utc':
-            $timestamp -= $offset;
-            return date('Y-m-d\TH:i:s\Z', $timestamp);
-
-        case 'iso8601':
-            if ($offset >= 0) {
-                $tz = '+';
-            } else {
-                $tz = '-';
-                $offset = -$offset;
-            }
-            $tz .= sprintf("%02d:%02d", floor($offset / 3600), round(($offset % 3600) / 60) );
-            return date('Y-m-d\TH:i:s', $timestamp) . $tz;
-
-        default :
-            return i18n::strftime($format ? $format : $defaultFormat, $timestamp);
-    }
-}
-
 function checkVars($aVars) {
     global $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_COOKIE_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_SESSION_VARS;
 
@@ -2279,6 +2236,16 @@ function stringToXML ($string)
 function encode_desc($data)
 {
 	return ENTITY::hen($data);
+}
+/* NOTE: use i18n::formatted_datetime() directly instead of this */
+function formatDate($format, $timestamp, $default_format, &$blog)
+{
+	$offset = date('Z', $timestamp);
+	if ( $blog )
+	{
+		$offset += $blog->getTimeOffset() * 3600;
+	}
+	return i18n::formatted_datetime($format, $timestamp, $default_format, $offset);
 }
 /**
  * Centralisation of the functions that generate links

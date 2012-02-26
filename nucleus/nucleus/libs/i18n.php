@@ -4,8 +4,7 @@
  * written by Takashi Sakamoto as of Feb 03, 2012
  * 
  * This includes wrapper functions of iconv and mbstring
- * and mail function with 7bit characters encoder
- * for multibyte processing and includes members related to locale.
+ * for multibyte processing and includes parameters related to locale.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -406,8 +405,8 @@ class i18n
 			return $format;
 		}
 		
-		$format		= trim(preg_replace('#(%[^%])#', ',$1,', $format), ',');
-		$elements	= preg_split('#,#', $format);
+		$format = trim(preg_replace('#(%[^%])#', ',$1,', $format), ',');
+		$elements = preg_split('#,#', $format);
 		
 		foreach ( $elements as $element )
 		{
@@ -426,6 +425,77 @@ class i18n
 		}
 		
 		return (string) $formatted;
+	}
+	
+	/**
+	 * i18n::formatted_datetime()
+	 * return formatted datetime string
+	 * 
+	 * Date and Time Formats
+	 * @link	http://www.w3.org/TR/NOTE-datetime
+	 * 
+	 * Working with Time Zones
+	 * @link	http://www.w3.org/TR/timezone/
+	 * 
+	 * @param	String	$format	timezone format
+	 * @param	String	$timestamp	UNIX timestamp
+	 * @param	String	$default_format	default timezone format
+	 * @param	Integer	$offset	timestamp offset
+	 * @return	String	formatted datetime
+	 */
+	static public function formatted_datetime($format, $timestamp, $default_format, $offset)
+	{
+		$suffix = '';
+		$string = '';
+		
+		switch ( $format )
+		{
+			case 'rfc822':
+				$format = 'D, j M Y H:i:s ';
+				if ( $offset < 0 )
+				{
+					$suffix = '-';
+					$offset = -$offset;
+				}
+				else
+				{
+					$suffix = '+';
+				}
+				
+				$suffix .= sprintf("%02d%02d", floor($offset / 3600), round(($offset % 3600) / 60) );
+				break;
+			case 'rfc822GMT':
+				$format = 'D, j M Y H:i:s ';
+				$timestamp -= $offset;
+				$suffix = 'GMT';
+				break;
+			case 'utc':
+				$timestamp -= $offset;
+				$format = 'Y-m-d\TH:i:s\Z';
+				$suffix = '';
+				break;
+			case 'iso8601':
+				$format = 'Y-m-d\TH:i:s';
+				if ( $offset < 0 )
+				{
+					$suffix = '-';
+					$offset = -$offset;
+				}
+				else
+				{
+					$suffix = '+';
+				}
+				$suffix .= sprintf("%02d:%02d", floor($offset / 3600), round(($offset % 3600) / 60) );
+				break;
+			case '':
+				$format = $default_format;
+				$suffix = '';
+				break;
+			default:
+				$suffix = 0;
+				break;
+		}
+		return i18n::strftime($format, $timestamp) . $suffix;
 	}
 	
 	/**

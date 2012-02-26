@@ -381,17 +381,30 @@ class ITEMACTIONS extends BaseActions {
 		if ($this->currentItem->more)
 			$this->parser->parse($this->template['MORELINK']);
 	}
-
+	
 	/**
+	 * ITEMACTIONS::parse_date()
 	 * Parse templatevar date
 	 *
-	 * @param format optional strftime format
+	 * @param	String	$format	format optional strftime format
+	 * @return	String	formatted datetime
 	 */
-	function parse_date($format = '') {
-		if (!isset($this->template['FORMAT_DATE'])) $this->template['FORMAT_DATE'] = '';
-		echo formatDate($format, $this->currentItem->timestamp, $this->template['FORMAT_DATE'], $this->blog);
+	function parse_date($format = '')
+	{
+		if ( !isset($this->template['FORMAT_DATE']) )
+		{
+			$this->template['FORMAT_DATE'] = '';
+		}
+		
+		$offset = 0;
+		if ( $this->blog )
+		{
+			$offset = $this->blog->getTimeOffset() * 3600;
+		}
+		
+		echo i18n::formatted_datetime($format, $this->currentItem->timestamp, $this->template['FORMAT_DATE'], $offset);
 	}
-
+	
 	/**
 	  * Parse templatevar time
 	  *

@@ -216,10 +216,17 @@ class COMMENTACTIONS extends BaseActions {
 	}
 
 	/**
+	 * COMMENTACTIONS::parse_date()
 	 * Parse templatevar date
+	 * 
+	 * @format	String	$format	Date format according to PHP
+	 * @return	String formatted datetime
+	 * 
 	 */
-	function parse_date($format = '') {
-		echo formatDate($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE'], $this->commentsObj->itemActions->blog);
+	function parse_date($format = '')
+	{
+		$offset = $this->commentsObj->itemActions->blog->getTimeOffset() * 3600;
+		echo i18n::formatted_datetime($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE'], $offset);
 	}
 
 	/**
