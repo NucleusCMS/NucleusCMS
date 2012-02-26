@@ -13,84 +13,99 @@
  * This class is a collections of functions that produce links
  * 
  * All functions in this clss should only be called statically,
- * for example: Link::createItemLink(...)
+ * for example: LINK::create_item_link(...)
  * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
  */
-class Link {
+class LINK
+{
 
 	/**
+	 * LINK::create_item_link()
 	 * Create a link to an item
+	 * @static
 	 * @param $itemid	item id
 	 * @param $extra	extra parameter
 	 */
-	function createItemLink($itemid, $extra = '') {
-		return Link::createLink('item', array('itemid' => $itemid, 'extra' => $extra) );
+	static public function create_item_link($itemid, $extra = '') {
+		return self::create_link('item', array('itemid' => $itemid, 'extra' => $extra) );
 	}
 
 	/**
+	 * LINK::create_member_link()
 	 * Create a link to a member
 	 * 
+	 * @static
 	 * @param $memberid	member id
 	 * @param $extra	extra parameter
 	 */
-	function createMemberLink($memberid, $extra = '') {
-		return Link::createLink('member', array('memberid' => $memberid, 'extra' => $extra) );
+	static public function create_member_link($memberid, $extra = '') {
+		return self::create_link('member', array('memberid' => $memberid, 'extra' => $extra) );
 	}
 	
 	/**
+	 * LINK::create_category_link()
 	 * Create a link to a category
 	 * 
+	 * @static
 	 * @param $catid	category id
 	 * @param $extra	extra parameter
 	 */
-	function createCategoryLink($catid, $extra = '') {
-		return Link::createLink('category', array('catid' => $catid, 'extra' => $extra) );
+	static public function create_category_link($catid, $extra = '') {
+		return self::create_link('category', array('catid' => $catid, 'extra' => $extra) );
 	}
 
 	/**
+	 * LINK::cteate_archive_link()
 	 * Create a link to an archive
 	 * 
+	 * @static
 	 * @param $blogid	blog id
 	 * @param $archive	archive identifier
 	 * @param $extra	extra parameter
 	 */
-	function createArchiveLink($blogid, $archive, $extra = '') {
-		return Link::createLink('archive', array('blogid' => $blogid, 'archive' => $archive, 'extra' => $extra) );
+	static public function create_archive_link($blogid, $archive, $extra = '') {
+		return self::create_link('archive', array('blogid' => $blogid, 'archive' => $archive, 'extra' => $extra) );
 	}
 
 	/**
+	 * LINK::create_archivelist_link()
 	 * Create a link to an archive list
 	 * 
+	 * @static
 	 * @param $blogid	blog id
 	 * @param $extra	extra parameter
 	 */
-	function createArchiveListLink($blogid = '', $extra = '') {
-		return Link::createLink('archivelist', array('blogid' => $blogid, 'extra' => $extra) );
+	static public function create_archivelist_link($blogid = '', $extra = '') {
+		return self::create_link('archivelist', array('blogid' => $blogid, 'extra' => $extra) );
 	}
 
 	/**
+	 * LINK::create_blogid_link()
 	 * Create a link to a blog
 	 * 
+	 * @static
 	 * @param $blogid	blog id
 	 * @param $extra	extra parameter
 	 */
-	function createBlogidLink($blogid, $params = '') {
-		return Link::createLink('blog', array('blogid' => $blogid, 'extra' => $params) );
+	static public function create_blogid_link($blogid, $params = '') {
+		return self::create_link('blog', array('blogid' => $blogid, 'extra' => $params) );
 	}
 
 	/**
+	 * LINK::create_link()
 	 * Create a link
 	 * 
 	 * Universell function that creates link of different types (like item, blog ...)
 	 * and with an array of parameters
 	 * 
+	 * @static
 	 * @param $type		type of the link
 	 * @param $params	array with parameters
 	 */
-	function createLink($type, $params) {
+	static public function create_link($type, $params) {
 		global $manager, $CONF;
 	
 		$generatedURL = '';
@@ -99,7 +114,8 @@ class Link {
 		// ask plugins first
 		$created = false;
 	
-		if ($usePathInfo) {
+		if ($usePathInfo)
+		{
 			$manager->notify(
 				'GenerateURL',
 				array(
@@ -112,7 +128,8 @@ class Link {
 		}
 	
 		// if a plugin created the URL, return it
-		if ($created) {
+		if ($created)
+		{
 			return $url;
 		}
 	
@@ -171,10 +188,11 @@ class Link {
 				break;
 		}
 	
-		return Link::addLinkParams($url, (isset($params['extra'])? $params['extra'] : null));
+		return LINK::add_link_params($url, (isset($params['extra'])? $params['extra'] : null));
 	}
-
-	function addLinkParams($link, $params) {
+	
+	static private function add_link_params($link, $params)
+	{
 		global $CONF;
 	
 		if (is_array($params) ) {
@@ -228,14 +246,16 @@ class Link {
 	}
 
 	/**
+	 * LINK::create_blog_link()
 	 * Create an link to a blog
 	 * 
 	 * This function considers the URLMode of the blog
 	 * 
+	 * @static
 	 * @param $url		url
 	 * @param $params	parameters
 	 */
-	function createBlogLink($url, $params) {
+	static public function create_blog_link($url, $params) {
 		global $CONF;
 		if ($CONF['URLMode'] == 'normal') {
 			if (i18n::strpos($url, '?') === FALSE && is_array($params)) {
@@ -251,4 +271,3 @@ class Link {
 	}
 
 }
-?>

@@ -319,7 +319,7 @@ class BLOG {
 		$temp = parse_url($CONF['Self']);
 		if ( $temp['scheme'] )
 		{
-			$mailto_msg .= createItemLink($itemid) . "\n\n";
+			$mailto_msg .= LINK::create_item_link($itemid) . "\n\n";
 		}
 		else
 		{
@@ -573,219 +573,257 @@ class BLOG {
 	}
 
 	/**
-	  * Shows the archivelist using the given template
-	  */
-	function showArchiveList($template, $mode = 'month', $limit = 0) {
+	 * BLOG::showArchiveList()
+	 * Shows the archivelist using the given template
+	 * 
+	 * @param	String	$template	template name
+	 * @param	String	$mode	year/month/day
+	 * @param	Integer	$limit	limit of record count
+	 * @return	Void
+	 */
+	function showArchiveList($template, $mode = 'month', $limit = 0)
+	{
 		global $CONF, $catid, $manager;
-
-		if (!isset ($linkparams)) {
+		
+		if ( !isset ($linkparams) )
+		{
 			$linkparams = array();
 		}
 		
-		if ($catid) {
+		if ( $catid )
+		{
 			$linkparams = array('catid' => $catid);
 		}
-
+		
 		$template =& $manager->getTemplate($template);
 		$data['blogid'] = $this->getID();
-
-		$tplt = isset($template['ARCHIVELIST_HEADER']) ? $template['ARCHIVELIST_HEADER']
-		                                               : '';
+		
+		$tplt = isset($template['ARCHIVELIST_HEADER']) ? $template['ARCHIVELIST_HEADER'] : '';
 		echo TEMPLATE::fill($tplt, $data);
-
+		
 		$query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM '.sql_table('item')
 		. ' WHERE iblog=' . $this->getID()
 		. ' and itime <=' . mysqldate($this->getCorrectTime())	// don't show future items!
 		. ' and idraft=0'; // don't show draft items
-
-		if ($catid)
+		
+		if ( $catid )
+		{
 			$query .= ' and icat=' . intval($catid);
-
+		}
+		
 		$query .= ' GROUP BY Year';
-		if ($mode == 'month' || $mode == 'day')
+		if ( $mode == 'month' || $mode == 'day' )
+		{
 			$query .= ', Month';
-		if ($mode == 'day')
+		}
+		if ( $mode == 'day' )
+		{
 			$query .= ', Day';
-
+		}
+		
 		$query .= ' ORDER BY itime DESC';
-
-		if ($limit > 0)
+		
+		if ( $limit > 0 )
+		{
 			$query .= ' LIMIT ' . intval($limit);
-
+		}
+		
 		$res = sql_query($query);
-
-		while ($current = sql_fetch_object($res)) {
-			$current->itime = strtotime($current->itime);	// string time -> unix timestamp
-
-			if ($mode == 'day') {
+		while ($current = sql_fetch_object($res))
+		{
+			/* string time -> unix timestamp */
+			$current->itime = strtotime($current->itime);
+			
+			if ( $mode == 'day' )
+			{
 				$archivedate = date('Y-m-d',$current->itime);
 				$archive['day'] = date('d',$current->itime);
 				$data['day'] = date('d',$current->itime);
 				$data['month'] = date('m',$current->itime);
 				$archive['month'] = $data['month'];
-			} elseif ($mode == 'year') {
+			}
+			elseif ( $mode == 'year' )
+			{
 				$archivedate = date('Y',$current->itime);
 				$data['day'] = '';
 				$data['month'] = '';
 				$archive['day'] = '';
 				$archive['month'] = '';
-			} else {
+			}
+			else
+			{
 				$archivedate = date('Y-m',$current->itime);
 				$data['month'] = date('m',$current->itime);
 				$archive['month'] = $data['month'];
 				$data['day'] = '';
 				$archive['day'] = '';
 			}
-
+			
 			$data['year'] = date('Y',$current->itime);
 			$archive['year'] = $data['year'];
-			$data['archivelink'] = createArchiveLink($this->getID(),$archivedate,$linkparams);
-
+			$data['archivelink'] = LINK::create_archive_link($this->getID(),$archivedate,$linkparams);
+			
 			$manager->notify(
 				'PreArchiveListItem',
 				array(
 					'listitem' => &$data
 				)
 			);
-
+			
 			$temp = TEMPLATE::fill($template['ARCHIVELIST_LISTITEM'],$data);
 			echo i18n::strftime($temp,$current->itime);
-
+			return;
 		}
-
+		
 		sql_free_result($res);
-
-		$tplt = isset($template['ARCHIVELIST_FOOTER']) ? $template['ARCHIVELIST_FOOTER']
-		                                               : '';
+		
+		$tplt = isset($template['ARCHIVELIST_FOOTER']) ? $template['ARCHIVELIST_FOOTER'] : '';
 		echo TEMPLATE::fill($tplt, $data);
+		return;
 	}
-
-
+	
 	/**
-	  * Shows the list of categories using a given template
-	  */
-	function showCategoryList($template) {
+	 * BLOG::showCategoryList()
+	 * Shows the list of categories using a given template
+	 * 
+	 * @param	String	$template	Template Name
+	 * @return	Void
+	 */
+	function showCategoryList($template)
+	{
 		global $CONF, $manager;
-
-		// determine arguments next to catids
-		// I guess this can be done in a better way, but it works
+		
+		/*
+		 * determine arguments next to catids
+		 * I guess this can be done in a better way, but it works
+		 */
 		global $archive, $archivelist;
-
+		
 		$linkparams = array();
-		if ($archive) {
-			$blogurl = createArchiveLink($this->getID(), $archive, '');
+		if ( $archive )
+		{
+			$blogurl = LINK::create_archive_link($this->getID(), $archive, '');
 			$linkparams['blogid'] = $this->getID();
 			$linkparams['archive'] = $archive;
-		} else if ($archivelist) {
-			$blogurl = createArchiveListLink($this->getID(), '');
+		}
+		else if ( $archivelist )
+		{
+			$blogurl = LINK::create_archivelist_link($this->getID(), '');
 			$linkparams['archivelist'] = $archivelist;
-		} else {
-			$blogurl = createBlogidLink($this->getID(), '');
+		}
+		else
+		{
+			$blogurl = LINK::create_blogid_link($this->getID(), '');
 			$linkparams['blogid'] = $this->getID();
 		}
-
+		
 		$template =& $manager->getTemplate($template);
 		
 		//: Change: Set nocatselected variable
-		if ($this->getSelectedCategory()) {
+		if ( $this->getSelectedCategory() )
+		{
 			$nocatselected = 'no';
 		}
-		else {
+		else
+		{
 			$nocatselected = 'yes';
 		} 
-
+		
 		echo TEMPLATE::fill((isset($template['CATLIST_HEADER']) ? $template['CATLIST_HEADER'] : null),
-							array(
-								'blogid' => $this->getID(),
-								'blogurl' => $blogurl,
-								'self' => $CONF['Self'],
-								//: Change: Set catiscurrent template variable for header
-								'catiscurrent' => $nocatselected,
-								'currentcat' => $nocatselected 
-							));
-
+			array(
+				'blogid' => $this->getID(),
+				'blogurl' => $blogurl,
+				'self' => $CONF['Self'],
+				//: Change: Set catiscurrent template variable for header
+				'catiscurrent' => $nocatselected,
+				'currentcat' => $nocatselected 
+			));
+		
 		$query = 'SELECT catid, cdesc as catdesc, cname as catname FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' ORDER BY cname ASC';
 		$res = sql_query($query);
-
-
-		while ($data = sql_fetch_assoc($res)) {
+		
+		while ( $data = sql_fetch_assoc($res) )
+		{
 			$data['blogid'] = $this->getID();
 			$data['blogurl'] = $blogurl;
-			$data['catlink'] = createLink(
-								'category',
-								array(
-									'catid' => $data['catid'],
-									'name' => $data['catname'],
-									'extra' => $linkparams
-								)
-							   );
+			$data['catlink'] = LINK::create_link(
+				'category',
+				array(
+					'catid' => $data['catid'],
+					'name' => $data['catname'],
+					'extra' => $linkparams
+				));
 			$data['self'] = $CONF['Self'];
 			
 			//catiscurrent
 			//: Change: Bugfix for catiscurrent logic so it gives catiscurrent = no when no category is selected.
 			$data['catiscurrent'] = 'no';
 			$data['currentcat'] = 'no'; 
-			if ($this->getSelectedCategory()) {
-				if ($this->getSelectedCategory() == $data['catid']) {
+			if ( $this->getSelectedCategory() )
+			{
+				if ( $this->getSelectedCategory() == $data['catid'] )
+				{
 					$data['catiscurrent'] = 'yes';
 					$data['currentcat'] = 'yes';
 				}
-				/*else {
-					$data['catiscurrent'] = 'no';
-					$data['currentcat'] = 'no';
-				}*/
 			}
-			else {
+			else
+			{
 				global $itemid;
-				if (intval($itemid) && $manager->existsItem(intval($itemid),0,0)) {
+				if ( intval($itemid) && $manager->existsItem(intval($itemid),0,0) )
+				{
 					$iobj =& $manager->getItem(intval($itemid),0,0);
 					$cid = $iobj['catid'];
-					if ($cid == $data['catid']) {
+					if ( $cid == $data['catid'] )
+					{
 						$data['catiscurrent'] = 'yes';
 						$data['currentcat'] = 'yes';
 					}
-					/*else {
-						$data['catiscurrent'] = 'no';
-						$data['currentcat'] = 'no';
-					}*/
 				}
 			}
-
+			
 			$manager->notify(
 				'PreCategoryListItem',
 				array(
 					'listitem' => &$data
 				)
 			);
-
+			
 			echo TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
-			//$temp = TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
-			//echo strftime($temp, $current->itime);
-
 		}
-
+		
 		sql_free_result($res);
-
+		
 		echo TEMPLATE::fill((isset($template['CATLIST_FOOTER']) ? $template['CATLIST_FOOTER'] : null),
-							array(
-								'blogid' => $this->getID(),
-								'blogurl' => $blogurl,
-								'self' => $CONF['Self'],
-								//: Change: Set catiscurrent template variable for footer
-								'catiscurrent' => $nocatselected,
-								'currentcat' => $nocatselected  
-							));
+			array(
+				'blogid' => $this->getID(),
+				'blogurl' => $blogurl,
+				'self' => $CONF['Self'],
+				//: Change: Set catiscurrent template variable for footer
+				'catiscurrent' => $nocatselected,
+				'currentcat' => $nocatselected  
+			));
+		return;
 	}
-
+	
 	/**
-	  * Shows a list of all blogs in the system using a given template
-	  * ordered by number, name, shortname or description
-	  * in ascending or descending order
-	  */
-	function showBlogList($template, $bnametype, $orderby, $direction) {
+	 * BLOG::showBlogList()
+	 * Shows a list of all blogs in the system using a given template
+	 * ordered by number, name, shortname or description
+	 * in ascending or descending order
+	 * 
+	 * @param	String	$template	tempalte name
+	 * @param	String	$bnametype	bname/bshortname
+	 * @param	String	$orderby	string for 'ORDER BY' SQL
+	 * @param	String	$direction	ASC/DESC
+	 * @return	Void
+	 */
+	function showBlogList($template, $bnametype, $orderby, $direction)
+	{
 		global $CONF, $manager;
-
-		switch ($orderby) {
+		
+		switch ( $orderby )
+		{
 			case 'number':
 				$orderby='bnumber';
 				break;
@@ -802,9 +840,10 @@ class BLOG {
 				$orderby='bnumber';
 				break;
 		}
-
+		
 		$direction=strtolower($direction);
-		switch ($direction) {
+		switch ( $direction )
+		{
 			case 'asc':
 				$direction='ASC';
 				break;
@@ -815,57 +854,57 @@ class BLOG {
 				$direction='ASC';
 				break;
 		}
-
+		
 		$template =& $manager->getTemplate($template);
-
+		
 		echo TEMPLATE::fill((isset($template['BLOGLIST_HEADER']) ? $template['BLOGLIST_HEADER'] : null),
-							array(
-								'sitename' => $CONF['SiteName'],
-								'siteurl' => $CONF['IndexURL']
-							));
-
+			array(
+				'sitename' => $CONF['SiteName'],
+				'siteurl' => $CONF['IndexURL']
+			)
+		);
+		
 		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY '.$orderby.' '.$direction;
 		$res = sql_query($query);
-
-		while ($data = sql_fetch_assoc($res)) {
-
+		
+		while ( $data = sql_fetch_assoc($res) )
+		{
 			$list = array();
-
-//			$list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
-			$list['bloglink'] = createBlogidLink($data['bnumber']);
-
+			$list['bloglink'] = LINK::create_blogid_link($data['bnumber']);
 			$list['blogdesc'] = $data['bdesc'];
-
 			$list['blogurl'] = $data['burl'];
-
-			if ($bnametype=='shortname') {
+			
+			if ( $bnametype == 'shortname' )
+			{
 				$list['blogname'] = $data['bshortname'];
 			}
-			else { // all other cases
+			else
+			{
+				/* all other cases */
 				$list['blogname'] = $data['bname'];
 			}
-
+			
 			$manager->notify(
 				'PreBlogListItem',
 				array(
 					'listitem' => &$list
 				)
 			);
-
+			
 			echo TEMPLATE::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
-
 		}
-
+		
 		sql_free_result($res);
-
+		
 		echo TEMPLATE::fill((isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
-							array(
-								'sitename' => $CONF['SiteName'],
-								'siteurl' => $CONF['IndexURL']
-							));
-
+			array(
+				'sitename' => $CONF['SiteName'],
+				'siteurl' => $CONF['IndexURL']
+			)
+		);
+		return;
 	}
-
+	
 	/**
 	  * Read the blog settings
 	  */

@@ -301,7 +301,7 @@ switch( $CONF['secureCookieKey'] )
 		$CONF['secureCookieKeyIP'] = '';
 }
 
-/* 
+/*
  * login/logout when required or renew cookies
  *  and decide locale on this session before plugin event generates
  */
@@ -1670,44 +1670,6 @@ function checkPlugin($plug) {
 }
 
 /**
-  * Centralisation of the functions that generate links
-  * Deprecated since 3.70:
-  * Please use Link::FunctionName(...) instead
-  */
-function createItemLink($itemid, $extra = '') {
-	return Link::createItemLink($itemid, $extra);
-}
-
-function createMemberLink($memberid, $extra = '') {
-	return Link::createMemberLink($memberid, $extra);
-}
-
-function createCategoryLink($catid, $extra = '') {
-	return Link::createCategoryLink($catid, $extra);
-}
-
-function createArchiveListLink($blogid = '', $extra = '') {
-	return Link::createArchiveListLink($blogid, $extra);
-}
-
-function createArchiveLink($blogid, $archive, $extra = '') {
-	return Link::createArchiveLink($blogid, $archive, $extra);
-}
-
-function createBlogidLink($blogid, $params = '') {
-	return Link::createBlogidLink($blogid, $params = '');
-}
-
-function createLink($type, $params) {
-	return Link::createLink($type, $params);
-}
-
-function createBlogLink($url, $params) {
-   return Link::createBlogLink($url, $params);
-}
-
-
-/**
  * @param $querystr
  *		querystring to alter (e.g. foo=1&bar=2&x=y)
  * @param $param
@@ -2314,8 +2276,44 @@ function stringToXML ($string)
 {
 	return ENTITY::hen($string);
 }
-
 function encode_desc($data)
 {
 	return ENTITY::hen($data);
+}
+/**
+ * Centralisation of the functions that generate links
+ * Deprecated since 4.0:
+ * Please use LINK::FunctionName(...) instead
+ */
+function createItemLink($itemid, $extra = '')
+{
+	return LINK::create_item_link($itemid, $extra);
+}
+function createMemberLink($memberid, $extra = '')
+{
+	return LINK::create_member_link($memberid, $extra);
+}
+function createCategoryLink($catid, $extra = '')
+{
+	return LINK::create_category_link($catid, $extra);
+}
+function createArchiveListLink($blogid = '', $extra = '')
+{
+	return LINK::create_archivelist_link($blogid, $extra);
+}
+function createArchiveLink($blogid, $archive, $extra = '')
+{
+	return LINK::create_archive_link($blogid, $archive, $extra);
+}
+function createBlogidLink($blogid, $params = '')
+{
+	return LINK::create_blogid_link($blogid, $params = '');
+}
+function createLink($type, $params)
+{
+	return LINK::create_link($type, $params);
+}
+function createBlogLink($url, $params)
+{
+	return LINK::create_blog_link($url, $params);
 }

@@ -176,10 +176,16 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	/**
+	 * ITEMACTIONS::parse_categorylink()
 	 * Parse templatevar categorylink
+	 * 
+	 * @param	Void
+	 * @return	Void
 	 */
-	function parse_categorylink() {
-		echo createLink('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category));
+	function parse_categorylink()
+	{
+		echo LINK::create_link('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category));
+		return;
 	}
 
 	/**
@@ -197,10 +203,15 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	/**
+	 * ITEMACTIONS::parse_authorlink()
 	 * Parse templatevar authorlink
+	 * 
+	 * @param	Void
+	 * @return	Void
 	 */
-	function parse_authorlink() {
-		echo createLink(
+	function parse_authorlink()
+	{
+		echo LINK::create_link(
 			'member',
 			array(
 				'memberid' => $this->currentItem->authorid,
@@ -208,6 +219,7 @@ class ITEMACTIONS extends BaseActions {
 				'extra' => $this->linkparams
 			)
 		);
+		return;
 	}
 
 	/**
@@ -218,10 +230,15 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	/**
+	 * ITEMACTIONS::parse_itemlink()
 	 * Parse templatevar itemlink
+	 * 
+	 * @param	Void
+	 * @return	Void
 	 */
-	function parse_itemlink() {
-		echo createLink(
+	function parse_itemlink()
+	{
+		echo LINK::create_link(
 			'item',
 			array(
 				'itemid' => $this->currentItem->itemid,
@@ -230,8 +247,9 @@ class ITEMACTIONS extends BaseActions {
 				'extra' => $this->linkparams
 			)
 		);
+		return;
 	}
-
+	
 	/**
 	 * Parse templatevar blogurl
 	 */
@@ -448,14 +466,20 @@ class ITEMACTIONS extends BaseActions {
 		if (($this->lastVisit != 0) && ($this->currentItem->timestamp > $this->lastVisit))
 			echo $this->template['NEW'];
 	}
-
+	
 	/**
-	  * Parse templatevar daylink
-	  */
-	function parse_daylink() {
-		echo createArchiveLink($this->blog->getID(), i18n::strftime('%Y-%m-%d',$this->currentItem->timestamp), $this->linkparams);
+	 * ITEMACTIONS::parse_daylink()
+	 * Parse templatevar daylink
+	 * 
+	 * @param	Void
+	 * @return	Void
+	 */
+	function parse_daylink()
+	{
+		echo LINK::create_archive_link($this->blog->getID(), i18n::strftime('%Y-%m-%d',$this->currentItem->timestamp), $this->linkparams);
+		return;
 	}
-
+	
 	/**
 	  * Parse templatevar comments
 	  */

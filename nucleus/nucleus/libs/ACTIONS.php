@@ -357,25 +357,47 @@ class ACTIONS extends BaseActions {
 	}
 
 	/**
-	 *  Creates an item link and if no id is given a todaylink 
+	 * ACTIONS::_itemlink()
+	 * Creates an item link and if no id is given a todaylink 
+	 * 
+	 * @param	Integer	$id	id for link
+	 * @param	String	$linktext	text for link
+	 * @return	Void
 	 */
-	function _itemlink($id, $linktext = '') {
+	function _itemlink($id, $linktext = '')
+	{
 		global $CONF;
-		if ($id)
-			echo $this->_link(createItemLink($id, $this->linkparams), $linktext);
+		if ( $id )
+		{
+			echo $this->_link(LINK::create_item_link($id, $this->linkparams), $linktext);
+		}
 		else
+		{
 			$this->parse_todaylink($linktext);
+		}
+		return;
 	}
 	
 	/**
-	 *  Creates an archive link and if no id is given a todaylink 
+	 * ACTIONS::_archivelink)
+	 * Creates an archive link and if no id is given a todaylink 
+	 * 
+	 * @param	Integer	$id	id for link
+	 * @param	String	$linktext	text for link
+	 * @return	Void
 	 */
-	function _archivelink($id, $linktext = '') {
+	function _archivelink($id, $linktext = '')
+	{
 		global $CONF, $blog;
-		if ($id)
-			echo $this->_link(createArchiveLink($blog->getID(), $id, $this->linkparams), $linktext);
+		if ( $id )
+		{
+			echo $this->_link(LINK::create_archive_link($blog->getID(), $id, $this->linkparams), $linktext);
+		}
 		else
+		{
 			$this->parse_todaylink($linktext);
+		}
+		return;
 	}
 	
 	/**
@@ -510,16 +532,26 @@ class ACTIONS extends BaseActions {
 	}
 	
 	/**
+	 * ACTIONS::parse_archivelink()
 	 *	A link to the archives for the current blog (or for default blog)
+	 *
+	 * @param	String	$linktext	text for link
+	 * @return	Void
 	 */
-	function parse_archivelink($linktext = '') {
+	function parse_archivelink($linktext = '')
+	{
 		global $blog, $CONF;
-		if ($blog)
-			echo $this->_link(createArchiveListLink($blog->getID(),$this->linkparams), $linktext);
+		if ( $blog )
+		{
+			echo $this->_link(LINK::create_archivelist_link($blog->getID(),$this->linkparams), $linktext);
+		}
 		else
-			echo $this->_link(createArchiveListLink(), $linktext);
+		{
+			echo $this->_link(LINK::create_archivelist_link(), $linktext);
+		}
+		return;
 	}
-
+	
 	function parse_archivelist($template, $category = 'all', $limit = 0) {
 		global $blog;
 		if ($category == 'all') $category = '';
@@ -654,35 +686,44 @@ class ACTIONS extends BaseActions {
 	}
 	
 	/**
+	 * ACTIONS::parse_commentform()
 	 * Parse skinvar commentform
+	 * 
+	 * @param	String	$destinationurl	URI for redirection
+	 * @return	Void
 	 */
-	function parse_commentform($destinationurl = '') {
+	function parse_commentform($destinationurl = '')
+	{
 		global $blog, $itemid, $member, $CONF, $manager, $DIR_LIBS, $errormessage;
-
+		
 		// warn when trying to provide a actionurl (used to be a parameter in Nucleus <2.0)
-		if (stristr($destinationurl, 'action.php')) {
+		if ( stristr($destinationurl, 'action.php') )
+		{
 			$args = func_get_args();
 			$destinationurl = $args[1];
 			ACTIONLOG::add(WARNING,_ACTIONURL_NOTLONGER_PARAMATER);
 		}
-
+		
 		$actionurl = $CONF['ActionURL'];
-
+		
 		// if item is closed, show message and do nothing
 		$item =& $manager->getItem($itemid,0,0);
-		if ($item['closed'] || !$blog->commentsEnabled()) {
+		if ( $item['closed'] || !$blog->commentsEnabled() )
+		{
 			$this->doForm('commentform-closed');
 			return;
 		}
 		
-		if (!$blog->isPublic() && !$member->isLoggedIn()) {
+		if ( !$blog->isPublic() && !$member->isLoggedIn() )
+		{
 			$this->doForm('commentform-closedtopublic');
 			return;
 		}
-
-		if (!$destinationurl)
+		
+		if ( !$destinationurl )
 		{
-			$destinationurl = createLink(
+			// note: createLink returns an HTML encoded URL
+			$destinationurl = LINK::create_link(
 				'item',
 				array(
 					'itemid' => $itemid,
@@ -691,24 +732,34 @@ class ACTIONS extends BaseActions {
 					'extra' => $this->linkparams
 				)
 			);
-
-			// note: createLink returns an HTML encoded URL
-		} else {
+		}
+		else
+		{
 			// HTML encode URL
 			$destinationurl = ENTITY::hsc($destinationurl);
 		}
-
+		
 		// values to prefill
 		$user = cookieVar($CONF['CookiePrefix'] .'comment_user');
-		if (!$user) $user = postVar('user');
+		if ( !$user )
+		{
+			$user = postVar('user');
+		}
+		
 		$userid = cookieVar($CONF['CookiePrefix'] .'comment_userid');
-		if (!$userid) $userid = postVar('userid');
+		if ( !$userid )
+		{
+			$userid = postVar('userid');
+		}
+		
 		$email = cookieVar($CONF['CookiePrefix'] .'comment_email');
-		if (!$email) {
+		if (!$email)
+		{
 			$email = postVar('email');
 		}
+		
 		$body = postVar('body');
-
+		
 		$this->formdata = array(
 			'destinationurl' => $destinationurl,	// url is already HTML encoded
 			'actionurl' => ENTITY::hsc($actionurl),
@@ -720,12 +771,16 @@ class ACTIONS extends BaseActions {
 			'membername' => $member->getDisplayName(),
 			'rememberchecked' => cookieVar($CONF['CookiePrefix'] .'comment_user')?'checked="checked"':''
 		);
-
-		if (!$member->isLoggedIn()) {
+		
+		if ( !$member->isLoggedIn() )
+		{
 			$this->doForm('commentform-notloggedin');
-		} else {
+		}
+		else
+		{
 			$this->doForm('commentform-loggedin');
 		}
+		return;
 	}
 	
 	/**
@@ -898,16 +953,22 @@ class ACTIONS extends BaseActions {
 	}
 
 	/**
+	 * ACTIONS::parse_member()
 	 * Parse skinvar member
-	 * (includes a member info thingie)	 
+	 * (includes a member info thingie)
+	 * 
+	 * @param	String	$what	which memberdata is needed
+	 * @return	Void
 	 */
-	function parse_member($what) {
+	function parse_member($what)
+	{
 		global $memberinfo, $member, $CONF;
-
+		
 		// 1. only allow the member-details-page specific variables on member pages
-		if ($this->skintype == 'member') {
-
-			switch($what) {
+		if ($this->skintype == 'member')
+		{
+			switch( $what )
+			{
 				case 'name':
 					echo ENTITY::hsc($memberinfo->getDisplayName());
 					break;
@@ -928,11 +989,12 @@ class ACTIONS extends BaseActions {
 					break;
 			}
 		}
-
+		
 		// 2. the next bunch of options is available everywhere, as long as the user is logged in
-		if ($member->isLoggedIn())
+		if ( $member->isLoggedIn() )
 		{
-			switch($what) {
+			switch( $what )
+			{
 				case 'yourname':
 					echo $member->getDisplayName();
 					break;
@@ -953,31 +1015,43 @@ class ACTIONS extends BaseActions {
 					break;
 				case 'yourprofileurl':
 					if ($CONF['URLMode'] == 'pathinfo')
-						echo createMemberLink($member->getID());
+						echo LINK::create_member_link($member->getID());
 					else
-						echo $CONF['IndexURL'] . createMemberLink($member->getID());
+						echo $CONF['IndexURL'] . LINK::create_member_link($member->getID());
 					break;
 			}
 		}
-
+		return;
 	}
 
 	/**
+	 * LINK::parse_membermailform()
 	 * Parse skinvar membermailform
+	 * 
+	 * @param	Integer	$rows	the height for textarea
+	 * @param	Integer	$cols	the width for textarea
+	 * @param	String	$desturl	URI to redirect
+	 * @return	Void
 	 */
-	function parse_membermailform($rows = 10, $cols = 40, $desturl = '') {
+	function parse_membermailform($rows = 10, $cols = 40, $desturl = '')
+	{
 		global $member, $CONF, $memberid;
-
-		if ($desturl == '') {
-			if ($CONF['URLMode'] == 'pathinfo')
-				$desturl = createMemberLink($memberid);
+		
+		if ( $desturl == '' )
+		{
+			if ( $CONF['URLMode'] == 'pathinfo' )
+			{
+				$desturl = LINK::create_member_link($memberid);
+			}
 			else
-				$desturl = $CONF['IndexURL'] . createMemberLink($memberid);
+			{
+				$desturl = $CONF['IndexURL'] . LINK::create_member_link($memberid);
+			}
 		}
-
+		
 		$message = postVar('message');
 		$frommail = postVar('frommail');
-
+		
 		$this->formdata = array(
 			'url' => ENTITY::hsc($desturl),
 			'actionurl' => ENTITY::hsc($CONF['ActionURL']),
@@ -987,14 +1061,20 @@ class ACTIONS extends BaseActions {
 			'message' => ENTITY::hsc($message),
 			'frommail' => ENTITY::hsc($frommail)
 		);
-		if ($member->isLoggedIn()) {
+		
+		if ( $member->isLoggedIn() )
+		{
 			$this->doForm('membermailform-loggedin');
-		} else if ($CONF['NonmemberMail']) {
+		}
+		else if ( $CONF['NonmemberMail'] )
+		{
 			$this->doForm('membermailform-notloggedin');
-		} else {
+		}
+		else
+		{
 			$this->doForm('membermailform-disallowed');
 		}
-
+		return;
 	}
 	
 	/**
@@ -1364,17 +1444,27 @@ class ACTIONS extends BaseActions {
 	}
 
 	/**
-	 *	Parse skinvar todaylink
-	 *	A link to the today page (depending on selected blog, etc...)
+	 * ACTIONS::parse_todaylink()
+	 * Parse skinvar todaylink
+	 * A link to the today page (depending on selected blog, etc...)
+	 *
+	 * @param	String	$linktext	text for link
+	 * @return	Void
 	 */
-	function parse_todaylink($linktext = '') {
+	function parse_todaylink($linktext = '')
+	{
 		global $blog, $CONF;
-		if ($blog)
-			echo $this->_link(createBlogidLink($blog->getID(),$this->linkparams), $linktext);
+		if ( $blog )
+		{
+			echo $this->_link(LINK::create_blogid_link($blog->getID(),$this->linkparams), $linktext);
+		}
 		else
+		{
 			echo $this->_link($CONF['SiteUrl'], $linktext);
+		}
+		return;
 	}
-
+	
 	/**
 	 * Parse vars
 	 * When commentform is not used, to include a hidden field with itemid	 

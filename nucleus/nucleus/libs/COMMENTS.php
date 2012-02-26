@@ -280,7 +280,7 @@ class COMMENTS {
 			
 			if ( $temp['scheme'] )
 			{
-				$message .= createItemLink($this->itemid) . "\n\n";
+				$message .= LINK::create_item_link($this->itemid) . "\n\n";
 			}
 			else
 			{

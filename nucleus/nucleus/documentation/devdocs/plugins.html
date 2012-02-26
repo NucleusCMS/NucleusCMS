@@ -2230,7 +2230,7 @@ Make the init method in the plugin like below
          include_once($this->getDirectory().'english.php');
    }</code></pre>
 </li>
-This logic is same as Nucleus’ language file setting.
+This logic is same as Nucleusï¿½ language file setting.
 	<li><strong>Add language files</strong>
 
 As English is the default language, it is recommended to have at least the English version.	</li>
@@ -2336,40 +2336,40 @@ and global variables described below:</p>
 		<td>Returns the full system path where the extra files for the plugin are stored (if there are no such files, this information makes no sense). The result is something like ".../nucleus/plugins/plugname/"</td>
 	</tr>
 	<tr>
-		<td><code>createItemLink($itemid, $extra = '')</code></td>
-		<td>Global function</td>
+		<td><code>LINK::create_item_link($itemid, $extra = '')</code></td>
+		<td>Public function</td>
 		<td><code>$itemid</code> Integer. ID of item being linked.<br />
 			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
 		</td>
 		<td>Returns the full URL, in scheme chosen by user, of item indicated by <code>$itemid</code></td>
 	</tr>
 	<tr>
-		<td><code>createMemberLink($memberid, $extra = '')</code></td>
-		<td>Global function</td>
+		<td><code>LINK::create_member_link($memberid, $extra = '')</code></td>
+		<td>Public function</td>
 		<td><code>$memberid</code> Integer. ID of member being linked.<br />
 			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
 		</td>
 		<td>Returns the full URL, in scheme chosen by user, of member page indicated by <code>$memberid</code></td>
 	</tr>
 	<tr>
-		<td><code>createCategoryLink($catid, $extra = '')</code></td>
-		<td>Global function</td>
+		<td><code>LINK::create_category_link($catid, $extra = '')</code></td>
+		<td>Public function</td>
 		<td><code>$catid</code> Integer. ID of category being linked.<br />
 			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
 		</td>
 		<td>Returns the full URL, in scheme chosen by user, of category index page indicated by <code>$catid</code></td>
 	</tr>
 	<tr>
-		<td><code>createArchiveListLink($blogid = '', $extra = '')</code></td>
-		<td>Global function</td>
+		<td><code>LINK::create_archivelist_link($blogid = '', $extra = '')</code></td>
+		<td>Public function</td>
 		<td><code>$blogid</code> Integer. ID of blog whose archivelist is being linked.<br />
 			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
 		</td>
 		<td>Returns the full URL, in scheme chosen by user, of archivelist page indicated by <code>$blogid</code></td>
 	</tr>
 	<tr>
-		<td><code>createArchiveLink($blogid, $archive, $extra = '')</code></td>
-		<td>Global function</td>
+		<td><code>LINK::create_archive_link($blogid, $archive, $extra = '')</code></td>
+		<td>Public function</td>
 		<td><code>$blogid</code> Integer. ID of blog whose archive is being linked.<br />
 			<code>$archive</code> String. Valid archive parameter for date (year-month) being linked.<br />
 			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
@@ -2377,8 +2377,8 @@ and global variables described below:</p>
 		<td>Returns the full URL, in scheme chosen by user, of archive page indicated by <code>$blogid</code> and <code>$archive</code></td>
 	</tr>
 	<tr>
-		<td><code>createBlogidLink($blogid, $extra = '')</code></td>
-		<td>Global function</td>
+		<td><code>LINK::create_blogid_link($blogid, $extra = '')</code></td>
+		<td>Public function</td>
 		<td><code>$blogid</code> Integer. ID of blog being linked.<br />
 			<code>$extra</code> Associative Array. Containing key-value pairs corresponding to additional parameters-values that should appear in the link.
 		</td>

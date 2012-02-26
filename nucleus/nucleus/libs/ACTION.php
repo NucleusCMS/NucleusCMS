@@ -80,22 +80,23 @@ class ACTION
 
 
 	/**
-	 *  Adds a new comment to an item (if IP isn't banned)
+	 * ACTION::addComment()
+	 * Adds a new comment to an item (if IP isn't banned)
+	 * 
+	 * @param	Void
+	 * @return	Void
 	 */
 	function addComment()
 	{
 		global $CONF, $errormessage, $manager;
-
+		
 		$post['itemid']		= intPostVar('itemid');
 		$post['user']		= postVar('user');
 		$post['userid']		= postVar('userid');
 		$post['email']		= postVar('email');
 		$post['body']		= postVar('body');
 		$post['remember']	= intPostVar('remember');
-
-		// set cookies when required
-		#$remember = intPostVar('remember');
-
+		
 		// begin if: "Remember Me" box checked
 		if ( $post['remember'] == 1 )
 		{
@@ -103,18 +104,17 @@ class ACTION
 			setcookie($CONF['CookiePrefix'] . 'comment_user', $post['user'], $lifetime, '/', '', 0);
 			setcookie($CONF['CookiePrefix'] . 'comment_userid', $post['userid'], $lifetime, '/', '', 0);
 			setcookie($CONF['CookiePrefix'] . 'comment_email', $post['email'], $lifetime, '/', '', 0);
-		} // end if
-
+		}
+		
 		$comments = new COMMENTS($post['itemid']);
-
+		
 		$blog_id = getBlogIDFromItemID($post['itemid']);
 		$this->checkban($blog_id);
 		$blog =& $manager->getBlog($blog_id);
-
+		
 		// note: PreAddComment and PostAddComment gets called somewhere inside addComment
 		$errormessage = $comments->addComment($blog->getCorrectTime(), $post);
-
-		// begin if:
+		
 		if ( $errormessage == '1' )
 		{
 			// redirect when adding comments succeeded
@@ -124,10 +124,9 @@ class ACTION
 			}
 			else
 			{
-				$url = createItemLink($post['itemid']);
+				$url = LINK::create_item_link($post['itemid']);
 				redirect($url);
-			} // end if
-
+			}
 		}
 		// else, show error message using default skin for blo
 		else
@@ -136,14 +135,16 @@ class ACTION
 				'message'	=> $errormessage,
 				'skinid'	=> $blog->getDefaultSkin()
 			);
-		} // end if
-
+		}
 		exit;
 	}
-
-
+	
 	/**
-	 *  Sends a message from the current member to the member given as argument
+	 * ACTION::sendMessage()
+	 * Sends a message from the current member to the member given as argument
+	 * 
+	 * @param	Void
+	 * @return	Void
 	 */
 	function sendMessage()
 	{
@@ -171,9 +172,9 @@ class ACTION
 		$tomem->readFromId(postVar('memberid') );
 
 		$message  = _MMAIL_MSG . ' ' . $fromName . "\n"
-			  . '(' . _MMAIL_FROMNUC. ' ' . $CONF['IndexURL'] .") \n\n"
-			  . _MMAIL_MAIL . " \n\n"
-			  . postVar('message');
+			. '(' . _MMAIL_FROMNUC. ' ' . $CONF['IndexURL'] .") \n\n"
+			. _MMAIL_MAIL . " \n\n"
+			. postVar('message');
 		$message .= NOTIFICATION::get_mail_footer();
 		
 		$title = _MMAIL_TITLE . ' ' . $fromName;
@@ -189,18 +190,17 @@ class ACTION
 			
 			if ( $CONF['URLMode'] == 'pathinfo' )
 			{
-				$url = createLink('member', array('memberid' => $tomem->getID(), 'name' => $tomem->getDisplayName() ) );
+				$url = LINK::create_link('member', array('memberid' => $tomem->getID(), 'name' => $tomem->getDisplayName() ) );
 			}
 			else
 			{
-				$url = $CONF['IndexURL'] . createMemberLink($tomem->getID());
+				$url = $CONF['IndexURL'] . LINK::create_member_link($tomem->getID());
 			}
 			
 			redirect($url);
 		}
 		exit;
 	}
-	
 	
 	/**
 	 * ACTION::validateMessage()
@@ -342,7 +342,6 @@ class ACTION
 
 	/**
 	 * ACTION::doKarma()
-	 * 
 	 * Handle karma votes
 	 * 
 	 * @param	String	$type	pos or neg
@@ -394,13 +393,7 @@ class ACTION
 		if ( $blog->getNotifyAddress() && $blog->notifyOnVote() )
 		{
 			$message = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
-//			if ($CONF['URLMode'] == 'pathinfo') {
-//				$itemLink = createItemLink(intval($itemid));
-//			} else {
-//				$itemLink = $CONF['IndexURL'] . createItemLink(intval($itemid));
-//			}
-//			$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
-			$itemLink = createItemLink(intval($itemid) );
+			$itemLink = LINK::create_item_link(intval($itemid) );
 			$temp = parse_url($itemLink);
 			
 			if ( !$temp['scheme'] )

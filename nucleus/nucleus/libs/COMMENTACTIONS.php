@@ -104,7 +104,7 @@ class COMMENTACTIONS extends BaseActions {
 	{
 		global $manager;
 		
-		if ( $comment['memberid'] != 0)
+		if ( $comment['memberid'] != 0 )
 		{
 			$comment['authtext'] = $template['COMMENTS_AUTH'];
 			$mem =& $manager->getMember($comment['memberid']);
@@ -119,7 +119,7 @@ class COMMENTACTIONS extends BaseActions {
 				$comment['userid'] = $mem->getEmail();
 			}
 			
-			$comment['userlinkraw'] = createLink(
+			$comment['userlinkraw'] = LINK::create_link(
 										'member',
 										array(
 											'memberid' => $comment['memberid'],
@@ -264,12 +264,17 @@ class COMMENTACTIONS extends BaseActions {
 	function parse_itemid() {
 		echo $this->commentsObj->itemid;
 	}
-
+	
 	/**
+	 * COMMENTACTIONS::parse_itemlink()
 	 * Parse templatevar itemlink
+	 * 
+	 * @param	Void
+	 * @return	Void
 	 */
-	function parse_itemlink() {
-		echo createLink(
+	function parse_itemlink()
+	{
+		echo LINK::create_link(
 			'item',
 			array(
 				'itemid' => $this->commentsObj->itemid,
@@ -278,8 +283,9 @@ class COMMENTACTIONS extends BaseActions {
 				'extra' => $this->commentsObj->itemActions->linkparams
 			)
 		);
+		return;
 	}
-
+	
 	/**
 	 * Parse templatevar itemtitle
 	 */
