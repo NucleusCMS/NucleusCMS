@@ -174,10 +174,10 @@ class ACTION
 			  . '(' . _MMAIL_FROMNUC. ' ' . $CONF['IndexURL'] .") \n\n"
 			  . _MMAIL_MAIL . " \n\n"
 			  . postVar('message');
-		$message .= getMailFooter();
+		$message .= NOTIFICATION::get_mail_footer();
 		
 		$title = _MMAIL_TITLE . ' ' . $fromName;
-		i18n::mail($tomem->getEmail(), $title, $message, $fromMail);
+		NOTIFICATION::mail($tomem->getEmail(), $title, $message, $fromMail, i18n::get_current_charset());
 		
 		if ( postVar('url') )
 		{
@@ -224,7 +224,7 @@ class ACTION
 			return _ERROR_DISALLOWED;
 		}
 		
-		if ( !$member->isLoggedIn() && (!isValidMailAddress(postVar('frommail') ) ) )
+		if ( !$member->isLoggedIn() && !NOTIFICATION::address_validation(postVar('frommail')) )
 		{
 			return _ERROR_BADMAILADDRESS;
 		}
@@ -388,14 +388,12 @@ class ACTION
 			break;
 		}
 		
-//		$blogid = getBlogIDFromItemID($itemid);
 		$blog =& $manager->getBlog($blogid);
 		
 		// send email to notification address, if any
 		if ( $blog->getNotifyAddress() && $blog->notifyOnVote() )
 		{
-			
-			$mailto_msg = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
+			$message = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
 //			if ($CONF['URLMode'] == 'pathinfo') {
 //				$itemLink = createItemLink(intval($itemid));
 //			} else {
@@ -410,24 +408,23 @@ class ACTION
 				$itemLink = $CONF['IndexURL'] . $itemLink;
 			}
 			
-			$mailto_msg .= $itemLink . "\n\n";
+			$message .= $itemLink . "\n\n";
 			
 			if ( $member->isLoggedIn() )
 			{
-				$mailto_msg .= _NOTIFY_MEMBER . ' ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
+				$message .= _NOTIFY_MEMBER . ' ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
 			}
 			
-			$mailto_msg .= _NOTIFY_IP . ' ' . serverVar('REMOTE_ADDR') . "\n";
-			$mailto_msg .= _NOTIFY_HOST . ' ' .  gethostbyaddr(serverVar('REMOTE_ADDR'))  . "\n";
-			$mailto_msg .= _NOTIFY_VOTE . "\n " . $type . "\n";
-			$mailto_msg .= getMailFooter();
+			$message .= _NOTIFY_IP . ' ' . serverVar('REMOTE_ADDR') . "\n";
+			$message .= _NOTIFY_HOST . ' ' .  gethostbyaddr(serverVar('REMOTE_ADDR'))  . "\n";
+			$message .= _NOTIFY_VOTE . "\n " . $type . "\n";
+			$message .= NOTIFICATION::get_mail_footer();
 			
-			$mailto_title = _NOTIFY_KV_TITLE . ' ' . strip_tags($item['title']) . ' (' . $itemid . ')';
+			$subject = _NOTIFY_KV_TITLE . ' ' . strip_tags($item['title']) . ' (' . $itemid . ')';
 			
-			$frommail = $member->getNotifyFromMailAddress();
+			$from = $member->getNotifyFromMailAddress();
 			
-			$notify = new NOTIFICATION($blog->getNotifyAddress() );
-			$notify->notify($mailto_title, $mailto_msg, $frommail);
+			NOTIFICATION::mail($blog->getNotifyAddress(), $subject, $message, $from, i18n::get_current_charset());
 		}
 		
 		$refererUrl = serverVar('HTTP_REFERER');
@@ -438,7 +435,6 @@ class ACTION
 		}
 		else
 		{
-//			$url = $CONF['IndexURL'] . 'index.php?itemid=' . $itemid;
 			$url = $itemLink;
 		}
 		

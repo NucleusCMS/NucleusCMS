@@ -142,11 +142,11 @@ class COMMENTACTIONS extends BaseActions {
 					$comment['userlinkraw'] = 'http://' . $comment['userid'];
 				}
 			}
-			else if ( isValidMailAddress($comment['email']) )
+			else if ( NOTIFICATION::address_validation($comment['email']) )
 			{
 				$comment['userlinkraw'] = 'mailto:' . $comment['email'];
 			}
-			else if ( isValidMailAddress($comment['userid']) )
+			else if ( NOTIFICATION::address_validation($comment['userid']) )
 			{
 				$comment['userlinkraw'] = 'mailto:' . $comment['userid'];
 			}
@@ -394,11 +394,11 @@ class COMMENTACTIONS extends BaseActions {
 		}
 		else
 		{
-			if ( isValidMailAddress($this->currentComment['email']) )
+			if ( NOTIFICATION::address_validation($this->currentComment['email']) )
 			{
 				echo $this->currentComment['email'];
 			}
-			elseif ( isValidMailAddress($this->currentComment['userid']) )
+			elseif ( NOTIFICATION::address_validation($this->currentComment['userid']) )
 			{
 				echo $this->currentComment['userid'];
 			}

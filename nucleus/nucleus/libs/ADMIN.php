@@ -2002,7 +2002,7 @@ class ADMIN
 			}
 		}
 		
-		if ( !isValidMailAddress($email) )
+		if ( !NOTIFICATION::address_validation($email) )
 		{
 			$this->error(_ERROR_BADMAILADDRESS);
 		}
@@ -2962,7 +2962,7 @@ class ADMIN
 		
 		$blog =& $manager->getBlog($blogid);
 		
-		$notify		= trim(postVar('notify'));
+		$notify_address	= trim(postVar('notify'));
 		$shortname	 	= trim(postVar('shortname'));
 		$updatefile	= trim(postVar('update'));
 		
@@ -2970,47 +2970,43 @@ class ADMIN
 		$notifyVote		= intPostVar('notifyVote');
 		$notifyNewItem	= intPostVar('notifyNewItem');
 		
-		if ($notifyComment == 0)
+		if ( $notifyComment == 0 )
 		{
 			$notifyComment = 1;
 		}
-		if ($notifyVote == 0)
+		if ( $notifyVote == 0 )
 		{
 			$notifyVote = 1;
 		}
-		if ($notifyNewItem == 0)
+		if ( $notifyNewItem == 0 )
 		{
 			$notifyNewItem = 1;
 		}
 		$notifyType = $notifyComment * $notifyVote * $notifyNewItem;
 		
-		if ($notify)
+		if ( $notify_address && !NOTIFICATION::address_validation($notify_address) )
 		{
-			$not = new NOTIFICATION($notify);
-			if (!$not->validAddresses())
-			{
-				$this->error(_ERROR_BADNOTIFY);
-			}
+			$this->error(_ERROR_BADNOTIFY);
 		}
 		
-		if (!isValidShortName($shortname))
+		if ( !isValidShortName($shortname) )
 		{
 			$this->error(_ERROR_BADSHORTBLOGNAME);
 		}
 		
-		if (($blog->getShortName() != $shortname) && $manager->existsBlog($shortname))
+		if ( ($blog->getShortName() != $shortname) && $manager->existsBlog($shortname) )
 		{
 			$this->error(_ERROR_DUPSHORTBLOGNAME);
 		}
 		// check if update file is writable
-		if ($updatefile && !is_writeable($updatefile))
+		if ( $updatefile && !is_writeable($updatefile) )
 		{
 			$this->error(_ERROR_UPDATEFILE);
 		}
 		
 		$blog->setName(trim(postVar('name')));
 		$blog->setShortName($shortname);
-		$blog->setNotifyAddress($notify);
+		$blog->setNotifyAddress($notify_address);
 		$blog->setNotifyType($notifyType);
 		$blog->setMaxComments(postVar('maxcomments'));
 		$blog->setCommentsEnabled(postVar('comments'));
@@ -5042,7 +5038,7 @@ selector();
 		$member->isAdmin() or $this->disallow();
 		
 		// check if email address for admin is valid
-		if ( !isValidMailAddress(postVar('AdminEmail')) )
+		if ( !NOTIFICATION::address_validation(postVar('AdminEmail')) )
 		{
 			$this->error(_ERROR_BADMAILADDRESS);
 		}

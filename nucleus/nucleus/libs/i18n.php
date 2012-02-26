@@ -33,7 +33,6 @@ class i18n
 	 * Initializing i18n class
 	 * 
 	 * @static
-	 * @access public
 	 * @param	string	$charset	character set
 	 * @return	boolean	
 	 */
@@ -94,7 +93,6 @@ class i18n
 	 * return available locale list with current charset
 	 * 
 	 * @static
-	 * @access public
 	 * @param	void
 	 * @return	array	available locale list
 	 */
@@ -108,7 +106,6 @@ class i18n
 	 * return current charset
 	 * 
 	 * @static
-	 * @access public
 	 * @param	void
 	 * @return	string	$charset	current character set
 	 */
@@ -127,7 +124,6 @@ class i18n
 	 * @see 2.  The Language Tag
 	 * 
 	 * @static
-	 * @access public
 	 * @param	string	$locale
 	 * @return	bool	TRUE/FALSE
 	 * 
@@ -149,7 +145,6 @@ class i18n
 	 * Get current locale
 	 * 
 	 * @static
-	 * @access public
 	 * @param	void
 	 * @return	$locale
 	 */
@@ -168,7 +163,6 @@ class i18n
 	 * http://www.php.net/manual/en/function.date-default-timezone-set.php
 	 * 
 	 * @static
-	 * @access public
 	 * @param	void
 	 * @return	void
 	 */
@@ -190,7 +184,6 @@ class i18n
 	 * get current timezone
 	 * 
 	 * @static
-	 * @access public
 	 * @param	void
 	 * @return	$timezone
 	 */
@@ -200,49 +193,10 @@ class i18n
 	}
 	
 	/**
-	 * i18n::hen
-	 * htmlentities wrapper
-	 * 
-	 * @static
-	 * @access public
-	 * @param	string	$string	target string
-	 * @param	string	$quotation	quotation mode. please refer to the argument of PHP built-in htmlentities
-	 * @return	string	escaped string
-	 */
-	static public function hen($string, $quotation=ENT_QUOTES)
-	{
-		$string = html_entity_decode($string, $quotation, self::$charset);
-		return (string) htmlentities($string, $quotation, self::$charset);
-	}
-	
-	/**
-	 * i18n::hsc
-	 * htmlspecialchars wrapper
-	 * 
-	 * NOTE: htmlspecialchars_decode() is ASCII-to-ACII conversion
-	 *  and its target string consists of several letters.
-	 *   There are no problems.
-	 * 
-	 * @static
-	 * @access public
-	 * @param	string	$string	target string
-	 * @param	string	$quotation	quotation mode. please refer to the argument of PHP built-in htmlspecialchars
-	 * @return	string	escaped string
-	 * 
-	 */
-	
-	static public function hsc($string, $quotation=ENT_QUOTES)
-	{
-		$string = htmlspecialchars_decode($string, $quotation);
-		return (string) htmlspecialchars($string, $quotation, self::$charset);
-	}
-	
-	/**
 	 * i18n::convert
 	 * character set converter
 	 * 
 	 * @static
-	 * @access public
 	 * @param	string	$string	target string binary
 	 * @param	string	$from	original character set encoding
 	 * @param	string	$to	target character set encoding
@@ -271,7 +225,6 @@ class i18n
 	 * strlen wrapper
 	 * 
 	 * @static
-	 * @access public
 	 * @param	string	$string	target string
 	 * @return	integer	the number of letters
 	 */
@@ -298,7 +251,6 @@ class i18n
 	 * strpos wrapper
 	 * 
 	 * @static
-	 * @access public
 	 * @param	string	$haystack	string to search
 	 * @param	string	$needle	string for search
 	 * @param	string	$offset	the position from which the search should be performed. 
@@ -332,7 +284,6 @@ class i18n
 	 * strrpos wrapper
 	 * 
 	 * @static
-	 * @access public
 	 * @param	string	$haystack	string to search
 	 * @param	string	$needle	string for search
 	 * @return	integer/FALSE	the numeric position of the last occurrence of needle in haystack
@@ -365,7 +316,6 @@ class i18n
 	 * substr wrapper
 	 * 
 	 * @static
-	 * @access public
 	 * @param	string	$string	string to be cut
 	 * @param	string	$start	the position of starting
 	 * @param	integer	$length	the length to be cut
@@ -400,7 +350,6 @@ class i18n
 	 *  http://www.php.net/manual/en/function.preg-split.php
 	 * 
 	 * @static
-	 * @access public
 	 * @param	string	$delimiter	singlebyte or multibyte delimiter
 	 * @param	string	$target	target string
 	 * @param	integer	$limit	the number of index for returned array
@@ -435,7 +384,6 @@ class i18n
 	 * strftime function based on multibyte processing
 	 * 
 	 * @static
-	 * @access public
 	 * @param	string	$format	format with singlebyte or multibyte
 	 * @param	timestamp	$timestamp	UNIX timestamp
 	 * @return	string	formatted timestamp
@@ -481,279 +429,10 @@ class i18n
 	}
 	
 	/**
-	 * i18n::mail
-	 * Send mails with headers including 7bit-encoded multibyte string
-	 * 
-	 * @static
-	 * @access public
-	 * @param	string	$to		receivers including singlebyte and multibyte strings, based on RFC 5322
-	 * @param	string	$subject	subject including singlebyte and multibyte strings
-	 * @param	string	$message	message including singlebyte and multibyte strings
-	 * @param	string	$from		senders including singlebyte and multibyte strings, based on RFC 5322
-	 * @param	string(B/Q)	$scheme	7bit-encoder scheme based on RFC 2047
-	 * @return	boolean	accepted delivery or not
-	 */
-	static public function mail($to, $subject, $message, $from, $scheme='B')
-	{
-		
-		$to = self::mailbox_list_encoder($to, $scheme);
-		$subject = self::seven_bit_characters_encoder($subject, $scheme);
-		$from = 'From: ' . self::mailbox_list_encoder($from, $scheme);
-		
-		/*
-		 * All of 7bit character encoding derives from ISO/IEC 646
-		 * So we can decide the body's encoding bit count by this regular expression.
-		 * 
-		 */
-		$bitcount = '8bit';
-		if ( preg_match('#\A[\x00-\x7f]*\z#', $message) )
-		{
-			$bitcount = '7bit';
-		}
-		
-		$headers = 'Content-Type: text/html; charset=' . self::$charset . "; format=flowed; delsp=yes\n"
-		. "Content-Transfer-Encoding: {$bitcount}\n"
-		. "X-Mailer: Nucleus CMS i18n class\n";
-		
-		return mail($to, $subject, $message, "{$from}\n{$headers}");
-	}
-	
-	/**
-	 * i18n::mailbox_list_encoder
-	 * Encode multi byte strings included in mailbox.
-	 * The format of mailbox is based on RFC 5322, which obsoletes RFC 2822
-	 * 
-	 * @link	http://www.ietf.org/rfc/rfc5322.txt
-	 * @see		3.4. Address Specification
-	 * 
-	 * @static
-	 * @access private
-	 * @param	string	$mailbox_list		mailbox list
-	 * @return	string	encoded string	
-	 * 
-	 */
-	static private function mailbox_list_encoder ($mailbox_list, $scheme='B')
-	{
-		$encoded_mailboxes = array();
-		$mailboxes = preg_split('#,#', $mailbox_list);
-		foreach ( $mailboxes as $mailbox )
-		{
-			if ( preg_match("#^([^,]+)?<([^,]+)?@([^,]+)?>$#", $mailbox, $match) )
-			{
-				$display_name = self::seven_bit_characters_encoder(trim($match[1]), $scheme);
-				$local_part = trim($match[2]);
-				$domain = trim($match[3]);
-				$encoded_mailboxes[] = "{$name} <{$local_part}@{$domain}>";
-			}
-			else if ( preg_match("#([^,]+)?@([^,]+)?#", $mailbox) )
-			{
-				$encoded_mailboxes[] = $mailbox;
-			}
-			else
-			{
-				continue;
-			}
-		}
-		if ( $encoded_mailboxes == array() )
-		{
-			return FALSE;
-		}
-		return implode(',', $encoded_mailboxes);
-	}
-	
-	/**
-	 * i18n::seven_bit_characters_encoder
-	 * Encoder into 7bit ASCII expression for Non-ASCII Text based on RFC 2047.
-	 * 
-	 * @link http://www.ietf.org/rfc/rfc2047.txt
-	 * @see 2. Syntax of encoded-words
-	 * 
-	 * NOTE: RFC 2047 has a ambiguousity for dealing with 'linear-white-space'.
-	 *  This causes a trouble related to line breaking between single byte and multi-byte strings.
-	 *  To avoid this, single byte string is encoded as well as multi byte string here.
-	 * 
-	 * NOTE: RFC 2231 also defines the way to use non-ASCII characters in MIME header.
-	 * http://www.ietf.org/rfc/rfc2231.txt
-	 * 
-	 * NOTE: iconv extension give the same functions as this in PHP5
-	 * iconv_mime_encode():
-	 * http://www.php.net/manual/en/function.iconv-mime-encode.php
-	 * 
-	 * @static
-	 * @access private
-	 * @param	string	$charset	Character set encoding
-	 * @param	string	$type	type of 7 bit encoding, should be 'B' or 'Q'
-	 * @param	string	$string	Target string with header field
-	 * @return	string	encoded string
-	 * 
-	 */
-	static private function seven_bit_characters_encoder($string, $scheme='B')
-	{
-		if ( $scheme != 'Q' )
-		{
-			$scheme = 'B';
-		}
-		$header = chr(13) . chr(10) . chr(32) . '=?' . self::$charset . "?{$scheme}?";
-		$footer = "?=";
-		$restriction = 78 - strlen($header) - strlen($footer) ;
-		
-		$encoded_words = array();
-		for ( $i = 0; $i < self::strlen($string); $i++ )
-		{
-			if ( $scheme == 'B' )
-			{
-				if ( $i == 0 )
-				{
-					$letters = '';
-				}
-				
-				$letter = self::substr($string, $i, 1);
-				$expected_length = strlen($letters) + strlen($letter) * 4 / 3;
-				
-				if ( $expected_length > $restriction )
-				{
-					$encoded_text = self::b_encoder($letters);
-					$encoded_words[] = "{$header}{$encoded_text}{$footer}";
-					$letters = '';
-				}
-				
-				$letters .= $letter;
-				
-				if ( $i == self::strlen($string) - 1 )
-				{
-					$encoded_text = self::b_encoder($letters);
-					$encoded_words[] = "{$header}{$encoded_text}{$footer}";
-					break;
-				}
-				continue;
-			}
-			else
-			{
-				if ( $i == 0 )
-				{
-					$encoded_text = '';
-				}
-				
-				$encoded_letter = self::q_encoder(self::substr($string, $i, 1));
-				$expected_length = strlen($encoded_text) + strlen($encoded_letter);
-				
-				if ( $expected_length > $restriction )
-				{
-					$encoded_words[] = "{$header}{$encoded_text}{$footer}";
-					$letters = '';
-				}
-				
-				$encoded_text .= $encoded_letter;
-				
-				if ( $i == self::strlen($string) - 1 )
-				{
-					$encoded_words[] = "{$header}{$encoded_text}{$footer}";
-					break;
-				}
-				continue;
-			}
-		}
-		
-		return implode('', $encoded_words);
-	}
-	
-	/**
-	 * B encoder according to RFC 2047.
-	 * The "B" encoding is identical to the "BASE64" encoding defined by RFC 4648.
-	 * 
-	 * @link http://www.ietf.org/rfc/rfc4648.txt
-	 * @see 6.8. Base64 Content-Transfer-Encoding
-	 * 
-	 * NOTE: According to RFC 4648
-	 * (1)	The final quantum of encoding input is an integral multiple of 24 bits;
-	 * 		here, the final unit of encoded output will be an integral multiple
-	 * 		of 4 characters with no "=" padding.
-	 * (2)	The final quantum of encoding input is exactly 8 bits; here,
-	 * 		the final unit of encoded output will be two characters followed
-	 * 		by two "=" padding characters.
-	 * (3)	The final quantum of encoding input is exactly 16 bits; here,
-	 * 		the final unit of encoded output will be three characters followed
-	 * 		by one "=" padding character.
-	 * 
-	 * @static
-	 * @access private
-	 * @param	string	$target	targetted string
-	 * @return	string	encoded string
-	 */
-	static private function b_encoder($target)
-	{
-		return base64_encode($target);
-	}
-	
-	/**
-	 * Q encoder according to RFC 2047.
-	 * The "Q" encoding is similar to "Quoted-Printable" content-transfer-encoding defined in RFC 2045,
-	 *  but the "Q" encoding and the "Quoted-Printable" are different a bit.
-	 * 
-	 * @link http://www.ietf.org/rfc/rfc2047.txt
-	 * @see 4.2. The "Q" encoding
-	 * 
-	 * NOTE: According to RFC 2047
-	 * (1)	Any 8-bit value may be represented by a "=" followed by two hexadecimal digits.
-	 * 		For example, if the character set in use were ISO-8859-1,
-	 * 		the "=" character would thus be encoded as "=3D", and a SPACE by "=20".
-	 * 		(Upper case should be used for hexadecimal digits "A" through "F".)
-	 * (2)	The 8-bit hexadecimal value 20 (e.g., ISO-8859-1 SPACE) may be
-	 * 		represented as "_" (underscore, ASCII 95.).
-	 * 		(This character may not pass through some internetwork mail gateways,
-	 * 		but its use will greatly enhance readability of "Q" encoded data
-	 * 		with mail readers that do not support this encoding.)
-	 * 		Note that the "_" always represents hexadecimal 20,
-	 * 		even if the SPACE character occupies a different code position
-	 * 		in the character set in use.
-	 * (3)	8-bit values which correspond to printable ASCII characters
-	 * 		other than "=", "?", and "_" (underscore), MAY be represented as those characters.
-	 * 		(But see section 5 for restrictions.)
-	 * 		In particular, SPACE and TAB MUST NOT be represented as themselves within encoded words.
-	 * 
-	 * @static
-	 * @access private
-	 * @param	string	$target	targetted string
-	 * @return	string	encoded string
-	 */
-	static private function q_encoder($target)
-	{
-		$string = '';
-		
-		for ( $i = 0; $i < strlen($target); $i++ )
-		{
-			$letter = substr ($target, $i, 1);
-			$order = ord($letter);
-			
-			// Printable ASCII characters without "=", "?", "_"
-			if ((33 <= $order && $order <= 60)
-			 || (62 == $order)
-			 || (64 <= $order && $order <= 94)
-			 || (96 <= $order && $order <= 126))
-			{
-				$string .= strtoupper(dechex($order));
-			}
-			// Space shuold be encoded as the same strings as "_"
-			else if ($order == 32)
-			{
-				$string .= '_';
-			}
-			// Other characters
-			else
-			{
-				$string .= '=' . strtoupper(dechex($order));
-			}
-		}
-		
-		return $string;
-	}
-	
-	/**
 	 * i18n::convert_locale_to_old_language_file_name()
 	 * NOTE: this should be obsoleted near future.
 	 * 
 	 * @static
-	 * @access public
 	 * @param	string	$target_locale	locale name as language_script_region
 	 * @return	string	old language file name
 	 */
@@ -783,7 +462,6 @@ class i18n
 	 * NOTE: this should be obsoleted near future.
 	 * 
 	 * @static
-	 * @access public
 	 * @param	string	$target_language	old language file name
 	 * @return	string	locale name as language_script_region
 	 */

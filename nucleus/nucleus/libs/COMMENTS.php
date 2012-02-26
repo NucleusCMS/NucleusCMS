@@ -274,12 +274,13 @@ class COMMENTS {
 		// begin if: send email to notification address
 		if ( $settings->getNotifyAddress() && $settings->notifyOnComment() )
 		{
-			$mailto_msg = _NOTIFY_NC_MSG . ' ' . $this->itemid . "\n";
+		
+			$message = _NOTIFY_NC_MSG . ' ' . $this->itemid . "\n";
 			$temp = parse_url($CONF['Self']);
 			
 			if ( $temp['scheme'] )
 			{
-				$mailto_msg .= createItemLink($this->itemid) . "\n\n";
+				$message .= createItemLink($this->itemid) . "\n\n";
 			}
 			else
 			{
@@ -287,35 +288,34 @@ class COMMENTS {
 				
 				if ( i18n::substr($tempurl, -1) == '/' || i18n::substr($tempurl, -4) == '.php' )
 				{
-					$mailto_msg .= $tempurl . '?itemid=' . $this->itemid . "\n\n";
+					$message .= $tempurl . '?itemid=' . $this->itemid . "\n\n";
 				}
 				else
 				{
-					$mailto_msg .= $tempurl . '/?itemid=' . $this->itemid . "\n\n";
+					$message .= $tempurl . '/?itemid=' . $this->itemid . "\n\n";
 				}
 			}
 			
 			if ( $comment['memberid'] == 0 )
 			{
-				$mailto_msg .= _NOTIFY_USER . ' ' . $comment['user'] . "\n";
-				$mailto_msg .= _NOTIFY_USERID . ' ' . $comment['userid'] . "\n";
+				$message .= _NOTIFY_USER . ' ' . $comment['user'] . "\n";
+				$message .= _NOTIFY_USERID . ' ' . $comment['userid'] . "\n";
 			}
 			else
 			{
-				$mailto_msg .= _NOTIFY_MEMBER .' ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
+				$message .= _NOTIFY_MEMBER .' ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
 			}
 			
-			$mailto_msg .= _NOTIFY_HOST . ' ' . $comment['host'] . "\n";
-			$mailto_msg .= _NOTIFY_COMMENT . "\n " . $comment['body'] . "\n";
-			$mailto_msg .= getMailFooter();
+			$message .= _NOTIFY_HOST . ' ' . $comment['host'] . "\n";
+			$message .= _NOTIFY_COMMENT . "\n " . $comment['body'] . "\n";
+			$message .= NOTIFICATION::get_mail_footer();
 			
 			$item =& $manager->getItem($this->itemid, 0, 0);
-			$mailto_title = _NOTIFY_NC_TITLE . ' ' . strip_tags($item['title']) . ' (' . $this->itemid . ')';
+			$subject = _NOTIFY_NC_TITLE . ' ' . strip_tags($item['title']) . ' (' . $this->itemid . ')';
 			
-			$frommail = $member->getNotifyFromMailAddress($comment['email']);
+			$from = $member->getNotifyFromMailAddress($comment['email']);
 			
-			$notify = new NOTIFICATION($settings->getNotifyAddress() );
-			$notify->notify($mailto_title, $mailto_msg , $frommail);
+			NOTIFICATION::mail($settings->getNotifyAddress(), $subject, $message, $from, i18n::get_current_charset());
 		}
 		
 		$comment = COMMENT::prepare($comment);
@@ -409,7 +409,7 @@ class COMMENTS {
 			return _ERROR_COMMENT_NOUSERNAME;
 		}
 		
-		if ( (i18n::strlen($comment['email']) != 0) && !isValidMailAddress(trim($comment['email'])) )
+		if ( (i18n::strlen($comment['email']) != 0) && !NOTIFICATION::address_validation(trim($comment['email'])) )
 		{
 			return _ERROR_BADMAILADDRESS;
 		}

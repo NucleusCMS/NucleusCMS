@@ -970,26 +970,6 @@ $manager->notify(
 
 
 	/**
-	 * This function checks if an email address is valid
-	 * @param string $address
-	 * @return int
-	 */
-	function isValidMailAddress($address)
-	{
-		// enhancement made in 3.6x based on code by Quandary.
-		if ( preg_match('/^(?!\\.)(?:\\.?[-a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~]+)+@(?!\\.)(?:\\.?(?!-)[-a-zA-Z0-9]+(?<!-)){2,}$/', $address) )
-		{
-			return 1;
-		}
-		else
-		{
-			return 0;
-		} // end if
-
-	}
-
-
-	/**
 	 * This function gets the blog ID from the blog name
 	 * @param string $name
 	 * @return
@@ -1629,30 +1609,6 @@ function helpHtml($id) {
 function helplink($id) {
     global $CONF;
     return '<a href="' . $CONF['AdminURL'] . 'documentation/help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
-}
-
-function getMailFooter() {
-    $message = "\n\n-----------------------------";
-    $message .=  "\n   Powered by Nucleus CMS";
-    $message .=  "\n(http://www.nucleuscms.org/)";
-    return $message;
-}
-
-/*
- * Returns the name of the language to use
- * preference priority: member - site
- * defaults to english-utf8 when no good language found
- *
- * NOTE: Deprecated, plugins to use this function should be re-worked as soon as possible!
- * TODO: this will be obsoleted soon.
- */
-function getLanguageName()
-{
-	if( ($language = i18n::convert_locale_to_old_language_file_name(i18n::get_current_locale())) === FALSE )
-	{
-		$language ='english';
-	}
-	return $language;
 }
 
 /**
@@ -2316,6 +2272,19 @@ function cleanFileName($str) {
 	return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
 }
 
+/**
+ * Centralisation of the functions to send mail
+ * Deprecated since 4.0:
+ * Please use functions in NOTIFICATION class instead
+ */
+function getMailFooter()
+{
+	NOTIFICATION::get_mail_footer();
+}
+function isValidMailAddress($address)
+{
+	return NOTIFICATION::address_validation($address);
+}
 /**
  * Centralisation of the functions that deals XML entities
  * Deprecated since 4.0:

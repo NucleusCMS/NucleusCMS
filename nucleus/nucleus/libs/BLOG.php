@@ -315,8 +315,7 @@ class BLOG {
 		
 		$ascii = ENTITY::anchor_footnoting($body);
 		
-		$mailto_msg = _NOTIFY_NI_MSG . " \n";
-//		$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
+		$message = _NOTIFY_NI_MSG . " \n";
 		$temp = parse_url($CONF['Self']);
 		if ( $temp['scheme'] )
 		{
@@ -327,23 +326,22 @@ class BLOG {
 			$tempurl = $this->getURL();
 			if ( i18n::substr($tempurl, -1) == '/' || i18n::substr($tempurl, -4) == '.php' )
 			{
-				$mailto_msg .= $tempurl . '?itemid=' . $itemid . "\n\n";
+				$message .= $tempurl . '?itemid=' . $itemid . "\n\n";
 			}
 			else
 			{
-				$mailto_msg .= $tempurl . '/?itemid=' . $itemid . "\n\n";
+				$message .= $tempurl . '/?itemid=' . $itemid . "\n\n";
 			}
 		}
-		$mailto_msg .= _NOTIFY_TITLE . ' ' . strip_tags($title) . "\n";
-		$mailto_msg .= _NOTIFY_CONTENTS . "\n " . $ascii . "\n";
-		$mailto_msg .= getMailFooter();
+		$message .= _NOTIFY_TITLE . ' ' . strip_tags($title) . "\n";
+		$message .= _NOTIFY_CONTENTS . "\n " . $ascii . "\n";
+		$message .= NOTIFICATION::get_mail_footer();
 		
-		$mailto_title = $this->getName() . ': ' . _NOTIFY_NI_TITLE;
+		$subject = $this->getName() . ': ' . _NOTIFY_NI_TITLE;
 		
-		$frommail = $member->getNotifyFromMailAddress();
+		$from = $member->getNotifyFromMailAddress();
 		
-		$notify = new NOTIFICATION($this->getNotifyAddress());
-		$notify->notify($mailto_title, $mailto_msg , $frommail);
+		NOTIFICATION::mail($this->getNotifyAddress(), $subject, $message, $from, i18n::get_current_charset());
 		return;
 	}
 	
@@ -685,9 +683,6 @@ class BLOG {
 			$blogurl = createBlogidLink($this->getID(), '');
 			$linkparams['blogid'] = $this->getID();
 		}
-
-		//$blogurl = $this->getURL() . $qargs;
-		//$blogurl = createBlogLink($this->getURL(), $linkparams);
 
 		$template =& $manager->getTemplate($template);
 		

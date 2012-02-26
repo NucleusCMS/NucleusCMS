@@ -417,15 +417,15 @@ class MEMBER {
 		{
 			case 'register':
 				$message = _ACTIVATE_REGISTER_MAIL;
-				$title = _ACTIVATE_REGISTER_MAILTITLE;
+				$subject = _ACTIVATE_REGISTER_MAILTITLE;
 				break;
 			case 'forgot':
 				$message = _ACTIVATE_FORGOT_MAIL;
-				$title = _ACTIVATE_FORGOT_MAILTITLE;
+				$subject = _ACTIVATE_FORGOT_MAILTITLE;
 				break;
 			case 'addresschange':
 				$message = _ACTIVATE_CHANGE_MAIL;
-				$title = _ACTIVATE_CHANGE_MAILTITLE;
+				$subject = _ACTIVATE_CHANGE_MAILTITLE;
 				break;
 			default;
 		}
@@ -440,10 +440,10 @@ class MEMBER {
 		);
 		
 		$message = TEMPLATE::fill($message, $aVars);
-		$title = TEMPLATE::fill($title, $aVars);
+		$subject = TEMPLATE::fill($subject, $aVars);
 		
 		// send mail
-		i18n::mail($this->getEmail(), $title ,$message, $CONF['AdminEmail']);
+		NOTIFICATION::mail($this->getEmail(), $subject ,$message, $CONF['AdminEmail'], i18n::get_current_charset());
 		
 		ACTIONLOG::add(INFO, _ACTIONLOG_ACTIVATIONLINK . ' (' . $this->getDisplayName() . ' / type: ' . $type . ')');
 		return;
@@ -520,7 +520,7 @@ class MEMBER {
 		{
 			return $this->getDisplayName() . " <" . $this->getEmail() . ">";
 		}
-		else if ( isValidMailAddress($suggest) )
+		else if ( NOTIFICATION::address_validation($suggest) )
 		{
 			return $suggest;
 		}
@@ -762,7 +762,7 @@ class MEMBER {
 	 */
 	public static function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes)
 	{
-		if ( !isValidMailAddress($email) )
+		if ( !NOTIFICATION::address_validation($email) )
 		{
 			return _ERROR_BADMAILADDRESS;
 		}
