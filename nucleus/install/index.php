@@ -814,7 +814,7 @@ function doInstall()
 		$DIR_MEDIA = $config_mediapath;
 		$DIR_SKINS = $config_skinspath;
 		$DIR_PLUGINS = $DIR_NUCLEUS . 'plugins/';
-		$DIR_LANG = $DIR_NUCLEUS . 'language/';
+		$DIR_LOCALES = $DIR_NUCLEUS . 'locales/';
 		$DIR_LIBS = $DIR_NUCLEUS . 'libs/';
 
 		// close database connection (needs to be closed if we want to include globalfunctions.php)
@@ -874,7 +874,7 @@ function doInstall()
 		$config_data .= "	// these dirs are normally sub dirs of the nucleus dir, but \n";
 		$config_data .= "	// you can redefine them if you wish\n";
 		$config_data .= "	\$DIR_PLUGINS = \$DIR_NUCLEUS . 'plugins/';\n";
-		$config_data .= "	\$DIR_LANG = \$DIR_NUCLEUS . 'language/';\n";
+		$config_data .= "	\$DIR_LOCALES = \$DIR_NUCLEUS . 'locales/';\n";
 		$config_data .= "	\$DIR_LIBS = \$DIR_NUCLEUS . 'libs/';\n";
 		$config_data .= "\n";
 		$config_data .= "	// include libs\n";
@@ -944,7 +944,7 @@ function doInstall()
 	// these dirs are normally sub dirs of the nucleus dir, but
 	// you can redefine them if you wish
 	$DIR_PLUGINS = $DIR_NUCLEUS . 'plugins/';
-	$DIR_LANG = $DIR_NUCLEUS . 'language/';
+	$DIR_LOCALES = $DIR_NUCLEUS . 'locales/';
 	$DIR_LIBS = $DIR_NUCLEUS . 'libs/';
 
 	// include libs
