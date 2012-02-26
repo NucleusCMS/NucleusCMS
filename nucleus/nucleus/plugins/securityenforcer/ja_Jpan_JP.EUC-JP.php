@@ -1,5 +1,5 @@
 <?php
-/** Japanese-UTF8 language file for NP_SECURITYENFORCER Plugin
+/** Japanese-UTF8 translation file for NP_SECURITYENFORCER Plugin
 */
 
 // Plugin Options

@@ -95,12 +95,16 @@
 	{
 		$current = 350;
 	}
-	else
+	else if ( !upgrade_checkinstall(400)  )
 	{
 		$current = 360;
 	}
-
-	if ( $current == 360 )
+	else
+	{
+		$current = 400
+	}
+	
+	if ( $current == 400 )
 	{
 ?>
 	<p class="ok"> No database updates required! The database has already been updated to the latest version of Nucleus. </p>

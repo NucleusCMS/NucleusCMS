@@ -150,10 +150,7 @@ class MEMBER {
 		$this->id = $obj->mnumber;
 		$this->setCanLogin($obj->mcanlogin);
 		$this->setNotes($obj->mnotes);
-		/*
-		 * FIXME: the name of this field should be 'mlocale', not deflang.
-		 */
-		$this->setLocale($obj->deflang);
+		$this->setLocale($obj->mlocale);
 		$this->setAutosave($obj->mautosave);
 		
 		return sql_num_rows($res);
@@ -545,8 +542,8 @@ class MEMBER {
 			   . "     madmin=" . $this->isAdmin() . ","
 			   . "     mnotes='" . sql_real_escape_string($this->getNotes()) . "',"
 			   . "     mcanlogin=" . $this->canLogin() . ","
-			   . "	    deflang='" . sql_real_escape_string($this->getLocale()) . "',"
-			   . "	    mautosave=" . intval($this->getAutosave()) . ""			   
+			   . "     mlocale='" . sql_real_escape_string($this->getLocale()) . "',"
+			   . "     mautosave=" . intval($this->getAutosave()) . ""			   
 			   . " WHERE mnumber=" . $this->getID();
 		sql_query($query);
 		return;

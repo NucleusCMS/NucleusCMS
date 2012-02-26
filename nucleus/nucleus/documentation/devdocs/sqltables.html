@@ -551,10 +551,10 @@ This document contains information on the fields inside the Nucleus database tab
 	<td>A copy of the key that is stored in the users cookie. This key is used to log on. When a member logs on, a random cookiekey is generated. One copy goes into the database, another one goes into a cookie on the users computer. (together with the username).</td>
 
 </tr><tr>
-	<td class="notnull">deflang</td>
+	<td class="notnull">mlocale</td>
 	<td>varchar(20)</td>
 	<td>''</td>
-	<td>Language file to use for this member. When empty, uses the default site language.</td>
+	<td>translation file to use for this member. When empty, uses the default site locale.</td>
 </tr></table>
 
 
@@ -994,9 +994,9 @@ This document contains information on the fields inside the Nucleus database tab
 	<td></td>
 	<td>URL of website. Should end with a slash.</td>
 </tr><tr>
-	<td>Language</td>
-	<td>english</td>
-	<td>Language file to use by default. A file <strong>languagename.php</strong> must exist in the languages directory.</td>
+	<td>Locale</td>
+	<td>en_Latn_US</td>
+	<td>Locale file to use by default. A file <strong>localename.php</strong> must exist in the locale directory.</td>
 </tr><tr>
 	<td>SessionCookie</td>
 	<td>0</td>

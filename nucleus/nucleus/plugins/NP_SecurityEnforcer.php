@@ -71,7 +71,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 	
 	public function init()
 	{
-		// include language file for this plugin
+		// include translation file for this plugin
 		if ( file_exists($this->getDirectory() . i18n::get_current_locale() . '.' . i18n::get_current_charset() . '.php') )
 		{
 			include_once($this->getDirectory() . i18n::get_current_locale() . '.' . i18n::get_current_charset() . '.php');

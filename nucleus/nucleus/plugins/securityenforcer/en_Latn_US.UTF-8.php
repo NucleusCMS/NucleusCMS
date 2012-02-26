@@ -1,5 +1,5 @@
 <?php
-/** English language file for NP_SECURITYENFORCER Plugin
+/** English translation file for NP_SECURITYENFORCER Plugin
 */
 
 // Plugin Options

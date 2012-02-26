@@ -2190,23 +2190,23 @@ refuse to install the plugin if a dependency is missing.</p>
 <h1>Internationalizing Your Plugin <a name="internationalization" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>Internationalization of a plugin allows your plugin to be easily used by people all over the world, people who do not 
-speak the same language as you do. It requires a little additional work for you, but makes translating the output of your plugin 
+use the same language as you do. It requires a little additional work for you, but makes translating the output of your plugin 
 as easy as translating a few phrases in a text file. Below is a description of the standard method suggested for use by Nucleus plugins. 
 Thanks to Andy Matsubara for the instructions.</p>
 
 <ol>
 	<li><strong>Develop your plugin</strong>
 
-At first, it is easier to develop it in your language. Use of language files is recommended after the plugin becomes stable.</li>
+At first, it is easier to develop it in your language. Use of translation files is recommended after the plugin becomes stable.</li>
 	<li><strong>Create plugin directory</strong>
 
 If your plugin name is NP_AbcDef, the plugin directory name is abcdef (always lower case).</li>
-	<li><strong>Create language files</strong>
+	<li><strong>Create translation files</strong>
 
-Create the language files in the directory of your plugin. The name of the language file must be the same as that of the Nucleus language file name. For example, english.php is for English and default use. japanese-utf8.php for Japanese(UTF-Cool,japanese-euc.php for Japanese(EUC-JP).</li>
+Create the translation files in the directory of your plugin. The name of the language file must be the same as that of the Nucleus translation file name. For example, english.php is for English and default use. japanese-utf8.php for Japanese(UTF-Cool,japanese-euc.php for Japanese(EUC-JP).</li>
 	<li><strong>Define strings</strong>
 
-Define strings like below in the language file:
+Define strings like below in the translation file:
 
 <pre class="example"><code>&lt;?php
 define('_ABCDEF_MESSAGENAME',                  'actual strings in the language');
@@ -2216,13 +2216,13 @@ define('_ABCDEF_MESSAGENAME',                  'actual strings in the language')
 You have to define them for all static strings in your plugin. As defined name is used globally in the environment, it is recommended to have a prefix derived from the plugin name(in this case _ABCDEF).</li>
 	<li><strong>Replace static strings</strong>
 
-Replace static strings in your plugin with the defined names so they will change according to the language file.</li>
+Replace static strings in your plugin with the defined names so they will change according to the translation file.</li>
 	<li><strong>Create init method</strong>
 
 Make the init method in the plugin like below
 
 <pre class="example"><code>   function init() {
-      // include language file for this plugin
+      // include translation file for this plugin
       $language = preg_replace( '#[\\|/]#', '', getLanguageName());
       if (file_exists($this->getDirectory().$language.'.php'))
          include_once($this->getDirectory().$language.'.php');
@@ -2230,8 +2230,8 @@ Make the init method in the plugin like below
          include_once($this->getDirectory().'english.php');
    }</code></pre>
 </li>
-This logic is same as Nucleus� language file setting.
-	<li><strong>Add language files</strong>
+This logic is same as Nucleus' translation file setting.
+	<li><strong>Add translation files</strong>
 
 As English is the default language, it is recommended to have at least the English version.	</li>
 </ol>

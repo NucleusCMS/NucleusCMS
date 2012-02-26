@@ -1883,11 +1883,11 @@ class ADMIN
 			<td><?php echo _MEMBERS_NOTES?></td>
 			<td><input name="notes" tabindex="80" size="40" maxlength="100" value="<?php echo  ENTITY::hsc($mem->getNotes()); ?>" /></td>
 		</tr><tr>
-			<td><?php echo _MEMBERS_DEFLANG?> <?php help('language'); ?>
+			<td><?php echo _MEMBERS_LOCALE?> <?php help('locale'); ?>
 			</td>
 			<td>
 			
-				<select name="deflang" tabindex="85">
+				<select name="locale" tabindex="85">
 				<?php
 				$locales = i18n::get_available_locale_list();
 				if ( !$mem->getLocale() || !in_array($mem->getLocale(), $locales) )
@@ -1974,7 +1974,7 @@ class ADMIN
         $admin          = postVar('admin');
         $canlogin       = postVar('canlogin');
         $notes          = strip_tags(postVar('notes'));
-        $locale        = postVar('deflang');
+        $locale        = postVar('locale');
 
         $mem = MEMBER::createFromID($memberid);
 
@@ -2011,7 +2011,7 @@ class ADMIN
 			$this->error(_ERROR_REALNAMEMISSING);
 		}
         if ( ($locale != '') && (!in_array($locale, i18n::get_available_locale_list())) )
-            $this->error(_ERROR_NOSUCHLANGUAGE);
+            $this->error(_ERROR_NOSUCHTRANSLATION);
 
         // check if there will remain at least one site member with both the logon and admin rights
         // (check occurs when taking away one of these rights from such a member)
@@ -4758,10 +4758,10 @@ selector();
             <td><?php echo _SETTINGS_ACTIONSURL?> <?php help('actionurl');?></td>
             <td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  ENTITY::hsc($CONF['ActionURL']) ?>" /></td>
         </tr><tr>
-            <td><?php echo _SETTINGS_LANGUAGE?> <?php help('language'); ?>
+            <td><?php echo _SETTINGS_LOCALE?> <?php help('locale'); ?>
             </td>
             <td>
-                <select name="Language" tabindex="10050">
+                <select name="Locale" tabindex="10050">
 			<?php
 				$locales = i18n::get_available_locale_list();
 				if ( !i18n::get_current_locale() || !in_array(i18n::get_current_locale(), $locales) )
@@ -5051,7 +5051,7 @@ selector();
 		$this->updateConfig('PluginURL',		postVar('PluginURL'));
 		$this->updateConfig('SkinsURL',		 postVar('SkinsURL'));
 		$this->updateConfig('ActionURL',		postVar('ActionURL'));
-		$this->updateConfig('Language',		   postVar('Language'));
+		$this->updateConfig('Locale',		   postVar('Locale'));
 		$this->updateConfig('AdminEmail',	   postVar('AdminEmail'));
 		$this->updateConfig('SessionCookie',	postVar('SessionCookie'));
 		$this->updateConfig('AllowMemberCreate',postVar('AllowMemberCreate'));
@@ -5079,7 +5079,7 @@ selector();
 		$this->updateConfig('DefaultListSize',		  postVar('DefaultListSize'));
 		$this->updateConfig('AdminCSS',		  postVar('AdminCSS'));
 		
-		// load new config and redirect (this way, the new language will be used is necessary)
+		// load new config and redirect (this way, the new locale will be used is necessary)
 		// note that when changing cookie settings, this redirect might cause the user
 		// to have to log in again.
 		getConfig();

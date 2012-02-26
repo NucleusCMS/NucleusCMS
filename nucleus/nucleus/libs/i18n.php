@@ -504,7 +504,7 @@ class i18n
 	 * 
 	 * @static
 	 * @param	string	$target_locale	locale name as language_script_region
-	 * @return	string	old language file name
+	 * @return	string	old translation file name
 	 */
 	static public function convert_locale_to_old_language_file_name($target_locale)
 	{
@@ -532,7 +532,7 @@ class i18n
 	 * NOTE: this should be obsoleted near future.
 	 * 
 	 * @static
-	 * @param	string	$target_language	old language file name
+	 * @param	string	$target_language	old translation file name
 	 * @return	string	locale name as language_script_region
 	 */
 	static public function convert_old_language_file_name_to_locale($target_language)
@@ -558,11 +558,10 @@ class i18n
 	
 	/**
 	 * i18n::$lang_refs
-	 * reference table to convert old and new way to name language files.
+	 * reference table to convert old and new way to name translation files.
 	 * NOTE: this should be obsoleted as soon as possible.
 	 * 
 	 * @static
-	 * @access private
 	 */
 	static private $lang_refs = array(
 		"english"		=> "en_Latn_US",

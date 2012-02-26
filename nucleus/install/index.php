@@ -273,7 +273,7 @@ function showInstallForm()
 			<table>
 				<tr>
 					<td><label for="if_mySQL_host"><?php echo _TEXT4_TAB_FIELD1; ?>:</label></td>
-					<td><input id="if_mySQL_host" name="mySQL_host" value="<?php echo ENTITY::hsc(@ini_get('mysql.default_host') )?>" /></td>
+					<td><input id="if_mySQL_host" name="mySQL_host" value="<?php echo @ini_get('mysql.default_host'); ?>" /></td>
 				</tr>
 				<tr>
 					<td><label for="if_mySQL_user"><?php echo _TEXT4_TAB_FIELD2; ?>:</label></td>

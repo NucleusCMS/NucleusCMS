@@ -26,7 +26,7 @@ class NP_Text extends NucleusPlugin
 	public function getAuthor()			{ return 'Armon Toubman'; }
 	public function getURL()			{ return 'http://forum.nucleuscms.org/viewtopic.php?t=14904'; }
 	public function getVersion()		{ return '0.53'; }
-	public function getDescription()	{ return 'Display constants from language files: <%Text(CONSTANT)%>'; }
+	public function getDescription()	{ return 'Display constants from translation files: <%Text(CONSTANT)%>'; }
 	public function getEventList()		{ return array('PreSkinParse'); }
 	public function supportsFeature($feature)	{ return ( $feature == 'SqlTablePrefix' ); }
 	public function install()			{ return; }

@@ -28,7 +28,7 @@ $DIR_SKINS = '/your/path/to/skins/';
 // these dirs are normally subdirs of the nucleus dir, but
 // you can redefine them if you wish
 $DIR_PLUGINS = $DIR_NUCLEUS . 'plugins/';
-$DIR_LANG = $DIR_NUCLEUS . 'language/';
+$DIR_LOCALES = $DIR_NUCLEUS . 'locales/';
 $DIR_LIBS = $DIR_NUCLEUS . 'libs/';
 
 if (!@file_exists($DIR_LIBS . 'globalfunctions.php')) {

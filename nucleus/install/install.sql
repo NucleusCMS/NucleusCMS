@@ -83,7 +83,7 @@ CREATE TABLE `nucleus_config` (
 INSERT INTO `nucleus_config` VALUES ('DefaultBlog', '1');
 INSERT INTO `nucleus_config` VALUES ('AdminEmail', 'example@example.org');
 INSERT INTO `nucleus_config` VALUES ('IndexURL', 'http://localhost:8080/nucleus/');
-INSERT INTO `nucleus_config` VALUES ('Language', 'english');
+INSERT INTO `nucleus_config` VALUES ('Locale', 'en_Latn_US');
 INSERT INTO `nucleus_config` VALUES ('SessionCookie', '');
 INSERT INTO `nucleus_config` VALUES ('AllowMemberCreate', '');
 INSERT INTO `nucleus_config` VALUES ('AllowMemberMail', '1');
@@ -155,7 +155,7 @@ CREATE TABLE `nucleus_member` (
   `madmin` tinyint(2) NOT NULL default '0',
   `mcanlogin` tinyint(2) NOT NULL default '1',
   `mcookiekey` varchar(40) default NULL,
-  `deflang` varchar(20) NOT NULL default '',
+  `mlocale` varchar(20) NOT NULL default '',
   `mautosave` tinyint(2) NOT NULL default '1',
   PRIMARY KEY  (`mnumber`),
 --  UNIQUE KEY `mnumber` (`mnumber`),

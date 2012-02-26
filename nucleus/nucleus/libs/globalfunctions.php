@@ -17,13 +17,13 @@
  */
 
 /* needed if we include globalfunctions from install.php */
-global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
+global $nucleus, $CONF, $DIR_LIBS, $DIR_LOCALE, $manager, $member;
 
 $nucleus['version'] = 'v4.00 SVN';
 $nucleus['codename'] = '';
 
 /* check and die if someone is trying to override internal globals (when register_globals turn on) */
-checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
+checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', '$DIR_LOCALE', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
 
 $CONF['debug'] = 0;
 if ( $CONF['debug'] )
@@ -38,39 +38,46 @@ else
 }
 
 /*
+ * FIXME: This is for compatibility since 4.0, should be obsoleted at future release.
+ */
+if ( !isset($DIR_LOCALES) )
+{
+	global $DIR_LANG;
+	$DIR_LOCALES = $DIR_NUCLEUS . 'locales/';
+	$DIR_LANG = $DIR_LOCALES;
+}
+
+/*
  * load and initialize i18n class
  */
 if (!class_exists('i18n', FALSE))
 {
 	include($DIR_LIBS . 'i18n.php');
 }
-if ( !i18n::init('UTF-8', $DIR_LANG) )
+if ( !i18n::init('UTF-8', $DIR_LOCALES) )
 {
 	exit('Fail to initialize i18n class.');
 }
 /*
- * FIXME: This is for compatibility, should be obsoleted near future.
+ * FIXME: This is for compatibility since 4.0, should be obsoleted at future release.
  */
 define('_CHARSET', i18n::get_current_charset());
 
 /*
-	Indicates when Nucleus should display startup errors. Set to 1 if you want
-	the error enabled (default), false otherwise
-	
-	alertOnHeadersSent
-		Displays an error when visiting a public Nucleus page and headers have
-		been sent out to early. This usually indicates an error in either a
-		configuration file or a language file, and could cause Nucleus to
-		malfunction
-	alertOnSecurityRisk
-		Displays an error only when visiting the admin area, and when one or
-		more of the installation files (install.php, install.sql, upgrades/
-		directory) are still on the server.
-*/
-
-if ( !isset($CONF['alertOnHeadersSent'])
-  || (isset($CONF['alertOnHeadersSent'])
-  && $CONF['alertOnHeadersSent'] !== 0) )
+ * Indicates when Nucleus should display startup errors. Set to 1 if you want
+ * the error enabled (default), false otherwise
+ *
+ * alertOnHeadersSent
+ *  Displays an error when visiting a public Nucleus page and headers have
+ *  been sent out to early. This usually indicates an error in either a
+ *  configuration file or a translation file, and could cause Nucleus to
+ *  malfunction
+ * alertOnSecurityRisk
+ * Displays an error only when visiting the admin area, and when one or
+ *  more of the installation files (install.php, install.sql, upgrades/
+ *  directory) are still on the server.
+ */
+if ( !array_key_exists('alertOnHeadersSent', $CONF) || $CONF['alertOnHeadersSent'] !== 0 )
 {
 	$CONF['alertOnHeadersSent'] = 1;
 }
@@ -115,7 +122,7 @@ if ( !isset($CONF['installscript']) )
 }
 
 /* we will use postVar, getVar, ... methods instead of $_GET, $_POST ...*/
-if ($CONF['installscript'] != 1)
+if ( $CONF['installscript'] != 1 )
 {
 	/* vars were already included in install.php */
 	include_once($DIR_LIBS . 'vars4.1.0.php');
@@ -185,7 +192,7 @@ if ( version_compare(PHP_VERSION, '5.3.0', '<') )
 }
 
 /* Avoid notices */
-if ( !isset($CONF['UsingAdminArea']) )
+if ( !array_key_exists('UsingAdminArea', $CONF) )
 {
 	$CONF['UsingAdminArea'] = 0;
 }
@@ -228,17 +235,22 @@ getConfig();
  * Here simply convert old name to new name without checking translation file existance
  * FIXME: This is for compatibility, should be obsoleted near future.
  */
-if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Language'])
-  && ($CONF['Language'] = i18n::convert_old_language_file_name_to_locale($CONF['Language'])) === FALSE )
+if ( !array_key_exists('Locale', $CONF) )
 {
-	$CONF['Language'] = '';
+	$CONF['Locale'] =& $CONF['Language'];
 }
-$locale = $CONF['Language'];
+
+if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Locale'])
+  && ($CONF['Locale'] = i18n::convert_old_language_file_name_to_locale($CONF['Language'])) === FALSE )
+{
+	$CONF['Locale'] = '';
+}
+$locale = $CONF['Locale'];
 
 /* Properly set $CONF['Self'] and others if it's not set...
  * usually when we are access from admin menu
  */
-if ( !isset($CONF['Self']) )
+if ( !array_key_exists('Self', $CONF) )
 {
 	$CONF['Self'] = $CONF['IndexURL'];
 	/* strip trailing */
@@ -260,7 +272,7 @@ $CONF['CategoryURL'] = $CONF['Self'];
  *switch URLMode back to normal when $CONF['Self'] ends in .php
  * this avoids urls like index.php/item/13/index.php/item/15
  */
-if ( !isset($CONF['URLMode'])
+if ( !array_key_exists('URLMode', $CONF)
  || (($CONF['URLMode'] == 'pathinfo')
   && (i18n::substr($CONF['Self'], i18n::strlen($CONF['Self']) - 4) == '.php')) )
 {
@@ -279,7 +291,7 @@ if ( ($CONF['DisableJsTools'] == 0)
 $member = new MEMBER();
 
 /* secure cookie key settings (either 'none', 0, 8, 16, 24, or 32) */
-if ( !isset($CONF['secureCookieKey']) )
+if ( !array_key_exists('secureCookieKey', $CONF) )
 {
 	$CONF['secureCookieKey'] = 24;
 }
@@ -320,7 +332,7 @@ if ( $action == 'login' )
 		$member->newCookieKey();
 		$member->setCookies($shared);
 		
-		if ( $CONF['secureCookieKey']!=='none' )
+		if ( $CONF['secureCookieKey'] !== 'none' )
 		{
 			/* secure cookie key */
 			$member->setCookieKey(md5($member->getCookieKey().$CONF['secureCookieKeyIP']));
@@ -488,8 +500,8 @@ if ( !headers_sent() )
 /*
 Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
 
-// To remove after v2.5 is released and language files have been updated.
-// Including this makes sure that language files for v2.5beta can still be used for v2.5final
+// To remove after v2.5 is released and translation files have been updated.
+// Including this makes sure that translation files for v2.5beta can still be used for v2.5final
 // without having weird _SETTINGS_EXTAUTH string showing up in the admin area.
 if (!defined('_MEMBERS_BYPASS'))
 {
@@ -744,7 +756,7 @@ $manager->notify(
 	 */
 	function include_translation($locale, $member = FALSE)
 	{
-		global $DIR_LANG;
+		global $DIR_LOCALES;
 		
 		/* 
 		 * 1. user's locale is used if set
@@ -757,11 +769,11 @@ $manager->notify(
 		{
 			$locale = $member->getLocale();
 		}
-		$translation_file = $DIR_LANG . $locale . '.' . i18n::get_current_charset() . '.php';
+		$translation_file = $DIR_LOCALES . $locale . '.' . i18n::get_current_charset() . '.php';
 		if ( !file_exists($translation_file) )
 		{
 			$locale = 'en_Latn_US';
-			$translation_file = $DIR_LANG . 'en_Latn_US.ISO-8859-1.php';
+			$translation_file = $DIR_LOCALES . 'en_Latn_US.ISO-8859-1.php';
 		}
 		include($translation_file);
 		return $locale;
@@ -1091,7 +1103,7 @@ function selector() {
 		}
 		
 		startUpError(
-			'<p>The page headers have already been sent out' . $extraInfo . '. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, at the end of the language file or at the end of a plugin file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>',
+			'<p>The page headers have already been sent out' . $extraInfo . '. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, at the end of the translation file or at the end of a plugin file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>',
 			'Page headers already sent'
 		);
 		exit;
@@ -1543,7 +1555,7 @@ function selectItem($id) {
     $itemid = intval($id);
 }
 
-// force the use of a language file (warning: can cause warnings)
+// force the use of a translation file (warning: can cause warnings)
 function selectLanguage($language) {
 
 	global $DIR_LANG;
@@ -1636,20 +1648,6 @@ function includephp($filename) {
     if (@file_exists($filename) ) {
         include($filename);
     }
-}
-
-/**
- * Checks if a certain language exists
- * @param string $lang
- * @return bool
- * 
- * NOTE: Deprecated, plugins to use this function should be re-worked as soon as possible!
- * TODO: this will be obsoleted soon.
- **/
-function checkLanguage($lang)
-{
-	return ( preg_match('#^(.+)_(.+)_(.+)$#', $lang)
-	  || i18n::convert_old_language_file_name_to_locale($lang) );
 }
 
 /**
@@ -1890,7 +1888,7 @@ function ticketForPlugin()
 		exit('You aren\'t logged in.');
 	}
 	
-	global $manager, $DIR_LIBS, $DIR_LANG, $HTTP_GET_VARS, $HTTP_POST_VARS;
+	global $manager, $DIR_LIBS, $DIR_LOCALE, $HTTP_GET_VARS, $HTTP_POST_VARS;
 	
 	/* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
 	if (!($p_translated = serverVar('PATH_TRANSLATED') ) )
@@ -2236,6 +2234,27 @@ function stringToXML ($string)
 function encode_desc($data)
 {
 	return ENTITY::hen($data);
+}
+/**
+ * Centralisation of the functions that deals with locales
+ * This functions is based on the old way to deal with languages
+ * Deprecated since 4.0:
+ */
+/* NOTE: use i18n::get_current_locale() directly instead of this */
+function getLanguageName()
+{
+	if( ($language = i18n::convert_locale_to_old_language_file_name(i18n::get_current_locale())) === FALSE )
+	{
+		$language ='english';
+	}
+	return $language;
+}
+
+/* NOTE: use i18n::get_available_locales() directly instead of this */
+function checkLanguage($lang)
+{
+	return ( preg_match('#^(.+)_(.+)_(.+)$#', $lang)
+	  || i18n::convert_old_language_file_name_to_locale($lang) );
 }
 /* NOTE: use i18n::formatted_datetime() directly instead of this */
 function formatDate($format, $timestamp, $default_format, &$blog)
