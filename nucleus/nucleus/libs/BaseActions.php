@@ -209,21 +209,23 @@ class BaseActions {
 			$this->aHighlight = parseHighlight($highlight);
 		}
 	}
-
+	
 	/**
 	 * Applies the highlight to the given piece of text
 	 *
-	 * @param &$data
-	 *		Data that needs to be highlighted
 	 * @see setHighlight
+	 * @param String	$data	Data that needs to be highlighted
+	 * @return	String	hilighted data
 	 */
-	function highlight(&$data) {
-		if ($this->aHighlight)
-			return highlight($data,$this->aHighlight,$this->template['SEARCH_HIGHLIGHT']);
-		else
-			return $data;
+	function highlight($data)
+	{
+		if ( $this->aHighlight )
+		{
+			$data = ENTITY::highlight($data, $this->aHighlight, $this->template['SEARCH_HIGHLIGHT']);
+		}
+		return $data;
 	}
-
+	
 	/**
 	 * Parses <%if%> statements
 	 */

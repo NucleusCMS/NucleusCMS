@@ -103,7 +103,7 @@ function gmc_askGreyPath() {
 		</p>
 
 		<ul>
-			<li>GreyMatter path: <input name="grey_scriptpath" size="60" value="<?php echo i18n::hsc($guess)?>" /></li>
+			<li>GreyMatter path: <input name="grey_scriptpath" size="60" value="<?php echo ENTITY::hsc($guess)?>" /></li>
 		</ul>
 
 		<p>
@@ -177,7 +177,7 @@ while ($author = fgets($filehandle,4096)) {
 		<tr>
 			<td>
 				<b><?php echo $a_name?></b>
-				<input name="author[<?php echo $idx?>]" value="<?php echo i18n::hsc($a_name)?>" type="hidden"
+				<input name="author[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden"
 			</td>
 			<td>
 		<?php			// TODO: avoid doing this query multiple times
@@ -252,9 +252,9 @@ fclose($filehandle);
 		<h1>Do the conversion!</h1>
 		<p>
 		<input type="hidden" name="authorcount" value="<?php echo $idx?>" />
-		<input type="hidden" name="grey_scriptpath" value="<?php echo i18n::hsc($grey_scriptpath)?>" />
-		<input type="hidden" name="grey_datapath" value="<?php echo i18n::hsc($grey_datapath)?>" />
-		<input type="hidden" name="grey_dataurl" value="<?php echo i18n::hsc($grey_dataurl)?>" />
+		<input type="hidden" name="grey_scriptpath" value="<?php echo ENTITY::hsc($grey_scriptpath)?>" />
+		<input type="hidden" name="grey_datapath" value="<?php echo ENTITY::hsc($grey_datapath)?>" />
+		<input type="hidden" name="grey_dataurl" value="<?php echo ENTITY::hsc($grey_dataurl)?>" />
 		<input type="submit" value="Do the conversion!" />
 		<input type="hidden" name="action" value="doConversion" />
 		</p>
@@ -534,7 +534,7 @@ function gm_popup($filename, $authorid, $text, $width, $height) {
 	// TODO: copy file to media directory
 	// TODO: create %popup(...)% code instead
 
-	$text = i18n::hsc(stripslashes($text));
+	$text = ENTITY::hsc(stripslashes($text));
 
 	return "<%popup($filename|$width|$height|$text)%>";
 }

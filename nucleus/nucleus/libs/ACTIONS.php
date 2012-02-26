@@ -260,10 +260,10 @@ class ACTIONS extends BaseActions {
 	 */
 	function _link($url, $linktext = '')
 	{
-		$u = i18n::hsc($url);
+		$u = ENTITY::hsc($url);
 		$u = preg_replace("/&amp;amp;/",'&amp;',$u); // fix URLs that already had encoded ampersands
 		if ($linktext != '') 
-			$l = '<a href="' . $u .'">'.i18n::hsc($linktext).'</a>';
+			$l = '<a href="' . $u .'">'.ENTITY::hsc($linktext).'</a>';
 		else
 			$l = $u;
 		return $l;
@@ -416,7 +416,7 @@ class ACTIONS extends BaseActions {
 	function parse_additemform() {
 		global $blog, $CONF;
 		$this->formdata = array(
-			'adminurl' => i18n::hsc($CONF['AdminURL']),
+			'adminurl' => ENTITY::hsc($CONF['AdminURL']),
 			'catid' => $blog->getDefaultCategory()
 		);
 		$blog->InsertJavaScriptInfo();
@@ -577,19 +577,19 @@ class ACTIONS extends BaseActions {
 		global $blog;
 		switch($which) {
 			case 'id':
-				echo i18n::hsc($blog->getID());
+				echo ENTITY::hsc($blog->getID());
 				break;
 			case 'url':
-				echo i18n::hsc($blog->getURL());
+				echo ENTITY::hsc($blog->getURL());
 				break;
 			case 'name':
-				echo i18n::hsc($blog->getName());
+				echo ENTITY::hsc($blog->getName());
 				break;
 			case 'desc':
-				echo i18n::hsc($blog->getDescription());
+				echo ENTITY::hsc($blog->getDescription());
 				break;
 			case 'short':
-				echo i18n::hsc($blog->getShortName());
+				echo ENTITY::hsc($blog->getShortName());
 				break;
 		}
 	}
@@ -695,7 +695,7 @@ class ACTIONS extends BaseActions {
 			// note: createLink returns an HTML encoded URL
 		} else {
 			// HTML encode URL
-			$destinationurl = i18n::hsc($destinationurl);
+			$destinationurl = ENTITY::hsc($destinationurl);
 		}
 
 		// values to prefill
@@ -711,12 +711,12 @@ class ACTIONS extends BaseActions {
 
 		$this->formdata = array(
 			'destinationurl' => $destinationurl,	// url is already HTML encoded
-			'actionurl' => i18n::hsc($actionurl),
+			'actionurl' => ENTITY::hsc($actionurl),
 			'itemid' => $itemid,
-			'user' => i18n::hsc($user),
-			'userid' => i18n::hsc($userid),
-			'email' => i18n::hsc($email),
-			'body' => i18n::hsc($body),
+			'user' => ENTITY::hsc($user),
+			'userid' => ENTITY::hsc($userid),
+			'email' => ENTITY::hsc($email),
+			'body' => ENTITY::hsc($body),
 			'membername' => $member->getDisplayName(),
 			'rememberchecked' => cookieVar($CONF['CookiePrefix'] .'comment_user')?'checked="checked"':''
 		);
@@ -755,7 +755,7 @@ class ACTIONS extends BaseActions {
 	function parse_errordiv() {
 		global $errormessage;
 		if ($errormessage)
-			echo '<div class="error">', i18n::hsc($errormessage),'</div>';
+			echo '<div class="error">', ENTITY::hsc($errormessage),'</div>';
 	}
 	
 	/**
@@ -794,11 +794,11 @@ class ACTIONS extends BaseActions {
 	function parse_image($what = 'imgtag') {
 		global $CONF;
 
-		$imagetext 	= i18n::hsc(requestVar('imagetext'));
+		$imagetext 	= ENTITY::hsc(requestVar('imagetext'));
 		$imagepopup = requestVar('imagepopup');
 		$width 		= intRequestVar('width');
 		$height 	= intRequestVar('height');
-		$fullurl 	= i18n::hsc($CONF['MediaURL'] . $imagepopup);
+		$fullurl 	= ENTITY::hsc($CONF['MediaURL'] . $imagepopup);
 
 		switch($what)
 		{
@@ -826,7 +826,7 @@ class ACTIONS extends BaseActions {
 	 * Parse skinvar imagetext
 	 */
 	function parse_imagetext() {
-		echo i18n::hsc(requestVar('imagetext'));
+		echo ENTITY::hsc(requestVar('imagetext'));
 	}
 
 	/**
@@ -868,16 +868,14 @@ class ACTIONS extends BaseActions {
 
 		switch ($format) {
 			case 'xml':
-				echo stringToXML ($item['title']);
-				break;
-			case 'attribute':
-				echo stringToAttribute ($item['title']);
+				echo ENTITY::hen($item['title']);
 				break;
 			case 'raw':
 				echo $item['title'];
 				break;
+			case 'attribute':
 			default:
-				echo i18n::hsc(strip_tags($item['title']));
+				echo ENTITY::hsc(strip_tags($item['title']));
 				break;
 		}
 	}
@@ -911,22 +909,22 @@ class ACTIONS extends BaseActions {
 
 			switch($what) {
 				case 'name':
-					echo i18n::hsc($memberinfo->getDisplayName());
+					echo ENTITY::hsc($memberinfo->getDisplayName());
 					break;
 				case 'realname':
-					echo i18n::hsc($memberinfo->getRealName());
+					echo ENTITY::hsc($memberinfo->getRealName());
 					break;
 				case 'notes':
-					echo i18n::hsc($memberinfo->getNotes());
+					echo ENTITY::hsc($memberinfo->getNotes());
 					break;
 				case 'url':
-					echo i18n::hsc($memberinfo->getURL());
+					echo ENTITY::hsc($memberinfo->getURL());
 					break;
 				case 'email':
-					echo i18n::hsc($memberinfo->getEmail());
+					echo ENTITY::hsc($memberinfo->getEmail());
 					break;
 				case 'id':
-					echo i18n::hsc($memberinfo->getID());
+					echo ENTITY::hsc($memberinfo->getID());
 					break;
 			}
 		}
@@ -981,13 +979,13 @@ class ACTIONS extends BaseActions {
 		$frommail = postVar('frommail');
 
 		$this->formdata = array(
-			'url' => i18n::hsc($desturl),
-			'actionurl' => i18n::hsc($CONF['ActionURL']),
+			'url' => ENTITY::hsc($desturl),
+			'actionurl' => ENTITY::hsc($CONF['ActionURL']),
 			'memberid' => $memberid,
 			'rows' => $rows,
 			'cols' => $cols,
-			'message' => i18n::hsc($message),
-			'frommail' => i18n::hsc($frommail)
+			'message' => ENTITY::hsc($message),
+			'frommail' => ENTITY::hsc($frommail)
 		);
 		if ($member->isLoggedIn()) {
 			$this->doForm('membermailform-loggedin');
@@ -1023,18 +1021,17 @@ class ACTIONS extends BaseActions {
 	function parse_nextitemtitle($format = '') {
 		global $itemtitlenext;
 
-		switch ($format) {
+		switch ( $format )
+		{
 			case 'xml':
-				echo stringToXML ($itemtitlenext);
-				break;
-			case 'attribute':
-				echo stringToAttribute ($itemtitlenext);
+				echo ENTITY::hen($itemtitlenext);
 				break;
 			case 'raw':
 				echo $itemtitlenext;
 				break;
+			case 'attribute':
 			default:
-				echo i18n::hsc($itemtitlenext);
+				echo ENTITY::hsc($itemtitlenext);
 				break;
 		}
 	}
@@ -1216,30 +1213,35 @@ class ACTIONS extends BaseActions {
 		global $itemidprev;
 		if (isset($itemidprev)) echo (int)$itemidprev;
 	}
-
+	
 	/**
+	 * ACTIONS::parse_previtemtitle()
 	 * Parse skinvar previtemtitle
 	 * (include itemtitle of prev item)
+	 * 
+	 * @param	String	$format	string format
+	 * @return	String	formatted string
 	 */
-	function parse_previtemtitle($format = '') {
+	function parse_previtemtitle($format = '')
+	{
 		global $itemtitleprev;
-
-		switch ($format) {
+		
+		switch ( $format )
+		{
 			case 'xml':
-				echo stringToXML ($itemtitleprev);
-				break;
-			case 'attribute':
-				echo stringToAttribute ($itemtitleprev);
+				echo ENTITY::hen($itemtitleprev);
 				break;
 			case 'raw':
 				echo $itemtitleprev;
 				break;
+			case 'attribute':
 			default:
-				echo i18n::hsc($itemtitleprev);
+				echo ENTITY::hsc($itemtitleprev);
 				break;
 		}
+		return;
 	}
-
+	
 	/**
 	 * Parse skinvar prevlink
 	 */
@@ -1260,14 +1262,14 @@ class ACTIONS extends BaseActions {
 	 */
 	function parse_query() {
 		global $query;
-		echo i18n::hsc($query);
+		echo ENTITY::hsc($query);
 	}
 	
 	/**
 	 * Parse skinvar referer
 	 */
 	function parse_referer() {
-		echo i18n::hsc(serverVar('HTTP_REFERER'));
+		echo ENTITY::hsc(serverVar('HTTP_REFERER'));
 	}
 
 	/**
@@ -1283,7 +1285,7 @@ class ACTIONS extends BaseActions {
 		// use default blog when no blog is selected
 		$this->formdata = array(
 			'id' => $blog?$blog->getID():$CONF['DefaultBlog'],
-			'query' => i18n::hsc(getVar('query')),
+			'query' => ENTITY::hsc(getVar('query')),
 		);
 		$this->doForm('searchform');
 	}

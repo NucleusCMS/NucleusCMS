@@ -241,7 +241,7 @@ class COMMENTACTIONS extends BaseActions {
 	 */
 	function parse_excerpt()
 	{
-		echo stringToXML(shorten($this->currentComment['body'], 60, '...'));
+		echo ENTITY::hen(ENTITY::shorten($this->currentComment['body'], 60, '...'));
 	}
 
 	/**
@@ -370,7 +370,7 @@ class COMMENTACTIONS extends BaseActions {
 		}
 		else
 		{
-			echo i18n::hsc($this->currentComment['user']);
+			echo ENTITY::hsc($this->currentComment['user']);
 		}
 	}
 

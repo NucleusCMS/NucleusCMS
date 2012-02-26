@@ -258,30 +258,32 @@ class ITEMACTIONS extends BaseActions {
 	 *
 	 * @param string $format defines in which format the title is shown
 	 */
-	function parse_title($format = '') {
-		if (is_array($this->currentItem)) {
+	function parse_title($format = '')
+	{
+		if ( is_array($this->currentItem) )
+		{
 			$itemtitle = $this->currentItem['title'];
-		} elseif (is_object($this->currentItem)) {
+		}
+		elseif ( is_object($this->currentItem) )
+		{
 			$itemtitle = $this->currentItem->title;
 		}
-		switch ($format) {
+		switch ( $format )
+		{
 			case 'xml':
-//				echo stringToXML ($this->currentItem->title);
-				echo stringToXML ($itemtitle);
+				echo ENTITY::hen($itemtitle);
 				break;
 			case 'attribute':
-//				echo stringToAttribute ($this->currentItem->title);
-				echo stringToAttribute ($itemtitle);
+				echo ENTITY::hsc($itemtitle);
 				break;
 			case 'raw':
-//				echo $this->currentItem->title;
 				echo $itemtitle;
 				break;
 			default:
-//				$this->highlightAndParse($this->currentItem->title);
 				$this->highlightAndParse($itemtitle);
 				break;
 		}
+		return;
 	}
 
 	/**
@@ -383,30 +385,40 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	/**
-	  * Parse templatevar syndicate_title
-	  *
-	  * @param maxLength optional maximum length
-	  */
+	 * ITEMACTIONS::parse_syndicate_title()
+	 * Parse templatevar syndicate_title
+	 *
+	 * @param String	$maxLength	maxLength optional maximum length
+	 * @return	String	syndicated title
+	 */
 	function parse_syndicate_title($maxLength = 100) {
 		$syndicated = strip_tags($this->currentItem->title);
-		echo i18n::hsc(shorten($syndicated,$maxLength,'...'));
+		echo ENTITY::hsc(ENTITY::shorten($syndicated,$maxLength,'...'));
 	}
-
+	
 	/**
-	  * Parse templatevar syndicate_description
-	  *
-	  * @param maxLength optional maximum length
-	  */
-	function parse_syndicate_description($maxLength = 250, $addHighlight = 0) {
+	 * ITEMACTIONS::parse_syndicate_description()
+	 * Parse templatevar syndicate_description
+	 *
+	 * @param Stromg	$maxLength	maxlength optional maximum length
+	 * @param	String	$addHighlight	highlighted string
+	 * @return	Void
+	 */
+	function parse_syndicate_description($maxLength = 250, $addHighlight = 0)
+	{
 		$syndicated = strip_tags($this->currentItem->body);
-		if ($addHighlight) {
-			$tmp_highlight = i18n::hsc(shorten($syndicated,$maxLength,'...'));
+		if ( $addHighlight )
+		{
+			$tmp_highlight = ENTITY::hsc(ENTITY::shorten($syndicated,$maxLength,'...'));
 			echo $this->highlightAndParse($tmp_highlight);
-		} else {
-			echo i18n::hsc(shorten($syndicated,$maxLength,'...'));
 		}
+		else
+		{
+			echo ENTITY::hsc(ENTITY::shorten($syndicated,$maxLength,'...'));
+		}
+		return;
 	}
-
+	
 	/**
 	  * Parse templatevar karmaposlink
 	  *

@@ -245,7 +245,7 @@ class PAGEFACTORY extends BaseActions
 	 */
 	function parse_bloglink()
 	{
-		echo '<a href="', i18n::hsc($this->blog->getURL()), '">', i18n::hsc($this->blog->getName()), '</a>';
+		echo '<a href="', ENTITY::hsc($this->blog->getURL()), '">', ENTITY::hsc($this->blog->getName()), '</a>';
 	}
 
 
@@ -384,7 +384,7 @@ class PAGEFACTORY extends BaseActions
 	function parse_contents($which)
 	{
 		if (!isset($this->variables[$which])) $this->variables[$which] = '';
-		echo i18n::hsc($this->variables[$which]);
+		echo ENTITY::hsc($this->variables[$which]);
 	}
 
 

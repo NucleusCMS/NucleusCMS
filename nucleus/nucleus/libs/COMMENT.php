@@ -84,7 +84,7 @@ class COMMENT {
 		$body = preg_replace("/\n{3,}/", "\n\n", $body);
 
 		// encode special characters as entities
-		$body = i18n::hsc($body);
+		$body = ENTITY::hsc($body);
 
 		// trim away whitespace and newlines at beginning and end
 		$body = trim($body);
@@ -106,48 +106,53 @@ class COMMENT {
 
 		return $body;
 	}
-
-
-
+	
 	/**
+	 * COMMENT::createLinkCode()
 	 * Creates a link code for unlinked URLs with different protocols
 	 *
-	 * @ static
+	 * @static
+	 * @param	String	$pre	Prefix of comment
+	 * @param	String	$url	URL
+	 * @param	String	$protocol	http, mailto and so on
 	 */
-	function createLinkCode($pre, $url, $protocol = 'http') {
+	function createLinkCode($pre, $url, $protocol = 'http')
+	{
 		$post = '';
-
+		
 		// it's possible that $url ends contains entities we don't want,
 		// since htmlspecialchars is applied _before_ URL linking
 		// move the part of URL, starting from the disallowed entity to the 'post' link part
 		$aBadEntities = array('&quot;', '&gt;', '&lt;');
-		foreach ($aBadEntities as $entity) {
-
+		foreach ( $aBadEntities as $entity )
+		{
 			$pos = i18n::strpos($url, $entity);
-
-			if ($pos) {
+			
+			if ( $pos )
+			{
 				$post = i18n::substr($url, $pos) . $post;
 				$url = i18n::substr($url, 0, $pos);
 			}
-
 		}
-
+		
 		// remove entities at end (&&&&)
-		if (preg_match('/(&\w+;)+$/i', $url, $matches) ) {
+		if ( preg_match('/(&\w+;)+$/i', $url, $matches) )
+		{
 			$post = $matches[0] . $post;	// found entities (1 or more)
 			$url = i18n::substr($url, 0, i18n::strlen($url) - i18n::strlen($post) );
 		}
-
+		
 		// move ending comma from url to 'post' part
-		if (i18n::substr($url, i18n::strlen($url) - 1) == ',') {
+		if ( i18n::substr($url, i18n::strlen($url) - 1) == ',' )
+		{
 			$url = i18n::substr($url, 0, i18n::strlen($url) - 1);
 			$post = ',' . $post;
 		}
-
+		
 		# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
 		# original ereg: ereg('^' . $protocol . '://', $url)
-
-		if (!preg_match('#^' . $protocol . '://#', $url) )
+		
+		if ( !preg_match('#^' . $protocol . '://#', $url) )
 		{
 			$linkedUrl = $protocol . ( ($protocol == 'mailto') ? ':' : '://') . $url;
 		}
@@ -155,17 +160,19 @@ class COMMENT {
 		{
 			$linkedUrl = $url;
 		}
-
-		if ($protocol != 'mailto') {
+		
+		if ( $protocol != 'mailto' )
+		{
 			$displayedUrl = $linkedUrl;
-		} else {
+		}
+		else
+		{
 			$displayedUrl = $url;
 		}
-
-		return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . i18n::hsc(shorten($displayedUrl,30,'...')) . '</a>' . $post;
+		
+		return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . ENTITY::hsc(ENTITY::shorten($displayedUrl,30,'...')) . '</a>' . $post;
 	}
-
-
+	
 	/**
 	 * This method is a callback for creating link codes
 	 * @param array $match

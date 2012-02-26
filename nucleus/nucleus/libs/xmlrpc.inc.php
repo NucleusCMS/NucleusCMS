@@ -1321,7 +1321,7 @@ $cp1252_to_xmlent =
 
 			if($this->debug > 1)
 			{
-				print "<PRE>\n---SENDING---\n" . i18n::hen($op) . "\n---END---\n</PRE>";
+				print "<PRE>\n---SENDING---\n" . ENTITY::hen($op) . "\n---END---\n</PRE>";
 				// let the client see this now in case http times out...
 				flush();
 			}
@@ -1464,7 +1464,7 @@ $cp1252_to_xmlent =
 
 			if($this->debug > 1)
 			{
-				print "<PRE>\n---SENDING---\n" . i18n::hen($payload) . "\n---END---\n</PRE>";
+				print "<PRE>\n---SENDING---\n" . ENTITY::hen($payload) . "\n---END---\n</PRE>";
 				// let the client see this now in case http times out...
 				flush();
 			}
@@ -1899,7 +1899,7 @@ $cp1252_to_xmlent =
 				// error response
 				$this->errno = $fcode;
 				$this->errstr = $fstr;
-				//$this->errstr = i18n::hsc($fstr); // XXX: encoding probably shouldn't be done here; fix later.
+				//$this->errstr = ENTITY::hsc($fstr); // XXX: encoding probably shouldn't be done here; fix later.
 			}
 			else
 			{
@@ -2347,11 +2347,11 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 					print '<PRE>';
 					foreach($GLOBALS['_xh']['headers'] as $header => $value)
 					{
-						print i18n::hen("HEADER: $header: $value\n");
+						print ENTITY::hen("HEADER: $header: $value\n");
 					}
 					foreach($GLOBALS['_xh']['cookies'] as $header => $value)
 					{
-						print i18n::hen("COOKIE: $header={$value['value']}\n");
+						print ENTITY::hen("COOKIE: $header={$value['value']}\n");
 					}
 					print "</PRE>\n";
 				}
@@ -2385,13 +2385,13 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 								{
 									$data = $degzdata;
 									if($this->debug)
-									print "<PRE>---INFLATED RESPONSE---[".i18n::strlen($data)." chars]---\n" . i18n::hen($data) . "\n---END---</PRE>";
+									print "<PRE>---INFLATED RESPONSE---[".i18n::strlen($data)." chars]---\n" . ENTITY::hen($data) . "\n---END---</PRE>";
 								}
 								elseif($GLOBALS['_xh']['headers']['content-encoding'] == 'gzip' && $degzdata = @gzinflate(i18n::substr($data, 10)))
 								{
 									$data = $degzdata;
 									if($this->debug)
-									print "<PRE>---INFLATED RESPONSE---[".i18n::strlen($data)." chars]---\n" . i18n::hen($data) . "\n---END---</PRE>";
+									print "<PRE>---INFLATED RESPONSE---[".i18n::strlen($data)." chars]---\n" . ENTITY::hen($data) . "\n---END---</PRE>";
 								}
 								else
 								{
@@ -2428,7 +2428,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 		{
 			if($this->debug)
 			{
-				print "<PRE>---GOT---\n" . i18n::hen($data) . "\n---END---\n</PRE>";
+				print "<PRE>---GOT---\n" . ENTITY::hen($data) . "\n---END---\n</PRE>";
 			}
 
 			if($data == '')
@@ -2467,7 +2467,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 					$start += i18n::strlen('<!-- SERVER DEBUG INFO (BASE64 ENCODED):');
 					$end = i18n::strpos($data, '-->', $start);
 					$comments = i18n::substr($data, $start, $end-$start);
-					print "<PRE>---SERVER DEBUG INFO (DECODED) ---\n\t".i18n::hen(str_replace("\n", "\n\t", base64_decode($comments)))."\n---END---\n</PRE>";
+					print "<PRE>---SERVER DEBUG INFO (DECODED) ---\n\t".ENTITY::hen(str_replace("\n", "\n\t", base64_decode($comments)))."\n---END---\n</PRE>";
 				}
 			}
 
@@ -2593,7 +2593,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				if ($this->debug)
 				{
 					print "<PRE>---PARSED---\n";
-					print i18n::hsc(var_export($GLOBALS['_xh']['value'], true));
+					print ENTITY::hsc(var_export($GLOBALS['_xh']['value'], true));
 					print "\n---END---</PRE>";
 				}
 

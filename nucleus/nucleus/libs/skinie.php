@@ -222,11 +222,11 @@ class SKINIMPORT
 			$inames_error .= "<ul>";
 			foreach( $invalidSkinNames as $sName )
 			{
-				$inames_error .= "<li>".i18n::hsc($sName)."</li>";
+				$inames_error .= "<li>".ENTITY::hsc($sName)."</li>";
 			}
 			foreach( $invalidTemplateNames as $sName )
 			{
-				$inames_error .= "<li>".i18n::hsc($sName)."</li>";
+				$inames_error .= "<li>".ENTITY::hsc($sName)."</li>";
 			}
 			$inames_error .= "</ul>";
 			return $inames_error;
@@ -396,7 +396,7 @@ class SKINIMPORT
 		
 		if ( $this->debug )
 		{
-			echo 'START: ', i18n::hsc($name), '<br />';
+			echo 'START: ', ENTITY::hsc($name), '<br />';
 		}
 		
 		switch ( $name )
@@ -446,7 +446,7 @@ class SKINIMPORT
 				$this->currentPartName = $attrs['name'];
 				break;
 			default:
-				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . i18n::hsc($name) . '<br />';
+				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . ENTITY::hsc($name) . '<br />';
 				break;
 		}
 		// character data never contains other tags
@@ -461,7 +461,7 @@ class SKINIMPORT
 	{
 		if ( $this->debug )
 		{
-			echo 'END: ' . i18n::hsc($name) . '<br />';
+			echo 'END: ' . ENTITY::hsc($name) . '<br />';
 		}
 		
 		if ( $this->parse_charset != i18n::get_current_charset() )
@@ -519,7 +519,7 @@ class SKINIMPORT
 				}
 				break;
 			default:
-				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . i18n::hsc($name) . '<br />';
+				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . ENTITY::hsc($name) . '<br />';
 				break;
 		}
 		$this->clear_character_data();
@@ -533,7 +533,7 @@ class SKINIMPORT
 	{
 		if ( $this->debug )
 		{
-			echo 'NEW DATA: ' . i18n::hsc($data) . '<br />';
+			echo 'NEW DATA: ' . ENTITY::hsc($data) . '<br />';
 		}
 		$this->cdata .= $data;
 		return;
@@ -679,12 +679,12 @@ class SKINEXPORT {
 		// skins
 		foreach ( $this->skins as $skinId => $skinName )
 		{
-			echo "\t\t" . '<skin name="' . i18n::hsc($skinName) . '" />' . "\n";
+			echo "\t\t" . '<skin name="' . ENTITY::hsc($skinName) . '" />' . "\n";
 		}
 		// templates
 		foreach ( $this->templates as $templateId => $templateName )
 		{
-			echo "\t\t" . '<template name="' . i18n::hsc($templateName) . '" />' . "\n";
+			echo "\t\t" . '<template name="' . ENTITY::hsc($templateName) . '" />' . "\n";
 		}
 		// extra info
 		if ( $this->info )
@@ -699,13 +699,13 @@ class SKINEXPORT {
 			$skinId = intval($skinId);
 			$skinObj = new SKIN($skinId);
 			
-			echo "\t" . '<skin name="' . i18n::hsc($skinName) . '" type="' . i18n::hsc($skinObj->getContentType()) . '" includeMode="' . i18n::hsc($skinObj->getIncludeMode()) . '" includePrefix="' . i18n::hsc($skinObj->getIncludePrefix()) . '">' . "\n";
-			echo "\t\t<description>" . i18n::hsc($skinObj->getDescription()) . "</description>\n";
+			echo "\t" . '<skin name="' . ENTITY::hsc($skinName) . '" type="' . ENTITY::hsc($skinObj->getContentType()) . '" includeMode="' . ENTITY::hsc($skinObj->getIncludeMode()) . '" includePrefix="' . ENTITY::hsc($skinObj->getIncludePrefix()) . '">' . "\n";
+			echo "\t\t<description>" . ENTITY::hsc($skinObj->getDescription()) . "</description>\n";
 			
 			$res = sql_query('SELECT stype, scontent FROM '. sql_table('skin') .' WHERE sdesc=' . $skinId);
 			while ( $partObj = sql_fetch_object($res) )
 			{
-				echo "\t\t" . '<part name="',i18n::hsc($partObj->stype) . '">';
+				echo "\t\t" . '<part name="',ENTITY::hsc($partObj->stype) . '">';
 				echo '<![CDATA[' . $this->escapeCDATA($partObj->scontent) . ']]>';
 				echo "</part>\n\n";
 			}
@@ -717,13 +717,13 @@ class SKINEXPORT {
 		{
 			$templateId = intval($templateId);
 			
-			echo "\t" . '<template name="' . i18n::hsc($templateName) . '">' . "\n";
-			echo "\t\t<description>" . i18n::hsc(TEMPLATE::getDesc($templateId)) . "</description>\n";
+			echo "\t" . '<template name="' . ENTITY::hsc($templateName) . '">' . "\n";
+			echo "\t\t<description>" . ENTITY::hsc(TEMPLATE::getDesc($templateId)) . "</description>\n";
 			
 			$res = sql_query('SELECT tpartname, tcontent FROM '. sql_table('template') .' WHERE tdesc=' . $templateId);
 			while ( $partObj = sql_fetch_object($res) )
 			{
-				echo "\t\t" . '<part name="' . i18n::hsc($partObj->tpartname) . '">';
+				echo "\t\t" . '<part name="' . ENTITY::hsc($partObj->tpartname) . '">';
 				echo '<![CDATA[' . $this->escapeCDATA($partObj->tcontent) . ']]>';
 				echo "</part>\n\n";
 			}

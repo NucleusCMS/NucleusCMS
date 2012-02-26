@@ -238,12 +238,16 @@ class ACTION
 	}
 	
 	/**
-	 *  Creates a new user account
+	 * ACTION::createAccount()
+	 * Creates a new user account
+	 *  
+	 * @param	Void
+	 * @return	Mixed
 	 */
 	function createAccount()
 	{
 		global $CONF, $manager;
-
+		
 		if ( !$CONF['AllowMemberCreate'] )
 		{
 			doError(_ERROR_MEMBERCREATEDISABLED);
@@ -264,7 +268,7 @@ class ACTION
 		$initialPwd = md5(uniqid(rand(), TRUE) );
 		
 		// create member (non admin/can not login/no notes/random string as password)
-		$name = shorten(postVar('name'), 32, '');
+		$name = ENTITY::shorten(postVar('name'), 32, '');
 		$r = MEMBER::create($name, postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
 		
 		if ( $r != 1 )

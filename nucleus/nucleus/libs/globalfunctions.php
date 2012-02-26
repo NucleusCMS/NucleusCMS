@@ -469,7 +469,7 @@ include($DIR_LIBS . 'NOTIFICATION.php');
 include($DIR_LIBS . 'BAN.php');
 include($DIR_LIBS . 'PAGEFACTORY.php');
 include($DIR_LIBS . 'SEARCH.php');
-include($DIR_LIBS . 'entity.php');
+include($DIR_LIBS . 'ENTITY.php');
 include($DIR_LIBS . 'Link.php');
 
 /* set lastVisit cookie (if allowed) */
@@ -926,78 +926,6 @@ $manager->notify(
 			$content_type = preg_replace('|[^a-z0-9-+./]|i', '', $content_type);
 			header('Content-Type: ' . $content_type . '; charset=' . i18n::get_current_charset());
 		} // end if
-
-	}
-
-
-	/**
-	 * This function highlights a specific query in a given HTML text (not within HTML tags) and returns it
-	 * @param string $text text to be highlighted
-	 * @param string $expression regular expression to be matched (can be an array of expressions as well)
-	 * @param string $highlight highlight to be used (use \\0 to indicate the matched expression)
-	 * @return string
-	 */
-	function highlight($text, $expression, $highlight)
-	{
-
-		if ( !$highlight || !$expression )
-		{
-			return $text;
-		}
-
-		if ( is_array($expression) && (count($expression) == 0) )
-		{
-			return $text;
-		}
-
-		// add a tag in front (is needed for preg_match_all to work correctly)
-		$text = '<!--h-->' . $text;
-
-		// split the HTML up so we have HTML tags
-		// $matches[0][i] = HTML + text
-		// $matches[1][i] = HTML
-		// $matches[2][i] = text
-		preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
-
-		// throw it all together again while applying the highlight to the text pieces
-		$result = '';
-
-		$count_matches = count($matches[2]);
-
-		for ( $i = 0; $i < $count_matches; $i++ )
-		{
-
-			if ( $i != 0 )
-			{
-				$result .= $matches[1][$i];
-			}
-
-			if ( is_array($expression) )
-			{
-
-				foreach ( $expression as $regex )
-				{
-
-					if ( $regex )
-					{
-						//$matches[2][$i] = @eregi_replace($regex, $highlight, $matches[2][$i]);
-						$matches[2][$i] = @preg_replace('#' . $regex . '#i', $highlight, $matches[2][$i]);
-					}
-
-				}
-
-				$result .= $matches[2][$i];
-
-			}
-			else
-			{
-				//$result .= @eregi_replace($expression, $highlight, $matches[2][$i]);
-				$result .= @preg_replace('#' . $expression . '#i', $highlight, $matches[2][$i]);
-			}
-
-		}
-
-		return $result;
 
 	}
 
@@ -1592,65 +1520,6 @@ function removeBreaks($var) {
 }
 
 /**
- * shortens a text string to maxlength.
- * $suffix is what needs to be added at the end (end length is <= $maxlength)
- *
- * The purpose is to limit the width of string for rendered screen in web browser.
- * So it depends on style sheet, browser's rendering scheme, client's system font.
- *
- * NOTE: In general, non-Latin font such as Japanese, Chinese, Cyrillic have two times as width as Latin fonts,
- *  but this is not always correct, for example, rendered by proportional font.
- *
- * @param string $escaped_string target string
- * @param integer $maxlength maximum length of return string which includes suffix
- * @param string $suffix added in the end of shortened-string
- * @return string
-*/
-function shorten($string, $maxlength, $suffix)
-{
-	static $flag;
-	
-	$decoded_entities_pcre = array();
-	$encoded_entities = array();
-	
-	/* 1. store html entities */
-	preg_match('#&[^&]+?;#', $string, $encoded_entities);
-	if ( !$encoded_entities )
-	{
-		$flag = FALSE;
-	}
-	else
-	{
-		$flag = TRUE;
-	}
-	if ( $flag )
-	{
-		foreach ( $encoded_entities as $encoded_entity )
-		{
-			$decoded_entities_pcre[] = '#' . html_entity_decode($encoded_entity, ENT_QUOTES, i18n::get_current_charset()) . '#';
-		}
-	}
-	
-	/* 2. decode string */
-	$string = html_entity_decode($string, ENT_QUOTES, i18n::get_current_charset());
-	
-	/* 3. shorten string and add suffix if string length is longer */
-	if ( i18n::strlen($string) > $maxlength - i18n::strlen($suffix) )
-	{
-		$string = i18n::substr($string, 0, $maxlength - i18n::strlen($suffix) );
-		$string .= $suffix;
-	}
-	
-	/* 4. recover entities */
-	if ( $flag )
-	{
-		$string = preg_replace($decoded_entities_pcre, $encoded_entities, $string);
-	}
-	
-	return $string;
-}
-
-/**
   * Converts a unix timestamp to a mysql DATETIME format, and places
   * quotes around it.
   */
@@ -1927,7 +1796,7 @@ function passVar($key, $value) {
     }
 
     // other values: do stripslashes if needed
-    ?><input type="hidden" name="<?php echo i18n::hsc($key)?>" value="<?php echo i18n::hsc(undoMagic($value) )?>" /><?php
+    ?><input type="hidden" name="<?php echo ENTITY::hsc($key)?>" value="<?php echo ENTITY::hsc(undoMagic($value) )?>" /><?php
 }
 
 /*
@@ -2201,18 +2070,18 @@ function ticketForPlugin()
 			$qstring = '?' . $qstring;
 		}
 		
-		echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . i18n::hsc($plugin_name) . "</span> ?</p>\n";
+		echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . ENTITY::hsc($plugin_name) . "</span> ?</p>\n";
 		
 		switch(strtoupper(serverVar('REQUEST_METHOD') ) )
 		{
 			case 'POST':
-				echo '<form method="POST" action="'.i18n::hsc($uri.$qstring).'">';
+				echo '<form method="POST" action="'.ENTITY::hsc($uri.$qstring).'">';
 				$manager->addTicketHidden();
 				_addInputTags($post);
 				break;
 			
 			case 'GET':
-				echo '<form method="GET" action="'.i18n::hsc($uri).'">';
+				echo '<form method="GET" action="'.ENTITY::hsc($uri).'">';
 				$manager->addTicketHidden();
 				_addInputTags($get);
 			
@@ -2240,8 +2109,8 @@ function _addInputTags(&$keys,$prefix=''){
         else {
             if (get_magic_quotes_gpc()) $value=stripslashes($value);
             if ($key=='ticket') continue;
-            echo '<input type="hidden" name="'.i18n::hsc($key).
-                '" value="'.i18n::hsc($value).'" />'."\n";
+            echo '<input type="hidden" name="'.ENTITY::hsc($key).
+                '" value="'.ENTITY::hsc($value).'" />'."\n";
         }
     }
 }
@@ -2376,112 +2245,6 @@ function redirect($url) {
     exit;
 }
 
-/**
- * Strip HTML tags from a string
- * This function is a bit more intelligent than a regular call to strip_tags(),
- * because it also deletes the contents of certain tags and cleans up any
- * unneeded whitespace.
- */
-function stringStripTags ($string) {
-    $string = preg_replace("/<del[^>]*>.+<\/del[^>]*>/isU", '', $string);
-    $string = preg_replace("/<script[^>]*>.+<\/script[^>]*>/isU", '', $string);
-    $string = preg_replace("/<style[^>]*>.+<\/style[^>]*>/isU", '', $string);
-    $string = str_replace('>', '> ', $string);
-    $string = str_replace('<', ' <', $string);
-    $string = strip_tags($string);
-    $string = preg_replace("/\s+/", " ", $string);
-    $string = trim($string);
-    return $string;
-}
-
-/**
- * Make a string containing HTML safe for use in a HTML attribute
- * Tags are stripped and entities are normalized
- */
-function stringToAttribute ($string)
-{
-	$string = stringStripTags($string);
-	$string = entity::named_to_numeric($string);
-	$string = entity::normalize_numeric($string);
-	
-	if ( i18n::get_current_charset() == 'UTF-8' )
-	{
-		$string = entity::numeric_to_utf8($string);
-	}
-	
-	$string = entity::specialchars($string, 'html');
-	$string = entity::numeric_to_named($string);
-	return $string;
-}
-
-/**
- * Make a string containing HTML safe for use in a XML document
- * Tags are stripped, entities are normalized and named entities are
- * converted to numeric entities.
- */
-function stringToXML ($string)
-{
-	$string = stringStripTags($string);
-	$string = entity::named_to_numeric($string);
-	$string = entity::normalize_numeric($string);
-	
-	if ( i18n::get_current_charset() == 'UTF-8' )
-	{
-		$string = entity::numeric_to_utf8($string);
-	}
-	
-	$string = entity::specialchars($string, 'xml');
-	return $string;
-}
-
-// START: functions from the end of file BLOG.php
-// used for mail notification (html -> text)
-function toAscii($html) {
-    // strip off most tags
-    $html = strip_tags($html,'<a>');
-    $to_replace = "/<a[^>]*href=[\"\']([^\"^']*)[\"\'][^>]*>([^<]*)<\/a>/i";
-    _links_init();
-    $ascii = preg_replace_callback ($to_replace, '_links_add', $html);
-    $ascii .= "\n\n" . _links_list();
-    return strip_tags($ascii);
-}
-
-function _links_init() {
-   global $tmp_links;
-   $tmp_links = array();
-}
-
-function _links_add($match) {
-   global $tmp_links;
-   array_push($tmp_links, $match[1]);
-   return $match[2] . ' [' . sizeof($tmp_links) .']';
-}
-
-function _links_list() {
-   global $tmp_links;
-   $output = '';
-   $i = 1;
-   foreach ($tmp_links as $current) {
-      $output .= "[$i] $current\n";
-      $i++;
-   }
-   return $output;
-}
-// END: functions from the end of file BLOG.php
-
-// START: functions from the end of file ADMIN.php
-/**
- * 
- * replace html entities for plugin description, but available for the other strings
- * NOTE: we can use i18n::hen() or i18n::hsc() alternatively and this is deprecated.
- * @param string $data	target string
- * @return	 string
- */
-function encode_desc($data)
-{
-	return i18n::hen($data);
-}
-
 /*
  * Returns the Javascript code for a bookmarklet that works on most modern browsers
  * @param blogid
@@ -2553,4 +2316,37 @@ function cleanFileName($str) {
 	return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
 }
 
-?>
+/**
+ * Centralisation of the functions that deals XML entities
+ * Deprecated since 4.0:
+ * Please use ENTITY::FunctionName(...) instead
+ */
+function highlight($text, $expression, $highlight)
+{
+	return ENTITY::highlight($text, $expression, $highlight);
+}
+function shorten($string, $maxlength, $suffix)
+{
+	return ENTITY::shorten($string, $maxlength, $suffix);
+}
+function stringStripTags ($string)
+{
+	return ENTITY::strip_tags($string);
+}
+function toAscii($string)
+{
+	return ENTITY::anchor_footnoting($string);
+}
+function stringToAttribute ($string)
+{
+	return ENTITY::hsc($string);
+}
+function stringToXML ($string)
+{
+	return ENTITY::hen($string);
+}
+
+function encode_desc($data)
+{
+	return ENTITY::hen($data);
+}

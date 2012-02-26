@@ -541,7 +541,7 @@ class MANAGER
 	function addTicketHidden()
 	{
 		$ticket = $this->_generateTicket();
-		echo '<input type="hidden" name="ticket" value="', i18n::hsc($ticket), '" />';
+		echo '<input type="hidden" name="ticket" value="', ENTITY::hsc($ticket), '" />';
 		return;
 	}
 

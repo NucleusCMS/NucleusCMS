@@ -299,7 +299,7 @@ class BLOG {
 
 		return $itemid;
 	}
-
+	
 	/**
 	 * BLOG::sendNewItemNotification()
 	 * Send a new item notification to the notification list
@@ -313,8 +313,7 @@ class BLOG {
 	{
 		global $CONF, $member;
 		
-		// create text version of html post
-		$ascii = toAscii($body);
+		$ascii = ENTITY::anchor_footnoting($body);
 		
 		$mailto_msg = _NOTIFY_NI_MSG . " \n";
 //		$mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
@@ -347,8 +346,7 @@ class BLOG {
 		$notify->notify($mailto_title, $mailto_msg , $frommail);
 		return;
 	}
-
-
+	
 	/**
 	  * Creates a new category for this blog
 	  *
@@ -454,7 +452,7 @@ class BLOG {
 			{
 				$template =& $manager->getTemplate($template);
 				$vars = array(
-					'query'		=> i18n::hsc($query),
+					'query'		=> ENTITY::hsc($query),
 					'blogid'	=> $this->getID()
 				);
 				echo TEMPLATE::fill($template['SEARCH_NOTHINGFOUND'],$vars);

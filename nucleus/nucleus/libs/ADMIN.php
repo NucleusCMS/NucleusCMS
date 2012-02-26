@@ -131,7 +131,7 @@ class ADMIN
         if (method_exists($this, $methodName))
             call_user_func(array(&$this, $methodName));
         else
-            $this->error(_BADACTION . i18n::hsc(" ($action)"));
+            $this->error(_BADACTION . ENTITY::hsc(" ($action)"));
 
     }
 
@@ -158,7 +158,7 @@ class ADMIN
         $this->pagehead();
 
         echo '<h2>', _LOGIN ,'</h2>';
-        if ($msg) echo _MESSAGE , ': ', i18n::hsc($msg);
+        if ($msg) echo _MESSAGE , ': ', ENTITY::hsc($msg);
         ?>
 
         <form action="index.php" method="post"><p>
@@ -290,7 +290,7 @@ class ADMIN
      * @param object BLOG
      */
     function bloglink(&$blog) {
-        return '<a href="'.i18n::hsc($blog->getURL()).'" title="'._BLOGLIST_TT_VISIT.'">'. i18n::hsc( $blog->getName() ) .'</a>';
+        return '<a href="'.ENTITY::hsc($blog->getURL()).'" title="'._BLOGLIST_TT_VISIT.'">'. ENTITY::hsc( $blog->getName() ) .'</a>';
     }
 
     /**
@@ -429,14 +429,14 @@ class ADMIN
 
         echo '<a href="index.php?action=overview">(',_BACKHOME,')</a>';
         echo '<h2>',_BATCH_ITEMS,'</h2>';
-        echo '<p>',_BATCH_EXECUTING,' <b>',i18n::hsc($action),'</b></p>';
+        echo '<p>',_BATCH_EXECUTING,' <b>',ENTITY::hsc($action),'</b></p>';
         echo '<ul>';
 
 
         // walk over all itemids and perform action
         foreach ($selected as $itemid) {
             $itemid = intval($itemid);
-            echo '<li>',_BATCH_EXECUTING,' <b>',i18n::hsc($action),'</b> ',_BATCH_ONITEM,' <b>', $itemid, '</b>...';
+            echo '<li>',_BATCH_EXECUTING,' <b>',ENTITY::hsc($action),'</b> ',_BATCH_ONITEM,' <b>', $itemid, '</b>...';
 
             // perform action, display errors if needed
             switch($action) {
@@ -447,7 +447,7 @@ class ADMIN
                     $error = $this->moveOneItem($itemid, $destCatid);
                     break;
                 default:
-                    $error = _BATCH_UNKNOWN . i18n::hsc($action);
+                    $error = _BATCH_UNKNOWN . ENTITY::hsc($action);
             }
 
             echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -489,13 +489,13 @@ class ADMIN
 
         echo '<a href="index.php?action=overview">(',_BACKHOME,')</a>';
         echo '<h2>',_BATCH_COMMENTS,'</h2>';
-        echo '<p>',_BATCH_EXECUTING,' <b>',i18n::hsc($action),'</b></p>';
+        echo '<p>',_BATCH_EXECUTING,' <b>',ENTITY::hsc($action),'</b></p>';
         echo '<ul>';
 
         // walk over all itemids and perform action
         foreach ($selected as $commentid) {
             $commentid = intval($commentid);
-            echo '<li>',_BATCH_EXECUTING,' <b>',i18n::hsc($action),'</b> ',_BATCH_ONCOMMENT,' <b>', $commentid, '</b>...';
+            echo '<li>',_BATCH_EXECUTING,' <b>',ENTITY::hsc($action),'</b> ',_BATCH_ONCOMMENT,' <b>', $commentid, '</b>...';
 
             // perform action, display errors if needed
             switch($action) {
@@ -503,7 +503,7 @@ class ADMIN
                     $error = $this->deleteOneComment($commentid);
                     break;
                 default:
-                    $error = _BATCH_UNKNOWN . i18n::hsc($action);
+                    $error = _BATCH_UNKNOWN . ENTITY::hsc($action);
             }
 
             echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -543,13 +543,13 @@ class ADMIN
 
         echo '<a href="index.php?action=usermanagement">(',_MEMBERS_BACKTOOVERVIEW,')</a>';
         echo '<h2>',_BATCH_MEMBERS,'</h2>';
-        echo '<p>',_BATCH_EXECUTING,' <b>',i18n::hsc($action),'</b></p>';
+        echo '<p>',_BATCH_EXECUTING,' <b>',ENTITY::hsc($action),'</b></p>';
         echo '<ul>';
 
         // walk over all itemids and perform action
         foreach ($selected as $memberid) {
             $memberid = intval($memberid);
-            echo '<li>',_BATCH_EXECUTING,' <b>',i18n::hsc($action),'</b> ',_BATCH_ONMEMBER,' <b>', $memberid, '</b>...';
+            echo '<li>',_BATCH_EXECUTING,' <b>',ENTITY::hsc($action),'</b> ',_BATCH_ONMEMBER,' <b>', $memberid, '</b>...';
 
             // perform action, display errors if needed
             switch($action) {
@@ -570,7 +570,7 @@ class ADMIN
                         sql_query('UPDATE ' . sql_table('member') .' SET madmin=0 WHERE mnumber='.$memberid);
                     break;
                 default:
-                    $error = _BATCH_UNKNOWN . i18n::hsc($action);
+                    $error = _BATCH_UNKNOWN . ENTITY::hsc($action);
             }
 
             echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -613,13 +613,13 @@ class ADMIN
         echo '<p><a href="index.php?action=manageteam&amp;blogid=',$blogid,'">(',_BACK,')</a></p>';
 
         echo '<h2>',_BATCH_TEAM,'</h2>';
-        echo '<p>',_BATCH_EXECUTING,' <b>',i18n::hsc($action),'</b></p>';
+        echo '<p>',_BATCH_EXECUTING,' <b>',ENTITY::hsc($action),'</b></p>';
         echo '<ul>';
 
         // walk over all itemids and perform action
         foreach ($selected as $memberid) {
             $memberid = intval($memberid);
-            echo '<li>',_BATCH_EXECUTING,' <b>',i18n::hsc($action),'</b> ',_BATCH_ONTEAM,' <b>', $memberid, '</b>...';
+            echo '<li>',_BATCH_EXECUTING,' <b>',ENTITY::hsc($action),'</b> ',_BATCH_ONTEAM,' <b>', $memberid, '</b>...';
 
             // perform action, display errors if needed
             switch($action) {
@@ -640,7 +640,7 @@ class ADMIN
                         sql_query('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
                     break;
                 default:
-                    $error = _BATCH_UNKNOWN . i18n::hsc($action);
+                    $error = _BATCH_UNKNOWN . ENTITY::hsc($action);
             }
 
             echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -687,13 +687,13 @@ class ADMIN
 
         echo '<a href="index.php?action=overview">(',_BACKHOME,')</a>';
         echo '<h2>',BATCH_CATEGORIES,'</h2>';
-        echo '<p>',_BATCH_EXECUTING,' <b>',i18n::hsc($action),'</b></p>';
+        echo '<p>',_BATCH_EXECUTING,' <b>',ENTITY::hsc($action),'</b></p>';
         echo '<ul>';
 
         // walk over all itemids and perform action
         foreach ($selected as $catid) {
             $catid = intval($catid);
-            echo '<li>',_BATCH_EXECUTING,' <b>',i18n::hsc($action),'</b> ',_BATCH_ONCATEGORY,' <b>', $catid, '</b>...';
+            echo '<li>',_BATCH_EXECUTING,' <b>',ENTITY::hsc($action),'</b> ',_BATCH_ONCATEGORY,' <b>', $catid, '</b>...';
 
             // perform action, display errors if needed
             switch($action) {
@@ -704,7 +704,7 @@ class ADMIN
                     $error = $this->moveOneCategory($catid, $destBlogId);
                     break;
                 default:
-                    $error = _BATCH_UNKNOWN . i18n::hsc($action);
+                    $error = _BATCH_UNKNOWN . ENTITY::hsc($action);
             }
 
             echo '<b>',($error ? _ERROR . ': '.$error : _BATCH_SUCCESS),'</b>';
@@ -875,7 +875,7 @@ class ADMIN
 
             while ($oBlog = sql_fetch_object($blogs)) {
                 if ($multipleBlogs)
-                    echo '<optgroup label="',i18n::hsc($oBlog->bname),'">';
+                    echo '<optgroup label="',ENTITY::hsc($oBlog->bname),'">';
 
                 // show selection to create new category when allowed/wanted
                 if ($showNewCat) {
@@ -891,7 +891,7 @@ class ADMIN
                         $selectText = ' selected="selected" ';
                     else
                         $selectText = '';
-                    echo '<option value="',$oCat->catid,'" ', $selectText,'>',i18n::hsc($oCat->cname),'</option>';
+                    echo '<option value="',$oCat->catid,'" ', $selectText,'>',ENTITY::hsc($oCat->cname),'</option>';
                 }
 
                 if ($multipleBlogs)
@@ -903,7 +903,7 @@ class ADMIN
                 echo '<option value="',$oBlog->bnumber,'"';
                 if ($oBlog->bnumber == $selected)
                     echo ' selected="selected"';
-                echo'>',i18n::hsc($oBlog->bname),'</option>';
+                echo'>',ENTITY::hsc($oBlog->bname),'</option>';
             }
         }
         echo '</select>';
@@ -1266,48 +1266,53 @@ class ADMIN
             $this->action_itemlist(getBlogIDFromItemID($itemid));
         }
     }
-
-    /**
-     * @todo document this
-     */
-    function action_itemdelete() {
-        global $member, $manager;
-
-        $itemid = intRequestVar('itemid');
-
-        // only allow if user is allowed to alter item
-        $member->canAlterItem($itemid) or $this->disallow();
-
-        if (!$manager->existsItem($itemid,1,1))
-            $this->error(_ERROR_NOSUCHITEM);
-
-        $item =& $manager->getItem($itemid,1,1);
-        $title = i18n::hsc(strip_tags($item['title']));
-        $body = strip_tags($item['body']);
-        $body = i18n::hsc(shorten($body,300,'...'));
-
-        $this->pagehead();
-        ?>
-            <h2><?php echo _DELETE_CONFIRM?></h2>
-
-            <p><?php echo _CONFIRMTXT_ITEM?></p>
-
-            <div class="note">
-                <b>"<?php echo  $title ?>"</b>
-                <br />
-                <?php echo $body?>
-            </div>
-
-            <form method="post" action="index.php"><div>
-                <input type="hidden" name="action" value="itemdeleteconfirm" />
-                <?php $manager->addTicketHidden() ?>
-                <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-                <input type="submit" value="<?php echo _DELETE_CONFIRM_BTN?>"  tabindex="10" />
-            </div></form>
-        <?php
-        $this->pagefoot();
-    }
-
+	
+	/**
+	 * ADMIN::action_itemdelete()
+	 * Delete item
+	 * 
+	 * @param	Void
+	 * @return	Void
+	 */
+	function action_itemdelete()
+	{
+		global $member, $manager;
+		
+		$itemid = intRequestVar('itemid');
+		
+		// only allow if user is allowed to alter item
+		$member->canAlterItem($itemid) or $this->disallow();
+		
+		if ( !$manager->existsItem($itemid,1,1) )
+		{
+			$this->error(_ERROR_NOSUCHITEM);
+		}
+		
+		$item =& $manager->getItem($itemid,1,1);
+		$title = ENTITY::hsc(strip_tags($item['title']));
+		$body = strip_tags($item['body']);
+		$body = ENTITY::hsc(ENTITY::shorten($body,300,'...'));
+		
+		$this->pagehead();
+		echo '<h2>' . _DELETE_CONFIRM . "</h2>\n";
+		echo '<p>' . _CONFIRMTXT_ITEM . "</p>\n";
+		echo "<div class=\"note\">\n";
+		echo "<b>{$title}</b>\n";
+		echo "<br />\n";
+		echo "{$body}\n";
+		echo "</div>\n";
+		echo "<form method=\"post\" action=\"index.php\">\n";
+		echo "<div>\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"itemdeleteconfirm\" />\n";
+		echo $manager->addTicketHidden() . "\n";
+		echo "<input type=\"hidden\" name=\"itemid\" value=\"{$itemid}\" />\n";
+		echo '<input type="submit" value="' . _DELETE_CONFIRM_BTN . "\"  tabindex=\"10\" />\n";
+		echo "</div>\n";
+		echo "</form>\n";
+		$this->pagefoot();
+		return;
+	}
+	
     /**
      * @todo document this
      */
@@ -1618,50 +1623,54 @@ class ADMIN
             $this->action_browseowncomments();
 
     }
-
-    /**
-     * @todo document this
-     */
-    function action_commentdelete() {
-        global $member, $manager;
-
-        $commentid = intRequestVar('commentid');
-
-        $member->canAlterComment($commentid) or $this->disallow();
-
-        $comment = COMMENT::getComment($commentid);
-
-        $body = strip_tags($comment['body']);
-        $body = i18n::hsc(shorten($body, 300, '...'));
-
-        if ($comment['member'])
-            $author = $comment['member'];
-        else
-            $author = $comment['user'];
-
-        $this->pagehead();
-        ?>
-
-            <h2><?php echo _DELETE_CONFIRM?></h2>
-
-            <p><?php echo _CONFIRMTXT_COMMENT?></p>
-
-            <div class="note">
-            <b><?php echo _EDITC_WHO?>:</b> <?php echo  $author ?>
-            <br />
-            <b><?php echo _EDITC_TEXT?>:</b> <?php echo  $body ?>
-            </div>
-
-            <form method="post" action="index.php"><div>
-                <input type="hidden" name="action" value="commentdeleteconfirm" />
-                <?php $manager->addTicketHidden() ?>
-                <input type="hidden" name="commentid" value="<?php echo  $commentid; ?>" />
-                <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
-            </div></form>
-        <?php
-        $this->pagefoot();
-    }
-
+	
+	/**
+	 * ADMIN::action_commentdelete()
+	 * Update comment
+	 * 
+	 * @param	Void
+	 * @return	Void
+	 */
+	function action_commentdelete()
+	{
+		global $member, $manager;
+		
+		$commentid = intRequestVar('commentid');
+		$member->canAlterComment($commentid) or $this->disallow();
+		$comment = COMMENT::getComment($commentid);
+		
+		$body = strip_tags($comment['body']);
+		$body = ENTITY::hsc(ENTITY::shorten($body, 300, '...'));
+		
+		if ( $comment['member'] )
+		{
+			$author = $comment['member'];
+		}
+		else
+		{
+			$author = $comment['user'];
+		}
+		
+		$this->pagehead();
+		
+		echo '<h2>' . _DELETE_CONFIRM . "</h2>\n";
+		echo '<p>' . _CONFIRMTXT_COMMENT . "</p>\n";
+		echo "<div class=\"note\">\n";
+		echo '<b>' . _EDITC_WHO . ":</b>{$author}<br />\n";
+		echo '<b>' . _EDITC_TEXT . ":</b>{$body}\n";
+		echo "</div>\n";
+		echo "<form method=\"post\" action=\"index.php\">\n";
+		echo "<div>\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"commentdeleteconfirm\" />\n";
+		echo $manager->addTicketHidden() . "\n";
+		echo "<input type=\"hidden\" name=\"commentid\" value=\"{$commentid}\" />\n";
+		echo '<input type="submit" tabindex="10" value="'. _DELETE_CONFIRM_BTN . "\" />\n";
+		echo "</div>\n";
+		echo "</form>\n";
+		$this->pagefoot();
+		return;
+	}
+	
     /**
      * @todo document this
      */
@@ -1834,15 +1843,15 @@ class ADMIN
 			</td>
 			<td>
 			<?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
-				<input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  i18n::hsc($mem->getDisplayName()); ?>" />
+				<input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  ENTITY::hsc($mem->getDisplayName()); ?>" />
 			<?php } else {
-				echo i18n::hsc($member->getDisplayName());
+				echo ENTITY::hsc($member->getDisplayName());
 			   }
 			?>
 			</td>
 		</tr><tr>
 			<td><?php echo _MEMBERS_REALNAME?></td>
-			<td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  i18n::hsc($mem->getRealName()); ?>" /></td>
+			<td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  ENTITY::hsc($mem->getRealName()); ?>" /></td>
 		</tr><tr>
 		<?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
 			<td><?php echo _MEMBERS_PWD?></td>
@@ -1855,10 +1864,10 @@ class ADMIN
 			<td><?php echo _MEMBERS_EMAIL?>
 				<br /><small><?php echo _MEMBERS_EMAIL_EDIT?></small>
 			</td>
-			<td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  i18n::hsc($mem->getEmail()); ?>" /></td>
+			<td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  ENTITY::hsc($mem->getEmail()); ?>" /></td>
 		</tr><tr>
 			<td><?php echo _MEMBERS_URL?></td>
-			<td><input name="url" tabindex="50" size="40" maxlength="100" value="<?php echo  i18n::hsc($mem->getURL()); ?>" /></td>
+			<td><input name="url" tabindex="50" size="40" maxlength="100" value="<?php echo  ENTITY::hsc($mem->getURL()); ?>" /></td>
 		<?php // only allow to change this by super-admins
 		   // we don't want normal users to 'upgrade' themselves to super-admins, do we? ;-)
 		   if ($member->isAdmin()) {
@@ -1872,7 +1881,7 @@ class ADMIN
 		<?php } ?>
 		</tr><tr>
 			<td><?php echo _MEMBERS_NOTES?></td>
-			<td><input name="notes" tabindex="80" size="40" maxlength="100" value="<?php echo  i18n::hsc($mem->getNotes()); ?>" /></td>
+			<td><input name="notes" tabindex="80" size="40" maxlength="100" value="<?php echo  ENTITY::hsc($mem->getNotes()); ?>" /></td>
 		</tr><tr>
 			<td><?php echo _MEMBERS_DEFLANG?> <?php help('language'); ?>
 			</td>
@@ -1883,11 +1892,11 @@ class ADMIN
 				$locales = i18n::get_available_locale_list();
 				if ( !$mem->getLocale() || !in_array($mem->getLocale(), $locales) )
 				{
-					echo "<option value=\"\" selected=\"selected\">" . i18n::hsc(_MEMBERS_USESITELANG) . "</option>\n";
+					echo "<option value=\"\" selected=\"selected\">" . ENTITY::hsc(_MEMBERS_USESITELANG) . "</option>\n";
 				}
 				else
 				{
-					echo "<option value=\"\">" . i18n::hsc(_MEMBERS_USESITELANG) . "</option>\n";
+					echo "<option value=\"\">" . ENTITY::hsc(_MEMBERS_USESITELANG) . "</option>\n";
 				}
 				
 				foreach( $locales as $locale )
@@ -2153,7 +2162,7 @@ class ADMIN
         }
 
         $aVars = array(
-            'memberName' => i18n::hsc($mem->getDisplayName())
+            'memberName' => ENTITY::hsc($mem->getDisplayName())
         );
         $title = TEMPLATE::fill($title, $aVars);
         $text = TEMPLATE::fill($text, $aVars);
@@ -2175,7 +2184,7 @@ class ADMIN
 
                         <input type="hidden" name="action" value="activatesetpwd" />
                         <?php $manager->addTicketHidden() ?>
-                        <input type="hidden" name="key" value="<?php echo i18n::hsc($key) ?>" />
+                        <input type="hidden" name="key" value="<?php echo ENTITY::hsc($key) ?>" />
 
                         <table><tr>
                             <td><?php echo _MEMBERS_PWD?></td>
@@ -2371,7 +2380,7 @@ class ADMIN
         ?>
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
-            <p><?php echo _CONFIRMTXT_TEAM1?><b><?php echo  i18n::hsc($teammem->getDisplayName()) ?></b><?php echo _CONFIRMTXT_TEAM2?><b><?php echo  i18n::hsc(strip_tags($blog->getName())) ?></b>
+            <p><?php echo _CONFIRMTXT_TEAM1?><b><?php echo  ENTITY::hsc($teammem->getDisplayName()) ?></b><?php echo _CONFIRMTXT_TEAM2?><b><?php echo  ENTITY::hsc(strip_tags($blog->getName())) ?></b>
             </p>
 
 
@@ -2502,7 +2511,7 @@ class ADMIN
             $res = sql_query('SELECT mname, mrealname FROM ' . sql_table('member') . ',' . sql_table('team') . ' WHERE mnumber=tmember AND tblog=' . intval($blogid));
             $aMemberNames = array();
             while ($o = sql_fetch_object($res))
-                array_push($aMemberNames, i18n::hsc($o->mname) . ' (' . i18n::hsc($o->mrealname). ')');
+                array_push($aMemberNames, ENTITY::hsc($o->mname) . ' (' . ENTITY::hsc($o->mrealname). ')');
             echo implode(',', $aMemberNames);
         ?>
         </p>
@@ -2522,18 +2531,18 @@ class ADMIN
         <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
         <table><tr>
             <td><?php echo _EBLOG_NAME?></td>
-            <td><input name="name" tabindex="10" size="40" maxlength="60" value="<?php echo  i18n::hsc($blog->getName()) ?>" /></td>
+            <td><input name="name" tabindex="10" size="40" maxlength="60" value="<?php echo  ENTITY::hsc($blog->getName()) ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_SHORTNAME?> <?php help('shortblogname'); ?>
                 <?php echo _EBLOG_SHORTNAME_EXTRA?>
             </td>
-            <td><input name="shortname" tabindex="20" maxlength="15" size="15" value="<?php echo  i18n::hsc($blog->getShortName()) ?>" /></td>
+            <td><input name="shortname" tabindex="20" maxlength="15" size="15" value="<?php echo  ENTITY::hsc($blog->getShortName()) ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_DESC?></td>
-            <td><input name="desc" tabindex="30" maxlength="200" size="40" value="<?php echo  i18n::hsc($blog->getDescription()) ?>" /></td>
+            <td><input name="desc" tabindex="30" maxlength="200" size="40" value="<?php echo  ENTITY::hsc($blog->getDescription()) ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_URL?></td>
-            <td><input name="url" tabindex="40" size="40" maxlength="100" value="<?php echo  i18n::hsc($blog->getURL()) ?>" /></td>
+            <td><input name="url" tabindex="40" size="40" maxlength="100" value="<?php echo  ENTITY::hsc($blog->getURL()) ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_DEFSKIN?>
                 <?php help('blogdefaultskin'); ?>
@@ -2571,7 +2580,7 @@ class ADMIN
          <td><?php $this->input_yesno('reqemail',$blog->emailRequired(),72); ?></td>
       </tr><tr>
             <td><?php echo _EBLOG_NOTIFY?> <?php help('blognotify'); ?></td>
-            <td><input name="notify" tabindex="80" maxlength="128" size="40" value="<?php echo  i18n::hsc($blog->getNotifyAddress()); ?>" /></td>
+            <td><input name="notify" tabindex="80" maxlength="128" size="40" value="<?php echo  ENTITY::hsc($blog->getNotifyAddress()); ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_NOTIFY_ON?></td>
             <td>
@@ -2589,10 +2598,10 @@ class ADMIN
             </td>
         </tr><tr>
             <td><?php echo _EBLOG_MAXCOMMENTS?> <?php help('blogmaxcomments'); ?></td>
-            <td><input name="maxcomments" tabindex="90" size="3" value="<?php echo  i18n::hsc($blog->getMaxComments()); ?>" /></td>
+            <td><input name="maxcomments" tabindex="90" size="3" value="<?php echo  ENTITY::hsc($blog->getMaxComments()); ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_UPDATE?> <?php help('blogupdatefile'); ?></td>
-            <td><input name="update" tabindex="100" size="40" maxlength="60" value="<?php echo  i18n::hsc($blog->getUpdateFile()) ?>" /></td>
+            <td><input name="update" tabindex="100" size="40" maxlength="60" value="<?php echo  ENTITY::hsc($blog->getUpdateFile()) ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_DEFCAT?></td>
             <td>
@@ -2611,7 +2620,7 @@ class ADMIN
                 <br /><?php echo _EBLOG_STIME?> <b><?php echo  i18n::strftime("%H:%M",time()); ?></b>
                 <br /><?php echo _EBLOG_BTIME?> <b><?php echo  i18n::strftime("%H:%M",$blog->getCorrectTime()); ?></b>
                 </td>
-            <td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  i18n::hsc($blog->getTimeOffset()); ?>" /></td>
+            <td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  ENTITY::hsc($blog->getTimeOffset()); ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_SEARCH?> <?php help('blogsearchable'); ?></td>
             <td><?php $this->input_yesno('searchable',$blog->getSearchable(),122); ?></td>
@@ -2734,11 +2743,11 @@ class ADMIN
         echo "<p><a href='index.php?action=blogsettings&amp;blogid=$blogid'>(",_BACK_TO_BLOGSETTINGS,")</a></p>";
 
         ?>
-        <h2><?php echo _EBLOG_CAT_UPDATE?> '<?php echo i18n::hsc($cname)?>'</h2>
+        <h2><?php echo _EBLOG_CAT_UPDATE?> '<?php echo ENTITY::hsc($cname)?>'</h2>
         <form method='post' action='index.php'><div>
         <input name="blogid" type="hidden" value="<?php echo $blogid?>" />
         <input name="catid" type="hidden" value="<?php echo $catid?>" />
-        <input name="desturl" type="hidden" value="<?php echo i18n::hsc($desturl) ?>" />
+        <input name="desturl" type="hidden" value="<?php echo ENTITY::hsc($desturl) ?>" />
         <input name="action" type="hidden" value="categoryupdate" />
         <?php $manager->addTicketHidden(); ?>
 
@@ -2746,10 +2755,10 @@ class ADMIN
             <th colspan="2"><?php echo _EBLOG_CAT_UPDATE ?></th>
         </tr><tr>
             <td><?php echo _EBLOG_CAT_NAME?></td>
-            <td><input type="text" name="cname" value="<?php echo i18n::hsc($cname)?>" size="40" maxlength="40" /></td>
+            <td><input type="text" name="cname" value="<?php echo ENTITY::hsc($cname)?>" size="40" maxlength="40" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_CAT_DESC?></td>
-            <td><input type="text" name="cdesc" value="<?php echo i18n::hsc($cdesc)?>" size="40" maxlength="200" /></td>
+            <td><input type="text" name="cdesc" value="<?php echo ENTITY::hsc($cdesc)?>" size="40" maxlength="200" /></td>
         </tr>
         <?php
             // insert plugin options
@@ -2843,7 +2852,7 @@ class ADMIN
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
             <div>
-            <?php echo _CONFIRMTXT_CATEGORY?><b><?php echo  i18n::hsc($blog->getCategoryName($catid))?></b>
+            <?php echo _CONFIRMTXT_CATEGORY?><b><?php echo  ENTITY::hsc($blog->getCategoryName($catid))?></b>
             </div>
 
             <form method="post" action="index.php"><div>
@@ -3051,7 +3060,7 @@ class ADMIN
             </p>
 
             <div>
-            <?php echo _CONFIRMTXT_BLOG?><b><?php echo  i18n::hsc($blog->getName())?></b>
+            <?php echo _CONFIRMTXT_BLOG?><b><?php echo  ENTITY::hsc($blog->getName())?></b>
             </div>
 
             <form method="post" action="index.php"><div>
@@ -3134,7 +3143,7 @@ class ADMIN
         ?>
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
-            <p><?php echo _CONFIRMTXT_MEMBER?><b><?php echo i18n::hsc($mem->getDisplayName()) ?></b>
+            <p><?php echo _CONFIRMTXT_MEMBER?><b><?php echo ENTITY::hsc($mem->getDisplayName()) ?></b>
             </p>
 
             <p>
@@ -3395,23 +3404,23 @@ class ADMIN
         ?>
         <h2><?php echo _BLOGCREATED_TITLE ?></h2>
 
-        <p><?php echo sprintf(_BLOGCREATED_ADDEDTXT, i18n::hsc($bname)) ?></p>
+        <p><?php echo sprintf(_BLOGCREATED_ADDEDTXT, ENTITY::hsc($bname)) ?></p>
 
         <ol>
-            <li><a href="#index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEWAY, i18n::hsc($bshortname)) ?></a></li>
+            <li><a href="#index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEWAY, ENTITY::hsc($bshortname)) ?></a></li>
             <li><a href="#skins"><?php echo _BLOGCREATED_ADVANCEDWAY ?></a></li>
         </ol>
 
-        <h3><a id="index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEDESC1, i18n::hsc($bshortname)) ?></a></h3>
+        <h3><a id="index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEDESC1, ENTITY::hsc($bshortname)) ?></a></h3>
 
-        <p><?php echo sprintf(_BLOGCREATED_SIMPLEDESC2, i18n::hsc($bshortname)) ?></p>
+        <p><?php echo sprintf(_BLOGCREATED_SIMPLEDESC2, ENTITY::hsc($bshortname)) ?></p>
 <pre><code>&lt;?php
 
-$CONF['Self'] = '<b><?php echo i18n::hsc($bshortname)?>.php</b>';
+$CONF['Self'] = '<b><?php echo ENTITY::hsc($bshortname)?>.php</b>';
 
 include('<i>./config.php</i>');
 
-selectBlog('<b><?php echo i18n::hsc($bshortname)?></b>');
+selectBlog('<b><?php echo ENTITY::hsc($bshortname)?></b>');
 selector();
 
 ?&gt;</code></pre>
@@ -3426,7 +3435,7 @@ selector();
             <input type="hidden" name="blogid" value="<?php echo intval($blogid)?>" />
             <table><tr>
                 <td><?php echo _EBLOG_URL?></td>
-                <td><input name="url" maxlength="100" size="40" value="<?php echo i18n::hsc($CONF['IndexURL'].$bshortname.'.php')?>" /></td>
+                <td><input name="url" maxlength="100" size="40" value="<?php echo ENTITY::hsc($CONF['IndexURL'].$bshortname.'.php')?>" /></td>
             </tr><tr>
                 <td><?php echo _EBLOG_CREATE?></td>
                 <td><input type="submit" value="<?php echo _EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
@@ -3503,7 +3512,7 @@ selector();
                                 <input type="hidden" name="mode" value="file" />
                                 <select name="skinfile" id="skinie_import_local">
                                 <?php                                   foreach ($candidates as $skinname => $skinfile) {
-                                        $html = i18n::hsc($skinfile);
+                                        $html = ENTITY::hsc($skinfile);
                                         echo '<option value="',$html,'">',$skinname,'</option>';
                                     }
                                 ?>
@@ -3543,8 +3552,8 @@ selector();
         while ($skinObj = sql_fetch_object($res)) {
             $id = 'skinexp' . $skinObj->sdnumber;
             echo '<td><input type="checkbox" name="skin[',$skinObj->sdnumber,']"  id="',$id,'" />';
-            echo '<label for="',$id,'">',i18n::hsc($skinObj->sdname),'</label></td>';
-            echo '<td>',i18n::hsc($skinObj->sddesc),'</td>';
+            echo '<label for="',$id,'">',ENTITY::hsc($skinObj->sdname),'</label></td>';
+            echo '<td>',ENTITY::hsc($skinObj->sddesc),'</td>';
             echo '</tr><tr>';
         }
 
@@ -3555,8 +3564,8 @@ selector();
         while ($templateObj = sql_fetch_object($res)) {
             $id = 'templateexp' . $templateObj->tdnumber;
             echo '<td><input type="checkbox" name="template[',$templateObj->tdnumber,']" id="',$id,'" />';
-            echo '<label for="',$id,'">',i18n::hsc($templateObj->tdname),'</label></td>';
-            echo '<td>',i18n::hsc($templateObj->tddesc),'</td>';
+            echo '<label for="',$id,'">',ENTITY::hsc($templateObj->tdname),'</label></td>';
+            echo '<td>',ENTITY::hsc($templateObj->tddesc),'</td>';
             echo '</tr><tr>';
         }
 
@@ -3621,7 +3630,7 @@ selector();
         <h2><?php echo _SKINIE_CONFIRM_TITLE?></h2>
 
         <ul>
-            <li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo i18n::hsc($importer->getInfo())?></p></li>
+            <li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo ENTITY::hsc($importer->getInfo())?></p></li>
             <li><p><strong><?php echo _SKINIE_INFO_SKINS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
             <li><p><strong><?php echo _SKINIE_INFO_TEMPLATES?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
             <?php
@@ -3638,8 +3647,8 @@ selector();
         <form method="post" action="index.php"><div>
             <input type="hidden" name="action" value="skiniedoimport" />
             <?php $manager->addTicketHidden() ?>
-            <input type="hidden" name="skinfile" value="<?php echo i18n::hsc(postVar('skinfile'))?>" />
-            <input type="hidden" name="mode" value="<?php echo i18n::hsc($mode)?>" />
+            <input type="hidden" name="skinfile" value="<?php echo ENTITY::hsc(postVar('skinfile'))?>" />
+            <input type="hidden" name="mode" value="<?php echo ENTITY::hsc($mode)?>" />
             <input type="submit" value="<?php echo _SKINIE_CONFIRM_IMPORT?>" />
             <?php
                 if ($hasNameClashes)
@@ -3705,7 +3714,7 @@ selector();
         <h2><?php echo _SKINIE_DONE?></h2>
 
         <ul>
-            <li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo i18n::hsc($importer->getInfo())?></p></li>
+            <li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo ENTITY::hsc($importer->getInfo())?></p></li>
             <li><p><strong><?php echo _SKINIE_INFO_IMPORTEDSKINS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
             <li><p><strong><?php echo _SKINIE_INFO_IMPORTEDTEMPLS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
         </ul>
@@ -3816,7 +3825,7 @@ selector();
         <a href="index.php?action=templateoverview">(<?php echo _TEMPLATE_BACK?>)</a>
         </p>
 
-        <h2><?php echo _TEMPLATE_EDIT_TITLE?> '<?php echo  i18n::hsc($templatename); ?>'</h2>
+        <h2><?php echo _TEMPLATE_EDIT_TITLE?> '<?php echo  ENTITY::hsc($templatename); ?>'</h2>
 
         <?php                   if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
         ?>
@@ -3834,10 +3843,10 @@ selector();
             <th colspan="2"><?php echo _TEMPLATE_SETTINGS?></th>
         </tr><tr>
             <td><?php echo _TEMPLATE_NAME?> <?php help('shortnames');?></td>
-            <td><input name="tname" tabindex="4" size="20" maxlength="20" value="<?php echo  i18n::hsc($templatename) ?>" /></td>
+            <td><input name="tname" tabindex="4" size="20" maxlength="20" value="<?php echo  ENTITY::hsc($templatename) ?>" /></td>
         </tr><tr>
             <td><?php echo _TEMPLATE_DESC?></td>
-            <td><input name="tdesc" tabindex="5" size="50" maxlength="200" value="<?php echo  i18n::hsc($templatedescription) ?>" /></td>
+            <td><input name="tdesc" tabindex="5" size="50" maxlength="200" value="<?php echo  ENTITY::hsc($templatedescription) ?>" /></td>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_UPDATE?></th>
         </tr><tr>
@@ -3920,7 +3929,7 @@ selector();
 
         foreach ($pluginfields as $pfkey=>$pfvalue) {
             echo "</tr><tr>\n";
-            echo '<th colspan="2">' . i18n::hen($pfkey) . "</th>\n";
+            echo '<th colspan="2">' . ENTITY::hen($pfkey) . "</th>\n";
             foreach ($pfvalue as $pffield=>$pfdesc) {
                 $this->_templateEditRow($template, $pfdesc, $pffield, '',++$tab,0);
             }
@@ -3951,7 +3960,7 @@ selector();
     ?>
         </tr><tr>
             <td><?php echo $description?> <?php if ($help) help('template'.$help); ?></td>
-            <td id="td<?php echo $count?>"><textarea class="templateedit" name="<?php echo $name?>" tabindex="<?php echo $tabindex?>" cols="50" rows="<?php echo $big?10:5?>" id="textarea<?php echo $count?>"><?php echo  i18n::hsc($template[$name]); ?></textarea></td>
+            <td id="td<?php echo $count?>"><textarea class="templateedit" name="<?php echo $name?>" tabindex="<?php echo $tabindex?>" cols="50" rows="<?php echo $big?10:5?>" id="textarea<?php echo $count?>"><?php echo  ENTITY::hsc($template[$name]); ?></textarea></td>
     <?php       $count++;
     }
 
@@ -4076,7 +4085,7 @@ selector();
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
             <p>
-            <?php echo _CONFIRMTXT_TEMPLATE?><b><?php echo i18n::hsc($name)?></b> (<?php echo  i18n::hsc($desc) ?>)
+            <?php echo _CONFIRMTXT_TEMPLATE?><b><?php echo ENTITY::hsc($name)?></b> (<?php echo  ENTITY::hsc($desc) ?>)
             </p>
 
             <form method="post" action="index.php"><div>
@@ -4290,7 +4299,7 @@ selector();
             $tabstart = 75;
 
             while ($row = sql_fetch_assoc($res)) {
-                echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . i18n::hsc(strtolower($row['stype'])) . '">' . i18n::hsc(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . i18n::hsc(strtolower($row['stype'])) . '">remove</a>)</li>';
+                echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . ENTITY::hsc(strtolower($row['stype'])) . '">' . ENTITY::hsc(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . ENTITY::hsc(strtolower($row['stype'])) . '">remove</a>)</li>';
             }
 
             echo '</ul>';
@@ -4307,19 +4316,19 @@ selector();
         <input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
         <table><tr>
             <td><?php echo _SKIN_NAME?> <?php help('shortnames');?></td>
-            <td><input name="name" tabindex="90" value="<?php echo  i18n::hsc($skin->getName()) ?>" maxlength="20" size="20" /></td>
+            <td><input name="name" tabindex="90" value="<?php echo  ENTITY::hsc($skin->getName()) ?>" maxlength="20" size="20" /></td>
         </tr><tr>
             <td><?php echo _SKIN_DESC?></td>
-            <td><input name="desc" tabindex="100" value="<?php echo  i18n::hsc($skin->getDescription()) ?>" maxlength="200" size="50" /></td>
+            <td><input name="desc" tabindex="100" value="<?php echo  ENTITY::hsc($skin->getDescription()) ?>" maxlength="200" size="50" /></td>
         </tr><tr>
             <td><?php echo _SKIN_TYPE?></td>
-            <td><input name="type" tabindex="110" value="<?php echo  i18n::hsc($skin->getContentType()) ?>" maxlength="40" size="20" /></td>
+            <td><input name="type" tabindex="110" value="<?php echo  ENTITY::hsc($skin->getContentType()) ?>" maxlength="40" size="20" /></td>
         </tr><tr>
             <td><?php echo _SKIN_INCLUDE_MODE?> <?php help('includemode')?></td>
             <td><?php $this->input_yesno('inc_mode',$skin->getIncludeMode(),120,'skindir','normal',_PARSER_INCMODE_SKINDIR,_PARSER_INCMODE_NORMAL);?></td>
         </tr><tr>
             <td><?php echo _SKIN_INCLUDE_PREFIX?> <?php help('includeprefix')?></td>
-            <td><input name="inc_prefix" tabindex="130" value="<?php echo  i18n::hsc($skin->getIncludePrefix()) ?>" maxlength="40" size="20" /></td>
+            <td><input name="inc_prefix" tabindex="130" value="<?php echo  ENTITY::hsc($skin->getIncludePrefix()) ?>" maxlength="40" size="20" /></td>
         </tr><tr>
             <td><?php echo _SKIN_CHANGE?></td>
             <td><input type="submit" tabindex="140" value="<?php echo _SKIN_CHANGE_BTN?>" onclick="return checkSubmit();" /></td>
@@ -4393,7 +4402,7 @@ selector();
         ?>
         <p>(<a href="index.php?action=skinoverview"><?php echo _SKIN_GOBACK?></a>)</p>
 
-        <h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo i18n::hsc($skin->getName()) ?>': <?php echo i18n::hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?></h2>
+        <h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo ENTITY::hsc($skin->getName()) ?>': <?php echo ENTITY::hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?></h2>
 
         <?php           if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
         ?>
@@ -4409,7 +4418,7 @@ selector();
 
         <input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
         <input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-        (skin type: <?php echo i18n::hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
+        (skin type: <?php echo ENTITY::hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
         <?php if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
             help('skinpart' . $type);
         } else {
@@ -4417,12 +4426,12 @@ selector();
         }?>
         <br />
 
-        <textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content"><?php echo  i18n::hsc($skin->getContent($type)) ?></textarea>
+        <textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content"><?php echo  ENTITY::hsc($skin->getContent($type)) ?></textarea>
 
         <br />
         <input type="submit" tabindex="20" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
         <input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-        (skin type: <?php echo i18n::hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
+        (skin type: <?php echo ENTITY::hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
 
         <br /><br />
         <?php echo _SKIN_ALLOWEDVARS?>
@@ -4485,7 +4494,7 @@ selector();
         $query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
         $r = sql_query($query);
         if ($o = sql_fetch_object($r))
-            $this->error(_ERROR_SKINDEFDELETE . i18n::hsc($o->bname));
+            $this->error(_ERROR_SKINDEFDELETE . ENTITY::hsc($o->bname));
 
         $this->pagehead();
 
@@ -4497,7 +4506,7 @@ selector();
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
             <p>
-                <?php echo _CONFIRMTXT_SKIN?><b><?php echo i18n::hsc($name) ?></b> (<?php echo  i18n::hsc($desc)?>)
+                <?php echo _CONFIRMTXT_SKIN?><b><?php echo ENTITY::hsc($name) ?></b> (<?php echo  ENTITY::hsc($desc)?>)
             </p>
 
             <form method="post" action="index.php"><div>
@@ -4573,14 +4582,14 @@ selector();
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
             <p>
-                <?php echo _CONFIRMTXT_SKIN_PARTS_SPECIAL; ?> <b><?php echo i18n::hsc($skintype); ?> (<?php echo i18n::hsc($name); ?>)</b> (<?php echo  i18n::hsc($desc)?>)
+                <?php echo _CONFIRMTXT_SKIN_PARTS_SPECIAL; ?> <b><?php echo ENTITY::hsc($skintype); ?> (<?php echo ENTITY::hsc($name); ?>)</b> (<?php echo  ENTITY::hsc($desc)?>)
             </p>
 
             <form method="post" action="index.php"><div>
                 <input type="hidden" name="action" value="skinremovetypeconfirm" />
                 <?php $manager->addTicketHidden() ?>
                 <input type="hidden" name="skinid" value="<?php echo $skinid; ?>" />
-                <input type="hidden" name="type" value="<?php echo i18n::hsc($skintype); ?>" />
+                <input type="hidden" name="type" value="<?php echo ENTITY::hsc($skintype); ?>" />
                 <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
             </div></form>
         <?php
@@ -4733,25 +4742,25 @@ selector();
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_ADMINMAIL?></td>
-            <td><input name="AdminEmail" tabindex="10010" size="40" value="<?php echo  i18n::hsc($CONF['AdminEmail']) ?>" /></td>
+            <td><input name="AdminEmail" tabindex="10010" size="40" value="<?php echo  ENTITY::hsc($CONF['AdminEmail']) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_SITENAME?></td>
-            <td><input name="SiteName" tabindex="10020" size="40" value="<?php echo  i18n::hsc($CONF['SiteName']) ?>" /></td>
+            <td><input name="SiteName" tabindex="10020" size="40" value="<?php echo  ENTITY::hsc($CONF['SiteName']) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_SITEURL?></td>
-            <td><input name="IndexURL" tabindex="10030" size="40" value="<?php echo  i18n::hsc($CONF['IndexURL']) ?>" /></td>
+            <td><input name="IndexURL" tabindex="10030" size="40" value="<?php echo  ENTITY::hsc($CONF['IndexURL']) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_ADMINURL?></td>
-            <td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  i18n::hsc($CONF['AdminURL']) ?>" /></td>
+            <td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  ENTITY::hsc($CONF['AdminURL']) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_PLUGINURL?> <?php help('pluginurl');?></td>
-            <td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  i18n::hsc($CONF['PluginURL']) ?>" /></td>
+            <td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  ENTITY::hsc($CONF['PluginURL']) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_SKINSURL?> <?php help('skinsurl');?></td>
-            <td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  i18n::hsc($CONF['SkinsURL']) ?>" /></td>
+            <td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  ENTITY::hsc($CONF['SkinsURL']) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_ACTIONSURL?> <?php help('actionurl');?></td>
-            <td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  i18n::hsc($CONF['ActionURL']) ?>" /></td>
+            <td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  ENTITY::hsc($CONF['ActionURL']) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_LANGUAGE?> <?php help('language'); ?>
             </td>
@@ -4792,11 +4801,11 @@ selector();
             </td>
             <td><?php $this->input_yesno('DisableSite',$CONF['DisableSite'],10060); ?>
                     <br />
-                <?php echo _SETTINGS_DISABLESITEURL ?> <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  i18n::hsc($CONF['DisableSiteURL'])?>" />
+                <?php echo _SETTINGS_DISABLESITEURL ?> <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  ENTITY::hsc($CONF['DisableSiteURL'])?>" />
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_DIRS?></td>
-            <td><?php echo  i18n::hsc($DIR_NUCLEUS) ?>
+            <td><?php echo  ENTITY::hsc($DIR_NUCLEUS) ?>
                 <i><?php echo _SETTINGS_SEECONFIGPHP?></i></td>
         </tr><tr>
             <td><?php echo _SETTINGS_DBLOGIN?></td>
@@ -4858,7 +4867,7 @@ selector();
                     $CONF['DefaultListSize'] = 10;
                 }
             ?>
-                <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  i18n::hsc((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
+                <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  ENTITY::hsc((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_ADMINCSS?> 
@@ -4904,7 +4913,7 @@ selector();
             <th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
         </tr><tr>
             <td><?php echo _SETTINGS_MEDIADIR?></td>
-            <td><?php echo  i18n::hsc($DIR_MEDIA) ?>
+            <td><?php echo  ENTITY::hsc($DIR_MEDIA) ?>
                 <i><?php echo _SETTINGS_SEECONFIGPHP?></i>
                 <?php                   if (!is_dir($DIR_MEDIA))
                         echo "<br /><b>" . _WARNING_NOTADIR . "</b>";
@@ -4917,7 +4926,7 @@ selector();
         </tr><tr>
             <td><?php echo _SETTINGS_MEDIAURL?></td>
             <td>
-                <input name="MediaURL" tabindex="10090" size="40" value="<?php echo  i18n::hsc($CONF['MediaURL']) ?>" />
+                <input name="MediaURL" tabindex="10090" size="40" value="<?php echo  ENTITY::hsc($CONF['MediaURL']) ?>" />
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_ALLOWUPLOAD?></td>
@@ -4925,12 +4934,12 @@ selector();
         </tr><tr>
             <td><?php echo _SETTINGS_ALLOWUPLOADTYPES?></td>
             <td>
-                <input name="AllowedTypes" tabindex="10100" size="40" value="<?php echo  i18n::hsc($CONF['AllowedTypes']) ?>" />
+                <input name="AllowedTypes" tabindex="10100" size="40" value="<?php echo  ENTITY::hsc($CONF['AllowedTypes']) ?>" />
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_MAXUPLOADSIZE?></td>
             <td>
-                <input name="MaxUploadSize" tabindex="10105" size="40" value="<?php echo  i18n::hsc($CONF['MaxUploadSize']) ?>" />
+                <input name="MaxUploadSize" tabindex="10105" size="40" value="<?php echo  ENTITY::hsc($CONF['MaxUploadSize']) ?>" />
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_MEDIAPREFIX?></td>
@@ -4978,13 +4987,13 @@ selector();
             <th colspan="2"><?php echo _SETTINGS_COOKIES_TITLE?> <?php help('cookies'); ?></th>
         </tr><tr>
             <td><?php echo _SETTINGS_COOKIEPREFIX?></td>
-            <td><input name="CookiePrefix" tabindex="10159" size="40" value="<?php echo  i18n::hsc($CONF['CookiePrefix'])?>" /></td>
+            <td><input name="CookiePrefix" tabindex="10159" size="40" value="<?php echo  ENTITY::hsc($CONF['CookiePrefix'])?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_COOKIEDOMAIN?></td>
-            <td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  i18n::hsc($CONF['CookieDomain'])?>" /></td>
+            <td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  ENTITY::hsc($CONF['CookieDomain'])?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_COOKIEPATH?></td>
-            <td><input name="CookiePath" tabindex="10170" size="40" value="<?php echo  i18n::hsc($CONF['CookiePath'])?>" /></td>
+            <td><input name="CookiePath" tabindex="10170" size="40" value="<?php echo  ENTITY::hsc($CONF['CookiePath'])?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_COOKIESECURE?></td>
             <td><?php $this->input_yesno('CookieSecure',$CONF['CookieSecure'],10180); ?></td>
@@ -5164,7 +5173,7 @@ selector();
 				}
 				else
 				{
-					$value = i18n::hsc($value);
+					$value = ENTITY::hsc($value);
 				}
 				echo "<tr>\n";
 				echo '<td>' . $key . "</td>\n";
@@ -5335,7 +5344,7 @@ selector();
 				'extrahead' => &$extrahead,
 				'action' => $this->action));
 		
-		$baseUrl = i18n::hsc($CONF['AdminURL']);
+		$baseUrl = ENTITY::hsc($CONF['AdminURL']);
 		if ( !array_key_exists('AdminCSS',$CONF) )
 		{
 			sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'original')");
@@ -5354,7 +5363,7 @@ selector();
 		echo "<!DOCTYPE {$root_element} PUBLIC \"{$this->formal_public_identifier}\" \"{$this->system_identifier}\">\n";
 		echo "<{$root_element} xmlns=\"{$this->xhtml_namespace}\" xml:lang=\"{$locale}\" lang=\"{$locale}\">\n";
 		echo "<head>\n";
-		echo '<title>' . i18n::hsc($CONF['SiteName']) . " - Admin</title>\n";
+		echo '<title>' . ENTITY::hsc($CONF['SiteName']) . " - Admin</title>\n";
 		echo "<link rel=\"stylesheet\" title=\"Nucleus Admin Default\" type=\"text/css\" href=\"{$baseUrl}styles/admin_{$CONF["AdminCSS"]}.css\" />\n";
 		echo "<link rel=\"stylesheet\" title=\"Nucleus Admin Default\" type=\"text/css\" href=\"{$baseUrl}styles/addedit.css\" />\n";
 		echo "<script type=\"text/javascript\" src=\"{$baseUrl}javascript/edit.js\"></script>\n";
@@ -5365,7 +5374,7 @@ selector();
 		echo "<body>\n";
 		echo "<div id=\"adminwrapper\">\n";
 		echo "<div class=\"header\">\n";
-		echo '<h1>' . i18n::hsc($CONF['SiteName']) . "</h1>\n";
+		echo '<h1>' . ENTITY::hsc($CONF['SiteName']) . "</h1>\n";
 		echo "</div>\n";
 		echo "<div id=\"container\">\n";
 		echo "<div id=\"content\">\n";
@@ -5530,7 +5539,7 @@ selector();
 				echo "<ul>\n";
 				foreach ( $aPluginExtras as $aInfo )
 				{
-					echo '<li><a href="' . i18n::hsc($aInfo['url']) . '" title="' . i18n::hsc($aInfo['tooltip']) . '">' . i18n::hsc($aInfo['title']) . "</a></li>\n";
+					echo '<li><a href="' . ENTITY::hsc($aInfo['url']) . '" title="' . ENTITY::hsc($aInfo['tooltip']) . '">' . ENTITY::hsc($aInfo['title']) . "</a></li>\n";
 				}
 				echo "</ul>\n";
 			}
@@ -5620,7 +5629,7 @@ selector();
             <?php echo _BOOKMARKLET_BMARKTEXT ?><small><?php echo _BOOKMARKLET_BMARKTEST ?></small>
             <br />
             <br />
-            <?php echo '<a href="' . i18n::hsc($bm) . '">' . sprintf(_BOOKMARKLET_ANCHOR, i18n::hsc($blog->getName())) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
+            <?php echo '<a href="' . ENTITY::hsc($bm) . '">' . sprintf(_BOOKMARKLET_ANCHOR, ENTITY::hsc($blog->getName())) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
         </p>
 
         <h3><?php echo _BOOKMARKLET_RIGHTCLICK ?></h3>
@@ -5629,7 +5638,7 @@ selector();
                 $url = 'index.php?action=regfile&blogid=' . intval($blogid);
                 $url = $manager->addTicketToUrl($url);
             ?>
-            <?php echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . i18n::hsc($url, ENT_QUOTES, "SJIS") . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2; ?>
+            <?php echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . ENTITY::hsc($url, ENT_QUOTES, "SJIS") . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2; ?>
         </p>
 
         <p>
@@ -5674,7 +5683,7 @@ selector();
 
         ?>
             <h2><?php echo _ACTIONLOG_CLEAR_TITLE?></h2>
-            <p><a href="<?php echo i18n::hsc($url)?>"><?php echo _ACTIONLOG_CLEAR_TEXT?></a></p>
+            <p><a href="<?php echo ENTITY::hsc($url)?>"><?php echo _ACTIONLOG_CLEAR_TEXT?></a></p>
         <?php
         echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 
@@ -5731,7 +5740,7 @@ selector();
         $member->blogAdminRights($blogid) or $this->disallow();
 
         $blog =& $manager->getBlog($blogid);
-        $banBlogName =  i18n::hsc($blog->getName());
+        $banBlogName =  ENTITY::hsc($blog->getName());
 
         $this->pagehead();
         ?>
@@ -5742,8 +5751,8 @@ selector();
             <h3><?php echo _BAN_IPRANGE?></h3>
 
             <p>
-                <?php echo _CONFIRMTXT_BAN?> <?php echo i18n::hsc($iprange) ?>
-                <input name="iprange" type="hidden" value="<?php echo i18n::hsc($iprange)?>" />
+                <?php echo _CONFIRMTXT_BAN?> <?php echo ENTITY::hsc($iprange) ?>
+                <input name="iprange" type="hidden" value="<?php echo ENTITY::hsc($iprange)?>" />
             </p>
 
             <h3><?php echo _BAN_BLOGS?></h3>
@@ -5807,7 +5816,7 @@ selector();
         echo "<ul>";
         foreach ($deleted as $delblog) {
             $b =& $manager->getBlog($delblog);
-            echo "<li>" . i18n::hsc($b->getName()). "</li>";
+            echo "<li>" . ENTITY::hsc($b->getName()). "</li>";
         }
         echo "</ul>";
 
@@ -5856,7 +5865,7 @@ selector();
         <div>
         <?php
         if ($ip) {
-            $iprangeVal = i18n::hsc($ip);
+            $iprangeVal = ENTITY::hsc($ip);
         ?>
             <input name="iprange" type="radio" value="<?php echo $iprangeVal ?>" checked="checked" id="ip_fixed" />
             <label for="ip_fixed"><?php echo $iprangeVal ?></label>
@@ -5878,7 +5887,7 @@ selector();
 
         <div>
             <input type="hidden" name="blogid" value="<?php echo $blogid?>" />
-            <input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">'<?php echo i18n::hsc($blog->getName())?>'</label>
+            <input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">'<?php echo ENTITY::hsc($blog->getName())?>'</label>
             <br />
             <input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?php echo _BAN_ALLBLOGS?></label>
         </div>
@@ -6135,7 +6144,7 @@ selector();
 <?php
 			foreach($candidates as $name)
 			{
-				echo '<option value="NP_',$name,'">',i18n::hsc($name),'</option>';
+				echo '<option value="NP_',$name,'">',ENTITY::hsc($name),'</option>';
 			}
 ?>
 				</select>
@@ -6173,7 +6182,7 @@ selector();
 
         echo '<p><a href="index.php?action=pluginlist">(',_PLUGS_BACK,')</a></p>';
 
-        echo '<h2>',_PLUGS_HELP_TITLE,': ',i18n::hsc($plugName),'</h2>';
+        echo '<h2>',_PLUGS_HELP_TITLE,': ',ENTITY::hsc($plugName),'</h2>';
 
         $plug =& $manager->getPlugin($plugName);
         $helpFile = $DIR_PLUGINS.$plug->getShortName().'/help.html';
@@ -6203,7 +6212,7 @@ selector();
         if ($manager->pluginInstalled($name))
             $this->error(_ERROR_DUPPLUGIN);
         if (!checkPlugin($name))
-            $this->error(_ERROR_PLUGFILEERROR . ' (' . i18n::hsc($name) . ')');
+            $this->error(_ERROR_PLUGFILEERROR . ' (' . ENTITY::hsc($name) . ')');
 
         // get number of currently installed plugins
         $res = sql_query('SELECT * FROM '.sql_table('plugin'));
@@ -6244,7 +6253,7 @@ selector();
             $this->deleteOnePlugin($plugin->getID());
 
             // ...and show error
-            $this->error(_ERROR_NUCLEUSVERSIONREQ . i18n::hsc($plugin->getMinNucleusVersion()));
+            $this->error(_ERROR_NUCLEUSVERSIONREQ . ENTITY::hsc($plugin->getMinNucleusVersion()));
         }
 
         // check if plugin needs a newer Nucleus version
@@ -6254,7 +6263,7 @@ selector();
             $this->deleteOnePlugin($plugin->getID());
 
             // ...and show error
-            $this->error(_ERROR_NUCLEUSVERSIONREQ . i18n::hsc( $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel() ) );
+            $this->error(_ERROR_NUCLEUSVERSIONREQ . ENTITY::hsc( $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel() ) );
         }
 
         $pluginList = $plugin->getPluginDep();
@@ -6267,7 +6276,7 @@ selector();
                 // uninstall plugin again...
                 $this->deleteOnePlugin($plugin->getID());
 
-                $this->error(sprintf(_ERROR_INSREQPLUGIN, i18n::hsc($pluginName)));
+                $this->error(sprintf(_ERROR_INSREQPLUGIN, ENTITY::hsc($pluginName)));
             }
         }
 
@@ -6533,7 +6542,7 @@ selector();
 		$extrahead = "<script type=\"text/javascript\" src=\"javascript/numbercheck.js\"></script>\n";
 		$this->pagehead($extrahead);
 		echo '<p><a href="index.php?action=pluginlist">(' . _PLUGS_BACK . ")</a></p>\n";
-		echo '<h2>' . sprintf(_PLUGIN_OPTIONS_TITLE, i18n::hsc($pname)) . "</h2>\n";
+		echo '<h2>' . sprintf(_PLUGIN_OPTIONS_TITLE, ENTITY::hsc($pname)) . "</h2>\n";
 		
 		if ( isset($message) )
 		{
@@ -6688,7 +6697,7 @@ selector();
 				{
 					define('_PLUGIN_OPTIONS_TITLE', 'Options for %s');
 				}
-				echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, i18n::hsc($aOption['pfile'])).'</th></tr>';
+				echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, ENTITY::hsc($aOption['pfile'])).'</th></tr>';
 			}
 			
 			$meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
@@ -6723,7 +6732,7 @@ selector();
 		$id_no  = $id . $value_no;
 		
 		/* yes option */
-		echo '<input type="radio" id="' . i18n::hsc($id_yes) . '" name="' . i18n::hsc($name) . '" value="' . i18n::hsc($value_yes) . '"';
+		echo '<input type="radio" id="' . ENTITY::hsc($id_yes) . '" name="' . ENTITY::hsc($name) . '" value="' . ENTITY::hsc($value_yes) . '"';
 		if ( $name=="admin" )
 		{
 			echo ' onclick="selectCanLogin(true);"';
@@ -6733,10 +6742,10 @@ selector();
 			echo " tabindex='$tabindex' checked='checked'";
 		}
 		echo " />\n";
-		echo '<label for="' . i18n::hsc($id_yes) . '">' . i18n::hsc($text_yes) . "</label>\n";
+		echo '<label for="' . ENTITY::hsc($id_yes) . '">' . ENTITY::hsc($text_yes) . "</label>\n";
 		
 		/* no option */
-		echo '<input type="radio" id="' . i18n::hsc($id_no) . '" name="' . i18n::hsc($name) . '" value="' . i18n::hsc($value_no) . '"';
+		echo '<input type="radio" id="' . ENTITY::hsc($id_no) . '" name="' . ENTITY::hsc($name) . '" value="' . ENTITY::hsc($value_no) . '"';
 		if ( $name=="admin" )
 		{
 			echo ' onclick="selectCanLogin(false);"';
@@ -6750,7 +6759,7 @@ selector();
 			echo ' disabled="disabled"';
 		}
 		echo " />\n";
-		echo '<label for="' . i18n::hsc($id_no) . '">' . i18n::hsc($text_no) . "</label>\n";
+		echo '<label for="' . ENTITY::hsc($id_no) . '">' . ENTITY::hsc($text_no) . "</label>\n";
 		
 		return;
 	}

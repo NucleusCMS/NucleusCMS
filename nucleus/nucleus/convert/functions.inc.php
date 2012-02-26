@@ -285,7 +285,7 @@ class BlogImport {
 			case 'NucleusMemberOptions':
 				$res = sql_query('SELECT mname as text, mnumber as value FROM '.sql_table('member'));
 				while ($o = mysql_fetch_object($res)) {
-					echo '<option value="'.i18n::hsc($o->value).'">'.i18n::hsc($o->text).'</option>';
+					echo '<option value="'.ENTITY::hsc($o->value).'">'.ENTITY::hsc($o->text).'</option>';
 				}
 				break;
 // ----------------------------------------------------------------------------------------
@@ -324,7 +324,7 @@ class BlogImport {
 						<tr>
 							<td>
 								<strong><?php echo $a_name?></strong>
-								<input name="author[<?php echo $idx?>]" value="<?php echo i18n::hsc($a_name)?>" type="hidden"
+								<input name="author[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden"
 							</td>
 							<td>
 								<select name="memberid[<?php echo $idx?>]">
@@ -382,7 +382,7 @@ class BlogImport {
 						<tr>
 							<td>
 								<strong><?php echo $a_name?></strong>
-								<input name="category[<?php echo $idx?>]" value="<?php echo i18n::hsc($a_name)?>" type="hidden"
+								<input name="category[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden"
 							</td>
 							<td>
 								<select name="catid[<?php echo $idx?>]">
@@ -705,7 +705,7 @@ class BlogImport {
 	 * Called by XML parser for data inside elements
 	 */
 	function characterData ($parser, $data) {
-		if ($this->bDebug) echo 'NEW DATA: ', i18n::hsc($data), '<br />';
+		if ($this->bDebug) echo 'NEW DATA: ', ENTITY::hsc($data), '<br />';
 		$this->cdata .= $data;
 	}
 

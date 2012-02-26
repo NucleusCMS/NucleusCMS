@@ -59,8 +59,8 @@ if (!$CONF['DisableSite']) {
 	?>
 	<rss version="2.0">
 		<channel>
-			<title><?php echo i18n::hsc($CONF['SiteName']); ?></title>
-			<link><?php echo i18n::hsc($CONF['IndexURL']); ?></link>
+			<title><?php echo ENTITY::hsc($CONF['SiteName']); ?></title>
+			<link><?php echo ENTITY::hsc($CONF['IndexURL']); ?></link>
 			<description></description>
 			<docs>http://backend.userland.com/rss</docs>
 		</channel>
