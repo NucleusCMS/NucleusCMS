@@ -42,8 +42,11 @@ else
  */
 if ( !isset($DIR_LOCALES) )
 {
-	global $DIR_LANG;
 	$DIR_LOCALES = $DIR_NUCLEUS . 'locales/';
+}
+global $DIR_LANG;
+if ( !isset($DIR_LANG) )
+{
 	$DIR_LANG = $DIR_LOCALES;
 }
 
