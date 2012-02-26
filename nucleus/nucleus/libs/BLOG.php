@@ -319,7 +319,7 @@ class BLOG {
 		$temp = parse_url($CONF['Self']);
 		if ( $temp['scheme'] )
 		{
-			$mailto_msg .= LINK::create_item_link($itemid) . "\n\n";
+			$message .= LINK::create_item_link($itemid) . "\n\n";
 		}
 		else
 		{

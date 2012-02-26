@@ -78,7 +78,6 @@ class ACTION
 		}
 	}
 
-
 	/**
 	 * ACTION::addComment()
 	 * Adds a new comment to an item (if IP isn't banned)
