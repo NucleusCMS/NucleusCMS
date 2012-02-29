@@ -248,55 +248,82 @@ class BLOG {
 
 
 	/**
-	  * Adds an item to this blog
-	  */
-	function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted='1') {
+	 * BLOG::addItem()
+	 * Adds an item to this blog
+	 * 
+	 * @param	Integer	$catid	ID for category
+	 * @param	String 	$title	ID for 
+	 * @param	String 	$body	text for body
+	 * @param	String 	$more	text for more
+	 * @param	Integer	$blogid	ID for blog
+	 * @param	Integer	$authorid	ID for author
+	 * @param	Timestamp	$timestamp	UNIX timestamp for post
+	 * @param	Boolean	$closed	opened or closed
+	 * @param	Boolean	$draft	draft or not
+	 * @param	Boolean	$posted	posted or not
+	 * @return
+	 */
+	function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted='1')
+	{
 		global $manager;
-
+		
 		$blogid 	= intval($blogid);
 		$authorid	= intval($authorid);
 		$title		= $title;
 		$body		= $body;
 		$more		= $more;
 		$catid		= intval($catid);
-
+		
 		// convert newlines to <br />
-		if ($this->convertBreaks()) {
+		if ( $this->convertBreaks() )
+		{
 			$body = addBreaks($body);
 			$more = addBreaks($more);
 		}
 
-		if ($closed != '1') $closed = '0';
-		if ($draft != '0') $draft = '1';
-
-		if (!$this->isValidCategory($catid))
+		if ( $closed != '1' )
+		{
+			$closed = '0';
+		}
+		if ( $draft != '0' )
+		{
+			$draft = '1';
+		}
+		
+		if ( !$this->isValidCategory($catid) )
+		{
 			$catid = $this->getDefaultCategory();
-
-		if ($timestamp > $this->getCorrectTime())
+		}
+		
+		if ( $timestamp > $this->getCorrectTime() )
+		{
 			$isFuture = 1;
-
+		}
+		
 		$timestamp = date('Y-m-d H:i:s',$timestamp);
-
+		
 		$manager->notify('PreAddItem',array('title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => &$this, 'authorid' => &$authorid, 'timestamp' => &$timestamp, 'closed' => &$closed, 'draft' => &$draft, 'catid' => &$catid));
-
+		
 		$ititle = sql_real_escape_string($title);
 		$ibody = sql_real_escape_string($body);
 		$imore = sql_real_escape_string($more);
-
-		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
-			   . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
+		
+		$query = "INSERT INTO %s (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) VALUES ('%s', '%s', '%s', %d, %d, '%s', %s, %s, %s, %s)";
+		$query = sprintf($query, sql_table('item'), $ititle, $ibody, $imore, $blogid, $authorid, $timestamp, $closed, $draft, $catid, $posted);
 		sql_query($query);
 		$itemid = sql_insert_id();
-
+		
 		$manager->notify('PostAddItem',array('itemid' => $itemid));
-
-		if (!$draft)
+		
+		if ( !$draft )
+		{
 			$this->updateUpdateFile();
-
+		}
 		// send notification mail
-		if (!$draft && !$isFuture && $this->getNotifyAddress() && $this->notifyOnNewItem())
+		if ( !$draft && !$isFuture && $this->getNotifyAddress() && $this->notifyOnNewItem() )
+		{
 			$this->sendNewItemNotification($itemid, $title, $body);
-
+		}
 		return $itemid;
 	}
 	
@@ -346,38 +373,35 @@ class BLOG {
 	}
 	
 	/**
-	  * Creates a new category for this blog
-	  *
-	  * @param $catName
-	  *		name of the new category. When empty, a name is generated automatically
-	  *		(starting with newcat)
-	  * @param $catDescription
-	  *		description of the new category. Defaults to 'New Category'
-	  *
-	  * @returns
-	  *		the new category-id in case of success.
-	  *		0 on failure
-	  */
-	function createNewCategory($catName = '', $catDescription = _CREATED_NEW_CATEGORY_DESC) {
+	 * BLOG::createNewCategory()
+	 * Creates a new category for this blog
+	 *
+	 * @param String	$catName	name of the new category. When empty, a name is generated automatically (starting with newcat)
+	 * @param String	$catDescription	description of the new category. Defaults to 'New Category'
+	 * @returns	Integer	the new category-id in case of success. 0 on failure
+	 */
+	function createNewCategory($catName = '', $catDescription = _CREATED_NEW_CATEGORY_DESC)
+	{
 		global $member, $manager;
-
-		if ($member->blogAdminRights($this->getID())) {
+		
+		if ( $member->blogAdminRights($this->getID()) )
+		{
 			// generate
-			if ($catName == '')
+			if ( $catName == '' )
 			{
 				$catName = _CREATED_NEW_CATEGORY_NAME;
 				$i = 1;
-
+				
 				$res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
-				while (sql_num_rows($res) > 0)
+				while ( sql_num_rows($res) > 0 )
 				{
 					$i++;
 					$res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
 				}
-
+				
 				$catName = $catName . $i;
 			}
-
+			
 			$manager->notify(
 				'PreAddCategory',
 				array(
@@ -386,11 +410,12 @@ class BLOG {
 					'description' => $catDescription
 				)
 			);
-
-			$query = 'INSERT INTO '.sql_table('category').' (cblog, cname, cdesc) VALUES (' . $this->getID() . ", '" . sql_real_escape_string($catName) . "', '" . sql_real_escape_string($catDescription) . "')";
+			
+			$query = "INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, '%s', '%s')";
+			$query = sprintf($query, sql_table('category'), (integer) $this->getID(). sql_real_escape_string($catName), sql_real_escape_string($catDescription));
 			sql_query($query);
 			$catid = sql_insert_id();
-
+			
 			$manager->notify(
 				'PostAddCategory',
 				array(
@@ -400,15 +425,12 @@ class BLOG {
 					'catid' => $catid
 				)
 			);
-
+			
 			return $catid;
-		} else {
-			return 0;
 		}
-
+		return 0;
 	}
-
-
+	
 	/**
 	 * Searches all months of this blog for the given query
 	 *
@@ -1235,21 +1257,29 @@ class BLOG {
 	}
 
 	/**
-	  * Tries to add a member to the team. 
-	  * Returns false if the member was already on the team
-	  */
-	function addTeamMember($memberid, $admin) {
+	 * BLOG::addTeamMember()
+	 * Tries to add a member to the team. 
+	 * Returns false if the member was already on the team
+	 * 
+	 * @param	Integer	$memberid	id for member
+	 * @param	Boolean	$admin	super-admin or not
+	 * @return	Boolean	Success/Fail
+	 */
+	function addTeamMember($memberid, $admin)
+	{
 		global $manager;
-
+		
 		$memberid = intval($memberid);
 		$admin = intval($admin);
-
+		
 		// check if member is already a member
 		$tmem = MEMBER::createFromID($memberid);
-
-		if ($tmem->isTeamMember($this->getID()))
+		
+		if ( $tmem->isTeamMember($this->getID()) )
+		{
 			return 0;
-
+		}
+		
 		$manager->notify(
 			'PreAddTeamMember',
 			array(
@@ -1258,10 +1288,10 @@ class BLOG {
 				'admin' => &$admin
 			)
 		);
-
+		
 		// add to team
-		$query = 'INSERT INTO '.sql_table('team').' (TMEMBER, TBLOG, TADMIN) '
-			   . 'VALUES (' . $memberid .', '.$this->getID().', "'.$admin.'")';
+		$query = "INSERT INTO %s (TMEMBER, TBLOG, TADMIN) ' . 'VALUES (%d, %d, %d)";
+		$query = sprintf($query, sql_table('team'), $memberid, $this->getID(), $admin);
 		sql_query($query);
 
 		$manager->notify(
@@ -1271,12 +1301,11 @@ class BLOG {
 				'member' => &$tmem,
 				'admin' => $admin
 			)
-
 		);
-
+		
 		$logMsg = sprintf(_TEAM_ADD_NEWTEAMMEMBER, $tmem->getDisplayName(), $memberid, $this->getName());
 		ACTIONLOG::add(INFO, $logMsg);
-
+		
 		return 1;
 	}
 

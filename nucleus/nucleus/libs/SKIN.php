@@ -181,9 +181,17 @@ class SKIN {
 	}
 	
 	/**
+	 * SKIN::createNew()
 	 * Creates a new skin, with the given characteristics.
 	 *
 	 * @static
+	 * @param	String	$name	value for nucleus_skin.sdname
+	 * @param	String	$desc	value for nucleus_skin.sddesc
+	 * @param	String	$type	value for nucleus_skin.sdtype
+	 * @param	String	$includeMode	value for nucleus_skin.sdinclude
+	 * @param	String	$includePrefix	value for nucleus_skin.sdincpref
+	 * @return	Integer	ID for just inserted record
+	 * 
 	 */
 	function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '')
 	{
@@ -200,7 +208,9 @@ class SKIN {
 			)
 		);
 		
-		sql_query('INSERT INTO ' . sql_table('skin_desc') . " (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('" . sql_real_escape_string($name) . "','" . sql_real_escape_string($desc) . "','" . sql_real_escape_string($type) . "','" . sql_real_escape_string($includeMode) . "','" . sql_real_escape_string($includePrefix) . "')");
+		$query = "INSERT INTO %s (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('%s', '%s', '%s', '%s', '%s')";
+		$query = sprintf($query, sql_table('skin_desc'), sql_real_escape_string($name), sql_real_escape_string($desc), sql_real_escape_string($type), sql_real_escape_string($includeMode), sql_real_escape_string($includePrefix));
+		sql_query($query);
 		$newid = sql_insert_id();
 		
 		$manager->notify(
@@ -287,20 +297,24 @@ class SKIN {
 	}
 
 	/**
+	 * SKIN::update()
 	 * Updates the contents for one part of the skin in the database
 	 * 
 	 * @param $type type of the skin part (e.g. index, item, search ...) 
 	 * @param $content new content for this skin part
+	 * @return	Void
+	 * 
 	 */
-
 	function update($type, $content)
 	{
 		global $manager;
 		
 		$skinid = $this->id;
 		
-		$query = 'SELECT sdesc FROM ' . sql_table('skin') . " WHERE stype='" . sql_real_escape_string($type) . "' and sdesc=" . intval($skinid);
+		$query = "SELECT sdesc FROM %s WHERE stype='%s' and sdesc=%d";
+		$query = sprintf($query, sql_table('skin'), sql_real_escape_string($type), (integer) $skinid);
 		$res = sql_query($query);
+		
 		$skintypeexists = sql_fetch_object($res);
 		$skintypevalue = ($content == true);
 		
@@ -341,12 +355,16 @@ class SKIN {
 		}
 		
 		// delete old thingie
-		sql_query('DELETE FROM ' . sql_table('skin') . " WHERE stype='" . sql_real_escape_string($type) . "' and sdesc=" . intval($skinid));
+		$query = "DELETE FROM %s WHERE stype='%s' and sdesc=%d";
+		$query = sprintf($query, sql_table('skin'), sql_real_escape_string($type), (integer) $skinid);
+		sql_query($query);
 		
 		// write new thingie
 		if ( $content )
 		{
-			sql_query('INSERT INTO ' . sql_table('skin') . " SET scontent='" . sql_real_escape_string($content) . "', stype='" . sql_real_escape_string($type) . "', sdesc=" . intval($skinid));
+			$query = "INSERT INTO %s (scontent, stype, sdesc) VALUE ('%s', '%s', %d)";
+			$query = sprintf($query, sql_table('skin'), sql_real_escape_string($content), sql_real_escape_string($type), (integer) $skinid);
+			sql_query($query);
 		}
 		
 		if( $skintypevalue && $skintypeexists )
@@ -384,6 +402,7 @@ class SKIN {
 				)
 			);
 		}
+		return;
 	}
 	
 	/**

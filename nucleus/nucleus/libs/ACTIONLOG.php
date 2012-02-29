@@ -22,29 +22,42 @@ define('INFO',3);		// info, errors and warnings
 define('DEBUG',4);		// everything
 $CONF['LogLevel'] = INFO;
 
-class ACTIONLOG {
-
+class ACTIONLOG
+{
 	/**
-	  * (Static) Method to add a message to the action log
-	  */
-	function add($level, $message) {
+	 * ACTIONLOG::add()
+	 * Method to add a message to the action log
+	 * 
+	 * @static
+	 * @param	Integer	$level	log level
+	 * @param	String	$message	log message
+	 * @return	
+	 * 
+	 */
+	function add($level, $message)
+	{
 		global $member, $CONF;
-
-		if ($CONF['LogLevel'] < $level)
+		
+		if ( $CONF['LogLevel'] < $level )
+		{
 			return;
-
-		if ($member && $member->isLoggedIn())
+		}
+		
+		if ( $member && $member->isLoggedIn() )
+		{
 			$message = "[" . $member->getDisplayName() . "] " . $message;
-
+		}
+		
 		$message = sql_real_escape_string($message);		// add slashes
 		$timestamp = date("Y-m-d H:i:s",time());	// format timestamp
-		$query = "INSERT INTO " . sql_table('actionlog') . " (timestamp, message) VALUES ('$timestamp', '$message')";
-
+		$query = "INSERT INTO %s (timestamp, message) VALUES ('%s', '%s')";
+		$query = sprintf($query, sql_table('actionlog'), $timestamp, $message);
 		sql_query($query);
-
-		ACTIONLOG::trimLog();
+		
+		self::trimLog();
+		return;
 	}
-
+	
 	/**
 	  * (Static) Method to clear the whole action log
 	  */

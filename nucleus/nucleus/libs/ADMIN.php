@@ -4043,24 +4043,32 @@ selector();
 
     }
 
-    /**
-     * @todo document this
-     */
-    function addToTemplate($id, $partname, $content) {
-        $partname = sql_real_escape_string($partname);
-        $content = sql_real_escape_string($content);
-
-        $id = intval($id);
-
-        // don't add empty parts:
-        if (!trim($content)) return -1;
-
-        $query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
-               . "VALUES ($id, '$partname', '$content')";
-        sql_query($query) or exit(_ADMIN_SQLDIE_QUERYERROR . sql_error());
-        return sql_insert_id();
-    }
-
+	/**
+	 * ADMIN::addToTemplate()
+	 * 
+	 * @param	Integer	$id	ID for template
+	 * @param	String	$partname	parts name
+	 * @param	String	$content	template contents
+	 * @return	Integer	record index
+	 * 
+	 */
+	function addToTemplate($id, $partname, $content)
+	{
+		// don't add empty parts:
+		if ( !trim($content) )
+		{
+			return -1;
+		}
+		
+		$partname = sql_real_escape_string($partname);
+		$content = sql_real_escape_string($content);
+		
+		$query = "INSERT INTO %s (tdesc, tpartname, tcontent) VALUES (%d, '%s', '%s')";
+		$query = sprintf($query, sql_table('template'), (integer) $id, $partname, $content);
+		sql_query($query) or exit(_ADMIN_SQLDIE_QUERYERROR . sql_error());
+		return sql_insert_id();
+	}
+	
     /**
      * @todo document this
      */
@@ -4677,91 +4685,104 @@ selector();
 
     }
 
-    /**
-     * @todo document this
-     */
-    function skinclonetype($skin, $newid, $type) {
-        $newid = intval($newid);
-        $content = $skin->getContent($type);
-        if ($content) {
-            $query = 'INSERT INTO '.sql_table('skin')." (sdesc, scontent, stype) VALUES ($newid,'". sql_real_escape_string($content)."', '". sql_real_escape_string($type)."')";
-            sql_query($query);
-        }
-    }
+	/**
+	 * ADMIN::skinclonetype()
+	 * 
+	 * @param	String	$skin	Skin object
+	 * @param	Integer	$newid	ID for this clone
+	 * @param	String	$type	type of skin
+	 * @return	Void
+	 */
+	function skinclonetype($skin, $newid, $type)
+	{
+		$newid = intval($newid);
+		$content = $skin->getContent($type);
+		
+		if ( $content )
+		{
+			$query = "INSERT INTO %s (sdesc, scontent, stype) VALUES (%d, '%s', '%s')";
+			$query = sprintf($query, sql_table('skin'), (integer) $newid, $content, $type);
+			sql_query($query);
+		}
+		return;
+	}
+	
+	/**
+	 * ADMIN::action_settingsedit()
+	 * 
+	 * @param	Void
+	 * @return	Void
+	 */
+	function action_settingsedit() {
+		global $member, $manager, $CONF, $DIR_NUCLEUS, $DIR_MEDIA;
 
-    /**
-     * @todo document this
-     */
-    function action_settingsedit() {
-        global $member, $manager, $CONF, $DIR_NUCLEUS, $DIR_MEDIA;
+		$member->isAdmin() or $this->disallow();
 
-        $member->isAdmin() or $this->disallow();
+		$this->pagehead();
 
-        $this->pagehead();
+		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
+		?>
 
-        echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
-        ?>
+		<h2><?php echo _SETTINGS_TITLE?></h2>
 
-        <h2><?php echo _SETTINGS_TITLE?></h2>
+		<form action="index.php" method="post">
+		<div>
 
-        <form action="index.php" method="post">
-        <div>
+		<input type="hidden" name="action" value="settingsupdate" />
+		<?php $manager->addTicketHidden() ?>
 
-        <input type="hidden" name="action" value="settingsupdate" />
-        <?php $manager->addTicketHidden() ?>
-
-        <table><tr>
-            <th colspan="2"><?php echo _SETTINGS_SUB_GENERAL?></th>
-        </tr><tr>
-            <td><?php echo _SETTINGS_DEFBLOG?> <?php help('defaultblog'); ?></td>
-            <td>
-                <?php
-                    $query =  'SELECT bname as text, bnumber as value'
-                           . ' FROM '.sql_table('blog');
-                    $template['name'] = 'DefaultBlog';
-                    $template['selected'] = $CONF['DefaultBlog'];
-                    $template['tabindex'] = 10;
-                    showlist($query,'select',$template);
-                ?>
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_BASESKIN?> <?php help('baseskin'); ?></td>
-            <td>
-                <?php
-                    $query =  'SELECT sdname as text, sdnumber as value'
-                           . ' FROM '.sql_table('skin_desc');
-                    $template['name'] = 'BaseSkin';
-                    $template['selected'] = $CONF['BaseSkin'];
-                    $template['tabindex'] = 1;
-                    showlist($query,'select',$template);
-                ?>
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_ADMINMAIL?></td>
-            <td><input name="AdminEmail" tabindex="10010" size="40" value="<?php echo  ENTITY::hsc($CONF['AdminEmail']) ?>" /></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_SITENAME?></td>
-            <td><input name="SiteName" tabindex="10020" size="40" value="<?php echo  ENTITY::hsc($CONF['SiteName']) ?>" /></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_SITEURL?></td>
-            <td><input name="IndexURL" tabindex="10030" size="40" value="<?php echo  ENTITY::hsc($CONF['IndexURL']) ?>" /></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_ADMINURL?></td>
-            <td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  ENTITY::hsc($CONF['AdminURL']) ?>" /></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_PLUGINURL?> <?php help('pluginurl');?></td>
-            <td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  ENTITY::hsc($CONF['PluginURL']) ?>" /></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_SKINSURL?> <?php help('skinsurl');?></td>
-            <td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  ENTITY::hsc($CONF['SkinsURL']) ?>" /></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_ACTIONSURL?> <?php help('actionurl');?></td>
-            <td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  ENTITY::hsc($CONF['ActionURL']) ?>" /></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_LOCALE?> <?php help('locale'); ?>
-            </td>
-            <td>
-                <select name="Locale" tabindex="10050">
+		<table><tr>
+			<th colspan="2"><?php echo _SETTINGS_SUB_GENERAL?></th>
+		</tr><tr>
+			<td><?php echo _SETTINGS_DEFBLOG?> <?php help('defaultblog'); ?></td>
+			<td>
+				<?php
+					$query =  'SELECT bname as text, bnumber as value'
+						   . ' FROM '.sql_table('blog');
+					$template['name'] = 'DefaultBlog';
+					$template['selected'] = $CONF['DefaultBlog'];
+					$template['tabindex'] = 10;
+					showlist($query,'select',$template);
+				?>
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_BASESKIN?> <?php help('baseskin'); ?></td>
+			<td>
+				<?php
+					$query =  'SELECT sdname as text, sdnumber as value'
+						   . ' FROM '.sql_table('skin_desc');
+					$template['name'] = 'BaseSkin';
+					$template['selected'] = $CONF['BaseSkin'];
+					$template['tabindex'] = 1;
+					showlist($query,'select',$template);
+				?>
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_ADMINMAIL?></td>
+			<td><input name="AdminEmail" tabindex="10010" size="40" value="<?php echo  ENTITY::hsc($CONF['AdminEmail']) ?>" /></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_SITENAME?></td>
+			<td><input name="SiteName" tabindex="10020" size="40" value="<?php echo  ENTITY::hsc($CONF['SiteName']) ?>" /></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_SITEURL?></td>
+			<td><input name="IndexURL" tabindex="10030" size="40" value="<?php echo  ENTITY::hsc($CONF['IndexURL']) ?>" /></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_ADMINURL?></td>
+			<td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  ENTITY::hsc($CONF['AdminURL']) ?>" /></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_PLUGINURL?> <?php help('pluginurl');?></td>
+			<td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  ENTITY::hsc($CONF['PluginURL']) ?>" /></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_SKINSURL?> <?php help('skinsurl');?></td>
+			<td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  ENTITY::hsc($CONF['SkinsURL']) ?>" /></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_ACTIONSURL?> <?php help('actionurl');?></td>
+			<td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  ENTITY::hsc($CONF['ActionURL']) ?>" /></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_LOCALE?> <?php help('locale'); ?>
+			</td>
+			<td>
+				<select name="Locale" tabindex="10050">
 			<?php
 				$locales = i18n::get_available_locale_list();
 				if ( !i18n::get_current_locale() || !in_array(i18n::get_current_locale(), $locales) )
@@ -4791,90 +4812,90 @@ selector();
 			?>
 			</select>
 
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_DISABLESITE?> <?php help('disablesite'); ?>
-            </td>
-            <td><?php $this->input_yesno('DisableSite',$CONF['DisableSite'],10060); ?>
-                    <br />
-                <?php echo _SETTINGS_DISABLESITEURL ?> <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  ENTITY::hsc($CONF['DisableSiteURL'])?>" />
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_DIRS?></td>
-            <td><?php echo  ENTITY::hsc($DIR_NUCLEUS) ?>
-                <i><?php echo _SETTINGS_SEECONFIGPHP?></i></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_DBLOGIN?></td>
-            <td><i><?php echo _SETTINGS_SEECONFIGPHP?></i></td>
-        </tr><tr>
-            <td>
-            <?php
-                echo _SETTINGS_JSTOOLBAR
-                /* =_SETTINGS_DISABLEJS
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_DISABLESITE?> <?php help('disablesite'); ?>
+			</td>
+			<td><?php $this->input_yesno('DisableSite',$CONF['DisableSite'],10060); ?>
+					<br />
+				<?php echo _SETTINGS_DISABLESITEURL ?> <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  ENTITY::hsc($CONF['DisableSiteURL'])?>" />
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_DIRS?></td>
+			<td><?php echo  ENTITY::hsc($DIR_NUCLEUS) ?>
+				<i><?php echo _SETTINGS_SEECONFIGPHP?></i></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_DBLOGIN?></td>
+			<td><i><?php echo _SETTINGS_SEECONFIGPHP?></i></td>
+		</tr><tr>
+			<td>
+			<?php
+				echo _SETTINGS_JSTOOLBAR
+				/* =_SETTINGS_DISABLEJS
 
-                    I temporary changed the meaning of DisableJsTools, until I can find a good
-                    way to select the javascript version to use
+					I temporary changed the meaning of DisableJsTools, until I can find a good
+					way to select the javascript version to use
 
-                    now, its:
-                        0 : IE
-                        1 : all javascript disabled
-                        2 : 'simpler' javascript (for mozilla/opera/mac)
-                */
-               ?>
-            </td>
-            <td><?php /* $this->input_yesno('DisableJsTools',$CONF['DisableJsTools'],10075); */?>
-                <select name="DisableJsTools" tabindex="10075">
-            <?php                   $extra = ($CONF['DisableJsTools'] == 1) ? 'selected="selected"' : '';
-                    echo "<option $extra value='1'>",_SETTINGS_JSTOOLBAR_NONE,"</option>";
-                    $extra = ($CONF['DisableJsTools'] == 2) ? 'selected="selected"' : '';
-                    echo "<option $extra value='2'>",_SETTINGS_JSTOOLBAR_SIMPLE,"</option>";
-                    $extra = ($CONF['DisableJsTools'] == 0) ? 'selected="selected"' : '';
-                    echo "<option $extra value='0'>",_SETTINGS_JSTOOLBAR_FULL,"</option>";
-            ?>
-                </select>
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_URLMODE?> <?php help('urlmode');?></td>
-                       <td><?php
+					now, its:
+						0 : IE
+						1 : all javascript disabled
+						2 : 'simpler' javascript (for mozilla/opera/mac)
+				*/
+			   ?>
+			</td>
+			<td><?php /* $this->input_yesno('DisableJsTools',$CONF['DisableJsTools'],10075); */?>
+				<select name="DisableJsTools" tabindex="10075">
+			<?php				   $extra = ($CONF['DisableJsTools'] == 1) ? 'selected="selected"' : '';
+					echo "<option $extra value='1'>",_SETTINGS_JSTOOLBAR_NONE,"</option>";
+					$extra = ($CONF['DisableJsTools'] == 2) ? 'selected="selected"' : '';
+					echo "<option $extra value='2'>",_SETTINGS_JSTOOLBAR_SIMPLE,"</option>";
+					$extra = ($CONF['DisableJsTools'] == 0) ? 'selected="selected"' : '';
+					echo "<option $extra value='0'>",_SETTINGS_JSTOOLBAR_FULL,"</option>";
+			?>
+				</select>
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_URLMODE?> <?php help('urlmode');?></td>
+					   <td><?php
 
-                       $this->input_yesno('URLMode',$CONF['URLMode'],10077,
-                              'normal','pathinfo',_SETTINGS_URLMODE_NORMAL,_SETTINGS_URLMODE_PATHINFO);
+					   $this->input_yesno('URLMode',$CONF['URLMode'],10077,
+							  'normal','pathinfo',_SETTINGS_URLMODE_NORMAL,_SETTINGS_URLMODE_PATHINFO);
 
-                       echo ' ', _SETTINGS_URLMODE_HELP;
+					   echo ' ', _SETTINGS_URLMODE_HELP;
 
-                             ?>
+							 ?>
 
-                       </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_DEBUGVARS?> <?php help('debugvars');?></td>
-                       <td><?php
+					   </td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_DEBUGVARS?> <?php help('debugvars');?></td>
+					   <td><?php
 
-                        $this->input_yesno('DebugVars',$CONF['DebugVars'],10078);
+						$this->input_yesno('DebugVars',$CONF['DebugVars'],10078);
 
-                             ?>
+							 ?>
 
-                       </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_DEFAULTLISTSIZE?> <?php help('defaultlistsize');?></td>
-            <td>
-            <?php
-                if (!array_key_exists('DefaultListSize',$CONF)) {
-                    sql_query("INSERT INTO ".sql_table('config')." VALUES ('DefaultListSize', '10')");
-                    $CONF['DefaultListSize'] = 10;
-                }
-            ?>
-                <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  ENTITY::hsc((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_ADMINCSS?> 
-            </td>
-            <td>
+					   </td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_DEFAULTLISTSIZE?> <?php help('defaultlistsize');?></td>
+			<td>
+			<?php
+				if (!array_key_exists('DefaultListSize',$CONF)) {
+					sql_query("INSERT INTO ".sql_table('config')." VALUES ('DefaultListSize', '10')");
+					$CONF['DefaultListSize'] = 10;
+				}
+			?>
+				<input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  ENTITY::hsc((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_ADMINCSS?> 
+			</td>
+			<td>
 
-                <select name="AdminCSS" tabindex="10080">
-                <?php               // show a dropdown list of all available admin css files
-                global $DIR_NUCLEUS;
+				<select name="AdminCSS" tabindex="10080">
+				<?php			   // show a dropdown list of all available admin css files
+				global $DIR_NUCLEUS;
 				
-                $dirhandle = opendir($DIR_NUCLEUS."styles/");
+				$dirhandle = opendir($DIR_NUCLEUS."styles/");
 
 				while ($filename = readdir($dirhandle) )
 				{
@@ -4904,127 +4925,127 @@ selector();
 				?>
 				</select>
 
-            </td>
-        </tr><tr>
-            <th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
-        </tr><tr>
-            <td><?php echo _SETTINGS_MEDIADIR?></td>
-            <td><?php echo  ENTITY::hsc($DIR_MEDIA) ?>
-                <i><?php echo _SETTINGS_SEECONFIGPHP?></i>
-                <?php                   if (!is_dir($DIR_MEDIA))
-                        echo "<br /><b>" . _WARNING_NOTADIR . "</b>";
-                    if (!is_readable($DIR_MEDIA))
-                        echo "<br /><b>" . _WARNING_NOTREADABLE . "</b>";
-                    if (!is_writeable($DIR_MEDIA))
-                        echo "<br /><b>" . _WARNING_NOTWRITABLE . "</b>";
-                ?>
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_MEDIAURL?></td>
-            <td>
-                <input name="MediaURL" tabindex="10090" size="40" value="<?php echo  ENTITY::hsc($CONF['MediaURL']) ?>" />
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_ALLOWUPLOAD?></td>
-            <td><?php $this->input_yesno('AllowUpload',$CONF['AllowUpload'],10090); ?></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_ALLOWUPLOADTYPES?></td>
-            <td>
-                <input name="AllowedTypes" tabindex="10100" size="40" value="<?php echo  ENTITY::hsc($CONF['AllowedTypes']) ?>" />
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_MAXUPLOADSIZE?></td>
-            <td>
-                <input name="MaxUploadSize" tabindex="10105" size="40" value="<?php echo  ENTITY::hsc($CONF['MaxUploadSize']) ?>" />
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_MEDIAPREFIX?></td>
-            <td><?php $this->input_yesno('MediaPrefix',$CONF['MediaPrefix'],10110); ?></td>
+			</td>
+		</tr><tr>
+			<th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
+		</tr><tr>
+			<td><?php echo _SETTINGS_MEDIADIR?></td>
+			<td><?php echo  ENTITY::hsc($DIR_MEDIA) ?>
+				<i><?php echo _SETTINGS_SEECONFIGPHP?></i>
+				<?php				   if (!is_dir($DIR_MEDIA))
+						echo "<br /><b>" . _WARNING_NOTADIR . "</b>";
+					if (!is_readable($DIR_MEDIA))
+						echo "<br /><b>" . _WARNING_NOTREADABLE . "</b>";
+					if (!is_writeable($DIR_MEDIA))
+						echo "<br /><b>" . _WARNING_NOTWRITABLE . "</b>";
+				?>
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_MEDIAURL?></td>
+			<td>
+				<input name="MediaURL" tabindex="10090" size="40" value="<?php echo  ENTITY::hsc($CONF['MediaURL']) ?>" />
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_ALLOWUPLOAD?></td>
+			<td><?php $this->input_yesno('AllowUpload',$CONF['AllowUpload'],10090); ?></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_ALLOWUPLOADTYPES?></td>
+			<td>
+				<input name="AllowedTypes" tabindex="10100" size="40" value="<?php echo  ENTITY::hsc($CONF['AllowedTypes']) ?>" />
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_MAXUPLOADSIZE?></td>
+			<td>
+				<input name="MaxUploadSize" tabindex="10105" size="40" value="<?php echo  ENTITY::hsc($CONF['MaxUploadSize']) ?>" />
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_MEDIAPREFIX?></td>
+			<td><?php $this->input_yesno('MediaPrefix',$CONF['MediaPrefix'],10110); ?></td>
 
-        </tr><tr>
-            <th colspan="2"><?php echo _SETTINGS_MEMBERS?></th>
-        </tr><tr>
-            <td><?php echo _SETTINGS_CHANGELOGIN?></td>
-            <td><?php $this->input_yesno('AllowLoginEdit',$CONF['AllowLoginEdit'],10120); ?></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_ALLOWCREATE?>
-                <?php help('allowaccountcreation'); ?>
-            </td>
-            <td><?php $this->input_yesno('AllowMemberCreate',$CONF['AllowMemberCreate'],10130); ?>
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_NEWLOGIN?> <?php help('allownewmemberlogin'); ?>
-                <br /><?php echo _SETTINGS_NEWLOGIN2?>
-            </td>
-            <td><?php $this->input_yesno('NewMemberCanLogon',$CONF['NewMemberCanLogon'],10140); ?>
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_MEMBERMSGS?>
-                <?php help('messageservice'); ?>
-            </td>
-            <td><?php $this->input_yesno('AllowMemberMail',$CONF['AllowMemberMail'],10150); ?>
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_NONMEMBERMSGS?>
-                <?php help('messageservice'); ?>
-            </td>
-            <td><?php $this->input_yesno('NonmemberMail',$CONF['NonmemberMail'],10155); ?>
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_PROTECTMEMNAMES?>
-                <?php help('protectmemnames'); ?>
-            </td>
-            <td><?php $this->input_yesno('ProtectMemNames',$CONF['ProtectMemNames'],10156); ?>
-            </td>
-
-
-
-        </tr><tr>
-            <th colspan="2"><?php echo _SETTINGS_COOKIES_TITLE?> <?php help('cookies'); ?></th>
-        </tr><tr>
-            <td><?php echo _SETTINGS_COOKIEPREFIX?></td>
-            <td><input name="CookiePrefix" tabindex="10159" size="40" value="<?php echo  ENTITY::hsc($CONF['CookiePrefix'])?>" /></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_COOKIEDOMAIN?></td>
-            <td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  ENTITY::hsc($CONF['CookieDomain'])?>" /></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_COOKIEPATH?></td>
-            <td><input name="CookiePath" tabindex="10170" size="40" value="<?php echo  ENTITY::hsc($CONF['CookiePath'])?>" /></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_COOKIESECURE?></td>
-            <td><?php $this->input_yesno('CookieSecure',$CONF['CookieSecure'],10180); ?></td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_COOKIELIFE?></td>
-            <td><?php $this->input_yesno('SessionCookie',$CONF['SessionCookie'],10190,
-                              1,0,_SETTINGS_COOKIESESSION,_SETTINGS_COOKIEMONTH); ?>
-            </td>
-        </tr><tr>
-            <td><?php echo _SETTINGS_LASTVISIT?></td>
-            <td><?php $this->input_yesno('LastVisit',$CONF['LastVisit'],10200); ?></td>
+		</tr><tr>
+			<th colspan="2"><?php echo _SETTINGS_MEMBERS?></th>
+		</tr><tr>
+			<td><?php echo _SETTINGS_CHANGELOGIN?></td>
+			<td><?php $this->input_yesno('AllowLoginEdit',$CONF['AllowLoginEdit'],10120); ?></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_ALLOWCREATE?>
+				<?php help('allowaccountcreation'); ?>
+			</td>
+			<td><?php $this->input_yesno('AllowMemberCreate',$CONF['AllowMemberCreate'],10130); ?>
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_NEWLOGIN?> <?php help('allownewmemberlogin'); ?>
+				<br /><?php echo _SETTINGS_NEWLOGIN2?>
+			</td>
+			<td><?php $this->input_yesno('NewMemberCanLogon',$CONF['NewMemberCanLogon'],10140); ?>
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_MEMBERMSGS?>
+				<?php help('messageservice'); ?>
+			</td>
+			<td><?php $this->input_yesno('AllowMemberMail',$CONF['AllowMemberMail'],10150); ?>
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_NONMEMBERMSGS?>
+				<?php help('messageservice'); ?>
+			</td>
+			<td><?php $this->input_yesno('NonmemberMail',$CONF['NonmemberMail'],10155); ?>
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_PROTECTMEMNAMES?>
+				<?php help('protectmemnames'); ?>
+			</td>
+			<td><?php $this->input_yesno('ProtectMemNames',$CONF['ProtectMemNames'],10156); ?>
+			</td>
 
 
 
-        </tr><tr>
-            <th colspan="2"><?php echo _SETTINGS_UPDATE?></th>
-        </tr><tr>
-            <td><?php echo _SETTINGS_UPDATE?></td>
-            <td><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN?>" onclick="return checkSubmit();" /></td>
-        </tr></table>
+		</tr><tr>
+			<th colspan="2"><?php echo _SETTINGS_COOKIES_TITLE?> <?php help('cookies'); ?></th>
+		</tr><tr>
+			<td><?php echo _SETTINGS_COOKIEPREFIX?></td>
+			<td><input name="CookiePrefix" tabindex="10159" size="40" value="<?php echo  ENTITY::hsc($CONF['CookiePrefix'])?>" /></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_COOKIEDOMAIN?></td>
+			<td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  ENTITY::hsc($CONF['CookieDomain'])?>" /></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_COOKIEPATH?></td>
+			<td><input name="CookiePath" tabindex="10170" size="40" value="<?php echo  ENTITY::hsc($CONF['CookiePath'])?>" /></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_COOKIESECURE?></td>
+			<td><?php $this->input_yesno('CookieSecure',$CONF['CookieSecure'],10180); ?></td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_COOKIELIFE?></td>
+			<td><?php $this->input_yesno('SessionCookie',$CONF['SessionCookie'],10190,
+							  1,0,_SETTINGS_COOKIESESSION,_SETTINGS_COOKIEMONTH); ?>
+			</td>
+		</tr><tr>
+			<td><?php echo _SETTINGS_LASTVISIT?></td>
+			<td><?php $this->input_yesno('LastVisit',$CONF['LastVisit'],10200); ?></td>
 
-        </div>
-        </form>
 
-        <?php
-            echo '<h2>',_PLUGINS_EXTRA,'</h2>';
 
-            $manager->notify(
-                'GeneralSettingsFormExtras',
-                array()
-            );
+		</tr><tr>
+			<th colspan="2"><?php echo _SETTINGS_UPDATE?></th>
+		</tr><tr>
+			<td><?php echo _SETTINGS_UPDATE?></td>
+			<td><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN?>" onclick="return checkSubmit();" /></td>
+		</tr></table>
 
-        $this->pagefoot();
-    }
+		</div>
+		</form>
 
+		<?php
+			echo '<h2>',_PLUGINS_EXTRA,'</h2>';
+
+			$manager->notify(
+				'GeneralSettingsFormExtras',
+				array()
+			);
+
+		$this->pagefoot();
+	}
+	
 	/**
 	 * ADMIN::action_settingsupdate()
 	 * Update $CONFIG and redirect
@@ -6194,131 +6215,149 @@ selector();
         $this->pagefoot();
     }
 
-    /**
-     * @todo document this
-     */
-    function action_pluginadd() {
-        global $member, $manager, $DIR_PLUGINS;
-
-        // check if allowed
-        $member->isAdmin() or $this->disallow();
-
-        $name = postVar('filename');
-
-        if ($manager->pluginInstalled($name))
-            $this->error(_ERROR_DUPPLUGIN);
-        if (!checkPlugin($name))
-            $this->error(_ERROR_PLUGFILEERROR . ' (' . ENTITY::hsc($name) . ')');
-
-        // get number of currently installed plugins
-        $res = sql_query('SELECT * FROM '.sql_table('plugin'));
-        $numCurrent = sql_num_rows($res);
-
-        // plugin will be added as last one in the list
-        $newOrder = $numCurrent + 1;
-
-        $manager->notify(
-            'PreAddPlugin',
-            array(
-                'file' => &$name
-            )
-        );
-
-        // do this before calling getPlugin (in case the plugin id is used there)
-        $query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.sql_real_escape_string($name).'")';
-        sql_query($query);
-        $iPid = sql_insert_id();
-
-        $manager->clearCachedInfo('installedPlugins');
-
-        // Load the plugin for condition checking and instalation
-        $plugin =& $manager->getPlugin($name);
-
-        // check if it got loaded (could have failed)
-        if (!$plugin)
-        {
-            sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. intval($iPid));
-            $manager->clearCachedInfo('installedPlugins');
-            $this->error(_ERROR_PLUGIN_LOAD);
-        }
-
-        // check if plugin needs a newer Nucleus version
-        if (getNucleusVersion() < $plugin->getMinNucleusVersion())
-        {
-            // uninstall plugin again...
-            $this->deleteOnePlugin($plugin->getID());
-
-            // ...and show error
-            $this->error(_ERROR_NUCLEUSVERSIONREQ . ENTITY::hsc($plugin->getMinNucleusVersion()));
-        }
-
-        // check if plugin needs a newer Nucleus version
-        if ((getNucleusVersion() == $plugin->getMinNucleusVersion()) && (getNucleusPatchLevel() < $plugin->getMinNucleusPatchLevel()))
-        {
-            // uninstall plugin again...
-            $this->deleteOnePlugin($plugin->getID());
-
-            // ...and show error
-            $this->error(_ERROR_NUCLEUSVERSIONREQ . ENTITY::hsc( $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel() ) );
-        }
-
-        $pluginList = $plugin->getPluginDep();
-        foreach ($pluginList as $pluginName)
-        {
-
-            $res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
-            if (sql_num_rows($res) == 0)
-            {
-                // uninstall plugin again...
-                $this->deleteOnePlugin($plugin->getID());
-
-                $this->error(sprintf(_ERROR_INSREQPLUGIN, ENTITY::hsc($pluginName)));
-            }
-        }
-
-        // call the install method of the plugin
-        $plugin->install();
-
-        $manager->notify(
-            'PostAddPlugin',
-            array(
-                'plugin' => &$plugin
-            )
-        );
-
-        // update all events
-        $this->action_pluginupdate();
-    }
-
-    /**
-     * @todo document this
-     */
-    function action_pluginupdate() {
-        global $member, $manager, $CONF;
-
-        // check if allowed
-        $member->isAdmin() or $this->disallow();
-
-        // delete everything from plugin_events
-        sql_query('DELETE FROM '.sql_table('plugin_event'));
-
-        // loop over all installed plugins
-        $res = sql_query('SELECT pid, pfile FROM '.sql_table('plugin'));
-        while($o = sql_fetch_object($res)) {
-            $pid = $o->pid;
-            $plug =& $manager->getPlugin($o->pfile);
-            if ($plug)
-            {
-                $eventList = $plug->getEventList();
-                foreach ($eventList as $eventName)
-                    sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.sql_real_escape_string($eventName).'\')');
-            }
-        }
-
-        redirect($CONF['AdminURL'] . '?action=pluginlist');
-//		$this->action_pluginlist();
-    }
-
+	/**
+	 * ADMIN::action_pluginadd()
+	 * 
+	 * @param	Void
+	 * @return	Void
+	 * 
+	 */
+	function action_pluginadd()
+	{
+		global $member, $manager, $DIR_PLUGINS;
+		
+		// check if allowed
+		$member->isAdmin() or $this->disallow();
+		
+		$name = postVar('filename');
+		
+		if ( $manager->pluginInstalled($name) )
+		{
+			$this->error(_ERROR_DUPPLUGIN);
+		}
+		
+		if ( !checkPlugin($name) )
+		{
+			$this->error(_ERROR_PLUGFILEERROR . ' (' . ENTITY::hsc($name) . ')');
+		}
+		
+		// get number of currently installed plugins
+		$res = sql_query('SELECT * FROM '.sql_table('plugin'));
+		$numCurrent = sql_num_rows($res);
+		
+		// plugin will be added as last one in the list
+		$newOrder = $numCurrent + 1;
+		
+		$manager->notify(
+			'PreAddPlugin',
+			array(
+				'file' => &$name
+			)
+		);
+		
+		// do this before calling getPlugin (in case the plugin id is used there)
+		$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.sql_real_escape_string($name).'")';
+		sql_query($query);
+		$iPid = sql_insert_id();
+		
+		$manager->clearCachedInfo('installedPlugins');
+		
+		// Load the plugin for condition checking and instalation
+		$plugin =& $manager->getPlugin($name);
+		
+		// check if it got loaded (could have failed)
+		if ( !$plugin )
+		{
+			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. intval($iPid));
+			$manager->clearCachedInfo('installedPlugins');
+			$this->error(_ERROR_PLUGIN_LOAD);
+		}
+		
+		// check if plugin needs a newer Nucleus version
+		if ( getNucleusVersion() < $plugin->getMinNucleusVersion() )
+		{
+			// uninstall plugin again...
+			$this->deleteOnePlugin($plugin->getID());
+			
+			// ...and show error
+			$this->error(_ERROR_NUCLEUSVERSIONREQ . ENTITY::hsc($plugin->getMinNucleusVersion()));
+		}
+		
+		// check if plugin needs a newer Nucleus version
+		if ( (getNucleusVersion() == $plugin->getMinNucleusVersion()) && (getNucleusPatchLevel() < $plugin->getMinNucleusPatchLevel()) )
+		{
+			// uninstall plugin again...
+			$this->deleteOnePlugin($plugin->getID());
+			
+			// ...and show error
+			$this->error(_ERROR_NUCLEUSVERSIONREQ . ENTITY::hsc( $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel() ) );
+		}
+		
+		$pluginList = $plugin->getPluginDep();
+		foreach ( $pluginList as $pluginName )
+		{
+			$res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
+			if (sql_num_rows($res) == 0)
+			{
+				// uninstall plugin again...
+				$this->deleteOnePlugin($plugin->getID());
+				$this->error(sprintf(_ERROR_INSREQPLUGIN, ENTITY::hsc($pluginName)));
+			}
+		}
+		
+		// call the install method of the plugin
+		$plugin->install();
+		
+		$manager->notify(
+			'PostAddPlugin',
+			array(
+				'plugin' => &$plugin
+			)
+		);
+		
+		// update all events
+		$this->action_pluginupdate();
+		return;
+	}
+	
+	/**
+	 * ADMIN:action_pluginupdate():
+	 * 
+	 * @param	Void
+	 * @return	Void
+	 * 
+	 */
+	function action_pluginupdate()
+	{
+		global $member, $manager, $CONF;
+		
+		// check if allowed
+		$member->isAdmin() or $this->disallow();
+		
+		// delete everything from plugin_events
+		sql_query('DELETE FROM '.sql_table('plugin_event'));
+		
+		// loop over all installed plugins
+		$res = sql_query('SELECT pid, pfile FROM '.sql_table('plugin'));
+		while ( $o = sql_fetch_object($res) )
+		{
+			$pid = $o->pid;
+			$plug =& $manager->getPlugin($o->pfile);
+			if ( $plug )
+			{
+				$eventList = $plug->getEventList();
+				foreach ( $eventList as $eventName )
+				{
+					$query = "INSERT INTO %s (pid, event) VALUES (%d, '%s')";
+					$query = sprintf($query, sql_table('plugin_event'), (integer) $pid, sql_real_escape_string($eventName));
+					sql_query($query);
+				}
+			}
+		}
+		redirect($CONF['AdminURL'] . '?action=pluginlist');
+		return;
+	}
+	
     /**
      * @todo document this
      */

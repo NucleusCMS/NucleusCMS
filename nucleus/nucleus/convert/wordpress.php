@@ -166,7 +166,7 @@ a:hover{text-decoration:underline}
         echo $total_num.", ";
 		$cate_map[$row->term_id] = $total_num;
         $query=
-          "insert into " . sql_table('category') .
+          "INSERT INTO " . sql_table('category') .
           " (catid,cblog,cname,cdesc)  values (".
           intval($total_num).",1,'".encoding($row->name)."','@wordpress')";
         $result = mysql_query($query,$linkblogcms) or die($query);
@@ -193,7 +193,7 @@ a:hover{text-decoration:underline}
 
         // insert post
         $query=
-          "insert into " . sql_table('item') . " ".
+          "INSERT INTO " . sql_table('item') . " ".
           "(ititle,ibody,iblog,iauthor,itime,icat) values (".
           "'".addslashes(encoding($row->post_title))."','".addslashes(paragraph(encoding(stripslashes($row->post_content)),false))."',1,1,'".$row->post_date."',$cat)";
         $result = mysql_query($query,$linkblogcms) or die($query);
@@ -206,7 +206,7 @@ a:hover{text-decoration:underline}
           $url=$row_detail->comment_author_email;
           if (!empty($row_detail->comment_author_url)) $url=$row_detail->comment_author_url;
           $query=
-            "insert into " . sql_table('comment') .
+            "INSERT INTO " . sql_table('comment') .
             " (cbody,cuser,cmail,cmember,citem,ctime,cip,cblog,chost) values (".
               "'".addslashes(paragraph(encoding(strip_tags(stripslashes($row_detail->comment_content))),true))."',".
               "'".encoding($row_detail->comment_author)."',".

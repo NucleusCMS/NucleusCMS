@@ -39,13 +39,21 @@ class BAN {
 	}
 
 	/**
-	  * Adds a new ban to the banlist. Returns 1 on success, 0 on error
-	  */
-	function addBan($blogid, $iprange, $reason) {
+	 * BAN::addBan()
+	 * Adds a new ban to the banlist. Returns 1 on success, 0 on error
+	 * 
+	 * @param	Integer	$blogid	ID for weblog
+	 * @param	String 	$iprange	IP range
+	 * @param	String 	$reason	reason for banning
+	 * @return	Boolean
+	 * 
+	 */
+	function addBan($blogid, $iprange, $reason)
+	{
 		global $manager;
-
+		
 		$blogid = intval($blogid);
-
+		
 		$manager->notify(
 			'PreAddBan',
 			array(
@@ -54,11 +62,11 @@ class BAN {
 				'reason' => &$reason
 			)
 		);
-
-		$query = 'INSERT INTO '.sql_table('ban')." (blogid, iprange, reason) VALUES "
-			   . "($blogid,'".sql_real_escape_string($iprange)."','".sql_real_escape_string($reason)."')";
+		
+		$query = "INSERT INTO %s (blogid, iprange, reason) VALUES (%d, '%s', '%s')";
+		$query = sprintf($query, sql_table('ban'), $blogid, sql_real_escape_string($iprange), sql_real_escape_string($reason));
 		$res = sql_query($query);
-
+		
 		$manager->notify(
 			'PostAddBan',
 			array(
@@ -67,10 +75,9 @@ class BAN {
 				'reason' => $reason
 			)
 		);
-
 		return $res ? 1 : 0;
 	}
-
+	
 	/**
 	  * Removes a ban from the banlist (correct iprange is needed as argument)
 	  * Returns 1 on success, 0 on error

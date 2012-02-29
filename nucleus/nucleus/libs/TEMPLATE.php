@@ -56,18 +56,28 @@ class TEMPLATE {
 	}
 
 	/**
+	 * TEMPLATE::update()
 	 * Updates the contents of one part of the template
+	 * 
+	 * @param	String	$type	value for nucleus_template.tpartname
+	 * @param	String	$content	value for nucleus_template.tcontent
+	 * @return	Void
 	 */
-	function update($type, $content) {
-		$id = $this->getID();
-
+	function update($type, $content)
+	{
 		// delete old thingie
-		sql_query('DELETE FROM '.sql_table('template')." WHERE tpartname='". sql_real_escape_string($type) ."' and tdesc=" . intval($id));
-
+		$query = "DELETE FROM %s WHERE tpartname='%s' and tdesc=%d";
+		$query = sprintf($query, sql_table('template'), sql_real_escape_string($type), (integer) $this->getID());
+		sql_query($query);
+		
 		// write new thingie
-		if ($content) {
-			sql_query('INSERT INTO '.sql_table('template')." SET tcontent='" . sql_real_escape_string($content) . "', tpartname='" . sql_real_escape_string($type) . "', tdesc=" . intval($id));
+		if ( $content )
+		{
+			$query = "INSERT %s (tcontent, tpartname, tdesc) VALUE ('%s', '%s', %d)";
+			$query = sprintf($query, sql_table('template'), sql_real_escape_string($content), sql_real_escape_string($type), (integer) $this->getID());
+			sql_query($query);
 		}
+		return;
 	}
 
 
