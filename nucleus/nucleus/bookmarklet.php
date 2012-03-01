@@ -219,7 +219,7 @@ function bm_loginAndPassThrough()
 	echo "<head>\n";
 	echo "<title>Nucleus</title>\n";
 	
-	bm_style()
+	bm_style();
 	
 	echo "</head>\n";
 	echo "<body>\n";
