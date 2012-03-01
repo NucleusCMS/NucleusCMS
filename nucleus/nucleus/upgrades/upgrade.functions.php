@@ -163,7 +163,6 @@
 		return getNucleusVersion();
 	}
 
-
 	/**
 	 * Show the login form
 	 * @param string $action
@@ -171,59 +170,48 @@
 	function upgrade_showLogin($action)
 	{
 		upgrade_head();
-?>
-	<h1> Log In </h1>
-	<p> Please enter your login name and password. </p>
-
-	<form method="POST" action="<?php echo $action; ?>">
-	<ul>
-		<li> <label for="i_login">Name:</label> <input type="text" name="login" id="i_login" size="20" /> </li>
-		<li> <label for="i_password">Password:</label> <input type="password" name="password" id="i_password" size="20" /> </li>
-	</ul>
-	<p> <input type="submit" value="Log In" /> </p>
-	<input name="action" value="login" type="hidden" />
-	</form>
-
-<?php
+		
+		echo "<h1> Log In </h1>\n";
+		echo "<p>Please enter your login name and password. </p>\n";
+	
+		echo "<form method=\"POST\" action=\"{$action}\">\n";
+		echo "<ul>\n";
+		echo "<li><label for=\"i_login\">Name:</label> <input type=\"text\" name=\"login\" id=\"i_login\" size=\"20\" /></li>\n";
+		echo "<li><label for=\"i_password\">Password:</label> <input type=\"password\" name=\"password\" id=\"i_password\" size=\"20\" /></li>\n";
+		echo "</ul>\n";
+		echo "<p><input type=\"submit\" value=\"Log In\" /></p>\n";
+		echo "<input name=\"action\" value=\"login\" type=\"hidden\" />\n";
+		echo "</form>\n";
+		
 		upgrade_foot();
 		exit;
-	} // end function upgrade_showLogin()
-
+	}
 
 	/**
 	 * Display the HTML header
 	 */
 	function upgrade_head()
 	{
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<title> Nucleus Upgrade </title>
-<?php
-	// begin if: manual.css exists - <link> it
-	if ( file_exists('../styles/manual.css') )
-	{
-?>
-		<link rel="stylesheet" href="../styles/manual.css" type="text/css" />
-<?php
+		echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
+		echo "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+		echo "<head>\n";
+		echo "<title> Nucleus Upgrade </title>\n";
+		
+		if ( file_exists('../styles/manual.css') )
+		{
+			echo "<link rel=\"stylesheet\" href=\"../styles/manual.css\" type=\"text/css\" />\n";
+		}
+		else
+		{
+			echo "<style type=\"text/css\">\n";
+			echo ".warning { color: red; }\n";
+			echo ".ok { color: green; }\n";
+			echo "</style>\n";
+		}
+		
+		echo "</head>\n";
+		echo "<body>\n";
 	}
-	// else: include some CSS
-	else
-	{
-?>
-		<style type="text/css">
-			.warning { color: red; }
-			.ok { color: green; }
-		</style>
-<?php
-	} // end if
-?>
-	</head>
-	<body>
-
-<?php
-	} // end function upgrade_head()
 
 
 	/**

@@ -101,7 +101,7 @@
 	}
 	else
 	{
-		$current = 400
+		$current = 400;
 	}
 	
 	if ( $current == 400 )
