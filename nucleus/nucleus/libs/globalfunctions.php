@@ -17,13 +17,13 @@
  */
 
 /* needed if we include globalfunctions from install.php */
-global $nucleus, $CONF, $DIR_LIBS, $DIR_LOCALE, $manager, $member;
+global $nucleus, $CONF, $DIR_LIBS, $DIR_LOCALES, $manager, $member;
 
 $nucleus['version'] = 'v4.00 SVN';
 $nucleus['codename'] = '';
 
 /* check and die if someone is trying to override internal globals (when register_globals turn on) */
-checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', '$DIR_LOCALE', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
+checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', '$DIR_LOCALES', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
 
 $CONF['debug'] = 0;
 if ( $CONF['debug'] )
@@ -234,19 +234,16 @@ register_shutdown_function('sql_disconnect');
 getConfig();
 
 /*
- * Nucleus CMS 4.0 uses 'locale' instead of 'language' to decide which translation file used
- * Here simply convert old name to new name without checking translation file existance
- * FIXME: This is for compatibility, should be obsoleted near future.
+ * FIXME: This is for backward compatibility, should be obsoleted near future.
  */
-if ( !array_key_exists('Locale', $CONF) )
-{
-	$CONF['Locale'] =& $CONF['Language'];
-}
-
 if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Locale'])
-  && ($CONF['Locale'] = i18n::convert_old_language_file_name_to_locale($CONF['Language'])) === FALSE )
+  && ($CONF['Locale'] = i18n::convert_old_language_file_name_to_locale($CONF['Locale'])) === FALSE )
 {
-	$CONF['Locale'] = '';
+	$CONF['Locale'] = 'en_Latn_US';
+}
+if ( !array_key_exists('Language', $CONF) )
+{
+	$CONF['Language'] = i18n::convert_locale_to_old_language_file_name($CONF['Locale']);
 }
 $locale = $CONF['Locale'];
 
@@ -606,7 +603,7 @@ if ( $CONF['URLMode'] == 'pathinfo' )
 						$blogid = intval($data[++$i]);
 					}
 					$i++;
-					if ( $i < sizeof($data) ) 
+					if ( $i < sizeof($data) )
 					{
 						$archive = $data[$i];
 					}
@@ -656,6 +653,7 @@ if ( $CONF['URLMode'] == 'pathinfo' )
 		}
 	}
 }
+
 /*
  * PostParseURL is a place to cleanup any of the path-related global variables before the selector function is run.
  * It has 2 values in the data in case the original virtualpath is needed, but most the use will be in tweaking
@@ -1891,7 +1889,7 @@ function ticketForPlugin()
 		exit('You aren\'t logged in.');
 	}
 	
-	global $manager, $DIR_LIBS, $DIR_LOCALE, $HTTP_GET_VARS, $HTTP_POST_VARS;
+	global $manager, $DIR_LIBS, $DIR_LOCALES, $HTTP_GET_VARS, $HTTP_POST_VARS;
 	
 	/* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
 	if (!($p_translated = serverVar('PATH_TRANSLATED') ) )
