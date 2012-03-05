@@ -177,7 +177,7 @@ while ($author = fgets($filehandle,4096)) {
 		<tr>
 			<td>
 				<b><?php echo $a_name?></b>
-				<input name="author[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden"
+				<input name="author[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden" />
 			</td>
 			<td>
 		<?php			// TODO: avoid doing this query multiple times

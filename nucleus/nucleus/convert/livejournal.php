@@ -149,7 +149,7 @@ function bc_assignMembers() {
 		<tr>
 			<td>
 				<b>default</b>
-				<input name="default" value="default" type="hidden"
+				<input name="default" value="default" type="hidden" />
 			</td>
 			<td>
 		<?php

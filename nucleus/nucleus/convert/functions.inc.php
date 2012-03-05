@@ -324,7 +324,7 @@ class BlogImport {
 						<tr>
 							<td>
 								<strong><?php echo $a_name?></strong>
-								<input name="author[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden"
+								<input name="author[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden" />
 							</td>
 							<td>
 								<select name="memberid[<?php echo $idx?>]">
@@ -342,7 +342,7 @@ class BlogImport {
 					<tr>
 						<td><em>Default Member</em></td>
 						<td>
-							<input name="author[<?php echo $idx?>]" value="_default" type="hidden"
+							<input name="author[<?php echo $idx?>]" value="_default" type="hidden" />
 							<select name="memberid[<?php echo $idx?>]">
 								<?php echo $optionsHtml; ?>
 							</select>
@@ -382,7 +382,7 @@ class BlogImport {
 						<tr>
 							<td>
 								<strong><?php echo $a_name?></strong>
-								<input name="category[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden"
+								<input name="category[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden" />
 							</td>
 							<td>
 								<select name="catid[<?php echo $idx?>]">

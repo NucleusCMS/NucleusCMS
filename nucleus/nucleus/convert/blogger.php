@@ -213,7 +213,7 @@ function bc_assignMembers() {
 		<p>
 			<input type="submit" value="Start Conversion" />
 			<input type="hidden" name="blogid" value="<?php echo intval($blogid) ?>" />
-			<input type="hidden" name="action" value="doConvert" /> (Could take quite a while. Press the button only once)
+			<input type="hidden" name="action" value="doConvert" /> (Could take quite a while. Press the button only once) />
 		</p>
 
 		</div></form>
