@@ -113,7 +113,7 @@
 	else
 	{
 ?>
-	<p class="warning"> <a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.6</a>. </p>
+	<p class="warning"> <a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v4.0</a>. </p>
 <?php
 	}
 ?>
@@ -160,6 +160,15 @@
 		upgrade_manual_350();
 		$sth = 1;
 	}
+
+	// upgrades from pre-400 version need to be warned of possible plugin incompatibility in general and specifically where known.
+	// may also need to do some things for db encoding?
+	if ( in_array($from, array(95, 96)) || $from < 400 )
+	{
+		upgrade_manual_400();
+		$sth = 1;
+	}
+
 
 	if ( $sth == 0 )
 	{
@@ -269,6 +278,54 @@
 		<li> <strong>NP_Text</strong>: Allows you to use internationalized skins to simplify translation. </li>
 		<li> <strong>NP_SecurityEnforcer</strong>: Enforces some security properties like password complexity and maximum failed login attempts. Note that it is disabled by default and must be enabled after installation. </li>
 	</ul>
+
+<?php
+	} // end function upgrade_manual_350()
+
+
+	/**
+	 * Manual update instructions for version 4.0 and before
+	 */
+	function upgrade_manual_400()
+	{
+		global $DIR_NUCLEUS, $manager;
+?>
+	<h2> Important Notices for Nucleus 4.0 </h2>
+
+<?php
+	// Give user warning if they are running old version of PHP
+	if ( phpversion() < '5' )
+	{
+		echo '<p> WARNING: You are running NucleusCMS on a older version of PHP that is no longer supported by NucleusCMS. Please upgrade to PHP5! </p>';
+	}
+	
+	// find if any of the known plugin incompatibilities are installed.
+	$pluginsToCheck = array(
+							array("NP_ShowComments","Not installed","1.30"),
+							array("NP_MultiLanguage","Not installed","1.10")
+						);
+	foreach ( $pluginsToCheck as $plug )
+	{
+		if ( $manager->pluginInstalled($plug[0]) )
+		{
+			$plug[1] = $manager->getPlugin($plug[0])->getVersion();
+		}
+	}
+?>
+
+	<p> Nucleus CMS 4.0 represents a lot of fundamental code changes behind the scenes to make use of PHP5 features, to establish a single multi-byte code base, and to generally improve some of the structure to comply with contempary coding standards.
+	    As such, despite the best efforts of the development team to maintain backward compatibility with plugins, there are areas where compatibility could not be maintained due to the nature of the 3rd-party plugin system. 
+		The following table shows the list of known plugin incompatibilities, please review it and upgrade your plugins as needed. If you experience compatibility issues with any plugins, 
+		please request help at our <a href="http://forum.nucleuscms.org">support forum</a>.</p>
+	<table>
+	<tr><th>Plugin Name</th><th>Installed Version</th><th>4.0-compatible version</th></tr>
+<?php
+	foreach ( $pluginsToCheck as $plug )
+	{
+		echo '<tr><td>'.$plug[0].'</td><td>'.$plug[1].'</td><td>'.$plug[2].'</td></tr>';
+	}
+?>
+	</table>
 
 <?php
 	} // end function upgrade_manual_350()

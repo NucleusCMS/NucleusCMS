@@ -40,6 +40,7 @@ include('upgrade3.3.php');
 include('upgrade3.4.php');
 include('upgrade3.5.php');
 include('upgrade3.6.php');
+include('upgrade4.0.php');
 
 $from = intGetVar('from');
 
@@ -77,6 +78,9 @@ switch($from) {
 		//break;
 	case 350:
 		upgrade_do360();
+		//break;
+	case 360:
+		upgrade_do400();
 		break;
 	default:
 		echo "<li>Error! No updates to execute</li>";

@@ -140,6 +140,11 @@
 				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 360 LIMIT 1';
 				$minrows = 1;
 			break;
+
+			case '400':
+				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 400 LIMIT 1';
+				$minrows = 1;
+			break;
 		}
 
 		$result = mysql_query($query);
