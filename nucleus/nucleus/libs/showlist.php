@@ -698,10 +698,10 @@ function listplug_table_categorylist($template, $type)
 			echo "<td>\n";
 			echo "<input type=\"checkbox\" id=\"batch{$id}\" name=\"batch[{$id}]\" value=\"{$current->catid}\" />\n";
 			echo "<label for=\"batch{$id}\">{$current->cname}</label>\n";
-			echo '</td>\n';
+			echo "</td>\n";
 			echo "<td>{$current->cdesc}</td>\n";
+			echo "<td><a href=\"index.php?action=categoryedit&amp;blogid={$current->cblog}&amp;catid={$current->catid}\" tabindex=\"{$template['tabindex']}\">" . _LISTS_EDIT . "</a></td>\n";
 			echo "<td><a href=\"index.php?action=categorydelete&amp;blogid={$current->cblog}&amp;catid={$current->catid}\" tabindex=\"{$template['tabindex']}\">" . _LISTS_DELETE . "</a></td>\n";
-			echo "<td><a href=\"index.php?action=categoryedit&amp;blogid=}$current->cblog}&amp;catid={$current->catid}\" tabindex=\"{$template['tabindex']}\">" . _LISTS_EDIT . "</a></td>\n";
 			break;
 	}
 	return;
