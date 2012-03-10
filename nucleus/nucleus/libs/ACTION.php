@@ -19,80 +19,88 @@
  */
 class ACTION
 {
-
 	/**
+	 * ACTION::ACTION()
 	 *  Constructor for an new ACTION object
+	 * 
+	 * @param	void
+	 * @return	void
+	 * 
 	 */
 	function ACTION()
 	{
-		// do nothing
+		return;
 	}
-
-
+	
 	/**
+	 * ACTION::doAction()
 	 *  Calls functions that handle an action called from action.php
+	 * 
+	 * @param	string	$action	action type
+	 * @return	mixed
 	 */
 	function doAction($action)
 	{
-		switch($action)
+		switch ( $action )
 		{
 			case 'autodraft':
 				return $this->autoDraft();
 			break;
-		
+			
 			case 'updateticket':
 				return $this->updateTicket();
 			break;
-
+			
 			case 'addcomment':
 				return $this->addComment();
 			break;
-
+			
 			case 'sendmessage':
 				return $this->sendMessage();
 			break;
-
+			
 			case 'createaccount':
 				return $this->createAccount();
 			break;
-
+			
 			case 'forgotpassword':
 				return $this->forgotPassword();
 			break;
-
+			
 			case 'votepositive':
 				return $this->doKarma('pos');
 			break;
-
+			
 			case 'votenegative':
 				return $this->doKarma('neg');
 			break;
-
+			
 			case 'plugin':
 				return $this->callPlugin();
 			break;
-
+			
 			default:
 				doError(_ERROR_BADACTION);
 			break;
 		}
 	}
-
+	
 	/**
 	 * ACTION::addComment()
 	 * Adds a new comment to an item (if IP isn't banned)
 	 * 
-	 * @param	Void
-	 * @return	Void
+	 * @param	void
+	 * @return	void
+	 * 
 	 */
 	function addComment()
 	{
 		global $CONF, $errormessage, $manager;
 		
-		$post['itemid']		= intPostVar('itemid');
+		$post['itemid']	= intPostVar('itemid');
 		$post['user']		= postVar('user');
-		$post['userid']		= postVar('userid');
-		$post['email']		= postVar('email');
+		$post['userid']	= postVar('userid');
+		$post['email']	= postVar('email');
 		$post['body']		= postVar('body');
 		$post['remember']	= intPostVar('remember');
 		
@@ -114,7 +122,15 @@ class ACTION
 		// note: PreAddComment and PostAddComment gets called somewhere inside addComment
 		$errormessage = $comments->addComment($blog->getCorrectTime(), $post);
 		
-		if ( $errormessage == '1' )
+		if ( $errormessage != '1' )
+		{
+			// show error message using default skin for blo
+			return array(
+				'message'	=> $errormessage,
+				'skinid'	=> $blog->getDefaultSkin()
+			);
+		}
+		else
 		{
 			// redirect when adding comments succeeded
 			if ( postVar('url') )
@@ -127,14 +143,6 @@ class ACTION
 				redirect($url);
 			}
 		}
-		// else, show error message using default skin for blo
-		else
-		{
-			return array(
-				'message'	=> $errormessage,
-				'skinid'	=> $blog->getDefaultSkin()
-			);
-		}
 		exit;
 	}
 	
@@ -142,8 +150,9 @@ class ACTION
 	 * ACTION::sendMessage()
 	 * Sends a message from the current member to the member given as argument
 	 * 
-	 * @param	Void
-	 * @return	Void
+	 * @param	void
+	 * @return	void
+	 * 
 	 */
 	function sendMessage()
 	{
@@ -169,7 +178,7 @@ class ACTION
 		
 		$tomem = new MEMBER();
 		$tomem->readFromId(postVar('memberid') );
-
+		
 		$message  = _MMAIL_MSG . ' ' . $fromName . "\n"
 			. '(' . _MMAIL_FROMNUC. ' ' . $CONF['IndexURL'] .") \n\n"
 			. _MMAIL_MAIL . " \n\n"
@@ -179,11 +188,7 @@ class ACTION
 		$title = _MMAIL_TITLE . ' ' . $fromName;
 		NOTIFICATION::mail($tomem->getEmail(), $title, $message, $fromMail, i18n::get_current_charset());
 		
-		if ( postVar('url') )
-		{
-			redirect(postVar('url') );
-		}
-		else
+		if ( !postVar('url') )
 		{
 			$CONF['MemberURL'] = $CONF['IndexURL'];
 			
@@ -195,8 +200,11 @@ class ACTION
 			{
 				$url = $CONF['IndexURL'] . LINK::create_member_link($tomem->getID());
 			}
-			
 			redirect($url);
+		}
+		else
+		{
+			redirect(postVar('url') );
 		}
 		exit;
 	}
@@ -206,8 +214,9 @@ class ACTION
 	 *  Checks if a mail to a member is allowed
 	 *  Returns a string with the error message if the mail is disallowed
 	 *  
-	 *  @param	void
+	 *  @param		void
 	 *  @return	String	Null character string
+	 *  
 	 */
 	function validateMessage()
 	{
@@ -228,8 +237,10 @@ class ACTION
 			return _ERROR_BADMAILADDRESS;
 		}
 		
-		// let plugins do verification (any plugin which thinks the comment is invalid
-		// can change 'error' to something other than '')
+		/*
+		 * let plugins do verification (any plugin which thinks the comment is
+		 * invalid can change 'error' to something other than '')
+		 */
 		$result = '';
 		$manager->notify('ValidateForm', array('type' => 'membermail', 'error' => &$result) );
 		
@@ -242,6 +253,7 @@ class ACTION
 	 *  
 	 * @param	Void
 	 * @return	Mixed
+	 * 
 	 */
 	function createAccount()
 	{
@@ -290,53 +302,52 @@ class ACTION
 	}
 	
 	/**
-	 *  Sends a new password
+	 * ACTION::forgotPassword()
+	 * Sends a new password
+	 * 
+	 * @param	void
+	 * @return	void
+	 * 
 	 */
 	function forgotPassword()
 	{
 		$membername = trim(postVar('name') );
-
+		
 		if ( !MEMBER::exists($membername) )
 		{
 			doError(_ERROR_NOSUCHMEMBER);
 		}
-
+		
 		$mem = MEMBER::createFromName($membername);
 		
-		/* below keeps regular users from resetting passwords using forgot password feature
-		     Removing for now until clear why it is required.*/
-		/*if (!$mem->canLogin())
-			doError(_ERROR_NOLOGON_NOACTIVATE);*/
-
 		// check if e-mail address is correct
-		if ( !($mem->getEmail() == postVar('email') ) )
+		if ( $mem->getEmail() != postVar('email') )
 		{
 			doError(_ERROR_INCORRECTEMAIL);
 		}
-
+		
 		// send activation link
 		$mem->sendActivationLink('forgot');
-
-		if ( postVar('url') )
-		{
-			redirect(postVar('url') );
-		}
-		else
+		
+		if ( !postVar('url') )
 		{
 			echo _MSG_ACTIVATION_SENT;
 			echo '<br /><br />Return to <a href="'.$CONF['IndexURL'].'" title="'.$CONF['SiteName'].'">'.$CONF['SiteName'].'</a>';
 		}
-
+		else
+		{
+			redirect(postVar('url') );
+		}
 		exit;
 	}
-
-
+	
 	/**
 	 * ACTION::doKarma()
 	 * Handle karma votes
 	 * 
 	 * @param	String	$type	pos or neg
 	 * @return	Void
+	 * 
 	 */
 	function doKarma($type)
 	{
@@ -413,125 +424,138 @@ class ACTION
 		
 		$refererUrl = serverVar('HTTP_REFERER');
 		
-		if ( $refererUrl )
+		if ( !$refererUrl )
 		{
-			$url = $refererUrl;
+			$url = $itemLink;
 		}
 		else
 		{
-			$url = $itemLink;
+			$url = $refererUrl;
 		}
 		
 		redirect($url);
 		exit;
 	}
-
-
+	
 	/**
-	  * Calls a plugin action
-	  */
+	 * ACTION::callPlugin()
+	 * Calls a plugin action
+	 * 
+	 * @param	void
+	 * @return	void
+	 * 
+	 */
 	function callPlugin()
 	{
 		global $manager;
-
+		
 		$pluginName = 'NP_' . requestVar('name');
 		$actionType = requestVar('type');
-
+		
 		// 1: check if plugin is installed
 		if ( !$manager->pluginInstalled($pluginName) )
 		{
 			doError(_ERROR_NOSUCHPLUGIN);
 		}
-
+		
 		// 2: call plugin
 		$pluginObject =& $manager->getPlugin($pluginName);
-
-		if ( $pluginObject )
-		{
-			$error = $pluginObject->doAction($actionType);
-		}
-		else
+		
+		if ( !$pluginObject )
 		{
 			$error = 'Could not load plugin (see actionlog)';
 		}
-
-		// doAction returns error when:
-		// - an error occurred (duh)
-		// - no actions are allowed (doAction is not implemented)
+		else
+		{
+			$error = $pluginObject->doAction($actionType);
+		}
+		
+		/*
+		 * doAction returns error when:
+		 *  - an error occurred (duh)
+		 *  - no actions are allowed (doAction is not implemented)
+		 */
 		if ( $error )
 		{
 			doError($error);
 		}
-
 		exit;
-
 	}
-
-
+	
 	/**
+	 * ACTION::checkban()
 	 *  Checks if an IP or IP range is banned
+	 * 
+	 * @param	integer	$blogid
+	 * @return	void
+	 * 
 	 */
 	function checkban($blogid)
 	{
 		// check if banned
 		$ban = BAN::isBanned($blogid, serverVar('REMOTE_ADDR') );
-
+		
 		if ( $ban != 0 )
 		{
 			doError(_ERROR_BANNED1 . $ban->iprange . _ERROR_BANNED2 . $ban->message . _ERROR_BANNED3);
 		}
-
+		return;
 	}
-
-
+	
 	/**
+	 * ACTION::updateTicket()
 	 * Gets a new ticket
+	 * 
+	 * @param	void
+	 * @return	boolean	FALSE
+	 * 
 	 */
 	function updateTicket()
 	{
 		global $manager;
 
-		if ( $manager->checkTicket() )
-		{
-			echo $manager->getNewTicket();
-		}
-		else
+		if ( !$manager->checkTicket() )
 		{
 			echo _ERROR . ':' . _ERROR_BADTICKET;
 		}
-
+		else
+		{
+			echo $manager->getNewTicket();
+		}
 		return FALSE;
 	}
-
-
+	
 	/**
+	 * ACTION::autoDraft()
 	 * Handles AutoSaveDraft
+	 * 
+	 * @param	void
+	 * @return	boolean	FALSE
+	 * 
 	 */
 	function autoDraft()
 	{
 		global $manager;
-
-		if ( $manager->checkTicket() )
+		
+		if ( !$manager->checkTicket() )
 		{
-			$manager->loadClass('ITEM');
-			$info = ITEM::createDraftFromRequest();
-
-			if ( $info['status'] == 'error' )
-			{
-				echo $info['message'];
-			}
-			else
-			{
-				echo $info['draftid'];
-			}
+			echo _ERROR . ':' . _ERROR_BADTICKET;
 		}
 		else
 		{
-            echo _ERROR . ':' . _ERROR_BADTICKET;
+			$manager->loadClass('ITEM');
+			$info = ITEM::createDraftFromRequest();
+			
+			if ( $info['status'] != 'error' )
+			{
+				echo $info['draftid'];
+			}
+			else
+			{
+				echo $info['message'];
+			}
 		}
-
 		return FALSE;
 	}
-
 }
 
