@@ -899,7 +899,8 @@ function getPluginNameFromPid($pid) {
 //    return isset($obj->pfile) ? $obj->pfile : false;
 }
 
-function selector() {
+function selector()
+{
 	global $itemid, $blogid, $memberid, $query, $amount, $archivelist, $maxresults;
 	global $archive, $skinid, $blog, $memberinfo, $CONF, $member;
 	global $imagepopup, $catid, $special;
@@ -963,7 +964,8 @@ function selector() {
 		global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
 		
 		// 1. get timestamp, blogid and catid for item
-		$query = 'SELECT itime, iblog, icat FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid);
+		$query = 'SELECT itime, iblog, icat FROM %s WHERE inumber=%d';
+		$query = sprintf($query, sql_table('item'), (integer) $itemid);
 		$res = sql_query($query);
 		$obj = sql_fetch_object($res);
 		
@@ -987,19 +989,18 @@ function selector() {
 		
 		$b =& $manager->getBlog($blogid);
 		
-		if ( $b->isValidCategory($catid) )
+		if ( !$b->isValidCategory($catid) )
 		{
-			$catextra = ' and icat=' . $catid;
+			$query = 'SELECT inumber, ititle FROM %s WHERE itime<%s and idraft=0 and iblog=%d ORDER BY itime DESC LIMIT 1';
+			$query = sprintf($query, sql_table('item'), mysqldate($timestamp), $blogid);
 		}
 		else
 		{
-			$catextra = '';
+			$query = 'SELECT inumber, ititle FROM %s WHERE itime<%s and idraft=0 and iblog=%d and icat=%d ORDER BY itime DESC LIMIT 1';
+			$query = sprintf($query, sql_table('item'), mysqldate($timestamp), $blogid, $catid);
 		}
 		
-		// get previous itemid and title
-		$query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime<' . mysqldate($timestamp) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime DESC LIMIT 1';
 		$res = sql_query($query);
-		
 		$obj = sql_fetch_object($res);
 		
 		if ( $obj )
@@ -1009,7 +1010,17 @@ function selector() {
 		}
 		
 		// get next itemid and title
-		$query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate($b->getCorrectTime()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
+		if ( !$b->isValidCategory($catid) )
+		{
+			$query = 'SELECT inumber, ititle FROM %s WHERE itime>%s and itime<=%s and idraft=0 and iblog=%d ORDER BY itime ASC LIMIT 1';
+			$query = sprintf($query, sql_table('item'), mysqldate($timestamp), mysqldate($b->getCorrectTime()), $blogid);
+		}
+		else
+		{
+			$query = 'SELECT inumber, ititle FROM %s WHERE itime>%s and itime<=%s and idraft=0 and iblog=%d icat=%d ORDER BY itime ASC LIMIT 1';
+			$query = sprintf($query, sql_table('item'), mysqldate($timestamp), mysqldate($b->getCorrectTime()), $blogid, $catid);
+			
+		}
 		$res = sql_query($query);
 		
 		$obj = sql_fetch_object($res);
@@ -1020,7 +1031,7 @@ function selector() {
 			$itemtitlenext = $obj->ititle;
 		}
 	}
-	elseif ($archive)
+	elseif ( $archive )
 	{
 		// show archive
 		$type = 'archive';
@@ -1119,7 +1130,7 @@ function selector() {
 			}
 		}
 	}
-	elseif ($archivelist)
+	elseif ( $archivelist )
 	{
 		$type = 'archivelist';
 		
@@ -1345,11 +1356,12 @@ function removeBreaks($var) {
 }
 
 /**
-  * Converts a unix timestamp to a mysql DATETIME format, and places
-  * quotes around it.
-  */
-function mysqldate($timestamp) {
-    return '"' . date('Y-m-d H:i:s', $timestamp) . '"';
+ * Converts a unix timestamp to a mysql DATETIME format, and places
+ * quotes around it.
+ */
+function mysqldate($timestamp)
+{
+	return '"' . date('Y-m-d H:i:s', $timestamp) . '"';
 }
 
 /**
