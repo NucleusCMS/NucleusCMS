@@ -1354,24 +1354,35 @@ class ADMIN
         $this->updateFuturePosted($blogid);
     }
 
-    /**
-     * Update a blog's future posted flag
-     * @param int $blogid
-     */
-    function updateFuturePosted($blogid) {
-        global $manager;
-
-        $blog =& $manager->getBlog($blogid);
-        $currenttime = $blog->getCorrectTime(time());
-        $result = sql_query("SELECT * FROM ".sql_table('item').
-            " WHERE iblog='".$blogid."' AND iposted=0 AND itime>".mysqldate($currenttime));
-        if (sql_num_rows($result) > 0) {
-                $blog->setFuturePost();
-        }
-        else {
-                $blog->clearFuturePost();
-        }
-    }
+	/**
+	 * ADMIN::updateFuturePosted()
+	 * Update a blog's future posted flag
+	 * 
+	 * @param integer $blogid
+	 * @return	void
+	 * 
+	 */
+	function updateFuturePosted($blogid)
+	{
+		global $manager;
+		
+		$blog =& $manager->getBlog($blogid);
+		$currenttime = $blog->getCorrectTime(time());
+		
+		$query = "SELECT * FROM %s WHERE iblog=%d AND iposted=0 AND itime>%s";
+		$query = sprintf($query, sql_table('item'), (integer) $blogid, mysqldate($currenttime));
+		$result = sql_query($query);
+		
+		if ( sql_num_rows($result) > 0 )
+		{
+				$blog->setFuturePost();
+		}
+		else
+		{
+				$blog->clearFuturePost();
+		}
+		return;
+	}
 
     /**
      * @todo document this

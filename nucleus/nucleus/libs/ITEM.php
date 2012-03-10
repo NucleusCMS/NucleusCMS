@@ -22,24 +22,27 @@
  */
 class ITEM
 {
-
 	/**
-	 * Item ID (int)
+	 * ITEM::$itemid
+	 * item id
 	 */
 	public $itemid;
-
-
+	
 	/**
+	 * ITEM::__construct()
 	 * Creates a new ITEM object
-	 * @param int $item_id
+	 * 
+	 * @param integer $item_id
+	 * @return	void
 	 */
 	public function __construct($item_id)
 	{
 		$this->itemid = $item_id;
+		return;
 	}
-
-
+	
 	/**
+	 * ITEM::getitem()
 	 * Returns one item with the specific itemid
 	 *
 	 * @param int $item_id
@@ -50,9 +53,9 @@ class ITEM
 	public function getitem($item_id, $allow_draft, $allow_future)
 	{
 		global $manager;
-
-		$item_id = intval($item_id);
-
+		
+		$item_id = (integer) $item_id;
+		
 		$query = 'SELECT ' .
 			'`i`.`idraft` AS `draft`, ' .
 			'`i`.`inumber` AS `itemid`, ' .
@@ -71,23 +74,23 @@ class ITEM
 			'WHERE `i`.`inumber` = %d ' .
 			'AND `i`.`iauthor` = `m`.`mnumber` ' .
 			'AND `i`.`iblog` = `b`.`bnumber` ';
-
+		
 		$query = sprintf($query, sql_table('item'), sql_table('member'), sql_table('blog'), $item_id);
-
+		
 		if ( !$allow_draft )
 		{
 			$query .= 'AND `i`.`idraft` = 0 ';
 		}
-
+		
 		if ( !$allow_future )
 		{
 			$blog =& $manager->getBlog(getBlogIDFromItemID($item_id));
 			$query .= 'AND `i`.`itime` <= ' . mysqldate($blog->getCorrectTime());
 		}
-
+		
 		$query .= ' LIMIT 1';
 		$result = sql_query($query);
-
+		
 		if ( sql_num_rows($result) == 1 )
 		{
 			$aItemInfo = sql_fetch_assoc($result);
@@ -98,23 +101,21 @@ class ITEM
 		{
 			return 0;
 		}
-
 	}
-
-
+	
 	/**
+	 * ITEM::createFromRequest()
 	 * Tries to create an item from the data in the current request (comes from
 	 * bookmarklet or admin area
 	 *
-	 * Returns an array with status info:
-	 * status = 'added', 'error', 'newcategory'
-	 *
-	 * @static
+	 * @param	void
+	 * @return	array	(status = added/error/newcategory, message)
+	 * 
 	 */
 	function createFromRequest()
 	{
 		global $member, $manager;
-
+		
 		$i_author = $member->getID();
 		$i_body = postVar('body');
 		$i_title = postVar('title');
@@ -128,49 +129,47 @@ class ITEM
 		$i_year = intPostVar('year');
 		$i_catid = postVar('catid');
 		$i_draftid = intPostVar('draftid');
-
+		
 		if ( !$member->canAddItem($i_catid) )
 		{
 			return array('status' => 'error', 'message' => _ERROR_DISALLOWED);
 		}
-
-		if (!$i_actiontype)
+		
+		if ( !$i_actiontype )
 			$i_actiontype = 'addnow';
-
+		
 		switch ( $i_actiontype )
 		{
 			case 'adddraft':
 				$i_draft = 1;
-			break;
-
+				break;
 			case 'addfuture':
 			case 'addnow':
 			default:
 				$i_draft = 0;
-			break;
+				break;
 		}
-
+		
 		if ( !trim($i_body) )
 		{
 			return array('status' => 'error', 'message' => _ERROR_NOEMPTYITEMS);
 		}
-
+		
 		// create new category if needed
 		if ( strstr($i_catid,'newcat') )
 		{
 			// get blogid
 			list($i_blogid) = sscanf($i_catid, "newcat-%d");
-
+			
 			// create
 			$blog =& $manager->getBlog($i_blogid);
 			$i_catid = $blog->createNewCategory();
-
+			
 			// show error when sth goes wrong
 			if ( !$i_catid )
 			{
 				return array('status' => 'error','message' => 'Could not create new category');
 			}
-
 		}
 		else
 		{
@@ -178,24 +177,23 @@ class ITEM
 			$i_blogid = getBlogIDFromCatID($i_catid);
 			$blog =& $manager->getBlog($i_blogid);
 		}
-
+		
 		if ( $i_actiontype == 'addfuture' )
 		{
 			$posttime = mktime($i_hour, $i_minutes, 0, $i_month, $i_day, $i_year);
-
+			
 			// make sure the date is in the future, unless we allow past dates
 			if ( (!$blog->allowPastPosting()) && ($posttime < $blog->getCorrectTime()) )
 			{
 				$posttime = $blog->getCorrectTime();
 			}
-
 		}
 		else
 		{
 			// time with offset, or 0 for drafts
 			$posttime = $i_draft ? 0 : $blog->getCorrectTime();
 		}
-
+		
 		if ( $posttime > $blog->getCorrectTime() )
 		{
 			$posted = 0;
@@ -205,9 +203,9 @@ class ITEM
 		{
 			$posted = 1;
 		}
-
+		
 		$itemid = $blog->additem($i_catid, $i_title, $i_body, $i_more, $i_blogid, $i_author, $posttime, $i_closed, $i_draft, $posted);
-
+		
 		//Setting the itemOptions
 		$aOptions = requestArray('plugoption');
 		NucleusPlugin::apply_plugin_options($aOptions, $itemid);
@@ -223,13 +221,13 @@ class ITEM
 				)
 			)
 		);
-
+		
 		if ( $i_draftid > 0 )
 		{
 			// delete permission is checked inside ITEM::delete()
 			ITEM::delete($i_draftid);
 		}
-
+		
 		// success
 		if ( $i_catid != intRequestVar('catid') )
 		{
@@ -239,46 +237,57 @@ class ITEM
 		{
 			return array('status' => 'added', 'itemid' => $itemid);
 		}
-
+		
 	}
-
-
+	
 	/**
-	  * Updates an item
-	  *
-	  * @static
-	  */
-	function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0)
+	 * ITEM::update()
+	 * Updates an item
+	 *
+	 * @param	integer	$itemid	item id
+	 * @param	integer	$catid	category id
+	 * @param	string	$title	title
+	 * @param	string	$body	body text
+	 * @param	string	$more	more text
+	 * @param	boolean	$closed	closed or not
+	 * @param	boolean	$wasdraft	previously draft or not
+	 * @param	boolean	$publish	published or not
+	 * @param	timestamp	$timestamp	timestamp
+	 * @return	void
+	 * 
+	 */
+		function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0)
 	{
 		global $manager;
-
+		
 		$itemid = intval($itemid);
-
+		
 		// make sure value is 1 or 0
 		if ( $closed != 1 )
 		{
 			$closed = 0;
 		}
-
+		
 		// get destination blogid
 		$new_blogid = getBlogIDFromCatID($catid);
 		$old_blogid = getBlogIDFromItemID($itemid);
-
+		
 		// move will be done on end of method
+		$moveNeeded = 0;
 		if ( $new_blogid != $old_blogid )
 		{
 			$moveNeeded = 1;
 		}
-
+		
 		$blog =& $manager->getBlog($new_blogid);
-
+		
 		// begin if: convert line breaks to <br/>
 		if ( $blog->convertBreaks() )
 		{
 			$body = addBreaks($body);
 			$more = addBreaks($more);
-		} // end if
-
+		}
+		
 		// call plugins
 		$manager->notify('PreUpdateItem', array(
 			'itemid' => $itemid,
@@ -290,7 +299,7 @@ class ITEM
 			'catid' => &$catid
 			)
 		);
-
+		
 		// update item itself
 		$query =  'UPDATE ' . sql_table('item')
 			   . ' SET'
@@ -299,13 +308,13 @@ class ITEM
 			   . " imore = '" . sql_real_escape_string($more) . "',"
 			   . " iclosed = " . intval($closed) . ","
 			   . " icat = " . intval($catid);
-
+		
 		// if we received an updated timestamp that is in the past, but past posting is not allowed, reject that date change (timestamp = 0 will make sure the current date is kept)
 		if ( (!$blog->allowPastPosting()) && ($timestamp < $blog->getCorrectTime()) )
 		{
 			$timestamp = 0;
-		} // end if
-
+		}
+		
 		// begin if: post is in the future
 		if ( $timestamp > $blog->getCorrectTime(time()) )
 		{
@@ -316,28 +325,27 @@ class ITEM
 		{
 			$isFuture = 0;
 			$query .= ', iposted = 1';
-		} // end if
-
+		}
+		
 		if ( $wasdraft && $publish )
 		{
 			// set timestamp to current date only if it's not a future item
 			// draft items have timestamp == 0
 			// don't allow timestamps in the past (unless otherwise defined in blogsettings)
 			$query .= ', idraft = 0';
-
+			
 			if ( $timestamp == 0 )
 			{
 				$timestamp = $blog->getCorrectTime();
 			}
-
+			
 			// send new item notification
 			if ( !$isFuture && $blog->getNotifyAddress() && $blog->notifyOnNewItem() )
 			{
 				$blog->sendNewItemNotification($itemid, $title, $body);
 			}
-
-		} // end if
-
+		}
+		
 		// save back to drafts
 		if ( !$wasdraft && !$publish )
 		{
@@ -345,27 +353,27 @@ class ITEM
 			// set timestamp back to zero for a draft
 			$query .= ', itime = ' . mysqldate($timestamp);
 		}
-
+		
 		// update timestamp when needed
 		if ( $timestamp != 0 )
 		{
 			$query .= ', itime = ' . mysqldate($timestamp);
 		}
-
+		
 		// make sure the correct item is updated
 		$query .= ' WHERE inumber = ' . $itemid;
-
+		
 		// off we go!
 		sql_query($query);
-
+		
 		$manager->notify('PostUpdateItem', array('itemid' => $itemid));
-
+		
 		// when needed, move item and comments to new blog
 		if ( $moveNeeded )
 		{
 			ITEM::move($itemid, $catid);
 		}
-
+		
 		//update the itemOptions
 		$aOptions = requestArray('plugoption');
 		NucleusPlugin::apply_plugin_options($aOptions);
@@ -382,21 +390,24 @@ class ITEM
 			)
 		);
 	}
-
-
+	
 	/**
+	 * ITEM::move()
 	 * Move an item to another blog (no checks)
 	 *
-	 * @static
+	 * @param	integer	$itemid
+	 * @param	integer	$new_catid
+	 * @return	void
 	 */
-	function move($itemid, $new_catid) {
+	function move($itemid, $new_catid)
+	{
 		global $manager;
-
+		
 		$itemid = intval($itemid);
 		$new_catid = intval($new_catid);
-
+		
 		$new_blogid = getBlogIDFromCatID($new_catid);
-
+		
 		$manager->notify(
 			'PreMoveItem',
 			array(
@@ -405,16 +416,15 @@ class ITEM
 				'destcatid' => $new_catid
 			)
 		);
-
-
+		
 		// update item table
 		$query = 'UPDATE '.sql_table('item')." SET iblog=$new_blogid, icat=$new_catid WHERE inumber=$itemid";
 		sql_query($query);
-
+		
 		// update comments
 		$query = 'UPDATE '.sql_table('comment')." SET cblog=" . $new_blogid." WHERE citem=" . $itemid;
 		sql_query($query);
-
+		
 		$manager->notify(
 			'PostMoveItem',
 			array(
@@ -423,14 +433,15 @@ class ITEM
 				'destcatid' => $new_catid
 			)
 		);
+		return;
 	}
 	
 	/**
 	 * ITEM::delete()
 	 * Deletes an item
 	 * 
-	 * @param	Void
-	 * @return	Void
+	 * @param	integer	$itemid
+	 * @return	void
 	 */
 	function delete($itemid)
 	{
@@ -464,44 +475,54 @@ class ITEM
 	}
 	
 	/**
+	 * ITEM::exists()
 	 * Returns true if there is an item with the given ID
 	 *
-	 * @static
+	 * @param	integer	$itemid
+	 * @param	boolean	$future
+	 * @param	boolean	$draft
+	 * @return	boolean	exists or not
+	 * 
 	 */
-	function exists($id,$future,$draft) {
+	function exists($id,$future,$draft)
+	{
 		global $manager;
-
+		
 		$id = intval($id);
-
+		
 		$r = 'select * FROM '.sql_table('item').' WHERE inumber='.$id;
-		if (!$future) {
+		if ( !$future )
+		{
 			$bid = getBlogIDFromItemID($id);
 			if (!$bid) return 0;
 			$b =& $manager->getBlog($bid);
 			$r .= ' and itime<='.mysqldate($b->getCorrectTime());
 		}
-		if (!$draft) {
+		if ( !$draft )
+		{
 			$r .= ' and idraft=0';
 		}
 		$r = sql_query($r);
-
 		return (sql_num_rows($r) != 0);
 	}
-
+	
 	/**
-	 * Tries to create an draft from the data in the current request (comes from
-	 * bookmarklet or admin area
+	 * ITEM::createDraftFromRequest()
+	 * Tries to create an draft from the data
+	 *  in the current request (comes from bookmarklet or admin area)
+	 *   Used by xmlHTTPRequest AutoDraft
 	 *
 	 * Returns an array with status info:
 	 * status = 'added', 'error', 'newcategory'
 	 *
-	 * @static
+	 * @param	void
+	 * @return	array	(status = added/error/newcategory, message)
 	 *
-	 * Used by xmlHTTPRequest AutoDraft
 	 */
-	function createDraftFromRequest() {
+	function createDraftFromRequest()
+	{
 		global $member, $manager;
-
+		
 		$i_author = $member->getID();
 		$i_body = postVar('body');
 		$i_title = postVar('title');
@@ -516,54 +537,53 @@ class ITEM
 		$i_catid = postVar('catid');
 		$i_draft = 1;
 		$type = postVar('type');
-		if ($type == 'edit') {
+		if ( $type == 'edit' )
+		{
 			$i_blogid = getBlogIDFromItemID(intPostVar('itemid'));
 		}
-		else {
+		else
+		{
 			$i_blogid = intPostVar('blogid');
 		}
 		$i_draftid = intPostVar('draftid');
-
-		if (!$member->canAddItem($i_catid)) {
+		
+		if ( !$member->canAddItem($i_catid) )
+		{
 			return array('status' => 'error', 'message' => _ERROR_DISALLOWED);
 		}
-
-		if (!trim($i_body)) {
+		
+		if ( !trim($i_body) )
+		{
 			return array('status' => 'error', 'message' => _ERROR_NOEMPTYITEMS);
 		}
-
+		
 		// create new category if needed
-		if (strstr($i_catid, 'newcat')) {
+		if ( strstr($i_catid, 'newcat') )
+		{
 			// Set in default category
 			$blog =& $manager->getBlog($i_blogid);
 			$i_catid = $blog->getDefaultCategory();
 		}
-		else {
+		else
+		{
 			// force blogid (must be same as category id)
 			$i_blogid = getBlogIDFromCatID($i_catid);
 			$blog =& $manager->getBlog($i_blogid);
 		}
-
+		
 		$posttime = 0;
-
-		if ($i_draftid > 0) {
+		
+		if ( $i_draftid > 0 )
+		{
 			ITEM::update($i_draftid, $i_catid, $i_title, $i_body, $i_more, $i_closed, 1, 0, 0);
 			$itemid = $i_draftid;
 		}
-		else {
+		else
+		{
 			$itemid = $blog->additem($i_catid, $i_title, $i_body, $i_more, $i_blogid, $i_author, $posttime, $i_closed, $i_draft);
 		}
-
-		// No plugin support in AutoSaveDraft yet
-		//Setting the itemOptions
-		//$aOptions = requestArray('plugoption');
-		//NucleusPlugin::apply_plugin_options($aOptions, $itemid);
-		//$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $i_title, 'body' => $i_body, 'more' => $i_more, 'closed' => $i_closed, 'catid' => $i_catid)));
-
-		// success
+		
 		return array('status' => 'added', 'draftid' => $itemid);
 	}
-
 }
 
-?>

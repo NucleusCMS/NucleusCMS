@@ -69,25 +69,32 @@ class BLOG {
 	}
 
 	/**
+	 * BLOG::showArchive()
 	 * Shows an archive for a given month
 	 *
-	 * @param $year
-	 *		year
-	 * @param $month
-	 *		month
-	 * @param $template
-	 *		String representing the template name to be used
+	 * @param integer	$year		year
+	 * @param integer	$month		month
+	 * @param string	$template	String representing the template name to be used
+	 * @return void
+	 * 
 	 */
-	function showArchive($templatename, $year, $month=0, $day=0) {
-
+	function showArchive($templatename, $year, $month=0, $day=0)
+	{
 		// create extra where clause for select query
-		if ($day == 0 && $month != 0) {
+		if ( $day == 0 && $month != 0 )
+		{
 			$timestamp_start = mktime(0,0,0,$month,1,$year);
-			$timestamp_end = mktime(0,0,0,$month+1,1,$year);  // also works when $month==12
-		} elseif ($month == 0) {
+			// also works when $month==12
+			$timestamp_end = mktime(0,0,0,$month+1,1,$year);
+		}
+		elseif ( $month == 0 )
+		{
 			$timestamp_start = mktime(0,0,0,1,1,$year);
-			$timestamp_end = mktime(0,0,0,12,31,$year);  // also works when $month==12
-		} else {
+			// also works when $month==12
+			$timestamp_end = mktime(0,0,0,12,31,$year);
+		}
+		else
+		{
 			$timestamp_start = mktime(0,0,0,$month,$day,$year);
 			$timestamp_end = mktime(0,0,0,$month,$day+1,$year);
 		}
@@ -96,7 +103,7 @@ class BLOG {
 
 
 		$this->readLogAmount($templatename,0,$extra_query,'',1,1);
-
+		return;
 	}
 
 	/**
@@ -154,21 +161,31 @@ class BLOG {
 	}
 
 	/**
+	 * BLOG::showUsingQuery()
 	 * Do the job for readLogAmmount
+	 * 
+	 * @param	string		$templateName	template name
+	 * @param	string		$query			string for query
+	 * @param	string		$highlight		string to be highlighted
+	 * @param	integer	$comments		the number of comments
+	 * @param	boolean	$dateheads		date header is needed or not
+	 * @return	integer	the number of rows as a result of mysql query
+	 * 
 	 */	
-	function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1) {
-		global $CONF, $manager;
-
+	function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1)
+	{
+		global $CONF, $manager, $currentTemplateName;
+		
 		$lastVisit = cookieVar($CONF['CookiePrefix'] .'lastVisit');
-		if ($lastVisit != 0)
+		if ( $lastVisit != 0 )
+		{
 			$lastVisit = $this->getCorrectTime($lastVisit);
-
+		}
+		
 		// set templatename as global variable (so plugins can access it)
-		global $currentTemplateName;
 		$currentTemplateName = $templateName;
-
 		$template =& $manager->getTemplate($templateName);
-
+		
 		// create parser object & action handler
 		$actions = new ITEMACTIONS($this);
 		$parser = new PARSER($actions->getDefinedActions(),$actions);
@@ -177,26 +194,29 @@ class BLOG {
 		$actions->setLastVisit($lastVisit);
 		$actions->setParser($parser);
 		$actions->setShowComments($comments);
-
+		
 		// execute query
 		$items = sql_query($query);
-
+		
 		// loop over all items
 		$old_date = 0;
-		while ($item = sql_fetch_object($items)) {
-
+		while ( $item = sql_fetch_object($items) )
+		{
 			$item->timestamp = strtotime($item->itime);	// string timestamp -> unix timestamp
-
+			
 			// action handler needs to know the item we're handling
 			$actions->setCurrentItem($item);
-
+			
 			// add date header if needed
-			if ($dateheads) {
+			if ( $dateheads )
+			{
 				$new_date = date('dFY',$item->timestamp);
-				if ($new_date != $old_date) {
+				if ( $new_date != $old_date )
+				{
 					// unless this is the first time, write date footer
 					$timestamp = $item->timestamp;
-					if ($old_date != 0) {
+					if ( $old_date != 0 )
+					{
 						$oldTS = strtotime($old_date);
 						$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
 						$tmp_footer = i18n::strftime(isset($template['DATE_FOOTER'])?$template['DATE_FOOTER']:'', $oldTS);
@@ -212,31 +232,29 @@ class BLOG {
 				}
 				$old_date = $new_date;
 			}
-
+			
 			// parse item
 			$parser->parse($template['ITEM_HEADER']);
 			$manager->notify('PreItem', array('blog' => &$this, 'item' => &$item));
 			$parser->parse($template['ITEM']);
 			$manager->notify('PostItem', array('blog' => &$this, 'item' => &$item));
 			$parser->parse($template['ITEM_FOOTER']);
-
 		}
-
+		
 		$numrows = sql_num_rows($items);
-
+		
 		// add another date footer if there was at least one item
-		if (($numrows > 0) && $dateheads) {
+		if ( ($numrows > 0) && $dateheads )
+		{
 			$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));
 			$parser->parse($template['DATE_FOOTER']);
 			$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));
 		}
-
-		sql_free_result($items);	// free memory
-
+		
+		sql_free_result($items);
 		return $numrows;
-
 	}
-
+	
 	/**
 	 * Simplified function for showing only one item
 	 */
@@ -483,52 +501,52 @@ class BLOG {
 	}
 
 	/**
+	 * BLOG::getSqlSearch()
 	 * Returns an SQL query to use for a search query
+	 * No LIMIT clause is added. (caller should add this if multiple pages are requested)
 	 *
-	 * @param $query
-	 *		search query
-	 * @param $amountMonths
-	 *		amount of months to search back. Default = 0 = unlimited
-	 * @param $mode
-	 *		either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
-	 * @returns $highlight
-	 *		words to highlight (out parameter)
-	 * @returns
-	 *		either a full SQL query, or an empty string (if querystring empty)
-	 * @note
-	 *		No LIMIT clause is added. (caller should add this if multiple pages are requested)
+	 * @param string	$query	search query
+	 * @param	integer	$amountMonths	amount of months to search back. Default = 0 = unlimited
+	 * @param	string	$mode	either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
+	 * @return	string	$highlight	words to highlight (out parameter)
+	 * @return	string	either a full SQL query, or an empty string (if querystring empty)
 	 */
 	function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
 	{
 		$searchclass = new SEARCH($query);
-
-		$highlight	  = $searchclass->inclusive;
-
+		
+		$highlight	 = $searchclass->inclusive;
+		
 		// if querystring is empty, return empty string
-		if ($searchclass->inclusive == '')
+		if ( $searchclass->inclusive == '' )
+		{
 			return '';
-
-
+		}
+		
 		$where  = $searchclass->boolean_sql_where('ititle,ibody,imore');
 		$select = $searchclass->boolean_sql_select('ititle,ibody,imore');
-
+		
 		// get list of blogs to search
 		$blogs 		= $searchclass->blogs; 		// array containing blogs that always need to be included
 		$blogs[]	= $this->getID();			// also search current blog (duh)
 		$blogs 		= array_unique($blogs);		// remove duplicates
 		$selectblogs = '';
-		if (count($blogs) > 0)
+		if ( count($blogs) > 0 )
+		{
 			$selectblogs = ' and i.iblog in (' . implode(',', $blogs) . ')';
-
-		if ($mode == '')
+		}
+		
+		if ( $mode == '' )
 		{
 			$query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
 			if ($select)
 				$query .= ', '.$select. ' as score ';
-		} else {
+		}
+		else
+		{
 			$query = 'SELECT COUNT(*) as result ';
 		}
-
+		
 		$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
 			   . ' WHERE i.iauthor=m.mnumber'
 			   . ' and i.icat=c.catid'
@@ -539,61 +557,72 @@ class BLOG {
 			   . ' and '.$where;
 
 		// take into account amount of months to search
-		if ($amountMonths > 0)
+		if ( $amountMonths > 0 )
 		{
 			$localtime = getdate($this->getCorrectTime());
 			$timestamp_start = mktime(0,0,0,$localtime['mon'] - $amountMonths,1,$localtime['year']);
 			$query .= ' and i.itime>' . mysqldate($timestamp_start);
 		}
-
-		if ($mode == '')
+		
+		if ( $mode == '' )
 		{
-			if ($select)
+			if ( $select )
+			{
 				$query .= ' ORDER BY score DESC';
+			}
 			else
+			{
 				$query .= ' ORDER BY i.itime DESC ';
+			}
 		}
-
+		
 		return $query;
 	}
-
+	
 	/**
+	 * BLOG::getSqlBlog()
 	 * Returns the SQL query that's normally used to display the blog items on the index type skins
+	 * No LIMIT clause is added. (caller should add this if multiple pages are requested)
 	 *
-	 * @param $mode
-	 *		either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
-	 * @returns
-	 *		either a full SQL query, or an empty string
-	 * @note
-	 *		No LIMIT clause is added. (caller should add this if multiple pages are requested)
+	 * @param	string	$extraQuery	extra query string
+	 * @param	string	$mode			either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
+	 * @return	string	either a full SQL query, or an empty string
 	 */
 	function getSqlBlog($extraQuery, $mode = '')
 	{
-		if ($mode == '')
-			$query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
+		if ( $mode == '' )
+		{
+			$query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author,
+				m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail,
+				m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
+		}
 		else
+		{
 			$query = 'SELECT COUNT(*) as result ';
-
-		$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
-			   . ' WHERE i.iblog='.$this->blogid
-			   . ' and i.iauthor=m.mnumber'
-			   . ' and i.icat=c.catid'
-			   . ' and i.idraft=0'	// exclude drafts
-					// don't show future items
-			   . ' and i.itime<=' . mysqldate($this->getCorrectTime());
-
-		if ($this->getSelectedCategory())
+		}
+		
+		$query	.= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
+				. ' WHERE i.iblog='.$this->blogid
+				. ' and i.iauthor=m.mnumber'
+				. ' and i.icat=c.catid'
+				. ' and i.idraft=0'	// exclude drafts
+				// don't show future items
+				. ' and i.itime<=' . mysqldate($this->getCorrectTime());
+		
+		if ( $this->getSelectedCategory() )
+		{
 			$query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
-
-
+		}
+		
 		$query .= $extraQuery;
-
-		if ($mode == '')
+		
+		if ( $mode == '' )
+		{
 			$query .= ' ORDER BY i.itime DESC';
-
+		}
 		return $query;
 	}
-
+	
 	/**
 	 * BLOG::showArchiveList()
 	 * Shows the archivelist using the given template
@@ -620,13 +649,23 @@ class BLOG {
 		$template =& $manager->getTemplate($template);
 		$data['blogid'] = $this->getID();
 		
-		$tplt = isset($template['ARCHIVELIST_HEADER']) ? $template['ARCHIVELIST_HEADER'] : '';
+		if ( !array_key_exists('ARCHIVELIST_HEADER', $template) || !$template['ARCHIVELIST_HEADER'] )
+		{
+			$tplt = '';
+		}
+		else
+		{
+			$tplt = $template['ARCHIVELIST_HEADER'];
+		}
+		
 		echo TEMPLATE::fill($tplt, $data);
 		
 		$query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM '.sql_table('item')
-		. ' WHERE iblog=' . $this->getID()
-		. ' and itime <=' . mysqldate($this->getCorrectTime())	// don't show future items!
-		. ' and idraft=0'; // don't show draft items
+				. ' WHERE iblog=' . $this->getID()
+				// don't show future items!
+				. ' and itime <=' . mysqldate($this->getCorrectTime())
+				// don't show draft items
+				. ' and idraft=0';
 		
 		if ( $catid )
 		{
@@ -651,7 +690,7 @@ class BLOG {
 		}
 		
 		$res = sql_query($query);
-		while ($current = sql_fetch_object($res))
+		while ( $current = sql_fetch_object($res) )
 		{
 			/* string time -> unix timestamp */
 			$current->itime = strtotime($current->itime);
@@ -699,7 +738,15 @@ class BLOG {
 		
 		sql_free_result($res);
 		
-		$tplt = isset($template['ARCHIVELIST_FOOTER']) ? $template['ARCHIVELIST_FOOTER'] : '';
+		if ( !array_key_exists('ARCHIVELIST_FOOTER', $template) || !$template['ARCHIVELIST_FOOTER'] )
+		{
+			$tplt = '';
+		}
+		else
+		{
+			$tplt = $template['ARCHIVELIST_FOOTER'];
+		}
+		
 		echo TEMPLATE::fill($tplt, $data);
 		return;
 	}
@@ -1417,33 +1464,43 @@ class BLOG {
 	}
 
 	/**
+	 * BLOG::getSqlItemList()
 	 * Returns the SQL query used to fill out templates for a list of items
+	 * No LIMIT clause is added. (caller should add this if multiple pages are requested)
 	 *
-	 * @param $itemarray
-	 *		an array holding the item numbers of the items to be displayed
-	 * @param $showDrafts
-	 *		0=do not show drafts 1=show drafts
-	 * @param $showFuture
-	 *		0=do not show future posts 1=show future posts
-	 * @returns
-	 *		either a full SQL query, or an empty string
-	 * @note
-	 *		No LIMIT clause is added. (caller should add this if multiple pages are requested)
+	 * @param	array	$itemarray		an array holding the item numbers of the items to be displayed
+	 * @param integer	$showDrafts	0=do not show drafts 1=show drafts
+	 * @param integer	$showFuture	0=do not show future posts 1=show future posts
+	 * @return	string	either a full SQL query, or an empty string
+	 * 
 	 */
 	function getSqlItemList($itemarray,$showDrafts = 0,$showFuture = 0)
 	{
-		if (!is_array($itemarray)) return '';
+		if ( !is_array($itemarray) )
+		{
+			return '';
+		}
+		
 		$showDrafts = intval($showDrafts);
 		$showFuture = intval($showFuture);
 		$items = array();
-		foreach ($itemarray as $value) {
-			if (intval($value)) $items[] = intval($value);
+		
+		foreach ( $itemarray as $value )
+		{
+			if ( intval($value) )
+			{
+				$items[] = intval($value);
+			}
 		}
-		if (!count($items)) return '';
-		//$itemlist = implode(',',$items);
+		if ( !count($items) )
+		{
+			return '';
+		}
+		
 		$i = count($items);
 		$query = '';
-		foreach ($items as $value) {
+		foreach ( $items as $value )
+		{
 			$query .= '('
 					.	'SELECT'
 					.	' i.inumber as itemid,'
@@ -1459,7 +1516,7 @@ class BLOG {
 					.	' c.cname as category,'
 					.	' i.icat as catid,'
 					.	' i.iclosed as closed';
-
+			
 			$query .= ' FROM '
 					. sql_table('item') . ' as i, '
 					. sql_table('member') . ' as m, '
@@ -1468,19 +1525,24 @@ class BLOG {
 				    .    ' i.iblog='.$this->blogid
 				   . ' and i.iauthor=m.mnumber'
 				   . ' and i.icat=c.catid';
-			if (!$showDrafts) $query .= ' and i.idraft=0';	// exclude drafts						
-			if (!$showFuture) $query .= ' and i.itime<=' . mysqldate($this->getCorrectTime()); // don't show future items
-
-			//$query .= ' and i.inumber IN ('.$itemlist.')';
+			
+			// exclude drafts	
+			if ( !$showDrafts )
+			{
+				$query .= ' and i.idraft=0';
+			}
+			if ( !$showFuture )
+			{
+				// don't show future items
+				$query .= ' and i.itime<=' . mysqldate($this->getCorrectTime());
+			}
+			
 			$query .= ' and i.inumber='.intval($value);
 			$query .= ')';
 			$i--;
 			if ($i) $query .= ' UNION ';
 		}
-
+		
 		return $query;
 	}
-
 }
-
-?>
