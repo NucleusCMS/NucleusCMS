@@ -97,14 +97,6 @@ $CONF['CategoryURL']         = $CONF['Self'];
 */
 
 /*
- * NOTE: this should be removed when releasing 4.0
- * switch URLMode back to normal when $CONF['Self'] ends in .php
- * this avoids urls like index.php/item/13/index.php/item/15
-if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php'))) {
-    $CONF['URLMode'] = 'normal';
-}*/
-
-/*
  * Set these to 1 to allow viewing of future items or draft items
  * Should really never do this, but can be useful for some plugins that might need to
  * Could cause some other issues if you use future posts otr drafts
@@ -287,174 +279,40 @@ if ( ($CONF['DisableJsTools'] == 0)
 	$CONF['DisableJsTools'] = 2;
 }
 
-/* login if cookies set*/
 $member = new MEMBER();
 
-/* secure cookie key settings (either 'none', 0, 8, 16, 24, or 32) */
-if ( !array_key_exists('secureCookieKey', $CONF) )
-{
-	$CONF['secureCookieKey'] = 24;
-}
-switch( $CONF['secureCookieKey'] )
-{
-	case 8:
-		$CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-		break;
-	case 16:
-		$CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-		break;
-	case 24:
-		$CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-		break;
-	case 32:
-		$CONF['secureCookieKeyIP'] = serverVar('REMOTE_ADDR');
-		break;
-	default:
-		$CONF['secureCookieKeyIP'] = '';
-}
-
-/*
- * login/logout when required or renew cookies
- *  and decide locale on this session before plugin event generates
- */
 if ( $action == 'login' )
 {
-	/* Form Authentication */
 	$login = postVar('login');
-	$pw = postVar('password');
-	/* shared computer or not */
+	$password = postVar('password');
 	$shared = intPostVar('shared');
-	/* avoid md5 collision by using a long key */
-	$pw=i18n::substr($pw,0,40);
-	
-	if ( $member->login($login, $pw) )
-	{
-		$member->newCookieKey();
-		$member->setCookies($shared);
-		
-		if ( $CONF['secureCookieKey'] !== 'none' )
-		{
-			/* secure cookie key */
-			$member->setCookieKey(md5($member->getCookieKey().$CONF['secureCookieKeyIP']));
-			$member->write();
-		}
-		
-		/* allows direct access to parts of the admin area after logging in */
-		if ( $nextaction )
-		{
-			$action = $nextaction;
-		}
-		
-		/* NOTE: include translation file and set locale */
-		$locale = include_translation($locale, $member);
-		i18n::set_current_locale($locale);
-		
-		$manager->notify('LoginSuccess', array('member' => &$member, 'username' => $login) );
-		$errormessage = '';
-		ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
-	}
-	else
-	{
-		/* errormessage for [%errordiv%] */
-		$trimlogin = trim($login);
-		if ( empty($trimlogin) )
-		{
-			$errormessage = "Please enter a username.";
-		}
-		else 
-		{
-			$errormessage = 'Login failed for ' . $login;
-		} 
-		
-		/* NOTE: include translation file and set locale */
-		$locale = include_translation($locale);
-		i18n::set_current_locale($locale);
-		
-		$manager->notify('LoginFailed', array('username' => $login) );
-		ACTIONLOG::add(INFO, $errormessage);
-	}
+	$member->login($login, $password, $shared);
 }
-
-/*
- * TODO: this should be removed when releasing 4.0
-Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
-elseif ( serverVar('PHP_AUTH_USER') && serverVar('PHP_AUTH_PW') )
+elseif ( ($action == 'logout') )
 {
-	// HTTP Authentication
-	$login  = serverVar('PHP_AUTH_USER');
-	$pw     = serverVar('PHP_AUTH_PW');
-	
-	if ( $member->login($login, $pw) )
-	{
-		$manager->notify('LoginSuccess',array('member' => &$member));
-		ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
-	}
-	else
-	{
-		$manager->notify('LoginFailed',array('username' => $login));
-		ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
-		
-		//Since bad credentials, generate an apropriate error page
-		header("WWW-Authenticate: Basic realm=\"Nucleus CMS {$nucleus['version']}\"");
-		header('HTTP/1.0 401 Unauthorized');
-		echo 'Invalid username or password';
-		exit;
-	}
-}
-*/
-
-elseif ( ($action == 'logout')
-      && (!headers_sent())
-      && cookieVar($CONF['CookiePrefix'] . 'user') )
-{
-	/* remove cookies on logout */
-	setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-	setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-	
-	/* NOTE: include translation file and set locale */
-	$locale = include_translation($locale);
-	i18n::set_current_locale($locale);
-	
-	$manager->notify('Logout', array('username' => cookieVar($CONF['CookiePrefix'] . 'user') ) );
-}
-elseif ( cookieVar($CONF['CookiePrefix'] . 'user') )
-{
-	/* Cookie Authentication */
-	$ck=cookieVar($CONF['CookiePrefix'] . 'loginkey');
-	/* 
-	 * secure cookie key
-	 * avoid md5 collision by using a long key
-	 */
-	$ck = i18n::substr($ck,0,32);
-	if ( $CONF['secureCookieKey']!=='none' )
-	{
-		$ck = md5($ck.$CONF['secureCookieKeyIP']);
-	}
-	$res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] . 'user'), $ck );
-	unset($ck);
-	
-	/* renew cookies when not on a shared computer */
-	if ( $res
-	  && (cookieVar($CONF['CookiePrefix'] . 'sharedpc') != 1)
-	  && (!headers_sent() ) )
-	{
-		$member->setCookieKey(cookieVar($CONF['CookiePrefix'] . 'loginkey'));
-		$member->setCookies();
-	}
-	
-	/* NOTE: include translation file and set locale */
-	$locale = include_translation($locale, $member);
-	i18n::set_current_locale($locale);
+	$member->logout();
 }
 else
 {
-	/* NOTE: include translation file and set locale */
-	$locale = include_translation($locale);
-	i18n::set_current_locale($locale);
+	$member->cookielogin();
 }
+
+/* NOTE: include translation file and set locale */
+if ( $member->isLoggedIn() && $member->getLocale())
+{
+	$locale = $member->getLocale();
+}
+include_translation($locale);
+i18n::set_current_locale($locale);
 
 /* login completed */
 $manager->notify('PostAuthentication', array('loggedIn' => $member->isLoggedIn() ) );
+
+/* next action */
+if ( $member->isLoggedIn() && $nextaction )
+{
+	$action = $nextaction;
+}
 
 /*
  * Release ticket for plugin
@@ -497,21 +355,6 @@ if ( !headers_sent() )
 	}
 }
 
-/*
-Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
-
-// To remove after v2.5 is released and translation files have been updated.
-// Including this makes sure that translation files for v2.5beta can still be used for v2.5final
-// without having weird _SETTINGS_EXTAUTH string showing up in the admin area.
-if (!defined('_MEMBERS_BYPASS'))
-{
-    define('_SETTINGS_EXTAUTH',         'Enable External Authentication');
-    define('_WARNING_EXTAUTH',          'Warning: Enable only if needed.');
-    define('_MEMBERS_BYPASS',           'Use External Authentication');
-}
-*/
-
-/* make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined */
 if ( !defined('_ARCHIVETYPE_MONTH') )
 {
 	define('_ARCHIVETYPE_DAY', 'day');
@@ -753,23 +596,12 @@ $manager->notify(
 	/**
 	 * This function decide which locale is used and include translation
 	 * @param	string	$locale	locale name referring to 'language tags' defined in RFC 5646
-	 * @param mixed	$member	member object
+	 * @return	Void
 	 */
-	function include_translation($locale, $member = FALSE)
+	function include_translation($locale)
 	{
 		global $DIR_LOCALES;
 		
-		/* 
-		 * 1. user's locale is used if set
-		 * 2. system default is used if it is not empty
-		 * 3. else 'en_Latn_US.ISO-8859-1.php' is included
-		 *     because this translation file is expected to include only 7bit ASCII characters
-		 *      which common in whole character coding scheme
-		 */
-		if ( $member && $member->getLocale() )
-		{
-			$locale = $member->getLocale();
-		}
 		$translation_file = $DIR_LOCALES . $locale . '.' . i18n::get_current_charset() . '.php';
 		if ( !file_exists($translation_file) )
 		{
@@ -777,7 +609,7 @@ $manager->notify(
 			$translation_file = $DIR_LOCALES . 'en_Latn_US.ISO-8859-1.php';
 		}
 		include($translation_file);
-		return $locale;
+		return;
 	}
 	
 	/**

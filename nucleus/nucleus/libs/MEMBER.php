@@ -17,11 +17,12 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id: MEMBER.php 1616 2012-01-08 09:48:15Z sakamocchi $
  */
-class MEMBER {
-	
+class MEMBER
+{
 	// 1 when authenticated, 0 when not
 	public $loggedin = 0;
 	public $password;		// not the actual password, but rather a MD5 hash
+	private	$algorism = 'md5';
 	
 	public $cookiekey;		// value that should also be in the client cookie to allow authentication
 	
@@ -35,27 +36,58 @@ class MEMBER {
 	public $canlogin = 0;		// (either 0 or 1)
 	public $notes;
 	public $autosave = 1;		// if the member use the autosave draft function
+	private $locale = '';
 	
-	/*
-	 * NOTE: $locale value obsoleted $language value since version 4.0
-	 */
+	/* NOTE: $locale value obsoleted $language value since version 4.0 */
 	public $language = '';
-	public $locale = '';
 	
 	/**
+	 * MEMBER::__construct()
 	 * Constructor for a member object
-	 */	 	
-	public function MEMBER()
+	 * 
+	 * @param	Void
+	 * @return	Void
+	 * 
+	 */
+	public function __construct()
 	{
-		// do nothing
+		global $CONF;
+		/* secure cookie key settings (either 'none', 0, 8, 16, 24, or 32) */
+		if ( !array_key_exists('secureCookieKey', $CONF) )
+		{
+			$CONF['secureCookieKey'] = 24;
+		}
+		
+		switch( $CONF['secureCookieKey'] )
+		{
+			case 8:
+				$CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
+				break;
+			case 16:
+				$CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
+				break;
+			case 24:
+				$CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
+				break;
+			case 32:
+				$CONF['secureCookieKeyIP'] = serverVar('REMOTE_ADDR');
+				break;
+			default:
+				$CONF['secureCookieKeyIP'] = '';
+		}
+		
 		return;
 	}
-
+	
 	/**
+	 * MEMBER::createFromName()
 	 * Create a member object for a given displayname
 	 *
-	 * @static	 	 
-	 */	 	
+	 * @static	
+	 * @param	String	$displayname	login name
+	 * @return	Object	member object
+	 * 
+	 */
 	public static function &createFromName($displayname)
 	{
 		$mem = new MEMBER();
@@ -64,9 +96,11 @@ class MEMBER {
 	}
 
 	/**
+	 * MEMBER::createFromID()
 	 * Create a member object for a given ID
 	 *
 	 * @static	
+	 * @param	Integer	$id	id for member
 	 */
 	public static function &createFromID($id)
 	{
@@ -75,24 +109,73 @@ class MEMBER {
 		return $mem;
 	}
 	
+	/**
+	 * MEMBER::readFromName()
+	 * Read member table in database
+	 * 
+	 * @param	String	$displayname	login name
+	 * @return	Object	SQL resource
+	 * 
+	 */
 	public function readFromName($displayname)
 	{
 		return $this->read("mname='".sql_real_escape_string($displayname)."'");
 	}
 	
+	/**
+	 * MEMBER::readFromID()
+	 * Read member table in database
+	 * 
+	 * @param	Integer	$id	id for member
+	 * @return	Object	SQL resource
+	 * 
+	 */
 	public function readFromID($id)
 	{
 		return $this->read("mnumber=" . intval($id));
 	}
 	
-	/*
+	/**
+	 * MEMBER::hash()
+	 * hash the target string
+	 * 
+	 * @param	String	$string	target string
+	 * @return	Void	hashed string
+	 */
+	public function hash($string)
+	{
+		switch ( $this->algorism )
+		{
+			case 'md5':
+			default:
+				$string = md5($string);
+		}
+		
+		return $string;
+	}
+	
+	/**
+	 * MEMBER::login()
 	 * Tries to login as a given user.
 	 * Returns true when succeeded, returns false when failed
 	 * 3.40 adds CustomLogin event
+	 * 
+	 * @param	String	$login	login name for member
+	 * @param	String	$password	password for member
+	 * @param	Integer	$shared	whether the user agent is shared or not
+	 * 
 	 */
-	public function login($login, $password)
+	public function login($login, $password, $shared=1)
 	{
-		global $manager;
+		global $CONF, $errormessage, $manager;
+		
+		/* TODO: validation for $login, $password, $shared */
+		if ( $login == '' || $password == '' )
+		{
+			return 0;
+		}
+		/* limiting the length of password to avoid hash collision */
+		$password=i18n::substr($password, 0, 40);
 		
 		$success = 0;
 		$allowlocal = 1;
@@ -107,33 +190,126 @@ class MEMBER {
 		{
 			$this->loggedin = ( $this->readFromName($login) && $this->checkPassword($password) );
 		}
+		
+		/* login failed */
+		if ( !$this->loggedin )
+		{
+			$trimlogin = trim($login);
+			if ( empty($trimlogin) )
+			{
+				$errormessage = "Please enter a username.";
+			}
+			else
+			{
+				$errormessage = 'Login failed for ' . $login;
+			}
+			$manager->notify('LoginFailed', array('username' => $login) );
+			ACTIONLOG::add(INFO, $errormessage);
+		}
+		/* login success */
+		else
+		{
+			$this->newCookieKey();
+			$this->setCookies($shared);
+			
+			if ( $CONF['secureCookieKey'] !== 'none' )
+			{
+				/* secure cookie key */
+				$this->setCookieKey($this->hash($this->getCookieKey().$CONF['secureCookieKeyIP']));
+				$this->write();
+			}
+			
+			$errormessage = '';
+			$manager->notify('LoginSuccess', array('member' => &$member, 'username' => $login) );
+			ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
+		}
+		
 		return $this->loggedin;
 	}
 	
-	/*
+	/**
+	 * MEMBER::cookielogin()
 	 * Login using cookie key
+	 * 
+	 * @param	String	$login	not used
+	 * @param	String	$cookiekey	not used
+	 * @return	Boolean	login or not
 	 */
-	public function cookielogin($login, $cookiekey)
+	public function cookielogin($login='', $cookiekey='')
 	{
-		$this->loggedin = ( $this->readFromName($login) && $this->checkCookieKey($cookiekey) );
+		global $CONF, $manager;
+		
+		if ( !headers_sent() && cookieVar("{$CONF['CookiePrefix']}user") )
+		{
+			/* Cookie Authentication */
+			$ck = cookieVar("{$CONF['CookiePrefix']}loginkey");
+			
+			/* TODO: validation for each cookie values */
+			
+			/* limiting the length of password to avoid hash collision */
+			$ck = i18n::substr($ck,0,32);
+			if ( $CONF['secureCookieKey']!=='none' )
+			{
+				$ck = $this->hash("{$ck}{$CONF['secureCookieKeyIP']}");
+			}
+			$this->loggedin = ( $this->readFromName(cookieVar("{$CONF['CookiePrefix']}user")) && $this->checkCookieKey($ck) );
+			unset($ck);
+			
+			/* renew cookies when not on a shared computer */
+			if ( $this->loggedin && (cookieVar($CONF['CookiePrefix'] . 'sharedpc') != 1) )
+			{
+				$this->setCookieKey(cookieVar("{$CONF['CookiePrefix']}loginkey"));
+				$this->setCookies();
+			}
+		}
 		return $this->loggedin;
 	}
 	
+	/**
+	 * MEMBER::logout()
+	 * logout and expire cookie
+	 * 
+	 * @param	Void
+	 * @return	Void
+	 */
 	public function logout()
 	{
+		global $CONF, $manager;
+		
+		if ( !headers_sent() && cookieVar("{$CONF['CookiePrefix']}user") )
+		{
+			/* remove cookies on logout */
+			setcookie("{$CONF['CookiePrefix']}user", '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+			setcookie("{$CONF['CookiePrefix']}loginkey", '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+			$manager->notify('Logout', array('username' => cookieVar("{$CONF['CookiePrefix']}user") ) );
+		}
+		
 		$this->loggedin = 0;
 		return;
 	}
 	
+	/**
+	 * MEMBER::isLoggedIn()
+	 * return member is loggedin or not
+	 * 
+	 * @param	Void
+	 * @return	Void
+	 */
 	public function isLoggedIn()
 	{
 		return $this->loggedin;
 	}
 	
-	/*
+	/**
+	 * MEMBER:read()
 	 * Read member information from the database 
+	 * 
+	 * @param	String	$where	where statement
+	 * @return	Resource	SQL resource
+	 * 
 	 */
-	public function read($where) {
+	public function read($where)
+	{
 		// read info
 		$query =  'SELECT * FROM '.sql_table('member') . ' WHERE ' . $where;
 		
@@ -156,9 +332,14 @@ class MEMBER {
 		return sql_num_rows($res);
 	}
 	
-	/*
+	/**
+	 * MEMBER::isBlogAdmin()
 	 * Returns true if member is an admin for the given blog
 	 * (returns false if not a team member)
+	 * 
+	 * @param	Integer	$blogid	weblog id
+	 * @return	Integer	weblog admin or not
+	 * 
 	 */
 	public function isBlogAdmin($blogid)
 	{
@@ -543,7 +724,7 @@ class MEMBER {
 			   . "     mnotes='" . sql_real_escape_string($this->getNotes()) . "',"
 			   . "     mcanlogin=" . $this->canLogin() . ","
 			   . "     mlocale='" . sql_real_escape_string($this->getLocale()) . "',"
-			   . "     mautosave=" . intval($this->getAutosave()) . ""			   
+			   . "     mautosave=" . intval($this->getAutosave()) . ""
 			   . " WHERE mnumber=" . $this->getID();
 		sql_query($query);
 		return;
@@ -556,7 +737,7 @@ class MEMBER {
 	
 	public function checkPassword($pw)
 	{
-		return (md5($pw) == $this->getPassword());
+		return ($this->hash($pw) == $this->getPassword());
 	}
 	
 	public function getRealName()
@@ -586,7 +767,7 @@ class MEMBER {
 
 	public function setPassword($pwd)
 	{
-		$this->password = md5($pwd);
+		$this->password = $this->hash($pwd);
 	}
 
 	public function getCookieKey()
@@ -600,7 +781,7 @@ class MEMBER {
 	public function newCookieKey()
 	{
 		mt_srand( (double) microtime() * 1000000);
-		$this->cookiekey = md5(uniqid(mt_rand()));
+		$this->cookiekey = $this->hash(uniqid(mt_rand()));
 		$this->write();
 		return $this->cookiekey;
 	}
@@ -796,7 +977,7 @@ class MEMBER {
 		
 		$name = sql_real_escape_string($name);
 		$realname = sql_real_escape_string($realname);
-		$password = sql_real_escape_string(md5($password));
+		$password = sql_real_escape_string($this->hash($password));
 		$email = sql_real_escape_string($email);
 		$url = sql_real_escape_string($url);
 		$admin = intval($admin);
@@ -872,7 +1053,7 @@ class MEMBER {
 		{
 			// generate a random key
 			srand((double)microtime()*1000000);
-			$key = md5(uniqid(rand(), true));
+			$key = $this->hash(uniqid(rand(), true));
 			
 			// attempt to add entry in database
 			// add in database as non-active
