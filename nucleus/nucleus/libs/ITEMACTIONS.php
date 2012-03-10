@@ -386,12 +386,12 @@ class ITEMACTIONS extends BaseActions {
 	 * ITEMACTIONS::parse_date()
 	 * Parse templatevar date
 	 *
-	 * @param	String	$format	format optional strftime format
-	 * @return	String	formatted datetime
+	 * @param	string	$format	format optional strftime format
+	 * @return	void
 	 */
 	function parse_date($format = '')
 	{
-		if ( !isset($this->template['FORMAT_DATE']) )
+		if ( !array_key_exists('FORMAT_DATE', $this->template) )
 		{
 			$this->template['FORMAT_DATE'] = '';
 		}
@@ -403,16 +403,33 @@ class ITEMACTIONS extends BaseActions {
 		}
 		
 		echo i18n::formatted_datetime($format, $this->currentItem->timestamp, $this->template['FORMAT_DATE'], $offset);
+		return;
 	}
 	
 	/**
-	  * Parse templatevar time
-	  *
-	  * @param format optional strftime format
-	  */
-	function parse_time($format = '') {
-		if (!isset($this->template['FORMAT_TIME'])) $this->template['FORMAT_TIME'] = '';
-		echo i18n::strftime($format ? $format : $this->template['FORMAT_TIME'],$this->currentItem->timestamp);
+	 * ITEMACTIONS::parse_time()
+	 * Parse templatevar time
+	 *
+	 * @param string	$format	format optional strftime format
+	 * @return	void
+	 * 
+	 */
+	function parse_time($format = '')
+	{
+		if ( !array_key_exists('FORMAT_TIME', $this->template) )
+		{
+			$this->template['FORMAT_TIME'] = '';
+		}
+		
+		if ( $format != '' )
+		{
+			echo i18n::strftime($format, $this->currentItem->timestamp);
+		}
+		else
+		{
+			echo i18n::strftime($this->template['FORMAT_TIME'], $this->currentItem->timestamp);
+		}
+		return;
 	}
 
 	/**

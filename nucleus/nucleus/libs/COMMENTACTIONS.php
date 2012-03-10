@@ -214,21 +214,28 @@ class COMMENTACTIONS extends BaseActions {
 		else
 			echo $this->template['COMMENTS_MANY'];
 	}
-
+	
 	/**
 	 * COMMENTACTIONS::parse_date()
 	 * Parse templatevar date
 	 * 
 	 * @format	String	$format	Date format according to PHP
-	 * @return	String formatted datetime
+	 * @return	void
 	 * 
 	 */
 	function parse_date($format = '')
 	{
+		if ( !array_key_exists('FORMAT_DATE', $this->template) )
+		{
+			$this->template['FORMAT_DATE'] = '';
+		}
+		
 		$offset = $this->commentsObj->itemActions->blog->getTimeOffset() * 3600;
+		
 		echo i18n::formatted_datetime($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE'], $offset);
+		return;
 	}
-
+	
 	/**
 	 * Parse templatevar email
 	 */
@@ -320,17 +327,33 @@ class COMMENTACTIONS extends BaseActions {
 		if ($tmp != $this->currentComment['body'])
 			$this->parser->parse($this->template['COMMENTS_CONTINUED']);
 	}
-
+	
 	/**
+	 * COMMENTACTIONS::parse_time()
 	 * Parse templatevar time
+	 * 
+	 * @param	string	$format	datetime format referring to strftime() in PHP's built-in function
+	 * @return	void
+	 * 
 	 */
-	function parse_time($format = '') {
-		echo i18n::strftime(
-				($format == '') ? $this->template['FORMAT_TIME'] : $format,
-				$this->currentComment['timestamp']
-			);
+	function parse_time($format = '')
+	{
+		if ( !array_key_exists('FORMAT_TIME', $this->template) )
+		{
+			$this->template['FORMAT_TIME'] = '';
+		}
+		
+		if ( $format != '' )
+		{
+			echo i18n::strftime($format, $this->currentComment['timestamp']);
+		}
+		else
+		{
+			echo i18n::strftime($this->template['FORMAT_TIME'], $this->currentComment['timestamp']);
+		}
+		return;
 	}
-
+	
 	/**
 	 * Parse templatevar timestamp
 	 */
