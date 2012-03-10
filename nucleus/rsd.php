@@ -4,5 +4,3 @@ $CONF = array();
 include('./config.php');
 selectSkin('xml/rsd');
 selector();
-
-?>

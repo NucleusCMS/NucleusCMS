@@ -20,17 +20,13 @@
 
 $CONF = array();
 require('./config.php');
-
-// common functions
-//include_once($DIR_LIBS . 'ACTION.php');
 include_libs('ACTION.php',true,false);
 
 $action = requestVar('action');
 $a = new ACTION();
 $errorInfo = $a->doAction($action);
 
-if ($errorInfo) {
+if ( $errorInfo )
+{
 	doError($errorInfo['message'], new SKIN($errorInfo['skinid']) );
 }
-
-?>

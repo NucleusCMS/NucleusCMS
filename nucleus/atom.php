@@ -20,32 +20,30 @@
 header('Pragma: no-cache');
 
 $CONF = array();
-$CONF['Self'] = 'atom.php';
-
 include('./config.php');
 
-if (!$CONF['DisableSite']) {
+if ( !$CONF['DisableSite'] )
+{
 	// get feed into $feed
 	ob_start();
-		selectSkin('feeds/atom');
-		selector();
-		$feed = ob_get_contents();
+	selectSkin('feeds/atom');
+	selector();
+	$feed = ob_get_contents();
 	ob_end_clean();
-
+	
 	// create ETAG (hash of feed)
 	// (HTTP_IF_NONE_MATCH has quotes around it)
 	$eTag = '"' . md5($feed) . '"';
 	header('Etag: ' . $eTag);
-
+	
 	// compare Etag to what we got
-	if ($eTag == serverVar('HTTP_IF_NONE_MATCH') ) {
+	if ( $eTag == serverVar('HTTP_IF_NONE_MATCH') )
+	{
 		header('HTTP/1.0 304 Not Modified');
 		header('Content-Length: 0');
-	} else {
-		// dump feed
+	}
+	else
+	{
 		echo $feed;
 	}
-
 }
-
-?>

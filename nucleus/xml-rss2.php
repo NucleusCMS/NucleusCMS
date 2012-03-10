@@ -21,51 +21,45 @@
 header('Pragma: no-cache');
 
 $CONF = array();
-// removed $CONF['Self'] to let it be set in globalfunctions.php. 
-// Having value here makes all links (normal or fancy urlmodes) look like xml-rss2.php?itemid=#
-//$CONF['Self'] = 'xml-rss2.php';
-
 include('./config.php');
 
-if (!$CONF['DisableSite']) {
-
+if ( !$CONF['DisableSite'] )
+{
 	// get feed into $feed
 	ob_start();
 	selectSkin('feeds/rss20');
 	selector();
 	$feed = ob_get_contents();
 	ob_end_clean();
-
-	// create ETAG (hash of feed)
-	// (HTTP_IF_NONE_MATCH has quotes around it)
+	
+	/*
+	 * create ETAG (hash of feed)
+	 * (HTTP_IF_NONE_MATCH has quotes around it)
+	 */
 	$eTag = '"' . md5($feed) . '"';
 	header('Etag: ' . $eTag);
-
+	
 	// compare Etag to what we got
-	if ($eTag == serverVar('HTTP_IF_NONE_MATCH') ) {
+	if ( $eTag == serverVar('HTTP_IF_NONE_MATCH') )
+	{
 		header('HTTP/1.0 304 Not Modified');
 		header('Content-Length: 0');
-	} else {
-		// dump feed
+	}
+	else
+	{
 		echo $feed;
 	}
-
-} else {
-	// output empty RSS file...
-	// (because site is disabled)
-
-	echo '<' . '?xml version="1.0" encoding="' . i18n::get_current_charset() . '"?' . '>';
-
-	?>
-	<rss version="2.0">
-		<channel>
-			<title><?php echo ENTITY::hsc($CONF['SiteName']); ?></title>
-			<link><?php echo ENTITY::hsc($CONF['IndexURL']); ?></link>
-			<description></description>
-			<docs>http://backend.userland.com/rss</docs>
-		</channel>
-	</rss>
-	<?php
 }
-
-?>
+// site is disabled, output empty RSS file
+else
+{
+	echo '<?xml version="1.0" encoding="' . i18n::get_current_charset() . '"?>' . "\n";
+	echo "<rss version=\"2.0\">\n";
+	echo "<channel>\n";
+	echo '<title>' . ENTITY::hsc($CONF['SiteName']) . "</title>\n";
+	echo "<link>" . ENTITY::hsc($CONF['IndexURL']) . "</link>\n";
+	echo "<description></description>\n";
+	echo "<docs>http://backend.userland.com/rss</docs>\n";
+	echo "</channel>\n";
+	echo "</rss>\n";
+}
