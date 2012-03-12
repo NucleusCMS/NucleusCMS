@@ -430,7 +430,7 @@ class BLOG {
 			);
 			
 			$query = "INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, '%s', '%s')";
-			$query = sprintf($query, sql_table('category'), (integer) $this->getID(). sql_real_escape_string($catName), sql_real_escape_string($catDescription));
+			$query = sprintf($query, sql_table('category'), (integer) $this->getID(), sql_real_escape_string($catName), sql_real_escape_string($catDescription));
 			sql_query($query);
 			$catid = sql_insert_id();
 			
