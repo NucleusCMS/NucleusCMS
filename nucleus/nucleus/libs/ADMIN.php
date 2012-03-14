@@ -6040,57 +6040,70 @@ selector();
         <?php       $this->pagefoot();
     }
 
-    /**
-     * @todo document this
-     */
-    function action_backupcreate() {
-        global $member, $DIR_LIBS;
-
-        $member->isAdmin() or $this->disallow();
-
-        // use compression ?
-        $useGzip = intval(postVar('gzip'));
-
-        include($DIR_LIBS . 'backup.php');
-
-        // try to extend time limit
-        // (creating/restoring dumps might take a while)
-        @set_time_limit(1200);
-
-        $bu = new Backup();
-        $bu->do_backup($useGzip);
-        exit;
-    }
-
-    /**
-     * @todo document this
-     */
-    function action_backuprestore() {
-        global $member, $DIR_LIBS;
-
-        $member->isAdmin() or $this->disallow();
-
-        if (intPostVar('letsgo') != 1)
-            $this->error(_ERROR_BACKUP_NOTSURE);
-
-        include($DIR_LIBS . 'backup.php');
-
-        // try to extend time limit
-        // (creating/restoring dumps might take a while)
-        @set_time_limit(1200);
-
-        $bu = new Backup();
-        $message = $bu->do_restore();
-        if ($message != '')
-            $this->error($message);
-
-        $this->pagehead();
-        ?>
-        <h2><?php echo _RESTORE_COMPLETE?></h2>
-        <?php       $this->pagefoot();
-
-    }
-
+	/**
+	 * Backup::action_backupcreate()
+	 * create file for backup
+	 * 
+	 * @param		void
+	 * @return	void
+	 * 
+	 */
+	function action_backupcreate()
+	{
+		global $member, $DIR_LIBS;
+		
+		$member->isAdmin() or $this->disallow();
+		
+		// use compression ?
+		$useGzip = intval(postVar('gzip'));
+		
+		include($DIR_LIBS . 'backup.php');
+		
+		// try to extend time limit
+		// (creating/restoring dumps might take a while)
+		@set_time_limit(1200);
+		
+		$bu = new Backup();
+		$bu->do_backup($useGzip);
+		exit;
+	}
+	
+	/**
+	 * Backup::action_backuprestore()
+	 * restoring from uploaded file
+	 * 
+	 * @param		void
+	 * @return	void
+	 */
+	function action_backuprestore()
+	{
+		global $member, $DIR_LIBS;
+		
+		$member->isAdmin() or $this->disallow();
+		
+		if ( intPostVar('letsgo') != 1 )
+		{
+			$this->error(_ERROR_BACKUP_NOTSURE);
+		}
+		
+		include($DIR_LIBS . 'backup.php');
+		
+		// try to extend time limit
+		// (creating/restoring dumps might take a while)
+		@set_time_limit(1200);
+		
+		$bu = new Backup();
+		$message = $bu->do_restore();
+		if ( $message != '' )
+		{
+			$this->error($message);
+		}
+		$this->pagehead();
+		echo '<h2>' . _RESTORE_COMPLETE . "</h2>\n";
+		$this->pagefoot();
+		return;
+	}
+	
     /**
      * @todo document this
      */
