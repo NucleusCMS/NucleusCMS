@@ -1,5 +1,5 @@
 <?php
-// Japanese (UTF-8) Nucleus Language File
+// Japanese (EUC-JP) Nucleus Language File
 //
 // Author: chrome (chrome@cgi.no-ip.org)
 // Modified by: Osamu Higuchi (osamu@higuchi.com)
@@ -15,12 +15,12 @@
 // available for download (with proper credit to the author, of course)
 
 // Note for Japanese users
-// このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
+// このファイルは Nucleus の EUC-JP 版日本語ランゲージファイルです。
 
 
 
 /**
- * Japanese UTF-8 Nucleus Language File
+ * Japanese EUC-JP Nucleus Language File
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The NucleusCMS Japanチーム
