@@ -1,0 +1,228 @@
+/*
+ * style sheet for installer
+ * 
+ * $Id: 
+*/
+
+@charset 'UTF-8';
+/* CSS Document */
+
+/* Layout */
+body{
+	margin:0;
+	padding:0;
+	text-align:center;
+	color:#666;
+}
+#header{
+	width: 100%;
+	height:40px;
+	background:#000;
+	position: fixed;  
+	top:0;  
+	left:0;  
+}
+#container,#container_detailed,#footer,#navigation{
+	margin:0 auto;
+	text-align:left;
+	border-width:0 1px;
+}
+#navigation{
+	width:800px;
+	height:40px;
+}
+#container,#container_detailed{
+	width:550px;
+	padding:40px 20px 0 30px;
+}
+#footer{
+	width:600px;
+}
+
+/* Common Settings */
+p{
+	margin:20px 0;
+}
+img{
+	border:none;
+}
+a{
+	text-decoration:none;
+}
+pre{
+	font-size: small;
+	line-height: 1em;
+	background-color:#eee;
+	border:1px solid gray;
+	padding: 2px;
+}
+.err{
+	display:block;
+	color:#c00;
+}
+
+/* Top navigation */
+#navigation h1{
+	width:120px;
+	height:35px;
+	margin:0 30px 0 0;
+	padding:4px 0 1px 0;
+	float:left;
+}
+#navigation ul{
+	margin:0 100px 0 0; 
+	padding:18px 0 2px 0;
+	height:20px;
+	list-style-type:none;
+}
+#navigation li{
+	float:left;
+	font-size:93%;
+	height:20px;
+}
+#navigation li.rightbox{
+	float:right;
+}
+#navigation li,#navigation a{
+	color:#dedede;
+}
+#navigation li.gry{
+	color:#787878;
+}
+#navigation a:hover{
+	color:#fff;
+}
+
+/* Content */
+#container h2,#container_detailed h2{
+	line-height:20px;
+	height:20px;
+	margin:0 -20px 0 -30px;
+	padding:6px 0 4px 35px;
+	background:url("nuc_h2_bk.png") 4px 4px no-repeat #d0d0d0;
+	font-size:136%;
+	color:#454545;
+}
+
+/* Form table */
+.prt table{
+	width: 100%;
+	margin-bottom:20px;
+}
+.prt table th{
+	font-size:99%;
+	text-align:right;
+	width:135px;
+	height:40px;
+}
+.prt table th .nam{
+	margin:5px 0 0 0;
+	padding:5px 0 0 0;
+	height:15px;
+	line-height:15px;
+	font-weight:bold;
+	color:#454545;
+}
+.prt table th .sub{
+	display:block;
+	margin:0;
+	padding:0 0 5px 0;
+	height:10px;
+	line-height:10px;
+	font-size:65%;
+	font-weight:normal;
+	color:#666;
+}
+.prt table td input{
+	width:390px;
+	height:35px;
+	margin:0 0 0 5px;
+	font-size:182%;
+	font-weight:bold;
+	color:#333;
+	background:url("nuc_input_bk.png") no-repeat;
+	border:1px solid #999;
+	border-right-color:#ccc;
+	border-bottom-color:#ccc;
+}
+
+#container_detailed .prt table td input{
+	height:25px;
+	margin:0 0 0 5px;
+	font-size:122%;
+	font-weight:normal;
+	color:#000;
+}
+
+/* Select */
+.prt select{
+	width:510px;
+	height:35px;
+	line-height:35px;
+	margin:0 20px 10px 0;
+	font-size:152%;
+	font-weight:bold;
+	color:#333;
+	border:1px solid #999;
+	border-left-color:#ccc;
+	border-top-color:#ccc;
+	background:url("nuc_input_bk.png") no-repeat;
+}
+
+#container_detailed .prt select{
+	height:25px;
+	line-height:25px;
+	margin:0 20px 10px 0;
+	font-size:122%;
+}
+
+/* Button */
+.prt .sbt{
+	height:40px;
+	margin:10px 0;
+	text-align:center;
+}
+.prt .sbt .sbt_sqr,.prt .sbt .sbt_arw{
+	height:35px;
+	border:none;
+	background:#000;
+	color:#dedede;
+	font-size:136%;
+	font-weight:bold;
+}
+.prt .sbt .sbt_sqr{
+	padding:0 20px;
+	margin-right:5px;
+	border-radius:5px;
+}
+.prt .sbt .sbt_arw{
+	padding:0 30px 0 20px;
+	border-radius:5px 0 0 5px;
+	background:url("nuc_but_bk_03.png") right top no-repeat #000;
+}
+.prt .sbt .sbt_sqr:hover{
+	color:#ffde00;
+	background:#292929;
+}
+.prt .sbt .sbt_arw:hover{
+	color:#ffde00;
+	background:url("nuc_but_bk_03.png") right top no-repeat #292929;
+}
+
+/* Text */
+#config_text{
+	width:100%;
+	height:50px;
+	border:1px solid gray;
+}
+
+/* Footer */
+#footer{
+	border-top:1px solid #999;
+	text-align:right;
+	height:25px;
+	margin-top:10px;
+	padding:5px 10px 0 0;
+	font-size:77%;
+}
+
