@@ -162,7 +162,7 @@ function do_action()
 				break;
 			case 'weblog':
 				if ( count($param->check_user_parameters()) == 0
-				&& count($param->check_weblog_parameters()) == 0 )
+					&& count($param->check_weblog_parameters()) == 0 )
 				{
 					$param->set_state('install');
 					$isPostback = false;
@@ -213,7 +213,7 @@ function show_header()
 	header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 	header('Content-Type: text/html; charset=' . i18n::get_current_charset());
 
-	?>
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
