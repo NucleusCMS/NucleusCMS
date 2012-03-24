@@ -28,7 +28,7 @@ error_reporting(E_ALL);
 $minimum_php_version	= '5.0.6';
 $minimum_mysql_version	= '3.23';
 
-$page_footer_copyright	= '&copy; 2001-2012 The Nucleus Groupe . Running Nucleus CMS v4.00';
+$page_footer_copyright	= '&copy; 2001-2012 The Nucleus Group . Running Nucleus CMS v4.00';
 
 // begin if: server's PHP version is below the minimum; halt installation
 if ( version_compare(PHP_VERSION, $minimum_php_version, '<') )
