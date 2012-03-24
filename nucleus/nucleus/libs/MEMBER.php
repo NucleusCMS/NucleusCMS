@@ -22,7 +22,7 @@ class MEMBER
 	// 1 when authenticated, 0 when not
 	public $loggedin = 0;
 	public $password;		// not the actual password, but rather a MD5 hash
-	private	$algorism = 'md5';
+	private $algorism = 'md5';
 	
 	public $cookiekey;		// value that should also be in the client cookie to allow authentication
 	
@@ -37,9 +37,6 @@ class MEMBER
 	public $notes;
 	public $autosave = 1;		// if the member use the autosave draft function
 	private $locale = '';
-	
-	/* NOTE: $locale value obsoleted $language value since version 4.0 */
-	public $language = '';
 	
 	/**
 	 * MEMBER::__construct()
@@ -353,20 +350,39 @@ class MEMBER
 			return ( sql_result($res,0,0) == 1 );
 	}
 	
+	/**
+	 * MEMBER::blogAdminRights()
+	 * 
+	 * @param	integer	$blogid	ID of target weblog
+	 * @return	boolean	whether to have admin rights to the weblog or not
+	 * 
+	 */
 	public function blogAdminRights($blogid)
 	{
 		return ($this->isAdmin() || $this->isBlogAdmin($blogid));
 	}
 	
+	/**
+	 * MEMBER::teamRights()
+	 * 
+	 * @param	integer	$blogid	ID of target weblog
+	 * @return	boolean	whether to have admin right to the weblog or not
+	 * 
+	 */
 	public function teamRights($blogid)
 	{
 		return ($this->isAdmin() || $this->isTeamMember($blogid));
 	}
 
-	/*
+	/**
+	 * MEMBER::isTeamMember()
 	 * Returns true if this member is a team member of the given blog
+	 * 
+	 * @param	integer	$blogid	ID of target weblog
+	 * @return	boolean	whether to join the weblog or not
+	 * 
 	 */
-	function isTeamMember($blogid)
+	public function isTeamMember($blogid)
 	{
 		$query = 'SELECT * FROM '.sql_table('team').' WHERE'
 			   . ' tblog=' . intval($blogid)
@@ -374,8 +390,15 @@ class MEMBER
 		$res = sql_query($query);
 		return (sql_num_rows($res) != 0);
 	}
-
-	function canAddItem($catid)
+	
+	/**
+	 * MEMBER::canAddItem()
+	 * 
+	 * @param	integer	$catid	ID of target category
+	 * @return	boolean	whether to be able to add items to the category or not
+	 * 
+	 */
+	public function canAddItem($catid)
 	{
 		global $manager;
 		
@@ -407,13 +430,18 @@ class MEMBER
 		return 1;
 	}
 	
-	/*
+	/**
+	 * MEMBER::canAlterComment()
 	 * Returns true if this member can edit/delete a commentitem. This can be in the
 	 * following cases:
 	 *	  - member is a super-admin
 	 *   - member is the author of the comment
 	 *   - member is admin of the blog associated with the comment
 	 *   - member is author of the item associated with the comment
+	 * 
+	 * @param	integer	$commentid	ID of target comment
+	 * @return	boolean	delete/edit the comment or not
+	 * 
 	 */
 	public function canAlterComment($commentid)
 	{
@@ -431,11 +459,16 @@ class MEMBER
 		return ($obj->cauthor == $this->getID()) or $this->isBlogAdmin($obj->blogid) or ($obj->iauthor == $this->getID());
 	}
 	
-	/*
+	/**
+	 * MEMBER::canAlterItem()
 	 * Returns true if this member can edit/delete an item. This is true in the following
 	 * cases: - member is a super-admin
 	 *	       - member is the author of the item
 	 *        - member is admin of the the associated blog
+	 * 
+	 * @param	integer	$itemid	ID of target item
+	 * @return	boolean	delete/edit the item or not
+	 * 
 	 */
 	public function canAlterItem($itemid)
 	{
@@ -447,22 +480,29 @@ class MEMBER
 		return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
 	}
 
-	/*
-	 * Return true if member can be deleted. This means that there are no items
-	 * posted by the member left
+	/**
+	 * MEMBER::canBeDeleted()
+	 * Return true if member can be deleted. This means that there are no items posted by the member left
+	 * 
+	 * @param	void
+	 * @return	boolean	whether there is no items or exists
+	 * 
 	 */
 	public function canBeDeleted()
 	{
 		$res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
-		return (sql_num_rows($res) == 0);
+		return ( sql_num_rows($res) == 0 );
 	}
 
-	/*
+	/**
+	 * MEMBER::canUpdateItem()
 	 * returns true if this member can move/update an item to a given category,
 	 * false if not (see comments fot the tests that are executed)
 	 *
-	 * @param itemid
-	 * @param newcat (can also be of form 'newcat-x' with x=blogid)
+	 * @param	integer	$itemid
+	 * @param	string	$newcat (can also be of form 'newcat-x' with x=blogid)
+	 * @return	boolean	whether being able to update the item or not
+	 * 
 	 */
 	public function canUpdateItem($itemid, $newcat)
 	{
@@ -537,14 +577,16 @@ class MEMBER
 		// all other cases: NOK
 		return 0;
 	}
-
+	
 	/**
-	  * Sets the cookies for the member
-	  *
-	  * @param shared
-	  *		set this to 1 when using a shared computer. Cookies will expire
-	  *		at the end of the session in this case.
-	  */
+	 * MEMBER::setCookies()
+	 * Sets the cookies for the member
+	 *
+	 * @param boolean	$shared	set this to 1 when using a shared computer. Cookies will expire
+	 *				at the end of the session in this case.
+	 * @return	void
+	 * 
+	 */
 	public function setCookies($shared = 0)
 	{
 		global $CONF;
@@ -558,8 +600,8 @@ class MEMBER
 			$lifetime = time()+2592000;
 		}
 		
-		setcookie($CONF['CookiePrefix'] .'user',$this->getDisplayName(),$lifetime,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
-		setcookie($CONF['CookiePrefix'] .'loginkey', $this->getCookieKey(),$lifetime,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
+		setcookie($CONF['CookiePrefix'] . 'user', $this->getDisplayName(), $lifetime, $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+		setcookie($CONF['CookiePrefix'] . 'loginkey', $this->getCookieKey(), $lifetime, $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
 		
 		// make sure cookies on shared pcs don't get renewed
 		if ( $shared )
@@ -573,9 +615,9 @@ class MEMBER
 	 * MEMBER::sendActivationLink()
 	 * Send activation mail
 	 * 
-	 * @param	String	$type	activation type
-	 * @param	String	$extra	extra info
-	 * @return	Void
+	 * @param	string	$type	activation type
+	 * @param	string	$extra	extra info
+	 * @return	void
 	 */
 	public function sendActivationLink($type, $extra='')
 	{
@@ -627,8 +669,13 @@ class MEMBER
 		return;
 	}
 	
-	/*
+	/**
+	 * MEMBER::getAdminBlogs()
 	 * Returns an array of all blogids for which member has admin rights
+	 * 
+	 * @param	void
+	 * @return	array	weblog IDs in which this member has admin rights
+	 * 
 	 */
 	public function getAdminBlogs()
 	{
@@ -654,8 +701,13 @@ class MEMBER
 		return $blogs;
 	}
 	
-	/*
+	/**
+	 * MEMBER::getTeamBlogs()
 	 * Returns an array of all blogids for which member has team rights
+	 * 
+	 * @param	boolean	$incAdmin	whether checking weblog admin rights or not
+	 * @return	array	weblog IDs in which this member join
+	 * 
 	 */
 	public function getTeamBlogs($incAdmin = 1)
 	{
@@ -702,30 +754,32 @@ class MEMBER
 		{
 			return $suggest;
 		}
-		else
-		{
-			return $CONF['AdminEmail'];
-		}
+		return $CONF['AdminEmail'];
 	}
 	
-	/*
+	/**
+	 * MEMBER::write()
 	 * Write data to database
+	 *
+	 * @param	void
+	 * @return	void
+	 * 
 	 */
-	function write()
+	public function write()
 	{
 		$query =  'UPDATE '.sql_table('member')
-			   . " SET mname='" . sql_real_escape_string($this->getDisplayName()) . "',"
-			   . "     mrealname='". sql_real_escape_string($this->getRealName()) . "',"
-			   . "     mpassword='". sql_real_escape_string($this->getPassword()) . "',"
-			   . "     mcookiekey='". sql_real_escape_string($this->getCookieKey()) . "',"
-			   . "     murl='" . sql_real_escape_string($this->getURL()) . "',"
-			   . "     memail='" . sql_real_escape_string($this->getEmail()) . "',"
-			   . "     madmin=" . $this->isAdmin() . ","
-			   . "     mnotes='" . sql_real_escape_string($this->getNotes()) . "',"
-			   . "     mcanlogin=" . $this->canLogin() . ","
-			   . "     mlocale='" . sql_real_escape_string($this->getLocale()) . "',"
-			   . "     mautosave=" . intval($this->getAutosave()) . ""
-			   . " WHERE mnumber=" . $this->getID();
+		        . " SET mname='" . sql_real_escape_string($this->getDisplayName()) . "', "
+		           . "mrealname='". sql_real_escape_string($this->getRealName()) . "', "
+		           . "mpassword='". sql_real_escape_string($this->getPassword()) . "', "
+		           . "mcookiekey='". sql_real_escape_string($this->getCookieKey()) . "', "
+		           . "murl='" . sql_real_escape_string($this->getURL()) . "', "
+		           . "memail='" . sql_real_escape_string($this->getEmail()) . "', "
+		           . "madmin=" . $this->isAdmin() . ", "
+		           . "mnotes='" . sql_real_escape_string($this->getNotes()) . "', "
+		           . "mcanlogin=" . $this->canLogin() . ", "
+		           . "mlocale='" . sql_real_escape_string($this->getLocale()) . "', "
+		           . "mautosave=" . intval($this->getAutosave()) . " "
+		        . "WHERE mnumber=" . $this->getID();
 		sql_query($query);
 		return;
 	}
@@ -744,39 +798,44 @@ class MEMBER
 	{
 		return $this->realname;
 	}
-
+	
 	public function setRealName($name)
 	{
 		$this->realname = $name;
 	}
-
+	
 	public function getEmail()
 	{
 		return $this->email;
 	}
-
+	
 	public function setEmail($email)
 	{
 		$this->email = $email;
 	}
-
+	
 	public function getPassword()
 	{
 		return $this->password;
 	}
-
+	
 	public function setPassword($pwd)
 	{
 		$this->password = $this->hash($pwd);
 	}
-
+	
 	public function getCookieKey()
 	{
 		return $this->cookiekey;
 	}
 	
-	/*
+	/**
+	 * MEMBER::newCookieKey()
 	 * Generate new cookiekey, save it, and return it
+	 * 
+	 * @param	void
+	 * @return	void
+	 * 
 	 */
 	public function newCookieKey()
 	{
@@ -801,27 +860,11 @@ class MEMBER
 		$this->url = $site;
 	}
 	
-	/*
-	 * FIXME: $this->locale is always correct or not?
-	 * NOTE: Deprecated, this will be obsoleted soon.
-	 */
-	public function getLanguage()
-	{
-		if ( ($language = i18n::convert_locale_to_old_language_file_name($this->locale)) === FALSE )
-		{
-			$language = '';
-		}
-		return $language;
-	}
-	
 	public function getLocale()
 	{
 		return $this->locale;
 	}
 	
-	/*
-	 * FIXME: $locale value should obsolete $language value near future
-	 */
 	public function setLocale($locale)
 	{
 		if ( !!preg_match('#^(.+)_(.+)_(.+)$#', $locale)
@@ -881,17 +924,28 @@ class MEMBER
 	public function setAutosave($val)
 	{
 		$this->autosave = $val;
+		return;
 	}
 	
+	/**
+	 * MEMBER::getID()
+	 * 
+	 * @param	void
+	 * @return	integer	id of this member object
+	 * 
+	 */
 	public function getID()
 	{
 		return $this->id;
 	}
 	
-	/*
+	/**
+	 * MEMBER::exists()
 	 * Returns true if there is a member with the given login name
 	 * 
 	 * @static
+	 * @param	string	$name	target name
+	 * @return	boolean	whether target name exists or not
 	 */
 	public static function exists($name)
 	{
@@ -899,10 +953,14 @@ class MEMBER
 		return ( sql_num_rows($r) != 0 );
 	}
 	
-	/*
+	/**
+	 * MEMBER::existsID()
 	 * Returns true if there is a member with the given ID
 	 *
 	 * @static
+	 * @param	integer	$id	target id
+	 * @return	boolean	whether target id exists or not
+	 * 
 	 */
 	public static function existsID($id)
 	{
@@ -910,11 +968,16 @@ class MEMBER
 		return (sql_num_rows($r) != 0);
 	}
 	
-	/*
-	 *  Checks if a username is protected. 
+	/**
+	 * MEMBER::isNameProtected()
+	 *  Checks if a username is protected.
 	 *  If so, it can not be used on anonymous comments
+	 * 
+	 * @param	string	$name	target name
+	 * @return	boolean	whether the name exists or not
+	 * 
 	 */
-	function isNameProtected($name)
+	public function isNameProtected($name)
 	{
 		// extract name
 		$name = strip_tags($name);
@@ -924,7 +987,6 @@ class MEMBER
 	
 	/**
 	 * MEMBER::create()
-	 * 
 	 * Adds a new member
 	 * 
 	 * @static
@@ -938,7 +1000,7 @@ class MEMBER
 	 * @param	String	$notes
 	 * @return	String	1 if success, others if fail
 	 */
-	public static function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes)
+	static public  function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes)
 	{
 		if ( !NOTIFICATION::address_validation($email) )
 		{
@@ -975,17 +1037,18 @@ class MEMBER
 			$url = 'http://' . $url;
 		}
 		
-		$name = sql_real_escape_string($name);
-		$realname = sql_real_escape_string($realname);
-		$password = sql_real_escape_string($this->hash($password));
-		$email = sql_real_escape_string($email);
-		$url = sql_real_escape_string($url);
-		$admin = intval($admin);
-		$canlogin = intval($canlogin);
-		$notes = sql_real_escape_string($notes);
+		$name		= sql_real_escape_string($name);
+		$realname	= sql_real_escape_string($realname);
+		$password	= sql_real_escape_string($this->hash($password));
+		$email		= sql_real_escape_string($email);
+		$url		= sql_real_escape_string($url);
+		$admin		= (integer) $admin;
+		$canlogin	= (integer) $canlogin;
+		$notes		= sql_real_escape_string($notes);
 		
-		$query = 'INSERT INTO '.sql_table('member')." (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
-			   . "VALUES ('$name','$realname','$password','$email','$url',$admin, $canlogin, '$notes')";
+		$query = 'INSERT INTO ' . sql_table('member')
+		       . " (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
+		       . "VALUES ('$name','$realname','$password','$email','$url',$admin, $canlogin, '$notes')";
 		sql_query($query);
 		
 		ACTIONLOG::add(INFO, _ACTIONLOG_NEWMEMBER . ' ' . $name);
@@ -993,11 +1056,14 @@ class MEMBER
 		return 1;
 	}
 	
-	/*
+	/**
+	 * MEMBER::getActivationInfo()
 	 * Returns activation info for a certain key (an object with properties vkey, vmember, ...)
-	 * (static)
 	 *
-	 * @author karma
+	 * @static
+	 * @param	string	$key	activation key
+	 * @return	mixed	return 0 if failed, else return activation table object
+	 * 
 	 */
 	public static function getActivationInfo($key)
 	{
@@ -1008,22 +1074,20 @@ class MEMBER
 		{
 			return 0;
 		}
-		else
-		{
-			return sql_fetch_object($res);
-		}
+		return sql_fetch_object($res);
 	}
 	
-	/*
+	/**
+	 * MEMBER::generateActivationEntry()
 	 * Creates an account activation key
+	 * addresschange -> old email address
 	 *
-	 * @param $type one of the following values (determines what to do when activation expires)
-	 *                'register' (new member registration)
-	 *                'forgot' (forgotton password)
-	 *                'addresschange' (member address has changed)
-	 * @param $extra extra info (needed when validation link expires)
-	 *				  addresschange -> old email address
-	 * @author dekarma
+	 * @param	string	$type	one of the following values (determines what to do when activation expires)
+	 * 				'register'	(new member registration)
+	 * 				'forgot'	(forgotton password)
+	 * 				'addresschange'	(member address has changed)
+	 * @param	string	$extra	extra info (needed when validation link expires)
+	 * @return	string	activation key
 	 */
 	public function generateActivationEntry($type, $extra = '')
 	{
@@ -1074,12 +1138,16 @@ class MEMBER
 		return $key;
 	}
 	
-	/*
+	/**
+	 * MEMBER::activate()
 	 * Inidicates that an activation link has been clicked and any forms displayed
 	 * there have been successfully filled out.
-	 * @author dekarma
+	 * 
+	 * @param	string	$key	activation key
+	 * @return	boolean
+	 * 
 	 */
-	function activate($key)
+	public function activate($key)
 	{
 		// get activate info
 		$info = MEMBER::getActivationInfo($key);
@@ -1115,10 +1183,12 @@ class MEMBER
 	}
 	
 	/**
+	 * MEMBER::cleanupActivationTable()
 	 * Cleans up entries in the activation table. All entries older than 2 days are removed.
 	 * (static)
 	 *
-	 * @author dekarma
+	 * @param	void
+	 * @return	void
 	 */
 	public function cleanupActivationTable()
 	{
@@ -1160,5 +1230,32 @@ class MEMBER
 		
 		// 2. delete activation entries for real
 		sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
+		return;
+	}
+	
+	/**
+	 * MEMBER::$language
+	 * 
+	 * @obsolete
+	 * @param	void
+	 * @return	void
+	 * 
+	 */
+	public $language = '';
+	/**
+	 * MEMBER::getLanguage()
+	 * 
+	 * @obsolete
+	 * @param	void
+	 * @return	void
+	 * 
+	 */
+	public function getLanguage()
+	{
+		if ( ($language = i18n::convert_locale_to_old_language_file_name($this->locale)) === FALSE )
+		{
+			$language = '';
+		}
+		return $language;
 	}
 }
