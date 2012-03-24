@@ -2092,31 +2092,44 @@ class ADMIN
         }
     }
 
-    /**
-     * @todo document this
-     */
-    function action_memberadd() {
-        global $member, $manager;
-
-        // check if allowed
-        $member->isAdmin() or $this->disallow();
-
-        if (postVar('password') != postVar('repeatpassword'))
-            $this->error(_ERROR_PASSWORDMISMATCH);
-        if (i18n::strlen(postVar('password')) < 6)
-            $this->error(_ERROR_PASSWORDTOOSHORT);
-
-        $res = MEMBER::create(postVar('name'), postVar('realname'), postVar('password'), postVar('email'), postVar('url'), postVar('admin'), postVar('canlogin'), postVar('notes'));
-        if ($res != 1)
-            $this->error($res);
-
-        // fire PostRegister event
-        $newmem = new MEMBER();
-        $newmem->readFromName(postVar('name'));
-        $manager->notify('PostRegister',array('member' => &$newmem));
-
-        $this->action_usermanagement();
-    }
+	/**
+	 * ADMIN::action_memberadd()
+	 * 
+	 * @param	void
+	 * @return	void
+	 * 
+	*/
+	function action_memberadd()
+	{
+		global $member, $manager;
+		
+		// check if allowed
+		$member->isAdmin() or $this->disallow();
+		
+		if ( postVar('password') != postVar('repeatpassword') )
+		{
+			$this->error(_ERROR_PASSWORDMISMATCH);
+		}
+		
+		if ( i18n::strlen(postVar('password')) < 6 )
+		{
+			$this->error(_ERROR_PASSWORDTOOSHORT);
+		}
+		
+		$res = MEMBER::create(postVar('name'), postVar('realname'), postVar('password'), postVar('email'), postVar('url'), postVar('admin'), postVar('canlogin'), postVar('notes'));
+		if ( $res != 1 )
+		{
+			$this->error($res);
+		}
+		
+		// fire PostRegister event
+		$newmem = new MEMBER();
+		$newmem->readFromName(postVar('name'));
+		$manager->notify('PostRegister',array('member' => &$newmem));
+		
+		$this->action_usermanagement();
+		return;
+	}
 
     /**
      * Account activation
