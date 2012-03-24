@@ -17,93 +17,109 @@
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
  * @version $Id$
  */
-class COMMENT {
-
+class COMMENT 
+{
 	/**
-	  * Returns the requested comment
-	  *
-	  * @static
-	  */
-	function getComment($commentid) {
+	 * COMMENT::getComment()
+	 * Returns the requested comment
+	 *
+	 * @static
+	 * @param	integer	$commentid	id for comment
+	 * @return	array	comment information
+	 * 
+	 */
+	function getComment($commentid)
+	{
 		$query = 'SELECT `cnumber` AS commentid, `cbody` AS body, `cuser` AS user, `cmail` AS userid, `cemail` AS email, `cmember` AS memberid, `ctime`, `chost` AS host, `mname` AS member, `cip` AS ip, `cblog` AS blogid'
 					. ' FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON `cmember` = `mnumber`'
 					. ' WHERE `cnumber` = ' . intval($commentid);
 		$comments = sql_query($query);
-
+		
 		$aCommentInfo = sql_fetch_assoc($comments);
-
-		if ($aCommentInfo) {
+		
+		if ( $aCommentInfo )
+		{
 			$aCommentInfo['timestamp'] = strtotime($aCommentInfo['ctime']);
 		}
-
+		
 		return $aCommentInfo;
 	}
-
+	
 	/**
-	  * Prepares a comment to be saved
-	  *
-	  * @static
-	  */
+	 * COMMENT::prepare()
+	 * Prepares a comment to be saved
+	 *
+	 * @static
+	 * @param	array	$comment	comment data
+	 * @return	array	comment date
+	 * 
+	 */
 	function prepare($comment)
 	{
-		$comment['user'] = strip_tags($comment['user']);
-		$comment['userid'] = strip_tags($comment['userid']);
-		$comment['email'] = strip_tags($comment['email']);
-
+		$comment['user']	= strip_tags($comment['user']);
+		$comment['userid']	= strip_tags($comment['userid']);
+		$comment['email']	= strip_tags($comment['email']);
+		
 		// remove newlines from user; remove quotes and newlines from userid and email; trim whitespace from beginning and end
-		$comment['user'] = trim(strtr($comment['user'], "\n", ' ') );
-		$comment['userid'] = trim(strtr($comment['userid'], "\'\"\n", '-- ') );
-		$comment['email'] = trim(strtr($comment['email'], "\'\"\n", '-- ') );
-
+		$comment['user']	= trim(strtr($comment['user'], "\n", ' ') );
+		$comment['userid']	= trim(strtr($comment['userid'], "\'\"\n", '-- ') );
+		$comment['email']	= trim(strtr($comment['email'], "\'\"\n", '-- ') );
+		
 		// begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
-		if ( !empty($comment['userid']) && (i18n::strpos($comment['userid'], 'http://') !== 0) && (i18n::strpos($comment['userid'], 'https://') !== 0) )
+		if ( array_key_exists('userid', $comment)
+		  && !empty($comment['userid'])
+		  && (i18n::strpos($comment['userid'], 'http://') !== 0)
+		  && (i18n::strpos($comment['userid'], 'https://') !== 0) )
 		{
 			$comment['userid'] = 'http://' . $comment['userid'];
-		} // end if
-
+		}
+		
 		$comment['body'] = COMMENT::prepareBody($comment['body']);
-
+		
 		return $comment;
 	}
-
+	
 	/**
+	 * COMMENT::prepareBody()
 	 * Prepares the body of a comment
 	 *
-	 * @ static
+	 * @static
+	 * @param	string	$body	string for comment body
+	 * @return	string	validate string for comment body
+	 * 
 	 */
-	function prepareBody($body) {
-
+	function prepareBody($body)
+	{
 		# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
 		# original ereg_replace: ereg_replace("\n.\n.\n", "\n", $body);
 
 		// convert Windows and Mac style 'returns' to *nix newlines
 		$body = preg_replace("/\r\n/", "\n", $body);
 		$body = preg_replace("/\r/", "\n", $body);
-
+		
 		// then remove newlines when too many in a row (3 or more newlines get converted to 1 newline)
 		$body = preg_replace("/\n{3,}/", "\n\n", $body);
-
+		
 		// encode special characters as entities
 		$body = ENTITY::hsc($body);
-
+		
 		// trim away whitespace and newlines at beginning and end
 		$body = trim($body);
-
+		
 		// add <br /> tags
 		$body = addBreaks($body);
-
+		
 		// create hyperlinks for http:// addresses
 		// there's a testcase for this in /build/testcases/urllinking.txt
-
 		$replace_from = array(
 			'/([^:\/\/\w]|^)((https:\/\/)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/i',
 			'/([^:\/\/\w]|^)((http:\/\/|www\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/i',
 			'/([^:\/\/\w]|^)((ftp:\/\/|ftp\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/i',
 			'/([^:\/\/\w]|^)(mailto:(([a-zA-Z\@\%\.\-\+_])+))/i'
 		);
-
+		
 		$body = preg_replace_callback($replace_from, array('self', 'prepareBody_cb'), $body);
-
+		
 		return $body;
 	}
 	
@@ -112,9 +128,11 @@ class COMMENT {
 	 * Creates a link code for unlinked URLs with different protocols
 	 *
 	 * @static
-	 * @param	String	$pre	Prefix of comment
-	 * @param	String	$url	URL
-	 * @param	String	$protocol	http, mailto and so on
+	 * @param	string	$pre	Prefix of comment
+	 * @param	string	$url	URL
+	 * @param	string	$protocol	http, mailto and so on
+	 * @return	string	string	including anchor element and child text
+	 * 
 	 */
 	function createLinkCode($pre, $url, $protocol = 'http')
 	{
@@ -174,9 +192,12 @@ class COMMENT {
 	}
 	
 	/**
+	 * COMMENT::prepareBody_cb()
 	 * This method is a callback for creating link codes
-	 * @param array $match
-	 * @return string
+	 * 
+	 * @param	array	$match	elements for achor
+	 * @return	string	including anchor element and child text
+	 * 
 	 */
 	function prepareBody_cb($match)
 	{
@@ -184,27 +205,25 @@ class COMMENT {
 		{
 			return $match[0];
 		}
-
+		
 		switch( strtolower($protocol[0]) )
 		{
 			case 'https':
 				return self::createLinkCode($match[1], $match[2], 'https');
 			break;
-
+			
 			case 'ftp':
 				return self::createLinkCode($match[1], $match[2], 'ftp');
 			break;
-
+			
 			case 'mailto':
 				return self::createLinkCode($match[1], $match[3], 'mailto');
 			break;
-
+			
 			default:
 				return self::createLinkCode($match[1], $match[2], 'http');
 			break;
 		}
+		return;
 	}
-
 }
-
-?>

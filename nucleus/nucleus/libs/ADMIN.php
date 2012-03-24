@@ -6104,105 +6104,98 @@ selector();
 		return;
 	}
 	
-    /**
-     * @todo document this
-     */
-    function action_pluginlist() {
-        global $member, $manager;
-
-        // check if allowed
-        $member->isAdmin() or $this->disallow();
-
-        $this->pagehead();
-
-        echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
-
-        echo '<h2>' , _PLUGS_TITLE_MANAGE , ' ', help('plugins'), '</h2>';
-
-        echo '<h3>' , _PLUGS_TITLE_INSTALLED , ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
-
-
-        $query =  'SELECT * FROM '.sql_table('plugin').' ORDER BY porder ASC';
-
-        $template['content'] = 'pluginlist';
-        $template['tabindex'] = 10;
-        showlist($query, 'table', $template);
-
-?>
-			<h3><?php echo _PLUGS_TITLE_UPDATE?></h3>
-
-			<p><?php echo _PLUGS_TEXT_UPDATE?></p>
-
-			<form method="post" action="index.php"><div>
-				<input type="hidden" name="action" value="pluginupdate" />
-				<?php $manager->addTicketHidden() ?>
-				<input type="submit" value="<?php echo _PLUGS_BTN_UPDATE ?>" tabindex="20" />
-			</div></form>
-
-			<h3><?php echo _PLUGS_TITLE_NEW?></h3>
-
-<?php
+	/**
+	 * ADMIN::action_pluginlist()
+	 * output the list of installed plugins
+	 * 
+	 * @param	void
+	 * @return	void
+	 * 
+	 */
+	function action_pluginlist()
+	{
+		global $DIR_PLUGINS, $member, $manager;
+		
+		// check if allowed
+		$member->isAdmin() or $this->disallow();
+		
+		$this->pagehead();
+		
+		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
+		
+		echo '<h2>' , _PLUGS_TITLE_MANAGE , ' ', help('plugins'), '</h2>';
+		
+		echo '<h3>' , _PLUGS_TITLE_INSTALLED , ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
+		
+		$query =  'SELECT * FROM '.sql_table('plugin').' ORDER BY porder ASC';
+		
+		$template['content'] = 'pluginlist';
+		$template['tabindex'] = 10;
+		showlist($query, 'table', $template);
+		
+		echo '<h3>' . _PLUGS_TITLE_UPDATE . "</h3>\n";
+		echo '<p>' . _PLUGS_TEXT_UPDATE . "</p>\n";
+		echo '<form method="post" action="index.php">' . "\n";
+		echo "<div>\n";
+		echo '<input type="hidden" name="action" value="pluginupdate" />' . "\n";
+		$manager->addTicketHidden();
+		echo '<input type="submit" value="' . _PLUGS_BTN_UPDATE . '" tabindex="20" />' . "\n";
+		echo "</div>\n";
+		echo "</form>\n";
+		
+		echo '<h3>' . _PLUGS_TITLE_NEW . "</h3>\n";
+		
 		// find a list of possibly non-installed plugins
 		$candidates = array();
-
-		global $DIR_PLUGINS;
-
 		$dirhandle = opendir($DIR_PLUGINS);
-
-		while ($filename = readdir($dirhandle) )
+		
+		while ( $filename = readdir($dirhandle) )
 		{
-
-			# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-			# original ereg: ereg('^NP_(.*)\.php$',$filename,$matches)
-
-			if (preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
+			if ( preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
 			{
-
 				$name = $matches[1];
+				
 				// only show in list when not yet installed
 				$res = sql_query('SELECT * FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '"');
-
-				if (sql_num_rows($res) == 0)
+				
+				if ( sql_num_rows($res) == 0 )
 				{
 					array_push($candidates, $name);
 				}
-
 			}
-
 		}
-
+		
 		closedir($dirhandle);
-
-		if (sizeof($candidates) > 0)
+		
+		if ( sizeof($candidates) > 0 )
 		{
-?>
-			<p><?php echo _PLUGS_ADD_TEXT?></p>
-
-			<form method='post' action='index.php'><div>
-				<input type='hidden' name='action' value='pluginadd' />
-				<?php $manager->addTicketHidden() ?>
-				<select name="filename" tabindex="30">
-<?php
-			foreach($candidates as $name)
+			echo '<p>' . _PLUGS_ADD_TEXT . "</p>\n";
+			
+			echo '<form method="post" action="index.php">' . "\n";
+			echo "<div>\n";
+			echo '<input type="hidden" name="action" value="pluginadd" />' . "\n";
+			$manager->addTicketHidden();
+			echo '<select name="filename" tabindex="30">' . "\n";
+			
+			foreach ( $candidates as $name )
 			{
 				echo '<option value="NP_',$name,'">',ENTITY::hsc($name),'</option>';
 			}
-?>
-				</select>
-				<input type='submit' tabindex="40" value='<?php echo _PLUGS_BTN_INSTALL?>' />
-			</div></form>
-
-<?php
+			
+			echo "</select>\n";
+			echo '<input type="submit" tabindex="40" value="' . _PLUGS_BTN_INSTALL ."\" />\n";
+			echo "</div>\n";
+			echo "</form>\n";
 		}
 		else
 		{
 			echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
 		}
-
+		
 		$this->pagefoot();
-
+		return;
 	}
-
+	
     /**
      * @todo document this
      */
