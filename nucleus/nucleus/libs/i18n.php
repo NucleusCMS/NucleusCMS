@@ -492,7 +492,7 @@ class i18n
 				$suffix = '';
 				break;
 			default:
-				$suffix = 0;
+				$suffix = '';
 				break;
 		}
 		return i18n::strftime($format, $timestamp) . $suffix;
