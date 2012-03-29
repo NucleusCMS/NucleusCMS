@@ -156,6 +156,12 @@ if ( !headers_sent() )
 	header('Generator: Nucleus CMS ' . $nucleus['version']);
 }
 
+/*
+ * NOTE: Since 4.0 release, Entity class becomes to be important class
+ *  with some wrapper functions for htmlspechalchars/htmlentity PHP's built-in function
+*/
+include($DIR_LIBS . 'ENTITY.php');
+
 /* include core classes that are needed for login & plugin handling */
 include_once($DIR_LIBS . 'mysql.php');
 /* added for 3.5 sql_* wrapper */
@@ -339,7 +345,6 @@ include($DIR_LIBS . 'NOTIFICATION.php');
 include($DIR_LIBS . 'BAN.php');
 include($DIR_LIBS . 'PAGEFACTORY.php');
 include($DIR_LIBS . 'SEARCH.php');
-include($DIR_LIBS . 'ENTITY.php');
 include($DIR_LIBS . 'LINK.php');
 
 /* set lastVisit cookie (if allowed) */
