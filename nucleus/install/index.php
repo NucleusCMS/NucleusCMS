@@ -28,7 +28,7 @@ error_reporting(E_ALL);
 $minimum_php_version	= '5.0.6';
 $minimum_mysql_version	= '3.23';
 
-$page_footer_copyright	= '&copy; 2001-2012 The Nucleus Group . Running Nucleus CMS v4.00';
+$page_footer_copyright	= '&copy; 2001-2012 The Nucleus Groupe . Running Nucleus CMS v4.00';
 
 // begin if: server's PHP version is below the minimum; halt installation
 if ( version_compare(PHP_VERSION, $minimum_php_version, '<') )
@@ -87,7 +87,7 @@ if ( array_key_exists('param_manager', $_SESSION) )
 }
 else
 {
-	$param = new PARAM_MANAGER();
+	$param = new ParamManager();
 }
 
 // include translation file
@@ -224,6 +224,20 @@ function show_header()
 		<?php echo _BODYFONTSTYLE; ?>
 		-->
 		</style>
+		<script type="text/javascript">
+			function SelectText( element ) {
+				window.setTimeout( function() { element.select() }, 0 );
+			}
+			var isSubmit = false;
+			function OnceSubmit() {
+				if (!isSubmit) {
+					isSubmit = true;
+					window.setTimeout( function() { isSubmit = false; }, 10000 );
+					return true;
+				}
+				return false;
+			}
+		</script>
 	</head>
 	<body>
 		<div id="header">
@@ -349,11 +363,11 @@ function show_database_setting_form($isPostback)
 	}
 	if ( $mysql_version == '0.0.0' )
 	{
-		echo '<span class="err">', _ERROR21, '</span>';
+		echo '<span class="err">', _DBVERSION_UNKOWN, '</span>';
 	}
 	elseif ( version_compare($mysql_version, $minimum_mysql_version, '<') )
 	{
-		echo '<span class="err">', sprintf(_ERROR20 , $minimum_mysql_version), '</span>';
+		echo '<span class="err">', sprintf(_DBVERSION_TOOLOW , $minimum_mysql_version), '</span>';
 	}
 ?>
 			</p>
@@ -385,7 +399,7 @@ function show_database_setting_form($isPostback)
 								<td><input type="text" name="mysql_user" value="<?php echo $param->mysql_user; ?>" /></td>
 						</tr>
 						<tr>
-							<th><span class="nam"><?php echo _DB_FIELD3; ?></span><span class="sub"><?php echo _DB_FIELD3_DESC; ?></span></th>
+							<th><span class="nam"><?php echo _DB_FIELD3; ?></span></th>
 								<td><input type="text" name="mysql_password" value="<?php echo $param->mysql_password; ?>" /></td>
 						</tr>
 						<tr>
@@ -476,11 +490,11 @@ function show_blog_setting_form($isPostback)
 								<td><input type="text" name="user_name" value="<?php echo $param->user_name; ?>" /></td>
 						</tr>
 						<tr>
-							<th><span class="nam"><?php echo _ADMIN_FIELD3; ?></span><span class="sub"><?php echo _ADMIN_FIELD3_DESC; ?></span></th>
+							<th><span class="nam"><?php echo _ADMIN_FIELD3; ?></span></th>
 								<td><input type="password" name="user_password" /></td>
 						</tr>
 						<tr>
-							<th><span class="nam"><?php echo _ADMIN_FIELD4; ?></span><span class="sub"><?php echo _ADMIN_FIELD4_DESC; ?></span></th>
+							<th><span class="nam"><?php echo _ADMIN_FIELD4; ?></span></th>
 								<td><input type="password" name="user_password2" /></td>
 						</tr>
 						<tr>
@@ -489,7 +503,7 @@ function show_blog_setting_form($isPostback)
 						</tr>
 					</table>
 					<p class="sbt">
-						<button type="submit" name="action" value="weblog" class="sbt_arw"><?php echo _INSTALL; ?></button>
+						<button type="submit" name="action" value="weblog" class="sbt_arw" onclick="OnceSubmit()"><?php echo _INSTALL; ?></button>
 					</p>
 				</div>
 			</form>
@@ -513,7 +527,7 @@ function show_detail_setting_form($isPostback)
 <?php
 	if ( $isPostback && !$param->check_all_parameters() )
 	{
-		echo '<span class="err">', _ERROR26, "</span>\n";
+		echo '<span class="err">', _VALID_ERROR, "</span>\n";
 	}
 ?>
 			</p>
@@ -521,10 +535,10 @@ function show_detail_setting_form($isPostback)
 				<li>PHP: <?php echo phpversion(); ?></li>
 				<li>MySQL:
 <?php
-	echo ($mysql_version == '0.0.0') ? _ERROR21 : $mysql_version;
+	echo ($mysql_version == '0.0.0') ? _DBVERSION_UNKOWN : $mysql_version;
 	if ( version_compare($mysql_version, $minimum_mysql_version, '<') )
 	{
-		echo '<span class="err">', sprintf(_ERROR20 , $minimum_mysql_version), '</span>';
+		echo '<span class="err">', sprintf(_DBVERSION_TOOLOW , $minimum_mysql_version), '</span>';
 	}
 ?></li>
 			</ul>
@@ -557,7 +571,7 @@ function show_detail_setting_form($isPostback)
 								<td><input type="text" name="mysql_user" value="<?php echo $param->mysql_user; ?>" /></td>
 						</tr>
 						<tr>
-							<th><span class="nam"><?php echo _DB_FIELD3; ?></span><span class="sub"><?php echo _DB_FIELD3_DESC; ?></span></th>
+							<th><span class="nam"><?php echo _DB_FIELD3; ?></span></th>
 								<td><input type="text" name="mysql_password" value="<?php echo $param->mysql_password; ?>" /></td>
 						</tr>
 						<tr>
@@ -663,11 +677,11 @@ function show_detail_setting_form($isPostback)
 								<td><input type="text" name="user_name" value="<?php echo $param->user_name; ?>" /></td>
 						</tr>
 						<tr>
-							<th><span class="nam"><?php echo _ADMIN_FIELD3; ?></span><span class="sub"><?php echo _ADMIN_FIELD3_DESC; ?></span></th>
+							<th><span class="nam"><?php echo _ADMIN_FIELD3; ?></span></th>
 								<td><input type="password" name="user_password" /></td>
 						</tr>
 						<tr>
-							<th><span class="nam"><?php echo _ADMIN_FIELD4; ?></span><span class="sub"><?php echo _ADMIN_FIELD4_DESC; ?></span></th>
+							<th><span class="nam"><?php echo _ADMIN_FIELD4; ?></span></th>
 								<td><input type="password" name="user_password2" /></td>
 						</tr>
 						<tr>
@@ -709,7 +723,7 @@ function show_detail_setting_form($isPostback)
 					</p>
 
 					<p class="sbt">
-						<button type="submit" name="action" value="detail" class="sbt_arw"><?php echo _INSTALL; ?></button>
+						<button type="submit" name="action" value="detail" class="sbt_arw" onclick="OnceSubmit()"><?php echo _INSTALL; ?></button>
 					</p>
 				</div>
 			</form>
@@ -730,7 +744,7 @@ function show_install_complete_form()
 <?php
 	if ( is_array($errors) && count($errors) > 0 )
 	{
-		echo _ERROR27;
+		echo _INST_ERROR;
 		foreach ( $errors as $error )
 		{
 			echo '<span class="err">', $error, "</span>\n";
@@ -744,9 +758,6 @@ function show_install_complete_form()
 			echo '<span class="err">', _INST_TEXT4, '</span>';
 ?>
 <textarea id="config_text" readonly="readonly" onfocus="SelectText(this);"><?php echo htmlentities($_SESSION['config_data'], null, i18n::get_current_charset() ) ?></textarea>
-<script type="text/javascript">
-  function SelectText( element ) {window.setTimeout( function() { element.select(); }, 0 );}
-</script>
 <?php
 		}
 		else
@@ -827,7 +838,7 @@ function do_install()
 	$MYSQL_CONN = @sql_connect_args($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD);
 	if ( $MYSQL_CONN == false )
 	{
-		$errors[] = _ERROR3;
+		$errors[] = _DBCONNECT_ERROR;
 		return $errors;
 	}
 
@@ -836,7 +847,7 @@ function do_install()
 	 */
 	if ( !sql_query('CREATE DATABASE IF NOT EXISTS `' . $MYSQL_DATABASE . '`') )
 	{
-		$errors[] = _ERROR12 . ': ' . sql_error();
+		$errors[] = _INST_ERROR1 . ': ' . sql_error();
 	}
 
 	/*
@@ -844,7 +855,7 @@ function do_install()
 	 */
 	if ( !sql_select_db($MYSQL_DATABASE) )
 	{
-		$errors[] = _ERROR13;
+		$errors[] = _INST_ERROR2;
 	}
 	sql_set_charset('utf8');
 
@@ -886,7 +897,7 @@ function do_install()
 	{
 		if ( in_array($row[0], $prefixed_table_names) )
 		{
-			$errors[] = _ERROR14;
+			$errors[] = _INST_ERROR3;
 			break;
 		}
 	}
@@ -913,7 +924,7 @@ function do_install()
 
 			if ( !sql_query($query) )
 			{
-				$errors[] = _ERROR15 . ' (<small>' . $query . '</small>): ' . sql_error();
+				$errors[] = _INST_ERROR4 . ' (<small>' . $query . '</small>): ' . sql_error();
 			}
 		}
 	}
@@ -926,7 +937,7 @@ function do_install()
 	$query = sprintf($query, tableName('nucleus_item'), _1ST_POST_TITLE, _1ST_POST, _1ST_POST2, i18n::formatted_datetime('mysql', time()));
 	if ( !sql_query($query) )
 	{
-		$errors[] = _ERROR15 . ' (<small>' . $newpost . '</small>): ' . sql_error();
+		$errors[] = _INST_ERROR4 . ' (<small>' . $newpost . '</small>): ' . sql_error();
 	}
 
 	/* push configurations */
@@ -954,7 +965,7 @@ function do_install()
 	$query = sprintf($query, tableName('nucleus_member'), $user_name, $user_realname, $user_password, $user_email, $config_indexurl);
 	if ( !sql_query($query) )
 	{
-		$errors[] = _ERROR16 . ': ' . sql_error();
+		$errors[] = _INST_ERROR5 . ': ' . sql_error();
 	}
 
 	/* push new weblog */
@@ -962,7 +973,7 @@ function do_install()
 	$query = sprintf($query, tableName('nucleus_blog'), $blog_name, $blog_shortname, $config_indexurl);
 	if ( !sql_query($query) )
 	{
-		$errors[] = _ERROR17 . ': ' . sql_error();
+		$errors[] = _INST_ERROR6 . ': ' . sql_error();
 	}
 
 	/* push default category */
@@ -970,7 +981,7 @@ function do_install()
 	$query = sprintf($query, tableName('nucleus_category'), _GENERALCAT_NAME, _GENERALCAT_DESC);
 	if ( !sql_query($query) )
 	{
-		$errors[] = _ERROR17 . ': ' . sql_error();
+		$errors[] = _INST_ERROR6 . ': ' . sql_error();
 	}
 
 	sql_close();
@@ -1094,7 +1105,7 @@ function canConfigFileWritable()
 
 		if ( @!is_writable('../config.php') )
 		{
-			return _ERROR19;
+			return _INST_ERROR8;
 		}
 	}
 	return '';
@@ -1202,7 +1213,7 @@ function installCustomPlugs($manager)
 		{
 			sql_query('DELETE FROM ' . tableName('nucleus_plugin') . " WHERE pfile = '" . sql_real_escape_string($plugName) . "'");
 			$numCurrent--;
-			array_push($aErrors, sprintf(_ERROR22 ,$plugName));
+			array_push($aErrors, sprintf(_INST_ERROR9 ,$plugName));
 			continue;
 		}
 		$plugin->install();
@@ -1252,7 +1263,7 @@ function installCustomSkins()
 
 		if ( !@file_exists($skinFile) )
 		{
-			array_push($aErrors, sprintf(_ERROR23, $skinFile));
+			array_push($aErrors, sprintf(_INST_ERROR10, $skinFile));
 			continue;
 		}
 
@@ -1260,7 +1271,7 @@ function installCustomSkins()
 
 		if ( $error )
 		{
-			array_push($aErrors, sprintf(_ERROR24, $skinName) . ' : ' . $error);
+			array_push($aErrors, sprintf(_INST_ERROR11, $skinName) . ' : ' . $error);
 			continue;
 		}
 
@@ -1268,7 +1279,7 @@ function installCustomSkins()
 
 		if ( $error )
 		{
-			array_push($aErrors, sprintf(_ERROR25, $skinName) . ' : ' . $error);
+			array_push($aErrors, sprintf(_INST_ERROR12, $skinName) . ' : ' . $error);
 			continue;
 		}
 	}
@@ -1359,13 +1370,13 @@ function updateConfig($name, $value)
 
 	if ( !sql_query($query) )
 	{
-		$errors[] = _ERROR15 . ': ' . sql_error();
+		$errors[] = _INST_ERROR4 . ': ' . sql_error();
 	}
 	return $errors;
 }
 
 
-class PARAM_MANAGER
+class ParamManager
 {
 	/* process parameter */
 	public $state;
@@ -1488,40 +1499,40 @@ class PARAM_MANAGER
 		$errors = array();
 		if ( $this->mysql_host == '' )
 		{
-			$errors[] = sprintf(_ERROR1, _DB_FIELD1);
+			$errors[] = sprintf(_VALID_ERROR1, _DB_FIELD1);
 		}
 
 		if ( $this->mysql_user == '' )
 		{
-			$errors[] = sprintf(_ERROR1, _DB_FIELD2);
+			$errors[] = sprintf(_VALID_ERROR1, _DB_FIELD2);
 		}
 		
 		if ( $this->mysql_user != ''
 			&& !preg_match('/^[a-z0-9_\-]+$/i', $this->mysql_user) )
 		{
-			$errors[] = sprintf(_ERROR2, _DB_FIELD2);
+			$errors[] = sprintf(_VALID_ERROR2, _DB_FIELD2);
 		}
 		
 		if ( $this->mysql_password == '' )
 		{
-			$errors[] = sprintf(_ERROR1, _DB_FIELD3);
+			$errors[] = sprintf(_VALID_ERROR1, _DB_FIELD3);
 		}
 
 		if ( $this->mysql_database == '' )
 		{
-			$errors[] = sprintf(_ERROR1, _DB_FIELD4);
+			$errors[] = sprintf(_VALID_ERROR1, _DB_FIELD4);
 		}
 
 		if ( $this->mysql_database != ''
 			&& !preg_match('/^[a-z0-9_\-]+$/i', $this->mysql_database) )
 		{
-			$errors[] = sprintf(_ERROR2, _DB_FIELD4);
+			$errors[] = sprintf(_VALID_ERROR2, _DB_FIELD4);
 		}
 
 		if ( $this->mysql_tablePrefix != ''
-			&& !preg_match('/^[a-z0-9_-]+$/i', $this->mysql_tablePrefix) )
+			&& !preg_match('/^[a-z0-9_]+$/i', $this->mysql_tablePrefix) )
 		{
-			$errors[] = sprintf(_ERROR2, _DB_FIELD5);
+			$errors[] = sprintf(_VALID_ERROR3, _DB_FIELD5);
 		}
 		
 		if ( count($errors) == 0 )
@@ -1529,7 +1540,7 @@ class PARAM_MANAGER
 			$mysql_conn = @sql_connect_args($this->mysql_host, $this->mysql_user, $this->mysql_password);
 			if ( $mysql_conn == false )
 			{
-				$errors[] = _ERROR3;
+				$errors[] = _DBCONNECT_ERROR;
 			}
 			else
 			{
@@ -1546,34 +1557,34 @@ class PARAM_MANAGER
 		$this->read_parameter($parameters);
 
 		$errors = array();
+		if ( $this->user_realname == '' )
+		{
+			$errors[] = sprintf(_VALID_ERROR1, _ADMIN_FIELD1);
+		}
+
 		if ( $this->user_name == '' )
 		{
-			$errors[] = sprintf(_ERROR1, _ADMIN_FIELD2);
+			$errors[] = sprintf(_VALID_ERROR1, _ADMIN_FIELD2);
 		}
 		elseif ( !preg_match("/^[a-z0-9]+([ a-z0-9]*[a-z0-9]+)?$/i", $this->user_name) )
 		{
-			$errors[] = _ERROR5;
-		}
-
-		if ( $this->user_realname == '' )
-		{
-			$errors[] = sprintf(_ERROR1, _ADMIN_FIELD1);
+			$errors[] = _VALID_ERROR5;
 		}
 
 		if ( $this->user_password == '' || $this->user_password2 == '' )
 		{
-			$errors[] = sprintf(_ERROR1, _ADMIN_FIELD3);
+			$errors[] = sprintf(_VALID_ERROR1, _ADMIN_FIELD3);
 			$this->user_password = '';
 		}
 		elseif ( $this->user_password != $this->user_password2 )
 		{
-			$errors[] = _ERROR6;
+			$errors[] = _VALID_ERROR6;
 			$this->user_password = '';
 		}
 
 		if ( !preg_match("/^[a-z0-9\._+\-]+@[a-z0-9\._\-]+\.[a-z]{2,6}$/i", $this->user_email) )
 		{
-			$errors[] = _ERROR7;
+			$errors[] = _VALID_ERROR7;
 		}
 
 		return $errors;
@@ -1587,17 +1598,17 @@ class PARAM_MANAGER
 		$errors = array();
 		if ( $this->blog_name == '' )
 		{
-			$errors[] = sprintf(_ERROR1, _BLOG_FIELD1);
+			$errors[] = sprintf(_VALID_ERROR1, _BLOG_FIELD1);
 		}
 
 		if ( $this->blog_shortname == '' )
 		{
-			$errors[] = sprintf(_ERROR1, _BLOG_FIELD2);
+			$errors[] = sprintf(_VALID_ERROR1, _BLOG_FIELD2);
 		}
 
 		if ( !preg_match("/^[a-z0-9]+$/i", $this->blog_shortname) )
 		{
-			$errors[] = _ERROR4;
+			$errors[] = _VALID_ERROR4;
 		}
 
 		return $errors;
@@ -1611,32 +1622,32 @@ class PARAM_MANAGER
 		$errors = array();
 		if ( substr($this->IndexURL, -1, 1) !== '/' )
 		{
-			$errors[] = sprintf(_ERROR8, _PATH_FIELD1);
+			$errors[] = sprintf(_VALID_ERROR8, _PATH_FIELD1);
 		}
 
 		if ( substr($this->AdminURL, -1, 1) !== '/' )
 		{
-			$errors[] = sprintf(_ERROR8, _PATH_FIELD2);
+			$errors[] = sprintf(_VALID_ERROR8, _PATH_FIELD2);
 		}
 
 		if ( substr($this->MediaURL, -1, 1) !== '/' )
 		{
-			$errors[] = sprintf(_ERROR8, _PATH_FIELD4);
+			$errors[] = sprintf(_VALID_ERROR8, _PATH_FIELD4);
 		}
 
 		if ( substr($this->SkinsURL, -1, 1) !== '/' )
 		{
-			$errors[] = sprintf(_ERROR8, _PATH_FIELD6);
+			$errors[] = sprintf(_VALID_ERROR8, _PATH_FIELD6);
 		}
 
 		if ( substr($this->PluginURL, -1, 1) !== '/' )
 		{
-			$errors[] = sprintf(_ERROR8, _PATH_FIELD8);
+			$errors[] = sprintf(_VALID_ERROR8, _PATH_FIELD8);
 		}
 
 		if ( strrchr($this->ActionURL, '/') != '/action.php' )
 		{
-			$errors[] = sprintf(_ERROR9, _PATH_FIELD9);
+			$errors[] = sprintf(_VALID_ERROR9, _PATH_FIELD9);
 		}
 
 		return $errors;
@@ -1649,19 +1660,31 @@ class PARAM_MANAGER
 
 		$separators = array('/', DIRECTORY_SEPARATOR);
 		$errors = array();
-		if ( !in_array(substr($this->AdminPath, -1, 1), $separators) || !file_exists($this->AdminPath) )
+		if ( !in_array(substr($this->AdminPath, -1, 1), $separators) )
 		{
-			$errors[] = sprintf(_ERROR10, _PATH_FIELD3);
+			$errors[] = sprintf(_VALID_ERROR10, _PATH_FIELD3);
+		}
+		elseif ( !file_exists($this->AdminPath) )
+		{
+			$errors[] = sprintf(_VALID_ERROR11, _PATH_FIELD3);
 		}
 
-		if ( !in_array(substr($this->MediaPath, -1, 1), $separators) || !file_exists($this->MediaPath) )
+		if ( !in_array(substr($this->MediaPath, -1, 1), $separators) )
 		{
-			$errors[] = sprintf(_ERROR10, _PATH_FIELD5);
+			$errors[] = sprintf(_VALID_ERROR10, _PATH_FIELD5);
+		}
+		elseif ( !file_exists($this->MediaPath) )
+		{
+			$errors[] = sprintf(_VALID_ERROR11, _PATH_FIELD5);
 		}
 
-		if ( !in_array(substr($this->SkinsPath, -1, 1), $separators) || !file_exists($this->SkinsPath) )
+		if ( !in_array(substr($this->SkinsPath, -1, 1), $separators) )
 		{
-			$errors[] = sprintf(_ERROR10, _PATH_FIELD7);
+			$errors[] = sprintf(_VALID_ERROR10, _PATH_FIELD7);
+		}
+		elseif ( !file_exists($this->SkinsPath) )
+		{
+			$errors[] = sprintf(_VALID_ERROR11, _PATH_FIELD7);
 		}
 
 		return $errors;

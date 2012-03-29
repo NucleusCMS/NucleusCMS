@@ -38,7 +38,6 @@ define('_DB_FIELD1_DESC',		'(It is usually localhost)');
 define('_DB_FIELD2',			'Username');
 define('_DB_FIELD2_DESC',		'(alphabet, number, _, -)');
 define('_DB_FIELD3',			'Password');
-define('_DB_FIELD3_DESC',		'(alphabet, number)');
 define('_DB_FIELD4',			'Database');
 define('_DB_FIELD4_DESC',		'(alphabet, number, _, -)');
 define('_DB_FIELD5',			'Table Prefix');
@@ -49,7 +48,7 @@ define('_SIMPLE_NAVI2',			'I was able to confirm the connection of the database.
 define('_BLOG_HEADER',			'Weblog Data');
 define('_BLOG_FIELD1',			'Blog Name');
 define('_BLOG_FIELD2',			'Blog Short Name');
-define('_BLOG_FIELD2_DESC',		'(alphabet, number, _, -)');
+define('_BLOG_FIELD2_DESC',		'(alphabet, number)');
 
 // admin settings
 define('_ADMIN_HEADER',			'Administrator User');
@@ -57,16 +56,14 @@ define('_ADMIN_FIELD1',			'Manager Name');
 define('_ADMIN_FIELD2',			'Login ID');
 define('_ADMIN_FIELD2_DESC',	'(alphabet, number)');
 define('_ADMIN_FIELD3',			'Password');
-define('_ADMIN_FIELD3_DESC',	'(alphabet, number)');
 define('_ADMIN_FIELD4',			'Password Again');
-define('_ADMIN_FIELD4_DESC',	'(alphabet, number)');
 define('_ADMIN_FIELD5',			'E-mail Address');
 
 // url/path settings
 define('_PATH_FIELD1',			'Site URL');
 define('_PATH_FIELD2',			'Admin-area URL');
 define('_PATH_FIELD3',			'Admin-area path');
-define('_PATH_FIELD4',			'Media files UR');
+define('_PATH_FIELD4',			'Media files URL');
 define('_PATH_FIELD5',			'Media dir path');
 define('_PATH_FIELD6',			'Skin files URL');
 define('_PATH_FIELD7',			'Skin files dir path');
@@ -101,35 +98,37 @@ define('_INST_TEXT4',			'Was unable to write to the <i>config.php</i>. Please re
 define('_INST_TEXT5',			'Please make sure the <i>config.php</i> permissions if it were a <span style="font-weight:bold;">444</span>. If different, please change the "444".');
 
 // errors
-define('_ERROR1',				'"%s" has not been entered.');
-define('_ERROR2',				'"%s" character that can be used are A-Z, a-z ,0-9, _ and -.');
-define('_ERROR3',				'Could not connect to MySQL Server.');
-define('_ERROR4',				'It contains characters that can not be used to "Blog Short Name". (Characters that can be used: A-Z, a-z and 0-9, blank can not be used)');
-define('_ERROR5',				'Contains characters that can not be used in "Login ID". (A-Z, a-z, 0-9 and the first and last non-blank characters that can be used)');
-define('_ERROR6',				'Passwords entered do not match.');
-define('_ERROR7',				'"E-mail address" is incorrect.');
+define('_DBCONNECT_ERROR',		'Could not connect to MySQL Server.');
+define('_DBVERSION_UNKOWN',		'Indeterminable');
+define('_DBVERSION_TOOLOW',		'You must have MySQL version %s or more at least in the Nucleus.');
 
-define('_ERROR8',				'Does not end with a forward slash "/" is "%s".');
-define('_ERROR9',				'Does not end with "action.php" the URL of the "%s".');
-define('_ERROR10',				'Does not end with a forward slash "/" directory path of "%s".');
-define('_ERROR11',				'Directory path in the "Admin-area path" does not exist on the server.');
-define('_ERROR12',				'Could not create the database. Please make sure that there is a permission to create.');
-define('_ERROR13',				'Could not find the database. Please make sure that the database exists.');
-define('_ERROR14',				'Database table was trying to create already exists.');
-define('_ERROR15',				'An error occurred execution of the query');
-define('_ERROR16',				'An error occurred during the execution of the "Configuring Members"');
-define('_ERROR17',				'An error occurred during the execution of the "Blog Settings"');
-define('_ERROR18',				'An error occurred during the execution of the "Setting item"');
-define('_ERROR19',				'can not write to the config.php. Once you have the permissions to <span style="font-weight:bold;">666</span> of config.php, the script will automatically write the configuration information. (<a href="../nucleus/documentation/tips.html#filepermissions">Quick Guide to change permissions</a>)');
-define('_ERROR20',				'You must have MySQL version %s or more at least in the Nucleus.');
-define('_ERROR21',				'Indeterminable');
-define('_ERROR22',				'Could not install the plug-in "%s".');
-define('_ERROR23',				'File "%s" can not be found.');
-define('_ERROR24',				'Theme file "%s" could not be read.');
-define('_ERROR25',				'Could not import the theme "%s".');
+define('_VALID_ERROR',			'There is an error in your input. Please re-look at the input value to see the error message for each section.');
+define('_VALID_ERROR1',			'"%s" has not been entered.');
+define('_VALID_ERROR2',			'"%s" character that can be used are A-Z, a-z ,0-9, _ and -.');
+define('_VALID_ERROR3',			'"%s" character that can be used are A-Z, a-z ,0-9 and _.');
+define('_VALID_ERROR4',			'It contains characters that can not be used to "Blog Short Name". (Characters that can be used: A-Z, a-z and 0-9, blank can not be used)');
+define('_VALID_ERROR5',			'Contains characters that can not be used in "Login ID". (A-Z, a-z, 0-9 and the first and last non-blank characters that can be used)');
+define('_VALID_ERROR6',			'Passwords entered do not match.');
+define('_VALID_ERROR7',			'"E-mail address" is incorrect.');
+define('_VALID_ERROR8',			'Does not end with a forward slash "/" is "%s".');
+define('_VALID_ERROR9',			'Does not end with "action.php" the URL of the "%s".');
+define('_VALID_ERROR10',		'Does not end with a forward slash "/" directory path of "%s".');
+define('_VALID_ERROR11',		'Directory path in the "%s" does not exist on the server.');
 
-define('_ERROR26',				'There is an error in your input. Please re-look at the input value to see the error message for each section.');
-define('_ERROR27',				'Failed to install. Please run the installation script again to fix the cause of the following.');
+define('_INST_ERROR',			'Failed to install. Please run the installation script again to fix the cause of the following.');
+define('_INST_ERROR1',			'Could not create the database. Please make sure that there is a permission to create.');
+define('_INST_ERROR2',			'Could not find the database. Please make sure that the database exists.');
+define('_INST_ERROR3',			'Database table was trying to create already exists.');
+define('_INST_ERROR4',			'An error occurred execution of the query');
+define('_INST_ERROR5',			'An error occurred during the execution of the "Configuring Members"');
+define('_INST_ERROR6',			'An error occurred during the execution of the "Blog Settings"');
+define('_INST_ERROR7',			'An error occurred during the execution of the "Setting item"');
+define('_INST_ERROR8',			'can not write to the config.php. Once you have the permissions to <span style="font-weight:bold;">666</span> of config.php, the script will automatically write the configuration information. (<a href="../nucleus/documentation/tips.html#filepermissions">Quick Guide to change permissions</a>)');
+define('_INST_ERROR9',			'Could not install the plug-in "%s".');
+define('_INST_ERROR10',			'File "%s" can not be found.');
+define('_INST_ERROR11',			'Theme file "%s" could not be read.');
+define('_INST_ERROR12',			'Could not import the theme "%s".');
+
 
 // General category
 define('_GENERALCAT_NAME',		'General');

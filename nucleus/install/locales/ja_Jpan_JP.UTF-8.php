@@ -50,7 +50,6 @@ define('_DB_FIELD1_DESC',		'（通常は localhost）');
 define('_DB_FIELD2',			'ユーザー名');
 define('_DB_FIELD2_DESC',		'（半角英数 , _ , - ）');
 define('_DB_FIELD3',			'パスワード');
-define('_DB_FIELD3_DESC',		'（半角英数）');
 define('_DB_FIELD4',			'データベース名');
 define('_DB_FIELD4_DESC',		'（半角英数 , _ , - ）');
 define('_DB_FIELD5',			'プリフィックス');
@@ -61,7 +60,7 @@ define('_SIMPLE_NAVI2',			'データベースの接続が確認できました�
 define('_BLOG_HEADER',			'ブログ設定');
 define('_BLOG_FIELD1',			'ブログ名');
 define('_BLOG_FIELD2',			'ブログ短縮名');
-define('_BLOG_FIELD2_DESC',		'（半角英数 , _ , - ）');
+define('_BLOG_FIELD2_DESC',		'（半角英数）');
 
 // admin settings
 define('_ADMIN_HEADER',			'管理者の情報');
@@ -69,9 +68,7 @@ define('_ADMIN_FIELD1',			'管理者名');
 define('_ADMIN_FIELD2',			'ログインID');
 define('_ADMIN_FIELD2_DESC',	'（半角英数）');
 define('_ADMIN_FIELD3',			'パスワード');
-define('_ADMIN_FIELD3_DESC',	'（半角英数）');
 define('_ADMIN_FIELD4',			'パスワード：確認');
-define('_ADMIN_FIELD4_DESC',	'（半角英数）');
 define('_ADMIN_FIELD5',			'メールアドレス');
 
 // url/path settings
@@ -113,35 +110,37 @@ define('_INST_TEXT4',			'<i>config.php</i>への書き込みが行えません�
 define('_INST_TEXT5',			'<i>config.php</i>のパーミッションが"<span style="font-weight:bold;">444</span>"であるか確認してください。もし、違うならば"444"に変更してください。');
 
 // errors
-define('_ERROR1',				'"%s" が入力されていません。');
-define('_ERROR2',				'"%s" に使用できる文字は半角の A-Z、a-z、0-9、_（アンダーライン）、-（ハイフン） のみです。');
-define('_ERROR3',				'MySQL Serverに接続できませんでした。');
-define('_ERROR4',				'"ブログの短縮名(略称)" に使用できる文字は  A-Z、a-z、0-9（半角英数）のみです。');
-define('_ERROR5',				'"ログインID" に使用できる文字は A-Z、a-z、0-9（半角英数）のみです。ただし、最初と最後以外では半角スペースも使用できます。');
-define('_ERROR6',				'入力された二つのパスワードが一致しません。');
-define('_ERROR7',				'"メールアドレス" が不正です。');
+define('_DBCONNECT_ERROR',		'MySQL Serverに接続できませんでした。');
+define('_DBVERSION_UNKOWN',		'判別不能');
+define('_DBVERSION_TOOLOW',		'Nucleusでは少なくともバージョン "%s" 以上のMySQLが必要です。');
 
-define('_ERROR8',				'"%s" が"/(スラッシュ)"で終わっていません。');
-define('_ERROR9',				'"%s" のアドレスが"action.php"で終わっていません。');
-define('_ERROR10',				'"%s" のディレクトリパスが"/(スラッシュ)"で終わっていません。');
-define('_ERROR11',				'"管理パス" のディレクトリパスがサーバ上に存在しません。');
-define('_ERROR12',				'データベースを作成できませんでした。作成の権限があるかどうか確認してください。');
-define('_ERROR13',				'データベースを見つけられませんでした。データベースが存在するか確認してください。');
-define('_ERROR14',				'作成しようとしたテーブルが既に存在しています。');
-define('_ERROR15',				'クエリの実行中にエラーが発生しました');
-define('_ERROR16',				'"メンバー設定" の実行中にエラーが発生しました');
-define('_ERROR17',				'"ブログ設定" の実行中にエラーが発生しました');
-define('_ERROR18',				'"アイテム設定" の実行中にエラーが発生しました');
-define('_ERROR19',				'config.php への書き込みができません。config.php のパーミッションを<span style="font-weight:bold;">666</span>にしておけば、スクリプトが自動で設定情報を書き込みます。(<a href="../nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>)。');
-define('_ERROR20',				'Nucleusでは少なくともバージョン "%s" 以上のMySQLが必要です。');
-define('_ERROR21',				'判別不能');
-define('_ERROR22',				'プラグイン "%s" をインストールできませんでした。');
-define('_ERROR23',				'ファイル "%s" が見つかりません。');
-define('_ERROR24',				'テーマファイル "%s" が読み込めませんでした。');
-define('_ERROR25',				'テーマ "%s" をインポートできませんでした。');
+define('_VALID_ERROR',			'入力内容に誤りがあります。各セクションのエラーメッセージを確認して入力値を見なおしてください。');
+define('_VALID_ERROR1',			'"%s" が入力されていません。');
+define('_VALID_ERROR2',			'"%s" に使用できる文字は半角の A-Z、a-z、0-9、_（アンダーライン）、-（ハイフン）のみです。');
+define('_VALID_ERROR3',			'"%s" に使用できる文字は半角の A-Z、a-z、0-9、_（アンダーライン）のみです。');
+define('_VALID_ERROR4',			'"ブログの短縮名(略称)" に使用できる文字は  A-Z、a-z、0-9（半角英数）のみです。');
+define('_VALID_ERROR5',			'"ログインID" に使用できる文字は A-Z、a-z、0-9（半角英数）のみです。ただし、最初と最後以外では半角スペースも使用できます。');
+define('_VALID_ERROR6',			'入力された二つのパスワードが一致しません。');
+define('_VALID_ERROR7',			'"メールアドレス" が不正です。');
+define('_VALID_ERROR8',			'"%s" が"/(スラッシュ)"で終わっていません。');
+define('_VALID_ERROR9',			'"%s" のアドレスが"action.php"で終わっていません。');
+define('_VALID_ERROR10',		'"%s" のディレクトリパスが"/(スラッシュ)"で終わっていません。');
+define('_VALID_ERROR11',		'"%s" のディレクトリパスがサーバ上に存在しません。');
 
-define('_ERROR26',				'入力内容に誤りがあります。各セクションのエラーメッセージを確認して入力値を見なおしてください。');
-define('_ERROR27',				'インストールに失敗しました。以下の原因を解決して再度インストールスクリプトを実行してください。');
+define('_INST_ERROR',			'インストールに失敗しました。以下の原因を解決して再度インストールスクリプトを実行してください。');
+define('_INST_ERROR1',			'データベースを作成できませんでした。作成の権限があるかどうか確認してください。');
+define('_INST_ERROR2',			'データベースを見つけられませんでした。データベースが存在するか確認してください。');
+define('_INST_ERROR3',			'作成しようとしたテーブルが既に存在しています。');
+define('_INST_ERROR4',			'クエリの実行中にエラーが発生しました');
+define('_INST_ERROR5',			'"メンバー設定" の実行中にエラーが発生しました');
+define('_INST_ERROR6',			'"ブログ設定" の実行中にエラーが発生しました');
+define('_INST_ERROR7',			'"アイテム設定" の実行中にエラーが発生しました');
+define('_INST_ERROR8',			'config.php への書き込みができません。config.php のパーミッションを<span style="font-weight:bold;">666</span>にしておけば、スクリプトが自動で設定情報を書き込みます。(<a href="../nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>)。');
+define('_INST_ERROR9',			'プラグイン "%s" をインストールできませんでした。');
+define('_INST_ERROR10',			'ファイル "%s" が見つかりません。');
+define('_INST_ERROR11',			'テーマファイル "%s" が読み込めませんでした。');
+define('_INST_ERROR12',			'テーマ "%s" をインポートできませんでした。');
+
 
 // General category
 define('_GENERALCAT_NAME',		'総合');
