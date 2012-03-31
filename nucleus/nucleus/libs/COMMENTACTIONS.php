@@ -102,11 +102,19 @@ class COMMENTACTIONS extends BaseActions {
 	 */
 	function setCurrentComment(&$comment)
 	{
-		global $manager;
+		global $currentcommentid, $currentcommentarray, $manager;
 		
 		if ( $comment['memberid'] != 0 )
 		{
-			$comment['authtext'] = $template['COMMENTS_AUTH'];
+			if ( !array_key_exists('COMMENTS_AUTH', $this->template) )
+			{
+				$comment['authtext'] = '';
+			}
+			else
+			{
+				$comment['authtext'] = $this->template['COMMENTS_AUTH'];
+			}
+			
 			$mem =& $manager->getMember($comment['memberid']);
 			$comment['user'] = $mem->getDisplayName();
 			
@@ -131,7 +139,7 @@ class COMMENTACTIONS extends BaseActions {
 		else
 		{
 			// create smart links
-			if ( !empty($comment['userid']) )
+			if ( !array_key_exists('userid', $comment) || !empty($comment['userid']) )
 			{
 				if ( (i18n::strpos($comment['userid'], 'http://') === 0) || (i18n::strpos($comment['userid'], 'https://') === 0) )
 				{
@@ -153,7 +161,6 @@ class COMMENTACTIONS extends BaseActions {
 		}
 		
 		$this->currentComment =& $comment;
-		global $currentcommentid, $currentcommentarray;
 		$currentcommentid = $comment['commentid'];
 		$currentcommentarray = $comment;
 		return;
