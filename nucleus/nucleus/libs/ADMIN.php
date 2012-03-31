@@ -6054,7 +6054,7 @@ selector();
     }
 
 	/**
-	 * Backup::action_backupcreate()
+	 * ADMIN::action_backupcreate()
 	 * create file for backup
 	 * 
 	 * @param		void
@@ -6068,7 +6068,7 @@ selector();
 		$member->isAdmin() or $this->disallow();
 		
 		// use compression ?
-		$useGzip = intval(postVar('gzip'));
+		$useGzip = (integer) postVar('gzip');
 		
 		include($DIR_LIBS . 'backup.php');
 		
@@ -6076,13 +6076,12 @@ selector();
 		// (creating/restoring dumps might take a while)
 		@set_time_limit(1200);
 		
-		$bu = new Backup();
-		$bu->do_backup($useGzip);
+		BACKUP::do_backup($useGzip);
 		exit;
 	}
 	
 	/**
-	 * Backup::action_backuprestore()
+	 * ADMIN::action_backuprestore()
 	 * restoring from uploaded file
 	 * 
 	 * @param		void
@@ -6105,8 +6104,7 @@ selector();
 		// (creating/restoring dumps might take a while)
 		@set_time_limit(1200);
 		
-		$bu = new Backup();
-		$message = $bu->do_restore();
+		$message = BACKUP::do_restore();
 		if ( $message != '' )
 		{
 			$this->error($message);
