@@ -12,8 +12,6 @@
 /**
  * Scripts to create/restore a backup of the Nucleus database
  *
- * Based on code in phpBB (http://phpBB.sourceforge.net)
- *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$

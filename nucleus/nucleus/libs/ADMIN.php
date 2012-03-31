@@ -6076,7 +6076,7 @@ selector();
 		// (creating/restoring dumps might take a while)
 		@set_time_limit(1200);
 		
-		BACKUP::do_backup($useGzip);
+		Backup::do_backup($useGzip);
 		exit;
 	}
 	
@@ -6104,7 +6104,7 @@ selector();
 		// (creating/restoring dumps might take a while)
 		@set_time_limit(1200);
 		
-		$message = BACKUP::do_restore();
+		$message = Backup::do_restore();
 		if ( $message != '' )
 		{
 			$this->error($message);
