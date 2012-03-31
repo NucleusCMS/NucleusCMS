@@ -3125,20 +3125,11 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 	{
 		if(!$utc)
 		{
-			$t=i18n::formatted_datetime("%Y%m%dT%H:%M:%S", $timet);
+			$t=i18n::formatted_datetime('iso8601UTC', $timet);
 		}
 		else
 		{
-			if(function_exists('gmstrftime'))
-			{
-				// gmstrftime doesn't exist in some versions
-				// of PHP
-				$t=gmstrftime("%Y%m%dT%H:%M:%S", $timet);
-			}
-			else
-			{
-				$t=i18n::formatted_datetime("%Y%m%dT%H:%M:%S", $timet-date('Z'));
-			}
+			$t=i18n::formatted_datetime('iso8601UTC', $timet-date('Z'));
 		}
 		return $t;
 	}

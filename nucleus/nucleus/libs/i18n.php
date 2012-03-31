@@ -439,11 +439,10 @@ class i18n
 	 * 
 	 * @param	String	$format	timezone format
 	 * @param	String	$timestamp	UNIX timestamp
-	 * @param	String	$default_format	default timezone format
 	 * @param	Integer	$offset	timestamp offset
 	 * @return	String	formatted datetime
 	 */
-	static public function formatted_datetime($format, $timestamp, $default_format, $offset)
+	static public function formatted_datetime($format, $timestamp, $offset=0)
 	{
 		$suffix = '';
 		$string = '';
@@ -517,7 +516,6 @@ class i18n
 				 *  5. Date and Time format
 				 *   http://www.ietf.org/rfc/rfc3339.txt
 				 */
-			case 'utc':
 				$timestamp -= $offset;
 				$format = 'Y-m-d\TH:i:s\Z';
 				$suffix = '';
