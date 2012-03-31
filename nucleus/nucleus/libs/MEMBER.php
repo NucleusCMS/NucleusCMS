@@ -1,9 +1,9 @@
 <?php
 
-/*
+/* 
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
  * Copyright (C) 2002-2009 The Nucleus Group
- *
+ * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
@@ -12,7 +12,7 @@
  */
 /**
  * A class representing site members
- *
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id: MEMBER.php 1616 2012-01-08 09:48:15Z sakamocchi $
@@ -25,6 +25,7 @@ class MEMBER
 	private $algorism = 'md5';
 	
 	public $cookiekey;		// value that should also be in the client cookie to allow authentication
+	private $cookie_salt = FALSE;
 	
 	// member info
 	public $id = -1;
@@ -48,39 +49,14 @@ class MEMBER
 	 */
 	public function __construct()
 	{
-		global $CONF;
-		/* secure cookie key settings (either 'none', 0, 8, 16, 24, or 32) */
-		if ( !array_key_exists('secureCookieKey', $CONF) )
-		{
-			$CONF['secureCookieKey'] = 24;
-		}
-		
-		switch( $CONF['secureCookieKey'] )
-		{
-			case 8:
-				$CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-				break;
-			case 16:
-				$CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-				break;
-			case 24:
-				$CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-				break;
-			case 32:
-				$CONF['secureCookieKeyIP'] = serverVar('REMOTE_ADDR');
-				break;
-			default:
-				$CONF['secureCookieKeyIP'] = '';
-		}
-		
 		return;
 	}
 	
 	/**
 	 * MEMBER::createFromName()
 	 * Create a member object for a given displayname
-	 *
-	 * @static	
+	 * 
+	 * @static
 	 * @param	String	$displayname	login name
 	 * @return	Object	member object
 	 * 
@@ -91,12 +67,12 @@ class MEMBER
 		$mem->readFromName($displayname);
 		return $mem;
 	}
-
+	
 	/**
 	 * MEMBER::createFromID()
 	 * Create a member object for a given ID
-	 *
-	 * @static	
+	 * 
+	 * @static
 	 * @param	Integer	$id	id for member
 	 */
 	public static function &createFromID($id)
@@ -147,8 +123,41 @@ class MEMBER
 			default:
 				$string = md5($string);
 		}
-		
 		return $string;
+	}
+	
+	/**
+	 * MEMBER::set_cookie_salt()
+	 * 
+	 * @param	integer	$key	secureCookieKey value
+	 * @return	void
+	 * 
+	 */
+	private function set_cookie_salt($key = 0)
+	{
+		if ( !$key )
+		{
+			$key = 24;
+		}
+		
+		switch( $key )
+		{
+			case 8:
+				$this->cookie_salt = preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/', '', serverVar('REMOTE_ADDR'));
+				break;
+			case 16:
+				$this->cookie_salt = preg_replace('/\.[0-9]+\.[0-9]+$/', '', serverVar('REMOTE_ADDR'));
+				break;
+			case 24:
+				$this->cookie_salt = preg_replace('/\.[0-9]+$/', '', serverVar('REMOTE_ADDR'));
+				break;
+			case 32:
+				$this->cookie_salt = serverVar('REMOTE_ADDR');
+				break;
+			default:
+				$this->cookie_salt = 'none';
+		}
+		return;
 	}
 	
 	/**
@@ -173,6 +182,15 @@ class MEMBER
 		}
 		/* limiting the length of password to avoid hash collision */
 		$password=i18n::substr($password, 0, 40);
+		
+		/* 
+		 * generate cookie salt from secure cookie key settings
+		* (either 'none', 0, 8, 16, 24, or 32)
+		*/
+		if ( !$this->cookie_salt )
+		{
+			$this->set_cookie_salt($CONF['secureCookieKey']);
+		}
 		
 		$success = 0;
 		$allowlocal = 1;
@@ -206,13 +224,19 @@ class MEMBER
 		/* login success */
 		else
 		{
+			/* For lower compatibility */
+			if ( strlen($this->password) === 32 )
+			{
+				$this->password = $this->hash($password);
+			}
+			
 			$this->newCookieKey();
 			$this->setCookies($shared);
 			
-			if ( $CONF['secureCookieKey'] !== 'none' )
+			if ( $this->cookie_salt !== 'none' )
 			{
 				/* secure cookie key */
-				$this->setCookieKey($this->hash($this->getCookieKey().$CONF['secureCookieKeyIP']));
+				$this->setCookieKey($this->hash($this->getCookieKey() . $this->cookie_salt));
 				$this->write();
 			}
 			
@@ -240,18 +264,27 @@ class MEMBER
 		{
 			/* Cookie Authentication */
 			$ck = cookieVar("{$CONF['CookiePrefix']}loginkey");
-			
+				
 			/* TODO: validation for each cookie values */
-			
+			 	
 			/* limiting the length of password to avoid hash collision */
 			$ck = i18n::substr($ck,0,32);
-			if ( $CONF['secureCookieKey']!=='none' )
+				
+			/* 
+			 * generate cookie salt from secure cookie key settings
+			* (either 'none', 0, 8, 16, 24, or 32)
+			*/
+			if ( !$this->cookie_salt )
 			{
-				$ck = $this->hash("{$ck}{$CONF['secureCookieKeyIP']}");
+				$this->set_cookie_salt($CONF['secureCookieKey']);
+			}
+			if ( $this->cookie_salt !== 'none' )
+			{
+				$ck = $this->hash($ck . $this->cookie_salt);
 			}
 			$this->loggedin = ( $this->readFromName(cookieVar("{$CONF['CookiePrefix']}user")) && $this->checkCookieKey($ck) );
 			unset($ck);
-			
+				
 			/* renew cookies when not on a shared computer */
 			if ( $this->loggedin && (cookieVar($CONF['CookiePrefix'] . 'sharedpc') != 1) )
 			{
@@ -299,7 +332,7 @@ class MEMBER
 	
 	/**
 	 * MEMBER:read()
-	 * Read member information from the database 
+	 * Read member information from the database
 	 * 
 	 * @param	String	$where	where statement
 	 * @return	Resource	SQL resource
@@ -341,8 +374,8 @@ class MEMBER
 	public function isBlogAdmin($blogid)
 	{
 		$query = 'SELECT tadmin FROM '.sql_table('team').' WHERE'
-			   . ' tblog=' . intval($blogid)
-			   . ' and tmember='. $this->getID();
+		. ' tblog=' . intval($blogid)
+		. ' and tmember='. $this->getID();
 		$res = sql_query($query);
 		if ( sql_num_rows($res) == 0 )
 			return 0;
@@ -373,7 +406,7 @@ class MEMBER
 	{
 		return ($this->isAdmin() || $this->isTeamMember($blogid));
 	}
-
+	
 	/**
 	 * MEMBER::isTeamMember()
 	 * Returns true if this member is a team member of the given blog
@@ -449,13 +482,13 @@ class MEMBER
 		{
 			return 1;
 		}
-	
+		
 		$query =  'SELECT citem as itemid, iblog as blogid, cmember as cauthor, iauthor'
 			   . ' FROM '.sql_table('comment') .', '.sql_table('item').', '.sql_table('blog')
 			   . ' WHERE citem=inumber and iblog=bnumber and cnumber=' . intval($commentid);
 		$res = sql_query($query);
 		$obj = sql_fetch_object($res);
-	
+		
 		return ($obj->cauthor == $this->getID()) or $this->isBlogAdmin($obj->blogid) or ($obj->iauthor == $this->getID());
 	}
 	
@@ -473,13 +506,13 @@ class MEMBER
 	public function canAlterItem($itemid)
 	{
 		if ($this->isAdmin()) return 1;
-
+		
 		$query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
 		$res = sql_query($query);
 		$obj = sql_fetch_object($res);
 		return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
 	}
-
+	
 	/**
 	 * MEMBER::canBeDeleted()
 	 * Return true if member can be deleted. This means that there are no items posted by the member left
@@ -493,12 +526,12 @@ class MEMBER
 		$res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
 		return ( sql_num_rows($res) == 0 );
 	}
-
+	
 	/**
 	 * MEMBER::canUpdateItem()
 	 * returns true if this member can move/update an item to a given category,
 	 * false if not (see comments fot the tests that are executed)
-	 *
+	 * 
 	 * @param	integer	$itemid
 	 * @param	string	$newcat (can also be of form 'newcat-x' with x=blogid)
 	 * @return	boolean	whether being able to update the item or not
@@ -507,7 +540,7 @@ class MEMBER
 	public function canUpdateItem($itemid, $newcat)
 	{
 		global $manager;
-
+		
 		// item does not exists -> NOK
 		if ( !$manager->existsItem($itemid,1,1) )
 		{
@@ -581,7 +614,7 @@ class MEMBER
 	/**
 	 * MEMBER::setCookies()
 	 * Sets the cookies for the member
-	 *
+	 * 
 	 * @param boolean	$shared	set this to 1 when using a shared computer. Cookies will expire
 	 *				at the end of the session in this case.
 	 * @return	void
@@ -740,7 +773,7 @@ class MEMBER
 	 * Returns an email address from which notification of commenting/karma voting can
 	 * be sent. A suggestion can be given for when the member is not logged in
 	 * 
-	 * @param	String	$suggest	
+	 * @param	String	$suggest
 	 * @return	String	mail address or suggestion
 	 */
 	public function getNotifyFromMailAddress($suggest = "")
@@ -760,7 +793,7 @@ class MEMBER
 	/**
 	 * MEMBER::write()
 	 * Write data to database
-	 *
+	 * 
 	 * @param	void
 	 * @return	void
 	 * 
@@ -768,18 +801,18 @@ class MEMBER
 	public function write()
 	{
 		$query =  'UPDATE '.sql_table('member')
-		        . " SET mname='" . sql_real_escape_string($this->getDisplayName()) . "', "
-		           . "mrealname='". sql_real_escape_string($this->getRealName()) . "', "
-		           . "mpassword='". sql_real_escape_string($this->getPassword()) . "', "
-		           . "mcookiekey='". sql_real_escape_string($this->getCookieKey()) . "', "
-		           . "murl='" . sql_real_escape_string($this->getURL()) . "', "
-		           . "memail='" . sql_real_escape_string($this->getEmail()) . "', "
-		           . "madmin=" . $this->isAdmin() . ", "
-		           . "mnotes='" . sql_real_escape_string($this->getNotes()) . "', "
-		           . "mcanlogin=" . $this->canLogin() . ", "
-		           . "mlocale='" . sql_real_escape_string($this->getLocale()) . "', "
-		           . "mautosave=" . intval($this->getAutosave()) . " "
-		        . "WHERE mnumber=" . $this->getID();
+		        . " SET mname='" . sql_real_escape_string($this->displayname) . "', "
+		           . "mrealname='". sql_real_escape_string($this->realname) . "', "
+		           . "mpassword='". sql_real_escape_string($this->password) . "', "
+		           . "mcookiekey='". sql_real_escape_string($this->cookiekey) . "', "
+		           . "murl='" . sql_real_escape_string($this->url) . "', "
+		           . "memail='" . sql_real_escape_string($this->email) . "', "
+		           . "madmin=" . intval($this->admin) . ", "
+		           . "mnotes='" . sql_real_escape_string($this->notes) . "', "
+		           . "mcanlogin=" . intval($this->canlogin) . ", "
+		           . "mlocale='" . sql_real_escape_string($this->locale) . "', "
+		           . "mautosave=" . intval($this->autosave) . " "
+		        . "WHERE mnumber=" . intval($this->id);
 		sql_query($query);
 		return;
 	}
@@ -791,7 +824,12 @@ class MEMBER
 	
 	public function checkPassword($pw)
 	{
-		return ($this->hash($pw) == $this->getPassword());
+		/* for lower compatibility (md5) */
+		if ( strlen($this->password) === 32 )
+		{
+			return (md5($pw) == $this->password);
+		}
+		return ($this->hash($pw) == $this->password);
 	}
 	
 	public function getRealName()
@@ -956,7 +994,7 @@ class MEMBER
 	/**
 	 * MEMBER::existsID()
 	 * Returns true if there is a member with the given ID
-	 *
+	 * 
 	 * @static
 	 * @param	integer	$id	target id
 	 * @return	boolean	whether target id exists or not
@@ -982,7 +1020,7 @@ class MEMBER
 		// extract name
 		$name = strip_tags($name);
 		$name = trim($name);
-		return MEMBER::exists($name);
+		return self::exists($name);
 	}
 	
 	/**
@@ -1000,19 +1038,20 @@ class MEMBER
 	 * @param	String	$notes
 	 * @return	String	1 if success, others if fail
 	 */
-	static public  function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes)
+	static public function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes)
 	{
 		if ( !NOTIFICATION::address_validation($email) )
 		{
 			return _ERROR_BADMAILADDRESS;
 		}
 		
+		/* TODO: this method should be in MEMBER class, not globalfunctions */
 		if ( !isValidDisplayName($name) )
 		{
 			return _ERROR_BADNAME;
 		}
 		
-		if ( MEMBER::exists($name) )
+		if ( self::exists($name) )
 		{
 			return _ERROR_NICKNAMEINUSE;
 		}
@@ -1022,12 +1061,13 @@ class MEMBER
 			return _ERROR_REALNAMEMISSING;
 		}
 		
+		/* TODO: check the number of characters */
 		if ( !$password )
 		{
 			return _ERROR_PASSWORDMISSING;
 		}
 		
-		/*
+		/* 
 		 *  begin if: sometimes user didn't prefix the URL with http:// or https://,
 		 *  this cause a malformed URL. Let's fix it.
 		 */
@@ -1039,16 +1079,18 @@ class MEMBER
 		
 		$name		= sql_real_escape_string($name);
 		$realname	= sql_real_escape_string($realname);
-		$password	= sql_real_escape_string($this->hash($password));
+		/* NOTE: hashed password is automatically updated if the length is 32 bytes when logging in */
+		$password	= sql_real_escape_string(md5($password));
 		$email		= sql_real_escape_string($email);
 		$url		= sql_real_escape_string($url);
 		$admin		= (integer) $admin;
 		$canlogin	= (integer) $canlogin;
 		$notes		= sql_real_escape_string($notes);
 		
-		$query = 'INSERT INTO ' . sql_table('member')
-		       . " (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
-		       . "VALUES ('$name','$realname','$password','$email','$url',$admin, $canlogin, '$notes')";
+		$query = "INSERT INTO %s"
+		       . " (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES)"
+		       . " VALUES ('%s','%s','%s','%s','%s',%d, %d, '%s')";
+		$query = sprintf($query, sql_table(member), $name, $realname, $password, $email, $url, $admin, $canlogin, $notes);
 		sql_query($query);
 		
 		ACTIONLOG::add(INFO, _ACTIONLOG_NEWMEMBER . ' ' . $name);
@@ -1059,7 +1101,7 @@ class MEMBER
 	/**
 	 * MEMBER::getActivationInfo()
 	 * Returns activation info for a certain key (an object with properties vkey, vmember, ...)
-	 *
+	 * 
 	 * @static
 	 * @param	string	$key	activation key
 	 * @return	mixed	return 0 if failed, else return activation table object
@@ -1081,7 +1123,7 @@ class MEMBER
 	 * MEMBER::generateActivationEntry()
 	 * Creates an account activation key
 	 * addresschange -> old email address
-	 *
+	 * 
 	 * @param	string	$type	one of the following values (determines what to do when activation expires)
 	 * 				'register'	(new member registration)
 	 * 				'forgot'	(forgotton password)
@@ -1150,7 +1192,7 @@ class MEMBER
 	public function activate($key)
 	{
 		// get activate info
-		$info = MEMBER::getActivationInfo($key);
+		$info = self::getActivationInfo($key);
 		
 		// no active key
 		if ( !$info )
@@ -1170,7 +1212,7 @@ class MEMBER
 				break;
 			case 'addresschange':
 				// reset old 'canlogin' value
-				list($oldEmail, $oldCanLogin) = i18n::explode('/', $info->vextra);
+				list($oldEmail, $oldCanLogin) = preg_split('#/#', $info->vextra);
 				sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin). ' WHERE mnumber=' . intval($info->vmember));
 				break;
 		}
@@ -1186,7 +1228,7 @@ class MEMBER
 	 * MEMBER::cleanupActivationTable()
 	 * Cleans up entries in the activation table. All entries older than 2 days are removed.
 	 * (static)
-	 *
+	 * 
 	 * @param	void
 	 * @return	void
 	 */
