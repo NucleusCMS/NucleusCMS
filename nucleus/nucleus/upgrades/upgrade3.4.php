@@ -26,14 +26,14 @@ function upgrade_do340() {
         }
 
 	// lengthen tpartname column of nucleus_template
-	$query = "	ALTER TABLE `" . sql_table('template') . "`
-					MODIFY `tpartname` varchar(64) NOT NULL default '' ;";
+	$query = "	ALTER TABLE " . sql_table('template') . "
+					MODIFY tpartname varchar(64) NOT NULL default '' ;";
 
 	upgrade_query('Altering ' . sql_table('template') . ' table', $query);
 	
 	// lengthen tdname column of nucleus_template_desc
-	$query = "	ALTER TABLE `" . sql_table('template_desc') . "`
-					MODIFY `tdname` varchar(64) NOT NULL default '' ;";
+	$query = "	ALTER TABLE " . sql_table('template_desc') . "
+					MODIFY tdname varchar(64) NOT NULL default '' ;";
 
 	upgrade_query('Altering ' . sql_table('template_desc') . ' table', $query);
 	

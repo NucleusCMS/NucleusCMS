@@ -30,9 +30,21 @@ class COMMENT
 	 */
 	function getComment($commentid)
 	{
-		$query = 'SELECT `cnumber` AS commentid, `cbody` AS body, `cuser` AS user, `cmail` AS userid, `cemail` AS email, `cmember` AS memberid, `ctime`, `chost` AS host, `mname` AS member, `cip` AS ip, `cblog` AS blogid'
-					. ' FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON `cmember` = `mnumber`'
-					. ' WHERE `cnumber` = ' . intval($commentid);
+		$query = 'SELECT cnumber AS commentid,'
+		              . 'cbody AS body,'
+		              . 'cuser AS user,'
+		              . 'cmail AS userid,'
+		              . 'cemail AS email,'
+		              . 'cmember AS memberid,'
+		              . 'ctime,'
+		              . 'chost AS host,'
+		              . 'mname AS member,'
+		              . 'cip AS ip,'
+		              . 'cblog AS blogid'
+		       . 'FROM %s LEFT OUTER JOIN %s ON cmember = mnumber'
+		       . 'WHERE cnumber = %d;';
+		
+		$query = sprintf($query, sql_table('comment'), sql_table('member'), (integer) $commentid);
 		$comments = sql_query($query);
 		
 		$aCommentInfo = sql_fetch_assoc($comments);

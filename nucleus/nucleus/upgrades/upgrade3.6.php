@@ -26,8 +26,8 @@ function upgrade_do360() {
         }
 	
 	// changing the blog table to lengthen bnotify field 
-    $query = "	ALTER TABLE `" . sql_table('blog') . "`
-					MODIFY `bnotify` varchar(128) default NULL ;";
+	$query = "	ALTER TABLE " . sql_table('blog') . "
+					MODIFY bnotify varchar(128) default NULL ;";
 
 	upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
 

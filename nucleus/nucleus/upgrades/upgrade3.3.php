@@ -21,15 +21,15 @@ function upgrade_do330() {
 		return 'already installed';
 
 	if (!upgrade_checkIfColumnExists('comment','cemail')) {
-		$query = "	ALTER TABLE `" . sql_table('comment') . "`
-					ADD `cemail` VARCHAR( 100 ) AFTER `cmail` ;";
+		$query = "	ALTER TABLE " . sql_table('comment') . "
+					ADD cemail VARCHAR( 100 ) AFTER cmail ;";
 
 		upgrade_query('Altering ' . sql_table('comment') . ' table', $query);
 	}
 
 	if (!upgrade_checkIfColumnExists('blog','breqemail')) {
-		$query = "	ALTER TABLE `" . sql_table('blog') . "`
-					ADD `breqemail` TINYINT( 2 ) DEFAULT '0' NOT NULL ;";
+		$query = "	ALTER TABLE " . sql_table('blog') . "
+					ADD breqemail TINYINT( 2 ) DEFAULT '0' NOT NULL ;";
 
 		upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
 	}
@@ -42,15 +42,15 @@ function upgrade_do330() {
 	);
 
 	if (!upgrade_checkIfColumnExists('item','iposted')) {
-		$query = "	ALTER TABLE `" . sql_table('item') . "`
-                                ADD `iposted` TINYINT(2) DEFAULT 1 NOT NULL ;";
+		$query = "	ALTER TABLE " . sql_table('item') . "
+                                ADD iposted TINYINT(2) DEFAULT 1 NOT NULL ;";
 
 		upgrade_query('Altering ' . sql_table('item') . ' table', $query);
 	}
 
 	if (!upgrade_checkIfColumnExists('blog','bfuturepost')) {
-		$query = "	ALTER TABLE `" . sql_table('blog') . "`
-                                ADD `bfuturepost` TINYINT(2) DEFAULT 0 NOT NULL ;";
+		$query = "	ALTER TABLE " . sql_table('blog') . "
+                                ADD bfuturepost TINYINT(2) DEFAULT 0 NOT NULL ;";
 
 		upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
 	}

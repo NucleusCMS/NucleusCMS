@@ -826,7 +826,7 @@ $manager->notify(
 	 */
 	function getBlogIDFromName($name)
 	{
-		return quickQuery('SELECT `bnumber` AS `result` FROM `' . sql_table('blog') . '` WHERE `bshortname` = "' . sql_real_escape_string($name) . '"');
+		return quickQuery('SELECT bnumber AS result FROM ' . sql_table('blog') . ' WHERE bshortname = "' . sql_real_escape_string($name) . '"');
 	}
 
 
@@ -837,7 +837,7 @@ $manager->notify(
 	 */
 	function getBlogNameFromID($id)
 	{
-		return quickQuery('SELECT `bname` AS `result` FROM `' . sql_table('blog') . '` WHERE `bnumber` = ' . intval($id));
+		return quickQuery('SELECT bname AS result FROM ' . sql_table('blog') . ' WHERE bnumber = ' . intval($id));
 	}
 
 
@@ -848,7 +848,7 @@ $manager->notify(
 	 */
 	function getBlogIDFromItemID($item_id)
 	{
-		return quickQuery('SELECT `iblog` AS `result` FROM `' . sql_table('item') . '` WHERE `inumber` = ' . intval($item_id));
+		return quickQuery('SELECT iblog AS result FROM ' . sql_table('item') . ' WHERE inumber = ' . intval($item_id));
 	}
 
 
@@ -859,7 +859,7 @@ $manager->notify(
 	 */
 	function getBlogIDFromCommentID($comment_id)
 	{
-		return quickQuery('SELECT `cblog` AS `result` FROM `' . sql_table('comment') . '` WHERE `cnumber` = ' . intval($comment_id));
+		return quickQuery('SELECT cblog AS result FROM ' . sql_table('comment') . ' WHERE cnumber = ' . intval($comment_id));
 	}
 
 
@@ -870,7 +870,7 @@ $manager->notify(
 	 */
 	function getBlogIDFromCatID($category_id)
 	{
-		return quickQuery('SELECT `cblog` AS `result` FROM `' . sql_table('category') . '` WHERE `catid` = ' . intval($category_id));
+		return quickQuery('SELECT cblog AS result FROM ' . sql_table('category') . ' WHERE catid = ' . intval($category_id));
 	}
 
 
@@ -881,7 +881,7 @@ $manager->notify(
 	 */
 	function getCatIDFromName($name)
 	{
-		return quickQuery('SELECT `catid` AS `result` FROM `' . sql_table('category') . '` WHERE `cname` = "' . sql_real_escape_string($name) . '"');
+		return quickQuery('SELECT catid AS result FROM ' . sql_table('category') . ' WHERE cname = "' . sql_real_escape_string($name) . '"');
 	}
 
 
@@ -1701,7 +1701,7 @@ function ticketForPlugin()
 	
 	// Solve the plugin name.
 	$plugins = array();
-	$query = 'SELECT `pfile` FROM '.sql_table('plugin');
+	$query = 'SELECT pfile FROM '.sql_table('plugin');
 	$res = sql_query($query);
 	
 	while($row = sql_fetch_row($res) )

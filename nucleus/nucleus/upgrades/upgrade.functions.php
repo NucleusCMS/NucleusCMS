@@ -337,10 +337,8 @@
 		// begin if: no upgrade failures; update the database version in the config table
 		if ( $upgrade_failures == 0 )
 		{
-			$query = 'UPDATE `%s` ' .
-				'SET `value` = "%s" ' .
-				'WHERE `name` = "DatabaseVersion"';
-
+			$query = 'UPDATE %s SET value = "%s" WHERE name = "DatabaseVersion";';
+			
 			$query = sprintf($query, sql_table('config'), $version);
 			upgrade_query($message, $query);
 		}
@@ -365,7 +363,7 @@
 		// get info for indices from database
 		$indices = array();
 
-		$query = 'SHOW INDEX FROM `' . sql_table($table) . '`';
+		$query = 'SHOW INDEX FROM ' . sql_table($table);
 		$result = @mysql_query($query);
 
 		// begin loop: each result object
@@ -405,7 +403,7 @@
 	 */
 	function upgrade_checkIfTableExists($table)
 	{
-		$query = 'SHOW TABLES LIKE `' . sql_table($table) . '`';
+		$query = 'SHOW TABLES LIKE ' . sql_table($table);
 		$result = @mysql_query($query);
 
 		// begin if: query executed successfully and one row was returned
@@ -430,7 +428,7 @@
 	  */
 	function upgrade_checkIfCVExists($value)
 	{
-		$query = 'SELECT `name` FROM `' . sql_table('config') . '` WHERE `name` = "' . $value . '"';
+		$query = 'SELECT name FROM ' . sql_table('config') . ' WHERE name = "' . $value . '"';
 		$result = @mysql_query($query);
 
 		// begin if: query executed successfully and one row was returned
@@ -456,7 +454,7 @@
 	  */
 	function upgrade_checkIfColumnExists($table, $column)
 	{
-		$query = 'DESC `' . sql_table($table) . '` `' . $column . '`';
+		$query = 'DESC ' . sql_table($table) . ' ' . $column;
 		$result = @mysql_query($query);
 
 		// begin if: query executed successfully and one row was returned

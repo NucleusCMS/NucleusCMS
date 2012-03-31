@@ -845,7 +845,7 @@ function do_install()
 	/*
 	 * 3. try to create database if needed
 	 */
-	if ( !sql_query('CREATE DATABASE IF NOT EXISTS `' . $MYSQL_DATABASE . '`') )
+	if ( !sql_query("CREATE DATABASE IF NOT EXISTS {$MYSQL_DATABASE};") )
 	{
 		$errors[] = _INST_ERROR1 . ': ' . sql_error();
 	}

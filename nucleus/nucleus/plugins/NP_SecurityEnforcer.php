@@ -52,10 +52,10 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		
 		// create needed tables
 		sql_query("CREATE TABLE IF NOT EXISTS ". sql_table('plug_securityenforcer').
-					" (`login` varchar(255),
-					   `fails` int(11) NOT NULL default '0',
-					   `lastfail` bigint NOT NULL default '0',
-					   KEY `login` (`login`)) ENGINE=MyISAM");
+					" (login varchar(255),
+					   fails int(11) NOT NULL default '0',
+					   lastfail bigint NOT NULL default '0',
+					   KEY login (login)) ENGINE=MyISAM");
 		return;
 	}
 	

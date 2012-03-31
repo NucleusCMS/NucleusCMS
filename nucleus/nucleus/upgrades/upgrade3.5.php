@@ -26,15 +26,15 @@ function upgrade_do350() {
         }
 	
 	// changing the member table to lengthen display name (mname)
-    $query = "	ALTER TABLE `" . sql_table('member') . "`
-					MODIFY `mname` varchar(32) NOT NULL default '' ;";
+    $query = "	ALTER TABLE " . sql_table('member') . "
+					MODIFY mname varchar(32) NOT NULL default '' ;";
 
 	upgrade_query('Altering ' . sql_table('member') . ' table', $query);
 
 	// changing the blog table to remove bsendping flag
     if (upgrade_checkIfColumnExists('blog', 'bsendping')) {
-		$query = "	ALTER TABLE `" . sql_table('blog') . "`
-					DROP `bsendping`;";
+		$query = "	ALTER TABLE " . sql_table('blog') . "
+					DROP bsendping;";
 	
 		upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
 	}

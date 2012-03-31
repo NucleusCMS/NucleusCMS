@@ -210,7 +210,7 @@ class Backup
 			$fields[] = sql_field_name($result, $j);
 		}
 		
-		return '(`' . implode('`, `', $fields) . '`)';	
+		return '(' . implode(', ', $fields) . ')';	
 	}
 	
 	/**
@@ -246,7 +246,7 @@ class Backup
 		while ( $row = sql_fetch_array($result) )
 		{
 			// Start building the SQL statement.
-			echo "INSERT INTO `".$tablename."` $tablename_list VALUES(";
+			echo "INSERT INTO ".$tablename." $tablename_list VALUES(";
 			
 			// Loop through the rows and fill in data for each column
 			for ( $j = 0; $j < $num_fields; $j++ )

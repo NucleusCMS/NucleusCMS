@@ -157,7 +157,7 @@ a:hover{text-decoration:underline}
       $catdd = $total_num;
       $total_num++;
 
-      $query="SELECT * FROM `".$prefixwp."term_taxonomy` , `".$prefixwp."terms` WHERE ".$prefixwp."term_taxonomy.term_taxonomy_id = ".$prefixwp."terms.term_id AND ".$prefixwp."term_taxonomy.taxonomy='category'";
+      $query="SELECT * FROM ".$prefixwp."term_taxonomy , ".$prefixwp."terms WHERE ".$prefixwp."term_taxonomy.term_taxonomy_id = ".$prefixwp."terms.term_id AND ".$prefixwp."term_taxonomy.taxonomy='category'";
       $querywp=mysql_query($query,$linkwp) or die($query);
       echo "<p>rows to transfer: ".mysql_num_rows($querywp)."</p>";
       echo "<p>";

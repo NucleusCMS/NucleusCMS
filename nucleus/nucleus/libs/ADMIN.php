@@ -6169,7 +6169,9 @@ selector();
 				$name = $matches[1];
 				
 				// only show in list when not yet installed
-				$res = sql_query('SELECT * FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '"');
+				$query = 'SELECT * FROM %s WHERE pfile = "NP_%s"';
+				$query = sprintf($query, sql_table('plugin'), sql_real_escape_string($name));
+				$res = sql_query($query);
 				
 				if ( sql_num_rows($res) == 0 )
 				{
