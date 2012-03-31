@@ -98,7 +98,7 @@ class ITEM
 		if ( !$allow_future )
 		{
 			$blog =& $manager->getBlog(getBlogIDFromItemID($item_id));
-			$query .= "AND i.itime <= " . mysqldate($blog->getCorrectTime());
+			$query .= "AND i.itime <= '" . i18n::formatted_datetime('mysql', $blog->getCorrectTime()) ."'";
 		}
 		
 		$query .= ' LIMIT 1';
@@ -361,13 +361,13 @@ class ITEM
 		{
 			$query .= ', idraft = 1';
 			// set timestamp back to zero for a draft
-			$query .= ", itime = " . mysqldate($timestamp);
+			$query .= ", itime = '" . i18n::formatted_datetime('mysql', $timestamp) ."'";
 		}
 		
 		// update timestamp when needed
 		if ( $timestamp != 0 )
 		{
-			$query .= ", itime = " . mysqldate($timestamp);
+			$query .= ", itime = '" . i18n::formatted_datetime('mysql', $timestamp) ."'";
 		}
 		
 		// make sure the correct item is updated
@@ -514,7 +514,7 @@ class ITEM
 				return 0;
 			}
 			$blog =& $manager->getBlog($blogid);
-			$query .= " and itime<=" . mysqldate($blog->getCorrectTime());
+			$query .= " and itime<='" . i18n::formatted_datetime('mysql', $blog->getCorrectTime()) ."'";
 		}
 		if ( !$draft )
 		{

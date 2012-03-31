@@ -98,10 +98,9 @@ class BLOG {
 			$timestamp_start = mktime(0,0,0,$month,$day,$year);
 			$timestamp_end = mktime(0,0,0,$month,$day+1,$year);
 		}
-		$extra_query = ' and i.itime>=' . mysqldate($timestamp_start)
-					 . ' and i.itime<' . mysqldate($timestamp_end);
-
-
+		$extra_query = " and i.itime>='%s' and i.itime<'%s'";
+		$extra_query = sprintf($extra_query, i18n::formatted_datetime('mysql', $timestamp_start), i18n::formatted_datetime('mysql', $timestamp_end));
+		
 		$this->readLogAmount($templatename,0,$extra_query,'',1,1);
 		return;
 	}
@@ -219,14 +218,32 @@ class BLOG {
 					{
 						$oldTS = strtotime($old_date);
 						$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
-						$tmp_footer = i18n::strftime(isset($template['DATE_FOOTER'])?$template['DATE_FOOTER']:'', $oldTS);
+						
+						if ( !in_array('DATE_FOOTER', $template) || !empty($template['DATE_FOOTER']) )
+						{
+							$tmp_footer = i18n::formatted_datetime('', $oldTS);
+						}
+						else
+						{
+							$tmp_footer = i18n::formatted_datetime($template['DATE_FOOTER'], $oldTS);
+						}
 						$parser->parse($tmp_footer);
 						$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
 					}
+					
 					$manager->notify('PreDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
+					
 					// note, to use templatvars in the dateheader, the %-characters need to be doubled in
 					// order to be preserved by strftime
-					$tmp_header = i18n::strftime((isset($template['DATE_HEADER']) ? $template['DATE_HEADER'] : null), $timestamp);
+					if ( !in_array('DATE_HEADER', $template) || !empty($template['DATE_HEADER']) )
+					{
+						$tmp_footer = i18n::formatted_datetime('', $timestamp);
+					}
+					else
+					{
+						$tmp_footer = i18n::formatted_datetime($template['DATE_FOOTER'], $timestamp);
+					}
+					
 					$parser->parse($tmp_header);
 					$manager->notify('PostDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
 				}
@@ -538,9 +555,14 @@ class BLOG {
 		
 		if ( $mode == '' )
 		{
-			$query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
-			if ($select)
+			$query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, i.itime, i.imore as more, i.icat as catid, i.iclosed as closed,
+				m.mname as author, m.mrealname as authorname, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl,
+				c.cname as category';
+			
+			if ( $select )
+			{
 				$query .= ', '.$select. ' as score ';
+			}
 		}
 		else
 		{
@@ -548,20 +570,21 @@ class BLOG {
 		}
 		
 		$query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
-			   . ' WHERE i.iauthor=m.mnumber'
-			   . ' and i.icat=c.catid'
-			   . ' and i.idraft=0'	// exclude drafts
-			   . $selectblogs
+				. ' WHERE i.iauthor=m.mnumber'
+				. ' and i.icat=c.catid'
+				// exclude drafts
+				. ' and i.idraft=0'
+				. $selectblogs
 					// don't show future items
-			   . ' and i.itime<=' . mysqldate($this->getCorrectTime())
-			   . ' and '.$where;
+				. ' and i.itime<="' . i18n::formatted_datetime('mysql', $this->getCorrectTime()) . '"'
+				. ' and '.$where;
 
 		// take into account amount of months to search
 		if ( $amountMonths > 0 )
 		{
 			$localtime = getdate($this->getCorrectTime());
 			$timestamp_start = mktime(0,0,0,$localtime['mon'] - $amountMonths,1,$localtime['year']);
-			$query .= ' and i.itime>' . mysqldate($timestamp_start);
+			$query .= ' and i.itime>"' . i18n::formatted_datetime('mysql', $timestamp_start) . '"';
 		}
 		
 		if ( $mode == '' )
@@ -605,9 +628,10 @@ class BLOG {
 				. ' WHERE i.iblog='.$this->blogid
 				. ' and i.iauthor=m.mnumber'
 				. ' and i.icat=c.catid'
-				. ' and i.idraft=0'	// exclude drafts
+				// exclude drafts
+				. ' and i.idraft=0'
 				// don't show future items
-				. ' and i.itime<=' . mysqldate($this->getCorrectTime());
+				. ' and i.itime<="' . i18n::formatted_datetime('mysql', $this->getCorrectTime()) . '"';
 		
 		if ( $this->getSelectedCategory() )
 		{
@@ -660,12 +684,13 @@ class BLOG {
 		
 		echo TEMPLATE::fill($tplt, $data);
 		
-		$query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM '.sql_table('item')
+		$query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) AS Day'
+				. ' FROM '.sql_table('item')
 				. ' WHERE iblog=' . $this->getID()
 				// don't show future items!
-				. ' and itime <=' . mysqldate($this->getCorrectTime())
+				. ' AND itime <="' . i18n::formatted_datetime('mysql', $this->getCorrectTime()) . '"'
 				// don't show draft items
-				. ' and idraft=0';
+				. ' AND idraft=0';
 		
 		if ( $catid )
 		{
@@ -732,7 +757,7 @@ class BLOG {
 			);
 			
 			$temp = TEMPLATE::fill($template['ARCHIVELIST_LISTITEM'],$data);
-			echo i18n::strftime($temp,$current->itime);
+			echo i18n::formatted_datetime($temp, $current->itime);
 			return;
 		}
 		
@@ -1357,7 +1382,7 @@ class BLOG {
 	}
 
 	function getID() {
-		return intval($this->blogid);
+		return (integer) $this->blogid;
 	}
 
 	/**
@@ -1534,7 +1559,7 @@ class BLOG {
 			if ( !$showFuture )
 			{
 				// don't show future items
-				$query .= ' and i.itime<=' . mysqldate($this->getCorrectTime());
+				$query .= " and i.itime<='" . i18n::formatted_datetime('mysql', $this->getCorrectTime()) . "'";
 			}
 			
 			$query .= ' and i.inumber='.intval($value);

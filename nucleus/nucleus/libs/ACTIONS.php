@@ -487,15 +487,28 @@ class ACTIONS extends BaseActions {
 	}
 
 	/**
+	 * ACTIONS::parse_archivedate()
 	  * %archivedate(locale,date format)%
+	 * 
+	 * @paramstring	$locale
+	 * @return	void
+	 * 
 	  */
-	function parse_archivedate($locale = '-def-') {
+	function parse_archivedate($locale = '-def-')
+	{
 		global $archive;
 
+		/* 
+		 * these lines are no meaning because there is no $template.
+		 */
 		if ($locale == '-def-')
+		{
 			setlocale(LC_TIME,$template['LOCALE']);
+		}
 		else
+		{
 			setlocale(LC_TIME,$locale);
+		}
 
 		// get archive date
 		sscanf($archive,'%d-%d-%d',$y,$m,$d);
@@ -503,20 +516,27 @@ class ACTIONS extends BaseActions {
 		// get format
 		$args = func_get_args();
 		// format can be spread over multiple parameters
-		if (sizeof($args) > 1) {
+		if ( sizeof($args) > 1 )
+		{
 			// take away locale
 			array_shift($args);
 			// implode
 			$format=implode(',',$args);
-		} elseif ($d == 0 && $m !=0) {
+		}
+		elseif ( $d == 0 && $m !=0 )
+		{
 			$format = '%B %Y';
-		} elseif ($m == 0) {
+		}
+		elseif ( $m == 0 )
+		{
 			$format = '%Y';			
-		} else {
+		}
+		else
+		{
 			$format = '%d %B %Y';
 		}
-
-		echo i18n::strftime($format,mktime(0,0,0,$m?$m:1,$d?$d:1,$y));
+		echo i18n::formatted_timedate($format, mktime(0,0,0,$m?$m:1,$d?$d:1,$y));
+		return;
 	}
 
 	/**
@@ -1500,4 +1520,3 @@ class ACTIONS extends BaseActions {
 
 
 }
-?>

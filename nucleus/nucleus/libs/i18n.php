@@ -450,7 +450,23 @@ class i18n
 		
 		switch ( $format )
 		{
+			case 'mysql':
+				/*
+				 * MySQL 5.0 Reference Manual
+				 *  10.3.1. The DATE, DATETIME, and TIMESTAMP Types
+				 *   http://dev.mysql.com/doc/refman/5.0/en/datetime.html
+				 */
+				$timestamp += $offset;
+				$format = '%Y-%m-%d %H:%M:%S';
+				$suffix ='';
+				break;
+			
 			case 'rfc822':
+				/*
+				 * RFC 822: STANDARD FOR THE FORMAT OF ARPA INTERNET TEXT MESSAGES
+				 *  5.  DATE AND TIME SPECIFICATION
+				 *   http://www.ietf.org/rfc/rfc0822.txt
+				 */
 				$format = 'D, j M Y H:i:s ';
 				if ( $offset < 0 )
 				{
@@ -465,16 +481,22 @@ class i18n
 				$suffix .= sprintf("%02d%02d", floor($offset / 3600), round(($offset % 3600) / 60) );
 				break;
 			case 'rfc822GMT':
+				/*
+				 * RFC 822: STANDARD FOR THE FORMAT OF ARPA INTERNET TEXT MESSAGES
+				 *  5.  DATE AND TIME SPECIFICATION
+				 *   http://www.ietf.org/rfc/rfc0822.txt
+				 */
 				$format = 'D, j M Y H:i:s ';
 				$timestamp -= $offset;
 				$suffix = 'GMT';
 				break;
-			case 'utc':
-				$timestamp -= $offset;
-				$format = 'Y-m-d\TH:i:s\Z';
-				$suffix = '';
-				break;
 			case 'iso8601':
+			case 'rfc3339':
+				/*
+				 * RFC3339: Date and Time on the Internet: Timestamps
+				 *  5. Date and Time format
+				 *   http://www.ietf.org/rfc/rfc3339.txt
+				 */
 				$format = 'Y-m-d\TH:i:s';
 				if ( $offset < 0 )
 				{
@@ -487,9 +509,22 @@ class i18n
 				}
 				$suffix .= sprintf("%02d:%02d", floor($offset / 3600), round(($offset % 3600) / 60) );
 				break;
-			case '':
-				$format = $default_format;
+			case 'utc':
+			case 'iso8601UTC':
+			case 'rfc3339UTC':
+				/*
+				 * RFC3339: Date and Time on the Internet: Timestamps
+				 *  5. Date and Time format
+				 *   http://www.ietf.org/rfc/rfc3339.txt
+				 */
+			case 'utc':
+				$timestamp -= $offset;
+				$format = 'Y-m-d\TH:i:s\Z';
 				$suffix = '';
+				break;
+			case '':
+				$format = '%X %x';
+				$offset = '';
 				break;
 			default:
 				$suffix = '';

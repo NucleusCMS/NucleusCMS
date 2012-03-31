@@ -391,9 +391,19 @@ class ITEMACTIONS extends BaseActions {
 	 */
 	function parse_date($format = '')
 	{
-		if ( !array_key_exists('FORMAT_DATE', $this->template) )
+		if ( $format !== '' )
 		{
-			$this->template['FORMAT_DATE'] = '';
+			/* do nothing */
+			;
+		}
+		else if ( !array_key_exists('FORMAT_DATE', $this->template) || $this->template['FORMAT_DATE'] === '' )
+		{
+			/* depends on the PHP's current locale */
+			$format = '%X';
+		}
+		else
+		{
+			$format = $this->template['FORMAT_DATE'];
 		}
 		
 		$offset = 0;
@@ -402,7 +412,7 @@ class ITEMACTIONS extends BaseActions {
 			$offset = $this->blog->getTimeOffset() * 3600;
 		}
 		
-		echo i18n::formatted_datetime($format, $this->currentItem->timestamp, $this->template['FORMAT_DATE'], $offset);
+		echo i18n::formatted_datetime($format, $this->currentItem->timestamp, $offset);
 		return;
 	}
 	
@@ -416,19 +426,21 @@ class ITEMACTIONS extends BaseActions {
 	 */
 	function parse_time($format = '')
 	{
-		if ( !array_key_exists('FORMAT_TIME', $this->template) )
+		if ( $format !== '' )
 		{
-			$this->template['FORMAT_TIME'] = '';
+			/* do nothing */
+			;
 		}
-		
-		if ( $format != '' )
+		else if ( !array_key_exists('FORMAT_TIME', $this->template) || $this->template['FORMAT_TIME'] === '' )
 		{
-			echo i18n::strftime($format, $this->currentItem->timestamp);
+			/* depends on the PHP's current locale */
+			$format = '%x';
 		}
 		else
 		{
-			echo i18n::strftime($this->template['FORMAT_TIME'], $this->currentItem->timestamp);
+			$format = $this->template['FORMAT_TIME'];
 		}
+		echo i18n::formatted_datetime($format, $this->currentItem->timestamp);
 		return;
 	}
 
@@ -506,7 +518,7 @@ class ITEMACTIONS extends BaseActions {
 	 */
 	function parse_daylink()
 	{
-		echo LINK::create_archive_link($this->blog->getID(), i18n::strftime('%Y-%m-%d',$this->currentItem->timestamp), $this->linkparams);
+		echo LINK::create_archive_link($this->blog->getID(), i18n::formatted_datetime('%Y-%m-%d',$this->currentItem->timestamp), $this->linkparams);
 		return;
 	}
 	

@@ -1369,8 +1369,8 @@ class ADMIN
 		$blog =& $manager->getBlog($blogid);
 		$currenttime = $blog->getCorrectTime(time());
 		
-		$query = "SELECT * FROM %s WHERE iblog=%d AND iposted=0 AND itime>%s";
-		$query = sprintf($query, sql_table('item'), (integer) $blogid, mysqldate($currenttime));
+		$query = "SELECT * FROM %s WHERE iblog=%d AND iposted=0 AND itime>'%s'";
+		$query = sprintf($query, sql_table('item'), (integer) $blogid, i18n::formatted_datetime('mysql', $currenttime));
 		$result = sql_query($query);
 		
 		if ( sql_num_rows($result) > 0 )
@@ -2641,8 +2641,8 @@ class ADMIN
             </td>
         </tr><tr>
             <td><?php echo _EBLOG_OFFSET?> <?php help('blogtimeoffset'); ?>
-                <br /><?php echo _EBLOG_STIME?> <b><?php echo  i18n::strftime("%H:%M",time()); ?></b>
-                <br /><?php echo _EBLOG_BTIME?> <b><?php echo  i18n::strftime("%H:%M",$blog->getCorrectTime()); ?></b>
+                <br /><?php echo _EBLOG_STIME?> <b><?php echo  i18n::formatted_datetime('%H:%M', time()); ?></b>
+                <br /><?php echo _EBLOG_BTIME?> <b><?php echo  i18n::formatted_datetime('%H:%M', $blog->getCorrectTime()); ?></b>
                 </td>
             <td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  ENTITY::hsc($blog->getTimeOffset()); ?>" /></td>
         </tr><tr>
@@ -3313,7 +3313,7 @@ class ADMIN
         </tr><tr>
             <td><?php echo _EBLOG_OFFSET?>
                 <?php help('blogtimeoffset'); ?>
-                <br /><?php echo _EBLOG_STIME?> <b><?php echo i18n::strftime("%H:%M",time()); ?></b>
+                <br /><?php echo _EBLOG_STIME?> <b><?php echo i18n::formatted_datetime('%H:%M',time()); ?></b>
             </td>
             <td><input name="timeoffset" tabindex="110" size="3" value="0" /></td>
         </tr><tr>

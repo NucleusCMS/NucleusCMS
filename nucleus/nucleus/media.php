@@ -351,9 +351,11 @@ function media_upload() {
 
 	// prefix filename with current date (YYYY-MM-DD-)
 	// this to avoid nameclashes
-	if ($CONF['MediaPrefix'])
-		$filename = i18n::strftime("%Y%m%d-", time()) . $filename;
-
+	if ( $CONF['MediaPrefix'] )
+	{
+		$filename = i18n::formatted_timedate("%Y%m%d-", time()) . $filename;
+	}
+	
 	$collection = requestVar('collection');
 	$res = MEDIA::addMediaObject($collection, $filetempname, $filename);
 

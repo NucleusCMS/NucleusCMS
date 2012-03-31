@@ -996,13 +996,13 @@ function selector()
 		
 		if ( !$b->isValidCategory($catid) )
 		{
-			$query = 'SELECT inumber, ititle FROM %s WHERE itime<%s and idraft=0 and iblog=%d ORDER BY itime DESC LIMIT 1';
-			$query = sprintf($query, sql_table('item'), mysqldate($timestamp), $blogid);
+			$query = "SELECT inumber, ititle FROM %s WHERE itime<'%s' AND idraft=0 AND iblog=%d ORDER BY itime DESC LIMIT 1";
+			$query = sprintf($query, sql_table('item'), i18n::formatted_datetime('mysql', $timestamp), $blogid);
 		}
 		else
 		{
-			$query = 'SELECT inumber, ititle FROM %s WHERE itime<%s and idraft=0 and iblog=%d and icat=%d ORDER BY itime DESC LIMIT 1';
-			$query = sprintf($query, sql_table('item'), mysqldate($timestamp), $blogid, $catid);
+			$query = "SELECT inumber, ititle FROM %s WHERE itime<'%s' AND idraft=0 AND iblog=%d AND icat=%d ORDER BY itime DESC LIMIT 1";
+			$query = sprintf($query, sql_table('item'), i18n::formatted_datetime('mysql', $timestamp), $blogid, $catid);
 		}
 		
 		$res = sql_query($query);
@@ -1017,14 +1017,13 @@ function selector()
 		// get next itemid and title
 		if ( !$b->isValidCategory($catid) )
 		{
-			$query = 'SELECT inumber, ititle FROM %s WHERE itime>%s and itime<=%s and idraft=0 and iblog=%d ORDER BY itime ASC LIMIT 1';
-			$query = sprintf($query, sql_table('item'), mysqldate($timestamp), mysqldate($b->getCorrectTime()), $blogid);
+			$query = "SELECT inumber, ititle FROM %s WHERE itime>'%s' AND itime<='%s' AND idraft=0 AND iblog=%d ORDER BY itime ASC LIMIT 1";
+			$query = sprintf($query, sql_table('item'), i18n::formatted_datetime('mysql', $timestamp), i18n::formatted_datetime('mysql', $b->getCorrectTime()), $blogid);
 		}
 		else
 		{
-			$query = 'SELECT inumber, ititle FROM %s WHERE itime>%s and itime<=%s and idraft=0 and iblog=%d icat=%d ORDER BY itime ASC LIMIT 1';
-			$query = sprintf($query, sql_table('item'), mysqldate($timestamp), mysqldate($b->getCorrectTime()), $blogid, $catid);
-			
+			$query = "SELECT inumber, ititle FROM %s WHERE itime>'%s' AND itime<='%s' AND idraft=0 AND iblog=%d AND icat=%d ORDER BY itime ASC LIMIT 1";
+			$query = sprintf($query, sql_table('item'), i18n::formatted_datetime('mysql', $timestamp), i18n::formatted_datetime('mysql', $b->getCorrectTime()), $blogid, $catid);
 		}
 		$res = sql_query($query);
 		
@@ -1057,7 +1056,7 @@ function selector()
 			$archivetype = _ARCHIVETYPE_DAY;
 			$t = mktime(0, 0, 0, $m, $d, $y);
 			// one day has 24 * 60 * 60 = 86400 seconds
-			$archiveprev = i18n::strftime('%Y-%m-%d', $t - 86400 );
+			$archiveprev = i18n::formatted_datetime('%Y-%m-%d', $t - 86400 );
 			// check for published items
 			if ( $t > $first_timestamp )
 			{
@@ -1070,7 +1069,7 @@ function selector()
 			
 			// one day later
 			$t += 86400;
-			$archivenext = i18n::strftime('%Y-%m-%d', $t);
+			$archivenext = i18n::formatted_datetime('%Y-%m-%d', $t);
 			if ( $t < $last_timestamp )
 			{
 				$archivenextexists = true;
@@ -1085,7 +1084,7 @@ function selector()
 			$archivetype = _ARCHIVETYPE_YEAR;
 			$t = mktime(0, 0, 0, 12, 31, $y - 1);
 			// one day before is in the previous year
-			$archiveprev = i18n::strftime('%Y', $t);
+			$archiveprev = i18n::formatted_datetime('%Y', $t);
 			if ( $t > $first_timestamp )
 			{
 				$archiveprevexists = true;
@@ -1097,7 +1096,7 @@ function selector()
 
 			// timestamp for the next year
 			$t = mktime(0, 0, 0, 1, 1, $y + 1);
-			$archivenext = i18n::strftime('%Y', $t);
+			$archivenext = i18n::formatted_datetime('%Y', $t);
 			if ( $t < $last_timestamp )
 			{
 				$archivenextexists = true;
@@ -1112,7 +1111,7 @@ function selector()
 			$archivetype = _ARCHIVETYPE_MONTH;
 			$t = mktime(0, 0, 0, $m, 1, $y);
 			// one day before is in the previous month
-			$archiveprev = i18n::strftime('%Y-%m', $t - 86400);
+			$archiveprev = i18n::formatted_datetime('%Y-%m', $t - 86400);
 			if ( $t > $first_timestamp )
 			{
 				$archiveprevexists = true;
@@ -1124,7 +1123,7 @@ function selector()
 			
 			// timestamp for the next month
 			$t = mktime(0, 0, 0, $m+1, 1, $y);
-			$archivenext = i18n::strftime('%Y-%m', $t);
+			$archivenext = i18n::formatted_datetime('%Y-%m', $t);
 			if ( $t < $last_timestamp )
 			{
 				$archivenextexists = true;
@@ -1358,15 +1357,6 @@ function addBreaks($var) {
 
 function removeBreaks($var) {
     return preg_replace("/<br \/>([\r\n])/", "$1", $var);
-}
-
-/**
- * Converts a unix timestamp to a mysql DATETIME format, and places
- * quotes around it.
- */
-function mysqldate($timestamp)
-{
-	return '"' . date('Y-m-d H:i:s', $timestamp) . '"';
 }
 
 /**
@@ -2114,8 +2104,13 @@ function formatDate($format, $timestamp, $default_format, &$blog)
 	{
 		$offset += $blog->getTimeOffset() * 3600;
 	}
-	return i18n::formatted_datetime($format, $timestamp, $default_format, $offset);
+	return i18n::formatted_datetime($format, $timestamp, $offset, $default_format);
 }
+/* NOTE: use i18n::formatted_datetime() directly instead of this */
+function mysqldate($timestamp)
+{
+	return '"' . i18n::formatted_datetime('mysql', $timestamp) . '"';
+ }
 /**
  * Centralisation of the functions that generate links
  * Deprecated since 4.0:

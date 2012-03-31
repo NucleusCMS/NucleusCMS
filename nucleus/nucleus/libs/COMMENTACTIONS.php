@@ -225,14 +225,23 @@ class COMMENTACTIONS extends BaseActions {
 	 */
 	function parse_date($format = '')
 	{
-		if ( !array_key_exists('FORMAT_DATE', $this->template) )
+		if ( $format !== '' )
 		{
-			$this->template['FORMAT_DATE'] = '';
+			/* do nothing */
+			;
+		}
+		else if ( !array_key_exists('FORMAT_DATE', $this->template) || $this->template['FORMAT_DATE'] === '' )
+		{
+			$format = '%X';
+		}
+		else
+		{
+			$format = $this->template['FORMAT_DATE'];
 		}
 		
 		$offset = $this->commentsObj->itemActions->blog->getTimeOffset() * 3600;
 		
-		echo i18n::formatted_datetime($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE'], $offset);
+		echo i18n::formatted_datetime($format, $this->currentComment['timestamp'], $offset);
 		return;
 	}
 	
@@ -338,19 +347,21 @@ class COMMENTACTIONS extends BaseActions {
 	 */
 	function parse_time($format = '')
 	{
-		if ( !array_key_exists('FORMAT_TIME', $this->template) )
+		if ( $format === '' )
 		{
-			$this->template['FORMAT_TIME'] = '';
+			/* do nothing */
+			;
 		}
-		
-		if ( $format != '' )
+		else if ( !array_key_exists('FORMAT_TIME', $this->template) || $this->template['FORMAT_TIME'] === '' )
 		{
-			echo i18n::strftime($format, $this->currentComment['timestamp']);
+			$format = '%x';
 		}
 		else
 		{
-			echo i18n::strftime($this->template['FORMAT_TIME'], $this->currentComment['timestamp']);
+			$format = $this->template['FORMAT_TIME'];
 		}
+		
+		echo i18n::formatted_datetime($format, $this->currentComment['timestamp']);
 		return;
 	}
 	
@@ -746,4 +757,3 @@ class COMMENTACTIONS extends BaseActions {
 	}
 
 }
-?>
