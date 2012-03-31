@@ -253,7 +253,7 @@
 		global $manager;
 
 		// login
-		$mem = new MEMBER();
+		$mem = new Member();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
@@ -262,7 +262,7 @@
 			return _error(6,"No such item ($itemid)");
 
 		$blogid = getBlogIDFromItemID($itemid);
-		$blog = new BLOG($blogid);
+		$blog = new Blog($blogid);
 
 		if (!$mem->canAlterItem($itemid))
 			return _error(7,"Not allowed to alter item");
@@ -287,7 +287,7 @@
 		global $manager;
 
 		// login
-		$mem = new MEMBER();
+		$mem = new Member();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
@@ -296,7 +296,7 @@
 			return _error(6,"No such item ($itemid)");
 
 		$blogid = getBlogIDFromItemID($itemid);
-		$blog = new BLOG($blogid);
+		$blog = new Blog($blogid);
 
 		if (!$mem->canAlterItem($itemid))
 			return _error(7, 'You are not allowed to request this information');
@@ -324,7 +324,7 @@
 
 		// get item data
 		$blogid = getBlogIDFromItemID($itemid);
-		$blog = new BLOG($blogid);
+		$blog = new Blog($blogid);
 		$old =& $manager->getItem($itemid,1,1);
 
 		return _edititem($itemid, $username, $password, $old['catid'], $old['title'], $old['body'], $old['more'], $old['draft'], 1, $old['closed']);
@@ -333,17 +333,17 @@
 
 	function _mt_categoryList($blogid, $username, $password) {
 		// 1. login
-		$mem = new MEMBER();
+		$mem = new Member();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
 		// check if on team and blog exists
-		if (!BLOG::existsID($blogid))
+		if (!Blog::existsID($blogid))
 			return _error(2,"No such blog ($blogid)");
 		if (!$mem->teamRights($blogid))
 			return _error(3,"Not a team member");
 
-		$b = new BLOG($blogid);
+		$b = new Blog($blogid);
 
 		$categorystruct = array();
 
@@ -375,12 +375,12 @@
 		$iAmount = intval($iAmount);
 
 		// 1. login
-		$mem = new MEMBER();
+		$mem = new Member();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
 		// 2. check if allowed
-		if (!BLOG::existsID($blogid))
+		if (!Blog::existsID($blogid))
 			return _error(2,"No such blog ($blogid)");
 		if (!$mem->teamRights($blogid))
 			return _error(3,"Not a team member");
@@ -391,7 +391,7 @@
 		// 3. create and return list of recent items
 		// Struct returned has dateCreated, userid, postid and title
 
-		$blog = new BLOG($blogid);
+		$blog = new Blog($blogid);
 
 		$structarray = array();		// the array in which the structs will be stored
 

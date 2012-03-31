@@ -34,9 +34,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	{
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
-	<head><title><?php echo ENTITY::hsc($title)?></title></head>
+	<head><title><?php echo Entity::hsc($title)?></title></head>
 	<body>
-		<h1><?php echo ENTITY::hsc($title)?></h1>
+		<h1><?php echo Entity::hsc($title)?></h1>
 		<?php echo $msg?>
 	</body>
 </html>

@@ -83,17 +83,17 @@ function listplug_select($template, $type)
 		case 'BODY':
 			$current = $template['current'];
 
-			echo '<option value="' . ENTITY::hsc($current->value) . '"';
+			echo '<option value="' . Entity::hsc($current->value) . '"';
 			if ( $template['selected'] == $current->value )
 			{
 				echo ' selected="selected" ';
 			}
 			if ( isset($template['shorten']) && $template['shorten'] > 0 )
 			{
-				echo ' title="'. ENTITY::hsc($current->text).'"';
-				$current->text = ENTITY::hsc(ENTITY::shorten($current->text, $template['shorten'], $template['shortenel']));
+				echo ' title="'. Entity::hsc($current->text).'"';
+				$current->text = Entity::hsc(Entity::shorten($current->text, $template['shorten'], $template['shortenel']));
 			}
-			echo '>' . ENTITY::hsc($current->text) . "</option>\n";
+			echo '>' . Entity::hsc($current->text) . "</option>\n";
 			break;
 		case 'FOOT':
 			echo '</select>';
@@ -155,11 +155,11 @@ function listplug_table_memberlist($template, $type)
 			$id = listplug_nextBatchId();
 			echo "<input type=\"checkbox\" id=\"batch{$id}\" name=\"batch[{$id}]\" value=\"{$current->mnumber}\" />\n";
 			echo "<label for=\"batch{$id}\">\n";
-			echo '<a href="mailto:' . ENTITY::hsc($current->memail) . '" tabindex="' . $template['tabindex'] . '">' . ENTITY::hsc($current->mname), "</a>\n";
+			echo '<a href="mailto:' . Entity::hsc($current->memail) . '" tabindex="' . $template['tabindex'] . '">' . Entity::hsc($current->mname), "</a>\n";
 			echo "</label>\n";
 			echo "</td>";
-			echo "<td>" . ENTITY::hsc($current->mrealname) . "</td>\n";
-			echo '<td><a href="' . ENTITY::hsc($current->murl) . '" tabindex="' . $template['tabindex'] . '">' . ENTITY::hsc($current->murl) . "</a></td>\n";
+			echo "<td>" . Entity::hsc($current->mrealname) . "</td>\n";
+			echo '<td><a href="' . Entity::hsc($current->murl) . '" tabindex="' . $template['tabindex'] . '">' . Entity::hsc($current->murl) . "</a></td>\n";
 			echo '<td>' . ($current->madmin ? _YES : _NO) . "</td>\n";
 			echo '<td>' . ($current->mcanlogin ? _YES : _NO) . "</td>\n";
 			echo '<td><a href="index.php?action=memberedit&amp;memberid=$current->mnumber" tabindex="' . $template['tabindex'] . '">' . _LISTS_EDIT . "</a></td>\n";
@@ -189,16 +189,16 @@ function listplug_table_teamlist($template, $type)
 			$id = listplug_nextBatchId();
 			echo "<input type=\"checkbox\" id=\"batch{$id}\" name=\"batch[{$id}]\" value=\"{$current->tmember}\" />\n";
 			echo '<label for="batch',$id,'">';
-			echo '<a href="mailto:' . ENTITY::hsc($current->memail) . '" tabindex="' . $template['tabindex'] . '">' . ENTITY::hsc($current->mname), "</a>\n";
+			echo '<a href="mailto:' . Entity::hsc($current->memail) . '" tabindex="' . $template['tabindex'] . '">' . Entity::hsc($current->mname), "</a>\n";
 			echo "</label>\n";
 			echo "</td>";
-			echo '<td>', ENTITY::hsc($current->mrealname), "</td>\n";
+			echo '<td>', Entity::hsc($current->mrealname), "</td>\n";
 			echo '<td>', ($current->tadmin ? _YES : _NO) , "</td>\n";
 			echo "<td><a href=\"index.php?action=teamdelete&amp;memberid=$current->tmember&amp;blogid={$current->tblog}\" tabindex=\"{$template['tabindex']}\">" . _LISTS_DELETE . "</a></td>\n";
 			
 			$url = "index.php?action=teamchangeadmin&memberid={$current->tmember}&blogid={$current->tblog}";
 			$url = $manager->addTicketToUrl($url);
-			echo '<td><a href="' . ENTITY::hsc($url) . '" tabindex="' . $template['tabindex'] . '">' . _LIST_TEAM_CHADMIN . "</a></td>\n";
+			echo '<td><a href="' . Entity::hsc($url) . '" tabindex="' . $template['tabindex'] . '">' . _LIST_TEAM_CHADMIN . "</a></td>\n";
 			break;
 	}
 	return;
@@ -221,25 +221,25 @@ function listplug_table_pluginlist($template, $type)
 			if ( $plug )
 			{
 				echo "<td>\n";
-				echo '<h3>' . ENTITY::hsc($plug->getName()) . "</h3>\n";
+				echo '<h3>' . Entity::hsc($plug->getName()) . "</h3>\n";
 				
 				echo "<dl>\n";
 				if ( $plug->getAuthor() )
 				{
 					echo '<dt>' . _LIST_PLUGS_AUTHOR . "</dt>\n";
-					echo '<dd>' . ENTITY::hsc($plug->getAuthor()) , "</dd>\n";
+					echo '<dd>' . Entity::hsc($plug->getAuthor()) , "</dd>\n";
 				}
 				
 				if ( $plug->getVersion() )
 				{
 					echo '<dt>' . _LIST_PLUGS_VER, "</dt>\n";
-					echo '<dd>' . ENTITY::hsc($plug->getVersion()) . "</dd>\n";
+					echo '<dd>' . Entity::hsc($plug->getVersion()) . "</dd>\n";
 				}
 				
 				if ( $plug->getURL() )
 				{
 					echo '<dt>' . _LIST_PLUGS_SITE . "<dt>\n";
-					echo '<dd><a href="' .  ENTITY::hsc($plug->getURL()) . '" tabindex="' . $template['tabindex'] . '">リンク</a></dd>' . "\n";
+					echo '<dd><a href="' .  Entity::hsc($plug->getURL()) . '" tabindex="' . $template['tabindex'] . '">リンク</a></dd>' . "\n";
 				}
 				echo "</dl>\n";
 				echo "</td>\n";
@@ -247,17 +247,17 @@ function listplug_table_pluginlist($template, $type)
 				echo "<td>\n";
 				echo "<dl>\n";
 				echo '<dt>' . _LIST_PLUGS_DESC ."</dt>\n";
-				echo '<dd>' . ENTITY::hen($plug->getDescription()) ."</dd>\n";
+				echo '<dd>' . Entity::hen($plug->getDescription()) ."</dd>\n";
 				if ( sizeof($plug->getEventList()) > 0 )
 				{
 					echo '<dt>' . _LIST_PLUGS_SUBS ."</dt>\n";
-					echo '<dd>' . ENTITY::hsc(implode(', ', $plug->getEventList())) ."</dd>\n";
+					echo '<dd>' . Entity::hsc(implode(', ', $plug->getEventList())) ."</dd>\n";
 				}
 				
 				if ( sizeof($plug->getPluginDep()) > 0 )
 				{
 					echo '<dt>' . _LIST_PLUGS_DEP ."</dt>\n";
-					echo '<dd>' . ENTITY::hsc(implode(', ', $plug->getPluginDep())) ."</dd>\n";
+					echo '<dd>' . Entity::hsc(implode(', ', $plug->getPluginDep())) ."</dd>\n";
 				}
 				
 				/* check dependency */
@@ -282,7 +282,7 @@ function listplug_table_pluginlist($template, $type)
 				if ( count($req) > 0 )
 				{
 					echo '<dt>' . _LIST_PLUGS_DEPREQ . "</dt>\n";
-					echo '<dd>' . ENTITY::hsc(implode(', ', $req)) . "</dd>\n";
+					echo '<dd>' . Entity::hsc(implode(', ', $req)) . "</dd>\n";
 				}
 				
 				/* check the database to see if it is up-to-date and notice the user if not */
@@ -297,23 +297,23 @@ function listplug_table_pluginlist($template, $type)
 			}
 			else
 			{
-				echo '<td colspan="2">' . sprintf(_PLUGINFILE_COULDNT_BELOADED, ENTITY::hsc($current->pfile)) . "</td>\n";
+				echo '<td colspan="2">' . sprintf(_PLUGINFILE_COULDNT_BELOADED, Entity::hsc($current->pfile)) . "</td>\n";
 			}
 			
 			echo "<td>\n";
 			echo "<ul>\n";
 			$current->pid = (integer) $current->pid;
 			
-			$url = ENTITY::hsc($manager->addTicketToUrl("index.php?plugid={$current->pid}&action=pluginup"));
+			$url = Entity::hsc($manager->addTicketToUrl("index.php?plugid={$current->pid}&action=pluginup"));
 			echo "<li><a href=\"{$url}\" tabindex=\"{$template['tabindex']}\">" , _LIST_PLUGS_UP , "</a></li>\n";
 			
-			$url = ENTITY::hsc($manager->addTicketToUrl("index.php?plugid={$current->pid}&action=plugindown"));
+			$url = Entity::hsc($manager->addTicketToUrl("index.php?plugid={$current->pid}&action=plugindown"));
 			echo "<li><a href=\"{$url}\" tabindex=\"{$template['tabindex']}\">" . _LIST_PLUGS_DOWN , "</a></li>\n";
 			echo "<li><a href=\"index.php?action=plugindelete&amp;plugid={$current->pid}\" tabindex=\"{$template['tabindex']}\">" . _LIST_PLUGS_UNINSTALL , "</a></li>\n";
 			
 			if ( $plug && ($plug->hasAdminArea() > 0) )
 			{
-				echo '<li><a href="' , ENTITY::hsc($plug->getAdminURL()) , '" tabindex="' , $template['tabindex'] , '">' , _LIST_PLUGS_ADMIN , "</a></li>\n";
+				echo '<li><a href="' , Entity::hsc($plug->getAdminURL()) , '" tabindex="' , $template['tabindex'] , '">' , _LIST_PLUGS_ADMIN , "</a></li>\n";
 			}
 			
 			if ( $plug && ($plug->supportsFeature('HelpPage') > 0) )
@@ -374,30 +374,30 @@ function listplug_plugOptionRow($current)
 	
 	if ( !$current['description'] )
 	{
-		echo '<td>' , ENTITY::hsc($current['name']) . "</td>\n";
+		echo '<td>' , Entity::hsc($current['name']) . "</td>\n";
 	}
 	else
 	{
 		if ( !defined($current['description']) )
 		{
-			echo '<td>' , ENTITY::hsc($current['description']) . "</td>\n";
+			echo '<td>' , Entity::hsc($current['description']) . "</td>\n";
 		}
 		else
 		{
-			echo '<td>' , ENTITY::hsc(constant($current['description'])) . "</td>\n";
+			echo '<td>' , Entity::hsc(constant($current['description'])) . "</td>\n";
 		}
 	}
 	echo "<td>\n";
 	switch($current['type'])
 	{
 		case 'yesno':
-			ADMIN::input_yesno($varname, $current['value'], 0, 'yes', 'no');
+			Admin::input_yesno($varname, $current['value'], 0, 'yes', 'no');
 			break;
 		case 'password':
-			echo '<input type="password" size="40" maxlength="128" name="',ENTITY::hsc($varname),'" value="',ENTITY::hsc($current['value']),"\" />\n";
+			echo '<input type="password" size="40" maxlength="128" name="',Entity::hsc($varname),'" value="',Entity::hsc($current['value']),"\" />\n";
 			break;
 		case 'select':
-			echo '<select name="'.ENTITY::hsc($varname)."\">\n";
+			echo '<select name="'.Entity::hsc($varname)."\">\n";
 			$options = NucleusPlugin::getOptionSelectValues($current['typeinfo']);
 			$options = i18n::explode('|', $options);
 			
@@ -405,19 +405,19 @@ function listplug_plugOptionRow($current)
 			{
 				if ($options[$i+1] == $current['value'])
 				{
-					echo '<option value="' . ENTITY::hsc($options[$i+1]) . '" selected="selected">';
+					echo '<option value="' . Entity::hsc($options[$i+1]) . '" selected="selected">';
 				}
 				else
 				{
-					echo '<option value="' . ENTITY::hsc($options[$i+1]) . '">';
+					echo '<option value="' . Entity::hsc($options[$i+1]) . '">';
 				}
 				if ( defined($options[$i]) )
 				{
-					echo ENTITY::hsc(constant($options[$i]));
+					echo Entity::hsc(constant($options[$i]));
 				}
 				else
 				{
-					echo ENTITY::hsc($options[$i]);
+					echo Entity::hsc($options[$i]);
 				}
 				echo "</option>\n";
 			}
@@ -428,19 +428,19 @@ function listplug_plugOptionRow($current)
 			//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 			if ( array_key_exists('access', $meta) && $meta['access'] == 'readonly' )
 			{
-				echo '<textarea class="pluginoption" cols="30" rows="5" name="' . ENTITY::hsc($varname) . "\" readonly=\"readonly\">\n";
+				echo '<textarea class="pluginoption" cols="30" rows="5" name="' . Entity::hsc($varname) . "\" readonly=\"readonly\">\n";
 			}
 			else
 			{
-				echo '<textarea class="pluginoption" cols="30" rows="5" name="' . ENTITY::hsc($varname) . "\">\n";
+				echo '<textarea class="pluginoption" cols="30" rows="5" name="' . Entity::hsc($varname) . "\">\n";
 			}
-			echo ENTITY::hsc($current['value']) . "\n";
+			echo Entity::hsc($current['value']) . "\n";
 			echo "</textarea>\n";
 			break;
 		case 'text':
 		default:
 			//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
-			echo '<input type="text" size="40" maxlength="128" name="',ENTITY::hsc($varname),'" value="',ENTITY::hsc($current['value']),'"';
+			echo '<input type="text" size="40" maxlength="128" name="',Entity::hsc($varname),'" value="',Entity::hsc($current['value']),'"';
 			if ( array_key_exists('datatype', $meta) && $meta['datatype'] == 'numerical' )
 			{
 				echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
@@ -490,11 +490,11 @@ function listplug_table_itemlist($template, $type)
 			echo "<td{$cssclass}>\n";
 			echo "<dl>\n";
 			echo '<dt>' . _LIST_ITEM_BLOG . "</dt>\n";
-			echo '<dd>' . ENTITY::hsc($current->bshortname) . "</dd>\n";
+			echo '<dd>' . Entity::hsc($current->bshortname) . "</dd>\n";
 			echo '<dt>' . _LIST_ITEM_CAT . "</dt>\n";
-			echo '<dd>' . ENTITY::hsc($current->cname) . "</dd>\n";
+			echo '<dd>' . Entity::hsc($current->cname) . "</dd>\n";
 			echo '<dt>' . _LIST_ITEM_AUTHOR . "</dt>\n";
-			echo '<dd>' . ENTITY::hsc($current->mname) . "</dd>\n";
+			echo '<dd>' . Entity::hsc($current->mname) . "</dd>\n";
 			echo '<dt>' . _LIST_ITEM_DATE . "</dt>\n";
 			echo '<dd>' . date("Y-m-d",$current->itime) . "</dd>\n";
 			echo '<dt>' . _LIST_ITEM_TIME . "</dt>\n";
@@ -507,11 +507,11 @@ function listplug_table_itemlist($template, $type)
 			echo "<td{$cssclass}>\n";
 			echo "<h3>\n";
 			echo "<input type=\"checkbox\" id=\"batch{$id}\" name=\"batch[{$id}]\" value=\"{$current->inumber}\" />\n";
-			echo "<label for=\"batch{$id}\">" . ENTITY::hsc(strip_tags($current->ititle)) . "</label>\n";
+			echo "<label for=\"batch{$id}\">" . Entity::hsc(strip_tags($current->ititle)) . "</label>\n";
 			echo "</h3>\n";
 			
 			$current->ibody = strip_tags($current->ibody);
-			$current->ibody = ENTITY::hsc(ENTITY::shorten($current->ibody, 300, '...'));
+			$current->ibody = Entity::hsc(Entity::shorten($current->ibody, 300, '...'));
 			echo "<p>$current->ibody</p>\n";
 			echo "</td>\n";
 			
@@ -520,7 +520,7 @@ function listplug_table_itemlist($template, $type)
 			echo "<li><a href=\"index.php?action=itemedit&amp;itemid={$current->inumber}\">" . _LISTS_EDIT . "</a></li>\n";
 			
 			// evaluate amount of comments for the item
-			$COMMENTS = new COMMENTS($current->inumber);
+			$COMMENTS = new Comments($current->inumber);
 			$camount = $COMMENTS->amountComments();
 			if ( $camount > 0 )
 			{
@@ -566,19 +566,19 @@ function listplug_table_commentlist($template, $type)
 			echo '<li>' . date("Y-m-d@H:i",$current->ctime) . "</li>\n";
 			if ( isset($current->mname) )
 			{
-				echo '<li>' . ENTITY::hsc($current->mname) ,' ', _LIST_COMMENTS_MEMBER . "</li>\n";
+				echo '<li>' . Entity::hsc($current->mname) ,' ', _LIST_COMMENTS_MEMBER . "</li>\n";
 			}
 			else
 			{
-				echo '<li>' . ENTITY::hsc($current->cuser) . "</li>\n";
+				echo '<li>' . Entity::hsc($current->cuser) . "</li>\n";
 			}
 			if ( isset($current->cmail) && $current->cmail )
 			{
-				echo '<li>' . ENTITY::hsc($current->cmail) . "</li>\n";
+				echo '<li>' . Entity::hsc($current->cmail) . "</li>\n";
 			}
 			if ( isset($current->cemail) && $current->cemail )
 			{
-				echo '<li>' . ENTITY::hsc($current->cemail) . "</li>\n";
+				echo '<li>' . Entity::hsc($current->cemail) . "</li>\n";
 			}
 			echo "</ul>\n";
 			echo "</td>\n";
@@ -589,7 +589,7 @@ function listplug_table_commentlist($template, $type)
 			echo "<input type=\"checkbox\" id=\"batch{$id}\" name=\"batch[{$id}\" value=\"{$current->cnumber}\" />\n";
 			echo "<label for=\"batch{$id}\">\n";
 			$current->cbody = strip_tags($current->cbody);
-			$current->cbody = ENTITY::hsc(ENTITY::shorten($current->cbody, 300, '...'));
+			$current->cbody = Entity::hsc(Entity::shorten($current->cbody, 300, '...'));
 			echo $current->cbody;
 			echo '</label>';
 			echo '</td>';
@@ -598,7 +598,7 @@ function listplug_table_commentlist($template, $type)
 			echo '<td><a href="index.php?action=commentdelete&amp;commentid=' . $current->cnumber . '">' . _LISTS_DELETE . "</a></td>\n";
 			if ( $template['canAddBan'] )
 			{
-				echo '<td><a href="index.php?action=banlistnewfromitem&amp;itemid=' . $current->citem . '&amp;ip=' . ENTITY::hsc($current->cip), '" title="' . ENTITY::hsc($current->chost) . '">' . _LIST_COMMENT_BANIP . "</a></td>\n";
+				echo '<td><a href="index.php?action=banlistnewfromitem&amp;itemid=' . $current->citem . '&amp;ip=' . Entity::hsc($current->cip), '" title="' . Entity::hsc($current->chost) . '">' . _LIST_COMMENT_BANIP . "</a></td>\n";
 			}
 			break;
 	}
@@ -615,7 +615,7 @@ function listplug_table_bloglist($template, $type)
 			break;
 		case 'BODY':
 			$current = $template['current'];
-			$current->bname = ENTITY::hsc($current->bname);
+			$current->bname = Entity::hsc($current->bname);
 			
 			echo "<td title=\"blogid:{$current->bnumber} shortname:{$current->bshortname}\"><a href=\"{$current->burl}\"><img src=\"images/globe.gif\" width=\"13\" height=\"13\" alt=\"". _BLOGLIST_TT_VISIT."\" /></a>{$current->bname}</td>\n";
 			echo "<td><a href=\"index.php?action=createitem&amp;blogid={$current->bnumber}\" title=\"" . _BLOGLIST_TT_ADD ."\">" . _BLOGLIST_ADD . "</a></td>\n";
@@ -648,8 +648,8 @@ function listplug_table_shortblognames($template, $type)
 			break;
 		case 'BODY':
 			$current = $template['current'];
-			$current->bshortname = ENTITY::hsc($current->bshortname);
-			$current->bname = ENTITY::hsc($current->bname);
+			$current->bshortname = Entity::hsc($current->bshortname);
+			$current->bname = Entity::hsc($current->bname);
 			
 			echo "<td>{$current->bshortname}</td>\n";
 			echo "<td>{$current->bname}</td>\n";
@@ -668,8 +668,8 @@ function listplug_table_shortnames($template, $type)
 			break;
 		case 'BODY':
 			$current = $template['current'];
-			$current->name = ENTITY::hsc($current->name);
-			$current->description = ENTITY::hsc($current->description);
+			$current->name = Entity::hsc($current->name);
+			$current->description = Entity::hsc($current->description);
 			
 			echo "<td>{$current->name}</td>\n";
 			echo "<td>{$current->description}</td>\n";
@@ -692,8 +692,8 @@ function listplug_table_categorylist($template, $type)
 			$id = listplug_nextBatchId();
 			
 			$current = $template['current'];
-			$current->cname = ENTITY::hsc($current->cname);
-			$current->cdesc = ENTITY::hsc($current->cdesc);
+			$current->cname = Entity::hsc($current->cname);
+			$current->cdesc = Entity::hsc($current->cdesc);
 			
 			echo "<td>\n";
 			echo "<input type=\"checkbox\" id=\"batch{$id}\" name=\"batch[{$id}]\" value=\"{$current->catid}\" />\n";
@@ -720,11 +720,11 @@ function listplug_table_templatelist($template, $type)
 		case 'BODY':
 			$current = $template['current'];
 			$current->tdnumber = (integer) $current->tdnumber;
-			$current->tdname = ENTITY::hsc($current->tdname);
-			$current->tddesc = ENTITY::hsc($current->tddesc);
+			$current->tdname = Entity::hsc($current->tdname);
+			$current->tddesc = Entity::hsc($current->tddesc);
 			
 			$url = "index.php?action=templateclone&templateid={$current->tdnumber}";
-			$url = ENTITY::hsc($manager->addTicketToUrl($url));
+			$url = Entity::hsc($manager->addTicketToUrl($url));
 			
 			echo "<td>{$current->tdname}</td>\n";
 			echo "<td>{$current->tddesc}</td>\n";
@@ -755,8 +755,8 @@ function listplug_table_skinlist($template, $type)
 		case 'BODY':
 			$current = $template['current'];
 			$current->sdnumber = (integer) $current->sdnumber;
-			$current->sdname = ENTITY::hsc($current->sdname);
-			$current->sdtype = ENTITY::hsc($current->sdtype);
+			$current->sdname = Entity::hsc($current->sdname);
+			$current->sdtype = Entity::hsc($current->sdtype);
 			
 			echo "<td>\n";
 			
@@ -788,7 +788,7 @@ function listplug_table_skinlist($template, $type)
 			if ( $current->sdincpref )
 			{
 				echo '<dt>' . _LIST_SKINS_INCPREFIX . "</dt>\n";
-				echo '<dd>' . ENTITY::hsc($current->sdincpref) . "</dd>\n";
+				echo '<dd>' . Entity::hsc($current->sdincpref) . "</dd>\n";
 			}
 			echo "</dl>\n";
 			
@@ -801,18 +801,18 @@ function listplug_table_skinlist($template, $type)
 				$has_enlargement = @file_exists($DIR_SKINS . $current->sdincpref . 'preview-large.png');
 				if ( $has_enlargement )
 				{
-					echo '<a href="',$CONF['SkinsURL'], ENTITY::hsc($current->sdincpref),'preview-large.png" title="' . _LIST_SKIN_PREVIEW_VIEWLARGER . "\">\n";
-					echo '<img class="skinpreview" src="',$CONF['SkinsURL'], ENTITY::hsc($current->sdincpref),'preview.png" width="100" height="75" alt="' . $alternatve_text . "\" />\n";
+					echo '<a href="',$CONF['SkinsURL'], Entity::hsc($current->sdincpref),'preview-large.png" title="' . _LIST_SKIN_PREVIEW_VIEWLARGER . "\">\n";
+					echo '<img class="skinpreview" src="',$CONF['SkinsURL'], Entity::hsc($current->sdincpref),'preview.png" width="100" height="75" alt="' . $alternatve_text . "\" />\n";
 					echo "</a><br />\n";
 				}
 				else
 				{
-					echo '<img class="skinpreview" src="',$CONF['SkinsURL'], ENTITY::hsc($current->sdincpref),'preview.png" width="100" height="75" alt="' . $alternatve_text . "\" /><br />\n";
+					echo '<img class="skinpreview" src="',$CONF['SkinsURL'], Entity::hsc($current->sdincpref),'preview.png" width="100" height="75" alt="' . $alternatve_text . "\" /><br />\n";
 				}
 				
 				if ( @file_exists("{$DIR_SKINS}{$current->sdincpref}readme.html") )
 				{
-					$url = $CONF['SkinsURL'] . ENTITY::hsc($current->sdincpref) . 'readme.html';
+					$url = $CONF['SkinsURL'] . Entity::hsc($current->sdincpref) . 'readme.html';
 					$title = sprintf(_LIST_SKIN_README, $current->sdname);
 					echo "<a href=\"{$url}\" title=\"{$title}\">" . _LIST_SKIN_README_TXT . "</a>\n";
 				}
@@ -823,7 +823,7 @@ function listplug_table_skinlist($template, $type)
 			echo "</td>\n";
 			
 			echo "<td>\n";
-			echo '<p>' . ENTITY::hsc($current->sddesc) . "</p>\n";
+			echo '<p>' . Entity::hsc($current->sddesc) . "</p>\n";
 			
 			/* show list of defined parts */
 			$query = "SELECT stype FROM %s WHERE sdesc=%d ORDER BY stype";
@@ -851,7 +851,7 @@ function listplug_table_skinlist($template, $type)
 					}
 					$types[$i]  = "<li>\n";
 					$types[$i] .= helpHtml($article) . "\n";
-					$types[$i] .= "<a href=\"index.php?action=skinedittype&amp;skinid={$current->sdnumber}&amp;type={$type}\" tabindex=\"{$template['tabindex']}\">" . ENTITY::hsc($friendlyNames[$type]) . "</a>\n";
+					$types[$i] .= "<a href=\"index.php?action=skinedittype&amp;skinid={$current->sdnumber}&amp;type={$type}\" tabindex=\"{$template['tabindex']}\">" . Entity::hsc($friendlyNames[$type]) . "</a>\n";
 					$types[$i] .= "</li>\n";
 				}
 				echo _LIST_SKINS_DEFINED;
@@ -863,7 +863,7 @@ function listplug_table_skinlist($template, $type)
 			echo "</td>\n";
 			
 			$url = "index.php?action=skinclone&skinid={$current->sdnumber}";
-			$url = ENTITY::hsc($manager->addTicketToUrl($url));
+			$url = Entity::hsc($manager->addTicketToUrl($url));
 			echo "<td>\n";
 			echo "<a href=\"{$url}\" tabindex=\"{$template['tabindex']}\">" . _LISTS_CLONE . "</a>\n";
 			echo "</td>\n";
@@ -885,8 +885,8 @@ function listplug_table_draftlist($template, $type)
 			break;
 		case 'BODY':
 			$current = $template['current'];
-			$current->bshortname = ENTITY::hsc($current->bshortname);
-			$current->ititle = ENTITY::hsc(strip_tags($current->ititle));
+			$current->bshortname = Entity::hsc($current->bshortname);
+			$current->ititle = Entity::hsc(strip_tags($current->ititle));
 			
 			echo "<td>{$current->bshortname}</td>\n";
 			echo "<td>{$current->ititle}</td>\n";
@@ -909,9 +909,9 @@ function listplug_table_otherdraftlist($template, $type)
 			break;
 		case 'BODY':
 			$current = $template['current'];
-			$current->bshortname = ENTITY::hsc($current->bshortname);
-			$current->ititle = ENTITY::hsc(strip_tags($current->ititle));
-			$current->mname = ENTITY::hsc($current->mname);
+			$current->bshortname = Entity::hsc($current->bshortname);
+			$current->ititle = Entity::hsc(strip_tags($current->ititle));
+			$current->mname = Entity::hsc($current->mname);
 			
 			echo "<td>{$current->bshortname}</td>\n";
 			echo "<td>{$current->ititle}</td>\n";
@@ -933,8 +933,8 @@ function listplug_table_actionlist($template, $type)
 			break;
 		case 'BODY':
 			$current = $template['current'];
-			$current->timestamp = ENTITY::hsc($current->timestamp);
-			$current->message = ENTITY::hsc($current->message);
+			$current->timestamp = Entity::hsc($current->timestamp);
+			$current->message = Entity::hsc($current->message);
 			
 			echo "<td>{$current->timestamp}</td>\n";
 			echo "<td>{$current->message}</td>\n";
@@ -955,12 +955,12 @@ function listplug_table_banlist($template, $type)
 		case 'BODY':
 			$current = $template['current'];
 			$current->blogid = (integer) $current->blogid;
-			$current->iprange = ENTITY::hsc($current->iprange);
-			$current->reason = ENTITY::hsc($current->reason);
+			$current->iprange = Entity::hsc($current->iprange);
+			$current->reason = Entity::hsc($current->reason);
 			
 			echo "<td>{$current->iprange}</td>\n";
 			echo "<td>{$current->reason}</td>\n";
-			echo "<td><a href=\"index.php?action=banlistdelete&amp;blogid=\"{$current->blogid}&amp;iprange=\"ENTITY::hsc($current->iprange}\">" . _LISTS_DELETE . "</a></td>\n";
+			echo "<td><a href=\"index.php?action=banlistdelete&amp;blogid=\"{$current->blogid}&amp;iprange=\"Entity::hsc($current->iprange}\">" . _LISTS_DELETE . "</a></td>\n";
 			break;
 	}
 	return;

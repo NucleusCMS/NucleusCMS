@@ -18,7 +18,8 @@
  * @version $Id$
  */
 
-class BODYACTIONS extends BaseActions {
+class BodyActions extends BaseActions
+{
 
 	var $currentItem;
 
@@ -27,7 +28,7 @@ class BODYACTIONS extends BaseActions {
 	/**
 	 * Constructor of the BODYACTIONS
 	 */
-	function BODYACTIONS () {
+	function __construct() {
 		$this->BaseActions();	
 	}
 
@@ -115,15 +116,15 @@ class BODYACTIONS extends BaseActions {
 		$windowwidth = $width;
 		$windowheight = $height;
 
-		$vars['link']			= ENTITY::hsc($CONF['MediaURL']. $filename);
-		$vars['text']			= ENTITY::hsc($text);
+		$vars['link']			= Entity::hsc($CONF['MediaURL']. $filename);
+		$vars['text']			= Entity::hsc($text);
 		$vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
 		$vars['width'] 			= $width;
 		$vars['height']			= $height;
 		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
 
 
-		echo TEMPLATE::fill($this->template['IMAGE_CODE'],$vars);;
+		echo Template::fill($this->template['IMAGE_CODE'],$vars);;
 
 	}
 
@@ -149,11 +150,11 @@ class BODYACTIONS extends BaseActions {
 			$filename = $this->currentItem->authorid . '/' . $filename;
 		}
 
-		$vars['link']			= ENTITY::hsc($CONF['MediaURL'] . $filename);
-		$vars['text']			= ENTITY::hsc($text);
+		$vars['link']			= Entity::hsc($CONF['MediaURL'] . $filename);
+		$vars['text']			= Entity::hsc($text);
 		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
 
-		echo TEMPLATE::fill($this->template['MEDIA_CODE'],$vars);;
+		echo Template::fill($this->template['MEDIA_CODE'],$vars);;
 	}
 
 	/**
@@ -181,17 +182,17 @@ class BODYACTIONS extends BaseActions {
 		$windowwidth = $width;
 		$windowheight = $height;
 
-		$vars['rawpopuplink'] 	= $CONF['Self'] . "?imagepopup=" . ENTITY::hsc($filename) . "&amp;width=$width&amp;height=$height&amp;imagetext=" . urlencode(ENTITY::hsc($text));
+		$vars['rawpopuplink'] 	= $CONF['Self'] . "?imagepopup=" . Entity::hsc($filename) . "&amp;width=$width&amp;height=$height&amp;imagetext=" . urlencode(Entity::hsc($text));
 		$vars['popupcode'] 		= "window.open(this.href,'imagepopup','status=no,toolbar=no,scrollbars=no,resizable=yes,width=$windowwidth,height=$windowheight');return false;";
-		$vars['popuptext'] 		= ENTITY::hsc($text);
+		$vars['popuptext'] 		= Entity::hsc($text);
 		$vars['popuplink'] 		= '<a href="' . $vars['rawpopuplink']. '" onclick="'. $vars['popupcode'].'" >' . $vars['popuptext'] . '</a>';
 		$vars['width'] 			= $width;
 		$vars['height']			= $height;
 		$vars['text']			= $text;
-		$vars['link']			= ENTITY::hsc($CONF['MediaURL'] . $filename);
+		$vars['link']			= Entity::hsc($CONF['MediaURL'] . $filename);
 		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['popuptext'] . '</a>';
 
-		echo TEMPLATE::fill($this->template['POPUP_CODE'],$vars);
+		echo Template::fill($this->template['POPUP_CODE'],$vars);
 	}
 	
 	// function to enable if-else-elseif-elseifnot-ifnot-endif to item template fields

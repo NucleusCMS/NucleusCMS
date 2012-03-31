@@ -23,8 +23,8 @@ if ( !function_exists('requestVar') )
 }
 require_once dirname(__FILE__) . '/ACTIONS.php';
 
-class SKIN {
-	
+class Skin
+{
 	// after creating a SKIN object, evaluates to true when the skin exists
 	var $isValid;
 	
@@ -264,11 +264,11 @@ class SKIN {
 		$manager->notify('PreSkinParse',array('skin' => &$this, 'type' => $type, 'contents' => &$contents));
 		
 		// set IncludeMode properties of parser
-		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
-		PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());
+		Parser::setProperty('IncludeMode',$this->getIncludeMode());
+		Parser::setProperty('IncludePrefix',$this->getIncludePrefix());
 		
-		$handler = new ACTIONS($type, $this);
-		$parser = new PARSER($actions, $handler);
+		$handler = new Actions($type, $this);
+		$parser = new Parser($actions, $handler);
 		$handler->setParser($parser);
 		$handler->setSkin($this);
 		$parser->parse($contents);

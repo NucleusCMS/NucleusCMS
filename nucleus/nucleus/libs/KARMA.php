@@ -16,18 +16,18 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
-class KARMA {
-
+class Karma
+{
 	// id of item about which this object contains information
 	var $itemid;
-
+	
 	// indicates if the karma vote info has already been intialized from the DB
 	var $inforead;
-
+	
 	// amount of positive/negative votes
 	var $karmapos;
 	var $karmaneg;
-
+	
 	function KARMA($itemid, $initpos = 0, $initneg = 0, $initread = 0) {
 		// itemid
 		$this->itemid = intval($itemid);

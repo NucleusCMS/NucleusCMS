@@ -20,8 +20,8 @@
  * @version $Id$
  */
 
-class BaseActions {
-
+class BaseActions
+{
 	// depth level for includes (max. level is 3)
 	var $level;
 
@@ -123,8 +123,8 @@ class BaseActions {
 			)
 			return $filename;
 
-		$filename = PARSER::getProperty('IncludePrefix') . $filename;
-		if (PARSER::getProperty('IncludeMode') == 'skindir') {
+		$filename = Parser::getProperty('IncludePrefix') . $filename;
+		if (Parser::getProperty('IncludeMode') == 'skindir') {
 			global $DIR_SKINS;
 			return $DIR_SKINS . $filename;
 		} else {
@@ -140,14 +140,14 @@ class BaseActions {
 	function parse_skinfile($filename) {
 		global $CONF;
 
-		echo $CONF['SkinsURL'] . PARSER::getProperty('IncludePrefix') . $filename;
+		echo $CONF['SkinsURL'] . Parser::getProperty('IncludePrefix') . $filename;
 	}
 
 	/**
 	 * Sets a property for the parser
 	 */
 	function parse_set($property, $value) {
-		PARSER::setProperty($property, $value);
+		Parser::setProperty($property, $value);
 	}
 
 	/**
@@ -221,7 +221,7 @@ class BaseActions {
 	{
 		if ( $this->aHighlight )
 		{
-			$data = ENTITY::highlight($data, $this->aHighlight, $this->template['SEARCH_HIGHLIGHT']);
+			$data = Entity::highlight($data, $this->aHighlight, $this->template['SEARCH_HIGHLIGHT']);
 		}
 		return $data;
 	}

@@ -23,19 +23,20 @@ define('READ_ONLY_MEDIA_FOLDER', '(Read Only)');
 /**
   * Represents the media objects for a certain member
   */
-class MEDIA {
-
+class Media
+{
 	/**
-	  * Gets the list of collections available to the currently logged
-	  * in member
-	  *
-	  * @returns array of dirname => display name
-	  */
-	function getCollectionList($exceptReadOnly = false) {
+	 * Gets the list of collections available to the currently logged
+	 * in member
+	 *
+	 * @returns array of dirname => display name
+	 */
+	public function getCollectionList($exceptReadOnly = false)
+	{
 		global $member, $DIR_MEDIA;
-
+		
 		$collections = array();
-
+		
 		// add private directory for member
 		$collections[$member->getID()] = PRIVATE_COLLECTION;
 
@@ -63,7 +64,7 @@ class MEDIA {
 	}
 
 	/**
-	  * Returns an array of MEDIAOBJECT objects for a certain collection
+	  * Returns an array of MediaObject objects for a certain collection
 	  *
 	  * @param $collection
 	  *		name of the collection
@@ -85,8 +86,8 @@ class MEDIA {
 		$dirhandle = opendir($mediadir);
 		while ($filename = readdir($dirhandle)) {
 			// only add files that match the filter
-			if (!@is_dir($filename) && MEDIA::checkFilter($filename, $filter))
-				array_push($filelist, new MEDIAOBJECT($collection, $filename, filemtime($mediadir . $filename)));
+			if (!@is_dir($filename) && Media::checkFilter($filename, $filter))
+				array_push($filelist, new MediaObject($collection, $filename, filemtime($mediadir . $filename)));
 		}
 		closedir($dirhandle);
 
@@ -114,7 +115,7 @@ class MEDIA {
 		if ($collectionName === (string)$member->getID())
 			return true;
 			
-		$collections = MEDIA::getCollectionList($exceptReadOnly);
+		$collections = Media::getCollectionList($exceptReadOnly);
 		$dirname = $collections[$collectionName];
 		if ($dirname == NULL || $dirname === PRIVATE_COLLECTION)
 			return false;  
@@ -153,7 +154,7 @@ class MEDIA {
 
 		// don't allow uploads to unknown or forbidden collections
 		$exceptReadOnly = true;
-		if (!MEDIA::isValidCollection($collection,$exceptReadOnly))
+		if (!Media::isValidCollection($collection,$exceptReadOnly))
 			return _ERROR_DISALLOWED;
 
 		// check dir permissions (try to create dir if it does not exist)
@@ -269,28 +270,27 @@ class MEDIA {
   *  - collection: collection to which the file belongs (can also be a owner ID, for private collections)
   *  - private: true if the media belongs to a private member collection
   */
-class MEDIAOBJECT {
-
-	var $private;
-	var $collection;
-	var $filename;
-	var $timestamp;
-
-	function MEDIAOBJECT($collection, $filename, $timestamp) {
+class MediaObject
+{
+	public $private;
+	public $collection;
+	public $filename;
+	public $timestamp;
+	
+	public function __construct($collection, $filename, $timestamp)
+	{
 		$this->private = is_numeric($collection);
 		$this->collection = $collection;
 		$this->filename = $filename;
 		$this->timestamp = $timestamp;
+		return;
 	}
-
 }
 
 /**
-  * User-defined sort method to sort an array of MEDIAOBJECTS
+  * User-defined sort method to sort an array of MediaObjects
   */
 function sort_media($a, $b) {
 	if ($a->timestamp == $b->timestamp) return 0;
 	return ($a->timestamp > $b->timestamp) ? -1 : 1;
 }
-
-?>

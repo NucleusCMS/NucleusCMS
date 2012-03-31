@@ -83,7 +83,7 @@
 
 		$blogid = getBlogIDFromItemID($itemid);
 
-		$blog = new BLOG($blogid);
+		$blog = new Blog($blogid);
 		$catid = $blog->getCategoryIdFromName($category);
 
 		if ($old['draft'] && $publish) {
@@ -272,12 +272,12 @@
 		$amount = intval($amount);
 
 		// 1. login
-		$mem = new MEMBER();
+		$mem = new Member();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
 		// 2. check if allowed
-		if (!BLOG::existsID($blogid))
+		if (!Blog::existsID($blogid))
 			return _error(2,"No such blog ($blogid)");
 		if (!$mem->teamRights($blogid))
 			return _error(3,"Not a team member");
@@ -288,7 +288,7 @@
 		// 3. create and return list of recent items
 		// Struct returned has dateCreated, userid, blogid and content
 
-		$blog = new BLOG($blogid);
+		$blog = new Blog($blogid);
 
 		$structarray = array();		// the array in which the structs will be stored
 
@@ -330,7 +330,7 @@
 		global $manager;
 
 		// 1. login
-		$mem = new MEMBER();
+		$mem = new Member();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
@@ -345,7 +345,7 @@
 		// Structure returned has dateCreated, userid, blogid and content
 
 		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
-		$blog = new BLOG($blogid);
+		$blog = new Blog($blogid);
 
 		// get category
 		$item['category'] = $blog->getCategoryName($item['catid']);

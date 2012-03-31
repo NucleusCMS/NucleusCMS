@@ -106,50 +106,50 @@ function media_select() {
 		$currentCollection = $member->getID();
 
 	// avoid directory travarsal and accessing invalid directory
-	if (!MEDIA::isValidCollection($currentCollection)) media_doError(_ERROR_DISALLOWED);
+	if (!Media::isValidCollection($currentCollection)) media_doError(_ERROR_DISALLOWED);
 
 	media_head();
 
 	// get collection list
-	$collections = MEDIA::getCollectionList();
+	$collections = Media::getCollectionList();
 
 	if (sizeof($collections) > 1) {
 	?>
 		<form method="post" action="media.php"><div>
-			<label for="media_collection"><?php echo ENTITY::hsc(_MEDIA_COLLECTION_LABEL)?></label>
+			<label for="media_collection"><?php echo Entity::hsc(_MEDIA_COLLECTION_LABEL)?></label>
 			<select name="collection" id="media_collection">
 				<?php					foreach ($collections as $dirname => $description) {
-						echo '<option value="',ENTITY::hsc($dirname),'"';
+						echo '<option value="',Entity::hsc($dirname),'"';
 						if ($dirname == $currentCollection) {
 							echo ' selected="selected"';
 						}
-						echo '>',ENTITY::hsc($description),'</option>';
+						echo '>',Entity::hsc($description),'</option>';
 					}
 				?>
 			</select>
-			<input type="submit" name="action" value="<?php echo ENTITY::hsc(_MEDIA_COLLECTION_SELECT) ?>" title="<?php echo ENTITY::hsc(_MEDIA_COLLECTION_TT)?>" />
-			<input type="submit" name="action" value="<?php echo ENTITY::hsc(_MEDIA_UPLOAD_TO) ?>" title="<?php echo ENTITY::hsc(_MEDIA_UPLOADLINK) ?>" />
+			<input type="submit" name="action" value="<?php echo Entity::hsc(_MEDIA_COLLECTION_SELECT) ?>" title="<?php echo Entity::hsc(_MEDIA_COLLECTION_TT)?>" />
+			<input type="submit" name="action" value="<?php echo Entity::hsc(_MEDIA_UPLOAD_TO) ?>" title="<?php echo Entity::hsc(_MEDIA_UPLOADLINK) ?>" />
 			<?php $manager->addTicketHidden() ?>
 		</div></form>
 	<?php	} else {
 	?>
 		<form method="post" action="media.php" style="float:right"><div>
-			<input type="hidden" name="collection" value="<?php echo ENTITY::hsc($currentCollection)?>" />
-			<input type="submit" name="action" value="<?php echo ENTITY::hsc(_MEDIA_UPLOAD_NEW) ?>" title="<?php echo ENTITY::hsc(_MEDIA_UPLOADLINK) ?>" />
+			<input type="hidden" name="collection" value="<?php echo Entity::hsc($currentCollection)?>" />
+			<input type="submit" name="action" value="<?php echo Entity::hsc(_MEDIA_UPLOAD_NEW) ?>" title="<?php echo Entity::hsc(_MEDIA_UPLOADLINK) ?>" />
 			<?php $manager->addTicketHidden() ?>
 		</div></form>
 	<?php	} // if sizeof
 
 	$filter = requestVar('filter');
 	$offset = intRequestVar('offset');
-	$arr = MEDIA::getMediaListByCollection($currentCollection, $filter);
+	$arr = Media::getMediaListByCollection($currentCollection, $filter);
 
 	?>
 		<form method="post" action="media.php"><div>
-			<label for="media_filter"><?php echo ENTITY::hsc(_MEDIA_FILTER_LABEL)?></label>
-			<input id="media_filter" type="text" name="filter" value="<?php echo ENTITY::hsc($filter)?>" />
-			<input type="submit" name="action" value="<?php echo ENTITY::hsc(_MEDIA_FILTER_APPLY) ?>" />
-			<input type="hidden" name="collection" value="<?php echo ENTITY::hsc($currentCollection)?>" />
+			<label for="media_filter"><?php echo Entity::hsc(_MEDIA_FILTER_LABEL)?></label>
+			<input id="media_filter" type="text" name="filter" value="<?php echo Entity::hsc($filter)?>" />
+			<input type="submit" name="action" value="<?php echo Entity::hsc(_MEDIA_FILTER_APPLY) ?>" />
+			<input type="hidden" name="collection" value="<?php echo Entity::hsc($currentCollection)?>" />
 			<input type="hidden" name="offset" value="<?php echo intval($offset)?>" />
 		</div></form>
 
@@ -157,7 +157,7 @@ function media_select() {
 
 	?>
 		<table width="100%">
-		<caption><?php echo _MEDIA_COLLECTION_LABEL . ENTITY::hsc($collections[$currentCollection])?></caption>
+		<caption><?php echo _MEDIA_COLLECTION_LABEL . Entity::hsc($collections[$currentCollection])?></caption>
 		<tr>
 		 <th><?php echo _MEDIA_MODIFIED?></th><th><?php echo _MEDIA_FILENAME?></th><th><?php echo _MEDIA_DIMENSIONS?></th>
 		</tr>
@@ -201,22 +201,22 @@ function media_select() {
 
 			if ($filetype != 0) {
 				// image (gif/jpg/png/swf)
-				echo "<td><a href=\"media.php\" onclick=\"chooseImage('", ENTITY::hsc($jsCurrentCollection), "','", ENTITY::hsc($jsFileName), "',"
-							   . "'", ENTITY::hsc($width), "','" , ENTITY::hsc($height), "'"
-							   . ")\" title=\"" . ENTITY::hsc($obj->filename). "\">"
-							   . ENTITY::hsc(ENTITY::shorten($obj->filename,25,'...'))
+				echo "<td><a href=\"media.php\" onclick=\"chooseImage('", Entity::hsc($jsCurrentCollection), "','", Entity::hsc($jsFileName), "',"
+							   . "'", Entity::hsc($width), "','" , Entity::hsc($height), "'"
+							   . ")\" title=\"" . Entity::hsc($obj->filename). "\">"
+							   . Entity::hsc(Entity::shorten($obj->filename,25,'...'))
 							   ."</a>";
-				echo ' (<a href="', ENTITY::hsc($CONF['MediaURL'] . $currentCollection . '/' . $obj->filename), '" onclick="window.open(this.href); return false;" title="',ENTITY::hsc(_MEDIA_VIEW_TT),'">',_MEDIA_VIEW,'</a>)';
+				echo ' (<a href="', Entity::hsc($CONF['MediaURL'] . $currentCollection . '/' . $obj->filename), '" onclick="window.open(this.href); return false;" title="',Entity::hsc(_MEDIA_VIEW_TT),'">',_MEDIA_VIEW,'</a>)';
 				echo "</td>";
 			} else {
 				// no image (e.g. mpg)
-				echo "<td><a href='media.php' onclick=\"chooseOther('" , ENTITY::hsc($jsCurrentCollection), "','", ENTITY::hsc($jsFileName), "'"
-							   . ")\" title=\"" . ENTITY::hsc($obj->filename). "\">"
-							   . ENTITY::hsc(ENTITY::shorten($obj->filename,30,'...'))
+				echo "<td><a href='media.php' onclick=\"chooseOther('" , Entity::hsc($jsCurrentCollection), "','", Entity::hsc($jsFileName), "'"
+							   . ")\" title=\"" . Entity::hsc($obj->filename). "\">"
+							   . Entity::hsc(Entity::shorten($obj->filename,30,'...'))
 							   ."</a></td>";
 
 			}
-			echo '<td>' , ENTITY::hsc($width) , 'x' , ENTITY::hsc($height) , '</td>';
+			echo '<td>' , Entity::hsc($width) , 'x' , Entity::hsc($height) , '</td>';
 			echo '</tr>';
 		}
 	} // if (sizeof($arr)>0)
@@ -246,7 +246,7 @@ function media_choose() {
 
 	$currentCollection = requestVar('collection');
 
-	$collections = MEDIA::getCollectionList();
+	$collections = Media::getCollectionList();
 
 	media_head();
 	?>
@@ -267,17 +267,17 @@ function media_choose() {
 		<br /><br /><label for="upload_collection">Collection:</label>
 		<br /><select name="collection" id="upload_collection">
 			<?php				foreach ($collections as $dirname => $description) {
-					echo '<option value="',ENTITY::hsc($dirname),'"';
+					echo '<option value="',Entity::hsc($dirname),'"';
 					if ($dirname == $currentCollection) {
 						echo ' selected="selected"';
 					}
-					echo '>',ENTITY::hsc($description),'</option>';
+					echo '>',Entity::hsc($description),'</option>';
 				}
 			?>
 		</select>
 	<?php		} else {
 	?>
-		<input name="collection" type="hidden" value="<?php echo ENTITY::hsc(requestVar('collection'))?>" />
+		<input name="collection" type="hidden" value="<?php echo Entity::hsc(requestVar('collection'))?>" />
 	<?php		} // if sizeof
 	?>
 	<br /><br />
@@ -357,7 +357,7 @@ function media_upload() {
 	}
 	
 	$collection = requestVar('collection');
-	$res = MEDIA::addMediaObject($collection, $filetempname, $filename);
+	$res = Media::addMediaObject($collection, $filetempname, $filename);
 
 	if ($res != '')
 		media_doError($res);
@@ -374,7 +374,7 @@ function media_loginAndPassThrough() {
 		<form method="post" action="media.php">
 		<div>
 			<input name="action" value="login" type="hidden" />
-			<input name="collection" value="<?php echo ENTITY::hsc(requestVar('collection'))?>" type="hidden" />
+			<input name="collection" value="<?php echo Entity::hsc(requestVar('collection'))?>" type="hidden" />
 			<?php echo _LOGINFORM_NAME?>: <input name="login" />
 			<br /><?php echo _LOGINFORM_PWD?>: <input name="password" type="password" />
 			<br /><input type="submit" value="<?php echo _LOGIN?>" />

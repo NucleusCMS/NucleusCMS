@@ -278,9 +278,9 @@ function bc_doConversion() {
 	if ($createnew == 1) {
 		// choose unique name
 		$shortname = 'blogger';
-		if (BLOG::exists($shortname)) {
+		if (Blog::exists($shortname)) {
 			$idx = 1;
-			while (BLOG::exists($shortname . $idx))
+			while (Blog::exists($shortname . $idx))
 				$idx++;
 			$shortname = $shortname . $idx;
 		}
@@ -290,7 +290,7 @@ function bc_doConversion() {
 	}
 
 	// add authors to blog team
-	$b = new BLOG($nucleus_blogid);
+	$b = new Blog($nucleus_blogid);
 	global $catid;
 	$catid = $b->getDefaultCategory();
 
@@ -327,7 +327,7 @@ function bc_convertOneItem($row, $memberid, $nucleus_blogid) {
 	$timestamp = date("Y-m-d H:i:s",bc_transformDate($row['eventtime']));
 
 	echo "<pre>";
-	echo "<b>entry</b>:" .  ENTITY::hsc(substr($row['event'],0,20)) . "...(time: " . $timestamp . ") \n";
+	echo "<b>entry</b>:" .  Entity::hsc(substr($row['event'],0,20)) . "...(time: " . $timestamp . ") \n";
 	echo "<b>author</b>: " . $row['author'] ;
 	echo " (nucleus-id: " . $nucl_id . ")";
 	echo "</pre>";

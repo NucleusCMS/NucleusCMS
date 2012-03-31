@@ -249,8 +249,8 @@
 	
 		global $pluginUrl;
 		
-		$result  = '<a href="' . ENTITY::hsc($pluginUrl) . '" title="Go back to &laquo;skins&raquo;">';
-		$result .= '<img src="' . ENTITY::hsc($pluginUrl . 'home.gif') . '" alt="" /> skins</a> / ';
+		$result  = '<a href="' . Entity::hsc($pluginUrl) . '" title="Go back to &laquo;skins&raquo;">';
+		$result .= '<img src="' . Entity::hsc($pluginUrl . 'home.gif') . '" alt="" /> skins</a> / ';
 
 		$parts = i18n::explode('/', $relative);
 		$part = '';
@@ -259,10 +259,10 @@
 			if ($v != '') {
 				$part .= $v . '/';
 				
-				$result .= '<a href="' . ENTITY::hsc($pluginUrl . '?dir=' . rawurlencode($part)) . '" ';
-				$result .= 'title="Go back to &laquo;' . ENTITY::hsc($v) . '&raquo;">';
-				$result .= '<img src="' . ENTITY::hsc($pluginUrl . 'dir.gif') . '" alt="" /> ';
-				$result .= ENTITY::hsc($v) . '</a> / ';
+				$result .= '<a href="' . Entity::hsc($pluginUrl . '?dir=' . rawurlencode($part)) . '" ';
+				$result .= 'title="Go back to &laquo;' . Entity::hsc($v) . '&raquo;">';
+				$result .= '<img src="' . Entity::hsc($pluginUrl . 'dir.gif') . '" alt="" /> ';
+				$result .= Entity::hsc($v) . '</a> / ';
 			}
 		}
 		
@@ -390,14 +390,14 @@
 			
 			if (is_readable ($directory . $name)) 
 			{
-				echo '<a href="' . ENTITY::hsc($pluginUrl . '?dir=' . rawurlencode($dir)) . '">';
-				echo '<img src="' . ENTITY::hsc($pluginUrl . 'dir.gif') . '" alt="folder" /> ';
-				echo ENTITY::hsc($name).'</a>';			
+				echo '<a href="' . Entity::hsc($pluginUrl . '?dir=' . rawurlencode($dir)) . '">';
+				echo '<img src="' . Entity::hsc($pluginUrl . 'dir.gif') . '" alt="folder" /> ';
+				echo Entity::hsc($name).'</a>';			
 			}
 			else
 			{
-				echo '<img src="' . ENTITY::hsc($pluginUrl . 'dir.gif') . '" alt="folder" /> ';
-				echo ENTITY::hsc($name);			
+				echo '<img src="' . Entity::hsc($pluginUrl . 'dir.gif') . '" alt="folder" /> ';
+				echo Entity::hsc($name);			
 			}
 						
 			echo '</td>';
@@ -410,13 +410,13 @@
 			
 			
 			if (is_writable($directory . $name)) {
-				echo '<td><a href="' . ENTITY::hsc($renUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . ENTITY::hsc($name) . '&raquo;">' . _SKINFILES_RENAME . '</a></td>';
+				echo '<td><a href="' . Entity::hsc($renUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . Entity::hsc($name) . '&raquo;">' . _SKINFILES_RENAME . '</a></td>';
 			} else {
 				echo '<td>&nbsp;</td>';
 			}
 			
 			if (is_writable($directory . $name) && sfDirectoryIsEmpty($directory . $name)) {
-				echo '<td><a href="' . ENTITY::hsc($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . ENTITY::hsc($name) . '&raquo;">' . _SKINFILES_DELETE . '</a></td>';
+				echo '<td><a href="' . Entity::hsc($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . Entity::hsc($name) . '&raquo;">' . _SKINFILES_DELETE . '</a></td>';
 			} else {
 				echo '<td>&nbsp;</td>';
 			}
@@ -440,14 +440,14 @@
 			
 			if (is_readable ($directory . $name) && sfAllowViewing($name)) 
 			{
-				echo '<a href="' . ENTITY::hsc($viewUrl) . '">';
-				echo '<img src="' . ENTITY::hsc(sfIcon($name)) . '" alt="" /> ';
-				echo ENTITY::hsc($name).'</a>';
+				echo '<a href="' . Entity::hsc($viewUrl) . '">';
+				echo '<img src="' . Entity::hsc(sfIcon($name)) . '" alt="" /> ';
+				echo Entity::hsc($name).'</a>';
 			}
 			else
 			{
-				echo '<img src="' . ENTITY::hsc(sfIcon($name)) . '" alt="" /> ';
-				echo ENTITY::hsc($name);
+				echo '<img src="' . Entity::hsc(sfIcon($name)) . '" alt="" /> ';
+				echo Entity::hsc($name);
 			}
 
 			echo '</td><td>';
@@ -457,7 +457,7 @@
 			echo '</td><td>';
 				
 			if (is_writable($directory . $name)) {
-				echo '<a href="' . ENTITY::hsc($renUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . ENTITY::hsc($name) . '&raquo;">' . _SKINFILES_RENAME . '</a>';
+				echo '<a href="' . Entity::hsc($renUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . Entity::hsc($name) . '&raquo;">' . _SKINFILES_RENAME . '</a>';
 			} else {
 				echo '&nbsp;';
 			}
@@ -465,7 +465,7 @@
 			echo '</td><td>';
 
 			if (is_writable($directory . $name)) {
-				echo '<a href="' . ENTITY::hsc($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . ENTITY::hsc($name) . '&raquo;">' . _SKINFILES_DELETE . '</a>';
+				echo '<a href="' . Entity::hsc($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . Entity::hsc($name) . '&raquo;">' . _SKINFILES_DELETE . '</a>';
 			} else {
 				echo '&nbsp;';
 			}
@@ -473,14 +473,14 @@
 			echo '</td><td>';
 			
 			if (is_writable($directory . $name) && sfAllowEditing($name))
-				echo '<a href="'. ENTITY::hsc($editUrl) . '" title="' . _SKINFILES_EDIT . ' &laquo;' . ENTITY::hsc($name) . '&raquo;">' . _SKINFILES_EDIT . '</a>';
+				echo '<a href="'. Entity::hsc($editUrl) . '" title="' . _SKINFILES_EDIT . ' &laquo;' . Entity::hsc($name) . '&raquo;">' . _SKINFILES_EDIT . '</a>';
 			else
 				echo '&nbsp;';
 
 			echo '</td><td>';
 			
 			if (is_readable ($directory . $name))
-				echo '<a href="' . ENTITY::hsc($dlUrl) . '" title="' . _SKINFILES_DOWNLOAD . ' &laquo;' . ENTITY::hsc($name) . '&raquo;">' . _SKINFILES_DOWNLOAD . '</a>';
+				echo '<a href="' . Entity::hsc($dlUrl) . '" title="' . _SKINFILES_DOWNLOAD . ' &laquo;' . Entity::hsc($name) . '&raquo;">' . _SKINFILES_DOWNLOAD . '</a>';
 			else
 				echo '&nbsp;';
 				
@@ -498,20 +498,20 @@
 			if (is_writable($directory)) {
 				echo '<div class="dialogbox">';
 				echo '<h4 class="light">' . _SKINFILES_CREATE_NEW_FILE . '</h4><div>';
-				echo '<form method="post" action="' . ENTITY::hsc($pluginUrl) . '">';
+				echo '<form method="post" action="' . Entity::hsc($pluginUrl) . '">';
 				$manager->addTicketHidden();
 				echo '<input type="hidden" name="action" value="createfile" />';
-				echo '<input type="hidden" name="dir" value="' . ENTITY::hsc($relative) . '" />';
+				echo '<input type="hidden" name="dir" value="' . Entity::hsc($relative) . '" />';
 				echo '<input type="text" name="name" size="40" value="untitled.txt" />';
 				echo '<p class="buttons"><input type="submit" value="' . _SKINFILES_CREATE_FILE . '" /></p></form>';
 				echo '</div></div>';
 	
 				echo '<div class="dialogbox">';
 				echo '<h4 class="light">' . _SKINFILES_UPLOAD_NEW_FILE . '</h4><div>';
-				echo '<form method="post" enctype="multipart/form-data" action="' . ENTITY::hsc($pluginUrl) . '">';
+				echo '<form method="post" enctype="multipart/form-data" action="' . Entity::hsc($pluginUrl) . '">';
 				$manager->addTicketHidden();
 				echo '<input type="hidden" name="action" value="uploadfile" />';
-				echo '<input type="hidden" name="dir" value="' . ENTITY::hsc($relative) . '" />';
+				echo '<input type="hidden" name="dir" value="' . Entity::hsc($relative) . '" />';
 				echo '<input type="hidden" name="MAX_FILE_SIZE" value="' . $CONF['MaxUploadSize'] . '" />';
 				echo '<input type="file" name="name" size="40" />';
 				echo '<p class="buttons"><input type="submit" value="' . _SKINFILES_UPLOAD . '" /></p></form>';
@@ -521,10 +521,10 @@
 			if (count($files)) {
 				echo '<div class="dialogbox">';
 				echo '<h4 class="light">' . _SKINFILES_DEL_ALL_FILES . '</h4><div>';
-				echo '<form method="post" action="' . ENTITY::hsc($pluginUrl) . '">';
+				echo '<form method="post" action="' . Entity::hsc($pluginUrl) . '">';
 				$manager->addTicketHidden();
 				echo '<input type="hidden" name="action" value="emptydir" />';
-				echo '<input type="hidden" name="dir" value="' . ENTITY::hsc($relative) . '" />';
+				echo '<input type="hidden" name="dir" value="' . Entity::hsc($relative) . '" />';
 				echo _SKINFILES_DEL_ALL_FILES_MSG;
 				echo '<p class="buttons"><input type="submit" value="' . _SKINFILES_DELETE_ALL . '" tabindex="140" onclick="return checkSubmit();" /></p>';
 				echo '</form>';
@@ -535,10 +535,10 @@
 		if (is_writable($directory)) {
 			echo '<div class="dialogbox">';
 			echo '<h4 class="light">' . _SKINFILES_CREATE_NEW_DIR . '</h4><div>';
-			echo '<form method="post" action="' . ENTITY::hsc($pluginUrl) . '">';
+			echo '<form method="post" action="' . Entity::hsc($pluginUrl) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="createdir" />';
-			echo '<input type="hidden" name="dir" value="' . ENTITY::hsc($relative) . '" />';
+			echo '<input type="hidden" name="dir" value="' . Entity::hsc($relative) . '" />';
 			echo '<input type="text" name="name" value="untitled" tabindex="90" size="40" />';
 			echo '<p class="buttons"><input type="submit" value="' . _SKINFILES_CREATE . '" tabindex="140" onclick="return checkSubmit();" /></p>';
 			echo '</form>';
@@ -566,17 +566,17 @@
 			$editUrl  = $manager->addTicketToUrl($pluginUrl . '?action=rendir&dir=' . rawurlencode($relative . $file));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . ENTITY::hsc($editUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . $file . '&raquo;">';
+			echo '<a href="' . Entity::hsc($editUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . $file . '&raquo;">';
 			echo '<img src="' . $pluginUrl . 'dir.gif' . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
-			echo '<form method="post" action="' . ENTITY::hsc($pluginUrl) . '">';
+			echo '<form method="post" action="' . Entity::hsc($pluginUrl) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="rendir_process" />';
-			echo '<input type="hidden" name="dir" value="' . ENTITY::hsc($relative . $file) . '" />';
+			echo '<input type="hidden" name="dir" value="' . Entity::hsc($relative . $file) . '" />';
 
-			echo '<h4>' . _SKINFILES_RENAME_DIR_MSG . ' &laquo;' . ENTITY::hsc($file) . '&raquo; ' . _SKINFILES_RENAME_DIR_MSG2 . '</h4><div>';
-			echo '<p><input type="text" name="name" size="40" value="' . ENTITY::hsc($preset != '' ? $preset : $file) . '" /></p>';
+			echo '<h4>' . _SKINFILES_RENAME_DIR_MSG . ' &laquo;' . Entity::hsc($file) . '&raquo; ' . _SKINFILES_RENAME_DIR_MSG2 . '</h4><div>';
+			echo '<p><input type="text" name="name" size="40" value="' . Entity::hsc($preset != '' ? $preset : $file) . '" /></p>';
 			echo '<p class="buttons">';
 			echo '<input type="hidden" name="sure" value="yes" />';
 			echo '<input type="submit" value="' . _SKINFILES_RENAME . '" />';
@@ -586,7 +586,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_DIR_DOES_NOT_EXIST1 . " &laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_DIR_DOES_NOT_EXIST2;
+			echo "<p class='error'>" . _SKINFILES_ERR_DIR_DOES_NOT_EXIST1 . " &laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_DIR_DOES_NOT_EXIST2;
 			echo _SKINFILES_ERR_DIR_DOES_NOT_EXIST3 . "</p>";
 		}
 	}
@@ -607,28 +607,28 @@
 				$name = requestVar('name');
 				
 				if ($name == '') {
-					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR1 . "&laquo;" . ENTITY::hsc($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR1 . "&laquo;" . Entity::hsc($file) . "&raquo; ";
 					echo _SKINFILES_ERR_COULD_NOT_RENAME_DIR2 . "</p>";
 					_skinfiles_rendir($name);
 					return;
 				}
 				
 				if (sfIllegalFilename($name)) {
-					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR3 . "&laquo;" . ENTITY::hsc($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR3 . "&laquo;" . Entity::hsc($file) . "&raquo; ";
 					echo _SKINFILES_ERR_COULD_NOT_RENAME_DIR4 . "</p>";
 					_skinfiles_rendir($name);
 					return;
 				} 
 				
 				if ($name == $file) {
-					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR5 . "&laquo;" . ENTITY::hsc($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR5 . "&laquo;" . Entity::hsc($file) . "&raquo; ";
 					echo _SKINFILES_ERR_COULD_NOT_RENAME_DIR6 . _SKINFILES_ERR_COULD_NOT_RENAME_DIR7 . "</p>";
 					_skinfiles_rendir($name);
 					return;
 				}
 				
 				if (file_exists($directory . $name)) {
-					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR8 . "&laquo;" . ENTITY::hsc($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR8 . "&laquo;" . Entity::hsc($file) . "&raquo; ";
 					echo _SKINFILES_ERR_COULD_NOT_RENAME_DIR9 . _SKINFILES_ERR_COULD_NOT_RENAME_DIR10 . "</p>";
 					_skinfiles_rendir($name);
 					return;
@@ -636,18 +636,18 @@
 				
 				if (!@rename($directory . $file, $directory . $name)) 
 				{
-					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR11 . "&laquo;" . ENTITY::hsc($file) . "&raquo;</p>";
+					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR11 . "&laquo;" . Entity::hsc($file) . "&raquo;</p>";
 					_skinfiles_rendir($name);
 					return;
 				}
 	
-				echo "<p class='message'>" . _SKINFILES_RENAMED_DIR1 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_RENAMED_DIR2;
-				echo _SKINFILES_RENAMED_DIR3 . "&laquo;" . ENTITY::hsc($name) . "&raquo;" . _SKINFILES_RENAMED_DIR4 . "</p>";
+				echo "<p class='message'>" . _SKINFILES_RENAMED_DIR1 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_RENAMED_DIR2;
+				echo _SKINFILES_RENAMED_DIR3 . "&laquo;" . Entity::hsc($name) . "&raquo;" . _SKINFILES_RENAMED_DIR4 . "</p>";
 				sfShowDirectory($directory);
 			} 		
 			else
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_DIR_DOES_NOT_EXIST1 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_DIR_DOES_NOT_EXIST2;
+				echo "<p class='error'>" . _SKINFILES_ERR_DIR_DOES_NOT_EXIST1 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_DIR_DOES_NOT_EXIST2;
 				echo _SKINFILES_ERR_DIR_DOES_NOT_EXIST3 . "</p>";
 			}
 		}
@@ -679,14 +679,14 @@
 			}
 			
 			if (sfIllegalFilename($name)) {
-				echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR2 . "&laquo;" . ENTITY::hsc($name) . "&raquo; ";
+				echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR2 . "&laquo;" . Entity::hsc($name) . "&raquo; ";
 				echo _SKINFILES_ERR_COULD_NOT_CREATE_DIR3 . "</p>";
 				sfShowDirectory($directory);
 				return;
 			} 
 			
 			if (file_exists($directory . $name)) {
-				echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR4 . "&laquo;" . ENTITY::hsc($name) . "&raquo; ";
+				echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR4 . "&laquo;" . Entity::hsc($name) . "&raquo; ";
 				echo _SKINFILES_ERR_COULD_NOT_CREATE_DIR5 . _SKINFILES_ERR_COULD_NOT_CREATE_DIR6 . "</p>";
 				sfShowDirectory($directory);
 				return;
@@ -696,19 +696,19 @@
 
 			if (!@mkdir($directory . $name, 0755)) 
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR2 . "&laquo;" . ENTITY::hsc($name) . "&raquo;</p>";
+				echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR2 . "&laquo;" . Entity::hsc($name) . "&raquo;</p>";
 				sfShowDirectory($directory);
 				return;
 			}
 
 			@umask($mask);
 			
-			echo "<p class='message'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR7 . "&laquo;" . ENTITY::hsc($name) . "&raquo; " . _SKINFILES_ERR_COULD_NOT_CREATE_DIR8 . "</p>";
+			echo "<p class='message'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR7 . "&laquo;" . Entity::hsc($name) . "&raquo; " . _SKINFILES_ERR_COULD_NOT_CREATE_DIR8 . "</p>";
 			sfShowDirectory($directory);
 		} 		
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR9 . "&laquo;" . ENTITY::hsc(basename($directory)) . "&raquo; " .  _SKINFILES_ERR_COULD_NOT_CREATE_DIR10;
+			echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR9 . "&laquo;" . Entity::hsc(basename($directory)) . "&raquo; " .  _SKINFILES_ERR_COULD_NOT_CREATE_DIR10;
 			echo _SKINFILES_ERR_COULD_NOT_CREATE_DIR11 . "</p>";
 		}
 	}
@@ -734,16 +734,16 @@
 			$delUrl  = $manager->addTicketToUrl($pluginUrl . '?action=deldir&dir=' . rawurlencode($relative . $file));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . ENTITY::hsc($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . $file . '&raquo;">';
+			echo '<a href="' . Entity::hsc($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . $file . '&raquo;">';
 			echo '<img src="' . $pluginUrl . 'dir.gif' . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
-			echo '<form method="post" action="' . ENTITY::hsc($pluginUrl) . '">';
+			echo '<form method="post" action="' . Entity::hsc($pluginUrl) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="deldir_process" />';
-			echo '<input type="hidden" name="dir" value="' . ENTITY::hsc($relative . $file) . '" />';
+			echo '<input type="hidden" name="dir" value="' . Entity::hsc($relative . $file) . '" />';
 
-			echo '<h4>' . _SKINFILES_DELETE_DIR . ' &laquo;' . ENTITY::hsc($file) . '&raquo; ' . _SKINFILES_DELETE_DIR2 . '</h4><div>';
+			echo '<h4>' . _SKINFILES_DELETE_DIR . ' &laquo;' . Entity::hsc($file) . '&raquo; ' . _SKINFILES_DELETE_DIR2 . '</h4><div>';
 			echo '<p class="buttons">';
 			echo '<input type="hidden" name="sure" value="yes" />';
 			echo '<input type="submit" value="' . _SKINFILES_DELETE . '" />';
@@ -753,7 +753,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR1 . " &laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR2;
+			echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR1 . " &laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR2;
 			echo _SKINFILES_ERR_DELETE_DIR3 . "</p>";
 		}
 	}
@@ -774,17 +774,17 @@
 			{
 				if (!@rmdir($directory . $file)) 
 				{
-					echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR4 . "&laquo;" . ENTITY::hsc($file) . "&raquo;</p>";
+					echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR4 . "&laquo;" . Entity::hsc($file) . "&raquo;</p>";
 					sfShowDirectory($directory);
 					return;
 				}
 	
-				echo "<p class='message'>" . _SKINFILES_ERR_DELETE_DIR5 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR6 . "</p>";
+				echo "<p class='message'>" . _SKINFILES_ERR_DELETE_DIR5 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR6 . "</p>";
 				sfShowDirectory($directory);
 			} 		
 			else
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR1 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR2;
+				echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR1 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR2;
 				echo _SKINFILES_ERR_DELETE_DIR3 . "</p>";
 			}
 		}
@@ -829,21 +829,21 @@
 			$emptyUrl  = $manager->addTicketToUrl($pluginUrl . '?action=emptydir&dir=' . rawurlencode($relative . $file));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . ENTITY::hsc($emptyUrl) . '" title="Empty &laquo;' . $file . '&raquo;">';
+			echo '<a href="' . Entity::hsc($emptyUrl) . '" title="Empty &laquo;' . $file . '&raquo;">';
 			echo '<img src="' . $pluginUrl . 'dir.gif' . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
-			echo '<form method="post" action="' . ENTITY::hsc($pluginUrl) . '">';
+			echo '<form method="post" action="' . Entity::hsc($pluginUrl) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="emptydir_process" />';
-			echo '<input type="hidden" name="dir" value="' . ENTITY::hsc($relative . $file) . '" />';
+			echo '<input type="hidden" name="dir" value="' . Entity::hsc($relative . $file) . '" />';
 
-			echo '<h4>' . _SKINFILES_DELETE_FILE_MSG . ' &laquo;' . ENTITY::hsc($file) . '&raquo;' . _SKINFILES_DELETE_FILE_MSG2 . '</h4><div>';
+			echo '<h4>' . _SKINFILES_DELETE_FILE_MSG . ' &laquo;' . Entity::hsc($file) . '&raquo;' . _SKINFILES_DELETE_FILE_MSG2 . '</h4><div>';
 			
 			if (count($files)) 
 			{
 				echo '<ul>';
-				foreach ($files as $name) {	echo '<li>' . ENTITY::hsc($name) . '</li>'; }
+				foreach ($files as $name) {	echo '<li>' . Entity::hsc($name) . '</li>'; }
 				echo '</ul>';
 	
 				echo '<p class="buttons">';
@@ -865,7 +865,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR1 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR2;
+			echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR1 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR2;
 			echo _SKINFILES_ERR_DELETE_DIR3 . "</p>";
 		}
 	}
@@ -890,9 +890,9 @@
 						   is_writable($directory . $file . '/' . $name)) 
 						{
 							if (unlink ($directory .$file . '/' . $name)) 
-								echo "<p class='message'>" . _SKINFILES_ERR_EMPTY_DIR1 . "&laquo;" . ENTITY::hsc($name) . "&raquo; " . _SKINFILES_ERR_EMPTY_DIR2 . "</p>";
+								echo "<p class='message'>" . _SKINFILES_ERR_EMPTY_DIR1 . "&laquo;" . Entity::hsc($name) . "&raquo; " . _SKINFILES_ERR_EMPTY_DIR2 . "</p>";
 							else
-								echo "<p class='error'>" . _SKINFILES_ERR_EMPTY_DIR3 . "&laquo;" . ENTITY::hsc($name) . "&raquo; " . _SKINFILES_ERR_EMPTY_DIR4 . "</p>";
+								echo "<p class='error'>" . _SKINFILES_ERR_EMPTY_DIR3 . "&laquo;" . Entity::hsc($name) . "&raquo; " . _SKINFILES_ERR_EMPTY_DIR4 . "</p>";
 						}
 					}
 					
@@ -903,7 +903,7 @@
 			}
 			else
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_EMPTY_DIR5 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_EMPTY_DIR6;
+				echo "<p class='error'>" . _SKINFILES_ERR_EMPTY_DIR5 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_EMPTY_DIR6;
 				echo _SKINFILES_ERR_EMPTY_DIR7 . "</p>";
 			}
 		}
@@ -980,10 +980,10 @@
 			$viewUrl  = $manager->addTicketToUrl($pluginUrl . '?action=viewfile&file=' . rawurlencode(sfRelativePath($directory . $file)));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . ENTITY::hsc($viewUrl) . '" title="View &laquo;' . $file . '&raquo;">';
-			echo '<img src="' . ENTITY::hsc(sfIcon($file)) . '" alt="" /> ' . $file . '</a></p>';
+			echo '<a href="' . Entity::hsc($viewUrl) . '" title="View &laquo;' . $file . '&raquo;">';
+			echo '<img src="' . Entity::hsc(sfIcon($file)) . '" alt="" /> ' . $file . '</a></p>';
 
-			echo '<h4>' . _SKINFILES_VIEW_FILE . '&laquo;' . ENTITY::hsc($file) . '&raquo;</h4>';
+			echo '<h4>' . _SKINFILES_VIEW_FILE . '&laquo;' . Entity::hsc($file) . '&raquo;</h4>';
 
 			if (sfIsFileType('html', $file))
 			{
@@ -995,7 +995,7 @@
 				$content = implode('', file($directory . $file));
 
 				echo '<pre>';
-				echo ENTITY::hsc($content);
+				echo Entity::hsc($content);
 				echo '</pre>';
 			}
 
@@ -1031,17 +1031,17 @@
 				
 				echo '<table>';
 				echo '<tr><th colspan="2">' . _SKINFILES_VIEW_FILE_IMG_INFO . '</th></tr>';
-				echo '<tr><td>' . _SKINFILES_VIEW_FILE_TYPE . '</td><td>' . ENTITY::hsc($type) . '</td></tr>';
-				echo '<tr><td>' . _SKINFILES_VIEW_FILE_WIDTH . '</td><td>' . ENTITY::hsc($size[0]) . _SKINFILES_VIEW_FILE_PX . '</td></tr>';
-				echo '<tr><td>' . _SKINFILES_VIEW_FILE_HEIGHT . '</td><td>' . ENTITY::hsc($size[1]) . _SKINFILES_VIEW_FILE_PX . '</td></tr>';	
+				echo '<tr><td>' . _SKINFILES_VIEW_FILE_TYPE . '</td><td>' . Entity::hsc($type) . '</td></tr>';
+				echo '<tr><td>' . _SKINFILES_VIEW_FILE_WIDTH . '</td><td>' . Entity::hsc($size[0]) . _SKINFILES_VIEW_FILE_PX . '</td></tr>';
+				echo '<tr><td>' . _SKINFILES_VIEW_FILE_HEIGHT . '</td><td>' . Entity::hsc($size[1]) . _SKINFILES_VIEW_FILE_PX . '</td></tr>';	
 				
 				if (isset($size['channels']) || isset($size['bits'])) 
 				{
 					$channels = isset($size['channels']) ? $size['channels'] : 3;
 					$depth    = $size[2] == IMAGETYPE_GIF ? $size['bits'] : $size['bits'] * $channels;
-					echo '<tr><td>' . _SKINFILES_VIEW_FILE_CHANNELS . '</td><td>' . ENTITY::hsc($channels) . '</td></tr>';
-					echo '<tr><td>' . _SKINFILES_VIEW_FILE_COLOR_DEPTH . '</td><td>' . ENTITY::hsc($depth) . _SKINFILES_VIEW_FILE_BITS . '</td></tr>';
-					echo '<tr><td>' . _SKINFILES_VIEW_FILE_COLORS . '</td><td>' . ENTITY::hsc(pow(2, $depth)) . _SKINFILES_VIEW_FILE_COLORS2 . '</td></tr>';
+					echo '<tr><td>' . _SKINFILES_VIEW_FILE_CHANNELS . '</td><td>' . Entity::hsc($channels) . '</td></tr>';
+					echo '<tr><td>' . _SKINFILES_VIEW_FILE_COLOR_DEPTH . '</td><td>' . Entity::hsc($depth) . _SKINFILES_VIEW_FILE_BITS . '</td></tr>';
+					echo '<tr><td>' . _SKINFILES_VIEW_FILE_COLORS . '</td><td>' . Entity::hsc(pow(2, $depth)) . _SKINFILES_VIEW_FILE_COLORS2 . '</td></tr>';
 				}
 
 				
@@ -1055,28 +1055,28 @@
 						echo '<tr><th colspan="2">Exif information</th></tr>';
 						
 						if (isset($exif['Make']) && isset($exif['Model']))
-							echo '<tr><td>Camera:</td><td>' . ENTITY::hsc($exif['Make'] . ' ' . $exif['Model']) . '</td></tr>';
+							echo '<tr><td>Camera:</td><td>' . Entity::hsc($exif['Make'] . ' ' . $exif['Model']) . '</td></tr>';
 						
 						if (isset($exif['DateTime']))
-							echo '<tr><td>Created on:</td><td>' . ENTITY::hsc($exif['DateTime']) . '</td></tr>';
+							echo '<tr><td>Created on:</td><td>' . Entity::hsc($exif['DateTime']) . '</td></tr>';
 						
 						if (isset($exif['XResolution']))
-							echo '<tr><td>Horizontal resolution:</td><td>' . ENTITY::hsc(_skinfiles_exif_prepare($exif['XResolution'])) . ' dpi</td></tr>';
+							echo '<tr><td>Horizontal resolution:</td><td>' . Entity::hsc(_skinfiles_exif_prepare($exif['XResolution'])) . ' dpi</td></tr>';
 						
 						if (isset($exif['YResolution']))
-							echo '<tr><td>Vertical resolution:</td><td>' . ENTITY::hsc(_skinfiles_exif_prepare($exif['YResolution'])) . ' dpi</td></tr>';
+							echo '<tr><td>Vertical resolution:</td><td>' . Entity::hsc(_skinfiles_exif_prepare($exif['YResolution'])) . ' dpi</td></tr>';
 						
 						if (isset($exif['FocalLength']))
-							echo '<tr><td>Focal length:</td><td>' . ENTITY::hsc(_skinfiles_exif_prepare($exif['FocalLength'])) . ' mm</td></tr>';
+							echo '<tr><td>Focal length:</td><td>' . Entity::hsc(_skinfiles_exif_prepare($exif['FocalLength'])) . ' mm</td></tr>';
 						
 						if (isset($exif['FNumber']))
-							echo '<tr><td>F-number:</td><td>F/' . ENTITY::hsc(_skinfiles_exif_prepare($exif['FNumber'])) . '</td></tr>';
+							echo '<tr><td>F-number:</td><td>F/' . Entity::hsc(_skinfiles_exif_prepare($exif['FNumber'])) . '</td></tr>';
 						
 						if (isset($exif['ExposureTime']))
-							echo '<tr><td>Exposuretime:</td><td>' . ENTITY::hsc(_skinfiles_exif_prepare($exif['ExposureTime'])) . ' sec</td></tr>';
+							echo '<tr><td>Exposuretime:</td><td>' . Entity::hsc(_skinfiles_exif_prepare($exif['ExposureTime'])) . ' sec</td></tr>';
 						
 						if (isset($exif['ISOSpeedRatings']))
-							echo '<tr><td>ISO-speed:</td><td>' . ENTITY::hsc(_skinfiles_exif_prepare($exif['ISOSpeedRatings'])) . '</td></tr>';
+							echo '<tr><td>ISO-speed:</td><td>' . Entity::hsc(_skinfiles_exif_prepare($exif['ISOSpeedRatings'])) . '</td></tr>';
 					}
 				}
 
@@ -1085,7 +1085,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_VIEW_FILE1 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_VIEW_FILE2;
+			echo "<p class='error'>" . _SKINFILES_ERR_VIEW_FILE1 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_VIEW_FILE2;
 			echo _SKINFILES_ERR_VIEW_FILE3 . "</p>";
 		}
 	}
@@ -1120,20 +1120,20 @@
 			$editUrl  = $manager->addTicketToUrl($pluginUrl . '?action=editfile&file=' . rawurlencode(sfRelativePath($directory . $file)));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . ENTITY::hsc($editUrl) . '" title="Edit &laquo;' . $file . '&raquo;">';
-			echo '<img src="' . ENTITY::hsc(sfIcon($file)) . '" alt="" /> ' . $file . '</a></p>';
+			echo '<a href="' . Entity::hsc($editUrl) . '" title="Edit &laquo;' . $file . '&raquo;">';
+			echo '<img src="' . Entity::hsc(sfIcon($file)) . '" alt="" /> ' . $file . '</a></p>';
 
 			$content = implode('', file($directory . $file));
 
 			echo '<div class="dialogbox">';
-			echo '<form method="post" action="' . ENTITY::hsc($pluginUrl) . '">';
+			echo '<form method="post" action="' . Entity::hsc($pluginUrl) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="editfile_process" />';
-			echo '<input type="hidden" name="file" value="' . ENTITY::hsc(sfRelativePath($directory . $file)) . '" />';
+			echo '<input type="hidden" name="file" value="' . Entity::hsc(sfRelativePath($directory . $file)) . '" />';
 
-			echo '<h4>' . _SKINFILES_EDIT_FILE_MSG . ' &laquo;' . ENTITY::hsc($file) . '&raquo;</h4><div>';
+			echo '<h4>' . _SKINFILES_EDIT_FILE_MSG . ' &laquo;' . Entity::hsc($file) . '&raquo;</h4><div>';
 			echo '<p><textarea class="skinedit" tabindex="8" rows="20" cols="80" name="content">';
-			echo ENTITY::hsc($content);
+			echo Entity::hsc($content);
 			echo '</textarea></p>';
 			
 			echo '<p class="buttons">';
@@ -1145,7 +1145,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE1 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE2;
+			echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE1 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE2;
 			echo _SKINFILES_ERR_EDIT_FILE3 . "</p>";
 		}
 	}
@@ -1173,15 +1173,15 @@
 				}
 				
 				if ($success)
-					echo "<p class='message'>" . _SKINFILES_ERR_EDIT_FILE4 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE5 . "</p>";
+					echo "<p class='message'>" . _SKINFILES_ERR_EDIT_FILE4 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE5 . "</p>";
 				else
-					echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE6 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE7 . "</p>";
+					echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE6 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE7 . "</p>";
 			
 				_skinfiles_editfile();
 			}
 			else
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE1 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE2;
+				echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE1 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE2;
 				echo _SKINFILES_ERR_EDIT_FILE3 . "</p>";
 			}
 		}
@@ -1211,17 +1211,17 @@
 			$editUrl  = $manager->addTicketToUrl($pluginUrl . '?action=renfile&file=' . rawurlencode(sfRelativePath($directory . $file)));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . ENTITY::hsc($editUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . $file . '&raquo;">';
-			echo '<img src="' . ENTITY::hsc(sfIcon($file)) . '" alt="" /> ' . $file . '</a></p>';
+			echo '<a href="' . Entity::hsc($editUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . $file . '&raquo;">';
+			echo '<img src="' . Entity::hsc(sfIcon($file)) . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
-			echo '<form method="post" action="' . ENTITY::hsc($pluginUrl) . '">';
+			echo '<form method="post" action="' . Entity::hsc($pluginUrl) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="renfile_process" />';
-			echo '<input type="hidden" name="file" value="' . ENTITY::hsc(sfRelativePath($directory . $file)) . '" />';
+			echo '<input type="hidden" name="file" value="' . Entity::hsc(sfRelativePath($directory . $file)) . '" />';
 
-			echo '<h4>' . _SKINFILES_RENAME_FILE_MSG . '&laquo;' . ENTITY::hsc($file) . '&raquo; ' . _SKINFILES_RENAME_FILE_MSG2 . '</h4><div>';
-			echo '<p><input type="text" name="name" size="40" value="' . ENTITY::hsc($preset != '' ? $preset : $file) . '" /></p>';
+			echo '<h4>' . _SKINFILES_RENAME_FILE_MSG . '&laquo;' . Entity::hsc($file) . '&raquo; ' . _SKINFILES_RENAME_FILE_MSG2 . '</h4><div>';
+			echo '<p><input type="text" name="name" size="40" value="' . Entity::hsc($preset != '' ? $preset : $file) . '" /></p>';
 			echo '<p class="buttons">';
 			echo '<input type="hidden" name="sure" value="yes" /">';
 			echo '<input type="submit" value="' . _SKINFILES_RENAME . '" />';
@@ -1231,7 +1231,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE1 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE2;
+			echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE1 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE2;
 			echo _SKINFILES_ERR_RENAME_FILE3 . "</p>";
 		}
 	}
@@ -1252,28 +1252,28 @@
 				$name = requestVar('name');
 
 				if ($name == '') {
-					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE4 . "&laquo;" . ENTITY::hsc($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE4 . "&laquo;" . Entity::hsc($file) . "&raquo; ";
 					echo _SKINFILES_ERR_RENAME_FILE5 . "</p>";
 					_skinfiles_renfile($name);
 					return;
 				}
 				
 				if (sfIllegalFilename($name)) {
-					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE6 . "&laquo;" . ENTITY::hsc($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE6 . "&laquo;" . Entity::hsc($file) . "&raquo; ";
 					echo _SKINFILES_ERR_RENAME_FILE7 . "</p>";
 					_skinfiles_renfile($name);
 					return;
 				} 
 				
 				if ($name == $file) {
-					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE8 . "&laquo;" . ENTITY::hsc($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE8 . "&laquo;" . Entity::hsc($file) . "&raquo; ";
 					echo _SKINFILES_ERR_RENAME_FILE9 . "</p>";
 					_skinfiles_renfile($name);
 					return;
 				}
 				
 				if (file_exists($directory . $name)) {
-					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE10 . "&laquo;" . ENTITY::hsc($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE10 . "&laquo;" . Entity::hsc($file) . "&raquo; ";
 					echo _SKINFILES_ERR_RENAME_FILE11;
 					echo _SKINFILES_ERR_RENAME_FILE12 . "</p>";
 					_skinfiles_renfile($name);
@@ -1282,18 +1282,18 @@
 
 				if (!@rename($directory . $file, $directory . $name)) 
 				{
-					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE13 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE14 . "</p>";
+					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE13 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE14 . "</p>";
 					_skinfiles_renfile($name);
 					return;
 				}
 	
-				echo "<p class='message'>" . _SKINFILES_ERR_RENAME_FILE15 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE16;
-				echo _SKINFILES_ERR_RENAME_FILE17 . "&laquo;" . ENTITY::hsc($name) . "&raquo;" . _SKINFILES_ERR_RENAME_FILE18 . "</p>";
+				echo "<p class='message'>" . _SKINFILES_ERR_RENAME_FILE15 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE16;
+				echo _SKINFILES_ERR_RENAME_FILE17 . "&laquo;" . Entity::hsc($name) . "&raquo;" . _SKINFILES_ERR_RENAME_FILE18 . "</p>";
 				sfShowDirectory($directory);
 			} 		
 			else
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE1 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE2;
+				echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE1 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE2;
 				echo _SKINFILES_ERR_RENAME_FILE3 . "</p>";
 			}
 		}
@@ -1325,14 +1325,14 @@
 			}
 			
 			if (sfIllegalFilename($name)) {
-				echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE2 . "&laquo;" . ENTITY::hsc($name) . "&raquo; ";
+				echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE2 . "&laquo;" . Entity::hsc($name) . "&raquo; ";
 				echo _SKINFILES_ERR_CREATE_FILE3 . "</p>";
 				sfShowDirectory($directory);
 				return;
 			} 
 			
 			if (file_exists($directory . $name)) {
-				echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE4 . "&laquo;" . ENTITY::hsc($name) . "&raquo; ";
+				echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE4 . "&laquo;" . Entity::hsc($name) . "&raquo; ";
 				echo _SKINFILES_ERR_CREATE_FILE5;
 				echo _SKINFILES_ERR_CREATE_FILE6 . "</p>";
 				sfShowDirectory($directory);
@@ -1341,7 +1341,7 @@
 			
 			if (!@touch($directory . $name)) 
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE7 . "&laquo;" . ENTITY::hsc($name) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE8 . "</p>";
+				echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE7 . "&laquo;" . Entity::hsc($name) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE8 . "</p>";
 				sfShowDirectory($directory);
 				return;
 			}
@@ -1350,12 +1350,12 @@
 			@chmod($directory . $name, 0755);
 			@umask($mask);
 			
-			echo "<p class='message'>" . _SKINFILES_ERR_CREATE_FILE9 . "&laquo;" . ENTITY::hsc($name) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE10 . "</p>";
+			echo "<p class='message'>" . _SKINFILES_ERR_CREATE_FILE9 . "&laquo;" . Entity::hsc($name) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE10 . "</p>";
 			sfShowDirectory($directory);
 		} 		
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE11 . "&laquo;" . ENTITY::hsc(basename($directory)) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE12;
+			echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE11 . "&laquo;" . Entity::hsc(basename($directory)) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE12;
 			echo _SKINFILES_ERR_CREATE_FILE13 . "</p>";
 		}
 	}
@@ -1380,16 +1380,16 @@
 			$delUrl  = $manager->addTicketToUrl($pluginUrl . '?action=delfile&file=' . rawurlencode(sfRelativePath($directory . $file)));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . ENTITY::hsc($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . $file . '&raquo;">';
-			echo '<img src="' . ENTITY::hsc(sfIcon($file)) . '" alt="" /> ' . $file . '</a></p>';
+			echo '<a href="' . Entity::hsc($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . $file . '&raquo;">';
+			echo '<img src="' . Entity::hsc(sfIcon($file)) . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
-			echo '<form method="post" action="' . ENTITY::hsc($pluginUrl) . '">';
+			echo '<form method="post" action="' . Entity::hsc($pluginUrl) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="delfile_process" />';
-			echo '<input type="hidden" name="file" value="' . ENTITY::hsc(sfRelativePath($directory . $file)) . '" />';
+			echo '<input type="hidden" name="file" value="' . Entity::hsc(sfRelativePath($directory . $file)) . '" />';
 
-			echo '<h4>' . _SKINFILES_DELETE_FILE . ' &laquo;' . ENTITY::hsc($file) . '&raquo; ' . _SKINFILES_DELETE_FILE2 . '</h4><div>';
+			echo '<h4>' . _SKINFILES_DELETE_FILE . ' &laquo;' . Entity::hsc($file) . '&raquo; ' . _SKINFILES_DELETE_FILE2 . '</h4><div>';
 			echo '<p class="buttons">';
 			echo '<input type="hidden" name="sure" value="yes" />';
 			echo '<input type="submit" value="' . _SKINFILES_DELETE . '" />';
@@ -1399,7 +1399,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>"  . _SKINFILES_ERR_DELETE_FILE1 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE2;
+			echo "<p class='error'>"  . _SKINFILES_ERR_DELETE_FILE1 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE2;
 			echo _SKINFILES_ERR_DELETE_FILE3 . "</p>";
 		}
 	}
@@ -1419,17 +1419,17 @@
 			{
 				if (!@unlink($directory . $file)) 
 				{
-					echo "<p class='error'>" . _SKINFILES_ERR_DELETE_FILE4 . "&laquo;" . ENTITY::hsc($file) . "&raquo;</p>";
+					echo "<p class='error'>" . _SKINFILES_ERR_DELETE_FILE4 . "&laquo;" . Entity::hsc($file) . "&raquo;</p>";
 					sfShowDirectory($directory);
 					return;
 				}
 	
-				echo "<p class='message'>" . _SKINFILES_ERR_DELETE_FILE5 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE6 . "</p>";
+				echo "<p class='message'>" . _SKINFILES_ERR_DELETE_FILE5 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE6 . "</p>";
 				sfShowDirectory($directory);
 			} 		
 			else
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_DELETE_FILE1 . "&laquo;" . ENTITY::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE2;
+				echo "<p class='error'>" . _SKINFILES_ERR_DELETE_FILE1 . "&laquo;" . Entity::hsc($file) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE2;
 				echo _SKINFILES_ERR_DELETE_FILE3 . "</p>";
 			}
 		}
@@ -1456,7 +1456,7 @@
 			$file = postFileInfo('name');
 
 			if ($file['size'] > $CONF['MaxUploadSize']) {
-				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . ENTITY::hsc($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_FILE_TOO_BIG . "<br />";
+				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . Entity::hsc($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_FILE_TOO_BIG . "<br />";
 				echo _SKINFILES_ERR_UPLOAD_FILE3 . $CONF['MaxUploadSize'] . " / ";
 				echo $file['size'] . " bytes</p>";
 				sfShowDirectory($directory);
@@ -1464,26 +1464,26 @@
 			}
 
 			if (!is_uploaded_file($file['tmp_name'])) {
-				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . ENTITY::hsc($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_BADREQUEST .  _SKINFILES_ERR_UPLOAD_FILE4 . "</p>";
+				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . Entity::hsc($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_BADREQUEST .  _SKINFILES_ERR_UPLOAD_FILE4 . "</p>";
 				sfShowDirectory($directory);
 				return;
 			}
 			
 			if (sfIllegalFilename($file['name'])) {
-				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE5 . "&laquo;" . ENTITY::hsc($file['name']) . "&raquo; ";
+				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE5 . "&laquo;" . Entity::hsc($file['name']) . "&raquo; ";
 				echo _SKINFILES_ERR_UPLOAD_FILE6 . "</p>";
 				sfShowDirectory($directory);
 				return;
 			}
 			
 			if (file_exists($directory . $file['name'])) {
-				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . ENTITY::hsc($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_UPLOADDUPLICATE . "</p>";
+				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . Entity::hsc($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_UPLOADDUPLICATE . "</p>";
 				sfShowDirectory($directory);
 				return;
 			}
 
 			if (!@move_uploaded_file($file['tmp_name'], $directory . $file['name'])) {
-				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . ENTITY::hsc($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_UPLOADMOVEP . _SKINFILES_ERR_UPLOAD_FILE4 . "</p>";
+				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . Entity::hsc($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_UPLOADMOVEP . _SKINFILES_ERR_UPLOAD_FILE4 . "</p>";
 				sfShowDirectory($directory);
 			}
 
@@ -1491,12 +1491,12 @@
 			@chmod($directory . $file['name'], 0755);
 			@umask($mask);
 
-			echo "<p class='message'>" . _SKINFILES_ERR_UPLOAD_FILE7 . "&laquo;" . ENTITY::hsc($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE8 . "</p>";
+			echo "<p class='message'>" . _SKINFILES_ERR_UPLOAD_FILE7 . "&laquo;" . Entity::hsc($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE8 . "</p>";
 			sfShowDirectory($directory);
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE9 . "&laquo;" . ENTITY::hsc(basename($directory)) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE10;
+			echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE9 . "&laquo;" . Entity::hsc(basename($directory)) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE10;
 			echo _SKINFILES_ERR_UPLOAD_FILE11 . "</p>";
 		}	
 	}

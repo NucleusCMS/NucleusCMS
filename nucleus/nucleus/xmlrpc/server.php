@@ -97,7 +97,7 @@ $s = new xmlrpc_server( $functionDefs );
   * Adds an item to the given blog. Username and password are required to login
   */
 function _addItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $catname = "") {
-	$blog = new BLOG($blogid);
+	$blog = new Blog($blogid);
 	$timestamp = $blog->getCorrectTime();
 	return _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $timestamp, 0, $catname);
 }
@@ -107,13 +107,13 @@ function _addItem($blogid, $username, $password, $title, $body, $more, $publish,
   */
 function _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed = '0', $timestamp, $future, $catname = "") {
 	// 1. login
-	$mem = new MEMBER();
+	$mem = new Member();
 
 	if (!$mem->login($username, $password))
 		return _error(1,"Could not log in");
 
 	// 2. check if allowed to add to blog
-	if (!BLOG::existsID($blogid))
+	if (!Blog::existsID($blogid))
 		return _error(2,"No such blog ($blogid)");
 	if (!$mem->teamRights($blogid))
 		return _error(3,"Not a team member");
@@ -121,7 +121,7 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
 		return _error(4,"Cannot add empty items!");
 
 	// 3. calculate missing vars
-	$blog = new BLOG($blogid);
+	$blog = new Blog($blogid);
 
 	// get category id (or id for default category when false category)
 	$catid = $blog->getCategoryIdFromName($catname);
@@ -152,7 +152,7 @@ function _edititem($itemid, $username, $password, $catid, $title, $body, $more, 
 	global $manager;
 
 	// 1. login
-	$mem = new MEMBER();
+	$mem = new Member();
 	if (!$mem->login($username, $password))
 		return _error(1,"Could not log in");
 
@@ -163,7 +163,7 @@ function _edititem($itemid, $username, $password, $catid, $title, $body, $more, 
 		return _error(7,"Not allowed to alter item");
 
 	// 3. update item
-	ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, 0);
+	Item::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, 0);
 
 	return new xmlrpcresp(new xmlrpcval(1,"boolean"));
 }
@@ -173,7 +173,7 @@ function _edititem($itemid, $username, $password, $catid, $title, $body, $more, 
   */
 function _getUsersBlogs($username, $password) {
 	// 1. Try to login
-	$mem = new MEMBER();
+	$mem = new Member();
 	if (!$mem->login($username, $password))
 		return _error(1,"Could not log in");
 
@@ -206,7 +206,7 @@ function _getUsersBlogs($username, $password) {
 
 function _getUserInfo($username, $password) {
 	// 1. login
-	$mem = new MEMBER();
+	$mem = new Member();
 	if (!$mem->login($username, $password))
 		return _error(1,"Could not log in");
 
@@ -234,7 +234,7 @@ function _deleteItem($itemid, $username, $password) {
 	global $manager;
 
 	// 1. login
-	$mem = new MEMBER();
+	$mem = new Member();
 	if (!$mem->login($username, $password))
 		return _error(1,"Could not log in");
 
@@ -246,7 +246,7 @@ function _deleteItem($itemid, $username, $password) {
 		return _error(3,"Not a team member");
 
 	// delete the item
-	ITEM::delete($itemid);
+	Item::delete($itemid);
 
 	return new xmlrpcresp(new xmlrpcval(1,"boolean"));
 }
@@ -256,18 +256,18 @@ function _deleteItem($itemid, $username, $password) {
   */
 function _getSkinPart($blogid, $username, $password, $type) {
 	// 1. login
-	$mem = new MEMBER();
+	$mem = new Member();
 	if (!$mem->login($username, $password))
 		return _error(1,"Could not log in");
 
 	// 2. check if allowed
-	if (!BLOG::existsID($blogid))
+	if (!Blog::existsID($blogid))
 		return _error(2,"No such blog ($blogid)");
 	if (!$mem->teamRights($blogid))
 		return _error(3,"Not a team member");
 
 	// 3. return skin part
-	$blog = new BLOG($blogid);
+	$blog = new Blog($blogid);
 	$skin = new SKIN($blog->getDefaultSkin());
 	return new xmlrpcresp(new xmlrpcval($skin->getContent($type),"string"));
 
@@ -275,18 +275,18 @@ function _getSkinPart($blogid, $username, $password, $type) {
 
 function _setSkinPart($blogid, $username, $password, $content, $type) {
 	// 1. login
-	$mem = new MEMBER();
+	$mem = new Member();
 	if (!$mem->login($username, $password))
 		return _error(1,"Could not log in");
 
 	// 2. check if allowed
-	if (!BLOG::existsID($blogid))
+	if (!Blog::existsID($blogid))
 		return _error(2,"No such blog ($blogid)");
 	if (!$mem->teamRights($blogid))
 		return _error(3,"Not a team member");
 
 	// 3. update skin part
-	$blog = new BLOG($blogid);
+	$blog = new Blog($blogid);
 	$skin = new SKIN($blog->getDefaultSkin());
 	$skin->update($type, $content);
 

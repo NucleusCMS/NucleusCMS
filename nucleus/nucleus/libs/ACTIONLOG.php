@@ -22,10 +22,10 @@ define('INFO',3);		// info, errors and warnings
 define('DEBUG',4);		// everything
 $CONF['LogLevel'] = INFO;
 
-class ACTIONLOG
+class ActionLog
 {
 	/**
-	 * ACTIONLOG::add()
+	 * ActionLog::add()
 	 * Method to add a message to the action log
 	 * 
 	 * @static

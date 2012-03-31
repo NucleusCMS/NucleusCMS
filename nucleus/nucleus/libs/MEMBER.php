@@ -17,7 +17,7 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id: MEMBER.php 1616 2012-01-08 09:48:15Z sakamocchi $
  */
-class MEMBER
+class Member
 {
 	// 1 when authenticated, 0 when not
 	public $loggedin = 0;
@@ -40,7 +40,7 @@ class MEMBER
 	private $locale = '';
 	
 	/**
-	 * MEMBER::__construct()
+	 * Member::__construct()
 	 * Constructor for a member object
 	 * 
 	 * @param	Void
@@ -53,7 +53,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::createFromName()
+	 * Member::createFromName()
 	 * Create a member object for a given displayname
 	 * 
 	 * @static
@@ -63,13 +63,13 @@ class MEMBER
 	 */
 	public static function &createFromName($displayname)
 	{
-		$mem = new MEMBER();
+		$mem = new Member();
 		$mem->readFromName($displayname);
 		return $mem;
 	}
 	
 	/**
-	 * MEMBER::createFromID()
+	 * Member::createFromID()
 	 * Create a member object for a given ID
 	 * 
 	 * @static
@@ -77,13 +77,13 @@ class MEMBER
 	 */
 	public static function &createFromID($id)
 	{
-		$mem = new MEMBER();
+		$mem = new Member();
 		$mem->readFromID($id);
 		return $mem;
 	}
 	
 	/**
-	 * MEMBER::readFromName()
+	 * Member::readFromName()
 	 * Read member table in database
 	 * 
 	 * @param	String	$displayname	login name
@@ -96,7 +96,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::readFromID()
+	 * Member::readFromID()
 	 * Read member table in database
 	 * 
 	 * @param	Integer	$id	id for member
@@ -109,7 +109,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::hash()
+	 * Member::hash()
 	 * hash the target string
 	 * 
 	 * @param	String	$string	target string
@@ -127,7 +127,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::set_cookie_salt()
+	 * Member::set_cookie_salt()
 	 * 
 	 * @param	integer	$key	secureCookieKey value
 	 * @return	void
@@ -161,7 +161,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::login()
+	 * Member::login()
 	 * Tries to login as a given user.
 	 * Returns true when succeeded, returns false when failed
 	 * 3.40 adds CustomLogin event
@@ -219,7 +219,7 @@ class MEMBER
 				$errormessage = 'Login failed for ' . $login;
 			}
 			$manager->notify('LoginFailed', array('username' => $login) );
-			ACTIONLOG::add(INFO, $errormessage);
+			ActionLog::add(INFO, $errormessage);
 		}
 		/* login success */
 		else
@@ -242,14 +242,14 @@ class MEMBER
 			
 			$errormessage = '';
 			$manager->notify('LoginSuccess', array('member' => &$member, 'username' => $login) );
-			ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
+			ActionLog::add(INFO, "Login successful for $login (sharedpc=$shared)");
 		}
 		
 		return $this->loggedin;
 	}
 	
 	/**
-	 * MEMBER::cookielogin()
+	 * Member::cookielogin()
 	 * Login using cookie key
 	 * 
 	 * @param	String	$login	not used
@@ -296,7 +296,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::logout()
+	 * Member::logout()
 	 * logout and expire cookie
 	 * 
 	 * @param	Void
@@ -319,7 +319,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::isLoggedIn()
+	 * Member::isLoggedIn()
 	 * return member is loggedin or not
 	 * 
 	 * @param	Void
@@ -363,7 +363,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::isBlogAdmin()
+	 * Member::isBlogAdmin()
 	 * Returns true if member is an admin for the given blog
 	 * (returns false if not a team member)
 	 * 
@@ -384,7 +384,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::blogAdminRights()
+	 * Member::blogAdminRights()
 	 * 
 	 * @param	integer	$blogid	ID of target weblog
 	 * @return	boolean	whether to have admin rights to the weblog or not
@@ -396,7 +396,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::teamRights()
+	 * Member::teamRights()
 	 * 
 	 * @param	integer	$blogid	ID of target weblog
 	 * @return	boolean	whether to have admin right to the weblog or not
@@ -408,7 +408,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::isTeamMember()
+	 * Member::isTeamMember()
 	 * Returns true if this member is a team member of the given blog
 	 * 
 	 * @param	integer	$blogid	ID of target weblog
@@ -425,7 +425,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::canAddItem()
+	 * Member::canAddItem()
 	 * 
 	 * @param	integer	$catid	ID of target category
 	 * @return	boolean	whether to be able to add items to the category or not
@@ -464,7 +464,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::canAlterComment()
+	 * Member::canAlterComment()
 	 * Returns true if this member can edit/delete a commentitem. This can be in the
 	 * following cases:
 	 *	  - member is a super-admin
@@ -493,7 +493,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::canAlterItem()
+	 * Member::canAlterItem()
 	 * Returns true if this member can edit/delete an item. This is true in the following
 	 * cases: - member is a super-admin
 	 *	       - member is the author of the item
@@ -514,7 +514,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::canBeDeleted()
+	 * Member::canBeDeleted()
 	 * Return true if member can be deleted. This means that there are no items posted by the member left
 	 * 
 	 * @param	void
@@ -528,7 +528,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::canUpdateItem()
+	 * Member::canUpdateItem()
 	 * returns true if this member can move/update an item to a given category,
 	 * false if not (see comments fot the tests that are executed)
 	 * 
@@ -612,7 +612,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::setCookies()
+	 * Member::setCookies()
 	 * Sets the cookies for the member
 	 * 
 	 * @param boolean	$shared	set this to 1 when using a shared computer. Cookies will expire
@@ -645,7 +645,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::sendActivationLink()
+	 * Member::sendActivationLink()
 	 * Send activation mail
 	 * 
 	 * @param	string	$type	activation type
@@ -692,18 +692,18 @@ class MEMBER
 			'activationDays' => $CONF['ActivationDays']
 		);
 		
-		$message = TEMPLATE::fill($message, $aVars);
-		$subject = TEMPLATE::fill($subject, $aVars);
+		$message = Template::fill($message, $aVars);
+		$subject = Template::fill($subject, $aVars);
 		
 		// send mail
 		NOTIFICATION::mail($this->getEmail(), $subject ,$message, $CONF['AdminEmail'], i18n::get_current_charset());
 		
-		ACTIONLOG::add(INFO, _ACTIONLOG_ACTIVATIONLINK . ' (' . $this->getDisplayName() . ' / type: ' . $type . ')');
+		ActionLog::add(INFO, _ACTIONLOG_ACTIVATIONLINK . ' (' . $this->getDisplayName() . ' / type: ' . $type . ')');
 		return;
 	}
 	
 	/**
-	 * MEMBER::getAdminBlogs()
+	 * Member::getAdminBlogs()
 	 * Returns an array of all blogids for which member has admin rights
 	 * 
 	 * @param	void
@@ -735,7 +735,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::getTeamBlogs()
+	 * Member::getTeamBlogs()
 	 * Returns an array of all blogids for which member has team rights
 	 * 
 	 * @param	boolean	$incAdmin	whether checking weblog admin rights or not
@@ -768,7 +768,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::getNotifyFromMailAddress()
+	 * Member::getNotifyFromMailAddress()
 	 * 
 	 * Returns an email address from which notification of commenting/karma voting can
 	 * be sent. A suggestion can be given for when the member is not logged in
@@ -791,7 +791,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::write()
+	 * Member::write()
 	 * Write data to database
 	 * 
 	 * @param	void
@@ -868,7 +868,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::newCookieKey()
+	 * Member::newCookieKey()
 	 * Generate new cookiekey, save it, and return it
 	 * 
 	 * @param	void
@@ -966,7 +966,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::getID()
+	 * Member::getID()
 	 * 
 	 * @param	void
 	 * @return	integer	id of this member object
@@ -978,7 +978,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::exists()
+	 * Member::exists()
 	 * Returns true if there is a member with the given login name
 	 * 
 	 * @static
@@ -992,7 +992,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::existsID()
+	 * Member::existsID()
 	 * Returns true if there is a member with the given ID
 	 * 
 	 * @static
@@ -1007,7 +1007,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::isNameProtected()
+	 * Member::isNameProtected()
 	 *  Checks if a username is protected.
 	 *  If so, it can not be used on anonymous comments
 	 * 
@@ -1024,7 +1024,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::create()
+	 * Member::create()
 	 * Adds a new member
 	 * 
 	 * @static
@@ -1093,13 +1093,13 @@ class MEMBER
 		$query = sprintf($query, sql_table(member), $name, $realname, $password, $email, $url, $admin, $canlogin, $notes);
 		sql_query($query);
 		
-		ACTIONLOG::add(INFO, _ACTIONLOG_NEWMEMBER . ' ' . $name);
+		ActionLog::add(INFO, _ACTIONLOG_NEWMEMBER . ' ' . $name);
 		
 		return 1;
 	}
 	
 	/**
-	 * MEMBER::getActivationInfo()
+	 * Member::getActivationInfo()
 	 * Returns activation info for a certain key (an object with properties vkey, vmember, ...)
 	 * 
 	 * @static
@@ -1120,7 +1120,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::generateActivationEntry()
+	 * Member::generateActivationEntry()
 	 * Creates an account activation key
 	 * addresschange -> old email address
 	 * 
@@ -1181,7 +1181,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::activate()
+	 * Member::activate()
 	 * Inidicates that an activation link has been clicked and any forms displayed
 	 * there have been successfully filled out.
 	 * 
@@ -1225,7 +1225,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::cleanupActivationTable()
+	 * Member::cleanupActivationTable()
 	 * Cleans up entries in the activation table. All entries older than 2 days are removed.
 	 * (static)
 	 * 
@@ -1256,7 +1256,7 @@ class MEMBER
 					// delete all information about this site member. registration is undone because there was
 					// no timely activation
 					include_once($DIR_LIBS . 'ADMIN.php');
-					ADMIN::deleteOneMember(intval($o->vmember));
+					Admin::deleteOneMember(intval($o->vmember));
 					break;
 				case 'addresschange':
 					// revert the e-mail address of the member back to old address
@@ -1276,7 +1276,7 @@ class MEMBER
 	}
 	
 	/**
-	 * MEMBER::$language
+	 * Member::$language
 	 * 
 	 * @obsolete
 	 * @param	void
@@ -1285,7 +1285,7 @@ class MEMBER
 	 */
 	public $language = '';
 	/**
-	 * MEMBER::getLanguage()
+	 * Member::getLanguage()
 	 * 
 	 * @obsolete
 	 * @param	void

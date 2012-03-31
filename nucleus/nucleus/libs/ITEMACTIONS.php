@@ -16,7 +16,8 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
-class ITEMACTIONS extends BaseActions {
+class ItemActions extends BaseActions
+{
 
 	// contains an assoc array with parameters that need to be included when
 	// generating links to items/archives/... (e.g. catid)
@@ -28,7 +29,7 @@ class ITEMACTIONS extends BaseActions {
 	// timestamp of last visit
 	var $lastVisit;
 
-	// item currently being handled (mysql result object, see BLOG::showUsingQuery)
+	// item currently being handled (mysql result object, see Blog::showUsingQuery)
 	var $currentItem;
 
 	// reference to the blog currently being displayed
@@ -40,7 +41,7 @@ class ITEMACTIONS extends BaseActions {
 	// true when comments need to be displayed
 	var $showComments;
 
-	function ITEMACTIONS(&$blog) {
+	function __construct(&$blog) {
 		// call constructor of superclass first
 		$this->BaseActions();
 
@@ -57,7 +58,7 @@ class ITEMACTIONS extends BaseActions {
 
 	/**
 	  * Returns an array with the actions that are defined
-	  * in the ITEMACTIONS class
+	  * in the ItemActions class
 	  */
 	function getDefinedActions() {
 		return array(
@@ -176,7 +177,7 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	/**
-	 * ITEMACTIONS::parse_categorylink()
+	 * ItemActions::parse_categorylink()
 	 * Parse templatevar categorylink
 	 * 
 	 * @param	Void
@@ -184,7 +185,7 @@ class ITEMACTIONS extends BaseActions {
 	 */
 	function parse_categorylink()
 	{
-		echo LINK::create_link('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category));
+		echo Link::create_link('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category));
 		return;
 	}
 
@@ -203,7 +204,7 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	/**
-	 * ITEMACTIONS::parse_authorlink()
+	 * ItemActions::parse_authorlink()
 	 * Parse templatevar authorlink
 	 * 
 	 * @param	Void
@@ -211,7 +212,7 @@ class ITEMACTIONS extends BaseActions {
 	 */
 	function parse_authorlink()
 	{
-		echo LINK::create_link(
+		echo Link::create_link(
 			'member',
 			array(
 				'memberid' => $this->currentItem->authorid,
@@ -230,7 +231,7 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	/**
-	 * ITEMACTIONS::parse_itemlink()
+	 * ItemActions::parse_itemlink()
 	 * Parse templatevar itemlink
 	 * 
 	 * @param	Void
@@ -238,7 +239,7 @@ class ITEMACTIONS extends BaseActions {
 	 */
 	function parse_itemlink()
 	{
-		echo LINK::create_link(
+		echo Link::create_link(
 			'item',
 			array(
 				'itemid' => $this->currentItem->itemid,
@@ -289,10 +290,10 @@ class ITEMACTIONS extends BaseActions {
 		switch ( $format )
 		{
 			case 'xml':
-				echo ENTITY::hen($itemtitle);
+				echo Entity::hen($itemtitle);
 				break;
 			case 'attribute':
-				echo ENTITY::hsc($itemtitle);
+				echo Entity::hsc($itemtitle);
 				break;
 			case 'raw':
 				echo $itemtitle;
@@ -383,7 +384,7 @@ class ITEMACTIONS extends BaseActions {
 	}
 	
 	/**
-	 * ITEMACTIONS::parse_date()
+	 * ItemActions::parse_date()
 	 * Parse templatevar date
 	 *
 	 * @param	string	$format	format optional strftime format
@@ -417,7 +418,7 @@ class ITEMACTIONS extends BaseActions {
 	}
 	
 	/**
-	 * ITEMACTIONS::parse_time()
+	 * ItemActions::parse_time()
 	 * Parse templatevar time
 	 *
 	 * @param string	$format	format optional strftime format
@@ -445,7 +446,7 @@ class ITEMACTIONS extends BaseActions {
 	}
 
 	/**
-	 * ITEMACTIONS::parse_syndicate_title()
+	 * ItemActions::parse_syndicate_title()
 	 * Parse templatevar syndicate_title
 	 *
 	 * @param String	$maxLength	maxLength optional maximum length
@@ -453,11 +454,11 @@ class ITEMACTIONS extends BaseActions {
 	 */
 	function parse_syndicate_title($maxLength = 100) {
 		$syndicated = strip_tags($this->currentItem->title);
-		echo ENTITY::hsc(ENTITY::shorten($syndicated,$maxLength,'...'));
+		echo Entity::hsc(Entity::shorten($syndicated,$maxLength,'...'));
 	}
 	
 	/**
-	 * ITEMACTIONS::parse_syndicate_description()
+	 * ItemActions::parse_syndicate_description()
 	 * Parse templatevar syndicate_description
 	 *
 	 * @param Stromg	$maxLength	maxlength optional maximum length
@@ -469,12 +470,12 @@ class ITEMACTIONS extends BaseActions {
 		$syndicated = strip_tags($this->currentItem->body);
 		if ( $addHighlight )
 		{
-			$tmp_highlight = ENTITY::hsc(ENTITY::shorten($syndicated,$maxLength,'...'));
+			$tmp_highlight = Entity::hsc(Entity::shorten($syndicated,$maxLength,'...'));
 			echo $this->highlightAndParse($tmp_highlight);
 		}
 		else
 		{
-			echo ENTITY::hsc(ENTITY::shorten($syndicated,$maxLength,'...'));
+			echo Entity::hsc(Entity::shorten($syndicated,$maxLength,'...'));
 		}
 		return;
 	}
@@ -510,7 +511,7 @@ class ITEMACTIONS extends BaseActions {
 	}
 	
 	/**
-	 * ITEMACTIONS::parse_daylink()
+	 * ItemActions::parse_daylink()
 	 * Parse templatevar daylink
 	 * 
 	 * @param	Void
@@ -518,7 +519,7 @@ class ITEMACTIONS extends BaseActions {
 	 */
 	function parse_daylink()
 	{
-		echo LINK::create_archive_link($this->blog->getID(), i18n::formatted_datetime('%Y-%m-%d',$this->currentItem->timestamp), $this->linkparams);
+		echo Link::create_archive_link($this->blog->getID(), i18n::formatted_datetime('%Y-%m-%d',$this->currentItem->timestamp), $this->linkparams);
 		return;
 	}
 	
@@ -531,7 +532,7 @@ class ITEMACTIONS extends BaseActions {
 
 		// add comments
 		if ($this->showComments && $this->blog->commentsEnabled()) {
-			$comments = new COMMENTS($this->currentItem->itemid);
+			$comments = new Comments($this->currentItem->itemid);
 			$comments->setItemActions($this);
 			$comments->showComments($this->template, $maxToShow, $this->currentItem->closed ? 0 : 1, $this->strHighlight);
 		}
@@ -600,8 +601,8 @@ class ITEMACTIONS extends BaseActions {
 	 * 'plugin variables in items' implementation by Andy
 	 */
 	function highlightAndParse(&$data) {
-		$actions = new BODYACTIONS($this->blog);
-		$parser = new PARSER($actions->getDefinedActions(), $actions);
+		$actions = new BodyActions($this->blog);
+		$parser = new Parser($actions->getDefinedActions(), $actions);
 		$actions->setTemplate($this->template);
 		$actions->setHighlight($this->strHighlight);
 		$actions->setCurrentItem($this->currentItem);

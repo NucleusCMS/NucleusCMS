@@ -17,8 +17,8 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
-class TEMPLATE {
-
+class Template
+{
 	var $id;
 
 	function TEMPLATE($templateid) {
@@ -31,7 +31,7 @@ class TEMPLATE {
 
 	// (static)
 	function createFromName($name) {
-		return new TEMPLATE(TEMPLATE::getIdFromName($name));
+		return new Template(Template::getIdFromName($name));
 	}
 
 	// (static)
@@ -56,7 +56,7 @@ class TEMPLATE {
 	}
 
 	/**
-	 * TEMPLATE::update()
+	 * Template::update()
 	 * Updates the contents of one part of the template
 	 * 
 	 * @param	String	$type	value for nucleus_template.tpartname

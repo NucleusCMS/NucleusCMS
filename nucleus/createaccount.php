@@ -59,7 +59,7 @@ if ( $CONF['AllowMemberCreate'] == 1 )
 		}
 		// after the from is sent it will be validated
 		// POST data will be added as value to treat the user with care (;-))
-		$a = new ACTION();
+		$a = new Action();
 		
 		$message = $a->createAccount();
 		if ( $message != 1 )

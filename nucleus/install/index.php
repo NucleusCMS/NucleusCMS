@@ -999,7 +999,7 @@ function do_install()
 		global $manager;
 		if ( !isset($manager) )
 		{
-			$manager = new MANAGER;
+			$manager = new Manager();
 		}
 
 		$aSkinErrors = installCustomSkins();
@@ -1254,7 +1254,7 @@ function installCustomSkins()
 	}
 
 	include_once($DIR_LIBS . 'skinie.php');
-	$importer = new SKINIMPORT();
+	$importer = new SkinImport();
 
 	foreach ( $aConfSkinsToImport as $skinName )
 	{

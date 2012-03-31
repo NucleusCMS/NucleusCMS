@@ -25,8 +25,8 @@
 
 
 
-class SEARCH {
-
+class Search
+{
 	var $querystring;
 	var $marked;
 	var $inclusive;

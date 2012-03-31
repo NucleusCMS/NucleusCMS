@@ -214,7 +214,7 @@ while ($a_name = array_pop($authors)) {
 		<tr>
 			<td>
 				<b><?php echo $a_name?></b>
-				<input name="author[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden" />
+				<input name="author[<?php echo $idx?>]" value="<?php echo Entity::hsc($a_name)?>" type="hidden" />
 			</td>
 			<td>
 		<?php			$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
@@ -335,9 +335,9 @@ function bc_doConversion() {
 	if ($createnew == 1) {
 		// choose unique name
 		$shortname = 'blogger';
-		if (BLOG::exists($shortname)) {
+		if (Blog::exists($shortname)) {
 			$idx = 1;
-			while (BLOG::exists($shortname . $idx))
+			while (Blog::exists($shortname . $idx))
 				$idx++;
 			$shortname = $shortname . $idx;
 		}
@@ -347,7 +347,7 @@ function bc_doConversion() {
 	}
 
 	// add authors to blog team
-	$b = new BLOG($nucleus_blogid);
+	$b = new Blog($nucleus_blogid);
 	global $catid;
 	$catid = $b->getDefaultCategory();
 
@@ -392,7 +392,7 @@ function bc_convertOneItem($row, $memberid, $nucleus_blogid) {
 
 	echo "<ul>";
 	echo "<li>Blogger ID: $bloggerid </li>";
-	echo "<li>Body:" .  ENTITY::hsc(substr($row['body'],0,20)) . "...(time: " . $timestamp . ") </li>";
+	echo "<li>Body:" .  Entity::hsc(substr($row['body'],0,20)) . "...(time: " . $timestamp . ") </li>";
 	echo "<li>author: " . $row['author'] ;
 	echo " (nucleus-id: " . $nucl_id . ")</li>";
 
@@ -456,7 +456,7 @@ function bc_addComment($nucleus_itemid, $data) {
 	else
 		$c_userid = $c_email;
 
-	echo '<div>',ENTITY::hsc(shorten($c_text,50,'...')),'</div><ul>';
+	echo '<div>',Entity::hsc(shorten($c_text,50,'...')),'</div><ul>';
 //	echo '<li>Date: ',strftime('%x %X',$c_timestamp),'</li>';
 	echo "<li>Name: $c_name</li>";
 //	echo "<li>Email: $c_email</li>";

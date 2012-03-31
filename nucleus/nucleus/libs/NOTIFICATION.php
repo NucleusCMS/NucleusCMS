@@ -17,7 +17,7 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
-class NOTIFICATION
+class Notification
 {
 	static private $charset;
 	static private $scheme = 'B';

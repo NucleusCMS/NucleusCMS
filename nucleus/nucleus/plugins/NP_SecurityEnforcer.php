@@ -181,8 +181,8 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		{
 			$data['success'] = 0;
 			$data['allowlocal'] = 0;
-			$info = sprintf(_SECURITYENFORCER_LOGIN_DISALLOWED, ENTITY::hsc($login), ENTITY::hsc($ip));
-			ACTIONLOG::add(INFO, $info);
+			$info = sprintf(_SECURITYENFORCER_LOGIN_DISALLOWED, Entity::hsc($login), Entity::hsc($ip));
+			ActionLog::add(INFO, $info);
 		}
 		return;
 	}

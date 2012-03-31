@@ -173,7 +173,7 @@
 		}
 		else
 		{
-			$blog = new BLOG($blogid);
+			$blog = new Blog($blogid);
 			$catid = $blog->getCategoryIdFromName($category);
 		}
 
@@ -267,12 +267,12 @@
 		$amount = intval($amount);
 
 		// 1. login
-		$mem = new MEMBER();
+		$mem = new Member();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
 		// 2. check if allowed
-		if (!BLOG::existsID($blogid))
+		if (!Blog::existsID($blogid))
 			return _error(2,"No such blog ($blogid)");
 		if (!$mem->teamRights($blogid))
 			return _error(3,"Not a team member");
@@ -283,7 +283,7 @@
 		// 3. create and return list of recent items
 		// Struct returned has dateCreated, userid, blogid and content
 
-		$blog = new BLOG($blogid);
+		$blog = new Blog($blogid);
 
 		$structarray = array();		// the array in which the structs will be stored
 
@@ -335,17 +335,17 @@
 		global $CONF, $DIR_MEDIA, $DIR_LIBS;
 
 		// - login
-		$mem = new MEMBER();
+		$mem = new Member();
 		if (!$mem->login($username, $password))
 			return _error(1,'Could not log in');
 
 		// - check if team member
-		if (!BLOG::existsID($blogid))
+		if (!Blog::existsID($blogid))
 			return _error(2,"No such blog ($blogid)");
 		if (!$mem->teamRights($blogid))
 			return _error(3,'Not a team member');
 
-		$b = new BLOG($blogid);
+		$b = new Blog($blogid);
 
 		// - decode data
 		$data = $info['bits']; // decoding was done transparantly by xmlrpclib
@@ -381,7 +381,7 @@
 			$filename = i18n::formatted_timedate("%Y%m%d-", time()) . $filename;
 		}
 		
-		$res = MEDIA::addMediaObjectRaw($collection, $filename, $data);
+		$res = Media::addMediaObjectRaw($collection, $filename, $data);
 		if ($res)
 			return _error(10, $res);
 
@@ -395,17 +395,17 @@
 
 	function _categoryList($blogid, $username, $password) {
 		// 1. login
-		$mem = new MEMBER();
+		$mem = new Member();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
 		// check if on team and blog exists
-		if (!BLOG::existsID($blogid))
+		if (!Blog::existsID($blogid))
 			return _error(2,"No such blog ($blogid)");
 		if (!$mem->teamRights($blogid))
 			return _error(3,"Not a team member");
 
-		$b = new BLOG($blogid);
+		$b = new Blog($blogid);
 
 		$categorystruct = array();
 
@@ -436,7 +436,7 @@
 		global $manager;
 
 		// 1. login
-		$mem = new MEMBER();
+		$mem = new Member();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
@@ -450,7 +450,7 @@
 		// 3. return the item
 		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
 
-		$b = new BLOG($blogid);
+		$b = new Blog($blogid);
 		if ($b->convertBreaks()) {
 			$item['body'] = removeBreaks($item['body']);
 			$item['more'] = removeBreaks($item['more']);

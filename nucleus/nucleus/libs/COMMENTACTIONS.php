@@ -14,10 +14,11 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id: COMMENTACTIONS.php 1626 2012-01-09 15:46:54Z sakamocchi $
+ * @version $Id: CommentActions.php 1626 2012-01-09 15:46:54Z sakamocchi $
  */
 
-class COMMENTACTIONS extends BaseActions {
+class CommentActions extends BaseActions
+{
 
 	// ref to COMMENTS object which is using this object to handle
 	// its templatevars
@@ -26,10 +27,10 @@ class COMMENTACTIONS extends BaseActions {
 	// template to use to parse the comments
 	var $template;
 
-	// comment currenlty being handled (mysql result assoc array; see COMMENTS::showComments())
+	// comment currenlty being handled (mysql result assoc array; see Comments::showComments())
 	var $currentComment;
 
-	function COMMENTACTIONS(&$comments) {
+	function __construct(&$comments) {
 		// call constructor of superclass first
 		$this->BaseActions();
 
@@ -93,7 +94,7 @@ class COMMENTACTIONS extends BaseActions {
 	}
 	
 	/**
-	 * COMMENTACTIONS::setCurrentComment()
+	 * CommentActions::setCurrentComment()
 	 * Set $currentcommentid and $currentcommentarray
 	 * 
 	 * @param	Array	$comment	array with comment elements
@@ -127,7 +128,7 @@ class COMMENTACTIONS extends BaseActions {
 				$comment['userid'] = $mem->getEmail();
 			}
 			
-			$comment['userlinkraw'] = LINK::create_link(
+			$comment['userlinkraw'] = Link::create_link(
 										'member',
 										array(
 											'memberid' => $comment['memberid'],
@@ -223,7 +224,7 @@ class COMMENTACTIONS extends BaseActions {
 	}
 	
 	/**
-	 * COMMENTACTIONS::parse_date()
+	 * CommentActions::parse_date()
 	 * Parse templatevar date
 	 * 
 	 * @format	String	$format	Date format according to PHP
@@ -263,7 +264,7 @@ class COMMENTACTIONS extends BaseActions {
 	}
 
 	/**
-	 * COMMENTACTIONS::parse_excerpt()
+	 * CommentActions::parse_excerpt()
 	 * Parse templatevar excerpt
 	 * 
 	 * @param	Void
@@ -271,7 +272,7 @@ class COMMENTACTIONS extends BaseActions {
 	 */
 	function parse_excerpt()
 	{
-		echo ENTITY::hen(ENTITY::shorten($this->currentComment['body'], 60, '...'));
+		echo Entity::hen(Entity::shorten($this->currentComment['body'], 60, '...'));
 	}
 
 	/**
@@ -296,7 +297,7 @@ class COMMENTACTIONS extends BaseActions {
 	}
 	
 	/**
-	 * COMMENTACTIONS::parse_itemlink()
+	 * CommentActions::parse_itemlink()
 	 * Parse templatevar itemlink
 	 * 
 	 * @param	Void
@@ -304,7 +305,7 @@ class COMMENTACTIONS extends BaseActions {
 	 */
 	function parse_itemlink()
 	{
-		echo LINK::create_link(
+		echo Link::create_link(
 			'item',
 			array(
 				'itemid' => $this->commentsObj->itemid,
@@ -345,7 +346,7 @@ class COMMENTACTIONS extends BaseActions {
 	}
 	
 	/**
-	 * COMMENTACTIONS::parse_time()
+	 * CommentActions::parse_time()
 	 * Parse templatevar time
 	 * 
 	 * @param	string	$format	datetime format referring to strftime() in PHP's built-in function
@@ -424,12 +425,12 @@ class COMMENTACTIONS extends BaseActions {
 		}
 		else
 		{
-			echo ENTITY::hsc($this->currentComment['user']);
+			echo Entity::hsc($this->currentComment['user']);
 		}
 	}
 
 	/**
-	 * COMMENTACTIONS::parse_useremail()
+	 * CommentActions::parse_useremail()
 	 * Output mail address
 	 * 
 	 * @param	void

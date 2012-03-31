@@ -16,13 +16,13 @@
  * hoping to diminish execution time
  *
  * The class is a singleton, meaning that there will be only one object of it
- * active at all times. The object can be requested using MANAGER::instance()
+ * active at all times. The object can be requested using Manager::instance()
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
-class MANAGER
+class Manager
 {
 
 	/**
@@ -60,7 +60,7 @@ class MANAGER
 	/**
 	 * Returns the only instance of this class. Creates the instance if it
 	 * does not yet exists. Users should use this function as
-	 * $manager =& MANAGER::instance(); to get a reference to the object
+	 * $manager =& Manager::instance(); to get a reference to the object
 	 * instead of a copy
 	 */
 	function &instance()
@@ -68,7 +68,7 @@ class MANAGER
 		static $instance = array();
 		if ( empty($instance) )
 		{
-			$instance[0] = new MANAGER();
+			$instance[0] = new Manager();
 		}
 		return $instance[0];
 	}
@@ -113,7 +113,7 @@ class MANAGER
 			// load class if needed
 			$this->loadClass('ITEM');
 			// load item object
-			$item = ITEM::getitem($itemid, $allowdraft, $allowfuture);
+			$item = Item::getitem($itemid, $allowdraft, $allowfuture);
 			$this->items[$itemid] = $item;
 		}
 		return $item;
@@ -134,7 +134,7 @@ class MANAGER
 	function existsItem($id,$future,$draft)
 	{
 		$this->_loadClass('ITEM','ITEM.php');
-		return ITEM::exists($id,$future,$draft);
+		return Item::exists($id,$future,$draft);
 	}
 
 	/**
@@ -157,7 +157,7 @@ class MANAGER
 			// load class if needed
 			$this->_loadClass('BLOG','BLOG.php');
 			// load blog object
-			$blog = new BLOG($blogid);
+			$blog = new Blog($blogid);
 			$this->blogs[$blogid] =& $blog;
 		}
 		return $blog;
@@ -169,7 +169,7 @@ class MANAGER
 	function existsBlog($name)
 	{
 		$this->_loadClass('BLOG','BLOG.php');
-		return BLOG::exists($name);
+		return Blog::exists($name);
 	}
 
 	/**
@@ -178,7 +178,7 @@ class MANAGER
 	function existsBlogID($id)
 	{
 		$this->_loadClass('BLOG','BLOG.php');
-		return BLOG::existsID($id);
+		return Blog::existsID($id);
 	}
 
 	/**
@@ -190,7 +190,7 @@ class MANAGER
 
 		if ( !$template )
 		{
-			$template = TEMPLATE::read($templateName);
+			$template = Template::read($templateName);
 			$this->templates[$templateName] =& $template;
 		}
 		return $template;
@@ -207,7 +207,7 @@ class MANAGER
 			// load class if needed
 			$this->_loadClass('KARMA','KARMA.php');
 			// create KARMA object
-			$karma = new KARMA($itemid);
+			$karma = new Karma($itemid);
 			$this->karma[$itemid] =& $karma;
 		}
 		return $karma;
@@ -225,7 +225,7 @@ class MANAGER
 			// load class if needed
 			$this->_loadClass('MEMBER','MEMBER.php');
 			// create MEMBER object
-			$mem =& MEMBER::createFromID($memberid);
+			$mem =& Member::createFromID($memberid);
 			$this->members[$memberid] =& $mem;
 		}
 		return $mem;
@@ -264,7 +264,7 @@ class MANAGER
 	}
 
 	/**
-	 * MANAGER::_loadPlugin()
+	 * Manager::_loadPlugin()
 	 * loading a certain plugin
 	 * 
 	 * @param	string $name plugin name
@@ -284,7 +284,7 @@ class MANAGER
 					{
 						define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
 					}
-					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name)); 
+					ActionLog::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name)); 
 					return 0;
 				}
 				
@@ -294,7 +294,7 @@ class MANAGER
 				// check if class exists (avoid errors in eval'd code)
 				if ( !class_exists($name) )
 				{
-					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
+					ActionLog::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
 					return 0;
 				}
 				
@@ -310,7 +310,7 @@ class MANAGER
 				  && !$this->plugins[$name]->supportsFeature('SqlTablePrefix') )
 				{
 					unset($this->plugins[$name]);
-					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
+					ActionLog::add(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
 					return 0;
 				}
 				
@@ -320,7 +320,7 @@ class MANAGER
 				  && !$this->plugins[$name]->supportsFeature('SqlApi') )
 				{
 					unset($this->plugins[$name]);
-					ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
+					ActionLog::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
 					return 0;
 				}
 				
@@ -541,7 +541,7 @@ class MANAGER
 	function addTicketHidden()
 	{
 		$ticket = $this->_generateTicket();
-		echo '<input type="hidden" name="ticket" value="', ENTITY::hsc($ticket), '" />';
+		echo '<input type="hidden" name="ticket" value="', Entity::hsc($ticket), '" />';
 		return;
 	}
 

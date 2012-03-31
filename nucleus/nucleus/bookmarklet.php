@@ -98,7 +98,7 @@ function bm_doAddItem()
 	global $member, $manager, $CONF;
 	
 	$manager->loadClass('ITEM');
-	$result = ITEM::createFromRequest();
+	$result = Item::createFromRequest();
 	
 	if ( $result['status'] == 'error' )
 	{
@@ -189,11 +189,11 @@ function bm_doEditItem()
 	}
 	
 	// update item for real
-	ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
+	Item::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
 	
 	if ( $draftid > 0 )
 	{
-		ITEM::delete($draftid);
+		Item::delete($draftid);
 	}
 	
 	// show success message
@@ -233,10 +233,10 @@ function bm_loginAndPassThrough()
 	echo "<input type=\"password\" name=\"password\" value=\"\" /></dd>\n";
 	echo "</dl>\n";
 	echo "<p>\n";
-	echo '<input type=\"hidden\" name="blogid" value="' . ENTITY::hsc($blogid). '" />' . "\n";
-	echo '<input type=\"hidden\" name="logtext" value="' . ENTITY::hsc($log_text) . '" />' . "\n";
-	echo '<input type=\"hidden\" name="loglink" value="' . ENTITY::hsc($log_link) . '" />' . "\n";
-	echo '<input type=\"hidden\" name="loglinktitle" value="' . ENTITY::hsc($log_linktitle) . '" />' . "\n";
+	echo '<input type=\"hidden\" name="blogid" value="' . Entity::hsc($blogid). '" />' . "\n";
+	echo '<input type=\"hidden\" name="logtext" value="' . Entity::hsc($log_text) . '" />' . "\n";
+	echo '<input type=\"hidden\" name="loglink" value="' . Entity::hsc($log_link) . '" />' . "\n";
+	echo '<input type=\"hidden\" name="loglinktitle" value="' . Entity::hsc($log_linktitle) . '" />' . "\n";
 	echo '<button type="submit" name="action" value="login">' . _LOGIN . "</button>\n";
 	echo "</p>\n";
 	echo "</form>\n";
@@ -255,7 +255,7 @@ function bm_doShowForm()
 	$log_link = requestVar('loglink');
 	$log_linktitle = requestVar('loglinktitle');
 	
-	if ( !BLOG::existsID($blogid) )
+	if ( !Blog::existsID($blogid) )
 	{
 		bm_doError(_ERROR_NOSUCHBLOG);
 	}
@@ -269,7 +269,7 @@ function bm_doShowForm()
 	
 	if ( $log_text )
 	{
-		$logje .= '<blockquote><div>"' . ENTITY::hsc($log_text) . '"</div></blockquote>' . "\n";
+		$logje .= '<blockquote><div>"' . Entity::hsc($log_text) . '"</div></blockquote>' . "\n";
 	}
 	
 	if ( !$log_linktitle )
@@ -279,13 +279,13 @@ function bm_doShowForm()
 	
 	if ( $log_link )
 	{
-		$logje .= '<a href="' . ENTITY::hsc($log_link) . '">' . ENTITY::hsc($log_linktitle) . '</a>';
+		$logje .= '<a href="' . Entity::hsc($log_link) . '">' . Entity::hsc($log_linktitle) . '</a>';
 	}
 	
 	$item['body'] = $logje;
-	$item['title'] = ENTITY::hsc($log_linktitle);
+	$item['title'] = Entity::hsc($log_linktitle);
 	
-	$factory = new PAGEFACTORY($blogid);
+	$factory = new PageFactory($blogid);
 	$factory->createAddForm('bookmarklet', $item);
 	return;
 }
@@ -317,7 +317,7 @@ function bm_doEditForm()
 		$item['more'] = removeBreaks($item['more']);
 	}
 	
-	$formfactory = new PAGEFACTORY($blog->getID() );
+	$formfactory = new PageFactory($blog->getID() );
 	$formfactory->createEditForm('bookmarklet', $item);
 	return;
 }

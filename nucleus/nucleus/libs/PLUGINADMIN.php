@@ -18,17 +18,17 @@
  * @version $Id$
  */
 
-class PluginAdmin {
-
+class PluginAdmin
+{
 	var $strFullName;		// NP_SomeThing
 	var $plugin;			// ref. to plugin object
 	var $bValid;			// evaluates to true when object is considered valid
 	var $admin;				// ref to an admin object
-
+	
 	function PluginAdmin($pluginName)
 	{
 		global $manager;
-        //include_once($DIR_LIBS . 'ADMIN.php');
+		include_once($DIR_LIBS . 'ADMIN.php');
 		include_libs('ADMIN.php',true,true);
 
 		$this->strFullName = 'NP_' . $pluginName;
@@ -47,14 +47,14 @@ class PluginAdmin {
 			doError(_ERROR_INVALID_PLUGIN);
 		}
 
-		$this->admin = new ADMIN();
+		$this->admin = new Admin();
 		$this->admin->action = 'plugin_' . $pluginName;
 	}
 
 	function start($extraHead = '')
 	{
 		global $CONF;
-		$strBaseHref  = '<base href="' . ENTITY::hsc($CONF['AdminURL']) . '" />';
+		$strBaseHref  = '<base href="' . Entity::hsc($CONF['AdminURL']) . '" />';
 		$extraHead .= $strBaseHref;
 
 		$this->admin->pagehead($extraHead);
@@ -77,7 +77,7 @@ class PluginAdmin {
 			//echo "\n<!--TicketForPlugin skipped-->\n";
 			return;
 		}
-		$ticket=ENTITY::hsc($ticket);
+		$ticket=Entity::hsc($ticket);
  
 ?><script type="text/javascript">
 /*<![CDATA[*/

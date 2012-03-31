@@ -191,13 +191,13 @@ class NP_Ping extends NucleusPlugin
 			$ping_result .= " | ";
 		}
 		
-		ACTIONLOG::add(INFO, $ping_result);
+		ActionLog::add(INFO, $ping_result);
 		return;
 	}
 	
 	public function pingPingomatic()
 	{
-		$b = new BLOG($this->myBlogId);
+		$b = new Blog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'weblogUpdates.ping',
 			array(
@@ -214,7 +214,7 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingWeblogs()
 	{
-		$b = new BLOG($this->myBlogId);
+		$b = new Blog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'weblogupdates.ping',
 			array(
@@ -231,7 +231,7 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingTechnorati()
 	{
-		$b = new BLOG($this->myBlogId);
+		$b = new Blog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'weblogUpdates.ping',
 			array(
@@ -248,7 +248,7 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingBlogRollingDotCom()
 	{
-		$b = new BLOG($this->myBlogId);
+		$b = new Blog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'weblogUpdates.ping',
 			array(
@@ -265,7 +265,7 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingBloGs()
 	{
-		$b = new BLOG($this->myBlogId);
+		$b = new Blog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'weblogUpdates.extendedPing',
 			array(
@@ -282,7 +282,7 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingWebloguesDotCom()
 	{
-		$b = new BLOG($this->myBlogId);
+		$b = new Blog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'weblogUpdates.extendedPing',
 			array(
@@ -299,7 +299,7 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingBloggDe()
 	{
-		$b = new BLOG($this->myBlogId);
+		$b = new Blog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'bloggUpdates.ping',
 			array(

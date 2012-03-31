@@ -18,7 +18,8 @@
  * @version $Id$
  */
 
-class ENCAPSULATE {
+class Encapsulate
+{
 	/**
 	  * Uses $call to call a function using parameters $params
 	  * This function should return the amount of entries shown.
@@ -27,7 +28,7 @@ class ENCAPSULATE {
 	  *
 	  * Passes on the amount of results found (for further encapsulation)
 	  */
-	function doEncapsulate($call, $params, $errorMessage = _ENCAPSULATE_ENCAPSULATE_NOENTRY) {
+	function doEncapsulate($call, $params, $errorMessage = _Encapsulate_Encapsulate_NOENTRY) {
 		// start output buffering
 		ob_start();
 
@@ -52,9 +53,9 @@ class ENCAPSULATE {
 /**
   * A class used to encapsulate a list of some sort inside next/prev buttons
   */
-class NAVLIST extends ENCAPSULATE {
-
-	function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
+class NavList extends Encapsulate
+{
+	function __construct($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
 		$this->action = $action;
 		$this->start = $start;
 		$this->amount = $amount;
@@ -66,7 +67,7 @@ class NAVLIST extends ENCAPSULATE {
 	}
 
 	function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-		$batch = new BATCH($batchtype);
+		$batch = new Barch($batchtype);
 
 		$this->doEncapsulate(
 				array(&$batch, 'showlist'),
@@ -94,7 +95,7 @@ class NAVLIST extends ENCAPSULATE {
 		$minamount = $this->minamount;
 		$maxamount = $this->maxamount;
 		$blogid = $this->blogid;
-		$search = ENTITY::hsc($this->search);
+		$search = Entity::hsc($this->search);
 		$itemid = $this->itemid;
 
 		$prev = $start - $amount;
@@ -159,8 +160,9 @@ class NAVLIST extends ENCAPSULATE {
 /**
  * A class used to encapsulate a list of some sort in a batch selection
  */
-class BATCH extends ENCAPSULATE {
-	function BATCH($type) {
+class Batch extends Encapsulate
+{
+	function __construct($type) {
 		$this->type = $type;
 	}
 

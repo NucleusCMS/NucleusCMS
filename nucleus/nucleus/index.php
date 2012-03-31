@@ -71,12 +71,12 @@ if ( $member->isLoggedIn() && !$member->canLogin() && !$bIsActivation )
 
 if ( $bNeedsLogin )
 {
-	// see ADMIN::login() (sets old action in POST vars)
+	// see Admin::login() (sets old action in POST vars)
 	setOldAction($action);
 	$action = 'showlogin';
 }
 
 sendContentType('text/html', 'admin-' . $action);
 
-$admin = new ADMIN();
+$admin = new Admin();
 $admin->action($action);

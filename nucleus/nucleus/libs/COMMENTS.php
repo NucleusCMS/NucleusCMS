@@ -21,7 +21,8 @@
 if ( !function_exists('requestVar') ) exit;
 require_once dirname(__FILE__) . '/COMMENTACTIONS.php';
 
-class COMMENTS {
+class Comments
+{
 
 	// item for which comment are being displayed
 	var $itemid;
@@ -33,7 +34,7 @@ class COMMENTS {
 	var $commentcount;
 
 	/**
-	 * Creates a new COMMENTS object for the given blog and item
+	 * Creates a new Comments object for the given blog and item
 	 *
 	 * @param $itemid
 	 *		id of the item
@@ -70,8 +71,8 @@ class COMMENTS {
 		global $CONF, $manager;
 
 		// create parser object & action handler
-		$actions = new COMMENTACTIONS($this);
-		$parser = new PARSER($actions->getDefinedActions(),$actions);
+		$actions = new CommentActions($this);
+		$parser = new Parser($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setParser($parser);
 
@@ -132,7 +133,7 @@ class COMMENTS {
 	}
 
 	/**
-	 * COMMENTS::addComment()
+	 * Comments::addComment()
 	 * Adds a new comment to the database
 	 * 
 	 * @param string $timestamp
@@ -161,7 +162,7 @@ class COMMENTS {
 		}
 		
 		// begin if: comment uses a protected member name
-		if ( $CONF['ProtectMemNames'] && !$member->isLoggedIn() && MEMBER::isNameProtected($comment['user']) )
+		if ( $CONF['ProtectMemNames'] && !$member->isLoggedIn() && Member::isNameProtected($comment['user']) )
 		{
 			return _ERROR_COMMENTS_MEMBERNICK;
 		}
@@ -280,7 +281,7 @@ class COMMENTS {
 			
 			if ( $temp['scheme'] )
 			{
-				$message .= LINK::create_item_link($this->itemid) . "\n\n";
+				$message .= Link::create_item_link($this->itemid) . "\n\n";
 			}
 			else
 			{
@@ -318,7 +319,7 @@ class COMMENTS {
 			NOTIFICATION::mail($settings->getNotifyAddress(), $subject, $message, $from, i18n::get_current_charset());
 		}
 		
-		$comment = COMMENT::prepare($comment);
+		$comment = Comment::prepare($comment);
 		
 		$manager->notify('PreAddComment', array('comment' => &$comment, 'spamcheck' => &$spamcheck) );
 		
@@ -362,7 +363,7 @@ class COMMENTS {
 
 
 	/**
-	 * COMMENTS::isValidComment()
+	 * Comments::isValidComment()
 	 * Checks if a comment is valid and call plugins
 	 * that can check if the comment is a spam comment	  
 	 * 

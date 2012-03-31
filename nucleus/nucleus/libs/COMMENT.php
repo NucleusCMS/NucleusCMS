@@ -17,10 +17,10 @@
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
  * @version $Id$
  */
-class COMMENT 
+class Comment 
 {
 	/**
-	 * COMMENT::getComment()
+	 * Comment::getComment()
 	 * Returns the requested comment
 	 *
 	 * @static
@@ -58,7 +58,7 @@ class COMMENT
 	}
 	
 	/**
-	 * COMMENT::prepare()
+	 * Comment::prepare()
 	 * Prepares a comment to be saved
 	 *
 	 * @static
@@ -86,13 +86,13 @@ class COMMENT
 			$comment['userid'] = 'http://' . $comment['userid'];
 		}
 		
-		$comment['body'] = COMMENT::prepareBody($comment['body']);
+		$comment['body'] = Comment::prepareBody($comment['body']);
 		
 		return $comment;
 	}
 	
 	/**
-	 * COMMENT::prepareBody()
+	 * Comment::prepareBody()
 	 * Prepares the body of a comment
 	 *
 	 * @static
@@ -113,7 +113,7 @@ class COMMENT
 		$body = preg_replace("/\n{3,}/", "\n\n", $body);
 		
 		// encode special characters as entities
-		$body = ENTITY::hsc($body);
+		$body = Entity::hsc($body);
 		
 		// trim away whitespace and newlines at beginning and end
 		$body = trim($body);
@@ -136,7 +136,7 @@ class COMMENT
 	}
 	
 	/**
-	 * COMMENT::createLinkCode()
+	 * Comment::createLinkCode()
 	 * Creates a link code for unlinked URLs with different protocols
 	 *
 	 * @static
@@ -200,11 +200,11 @@ class COMMENT
 			$displayedUrl = $url;
 		}
 		
-		return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . ENTITY::hsc(ENTITY::shorten($displayedUrl,30,'...')) . '</a>' . $post;
+		return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . Entity::hsc(Entity::shorten($displayedUrl,30,'...')) . '</a>' . $post;
 	}
 	
 	/**
-	 * COMMENT::prepareBody_cb()
+	 * Comment::prepareBody_cb()
 	 * This method is a callback for creating link codes
 	 * 
 	 * @param	array	$match	elements for achor

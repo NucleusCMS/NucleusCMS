@@ -103,7 +103,7 @@ function gmc_askGreyPath() {
 		</p>
 
 		<ul>
-			<li>GreyMatter path: <input name="grey_scriptpath" size="60" value="<?php echo ENTITY::hsc($guess)?>" /></li>
+			<li>GreyMatter path: <input name="grey_scriptpath" size="60" value="<?php echo Entity::hsc($guess)?>" /></li>
 		</ul>
 
 		<p>
@@ -177,7 +177,7 @@ while ($author = fgets($filehandle,4096)) {
 		<tr>
 			<td>
 				<b><?php echo $a_name?></b>
-				<input name="author[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden" />
+				<input name="author[<?php echo $idx?>]" value="<?php echo Entity::hsc($a_name)?>" type="hidden" />
 			</td>
 			<td>
 		<?php			// TODO: avoid doing this query multiple times
@@ -252,9 +252,9 @@ fclose($filehandle);
 		<h1>Do the conversion!</h1>
 		<p>
 		<input type="hidden" name="authorcount" value="<?php echo $idx?>" />
-		<input type="hidden" name="grey_scriptpath" value="<?php echo ENTITY::hsc($grey_scriptpath)?>" />
-		<input type="hidden" name="grey_datapath" value="<?php echo ENTITY::hsc($grey_datapath)?>" />
-		<input type="hidden" name="grey_dataurl" value="<?php echo ENTITY::hsc($grey_dataurl)?>" />
+		<input type="hidden" name="grey_scriptpath" value="<?php echo Entity::hsc($grey_scriptpath)?>" />
+		<input type="hidden" name="grey_datapath" value="<?php echo Entity::hsc($grey_datapath)?>" />
+		<input type="hidden" name="grey_dataurl" value="<?php echo Entity::hsc($grey_dataurl)?>" />
 		<input type="submit" value="Do the conversion!" />
 		<input type="hidden" name="action" value="doConversion" />
 		</p>
@@ -325,9 +325,9 @@ function gmc_doConversion() {
 	if ($createnew == 1) {
 		// choose unique name
 		$shortname = 'greymatter';
-		if (BLOG::exists($shortname)) {
+		if (Blog::exists($shortname)) {
 			$idx = 1;
-			while (BLOG::exists($shortname . $idx))
+			while (Blog::exists($shortname . $idx))
 				$idx++;
 			$shortname = $shortname . $idx;
 		}
@@ -337,7 +337,7 @@ function gmc_doConversion() {
 	}
 
 	// add authors to blog team
-	$blog = new BLOG($nucleus_blogid);
+	$blog = new Blog($nucleus_blogid);
 	global $catid;
 	$catid = $blog->getDefaultCategory();
 	for ($i=0;$i<$authorcount;$i++)
@@ -526,7 +526,7 @@ function gm_linkmo($url, $mouseover, $text) {
 function gm_popup($filename, $authorid, $text, $width, $height) {
 	global $grey_datapath;
 
-	$res = MEDIA::addMediaObject(MEMBER::createFromID($authorid), "$grey_datapath$filename", $filename);
+	$res = Media::addMediaObject(Member::createFromID($authorid), "$grey_datapath$filename", $filename);
 
 	if ($res != "")
 		die("error copying media files: $res");
@@ -534,7 +534,7 @@ function gm_popup($filename, $authorid, $text, $width, $height) {
 	// TODO: copy file to media directory
 	// TODO: create %popup(...)% code instead
 
-	$text = ENTITY::hsc(stripslashes($text));
+	$text = Entity::hsc(stripslashes($text));
 
 	return "<%popup($filename|$width|$height|$text)%>";
 }

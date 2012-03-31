@@ -14,14 +14,15 @@
  * the special tags in the skins
  *
  * The allowed tags for a type of skinpart are defined by the
- * SKIN::getAllowedActionsForType($type) method
+ * Skin::getAllowedActionsForType($type) method
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id$
  */
 
-class ACTIONS extends BaseActions {
+class Actions extends BaseActions
+{
 
 	// part of the skin currently being parsed ('index', 'item', 'archive',
 	// 'archivelist', 'member', 'search', 'error', 'imagepopup')
@@ -43,9 +44,9 @@ class ACTIONS extends BaseActions {
 	var $amountfound;
 
 	/**
-	 * Constructor for a new ACTIONS object
+	 * Constructor for a new Actions object
 	 */
-	function ACTIONS($type) {
+	function Actions($type) {
 		// call constructor of superclass first
 		$this->BaseActions();
 
@@ -76,13 +77,13 @@ class ACTIONS extends BaseActions {
 	function doForm($filename) {
 		global $DIR_NUCLEUS;
 		array_push($this->parser->actions,'formdata','text','callback','errordiv','ticket');
-		$oldIncludeMode = PARSER::getProperty('IncludeMode');
-		$oldIncludePrefix = PARSER::getProperty('IncludePrefix');
-		PARSER::setProperty('IncludeMode','normal');
-		PARSER::setProperty('IncludePrefix','');
+		$oldIncludeMode = Parser::getProperty('IncludeMode');
+		$oldIncludePrefix = Parser::getProperty('IncludePrefix');
+		Parser::setProperty('IncludeMode','normal');
+		Parser::setProperty('IncludePrefix','');
 		$this->parse_parsedinclude($DIR_NUCLEUS . 'forms/' . $filename . '.template');
-		PARSER::setProperty('IncludeMode',$oldIncludeMode);
-		PARSER::setProperty('IncludePrefix',$oldIncludePrefix);
+		Parser::setProperty('IncludeMode',$oldIncludeMode);
+		Parser::setProperty('IncludePrefix',$oldIncludePrefix);
 		array_pop($this->parser->actions);		// errordiv
 		array_pop($this->parser->actions);		// callback
 		array_pop($this->parser->actions);		// text
@@ -260,10 +261,10 @@ class ACTIONS extends BaseActions {
 	 */
 	function _link($url, $linktext = '')
 	{
-		$u = ENTITY::hsc($url);
+		$u = Entity::hsc($url);
 		$u = preg_replace("/&amp;amp;/",'&amp;',$u); // fix URLs that already had encoded ampersands
 		if ($linktext != '') 
-			$l = '<a href="' . $u .'">'.ENTITY::hsc($linktext).'</a>';
+			$l = '<a href="' . $u .'">'.Entity::hsc($linktext).'</a>';
 		else
 			$l = $u;
 		return $l;
@@ -357,7 +358,7 @@ class ACTIONS extends BaseActions {
 	}
 
 	/**
-	 * ACTIONS::_itemlink()
+	 * Actions::_itemlink()
 	 * Creates an item link and if no id is given a todaylink 
 	 * 
 	 * @param	Integer	$id	id for link
@@ -369,7 +370,7 @@ class ACTIONS extends BaseActions {
 		global $CONF;
 		if ( $id )
 		{
-			echo $this->_link(LINK::create_item_link($id, $this->linkparams), $linktext);
+			echo $this->_link(Link::create_item_link($id, $this->linkparams), $linktext);
 		}
 		else
 		{
@@ -379,7 +380,7 @@ class ACTIONS extends BaseActions {
 	}
 	
 	/**
-	 * ACTIONS::_archivelink)
+	 * Actions::_archivelink)
 	 * Creates an archive link and if no id is given a todaylink 
 	 * 
 	 * @param	Integer	$id	id for link
@@ -391,7 +392,7 @@ class ACTIONS extends BaseActions {
 		global $CONF, $blog;
 		if ( $id )
 		{
-			echo $this->_link(LINK::create_archive_link($blog->getID(), $id, $this->linkparams), $linktext);
+			echo $this->_link(Link::create_archive_link($blog->getID(), $id, $this->linkparams), $linktext);
 		}
 		else
 		{
@@ -438,7 +439,7 @@ class ACTIONS extends BaseActions {
 	function parse_additemform() {
 		global $blog, $CONF;
 		$this->formdata = array(
-			'adminurl' => ENTITY::hsc($CONF['AdminURL']),
+			'adminurl' => Entity::hsc($CONF['AdminURL']),
 			'catid' => $blog->getDefaultCategory()
 		);
 		$blog->InsertJavaScriptInfo();
@@ -487,7 +488,7 @@ class ACTIONS extends BaseActions {
 	}
 
 	/**
-	 * ACTIONS::parse_archivedate()
+	 * Actions::parse_archivedate()
 	  * %archivedate(locale,date format)%
 	 * 
 	 * @paramstring	$locale
@@ -552,7 +553,7 @@ class ACTIONS extends BaseActions {
 	}
 	
 	/**
-	 * ACTIONS::parse_archivelink()
+	 * Actions::parse_archivelink()
 	 *	A link to the archives for the current blog (or for default blog)
 	 *
 	 * @param	String	$linktext	text for link
@@ -563,11 +564,11 @@ class ACTIONS extends BaseActions {
 		global $blog, $CONF;
 		if ( $blog )
 		{
-			echo $this->_link(LINK::create_archivelist_link($blog->getID(),$this->linkparams), $linktext);
+			echo $this->_link(Link::create_archivelist_link($blog->getID(),$this->linkparams), $linktext);
 		}
 		else
 		{
-			echo $this->_link(LINK::create_archivelist_link(), $linktext);
+			echo $this->_link(Link::create_archivelist_link(), $linktext);
 		}
 		return;
 	}
@@ -619,7 +620,7 @@ class ACTIONS extends BaseActions {
 	*	direction: order ascending or descending		  
 	*/
 	function parse_bloglist($template, $bnametype = '', $orderby='number', $direction='asc') {
-		BLOG::showBlogList($template, $bnametype, $orderby, $direction);
+		Blog::showBlogList($template, $bnametype, $orderby, $direction);
 	}
 	
 	/**
@@ -629,19 +630,19 @@ class ACTIONS extends BaseActions {
 		global $blog;
 		switch($which) {
 			case 'id':
-				echo ENTITY::hsc($blog->getID());
+				echo Entity::hsc($blog->getID());
 				break;
 			case 'url':
-				echo ENTITY::hsc($blog->getURL());
+				echo Entity::hsc($blog->getURL());
 				break;
 			case 'name':
-				echo ENTITY::hsc($blog->getName());
+				echo Entity::hsc($blog->getName());
 				break;
 			case 'desc':
-				echo ENTITY::hsc($blog->getDescription());
+				echo Entity::hsc($blog->getDescription());
 				break;
 			case 'short':
-				echo ENTITY::hsc($blog->getShortName());
+				echo Entity::hsc($blog->getShortName());
 				break;
 		}
 	}
@@ -706,7 +707,7 @@ class ACTIONS extends BaseActions {
 	}
 	
 	/**
-	 * ACTIONS::parse_commentform()
+	 * Actions::parse_commentform()
 	 * Parse skinvar commentform
 	 * 
 	 * @param	String	$destinationurl	URI for redirection
@@ -721,7 +722,7 @@ class ACTIONS extends BaseActions {
 		{
 			$args = func_get_args();
 			$destinationurl = $args[1];
-			ACTIONLOG::add(WARNING,_ACTIONURL_NOTLONGER_PARAMATER);
+			ActionLog::add(WARNING,_ACTIONURL_NOTLONGER_PARAMATER);
 		}
 		
 		$actionurl = $CONF['ActionURL'];
@@ -743,7 +744,7 @@ class ACTIONS extends BaseActions {
 		if ( !$destinationurl )
 		{
 			// note: createLink returns an HTML encoded URL
-			$destinationurl = LINK::create_link(
+			$destinationurl = Link::create_link(
 				'item',
 				array(
 					'itemid' => $itemid,
@@ -756,7 +757,7 @@ class ACTIONS extends BaseActions {
 		else
 		{
 			// HTML encode URL
-			$destinationurl = ENTITY::hsc($destinationurl);
+			$destinationurl = Entity::hsc($destinationurl);
 		}
 		
 		// values to prefill
@@ -782,12 +783,12 @@ class ACTIONS extends BaseActions {
 		
 		$this->formdata = array(
 			'destinationurl' => $destinationurl,	// url is already HTML encoded
-			'actionurl' => ENTITY::hsc($actionurl),
+			'actionurl' => Entity::hsc($actionurl),
 			'itemid' => $itemid,
-			'user' => ENTITY::hsc($user),
-			'userid' => ENTITY::hsc($userid),
-			'email' => ENTITY::hsc($email),
-			'body' => ENTITY::hsc($body),
+			'user' => Entity::hsc($user),
+			'userid' => Entity::hsc($userid),
+			'email' => Entity::hsc($email),
+			'body' => Entity::hsc($body),
 			'membername' => $member->getDisplayName(),
 			'rememberchecked' => cookieVar($CONF['CookiePrefix'] .'comment_user')?'checked="checked"':''
 		);
@@ -812,14 +813,14 @@ class ACTIONS extends BaseActions {
 		$template =& $manager->getTemplate($template);
 
 		// create parser object & action handler
-		$actions = new ITEMACTIONS($blog);
-		$parser = new PARSER($actions->getDefinedActions(),$actions);
+		$actions = new ItemActions($blog);
+		$parser = new Parser($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setParser($parser);
-		$item = ITEM::getitem($itemid, 0, 0);
+		$item = Item::getitem($itemid, 0, 0);
 		$actions->setCurrentItem($item);
 
-		$comments = new COMMENTS($itemid);
+		$comments = new Comments($itemid);
 		$comments->setItemActions($actions);
 		$comments->showComments($template, -1, 1, $highlight);	// shows ALL comments
 	}
@@ -830,7 +831,7 @@ class ACTIONS extends BaseActions {
 	function parse_errordiv() {
 		global $errormessage;
 		if ($errormessage)
-			echo '<div class="error">', ENTITY::hsc($errormessage),'</div>';
+			echo '<div class="error">', Entity::hsc($errormessage),'</div>';
 	}
 	
 	/**
@@ -869,11 +870,11 @@ class ACTIONS extends BaseActions {
 	function parse_image($what = 'imgtag') {
 		global $CONF;
 
-		$imagetext 	= ENTITY::hsc(requestVar('imagetext'));
+		$imagetext 	= Entity::hsc(requestVar('imagetext'));
 		$imagepopup = requestVar('imagepopup');
 		$width 		= intRequestVar('width');
 		$height 	= intRequestVar('height');
-		$fullurl 	= ENTITY::hsc($CONF['MediaURL'] . $imagepopup);
+		$fullurl 	= Entity::hsc($CONF['MediaURL'] . $imagepopup);
 
 		switch($what)
 		{
@@ -901,7 +902,7 @@ class ACTIONS extends BaseActions {
 	 * Parse skinvar imagetext
 	 */
 	function parse_imagetext() {
-		echo ENTITY::hsc(requestVar('imagetext'));
+		echo Entity::hsc(requestVar('imagetext'));
 	}
 
 	/**
@@ -943,14 +944,14 @@ class ACTIONS extends BaseActions {
 
 		switch ($format) {
 			case 'xml':
-				echo ENTITY::hen($item['title']);
+				echo Entity::hen($item['title']);
 				break;
 			case 'raw':
 				echo $item['title'];
 				break;
 			case 'attribute':
 			default:
-				echo ENTITY::hsc(strip_tags($item['title']));
+				echo Entity::hsc(strip_tags($item['title']));
 				break;
 		}
 	}
@@ -973,7 +974,7 @@ class ACTIONS extends BaseActions {
 	}
 
 	/**
-	 * ACTIONS::parse_member()
+	 * Actions::parse_member()
 	 * Parse skinvar member
 	 * (includes a member info thingie)
 	 * 
@@ -990,22 +991,22 @@ class ACTIONS extends BaseActions {
 			switch( $what )
 			{
 				case 'name':
-					echo ENTITY::hsc($memberinfo->getDisplayName());
+					echo Entity::hsc($memberinfo->getDisplayName());
 					break;
 				case 'realname':
-					echo ENTITY::hsc($memberinfo->getRealName());
+					echo Entity::hsc($memberinfo->getRealName());
 					break;
 				case 'notes':
-					echo ENTITY::hsc($memberinfo->getNotes());
+					echo Entity::hsc($memberinfo->getNotes());
 					break;
 				case 'url':
-					echo ENTITY::hsc($memberinfo->getURL());
+					echo Entity::hsc($memberinfo->getURL());
 					break;
 				case 'email':
-					echo ENTITY::hsc($memberinfo->getEmail());
+					echo Entity::hsc($memberinfo->getEmail());
 					break;
 				case 'id':
-					echo ENTITY::hsc($memberinfo->getID());
+					echo Entity::hsc($memberinfo->getID());
 					break;
 			}
 		}
@@ -1035,9 +1036,9 @@ class ACTIONS extends BaseActions {
 					break;
 				case 'yourprofileurl':
 					if ($CONF['URLMode'] == 'pathinfo')
-						echo LINK::create_member_link($member->getID());
+						echo Link::create_member_link($member->getID());
 					else
-						echo $CONF['IndexURL'] . LINK::create_member_link($member->getID());
+						echo $CONF['IndexURL'] . Link::create_member_link($member->getID());
 					break;
 			}
 		}
@@ -1045,7 +1046,7 @@ class ACTIONS extends BaseActions {
 	}
 
 	/**
-	 * LINK::parse_membermailform()
+	 * Link::parse_membermailform()
 	 * Parse skinvar membermailform
 	 * 
 	 * @param	Integer	$rows	the height for textarea
@@ -1061,11 +1062,11 @@ class ACTIONS extends BaseActions {
 		{
 			if ( $CONF['URLMode'] == 'pathinfo' )
 			{
-				$desturl = LINK::create_member_link($memberid);
+				$desturl = Link::create_member_link($memberid);
 			}
 			else
 			{
-				$desturl = $CONF['IndexURL'] . LINK::create_member_link($memberid);
+				$desturl = $CONF['IndexURL'] . Link::create_member_link($memberid);
 			}
 		}
 		
@@ -1073,13 +1074,13 @@ class ACTIONS extends BaseActions {
 		$frommail = postVar('frommail');
 		
 		$this->formdata = array(
-			'url' => ENTITY::hsc($desturl),
-			'actionurl' => ENTITY::hsc($CONF['ActionURL']),
+			'url' => Entity::hsc($desturl),
+			'actionurl' => Entity::hsc($CONF['ActionURL']),
 			'memberid' => $memberid,
 			'rows' => $rows,
 			'cols' => $cols,
-			'message' => ENTITY::hsc($message),
-			'frommail' => ENTITY::hsc($frommail)
+			'message' => Entity::hsc($message),
+			'frommail' => Entity::hsc($frommail)
 		);
 		
 		if ( $member->isLoggedIn() )
@@ -1124,14 +1125,14 @@ class ACTIONS extends BaseActions {
 		switch ( $format )
 		{
 			case 'xml':
-				echo ENTITY::hen($itemtitlenext);
+				echo Entity::hen($itemtitlenext);
 				break;
 			case 'raw':
 				echo $itemtitlenext;
 				break;
 			case 'attribute':
 			default:
-				echo ENTITY::hsc($itemtitlenext);
+				echo Entity::hsc($itemtitlenext);
 				break;
 		}
 	}
@@ -1158,9 +1159,9 @@ class ACTIONS extends BaseActions {
 		global $CONF;
 		if ($imgurl == '') {
 			$imgurl = $CONF['AdminURL'] . 'nucleus.gif';
-		} else if (PARSER::getProperty('IncludeMode') == 'skindir'){
+		} else if (Parser::getProperty('IncludeMode') == 'skindir'){
 			// when skindit IncludeMode is used: start from skindir
-			$imgurl = $CONF['SkinsURL'] . PARSER::getProperty('IncludePrefix') . $imgurl;
+			$imgurl = $CONF['SkinsURL'] . Parser::getProperty('IncludePrefix') . $imgurl;
 		}
 
 		$this->formdata = array(
@@ -1300,9 +1301,9 @@ class ACTIONS extends BaseActions {
 		$row['more'] = '<span id="prevmore"></span>';
 		$row['itemlink'] = '';
 		$row['itemid'] = 0; $row['blogid'] = $blog->getID();
-		echo TEMPLATE::fill($template['ITEM_HEADER'],$row);
-		echo TEMPLATE::fill($template['ITEM'],$row);
-		echo TEMPLATE::fill($template['ITEM_FOOTER'],$row);
+		echo Template::fill($template['ITEM_HEADER'],$row);
+		echo Template::fill($template['ITEM'],$row);
+		echo Template::fill($template['ITEM_FOOTER'],$row);
 	}
 
 	/*
@@ -1315,7 +1316,7 @@ class ACTIONS extends BaseActions {
 	}
 	
 	/**
-	 * ACTIONS::parse_previtemtitle()
+	 * Actions::parse_previtemtitle()
 	 * Parse skinvar previtemtitle
 	 * (include itemtitle of prev item)
 	 * 
@@ -1329,14 +1330,14 @@ class ACTIONS extends BaseActions {
 		switch ( $format )
 		{
 			case 'xml':
-				echo ENTITY::hen($itemtitleprev);
+				echo Entity::hen($itemtitleprev);
 				break;
 			case 'raw':
 				echo $itemtitleprev;
 				break;
 			case 'attribute':
 			default:
-				echo ENTITY::hsc($itemtitleprev);
+				echo Entity::hsc($itemtitleprev);
 				break;
 		}
 		return;
@@ -1362,14 +1363,14 @@ class ACTIONS extends BaseActions {
 	 */
 	function parse_query() {
 		global $query;
-		echo ENTITY::hsc($query);
+		echo Entity::hsc($query);
 	}
 	
 	/**
 	 * Parse skinvar referer
 	 */
 	function parse_referer() {
-		echo ENTITY::hsc(serverVar('HTTP_REFERER'));
+		echo Entity::hsc(serverVar('HTTP_REFERER'));
 	}
 
 	/**
@@ -1385,7 +1386,7 @@ class ACTIONS extends BaseActions {
 		// use default blog when no blog is selected
 		$this->formdata = array(
 			'id' => $blog?$blog->getID():$CONF['DefaultBlog'],
-			'query' => ENTITY::hsc(getVar('query')),
+			'query' => Entity::hsc(getVar('query')),
 		);
 		$this->doForm('searchform');
 	}
@@ -1464,7 +1465,7 @@ class ACTIONS extends BaseActions {
 	}
 
 	/**
-	 * ACTIONS::parse_todaylink()
+	 * Actions::parse_todaylink()
 	 * Parse skinvar todaylink
 	 * A link to the today page (depending on selected blog, etc...)
 	 *
@@ -1476,7 +1477,7 @@ class ACTIONS extends BaseActions {
 		global $blog, $CONF;
 		if ( $blog )
 		{
-			echo $this->_link(LINK::create_blogid_link($blog->getID(),$this->linkparams), $linktext);
+			echo $this->_link(Link::create_blogid_link($blog->getID(),$this->linkparams), $linktext);
 		}
 		else
 		{

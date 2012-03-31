@@ -17,15 +17,16 @@
  * @version $Id$
  */
 
-class BAN {
-
+class Ban
+{
 	/**
-	  * Checks if a given IP is banned from commenting/voting
-	  *
-	  * Returns 0 when not banned, or a BANINFO object containing the
-	  * message and other information of the ban
-	  */
-	function isBanned($blogid, $ip) {
+	 * Checks if a given IP is banned from commenting/voting
+	 *
+	 * Returns 0 when not banned, or a BanInfo object containing the
+	 * message and other information of the ban
+	 */
+	public function isBanned($blogid, $ip)
+	{
 		$blogid = intval($blogid);
 		$query = 'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid;
 		$res = sql_query($query);
@@ -33,13 +34,13 @@ class BAN {
 			$found = i18n::strpos ($ip, $obj->iprange);
 			if (!($found === false))
 				// found a match!
-					return new BANINFO($obj->iprange, $obj->reason);
+					return new BanInfo($obj->iprange, $obj->reason);
 		}
 		return 0;
 	}
 
 	/**
-	 * BAN::addBan()
+	 * Ban::addBan()
 	 * Adds a new ban to the banlist. Returns 1 on success, 0 on error
 	 * 
 	 * @param	Integer	$blogid	ID for weblog
@@ -48,7 +49,7 @@ class BAN {
 	 * @return	Boolean
 	 * 
 	 */
-	function addBan($blogid, $iprange, $reason)
+	public function addBan($blogid, $iprange, $reason)
 	{
 		global $manager;
 		
@@ -79,35 +80,36 @@ class BAN {
 	}
 	
 	/**
-	  * Removes a ban from the banlist (correct iprange is needed as argument)
-	  * Returns 1 on success, 0 on error
-	  */
-	function removeBan($blogid, $iprange) {
+	 * Removes a ban from the banlist (correct iprange is needed as argument)
+	 * Returns 1 on success, 0 on error
+	 */
+	public function removeBan($blogid, $iprange)
+	{
 		global $manager;
 		$blogid = intval($blogid);
-
+		
 		$manager->notify('PreDeleteBan', array('blogid' => $blogid, 'range' => $iprange));
-
+		
 		$query = 'DELETE FROM '.sql_table('ban')." WHERE blogid=$blogid and iprange='" .sql_real_escape_string($iprange). "'";
 		sql_query($query);
-
+		
 		$result = (sql_affected_rows() > 0);
-
+		
 		$manager->notify('PostDeleteBan', array('blogid' => $blogid, 'range' => $iprange));
-
+		
 		return $result;
 	}
 }
 
-class BANINFO {
-	var $iprange;
-	var $message;
-
-	function BANINFO($iprange, $message) {
+class BanInfo
+{
+	public $iprange;
+	public $message;
+	
+	public function __construct($iprange, $message)
+	{
 		$this->iprange = $iprange;
 		$this->message = $message;
+		return;
 	}
 }
-
-
-?>

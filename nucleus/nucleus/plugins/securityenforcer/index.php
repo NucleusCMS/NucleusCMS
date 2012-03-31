@@ -77,8 +77,8 @@ if ( sql_num_rows($result) )
 	while( $row = sql_fetch_assoc($result) )
 	{
 		echo '<tr>';
-		echo '<td>'.ENTITY::hsc($row['login']).'</td>';
-		echo '<td><input type="checkbox" name="unlock[]" value="'.ENTITY::hsc($row['login']).'" />'._SECURITYENFORCER_UNLOCK.'</td>';
+		echo '<td>'.Entity::hsc($row['login']).'</td>';
+		echo '<td><input type="checkbox" name="unlock[]" value="'.Entity::hsc($row['login']).'" />'._SECURITYENFORCER_UNLOCK.'</td>';
 		echo '</tr>';
 	}
 }

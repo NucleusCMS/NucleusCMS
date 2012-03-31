@@ -565,7 +565,7 @@ abstract class NucleusPlugin
 		switch ( $context )
 		{
 			case 'member':
-				if ( !MEMBER::existsID($contextid) )
+				if ( !Member::existsID($contextid) )
 				{
 					return 0;
 				}

@@ -23,7 +23,7 @@ require('./config.php');
 include_libs('ACTION.php',true,false);
 
 $action = requestVar('action');
-$a = new ACTION();
+$a = new Action();
 $errorInfo = $a->doAction($action);
 
 if ( $errorInfo )

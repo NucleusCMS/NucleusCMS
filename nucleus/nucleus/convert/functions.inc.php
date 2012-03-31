@@ -285,7 +285,7 @@ class BlogImport {
 			case 'NucleusMemberOptions':
 				$res = sql_query('SELECT mname as text, mnumber as value FROM '.sql_table('member'));
 				while ($o = mysql_fetch_object($res)) {
-					echo '<option value="'.ENTITY::hsc($o->value).'">'.ENTITY::hsc($o->text).'</option>';
+					echo '<option value="'.Entity::hsc($o->value).'">'.Entity::hsc($o->text).'</option>';
 				}
 				break;
 // ----------------------------------------------------------------------------------------
@@ -324,7 +324,7 @@ class BlogImport {
 						<tr>
 							<td>
 								<strong><?php echo $a_name?></strong>
-								<input name="author[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden" />
+								<input name="author[<?php echo $idx?>]" value="<?php echo Entity::hsc($a_name)?>" type="hidden" />
 							</td>
 							<td>
 								<select name="memberid[<?php echo $idx?>]">
@@ -382,7 +382,7 @@ class BlogImport {
 						<tr>
 							<td>
 								<strong><?php echo $a_name?></strong>
-								<input name="category[<?php echo $idx?>]" value="<?php echo ENTITY::hsc($a_name)?>" type="hidden" />
+								<input name="category[<?php echo $idx?>]" value="<?php echo Entity::hsc($a_name)?>" type="hidden" />
 							</td>
 							<td>
 								<select name="catid[<?php echo $idx?>]">
@@ -460,9 +460,9 @@ class BlogImport {
 		if ($createnew == 1) {
 			// choose unique name
 			$shortname = 'import';
-			if (BLOG::exists($shortname)) {
+			if (Blog::exists($shortname)) {
 				$idx = 1;
-				while (BLOG::exists($shortname . $idx))
+				while (Blog::exists($shortname . $idx))
 					$idx++;
 				$shortname = $shortname . $idx;
 			}
@@ -705,7 +705,7 @@ class BlogImport {
 	 * Called by XML parser for data inside elements
 	 */
 	function characterData ($parser, $data) {
-		if ($this->bDebug) echo 'NEW DATA: ', ENTITY::hsc($data), '<br />';
+		if ($this->bDebug) echo 'NEW DATA: ', Entity::hsc($data), '<br />';
 		$this->cdata .= $data;
 	}
 

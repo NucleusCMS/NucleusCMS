@@ -22,8 +22,8 @@ require_once dirname(__FILE__) . '/BaseActions.php';
  * This is the parser class of Nucleus. It is used for various things (skin parsing,
  * form generation, ...)
  */
-class PARSER {
-
+class Parser
+{
 	// array with the names of all allowed actions
 	var $actions;
 

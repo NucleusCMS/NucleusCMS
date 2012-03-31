@@ -13,17 +13,17 @@
  * This class is a collections of functions that produce links
  * 
  * All functions in this clss should only be called statically,
- * for example: LINK::create_item_link(...)
+ * for example: Link::create_item_link(...)
  * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2011 The Nucleus Group
  * @version $Id$
  */
-class LINK
+class Link
 {
 
 	/**
-	 * LINK::create_item_link()
+	 * Link::create_item_link()
 	 * Create a link to an item
 	 * @static
 	 * @param $itemid	item id
@@ -34,7 +34,7 @@ class LINK
 	}
 
 	/**
-	 * LINK::create_member_link()
+	 * Link::create_member_link()
 	 * Create a link to a member
 	 * 
 	 * @static
@@ -46,7 +46,7 @@ class LINK
 	}
 	
 	/**
-	 * LINK::create_category_link()
+	 * Link::create_category_link()
 	 * Create a link to a category
 	 * 
 	 * @static
@@ -58,7 +58,7 @@ class LINK
 	}
 
 	/**
-	 * LINK::cteate_archive_link()
+	 * Link::cteate_archive_link()
 	 * Create a link to an archive
 	 * 
 	 * @static
@@ -71,7 +71,7 @@ class LINK
 	}
 
 	/**
-	 * LINK::create_archivelist_link()
+	 * Link::create_archivelist_link()
 	 * Create a link to an archive list
 	 * 
 	 * @static
@@ -83,7 +83,7 @@ class LINK
 	}
 
 	/**
-	 * LINK::create_blogid_link()
+	 * Link::create_blogid_link()
 	 * Create a link to a blog
 	 * 
 	 * @static
@@ -95,7 +95,7 @@ class LINK
 	}
 
 	/**
-	 * LINK::create_link()
+	 * Link::create_link()
 	 * Create a link
 	 * 
 	 * Universell function that creates link of different types (like item, blog ...)
@@ -188,7 +188,7 @@ class LINK
 				break;
 		}
 	
-		return LINK::add_link_params($url, (isset($params['extra'])? $params['extra'] : null));
+		return Link::add_link_params($url, (isset($params['extra'])? $params['extra'] : null));
 	}
 	
 	static private function add_link_params($link, $params)
@@ -246,7 +246,7 @@ class LINK
 	}
 
 	/**
-	 * LINK::create_blog_link()
+	 * Link::create_blog_link()
 	 * Create an link to a blog
 	 * 
 	 * This function considers the URLMode of the blog

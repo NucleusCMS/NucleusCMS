@@ -1,9 +1,9 @@
 <?php
 
-class ENTITY
+class Entity
 {
 	/**
-	 * ENTITY::hen
+	 * Entity::hen
 	 * htmlentities wrapper
 	 * 
 	 * @static
@@ -22,7 +22,7 @@ class ENTITY
 	}
 	
 	/**
-	 * ENTITY::hsc
+	 * Entity::hsc
 	 * htmlspecialchars wrapper
 	 * 
 	 * NOTE: htmlspecialchars_decode() is ASCII-to-ACII conversion
@@ -46,7 +46,7 @@ class ENTITY
 	}
 	
 	/**
-	 * ENTITY::strip_tags()
+	 * Entity::strip_tags()
 	 * Strip HTML tags from a string
 	 * 
 	 * This function is a bit more intelligent than a regular call to strip_tags(),
@@ -131,7 +131,7 @@ class ENTITY
 	}
 	
 	/**
-	 * ENTITY::highlight()
+	 * Entity::highlight()
 	 * highlights a specific query in a given HTML text (not within HTML tags)
 	 * 
 	 * @static
@@ -181,7 +181,7 @@ class ENTITY
 	}
 	
 	/**
-	 * ENTITY::anchor_footnoting()
+	 * Entity::anchor_footnoting()
 	 * change strings with footnoticing generated from anchor elements
 	 * 
 	 * @static
@@ -215,19 +215,19 @@ class ENTITY
 	 */
 	
 	/**
-	 * ENTITY::named_to_numeric()
+	 * Entity::named_to_numeric()
 	 * 
 	 * @deprecated
 	 * @param String $string
 	 */
 	function named_to_numeric ($string)
 	{
-		$string = preg_replace('/(&[0-9A-Za-z]+)(;?\=?|([^A-Za-z0-9\;\:\.\-\_]))/e', "entity::_named('\\1', '\\2') . '\\3'", $string);
+		$string = preg_replace('/(&[0-9A-Za-z]+)(;?\=?|([^A-Za-z0-9\;\:\.\-\_]))/e', "Entity::_named('\\1', '\\2') . '\\3'", $string);
 		return $string;
 	}
 	
 	/**
-	 * ENTITY::named_to_numeric()
+	 * Entity::named_to_numeric()
 	 * 
 	 * @deprecated
 	 * @param String $string
@@ -240,7 +240,7 @@ class ENTITY
 	}
 	
 	/**
-	 * ENTITY::numeric_to_utf8()
+	 * Entity::numeric_to_utf8()
 	 * 
 	 * @deprecated
 	 * @param String $string
@@ -248,12 +248,12 @@ class ENTITY
 	function numeric_to_utf8 ($string) {
 		$string = preg_replace('/&#([0-9]+)(;)?/e', "'&#x'.dechex('\\1').';'", $string);
 		$string = preg_replace('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/e', "'&#x' . strtoupper('\\2') . ';\\4'", $string);
-		$string = preg_replace('/&#x([0-9A-Fa-f]+);/e', "entity::_hex_to_utf8('\\1')", $string);		
+		$string = preg_replace('/&#x([0-9A-Fa-f]+);/e', "Entity::_hex_to_utf8('\\1')", $string);		
 		return $string; 	
 	}
 	
 	/**
-	 * ENTITY::numeric_to_named()
+	 * Entity::numeric_to_named()
 	 * convert decimal and hexadecimal numeric character references into named character references
 	 * 
 	 * @deprecated
@@ -267,7 +267,7 @@ class ENTITY
 	}
 	
 	/**
-	 * ENTITY::specialchars()
+	 * Entity::specialchars()
 	 * convert HTML entities to named character reference
 	 * 
 	 * @deprecated
@@ -297,7 +297,7 @@ class ENTITY
 	}
 	
 	/**
-	 * ENTITY::_hex_to_utf8()
+	 * Entity::_hex_to_utf8()
 	 * convert decimal numeric character references to hexadecimal numeric character references
 	 * 
 	 * @deprecated
@@ -327,7 +327,7 @@ class ENTITY
 	}
 	
 	/**
-	 * ENTITY::_named()
+	 * Entity::_named()
 	 * convert entities to named character reference
 	 * 
 	 * @deprecated

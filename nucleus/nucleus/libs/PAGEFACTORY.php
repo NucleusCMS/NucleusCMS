@@ -20,9 +20,8 @@
  * admin area, bookmarklet, skins or any other places where such a form
  * might be needed
  */
-class PAGEFACTORY extends BaseActions
+class PageFactory extends BaseActions
 {
-
 	/**
 	 * Reference to the blog object for which an add:edit form is created
 	 */
@@ -162,7 +161,7 @@ class PAGEFACTORY extends BaseActions
 		$template = $this->getTemplateFor($this->type);
 
 		# use the PARSER engine to parse that template
-		$parser = new PARSER($this->actions, $this);
+		$parser = new Parser($this->actions, $this);
 		$parser->parse($template);
 	}
 
@@ -218,7 +217,7 @@ class PAGEFACTORY extends BaseActions
 			$category_id = $this->blog->getDefaultCategory();
 		} // end if
 
-		ADMIN::selectBlogCategory('catid', $category_id, $start_index, 1, $this->blog->getID());
+		Admin::selectBlogCategory('catid', $category_id, $start_index, 1, $this->blog->getID());
 	}
 
 
@@ -245,7 +244,7 @@ class PAGEFACTORY extends BaseActions
 	 */
 	function parse_bloglink()
 	{
-		echo '<a href="', ENTITY::hsc($this->blog->getURL()), '">', ENTITY::hsc($this->blog->getName()), '</a>';
+		echo '<a href="', Entity::hsc($this->blog->getURL()), '">', Entity::hsc($this->blog->getName()), '</a>';
 	}
 
 
@@ -384,7 +383,7 @@ class PAGEFACTORY extends BaseActions
 	function parse_contents($which)
 	{
 		if (!isset($this->variables[$which])) $this->variables[$which] = '';
-		echo ENTITY::hsc($this->variables[$which]);
+		echo Entity::hsc($this->variables[$which]);
 	}
 
 
@@ -544,7 +543,7 @@ class PAGEFACTORY extends BaseActions
 	function parse_itemoptions()
 	{
 		global $itemid;
-		ADMIN::_insertPluginOptions('item', $itemid);
+		Admin::_insertPluginOptions('item', $itemid);
 	}
 
 

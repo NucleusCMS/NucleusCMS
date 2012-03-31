@@ -181,7 +181,7 @@ include($DIR_LIBS . 'ACTIONLOG.php');
 include($DIR_LIBS . 'MANAGER.php');
 include($DIR_LIBS . 'PLUGIN.php');
 
-$manager =& MANAGER::instance();
+$manager =& Manager::instance();
 
 /*
  * make sure there's no unnecessary escaping:
@@ -285,7 +285,7 @@ if ( ($CONF['DisableJsTools'] == 0)
 	$CONF['DisableJsTools'] = 2;
 }
 
-$member = new MEMBER();
+$member = new Member();
 
 if ( $action == 'login' )
 {
@@ -918,7 +918,7 @@ function selector()
 	{
 		global $DIR_LIBS, $errormessage;
 		include_once($DIR_LIBS . 'ACTION.php');
-		$a = new ACTION();
+		$a = new Action();
 		$errorInfo = $a->doAction($action);
 		
 		if ( $errorInfo )
@@ -1176,7 +1176,7 @@ function selector()
 	{
 		$type = 'member';
 		
-		if ( !MEMBER::existsID($memberid) )
+		if ( !Member::existsID($memberid) )
 		{
 			doError(_ERROR_NOSUCHMEMBER);
 		}
@@ -1409,13 +1409,13 @@ function selectLanguage($language) {
 }
 
 function parseFile($filename, $includeMode = 'normal', $includePrefix = '') {
-    $handler = new ACTIONS('fileparser');
-    $parser = new PARSER(SKIN::getAllowedActionsForType('fileparser'), $handler);
+    $handler = new Actions('fileparser');
+    $parser = new Parser(SKIN::getAllowedActionsForType('fileparser'), $handler);
     $handler->parser =& $parser;
 
     // set IncludeMode properties of parser
-    PARSER::setProperty('IncludeMode', $includeMode);
-    PARSER::setProperty('IncludePrefix', $includePrefix);
+    Parser::setProperty('IncludeMode', $includeMode);
+    Parser::setProperty('IncludePrefix', $includePrefix);
 
     if (!file_exists($filename) ) {
         doError('A file is missing');
@@ -1445,7 +1445,7 @@ function debug($msg) {
 
 // shortcut
 function addToLog($level, $msg) {
-    ACTIONLOG::add($level, $msg);
+    ActionLog::add($level, $msg);
 }
 
 // shows a link to help file
@@ -1552,7 +1552,7 @@ function passVar($key, $value) {
     }
 
     // other values: do stripslashes if needed
-    ?><input type="hidden" name="<?php echo ENTITY::hsc($key)?>" value="<?php echo ENTITY::hsc(undoMagic($value) )?>" /><?php
+    ?><input type="hidden" name="<?php echo Entity::hsc($key)?>" value="<?php echo Entity::hsc(undoMagic($value) )?>" /><?php
 }
 
 function checkVars($aVars) {
@@ -1783,18 +1783,18 @@ function ticketForPlugin()
 			$qstring = '?' . $qstring;
 		}
 		
-		echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . ENTITY::hsc($plugin_name) . "</span> ?</p>\n";
+		echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . Entity::hsc($plugin_name) . "</span> ?</p>\n";
 		
 		switch(strtoupper(serverVar('REQUEST_METHOD') ) )
 		{
 			case 'POST':
-				echo '<form method="POST" action="'.ENTITY::hsc($uri.$qstring).'">';
+				echo '<form method="POST" action="'.Entity::hsc($uri.$qstring).'">';
 				$manager->addTicketHidden();
 				_addInputTags($post);
 				break;
 			
 			case 'GET':
-				echo '<form method="GET" action="'.ENTITY::hsc($uri).'">';
+				echo '<form method="GET" action="'.Entity::hsc($uri).'">';
 				$manager->addTicketHidden();
 				_addInputTags($get);
 			
@@ -1822,8 +1822,8 @@ function _addInputTags(&$keys,$prefix=''){
         else {
             if (get_magic_quotes_gpc()) $value=stripslashes($value);
             if ($key=='ticket') continue;
-            echo '<input type="hidden" name="'.ENTITY::hsc($key).
-                '" value="'.ENTITY::hsc($value).'" />'."\n";
+            echo '<input type="hidden" name="'.Entity::hsc($key).
+                '" value="'.Entity::hsc($value).'" />'."\n";
         }
     }
 }
@@ -2045,35 +2045,35 @@ function isValidMailAddress($address)
 /**
  * Centralisation of the functions that deals XML entities
  * Deprecated since 4.0:
- * Please use ENTITY::FunctionName(...) instead
+ * Please use Entity::FunctionName(...) instead
  */
 function highlight($text, $expression, $highlight)
 {
-	return ENTITY::highlight($text, $expression, $highlight);
+	return Entity::highlight($text, $expression, $highlight);
 }
 function shorten($string, $maxlength, $suffix)
 {
-	return ENTITY::shorten($string, $maxlength, $suffix);
+	return Entity::shorten($string, $maxlength, $suffix);
 }
 function stringStripTags ($string)
 {
-	return ENTITY::strip_tags($string);
+	return Entity::strip_tags($string);
 }
 function toAscii($string)
 {
-	return ENTITY::anchor_footnoting($string);
+	return Entity::anchor_footnoting($string);
 }
 function stringToAttribute ($string)
 {
-	return ENTITY::hsc($string);
+	return Entity::hsc($string);
 }
 function stringToXML ($string)
 {
-	return ENTITY::hen($string);
+	return Entity::hen($string);
 }
 function encode_desc($data)
 {
-	return ENTITY::hen($data);
+	return Entity::hen($data);
 }
 /**
  * Centralisation of the functions that deals with locales
@@ -2114,37 +2114,37 @@ function mysqldate($timestamp)
 /**
  * Centralisation of the functions that generate links
  * Deprecated since 4.0:
- * Please use LINK::FunctionName(...) instead
+ * Please use Link::FunctionName(...) instead
  */
 function createItemLink($itemid, $extra = '')
 {
-	return LINK::create_item_link($itemid, $extra);
+	return Link::create_item_link($itemid, $extra);
 }
 function createMemberLink($memberid, $extra = '')
 {
-	return LINK::create_member_link($memberid, $extra);
+	return Link::create_member_link($memberid, $extra);
 }
 function createCategoryLink($catid, $extra = '')
 {
-	return LINK::create_category_link($catid, $extra);
+	return Link::create_category_link($catid, $extra);
 }
 function createArchiveListLink($blogid = '', $extra = '')
 {
-	return LINK::create_archivelist_link($blogid, $extra);
+	return Link::create_archivelist_link($blogid, $extra);
 }
 function createArchiveLink($blogid, $archive, $extra = '')
 {
-	return LINK::create_archive_link($blogid, $archive, $extra);
+	return Link::create_archive_link($blogid, $archive, $extra);
 }
 function createBlogidLink($blogid, $params = '')
 {
-	return LINK::create_blogid_link($blogid, $params = '');
+	return Link::create_blogid_link($blogid, $params = '');
 }
 function createLink($type, $params)
 {
-	return LINK::create_link($type, $params);
+	return Link::create_link($type, $params);
 }
 function createBlogLink($url, $params)
 {
-	return LINK::create_blog_link($url, $params);
+	return Link::create_blog_link($url, $params);
 }

@@ -56,8 +56,8 @@ else
 	echo '<?xml version="1.0" encoding="' . i18n::get_current_charset() . '"?>' . "\n";
 	echo "<rss version=\"2.0\">\n";
 	echo "<channel>\n";
-	echo '<title>' . ENTITY::hsc($CONF['SiteName']) . "</title>\n";
-	echo "<link>" . ENTITY::hsc($CONF['IndexURL']) . "</link>\n";
+	echo '<title>' . Entity::hsc($CONF['SiteName']) . "</title>\n";
+	echo "<link>" . Entity::hsc($CONF['IndexURL']) . "</link>\n";
 	echo "<description></description>\n";
 	echo "<docs>http://backend.userland.com/rss</docs>\n";
 	echo "</channel>\n";

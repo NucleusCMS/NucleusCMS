@@ -208,12 +208,12 @@
 		$amount = intval($amount);
 
 		// 1. login
-		$mem = new MEMBER();
+		$mem = new Member();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
 		// 2. check if allowed
-		if (!BLOG::existsID($blogid))
+		if (!Blog::existsID($blogid))
 			return _error(2,"No such blog ($blogid)");
 		if (!$mem->teamRights($blogid))
 			return _error(3,"Not a team member");
@@ -259,7 +259,7 @@
 		global $manager;
 
 		// 1. login
-		$mem = new MEMBER();
+		$mem = new Member();
 		if (!$mem->login($username, $password))
 			return _error(1,"Could not log in");
 
@@ -276,7 +276,7 @@
 
 		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
 
-		$blog = new BLOG($blogid);
+		$blog = new Blog($blogid);
 		if ($blog->convertBreaks())
 			$item['body'] = removeBreaks($item['body']);
 

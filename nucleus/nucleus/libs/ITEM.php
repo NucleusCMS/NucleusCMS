@@ -20,10 +20,10 @@
  * A class representing an item
  *
  */
-class ITEM
+class Item
 {
 	/**
-	 * ITEM::$actiontypes
+	 * Item::$actiontypes
 	 * actiontype list for handling items
 	 * 
 	 * @static
@@ -32,7 +32,7 @@ class ITEM
 		= array('addnow', 'adddraft', 'addfuture', 'edit', 'changedate', 'backtodrafts', 'delete');
 	
 	/**
-	 * ITEM::$itemid
+	 * Item::$itemid
 	 * item id
 	 * @deprecated
 	 * 
@@ -40,7 +40,7 @@ class ITEM
 	public $itemid;
 	
 	/**
-	 * ITEM::__construct()
+	 * Item::__construct()
 	 * Creates a new ITEM object
 	 * 
 	 * @deprecated
@@ -54,7 +54,7 @@ class ITEM
 	}
 	
 	/**
-	 * ITEM::getitem()
+	 * Item::getitem()
 	 * Returns one item with the specific itemid
 	 *
 	 * @param int $item_id
@@ -117,7 +117,7 @@ class ITEM
 	}
 	
 	/**
-	 * ITEM::createFromRequest()
+	 * Item::createFromRequest()
 	 * Tries to create an item from the data in the current request (comes from
 	 * bookmarklet or admin area
 	 *
@@ -239,7 +239,7 @@ class ITEM
 		
 		if ( $i_draftid > 0 )
 		{
-			// delete permission is checked inside ITEM::delete()
+			// delete permission is checked inside Item::delete()
 			self::delete($i_draftid);
 		}
 		
@@ -255,7 +255,7 @@ class ITEM
 	}
 	
 	/**
-	 * ITEM::update()
+	 * Item::update()
 	 * Updates an item
 	 *
 	 * @static
@@ -403,7 +403,7 @@ class ITEM
 	}
 	
 	/**
-	 * ITEM::move()
+	 * Item::move()
 	 * Move an item to another blog (no checks)
 	 *
 	 * @static
@@ -450,7 +450,7 @@ class ITEM
 	}
 	
 	/**
-	 * ITEM::delete()
+	 * Item::delete()
 	 * Deletes an item
 	 * 
 	 * @param	integer	$itemid
@@ -489,7 +489,7 @@ class ITEM
 	}
 	
 	/**
-	 * ITEM::exists()
+	 * Item::exists()
 	 * Returns true if there is an item with the given ID
 	 *
 	 * @static
@@ -525,7 +525,7 @@ class ITEM
 	}
 	
 	/**
-	 * ITEM::createDraftFromRequest()
+	 * Item::createDraftFromRequest()
 	 * Tries to create an draft from the data
 	 *  in the current request (comes from bookmarklet or admin area)
 	 *   Used by xmlHTTPRequest AutoDraft

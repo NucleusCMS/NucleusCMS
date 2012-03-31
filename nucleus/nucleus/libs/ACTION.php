@@ -17,10 +17,10 @@
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
  * @version $Id: ACTION.php 1646 2012-01-29 10:47:32Z sakamocchi $
  */
-class ACTION
+class Action
 {
 	/**
-	 * ACTION::ACTION()
+	 * Action::ACTION()
 	 *  Constructor for an new ACTION object
 	 * 
 	 * @param	void
@@ -33,7 +33,7 @@ class ACTION
 	}
 	
 	/**
-	 * ACTION::doAction()
+	 * Action::doAction()
 	 *  Calls functions that handle an action called from action.php
 	 * 
 	 * @param	string	$action	action type
@@ -86,7 +86,7 @@ class ACTION
 	}
 	
 	/**
-	 * ACTION::addComment()
+	 * Action::addComment()
 	 * Adds a new comment to an item (if IP isn't banned)
 	 * 
 	 * @param	void
@@ -113,7 +113,7 @@ class ACTION
 			setcookie($CONF['CookiePrefix'] . 'comment_email', $post['email'], $lifetime, '/', '', 0);
 		}
 		
-		$comments = new COMMENTS($post['itemid']);
+		$comments = new Comments($post['itemid']);
 		
 		$blog_id = getBlogIDFromItemID($post['itemid']);
 		$this->checkban($blog_id);
@@ -139,7 +139,7 @@ class ACTION
 			}
 			else
 			{
-				$url = LINK::create_item_link($post['itemid']);
+				$url = Link::create_item_link($post['itemid']);
 				redirect($url);
 			}
 		}
@@ -147,7 +147,7 @@ class ACTION
 	}
 	
 	/**
-	 * ACTION::sendMessage()
+	 * Action::sendMessage()
 	 * Sends a message from the current member to the member given as argument
 	 * 
 	 * @param	void
@@ -176,17 +176,17 @@ class ACTION
 			$fromName = $member->getDisplayName();
 		}
 		
-		$tomem = new MEMBER();
+		$tomem = new Member();
 		$tomem->readFromId(postVar('memberid') );
 		
 		$message  = _MMAIL_MSG . ' ' . $fromName . "\n"
 			. '(' . _MMAIL_FROMNUC. ' ' . $CONF['IndexURL'] .") \n\n"
 			. _MMAIL_MAIL . " \n\n"
 			. postVar('message');
-		$message .= NOTIFICATION::get_mail_footer();
+		$message .= Notification::get_mail_footer();
 		
 		$title = _MMAIL_TITLE . ' ' . $fromName;
-		NOTIFICATION::mail($tomem->getEmail(), $title, $message, $fromMail, i18n::get_current_charset());
+		Notification::mail($tomem->getEmail(), $title, $message, $fromMail, i18n::get_current_charset());
 		
 		if ( !postVar('url') )
 		{
@@ -194,11 +194,11 @@ class ACTION
 			
 			if ( $CONF['URLMode'] == 'pathinfo' )
 			{
-				$url = LINK::create_link('member', array('memberid' => $tomem->getID(), 'name' => $tomem->getDisplayName() ) );
+				$url = Link::create_link('member', array('memberid' => $tomem->getID(), 'name' => $tomem->getDisplayName() ) );
 			}
 			else
 			{
-				$url = $CONF['IndexURL'] . LINK::create_member_link($tomem->getID());
+				$url = $CONF['IndexURL'] . Link::create_member_link($tomem->getID());
 			}
 			redirect($url);
 		}
@@ -210,7 +210,7 @@ class ACTION
 	}
 	
 	/**
-	 * ACTION::validateMessage()
+	 * Action::validateMessage()
 	 *  Checks if a mail to a member is allowed
 	 *  Returns a string with the error message if the mail is disallowed
 	 *  
@@ -232,7 +232,7 @@ class ACTION
 			return _ERROR_DISALLOWED;
 		}
 		
-		if ( !$member->isLoggedIn() && !NOTIFICATION::address_validation(postVar('frommail')) )
+		if ( !$member->isLoggedIn() && !Notification::address_validation(postVar('frommail')) )
 		{
 			return _ERROR_BADMAILADDRESS;
 		}
@@ -248,7 +248,7 @@ class ACTION
 	}
 	
 	/**
-	 * ACTION::createAccount()
+	 * Action::createAccount()
 	 * Creates a new user account
 	 *  
 	 * @param	Void
@@ -279,8 +279,8 @@ class ACTION
 		$initialPwd = md5(uniqid(rand(), TRUE) );
 		
 		// create member (non admin/can not login/no notes/random string as password)
-		$name = ENTITY::shorten(postVar('name'), 32, '');
-		$r = MEMBER::create($name, postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
+		$name = Entity::shorten(postVar('name'), 32, '');
+		$r = Member::create($name, postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
 		
 		if ( $r != 1 )
 		{
@@ -288,7 +288,7 @@ class ACTION
 		}
 		
 		// send message containing password.
-		$newmem = new MEMBER();
+		$newmem = new Member();
 		$newmem->readFromName($name);
 		$newmem->sendActivationLink('register');
 		
@@ -302,7 +302,7 @@ class ACTION
 	}
 	
 	/**
-	 * ACTION::forgotPassword()
+	 * Action::forgotPassword()
 	 * Sends a new password
 	 * 
 	 * @param	void
@@ -313,12 +313,12 @@ class ACTION
 	{
 		$membername = trim(postVar('name') );
 		
-		if ( !MEMBER::exists($membername) )
+		if ( !Member::exists($membername) )
 		{
 			doError(_ERROR_NOSUCHMEMBER);
 		}
 		
-		$mem = MEMBER::createFromName($membername);
+		$mem = Member::createFromName($membername);
 		
 		// check if e-mail address is correct
 		if ( $mem->getEmail() != postVar('email') )
@@ -342,7 +342,7 @@ class ACTION
 	}
 	
 	/**
-	 * ACTION::doKarma()
+	 * Action::doKarma()
 	 * Handle karma votes
 	 * 
 	 * @param	String	$type	pos or neg
@@ -395,7 +395,7 @@ class ACTION
 		if ( $blog->getNotifyAddress() && $blog->notifyOnVote() )
 		{
 			$message = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
-			$itemLink = LINK::create_item_link(intval($itemid) );
+			$itemLink = Link::create_item_link(intval($itemid) );
 			$temp = parse_url($itemLink);
 			
 			if ( !$temp['scheme'] )
@@ -413,13 +413,13 @@ class ACTION
 			$message .= _NOTIFY_IP . ' ' . serverVar('REMOTE_ADDR') . "\n";
 			$message .= _NOTIFY_HOST . ' ' .  gethostbyaddr(serverVar('REMOTE_ADDR'))  . "\n";
 			$message .= _NOTIFY_VOTE . "\n " . $type . "\n";
-			$message .= NOTIFICATION::get_mail_footer();
+			$message .= Notification::get_mail_footer();
 			
 			$subject = _NOTIFY_KV_TITLE . ' ' . strip_tags($item['title']) . ' (' . $itemid . ')';
 			
 			$from = $member->getNotifyFromMailAddress();
 			
-			NOTIFICATION::mail($blog->getNotifyAddress(), $subject, $message, $from, i18n::get_current_charset());
+			Notification::mail($blog->getNotifyAddress(), $subject, $message, $from, i18n::get_current_charset());
 		}
 		
 		$refererUrl = serverVar('HTTP_REFERER');
@@ -438,7 +438,7 @@ class ACTION
 	}
 	
 	/**
-	 * ACTION::callPlugin()
+	 * Action::callPlugin()
 	 * Calls a plugin action
 	 * 
 	 * @param	void
@@ -483,7 +483,7 @@ class ACTION
 	}
 	
 	/**
-	 * ACTION::checkban()
+	 * Action::checkban()
 	 *  Checks if an IP or IP range is banned
 	 * 
 	 * @param	integer	$blogid
@@ -493,7 +493,7 @@ class ACTION
 	function checkban($blogid)
 	{
 		// check if banned
-		$ban = BAN::isBanned($blogid, serverVar('REMOTE_ADDR') );
+		$ban = Ban::isBanned($blogid, serverVar('REMOTE_ADDR') );
 		
 		if ( $ban != 0 )
 		{
@@ -503,7 +503,7 @@ class ACTION
 	}
 	
 	/**
-	 * ACTION::updateTicket()
+	 * Action::updateTicket()
 	 * Gets a new ticket
 	 * 
 	 * @param	void
@@ -526,7 +526,7 @@ class ACTION
 	}
 	
 	/**
-	 * ACTION::autoDraft()
+	 * Action::autoDraft()
 	 * Handles AutoSaveDraft
 	 * 
 	 * @param	void
@@ -544,7 +544,7 @@ class ACTION
 		else
 		{
 			$manager->loadClass('ITEM');
-			$info = ITEM::createDraftFromRequest();
+			$info = Item::createDraftFromRequest();
 			
 			if ( $info['status'] != 'error' )
 			{

@@ -22,8 +22,8 @@
 if ( !function_exists('requestVar') ) exit;
 require_once dirname(__FILE__) . '/ITEMACTIONS.php';
 
-class BLOG {
-
+class Blog
+{
 	// blog id
 	var $blogid;
 
@@ -69,7 +69,7 @@ class BLOG {
 	}
 
 	/**
-	 * BLOG::showArchive()
+	 * Blog::showArchive()
 	 * Shows an archive for a given month
 	 *
 	 * @param integer	$year		year
@@ -160,7 +160,7 @@ class BLOG {
 	}
 
 	/**
-	 * BLOG::showUsingQuery()
+	 * Blog::showUsingQuery()
 	 * Do the job for readLogAmmount
 	 * 
 	 * @param	string		$templateName	template name
@@ -186,8 +186,8 @@ class BLOG {
 		$template =& $manager->getTemplate($templateName);
 		
 		// create parser object & action handler
-		$actions = new ITEMACTIONS($this);
-		$parser = new PARSER($actions->getDefinedActions(),$actions);
+		$actions = new ItemActions($this);
+		$parser = new Parser($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setHighlight($highlight);
 		$actions->setLastVisit($lastVisit);
@@ -283,7 +283,7 @@ class BLOG {
 
 
 	/**
-	 * BLOG::addItem()
+	 * Blog::addItem()
 	 * Adds an item to this blog
 	 * 
 	 * @param	Integer	$catid	ID for category
@@ -363,7 +363,7 @@ class BLOG {
 	}
 	
 	/**
-	 * BLOG::sendNewItemNotification()
+	 * Blog::sendNewItemNotification()
 	 * Send a new item notification to the notification list
 	 * 
 	 * @param String	$itemid	ID of the item
@@ -375,13 +375,13 @@ class BLOG {
 	{
 		global $CONF, $member;
 		
-		$ascii = ENTITY::anchor_footnoting($body);
+		$ascii = Entity::anchor_footnoting($body);
 		
 		$message = _NOTIFY_NI_MSG . " \n";
 		$temp = parse_url($CONF['Self']);
 		if ( $temp['scheme'] )
 		{
-			$message .= LINK::create_item_link($itemid) . "\n\n";
+			$message .= Link::create_item_link($itemid) . "\n\n";
 		}
 		else
 		{
@@ -408,7 +408,7 @@ class BLOG {
 	}
 	
 	/**
-	 * BLOG::createNewCategory()
+	 * Blog::createNewCategory()
 	 * Creates a new category for this blog
 	 *
 	 * @param String	$catName	name of the new category. When empty, a name is generated automatically (starting with newcat)
@@ -507,10 +507,10 @@ class BLOG {
 			{
 				$template =& $manager->getTemplate($template);
 				$vars = array(
-					'query'		=> ENTITY::hsc($query),
+					'query'		=> Entity::hsc($query),
 					'blogid'	=> $this->getID()
 				);
-				echo TEMPLATE::fill($template['SEARCH_NOTHINGFOUND'],$vars);
+				echo Template::fill($template['SEARCH_NOTHINGFOUND'],$vars);
 			}
 		}
 
@@ -518,7 +518,7 @@ class BLOG {
 	}
 
 	/**
-	 * BLOG::getSqlSearch()
+	 * Blog::getSqlSearch()
 	 * Returns an SQL query to use for a search query
 	 * No LIMIT clause is added. (caller should add this if multiple pages are requested)
 	 *
@@ -530,7 +530,7 @@ class BLOG {
 	 */
 	function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
 	{
-		$searchclass = new SEARCH($query);
+		$searchclass = new Search($query);
 		
 		$highlight	 = $searchclass->inclusive;
 		
@@ -603,7 +603,7 @@ class BLOG {
 	}
 	
 	/**
-	 * BLOG::getSqlBlog()
+	 * Blog::getSqlBlog()
 	 * Returns the SQL query that's normally used to display the blog items on the index type skins
 	 * No LIMIT clause is added. (caller should add this if multiple pages are requested)
 	 *
@@ -648,7 +648,7 @@ class BLOG {
 	}
 	
 	/**
-	 * BLOG::showArchiveList()
+	 * Blog::showArchiveList()
 	 * Shows the archivelist using the given template
 	 * 
 	 * @param	String	$template	template name
@@ -682,7 +682,7 @@ class BLOG {
 			$tplt = $template['ARCHIVELIST_HEADER'];
 		}
 		
-		echo TEMPLATE::fill($tplt, $data);
+		echo Template::fill($tplt, $data);
 		
 		$query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) AS Day'
 				. ' FROM '.sql_table('item')
@@ -747,7 +747,7 @@ class BLOG {
 			
 			$data['year'] = date('Y',$current->itime);
 			$archive['year'] = $data['year'];
-			$data['archivelink'] = LINK::create_archive_link($this->getID(),$archivedate,$linkparams);
+			$data['archivelink'] = Link::create_archive_link($this->getID(),$archivedate,$linkparams);
 			
 			$manager->notify(
 				'PreArchiveListItem',
@@ -756,7 +756,7 @@ class BLOG {
 				)
 			);
 			
-			$temp = TEMPLATE::fill($template['ARCHIVELIST_LISTITEM'],$data);
+			$temp = Template::fill($template['ARCHIVELIST_LISTITEM'],$data);
 			echo i18n::formatted_datetime($temp, $current->itime);
 			return;
 		}
@@ -772,12 +772,12 @@ class BLOG {
 			$tplt = $template['ARCHIVELIST_FOOTER'];
 		}
 		
-		echo TEMPLATE::fill($tplt, $data);
+		echo Template::fill($tplt, $data);
 		return;
 	}
 	
 	/**
-	 * BLOG::showCategoryList()
+	 * Blog::showCategoryList()
 	 * Shows the list of categories using a given template
 	 * 
 	 * @param	String	$template	Template Name
@@ -796,18 +796,18 @@ class BLOG {
 		$linkparams = array();
 		if ( $archive )
 		{
-			$blogurl = LINK::create_archive_link($this->getID(), $archive, '');
+			$blogurl = Link::create_archive_link($this->getID(), $archive, '');
 			$linkparams['blogid'] = $this->getID();
 			$linkparams['archive'] = $archive;
 		}
 		else if ( $archivelist )
 		{
-			$blogurl = LINK::create_archivelist_link($this->getID(), '');
+			$blogurl = Link::create_archivelist_link($this->getID(), '');
 			$linkparams['archivelist'] = $archivelist;
 		}
 		else
 		{
-			$blogurl = LINK::create_blogid_link($this->getID(), '');
+			$blogurl = Link::create_blogid_link($this->getID(), '');
 			$linkparams['blogid'] = $this->getID();
 		}
 		
@@ -823,7 +823,7 @@ class BLOG {
 			$nocatselected = 'yes';
 		} 
 		
-		echo TEMPLATE::fill((isset($template['CATLIST_HEADER']) ? $template['CATLIST_HEADER'] : null),
+		echo Template::fill((isset($template['CATLIST_HEADER']) ? $template['CATLIST_HEADER'] : null),
 			array(
 				'blogid' => $this->getID(),
 				'blogurl' => $blogurl,
@@ -840,7 +840,7 @@ class BLOG {
 		{
 			$data['blogid'] = $this->getID();
 			$data['blogurl'] = $blogurl;
-			$data['catlink'] = LINK::create_link(
+			$data['catlink'] = Link::create_link(
 				'category',
 				array(
 					'catid' => $data['catid'],
@@ -883,12 +883,12 @@ class BLOG {
 				)
 			);
 			
-			echo TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
+			echo Template::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
 		}
 		
 		sql_free_result($res);
 		
-		echo TEMPLATE::fill((isset($template['CATLIST_FOOTER']) ? $template['CATLIST_FOOTER'] : null),
+		echo Template::fill((isset($template['CATLIST_FOOTER']) ? $template['CATLIST_FOOTER'] : null),
 			array(
 				'blogid' => $this->getID(),
 				'blogurl' => $blogurl,
@@ -901,7 +901,7 @@ class BLOG {
 	}
 	
 	/**
-	 * BLOG::showBlogList()
+	 * Blog::showBlogList()
 	 * Shows a list of all blogs in the system using a given template
 	 * ordered by number, name, shortname or description
 	 * in ascending or descending order
@@ -951,7 +951,7 @@ class BLOG {
 		
 		$template =& $manager->getTemplate($template);
 		
-		echo TEMPLATE::fill((isset($template['BLOGLIST_HEADER']) ? $template['BLOGLIST_HEADER'] : null),
+		echo Template::fill((isset($template['BLOGLIST_HEADER']) ? $template['BLOGLIST_HEADER'] : null),
 			array(
 				'sitename' => $CONF['SiteName'],
 				'siteurl' => $CONF['IndexURL']
@@ -964,7 +964,7 @@ class BLOG {
 		while ( $data = sql_fetch_assoc($res) )
 		{
 			$list = array();
-			$list['bloglink'] = LINK::create_blogid_link($data['bnumber']);
+			$list['bloglink'] = Link::create_blogid_link($data['bnumber']);
 			$list['blogdesc'] = $data['bdesc'];
 			$list['blogurl'] = $data['burl'];
 			
@@ -985,12 +985,12 @@ class BLOG {
 				)
 			);
 			
-			echo TEMPLATE::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
+			echo Template::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
 		}
 		
 		sql_free_result($res);
 		
-		echo TEMPLATE::fill((isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
+		echo Template::fill((isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
 			array(
 				'sitename' => $CONF['SiteName'],
 				'siteurl' => $CONF['IndexURL']
@@ -1329,7 +1329,7 @@ class BLOG {
 	}
 
 	/**
-	 * BLOG::addTeamMember()
+	 * Blog::addTeamMember()
 	 * Tries to add a member to the team. 
 	 * Returns false if the member was already on the team
 	 * 
@@ -1345,7 +1345,7 @@ class BLOG {
 		$admin = intval($admin);
 		
 		// check if member is already a member
-		$tmem = MEMBER::createFromID($memberid);
+		$tmem = Member::createFromID($memberid);
 		
 		if ( $tmem->isTeamMember($this->getID()) )
 		{
@@ -1376,7 +1376,7 @@ class BLOG {
 		);
 		
 		$logMsg = sprintf(_TEAM_ADD_NEWTEAMMEMBER, $tmem->getDisplayName(), $memberid, $this->getName());
-		ACTIONLOG::add(INFO, $logMsg);
+		ActionLog::add(INFO, $logMsg);
 		
 		return 1;
 	}
@@ -1489,7 +1489,7 @@ class BLOG {
 	}
 
 	/**
-	 * BLOG::getSqlItemList()
+	 * Blog::getSqlItemList()
 	 * Returns the SQL query used to fill out templates for a list of items
 	 * No LIMIT clause is added. (caller should add this if multiple pages are requested)
 	 *
