@@ -1751,7 +1751,7 @@ class Admin
         $template['tabindex'] = 10;
 
         $manager->loadClass("ENCAPSULATE");
-        $batch = new Barch('member');
+        $batch = new Batch('member');
         $batch->showlist($query,'table',$template);
 
         echo '<h3>' . _MEMBERS_NEW .'</h3>';
@@ -2329,7 +2329,7 @@ class Admin
         $template['tabindex'] = 10;
 
         $manager->loadClass("ENCAPSULATE");
-        $batch = new Barch('team');
+        $batch = new Batch('team');
         $batch->showlist($query, 'table', $template);
 
         ?>
@@ -2671,7 +2671,7 @@ class Admin
         $template['tabindex'] = 200;
 
         $manager->loadClass("ENCAPSULATE");
-        $batch = new Barch('category');
+        $batch = new Batch('category');
         $batch->showlist($query,'table',$template);
 
         ?>

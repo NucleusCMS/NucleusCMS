@@ -67,7 +67,7 @@ class NavList extends Encapsulate
 	}
 
 	function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-		$batch = new Barch($batchtype);
+		$batch = new Batch($batchtype);
 
 		$this->doEncapsulate(
 				array(&$batch, 'showlist'),
