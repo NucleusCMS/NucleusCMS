@@ -15,31 +15,35 @@
  * @version $Id$
  */
 
-if ( !function_exists('requestVar') ) exit;
+if ( !function_exists('requestVar') )
+{
+	exit;
+}
 require_once dirname(__FILE__) . '/BaseActions.php';
 
 /**
- * This is the parser class of Nucleus. It is used for various things (skin parsing,
- * form generation, ...)
+ * This is the parser class of Nucleus. It is used for various things
+ * (skin parsing, form generation, ...)
  */
 class Parser
 {
 	// array with the names of all allowed actions
-	var $actions;
-
+	public $actions;
+	
 	// reference to actions handler
-	var $handler;
-
+	public $handler;
+	
 	// delimiters that can be used for skin/templatevars
-	var $delim;
-
+	public $delim;
+	
 	// parameter delimiter (to separate skinvar params)
-	var $pdelim;
-
+	public $pdelim;
+	
 	// usually set to 0. When set to 1, all skinvars are allowed regardless of $actions
-	var $norestrictions;
-
+	public $norestrictions;
+	
 	/**
+	 * Parset::__construct()
 	 * Creates a new parser object with the given allowed actions
 	 * and the given handler
 	 *
@@ -48,126 +52,131 @@ class Parser
 	 * @param $delim optional delimiter
 	 * @param $paramdelim optional parameterdelimiter
 	 */
-	function PARSER($allowedActions, &$handler, $delim = '(<%|%>)', $pdelim = ',') {
-		$this->actions = $allowedActions;
-		$this->handler =& $handler;
-		$this->delim = $delim;
-		$this->pdelim = $pdelim;
+	public function __construct($allowedActions, &$handler, $delim = '(<%|%>)', $pdelim = ',')
+	{
+		$this->actions	= $allowedActions;
+		$this->handler	=& $handler;
+		$this->delim	= $delim;
+		$this->pdelim	= $pdelim;
 		$this->norestrictions = 0;	// set this to 1 to disable checking for allowedActions
+		return;
 	}
-
+	
 	/**
 	 * Parses the given contents and outputs it
 	 */
-	function parse(&$contents) {
-
-		$pieces = preg_split('/'.$this->delim.'/',$contents);
-
+	public function parse(&$contents)
+	{
+		/* escaping only pcre delimiter */
+		$pcre = preg_replace('#\##', '#', $this->delim);
+		
+		$pieces = preg_split("#{$pcre}#", $contents);
+		
 		$maxidx = sizeof($pieces);
-		for ($idx = 0; $idx < $maxidx; $idx++) {
+		for ( $idx = 0; $idx < $maxidx; $idx++ )
+		{
 			echo $pieces[$idx];
 			$idx++;
-			if ($idx < $maxidx) {
+			if ( $idx < $maxidx )
+			{
 				$this->doAction($pieces[$idx]);
 			}
 		}
+		return;
 	}
 
 
 	/**
-	  * Called from the parser to handle an action
-	  * 
-	  * @param $action name of the action (e.g. blog, image ...)
-	  */
-	function doAction($action) {
+	 * Parset::doAction()
+	 * Called from the parser to handle an action
+	 * 
+	 * @param	string	$action	name of the action (e.g. blog, image ...)
+	 * @return	void
+	 */
+	public function doAction($action)
+	{
 		global $manager, $CONF;
 
-		if (!$action) return;
-
+		if ( !$action )
+		{
+			return;
+		}
+		
 		// split into action name + arguments
-		if (strstr($action,'(')) {
-			$paramStartPos = i18n::strpos($action, '(');
-			$params = i18n::substr($action, $paramStartPos + 1, i18n::strlen($action) - $paramStartPos - 2);
-			$action = i18n::substr($action, 0, $paramStartPos);
-			$params = preg_split ('#' . $this->pdelim . '#', $params);
-
-			// trim parameters
-			// for PHP versions lower than 4.0.6:
-			//   - add // before '$params = ...'
-			//   - remove // before 'foreach'
-			$params = array_map('trim',$params);
-			// foreach ($params as $key => $value) { $params[$key] = trim($value); }
-		} else {
+		if ( i18n::strpos($action, '(') != FALSE )
+		{
+			$paramStartPos	= i18n::strpos($action, '(');
+			$params			= i18n::substr($action, $paramStartPos + 1, i18n::strlen($action) - $paramStartPos - 2);
+			$action			= i18n::substr($action, 0, $paramStartPos);
+			$params			= preg_split ('#' . preg_quote($this->pdelim, '#') . '#', $params);
+			$params			= array_map('trim', $params);
+		}
+		else
+		{
 			// no parameters
 			$params = array();
 		}
-
+		
 		$actionlc = strtolower($action);
-
+		
 		// skip execution of skinvars while inside an if condition which hides this part of the page
-		if (!$this->handler->if_currentlevel && ($actionlc != 'else') && ($actionlc != 'elseif') && ($actionlc != 'endif') && ($actionlc != 'ifnot') && ($actionlc != 'elseifnot') && (i18n::substr($actionlc,0,2) != 'if'))
+		$if_tags = array('else', 'elseif', 'endif', 'ifnot', 'elseifnot');
+		if ( !$this->handler->if_currentlevel
+		  && !in_array($actionlc, $if_tags)
+		  && (i18n::substr($actionlc, 0, 2) != 'if') )
+		{
 			return;
-
-		if (in_array($actionlc, $this->actions) || $this->norestrictions ) {
-			// when using PHP versions lower than 4.0.5, uncomment the line before
-			// and comment the call_user_func_array call
-			//$this->call_using_array($action, $this->handler, $params);
-			call_user_func_array(array(&$this->handler,'parse_' . $actionlc), $params);
-		} else {
+		}
+		
+		if ( in_array($actionlc, $this->actions) || $this->norestrictions )
+		{
+			call_user_func_array(array(&$this->handler, "parse_{$actionlc}"), $params);
+		}
+		else
+		{
 			// redirect to plugin action if possible
-			if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_'.$action)) {
-				$this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
-			} else {
-				if ($CONF['DebugVars']==true) {
-				echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
-		}
+			if ( in_array('plugin', $this->actions) && $manager->pluginInstalled("NP_{$action}") )
+			{
+				$this->doAction('plugin(' . $action . $this->pdelim . implode($this->pdelim,$params) . ')');
 			}
-			
+			else
+			{
+				if ( $CONF['DebugVars']==true )
+				{
+					echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
+				}
+			}
 		}
-
+		return;
 	}
-
+	
 	/**
-	  * Calls a method using an array of parameters (for use with PHP versions lower than 4.0.5)
-	  * ( = call_user_func_array() function )
-	  */
-	function call_using_array($methodname, &$handler, $paramarray) {
-
-		$methodname = 'parse_' . $methodname;
-
-		if (!method_exists($handler, $methodname)) {
-			return;
-		}
-
-		$command = 'call_user_func(array(&$handler,$methodname)';
-		for ($i = 0; $i<count($paramarray); $i++)
-			$command .= ',$paramarray[' . $i . ']';
-		$command .= ');';
-		eval($command);	// execute the correct method
-	}
-
-	/**
+	 * Parser::setProperty()
 	 * Set a property of the parser in the manager
 	 * 
-	 * @param $property additional parser property (e.g. include prefix of the skin)
-	 * @param $value new value
+	 * @static
+	 * @param	string	$property	additional parser property (e.g. include prefix of the skin)
+	 * @param	string	$value		new value
+	 * @return	void
 	 */
-	function setProperty($property, $value) {
+	static public function setProperty($property, $value)
+	{
 		global $manager;
 		$manager->setParserProperty($property, $value);
+		return;
 	}
 
 	/**
+	 * Parser::getProperty()
 	 * Get a property of the parser from the manager
 	 * 
-	 * @param $name name of the property
+	 * @static
+	 * @param	string	$name	name of the property
+	 * @return	string	value of the property
 	 */
-	function getProperty($name) {
+	static public function getProperty($name)
+	{
 		global $manager;
 		return $manager->getParserProperty($name);
 	}
-
-
 }
-
-?>
