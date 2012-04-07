@@ -1250,7 +1250,7 @@ function selector()
 	
 	$skin = new SKIN($skinid);
 	
-	if ( !$skin->isValid )
+	if ( !$skin->isValid() )
 	{
 		doError(_ERROR_NOSUCHSKIN);
 	}
@@ -1270,30 +1270,38 @@ function selector()
 /**
   * Show error skin with given message. An optional skin-object to use can be given
   */
-function doError($msg, $skin = '') {
-    global $errormessage, $CONF, $skinid, $blogid, $manager;
-
-    if ($skin == '') {
-
-        if (SKIN::existsID($skinid) ) {
-            $skin = new SKIN($skinid);
-        } elseif ($manager->existsBlogID($blogid) ) {
-            $blog =& $manager->getBlog($blogid);
-            $skin = new SKIN($blog->getDefaultSkin() );
-        } elseif ($CONF['DefaultBlog']) {
-            $blog =& $manager->getBlog($CONF['DefaultBlog']);
-            $skin = new SKIN($blog->getDefaultSkin() );
-        } else {
-            // this statement should actually never be executed
-            $skin = new SKIN($CONF['BaseSkin']);
-        }
-
-    }
-
-    $skinid = $skin->id;
-    $errormessage = $msg;
-    $skin->parse('error');
-    exit;
+function doError($msg, $skin = '')
+{
+	global $errormessage, $CONF, $skinid, $blogid, $manager;
+	
+	if ( $skin == '' )
+	{
+		if ( Skin::existsID($skinid) )
+		{
+			$id = $skinid;
+		}
+		elseif ( $manager->existsBlogID($blogid) )
+		{
+			$blog =& $manager->getBlog($blogid);
+			$id = $blog->getDefaultSkin();
+		}
+		elseif ($CONF['DefaultBlog'] )
+		{
+			$blog =& $manager->getBlog($CONF['DefaultBlog']);
+			$id = $blog->getDefaultSkin();
+		}
+		else
+		{
+			// this statement should actually never be executed
+			$id = $CONF['BaseSkin'];
+		}
+		$skin = new Skin($id);
+	}
+	
+	$skinid = $skin->getID();
+	$errormessage = $msg;
+	$skin->parse('error');
+	exit;
 }
 
 function getConfig() {
