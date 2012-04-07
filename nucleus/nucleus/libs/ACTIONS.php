@@ -686,7 +686,6 @@ class Actions extends BaseActions
 		
 		/* 
 		 * TODO: these lines are no meaning because there is no $template.
-		 */
 		if ( $locale == '-def-' )
 		{
 			setlocale(LC_TIME, $template['LOCALE']);
@@ -695,6 +694,7 @@ class Actions extends BaseActions
 		{
 			setlocale(LC_TIME, $locale);
 		}
+		 */
 		
 		// get archive date
 		sscanf($archive,'%d-%d-%d',$y,$m,$d);
@@ -721,7 +721,7 @@ class Actions extends BaseActions
 		{
 			$format = '%d %B %Y';
 		}
-		echo i18n::formatted_timedate($format, mktime(0,0,0,$m?$m:1,$d?$d:1,$y));
+		echo i18n::formatted_datetime($format, mktime(0,0,0,$m?$m:1,$d?$d:1,$y));
 		return;
 	}
 	
