@@ -780,8 +780,8 @@ class Blog
 	 * Blog::showCategoryList()
 	 * Shows the list of categories using a given template
 	 * 
-	 * @param	String	$template	Template Name
-	 * @return	Void
+	 * @param	string	$template	Template Name
+	 * @return	void
 	 */
 	function showCategoryList($template)
 	{
@@ -823,36 +823,46 @@ class Blog
 			$nocatselected = 'yes';
 		} 
 		
-		echo Template::fill((isset($template['CATLIST_HEADER']) ? $template['CATLIST_HEADER'] : null),
-			array(
-				'blogid' => $this->getID(),
-				'blogurl' => $blogurl,
-				'self' => $CONF['Self'],
-				//: Change: Set catiscurrent template variable for header
-				'catiscurrent' => $nocatselected,
-				'currentcat' => $nocatselected 
-			));
+		$args = array(
+			'blogid'	=> $this->getID(),
+			'blogurl'	=> $blogurl,
+			'self'		=> $CONF['Self'],
+			//: Change: Set catiscurrent template variable for header
+			'catiscurrent'	=> $nocatselected,
+			'currentcat'	=> $nocatselected 
+		);
 		
-		$query = 'SELECT catid, cdesc as catdesc, cname as catname FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' ORDER BY cname ASC';
+		/* output header of category list item */
+		if ( !array_key_exists('CATLIST_HEADER', $template) || empty($template['CATLIST_HEADER']) )
+		{
+			echo Template::fill(NULL, $args);
+		}
+		else
+		{
+			echo Template::fill($template['CATLIST_HEADER'], $args);
+		}
+		
+		$query = "SELECT catid, cdesc as catdesc, cname as catname FROM %s WHERE cblog=%d ORDER BY cname ASC;";
+		$query = sprintf($query, sql_table('category'), (integer) $this->getID());
 		$res = sql_query($query);
 		
 		while ( $data = sql_fetch_assoc($res) )
 		{
-			$data['blogid'] = $this->getID();
-			$data['blogurl'] = $blogurl;
-			$data['catlink'] = Link::create_link(
-				'category',
-				array(
-					'catid' => $data['catid'],
-					'name' => $data['catname'],
-					'extra' => $linkparams
-				));
-			$data['self'] = $CONF['Self'];
+			$args = array(
+				'catid'	=> $data['catid'],
+				'name'	=> $data['catname'],
+				'extra'	=> $linkparams
+			);
 			
-			//catiscurrent
-			//: Change: Bugfix for catiscurrent logic so it gives catiscurrent = no when no category is selected.
+			$data['blogid']		= $this->getID();
+			$data['blogurl']	= $blogurl;
+			$data['catlink']	= Link::create_link('category', $args);
+			$data['self']		= $CONF['Self'];
+			
+			// this gives catiscurrent = no when no category is selected.
 			$data['catiscurrent'] = 'no';
-			$data['currentcat'] = 'no'; 
+			$data['currentcat'] = 'no';
+			
 			if ( $this->getSelectedCategory() )
 			{
 				if ( $this->getSelectedCategory() == $data['catid'] )
@@ -864,14 +874,15 @@ class Blog
 			else
 			{
 				global $itemid;
-				if ( intval($itemid) && $manager->existsItem(intval($itemid),0,0) )
+				if ( intval($itemid) && $manager->existsItem(intval($itemid), 0, 0) )
 				{
-					$iobj =& $manager->getItem(intval($itemid),0,0);
-					$cid = $iobj['catid'];
+					$iobj	=& $manager->getItem(intval($itemid), 0, 0);
+					$cid	= $iobj['catid'];
+					
 					if ( $cid == $data['catid'] )
 					{
-						$data['catiscurrent'] = 'yes';
-						$data['currentcat'] = 'yes';
+						$data['catiscurrent']	= 'yes';
+						$data['currentcat']		= 'yes';
 					}
 				}
 			}
@@ -880,23 +891,38 @@ class Blog
 				'PreCategoryListItem',
 				array(
 					'listitem' => &$data
-				)
-			);
+				));
 			
-			echo Template::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
+			if ( !array_key_exists('CATLIST_LISTITEM', $template) || empty($template['CATLIST_LISTITEM']))
+			{
+				echo Template::fill(NULL, $data);
+			}
+			else
+			{
+				echo Template::fill($template['CATLIST_LISTITEM'], $data);
+			}
 		}
 		
 		sql_free_result($res);
 		
-		echo Template::fill((isset($template['CATLIST_FOOTER']) ? $template['CATLIST_FOOTER'] : null),
-			array(
-				'blogid' => $this->getID(),
-				'blogurl' => $blogurl,
-				'self' => $CONF['Self'],
-				//: Change: Set catiscurrent template variable for footer
-				'catiscurrent' => $nocatselected,
-				'currentcat' => $nocatselected  
-			));
+		$args = array(
+			'blogid'	=> $this->getID(),
+			'blogurl'	=> $blogurl,
+			'self'		=> $CONF['Self'],
+			//: Change: Set catiscurrent template variable for footer
+			'catiscurrent'	=> $nocatselected,
+			'currentcat'	=> $nocatselected  
+		);
+		
+		if ( !array_key_exists('CATLIST_FOOTER', $template) || empty($template['CATLIST_FOOTER']))
+		{
+			echo Template::fill(NULL, $args);
+		}
+		else
+		{
+			echo Template::fill($template['CATLIST_FOOTER'], $args);
+		}
+		
 		return;
 	}
 	
