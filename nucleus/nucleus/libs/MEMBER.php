@@ -189,7 +189,12 @@ class Member
 		*/
 		if ( !$this->cookie_salt )
 		{
-			$this->set_cookie_salt($CONF['secureCookieKey']);
+			$salt = 0;
+			if ( array_key_exists('secureCookieKey', $CONF) )
+			{
+				$salt = $CONF['secureCookieKey'];
+			}
+			$this->set_cookie_salt($salt);
 		}
 		
 		$success = 0;
@@ -276,8 +281,14 @@ class Member
 			*/
 			if ( !$this->cookie_salt )
 			{
-				$this->set_cookie_salt($CONF['secureCookieKey']);
+				$salt = 0;
+				if ( array_key_exists('secureCookieKey', $CONF) )
+				{
+					$salt = $CONF['secureCookieKey'];
+				}
+				$this->set_cookie_salt($salt);
 			}
+			
 			if ( $this->cookie_salt !== 'none' )
 			{
 				$ck = $this->hash($ck . $this->cookie_salt);
