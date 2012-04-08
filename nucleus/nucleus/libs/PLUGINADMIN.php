@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2009 The Nucleus Group
+ * Copyright (C) 2002-2012 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,71 +14,93 @@
  * code to make it easier to create plugin admin areas
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$
  */
 
 class PluginAdmin
 {
-	var $strFullName;		// NP_SomeThing
-	var $plugin;			// ref. to plugin object
-	var $bValid;			// evaluates to true when object is considered valid
-	var $admin;				// ref to an admin object
+	public $strFullName;		// NP_SomeThing
+	public $plugin;			// ref. to plugin object
+	public $bValid;			// evaluates to true when object is considered valid
+	public $admin;			// ref to an admin object
 	
-	function PluginAdmin($pluginName)
+	public function __construct($pluginName)
 	{
-		global $manager;
-		include_once($DIR_LIBS . 'ADMIN.php');
-		include_libs('ADMIN.php',true,true);
-
-		$this->strFullName = 'NP_' . $pluginName;
-
+		global $manager, $DIR_LIBS;
+		
+		if ( !class_exists('Admin', FALSE) )
+		{
+			include($DIR_LIBS . 'ADMIN.php');
+		}
+		
+		$this->strFullName = "NP_{$pluginName}";
+		
 		// check if plugin exists and is installed
 		if ( !$manager->pluginInstalled($this->strFullName) )
 		{
 			doError(_ERROR_INVALID_PLUGIN);
 		}
-
+		
 		$this->plugin =& $manager->getPlugin($this->strFullName);
 		$this->bValid = $this->plugin;
-
+		
 		if ( !$this->bValid )
 		{
 			doError(_ERROR_INVALID_PLUGIN);
 		}
-
+		
 		$this->admin = new Admin();
-		$this->admin->action = 'plugin_' . $pluginName;
+		$this->admin->action = "plugin_{$pluginName}";
+		return;
 	}
-
-	function start($extraHead = '')
+	
+	/**
+	 * PluginAdmin::start()
+	 * 
+	 * @param	string	$extraHead	child elements for header element
+	 * @return	void
+	 */
+	public function start($extraHead = '')
 	{
 		global $CONF;
 		$strBaseHref  = '<base href="' . Entity::hsc($CONF['AdminURL']) . '" />';
 		$extraHead .= $strBaseHref;
-
+		
 		$this->admin->pagehead($extraHead);
+		return;
 	}
-
-	function end()
+	
+	/**
+	 * PluginAdmin::end()
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function end()
 	{
 		$this->_AddTicketByJS();
 		$this->admin->pagefoot();
+		return;
 	}
-
-/** 
- * Add ticket when not used in plugin's admin page
- * to avoid CSRF.
- */
-	function _AddTicketByJS(){
+	
+	/**
+	 * PluginAdmin::_AddTicketByJS()
+	 * Add ticket when not used in plugin's admin page
+	 * to avoid CSRF.
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function _AddTicketByJS()
+	{
 		global $CONF,$ticketforplugin;
 		if ( !($ticket=$ticketforplugin['ticket']) ) 
 		{
-			//echo "\n<!--TicketForPlugin skipped-->\n";
 			return;
 		}
 		$ticket=Entity::hsc($ticket);
- 
+
 ?><script type="text/javascript">
 /*<![CDATA[*/
 /* Add tickets for available links (outside blog excluded) */
@@ -132,7 +154,7 @@ for (i=0;document.forms[i];i++){
 }
 /*]]>*/
 </script><?php
- 
+	return;
 	}
 }
 
