@@ -736,7 +736,7 @@ class Manager
 				
 				// add in database as non-active
 				$query = "INSERT INTO %s (ticket, member, ctime)"
-				       . " VALUES ('%s', %d, '%d');";
+				       . " VALUES ('%s', %d, '%s');";
 				$query = sprintf($query, sql_table('tickets'), sql_real_escape_string($ticket), (integer) $memberId, date('Y-m-d H:i:s',time()));
 				
 				if ( sql_query($query) )
