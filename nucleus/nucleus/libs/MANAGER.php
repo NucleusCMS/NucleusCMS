@@ -24,7 +24,6 @@
  */
 class Manager
 {
-
 	/**
 	 * Cached ITEM, BLOG, PLUGIN, KARMA and MEMBER objects. When these objects are requested
 	 * through the global $manager object (getItem, getBlog, ...), only the first call
@@ -39,31 +38,40 @@ class Manager
 	var $karma;
 	var $templates;
 	var $members;
-
+	
 	/**
 	 * cachedInfo to avoid repeated SQL queries (see pidInstalled/pluginInstalled/getPidFromName)
 	 * e.g. which plugins exists?
 	 *
 	 * $cachedInfo['installedPlugins'] = array($pid -> $name)
 	 */
-	var $cachedInfo;
-
+	private $cachedInfo;
+	
 	/**
 	 * The plugin subscriptionlist
 	 *
 	 * The subcription array has the following structure
 	 *		$subscriptions[$EventName] = array containing names of plugin classes to be
 	 *									 notified when that event happens
+	 * 
+	 * NOTE: this is referred by Comments::addComment() for spamcheck API
+	 * TODO: we should add new methods to get this
 	 */
-	var $subscriptions;
-
+	public $subscriptions;
+	
+	/**
+	 * Ticket functions. These are uses by the admin area to make it impossible to simulate certain GET/POST
+	 * requests. tickets are user specific
+	 */
+	private $currentRequestTicket = '';
+	
 	/**
 	 * Returns the only instance of this class. Creates the instance if it
 	 * does not yet exists. Users should use this function as
 	 * $manager =& Manager::instance(); to get a reference to the object
 	 * instead of a copy
 	 */
-	function &instance()
+	public function &instance()
 	{
 		static $instance = array();
 		if ( empty($instance) )
@@ -72,11 +80,11 @@ class Manager
 		}
 		return $instance[0];
 	}
-
+	
 	/**
 	 * The constructor of this class initializes the object caches
 	 */
-	function MANAGER()
+	public function __construct()
 	{
 		$this->items = array();
 		$this->blogs = array();
@@ -86,28 +94,32 @@ class Manager
 		$this->cachedInfo = array();
 		return;
 	}
-
+	
 	/**
 	 * Returns the requested item object. If it is not in the cache, it will
 	 * first be loaded and then placed in the cache.
 	 * Intended use: $item =& $manager->getItem(1234)
 	 */
-	function &getItem($itemid, $allowdraft, $allowfuture)
+	public function &getItem($itemid, $allowdraft, $allowfuture)
 	{
 		$item =& $this->items[$itemid];
-
+		
 		// check the draft and future rules if the item was already cached
 		if ( $item )
 		{
-			if ((!$allowdraft) && ($item['draft']))
+			if ( (!$allowdraft) && ($item['draft']) )
+			{
 				return 0;
-
+			}
+			
 			$blog =& $this->getBlog(getBlogIDFromItemID($itemid));
+			
 			if ( (!$allowfuture) && ($item['timestamp'] > $blog->getCorrectTime()) )
 			{
 				return 0;
 			}
 		}
+		
 		if ( !$item )
 		{
 			// load class if needed
@@ -118,40 +130,40 @@ class Manager
 		}
 		return $item;
 	}
-
+	
 	/**
 	 * Loads a class if it has not yet been loaded
 	 */
-	function loadClass($name)
+	public function loadClass($name)
 	{
 		$this->_loadClass($name, $name . '.php');
 		return;
 	}
-
+	
 	/**
 	 * Checks if an item exists
 	 */
-	function existsItem($id,$future,$draft)
+	public function existsItem($id,$future,$draft)
 	{
 		$this->_loadClass('ITEM','ITEM.php');
 		return Item::exists($id,$future,$draft);
 	}
-
+	
 	/**
 	 * Checks if a category exists
 	 */
-	function existsCategory($id)
+	public function existsCategory($id)
 	{
 		return (quickQuery('SELECT COUNT(*) as result FROM '.sql_table('category').' WHERE catid='.intval($id)) > 0);
 	}
-
+	
 	/**
 	 * Returns the blog object for a given blogid
 	 */
-	function &getBlog($blogid)
+	public function &getBlog($blogid)
 	{
 		$blog =& $this->blogs[$blogid];
-
+		
 		if ( !$blog )
 		{
 			// load class if needed
@@ -162,32 +174,32 @@ class Manager
 		}
 		return $blog;
 	}
-
+	
 	/**
 	 * Checks if a blog exists
 	 */
-	function existsBlog($name)
+	public function existsBlog($name)
 	{
 		$this->_loadClass('BLOG','BLOG.php');
 		return Blog::exists($name);
 	}
-
+	
 	/**
 	 * Checks if a blog id exists
 	 */
-	function existsBlogID($id)
+	public function existsBlogID($id)
 	{
 		$this->_loadClass('BLOG','BLOG.php');
 		return Blog::existsID($id);
 	}
-
+	
 	/**
 	 * Returns a previously read template
 	 */
-	function &getTemplate($templateName)
+	public function &getTemplate($templateName)
 	{
 		$template =& $this->templates[$templateName];
-
+		
 		if ( !$template )
 		{
 			$template = Template::read($templateName);
@@ -195,15 +207,16 @@ class Manager
 		}
 		return $template;
 	}
-
+	
 	/**
 	 * Returns a KARMA object (karma votes)
 	 */
-	function &getKarma($itemid)
+	public function &getKarma($itemid)
 	{
 		$karma =& $this->karma[$itemid];
-
-		if ( !$karma ) {
+		
+		if ( !$karma )
+		{
 			// load class if needed
 			$this->_loadClass('KARMA','KARMA.php');
 			// create KARMA object
@@ -212,14 +225,14 @@ class Manager
 		}
 		return $karma;
 	}
-
+	
 	/**
 	 * Returns a MEMBER object
 	 */
-	function &getMember($memberid)
+	public function &getMember($memberid)
 	{
 		$mem =& $this->members[$memberid];
-
+		
 		if ( !$mem )
 		{
 			// load class if needed
@@ -230,11 +243,11 @@ class Manager
 		}
 		return $mem;
 	}
-
+	
 	/**
 	 * Set the global parser preferences
 	 */
-	function setParserProperty($name, $value)
+	public function setParserProperty($name, $value)
 	{
 		$this->parserPrefs[$name] = $value;
 		return;
@@ -243,17 +256,17 @@ class Manager
 	/**
 	 * Get the global parser preferences
 	 */
-	function getParserProperty($name)
+	public function getParserProperty($name)
 	{
 		return $this->parserPrefs[$name];
 	}
-
+	
 	/**
-	  * A helper function to load a class
-	  * 
-	  *	private
-	  */
-	function _loadClass($name, $filename)
+	 * A helper function to load a class
+	 * 
+	 *	private
+	 */
+	private function _loadClass($name, $filename)
 	{
 		if ( !class_exists($name) )
 		{
@@ -262,7 +275,7 @@ class Manager
 		}
 		return;
 	}
-
+	
 	/**
 	 * Manager::_loadPlugin()
 	 * loading a certain plugin
@@ -270,76 +283,82 @@ class Manager
 	 * @param	string $name plugin name
 	 * @return	void
 	 */
-	function _loadPlugin($name)
+	private function _loadPlugin($name)
 	{
+		global $DIR_PLUGINS, $MYSQL_HANDLER, $MYSQL_PREFIX;
+		
+		if ( class_exists($name) )
+		{
+			return;
+		}
+		
+		$fileName = "{$DIR_PLUGINS}{$name}.php";
+		
+		if ( !file_exists($fileName) )
+		{
+			if ( !defined('_MANAGER_PLUGINFILE_NOTFOUND') )
+			{
+				define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
+			}
+			ActionLog::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name)); 
+			return 0;
+		}
+		
+		// load plugin
+		include($fileName);
+		
+		// check if class exists (avoid errors in eval'd code)
 		if ( !class_exists($name) )
 		{
-				global $DIR_PLUGINS;
-				
-				$fileName = $DIR_PLUGINS . $name . '.php';
-				
-				if ( !file_exists($fileName) )
-				{
-					if ( !defined('_MANAGER_PLUGINFILE_NOTFOUND') )
-					{
-						define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
-					}
-					ActionLog::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name)); 
-					return 0;
-				}
-				
-				// load plugin
-				include($fileName);
-				
-				// check if class exists (avoid errors in eval'd code)
-				if ( !class_exists($name) )
-				{
-					ActionLog::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
-					return 0;
-				}
-				
-				// add to plugin array
-				eval('$this->plugins[$name] = new ' . $name . '();');
-				
-				// get plugid
-				$this->plugins[$name]->setID($this->getPidFromName($name));
-				
-				// unload plugin if a prefix is used and the plugin cannot handle this^
-				global $MYSQL_PREFIX;
-				if ( ($MYSQL_PREFIX != '')
-				  && !$this->plugins[$name]->supportsFeature('SqlTablePrefix') )
-				{
-					unset($this->plugins[$name]);
-					ActionLog::add(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
-					return 0;
-				}
-				
-				// unload plugin if using non-mysql handler and plugin does not support it 
-				global $MYSQL_HANDLER;
-				if ( (!in_array('mysql',$MYSQL_HANDLER))
-				  && !$this->plugins[$name]->supportsFeature('SqlApi') )
-				{
-					unset($this->plugins[$name]);
-					ActionLog::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
-					return 0;
-				}
-				
-				// call init method
-				$this->plugins[$name]->init();
+			ActionLog::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
+			return 0;
 		}
+		
+		// add to plugin array
+		$this->plugins[$name] = new $name();
+		
+		// get plugid
+		$this->plugins[$name]->setID($this->getPidFromName($name));
+		
+		// unload plugin if a prefix is used and the plugin cannot handle this
+		if ( ($MYSQL_PREFIX != '')
+		  && !$this->plugins[$name]->supportsFeature('SqlTablePrefix') )
+		{
+			unset($this->plugins[$name]);
+			ActionLog::add(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
+			return 0;
+		}
+		
+		// unload plugin if using non-mysql handler and plugin does not support it 
+		if ( (!in_array('mysql',$MYSQL_HANDLER))
+		  && !$this->plugins[$name]->supportsFeature('SqlApi') )
+		{
+			unset($this->plugins[$name]);
+			ActionLog::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
+			return 0;
+		}
+		
+		// call init method
+		$this->plugins[$name]->init();
+		
 		return;
 	}
 
 	/**
+	 * Manager:getPlugin()
 	 * Returns a PLUGIN object
+	 * 
+	 * @param	string	$name	name of plugin
+	 * @return	object	plugin object
 	 */
-	function &getPlugin($name)
+	public function &getPlugin($name)
 	{
 		// retrieve the name of the plugin in the right capitalisation
 		$name = $this->getUpperCaseName ($name);
+		
 		// get the plugin	
 		$plugin =& $this->plugins[$name]; 
-
+		
 		if ( !$plugin )
 		{
 			// load class if needed
@@ -348,17 +367,27 @@ class Manager
 		}
 		return $plugin;
 	}
-
+	
 	/**
-	  * Checks if the given plugin IS loaded or not
-	  */
-	function &pluginLoaded($name)
+	 * Manager::pluginLoaded()
+	 * Checks if the given plugin IS loaded or not
+	 * 
+	 * @param	string	$name	name of plugin
+	 * @return	object	plugin object
+	 */
+	public function &pluginLoaded($name)
 	{
 		$plugin =& $this->plugins[$name];
 		return $plugin;
 	}
-		
-	function &pidLoaded($pid)
+	
+	/**
+	 * Manager::pidLoaded()
+	 * 
+	 * @param	integer	$pid	id for plugin
+	 * @return	object	plugin object
+	 */
+	public function &pidLoaded($pid)
 	{
 		$plugin=false;
 		reset($this->plugins);
@@ -373,23 +402,40 @@ class Manager
 		}
 		return $plugin;
 	}
-
+	
 	/**
-	  * checks if the given plugin IS installed or not
-	  */
-	function pluginInstalled($name)
+	 * Manager::pluginInstalled()
+	 * checks if the given plugin IS installed or not
+	 * 
+	 * @param	string	$name	name of plugin
+	 * @return	boolean	exists or not
+	 */
+	public function pluginInstalled($name)
 	{
 		$this->_initCacheInfo('installedPlugins');
 		return ($this->getPidFromName($name) != -1);
 	}
 
-	function pidInstalled($pid)
+	/**
+	 * Manager::pidInstalled()
+	 * checks if the given plugin IS installed or not
+	 * 
+	 * @param	integer	$pid	id of plugin
+	 * @return	boolean	exists or not
+	 */
+	public function pidInstalled($pid)
 	{
 		$this->_initCacheInfo('installedPlugins');
 		return ($this->cachedInfo['installedPlugins'][$pid] != '');
 	}
-
-	function getPidFromName($name)
+	
+	/**
+	 * Manager::getPidFromName()
+	 * 
+	 * @param	string	$name	name of plugin
+	 * @return	mixed	id for plugin or -1 if not exists
+	 */
+	public function getPidFromName($name)
 	{
 		$this->_initCacheInfo('installedPlugins');
 		foreach ( $this->cachedInfo['installedPlugins'] as $pid => $pfile )
@@ -401,11 +447,15 @@ class Manager
 		}
 		return -1;
 	}
-
+	
 	/**
-	  * Retrieve the name of a plugin in the right capitalisation
-	  */
-	function getUpperCaseName ($name)
+	 * Manager::getUpperCaseName()
+	 * Retrieve the name of a plugin in the right capitalisation
+	 * 
+	 * @param	string	$name	name of plugin
+	 * @return	string	name according to UpperCamelCase
+	 */
+	public function getUpperCaseName ($name)
 	{
 		$this->_initCacheInfo('installedPlugins');
 		foreach ( $this->cachedInfo['installedPlugins'] as $pid => $pfile )
@@ -418,21 +468,33 @@ class Manager
 		return -1;
 	}
 	
-	function clearCachedInfo($what)
+	/**
+	 * Manager::clearCachedInfo()
+	 * 
+	 * @param	string	$what
+	 * @return	void
+	 */
+	public function clearCachedInfo($what)
 	{
 		unset($this->cachedInfo[$what]);
 		return;
 	}
-
+	
 	/**
+	 * Manager::_initCacheInfo()
 	 * Loads some info on the first call only
+	 * 
+	 * @param	string	$what	'installedPlugins'
+	 * @return	void
 	 */
-	function _initCacheInfo($what)
+	private function _initCacheInfo($what)
 	{
-		if ( isset($this->cachedInfo[$what]) && is_array($this->cachedInfo[$what]) )
+		if ( array_key_exists($what, $this->cachedInfo)
+		  && is_array($this->cachedInfo[$what]) )
 		{
 			return;
 		}
+		
 		switch ($what)
 		{
 			// 'installedPlugins' = array ($pid => $name)
@@ -447,20 +509,21 @@ class Manager
 		}
 		return;
 	}
-
+	
 	/**
+	 * Manager::notify()
 	 * A function to notify plugins that something has happened. Only the plugins
 	 * that are subscribed to the event will get notified.
 	 * Upon the first call, the list of subscriptions will be fetched from the
 	 * database. The plugins itsself will only get loaded when they are first needed
 	 *
-	 * @param $eventName
-	 *		Name of the event (method to be called on plugins)
-	 * @param $data
-	 *		Can contain any type of data, depending on the event type. Usually this is
-	 *		an itemid, blogid, ... but it can also be an array containing multiple values
+	 * @param	string	$eventName	Name of the event (method to be called on plugins)
+	 * @param	string	$data		Can contain any type of data,
+	 * 								depending on the event type. Usually this is an itemid, blogid, ...
+	 * 								but it can also be an array containing multiple values
+	 * @return	void
 	 */
-	function notify($eventName, $data)
+	public function notify($eventName, $data)
 	{
 		// load subscription list if needed
 		if ( !is_array($this->subscriptions) )
@@ -470,11 +533,12 @@ class Manager
 		
 		// get listening objects
 		$listeners = false;
-		if ( isset($this->subscriptions[$eventName]) )
+		if ( array_key_exists($eventName, $this->subscriptions)
+		  && !empty($this->subscriptions[$eventName]) )
 		{
 			$listeners = $this->subscriptions[$eventName];
 		}
-
+		
 		// notify all of them
 		if ( is_array($listeners) )
 		{
@@ -482,9 +546,11 @@ class Manager
 			{
 				// load class if needed
 				$this->_loadPlugin($listener);
+				
 				// do notify (if method exists)
-				if ( isset($this->plugins[$listener])
-				  && method_exists($this->plugins[$listener], 'event_' . $eventName))
+				if ( array_key_exists($listener, $this->plugins)
+				  && !empty($this->plugins[$listener])
+				  && method_exists($this->plugins[$listener], 'event_' . $eventName) )
 				{
 					call_user_func(array(&$this->plugins[$listener],'event_' . $eventName), $data);
 				}
@@ -492,16 +558,25 @@ class Manager
 		}
 		return;
 	}
-
+	
 	/**
+	 * Manager::_loadSubscriptions()
 	 * Loads plugin subscriptions
+	 * 
+	 * @param	void
+	 * @return	void
 	 */
-	function _loadSubscriptions()
+	private function _loadSubscriptions()
 	{
 		// initialize as array
 		$this->subscriptions = array();
-
-		$res = sql_query('SELECT p.pfile as pfile, e.event as event FROM '.sql_table('plugin_event').' as e, '.sql_table('plugin').' as p WHERE e.pid=p.pid ORDER BY p.porder ASC');
+		
+		$query = "SELECT p.pfile as pfile, e.event as event"
+		       . " FROM %s as e, %s as p"
+		       . " WHERE e.pid=p.pid ORDER BY p.porder ASC";
+		$query = sprintf($query, sql_table('plugin_event'), sql_table('plugin'));
+		$res = sql_query($query);
+		
 		while ( $o = sql_fetch_object($res) )
 		{
 			$pluginName = $o->pfile;
@@ -510,18 +585,15 @@ class Manager
 		}
 		return;
 	}
-
-	/*
-		Ticket functions. These are uses by the admin area to make it impossible to simulate certain GET/POST
-		requests. tickets are user specific
-	*/
-
-	var $currentRequestTicket = '';
-
+	
 	/**
+	 * Manager::addTicketToUrl()
 	 * GET requests: Adds ticket to URL (URL should NOT be html-encoded!, ticket is added at the end)
+	 * 
+	 * @param	string	url	string for URI
+	 * @return	void
 	 */
-	function addTicketToUrl($url)
+	public function addTicketToUrl($url)
 	{
 		$ticketCode = 'ticket=' . $this->_generateTicket();
 		if ( strstr($url, '?') )
@@ -534,46 +606,58 @@ class Manager
 		}
 		return $ticketCode;
 	}
-
+	
 	/**
+	 * Manager::addTicketHidden()
 	 * POST requests: Adds ticket as hidden formvar
+	 * 
+	 * @param	void
+	 * @return	void
 	 */
-	function addTicketHidden()
+	public function addTicketHidden()
 	{
 		$ticket = $this->_generateTicket();
 		echo '<input type="hidden" name="ticket" value="', Entity::hsc($ticket), '" />';
 		return;
 	}
-
+	
 	/**
+	 * Manager::getNewTicket()
 	 * Get a new ticket
 	 * (xmlHTTPRequest AutoSaveDraft uses this to refresh the ticket)
+	 * 
+	 * @param	void
+	 * @return	string	string of ticket
 	 */
-	function getNewTicket()
+	public function getNewTicket()
 	{
 		$this->currentRequestTicket = '';
 		return $this->_generateTicket();
 	}
-
+	
 	/**
+	 * Manager::checkTicket()
 	 * Checks the ticket that was passed along with the current request
+	 * 
+	 * @param	void
+	 * @return	boolean	correct or not
 	 */
-	function checkTicket()
+	public function checkTicket()
 	{
 		global $member;
-
+		
 		// get ticket from request
 		$ticket = requestVar('ticket');
-
+		
 		// no ticket -> don't allow
 		if ( $ticket == '' )
 		{
-			return false;
+			return FALSE;
 		}
-
+		
 		// remove expired tickets first
 		$this->_cleanUpExpiredTickets();
-
+		
 		// get member id
 		if (!$member->isLoggedIn())
 		{
@@ -583,10 +667,10 @@ class Manager
 		{
 			$memberId = $member->getID();
 		}
-
+		
 		// check if ticket is a valid one
 		$query = 'SELECT COUNT(*) as result FROM ' . sql_table('tickets') . ' WHERE member=' . intval($memberId). ' and ticket=\''.sql_real_escape_string($ticket).'\'';
-
+		
 		/*
 		 * NOTE:
 		 * [in the original implementation, the checked ticket was deleted. This would lead to invalid
@@ -594,33 +678,39 @@ class Manager
 		 * leaving the keys in the database is not a real problem, since they're member-specific and
 		 * only valid for a period of one hour]
 		 */
-		if ( quickQuery($query) == 1 )
+		if ( quickQuery($query) != 1 )
 		{
-			return true;
+			return FALSE;
 		}
-		// not a valid ticket
-		else
-		{
-			return false;
-		}
+		
+		return TRUE;
 	}
 
 	/**
-	 * (internal method) Removes the expired tickets
+	 * Manager::_cleanUpExpiredTickets()
+	 * Removes the expired tickets
+	 * 
+	 * @param	void
+	 * @return	void
 	 */
-	function _cleanUpExpiredTickets()
+	private function _cleanUpExpiredTickets()
 	{
 		// remove tickets older than 1 hour
 		$oldTime = time() - 60 * 60;
-		$query = 'DELETE FROM ' . sql_table('tickets'). ' WHERE ctime < \'' . date('Y-m-d H:i:s',$oldTime) .'\'';
+		$query = "DELETE FROM %s WHERE ctime < '%s';";
+		$query = sprintf($query, sql_table('tickets'), date('Y-m-d H:i:s',$oldTime));
 		sql_query($query);
 		return;
 	}
-
+	
 	/**
-	 * (internal method) Generates/returns a ticket (one ticket per page request)
+	 * Manager::_generateTicket()
+	 * Generates/returns a ticket (one ticket per page request)
+	 * 
+	 * @param	void
+	 * @return	void
 	 */
-	function _generateTicket()
+	private function _generateTicket()
 	{
 		if ( $this->currentRequestTicket == '' )
 		{
@@ -636,17 +726,19 @@ class Manager
 			{
 				$memberId = $member->getID();
 			}
-
+			
 			$ok = false;
 			while ( !$ok )
 			{
 				// generate a random token
 				srand((double)microtime()*1000000);
 				$ticket = md5(uniqid(rand(), true));
-
+				
 				// add in database as non-active
-				$query = 'INSERT INTO ' . sql_table('tickets') . ' (ticket, member, ctime) ';
-				$query .= 'VALUES (\'' . sql_real_escape_string($ticket). '\', \'' . intval($memberId). '\', \'' . date('Y-m-d H:i:s',time()) . '\')';
+				$query = "INSERT INTO %s (ticket, member, ctime)"
+				       . " VALUES ('%s', %d, '%d');";
+				$query = sprintf($query, sql_table('tickets'), sql_real_escape_string($ticket), (integer) $memberId, date('Y-m-d H:i:s',time()));
+				
 				if ( sql_query($query) )
 				{
 					$ok = true;
