@@ -167,7 +167,7 @@ class Skin
 	 */
 	static public function exists($name)
 	{
-		$query = "SELECT COUNT (*) AS result FROM %s WHERE sdname='%s';";
+		$query = "SELECT COUNT(*) AS result FROM %s WHERE sdname='%s';";
 		$query = sprintf($query, sql_table('skin_desc'), sql_real_escape_string($name));
 		return quickQuery($query) > 0;
 	}
