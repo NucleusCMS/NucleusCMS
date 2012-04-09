@@ -149,12 +149,6 @@ class Actions extends BaseActions
 			case 'admin':
 				$condition = $member->isLoggedIn() && $this->ifAdmin($name);
 				break;
-			case 'superadmin':
-				$condition = $member->isLoggedIn() && $member->isAdmin();
-				break;
-			case 'allowloginedit':
-				$condition = $member->isLoggedIn() && ($CONF['AllowLoginEdit'] || $member->isAdmin());
-				break;
 			case 'nextitem':
 				$condition = ($itemidnext != '');
 				break;
@@ -172,27 +166,6 @@ class Actions extends BaseActions
 				break;
 			case 'hasplugin':
 				$condition = $this->ifHasPlugin($name, $value);
-				break;
-			case 'adminaction':
-				$condition = ($this->objAdmin->action == $name);
-				break;
-			case 'adminoldaction':
-				$condition = ($this->objAdmin->action == $name);
-				break;
-			case 'addresschange':
-				$condition = ($this->_ifAddresscange());
-				break;
-			case 'bechangepass':
-				$condition = ($this->_beChangePassword());
-				break;
-			case 'skincandidates':
-				$condition = ($this->_ifSkincandidates());
-				break;
-			case 'nameclashes':
-				$condition = requestVar('nameclashes');
-				break;
-			case 'existsnewplugin':
-				$condition = ($this->_existsNewPlugin());
 				break;
 			default:
 				$condition = $manager->pluginInstalled("NP_{$field}") && $this->ifPlugin($field, $name, $value);
