@@ -1271,7 +1271,7 @@ class Member
 					break;
 				case 'addresschange':
 					// revert the e-mail address of the member back to old address
-					list($oldEmail, $oldCanLogin) = i18n::explode('/', $o->vextra);
+					list($oldEmail, $oldCanLogin) = preg_split('#/#', $o->vextra);
 					sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin). ', memail=\'' . sql_real_escape_string($oldEmail). '\' WHERE mnumber=' . intval($o->vmember));
 					break;
 				case 'forgot':

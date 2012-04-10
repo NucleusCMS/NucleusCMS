@@ -5,15 +5,13 @@ include('./config.php');
 
 // default to default implementation (/item/1234)
 // if itemid was not filled out by plugins
-if ($itemid == 0)
+if ( $itemid == 0 )
 {
-	$data = i18n::explode("/",serverVar('PATH_INFO'));
-	if (count($data) > 1)
+	$data = preg_split("#/#", serverVar('PATH_INFO'));
+	if ( count($data) > 1 )
 	{
-		$itemid = intval($data[1]);
+		$itemid = (integer) $data[1];
 	}
 }
 
 selector();
-
-?>

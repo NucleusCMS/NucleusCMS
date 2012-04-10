@@ -2278,7 +2278,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				while(list(,$line) = @each($ar))
 				{
 					// take care of multi-line headers and cookies
-					$arr = i18n::explode(':',$line,2);
+					$arr = preg_split('#:#',$line,2);
 					if(count($arr) > 1)
 					{
 						$header_name = strtolower(trim($arr[0]));
@@ -2292,7 +2292,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 							{
 								// version 2 cookies:
 								// there could be many cookies on one line, comma separated
-								$cookies = i18n::explode(',', $arr[1]);
+								$cookies = preg_split('#,#', $arr[1]);
 							}
 							else
 							{
@@ -2308,10 +2308,10 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 									$GLOBALS['_xh']['headers'][$header_name] = trim($cookie);
 								// parse cookie attributes, in case user wants to correctly honour them
 								// feature creep: only allow rfc-compliant cookie attributes?
-								$cookie = i18n::explode(';', $cookie);
+								$cookie = preg_split('#;#', $cookie);
 								foreach ($cookie as $pos => $val)
 								{
-									$val = i18n::explode('=', $val, 2);
+									$val = preg_split('#=#', $val, 2);
 									$tag = trim($val[0]);
 									$val = trim(@$val[1]);
 									/// @todo with version 1 cookies, we should strip leading and trailing " chars
@@ -3617,7 +3617,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 				'EUC-JP', 'EUC-', 'EUC-KR', 'EUC-CN')
 		);
 		if (is_string($validlist))
-			$validlist = i18n::explode(',', $validlist);
+			$validlist = preg_split('#,#', $validlist);
 		if (@in_array(strtoupper($encoding), $validlist))
 			return true;
 		else

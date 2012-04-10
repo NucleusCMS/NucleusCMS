@@ -131,7 +131,7 @@ class BodyActions extends BaseActions
 	{
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
-		$args = i18n::explode('|',implode($args,', '));
+		$args = preg_split('#\|#',implode($args,', '));
 		echo call_user_func_array(array(&$this,'createImageCode'),$args);
 	}
 	

@@ -3,15 +3,13 @@
 include('./fancyurls.config.php');
 include('./config.php');
 
-if (!requestVar('special'))
+if ( !requestVar('special') )
 {
-       $data = i18n::explode("/",serverVar('PATH_INFO'));
-       if (count($data) > 1)
-       {
-               $_REQUEST['special'] = $data[1];
-       }
+	$data = preg_split("#/#", serverVar('PATH_INFO'));
+	if ( count($data) > 1 )
+	{
+		$_REQUEST['special'] = $data[1];
+	}
 }
 
 selector();
-
-?>

@@ -252,7 +252,7 @@
 		$result  = '<a href="' . Entity::hsc($pluginUrl) . '" title="Go back to &laquo;skins&raquo;">';
 		$result .= '<img src="' . Entity::hsc($pluginUrl . 'home.gif') . '" alt="" /> skins</a> / ';
 
-		$parts = i18n::explode('/', $relative);
+		$parts = preg_split('#/#', $relative);
 		$part = '';
 		
 		while (list(,$v) = each ($parts)) {

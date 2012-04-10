@@ -338,7 +338,7 @@ function media_upload() {
 
 	// check file type against allowed types
 	$ok = 0;
-	$allowedtypes = i18n::explode (',', $CONF['AllowedTypes']);
+	$allowedtypes = preg_split('#,#', $CONF['AllowedTypes']);
 	foreach ( $allowedtypes as $type )
 	{
 		//if (eregi("\." .$type. "$",$filename)) $ok = 1;

@@ -457,7 +457,7 @@ class PageFactory extends BaseActions
 
 
 					if ($extrabuttons) {
-						$btns = i18n::explode('+',$extrabuttons);
+						$btns = preg_split('#\+#',$extrabuttons);
 						$this->_jsbuttonspacer();
 						foreach ($btns as $button) {
 							switch($button) {
@@ -490,7 +490,7 @@ class PageFactory extends BaseActions
 
 
 					if ($extrabuttons) {
-						$btns = i18n::explode('+',$extrabuttons);
+						$btns = preg_split('#\+#',$extrabuttons);
 						$this->_jsbuttonspacer();
 						foreach ($btns as $button) {
 							switch($button) {

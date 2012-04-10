@@ -348,6 +348,7 @@ class i18n
 	 *  preg_split()
 	 *  http://www.php.net/manual/en/function.preg-split.php
 	 * 
+	 * @deprecated
 	 * @static
 	 * @param	string	$delimiter	singlebyte or multibyte delimiter
 	 * @param	string	$target	target string

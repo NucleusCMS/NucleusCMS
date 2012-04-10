@@ -5,15 +5,13 @@ include('./config.php');
 
 // default to default implementation (/archives/1)
 // if archivelist was not filled out by plugins
-if ($archivelist == 0)
+if ( $archivelist == 0 )
 {
-	$data = i18n::explode("/",serverVar('PATH_INFO'));
-	if (count($data) > 1)
+	$data = preg_split("#/#",serverVar('PATH_INFO'));
+	if ( count($data) > 1 )
 	{
-		$archivelist = intval($data[1]);
+		$archivelist = (integer) $data[1];
 	}
 }
 
 selector();
-
-?>

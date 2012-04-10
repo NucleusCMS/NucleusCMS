@@ -50,7 +50,7 @@ class Search
 	function  boolean_sql_select($match){
 		if (i18n::strlen($this->inclusive) > 0) {
 		   /* build sql for determining score for each record */
-		   $result=i18n::explode(" ",$this->inclusive);
+		   $result=preg_split("# #",$this->inclusive);
 		   for($cth=0;$cth<count($result);$cth++){
 			   if(i18n::strlen($result[$cth])>=4){
 				   $stringsum_long .=  " $result[$cth] ";
@@ -174,7 +174,7 @@ class Search
 
 		/* apply arbitrary function to all 'word' atoms */
 
-		$result_a = i18n::explode(' ', $result);
+		$result_a = preg_split('# #', $result);
 
 		for($word = 0;$word<count($result_a);$word++)
 		{
@@ -195,7 +195,7 @@ class Search
 	}
 
 	function boolean_sql_where_short($string,$match){
-		$match_a = i18n::explode(',',$match);
+		$match_a = preg_split('#,#',$match);
 		for($ith=0;$ith<count($match_a);$ith++){
 			$like_a[$ith] = " $match_a[$ith] LIKE '% $string %' ";
 		}
@@ -204,7 +204,7 @@ class Search
 		return $like;
 	}
 	function boolean_sql_select_short($string,$match){
-		$match_a = i18n::explode(',',$match);
+		$match_a = preg_split('#,#',$match);
 		$score_unit_weight = .2;
 		for($ith=0;$ith<count($match_a);$ith++){
 			$score_a[$ith] =

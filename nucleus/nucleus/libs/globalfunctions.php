@@ -420,7 +420,7 @@ if ( $CONF['URLMode'] == 'pathinfo' )
 	if ( !$parsed )
 	{
 		/* default implementation */
-		$data = i18n::explode("/", $virtualpath );
+		$data = preg_split("#/#", $virtualpath );
 		for ( $i = 0; $i < sizeof($data); $i++ )
 		{
 			switch ( $data[$i] )
@@ -796,7 +796,7 @@ $manager->notify(
 			return array();
 		}
 		
-		$aHighlight = i18n::explode(' ', $query);
+		$aHighlight = preg_split('# #', $query);
 		
 		for ( $i = 0; $i < count($aHighlight); $i++ )
 		{
@@ -1516,35 +1516,35 @@ function checkPlugin($plug) {
 }
 
 /**
- * @param $querystr
- *		querystring to alter (e.g. foo=1&bar=2&x=y)
- * @param $param
- *		name of parameter to change (e.g. 'foo')
- * @param $value
- *		New value for that parameter (e.g. 3)
- * @result
- *		altered query string (for the examples above: foo=3&bar=2&x=y)
+ * alterQueryStr()
+ * 
+ * @param	string	$querystr	querystring to alter (e.g. foo=1&bar=2&x=y)
+ * @param	string	$param	name of parameter to change (e.g. 'foo')
+ * @param	string	$value	New value for that parameter (e.g. 3)
+ * @result	string	altered query string (for the examples above: foo=3&bar=2&x=y)
  */
-function alterQueryStr($querystr, $param, $value) {
-    $vars = i18n::explode('&', $querystr);
-    $set  = false;
-
-    for ($i = 0; $i < count($vars); $i++) {
-        $v = i18n::explode('=', $vars[$i]);
-
-        if ($v[0] == $param) {
-            $v[1] = $value;
-            $vars[$i] = implode('=', $v);
-            $set = true;
-            break;
-        }
-    }
-
-    if (!$set) {
-        $vars[] = $param . '=' . $value;
-    }
-
-    return ltrim(implode('&', $vars), '&');
+function alterQueryStr($querystr, $param, $value)
+{
+	$vars = preg_split('#&#', $querystr);
+	$set = FALSE;
+	
+	for ( $i = 0; $i < count($vars); $i++ )
+	{
+		$v = preg_split('#=#', $vars[$i]);
+		
+		if ( $v[0] == $param )
+		{
+			$v[1] = $value;
+			$vars[$i] = implode('=', $v);
+			$set = true;
+			break;
+		}
+	}
+	if ( !$set )
+	{
+		$vars[] = "{$param}={$value}";
+	}
+	return ltrim(implode('&', $vars), '&');
 }
 
 // passes one variable as hidden input field (multiple fields for arrays)
@@ -1647,6 +1647,8 @@ function sanitizeParams()
 }
 
 /**
+ * ticketForPlugin()
+ * 
  * Check ticket when not checked in plugin's admin page
  * to avoid CSRF.
  * Also avoid the access to plugin/index.php by guest user.
@@ -1776,7 +1778,7 @@ function ticketForPlugin()
 		// Resolve URI and QUERY_STRING
 		if ($uri = serverVar('REQUEST_URI') )
 		{
-			list($uri, $qstring) = i18n::explode('?', $uri);
+			list($uri, $qstring) = preg_split('#\?#', $uri);
 		}
 		else
 		{
@@ -1820,7 +1822,8 @@ function ticketForPlugin()
 	
 	/* Create new ticket */
 	$ticket=$manager->addTicketToUrl('');
-	$ticketforplugin['ticket']=i18n::substr($ticket,i18n::strpos($ticket,'ticket=')+7);
+	$ticketforplugin['ticket'] = preg_split($ticket, i18n::strpos($ticket, 'ticket=') + 7);
+	return;
 }
 
 function _addInputTags(&$keys,$prefix=''){
@@ -1837,31 +1840,40 @@ function _addInputTags(&$keys,$prefix=''){
 }
 
 /**
+ * serverStringToArray()
  * Convert the server string such as $_SERVER['REQUEST_URI']
  * to arry like arry['blogid']=1 and array['page']=2 etc.
+ * 
+ * @param	string	$str		string
+ * @param	string	$array		
+ * @param	string	$frontParam	
  */
 function serverStringToArray($str, &$array, &$frontParam)
 {
-    // init param
-    $array = array();
-    $frontParam = "";
-
-    // split front param, e.g. /index.php, and others, e.g. blogid=1&page=2
-    if (strstr($str, "?")){
-        list($frontParam, $args) = preg_split("/\?/", $str, 2);
-    }
-    else {
-        $args = $str;
-        $frontParam = "";
-    }
-
-    // If there is no args like blogid=1&page=2, return
-    if (!strstr($str, "=") && !i18n::strlen($frontParam)) {
-        $frontParam = $str;
-        return;
-    }
-
-    $array = i18n::explode("&", $args);
+	// init param
+	$array = array();
+	$frontParam = "";
+	
+	// split front param, e.g. /index.php, and others, e.g. blogid=1&page=2
+	if ( i18n::strpos($str, "?") > 0 )
+	{
+		list($frontParam, $args) = preg_split("#\?#", $str, 2);
+	}
+	else
+	{
+		$args = $str;
+		$frontParam = "";
+	}
+	
+	// If there is no args like blogid=1&page=2, return
+	if ( i18n::strpos($str, "=") == FALSE && !i18n::strlen($frontParam) )
+	{
+		$frontParam = $str;
+		return;
+	}
+	
+	$array = preg_split("#&#", $args);
+	return;
 }
 
 /**
@@ -1881,54 +1893,62 @@ function arrayToServerString($array, $frontParam, &$str)
 }
 
 /**
+ * sanitizeArray()
  * Sanitize array parameters.
  * This function checks both key and value.
  * - check key if it inclues " (double quote),  remove from array
  * - check value if it includes \ (escape sequece), remove remaining string
+ * 
+ * @param	array	&$array	
+ * @return	void
  */
 function sanitizeArray(&$array)
 {
-    $excludeListForSanitization = array('query');
-//	$excludeListForSanitization = array();
-
-    foreach ($array as $k => $v) {
-
-        // split to key and value
-        list($key, $val) = preg_split("/=/", $v, 2);
-        if (!isset($val)) {
-            continue;
-        }
-
-        // when magic quotes is on, need to use stripslashes,
-        // and then addslashes
-        if (get_magic_quotes_gpc()) {
-            $val = stripslashes($val);
-        }
+	$excludeListForSanitization = array('query');
+	
+	foreach ( $array as $k => $v )
+	{
+		// split to key and value
+		list($key, $val) = preg_split("#=#", $v, 2);
+		if ( !isset($val) )
+		{
+			continue;
+		}
+		
+		// when magic quotes is on, need to use stripslashes,
+		// and then addslashes
+		if ( get_magic_quotes_gpc() )
+		{
+			$val = stripslashes($val);
+		}
 		// note that we must use addslashes here because this function is called before the db connection is made
 		// and sql_real_escape_string needs a db connection
-        $val = addslashes($val);
-
-        // if $key is included in exclude list, skip this param
-        if (!in_array($key, $excludeListForSanitization)) {
-
-            // check value
-            if (i18n::strpos($val, '\\')) {
-                list($val, $tmp) = i18n::explode('\\', $val);
-            }
-
-            // remove control code etc.
-            $val = strtr($val, "\0\r\n<>'\"", "       ");
-
-            // check key
-            if (preg_match('/\"/i', $key)) {
-                unset($array[$k]);
-                continue;
-            }
-
-            // set sanitized info
-            $array[$k] = sprintf("%s=%s", $key, $val);
-        }
-    }
+		$val = addslashes($val);
+		
+		// if $key is included in exclude list, skip this param
+		if ( !in_array($key, $excludeListForSanitization) )
+		{
+			// check value
+			if ( i18n::strpos($val, '\\') )
+			{
+				list($val, $tmp) = preg_split('#\\\\#', $val);
+			}
+			
+			// remove control code etc.
+			$val = strtr($val, "\0\r\n<>'\"", "       ");
+			
+			// check key
+			if ( preg_match('#\"#', $key) )
+			{
+				unset($array[$k]);
+				continue;
+			}
+			
+			// set sanitized info
+			$array[$k] = sprintf("%s=%s", $key, $val);
+		}
+	}
+	return;
 }
 
 /**

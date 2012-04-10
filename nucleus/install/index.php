@@ -1130,7 +1130,7 @@ function getMySqlVersion()
 	if ( $result != FALSE && sql_num_rows($result) > 0 )
 	{
 		$row = sql_fetch_array($result);
-		$match = i18n::explode('.', $row['version']);
+		$match = preg_split('#\.#', $row['version']);
 	}
 	else
 	{
@@ -1139,14 +1139,14 @@ function getMySqlVersion()
 		if ( $result != FALSE && @sql_num_rows($result) > 0 )
 		{
 			$row = sql_fetch_row($result);
-			$match = i18n::explode('.', $row[1]);
+			$match = preg_split('#\.#', $row[1]);
 		}
 		else
 		{
 			//$output = shell_exec('mysql -V');
 			$output = ( function_exists('shell_exec') ) ? @shell_exec('mysql -V') : '0.0.0';
 			preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
-			$match = i18n::explode('.', $version[0]);
+			$match = preg_split('#\.#', $version[0]);
 
 			if ( $match[0] == '' )
 			{

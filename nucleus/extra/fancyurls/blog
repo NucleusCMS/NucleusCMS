@@ -5,15 +5,13 @@ include('./config.php');
 
 // default to default implementation (/blog/1234)
 // if blogid was not filled out by plugins
-if ($blogid == 0)
+if ( $blogid == 0 )
 {
-	$data = i18n::explode("/",serverVar('PATH_INFO'));
+	$data = preg_split("#/#",serverVar('PATH_INFO'));
 	if (count($data) > 1)
 	{
-		$blogid = intval($data[1]);
+		$blogid = (integer) $data[1];
 	}
 }
 
 selector();
-
-?>

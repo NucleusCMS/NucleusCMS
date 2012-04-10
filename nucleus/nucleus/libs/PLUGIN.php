@@ -806,7 +806,7 @@ abstract class NucleusPlugin
 		$meta = array();
 		
 		/* 1. if $typeExtra includes delimiter ';', split it to tokens */
-		$tokens = i18n::explode(';', $typeExtra);
+		$tokens = preg_split('#;#', $typeExtra);
 		
 		/*
 		 * 2. if each of tokens includes "=", it consists of key => value

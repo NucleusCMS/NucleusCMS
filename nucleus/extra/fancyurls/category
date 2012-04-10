@@ -5,15 +5,13 @@ include('./config.php');
 
 // default to default implementation (/category/1234)
 // if catid was not filled out by plugins
-if ($catid == 0)
+if ( $catid == 0 )
 {
-	$data = i18n::explode("/",serverVar('PATH_INFO'));
+	$data = preg_split("#/#", serverVar('PATH_INFO'));
 	if (count($data) > 1)
 	{
-		$catid = intval($data[1]);
+		$catid = (integer) $data[1];
 	}
 }
 
 selector();
-
-?>

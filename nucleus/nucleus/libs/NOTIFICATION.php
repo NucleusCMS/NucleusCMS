@@ -342,7 +342,7 @@ class Notification
 	 */
 	function __construct($addresses)
 	{
-		$this->addresses = i18n::explode(';' , $addresses);
+		$this->addresses = preg_split('#;#' , $addresses);
 	}
 	
 	/**

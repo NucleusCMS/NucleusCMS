@@ -5,16 +5,14 @@ include('./config.php');
 
 // default to default implementation (/archive/1/2005-12)
 // if blogid was not filled out by plugins
-if (($blogid == 0) && ($archive == ''))
+if ( ($blogid == 0) && ($archive == '') )
 {
-	$data = i18n::explode("/",serverVar('PATH_INFO'));
-	if (count($data) > 2)
+	$data = preg_split("#/#", serverVar('PATH_INFO'));
+	if ( count($data) > 2 )
 	{
-		$blogid = intval($data[1]);
+		$blogid = (integer) $data[1];
 		$archive = $data[2];
 	}
 }
 
 selector();
-
-?>

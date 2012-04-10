@@ -57,7 +57,7 @@ if (!function_exists('sql_fetch_assoc'))
 				$portnum = '';
 			}
 			else {
-				list($host,$port) = i18n::explode(":",$mysql_host);
+				list($host,$port) = preg_split("#:#", $mysql_host);
 				if (isset($port)) {
 					$portnum = $port;
 					$port = ';port='.trim($port);
@@ -151,7 +151,7 @@ if (!function_exists('sql_fetch_assoc'))
 				$portnum = ''; 
 			}
 			else {
-				list($host,$port) = i18n::explode(":",$MYSQL_HOST);
+				list($host,$port) = preg_split("#:#", $MYSQL_HOST);
 				if (isset($port)) {
 					$portnum = $port;
 					$port = ';port='.trim($port);
@@ -300,7 +300,7 @@ if (!function_exists('sql_fetch_assoc'))
 		if (is_null($dbh)) { 
 			try {
 				$SQL_DBH = NULL;
-				list($host,$port) = i18n::explode(":",$MYSQL_HOST);
+				list($host,$port) = preg_split("#:#", $MYSQL_HOST);
 				if (isset($port)) {
 					$portnum = $port;
 					$port = ';port='.trim($port);
