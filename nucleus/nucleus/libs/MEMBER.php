@@ -916,7 +916,7 @@ class Member
 	
 	public function setLocale($locale)
 	{
-		if ( !!preg_match('#^(.+)_(.+)_(.+)$#', $locale)
+		if ( !preg_match('#^(.+)_(.+)_(.+)$#', $locale)
 		 && ($locale = i18n::convert_old_language_file_name_to_locale($locale)) === FALSE )
 		{
 			$locale = '';
