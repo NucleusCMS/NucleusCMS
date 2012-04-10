@@ -20,168 +20,233 @@
 
 class BodyActions extends BaseActions
 {
-
-	var $currentItem;
-
-	var $template;
-
+	private $currentItem;
+	private $template;
+	
+	static private $defined_actions = array(
+		'image',
+		'media',
+		'popup',
+		'plugin',
+		'if',
+		'else',
+		'endif',
+		'elseif',
+		'ifnot',
+		'elseifnot'
+	);
+	
 	/**
+	 * BodyActions::__construct()
 	 * Constructor of the BODYACTIONS
+	 * 
+	 * @param	void
+	 * @return	void
 	 */
-	function __construct() {
+	public function __construct()
+	{
 		$this->BaseActions();	
+		return;
 	}
-
+	
 	/**
+	 * BodyActions::setCurrentItem()
 	 * Set the current item
 	 * 
-	 * @param &$item
-	 * 			reference to the current item
+	 * @param	object	&$item	reference to the current item
+	 * @return	void
 	 */
-	function setCurrentItem(&$item) {
-		$this->currentItem =& $item;
+	public function setCurrentItem(&$item)
+	{
 		global $currentitemid;
+		$this->currentItem =& $item;
 		$currentitemid = $this->currentItem->itemid;
+		return;
 	}
-
+	
 	/**
+	 * BodyActions::setTemplate()
 	 * Set the current template
 	 * 
-	 * @param $template
-	 * 			Template to be used
+	 * @param	string	$template	Template to be used
+	 * @return	void
 	 */
-	function setTemplate($template) {
+	public function setTemplate($template)
+	{
 		$this->template =& $template;
+		return;
 	}
-
+	
 	/**
+	 * BodyActions::getDefinedActions()
 	 * Get the defined actions in an item
+	 * 
+	 * @param	void
+	 * @return	Array	self::$defined_actions
 	 */
-	function getDefinedActions() {
-		return array('image', 'media', 'popup', 'plugin', 'if', 'else', 'endif', 'elseif', 'ifnot', 'elseifnot');
+	public function getDefinedActions()
+	{
+		return self::$defined_actions;
 	}
-
+	
 	/**
+	 * BodyActions::parse_plugin()
 	 * Parse a plugin var
 	 * Called if <%plugin(...)%> in an item appears
 	 * 
 	 * Calls the doItemVar function in the plugin
 	 */
-	function parse_plugin($pluginName) {
+	public function parse_plugin($pluginName)
+	{
 		global $manager;
-
-		// should be already tested from the parser (PARSER.php)
-		// only continue when the plugin is really installed
-		/*if (!$manager->pluginInstalled('NP_' . $pluginName)) {
-			return;
-		}*/
-
+		
 		$plugin =& $manager->getPlugin('NP_' . $pluginName);
-		if (!$plugin) return;
-
+		if ( !$plugin )
+		{
+			return;	
+		}
+		
 		// get arguments
 		$params = func_get_args();
-
+		
 		// remove plugin name
 		array_shift($params);
-
+		
 		// add item reference (array_unshift didn't work)
 		$params = array_merge(array(&$this->currentItem),$params);
-
+		
 		call_user_func_array(array(&$plugin,'doItemVar'), $params);
-	}
-
-	/**
-	 * Parse image
-	 * Called if <%image(...)%> in an item appears
-	 */
-	function parse_image() {
-		// image/popup calls have arguments separated by |
-		$args = func_get_args();
-		$args = i18n::explode('|',implode($args,', '));
-		call_user_func_array(array(&$this,'createImageCode'),$args);
+		return;
 	}
 	
 	/**
-	 * Creates the code for an image
+	 * BodyActions::parse_image()
+	 * Parse image
+	 * Called if <%image(...)%> in an item appears
+	 * 
+	 * @param	void
+	 * @return	parsed image tag
 	 */
-	function createImageCode($filename, $width, $height, $text = '') {
+	public function parse_image()
+	{
+		// image/popup calls have arguments separated by |
+		$args = func_get_args();
+		$args = i18n::explode('|',implode($args,', '));
+		echo call_user_func_array(array(&$this,'createImageCode'),$args);
+	}
+	
+	/**
+	 * BaseActions::createImageCode()
+	 * Creates the code for an image
+	 * 
+	 * @param	string	$filename	name of file from tag
+	 * @param	integer	$width		width of file from tag
+	 * @param	integer	$height		height of file from tag
+	 * @return	string	image element with anchor element
+	 */
+	public function createImageCode($filename, $width, $height, $text = '')
+	{
 		global $CONF;
-
+		
 		// select private collection when no collection given
-		if (!strstr($filename,'/')) {
+		if ( !strstr($filename,'/') )
+		{
 			$filename = $this->currentItem->authorid . '/' . $filename;
 		}
-
+		
 		$windowwidth = $width;
 		$windowheight = $height;
-
+		
 		$vars['link']			= Entity::hsc($CONF['MediaURL']. $filename);
 		$vars['text']			= Entity::hsc($text);
 		$vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
 		$vars['width'] 			= $width;
 		$vars['height']			= $height;
 		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
-
-
-		echo Template::fill($this->template['IMAGE_CODE'],$vars);;
-
+		
+		return Template::fill($this->template['IMAGE_CODE'],$vars);;
 	}
-
+	
 	/**
+	 * BodyActions::parse_media()
 	 * Parse media
 	 * Called if <%media(...)%> in an item appears
+	 * 
+	 * @param	void
+	 * @param	parsed media tag
 	 */
-	function parse_media() {
+	public function parse_media()
+	{
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
-		$args = i18n::explode('|',implode($args,', '));
-		call_user_func_array(array(&$this,'createMediaCode'),$args);
+		$args = preg_split('#\|#', implode($args,', '));
+		echo call_user_func_array(array(&$this,'createMediaCode'), $args);
 	}
-
+	
 	/**
+	 * BodyActions::createMediaCode()
 	 * Creates the code for a media
+	 * 
+	 * @param	string	$filename	name of file from tag
+	 * @param	string	$text		alternative text from tag
+	 * @return	string	text element with anchor element
 	 */
-	function createMediaCode($filename, $text = '') {
+	public function createMediaCode($filename, $text = '')
+	{
 		global $CONF;
-
+		
 		// select private collection when no collection given
-		if (!strstr($filename,'/')) {
+		if ( !strstr($filename,'/') )
+		{
 			$filename = $this->currentItem->authorid . '/' . $filename;
 		}
-
+		
 		$vars['link']			= Entity::hsc($CONF['MediaURL'] . $filename);
 		$vars['text']			= Entity::hsc($text);
-		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
-
-		echo Template::fill($this->template['MEDIA_CODE'],$vars);;
+		$vars['media']			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
+		
+		return Template::fill($this->template['MEDIA_CODE'], $vars);;
 	}
-
+	
 	/**
+	 * BodyActions::parse_popup()
 	 * Parse popup
 	 * Called if <%popup(...)%> in an item appears
+	 * 
+	 * @param	void
+	 * @return	string	parsed popup tag
 	 */
-	function parse_popup() {
+	public function parse_popup()
+	{
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
-		$args = i18n::explode('|',implode($args,', '));
-		call_user_func_array(array(&$this,'createPopupCode'),$args);
+		$args = preg_split('#\|#', implode($args,', '));
+		echo call_user_func_array(array(&$this,'createPopupCode'), $args);
 	}
-
+	
 	/**
+	 * BodyActions::createPopupCode()
 	 * Creates the code for a popup
+	 * 
+	 * @param	string	$filename	name of file from tag
+	 * @param	integer	$width		width of file from tag
+	 * @param	integer	$height		height of file from tag
+	 * @param	string	$text		alternative text from tag
+	 * @return	string	text element with anchor element of JavaScript window.open
 	 */
-	function createPopupCode($filename, $width, $height, $text = '') {
+	public function createPopupCode($filename, $width, $height, $text = '')
+	{
 		global $CONF;
-
+		
 		// select private collection when no collection given
-		if (!strstr($filename,'/')) {
+		if ( !strstr($filename,'/') )
+		{
 			$filename = $this->currentItem->authorid . '/' . $filename;
 		}
-
+		
 		$windowwidth = $width;
 		$windowheight = $height;
-
+		
 		$vars['rawpopuplink'] 	= $CONF['Self'] . "?imagepopup=" . Entity::hsc($filename) . "&amp;width=$width&amp;height=$height&amp;imagetext=" . urlencode(Entity::hsc($text));
 		$vars['popupcode'] 		= "window.open(this.href,'imagepopup','status=no,toolbar=no,scrollbars=no,resizable=yes,width=$windowwidth,height=$windowheight');return false;";
 		$vars['popuptext'] 		= Entity::hsc($text);
@@ -191,29 +256,31 @@ class BodyActions extends BaseActions
 		$vars['text']			= $text;
 		$vars['link']			= Entity::hsc($CONF['MediaURL'] . $filename);
 		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['popuptext'] . '</a>';
-
-		echo Template::fill($this->template['POPUP_CODE'],$vars);
+		
+		return Template::fill($this->template['POPUP_CODE'], $vars);
 	}
 	
-	// function to enable if-else-elseif-elseifnot-ifnot-endif to item template fields
-	
 	/**
+	 * BodyActions::checkCondition()
 	 * Checks conditions for if statements
 	 *
-	 * @param string $field type of <%if%>
-	 * @param string $name property of field
-	 * @param string $value value of property
+	 * @param	string	$field	type of <%if%>
+	 * @param	string	$name	property of field
+	 * @param	string	$value	value of property
+	 * @return	condition
 	 */
-	function checkCondition($field, $name='', $value = '') {
+	public function checkCondition($field, $name='', $value = '')
+	{
 		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
-
+		
 		$condition = 0;
-		switch($field) {
+		switch ( $field )
+		{
 			case 'category':
-				$condition = ($blog && $this->_ifCategory($name,$value));
+				$condition = ($blog && $this->ifCategory($name,$value));
 				break;
 			case 'itemcategory':
-				$condition = ($this->_ifItemCategory($name,$value));
+				$condition = ($this->ifItemCategory($name,$value));
 				break;
 			case 'blogsetting':
 				$condition = ($blog && ($blog->getSetting($name) == $value));
@@ -226,215 +293,277 @@ class BodyActions extends BaseActions
 				$condition = $member->isLoggedIn();
 				break;
 			case 'onteam':
-				$condition = $member->isLoggedIn() && $this->_ifOnTeam($name);
+				$condition = $member->isLoggedIn() && $this->ifOnTeam($name);
 				break;
 			case 'admin':
-				$condition = $member->isLoggedIn() && $this->_ifAdmin($name);
+				$condition = $member->isLoggedIn() && $this->ifAdmin($name);
 				break;
 			case 'author':
-				$condition = ($this->_ifAuthor($name,$value));
+				$condition = ($this->ifAuthor($name,$value));
 				break;
-/*			case 'nextitem':
-				$condition = ($itemidnext != '');
-				break;
-			case 'previtem':
-				$condition = ($itemidprev != '');
-				break;
-			case 'archiveprevexists':
-				$condition = ($archiveprevexists == true);
-				break;
-			case 'archivenextexists':
-				$condition = ($archivenextexists == true);
-				break; 
-			case 'skintype':
-				$condition = ($name == $this->skintype);
-				break; */
 			case 'hasplugin':
-				$condition = $this->_ifHasPlugin($name, $value);
+				$condition = $this->ifHasPlugin($name, $value);
 				break;
 			default:
-				$condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
+				$condition = $manager->pluginInstalled('NP_' . $field) && $this->ifPlugin($field, $name, $value);
 				break;
 		}
 		return $condition;
 	}	
 	
 	/**
+	 * BodyActions::ifCategory()
 	 *  Different checks for a category
+	 *  
+	 * @param	string	$key	key for data of category
+	 * @param	string	$value	value for data of category
+	 * @return	boolean
 	 */
-	function _ifCategory($name = '', $value='') {
+	private function ifCategory($key = '', $value = '')
+	{
 		global $blog, $catid;
-
+		
 		// when no parameter is defined, just check if a category is selected
-		if (($name != 'catname' && $name != 'catid') || ($value == ''))
+		if ( ($key != 'catname' && $key != 'catid') || ($value == '') )
+		{
 			return $blog->isValidCategory($catid);
-
-		// check category name
-		if ($name == 'catname') {
-			$value = $blog->getCategoryIdFromName($value);
-			if ($value == $catid)
-				return $blog->isValidCategory($catid);
 		}
-
+		
+		// check category name
+		if ( $key == 'catname' )
+		{
+			$value = $blog->getCategoryIdFromName($value);
+			if ( $value == $catid )
+			{
+				return $blog->isValidCategory($catid);
+			}
+		}
+		
 		// check category id
-		if (($name == 'catid') && ($value == $catid))
+		if ( ($key == 'catid') && ($value == $catid) )
+		{
 			return $blog->isValidCategory($catid);
-
-		return false;
+		}
+		
+		return FALSE;
 	}
 	
-		
 	/**
-	 *  Different checks for an author
+	 * BodyActions::ifAuthor()
+	 * Different checks for an author
+	 * 
+	 * @param	string	$key	key for data of author
+	 * @param	string	$value	value for data of author
+	 * @return	boolean
 	 */
-	function _ifAuthor($name = '', $value='') {
+	private function ifAuthor($key = '', $value = '')
+	{
 		global $member, $manager;
 		
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
-
+		
 		// when no parameter is defined, just check if author is current visitor
-		if (($name != 'isadmin' && $name != 'name') || ($name == 'name' && $value == '')) {
+		if ( ($key != 'isadmin' && $key != 'name') || ($key == 'name' && $value == '') )
+		{
 			return (intval($member->getID()) > 0 && intval($member->getID()) == intval($this->currentItem->authorid));
 		}
-
+		
 		// check author name
-		if ($name == 'name') {
+		if ( $key == 'name' )
+		{
 			$value = strtolower($value);
-			if ($value == strtolower($this->currentItem->author))
-				return true;
+			if ( $value == strtolower($this->currentItem->author) )
+			{
+				return TRUE;
+			}
 		}
-
+		
 		// check if author is admin
-		if (($name == 'isadmin')) {			
+		if ( ($key == 'isadmin') )
+		{
 			$aid = intval($this->currentItem->authorid);
 			$blogid = intval($b->getID());			
 			$amember =& $manager->getMember($aid);
-			if ($amember->isAdmin())
-				return true;
-				
+			if ( $amember->isAdmin() )
+			{
+				return TRUE;
+			}	
 			return $amember->isBlogAdmin($blogid);
 		}
-
-		return false;
+		
+		return FALSE;
 	}
 	
 	/**
-	 *  Different checks for a category
+	 * BodyActions::ifItemCategory()
+	 * Different checks for a category
+	 * 
+	 * @param	string	$key	key for data of category
+	 * @param	string	$value	value for data of category
+	 * @return	boolean	
 	 */
-	function _ifItemCategory($name = '', $value='') {
+	private function ifItemCategory($key = '', $value = '')
+	{
 		global $catid, $manager;
 		
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
-
+		
 		// when no parameter is defined, just check if a category is selected
-		if (($name != 'catname' && $name != 'catid') || ($value == ''))
+		if ( ($key != 'catname' && $key != 'catid') || ($value == '') )
+		{
 			return $b->isValidCategory($catid);
+		}
 			
 		$icatid = $this->currentItem->catid;
-		//$icategory = $this->currentItem->category;
-
+		
 		// check category name
-		if ($name == 'catname') {
+		if ( $key == 'catname' )
+		{
 			$value = $b->getCategoryIdFromName($value);
-			if ($value == $icatid)
+			if ( $value == $icatid )
+			{
 				return $b->isValidCategory($icatid);
+			}
 		}
-
+		
 		// check category id
-		if (($name == 'catid') && ($value == $icatid))
+		if ( ($key == 'catid') && ($value == $icatid) )
+		{
 			return $b->isValidCategory($icatid);
-
-		return false;
+		}
+		return FALSE;
 	}
-
 	
 	/**
-	 *  Checks if a member is on the team of a blog and return his rights
+	 * BodyActions::ifOnTeam()
+	 * Checks if a member is on the team of a blog and return his rights
+	 * 
+	 * @param	string	$blogName	name of weblog
+	 * @return	boolean
 	 */
-	function _ifOnTeam($blogName = '') {
+	private function ifOnTeam($blogName = '')
+	{
 		global $blog, $member, $manager;
-
+		
 		// when no blog found
-		if (($blogName == '') && (!is_object($blog)))
+		if ( ($blogName == '') && (!is_object($blog)) )
+		{
 			return 0;
-
+		}
+		
 		// explicit blog selection
-		if ($blogName != '')
+		if ( $blogName != '' )
+		{
 			$blogid = getBlogIDFromName($blogName);
-
-		if (($blogName == '') || !$manager->existsBlogID($blogid))
+		}
+		
+		if ( ($blogName == '') || !$manager->existsBlogID($blogid) )
+		{
 			// use current blog
 			$blogid = $blog->getID();
-
+		}
 		return $member->teamRights($blogid);
 	}
-
-	/**
-	 *  Checks if a member is admin of a blog
-	 */
-	function _ifAdmin($blogName = '') {
-		global $blog, $member, $manager;
-
-		// when no blog found
-		if (($blogName == '') && (!is_object($blog)))
-			return 0;
-
-		// explicit blog selection
-		if ($blogName != '')
-			$blogid = getBlogIDFromName($blogName);
-
-		if (($blogName == '') || !$manager->existsBlogID($blogid))
-			// use current blog
-			$blogid = $blog->getID();
-
-		return $member->isBlogAdmin($blogid);
-	}
-
 	
 	/**
+	 * BodyActions::ifAdmin()
+	 * Checks if a member is admin of a blog
+	 * 
+	 * @param	string	$blogName	name of weblog
+	 * @return	boolean
+	 */
+	private function ifAdmin($blogName = '')
+	{
+		global $blog, $member, $manager;
+		
+		// when no blog found
+		if ( ($blogName == '') && (!is_object($blog)) )
+		{
+			return 0;
+		}
+		
+		// explicit blog selection
+		if ( $blogName != '' )
+		{
+			$blogid = getBlogIDFromName($blogName);
+		}
+		
+		if ( ($blogName == '') || !$manager->existsBlogID($blogid) )
+		{
+			// use current blog
+			$blogid = $blog->getID();
+		}
+		return $member->isBlogAdmin($blogid);
+	}
+	
+	
+	/**
+	 * BodyActions::ifHasPlugin()
 	 *	hasplugin,PlugName
 	 *	   -> checks if plugin exists
 	 *	hasplugin,PlugName,OptionName
 	 *	   -> checks if the option OptionName from plugin PlugName is not set to 'no'
 	 *	hasplugin,PlugName,OptionName=value
 	 *	   -> checks if the option OptionName from plugin PlugName is set to value
+	 *
+	 * @param	string	$name	name of plugin
+	 * @param	string	$value	value for plugin argument
+	 * @return	boolean
 	 */
-	function _ifHasPlugin($name, $value) {
+	private function ifHasPlugin($name, $value)
+	{
 		global $manager;
 		$condition = false;
+		
 		// (pluginInstalled method won't write a message in the actionlog on failure)
-		if ($manager->pluginInstalled('NP_'.$name)) {
-			$plugin =& $manager->getPlugin('NP_' . $name);
-			if ($plugin != NULL) {
-				if ($value == "") {
-					$condition = true;
-				} else {
-					list($name2, $value2) = i18n::explode('=', $value, 2);
-					if ($value2 == "" && $plugin->getOption($name2) != 'no') {
-						$condition = true;
-					} else if ($plugin->getOption($name2) == $value2) {
-						$condition = true;
+		if ( $manager->pluginInstalled("NP_{$name}") )
+		{
+			$plugin =& $manager->getPlugin("NP_{$name}");
+			if ( $plugin != NULL )
+			{
+				if ( $value == "" )
+				{
+					$condition = TRUE;
+				}
+				else
+				{
+					list($name2, $value2) = preg_split('#=#', $value, 2);
+					if ( $value2 == "" && $plugin->getOption($name2) != 'no' )
+					{
+						$condition = TRUE;
+					}
+					else if ( $plugin->getOption($name2) == $value2 )
+					{
+						$condition = TRUE;
 					}
 				}
 			}
 		}
 		return $condition;
 	}
-
+	
 	/**
+	 * BodyActions::ifPlugin()
 	 * Checks if a plugin exists and call its doIf function
+	 * 
+	 * @param	string	$name	name of plugin
+	 * @param	string	$key	...
+	 * @param	string	$value	...
+	 * @return	string	result of plugin 'doIf'
 	 */
-	function _ifPlugin($name, $key = '', $value = '') {
+	private function ifPlugin($name, $key = '', $value = '')
+	{
 		global $manager;
-
-		$plugin =& $manager->getPlugin('NP_' . $name);
-		if (!$plugin) return;
-
+		
+		$plugin =& $manager->getPlugin("NP_{$name}");
+		if ( !$plugin )
+		{
+			return;
+		}
+		
 		$params = func_get_args();
 		array_shift($params);
-
+		
 		return call_user_func_array(array(&$plugin, 'doIf'), $params);
 	}
-
 }
-?>
