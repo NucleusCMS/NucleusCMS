@@ -19,16 +19,28 @@
 
 class CommentActions extends BaseActions
 {
-	// ref to COMMENTS object which is using this object to handle
-	// its templatevars
+	/**
+	 * CommentsActions::$commentsObj
+	 * ref to COMMENTS object which is using this object to handle its templatevars
+	 */
 	private $commentsObj;
 	
-	// template to use to parse the comments
+	/**
+	 * CommentsActions::$template
+	 * template to use to parse the comments
+	 */
 	private $template;
 	
-	// comment currenlty being handled (mysql result assoc array; see Comments::showComments())
+	/**
+	 * CommentsActions::$currentComment
+	 * comment currenlty being handled (mysql result assoc array; see Comments::showComments())
+	 */
 	private $currentComment;
 	
+	/**
+	 * CommentsActions::$defined_actions
+	 * defined actions in this class
+	 */
 	static private $defined_actions = array(
 		'blogurl',
 		'commentcount',
@@ -693,12 +705,13 @@ class CommentActions extends BaseActions
 	}
 	
 	/**
-	 * CommentActions::checkCondition()
+	 * ItemActions::checkCondition()
 	 * Checks conditions for if statements
 	 *
-	 * @param string $field type of <%if%>
-	 * @param string $name property of field
-	 * @param string $value value of property
+	 * @param	string	$field	type of <%if%>
+	 * @param	string	$name	property of field
+	 * @param	string	$value	value of property
+	 * @return	boolean
 	 */
 	private function checkCondition($field, $name='', $value = '') {
 		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
@@ -744,21 +757,22 @@ class CommentActions extends BaseActions
 	 * CommentActions::ifCategory()
 	 * Different checks for a category
 	 * 
-	 * @param	void
-	 * @return	void
+	 * @param	string	$key	key of category
+	 * @param	string	$value	value for key of category
+	 * @return	boolean
 	 */
-	private function ifCategory($name = '', $value = '')
+	private function ifCategory($key = '', $value = '')
 	{
 		global $blog, $catid;
 		
 		// when no parameter is defined, just check if a category is selected
-		if ( ($name != 'catname' && $name != 'catid') || ($value == '') )
+		if ( ($key != 'catname' && $key != 'catid') || ($value == '') )
 		{
 			return $blog->isValidCategory($catid);
 		}
 		
 		// check category name
-		if ( $name == 'catname' )
+		if ( $key == 'catname' )
 		{
 			$value = $blog->getCategoryIdFromName($value);
 			if ($value == $catid)
@@ -766,7 +780,7 @@ class CommentActions extends BaseActions
 		}
 		
 		// check category id
-		if ( ($name == 'catid') && ($value == $catid) )
+		if ( ($key == 'catid') && ($value == $catid) )
 		{
 			return $blog->isValidCategory($catid);
 		}
@@ -882,8 +896,8 @@ class CommentActions extends BaseActions
 	 * CommentActions::ifOnTeam()
 	 * Checks if a member is on the team of a blog and return his rights
 	 * 
-	 * @param	void
-	 * @return	void
+	 * @param	string	$blogName	name of weblog
+	 * @return	boolean	correct or not
 	 */
 	private function ifOnTeam($blogName = '')
 	{
@@ -916,8 +930,8 @@ class CommentActions extends BaseActions
 	 * CommentActions::ifAdmin()
 	 * Checks if a member is admin of a blog
 	 * 
-	 * @param	void
-	 * @return	void
+	 * @param	string	$blogName	name of weblog
+	 * @return	boolean	correct or not
 	 */
 	private function ifAdmin($blogName = '')
 	{
@@ -956,8 +970,8 @@ class CommentActions extends BaseActions
 	 *	   -> checks if the option OptionName from plugin PlugName is set to value
 	 *
 	 * @param	string	$name	name of plugin
-	 * @param	string	$value	name (and value) of plugin option
-	 * @return	boolean
+	 * @param	string	$value	key (and value) of plugin option
+	 * @return	boolean	correct or not
 	 */
 	private function ifHasPlugin($name, $value)
 	{
@@ -996,8 +1010,9 @@ class CommentActions extends BaseActions
 	 * Checks if a plugin exists and call its doIf function
 	 * 
 	 * @param	string	$name	name of plugin
-	 * @param	string	$key	key for confition
-	 * @param	string	$value	value for contdition
+	 * @param	string	$key	key of plugin option
+	 * @param	string	$value	value of plugin option
+	 * @return	boolean	callback output from plugin
 	 */
 	private function ifPlugin($name, $key = '', $value = '')
 	{
@@ -1015,4 +1030,3 @@ class CommentActions extends BaseActions
 		return call_user_func_array(array(&$plugin, 'doIf'), $params);
 	}
 }
-	

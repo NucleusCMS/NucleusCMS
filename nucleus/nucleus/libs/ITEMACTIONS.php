@@ -18,266 +18,415 @@
  */
 class ItemActions extends BaseActions
 {
-
-	// contains an assoc array with parameters that need to be included when
-	// generating links to items/archives/... (e.g. catid)
-	var $linkparams;
-
-	// true when the current user is a blog admin (and thus allowed to edit all items)
-	var $allowEditAll;
-
-	// timestamp of last visit
-	var $lastVisit;
-
-	// item currently being handled (mysql result object, see Blog::showUsingQuery)
-	var $currentItem;
-
-	// reference to the blog currently being displayed
-	var $blog;
-
-	// associative array with template info (part name => contents)
-	var $template;
-
-	// true when comments need to be displayed
-	var $showComments;
-
-	function __construct(&$blog) {
+	/**
+	 * ItemActions::$currentItem
+	 * item currently being handled (mysql result object, see Blog::showUsingQuery)
+	 */
+	public $currentItem;
+	
+	/**
+	 * ItemActions::$linkparams
+	 * contains an assoc array with parameters that need to be included when
+	 * generating links to items/archives/... (e.g. catid)
+	 */
+	public $linkparams;
+	
+	/**
+	 * ItemActions::$allowEditAll
+	 * true when the current user is a blog admin (and thus allowed to edit all items) 
+	 */
+	private $allowEditAll;
+	
+	/**
+	 * ItemActions::$lastVisit
+	 * timestamp of last visit
+	 */
+	private $lastVisit;
+	
+	/**
+	 * ItemActions::$blog
+	 * reference to the blog currently being displayed
+	 */
+	private $blog;
+	
+	/**
+	 * ItemActions::$template
+	 * associative array with template info (part name => contents)
+	 */
+	private $template;
+	
+	/**
+	 * ItemActions::$showComments
+	 * true when comments need to be displayed
+	 */
+	private $showComments;
+	
+	/**
+	 * ItemActions::$defined_actions
+	 * defined actions in this class
+	 */
+	static private $defined_actions = array(
+		'blogid',
+		'title',
+		'body',
+		'more',
+		'smartbody',
+		'itemid',
+		'morelink',
+		'category',
+		'categorylink',
+		'author',
+		'authorid',
+		'authorlink',
+		'catid',
+		'karma',
+		'date',
+		'time',
+		'query',
+		'itemlink',
+		'blogurl',
+		'closed',
+		'syndicate_title',
+		'syndicate_description',
+		'karmaposlink',
+		'karmaneglink',
+		'new',
+		'image',
+		'popup',
+		'media',
+		'daylink',
+		'query',
+		'include',
+		'phpinclude',
+		'parsedinclude',
+		'skinfile',
+		'set',
+		'plugin',
+		'edit',
+		'editlink',
+		'editpopupcode',
+		'comments',
+		'relevance',
+		'if',
+		'else',
+		'endif',
+		'elseif',
+		'ifnot',
+		'elseifnot'
+	);
+	
+	/**
+	 * ItemActions::__construct
+	 * Enter description here ...
+	 * @param unknown_type $blog
+	 */
+	public function __construct(&$blog)
+	{
+		global $catid, $member;
 		// call constructor of superclass first
 		$this->BaseActions();
-
+		
 		// extra parameters for created links
-		global $catid;
-		if ($catid)
+		if ( $catid )
+		{
 			$this->linkparams = array('catid' => $catid);
-
+		}
+		
 		// check if member is blog admin (and thus allowed to edit all items)
-		global $member;
 		$this->allowEditAll = ($member->isLoggedIn() && $member->blogAdminRights($blog->getID()));
 		$this->setBlog($blog);
-	}
-
-	/**
-	  * Returns an array with the actions that are defined
-	  * in the ItemActions class
-	  */
-	function getDefinedActions() {
-		return array(
-			'blogid',
-			'title',
-			'body',
-			'more',
-			'smartbody',
-			'itemid',
-			'morelink',
-			'category',
-			'categorylink',
-			'author',
-			'authorid',
-			'authorlink',
-			'catid',
-			'karma',
-			'date',
-			'time',
-			'query',
-			'itemlink',
-			'blogurl',
-			'closed',
-			'syndicate_title',
-			'syndicate_description',
-			'karmaposlink',
-			'karmaneglink',
-			'new',
-			'image',
-			'popup',
-			'media',
-			'daylink',
-			'query',
-			'include',
-			'phpinclude',
-			'parsedinclude',
-			'skinfile',
-			'set',
-			'plugin',
-			'edit',
-			'editlink',
-			'editpopupcode',
-			'comments',
-			'relevance',
-			'if',
-			'else',
-			'endif',
-			'elseif',
-			'ifnot',
-			'elseifnot'
-		);
-	}
-
-	function setLastVisit($lastVisit) {
-		$this->lastVisit = $lastVisit;
-	}
-
-	function setParser(&$parser) {
-		$this->parser =& $parser;
-	}
-
-	function setCurrentItem(&$item) {
-		$this->currentItem =& $item;
-		global $currentitemid;
-		$currentitemid = $this->currentItem->itemid;
-	}
-
-	function setBlog(&$blog) {
-		$this->blog =& $blog;
-	}
-
-	function setTemplate($template) {
-		$this->template =& $template;
-	}
-
-	function setShowComments($val) {
-		$this->showComments = $val;
-	}
-
-	// methods used by parser to insert content
-
-
-	/**
-	 * Parse templatevar blogid
-	 */
-	function parse_blogid() {
-		echo $this->blog->getID();
-	}
-
-	/**
-	 * Parse templatevar body
-	 */
-	function parse_body() {
-		$this->highlightAndParse($this->currentItem->body);
-	}
-
-	/**
-	 * Parse templatevar more
-	 */
-	function parse_more() {
-		$this->highlightAndParse($this->currentItem->more);
-	}
-
-	/**
-	 * Parse templatevar itemid
-	 */
-	function parse_itemid() {
-		echo $this->currentItem->itemid;
-	}
-
-	/**
-	 * Parse templatevar category
-	 */
-	function parse_category() {
-		echo $this->currentItem->category;
-	}
-
-	/**
-	 * ItemActions::parse_categorylink()
-	 * Parse templatevar categorylink
-	 * 
-	 * @param	Void
-	 * @return	Void
-	 */
-	function parse_categorylink()
-	{
-		echo Link::create_link('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category));
-		return;
-	}
-
-	/**
-	 * Parse templatevar catid
-	 */
-	function parse_catid() {
-		echo $this->currentItem->catid;
-	}
-
-	/**
-	 * Parse templatevar authorid
-	 */
-	function parse_authorid() {
-		echo $this->currentItem->authorid;
-	}
-
-	/**
-	 * ItemActions::parse_authorlink()
-	 * Parse templatevar authorlink
-	 * 
-	 * @param	Void
-	 * @return	Void
-	 */
-	function parse_authorlink()
-	{
-		echo Link::create_link(
-			'member',
-			array(
-				'memberid' => $this->currentItem->authorid,
-				'name' => $this->currentItem->author,
-				'extra' => $this->linkparams
-			)
-		);
-		return;
-	}
-
-	/**
-	 * Parse templatevar query
-	 */
-	function parse_query() {
-		echo $this->strHighlight;
-	}
-
-	/**
-	 * ItemActions::parse_itemlink()
-	 * Parse templatevar itemlink
-	 * 
-	 * @param	Void
-	 * @return	Void
-	 */
-	function parse_itemlink()
-	{
-		echo Link::create_link(
-			'item',
-			array(
-				'itemid' => $this->currentItem->itemid,
-				'title' => $this->currentItem->title,
-				'timestamp' => $this->currentItem->timestamp,
-				'extra' => $this->linkparams
-			)
-		);
 		return;
 	}
 	
 	/**
+	 * ItemActions::getDefinedActions()
+	 * Returns an array with the actions that are defined
+	 * in the ItemActions class
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function getDefinedActions()
+	{
+		return self::$defined_actions;
+	}
+	
+	/**
+	 * ItemActions::setLastVisit()
+	 * 
+	 * @param	timestamp	$lastVisit	timestamp of latest visit
+	 * @return	void
+	 */
+	public function setLastVisit($lastVisit)
+	{
+		$this->lastVisit = $lastVisit;
+		return;
+	}
+	
+	/**
+	 * ItemActions::setParser()
+	 * 
+	 * @param	object	&$parser	instance of Parser class
+	 * @return	void
+	 */
+	public function setParser(&$parser)
+	{
+		$this->parser =& $parser;
+		return;
+	}
+	
+	/**
+	 * ItemActions::setCurrentItem()
+	 * 
+	 * @param	object	$item	instance of Item class
+	 * @return	void
+	 */
+	public function setCurrentItem(&$item)
+	{
+		global $currentitemid;
+		$this->currentItem =& $item;
+		$currentitemid = $this->currentItem->itemid;
+		return;
+	}
+	
+	/**
+	 * ItemActions::setBlog()
+	 * 
+	 * @param	object	&$blog	instance of Blog class
+	 * @return	void
+	 */
+	public function setBlog(&$blog)
+	{
+		$this->blog =& $blog;
+		return;
+	}
+	
+	/**
+	 * ItemActions::setTemplate()
+	 * 
+	 * @param	array	$template	array including templates
+	 * @return	void
+	 */
+	public function setTemplate($template)
+	{
+		$this->template =& $template;
+		return;
+	}
+	
+	/**
+	 * ItemActions::setShowComments()
+	 * 
+	 * @param	boolean	$val	need to be displayed or not
+	 * @return	void
+	 */
+	public function setShowComments($val)
+	{
+		$this->showComments = (boolean) $val;
+		return;
+	}
+	
+	/**
+	 * ItemActions::parse_blogid()
+	 * Parse templatevar blogid
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_blogid()
+	{
+		echo $this->blog->getID();
+	}
+
+	/**
+	 * ItemActions::parse_body()
+	 * Parse templatevar body
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_body()
+	{
+		$this->highlightAndParse($this->currentItem->body);
+		return;
+	}
+	
+	/**
+	 * ItemActions::parse_more()
+	 * Parse templatevar more
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_more()
+	{
+		$this->highlightAndParse($this->currentItem->more);
+		return;
+	}
+	
+	/**
+	 * ItemActions::parse_itemid()
+	 * Parse templatevar itemid
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_itemid()
+	{
+		echo $this->currentItem->itemid;
+		return;
+	}
+	
+	/**
+	 * ItemActions::parse_category()
+	 * Parse templatevar category
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_category()
+	{
+		echo $this->currentItem->category;
+		return;
+	}
+	
+	/**
+	 * ItemActions::parse_categorylink()
+	 * Parse templatevar categorylink
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_categorylink()
+	{
+		echo Link::create_link('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category));
+		return;
+	}
+	
+	/**
+	 * ItemActions::parse_catid()
+	 * Parse templatevar catid
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_catid()
+	{
+		echo $this->currentItem->catid;
+		return;
+	}
+	
+	/**
+	 * ItemActions::parse_authorid()
+	 * Parse templatevar authorid
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_authorid()
+	{
+		echo $this->currentItem->authorid;
+		return;
+	}
+	
+	/**
+	 * ItemActions::parse_authorlink()
+	 * Parse templatevar authorlink
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_authorlink()
+	{
+		$data = array(
+				'memberid' => $this->currentItem->authorid,
+				'name' => $this->currentItem->author,
+				'extra' => $this->linkparams
+			);
+		
+		echo Link::create_link('member', $data);
+		return;
+	}
+	
+	/**
+	 * ItemActions::parse_query()
+	 * Parse templatevar query
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_query()
+	{
+		echo $this->strHighlight;
+		return;
+	}
+	
+	/**
+	 * ItemActions::parse_itemlink()
+	 * Parse templatevar itemlink
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_itemlink()
+	{
+		$data = array(
+			'itemid'	=> $this->currentItem->itemid,
+			'title'		=> $this->currentItem->title,
+			'timestamp'	=> $this->currentItem->timestamp,
+			'extra'		=> $this->linkparams
+		);
+		
+		echo Link::create_link('item', $data);
+		return;
+	}
+	
+	/**
+	 * ItemActions::parse_blogurl()
 	 * Parse templatevar blogurl
+	 * 
+	 * @param	void
+	 * @return	void
 	 */
-	function parse_blogurl() {
+	public function parse_blogurl()
+	{
 		echo $this->blog->getURL();
+		return;
 	}
-
+	
 	/**
+	 * ItemActions::parse_closed()
 	 * Parse templatevar closed
+	 * 
+	 * @param	void
+	 * @return	void
 	 */
-	function parse_closed() {
+	public function parse_closed()
+	{
 		echo $this->currentItem->closed;
+		return;
 	}
-
+	
 	/**
+	 * ItemActions::parse_relevance()
 	 * Parse templatevar relevance
+	 * 
+	 * @param	void
+	 * @return	void
 	 */
-	function parse_relevance() {
+	public function parse_relevance()
+	{
 		echo round($this->currentItem->score,2);
+		return;
 	}
-
+	
 	/**
+	 * ItemActions::parse_title()
 	 * Parse templatevar title
 	 *
-	 * @param string $format defines in which format the title is shown
+	 * @param	string	$format	defines in which format the title is shown
+	 * @return	void
 	 */
-	function parse_title($format = '')
+	public function parse_title($format = '')
 	{
 		if ( is_array($this->currentItem) )
 		{
@@ -304,17 +453,23 @@ class ItemActions extends BaseActions
 		}
 		return;
 	}
-
+	
 	/**
+	 * ItemActions::parse_karma()
 	 * Parse templatevar karma
+	 * 
+	 * @param	string	$type	type of data for karma
+	 * @return	void
 	 */
-	function parse_karma($type = 'totalscore') {
+	public function parse_karma($type = 'totalscore')
+	{
 		global $manager;
-
+		
 		// get karma object
 		$karma =& $manager->getKarma($this->currentItem->itemid);
-
-		switch($type) {
+		
+		switch ( $type )
+		{
 			case 'pos':
 				echo $karma->getNbPosVotes();
 				break;
@@ -337,14 +492,19 @@ class ItemActions extends BaseActions
 				echo $karma->getTotalScore();
 				break;
 		}
-
+		return;
 	}
-
+	
 	/**
+	 * ItemActions::parse_author()
 	 * Parse templatevar author
+	 * 
+	 * @param	string	$which	key of data for author
+	 * @return	void
 	 */
-	function parse_author($which = '') {
-		switch($which)
+	public function parse_author($which = '')
+	{
+		switch ( $which )
 		{
 			case 'realname':
 				echo $this->currentItem->authorname;
@@ -362,25 +522,40 @@ class ItemActions extends BaseActions
 			default:
 				echo $this->currentItem->author;
 		}
+		return;
 	}
-
+	
 	/**
+	 * ItemActions::parse_smartbody()
 	 * Parse templatevar smartbody
+	 * 
+	 * @param	void
+	 * @return	void
 	 */
-	function parse_smartbody() {
-		if (!$this->currentItem->more) {
+	public function parse_smartbody()
+	{
+		if ( !$this->currentItem->more )
+		{
 			$this->highlightAndParse($this->currentItem->body);
-		} else {
+		}
+		else
+		{
 			$this->highlightAndParse($this->currentItem->more);
 		}
+		return;
 	}
-
+	
 	/**
+	 * ItemActions::parse_morelink()
 	 * Parse templatevar morelink
 	 */
-	function parse_morelink() {
-		if ($this->currentItem->more)
+	public function parse_morelink()
+	{
+		if ( $this->currentItem->more )
+		{
 			$this->parser->parse($this->template['MORELINK']);
+		}
+		return;
 	}
 	
 	/**
@@ -390,7 +565,7 @@ class ItemActions extends BaseActions
 	 * @param	string	$format	format optional strftime format
 	 * @return	void
 	 */
-	function parse_date($format = '')
+	public function parse_date($format = '')
 	{
 		if ( $format !== '' )
 		{
@@ -421,11 +596,10 @@ class ItemActions extends BaseActions
 	 * ItemActions::parse_time()
 	 * Parse templatevar time
 	 *
-	 * @param string	$format	format optional strftime format
+	 * @param	string	$format	format optional strftime format
 	 * @return	void
-	 * 
 	 */
-	function parse_time($format = '')
+	public function parse_time($format = '')
 	{
 		if ( $format !== '' )
 		{
@@ -444,15 +618,15 @@ class ItemActions extends BaseActions
 		echo i18n::formatted_datetime($format, $this->currentItem->timestamp);
 		return;
 	}
-
+	
 	/**
 	 * ItemActions::parse_syndicate_title()
 	 * Parse templatevar syndicate_title
 	 *
-	 * @param String	$maxLength	maxLength optional maximum length
-	 * @return	String	syndicated title
+	 * @param	string	$maxLength	maxLength optional maximum length
+	 * @return	string	syndicated	title
 	 */
-	function parse_syndicate_title($maxLength = 100) {
+	public function parse_syndicate_title($maxLength = 100) {
 		$syndicated = strip_tags($this->currentItem->title);
 		echo Entity::hsc(Entity::shorten($syndicated,$maxLength,'...'));
 	}
@@ -461,11 +635,11 @@ class ItemActions extends BaseActions
 	 * ItemActions::parse_syndicate_description()
 	 * Parse templatevar syndicate_description
 	 *
-	 * @param Stromg	$maxLength	maxlength optional maximum length
-	 * @param	String	$addHighlight	highlighted string
-	 * @return	Void
+	 * @param	stromg	$maxLength		maxlength optional maximum length
+	 * @param	string	$addHighlight	highlighted string
+	 * @return	void
 	 */
-	function parse_syndicate_description($maxLength = 250, $addHighlight = 0)
+	public function parse_syndicate_description($maxLength = 250, $addHighlight = 0)
 	{
 		$syndicated = strip_tags($this->currentItem->body);
 		if ( $addHighlight )
@@ -481,165 +655,218 @@ class ItemActions extends BaseActions
 	}
 	
 	/**
-	  * Parse templatevar karmaposlink
-	  *
-	  * @param string text
-	  */
-	function parse_karmaposlink($text = '') {
+	 * ItemActions::parse_karmaposlink()
+	 * Parse templatevar karmaposlink
+	 *
+	 * @param	string	$text	text element for anchor element
+	 * @return	void
+	 */
+	public function parse_karmaposlink($text = '')
+	{
 		global $CONF;
-		$link = $CONF['ActionURL'] . '?action=votepositive&amp;itemid='.$this->currentItem->itemid;
-		echo $text ? '<a href="'.$link.'">'.$text.'</a>' : $link;
+		$link = $CONF['ActionURL'] . '?action=votepositive&amp;itemid=' . $this->currentItem->itemid;
+		if ( !$text )
+		{
+			echo '<a href="'.$link.'">' . $text . '</a>';
+		}
+		else
+		{
+			echo $link;
+		}
+		
+		return;
 	}
-
+	
 	/**
-	  * Parse templatevar karmaneglink
-	  *
-	  * @param string text
-	  */
-	function parse_karmaneglink($text = '') {
+	 * ItemActions::parse_karmaneglink()
+	 * Parse templatevar karmaneglink
+	 *
+	 * @param	string $text	text element for anchor element
+	 * @return	void
+	 */
+	public function parse_karmaneglink($text = '')
+	{
 		global $CONF;
 		$link = $CONF['ActionURL'] . '?action=votenegative&amp;itemid='.$this->currentItem->itemid;
-		echo $text ? '<a href="'.$link.'">'.$text.'</a>' : $link;
+		
+		if ( !$text )
+		{
+			echo '<a href="'.$link.'">' . $text . '</a>';
+		}
+		else
+		{
+			echo $link;
+		}
+		
+		return;
 	}
 
 	/**
-	  * Parse templatevar new
-	  */
-	function parse_new() {
-		if (($this->lastVisit != 0) && ($this->currentItem->timestamp > $this->lastVisit))
+	 * ItemActions::parse_new()
+	 * Parse templatevar new
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_new()
+	{
+		if ( ($this->lastVisit != 0) && ($this->currentItem->timestamp > $this->lastVisit) )
+		{
 			echo $this->template['NEW'];
+		}
+		return;
 	}
 	
 	/**
 	 * ItemActions::parse_daylink()
 	 * Parse templatevar daylink
 	 * 
-	 * @param	Void
-	 * @return	Void
+	 * @param	void
+	 * @return	void
 	 */
-	function parse_daylink()
+	public function parse_daylink()
 	{
-		echo Link::create_archive_link($this->blog->getID(), i18n::formatted_datetime('%Y-%m-%d',$this->currentItem->timestamp), $this->linkparams);
+		echo Link::create_archive_link($this->blog->getID(), i18n::formatted_datetime('%Y-%m-%d', $this->currentItem->timestamp), $this->linkparams);
 		return;
 	}
 	
 	/**
-	  * Parse templatevar comments
-	  */
-	function parse_comments($maxToShow = 0) {
-		if ($maxToShow == 0)
+	 * ItemActions::parse_comments(
+	 * Parse templatevar comments
+	 * 
+	 * @param	integer	$maxToShow	maximum number of comments in a display
+	 * @return	void
+	 */
+	public function parse_comments($maxToShow = 0)
+	{
+		if ( $maxToShow == 0 )
+		{
 			$maxToShow = $this->blog->getMaxComments();
-
+		}
+		
 		// add comments
-		if ($this->showComments && $this->blog->commentsEnabled()) {
+		if ( $this->showComments && $this->blog->commentsEnabled() )
+		{
 			$comments = new Comments($this->currentItem->itemid);
 			$comments->setItemActions($this);
 			$comments->showComments($this->template, $maxToShow, $this->currentItem->closed ? 0 : 1, $this->strHighlight);
 		}
+		return;
 	}
-
+	
 	/**
-	  * Executes a plugin templatevar
-	  *
-	  * @param pluginName name of plugin (without the NP_)
-	  *
-	  * extra parameters can be added
-	  */
-	function parse_plugin($pluginName) {
+	 * ItemActions::parse_plugin()
+	 * Executes a plugin templatevar
+	 *
+	 * @param	string	$pluginName	name of plugin (without the NP_)
+	 * @param	extra parameters can be added
+	 * @return	void
+	 */
+	public function parse_plugin($pluginName)
+	{
 		global $manager;
-
-		// should be already tested from the parser (PARSER.php)
-		// only continue when the plugin is really installed
-		/*if (!$manager->pluginInstalled('NP_' . $pluginName))
-			return;*/
-
-		$plugin =& $manager->getPlugin('NP_' . $pluginName);
-		if (!$plugin) return;
-
+		
+		$plugin =& $manager->getPlugin("NP_{$pluginName}");
+		if ( !$plugin )
+		{
+			return;
+		}
+		
 		// get arguments
 		$params = func_get_args();
-
+		
 		// remove plugin name
 		array_shift($params);
-
+		
 		// add item reference (array_unshift didn't work)
 		$params = array_merge(array(&$this->currentItem),$params);
-
+		
 		call_user_func_array(array(&$plugin,'doTemplateVar'), $params);
+		return;
 	}
-
+	
 	/**
-	  * Parse templatevar edit
-	  */
-	function parse_edit() {
+	 * ItemActions::parse_edit()
+	 * Parse templatevar edit
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_edit()
+	{
 		global $member, $CONF;
-		if ($this->allowEditAll || ($member->isLoggedIn() && ($member->getID() == $this->currentItem->authorid)) ) {
+		if ( $this->allowEditAll || ($member->isLoggedIn() && ($member->getID() == $this->currentItem->authorid)) )
+		{
 			$this->parser->parse($this->template['EDITLINK']);
 		}
+		return;
 	}
-
+	
 	/**
-	  * Parse templatevar editlink
-	  */
-	function parse_editlink() {
+	 * ItemActions::parse_editlink()
+	 * Parse templatevar editlink
+	 */
+	public function parse_editlink()
+	{
 		global $CONF;
-		echo $CONF['AdminURL'],'bookmarklet.php?action=edit&amp;itemid=',$this->currentItem->itemid;
+		echo $CONF['AdminURL'] . 'bookmarklet.php?action=edit&amp;itemid=' . $this->currentItem->itemid;
+		return;
 	}
-
+	
 	/**
-	  * Parse templatevar editpopupcode
-	  */
-	function parse_editpopupcode() {
+	 * ItemActions::parse_editpopupcode()
+	 * Parse templatevar editpopupcode
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_editpopupcode()
+	{
 		echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=550,left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
+		return;
 	}
-
-	// helper functions
-
+	
 	/**
+	 * ItemActions::highlightAndParse()
 	 * Parses highlighted text, with limited actions only (to prevent not fully trusted team members
 	 * from hacking your weblog.
 	 * 'plugin variables in items' implementation by Andy
+	 * 
+	 * @param	array	$data	
+	 * @return	void
 	 */
-	function highlightAndParse(&$data) {
+	public function highlightAndParse(&$data)
+	{
 		$actions = new BodyActions($this->blog);
 		$parser = new Parser($actions->getDefinedActions(), $actions);
 		$actions->setTemplate($this->template);
 		$actions->setHighlight($this->strHighlight);
 		$actions->setCurrentItem($this->currentItem);
-		//$actions->setParser($parser);
 		$parser->parse($actions->highlight($data));
+		return;
 	}
-
-	/*
-	// this is the function previous to the 'plugin variables in items' implementation by Andy
-	function highlightAndParse(&$data) {
-		// allow only a limited subset of actions (do not allow includes etc, they might be evil)
-		$this->parser->actions = array('image','media','popup');
-		$tmp_highlight = $this->highlight($data);
-		$this->parser->parse($tmp_highlight);
-		$this->parser->actions = $this->getDefinedActions();
-	}
-	*/
 	
-	// function to enable if-else-elseif-elseifnot-ifnot-endif to item template fields
-	
-		/**
+	/**
+	 * ItemActions::checkCondition()
 	 * Checks conditions for if statements
 	 *
-	 * @param string $field type of <%if%>
-	 * @param string $name property of field
-	 * @param string $value value of property
+	 * @param	string	$field	type of <%if%>
+	 * @param	string	$name	property of field
+	 * @param	string	$value	value of property
+	 * @return	boolean
 	 */
-	function checkCondition($field, $name='', $value = '') {
+	private function checkCondition($field, $name='', $value = '')
+	{
 		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
-
+		
 		$condition = 0;
-		switch($field) {
+		switch ( $field )
+		{
 			case 'category':
-				$condition = ($blog && $this->_ifCategory($name,$value));
+				$condition = ($blog && $this->ifCategory($name,$value));
 				break;
 			case 'itemcategory':
-				$condition = ($this->_ifItemCategory($name,$value));
+				$condition = ($this->ifItemCategory($name,$value));
 				break;
 			case 'blogsetting':
 				$condition = ($blog && ($blog->getSetting($name) == $value));
@@ -652,216 +879,275 @@ class ItemActions extends BaseActions
 				$condition = $member->isLoggedIn();
 				break;
 			case 'onteam':
-				$condition = $member->isLoggedIn() && $this->_ifOnTeam($name);
+				$condition = $member->isLoggedIn() && $this->ifOnTeam($name);
 				break;
 			case 'admin':
-				$condition = $member->isLoggedIn() && $this->_ifAdmin($name);
+				$condition = $member->isLoggedIn() && $this->ifAdmin($name);
 				break;
 			case 'author':
-				$condition = ($this->_ifAuthor($name,$value));
+				$condition = ($this->ifAuthor($name,$value));
 				break;
-/*			case 'nextitem':
-				$condition = ($itemidnext != '');
-				break;
-			case 'previtem':
-				$condition = ($itemidprev != '');
-				break;
-			case 'archiveprevexists':
-				$condition = ($archiveprevexists == true);
-				break;
-			case 'archivenextexists':
-				$condition = ($archivenextexists == true);
-				break; 
-			case 'skintype':
-				$condition = ($name == $this->skintype);
-				break; */
 			case 'hasplugin':
-				$condition = $this->_ifHasPlugin($name, $value);
+				$condition = $this->ifHasPlugin($name, $value);
 				break;
 			default:
-				$condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
+				$condition = $manager->pluginInstalled('NP_' . $field) && $this->ifPlugin($field, $name, $value);
 				break;
 		}
 		return $condition;
 	}	
 	
 	/**
+	 * ItemActions::ifCategory()
 	 *  Different checks for a category
+	 *  
+	 * @param	string	$key	key of category
+	 * @param	string	$value	value for key of category
+	 * @return	boolean
 	 */
-	function _ifCategory($name = '', $value='') {
+	private function ifCategory($key = '', $value = '')
+	{
 		global $blog, $catid;
-
+		
 		// when no parameter is defined, just check if a category is selected
-		if (($name != 'catname' && $name != 'catid') || ($value == ''))
-			return $blog->isValidCategory($catid);
-
-		// check category name
-		if ($name == 'catname') {
-			$value = $blog->getCategoryIdFromName($value);
-			if ($value == $catid)
-				return $blog->isValidCategory($catid);
+		if ( ($key != 'catname' && $key != 'catid') || ($value == '') )
+		{
+			return (boolean) $blog->isValidCategory($catid);
 		}
-
+		
+		// check category name
+		if ( $key == 'catname' )
+		{
+			$value = $blog->getCategoryIdFromName($value);
+			if ( $value == $catid )
+			{
+				return (boolean) $blog->isValidCategory($catid);
+			}
+		}
+		
 		// check category id
-		if (($name == 'catid') && ($value == $catid))
-			return $blog->isValidCategory($catid);
-
-		return false;
+		if ( ($key == 'catid') && ($value == $catid) )
+		{
+			return (boolean) $blog->isValidCategory($catid);
+		}
+		return FALSE;
 	}
 	
-		
 	/**
-	 *  Different checks for an author
+	 * ItemActions::ifAuthor()
+	 * Different checks for an author
+	 * 
+	 * @param	string	$key	key of data for author
+	 * @param	string	$value	value of data for author
+	 * @return	boolean	correct or not
 	 */
-	function _ifAuthor($name = '', $value='') {
+	private function ifAuthor($key = '', $value = '')
+	{
 		global $member, $manager;
 		
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
-
+		
 		// when no parameter is defined, just check if author is current visitor
-		if (($name != 'isadmin' && $name != 'name') || ($name == 'name' && $value == '')) {
-			return (intval($member->getID()) > 0 && intval($member->getID()) == intval($this->currentItem->authorid));
+		if ( ($key != 'isadmin' && $key != 'name') || ($key == 'name' && $value == '') )
+		{
+			return (boolean) ((integer) $member->getID() > 0 && (integer) $member->getID() == (integer) $this->currentItem->authorid);
 		}
-
+		
 		// check author name
-		if ($name == 'name') {
+		if ( $key == 'name' )
+		{
 			$value = strtolower($value);
-			if ($value == strtolower($this->currentItem->author))
-				return true;
+			if ( $value == strtolower($this->currentItem->author) )
+			{
+				return TRUE;
+			}
 		}
-
+		
 		// check if author is admin
-		if (($name == 'isadmin')) {			
+		if ( ($key == 'isadmin') )
+		{
 			$aid = intval($this->currentItem->authorid);
 			$blogid = intval($b->getID());			
 			$amember =& $manager->getMember($aid);
-			if ($amember->isAdmin())
-				return true;
-				
-			return $amember->isBlogAdmin($blogid);
+			if ( $amember->isAdmin() )
+			{
+				return TRUE;
+			}
+			return (boolean) $amember->isBlogAdmin($blogid);
 		}
-
-		return false;
+		
+		return FALSE;
 	}
 	
 	/**
-	 *  Different checks for a category
+	 * ItemActions::ifItemCategory()
+	 * Different checks for a category
+	 * 
+	 * @param	string	$key	key of data for category to which item belongs
+	 * @param	string	$value	value of data for category to which item belongs
+	 * @return boolean	correct or not
 	 */
-	function _ifItemCategory($name = '', $value='') {
+	private function ifItemCategory($key = '', $value='')
+	{
 		global $catid, $manager;
 		
 		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
-
+		
 		// when no parameter is defined, just check if a category is selected
-		if (($name != 'catname' && $name != 'catid') || ($value == ''))
-			return $b->isValidCategory($catid);
-			
-		$icatid = $this->currentItem->catid;
-		//$icategory = $this->currentItem->category;
-
-		// check category name
-		if ($name == 'catname') {
-			$value = $b->getCategoryIdFromName($value);
-			if ($value == $icatid)
-				return $b->isValidCategory($icatid);
+		if ( ($key != 'catname' && $key != 'catid') || ($value == '') )
+		{
+			return (boolean) $b->isValidCategory($catid);
 		}
-
+		
+		$icatid = $this->currentItem->catid;
+		
+		// check category name
+		if ( $key == 'catname' )
+		{
+			$value = $b->getCategoryIdFromName($value);
+			if ( $value == $icatid )
+			{
+				return (boolean) $b->isValidCategory($icatid);
+			}
+		}
+		
 		// check category id
-		if (($name == 'catid') && ($value == $icatid))
-			return $b->isValidCategory($icatid);
-
-		return false;
+		if ( ($key == 'catid') && ($value == $icatid) )
+		{
+			return (boolean) $b->isValidCategory($icatid);
+		}
+		return FALSE;
 	}
 
 	
 	/**
-	 *  Checks if a member is on the team of a blog and return his rights
+	 * ItemActions::ifOnTeam()
+	 * Checks if a member is on the team of a blog and return his rights
+	 * 
+	 * @param	string	$blogName	name of weblog
+	 * @return	boolean	correct or not
 	 */
-	function _ifOnTeam($blogName = '') {
+	private function ifOnTeam($blogName = '')
+	{
 		global $blog, $member, $manager;
-
+		
 		// when no blog found
-		if (($blogName == '') && (!is_object($blog)))
+		if ( ($blogName == '') && (!is_object($blog)) )
+		{
 			return 0;
-
+		}
+		
 		// explicit blog selection
-		if ($blogName != '')
+		if ( $blogName != '' )
+		{
 			$blogid = getBlogIDFromName($blogName);
-
-		if (($blogName == '') || !$manager->existsBlogID($blogid))
-			// use current blog
+		}
+		
+		// use current blog
+		if ( ($blogName == '') || !$manager->existsBlogID($blogid) )
+		{
 			$blogid = $blog->getID();
-
-		return $member->teamRights($blogid);
+		}
+		return (boolean) $member->teamRights($blogid);
 	}
-
-	/**
-	 *  Checks if a member is admin of a blog
-	 */
-	function _ifAdmin($blogName = '') {
-		global $blog, $member, $manager;
-
-		// when no blog found
-		if (($blogName == '') && (!is_object($blog)))
-			return 0;
-
-		// explicit blog selection
-		if ($blogName != '')
-			$blogid = getBlogIDFromName($blogName);
-
-		if (($blogName == '') || !$manager->existsBlogID($blogid))
-			// use current blog
-			$blogid = $blog->getID();
-
-		return $member->isBlogAdmin($blogid);
-	}
-
 	
 	/**
+	 * ItemActions::ifAdmin()
+	 * Checks if a member is admin of a blog
+	 * 
+	 * @param	string	$blogName	name of weblog
+	 * @return	boolean	correct or not
+	 */
+	private function ifAdmin($blogName = '')
+	{
+		global $blog, $member, $manager;
+		
+		// when no blog found
+		if ( ($blogName == '') && (!is_object($blog)) )
+		{
+			return 0;
+		}
+		
+		// explicit blog selection
+		if ( $blogName != '' )
+		{
+			$blogid = getBlogIDFromName($blogName);
+		}
+		
+		// use current blog
+		if ( ($blogName == '') || !$manager->existsBlogID($blogid) )
+		{
+			$blogid = $blog->getID();
+		}
+		return (boolean) $member->isBlogAdmin($blogid);
+	}
+	
+	
+	/**
+	 * ItemActions::ifHasPlugin()
 	 *	hasplugin,PlugName
 	 *	   -> checks if plugin exists
 	 *	hasplugin,PlugName,OptionName
 	 *	   -> checks if the option OptionName from plugin PlugName is not set to 'no'
 	 *	hasplugin,PlugName,OptionName=value
 	 *	   -> checks if the option OptionName from plugin PlugName is set to value
+	 *
+	 * @param	string	$name	name of plugin
+	 * @param	string	$value	key (and value) of plugin option
+	 * @return	boolean	correct or not
 	 */
-	function _ifHasPlugin($name, $value) {
+	private function ifHasPlugin($name, $value)
+	{
 		global $manager;
-		$condition = false;
+		$condition = FALSE;
 		// (pluginInstalled method won't write a message in the actionlog on failure)
-		if ($manager->pluginInstalled('NP_'.$name)) {
+		if ( $manager->pluginInstalled("NP_{$name}"))
+		{
 			$plugin =& $manager->getPlugin('NP_' . $name);
-			if ($plugin != NULL) {
-				if ($value == "") {
-					$condition = true;
-				} else {
+			if ( $plugin != NULL )
+			{
+				if ( $value == "" )
+				{
+					$condition = TRUE;
+				}
+				else
+				{
 					list($name2, $value2) = preg_split('#=#', $value, 2);
-					if ($value2 == "" && $plugin->getOption($name2) != 'no') {
-						$condition = true;
-					} else if ($plugin->getOption($name2) == $value2) {
-						$condition = true;
+					if ( $value2 == "" && $plugin->getOption($name2) != 'no' )
+					{
+						$condition = TRUE;
+					}
+					else if ( $plugin->getOption($name2) == $value2 )
+					{
+						$condition = TRUE;
 					}
 				}
 			}
 		}
-		return $condition;
+		return (boolean) $condition;
 	}
-
+	
 	/**
+	 * ItemActions::ifPlugin()
 	 * Checks if a plugin exists and call its doIf function
+	 * 
+	 * @param	string	$name	name of plugin
+	 * @param	string	$key	key of plugin option
+	 * @param	string	$value	value of plugin option
+	 * @return	boolean	callback output from plugin
 	 */
-	function _ifPlugin($name, $key = '', $value = '') {
+	private function ifPlugin($name, $key = '', $value = '')
+	{
 		global $manager;
-
-		$plugin =& $manager->getPlugin('NP_' . $name);
-		if (!$plugin) return;
-
+		
+		$plugin =& $manager->getPlugin("NP_{$name}");
+		if ( !$plugin )
+		{
+			return;
+		}
 		$params = func_get_args();
 		array_shift($params);
-
-		return call_user_func_array(array(&$plugin, 'doIf'), $params);
+		
+		return (boolean) call_user_func_array(array(&$plugin, 'doIf'), $params);
 	}
-
 }
-
-?>
