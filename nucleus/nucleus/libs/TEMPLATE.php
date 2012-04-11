@@ -243,7 +243,7 @@ class Template
 	static public function exists($name)
 	{
 		$query = "SELECT * FROM %s WHERE tdname='%s';";
-		$query = sql_query($query, sql_table('template_desc'), sql_real_escape_string($name));
+		$query = sprintf($query, sql_table('template_desc'), sql_real_escape_string($name));
 		$result = sql_query($query);
 		return (sql_num_rows($result) != 0);
 	}
