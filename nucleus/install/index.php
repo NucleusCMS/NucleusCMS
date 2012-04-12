@@ -25,8 +25,8 @@ $CONF = array();
 /* reporting all errors for support */
 error_reporting(E_ALL);
 
-$minimum_php_version	= '5.0.6';
-$minimum_mysql_version	= '3.23';
+$minimum_php_version = '5.0.6';
+$minimum_mysql_version = '3.23';
 
 $page_footer_copyright	= '&copy; 2001-2012 The Nucleus Groupe . Running Nucleus CMS v4.00';
 
@@ -161,8 +161,7 @@ function do_action()
 				}
 				break;
 			case 'weblog':
-				if ( count($param->check_user_parameters()) == 0
-					&& count($param->check_weblog_parameters()) == 0 )
+				if ( count($param->check_user_parameters()) == 0 && count($param->check_weblog_parameters()) == 0 )
 				{
 					$param->set_state('install');
 					$isPostback = false;
@@ -845,7 +844,7 @@ function do_install()
 	/*
 	 * 3. try to create database if needed
 	 */
-	if ( !sql_query("CREATE DATABASE IF NOT EXISTS {$MYSQL_DATABASE};") )
+	if ( !sql_query("CREATE DATABASE IF NOT EXISTS {$MYSQL_DATABASE}") )
 	{
 		$errors[] = _INST_ERROR1 . ': ' . sql_error();
 	}
@@ -1002,6 +1001,8 @@ function do_install()
 			$manager = new Manager();
 		}
 
+		include_once($DIR_LIBS . 'skinie.php');
+
 		$aSkinErrors = installCustomSkins();
 		if ( count($aSkinErrors) > 0 )
 		{
@@ -1021,7 +1022,7 @@ function do_install()
 		$query = sprintf($query, tableName('nucleus_config'), $defSkinID);
 		sql_query($query);
 
-		$aPlugErrors = installCustomPlugs($manager);
+		$aPlugErrors = installCustomPlugs();
 		if ( count($aPlugErrors) > 0 )
 		{
 			array_merge($errors, $aPlugErrors);
@@ -1184,12 +1185,10 @@ function tableName($input)
 
 /**
  * Install custom plugins
- *
- * @param object $manager MANAGER class instance
  */
-function installCustomPlugs($manager)
+function installCustomPlugs()
 {
-	global $aConfPlugsToInstall, $DIR_LIBS;
+	global $aConfPlugsToInstall, $DIR_LIBS, $manager;
 
 	$aErrors = array();
 	if ( count($aConfPlugsToInstall) == 0 )
@@ -1253,7 +1252,6 @@ function installCustomSkins()
 		return $aErrors;
 	}
 
-	include_once($DIR_LIBS . 'skinie.php');
 	$importer = new SkinImport();
 
 	foreach ( $aConfSkinsToImport as $skinName )
@@ -1434,24 +1432,26 @@ class ParamManager
 		$this->blog_shortname = 'mynucleuscms';
 
 		/* root path */
-		$this->root_path = realpath(dirname(__FILE__) . '/..');
+		//		$this->root_path = realpath(dirname(__FILE__) . '/..');
+		$directory_separator = preg_quote(DIRECTORY_SEPARATOR, '|');
+		$this->root_path = implode('/', preg_split("|$directory_separator|", realpath(dirname(__FILE__) . '/..')));
 		if ( substr($this->root_path, -1, 1) !== '/' )
 		{
 			$this->root_path .= '/';
 		}
-		$base_path_pcre = preg_quote($this->root_path, '#');
+		$base_path_pcre = preg_quote($this->root_path, '|');
 
 		/* current directry name */
-		$directory_name = preg_replace("#$base_path_pcre#", '', dirname(__FILE__));
-		$directory_name_pcre = preg_quote($directory_name, '#');
+		$directory_name = preg_replace("|$base_path_pcre|", '', implode('/', preg_split("|$directory_separator|", realpath(dirname(__FILE__)))));
+		$directory_name_pcre = preg_quote($directory_name, '|');
 
 		/* root uri */
 		$root_url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
-		$this->root_url = preg_replace("#$directory_name_pcre(.*)$#", '', $root_url);
+		$this->root_url = preg_replace("|$directory_name_pcre(.*)$|", '', $root_url);
 
-		$this->AdminPath = $this->root_path . 'nucleus' . DIRECTORY_SEPARATOR;
-		$this->MediaPath = $this->root_path . 'media' . DIRECTORY_SEPARATOR;
-		$this->SkinsPath = $this->root_path . 'skins' . DIRECTORY_SEPARATOR;
+		$this->AdminPath = $this->root_path . 'nucleus/';
+		$this->MediaPath = $this->root_path . 'media/';
+		$this->SkinsPath = $this->root_path . 'skins/';
 
 		$this->IndexURL  = $this->root_url;
 		$this->AdminURL  = $this->root_url . 'nucleus/';
@@ -1513,10 +1513,10 @@ class ParamManager
 			$errors[] = sprintf(_VALID_ERROR2, _DB_FIELD2);
 		}
 		
-		if ( $this->mysql_password == '' )
-		{
-			$errors[] = sprintf(_VALID_ERROR1, _DB_FIELD3);
-		}
+		//		if ( $this->mysql_password == '' )
+		//		{
+		//			$errors[] = sprintf(_VALID_ERROR1, _DB_FIELD3);
+		//		}
 
 		if ( $this->mysql_database == '' )
 		{
