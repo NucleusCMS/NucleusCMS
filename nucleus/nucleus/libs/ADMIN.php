@@ -1120,61 +1120,71 @@ class Admin
 
         $this->pagefoot();
     }
-
-    /**
-     * Provide a page to item a new item to the given blog
-     */
-    function action_createitem() {
-        global $member, $manager;
-
-        $blogid = intRequestVar('blogid');
-
-        // check if allowed
-        $member->teamRights($blogid) or $this->disallow();
-
-        $memberid = $member->getID();
-
-        $blog =& $manager->getBlog($blogid);
-
-        $this->pagehead();
-
-        // generate the add-item form
-        $formfactory = new PageFactory($blogid);
-        $formfactory->createAddForm('admin');
-
-        $this->pagefoot();
-    }
-
-    /**
-     * @todo document this
-     */
-    function action_itemedit()
+	
+	/**
+	 * Admin::action_createitem()
+	 * Provide a page to item a new item to the given blog
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_createitem()
 	{
 		global $member, $manager;
-
+		
+		$blogid = intRequestVar('blogid');
+		
+		// check if allowed
+		$member->teamRights($blogid) or $this->disallow();
+		
+		$memberid = $member->getID();
+		
+		$blog =& $manager->getBlog($blogid);
+		
+		$this->pagehead();
+		
+		// generate the add-item form
+		$formfactory = new PageFactory($blogid);
+		$formfactory->createAddForm('admin');
+		
+		$this->pagefoot();
+		return;
+	}
+	
+	/**
+	 * Admin::action_itemedit()
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_itemedit()
+	{
+		global $member, $manager;
+		
 		$itemid = intRequestVar('itemid');
-
+		
 		// only allow if user is allowed to alter item
 		$member->canAlterItem($itemid) or $this->disallow();
-
+		
 		$item =& $manager->getItem($itemid, 1, 1);
 		$blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
-
+		
 		$manager->notify('PrepareItemForEdit', array('item' => &$item));
-
-		if ($blog->convertBreaks())
+		
+		if ( $blog->convertBreaks() )
 		{
 			$item['body'] = removeBreaks($item['body']);
 			$item['more'] = removeBreaks($item['more']);
 		}
-
+		
 		// form to edit blog items
 		$this->pagehead();
 		$formfactory = new PageFactory($blog->getID());
 		$formfactory->createEditForm('admin', $item);
 		$this->pagefoot();
-    }
-
+		return;
+	}
+	
     /**
      * @todo document this
      */
