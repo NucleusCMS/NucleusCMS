@@ -399,7 +399,7 @@ function listplug_plugOptionRow($current)
 		case 'select':
 			echo '<select name="'.Entity::hsc($varname)."\">\n";
 			$options = NucleusPlugin::getOptionSelectValues($current['typeinfo']);
-			$options = i18n::explode('|', $options);
+			$options = preg_split('/\|/', $options);
 			
 			for ( $i=0; $i<(count($options)-1); $i+=2 )
 			{
