@@ -22,26 +22,29 @@ $CONF['UsingAdminArea'] = 1;
 // include the admin code
 require_once('../config.php');
 
-if ($CONF['alertOnSecurityRisk'] == 1)
+if ( $CONF['alertOnSecurityRisk'] == 1 )
 {
 	// check if files exist and generate an error if so
 	$aFiles = array(
-		'../install.sql' => _ERRORS_INSTALLSQL,
-		'../install.php' => _ERRORS_INSTALLPHP,
-		'upgrades' => _ERRORS_UPGRADESDIR,
-		'convert' => _ERRORS_CONVERTDIR
+		'../install'	=> _ERRORS_INSTALLDIR,
+		'upgrades'		=> _ERRORS_UPGRADESDIR,
+		'convert'		=> _ERRORS_CONVERTDIR
 	);
 	$aFound = array();
-	foreach($aFiles as $fileName => $fileDesc)
+	foreach ( $aFiles as $fileName => $fileDesc )
 	{
-		if (@file_exists($fileName))
+		if ( @file_exists($fileName) )
+		{
 			array_push($aFound, $fileDesc);
+		}
 	}
-	if (@is_writable('../config.php')) {
+	if ( @is_writable('../config.php') )
+	{
 		array_push($aFound, _ERRORS_CONFIGPHP);
 	}
-	if (sizeof($aFound) > 0)
+	if ( sizeof($aFound) > 0 )
 	{
+		sendContentType('text/html', 'startUpError');
 		startUpError(
 			_ERRORS_STARTUPERROR1. implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2,
 			_ERRORS_STARTUPERROR3
@@ -49,24 +52,24 @@ if ($CONF['alertOnSecurityRisk'] == 1)
 	}
 }
 
-$bNeedsLogin = false;
-$bIsActivation = in_array($action, array('activate', 'activatesetpwd'));
+$bNeedsLogin	= FALSE;
+$bIsActivation	= in_array($action, array('activate', 'activatesetpwd'));
 
 if ( $action == 'logout' )
 {
-	$bNeedsLogin = true;
+	$bNeedsLogin = TRUE;
 }
 
 if ( !$member->isLoggedIn() && !$bIsActivation )
 {
-	$bNeedsLogin = true;
+	$bNeedsLogin = TRUE;
 }
 
 // show error if member cannot login to admin
 if ( $member->isLoggedIn() && !$member->canLogin() && !$bIsActivation )
 {
 	$error = _ERROR_LOGINDISALLOWED;
-	$bNeedsLogin = true;
+	$bNeedsLogin = TRUE;
 }
 
 if ( $bNeedsLogin )
