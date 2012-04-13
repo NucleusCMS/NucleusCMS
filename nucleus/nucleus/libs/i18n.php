@@ -339,47 +339,6 @@ class i18n
 	}
 	
 	/**
-	 * i18n::explode()
-	 * explode function based on multibyte processing with non-pcre regular expressions
-	 * 
-	 * NOTE: we SHOULD use preg_split function instead of this,
-	 *  and I hope this is obsoleted near future...
-	 *  
-	 *  preg_split()
-	 *  http://www.php.net/manual/en/function.preg-split.php
-	 * 
-	 * @deprecated
-	 * @static
-	 * @param	string	$delimiter	singlebyte or multibyte delimiter
-	 * @param	string	$target	target string
-	 * @param	integer	$limit	the number of index for returned array
-	 * @return	array	array splitted by $delimiter
-	 */
-	static public function explode($delimiter, $target, $limit=0)
-	{
-		$array = array();
-		$preg_delimiter = '#' . preg_quote($delimiter, '#') . '#';
-		if ( preg_match($preg_delimiter, $target) === 0 )
-		{
-			return (array) $target;
-		}
-		for ( $count=0; $limit == 0 || $count < $limit; $count++ )
-		{
-			$offset = self::strpos($target, $delimiter);
-			if ( $array != array() && $offset == 0 )
-			{
-				$array[] = $target;
-				break;
-			}
-			$array[]	= self::substr($target, 0, $offset);
-			$length	= self::strlen($target) - $offset;
-			$target	= self::substr($target, $offset+1, $length);
-			continue;
-		}
-		return (array) $array;
-	}
-	
-	/**
 	 * i18n::strftime
 	 * strftime function based on multibyte processing
 	 * 
