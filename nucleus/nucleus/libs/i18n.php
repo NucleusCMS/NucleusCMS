@@ -252,7 +252,7 @@ class i18n
 	 * @static
 	 * @param	string	$haystack	string to search
 	 * @param	string	$needle	string for search
-	 * @param	string	$offset	the position from which the search should be performed. 
+	 * @param	integer	$offset	the position from which the search should be performed. 
 	 * @return	integer/FALSE	the numeric position of the first occurrence of needle in haystack
 	 */
 	static public function strpos($haystack, $needle, $offset=0)
