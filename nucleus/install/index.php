@@ -161,7 +161,8 @@ function do_action()
 				}
 				break;
 			case 'weblog':
-				if ( count($param->check_user_parameters()) == 0 && count($param->check_weblog_parameters()) == 0 )
+				if ( count($param->check_user_parameters()) == 0
+					&& count($param->check_weblog_parameters()) == 0 )
 				{
 					$param->set_state('install');
 					$isPostback = false;
@@ -1144,7 +1145,6 @@ function getMySqlVersion()
 		}
 		else
 		{
-			//$output = shell_exec('mysql -V');
 			$output = ( function_exists('shell_exec') ) ? @shell_exec('mysql -V') : '0.0.0';
 			preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
 			$match = preg_split('#\.#', $version[0]);
@@ -1432,7 +1432,6 @@ class ParamManager
 		$this->blog_shortname = 'mynucleuscms';
 
 		/* root path */
-		//		$this->root_path = realpath(dirname(__FILE__) . '/..');
 		$directory_separator = preg_quote(DIRECTORY_SEPARATOR, '|');
 		$this->root_path = implode('/', preg_split("|$directory_separator|", realpath(dirname(__FILE__) . '/..')));
 		if ( substr($this->root_path, -1, 1) !== '/' )
@@ -1442,7 +1441,7 @@ class ParamManager
 		$base_path_pcre = preg_quote($this->root_path, '|');
 
 		/* current directry name */
-		$directory_name = preg_replace("|$base_path_pcre|", '', implode('/', preg_split("|$directory_separator|", realpath(dirname(__FILE__)))));
+		$directory_name = preg_replace("#{$base_path_pcre}#", '', implode('/', preg_split("#{$directory_separator}#", realpath(dirname(__FILE__)))));
 		$directory_name_pcre = preg_quote($directory_name, '|');
 
 		/* root uri */
@@ -1513,11 +1512,6 @@ class ParamManager
 			$errors[] = sprintf(_VALID_ERROR2, _DB_FIELD2);
 		}
 		
-		//		if ( $this->mysql_password == '' )
-		//		{
-		//			$errors[] = sprintf(_VALID_ERROR1, _DB_FIELD3);
-		//		}
-
 		if ( $this->mysql_database == '' )
 		{
 			$errors[] = sprintf(_VALID_ERROR1, _DB_FIELD4);
