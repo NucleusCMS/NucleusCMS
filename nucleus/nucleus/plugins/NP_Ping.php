@@ -33,14 +33,46 @@
 
 class NP_Ping extends NucleusPlugin
 {
-	public function getName() { return 'Ping'; }
-	public function getAuthor() { return 'admun (Edmond Hui)'; }
-	public function getURL() { return 'http://edmondhui.homeip.net/nudn'; }
-	public function getVersion() { return '1.81'; }
-	public function getMinNucleusVersion() { return '330'; }
-	public function getDescription() { return _PING_DESC; }
-	public function supportsFeature($what) { return ( $what == 'SqlTablePrefix' ); }
-	public function getEventList(){ return array('JustPosted', 'PostAddItem', 'PostUpdateItem'); }
+	public function getName()
+	{
+		return 'Ping';
+	}
+
+	public function getAuthor()
+	{
+		return 'admun (Edmond Hui)';
+	}
+
+	public function getURL()
+	{
+		return 'http://edmondhui.homeip.net/nudn';
+	}
+
+	public function getVersion()
+	{
+		return '1.81';
+	}
+
+	public function getMinNucleusVersion()
+	{
+		return '330';
+	}
+
+	public function getDescription()
+	{
+		return _PING_DESC;
+	}
+
+	public function supportsFeature($what)
+	{
+		return ( $what == 'SqlTablePrefix' );
+	}
+
+	public function getEventList()
+	{
+		return array('JustPosted', 'PostAddItem', 'PostUpdateItem');
+	}
+
 	public function init()
 	{
 		// include translation file for this plugin
@@ -58,24 +90,24 @@ class NP_Ping extends NucleusPlugin
 	public function install()
 	{
 		// Default, http://pingomatic.com
-		$this->createOption('pingpong_pingomatic', _PING_PINGOM, 'yesno', 'yes');
+		$this->createOption('pingpong_pingomatic',	'_PING_PINGOM',		'yesno', 'yes');
 		// http://weblogs.com
-		$this->createOption('pingpong_weblogs', _PING_WEBLOGS, 'yesno', 'no');
+		$this->createOption('pingpong_weblogs',		'_PING_WEBLOGS',	'yesno', 'no');
 		// http://www.technorati.com
-		$this->createOption('pingpong_technorati', _PING_TECHNOR, 'yesno', 'no');
+		$this->createOption('pingpong_technorati',	'_PING_TECHNOR',	'yesno', 'no');
 		// http://www.blogrolling.com
-		$this->createOption('pingpong_blogrolling', _PING_BLOGR, 'yesno', 'no');
+		$this->createOption('pingpong_blogrolling',	'_PING_BLOGR',		'yesno', 'no');
 		// http://blo.gs
-		$this->createOption('pingpong_blogs', _PING_BLOGS, 'yesno', 'no');
+		$this->createOption('pingpong_blogs',		'_PING_BLOGS',		'yesno', 'no');
 		// http://weblogues.com/
-		$this->createOption('pingpong_weblogues', _PING_WEBLOGUES, 'yesno', 'no');
+		$this->createOption('pingpong_weblogues',	'_PING_WEBLOGUES',	'yesno', 'no');
 		// http://blogg.de
-		$this->createOption('pingpong_bloggde', _PING_BLOGGDE, 'yesno', 'no');
+		$this->createOption('pingpong_bloggde',		'_PING_BLOGGDE',	'yesno', 'no');
 		// Pinging on background
-		$this->createOption('ping_background', _PING_BG, 'yesno', 'no');
+		$this->createOption('ping_background',		'_PING_BG',			'yesno', 'no');
 		
-		/* plugin weblog option */
-		$this->createBlogOption('ping_sendping', _PING_SENDPING, 'yesno', 'yes');
+		// plugin weblog option
+		$this->createBlogOption('ping_sendping',	'_PING_SENDPING',	'yesno', 'yes');
 		return;
 	}
 	
@@ -90,7 +122,7 @@ class NP_Ping extends NucleusPlugin
 		}
 		
 		$bid = intval($data['blogid']);
-		if ($this->getBlogOption($bid, 'ping_sendping') == "yes")
+		if ( $this->getBlogOption($bid, 'ping_sendping') == "yes" )
 		{
 			if ( $this->getOption('ping_background') == "yes" )
 			{
@@ -123,9 +155,11 @@ class NP_Ping extends NucleusPlugin
 		$iid  = intval($itemid);
 		global $manager;
 		$item = $manager->getItem($iid,0,0);
-		if ($item) {
+		if ( $item )
+		{
 			$bid = intval(getBlogIDFromItemID($iid));
-			if ($this->getBlogOption($bid, 'ping_sendping') == "yes" ) {
+			if ( $this->getBlogOption($bid, 'ping_sendping') == "yes" )
+			{
 				$this->sendPings(array('blogid' => $bid));
 			}
 		}

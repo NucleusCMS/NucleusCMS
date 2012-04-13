@@ -18,15 +18,49 @@ PARTICULAR PURPOSE. See the GNU General Public License for more details.
 */
 class NP_SecurityEnforcer extends NucleusPlugin
 {
-	public function getName()		{ return 'SecurityEnforcer'; }
-	public function getAuthor()		{ return 'Frank Truscott + Cacher + Mocchi'; }
-	public function getURL()			{ return 'http://revcetera.com/ftruscot';	}
-	public function getVersion()	{ return '1.02'; }
-	public function getDescription()	{ return _SECURITYENFORCER_DESCRIPTION; }
-	public function getMinNucleusVersion()	{ return 400; }
-	public function getTableList() { return array(sql_table('plug_securityenforcer')); }
-	public function getEventList() { return array('QuickMenu','PrePasswordSet','CustomLogin','LoginSuccess','LoginFailed','PostRegister'); }
-	public function hasAdminArea() { return 1; }
+	public function getName()
+	{
+		return 'SecurityEnforcer';
+	}
+
+	public function getAuthor()
+	{
+		return 'Frank Truscott + Cacher + Mocchi';
+	}
+
+	public function getURL()
+	{
+		return 'http://revcetera.com/ftruscot';
+	}
+
+	public function getVersion()
+	{
+		return '1.02';
+	}
+
+	public function getDescription()
+	{
+		return _SECURITYENFORCER_DESCRIPTION;
+	}
+
+	public function getMinNucleusVersion()
+	{
+		return 400;
+	}
+
+	public function getTableList()
+	{
+		return array(sql_table('plug_securityenforcer'));
+	}
+
+	public function getEventList()
+	{
+		return array('QuickMenu','PrePasswordSet','CustomLogin','LoginSuccess','LoginFailed','PostRegister');
+	}
+
+	public function hasAdminArea() {
+		return 1;
+	}
 	
 	public function supportsFeature($what)
 	{
@@ -42,13 +76,13 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		global $CONF;
 		
 		// Need to make some options
-		$this->createOption('quickmenu', '_SECURITYENFORCER_OPT_QUICKMENU', 'yesno', 'yes');
-		$this->createOption('del_uninstall_data', '_SECURITYENFORCER_OPT_DEL_UNINSTALL_DATA', 'yesno','no');
-		$this->createOption('enable_security', '_SECURITYENFORCER_OPT_ENABLE', 'yesno','yes');
-		$this->createOption('pwd_min_length', '_SECURITYENFORCER_OPT_PWD_MIN_LENGTH', 'text','8');
-		$this->createOption('pwd_complexity', '_SECURITYENFORCER_OPT_PWD_COMPLEXITY', 'select','0', '_SECURITYENFORCER_OPT_SELECT_OFF_COMP|0|_SECURITYENFORCER_OPT_SELECT_ONE_COMP|1|_SECURITYENFORCER_OPT_SELECT_TWO_COMP|2|_SECURITYENFORCER_OPT_SELECT_THREE_COMP|3|_SECURITYENFORCER_OPT_SELECT_FOUR_COMP|4;datatype=numerical');
-		$this->createOption('max_failed_login', '_SECURITYENFORCER_OPT_MAX_FAILED_LOGIN', 'text', '5');
-		$this->createOption('login_lockout', '_SECURITYENFORCER_OPT_LOGIN_LOCKOUT', 'text', '15');
+		$this->createOption('quickmenu',			'_SECURITYENFORCER_OPT_QUICKMENU',			'yesno', 'yes');
+		$this->createOption('del_uninstall_data',	'_SECURITYENFORCER_OPT_DEL_UNINSTALL_DATA',	'yesno','no');
+		$this->createOption('enable_security',		'_SECURITYENFORCER_OPT_ENABLE',				'yesno','yes');
+		$this->createOption('pwd_min_length',		'_SECURITYENFORCER_OPT_PWD_MIN_LENGTH',		'text','8');
+		$this->createOption('pwd_complexity',		'_SECURITYENFORCER_OPT_PWD_COMPLEXITY',		'select','0', '_SECURITYENFORCER_OPT_SELECT_OFF_COMP|0|_SECURITYENFORCER_OPT_SELECT_ONE_COMP|1|_SECURITYENFORCER_OPT_SELECT_TWO_COMP|2|_SECURITYENFORCER_OPT_SELECT_THREE_COMP|3|_SECURITYENFORCER_OPT_SELECT_FOUR_COMP|4;datatype=numerical');
+		$this->createOption('max_failed_login',		'_SECURITYENFORCER_OPT_MAX_FAILED_LOGIN',	'text', '5');
+		$this->createOption('login_lockout',		'_SECURITYENFORCER_OPT_LOGIN_LOCKOUT',		'text', '15');
 		
 		// create needed tables
 		sql_query("CREATE TABLE IF NOT EXISTS ". sql_table('plug_securityenforcer').
@@ -85,7 +119,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		$this->pwd_min_length	= (integer) $this->getOption('pwd_min_length');
 		$this->pwd_complexity	= (integer) $this->getOption('pwd_complexity');
 		$this->max_failed_login	= (integer) $this->getOption('max_failed_login');
-		$this->login_lockout		= (integer) $this->getOption('login_lockout');
+		$this->login_lockout	= (integer) $this->getOption('login_lockout');
 		return;
 	}
 	
@@ -169,18 +203,18 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		global $_SERVER;
 		$login = $data['login'];
 		$ip = $_SERVER['REMOTE_ADDR'];
-		sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE lastfail < ".(time() - ($this->login_lockout * 60)));
-		$query = "SELECT fails as result FROM ".sql_table('plug_securityenforcer')." ";
-		$query .= "WHERE login='".sql_real_escape_string($login)."'";
+		sql_query("DELETE FROM " . sql_table('plug_securityenforcer') . " WHERE lastfail < " . (time() - ($this->login_lockout * 60)));
+		$query = "SELECT fails as result FROM " . sql_table('plug_securityenforcer') . " ";
+		$query .= "WHERE login='" . sql_real_escape_string($login) . "'";
 		$flogin = quickQuery($query); 
-		$query = "SELECT fails as result FROM ".sql_table('plug_securityenforcer')." ";
-		$query .= "WHERE login='".sql_real_escape_string($ip)."'";
+		$query = "SELECT fails as result FROM " . sql_table('plug_securityenforcer') . " ";
+		$query .= "WHERE login='" . sql_real_escape_string($ip) . "'";
 		$fip = quickQuery($query); 
 		
 		if ( $flogin >= $this->max_failed_login || $fip >= $this->max_failed_login )
 		{
-			$data['success'] = 0;
-			$data['allowlocal'] = 0;
+			$data['success']	= 0;
+			$data['allowlocal']	= 0;
 			$info = sprintf(_SECURITYENFORCER_LOGIN_DISALLOWED, Entity::hsc($login), Entity::hsc($ip));
 			ActionLog::add(INFO, $info);
 		}
@@ -197,8 +231,8 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		global $_SERVER;
 		$login = $data['username'];
 		$ip = $_SERVER['REMOTE_ADDR'];
-		sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login='".sql_real_escape_string($login)."'");
-		sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login='".sql_real_escape_string($ip)."'");
+		sql_query("DELETE FROM " . sql_table('plug_securityenforcer') . " WHERE login='" . sql_real_escape_string($login) . "'");
+		sql_query("DELETE FROM " . sql_table('plug_securityenforcer') . " WHERE login='" . sql_real_escape_string($ip) . "'");
 		return;
 	}
 	
@@ -212,23 +246,23 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		global $_SERVER;
 		$login = $data['username'];
 		$ip = $_SERVER['REMOTE_ADDR'];
-		$lres = sql_query("SELECT * FROM ".sql_table('plug_securityenforcer')." WHERE login='".sql_real_escape_string($login)."'");
+		$lres = sql_query("SELECT * FROM " . sql_table('plug_securityenforcer') . " WHERE login='" . sql_real_escape_string($login) . "'");
 		if ( sql_num_rows($lres) )
 		{
-			sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login='".sql_real_escape_string($login)."'");
+			sql_query("UPDATE " . sql_table('plug_securityenforcer') . " SET fails=fails+1, lastfail=" . time() . " WHERE login='" . sql_real_escape_string($login) . "'");
 		}
 		else
 		{
-			sql_query("INSERT INTO ".sql_table('plug_securityenforcer')." (login,fails,lastfail) VALUES ('".sql_real_escape_string($login)."',1,".time().")");
+			sql_query("INSERT INTO " . sql_table('plug_securityenforcer') . " (login,fails,lastfail) VALUES ('" . sql_real_escape_string($login) . "',1," . time() . ")");
 		}
-		$lres = sql_query("SELECT * FROM ".sql_table('plug_securityenforcer')." WHERE login='".sql_real_escape_string($ip)."'");
+		$lres = sql_query("SELECT * FROM " . sql_table('plug_securityenforcer') . " WHERE login='" . sql_real_escape_string($ip) . "'");
 		if ( sql_num_rows($lres) )
 		{
-			sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login='".sql_real_escape_string($ip)."'");
+			sql_query("UPDATE " . sql_table('plug_securityenforcer') . " SET fails=fails+1, lastfail=" . time() . " WHERE login='" . sql_real_escape_string($ip) . "'");
 		}
 		else
 		{
-			sql_query("INSERT INTO ".sql_table('plug_securityenforcer')." (login,fails,lastfail) VALUES ('".sql_real_escape_string($ip)."',1,".time().")");
+			sql_query("INSERT INTO " . sql_table('plug_securityenforcer') . " (login,fails,lastfail) VALUES ('" . sql_real_escape_string($ip) . "',1," . time() . ")");
 		}
 		return;
 	}
@@ -252,13 +286,13 @@ class NP_SecurityEnforcer extends NucleusPlugin
 			$complexity = 4;
 		}
 		
-		$ucchars = "[A-Z]";
-		$lcchars = "[a-z]";
-		$numchars = "[0-9]";
-		$ochars = "[-~!@#$%^&*()_+=,.<>?:;|]";
-		$chartypes = array($ucchars, $lcchars, $numchars, $ochars);
-		$tot = array(0,0,0,0);
-		$i = 0;
+		$ucchars	= "[A-Z]";
+		$lcchars	= "[a-z]";
+		$numchars	= "[0-9]";
+		$ochars		= "[-~!@#$%^&*()_+=,.<>?:;|]";
+		$chartypes	= array($ucchars, $lcchars, $numchars, $ochars);
+		$tot		= array(0,0,0,0);
+		$i			= 0;
 		
 		foreach ( $chartypes as $value )
 		{

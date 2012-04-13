@@ -22,15 +22,50 @@ class NP_Text extends NucleusPlugin
 	public $errorLogged = false;
 	public $constantPrefix = "SL_";
 	
-	public function getName()			{ return 'Text'; }
-	public function getAuthor()			{ return 'Armon Toubman'; }
-	public function getURL()			{ return 'http://forum.nucleuscms.org/viewtopic.php?t=14904'; }
-	public function getVersion()		{ return '0.53'; }
-	public function getDescription()	{ return 'Display constants from translation files: <%Text(CONSTANT)%>'; }
-	public function getEventList()		{ return array('PreSkinParse'); }
-	public function supportsFeature($feature)	{ return ( $feature == 'SqlTablePrefix' ); }
-	public function install()			{ return; }
-	public function uninstall()			{ return; }
+	public function getName()
+	{
+		return 'Text';
+	}
+	public function getAuthor()
+	{
+		return 'Armon Toubman';
+	}
+
+	public function getURL()
+	{
+		return 'http://forum.nucleuscms.org/viewtopic.php?t=14904';
+	}
+
+	public function getVersion()
+	{
+		return '0.53';
+	}
+
+	public function getDescription()
+	{
+		return 'Display constants from translation files: <%Text(CONSTANT)%>';
+	}
+
+	public function getEventList()
+	{
+		return array('PreSkinParse');
+	}
+
+	public function supportsFeature($feature)
+	{
+		return ( $feature == 'SqlTablePrefix' );
+	}
+
+	public function install()
+	{
+		return;
+	}
+
+	public function uninstall()
+	{
+		return;
+	}
+
 	public function init()
 	{
 		$this->incModePref = $this->skin_incmodepref();
@@ -116,7 +151,8 @@ class NP_Text extends NucleusPlugin
 			$filename = $filename.".php";
 		}
 		
-		if( is_file($filename) ) {
+		if ( is_file($filename) )
+		{
 			include($filename);
 		}
 		else
@@ -124,7 +160,7 @@ class NP_Text extends NucleusPlugin
 			addToLog(1, "NP_Text cannot find ".$filename);
 		}
 		
-		if( defined($this->constantPrefix.$constant) )
+		if ( defined($this->constantPrefix.$constant) )
 		{
 			echo constant($this->constantPrefix.$constant);
 		}
@@ -142,7 +178,7 @@ class NP_Text extends NucleusPlugin
 	private function skin_incmodepref()
 	{
 		global $currentSkinName;
-		$sql = "SELECT * FROM ".sql_table("skin_desc")." WHERE sdname = '".$currentSkinName."'";
+		$sql = "SELECT * FROM " . sql_table("skin_desc") . " WHERE sdname = '" . $currentSkinName . "'";
 		$result = sql_query($sql);
 		$row = sql_fetch_array($result, MYSQL_ASSOC);
 		return array($row['sdincmode'], $row['sdincpref']);

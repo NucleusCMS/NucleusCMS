@@ -44,14 +44,40 @@ class NP_SkinFiles extends NucleusPlugin {
 	* v2.02 kimitake - multilingual support, modified form button for IE
 	*/
 	
-	public function getName()			{ return 'SkinFiles'; }
-	public function getAuthor()			{ return 'Misc authors'; }
-	public function getURL()			{ return 'http://www.nucleuscms.org/'; }
-	public function getVersion()		{ return '2.02'; }
-	public function getDescription()	{ return 'A simple file manager for skins.';	}
-	public function hasAdminArea()		{ return 1; }
-	public function getEventList()		{ return array('QuickMenu'); }
-	
+	public function getName()
+	{
+		return 'SkinFiles';
+	}
+	public function getAuthor()
+	{
+		return 'Misc authors';
+	}
+
+	public function getURL()
+	{
+		return 'http://www.nucleuscms.org/';
+	}
+
+	public function getVersion()
+	{
+		return '2.02';
+	}
+
+	public function getDescription()
+	{
+		return 'A simple file manager for skins.';
+	}
+
+	public function hasAdminArea()
+	{
+		return 1;
+	}
+
+	public function getEventList()
+	{
+		return array('QuickMenu');
+	}
+
 	public function supportsFeature($what)
 	{
 		if ( $what == 'SqlTablePrefix' )
