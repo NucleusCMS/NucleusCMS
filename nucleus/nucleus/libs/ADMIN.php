@@ -4218,52 +4218,59 @@ selector();
         $this->action_templateoverview();
     }
 
-    /**
-     * @todo document this
-     */
-    function action_skinoverview() {
-        global $member, $manager;
-
-        $member->isAdmin() or $this->disallow();
-
-        $this->pagehead();
-
-        echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
-
-        echo '<h2>' . _SKIN_EDIT_TITLE . '</h2>';
-
-        echo '<h3>' . _SKIN_AVAILABLE_TITLE . '</h3>';
-
-        $query = 'SELECT * FROM '.sql_table('skin_desc').' ORDER BY sdname';
-        $template['content'] = 'skinlist';
-        $template['tabindex'] = 10;
-        showlist($query,'table',$template);
-
-        echo '<h3>' . _SKIN_NEW_TITLE . '</h3>';
-
-        ?>
-        <form method="post" action="index.php">
-        <div>
-
-        <input name="action" value="skinnew" type="hidden" />
-        <?php $manager->addTicketHidden() ?>
-        <table><tr>
-            <td><?php echo _SKIN_NAME?> <?php help('shortnames');?></td>
-            <td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
-        </tr><tr>
-            <td><?php echo _SKIN_DESC?></td>
-            <td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
-        </tr><tr>
-            <td><?php echo _SKIN_CREATE?></td>
-            <td><input type="submit" tabindex="10030" value="<?php echo _SKIN_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
-        </tr></table>
-
-        </div>
-        </form>
-
-        <?php
-        $this->pagefoot();
-    }
+	/**
+	 * Admin::action_skinoverview()
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_skinoverview()
+	{
+		global $member, $manager;
+		
+		$member->isAdmin() or $this->disallow();
+		
+		$this->pagehead();
+		
+		echo '<p><a href="index.php?action=manage">(' . _BACKTOMANAGE . ")</a></p>\n";
+		echo '<h2>' . _SKIN_EDIT_TITLE . "</h2>\n";
+		echo '<h3>' . _SKIN_AVAILABLE_TITLE . "</h3>\n";
+		
+		$query = 'SELECT * FROM '.sql_table('skin_desc').' ORDER BY sdname;';
+		$template['content'] = 'skinlist';
+		$template['tabindex'] = 10;
+		showlist($query,'table',$template);
+		
+		echo '<h3>' . _SKIN_NEW_TITLE . "</h3>\n";
+		echo "<form method=\"post\" action=\"index.php\">\n";
+		echo "<div>\n";
+		echo "<input name=\"action\" value=\"skinnew\" type=\"hidden\" />\n";
+		
+		$manager->addTicketHidden() . "\n";
+		
+		echo "<table frame=\"box\" rules=\"all\" summary=\"skinoverview\">\n";
+		echo "<tr>\n";
+		echo "<td>" . _SKIN_NAME;
+		echo help('shortnames');
+		echo "</td>\n";
+		echo "<td><input name=\"name\" tabindex=\"10010\" maxlength=\"20\" size=\"20\" /></td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo "<td>" . _SKIN_DESC . "</td>\n";
+		echo "<td><input name=\"desc\" tabindex=\"10020\" maxlength=\"200\" size=\"50\" /></td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _SKIN_CREATE . "</td>\n";
+		echo '<td><input type="submit" tabindex="10030" value="' . _SKIN_CREATE_BTN . '" onclick="return checkSubmit();" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "</table>\n";
+		
+		echo "</div>\n";
+		echo "</form>\n";
+		
+		$this->pagefoot();
+		return;
+	}
 
     /**
      * @todo document this
