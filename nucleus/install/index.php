@@ -1538,7 +1538,7 @@ class ParamManager
 			}
 			else
 			{
-				@sql_close($mysql_conn);
+				@sql_disconnect($mysql_conn);
 			}
 		}
 
