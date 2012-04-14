@@ -25,22 +25,230 @@ class Actions extends BaseActions
 {
 	// part of the skin currently being parsed ('index', 'item', 'archive',
 	// 'archivelist', 'member', 'search', 'error', 'imagepopup')
-	var $skintype;
+	private $skintype;
 	
 	// contains an assoc array with parameters that need to be included when
 	// generating links to items/archives/... (e.g. catid)
-	var $linkparams;
+	private $linkparams;
 	
 	// reference to the skin object for which a part is being parsed
-	var $skin;
+	private $skin;
 	
 	// used when including templated forms from the include/ dir. The $formdata var
 	// contains the values to fill out in there (assoc array name -> value)
-	var $formdata;
+	private $formdata;
 	
 	// filled out with the number of displayed items after calling one of the
 	// (other)blog/(other)searchresults skinvars.
-	var $amountfound;
+	private $amountfound;
+	
+	/**
+	 * Actions::$default_actions
+	 * list of whole action names with which this class can deal
+	 */
+	static private $default_actions = array(
+		'addlink',
+		'addpopupcode',
+		'adminurl',
+		'archivelink',
+		'bloglist',
+		'category',
+		'charset',
+		'else',
+		'elseif',
+		'elseifnot',
+		'endif',
+		'if',
+		'ifnot',
+		'include',
+		'loginform',
+		'member',
+		'nucleusbutton',
+		'otherarchivedaylist',
+		'otherarchivelist',
+		'otherarchiveyearlist',
+		'otherblog',
+		'parsedinclude',
+		'phpinclude',
+		'plugin',
+		'referer',
+		'searchform',
+		'self',
+		'set',
+		'sitevar',
+		'skinfile',
+		'skinname',
+		'sticky',
+		'todaylink',
+		'version',
+		// deprecated (Nucleus v2.0)
+		/* TODO: remove this */
+		'ifcat'
+	);
+	
+	/**
+	 * Actions::$page_type_friendly_names
+	 * friendly name for wrapped page types
+	 */
+	static public $skin_type_friendly_names = array(
+		'index'			=> _SKIN_PART_MAIN,
+		'item'			=> _SKIN_PART_ITEM,
+		'archivelist'	=> _SKIN_PART_ALIST,
+		'archive'		=> _SKIN_PART_ARCHIVE,
+		'search'		=> _SKIN_PART_SEARCH,
+		'error'			=> _SKIN_PART_ERROR,
+		'member'		=> _SKIN_PART_MEMBER,
+		'imagepopup'	=> _SKIN_PART_POPUP
+	);
+	
+	/**
+	 * Actions::getDefinedActions()
+	 * 
+	 * @static
+	 * @param	string	$type	page type
+	 * @return	array	allowed	actions for the page type
+	 */
+	static public function getDefinedActions($type='')
+	{
+		// extra actions specific for a certain skin type
+		$extra_actions = array();
+		
+		switch ( $type )
+		{
+			case 'index':
+				$extra_actions = array(
+					'blog',
+					'blogsetting',
+					'preview',
+					'additemform',
+					'categorylist',
+					'archivelist',
+					'archivedaylist',
+					'archiveyearlist',
+					'nextlink',
+					'prevlink'
+				);
+				break;
+			case 'archive':
+				$extra_actions = array(
+					'blog',
+					'archive',
+					'otherarchive',
+					'categorylist',
+					'archivelist',
+					'archivedaylist',
+					'archiveyearlist',
+					'blogsetting',
+					'archivedate',
+					'nextarchive',
+					'prevarchive',
+					'nextlink',
+					'prevlink',
+					'archivetype'
+				);
+				break;
+			case 'archivelist':
+				$extra_actions = array(
+					'blog',
+					'archivelist',
+					'archivedaylist',
+					'archiveyearlist',
+					'categorylist',
+					'blogsetting'
+				);
+				break;
+			case 'search':
+				$extra_actions = array(
+					'blog',
+					'archivelist',
+					'archivedaylist',
+					'archiveyearlist',
+					'categorylist',
+					'searchresults',
+					'othersearchresults',
+					'blogsetting',
+					'query',
+					'nextlink',
+					'prevlink'
+				);
+				break;
+			case 'imagepopup':
+				$extra_actions = array(
+					'image',
+					// deprecated (Nucleus v2.0)
+					/* TODO: remove this */
+					'imagetext'
+				);
+				break;
+			case 'member':
+				$extra_actions = array(
+					'membermailform',
+					'blogsetting',
+					'nucleusbutton',
+					'categorylist'
+				);
+				break;
+			case 'item':
+				$extra_actions = array(
+					'blog',
+					'item',
+					'comments',
+					'commentform',
+					'vars',
+					'blogsetting',
+					'nextitem',
+					'previtem',
+					'nextlink',
+					'prevlink',
+					'nextitemtitle',
+					'previtemtitle',
+					'categorylist',
+					'archivelist',
+					'archivedaylist',
+					'archiveyearlist',
+					'itemtitle',
+					'itemid',
+					'itemlink'
+				);
+				break;
+			case 'error':
+				$extra_actions = array(
+					'errormessage',
+					'categorylist'
+				);
+				break;
+			default:
+					$extra_actions = array(
+						'blog',
+						'blogsetting',
+						'preview',
+						'additemform',
+						'categorylist',
+						'archivelist',
+						'archivedaylist',
+						'archiveyearlist',
+						'nextlink',
+						'prevlink',
+						'membermailform',
+						'nucleusbutton',
+						'categorylist'
+					);
+				break;
+		}
+		return array_merge(self::$default_actions, $extra_actions);
+	}
+	
+	/**
+	 * Actions::getSkinTypeFriendlyNames()
+	 * 
+	 * @static
+	 * @param	void
+	 * @return	array	list of friendly names for page actions
+	 */
+	static public function getSkinTypeFriendlyNames()
+	{
+		return self::$skin_type_friendly_names;
+	}
 	
 	/**
 	 * Actions::__construct()

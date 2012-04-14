@@ -4239,6 +4239,7 @@ selector();
 		$query = 'SELECT * FROM '.sql_table('skin_desc').' ORDER BY sdname;';
 		$template['content'] = 'skinlist';
 		$template['tabindex'] = 10;
+		$template['friendly_names'] = Skin::getFriendlyNames('Actions');
 		showlist($query,'table',$template);
 		
 		echo '<h3>' . _SKIN_NEW_TITLE . "</h3>\n";

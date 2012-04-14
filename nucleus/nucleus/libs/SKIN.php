@@ -21,7 +21,6 @@ if ( !function_exists('requestVar') )
 {
 	exit;
 }
-require_once dirname(__FILE__) . '/ACTIONS.php';
 
 class Skin
 {
@@ -36,15 +35,23 @@ class Skin
 	private $includePrefix;
 	private $name;
 	
+	/* action class */
+	private $action_class;
+	private $event_identifier;
+	
 	/**
 	 * Skin::__construct()
 	 * Constructor for a new SKIN object
 	 * 
-	 * @param	integer	$id	id of the skin
+	 * @param	integer	$id					id of the skin
+	 * @param	string	$action_class		name of class extended from BaseActions
+	 * @param	string	$event_identifier	event identifier. for example, InitAdminSkinParse if AdminSkin is used
 	 * @return	void
 	 */
-	public function __construct($id)
+	public function __construct($id, $action_class='Actions', $event_identifier='Skin')
 	{
+		global $DIR_LIBS;
+		
 		$this->id = (integer) $id;
 		
 		// read skin name/description/content type
@@ -58,11 +65,37 @@ class Skin
 			return;
 		}
 		
+		/*
+		 * NOTE: include needed action class
+		 */
+		if ( $action_class != 'Actions' )
+		{
+			if ( !class_exists($action_class, FALSE)
+			  && (!file_exists("{$DIR_LIBS}{$action_class}.php")
+			   || !include("{$DIR_LIBS}{$action_class}.php")) )
+			{
+				return;
+			}
+		}
+		else
+		{
+			if ( !class_exists('Actions', FALSE)
+			  && (!file_exists("{$DIR_LIBS}ACTIONS.php")
+			   || !include("{$DIR_LIBS}ACTIONS.php")) )
+			{
+				return;
+			}
+		}
+		
+		$this->action_class = $action_class;
+		$this->event_identifier = $event_identifier;
+		
 		$this->name = $obj->sdname;
 		$this->description = $obj->sddesc;
 		$this->contentType = $obj->sdtype;
 		$this->includeMode = $obj->sdincmode;
 		$this->includePrefix = $obj->sdincpref;
+		
 		return;
 	}
 	
@@ -169,7 +202,7 @@ class Skin
 	{
 		$query = "SELECT COUNT(*) AS result FROM %s WHERE sdname='%s';";
 		$query = sprintf($query, sql_table('skin_desc'), sql_real_escape_string($name));
-		return quickQuery($query) > 0;
+		return (quickQuery($query) > 0);
 	}
 	
 	/**
@@ -184,7 +217,7 @@ class Skin
 	{
 		$query = "SELECT COUNT(*) AS result FROM %s WHERE sdnumber=%d;";
 		$query = sprintf($query, sql_table('skin_desc'), (integer) $id);
-		return quickQuery($query) > 0;
+		return (quickQuery($query) > 0);
 	}
 	
 	/**
@@ -244,7 +277,7 @@ class Skin
 	 * @param	String	$includePrefix	value for nucleus_skin.sdincpref
 	 * @return	Integer	ID for just inserted record
 	 */
-	function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '')
+	public function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '')
 	{
 		global $manager;
 		
@@ -294,7 +327,7 @@ class Skin
 	{
 		global $currentSkinName, $manager, $CONF;
 		
-		$manager->notify('InitSkinParse',array('skin' => &$this, 'type' => $type));
+		$manager->notify("Init{$this->event_identifier}Parse", array('skin' => &$this, 'type' => $type));
 		
 		// set output type
 		sendContentType($this->getContentType(), 'skin');
@@ -317,19 +350,21 @@ class Skin
 		
 		$actions = $this->getAllowedActionsForType($type);
 		
-		$manager->notify('PreSkinParse',array('skin' => &$this, 'type' => $type, 'contents' => &$contents));
+		$manager->notify("Pre{$this->event_identifier}Parse", array('skin' => &$this, 'type' => $type, 'contents' => &$contents));
 		
 		// set IncludeMode properties of parser
 		Parser::setProperty('IncludeMode', $this->getIncludeMode());
 		Parser::setProperty('IncludePrefix', $this->getIncludePrefix());
 		
-		$handler = new Actions($type, $this);
+		$action_class = $this->action_class;
+		$handler = new $action_class($type);
+		
 		$parser = new Parser($actions, $handler);
 		$handler->setParser($parser);
 		$handler->setSkin($this);
 		$parser->parse($contents);
 		
-		$manager->notify('PostSkinParse',array('skin' => &$this, 'type' => $type));
+		$manager->notify("Post{$this->event_identifier}Parse", array('skin' => &$this, 'type' => $type));
 		return;
 	}
 	
@@ -340,7 +375,7 @@ class Skin
 	 * @param	string	$type	type of the skin (e.g. index, item, search ...)
 	 * @return	string	content of scontent
 	 */
-	function getContent($type)
+	public function getContent($type)
 	{
 		$query = "SELECT scontent FROM %s WHERE sdesc=%d and stype='%s';";
 		$query = sprintf($query, sql_table('skin'), (integer) $this->id, sql_real_escape_string($type));
@@ -362,7 +397,7 @@ class Skin
 	 * @return	void
 	 * 
 	 */
-	function update($type, $content)
+	public function update($type, $content)
 	{
 		global $manager;
 		
@@ -375,38 +410,33 @@ class Skin
 		
 		if( $skintypevalue && $skintypeexists )
 		{
-			// PreUpdateSkinPart event
-			$manager->notify(
-				'PreUpdateSkinPart',
-				array(
-					'skinid' => $this->id,
-					'type' => $type,
-					'content' => &$content
-				)
+			$data = array(
+				'skinid'	=>  $this->id,
+				'type'		=>  $type,
+				'content'	=> &$content
 			);
+			
+			// PreUpdateSkinPart event
+			$manager->notify("PreUpdate{{$this->event_identifier}}Part", $data);
 		}
 		else if( $skintypevalue && !$skintypeexists )
 		{
-			// PreAddSkinPart event
-			$manager->notify(
-				'PreAddSkinPart',
-				array(
-					'skinid' => $this->id,
-					'type' => $type,
-					'content' => &$content
-				)
+			$data = array(
+				'skinid' => $this->id,
+				'type' => $type,
+				'content' => &$content
 			);
+			
+			$manager->notify("PreAdd{$this->event_identifier}Part", $data);
 		}
 		else if( !$skintypevalue && $skintypeexists )
 		{
-			// PreDeleteSkinPart event
-			$manager->notify(
-				'PreDeleteSkinPart',
-				array(
-					'skinid' => $this->id,
-					'type' => $type
-				)
+			$data = array(
+				'skinid' => $this->id,
+				'type' => $type
 			);
+			
+			$manager->notify("PreDelete{$this->event_identifier}Part", $data);
 		}
 		
 		// delete old thingie
@@ -424,38 +454,34 @@ class Skin
 		
 		if( $skintypevalue && $skintypeexists )
 		{
-			// PostUpdateSkinPart event
-			$manager->notify(
-			'PostUpdateSkinPart',
-				array(
-					'skinid'	=> $this->id,
-					'type'		=> $type,
-					'content'	=> &$content
-				)
+			$data = array(
+				'skinid'	=> $this->id,
+				'type'		=> $type,
+				'content'	=> &$content
 			);
+			
+			// PostUpdateSkinPart event
+			$manager->notify("PostUpdate{$this->event_identifier}Part", $data);
 		}
 		else if( $skintypevalue && (!$skintypeexists) )
 		{
-			// PostAddSkinPart event
-			$manager->notify(
-				'PostAddSkinPart',
-				array(
-					'skinid'	=> $this->id,
-					'type'		=> $type,
-					'content'	=> &$content
-				)
+			$data = array(
+				'skinid'	=> $this->id,
+				'type'		=> $type,
+				'content'	=> &$content
 			);
+			
+			// PostAddSkinPart event
+			$manager->notify("PostAdd{$this->event_identifier}Part", $data);
 		}
 		else if( (!$skintypevalue) && $skintypeexists )
 		{
-			// PostDeleteSkinPart event
-			$manager->notify(
-				'PostDeleteSkinPart',
-				array(
-					'skinid'	=> $this->id,
-					'type'		=> $type
-				)
+			$data = array(
+				'skinid'	=> $this->id,
+				'type'		=> $type
 			);
+			
+			$manager->notify("PostDelete{$this->event_identifier}Part", $data);
 		}
 		return;
 	}
@@ -467,7 +493,7 @@ class Skin
 	 * @param	void
 	 * @return	void
 	 */
-	function deleteAllParts()
+	public function deleteAllParts()
 	{
 		$query = "DELETE FROM %s WHERE sdesc=%d;";
 		$query = sprintf($query, sql_table('skin'), (integer) $this->id);
@@ -485,7 +511,7 @@ class Skin
 	 * @param	string	$includePrefix	include prefix of the skin
 	 * @return	void
 	 */
-	function updateGeneralInfo($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '')
+	public function updateGeneralInfo($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '')
 	{
 		$name			= sql_real_escape_string($name);
 		$desc			= sql_real_escape_string($desc);
@@ -501,38 +527,6 @@ class Skin
 	}
 	
 	/**
-	 * Skin::getFriendlyNames()
-	 * Get an array with the names of possible skin parts
-	 * Used to show all possible parts of a skin in the administration backend
-	 * 
-	 * @param	void
-	 * @param	array	type of the skin
-	 */
-	static public function getFriendlyNames()
-	{
-		$skintypes = array(
-			'index'			=> _SKIN_PART_MAIN,
-			'item'			=> _SKIN_PART_ITEM,
-			'archivelist'	=> _SKIN_PART_ALIST,
-			'archive'		=> _SKIN_PART_ARCHIVE,
-			'search'		=> _SKIN_PART_SEARCH,
-			'error'			=> _SKIN_PART_ERROR,
-			'member'		=> _SKIN_PART_MEMBER,
-			'imagepopup'	=> _SKIN_PART_POPUP
-		);
-		
-		$query = "SELECT stype FROM " . sql_table('skin')
-		       . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member')";
-		$res = sql_query($query);
-		while ( $row = sql_fetch_array($res) )
-		{
-			/* TODO: ucfirst() depends on the current locale  */
-			$skintypes[strtolower($row['stype'])] = ucfirst($row['stype']);
-		}
-		return $skintypes;
-	}
-	
-	/**
 	 * Skin::getAllowedActionsForType()
 	 * Get the allowed actions for a skin type
 	 * returns an array with the allowed actions
@@ -540,179 +534,72 @@ class Skin
 	 * @param	string	$type	type of the skin (e.g. index, item, search ...)
 	 * @return	array	allowed action types
 	 */
-	function getAllowedActionsForType($type)
+	public function getAllowedActionsForType($type)
 	{
-		global $blogid;
+		/**
+		 * NOTE: static method with variable class name is supported since PHP 5.3
+		 *  So now we utilize eval function.
+		 */
+		$page_action_names = array();
+		eval("\$defined_actions = {$this->action_class}::getDefinedActions('{$type}');");
+		return $defined_actions;
+	}
+	
+	/**
+	 * Skin::getFriendlyNames()
+	 * Get an array with the names of possible skin parts
+	 * Used to show all possible parts of a skin in the administration backend
+	 * 
+	 * @static
+	 * @param	string	$action_class	name of action class (optional)
+	 * @param	array	type of the skin
+	 */
+	static public function getFriendlyNames($action_class='Actions')
+	{
+		global $DIR_LIBS;
 		
-		// some actions that can be performed at any time, from anywhere
-		$defaultActions = array(
-			'otherblog',
-			'plugin',
-			'version',
-			'nucleusbutton',
-			'include',
-			'phpinclude',
-			'parsedinclude',
-			'loginform',
-			'sitevar',
-			'otherarchivelist',
-			'otherarchivedaylist',
-			'otherarchiveyearlist',
-			'self',
-			'adminurl',
-			'todaylink',
-			'archivelink',
-			'member',
-			'category',
-			'searchform',
-			'referer',
-			'skinname',
-			'skinfile',
-			'set',
-			'if',
-			'else',
-			'endif',
-			'elseif',
-			'ifnot',
-			'elseifnot',
-			'charset',
-			'bloglist',
-			'addlink',
-			'addpopupcode',
-			'sticky',
-			// deprecated (Nucleus v2.0)
-			/* TODO: remove this */
-			'ifcat'
-		);
-		
-		// extra actions specific for a certain skin type
-		$extraActions = array();
-		
-		switch ( $type )
+		/*
+		 * NOTE: include needed action class
+		 */
+		if ( $action_class != 'Actions' )
 		{
-			case 'index':
-				$extraActions = array(
-					'blog',
-					'blogsetting',
-					'preview',
-					'additemform',
-					'categorylist',
-					'archivelist',
-					'archivedaylist',
-					'archiveyearlist',
-					'nextlink',
-					'prevlink'
-				);
-				break;
-			case 'archive':
-				$extraActions = array(
-					'blog',
-					'archive',
-					'otherarchive',
-					'categorylist',
-					'archivelist',
-					'archivedaylist',
-					'archiveyearlist',
-					'blogsetting',
-					'archivedate',
-					'nextarchive',
-					'prevarchive',
-					'nextlink',
-					'prevlink',
-					'archivetype'
-				);
-				break;
-			case 'archivelist':
-				$extraActions = array(
-					'blog',
-					'archivelist',
-					'archivedaylist',
-					'archiveyearlist',
-					'categorylist',
-					'blogsetting'
-				);
-				break;
-			case 'search':
-				$extraActions = array(
-					'blog',
-					'archivelist',
-					'archivedaylist',
-					'archiveyearlist',
-					'categorylist',
-					'searchresults',
-					'othersearchresults',
-					'blogsetting',
-					'query',
-					'nextlink',
-					'prevlink'
-				);
-				break;
-			case 'imagepopup':
-				$extraActions = array(
-					'image',
-					// deprecated (Nucleus v2.0)
-					/* TODO: remove this */
-					'imagetext'
-				);
-				break;
-			case 'member':
-				$extraActions = array(
-					'membermailform',
-					'blogsetting',
-					'nucleusbutton',
-					'categorylist'
-				);
-				break;
-			case 'item':
-				$extraActions = array(
-					'blog',
-					'item',
-					'comments',
-					'commentform',
-					'vars',
-					'blogsetting',
-					'nextitem',
-					'previtem',
-					'nextlink',
-					'prevlink',
-					'nextitemtitle',
-					'previtemtitle',
-					'categorylist',
-					'archivelist',
-					'archivedaylist',
-					'archiveyearlist',
-					'itemtitle',
-					'itemid',
-					'itemlink'
-				);
-				break;
-			case 'error':
-				$extraActions = array(
-					'errormessage',
-					'categorylist'
-				);
-				break;
-			default:
-				if ( $blogid && $blogid > 0 )
-				{
-					$extraActions = array(
-						'blog',
-						'blogsetting',
-						'preview',
-						'additemform',
-						'categorylist',
-						'archivelist',
-						'archivedaylist',
-						'archiveyearlist',
-						'nextlink',
-						'prevlink',
-						'membermailform',
-						'nucleusbutton',
-						'categorylist'
-					);
-				}
-				break;
+			if ( !class_exists($action_class, FALSE)
+			  && (!file_exists("{$DIR_LIBS}{$action_class}.php")
+			   || !include("{$DIR_LIBS}{$action_class}.php")) )
+			{
+				return;
+			}
 		}
-		return array_merge($defaultActions, $extraActions);
+		else
+		{
+			if ( !class_exists('Actions', FALSE)
+			  && (!file_exists("{$DIR_LIBS}ACTIONS.php")
+			   || !include("{$DIR_LIBS}ACTIONS.php")) )
+			{
+				return;
+			}
+		}
+		
+		/**
+		 * NOTE: static method with variable class name is supported since PHP 5.3
+		 *  So now we utilize eval function.
+		 */
+		eval("\$friendly_names = {$action_class}::getSkinTypeFriendlyNames();");
+		
+		$action_names = array();
+		foreach ( $friendly_names as $action_name => $friendly_name )
+		{
+			$action_names[] = $action_name;
+		}
+		
+		$query = "SELECT stype FROM %s WHERE stype NOT IN ('%s');";
+		$query = sprintf($query, sql_table('skin'), implode("','", $action_names));
+		$res = sql_query($query);
+		
+		while ( $row = sql_fetch_array($res) )
+		{
+			$friendly_names[strtolower($row['stype'])] = $row['stype'];
+		}
+		return $friendly_names;
 	}
 }

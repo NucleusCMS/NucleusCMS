@@ -837,11 +837,10 @@ function listplug_table_skinlist($template, $type)
 			}
 			if ( sizeof($types) > 0 )
 			{
-				$friendlyNames = SKIN::getFriendlyNames();
 				for ( $i = 0; $i < sizeof($types); $i++ )
 				{
 					$type = $types[$i];
-					if ( !in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup')) )
+					if ( !array_key_exists($type, $template['friendly_names']) || $type == strtolower($template['friendly_names'][$type]) )
 					{
 						$article = 'skinpartspecial';
 					}
@@ -849,10 +848,12 @@ function listplug_table_skinlist($template, $type)
 					{
 						$article = "skinpart{$type}";
 					}
-					$types[$i]  = "<li>\n";
-					$types[$i] .= helpHtml($article) . "\n";
-					$types[$i] .= "<a href=\"index.php?action=skinedittype&amp;skinid={$current->sdnumber}&amp;type={$type}\" tabindex=\"{$template['tabindex']}\">" . Entity::hsc($friendlyNames[$type]) . "</a>\n";
-					$types[$i] .= "</li>\n";
+					$types[$i]  = "<li>\n"
+					            . helpHtml($article) . "\n"
+					            . "<a href=\"index.php?action=skinedittype&amp;skinid={$current->sdnumber}&amp;type={$type}\" tabindex=\"{$template['tabindex']}\">"
+					            . Entity::hsc($template['friendly_names'][$type])
+					            . "</a>\n"
+					            . "</li>\n";
 				}
 				echo _LIST_SKINS_DEFINED;
 				echo '<ul>' . implode('', $types) . "</ul>\n";
