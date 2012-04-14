@@ -245,10 +245,26 @@ if (!function_exists('sql_fetch_assoc'))
 		else $dbh = NULL;
 	}
 	
-	function sql_close(&$dbh=NULL) {
+	/**
+	 * sql_close()
+	 * use sql_disconnect() instead of this
+	 * 
+	 * @deprecated
+	 * @param	resource	$conn	resource of mySQL connection
+	 * @return	void
+	 */
+	function sql_close(&$dbh=NULL)
+	{
 		global $SQL_DBH;
-		if (is_null($dbh)) $SQL_DBH = NULL;
-		else $dbh = NULL;
+		if ( is_null($dbh) )
+		{
+			$SQL_DBH = NULL;
+		}
+		else
+		{
+			$dbh = NULL;
+		}
+		return;
 	}
 	
 	/**

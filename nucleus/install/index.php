@@ -984,7 +984,7 @@ function do_install()
 		$errors[] = _INST_ERROR6 . ': ' . sql_error();
 	}
 
-	sql_close();
+	sql_disconnect();
 
 	/*
 	 * 7. install default plugins and skins

@@ -102,6 +102,14 @@ if ( function_exists('mysql_query') && !function_exists('sql_fetch_assoc') )
 		@mysql_close($conn);
 	}
 	
+	/**
+	 * sql_close()
+	 * use sql_disconnect() instead of this
+	 * 
+	 * @deprecated
+	 * @param	resource	$conn	resource of mySQL connection
+	 * @return	void
+	 */
 	function sql_close($conn = false)
 	{
 		global $MYSQL_CONN;
@@ -110,6 +118,7 @@ if ( function_exists('mysql_query') && !function_exists('sql_fetch_assoc') )
 			$conn = $MYSQL_CONN;
 		}
 		@mysql_close($conn);
+		return;
 	}
 	
 	/**
