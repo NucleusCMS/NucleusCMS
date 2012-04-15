@@ -34,6 +34,9 @@ class Actions extends BaseActions
 	// reference to the skin object for which a part is being parsed
 	private $skin;
 	
+	// an instance of parser class
+	private $parser;
+	
 	// used when including templated forms from the include/ dir. The $formdata var
 	// contains the values to fill out in there (assoc array name -> value)
 	private $formdata;
