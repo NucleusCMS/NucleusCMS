@@ -321,7 +321,7 @@ class PageFactory extends BaseActions
 	 */
 	public function parse_ifblogsetting($name, $value=1)
 	{
-		$this->_addIfCondition(($this->blog->getSetting($name) == $value));
+		$this->addIfCondition(($this->blog->getSetting($name) == $value));
 		return;
 	}
 	
@@ -333,7 +333,7 @@ class PageFactory extends BaseActions
 	 */
 	public function parse_ifitemproperty($name,$value=1)
 	{
-		$this->_addIfCondition(($this->variables[$name] == $value));
+		$this->addIfCondition(($this->variables[$name] == $value));
 		return;
 	}
 	
@@ -346,7 +346,7 @@ class PageFactory extends BaseActions
 	function parse_ifautosave($name,$value=1)
 	{
 		global $member;
-		$this->_addIfCondition($member->getAutosave() == $value);
+		$this->addIfCondition($member->getAutosave() == $value);
 		return;
 	}
 	

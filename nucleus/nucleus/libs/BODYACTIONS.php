@@ -45,7 +45,7 @@ class BodyActions extends BaseActions
 	 */
 	public function __construct()
 	{
-		$this->BaseActions();	
+		$this->initialize();	
 		return;
 	}
 	
@@ -136,7 +136,7 @@ class BodyActions extends BaseActions
 	}
 	
 	/**
-	 * BaseActions::createImageCode()
+	 * BodyActions::createImageCode()
 	 * Creates the code for an image
 	 * 
 	 * @param	string	$filename	name of file from tag

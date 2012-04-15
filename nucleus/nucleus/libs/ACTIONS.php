@@ -34,9 +34,6 @@ class Actions extends BaseActions
 	// reference to the skin object for which a part is being parsed
 	private $skin;
 	
-	// an instance of parser class
-	private $parser;
-	
 	// used when including templated forms from the include/ dir. The $formdata var
 	// contains the values to fill out in there (assoc array name -> value)
 	private $formdata;
@@ -90,7 +87,7 @@ class Actions extends BaseActions
 	);
 	
 	/**
-	 * Actions::$page_type_friendly_names
+	 * Actions::$skin_type_friendly_names
 	 * friendly name for wrapped page types
 	 */
 	static public $skin_type_friendly_names = array(
@@ -113,7 +110,6 @@ class Actions extends BaseActions
 	 */
 	static public function getDefinedActions($type='')
 	{
-		// extra actions specific for a certain skin type
 		$extra_actions = array();
 		
 		switch ( $type )
@@ -265,7 +261,7 @@ class Actions extends BaseActions
 		global $catid;
 		
 		// call constructor of superclass first
-		$this->BaseActions();
+		$this->initialize();
 		$this->skintype = $type;
 		
 		if ( $catid )

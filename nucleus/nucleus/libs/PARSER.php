@@ -121,7 +121,7 @@ class Parser
 		
 		// skip execution of skinvars while inside an if condition which hides this part of the page
 		$if_tags = array('else', 'elseif', 'endif', 'ifnot', 'elseifnot');
-		if ( !$this->handler->if_currentlevel
+		if ( !$this->handler->getTopIfCondition()
 		  && !in_array($actionlc, $if_tags)
 		  && (i18n::substr($actionlc, 0, 2) != 'if') )
 		{

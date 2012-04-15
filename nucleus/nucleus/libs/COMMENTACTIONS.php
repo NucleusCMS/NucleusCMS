@@ -91,7 +91,7 @@ class CommentActions extends BaseActions
 	public function __construct(&$comments)
 	{
 		// call constructor of superclass first
-		$this->BaseActions();
+		$this->initialize();
 		
 		// reference to the comments object
 		$this->setCommentsObj($comments);
