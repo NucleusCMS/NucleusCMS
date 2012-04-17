@@ -227,15 +227,15 @@ class PageFactory extends BaseActions
 	public function parse_categories($start_index = 0)
 	{
 		// begin if: catid variable is set; use it to select the category
-		if ( $this->variables['catid'] )
+		if ( !array_key_exists('catid', $this->variables) )
 		{
-			$category_id = $this->variables['catid'];
+			$category_id = $this->blog->getDefaultCategory();
 		}
 		// else: get the default category
 		else
 		{
-			$category_id = $this->blog->getDefaultCategory();
-		} // end if
+			$category_id = $this->variables['catid'];
+		}
 		
 		Admin::selectBlogCategory('catid', $category_id, $start_index, 1, $this->blog->getID());
 		return;
