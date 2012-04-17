@@ -348,8 +348,6 @@ class Skin
 			}
 		}
 		
-		$actions = $this->getAllowedActionsForType($type);
-		
 		$manager->notify("Pre{$this->event_identifier}Parse", array('skin' => &$this, 'type' => $type, 'contents' => &$contents));
 		
 		// set IncludeMode properties of parser
@@ -359,7 +357,9 @@ class Skin
 		$action_class = $this->action_class;
 		$handler = new $action_class($type);
 		
+		$actions = $handler->getDefinedActions($type);
 		$parser = new Parser($actions, $handler);
+		
 		$handler->setParser($parser);
 		$handler->setSkin($this);
 		$parser->parse($contents);
