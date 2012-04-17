@@ -833,83 +833,129 @@ class Admin
         Admin::selectBlog($name, 'category', $selected, $tabindex, $showNewCat, $iForcedBlogInclude);
     }
 
-    /**
-     * Inserts a HTML select element with choices for all blogs to which the user has access
-     *      mode = 'blog' => shows blognames and values are blogids
-     *      mode = 'category' => show category names and values are catids
-     *
-     * @param $iForcedBlogInclude
-     *      ID of a blog that always needs to be included, without checking if the
-     *      member is on the blog team (-1 = none)
-     * @todo document parameters
-     */
-    function selectBlog($name, $mode='blog', $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
-        global $member, $CONF;
-
-        // 0. get IDs of blogs to which member can post items (+ forced blog)
-        $aBlogIds = array();
-        if ($iForcedBlogInclude != -1)
-            $aBlogIds[] = intval($iForcedBlogInclude);
-
-        if (($member->isAdmin()) && ($CONF['ShowAllBlogs']))
-            $queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').' ORDER BY bname';
-        else
-            $queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').', '.sql_table('team').' WHERE tblog=bnumber and tmember=' . $member->getID();
-        $rblogids = sql_query($queryBlogs);
-        while ($o = sql_fetch_object($rblogids))
-            if ($o->bnumber != $iForcedBlogInclude)
-                $aBlogIds[] = intval($o->bnumber);
-
-        if (count($aBlogIds) == 0)
-            return;
-
-        echo '<select name="',$name,'" tabindex="',$tabindex,'">';
-
-        // 1. select blogs (we'll create optiongroups)
-        // (only select those blogs that have the user on the team)
-        $queryBlogs =  'SELECT bnumber, bname FROM '.sql_table('blog').' WHERE bnumber in ('.implode(',',$aBlogIds).') ORDER BY bname';
-        $blogs = sql_query($queryBlogs);
-        if ($mode == 'category') {
-            if (sql_num_rows($blogs) > 1)
-                $multipleBlogs = 1;
-
-            while ($oBlog = sql_fetch_object($blogs)) {
-                if ($multipleBlogs)
-                    echo '<optgroup label="',Entity::hsc($oBlog->bname),'">';
-
-                // show selection to create new category when allowed/wanted
-                if ($showNewCat) {
-                    // check if allowed to do so
-                    if ($member->blogAdminRights($oBlog->bnumber))
-                        echo '<option value="newcat-',$oBlog->bnumber,'">',_ADD_NEWCAT,'</option>';
-                }
-
-                // 2. for each category in that blog
-                $categories = sql_query('SELECT cname, catid FROM '.sql_table('category').' WHERE cblog=' . $oBlog->bnumber . ' ORDER BY cname ASC');
-                while ($oCat = sql_fetch_object($categories)) {
-                    if ($oCat->catid == $selected)
-                        $selectText = ' selected="selected" ';
-                    else
-                        $selectText = '';
-                    echo '<option value="',$oCat->catid,'" ', $selectText,'>',Entity::hsc($oCat->cname),'</option>';
-                }
-
-                if ($multipleBlogs)
-                    echo '</optgroup>';
-            }
-        } else {
-            // blog mode
-            while ($oBlog = sql_fetch_object($blogs)) {
-                echo '<option value="',$oBlog->bnumber,'"';
-                if ($oBlog->bnumber == $selected)
-                    echo ' selected="selected"';
-                echo'>',Entity::hsc($oBlog->bname),'</option>';
-            }
-        }
-        echo '</select>';
-
-    }
-
+	/**
+	 * Admin::selectBlog()
+	 * Inserts a HTML select element with choices for all blogs to which the user has access
+	 *  mode = 'blog' => shows blognames and values are blogids
+	 *  mode = 'category' => show category names and values are catids
+	 * 
+	 * @param	string	$name				name of 
+	 * @param	string	$mode				blog/category
+	 * @param	integer	$selected			category ID to be selected
+	 * @param	integer	$tabindex			tab index value
+	 * @param	integer	$showNewCat			show category to newly be created
+	 * @param	integer	$iForcedBlogInclude	ID of a blog that always needs to be included,
+	 * 						without checking if the member is on the blog team (-1 = none)
+	 * @return	void
+	 */
+	public function selectBlog($name, $mode='blog', $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1)
+	{
+		global $member, $CONF;
+		
+		// 0. get IDs of blogs to which member can post items (+ forced blog)
+		$aBlogIds = array();
+		if ( $iForcedBlogInclude != -1 )
+		{
+			$aBlogIds[] = intval($iForcedBlogInclude);
+		}
+		
+		if ( !$member->isAdmin() || !array_key_exists('ShowAllBlogs', $CONF) || !$CONF['ShowAllBlogs'] )
+		{
+			$query = "SELECT bnumber FROM %s,%s WHERE tblog=bnumber and tmember=%d;";
+			$query = sprintf($query, sql_table('blog'), sql_table('team'), (integer) $member->getID());
+		}
+		else
+		{
+			$query = "SELECT bnumber FROM %s ORDER BY bname;";
+			$query = sprintf($query, sql_table('blog'));
+		}
+		
+		$rblogids = sql_query($query);
+		while ( $o = sql_fetch_object($rblogids) )
+		{
+			if ( $o->bnumber != $iForcedBlogInclude )
+			{
+				$aBlogIds[] = (integer) $o->bnumber;
+			}
+		}
+		if ( count($aBlogIds) == 0 )
+		{
+			return;
+		}
+		
+		echo "<select name=\"{$name}\" tabindex=\"{$tabindex}\">\n";
+		
+		// 1. select blogs (we'll create optiongroups)
+		// (only select those blogs that have the user on the team)
+		$query = "SELECT bnumber, bname FROM %s WHERE bnumber in ('%s') ORDER BY bname;";
+		$query = sprintf($query, sql_table('blog'), implode(',',$aBlogIds));
+		$blogs = sql_query($query);
+		
+		if ( $mode == 'category' )
+		{
+			if ( sql_num_rows($blogs) > 1 )
+			{
+				$multipleBlogs = 1;
+			}
+			
+			while ( $oBlog = sql_fetch_object($blogs) )
+			{
+				if ( $multipleBlogs )
+				{
+					echo '<optgroup label="' . Entity::hsc($oBlog->bname) . '">' . "\n";
+				}
+				
+				// show selection to create new category when allowed/wanted
+				if ( $showNewCat )
+				{
+					// check if allowed to do so
+					if ( $member->blogAdminRights($oBlog->bnumber) )
+					{
+						echo "<option value=\"newcat-{$oBlog->bnumber}\">" . _ADD_NEWCAT . "</option>\n";
+					}
+				}
+				
+				// 2. for each category in that blog
+				$query = "SELECT cname, catid FROM %s WHERE cblog=%d ORDER BY cname ASC;";
+				$query = sprintf($query, sql_table('category'), (integer) $oBlog->bnumber);
+				$categories = sql_query($query);
+				while ( $oCat = sql_fetch_object($categories) )
+				{
+					if ( $oCat->catid != $selected )
+					{
+					echo "<option value=\"{$oCat->catid}\" {$selectText} >" . Entity::hsc($oCat->cname) . "</option>\n";
+					}
+					else
+					{
+					echo "<option value=\"{$oCat->catid}\" selected=\"selected\" >" . Entity::hsc($oCat->cname) . "</option>\n";
+					}
+				}
+				
+				if ( $multipleBlogs )
+				{
+					echo "</optgroup>\n";
+				}
+			}
+		}
+		else
+		{
+			// blog mode
+			while ( $oBlog = sql_fetch_object($blogs) )
+			{
+				if ( $oBlog->bnumber != $selected )
+				{
+					echo "<option value=\"{$oBlog->bnumber}\">" . Entity::hsc($oBlog->bname) . "</option>\n";
+				}
+				else
+				{
+					echo "<option value=\"{$oBlog->bnumber}\" selected=\"selected\">" . Entity::hsc($oBlog->bname) . "</option>\n";
+				}
+			}
+		}
+		echo "</select>\n";
+		return;
+	}
+	
     /**
      * @todo document this
      */
@@ -4287,10 +4333,10 @@ selector();
         if (!isValidSkinName($name))
             $this->error(_ERROR_BADSKINNAME);
 
-        if (SKIN::exists($name))
+        if (Skin::exists($name))
             $this->error(_ERROR_DUPSKINNAME);
 
-        $newId = SKIN::createNew($name, $desc);
+        $newId = Skin::createNew($name, $desc);
 
         $this->action_skinoverview();
     }
@@ -4409,7 +4455,7 @@ selector();
         if (!isValidSkinName($name))
             $this->error(_ERROR_BADSKINNAME);
 
-        if (($skin->getName() != $name) && SKIN::exists($name))
+        if (($skin->getName() != $name) && Skin::exists($name))
             $this->error(_ERROR_DUPSKINNAME);
 
         if (!$type) $type = 'text/html';
@@ -4422,87 +4468,140 @@ selector();
 
     }
 
-    /**
-     * @todo document this
-     */
-    function action_skinedittype($msg = '') {
-        global $member, $manager;
-
-        $skinid = intRequestVar('skinid');
-        $type = requestVar('type');
-
-        $member->isAdmin() or $this->disallow();
-
-        $type = trim($type);
-        $type = strtolower($type);
-
-        if (!isValidShortName($type)) {
-            $this->error(_ERROR_SKIN_PARTS_SPECIAL_FORMAT);
-        }
-
-        $skin = new SKIN($skinid);
-
-        $friendlyNames = SKIN::getFriendlyNames();
-
-        $this->pagehead();
-        ?>
-        <p>(<a href="index.php?action=skinoverview"><?php echo _SKIN_GOBACK?></a>)</p>
-
-        <h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo Entity::hsc($skin->getName()) ?>': <?php echo Entity::hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?></h2>
-
-        <?php           if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
-        ?>
-
-
-        <form method="post" action="index.php">
-        <div>
-
-        <input type="hidden" name="action" value="skinupdate" />
-        <?php $manager->addTicketHidden() ?>
-        <input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
-        <input type="hidden" name="type" value="<?php echo  $type ?>" />
-
-        <input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
-        <input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-        (skin type: <?php echo Entity::hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
-        <?php if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
-            help('skinpart' . $type);
-        } else {
-            help('skinpartspecial');
-        }?>
-        <br />
-
-        <textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content"><?php echo  Entity::hsc($skin->getContent($type)) ?></textarea>
-
-        <br />
-        <input type="submit" tabindex="20" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
-        <input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-        (skin type: <?php echo Entity::hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
-
-        <br /><br />
-        <?php echo _SKIN_ALLOWEDVARS?>
-        <?php           $actions = SKIN::getAllowedActionsForType($type);
-
-            sort($actions);
-
-            while ($current = array_shift($actions)) {
-                // skip deprecated vars
-                if ($current == 'ifcat') continue;
-                if ($current == 'imagetext') continue;
-                if ($current == 'vars') continue;
-
-                echo helplink('skinvar-' . $current) . "$current</a>";
-                if (count($actions) != 0) echo ", ";
-            }
-        echo '<br /><br />' . _SKINEDIT_ALLOWEDBLOGS;
-        $query = 'SELECT bshortname, bname FROM '.sql_table('blog');
-        showlist($query,'table',array('content'=>'shortblognames'));
-        echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
-        $query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
-        showlist($query,'table',array('content'=>'shortnames'));
-        echo '</div></form>';
-        $this->pagefoot();
-    }
+	/**
+	 * Admin::action_skinedittype()
+	 * 
+	 * @param	string	$msg	message for pageheader
+	 * @return	void
+	 */
+	public function action_skinedittype($msg = '')
+	{
+		global $member, $manager;
+		
+		$skinid = intRequestVar('skinid');
+		$type = requestVar('type');
+		
+		$member->isAdmin() or $this->disallow();
+		
+		$type = trim($type);
+		$type = strtolower($type);
+		
+		if ( !isValidShortName($type) )
+		{
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_FORMAT);
+		}
+		
+		$skin = new SKIN($skinid);
+		$friendlyNames = Skin::getFriendlyNames();
+		
+		$this->pagehead();
+		
+		echo '<p>(<a href="index.php?action=skinoverview">' . _SKIN_GOBACK . "</a>)</p>\n";
+		
+		if ( !array_key_exists($type, $friendlyNames) || !isset($friendlyNames[$type]) )
+		{
+			echo '<h2>' . _SKIN_EDITPART_TITLE . Entity::hsc($skin->getName()) . ':' . Entity::hsc(ucfirst($type)) . "</h2>\n";
+		}
+		else
+		{
+			echo '<h2>' . _SKIN_EDITPART_TITLE . Entity::hsc($skin->getName()) . ':' . Entity::hsc($friendlyNames[$type]) . "</h2>\n";
+		}
+		
+		if ( isset($msg) )
+		{
+			echo "<p>"._MESSAGE.": $msg</p>\n";
+		}
+		
+		echo "<form method=\"post\" action=\"index.php\">\n";
+		echo "<div>\n";
+		
+		echo "<input type=\"hidden\" name=\"action\" value=\"skinupdate\" />\n";
+		$manager->addTicketHidden() . "\n";
+		echo "<input type=\"hidden\" name=\"skinid\" value=\"{$skinid}\" />\n";
+		echo "<input type=\"hidden\" name=\"type\" value=\"{$type}\" />\n";
+		
+		echo '<input type="submit" value="' . _SKIN_UPDATE_BTN . '" onclick="return checkSubmit();" />' . "\n";
+		echo '<input type="reset" value="' . _SKIN_RESET_BTN . '" />' . "\n";
+		
+		if ( !array_key_exists($type, $friendlyNames) || !isset($friendlyNames[$type]) )
+		{
+			echo '(skin type: ' . Entity::hsc(ucfirst($type)) . ")\n";
+		}
+		else
+		{
+			echo '(skin type: ' . Entity::hsc($friendlyNames[$type]) . ")\n";
+		}
+		
+		if ( !in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup')) )
+		{
+			help('skinpartspecial');
+		}
+		else
+		{
+			help('skinpart' . $type);
+		}
+		echo "<br />\n";
+		
+		echo "<textarea class=\"skinedit\" tabindex=\"10\" rows=\"20\" cols=\"80\" name=\"content\">\n";
+		echo Entity::hsc($skin->getContent($type)) . "\n";
+		echo "</textarea>\n";
+		
+		echo "<br />\n";
+		echo '<input type="submit" tabindex="20" value="' . _SKIN_UPDATE_BTN . '" onclick="return checkSubmit();" />' . "\n";
+		echo '<input type="reset" value="' . _SKIN_RESET_BTN . '" />' . "\n";
+		if ( !array_key_exists($type, $friendlyNames) || !isset($friendlyNames[$type]) )
+		{
+			echo '(skin type: ' . Entity::hsc(ucfirst($type)) . ")\n";
+		}
+		else
+		{
+			echo '(skin type: ' . Entity::hsc($friendlyNames[$type]) . ")\n";
+		}
+		
+		echo "<br />\n";
+		echo "<br />\n";
+		echo _SKIN_ALLOWEDVARS;
+		
+		$actions = Skin::getAllowedActions($type);
+		
+		sort($actions);
+		
+		while ($current = array_shift($actions))
+		{
+			// skip deprecated vars
+			if ( in_array(array('ifcat', 'imagetext', 'vars')) )
+			{
+				continue;
+			}
+			
+			echo helplink("skinvar-{$current}") . "{$current}</a>\n";
+			
+			if ( count($actions) != 0 )
+			{
+				echo ", ";
+			}
+		}
+		
+		echo "<br />\n";
+		echo "<br />\n";
+		echo _SKINEDIT_ALLOWEDBLOGS;
+		
+		$query = 'SELECT bshortname, bname FROM '.sql_table('blog');
+		showlist($query, 'table', array('content'=>'shortblognames'));
+		
+		echo "<br />\n";
+		echo _SKINEDIT_ALLOWEDTEMPLATESS;
+		
+		$query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
+		showlist($query, 'table', array('content'=>'shortnames'));
+		
+		echo "</div>\n";
+		echo "</form>\n";
+		
+		$this->pagefoot();
+		
+		return;
+	}
 
     /**
      * @todo document this
@@ -4688,15 +4787,15 @@ selector();
         $name = "clone_" . $skin->getName();
 
         // if a skin with that name already exists:
-        if (SKIN::exists($name)) {
+        if (Skin::exists($name)) {
             $i = 1;
-            while (SKIN::exists($name . $i))
+            while (Skin::exists($name . $i))
                 $i++;
             $name .= $i;
         }
 
         // 2. create skin desc
-        $newid = SKIN::createNew(
+        $newid = Skin::createNew(
             $name,
             $skin->getDescription(),
             $skin->getContentType(),
