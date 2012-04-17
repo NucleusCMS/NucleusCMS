@@ -56,7 +56,7 @@ class BaseActions
 	 * BaseActions::BaseActions()
 	 *  Constructor for a new BaseAction object
 	 */
-	protected function initialize()
+	protected function __construct()
 	{
 		$this->level = 0;
 		

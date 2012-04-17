@@ -124,7 +124,7 @@ class ItemActions extends BaseActions
 	{
 		global $catid, $member;
 		// call constructor of superclass first
-		$this->initialize();
+		parent::__construct();
 		
 		// extra parameters for created links
 		if ( $catid )

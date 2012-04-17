@@ -45,7 +45,7 @@ class BodyActions extends BaseActions
 	 */
 	public function __construct()
 	{
-		$this->initialize();	
+		parent::__construct();
 		return;
 	}
 	

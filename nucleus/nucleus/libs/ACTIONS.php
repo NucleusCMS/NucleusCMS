@@ -261,7 +261,7 @@ class Actions extends BaseActions
 		global $catid;
 		
 		// call constructor of superclass first
-		$this->initialize();
+		parent::__construct();
 		$this->skintype = $type;
 		
 		if ( $catid )
