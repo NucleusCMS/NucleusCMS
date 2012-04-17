@@ -61,13 +61,13 @@ class BaseActions
 		$this->level = 0;
 		
 		// if nesting level
-		$this->if_conditions = array(); // array on which condition values are pushed/popped
+		$this->if_conditions = array();	// array on which condition values are pushed/popped
 		$this->if_execute = array(); 	// array on which condition values are pushed/popped
 		$this->if_currentlevel = 1;		// 1 = current level is displayed; 0 = current level not displayed
 		
 		// highlights
-		$this->strHighlight = '';			// full highlight
-		$this->aHighlight = array();		// parsed highlight
+		$this->strHighlight = '';		// full highlight
+		$this->aHighlight = array();	// parsed highlight
 		return;
 	}
 	
