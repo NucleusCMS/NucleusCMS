@@ -183,7 +183,7 @@ class PageFactory extends BaseActions
 		$template = $this->getTemplateFor($this->type);
 		
 		# use the PARSER engine to parse that template
-		$parser = new Parser(self::$defined_actions, $this);
+		$parser = new Parser(self::getDefinedActions(), $this);
 		$parser->parse($template);
 		return;
 	}
