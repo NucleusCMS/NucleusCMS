@@ -113,9 +113,9 @@ class BodyActions extends BaseActions
 		array_shift($params);
 		
 		// add item reference (array_unshift didn't work)
-		$params = array_merge(array(&$this->currentItem),$params);
+		$params = array_merge(array(&$this->currentItem), $params);
 		
-		call_user_func_array(array(&$plugin,'doItemVar'), $params);
+		call_user_func_array(array(&$plugin, 'doItemVar'), $params);
 		return;
 	}
 	
@@ -131,8 +131,8 @@ class BodyActions extends BaseActions
 	{
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
-		$args = preg_split('#\|#',implode($args,', '));
-		echo call_user_func_array(array(&$this,'createImageCode'),$args);
+		$args = preg_split('#\|#', implode($args, ', '));
+		echo call_user_func_array(array(&$this, 'createImageCode'), $args);
 	}
 	
 	/**
@@ -149,7 +149,7 @@ class BodyActions extends BaseActions
 		global $CONF;
 		
 		// select private collection when no collection given
-		if ( !strstr($filename,'/') )
+		if ( !strstr($filename, '/') )
 		{
 			$filename = $this->currentItem->authorid . '/' . $filename;
 		}
@@ -157,14 +157,14 @@ class BodyActions extends BaseActions
 		$windowwidth = $width;
 		$windowheight = $height;
 		
-		$vars['link']			= Entity::hsc($CONF['MediaURL']. $filename);
-		$vars['text']			= Entity::hsc($text);
-		$vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
-		$vars['width'] 			= $width;
-		$vars['height']			= $height;
-		$vars['media'] 			= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
+		$vars['link']	= Entity::hsc($CONF['MediaURL']. $filename);
+		$vars['text']	= Entity::hsc($text);
+		$vars['image']	= '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
+		$vars['width']	= $width;
+		$vars['height']	= $height;
+		$vars['media'] 	= '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
 		
-		return Template::fill($this->template['IMAGE_CODE'],$vars);;
+		return Template::fill($this->template['IMAGE_CODE'], $vars);
 	}
 	
 	/**
@@ -179,8 +179,8 @@ class BodyActions extends BaseActions
 	{
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
-		$args = preg_split('#\|#', implode($args,', '));
-		echo call_user_func_array(array(&$this,'createMediaCode'), $args);
+		$args = preg_split('#\|#', implode($args, ', '));
+		echo call_user_func_array(array(&$this, 'createMediaCode'), $args);
 	}
 	
 	/**
@@ -196,7 +196,7 @@ class BodyActions extends BaseActions
 		global $CONF;
 		
 		// select private collection when no collection given
-		if ( !strstr($filename,'/') )
+		if ( !strstr($filename, '/') )
 		{
 			$filename = $this->currentItem->authorid . '/' . $filename;
 		}
@@ -220,8 +220,8 @@ class BodyActions extends BaseActions
 	{
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
-		$args = preg_split('#\|#', implode($args,', '));
-		echo call_user_func_array(array(&$this,'createPopupCode'), $args);
+		$args = preg_split('#\|#', implode($args, ', '));
+		echo call_user_func_array(array(&$this, 'createPopupCode'), $args);
 	}
 	
 	/**
@@ -239,7 +239,7 @@ class BodyActions extends BaseActions
 		global $CONF;
 		
 		// select private collection when no collection given
-		if ( !strstr($filename,'/') )
+		if ( !strstr($filename, '/') )
 		{
 			$filename = $this->currentItem->authorid . '/' . $filename;
 		}
