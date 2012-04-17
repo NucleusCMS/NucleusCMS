@@ -28,12 +28,6 @@ class BodyActions extends BaseActions
 		'media',
 		'popup',
 		'plugin',
-		'if',
-		'else',
-		'endif',
-		'elseif',
-		'ifnot',
-		'elseifnot'
 	);
 	
 	/**
@@ -81,12 +75,13 @@ class BodyActions extends BaseActions
 	 * BodyActions::getDefinedActions()
 	 * Get the defined actions in an item
 	 * 
+	 * @static
 	 * @param	void
 	 * @return	Array	self::$defined_actions
 	 */
-	public function getDefinedActions()
+	static public function getDefinedActions()
 	{
-		return self::$defined_actions;
+		return array_merge(self::$defined_actions, parent::getDefinedActions());
 	}
 	
 	/**

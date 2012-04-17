@@ -52,6 +52,21 @@ class BaseActions
 	// and parseHighlight() methods)
 	private $aHighlight;
 	
+	/* NOTE: defined actions for this base class */
+	static private $defined_actions = array(
+		'else',
+		'elseif',
+		'elseifnot',
+		'endif',
+		'if',
+		'ifnot',
+		'include',
+		'parsedinclude',
+		'phpinclude',
+		'set',
+		'skinfile'
+	);
+	
 	/**
 	 * BaseActions::BaseActions()
 	 *  Constructor for a new BaseAction object
@@ -69,6 +84,18 @@ class BaseActions
 		$this->strHighlight = '';		// full highlight
 		$this->aHighlight = array();	// parsed highlight
 		return;
+	}
+	
+	/**
+	 * BaseActions::getDefinedActions()
+	 * 
+	 * @static
+	 * @param	void
+	 * @return	void
+	 */
+	static public function getDefinedActions()
+	{
+		return self::$defined_actions;
 	}
 	
 	/**

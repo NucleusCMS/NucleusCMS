@@ -54,13 +54,6 @@ class Actions extends BaseActions
 		'bloglist',
 		'category',
 		'charset',
-		'else',
-		'elseif',
-		'elseifnot',
-		'endif',
-		'if',
-		'ifnot',
-		'include',
 		'loginform',
 		'member',
 		'nucleusbutton',
@@ -68,15 +61,11 @@ class Actions extends BaseActions
 		'otherarchivelist',
 		'otherarchiveyearlist',
 		'otherblog',
-		'parsedinclude',
-		'phpinclude',
 		'plugin',
 		'referer',
 		'searchform',
 		'self',
-		'set',
 		'sitevar',
-		'skinfile',
 		'skinname',
 		'sticky',
 		'todaylink',
@@ -234,7 +223,10 @@ class Actions extends BaseActions
 					);
 				break;
 		}
-		return array_merge(self::$default_actions, $extra_actions);
+		
+		$defined_actions = array_merge(self::$default_actions, $extra_actions);
+		
+		return array_merge($defined_actions, parent::getDefinedActions());
 	}
 	
 	/**

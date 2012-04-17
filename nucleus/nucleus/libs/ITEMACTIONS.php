@@ -66,54 +66,43 @@ class ItemActions extends BaseActions
 	 * defined actions in this class
 	 */
 	static private $defined_actions = array(
-		'blogid',
-		'title',
-		'body',
-		'more',
-		'smartbody',
-		'itemid',
-		'morelink',
-		'category',
-		'categorylink',
 		'author',
 		'authorid',
 		'authorlink',
-		'catid',
-		'karma',
-		'date',
-		'time',
-		'query',
-		'itemlink',
+		'blogid',
 		'blogurl',
+		'body',
+		'category',
+		'categorylink',
+		'catid',
 		'closed',
-		'syndicate_title',
-		'syndicate_description',
-		'karmaposlink',
-		'karmaneglink',
-		'new',
-		'image',
-		'popup',
-		'media',
+		'comments',
+		'date',
 		'daylink',
-		'query',
-		'include',
-		'phpinclude',
-		'parsedinclude',
-		'skinfile',
-		'set',
-		'plugin',
 		'edit',
 		'editlink',
 		'editpopupcode',
-		'comments',
+		'itemid',
+		'itemlink',
+		'karma',
+		'karmaneglink',
+		'karmaposlink',
+		'more',
+		'morelink',
+		'new',
+		'plugin',
+		'query',
 		'relevance',
-		'if',
-		'else',
-		'endif',
-		'elseif',
-		'ifnot',
-		'elseifnot'
-	);
+		'smartbody',
+		'syndicate_description',
+		'syndicate_title',
+		'time',
+		'title',
+	/* actions defined in BodyAction class */
+		'image',
+		'media',
+		'popup',
+		);
 	
 	/**
 	 * ItemActions::__construct
@@ -143,12 +132,13 @@ class ItemActions extends BaseActions
 	 * Returns an array with the actions that are defined
 	 * in the ItemActions class
 	 * 
+	 * @static
 	 * @param	void
 	 * @return	void
 	 */
-	public function getDefinedActions()
+	static public function getDefinedActions()
 	{
-		return self::$defined_actions;
+		return array_merge(self::$defined_actions, parent::getDefinedActions());
 	}
 	
 	/**

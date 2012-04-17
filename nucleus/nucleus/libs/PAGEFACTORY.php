@@ -58,35 +58,25 @@ class PageFactory extends BaseActions
 	 */
 	// TODO: move the definition of actions to the createXForm methods
 	static private $defined_actions = array(
-		'actionurl',
-		'title',
-		'body',
-		'more',
+		'authorname',
 		'blogid',
 		'bloglink',
 		'blogname',
-		'authorname',
-		'checkedonval',
-		'helplink',
-		'currenttime',
-		'itemtime',
-		'init',
-		'text',
-		'jsinput',
-		'jsbuttonbar',
 		'categories',
+		'checkedonval',
 		'contents',
-		'ifblogsetting',
-		'ifitemproperty',
-		'else',
-		'endif',
-		'pluginextras',
-		'itemoptions',
+		'currenttime',
 		'extrahead',
+		'helplink',
+		'init',
+		'itemoptions',
+		'itemtime',
+		'jsbuttonbar',
+		'jsinput',
+		'pluginextras',
+		'text',
 		'ticket',
-		'autosave',
-		'autosaveinfo',
-		'ifautosave'
+		'title'
 	);
 	
 	/**
@@ -110,6 +100,19 @@ class PageFactory extends BaseActions
 		 */
 		$this->allowed_types = array('bookmarklet', 'admin');
 		return;
+	}
+	
+	/**
+	 * PageFactory::getDefinedActions()
+	 * 
+	 * @static
+	 * @param	void
+	 * @return	array	array for defined action names
+	 * 
+	 */
+	static public function getDefinedActions()
+	{
+		return array_merge(self::$defined_actions, parent::getDefinedActions());
 	}
 	
 	/**

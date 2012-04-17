@@ -42,44 +42,33 @@ class CommentActions extends BaseActions
 	 * defined actions in this class
 	 */
 	static private $defined_actions = array(
+		'authtext',
+		'blogid',
 		'blogurl',
-		'commentcount',
-		'commentword',
-		'email',
-		'itemlink',
-		'itemid',
-		'itemtitle',
-		'date',
-		'time',
-		'commentid',
 		'body',
-		'memberid',
-		'timestamp',
+		'commentcount',
+		'commentid',
+		'commentword',
+		'date',
+		'email',
+		'excerpt',
 		'host',
 		'ip',
-		'blogid',
-		'authtext',
-		'user',
-		'userid',
-		'userlinkraw',
-		'userlink',
-		'useremail',
-		'userwebsite',
-		'userwebsitelink',
-		'excerpt',
-		'short',
-		'skinfile',
-		'set',
+		'itemid',
+		'itemlink',
+		'itemtitle',
+		'memberid',
 		'plugin',
-		'include',
-		'phpinclude',
-		'parsedinclude',
-		'if',
-		'else',
-		'endif',
-		'elseif',
-		'ifnot',
-		'elseifnot'
+		'short',
+		'time',
+		'timestamp',
+		'user',
+		'useremail',
+		'userid',
+		'userlink',
+		'userlinkraw',
+		'userwebsite',
+		'userwebsitelink'
 	);
 	
 	/**
@@ -101,12 +90,13 @@ class CommentActions extends BaseActions
 	/**
 	 * CommentActions::getDefinedActions()
 	 * 
+	 * @static
 	 * @param	void
 	 * @return array	actions array
 	 */
-	public function getDefinedActions()
+	static public function getDefinedActions()
 	{
-		return self::$defined_actions;
+		return array_merge(self::$defined_actions, parent::getDefinedActions());
 	}
 	
 	/**
