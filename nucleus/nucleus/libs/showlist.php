@@ -348,7 +348,7 @@ function listplug_table_plugoptionlist($template, $type)
 			break;
 		case 'FOOT':
 			echo "<tr>\n";
-			echo '<th colspan=\"2\">' . _PLUGS_SAVE . "</th>\n";
+			echo '<th colspan="2">' . _PLUGS_SAVE . "</th>\n";
 			echo "</tr>\n";
 			echo "<tr>\n";
 			echo "<td>" . _PLUGS_SAVE . "</td>\n";
