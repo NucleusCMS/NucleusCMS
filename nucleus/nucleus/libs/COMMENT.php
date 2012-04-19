@@ -31,18 +31,18 @@ class Comment
 	function getComment($commentid)
 	{
 		$query = 'SELECT cnumber AS commentid,'
-		              . 'cbody AS body,'
-		              . 'cuser AS user,'
-		              . 'cmail AS userid,'
-		              . 'cemail AS email,'
-		              . 'cmember AS memberid,'
-		              . 'ctime,'
-		              . 'chost AS host,'
-		              . 'mname AS member,'
-		              . 'cip AS ip,'
-		              . 'cblog AS blogid'
-		       . 'FROM %s LEFT OUTER JOIN %s ON cmember = mnumber'
-		       . 'WHERE cnumber = %d;';
+		              . ' cbody AS body,'
+		              . ' cuser AS user,'
+		              . ' cmail AS userid,'
+		              . ' cemail AS email,'
+		              . ' cmember AS memberid,'
+		              . ' ctime,'
+		              . ' chost AS host,'
+		              . ' mname AS member,'
+		              . ' cip AS ip,'
+		              . ' cblog AS blogid'
+		       . ' FROM %s LEFT OUTER JOIN %s ON cmember = mnumber'
+		       . ' WHERE cnumber = %d;';
 		
 		$query = sprintf($query, sql_table('comment'), sql_table('member'), (integer) $commentid);
 		$comments = sql_query($query);
