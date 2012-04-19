@@ -269,7 +269,8 @@ div#content table tbody tr:hover {
 	background-color:	#F5F5F5;
 }
 
-div#content table thead tr th {
+div#content table thead tr th,
+div#content table tbody tr th {
 	border: none;
 	background-color: #BBBBCC;
 	color: #000000;
