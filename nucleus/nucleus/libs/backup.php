@@ -129,7 +129,8 @@ class Backup
 
 		// dump all tables
 		reset($tables);
-		array_walk($tables, array(self, 'dump_table'));
+		/* NOTE: hope to use 'self' keyword here but works bad so here use __CLASS__ macro. */
+		array_walk($tables, array(__CLASS__, 'dump_table'));
 
 		if ( $gzip )
 		{
