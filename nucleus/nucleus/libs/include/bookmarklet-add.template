@@ -7,7 +7,7 @@
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
-		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
+		<%if(autosave)%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
@@ -46,7 +46,7 @@
 			<div id="body" class="contentblock">
 
 				<table>
-				<%ifautosave()%><tr>
+				<%if(autosave)%><tr>
 				<td><%text(_AUTOSAVEDRAFT)%></td>
 				<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
 				</tr><%endif%>
@@ -74,7 +74,7 @@
 				<td><%categories%></td>
 				</tr>
 				<tr>
-				<%ifautosave()%><td><%text(_AUTOSAVEDRAFT_NOW)%></td>
+				<%if(autosave)%><td><%text(_AUTOSAVEDRAFT_NOW)%></td>
 				<td><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="autoSaveDraft();" /></td><%endif%>
 				</tr>
 				</table>
@@ -96,7 +96,7 @@
 			</div>
 			<div id="options" class="contentblock">
 				<table>
-				<%ifblogsetting(bcomments)%>
+				<%if(blogsetting, bcomments)%>
 					<tr>
 					<td><%text(_ADD_DISABLE_COMMENTS)%></td>
 					<td>
@@ -121,7 +121,7 @@
 						<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" />:
 						<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />
 						(dd/mm/yyyy hh:mm)
-						<%ifblogsetting(ballowpast,0)%>
+						<%if(blogsetting, ballowpast,0)%>
 							<br />
 							<%text(_ADD_NOPASTDATES)%>
 						<%endif%>
@@ -154,7 +154,7 @@
 			
 		</div></form>
 
-	<%ifautosave()%><script type="text/javascript">
+	<%if(autosave)%><script type="text/javascript">
 		var xmlhttprequest = new Array();
 		xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
 		xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler

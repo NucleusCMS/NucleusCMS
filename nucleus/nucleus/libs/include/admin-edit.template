@@ -2,7 +2,7 @@
 
 <%init%>
 <script type="text/javascript" src="javascript/numbercheck.js"></script>
-<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
+<%if(autosave)%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 
 <form id="editform" method="post" action="index.php">
 <div>
@@ -15,7 +15,7 @@
 <table><tr>
 	<th colspan="2"><%text(_EDIT_ITEM)%></th>
 </tr>
-<%ifautosave()%><tr>
+<%if(autosave)%><tr>
 	<td><%text(_AUTOSAVEDRAFT)%></td>
 	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
 </tr><%endif%>
@@ -51,7 +51,7 @@
 	</td>
 </tr><tr>
 
-<%ifblogsetting(bcomments)%>
+<%if(blogsetting, bcomments)%>
 		<td>
 			<%text(_ADD_DISABLE_COMMENTS)%>
 		</td>
@@ -72,7 +72,7 @@
 
 		<input type="submit" tabindex="60" value="<%text(_EDIT_SUBMIT)%>" onclick="return checkSubmit();" />
 
-<%ifitemproperty(draft)%>
+<%if(itemproperty, draft)%>
 		<br /><br />
 		<input name="actiontype" value="addnow" type="radio" id="act_now" /><label for="act_now" tabindex="61"><%text(_ADD_ADDNOW)%></label>
 		<br />
@@ -86,7 +86,7 @@
 			<input id="inputhour" name="hour" tabindex="74" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" />:
 			<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />
 			(dd/mm/yyyy hh:mm)
-			<%ifblogsetting(ballowpast,0)%>
+			<%if(blogsetting, ballowpast,0)%>
 				<br />
 				<%text(_ADD_NOPASTDATES)%>
 			<%endif%>
@@ -96,10 +96,10 @@
 		<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="61" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
 <%endif%>
 
-<%ifitemproperty(draft,0)%>
+<%if(itemproperty, draft,0)%>
 	<br /><br />
 	<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="61" /><label for="act_edit"><%text(_BMLET_EDIT)%></label>
-	<%ifblogsetting(ballowpast)%>
+	<%if(blogsetting, ballowpast)%>
 		<br />
 		<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="70" /><label for="act_changedate"><%text(_ADD_CHANGEDATE)%></label> <%helplink(changedate)%>
 			<div class="indent">
@@ -144,7 +144,7 @@
 		<td>
 			<input tabindex="60" type="submit" value="<%text(_EDIT_SUBMIT)%>" 
 				onclick="return checkSubmit();" />
-			<%ifautosave()%><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
+			<%if(autosave)%><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
 				onclick="autoSaveDraft();" /><%endif%>
 		</td>
 	
@@ -153,7 +153,7 @@
 </div>
 </form>
 
-<%ifautosave()%><script type="text/javascript">
+<%if(autosave)%><script type="text/javascript">
 	var xmlhttprequest = new Array();
 	xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
 	xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler

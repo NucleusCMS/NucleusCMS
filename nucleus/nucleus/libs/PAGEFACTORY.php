@@ -69,9 +69,6 @@ class PageFactory extends BaseActions
 		'extrahead',
 		'helplink',
 		'init',
-		'ifautosave',
-		'ifblogsetting',
-		'ifitemproperty',
 		'itemoptions',
 		'itemtime',
 		'jsbuttonbar',
@@ -315,45 +312,37 @@ class PageFactory extends BaseActions
 	}
 	
 	/**
-	 * PageFactory::parse_ifblogsetting()
-	 * Indicates the start of a conditional block of data. It will be added to
-	 * the output only if the blogsetting with the given name equals the
-	 * given value (default for value = 1 = true)
-	 * the name of the blogsetting is the column name in the nucleus_blog table
-	 * the conditional block ends with an <endif> var
-	 * 
-	 * @param	string	$name
-	 * @return	void
+	 * PageFactory::checkCondition()
+	 * Checks conditions for if statements
+	 *
+	 * @param	string	$field	type of <%if%>
+	 * @param	string	$name	property of field
+	 * @param	string	$value	value of property
+	 * @return	boolean
 	 */
-	public function parse_ifblogsetting($name, $value=1)
-	{
-		$this->addIfCondition(($this->blog->getSetting($name) == $value));
-		return;
-	}
-	
-	/**
-	 * PageFactory::parse_ifitemproperty()
-	 * 
-	 * @param	string	$namge
-	 * @return	void
-	 */
-	public function parse_ifitemproperty($name,$value=1)
-	{
-		$this->addIfCondition(($this->variables[$name] == $value));
-		return;
-	}
-	
-	/**
-	 * PageFactory::parse_ifautosave()
-	 * 
-	 * @param	string	$name
-	 * @return	void
-	 */
-	function parse_ifautosave($name,$value=1)
+	protected function checkCondition($field, $name = '', $value = 1)
 	{
 		global $member;
-		$this->addIfCondition($member->getAutosave() == $value);
-		return;
+		
+		$condition = 0;
+		switch ( $field )
+		{
+			case 'blogsetting':
+				$condition = (boolean) ($this->blog->getSetting($name) == $value);
+				break;
+			case 'autosave':
+				$condition = (boolean) ($member->getAutosave() == $value);
+				break;
+			case 'itemproperty':
+				if ( array_key_exists($name, $this->variables) )
+				{
+					$condition = (boolean) ($this->variables[$name] == $value);
+				}
+				break;
+			default:
+				break;
+		}
+		return $condition;
 	}
 	
 	/**

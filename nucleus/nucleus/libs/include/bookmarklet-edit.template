@@ -7,7 +7,7 @@
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
-		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
+		<%if(autosave)%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
@@ -45,7 +45,7 @@
 
 			<div id="body" class="contentblock">
 				<table>
-				<%ifautosave()%><tr>
+				<%if(autosave)%><tr>
 				<td><%text(_AUTOSAVEDRAFT)%></td>
 				<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
 				</tr><%endif%>
@@ -72,7 +72,7 @@
 				<td><%categories%></td>
 				</tr>
 				<tr>
-				<%ifautosave()%><td><%text(_AUTOSAVEDRAFT_NOW)%></td>
+				<%if(autosave)%><td><%text(_AUTOSAVEDRAFT_NOW)%></td>
 				<td><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="autoSaveDraft();" /></td><%endif%>
 				</tr>
 				</table>
@@ -93,7 +93,7 @@
 			</div>
 			<div id="options" class="contentblock">
 				<table>
-				<%ifblogsetting(bcomments)%>
+				<%if(blogsetting, bcomments)%>
 					<tr>
 					<td><%text(_ADD_DISABLE_COMMENTS)%></td>
 					<td>
@@ -110,7 +110,7 @@
 				<ul class="nobullets">
 					<li><input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" /><label for="act_edit"><%text(_BMLET_EDIT)%></label></li>
 					<li><input name="actiontype" value="delete" type="radio" id="act_delete" /><label for="act_delete"><%text(_BMLET_DELETE)%></label></li>
-					<%ifblogsetting(ballowpast)%>
+					<%if(blogsetting, ballowpast)%>
 						<li>
 							<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="70" /><label for="act_changedate"><%text(_BMLET_CHANGEDATE)%></label> <%helplink(changedate)%>
 									<div class="indent">
@@ -153,7 +153,7 @@
 			
 		</div></form>
 
-	<%ifautosave()%><script type="text/javascript">
+	<%if(autosave)%><script type="text/javascript">
 		var xmlhttprequest = new Array();
 		xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
 		xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
