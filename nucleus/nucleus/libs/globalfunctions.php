@@ -1407,19 +1407,6 @@ function selectItem($id) {
     $itemid = intval($id);
 }
 
-// force the use of a translation file (warning: can cause warnings)
-function selectLanguage($language) {
-
-	global $DIR_LANG;
-
-	# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-	# original ereg_replace: preg_replace( '@\\|/@', '', $language) . '.php')
-	# important note that '\' must be matched with '\\\\' in preg* expressions
-
-	include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
-
-}
-
 function parseFile($filename, $includeMode = 'normal', $includePrefix = '') {
     $handler = new Actions('fileparser');
     $parser = new Parser(SKIN::getAllowedActionsForType('fileparser'), $handler);
@@ -2120,6 +2107,13 @@ function getLanguageName()
 		$language ='english';
 	}
 	return $language;
+}
+/* NOTE: this is completely deprecated because generating much warnings */
+function selectLanguage($language)
+{
+	global $DIR_LANG;
+	include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
+	return;
 }
 
 /* NOTE: use i18n::get_available_locales() directly instead of this */
