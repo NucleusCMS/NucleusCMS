@@ -141,7 +141,7 @@ function listplug_table_memberlist($template, $type)
 			echo '<th>' . _LIST_MEMBER_NAME . "</th>\n";
 			echo '<th>' . _LIST_MEMBER_RNAME . "</th>\n";
 			echo '<th>' . _LIST_MEMBER_URL . "</th>\n";
-			echo '<th>' . _LIST_MEMBER_ADMIN . "</th>\n";
+			echo '<th>' . _LIST_MEMBER_ADMIN;
 			help('superadmin');
 			echo "</th>\n";
 			echo '<th>' . _LIST_MEMBER_LOGIN;
@@ -177,7 +177,7 @@ function listplug_table_teamlist($template, $type)
 		case 'HEAD':
 			echo "<th>" . _LIST_MEMBER_NAME . "</th>\n";
 			echo "<th>" . _LIST_MEMBER_RNAME . "</th>\n";
-			echo "<th>" . _LIST_TEAM_ADMIN . "</th>\n";
+			echo "<th>" . _LIST_TEAM_ADMIN;
 			help('teamadmin');
 			echo "</th>\n";
 			echo "<th colspan=\"2\">"._LISTS_ACTIONS."</th>\n";
