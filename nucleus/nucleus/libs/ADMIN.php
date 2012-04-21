@@ -4562,14 +4562,14 @@ selector();
 		echo "<br />\n";
 		echo _SKIN_ALLOWEDVARS;
 		
-		$actions = Skin::getAllowedActions($type);
+		$actions = $skin->getAllowedActionsForType($type);
 		
 		sort($actions);
 		
 		while ($current = array_shift($actions))
 		{
 			// skip deprecated vars
-			if ( in_array(array('ifcat', 'imagetext', 'vars')) )
+			if ( in_array($current, array('ifcat', 'imagetext', 'vars')) )
 			{
 				continue;
 			}
