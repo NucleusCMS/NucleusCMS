@@ -4341,97 +4341,141 @@ selector();
         $this->action_skinoverview();
     }
 
-    /**
-     * @todo document this
-     */
-    function action_skinedit() {
-        global $member, $manager;
-
-        $skinid = intRequestVar('skinid');
-
-        $member->isAdmin() or $this->disallow();
-
-        $skin = new SKIN($skinid);
-
-        $this->pagehead();
-        ?>
-        <p>
-            <a href="index.php?action=skinoverview">(<?php echo _SKIN_BACK?>)</a>
-        </p>
-        <h2><?php echo _SKIN_EDITONE_TITLE?> '<?php echo  $skin->getName() ?>'</h2>
-
-        <h3><?php echo _SKIN_PARTS_TITLE?></h3>
-        <?php echo _SKIN_PARTS_MSG?>
-        <ul>
-            <li><a tabindex="10" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=index"><?php echo _SKIN_PART_MAIN?></a> <?php help('skinpartindex')?></li>
-            <li><a tabindex="20" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=item"><?php echo _SKIN_PART_ITEM?></a> <?php help('skinpartitem')?></li>
-            <li><a tabindex="30" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=archivelist"><?php echo _SKIN_PART_ALIST?></a> <?php help('skinpartarchivelist')?></li>
-            <li><a tabindex="40" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=archive"><?php echo _SKIN_PART_ARCHIVE?></a> <?php help('skinpartarchive')?></li>
-            <li><a tabindex="50" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=search"><?php echo _SKIN_PART_SEARCH?></a> <?php help('skinpartsearch')?></li>
-            <li><a tabindex="60" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=error"><?php echo _SKIN_PART_ERROR?></a> <?php help('skinparterror')?></li>
-            <li><a tabindex="70" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=member"><?php echo _SKIN_PART_MEMBER?></a> <?php help('skinpartmember')?></li>
-            <li><a tabindex="75" href="index.php?action=skinedittype&amp;skinid=<?php echo  $skinid ?>&amp;type=imagepopup"><?php echo _SKIN_PART_POPUP?></a> <?php help('skinpartimagepopup')?></li>
-        </ul>
-
-        <?php
-
-        $query = "SELECT stype FROM " . sql_table('skin') . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member') and sdesc = " . $skinid;
-        $res = sql_query($query);
-
-        echo '<h3>' . _SKIN_PARTS_SPECIAL . '</h3>';
-        echo '<form method="get" action="index.php">' . "\r\n";
-        echo '<input type="hidden" name="action" value="skinedittype" />' . "\r\n";
-        echo '<input type="hidden" name="skinid" value="' . $skinid . '" />' . "\r\n";
-        echo '<input name="type" tabindex="89" size="20" maxlength="20" />' . "\r\n";
-        echo '<input type="submit" tabindex="140" value="' . _SKIN_CREATE . '" onclick="return checkSubmit();" />' . "\r\n";
-        echo '</form>' . "\r\n";
-
-        if ($res && sql_num_rows($res) > 0) {
-            echo '<ul>';
-            $tabstart = 75;
-
-            while ($row = sql_fetch_assoc($res)) {
-                echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . Entity::hsc(strtolower($row['stype'])) . '">' . Entity::hsc(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . Entity::hsc(strtolower($row['stype'])) . '">remove</a>)</li>';
-            }
-
-            echo '</ul>';
-        }
-
-        ?>
-
-        <h3><?php echo _SKIN_GENSETTINGS_TITLE; ?></h3>
-        <form method="post" action="index.php">
-        <div>
-
-        <input type="hidden" name="action" value="skineditgeneral" />
-        <?php $manager->addTicketHidden() ?>
-        <input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
-        <table><tr>
-            <td><?php echo _SKIN_NAME?> <?php help('shortnames');?></td>
-            <td><input name="name" tabindex="90" value="<?php echo  Entity::hsc($skin->getName()) ?>" maxlength="20" size="20" /></td>
-        </tr><tr>
-            <td><?php echo _SKIN_DESC?></td>
-            <td><input name="desc" tabindex="100" value="<?php echo  Entity::hsc($skin->getDescription()) ?>" maxlength="200" size="50" /></td>
-        </tr><tr>
-            <td><?php echo _SKIN_TYPE?></td>
-            <td><input name="type" tabindex="110" value="<?php echo  Entity::hsc($skin->getContentType()) ?>" maxlength="40" size="20" /></td>
-        </tr><tr>
-            <td><?php echo _SKIN_INCLUDE_MODE?> <?php help('includemode')?></td>
-            <td><?php $this->input_yesno('inc_mode',$skin->getIncludeMode(),120,'skindir','normal',_PARSER_INCMODE_SKINDIR,_PARSER_INCMODE_NORMAL);?></td>
-        </tr><tr>
-            <td><?php echo _SKIN_INCLUDE_PREFIX?> <?php help('includeprefix')?></td>
-            <td><input name="inc_prefix" tabindex="130" value="<?php echo  Entity::hsc($skin->getIncludePrefix()) ?>" maxlength="40" size="20" /></td>
-        </tr><tr>
-            <td><?php echo _SKIN_CHANGE?></td>
-            <td><input type="submit" tabindex="140" value="<?php echo _SKIN_CHANGE_BTN?>" onclick="return checkSubmit();" /></td>
-        </tr></table>
-
-        </div>
-        </form>
-
-
-        <?php       $this->pagefoot();
-    }
+	/**
+	 * Admin::action_skinedit()
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_skinedit()
+	{
+		global $member, $manager;
+		
+		$skinid = intRequestVar('skinid');
+		
+		$member->isAdmin() or $this->disallow();
+		
+		$skin = new SKIN($skinid);
+		
+		$this->pagehead();
+		
+		$skin_default_types = array(
+			'index'			=> _SKIN_PART_MAIN,
+			'item'			=> _SKIN_PART_ITEM,
+			'archivelist'	=> _SKIN_PART_ALIST,
+			'archive'		=> _SKIN_PART_ARCHIVE,
+			'search'		=> _SKIN_PART_SEARCH,
+			'error'			=> _SKIN_PART_ERROR,
+			'member'		=> _SKIN_PART_MEMBER,
+			'imagepopup'	=> _SKIN_PART_POPUP
+		);
+		
+		echo "<p>";
+		echo '( <a href="index.php?action=skinoverview">' . _SKIN_BACK . "</a> )";
+		echo "</p>\n";
+		echo '<h2>' . _SKIN_EDITONE_TITLE . $skin->getName() . "</h2>\n";
+		
+		echo '<h3>' . _SKIN_PARTS_TITLE . "</h3>\n";
+		echo _SKIN_PARTS_MSG . "\n";
+		echo "<ul>\n";
+		
+		$tabindex = 10;
+		$types = array();
+		foreach ( $skin_default_types as $type => $friendly_name )
+		{
+			echo "<li>\n";
+			echo "<a tabindex=\"{$tabindex}\" href=\"index.php?action=skinedittype&amp;skinid={$skinid}&amp;type={$type}\">";
+			echo $friendly_name;
+			echo "</a>\n";
+			help("skinpart{$type}");
+			echo "</li>\n";
+			$tabindex++;
+			$types[] = $type;
+		}
+		echo "</ul>\n";
+		
+		$query = "SELECT stype FROM %s WHERE stype NOT IN ('%s') and sdesc=%d;";
+		$query = sprintf($query, sql_table('skin'), implode("', '", $types) , $skinid);
+		$res = sql_query($query);
+		
+		echo '<h3>' . _SKIN_PARTS_SPECIAL . '</h3>';
+		echo "<form method=\"get\" action=\"index.php\">\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"skinedittype\" />\n";
+		echo "<input type=\"hidden\" name=\"skinid\" value=\"{$skinid}\" />\n";
+		echo "<input type=\"text\" name=\"type\" tabindex=\"89\" size=\"20\" maxlength=\"20\" />\n";
+		echo '<input type="submit" tabindex="140" value="' . _SKIN_CREATE . "\" onclick=\"return checkSubmit();\" />\n";
+		echo "</form>\n";
+		
+		if ( $res && sql_num_rows($res) > 0 )
+		{
+			$tabstart = 75;
+			
+			echo '<ul>';
+			while ( $row = sql_fetch_assoc($res) )
+			{
+				$tabstart++;
+				echo "<li>\n";
+				echo "<a tabindex=\"{$tabstart}\" href=\"index.php?action=skinedittype&amp;skinid={$skinid}&amp;type=" . Entity::hsc(strtolower($row['stype'])) . "\">";
+				echo Entity::hsc(ucfirst($row['stype']));
+				echo "</a>\n";
+				$tabstart++;
+				echo "(<a tabindex=\"{$tabstart}\" href=\"index.php?action=skinremovetype&amp;skinid={$skinid}&amp;type=" . Entity::hsc(strtolower($row['stype'])) . "\">";
+				echo _LISTS_DELETE;
+				echo "</a>)\n";
+				echo "</li>\n";
+			}
+			echo '</ul>';
+		}
+		
+		echo '<h3>' . _SKIN_GENSETTINGS_TITLE . "</h3>\n";
+		echo "<form method=\"post\" action=\"index.php\">\n";
+		echo "<div>\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"skineditgeneral\" />\n";
+		$manager->addTicketHidden() . "\n";
+		echo "<input type=\"hidden\" name=\"skinid\" value=\"{$skinid}\" />\n";
+		
+		echo '<table frame="box" rules="all" summary="' . _SKIN_GENSETTINGS_TITLE . '">' . "\n";
+		echo "<tr>\n";
+		echo '<td>';
+		echo _SKIN_NAME;
+		help('shortnames');
+		echo "</td>\n";
+		echo '<td><input type="text" name="name" tabindex="90" value="' . Entity::hsc($skin->getName()) . '" maxlength="20" size="20" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _SKIN_DESC . "</td>\n";
+		echo '<td><input type="text" name="desc" tabindex="100" value="' . Entity::hsc($skin->getDescription()) . '" maxlength="200" size="50" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _SKIN_TYPE . "</td>\n";
+		echo '<td><input type="text" name="type" tabindex="110" value="' . Entity::hsc($skin->getContentType()) . '" maxlength="40" size="20" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>';
+		echo _SKIN_INCLUDE_MODE;
+		help('includemode');
+		echo "</td>\n";
+		echo '<td>';
+		$this->input_yesno('inc_mode', $skin->getIncludeMode(), 120, 'skindir', 'normal', _PARSER_INCMODE_SKINDIR, _PARSER_INCMODE_NORMAL);
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>';
+		echo _SKIN_INCLUDE_PREFIX;
+		help('includeprefix');
+		echo "</td>\n";
+		echo '<td><input type="text" name="inc_prefix" tabindex="130" value="' . Entity::hsc($skin->getIncludePrefix()) . '" maxlength="40" size="20" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _SKIN_CHANGE . "</td>\n";
+		echo '<td><input type="submit" tabindex="140" value="' . _SKIN_CHANGE_BTN . '" onclick="return checkSubmit();" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "</table>\n";
+		
+		echo "</div>\n";
+		echo "</form>\n";
+		$this->pagefoot();
+		return;
+	}
 
     /**
      * @todo document this
@@ -4509,7 +4553,7 @@ selector();
 		
 		if ( isset($msg) )
 		{
-			echo "<p>"._MESSAGE.": $msg</p>\n";
+			echo "<p>" . _MESSAGE . ": $msg</p>\n";
 		}
 		
 		echo "<form method=\"post\" action=\"index.php\">\n";
