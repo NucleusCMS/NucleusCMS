@@ -4537,21 +4537,22 @@ selector();
 		
 		$skin = new SKIN($skinid);
 		$friendlyNames = Skin::getFriendlyNames();
+		if ( !array_key_exists($type, $friendlyNames) || !isset($friendlyNames[$type]) )
+		{
+			$friendlyName = ucfirst($type);
+		}
+		else
+		{
+			$friendlyName = $friendlyNames[$type];
+		}
 		
 		$this->pagehead();
 		
 		echo '<p>(<a href="index.php?action=skinoverview">' . _SKIN_GOBACK . "</a>)</p>\n";
 		
-		if ( !array_key_exists($type, $friendlyNames) || !isset($friendlyNames[$type]) )
-		{
-			echo '<h2>' . _SKIN_EDITPART_TITLE . Entity::hsc($skin->getName()) . ':' . Entity::hsc(ucfirst($type)) . "</h2>\n";
-		}
-		else
-		{
-			echo '<h2>' . _SKIN_EDITPART_TITLE . Entity::hsc($skin->getName()) . ':' . Entity::hsc($friendlyNames[$type]) . "</h2>\n";
-		}
+		echo '<h2>' . _SKIN_EDITPART_TITLE . " '" . Entity::hsc($skin->getName()) . "': " . Entity::hsc($friendlyName) . "</h2>\n";
 		
-		if ( isset($msg) )
+		if ( $msg != '')
 		{
 			echo "<p>" . _MESSAGE . ": $msg</p>\n";
 		}
@@ -4566,15 +4567,7 @@ selector();
 		
 		echo '<input type="submit" value="' . _SKIN_UPDATE_BTN . '" onclick="return checkSubmit();" />' . "\n";
 		echo '<input type="reset" value="' . _SKIN_RESET_BTN . '" />' . "\n";
-		
-		if ( !array_key_exists($type, $friendlyNames) || !isset($friendlyNames[$type]) )
-		{
-			echo '(skin type: ' . Entity::hsc(ucfirst($type)) . ")\n";
-		}
-		else
-		{
-			echo '(skin type: ' . Entity::hsc($friendlyNames[$type]) . ")\n";
-		}
+		echo '(skin type: ' . Entity::hsc($friendlyName) . ")\n";
 		
 		if ( !in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup')) )
 		{
@@ -4593,14 +4586,7 @@ selector();
 		echo "<br />\n";
 		echo '<input type="submit" tabindex="20" value="' . _SKIN_UPDATE_BTN . '" onclick="return checkSubmit();" />' . "\n";
 		echo '<input type="reset" value="' . _SKIN_RESET_BTN . '" />' . "\n";
-		if ( !array_key_exists($type, $friendlyNames) || !isset($friendlyNames[$type]) )
-		{
-			echo '(skin type: ' . Entity::hsc(ucfirst($type)) . ")\n";
-		}
-		else
-		{
-			echo '(skin type: ' . Entity::hsc($friendlyNames[$type]) . ")\n";
-		}
+		echo '(skin type: ' . Entity::hsc($friendlyName) . ")\n";
 		
 		echo "<br />\n";
 		echo "<br />\n";
