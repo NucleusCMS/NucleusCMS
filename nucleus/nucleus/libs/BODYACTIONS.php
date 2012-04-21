@@ -264,7 +264,7 @@ class BodyActions extends BaseActions
 	 * @param	string	$value	value of property
 	 * @return	condition
 	 */
-	public function checkCondition($field, $name='', $value = '')
+	protected function checkCondition($field, $name='', $value = '')
 	{
 		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
 		

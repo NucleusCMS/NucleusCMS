@@ -695,7 +695,7 @@ class CommentActions extends BaseActions
 	}
 	
 	/**
-	 * ItemActions::checkCondition()
+	 * CommentActions::checkCondition()
 	 * Checks conditions for if statements
 	 *
 	 * @param	string	$field	type of <%if%>
@@ -703,7 +703,7 @@ class CommentActions extends BaseActions
 	 * @param	string	$value	value of property
 	 * @return	boolean
 	 */
-	private function checkCondition($field, $name='', $value = '') {
+	protected function checkCondition($field, $name='', $value = '') {
 		global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
 		$condition = 0;
 		switch ( $field )
