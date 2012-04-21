@@ -577,12 +577,7 @@ class Skin
 	 */
 	public function getAllowedActionsForType($type)
 	{
-		/**
-		 * NOTE: static method with variable class name is supported since PHP 5.3
-		 *  So now we utilize eval function.
-		 */
-		eval("\$defined_actions = {$this->action_class}::getDefinedActions('{$type}');");
-		return $defined_actions;
+		return call_user_func(array($this->action_class, 'getDefinedActions'), $type);
 	}
 	
 	/**
@@ -595,11 +590,6 @@ class Skin
 	 */
 	public function getFriendlyNames()
 	{
-		/**
-		 * NOTE: static method with variable class name is supported since PHP 5.3
-		 *  So now we utilize eval function.
-		 */
-		eval("\$friendly_names = {$this->action_class}::getSkinTypeFriendlyNames();");
-		return $friendly_names;
+		return call_user_func(array($this->action_class, 'getSkinTypeFriendlyNames'));
 	}
 }
