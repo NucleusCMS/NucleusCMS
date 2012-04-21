@@ -4263,7 +4263,7 @@ selector();
 
         $this->action_templateoverview();
     }
-
+	
 	/**
 	 * Admin::action_skinoverview()
 	 * 
@@ -4285,7 +4285,7 @@ selector();
 		$query = 'SELECT * FROM '.sql_table('skin_desc').' ORDER BY sdname;';
 		$template['content'] = 'skinlist';
 		$template['tabindex'] = 10;
-		$template['friendly_names'] = Skin::getFriendlyNames('Actions');
+		
 		showlist($query,'table',$template);
 		
 		echo '<h3>' . _SKIN_NEW_TITLE . "</h3>\n";
@@ -4318,7 +4318,7 @@ selector();
 		$this->pagefoot();
 		return;
 	}
-
+	
     /**
      * @todo document this
      */
@@ -4355,19 +4355,9 @@ selector();
 		$member->isAdmin() or $this->disallow();
 		
 		$skin = new SKIN($skinid);
+		$friendlyNames = $skin->getFriendlyNames();
 		
 		$this->pagehead();
-		
-		$skin_default_types = array(
-			'index'			=> _SKIN_PART_MAIN,
-			'item'			=> _SKIN_PART_ITEM,
-			'archivelist'	=> _SKIN_PART_ALIST,
-			'archive'		=> _SKIN_PART_ARCHIVE,
-			'search'		=> _SKIN_PART_SEARCH,
-			'error'			=> _SKIN_PART_ERROR,
-			'member'		=> _SKIN_PART_MEMBER,
-			'imagepopup'	=> _SKIN_PART_POPUP
-		);
 		
 		echo "<p>";
 		echo '( <a href="index.php?action=skinoverview">' . _SKIN_BACK . "</a> )";
@@ -4380,7 +4370,7 @@ selector();
 		
 		$tabindex = 10;
 		$types = array();
-		foreach ( $skin_default_types as $type => $friendly_name )
+		foreach ( $friendlyNames as $type => $friendly_name )
 		{
 			echo "<li>\n";
 			echo "<a tabindex=\"{$tabindex}\" href=\"index.php?action=skinedittype&amp;skinid={$skinid}&amp;type={$type}\">";
@@ -4389,12 +4379,11 @@ selector();
 			help("skinpart{$type}");
 			echo "</li>\n";
 			$tabindex++;
-			$types[] = $type;
 		}
 		echo "</ul>\n";
 		
 		$query = "SELECT stype FROM %s WHERE stype NOT IN ('%s') and sdesc=%d;";
-		$query = sprintf($query, sql_table('skin'), implode("', '", $types) , $skinid);
+		$query = sprintf($query, sql_table('skin'), implode("', '", array_keys($friendlyNames)) , $skinid);
 		$res = sql_query($query);
 		
 		echo '<h3>' . _SKIN_PARTS_SPECIAL . '</h3>';
@@ -4536,7 +4525,7 @@ selector();
 		}
 		
 		$skin = new SKIN($skinid);
-		$friendlyNames = Skin::getFriendlyNames();
+		$friendlyNames = $skin->getFriendlyNames();
 		if ( !array_key_exists($type, $friendlyNames) || !isset($friendlyNames[$type]) )
 		{
 			$friendlyName = ucfirst($type);
@@ -4569,7 +4558,7 @@ selector();
 		echo '<input type="reset" value="' . _SKIN_RESET_BTN . '" />' . "\n";
 		echo '(skin type: ' . Entity::hsc($friendlyName) . ")\n";
 		
-		if ( !in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup')) )
+		if ( !in_array($type, array_keys($friendlyNames)) )
 		{
 			help('skinpartspecial');
 		}
@@ -4726,81 +4715,110 @@ selector();
 
         $this->action_skinoverview();
     }
-
-    /**
-     * @todo document this
-     */
-    function action_skinremovetype() {
-        global $member, $manager, $CONF;
-
-        $skinid = intRequestVar('skinid');
-        $skintype = requestVar('type');
-
-        if (!isValidShortName($skintype)) {
-            $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
-        }
-
-        $member->isAdmin() or $this->disallow();
-
-        // don't allow default skinparts to be deleted
-        if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
-            $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
-        }
-
-        $this->pagehead();
-
-        $skin = new SKIN($skinid);
-        $name = $skin->getName();
-        $desc = $skin->getDescription();
-
-        ?>
-            <h2><?php echo _DELETE_CONFIRM?></h2>
-
-            <p>
-                <?php echo _CONFIRMTXT_SKIN_PARTS_SPECIAL; ?> <b><?php echo Entity::hsc($skintype); ?> (<?php echo Entity::hsc($name); ?>)</b> (<?php echo  Entity::hsc($desc)?>)
-            </p>
-
-            <form method="post" action="index.php"><div>
-                <input type="hidden" name="action" value="skinremovetypeconfirm" />
-                <?php $manager->addTicketHidden() ?>
-                <input type="hidden" name="skinid" value="<?php echo $skinid; ?>" />
-                <input type="hidden" name="type" value="<?php echo Entity::hsc($skintype); ?>" />
-                <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
-            </div></form>
-        <?php
-        $this->pagefoot();
-    }
-
-    /**
-     * @todo document this
-     */
-    function action_skinremovetypeconfirm() {
-        global $member, $CONF, $manager;
-
-        $skinid = intRequestVar('skinid');
-        $skintype = requestVar('type');
-
-        if (!isValidShortName($skintype)) {
-            $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
-        }
-
-        $member->isAdmin() or $this->disallow();
-
-        // don't allow default skinparts to be deleted
-        if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
-            $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
-        }
-
-        $manager->notify('PreDeleteSkinPart', array('skinid' => $skinid, 'skintype' => $skintype));
-
-        // delete part
-        sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc=' . $skinid . ' AND stype=\'' . $skintype . '\'');
-
-        $manager->notify('PostDeleteSkinPart', array('skinid' => $skinid, 'skintype' => $skintype));
-
-        $this->action_skinedit();
-    }
-
+	
+	/**
+	 * Admin::action_skinremovetype()
+	 *
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_skinremovetype()
+	{
+		global $member, $manager, $CONF;
+		
+		$skinid = intRequestVar('skinid');
+		$skintype = requestVar('type');
+		
+		if ( !isValidShortName($skintype) )
+		{
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+		}
+		
+		$member->isAdmin() or $this->disallow();
+		
+		// don't allow default skinparts to be deleted
+		$skin = new Skin($skinid);
+		$friendlyNames = $skin->getFriendlyNames();
+		if ( in_array($skintype, array_keys($friendlyNames)) )
+		{
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+		}
+		
+		$name = $skin->getName();
+		$desc = $skin->getDescription();
+		
+		$this->pagehead();
+		
+		echo '<h2>' . _DELETE_CONFIRM . "</h2>\n";
+		echo "<p>\n";
+		echo _CONFIRMTXT_SKIN_PARTS_SPECIAL;
+		echo Entity::hsc($skintype);
+		echo  '(' . Entity::hsc($name) . ')</b>';
+		echo ' (' . Entity::hsc($desc) . ')';
+		echo "</p>\n";
+		
+		echo "<form method=\"post\" action=\"index.php\">\n";
+		echo "<div>\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"skinremovetypeconfirm\" />\n";
+		$manager->addTicketHidden();
+		echo "<input type=\"hidden\" name=\"skinid\" value=\"{$skinid}\" />\n";
+		echo '<input type="hidden" name="type" value="' . Entity::hsc($skintype) . '" />' . "\n";
+		echo '<input type="submit" tabindex="10" value="' . _DELETE_CONFIRM_BTN . '" />' . "\n";
+		echo "</div>\n";
+		echo "</form>\n";
+		$this->pagefoot();
+		return;
+	}
+	
+	/**
+	 * Admin::action_skinremovetypeconfirm()
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_skinremovetypeconfirm()
+	{
+		global $member, $CONF, $manager;
+		
+		$skinid = intRequestVar('skinid');
+		$skintype = requestVar('type');
+		
+		if ( !isValidShortName($skintype) )
+		{
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+		}
+		
+		$member->isAdmin() or $this->disallow();
+		
+		// don't allow default skinparts to be deleted
+		$skin = new Skin($skinid);
+		$friendlyNames = $skin->getFriendlyNames();
+		if ( in_array($skintype, array_keys($friendlyNames)) )
+		{
+			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+		}
+		
+		$data = array(
+			'skinid'	=> $skinid,
+			'skintype'	=> $skintype
+		);
+		$manager->notify('PreDeleteSkinPart', $data);
+		
+		// delete part
+		$query = "DELETE FROM %s WHERE sdesc=%d AND stype='%s';";
+		$query = sprintf($query, sql_table('skin'), (integer) $skinid, $skintype);
+		sql_query($query);
+		
+		$data = array(
+			'skinid'	=> $skinid,
+			'skintype'	=> $skintype
+		);
+		$manager->notify('PostDeleteSkinPart', $data);
+		
+		$this->action_skinedit();
+		return;
+	}
+	
     /**
      * @todo document this
      */
@@ -4832,20 +4850,7 @@ selector();
             $skin->getIncludeMode(),
             $skin->getIncludePrefix()
         );
-
-
-        // 3. clone
-        /*
-        $this->skinclonetype($skin, $newid, 'index');
-        $this->skinclonetype($skin, $newid, 'item');
-        $this->skinclonetype($skin, $newid, 'archivelist');
-        $this->skinclonetype($skin, $newid, 'archive');
-        $this->skinclonetype($skin, $newid, 'search');
-        $this->skinclonetype($skin, $newid, 'error');
-        $this->skinclonetype($skin, $newid, 'member');
-        $this->skinclonetype($skin, $newid, 'imagepopup');
-        */
-
+        
         $query = "SELECT stype FROM " . sql_table('skin') . " WHERE sdesc = " . $skinid;
         $res = sql_query($query);
         while ($row = sql_fetch_assoc($res)) {

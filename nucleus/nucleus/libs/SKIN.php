@@ -594,52 +594,13 @@ class Skin
 	 * @param	string	$action_class	name of action class (optional)
 	 * @param	array	type of the skin
 	 */
-	static public function getFriendlyNames($action_class='Actions')
+	public function getFriendlyNames($action_class='Actions')
 	{
-		global $DIR_LIBS;
-		
-		/*
-		 * NOTE: include needed action class
-		 */
-		if ( $action_class != 'Actions' )
-		{
-			if ( !class_exists($action_class, FALSE)
-			  && (!file_exists("{$DIR_LIBS}{$action_class}.php")
-			   || !include("{$DIR_LIBS}{$action_class}.php")) )
-			{
-				return;
-			}
-		}
-		else
-		{
-			if ( !class_exists('Actions', FALSE)
-			  && (!file_exists("{$DIR_LIBS}ACTIONS.php")
-			   || !include("{$DIR_LIBS}ACTIONS.php")) )
-			{
-				return;
-			}
-		}
-		
 		/**
 		 * NOTE: static method with variable class name is supported since PHP 5.3
 		 *  So now we utilize eval function.
 		 */
 		eval("\$friendly_names = {$action_class}::getSkinTypeFriendlyNames();");
-		
-		$action_names = array();
-		foreach ( $friendly_names as $action_name => $friendly_name )
-		{
-			$action_names[] = $action_name;
-		}
-		
-		$query = "SELECT stype FROM %s WHERE stype NOT IN ('%s');";
-		$query = sprintf($query, sql_table('skin'), implode("','", $action_names));
-		$res = sql_query($query);
-		
-		while ( $row = sql_fetch_array($res) )
-		{
-			$friendly_names[strtolower($row['stype'])] = $row['stype'];
-		}
 		return $friendly_names;
 	}
 }

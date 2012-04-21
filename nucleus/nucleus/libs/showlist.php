@@ -825,39 +825,43 @@ function listplug_table_skinlist($template, $type)
 			echo "<td>\n";
 			echo '<p>' . Entity::hsc($current->sddesc) . "</p>\n";
 			
-			/* show list of defined parts */
+			/* make list of registered skins */
 			$query = "SELECT stype FROM %s WHERE sdesc=%d ORDER BY stype";
 			$query = sprintf($query, sql_table('skin'), $current->sdnumber);
 			$r = sql_query($query);
-			
 			$types = array();
 			while ( $o = sql_fetch_object($r) )
 			{
 				array_push($types, $o->stype);
 			}
-			if ( sizeof($types) > 0 )
+			
+			/* make list of defined skins */
+			$skin = new Skin($current->sdnumber);
+			$friendlyNames = $skin->getFriendlyNames();
+			
+			echo _LIST_SKINS_DEFINED;
+			echo "<ul>\n";
+			foreach ( $types as $type )
 			{
-				for ( $i = 0; $i < sizeof($types); $i++ )
+				if ( !array_key_exists($type, $friendlyNames) )
 				{
-					$type = $types[$i];
-					if ( !array_key_exists($type, $template['friendly_names']) || $type == strtolower($template['friendly_names'][$type]) )
-					{
-						$article = 'skinpartspecial';
-					}
-					else
-					{
-						$article = "skinpart{$type}";
-					}
-					$types[$i]  = "<li>\n"
-					            . helpHtml($article) . "\n"
-					            . "<a href=\"index.php?action=skinedittype&amp;skinid={$current->sdnumber}&amp;type={$type}\" tabindex=\"{$template['tabindex']}\">"
-					            . Entity::hsc($template['friendly_names'][$type])
-					            . "</a>\n"
-					            . "</li>\n";
+					$friendlyName = ucfirst($type);
+					$article = 'skinpartspecial';
 				}
-				echo _LIST_SKINS_DEFINED;
-				echo '<ul>' . implode('', $types) . "</ul>\n";
+				else
+				{
+					$friendlyName = $friendlyNames[$type];
+					$article = "skinpart{$type}";
+				}
+				echo "<li>\n";
+				echo helpHtml($article) . "\n";
+				echo "<a href=\"index.php?action=skinedittype&amp;skinid={$current->sdnumber}&amp;type={$type}\" tabindex=\"{$template['tabindex']}\">";
+				echo Entity::hsc($friendlyName);
+				echo "</a>\n";
+				echo "</li>\n";
 			}
+			echo "</ul>\n";
+			
 			echo "</td>";
 			echo "<td>\n";
 			echo "<a href=\nindex.php?action=skinedit&amp;skinid={$current->sdnumber}\n tabindex=\n{$template['tabindex']}>" . _LISTS_EDIT . "</a>\n";
