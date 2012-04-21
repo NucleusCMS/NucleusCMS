@@ -580,7 +580,6 @@ class Skin
 		 * NOTE: static method with variable class name is supported since PHP 5.3
 		 *  So now we utilize eval function.
 		 */
-		$page_action_names = array();
 		eval("\$defined_actions = {$this->action_class}::getDefinedActions('{$type}');");
 		return $defined_actions;
 	}
@@ -590,17 +589,16 @@ class Skin
 	 * Get an array with the names of possible skin parts
 	 * Used to show all possible parts of a skin in the administration backend
 	 * 
-	 * @static
-	 * @param	string	$action_class	name of action class (optional)
-	 * @param	array	type of the skin
+	 * @param	string	void
+	 * @return	array	type of the skin
 	 */
-	public function getFriendlyNames($action_class='Actions')
+	public function getFriendlyNames()
 	{
 		/**
 		 * NOTE: static method with variable class name is supported since PHP 5.3
 		 *  So now we utilize eval function.
 		 */
-		eval("\$friendly_names = {$action_class}::getSkinTypeFriendlyNames();");
+		eval("\$friendly_names = {$this->action_class}::getSkinTypeFriendlyNames();");
 		return $friendly_names;
 	}
 }
