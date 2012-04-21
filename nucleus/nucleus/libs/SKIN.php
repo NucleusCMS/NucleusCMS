@@ -321,11 +321,12 @@ class Skin
 	 * Parse a SKIN
 	 * 
 	 * @param	string	$type
+	 * @param	string	$path	path to file if using fileparser
 	 * @return	void
 	 */
-	public function parse($type)
+	public function parse($type, $path='')
 	{
-		global $currentSkinName, $manager, $CONF;
+		global $currentSkinName, $manager, $CONF, $DIR_NUCLEUS;
 		
 		$manager->notify("Init{$this->event_identifier}Parse", array('skin' => &$this, 'type' => $type));
 		
@@ -334,7 +335,16 @@ class Skin
 		
 		// set skin name as global var (so plugins can access it)
 		$currentSkinName = $this->getName();
-		$contents = $this->getContent($type);
+		
+		$contents = FALSE;
+		if ( $type != 'fileparse' )
+		{
+			$contents = $this->getContent($type);
+		}
+		else if ( $path !== ''  && i18n::strpos(realpath($path), realpath("$DIR_NUCLEUS/../")) == 0 )
+		{
+			$contents = $this->getFileContent($path);
+		}
 		
 		if ( !$contents )
 		{
@@ -383,11 +393,41 @@ class Skin
 		
 		if ( sql_num_rows($res) == 0 )
 		{
-			return '';
+			return FALSE;
 		}
 		return sql_result($res, 0, 0);
 	}
-
+	
+	/**
+	 * Skin::getFileContent()
+	 * 
+	 * @param	string	$fullpath	fullpath to the file to parse
+	 * @return	mixed	file contents or FALSE
+	 */
+	public function getFileContent($fullpath)
+	{
+		$fsize = filesize($fullpath);
+		if ( $fsize <= 0 )
+		{
+			return;
+		}
+		
+		$fd = fopen ($fullpath, 'r');
+		if ( $fd === FALSE )
+		{
+			return FALSE;
+		}
+		
+		$contents = fread ($fd, $fsize);
+		if ( $contents === FALSE )
+		{
+			return FALSE;
+		}
+		
+		fclose ($fd);
+		return $contents;
+	}
+	
 	/**
 	 * SKIN::update()
 	 * Updates the contents for one part of the skin in the database

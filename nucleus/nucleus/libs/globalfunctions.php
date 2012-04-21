@@ -1407,32 +1407,28 @@ function selectItem($id) {
     $itemid = intval($id);
 }
 
-function parseFile($filename, $includeMode = 'normal', $includePrefix = '') {
-    $handler = new Actions('fileparser');
-    $parser = new Parser(SKIN::getAllowedActionsForType('fileparser'), $handler);
-    $handler->parser =& $parser;
-
-    // set IncludeMode properties of parser
-    Parser::setProperty('IncludeMode', $includeMode);
-    Parser::setProperty('IncludePrefix', $includePrefix);
-
-    if (!file_exists($filename) ) {
-        doError('A file is missing');
-    }
-
-    $fsize = filesize($filename);
-
-    if ($fsize <= 0) {
-        return;
-    }
-
-    // read file
-    $fd = fopen ($filename, 'r');
-    $contents = fread ($fd, $fsize);
-    fclose ($fd);
-
-    // parse file contents
-    $parser->parse($contents);
+function parseFile($filename, $includeMode = 'normal', $includePrefix = '')
+{
+	global $skinid;
+	
+	if ( !$skinid || !existsID($skinid) )
+	{
+		$skin = new Skin($CONF['BaseSkin']);
+	}
+	else
+	{
+		$skin = new Skin($skinid);
+	}
+	
+	$oldIncludeMode = Parser::getProperty('IncludeMode');
+	$oldIncludePrefix = Parser::getProperty('IncludePrefix');
+	
+	$skin->parse('fileparse', $filename);
+	
+	Parser::setProperty('IncludeMode', $oldIncludeMode);
+	Parser::setProperty('IncludePrefix', $oldIncludePrefix);
+	
+	return;
 }
 
 /**
