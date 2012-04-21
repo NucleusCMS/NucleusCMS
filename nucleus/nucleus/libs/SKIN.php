@@ -519,8 +519,8 @@ class Skin
 		$includeMode	= sql_real_escape_string($includeMode);
 		$includePrefix	= sql_real_escape_string($includePrefix);
 		
-		$query ="UPDATE %s SET sdname='', sddesc='%s', sdtype='%s', sdincmode='%s', sdincpref='%s' WHERE sdnumber=%d:";
-		$query = sprintf($query, $name, $desc, $type, $includeMode, $includePrefix, (integer) $this->id);
+		$query ="UPDATE %s SET sdname='%s', sddesc='%s', sdtype='%s', sdincmode='%s', sdincpref='%s' WHERE sdnumber=%d";
+		$query = sprintf($query, sql_table('skin_desc'), $name, $desc, $type, $includeMode, $includePrefix, (integer) $this->id);
 		
 		sql_query($query);
 		return;
