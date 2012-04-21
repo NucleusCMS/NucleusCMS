@@ -54,17 +54,6 @@ class Skin
 		
 		$this->id = (integer) $id;
 		
-		// read skin name/description/content type
-		$query = "SELECT * FROM %s WHERE sdnumber=%d";
-		$query = sprintf($query, sql_table('skin_desc'), (integer) $this->id);
-		$res = sql_query($query);
-		$obj = sql_fetch_object($res);
-		$this->valid = (sql_num_rows($res) > 0);
-		if ( !$this->valid )
-		{
-			return;
-		}
-		
 		/*
 		 * NOTE: include needed action class
 		 */
@@ -89,6 +78,18 @@ class Skin
 		
 		$this->action_class = $action_class;
 		$this->event_identifier = $event_identifier;
+		
+		// read skin name/description/content type
+		$query = "SELECT * FROM %s WHERE sdnumber=%d;";
+		$query = sprintf($query, sql_table('skin_desc'), $this->id);
+		$res = sql_query($query);
+		$obj = sql_fetch_object($res);
+		
+		$this->valid = (sql_num_rows($res) > 0);
+		if ( !$this->valid )
+		{
+			return;
+		}
 		
 		$this->name = $obj->sdname;
 		$this->description = $obj->sddesc;
