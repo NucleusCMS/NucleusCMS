@@ -84,7 +84,7 @@ function listplug_select($template, $type)
 			$current = $template['current'];
 
 			echo '<option value="' . Entity::hsc($current->value) . '"';
-			if ( $template['selected'] == $current->value )
+			if ( array_key_exists('selected', $template) && $template['selected'] == $current->value )
 			{
 				echo ' selected="selected" ';
 			}
