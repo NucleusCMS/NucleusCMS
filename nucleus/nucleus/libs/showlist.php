@@ -825,32 +825,21 @@ function listplug_table_skinlist($template, $type)
 			echo "<td>\n";
 			echo '<p>' . Entity::hsc($current->sddesc) . "</p>\n";
 			
-			/* make list of registered skins */
-			$query = "SELECT stype FROM %s WHERE sdesc=%d ORDER BY stype";
-			$query = sprintf($query, sql_table('skin'), $current->sdnumber);
-			$r = sql_query($query);
-			$types = array();
-			while ( $o = sql_fetch_object($r) )
-			{
-				array_push($types, $o->stype);
-			}
-			
 			/* make list of defined skins */
 			$skin = new Skin($current->sdnumber);
-			$friendlyNames = $skin->getFriendlyNames();
+			$available_skin_types = $skin->getAvailableTypes();
 			
 			echo _LIST_SKINS_DEFINED;
 			echo "<ul>\n";
-			foreach ( $types as $type )
+			foreach ( $available_skin_types as $type => $friendlyName )
 			{
-				if ( !array_key_exists($type, $friendlyNames) )
+				if ( $friendlyName === FALSE )
 				{
 					$friendlyName = ucfirst($type);
 					$article = 'skinpartspecial';
 				}
 				else
 				{
-					$friendlyName = $friendlyNames[$type];
 					$article = "skinpart{$type}";
 				}
 				echo "<li>\n";

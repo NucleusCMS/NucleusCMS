@@ -568,11 +568,54 @@ class Skin
 	}
 	
 	/**
+	 * Skin::getDefaultTypes()
+	 * 
+	 * @param	string	void
+	 * @return	array	default skin types
+	 */
+	public function getDefaultTypes()
+	{
+		return call_user_func(array($this->action_class, 'getDefaultSkinTypes'));
+	}
+	
+	/**
+	 * Skin::getAvailableTypes()
+	 * 
+	 * @param	string	void
+	 * @return	array	registered skin types
+	 */
+	public function getAvailableTypes()
+	{
+		$default_skintypes = $this->getDefaultTypes();
+		$query = "SELECT stype FROM %s WHERE sdesc=%d;";
+		$query = sprintf($query, sql_table('skin'), (integer) $this->id);
+		
+		/* NOTE: force to put default types in the beginning */
+		$in_default = array();
+		$no_default = array();
+		
+		$res = sql_query($query);
+		while ( $row = sql_fetch_array($res) )
+		{
+			if ( !array_key_exists($row['stype'], $default_skintypes) )
+			{
+				$no_default[$row['stype']] = FALSE;
+			}
+			else
+			{
+				$in_default[$row['stype']] = $default_skintypes[$row['stype']];
+			}
+		}
+		
+		return array_merge($in_default, $no_default);
+	}
+	
+	/**
 	 * Skin::getAllowedActionsForType()
 	 * Get the allowed actions for a skin type
 	 * returns an array with the allowed actions
 	 * 
-	 * @param	string	$type	type of the skin (e.g. index, item, search ...)
+	 * @param	string	$type	type of the skin
 	 * @return	array	allowed action types
 	 */
 	public function getAllowedActionsForType($type)
@@ -580,16 +623,4 @@ class Skin
 		return call_user_func(array($this->action_class, 'getDefinedActions'), $type);
 	}
 	
-	/**
-	 * Skin::getFriendlyNames()
-	 * Get an array with the names of possible skin parts
-	 * Used to show all possible parts of a skin in the administration backend
-	 * 
-	 * @param	string	void
-	 * @return	array	type of the skin
-	 */
-	public function getFriendlyNames()
-	{
-		return call_user_func(array($this->action_class, 'getSkinTypeFriendlyNames'));
-	}
 }

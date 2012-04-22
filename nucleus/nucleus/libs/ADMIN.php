@@ -4355,7 +4355,8 @@ selector();
 		$member->isAdmin() or $this->disallow();
 		
 		$skin = new SKIN($skinid);
-		$friendlyNames = $skin->getFriendlyNames();
+		$default_skin_types = $skin->getDefaultTypes();
+		$available_skin_types = $skin->getAvailableTypes();
 		
 		$this->pagehead();
 		
@@ -4369,8 +4370,7 @@ selector();
 		echo "<ul>\n";
 		
 		$tabindex = 10;
-		$types = array();
-		foreach ( $friendlyNames as $type => $friendly_name )
+		foreach ( $default_skin_types as $type => $friendly_name )
 		{
 			echo "<li>\n";
 			echo "<a tabindex=\"{$tabindex}\" href=\"index.php?action=skinedittype&amp;skinid={$skinid}&amp;type={$type}\">";
@@ -4382,10 +4382,6 @@ selector();
 		}
 		echo "</ul>\n";
 		
-		$query = "SELECT stype FROM %s WHERE stype NOT IN ('%s') and sdesc=%d;";
-		$query = sprintf($query, sql_table('skin'), implode("', '", array_keys($friendlyNames)) , $skinid);
-		$res = sql_query($query);
-		
 		echo '<h3>' . _SKIN_PARTS_SPECIAL . '</h3>';
 		echo "<form method=\"get\" action=\"index.php\">\n";
 		echo "<input type=\"hidden\" name=\"action\" value=\"skinedittype\" />\n";
@@ -4394,23 +4390,27 @@ selector();
 		echo '<input type="submit" tabindex="140" value="' . _SKIN_CREATE . "\" onclick=\"return checkSubmit();\" />\n";
 		echo "</form>\n";
 		
-		if ( $res && sql_num_rows($res) > 0 )
+		/* NOTE: special skin parts has FALSE in its value */
+		if ( in_array(FALSE, array_values($available_skin_types)) )
 		{
 			$tabstart = 75;
 			
 			echo '<ul>';
-			while ( $row = sql_fetch_assoc($res) )
+			foreach ( $available_skin_types as $type => $friendly_name )
 			{
-				$tabstart++;
-				echo "<li>\n";
-				echo "<a tabindex=\"{$tabstart}\" href=\"index.php?action=skinedittype&amp;skinid={$skinid}&amp;type=" . Entity::hsc(strtolower($row['stype'])) . "\">";
-				echo Entity::hsc(ucfirst($row['stype']));
-				echo "</a>\n";
-				$tabstart++;
-				echo "(<a tabindex=\"{$tabstart}\" href=\"index.php?action=skinremovetype&amp;skinid={$skinid}&amp;type=" . Entity::hsc(strtolower($row['stype'])) . "\">";
-				echo _LISTS_DELETE;
-				echo "</a>)\n";
-				echo "</li>\n";
+				if ( !$friendly_name )
+				{
+					$tabstart++;
+					echo "<li>\n";
+					echo "<a tabindex=\"{$tabstart}\" href=\"index.php?action=skinedittype&amp;skinid={$skinid}&amp;type=" . Entity::hsc(strtolower($type)) . '">';
+					echo Entity::hsc(ucfirst($type));
+					echo "</a>\n";
+					$tabstart++;
+					echo "(<a tabindex=\"{$tabstart}\" href=\"index.php?action=skinremovetype&amp;skinid={$skinid}&amp;type=" . Entity::hsc(strtolower($type)) . '">';
+					echo _LISTS_DELETE;
+					echo "</a>)\n";
+					echo "</li>\n";
+				}
 			}
 			echo '</ul>';
 		}
@@ -4525,14 +4525,14 @@ selector();
 		}
 		
 		$skin = new SKIN($skinid);
-		$friendlyNames = $skin->getFriendlyNames();
-		if ( !array_key_exists($type, $friendlyNames) || !isset($friendlyNames[$type]) )
+		$skin_types = $skin->getAvailableTypes();
+		if ( !array_key_exists($type, $skin_types) || !$skin_types[$type] )
 		{
 			$friendlyName = ucfirst($type);
 		}
 		else
 		{
-			$friendlyName = $friendlyNames[$type];
+			$friendlyName = $skin_types[$type];
 		}
 		
 		$this->pagehead();
@@ -4558,7 +4558,7 @@ selector();
 		echo '<input type="reset" value="' . _SKIN_RESET_BTN . '" />' . "\n";
 		echo '(skin type: ' . Entity::hsc($friendlyName) . ")\n";
 		
-		if ( !in_array($type, array_keys($friendlyNames)) )
+		if ( !array_key_exists($type, $skin_types) || !$skin_types[$type] )
 		{
 			help('skinpartspecial');
 		}
@@ -4585,7 +4585,7 @@ selector();
 		
 		sort($actions);
 		
-		while ($current = array_shift($actions))
+		while ( $current = array_shift($actions) )
 		{
 			// skip deprecated vars
 			if ( in_array($current, array('ifcat', 'imagetext', 'vars')) )
@@ -4738,8 +4738,8 @@ selector();
 		
 		// don't allow default skinparts to be deleted
 		$skin = new Skin($skinid);
-		$friendlyNames = $skin->getFriendlyNames();
-		if ( in_array($skintype, array_keys($friendlyNames)) )
+		$default_skin_types = $skin->getDefaultTypes();
+		if ( array_key_exists($skintype, $default_skin_types) )
 		{
 			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
 		}
@@ -4792,8 +4792,8 @@ selector();
 		
 		// don't allow default skinparts to be deleted
 		$skin = new Skin($skinid);
-		$friendlyNames = $skin->getFriendlyNames();
-		if ( in_array($skintype, array_keys($friendlyNames)) )
+		$default_skin_types = $skin->getDefaultTypes();
+		if ( array_key_exists($skintype, $default_skin_types) )
 		{
 			$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
 		}

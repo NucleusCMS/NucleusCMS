@@ -79,7 +79,7 @@ class Actions extends BaseActions
 	 * Actions::$skin_type_friendly_names
 	 * friendly name for wrapped page types
 	 */
-	static public $skin_type_friendly_names = array(
+	static public $default_skin_types = array(
 		'index'			=> _SKIN_PART_MAIN,
 		'item'			=> _SKIN_PART_ITEM,
 		'archivelist'	=> _SKIN_PART_ALIST,
@@ -230,15 +230,15 @@ class Actions extends BaseActions
 	}
 	
 	/**
-	 * Actions::getSkinTypeFriendlyNames()
+	 * Actions::getDefaultSkinTypes()
 	 * 
 	 * @static
 	 * @param	void
 	 * @return	array	list of friendly names for page actions
 	 */
-	static public function getSkinTypeFriendlyNames()
+	static public function getDefaultSkinTypes()
 	{
-		return self::$skin_type_friendly_names;
+		return self::$default_skin_types;
 	}
 	
 	/**
