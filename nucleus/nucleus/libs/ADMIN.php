@@ -334,68 +334,88 @@ class Admin
         $this->pagefoot();
     }
 
-    /**
-     * @todo document this
-     */
-    function action_itemlist($blogid = '') {
-        global $member, $manager, $CONF;
-
-        if ($blogid == '')
-            $blogid = intRequestVar('blogid');
-
-        $member->teamRights($blogid) or $member->isAdmin() or $this->disallow();
-
-        $this->pagehead();
-        $blog =& $manager->getBlog($blogid);
-
-        echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
-        echo '<h2>' . _ITEMLIST_BLOG . ' ' . $this->bloglink($blog) . '</h2>';
-
-        // start index
-        if (postVar('start'))
-            $start = intPostVar('start');
-        else
-            $start = 0;
-
-        if ($start == 0)
-            echo '<p><a href="index.php?action=createitem&amp;blogid='.$blogid.'">',_ITEMLIST_ADDNEW,'</a></p>';
-
-        // amount of items to show
-        if (postVar('amount'))
-            $amount = intPostVar('amount');
-        else {
-            $amount = intval($CONF['DefaultListSize']);
-            if ($amount < 1)
-                $amount = 10;
-        }
-
-        $search = postVar('search');    // search through items
-
-        $query =  'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, itime'
-               . ' FROM ' . sql_table('item') . ', ' . sql_table('blog') . ', ' . sql_table('member') . ', ' . sql_table('category')
-               . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=' . $blogid;
-
-        if ($search)
-            $query .= ' and ((ititle LIKE "%' . sql_real_escape_string($search) . '%") or (ibody LIKE "%' . sql_real_escape_string($search) . '%") or (imore LIKE "%' . sql_real_escape_string($search) . '%"))';
-
-        // non-blog-admins can only edit/delete their own items
-        if (!$member->blogAdminRights($blogid))
-            $query .= ' and iauthor=' . $member->getID();
-
-
-        $query .= ' ORDER BY itime DESC'
-                . " LIMIT $start,$amount";
-
-        $template['content'] = 'itemlist';
-        $template['now'] = $blog->getCorrectTime(time());
-
-        $manager->loadClass("ENCAPSULATE");
-        $navList = new NavList('itemlist', $start, $amount, 0, 1000, $blogid, $search, 0);
-        $navList->showBatchList('item',$query,'table',$template);
-
-
-        $this->pagefoot();
-    }
+	/**
+	 * Admin::action_itemlist()
+	 * 
+	 * @param	integer	$blogid	ID for weblog
+	 * @return	void
+	 */
+	public function action_itemlist($blogid = '')
+	{
+		global $member, $manager, $CONF;
+		
+		if ( $blogid == '' )
+		{
+			$blogid = intRequestVar('blogid');
+		}
+		
+		$member->teamRights($blogid) or $member->isAdmin() or $this->disallow();
+		
+		$this->pagehead();
+		$blog =& $manager->getBlog($blogid);
+		
+		echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
+		echo '<h2>' . _ITEMLIST_BLOG . ' ' . $this->bloglink($blog) . '</h2>';
+		
+		// start index
+		if ( postVar('start') )
+		{
+			$start = intPostVar('start');
+		}
+		else
+		{
+			$start = 0;
+		}
+		
+		if ( $start == 0 )
+		{
+			echo '<p><a href="index.php?action=createitem&amp;blogid='.$blogid.'">' . _ITEMLIST_ADDNEW . "</a></p>\n";
+		}
+		
+		// amount of items to show
+		if ( postVar('amount') )
+		{
+			$amount = intPostVar('amount');
+		}
+		else
+		{
+			$amount = intval($CONF['DefaultListSize']);
+			if ( $amount < 1 )
+			{
+				$amount = 10;
+			}
+		}
+		
+		$search = postVar('search');	// search through items
+		
+		$query = 'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, itime'
+		       . ' FROM ' . sql_table('item') . ', ' . sql_table('blog') . ', ' . sql_table('member') . ', ' . sql_table('category')
+		       . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=' . $blogid;
+		
+		if ( $search )
+		{
+			$query .= " AND ((ititle LIKE '%" . sql_real_escape_string($search) . "%') OR (ibody LIKE '%" . sql_real_escape_string($search) . "%') OR (imore LIKE '%" . sql_real_escape_string($search) . "%'))";
+		}
+		
+		// non-blog-admins can only edit/delete their own items
+		if ( !$member->blogAdminRights($blogid) )
+		{
+			$query .= ' and iauthor=' . $member->getID();
+		}
+		
+		$query .= ' ORDER BY itime DESC'
+		        . " LIMIT $start, $amount";
+		
+		$template['content'] = 'itemlist';
+		$template['now'] = $blog->getCorrectTime(time());
+		
+		$manager->loadClass("ENCAPSULATE");
+		$navList = new NavList('itemlist', $start, $amount, 0, 1000, $blogid, $search, 0);
+		$navList->showBatchList('item',$query,'table',$template);
+		
+		$this->pagefoot();
+		return;
+	}
 
     /**
      * @todo document this
@@ -956,216 +976,281 @@ class Admin
 		return;
 	}
 	
-    /**
-     * @todo document this
-     */
-    function action_browseownitems() {
-        global $member, $manager, $CONF;
-
-        $this->pagehead();
-
-        echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
-        echo '<h2>' . _ITEMLIST_YOUR. '</h2>';
-
-        // start index
-        if (postVar('start'))
-            $start = intPostVar('start');
-        else
-            $start = 0;
-
-        // amount of items to show
-        if (postVar('amount'))
-            $amount = intPostVar('amount');
-        else {
-            $amount = intval($CONF['DefaultListSize']);
-            if ($amount < 1)
-                $amount = 10;
-        }
-
-        $search = postVar('search');    // search through items
-
-        $query =  'SELECT bshortname, cname, mname, ititle, ibody, idraft, inumber, itime'
-               . ' FROM '.sql_table('item').', '.sql_table('blog') . ', '.sql_table('member') . ', '.sql_table('category')
-               . ' WHERE iauthor='. $member->getID() .' and iauthor=mnumber and iblog=bnumber and icat=catid';
-
-        if ($search)
-            $query .= ' and ((ititle LIKE "%' . sql_real_escape_string($search) . '%") or (ibody LIKE "%' . sql_real_escape_string($search) . '%") or (imore LIKE "%' . sql_real_escape_string($search) . '%"))';
-
-        $query .= ' ORDER BY itime DESC'
-                . " LIMIT $start,$amount";
-
-        $template['content'] = 'itemlist';
-        $template['now'] = time();
-
-        $manager->loadClass("ENCAPSULATE");
-        $navList = new NavList('browseownitems', $start, $amount, 0, 1000, /*$blogid*/ 0, $search, 0);
-        $navList->showBatchList('item',$query,'table',$template);
-
-        $this->pagefoot();
-
-    }
-
-    /**
-     * Show all the comments for a given item
-     * @param int $itemid
-     */
-    function action_itemcommentlist($itemid = '') {
-        global $member, $manager, $CONF;
-
-        if ($itemid == '')
-            $itemid = intRequestVar('itemid');
-
-        // only allow if user is allowed to alter item
-        $member->canAlterItem($itemid) or $this->disallow();
-
-        $blogid = getBlogIdFromItemId($itemid);
-
-        $this->pagehead();
-
-        // start index
-        if (postVar('start'))
-            $start = intPostVar('start');
-        else
-            $start = 0;
-
-        // amount of items to show
-        if (postVar('amount'))
-            $amount = intPostVar('amount');
-        else {
-            $amount = intval($CONF['DefaultListSize']);
-            if ($amount < 1)
-                $amount = 10;
-        }
-
-        $search = postVar('search');
-
-        echo '<p>(<a href="index.php?action=itemlist&amp;blogid=',$blogid,'">',_BACKTOOVERVIEW,'</a>)</p>';
-        echo '<h2>',_COMMENTS,'</h2>';
-
-        $query = 'SELECT cbody, cuser, cmail, cemail, mname, ctime, chost, cnumber, cip, citem FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
-
-        if ($search)
-            $query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
-
-        $query .= ' ORDER BY ctime ASC'
-                . " LIMIT $start,$amount";
-
-        $template['content'] = 'commentlist';
-        $template['canAddBan'] = $member->blogAdminRights(getBlogIDFromItemID($itemid));
-
-        $manager->loadClass("ENCAPSULATE");
-        $navList = new NavList('itemcommentlist', $start, $amount, 0, 1000, 0, $search, $itemid);
-        $navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS);
-
-        $this->pagefoot();
-    }
-
-    /**
-     * Browse own comments
-     */
-    function action_browseowncomments() {
-        global $member, $manager, $CONF;
-
-        // start index
-        if (postVar('start'))
-            $start = intPostVar('start');
-        else
-            $start = 0;
-
-        // amount of items to show
-        if (postVar('amount'))
-            $amount = intPostVar('amount');
-        else {
-            $amount = intval($CONF['DefaultListSize']);
-            if ($amount < 1)
-                $amount = 10;
-        }
-
-        $search = postVar('search');
-
-
-        $query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cmember=' . $member->getID();
-
-        if ($search)
-            $query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
-
-        $query .= ' ORDER BY ctime DESC'
-                . " LIMIT $start,$amount";
-
-        $this->pagehead();
-
-        echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
-        echo '<h2>', _COMMENTS_YOUR ,'</h2>';
-
-        $template['content'] = 'commentlist';
-        $template['canAddBan'] = 0; // doesn't make sense to allow banning yourself
-
-        $manager->loadClass("ENCAPSULATE");
-        $navList = new NavList('browseowncomments', $start, $amount, 0, 1000, 0, $search, 0);
-        $navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS_YOUR);
-
-        $this->pagefoot();
-    }
-
-    /**
-     * Browse all comments for a weblog
-     * @param int $blogid
-     */
-    function action_blogcommentlist($blogid = '')
-    {
-        global $member, $manager, $CONF;
-
-        if ($blogid == '')
-            $blogid = intRequestVar('blogid');
-        else
-            $blogid = intval($blogid);
-
-        $member->teamRights($blogid) or $member->isAdmin() or $this->disallow();
-
-        // start index
-        if (postVar('start'))
-            $start = intPostVar('start');
-        else
-            $start = 0;
-
-        // amount of items to show
-        if (postVar('amount'))
-            $amount = intPostVar('amount');
-        else {
-            $amount = intval($CONF['DefaultListSize']);
-            if ($amount < 1)
-                $amount = 10;
-        }
-
-        $search = postVar('search');        // search through comments
-
-
-        $query =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
-
-        if ($search != '')
-            $query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
-
-
-        $query .= ' ORDER BY ctime DESC'
-                . " LIMIT $start,$amount";
-
-
-        $blog =& $manager->getBlog($blogid);
-
-        $this->pagehead();
-
-        echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
-        echo '<h2>', _COMMENTS_BLOG , ' ' , $this->bloglink($blog), '</h2>';
-
-        $template['content'] = 'commentlist';
-        $template['canAddBan'] = $member->blogAdminRights($blogid);
-
-        $manager->loadClass("ENCAPSULATE");
-        $navList = new NavList('blogcommentlist', $start, $amount, 0, 1000, $blogid, $search, 0);
-        $navList->showBatchList('comment',$query,'table',$template, _NOCOMMENTS_BLOG);
-
-        $this->pagefoot();
-    }
+	/**
+	 * Admin::action_browseownitems()
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_browseownitems()
+	{
+		global $member, $manager, $CONF;
+		
+		$this->pagehead();
+		
+		echo '<p><a href="index.php?action=overview">(' . _BACKHOME . ")</a></p>\n";
+		echo '<h2>' . _ITEMLIST_YOUR . "</h2>\n";
+		
+		// start index
+		if ( postVar('start') )
+		{
+			$start = intPostVar('start');
+		}
+		else
+		{
+			$start = 0;
+		}
+		
+		// amount of items to show
+		if ( postVar('amount') )
+		{
+			$amount = intPostVar('amount');
+		}
+		else
+		{
+			$amount = (integer) $CONF['DefaultListSize'];
+			if ( $amount < 1 )
+			{
+				$amount = 10;
+			}
+		}
+		
+		$search = postVar('search');	// search through items
+		
+		$query = 'SELECT bshortname, cname, mname, ititle, ibody, idraft, inumber, itime'
+		       . ' FROM '.sql_table('item').', '.sql_table('blog') . ', '.sql_table('member') . ', '.sql_table('category')
+		       . ' WHERE iauthor='. $member->getID() .' and iauthor=mnumber and iblog=bnumber and icat=catid';
+		
+		if ( $search )
+		{
+			$query .= " and ((ititle LIKE '%" . sql_real_escape_string($search) . "%') or (ibody LIKE '%" . sql_real_escape_string($search) . "%') or (imore LIKE '%" . sql_real_escape_string($search) . "%'))";
+		}
+		
+		$query .= ' ORDER BY itime DESC'
+		        . " LIMIT $start, $amount";
+		
+		$template['content'] = 'itemlist';
+		$template['now'] = time();
+		
+		$manager->loadClass("ENCAPSULATE");
+		$navList = new NavList('browseownitems', $start, $amount, 0, 1000, /*$blogid*/ 0, $search, 0);
+		$navList->showBatchList('item',$query,'table',$template);
+		
+		$this->pagefoot();
+		return;
+	}
+	
+	/**
+	 * Admin::action_itemcommentlist()
+	 * 
+	 * Show all the comments for a given item
+	 * @param	integer	$itemid	ID for item
+	 * @return	void
+	 */
+	public function action_itemcommentlist($itemid = '')
+	{
+		global $member, $manager, $CONF;
+		
+		if ( $itemid == '' )
+		{
+			$itemid = intRequestVar('itemid');
+		}
+		
+		// only allow if user is allowed to alter item
+		$member->canAlterItem($itemid) or $this->disallow();
+		
+		$blogid = getBlogIdFromItemId($itemid);
+		
+		$this->pagehead();
+		
+		// start index
+		if ( postVar('start') )
+		{
+			$start = intPostVar('start');
+		}
+		else
+		{
+			$start = 0;
+		}
+		
+		// amount of items to show
+		if ( postVar('amount') )
+		{
+			$amount = intPostVar('amount');
+		}
+		else
+		{
+			$amount = (integer) $CONF['DefaultListSize'];
+			if ( $amount < 1 )
+			{
+				$amount = 10;
+			}
+		}
+		
+		$search = postVar('search');
+		
+		echo '<p>(<a href="index.php?action=itemlist&amp;blogid=' . $blogid . '">' . _BACKTOOVERVIEW . "</a>)</p>\n";
+		echo '<h2>',_COMMENTS,'</h2>';
+		
+		$query = 'SELECT cbody, cuser, cmail, cemail, mname, ctime, chost, cnumber, cip, citem FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
+		
+		if ( $search )
+		{
+			$query .= " and cbody LIKE '%" . sql_real_escape_string($search) . "%'";
+		}
+		
+		$query .= ' ORDER BY ctime ASC'
+		        . " LIMIT $start,$amount";
+		
+		$template['content'] = 'commentlist';
+		$template['canAddBan'] = $member->blogAdminRights(getBlogIDFromItemID($itemid));
+		
+		$manager->loadClass("ENCAPSULATE");
+		$navList = new NavList('itemcommentlist', $start, $amount, 0, 1000, 0, $search, $itemid);
+		$navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS);
+		
+		$this->pagefoot();
+		return;
+	}
+	
+	/**
+	 * Admin::action_browseowncomments()
+	 * Browse own comments
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_browseowncomments()
+	{
+		global $member, $manager, $CONF;
+		
+		// start index
+		if ( postVar('start') )
+		{
+			$start = intPostVar('start');
+		}
+		else
+		{
+			$start = 0;
+		}
+		
+		// amount of items to show
+		if ( postVar('amount') )
+		{
+			$amount = intPostVar('amount');
+		}
+		else
+		{
+			$amount = intval($CONF['DefaultListSize']);
+			if ( $amount < 1 )
+			{
+				$amount = 10;
+			}
+		}
+		
+		$search = postVar('search');
+		
+		$query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cmember=' . $member->getID();
+		
+		if ( $search )
+		{
+			$query .= " and cbody LIKE '%" . sql_real_escape_string($search) . "%'";
+		}
+		
+		$query .= ' ORDER BY ctime DESC'
+		        . " LIMIT $start,$amount";
+		
+		$this->pagehead();
+		
+		echo '<p><a href="index.php?action=overview">(' . _BACKHOME . ")</a></p>\n";
+		echo '<h2>' . _COMMENTS_YOUR . "</h2>\n";
+		
+		$template['content'] = 'commentlist';
+		$template['canAddBan'] = 0; // doesn't make sense to allow banning yourself
+		
+		$manager->loadClass("ENCAPSULATE");
+		$navList = new NavList('browseowncomments', $start, $amount, 0, 1000, 0, $search, 0);
+		$navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS_YOUR);
+		
+		$this->pagefoot();
+		return;
+	}
+	
+	/**
+	 * Admin::action_blogcommentlist()
+	 * 
+	 * Browse all comments for a weblog
+	 * @param	integer	$blogid	ID for weblog
+	 * @return	void
+	 */
+	function action_blogcommentlist($blogid = '')
+	{
+		global $member, $manager, $CONF;
+		
+		if ( $blogid == '' )
+		{
+			$blogid = intRequestVar('blogid');
+		}
+		else
+		{
+			$blogid = intval($blogid);
+		}
+		
+		$member->teamRights($blogid) or $member->isAdmin() or $this->disallow();
+		
+		// start index
+		if ( postVar('start') )
+		{
+			$start = intPostVar('start');
+		}
+		else
+		{
+			$start = 0;
+		}
+		
+		// amount of items to show
+		if ( postVar('amount') )
+		{
+			$amount = intPostVar('amount');
+		}
+		else
+		{
+			$amount = intval($CONF['DefaultListSize']);
+			if ( $amount < 1 )
+			{
+				$amount = 10;
+			}
+		}
+		
+		$search = postVar('search');		// search through comments
+		
+		$query =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
+		
+		if ( $search != '' )
+		{
+			$query .= " and cbody LIKE '%" . sql_real_escape_string($search) . "%'";
+		}
+		
+		$query .= ' ORDER BY ctime DESC'
+		        . " LIMIT $start,$amount";
+		
+		$blog =& $manager->getBlog($blogid);
+		
+		$this->pagehead();
+		
+		echo '<p><a href="index.php?action=overview">(' . _BACKHOME . ")</a></p>\n";
+		echo '<h2>', _COMMENTS_BLOG , ' ' , $this->bloglink($blog), '</h2>';
+		
+		$template['content'] = 'commentlist';
+		$template['canAddBan'] = $member->blogAdminRights($blogid);
+		
+		$manager->loadClass("ENCAPSULATE");
+		$navList = new NavList('blogcommentlist', $start, $amount, 0, 1000, $blogid, $search, 0);
+		$navList->showBatchList('comment',$query,'table',$template, _NOCOMMENTS_BLOG);
+		
+		$this->pagefoot();
+		return;
+	}
 	
 	/**
 	 * Admin::action_createitem()
@@ -1783,82 +1868,106 @@ class Admin
         return '';
     }
 
-    /**
-     * Usermanagement main
-     */
-    function action_usermanagement() {
-        global $member, $manager;
-
-        // check if allowed
-        $member->isAdmin() or $this->disallow();
-
-        $this->pagehead();
-
-        echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
-
-        echo '<h2>' . _MEMBERS_TITLE .'</h2>';
-
-        echo '<h3>' . _MEMBERS_CURRENT .'</h3>';
-
-        // show list of members with actions
-        $query =  'SELECT *'
-               . ' FROM '.sql_table('member');
-        $template['content'] = 'memberlist';
-        $template['tabindex'] = 10;
-
-        $manager->loadClass("ENCAPSULATE");
-        $batch = new Batch('member');
-        $batch->showlist($query,'table',$template);
-
-        echo '<h3>' . _MEMBERS_NEW .'</h3>';
-        ?>
-            <form method="post" action="index.php" name="memberedit"><div>
-
-            <input type="hidden" name="action" value="memberadd" />
-            <?php $manager->addTicketHidden() ?>
-
-            <table>
-            <tr>
-                <th colspan="2"><?php echo _MEMBERS_NEW?></th>
-            </tr><tr>
-                <td><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
-                <br /><small><?php echo _MEMBERS_DISPLAY_INFO?></small>
-                </td>
-                <td><input tabindex="10010" name="name" size="32" maxlength="32" /></td>
-            </tr><tr>
-                <td><?php echo _MEMBERS_REALNAME?></td>
-                <td><input name="realname" tabindex="10020" size="40" maxlength="60" /></td>
-            </tr><tr>
-                <td><?php echo _MEMBERS_PWD?></td>
-                <td><input name="password" tabindex="10030" size="16" maxlength="40" type="password" /></td>
-            </tr><tr>
-                <td><?php echo _MEMBERS_REPPWD?></td>
-                <td><input name="repeatpassword" tabindex="10035" size="16" maxlength="40" type="password" /></td>
-            </tr><tr>
-                <td><?php echo _MEMBERS_EMAIL?></td>
-                <td><input name="email" tabindex="10040" size="40" maxlength="60" /></td>
-            </tr><tr>
-                <td><?php echo _MEMBERS_URL?></td>
-                <td><input name="url" tabindex="10050" size="40" maxlength="100" /></td>
-            </tr><tr>
-                <td><?php echo _MEMBERS_SUPERADMIN?> <?php help('superadmin'); ?></td>
-                <td><?php $this->input_yesno('admin',0,10060); ?> </td>
-            </tr><tr>
-                <td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
-                <td><?php $this->input_yesno('canlogin',1,10070); ?></td>
-            </tr><tr>
-                <td><?php echo _MEMBERS_NOTES?></td>
-                <td><input name="notes" maxlength="100" size="40" tabindex="10080" /></td>
-            </tr><tr>
-                <td><?php echo _MEMBERS_NEW?></td>
-                <td><input type="submit" value="<?php echo _MEMBERS_NEW_BTN?>" tabindex="10090" onclick="return checkSubmit();" /></td>
-            </tr></table>
-
-            </div></form>
-        <?php
-        $this->pagefoot();
-    }
-
+	/**
+	 * Admin::action_usermanagement()
+	 * 
+	 * Usermanagement main
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_usermanagement()
+	{
+		global $member, $manager;
+		
+		// check if allowed
+		$member->isAdmin() or $this->disallow();
+		
+		$this->pagehead();
+		
+		echo '<p><a href="index.php?action=manage">(' . _BACKTOMANAGE . ")</a></p>\n";
+		
+		echo '<h2>' . _MEMBERS_TITLE . "</h2>\n";
+		
+		echo '<h3>' . _MEMBERS_CURRENT . "</h3>\n";
+		
+		// show list of members with actions
+		$query =  'SELECT * FROM '.sql_table('member');
+		$template['content'] = 'memberlist';
+		$template['tabindex'] = 10;
+		
+		$manager->loadClass("ENCAPSULATE");
+		$batch = new Batch('member');
+		$batch->showlist($query,'table',$template);
+		
+		echo '<h3>' . _MEMBERS_NEW .'</h3>';
+		echo "<form method=\"post\" action=\"index.php\" name=\"memberedit\">\n";
+		echo "<div>\n";
+		echo "<input type=\"hidden\" name=\"action\" value=\"memberadd\" />\n";
+		$manager->addTicketHidden();
+		
+		echo '<table frame="box" rules="rules" summary="' . _MEMBERS_NEW . '">' ."\n";
+		echo "<tr>\n";
+		echo '<th colspan="2">' . _MEMBERS_NEW . "</th>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _MEMBERS_DISPLAY;
+		help('shortnames');
+		echo '<br />';
+		echo '<small>' . _MEMBERS_DISPLAY_INFO . '</small>';
+		echo "</td>\n";
+		echo "<td><input tabindex=\"10010\" name=\"name\" size=\"32\" maxlength=\"32\" /></td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _MEMBERS_REALNAME . "</td>\n";
+		echo "<td><input name=\"realname\" tabindex=\"10020\" size=\"40\" maxlength=\"60\" /></td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _MEMBERS_PWD . "</td>\n";
+		echo "<td><input name=\"password\" tabindex=\"10030\" size=\"16\" maxlength=\"40\" type=\"password\" /></td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _MEMBERS_REPPWD . "</td>\n";
+		echo "<td><input name=\"repeatpassword\" tabindex=\"10035\" size=\"16\" maxlength=\"40\" type=\"password\" /></td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _MEMBERS_EMAIL . "</td>\n";
+		echo "<td><input name=\"email\" tabindex=\"10040\" size=\"40\" maxlength=\"60\" /></td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _MEMBERS_URL . "</td>\n";
+		echo "<td><input name=\"url\" tabindex=\"10050\" size=\"40\" maxlength=\"100\" /></td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _MEMBERS_SUPERADMIN;
+		help('superadmin');
+		echo "</td>\n";
+		echo '<td>';
+		$this->input_yesno('admin',0,10060);
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _MEMBERS_CANLOGIN;
+		help('canlogin');
+		echo "</td>\n";
+		echo '<td>';
+		$this->input_yesno('canlogin',1,10070);
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _MEMBERS_NOTES . "</td>\n";
+		echo "<td><input name=\"notes\" maxlength=\"100\" size=\"40\" tabindex=\"10080\" /></td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _MEMBERS_NEW . "</td>\n";
+		echo '<td><input type="submit" value="' . _MEMBERS_NEW_BTN . '" tabindex="10090" onclick="return checkSubmit();" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "</table>\n";
+		echo "</div>\n";
+		echo "</form>\n";
+		$this->pagefoot();
+		return;
+	}
+	
     /**
      * Edit member settings
      */
@@ -2356,70 +2465,85 @@ class Admin
         $this->pagefoot();
     }
 
-    /**
-     * Manage team
-     */
-    function action_manageteam() {
-        global $member, $manager;
-
-        $blogid = intRequestVar('blogid');
-
-        // check if allowed
-        $member->blogAdminRights($blogid) or $this->disallow();
-
-        $this->pagehead();
-
-        echo "<p><a href='index.php?action=blogsettings&amp;blogid=$blogid'>(",_BACK_TO_BLOGSETTINGS,")</a></p>";
-
-        echo '<h2>' . _TEAM_TITLE . getBlogNameFromID($blogid) . '</h2>';
-
-        echo '<h3>' . _TEAM_CURRENT . '</h3>';
-
-
-
-        $query =  'SELECT tblog, tmember, mname, mrealname, memail, tadmin'
-               . ' FROM '.sql_table('member').', '.sql_table('team')
-               . ' WHERE tmember=mnumber and tblog=' . $blogid;
-
-        $template['content'] = 'teamlist';
-        $template['tabindex'] = 10;
-
-        $manager->loadClass("ENCAPSULATE");
-        $batch = new Batch('team');
-        $batch->showlist($query, 'table', $template);
-
-        ?>
-            <h3><?php echo _TEAM_ADDNEW?></h3>
-
-            <form method='post' action='index.php'><div>
-
-            <input type='hidden' name='action' value='teamaddmember' />
-            <input type='hidden' name='blogid' value='<?php echo  $blogid; ?>' />
-            <?php $manager->addTicketHidden() ?>
-
-            <table><tr>
-                <td><?php echo _TEAM_CHOOSEMEMBER?></td>
-                <td><?php                   // TODO: try to make it so only non-team-members are listed
-                    $query =  'SELECT mname as text, mnumber as value'
-                           . ' FROM '.sql_table('member');
-
-                    $template['name'] = 'memberid';
-                    $template['tabindex'] = 10000;
-                    showlist($query,'select',$template);
-                ?></td>
-            </tr><tr>
-                <td><?php echo _TEAM_ADMIN?><?php help('teamadmin'); ?></td>
-                <td><?php $this->input_yesno('admin',0,10020); ?></td>
-            </tr><tr>
-                <td><?php echo _TEAM_ADD?></td>
-                <td><input type='submit' value='<?php echo _TEAM_ADD_BTN?>' tabindex="10030" /></td>
-            </tr></table>
-
-            </div></form>
-        <?php
-        $this->pagefoot();
-    }
-
+	/**
+	 * Admin::action_manageteam()
+	 * 
+	 * Manage team
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_manageteam()
+	{
+		global $member, $manager;
+		
+		$blogid = intRequestVar('blogid');
+		
+		// check if allowed
+		$member->blogAdminRights($blogid) or $this->disallow();
+		
+		$this->pagehead();
+		
+		echo "<p><a href='index.php?action=blogsettings&amp;blogid=$blogid'>(" . _BACK_TO_BLOGSETTINGS . ")</a></p>\n";
+		
+		echo '<h2>' . _TEAM_TITLE . getBlogNameFromID($blogid) . "</h2>\n";
+		
+		echo '<h3>' . _TEAM_CURRENT . "</h3>\n";
+		
+		$query = 'SELECT tblog, tmember, mname, mrealname, memail, tadmin'
+		       . ' FROM '.sql_table('member').', '.sql_table('team')
+		       . ' WHERE tmember=mnumber and tblog=' . $blogid;
+		
+		$template['content'] = 'teamlist';
+		$template['tabindex'] = 10;
+		
+		$manager->loadClass("ENCAPSULATE");
+		$batch = new Batch('team');
+		$batch->showlist($query, 'table', $template);
+		
+		echo '<h3>' . _TEAM_ADDNEW . "</h3>\n";
+			
+		echo "<form method=\"post\" action=\"index.php\">\n";
+		echo "<div>\n";
+		
+		echo "<input type=\"hidden\" name=\"action\" value=\"teamaddmember\" />\n";
+		echo "<input type=\"hidden\" name=\"blogid\" value=\"{$blogid}\" />\n";
+		$manager->addTicketHidden();
+			
+		echo '<table frame="box" rules="all" summary="' . _TEAM_ADDNEW . '">' . "\n";
+		echo "<tr>\n";
+		echo '<td>' . _TEAM_CHOOSEMEMBER . "</td>\n";
+		
+		// TODO: try to make it so only non-team-members are listed
+		echo "<td>\n";
+		
+		$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
+		$template['name'] = 'memberid';
+		$template['tabindex'] = 10000;
+		showlist($query,'select',$template);
+		
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _TEAM_ADMIN;
+		help('teamadmin');
+		echo "</td>\n";
+		echo '<td>';
+		$this->input_yesno('admin',0,10020);
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _TEAM_ADD . "</td>\n";
+		echo '<td><input type="submit" value="' . _TEAM_ADD_BTN . '" tabindex="10030" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "</table>\n";
+		
+		echo "</div>\n";
+		echo "</form>\n";
+		
+		$this->pagefoot();
+		return;
+	}
+	
     /**
      * Add member to team
      */
@@ -2563,209 +2687,282 @@ class Admin
         else
             $this->action_overview(_MSG_ADMINCHANGED);
     }
-
-    /**
-     * @todo document this
-     */
-    function action_blogsettings() {
-        global $member, $manager;
-
-        $blogid = intRequestVar('blogid');
-
-        // check if allowed
-        $member->blogAdminRights($blogid) or $this->disallow();
-
-        $blog =& $manager->getBlog($blogid);
-
-        $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
-        $this->pagehead($extrahead);
-
-        echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
-        ?>
-        <h2><?php echo _EBLOG_TITLE?>: '<?php echo $this->bloglink($blog)?>'</h2>
-
-        <h3><?php echo _EBLOG_TEAM_TITLE?></h3>
-
-        <p><?php echo _EBLOG_CURRENT_TEAM_MEMBER; ?>
-        <?php
-            $res = sql_query('SELECT mname, mrealname FROM ' . sql_table('member') . ',' . sql_table('team') . ' WHERE mnumber=tmember AND tblog=' . intval($blogid));
-            $aMemberNames = array();
-            while ($o = sql_fetch_object($res))
-                array_push($aMemberNames, Entity::hsc($o->mname) . ' (' . Entity::hsc($o->mrealname). ')');
-            echo implode(',', $aMemberNames);
-        ?>
-        </p>
-
-
-
-        <p>
-        <a href="index.php?action=manageteam&amp;blogid=<?php echo $blogid?>"><?php echo _EBLOG_TEAM_TEXT?></a>
-        </p>
-
-        <h3><?php echo _EBLOG_SETTINGS_TITLE?></h3>
-
-        <form method="post" action="index.php"><div>
-
-        <input type="hidden" name="action" value="blogsettingsupdate" />
-        <?php $manager->addTicketHidden() ?>
-        <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-        <table><tr>
-            <td><?php echo _EBLOG_NAME?></td>
-            <td><input name="name" tabindex="10" size="40" maxlength="60" value="<?php echo  Entity::hsc($blog->getName()) ?>" /></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_SHORTNAME?> <?php help('shortblogname'); ?>
-                <?php echo _EBLOG_SHORTNAME_EXTRA?>
-            </td>
-            <td><input name="shortname" tabindex="20" maxlength="15" size="15" value="<?php echo  Entity::hsc($blog->getShortName()) ?>" /></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_DESC?></td>
-            <td><input name="desc" tabindex="30" maxlength="200" size="40" value="<?php echo  Entity::hsc($blog->getDescription()) ?>" /></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_URL?></td>
-            <td><input name="url" tabindex="40" size="40" maxlength="100" value="<?php echo  Entity::hsc($blog->getURL()) ?>" /></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_DEFSKIN?>
-                <?php help('blogdefaultskin'); ?>
-            </td>
-            <td>
-                <?php
-                    $query =  'SELECT sdname as text, sdnumber as value'
-                           . ' FROM '.sql_table('skin_desc');
-                    $template['name'] = 'defskin';
-                    $template['selected'] = $blog->getDefaultSkin();
-                    $template['tabindex'] = 50;
-                    showlist($query,'select',$template);
-                ?>
-
-            </td>
-        </tr><tr>
-            <td><?php echo _EBLOG_LINEBREAKS?> <?php help('convertbreaks'); ?>
-            </td>
-            <td><?php $this->input_yesno('convertbreaks',$blog->convertBreaks(),55); ?></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_ALLOWPASTPOSTING?> <?php help('allowpastposting'); ?>
-            </td>
-            <td><?php $this->input_yesno('allowpastposting',$blog->allowPastPosting(),57); ?></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_DISABLECOMMENTS?>
-            </td>
-            <td><?php $this->input_yesno('comments',$blog->commentsEnabled(),60); ?></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_ANONYMOUS?>
-            </td>
-            <td><?php $this->input_yesno('public',$blog->isPublic(),70); ?></td>
-        </tr><tr>
-    <td><?php echo _EBLOG_REQUIREDEMAIL?>
-         </td>
-         <td><?php $this->input_yesno('reqemail',$blog->emailRequired(),72); ?></td>
-      </tr><tr>
-            <td><?php echo _EBLOG_NOTIFY?> <?php help('blognotify'); ?></td>
-            <td><input name="notify" tabindex="80" maxlength="128" size="40" value="<?php echo  Entity::hsc($blog->getNotifyAddress()); ?>" /></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_NOTIFY_ON?></td>
-            <td>
-                <input name="notifyComment" value="3" type="checkbox" tabindex="81" id="notifyComment"
-                    <?php if  ($blog->notifyOnComment()) echo "checked='checked'" ?>
-                /><label for="notifyComment"><?php echo _EBLOG_NOTIFY_COMMENT?></label>
-                <br />
-                <input name="notifyVote" value="5" type="checkbox" tabindex="82" id="notifyVote"
-                    <?php if  ($blog->notifyOnVote()) echo "checked='checked'" ?>
-                /><label for="notifyVote"><?php echo _EBLOG_NOTIFY_KARMA?></label>
-                <br />
-                <input name="notifyNewItem" value="7" type="checkbox" tabindex="83" id="notifyNewItem"
-                    <?php if  ($blog->notifyOnNewItem()) echo "checked='checked'" ?>
-                /><label for="notifyNewItem"><?php echo _EBLOG_NOTIFY_ITEM?></label>
-            </td>
-        </tr><tr>
-            <td><?php echo _EBLOG_MAXCOMMENTS?> <?php help('blogmaxcomments'); ?></td>
-            <td><input name="maxcomments" tabindex="90" size="3" value="<?php echo  Entity::hsc($blog->getMaxComments()); ?>" /></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_UPDATE?> <?php help('blogupdatefile'); ?></td>
-            <td><input name="update" tabindex="100" size="40" maxlength="60" value="<?php echo  Entity::hsc($blog->getUpdateFile()) ?>" /></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_DEFCAT?></td>
-            <td>
-                <?php
-                    $query =  'SELECT cname as text, catid as value'
-                           . ' FROM '.sql_table('category')
-                           . ' WHERE cblog=' . $blog->getID();
-                    $template['name'] = 'defcat';
-                    $template['selected'] = $blog->getDefaultCategory();
-                    $template['tabindex'] = 110;
-                    showlist($query,'select',$template);
-                ?>
-            </td>
-        </tr><tr>
-            <td><?php echo _EBLOG_OFFSET?> <?php help('blogtimeoffset'); ?>
-                <br /><?php echo _EBLOG_STIME?> <b><?php echo  i18n::formatted_datetime('%H:%M', time()); ?></b>
-                <br /><?php echo _EBLOG_BTIME?> <b><?php echo  i18n::formatted_datetime('%H:%M', $blog->getCorrectTime()); ?></b>
-                </td>
-            <td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  Entity::hsc($blog->getTimeOffset()); ?>" /></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_SEARCH?> <?php help('blogsearchable'); ?></td>
-            <td><?php $this->input_yesno('searchable',$blog->getSearchable(),122); ?></td>
-        </tr>
-        <?php
-            // plugin options
-            $this->_insertPluginOptions('blog',$blogid);
-        ?>
-        <tr>
-            <th colspan="2"><?php echo _EBLOG_CHANGE?></th>
-        </tr><tr>
-            <td><?php echo _EBLOG_CHANGE?></td>
-            <td><input type="submit" tabindex="130" value="<?php echo _EBLOG_CHANGE_BTN?>" onclick="return checkSubmit();" /></td>
-        </tr></table>
-
-        </div></form>
-
-        <h3><?php echo _EBLOG_CAT_TITLE?></h3>
-
-
-        <?php
-        $query = 'SELECT * FROM '.sql_table('category').' WHERE cblog='.$blog->getID().' ORDER BY cname';
-        $template['content'] = 'categorylist';
-        $template['tabindex'] = 200;
-
-        $manager->loadClass("ENCAPSULATE");
-        $batch = new Batch('category');
-        $batch->showlist($query,'table',$template);
-
-        ?>
-
-
-        <form action="index.php" method="post"><div>
-        <input name="action" value="categorynew" type="hidden" />
-        <?php $manager->addTicketHidden() ?>
-        <input name="blogid" value="<?php echo $blog->getID()?>" type="hidden" />
-
-        <table><tr>
-            <th colspan="2"><?php echo _EBLOG_CAT_CREATE?></th>
-        </tr><tr>
-            <td><?php echo _EBLOG_CAT_NAME?></td>
-            <td><input name="cname" size="40" maxlength="40" tabindex="300" /></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_CAT_DESC?></td>
-            <td><input name="cdesc" size="40" maxlength="200" tabindex="310" /></td>
-        </tr><tr>
-            <td><?php echo _EBLOG_CAT_CREATE?></td>
-            <td><input type="submit" value="<?php echo _EBLOG_CAT_CREATE?>" tabindex="320" /></td>
-        </tr></table>
-
-        </div></form>
-
-        <?php
-
-            echo '<h3>',_PLUGINS_EXTRA,'</h3>';
-
-            $manager->notify(
-                'BlogSettingsFormExtras',
-                array(
-                    'blog' => &$blog
-                )
-            );
-
-        $this->pagefoot();
-    }
+	
+	/**
+	 * Admin::action_blogsettings()
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_blogsettings()
+	{
+		global $member, $manager;
+		
+		$blogid = intRequestVar('blogid');
+		
+		// check if allowed
+		$member->blogAdminRights($blogid) or $this->disallow();
+		
+		$blog =& $manager->getBlog($blogid);
+		
+		$extrahead = "<script type=\"text/javascript\" src=\"javascript/numbercheck.js\"></script>\n";
+		$this->pagehead($extrahead);
+		
+		echo '<p><a href="index.php?action=overview">(' . _BACKHOME . ")</a></p>\n";
+		echo '<h2>' . _EBLOG_TITLE . ": '{$this->bloglink($blog)}'</h2>\n";
+		
+		echo '<h3>' . _EBLOG_TEAM_TITLE . "</h3>\n";
+		
+		echo '<p>' . _EBLOG_CURRENT_TEAM_MEMBER;
+		
+		$query = "SELECT mname, mrealname FROM %s, %s WHERE mnumber=tmember AND tblog=%d;";
+		$query = sprintf($query, sql_table('member'), sql_table('team'), (integer) $blogid);
+		$res = sql_query($query);
+		$aMemberNames = array();
+		while ( $o = sql_fetch_object($res) )
+		{
+			$aMemberNames[] = Entity::hsc($o->mname) . ' (' . Entity::hsc($o->mrealname). ')';
+		}
+		echo implode(',', $aMemberNames);
+			
+		echo "</p>\n";
+		echo '<p>';
+		echo '<a href="index.php?action=manageteam&amp;blogid=' . $blogid . '">' . _EBLOG_TEAM_TEXT . '</a>';
+		echo "</p>\n";
+		
+		echo '<h3>' . _EBLOG_SETTINGS_TITLE . "</h3>\n";
+		
+		echo "<form method=\"post\" action=\"index.php\">\n";
+		echo "<div>\n";
+		
+		echo "<input type=\"hidden\" name=\"action\" value=\"blogsettingsupdate\" />\n";
+		$manager->addTicketHidden() . "\n";
+		echo "<input type=\"hidden\" name=\"blogid\" value=\"{$blogid}\" />\n";
+		
+		echo '<table frame="box" rules="all" summary="' . _EBLOG_SETTINGS_TITLE . '">' . "\n";
+		echo "<tfoot>\n";
+		echo "<tr>\n";
+		echo '<th colspan="2">' . _EBLOG_CHANGE . "</th>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_CHANGE . "</td>\n";
+		echo '<td><input type="submit" tabindex="130" value="' . _EBLOG_CHANGE_BTN . '" onclick="return checkSubmit();" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "</tfoot>\n";
+		echo "<tbody>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_NAME . "</td>\n";
+		echo '<td><input name="name" tabindex="10" size="40" maxlength="60" value="' . Entity::hsc($blog->getName()) . '" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_SHORTNAME;
+		help('shortblogname');
+		echo _EBLOG_SHORTNAME_EXTRA;
+		echo "</td>\n";
+		echo '<td><input name="shortname" tabindex="20" maxlength="15" size="15" value="' . Entity::hsc($blog->getShortName()) .'" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_DESC . "</td>\n";
+		echo '<td><input name="desc" tabindex="30" maxlength="200" size="40" value="' . Entity::hsc($blog->getDescription()) . '" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_URL . "</td>\n";
+		echo '<td><input name="url" tabindex="40" size="40" maxlength="100" value="' . Entity::hsc($blog->getURL()) . '" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_DEFSKIN;
+		help('blogdefaultskin');
+		echo "</td>\n";
+		echo "<td>\n";
+		
+		$query = 'SELECT sdname as text, sdnumber as value FROM ' . sql_table('skin_desc');
+		$template['name'] = 'defskin';
+		$template['selected'] = $blog->getDefaultSkin();
+		$template['tabindex'] = 50;
+		showlist($query, 'select', $template);
+		
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_LINEBREAKS;
+		help('convertbreaks');
+		echo "</td>\n";
+		echo '<td>';
+		$this->input_yesno('convertbreaks',$blog->convertBreaks(),55);
+		echo "</td>\n";
+		echo "</tr>\n";
+		
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_ALLOWPASTPOSTING;
+		help('allowpastposting');
+		echo "</td>\n";
+		echo '<td>';
+		$this->input_yesno('allowpastposting',$blog->allowPastPosting(),57);
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_DISABLECOMMENTS;
+		echo "</td>\n";
+		echo '<td>';
+		$this->input_yesno('comments', $blog->commentsEnabled(), 60);
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_ANONYMOUS . "</td>\n";
+		echo '<td>';
+		$this->input_yesno('public',$blog->isPublic(),70);
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_REQUIREDEMAIL . "</td>\n";
+		echo '<td>';
+		$this->input_yesno('reqemail', $blog->emailRequired(),72);
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_NOTIFY;
+		help('blognotify');
+		echo "</td>\n";
+		echo '<td><input name="notify" tabindex="80" maxlength="128" size="40" value="' . Entity::hsc($blog->getNotifyAddress()) . '" />' . "</td>\n";
+		echo "</tr>\n";
+		
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_NOTIFY_ON . "</td>\n";
+		echo "<td>\n";
+		
+		if ( !$blog->notifyOnComment() )
+		{
+			echo "<input name=\"notifyComment\" value=\"3\" type=\"checkbox\" tabindex=\"81\" id=\"notifyComment\" />\n";
+		}
+		else
+		{
+			echo "<input name=\"notifyComment\" value=\"3\" type=\"checkbox\" tabindex=\"81\" id=\"notifyComment\" checked=\"checked\"/>\n";
+		}
+		echo '<label for="notifyComment">' . _EBLOG_NOTIFY_COMMENT . "</label><br />\n";
+		
+		if ( !$blog->notifyOnVote() )
+		{
+			echo "<input name=\"notifyVote\" value=\"5\" type=\"checkbox\" tabindex=\"82\" id=\"notifyVote\" />\n";
+		}
+		else
+		{
+			echo "<input name=\"notifyVote\" value=\"5\" type=\"checkbox\" tabindex=\"82\" id=\"notifyVote\" checked=\"checked\" />\n";
+		}
+		
+		echo '<label for="notifyVote">' . _EBLOG_NOTIFY_KARMA . "</label><br />\n";
+		
+		if ( !$blog->notifyOnNewItem() )
+		{
+			echo "<input name=\"notifyNewItem\" value=\"7\" type=\"checkbox\" tabindex=\"83\" id=\"notifyNewItem\" />\n";
+		
+		}
+		else
+		{
+			echo "<input name=\"notifyNewItem\" value=\"7\" type=\"checkbox\" tabindex=\"83\" id=\"notifyNewItem\" checked=\"checked\" />\n";
+		}
+		
+		echo '<label for="notifyNewItem">' . _EBLOG_NOTIFY_ITEM . "</label>\n";
+		
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_MAXCOMMENTS;
+		help('blogmaxcomments');
+		echo "</td>\n";
+		echo '<td><input name="maxcomments" tabindex="90" size="3" value="' . Entity::hsc($blog->getMaxComments()) . '" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_UPDATE;
+		help('blogupdatefile');
+		echo "</td>\n";
+		echo '<td><input name="update" tabindex="100" size="40" maxlength="60" value="' . Entity::hsc($blog->getUpdateFile()) .'" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_DEFCAT . "</td>\n";
+		echo "<td>\n";
+		$query =  "SELECT cname as text, catid as value FROM %s WHERE cblog=%d;";
+		$query = sprintf($query, sql_table('category'), (integer) $blog->getID());
+		$template['name'] = 'defcat';
+		$template['selected'] = $blog->getDefaultCategory();
+		$template['tabindex'] = 110;
+		showlist($query, 'select', $template);
+		echo "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_OFFSET;
+		help('blogtimeoffset');
+		echo "<br />\n";
+		echo _EBLOG_STIME;
+		echo ' <b>' . i18n::formatted_datetime('%H:%M', time()) . '</b><br />';
+		echo _EBLOG_BTIME;
+		echo '<b>' . i18n::formatted_datetime('%H:%M', $blog->getCorrectTime()) . '</b>';
+		echo "</td>\n";
+		echo '<td><input name="timeoffset" tabindex="120" size="3" value="' . Entity::hsc($blog->getTimeOffset()) .'" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_SEARCH;
+		help('blogsearchable');
+		echo "</td>\n";
+		echo '<td>';
+		$this->input_yesno('searchable', $blog->getSearchable(), 122);
+		echo "</td>\n";
+		echo "</tr>\n";
+		
+		// plugin options
+		$this->_insertPluginOptions('blog', $blogid);
+		
+		echo "</tbody>\n";
+		echo "</table>\n";
+		
+		echo "</div>\n";
+		echo "</form>\n";
+		
+		echo '<h3>' . _EBLOG_CAT_TITLE . "</h3>\n";
+		
+		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog='.$blog->getID().' ORDER BY cname';
+		$template['content'] = 'categorylist';
+		$template['tabindex'] = 200;
+		
+		$manager->loadClass("ENCAPSULATE");
+		$batch = new Batch('category');
+		$batch->showlist($query,'table',$template);
+		
+		echo "<form action=\"index.php\" method=\"post\">\n";
+		echo "<div>\n";
+		echo "<input name=\"action\" value=\"categorynew\" type=\"hidden\" />\n";
+		$manager->addTicketHidden() . "\n";
+		echo "<input name=\"blogid\" value=\"{$blog->getID()}\" type=\"hidden\" />\n";
+		
+		echo '<table frame="box" rules="all" summary="' . _EBLOG_CAT_CREATE . '">' . "\n";
+		echo "<thead>\n";
+		echo "<tr>\n";
+		echo '<th colspan="2">' . _EBLOG_CAT_CREATE . "</th>\n";
+		echo "</tr>\n";
+		echo "</thead>\n";
+		echo "<tbody>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_CAT_NAME . "</td>\n";
+		echo "<td><input name=\"cname\" size=\"40\" maxlength=\"40\" tabindex=\"300\" /></td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_CAT_DESC . "</td>\n";
+		echo "<td><input name=\"cdesc\" size=\"40\" maxlength=\"200\" tabindex=\"310\" /></td>\n";
+		echo "</tr>\n";
+		echo "<tr>\n";
+		echo '<td>' . _EBLOG_CAT_CREATE . "</td>\n";
+		echo '<td><input type="submit" value="' . _EBLOG_CAT_CREATE . '" tabindex="320" />' . "</td>\n";
+		echo "</tr>\n";
+		echo "</tbody>\n";
+		echo "</table>\n";
+		echo "</div>\n";
+		echo "</form>\n";
+		
+		echo '<h3>' . _PLUGINS_EXTRA . "</h3>\n";
+		$manager->notify('BlogSettingsFormExtras', array('blog' => &$blog));
+		
+		$this->pagefoot();
+		return;
+	}
 
     /**
      * @todo document this
