@@ -1174,7 +1174,7 @@ define('_MEMBERS_NEW_BTN',			'Tag hozzáadása');
 define('_MEMBERS_EDIT',				'Tag szerkesztése');
 define('_MEMBERS_EDIT_BTN',			'Beállítások változtatása');
 define('_MEMBERS_BACKTOOVERVIEW',	'Vissza a tagok beállításaihoz');
-define('_MEMBERS_DEFLANG',			'Nyelv');
+define('_MEMBERS_LOCALE',			'Nyelv');
 define('_MEMBERS_USESITELANG',		'- oldal beállításainak használata -');
 
 // List of blogs (TT = tooltip)

@@ -1180,7 +1180,7 @@ define('_MEMBERS_NEW_BTN',			'添加會員');
 define('_MEMBERS_EDIT',				'編輯會員');
 define('_MEMBERS_EDIT_BTN',			'改變設置');
 define('_MEMBERS_BACKTOOVERVIEW',	'返回會員總攬');
-define('_MEMBERS_DEFLANG',			'語言');
+define('_MEMBERS_LOCALE',			'語言');
 define('_MEMBERS_USESITELANG',		'- 使用站點設置 -');
 
 // List of blogs (TT = tooltip)

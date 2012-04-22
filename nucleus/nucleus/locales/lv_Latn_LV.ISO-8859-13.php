@@ -1195,7 +1195,7 @@ define('_MEMBERS_NEW_BTN',            'Pievienot');
 define('_MEMBERS_EDIT',                'Modific�t dal�bnieka inform�ciju');
 define('_MEMBERS_EDIT_BTN',            'Main�t uzst�d�jumus');
 define('_MEMBERS_BACKTOOVERVIEW',    'Atpaka� uz Dal�bnieku inform�ciju');
-define('_MEMBERS_DEFLANG',            'Valoda');
+define('_MEMBERS_LOCALE',            'Valoda');
 define('_MEMBERS_USESITELANG',        '- sist�mas pamatvaloda -');
 
 // List of blogs (TT = tooltip)

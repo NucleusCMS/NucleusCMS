@@ -1187,7 +1187,7 @@ define('_MEMBERS_NEW_BTN',			'Afegir un usuari');
 define('_MEMBERS_EDIT',				'Editar un usuari');
 define('_MEMBERS_EDIT_BTN',			'Change Settings');
 define('_MEMBERS_BACKTOOVERVIEW',	'Tornar al resum d\'usuaris');
-define('_MEMBERS_DEFLANG',			'Idioma');
+define('_MEMBERS_LOCALE',			'Idioma');
 define('_MEMBERS_USESITELANG',		'- utilitzar els paràmetres del lloc -');
 
 // List of blogs (TT = tooltip)

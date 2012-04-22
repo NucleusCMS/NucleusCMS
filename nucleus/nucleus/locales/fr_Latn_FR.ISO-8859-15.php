@@ -1181,7 +1181,7 @@ define('_MEMBERS_NEW_BTN',		'Ajouter un participant');
 define('_MEMBERS_EDIT',			'Modifier les participants');
 define('_MEMBERS_EDIT_BTN',		'Modifier');
 define('_MEMBERS_BACKTOOVERVIEW',	'Retour au sommaire des participants');
-define('_MEMBERS_DEFLANG',		'Langue');
+define('_MEMBERS_LOCALE',		'Langue');
 define('_MEMBERS_USESITELANG',		'- utiliser les r�glages du site -');
 
 // List of blogs (TT = tooltip)

@@ -941,7 +941,7 @@ define('_LOGIN_SHARED',				_LOGINFORM_SHARED);
 define('_LOGIN_FORGOT',				'Passwort vergessen?');
 
 // membermanagement
-define('_MEMBERS_DEFLANG',			'Sprache');
+define('_MEMBERS_LOCALE',			'Sprache');
 define('_MEMBERS_USESITELANG',		'- Site-Einstellungen verwenden -');
 define('_MEMBERS_TITLE',			'Benutzerverwaltung');
 define('_MEMBERS_CURRENT',			'Aktuelle Benutzer');

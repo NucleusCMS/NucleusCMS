@@ -1194,7 +1194,7 @@ define('_MEMBERS_NEW_BTN',					'メンバーの追加');
 define('_MEMBERS_EDIT',						'メンバーの編集');
 define('_MEMBERS_EDIT_BTN',					'設定の変更');
 define('_MEMBERS_BACKTOOVERVIEW',			'メンバーの一覧に戻る');
-define('_MEMBERS_DEFLANG',					'使用する言語');
+define('_MEMBERS_LOCALE',					'使用する言語');
 define('_MEMBERS_USESITELANG',				'- サイトの設定を使う -');
 
 // List of blogs (TT = tooltip)

@@ -1182,7 +1182,7 @@ define('_MEMBERS_NEW_BTN',			'Gebruiker Toevoegen');
 define('_MEMBERS_EDIT',				'Wijzigen');
 define('_MEMBERS_EDIT_BTN',			'Wijzigen');
 define('_MEMBERS_BACKTOOVERVIEW',	'Terug naar gebruikersbeheer');
-define('_MEMBERS_DEFLANG',			'Taal');
+define('_MEMBERS_LOCALE',			'Taal');
 define('_MEMBERS_USESITELANG',		'- site-default -');
 
 

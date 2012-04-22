@@ -1180,7 +1180,7 @@ define('_MEMBERS_NEW_BTN',			'P�idat u�ivatele');
 define('_MEMBERS_EDIT',				'Upravit u�ivatele');
 define('_MEMBERS_EDIT_BTN',			'Ulo�it nastaven�');
 define('_MEMBERS_BACKTOOVERVIEW',	'Zp�t na p�ehled u�ivatel�');
-define('_MEMBERS_DEFLANG',			'Jazyk');
+define('_MEMBERS_LOCALE',			'Jazyk');
 define('_MEMBERS_USESITELANG',		'- v�choz� jazyk str�nky -');
 
 // List of blogs (TT = tooltip)

@@ -1176,7 +1176,7 @@ define('_MEMBERS_NEW_BTN',			'Фюсртш їыхэ');
 define('_MEMBERS_EDIT',				'ахфръђш№рщ їыхэ');
 define('_MEMBERS_EDIT_BTN',			'Я№юьхэш эрёђ№ющъш');
 define('_MEMBERS_BACKTOOVERVIEW',	'Юс№рђэю ъњь Member Overview');
-define('_MEMBERS_DEFLANG',			'Хчшъ');
+define('_MEMBERS_LOCALE',			'Хчшъ');
 define('_MEMBERS_USESITELANG',		'- шчяюычтрщ эрёђ№ющъшђх эр ёрщђр -');
 
 // List of blogs (TT = tooltip)

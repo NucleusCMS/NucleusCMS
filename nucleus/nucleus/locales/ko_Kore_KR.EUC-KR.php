@@ -1151,7 +1151,7 @@ define('_MEMBERS_NEW_BTN',			'회원 추가');
 define('_MEMBERS_EDIT',				'회원 수정');
 define('_MEMBERS_EDIT_BTN',			'설정 변경');
 define('_MEMBERS_BACKTOOVERVIEW',	'회원 보기로 돌아가기');
-define('_MEMBERS_DEFLANG',			'언어');
+define('_MEMBERS_LOCALE',			'언어');
 define('_MEMBERS_USESITELANG',		'- 사이트 설정 사용 -');
 
 // List of blogs (TT = tooltip)

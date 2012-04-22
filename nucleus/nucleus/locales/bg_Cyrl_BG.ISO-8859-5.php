@@ -1177,7 +1177,7 @@ define('_MEMBERS_NEW_BTN',			'Добави член');
 define('_MEMBERS_EDIT',				'Редактирай член');
 define('_MEMBERS_EDIT_BTN',			'Промени настройки');
 define('_MEMBERS_BACKTOOVERVIEW',	'Обратно към Member Overview');
-define('_MEMBERS_DEFLANG',			'Език');
+define('_MEMBERS_LOCALE',			'Език');
 define('_MEMBERS_USESITELANG',		'- използвай настройките на сайта -');
 
 // List of blogs (TT = tooltip)

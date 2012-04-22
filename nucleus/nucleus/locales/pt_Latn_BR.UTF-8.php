@@ -1176,7 +1176,7 @@ define('_MEMBERS_NEW_BTN',			'Novo membro');
 define('_MEMBERS_EDIT',				'Perfil');
 define('_MEMBERS_EDIT_BTN',			'Salvar alterações');
 define('_MEMBERS_BACKTOOVERVIEW',	'Voltar para a lista de membros');
-define('_MEMBERS_DEFLANG',			'Língua');
+define('_MEMBERS_LOCALE',			'Língua');
 define('_MEMBERS_USESITELANG',		'- configurações do site -');
 
 // List of blogs (TT = tooltip)

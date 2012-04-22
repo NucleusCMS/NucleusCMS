@@ -1187,7 +1187,7 @@ define('_MEMBERS_NEW_BTN',			'Lisää käyttäjä');
 define('_MEMBERS_EDIT',				'Käyttäjätietojen muokkaus');
 define('_MEMBERS_EDIT_BTN',			'Muuta asetuksia');
 define('_MEMBERS_BACKTOOVERVIEW',	'Takaisin käyttäjät -sivulle');
-define('_MEMBERS_DEFLANG',			'Kieli');
+define('_MEMBERS_LOCALE',			'Kieli');
 define('_MEMBERS_USESITELANG',		'- käytä sivuston vakioasetusta -');
 
 // List of blogs (TT = tooltip)

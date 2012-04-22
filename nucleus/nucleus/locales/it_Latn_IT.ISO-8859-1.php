@@ -1183,7 +1183,7 @@ define('_MEMBERS_NEW_BTN',			'Aggiungi utente');
 define('_MEMBERS_EDIT',				'Modifica dati utente');
 define('_MEMBERS_EDIT_BTN',			'Invia le modifiche');
 define('_MEMBERS_BACKTOOVERVIEW',	'Torna alla pagina principale della gestione degli utenti');
-define('_MEMBERS_DEFLANG',			'Linguaggio');
+define('_MEMBERS_LOCALE',			'Linguaggio');
 define('_MEMBERS_USESITELANG',		'- usa le impostazioni standard del weblog -');
 
 // List of blogs (TT = tooltip)

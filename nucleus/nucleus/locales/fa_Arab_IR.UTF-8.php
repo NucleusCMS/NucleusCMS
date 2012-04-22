@@ -1179,7 +1179,7 @@ define('_MEMBERS_NEW_BTN',			'افزودن كاربر');
 define('_MEMBERS_EDIT',				'ويرايش كاربر');
 define('_MEMBERS_EDIT_BTN',			'تغيير تنظيم ها');
 define('_MEMBERS_BACKTOOVERVIEW',	'Back to Member Overview');
-define('_MEMBERS_DEFLANG',			'زبان');
+define('_MEMBERS_LOCALE',			'زبان');
 define('_MEMBERS_USESITELANG',		'- استفاده از تنظيم هاي سايت -');
 
 // List of blogs (TT = tooltip)

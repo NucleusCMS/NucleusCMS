@@ -1187,7 +1187,7 @@ define('_MEMBERS_NEW_BTN',			'Lis�� k�ytt�j�');
 define('_MEMBERS_EDIT',				'K�ytt�j�tietojen muokkaus');
 define('_MEMBERS_EDIT_BTN',			'Muuta asetuksia');
 define('_MEMBERS_BACKTOOVERVIEW',	'Takaisin k�ytt�j�t -sivulle');
-define('_MEMBERS_DEFLANG',			'Kieli');
+define('_MEMBERS_LOCALE',			'Kieli');
 define('_MEMBERS_USESITELANG',		'- k�yt� sivuston vakioasetusta -');
 
 // List of blogs (TT = tooltip)

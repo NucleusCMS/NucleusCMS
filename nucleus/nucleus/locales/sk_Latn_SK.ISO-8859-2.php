@@ -1179,7 +1179,7 @@ define('_MEMBERS_NEW_BTN',			'Prida� u��vatele');
 define('_MEMBERS_EDIT',				'Upravi� u��vate�a');
 define('_MEMBERS_EDIT_BTN',			'Ulo�i� nastavenia');
 define('_MEMBERS_BACKTOOVERVIEW',	'Sp� na preh�ad u��vate�ov');
-define('_MEMBERS_DEFLANG',			'Jazyk');
+define('_MEMBERS_LOCALE',			'Jazyk');
 define('_MEMBERS_USESITELANG',		'- �tandardn� jazyk str�nky -');
 
 // List of blogs (TT = tooltip)

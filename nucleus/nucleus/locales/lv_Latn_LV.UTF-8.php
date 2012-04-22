@@ -1195,7 +1195,7 @@ define('_MEMBERS_NEW_BTN',            'Pievienot');
 define('_MEMBERS_EDIT',                'Modificēt dalībnieka informāciju');
 define('_MEMBERS_EDIT_BTN',            'Mainīt uzstādījumus');
 define('_MEMBERS_BACKTOOVERVIEW',    'Atpakaļ uz Dalībnieku informāciju');
-define('_MEMBERS_DEFLANG',            'Valoda');
+define('_MEMBERS_LOCALE',            'Valoda');
 define('_MEMBERS_USESITELANG',        '- sistēmas pamatvaloda -');
 
 // List of blogs (TT = tooltip)

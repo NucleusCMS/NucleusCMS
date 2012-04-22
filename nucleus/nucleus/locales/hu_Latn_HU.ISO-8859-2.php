@@ -1174,7 +1174,7 @@ define('_MEMBERS_NEW_BTN',			'Tag hozz�ad�sa');
 define('_MEMBERS_EDIT',				'Tag szerkeszt�se');
 define('_MEMBERS_EDIT_BTN',			'Be�ll�t�sok v�ltoztat�sa');
 define('_MEMBERS_BACKTOOVERVIEW',	'Vissza a tagok be�ll�t�saihoz');
-define('_MEMBERS_DEFLANG',			'Nyelv');
+define('_MEMBERS_LOCALE',			'Nyelv');
 define('_MEMBERS_USESITELANG',		'- oldal be�ll�t�sainak haszn�lata -');
 
 // List of blogs (TT = tooltip)

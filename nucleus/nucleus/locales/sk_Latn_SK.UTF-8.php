@@ -1179,7 +1179,7 @@ define('_MEMBERS_NEW_BTN',			'Pridať užívatele');
 define('_MEMBERS_EDIT',				'Upraviť užívateľa');
 define('_MEMBERS_EDIT_BTN',			'Uložiť nastavenia');
 define('_MEMBERS_BACKTOOVERVIEW',	'Späť na prehľad užívateľov');
-define('_MEMBERS_DEFLANG',			'Jazyk');
+define('_MEMBERS_LOCALE',			'Jazyk');
 define('_MEMBERS_USESITELANG',		'- štandardný jazyk stránky -');
 
 // List of blogs (TT = tooltip)

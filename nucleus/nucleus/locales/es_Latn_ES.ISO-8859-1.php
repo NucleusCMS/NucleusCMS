@@ -1184,7 +1184,7 @@ define('_MEMBERS_NEW_BTN',			'Introducir miembro');
 define('_MEMBERS_EDIT',				'Modificar miembro');
 define('_MEMBERS_EDIT_BTN',			'Modificar las preferencias');
 define('_MEMBERS_BACKTOOVERVIEW',	'Volver a la p�gina del miembro');
-define('_MEMBERS_DEFLANG',			'Idioma');
+define('_MEMBERS_LOCALE',			'Idioma');
 define('_MEMBERS_USESITELANG',		'- usar las preferencias de la web -');
 
 // List of blogs (TT = tooltip)

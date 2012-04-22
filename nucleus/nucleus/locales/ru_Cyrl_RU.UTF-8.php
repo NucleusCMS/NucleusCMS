@@ -1177,7 +1177,7 @@ define('_MEMBERS_NEW_BTN',			'Добавить пользователя');
 define('_MEMBERS_EDIT',				'Изменить профиль пользователя');
 define('_MEMBERS_EDIT_BTN',			'Внести изменения');
 define('_MEMBERS_BACKTOOVERVIEW',	'Вернуться к обзору пользователей');
-define('_MEMBERS_DEFLANG',			'Язык');
+define('_MEMBERS_LOCALE',			'Язык');
 define('_MEMBERS_USESITELANG',		'- использовать настройки сайта -');
 
 // List of blogs (TT = tooltip)
