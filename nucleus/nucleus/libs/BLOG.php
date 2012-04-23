@@ -756,9 +756,14 @@ class Blog
 				)
 			);
 			
+			// replace variables of form %variable%, i.e. normal nucleus variables
 			$temp = Template::fill($template['ARCHIVELIST_LISTITEM'],$data);
-			echo i18n::formatted_datetime($temp, $current->itime);
-			return;
+			// replace time format variables
+			$temp = i18n::formatted_datetime($temp, $current->itime);
+			//replace variables of form %%variable%%, like for a plugin using PreArchiveListItem and adding large number of characters
+			// that would mess up the 1023 character limit on strftime()
+			$temp = Template::fill($temp,$data);
+			echo $temp;
 		}
 		
 		sql_free_result($res);
