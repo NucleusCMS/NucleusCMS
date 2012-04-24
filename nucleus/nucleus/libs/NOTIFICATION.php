@@ -172,7 +172,7 @@ class Notification
 		$restriction = 78 - strlen($header) - strlen($footer) ;
 		
 		$encoded_words = array();
-		for ( $i = 0; $i < self::strlen($string); $i++ )
+		for ( $i = 0; $i < i18n::strlen($string); $i++ )
 		{
 			if ( self::$scheme == 'B' )
 			{
@@ -181,7 +181,7 @@ class Notification
 					$letters = '';
 				}
 				
-				$letter = self::substr($string, $i, 1);
+				$letter = i18n::substr($string, $i, 1);
 				$expected_length = strlen($letters) + strlen($letter) * 4 / 3;
 				
 				if ( $expected_length > $restriction )
@@ -193,7 +193,7 @@ class Notification
 				
 				$letters .= $letter;
 				
-				if ( $i == self::strlen($string) - 1 )
+				if ( $i == i18n::strlen($string) - 1 )
 				{
 					$encoded_text = self::b_encoder($letters);
 					$encoded_words[] = "{$header}{$encoded_text}{$footer}";
@@ -208,7 +208,7 @@ class Notification
 					$encoded_text = '';
 				}
 				
-				$encoded_letter = self::q_encoder(self::substr($string, $i, 1));
+				$encoded_letter = self::q_encoder(i18n::substr($string, $i, 1));
 				$expected_length = strlen($encoded_text) + strlen($encoded_letter);
 				
 				if ( $expected_length > $restriction )
@@ -219,7 +219,7 @@ class Notification
 				
 				$encoded_text .= $encoded_letter;
 				
-				if ( $i == self::strlen($string) - 1 )
+				if ( $i == i18n::strlen($string) - 1 )
 				{
 					$encoded_words[] = "{$header}{$encoded_text}{$footer}";
 					break;
