@@ -165,7 +165,7 @@ class Item
 		}
 		
 		// create new category if needed
-		if ( i18n::strpos($i_catid, 'newcat') )
+		if ( i18n::strpos($i_catid, 'newcat') === 0 )
 		{
 			// get blogid
 			list($i_blogid) = sscanf($i_catid, "newcat-%d");
