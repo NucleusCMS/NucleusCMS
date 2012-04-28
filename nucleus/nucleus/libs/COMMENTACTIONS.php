@@ -487,7 +487,7 @@ class CommentActions extends BaseActions
 	 */
 	public function parse_time($format = '')
 	{
-		if ( $format === '' )
+		if ( $format !== '' )
 		{
 			/* do nothing */
 			;

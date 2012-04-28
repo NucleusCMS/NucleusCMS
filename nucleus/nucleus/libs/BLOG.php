@@ -1393,10 +1393,10 @@ class Blog
 		);
 		
 		// add to team
-		$query = "INSERT INTO %s (TMEMBER, TBLOG, TADMIN) ' . 'VALUES (%d, %d, %d)";
-		$query = sprintf($query, sql_table('team'), $memberid, $this->getID(), $admin);
+		$query = "INSERT INTO %s (TMEMBER, TBLOG, TADMIN) VALUES (%d, %d, %d);";
+		$query = sprintf($query, sql_table('team'), (integer) $memberid, (integer) $this->getID(), (integer) $admin);
 		sql_query($query);
-
+		
 		$manager->notify(
 			'PostAddTeamMember',
 			array(
