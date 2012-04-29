@@ -76,10 +76,10 @@ function autoSaveDraft() {
 	checks = 0;
 	seconds = now();
 
-	var title = encodeURI(addform.title.value);
-	var body = encodeURI(addform.body.value);
+	var title = encodeURIComponent(addform.title.value);
+	var body = encodeURIComponent(addform.body.value);
 	var catid = addform.catid.options[addform.catid.selectedIndex].value;
-	var more = encodeURI(addform.more.value);
+	var more = encodeURIComponent(addform.more.value);
 	var closed = 0;
 	if (addform.closed[0].checked) {
 		closed = addform.closed[0].value;
