@@ -120,7 +120,7 @@ class Admin
         );
 /*
         // the rest of the actions needs to be checked
-        $aActionsToCheck = array('additem', 'itemupdate', 'itemmoveto', 'categoryupdate', 'categorydeleteconfirm', 'itemdeleteconfirm', 'commentdeleteconfirm', 'teamdeleteconfirm', 'memberdeleteconfirm', 'templatedeleteconfirm', 'skindeleteconfirm', 'banlistdeleteconfirm', 'plugindeleteconfirm', 'batchitem', 'batchcomment', 'batchmember', 'batchcategory', 'batchteam', 'regfile', 'commentupdate', 'banlistadd', 'changemembersettings', 'clearactionlog', 'settingsupdate', 'blogsettingsupdate', 'categorynew', 'teamchangeadmin', 'teamaddmember', 'memberadd', 'addnewlog', 'addnewlog2', 'backupcreate', 'backuprestore', 'pluginup', 'plugindown', 'pluginupdate', 'pluginadd', 'pluginoptionsupdate', 'skinupdate', 'skinclone', 'skineditgeneral', 'templateclone', 'templatenew', 'templateupdate', 'skinieimport', 'skinieexport', 'skiniedoimport', 'skinnew', 'deleteblogconfirm', 'activatesetpwd');
+        $aActionsToCheck = array('additem', 'itemupdate', 'itemmoveto', 'categoryupdate', 'categorydeleteconfirm', 'itemdeleteconfirm', 'commentdeleteconfirm', 'teamdeleteconfirm', 'memberdeleteconfirm', 'templatedeleteconfirm', 'skindeleteconfirm', 'banlistdeleteconfirm', 'plugindeleteconfirm', 'batchitem', 'batchcomment', 'batchmember', 'batchcategory', 'batchteam', 'commentupdate', 'banlistadd', 'changemembersettings', 'clearactionlog', 'settingsupdate', 'blogsettingsupdate', 'categorynew', 'teamchangeadmin', 'teamaddmember', 'memberadd', 'addnewlog', 'addnewlog2', 'backupcreate', 'backuprestore', 'pluginup', 'plugindown', 'pluginupdate', 'pluginadd', 'pluginoptionsupdate', 'skinupdate', 'skinclone', 'skineditgeneral', 'templateclone', 'templatenew', 'templateupdate', 'skinieimport', 'skinieexport', 'skiniedoimport', 'skinnew', 'deleteblogconfirm', 'activatesetpwd');
 */
         if (!in_array($this->action, $aActionsNotToCheck))
         {
@@ -5962,101 +5962,42 @@ selector();
 		return;
 	}
 	
-    /**
-     * @todo document this
-     */
-    function action_regfile() {
-        global $member, $CONF;
-
-        $blogid = intRequestVar('blogid');
-
-        $member->teamRights($blogid) or $this->disallow();
-
-        // header-code stolen from phpMyAdmin
-        // REGEDIT and bookmarklet code stolen from GreyMatter
-
-        $sjisBlogName = sprintf(_WINREGFILE_TEXT, getBlogNameFromID($blogid));
-
-
-        header('Content-Type: application/octetstream');
-        header('Content-Disposition: filename="nucleus.reg"');
-        header('Pragma: no-cache');
-        header('Expires: 0');
-
-        echo "REGEDIT4\n";
-        echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\" . $sjisBlogName . "]\n";
-        echo '@="' . $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=".intval($blogid)."\"\n";
-        echo '"contexts"=hex:31';
-    }
-
-    /**
-     * @todo document this
-     */
-    function action_bookmarklet() {
-        global $member, $manager;
-
-        $blogid = intRequestVar('blogid');
-
-        $member->teamRights($blogid) or $this->disallow();
-
-        $blog =& $manager->getBlog($blogid);
-        $bm = getBookmarklet($blogid);
-
-        $this->pagehead();
-
-        echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
-
-        ?>
-
-        <h2><?php echo _BOOKMARKLET_TITLE ?></h2>
-
-        <p>
-        <?php echo _BOOKMARKLET_DESC1 . _BOOKMARKLET_DESC2 . _BOOKMARKLET_DESC3 . _BOOKMARKLET_DESC4 . _BOOKMARKLET_DESC5 ?>
-        </p>
-
-        <h3><?php echo _BOOKMARKLET_BOOKARKLET ?></h3>
-        <p>
-            <?php echo _BOOKMARKLET_BMARKTEXT ?><small><?php echo _BOOKMARKLET_BMARKTEST ?></small>
-            <br />
-            <br />
-            <?php echo '<a href="' . Entity::hsc($bm) . '">' . sprintf(_BOOKMARKLET_ANCHOR, Entity::hsc($blog->getName())) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
-        </p>
-
-        <h3><?php echo _BOOKMARKLET_RIGHTCLICK ?></h3>
-        <p>
-            <?php
-                $url = 'index.php?action=regfile&blogid=' . intval($blogid);
-                $url = $manager->addTicketToUrl($url);
-            ?>
-            <?php echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . Entity::hsc($url, ENT_QUOTES, "SJIS") . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2; ?>
-        </p>
-
-        <p>
-            <?php echo _BOOKMARKLET_RIGHTTEXT3 ?>
-        </p>
-
-        <h3><?php echo _BOOKMARKLET_UNINSTALLTT ?></h3>
-        <p>
-            <?php echo _BOOKMARKLET_DELETEBAR ?>
-        </p>
-
-        <p>
-            <?php echo _BOOKMARKLET_DELETERIGHTT ?>
-        </p>
-
-        <ol>
-            <li><?php echo _BOOKMARKLET_DELETERIGHT1 ?></li>
-            <li><?php echo _BOOKMARKLET_DELETERIGHT2 ?></li>
-            <li><?php echo _BOOKMARKLET_DELETERIGHT3 ?></li>
-            <li><?php echo _BOOKMARKLET_DELETERIGHT4 ?></li>
-            <li><?php echo _BOOKMARKLET_DELETERIGHT5 ?></li>
-        </ol>
-
-        <?php
-        $this->pagefoot();
-
-    }
-
+	/**
+	 * Admin::action_bookmarklet()
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function action_bookmarklet()
+	{
+		global $member, $manager;
+		
+		$blogid = intRequestVar('blogid');
+		$member->teamRights($blogid) or $this->disallow();
+		$blog =& $manager->getBlog($blogid);
+		
+		$this->pagehead();
+		
+		echo '<p><a href="index.php?action=overview">(' . _BACKHOME . ")</a></p>\n";
+		
+		echo '<h2>' . _BOOKMARKLET_TITLE . "</h2>\n";
+		echo '<p>';
+		echo _BOOKMARKLET_DESC1 . _BOOKMARKLET_DESC2 . _BOOKMARKLET_DESC3 . _BOOKMARKLET_DESC4 . _BOOKMARKLET_DESC5;
+		echo "</p>\n";
+		
+		echo '<h3>' . _BOOKMARKLET_BOOKARKLET . "</h3>\n";
+		echo '<p>';
+		echo _BOOKMARKLET_BMARKTEXT . '<small>' . _BOOKMARKLET_BMARKTEST . '</small>';
+		echo "</p>\n";
+		echo '<p>';
+		echo '<a href="javascript:' . rawurlencode(getBookmarklet($blogid)) . '">' . sprintf(_BOOKMARKLET_ANCHOR, Entity::hsc($blog->getName())) . '</a>';
+		echo _BOOKMARKLET_BMARKFOLLOW;
+		echo "</p>\n";
+		
+		$this->pagefoot();
+		return;
+	}
+	
     /**
      * @todo document this
      */

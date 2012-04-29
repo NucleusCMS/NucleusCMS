@@ -175,9 +175,6 @@ define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group &amp; Nucleus CMS Japa
 // Quick menu
 define('_QMENU_MANAGE_SYSTEM',						'システム環境');
 
-// REG file
-define('_WINREGFILE_TEXT',							'「%s」に記事を投稿');
-
 // Bookmarklet
 define('_BOOKMARKLET_TITLE',						'ブックマークレット<!-- と 右クリックメニュー -->');
 define('_BOOKMARKLET_DESC1',						'ブックマークレット（Bookmarklet）とは、Webブラウザのブックマークに登録して使うJavaScriptプログラムです。<br />');
@@ -189,19 +186,6 @@ define('_BOOKMARKLET_BOOKARKLET',					'ブックマークレット');
 define('_BOOKMARKLET_ANCHOR',						'「%s」に記事を投稿');
 define('_BOOKMARKLET_BMARKTEXT',					' 下のリンクを「お気に入り」もしくは「ブックマーク」に追加してください。追加の仕方はそれぞれのブラウザのヘルプを参照してください。<br />');
 define('_BOOKMARKLET_BMARKTEST',					' (テストしてみたい場合は下のリンクをクリックしてみてください)');
-define('_BOOKMARKLET_RIGHTCLICK',					'右クリックメニューにインストール(Windows Internet Explorerのみ)');
-define('_BOOKMARKLET_RIGHTLABEL',					'右クリックメニュー');
-define('_BOOKMARKLET_RIGHTTEXT1',					'Windowsでインターネットエクスプローラーを使用している場合は、');
-define('_BOOKMARKLET_RIGHTTEXT2',					'にインストールすることも出来ます<br />(「開く」を選択すれば直接レジストリに登録します)');
-define('_BOOKMARKLET_RIGHTTEXT3',					'このインストールした右クリックメニューを表示するためにはIEの再起動が必要です。');
-define('_BOOKMARKLET_UNINSTALLTT',					'アンインストール');
-define('_BOOKMARKLET_DELETEBAR',					'「お気に入り」もしくはツールバーから消すには、単に削除するだけです。');
-define('_BOOKMARKLET_DELETERIGHTT',					'右クリックメニューから消したい時は、以下の手順を踏んでください:');
-define('_BOOKMARKLET_DELETERIGHT1',					'スタートメニューから「ファイルを指定して実行...」を選択');
-define('_BOOKMARKLET_DELETERIGHT2',					'"regedit" と入力');
-define('_BOOKMARKLET_DELETERIGHT3',					'"OK" ボタンを押す');
-define('_BOOKMARKLET_DELETERIGHT4',					'"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" をツリーの中から検索');
-define('_BOOKMARKLET_DELETERIGHT5',					'"「(あなたのblogの名前)」に記事を投稿" エントリを削除');
 
 define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'何かが間違っています');
 define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'新しいカテゴリを作ることが出来ませんでした');

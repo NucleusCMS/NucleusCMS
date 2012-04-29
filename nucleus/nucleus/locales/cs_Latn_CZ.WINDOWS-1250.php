@@ -169,9 +169,6 @@ define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group');
 // Quick menu
 define('_QMENU_MANAGE_SYSTEM',						'System info');
 
-// REG file
-define('_WINREGFILE_TEXT',							'Post To &Nucleus (%s)');
-
 // Bookmarklet
 define('_BOOKMARKLET_TITLE',						'Bookmarklet<!-- and Right Click Menu -->');
 define('_BOOKMARKLET_DESC1',						'Bookmarklets allow adding items to your weblog with just one single click. ');
@@ -183,19 +180,6 @@ define('_BOOKMARKLET_BOOKARKLET',					'bookmarklet');
 define('_BOOKMARKLET_ANCHOR',						'Add to %s');
 define('_BOOKMARKLET_BMARKTEXT',					'You can drag the following link to your favorites, or your browsers toolbar: ');
 define('_BOOKMARKLET_BMARKTEST',					'(if you want to test the bookmarklet first, click the link)');
-define('_BOOKMARKLET_RIGHTCLICK',					'Right Click Menu Access (IE &amp; Windows)');
-define('_BOOKMARKLET_RIGHTLABEL',					'right click menu item');
-define('_BOOKMARKLET_RIGHTTEXT1',					'Or you can install the ');
-define('_BOOKMARKLET_RIGHTTEXT2',					' (choose \'open file\' and add to registry)');
-define('_BOOKMARKLET_RIGHTTEXT3',					'You\'ll have to restart Internet Explorer before the option shows up in the context menus.');
-define('_BOOKMARKLET_UNINSTALLTT',					'Uninstalling');
-define('_BOOKMARKLET_DELETEBAR',					'For the bookmarklet, you can just delete it.');
-define('_BOOKMARKLET_DELETERIGHTT',					'For the right click menu item, follow the procedure listed below:');
-define('_BOOKMARKLET_DELETERIGHT1',					'Select "Run..." from the Start Menu');
-define('_BOOKMARKLET_DELETERIGHT2',					'Type: "regedit"');
-define('_BOOKMARKLET_DELETERIGHT3',					'Click the "OK" button');
-define('_BOOKMARKLET_DELETERIGHT4',					'Search for "\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" in the tree');
-define('_BOOKMARKLET_DELETERIGHT5',					'Delete the "add to \'Your weblog\'" item');
 
 define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'Something went wrong');
 define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'Could not create new category');
