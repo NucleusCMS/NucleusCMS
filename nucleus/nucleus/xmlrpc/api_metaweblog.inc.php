@@ -378,7 +378,7 @@
 		// this to avoid nameclashes
 		if ( $CONF['MediaPrefix'] )
 		{
-			$filename = i18n::formatted_timedate("%Y%m%d-", time()) . $filename;
+			$filename = i18n::formatted_datetime("%Y%m%d-", time()) . $filename;
 		}
 		
 		$res = Media::addMediaObjectRaw($collection, $filename, $data);
