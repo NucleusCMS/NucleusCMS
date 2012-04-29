@@ -1347,7 +1347,7 @@ class Admin
             $actiontype='addnow';
 
         // create new category if needed
-        if (strstr($catid,'newcat')) {
+        if ( i18n::strpos($catid,'newcat') === 0 ) {
             // get blogid
             list($blogid) = sscanf($catid,"newcat-%d");
 
@@ -1567,7 +1567,7 @@ class Admin
         $catid = requestVar('catid');
 
         // create new category if needed
-        if (strstr($catid,'newcat')) {
+        if ( i18n::strpos($catid,'newcat') === 0 ) {
             // get blogid
             list($blogid) = sscanf($catid,'newcat-%d');
 
@@ -5586,7 +5586,7 @@ selector();
 			echo "<tbody>\n";
 			echo "<tr>\n";
 			echo '<td>mod_rewrite' . "</td>\n";
-			$modrewrite = (strstr($im, 'mod_rewrite') != '') ?
+			$modrewrite = (i18n::strpos($im, 'mod_rewrite') !== FALSE) ?
 						_ADMIN_SYSTEMOVERVIEW_ENABLE :
 						_ADMIN_SYSTEMOVERVIEW_DISABLE;
 			echo '<td>' . $modrewrite . "</td>\n";

@@ -449,7 +449,7 @@ class Member
 		// if this is a 'newcat' style newcat
 		// no blog admin of destination blog -> NOK
 		// blog admin of destination blog -> OK
-		if ( strstr($catid,'newcat') )
+		if ( i18n::strpos($catid,'newcat') === 0 )
 		{
 			// get blogid
 			list($blogid) = sscanf($catid,"newcat-%d");
@@ -567,7 +567,7 @@ class Member
 		// if this is a 'newcat' style newcat
 		// no blog admin of destination blog -> NOK
 		// blog admin of destination blog -> OK
-		if (strstr($newcat,'newcat'))
+		if ( i18n::strpos($catid,'newcat') === 0 )
 		{
 			// get blogid
 			list($blogid) = sscanf($newcat,'newcat-%d');

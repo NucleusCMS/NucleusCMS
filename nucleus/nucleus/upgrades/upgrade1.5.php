@@ -92,7 +92,8 @@ function upgrade_do150() {
 	// in templates: add 'comments'-templatevar to all non-empty ITEM templates	
 	$res = sql_query('SELECT * FROM '.sql_table('template').' WHERE tpartname=\'ITEM\'');
 	while ($o = mysql_fetch_object($res)) {
-		if (!strstr($o->tcontent,'<%comments%>')) {
+		if ( i18n::strpos($o->tcontent,'<%comments%>') === FALSE)
+		{
 			$newval = $o->tcontent . '<%comments%>';
 			$query = 'UPDATE '.sql_table('template').' SET tcontent=\''. addslashes($newval).'\' WHERE tdesc=' . $o->tdesc . ' AND tpartname=\'ITEM\'';
 			upgrade_query('Updating ITEM part in template ' . $o->tdesc, $query);

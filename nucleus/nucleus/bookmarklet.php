@@ -150,7 +150,7 @@ function bm_doEditItem()
 	}
 	
 	// create new category if needed (only on edit/changedate)
-	if ( strstr($catid,'newcat') )
+	if ( i18n::strpos($catid,'newcat') === 0 )
 	{
 		// get blogid
 		list($blogid) = sscanf($catid, "newcat-%d");

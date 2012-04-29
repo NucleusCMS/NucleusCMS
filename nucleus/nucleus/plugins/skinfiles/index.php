@@ -931,7 +931,7 @@
 		if (sfValidPath($directory) && file_exists($directory . $file) && 
 			is_file($directory . $file) && is_readable($directory . $file)) 
 		{
-			if (strstr(serverVar('HTTP_USER_AGENT'), "MSIE"))
+			if ( i18n::strpos(serverVar('HTTP_USER_AGENT'), "MSIE") !== FALSE )
 				$name = preg_replace('/\./', '%2e', $file, substr_count($file, '.') - 1);
 			else
 				$name = $file;

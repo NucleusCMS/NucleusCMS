@@ -283,8 +283,8 @@ if ( !array_key_exists('URLMode', $CONF)
 
 /* automatically use simpler toolbar for mozilla */
 if ( ($CONF['DisableJsTools'] == 0)
-   && strstr(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0')
-   && strstr(serverVar('HTTP_USER_AGENT'), 'Gecko') )
+   && i18n::strpos(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0') !== FALSE
+   && i18n::strpos(serverVar('HTTP_USER_AGENT'), 'Gecko') !== FALSE )
 {
 	$CONF['DisableJsTools'] = 2;
 }
@@ -450,9 +450,9 @@ if ( $CONF['URLMode'] == 'pathinfo' )
 					
 				/* two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid) */
 				case $CONF['ArchiveKey']:
-					if ( (($i + 1) < sizeof($data) ) && (!strstr($data[$i + 1], '-') ) )
+					if ( (($i + 1) < sizeof($data) ) && (i18n::strpos($data[$i + 1], '-') === FALSE ) )
 					{
-						$blogid = intval($data[++$i]);
+						$blogid = (integer) $data[++$i];
 					}
 					$i++;
 					if ( $i < sizeof($data) )
@@ -1749,7 +1749,7 @@ function ticketForPlugin()
 	}
 	
 	/* Show a form if not valid ticket */
-	if ( ( strstr(serverVar('REQUEST_URI'), '?') || serverVar('QUERY_STRING')
+	if ( ( i18n::strpos(serverVar('REQUEST_URI'), '?') !== FALSE || serverVar('QUERY_STRING')
 	 || strtoupper(serverVar('REQUEST_METHOD') ) == 'POST')
 	 && (!$manager->checkTicket() ) )
 	{
@@ -1869,14 +1869,19 @@ function serverStringToArray($str, &$array, &$frontParam)
  */
 function arrayToServerString($array, $frontParam, &$str)
 {
-    if (strstr($str, "?")) {
-        $str = $frontParam . "?";
-    } else {
-        $str = $frontParam;
-    }
-    if (count($array)) {
-        $str .= implode("&", $array);
-    }
+	if ( i18n::strpos($str, "?") !== FALSE )
+	{
+		$str = $frontParam . "?";
+	}
+	else
+	{
+		$str = $frontParam;
+	}
+	if ( count($array) )
+	{
+		$str .= implode("&", $array);
+	}
+	return;
 }
 
 /**

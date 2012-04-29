@@ -1332,19 +1332,25 @@ class Blog
 	function setEmailRequired($val) {
 		$this->setSetting('breqemail',$val);
 	}
-
-	function setTimeOffset($val) {
+	
+	public function setTimeOffset($val)
+	{
 		// check validity of value
 		// 1. replace , by . (common mistake)
 		$val = str_replace(',','.',$val);
+		
 		// 2. cast to float or int
-		if (is_numeric($val) && strstr($val,'.5')) {
+		if ( is_numeric($val) && (i18n::strpos($val, '.5') === (i18n::strlen($val) - 2)) )
+		{
 			$val = (float) $val;
-		} else {
-			$val = intval($val);
 		}
-
+		else
+		{
+			$val = (integer) $val;
+		}
+		
 		$this->setSetting('btimeoffset',$val);
+		return;
 	}
 
 	function setDefaultCategory($val) {

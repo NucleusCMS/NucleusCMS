@@ -596,13 +596,13 @@ class Manager
 	public function addTicketToUrl($url)
 	{
 		$ticketCode = 'ticket=' . $this->_generateTicket();
-		if ( strstr($url, '?') )
+		if ( i18n::strpos($filename, '/') === FALSE )
 		{
-			$ticketCode = "{$url}&{$ticketCode}";
+			$ticketCode = "{$url}?{$ticketCode}";
 		}
 		else
 		{
-			$ticketCode = "{$url}?{$ticketCode}";
+			$ticketCode = "{$url}&{$ticketCode}";
 		}
 		return $ticketCode;
 	}

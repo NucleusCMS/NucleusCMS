@@ -476,7 +476,7 @@ function gm_parsecommands($text, $authorid ) {
 	// {{email address text}}
 	// {{emailmo address text|mouseover text}}
 	// {{popup
-	if (strstr($text,"{{link") || stristr($text,"{{email") || stristr($text,"{{popup")) {
+	if (i18n::strpos($text,"{{link") !== FALSE || stristr($text,"{{email") || stristr($text,"{{popup")) {
 		$to_replace = array(
 			"/({{linkmo) (http|https|ftp)(:\/\/\S+?) (.+?)(\|)(.+?)(}})/ies",
 			"/({{link) (http|https|ftp)(:\/\/\S+?)(}})/is",

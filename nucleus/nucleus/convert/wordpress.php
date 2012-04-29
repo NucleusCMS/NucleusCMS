@@ -29,9 +29,9 @@ include("../../config.php");
     if (isset($_POST[$s])) 
       echo addslashes(stripslashes($_POST[$s])); 
     else {
-      if (strstr($s,'host')) echo "localhost";
-      if (strstr($s,'username')) echo "root";
-      if (strstr($s,'wpprefix')) echo "wp_";
+      if (i18n::strpos($s,'host')!==FALSE) echo "localhost";
+      if (i18n::strpos($s,'username')!==FALSE) echo "root";
+      if (i18n::strpos($s,'wpprefix')!==FALSE) echo "wp_";
     }
   }
   

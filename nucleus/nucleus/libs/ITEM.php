@@ -576,7 +576,7 @@ class Item
 		}
 		
 		// create new category if needed
-		if ( strstr($i_catid, 'newcat') )
+		if ( i18n::strpos($catid,'newcat') === 0 )
 		{
 			// Set in default category
 			$blog =& $manager->getBlog($i_blogid);
