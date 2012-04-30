@@ -29,14 +29,8 @@ class PageFactory extends BaseActions
 	private $blog;
 	
 	/**
-	 * PageFactory::$allowed_types
-	 * Allowed types of forms (bookmarklet/admin)
-	 */
-	private $allowed_types;
-	
-	/**
 	 * PageFactory::$type
-	 * One of the types in $allowed_types
+	 * One of the types got by self::getDefaultSkinTypes()
 	 */
 	private $type;
 	
@@ -79,28 +73,10 @@ class PageFactory extends BaseActions
 		'title'
 	);
 	
-	/**
-	 * PageFactory::__construct()
-	 * Creates a new PAGEFACTORY object
-	 * 
-	 * @param	integer	$blog_id
-	 * @return	void
-	 */
-	public function __construct($blog_id)
-	{
-		global $manager;
-		
-		parent::__construct();
-		
-		$this->blog =& $manager->getBlog($blog_id);
-		
-		/*
-		 * TODO: maybe add 'skin' later on?
-		 * TODO: maybe add other pages from admin area
-		 */
-		$this->allowed_types = array('bookmarklet', 'admin');
-		return;
-	}
+	static private $default_skin_types = array(
+		'bookmarklet'	=> '',
+		'admin'			=> ''
+	);
 	
 	/**
 	 * PageFactory::getDefinedActions()
@@ -110,9 +86,39 @@ class PageFactory extends BaseActions
 	 * @return	array	array for defined action names
 	 * 
 	 */
-	static public function getDefinedActions()
+	static public function getDefinedActions($type='')
 	{
 		return array_merge(self::$defined_actions, parent::getDefinedActions());
+	}
+	
+	/**
+	 * AdminActions::getSkinTypeFriendlyNames()
+	 * 
+	 * @static
+	 * @param	void
+	 * @return	array	list of friendly names for page actions
+	 */
+	static public function getDefaultSkinTypes()
+	{
+		return self::$default_skin_types;
+	}
+	
+	/**
+	 * PageFactory::__construct()
+	 * Creates a new PAGEFACTORY object
+	 * 
+	 * @param	integer	$blog_id
+	 * @return	void
+	 */
+	public function __construct($blogid)
+	{
+		global $manager;
+		
+		parent::__construct();
+		
+		$this->blog =& $manager->getBlog($blogid);
+		
+		return;
 	}
 	
 	/**
@@ -128,7 +134,7 @@ class PageFactory extends BaseActions
 		global $manager;
 		
 		// begin if: the $type is not in the allowed types array
-		if ( !in_array($type, $this->allowed_types) )
+		if ( !in_array($type, $this->getDefaultSkinTypes()) )
 		{
 			return;
 		}
@@ -153,7 +159,7 @@ class PageFactory extends BaseActions
 	public function createEditForm($type, $contents)
 	{
 		// begin if: the $type is not in the allowed types array
-		if ( !in_array($type, $this->allowed_types) )
+		if ( !in_array($type, $this->getDefaultSkinTypes()) )
 		{
 			return;
 		}
@@ -210,7 +216,7 @@ class PageFactory extends BaseActions
 		if ( $filesize <= 0 )
 		{
 			return '';
-		} // end if
+		}
 		
 		# read file and return it
 		$fd = fopen ($filename, 'r');
