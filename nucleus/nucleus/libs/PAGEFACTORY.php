@@ -134,7 +134,7 @@ class PageFactory extends BaseActions
 		global $manager;
 		
 		// begin if: the $type is not in the allowed types array
-		if ( !in_array($type, $this->getDefaultSkinTypes()) )
+		if ( !array_key_exists($type, $this->getDefaultSkinTypes()) )
 		{
 			return;
 		}
@@ -159,7 +159,7 @@ class PageFactory extends BaseActions
 	public function createEditForm($type, $contents)
 	{
 		// begin if: the $type is not in the allowed types array
-		if ( !in_array($type, $this->getDefaultSkinTypes()) )
+		if ( !array_key_exists($type, $this->getDefaultSkinTypes()) )
 		{
 			return;
 		}
