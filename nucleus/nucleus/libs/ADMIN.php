@@ -1275,8 +1275,8 @@ class Admin
 		$this->pagehead();
 		
 		// generate the add-item form
-		$formfactory = new PageFactory($blogid);
-		$formfactory->createAddForm('admin');
+		$handler = new PageFactory($blogid);
+		$handler->createAddForm('admin');
 		
 		$this->pagefoot();
 		return;
@@ -1310,8 +1310,8 @@ class Admin
 		
 		// form to edit blog items
 		$this->pagehead();
-		$formfactory = new PageFactory($blog->getID());
-		$formfactory->createEditForm('admin', $item);
+		$handler = new PageFactory($blog->getID());
+		$handler->createEditForm('admin', $item);
 		$this->pagefoot();
 		return;
 	}

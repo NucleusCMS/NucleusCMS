@@ -827,12 +827,12 @@ class ItemActions extends BaseActions
 	 */
 	public function highlightAndParse(&$data)
 	{
-		$actions = new BodyActions($this->blog);
-		$parser = new Parser($actions->getDefinedActions(), $actions);
-		$actions->setTemplate($this->template);
-		$actions->setHighlight($this->strHighlight);
-		$actions->setCurrentItem($this->currentItem);
-		$parser->parse($actions->highlight($data));
+		$handler = new BodyActions($this->blog);
+		$parser = new Parser($handler->getDefinedActions(), $handler);
+		$handler->setTemplate($this->template);
+		$handler->setHighlight($this->strHighlight);
+		$handler->setCurrentItem($this->currentItem);
+		$parser->parse($handler->highlight($data));
 		return;
 	}
 	

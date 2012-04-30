@@ -71,10 +71,10 @@ class Comments
 		global $CONF, $manager;
 
 		// create parser object & action handler
-		$actions = new CommentActions($this);
-		$parser = new Parser($actions->getDefinedActions(),$actions);
-		$actions->setTemplate($template);
-		$actions->setParser($parser);
+		$handler = new CommentActions($this);
+		$parser = new Parser($handler->getDefinedActions(),$handler);
+		$handler->setTemplate($template);
+		$handler->setParser($parser);
 
 		if ($maxToShow == 0) {
 			$this->commentcount = $this->amountComments();
@@ -105,8 +105,8 @@ class Comments
 
 		while ( $comment = sql_fetch_assoc($comments) ) {
 			$comment['timestamp'] = strtotime($comment['ctime']);
-			$actions->setCurrentComment($comment);
-			$actions->setHighlight($highlight);
+			$handler->setCurrentComment($comment);
+			$handler->setHighlight($highlight);
 			$manager->notify('PreComment', array('comment' => &$comment));
 			$parser->parse($template['COMMENTS_BODY']);
 			$manager->notify('PostComment', array('comment' => &$comment));

@@ -186,13 +186,13 @@ class Blog
 		$template =& $manager->getTemplate($templateName);
 		
 		// create parser object & action handler
-		$actions = new ItemActions($this);
-		$parser = new Parser($actions->getDefinedActions(),$actions);
-		$actions->setTemplate($template);
-		$actions->setHighlight($highlight);
-		$actions->setLastVisit($lastVisit);
-		$actions->setParser($parser);
-		$actions->setShowComments($comments);
+		$handler = new ItemActions($this);
+		$parser = new Parser($handler->getDefinedActions(), $handler);
+		$handler->setTemplate($template);
+		$handler->setHighlight($highlight);
+		$handler->setLastVisit($lastVisit);
+		$handler->setParser($parser);
+		$handler->setShowComments($comments);
 		
 		// execute query
 		$items = sql_query($query);
@@ -204,7 +204,7 @@ class Blog
 			$item->timestamp = strtotime($item->itime);	// string timestamp -> unix timestamp
 			
 			// action handler needs to know the item we're handling
-			$actions->setCurrentItem($item);
+			$handler->setCurrentItem($item);
 			
 			// add date header if needed
 			if ( $dateheads )

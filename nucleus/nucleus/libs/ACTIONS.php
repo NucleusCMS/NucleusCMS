@@ -1271,15 +1271,15 @@ class Actions extends BaseActions
 		$template =& $manager->getTemplate($template);
 		
 		// create parser object & action handler
-		$actions = new ItemActions($blog);
-		$parser = new Parser($actions->getDefinedActions(),$actions);
-		$actions->setTemplate($template);
-		$actions->setParser($parser);
+		$handler = new ItemActions($blog);
+		$parser = new Parser($actions->getDefinedActions(),$handler);
+		$handler->setTemplate($template);
+		$handler->setParser($parser);
 		$item = Item::getitem($itemid, 0, 0);
-		$actions->setCurrentItem($item);
+		$handler->setCurrentItem($item);
 		
 		$comments = new Comments($itemid);
-		$comments->setItemActions($actions);
+		$comments->setItemActions($handler);
 		// shows ALL comments
 		$comments->showComments($template, -1, 1, $highlight);
 		return;
