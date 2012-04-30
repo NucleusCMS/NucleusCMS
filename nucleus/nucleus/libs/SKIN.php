@@ -334,24 +334,24 @@ class Skin
 		// set output type
 		sendContentType($this->getContentType(), 'skin');
 		
-		// set skin name as global var (so plugins can access it)
+		/* FIX: should be obsoleted */
 		$currentSkinName = $this->getName();
 		
+		// retrieve contents
 		$contents = FALSE;
 		if ( $type != 'fileparse' )
 		{
-			$contents = $this->getContent($type);
+			$contents = $this->getContentFromDB($type);
 		}
 		else if ( $path !== ''  && i18n::strpos(realpath($path), realpath("$DIR_NUCLEUS/../")) == 0 )
 		{
-			$contents = $this->getFileContent($path);
+			$contents = $this->getContentFromFile($path);
 		}
-		
-		if ( !$contents )
+		// use base skin if this skin does not have contents
+		if ( $contents === FALSE )
 		{
-			// use base skin if this skin does not have contents
 			$defskin = new SKIN($CONF['BaseSkin']);
-			$contents = $defskin->getContent($type);
+			$contents = $defskin->getContentFromDB($type);
 			if ( !$contents )
 			{
 				echo _ERROR_SKIN;
@@ -365,9 +365,11 @@ class Skin
 		Parser::setProperty('IncludeMode', $this->getIncludeMode());
 		Parser::setProperty('IncludePrefix', $this->getIncludePrefix());
 		
+		// call action handler
 		$action_class = $this->action_class;
 		$handler = new $action_class($type);
 		
+		// register action handler to parser
 		$actions = $handler->getDefinedActions($type);
 		$parser = new Parser($actions, $handler);
 		
@@ -380,32 +382,32 @@ class Skin
 	}
 	
 	/**
-	 * Skin::getContent()
-	 * Get content of the skin part from the database
+	 * Skin::getContentFromDB()
 	 * 
-	 * @param	string	$type	type of the skin (e.g. index, item, search ...)
-	 * @return	string	content of scontent
+	 * @param	string	$skintype	skin type
+	 * @return	string	content for the skin type
 	 */
-	public function getContent($type)
+	public function getContentFromDB($skintype)
 	{
 		$query = "SELECT scontent FROM %s WHERE sdesc=%d and stype='%s';";
-		$query = sprintf($query, sql_table('skin'), (integer) $this->id, sql_real_escape_string($type));
+		$query = sprintf($query, sql_table('skin'), (integer) $this->id, sql_real_escape_string($skintype));
 		$res = sql_query($query);
 		
 		if ( sql_num_rows($res) == 0 )
 		{
 			return FALSE;
 		}
+		
 		return sql_result($res, 0, 0);
 	}
 	
 	/**
-	 * Skin::getFileContent()
+	 * Skin::getContentFromFile()
 	 * 
 	 * @param	string	$fullpath	fullpath to the file to parse
 	 * @return	mixed	file contents or FALSE
 	 */
-	public function getFileContent($fullpath)
+	public function getContentFromFile($fullpath)
 	{
 		$fsize = filesize($fullpath);
 		if ( $fsize <= 0 )
