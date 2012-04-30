@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2009 The Nucleus Group
+ * Copyright (C) 2002-2012 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
  * in order to use this.
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id: bookmarklet.php 1624 2012-01-09 11:36:20Z sakamocchi $
  */
 
@@ -25,36 +25,35 @@ $CONF['UsingAdminArea'] = 1;
 // include all classes and config data
 include('../config.php');
 
+// check logged-in or pass through
 $action = requestVar('action');
+if ( !$member->isLoggedIn() )
+{
+	bm_loginAndPassThrough($action);
+	exit;
+}
+else if ( $action == 'login')
+{
+	$action = requestVar('nextaction');
+}
+
+$action = strtolower($action);
 
 if ( $action == 'contextmenucode' )
 {
 	bm_doContextMenuCode();
 	exit;
 }
-
-if ( !$member->isLoggedIn() )
+else if ( $action == '' )
 {
-	bm_loginAndPassThrough();
-	exit;
-}
-
-// on successfull login
-if ( ($action == 'login') && ($member->isLoggedIn()) )
-{
-	$action = requestVar('nextaction');
-}
-
-if ($action == '') {
 	$action = 'add';
 }
 
+// send HTTP 1.1 message header for Content-Type
 sendContentType('text/html', 'bookmarklet-' . $action);
 
 // check ticket
-$action = strtolower($action);
 $aActionsNotToCheck = array('login', 'add', 'edit');
-
 if ( !in_array($action, $aActionsNotToCheck) )
 {
 	if ( !$manager->checkTicket() )
@@ -120,6 +119,8 @@ function bm_doAddItem()
 	}
 	
 	bm_message(_ITEM_ADDED, _ITEM_ADDED, $message,$extrahead);
+	
+	return;
 }
 
 function bm_doEditItem()
@@ -205,44 +206,45 @@ function bm_doEditItem()
 	{
 		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _ITEM_UPDATED, '');
 	}
+	
+	return;
 }
 
-function bm_loginAndPassThrough()
+function bm_loginAndPassThrough($action='add')
 {
 	$blogid = intRequestVar('blogid');
-	$log_text = requestVar('logtext');
-	$log_link = requestVar('loglink');
-	$log_linktitle = requestVar('loglinktitle');
+	$itemid = intRequestVar('itemid');
+	$log_text		= requestVar('logtext');
+	$log_link		= requestVar('loglink');
+	$log_linktitle	= requestVar('loglinktitle');
 	
 	echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
 	echo "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
 	echo "<head>\n";
-	echo "<title>Nucleus</title>\n";
+	echo "<title>Nucleus CMS Bookmarklet</title>\n";
 	
 	bm_style();
 	
 	echo "</head>\n";
 	echo "<body>\n";
 	echo '<h1>' . _LOGIN_PLEASE . "</h1>\n";
-	
 	echo "<form method=\"post\" action=\"bookmarklet.php\">\n";
-	echo "<dl>\n";
-	echo '<dt>' . _LOGINFORM_NAME . "</dt>\n";
-	echo "<dd><input type=\"text\" name=\"login\" value=\"\" /></dd>\n";
-	echo '<dt>' . _LOGINFORM_PWD . ":</dt>\n";
-	echo "<input type=\"password\" name=\"password\" value=\"\" /></dd>\n";
-	echo "</dl>\n";
 	echo "<p>\n";
-	echo '<input type=\"hidden\" name="blogid" value="' . Entity::hsc($blogid). '" />' . "\n";
-	echo '<input type=\"hidden\" name="logtext" value="' . Entity::hsc($log_text) . '" />' . "\n";
-	echo '<input type=\"hidden\" name="loglink" value="' . Entity::hsc($log_link) . '" />' . "\n";
-	echo '<input type=\"hidden\" name="loglinktitle" value="' . Entity::hsc($log_linktitle) . '" />' . "\n";
+	echo _LOGINFORM_NAME . "<input type=\"text\" name=\"login\" value=\"\" /><br />\n";
+	echo _LOGINFORM_PWD . "<input type=\"password\" name=\"password\" value=\"\" /><br />\n";
+	echo '<input type="hidden" name="blogid" value="' . Entity::hsc($blogid). '" />' . "\n";
+	echo '<input type="hidden" name="itemid" value="' . Entity::hsc($itemid). '" />' . "\n";
+	echo '<input type="hidden" name="logtext" value="' . Entity::hsc($log_text) . '" />' . "\n";
+	echo '<input type="hidden" name="loglink" value="' . Entity::hsc($log_link) . '" />' . "\n";
+	echo '<input type="hidden" name="loglinktitle" value="' . Entity::hsc($log_linktitle) . '" />' . "\n";
+	echo "<input type=\"hidden\" name=\"nextaction\" value=\"{$action}\" />\n";
 	echo '<button type="submit" name="action" value="login">' . _LOGIN . "</button>\n";
 	echo "</p>\n";
 	echo "</form>\n";
-	echo '<p><a href=\"bookmarklet.php\" onclick=\"window.close();\">' . _POPUP_CLOSE . "</a></p>\n";
+	echo '<p><a href="bookmarklet.php" onclick="window.close();">' . _POPUP_CLOSE . "</a></p>\n";
 	echo "</body>\n";
 	echo "</html>\n";
+	
 	return;
 }
 
@@ -250,10 +252,10 @@ function bm_doShowForm()
 {
 	global $member;
 	
-	$blogid = intRequestVar('blogid');
-	$log_text = trim(requestVar('logtext'));
-	$log_link = requestVar('loglink');
-	$log_linktitle = requestVar('loglinktitle');
+	$blogid			= intRequestVar('blogid');
+	$log_text		= trim(requestVar('logtext'));
+	$log_link		= requestVar('loglink');
+	$log_linktitle	= requestVar('loglinktitle');
 	
 	if ( !Blog::existsID($blogid) )
 	{
@@ -287,6 +289,7 @@ function bm_doShowForm()
 	
 	$factory = new PageFactory($blogid);
 	$factory->createAddForm('bookmarklet', $item);
+	
 	return;
 }
 
@@ -319,6 +322,7 @@ function bm_doEditForm()
 	
 	$formfactory = new PageFactory($blog->getID() );
 	$formfactory->createEditForm('bookmarklet', $item);
+	
 	return;
 }
 
@@ -345,27 +349,31 @@ function bm_message($title, $head, $msg, $extrahead = '')
 	echo '<p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();">' . _POPUP_CLOSE . "</a></p>\n";
 	echo "</body>\n";
 	echo "</html>\n";
+	
 	return;
 }
 
 function bm_style()
 {
-	echo '<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />' . "\n";
-	echo '<link rel="stylesheet" type="text/css" href="styles/addedit.css" />' . "\n";
+	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/bookmarklet.css\" />\n";
+	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/addedit.css\" />\n";
+	return;
 }
 
-function bm_doContextMenuCode()
+function bm_doContextMenuCode($width=600, $height=500)
 {
 	global $CONF;
 	
 	$blogid = (integer) intGetVar('blogid');
 	
 	echo "<script type=\"text/javascript\" defer=\"defer\">\n";
-	echo "	doc = external.menuArguments.document;\n";
-	echo "	lt = escape(doc.selection.createRange().text);\n";
-	echo "	loglink = escape(external.menuArguments.location.href);\n";
-	echo "	loglinktitle = escape(doc.title);\n";
-	echo "	wingm = window.open('{$CONF['AdminURL']}bookmarklet.php?blogid={$blogid}&logtext=' + lt + '&loglink=' + loglink + '&loglinktitle=' + loglinktitle, 'nucleusbm', 'scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes')\n";
-	echo "	wingm.focus()\n";
+	echo "<![CDATA[\n";
+	echo " doc = external.menuArguments.document;\n";
+	echo " lt = encodeURIComponent(doc.selection.createRange().text);\n";
+	echo " loglink = encodeURIComponent(external.menuArguments.location.href);\n";
+	echo " loglinktitle = encodeURIComponent(doc.title);\n";
+	echo " wingm = window.open('{$CONF['AdminURL']}bookmarklet.php?blogid={$blogid}&logtext=' + lt + '&loglink=' + loglink + '&loglinktitle=' + loglinktitle, 'nucleusbm', 'scrollbars=yes,width={$width},height={$height},left=10,top=10,status=yes,resizable=yes')\n";
+	echo " wingm.focus()\n";
+	echo "]]>\n";
 	echo "</script>\n";
 }
