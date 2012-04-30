@@ -567,10 +567,10 @@ class Member
 		// if this is a 'newcat' style newcat
 		// no blog admin of destination blog -> NOK
 		// blog admin of destination blog -> OK
-		if ( i18n::strpos($catid,'newcat') === 0 )
+		if ( i18n::strpos($newcat, 'newcat') === 0 )
 		{
 			// get blogid
-			list($blogid) = sscanf($newcat,'newcat-%d');
+			list($blogid) = sscanf($newcat, 'newcat-%d');
 			return $this->blogAdminRights($blogid);
 		}
 		
