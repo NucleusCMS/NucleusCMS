@@ -26,25 +26,25 @@ class PageFactory extends BaseActions
 	 * PageFactory::$blog
 	 * Reference to the blog object for which an add:edit form is created
 	 */
-	private $blog;
+	private $blog = NULL;
 	
 	/**
 	 * PageFactory::$type
 	 * One of the types got by self::getDefaultSkinTypes()
 	 */
-	private $type;
+	private $type = '';
 	
 	/**
 	 * PageFactory::$method
 	 * 'add' or 'edit'
 	 */
-	private $method;
+	private $method = '';
 	
 	/**
 	 * PageFactory::$variables
 	 * Info to fill out in the form (e.g. catid, itemid, ...)
 	 */
-	private $variables;
+	private $variables = array();
 	
 	/**
 	 * PageFactory::$actions
@@ -107,87 +107,29 @@ class PageFactory extends BaseActions
 	 * PageFactory::__construct()
 	 * Creates a new PAGEFACTORY object
 	 * 
-	 * @param	integer	$blog_id
+	 * @param	object	$blog
 	 * @return	void
 	 */
-	public function __construct($blogid)
+	public function __construct(&$blog)
 	{
 		global $manager;
 		
 		parent::__construct();
 		
-		$this->blog =& $manager->getBlog($blogid);
+		$this->blog =& $blog;
 		
 		return;
 	}
 	
 	/**
-	 * PageFactory::createAddForm()
-	 * Creates an "add item" form for a given type of page
+	 * PageFactory::setVariables()
 	 * 
-	 * @param	string	$type		'admin' or 'bookmarklet'
-	 * @param	array	$contents
+	 * @param	array	$variables	associated array for item data
 	 * @return	void
 	 */
-	public function createAddForm($type, $contents = array())
+	public function setVariables($variables)
 	{
-		global $manager;
-		
-		// begin if: the $type is not in the allowed types array
-		if ( !array_key_exists($type, $this->getDefaultSkinTypes()) )
-		{
-			return;
-		}
-		
-		$this->type = $type;
-		$this->method = 'add';
-		
-		$manager->notify('PreAddItemForm', array('contents' => &$contents, 'blog' => &$this->blog));
-		
-		$this->createForm($contents);
-		return;
-	}
-	
-	/**
-	 * PageFactory::createEditForm()
-	 * Creates an "edit item" form for a given type of page
-	 * 
-	 * @param	string	$type		'admin' or 'bookmarklet'
-	 * @param	array	$contents
-	 * @return	void
-	 */
-	public function createEditForm($type, $contents)
-	{
-		// begin if: the $type is not in the allowed types array
-		if ( !array_key_exists($type, $this->getDefaultSkinTypes()) )
-		{
-			return;
-		}
-		
-		$this->type = $type;
-		$this->method = 'edit';
-		$this->createForm($contents);
-		return;
-	}
-	
-	/**
-	 * PageFactory::createForm()
-	 * creates a form for a given type of page
-	 * 
-	 * @param	array	$contents
-	 * @return	void
-	 */
-	private function createForm($contents)
-	{
-		# save contents
-		$this->variables = $contents;
-		
-		# get template to use
-		$template = $this->getTemplateFor($this->type);
-		
-		# use the PARSER engine to parse that template
-		$parser = new Parser(self::getDefinedActions(), $this);
-		$parser->parse($template);
+		$this->variables = $variables;
 		return;
 	}
 	
@@ -195,14 +137,21 @@ class PageFactory extends BaseActions
 	 * PageFactory::getTemplateFor()
 	 * Returns an appropriate template
 	 * 
-	 * @param	string	$type
+	 * @param	string	$type	type of skin
+	 * @param	string	$method	type of template
 	 * @return	string	contents of form template
 	 */
-	private function getTemplateFor($type)
+	public function getTemplateFor($type, $method)
 	{
 		global $DIR_LIBS;
 		
-		$filename = $DIR_LIBS . 'include/' . $this->type . '-' . $this->method . '.template';
+		// the $type is not in the allowed types array
+		if ( !array_key_exists($type, $this->getDefaultSkinTypes()) )
+		{
+			return '';
+		}
+		
+		$filename = "{$DIR_LIBS}include/{$type}-{$method}.template";
 		
 		// begin if: file doesn't exist
 		if ( !file_exists($filename) )
@@ -222,6 +171,9 @@ class PageFactory extends BaseActions
 		$fd = fopen ($filename, 'r');
 		$contents = fread ($fd, $filesize);
 		fclose ($fd);
+		
+		$this->type = $type;
+		$this->method = $method;
 		
 		return $contents;
 	}

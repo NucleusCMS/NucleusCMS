@@ -214,9 +214,9 @@ function bm_loginAndPassThrough($action='add')
 {
 	$blogid = intRequestVar('blogid');
 	$itemid = intRequestVar('itemid');
-	$log_text		= requestVar('logtext');
-	$log_link		= requestVar('loglink');
-	$log_linktitle	= requestVar('loglinktitle');
+	$log_text = requestVar('logtext');
+	$log_link = requestVar('loglink');
+	$log_linktitle = requestVar('loglinktitle');
 	
 	echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
 	echo "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
@@ -250,7 +250,7 @@ function bm_loginAndPassThrough($action='add')
 
 function bm_doShowForm()
 {
-	global $member;
+	global $manager, $member;
 	
 	$blogid			= intRequestVar('blogid');
 	$log_text		= trim(requestVar('logtext'));
@@ -260,6 +260,10 @@ function bm_doShowForm()
 	if ( !Blog::existsID($blogid) )
 	{
 		bm_doError(_ERROR_NOSUCHBLOG);
+	}
+	else
+	{
+		$blog =& $manager->getBlog($blogid);
 	}
 	
 	if ( !$member->isTeamMember($blogid) )
@@ -284,11 +288,18 @@ function bm_doShowForm()
 		$logje .= '<a href="' . Entity::hsc($log_link) . '">' . Entity::hsc($log_linktitle) . '</a>';
 	}
 	
-	$item['body'] = $logje;
-	$item['title'] = Entity::hsc($log_linktitle);
+	$variables = array();
+	$variables['body'] = $logje;
+	$variables['title'] = Entity::hsc($log_linktitle);
 	
-	$factory = new PageFactory($blogid);
-	$factory->createAddForm('bookmarklet', $item);
+	$handler = new PageFactory($blog);
+	$handler->setVariables($variables);
+	
+	$contents = $handler->getTemplateFor('bookmarklet', 'add');
+	$manager->notify('PreAddItemForm', array('contents' => &$contents, 'blog' => &$blog));
+	
+	$parser = new Parser($handler->getDefinedActions(), $handler);
+	$parser->parse($contents);
 	
 	return;
 }
@@ -309,19 +320,24 @@ function bm_doEditForm()
 		bm_doError(_ERROR_DISALLOWED);
 	}
 	
-	$item =& $manager->getItem($itemid, 1, 1);
+	$variables =& $manager->getItem($itemid, 1, 1);
 	$blog =& $manager->getBlog(getBlogIDFromItemID($itemid) );
 	
-	$manager->notify('PrepareItemForEdit', array('item' => &$item) );
+	$manager->notify('PrepareItemForEdit', array('item' => &$variables) );
 	
 	if ( $blog->convertBreaks() )
 	{
-		$item['body'] = removeBreaks($item['body']);
-		$item['more'] = removeBreaks($item['more']);
+		$variables['body'] = removeBreaks($variables['body']);
+		$variables['more'] = removeBreaks($variables['more']);
 	}
 	
-	$formfactory = new PageFactory($blog->getID() );
-	$formfactory->createEditForm('bookmarklet', $item);
+	$handler = new PageFactory($blog);
+	$handler->setVariables($variables);
+	
+	$contents = $handler->getTemplateFor('bookmarklet', 'edit');
+	
+	$parser = new Parser($handler->getDefinedActions(), $handler);
+	$parser->parse($contents);
 	
 	return;
 }

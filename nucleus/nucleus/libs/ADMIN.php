@@ -1272,13 +1272,18 @@ class Admin
 		
 		$blog =& $manager->getBlog($blogid);
 		
-		$this->pagehead();
-		
 		// generate the add-item form
-		$handler = new PageFactory($blogid);
-		$handler->createAddForm('admin');
+		$handler = new PageFactory($blog);
 		
+		$contents = $handler->getTemplateFor('admin', 'add');
+		$manager->notify('PreAddItemForm', array('contents' => &$contents, 'blog' => &$blog));
+		
+		$parser = new Parser($handler->getDefinedActions(), $handler);
+		
+		$this->pagehead();
+		$parser->parse($contents);
 		$this->pagefoot();
+		
 		return;
 	}
 	
@@ -1297,21 +1302,27 @@ class Admin
 		// only allow if user is allowed to alter item
 		$member->canAlterItem($itemid) or $this->disallow();
 		
-		$item =& $manager->getItem($itemid, 1, 1);
+		$variables =& $manager->getItem($itemid, 1, 1);
 		$blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
 		
-		$manager->notify('PrepareItemForEdit', array('item' => &$item));
+		$manager->notify('PrepareItemForEdit', array('item' => &$variables));
 		
 		if ( $blog->convertBreaks() )
 		{
-			$item['body'] = removeBreaks($item['body']);
-			$item['more'] = removeBreaks($item['more']);
+			$variables['body'] = removeBreaks($variables['body']);
+			$variables['more'] = removeBreaks($variables['more']);
 		}
 		
 		// form to edit blog items
+		$handler = new PageFactory($blog);
+		$handler->setVariables($variables);
+		
+		$content = $handler->getTemplateFor('admin', 'edit');
+		
+		$parser = new Parser($handler->getDefinedActions(), $handler);
+		
 		$this->pagehead();
-		$handler = new PageFactory($blog->getID());
-		$handler->createEditForm('admin', $item);
+		$parser->parse($content);
 		$this->pagefoot();
 		return;
 	}
