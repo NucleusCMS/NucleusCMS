@@ -1272,7 +1272,7 @@ class Actions extends BaseActions
 		
 		// create parser object & action handler
 		$handler = new ItemActions($blog);
-		$parser = new Parser($actions->getDefinedActions(),$handler);
+		$parser = new Parser($handler->getDefinedActions(),$handler);
 		$handler->setTemplate($template);
 		$handler->setParser($parser);
 		$item = Item::getitem($itemid, 0, 0);
