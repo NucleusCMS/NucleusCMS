@@ -231,17 +231,17 @@
 			   ." WHERE iblog=$blogid"
 			   ." ORDER BY itime DESC"
 			   ." LIMIT $amount";
-		$r = sql_query($query);
-		while ($obj = sql_fetch_object($r)) {
+		$r = DB::getResult($query);
+		foreach ( $r as $row ) {
 			$newstruct = new xmlrpcval(array(
-				"publishDate" => new xmlrpcval(iso8601_encode(strtotime($obj->itime)),"dateTime.iso8601"),
-				"userid" => new xmlrpcval($obj->iauthor,"string"),
+				"publishDate" => new xmlrpcval(iso8601_encode(strtotime($row['itime'])),"dateTime.iso8601"),
+				"userid" => new xmlrpcval($row['iauthor'],"string"),
 				"blogid" => new xmlrpcval($blogid,"string"),
-				"title" => new xmlrpcval($obj->ititle,"string"),
-				"body" => new xmlrpcval($obj->ibody,"string"),
-				"more" => new xmlrpcval($obj->imore,"string"),
-				"draft" => new xmlrpcval($obj->idraft,"boolean"),
-				"closed" => new xmlrpcval($obj->iclosed,"boolean"),
+				"title" => new xmlrpcval($row['ititle'],"string"),
+				"body" => new xmlrpcval($row['ibody'],"string"),
+				"more" => new xmlrpcval($row['imore'],"string"),
+				"draft" => new xmlrpcval($row['idraft'],"boolean"),
+				"closed" => new xmlrpcval($row['iclosed'],"boolean"),
 			),'struct');
 			array_push($structarray, $newstruct);
 		}

@@ -292,9 +292,9 @@
 			   ." WHERE iblog=$blogid and icat=catid and iauthor=mnumber"
 			   ." ORDER BY itime DESC"
 			   ." LIMIT $amount";
-		$r = sql_query($query);
+		$r = DB::getResult($query);
 
-		while ($row = sql_fetch_assoc($r)) {
+		foreach ( $r as $row ) {
 
 			// remove linebreaks if needed
 			if ($blog->convertBreaks()) {
@@ -413,14 +413,14 @@
 				. ' FROM '.sql_table('category')
 				. " WHERE cblog=" . intval($blogid)
 				. " ORDER BY cname";
-		$r = sql_query($query);
+		$r = DB::getResult($query);
 
-		while ($obj = sql_fetch_object($r)) {
+		foreach ( $r as $row ) {
 
-			$categorystruct[$obj->cname] = new xmlrpcval(
+			$categorystruct[$row['cname']] = new xmlrpcval(
 				array(
-					"description" => new xmlrpcval($obj->cdesc,"string"),
-					"htmlUrl" => new xmlrpcval($b->getURL() . "?catid=" . $obj->catid ,"string"),
+					"description" => new xmlrpcval($row['cdesc'],"string"),
+					"htmlUrl" => new xmlrpcval($b->getURL() . "?catid=" . $row['catid'] ,"string"),
 					"rssUrl" => new xmlrpcval("","string")
 				)
 			,'struct');

@@ -351,14 +351,14 @@
 				. ' FROM '.sql_table('category')
 				. " WHERE cblog=" . intval($blogid)
 				. " ORDER BY cname";
-		$r = sql_query($query);
+		$r = DB::getResult($query);
 
-		while ($obj = sql_fetch_object($r)) {
+		foreach ( $r as $row ) {
 
 			$categorystruct[] = new xmlrpcval(
 				array(
-					"categoryName" => new xmlrpcval($obj->cname,"string"),
-					"categoryId" => new xmlrpcval($obj->cname,"string")
+					"categoryName" => new xmlrpcval($row['cname'],"string"),
+					"categoryId" => new xmlrpcval($row['cname'],"string")
 				)
 			,'struct');
 
@@ -400,9 +400,9 @@
 			   ." WHERE iblog=$blogid"
 			   ." ORDER BY itime DESC"
 			   ." LIMIT $iAmount";
-		$r = sql_query($query);
+		$r = DB::getResult($query);
 
-		while ($row = sql_fetch_assoc($r)) {
+		foreach ( $r as $row ) {
 
 			$newstruct = new xmlrpcval(array(
 				"dateCreated" => new xmlrpcval(iso8601_encode(strtotime($row['itime'])),"dateTime.iso8601"),

@@ -85,7 +85,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		$this->createOption('login_lockout',		'_SECURITYENFORCER_OPT_LOGIN_LOCKOUT',		'text', '15');
 		
 		// create needed tables
-		sql_query("CREATE TABLE IF NOT EXISTS ". sql_table('plug_securityenforcer').
+		DB::execute("CREATE TABLE IF NOT EXISTS ". sql_table('plug_securityenforcer').
 					" (login varchar(255),
 					   fails int(11) NOT NULL default '0',
 					   lastfail bigint NOT NULL default '0',
@@ -98,7 +98,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		// if requested, delete the data table
 		if ( $this->getOption('del_uninstall_data') == 'yes' )
 		{
-			sql_query('DROP TABLE '.sql_table('plug_securityenforcer'));
+			DB::execute('DROP TABLE '.sql_table('plug_securityenforcer'));
 		}
 		return;
 	}
@@ -203,13 +203,13 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		global $_SERVER;
 		$login = $data['login'];
 		$ip = $_SERVER['REMOTE_ADDR'];
-		sql_query("DELETE FROM " . sql_table('plug_securityenforcer') . " WHERE lastfail < " . (time() - ($this->login_lockout * 60)));
+		DB::execute("DELETE FROM " . sql_table('plug_securityenforcer') . " WHERE lastfail < " . (time() - ($this->login_lockout * 60)));
 		$query = "SELECT fails as result FROM " . sql_table('plug_securityenforcer') . " ";
-		$query .= "WHERE login='" . sql_real_escape_string($login) . "'";
-		$flogin = quickQuery($query); 
+		$query .= 'WHERE login=' . DB::quoteValue($login);
+		$flogin = DB::getValue($query); 
 		$query = "SELECT fails as result FROM " . sql_table('plug_securityenforcer') . " ";
-		$query .= "WHERE login='" . sql_real_escape_string($ip) . "'";
-		$fip = quickQuery($query); 
+		$query .= 'WHERE login=' . DB::quoteValue($ip);
+		$fip = DB::getValue($query); 
 		
 		if ( $flogin >= $this->max_failed_login || $fip >= $this->max_failed_login )
 		{
@@ -231,8 +231,8 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		global $_SERVER;
 		$login = $data['username'];
 		$ip = $_SERVER['REMOTE_ADDR'];
-		sql_query("DELETE FROM " . sql_table('plug_securityenforcer') . " WHERE login='" . sql_real_escape_string($login) . "'");
-		sql_query("DELETE FROM " . sql_table('plug_securityenforcer') . " WHERE login='" . sql_real_escape_string($ip) . "'");
+		DB::execute("DELETE FROM " . sql_table('plug_securityenforcer') . " WHERE login=" . DB::quoteValue($login));
+		DB::execute("DELETE FROM " . sql_table('plug_securityenforcer') . " WHERE login=" . DB::quoteValue($ip));
 		return;
 	}
 	
@@ -246,23 +246,23 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		global $_SERVER;
 		$login = $data['username'];
 		$ip = $_SERVER['REMOTE_ADDR'];
-		$lres = sql_query("SELECT * FROM " . sql_table('plug_securityenforcer') . " WHERE login='" . sql_real_escape_string($login) . "'");
-		if ( sql_num_rows($lres) )
+		$lres = DB::getValue("SELECT * FROM " . sql_table('plug_securityenforcer') . ' WHERE login=' . DB::quoteValue($login));
+		if ( $lres )
 		{
-			sql_query("UPDATE " . sql_table('plug_securityenforcer') . " SET fails=fails+1, lastfail=" . time() . " WHERE login='" . sql_real_escape_string($login) . "'");
+			DB::execute("UPDATE " . sql_table('plug_securityenforcer') . " SET fails=fails+1, lastfail=" . time() . ' WHERE login=' . DB::quoteValue($login));
 		}
 		else
 		{
-			sql_query("INSERT INTO " . sql_table('plug_securityenforcer') . " (login,fails,lastfail) VALUES ('" . sql_real_escape_string($login) . "',1," . time() . ")");
+			DB::execute("INSERT INTO " . sql_table('plug_securityenforcer') . ' (login,fails,lastfail) VALUES (' . DB::quoteValue($login) . ',1,' . time() . ')');
 		}
-		$lres = sql_query("SELECT * FROM " . sql_table('plug_securityenforcer') . " WHERE login='" . sql_real_escape_string($ip) . "'");
-		if ( sql_num_rows($lres) )
+		$lres = DB::getValue("SELECT * FROM " . sql_table('plug_securityenforcer') . " WHERE login='" . DB::quoteValue($ip) . "'");
+		if ( $lres )
 		{
-			sql_query("UPDATE " . sql_table('plug_securityenforcer') . " SET fails=fails+1, lastfail=" . time() . " WHERE login='" . sql_real_escape_string($ip) . "'");
+			DB::execute("UPDATE " . sql_table('plug_securityenforcer') . ' SET fails=fails+1, lastfail=' . time() . ' WHERE login=' . DB::quoteValue($ip));
 		}
 		else
 		{
-			sql_query("INSERT INTO " . sql_table('plug_securityenforcer') . " (login,fails,lastfail) VALUES ('" . sql_real_escape_string($ip) . "',1," . time() . ")");
+			DB::execute("INSERT INTO " . sql_table('plug_securityenforcer') . ' (login,fails,lastfail) VALUES (' . DB::quoteValue($ip) . ',1,' . time() . ')');
 		}
 		return;
 	}

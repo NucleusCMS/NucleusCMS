@@ -28,12 +28,12 @@ error_reporting(E_ALL);
 $minimum_php_version = '5.0.6';
 $minimum_mysql_version = '3.23';
 
-$page_footer_copyright	= '&copy; 2001-2012 The Nucleus Groupe . Running Nucleus CMS v4.00';
+$page_footer_copyright = '&copy; 2001-2012 The Nucleus Groupe . Running Nucleus CMS v4.00';
 
 // begin if: server's PHP version is below the minimum; halt installation
 if ( version_compare(PHP_VERSION, $minimum_php_version, '<') )
 {
-	exit('<div style="font-size: xx-large;"> Nucleus requires at least PHP version '. $minimum_php_version .'</div>');
+	exit('<div style="font-size: xx-large;"> Nucleus requires at least PHP version ' . $minimum_php_version . '</div>');
 }
 
 // make sure there's no unnecessary escaping: # set_magic_quotes_runtime(0);
@@ -43,8 +43,8 @@ if ( version_compare(PHP_VERSION, '5.3.0', '<') )
 }
 
 /* default installed plugins and skins */
-$aConfPlugsToInstall	= array('NP_SecurityEnforcer', 'NP_SkinFiles', 'NP_Text');
-$aConfSkinsToImport		= array('atom', 'rss2.0', 'rsd', 'default');
+$aConfPlugsToInstall = array('NP_SecurityEnforcer', 'NP_SkinFiles', 'NP_Text');
+$aConfSkinsToImport = array('atom', 'rss2.0', 'rsd', 'default');
 
 // Check if some important files
 do_check_files();
@@ -63,7 +63,6 @@ if ( !function_exists('mysql_query') && !function_exists('mysqli_query') )
 }
 
 // include core classes that are needed for login & plugin handling
-include_once('../nucleus/libs/mysql.php');
 
 // added for 3.5 sql_* wrapper
 global $MYSQL_HANDLER;
@@ -72,7 +71,7 @@ if ( !isset($MYSQL_HANDLER) )
 {
 	$MYSQL_HANDLER = array('mysql', '');
 }
-include_once('../nucleus/libs/sql/' . $MYSQL_HANDLER[0] . '.php');
+include_once('../nucleus/libs/sql/sql.php');
 
 session_start();
 if ( count($_GET) == 0 && count($_POST) == 0 )
@@ -112,7 +111,6 @@ else
 	unset($_SESSION['param_manager']);
 }
 exit;
-
 
 /**
  * installer action
@@ -212,7 +210,6 @@ function show_header()
 	header("Cache-Control: no-cache, must-revalidate");
 	header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 	header('Content-Type: text/html; charset=' . i18n::get_current_charset());
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -244,35 +241,35 @@ function show_header()
 			<div id="navigation">
 				<h1><img src="./styles/nucleus_rogo.png" alt="NucleusCMS" /></h1>
 				<ul>
-					<?php
-					if ( in_array($param->state, array('mysql', 'weblog', 'install')) )
-					{
-						echo '<li>', _STEP1, '</li><li';
-						if ( $param->state == 'mysql' )
-						{
-							echo ' class="gry"';
-						}
-						echo '>&nbsp; &gt; &nbsp;', _STEP2, '</li><li';
-						if ( in_array($param->state, array('mysql', 'weblog')) )
-						{
-							echo ' class="gry"';
-						}
-						echo '>&nbsp; &gt; &nbsp;', _STEP3, "</li>\n";
-					}
-					if ( in_array($param->state, array('mysql', 'weblog', 'detail')) )
-					{
-						echo '<li class="rightbox">';
-						if ( in_array($param->state, array('mysql', 'weblog')) )
-						{
-							echo '<a href="./?mode=detail">', _MODE2, '</a>';
-						}
-						else
-						{
-							echo '<a href="./?mode=simple">', _MODE1, '</a>';
-						}
-						echo '</li>';
-					}
-					?>
+<?php
+	if ( in_array($param->state, array('mysql', 'weblog', 'install')) )
+	{
+		echo '<li>', _STEP1, '</li><li';
+		if ( $param->state == 'mysql' )
+		{
+			echo ' class="gry"';
+		}
+		echo '>&nbsp; &gt; &nbsp;', _STEP2, '</li><li';
+		if ( in_array($param->state, array('mysql', 'weblog')) )
+		{
+			echo ' class="gry"';
+		}
+		echo '>&nbsp; &gt; &nbsp;', _STEP3, "</li>\n";
+	}
+	if ( in_array($param->state, array('mysql', 'weblog', 'detail')) )
+	{
+		echo '<li class="rightbox">';
+		if ( in_array($param->state, array('mysql', 'weblog')) )
+		{
+			echo '<a href="./?mode=detail">', _MODE2, '</a>';
+		}
+		else
+		{
+			echo '<a href="./?mode=simple">', _MODE1, '</a>';
+		}
+		echo '</li>';
+	}
+?>
 				</ul>
 			</div>
 		</div>
@@ -302,7 +299,7 @@ function show_select_locale_form()
 	// Get the browser language that can be displayed
 	// TODO: default locale select simple implementation
 	$languages = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-	foreach ($languages as $language)
+	foreach ( $languages as $language )
 	{
 		$language = preg_replace('#([\w]+).*#', '$1', $language);
 		break;
@@ -352,7 +349,7 @@ function show_database_setting_form($isPostback)
 
 	$config_writable = canConfigFileWritable();
 	$mysql_version = getMySqlVersion();
-	?>
+?>
 		<div id="container">
 			<p class="msg">
 <?php
@@ -367,7 +364,7 @@ function show_database_setting_form($isPostback)
 	}
 	elseif ( version_compare($mysql_version, $minimum_mysql_version, '<') )
 	{
-		echo '<span class="err">', sprintf(_DBVERSION_TOOLOW , $minimum_mysql_version), '</span>';
+		echo '<span class="err">', sprintf(_DBVERSION_TOOLOW, $minimum_mysql_version), '</span>';
 	}
 ?>
 			</p>
@@ -427,7 +424,6 @@ function show_database_setting_form($isPostback)
 function show_blog_setting_form($isPostback)
 {
 	global $param;
-
 ?>
 		<div id="container">
 			<p class="msg">
@@ -538,7 +534,7 @@ function show_detail_setting_form($isPostback)
 	echo ($mysql_version == '0.0.0') ? _DBVERSION_UNKOWN : $mysql_version;
 	if ( version_compare($mysql_version, $minimum_mysql_version, '<') )
 	{
-		echo '<span class="err">', sprintf(_DBVERSION_TOOLOW , $minimum_mysql_version), '</span>';
+		echo '<span class="err">', sprintf(_DBVERSION_TOOLOW, $minimum_mysql_version), '</span>';
 	}
 ?></li>
 			</ul>
@@ -757,7 +753,7 @@ function show_install_complete_form()
 		{
 			echo '<span class="err">', _INST_TEXT4, '</span>';
 ?>
-<textarea id="config_text" readonly="readonly" onfocus="SelectText(this);"><?php echo htmlentities($_SESSION['config_data'], null, i18n::get_current_charset() ) ?></textarea>
+<textarea id="config_text" readonly="readonly" onfocus="SelectText(this);"><?php echo htmlentities($_SESSION['config_data'], null, i18n::get_current_charset()) ?></textarea>
 <?php
 		}
 		else
@@ -812,31 +808,31 @@ function show_install_complete_form()
 function do_install()
 {
 	global $param;
-	global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_PREFIX, $MYSQL_CONN;
+	global $MYSQL_HANDLER, $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_PREFIX, $MYSQL_CONN;
 	global $DIR_NUCLEUS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
 	$errors = array();
 
 	/*
 	 * 1. put all param-vars into vars
 	 */
-	$MYSQL_HOST = $param->mysql_host;
-	$MYSQL_USER = $param->mysql_user;
-	$MYSQL_PASSWORD = $param->mysql_password;
-	$MYSQL_DATABASE = $param->mysql_database;
-	$MYSQL_PREFIX = $param->mysql_tablePrefix;
+	$MYSQL_HOST		= $param->mysql_host;
+	$MYSQL_USER		= $param->mysql_user;
+	$MYSQL_PASSWORD	= $param->mysql_password;
+	$MYSQL_DATABASE	= $param->mysql_database;
+	$MYSQL_PREFIX	= $param->mysql_tablePrefix;
 
-	$DIR_NUCLEUS = $param->AdminPath;
-	$DIR_MEDIA = $param->MediaPath;
-	$DIR_SKINS = $param->SkinsPath;
-	$DIR_PLUGINS = $DIR_NUCLEUS . 'plugins/';
-	$DIR_LOCALES = $DIR_NUCLEUS . 'locales/';
-	$DIR_LIBS = $DIR_NUCLEUS . 'libs/';
+	$DIR_NUCLEUS	= $param->AdminPath;
+	$DIR_MEDIA		= $param->MediaPath;
+	$DIR_SKINS		= $param->SkinsPath;
+	$DIR_PLUGINS	= $DIR_NUCLEUS . 'plugins/';
+	$DIR_LOCALES	= $DIR_NUCLEUS . 'locales/';
+	$DIR_LIBS		= $DIR_NUCLEUS . 'libs/';
 
 	/*
 	 * 2.open mySQL connection
 	 */
-	$MYSQL_CONN = @sql_connect_args($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD);
-	if ( $MYSQL_CONN == false )
+	$MYSQL_CONN = @DB::setConnectionInfo($MYSQL_HANDLER[1], $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD);
+	if ( $MYSQL_CONN == FALSE )
 	{
 		$errors[] = _DBCONNECT_ERROR;
 		return $errors;
@@ -845,19 +841,20 @@ function do_install()
 	/*
 	 * 3. try to create database if needed
 	 */
-	if ( !sql_query("CREATE DATABASE IF NOT EXISTS {$MYSQL_DATABASE}") )
+	if ( DB::execute("CREATE DATABASE IF NOT EXISTS {$MYSQL_DATABASE}") === FALSE )
 	{
-		$errors[] = _INST_ERROR1 . ': ' . sql_error();
+		$errinfo = DB::getError();
+		$errors[] = _INST_ERROR1 . ': ' . $errinfo[2];
 	}
 
 	/*
 	 * 4. try to select database
 	 */
-	if ( !sql_select_db($MYSQL_DATABASE) )
+	$MYSQL_CONN = @DB::setConnectionInfo($MYSQL_HANDLER[1], $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE);
+	if ( !$MYSQL_CONN )
 	{
 		$errors[] = _INST_ERROR2;
 	}
-	sql_set_charset('utf8');
 
 	if ( count($errors) > 0 )
 	{
@@ -892,8 +889,8 @@ function do_install()
 	}
 
 	// table exists check
-	$result = sql_query('SHOW TABLES');
-	while ($row = mysql_fetch_array($result, MYSQL_NUM))
+	$result = DB::getResult('SHOW TABLES');
+	foreach ( $result as $row )
 	{
 		if ( in_array($row[0], $prefixed_table_names) )
 		{
@@ -908,7 +905,7 @@ function do_install()
 
 	$filename = 'install.sql';
 	$fd = fopen($filename, 'r');
-	$queries = fread($fd, filesize($filename) );
+	$queries = fread($fd, filesize($filename));
 	fclose($fd);
 
 	$queries = preg_split('#(;\n|;\r)#', $queries);
@@ -922,9 +919,10 @@ function do_install()
 				$query = str_replace($table_names, $prefixed_table_names, $query);
 			}
 
-			if ( !sql_query($query) )
+			if ( DB::execute($query) === FALSE )
 			{
-				$errors[] = _INST_ERROR4 . ' (<small>' . $query . '</small>): ' . sql_error();
+				$errinfo = DB::getError();
+				$errors[] = _INST_ERROR4 . ' (<small>' . $query . '</small>): ' . $errinfo[2];
 			}
 		}
 	}
@@ -933,11 +931,18 @@ function do_install()
 	 * 6. put needed records
 	 */
 	/* push first post */
-	$query = "INSERT INTO %s VALUES (1, '%s', '%s', '%s', 1, 1, '%s', 0, 0, 0, 1, 0, 1)";
-	$query = sprintf($query, tableName('nucleus_item'), _1ST_POST_TITLE, _1ST_POST, _1ST_POST2, i18n::formatted_datetime('mysql', time()));
-	if ( !sql_query($query) )
+	$query = "INSERT INTO %s VALUES (1, %s, %s, %s, 1, 1, '%s', 0, 0, 0, 1, 0, 1)";
+	$query = sprintf($query,
+		tableName('nucleus_item'),
+		DB::quoteValue(_1ST_POST_TITLE),
+		DB::quoteValue(_1ST_POST),
+		DB::quoteValue(_1ST_POST2),
+		DB::formatDateTime(time())
+	);
+	if ( DB::execute($query) === FALSE )
 	{
-		$errors[] = _INST_ERROR4 . ' (<small>' . $newpost . '</small>): ' . sql_error();
+		$errinfo = DB::getError();
+		$errors[] = _INST_ERROR4 . ' (<small>' . $newpost . '</small>): ' . $errinfo[2];
 	}
 
 	/* push configurations */
@@ -951,40 +956,48 @@ function do_install()
 	array_merge($errors, updateConfig('SiteName', $param->blog_name));
 	array_merge($errors, updateConfig('Locale', i18n::get_current_locale()));
 
-	/* escape strings for SQL */
-	$user_name			= sql_real_escape_string($param->user_name);
-	$user_realname		= sql_real_escape_string($param->user_realname);
-	$user_password		= sql_real_escape_string(md5($param->user_password));
-	$user_email			= sql_real_escape_string($param->user_email);
-	$blog_name			= sql_real_escape_string($param->blog_name);
-	$blog_shortname		= sql_real_escape_string($param->blog_shortname);
-	$config_indexurl	= sql_real_escape_string($param->IndexURL);
-
 	/* push super admin */
-	$query = "UPDATE %s SET mname = '%s', mrealname = '%s', mpassword = '%s', memail = '%s', murl = '%s', madmin = 1, mcanlogin = 1 WHERE mnumber = 1";
-	$query = sprintf($query, tableName('nucleus_member'), $user_name, $user_realname, $user_password, $user_email, $config_indexurl);
-	if ( !sql_query($query) )
+	$query = "UPDATE %s SET mname = %s, mrealname = %s, mpassword = %s, memail = %s, murl = %s, madmin = 1, mcanlogin = 1 WHERE mnumber = 1";
+	$query = sprintf($query,
+		tableName('nucleus_member'),
+		DB::quoteValue($param->user_name),
+		DB::quoteValue($param->user_realname),
+		DB::quoteValue(md5($param->user_password)),
+		DB::quoteValue($param->user_email),
+		DB::quoteValue($param->IndexURL)
+	);
+	if ( DB::execute($query) === FALSE )
 	{
-		$errors[] = _INST_ERROR5 . ': ' . sql_error();
+		$errinfo = DB::getError();
+		$errors[] = _INST_ERROR5 . ': ' . $errinfo[2];
 	}
 
 	/* push new weblog */
-	$query = "UPDATE %s SET bname = '%s', bshortname = '%s', burl = '%s' WHERE bnumber = 1";
-	$query = sprintf($query, tableName('nucleus_blog'), $blog_name, $blog_shortname, $config_indexurl);
-	if ( !sql_query($query) )
+	$query = "UPDATE %s SET bname = %s, bshortname = %s, burl = %s WHERE bnumber = 1";
+	$query = sprintf($query,
+		tableName('nucleus_blog'),
+		DB::quoteValue($param->blog_name),
+		DB::quoteValue($param->blog_shortname),
+		DB::quoteValue($param->IndexURL)
+	);
+	if ( DB::execute($query) === FALSE )
 	{
-		$errors[] = _INST_ERROR6 . ': ' . sql_error();
+		$errinfo = DB::getError();
+		$errors[] = _INST_ERROR6 . ': ' . $errinfo[2];
 	}
 
 	/* push default category */
 	$query = "UPDATE %s SET cname = '%s', cdesc = '%s' WHERE catid = 1";
-	$query = sprintf($query, tableName('nucleus_category'), _GENERALCAT_NAME, _GENERALCAT_DESC);
-	if ( !sql_query($query) )
+	$query = sprintf($query,
+		tableName('nucleus_category'),
+		DB::quoteValue(_GENERALCAT_NAME),
+		DB::quoteValue(_GENERALCAT_DESC)
+	);
+	if ( DB::execute($query) === FALSE )
 	{
-		$errors[] = _INST_ERROR6 . ': ' . sql_error();
+		$errinfo = DB::getError();
+		$errors[] = _INST_ERROR6 . ': ' . $errinfo[2];
 	}
-
-	sql_disconnect();
 
 	/*
 	 * 7. install default plugins and skins
@@ -1003,25 +1016,23 @@ function do_install()
 		}
 
 		include_once($DIR_LIBS . 'skinie.php');
-
+		
 		$aSkinErrors = installCustomSkins();
 		if ( count($aSkinErrors) > 0 )
 		{
 			array_merge($errors, $aSkinErrors);
 		}
 
-		$query  = "SELECT sdnumber FROM %s WHERE sdname='default'";
-		$query = sprintf($query, tableName('nucleus_skin_desc'));
-		$res = sql_query($query);
-		$obj = sql_fetch_assoc($res);
-		$defSkinID = (integer) $obj['sdnumber'];
+		$query		= "SELECT sdnumber FROM %s WHERE sdname='default'";
+		$query		= sprintf($query, tableName('nucleus_skin_desc'));
+		$defSkinID	= intval(DB::getValue($query));
 
 		$query = "UPDATE %s SET bdefskin=%d WHERE bnumber=1";
 		$query = sprintf($query, tableName('nucleus_blog'), $defSkinID);
-		sql_query($query);
+		DB::execute($query);
 		$query = "UPDATE %s SET value=%d WHERE name='BaseSkin'";
 		$query = sprintf($query, tableName('nucleus_config'), $defSkinID);
-		sql_query($query);
+		DB::execute($query);
 
 		$aPlugErrors = installCustomPlugs();
 		if ( count($aPlugErrors) > 0 )
@@ -1044,7 +1055,7 @@ function do_install()
 	$config_data .= "// default is \$MYSQL_HANDLER = array('mysql','mysql');\n";
 	$config_data .= "//\$MYSQL_HANDLER = array('mysql','mysql');\n";
 	$config_data .= "//\$MYSQL_HANDLER = array('pdo','mysql');\n";
-	$config_data .= "\$MYSQL_HANDLER = array('".$MYSQL_HANDLER[0]."','".$MYSQL_HANDLER[1]."');\n";
+	$config_data .= "\$MYSQL_HANDLER = array('" . $MYSQL_HANDLER[0] . "','" . $MYSQL_HANDLER[1] . "');\n";
 	$config_data .= "\n";
 	$config_data .= "// main nucleus directory\n";
 	$config_data .= "\$DIR_NUCLEUS = '" . $DIR_NUCLEUS . "';\n";
@@ -1070,7 +1081,7 @@ function do_install()
 	{
 		if ( $fp = @fopen('../config.php', 'w') )
 		{
-			$result = @fwrite($fp, $config_data, i18n::strlen($config_data) );
+			$result = @fwrite($fp, $config_data, i18n::strlen($config_data));
 			fclose($fp);
 		}
 	}
@@ -1078,7 +1089,7 @@ function do_install()
 	if ( $result )
 	{
 		// try to change the read-only permission.
-		if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' )
+		if ( strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' )
 		{
 			@chmod('../config.php', 0444);
 		}
@@ -1100,7 +1111,7 @@ function canConfigFileWritable()
 	if ( @file_exists('../config.php') && @!is_writable('../config.php') )
 	{
 		// try to change the read-write permission.
-		if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' )
+		if ( strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' )
 		{
 			@chmod('../config.php', 0666);
 		}
@@ -1119,33 +1130,31 @@ function canConfigFileWritable()
  */
 function getMySqlVersion()
 {
-	global $minimum_mysql_version, $errors;
+	global $MYSQL_HANDLER, $minimum_mysql_version, $errors;
 	// Turn on output buffer
 	// Needed to repress the output of the sql function that are
 	// not part of php (in this case the @ operator doesn't work)
 	ob_start();
 
 	// note: this piece of code is taken from phpMyAdmin
-	$conn = sql_connect_args('localhost', '', '');
-	$result = @sql_query('SELECT VERSION() AS version', $conn);
+	$conn = @DB::setConnectionInfo($MYSQL_HANDLER[1], 'localhost', '', '');
 
-	if ( $result != FALSE && sql_num_rows($result) > 0 )
+	if ( $conn )
 	{
-		$row = sql_fetch_array($result);
-		$match = preg_split('#\.#', $row['version']);
+		$row = DB::getAttribute(PDO::ATTR_SERVER_VERSION);
+		$match = preg_split('#\.#', $row);
 	}
 	else
 	{
-		$result = @sql_query('SHOW VARIABLES LIKE \'version\'', $conn);
+		$row = @DB::getRow('SHOW VARIABLES LIKE \'version\'');
 
-		if ( $result != FALSE && @sql_num_rows($result) > 0 )
+		if ( $row )
 		{
-			$row = sql_fetch_row($result);
 			$match = preg_split('#\.#', $row[1]);
 		}
 		else
 		{
-			$output = ( function_exists('shell_exec') ) ? @shell_exec('mysql -V') : '0.0.0';
+			$output = (function_exists('shell_exec')) ? @shell_exec('mysql -V') : '0.0.0';
 			preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
 			$match = preg_split('#\.#', $version[0]);
 
@@ -1156,7 +1165,7 @@ function getMySqlVersion()
 		}
 	}
 
-	@sql_disconnect($conn);
+	@DB::disConnect();
 
 	//End and clean output buffer
 	ob_end_clean();
@@ -1196,13 +1205,17 @@ function installCustomPlugs()
 		return $aErrors;
 	}
 
-	$res = sql_query('SELECT * FROM ' . tableName('nucleus_plugin') );
-	$numCurrent = sql_num_rows($res);
+	$query = sprintf('SELECT * FROM %s', tableName('nucleus_plugin'));
+	$res = DB::getResult($query);
+	$numCurrent = $res->rowCount();
 
 	foreach ( $aConfPlugsToInstall as $plugName )
 	{
-		$query = 'INSERT INTO ' . tableName('nucleus_plugin') . ' (porder, pfile) VALUES (' . (++$numCurrent) . ", '" . sql_real_escape_string($plugName) . "')";
-		sql_query($query);
+		$query = sprintf('INSERT INTO %s (porder, pfile) VALUES (%d, %s)',
+			tableName('nucleus_plugin'),
+			(++$numCurrent),
+			DB::quoteValue($plugName));
+		DB::execute($query);
 
 		$manager->clearCachedInfo('installedPlugins');
 		$plugin =& $manager->getPlugin($plugName);
@@ -1210,28 +1223,36 @@ function installCustomPlugs()
 
 		if ( !$plugin )
 		{
-			sql_query('DELETE FROM ' . tableName('nucleus_plugin') . " WHERE pfile = '" . sql_real_escape_string($plugName) . "'");
+			$query = sprintf('DELETE FROM %s WHERE pfile = %s',
+				tableName('nucleus_plugin'),
+				DB::quoteValue($plugName));
+			DB::execute($query);
 			$numCurrent--;
-			array_push($aErrors, sprintf(_INST_ERROR9 ,$plugName));
+			array_push($aErrors, sprintf(_INST_ERROR9, $plugName));
 			continue;
 		}
 		$plugin->install();
 	}
 
-	sql_query('DELETE FROM ' . tableName('nucleus_plugin_event') );
-	$res = sql_query('SELECT pid, pfile FROM ' . tableName('nucleus_plugin') );
+	$query = sprintf('DELETE FROM %s', tableName('nucleus_plugin_event'));
+	DB::execute($query);
+	$query = sprintf('SELECT pid, pfile FROM %s', tableName('nucleus_plugin'));
+	$res = DB::getResult($query);
 
-	while ( $o = sql_fetch_object($res) )
+	foreach ( $res as $row )
 	{
-		$pid = $o->pid;
-		$plug =& $manager->getPlugin($o->pfile);
+		$plug =& $manager->getPlugin($row['pfile']);
 
 		if ( $plug )
 		{
 			$eventList = $plug->getEventList();
 			foreach ( $eventList as $eventName )
 			{
-				sql_query('INSERT INTO ' . tableName('nucleus_plugin_event') . ' (pid, event) VALUES (' . $pid . ", '" . $eventName . "')");
+				$query = sprintf('INSERT INTO %s (pid, event) VALUES (%d, %s)',
+					tableName('nucleus_plugin_event'),
+					intval($row['pid']),
+					DB::quoteValue($eventName));
+				DB::execute($query);
 			}
 		}
 	}
@@ -1284,7 +1305,6 @@ function installCustomSkins()
 	return $aErrors;
 }
 
-
 /**
  * Check if some important files of the Nucleus CMS installation are available
  * Give an error if one or more files are not accessible
@@ -1318,7 +1338,6 @@ function do_check_files()
 		'../nucleus/libs/MANAGER.php',
 		'../nucleus/libs/MEDIA.php',
 		'../nucleus/libs/MEMBER.php',
-		'../nucleus/libs/mysql.php',
 		'../nucleus/libs/NOTIFICATION.php',
 		'../nucleus/libs/PAGEFACTORY.php',
 		'../nucleus/libs/PARSER.php',
@@ -1331,7 +1350,8 @@ function do_check_files()
 		'../nucleus/libs/vars4.1.0.php',
 		'../nucleus/libs/xmlrpc.inc.php',
 		'../nucleus/libs/xmlrpcs.inc.php',
-		'../nucleus/libs/sql/mysql.php'
+		'../nucleus/libs/data/DB.php',
+		'../nucleus/libs/data/MYSQLPDO.php'
 	);
 
 	$count = count($files);
@@ -1339,16 +1359,15 @@ function do_check_files()
 	{
 		if ( !is_readable($files[$i]) )
 		{
-			array_push( $missingfiles, 'File <b>' . $files[$i] . '</b> is missing or not readable.<br />');
+			array_push($missingfiles, 'File <b>' . $files[$i] . '</b> is missing or not readable.<br />');
 		}
 	}
 
 	if ( count($missingfiles) > 0 )
 	{
-		exit(implode( "\n", $missingfiles));
+		exit(implode("\n", $missingfiles));
 	}
 }
-
 
 /**
  * Updates the configuration in the database
@@ -1360,19 +1379,17 @@ function do_check_files()
 function updateConfig($name, $value)
 {
 	$errors = array();
-	$name = sql_real_escape_string($name);
-	$value = trim(sql_real_escape_string($value) );
 
-	$query = "UPDATE %s SET value = '%s' WHERE name = '%s'";
-	$query = sprintf($query, tableName('nucleus_config'), $value, $name);
+	$query = "UPDATE %s SET value = %s WHERE name = %s";
+	$query = sprintf($query, tableName('nucleus_config'), DB::quoteValue(trim($value)), DB::quoteValue($name));
 
-	if ( !sql_query($query) )
+	if ( DB::execute($query) === FALSE )
 	{
-		$errors[] = _INST_ERROR4 . ': ' . sql_error();
+		$errinfo = DB::getError();
+		$errors[] = _INST_ERROR4 . ': ' . $errinfo[2];
 	}
 	return $errors;
 }
-
 
 class ParamManager
 {
@@ -1492,6 +1509,8 @@ class ParamManager
 
 	public function check_mysql_parameters()
 	{
+		global $MYSQL_HANDLER;
+		
 		$parameters = array('mysql_host', 'mysql_user', 'mysql_password', 'mysql_database', 'mysql_tablePrefix');
 		$this->read_parameter($parameters);
 
@@ -1531,14 +1550,14 @@ class ParamManager
 		
 		if ( count($errors) == 0 )
 		{
-			$mysql_conn = @sql_connect_args($this->mysql_host, $this->mysql_user, $this->mysql_password);
+			$mysql_conn = @DB::setConnectionInfo($MYSQL_HANDLER[1], $this->mysql_host, $this->mysql_user, $this->mysql_password);
 			if ( $mysql_conn == false )
 			{
 				$errors[] = _DBCONNECT_ERROR;
 			}
 			else
 			{
-				@sql_disconnect($mysql_conn);
+				@DB::disConnect();
 			}
 		}
 

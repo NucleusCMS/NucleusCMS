@@ -184,22 +184,31 @@ function _getUsersBlogs($username, $password) {
 			. ' FROM '.sql_table('blog').', '.sql_table('team')
 			. " WHERE tblog=bnumber and tmember=" . $mem->getID()
 			. " ORDER BY bname";
-	$r = sql_query($query);
-
-	while ($obj = sql_fetch_object($r)) {
-		if ($obj->burl)
+	$r = DB::getResult($query);
+	
+	foreach ( $r as $row )
+	{
+		if ( $row['burl'] )
+		{
+			$blogurl = $row['burl'];
+		}
+		if ( $obj->burl )
+		{
 			$blogurl = $obj->burl;
+		}
 		else
+		{
 			$blogurl = 'http://';
-
+		}
+		
 		$newstruct = new xmlrpcval(array(
-			"url" => new xmlrpcval($blogurl,"string"),
-			"blogid" => new xmlrpcval($obj->bnumber,"string"),
-			"blogName" => new xmlrpcval($obj->bname,"string")
+			"url"		=> new xmlrpcval($blogurl, "string"),
+			"blogid"	=> new xmlrpcval($row['bnumber'], "string"),
+			"blogName"	=> new xmlrpcval($row['bname'], "string")
 		),'struct');
 		array_push($structarray, $newstruct);
 	}
-
+	
 	return new xmlrpcresp(new xmlrpcval( $structarray , "array"));
 }
 

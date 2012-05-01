@@ -25,7 +25,7 @@ include_libs('PLUGINADMIN.php');
 // some functions
 function SE_unlockLogin($login)
 {
-	sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login='".sql_real_escape_string($login)."'");
+	DB::execute('DELETE FROM '.sql_table('plug_securityenforcer').' WHERE login='.DB::quoteValue($login));
 }
 	
 // create the admin area page
@@ -71,10 +71,10 @@ echo '<table>';
 echo '<tr><th>'._SECURITYENFORCER_ENTITY.'</th><th>'._SECURITYENFORCER_UNLOCK.'?</th></tr>';
 echo '<tr><td colspan="2" class="submit"><input type="submit" value="'._SECURITYENFORCER_UNLOCK.'" /></td></tr>';
 // do query to get all entries, loop
-$result = sql_query("SELECT * FROM ".sql_table("plug_securityenforcer")." WHERE fails >= ".$plug->max_failed_login);
-if ( sql_num_rows($result) )
+$result = DB::getResult("SELECT * FROM ".sql_table("plug_securityenforcer")." WHERE fails >= ".$plug->max_failed_login);
+if ( $result->rowCount() )
 {
-	while( $row = sql_fetch_assoc($result) )
+	foreach ( $result as $row )
 	{
 		echo '<tr>';
 		echo '<td>'.Entity::hsc($row['login']).'</td>';

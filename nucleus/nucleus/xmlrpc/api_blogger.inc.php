@@ -297,9 +297,9 @@
 			   ." WHERE iblog=$blogid and icat=catid and iauthor=mnumber"
 			   ." ORDER BY itime DESC"
 			   ." LIMIT $amount";
-		$r = sql_query($query);
+		$r = DB::getResult($query);
 
-		while ($row = sql_fetch_assoc($r)) {
+		foreach ( $r as $row ) {
 
 			// remove linebreaks if needed
 			if ($blog->convertBreaks())
