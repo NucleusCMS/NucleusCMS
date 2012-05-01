@@ -283,9 +283,10 @@ class BlogImport {
 		switch($what) {
 // ----------------------------------------------------------------------------------------
 			case 'NucleusMemberOptions':
-				$res = sql_query('SELECT mname as text, mnumber as value FROM '.sql_table('member'));
-				while ($o = mysql_fetch_object($res)) {
-					echo '<option value="'.Entity::hsc($o->value).'">'.Entity::hsc($o->text).'</option>';
+				$res = DB::getResult('SELECT mname as text, mnumber as value FROM '.sql_table('member'));
+				foreach ( $res as $row )
+				{
+					echo '<option value="'.Entity::hsc($row['value']).'">'.Entity::hsc($row['text']).'</option>';
 				}
 				break;
 // ----------------------------------------------------------------------------------------
@@ -803,9 +804,12 @@ class BlogImport {
 		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IKARMAPOS, IKARMANEG, ICAT) '
 			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $karmapos, $karmaneg,  $category)";
 
-		mysql_query($query) or die("Error while executing query: " . $query);
+		if ( DB::execute($query) === FALSE )
+		{
+			die("Error while executing query: " . $query);
+		}
 
-		return mysql_insert_id();
+		return DB::getInsertId();
 	}
 
 	function sql_addToBlog($name, $shortname, $ownerid) {
@@ -813,15 +817,18 @@ class BlogImport {
 		$shortname 	= addslashes($shortname);
 
 		// create new category first
-		mysql_query('INSERT INTO '.sql_table('category')." (CNAME, CDESC) VALUES ('General','Items that do not fit in another category')");
-		$defcat = mysql_insert_id();
+		DB::execute('INSERT INTO '.sql_table('category')." (CNAME, CDESC) VALUES ('General','Items that do not fit in another category')");
+		$defcat = DB::getInsertId();
 
 		$query = 'INSERT INTO '.sql_table('blog')." (BNAME, BSHORTNAME, BCOMMENTS, BMAXCOMMENTS, BDEFCAT) VALUES ('$name','$shortname',1 ,0, $defcat)";
-		mysql_query($query) or die("Error while executing query: " . $query);
-		$id = mysql_insert_id();
+		if ( DB::execute($query) === FALSE )
+		{
+			die("Error while executing query: " . $query);
+		}
+		$id = DB::getInsertId();
 
 		// update category row so it links to blog
-		mysql_query('UPDATE ' . sql_table('category') . ' SET cblog=' . intval($id). ' WHERE catid=' . intval($defcat));
+		DB::execute('UPDATE ' . sql_table('category') . ' SET cblog=' . intval($id). ' WHERE catid=' . intval($defcat));
 
 		BlogImport::sql_addToTeam($id,$ownerid,1);
 
@@ -841,9 +848,12 @@ class BlogImport {
 			   . ' (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CBLOG, CIP) '
 			   . "VALUES ('$name', '$url', $memberid, '$body', $itemid, '$timestamp', '$host', $blogid, '$ip')";
 
-		mysql_query($query) or die("Error while executing query: " . $query);
+		if ( DB::execute($query) === FALSE )
+		{
+			die("Error while executing query: " . $query);
+		}
 
-		return mysql_insert_id();
+		return DB::getInsertId();
 	}
 
 	function sql_addToTeam($blogid, $memberid, $admin) {
@@ -851,12 +861,13 @@ class BlogImport {
 		$query = 'INSERT INTO '.sql_table('team').' (TMEMBER, TBLOG, TADMIN) '
 			   . "VALUES ($memberid, $blogid, $admin)";
 
-		mysql_query($query) or die("Error while executing query: " . $query);
+		if ( DB::execute($query) === FALSE )
+		{
+			die("Error while executing query: " . $query);
+		}
 
-		return mysql_insert_id();
+		return DB::getInsertId();
 	}
-
-
 
 }
 
@@ -889,9 +900,12 @@ if ($ver > 250)
 		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IKARMAPOS, IKARMANEG, ICAT) '
 			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $karmapos, $karmaneg,  $category)";
 
-		mysql_query($query) or die("Error while executing query: " . $query);
+		if ( DB::execute($query) === FALSE )
+		{
+			die("Error while executing query: " . $query);
+		}
 
-		return mysql_insert_id();
+		return DB::getInsertId();
 	}
 
 
@@ -901,15 +915,17 @@ if ($ver > 250)
 		$shortname = addslashes($shortname);
 
 		// create new category first
-		mysql_query('INSERT INTO '.sql_table('category')." (CNAME, CDESC) VALUES ('General','Items that do not fit in another categort')");
-		$defcat = mysql_insert_id();
+		DB::execute('INSERT INTO '.sql_table('category')." (CNAME, CDESC) VALUES ('General','Items that do not fit in another categort')");
+		$defcat = DB::getInsertId();
 
 		$query = 'INSERT INTO '.sql_table('blog')." (BNAME, BSHORTNAME, BCOMMENTS, BMAXCOMMENTS, BDEFCAT) VALUES ('$name','$shortname',1 ,0, $defcat)";
-		mysql_query($query) or die("Error while executing query: " . $query);
-		$id = mysql_insert_id();
+		if ( DB::execute($query) === FALSE )
+		{
+			die("Error while executing query: " . $query);
+		}
+		$id = DB::getInsertId();
 
 		convert_addToTeam($id,$ownerid,1);
-
 
 		return $id;
 	}
@@ -926,9 +942,12 @@ if ($ver > 250)
 			   . ' (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CBLOG, CIP) '
 			   . "VALUES ('$name', '$url', $memberid, '$body', $itemid, '$timestamp', '$host', $blogid, '$ip')";
 
-		mysql_query($query) or die("Error while executing query: " . $query);
+		if ( DB::execute($query) === FALSE )
+		{
+			die("Error while executing query: " . $query);
+		}
 
-		return mysql_insert_id();
+		return DB::getInsertId();
 	}
 
 	// TODO: remove this function (replaced by BlogImport::sql_addToTeam)
@@ -937,9 +956,12 @@ if ($ver > 250)
 		$query = 'INSERT INTO '.sql_table('team').' (TMEMBER, TBLOG, TADMIN) '
 			   . "VALUES ($memberid, $blogid, $admin)";
 
-		mysql_query($query) or die("Error while executing query: " . $query);
-
-		return mysql_insert_id();
+		if ( DB::execute($query) === FALSE )
+		{
+			die("Error while executing query: " . $query);
+		}
+		
+		return DB::getInsertId();
 	}
 
 	function convert_showLogin($type) {
