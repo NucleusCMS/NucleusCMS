@@ -54,11 +54,11 @@ function upgrade_do150() {
 		upgrade_query('Adding cblog column in table nucleus_comment',$query);
 
 		$query = 'SELECT inumber, iblog FROM '.sql_table('item').', '.sql_table('comment').' WHERE inumber=citem AND cblog=0';
-		$res = sql_query($query);
+		$res = DB::getResult($query);
 
-		while($o = mysql_fetch_object($res)) {
-			$query = 'UPDATE '.sql_table('comment')." SET cblog='".$o->iblog."' WHERE citem='".$o->inumber."'";
-			upgrade_query('Filling cblog column for item ' . $o->inumber, $query);
+		foreach ( $res as $row ) {
+			$query = 'UPDATE '.sql_table('comment')." SET cblog='".$row['iblog']."' WHERE citem='".$row['inumber']."'";
+			upgrade_query('Filling cblog column for item ' . $row['inumber'], $query);
 		}
 	}	
 	
@@ -72,9 +72,9 @@ function upgrade_do150() {
 	
 	// add 'EDITLINK' to all templates
 	$query = 'SELECT tdnumber FROM '.sql_table('template_desc');
-	$res = sql_query($query);	// get all template ids
-	while ($obj = mysql_fetch_object($res)) {
-		$tid = $obj->tdnumber; 	// template id
+	$res = DB::getResult($query);	// get all template ids
+	foreach ( $res as $row ) {
+		$tid = $row['tdnumber']; 	// template id
 	
 		$query = 'INSERT INTO '.sql_table('template')." VALUES ($tid, 'EDITLINK', '<a href=\"<%editlink%>\" onclick=\"<%editpopupcode%>\">edit</a>');";
 		upgrade_query("Adding editlink code to template $tid",$query);
@@ -82,21 +82,22 @@ function upgrade_do150() {
 	}
 	
 	// in templates: update DATE_HEADER templates
-	$res = sql_query('SELECT * FROM '.sql_table('template').' WHERE tpartname=\'DATE_HEADER\'');
-	while ($o = mysql_fetch_object($res)) {
-		$newval = str_replace('<%daylink%>','<%%daylink%%>',$o->tcontent);
-		$query = 'UPDATE '.sql_table('template').' SET tcontent=\''. addslashes($newval).'\' WHERE tdesc=' . $o->tdesc . ' AND tpartname=\'DATE_HEADER\'';
-		upgrade_query('Updating DATE_HEADER part in template ' . $o->tdesc, $query);
+	$res = DB::getResult('SELECT * FROM '.sql_table('template').' WHERE tpartname=\'DATE_HEADER\'');
+	foreach ( $res as $row ) {
+		$newval = str_replace('<%daylink%>','<%%daylink%%>',$row['tcontent']);
+		$query = 'UPDATE '.sql_table('template').' SET tcontent=\''. addslashes($newval).'\' WHERE tdesc=' . $row['tdesc'] . ' AND tpartname=\'DATE_HEADER\'';
+		upgrade_query('Updating DATE_HEADER part in template ' . $row['tdesc'], $query);
 	}
 	
 	// in templates: add 'comments'-templatevar to all non-empty ITEM templates	
-	$res = sql_query('SELECT * FROM '.sql_table('template').' WHERE tpartname=\'ITEM\'');
-	while ($o = mysql_fetch_object($res)) {
-		if ( i18n::strpos($o->tcontent,'<%comments%>') === FALSE)
+	$res = DB::getResult('SELECT * FROM '.sql_table('template').' WHERE tpartname=\'ITEM\'');
+	foreach ( $res as $row )
+	{
+		if ( i18n::strpos($o->tcontent,'<%comments%>') === FALSE )
 		{
-			$newval = $o->tcontent . '<%comments%>';
-			$query = 'UPDATE '.sql_table('template').' SET tcontent=\''. addslashes($newval).'\' WHERE tdesc=' . $o->tdesc . ' AND tpartname=\'ITEM\'';
-			upgrade_query('Updating ITEM part in template ' . $o->tdesc, $query);
+			$newval = $row['tcontent'] . '<%comments%>';
+			$query = 'UPDATE '.sql_table('template').' SET tcontent=\''. addslashes($newval).'\' WHERE tdesc=' . $row['tdesc'] . ' AND tpartname=\'ITEM\'';
+			upgrade_query('Updating ITEM part in template ' . $row['tdesc'], $query);
 		}
 	}
 

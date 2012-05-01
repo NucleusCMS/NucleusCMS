@@ -21,7 +21,7 @@
 	 */
 
 	/*************************************************************
-	 *     NOTE: With upgrade to 3.6, need to set this to use sql_* API
+	 * NOTE: With upgrade to 4.0, need to set this to use DB::* API
 	 **************************************************************/
 
 	include('../../config.php');
@@ -147,8 +147,8 @@
 			break;
 		}
 
-		$result = mysql_query($query);
-		$installed = ( $result != 0 ) && (mysql_num_rows($result) >= $minrows);
+		$result = DB::getResult($query);
+		$installed = ( $result !== FALSE ) && ($result->rowCount() >= $minrows);
 
 		return $installed;
 	}
@@ -302,13 +302,14 @@
 		echo "<li> $friendly &mdash; ";
 
 		# execute the query
-		$result = @mysql_query($query);
+		$result = @DB::execute($query);
 
 		// begin if: error executing query
 		if ( $result === FALSE )
 		{
 			echo '<span class="warning"> FAILED </span> <br />';
-			echo 'Error: <code>', mysql_error(), '</code>';
+			$err = DB::getError();
+			echo 'Error: <code>', $err[2], '</code>';
 			$upgrade_failures++;
 		}
 		// else: query was successful
@@ -364,19 +365,19 @@
 		$indices = array();
 
 		$query = 'SHOW INDEX FROM ' . sql_table($table);
-		$result = @mysql_query($query);
+		$result = @DB::getResult($query);
 
 		// begin loop: each result object
-		while ( $object = mysql_fetch_object($result) )
+		foreach ( $result as $row )
 		{
 
 			// begin if: key has not been added to the indeces array yet
-			if ( !isset($indices[$object->Key_name]) )
+			if ( !isset($indices[$row['Key_name']]) )
 			{
-				$indices[$object->Key_name] = array();
+				$indices[$row['Key_name']] = array();
 			} // end if
 
-			array_push($indices[$object->Key_name], $object->Column_name);
+			array_push($indices[$row['Key_name']], $row['Column_name']);
 		}
 
 		// compare each index with parameter
@@ -404,10 +405,10 @@
 	function upgrade_checkIfTableExists($table)
 	{
 		$query = 'SHOW TABLES LIKE ' . sql_table($table);
-		$result = @mysql_query($query);
+		$result = DB::getResult($query);
 
 		// begin if: query executed successfully and one row was returned
-		if ( ($result !== FALSE) && (@mysql_num_rows($result) == 1) )
+		if ( ($result !== FALSE) && ($result->rowCount() == 1) )
 		{
 			return TRUE;
 		}
@@ -429,10 +430,10 @@
 	function upgrade_checkIfCVExists($value)
 	{
 		$query = 'SELECT name FROM ' . sql_table('config') . ' WHERE name = "' . $value . '"';
-		$result = @mysql_query($query);
+		$result = DB::getResult($query);
 
 		// begin if: query executed successfully and one row was returned
-		if ( ($result !== FALSE) && (@mysql_num_rows($result) == 1) )
+		if ( ($result !== FALSE) && ($result->rowCount() == 1) )
 		{
 			return TRUE;
 		}
@@ -455,10 +456,10 @@
 	function upgrade_checkIfColumnExists($table, $column)
 	{
 		$query = 'DESC ' . sql_table($table) . ' ' . $column;
-		$result = @mysql_query($query);
+		$result = DB::getResult($query);
 
 		// begin if: query executed successfully and one row was returned
-		if ( ($result !== FALSE) && (@mysql_num_rows($result) == 1) )
+		if ( ($result !== FALSE) && ($result->rowCount() == 1) )
 		{
 			return TRUE;
 		}

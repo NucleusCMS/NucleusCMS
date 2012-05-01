@@ -25,10 +25,10 @@ function upgrade_do400()
 	/* config.Language to config.Locale  */
 	if ( !upgrade_checkIfColumnExists('config','Locale') )
 	{
-		$res = sql_query("SELECT * FROM " . sql_table('config') . " WHERE name='Language'");
-		while ( $o = mysql_fetch_object($res) )
+		$res = DB::getResult("SELECT * FROM " . sql_table('config') . " WHERE name='Language'");
+		foreach ( $res as $row )
 		{
-			$locale = $o->Language;
+			$locale = $row['Language'];
 		}
 		$query = 'INSERT INTO ' . sql_table('config') . " (name, value) VALUE('Locale', '{$locale}');";
 		upgrade_query("Renaming Language for configs to Locale", $query);
