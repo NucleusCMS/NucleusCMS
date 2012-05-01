@@ -98,15 +98,15 @@ class Item
 		if ( !$allow_future )
 		{
 			$blog =& $manager->getBlog(getBlogIDFromItemID($item_id));
-			$query .= "AND i.itime <= '" . i18n::formatted_datetime('mysql', $blog->getCorrectTime()) ."'";
+			$query .= "AND i.itime <= '" . DB::formatDateTime($blog->getCorrectTime()) ."'";
 		}
 		
 		$query .= ' LIMIT 1';
-		$result = sql_query($query);
+		$result = DB::getResult($query);
 		
-		if ( sql_num_rows($result) == 1 )
+		if ( $result->rowCount() == 1 )
 		{
-			$aItemInfo = sql_fetch_assoc($result);
+			$aItemInfo = $result->fetch(PDO::FETCH_ASSOC);
 			$aItemInfo['timestamp'] = strtotime($aItemInfo['itime']);
 			return $aItemInfo;
 		}
@@ -313,11 +313,11 @@ class Item
 		// update item itself
 		$query =  'UPDATE ' . sql_table('item')
 				. ' SET'
-				. " ibody = '" . sql_real_escape_string($body) . "',"
-				. " ititle = '" . sql_real_escape_string($title) . "',"
-				. " imore = '" . sql_real_escape_string($more) . "',"
-				. " iclosed = " . intval($closed) . ","
-				. " icat = " . intval($catid);
+				. ' ibody = ' . DB::quoteValue($body) . ','
+				. ' ititle = ' . DB::quoteValue($title) . ','
+				. ' imore = ' . DB::quoteValue($more) . ','
+				. ' iclosed = ' . intval($closed) . ','
+				. ' icat = ' . intval($catid);
 		
 		// if we received an updated timestamp that is in the past, but past posting is not allowed, reject that date change (timestamp = 0 will make sure the current date is kept)
 		if ( (!$blog->allowPastPosting()) && ($timestamp < $blog->getCorrectTime()) )
@@ -361,20 +361,20 @@ class Item
 		{
 			$query .= ', idraft = 1';
 			// set timestamp back to zero for a draft
-			$query .= ", itime = '" . i18n::formatted_datetime('mysql', $timestamp) ."'";
+			$query .= ", itime = '" . DB::formatDateTime($timestamp) ."'";
 		}
 		
 		// update timestamp when needed
 		if ( $timestamp != 0 )
 		{
-			$query .= ", itime = '" . i18n::formatted_datetime('mysql', $timestamp) ."'";
+			$query .= ", itime = '" . DB::formatDateTime($timestamp) ."'";
 		}
 		
 		// make sure the correct item is updated
 		$query .= ' WHERE inumber = ' . $itemid;
 		
 		// off we go!
-		sql_query($query);
+		DB::execute($query);
 		
 		$manager->notify('PostUpdateItem', array('itemid' => $itemid));
 		
@@ -431,12 +431,12 @@ class Item
 		// update item table
 		$query = "UPDATE %s SET iblog=%d, icat=%d WHERE inumber=%d";
 		$query = sprintf($query, sql_table('item'), $new_blogid, $new_catid, $itemid);
-		sql_query($query);
+		DB::execute($query);
 		
 		// update comments
 		$query = "UPDATE %s SET cblog=%d WHERE citem=%d";
 		$query = sprintf($query, sql_table('comment'), $new_blogid, $itemid);
-		sql_query($query);
+		DB::execute($query);
 		
 		$manager->notify(
 			'PostMoveItem',
@@ -473,12 +473,12 @@ class Item
 		// delete item
 		$query = "DELETE FROM %s WHERE inumber=%d";
 		$query = sprintf($query, sql_table('item'), $itemid);
-		sql_query($query);
+		DB::execute($query);
 		
 		// delete the comments associated with the item
 		$query = "DELETE FROM %s WHERE citem=%d";
 		$query = sprintf($query, sql_table('comment'), $itemid);
-		sql_query($query);
+		DB::execute($query);
 		
 		// delete all associated plugin options
 		NucleusPlugin::delete_option_values('item', $itemid);
@@ -514,14 +514,14 @@ class Item
 				return 0;
 			}
 			$blog =& $manager->getBlog($blogid);
-			$query .= " and itime<='" . i18n::formatted_datetime('mysql', $blog->getCorrectTime()) ."'";
+			$query .= " and itime<='" . DB::formatDateTime($blog->getCorrectTime()) ."'";
 		}
 		if ( !$draft )
 		{
 			$query .= ' and idraft=0';
 		}
-		$result = sql_query($query);
-		return ( sql_num_rows($result) != 0 );
+		$result = DB::getResult($query);
+		return ( $result->rowCount() != 0 );
 	}
 	
 	/**

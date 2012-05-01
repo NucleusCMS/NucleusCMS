@@ -28,13 +28,16 @@ class Ban
 	public function isBanned($blogid, $ip)
 	{
 		$blogid = intval($blogid);
-		$query = 'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid;
-		$res = sql_query($query);
-		while ($obj = sql_fetch_object($res)) {
-			$found = i18n::strpos ($ip, $obj->iprange);
-			if (!($found === false))
+		$query = sprintf('SELECT * FROM %s WHERE blogid=%d', sql_table('ban'), intval($blogid));
+		$res = DB::getResult($query);
+		foreach ( $res as $row )
+		{
+			$found = i18n::strpos ($ip, $row['iprange']);
+			if ( $found !== false )
+			{
 				// found a match!
-					return new BanInfo($obj->iprange, $obj->reason);
+				return new BanInfo($row['iprange'], $row['reason']);
+			}
 		}
 		return 0;
 	}
@@ -53,8 +56,6 @@ class Ban
 	{
 		global $manager;
 		
-		$blogid = intval($blogid);
-		
 		$manager->notify(
 			'PreAddBan',
 			array(
@@ -64,9 +65,9 @@ class Ban
 			)
 		);
 		
-		$query = "INSERT INTO %s (blogid, iprange, reason) VALUES (%d, '%s', '%s')";
-		$query = sprintf($query, sql_table('ban'), $blogid, sql_real_escape_string($iprange), sql_real_escape_string($reason));
-		$res = sql_query($query);
+		$query = 'INSERT INTO %s (blogid, iprange, reason) VALUES (%d, %s, %s)';
+		$query = sprintf($query, sql_table('ban'), intval($blogid), DB::quoteValue($iprange), DB::quoteValue($reason));
+		$res = DB::execute($query);
 		
 		$manager->notify(
 			'PostAddBan',
@@ -76,7 +77,8 @@ class Ban
 				'reason' => $reason
 			)
 		);
-		return $res ? 1 : 0;
+		
+		return $res !== FALSE ? 1 : 0;
 	}
 	
 	/**
@@ -86,18 +88,28 @@ class Ban
 	public function removeBan($blogid, $iprange)
 	{
 		global $manager;
-		$blogid = intval($blogid);
 		
-		$manager->notify('PreDeleteBan', array('blogid' => $blogid, 'range' => $iprange));
+		$manager->notify(
+			'PreDeleteBan',
+			array(
+				'blogid' => $blogid,
+				'range' => $iprange
+			)
+		);
 		
-		$query = 'DELETE FROM '.sql_table('ban')." WHERE blogid=$blogid and iprange='" .sql_real_escape_string($iprange). "'";
-		sql_query($query);
+		$query = 'DELETE FROM %s WHERE blogid=%d and iprange=%s';
+		$query = sprintf($query, sql_table('ban'), intval($blogid), DB::quoteValue($iprange));
+		$res = DB::execute($query);
 		
-		$result = (sql_affected_rows() > 0);
+		$manager->notify(
+			'PostDeleteBan',
+			array(
+				'blogid' => $blogid,
+				'range' => $iprange
+			)
+		);
 		
-		$manager->notify('PostDeleteBan', array('blogid' => $blogid, 'range' => $iprange));
-		
-		return $result;
+		return $res !== FALSE ? 1 : 0;
 	}
 }
 

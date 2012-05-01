@@ -45,9 +45,7 @@ class Comment
 		       . ' WHERE cnumber = %d;';
 		
 		$query = sprintf($query, sql_table('comment'), sql_table('member'), (integer) $commentid);
-		$comments = sql_query($query);
-		
-		$aCommentInfo = sql_fetch_assoc($comments);
+		$aCommentInfo = DB::getRow($query);
 		
 		if ( $aCommentInfo )
 		{

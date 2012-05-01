@@ -99,7 +99,7 @@ class Blog
 			$timestamp_end = mktime(0,0,0,$month,$day+1,$year);
 		}
 		$extra_query = " and i.itime>='%s' and i.itime<'%s'";
-		$extra_query = sprintf($extra_query, i18n::formatted_datetime('mysql', $timestamp_start), i18n::formatted_datetime('mysql', $timestamp_end));
+		$extra_query = sprintf($extra_query, DB::formatDateTime($timestamp_start), DB::formatDateTime($timestamp_end));
 		
 		$this->readLogAmount($templatename,0,$extra_query,'',1,1);
 		return;
@@ -195,13 +195,13 @@ class Blog
 		$handler->setShowComments($comments);
 		
 		// execute query
-		$items = sql_query($query);
+		$items = DB::getResult($query);
 		
 		// loop over all items
 		$old_date = 0;
-		while ( $item = sql_fetch_object($items) )
+		foreach ( $items as $item )
 		{
-			$item->timestamp = strtotime($item->itime);	// string timestamp -> unix timestamp
+			$item['timestamp'] = strtotime($item['itime']);	// string timestamp -> unix timestamp
 			
 			// action handler needs to know the item we're handling
 			$handler->setCurrentItem($item);
@@ -209,23 +209,23 @@ class Blog
 			// add date header if needed
 			if ( $dateheads )
 			{
-				$new_date = date('dFY',$item->timestamp);
+				$new_date = date('dFY', $item['timestamp']);
 				if ( $new_date != $old_date )
 				{
 					// unless this is the first time, write date footer
-					$timestamp = $item->timestamp;
+					$timestamp = $item['timestamp'];
 					if ( $old_date != 0 )
 					{
 						$oldTS = strtotime($old_date);
 						$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
 						
-						if ( !in_array('DATE_FOOTER', $template) || !empty($template['DATE_FOOTER']) )
+						if ( in_array('DATE_FOOTER', $template) && !empty($template['DATE_FOOTER']) )
 						{
-							$tmp_footer = i18n::formatted_datetime('', $oldTS);
+							$tmp_footer = i18n::formatted_datetime($template['DATE_FOOTER'], $oldTS);
 						}
 						else
 						{
-							$tmp_footer = i18n::formatted_datetime($template['DATE_FOOTER'], $oldTS);
+							$tmp_footer = '';
 						}
 						$parser->parse($tmp_footer);
 						$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
@@ -235,15 +235,14 @@ class Blog
 					
 					// note, to use templatvars in the dateheader, the %-characters need to be doubled in
 					// order to be preserved by strftime
-					if ( !in_array('DATE_HEADER', $template) || !empty($template['DATE_HEADER']) )
+					if ( in_array('DATE_HEADER', $template) && !empty($template['DATE_HEADER']) )
 					{
-						$tmp_footer = i18n::formatted_datetime('', $timestamp);
+						$tmp_header = i18n::formatted_datetime($template['DATE_HEADER'], $timestamp);
 					}
 					else
 					{
-						$tmp_footer = i18n::formatted_datetime($template['DATE_FOOTER'], $timestamp);
+						$tmp_header = '';
 					}
-					
 					$parser->parse($tmp_header);
 					$manager->notify('PostDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
 				}
@@ -258,7 +257,7 @@ class Blog
 			$parser->parse($template['ITEM_FOOTER']);
 		}
 		
-		$numrows = sql_num_rows($items);
+		$numrows = $items->rowCount();
 		
 		// add another date footer if there was at least one item
 		if ( ($numrows > 0) && $dateheads )
@@ -268,7 +267,7 @@ class Blog
 			$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));
 		}
 		
-		sql_free_result($items);
+		$items->closeCursor();
 		return $numrows;
 	}
 	
@@ -339,14 +338,14 @@ class Blog
 		
 		$manager->notify('PreAddItem',array('title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => &$this, 'authorid' => &$authorid, 'timestamp' => &$timestamp, 'closed' => &$closed, 'draft' => &$draft, 'catid' => &$catid));
 		
-		$ititle = sql_real_escape_string($title);
-		$ibody = sql_real_escape_string($body);
-		$imore = sql_real_escape_string($more);
+		$ititle = DB::quoteValue($title);
+		$ibody = DB::quoteValue($body);
+		$imore = DB::quoteValue($more);
 		
-		$query = "INSERT INTO %s (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) VALUES ('%s', '%s', '%s', %d, %d, '%s', %s, %s, %s, %s)";
+		$query = "INSERT INTO %s (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) VALUES (%s, %s, %s, %d, %d, '%s', %s, %s, %s, %s)";
 		$query = sprintf($query, sql_table('item'), $ititle, $ibody, $imore, $blogid, $authorid, $timestamp, $closed, $draft, $catid, $posted);
-		sql_query($query);
-		$itemid = sql_insert_id();
+		DB::execute($query);
+		$itemid = DB::getInsertId();
 		
 		$manager->notify('PostAddItem',array('itemid' => $itemid));
 		
@@ -427,11 +426,11 @@ class Blog
 				$catName = _CREATED_NEW_CATEGORY_NAME;
 				$i = 1;
 				
-				$res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
-				while ( sql_num_rows($res) > 0 )
+				$res = DB::getResult('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
+				while ( $res->rowCount() > 0 )
 				{
 					$i++;
-					$res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
+					$res = DB::getResult('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
 				}
 				
 				$catName = $catName . $i;
@@ -446,10 +445,10 @@ class Blog
 				)
 			);
 			
-			$query = "INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, '%s', '%s')";
-			$query = sprintf($query, sql_table('category'), (integer) $this->getID(), sql_real_escape_string($catName), sql_real_escape_string($catDescription));
-			sql_query($query);
-			$catid = sql_insert_id();
+			$query = "INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, %s, %s)";
+			$query = sprintf($query, sql_table('category'), (integer) $this->getID(), DB::quoteValue($catName), DB::quoteValue($catDescription));
+			DB::execute($query);
+			$catid = DB::getInsertId();
 			
 			$manager->notify(
 				'PostAddCategory',
@@ -576,7 +575,7 @@ class Blog
 				. ' and i.idraft=0'
 				. $selectblogs
 					// don't show future items
-				. ' and i.itime<="' . i18n::formatted_datetime('mysql', $this->getCorrectTime()) . '"'
+				. ' and i.itime<="' . DB::formatDateTime($this->getCorrectTime()) . '"'
 				. ' and '.$where;
 
 		// take into account amount of months to search
@@ -584,7 +583,7 @@ class Blog
 		{
 			$localtime = getdate($this->getCorrectTime());
 			$timestamp_start = mktime(0,0,0,$localtime['mon'] - $amountMonths,1,$localtime['year']);
-			$query .= ' and i.itime>"' . i18n::formatted_datetime('mysql', $timestamp_start) . '"';
+			$query .= ' and i.itime>"' . DB::formatDateTime($timestamp_start) . '"';
 		}
 		
 		if ( $mode == '' )
@@ -631,7 +630,7 @@ class Blog
 				// exclude drafts
 				. ' and i.idraft=0'
 				// don't show future items
-				. ' and i.itime<="' . i18n::formatted_datetime('mysql', $this->getCorrectTime()) . '"';
+				. ' and i.itime<="' . DB::formatDateTime($this->getCorrectTime()) . '"';
 		
 		if ( $this->getSelectedCategory() )
 		{
@@ -688,7 +687,7 @@ class Blog
 				. ' FROM '.sql_table('item')
 				. ' WHERE iblog=' . $this->getID()
 				// don't show future items!
-				. ' AND itime <="' . i18n::formatted_datetime('mysql', $this->getCorrectTime()) . '"'
+				. ' AND itime <="' . DB::formatDateTime($this->getCorrectTime()) . '"'
 				// don't show draft items
 				. ' AND idraft=0';
 		
@@ -714,23 +713,23 @@ class Blog
 			$query .= ' LIMIT ' . intval($limit);
 		}
 		
-		$res = sql_query($query);
-		while ( $current = sql_fetch_object($res) )
+		$res = DB::getResult($query);
+		foreach ( $res as $current )
 		{
 			/* string time -> unix timestamp */
-			$current->itime = strtotime($current->itime);
+			$current['itime'] = strtotime($current['itime']);
 			
 			if ( $mode == 'day' )
 			{
-				$archivedate = date('Y-m-d',$current->itime);
-				$archive['day'] = date('d',$current->itime);
-				$data['day'] = date('d',$current->itime);
-				$data['month'] = date('m',$current->itime);
+				$archivedate = date('Y-m-d',$current['itime']);
+				$archive['day'] = date('d',$current['itime']);
+				$data['day'] = date('d',$current['itime']);
+				$data['month'] = date('m',$current['itime']);
 				$archive['month'] = $data['month'];
 			}
 			elseif ( $mode == 'year' )
 			{
-				$archivedate = date('Y',$current->itime);
+				$archivedate = date('Y',$current['itime']);
 				$data['day'] = '';
 				$data['month'] = '';
 				$archive['day'] = '';
@@ -738,14 +737,14 @@ class Blog
 			}
 			else
 			{
-				$archivedate = date('Y-m',$current->itime);
-				$data['month'] = date('m',$current->itime);
+				$archivedate = date('Y-m',$current['itime']);
+				$data['month'] = date('m',$current['itime']);
 				$archive['month'] = $data['month'];
 				$data['day'] = '';
 				$archive['day'] = '';
 			}
 			
-			$data['year'] = date('Y',$current->itime);
+			$data['year'] = date('Y',$current['itime']);
 			$archive['year'] = $data['year'];
 			$data['archivelink'] = Link::create_archive_link($this->getID(),$archivedate,$linkparams);
 			
@@ -756,17 +755,12 @@ class Blog
 				)
 			);
 			
-			// replace variables of form %variable%, i.e. normal nucleus variables
 			$temp = Template::fill($template['ARCHIVELIST_LISTITEM'],$data);
-			// replace time format variables
-			$temp = i18n::formatted_datetime($temp, $current->itime);
-			//replace variables of form %%variable%%, like for a plugin using PreArchiveListItem and adding large number of characters
-			// that would mess up the 1023 character limit on strftime()
-			$temp = Template::fill($temp,$data);
-			echo $temp;
+			echo i18n::formatted_datetime($temp, $current['itime']);
+			return;
 		}
 		
-		sql_free_result($res);
+		$res->closeCursor();
 		
 		if ( !array_key_exists('ARCHIVELIST_FOOTER', $template) || !$template['ARCHIVELIST_FOOTER'] )
 		{
@@ -849,9 +843,9 @@ class Blog
 		
 		$query = "SELECT catid, cdesc as catdesc, cname as catname FROM %s WHERE cblog=%d ORDER BY cname ASC;";
 		$query = sprintf($query, sql_table('category'), (integer) $this->getID());
-		$res = sql_query($query);
+		$res = DB::getResult($query);
 		
-		while ( $data = sql_fetch_assoc($res) )
+		foreach ( $res as $data )
 		{
 			$args = array(
 				'catid'	=> $data['catid'],
@@ -908,7 +902,7 @@ class Blog
 			}
 		}
 		
-		sql_free_result($res);
+		$res->closeCursor();
 		
 		$args = array(
 			'blogid'	=> $this->getID(),
@@ -990,9 +984,9 @@ class Blog
 		);
 		
 		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY '.$orderby.' '.$direction;
-		$res = sql_query($query);
+		$res = DB::getResult($query);
 		
-		while ( $data = sql_fetch_assoc($res) )
+		foreach ( $res as $data )
 		{
 			$list = array();
 			$list['bloglink'] = Link::create_blogid_link($data['bnumber']);
@@ -1019,7 +1013,7 @@ class Blog
 			echo Template::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
 		}
 		
-		sql_free_result($res);
+		$res->closeCursor();
 		
 		echo Template::fill((isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
 			array(
@@ -1037,13 +1031,13 @@ class Blog
 		$query =  'SELECT *'
 			   . ' FROM '.sql_table('blog')
 			   . ' WHERE bnumber=' . $this->blogid;
-		$res = sql_query($query);
+		$res = DB::getResult($query);
 
-		$this->isValid = (sql_num_rows($res) > 0);
+		$this->isValid = ($res->rowCount() > 0);
 		if (!$this->isValid)
 			return;
 
-		$this->settings = sql_fetch_assoc($res);
+		$this->settings = $res->fetch(PDO::FETCH_ASSOC);
 	}
 
 	/**
@@ -1057,8 +1051,8 @@ class Blog
 			$offset = intval($offset);
 
 		$query =  'UPDATE '.sql_table('blog')
-			   . " SET bname='" . sql_real_escape_string($this->getName()) . "',"
-			   . "     bshortname='". sql_real_escape_string($this->getShortName()) . "',"
+			   . " SET bname='" . DB::quoteValue($this->getName()) . "',"
+			   . "     bshortname='". DB::quoteValue($this->getShortName()) . "',"
 			   . "     bcomments=". intval($this->commentsEnabled()) . ","
 			   . "     bmaxcomments=" . intval($this->getMaxComments()) . ","
 			   . "     btimeoffset=" . $offset . ","
@@ -1066,16 +1060,16 @@ class Blog
 			   . "     breqemail=" . intval($this->emailRequired()) . ","
 			   . "     bconvertbreaks=" . intval($this->convertBreaks()) . ","
 			   . "     ballowpast=" . intval($this->allowPastPosting()) . ","
-			   . "     bnotify='" . sql_real_escape_string($this->getNotifyAddress()) . "',"
+			   . "     bnotify='" . DB::quoteValue($this->getNotifyAddress()) . "',"
 			   . "     bnotifytype=" . intval($this->getNotifyType()) . ","
-			   . "     burl='" . sql_real_escape_string($this->getURL()) . "',"
-			   . "     bupdate='" . sql_real_escape_string($this->getUpdateFile()) . "',"
-			   . "     bdesc='" . sql_real_escape_string($this->getDescription()) . "',"
+			   . "     burl='" . DB::quoteValue($this->getURL()) . "',"
+			   . "     bupdate='" . DB::quoteValue($this->getUpdateFile()) . "',"
+			   . "     bdesc='" . DB::quoteValue($this->getDescription()) . "',"
 			   . "     bdefcat=" . intval($this->getDefaultCategory()) . ","
 			   . "     bdefskin=" . intval($this->getDefaultSkin()) . ","
 			   . "     bincludesearch=" . intval($this->getSearchable())
 			   . " WHERE bnumber=" . intval($this->getID());
-		sql_query($query);
+		DB::execute($query);
 
 	}
 
@@ -1099,8 +1093,8 @@ class Blog
 	  */
 	function isValidCategory($catid) {
 		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
-		$res = sql_query($query);
-		return (sql_num_rows($res) != 0);
+		$res = DB::getResult($query);
+		return ($res->rowCount() != 0);
 	}
 
 	/**
@@ -1110,9 +1104,8 @@ class Blog
 	  * 	category id
 	  */
 	function getCategoryName($catid) {
-		$res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
-		$o = sql_fetch_object($res);
-		return $o->cname;
+		$res = DB::getValue('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+		return $res;
 	}
 
 	/**
@@ -1122,9 +1115,8 @@ class Blog
 	  * 	category id
 	  */
 	function getCategoryDesc($catid) {
-		$res = sql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
-		$o = sql_fetch_object($res);
-		return $o->cdesc;
+		$res = DB::getValue('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+		return $res;
 	}
 
 	/**
@@ -1134,10 +1126,9 @@ class Blog
 	  * 	category name
 	  */
 	function getCategoryIdFromName($name) {
-		$res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . sql_real_escape_string($name) . '"');
-		if (sql_num_rows($res) > 0) {
-			$o = sql_fetch_object($res);
-			return $o->catid;
+		$res = DB::getValue('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . DB::quoteValue($name) . '"');
+		if ( $res ) {
+			return $res;
 		} else {
 			return $this->getDefaultCategory();
 		}
@@ -1401,7 +1392,7 @@ class Blog
 		// add to team
 		$query = "INSERT INTO %s (TMEMBER, TBLOG, TADMIN) VALUES (%d, %d, %d);";
 		$query = sprintf($query, sql_table('team'), (integer) $memberid, (integer) $this->getID(), (integer) $admin);
-		sql_query($query);
+		DB::execute($query);
 		
 		$manager->notify(
 			'PostAddTeamMember',
@@ -1430,8 +1421,8 @@ class Blog
 	  * 	blog shortname
 	  */
 	function exists($name) {
-		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bshortname="'.sql_real_escape_string($name).'"');
-		return (sql_num_rows($r) != 0);
+		$r = DB::getResult('SELECT * FROM '.sql_table('blog').' WHERE bshortname='. DB::quoteValue($name));
+		return ($r->rowCount() != 0);
 	}
 
 	/**
@@ -1442,8 +1433,8 @@ class Blog
 	  * 	blog id
 	  */
 	function existsID($id) {
-		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
-		return (sql_num_rows($r) != 0);
+		$r = DB::getResult('SELECT * FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
+		return ($r->rowCount() != 0);
 	}
 
 	/**
@@ -1452,7 +1443,7 @@ class Blog
 	function setFuturePost() {
 		$query =  'UPDATE '.sql_table('blog')
 			    . " SET bfuturepost='1' WHERE bnumber=" . $this->getID();
-		sql_query($query);
+		DB::execute($query);
 	}
 
 	/**
@@ -1461,7 +1452,7 @@ class Blog
 	function clearFuturePost() {
 		$query =  'UPDATE '.sql_table('blog')
 			   . " SET bfuturepost='0' WHERE bnumber=" . $this->getID();
-		sql_query($query);
+		DB::execute($query);
 	}
 
 	/**
@@ -1472,9 +1463,9 @@ class Blog
 
 		if ($this->settings['bfuturepost'] == 1) {
 			$blogid = $this->getID();
-			$result = sql_query("SELECT * FROM " . sql_table('item')
+			$result = DB::getResult("SELECT * FROM " . sql_table('item')
 			          . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()");
-			if (sql_num_rows($result) > 0) {
+			if ( $result->rowCount() > 0 ) {
 				// This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
 				// Note that the plugins's calling order is subject to thri order in the plugin list
 				$pinged = false;
@@ -1486,12 +1477,12 @@ class Blog
 				);
 
 				// clear all expired future posts
-				sql_query("UPDATE " . sql_table('item') . " SET iposted='1' WHERE iblog=" . $blogid . " AND itime<NOW()");
+				DB::execute("UPDATE " . sql_table('item') . " SET iposted='1' WHERE iblog=" . $blogid . " AND itime<NOW()");
 
 				// check to see any pending future post, clear the flag is none
-				$result = sql_query("SELECT * FROM " . sql_table('item')
+				$result = DB::getResult("SELECT * FROM " . sql_table('item')
 				          . " WHERE iposted=0 AND iblog=" . $blogid);
-				if (sql_num_rows($result) == 0) {
+				if ( $result->rowCount() == 0 ) {
 					$this->clearFuturePost();
 				}
 			}
@@ -1596,7 +1587,7 @@ class Blog
 			if ( !$showFuture )
 			{
 				// don't show future items
-				$query .= " and i.itime<='" . i18n::formatted_datetime('mysql', $this->getCorrectTime()) . "'";
+				$query .= " and i.itime<='" . DB::formatDateTime($this->getCorrectTime()) . "'";
 			}
 			
 			$query .= ' and i.inumber='.intval($value);

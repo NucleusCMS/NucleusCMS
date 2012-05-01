@@ -17,7 +17,7 @@
  * @version $Id$
  */
 
-if ( !function_exists('requestVar') ) 
+if ( !function_exists('requestVar') )
 {
 	exit;
 }
@@ -82,20 +82,17 @@ class Skin
 		// read skin name/description/content type
 		$query = "SELECT * FROM %s WHERE sdnumber=%d;";
 		$query = sprintf($query, sql_table('skin_desc'), $this->id);
-		$res = sql_query($query);
-		$obj = sql_fetch_object($res);
+		$res = DB::getRow($query);
 		
-		$this->valid = (sql_num_rows($res) > 0);
-		if ( !$this->valid )
+		$this->valid = !empty($res);
+		if ( $this->valid )
 		{
-			return;
+			$this->name = $res['sdname'];
+			$this->description = $res['sddesc'];
+			$this->contentType = $res['sdtype'];
+			$this->includeMode = $res['sdincmode'];
+			$this->includePrefix = $res['sdincpref'];
 		}
-		
-		$this->name = $obj->sdname;
-		$this->description = $obj->sddesc;
-		$this->contentType = $obj->sdtype;
-		$this->includeMode = $obj->sdincmode;
-		$this->includePrefix = $obj->sdincpref;
 		
 		return;
 	}
@@ -201,9 +198,9 @@ class Skin
 	 */
 	static public function exists($name)
 	{
-		$query = "SELECT COUNT(*) AS result FROM %s WHERE sdname='%s';";
-		$query = sprintf($query, sql_table('skin_desc'), sql_real_escape_string($name));
-		return (quickQuery($query) > 0);
+		$query = "SELECT COUNT(*) AS result FROM %s WHERE sdname=%s;";
+		$query = sprintf($query, sql_table('skin_desc'), DB::quoteValue($name));
+		return (DB::getValue($query) > 0);
 	}
 	
 	/**
@@ -218,7 +215,7 @@ class Skin
 	{
 		$query = "SELECT COUNT(*) AS result FROM %s WHERE sdnumber=%d;";
 		$query = sprintf($query, sql_table('skin_desc'), (integer) $id);
-		return (quickQuery($query) > 0);
+		return (DB::getValue($query) > 0);
 	}
 	
 	/**
@@ -244,11 +241,9 @@ class Skin
 	 */
 	static public function getIdFromName($name)
 	{
-		$query = "SELECT sdnumber FROM %s WHERE sdname='%s';";
-		$query = sprintf($query, sql_table('skin_desc'), sql_real_escape_string($name));
-		$res = sql_query($query);
-		$obj = sql_fetch_object($res);
-		return $obj->sdnumber;
+		$query = "SELECT sdnumber FROM %s WHERE sdname=%s;";
+		$query = sprintf($query, sql_table('skin_desc'), DB::quoteValue($name));
+		return DB::getValue($query);
 	}
 	
 	/**
@@ -263,7 +258,7 @@ class Skin
 	{
 		$query = "SELECT sdname AS result FROM %s WHERE sdnumber=%d;";
 		$query = sprintf($query, sql_table('skin_desc'), (integer) $id);
-		return quickQuery($query);
+		return DB::getValue($query);
 	}
 	
 	/**
@@ -293,15 +288,15 @@ class Skin
 			)
 		);
 		
-		$query = "INSERT INTO %s (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('%s', '%s', '%s', '%s', '%s');";
-		$sdname		= sql_real_escape_string($name);
-		$sddesc		= sql_real_escape_string($desc);
-		$sdtype		= sql_real_escape_string($type);
-		$sdincmode	= sql_real_escape_string($includeMode);
-		$sdincpref	= sql_real_escape_string($includePrefix);
+		$query = "INSERT INTO %s (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES (%s, %s, %s, %s, %s);";
+		$sdname		= DB::quoteValue($name);
+		$sddesc		= DB::quoteValue($desc);
+		$sdtype		= DB::quoteValue($type);
+		$sdincmode	= DB::quoteValue($includeMode);
+		$sdincpref	= DB::quoteValue($includePrefix);
 		$query = sprintf($query, sql_table('skin_desc'), $sdname, $sddesc, $sdtype, $sdincmode, $sdincpref);
-		sql_query($query);
-		$newid = sql_insert_id();
+		DB::execute($query);
+		$newid = DB::getInsertId();
 		
 		$manager->notify(
 			'PostAddSkin',
@@ -389,18 +384,13 @@ class Skin
 	 */
 	public function getContentFromDB($skintype)
 	{
-		$query = "SELECT scontent FROM %s WHERE sdesc=%d and stype='%s';";
-		$query = sprintf($query, sql_table('skin'), (integer) $this->id, sql_real_escape_string($skintype));
-		$res = sql_query($query);
+		$query = "SELECT scontent FROM %s WHERE sdesc=%d and stype=%s;";
+		$query = sprintf($query, sql_table('skin'), (integer) $this->id, DB::quoteValue($skintype));
+		$res = DB::getValue($query);
 		
-		if ( sql_num_rows($res) == 0 )
-		{
-			return FALSE;
+		return $res ? $res : '';
 		}
 		
-		return sql_result($res, 0, 0);
-	}
-	
 	/**
 	 * Skin::getContentFromFile()
 	 * 
@@ -444,11 +434,11 @@ class Skin
 	{
 		global $manager;
 		
-		$query = "SELECT sdesc FROM %s WHERE stype='%s' and sdesc=%d;";
-		$query = sprintf($query, sql_table('skin'), sql_real_escape_string($type), (integer) $this->id);
-		$res = sql_query($query);
+		$query = "SELECT sdesc FROM %s WHERE stype=%s and sdesc=%d;";
+		$query = sprintf($query, sql_table('skin'), DB::quoteValue($type), (integer) $this->id);
+		$res = DB::getValue($query);
 		
-		$skintypeexists = sql_fetch_object($res);
+		$skintypeexists = !empty($res);
 		$skintypevalue = ($content == true);
 		
 		if( $skintypevalue && $skintypeexists )
@@ -483,16 +473,16 @@ class Skin
 		}
 		
 		// delete old thingie
-		$query = "DELETE FROM %s WHERE stype='%s' and sdesc=%d";
-		$query = sprintf($query, sql_table('skin'), sql_real_escape_string($type), (integer) $this->id);
-		sql_query($query);
+		$query = "DELETE FROM %s WHERE stype=%s and sdesc=%d";
+		$query = sprintf($query, sql_table('skin'), DB::quoteValue($type), (integer) $this->id);
+		DB::execute($query);
 		
 		// write new thingie
 		if ( $content )
 		{
-			$query = "INSERT INTO %s (scontent, stype, sdesc) VALUE ('%s', '%s', %d)";
-			$query = sprintf($query, sql_table('skin'), sql_real_escape_string($content), sql_real_escape_string($type), (integer) $this->id);
-			sql_query($query);
+			$query = "INSERT INTO %s (scontent, stype, sdesc) VALUE (%s, %s, %d)";
+			$query = sprintf($query, sql_table('skin'), DB::quoteValue($content), DB::quoteValue($type), (integer) $this->id);
+			DB::execute($query);
 		}
 		
 		if( $skintypevalue && $skintypeexists )
@@ -540,7 +530,7 @@ class Skin
 	{
 		$query = "DELETE FROM %s WHERE sdesc=%d;";
 		$query = sprintf($query, sql_table('skin'), (integer) $this->id);
-		sql_query($query);
+		DB::execute($query);
 	}
 	
 	/**
@@ -556,16 +546,16 @@ class Skin
 	 */
 	public function updateGeneralInfo($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '')
 	{
-		$name			= sql_real_escape_string($name);
-		$desc			= sql_real_escape_string($desc);
-		$type			= sql_real_escape_string($type);
-		$includeMode	= sql_real_escape_string($includeMode);
-		$includePrefix	= sql_real_escape_string($includePrefix);
+		$name			= DB::quoteValue($name);
+		$desc			= DB::quoteValue($desc);
+		$type			= DB::quoteValue($type);
+		$includeMode	= DB::quoteValue($includeMode);
+		$includePrefix	= DB::quoteValue($includePrefix);
 		
-		$query ="UPDATE %s SET sdname='%s', sddesc='%s', sdtype='%s', sdincmode='%s', sdincpref='%s' WHERE sdnumber=%d";
+		$query ="UPDATE %s SET sdname=%s, sddesc=%s, sdtype=%s, sdincmode=%s, sdincpref=%s WHERE sdnumber=%d";
 		$query = sprintf($query, sql_table('skin_desc'), $name, $desc, $type, $includeMode, $includePrefix, (integer) $this->id);
 		
-		sql_query($query);
+		DB::execute($query);
 		return;
 	}
 	
@@ -596,8 +586,8 @@ class Skin
 		$in_default = array();
 		$no_default = array();
 		
-		$res = sql_query($query);
-		while ( $row = sql_fetch_array($res) )
+		$res = DB::getResult($query);
+		foreach ( $res as $row )
 		{
 			if ( !array_key_exists($row['stype'], $default_skintypes) )
 			{

@@ -47,7 +47,7 @@ class ItemActions extends BaseActions
 	 * ItemActions::$blog
 	 * reference to the blog currently being displayed
 	 */
-	private $blog;
+	public $blog;
 	
 	/**
 	 * ItemActions::$template
@@ -112,6 +112,7 @@ class ItemActions extends BaseActions
 	public function __construct(&$blog)
 	{
 		global $catid, $member;
+		
 		// call constructor of superclass first
 		parent::__construct();
 		
@@ -175,7 +176,7 @@ class ItemActions extends BaseActions
 	{
 		global $currentitemid;
 		$this->currentItem =& $item;
-		$currentitemid = $this->currentItem->itemid;
+		$currentitemid = $this->currentItem['itemid'];
 		return;
 	}
 	
@@ -236,7 +237,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_body()
 	{
-		$this->highlightAndParse($this->currentItem->body);
+		$this->highlightAndParse($this->currentItem['body']);
 		return;
 	}
 	
@@ -249,7 +250,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_more()
 	{
-		$this->highlightAndParse($this->currentItem->more);
+		$this->highlightAndParse($this->currentItem['more']);
 		return;
 	}
 	
@@ -262,7 +263,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_itemid()
 	{
-		echo $this->currentItem->itemid;
+		echo $this->currentItem['itemid'];
 		return;
 	}
 	
@@ -275,7 +276,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_category()
 	{
-		echo $this->currentItem->category;
+		echo $this->currentItem['category'];
 		return;
 	}
 	
@@ -288,7 +289,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_categorylink()
 	{
-		echo Link::create_link('category', array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category));
+		echo Link::create_link('category', array('catid' => $this->currentItem['catid'], 'name' => $this->currentItem['category']));
 		return;
 	}
 	
@@ -301,7 +302,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_catid()
 	{
-		echo $this->currentItem->catid;
+		echo $this->currentItem['catid'];
 		return;
 	}
 	
@@ -314,7 +315,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_authorid()
 	{
-		echo $this->currentItem->authorid;
+		echo $this->currentItem['authorid'];
 		return;
 	}
 	
@@ -328,8 +329,8 @@ class ItemActions extends BaseActions
 	public function parse_authorlink()
 	{
 		$data = array(
-				'memberid' => $this->currentItem->authorid,
-				'name' => $this->currentItem->author,
+				'memberid' => $this->currentItem['authorid'],
+				'name' => $this->currentItem['author'],
 				'extra' => $this->linkparams
 			);
 		
@@ -360,9 +361,9 @@ class ItemActions extends BaseActions
 	public function parse_itemlink()
 	{
 		$data = array(
-			'itemid'	=> $this->currentItem->itemid,
-			'title'		=> $this->currentItem->title,
-			'timestamp'	=> $this->currentItem->timestamp,
+			'itemid'	=> $this->currentItem['itemid'],
+			'title'		=> $this->currentItem['title'],
+			'timestamp'	=> $this->currentItem['timestamp'],
 			'extra'		=> $this->linkparams
 		);
 		
@@ -392,7 +393,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_closed()
 	{
-		echo $this->currentItem->closed;
+		echo $this->currentItem['closed'];
 		return;
 	}
 	
@@ -405,7 +406,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_relevance()
 	{
-		echo round($this->currentItem->score,2);
+		echo round($this->currentItem['score'], 2);
 		return;
 	}
 	
@@ -421,10 +422,6 @@ class ItemActions extends BaseActions
 		if ( is_array($this->currentItem) )
 		{
 			$itemtitle = $this->currentItem['title'];
-		}
-		elseif ( is_object($this->currentItem) )
-		{
-			$itemtitle = $this->currentItem->title;
 		}
 		switch ( $format )
 		{
@@ -456,7 +453,7 @@ class ItemActions extends BaseActions
 		global $manager;
 		
 		// get karma object
-		$karma =& $manager->getKarma($this->currentItem->itemid);
+		$karma =& $manager->getKarma($this->currentItem['itemid']);
 		
 		switch ( $type )
 		{
@@ -497,20 +494,20 @@ class ItemActions extends BaseActions
 		switch ( $which )
 		{
 			case 'realname':
-				echo $this->currentItem->authorname;
+				echo $this->currentItem['authorname'];
 				break;
 			case 'id':
-				echo $this->currentItem->authorid;
+				echo $this->currentItem['authorid'];
 				break;
 			case 'email':
-				echo $this->currentItem->authormail;
+				echo $this->currentItem['authormail'];
 				break;
 			case 'url':
-				echo $this->currentItem->authorurl;
+				echo $this->currentItem['authorurl'];
 				break;
 			case 'name':
 			default:
-				echo $this->currentItem->author;
+				echo $this->currentItem['author'];
 		}
 		return;
 	}
@@ -524,13 +521,13 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_smartbody()
 	{
-		if ( !$this->currentItem->more )
+		if ( !$this->currentItem['more'] )
 		{
-			$this->highlightAndParse($this->currentItem->body);
+			$this->highlightAndParse($this->currentItem['body']);
 		}
 		else
 		{
-			$this->highlightAndParse($this->currentItem->more);
+			$this->highlightAndParse($this->currentItem['more']);
 		}
 		return;
 	}
@@ -541,7 +538,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_morelink()
 	{
-		if ( $this->currentItem->more )
+		if ( $this->currentItem['more'] )
 		{
 			$this->parser->parse($this->template['MORELINK']);
 		}
@@ -578,7 +575,7 @@ class ItemActions extends BaseActions
 			$offset = $this->blog->getTimeOffset() * 3600;
 		}
 		
-		echo i18n::formatted_datetime($format, $this->currentItem->timestamp, $offset);
+		echo i18n::formatted_datetime($format, $this->currentItem['timestamp'], $offset);
 		return;
 	}
 	
@@ -605,7 +602,7 @@ class ItemActions extends BaseActions
 		{
 			$format = $this->template['FORMAT_TIME'];
 		}
-		echo i18n::formatted_datetime($format, $this->currentItem->timestamp);
+		echo i18n::formatted_datetime($format, $this->currentItem['timestamp']);
 		return;
 	}
 	
@@ -617,7 +614,7 @@ class ItemActions extends BaseActions
 	 * @return	string	syndicated	title
 	 */
 	public function parse_syndicate_title($maxLength = 100) {
-		$syndicated = strip_tags($this->currentItem->title);
+		$syndicated = strip_tags($this->currentItem['title']);
 		echo Entity::hsc(Entity::shorten($syndicated,$maxLength,'...'));
 	}
 	
@@ -631,7 +628,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_syndicate_description($maxLength = 250, $addHighlight = 0)
 	{
-		$syndicated = strip_tags($this->currentItem->body);
+		$syndicated = strip_tags($this->currentItem['body']);
 		if ( $addHighlight )
 		{
 			$tmp_highlight = Entity::hsc(Entity::shorten($syndicated,$maxLength,'...'));
@@ -654,7 +651,7 @@ class ItemActions extends BaseActions
 	public function parse_karmaposlink($text = '')
 	{
 		global $CONF;
-		$link = $CONF['ActionURL'] . '?action=votepositive&amp;itemid=' . $this->currentItem->itemid;
+		$link = $CONF['ActionURL'] . '?action=votepositive&amp;itemid=' . $this->currentItem['itemid'];
 		if ( !$text )
 		{
 			echo '<a href="'.$link.'">' . $text . '</a>';
@@ -677,7 +674,7 @@ class ItemActions extends BaseActions
 	public function parse_karmaneglink($text = '')
 	{
 		global $CONF;
-		$link = $CONF['ActionURL'] . '?action=votenegative&amp;itemid='.$this->currentItem->itemid;
+		$link = $CONF['ActionURL'] . '?action=votenegative&amp;itemid='.$this->currentItem['itemid'];
 		
 		if ( !$text )
 		{
@@ -700,7 +697,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_new()
 	{
-		if ( ($this->lastVisit != 0) && ($this->currentItem->timestamp > $this->lastVisit) )
+		if ( ($this->lastVisit != 0) && ($this->currentItem['timestamp'] > $this->lastVisit) )
 		{
 			echo $this->template['NEW'];
 		}
@@ -716,7 +713,7 @@ class ItemActions extends BaseActions
 	 */
 	public function parse_daylink()
 	{
-		echo Link::create_archive_link($this->blog->getID(), i18n::formatted_datetime('%Y-%m-%d', $this->currentItem->timestamp), $this->linkparams);
+		echo Link::create_archive_link($this->blog->getID(), i18n::formatted_datetime('%Y-%m-%d', $this->currentItem['timestamp']), $this->linkparams);
 		return;
 	}
 	
@@ -737,9 +734,9 @@ class ItemActions extends BaseActions
 		// add comments
 		if ( $this->showComments && $this->blog->commentsEnabled() )
 		{
-			$comments = new Comments($this->currentItem->itemid);
+			$comments = new Comments($this->currentItem['itemid']);
 			$comments->setItemActions($this);
-			$comments->showComments($this->template, $maxToShow, $this->currentItem->closed ? 0 : 1, $this->strHighlight);
+			$comments->showComments($this->template, $maxToShow, $this->currentItem['closed'] ? 0 : 1, $this->strHighlight);
 		}
 		return;
 	}
@@ -785,7 +782,7 @@ class ItemActions extends BaseActions
 	public function parse_edit()
 	{
 		global $member, $CONF;
-		if ( $this->allowEditAll || ($member->isLoggedIn() && ($member->getID() == $this->currentItem->authorid)) )
+		if ( $this->allowEditAll || ($member->isLoggedIn() && ($member->getID() == $this->currentItem['authorid'])) )
 		{
 			$this->parser->parse($this->template['EDITLINK']);
 		}
@@ -799,7 +796,7 @@ class ItemActions extends BaseActions
 	public function parse_editlink()
 	{
 		global $CONF;
-		echo $CONF['AdminURL'] . 'bookmarklet.php?action=edit&amp;itemid=' . $this->currentItem->itemid;
+		echo $CONF['AdminURL'] . 'bookmarklet.php?action=edit&amp;itemid=' . $this->currentItem['itemid'];
 		return;
 	}
 	
@@ -862,7 +859,7 @@ class ItemActions extends BaseActions
 				$condition = ($blog && ($blog->getSetting($name) == $value));
 				break;
 			case 'itemblogsetting':
-				$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+				$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem['itemid']));
 				$condition = ($b && ($b->getSetting($name) == $value));
 				break;
 			case 'loggedin':
@@ -935,19 +932,19 @@ class ItemActions extends BaseActions
 	{
 		global $member, $manager;
 		
-		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem['itemid']));
 		
 		// when no parameter is defined, just check if author is current visitor
 		if ( ($key != 'isadmin' && $key != 'name') || ($key == 'name' && $value == '') )
 		{
-			return (boolean) ((integer) $member->getID() > 0 && (integer) $member->getID() == (integer) $this->currentItem->authorid);
+			return (boolean) ((integer) $member->getID() > 0 && (integer) $member->getID() == (integer) $this->currentItem['authorid']);
 		}
 		
 		// check author name
 		if ( $key == 'name' )
 		{
 			$value = strtolower($value);
-			if ( $value == strtolower($this->currentItem->author) )
+			if ( $value == strtolower($this->currentItem['author']) )
 			{
 				return TRUE;
 			}
@@ -956,7 +953,7 @@ class ItemActions extends BaseActions
 		// check if author is admin
 		if ( ($key == 'isadmin') )
 		{
-			$aid = intval($this->currentItem->authorid);
+			$aid = intval($this->currentItem['authorid']);
 			$blogid = intval($b->getID());			
 			$amember =& $manager->getMember($aid);
 			if ( $amember->isAdmin() )
@@ -981,7 +978,7 @@ class ItemActions extends BaseActions
 	{
 		global $catid, $manager;
 		
-		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem['itemid']));
 		
 		// when no parameter is defined, just check if a category is selected
 		if ( ($key != 'catname' && $key != 'catid') || ($value == '') )
@@ -989,7 +986,7 @@ class ItemActions extends BaseActions
 			return (boolean) $b->isValidCategory($catid);
 		}
 		
-		$icatid = $this->currentItem->catid;
+		$icatid = $this->currentItem['catid'];
 		
 		// check category name
 		if ( $key == 'catname' )

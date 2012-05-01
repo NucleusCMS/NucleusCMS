@@ -168,11 +168,11 @@ class Admin
         <br />
         <input name="action" value="login" type="hidden" />
         <br />
-        <input type="submit" value="<?php echo _LOGIN?>" tabindex="30" />
+        <input type="submit" value="<?php echo _LOGIN ?>" tabindex="30" />
         <br />
         <small>
-            <input type="checkbox" value="1" name="shared" tabindex="40" id="shared" /><label for="shared"><?php echo _LOGIN_SHARED?></label>
-            <br /><a href="forgotpassword.html"><?php echo _LOGIN_FORGOT?></a>
+            <input type="checkbox" value="1" name="shared" tabindex="40" id="shared" /><label for="shared"><?php echo _LOGIN_SHARED ?></label>
+            <br /><a href="forgotpassword.html"><?php echo _LOGIN_FORGOT ?></a>
         </small>
         <?php           // pass through vars
 
@@ -221,7 +221,7 @@ class Admin
         $amount = showlist($query,'table',$template);
 
         if (($showAll != 'yes') && ($member->isAdmin())) {
-            $total = quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('blog'));
+            $total = DB::getValue('SELECT COUNT(*) as result FROM ' . sql_table('blog'));
             if ($total > $amount)
                 echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
         }
@@ -394,7 +394,7 @@ class Admin
 		
 		if ( $search )
 		{
-			$query .= " AND ((ititle LIKE '%" . sql_real_escape_string($search) . "%') OR (ibody LIKE '%" . sql_real_escape_string($search) . "%') OR (imore LIKE '%" . sql_real_escape_string($search) . "%'))";
+			$query .= " AND ((ititle LIKE " . DB::quoteValue('%'.$search.'%') . ") OR (ibody LIKE " . DB::quoteValue('%'.$search.'%') . ") OR (imore LIKE " . DB::quoteValue('%'.$search.'%') . "))";
 		}
 		
 		// non-blog-admins can only edit/delete their own items
@@ -578,16 +578,16 @@ class Admin
                     break;
                 case 'setadmin':
                     // always succeeds
-                    sql_query('UPDATE ' . sql_table('member') . ' SET madmin=1 WHERE mnumber='.$memberid);
+                    DB::execute('UPDATE ' . sql_table('member') . ' SET madmin=1 WHERE mnumber='.$memberid);
                     $error = '';
                     break;
                 case 'unsetadmin':
                     // there should always remain at least one super-admin
-                    $r = sql_query('SELECT * FROM '.sql_table('member'). ' WHERE madmin=1 and mcanlogin=1');
-                    if (sql_num_rows($r) < 2)
+                    $r = DB::getResult('SELECT * FROM '.sql_table('member'). ' WHERE madmin=1 and mcanlogin=1');
+                    if ($r->rowCount() < 2)
                         $error = _ERROR_ATLEASTONEADMIN;
                     else
-                        sql_query('UPDATE ' . sql_table('member') .' SET madmin=0 WHERE mnumber='.$memberid);
+                        DB::execute('UPDATE ' . sql_table('member') .' SET madmin=0 WHERE mnumber='.$memberid);
                     break;
                 default:
                     $error = _BATCH_UNKNOWN . Entity::hsc($action);
@@ -648,16 +648,16 @@ class Admin
                     break;
                 case 'setadmin':
                     // always succeeds
-                    sql_query('UPDATE '.sql_table('team').' SET tadmin=1 WHERE tblog='.$blogid.' and tmember='.$memberid);
+                    DB::execute('UPDATE '.sql_table('team').' SET tadmin=1 WHERE tblog='.$blogid.' and tmember='.$memberid);
                     $error = '';
                     break;
                 case 'unsetadmin':
                     // there should always remain at least one admin
-                    $r = sql_query('SELECT * FROM '.sql_table('team').' WHERE tadmin=1 and tblog='.$blogid);
-                    if (sql_num_rows($r) < 2)
+                    $r = DB::getResult('SELECT * FROM '.sql_table('team').' WHERE tadmin=1 and tblog='.$blogid);
+                    if ($r->rowCount() < 2)
                         $error = _ERROR_ATLEASTONEBLOGADMIN;
                     else
-                        sql_query('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
+                        DB::execute('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
                     break;
                 default:
                     $error = _BATCH_UNKNOWN . Entity::hsc($action);
@@ -745,10 +745,10 @@ class Admin
         global $manager;
         $this->pagehead();
         ?>
-        <h2><?php echo _MOVE_TITLE?></h2>
+        <h2><?php echo _MOVE_TITLE ?></h2>
         <form method="post" action="index.php"><div>
 
-            <input type="hidden" name="action" value="batch<?php echo $type?>" />
+            <input type="hidden" name="action" value="batch<?php echo $type ?>" />
             <input type="hidden" name="batchaction" value="move" />
             <?php
                 $manager->addTicketHidden();
@@ -764,7 +764,7 @@ class Admin
             ?>
 
 
-            <input type="submit" value="<?php echo _MOVE_BTN?>" onclick="return checkSubmit();" />
+            <input type="submit" value="<?php echo _MOVE_BTN ?>" onclick="return checkSubmit();" />
 
         </div></form>
         <?php       $this->pagefoot();
@@ -778,10 +778,10 @@ class Admin
         global $manager;
         $this->pagehead();
         ?>
-        <h2><?php echo _MOVECAT_TITLE?></h2>
+        <h2><?php echo _MOVECAT_TITLE ?></h2>
         <form method="post" action="index.php"><div>
 
-            <input type="hidden" name="action" value="batch<?php echo $type?>" />
+            <input type="hidden" name="action" value="batch<?php echo $type ?>" />
             <input type="hidden" name="batchaction" value="move" />
             <?php
                 $manager->addTicketHidden();
@@ -797,7 +797,7 @@ class Admin
             ?>
 
 
-            <input type="submit" value="<?php echo _MOVECAT_BTN?>" onclick="return checkSubmit();" />
+            <input type="submit" value="<?php echo _MOVECAT_BTN ?>" onclick="return checkSubmit();" />
 
         </div></form>
         <?php       $this->pagefoot();
@@ -812,10 +812,10 @@ class Admin
 
         $this->pagehead();
         ?>
-        <h2><?php echo _BATCH_DELETE_CONFIRM?></h2>
+        <h2><?php echo _BATCH_DELETE_CONFIRM ?></h2>
         <form method="post" action="index.php"><div>
 
-            <input type="hidden" name="action" value="batch<?php echo $type?>" />
+            <input type="hidden" name="action" value="batch<?php echo $type ?>" />
             <?php $manager->addTicketHidden() ?>
             <input type="hidden" name="batchaction" value="delete" />
             <input type="hidden" name="confirmation" value="yes" />
@@ -836,7 +836,7 @@ class Admin
 
             ?>
 
-            <input type="submit" value="<?php echo _BATCH_DELETE_CONFIRM_BTN?>" onclick="return checkSubmit();" />
+            <input type="submit" value="<?php echo _BATCH_DELETE_CONFIRM_BTN ?>" onclick="return checkSubmit();" />
 
         </div></form>
         <?php       $this->pagefoot();
@@ -890,12 +890,12 @@ class Admin
 			$query = sprintf($query, sql_table('blog'));
 		}
 		
-		$rblogids = sql_query($query);
-		while ( $o = sql_fetch_object($rblogids) )
+		$rblogids = DB::getResult($query);
+		foreach ( $rblogids as $row )
 		{
-			if ( $o->bnumber != $iForcedBlogInclude )
+			if ( $row['bnumber'] != $iForcedBlogInclude )
 			{
-				$aBlogIds[] = (integer) $o->bnumber;
+				$aBlogIds[] = (integer) $row['bnumber'];
 			}
 		}
 		if ( count($aBlogIds) == 0 )
@@ -907,47 +907,47 @@ class Admin
 		
 		// 1. select blogs (we'll create optiongroups)
 		// (only select those blogs that have the user on the team)
-		$query = "SELECT bnumber, bname FROM %s WHERE bnumber in ('%s') ORDER BY bname;";
+		$query = "SELECT bnumber, bname FROM %s WHERE bnumber in (%s) ORDER BY bname;";
 		$query = sprintf($query, sql_table('blog'), implode(',',$aBlogIds));
-		$blogs = sql_query($query);
+		$blogs = DB::getResult($query);
 		
 		if ( $mode == 'category' )
 		{
-			if ( sql_num_rows($blogs) > 1 )
+			if ( $blogs->rowCount() > 1 )
 			{
 				$multipleBlogs = 1;
 			}
 			
-			while ( $oBlog = sql_fetch_object($blogs) )
+			foreach ( $blogs as $row )
 			{
 				if ( $multipleBlogs )
 				{
-					echo '<optgroup label="' . Entity::hsc($oBlog->bname) . '">' . "\n";
+					echo '<optgroup label="' . Entity::hsc($row['bname']) . '">' . "\n";
 				}
 				
 				// show selection to create new category when allowed/wanted
 				if ( $showNewCat )
 				{
 					// check if allowed to do so
-					if ( $member->blogAdminRights($oBlog->bnumber) )
+					if ( $member->blogAdminRights($row['bnumber']) )
 					{
-						echo "<option value=\"newcat-{$oBlog->bnumber}\">" . _ADD_NEWCAT . "</option>\n";
+						echo "<option value=\"newcat-{$row['bnumber']}\">" . _ADD_NEWCAT . "</option>\n";
 					}
 				}
 				
 				// 2. for each category in that blog
 				$query = "SELECT cname, catid FROM %s WHERE cblog=%d ORDER BY cname ASC;";
-				$query = sprintf($query, sql_table('category'), (integer) $oBlog->bnumber);
-				$categories = sql_query($query);
-				while ( $oCat = sql_fetch_object($categories) )
+				$query = sprintf($query, sql_table('category'), (integer) $row['bnumber']);
+				$categories = DB::getResult($query);
+				foreach ( $categories as $cat )
 				{
-					if ( $oCat->catid != $selected )
+					if ( $cat['catid'] != $selected )
 					{
-					echo "<option value=\"{$oCat->catid}\" {$selectText} >" . Entity::hsc($oCat->cname) . "</option>\n";
+					echo "<option value=\"{$cat['catid']}\" {$selectText} >" . Entity::hsc($cat['cname']) . "</option>\n";
 					}
 					else
 					{
-					echo "<option value=\"{$oCat->catid}\" selected=\"selected\" >" . Entity::hsc($oCat->cname) . "</option>\n";
+					echo "<option value=\"{$cat['catid']}\" selected=\"selected\" >" . Entity::hsc($cat['cname']) . "</option>\n";
 					}
 				}
 				
@@ -960,15 +960,15 @@ class Admin
 		else
 		{
 			// blog mode
-			while ( $oBlog = sql_fetch_object($blogs) )
+			foreach ( $blogs as $row )
 			{
-				if ( $oBlog->bnumber != $selected )
+				if ( $row['bnumber'] != $selected )
 				{
-					echo "<option value=\"{$oBlog->bnumber}\">" . Entity::hsc($oBlog->bname) . "</option>\n";
+					echo "<option value=\"{$row['bnumber']}\">" . Entity::hsc($row['bname']) . "</option>\n";
 				}
 				else
 				{
-					echo "<option value=\"{$oBlog->bnumber}\" selected=\"selected\">" . Entity::hsc($oBlog->bname) . "</option>\n";
+					echo "<option value=\"{$row['bnumber']}\" selected=\"selected\">" . Entity::hsc($row['bname']) . "</option>\n";
 				}
 			}
 		}
@@ -1023,7 +1023,7 @@ class Admin
 		
 		if ( $search )
 		{
-			$query .= " and ((ititle LIKE '%" . sql_real_escape_string($search) . "%') or (ibody LIKE '%" . sql_real_escape_string($search) . "%') or (imore LIKE '%" . sql_real_escape_string($search) . "%'))";
+			$query .= " and ((ititle LIKE " . DB::quoteValue('%'.$search.'%') . ") or (ibody LIKE " . DB::quoteValue('%'.$search.'%') . ") or (imore LIKE " . DB::quoteValue('%'.$search.'%') . "))";
 		}
 		
 		$query .= ' ORDER BY itime DESC'
@@ -1096,7 +1096,7 @@ class Admin
 		
 		if ( $search )
 		{
-			$query .= " and cbody LIKE '%" . sql_real_escape_string($search) . "%'";
+			$query .= " and cbody LIKE " . DB::quoteValue('%'.$search.'%');
 		}
 		
 		$query .= ' ORDER BY ctime ASC'
@@ -1154,7 +1154,7 @@ class Admin
 		
 		if ( $search )
 		{
-			$query .= " and cbody LIKE '%" . sql_real_escape_string($search) . "%'";
+			$query .= " and cbody LIKE " . DB::quoteValue('%'.$search.'%');
 		}
 		
 		$query .= ' ORDER BY ctime DESC'
@@ -1228,7 +1228,7 @@ class Admin
 		
 		if ( $search != '' )
 		{
-			$query .= " and cbody LIKE '%" . sql_real_escape_string($search) . "%'";
+			$query .= " and cbody LIKE " . DB::quoteValue('%'.$search.'%');
 		}
 		
 		$query .= ' ORDER BY ctime DESC'
@@ -1522,10 +1522,10 @@ class Admin
 		$currenttime = $blog->getCorrectTime(time());
 		
 		$query = "SELECT * FROM %s WHERE iblog=%d AND iposted=0 AND itime>'%s'";
-		$query = sprintf($query, sql_table('item'), (integer) $blogid, i18n::formatted_datetime('mysql', $currenttime));
-		$result = sql_query($query);
+		$query = sprintf($query, sql_table('item'), (integer) $blogid, DB::formatDateTime($currenttime));
+		$result = DB::getResult($query);
 		
-		if ( sql_num_rows($result) > 0 )
+		if ( $result->rowCount() > 0 )
 		{
 				$blog->setFuturePost();
 		}
@@ -1551,7 +1551,7 @@ class Admin
 
         $this->pagehead();
         ?>
-            <h2><?php echo _MOVE_TITLE?></h2>
+            <h2><?php echo _MOVE_TITLE ?></h2>
             <form method="post" action="index.php"><div>
                 <input type="hidden" name="action" value="itemmoveto" />
                 <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
@@ -1562,7 +1562,7 @@ class Admin
                     $this->selectBlogCategory('catid',$item['catid'],10,1);
                 ?>
 
-                <input type="submit" value="<?php echo _MOVE_BTN?>" tabindex="10000" onclick="return checkSubmit();" />
+                <input type="submit" value="<?php echo _MOVE_BTN ?>" tabindex="10000" onclick="return checkSubmit();" />
             </div></form>
         <?php
         $this->pagefoot();
@@ -1672,14 +1672,14 @@ class Admin
 		$comment['body'] = str_replace('<br />', '', $comment['body']);
 
 		// replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-		/* original eregi_replace: eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>", "\\1", $comment['body']) */
+		/* original eregi_replace: eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\") ?>[^<]*</a>", "\\1", $comment['body']) */
 
-        $comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#i", "\\1", $comment['body']);
+        $comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\") ?>[^<]*</a>#i", "\\1", $comment['body']);
 
         $this->pagehead();
 
         ?>
-        <h2><?php echo _EDITC_TITLE?></h2>
+        <h2><?php echo _EDITC_TITLE ?></h2>
 
         <form action="index.php" method="post"><div>
 
@@ -1687,9 +1687,9 @@ class Admin
         <?php $manager->addTicketHidden(); ?>
         <input type="hidden" name="commentid" value="<?php echo  $commentid; ?>" />
         <table><tr>
-            <th colspan="2"><?php echo _EDITC_TITLE?></th>
+            <th colspan="2"><?php echo _EDITC_TITLE ?></th>
         </tr><tr>
-            <td><?php echo _EDITC_WHO?></td>
+            <td><?php echo _EDITC_WHO ?></td>
             <td>
             <?php               if ($comment['member'])
                     echo $comment['member'] . " (" . _EDITC_MEMBER . ")";
@@ -1698,10 +1698,10 @@ class Admin
             ?>
             </td>
         </tr><tr>
-            <td><?php echo _EDITC_WHEN?></td>
+            <td><?php echo _EDITC_WHEN ?></td>
             <td><?php echo  date("Y-m-d @ H:i",$comment['timestamp']); ?></td>
         </tr><tr>
-            <td><?php echo _EDITC_HOST?></td>
+            <td><?php echo _EDITC_HOST ?></td>
             <td><?php echo  $comment['host']; ?></td>
         </tr>
         <tr>
@@ -1713,15 +1713,15 @@ class Admin
             <td><input type="text" name="email" size="30" tabindex="8" value="<?php echo $comment['email']; ?>" /></td>
         </tr>
         <tr>
-            <td><?php echo _EDITC_TEXT?></td>
+            <td><?php echo _EDITC_TEXT ?></td>
             <td>
                 <textarea name="body" tabindex="10" rows="10" cols="50"><?php                   // htmlspecialchars not needed (things should be escaped already)
                     echo $comment['body'];
                 ?></textarea>
             </td>
         </tr><tr>
-            <td><?php echo _EDITC_EDIT?></td>
-            <td><input type="submit"  tabindex="20" value="<?php echo _EDITC_EDIT?>" onclick="return checkSubmit();" /></td>
+            <td><?php echo _EDITC_EDIT ?></td>
+            <td><input type="submit"  tabindex="20" value="<?php echo _EDITC_EDIT ?>" onclick="return checkSubmit();" /></td>
         </tr></table>
 
         </div></form>
@@ -1764,26 +1764,25 @@ class Admin
 			$this->error(_ERROR_COMMENT_TOOLONG);
 		}
 
-        // prepare body
-        $body = Comment::prepareBody($body);
+		// prepare body
+		$body = Comment::prepareBody($body);
 
-        // call plugins
-        $manager->notify('PreUpdateComment',array('body' => &$body));
+		// call plugins
+		$manager->notify('PreUpdateComment',array('body' => &$body));
 
-        $query = 'UPDATE ' . sql_table('comment')
-               . " SET cmail = '" . sql_real_escape_string($url) . "', cemail = '" . sql_real_escape_string($email) . "', cbody = '" . sql_real_escape_string($body) . "'"
-               . " WHERE cnumber = " . $commentid;
-        sql_query($query);
+		$query = 'UPDATE ' . sql_table('comment')
+			. ' SET cmail = ' . DB::quoteValue($url) . ', cemail = ' . DB::quoteValue($email) . ', cbody = ' . DB::quoteValue($body)
+			. ' WHERE cnumber = ' . $commentid;
+		DB::execute($query);
 
-        // get itemid
-        $res = sql_query('SELECT citem FROM '.sql_table('comment').' WHERE cnumber=' . $commentid);
-        $o = sql_fetch_object($res);
-        $itemid = $o->citem;
+		// get itemid
+		$res = DB::getValue('SELECT citem FROM '.sql_table('comment').' WHERE cnumber=' . $commentid);
+		$itemid = $res;
 
-        if ($member->canAlterItem($itemid))
-            $this->action_itemcommentlist($itemid);
-        else
-            $this->action_browseowncomments();
+ 		if ($member->canAlterItem($itemid))
+			$this->action_itemcommentlist($itemid);
+		else
+			$this->action_browseowncomments();
 
     }
 	
@@ -1843,9 +1842,8 @@ class Admin
         $commentid = intRequestVar('commentid');
 
         // get item id first
-        $res = sql_query('SELECT citem FROM '.sql_table('comment') .' WHERE cnumber=' . $commentid);
-        $o = sql_fetch_object($res);
-        $itemid = $o->citem;
+        $res = DB::getValue('SELECT citem FROM '.sql_table('comment') .' WHERE cnumber=' . $commentid);
+        $itemid = $res;
 
         $error = $this->deleteOneComment($commentid);
         if ($error)
@@ -1872,7 +1870,7 @@ class Admin
 
         // delete the comments associated with the item
         $query = 'DELETE FROM '.sql_table('comment').' WHERE cnumber=' . $commentid;
-        sql_query($query);
+        DB::execute($query);
 
         $manager->notify('PostDeleteComment', array('commentid' => $commentid));
 
@@ -2023,10 +2021,10 @@ class Admin
 		<?php $manager->addTicketHidden() ?>
 		
 		<table><tr>
-			<th colspan="2"><?php echo _MEMBERS_EDIT?></th>
+			<th colspan="2"><?php echo _MEMBERS_EDIT ?></th>
 		</tr><tr>
-			<td><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
-				<br /><small><?php echo _MEMBERS_DISPLAY_INFO?></small>
+			<td><?php echo _MEMBERS_DISPLAY ?> <?php help('shortnames'); ?>
+				<br /><small><?php echo _MEMBERS_DISPLAY_INFO ?></small>
 			</td>
 			<td>
 			<?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
@@ -2037,40 +2035,40 @@ class Admin
 			?>
 			</td>
 		</tr><tr>
-			<td><?php echo _MEMBERS_REALNAME?></td>
+			<td><?php echo _MEMBERS_REALNAME ?></td>
 			<td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  Entity::hsc($mem->getRealName()); ?>" /></td>
 		</tr><tr>
 		<?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
-			<td><?php echo _MEMBERS_PWD?></td>
+			<td><?php echo _MEMBERS_PWD ?></td>
 			<td><input type="password" tabindex="30" maxlength="40" size="16" name="password" /></td>
 		</tr><tr>
-			<td><?php echo _MEMBERS_REPPWD?></td>
+			<td><?php echo _MEMBERS_REPPWD ?></td>
 			<td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" /></td>
 		<?php } ?>
 		</tr><tr>
-			<td><?php echo _MEMBERS_EMAIL?>
-				<br /><small><?php echo _MEMBERS_EMAIL_EDIT?></small>
+			<td><?php echo _MEMBERS_EMAIL ?>
+				<br /><small><?php echo _MEMBERS_EMAIL_EDIT ?></small>
 			</td>
 			<td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  Entity::hsc($mem->getEmail()); ?>" /></td>
 		</tr><tr>
-			<td><?php echo _MEMBERS_URL?></td>
+			<td><?php echo _MEMBERS_URL ?></td>
 			<td><input name="url" tabindex="50" size="40" maxlength="100" value="<?php echo  Entity::hsc($mem->getURL()); ?>" /></td>
 		<?php // only allow to change this by super-admins
 		   // we don't want normal users to 'upgrade' themselves to super-admins, do we? ;-)
 		   if ($member->isAdmin()) {
 		?>
 			</tr><tr>
-				<td><?php echo _MEMBERS_SUPERADMIN?> <?php help('superadmin'); ?></td>
+				<td><?php echo _MEMBERS_SUPERADMIN ?> <?php help('superadmin'); ?></td>
 				<td><?php $this->input_yesno('admin',$mem->isAdmin(),60); ?></td>
 			</tr><tr>
-				<td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
+				<td><?php echo _MEMBERS_CANLOGIN ?> <?php help('canlogin'); ?></td>
 				<td><?php $this->input_yesno('canlogin',$mem->canLogin(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
 		<?php } ?>
 		</tr><tr>
-			<td><?php echo _MEMBERS_NOTES?></td>
+			<td><?php echo _MEMBERS_NOTES ?></td>
 			<td><input name="notes" tabindex="80" size="40" maxlength="100" value="<?php echo  Entity::hsc($mem->getNotes()); ?>" /></td>
 		</tr><tr>
-			<td><?php echo _MEMBERS_LOCALE?> <?php help('locale'); ?>
+			<td><?php echo _MEMBERS_LOCALE ?> <?php help('locale'); ?>
 			</td>
 			<td>
 			
@@ -2103,7 +2101,7 @@ class Admin
 			</td>
 		</tr>
 		<tr>
-			<td><?php echo _MEMBERS_USEAUTOSAVE?> <?php help('autosave'); ?></td>
+			<td><?php echo _MEMBERS_USEAUTOSAVE ?> <?php help('autosave'); ?></td>
 			<td><?php $this->input_yesno('autosave', $mem->getAutosave(), 87); ?></td>
 		</tr>
 		<?php
@@ -2113,8 +2111,8 @@ class Admin
 		<tr>
 			<th colspan="2"><?php echo _MEMBERS_EDIT ?></th>
 		</tr><tr>
-			<td><?php echo _MEMBERS_EDIT?></td>
-			<td><input type="submit" tabindex="90" value="<?php echo _MEMBERS_EDIT_BTN?>" onclick="return checkSubmit();" /></td>
+			<td><?php echo _MEMBERS_EDIT ?></td>
+			<td><input type="submit" tabindex="90" value="<?php echo _MEMBERS_EDIT_BTN ?>" onclick="return checkSubmit();" /></td>
 		</tr></table>
 		
 		</div></form>
@@ -2206,8 +2204,8 @@ class Admin
              || (!$canlogin && $mem->isAdmin() && $mem->canLogin())
            )
         {
-            $r = sql_query('SELECT * FROM '.sql_table('member').' WHERE madmin=1 and mcanlogin=1');
-            if (sql_num_rows($r) < 2)
+            $r = DB::getResult('SELECT * FROM '.sql_table('member').' WHERE madmin=1 and mcanlogin=1');
+            if ($r->rowCount() < 2)
                 $this->error(_ERROR_ATLEASTONEADMIN);
         }
 
@@ -2334,7 +2332,7 @@ class Admin
         if (!$info)
             $this->error(_ERROR_ACTIVATE);
 
-        $mem = Member::createFromId($info->vmember);
+        $mem = Member::createFromId($info['vmember']);
 
         if (!$mem)
             $this->error(_ERROR_ACTIVATE);
@@ -2343,7 +2341,7 @@ class Admin
         $title = '';
         $bNeedsPasswordChange = true;
 
-        switch ($info->vtype)
+        switch ($info['vtype'])
         {
             case 'forgot':
                 $title = _ACTIVATE_FORGOT_TITLE;
@@ -2387,10 +2385,10 @@ class Admin
                         <input type="hidden" name="key" value="<?php echo Entity::hsc($key) ?>" />
 
                         <table><tr>
-                            <td><?php echo _MEMBERS_PWD?></td>
+                            <td><?php echo _MEMBERS_PWD ?></td>
                             <td><input type="password" maxlength="40" size="16" name="password" /></td>
                         </tr><tr>
-                            <td><?php echo _MEMBERS_REPPWD?></td>
+                            <td><?php echo _MEMBERS_REPPWD ?></td>
                             <td><input type="password" maxlength="40" size="16" name="repeatpassword" /></td>
                         <?php
 
@@ -2429,10 +2427,10 @@ class Admin
         // get activation info
         $info = Member::getActivationInfo($key);
 
-        if (!$info || ($info->type == 'addresschange'))
+        if (!$info || ($info['type'] == 'addresschange'))
             return $this->_showActivationPage($key, _ERROR_ACTIVATE);
 
-        $mem = Member::createFromId($info->vmember);
+        $mem = Member::createFromId($info['vmember']);
 
         if (!$mem)
             return $this->_showActivationPage($key, _ERROR_ACTIVATE);
@@ -2593,9 +2591,9 @@ class Admin
 
         $this->pagehead();
         ?>
-            <h2><?php echo _DELETE_CONFIRM?></h2>
+            <h2><?php echo _DELETE_CONFIRM ?></h2>
 
-            <p><?php echo _CONFIRMTXT_TEAM1?><b><?php echo  Entity::hsc($teammem->getDisplayName()) ?></b><?php echo _CONFIRMTXT_TEAM2?><b><?php echo  Entity::hsc(strip_tags($blog->getName())) ?></b>
+            <p><?php echo _CONFIRMTXT_TEAM1 ?><b><?php echo  Entity::hsc($teammem->getDisplayName()) ?></b><?php echo _CONFIRMTXT_TEAM2 ?><b><?php echo  Entity::hsc(strip_tags($blog->getName())) ?></b>
             </p>
 
 
@@ -2604,7 +2602,7 @@ class Admin
             <?php $manager->addTicketHidden() ?>
             <input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
             <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-            <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
+            <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
             </div></form>
         <?php
         $this->pagefoot();
@@ -2650,13 +2648,13 @@ class Admin
             // check if there are more blog members left and at least one admin
             // (check for at least two admins before deletion)
             $query = 'SELECT * FROM '.sql_table('team') . ' WHERE tblog='.$blogid.' and tadmin=1';
-            $r = sql_query($query);
-            if (sql_num_rows($r) < 2)
+            $r = DB::getResult($query);
+            if ($r->rowCount() < 2)
                 return _ERROR_ATLEASTONEBLOGADMIN;
         }
 
         $query = 'DELETE FROM '.sql_table('team')." WHERE tblog=$blogid and tmember=$memberid";
-        sql_query($query);
+        DB::execute($query);
 
         $manager->notify('PostDeleteTeamMember', array('member' => &$tmem, 'blogid' => $blogid));
 
@@ -2679,8 +2677,8 @@ class Admin
 
         // don't allow when there is only one admin at this moment
         if ($mem->isBlogAdmin($blogid)) {
-            $r = sql_query('SELECT * FROM '.sql_table('team') . " WHERE tblog=$blogid and tadmin=1");
-            if (sql_num_rows($r) == 1)
+            $r = DB::getResult('SELECT * FROM '.sql_table('team') . " WHERE tblog=$blogid and tadmin=1");
+            if ($r->rowCount() == 1)
                 $this->error(_ERROR_ATLEASTONEBLOGADMIN);
         }
 
@@ -2690,7 +2688,7 @@ class Admin
             $newval = 1;
 
         $query = 'UPDATE '.sql_table('team') ." SET tadmin=$newval WHERE tblog=$blogid and tmember=$memberid";
-        sql_query($query);
+        DB::execute($query);
 
         // only show manageteam if member did not change its own admin privileges
         if ($member->isBlogAdmin($blogid))
@@ -2728,11 +2726,11 @@ class Admin
 		
 		$query = "SELECT mname, mrealname FROM %s, %s WHERE mnumber=tmember AND tblog=%d;";
 		$query = sprintf($query, sql_table('member'), sql_table('team'), (integer) $blogid);
-		$res = sql_query($query);
+		$res = DB::getResult($query);
 		$aMemberNames = array();
-		while ( $o = sql_fetch_object($res) )
+		foreach ( $res as $row )
 		{
-			$aMemberNames[] = Entity::hsc($o->mname) . ' (' . Entity::hsc($o->mrealname). ')';
+			$aMemberNames[] = Entity::hsc($row['mname']) . ' (' . Entity::hsc($row['mrealname']). ')';
 		}
 		echo implode(',', $aMemberNames);
 			
@@ -2991,9 +2989,9 @@ class Admin
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
-        $query = 'SELECT * FROM '.sql_table('category') . ' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid);
-        $res = sql_query($query);
-        if (sql_num_rows($res) > 0)
+        $query = 'SELECT * FROM '.sql_table('category') . ' WHERE cname=' . DB::quoteValue($cname).' and cblog=' . intval($blogid);
+        $res = DB::getResult($query);
+        if ($res->rowCount() > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $blog       =& $manager->getBlog($blogid);
@@ -3019,11 +3017,10 @@ class Admin
 
         $member->blogAdminRights($blogid) or $this->disallow();
 
-        $res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cblog=$blogid AND catid=$catid");
-        $obj = sql_fetch_object($res);
+        $res = DB::getRow('SELECT * FROM '.sql_table('category')." WHERE cblog=$blogid AND catid=$catid");
 
-        $cname = $obj->cname;
-        $cdesc = $obj->cdesc;
+        $cname = $res['cname'];
+        $cdesc = $res['cdesc'];
 
         $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
         $this->pagehead($extrahead);
@@ -3031,10 +3028,10 @@ class Admin
         echo "<p><a href='index.php?action=blogsettings&amp;blogid=$blogid'>(",_BACK_TO_BLOGSETTINGS,")</a></p>";
 
         ?>
-        <h2><?php echo _EBLOG_CAT_UPDATE?> '<?php echo Entity::hsc($cname)?>'</h2>
+        <h2><?php echo _EBLOG_CAT_UPDATE ?> '<?php echo Entity::hsc($cname) ?>'</h2>
         <form method='post' action='index.php'><div>
-        <input name="blogid" type="hidden" value="<?php echo $blogid?>" />
-        <input name="catid" type="hidden" value="<?php echo $catid?>" />
+        <input name="blogid" type="hidden" value="<?php echo $blogid ?>" />
+        <input name="catid" type="hidden" value="<?php echo $catid ?>" />
         <input name="desturl" type="hidden" value="<?php echo Entity::hsc($desturl) ?>" />
         <input name="action" type="hidden" value="categoryupdate" />
         <?php $manager->addTicketHidden(); ?>
@@ -3042,11 +3039,11 @@ class Admin
         <table><tr>
             <th colspan="2"><?php echo _EBLOG_CAT_UPDATE ?></th>
         </tr><tr>
-            <td><?php echo _EBLOG_CAT_NAME?></td>
-            <td><input type="text" name="cname" value="<?php echo Entity::hsc($cname)?>" size="40" maxlength="40" /></td>
+            <td><?php echo _EBLOG_CAT_NAME ?></td>
+            <td><input type="text" name="cname" value="<?php echo Entity::hsc($cname) ?>" size="40" maxlength="40" /></td>
         </tr><tr>
-            <td><?php echo _EBLOG_CAT_DESC?></td>
-            <td><input type="text" name="cdesc" value="<?php echo Entity::hsc($cdesc)?>" size="40" maxlength="200" /></td>
+            <td><?php echo _EBLOG_CAT_DESC ?></td>
+            <td><input type="text" name="cdesc" value="<?php echo Entity::hsc($cdesc) ?>" size="40" maxlength="200" /></td>
         </tr>
         <?php
             // insert plugin options
@@ -3055,8 +3052,8 @@ class Admin
         <tr>
             <th colspan="2"><?php echo _EBLOG_CAT_UPDATE ?></th>
         </tr><tr>
-            <td><?php echo _EBLOG_CAT_UPDATE?></td>
-            <td><input type="submit" value="<?php echo _EBLOG_CAT_UPDATE_BTN?>" /></td>
+            <td><?php echo _EBLOG_CAT_UPDATE ?></td>
+            <td><input type="submit" value="<?php echo _EBLOG_CAT_UPDATE_BTN ?>" /></td>
         </tr></table>
 
         </div></form>
@@ -3081,17 +3078,17 @@ class Admin
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
-        $query = 'SELECT * FROM '.sql_table('category').' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
-        $res = sql_query($query);
-        if (sql_num_rows($res) > 0)
+        $query = 'SELECT * FROM '.sql_table('category').' WHERE cname=' . DB::quoteValue($cname).' and cblog=' . intval($blogid) . " and not(catid=$catid)";
+        $res = DB::getResult($query);
+        if ($res->rowCount() > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $query =  'UPDATE '.sql_table('category').' SET'
-               . " cname='" . sql_real_escape_string($cname) . "',"
-               . " cdesc='" . sql_real_escape_string($cdesc) . "'"
-               . " WHERE catid=" . $catid;
+               . ' cname=' . DB::quoteValue($cname) . ','
+               . ' cdesc=' . DB::quoteValue($cdesc)
+               . ' WHERE catid=' . $catid;
 
-        sql_query($query);
+        DB::execute($query);
 
         // store plugin options
         $aOptions = requestArray('plugoption');
@@ -3130,25 +3127,25 @@ class Admin
 
         // check if catid is the only category left for blogid
         $query = 'SELECT catid FROM '.sql_table('category').' WHERE cblog=' . $blogid;
-        $res = sql_query($query);
-        if (sql_num_rows($res) == 1)
+        $res = DB::getResult($query);
+        if ($res->rowCount() == 1)
             $this->error(_ERROR_DELETELASTCATEGORY);
 
 
         $this->pagehead();
         ?>
-            <h2><?php echo _DELETE_CONFIRM?></h2>
+            <h2><?php echo _DELETE_CONFIRM ?></h2>
 
             <div>
-            <?php echo _CONFIRMTXT_CATEGORY?><b><?php echo  Entity::hsc($blog->getCategoryName($catid))?></b>
+            <?php echo _CONFIRMTXT_CATEGORY ?><b><?php echo  Entity::hsc($blog->getCategoryName($catid)) ?></b>
             </div>
 
             <form method="post" action="index.php"><div>
             <input type="hidden" name="action" value="categorydeleteconfirm" />
             <?php $manager->addTicketHidden() ?>
-            <input type="hidden" name="blogid" value="<?php echo $blogid?>" />
-            <input type="hidden" name="catid" value="<?php echo $catid?>" />
-            <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
+            <input type="hidden" name="blogid" value="<?php echo $blogid ?>" />
+            <input type="hidden" name="catid" value="<?php echo $catid ?>" />
+            <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
             </div></form>
         <?php
         $this->pagefoot();
@@ -3210,8 +3207,8 @@ class Admin
 		
 		// check if catid is the only category left for blogid
 		$query = 'SELECT catid FROM '.sql_table('category').' WHERE cblog=' . $blogid;
-		$res = sql_query($query);
-		if ( sql_num_rows($res) == 1 )
+		$res = DB::getResult($query);
+		if ( $res->rowCount() == 1 )
 		{
 			return _ERROR_DELETELASTCATEGORY;
 		}
@@ -3220,14 +3217,14 @@ class Admin
 		
 		// change category for all items to the default category
 		$query = 'UPDATE '.sql_table('item')." SET icat=$destcatid WHERE icat=$catid";
-		sql_query($query);
+		DB::execute($query);
 		
 		// delete all associated plugin options
 		NucleusPlugin::delete_option_values('category', $catid);
 		
 		// delete category
 		$query = 'DELETE FROM '.sql_table('category').' WHERE catid=' .$catid;
-		sql_query($query);
+		DB::execute($query);
 		
 		$manager->notify('PostDeleteCategory', array('catid' => $catid));
 		return;
@@ -3338,20 +3335,20 @@ class Admin
 
         $this->pagehead();
         ?>
-            <h2><?php echo _DELETE_CONFIRM?></h2>
+            <h2><?php echo _DELETE_CONFIRM ?></h2>
 
-            <p><?php echo _WARNINGTXT_BLOGDEL?>
+            <p><?php echo _WARNINGTXT_BLOGDEL ?>
             </p>
 
             <div>
-            <?php echo _CONFIRMTXT_BLOG?><b><?php echo  Entity::hsc($blog->getName())?></b>
+            <?php echo _CONFIRMTXT_BLOG ?><b><?php echo  Entity::hsc($blog->getName()) ?></b>
             </div>
 
             <form method="post" action="index.php"><div>
             <input type="hidden" name="action" value="deleteblogconfirm" />
             <?php $manager->addTicketHidden() ?>
             <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-            <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
+            <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
             </div></form>
         <?php
         $this->pagefoot();
@@ -3380,30 +3377,30 @@ class Admin
 		
 		// delete all comments
 		$query = 'DELETE FROM '.sql_table('comment').' WHERE cblog='.$blogid;
-		sql_query($query);
+		DB::execute($query);
 		
 		// delete all items
 		$query = 'DELETE FROM '.sql_table('item').' WHERE iblog='.$blogid;
-		sql_query($query);
+		DB::execute($query);
 		
 		// delete all team members
 		$query = 'DELETE FROM '.sql_table('team').' WHERE tblog='.$blogid;
-		sql_query($query);
+		DB::execute($query);
 		
 		// delete all bans
 		$query = 'DELETE FROM '.sql_table('ban').' WHERE blogid='.$blogid;
-		sql_query($query);
+		DB::execute($query);
 		
 		// delete all categories
 		$query = 'DELETE FROM '.sql_table('category').' WHERE cblog='.$blogid;
-		sql_query($query);
+		DB::execute($query);
 		
 		// delete all associated plugin options
 		NucleusPlugin::delete_option_values('blog', $blogid);
 		
 		// delete the blog itself
 		$query = 'DELETE FROM '.sql_table('blog').' WHERE bnumber='.$blogid;
-		sql_query($query);
+		DB::execute($query);
 		
 		$manager->notify('PostDeleteBlog', array('blogid' => $blogid));
 		
@@ -3425,9 +3422,9 @@ class Admin
 
         $this->pagehead();
         ?>
-            <h2><?php echo _DELETE_CONFIRM?></h2>
+            <h2><?php echo _DELETE_CONFIRM ?></h2>
 
-            <p><?php echo _CONFIRMTXT_MEMBER?><b><?php echo Entity::hsc($mem->getDisplayName()) ?></b>
+            <p><?php echo _CONFIRMTXT_MEMBER ?><b><?php echo Entity::hsc($mem->getDisplayName()) ?></b>
             </p>
 
             <p>
@@ -3438,7 +3435,7 @@ class Admin
             <input type="hidden" name="action" value="memberdeleteconfirm" />
             <?php $manager->addTicketHidden() ?>
             <input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
-            <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
+            <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
             </div></form>
         <?php
         $this->pagefoot();
@@ -3489,19 +3486,19 @@ class Admin
 		/* unlink comments from memberid */
 		if ( $memberid )
 		{
-			$query = "UPDATE %s SET cmember=0, cuser='%s' WHERE cmember=%d";
-			$query = sprintf($query, sql_table('comment'), sql_real_escape_string($mem->getDisplayName()), $memberid);
-			sql_query($query);
+			$query = "UPDATE %s SET cmember=0, cuser=%s WHERE cmember=%d";
+			$query = sprintf($query, sql_table('comment'), DB::quoteValue($mem->getDisplayName()), $memberid);
+			DB::execute($query);
 		}
 		
 		$query = 'DELETE FROM '.sql_table('member').' WHERE mnumber='.$memberid;
-		sql_query($query);
+		DB::execute($query);
 		
 		$query = 'DELETE FROM '.sql_table('team').' WHERE tmember='.$memberid;
-		sql_query($query);
+		DB::execute($query);
 		
 		$query = 'DELETE FROM '.sql_table('activation').' WHERE vmember='.$memberid;
-		sql_query($query);
+		DB::execute($query);
 		
 		// delete all associated plugin options
 		NucleusPlugin::delete_option_values('member', $memberid);
@@ -3524,7 +3521,7 @@ class Admin
 
         echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
         ?>
-        <h2><?php echo _EBLOG_CREATE_TITLE?></h2>
+        <h2><?php echo _EBLOG_CREATE_TITLE ?></h2>
 
         <h3><?php echo _ADMIN_NOTABILIA ?></h3>
 
@@ -3540,7 +3537,7 @@ class Admin
         <h3><?php echo _ADMIN_HOW_TO_CREATE ?></h3>
 
         <p>
-        <?php echo _EBLOG_CREATE_TEXT?>
+        <?php echo _EBLOG_CREATE_TEXT ?>
         </p>
 
         <form method="post" action="index.php"><div>
@@ -3550,18 +3547,18 @@ class Admin
 
 
         <table><tr>
-            <td><?php echo _EBLOG_NAME?></td>
+            <td><?php echo _EBLOG_NAME ?></td>
             <td><input name="name" tabindex="10" size="40" maxlength="60" /></td>
         </tr><tr>
-            <td><?php echo _EBLOG_SHORTNAME?>
+            <td><?php echo _EBLOG_SHORTNAME ?>
                 <?php help('shortblogname'); ?>
             </td>
             <td><input name="shortname" tabindex="20" maxlength="15" size="15" /></td>
         </tr><tr>
-            <td><?php echo _EBLOG_DESC?></td>
+            <td><?php echo _EBLOG_DESC ?></td>
             <td><input name="desc" tabindex="30" maxlength="200" size="40" /></td>
         </tr><tr>
-            <td><?php echo _EBLOG_DEFSKIN?>
+            <td><?php echo _EBLOG_DEFSKIN ?>
                 <?php help('blogdefaultskin'); ?>
             </td>
             <td>
@@ -3575,19 +3572,19 @@ class Admin
                 ?>
             </td>
         </tr><tr>
-            <td><?php echo _EBLOG_OFFSET?>
+            <td><?php echo _EBLOG_OFFSET ?>
                 <?php help('blogtimeoffset'); ?>
-                <br /><?php echo _EBLOG_STIME?> <b><?php echo i18n::formatted_datetime('%H:%M',time()); ?></b>
+                <br /><?php echo _EBLOG_STIME ?> <b><?php echo i18n::formatted_datetime('%H:%M',time()); ?></b>
             </td>
             <td><input name="timeoffset" tabindex="110" size="3" value="0" /></td>
         </tr><tr>
-            <td><?php echo _EBLOG_ADMIN?>
+            <td><?php echo _EBLOG_ADMIN ?>
                 <?php help('teamadmin'); ?>
             </td>
-            <td><?php echo _EBLOG_ADMIN_MSG?></td>
+            <td><?php echo _EBLOG_ADMIN_MSG ?></td>
         </tr><tr>
-            <td><?php echo _EBLOG_CREATE?></td>
-            <td><input type="submit" tabindex="120" value="<?php echo _EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+            <td><?php echo _EBLOG_CREATE ?></td>
+            <td><input type="submit" tabindex="120" value="<?php echo _EBLOG_CREATE_BTN ?>" onclick="return checkSubmit();" /></td>
         </tr></table>
 
         </div></form>
@@ -3628,27 +3625,30 @@ class Admin
         );
 
 
-        // add slashes for sql queries
-        $bname =        sql_real_escape_string($bname);
-        $bshortname =   sql_real_escape_string($bshortname);
-        $btimeoffset =  sql_real_escape_string($btimeoffset);
-        $bdesc =        sql_real_escape_string($bdesc);
-        $bdefskin =     sql_real_escape_string($bdefskin);
-
         // create blog
-        $query = 'INSERT INTO '.sql_table('blog')." (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', '$btimeoffset', '$bdefskin')";
-        sql_query($query);
-        $blogid = sql_insert_id();
+		$query = sprintf('INSERT INTO %s (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES (%s, %s, %s, %s, %s)',
+			sql_table('blog'),
+			DB::quoteValue($bname),
+			DB::quoteValue($bshortname),
+			DB::quoteValue($bdesc),
+			DB::quoteValue($btimeoffset),
+			DB::quoteValue($bdefskin)
+		);
+        DB::execute($query);
+        $blogid = DB::getInsertId();
         $blog   =& $manager->getBlog($blogid);
 
         // create new category
         $catdefname = (defined('_EBLOGDEFAULTCATEGORY_NAME') ? _EBLOGDEFAULTCATEGORY_NAME : 'General');
         $catdefdesc = (defined('_EBLOGDEFAULTCATEGORY_DESC') ? _EBLOGDEFAULTCATEGORY_DESC : 'Items that do not fit in other categories');
-        $sql = 'INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, "%s", "%s")';
-        sql_query(sprintf($sql, sql_table('category'), $blogid, $catdefname, $catdefdesc));
-//		sql_query(sprintf($sql, sql_table('category'), $blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC));
-//		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
-        $catid = sql_insert_id();
+		$query = sprintf('INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, %s, %s)',
+			sql_table('category'),
+			$blogid,
+			DB::quoteValue($catdefname),
+			DB::quoteValue($catdefdesc)
+		);
+        DB::execute($query);
+        $catid = DB::getInsertId();
 
         // set as default category
         $blog->setDefaultCategory($catid);
@@ -3656,17 +3656,15 @@ class Admin
 
         // create team member
         $memberid = $member->getID();
-        $query = 'INSERT INTO '.sql_table('team')." (tmember, tblog, tadmin) VALUES ($memberid, $blogid, 1)";
-        sql_query($query);
+        $query = sprintf('INSERT INTO %s (tmember, tblog, tadmin) VALUES (%d, %d, 1)', sql_table('team'), $memberid, $blogid);
+        DB::execute($query);
 
         $itemdeftitle = (defined('_EBLOG_FIRSTITEM_TITLE') ? _EBLOG_FIRSTITEM_TITLE : 'First Item');
         $itemdefbody = (defined('_EBLOG_FIRSTITEM_BODY') ? _EBLOG_FIRSTITEM_BODY : 'This is the first item in your weblog. Feel free to delete it.');
 
         $blog->additem($blog->getDefaultCategory(),$itemdeftitle,$itemdefbody,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
-        //$blog->additem($blog->getDefaultCategory(),_EBLOG_FIRSTITEM_TITLE,_EBLOG_FIRSTITEM_BODY,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
 
-
-
+        
         $manager->notify(
             'PostAddBlog',
             array(
@@ -3700,11 +3698,11 @@ class Admin
         <p><?php echo sprintf(_BLOGCREATED_SIMPLEDESC2, Entity::hsc($bshortname)) ?></p>
 <pre><code>&lt;?php
 
-$CONF['Self'] = '<b><?php echo Entity::hsc($bshortname)?>.php</b>';
+$CONF['Self'] = '<b><?php echo Entity::hsc($bshortname) ?>.php</b>';
 
 include('<i>./config.php</i>');
 
-selectBlog('<b><?php echo Entity::hsc($bshortname)?></b>');
+selectBlog('<b><?php echo Entity::hsc($bshortname) ?></b>');
 selector();
 
 ?&gt;</code></pre>
@@ -3716,13 +3714,13 @@ selector();
         <form action="index.php" method="post"><div>
             <input type="hidden" name="action" value="addnewlog2" />
             <?php $manager->addTicketHidden() ?>
-            <input type="hidden" name="blogid" value="<?php echo intval($blogid)?>" />
+            <input type="hidden" name="blogid" value="<?php echo intval($blogid) ?>" />
             <table><tr>
-                <td><?php echo _EBLOG_URL?></td>
-                <td><input name="url" maxlength="100" size="40" value="<?php echo Entity::hsc($CONF['IndexURL'].$bshortname.'.php')?>" /></td>
+                <td><?php echo _EBLOG_URL ?></td>
+                <td><input name="url" maxlength="100" size="40" value="<?php echo Entity::hsc($CONF['IndexURL'].$bshortname.'.php') ?>" /></td>
             </tr><tr>
-                <td><?php echo _EBLOG_CREATE?></td>
-                <td><input type="submit" value="<?php echo _EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+                <td><?php echo _EBLOG_CREATE ?></td>
+                <td><input type="submit" value="<?php echo _EBLOG_CREATE_BTN ?>" onclick="return checkSubmit();" /></td>
             </tr></table>
         </div></form>
 
@@ -3733,13 +3731,13 @@ selector();
         <form action="index.php" method="post"><div>
             <input type="hidden" name="action" value="addnewlog2" />
             <?php $manager->addTicketHidden() ?>
-            <input type="hidden" name="blogid" value="<?php echo intval($blogid)?>" />
+            <input type="hidden" name="blogid" value="<?php echo intval($blogid) ?>" />
             <table><tr>
-                <td><?php echo _EBLOG_URL?></td>
+                <td><?php echo _EBLOG_URL ?></td>
                 <td><input name="url" maxlength="100" size="40" /></td>
             </tr><tr>
-                <td><?php echo _EBLOG_CREATE?></td>
-                <td><input type="submit" value="<?php echo _EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+                <td><?php echo _EBLOG_CREATE ?></td>
+                <td><input type="submit" value="<?php echo _EBLOG_CREATE_BTN ?>" onclick="return checkSubmit();" /></td>
             </tr></table>
         </div></form>
 
@@ -3781,9 +3779,9 @@ selector();
         echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
 
     ?>
-        <h2><?php echo _SKINIE_TITLE_IMPORT?></h2>
+        <h2><?php echo _SKINIE_TITLE_IMPORT ?></h2>
 
-                <p><label for="skinie_import_local"><?php echo _SKINIE_LOCAL?></label>
+                <p><label for="skinie_import_local"><?php echo _SKINIE_LOCAL ?></label>
                 <?php                   global $DIR_SKINS;
 
                     $candidates = SkinImport::searchForCandidates($DIR_SKINS);
@@ -3801,7 +3799,7 @@ selector();
                                     }
                                 ?>
                                 </select>
-                                <input type="submit" value="<?php echo _SKINIE_BTN_IMPORT?>" />
+                                <input type="submit" value="<?php echo _SKINIE_BTN_IMPORT ?>" />
                             </div></form>
                         <?php                   } else {
                         echo _SKINIE_NOCANDIDATES;
@@ -3809,58 +3807,58 @@ selector();
                 ?>
                 </p>
 
-                <p><em><?php echo _OR?></em></p>
+                <p><em><?php echo _OR ?></em></p>
 
                 <form method="post" action="index.php"><p>
                     <?php $manager->addTicketHidden() ?>
                     <input type="hidden" name="action" value="skinieimport" />
                     <input type="hidden" name="mode" value="url" />
-                    <label for="skinie_import_url"><?php echo _SKINIE_FROMURL?></label>
+                    <label for="skinie_import_url"><?php echo _SKINIE_FROMURL ?></label>
                     <input type="text" name="skinfile" id="skinie_import_url" size="60" value="http://" />
-                    <input type="submit" value="<?php echo _SKINIE_BTN_IMPORT?>" />
+                    <input type="submit" value="<?php echo _SKINIE_BTN_IMPORT ?>" />
                 </p></form>
 
 
-        <h2><?php echo _SKINIE_TITLE_EXPORT?></h2>
+        <h2><?php echo _SKINIE_TITLE_EXPORT ?></h2>
         <form method="post" action="index.php"><div>
             <input type="hidden" name="action" value="skinieexport" />
             <?php $manager->addTicketHidden() ?>
 
-            <p><?php echo _SKINIE_EXPORT_INTRO?></p>
+            <p><?php echo _SKINIE_EXPORT_INTRO ?></p>
 
             <table><tr>
-                <th colspan="2"><?php echo _SKINIE_EXPORT_SKINS?></th>
+                <th colspan="2"><?php echo _SKINIE_EXPORT_SKINS ?></th>
             </tr><tr>
     <?php       // show list of skins
-        $res = sql_query('SELECT * FROM '.sql_table('skin_desc'));
-        while ($skinObj = sql_fetch_object($res)) {
-            $id = 'skinexp' . $skinObj->sdnumber;
-            echo '<td><input type="checkbox" name="skin[',$skinObj->sdnumber,']"  id="',$id,'" />';
-            echo '<label for="',$id,'">',Entity::hsc($skinObj->sdname),'</label></td>';
-            echo '<td>',Entity::hsc($skinObj->sddesc),'</td>';
+        $res = DB::getResult('SELECT * FROM '.sql_table('skin_desc'));
+        foreach ( $res as $row) {
+            $id = 'skinexp' . $row['sdnumber'];
+            echo '<td><input type="checkbox" name="skin[',$row['sdnumber'],']"  id="',$id,'" />';
+            echo '<label for="',$id,'">',Entity::hsc($row['sdname']),'</label></td>';
+            echo '<td>',Entity::hsc($row['sddesc']),'</td>';
             echo '</tr><tr>';
         }
 
         echo '<th colspan="2">',_SKINIE_EXPORT_TEMPLATES,'</th></tr><tr>';
 
         // show list of templates
-        $res = sql_query('SELECT * FROM '.sql_table('template_desc'));
-        while ($templateObj = sql_fetch_object($res)) {
-            $id = 'templateexp' . $templateObj->tdnumber;
-            echo '<td><input type="checkbox" name="template[',$templateObj->tdnumber,']" id="',$id,'" />';
-            echo '<label for="',$id,'">',Entity::hsc($templateObj->tdname),'</label></td>';
-            echo '<td>',Entity::hsc($templateObj->tddesc),'</td>';
+        $res = DB::getResult('SELECT * FROM '.sql_table('template_desc'));
+        foreach ( $res as $row ) {
+            $id = 'templateexp' . $row['tdnumber'];
+            echo '<td><input type="checkbox" name="template[',$row['tdnumber'],']" id="',$id,'" />';
+            echo '<label for="',$id,'">',Entity::hsc($row['tdname']),'</label></td>';
+            echo '<td>',Entity::hsc($row['tddesc']),'</td>';
             echo '</tr><tr>';
         }
 
     ?>
-                <th colspan="2"><?php echo _SKINIE_EXPORT_EXTRA?></th>
+                <th colspan="2"><?php echo _SKINIE_EXPORT_EXTRA ?></th>
             </tr><tr>
                 <td colspan="2"><textarea cols="40" rows="5" name="info"></textarea></td>
             </tr><tr>
-                <th colspan="2"><?php echo _SKINIE_TITLE_EXPORT?></th>
+                <th colspan="2"><?php echo _SKINIE_TITLE_EXPORT ?></th>
             </tr><tr>
-                <td colspan="2"><input type="submit" value="<?php echo _SKINIE_BTN_EXPORT?>" /></td>
+                <td colspan="2"><input type="submit" value="<?php echo _SKINIE_BTN_EXPORT ?>" /></td>
             </tr></table>
         </div></form>
 
@@ -3911,18 +3909,18 @@ selector();
 
         echo '<p><a href="index.php?action=skinieoverview">(',_BACK,')</a></p>';
         ?>
-        <h2><?php echo _SKINIE_CONFIRM_TITLE?></h2>
+        <h2><?php echo _SKINIE_CONFIRM_TITLE ?></h2>
 
         <ul>
-            <li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo Entity::hsc($importer->getInfo())?></p></li>
-            <li><p><strong><?php echo _SKINIE_INFO_SKINS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
-            <li><p><strong><?php echo _SKINIE_INFO_TEMPLATES?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
+            <li><p><strong><?php echo _SKINIE_INFO_GENERAL ?></strong> <?php echo Entity::hsc($importer->getInfo()) ?></p></li>
+            <li><p><strong><?php echo _SKINIE_INFO_SKINS ?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames()) ?></p></li>
+            <li><p><strong><?php echo _SKINIE_INFO_TEMPLATES ?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames()) ?></p></li>
             <?php
                 if ($hasNameClashes)
                 {
             ?>
-            <li><p><strong style="color: red;"><?php echo _SKINIE_INFO_SKINCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$skinNameClashes)?></p></li>
-            <li><p><strong style="color: red;"><?php echo _SKINIE_INFO_TEMPLCLASH?></strong> <?php echo implode(' <em>'._AND.'</em> ',$templateNameClashes)?></p></li>
+            <li><p><strong style="color: red;"><?php echo _SKINIE_INFO_SKINCLASH ?></strong> <?php echo implode(' <em>'._AND.'</em> ',$skinNameClashes) ?></p></li>
+            <li><p><strong style="color: red;"><?php echo _SKINIE_INFO_TEMPLCLASH ?></strong> <?php echo implode(' <em>'._AND.'</em> ',$templateNameClashes) ?></p></li>
             <?php
                 } // if (hasNameClashes)
             ?>
@@ -3931,15 +3929,15 @@ selector();
         <form method="post" action="index.php"><div>
             <input type="hidden" name="action" value="skiniedoimport" />
             <?php $manager->addTicketHidden() ?>
-            <input type="hidden" name="skinfile" value="<?php echo Entity::hsc(postVar('skinfile'))?>" />
-            <input type="hidden" name="mode" value="<?php echo Entity::hsc($mode)?>" />
-            <input type="submit" value="<?php echo _SKINIE_CONFIRM_IMPORT?>" />
+            <input type="hidden" name="skinfile" value="<?php echo Entity::hsc(postVar('skinfile')) ?>" />
+            <input type="hidden" name="mode" value="<?php echo Entity::hsc($mode) ?>" />
+            <input type="submit" value="<?php echo _SKINIE_CONFIRM_IMPORT ?>" />
             <?php
                 if ($hasNameClashes)
                 {
             ?>
             <br />
-            <input type="checkbox" name="overwrite" value="1" id="cb_overwrite" /><label for="cb_overwrite"><?php echo _SKINIE_CONFIRM_OVERWRITE?></label>
+            <input type="checkbox" name="overwrite" value="1" id="cb_overwrite" /><label for="cb_overwrite"><?php echo _SKINIE_CONFIRM_OVERWRITE ?></label>
             <?php
                 } // if (hasNameClashes)
             ?>
@@ -3995,12 +3993,12 @@ selector();
 
         echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
     ?>
-        <h2><?php echo _SKINIE_DONE?></h2>
+        <h2><?php echo _SKINIE_DONE ?></h2>
 
         <ul>
-            <li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo Entity::hsc($importer->getInfo())?></p></li>
-            <li><p><strong><?php echo _SKINIE_INFO_IMPORTEDSKINS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
-            <li><p><strong><?php echo _SKINIE_INFO_IMPORTEDTEMPLS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
+            <li><p><strong><?php echo _SKINIE_INFO_GENERAL ?></strong> <?php echo Entity::hsc($importer->getInfo()) ?></p></li>
+            <li><p><strong><?php echo _SKINIE_INFO_IMPORTEDSKINS ?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames()) ?></p></li>
+            <li><p><strong><?php echo _SKINIE_INFO_IMPORTEDTEMPLS ?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames()) ?></p></li>
         </ul>
 
     <?php       $this->pagefoot();
@@ -4069,14 +4067,14 @@ selector();
         <input name="action" value="templatenew" type="hidden" />
         <?php $manager->addTicketHidden() ?>
         <table><tr>
-            <td><?php echo _TEMPLATE_NAME?> <?php help('shortnames');?></td>
+            <td><?php echo _TEMPLATE_NAME ?> <?php help('shortnames'); ?></td>
             <td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
         </tr><tr>
-            <td><?php echo _TEMPLATE_DESC?></td>
+            <td><?php echo _TEMPLATE_DESC ?></td>
             <td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
         </tr><tr>
-            <td><?php echo _TEMPLATE_CREATE?></td>
-            <td><input type="submit" tabindex="10030" value="<?php echo _TEMPLATE_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+            <td><?php echo _TEMPLATE_CREATE ?></td>
+            <td><input type="submit" tabindex="10030" value="<?php echo _TEMPLATE_CREATE_BTN ?>" onclick="return checkSubmit();" /></td>
         </tr></table>
 
         </div></form>
@@ -4096,7 +4094,7 @@ selector();
         $member->isAdmin() or $this->disallow();
 
         $extrahead = '<script type="text/javascript" src="javascript/templateEdit.js"></script>';
-        $extrahead .= '<script type="text/javascript">setTemplateEditText("'.sql_real_escape_string(_EDITTEMPLATE_EMPTY).'");</script>';
+        $extrahead .= '<script type="text/javascript">setTemplateEditText('.DB::quoteValue(_EDITTEMPLATE_EMPTY).');</script>';
 
         $this->pagehead($extrahead);
 
@@ -4106,15 +4104,15 @@ selector();
 
         ?>
         <p>
-        <a href="index.php?action=templateoverview">(<?php echo _TEMPLATE_BACK?>)</a>
+        <a href="index.php?action=templateoverview">(<?php echo _TEMPLATE_BACK ?>)</a>
         </p>
 
-        <h2><?php echo _TEMPLATE_EDIT_TITLE?> '<?php echo  Entity::hsc($templatename); ?>'</h2>
+        <h2><?php echo _TEMPLATE_EDIT_TITLE ?> '<?php echo  Entity::hsc($templatename); ?>'</h2>
 
         <?php                   if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
         ?>
 
-        <p><?php echo _TEMPLATE_EDIT_MSG?></p>
+        <p><?php echo _TEMPLATE_EDIT_MSG ?></p>
 
         <form method="post" action="index.php">
         <div>
@@ -4124,23 +4122,23 @@ selector();
         <input type="hidden" name="templateid" value="<?php echo  $templateid; ?>" />
 
         <table><tr>
-            <th colspan="2"><?php echo _TEMPLATE_SETTINGS?></th>
+            <th colspan="2"><?php echo _TEMPLATE_SETTINGS ?></th>
         </tr><tr>
-            <td><?php echo _TEMPLATE_NAME?> <?php help('shortnames');?></td>
+            <td><?php echo _TEMPLATE_NAME ?> <?php help('shortnames'); ?></td>
             <td><input name="tname" tabindex="4" size="20" maxlength="20" value="<?php echo  Entity::hsc($templatename) ?>" /></td>
         </tr><tr>
-            <td><?php echo _TEMPLATE_DESC?></td>
+            <td><?php echo _TEMPLATE_DESC ?></td>
             <td><input name="tdesc" tabindex="5" size="50" maxlength="200" value="<?php echo  Entity::hsc($templatedescription) ?>" /></td>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_UPDATE?></th>
+            <th colspan="2"><?php echo _TEMPLATE_UPDATE ?></th>
         </tr><tr>
-            <td><?php echo _TEMPLATE_UPDATE?></td>
+            <td><?php echo _TEMPLATE_UPDATE ?></td>
             <td>
-                <input type="submit" tabindex="6" value="<?php echo _TEMPLATE_UPDATE_BTN?>" onclick="return checkSubmit();" />
-                <input type="reset" tabindex="7" value="<?php echo _TEMPLATE_RESET_BTN?>" />
+                <input type="submit" tabindex="6" value="<?php echo _TEMPLATE_UPDATE_BTN ?>" onclick="return checkSubmit();" />
+                <input type="reset" tabindex="7" value="<?php echo _TEMPLATE_RESET_BTN ?>" />
             </td>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_ITEMS?> <?php help('templateitems'); ?></th>
+            <th colspan="2"><?php echo _TEMPLATE_ITEMS ?> <?php help('templateitems'); ?></th>
 <?php	$this->_templateEditRow($template, _TEMPLATE_ITEMHEADER, 'ITEM_HEADER', '', 8);
     $this->_templateEditRow($template, _TEMPLATE_ITEMBODY, 'ITEM', '', 9, 1);
     $this->_templateEditRow($template, _TEMPLATE_ITEMFOOTER, 'ITEM_FOOTER', '', 10);
@@ -4149,7 +4147,7 @@ selector();
     $this->_templateEditRow($template, _TEMPLATE_NEW, 'NEW', 'new', 30);
 ?>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_COMMENTS_ANY?> <?php help('templatecomments'); ?></th>
+            <th colspan="2"><?php echo _TEMPLATE_COMMENTS_ANY ?> <?php help('templatecomments'); ?></th>
 <?php	$this->_templateEditRow($template, _TEMPLATE_CHEADER, 'COMMENTS_HEADER', 'commentheaders', 40);
     $this->_templateEditRow($template, _TEMPLATE_CBODY, 'COMMENTS_BODY', 'commentbody', 50, 1);
     $this->_templateEditRow($template, _TEMPLATE_CFOOTER, 'COMMENTS_FOOTER', 'commentheaders', 60);
@@ -4159,34 +4157,34 @@ selector();
     $this->_templateEditRow($template, _TEMPLATE_CMEXTRA, 'COMMENTS_AUTH', 'memberextra', 100);
 ?>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_COMMENTS_NONE?> <?php help('templatecomments'); ?></th>
+            <th colspan="2"><?php echo _TEMPLATE_COMMENTS_NONE ?> <?php help('templatecomments'); ?></th>
 <?php
     $this->_templateEditRow($template, _TEMPLATE_CNONE, 'COMMENTS_NONE', '', 110);
 ?>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_COMMENTS_TOOMUCH?> <?php help('templatecomments'); ?></th>
+            <th colspan="2"><?php echo _TEMPLATE_COMMENTS_TOOMUCH ?> <?php help('templatecomments'); ?></th>
 <?php	$this->_templateEditRow($template, _TEMPLATE_CTOOMUCH, 'COMMENTS_TOOMUCH', '', 120);
 ?>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_ARCHIVELIST?> <?php help('templatearchivelists'); ?></th>
+            <th colspan="2"><?php echo _TEMPLATE_ARCHIVELIST ?> <?php help('templatearchivelists'); ?></th>
 <?php	$this->_templateEditRow($template, _TEMPLATE_AHEADER, 'ARCHIVELIST_HEADER', '', 130);
     $this->_templateEditRow($template, _TEMPLATE_AITEM, 'ARCHIVELIST_LISTITEM', '', 140);
     $this->_templateEditRow($template, _TEMPLATE_AFOOTER, 'ARCHIVELIST_FOOTER', '', 150);
 ?>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_BLOGLIST?> <?php help('templatebloglists'); ?></th>
+            <th colspan="2"><?php echo _TEMPLATE_BLOGLIST ?> <?php help('templatebloglists'); ?></th>
 <?php	$this->_templateEditRow($template, _TEMPLATE_BLOGHEADER, 'BLOGLIST_HEADER', '', 160);
     $this->_templateEditRow($template, _TEMPLATE_BLOGITEM, 'BLOGLIST_LISTITEM', '', 170);
     $this->_templateEditRow($template, _TEMPLATE_BLOGFOOTER, 'BLOGLIST_FOOTER', '', 180);
 ?>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_CATEGORYLIST?> <?php help('templatecategorylists'); ?></th>
+            <th colspan="2"><?php echo _TEMPLATE_CATEGORYLIST ?> <?php help('templatecategorylists'); ?></th>
 <?php	$this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 190);
     $this->_templateEditRow($template, _TEMPLATE_CATITEM, 'CATLIST_LISTITEM', '', 200);
     $this->_templateEditRow($template, _TEMPLATE_CATFOOTER, 'CATLIST_FOOTER', '', 210);
 ?>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_DATETIME?></th>
+            <th colspan="2"><?php echo _TEMPLATE_DATETIME ?></th>
 <?php	$this->_templateEditRow($template, _TEMPLATE_DHEADER, 'DATE_HEADER', 'dateheads', 220);
     $this->_templateEditRow($template, _TEMPLATE_DFOOTER, 'DATE_FOOTER', 'dateheads', 230);
     $this->_templateEditRow($template, _TEMPLATE_DFORMAT, 'FORMAT_DATE', 'datetime', 240);
@@ -4194,18 +4192,18 @@ selector();
     $this->_templateEditRow($template, _TEMPLATE_LOCALE, 'LOCALE', 'locale', 260);
 ?>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_IMAGE?> <?php help('templatepopups'); ?></th>
+            <th colspan="2"><?php echo _TEMPLATE_IMAGE ?> <?php help('templatepopups'); ?></th>
 <?php	$this->_templateEditRow($template, _TEMPLATE_PCODE, 'POPUP_CODE', '', 270);
     $this->_templateEditRow($template, _TEMPLATE_ICODE, 'IMAGE_CODE', '', 280);
     $this->_templateEditRow($template, _TEMPLATE_MCODE, 'MEDIA_CODE', '', 290);
 ?>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_SEARCH?></th>
+            <th colspan="2"><?php echo _TEMPLATE_SEARCH ?></th>
 <?php	$this->_templateEditRow($template, _TEMPLATE_SHIGHLIGHT, 'SEARCH_HIGHLIGHT', 'highlight',300);
     $this->_templateEditRow($template, _TEMPLATE_SNOTFOUND, 'SEARCH_NOTHINGFOUND', 'nothingfound',310);
 ?>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_PLUGIN_FIELDS?></th>
+            <th colspan="2"><?php echo _TEMPLATE_PLUGIN_FIELDS ?></th>
 <?php
         $tab = 600;
         $pluginfields = array();
@@ -4220,12 +4218,12 @@ selector();
         }
 ?>
         </tr><tr>
-            <th colspan="2"><?php echo _TEMPLATE_UPDATE?></th>
+            <th colspan="2"><?php echo _TEMPLATE_UPDATE ?></th>
         </tr><tr>
-            <td><?php echo _TEMPLATE_UPDATE?></td>
+            <td><?php echo _TEMPLATE_UPDATE ?></td>
             <td>
-                <input type="submit" tabindex="800" value="<?php echo _TEMPLATE_UPDATE_BTN?>" onclick="return checkSubmit();" />
-                <input type="reset" tabindex="810" value="<?php echo _TEMPLATE_RESET_BTN?>" />
+                <input type="submit" tabindex="800" value="<?php echo _TEMPLATE_UPDATE_BTN ?>" onclick="return checkSubmit();" />
+                <input type="reset" tabindex="810" value="<?php echo _TEMPLATE_RESET_BTN ?>" />
             </td>
         </tr></table>
 
@@ -4243,8 +4241,8 @@ selector();
         if (!isset($template[$name])) $template[$name] = '';
     ?>
         </tr><tr>
-            <td><?php echo $description?> <?php if ($help) help('template'.$help); ?></td>
-            <td id="td<?php echo $count?>"><textarea class="templateedit" name="<?php echo $name?>" tabindex="<?php echo $tabindex?>" cols="50" rows="<?php echo $big?10:5?>" id="textarea<?php echo $count?>"><?php echo  Entity::hsc($template[$name]); ?></textarea></td>
+            <td><?php echo $description ?> <?php if ($help) help('template'.$help); ?></td>
+            <td id="td<?php echo $count ?>"><textarea class="templateedit" name="<?php echo $name ?>" tabindex="<?php echo $tabindex ?>" cols="50" rows="<?php echo $big?10:5 ?>" id="textarea<?php echo $count ?>"><?php echo  Entity::hsc($template[$name]); ?></textarea></td>
     <?php       $count++;
     }
 
@@ -4268,19 +4266,19 @@ selector();
             $this->error(_ERROR_DUPTEMPLATENAME);
 
 
-        $name = sql_real_escape_string($name);
-        $desc = sql_real_escape_string($desc);
+        $name = DB::quoteValue($name);
+        $desc = DB::quoteValue($desc);
 
         // 1. Remove all template parts
         $query = 'DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid;
-        sql_query($query);
+        DB::execute($query);
 
         // 2. Update description
         $query =  'UPDATE '.sql_table('template_desc').' SET'
-               . " tdname='" . $name . "',"
-               . " tddesc='" . $desc . "'"
-               . " WHERE tdnumber=" . $templateid;
-        sql_query($query);
+               . ' tdname=' . $name . ','
+               . ' tddesc=' . $desc
+               . ' WHERE tdnumber=' . $templateid;
+        DB::execute($query);
 
         // 3. Add non-empty template parts
         $this->addToTemplate($templateid, 'ITEM_HEADER', postVar('ITEM_HEADER'));
@@ -4348,13 +4346,17 @@ selector();
 			return -1;
 		}
 		
-		$partname = sql_real_escape_string($partname);
-		$content = sql_real_escape_string($content);
+		$partname = DB::quoteValue($partname);
+		$content = DB::quoteValue($content);
 		
-		$query = "INSERT INTO %s (tdesc, tpartname, tcontent) VALUES (%d, '%s', '%s')";
+		$query = "INSERT INTO %s (tdesc, tpartname, tcontent) VALUES (%d, %s, %s)";
 		$query = sprintf($query, sql_table('template'), (integer) $id, $partname, $content);
-		sql_query($query) or exit(_ADMIN_SQLDIE_QUERYERROR . sql_error());
-		return sql_insert_id();
+		if ( DB::execute($query) === FALSE )
+		{
+			$err = DB::getError();
+			exit(_ADMIN_SQLDIE_QUERYERROR . $err[2]);
+		}
+		return DB::getInsertId();
 	}
 	
     /**
@@ -4374,17 +4376,17 @@ selector();
         $desc = Template::getDesc($templateid);
 
         ?>
-            <h2><?php echo _DELETE_CONFIRM?></h2>
+            <h2><?php echo _DELETE_CONFIRM ?></h2>
 
             <p>
-            <?php echo _CONFIRMTXT_TEMPLATE?><b><?php echo Entity::hsc($name)?></b> (<?php echo  Entity::hsc($desc) ?>)
+            <?php echo _CONFIRMTXT_TEMPLATE ?><b><?php echo Entity::hsc($name) ?></b> (<?php echo  Entity::hsc($desc) ?>)
             </p>
 
             <form method="post" action="index.php"><div>
                 <input type="hidden" name="action" value="templatedeleteconfirm" />
                 <?php $manager->addTicketHidden() ?>
                 <input type="hidden" name="templateid" value="<?php echo  $templateid ?>" />
-                <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
+                <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
             </div></form>
         <?php
         $this->pagefoot();
@@ -4403,10 +4405,10 @@ selector();
         $manager->notify('PreDeleteTemplate', array('templateid' => $templateid));
 
         // 1. delete description
-        sql_query('DELETE FROM '.sql_table('template_desc').' WHERE tdnumber=' . $templateid);
+        DB::execute('DELETE FROM '.sql_table('template_desc').' WHERE tdnumber=' . $templateid);
 
         // 2. delete parts
-        sql_query('DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid);
+        DB::execute('DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid);
 
         $manager->notify('PostDeleteTemplate', array('templateid' => $templateid));
 
@@ -4464,9 +4466,9 @@ selector();
 
         // 3. create clone
         // go through parts of old template and add them to the new one
-        $res = sql_query('SELECT tpartname, tcontent FROM '.sql_table('template').' WHERE tdesc=' . $templateid);
-        while ($o = sql_fetch_object($res)) {
-            $this->addToTemplate($newid, $o->tpartname, $o->tcontent);
+        $res = DB::getResult('SELECT tpartname, tcontent FROM '.sql_table('template').' WHERE tdesc=' . $templateid);
+        foreach ( $res as $row ) {
+            $this->addToTemplate($newid, $row['tpartname'], $row['tcontent']);
         }
 
         $this->action_templateoverview();
@@ -4864,9 +4866,9 @@ selector();
 
         // don't allow deletion of default skins for blogs
         $query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
-        $r = sql_query($query);
-        if ($o = sql_fetch_object($r))
-            $this->error(_ERROR_SKINDEFDELETE . Entity::hsc($o->bname));
+        $r = DB::getValue($query);
+        if ( $r )
+            $this->error(_ERROR_SKINDEFDELETE . Entity::hsc($r));
 
         $this->pagehead();
 
@@ -4875,17 +4877,17 @@ selector();
         $desc = $skin->getDescription();
 
         ?>
-            <h2><?php echo _DELETE_CONFIRM?></h2>
+            <h2><?php echo _DELETE_CONFIRM ?></h2>
 
             <p>
-                <?php echo _CONFIRMTXT_SKIN?><b><?php echo Entity::hsc($name) ?></b> (<?php echo  Entity::hsc($desc)?>)
+                <?php echo _CONFIRMTXT_SKIN ?><b><?php echo Entity::hsc($name) ?></b> (<?php echo  Entity::hsc($desc) ?>)
             </p>
 
             <form method="post" action="index.php"><div>
                 <input type="hidden" name="action" value="skindeleteconfirm" />
                 <?php $manager->addTicketHidden() ?>
                 <input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
-                <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
+                <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
             </div></form>
         <?php
         $this->pagefoot();
@@ -4907,17 +4909,17 @@ selector();
 
         // don't allow deletion of default skins for blogs
         $query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
-        $r = sql_query($query);
-        if ($o = sql_fetch_object($r))
-            $this->error(_ERROR_SKINDEFDELETE .$o->bname);
+        $r = DB::getValue($query);
+        if ($r)
+            $this->error(_ERROR_SKINDEFDELETE .$r);
 
         $manager->notify('PreDeleteSkin', array('skinid' => $skinid));
 
         // 1. delete description
-        sql_query('DELETE FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $skinid);
+        DB::execute('DELETE FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $skinid);
 
         // 2. delete parts
-        sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc=' . $skinid);
+        DB::execute('DELETE FROM '.sql_table('skin').' WHERE sdesc=' . $skinid);
 
         $manager->notify('PostDeleteSkin', array('skinid' => $skinid));
 
@@ -5015,7 +5017,7 @@ selector();
 		// delete part
 		$query = "DELETE FROM %s WHERE sdesc=%d AND stype='%s';";
 		$query = sprintf($query, sql_table('skin'), (integer) $skinid, $skintype);
-		sql_query($query);
+		DB::execute($query);
 		
 		$data = array(
 			'skinid'	=> $skinid,
@@ -5060,8 +5062,8 @@ selector();
         );
         
         $query = "SELECT stype FROM " . sql_table('skin') . " WHERE sdesc = " . $skinid;
-        $res = sql_query($query);
-        while ($row = sql_fetch_assoc($res)) {
+        $res = DB::getResult($query);
+        foreach ( $res as $row) {
             $this->skinclonetype($skin, $newid, $row['stype']);
         }
 
@@ -5086,7 +5088,7 @@ selector();
 		{
 			$query = "INSERT INTO %s (sdesc, scontent, stype) VALUES (%d, '%s', '%s')";
 			$query = sprintf($query, sql_table('skin'), (integer) $newid, $content, $type);
-			sql_query($query);
+			DB::execute($query);
 		}
 		return;
 	}
@@ -5107,7 +5109,7 @@ selector();
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
 		?>
 
-		<h2><?php echo _SETTINGS_TITLE?></h2>
+		<h2><?php echo _SETTINGS_TITLE ?></h2>
 
 		<form action="index.php" method="post">
 		<div>
@@ -5116,9 +5118,9 @@ selector();
 		<?php $manager->addTicketHidden() ?>
 
 		<table><tr>
-			<th colspan="2"><?php echo _SETTINGS_SUB_GENERAL?></th>
+			<th colspan="2"><?php echo _SETTINGS_SUB_GENERAL ?></th>
 		</tr><tr>
-			<td><?php echo _SETTINGS_DEFBLOG?> <?php help('defaultblog'); ?></td>
+			<td><?php echo _SETTINGS_DEFBLOG ?> <?php help('defaultblog'); ?></td>
 			<td>
 				<?php
 					$query =  'SELECT bname as text, bnumber as value'
@@ -5130,7 +5132,7 @@ selector();
 				?>
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_BASESKIN?> <?php help('baseskin'); ?></td>
+			<td><?php echo _SETTINGS_BASESKIN ?> <?php help('baseskin'); ?></td>
 			<td>
 				<?php
 					$query =  'SELECT sdname as text, sdnumber as value'
@@ -5142,28 +5144,28 @@ selector();
 				?>
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_ADMINMAIL?></td>
+			<td><?php echo _SETTINGS_ADMINMAIL ?></td>
 			<td><input name="AdminEmail" tabindex="10010" size="40" value="<?php echo  Entity::hsc($CONF['AdminEmail']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_SITENAME?></td>
+			<td><?php echo _SETTINGS_SITENAME ?></td>
 			<td><input name="SiteName" tabindex="10020" size="40" value="<?php echo  Entity::hsc($CONF['SiteName']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_SITEURL?></td>
+			<td><?php echo _SETTINGS_SITEURL ?></td>
 			<td><input name="IndexURL" tabindex="10030" size="40" value="<?php echo  Entity::hsc($CONF['IndexURL']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_ADMINURL?></td>
+			<td><?php echo _SETTINGS_ADMINURL ?></td>
 			<td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  Entity::hsc($CONF['AdminURL']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_PLUGINURL?> <?php help('pluginurl');?></td>
+			<td><?php echo _SETTINGS_PLUGINURL ?> <?php help('pluginurl'); ?></td>
 			<td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  Entity::hsc($CONF['PluginURL']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_SKINSURL?> <?php help('skinsurl');?></td>
+			<td><?php echo _SETTINGS_SKINSURL ?> <?php help('skinsurl'); ?></td>
 			<td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  Entity::hsc($CONF['SkinsURL']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_ACTIONSURL?> <?php help('actionurl');?></td>
+			<td><?php echo _SETTINGS_ACTIONSURL ?> <?php help('actionurl'); ?></td>
 			<td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  Entity::hsc($CONF['ActionURL']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_LOCALE?> <?php help('locale'); ?>
+			<td><?php echo _SETTINGS_LOCALE ?> <?php help('locale'); ?>
 			</td>
 			<td>
 				<select name="Locale" tabindex="10050">
@@ -5198,19 +5200,19 @@ selector();
 
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_DISABLESITE?> <?php help('disablesite'); ?>
+			<td><?php echo _SETTINGS_DISABLESITE ?> <?php help('disablesite'); ?>
 			</td>
 			<td><?php $this->input_yesno('DisableSite',$CONF['DisableSite'],10060); ?>
 					<br />
-				<?php echo _SETTINGS_DISABLESITEURL ?> <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  Entity::hsc($CONF['DisableSiteURL'])?>" />
+				<?php echo _SETTINGS_DISABLESITEURL ?> <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  Entity::hsc($CONF['DisableSiteURL']) ?>" />
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_DIRS?></td>
+			<td><?php echo _SETTINGS_DIRS ?></td>
 			<td><?php echo  Entity::hsc($DIR_NUCLEUS) ?>
-				<i><?php echo _SETTINGS_SEECONFIGPHP?></i></td>
+				<i><?php echo _SETTINGS_SEECONFIGPHP ?></i></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_DBLOGIN?></td>
-			<td><i><?php echo _SETTINGS_SEECONFIGPHP?></i></td>
+			<td><?php echo _SETTINGS_DBLOGIN ?></td>
+			<td><i><?php echo _SETTINGS_SEECONFIGPHP ?></i></td>
 		</tr><tr>
 			<td>
 			<?php
@@ -5227,7 +5229,7 @@ selector();
 				*/
 			   ?>
 			</td>
-			<td><?php /* $this->input_yesno('DisableJsTools',$CONF['DisableJsTools'],10075); */?>
+			<td><?php /* $this->input_yesno('DisableJsTools',$CONF['DisableJsTools'],10075); */ ?>
 				<select name="DisableJsTools" tabindex="10075">
 			<?php				   $extra = ($CONF['DisableJsTools'] == 1) ? 'selected="selected"' : '';
 					echo "<option $extra value='1'>",_SETTINGS_JSTOOLBAR_NONE,"</option>";
@@ -5239,7 +5241,7 @@ selector();
 				</select>
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_URLMODE?> <?php help('urlmode');?></td>
+			<td><?php echo _SETTINGS_URLMODE ?> <?php help('urlmode'); ?></td>
 					   <td><?php
 
 					   $this->input_yesno('URLMode',$CONF['URLMode'],10077,
@@ -5251,7 +5253,7 @@ selector();
 
 					   </td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_DEBUGVARS?> <?php help('debugvars');?></td>
+			<td><?php echo _SETTINGS_DEBUGVARS ?> <?php help('debugvars'); ?></td>
 					   <td><?php
 
 						$this->input_yesno('DebugVars',$CONF['DebugVars'],10078);
@@ -5260,18 +5262,18 @@ selector();
 
 					   </td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_DEFAULTLISTSIZE?> <?php help('defaultlistsize');?></td>
+			<td><?php echo _SETTINGS_DEFAULTLISTSIZE ?> <?php help('defaultlistsize'); ?></td>
 			<td>
 			<?php
 				if (!array_key_exists('DefaultListSize',$CONF)) {
-					sql_query("INSERT INTO ".sql_table('config')." VALUES ('DefaultListSize', '10')");
+					DB::execute("INSERT INTO ".sql_table('config')." VALUES ('DefaultListSize', '10')");
 					$CONF['DefaultListSize'] = 10;
 				}
 			?>
 				<input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  Entity::hsc((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_ADMINCSS?> 
+			<td><?php echo _SETTINGS_ADMINCSS ?> 
 			</td>
 			<td>
 
@@ -5311,11 +5313,11 @@ selector();
 
 			</td>
 		</tr><tr>
-			<th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
+			<th colspan="2"><?php echo _SETTINGS_MEDIA ?> <?php help('media'); ?></th>
 		</tr><tr>
-			<td><?php echo _SETTINGS_MEDIADIR?></td>
+			<td><?php echo _SETTINGS_MEDIADIR ?></td>
 			<td><?php echo  Entity::hsc($DIR_MEDIA) ?>
-				<i><?php echo _SETTINGS_SEECONFIGPHP?></i>
+				<i><?php echo _SETTINGS_SEECONFIGPHP ?></i>
 				<?php				   if (!is_dir($DIR_MEDIA))
 						echo "<br /><b>" . _WARNING_NOTADIR . "</b>";
 					if (!is_readable($DIR_MEDIA))
@@ -5325,58 +5327,58 @@ selector();
 				?>
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_MEDIAURL?></td>
+			<td><?php echo _SETTINGS_MEDIAURL ?></td>
 			<td>
 				<input name="MediaURL" tabindex="10090" size="40" value="<?php echo  Entity::hsc($CONF['MediaURL']) ?>" />
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_ALLOWUPLOAD?></td>
+			<td><?php echo _SETTINGS_ALLOWUPLOAD ?></td>
 			<td><?php $this->input_yesno('AllowUpload',$CONF['AllowUpload'],10090); ?></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_ALLOWUPLOADTYPES?></td>
+			<td><?php echo _SETTINGS_ALLOWUPLOADTYPES ?></td>
 			<td>
 				<input name="AllowedTypes" tabindex="10100" size="40" value="<?php echo  Entity::hsc($CONF['AllowedTypes']) ?>" />
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_MAXUPLOADSIZE?></td>
+			<td><?php echo _SETTINGS_MAXUPLOADSIZE ?></td>
 			<td>
 				<input name="MaxUploadSize" tabindex="10105" size="40" value="<?php echo  Entity::hsc($CONF['MaxUploadSize']) ?>" />
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_MEDIAPREFIX?></td>
+			<td><?php echo _SETTINGS_MEDIAPREFIX ?></td>
 			<td><?php $this->input_yesno('MediaPrefix',$CONF['MediaPrefix'],10110); ?></td>
 
 		</tr><tr>
-			<th colspan="2"><?php echo _SETTINGS_MEMBERS?></th>
+			<th colspan="2"><?php echo _SETTINGS_MEMBERS ?></th>
 		</tr><tr>
-			<td><?php echo _SETTINGS_CHANGELOGIN?></td>
+			<td><?php echo _SETTINGS_CHANGELOGIN ?></td>
 			<td><?php $this->input_yesno('AllowLoginEdit',$CONF['AllowLoginEdit'],10120); ?></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_ALLOWCREATE?>
+			<td><?php echo _SETTINGS_ALLOWCREATE ?>
 				<?php help('allowaccountcreation'); ?>
 			</td>
 			<td><?php $this->input_yesno('AllowMemberCreate',$CONF['AllowMemberCreate'],10130); ?>
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_NEWLOGIN?> <?php help('allownewmemberlogin'); ?>
-				<br /><?php echo _SETTINGS_NEWLOGIN2?>
+			<td><?php echo _SETTINGS_NEWLOGIN ?> <?php help('allownewmemberlogin'); ?>
+				<br /><?php echo _SETTINGS_NEWLOGIN2 ?>
 			</td>
 			<td><?php $this->input_yesno('NewMemberCanLogon',$CONF['NewMemberCanLogon'],10140); ?>
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_MEMBERMSGS?>
+			<td><?php echo _SETTINGS_MEMBERMSGS ?>
 				<?php help('messageservice'); ?>
 			</td>
 			<td><?php $this->input_yesno('AllowMemberMail',$CONF['AllowMemberMail'],10150); ?>
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_NONMEMBERMSGS?>
+			<td><?php echo _SETTINGS_NONMEMBERMSGS ?>
 				<?php help('messageservice'); ?>
 			</td>
 			<td><?php $this->input_yesno('NonmemberMail',$CONF['NonmemberMail'],10155); ?>
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_PROTECTMEMNAMES?>
+			<td><?php echo _SETTINGS_PROTECTMEMNAMES ?>
 				<?php help('protectmemnames'); ?>
 			</td>
 			<td><?php $this->input_yesno('ProtectMemNames',$CONF['ProtectMemNames'],10156); ?>
@@ -5385,35 +5387,35 @@ selector();
 
 
 		</tr><tr>
-			<th colspan="2"><?php echo _SETTINGS_COOKIES_TITLE?> <?php help('cookies'); ?></th>
+			<th colspan="2"><?php echo _SETTINGS_COOKIES_TITLE ?> <?php help('cookies'); ?></th>
 		</tr><tr>
-			<td><?php echo _SETTINGS_COOKIEPREFIX?></td>
-			<td><input name="CookiePrefix" tabindex="10159" size="40" value="<?php echo  Entity::hsc($CONF['CookiePrefix'])?>" /></td>
+			<td><?php echo _SETTINGS_COOKIEPREFIX ?></td>
+			<td><input name="CookiePrefix" tabindex="10159" size="40" value="<?php echo  Entity::hsc($CONF['CookiePrefix']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_COOKIEDOMAIN?></td>
-			<td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  Entity::hsc($CONF['CookieDomain'])?>" /></td>
+			<td><?php echo _SETTINGS_COOKIEDOMAIN ?></td>
+			<td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  Entity::hsc($CONF['CookieDomain']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_COOKIEPATH?></td>
-			<td><input name="CookiePath" tabindex="10170" size="40" value="<?php echo  Entity::hsc($CONF['CookiePath'])?>" /></td>
+			<td><?php echo _SETTINGS_COOKIEPATH ?></td>
+			<td><input name="CookiePath" tabindex="10170" size="40" value="<?php echo  Entity::hsc($CONF['CookiePath']) ?>" /></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_COOKIESECURE?></td>
+			<td><?php echo _SETTINGS_COOKIESECURE ?></td>
 			<td><?php $this->input_yesno('CookieSecure',$CONF['CookieSecure'],10180); ?></td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_COOKIELIFE?></td>
+			<td><?php echo _SETTINGS_COOKIELIFE ?></td>
 			<td><?php $this->input_yesno('SessionCookie',$CONF['SessionCookie'],10190,
 							  1,0,_SETTINGS_COOKIESESSION,_SETTINGS_COOKIEMONTH); ?>
 			</td>
 		</tr><tr>
-			<td><?php echo _SETTINGS_LASTVISIT?></td>
+			<td><?php echo _SETTINGS_LASTVISIT ?></td>
 			<td><?php $this->input_yesno('LastVisit',$CONF['LastVisit'],10200); ?></td>
 
 
 
 		</tr><tr>
-			<th colspan="2"><?php echo _SETTINGS_UPDATE?></th>
+			<th colspan="2"><?php echo _SETTINGS_UPDATE ?></th>
 		</tr><tr>
-			<td><?php echo _SETTINGS_UPDATE?></td>
-			<td><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN?>" onclick="return checkSubmit();" /></td>
+			<td><?php echo _SETTINGS_UPDATE ?></td>
+			<td><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN ?>" onclick="return checkSubmit();" /></td>
 		</tr></table>
 
 		</div>
@@ -5526,7 +5528,7 @@ selector();
 			echo "</tr>\n";
 			echo "<tr>\n";
 			echo '<td>' . _ADMIN_SYSTEMOVERVIEW_MYSQLVERSION . "</td>\n";
-			echo '<td>' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
+			echo '<td>' . DB::getAttribute(PDO::ATTR_SERVER_VERSION) . ' (' . DB::getAttribute(PDO::ATTR_CLIENT_VERSION) . ')' . "</td>\n";
 			echo "</tr>\n";
 			echo "</tbody>\n";
 			echo "</table>\n\n";
@@ -5690,13 +5692,17 @@ selector();
 	 */
 	function updateConfig($name, $val)
 	{
-		$name = sql_real_escape_string($name);
-		$val = trim(sql_real_escape_string($val));
+		$name = DB::quoteValue($name);
+		$val = DB::quoteValue(trim($val));
 		
-		$query = "UPDATE %s SET value='%s' WHERE name='%s'";
+		$query = "UPDATE %s SET value=%s WHERE name=%s";
 		$query = sprintf($query, sql_table('config'), $val, $name);
-		sql_query($query) or die("Query error: " . sql_error());
-		return sql_insert_id();
+		if ( DB::execute($query) === FALSE )
+		{
+			$err = DB::getError();
+			die("Query error: " . $err[2]);
+		}
+		return DB::getInsertId();
 	}
 	
 	/**
@@ -5748,7 +5754,7 @@ selector();
 		$baseUrl = Entity::hsc($CONF['AdminURL']);
 		if ( !array_key_exists('AdminCSS',$CONF) )
 		{
-			sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'original')");
+			DB::execute("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'original')");
 			$CONF['AdminCSS'] = 'original';
 		}
 		
@@ -6024,8 +6030,8 @@ selector();
         $url = $manager->addTicketToUrl('index.php?action=clearactionlog');
 
         ?>
-            <h2><?php echo _ACTIONLOG_CLEAR_TITLE?></h2>
-            <p><a href="<?php echo Entity::hsc($url)?>"><?php echo _ACTIONLOG_CLEAR_TEXT?></a></p>
+            <h2><?php echo _ACTIONLOG_CLEAR_TITLE ?></h2>
+            <p><a href="<?php echo Entity::hsc($url) ?>"><?php echo _ACTIONLOG_CLEAR_TEXT ?></a></p>
         <?php
         echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 
@@ -6086,33 +6092,33 @@ selector();
 
         $this->pagehead();
         ?>
-            <h2><?php echo _BAN_REMOVE_TITLE?></h2>
+            <h2><?php echo _BAN_REMOVE_TITLE ?></h2>
 
             <form method="post" action="index.php">
 
-            <h3><?php echo _BAN_IPRANGE?></h3>
+            <h3><?php echo _BAN_IPRANGE ?></h3>
 
             <p>
-                <?php echo _CONFIRMTXT_BAN?> <?php echo Entity::hsc($iprange) ?>
-                <input name="iprange" type="hidden" value="<?php echo Entity::hsc($iprange)?>" />
+                <?php echo _CONFIRMTXT_BAN ?> <?php echo Entity::hsc($iprange) ?>
+                <input name="iprange" type="hidden" value="<?php echo Entity::hsc($iprange) ?>" />
             </p>
 
-            <h3><?php echo _BAN_BLOGS?></h3>
+            <h3><?php echo _BAN_BLOGS ?></h3>
 
             <div>
-                <input type="hidden" name="blogid" value="<?php echo $blogid?>" />
+                <input type="hidden" name="blogid" value="<?php echo $blogid ?>" />
                 <input name="allblogs" type="radio" value="0" id="allblogs_one" />
                 <label for="allblogs_one"><?php echo sprintf(_BAN_BANBLOGNAME, $banBlogName) ?></label>
                 <br />
-                <input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?php echo _BAN_ALLBLOGS?></label>
+                <input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?php echo _BAN_ALLBLOGS ?></label>
             </div>
 
-            <h3><?php echo _BAN_DELETE_TITLE?></h3>
+            <h3><?php echo _BAN_DELETE_TITLE ?></h3>
 
             <div>
                 <?php $manager->addTicketHidden() ?>
                 <input type="hidden" name="action" value="banlistdeleteconfirm" />
-                <input type="submit" value="<?php echo _DELETE_CONFIRM_BTN?>" />
+                <input type="submit" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
             </div>
 
             </form>
@@ -6190,14 +6196,14 @@ selector();
 
         $this->pagehead();
         ?>
-        <h2><?php echo _BAN_ADD_TITLE?></h2>
+        <h2><?php echo _BAN_ADD_TITLE ?></h2>
 
 
         <form method="post" action="index.php">
 
-        <h3><?php echo _BAN_IPRANGE?></h3>
+        <h3><?php echo _BAN_IPRANGE ?></h3>
 
-        <p><?php echo _BAN_IPRANGE_TEXT?></p>
+        <p><?php echo _BAN_IPRANGE_TEXT ?></p>
 
         <div class="note">
             <strong><?php echo _BAN_EXAMPLE_TITLE ?></strong>
@@ -6223,29 +6229,29 @@ selector();
         ?>
         </div>
 
-        <h3><?php echo _BAN_BLOGS?></h3>
+        <h3><?php echo _BAN_BLOGS ?></h3>
 
-        <p><?php echo _BAN_BLOGS_TEXT?></p>
+        <p><?php echo _BAN_BLOGS_TEXT ?></p>
 
         <div>
-            <input type="hidden" name="blogid" value="<?php echo $blogid?>" />
-            <input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">'<?php echo Entity::hsc($blog->getName())?>'</label>
+            <input type="hidden" name="blogid" value="<?php echo $blogid ?>" />
+            <input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">'<?php echo Entity::hsc($blog->getName()) ?>'</label>
             <br />
-            <input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?php echo _BAN_ALLBLOGS?></label>
+            <input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?php echo _BAN_ALLBLOGS ?></label>
         </div>
 
-        <h3><?php echo _BAN_REASON_TITLE?></h3>
+        <h3><?php echo _BAN_REASON_TITLE ?></h3>
 
-        <p><?php echo _BAN_REASON_TEXT?></p>
+        <p><?php echo _BAN_REASON_TEXT ?></p>
 
         <div><textarea name="reason" cols="40" rows="5"></textarea></div>
 
-        <h3><?php echo _BAN_ADD_TITLE?></h3>
+        <h3><?php echo _BAN_ADD_TITLE ?></h3>
 
         <div>
             <input name="action" type="hidden" value="banlistadd" />
             <?php $manager->addTicketHidden() ?>
-            <input type="submit" value="<?php echo _BAN_ADD_BTN?>" />
+            <input type="submit" value="<?php echo _BAN_ADD_BTN ?>" />
         </div>
 
         </form>
@@ -6314,41 +6320,41 @@ selector();
 
         echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
         ?>
-        <h2><?php echo _BACKUPS_TITLE?></h2>
+        <h2><?php echo _BACKUPS_TITLE ?></h2>
 
-        <h3><?php echo _BACKUP_TITLE?></h3>
+        <h3><?php echo _BACKUP_TITLE ?></h3>
 
-        <p><?php echo _BACKUP_INTRO?></p>
+        <p><?php echo _BACKUP_INTRO ?></p>
 
         <form method="post" action="index.php"><p>
         <input type="hidden" name="action" value="backupcreate" />
         <?php $manager->addTicketHidden() ?>
 
-        <input type="radio" name="gzip" value="1" checked="checked" id="gzip_yes" tabindex="10" /><label for="gzip_yes"><?php echo _BACKUP_ZIP_YES?></label>
+        <input type="radio" name="gzip" value="1" checked="checked" id="gzip_yes" tabindex="10" /><label for="gzip_yes"><?php echo _BACKUP_ZIP_YES ?></label>
         <br />
-        <input type="radio" name="gzip" value="0" id="gzip_no" tabindex="10" /><label for="gzip_no" ><?php echo _BACKUP_ZIP_NO?></label>
+        <input type="radio" name="gzip" value="0" id="gzip_no" tabindex="10" /><label for="gzip_no" ><?php echo _BACKUP_ZIP_NO ?></label>
         <br /><br />
-        <input type="submit" value="<?php echo _BACKUP_BTN?>" tabindex="20" />
+        <input type="submit" value="<?php echo _BACKUP_BTN ?>" tabindex="20" />
 
         </p></form>
 
-        <div class="note"><?php echo _BACKUP_NOTE?></div>
+        <div class="note"><?php echo _BACKUP_NOTE ?></div>
 
 
-        <h3><?php echo _RESTORE_TITLE?></h3>
+        <h3><?php echo _RESTORE_TITLE ?></h3>
 
-        <div class="note"><?php echo _RESTORE_NOTE?></div>
+        <div class="note"><?php echo _RESTORE_NOTE ?></div>
 
-        <p><?php echo _RESTORE_INTRO?></p>
+        <p><?php echo _RESTORE_INTRO ?></p>
 
         <form method="post" action="index.php" enctype="multipart/form-data"><p>
             <input type="hidden" name="action" value="backuprestore" />
             <?php $manager->addTicketHidden() ?>
             <input name="backup_file" type="file" tabindex="30" />
             <br /><br />
-            <input type="submit" value="<?php echo _RESTORE_BTN?>" tabindex="40" />
-            <br /><input type="checkbox" name="letsgo" value="1" id="letsgo" tabindex="50" /><label for="letsgo"><?php echo _RESTORE_IMSURE?></label>
-            <br /><?php echo _RESTORE_WARNING?>
+            <input type="submit" value="<?php echo _RESTORE_BTN ?>" tabindex="40" />
+            <br /><input type="checkbox" name="letsgo" value="1" id="letsgo" tabindex="50" /><label for="letsgo"><?php echo _RESTORE_IMSURE ?></label>
+            <br /><?php echo _RESTORE_WARNING ?>
         </p></form>
 
         <?php       $this->pagefoot();
@@ -6468,11 +6474,11 @@ selector();
 				$name = $matches[1];
 				
 				// only show in list when not yet installed
-				$query = 'SELECT * FROM %s WHERE pfile = "NP_%s"';
-				$query = sprintf($query, sql_table('plugin'), sql_real_escape_string($name));
-				$res = sql_query($query);
+				$query = 'SELECT * FROM %s WHERE pfile = %s';
+				$query = sprintf($query, sql_table('plugin'), DB::quoteValue('NP_'.$name));
+				$res = DB::getResult($query);
 				
-				if ( sql_num_rows($res) == 0 )
+				if ( $res->rowCount() == 0 )
 				{
 					array_push($candidates, $name);
 				}
@@ -6573,8 +6579,8 @@ selector();
 		}
 		
 		// get number of currently installed plugins
-		$res = sql_query('SELECT * FROM '.sql_table('plugin'));
-		$numCurrent = sql_num_rows($res);
+		$res = DB::getResult('SELECT * FROM '.sql_table('plugin'));
+		$numCurrent = $res->rowCount();
 		
 		// plugin will be added as last one in the list
 		$newOrder = $numCurrent + 1;
@@ -6587,9 +6593,9 @@ selector();
 		);
 		
 		// do this before calling getPlugin (in case the plugin id is used there)
-		$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.sql_real_escape_string($name).'")';
-		sql_query($query);
-		$iPid = sql_insert_id();
+		$query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.','.DB::quoteValue($name).')';
+		DB::execute($query);
+		$iPid = DB::getInsertId();
 		
 		$manager->clearCachedInfo('installedPlugins');
 		
@@ -6599,7 +6605,7 @@ selector();
 		// check if it got loaded (could have failed)
 		if ( !$plugin )
 		{
-			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. intval($iPid));
+			DB::execute('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. intval($iPid));
 			$manager->clearCachedInfo('installedPlugins');
 			$this->error(_ERROR_PLUGIN_LOAD);
 		}
@@ -6627,8 +6633,8 @@ selector();
 		$pluginList = $plugin->getPluginDep();
 		foreach ( $pluginList as $pluginName )
 		{
-			$res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
-			if (sql_num_rows($res) == 0)
+			$res = DB::getResult('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile=' . DB::quoteValue($pluginName));
+			if ($res->rowCount() == 0)
 			{
 				// uninstall plugin again...
 				$this->deleteOnePlugin($plugin->getID());
@@ -6666,22 +6672,22 @@ selector();
 		$member->isAdmin() or $this->disallow();
 		
 		// delete everything from plugin_events
-		sql_query('DELETE FROM '.sql_table('plugin_event'));
+		DB::execute('DELETE FROM '.sql_table('plugin_event'));
 		
 		// loop over all installed plugins
-		$res = sql_query('SELECT pid, pfile FROM '.sql_table('plugin'));
-		while ( $o = sql_fetch_object($res) )
+		$res = DB::getResult('SELECT pid, pfile FROM '.sql_table('plugin'));
+		foreach ( $res as $row )
 		{
-			$pid = $o->pid;
-			$plug =& $manager->getPlugin($o->pfile);
+			$pid = $row['pid'];
+			$plug =& $manager->getPlugin($row['pfile']);
 			if ( $plug )
 			{
 				$eventList = $plug->getEventList();
 				foreach ( $eventList as $eventName )
 				{
-					$query = "INSERT INTO %s (pid, event) VALUES (%d, '%s')";
-					$query = sprintf($query, sql_table('plugin_event'), (integer) $pid, sql_real_escape_string($eventName));
-					sql_query($query);
+					$query = "INSERT INTO %s (pid, event) VALUES (%d, %s)";
+					$query = sprintf($query, sql_table('plugin_event'), (integer) $pid, DB::quoteValue($eventName));
+					DB::execute($query);
 				}
 			}
 		}
@@ -6705,15 +6711,15 @@ selector();
 
         $this->pagehead();
         ?>
-            <h2><?php echo _DELETE_CONFIRM?></h2>
+            <h2><?php echo _DELETE_CONFIRM ?></h2>
 
-            <p><?php echo _CONFIRMTXT_PLUGIN?> <strong><?php echo getPluginNameFromPid($pid)?></strong>?</p>
+            <p><?php echo _CONFIRMTXT_PLUGIN ?> <strong><?php echo getPluginNameFromPid($pid) ?></strong>?</p>
 
             <form method="post" action="index.php"><div>
             <?php $manager->addTicketHidden() ?>
             <input type="hidden" name="action" value="plugindeleteconfirm" />
             <input type="hidden" name="plugid" value="<?php echo $pid; ?>" />
-            <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
+            <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
             </div></form>
         <?php
         $this->pagefoot();
@@ -6750,7 +6756,7 @@ selector();
         if (!$manager->pidInstalled($pid))
             return _ERROR_NOSUCHPLUGIN;
 
-        $name = quickQuery('SELECT pfile as result FROM '.sql_table('plugin').' WHERE pid='.$pid);
+        $name = DB::getValue('SELECT pfile as result FROM '.sql_table('plugin').' WHERE pid='.$pid);
 
 /*		// call the unInstall method of the plugin
         if ($callUninstall) {
@@ -6759,9 +6765,9 @@ selector();
         }*/
 
         // check dependency before delete
-        $res = sql_query('SELECT pfile FROM '.sql_table('plugin'));
-        while($o = sql_fetch_object($res)) {
-            $plug =& $manager->getPlugin($o->pfile);
+        $res = DB::getResult('SELECT pfile FROM '.sql_table('plugin'));
+        foreach ( $res as $row ) {
+            $plug =& $manager->getPlugin($row['pfile']);
             if ($plug)
             {
                 $depList = $plug->getPluginDep();
@@ -6769,7 +6775,7 @@ selector();
                 {
                     if ($name == $depName)
                     {
-                        return sprintf(_ERROR_DELREQPLUGIN, $o->pfile);
+                        return sprintf(_ERROR_DELREQPLUGIN, $row['pfile']);
                     }
                 }
             }
@@ -6784,28 +6790,27 @@ selector();
         }
 
         // delete all subscriptions
-        sql_query('DELETE FROM '.sql_table('plugin_event').' WHERE pid=' . $pid);
+        DB::execute('DELETE FROM '.sql_table('plugin_event').' WHERE pid=' . $pid);
 
         // delete all options
         // get OIDs from plugin_option_desc
-        $res = sql_query('SELECT oid FROM ' . sql_table('plugin_option_desc') . ' WHERE opid=' . $pid);
+        $res = DB::getResult('SELECT oid FROM ' . sql_table('plugin_option_desc') . ' WHERE opid=' . $pid);
         $aOIDs = array();
-        while ($o = sql_fetch_object($res)) {
-            array_push($aOIDs, $o->oid);
+        foreach ( $res as $row ) {
+            array_push($aOIDs, $row['oid']);
         }
 
         // delete from plugin_option and plugin_option_desc
-        sql_query('DELETE FROM '.sql_table('plugin_option_desc').' WHERE opid=' . $pid);
+        DB::execute('DELETE FROM '.sql_table('plugin_option_desc').' WHERE opid=' . $pid);
         if (count($aOIDs) > 0)
-            sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid in ('.implode(',',$aOIDs).')');
+            DB::execute('DELETE FROM '.sql_table('plugin_option').' WHERE oid in ('.implode(',',$aOIDs).')');
 
         // update order numbers
-        $res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid=' . $pid);
-        $o = sql_fetch_object($res);
-        sql_query('UPDATE '.sql_table('plugin').' SET porder=(porder - 1) WHERE porder>'.$o->porder);
+        $res = DB::getValue('SELECT porder FROM '.sql_table('plugin').' WHERE pid=' . $pid);
+        DB::execute('UPDATE '.sql_table('plugin').' SET porder=(porder - 1) WHERE porder>'.$res);
 
         // delete row
-        sql_query('DELETE FROM '.sql_table('plugin').' WHERE pid='.$pid);
+        DB::execute('DELETE FROM '.sql_table('plugin').' WHERE pid='.$pid);
 
         $manager->clearCachedInfo('installedPlugins');
         $manager->notify('PostDeletePlugin', array('plugid' => $pid));
@@ -6828,16 +6833,14 @@ selector();
             $this->error(_ERROR_NOSUCHPLUGIN);
 
         // 1. get old order number
-        $res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
-        $o = sql_fetch_object($res);
-        $oldOrder = $o->porder;
+        $oldOrder = DB::getValue('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
 
         // 2. calculate new order number
         $newOrder = ($oldOrder > 1) ? ($oldOrder - 1) : 1;
 
         // 3. update plug numbers
-        sql_query('UPDATE '.sql_table('plugin').' SET porder='.$oldOrder.' WHERE porder='.$newOrder);
-        sql_query('UPDATE '.sql_table('plugin').' SET porder='.$newOrder.' WHERE pid='.$plugid);
+        DB::execute('UPDATE '.sql_table('plugin').' SET porder='.$oldOrder.' WHERE porder='.$newOrder);
+        DB::execute('UPDATE '.sql_table('plugin').' SET porder='.$newOrder.' WHERE pid='.$plugid);
 
         //$this->action_pluginlist();
         // To avoid showing ticket in the URL, redirect to pluginlist, instead.
@@ -6858,19 +6861,17 @@ selector();
             $this->error(_ERROR_NOSUCHPLUGIN);
 
         // 1. get old order number
-        $res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
-        $o = sql_fetch_object($res);
-        $oldOrder = $o->porder;
+        $oldOrder = DB::getValue('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
 
-        $res = sql_query('SELECT * FROM '.sql_table('plugin'));
-        $maxOrder = sql_num_rows($res);
+        $res = DB::getResult('SELECT * FROM '.sql_table('plugin'));
+        $maxOrder = $res->rowCount();
 
         // 2. calculate new order number
         $newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;
 
         // 3. update plug numbers
-        sql_query('UPDATE '.sql_table('plugin').' SET porder='.$oldOrder.' WHERE porder='.$newOrder);
-        sql_query('UPDATE '.sql_table('plugin').' SET porder='.$newOrder.' WHERE pid='.$plugid);
+        DB::execute('UPDATE '.sql_table('plugin').' SET porder='.$oldOrder.' WHERE porder='.$newOrder);
+        DB::execute('UPDATE '.sql_table('plugin').' SET porder='.$newOrder.' WHERE pid='.$plugid);
 
         //$this->action_pluginlist();
         // To avoid showing ticket in the URL, redirect to pluginlist, instead.
@@ -6925,17 +6926,17 @@ selector();
 		$aOIDs = array();
 		$query = "SELECT * FROM %s WHERE ocontext='global' and opid=%d ORDER BY oid ASC";
 		$query = sprintf($query, sql_table('plugin_option_desc'), $pid);
-		$result = sql_query($query);
-		while ( $object = sql_fetch_object($result) )
+		$result = DB::getResult($query);
+		foreach ( $result as $row )
 		{
-			array_push($aOIDs, $object->oid);
-			$aOptions[$object->oid] = array(
-						'oid' => $object->oid,
-						'value' => $object->odef,
-						'name' => $object->oname,
-						'description' => $object->odesc,
-						'type' => $object->otype,
-						'typeinfo' => $object->oextra,
+			array_push($aOIDs, $row['oid']);
+			$aOptions[$row['oid']] = array(
+						'oid' => $row['oid'],
+						'value' => $row['odef'],
+						'name' => $row['oname'],
+						'description' => $row['odesc'],
+						'type' => $row['otype'],
+						'typeinfo' => $row['oextra'],
 						'contextid' => 0
 			);
 		}
@@ -6944,10 +6945,10 @@ selector();
 		{
 			$query = "SELECT oid, ovalue FROM %s WHERE oid in (%s)";
 			$query = sprintf($query, sql_table('plugin_option'), implode(',',$aOIDs));
-			$result = sql_query($query);
-			while ( $object = sql_fetch_object($result) )
+			$result = DB::getResult($query);
+			foreach ( $result as $row )
 			{
-				$aOptions[$object->oid]['value'] = $object->ovalue;
+				$aOptions[$row['oid']]['value'] = $row['ovalue'];
 			}
 		}
 		
@@ -7014,37 +7015,37 @@ selector();
 		// get all current values for this contextid
 		// (note: this might contain doubles for overlapping contextids)
 		$aIdToValue = array();
-		$res = sql_query('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE ocontextid=' . intval($contextid));
-		while ( $object = sql_fetch_object($res) )
+		$res = DB::getResult('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE ocontextid=' . intval($contextid));
+		foreach ( $res as $row )
 		{
-			$aIdToValue[$object->oid] = $object->ovalue;
+			$aIdToValue[$row['oid']] = $row['ovalue'];
 		}
 		
 		// get list of oids per pid
 		$query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ',' . sql_table('plugin')
-			   . ' WHERE opid=pid and ocontext=\''.sql_real_escape_string($context).'\' ORDER BY porder, oid ASC';
-		$res = sql_query($query);
+			   . ' WHERE opid=pid and ocontext='.DB::quoteValue($context).' ORDER BY porder, oid ASC';
+		$res = DB::getResult($query);
 		$aOptions = array();
-		while ( $object = sql_fetch_object($res) )
+		foreach ( $res as $row )
 		{
-			if (in_array($object->oid, array_keys($aIdToValue)))
+			if (in_array($row['oid'], array_keys($aIdToValue)))
 			{
-				$value = $aIdToValue[$object->oid];
+				$value = $aIdToValue[$row['oid']];
 			}
 			else
 			{
-				$value = $object->odef;
+				$value = $row['odef'];
 			}
 			
 			array_push($aOptions, array(
-				'pid' => $object->pid,
-				'pfile' => $object->pfile,
-				'oid' => $object->oid,
+				'pid' => $row['pid'],
+				'pfile' => $row['pfile'],
+				'oid' => $row['oid'],
 				'value' => $value,
-				'name' => $object->oname,
-				'description' => $object->odesc,
-				'type' => $object->otype,
-				'typeinfo' => $object->oextra,
+				'name' => $row['oname'],
+				'description' => $row['odesc'],
+				'type' => $row['otype'],
+				'typeinfo' => $row['oextra'],
 				'contextid' => $contextid,
 				'extra' => ''));
 		}

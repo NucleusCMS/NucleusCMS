@@ -136,7 +136,7 @@ abstract class NucleusPlugin
 	 *  Name of the feature. See plugin documentation for more info
 	 *   'SqlTablePrefix' -> if the plugin uses the sql_table() method to get table names
 	 *   'HelpPage' -> if the plugin provides a helppage
-	 *   'SqlApi' -> if the plugin uses the complete sql_* api (must also require nucleuscms 3.5)
+	 *   'SqlApi' -> if the plugin uses DB::* api (or sql_*) (must also require nucleuscms 3.5)
 	 */
 	public function supportsFeature($feature)
 	{
@@ -263,10 +263,10 @@ abstract class NucleusPlugin
 			
 			$query =  "SELECT d.oname as name, o.ovalue as value FROM %s o, %s d WHERE d.opid=%d AND d.oid=o.oid;";
 			$query = sprintf($query, sql_table('plugin_option'), sql_table('plugin_option_desc'), (integer) $this->plugid);
-			$result = sql_query($query);
-			while ( $row = sql_fetch_object($result) )
+			$result = DB::getResult($query);
+			foreach ( $result as $row )
 			{
-				$this->plugin_options[strtolower($row->name)] = $row->value;
+				$this->plugin_options[strtolower($row['name'])] = $row['value'];
 			}
 		}
 		if ( isset($this->plugin_options[strtolower($name)]) )
@@ -462,11 +462,9 @@ abstract class NucleusPlugin
 		// retrieve the data and return
 		$query = "SELECT otype, oextra FROM %s WHERE oid = %d;";
 		$query = sprintf($query, sql_table('plugin_option_desc'), $oid);
-		$result = sql_query($query);
+		$row = DB::getRow($query);
 		
-		$o = sql_fetch_array($result);
-		
-		if ( ($this->optionCanBeNumeric($o['otype'])) && ($o['oextra'] == 'number' ) )
+		if ( ($this->optionCanBeNumeric($row['otype'])) && ($row['oextra'] == 'number' ) )
 		{
 			$orderby = 'CAST(ovalue AS SIGNED)';
 		}
@@ -476,12 +474,12 @@ abstract class NucleusPlugin
 		}
 		$query = "SELECT ovalue value, ocontextid id FROM %s WHERE oid = %d ORDER BY %s %s LIMIT 0,%d;";
 		$query = sprintf($query, sql_table('plugin_option'), $oid, $orderby, $sort, (integer) $amount);
-		$result = sql_query($query);
+		$result = DB::getResult($query);
 		
 		// create the array
 		$i = 0;
 		$top = array();
-		while( $row = sql_fetch_array($result) )
+		foreach( $result as $row )
 		{
 			$top[$i++] = $row;
 		}
@@ -501,14 +499,14 @@ abstract class NucleusPlugin
 		$query = 'INSERT INTO ' . sql_table('plugin_option_desc')
 				.' (opid, oname, ocontext, odesc, otype, odef, oextra)'
 				.' VALUES ('.intval($this->plugid)
-					.', \''.sql_real_escape_string($name).'\''
-					.', \''.sql_real_escape_string($context).'\''
-					.', \''.sql_real_escape_string($desc).'\''
-					.', \''.sql_real_escape_string($type).'\''
-					.', \''.sql_real_escape_string($defValue).'\''
-					.', \''.sql_real_escape_string($typeExtras).'\');';
-		sql_query($query);
-		$oid = sql_insert_id();
+					.', '.DB::quoteValue($name)
+					.', '.DB::quoteValue($context)
+					.', '.DB::quoteValue($desc)
+					.', '.DB::quoteValue($type)
+					.', '.DB::quoteValue($defValue)
+					.', '.DB::quoteValue($typeExtras).')';
+		DB::execute($query);
+		$oid = DB::getInsertId();
 		
 		$key = $context . '_' . $name;
 		$this->option_info[$key] = array('oid' => $oid, 'default' => $defValue);
@@ -532,12 +530,12 @@ abstract class NucleusPlugin
 		// delete all things from plugin_option
 		$query = "DELETE FROM %s WHERE oid=%d;";
 		$query = sprintf($query, sql_table('plugin_option'), (integer) $oid);
-		sql_query($query);
+		DB::execute($query);
 		
 		// delete entry from plugin_option_desc
 		$query = "DELETE FROM %s WHERE oid=%d;";
 		$query = sprintf($query, sql_table('plugin_option_desc'), $oid);
-		sql_query($query);
+		DB::execute($query);
 		
 		// clear from cache
 		unset($this->option_info["{$context}_{$name}"]);
@@ -599,11 +597,11 @@ abstract class NucleusPlugin
 		// update plugin_option
 		$query = "DELETE FROM %s WHERE oid=%d and ocontextid=%d;";
 		$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid);
-		sql_query($query);
+		DB::execute($query);
 		
-		$query = "INSERT INTO %s (ovalue, oid, ocontextid) VALUES ('%s', %d, %d);";
-		$query = sprintf($query, sql_table('plugin_option'), sql_real_escape_string($value), $oid, $contextid);
-		sql_query($query);
+		$query = "INSERT INTO %s (ovalue, oid, ocontextid) VALUES (%s, %d, %d);";
+		$query = sprintf($query, sql_table('plugin_option'), DB::quoteValue($value), $oid, $contextid);
+		DB::execute($query);
 		
 		// update cache
 		$this->option_values["{$oid}_{$contextid}"] = $value;
@@ -640,20 +638,20 @@ abstract class NucleusPlugin
 		// get from DB
 		$query = "SELECT ovalue FROM %s WHERE oid=%d and ocontextid=%d;";
 		$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid);
-		$result = sql_query($query);
+		$result = DB::getResult($query);
 		
-		if ( !$result || (sql_num_rows($result) == 0) )
+		if ( !$result || ($result->rowCount() == 0) )
 		{
 			// fill DB with default value
 			$this->option_values[$key] = $this->get_default_value($context, $name);
-			$query = "INSERT INTO %s (oid, ocontextid, ovalue) VALUES (%d, %d, '%s');";
-			$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid, sql_real_escape_string($defVal));
-			sql_query($query);
+			$query = "INSERT INTO %s (oid, ocontextid, ovalue) VALUES (%d, %d, %s);";
+			$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid, DB::quoteValue($defVal));
+			DB::execute($query);
 		}
 		else
 		{
-			$o = sql_fetch_object($result);
-			$this->option_values[$key] = $o->ovalue;
+			$row = $result->fetch();
+			$this->option_values[$key] = $row['ovalue'];
 		}
 		
 		return $this->option_values[$key];
@@ -692,21 +690,21 @@ abstract class NucleusPlugin
 				break;
 		}
 		
-		$result = sql_query($query);
+		$result = DB::getResult($query);
 		if ( $result )
 		{
-			while ( $o = sql_fetch_object($r) )
+			foreach ( $result as $row )
 			{
-				$options[$o->contextid] = $default_value;
+				$options[$row['contextid']] = $default_value;
 			}
 		}
 		
 		$query = "SELECT ocontextid, ovalue FROM %s WHERE oid=%d;";
 		$query = sprintf($query, sql_table('plugin_option'), $oid);
-		$result = sql_query($query);
-		while ( $o = sql_fetch_object($result) )
+		$result = DB::getResult($query);
+		foreach ( $result as $row )
 		{
-			$options[$o->ocontextid] = $o->ovalue;
+			$options[$row['ocontextid']] = $row['ovalue'];
 		}
 
 		return $options;
@@ -737,13 +735,13 @@ abstract class NucleusPlugin
 		$this->option_info = array();
 		$query = "SELECT oid, oname, ocontext, odef FROM %s WHERE opid=%d;";
 		$query = sprintf($query, sql_table('plugin_option_desc'), $this->plugid);
-		$result = sql_query($query);
-		while ( $o = sql_fetch_object($result) )
+		$result = DB::getResult($query);
+		foreach ( $result as $row )
 		{
-			$k = $o->ocontext . '_' . $o->oname;
-			$this->option_info[$k] = array('oid' => $o->oid, 'default' => $o->odef);
+			$k = $row['ocontext'] . '_' . $row['oname'];
+			$this->option_info[$k] = array('oid' => $row['oid'], 'default' => $row['odef']);
 		}
-		sql_free_result($result);
+		$result->closeCursor();
 		
 		return $this->option_info[$key]['oid'];
 	}
@@ -774,21 +772,21 @@ abstract class NucleusPlugin
 		// delete all associated plugin options
 		$aOIDs = array();
 		// find ids
-		$query = "SELECT oid FROM %s WHERE ocontext='%s';";
-		$query = sprintf($query, sql_table('plugin_option_desc'), sql_real_escape_string($context));
+		$query = "SELECT oid FROM %s WHERE ocontext=%s;";
+		$query = sprintf($query, sql_table('plugin_option_desc'), DB::quoteValue($context));
 		
-		$result = sql_query($query);
-		while ( $o = sql_fetch_object($result) )
+		$result = DB::getResult($query);
+		foreach ( $result as $row )
 		{
-			array_push($aOIDs, $o->oid);
+			array_push($aOIDs, $row['oid']);
 		}
-		sql_free_result($result);
+		$result->closeCursor();
 		// delete those options. go go go
 		if ( count($aOIDs) > 0 )
 		{
 			$query = "DELETE FROM %s WHERE oid in (%s) and ocontextid=%d;";
 			$query = sprintf($query, sql_table('plugin_option'), implode(',',$aOIDs), (integer) $contextid);
-			sql_query($query);
+			DB::execute($query);
 		}
 		return;
 	}
@@ -853,11 +851,11 @@ abstract class NucleusPlugin
 	 */
 	public function subscribtionListIsUptodate()
 	{
-		$res = sql_query('SELECT event FROM '.sql_table('plugin_event').' WHERE pid = '.$this->plugid);
+		$res = DB::getResult('SELECT event FROM '.sql_table('plugin_event').' WHERE pid = '.$this->plugid);
 		$ev = array();
-		while( $a = sql_fetch_array($res) )
+		foreach ( $res as $row )
 		{
-			array_push($ev, $a['event']);
+			array_push($ev, $row['event']);
 		}
 		if ( count($ev) != count($this->getEventList()) )
 		{
@@ -898,8 +896,8 @@ abstract class NucleusPlugin
 			// get option type info
 			$query = "SELECT opid, oname, ocontext, otype, oextra, odef FROM %s WHERE oid=%d;";
 			$query = sprintf($query, sql_table('plugin_option_desc'), (integer) $oid);
-			$result = sql_query($query);
-			if ( $info = sql_fetch_object($result) )
+			$result = DB::getRow($query);
+			if ( $result )
 			{
 				foreach ( $values as $id => $value )
 				{
@@ -927,7 +925,7 @@ abstract class NucleusPlugin
 					$value = undoMagic($value);
 					
 					/* validation the value according to its type */
-					switch ( $info->otype )
+					switch ( $result['otype'] )
 					{
 						case 'yesno':
 							if ( ($value != 'yes') && ($value != 'no') )
@@ -940,7 +938,7 @@ abstract class NucleusPlugin
 							if ( array_key_exists('datatype', $meta)
 							 && ($meta['datatype'] == 'numerical') && ($value != (integer) $value) )
 							{
-								$value = (integer) $info->odef;
+								$value = (integer) $result['odef'];
 							}
 							break;
 						case 'password':
@@ -954,9 +952,9 @@ abstract class NucleusPlugin
 					 * possibility to change/validate the new value for the option
 					 */
 					$data = array(
-						'context'		=> $info->ocontext,
-						'plugid'		=> $info->opid,
-						'optionname'	=> $info->oname,
+						'context'		=> $result['ocontext'],
+						'plugid'		=> $result['opid'],
+						'optionname'	=> $result['oname'],
 						'contextid'	=> $contextid,
 						'value'		=> &$value);
 					$manager->notify('PrePluginOptionsUpdate', $data);
@@ -964,16 +962,16 @@ abstract class NucleusPlugin
 					// delete and insert its fields of table in database
 					$query = "DELETE FROM %s WHERE oid=%d AND ocontextid=%d;";
 					$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid);
-					sql_query($query);
-					$query = "INSERT INTO %s (oid, ocontextid, ovalue) VALUES (%d, %d, '%s');";
-					$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid, sql_real_escape_string($value));
-					sql_query($query);
+					DB::execute($query);
+					$query = "INSERT INTO %s (oid, ocontextid, ovalue) VALUES (%d, %d, %s);";
+					$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid, DB::quoteValue($value));
+					DB::execute($query);
 				}
 			}
 			// clear option value cache if the plugin object is already loaded
 			if ( is_object($info) )
 			{
-				$plugin=& $manager->pidLoaded($info->opid);
+				$plugin=& $manager->pidLoaded($result['opid']);
 				if ( $plugin )
 				{
 					$plugin->clearOptionValueCache();

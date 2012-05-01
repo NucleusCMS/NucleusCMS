@@ -48,11 +48,9 @@ class ActionLog
 			$message = "[" . $member->getDisplayName() . "] " . $message;
 		}
 		
-		$message = sql_real_escape_string($message);		// add slashes
-		$timestamp = date("Y-m-d H:i:s",time());	// format timestamp
-		$query = "INSERT INTO %s (timestamp, message) VALUES ('%s', '%s')";
-		$query = sprintf($query, sql_table('actionlog'), $timestamp, $message);
-		sql_query($query);
+		$query = "INSERT INTO %s (timestamp, message) VALUES ('%s', %s)";
+		$query = sprintf($query, sql_table('actionlog'), DB::formatDateTime(), DB::quoteValue($message));
+		DB::execute($query);
 		
 		self::trimLog();
 		return;
@@ -64,11 +62,11 @@ class ActionLog
 	function clear() {
 		global $manager;
 
-		$query = 'DELETE FROM ' . sql_table('actionlog');
+		$query = sprintf('DELETE FROM %s', sql_table('actionlog'));
 
 		$manager->notify('ActionLogCleared',array());
 
-		return sql_query($query);
+		return DB::execute($query) !== FALSE;
 	}
 
 	/**
@@ -83,14 +81,18 @@ class ActionLog
 		// trim
 		$checked = 1;
 
-		$iTotal = quickQuery('SELECT COUNT(*) AS result FROM ' . sql_table('actionlog'));
+		$query = sprintf('SELECT COUNT(*) AS result FROM %s', sql_table('actionlog'));
+		$iTotal = DB::getValue($query);
 
 		// if size > 500, drop back to about 250
 		$iMaxSize = 500;
 		$iDropSize = 250;
 		if ($iTotal > $iMaxSize) {
-			$tsChop = quickQuery('SELECT timestamp as result FROM ' . sql_table('actionlog') . ' ORDER BY timestamp DESC LIMIT '.$iDropSize.',1');
-			sql_query('DELETE FROM ' . sql_table('actionlog') . ' WHERE timestamp < \'' . $tsChop . '\'');
+			$query = sprintf('SELECT timestamp as result FROM %s ORDER BY timestamp DESC LIMIT %d,1',
+				sql_table('actionlog'), intval($iDropSize));
+			$tsChop = DB::getValue($query);
+			$query = sprintf("DELETE FROM %s WHERE timestamp < '%s'", sql_table('actionlog'), $tsChop);
+			DB::execute($query);
 		}
 
 	}

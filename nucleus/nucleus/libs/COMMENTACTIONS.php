@@ -417,8 +417,8 @@ class CommentActions extends BaseActions
 	{
 		$data = array(
 			'itemid'	=> $this->commentsObj->itemid,
-			'timestamp'	=> $this->commentsObj->itemActions->currentItem->timestamp,
-			'title'		=> $this->commentsObj->itemActions->currentItem->title,
+			'timestamp'	=> $this->commentsObj->itemActions->currentItem['timestamp'],
+			'title'		=> $this->commentsObj->itemActions->currentItem['title'],
 			'extra'		=> $this->commentsObj->itemActions->linkparams
 		);
 		

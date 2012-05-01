@@ -349,44 +349,12 @@ class i18n
 	 */
 	static public function strftime($format, $timestamp='')
 	{
-		$formatted = '';
-		
-		if ( $timestamp == '' )
-		{
-			$timestamp = time();
+		return preg_replace_callback('/(%[a-z%])/i',
+			create_function('$matches', 'return strftime($matches[1], ' . intval($timestamp) . ');'),
+			$format
+		);
 		}
 		
-		if ( $format == '%%' )
-		{
-			return '%';
-		}
-		else if ( preg_match('#%[^%]#', $format) === 0 )
-		{
-			return $format;
-		}
-		
-		$format = trim(preg_replace('#(%[^%])#', ',$1,', $format), ',');
-		$elements = preg_split('#,#', $format);
-		
-		foreach ( $elements as $element )
-		{
-			if ( preg_match('#(%[^%])#', $element) )
-			{
-				$formatted .= strftime($element, $timestamp);
-			}
-			else if ( $element == '%%' )
-			{
-				$formatted .= '%';
-			}
-			else
-			{
-				$formatted .= $element;
-			}
-		}
-		
-		return (string) $formatted;
-	}
-	
 	/**
 	 * i18n::formatted_datetime()
 	 * return formatted datetime string
@@ -397,7 +365,7 @@ class i18n
 	 * Working with Time Zones
 	 * @link	http://www.w3.org/TR/timezone/
 	 * 
-	 * @param	String	$format	timezone format
+	 * @param	String	$format	time expression format
 	 * @param	String	$timestamp	UNIX timestamp
 	 * @param	Integer	$offset	timestamp offset
 	 * @return	String	formatted datetime
@@ -426,7 +394,7 @@ class i18n
 				 *  5.  DATE AND TIME SPECIFICATION
 				 *   http://www.ietf.org/rfc/rfc0822.txt
 				 */
-				$format = 'D, j M Y H:i:s ';
+				$format = '%a, %d %m %y %H:%M:%S ';
 				if ( $offset < 0 )
 				{
 					$suffix = '-';
@@ -445,7 +413,7 @@ class i18n
 				 *  5.  DATE AND TIME SPECIFICATION
 				 *   http://www.ietf.org/rfc/rfc0822.txt
 				 */
-				$format = 'D, j M Y H:i:s ';
+				$format = '%a, %d %m %y %H:%M:%S ';
 				$timestamp -= $offset;
 				$suffix = 'GMT';
 				break;
@@ -456,7 +424,7 @@ class i18n
 				 *  5. Date and Time format
 				 *   http://www.ietf.org/rfc/rfc3339.txt
 				 */
-				$format = 'Y-m-d\TH:i:s';
+				$format = '%Y-%m-%dT%H:%M:%S';
 				if ( $offset < 0 )
 				{
 					$suffix = '-';
@@ -477,7 +445,7 @@ class i18n
 				 *   http://www.ietf.org/rfc/rfc3339.txt
 				 */
 				$timestamp -= $offset;
-				$format = 'Y-m-d\TH:i:s\Z';
+				$format = '%Y-%m-%dT%H:%M:%SZ';
 				$suffix = '';
 				break;
 			case '':

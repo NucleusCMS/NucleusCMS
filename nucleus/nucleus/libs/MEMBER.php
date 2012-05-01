@@ -92,7 +92,7 @@ class Member
 	 */
 	public function readFromName($displayname)
 	{
-		return $this->read("mname='".sql_real_escape_string($displayname)."'");
+		return $this->read('mname='.DB::quoteValue($displayname));
 	}
 	
 	/**
@@ -354,23 +354,22 @@ class Member
 		// read info
 		$query =  'SELECT * FROM '.sql_table('member') . ' WHERE ' . $where;
 		
-		$res = sql_query($query);
-		$obj = sql_fetch_object($res);
+		$row = DB::getRow($query);
 		
-		$this->setRealName($obj->mrealname);
-		$this->setEmail($obj->memail);
-		$this->password = $obj->mpassword;
-		$this->setCookieKey($obj->mcookiekey);
-		$this->setURL($obj->murl);
-		$this->setDisplayName($obj->mname);
-		$this->setAdmin($obj->madmin);
-		$this->id = $obj->mnumber;
-		$this->setCanLogin($obj->mcanlogin);
-		$this->setNotes($obj->mnotes);
-		$this->setLocale($obj->mlocale);
-		$this->setAutosave($obj->mautosave);
+		$this->setRealName($row['mrealname']);
+		$this->setEmail($row['memail']);
+		$this->password = $row['mpassword'];
+		$this->setCookieKey($row['mcookiekey']);
+		$this->setURL($row['murl']);
+		$this->setDisplayName($row['mname']);
+		$this->setAdmin($row['madmin']);
+		$this->id = $row['mnumber'];
+		$this->setCanLogin($row['mcanlogin']);
+		$this->setNotes($row['mnotes']);
+		$this->setLocale($row['mlocale']);
+		$this->setAutosave($row['mautosave']);
 		
-		return sql_num_rows($res);
+		return $row ? TRUE : FALSE;
 	}
 	
 	/**
@@ -387,11 +386,11 @@ class Member
 		$query = 'SELECT tadmin FROM '.sql_table('team').' WHERE'
 		. ' tblog=' . intval($blogid)
 		. ' and tmember='. $this->getID();
-		$res = sql_query($query);
-		if ( sql_num_rows($res) == 0 )
-			return 0;
+		$res = DB::getValue($query);
+		if ( $res )
+			return ($res == 1);
 		else
-			return ( sql_result($res,0,0) == 1 );
+			return 0;
 	}
 	
 	/**
@@ -431,8 +430,8 @@ class Member
 		$query = 'SELECT * FROM '.sql_table('team').' WHERE'
 			   . ' tblog=' . intval($blogid)
 			   . ' and tmember='. $this->getID();
-		$res = sql_query($query);
-		return (sql_num_rows($res) != 0);
+		$res = DB::getResult($query);
+		return ($res->rowCount() != 0);
 	}
 	
 	/**
@@ -497,10 +496,9 @@ class Member
 		$query =  'SELECT citem as itemid, iblog as blogid, cmember as cauthor, iauthor'
 			   . ' FROM '.sql_table('comment') .', '.sql_table('item').', '.sql_table('blog')
 			   . ' WHERE citem=inumber and iblog=bnumber and cnumber=' . intval($commentid);
-		$res = sql_query($query);
-		$obj = sql_fetch_object($res);
+		$res = DB::getRow($query);
 		
-		return ($obj->cauthor == $this->getID()) or $this->isBlogAdmin($obj->blogid) or ($obj->iauthor == $this->getID());
+		return ($res['cauthor'] == $this->getID()) or $this->isBlogAdmin($res['blogid']) or ($res['iauthor'] == $this->getID());
 	}
 	
 	/**
@@ -519,9 +517,8 @@ class Member
 		if ($this->isAdmin()) return 1;
 		
 		$query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
-		$res = sql_query($query);
-		$obj = sql_fetch_object($res);
-		return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
+		$res = DB::getRow($query);
+		return ($res['iauthor'] == $this->getID()) or $this->isBlogAdmin($res['iblog']);
 	}
 	
 	/**
@@ -534,8 +531,8 @@ class Member
 	 */
 	public function canBeDeleted()
 	{
-		$res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
-		return ( sql_num_rows($res) == 0 );
+		$res = DB::getResult('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
+		return ( $res->rowCount() == 0 );
 	}
 	
 	/**
@@ -590,7 +587,7 @@ class Member
 		}
 		
 		// not a valid category -> NOK
-		$validCat = quickQuery('SELECT COUNT(*) AS result FROM '.sql_table('category').' WHERE catid='.intval($newcat));
+		$validCat = DB::getValue('SELECT COUNT(*) AS result FROM '.sql_table('category').' WHERE catid='.intval($newcat));
 		if ( !$validCat )
 		{
 			return 0;
@@ -734,12 +731,12 @@ class Member
 			$query = 'SELECT tblog as blogid from '.sql_table('team').' where tadmin=1 and tmember=' . $this->getID();
 		}
 		
-		$res = sql_query($query);
-		if ( sql_num_rows($res) > 0 )
+		$res = DB::getResult($query);
+		if ( $res->rowCount() > 0 )
 		{
-			while ( $obj = sql_fetch_object($res) )
+			foreach ( $res as $row )
 			{
-				array_push($blogs, $obj->blogid);
+				array_push($blogs, $row['blogid']);
 			}
 		}
 		return $blogs;
@@ -767,12 +764,12 @@ class Member
 			$query = 'SELECT tblog as blogid from '.sql_table('team').' where tmember=' . $this->getID();
 		}
 		
-		$res = sql_query($query);
-		if ( sql_num_rows($res) > 0 )
+		$res = DB::getResult($query);
+		if ( $res->rowCount() > 0 )
 		{
-			while ( $obj = sql_fetch_object($res) )
+			foreach ( $res as $row )
 			{
-				array_push($blogs, $obj->blogid);
+				array_push($blogs, $row['blogid']);
 			}
 		}
 		return $blogs;
@@ -812,19 +809,19 @@ class Member
 	public function write()
 	{
 		$query =  'UPDATE '.sql_table('member')
-		        . " SET mname='" . sql_real_escape_string($this->displayname) . "', "
-		           . "mrealname='". sql_real_escape_string($this->realname) . "', "
-		           . "mpassword='". sql_real_escape_string($this->password) . "', "
-		           . "mcookiekey='". sql_real_escape_string($this->cookiekey) . "', "
-		           . "murl='" . sql_real_escape_string($this->url) . "', "
-		           . "memail='" . sql_real_escape_string($this->email) . "', "
-		           . "madmin=" . intval($this->admin) . ", "
-		           . "mnotes='" . sql_real_escape_string($this->notes) . "', "
-		           . "mcanlogin=" . intval($this->canlogin) . ", "
-		           . "mlocale='" . sql_real_escape_string($this->locale) . "', "
-		           . "mautosave=" . intval($this->autosave) . " "
-		        . "WHERE mnumber=" . intval($this->id);
-		sql_query($query);
+		        . ' SET mname=' . DB::quoteValue($this->displayname) . ', '
+		           . 'mrealname='. DB::quoteValue($this->realname) . ', '
+		           . 'mpassword='. DB::quoteValue($this->password) . ', '
+		           . 'mcookiekey='. DB::quoteValue($this->cookiekey) . ', '
+		           . 'murl=' . DB::quoteValue($this->url) . ', '
+		           . 'memail=' . DB::quoteValue($this->email) . ', '
+		           . 'madmin=' . intval($this->admin) . ', '
+		           . 'mnotes=' . DB::quoteValue($this->notes) . ', '
+		           . 'mcanlogin=' . intval($this->canlogin) . ', '
+		           . 'mlocale=' . DB::quoteValue($this->locale) . ', '
+		           . 'mautosave=' . intval($this->autosave) . ' '
+		        . 'WHERE mnumber=' . intval($this->id);
+		DB::execute($query);
 		return;
 	}
 	
@@ -998,8 +995,8 @@ class Member
 	 */
 	public static function exists($name)
 	{
-		$r = sql_query('select * FROM '.sql_table('member')." WHERE mname='".sql_real_escape_string($name)."'");
-		return ( sql_num_rows($r) != 0 );
+		$r = DB::getResult('SELECT * FROM ' . sql_table('member') . ' WHERE mname=' . DB::quoteValue($name));
+		return ( $r->rowCount() != 0 );
 	}
 	
 	/**
@@ -1013,8 +1010,8 @@ class Member
 	 */
 	public static function existsID($id)
 	{
-		$r = sql_query('select * FROM '.sql_table('member')." WHERE mnumber='".intval($id)."'");
-		return (sql_num_rows($r) != 0);
+		$r = DB::getResult('SELECT * FROM ' . sql_table('member') . ' WHERE mnumber=' . intval($id));
+		return ( $r->rowCount() != 0 );
 	}
 	
 	/**
@@ -1088,21 +1085,21 @@ class Member
 			$url = 'http://' . $url;
 		}
 		
-		$name		= sql_real_escape_string($name);
-		$realname	= sql_real_escape_string($realname);
+		$name		= DB::quoteValue($name);
+		$realname	= DB::quoteValue($realname);
 		/* NOTE: hashed password is automatically updated if the length is 32 bytes when logging in */
-		$password	= sql_real_escape_string(md5($password));
-		$email		= sql_real_escape_string($email);
-		$url		= sql_real_escape_string($url);
+		$password	= DB::quoteValue(md5($password));
+		$email		= DB::quoteValue($email);
+		$url		= DB::quoteValue($url);
 		$admin		= (integer) $admin;
 		$canlogin	= (integer) $canlogin;
-		$notes		= sql_real_escape_string($notes);
+		$notes		= DB::quoteValue($notes);
 		
 		$query = "INSERT INTO %s"
 		       . " (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES)"
-		       . " VALUES ('%s','%s','%s','%s','%s',%d, %d, '%s')";
+		       . " VALUES (%s, %s, %s, %s, %s, %d, %d, %s)";
 		$query = sprintf($query, sql_table(member), $name, $realname, $password, $email, $url, $admin, $canlogin, $notes);
-		sql_query($query);
+		DB::execute($query);
 		
 		ActionLog::add(INFO, _ACTIONLOG_NEWMEMBER . ' ' . $name);
 		
@@ -1120,14 +1117,14 @@ class Member
 	 */
 	public static function getActivationInfo($key)
 	{
-		$query = 'SELECT * FROM ' . sql_table('activation') . ' WHERE vkey=\'' . sql_real_escape_string($key). '\'';
-		$res = sql_query($query);
+		$query = 'SELECT * FROM ' . sql_table('activation') . ' WHERE vkey=' . DB::quoteValue($key);
+		$res = DB::getResult($query);
 		
-		if ( !$res || (sql_num_rows($res) == 0) )
+		if ( !$res || ($res->rowCount() == 0) )
 		{
 			return 0;
 		}
-		return sql_fetch_object($res);
+		return $res->fetch();
 	}
 	
 	/**
@@ -1149,7 +1146,7 @@ class Member
 		
 		// kill any existing entries for the current member (delete is ok)
 		// (only one outstanding activation key can be present for a member)
-		sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vmember=' . intval($this->getID()));
+		DB::execute('DELETE FROM ' . sql_table('activation') . ' WHERE vmember=' . intval($this->getID()));
 		
 		// indicates if the member can log in while the link is active
 		$canLoginWhileActive = false;
@@ -1175,8 +1172,8 @@ class Member
 			// attempt to add entry in database
 			// add in database as non-active
 			$query = 'INSERT INTO ' . sql_table('activation'). ' (vkey, vtime, vmember, vtype, vextra) ';
-			$query .= 'VALUES (\'' . sql_real_escape_string($key). '\', \'' . date('Y-m-d H:i:s',time()) . '\', \'' . intval($this->getID()). '\', \'' . sql_real_escape_string($type). '\', \'' . sql_real_escape_string($extra). '\')';
-			if ( sql_query($query) )
+			$query .= 'VALUES (' . DB::quoteValue($key). ', \'' . date('Y-m-d H:i:s',time()) . '\', ' . intval($this->getID()). ', ' . DB::quoteValue($type). ', ' . DB::quoteValue($extra). ')';
+			if ( DB::execute($query) !== FALSE )
 				$ok = true;
 		}
 		
@@ -1211,7 +1208,7 @@ class Member
 			return false;
 		}
 		
-		switch ( $info->vtype )
+		switch ( $info['vtype'] )
 		{
 			case 'forgot':
 				// nothing to do
@@ -1219,17 +1216,17 @@ class Member
 			case 'register':
 				// set canlogin value
 				global $CONF;
-				sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($CONF['NewMemberCanLogon']). ' WHERE mnumber=' . intval($info->vmember));
+				DB::execute('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($CONF['NewMemberCanLogon']). ' WHERE mnumber=' . intval($info['vmember']));
 				break;
 			case 'addresschange':
 				// reset old 'canlogin' value
-				list($oldEmail, $oldCanLogin) = preg_split('#/#', $info->vextra);
-				sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin). ' WHERE mnumber=' . intval($info->vmember));
+				list($oldEmail, $oldCanLogin) = preg_split('#/#', $info['vextra']);
+				DB::execute('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin). ' WHERE mnumber=' . intval($info['vmember']));
 				break;
 		}
 		
 		// delete from activation table
-		sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vkey=\'' . sql_real_escape_string($key) . '\'');
+		DB::execute('DELETE FROM ' . sql_table('activation') . ' WHERE vkey=' . DB::quoteValue($key));
 		
 		// success!
 		return true;
@@ -1257,22 +1254,22 @@ class Member
 		$boundary = time() - (60 * 60 * 24 * $actdays);
 		
 		// 1. walk over all entries, and see if special actions need to be performed
-		$res = sql_query('SELECT * FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
+		$res = DB::getResult('SELECT * FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
 		
-		while ( $o = sql_fetch_object($res) )
+		foreach ( $res as $row )
 		{
-			switch ( $o->vtype )
+			switch ( $row['vtype'] )
 			{
 				case 'register':
 					// delete all information about this site member. registration is undone because there was
 					// no timely activation
 					include_once($DIR_LIBS . 'ADMIN.php');
-					Admin::deleteOneMember(intval($o->vmember));
+					Admin::deleteOneMember(intval($row['vmember']));
 					break;
 				case 'addresschange':
 					// revert the e-mail address of the member back to old address
-					list($oldEmail, $oldCanLogin) = preg_split('#/#', $o->vextra);
-					sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin). ', memail=\'' . sql_real_escape_string($oldEmail). '\' WHERE mnumber=' . intval($o->vmember));
+					list($oldEmail, $oldCanLogin) = preg_split('#/#', $row['vextra']);
+					DB::execute('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin). ', memail=' . DB::quoteValue($oldEmail). ' WHERE mnumber=' . intval($row['vmember']));
 					break;
 				case 'forgot':
 					// delete the activation link and ignore. member can request a new password using the
@@ -1282,7 +1279,7 @@ class Member
 		}
 		
 		// 2. delete activation entries for real
-		sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
+		DB::execute('DELETE FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
 		return;
 	}
 	

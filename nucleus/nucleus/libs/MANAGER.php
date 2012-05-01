@@ -154,7 +154,7 @@ class Manager
 	 */
 	public function existsCategory($id)
 	{
-		return (quickQuery('SELECT COUNT(*) as result FROM '.sql_table('category').' WHERE catid='.intval($id)) > 0);
+		return (DB::getValue('SELECT COUNT(*) as result FROM '.sql_table('category').' WHERE catid='.intval($id)) > 0);
 	}
 	
 	/**
@@ -500,10 +500,10 @@ class Manager
 			// 'installedPlugins' = array ($pid => $name)
 			case 'installedPlugins':
 				$this->cachedInfo['installedPlugins'] = array();
-				$res = sql_query('SELECT pid, pfile FROM ' . sql_table('plugin'));
-				while ( $o = sql_fetch_object($res) )
+				$res = DB::getResult('SELECT pid, pfile FROM ' . sql_table('plugin'));
+				foreach ( $res as $row )
 				{
-					$this->cachedInfo['installedPlugins'][$o->pid] = $o->pfile;
+					$this->cachedInfo['installedPlugins'][$row['pid']] = $row['pfile'];
 				}
 				break;
 		}
@@ -575,12 +575,12 @@ class Manager
 		       . " FROM %s as e, %s as p"
 		       . " WHERE e.pid=p.pid ORDER BY p.porder ASC";
 		$query = sprintf($query, sql_table('plugin_event'), sql_table('plugin'));
-		$res = sql_query($query);
+		$res = DB::getResult($query);
 		
-		while ( $o = sql_fetch_object($res) )
+		foreach ( $res as $row )
 		{
-			$pluginName = $o->pfile;
-			$eventName = $o->event;
+			$pluginName = $row['pfile'];
+			$eventName = $row['event'];
 			$this->subscriptions[$eventName][] = $pluginName;
 		}
 		return;
@@ -669,7 +669,11 @@ class Manager
 		}
 		
 		// check if ticket is a valid one
-		$query = 'SELECT COUNT(*) as result FROM ' . sql_table('tickets') . ' WHERE member=' . intval($memberId). ' and ticket=\''.sql_real_escape_string($ticket).'\'';
+		$query = sprintf('SELECT COUNT(*) as result FROM %s WHERE member=%d and ticket=%s',
+			sql_table('tickets'),
+			intval($memberId),
+			DB::quoteValue($ticket)
+		);
 		
 		/*
 		 * NOTE:
@@ -678,7 +682,7 @@ class Manager
 		 * leaving the keys in the database is not a real problem, since they're member-specific and
 		 * only valid for a period of one hour]
 		 */
-		if ( quickQuery($query) != 1 )
+		if ( DB::getValue($query) != 1 )
 		{
 			return FALSE;
 		}
@@ -699,7 +703,7 @@ class Manager
 		$oldTime = time() - 60 * 60;
 		$query = "DELETE FROM %s WHERE ctime < '%s';";
 		$query = sprintf($query, sql_table('tickets'), date('Y-m-d H:i:s',$oldTime));
-		sql_query($query);
+		DB::execute($query);
 		return;
 	}
 	
@@ -736,10 +740,10 @@ class Manager
 				
 				// add in database as non-active
 				$query = "INSERT INTO %s (ticket, member, ctime)"
-				       . " VALUES ('%s', %d, '%s');";
-				$query = sprintf($query, sql_table('tickets'), sql_real_escape_string($ticket), (integer) $memberId, date('Y-m-d H:i:s',time()));
+				       . " VALUES (%s, %d, '%s');";
+				$query = sprintf($query, sql_table('tickets'), DB::quoteValue($ticket), (integer) $memberId, date('Y-m-d H:i:s',time()));
 				
-				if ( sql_query($query) )
+				if ( DB::execute($query) !== FALSE )
 				{
 					$ok = true;
 				}

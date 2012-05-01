@@ -703,11 +703,11 @@ class SkinExport
 			echo "\t" . '<skin name="' . Entity::hsc($skinName) . '" type="' . Entity::hsc($skinObj->getContentType()) . '" includeMode="' . Entity::hsc($skinObj->getIncludeMode()) . '" includePrefix="' . Entity::hsc($skinObj->getIncludePrefix()) . '">' . "\n";
 			echo "\t\t<description>" . Entity::hsc($skinObj->getDescription()) . "</description>\n";
 			
-			$res = sql_query('SELECT stype, scontent FROM '. sql_table('skin') .' WHERE sdesc=' . $skinId);
-			while ( $partObj = sql_fetch_object($res) )
+			$res = DB::getResult('SELECT stype, scontent FROM '. sql_table('skin') .' WHERE sdesc=' . $skinId);
+			foreach ( $res as $row )
 			{
-				echo "\t\t" . '<part name="',Entity::hsc($partObj->stype) . '">';
-				echo '<![CDATA[' . $this->escapeCDATA($partObj->scontent) . ']]>';
+				echo "\t\t" . '<part name="',Entity::hsc($row['stype']) . '">';
+				echo '<![CDATA[' . $this->escapeCDATA($row['scontent']) . ']]>';
 				echo "</part>\n\n";
 			}
 			echo "\t</skin>\n\n\n";
@@ -721,11 +721,11 @@ class SkinExport
 			echo "\t" . '<template name="' . Entity::hsc($templateName) . '">' . "\n";
 			echo "\t\t<description>" . Entity::hsc(Template::getDesc($templateId)) . "</description>\n";
 			
-			$res = sql_query('SELECT tpartname, tcontent FROM '. sql_table('template') .' WHERE tdesc=' . $templateId);
-			while ( $partObj = sql_fetch_object($res) )
+			$res = DB::getResult('SELECT tpartname, tcontent FROM '. sql_table('template') .' WHERE tdesc=' . $templateId);
+			foreach ( $res as $row )
 			{
-				echo "\t\t" . '<part name="' . Entity::hsc($partObj->tpartname) . '">';
-				echo '<![CDATA[' . $this->escapeCDATA($partObj->tcontent) . ']]>';
+				echo "\t\t" . '<part name="' . Entity::hsc($row['tpartname']) . '">';
+				echo '<![CDATA[' . $this->escapeCDATA($row['tcontent']) . ']]>';
 				echo "</part>\n\n";
 			}
 			

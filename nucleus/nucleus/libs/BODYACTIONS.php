@@ -54,7 +54,7 @@ class BodyActions extends BaseActions
 	{
 		global $currentitemid;
 		$this->currentItem =& $item;
-		$currentitemid = $this->currentItem->itemid;
+		$currentitemid = $this->currentItem['itemid'];
 		return;
 	}
 	
@@ -146,7 +146,7 @@ class BodyActions extends BaseActions
 		// select private collection when no collection given
 		if ( i18n::strpos($filename, '/') === FALSE )
 		{
-			$filename = $this->currentItem->authorid . '/' . $filename;
+			$filename = $this->currentItem['authorid'] . '/' . $filename;
 		}
 		
 		$windowwidth = $width;
@@ -193,7 +193,7 @@ class BodyActions extends BaseActions
 		// select private collection when no collection given
 		if ( i18n::strpos($filename, '/') === FALSE )
 		{
-			$filename = $this->currentItem->authorid . '/' . $filename;
+			$filename = $this->currentItem['authorid'] . '/' . $filename;
 		}
 		
 		$vars['link']			= Entity::hsc($CONF['MediaURL'] . $filename);
@@ -236,7 +236,7 @@ class BodyActions extends BaseActions
 		// select private collection when no collection given
 		if ( i18n::strpos($filename, '/') === FALSE )
 		{
-			$filename = $this->currentItem->authorid . '/' . $filename;
+			$filename = $this->currentItem['authorid'] . '/' . $filename;
 		}
 		
 		$windowwidth = $width;
@@ -281,7 +281,7 @@ class BodyActions extends BaseActions
 				$condition = ($blog && ($blog->getSetting($name) == $value));
 				break;
 			case 'itemblogsetting':
-				$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+				$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem['itemid']));
 				$condition = ($b && ($b->getSetting($name) == $value));
 				break;
 			case 'loggedin':
@@ -355,19 +355,19 @@ class BodyActions extends BaseActions
 	{
 		global $member, $manager;
 		
-		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem['itemid']));
 		
 		// when no parameter is defined, just check if author is current visitor
 		if ( ($key != 'isadmin' && $key != 'name') || ($key == 'name' && $value == '') )
 		{
-			return (intval($member->getID()) > 0 && intval($member->getID()) == intval($this->currentItem->authorid));
+			return (intval($member->getID()) > 0 && intval($member->getID()) == intval($this->currentItem['authorid']));
 		}
 		
 		// check author name
 		if ( $key == 'name' )
 		{
 			$value = strtolower($value);
-			if ( $value == strtolower($this->currentItem->author) )
+			if ( $value == strtolower($this->currentItem['author']) )
 			{
 				return TRUE;
 			}
@@ -376,7 +376,7 @@ class BodyActions extends BaseActions
 		// check if author is admin
 		if ( ($key == 'isadmin') )
 		{
-			$aid = intval($this->currentItem->authorid);
+			$aid = intval($this->currentItem['authorid']);
 			$blogid = intval($b->getID());			
 			$amember =& $manager->getMember($aid);
 			if ( $amember->isAdmin() )
@@ -401,7 +401,7 @@ class BodyActions extends BaseActions
 	{
 		global $catid, $manager;
 		
-		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem['itemid']));
 		
 		// when no parameter is defined, just check if a category is selected
 		if ( ($key != 'catname' && $key != 'catid') || ($value == '') )
@@ -409,7 +409,7 @@ class BodyActions extends BaseActions
 			return $b->isValidCategory($catid);
 		}
 			
-		$icatid = $this->currentItem->catid;
+		$icatid = $this->currentItem['catid'];
 		
 		// check category name
 		if ( $key == 'catname' )

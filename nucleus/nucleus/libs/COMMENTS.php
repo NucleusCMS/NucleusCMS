@@ -84,8 +84,8 @@ class Comments
 				   . ' WHERE c.citem=' . $this->itemid
 				   . ' ORDER BY c.ctime';
 
-			$comments = sql_query($query);
-			$this->commentcount = sql_num_rows($comments);
+			$comments = DB::getResult($query);
+			$this->commentcount = $comments->rowCount();
 		}
 
 		// if no result was found
@@ -103,7 +103,7 @@ class Comments
 
 		$parser->parse($template['COMMENTS_HEADER']);
 
-		while ( $comment = sql_fetch_assoc($comments) ) {
+		foreach ( $comments as $comment ) {
 			$comment['timestamp'] = strtotime($comment['ctime']);
 			$handler->setCurrentComment($comment);
 			$handler->setHighlight($highlight);
@@ -114,7 +114,7 @@ class Comments
 
 		$parser->parse($template['COMMENTS_FOOTER']);
 
-		sql_free_result($comments);
+		$comments->closeCursor();
 
 		return $this->commentcount;
 	}
@@ -126,10 +126,9 @@ class Comments
 		$query =  'SELECT COUNT(*)'
 			   . ' FROM '.sql_table('comment').' as c'
 			   . ' WHERE c.citem='. $this->itemid;
-		$res = sql_query($query);
-		$arr = sql_fetch_row($res);
+		$res = DB::getValue($query);
 
-		return $arr[0];
+		return $res;
 	}
 
 	/**
@@ -323,12 +322,12 @@ class Comments
 		
 		$manager->notify('PreAddComment', array('comment' => &$comment, 'spamcheck' => &$spamcheck) );
 		
-		$name		= sql_real_escape_string($comment['user']);
-		$url		= sql_real_escape_string($comment['userid']);
-		$email      = sql_real_escape_string($comment['email']);
-		$body		= sql_real_escape_string($comment['body']);
-		$host		= sql_real_escape_string($comment['host']);
-		$ip			= sql_real_escape_string($comment['ip']);
+		$name		= DB::quoteValue($comment['user']);
+		$url		= DB::quoteValue($comment['userid']);
+		$email		= DB::quoteValue($comment['email']);
+		$body		= DB::quoteValue($comment['body']);
+		$host		= DB::quoteValue($comment['host']);
+		$ip			= DB::quoteValue($comment['ip']);
 		$memberid	= intval($comment['memberid']);
 		$timestamp	= date('Y-m-d H:i:s', $comment['timestamp']);
 		$itemid		= $this->itemid;
@@ -336,12 +335,12 @@ class Comments
 		$qSql       = 'SELECT COUNT(*) AS result '
 					. 'FROM ' . sql_table('comment')
 					. ' WHERE '
-					.      'cmail   = "' . $url . '"'
-					. ' AND cmember = "' . $memberid . '"'
-					. ' AND cbody   = "' . $body . '"'
-					. ' AND citem   = "' . $itemid . '"'
-					. ' AND cblog   = "' . $blogid . '"';
-		$result     = (integer) quickQuery($qSql);
+					.      'cmail   = ' . $url
+					. ' AND cmember = ' . $memberid
+					. ' AND cbody   = ' . $body
+					. ' AND citem   = ' . $itemid
+					. ' AND cblog   = ' . $blogid;
+		$result     = (integer) DB::getValue($qSql);
 		
 		if ( $result > 0 )
 		{
@@ -349,12 +348,12 @@ class Comments
 		}
 		
 		$query = 'INSERT INTO '.sql_table('comment').' (CUSER, CMAIL, CEMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CIP, CBLOG) '
-			   . "VALUES ('$name', '$url', '$email', $memberid, '$body', $itemid, '$timestamp', '$host', '$ip', '$blogid')";
+			   . "VALUES ($name, $url, $email, $memberid, $body, $itemid, '$timestamp', $host, $ip, '$blogid')";
 		
-		sql_query($query);
+		DB::execute($query);
 		
 		// post add comment
-		$commentid = sql_insert_id();
+		$commentid = DB::getInsertId();
 		$manager->notify('PostAddComment', array('comment' => &$comment, 'commentid' => &$commentid, 'spamcheck' => &$spamcheck) );
 		
 		// succeeded !

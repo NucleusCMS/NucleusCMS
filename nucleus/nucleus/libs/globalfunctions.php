@@ -54,6 +54,24 @@ if ( !isset($DIR_LANG) )
 	$DIR_LANG = $DIR_LOCALES;
 }
 
+/**
+ * Errors before the database connection has been made
+ */
+function startUpError($msg, $title)
+{
+	header('Content-Type: text/xml; charset=' . i18n::get_current_charset());
+?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head><title><?php echo htmlspecialchars($title, null, i18n::get_current_charset()) ?></title></head>
+	<body>
+		<h1><?php echo htmlspecialchars($title, null, i18n::get_current_charset()) ?></h1>
+		<?php echo $msg ?>
+	</body>
+</html>
+<?php
+	exit;
+}
+
 /*
  * load and initialize i18n class
  */
@@ -167,7 +185,7 @@ if ( !headers_sent() )
 include($DIR_LIBS . 'ENTITY.php');
 
 /* include core classes that are needed for login & plugin handling */
-include_once($DIR_LIBS . 'mysql.php');
+
 /* added for 3.5 sql_* wrapper */
 global $MYSQL_HANDLER;
 if ( !isset($MYSQL_HANDLER) )
@@ -178,14 +196,15 @@ if ( $MYSQL_HANDLER[0] == '' )
 {
 	$MYSQL_HANDLER[0] = 'mysql';
 }
-include_once($DIR_LIBS . 'sql/'.$MYSQL_HANDLER[0].'.php');
+/* added for 4.0 DB::* wrapper and compatibility sql_* */
+include_once($DIR_LIBS . 'sql/sql.php');
 /* end new for 3.5 sql_* wrapper */
 include($DIR_LIBS . 'MEMBER.php');
 include($DIR_LIBS . 'ACTIONLOG.php');
 include($DIR_LIBS . 'MANAGER.php');
 include($DIR_LIBS . 'PLUGIN.php');
 
-$manager =& Manager::instance();
+$manager = new Manager();
 
 /*
  * make sure there's no unnecessary escaping:
@@ -211,8 +230,7 @@ if ( $CONF['UsingAdminArea'] )
 }
 
 /* connect to database */
-sql_connect();
-$SQLCount = 0;
+DB::setConnectionInfo($MYSQL_HANDLER[1], $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE);
 
 /* logs sanitized result if need */
 if ( $orgRequestURI!==serverVar('REQUEST_URI') )
@@ -228,9 +246,6 @@ if ( $orgRequestURI!==serverVar('REQUEST_URI') )
 		die("");
 	}
 }
-
-/* makes sure database connection gets closed on script termination */
-register_shutdown_function('sql_disconnect');
 
 /* read config */
 getConfig();
@@ -830,7 +845,8 @@ $manager->notify(
 	 */
 	function getBlogIDFromName($name)
 	{
-		return quickQuery('SELECT bnumber AS result FROM ' . sql_table('blog') . ' WHERE bshortname = "' . sql_real_escape_string($name) . '"');
+		$query = sprintf('SELECT bnumber AS result FROM %s WHERE bshortname=%s', sql_table('blog'), DB::quoteValue($name));
+		return DB::getValue($query);
 	}
 
 
@@ -841,7 +857,8 @@ $manager->notify(
 	 */
 	function getBlogNameFromID($id)
 	{
-		return quickQuery('SELECT bname AS result FROM ' . sql_table('blog') . ' WHERE bnumber = ' . intval($id));
+		$query = sprintf('SELECT bname AS result FROM %s WHERE bnumber=%d', sql_table('blog'), intval($id));
+		return DB::getValue($query);
 	}
 
 
@@ -852,7 +869,8 @@ $manager->notify(
 	 */
 	function getBlogIDFromItemID($item_id)
 	{
-		return quickQuery('SELECT iblog AS result FROM ' . sql_table('item') . ' WHERE inumber = ' . intval($item_id));
+		$query = sprintf('SELECT iblog AS result FROM %s WHERE inumber=%d', sql_table('item'), intval($item_id));
+		return DB::getValue($query);
 	}
 
 
@@ -863,7 +881,8 @@ $manager->notify(
 	 */
 	function getBlogIDFromCommentID($comment_id)
 	{
-		return quickQuery('SELECT cblog AS result FROM ' . sql_table('comment') . ' WHERE cnumber = ' . intval($comment_id));
+		$query = sprintf('SELECT cblog AS result FROM %s WHERE cnumber=%d', sql_table('comment'), intval($comment_id));
+		return DB::getValue($query);
 	}
 
 
@@ -874,7 +893,8 @@ $manager->notify(
 	 */
 	function getBlogIDFromCatID($category_id)
 	{
-		return quickQuery('SELECT cblog AS result FROM ' . sql_table('category') . ' WHERE catid = ' . intval($category_id));
+		$query = sprintf('SELECT cblog AS result FROM %s WHERE catid=%d', sql_table('category'), intval($category_id));
+		return DB::getValue($query);
 	}
 
 
@@ -885,26 +905,26 @@ $manager->notify(
 	 */
 	function getCatIDFromName($name)
 	{
-		return quickQuery('SELECT catid AS result FROM ' . sql_table('category') . ' WHERE cname = "' . sql_real_escape_string($name) . '"');
+		$query = sprintf('SELECT catid AS result FROM %s WHERE cname=%s', sql_table('category'), DB::quoteValue($name));
+		return DB::getValue($query);
 	}
 
 
 	/**
 	 * This function performs a quick SQL query
+	 * @deprecated
 	 * @param string $query
 	 * @return object
 	 */
 	function quickQuery($query)
 	{
-		$res = sql_query($query);
-		$obj = sql_fetch_object($res);
-		return $obj->result;
+		$row = DB::getRow($query);
+		return $row['result'];
 	}
 
 function getPluginNameFromPid($pid) {
-    $res = sql_query('SELECT pfile FROM ' . sql_table('plugin') . ' WHERE pid=' . intval($pid) );
-    $obj = sql_fetch_object($res);
-    return $obj->pfile;
+    $query = sprintf('SELECT pfile FROM %s WHERE pid=%d', sql_table('plugin'), intval($pid));
+    return DB::getValue($query);
 //    return isset($obj->pfile) ? $obj->pfile : false;
 }
 
@@ -974,69 +994,64 @@ function selector()
 		
 		// 1. get timestamp, blogid and catid for item
 		$query = 'SELECT itime, iblog, icat FROM %s WHERE inumber=%d';
-		$query = sprintf($query, sql_table('item'), (integer) $itemid);
-		$res = sql_query($query);
-		$obj = sql_fetch_object($res);
+		$query = sprintf($query, sql_table('item'), intval($itemid));
+		$row = DB::getRow($query);
 		
 		// if a different blog id has been set through the request or selectBlog(),
 		// deny access
 		
-		if ( $blogid && (intval($blogid) != $obj->iblog) )
+		if ( $blogid && (intval($blogid) != $row['iblog']) )
 		{
 			doError(_ERROR_NOSUCHITEM);
 		}
 		
 		// if a category has been selected which doesn't match the item, ignore the
 		// category. #85
-		if ( ($catid != 0) && ($catid != $obj->icat) )
+		if ( ($catid != 0) && ($catid != $row['icat']) )
 		{
 			$catid = 0;
 		}
 		
-		$blogid = $obj->iblog;
-		$timestamp = strtotime($obj->itime);
+		$blogid = $row['iblog'];
+		$timestamp = strtotime($row['itime']);
 		
 		$b =& $manager->getBlog($blogid);
 		
 		if ( !$b->isValidCategory($catid) )
 		{
 			$query = "SELECT inumber, ititle FROM %s WHERE itime<'%s' AND idraft=0 AND iblog=%d ORDER BY itime DESC LIMIT 1";
-			$query = sprintf($query, sql_table('item'), i18n::formatted_datetime('mysql', $timestamp), $blogid);
+			$query = sprintf($query, sql_table('item'), DB::formatDateTime($timestamp), intval($blogid));
 		}
 		else
 		{
 			$query = "SELECT inumber, ititle FROM %s WHERE itime<'%s' AND idraft=0 AND iblog=%d AND icat=%d ORDER BY itime DESC LIMIT 1";
-			$query = sprintf($query, sql_table('item'), i18n::formatted_datetime('mysql', $timestamp), $blogid, $catid);
+			$query = sprintf($query, sql_table('item'), DB::formatDateTime($timestamp), intval($blogid), intval($catid));
 		}
+		$row = DB::getRow($query);
 		
-		$res = sql_query($query);
-		$obj = sql_fetch_object($res);
-		
-		if ( $obj )
+		if ( $row )
 		{
-			$itemidprev = $obj->inumber;
-			$itemtitleprev = $obj->ititle;
+			$itemidprev = $row['inumber'];
+			$itemtitleprev = $row['ititle'];
 		}
 		
 		// get next itemid and title
 		if ( !$b->isValidCategory($catid) )
 		{
 			$query = "SELECT inumber, ititle FROM %s WHERE itime>'%s' AND itime<='%s' AND idraft=0 AND iblog=%d ORDER BY itime ASC LIMIT 1";
-			$query = sprintf($query, sql_table('item'), i18n::formatted_datetime('mysql', $timestamp), i18n::formatted_datetime('mysql', $b->getCorrectTime()), $blogid);
+			$query = sprintf($query, sql_table('item'), DB::formatDateTime($timestamp), DB::formatDateTime($b->getCorrectTime()), intval($blogid));
 		}
 		else
 		{
 			$query = "SELECT inumber, ititle FROM %s WHERE itime>'%s' AND itime<='%s' AND idraft=0 AND iblog=%d AND icat=%d ORDER BY itime ASC LIMIT 1";
-			$query = sprintf($query, sql_table('item'), i18n::formatted_datetime('mysql', $timestamp), i18n::formatted_datetime('mysql', $b->getCorrectTime()), $blogid, $catid);
+			$query = sprintf($query, sql_table('item'), DB::formatDateTime($timestamp), DB::formatDateTime($b->getCorrectTime()), intval($blogid), intval($catid));
 		}
-		$res = sql_query($query);
+		$row = DB::getRow($query);
 		
-		$obj = sql_fetch_object($res);
-		
-		if ( $obj )
+		if ( $row )
 		{
-			$itemidnext = $obj->inumber;
-			$itemtitlenext = $obj->ititle;
+			$itemidnext = $row['inumber'];
+			$itemtitlenext = $row['ititle'];
 		}
 	}
 	elseif ( $archive )
@@ -1048,10 +1063,10 @@ function selector()
 		global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
 		
 		// sql queries for the timestamp of the first and the last published item
-		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime ASC";
-		$first_timestamp=quickQuery ($query);
-		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime DESC";
-		$last_timestamp=quickQuery ($query);
+		$query = sprintf('SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 ORDER BY itime ASC', sql_table('item'));
+		$first_timestamp = DB::getValue($query);
+		$query = sprintf('SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 ORDER BY itime DESC', sql_table('item'));
+		$last_timestamp = DB::getValue($query);
 		
 		sscanf($archive, '%d-%d-%d', $y, $m, $d);
 		
@@ -1311,11 +1326,12 @@ function doError($msg, $skin = '')
 function getConfig() {
     global $CONF;
 
-    $query = 'SELECT * FROM ' . sql_table('config');
-    $res = sql_query($query);
+    $query = sprintf('SELECT * FROM %s', sql_table('config'));
+    $res = DB::getResult($query);
 
-    while ($obj = sql_fetch_object($res) ) {
-        $CONF[$obj->name] = $obj->value;
+    foreach ( $res as $row )
+    {
+    	$CONF[$row['name']] = $row['value'];
     }
 }
 
@@ -1688,16 +1704,16 @@ function ticketForPlugin()
 	
 	// Solve the plugin name.
 	$plugins = array();
-	$query = 'SELECT pfile FROM '.sql_table('plugin');
-	$res = sql_query($query);
+	$query = sprintf('SELECT pfile FROM %s', sql_table('plugin'));
+	$res = DB::getResult($query);
 	
-	while($row = sql_fetch_row($res) )
+	foreach ( $res as $row )
 	{
-		$name = i18n::substr($row[0], 3);
+		$name = i18n::substr($row['pfile'], 3);
 		$plugins[strtolower($name)] = $name;
 	}
 	
-	sql_free_result($res);
+	$res->closeCursor();
 	
 	if (array_key_exists($path, $plugins))
 	{
@@ -1981,6 +1997,7 @@ function redirect($url) {
 /**
  * getBookmarklet()
  * Returns the Javascript code for a bookmarklet that works on most modern browsers
+ * 
  * @param	integer	$blogid	ID for weblog
  * @return	script to call Bookmarklet
  */
@@ -2036,10 +2053,9 @@ function ifset(&$var) {
  * @return number of subscriber(s)
  */
 function numberOfEventSubscriber($event) {
-    $query = 'SELECT COUNT(*) as count FROM ' . sql_table('plugin_event') . ' WHERE event=\'' . $event . '\'';
-    $res = sql_query($query);
-    $obj = sql_fetch_object($res);
-    return $obj->count;
+    $query = sprintf('SELECT COUNT(*) as count FROM %s WHERE event=%s', sql_table('plugin_event'), DB::quoteValue($event));
+    $res = DB::getValue($query);
+    return $res;
 }
 
 /**
@@ -2156,7 +2172,7 @@ function formatDate($format, $timestamp, $default_format, &$blog)
 /* NOTE: use i18n::formatted_datetime() directly instead of this */
 function mysqldate($timestamp)
 {
-	return '"' . i18n::formatted_datetime('mysql', $timestamp) . '"';
+	return '"' . DB::formatDateTime($timestamp) . '"';
  }
 /**
  * Centralisation of the functions that generate links

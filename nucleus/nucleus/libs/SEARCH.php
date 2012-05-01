@@ -60,8 +60,8 @@ class Search
 		   }
 
 		   if(i18n::strlen($stringsum_long)>0){
-				$stringsum_long = sql_real_escape_string($stringsum_long);
-				$stringsum_a[] = " match ($match) against ('$stringsum_long') ";
+				$stringsum_long = DB::quoteValue($stringsum_long);
+				$stringsum_a[] = " match ({$match}) against ({$stringsum_long}) ";
 		   }
 
 		   $stringsum .= implode("+",$stringsum_a);
@@ -134,7 +134,7 @@ class Search
 
         if (!is_array($matches)) $match=$matches;
 
-        else return ' match ('.$match.') against (\''.sql_real_escape_string($matches[1]).'\') > 0 ';
+        else return ' match ('.$match.') against ('.DB::quoteValue($matches[1]).') > 0 ';
 
     }
 
@@ -144,7 +144,7 @@ class Search
 
         if (!is_array($matches)) $match=$matches;
 
-        else return ' ('.$this->boolean_sql_where_short(sql_real_escape_string($matches[1]),$match).') ';
+        else return ' ('.$this->boolean_sql_where_short($matches[1], $match).') ';
 
     }	
 
@@ -197,7 +197,7 @@ class Search
 	function boolean_sql_where_short($string,$match){
 		$match_a = preg_split('#,#',$match);
 		for($ith=0;$ith<count($match_a);$ith++){
-			$like_a[$ith] = " $match_a[$ith] LIKE '% $string %' ";
+			$like_a[$ith] = ' $match_a[$ith] LIKE ' . DB::quoteValue("% {$string} %") . ' ';
 		}
 		$like = implode(" OR ",$like_a);
 
@@ -209,9 +209,9 @@ class Search
 		for($ith=0;$ith<count($match_a);$ith++){
 			$score_a[$ith] =
 						   " $score_unit_weight*(
-						   LENGTH(" . sql_real_escape_string($match_a[$ith]) . ") -
-						   LENGTH(REPLACE(LOWER(" . sql_real_escape_string($match_a[$ith]) . "),LOWER('" . sql_real_escape_string($string) . "'),'')))
-						   /LENGTH('" . sql_real_escape_string($string) . "') ";
+						   LENGTH(" . DB::quoteValue($match_a[$ith]) . ") -
+						   LENGTH(REPLACE(LOWER(" . DB::quoteValue($match_a[$ith]) . "),LOWER(" . DB::quoteValue($string) . "),'')))
+						   /LENGTH(" . DB::quoteValue($string) . ") ";
 		}
 		$score = implode(" + ",$score_a);
 

@@ -86,31 +86,30 @@ class Karma
 	// these methods shouldn't be called directly
 	function readFromDatabase() {
 		$query = 'SELECT ikarmapos, ikarmaneg FROM '.sql_table('item').' WHERE inumber=' . $this->itemid;
-		$res = sql_query($query);
-		$obj = sql_fetch_object($res);
+		$res = DB::getRow($query);
 
-		$this->karmapos = $obj->ikarmapos;
-		$this->karmaneg = $obj->ikarmaneg;
+		$this->karmapos = $res['ikarmapos'];
+		$this->karmaneg = $res['ikarmaneg'];
 		$this->inforead = 1;
 	}
 
 
 	function writeToDatabase() {
 		$query = 'UPDATE '.sql_table('item').' SET ikarmapos=' . $this->karmapos . ', ikarmaneg='.$this->karmaneg.' WHERE inumber=' . $this->itemid;
-		sql_query($query);
+		DB::execute($query);
 	}
 
 	// checks if a vote is still allowed for an IP
 	function isVoteAllowed($ip) {
-		$query = 'SELECT * FROM '.sql_table('karma')." WHERE itemid=$this->itemid and ip='".sql_real_escape_string($ip)."'";
-		$res = sql_query($query);
-		return (sql_num_rows($res) == 0);
+		$query = 'SELECT * FROM '.sql_table('karma')." WHERE itemid={$this->itemid} and ip=". DB::quoteValue($ip);
+		$res = DB::getResult($query);
+		return ($res->rowCount() == 0);
 	}
 
 	// save IP in database so no multiple votes are possible
 	function saveIP() {
-		$query = 'INSERT INTO '.sql_table('karma').' (itemid, ip) VALUES ('.$this->itemid.",'".sql_real_escape_string(serverVar('REMOTE_ADDR'))."')";
-		sql_query($query);
+		$query = 'INSERT INTO ' . sql_table('karma') .' (itemid, ip) VALUES (' . $this->itemid . ','. DB::quoteValue(serverVar('REMOTE_ADDR')) .')';
+		DB::execute($query);
 	}
 }
 

@@ -298,7 +298,7 @@ class Actions extends BaseActions
 	public function doForm($filename)
 	{
 		global $DIR_NUCLEUS;
-		array_push($this->parser->actions,'formdata','text','callback','errordiv','ticket');
+		array_push($this->parser->actions,'formdata', 'text', 'callback','errordiv','ticket');
 		
 		$oldIncludeMode = Parser::getProperty('IncludeMode');
 		$oldIncludePrefix = Parser::getProperty('IncludePrefix');
@@ -649,7 +649,7 @@ class Actions extends BaseActions
 				}
 				if ( $sqlquery )
 				{
-					$iAmountOnPage = intval(quickQuery($sqlquery)) - intval($startpos);
+					$iAmountOnPage = intval(DB::getValue($sqlquery)) - intval($startpos);
 				}
 			}
 			

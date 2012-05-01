@@ -68,12 +68,10 @@ class Template
 	 */
 	static public function getIdFromName($name)
 	{
-		$name = sql_real_escape_string($name);
-		$query =  "SELECT tdnumber FROM %s WHERE tdname='%s';";
+		$name = DB::quoteValue($name);
+		$query = "SELECT tdnumber FROM %s WHERE tdname=%s";
 		$query = sprintf($query, sql_table('template_desc'), $name);
-		$res = sql_query($query);
-		$obj = sql_fetch_object($res);
-		return $obj->tdnumber;
+		return DB::getValue($query);
 	}
 	
 	/**
@@ -86,9 +84,9 @@ class Template
 	 */
 	public function updateGeneralInfo($name, $desc)
 	{
-		$query =  "UPDATE %s SET tdname='%s', tddesc='%s' WHERE tdnumber=%d;";
-		$query = sprintf($query, sql_table('template_desc'), sql_real_escape_string($name), sql_real_escape_string($desc), (integer) $this->getID());
-		sql_query($query);
+		$query =  "UPDATE %s SET tdname=%s, tddesc=%s WHERE tdnumber=%d";
+		$query = sprintf($query, sql_table('template_desc'), DB::quoteValue($name), DB::quoteValue($desc), (integer) $this->getID());
+		DB::execute($query);
 		return;
 	}
 	
@@ -103,16 +101,16 @@ class Template
 	public function update($type, $content)
 	{
 		// delete old thingie
-		$query = "DELETE FROM %s WHERE tpartname='%s' and tdesc=%d";
-		$query = sprintf($query, sql_table('template'), sql_real_escape_string($type), (integer) $this->getID());
-		sql_query($query);
+		$query = "DELETE FROM %s WHERE tpartname=%s and tdesc=%d";
+		$query = sprintf($query, sql_table('template'), DB::quoteValue($type), (integer) $this->getID());
+		DB::execute($query);
 		
 		// write new thingie
 		if ( $content )
 		{
-			$query = "INSERT %s (tcontent, tpartname, tdesc) VALUE ('%s', '%s', %d)";
-			$query = sprintf($query, sql_table('template'), sql_real_escape_string($content), sql_real_escape_string($type), (integer) $this->getID());
-			sql_query($query);
+			$query = "INSERT %s (tcontent, tpartname, tdesc) VALUE (%s, %s, %d)";
+			$query = sprintf($query, sql_table('template'), DB::quoteValue($content), DB::quoteValue($type), (integer) $this->getID());
+			DB::execute($query);
 		}
 		return;
 	}
@@ -128,7 +126,7 @@ class Template
 	{
 		$query = "DELETE FROM %s WHERE tdesc=%d";
 		$query = sprintf($query, sql_table('template'), (integer) $this->getID());
-		sql_query($query);
+		DB::execute($query);
 		return;
 	}
 	
@@ -153,8 +151,8 @@ class Template
 			)
 		);
 		
-		sql_query('INSERT INTO '.sql_table('template_desc')." (tdname, tddesc) VALUES ('" . sql_real_escape_string($name) . "','" . sql_real_escape_string($desc) . "')");
-		$newId = sql_insert_id();
+		DB::execute('INSERT INTO '.sql_table('template_desc').' (tdname, tddesc) VALUES (' . DB::quoteValue($name) . ',' . DB::quoteValue($desc) . ')');
+		$newId = DB::getInsertId();
 		
 		$manager->notify(
 			'PostAddTemplate',
@@ -185,13 +183,13 @@ class Template
 			)
 		);
 		
-		$query = "SELECT tpartname, tcontent FROM %s, %s WHERE tdesc=tdnumber and tdname='%s'";
-		$query = sprintf($query, sql_table('template_desc'), sql_table('template'), sql_real_escape_string($name));
-		$res = sql_query($query);
+		$query = "SELECT tpartname, tcontent FROM %s, %s WHERE tdesc=tdnumber and tdname=%s";
+		$query = sprintf($query, sql_table('template_desc'), sql_table('template'), DB::quoteValue($name));
+		$res = DB::getResult($query);
 		
-		while ($obj = sql_fetch_object($res))
+		foreach ( $res as $row )
 		{
-			$template[$obj->tpartname] = $obj->tcontent;
+			$template[$row['tpartname']] = $row['tcontent'];
 		}
 		
 		/*
@@ -242,10 +240,10 @@ class Template
 	 */
 	static public function exists($name)
 	{
-		$query = "SELECT * FROM %s WHERE tdname='%s';";
-		$query = sprintf($query, sql_table('template_desc'), sql_real_escape_string($name));
-		$result = sql_query($query);
-		return (sql_num_rows($result) != 0);
+		$query = "SELECT * FROM %s WHERE tdname=%s";
+		$query = sprintf($query, sql_table('template_desc'), DB::quoteValue($name));
+		$r = DB::getResult($query);
+		return ($r->rowCount() != 0);
 	}
 	
 	/**
@@ -258,10 +256,10 @@ class Template
 	 */
 	static public function existsID($id)
 	{
-		$query = "SELECT * FROM %s WHERE tdnumber=%d;";
+		$query = "SELECT * FROM %s WHERE tdnumber=%d";
 		$query = sprintf($query, sql_table('template_desc'), (integer) $id);
-		$r = sql_query($query);
-		return (sql_num_rows($r) != 0);
+		$r = DB::getResult($query);
+		return ($r->rowCount() != 0);
 	}
 	
 	/**
@@ -275,7 +273,7 @@ class Template
 	{
 		$query = "SELECT tdname as result FROM %s WHERE tdnumber=%d";
 		$query = sprintf($query, sql_table('template_desc'), (integer) $id);
-		return quickQuery($query);
+		return DB::getValue($query);
 	}
 	
 	/**
@@ -287,10 +285,8 @@ class Template
 	 */
 	static public function getDesc($id)
 	{
-		$query = "SELECT tddesc FROM %s WHERE tdnumber=%d;";
+		$query = "SELECT tddesc FROM %s WHERE tdnumber=%d";
 		$query = sprintf($query, sql_table('template_desc'), (integer) $id);
-		$res = sql_query($query);
-		$obj = sql_fetch_object($res);
-		return $obj->tddesc;
+		return DB::getValue($query);
 	}
 }
