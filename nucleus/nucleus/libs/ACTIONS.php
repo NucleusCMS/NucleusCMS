@@ -298,7 +298,7 @@ class Actions extends BaseActions
 	public function doForm($filename)
 	{
 		global $DIR_NUCLEUS;
-		array_push($this->parser->actions,'formdata', 'text', 'callback','errordiv','ticket');
+		array_push($this->parser->actions,'formdata', 'callback','errordiv','ticket');
 		
 		$oldIncludeMode = Parser::getProperty('IncludeMode');
 		$oldIncludePrefix = Parser::getProperty('IncludePrefix');
@@ -311,7 +311,6 @@ class Actions extends BaseActions
 		
 		array_pop($this->parser->actions);	// errordiv
 		array_pop($this->parser->actions);	// callback
-		array_pop($this->parser->actions);	// text
 		array_pop($this->parser->actions);	// formdata
 		array_pop($this->parser->actions);	// ticket
 		return;
@@ -2176,23 +2175,6 @@ class Actions extends BaseActions
 	public function parse_skintype()
 	{
 		echo $this->skintype;
-		return;
-	}
-	
-	/**
-	 * Actions::parse_text()
-	 * Parse text
-	 * 
-	 * @param	void
-	 * @return	void
-	 */
-	public function parse_text($which)
-	{
-		// constant($which) only available from 4.0.4 :(
-		if ( defined($which) )
-		{
-			eval("echo $which;");
-		}
 		return;
 	}
 	

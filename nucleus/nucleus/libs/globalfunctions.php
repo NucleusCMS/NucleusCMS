@@ -622,7 +622,7 @@ $manager->notify(
 	 * @param	string	$locale	locale name referring to 'language tags' defined in RFC 5646
 	 * @return	Void
 	 */
-	function include_translation($locale)
+	function include_translation(&$locale)
 	{
 		global $DIR_LOCALES;
 		

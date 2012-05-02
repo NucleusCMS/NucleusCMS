@@ -64,11 +64,12 @@ class BaseActions
 		'parsedinclude',
 		'phpinclude',
 		'set',
-		'skinfile'
+		'skinfile',
+		'text'
 	);
 	
 	/**
-	 * BaseActions::BaseActions()
+	 * BaseActions::__construct()
 	 *  Constructor for a new BaseAction object
 	 */
 	protected function __construct()
@@ -225,6 +226,26 @@ class BaseActions
 	public function parse_set($property, $value)
 	{
 		Parser::setProperty($property, $value);
+		return;
+	}
+	
+	/**
+	 * BaseActions::parse_text()
+	 * Parse text
+	 * 
+	 * @param	string	$constant	named constant
+	 * @return	void
+	 */
+	public function parse_text($constant)
+	{
+		if ( !defined($constant) )
+		{
+			echo Entity::hsc($constant);
+		}
+		else
+		{
+			echo Entity::hsc(constant($constant));
+		}
 		return;
 	}
 	

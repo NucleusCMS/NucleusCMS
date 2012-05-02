@@ -68,7 +68,6 @@ class PageFactory extends BaseActions
 		'jsbuttonbar',
 		'jsinput',
 		'pluginextras',
-		'text',
 		'ticket',
 		'title'
 	);
@@ -382,26 +381,6 @@ class PageFactory extends BaseActions
 		
 		$manager->notify('BookmarkletExtraHead', $data);
 		echo $extrahead;
-		return;
-	}
-	
-	/**
-	 * PageFactroy::parse_text()
-	 * inserts some localized text
-	 * 
-	 * @param	string	$which
-	 * @return	void
-	 */
-	public function parse_text($which)
-	{
-		if ( !defined($which) )
-		{
-			echo $which;
-		}
-		else
-		{
-			echo constant($which);
-		}
 		return;
 	}
 	

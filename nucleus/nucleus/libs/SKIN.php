@@ -326,6 +326,9 @@ class Skin
 		
 		$manager->notify("Init{$this->event_identifier}Parse", array('skin' => &$this, 'type' => $type));
 		
+		// include skin locale file for <%text%> tag if useable
+		$this->includeTranslation();
+		
 		// set output type
 		sendContentType($this->getContentType(), 'skin');
 		
@@ -556,6 +559,48 @@ class Skin
 		$query = sprintf($query, sql_table('skin_desc'), $name, $desc, $type, $includeMode, $includePrefix, (integer) $this->id);
 		
 		DB::execute($query);
+		return;
+	}
+	
+	/**
+	 * Skin::includeTranslation()
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	private function includeTranslation()
+	{
+		global $DIR_SKINS;
+		
+		$locale = i18n::get_current_locale() . '.' . i18n::get_current_charset();
+		
+		if( $this->includeMode == "normal" )
+		{
+			$filename = "./locales/{$locale}.php";
+		}
+		else if( $this->includeMode == "skindir" )
+		{
+			if ( $this->includePrefix == '' )
+			{
+				$filename = "{$DIR_SKINS}locales/{$locale}.php";
+			}
+			else
+			{
+				$filename = "{$DIR_SKINS}{$this->includePrefix}locales/{$locale}.php";
+			}
+		}
+		else
+		{
+			return;
+		}
+		
+		if ( !file_exists($filename) )
+		{
+			return;
+		}
+		
+		include_once($filename);
+		
 		return;
 	}
 	
