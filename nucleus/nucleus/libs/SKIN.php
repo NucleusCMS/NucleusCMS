@@ -392,8 +392,8 @@ class Skin
 		$res = DB::getValue($query);
 		
 		return $res ? $res : '';
-		}
-		
+	}
+	
 	/**
 	 * Skin::getContentFromFile()
 	 * 
