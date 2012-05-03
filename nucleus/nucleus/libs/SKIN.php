@@ -277,16 +277,14 @@ class Skin
 	{
 		global $manager;
 		
-		$manager->notify(
-			'PreAddSkin',
-			array(
-				'name' => &$name,
-				'description' => &$desc,
-				'type' => &$type,
-				'includeMode' => &$includeMode,
-				'includePrefix' => &$includePrefix
-			)
+		$data = array(
+			'name'			=> &$name,
+			'description'	=> &$desc,
+			'type'			=> &$type,
+			'includeMode'	=> &$includeMode,
+			'includePrefix'	=> &$includePrefix
 		);
+		$manager->notify('PreAddSkin', $data);
 		
 		$query = "INSERT INTO %s (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES (%s, %s, %s, %s, %s);";
 		$sdname		= DB::quoteValue($name);
@@ -298,17 +296,16 @@ class Skin
 		DB::execute($query);
 		$newid = DB::getInsertId();
 		
-		$manager->notify(
-			'PostAddSkin',
-			array(
-				'skinid'		=> $newid,
-				'name'			=> $name,
-				'description'	=> $desc,
-				'type'			=> $type,
-				'includeMode'	=> $includeMode,
-				'includePrefix'	=> $includePrefix
-			)
+		$data = array(
+			'skinid'		=> $newid,
+			'name'			=> $name,
+			'description'	=> $desc,
+			'type'			=> $type,
+			'includeMode'	=> $includeMode,
+			'includePrefix'	=> $includePrefix
 		);
+		$manager->notify('PostAddSkin', $data);
+		
 		return $newid;
 	}
 	
@@ -324,7 +321,11 @@ class Skin
 	{
 		global $currentSkinName, $manager, $CONF, $DIR_NUCLEUS;
 		
-		$manager->notify("Init{$this->event_identifier}Parse", array('skin' => &$this, 'type' => $type));
+		$data = array(
+			'skin' => &$this,
+			'type' => $type
+		);
+		$manager->notify("Init{$this->event_identifier}Parse", $data);
 		
 		// include skin locale file for <%text%> tag if useable
 		$this->includeTranslation();
@@ -357,7 +358,12 @@ class Skin
 			}
 		}
 		
-		$manager->notify("Pre{$this->event_identifier}Parse", array('skin' => &$this, 'type' => $type, 'contents' => &$contents));
+		$data = array(
+			'skin'		=> &$this,
+			'type'		=> $type,
+			'contents'	=> &$contents
+		);
+		$manager->notify("Pre{$this->event_identifier}Parse", $data);
 		
 		// set IncludeMode properties of parser
 		Parser::setProperty('IncludeMode', $this->getIncludeMode());
@@ -375,7 +381,12 @@ class Skin
 		$handler->setSkin($this);
 		$parser->parse($contents);
 		
-		$manager->notify("Post{$this->event_identifier}Parse", array('skin' => &$this, 'type' => $type));
+		$data = array(
+			'skin' => &$this,
+			'type' => $type
+		);
+		$manager->notify("Post{$this->event_identifier}Parse", $data);
+		
 		return;
 	}
 	
@@ -458,9 +469,9 @@ class Skin
 		else if( $skintypevalue && !$skintypeexists )
 		{
 			$data = array(
-				'skinid' => $this->id,
-				'type' => $type,
-				'content' => &$content
+				'skinid'	=> $this->id,
+				'type'		=> $type,
+				'content'	=> &$content
 			);
 			
 			$manager->notify("PreAdd{$this->event_identifier}Part", $data);
@@ -468,8 +479,8 @@ class Skin
 		else if( !$skintypevalue && $skintypeexists )
 		{
 			$data = array(
-				'skinid' => $this->id,
-				'type' => $type
+				'skinid'	=> $this->id,
+				'type'		=> $type
 			);
 			
 			$manager->notify("PreDelete{$this->event_identifier}Part", $data);
