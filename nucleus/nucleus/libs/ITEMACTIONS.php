@@ -129,17 +129,16 @@ class ItemActions extends BaseActions
 	}
 	
 	/**
-	 * ItemActions::getDefinedActions()
+	 * ItemActions::getAvailableActions()
 	 * Returns an array with the actions that are defined
 	 * in the ItemActions class
 	 * 
-	 * @static
 	 * @param	void
 	 * @return	void
 	 */
-	static public function getDefinedActions()
+	public function getAvailableActions()
 	{
-		return array_merge(self::$defined_actions, parent::getDefinedActions());
+		return array_merge(self::$defined_actions, parent::getAvailableActions());
 	}
 	
 	/**
@@ -813,10 +812,11 @@ class ItemActions extends BaseActions
 	public function highlightAndParse(&$data)
 	{
 		$handler = new BodyActions($this->blog);
-		$parser = new Parser($handler->getDefinedActions(), $handler);
 		$handler->setTemplate($this->template);
 		$handler->setHighlight($this->strHighlight);
 		$handler->setCurrentItem($this->currentItem);
+		
+		$parser = new Parser($handler);
 		$parser->parse($handler->highlight($data));
 		return;
 	}

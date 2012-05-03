@@ -88,15 +88,14 @@ class CommentActions extends BaseActions
 	}
 	
 	/**
-	 * CommentActions::getDefinedActions()
+	 * CommentActions::getAvailableActions()
 	 * 
-	 * @static
 	 * @param	void
 	 * @return array	actions array
 	 */
-	static public function getDefinedActions()
+	public function getAvailableActions()
 	{
-		return array_merge(self::$defined_actions, parent::getDefinedActions());
+		return array_merge(self::$defined_actions, parent::getAvailableActions());
 	}
 	
 	/**

@@ -47,18 +47,20 @@ class Parser
 	 * Creates a new parser object with the given allowed actions
 	 * and the given handler
 	 *
-	 * @param $allowedActions array
 	 * @param $handler class object with functions for each action (reference)
 	 * @param $delim optional delimiter
 	 * @param $paramdelim optional parameterdelimiter
 	 */
-	public function __construct($allowedActions, &$handler, $delim = '(<%|%>)', $pdelim = ',')
+	public function __construct( &$handler, $delim = '(<%|%>)', $pdelim = ',')
 	{
-		$this->actions	= $allowedActions;
-		$this->handler	=& $handler;
-		$this->delim	= $delim;
-		$this->pdelim	= $pdelim;
+		$this->handler	= &$handler;
+		$this->actions	=  $handler->getAvailableActions();
+		$this->delim	=  $delim;
+		$this->pdelim	=  $pdelim;
 		$this->norestrictions = 0;	// set this to 1 to disable checking for allowedActions
+		
+		$handler->setParser($this);
+		
 		return;
 	}
 	

@@ -88,13 +88,12 @@ class BaseActions
 	}
 	
 	/**
-	 * BaseActions::getDefinedActions()
+	 * BaseActions::getAvailableActions()
 	 * 
-	 * @static
 	 * @param	void
 	 * @return	void
 	 */
-	static public function getDefinedActions()
+	public function getAvailableActions()
 	{
 		return self::$defined_actions;
 	}

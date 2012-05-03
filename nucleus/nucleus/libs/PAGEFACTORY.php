@@ -30,7 +30,7 @@ class PageFactory extends BaseActions
 	
 	/**
 	 * PageFactory::$type
-	 * One of the types got by self::getDefaultSkinTypes()
+	 * One of the types got by self::getAvailableSkinTypes()
 	 */
 	private $type = '';
 	
@@ -78,26 +78,13 @@ class PageFactory extends BaseActions
 	);
 	
 	/**
-	 * PageFactory::getDefinedActions()
-	 * 
-	 * @static
-	 * @param	void
-	 * @return	array	array for defined action names
-	 * 
-	 */
-	static public function getDefinedActions($type='')
-	{
-		return array_merge(self::$defined_actions, parent::getDefinedActions());
-	}
-	
-	/**
 	 * AdminActions::getSkinTypeFriendlyNames()
 	 * 
 	 * @static
 	 * @param	void
 	 * @return	array	list of friendly names for page actions
 	 */
-	static public function getDefaultSkinTypes()
+	static public function getAvailableSkinTypes()
 	{
 		return self::$default_skin_types;
 	}
@@ -118,6 +105,18 @@ class PageFactory extends BaseActions
 		$this->blog =& $blog;
 		
 		return;
+	}
+	
+	/**
+	 * PageFactory::getAvailableActions()
+	 * 
+	 * @param	void
+	 * @return	array	array for defined action names
+	 * 
+	 */
+	public function getAvailableActions()
+	{
+		return array_merge(self::$defined_actions, parent::getAvailableActions());
 	}
 	
 	/**
@@ -145,7 +144,7 @@ class PageFactory extends BaseActions
 		global $DIR_LIBS;
 		
 		// the $type is not in the allowed types array
-		if ( !array_key_exists($type, $this->getDefaultSkinTypes()) )
+		if ( !array_key_exists($type, $this->getAvailableSkinTypes()) )
 		{
 			return '';
 		}

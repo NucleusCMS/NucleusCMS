@@ -1278,7 +1278,7 @@ class Admin
 		$contents = $handler->getTemplateFor('admin', 'add');
 		$manager->notify('PreAddItemForm', array('contents' => &$contents, 'blog' => &$blog));
 		
-		$parser = new Parser($handler->getDefinedActions(), $handler);
+		$parser = new Parser($handler);
 		
 		$this->pagehead();
 		$parser->parse($contents);
@@ -1319,7 +1319,7 @@ class Admin
 		
 		$content = $handler->getTemplateFor('admin', 'edit');
 		
-		$parser = new Parser($handler->getDefinedActions(), $handler);
+		$parser = new Parser($handler);
 		
 		$this->pagehead();
 		$parser->parse($content);

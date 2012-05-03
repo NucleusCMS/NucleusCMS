@@ -298,7 +298,7 @@ function bm_doShowForm()
 	$contents = $handler->getTemplateFor('bookmarklet', 'add');
 	$manager->notify('PreAddItemForm', array('contents' => &$contents, 'blog' => &$blog));
 	
-	$parser = new Parser($handler->getDefinedActions(), $handler);
+	$parser = new Parser($handler);
 	$parser->parse($contents);
 	
 	return;
@@ -336,7 +336,7 @@ function bm_doEditForm()
 	
 	$contents = $handler->getTemplateFor('bookmarklet', 'edit');
 	
-	$parser = new Parser($handler->getDefinedActions(), $handler);
+	$parser = new Parser($handler);
 	$parser->parse($contents);
 	
 	return;

@@ -187,12 +187,12 @@ class Blog
 		
 		// create parser object & action handler
 		$handler = new ItemActions($this);
-		$parser = new Parser($handler->getDefinedActions(), $handler);
 		$handler->setTemplate($template);
 		$handler->setHighlight($highlight);
 		$handler->setLastVisit($lastVisit);
-		$handler->setParser($parser);
 		$handler->setShowComments($comments);
+		
+		$parser = new Parser($handler);
 		
 		// execute query
 		$items = DB::getResult($query);

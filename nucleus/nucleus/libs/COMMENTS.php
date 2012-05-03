@@ -72,10 +72,10 @@ class Comments
 
 		// create parser object & action handler
 		$handler = new CommentActions($this);
-		$parser = new Parser($handler->getDefinedActions(),$handler);
 		$handler->setTemplate($template);
-		$handler->setParser($parser);
-
+		
+		$parser = new Parser($handler);
+		
 		if ($maxToShow == 0) {
 			$this->commentcount = $this->amountComments();
 		} else {

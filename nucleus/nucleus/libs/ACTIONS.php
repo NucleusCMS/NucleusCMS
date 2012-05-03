@@ -13,9 +13,6 @@
  * This class contains the functions that get called by using
  * the special tags in the skins
  *
- * The allowed tags for a type of skinpart are defined by the
- * Skin::getAllowedActionsForType($type) method
- *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$
@@ -91,17 +88,50 @@ class Actions extends BaseActions
 	);
 	
 	/**
-	 * Actions::getDefinedActions()
+	 * Actions::getAvailableSkinTypes()
 	 * 
 	 * @static
-	 * @param	string	$type	page type
+	 * @param	void
+	 * @return	array	list of friendly names for page actions
+	 */
+	static public function getAvailableSkinTypes()
+	{
+		return self::$default_skin_types;
+	}
+	
+	/**
+	 * Actions::__construct()
+	 * Constructor for a new Actions object
+	 * 
+	 * @param	string	$type
+	 * @return	void
+	 */
+	public function __construct($type)
+	{
+		global $catid;
+		
+		// call constructor of superclass first
+		parent::__construct();
+		$this->skintype = $type;
+		
+		if ( $catid )
+		{
+			$this->linkparams = array('catid' => $catid);
+		}
+		return;
+	}
+	
+	/**
+	 * Actions::getAvailableActions()
+	 * 
+	 * @param	void
 	 * @return	array	allowed	actions for the page type
 	 */
-	static public function getDefinedActions($type='')
+	public function getAvailableActions()
 	{
 		$extra_actions = array();
 		
-		switch ( $type )
+		switch ( $this->skintype )
 		{
 			case 'index':
 				$extra_actions = array(
@@ -226,41 +256,7 @@ class Actions extends BaseActions
 		
 		$defined_actions = array_merge(self::$default_actions, $extra_actions);
 		
-		return array_merge($defined_actions, parent::getDefinedActions());
-	}
-	
-	/**
-	 * Actions::getDefaultSkinTypes()
-	 * 
-	 * @static
-	 * @param	void
-	 * @return	array	list of friendly names for page actions
-	 */
-	static public function getDefaultSkinTypes()
-	{
-		return self::$default_skin_types;
-	}
-	
-	/**
-	 * Actions::__construct()
-	 * Constructor for a new Actions object
-	 * 
-	 * @param	string	$type
-	 * @return	void
-	 */
-	public function __construct($type)
-	{
-		global $catid;
-		
-		// call constructor of superclass first
-		parent::__construct();
-		$this->skintype = $type;
-		
-		if ( $catid )
-		{
-			$this->linkparams = array('catid' => $catid);
-		}
-		return;
+		return array_merge($defined_actions, parent::getAvailableActions());
 	}
 	
 	/**
@@ -1254,15 +1250,16 @@ class Actions extends BaseActions
 	public function parse_comments($template)
 	{
 		global $itemid, $manager, $blog, $highlight;
+		
 		$template =& $manager->getTemplate($template);
+		$item = Item::getitem($itemid, 0, 0);
 		
 		// create parser object & action handler
 		$handler = new ItemActions($blog);
-		$parser = new Parser($handler->getDefinedActions(),$handler);
 		$handler->setTemplate($template);
-		$handler->setParser($parser);
-		$item = Item::getitem($itemid, 0, 0);
 		$handler->setCurrentItem($item);
+		
+		$parser = new Parser($handler);
 		
 		$comments = new Comments($itemid);
 		$comments->setItemActions($handler);

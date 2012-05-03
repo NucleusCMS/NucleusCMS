@@ -372,13 +372,10 @@ class Skin
 		// call action handler
 		$action_class = $this->action_class;
 		$handler = new $action_class($type);
+		$handler->setSkin($this);
 		
 		// register action handler to parser
-		$actions = $handler->getDefinedActions($type);
-		$parser = new Parser($actions, $handler);
-		
-		$handler->setParser($parser);
-		$handler->setSkin($this);
+		$parser = new Parser($handler);
 		$parser->parse($contents);
 		
 		$data = array(
@@ -623,7 +620,7 @@ class Skin
 	 */
 	public function getDefaultTypes()
 	{
-		return call_user_func(array($this->action_class, 'getDefaultSkinTypes'));
+		return call_user_func(array($this->action_class, 'getAvailableSkinTypes'));
 	}
 	
 	/**
@@ -663,12 +660,13 @@ class Skin
 	 * Get the allowed actions for a skin type
 	 * returns an array with the allowed actions
 	 * 
-	 * @param	string	$type	type of the skin
+	 * @param	string	$skintype	type of the skin
 	 * @return	array	allowed action types
 	 */
-	public function getAllowedActionsForType($type)
+	public function getAllowedActionsForType($skintype)
 	{
-		return call_user_func(array($this->action_class, 'getDefinedActions'), $type);
+		$handler = new $this->action_class($skintype);
+		return $handler->getAvailableActions();
 	}
 	
 }

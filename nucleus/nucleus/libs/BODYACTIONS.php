@@ -44,6 +44,18 @@ class BodyActions extends BaseActions
 	}
 	
 	/**
+	 * BodyActions::getAvailableActions()
+	 * Get the defined actions in an item
+	 * 
+	 * @param	void
+	 * @return	array	self::$defined_actions
+	 */
+	public function getAvailableActions()
+	{
+		return array_merge(self::$defined_actions, parent::getAvailableActions());
+	}
+	
+	/**
 	 * BodyActions::setCurrentItem()
 	 * Set the current item
 	 * 
@@ -69,19 +81,6 @@ class BodyActions extends BaseActions
 	{
 		$this->template =& $template;
 		return;
-	}
-	
-	/**
-	 * BodyActions::getDefinedActions()
-	 * Get the defined actions in an item
-	 * 
-	 * @static
-	 * @param	void
-	 * @return	Array	self::$defined_actions
-	 */
-	static public function getDefinedActions()
-	{
-		return array_merge(self::$defined_actions, parent::getDefinedActions());
 	}
 	
 	/**
