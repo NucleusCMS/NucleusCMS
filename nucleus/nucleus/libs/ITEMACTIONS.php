@@ -155,18 +155,6 @@ class ItemActions extends BaseActions
 	}
 	
 	/**
-	 * ItemActions::setParser()
-	 * 
-	 * @param	object	&$parser	instance of Parser class
-	 * @return	void
-	 */
-	public function setParser(&$parser)
-	{
-		$this->parser =& $parser;
-		return;
-	}
-	
-	/**
 	 * ItemActions::setCurrentItem()
 	 * 
 	 * @param	object	$item	instance of Item class

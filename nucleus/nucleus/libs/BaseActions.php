@@ -100,6 +100,19 @@ class BaseActions
 	}
 	
 	/**
+	 * BaseActions::setParser()
+	 * Set the parser
+	 * 
+	 * @param	object	$parser	an instance of Parser class
+	 * @return	void
+	 */
+	public function setParser(&$parser)
+	{
+		$this->parser =& $parser;
+		return;
+	}
+	
+	/**
 	 * BaseActions::parse_include()
 	 * include file (no parsing of php)
 	 * 

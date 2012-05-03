@@ -276,19 +276,6 @@ class Actions extends BaseActions
 	}
 	
 	/**
-	 * Actions::setParser()
-	 * Set the parser
-	 * 
-	 * @param	object	$parser	an instance of Parser class
-	 * @return	void
-	 */
-	public function setParser(&$parser)
-	{
-		$this->parser =& $parser;
-		return;
-	}
-	
-	/**
 	 * Actions::doForm()
 	 * Forms get parsedincluded now, using an extra <formdata> skinvar
 	 *

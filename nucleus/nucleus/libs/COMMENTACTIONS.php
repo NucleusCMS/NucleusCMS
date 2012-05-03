@@ -100,18 +100,6 @@ class CommentActions extends BaseActions
 	}
 	
 	/**
-	 * CommentActions::setParser()
-	 * 
-	 * @param	object	$parser	instance of Parser class
-	 * @return	void
-	 */
-	public function setParser(&$parser)
-	{
-		$this->parser =& $parser;
-		return;
-	}
-	
-	/**
 	 * 
 	 * CommentActions::setCommentsObj()
 	 * 
