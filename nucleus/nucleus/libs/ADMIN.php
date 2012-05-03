@@ -4779,7 +4779,7 @@ selector();
 		echo "<br />\n";
 		
 		echo "<textarea class=\"skinedit\" tabindex=\"10\" rows=\"20\" cols=\"80\" name=\"content\">\n";
-		echo Entity::hsc($skin->getContent($type)) . "\n";
+		echo Entity::hsc($skin->getContentFromDB($type)) . "\n";
 		echo "</textarea>\n";
 		
 		echo "<br />\n";
@@ -5082,7 +5082,7 @@ selector();
 	function skinclonetype($skin, $newid, $type)
 	{
 		$newid = intval($newid);
-		$content = $skin->getContent($type);
+		$content = $skin->getContentFromDB($type);
 		
 		if ( $content )
 		{

@@ -278,7 +278,7 @@ function _getSkinPart($blogid, $username, $password, $type) {
 	// 3. return skin part
 	$blog = new Blog($blogid);
 	$skin = new SKIN($blog->getDefaultSkin());
-	return new xmlrpcresp(new xmlrpcval($skin->getContent($type),"string"));
+	return new xmlrpcresp(new xmlrpcval($skin->getContentFromDB($type),"string"));
 
 }
 

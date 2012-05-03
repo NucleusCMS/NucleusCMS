@@ -8,6 +8,6 @@ if ( !function_exists('getmtime') )
 	}
 }
 
-global $StartTime, $SQLCount;
+global $StartTime;
 $loadtime = getmtime() - $StartTime;
-printf("%.3f sec/%d queries", $loadtime, $SQLCount);
+printf("%.3f sec/%d queries", $loadtime, DB::getExecCount());
