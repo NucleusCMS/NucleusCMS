@@ -48,7 +48,7 @@ class ActionLog
 			$message = "[" . $member->getDisplayName() . "] " . $message;
 		}
 		
-		$query = "INSERT INTO %s (timestamp, message) VALUES ('%s', %s)";
+		$query = "INSERT INTO %s (timestamp, message) VALUES (%s, %s)";
 		$query = sprintf($query, sql_table('actionlog'), DB::formatDateTime(), DB::quoteValue($message));
 		DB::execute($query);
 		

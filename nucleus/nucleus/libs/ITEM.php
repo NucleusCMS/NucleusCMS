@@ -98,7 +98,7 @@ class Item
 		if ( !$allow_future )
 		{
 			$blog =& $manager->getBlog(getBlogIDFromItemID($item_id));
-			$query .= "AND i.itime <= '" . DB::formatDateTime($blog->getCorrectTime()) ."'";
+			$query .= 'AND i.itime <= ' . DB::formatDateTime($blog->getCorrectTime());
 		}
 		
 		$query .= ' LIMIT 1';
@@ -361,13 +361,13 @@ class Item
 		{
 			$query .= ', idraft = 1';
 			// set timestamp back to zero for a draft
-			$query .= ", itime = '" . DB::formatDateTime($timestamp) ."'";
+			$query .= ', itime = ' . DB::formatDateTime($timestamp);
 		}
 		
 		// update timestamp when needed
 		if ( $timestamp != 0 )
 		{
-			$query .= ", itime = '" . DB::formatDateTime($timestamp) ."'";
+			$query .= ', itime = ' . DB::formatDateTime($timestamp);
 		}
 		
 		// make sure the correct item is updated
@@ -514,7 +514,7 @@ class Item
 				return 0;
 			}
 			$blog =& $manager->getBlog($blogid);
-			$query .= " and itime<='" . DB::formatDateTime($blog->getCorrectTime()) ."'";
+			$query .= ' and itime<=' . DB::formatDateTime($blog->getCorrectTime());
 		}
 		if ( !$draft )
 		{

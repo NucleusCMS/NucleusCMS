@@ -21,7 +21,7 @@ class DB
 {
 	private static $dbh;
 	private static $execCount = 0;
-	private static $dateFormat = '%Y-%m-%d %H:%M:%S';
+	private static $dateFormat = '\'%Y-%m-%d %H:%M:%S\'';
 	
 	/**
 	 * Set the information to connect to the database, it will attempt to connect.
@@ -146,7 +146,7 @@ class DB
 	 * The value converted to a format that can be passed to the database datetime.
 	 * @param int $timestamp UNIX timestamp
 	 * @param int $offset timestamp offset
-	 * @return string formatted datetime
+	 * @return string formatted datetime (quart treated)
 	 */
 	public static function formatDateTime($timestamp = null, $offset=0)
 	{

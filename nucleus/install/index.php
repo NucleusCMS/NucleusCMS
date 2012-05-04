@@ -931,13 +931,13 @@ function do_install()
 	 * 6. put needed records
 	 */
 	/* push first post */
-	$query = "INSERT INTO %s VALUES (1, %s, %s, %s, 1, 1, '%s', 0, 0, 0, 1, 0, 1)";
+	$query = "INSERT INTO %s VALUES (1, %s, %s, %s, 1, 1, %s, 0, 0, 0, 1, 0, 1)";
 	$query = sprintf($query,
 		tableName('nucleus_item'),
 		DB::quoteValue(_1ST_POST_TITLE),
 		DB::quoteValue(_1ST_POST),
 		DB::quoteValue(_1ST_POST2),
-		DB::formatDateTime(time())
+		DB::formatDateTime()
 	);
 	if ( DB::execute($query) === FALSE )
 	{

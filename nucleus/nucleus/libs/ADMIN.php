@@ -1521,7 +1521,7 @@ class Admin
 		$blog =& $manager->getBlog($blogid);
 		$currenttime = $blog->getCorrectTime(time());
 		
-		$query = "SELECT * FROM %s WHERE iblog=%d AND iposted=0 AND itime>'%s'";
+		$query = "SELECT * FROM %s WHERE iblog=%d AND iposted=0 AND itime>%s";
 		$query = sprintf($query, sql_table('item'), (integer) $blogid, DB::formatDateTime($currenttime));
 		$result = DB::getResult($query);
 		

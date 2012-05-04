@@ -1019,12 +1019,12 @@ function selector()
 		
 		if ( !$b->isValidCategory($catid) )
 		{
-			$query = "SELECT inumber, ititle FROM %s WHERE itime<'%s' AND idraft=0 AND iblog=%d ORDER BY itime DESC LIMIT 1";
+			$query = "SELECT inumber, ititle FROM %s WHERE itime<%s AND idraft=0 AND iblog=%d ORDER BY itime DESC LIMIT 1";
 			$query = sprintf($query, sql_table('item'), DB::formatDateTime($timestamp), intval($blogid));
 		}
 		else
 		{
-			$query = "SELECT inumber, ititle FROM %s WHERE itime<'%s' AND idraft=0 AND iblog=%d AND icat=%d ORDER BY itime DESC LIMIT 1";
+			$query = "SELECT inumber, ititle FROM %s WHERE itime<%s AND idraft=0 AND iblog=%d AND icat=%d ORDER BY itime DESC LIMIT 1";
 			$query = sprintf($query, sql_table('item'), DB::formatDateTime($timestamp), intval($blogid), intval($catid));
 		}
 		$row = DB::getRow($query);
@@ -1038,12 +1038,12 @@ function selector()
 		// get next itemid and title
 		if ( !$b->isValidCategory($catid) )
 		{
-			$query = "SELECT inumber, ititle FROM %s WHERE itime>'%s' AND itime<='%s' AND idraft=0 AND iblog=%d ORDER BY itime ASC LIMIT 1";
+			$query = "SELECT inumber, ititle FROM %s WHERE itime>%s AND itime<=%s AND idraft=0 AND iblog=%d ORDER BY itime ASC LIMIT 1";
 			$query = sprintf($query, sql_table('item'), DB::formatDateTime($timestamp), DB::formatDateTime($b->getCorrectTime()), intval($blogid));
 		}
 		else
 		{
-			$query = "SELECT inumber, ititle FROM %s WHERE itime>'%s' AND itime<='%s' AND idraft=0 AND iblog=%d AND icat=%d ORDER BY itime ASC LIMIT 1";
+			$query = "SELECT inumber, ititle FROM %s WHERE itime>%s AND itime<=%s AND idraft=0 AND iblog=%d AND icat=%d ORDER BY itime ASC LIMIT 1";
 			$query = sprintf($query, sql_table('item'), DB::formatDateTime($timestamp), DB::formatDateTime($b->getCorrectTime()), intval($blogid), intval($catid));
 		}
 		$row = DB::getRow($query);
@@ -2169,10 +2169,13 @@ function formatDate($format, $timestamp, $default_format, &$blog)
 	}
 	return i18n::formatted_datetime($format, $timestamp, $offset, $default_format);
 }
-/* NOTE: use i18n::formatted_datetime() directly instead of this */
+/**
+ * NOTE: use DB::formatDateTime() directly instead of this
+ * @deprecated
+ */
 function mysqldate($timestamp)
 {
-	return '"' . DB::formatDateTime($timestamp) . '"';
+	return DB::formatDateTime($timestamp);
  }
 /**
  * Centralisation of the functions that generate links

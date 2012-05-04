@@ -98,7 +98,7 @@ class Blog
 			$timestamp_start = mktime(0,0,0,$month,$day,$year);
 			$timestamp_end = mktime(0,0,0,$month,$day+1,$year);
 		}
-		$extra_query = " and i.itime>='%s' and i.itime<'%s'";
+		$extra_query = " and i.itime>=%s and i.itime<%s";
 		$extra_query = sprintf($extra_query, DB::formatDateTime($timestamp_start), DB::formatDateTime($timestamp_end));
 		
 		$this->readLogAmount($templatename,0,$extra_query,'',1,1);
@@ -576,7 +576,7 @@ class Blog
 				. ' and i.idraft=0'
 				. $selectblogs
 					// don't show future items
-				. ' and i.itime<="' . DB::formatDateTime($this->getCorrectTime()) . '"'
+				. ' and i.itime<=' . DB::formatDateTime($this->getCorrectTime())
 				. ' and '.$where;
 
 		// take into account amount of months to search
@@ -584,7 +584,7 @@ class Blog
 		{
 			$localtime = getdate($this->getCorrectTime());
 			$timestamp_start = mktime(0,0,0,$localtime['mon'] - $amountMonths,1,$localtime['year']);
-			$query .= ' and i.itime>"' . DB::formatDateTime($timestamp_start) . '"';
+			$query .= ' and i.itime>' . DB::formatDateTime($timestamp_start);
 		}
 		
 		if ( $mode == '' )
@@ -631,7 +631,7 @@ class Blog
 				// exclude drafts
 				. ' and i.idraft=0'
 				// don't show future items
-				. ' and i.itime<="' . DB::formatDateTime($this->getCorrectTime()) . '"';
+				. ' and i.itime<=' . DB::formatDateTime($this->getCorrectTime());
 		
 		if ( $this->getSelectedCategory() )
 		{
@@ -688,7 +688,7 @@ class Blog
 				. ' FROM '.sql_table('item')
 				. ' WHERE iblog=' . $this->getID()
 				// don't show future items!
-				. ' AND itime <="' . DB::formatDateTime($this->getCorrectTime()) . '"'
+				. ' AND itime <=' . DB::formatDateTime($this->getCorrectTime())
 				// don't show draft items
 				. ' AND idraft=0';
 		
@@ -1052,24 +1052,24 @@ class Blog
 			$offset = intval($offset);
 
 		$query =  'UPDATE '.sql_table('blog')
-			   . " SET bname='" . DB::quoteValue($this->getName()) . "',"
-			   . "     bshortname='". DB::quoteValue($this->getShortName()) . "',"
-			   . "     bcomments=". intval($this->commentsEnabled()) . ","
-			   . "     bmaxcomments=" . intval($this->getMaxComments()) . ","
-			   . "     btimeoffset=" . $offset . ","
-			   . "     bpublic=" . intval($this->isPublic()) . ","
-			   . "     breqemail=" . intval($this->emailRequired()) . ","
-			   . "     bconvertbreaks=" . intval($this->convertBreaks()) . ","
-			   . "     ballowpast=" . intval($this->allowPastPosting()) . ","
-			   . "     bnotify='" . DB::quoteValue($this->getNotifyAddress()) . "',"
-			   . "     bnotifytype=" . intval($this->getNotifyType()) . ","
-			   . "     burl='" . DB::quoteValue($this->getURL()) . "',"
-			   . "     bupdate='" . DB::quoteValue($this->getUpdateFile()) . "',"
-			   . "     bdesc='" . DB::quoteValue($this->getDescription()) . "',"
-			   . "     bdefcat=" . intval($this->getDefaultCategory()) . ","
-			   . "     bdefskin=" . intval($this->getDefaultSkin()) . ","
-			   . "     bincludesearch=" . intval($this->getSearchable())
-			   . " WHERE bnumber=" . intval($this->getID());
+			   . ' SET bname=' . DB::quoteValue($this->getName()) . ','
+			   . '     bshortname='. DB::quoteValue($this->getShortName()) . ','
+			   . '     bcomments='. intval($this->commentsEnabled()) . ','
+			   . '     bmaxcomments=' . intval($this->getMaxComments()) . ','
+			   . '     btimeoffset=' . $offset . ','
+			   . '     bpublic=' . intval($this->isPublic()) . ','
+			   . '     breqemail=' . intval($this->emailRequired()) . ','
+			   . '     bconvertbreaks=' . intval($this->convertBreaks()) . ','
+			   . '     ballowpast=' . intval($this->allowPastPosting()) . ','
+			   . '     bnotify=' . DB::quoteValue($this->getNotifyAddress()) . ','
+			   . '     bnotifytype=' . intval($this->getNotifyType()) . ','
+			   . '     burl=' . DB::quoteValue($this->getURL()) . ','
+			   . '     bupdate=' . DB::quoteValue($this->getUpdateFile()) . ','
+			   . '     bdesc=' . DB::quoteValue($this->getDescription()) . ','
+			   . '     bdefcat=' . intval($this->getDefaultCategory()) . ','
+			   . '     bdefskin=' . intval($this->getDefaultSkin()) . ','
+			   . '     bincludesearch=' . intval($this->getSearchable())
+			   . ' WHERE bnumber=' . intval($this->getID());
 		DB::execute($query);
 
 	}
@@ -1588,7 +1588,7 @@ class Blog
 			if ( !$showFuture )
 			{
 				// don't show future items
-				$query .= " and i.itime<='" . DB::formatDateTime($this->getCorrectTime()) . "'";
+				$query .= ' and i.itime<=' . DB::formatDateTime($this->getCorrectTime());
 			}
 			
 			$query .= ' and i.inumber='.intval($value);
