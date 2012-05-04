@@ -1098,7 +1098,7 @@ class Member
 		$query = "INSERT INTO %s"
 		       . " (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES)"
 		       . " VALUES (%s, %s, %s, %s, %s, %d, %d, %s)";
-		$query = sprintf($query, sql_table(member), $name, $realname, $password, $email, $url, $admin, $canlogin, $notes);
+		$query = sprintf($query, sql_table('member'), $name, $realname, $password, $email, $url, $admin, $canlogin, $notes);
 		DB::execute($query);
 		
 		ActionLog::add(INFO, _ACTIONLOG_NEWMEMBER . ' ' . $name);
