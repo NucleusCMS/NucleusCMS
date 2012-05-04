@@ -432,10 +432,20 @@ class PageFactory extends BaseActions
 		$attributes  = " name=\"{$which}\"";
 		$attributes .= " id=\"input{$which}\"";
 		
-		if ( $CONF['DisableJsTools'] != 1 )
+		if ( !$CONF['DisableJsTools'] )
+		{
+			$attributes .= ' onkeypress="shortCuts();"';
+			
+			if ( $member->getAutosave() )
+			{
+				$attributes .= ' onkeyup="doMonitor();"';
+			}
+		}
+		else
 		{
 			$attributes .= ' onclick="storeCaret(this);"';
 			$attributes .= ' onselect="storeCaret(this);"';
+			
 			if ( $member->getAutosave() )
 			{
 				$attributes .= " onkeyup=\"storeCaret(this); updPreview('{$which}'); doMonitor();\"";
@@ -443,17 +453,6 @@ class PageFactory extends BaseActions
 			else
 			{
 				$attributes .= " onkeyup=\"storeCaret(this); updPreview('{$which}');\"";
-			}
-		}
-		else
-		{
-			if ( $CONF['DisableJsTools'] == 0 )
-			{
-				$attributes .= ' onkeypress="shortCuts();"';
-			}
-			if ( $member->getAutosave() )
-			{
-				$attributes .= ' onkeyup="doMonitor();"';
 			}
 		}
 		echo $attributes;
