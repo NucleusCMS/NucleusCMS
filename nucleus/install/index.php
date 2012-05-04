@@ -43,7 +43,7 @@ if ( version_compare(PHP_VERSION, '5.3.0', '<') )
 }
 
 /* default installed plugins and skins */
-$aConfPlugsToInstall = array('NP_SecurityEnforcer', 'NP_SkinFiles', 'NP_Text');
+$aConfPlugsToInstall = array('NP_SecurityEnforcer', 'NP_SkinFiles');
 $aConfSkinsToImport = array('atom', 'rss2.0', 'rsd', 'default');
 
 // Check if some important files
@@ -987,7 +987,7 @@ function do_install()
 	}
 
 	/* push default category */
-	$query = "UPDATE %s SET cname = '%s', cdesc = '%s' WHERE catid = 1";
+	$query = "UPDATE %s SET cname = %s, cdesc = %s WHERE catid = 1";
 	$query = sprintf($query,
 		tableName('nucleus_category'),
 		DB::quoteValue(_GENERALCAT_NAME),
@@ -1350,8 +1350,8 @@ function do_check_files()
 		'../nucleus/libs/vars4.1.0.php',
 		'../nucleus/libs/xmlrpc.inc.php',
 		'../nucleus/libs/xmlrpcs.inc.php',
-		'../nucleus/libs/data/DB.php',
-		'../nucleus/libs/data/MYSQLPDO.php'
+		'../nucleus/libs/sql/DB.php',
+		'../nucleus/libs/sql/MYSQLPDO.php'
 	);
 
 	$count = count($files);
