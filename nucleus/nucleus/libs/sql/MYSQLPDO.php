@@ -374,6 +374,7 @@ class MysqlPDOStatement implements Iterator
 	private $dbcon;
 	private $_queryString = '';
 
+	private $def_fetch_mode = PDO::FETCH_BOTH;
 	private $def_col_num = 0;
 	private $def_class_name = 'stdClass';
 	private $def_ctorargs = null;
@@ -462,11 +463,16 @@ class MysqlPDOStatement implements Iterator
 		return FALSE;
 	}
 
-	public function fetch($fetch_style, $cursor_orientation = PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
+	public function fetch($fetch_style = PDO::ATTR_DEFAULT_FETCH_MODE, $cursor_orientation = PDO::FETCH_ORI_NEXT, $cursor_offset = 0)
 	{
 		if ( !is_resource($this->result) || $cursor_orientation != PDO::FETCH_ORI_NEXT )
 		{
 			return FALSE;
+		}
+		
+		if ( $fetch_style == PDO::ATTR_DEFAULT_FETCH_MODE )
+		{
+			$fetch_style = $this->def_fetch_mode;
 		}
 
 		switch ( $fetch_style )
@@ -478,9 +484,11 @@ class MysqlPDOStatement implements Iterator
 			case PDO::FETCH_NUM:
 				return @call_user_func(MysqlPDO::$handler . 'fetch_array', $this->result, MYSQL_NUM);
 			case PDO::FETCH_OBJ:
-				return $this->fetchObject('stdClass');
-			case PDO::FETCH_CLASS:
 				return $this->fetchObject();
+			case PDO::FETCH_CLASS:
+				return $this->fetchObject($this->def_class_name, $this->def_ctorargs);
+			case PDO::FETCH_COLUMN:
+				return $this->fetchColumn($this->def_col_num);
 			case PDO::FETCH_BOUND:
 				return FALSE; // Not supported
 			case PDO::FETCH_INTO:
@@ -492,42 +500,75 @@ class MysqlPDOStatement implements Iterator
 		}
 	}
 
-	public function fetchAll($fetch_style, $fetch_argument, $ctor_args = array())
+	public function fetchAll($fetch_style = PDO::ATTR_DEFAULT_FETCH_MODE, $fetch_argument = null, $ctor_args = array())
 	{
+		if ( $fetch_style == PDO::ATTR_DEFAULT_FETCH_MODE )
+		{
+			$fetch_style = PDO::FETCH_BOTH;
+		}
+		
+		$ret = array();
 		if ( ($fetch_style & PDO::FETCH_COLUMN) != 0 )
 		{
-			return FALSE;
+			if ( $fetch_style == PDO::FETCH_COLUMN )
+			{
+				$column = $fetch_argument == null ? 0 : intval($fetch_argument);
+				while ( $row = $this->fetchColumn($column) )
+				{
+					$ret[] = $row;
+				}
+			}
+			elseif ( ($fetch_style & PDO::FETCH_UNIQUE) != 0 )
+			{
+				return FALSE;
+			}
+			elseif ( ($fetch_style & PDO::FETCH_GROUP) != 0 )
+			{
+				return FALSE;
+			}
 		}
-
-		$ret = array();
-		while ( $row = $this->fetch(PDO::FETCH_BOTH) )
+		elseif ( $fetch_style == PDO::FETCH_CLASS )
 		{
-			$ret[] = $row;
+			while ( $row = $this->fetchObject($fetch_argument, $ctor_args) )
+			{
+				$ret[] = $row;
+			}
+		}
+		elseif ( $fetch_style == PDO::FETCH_FUNC )
+		{
+			while ( $row = $this->fetch(PDO::FETCH_ASSOC) )
+			{
+				$ret[] = call_user_func_array($fetch_argument, array_values($row));
+			}
+		}
+		else
+		{
+			while ( $row = $this->fetch($fetch_style) )
+			{
+				$ret[] = $row;
+			}
 		}
 		return $ret;
 	}
 
-	public function fetchColumn($column_number = null)
+	public function fetchColumn($column_number = 0)
 	{
-		if ( !isset($column_number) )
+		if ( $ret = $this->fetch(PDO::FETCH_NUM) )
 		{
-			$column_number = $this->def_col_num;
+			return $ret[$column_number];
 		}
-		$ret = $this->fetch(PDO::FETCH_NUM);
-		return $ret[$column_number];
+		return FALSE;
 	}
 
-	public function fetchObject($class_name = null, $ctor_args = null)
+	public function fetchObject($class_name = 'stdClass', $ctor_args = null)
 	{
-		$c_name = isset($class_name) ? $class_name : $this->def_class_name;
-		$c_args = isset($ctor_args) ? $ctor_args : $this->def_ctorargs;
-		if ( $c_args == null )
+		if ( is_array($ctor_args) && !empty($ctor_args) )
 		{
-			return @call_user_func(MysqlPDO::$handler . 'fetch_object', $this->result, $c_name);
+			return @call_user_func(MysqlPDO::$handler . 'fetch_object', $this->result, $class_name, $ctor_args);
 		}
 		else
 		{
-			return @call_user_func(MysqlPDO::$handler . 'fetch_object', $this->result, $c_name, $c_args);
+			return @call_user_func(MysqlPDO::$handler . 'fetch_object', $this->result, $class_name);
 		}
 	}
 
@@ -563,14 +604,7 @@ class MysqlPDOStatement implements Iterator
 
 	public function rowCount()
 	{
-		if ( @call_user_func(MysqlPDO::$handler . 'affected_rows', $this->result) == FALSE )
-		{
-			return @call_user_func(MysqlPDO::$handler . 'num_rows', $this->result);
-		}
-		else
-		{
-			return @call_user_func(MysqlPDO::$handler . 'affected_rows', $this->result);
-		}
+		return @call_user_func(MysqlPDO::$handler . 'affected_rows', $this->dbcon);
 	}
 
 	/**
@@ -595,6 +629,9 @@ class MysqlPDOStatement implements Iterator
 			case PDO::FETCH_INTO:
 				$this->bind_object = &$mode_argument;
 				return FALSE; // Not supported
+			default:
+				$this->def_fetch_mode = $mode;
+				break;
 		}
 		return 1;
 	}
@@ -610,7 +647,7 @@ class MysqlPDOStatement implements Iterator
 
 	function valid()
 	{
-		return ($this->iterator_value = $this->fetch(PDO::FETCH_BOTH));
+		return ($this->iterator_value = $this->fetch());
 	}
 
 	function current()
