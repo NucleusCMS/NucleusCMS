@@ -22,14 +22,24 @@ global $nucleus, $CONF, $DIR_LIBS, $DIR_LOCALES, $manager, $member;
 $nucleus['version'] = 'v4.00 SVN';
 $nucleus['codename'] = '';
 
+/*
+ * make sure there's no unnecessary escaping:
+ * set_magic_quotes_runtime(0);
+ */
+if ( version_compare(PHP_VERSION, '5.3.0', '<') )
+{
+	ini_set('magic_quotes_runtime', '0');
+}
+
 /* check and die if someone is trying to override internal globals (when register_globals turn on) */
 checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LOCALES', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
 
-/* debug mode */
 if ( !isset($CONF) )
 {
 	$CONF = array();
 }
+
+/* debug mode */
 if ( array_key_exists('debug', $CONF) && $CONF['debug'] )
 {
 	/* report all errors! */
@@ -42,81 +52,23 @@ else
 }
 
 /*
- * FIXME: This is for compatibility since 4.0, should be obsoleted at future release.
- */
-if ( !isset($DIR_LOCALES) )
-{
-	$DIR_LOCALES = $DIR_NUCLEUS . 'locales/';
-}
-global $DIR_LANG;
-if ( !isset($DIR_LANG) )
-{
-	$DIR_LANG = $DIR_LOCALES;
-}
-
-/**
- * Errors before the database connection has been made
- */
-function startUpError($msg, $title)
-{
-	header('Content-Type: text/xml; charset=' . i18n::get_current_charset());
-?>
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head><title><?php echo htmlspecialchars($title, null, i18n::get_current_charset()) ?></title></head>
-	<body>
-		<h1><?php echo htmlspecialchars($title, null, i18n::get_current_charset()) ?></h1>
-		<?php echo $msg ?>
-	</body>
-</html>
-<?php
-	exit;
-}
-
-/*
- * load and initialize i18n class
- */
-if (!class_exists('i18n', FALSE))
-{
-	include($DIR_LIBS . 'i18n.php');
-}
-if ( !i18n::init('UTF-8', $DIR_LOCALES) )
-{
-	exit('Fail to initialize i18n class.');
-}
-/*
- * FIXME: This is for compatibility since 4.0, should be obsoleted at future release.
- */
-define('_CHARSET', i18n::get_current_charset());
-
-/*
- * Indicates when Nucleus should display startup errors. Set to 1 if you want
- * the error enabled (default), false otherwise
- *
  * alertOnHeadersSent
  *  Displays an error when visiting a public Nucleus page and headers have
  *  been sent out to early. This usually indicates an error in either a
  *  configuration file or a translation file, and could cause Nucleus to
  *  malfunction
- * alertOnSecurityRisk
- * Displays an error only when visiting the admin area, and when one or
- *  more of the installation files (install.php, install.sql, upgrades/
- *  directory) are still on the server.
  */
 if ( !array_key_exists('alertOnHeadersSent', $CONF) || $CONF['alertOnHeadersSent'] !== 0 )
 {
 	$CONF['alertOnHeadersSent'] = 1;
 }
-$CONF['alertOnSecurityRisk'] = 1;
 /*
- * NOTE: this should be removed when releasing 4.0
-$CONF['ItemURL']           = $CONF['Self'];
-$CONF['ArchiveURL']          = $CONF['Self'];
-$CONF['ArchiveListURL']      = $CONF['Self'];
-$CONF['MemberURL']           = $CONF['Self'];
-$CONF['SearchURL']           = $CONF['Self'];
-$CONF['BlogURL']             = $CONF['Self'];
-$CONF['CategoryURL']         = $CONF['Self'];
-*/
+ * alertOnSecurityRisk
+ * Displays an error only when visiting the admin area, and when one or
+ *  more of the installation files (install.php, install.sql, upgrades/
+ *  directory) are still on the server.
+ */
+$CONF['alertOnSecurityRisk'] = 1;
 
 /*
  * Set these to 1 to allow viewing of future items or draft items
@@ -133,60 +85,80 @@ if ( getNucleusPatchLevel() > 0 )
 }
 
 /* Avoid notices */
-if ( !isset($CONF['installscript']) )
+if ( !array_key_exists('installscript', $CONF) || empty($CONF['installscript']) )
 {
 	$CONF['installscript'] = 0;
 }
-
-/* we will use postVar, getVar, ... methods instead of $_GET, $_POST ...*/
-if ( $CONF['installscript'] != 1 )
+if ( !array_key_exists('UsingAdminArea', $CONF) )
 {
-	/* vars were already included in install.php */
-	include_once($DIR_LIBS . 'vars4.1.0.php');
+	$CONF['UsingAdminArea'] = 0;
 }
-
-/* sanitize option */
-$bLoggingSanitizedResult=0;
-$bSanitizeAndContinue=0;
-
-$orgRequestURI = serverVar('REQUEST_URI');
-sanitizeParams();
-
-/* get all variables that can come from the request and put them in the global scope */
-$blogid       = requestVar('blogid');
-$itemid       = intRequestVar('itemid');
-$catid        = intRequestVar('catid');
-$skinid       = requestVar('skinid');
-$memberid     = requestVar('memberid');
-$archivelist  = requestVar('archivelist');
-$imagepopup   = requestVar('imagepopup');
-$archive      = requestVar('archive');
-$query        = requestVar('query');
-$highlight    = requestVar('highlight');
-$amount       = requestVar('amount');
-$action       = requestVar('action');
-$nextaction   = requestVar('nextaction');
-$maxresults   = requestVar('maxresults');
-$startpos     = intRequestVar('startpos');
-$errormessage = '';
-$error        = '';
-$special      = requestVar('special');
-$virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 if ( !headers_sent() )
 {
 	header('Generator: Nucleus CMS ' . $nucleus['version']);
 }
 
+
+/* FIXME: This is for compatibility since 4.0, should be obsoleted at future release. */
+if ( !isset($DIR_LOCALES) )
+{
+	$DIR_LOCALES = $DIR_NUCLEUS . 'locales/';
+}
+global $DIR_LANG;
+if ( !isset($DIR_LANG) )
+{
+	$DIR_LANG = $DIR_LOCALES;
+}
+
+/* load and initialize i18n class */
+if (!class_exists('i18n', FALSE))
+{
+	include($DIR_LIBS . 'i18n.php');
+}
+if ( !i18n::init('UTF-8', $DIR_LOCALES) )
+{
+	exit('Fail to initialize i18n class.');
+}
+
+/* FIXME: This is just for compatibility since 4.0, should be obsoleted at future release. */
+define('_CHARSET', i18n::get_current_charset());
+
+
 /*
  * NOTE: Since 4.0 release, Entity class becomes to be important class
  *  with some wrapper functions for htmlspechalchars/htmlentity PHP's built-in function
-*/
+ */
 include($DIR_LIBS . 'ENTITY.php');
 
-/* include core classes that are needed for login & plugin handling */
+/* we will use postVar, getVar, ... methods instead of $_GET, $_POST ... */
+if ( $CONF['installscript'] != 1 )
+{
+	/* vars were already included in install.php */
+	include_once($DIR_LIBS . 'vars4.1.0.php');
+	
+	/* added for 4.0 DB::* wrapper and compatibility sql_* */
+	include_once($DIR_LIBS . 'sql/sql.php');
+}
 
-/* added for 3.5 sql_* wrapper */
+/* include core classes that are needed for login & plugin handling */
+include($DIR_LIBS . 'MEMBER.php');
+include($DIR_LIBS . 'ACTIONLOG.php');
+include($DIR_LIBS . 'MANAGER.php');
+include($DIR_LIBS . 'PLUGIN.php');
+
+$manager =& MANAGER::instance();
+
+/* only needed when updating logs */
+if ( $CONF['UsingAdminArea'] )
+{
+	/* XML-RPC client classes */
+	include($DIR_LIBS . 'xmlrpc.inc.php');
+	include($DIR_LIBS . 'ADMIN.php');
+}
+
+
+/* connect to database */
 global $MYSQL_HANDLER;
 if ( !isset($MYSQL_HANDLER) )
 {
@@ -196,50 +168,23 @@ if ( $MYSQL_HANDLER[0] == '' )
 {
 	$MYSQL_HANDLER[0] = 'mysql';
 }
-/* added for 4.0 DB::* wrapper and compatibility sql_* */
-include_once($DIR_LIBS . 'sql/sql.php');
-/* end new for 3.5 sql_* wrapper */
-include($DIR_LIBS . 'MEMBER.php');
-include($DIR_LIBS . 'ACTIONLOG.php');
-include($DIR_LIBS . 'MANAGER.php');
-include($DIR_LIBS . 'PLUGIN.php');
-
-$manager = new Manager();
-
-/*
- * make sure there's no unnecessary escaping:
- * set_magic_quotes_runtime(0);
- */
-if ( version_compare(PHP_VERSION, '5.3.0', '<') )
-{
-	ini_set('magic_quotes_runtime', '0');
-}
-
-/* Avoid notices */
-if ( !array_key_exists('UsingAdminArea', $CONF) )
-{
-	$CONF['UsingAdminArea'] = 0;
-}
-
-/* only needed when updating logs */
-if ( $CONF['UsingAdminArea'] )
-{
-	/* XML-RPC client classes */
-	include($DIR_LIBS . 'xmlrpc.inc.php');
-	include_once($DIR_LIBS . 'ADMIN.php');
-}
-
-/* connect to database */
 DB::setConnectionInfo($MYSQL_HANDLER[1], $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE);
 
+
+/* sanitize option */
+$bLoggingSanitizedResult=0;
+$bSanitizeAndContinue=0;
+$orgRequestURI = serverVar('REQUEST_URI');
+sanitizeParams();
+
 /* logs sanitized result if need */
-if ( $orgRequestURI!==serverVar('REQUEST_URI') )
+if ( $orgRequestURI !== serverVar('REQUEST_URI') )
 {
 	$msg = "Sanitized [" . serverVar('REMOTE_ADDR') . "] ";
 	$msg .= $orgRequestURI . " -> " . serverVar('REQUEST_URI');
 	if ( $bLoggingSanitizedResult )
 	{
-	addToLog(WARNING, $msg);
+		addToLog(WARNING, $msg);
 	}
 	if ( !$bSanitizeAndContinue )
 	{
@@ -247,12 +192,32 @@ if ( $orgRequestURI!==serverVar('REQUEST_URI') )
 	}
 }
 
+/* get all variables that can come from the request and put them in the global scope */
+$blogid		= requestVar('blogid');
+$itemid		= intRequestVar('itemid');
+$catid		= intRequestVar('catid');
+$skinid		= requestVar('skinid');
+$memberid	= requestVar('memberid');
+$archivelist = requestVar('archivelist');
+$imagepopup	= requestVar('imagepopup');
+$archive	= requestVar('archive');
+$query		= requestVar('query');
+$highlight	= requestVar('highlight');
+$amount		= requestVar('amount');
+$action		= requestVar('action');
+$nextaction	= requestVar('nextaction');
+$maxresults	= requestVar('maxresults');
+$startpos	= intRequestVar('startpos');
+$errormessage = '';
+$error		= '';
+$special	= requestVar('special');
+$virtualpath = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
+
+
 /* read config */
 getConfig();
 
-/*
- * FIXME: This is for backward compatibility, should be obsoleted near future.
- */
+/* FIXME: This is for backward compatibility, should be obsoleted near future. */
 if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Locale'])
   && ($CONF['Locale'] = i18n::convert_old_language_file_name_to_locale($CONF['Locale'])) === FALSE )
 {
@@ -277,12 +242,12 @@ if ( !array_key_exists('Self', $CONF) )
 	}
 }
 
-$CONF['ItemURL'] = $CONF['Self'];
-$CONF['ArchiveURL'] = $CONF['Self'];
+$CONF['ItemURL']	= $CONF['Self'];
+$CONF['ArchiveURL']	= $CONF['Self'];
 $CONF['ArchiveListURL'] = $CONF['Self'];
-$CONF['MemberURL'] = $CONF['Self'];
-$CONF['SearchURL'] = $CONF['Self'];
-$CONF['BlogURL'] = $CONF['Self'];
+$CONF['MemberURL']	= $CONF['Self'];
+$CONF['SearchURL']	= $CONF['Self'];
+$CONF['BlogURL']	= $CONF['Self'];
 $CONF['CategoryURL'] = $CONF['Self'];
 
 /*
@@ -359,7 +324,6 @@ include($DIR_LIBS . 'BLOG.php');
 include($DIR_LIBS . 'BODYACTIONS.php');
 include($DIR_LIBS . 'COMMENTS.php');
 include($DIR_LIBS . 'COMMENT.php');
-/* include($DIR_LIBS . 'ITEM.php'); */
 include($DIR_LIBS . 'NOTIFICATION.php');
 include($DIR_LIBS . 'BAN.php');
 include($DIR_LIBS . 'PAGEFACTORY.php');
@@ -528,20 +492,38 @@ if ( $CONF['URLMode'] == 'pathinfo' )
  * the values of something like catid or itemid
  * New in 3.60
  */
-$manager->notify(
-	'PostParseURL',
-	array(
-		/* e.g. item, blog, ... */
-		'type' => basename(serverVar('SCRIPT_NAME') ),
-		'info' => $virtualpath
-	)
+$data = array(
+	'type' => basename(serverVar('SCRIPT_NAME')),
+	'info' => $virtualpath
 );
+$manager->notify('PostParseURL', $data);
 
 /*
  * NOTE: Here is the end of initialization
  */
 
-	/**
+/**
+ * Errors before the database connection has been made
+ * 
+ * @param	string	$msg	message to notify
+ * @param	string	$title	page title
+ * @return	void
+ */
+function startUpError($msg, $title)
+{
+	header('Content-Type: text/xml; charset=' . i18n::get_current_charset());
+	echo "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	echo "<head>\n";
+	echo '<title>'. Entity::hsc($title) . "</title></head>\n";
+	echo "<body>\n";
+	echo '<h1>' . Entity::hsc($title) . "</h1>\n";
+	echo Entity::hsc($msg);
+	echo "</body>\n";
+	echo "</html>\n";
+	exit;
+}
+
+/**
 	 * This function includes or requires the specified library file
 	 * @param string $file
 	 * @param bool $once use the _once() version
