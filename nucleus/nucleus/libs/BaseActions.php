@@ -54,6 +54,7 @@ class BaseActions
 	
 	/* NOTE: defined actions for this base class */
 	static private $defined_actions = array(
+		'charset',
 		'else',
 		'elseif',
 		'elseifnot',
@@ -61,6 +62,7 @@ class BaseActions
 		'if',
 		'ifnot',
 		'include',
+		'locale',
 		'parsedinclude',
 		'phpinclude',
 		'set',
@@ -108,6 +110,42 @@ class BaseActions
 	public function setParser(&$parser)
 	{
 		$this->parser =& $parser;
+		return;
+	}
+	
+	/**
+	 * BaseActions::parse_charset()
+	 * Parse charset to appropriate character set name registered to IANA
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_charset()
+	{
+		global $member;
+		
+		if ( i18n::get_forced_charset() !== '' )
+		{
+			echo i18n::get_forced_charset();
+		}
+		else
+		{
+			echo i18n::get_current_charset();
+		}
+		
+		return;
+	}
+	
+	/**
+	 * BaseActions::parse_locale()
+	 * Parse locale to language-script-region according to RFC 4646
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_locale()
+	{
+		echo preg_replace('#_#', '-', i18n::get_current_locale());
 		return;
 	}
 	

@@ -50,7 +50,6 @@ class Actions extends BaseActions
 		'archivelink',
 		'bloglist',
 		'category',
-		'charset',
 		'loginform',
 		'member',
 		'nucleusbutton',
@@ -1125,19 +1124,6 @@ class Actions extends BaseActions
 			$b->showCategoryList($template);
 			$this->postBlogContent('categorylist',$b);
 		}
-		return;
-	}
-	
-	/**
-	 * Actions::parse_charset()
-	 * Parse skinvar charset
-	 * 
-	 * @param	void
-	 * @return	void
-	 */
-	public function parse_charset()
-	{
-		echo i18n::get_current_charset();
 		return;
 	}
 	
