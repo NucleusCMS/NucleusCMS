@@ -192,7 +192,7 @@ class i18n
 	{
 		if ( !self::$forced_language )
 		{
-			return;
+			return '';
 		}
 		
 		$elements = array(self::$forced_language, self::$forced_script, self::$forced_region);
