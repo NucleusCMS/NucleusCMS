@@ -100,7 +100,7 @@ if ( !headers_sent() )
 }
 
 
-/* FIXME: This is for compatibility since 4.0, should be obsoleted at future release. */
+/* TODO: This is for compatibility since 4.0, should be obsoleted at future release. */
 if ( !isset($DIR_LOCALES) )
 {
 	$DIR_LOCALES = $DIR_NUCLEUS . 'locales/';
@@ -121,7 +121,7 @@ if ( !i18n::init('UTF-8', $DIR_LOCALES) )
 	exit('Fail to initialize i18n class.');
 }
 
-/* FIXME: This is just for compatibility since 4.0, should be obsoleted at future release. */
+/* TODO: This is just for compatibility since 4.0, should be obsoleted at future release. */
 define('_CHARSET', i18n::get_current_charset());
 
 
@@ -171,9 +171,47 @@ if ( $MYSQL_HANDLER[0] == '' )
 DB::setConnectionInfo($MYSQL_HANDLER[1], $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE);
 
 
+/* force locale or charset */
+$locale = '';
+$charset = i18n::get_current_charset();
+
+$data = array(
+	'locale'	=> &$locale,
+	'charset'	=> &$charset
+);
+$manager->notify('ForceLocale', $data);
+
+if ( $data['locale'] !== '' )
+{
+	i18n::set_forced_locale($data['locale']);
+}
+if ( $data['charset'] !== '' )
+{
+	i18n::set_forced_charset($data['charset']);
+}
+unset($locale);
+unset($charset);
+
+
+/* convert forced charset to current charset */
+if ( i18n::get_forced_charset() != i18n::get_current_charset() )
+{
+	$_POST		= i18n::convert_array($_POST, i18n::get_forced_charset());
+	$_GET		= i18n::convert_array($_GET, i18n::get_forced_charset());
+	$_REQUEST	= i18n::convert_array($_REQUEST, i18n::get_forced_charset());
+	$_COOKIE	= i18n::convert_array($_COOKIE, i18n::get_forced_charset());
+	$_FILES		= i18n::convert_array($_FILES, i18n::get_forced_charset());
+	
+	if ( session_id() !== '' )
+	{
+		$_SESSION = i18n::convert_array($_SESSION, i18n::get_forced_charset());
+	}
+}
+
+
 /* sanitize option */
-$bLoggingSanitizedResult=0;
-$bSanitizeAndContinue=0;
+$bLoggingSanitizedResult = 0;
+$bSanitizeAndContinue = 0;
 $orgRequestURI = serverVar('REQUEST_URI');
 sanitizeParams();
 
@@ -211,23 +249,12 @@ $startpos	= intRequestVar('startpos');
 $errormessage = '';
 $error		= '';
 $special	= requestVar('special');
-$virtualpath = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
+$virtualpath = ((getVar('virtualpath') != NULL) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 
 /* read config */
 getConfig();
 
-/* FIXME: This is for backward compatibility, should be obsoleted near future. */
-if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Locale'])
-  && ($CONF['Locale'] = i18n::convert_old_language_file_name_to_locale($CONF['Locale'])) === FALSE )
-{
-	$CONF['Locale'] = 'en_Latn_US';
-}
-if ( !array_key_exists('Language', $CONF) )
-{
-	$CONF['Language'] = i18n::convert_locale_to_old_language_file_name($CONF['Locale']);
-}
-$locale = $CONF['Locale'];
 
 /* Properly set $CONF['Self'] and others if it's not set...
  * usually when we are access from admin menu
@@ -242,13 +269,13 @@ if ( !array_key_exists('Self', $CONF) )
 	}
 }
 
-$CONF['ItemURL']	= $CONF['Self'];
-$CONF['ArchiveURL']	= $CONF['Self'];
-$CONF['ArchiveListURL'] = $CONF['Self'];
-$CONF['MemberURL']	= $CONF['Self'];
-$CONF['SearchURL']	= $CONF['Self'];
-$CONF['BlogURL']	= $CONF['Self'];
-$CONF['CategoryURL'] = $CONF['Self'];
+$CONF['ItemURL']		= $CONF['Self'];
+$CONF['ArchiveURL']		= $CONF['Self'];
+$CONF['ArchiveListURL']	= $CONF['Self'];
+$CONF['MemberURL']		= $CONF['Self'];
+$CONF['SearchURL']		= $CONF['Self'];
+$CONF['BlogURL']		= $CONF['Self'];
+$CONF['CategoryURL']	= $CONF['Self'];
 
 /*
  *switch URLMode back to normal when $CONF['Self'] ends in .php
@@ -287,13 +314,38 @@ else
 	$member->cookielogin();
 }
 
-/* NOTE: include translation file and set locale */
-if ( $member->isLoggedIn() && $member->getLocale())
+
+/* TODO: This is for backward compatibility, should be obsoleted near future. */
+if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Locale'])
+  && ($CONF['Locale'] = i18n::convert_old_language_file_name_to_locale($CONF['Locale'])) === FALSE )
 {
-	$locale = $member->getLocale();
+	$CONF['Locale'] = 'en_Latn_US';
+}
+if ( !array_key_exists('Language', $CONF) )
+{
+	$CONF['Language'] = i18n::convert_locale_to_old_language_file_name($CONF['Locale']);
+}
+$locale = $CONF['Locale'];
+
+
+/* NOTE: include translation file and set locale */
+if ( $member->isLoggedIn() )
+{
+	if ( $member->getLocale() )
+	{
+		$locale = $member->getLocale();
+	}
+}
+else
+{
+	if ( i18n::get_forced_locale() !== '' )
+	{
+		$locale = i18n::get_forced_locale();
+	}
 }
 include_translation($locale);
 i18n::set_current_locale($locale);
+
 
 /* login completed */
 $manager->notify('PostAuthentication', array('loggedIn' => $member->isLoggedIn() ) );
@@ -734,51 +786,72 @@ function startUpError($msg, $title)
 	}
 
 
-	/**
-	 * TODO: This function should be changed to send_content_type() per the Coding Guidelines. Ensure this change is compatible with rest of core.
-	 *
-	 * This function sends the Content-Type header if headers have not already been sent
-	 * It also determines if the browser can accept application/xhtml+xml and sends it only to those that can.
-	 * @param string $content_type
-	 * @param string $page_type
-	 * @param string $charset Deprecated. This has no meaning.
-	 */
-	function sendContentType($content_type, $page_type = '', $charset = _CHARSET)
+/**
+ * sendContentType()
+ * This function sends the Content-Type header if headers have not already been sent
+ * It also determines if the browser can accept application/xhtml+xml and sends it only to those that can.
+ * 
+ * if content type is application/xhtml+xml, only send it to browsers
+ * that can handle it (IE6 cannot). Otherwise, send text/html
+ *
+ * v2.5:
+ * For admin area pages, keep sending text/html (unless it's a debug version)
+ * application/xhtml+xml still causes too much problems with the javascript implementations
+ *
+ * v3.3:
+ * ($CONF['UsingAdminArea'] && !$CONF['debug']) gets removed,
+ * application/xhtml+xml seems to be working, so we're going to use it if we can.
+ * 
+ * @param	string	$content_type	MIME media type registered to IANA, http://www.iana.org/assignments/media-types/index.html
+ * @param	string	$page_type		
+ * @param	string	$charset		Deprecated. This has no meaning.
+ * @return	void
+ * 
+ */
+function sendContentType($content_type, $page_type = '', $charset = '')
+{
+	global $manager, $CONF;
+	
+	if ( headers_sent() )
 	{
-		global $manager, $CONF;
-		
-		if ( !headers_sent() )
-		{
-			// if content type is application/xhtml+xml, only send it to browsers
-			// that can handle it (IE6 cannot). Otherwise, send text/html
-
-			// v2.5: For admin area pages, keep sending text/html (unless it's a debug version)
-			//       application/xhtml+xml still causes too much problems with the javascript implementations
-
-			// v3.3: ($CONF['UsingAdminArea'] && !$CONF['debug']) gets removed,
-			//       application/xhtml+xml seems to be working, so we're going to use it if we can.
-
-			if ( ($content_type == 'application/xhtml+xml')
-				&& (!stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml') ) )
-			{
-				$content_type = 'text/html';
-			} // end if
-
-			$manager->notify(
-				'PreSendContentType',
-				array(
-					'contentType' => &$content_type,
-					'charset' => i18n::get_current_charset(),
-					'pageType' => $page_type
-				)
-			);
-
-			// strip strange characters
-			$content_type = preg_replace('|[^a-z0-9-+./]|i', '', $content_type);
-			header('Content-Type: ' . $content_type . '; charset=' . i18n::get_current_charset());
-		} // end if
-
+		return;
 	}
+	
+	/* NOTE: MIME Media Type */
+	if ( ($content_type == 'application/xhtml+xml')
+		&& (!stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml') ) )
+	{
+		$content_type = 'text/html';
+	}
+	
+	/* NOTE: generate event */
+	$data = array(
+		'pageType'		=>  $page_type,
+		'contentType'	=> &$content_type
+	);
+	$manager->notify('PreSendContentType', $data);
+	
+	/* NOTE: confirm MIME Media Type */
+	$content_type = preg_replace('#[^a-zA-Z0-9-+./]#', '', $content_type);
+	
+	/* NOTE: confirm character set */
+	$charset = i18n::get_current_charset();
+	if ( i18n::get_forced_charset() !== '' )
+	{
+		$charset = i18n::get_forced_charset();
+	}
+	
+	/* NOTE: send HTTP 1.1 header */
+	header("Content-Type: {$content_type}; charset={$charset}");
+	
+	/* NOTE: set handler for translating character set */
+	if ( $charset != i18n::get_current_charset() )
+	{
+		ob_start(array('i18n', 'convert_handler'));
+	}
+	
+	return;
+}
 
 
 	/**
@@ -1583,52 +1656,42 @@ function checkVars($aVars) {
 
 
 /**
+ * sanitizeParams()
  * Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc.
- * to avoid XSS
+ * to avoid XSS.
+ * 
+ * @param	void
+ * @return	void
  */
 function sanitizeParams()
 {
-    global $HTTP_SERVER_VARS;
-
-    $array = array();
-    $str = '';
-    $frontParam = '';
-
-    // REQUEST_URI of $HTTP_SERVER_VARS
-    $str =& $HTTP_SERVER_VARS["REQUEST_URI"];
-    serverStringToArray($str, $array, $frontParam);
-    sanitizeArray($array);
-    arrayToServerString($array, $frontParam, $str);
-
-    // QUERY_STRING of $HTTP_SERVER_VARS
-    $str =& $HTTP_SERVER_VARS["QUERY_STRING"];
-    serverStringToArray($str, $array, $frontParam);
-    sanitizeArray($array);
-    arrayToServerString($array, $frontParam, $str);
-
-    if (phpversion() >= '4.1.0') {
-        // REQUEST_URI of $_SERVER
-        $str =& $_SERVER["REQUEST_URI"];
-        serverStringToArray($str, $array, $frontParam);
-        sanitizeArray($array);
-        arrayToServerString($array, $frontParam, $str);
-
-        // QUERY_STRING of $_SERVER
-        $str =& $_SERVER["QUERY_STRING"];
-        serverStringToArray($str, $array, $frontParam);
-        sanitizeArray($array);
-        arrayToServerString($array, $frontParam, $str);
-    }
-
-    // $_GET
-    convArrayForSanitizing($_GET, $array);
-    sanitizeArray($array);
-    revertArrayForSanitizing($array, $_GET);
-
-    // $_REQUEST (only GET param)
-    convArrayForSanitizing($_REQUEST, $array);
-    sanitizeArray($array);
-    revertArrayForSanitizing($array, $_REQUEST);
+	$array = array();
+	$str = '';
+	$frontParam = '';
+	
+	// REQUEST_URI of $_SERVER
+	$str =& $_SERVER["REQUEST_URI"];
+	serverStringToArray($str, $array, $frontParam);
+	sanitizeArray($array);
+	arrayToServerString($array, $frontParam, $str);
+	
+	// QUERY_STRING of $_SERVER
+	$str =& $_SERVER["QUERY_STRING"];
+	serverStringToArray($str, $array, $frontParam);
+	sanitizeArray($array);
+	arrayToServerString($array, $frontParam, $str);
+	
+	// $_GET
+	convArrayForSanitizing($_GET, $array);
+	sanitizeArray($array);
+	revertArrayForSanitizing($array, $_GET);
+	
+	// $_REQUEST (only GET param)
+	convArrayForSanitizing($_REQUEST, $array);
+	sanitizeArray($array);
+	revertArrayForSanitizing($array, $_REQUEST);
+	
+	return;
 }
 
 /**
@@ -1829,55 +1892,85 @@ function _addInputTags(&$keys,$prefix=''){
  * Convert the server string such as $_SERVER['REQUEST_URI']
  * to arry like arry['blogid']=1 and array['page']=2 etc.
  * 
- * @param	string	$str		string
- * @param	string	$array		
- * @param	string	$frontParam	
+ * @param	string	 $uri				string
+ * @param	string	&$query_elements	elements of query according to application/x-www-form-urlencoded
+ * @param	string	&$hier_part			hierarchical part includes path
+ * 
+ * NOTE:
+ * RFC 3986: Uniform Resource Identifiers (URI): Generic Syntax
+ * 3.  Syntax Components
+ * http://www.ietf.org/rfc/rfc3986.txt
+ * 
+ * Hypertext Markup Language - 2.0
+ * 8.2.1. The form-urlencoded Media Type
+ * http://tools.ietf.org/html/rfc1866#section-8.2.1
+ * 
+ * $_SERVER > Language Reference > Predefined Variables > PHP Manual
+ * http://www.php.net/manual/en/reserved.variables.server.php
  */
-function serverStringToArray($str, &$array, &$frontParam)
+function serverStringToArray($uri, &$query_elements, &$hier_part)
 {
 	// init param
-	$array = array();
-	$frontParam = "";
+	$query_elements = array();
+	$hier_part = "";
 	
-	// split front param, e.g. /index.php, and others, e.g. blogid=1&page=2
-	if ( i18n::strpos($str, "?") > 0 )
+	// split hierarchical part, e.g. /index.php, query and fragment, e.g. blogid=1&page=2#section1
+	if ( i18n::strpos($uri, "?") > 0 )
 	{
-		list($frontParam, $args) = preg_split("#\?#", $str, 2);
+		list($hier_part, $query_and_fragment) = preg_split("#\?#", $uri, 2);
 	}
 	else
 	{
-		$args = $str;
-		$frontParam = "";
+		$query_and_fragment = $uri;
+		$hier_part = '';
 	}
 	
-	// If there is no args like blogid=1&page=2, return
-	if ( i18n::strpos($str, "=") == FALSE && !i18n::strlen($frontParam) )
+	// If there is no query like blogid=1&page=2, return
+	if ( i18n::strpos($uri, "=") == FALSE && !i18n::strlen($hier_part) )
 	{
-		$frontParam = $str;
+		$hier_part = $uri;
 		return;
 	}
 	
-	$array = preg_split("#&#", $args);
+	$query_elements = preg_split("#&#", $query_and_fragment);
 	return;
 }
 
 /**
+ * arrayToServerString()
  * Convert array like array['blogid'] to server string
  * such as $_SERVER['REQUEST_URI']
+ * 
+ * @param	array	 $query_elements	elements of query according to application/x-www-form-urlencoded
+ * @param	string	 $hier_part			hier-part defined in RFC3986
+ * @param	string	&$uri				return value
+ * @return	void
+ * 
+ * NOTE:
+ * RFC 3986: Uniform Resource Identifiers (URI): Generic Syntax
+ * 3.  Syntax Components
+ * http://www.ietf.org/rfc/rfc3986.txt
+ * 
+ * Hypertext Markup Language - 2.0
+ * 8.2.1. The form-urlencoded Media Type
+ * http://tools.ietf.org/html/rfc1866#section-8.2.1
+ * 
+ * $_SERVER > Language Reference > Predefined Variables > PHP Manual
+ * http://www.php.net/manual/en/reserved.variables.server.php
  */
-function arrayToServerString($array, $frontParam, &$str)
+function arrayToServerString($query_elements, $hier_part, &$uri)
 {
-	if ( i18n::strpos($str, "?") !== FALSE )
+	if ( i18n::strpos($uri, "?") !== FALSE )
 	{
-		$str = $frontParam . "?";
+		$uri = $hier_part . "?";
 	}
 	else
 	{
-		$str = $frontParam;
+		$uri = $hier_part;
 	}
-	if ( count($array) )
+	if ( count($query_elements) > 0 )
 	{
-		$str .= implode("&", $array);
+		$uri .= implode("&", $query_elements);
 	}
 	return;
 }
@@ -1889,7 +1982,7 @@ function arrayToServerString($array, $frontParam, &$str)
  * - check key if it inclues " (double quote),  remove from array
  * - check value if it includes \ (escape sequece), remove remaining string
  * 
- * @param	array	&$array	
+ * @param	array	&$array	elements of query according to application/x-www-form-urlencoded
  * @return	void
  */
 function sanitizeArray(&$array)
@@ -1911,6 +2004,7 @@ function sanitizeArray(&$array)
 		{
 			$val = stripslashes($val);
 		}
+		
 		// note that we must use addslashes here because this function is called before the db connection is made
 		// and sql_real_escape_string needs a db connection
 		$val = addslashes($val);
@@ -1919,7 +2013,7 @@ function sanitizeArray(&$array)
 		if ( !in_array($key, $excludeListForSanitization) )
 		{
 			// check value
-			if ( i18n::strpos($val, '\\') )
+			if ( i18n::strpos($val, '\\') > 0 )
 			{
 				list($val, $tmp) = preg_split('#\\\\#', $val);
 			}
@@ -1928,7 +2022,7 @@ function sanitizeArray(&$array)
 			$val = strtr($val, "\0\r\n<>'\"", "       ");
 			
 			// check key
-			if ( preg_match('#\"#', $key) )
+			if ( preg_match('#\"#', $key) > 0 )
 			{
 				unset($array[$k]);
 				continue;
@@ -1942,27 +2036,45 @@ function sanitizeArray(&$array)
 }
 
 /**
+ * convArrayForSanitizing()
  * Convert array for sanitizeArray function
+ * 
+ * @param	string	$src	array to be sanitized
+ * @param	array	&$array	array to be temporarily stored
+ * @return	void
  */
 function convArrayForSanitizing($src, &$array)
 {
-    $array = array();
-    foreach ($src as $key => $val) {
-        if (key_exists($key, $_GET)) {
-            array_push($array, sprintf("%s=%s", $key, $val));
-        }
-    }
+	$array = array();
+	foreach ( $src as $key => $val )
+	{
+		if ( !key_exists($key, $_GET) )
+		{
+			continue;
+		}
+		$array[] = sprintf("%s=%s", $key, $val);
+		continue;
+	}
+	return;
 }
 
 /**
+ * revertArrayForSanitizing()
  * Revert array after sanitizeArray function
+ * 
+ * @param	array	$array	element of query according to application/x-www-form-urlencoded
+ * @param	array	&$dst	combination of key and value
+ * @return	void
  */
 function revertArrayForSanitizing($array, &$dst)
 {
-    foreach ($array as $v) {
-        list($key, $val) = preg_split("/=/", $v, 2);
-        $dst[$key] = $val;
-    }
+	foreach ( $array as $v )
+	{
+		list($key, $val) = preg_split("#=#", $v, 2);
+		$dst[$key] = $val;
+		continue;
+	}
+	return;
 }
 
 /**

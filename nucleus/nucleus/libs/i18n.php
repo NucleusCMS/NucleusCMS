@@ -20,12 +20,18 @@ class i18n
 {
 	static private $mode = FALSE;
 	
-	static private $charset = '';
-	static private $language = '';
-	static private $script = '';
-	static private $region = '';
+	static private $current_charset = '';
+	static private $current_language = '';
+	static private $current_script = '';
+	static private $current_region = '';
+	
 	static private $locale_list = array();
 	static private $timezone = 'UTC';
+	
+	static private $forced_charset = '';
+	static private $forced_language = '';
+	static private $forced_script = '';
+	static private $forced_region = '';
 	
 	/**
 	 * i18n::init
@@ -68,7 +74,7 @@ class i18n
 			 && iconv_set_encoding('output_encoding', $charset)
 			 && iconv_set_encoding('internal_encoding', $charset) )
 			{
-				self::$charset = $charset;
+				self::$current_charset = $charset;
 				self::$mode = 'iconv';
 			}
 		}
@@ -79,7 +85,7 @@ class i18n
 			 && mb_internal_encoding($charset)
 			 && mb_regex_encoding($charset) )
 			{
-				self::$charset = $charset;
+				self::$current_charset = $charset;
 				self::$mode = 'mbstring';
 			}
 		}
@@ -110,7 +116,7 @@ class i18n
 	 */
 	static public function get_current_charset()
 	{
-		return self::$charset;
+		return self::$current_charset;
 	}
 	
 	/**
@@ -131,9 +137,9 @@ class i18n
 	{
 		if ( preg_match('#^(.+)_(.+)_(.+)$#', $locale, $match) )
 		{
-			self::$language = $match[1];
-			self::$script   = $match[2];
-			self::$region   = $match[3];
+			self::$current_language = $match[1];
+			self::$current_script   = $match[2];
+			self::$current_region   = $match[3];
 			return TRUE;
 		}
 		return FALSE;
@@ -149,8 +155,75 @@ class i18n
 	 */
 	static public function get_current_locale()
 	{
-		$elements = array(self::$language, self::$script, self::$region);
+		$elements = array(self::$current_language, self::$current_script, self::$current_region);
 		return implode('_', $elements);
+	}
+	
+	/**
+	 * i18n::set_forced_locale()
+	 * Set forced locale
+	 * 
+	 * @static
+	 * @param	string	$forced_locale
+	 * @return	bool	TRUE/FALSE
+	 * 
+	 */
+	static public function set_forced_locale($forced_locale)
+	{
+		if ( preg_match('#^(.+)_(.+)_(.+)$#', $forced_locale, $match) )
+		{
+			self::$forced_language	= $match[1];
+			self::$forced_script	= $match[2];
+			self::$forced_region	= $match[3];
+			return TRUE;
+		}
+		return FALSE;
+	}
+	
+	/**
+	 * i18n::get_forced_locale
+	 * Get forced locale
+	 * 
+	 * @static
+	 * @param	void
+	 * @return	$forced_locale
+	 */
+	static public function get_forced_locale()
+	{
+		if ( !self::$forced_language )
+		{
+			return;
+		}
+		
+		$elements = array(self::$forced_language, self::$forced_script, self::$forced_region);
+		return implode('_', $elements);
+	}
+	
+	/**
+	 * i18n::set_forced_charset
+	 * return forced charset
+	 * 
+	 * @static
+	 * @param	void	$charset	forced character set
+	 * @return	void
+	 */
+	static public function set_forced_charset($forced_charset)
+	{
+		self::$forced_charset = $forced_charset;
+		return;
+	}
+	
+	/**
+	 * i18n::get_forced_charset
+	 * return forced charset
+	 * 
+	 * @static
+	 * @param	void
+	 * @return	string	$charset	forced character set
+	 */
+	static public function get_forced_charset()
+	{
+		return self::$forced_charset;
 	}
 	
 	/**
@@ -205,10 +278,14 @@ class i18n
 	{
 		if ( $to == '' )
 		{
-			$to = self::$charset;
+			$to = self::$current_charset;
 		}
 		
-		if ( self::$mode == 'iconv' )
+		if ( $from == $to )
+		{
+			/* do nothing */
+		}
+		else if ( self::$mode == 'iconv' )
 		{
 			$string = iconv($from, $to.'//TRANSLIT', $string);
 		}
@@ -217,6 +294,51 @@ class i18n
 			$string = mb_convert_encoding($string, $to, $from);
 		}
 		return (string) $string;
+	}
+	
+	/**
+	 * i18n::convert_handler
+	 * callable handler for character set converter
+	 * 
+	 * @static
+	 * @param	string	$string	target string binary
+	 * @return	void
+	 */
+	static public function convert_handler($string)
+	{
+		return self::convert($string, self::$current_charset, self::$forced_charset);
+	}
+	
+	/**
+	 * i18n::convert_array
+	 * recursively converting array
+	 * 
+	 * @static
+	 * @param	array	$array	array to convert
+	 * @return	void
+	 */
+	static public function convert_array($array, $from, $to='')
+	{
+		if ( !is_array($array) )
+		{
+			$array = self::convert($array, $from, $to);
+		}
+		else
+		{
+			foreach ( $array as $key => $value )
+			{
+				if ( !is_array($value) )
+				{
+					$array[$key] = self::convert($value, $from, $to);
+				}
+				else
+				{
+					self::convert_array($array[$key]);
+				}
+			}
+		}
+		
+		return $array;
 	}
 	
 	/**
@@ -232,11 +354,11 @@ class i18n
 		$length = 0;
 		if ( self::$mode == 'iconv' )
 		{
-			$length = iconv_strlen($string, self::$charset);
+			$length = iconv_strlen($string, self::$current_charset);
 		}
 		else if ( self::$mode == 'mbstring' )
 		{
-			$length = mb_strlen($string, self::$charset);
+			$length = mb_strlen($string, self::$current_charset);
 		}
 		else
 		{
@@ -260,11 +382,11 @@ class i18n
 		$position = 0;
 		if ( self::$mode == 'iconv' )
 		{
-			$position = iconv_strpos($haystack, $needle, $offset, self::$charset);
+			$position = iconv_strpos($haystack, $needle, $offset, self::$current_charset);
 		}
 		else if ( self::$mode == 'mbstring' )
 		{
-			$position = mb_strpos($haystack, $needle, $offset, self::$charset);
+			$position = mb_strpos($haystack, $needle, $offset, self::$current_charset);
 		}
 		else
 		{
@@ -292,11 +414,11 @@ class i18n
 		$position = 0;
 		if ( self::$mode == 'iconv' )
 		{
-			$position = iconv_strrpos($haystack, $needle, self::$charset);
+			$position = iconv_strrpos($haystack, $needle, self::$current_charset);
 		}
 		else if ( self::$mode == 'mbstring' )
 		{
-			$position = mb_strrpos($haystack, $needle, 0, self::$charset);
+			$position = mb_strrpos($haystack, $needle, 0, self::$current_charset);
 		}
 		else
 		{
@@ -325,11 +447,11 @@ class i18n
 		$return = '';
 		if ( self::$mode == 'iconv' )
 		{
-			$return = iconv_substr($string, $start, $length, self::$charset);
+			$return = iconv_substr($string, $start, $length, self::$current_charset);
 		}
 		else if ( self::$mode == 'mbstring' )
 		{
-			$return = mb_substr($string, $start, $length, self::$charset);
+			$return = mb_substr($string, $start, $length, self::$current_charset);
 		}
 		else
 		{
@@ -474,7 +596,7 @@ class i18n
 		{
 			if ( preg_match('#-#', $language) )
 			{
-				if ( $target_locale . '.' . self::$charset == $locale )
+				if ( $target_locale . '.' . self::$current_charset == $locale )
 				{
 					$target_language = $language;
 					break;
