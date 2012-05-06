@@ -6903,7 +6903,7 @@ selector();
 		
 		$pname = getPluginNameFromPid($pid);
 		
-		/* just for including translation */
+		/* NOTE: to include translation file */
 		$manager->getPlugin($pname);
 		
 		$extrahead = "<script type=\"text/javascript\" src=\"javascript/numbercheck.js\"></script>\n";
@@ -6922,42 +6922,40 @@ selector();
 		echo "<input type=\"hidden\" name=\"plugid\" value=\"{$pid}\" />\n";
 		$manager->addTicketHidden();
 		
-		$aOptions = array();
-		$aOIDs = array();
+		$options = array();
 		$query = "SELECT * FROM %s WHERE ocontext='global' and opid=%d ORDER BY oid ASC";
 		$query = sprintf($query, sql_table('plugin_option_desc'), $pid);
 		$result = DB::getResult($query);
 		foreach ( $result as $row )
 		{
-			array_push($aOIDs, $row['oid']);
-			$aOptions[$row['oid']] = array(
-						'oid' => $row['oid'],
-						'value' => $row['odef'],
-						'name' => $row['oname'],
-						'description' => $row['odesc'],
-						'type' => $row['otype'],
-						'typeinfo' => $row['oextra'],
-						'contextid' => 0
+			$options[$row['oid']] = array(
+				'oid'		=> $row['oid'],
+				'value'		=> $row['odef'],
+				'name'		=> $row['oname'],
+				'description' => $row['odesc'],
+				'type'		=> $row['otype'],
+				'typeinfo'	=> $row['oextra'],
+				'contextid'	=> 0
 			);
 		}
 		// fill out actual values
-		if ( count($aOIDs) > 0 )
+		if ( count($options) > 0 )
 		{
 			$query = "SELECT oid, ovalue FROM %s WHERE oid in (%s)";
-			$query = sprintf($query, sql_table('plugin_option'), implode(',',$aOIDs));
+			$query = sprintf($query, sql_table('plugin_option'), implode(',',array_keys($options)));
 			$result = DB::getResult($query);
 			foreach ( $result as $row )
 			{
-				$aOptions[$row['oid']]['value'] = $row['ovalue'];
+				$options[$row['oid']]['value'] = $row['ovalue'];
 			}
 		}
 		
 		// call plugins
-		$data = array('context' => 'global', 'plugid' => $pid, 'options'=>&$aOptions);
+		$data = array('context' => 'global', 'plugid' => $pid, 'options'=>&$options);
 		$manager->notify('PrePluginOptionsEdit',$data);
 		
 		$template['content'] = 'plugoptionlist';
-		$amount = showlist($aOptions,'table',$template);
+		$amount = showlist($options,'table', $template);
 		if ( $amount == 0 )
 		{
 			echo '<p>',_ERROR_NOPLUGOPTIONS,'</p>';
@@ -7012,66 +7010,60 @@ selector();
 	 */
 	public function _insertPluginOptions($context, $contextid = 0)
 	{
-		// get all current values for this contextid
-		// (note: this might contain doubles for overlapping contextids)
-		$aIdToValue = array();
-		$res = DB::getResult('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE ocontextid=' . intval($contextid));
-		foreach ( $res as $row )
-		{
-			$aIdToValue[$row['oid']] = $row['ovalue'];
-		}
-		
-		// get list of oids per pid
-		$query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ',' . sql_table('plugin')
-			   . ' WHERE opid=pid and ocontext='.DB::quoteValue($context).' ORDER BY porder, oid ASC';
-		$res = DB::getResult($query);
-		$aOptions = array();
-		foreach ( $res as $row )
-		{
-			if (in_array($row['oid'], array_keys($aIdToValue)))
-			{
-				$value = $aIdToValue[$row['oid']];
-			}
-			else
-			{
-				$value = $row['odef'];
-			}
-			
-			array_push($aOptions, array(
-				'pid' => $row['pid'],
-				'pfile' => $row['pfile'],
-				'oid' => $row['oid'],
-				'value' => $value,
-				'name' => $row['oname'],
-				'description' => $row['odesc'],
-				'type' => $row['otype'],
-				'typeinfo' => $row['oextra'],
-				'contextid' => $contextid,
-				'extra' => ''));
-		}
-		
 		global $manager;
-		$manager->notify('PrePluginOptionsEdit',array('context' => $context, 'contextid' => $contextid, 'options'=>&$aOptions));
+		
+		/* get current registered plugin option list in this context even if it's not used */
+		$query = "SELECT * FROM %s AS plugins, %s AS options LEFT OUTER JOIN %s AS added "
+		       . "ON ( options.oid=added.oid AND options.ocontext=%s  AND added.ocontextid=%d) "
+		       . "WHERE plugins.pid=options.opid "
+		       . "ORDER BY options.oid ASC;";
+		$query = sprintf($query, sql_table('plugin'), sql_table('plugin_option_desc'), sql_table('plugin_option'), DB::quoteValue($context), DB::quoteValue($contextid));
+		
+		$res = DB::getResult($query);
+		
+		$options = array();
+		foreach ( $res as $row )
+		{
+			/* NOTE: to include translation file */
+			$manager->getPlugin($row['pfile']);
+			
+			$options[] = array(
+				'pid'		=> $row['pid'],
+				'pfile'		=> $row['pfile'],
+				'oid'		=> $row['oid'],
+				'value'		=> ( !$row['ovalue'] ) ? $row['odef'] : $row['ovalue'],
+				'name'		=> $row['oname'],
+				'description' => $row['odesc'],
+				'type'		=> $row['otype'],
+				'typeinfo'	=> $row['oextra'],
+				'contextid'	=> $contextid,
+				'extra'		=> ''
+			);
+		}
+		
+		$manager->notify('PrePluginOptionsEdit',array('context' => $context, 'contextid' => $contextid, 'options'=>&$options));
 		
 		$iPrevPid = -1;
-		foreach ($aOptions as $aOption)
+		foreach ( $options as $option)
 		{
 			// new plugin?
-			if ( $iPrevPid != $aOption['pid'] )
+			if ( $iPrevPid != $option['pid'] )
 			{
-				$iPrevPid = $aOption['pid'];
+				$iPrevPid = $option['pid'];
 				if ( !defined('_PLUGIN_OPTIONS_TITLE') )
 				{
 					define('_PLUGIN_OPTIONS_TITLE', 'Options for %s');
 				}
-				echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, Entity::hsc($aOption['pfile'])).'</th></tr>';
+				echo "<tr>\n";
+				echo '<th colspan="2">' . sprintf(_PLUGIN_OPTIONS_TITLE, Entity::hsc($option['pfile'])) . "</th>\n";
+				echo "</tr>\n";
 			}
 			
-			$meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
+			$meta = NucleusPlugin::getOptionMeta($option['typeinfo']);
 			if ( @$meta['access'] != 'hidden' )
 			{
 				echo '<tr>';
-				listplug_plugOptionRow($aOption);
+				listplug_plugOptionRow($option);
 				echo '</tr>';
 			}
 		}
