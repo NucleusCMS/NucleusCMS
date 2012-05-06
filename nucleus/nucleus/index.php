@@ -44,7 +44,6 @@ if ( $CONF['alertOnSecurityRisk'] == 1 )
 	}
 	if ( sizeof($aFound) > 0 )
 	{
-		sendContentType('text/html', 'startUpError');
 		startUpError(
 			_ERRORS_STARTUPERROR1. implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2,
 			_ERRORS_STARTUPERROR3
