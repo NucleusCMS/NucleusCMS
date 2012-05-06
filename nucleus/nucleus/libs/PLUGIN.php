@@ -645,7 +645,7 @@ abstract class NucleusPlugin
 			// fill DB with default value
 			$this->option_values[$key] = $this->get_default_value($context, $name);
 			$query = "INSERT INTO %s (oid, ocontextid, ovalue) VALUES (%d, %d, %s);";
-			$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid, DB::quoteValue($defVal));
+			$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid, DB::quoteValue($this->option_values[$key]));
 			DB::execute($query);
 		}
 		else
