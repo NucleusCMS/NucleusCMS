@@ -449,6 +449,23 @@ class Manager
 	}
 	
 	/**
+	 * Manager::getPluginNameFromPid()
+	 * 
+	 * @param	string	$pid	ID for plugin
+	 * @return	string	name of plugin
+	 */
+	public function getPluginNameFromPid($pid)
+	{
+		if ( !array_key_exists($pid, $this->cachedInfo['installedPlugins']) )
+		{
+			$query = 'SELECT pfile FROM %s WHERE pid=%d;';
+			$query = sprintf($query, sql_table('plugin'), (integer) $pid);
+			return DB::getValue($query);
+		}
+		return $this->cachedInfo['installedPlugins'][$pid];
+	}
+	
+	/**
 	 * Manager::getUpperCaseName()
 	 * Retrieve the name of a plugin in the right capitalisation
 	 * 
@@ -584,6 +601,19 @@ class Manager
 			$this->subscriptions[$eventName][] = $pluginName;
 		}
 		return;
+	}
+	
+	/**
+	 * Manager::getNumberOfSubscribers()
+	 * 
+	 * @param	string	$event	name of events
+	 * @return	integer	number of event subscriber
+	 */
+	public function getNumberOfSubscribers($event)
+	{
+		$query = 'SELECT COUNT(*) as count FROM %s WHERE event=%s;';
+		$query = sprintf($query, sql_table('plugin_event'), DB::quoteValue($event));
+		return (integer) DB::getValue($query);
 	}
 	
 	/**

@@ -23,7 +23,7 @@ class PluginAdmin
 	public $strFullName;		// NP_SomeThing
 	public $plugin;			// ref. to plugin object
 	public $bValid;			// evaluates to true when object is considered valid
-	public $admin;			// ref to an admin object
+	public $admin;				// ref to an admin object
 	
 	public function __construct($pluginName)
 	{

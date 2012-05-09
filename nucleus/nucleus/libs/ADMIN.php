@@ -6530,7 +6530,7 @@ selector();
         if (!$manager->pidInstalled($plugid))
             $this->error(_ERROR_NOSUCHPLUGIN);
 
-        $plugName = getPluginNameFromPid($plugid);
+        $plugName = $manager->getPluginNameFromPid($plugid);
 
         $this->pagehead();
 
@@ -6713,7 +6713,7 @@ selector();
         ?>
             <h2><?php echo _DELETE_CONFIRM ?></h2>
 
-            <p><?php echo _CONFIRMTXT_PLUGIN ?> <strong><?php echo getPluginNameFromPid($pid) ?></strong>?</p>
+            <p><?php echo _CONFIRMTXT_PLUGIN ?> <strong><?php echo $manager->getPluginNameFromPid($pid) ?></strong>?</p>
 
             <form method="post" action="index.php"><div>
             <?php $manager->addTicketHidden() ?>
@@ -6901,7 +6901,7 @@ selector();
 			$this->error(_ERROR_NOSUCHPLUGIN);
 		}
 		
-		$pname = getPluginNameFromPid($pid);
+		$pname = $manager->getPluginNameFromPid($pid);
 		
 		/* NOTE: to include translation file */
 		$manager->getPlugin($pname);

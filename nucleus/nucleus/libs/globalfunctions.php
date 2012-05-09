@@ -356,11 +356,6 @@ if ( $member->isLoggedIn() && $nextaction )
 	$action = $nextaction;
 }
 
-/*
- * Release ticket for plugin
- */
-ticketForPlugin();
-
 /* first, let's see if the site is disabled or not. always allow admin area access. */
 if ( $CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea'] )
 {
@@ -555,236 +550,238 @@ $manager->notify('PostParseURL', $data);
  */
 
 /**
- * Errors before the database connection has been made
+ * include_libs()
+ * This function includes or requires the specified library file
  * 
- * @param	string	$msg	message to notify
- * @param	string	$title	page title
+ * @param	string	$file
+ * @param	boolean	$once use the _once() version
+ * @param	boolean	$require use require() instead of include()
  * @return	void
  */
-function startUpError($msg, $title)
+function include_libs($file, $once = TRUE, $require = TRUE)
 {
-	header('Content-Type: text/xml; charset=' . i18n::get_current_charset());
-	echo "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
-	echo "<head>\n";
-	echo '<title>'. Entity::hsc($title) . "</title></head>\n";
-	echo "<body>\n";
-	echo '<h1>' . Entity::hsc($title) . "</h1>\n";
-	echo Entity::hsc($msg);
-	echo "</body>\n";
-	echo "</html>\n";
-	exit;
+	global $DIR_LIBS;
+	
+	// $DIR_LIBS isn't a directory
+	if ( !is_dir($DIR_LIBS) )
+	{
+		exit;
+	}
+	
+	$lib_path = $DIR_LIBS . $file;
+	
+	if ( $once && $require )
+	{
+		require_once($lib_path);
+	}
+	else if ( $once && !$require )
+	{
+		include_once($lib_path);
+	}
+	else if ( $require )
+	{
+		require($lib_path);
+	}
+	else
+	{
+		include($lib_path);
+	}
+	return;
 }
 
 /**
-	 * This function includes or requires the specified library file
-	 * @param string $file
-	 * @param bool $once use the _once() version
-	 * @param bool $require use require() instead of include()
-	 */
-	function include_libs($file, $once = TRUE, $require = TRUE)
+ * include_plugins()
+ * This function includes or requires the specified plugin file
+ * 
+ * @param	string	$file
+ * @param	boolean	$once use the _once() version
+ * @param	boolean	$require use require() instead of include()
+ * @return	
+ */
+function include_plugins($file, $once = TRUE, $require = TRUE)
+{
+	global $DIR_PLUGINS;
+	
+	// begin if: $DIR_LIBS isn't a directory
+	if ( !is_dir($DIR_PLUGINS) )
 	{
-		global $DIR_LIBS;
-
-		// begin if: $DIR_LIBS isn't a directory
-		if ( !is_dir($DIR_LIBS) )
-		{
-			exit;
-		} // end if
-
-		$lib_path = $DIR_LIBS . $file;
-
-		// begin if: 
-		if ( $once && $require )
-		{
-			require_once($lib_path);
-		}
-		else if ( $once && !$require )
-		{
-			include_once($lib_path);
-		}
-		else if ( $require )
-		{
-			require($lib_path);
-		}
-		else
-		{
-			include($lib_path);
-		} // end if
-
-	}
-
-
-	/**
-	 * This function includes or requires the specified plugin file
-	 * @param string $file
-	 * @param bool $once use the _once() version
-	 * @param bool $require use require() instead of include()
-	 */
-	function include_plugins($file, $once = TRUE, $require = TRUE)
-	{
-		global $DIR_PLUGINS;
-
-		// begin if: $DIR_LIBS isn't a directory
-		if ( !is_dir($DIR_PLUGINS) )
-		{
-			exit;
-		} // end if
-
-		$plugin_path = $DIR_PLUGINS . $file;
-
-		// begin if: 
-		if ( $once && $require )
-		{
-			require_once($plugin_path);
-		}
-		else if ( $once && !$require )
-		{
-			include_once($plugin_path);
-		}
-		elseif ( $require )
-		{
-			require($plugin_path);
-		}
-		else
-		{
-			include($plugin_path);
-		}
+		exit;
 	}
 	
-	/**
-	 * This function decide which locale is used and include translation
-	 * @param	string	$locale	locale name referring to 'language tags' defined in RFC 5646
-	 * @return	Void
-	 */
-	function include_translation(&$locale)
+	$plugin_path = $DIR_PLUGINS . $file;
+	
+	// begin if: 
+	if ( $once && $require )
 	{
-		global $DIR_LOCALES;
-		
-		$translation_file = $DIR_LOCALES . $locale . '.' . i18n::get_current_charset() . '.php';
-		if ( !file_exists($translation_file) )
-		{
-			$locale = 'en_Latn_US';
-			$translation_file = $DIR_LOCALES . 'en_Latn_US.ISO-8859-1.php';
-		}
-		include($translation_file);
-		return;
+		require_once($plugin_path);
+	}
+	else if ( $once && !$require )
+	{
+		include_once($plugin_path);
+	}
+	elseif ( $require )
+	{
+		require($plugin_path);
+	}
+	else
+	{
+		include($plugin_path);
+	}
+	return;
+}
+
+/**
+ * include_translation()
+ * This function decide which locale is used and include translation
+ * 
+ * @param	string	&$locale	locale name referring to 'language tags' defined in RFC 5646
+ * @return	void
+ */
+function include_translation(&$locale)
+{
+	global $DIR_LOCALES;
+	
+	$translation_file = $DIR_LOCALES . $locale . '.' . i18n::get_current_charset() . '.php';
+	if ( !file_exists($translation_file) )
+	{
+		$locale = 'en_Latn_US';
+		$translation_file = $DIR_LOCALES . 'en_Latn_US.ISO-8859-1.php';
+	}
+	include($translation_file);
+	return;
+}
+
+/**
+ * intPostVar()
+ * This function returns the integer value of $_POST for the variable $name
+ * 
+ * @param	string	$name	field to get the integer value of
+ * @return	integer
+ */
+function intPostVar($name)
+{
+	return (integer) postVar($name);
+}
+
+
+/**
+ * intGetVar()
+ * This function returns the integer value of $_GET for the variable $name
+ * 
+ * @param	string	$name	field to get the integer value of
+ * @return	integer
+ */
+function intGetVar($name)
+{
+	return (integer) getVar($name);
+}
+
+
+/**
+ * intRequestVar()
+ * This function returns the integer value of $_REQUEST for the variable $name. Also checks $_GET and $_POST if not found in $_REQUEST
+ * 
+ * @param string $name field to get the integer value of
+ * @return int
+ */
+function intRequestVar($name)
+{
+	return (integer) requestVar($name);
+}
+
+
+/**
+ * intCookieVar()
+ * This function returns the integer value of $_COOKIE for the variable $name
+ * 
+ * @param	string	$name	field to get the integer value of
+ * @return	integer
+ */
+function intCookieVar($name)
+{
+	return (integer) cookieVar($name);
+}
+
+/**
+ * getNucleusVersion()
+ * This function returns the current Nucleus version (100 = 1.00, 101 = 1.01, etc...)
+ * 
+ * @param	void
+ * @return	integer
+ */
+function getNucleusVersion()
+{
+	return 400;
+}
+
+/**
+ * getNucleusPatchLevel()
+ * TODO: Better description of this function.
+ *
+ * Power users can install patches in between nucleus releases. These patches
+ * usually add new functionality in the plugin API and allow those to
+ * be tested without having to install CVS.
+ *
+ *@param	void
+ * @return	integer
+ */
+function getNucleusPatchLevel()
+{
+	return 0;
+}
+
+/**
+ * getLatestVersion()
+ * This function returns the latest Nucleus version available for download from nucleuscms.org or FALSE if unable to attain data
+ * Format will be major.minor/patachlevel e.g. 3.41 or 3.41/02
+ * 
+ * @param	void
+ * @return	mixed
+ */
+function getLatestVersion()
+{
+	// begin if: cURL is not available in this PHP installation
+	if ( !function_exists('curl_init') )
+	{
+		return FALSE;
 	}
 	
-	/**
-	 * This function returns the integer value of $_POST for the variable $name
-	 * @param string $name field to get the integer value of
-	 * @return int
-	 */
-	function intPostVar($name)
+	$curl = curl_init();
+	$timeout = 5;
+	
+	curl_setopt ($curl, CURLOPT_URL, 'http://nucleuscms.org/version_check.php');
+	curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
+	curl_setopt ($curl, CURLOPT_CONNECTTIMEOUT, $timeout);
+	
+	$return = curl_exec($curl);
+	
+	curl_close($curl);
+	
+	return $return;
+}
+
+/**
+ * sql_table()
+ * This function returns a Nucleus table name with the appropriate prefix
+ * @param string $name
+ * @return string
+ */
+function sql_table($name)
+{
+	global $MYSQL_PREFIX;
+	
+	// begin if: no MySQL prefix
+	if ( empty($MYSQL_PREFIX) )
 	{
-		return intval(postVar($name));
+		return 'nucleus_' . $name;
 	}
-
-
-	/**
-	 * This function returns the integer value of $_GET for the variable $name
-	 * @param string $name field to get the integer value of
-	 * @return int
-	 */
-	function intGetVar($name)
+	// else: use MySQL prefix
+	else
 	{
-		return intval(getVar($name));
+		return $MYSQL_PREFIX . 'nucleus_' . $name;
 	}
-
-
-	/**
-	 * This function returns the integer value of $_REQUEST for the variable $name. Also checks $_GET and $_POST if not found in $_REQUEST
-	 * @param string $name field to get the integer value of
-	 * @return int
-	 */
-	function intRequestVar($name)
-	{
-		return intval(requestVar($name));
-	}
-
-
-	/**
-	 * This function returns the integer value of $_COOKIE for the variable $name
-	 * @param string $name field to get the integer value of
-	 * @return int
-	 */
-	function intCookieVar($name)
-	{
-		return intval(cookieVar($name));
-	}
-
-
-	/**
-	 * This function returns the current Nucleus version (100 = 1.00, 101 = 1.01, etc...)
-	 * @return int
-	 */
-	function getNucleusVersion()
-	{
-		return 400;
-	}
-
-
-	/**
-	 * TODO: Better description of this function.
-	 *
-	 * Power users can install patches in between nucleus releases. These patches
-	 * usually add new functionality in the plugin API and allow those to
-	 * be tested without having to install CVS.
-	 *
-	 * @return int
-	 */
-	function getNucleusPatchLevel()
-	{
-		return 0;
-	}
-
-
-	/**
-	 * This function returns the latest Nucleus version available for download from nucleuscms.org or FALSE if unable to attain data
-	 * Format will be major.minor/patachlevel e.g. 3.41 or 3.41/02
-	 * @return string|bool
-	 */
-	function getLatestVersion()
-	{
-		// begin if: cURL is not available in this PHP installation
-		if ( !function_exists('curl_init') )
-		{
-			return FALSE;
-		} // end if
-
-		$curl = curl_init();
-		$timeout = 5;
-		curl_setopt ($curl, CURLOPT_URL, 'http://nucleuscms.org/version_check.php');
-		curl_setopt ($curl, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt ($curl, CURLOPT_CONNECTTIMEOUT, $timeout);
-		$return = curl_exec($curl);
-		curl_close($curl);
-		return $return;
-	}
-
-
-	/**
-	 * This function returns a Nucleus table name with the appropriate prefix
-	 * @param string $name
-	 * @return string
-	 */
-	function sql_table($name)
-	{
-		global $MYSQL_PREFIX;
-
-		// begin if: no MySQL prefix
-		if ( empty($MYSQL_PREFIX) )
-		{
-			return 'nucleus_' . $name;
-		}
-		// else: use MySQL prefix
-		else
-		{
-			return $MYSQL_PREFIX . 'nucleus_' . $name;
-		} // end if
-
-	}
-
+	return;
+}
 
 /**
  * sendContentType()
@@ -853,149 +850,196 @@ function sendContentType($content_type, $page_type = '', $charset = '')
 	return;
 }
 
-
-	/**
-	 * This function parses a query into an array of expressions that can be passed on to the highlight method
-	 * @param string $query
-	 */
-	function parseHighlight($query)
+/**
+ * parseHighlight()
+ * This function parses a query into an array of expressions that can be passed on to the highlight method
+ * @param	string	$query
+ * @return	void
+ */
+function parseHighlight($query)
+{
+	// TODO: add more intelligent splitting logic
+	
+	// get rid of quotes
+	$query = preg_replace('/\'|"/', '', $query);
+	
+	if ( !$query )
 	{
-		// TODO: add more intelligent splitting logic
+		return array();
+	}
+	
+	$aHighlight = preg_split('# #', $query);
+	
+	for ( $i = 0; $i < count($aHighlight); $i++ )
+	{
+		$aHighlight[$i] = trim($aHighlight[$i]);
 		
-		// get rid of quotes
-		$query = preg_replace('/\'|"/', '', $query);
-		
-		if ( !$query )
+		if ( i18n::strlen($aHighlight[$i]) < 3 )
 		{
-			return array();
-		}
-		
-		$aHighlight = preg_split('# #', $query);
-		
-		for ( $i = 0; $i < count($aHighlight); $i++ )
-		{
-			$aHighlight[$i] = trim($aHighlight[$i]);
-			
-			if ( i18n::strlen($aHighlight[$i]) < 3 )
-			{
-				unset($aHighlight[$i]);
-			}
-		}
-		
-		if ( count($aHighlight) == 1 )
-		{
-			return $aHighlight[0];
-		}
-		else
-		{
-			return $aHighlight;
+			unset($aHighlight[$i]);
 		}
 	}
-
-
-	/**
-	 * This function gets the blog ID from the blog name
-	 * @param string $name
-	 * @return
-	 */
-	function getBlogIDFromName($name)
+	
+	if ( count($aHighlight) == 1 )
 	{
-		$query = sprintf('SELECT bnumber AS result FROM %s WHERE bshortname=%s', sql_table('blog'), DB::quoteValue($name));
-		return DB::getValue($query);
+		return $aHighlight[0];
 	}
-
-
-	/**
-	 * This function gets the blog name from the blog ID
-	 * @param int $id
-	 * @return object
-	 */
-	function getBlogNameFromID($id)
+	else
 	{
-		$query = sprintf('SELECT bname AS result FROM %s WHERE bnumber=%d', sql_table('blog'), intval($id));
-		return DB::getValue($query);
+		return $aHighlight;
 	}
-
-
-	/**
-	 * This function gets the blog ID from the item ID
-	 * @param int $item_id
-	 * @return object
-	 */
-	function getBlogIDFromItemID($item_id)
-	{
-		$query = sprintf('SELECT iblog AS result FROM %s WHERE inumber=%d', sql_table('item'), intval($item_id));
-		return DB::getValue($query);
-	}
-
-
-	/**
-	 * This function gets the blog ID from the comment ID
-	 * @param int $comment_id
-	 * @return object
-	 */
-	function getBlogIDFromCommentID($comment_id)
-	{
-		$query = sprintf('SELECT cblog AS result FROM %s WHERE cnumber=%d', sql_table('comment'), intval($comment_id));
-		return DB::getValue($query);
-	}
-
-
-	/**
-	 * This function gets the blog ID from the category ID
-	 * @param int $category_id
-	 * @return object
-	 */
-	function getBlogIDFromCatID($category_id)
-	{
-		$query = sprintf('SELECT cblog AS result FROM %s WHERE catid=%d', sql_table('category'), intval($category_id));
-		return DB::getValue($query);
-	}
-
-
-	/**
-	 * This function gets the category ID from the category name
-	 * @param int $name
-	 * @return object
-	 */
-	function getCatIDFromName($name)
-	{
-		$query = sprintf('SELECT catid AS result FROM %s WHERE cname=%s', sql_table('category'), DB::quoteValue($name));
-		return DB::getValue($query);
-	}
-
-
-	/**
-	 * This function performs a quick SQL query
-	 * @deprecated
-	 * @param string $query
-	 * @return object
-	 */
-	function quickQuery($query)
-	{
-		$row = DB::getRow($query);
-		return $row['result'];
-	}
-
-function getPluginNameFromPid($pid) {
-    $query = sprintf('SELECT pfile FROM %s WHERE pid=%d', sql_table('plugin'), intval($pid));
-    return DB::getValue($query);
-//    return isset($obj->pfile) ? $obj->pfile : false;
+	return;
 }
 
+/**
+ * getConfig()
+ * 
+ * @param	void
+ * @return	void
+ */
+function getConfig()
+{
+	global $CONF;
+	
+	$query = sprintf('SELECT * FROM %s', sql_table('config'));
+	$res = DB::getResult($query);
+	
+	foreach ( $res as $row )
+	{
+		$CONF[$row['name']] = $row['value'];
+	}
+	return;
+}
+
+/**
+ * This function gets the blog ID from the blog name
+ * @param string $name
+ * @return
+ */
+function getBlogIDFromName($name)
+{
+	$query = sprintf('SELECT bnumber AS result FROM %s WHERE bshortname=%s', sql_table('blog'), DB::quoteValue($name));
+	return DB::getValue($query);
+}
+
+/**
+ * This function gets the blog name from the blog ID
+ * @param int $id
+ * @return object
+ */
+function getBlogNameFromID($id)
+{
+	$query = sprintf('SELECT bname AS result FROM %s WHERE bnumber=%d', sql_table('blog'), intval($id));
+	return DB::getValue($query);
+}
+
+/**
+ * This function gets the blog ID from the item ID
+ * @param int $item_id
+ * @return object
+ */
+function getBlogIDFromItemID($item_id)
+{
+	$query = sprintf('SELECT iblog AS result FROM %s WHERE inumber=%d', sql_table('item'), intval($item_id));
+	return DB::getValue($query);
+}
+
+/**
+ * This function gets the blog ID from the comment ID
+ * @param int $comment_id
+ * @return object
+ */
+function getBlogIDFromCommentID($comment_id)
+{
+	$query = sprintf('SELECT cblog AS result FROM %s WHERE cnumber=%d', sql_table('comment'), intval($comment_id));
+	return DB::getValue($query);
+}
+
+/**
+ * This function gets the blog ID from the category ID
+ * @param int $category_id
+ * @return object
+ */
+function getBlogIDFromCatID($category_id)
+{
+	$query = sprintf('SELECT cblog AS result FROM %s WHERE catid=%d', sql_table('category'), intval($category_id));
+	return DB::getValue($query);
+}
+
+/**
+ * This function gets the category ID from the category name
+ * @param int $name
+ * @return object
+ */
+function getCatIDFromName($name)
+{
+	$query = sprintf('SELECT catid AS result FROM %s WHERE cname=%s', sql_table('category'), DB::quoteValue($name));
+	return DB::getValue($query);
+}
+
+
+/**
+ * functions to be used in index.php to select something
+ */
+function selectBlog($shortname)
+{
+	global $blogid, $archivelist;
+	$blogid = getBlogIDFromName($shortname);
+	
+	// also force archivelist variable, if it is set
+	if ( $archivelist )
+	{
+		$archivelist = $blogid;
+	}
+	return;
+}
+function selectSkin($skinname)
+{
+	global $skinid;
+	$skinid = SKIN::getIdFromName($skinname);
+	return;
+}
+function selectCategory($cat)
+{
+	global $catid;
+	if ( is_numeric($cat) )
+	{
+		$catid = (integer) $cat;
+	}
+	else
+	{
+		$catid = getCatIDFromName($cat);
+	}
+	return;
+}
+function selectItem($id)
+{
+	global $itemid;
+	$itemid = (integer) $id;
+	return;
+}
+function selectSpecialSkinType($id)
+{
+	global $special;
+	$special = strtolower($id);
+	return;
+}
 function selector()
 {
-	global $itemid, $blogid, $memberid, $query, $amount, $archivelist, $maxresults;
-	global $archive, $skinid, $blog, $memberinfo, $CONF, $member;
-	global $imagepopup, $catid, $special;
-	global $manager;
+	global $archive, $archivelist, $archivenext, $archivenextexists, $archiveprev, $archiveprevexists, $archivetype;
+	global $blog, $blogid;
+	global $catid;
+	global $itemid, $itemidnext, $itemidprev, $itemtitlenext, $itemtitleprev;
+	global $CONF, $DIR_LIBS, $amount, $errormessage, $imagepopup;
+	global $manager, $maxresults, $query;
+	global $member, $memberid, $memberinfo;
+	global $skinid, $skinpart, $special;
 	
 	$actionNames = array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin');
 	$action = requestVar('action');
 	
 	if ( in_array($action, $actionNames) )
 	{
-		global $DIR_LIBS, $errormessage;
 		include_once($DIR_LIBS . 'ACTION.php');
 		$a = new Action();
 		$errorInfo = $a->doAction($action);
@@ -1021,8 +1065,13 @@ function selector()
 		}
 		
 		startUpError(
-			'<p>The page headers have already been sent out' . $extraInfo . '. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, at the end of the translation file or at the end of a plugin file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>',
-			'Page headers already sent'
+		   "<p>The page headers have already been sent out{$extraInfo}. This could cause Nucleus not to work in the expected way.</p>"
+		 . "<p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, "
+		 . "at the end of the translation file or at the end of a plugin file.</p>"
+		 . "<p>Please check this and try again.</p>"
+		 . "<p>If you don't want to see this error message again, without solving the problem, "
+		 . "set <code>{$CONF['alertOnHeadersSent']}</code> in <code>globalfunctions.php</code> to <code>0</code></p>"
+		 . "Page headers already sent"
 		);
 		exit;
 	}
@@ -1044,8 +1093,6 @@ function selector()
 		{
 			doError(_ERROR_NOSUCHITEM);
 		}
-		
-		global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
 		
 		// 1. get timestamp, blogid and catid for item
 		$query = 'SELECT itime, iblog, icat FROM %s WHERE inumber=%d';
@@ -1113,9 +1160,6 @@ function selector()
 	{
 		// show archive
 		$type = 'archive';
-		
-		// get next and prev month links ...
-		global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
 		
 		// sql queries for the timestamp of the first and the last published item
 		$query = sprintf('SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 ORDER BY itime ASC', sql_table('item'));
@@ -1330,7 +1374,6 @@ function selector()
 	}
 	
 	// set global skinpart variable so can determine quickly what is being parsed from any plugin or phpinclude
-	global $skinpart;
 	$skinpart = $type;
 	
 	// parse the skin
@@ -1342,8 +1385,13 @@ function selector()
 }
 
 /**
-  * Show error skin with given message. An optional skin-object to use can be given
-  */
+ * doError()
+ * Show error skin with given message. An optional skin-object to use can be given
+ * 
+ * @param	string	$msg
+ * @param	string	$skin
+ * @return	void
+ */
 function doError($msg, $skin = '')
 {
 	global $errormessage, $CONF, $skinid, $blogid, $manager;
@@ -1378,106 +1426,66 @@ function doError($msg, $skin = '')
 	exit;
 }
 
-function getConfig() {
-    global $CONF;
-
-    $query = sprintf('SELECT * FROM %s', sql_table('config'));
-    $res = DB::getResult($query);
-
-    foreach ( $res as $row )
-    {
-    	$CONF[$row['name']] = $row['value'];
-    }
+/**
+ * Errors before the database connection has been made
+ * 
+ * @param	string	$msg	message to notify
+ * @param	string	$title	page title
+ * @return	void
+ */
+function startUpError($msg, $title)
+{
+	header('Content-Type: text/xml; charset=' . i18n::get_current_charset());
+	echo "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+	echo "<head>\n";
+	echo '<title>'. Entity::hsc($title) . "</title></head>\n";
+	echo "<body>\n";
+	echo '<h1>' . Entity::hsc($title) . "</h1>\n";
+	echo Entity::hsc($msg);
+	echo "</body>\n";
+	echo "</html>\n";
+	exit;
 }
 
-// some checks for names of blogs, categories, templates, members, ...
-function isValidShortName($name) {
-
-	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-	# original eregi: eregi('^[a-z0-9]+$', $name)
-
+function isValidShortName($name)
+{
 	return preg_match('#^[a-z0-9]+$#i', $name);
-
 }
-
-function isValidDisplayName($name) {
-
-	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-	# original eregi: eregi('^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$', $name)
-
+function isValidDisplayName($name)
+{
 	return preg_match('#^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$#i', $name);
-
 }
-
-function isValidCategoryName($name) {
-    return 1;
+function isValidCategoryName($name)
+{
+	return 1;
 }
-
-function isValidTemplateName($name) {
-
-	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-	# original eregi: eregi('^[a-z0-9/]+$', $name)
-	// added - and _ to valid characters as of 4.00
-
+function isValidTemplateName($name)
+{
 	return preg_match('#^[a-z0-9/_\-]+$#i', $name);
-
 }
-
-function isValidSkinName($name) {
-
-	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-	# original eregi: eregi('^[a-z0-9/]+$', $name);
-	// added - and _ to valid characters as of 4.00
-
+function isValidSkinName($name)
+{
 	return preg_match('#^[a-z0-9/_\-]+$#i', $name);
-
 }
 
 // add and remove linebreaks
-function addBreaks($var) {
-    return nl2br($var);
+function addBreaks($var)
+{
+	return nl2br($var);
 }
-
-function removeBreaks($var) {
-    return preg_replace("/<br \/>([\r\n])/", "$1", $var);
-}
-
-/**
-  * functions for use in index.php
-  */
-function selectBlog($shortname) {
-    global $blogid, $archivelist;
-    $blogid = getBlogIDFromName($shortname);
-
-    // also force archivelist variable, if it is set
-    if ($archivelist) {
-        $archivelist = $blogid;
-    }
-}
-
-function selectSkin($skinname) {
-    global $skinid;
-    $skinid = SKIN::getIdFromName($skinname);
+function removeBreaks($var)
+{
+	return preg_replace("/<br \/>([\r\n])/", "$1", $var);
 }
 
 /**
- * Can take either a category ID or a category name (be aware that
- * multiple categories can have the same name)
+ * parseFile()
+ * 
+ * @param	string	$filename
+ * @param	string	$includeMode
+ * @param	string	$includePrefix
+ * @return	void
  */
-function selectCategory($cat) {
-    global $catid;
-    if (is_numeric($cat) ) {
-        $catid = intval($cat);
-    } else {
-        $catid = getCatIDFromName($cat);
-    }
-}
-
-function selectItem($id) {
-    global $itemid;
-    $itemid = intval($id);
-}
-
 function parseFile($filename, $includeMode = 'normal', $includePrefix = '')
 {
 	global $skinid;
@@ -1503,74 +1511,78 @@ function parseFile($filename, $includeMode = 'normal', $includePrefix = '')
 }
 
 /**
-  * Outputs a debug message
-  */
-function debug($msg) {
-    echo '<p><b>' . $msg . "</b></p>\n";
-}
-
-// shortcut
-function addToLog($level, $msg) {
-    ActionLog::add($level, $msg);
+ * debug()
+ * Outputs a debug message
+ * 
+ * @param	string	$msg
+ * @return	void
+ */
+function debug($msg)
+{
+	echo '<p><b>' . $msg . "</b></p>\n";
+	return;
 }
 
 // shows a link to help file
-function help($id) {
-    echo helpHtml($id);
+function help($id)
+{
+	echo helpHtml($id);
+	return;
 }
-
-function helpHtml($id) {
-    global $CONF;
-    return helplink($id) . '<img src="' . $CONF['AdminURL'] . 'documentation/icon-help.gif" width="15" height="15" alt="' . _HELP_TT . '" title="' . _HELP_TT . '" /></a>';
+function helpHtml($id)
+{
+	global $CONF;
+	return helplink($id) . '<img src="' . $CONF['AdminURL'] . 'documentation/icon-help.gif" width="15" height="15" alt="' . _HELP_TT . '" title="' . _HELP_TT . '" /></a>';
 }
-
-function helplink($id) {
-    global $CONF;
-    return '<a href="' . $CONF['AdminURL'] . 'documentation/help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
+function helplink($id)
+{
+	global $CONF;
+	return '<a href="' . $CONF['AdminURL'] . 'documentation/help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
 }
 
 /**
-  * Includes a PHP file. This method can be called while parsing templates and skins
-  */
-function includephp($filename) {
-    // make predefined variables global, so most simple scripts can be used here
-
-    // apache (names taken from PHP doc)
-    global $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE, $SERVER_PROTOCOL;
-    global $REQUEST_METHOD, $QUERY_STRING, $DOCUMENT_ROOT, $HTTP_ACCEPT;
-    global $HTTP_ACCEPT_CHARSET, $HTTP_ACCEPT_ENCODING, $HTTP_ACCEPT_LANGUAGE;
-    global $HTTP_CONNECTION, $HTTP_HOST, $HTTP_REFERER, $HTTP_USER_AGENT;
-    global $REMOTE_ADDR, $REMOTE_PORT, $SCRIPT_FILENAME, $SERVER_ADMIN;
-    global $SERVER_PORT, $SERVER_SIGNATURE, $PATH_TRANSLATED, $SCRIPT_NAME;
-    global $REQUEST_URI;
-
-    // php (taken from PHP doc)
-    global $argv, $argc, $PHP_SELF, $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $HTTP_POST_VARS;
-    global $HTTP_POST_FILES, $HTTP_ENV_VARS, $HTTP_SERVER_VARS, $HTTP_SESSION_VARS;
-
-    // other
-    global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
-
-    if (@file_exists($filename) ) {
-        include($filename);
-    }
+ * includephp()
+ * Includes a PHP file. This method can be called while parsing templates and skins
+ * 
+ * @param	string	$filename	name of file to parse
+ * @return	void
+ */
+function includephp($filename)
+{
+	// make predefined variables global, so most simple scripts can be used here
+	
+	// apache (names taken from PHP doc)
+	global $GATEWAY_INTERFACE, $SERVER_NAME, $SERVER_SOFTWARE, $SERVER_PROTOCOL;
+	global $REQUEST_METHOD, $QUERY_STRING, $DOCUMENT_ROOT, $HTTP_ACCEPT;
+	global $HTTP_ACCEPT_CHARSET, $HTTP_ACCEPT_ENCODING, $HTTP_ACCEPT_LANGUAGE;
+	global $HTTP_CONNECTION, $HTTP_HOST, $HTTP_REFERER, $HTTP_USER_AGENT;
+	global $REMOTE_ADDR, $REMOTE_PORT, $SCRIPT_FILENAME, $SERVER_ADMIN;
+	global $SERVER_PORT, $SERVER_SIGNATURE, $PATH_TRANSLATED, $SCRIPT_NAME;
+	global $REQUEST_URI;
+	
+	// php (taken from PHP doc)
+	global $argv, $argc, $PHP_SELF, $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $HTTP_POST_VARS;
+	global $HTTP_POST_FILES, $HTTP_ENV_VARS, $HTTP_SERVER_VARS, $HTTP_SESSION_VARS;
+	
+	// other
+	global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
+	
+	if ( @file_exists($filename) )
+	{
+		include($filename);
+	}
+	return;
 }
 
 /**
  * Checks if a certain plugin exists
- * @param string $plug
- * @return bool
- **/
-function checkPlugin($plug) {
-
+ * @param	string	$plug	name of plugin
+ * @return	boolean	exists or not
+ */
+function checkPlugin($name)
+{
 	global $DIR_PLUGINS;
-
-	# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-	# original ereg_replace: ereg_replace( '[\\|/]', '', $plug) . '.php')
-	# important note that '\' must be matched with '\\\\' in preg* expressions
-
-	return file_exists($DIR_PLUGINS . preg_replace('#[\\\\|/]#', '', $plug) . '.php');
-
+	return file_exists($DIR_PLUGINS . preg_replace('#[\\\\|/]#', '', $name) . '.php');
 }
 
 /**
@@ -1579,7 +1591,7 @@ function checkPlugin($plug) {
  * @param	string	$querystr	querystring to alter (e.g. foo=1&bar=2&x=y)
  * @param	string	$param	name of parameter to change (e.g. 'foo')
  * @param	string	$value	New value for that parameter (e.g. 3)
- * @result	string	altered query string (for the examples above: foo=3&bar=2&x=y)
+ * @return	string	altered query string (for the examples above: foo=3&bar=2&x=y)
  */
 function alterQueryStr($querystr, $param, $value)
 {
@@ -1605,55 +1617,54 @@ function alterQueryStr($querystr, $param, $value)
 	return ltrim(implode('&', $vars), '&');
 }
 
-// passes one variable as hidden input field (multiple fields for arrays)
-// @see passRequestVars in varsx.x.x.php
-function passVar($key, $value) {
-    // array ?
-    if (is_array($value) ) {
-        for ($i = 0; $i < sizeof($value); $i++) {
-            passVar($key . '[' . $i . ']', $value[$i]);
-        }
-
-        return;
-    }
-
-    // other values: do stripslashes if needed
-    ?><input type="hidden" name="<?php echo Entity::hsc($key)?>" value="<?php echo Entity::hsc(undoMagic($value) )?>" /><?php
+/**
+ * passVar()
+ * passes one variable as hidden input field (multiple fields for arrays)
+ * @see passRequestVars in varsx.x.x.php
+ * 
+ * @param	string	$key
+ * @param	string	$value
+ * @return	void
+ */
+function passVar($key, $value)
+{
+	// array ?
+	if ( is_array($value) )
+	{
+		for ( $i = 0; $i < sizeof($value); $i++ )
+		{
+			passVar($key . '[' . $i . ']', $value[$i]);
+		}
+		return;
+	}
+	
+	// other values: do stripslashes if needed
+	echo '<input type="hidden" name="' . Entity::hsc($key) . '" value="' . Entity::hsc(undoMagic($value)) . '" />' . "\n";
+	return;
 }
 
-function checkVars($aVars) {
-    global $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_COOKIE_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_SESSION_VARS;
-
-    foreach ($aVars as $varName) {
-
-        if (phpversion() >= '4.1.0') {
-
-            if (   isset($_GET[$varName])
-                || isset($_POST[$varName])
-                || isset($_COOKIE[$varName])
-                || isset($_ENV[$varName])
-                || isset($_SESSION[$varName])
-                || isset($_FILES[$varName])
-            ) {
-                die('Sorry. An error occurred.');
-            }
-
-        } else {
-
-            if (   isset($HTTP_GET_VARS[$varName])
-                || isset($HTTP_POST_VARS[$varName])
-                || isset($HTTP_COOKIE_VARS[$varName])
-                || isset($HTTP_ENV_VARS[$varName])
-                || isset($HTTP_SESSION_VARS[$varName])
-                || isset($HTTP_POST_FILES[$varName])
-            ) {
-                die('Sorry. An error occurred.');
-            }
-
-        }
-    }
+/**
+ * checkVars()
+ * 
+ * @param	string	$variables
+ * @return	void
+ */
+function checkVars($variables)
+{
+	foreach ( $variables as $variable )
+	{
+		if ( array_key_exists($variable, $_GET)
+		  || array_key_exists($variable, $_POST)
+		  || array_key_exists($variable, $_COOKIE)
+		  || array_key_exists($variable, $_ENV)
+		  || (session_id() !== '' && array_key_exists($variable, $_SESSION))
+		  || array_key_exists($variable, $_FILES) )
+		{
+			die('Sorry. An error occurred.');
+		}
+	}
+	return;
 }
-
 
 /**
  * sanitizeParams()
@@ -1694,197 +1705,32 @@ function sanitizeParams()
 	return;
 }
 
-/**
- * ticketForPlugin()
- * 
- * Check ticket when not checked in plugin's admin page
- * to avoid CSRF.
- * Also avoid the access to plugin/index.php by guest user.
- */
-function ticketForPlugin()
+function _addInputTags(&$keys,$prefix='')
 {
-	global $CONF, $DIR_PLUGINS, $member, $ticketforplugin;
-	
-	/* initialize */
-	$ticketforplugin = array();
-	$ticketforplugin['ticket'] = FALSE;
-	
-	/* $_SERVER['PATH_TRANSLATED']
-	 * http://www.php.net/manual/en/reserved.variables.server.php
-	 * Note: As of PHP 4.3.2, PATH_TRANSLATED is no longer set implicitly
-	 * under the Apache 2 SAPI in contrast to the situation in Apache 1,
-	 * where it's set to the same value as the SCRIPT_FILENAME server variable
-	 * when it's not populated by Apache.
-	 * This change was made to comply with the CGI specification
-	 * that PATH_TRANSLATED should only exist if PATH_INFO is defined.
-	 * Apache 2 users may use AcceptPathInfo = On inside httpd.conf to define PATH_INFO. 
-	 */
-	
-	/* Check if using plugin's php file. */
-	$p_translated = serverVar('SCRIPT_FILENAME');
-	
-	if (!file_exists($p_translated) )
+	foreach ( $keys as $key=>$value )
 	{
-		header("HTTP/1.0 404 Not Found");
-		exit('');
-	}
-	
-	$p_translated = str_replace('\\', '/', $p_translated);
-	$d_plugins = str_replace('\\', '/', $DIR_PLUGINS);
-	
-	// This isn't plugin php file.
-	if ( i18n::strpos($p_translated, $d_plugins) !== 0 )
-	{
-		return;
-	}
-
-	// Solve the plugin php file or admin directory
-	$phppath = i18n::substr($p_translated, i18n::strlen($d_plugins) );
-	// Remove the first "/" if exists.
-	$phppath = preg_replace('#^/#', '', $phppath);
-	// Remove the first "NP_" and the last ".php" if exists.
-	$path = preg_replace('#^NP_(.*)\.php$#', '$1', $phppath);
-	// Remove the "/" and beyond.
-	$path = preg_replace('#^([^/]*)/(.*)$#', '$1', $path);
-	
-	// Solve the plugin name.
-	$plugins = array();
-	$query = sprintf('SELECT pfile FROM %s', sql_table('plugin'));
-	$res = DB::getResult($query);
-	
-	foreach ( $res as $row )
-	{
-		$name = i18n::substr($row['pfile'], 3);
-		$plugins[strtolower($name)] = $name;
-	}
-	
-	$res->closeCursor();
-	
-	if (array_key_exists($path, $plugins))
-	{
-		$plugin_name = $plugins[$path];
-	}
-	else if (in_array($path, $plugins))
-	{
-		$plugin_name = $path;
-	}
-	else
-	{
-		header("HTTP/1.0 404 Not Found");
-		exit('');
-	}
-	
-	/* Return if not index.php */
-	if ( ($phppath != strtolower($plugin_name) . '/') && ($phppath != strtolower($plugin_name) . '/index.php') )
-	{
-		return;
-	}
-	
-	/* Exit if not logged in. */
-	if ( !$member->isLoggedIn() )
-	{
-		exit('You aren\'t logged in.');
-	}
-	
-	global $manager, $DIR_LIBS, $DIR_LOCALES, $HTTP_GET_VARS, $HTTP_POST_VARS;
-	
-	/* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
-	if (!($p_translated = serverVar('PATH_TRANSLATED') ) )
-	{
-		$p_translated = serverVar('SCRIPT_FILENAME');
-	}
-	
-	if ($file = @file($p_translated) )
-	{
-		$prevline = '';
-		
-		foreach($file as $line)
+		if ( $prefix )
 		{
-			if (preg_match('/[\$]manager([\s]*)[\-]>([\s]*)checkTicket([\s]*)[\(]/i', $prevline . $line) )
-			{
-				return;
-			}
-			
-			$prevline = $line;
+			$key=$prefix.'['.$key.']';
 		}
-	}
-	
-	/* Show a form if not valid ticket */
-	if ( ( i18n::strpos(serverVar('REQUEST_URI'), '?') !== FALSE || serverVar('QUERY_STRING')
-	 || strtoupper(serverVar('REQUEST_METHOD') ) == 'POST')
-	 && (!$manager->checkTicket() ) )
-	{
-		$oPluginAdmin = new PluginAdmin($plugin_name);
-		$oPluginAdmin->start();
-		echo '<p>' . _ERROR_BADTICKET . "</p>\n";
-		
-		/* Show the form to confirm action */
-		// PHP 4.0.x support
-		$get = (isset($_GET) ) ? $_GET : $HTTP_GET_VARS;
-		$post = (isset($_POST) ) ? $_POST : $HTTP_POST_VARS;
-		
-		// Resolve URI and QUERY_STRING
-		if ($uri = serverVar('REQUEST_URI') )
+		if ( is_array($value) )
 		{
-			list($uri, $qstring) = preg_split('#\?#', $uri);
+			_addInputTags($value,$key);
 		}
 		else
 		{
-			if ( !($uri = serverVar('PHP_SELF') ) )
-			{
-				$uri = serverVar('SCRIPT_NAME');
+			if ( get_magic_quotes_gpc() )
+				{$value=stripslashes($value);
 			}
-			$qstring = serverVar('QUERY_STRING');
+			if ( $key == 'ticket' )
+			{
+				continue;
+			}
+			echo '<input type="hidden" name="'.Entity::hsc($key).
+			     '" value="'.Entity::hsc($value).'" />'."\n";
 		}
-		if ($qstring)
-		{
-			$qstring = '?' . $qstring;
-		}
-		
-		echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . Entity::hsc($plugin_name) . "</span> ?</p>\n";
-		
-		switch(strtoupper(serverVar('REQUEST_METHOD') ) )
-		{
-			case 'POST':
-				echo '<form method="POST" action="'.Entity::hsc($uri.$qstring).'">';
-				$manager->addTicketHidden();
-				_addInputTags($post);
-				break;
-			
-			case 'GET':
-				echo '<form method="GET" action="'.Entity::hsc($uri).'">';
-				$manager->addTicketHidden();
-				_addInputTags($get);
-			
-			default:
-				break;
-		}
-		
-		echo '<input type="submit" value="' . _YES . '" />&nbsp;&nbsp;&nbsp;&nbsp;';
-		echo '<input type="button" value="' . _NO . '" onclick="history.back(); return false;" />';
-		echo "</form>\n";
-		
-		$oPluginAdmin->end();
-		exit;
 	}
-	
-	/* Create new ticket */
-	$ticket=$manager->addTicketToUrl('');
-	$ticketforplugin['ticket'] = preg_split($ticket, i18n::strpos($ticket, 'ticket=') + 7);
 	return;
-}
-
-function _addInputTags(&$keys,$prefix=''){
-    foreach($keys as $key=>$value){
-        if ($prefix) $key=$prefix.'['.$key.']';
-        if (is_array($value)) _addInputTags($value,$key);
-        else {
-            if (get_magic_quotes_gpc()) $value=stripslashes($value);
-            if ($key=='ticket') continue;
-            echo '<input type="hidden" name="'.Entity::hsc($key).
-                '" value="'.Entity::hsc($value).'" />'."\n";
-        }
-    }
 }
 
 /**
@@ -2078,14 +1924,19 @@ function revertArrayForSanitizing($array, &$dst)
 }
 
 /**
+ * redirect()
  * Stops processing the request and redirects to the given URL.
  * - no actual contents should have been sent to the output yet
  * - the URL will be stripped of illegal or dangerous characters
+ * 
+ * @param	string	$uri
+ * @return	void
  */
-function redirect($url) {
-    $url = preg_replace('|[^a-z0-9-~+_.?#=&;,/:@%*]|i', '', $url);
-    header('Location: ' . $url);
-    exit;
+function redirect($url)
+{
+	$url = preg_replace('#[^a-z0-9-~+_.?\#=&;,/:@%*]#i', '', $url);
+	header('Location: ' . $url);
+	exit;
 }
 
 /**
@@ -2124,65 +1975,31 @@ function getBookmarklet($blogid, $width=600,  $height=500)
 	
 	return $script;
 }
-// END: functions from the end of file ADMIN.php
 
 /**
- * Returns a variable or null if not set
- *
- * @param mixed Variable
- * @return mixed Variable
- */
-function ifset(&$var) {
-    if (isset($var)) {
-        return $var;
-    }
-
-    return null;
-}
-
-/**
- * Returns number of subscriber to an event
- *
- * @param event
- * @return number of subscriber(s)
- */
-function numberOfEventSubscriber($event) {
-    $query = sprintf('SELECT COUNT(*) as count FROM %s WHERE event=%s', sql_table('plugin_event'), DB::quoteValue($event));
-    $res = DB::getValue($query);
-    return $res;
-}
-
-/**
- * sets $special global variable for use in index.php before selector()
- *
- * @param String id
- * @return nothing
- */
-function selectSpecialSkinType($id) {
-    global $special;
-    $special = strtolower($id);
-}
-
-/**
+ * cleanFileName()
  * cleans filename of uploaded file for writing to file system
  *
- * @param String str
- * @return String cleaned filename ready for use
+ * @param	string	$str
+ * @return	string	$cleaned filename ready for use
  */
-function cleanFileName($str) {
+function cleanFileName($str)
+{
 	$str = strtolower($str);
 	$ext_point = i18n::strrpos($str,".");
-	if ($ext_point===false) return false;
+	if ( $ext_point === FALSE )
+	{
+		return FALSE;
+	}
 	$ext = i18n::substr($str,$ext_point,i18n::strlen($str));
 	$str = i18n::substr($str,0,$ext_point);
-
-	return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
+	
+	return preg_replace("#[^a-z0-9-]#", "_", $str) . $ext;
 }
 
 /**
- * Centralisation of the functions to send mail
+ * use Notification class instead of this
  * Deprecated since 4.0:
- * Please use functions in NOTIFICATION class instead
  */
 function getMailFooter()
 {
@@ -2193,9 +2010,8 @@ function isValidMailAddress($address)
 	return NOTIFICATION::address_validation($address);
 }
 /**
- * Centralisation of the functions that deals XML entities
+ * use Entity class instead of this
  * Deprecated since 4.0:
- * Please use Entity::FunctionName(...) instead
  */
 function highlight($text, $expression, $highlight)
 {
@@ -2230,7 +2046,6 @@ function encode_desc($data)
  * This functions is based on the old way to deal with languages
  * Deprecated since 4.0:
  */
-/* NOTE: use i18n::get_current_locale() directly instead of this */
 function getLanguageName()
 {
 	if( ($language = i18n::convert_locale_to_old_language_file_name(i18n::get_current_locale())) === FALSE )
@@ -2239,21 +2054,21 @@ function getLanguageName()
 	}
 	return $language;
 }
-/* NOTE: this is completely deprecated because generating much warnings */
 function selectLanguage($language)
 {
 	global $DIR_LANG;
 	include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
 	return;
 }
-
-/* NOTE: use i18n::get_available_locales() directly instead of this */
+/**
+ * use i18n class instead of these
+ * Deprecated since 4.0
+ */
 function checkLanguage($lang)
 {
 	return ( preg_match('#^(.+)_(.+)_(.+)$#', $lang)
 	  || i18n::convert_old_language_file_name_to_locale($lang) );
 }
-/* NOTE: use i18n::formatted_datetime() directly instead of this */
 function formatDate($format, $timestamp, $default_format, &$blog)
 {
 	$offset = date('Z', $timestamp);
@@ -2263,10 +2078,16 @@ function formatDate($format, $timestamp, $default_format, &$blog)
 	}
 	return i18n::formatted_datetime($format, $timestamp, $offset, $default_format);
 }
+
 /**
- * NOTE: use DB::formatDateTime() directly instead of this
- * @deprecated
+ * use DB class instead of these
+ * Deprecated since 4.0
  */
+function quickQuery($query)
+{
+	$row = DB::getRow($query);
+	return $row['result'];
+}
 function mysqldate($timestamp)
 {
 	return DB::formatDateTime($timestamp);
@@ -2307,4 +2128,195 @@ function createLink($type, $params)
 function createBlogLink($url, $params)
 {
 	return Link::create_blog_link($url, $params);
+}
+/**
+ * use ActionLog class instead of this
+ * Deprecated since 4.0
+ */
+function addToLog($level, $msg)
+{
+	ActionLog::add($level, $msg);
+}
+/**
+ * use PHP's implement
+ * Deprecated since 4.0
+ */
+function ifset(&$var)
+{
+	if ( isset($var) )
+	{
+		return $var;
+	}
+	
+	return NULL;
+}
+/**
+ * use Manager::getPluginNameFromPid() instead of this
+ * Deprecated since 4.0
+ */
+function getPluginNameFromPid($pid)
+{
+	global $manager;
+	return $manager->getPluginNameFromPid($pid);
+}
+/**
+ * use Manager::numberOfEventSubscribers() instead of this
+ * Deprecated since 4.0
+ */
+function numberOfEventSubscribers($event)
+{
+	global $manager;
+	return $manager->getNumberOfSubscribers($event);
+}
+
+/**
+ * PluginAdmin has already the alternative implement
+ * Deprecated since 4.0
+ */
+function ticketForPlugin()
+{
+	global $CONF, $DIR_LIBS, $DIR_LOCALES, $DIR_PLUGINS, $manager, $member, $ticketforplugin;
+	
+	/* initialize */
+	$ticketforplugin = array();
+	$ticketforplugin['ticket'] = FALSE;
+	
+	/* Check if using plugin's php file. */
+	$p_translated = serverVar('SCRIPT_FILENAME');
+	
+	if (!file_exists($p_translated) )
+	{
+		header("HTTP/1.0 404 Not Found");
+		exit('');
+	}
+	
+	// check whether this is plugin or not
+	$p_translated = str_replace('\\', '/', $p_translated);
+	$d_plugins = str_replace('\\', '/', $DIR_PLUGINS);
+	if ( i18n::strpos($p_translated, $d_plugins) !== 0 )
+	{
+		return;
+	}
+	
+	// Solve the plugin php file or admin directory
+	$phppath = i18n::substr($p_translated, i18n::strlen($d_plugins) );
+	// Remove the first "/" if exists.
+	$phppath = preg_replace('#^/#', '', $phppath);
+	// Remove the first "NP_" and the last ".php" if exists.
+	$path = preg_replace('#^NP_(.*)\.php$#', '$1', $phppath);
+	// Remove the "/" and beyond.
+	$path = preg_replace('#^([^/]*)/(.*)$#', '$1', $path);
+	
+	// Solve the plugin name.
+	$plugins = array();
+	$query = sprintf('SELECT pfile FROM %s;', sql_table('plugin'));
+	$res = DB::getResult($query);
+	
+	foreach ( $res as $row )
+	{
+		$name = i18n::substr($row['pfile'], 3);
+		$plugins[strtolower($name)] = $name;
+	}
+	
+	$res->closeCursor();
+	
+	if ( !array_key_exists($path, $plugins) )
+	{
+		header("HTTP/1.0 404 Not Found");
+		exit('');
+	}
+	else
+	{
+		$plugin_name = $plugins[$path];
+	}
+	
+	/* Return if not index.php */
+	if ( ($phppath != strtolower($plugin_name) . '/')
+	  && ($phppath != strtolower($plugin_name) . '/index.php') )
+	{
+		return;
+	}
+	
+	/* Exit if not logged in. */
+	if ( !$member->isLoggedIn() )
+	{
+		exit('You aren\'t logged in.');
+	}
+	
+	/* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
+	if ( $file = @file($p_translated) )
+	{
+		$prevline = '';
+		
+		foreach($file as $line)
+		{
+			if (preg_match('#[\$]manager([\s]*)[\-]>([\s]*)checkTicket([\s]*)[\(]#i', $prevline . $line) )
+			{
+				return;
+			}
+			
+			$prevline = $line;
+		}
+	}
+	
+	/* Show a form if not valid ticket */
+	if ( (i18n::strpos(serverVar('REQUEST_URI'), '?') !== FALSE
+	  || serverVar('QUERY_STRING')
+	  || strtoupper(serverVar('REQUEST_METHOD') ) == 'POST')
+	  && !$manager->checkTicket() )
+	{
+		$oPluginAdmin = new PluginAdmin($plugin_name);
+		$oPluginAdmin->start();
+		
+		echo '<p>' . _ERROR_BADTICKET . "</p>\n";
+		
+		// Resolve URI and QUERY_STRING
+		if ($uri = serverVar('REQUEST_URI') )
+		{
+			list($uri, $qstring) = preg_split('#\?#', $uri);
+		}
+		else
+		{
+			if ( !($uri = serverVar('PHP_SELF') ) )
+			{
+				$uri = serverVar('SCRIPT_NAME');
+			}
+			$qstring = serverVar('QUERY_STRING');
+		}
+		if ($qstring)
+		{
+			$qstring = '?' . $qstring;
+		}
+		
+		echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . Entity::hsc($plugin_name) . "</span> ?</p>\n";
+		
+		switch(strtoupper(serverVar('REQUEST_METHOD') ) )
+		{
+			case 'POST':
+				echo '<form method="POST" action="'.Entity::hsc($uri.$qstring).'">';
+				$manager->addTicketHidden();
+				_addInputTags($_POST);
+				break;
+			
+			case 'GET':
+				echo '<form method="GET" action="'.Entity::hsc($uri).'">';
+				$manager->addTicketHidden();
+				_addInputTags($_GET);
+			
+			default:
+				break;
+		}
+		
+		echo '<input type="submit" value="' . _YES . '" />&nbsp;&nbsp;&nbsp;&nbsp;';
+		echo '<input type="button" value="' . _NO . '" onclick="history.back(); return false;" />';
+		echo "</form>\n";
+		
+		$oPluginAdmin->end();
+		exit;
+	}
+	
+	/* Create new ticket */
+	$ticket=$manager->addTicketToUrl('');
+	$ticketforplugin['ticket'] = preg_split($ticket, i18n::strpos($ticket, 'ticket=') + 7);
+	return;
 }

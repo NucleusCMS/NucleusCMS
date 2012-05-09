@@ -72,12 +72,12 @@ function listplug_select($template, $type)
 	switch( $type )
 	{
 		case 'HEAD':
-			echo '<select name="' . ifset($template['name']) . '" tabindex="' . ifset($template['tabindex']) . '" ' . ifset($template['javascript']) . ">\n";
+			echo "<select name=\"{$template['name']}\" tabindex=\"{$template['tabindex']}\" {$template['javascript']}>\n";
 			
 			// add extra row if needed
-			if ( ifset($template['extra']) )
+			if ( array_key_exists('extra', $template) && !empty($template['extra']) )
 			{
-				echo '<option value="', ifset($template['extraval']), '">', $template['extra'], "</option>\n";
+				echo "<option value=\"{$template['extraval']}\">{$template['extra']}</option>\n";
 			}
 			
 			break;
