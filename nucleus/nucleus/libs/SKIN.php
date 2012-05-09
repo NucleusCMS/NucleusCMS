@@ -372,10 +372,10 @@ class Skin
 		// call action handler
 		$action_class = $this->action_class;
 		$handler = new $action_class($type);
-		$handler->setSkin($this);
 		
 		// register action handler to parser
 		$parser = new Parser($handler);
+		$parser->setSkin($this);
 		$parser->parse($contents);
 		
 		$data = array(

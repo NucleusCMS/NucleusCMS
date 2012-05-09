@@ -28,9 +28,6 @@ class Actions extends BaseActions
 	// generating links to items/archives/... (e.g. catid)
 	private $linkparams;
 	
-	// reference to the skin object for which a part is being parsed
-	private $skin;
-	
 	// used when including templated forms from the include/ dir. The $formdata var
 	// contains the values to fill out in there (assoc array name -> value)
 	private $formdata;
@@ -256,18 +253,6 @@ class Actions extends BaseActions
 		$defined_actions = array_merge(self::$default_actions, $extra_actions);
 		
 		return array_merge($defined_actions, parent::getAvailableActions());
-	}
-	
-	/**
-	 * Actions::setSkin()
-	 * Set the skin
-	 * @param	object	$skin	an instance of Skin class
-	 * @return	void
-	 */
-	public function setSkin(&$skin)
-	{
-		$this->skin =& $skin;
-		return;
 	}
 	
 	/**
@@ -2131,7 +2116,7 @@ class Actions extends BaseActions
 	 */
 	public function parse_skinname()
 	{
-		echo $this->skin->getName();
+		echo $this->parser->skin->getName();
 		return;
 	}
 	

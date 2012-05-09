@@ -183,10 +183,10 @@ class BaseActions
 	 * BaseActions::parse_parsedinclude()
 	 * parsed include
 	 * 
-	 * @param	string	$filename	filename to be included
+	 * @param	string	$name	filename to be included
 	 * @return	void
 	 */
-	public function parse_parsedinclude($filename)
+	public function parse_parsedinclude($name)
 	{
 		// check current level
 		if ( $this->level > 3 )
@@ -195,14 +195,15 @@ class BaseActions
 			return;
 		}
 		
-		$file = $this->getIncludeFileName($filename);
-		
+		$file = $this->getIncludeFileName($name);
 		if ( !file_exists($file) )
 		{
-			return;
+			$contents = $this->parser->skin->getContentFromDB($name);
 		}
-		
-		$contents = file_get_contents($file);
+		else
+		{
+			$contents = file_get_contents($file);
+		}
 		
 		if ( empty($contents) )
 		{

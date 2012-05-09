@@ -33,6 +33,9 @@ class Parser
 	// reference to actions handler
 	public $handler;
 	
+	// reference to an instance of Skin class
+	public $skin;
+	
 	// delimiters that can be used for skin/templatevars
 	public $delim;
 	
@@ -149,6 +152,18 @@ class Parser
 				}
 			}
 		}
+		return;
+	}
+	
+	/**
+	 * Parser::setSkin()
+	 * Set the skin
+	 * @param	object	$skin	an instance of Skin class
+	 * @return	void
+	 */
+	public function setSkin(&$skin)
+	{
+		$this->skin = &$skin;
 		return;
 	}
 	
