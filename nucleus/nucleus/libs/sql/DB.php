@@ -24,6 +24,7 @@ class DB
 	private static $dateFormat = '\'%Y-%m-%d %H:%M:%S\'';
 	
 	/**
+	 * DB::setConnectionInfo()
 	 * Set the information to connect to the database, it will attempt to connect.
 	 * @param string $engine Engine
 	 * @param string $host Host
@@ -126,6 +127,7 @@ class DB
 	}
 
 	/**
+	 * DB::disConnect()
 	 * Disconnect the connection to the database.
 	 */
 	public static function disConnect()
@@ -134,6 +136,7 @@ class DB
 	}
 
 	/**
+	 * DB::getExecCount()
 	 * To get the number of times you run the statement.
 	 * @return int Number of executions
 	 */
@@ -143,6 +146,7 @@ class DB
 	}
 
 	/**
+	 * DB::formatDateTime()
 	 * The value converted to a format that can be passed to the database datetime.
 	 * @param int $timestamp UNIX timestamp
 	 * @param int $offset timestamp offset
@@ -162,6 +166,7 @@ class DB
 	}
 	
 	/**
+	 * DB::getValue()
 	 * Gets the value of the first column of the first row of the results obtained in the statement.
 	 * @param string $statement SQL Statement
 	 * @return mixed Result value. If the call fails, it will return FALSE.
@@ -170,15 +175,16 @@ class DB
 	{
 		if ( self::$dbh == null ) return FALSE;
 		self::$execCount++;
-		$stmt = &self::$dbh->query($statement);
-		if ( $result = $stmt->fetch(PDO::FETCH_NUM) )
+		$result = self::showErrorDisplay(self::$dbh->query($statement));
+		if ( $row = $result->fetch(PDO::FETCH_NUM) )
 		{
-			return $result[0];
+			return $row[0];
 		}
 		return FALSE;
 	}
 
 	/**
+	 * DB::getRow()
 	 * Gets the first row of the results obtained in the statement.
 	 * @param string $statement SQL Statement
 	 * @return array Result row. If the call fails, it will return FALSE.
@@ -187,10 +193,12 @@ class DB
 	{
 		if ( self::$dbh == null ) return FALSE;
 		self::$execCount++;
-		return self::$dbh->query($statement)->fetch(PDO::FETCH_BOTH);
+		$result = self::showErrorDisplay(self::$dbh->query($statement));
+		return $result->fetch(PDO::FETCH_BOTH);
 	}
 
 	/**
+	 * DB::getResult()
 	 * Gets the set of results obtained in the statement.
 	 * @param string $statement SQL Statement
 	 * @return PDOStatement Result set object. If the call fails, it will return FALSE.
@@ -199,10 +207,11 @@ class DB
 	{
 		if ( self::$dbh == null ) return FALSE;
 		self::$execCount++;
-		return self::$dbh->query($statement);
+		return self::showErrorDisplay(self::$dbh->query($statement));
 	}
 
 	/**
+	 * DB::execute()
 	 * Execute an SQL statement and return the number of affected rows.
 	 * @param string $statement SQL Statement
 	 * @return int number of rows that were modified or deleted by the SQL statement you issued.
@@ -211,10 +220,31 @@ class DB
 	{
 		if ( self::$dbh == null ) return FALSE;
 		self::$execCount++;
-		return self::$dbh->exec($statement);
+		return self::showErrorDisplay(self::$dbh->exec($statement));
+	}
+
+	/**
+	 * DB::showErrorDisplay()
+	 * On the display query execution result query has an error in the case of FALSE.
+	 * @param mixed $result Query execution result
+	 * @return mixes Query execution result
+	 */
+	private static function showErrorDisplay($result)
+	{
+		global $CONF;
+		if ( array_key_exists('debug', $CONF) && $CONF['debug'] )
+		{
+			if ( $result === FALSE )
+			{
+				$err = self::getError();
+				print('mySQL error with query $query: ' . $err[2]);
+			}
+		}
+		return $result;
 	}
 	
 	/**
+	 * DB::getError()
 	 * Gets the error information associated with the last operation.
 	 * @return array Error info
 	 */
@@ -225,6 +255,7 @@ class DB
 	}
 
 	/**
+	 * DB::quoteValue()
 	 * Quotes a string for use in a query.
 	 * @param string $value Value to quote
 	 * @return string Quoted value
@@ -236,6 +267,7 @@ class DB
 	}
 
 	/**
+	 * DB::getInsertId()
 	 * Get the value of the ID of the rows that are inserted at the end.
 	 * @return string ID of the row
 	 */
@@ -246,6 +278,7 @@ class DB
 	}
 
 	/**
+	 * DB::getAttribute()
 	 * Gets the attribute of the database.
 	 * @return string Attribute
 	 */
