@@ -91,7 +91,7 @@ class Notification
 			$bitcount = '7bit';
 		}
 		
-		$header  = 'Content-Type: text/html; charset=' . self::$charset . "; format=flowed; delsp=yes\n";
+		$header  = 'Content-Type: text/plain; charset=' . self::$charset . "; format=flowed; delsp=yes\n";
 		$header .= "Content-Transfer-Encoding: {$bitcount}\n";
 		$header .= "X-Mailer: Nucleus CMS NOTIFICATION class\n";
 		
