@@ -28,14 +28,15 @@ class Item
 	 * 
 	 * @static
 	 */
-	static private $actiontypes
-		= array('addnow', 'adddraft', 'addfuture', 'edit', 'changedate', 'backtodrafts', 'delete');
+	static private $actiontypes = array(
+		'addnow', 'adddraft', 'addfuture', 'edit',
+		'changedate', 'backtodrafts', 'delete'
+	);
 	
 	/**
 	 * Item::$itemid
 	 * item id
 	 * @deprecated
-	 * 
 	 */
 	public $itemid;
 	
@@ -56,12 +57,12 @@ class Item
 	/**
 	 * Item::getitem()
 	 * Returns one item with the specific itemid
-	 *
+	 * 
+	 * @static
 	 * @param int $item_id
 	 * @param bool $allow_draft
 	 * @param bool $allow_future
 	 * @return mixed
-	 * 
 	 */
 	static public function getitem($item_id, $allow_draft, $allow_future)
 	{
@@ -110,10 +111,7 @@ class Item
 			$aItemInfo['timestamp'] = strtotime($aItemInfo['itime']);
 			return $aItemInfo;
 		}
-		else
-		{
-			return 0;
-		}
+		return 0;
 	}
 	
 	/**
@@ -224,18 +222,19 @@ class Item
 		//Setting the itemOptions
 		$aOptions = requestArray('plugoption');
 		NucleusPlugin::apply_plugin_options($aOptions, $itemid);
-		$manager->notify('PostPluginOptionsUpdate', array(
-			'context' => 'item',
-			'itemid' => $itemid,
-			'item' => array(
-				'title' => $i_title,
-				'body' => $i_body,
-				'more' => $i_more,
-				'closed' => $i_closed,
-				'catid' => $i_catid
-				)
+		$data = array(
+			'context'	=> 'item',
+			'itemid'	=> $itemid,
+			'item'		=> array(
+				'title'		=> $i_title,
+				'body'		=> $i_body,
+				'more'		=> $i_more,
+				'closed'	=> $i_closed,
+				'catid'		=> $i_catid
 			)
 		);
+		
+		$manager->notify('PostPluginOptionsUpdate', $data);
 		
 		if ( $i_draftid > 0 )
 		{
@@ -248,10 +247,8 @@ class Item
 		{
 			return array('status' => 'newcategory', 'itemid' => $itemid, 'catid' => $i_catid);
 		}
-		else
-		{
-			return array('status' => 'added', 'itemid' => $itemid);
-		}
+		
+		return array('status' => 'added', 'itemid' => $itemid);
 	}
 	
 	/**
@@ -269,7 +266,6 @@ class Item
 	 * @param	boolean	$publish	published or not
 	 * @param	timestamp	$timestamp	timestamp
 	 * @return	void
-	 * 
 	 */
 	static public function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0)
 	{
@@ -299,7 +295,7 @@ class Item
 		}
 		
 		// call plugins
-		$manager->notify('PreUpdateItem', array(
+		$data = array(
 			'itemid'	=> $itemid,
 			'title'		=> &$title,
 			'body'		=> &$body,
@@ -307,8 +303,8 @@ class Item
 			'blog'		=> &$blog,
 			'closed'	=> &$closed,
 			'catid'		=> &$catid
-			)
 		);
+		$manager->notify('PreUpdateItem', $data);
 		
 		// update item itself
 		$query =  'UPDATE ' . sql_table('item')
@@ -319,7 +315,8 @@ class Item
 				. ' iclosed = ' . intval($closed) . ','
 				. ' icat = ' . intval($catid);
 		
-		// if we received an updated timestamp that is in the past, but past posting is not allowed, reject that date change (timestamp = 0 will make sure the current date is kept)
+		// if we received an updated timestamp that is in the past, but past posting is not allowed,
+		// reject that date change (timestamp = 0 will make sure the current date is kept)
 		if ( (!$blog->allowPastPosting()) && ($timestamp < $blog->getCorrectTime()) )
 		{
 			$timestamp = 0;
@@ -387,18 +384,18 @@ class Item
 		//update the itemOptions
 		$aOptions = requestArray('plugoption');
 		NucleusPlugin::apply_plugin_options($aOptions);
-		$manager->notify('PostPluginOptionsUpdate', array(
-			'context' => 'item',
-			'itemid' => $itemid,
-			'item' => array(
-				'title' => $title,
-				'body' => $body,
-				'more' => $more,
-				'closed' => $closed,
-				'catid' => $catid
-				)
+		$data = array(
+			'context'	=> 'item',
+			'itemid'	=> $itemid,
+			'item'		=> array(
+				'title'		=> $title,
+				'body'		=> $body,
+				'more'		=> $more,
+				'closed'	=> $closed,
+				'catid'		=> $catid
 			)
 		);
+		$manager->notify('PostPluginOptionsUpdate', $data);
 		return;
 	}
 	
@@ -415,18 +412,16 @@ class Item
 	{
 		global $manager;
 		
-		$itemid			= (integer) $itemid;
-		$new_catid	= (integer) $new_catid;
-		$new_blogid	= getBlogIDFromCatID($new_catid);
+		$itemid = (integer) $itemid;
+		$new_catid = (integer) $new_catid;
+		$new_blogid = getBlogIDFromCatID($new_catid);
 		
-		$manager->notify(
-			'PreMoveItem',
-			array(
-				'itemid' => $itemid,
-				'destblogid' => $new_blogid,
-				'destcatid' => $new_catid
-			)
+		$data = array(
+			'itemid'		=> $itemid,
+			'destblogid'	=> $new_blogid,
+			'destcatid'		=> $new_catid
 		);
+		$manager->notify('PreMoveItem', $data);
 		
 		// update item table
 		$query = "UPDATE %s SET iblog=%d, icat=%d WHERE inumber=%d";
@@ -438,14 +433,12 @@ class Item
 		$query = sprintf($query, sql_table('comment'), $new_blogid, $itemid);
 		DB::execute($query);
 		
-		$manager->notify(
-			'PostMoveItem',
-			array(
-				'itemid' => $itemid,
-				'destblogid' => $new_blogid,
-				'destcatid' => $new_catid
-			)
+		$data = array(
+			'itemid'		=> $itemid,
+			'destblogid'	=> $new_blogid,
+			'destcatid'		=> $new_catid
 		);
+		$manager->notify('PostMoveItem', $data);
 		return;
 	}
 	
@@ -471,12 +464,12 @@ class Item
 		$manager->notify('PreDeleteItem', array('itemid' => $itemid));
 		
 		// delete item
-		$query = "DELETE FROM %s WHERE inumber=%d";
+		$query = "DELETE FROM %s WHERE inumber=%d;";
 		$query = sprintf($query, sql_table('item'), $itemid);
 		DB::execute($query);
 		
 		// delete the comments associated with the item
-		$query = "DELETE FROM %s WHERE citem=%d";
+		$query = "DELETE FROM %s WHERE citem=%d;";
 		$query = sprintf($query, sql_table('comment'), $itemid);
 		DB::execute($query);
 		
@@ -497,14 +490,15 @@ class Item
 	 * @param	boolean	$future
 	 * @param	boolean	$draft
 	 * @return	boolean	exists or not
-	 * 
 	 */
 	static public function exists($itemid, $future, $draft)
 	{
 		global $manager;
 		
 		$itemid = (integer) $itemid;
-		$query = 'select * FROM '.sql_table('item').' WHERE inumber='.$itemid;
+		
+		$query = 'SELECT * FROM %s WHERE inumber=%d';
+		$query = sprintf($query, sql_table('item'), $itemid);
 		
 		if ( !$future )
 		{
@@ -514,12 +508,14 @@ class Item
 				return 0;
 			}
 			$blog =& $manager->getBlog($blogid);
-			$query .= ' and itime<=' . DB::formatDateTime($blog->getCorrectTime());
+			$query .= ' AND itime<=' . DB::formatDateTime($blog->getCorrectTime());
 		}
+		
 		if ( !$draft )
 		{
-			$query .= ' and idraft=0';
+			$query .= ' AND idraft=0';
 		}
+		
 		$result = DB::getResult($query);
 		return ( $result->rowCount() != 0 );
 	}
@@ -536,7 +532,6 @@ class Item
 	 * @static
 	 * @param	void
 	 * @return	array	(status = added/error/newcategory, message)
-	 *
 	 */
 	static public function createDraftFromRequest()
 	{
@@ -545,14 +540,14 @@ class Item
 		/*
 		 * TODO: these values from user agent should be validated but not implemented yet
 		 */
-		$i_author		= $member->getID();
-		$i_body			= postVar('body');
-		$i_title		= postVar('title');
-		$i_more			= postVar('more');
-		$i_closed		= intPostVar('closed');
-		$i_catid		= postVar('catid');
-		$i_draft		= 1;
-		$type				= postVar('type');
+		$i_author	= $member->getID();
+		$i_body		= postVar('body');
+		$i_title	= postVar('title');
+		$i_more		= postVar('more');
+		$i_closed	= intPostVar('closed');
+		$i_catid	= postVar('catid');
+		$i_draft	= 1;
+		$type		= postVar('type');
 		$i_draftid	= intPostVar('draftid');
 		
 		if ( $type == 'edit' )
