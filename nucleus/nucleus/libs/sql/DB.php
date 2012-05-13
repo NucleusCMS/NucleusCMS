@@ -175,7 +175,7 @@ class DB
 	{
 		if ( self::$dbh == null ) return FALSE;
 		self::$execCount++;
-		$result = self::showErrorDisplay(self::$dbh->query($statement));
+		$result = self::callQuery($statement);
 		if ( $row = $result->fetch(PDO::FETCH_NUM) )
 		{
 			return $row[0];
@@ -193,7 +193,7 @@ class DB
 	{
 		if ( self::$dbh == null ) return FALSE;
 		self::$execCount++;
-		$result = self::showErrorDisplay(self::$dbh->query($statement));
+		$result = self::callQuery($statement);
 		return $result->fetch(PDO::FETCH_BOTH);
 	}
 
@@ -207,40 +207,68 @@ class DB
 	{
 		if ( self::$dbh == null ) return FALSE;
 		self::$execCount++;
-		return self::showErrorDisplay(self::$dbh->query($statement));
+		return self::callQuery($statement);
 	}
 
 	/**
 	 * DB::execute()
 	 * Execute an SQL statement and return the number of affected rows.
 	 * @param string $statement SQL Statement
-	 * @return int number of rows that were modified or deleted by the SQL statement you issued.
+	 * @return int number of rows that were modified or deleted by the SQL statement you issued. If the call fails, it will return FALSE.
 	 */
 	public static function execute($statement)
 	{
 		if ( self::$dbh == null ) return FALSE;
 		self::$execCount++;
-		return self::showErrorDisplay(self::$dbh->exec($statement));
+		return self::callExec($statement);
 	}
 
 	/**
-	 * DB::showErrorDisplay()
-	 * On the display query execution result query has an error in the case of FALSE.
-	 * @param mixed $result Query execution result
-	 * @return mixes Query execution result
+	 * DB::callQuery()
+	 * Run the query to retrieve the result set.
+	 * @param string $statement query to be executed
+	 * @return PDOStatement Result set object. If the call fails, it will return FALSE.
 	 */
-	private static function showErrorDisplay($result)
+	private static function callQuery($statement)
+	{
+		$result = self::$dbh->query($statement);
+		if ( $result === FALSE )
+		{
+			self::showErrorDisplay($statement);
+		}
+		return $result;
+	}
+	
+	/**
+	 * DB::callExec()
+	 * Run the query and returns the number of rows affected.
+	 * @param string $statement query to be executed
+	 * @return int number of rows that were modified or deleted by the SQL statement you issued. If the call fails, it will return FALSE.
+	 */
+	private static function callExec($statement)
+	{
+		$result = self::$dbh->exec($statement);
+		if ( $result === FALSE )
+		{
+			self::showErrorDisplay($statement);
+		}
+		return $result;
+	}
+	
+	/**
+	 * DB::showErrorDisplay()
+	 * The error message is output to the screen of the query.
+	 * @param string $statement query output to the screen
+	 */
+	private static function showErrorDisplay($statement)
 	{
 		global $CONF;
 		if ( array_key_exists('debug', $CONF) && $CONF['debug'] )
 		{
-			if ( $result === FALSE )
-			{
-				$err = self::getError();
-				print('mySQL error with query $query: ' . $err[2]);
-			}
+			$err = self::getError();
+			print("mySQL error with query '{$statement}' : " . $err[2]);
 		}
-		return $result;
+		return;
 	}
 	
 	/**
