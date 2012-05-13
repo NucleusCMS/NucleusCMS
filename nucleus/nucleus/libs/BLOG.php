@@ -342,8 +342,9 @@ class Blog
 		$ititle = DB::quoteValue($title);
 		$ibody = DB::quoteValue($body);
 		$imore = DB::quoteValue($more);
+		$timestamp = DB::formatDateTime(strtotime($timestamp));
 		
-		$query = "INSERT INTO %s (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) VALUES (%s, %s, %s, %d, %d, '%s', %s, %s, %s, %s)";
+		$query = "INSERT INTO %s (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) VALUES (%s, %s, %s, %d, %d, %s, %s, %s, %s, %s)";
 		$query = sprintf($query, sql_table('item'), $ititle, $ibody, $imore, $blogid, $authorid, $timestamp, $closed, $draft, $catid, $posted);
 		DB::execute($query);
 		$itemid = DB::getInsertId();

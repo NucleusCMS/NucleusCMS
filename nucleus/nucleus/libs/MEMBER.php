@@ -1171,8 +1171,15 @@ class Member
 			
 			// attempt to add entry in database
 			// add in database as non-active
-			$query = 'INSERT INTO ' . sql_table('activation'). ' (vkey, vtime, vmember, vtype, vextra) ';
-			$query .= 'VALUES (' . DB::quoteValue($key). ', \'' . date('Y-m-d H:i:s',time()) . '\', ' . intval($this->getID()). ', ' . DB::quoteValue($type). ', ' . DB::quoteValue($extra). ')';
+			$query = 'INSERT INTO %s (vkey, vtime, vmember, vtype, vextra) VALUES (%s, %s, %d, %s, %s)';
+			$query = sprintf($query
+				, sql_table('activation')
+				, DB::quoteValue($key)
+				, DB::formatDateTime()
+				, intval($this->getID())
+				, DB::quoteValue($type)
+				, DB::quoteValue($extra)
+			);
 			if ( DB::execute($query) !== FALSE )
 				$ok = true;
 		}
@@ -1254,7 +1261,8 @@ class Member
 		$boundary = time() - (60 * 60 * 24 * $actdays);
 		
 		// 1. walk over all entries, and see if special actions need to be performed
-		$res = DB::getResult('SELECT * FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
+		$query = sprintf('SELECT * FROM %s WHERE vtime < %s', sql_table('activation'), DB::formatDateTime($boundary));
+		$res = DB::getResult($query);
 		
 		foreach ( $res as $row )
 		{
@@ -1279,7 +1287,8 @@ class Member
 		}
 		
 		// 2. delete activation entries for real
-		DB::execute('DELETE FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
+		$query = sprintf('DELETE FROM %s WHERE vtime < %s', sql_table('activation'), DB::formatDateTime($boundary));
+		DB::execute($query);
 		return;
 	}
 	

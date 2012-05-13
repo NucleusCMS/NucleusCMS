@@ -329,7 +329,7 @@ class Comments
 		$host		= DB::quoteValue($comment['host']);
 		$ip			= DB::quoteValue($comment['ip']);
 		$memberid	= intval($comment['memberid']);
-		$timestamp	= date('Y-m-d H:i:s', $comment['timestamp']);
+		$timestamp	= DB::formatDateTime($comment['timestamp']);
 		$itemid		= $this->itemid;
 		
 		$qSql       = 'SELECT COUNT(*) AS result '
@@ -347,8 +347,9 @@ class Comments
 			return _ERROR_BADACTION;
 		}
 		
-		$query = 'INSERT INTO '.sql_table('comment').' (CUSER, CMAIL, CEMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CIP, CBLOG) '
-			   . "VALUES ($name, $url, $email, $memberid, $body, $itemid, '$timestamp', $host, $ip, '$blogid')";
+		$query = sprintf('INSERT INTO %s (cuser, cmail, cemail, cmember, cbody, citem, ctime, chost, cip, cblog) '
+			. 'VALUES (%s, %s, %s, %d, %s, %d, %s, %s, %s, %d)'
+			, sql_table('comment'), $name, $url, $email, $memberid, $body, $itemid, $timestamp, $host, $ip, $blogid);
 		
 		DB::execute($query);
 		

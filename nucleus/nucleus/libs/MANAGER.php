@@ -731,8 +731,8 @@ class Manager
 	{
 		// remove tickets older than 1 hour
 		$oldTime = time() - 60 * 60;
-		$query = "DELETE FROM %s WHERE ctime < '%s';";
-		$query = sprintf($query, sql_table('tickets'), date('Y-m-d H:i:s',$oldTime));
+		$query = 'DELETE FROM %s WHERE ctime < %s';
+		$query = sprintf($query, sql_table('tickets'), DB::formatDateTime($oldTime));
 		DB::execute($query);
 		return;
 	}
@@ -769,9 +769,8 @@ class Manager
 				$ticket = md5(uniqid(rand(), true));
 				
 				// add in database as non-active
-				$query = "INSERT INTO %s (ticket, member, ctime)"
-				       . " VALUES (%s, %d, '%s');";
-				$query = sprintf($query, sql_table('tickets'), DB::quoteValue($ticket), (integer) $memberId, date('Y-m-d H:i:s',time()));
+				$query = 'INSERT INTO %s (ticket, member, ctime) VALUES (%s, %d, %s)';
+				$query = sprintf($query, sql_table('tickets'), DB::quoteValue($ticket), (integer) $memberId, DB::formatDateTime());
 				
 				if ( DB::execute($query) !== FALSE )
 				{
