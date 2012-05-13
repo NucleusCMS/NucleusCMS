@@ -23,114 +23,132 @@ require_once dirname(__FILE__) . '/COMMENTACTIONS.php';
 
 class Comments
 {
-
-	// item for which comment are being displayed
-	var $itemid;
-
 	// reference to the itemActions object that is calling the showComments function
-	var $itemActions;
-
+	public $itemActions;
+	
+	// item for which comment are being displayed
+	public $itemid;
+	
 	// total amount of comments displayed
-	var $commentcount;
-
+	public $commentcount;
+	
 	/**
+	 * Comments::__construct()
 	 * Creates a new Comments object for the given blog and item
 	 *
-	 * @param $itemid
-	 *		id of the item
+	 * @param	integer	$itemid	id of the item
+	 * @return	void
 	 */
-	function COMMENTS($itemid) {
-		$this->itemid = intval($itemid);
+	public function __construct($itemid)
+	{
+		$this->itemid = (integer) $itemid;
+		return;
 	}
 	
 	/**
+	 * Comments::setItemActions()
 	 * Used when parsing comments
 	 *
-	 * @param $itemActions
-	 *		itemActions object, that will take care of the parsing
+	 * @param	object	$itemActions	itemActions object, that will take care of the parsing
+	 * @return	void
 	 */
-	function setItemActions(&$itemActions) {
+	public function setItemActions(&$itemActions)
+	{
 		$this->itemActions =& $itemActions;
+		return;
 	}
-
+	
 	/**
+	 * Comments::showComments()
 	 * Shows maximum $max comments to the given item using the given template
 	 * returns the amount of shown comments (if maxToShow = -1, then there is no limit)
 	 *
-	 * @param template
-	 *		template to use
-	 * @param maxToShow
-	 *		max. comments to show
-	 * @param showNone
-	 *		indicates if the 'no comments' thingie should be outputted when there are no comments
-	 *		(useful for closed items)
-	 * @param highlight
-	 *		Highlight to use (if any)
+	 * @param	array	template	template to use
+	 * @param	integer	maxToShow	max. comments to show
+	 * @param	integer	showNone	indicates if the 'no comments' thingie should be outputted
+	 * 								when there are no comments (useful for closed items)
+	 * @param	string	highlight	Highlight to use (if any)
+	 * @return	integer	number of comments
 	 */
-	function showComments($template, $maxToShow = -1, $showNone = 1, $highlight = '') {
+	public function showComments($template, $maxToShow = -1, $showNone = 1, $highlight = '')
+	{
 		global $CONF, $manager;
-
+		
+		if ( $maxToShow == 0 )
+		{
+			$this->commentcount = $this->amountComments();
+		}
+		else
+		{
+			$query = 'SELECT citem as itemid, cnumber as commentid, cbody as body, cuser as user, cmail as userid, '
+			       . 'cemail as email, cmember as memberid, ctime, chost as host, cip as ip, cblog as blogid '
+			       . 'FROM %s as c WHERE citem=%d ORDER BY ctime';
+			
+			$query = sprintf($query, sql_table('comment'), (integer) $this->itemid);
+			$comments = DB::getResult($query);
+			$this->commentcount = $comments->rowCount();
+		}
+		
 		// create parser object & action handler
 		$handler = new CommentActions($this);
 		$handler->setTemplate($template);
 		
 		$parser = new Parser($handler);
 		
-		if ($maxToShow == 0) {
-			$this->commentcount = $this->amountComments();
-		} else {
-			$query =  'SELECT c.citem as itemid, c.cnumber as commentid, c.cbody as body, c.cuser as user, c.cmail as userid, c.cemail as email, c.cmember as memberid, c.ctime, c.chost as host, c.cip as ip, c.cblog as blogid'
-				   . ' FROM '.sql_table('comment').' as c'
-				   . ' WHERE c.citem=' . $this->itemid
-				   . ' ORDER BY c.ctime';
-
-			$comments = DB::getResult($query);
-			$this->commentcount = $comments->rowCount();
-		}
-
 		// if no result was found
-		if ($this->commentcount == 0) {
+		if ( $this->commentcount == 0 )
+		{
 			// note: when no reactions, COMMENTS_HEADER and COMMENTS_FOOTER are _NOT_ used
-			if ($showNone) $parser->parse($template['COMMENTS_NONE']);
+			if ( $showNone )
+			{
+				$parser->parse($template['COMMENTS_NONE']);
+			}
 			return 0;
 		}
-
+		
 		// if too many comments to show
-		if (($maxToShow != -1) && ($this->commentcount > $maxToShow)) {
+		if ( ($maxToShow != -1) && ($this->commentcount > $maxToShow) )
+		{
 			$parser->parse($template['COMMENTS_TOOMUCH']);
 			return 0;
 		}
-
+		
 		$parser->parse($template['COMMENTS_HEADER']);
-
-		foreach ( $comments as $comment ) {
+		
+		foreach ( $comments as $comment )
+		{
 			$comment['timestamp'] = strtotime($comment['ctime']);
 			$handler->setCurrentComment($comment);
 			$handler->setHighlight($highlight);
+			
 			$manager->notify('PreComment', array('comment' => &$comment));
 			$parser->parse($template['COMMENTS_BODY']);
 			$manager->notify('PostComment', array('comment' => &$comment));
 		}
-
+		
 		$parser->parse($template['COMMENTS_FOOTER']);
-
+		
 		$comments->closeCursor();
-
+		
 		return $this->commentcount;
 	}
-
+	
 	/**
+	 * Comments::amountComments()
 	 * Returns the amount of comments for this itemid
+	 * 
+	 * @param	void
+	 * @return	integer	number of comments
 	 */
-	function amountComments() {
-		$query =  'SELECT COUNT(*)'
-			   . ' FROM '.sql_table('comment').' as c'
-			   . ' WHERE c.citem='. $this->itemid;
+	public function amountComments()
+	{
+		$query = 'SELECT COUNT(*) FROM %s WHERE citem=%d;';
+		$query = sprintf($query, sql_table('comment'), (integer) $this->itemid);
 		$res = DB::getValue($query);
-
+		
 		return $res;
 	}
-
+	
 	/**
 	 * Comments::addComment()
 	 * Adds a new comment to the database
@@ -139,7 +157,7 @@ class Comments
 	 * @param array $comment
 	 * @return mixed
 	 */
-	function addComment($timestamp, $comment)
+	public function addComment($timestamp, $comment)
 	{
 		global $CONF, $member, $manager;
 		
@@ -233,12 +251,12 @@ class Comments
 			$p = $manager->getPlugin($plugin);
 			$continue = $continue || $p->supportsFeature('handleSpam');
 		}
-
+		
 		$spamcheck = array(
-			'type'  	=> 'comment',
+			'type'		=> 'comment',
 			'body'		=> $comment['body'],
-			'id'        => $comment['itemid'],
-			'live'   	=> TRUE,
+			'id'		=> $comment['itemid'],
+			'live'		=> TRUE,
 			'return'	=> $continue
 		);
 		
@@ -265,7 +283,6 @@ class Comments
 		
 		// isValidComment returns either "1" or an error message
 		$isvalid = $this->isValidComment($comment, $spamcheck);
-		
 		if ( $isvalid != 1 )
 		{
 			return $isvalid;
@@ -332,15 +349,15 @@ class Comments
 		$timestamp	= DB::formatDateTime($comment['timestamp']);
 		$itemid		= $this->itemid;
 		
-		$qSql       = 'SELECT COUNT(*) AS result '
-					. 'FROM ' . sql_table('comment')
-					. ' WHERE '
-					.      'cmail   = ' . $url
-					. ' AND cmember = ' . $memberid
-					. ' AND cbody   = ' . $body
-					. ' AND citem   = ' . $itemid
-					. ' AND cblog   = ' . $blogid;
-		$result     = (integer) DB::getValue($qSql);
+		$qSql = 'SELECT COUNT(*) AS result '
+		      . 'FROM ' . sql_table('comment')
+		      . ' WHERE '
+		      .      'cmail   = ' . $url
+		      . ' AND cmember = ' . $memberid
+		      . ' AND cbody   = ' . $body
+		      . ' AND citem   = ' . $itemid
+		      . ' AND cblog   = ' . $blogid;
+		$result = (integer) DB::getValue($qSql);
 		
 		if ( $result > 0 )
 		{
@@ -360,17 +377,17 @@ class Comments
 		// succeeded !
 		return TRUE;
 	}
-
-
+	
 	/**
 	 * Comments::isValidComment()
 	 * Checks if a comment is valid and call plugins
 	 * that can check if the comment is a spam comment	  
 	 * 
-	 * @param	Array	$comment	array with comment elements
-	 * @param	Array	$spamcheck	array with spamcheck elements
+	 * @param	array	$comment	array with comment elements
+	 * @param	array	$spamcheck	array with spamcheck elements
+	 * @return	boolean	valid or not
 	 */
-	function isValidComment(&$comment, &$spamcheck)
+	private function isValidComment(&$comment, &$spamcheck)
 	{
 		global $member, $manager;
 		
