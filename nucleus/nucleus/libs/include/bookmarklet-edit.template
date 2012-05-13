@@ -24,7 +24,7 @@
 		</script>
 	</head>
 	<body>
-		<h1><%text(_EDIT_ITEM)%> (<%contents(itemid)%>)</h1>
+		<h1><%text(_EDIT_ITEM)%> (<%contents(title)%>)</h1>
 		<form id="editform" method="post" action="bookmarklet.php" ><div>
 			
 			<input name="action" type="hidden" value="edititem" />
