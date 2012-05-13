@@ -913,10 +913,7 @@ class Admin
 		
 		if ( $mode == 'category' )
 		{
-			if ( $blogs->rowCount() > 1 )
-			{
-				$multipleBlogs = 1;
-			}
+			$multipleBlogs = ($blogs->rowCount() > 1);
 			
 			foreach ( $blogs as $row )
 			{
@@ -7013,11 +7010,11 @@ selector();
 		global $manager;
 		
 		/* get current registered plugin option list in this context even if it's not used */
-		$query = "SELECT * FROM %s AS plugins, %s AS options LEFT OUTER JOIN %s AS added "
-		       . "ON ( options.oid=added.oid AND options.ocontext=%s  AND added.ocontextid=%d) "
-		       . "WHERE plugins.pid=options.opid "
-		       . "ORDER BY options.oid ASC;";
-		$query = sprintf($query, sql_table('plugin'), sql_table('plugin_option_desc'), sql_table('plugin_option'), DB::quoteValue($context), DB::quoteValue($contextid));
+		$query = 'SELECT * FROM %s AS plugins, %s AS options LEFT OUTER JOIN %s AS added '
+		       . 'ON ( options.oid=added.oid ) '
+		       . 'WHERE plugins.pid=options.opid AND options.ocontext=%s AND added.ocontextid=%d '
+		       . 'ORDER BY options.oid ASC';
+		$query = sprintf($query, sql_table('plugin'), sql_table('plugin_option_desc'), sql_table('plugin_option'), DB::quoteValue($context), intval($contextid));
 		
 		$res = DB::getResult($query);
 		
