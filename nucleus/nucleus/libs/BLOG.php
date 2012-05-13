@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2009 The Nucleus Group
+ * Copyright (C) 2002-2012 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -38,47 +38,46 @@ class Blog
 	var $settings;
 
 	/**
+	 * Blog::_\construct()
 	 * Creates a new BLOG object for the given blog
 	 *
-	 * @param $id blogid
+	 * @param	integer	$id	blogid
+	 * @return	void
 	 */
-	function BLOG($id) {
-		$this->blogid = intval($id);
-		$this->readSettings();
-
-		// try to set catid
-		// (the parse functions in SKIN.php will override this, so it's mainly useless)
+	public function __construct($id)
+	{
 		global $catid;
+		
+		$this->blogid = (integer) $id;
+		$this->readSettings();
 		$this->setSelectedCategory($catid);
+		return;
 	}
-
+	
 	/**
+	 * Blog::readLog()
 	 * Shows the given amount of items for this blog
 	 *
-	 * @param $template
-	 *		String representing the template _NAME_ (!)
-	 * @param $amountEntries
-	 *		amount of entries to show
-	 * @param $startpos
-	 *		offset from where items should be shown (e.g. 5 = start at fifth item)
-	 * @returns int
-	 *		amount of items shown
+	 * @param	string	$template	String representing the template _NAME_ (!)
+	 * @param	integer	$amountEntries	amount of entries to show
+	 * @param	integer	$startpos	offset from where items should be shown (e.g. 5 = start at fifth item)
+	 * @return	integer	amount of items shown
 	 */
-	function readLog($template, $amountEntries, $offset = 0, $startpos = 0) {
+	public function readLog($template, $amountEntries, $offset = 0, $startpos = 0)
+	{
 		return $this->readLogAmount($template,$amountEntries,'','',1,1,$offset, $startpos);
 	}
-
+	
 	/**
 	 * Blog::showArchive()
 	 * Shows an archive for a given month
 	 *
-	 * @param integer	$year		year
-	 * @param integer	$month		month
-	 * @param string	$template	String representing the template name to be used
-	 * @return void
-	 * 
+	 * @param	integer	$year		year
+	 * @param	integer	$month		month
+	 * @param	string	$template	String representing the template name to be used
+	 * @return	void
 	 */
-	function showArchive($templatename, $year, $month=0, $day=0)
+	public function showArchive($templatename, $year, $month=0, $day=0)
 	{
 		// create extra where clause for select query
 		if ( $day == 0 && $month != 0 )
@@ -104,74 +103,85 @@ class Blog
 		$this->readLogAmount($templatename,0,$extra_query,'',1,1);
 		return;
 	}
-
+	
 	/**
+	 * Blog::setSelectedCategory()
 	 * Sets the selected category by id (only when category exists)
+	 * 
+	 * @param	integer	$catid	ID for category
+	 * @return	void
 	 */
-	function setSelectedCategory($catid) {
-		if ($this->isValidCategory($catid) || (intval($catid) == 0))
+	public function setSelectedCategory($catid)
+	{
+		if ( $this->isValidCategory($catid) || (intval($catid) == 0) )
+		{
 			$this->selectedcatid = intval($catid);
+		}
+		return;
 	}
-
+	
 	/**
+	 * Blog::setSelectedCategoryByName()
 	 * Sets the selected category by name
+	 * 
+	 * @param	string	$catname	name of category
+	 * @return	void
 	 */
-	function setSelectedCategoryByName($catname) {
+	public function setSelectedCategoryByName($catname)
+	{
 		$this->setSelectedCategory($this->getCategoryIdFromName($catname));
+		return;
 	}
-
+	
 	/**
+	 * Blog::getSelectedCategory()
 	 * Returns the selected category
+	 * 
+	 * @param	void
+	 * @return	integer
 	 */
-	function getSelectedCategory() {
+	public function getSelectedCategory()
+	{
 		return $this->selectedcatid;
 	}
-
+	
 	/**
 	 * Shows the given amount of items for this blog
 	 *
-	 * @param $template
-	 *		String representing the template _NAME_ (!)
-	 * @param $amountEntries
-	 *		amount of entries to show (0 = no limit)
-	 * @param $extraQuery
-	 *		extra conditions to be added to the query
-	 * @param $highlight
-	 *		contains a query that should be highlighted
-	 * @param $comments
-	 *		1=show comments 0=don't show comments
-	 * @param $dateheads
-	 *		1=show dateheads 0=don't show dateheads
-	 * @param $offset
-	 *		offset
-	 * @returns int
-	 *		amount of items shown
+	 * @param	string	$template		string representing the template _NAME_ (!)
+	 * @param	integer	$amountEntries	amount of entries to show (0 = no limit)
+	 * @param	string	$extraQuery		extra conditions to be added to the query
+	 * @param	string	$highlight		contains a query that should be highlighted
+	 * @param	integer	$comments		1=show comments 0=don't show comments
+	 * @param	integer	$dateheads		1=show dateheads 0=don't show dateheads
+	 * @param	integer	$offset			offset
+	 * @return	integer	amount of items shown
 	 */
-	function readLogAmount($template, $amountEntries, $extraQuery, $highlight, $comments, $dateheads, $offset = 0, $startpos = 0) {
-
+	private function readLogAmount($template, $amountEntries, $extraQuery, $highlight, $comments, $dateheads, $offset = 0, $startpos = 0)
+	{
 		$query = $this->getSqlBlog($extraQuery);
-
-		if ($amountEntries > 0) {
-				// $offset zou moeten worden:
-				// (($startpos / $amountentries) + 1) * $offset ... later testen ...
-			   $query .= ' LIMIT ' . intval($startpos + $offset).',' . intval($amountEntries);
+		
+		if ( $amountEntries > 0 )
+		{
+			// $offset zou moeten worden:
+			// (($startpos / $amountentries) + 1) * $offset ... later testen ...
+			$query .= ' LIMIT ' . intval($startpos + $offset).',' . intval($amountEntries);
 		}
 		return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
 	}
-
+	
 	/**
 	 * Blog::showUsingQuery()
 	 * Do the job for readLogAmmount
 	 * 
-	 * @param	string		$templateName	template name
-	 * @param	string		$query			string for query
-	 * @param	string		$highlight		string to be highlighted
+	 * @param	string	$templateName	template name
+	 * @param	string	$query			string for query
+	 * @param	string	$highlight		string to be highlighted
 	 * @param	integer	$comments		the number of comments
 	 * @param	boolean	$dateheads		date header is needed or not
 	 * @return	integer	the number of rows as a result of mysql query
-	 * 
-	 */	
-	function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1)
+	 */
+	private function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1)
 	{
 		global $CONF, $manager, $currentTemplateName;
 		
@@ -201,7 +211,8 @@ class Blog
 		$old_date = 0;
 		foreach ( $items as $item )
 		{
-			$item['timestamp'] = strtotime($item['itime']);	// string timestamp -> unix timestamp
+			// string timestamp -> unix timestamp
+			$item['timestamp'] = strtotime($item['itime']);
 			
 			// action handler needs to know the item we're handling
 			$handler->setCurrentItem($item);
@@ -219,13 +230,13 @@ class Blog
 						$oldTS = strtotime($old_date);
 						$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
 						
-						if ( in_array('DATE_FOOTER', $template) && !empty($template['DATE_FOOTER']) )
+						if ( !in_array('DATE_FOOTER', $template) || empty($template['DATE_FOOTER']) )
 						{
-							$tmp_footer = i18n::formatted_datetime($template['DATE_FOOTER'], $oldTS);
+							$tmp_footer = '';
 						}
 						else
 						{
-							$tmp_footer = '';
+							$tmp_footer = i18n::formatted_datetime($template['DATE_FOOTER'], $oldTS);
 						}
 						$parser->parse($tmp_footer);
 						$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
@@ -235,13 +246,13 @@ class Blog
 					
 					// note, to use templatvars in the dateheader, the %-characters need to be doubled in
 					// order to be preserved by strftime
-					if ( in_array('DATE_HEADER', $template) && !empty($template['DATE_HEADER']) )
+					if ( !in_array('DATE_HEADER', $template) || empty($template['DATE_HEADER']) )
 					{
-						$tmp_header = i18n::formatted_datetime($template['DATE_HEADER'], $timestamp);
+						$tmp_header = '';
 					}
 					else
 					{
-						$tmp_header = '';
+						$tmp_header = i18n::formatted_datetime($template['DATE_HEADER'], $timestamp);
 					}
 					$parser->parse($tmp_header);
 					$manager->notify('PostDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
@@ -272,37 +283,43 @@ class Blog
 	}
 	
 	/**
+	 * Blog::showOneitem()
 	 * Simplified function for showing only one item
+	 * 
+	 * @param	integer	$itemid		ID for item
+	 * @param	array	$template	template for item
+	 * @param	string	$highlight	string for highlight
+	 * @return	integer	1
 	 */
-	function showOneitem($itemid, $template, $highlight) {
+	public function showOneitem($itemid, $template, $highlight)
+	{
 		$extraQuery = ' and inumber=' . intval($itemid);
-
+		
 		return $this->readLogAmount($template, 1, $extraQuery, $highlight, 0, 0);
 	}
-
-
+	
 	/**
 	 * Blog::addItem()
 	 * Adds an item to this blog
 	 * 
-	 * @param	Integer	$catid	ID for category
-	 * @param	String 	$title	ID for 
-	 * @param	String 	$body	text for body
-	 * @param	String 	$more	text for more
-	 * @param	Integer	$blogid	ID for blog
-	 * @param	Integer	$authorid	ID for author
-	 * @param	Timestamp	$timestamp	UNIX timestamp for post
-	 * @param	Boolean	$closed	opened or closed
-	 * @param	Boolean	$draft	draft or not
-	 * @param	Boolean	$posted	posted or not
-	 * @return
+	 * @param	integer		$catid	ID for category
+	 * @param	string		$title	ID for 
+	 * @param	string		$body	text for body
+	 * @param	string		$more	text for more
+	 * @param	integer		$blogid	ID for blog
+	 * @param	integer		$authorid	ID for author
+	 * @param	timestamp	$timestamp	UNIX timestamp for post
+	 * @param	boolean		$closed	opened or closed
+	 * @param	boolean		$draft	draft or not
+	 * @param	boolean		$posted	posted or not
+	 * @return	integer	ID for added item
 	 */
 	function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted='1')
 	{
 		global $manager;
 		
-		$blogid 	= intval($blogid);
-		$authorid	= intval($authorid);
+		$blogid		= (integer) $blogid;
+		$authorid	= (integer) $authorid;
 		$title		= $title;
 		$body		= $body;
 		$more		= $more;
@@ -367,12 +384,12 @@ class Blog
 	 * Blog::sendNewItemNotification()
 	 * Send a new item notification to the notification list
 	 * 
-	 * @param String	$itemid	ID of the item
-	 * @param String	$title	title of the item
-	 * @param String	$body	body of the item
-	 * @return	Void
+	 * @param	string	$itemid	ID of the item
+	 * @param	string	$title	title of the item
+	 * @param	string	$body	body of the item
+	 * @return	void
 	 */
-	function sendNewItemNotification($itemid, $title, $body)
+	public function sendNewItemNotification($itemid, $title, $body)
 	{
 		global $CONF, $member;
 		
@@ -412,124 +429,118 @@ class Blog
 	 * Blog::createNewCategory()
 	 * Creates a new category for this blog
 	 *
-	 * @param String	$catName	name of the new category. When empty, a name is generated automatically (starting with newcat)
-	 * @param String	$catDescription	description of the new category. Defaults to 'New Category'
-	 * @returns	Integer	the new category-id in case of success. 0 on failure
+	 * @param	string	$catName		name of the new category. When empty, a name is generated automatically (starting with newcat)
+	 * @param	string	$catDescription	description of the new category. Defaults to 'New Category'
+	 * @return	integer	ID for new category on success. 0 on failure
 	 */
-	function createNewCategory($catName = '', $catDescription = _CREATED_NEW_CATEGORY_DESC)
+	public function createNewCategory($catName = '', $catDescription = _CREATED_NEW_CATEGORY_DESC)
 	{
 		global $member, $manager;
 		
-		if ( $member->blogAdminRights($this->getID()) )
+		if ( !$member->blogAdminRights($this->blogid) )
 		{
-			// generate
-			if ( $catName == '' )
+			return 0;
+		}
+		
+		// generate
+		if ( $catName == '' )
+		{
+			$catName = _CREATED_NEW_CATEGORY_NAME;
+			$i = 1;
+			
+			$res = DB::getResult('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->blogid);
+			while ( $res->rowCount() > 0 )
 			{
-				$catName = _CREATED_NEW_CATEGORY_NAME;
-				$i = 1;
-				
-				$res = DB::getResult('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
-				while ( $res->rowCount() > 0 )
-				{
-					$i++;
-					$res = DB::getResult('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
-				}
-				
-				$catName = $catName . $i;
+				$i++;
+				$res = DB::getResult('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->blogid);
 			}
 			
-			$manager->notify(
-				'PreAddCategory',
-				array(
-					'blog' => &$this,
-					'name' => &$catName,
-					'description' => $catDescription
-				)
-			);
-			
-			$query = "INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, %s, %s)";
-			$query = sprintf($query, sql_table('category'), (integer) $this->getID(), DB::quoteValue($catName), DB::quoteValue($catDescription));
-			DB::execute($query);
-			$catid = DB::getInsertId();
-			
-			$manager->notify(
-				'PostAddCategory',
-				array(
-					'blog' => &$this,
-					'name' => $catName,
-					'description' => $catDescription,
-					'catid' => $catid
-				)
-			);
-			
-			return $catid;
+			$catName = $catName . $i;
 		}
-		return 0;
+		
+		$data = array(
+			'blog'			=> &$this,
+			'name'			=> &$catName,
+			'description'	=> $catDescription
+		);
+		$manager->notify('PreAddCategory', $data);
+		
+		$query = "INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, %s, %s)";
+		$query = sprintf($query, sql_table('category'), (integer) $this->blogid, DB::quoteValue($catName), DB::quoteValue($catDescription));
+		DB::execute($query);
+		$catid = DB::getInsertId();
+		
+		$data = array(
+			'blog'			=> &$this,
+			'name'			=> $catName,
+			'description'	=> $catDescription,
+			'catid'			=> $catid
+		);
+		$manager->notify('PostAddCategory', $data);
+		
+		return $catid;
 	}
 	
 	/**
+	 * Blog::search()
 	 * Searches all months of this blog for the given query
 	 *
-	 * @param $query
-	 *		search query
-	 * @param $template
-	 *		template to be used (__NAME__ of the template)
-	 * @param $amountMonths
-	 *		max amount of months to be search (0 = all)
-	 * @param $maxresults
-	 *		max number of results to show
-	 * @param $startpos
-	 *		offset
-	 * @returns
-	 *		amount of hits found
+	 * @param	string	$query			search query
+	 * @param	array	$template		template to be used (__NAME__ of the template)
+	 * @param	integer	$amountMonths	max amount of months to be search (0 = all)
+	 * @param	integer	$maxresults		max number of results to show
+	 * @param	integer	$startpos		offset
+	 * @return	amount of hits found
 	 */
-	function search($query, $template, $amountMonths, $maxresults, $startpos) {
+	public function search($query, $template, $amountMonths, $maxresults, $startpos) {
 		global $CONF, $manager;
-
+		
 		$highlight 	= '';
 		$sqlquery	= $this->getSqlSearch($query, $amountMonths, $highlight);
-
-		if ($sqlquery == '')
+		
+		if ( $sqlquery == '' )
 		{
 			// no query -> show everything
 			$extraquery = '';
 			$amountfound = $this->readLogAmount($template, $maxresults, $extraQuery, $query, 1, 1);
-		} else {
-
+		}
+		else
+		{
 			// add LIMIT to query (to split search results into pages)
-			if (intval($maxresults > 0))
-				$sqlquery .= ' LIMIT ' . intval($startpos).',' . intval($maxresults);
-
+			if ( intval($maxresults > 0) )
+			{
+				$sqlquery .= ' LIMIT ' . intval($startpos) . ',' . intval($maxresults);
+			}
+			
 			// show results
 			$amountfound = $this->showUsingQuery($template, $sqlquery, $highlight, 1, 1);
-
+			
 			// when no results were found, show a message
-			if ($amountfound == 0)
+			if ( $amountfound == 0 )
 			{
 				$template =& $manager->getTemplate($template);
 				$vars = array(
 					'query'		=> Entity::hsc($query),
-					'blogid'	=> $this->getID()
+					'blogid'	=> $this->blogid
 				);
-				echo Template::fill($template['SEARCH_NOTHINGFOUND'],$vars);
+				echo Template::fill($template['SEARCH_NOTHINGFOUND'], $vars);
 			}
 		}
-
 		return $amountfound;
 	}
-
+	
 	/**
 	 * Blog::getSqlSearch()
 	 * Returns an SQL query to use for a search query
 	 * No LIMIT clause is added. (caller should add this if multiple pages are requested)
 	 *
-	 * @param string	$query	search query
+	 * @param	string	$query			search query
 	 * @param	integer	$amountMonths	amount of months to search back. Default = 0 = unlimited
-	 * @param	string	$mode	either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
-	 * @return	string	$highlight	words to highlight (out parameter)
+	 * @param	string	$mode			either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
+	 * @return	string	$highlight		words to highlight (out parameter)
 	 * @return	string	either a full SQL query, or an empty string (if querystring empty)
 	 */
-	function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
+	public function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
 	{
 		$searchclass = new Search($query);
 		
@@ -545,9 +556,9 @@ class Blog
 		$select = $searchclass->boolean_sql_select('ititle,ibody,imore');
 		
 		// get list of blogs to search
-		$blogs 		= $searchclass->blogs; 		// array containing blogs that always need to be included
-		$blogs[]	= $this->getID();			// also search current blog (duh)
-		$blogs 		= array_unique($blogs);		// remove duplicates
+		$blogs		= $searchclass->blogs;	// array containing blogs that always need to be included
+		$blogs[]	= $this->blogid;		// also search current blog (duh)
+		$blogs		= array_unique($blogs);	// remove duplicates
 		$selectblogs = '';
 		if ( count($blogs) > 0 )
 		{
@@ -579,7 +590,7 @@ class Blog
 					// don't show future items
 				. ' and i.itime<=' . DB::formatDateTime($this->getCorrectTime())
 				. ' and '.$where;
-
+		
 		// take into account amount of months to search
 		if ( $amountMonths > 0 )
 		{
@@ -609,10 +620,10 @@ class Blog
 	 * No LIMIT clause is added. (caller should add this if multiple pages are requested)
 	 *
 	 * @param	string	$extraQuery	extra query string
-	 * @param	string	$mode			either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
+	 * @param	string	$mode		either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
 	 * @return	string	either a full SQL query, or an empty string
 	 */
-	function getSqlBlog($extraQuery, $mode = '')
+	public function getSqlBlog($extraQuery, $mode = '')
 	{
 		if ( $mode == '' )
 		{
@@ -629,14 +640,12 @@ class Blog
 				. ' WHERE i.iblog='.$this->blogid
 				. ' and i.iauthor=m.mnumber'
 				. ' and i.icat=c.catid'
-				// exclude drafts
-				. ' and i.idraft=0'
-				// don't show future items
-				. ' and i.itime<=' . DB::formatDateTime($this->getCorrectTime());
+				. ' and i.idraft=0' // exclude drafts
+				. ' and i.itime<=' . DB::formatDateTime($this->getCorrectTime()); // don't show future items
 		
-		if ( $this->getSelectedCategory() )
+		if ( $this->selectedcatid )
 		{
-			$query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
+			$query .= ' and i.icat=' . $this->selectedcatid . ' ';
 		}
 		
 		$query .= $extraQuery;
@@ -652,12 +661,12 @@ class Blog
 	 * Blog::showArchiveList()
 	 * Shows the archivelist using the given template
 	 * 
-	 * @param	String	$template	template name
-	 * @param	String	$mode	year/month/day
-	 * @param	Integer	$limit	limit of record count
-	 * @return	Void
+	 * @param	string	$template	template name
+	 * @param	string	$mode	year/month/day
+	 * @param	integer	$limit	limit of record count
+	 * @return	void
 	 */
-	function showArchiveList($template, $mode = 'month', $limit = 0)
+	public function showArchiveList($template, $mode = 'month', $limit = 0)
 	{
 		global $CONF, $catid, $manager;
 		
@@ -672,7 +681,7 @@ class Blog
 		}
 		
 		$template =& $manager->getTemplate($template);
-		$data['blogid'] = $this->getID();
+		$data['blogid'] = $this->blogid;
 		
 		if ( !array_key_exists('ARCHIVELIST_HEADER', $template) || !$template['ARCHIVELIST_HEADER'] )
 		{
@@ -687,11 +696,9 @@ class Blog
 		
 		$query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) AS Day'
 				. ' FROM '.sql_table('item')
-				. ' WHERE iblog=' . $this->getID()
-				// don't show future items!
-				. ' AND itime <=' . DB::formatDateTime($this->getCorrectTime())
-				// don't show draft items
-				. ' AND idraft=0';
+				. ' WHERE iblog=' . $this->blogid
+				. ' AND itime <=' . DB::formatDateTime($this->getCorrectTime()) // don't show future items!
+				. ' AND idraft=0'; // don't show draft items
 		
 		if ( $catid )
 		{
@@ -748,14 +755,9 @@ class Blog
 			
 			$data['year'] = date('Y',$current['itime']);
 			$archive['year'] = $data['year'];
-			$data['archivelink'] = Link::create_archive_link($this->getID(),$archivedate,$linkparams);
+			$data['archivelink'] = Link::create_archive_link($this->blogid,$archivedate,$linkparams);
 			
-			$manager->notify(
-				'PreArchiveListItem',
-				array(
-					'listitem' => &$data
-				)
-			);
+			$manager->notify('PreArchiveListItem', array('listitem' => &$data));
 			
 			$temp = Template::fill($template['ARCHIVELIST_LISTITEM'],$data);
 			echo i18n::formatted_datetime($temp, $current['itime']);
@@ -784,38 +786,36 @@ class Blog
 	 * @param	string	$template	Template Name
 	 * @return	void
 	 */
-	function showCategoryList($template)
+	public function showCategoryList($template)
 	{
-		global $CONF, $manager;
+		global $CONF, $archive, $archivelist, $manager;
 		
 		/*
 		 * determine arguments next to catids
 		 * I guess this can be done in a better way, but it works
 		 */
-		global $archive, $archivelist;
-		
 		$linkparams = array();
 		if ( $archive )
 		{
-			$blogurl = Link::create_archive_link($this->getID(), $archive, '');
-			$linkparams['blogid'] = $this->getID();
+			$blogurl = Link::create_archive_link($this->blogid, $archive, '');
+			$linkparams['blogid'] = $this->blogid;
 			$linkparams['archive'] = $archive;
 		}
 		else if ( $archivelist )
 		{
-			$blogurl = Link::create_archivelist_link($this->getID(), '');
+			$blogurl = Link::create_archivelist_link($this->blogid, '');
 			$linkparams['archivelist'] = $archivelist;
 		}
 		else
 		{
-			$blogurl = Link::create_blogid_link($this->getID(), '');
-			$linkparams['blogid'] = $this->getID();
+			$blogurl = Link::create_blogid_link($this->blogid, '');
+			$linkparams['blogid'] = $this->blogid;
 		}
 		
 		$template =& $manager->getTemplate($template);
 		
 		//: Change: Set nocatselected variable
-		if ( $this->getSelectedCategory() )
+		if ( $this->selectedcatid )
 		{
 			$nocatselected = 'no';
 		}
@@ -825,11 +825,10 @@ class Blog
 		} 
 		
 		$args = array(
-			'blogid'	=> $this->getID(),
+			'blogid'	=> $this->blogid,
 			'blogurl'	=> $blogurl,
 			'self'		=> $CONF['Self'],
-			//: Change: Set catiscurrent template variable for header
-			'catiscurrent'	=> $nocatselected,
+			'catiscurrent'	=> $nocatselected, // Change: Set catiscurrent template variable for header
 			'currentcat'	=> $nocatselected 
 		);
 		
@@ -844,7 +843,7 @@ class Blog
 		}
 		
 		$query = "SELECT catid, cdesc as catdesc, cname as catname FROM %s WHERE cblog=%d ORDER BY cname ASC;";
-		$query = sprintf($query, sql_table('category'), (integer) $this->getID());
+		$query = sprintf($query, sql_table('category'), (integer) $this->blogid);
 		$res = DB::getResult($query);
 		
 		foreach ( $res as $data )
@@ -855,7 +854,7 @@ class Blog
 				'extra'	=> $linkparams
 			);
 			
-			$data['blogid']		= $this->getID();
+			$data['blogid']		= $this->blogid;
 			$data['blogurl']	= $blogurl;
 			$data['catlink']	= Link::create_link('category', $args);
 			$data['self']		= $CONF['Self'];
@@ -864,12 +863,12 @@ class Blog
 			$data['catiscurrent'] = 'no';
 			$data['currentcat'] = 'no';
 			
-			if ( $this->getSelectedCategory() )
+			if ( $this->selectedcatid )
 			{
-				if ( $this->getSelectedCategory() == $data['catid'] )
+				if ( $this->selectedcatid == $data['catid'] )
 				{
-					$data['catiscurrent'] = 'yes';
-					$data['currentcat'] = 'yes';
+					$data['catiscurrent']	= 'yes';
+					$data['currentcat']		= 'yes';
 				}
 			}
 			else
@@ -888,11 +887,7 @@ class Blog
 				}
 			}
 			
-			$manager->notify(
-				'PreCategoryListItem',
-				array(
-					'listitem' => &$data
-				));
+			$manager->notify('PreCategoryListItem', array('listitem' => &$data));
 			
 			if ( !array_key_exists('CATLIST_LISTITEM', $template) || empty($template['CATLIST_LISTITEM']))
 			{
@@ -907,12 +902,11 @@ class Blog
 		$res->closeCursor();
 		
 		$args = array(
-			'blogid'	=> $this->getID(),
-			'blogurl'	=> $blogurl,
-			'self'		=> $CONF['Self'],
-			//: Change: Set catiscurrent template variable for footer
-			'catiscurrent'	=> $nocatselected,
-			'currentcat'	=> $nocatselected  
+			'blogid'		=> $this->blogid,
+			'blogurl'		=> $blogurl,
+			'self'			=> $CONF['Self'],
+			'catiscurrent'	=> $nocatselected, //: Change: Set catiscurrent template variable for footer
+			'currentcat'	=> $nocatselected
 		);
 		
 		if ( !array_key_exists('CATLIST_FOOTER', $template) || empty($template['CATLIST_FOOTER']))
@@ -933,13 +927,13 @@ class Blog
 	 * ordered by number, name, shortname or description
 	 * in ascending or descending order
 	 * 
-	 * @param	String	$template	tempalte name
-	 * @param	String	$bnametype	bname/bshortname
-	 * @param	String	$orderby	string for 'ORDER BY' SQL
-	 * @param	String	$direction	ASC/DESC
-	 * @return	Void
+	 * @param	string	$template	tempalte name
+	 * @param	string	$bnametype	bname/bshortname
+	 * @param	string	$orderby	string for 'ORDER BY' SQL
+	 * @param	string	$direction	ASC/DESC
+	 * @return	void
 	 */
-	function showBlogList($template, $bnametype, $orderby, $direction)
+	public function showBlogList($template, $bnametype, $orderby, $direction)
 	{
 		global $CONF, $manager;
 		
@@ -978,80 +972,92 @@ class Blog
 		
 		$template =& $manager->getTemplate($template);
 		
-		echo Template::fill((isset($template['BLOGLIST_HEADER']) ? $template['BLOGLIST_HEADER'] : null),
-			array(
-				'sitename' => $CONF['SiteName'],
-				'siteurl' => $CONF['IndexURL']
-			)
-		);
-		
-		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY '.$orderby.' '.$direction;
-		$res = DB::getResult($query);
-		
-		foreach ( $res as $data )
+		if ( array_key_exists('BLOGLIST_HEADER', $template) && !empty($template['BLOGLIST_HEADER']) )
 		{
-			$list = array();
-			$list['bloglink'] = Link::create_blogid_link($data['bnumber']);
-			$list['blogdesc'] = $data['bdesc'];
-			$list['blogurl'] = $data['burl'];
-			
-			if ( $bnametype == 'shortname' )
-			{
-				$list['blogname'] = $data['bshortname'];
-			}
-			else
-			{
-				/* all other cases */
-				$list['blogname'] = $data['bname'];
-			}
-			
-			$manager->notify(
-				'PreBlogListItem',
-				array(
-					'listitem' => &$list
-				)
+			$vars = array(
+				'sitename'	=> $CONF['SiteName'],
+				'siteurl'	=> $CONF['IndexURL']
 			);
 			
-			echo Template::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
+			echo Template::fill($template['BLOGLIST_HEADER'], $vars);
 		}
 		
-		$res->closeCursor();
+		if ( array_key_exists('BLOGLIST_LISTITEM', $template) && !empty($template['BLOGLIST_LISTITEM']) )
+		{
+			$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY '.$orderby.' '.$direction;
+			$res = DB::getResult($query);
+			
+			foreach ( $res as $data )
+			{
+				$list = array();
+				$list['bloglink'] = Link::create_blogid_link($data['bnumber']);
+				$list['blogdesc'] = $data['bdesc'];
+				$list['blogurl'] = $data['burl'];
+				
+				if ( $bnametype == 'shortname' )
+				{
+					$list['blogname'] = $data['bshortname'];
+				}
+				else
+				{
+					/* all other cases */
+					$list['blogname'] = $data['bname'];
+				}
+				
+				$manager->notify('PreBlogListItem',array('listitem' => &$list));
+				
+				echo Template::fill($template['BLOGLIST_LISTITEM'], $list);
+			}
+			
+			$res->closeCursor();
+		}
 		
-		echo Template::fill((isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
-			array(
+		
+		if ( array_key_exists('BLOGLIST_FOOTER', $template) && !empty($template['BLOGLIST_FOOTER']) )
+		{
+			$vars = array(
 				'sitename' => $CONF['SiteName'],
 				'siteurl' => $CONF['IndexURL']
-			)
-		);
+			);
+			echo Template::fill($template['BLOGLIST_FOOTER']);
+		}
 		return;
 	}
 	
 	/**
-	  * Read the blog settings
-	  */
-	function readSettings() {
-		$query =  'SELECT *'
-			   . ' FROM '.sql_table('blog')
-			   . ' WHERE bnumber=' . $this->blogid;
+	 * Blog::readSettings()
+	 * Read the blog settings
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function readSettings()
+	{
+		$query =  'SELECT * FROM %s WHERE bnumber=%d;';
+		$query = sprintf($query, sql_table('blog'), (integer) $this->blogid);
 		$res = DB::getResult($query);
-
+		
 		$this->isValid = ($res->rowCount() > 0);
-		if (!$this->isValid)
-			return;
-
-		$this->settings = $res->fetch(PDO::FETCH_ASSOC);
+		if ( $this->isValid )
+		{
+			$this->settings = $res->fetch(PDO::FETCH_ASSOC);
+		}
+		return;
 	}
-
+	
 	/**
-	  * Write the blog settings
-	  */
-	function writeSettings() {
-
+	 * Blog::writeSettings()
+	 * Write the blog settings
+	 */
+	public function writeSettings()
+	{
 		// (can't use floatval since not available prior to PHP 4.2)
 		$offset = $this->getTimeOffset();
-		if (!is_float($offset))
-			$offset = intval($offset);
-
+		if ( !is_float($offset) )
+		{
+			$offset = (integer) $offset;
+		}
+		
 		$query =  'UPDATE '.sql_table('blog')
 			   . ' SET bname=' . DB::quoteValue($this->getName()) . ','
 			   . '     bshortname='. DB::quoteValue($this->getShortName()) . ','
@@ -1070,262 +1076,507 @@ class Blog
 			   . '     bdefcat=' . intval($this->getDefaultCategory()) . ','
 			   . '     bdefskin=' . intval($this->getDefaultSkin()) . ','
 			   . '     bincludesearch=' . intval($this->getSearchable())
-			   . ' WHERE bnumber=' . intval($this->getID());
+			   . ' WHERE bnumber=' . intval($this->blogid);
 		DB::execute($query);
-
+		return;
 	}
-
+	
 	/**
-	  * Update the update file if requested
-	  */	
-	function updateUpdatefile() {
-		 if ($this->getUpdateFile()) {
-			$f_update = fopen($this->getUpdateFile(),'w');
+	 * Blog::updateUpdatefile()
+	 * Update the update file if requested
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function updateUpdatefile()
+	{
+		if ( $this->getUpdateFile() )
+		{
+			$f_update = fopen($this->getUpdateFile(), 'w');
 			fputs($f_update,$this->getCorrectTime());
 			fclose($f_update);
-		 }
-
+		}
+		return;
 	}
-
+	
 	/**
-	  * Check if a category with a given catid is valid
-	  * 
-	  * @param $catid
-	  * 	category id
-	  */
-	function isValidCategory($catid) {
-		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
+	 * Blog::isValidCategory()
+	 * Check if a category with a given catid is valid
+	 * 
+	 * @param	integer	$catid	ID for category
+	 * @return	boolean	exists or not
+	 */
+	public function isValidCategory($catid)
+	{
+		$query = 'SELECT * FROM %s WHERE cblog=%d and catid=%d;';
+		$query = sprintf($query, sql_table('category'), (integer) $this->blogid, (integer) $catid);
 		$res = DB::getResult($query);
 		return ($res->rowCount() != 0);
 	}
-
+	
 	/**
-	  * Get the category name for a given catid
-	  * 
-	  * @param $catid
-	  * 	category id
-	  */
-	function getCategoryName($catid) {
-		$res = DB::getValue('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+	 * Blog::getCategoryName()
+	 * Get the category name for a given catid
+	 * 
+	 * @param	integer	$catid	ID for category
+	 * @return	string	name of category
+	 */
+	public function getCategoryName($catid)
+	{
+		$query = 'SELECT cname FROM %s WHERE cblog=%d and catid=%d;';
+		$query = sprintf($query, sql_table('category'), (integer) $this->blogid, (integer) $catid);
+		$res = DB::getValue($query);
 		return $res;
 	}
-
+	
 	/**
-	  * Get the category description for a given catid
-	  * 
-	  * @param $catid
-	  * 	category id
-	  */
-	function getCategoryDesc($catid) {
-		$res = DB::getValue('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+	 * Blog::getCategoryDesc()
+	 * Get the category description for a given catid
+	 * 
+	 * @param $catid
+	 * 	category id
+	 */
+	public function getCategoryDesc($catid)
+	{
+		$query = 'SELECT cdesc FROM %s WHERE cblog=%d and catid=%d;';
+		$query = sprintf($querym, sql_table('category'), (integer) $this->blogid, (integer) $catid);
+		$res = DB::getValue();
 		return $res;
 	}
-
+	
 	/**
-	  * Get the category id for a given category name
-	  * 
-	  * @param $name
-	  * 	category name
-	  */
-	function getCategoryIdFromName($name) {
-		$res = DB::getValue('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . DB::quoteValue($name) . '"');
-		if ( $res ) {
-			return $res;
-		} else {
+	 * Blog::getCategoryIdFromName
+	 * Get the category id for a given category name
+	 * 
+	 * @param	string	$name	category name
+	 * @return	ID for category
+	 */
+	public function getCategoryIdFromName($name)
+	{
+		$query = 'SELECT catid FROM %s WHERE cblog=%d and cname=%s;';
+		$query = sprintf($query, sql_table('category'), (integer) $this->blogid, DB::quoteValue($name));
+		
+		$res = DB::getValue();
+		if ( !$res )
+		{
 			return $this->getDefaultCategory();
 		}
-	}
-
-	/**
-	  * Get the the setting for the line break handling
-	  * [should be named as getConvertBreaks()]
-	  */
-	function convertBreaks() {
-		return $this->getSetting('bconvertbreaks');
+		return $res;
 	}
 	
 	/**
-	  * Set the the setting for the line break handling
-	  * 
-	  * @param $val
-	  * 	new value for bconvertbreaks
-	  */
-	function setConvertBreaks($val) {
-		$this->setSetting('bconvertbreaks',$val);
-	}
-
-	/**
-	  * Insert a javascript that includes information about the settings
-	  * of an author:  ConvertBreaks, MediaUrl and AuthorId
-	  * 
-	  * @param $authorid
-	  * 	id of the author
-	  */	
-	function insertJavaScriptInfo($authorid = '') {
+	 * Blog::insertJavaScriptInfo()
+	 * Insert a javascript that includes information about the settings
+	 * of an author:  ConvertBreaks, MediaUrl and AuthorId
+	 * 
+	 * @param	$authorid	id of the author
+	 */
+	public function insertJavaScriptInfo($authorid = '')
+	{
 		global $member, $CONF;
-
-		if ($authorid == '')
+		
+		if ( $authorid == '' )
+		{
 			$authorid = $member->getID();
-
-		?>
-		<script type="text/javascript">
-			setConvertBreaks(<?php echo  $this->convertBreaks() ? 'true' : 'false' ?>);
-			setMediaUrl("<?php echo $CONF['MediaURL']?>");
-			setAuthorId(<?php echo $authorid?>);
-		</script><?php	
-	}
-
-	/**
-	  * Set the the setting for allowing to publish postings in the past
-	  * 
-	  * @param $val
-	  * 	new value for ballowpast
-	  */
-	function setAllowPastPosting($val) {
-		$this->setSetting('ballowpast',$val);
+		}
+		
+		echo "<script type=\"text/javascript\">\n";
+		
+		if ( !$this->convertBreaks() )
+		{
+			echo "setConvertBreaks(FALSE):\n";
+		}
+		else
+		{
+			echo "setConvertBreaks(TRUE):\n";
+		}
+		echo "setMediaUrl('{$CONF['MediaURL']}');\n";
+		echo "setAuthorId('{$authorid}');\n";
+		echo "</script>\n";
+		return;
 	}
 	
 	/**
-	  * Get the the setting if it is allowed to publish postings in the past
-	  * [should be named as getAllowPastPosting()]
-	  */
-	function allowPastPosting() {
+	 * Blog::setAllowPastPosting()
+	 * Set the the setting for allowing to publish postings in the past
+	 * 
+	 * @param	boolean	$val	new value for ballowpast
+	 * @return	void
+	 */
+	public function setAllowPastPosting($val)
+	{
+		$this->setSetting('ballowpast', $val);
+		return;
+	}
+	
+	/**
+	 * Blog::allowPastPosting()
+	 * Get the the setting if it is allowed to publish postings in the past
+	 * [should be named as getAllowPastPosting()]
+	 * 
+	 * @param	void
+	 * @return	boolean
+	 */
+	public function allowPastPosting()
+	{
 		return $this->getSetting('ballowpast');
 	}
-
-	function getCorrectTime($t=0) {
-		if ($t == 0) $t = time();
+	
+	/**
+	 * Blog::getCorrectTime()
+	 * 
+	 * @param	integer	$t
+	 * @return	integer
+	 */
+	public function getCorrectTime($t=0)
+	{
+		if ( $t == 0 )
+		{
+			$t = time();
+		}
 		return ($t + 3600 * $this->getTimeOffset());
 	}
-
-	function getName() {
+	
+	/**
+	 * Blog::getName()
+	 * 
+	 * @param	void
+	 * @return	string name of this weblog
+	 */
+	public function getName()
+	{
 		return $this->getSetting('bname');
 	}
-
-	function getShortName() {
+	
+	/**
+	 * Blog::getShortName()
+	 * 
+	 * @param	void
+	 * @return	string	short name of this weblog
+	 */
+	public function getShortName()
+	{
 		return $this->getSetting('bshortname');
 	}
-
-	function getMaxComments() {
+	
+	/**
+	 * Blog::getMaxComments()
+	 * 
+	 * @param	void
+	 * @return	integer	maximum number of comments
+	 */
+	public function getMaxComments()
+	{
 		return $this->getSetting('bmaxcomments');
 	}
-
-	function getNotifyAddress() {
+	
+	/**
+	 * Blog::getNotifyAddress()
+	 * 
+	 * @param	void
+	 * @return	string	mail address for notifying
+	 */
+	public function getNotifyAddress()
+	{
 		return $this->getSetting('bnotify');
 	}
-
-	function getNotifyType() {
+	
+	/**
+	 * Blog::getNotifyType()
+	 * 
+	 * @param	void
+	 * @return	integer	notifycation type
+	 */
+	public function getNotifyType()
+	{
 		return $this->getSetting('bnotifytype');
 	}
-
-	function notifyOnComment() {
+	
+	/**
+	 * Blog::notifyOnComment()
+	 * 
+	 * @param	void
+	 * @return	boolean
+	 */
+	public function notifyOnComment()
+	{
 		$n = $this->getNotifyType();
 		return (($n != 0) && (($n % 3) == 0));
 	}
-
-	function notifyOnVote() {
+	
+	/**
+	 * Blog::notifyOnVote()
+	 * 
+	 * @param	void
+	 * @return	boolean
+	 */
+	public function notifyOnVote()
+	{
 		$n = $this->getNotifyType();
 		return (($n != 0) && (($n % 5) == 0));
 	}
-
-	function notifyOnNewItem() {
+	
+	/**
+	 * Blog::notifyOnNewItem()
+	 * 
+	 * @param	void
+	 * @return	boolean
+	 */
+	public function notifyOnNewItem()
+	{
 		$n = $this->getNotifyType();
 		return (($n != 0) && (($n % 7) == 0));
 	}
-
-	function setNotifyType($val) {
+	
+	/**
+	 * Blog::setNotifyType()
+	 * 
+	 * @param	integer	$val
+	 * @return	void
+	 */
+	public function setNotifyType($val)
+	{
 		$this->setSetting('bnotifytype',$val);
-	}
-
-
-	function getTimeOffset() {
-		return $this->getSetting('btimeoffset');
-	}
-
-	function commentsEnabled() {
-		return $this->getSetting('bcomments');
-	}
-
-	function getURL() {
-		return $this->getSetting('burl');
-	}
-
-	function getDefaultSkin() {
-		return $this->getSetting('bdefskin');
-	}
-
-	function getUpdateFile() {
-		return $this->getSetting('bupdate');
-	}
-
-	function getDescription() {
-		return $this->getSetting('bdesc');
-	}
-
-	function isPublic() {
-		return $this->getSetting('bpublic');
-	}
-
-	function emailRequired() {
-		return $this->getSetting('breqemail');
-	}
-
-	function getSearchable() {
-		return $this->getSetting('bincludesearch');
-	}
-
-	function getDefaultCategory() {
-		return $this->getSetting('bdefcat');
-	}
-
-	function setPublic($val) {
-		$this->setSetting('bpublic',$val);
-	}
-
-	function setSearchable($val) {
-		$this->setSetting('bincludesearch',$val);
-	}
-
-	function setDescription($val) {
-		$this->setSetting('bdesc',$val);
-	}
-
-	function setUpdateFile($val) {
-		$this->setSetting('bupdate',$val);
-	}
-
-	function setDefaultSkin($val) {
-		$this->setSetting('bdefskin',$val);
-	}
-
-	function setURL($val) {
-		$this->setSetting('burl',$val);
-	}
-
-	function setName($val) {
-		$this->setSetting('bname',$val);
-	}
-
-	function setShortName($val) {
-		$this->setSetting('bshortname',$val);
-	}
-
-	function setCommentsEnabled($val) {
-		$this->setSetting('bcomments',$val);
-	}
-
-	function setMaxComments($val) {
-		$this->setSetting('bmaxcomments',$val);
-	}
-
-	function setNotifyAddress($val) {
-		$this->setSetting('bnotify',$val);
-	}
-
-	function setEmailRequired($val) {
-		$this->setSetting('breqemail',$val);
+		return;
 	}
 	
+	/**
+	 * Blog::getTimeOffset()
+	 * @param	void
+	 * @return	
+	 */
+	public function getTimeOffset()
+	{
+		return $this->getSetting('btimeoffset');
+	}
+	
+	/**
+	 * Blog::commentsEnabled()
+	 * @param	void
+	 * @return	integer	enabled or not
+	 */
+	public function commentsEnabled()
+	{
+		return $this->getSetting('bcomments');
+	}
+	
+	/**
+	 * Blog::getURL()
+	 * @param	void
+	 * @return	string	URI for this weblog
+	 */
+	public function getURL()
+	{
+		return $this->getSetting('burl');
+	}
+	
+	/**
+	 * Blog::getDefaultSkin()
+	 * @param	void
+	 * @return	name of skin as default for this weblog
+	 */
+	public function getDefaultSkin()
+	{
+		return $this->getSetting('bdefskin');
+	}
+	
+	/**
+	 * Blog::getUpdateFile()
+	 * @param	void
+	 * @return	string	name of file to be updated when weblog is updated
+	 */
+	public function getUpdateFile()
+	{
+		return $this->getSetting('bupdate');
+	}
+	
+	/**
+	 * Blog::getDescription()
+	 * @param	void
+	 * @return	string	description for this weblog
+	 */
+	public function getDescription()
+	{
+		return $this->getSetting('bdesc');
+	}
+	
+	/**
+	 * Blog::isPublic()
+	 * @param	void
+	 * @return	integer	publlic or not
+	 */
+	public function isPublic()
+	{
+		return $this->getSetting('bpublic');
+	}
+	
+	/**
+	 * Blog::emailRequired()
+	 * @param	void
+	 * @return	integer	email is required when posting comment or not
+	 */
+	public function emailRequired()
+	{
+		return $this->getSetting('breqemail');
+	}
+	
+	/**
+	 * Blog::getSearchable()
+	 * @param	void
+	 * @return	integer	searchable or not
+	 */
+	public function getSearchable()
+	{
+		return $this->getSetting('bincludesearch');
+	}
+	
+	/**
+	 * Blog::getDefaultCategory()
+	 * @param	void
+	 * @return	ID for category as a default
+	 */
+	public function getDefaultCategory()
+	{
+		return $this->getSetting('bdefcat');
+	}
+	
+	/**
+	 * Blog::setPublic()
+	 * @param	integer	$val	allow comments by non-registered members or not
+	 * @return	void
+	 */
+	public function setPublic($val)
+	{
+		$this->setSetting('bpublic', $val);
+		return;
+	}
+	
+	/**
+	 * Blog::setSearchable()
+	 * @param	integer	$val	searchable from the other blogs or not
+	 * @return	void
+	 */
+	public function setSearchable($val)
+	{
+		$this->setSetting('bincludesearch', $val);
+		return;
+	}
+	
+	/**
+	 * Blog::setDescription
+	 * @param	string	$val	description for this weblog
+	 * @return	void
+	 */
+	public function setDescription($val)
+	{
+		$this->setSetting('bdesc',$val);
+		return;
+	}
+	
+	/**
+	 * Blog::setUpdateFile()
+	 * @param	string	$val	name of file to beupdated when weblog is updated
+	 * @return	
+	 */
+	public function setUpdateFile($val)
+	{
+		$this->setSetting('bupdate',$val);
+		return;
+	}
+	
+	/**
+	 * Blog::setDefaultSkin()
+	 * @param	integer	$val	ID for default skin to use when displaying this weblog
+	 * @return	void
+	 */
+	public function setDefaultSkin($val)
+	{
+		$this->setSetting('bdefskin', $val);
+		return;
+	}
+	
+	/**
+	 * Blog::setURL()
+	 * @param	string	$val	URI for this weblog
+	 * @return	
+	 */
+	public function setURL($val)
+	{
+		$this->setSetting('burl', $val);
+		return;
+	}
+	
+	/**
+	 * Blog::setName()
+	 * @param	string	$val	name of this weblog
+	 * @return	void
+	 */
+	public function setName($val)
+	{
+		$this->setSetting('bname', $val);
+		return;
+	}
+	
+	/**
+	 * Blog::setShortName()
+	 * @param	string	$val	short name for this weblog
+	 * @return	void
+	 */
+	public function setShortName($val)
+	{
+		$this->setSetting('bshortname', $val);
+		return;
+	}
+	
+	/**
+	 * Blog::setCommentsEnabled()
+	 * @param	integer	$val	enabling posting comment or not
+	 * @return	void
+	 */
+	public function setCommentsEnabled($val)
+	{
+		$this->setSetting('bcomments',$val);
+		return;
+	}
+	
+	/**
+	 * Blog::setMaxComments()
+	 * @param	integer	$val	maximum number of comments for this weblog
+	 * @return	void
+	 */
+	public function setMaxComments($val)
+	{
+		$this->setSetting('bmaxcomments', $val);
+		return;
+	}
+	
+	/**
+	 * Blog::setNotifyAddress()
+	 * @param	string	$val	email to be notified if weblog updated
+	 * @return	void
+	 */
+	public function setNotifyAddress($val)
+	{
+		$this->setSetting('bnotify', $val);
+		return;
+	}
+	
+	/**
+	 * Blog::setEmailRequired()
+	 * @param	string	requiring comments with email or not from non member
+	 * @return	void
+	 */
+	public function setEmailRequired($val)
+	{
+		$this->setSetting('breqemail', $val);
+		return;
+	}
+	
+	/**
+	 * Blog::setTimeOffset()
+	 * @param	integer	$val	time offset
+	 * @return	void
+	 */
 	public function setTimeOffset($val)
 	{
 		// check validity of value
@@ -1345,29 +1596,50 @@ class Blog
 		$this->setSetting('btimeoffset',$val);
 		return;
 	}
-
-	function setDefaultCategory($val) {
+	
+	/**
+	 * Blog::setDefaultCategory()
+	 * @param	integer	$val	ID for default category for this weblog
+	 * @return	
+	 */
+	public function setDefaultCategory($val)
+	{
 		$this->setSetting('bdefcat',$val);
+		return;
 	}
-
-	function getSetting($key) {
+	
+	/**
+	 * Blog::getSetting()
+	 * @param	string	$key	key for setting of this weblog
+	 * @return	mixed	value for the setting
+	 */
+	public function getSetting($key)
+	{
 		return $this->settings[$key];
 	}
-
-	function setSetting($key,$value) {
+	
+	/**
+	 * Blog::setSetting()
+	 * @param	string	$key	key for setting of this weblog
+	 * @param	mixed	$value	value for the key
+	 * @return	
+	 */
+	public function setSetting($key, $value)
+	{
 		$this->settings[$key] = $value;
+		return;
 	}
-
+	
 	/**
 	 * Blog::addTeamMember()
 	 * Tries to add a member to the team. 
 	 * Returns false if the member was already on the team
 	 * 
-	 * @param	Integer	$memberid	id for member
-	 * @param	Boolean	$admin	super-admin or not
-	 * @return	Boolean	Success/Fail
+	 * @param	integer	$memberid	id for member
+	 * @param	boolean	$admin	super-admin or not
+	 * @return	boolean	Success/Fail
 	 */
-	function addTeamMember($memberid, $admin)
+	public function addTeamMember($memberid, $admin)
 	{
 		global $manager;
 		
@@ -1377,159 +1649,175 @@ class Blog
 		// check if member is already a member
 		$tmem = Member::createFromID($memberid);
 		
-		if ( $tmem->isTeamMember($this->getID()) )
+		if ( $tmem->isTeamMember($this->blogid) )
 		{
 			return 0;
 		}
 		
-		$manager->notify(
-			'PreAddTeamMember',
-			array(
-				'blog' => &$this,
-				'member' => &$tmem,
-				'admin' => &$admin
-			)
+		$data = array(
+			'blog'		=> &$this,
+			'member'	=> &$tmem,
+			'admin'		=> &$admin
 		);
+		$manager->notify('PreAddTeamMember', $data);
 		
 		// add to team
 		$query = "INSERT INTO %s (TMEMBER, TBLOG, TADMIN) VALUES (%d, %d, %d);";
-		$query = sprintf($query, sql_table('team'), (integer) $memberid, (integer) $this->getID(), (integer) $admin);
+		$query = sprintf($query, sql_table('team'), (integer) $memberid, (integer) $this->blogid, (integer) $admin);
 		DB::execute($query);
 		
-		$manager->notify(
-			'PostAddTeamMember',
-			array(
-				'blog' => &$this,
-				'member' => &$tmem,
-				'admin' => $admin
-			)
+		$data = array(
+			'blog'		=> &$this,
+			'member'	=> &$tmem,
+			'admin'		=>  $admin
 		);
+		$manager->notify('PostAddTeamMember', $data);
 		
 		$logMsg = sprintf(_TEAM_ADD_NEWTEAMMEMBER, $tmem->getDisplayName(), $memberid, $this->getName());
 		ActionLog::add(INFO, $logMsg);
 		
 		return 1;
 	}
-
-	function getID() {
+	
+	/**
+	 * Blog::getID()
+	 * @param	void
+	 * @return	integer	ID for this weblog
+	 */
+	public function getID()
+	{
 		return (integer) $this->blogid;
 	}
-
+	
 	/**
-	  * Checks if a blog with a given shortname exists 
-	  * Returns true if there is a blog with the given shortname (static)
-	  * 
-	  * @param $name
-	  * 	blog shortname
-	  */
-	function exists($name) {
+	 * Checks if a blog with a given shortname exists 
+	 * Returns true if there is a blog with the given shortname (static)
+	 * 
+	 * @param	string	$name		blog shortname
+	 * @return	boolean	exists or not
+	 */
+	public function exists($name)
+	{
 		$r = DB::getResult('SELECT * FROM '.sql_table('blog').' WHERE bshortname='. DB::quoteValue($name));
 		return ($r->rowCount() != 0);
 	}
-
+	
 	/**
-	  * Checks if a blog with a given id exists 
-	  * Returns true if there is a blog with the given ID (static)
-	  * 
-	  * @param $id
-	  * 	blog id
-	  */
-	function existsID($id) {
+	 * Checks if a blog with a given id exists 
+	 * Returns true if there is a blog with the given ID (static)
+	 * 
+	 * @param	integer	$id	ID for searched weblog
+	 * @return	boolean	exists or not
+	 */
+	public function existsID($id)
+	{
 		$r = DB::getResult('SELECT * FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
 		return ($r->rowCount() != 0);
 	}
-
+	
 	/**
-	  * flag there is a future post pending 
-	  */
-	function setFuturePost() {
-		$query =  'UPDATE '.sql_table('blog')
-			    . " SET bfuturepost='1' WHERE bnumber=" . $this->getID();
+	 * Blog::setFuturePost()
+	 * flag there is a future post pending
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function setFuturePost()
+	{
+		$query =  "UPDATE %s SET bfuturepost='1' WHERE bnumber=%d;";
+		$query = sprintf($query, sql_table('blog'), (integer) $this->blogid);
 		DB::execute($query);
+		return;
 	}
-
+	
 	/**
-	  * clear there is a future post pending 
-	  */
-	function clearFuturePost() {
-		$query =  'UPDATE '.sql_table('blog')
-			   . " SET bfuturepost='0' WHERE bnumber=" . $this->getID();
+	 * Blog::clearFuturePost()
+	 * clear there is a future post pending
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function clearFuturePost()
+	{
+		$query =  "UPDATE %s SET bfuturepost='0' WHERE bnumber=%d;";
+		$query = sprintf($query, sql_table('blog'), (integer) $this->blogid);
 		DB::execute($query);
+		return;
 	}
-
+	
 	/**
-	  * check if we should throw justPosted event 
-	  */
-	function checkJustPosted() {
+	 * Blog::checkJustPosted()
+	 * check if we should throw justPosted event 
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function checkJustPosted()
+	{
 		global $manager;
-
-		if ($this->settings['bfuturepost'] == 1) {
-			$blogid = $this->getID();
-			$result = DB::getResult("SELECT * FROM " . sql_table('item')
-			          . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()");
-			if ( $result->rowCount() > 0 ) {
+		
+		if ( $this->settings['bfuturepost'] == 1 )
+		{
+			$query = "SELECT * FROM %s WHERE iposted=0 AND iblog=%d AND itime < NOW();";
+			$query = sprintf($query, sql_table('item'), (integer) $this->blogid);
+			
+			$result = DB::getResult($query);
+			if ( $result->rowCount() > 0 )
+			{
 				// This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
 				// Note that the plugins's calling order is subject to thri order in the plugin list
-				$pinged = false;
-				$manager->notify(
-						'JustPosted',
-						array('blogid' => $blogid,
-						'pinged' => &$pinged
-						)
-				);
-
+				$pinged = FALSE;
+				$manager->notify('JustPosted', array('blogid' => $this->blogid, 'pinged' => &$pinged));
+				
 				// clear all expired future posts
-				DB::execute("UPDATE " . sql_table('item') . " SET iposted='1' WHERE iblog=" . $blogid . " AND itime<NOW()");
-
+				$query = "UPDATE %s SET iposted='1' WHERE iblog=%d AND itime < NOW();";
+				$query = spriintf($query, sql_table('item'), (integer) $this->blogid);
+				DB::execute($query);
+				
 				// check to see any pending future post, clear the flag is none
-				$result = DB::getResult("SELECT * FROM " . sql_table('item')
-				          . " WHERE iposted=0 AND iblog=" . $blogid);
-				if ( $result->rowCount() == 0 ) {
+				$query = "SELECT * FROM %s WHERE iposted=0 AND iblog=%d;";
+				$query = sprintf($query, sql_table('item'), (integer) $this->blogid);
+				
+				$result = DB::getResult($query);
+				if ( $result->rowCount() == 0 )
+				{
 					$this->clearFuturePost();
 				}
 			}
 		}
+		return;
 	}
-
+	
 	/**
+	 * Blog::readLogFromList()
 	 * Shows the given list of items for this blog
 	 *
-	 * @param $itemarray
-	 *		array of item numbers to be displayed
-	 * @param $template
-	 *		String representing the template _NAME_ (!)
-	 * @param $highlight
-	 *		contains a query that should be highlighted
-	 * @param $comments
-	 *		1=show comments 0=don't show comments
-	 * @param $dateheads
-	 *		1=show dateheads 0=don't show dateheads
-	 * @param $showDrafts
-	 *		0=do not show drafts 1=show drafts
-	 * @param $showFuture
-	 *		0=do not show future posts 1=show future posts
-	 * @returns int
-	 *		amount of items shown
+	 * @param	array	$itemarray	array of item numbers to be displayed
+	 * @param	string	$template	string representing the template _NAME_ (!)
+	 * @param	string	$highlight	contains a query that should be highlighted
+	 * @param	boolean	$comments	1=show comments 0=don't show comments
+	 * @param	boolean	$dateheads	1=show dateheads 0=don't show dateheads
+	 * @param	boolean	$showDrafts	0=do not show drafts 1=show drafts
+	 * @param	boolean	$showFuture	0=do not show future posts 1=show future posts
+	 * @return	integer	amount of items shown
 	 */
-	function readLogFromList($itemarray, $template, $highlight = '', $comments = 1, $dateheads = 1,$showDrafts = 0, $showFuture = 0) {
-
+	public function readLogFromList($itemarray, $template, $highlight = '', $comments = 1, $dateheads = 1,$showDrafts = 0, $showFuture = 0)
+	{
 		$query = $this->getSqlItemList($itemarray,$showDrafts,$showFuture);
-
 		return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
 	}
-
+	
 	/**
 	 * Blog::getSqlItemList()
 	 * Returns the SQL query used to fill out templates for a list of items
 	 * No LIMIT clause is added. (caller should add this if multiple pages are requested)
 	 *
-	 * @param	array	$itemarray		an array holding the item numbers of the items to be displayed
-	 * @param integer	$showDrafts	0=do not show drafts 1=show drafts
-	 * @param integer	$showFuture	0=do not show future posts 1=show future posts
+	 * @param	array	$itemarray	an array holding the item numbers of the items to be displayed
+	 * @param	integer	$showDrafts	0=do not show drafts 1=show drafts
+	 * @param	integer	$showFuture	0=do not show future posts 1=show future posts
 	 * @return	string	either a full SQL query, or an empty string
-	 * 
 	 */
-	function getSqlItemList($itemarray,$showDrafts = 0,$showFuture = 0)
+	public function getSqlItemList($itemarray,$showDrafts = 0,$showFuture = 0)
 	{
 		if ( !is_array($itemarray) )
 		{
@@ -1599,5 +1887,32 @@ class Blog
 		}
 		
 		return $query;
+	}
+	
+	/**
+	 * Blog::convertBreaks()
+	 * Get the the setting for the line break handling
+	 * [should be named as getConvertBreaks()]
+	 * 
+	 * @deprecated
+	 * @param	void
+	 * @return	
+	 */
+	public function convertBreaks()
+	{
+		return $this->getSetting('bconvertbreaks');
+	}
+	
+	/**
+	 * Set the the setting for the line break handling
+	 * 
+	 * @deprecated
+	 * @param	boolean	$val	new value for bconvertbreaks
+	 * @return	void
+	 */
+	public function setConvertBreaks($val)
+	{
+		$this->setSetting('bconvertbreaks', $val);
+		return;
 	}
 }
