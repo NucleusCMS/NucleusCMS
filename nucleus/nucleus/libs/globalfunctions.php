@@ -1349,12 +1349,6 @@ function selector()
 		}
 	}
 	
-	// decide which skin should be used
-	if ( $skinid != '' && ($skinid == 0) )
-	{
-		selectSkin($skinid);
-	}
-	
 	if ( !$skinid )
 	{
 		$skinid = $blog->getDefaultSkin();
