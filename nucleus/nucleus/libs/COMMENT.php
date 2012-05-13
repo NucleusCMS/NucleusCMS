@@ -28,7 +28,7 @@ class Comment
 	 * @return	array	comment information
 	 * 
 	 */
-	function getComment($commentid)
+	static function getComment($commentid)
 	{
 		$query = 'SELECT cnumber AS commentid,'
 		              . ' cbody AS body,'
@@ -64,7 +64,7 @@ class Comment
 	 * @return	array	comment date
 	 * 
 	 */
-	function prepare($comment)
+	static function prepare($comment)
 	{
 		$comment['user']	= strip_tags($comment['user']);
 		$comment['userid']	= strip_tags($comment['userid']);
@@ -96,13 +96,9 @@ class Comment
 	 * @static
 	 * @param	string	$body	string for comment body
 	 * @return	string	validate string for comment body
-	 * 
 	 */
-	function prepareBody($body)
+	static public function prepareBody($body)
 	{
-		# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-		# original ereg_replace: ereg_replace("\n.\n.\n", "\n", $body);
-
 		// convert Windows and Mac style 'returns' to *nix newlines
 		$body = preg_replace("/\r\n/", "\n", $body);
 		$body = preg_replace("/\r/", "\n", $body);
@@ -128,9 +124,7 @@ class Comment
 			'/([^:\/\/\w]|^)(mailto:(([a-zA-Z\@\%\.\-\+_])+))/i'
 		);
 		
-		$body = preg_replace_callback($replace_from, array('self', 'prepareBody_cb'), $body);
-		
-		return $body;
+		return preg_replace_callback($replace_from, array(__CLASS__, 'prepareBody_cb'), $body);
 	}
 	
 	/**
@@ -142,9 +136,8 @@ class Comment
 	 * @param	string	$url	URL
 	 * @param	string	$protocol	http, mailto and so on
 	 * @return	string	string	including anchor element and child text
-	 * 
 	 */
-	function createLinkCode($pre, $url, $protocol = 'http')
+	static private function createLinkCode($pre, $url, $protocol = 'http')
 	{
 		$post = '';
 		
@@ -177,9 +170,6 @@ class Comment
 			$post = ',' . $post;
 		}
 		
-		# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-		# original ereg: ereg('^' . $protocol . '://', $url)
-		
 		if ( !preg_match('#^' . $protocol . '://#', $url) )
 		{
 			$linkedUrl = $protocol . ( ($protocol == 'mailto') ? ':' : '://') . $url;
@@ -209,7 +199,7 @@ class Comment
 	 * @return	string	including anchor element and child text
 	 * 
 	 */
-	function prepareBody_cb($match)
+	static public function prepareBody_cb($match)
 	{
 		if ( !preg_match('/^[a-z]+/i', $match[2], $protocol) )
 		{
