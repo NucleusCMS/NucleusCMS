@@ -908,7 +908,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Soubor s t�mto n�zvem ji� existuje. P�
 define('_ERROR_LOGINDISALLOWED',	'Promi�te, ale nem�ete se p�ihl�sit do spr�vcovsk� oblasti. Nicm�n� m�ete se p�ihl�sit jako jin� u�ivatel.');
 define('_ERROR_DBCONNECT',			'Nelze se p�ipojit k mySQL serveru');
 define('_ERROR_DBSELECT',			'Nelze vybrat datab�zi nucleus.');
-define('_ERROR_NOSUCHLANGUAGE',		'Tento jazykov� soubor neexistuje');
+define('_ERROR_NOSUCHLOCALE',		'Tento jazykov� soubor neexistuje');
 define('_ERROR_NOSUCHCATEGORY',		'Takov� kategorie neexistuje');
 define('_ERROR_DELETELASTCATEGORY',	'Mus� existovat alespo� jedna kategorie');
 define('_ERROR_DELETEDEFCATEGORY',	'Nelze odstranit v�choz� kategorii');
@@ -1109,7 +1109,7 @@ define('_SETTINGS_ALLOWCREATE',		'Povolit n�v�t�vn�k�m vytvo�it si r
 define('_SETTINGS_NEWLOGIN',		'Povolit p�ihl�en� z ��t�, vytvo�en�ch n�v�t�vn�ky');
 define('_SETTINGS_NEWLOGIN2',		'(pouze pro nov� vytvo�en� ��ty)');
 define('_SETTINGS_MEMBERMSGS',		'Povolit slu�by mezi �leny');
-define('_SETTINGS_LANGUAGE',		'V�choz� jazyk');
+define('_SETTINGS_LOCALE',		'V�choz� jazyk');
 define('_SETTINGS_DISABLESITE',		'Vypnout str�nku');
 define('_SETTINGS_DBLOGIN',			'mySQL Login a Datab�ze');
 define('_SETTINGS_UPDATE',			'Ulo�it nastaven�');

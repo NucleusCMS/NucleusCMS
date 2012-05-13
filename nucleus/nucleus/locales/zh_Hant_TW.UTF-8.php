@@ -908,7 +908,7 @@ define('_ERROR_UPLOADDUPLICATE',	'已經有一個同名文件，上傳之前請�
 define('_ERROR_LOGINDISALLOWED',	'對不起，你不能登錄管理區。但可以用其他用戶身份登錄');
 define('_ERROR_DBCONNECT',			'無法連接到 MySQL 服務器');
 define('_ERROR_DBSELECT',			'無法選擇文章系統的數據庫');
-define('_ERROR_NOSUCHLANGUAGE',		'沒有這個語言文件');
+define('_ERROR_NOSUCHLOCALE',		'沒有這個語言文件');
 define('_ERROR_NOSUCHCATEGORY',		'沒有這個類別');
 define('_ERROR_DELETELASTCATEGORY',	'至少一個類別');
 define('_ERROR_DELETEDEFCATEGORY',	'不能刪除默認類別');
@@ -1109,7 +1109,7 @@ define('_SETTINGS_ALLOWCREATE',		'允許訪客建立會員賬號');
 define('_SETTINGS_NEWLOGIN',		'允許訪客建立的賬號登錄');
 define('_SETTINGS_NEWLOGIN2',		'（只在新註冊的賬號上生效）');
 define('_SETTINGS_MEMBERMSGS',		'允許會員到會員的服務');
-define('_SETTINGS_LANGUAGE',		'默認語言');
+define('_SETTINGS_LOCALE',		'默認語言');
 define('_SETTINGS_DISABLESITE',		'關閉站點');
 define('_SETTINGS_DBLOGIN',			'MySQL 登錄 &amp; 數據庫');
 define('_SETTINGS_UPDATE',			'更新設置');

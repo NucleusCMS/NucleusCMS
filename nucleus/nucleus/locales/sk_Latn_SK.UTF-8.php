@@ -907,7 +907,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Súbor s týmto názvom už existuje. Pred nah
 define('_ERROR_LOGINDISALLOWED',	'Prepáčte, ale nemôžete sa prihlásiť do správcovskej oblasti. Avšak môžete sa prihlásiť ako iný užívateľ.');
 define('_ERROR_DBCONNECT',			'Nie je možné pripojiť sa k mySQL serveru');
 define('_ERROR_DBSELECT',			'Nie je možné vybrať databázu nucleus.');
-define('_ERROR_NOSUCHLANGUAGE',		'Tento jazykový súbor neexistuje');
+define('_ERROR_NOSUCHLOCALE',		'Tento jazykový súbor neexistuje');
 define('_ERROR_NOSUCHCATEGORY',		'Taká kategória neexistuje');
 define('_ERROR_DELETELASTCATEGORY',	'Musí existovať aspoň jedna kategória');
 define('_ERROR_DELETEDEFCATEGORY',	'Nie je možné odstrániť defaultnú kategóriu');
@@ -1108,7 +1108,7 @@ define('_SETTINGS_ALLOWCREATE',		'Povoliť návštevníkom vytvoriť si registro
 define('_SETTINGS_NEWLOGIN',		'Povoliť prihlásenie z účtov, vytvorených návštevníkmi');
 define('_SETTINGS_NEWLOGIN2',		'(iba pre novo vytvorené účty)');
 define('_SETTINGS_MEMBERMSGS',		'Povoliť služby medzi členmi');
-define('_SETTINGS_LANGUAGE',		'Štandardný jazyk');
+define('_SETTINGS_LOCALE',		'Štandardný jazyk');
 define('_SETTINGS_DISABLESITE',		'Vypnúť stránku');
 define('_SETTINGS_DBLOGIN',			'mySQL Login a Databáza');
 define('_SETTINGS_UPDATE',			'Uložiť nastavenia');

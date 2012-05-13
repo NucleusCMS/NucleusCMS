@@ -902,7 +902,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Egy f�jl m�r l�tezik ezzel a n�vvel. N
 define('_ERROR_LOGINDISALLOWED',	'Sajn�lom, nem enged�lyezett az adminisztr�ci�s ter�letre val� bel�p�s. Jelentkezz be felhaszn�l�k�nt.');
 define('_ERROR_DBCONNECT',			'Nem tudok kapcsol�dni a mySQL szerverhez.');
 define('_ERROR_DBSELECT',			'Nem l�tom a nucleus adatb�zis�t.');
-define('_ERROR_NOSUCHLANGUAGE',		'Nem l�tez� nelvi f�jl!');
+define('_ERROR_NOSUCHLOCALE',		'Nem l�tez� nelvi f�jl!');
 define('_ERROR_NOSUCHCATEGORY',		'Nem l�tez� kateg�ria!');
 define('_ERROR_DELETELASTCATEGORY',	'Egy kateg�ri�nak l�teznie kell!');
 define('_ERROR_DELETEDEFCATEGORY',	'Az alap kateg�ri�t nem lehet t�r�lni!');
@@ -1103,7 +1103,7 @@ define('_SETTINGS_ALLOWCREATE',		'Enged�ly a l�togat�k sz�m�ra felhasz
 define('_SETTINGS_NEWLOGIN',		'Bel�p�s enged�lyez�se felhaszn�l�k �ltal l�trehozott felhaszn�l�i fi�kokhoz.');
 define('_SETTINGS_NEWLOGIN2',		'(Csak az �jonnan l�trehozott felhaszn�l�i fi�kokhoz j�r)');
 define('_SETTINGS_MEMBERMSGS',		'Tag a tagnak szolg�ltat�s enged�lez�se');
-define('_SETTINGS_LANGUAGE',		'Alap nyelv');
+define('_SETTINGS_LOCALE',		'Alap nyelv');
 define('_SETTINGS_DISABLESITE',		'Oldal tilt�sa');
 define('_SETTINGS_DBLOGIN',			'mySQL bel�p�s &amp; adatb�zis');
 define('_SETTINGS_UPDATE',			'Be�ll�t�sok friss�t�se');

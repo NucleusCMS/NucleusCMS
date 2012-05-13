@@ -905,7 +905,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Друг файл със същото име вече съществува. Опит
 define('_ERROR_LOGINDISALLOWED',	'Sorry, you\'re not allowed to log in to the admin area. You can log in as another user, though');
 define('_ERROR_DBCONNECT',			'Не може да се свърже с mySQL сървъра');
 define('_ERROR_DBSELECT',			'Не може да избере nucleus базата данни.');
-define('_ERROR_NOSUCHLANGUAGE',		'Не съществува такъв езиков файл');
+define('_ERROR_NOSUCHLOCALE',		'Не съществува такъв езиков файл');
 define('_ERROR_NOSUCHCATEGORY',		'не съществува такава категория');
 define('_ERROR_DELETELASTCATEGORY',	'Трябва да има поне една категория');
 define('_ERROR_DELETEDEFCATEGORY',	'Не можете да изтриете default категорията');
@@ -1106,7 +1106,7 @@ define('_SETTINGS_ALLOWCREATE',		'Разреши на посетителите да създават членски ак
 define('_SETTINGS_NEWLOGIN',		'Login разрешен за Потребителски-Създадени акаунти');
 define('_SETTINGS_NEWLOGIN2',		'(отнася се само за новосъздадени акаунти)');
 define('_SETTINGS_MEMBERMSGS',		'Разреши Member-2-Member услугата');
-define('_SETTINGS_LANGUAGE',		'Default Language');
+define('_SETTINGS_LOCALE',			'Default Locale');
 define('_SETTINGS_DISABLESITE',		'Спри сайта');
 define('_SETTINGS_DBLOGIN',			'mySQL Login &amp; Database');
 define('_SETTINGS_UPDATE',			'Обновени настройки');

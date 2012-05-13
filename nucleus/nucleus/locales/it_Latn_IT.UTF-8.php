@@ -911,7 +911,7 @@ define('_ERROR_UPLOADDUPLICATE',	'E\' gi&agrave; present eun altro file con ques
 define('_ERROR_LOGINDISALLOWED',	'Non sei ablitato all\'accesso all\'area amministrativa del blog. Puoi connetterti come altro utente');
 define('_ERROR_DBCONNECT',			'Non &egrave; possibile connettersi al server mySQL');
 define('_ERROR_DBSELECT',			'Non &egrave; possibile selezionare il database di Nucleus.');
-define('_ERROR_NOSUCHLANGUAGE',		'Il file della lingua non esiste');
+define('_ERROR_NOSUCHLOCALE',		'Il file della lingua non esiste');
 define('_ERROR_NOSUCHCATEGORY',		'La categoria non esiste');
 define('_ERROR_DELETELASTCATEGORY',	'Ci deve essere almeno una categoria');
 define('_ERROR_DELETEDEFCATEGORY',	'Non puoi cancellare la categoria di default');
@@ -1112,7 +1112,7 @@ define('_SETTINGS_ALLOWCREATE',		'Consenti ai visitatori di creare un account ut
 define('_SETTINGS_NEWLOGIN',		'Abilita il login all\'area amministrativa per gli account creati dagli utenti');
 define('_SETTINGS_NEWLOGIN2',		'(questa impostazione verr&agrave; applicata solo ai nuovi account)');
 define('_SETTINGS_MEMBERMSGS',		'Abilita i servizi tra i membri del blog');
-define('_SETTINGS_LANGUAGE',		'Linguaggio di default');
+define('_SETTINGS_LOCALE',		'Linguaggio di default');
 define('_SETTINGS_DISABLESITE',		'Disabilita il weblog');
 define('_SETTINGS_DBLOGIN',			'Connessione mySQL &amp; database');
 define('_SETTINGS_UPDATE',			'Aggiorna le impostazioni');

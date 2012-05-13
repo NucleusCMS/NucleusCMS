@@ -924,7 +924,7 @@ define('_ERROR_UPLOADDUPLICATE',			'同じ名前のファイルが既に存在�
 define('_ERROR_LOGINDISALLOWED',			'管理領域へのログインが認められていません。もしあなたが管理ユーザーのアカウントを持っているのなら、管理ユーザーとしてログインしなおしてください。');
 define('_ERROR_DBCONNECT',					'MySQLサーバに接続できません');
 define('_ERROR_DBSELECT',					'Nucleusが使用するデータベースを選択できません。');
-define('_ERROR_NOSUCHLANGUAGE',				'指定された言語ファイルは存在しません。');
+define('_ERROR_NOSUCHLOCALE',				'指定された言語ファイルは存在しません。');
 define('_ERROR_NOSUCHCATEGORY',				'指定されたカテゴリーは存在しません。');
 define('_ERROR_DELETELASTCATEGORY',			'カテゴリーを最低一つは設定してください。');
 define('_ERROR_DELETEDEFCATEGORY',			'既定のカテゴリーは削除できません。');
@@ -1125,7 +1125,7 @@ define('_SETTINGS_ALLOWCREATE',				'ビジターによるメンバーアカウ�
 define('_SETTINGS_NEWLOGIN',				'ビジターが作成したアカウントでのログインを作成直後に可能にする');
 define('_SETTINGS_NEWLOGIN2',				'(新しく作成されたアカウントのみ)');
 define('_SETTINGS_MEMBERMSGS',				'メンバー間サービスを可能にする');
-define('_SETTINGS_LANGUAGE',				'使用する言語');
+define('_SETTINGS_LOCALE',				'使用する言語');
 define('_SETTINGS_DISABLESITE',				'サイトを閉鎖し、指定のURLに転送する（非常時用）');
 define('_SETTINGS_DBLOGIN',					'MySQL ログイン &amp; データベース');
 define('_SETTINGS_UPDATE',					'設定の更新');

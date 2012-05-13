@@ -915,7 +915,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Toinen samanniminen tiedosto on jo olemassa. K
 define('_ERROR_LOGINDISALLOWED',	'Valitettavasti et ole oikeutettu kirjautumaan j�rjestelm�nvalvoja alueelle. Toisaalta, voit kirjautua sis��n toisena k�ytt�j�n�');
 define('_ERROR_DBCONNECT',			'MySQL-palvelimeen ei saatu yhteytt�');
 define('_ERROR_DBSELECT',			'Nucleus tietokantaa ei voitu valita.');
-define('_ERROR_NOSUCHLANGUAGE',		'Kyseist� kielitiedostoa ei ole olemassa');
+define('_ERROR_NOSUCHLOCALE',		'Kyseist� kielitiedostoa ei ole olemassa');
 define('_ERROR_NOSUCHCATEGORY',		'Kyseist� kategoriaa ei ole olemassa');
 define('_ERROR_DELETELASTCATEGORY',	'Ainakin yksi kategoria t�ytyy olla olemassa');
 define('_ERROR_DELETEDEFCATEGORY',	'Vakiokategoriaa ei voi tuhota');
@@ -1116,7 +1116,7 @@ define('_SETTINGS_ALLOWCREATE',		'Salli k�ytt�jien luoda k�ytt�j�tili'
 define('_SETTINGS_NEWLOGIN',		'Sis��nkirjautuminen sallittu k�ytt�j�n luomilla tileill�');
 define('_SETTINGS_NEWLOGIN2',		'(koskee vain vasta luotuja tilej�)');
 define('_SETTINGS_MEMBERMSGS',		'Salli k�ytt�j�lt�-k�ytt�j�lle palvelu');
-define('_SETTINGS_LANGUAGE',		'Vakiokieli');
+define('_SETTINGS_LOCALE',		'Vakiokieli');
 define('_SETTINGS_DISABLESITE',		'Sivusto pois k�yt�st�');
 define('_SETTINGS_DBLOGIN',			'MySQL -kirjautuminen &amp; -tietokanta');
 define('_SETTINGS_UPDATE',			'P�ivit� asetukset');

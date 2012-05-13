@@ -904,7 +904,7 @@ define('_ERROR_UPLOADDUPLICATE',	'J� existe um arquivo com este nome. Renomeie
 define('_ERROR_LOGINDISALLOWED',	'Voc� n�o pode logar. Tente usar outro usu�rio.');
 define('_ERROR_DBCONNECT',			'N�o foi poss�vel conectar com o servidor mySQL.');
 define('_ERROR_DBSELECT',			'N�o foi posss�vel acessar o banco de dados nucleus.');
-define('_ERROR_NOSUCHLANGUAGE', 'Esta l�ngua n�o existe');
+define('_ERROR_NOSUCHLOCALE', 'Esta l�ngua n�o existe');
 define('_ERROR_NOSUCHCATEGORY', 'Este tema n�o existe');
 define('_ERROR_DELETELASTCATEGORY', '� preciso haver ao menos um tema');
 define('_ERROR_DELETEDEFCATEGORY', 'Voc� n�o pode apagar o tema');
@@ -1105,7 +1105,7 @@ define('_SETTINGS_ALLOWCREATE',		'Permitir que usu�rios criem novas contas');
 define('_SETTINGS_NEWLOGIN',		'Permitir login para as contas criadas por usu�rios');
 define('_SETTINGS_NEWLOGIN2',		'(apenas para as novas contas criadas)');
 define('_SETTINGS_MEMBERMSGS',		'Permitir servi�o membro-a-membro');
-define('_SETTINGS_LANGUAGE',		'Linguagem padr�o');
+define('_SETTINGS_LOCALE',		'Linguagem padr�o');
 define('_SETTINGS_DISABLESITE',		'Desabilitar o site');
 define('_SETTINGS_DBLOGIN',			'Login do banco de dados mySQL');
 define('_SETTINGS_UPDATE',			'Atualiza configura��es');

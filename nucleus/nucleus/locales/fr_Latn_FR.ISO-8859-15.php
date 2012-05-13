@@ -909,7 +909,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Un fichier de ce nom existe d�j�. Essayez 
 define('_ERROR_LOGINDISALLOWED',	'D�sol�, vous n\'�tes pas autoris� � vous connecter � la zone admin. Vous pouvez vous connecter sous un autre nom');
 define('_ERROR_DBCONNECT',		'Impossible de se connecter au serveur mySQL');
 define('_ERROR_DBSELECT',		'Impossible de s�lectionner la base Nucleus.');
-define('_ERROR_NOSUCHLANGUAGE',		'Fichier de langue indisponible');
+define('_ERROR_NOSUCHLOCALE',		'Fichier de langue indisponible');
 define('_ERROR_NOSUCHCATEGORY',		'Th�me indisponible');
 define('_ERROR_DELETELASTCATEGORY',	'Il doit y avoir au moins un th�me');
 define('_ERROR_DELETEDEFCATEGORY',	'Impossible d\'effacerle th�me par d�faut');
@@ -1110,7 +1110,7 @@ define('_SETTINGS_ALLOWCREATE',		'Autoriser les visiteurs � cr�er un compte'
 define('_SETTINGS_NEWLOGIN',		'Connexion autoris�e pour les comptes cr��s par des utilisateurs');
 define('_SETTINGS_NEWLOGIN2',		'(ne vaut que pour les comptes r�cemment cr��s)');
 define('_SETTINGS_MEMBERMSGS',		'Autoriser les services de participant � participant');
-define('_SETTINGS_LANGUAGE',		'Langue par d�faut');
+define('_SETTINGS_LOCALE',		'Langue par d�faut');
 define('_SETTINGS_DISABLESITE',		'D�sactiver le site');
 define('_SETTINGS_DBLOGIN',		'mySQL Login &amp; Database');
 define('_SETTINGS_UPDATE',		'Mettre � jour les r�glages');

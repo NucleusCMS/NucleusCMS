@@ -904,7 +904,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Já existe um arquivo com este nome. Renomeie 
 define('_ERROR_LOGINDISALLOWED',	'Você não pode logar. Tente usar outro usuário.');
 define('_ERROR_DBCONNECT',			'Não foi possível conectar com o servidor mySQL.');
 define('_ERROR_DBSELECT',			'Não foi posssível acessar o banco de dados nucleus.');
-define('_ERROR_NOSUCHLANGUAGE', 'Esta língua não existe');
+define('_ERROR_NOSUCHLOCALE', 'Esta língua não existe');
 define('_ERROR_NOSUCHCATEGORY', 'Este tema não existe');
 define('_ERROR_DELETELASTCATEGORY', 'É preciso haver ao menos um tema');
 define('_ERROR_DELETEDEFCATEGORY', 'Você não pode apagar o tema');
@@ -1105,7 +1105,7 @@ define('_SETTINGS_ALLOWCREATE',		'Permitir que usuários criem novas contas');
 define('_SETTINGS_NEWLOGIN',		'Permitir login para as contas criadas por usuários');
 define('_SETTINGS_NEWLOGIN2',		'(apenas para as novas contas criadas)');
 define('_SETTINGS_MEMBERMSGS',		'Permitir serviço membro-a-membro');
-define('_SETTINGS_LANGUAGE',		'Linguagem padrão');
+define('_SETTINGS_LOCALE',		'Linguagem padrão');
 define('_SETTINGS_DISABLESITE',		'Desabilitar o site');
 define('_SETTINGS_DBLOGIN',			'Login do banco de dados mySQL');
 define('_SETTINGS_UPDATE',			'Atualiza configurações');

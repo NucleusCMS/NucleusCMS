@@ -909,7 +909,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Soubor s tímto názvem již existuje. Před n
 define('_ERROR_LOGINDISALLOWED',	'Promiňte, ale nemůžete se přihlásit do správcovské oblasti. Nicméně můžete se přihlásit jako jiný uživatel.');
 define('_ERROR_DBCONNECT',			'Nelze se připojit k mySQL serveru');
 define('_ERROR_DBSELECT',			'Nelze vybrat databázi nucleus.');
-define('_ERROR_NOSUCHLANGUAGE',		'Tento jazykový soubor neexistuje');
+define('_ERROR_NOSUCHLOCALE',		'Tento jazykový soubor neexistuje');
 define('_ERROR_NOSUCHCATEGORY',		'Taková kategorie neexistuje');
 define('_ERROR_DELETELASTCATEGORY',	'Musí existovat alespoň jedna kategorie');
 define('_ERROR_DELETEDEFCATEGORY',	'Nelze odstranit výchozí kategorii');
@@ -1110,7 +1110,7 @@ define('_SETTINGS_ALLOWCREATE',		'Povolit návštěvníkům vytvořit si registr
 define('_SETTINGS_NEWLOGIN',		'Povolit přihlášení z účtů, vytvořených návštěvníky');
 define('_SETTINGS_NEWLOGIN2',		'(pouze pro nově vytvořené účty)');
 define('_SETTINGS_MEMBERMSGS',		'Povolit služby mezi členy');
-define('_SETTINGS_LANGUAGE',		'Výchozí jazyk');
+define('_SETTINGS_LOCALE',		'Výchozí jazyk');
 define('_SETTINGS_DISABLESITE',		'Vypnout stránku');
 define('_SETTINGS_DBLOGIN',			'mySQL Login a Databáze');
 define('_SETTINGS_UPDATE',			'Uložit nastavení');

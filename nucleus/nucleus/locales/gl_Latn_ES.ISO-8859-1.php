@@ -907,7 +907,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Xa existe otro arquivo con ese nome. Intente r
 define('_ERROR_LOGINDISALLOWED',	'Sen permiso para entrar na administraci�n. � posible rexistrarse como outro usuario');
 define('_ERROR_DBCONNECT',			'Non � posible conectar con MySQL server');
 define('_ERROR_DBSELECT',			'Non � posible seleccionala base de datos de Nucleus.');
-define('_ERROR_NOSUCHLANGUAGE',		'Non existe o arquivo para o idioma');
+define('_ERROR_NOSUCHLOCALE',		'Non existe o arquivo para o idioma');
 define('_ERROR_NOSUCHCATEGORY',		'Non existe a categor�a');
 define('_ERROR_DELETELASTCATEGORY',	'Debe de haber polo menos una categor�a');
 define('_ERROR_DELETEDEFCATEGORY',	'Non � posible eliminala categor�a principal');
@@ -1108,7 +1108,7 @@ define('_SETTINGS_ALLOWCREATE',		'Permitir �s visitantes crear unha conta de m
 define('_SETTINGS_NEWLOGIN',		'Rexistro permitido para as contas creadas polo usuario');
 define('_SETTINGS_NEWLOGIN2',		'(s� para contas novas)');
 define('_SETTINGS_MEMBERMSGS',		'Permite un servicio de membro a membro');
-define('_SETTINGS_LANGUAGE',		'Idioma por defecto');
+define('_SETTINGS_LOCALE',		'Idioma por defecto');
 define('_SETTINGS_DISABLESITE',		'Deshabilitar web');
 define('_SETTINGS_DBLOGIN',			'MySQL Rexistro e base de datos');
 define('_SETTINGS_UPDATE',			'Actualizar preferencias');

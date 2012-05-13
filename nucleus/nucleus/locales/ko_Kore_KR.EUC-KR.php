@@ -879,7 +879,7 @@ define('_ERROR_UPLOADDUPLICATE',	'같은 이름의 파일이 이미 존재합니다. 이름을 바�
 define('_ERROR_LOGINDISALLOWED',	'관리자 영역에는 들어갈 수 없습니다. 하지만 다른 유저로는 로그인할 수 있습니다');
 define('_ERROR_DBCONNECT',			'MySQL 서버에 연결하지 못했습니다');
 define('_ERROR_DBSELECT',			'Nucleus 데이터베이스를 선택하지 못했습니다.');
-define('_ERROR_NOSUCHLANGUAGE',		'그런 언어 파일은 없습니다');
+define('_ERROR_NOSUCHLOCALE',		'그런 언어 파일은 없습니다');
 define('_ERROR_NOSUCHCATEGORY',		'그런 카테고리는 없습니다');
 define('_ERROR_DELETELASTCATEGORY',	'카테고리가 적어도 한 개는 있어야합니다');
 define('_ERROR_DELETEDEFCATEGORY',	'기본설정 카테고리는 삭제할 수 없습니다');
@@ -1080,7 +1080,7 @@ define('_SETTINGS_ALLOWCREATE',		'방문자가 회원 계정 생성 가능?');
 define('_SETTINGS_NEWLOGIN',		'방문자가 생성한 계정으로 로그인 가능?');
 define('_SETTINGS_NEWLOGIN2',		'(새로 만든 계정에만 해당)');
 define('_SETTINGS_MEMBERMSGS',		'회원간 서비스 가능');
-define('_SETTINGS_LANGUAGE',		'기본설정 언어');
+define('_SETTINGS_LOCALE',		'기본설정 언어');
 define('_SETTINGS_DISABLESITE',		'사이트 닫기');
 define('_SETTINGS_DBLOGIN',			'mySQL 로그인 & 데이터베이스');
 define('_SETTINGS_UPDATE',			'설정 갱신');

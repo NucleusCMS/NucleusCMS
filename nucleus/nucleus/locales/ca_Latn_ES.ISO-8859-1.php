@@ -915,7 +915,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Ja exiteix un altre fitxer amb awuest nom. Int
 define('_ERROR_LOGINDISALLOWED',	'No t\'és permès entrar a l\'àrea d\'administració. No obstant això, pots registrar-te com un altre usuari');
 define('_ERROR_DBCONNECT',			'No és pot conectar al servidor MySQL');
 define('_ERROR_DBSELECT',			'No ha estat possible sel·Lecciónar la base de dades de nucleus.');
-define('_ERROR_NOSUCHLANGUAGE',		'No existeix tal llenguatge');
+define('_ERROR_NOSUCHLOCALE',		'No existeix tal llenguatge');
 define('_ERROR_NOSUCHCATEGORY',		'No existeix la categoria desitjada');
 define('_ERROR_DELETELASTCATEGORY',	'Hi ha d\'haver almenys 1 categoria');
 define('_ERROR_DELETEDEFCATEGORY',	'No és pot esborrar la categoria per defecte');
@@ -1116,7 +1116,7 @@ define('_SETTINGS_ALLOWCREATE',		'Permetre als visitants crear-se un usuari');
 define('_SETTINGS_NEWLOGIN',		'Permetre el registre d\'usuaris creats per visitants');
 define('_SETTINGS_NEWLOGIN2',		'(només s\'aplica a usuaris recent creats)');
 define('_SETTINGS_MEMBERMSGS',		'Permetre servei Usuari-a-Usuari');
-define('_SETTINGS_LANGUAGE',		'Idiome per defecte');
+define('_SETTINGS_LOCALE',		'Idiome per defecte');
 define('_SETTINGS_DISABLESITE',		'Descativar la pàgina');
 define('_SETTINGS_DBLOGIN',			'Usuari MySQL &amp; Base de dades');
 define('_SETTINGS_UPDATE',			'Actualitzar els paràmetres');

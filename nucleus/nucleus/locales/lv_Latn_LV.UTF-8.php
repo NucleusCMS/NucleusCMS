@@ -923,7 +923,7 @@ define('_ERROR_UPLOADDUPLICATE',    'Fails ar šādu nosaukumu jau eksistē. Pir
 define('_ERROR_LOGINDISALLOWED',    'Piedod, tev nav dota atļauja šeit ārdīties kā adminam. Bet vismaz vari padarboties kā dalībnieks. Uzraksti kaut ko labu');
 define('_ERROR_DBCONNECT',            'Hm, mySQL serveris nokāries? Piezvani adminam');
 define('_ERROR_DBSELECT',            'Hm, problēma ar blogu datu bāzi.');
-define('_ERROR_NOSUCHLANGUAGE',        'Hm, problēma ar valodu failu (nav atrasts)');
+define('_ERROR_NOSUCHLOCALE',        'Hm, problēma ar valodu failu (nav atrasts)');
 define('_ERROR_NOSUCHCATEGORY',        'Hm, sadaļa netika atrasta');
 define('_ERROR_DELETELASTCATEGORY',    'Jābūt vismaz vienai sadaļai');
 define('_ERROR_DELETEDEFCATEGORY',    'Pamatsadaļu nedrīkst dzēst');
@@ -1124,7 +1124,7 @@ define('_SETTINGS_ALLOWCREATE',        'Atļaut visiem apmeklētājiem reģistr�
 define('_SETTINGS_NEWLOGIN',        'Atļaut pieslēgties kā administratoram uzreiz pēc reģistrēšanās');
 define('_SETTINGS_NEWLOGIN2',        '(tikai jaunizveidotiem)');
 define('_SETTINGS_MEMBERMSGS',        'Atļaut izmantot dalībnieks-dalībniekam servisu');
-define('_SETTINGS_LANGUAGE',        'Valoda');
+define('_SETTINGS_LOCALE',        'Valoda');
 define('_SETTINGS_DISABLESITE',        'Apstādināt sistēmu');
 define('_SETTINGS_DBLOGIN',            'mySQL DB informācija');
 define('_SETTINGS_UPDATE',            'Uzstādījumu saglabāšana');

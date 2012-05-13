@@ -923,7 +923,7 @@ define('_ERROR_UPLOADDUPLICATE',    'Fails ar ��du nosaukumu jau eksist�. 
 define('_ERROR_LOGINDISALLOWED',    'Piedod, tev nav dota at�auja �eit �rd�ties k� adminam. Bet vismaz vari padarboties k� dal�bnieks. Uzraksti kaut ko labu');
 define('_ERROR_DBCONNECT',            'Hm, mySQL serveris nok�ries? Piezvani adminam');
 define('_ERROR_DBSELECT',            'Hm, probl�ma ar blogu datu b�zi.');
-define('_ERROR_NOSUCHLANGUAGE',        'Hm, probl�ma ar valodu failu (nav atrasts)');
+define('_ERROR_NOSUCHLOCALE',        'Hm, probl�ma ar valodu failu (nav atrasts)');
 define('_ERROR_NOSUCHCATEGORY',        'Hm, sada�a netika atrasta');
 define('_ERROR_DELETELASTCATEGORY',    'J�b�t vismaz vienai sada�ai');
 define('_ERROR_DELETEDEFCATEGORY',    'Pamatsada�u nedr�kst dz�st');
@@ -1124,7 +1124,7 @@ define('_SETTINGS_ALLOWCREATE',        'At�aut visiem apmekl�t�jiem re�i
 define('_SETTINGS_NEWLOGIN',        'At�aut piesl�gties k� administratoram uzreiz p�c re�istr��an�s');
 define('_SETTINGS_NEWLOGIN2',        '(tikai jaunizveidotiem)');
 define('_SETTINGS_MEMBERMSGS',        'At�aut izmantot dal�bnieks-dal�bniekam servisu');
-define('_SETTINGS_LANGUAGE',        'Valoda');
+define('_SETTINGS_LOCALE',        'Valoda');
 define('_SETTINGS_DISABLESITE',        'Apst�din�t sist�mu');
 define('_SETTINGS_DBLOGIN',            'mySQL DB inform�cija');
 define('_SETTINGS_UPDATE',            'Uzst�d�jumu saglab��ana');

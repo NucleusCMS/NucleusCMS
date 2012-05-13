@@ -903,7 +903,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Datei mit diesem Namen bereits vorhanden. Bitt
 define('_ERROR_LOGINDISALLOWED',	'Sie sind für den Administrationsbereich nicht freigeschaltet. Sie kö;nnen sich als Benutzer anmelden.');
 define('_ERROR_DBCONNECT',			'Keine Verbindung zum mySQL-Server');
 define('_ERROR_DBSELECT',			'Nucleus Datenbank nicht gefunden');
-define('_ERROR_NOSUCHLANGUAGE',		'Keine entsprechende Sprachdatei gefunden');
+define('_ERROR_NOSUCHLOCALE',		'Keine entsprechende Sprachdatei gefunden');
 define('_ERROR_NOSUCHCATEGORY',		'Keine entsprechende Kategorie vorhanden');
 define('_ERROR_DELETELASTCATEGORY',	'Es muss mindestens eine Kategorie existieren');
 define('_ERROR_DELETEDEFCATEGORY',	'Standard Kategorie kann nicht gelö;scht werden');
@@ -1104,7 +1104,7 @@ define('_SETTINGS_ALLOWCREATE',		'Besuchern die Einrichtung eines Benutzer-Konto
 define('_SETTINGS_NEWLOGIN',		'Anmelden mit selbst erstelltem Konto gestatten');
 define('_SETTINGS_NEWLOGIN2',		'(gilt nur für neue Benutzer-Konten)');
 define('_SETTINGS_MEMBERMSGS',		'Mitglied-zu-Mitglied-Kommunikation gestatten');
-define('_SETTINGS_LANGUAGE',		'Standard Sprachmodul');
+define('_SETTINGS_LOCALE',		'Standard Sprachmodul');
 define('_SETTINGS_DISABLESITE',		'Seite offline schalten');
 define('_SETTINGS_DBLOGIN',			'mySQL Anmeldung &amp; Datenbank');
 define('_SETTINGS_UPDATE',			'Einstellungen speichern');

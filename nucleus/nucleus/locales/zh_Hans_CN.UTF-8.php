@@ -908,7 +908,7 @@ define('_ERROR_UPLOADDUPLICATE',	'已经有一个同名文件，上传之前请�
 define('_ERROR_LOGINDISALLOWED',	'对不起，你不能登录管理区。但可以用其他用户身份登录');
 define('_ERROR_DBCONNECT',			'无法连接到 MySQL 服务器');
 define('_ERROR_DBSELECT',			'无法选择文章系统的数据库');
-define('_ERROR_NOSUCHLANGUAGE',		'没有这个语言文件');
+define('_ERROR_NOSUCHLOCALE',		'没有这个语言文件');
 define('_ERROR_NOSUCHCATEGORY',		'没有这个类别');
 define('_ERROR_DELETELASTCATEGORY',	'至少一个类别');
 define('_ERROR_DELETEDEFCATEGORY',	'不能删除默认类别');
@@ -1109,7 +1109,7 @@ define('_SETTINGS_ALLOWCREATE',		'允许访客建立会员账号');
 define('_SETTINGS_NEWLOGIN',		'允许访客建立的账号登录');
 define('_SETTINGS_NEWLOGIN2',		'（只在新注册的账号上生效）');
 define('_SETTINGS_MEMBERMSGS',		'允许会员到会员的服务');
-define('_SETTINGS_LANGUAGE',		'默认语言');
+define('_SETTINGS_LOCALE',		'默认语言');
 define('_SETTINGS_DISABLESITE',		'关闭站点');
 define('_SETTINGS_DBLOGIN',			'MySQL 登录 &amp; 数据库');
 define('_SETTINGS_UPDATE',			'更新设置');

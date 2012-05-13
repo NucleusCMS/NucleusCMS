@@ -908,7 +908,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Een bestand met dezelfde naam bestaat reeds. P
 define('_ERROR_LOGINDISALLOWED',	'Sorry, U bent niet gemachtigd om in te loggen op de admin area');
 define('_ERROR_DBCONNECT',			'Kon geen verbinding maken met de MySQL database');
 define('_ERROR_DBSELECT',			'Kon de databank niet correct selecteren.');
-define('_ERROR_NOSUCHLANGUAGE',		'De gevraagde taal bestaat niet');
+define('_ERROR_NOSUCHLOCALE',		'De gevraagde taal bestaat niet');
 define('_ERROR_NOSUCHCATEGORY',		'Categorie bestaat niet');
 define('_ERROR_DELETELASTCATEGORY',	'Er moet steeds minstens één categorie bestaan');
 define('_ERROR_DELETEDEFCATEGORY',	'Kan default categorie niet wissen');
@@ -1110,7 +1110,7 @@ define('_SETTINGS_ALLOWCREATE',		'Bezoekers toelaten een gebruikersaccount aan t
 define('_SETTINGS_NEWLOGIN',		'Login toegelaten voor nieuwe gebruikers');
 define('_SETTINGS_NEWLOGIN2',		'(geldt enkel voor nieuwe accounts)');
 define('_SETTINGS_MEMBERMSGS',		'Member-2-Member Service Toelaten');
-define('_SETTINGS_LANGUAGE',		'Default Taal');
+define('_SETTINGS_LOCALE',		'Default Taal');
 define('_SETTINGS_DISABLESITE',		'Site Uitschakelen');
 define('_SETTINGS_DBLOGIN',			'mySQL Login &amp; Database');
 define('_SETTINGS_UPDATE',			'Bewaren');

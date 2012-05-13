@@ -904,7 +904,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Another file with that name already exists. Tr
 define('_ERROR_LOGINDISALLOWED',	'Sorry, you\'re not allowed to log in to the admin area. You can log in as another user, though');
 define('_ERROR_DBCONNECT',			'Could not connect to mySQL server');
 define('_ERROR_DBSELECT',			'Could not select the nucleus database.');
-define('_ERROR_NOSUCHLANGUAGE',		'No such translation file exists');
+define('_ERROR_NOSUCHLOCALE',		'No such translation file exists');
 define('_ERROR_NOSUCHCATEGORY',		'No such category exists');
 define('_ERROR_DELETELASTCATEGORY',	'There must at least be one category');
 define('_ERROR_DELETEDEFCATEGORY',	'Cannot delete default category');
@@ -1105,7 +1105,7 @@ define('_SETTINGS_ALLOWCREATE',		'Allow Visitors to Create a Member Account');
 define('_SETTINGS_NEWLOGIN',		'Login Allowed for User-Created accounts');
 define('_SETTINGS_NEWLOGIN2',		'(only goes for newly created accounts)');
 define('_SETTINGS_MEMBERMSGS',		'Allow Member-2-Member Service');
-define('_SETTINGS_LANGUAGE',		'Default Language');
+define('_SETTINGS_LOCALE',			'Default Locale');
 define('_SETTINGS_DISABLESITE',		'Disable Site');
 define('_SETTINGS_DBLOGIN',			'mySQL Login &amp; Database');
 define('_SETTINGS_UPDATE',			'Update Settings');

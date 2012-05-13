@@ -909,7 +909,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Un fichier de ce nom existe déjà. Essayez de
 define('_ERROR_LOGINDISALLOWED',	'Désolé, vous n\'êtes pas autorisé à vous connecter à la zone admin. Vous pouvez vous connecter sous un autre nom');
 define('_ERROR_DBCONNECT',		'Impossible de se connecter au serveur mySQL');
 define('_ERROR_DBSELECT',		'Impossible de sélectionner la base Nucleus.');
-define('_ERROR_NOSUCHLANGUAGE',		'Fichier de langue indisponible');
+define('_ERROR_NOSUCHLOCALE',		'Fichier de langue indisponible');
 define('_ERROR_NOSUCHCATEGORY',		'Thème indisponible');
 define('_ERROR_DELETELASTCATEGORY',	'Il doit y avoir au moins un thème');
 define('_ERROR_DELETEDEFCATEGORY',	'Impossible d\'effacerle thème par défaut');
@@ -1110,7 +1110,7 @@ define('_SETTINGS_ALLOWCREATE',		'Autoriser les visiteurs à créer un compte');
 define('_SETTINGS_NEWLOGIN',		'Connexion autorisée pour les comptes créés par des utilisateurs');
 define('_SETTINGS_NEWLOGIN2',		'(ne vaut que pour les comptes récemment créés)');
 define('_SETTINGS_MEMBERMSGS',		'Autoriser les services de participant à participant');
-define('_SETTINGS_LANGUAGE',		'Langue par défaut');
+define('_SETTINGS_LOCALE',		'Langue par défaut');
 define('_SETTINGS_DISABLESITE',		'Désactiver le site');
 define('_SETTINGS_DBLOGIN',		'mySQL Login &amp; Database');
 define('_SETTINGS_UPDATE',		'Mettre à jour les réglages');

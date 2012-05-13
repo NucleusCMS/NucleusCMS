@@ -904,7 +904,7 @@ define('_ERROR_UPLOADDUPLICATE',	'Ф№ѓу єрщы ёњё ёњљюђю шьх 
 define('_ERROR_LOGINDISALLOWED',	'Sorry, you\'re not allowed to log in to the admin area. You can log in as another user, though');
 define('_ERROR_DBCONNECT',			'Эх ьюцх фр ёх ётњ№цх ё mySQL ёњ№тњ№р');
 define('_ERROR_DBSELECT',			'Эх ьюцх фр шчсх№х nucleus срчрђр фрээш.');
-define('_ERROR_NOSUCHLANGUAGE',		'Эх ёњљхёђтѓтр ђръњт хчшъют єрщы');
+define('_ERROR_NOSUCHLOCALE',		'Эх ёњљхёђтѓтр ђръњт хчшъют єрщы');
 define('_ERROR_NOSUCHCATEGORY',		'эх ёњљхёђтѓтр ђръртр ърђхую№шџ');
 define('_ERROR_DELETELASTCATEGORY',	'в№џстр фр шьр яюэх хфэр ърђхую№шџ');
 define('_ERROR_DELETEDEFCATEGORY',	'Эх ьюцхђх фр шчђ№шхђх default ърђхую№шџђр');
@@ -1105,7 +1105,7 @@ define('_SETTINGS_ALLOWCREATE',		'арч№хјш эр яюёхђшђхышђх 
 define('_SETTINGS_NEWLOGIN',		'Login №рч№хјхэ чр Яюђ№хсшђхыёъш-бњчфрфхэш рърѓэђш');
 define('_SETTINGS_NEWLOGIN2',		'(юђэрёџ ёх ёрью чр эютюёњчфрфхэш рърѓэђш)');
 define('_SETTINGS_MEMBERMSGS',		'арч№хјш Member-2-Member ѓёыѓурђр');
-define('_SETTINGS_LANGUAGE',		'Default Language');
+define('_SETTINGS_LOCALE',			'Default Locale');
 define('_SETTINGS_DISABLESITE',		'бя№ш ёрщђр');
 define('_SETTINGS_DBLOGIN',			'mySQL Login &amp; Database');
 define('_SETTINGS_UPDATE',			'Юсэютхэш эрёђ№ющъш');
