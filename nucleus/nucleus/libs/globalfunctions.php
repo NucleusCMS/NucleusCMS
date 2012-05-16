@@ -1432,10 +1432,10 @@ function startUpError($msg, $title)
 	header('Content-Type: text/xml; charset=' . i18n::get_current_charset());
 	echo "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
 	echo "<head>\n";
-	echo '<title>'. Entity::hsc($title) . "</title></head>\n";
+	echo "<title>{$title}</title></head>\n";
 	echo "<body>\n";
-	echo '<h1>' . Entity::hsc($title) . "</h1>\n";
-	echo Entity::hsc($msg);
+	echo "<h1>{$title}</h1>\n";
+	echo $msg;
 	echo "</body>\n";
 	echo "</html>\n";
 	exit;
