@@ -51,15 +51,9 @@ do_check_files();
 
 /* i18n class is needed for internationalization */
 include_once('../nucleus/libs/i18n.php');
-if ( !i18n::init('UTF-8', './locales') )
+if ( !i18n::init('UTF-8', '../nucleus/locales') )
 {
 	exit('<div style="font-size: xx-large;"> Failed to initialize iconv or mbstring extension. Would you please contact the administrator of your PHP server? </div>');
-}
-
-// check if mysql support is installed; this check may not make sense, as is, in a version past 3.5x
-if ( !function_exists('mysql_query') && !function_exists('mysqli_query') )
-{
-	exit('<div style="font-size: xx-large;"> Your PHP version does not have support for MySQL :( </div>');
 }
 
 // include core classes that are needed for login & plugin handling
@@ -70,6 +64,12 @@ global $MYSQL_HANDLER;
 if ( !isset($MYSQL_HANDLER) )
 {
 	$MYSQL_HANDLER = array('mysql', '');
+	
+	// check if mysql support is installed; this check may not make sense, as is, in a version past 3.5x
+	if ( !function_exists('mysql_query') && !function_exists('mysqli_query') )
+	{
+		exit('<div style="font-size: xx-large;"> Your PHP version does not have support for MySQL :( </div>');
+}
 }
 include_once('../nucleus/libs/sql/sql.php');
 
@@ -296,19 +296,13 @@ function show_footer()
  */
 function show_select_locale_form()
 {
-	// Get the browser language that can be displayed
-	// TODO: default locale select simple implementation
-	$languages = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-	foreach ( $languages as $language )
-	{
-		$language = preg_replace('#([\w]+).*#', '$1', $language);
-		break;
+	// get locale list
+	$localelist = i18n::get_available_locale_list();
+	$locales = array();
+	foreach ( $localelist as $locale ) {
+		$checkfile = './locales/' . $locale . '.' . i18n::get_current_charset() . '.php';
+		$locales[] = array( $locale, (!file_exists($checkfile) ? '*&nbsp;' : '') . $locale );
 	}
-
-	$locales = array(
-		array('en_Latn_US', 'English - United States'),
-		array('ja_Jpan_JP', 'Japanese - Japan')
-	);
 ?>
 		<div id="container">
 			<p style="font-size:152%;font-weight:bold;">
@@ -319,6 +313,11 @@ function show_select_locale_form()
 				<div class="prt">
 					<select name="locale">
 <?php
+	// Get the browser language that can be displayed
+	// TODO: default locale select simple implementation
+	$languages = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+	$language = (is_array($languages) && count($languages) > 0) ? preg_replace('#^([\w]+).*$#', '$1', $languages[0]) : '';
+
 	foreach ( $locales as $locale )
 	{
 		echo "<option value=\"$locale[0]\"";
@@ -330,6 +329,9 @@ function show_select_locale_form()
 	}
 ?>
 					</select>
+					<p>Nucleus is installed in the selected locale, the locale of the Asterisk prefixed will be displayed in English because there is no translation of the installer file.</p>
+					<p>We will wait for the translator by volunteers!</p>
+					</p>
 					<p class="sbt">
 						<button type="submit" name="action" value="locale" class="sbt_arw">START</button>
 					</p>
