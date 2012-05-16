@@ -291,11 +291,11 @@ class BaseActions
 	{
 		if ( !defined($constant) )
 		{
-			echo Entity::hsc($constant);
+			echo $constant;
 		}
 		else
 		{
-			echo Entity::hsc(constant($constant));
+			echo constant($constant);
 		}
 		return;
 	}
