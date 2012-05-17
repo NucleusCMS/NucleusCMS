@@ -58,7 +58,7 @@ else
  *  configuration file or a translation file, and could cause Nucleus to
  *  malfunction
  */
-if ( !array_key_exists('alertOnHeadersSent', $CONF) || $CONF['alertOnHeadersSent'] !== 0 )
+if ( !array_key_exists('alertOnHeadersSent', $CONF) )
 {
 	$CONF['alertOnHeadersSent'] = 1;
 }
@@ -68,8 +68,10 @@ if ( !array_key_exists('alertOnHeadersSent', $CONF) || $CONF['alertOnHeadersSent
  *  more of the installation files (install.php, install.sql, upgrades/
  *  directory) are still on the server.
  */
-$CONF['alertOnSecurityRisk'] = 1;
-
+if ( !array_key_exists('alertOnSecurityRisk', $CONF) )
+{
+	$CONF['alertOnSecurityRisk'] = 1;
+}
 /*
  * Set these to 1 to allow viewing of future items or draft items
  * Should really never do this, but can be useful for some plugins that might need to
