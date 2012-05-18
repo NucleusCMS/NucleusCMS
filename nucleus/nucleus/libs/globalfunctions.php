@@ -17,7 +17,7 @@
  */
 
 /* needed if we include globalfunctions from install.php */
-global $nucleus, $CONF, $DIR_LIBS, $DIR_LOCALES, $manager, $member;
+global $nucleus, $CONF, $DIR_LIBS, $DIR_LOCALES, $manager, $member, $MYSQL_HANDLER;
 
 $nucleus['version'] = 'v4.00 SVN';
 $nucleus['codename'] = '';
@@ -32,7 +32,12 @@ if ( version_compare(PHP_VERSION, '5.3.0', '<') )
 }
 
 /* check and die if someone is trying to override internal globals (when register_globals turn on) */
-checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LOCALES', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
+checkVars(array('nucleus', 'CONF', 'DIR_LIBS',
+'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE',
+'DIR_LOCALES', 'DIR_PLUGINS',
+'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS',
+'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS',
+'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
 
 if ( !isset($CONF) )
 {
@@ -161,7 +166,6 @@ if ( $CONF['UsingAdminArea'] )
 
 
 /* connect to database */
-global $MYSQL_HANDLER;
 if ( !isset($MYSQL_HANDLER) )
 {
 	$MYSQL_HANDLER = array('mysql','');
@@ -251,7 +255,6 @@ $startpos	= intRequestVar('startpos');
 $errormessage = '';
 $error		= '';
 $special	= requestVar('special');
-$virtualpath = ((getVar('virtualpath') != NULL) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 
 /* read config */
@@ -279,17 +282,6 @@ $CONF['SearchURL']		= $CONF['Self'];
 $CONF['BlogURL']		= $CONF['Self'];
 $CONF['CategoryURL']	= $CONF['Self'];
 
-/*
- *switch URLMode back to normal when $CONF['Self'] ends in .php
- * this avoids urls like index.php/item/13/index.php/item/15
- */
-if ( !array_key_exists('URLMode', $CONF)
- || (($CONF['URLMode'] == 'pathinfo')
-  && (i18n::substr($CONF['Self'], i18n::strlen($CONF['Self']) - 4) == '.php')) )
-{
-	$CONF['URLMode'] = 'normal';
-}
-
 /* automatically use simpler toolbar for mozilla */
 if ( ($CONF['DisableJsTools'] == 0)
    && i18n::strpos(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0') !== FALSE
@@ -298,8 +290,8 @@ if ( ($CONF['DisableJsTools'] == 0)
 	$CONF['DisableJsTools'] = 2;
 }
 
+/* login processing */
 $member = new Member();
-
 if ( $action == 'login' )
 {
 	$login = postVar('login');
@@ -315,7 +307,6 @@ else
 {
 	$member->cookielogin();
 }
-
 
 /* TODO: This is for backward compatibility, should be obsoleted near future. */
 if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Locale'])
@@ -399,138 +390,26 @@ if ( !defined('_ARCHIVETYPE_MONTH') )
 	define('_ARCHIVETYPE_YEAR', 'year');
 }
 
-/* decode path_info */
-if ( $CONF['URLMode'] == 'pathinfo' )
+/* for path resolving */
+$virtualpath = getVar('virtualpath');
+if ( getVar('virtualpath') == '' )
 {
-	/* initialize keywords if this hasn't been done before */
-	if ( !isset($CONF['ItemKey']) || $CONF['ItemKey'] == '' )
+	$virtualpath = serverVar('PATH_INFO');
+}
+
+/*
+ * switch URLMode back to normal when $CONF['Self'] ends in .php
+ * this avoids urls like index.php/item/13/index.php/item/15
+ */
+if ( !array_key_exists('URLMode', $CONF) || ($CONF['URLMode'] != 'pathinfo') )
+{
+	$CONF['URLMode'] = 'normal';
+}
+else
+{
+	if ( i18n::substr($CONF['Self'], i18n::strlen($CONF['Self']) - 4) != '.php' )
 	{
-		$CONF['ItemKey'] = 'item';
-	}
-	
-	if ( !isset($CONF['ArchiveKey']) || $CONF['ArchiveKey'] == '' )
-	{
-		$CONF['ArchiveKey'] = 'archive';
-	}
-	
-	if ( !isset($CONF['ArchivesKey']) || $CONF['ArchivesKey'] == '' )
-	{
-		$CONF['ArchivesKey'] = 'archives';
-	}
-	
-	if ( !isset($CONF['MemberKey']) || $CONF['MemberKey'] == '' )
-	{
-		$CONF['MemberKey'] = 'member';
-	}
-	
-	if ( !isset($CONF['BlogKey']) || $CONF['BlogKey'] == '' )
-	{
-		$CONF['BlogKey'] = 'blog';
-	}
-	
-	if ( !isset($CONF['CategoryKey']) || $CONF['CategoryKey'] == '' )
-	{
-		$CONF['CategoryKey'] = 'category';
-	}
-	
-	if ( !isset($CONF['SpecialskinKey']) || $CONF['SpecialskinKey'] == '' )
-	{
-		$CONF['SpecialskinKey'] = 'special';
-	}
-	
-	$parsed = false;
-	$manager->notify(
-		'ParseURL',
-		array(
-			/* e.g. item, blog, ... */
-			'type' => basename(serverVar('SCRIPT_NAME') ),
-			'info' => $virtualpath,
-			'complete' => &$parsed
-		)
-	);
-	
-	if ( !$parsed )
-	{
-		/* default implementation */
-		$data = preg_split("#/#", $virtualpath );
-		for ( $i = 0; $i < sizeof($data); $i++ )
-		{
-			switch ( $data[$i] )
-			{
-				/* item/1 (blogid) */
-				case $CONF['ItemKey']:
-					$i++;
-					
-					if ( $i < sizeof($data) )
-					{
-						$itemid = intval($data[$i]);
-					}
-					break;
-				
-				/* archives/1 (blogid) */
-				case $CONF['ArchivesKey']:
-						$i++;
-						if ( $i < sizeof($data) )
-						{
-							$archivelist = intval($data[$i]);
-						}
-						break;
-					
-				/* two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid) */
-				case $CONF['ArchiveKey']:
-					if ( (($i + 1) < sizeof($data) ) && (i18n::strpos($data[$i + 1], '-') === FALSE ) )
-					{
-						$blogid = (integer) $data[++$i];
-					}
-					$i++;
-					if ( $i < sizeof($data) )
-					{
-						$archive = $data[$i];
-					}
-					break;
-					
-				/* blogid/1 */
-				case 'blogid':
-				/* blog/1 */
-				case $CONF['BlogKey']:
-					$i++;
-					if ( $i < sizeof($data) )
-					{
-						$blogid = intval($data[$i]);
-					}
-					break;
-				
-				/* category/1 (catid) */
-				case $CONF['CategoryKey']:
-				case 'catid':
-					$i++;
-					if ( $i < sizeof($data) )
-					{
-						$catid = intval($data[$i]);
-					}
-					break;
-				
-				case $CONF['MemberKey']:
-					$i++;
-					if ( $i < sizeof($data) )
-					{
-						$memberid = intval($data[$i]);
-					}
-					break;
-				
-				case $CONF['SpecialskinKey']:
-					$i++;
-					if ( $i < sizeof($data) )
-					{
-						$special = $data[$i];
-						$_REQUEST['special'] = $special;
-					}
-					break;
-				
-				default:
-					// skip...
-			}
-		}
+		decodePathInfo($virtualpath);
 	}
 }
 
@@ -1356,7 +1235,6 @@ function selector()
 		$skinid = $blog->getDefaultSkin();
 	}
 	
-	//$special = requestVar('special'); //get at top of file as global
 	if ( !empty($special) && isValidShortName($special) )
 	{
 		$type = strtolower($special);
@@ -1416,10 +1294,9 @@ function doError($msg, $skin = '')
 		$skin = new Skin($id);
 	}
 	
-	$skinid = $skin->getID();
 	$errormessage = $msg;
 	$skin->parse('error');
-	exit;
+	return;
 }
 
 /**
@@ -1918,6 +1795,150 @@ function revertArrayForSanitizing($array, &$dst)
 	}
 	return;
 }
+
+/**
+ * decodePathInfo()
+ * 
+ * @param	string	$virtualpath
+ * @return	void
+ */
+function decodePathInfo($virtualpath)
+{
+	global $CONF, $manager, $archive, $blog, $catid, $memberid, $special;
+	
+	/* initialize keywords if this hasn't been done before */
+	if ( !isset($CONF['ItemKey']) || empty($CONF['ItemKey']) )
+	{
+		$CONF['ItemKey'] = 'item';
+	}
+	
+	if ( !isset($CONF['ArchiveKey']) || empty($CONF['ArchiveKey']) )
+	{
+		$CONF['ArchiveKey'] = 'archive';
+	}
+	
+	if ( !isset($CONF['ArchivesKey']) || empty($CONF['ArchivesKey']) )
+	{
+		$CONF['ArchivesKey'] = 'archives';
+	}
+	
+	if ( !isset($CONF['MemberKey']) || empty($CONF['MemberKey']) )
+	{
+		$CONF['MemberKey'] = 'member';
+	}
+	
+	if ( !isset($CONF['BlogKey']) || empty($CONF['BlogKey']) )
+	{
+		$CONF['BlogKey'] = 'blog';
+	}
+	
+	if ( !isset($CONF['CategoryKey']) || empty($CONF['CategoryKey']) )
+	{
+		$CONF['CategoryKey'] = 'category';
+	}
+	
+	if ( !isset($CONF['SpecialskinKey']) || empty($CONF['SpecialskinKey']) )
+	{
+		$CONF['SpecialskinKey'] = 'special';
+	}
+	
+	$parsed = FALSE;
+	$data = array(
+		'type'		=>  basename(serverVar('SCRIPT_NAME') ),
+		'info'		=>  $virtualpath,
+		'complete'	=> &$parsed
+	);
+	$manager->notify('ParseURL', $data);
+	
+	/* already parsed by the other subsystem */
+	if ( $parsed )
+	{
+		return;
+	}
+	/* default implementation */
+	$data = preg_split("#/#", $virtualpath);
+	for ( $i = 0; $i < sizeof($data); $i++ )
+	{
+		switch ( $data[$i] )
+		{
+			/* item/1 (blogid) */
+			case $CONF['ItemKey']:
+				$i++;
+				
+				if ( $i < sizeof($data) )
+				{
+					$itemid = (integer) $data[$i];
+				}
+				break;
+			
+			/* archives/1 (blogid) */
+			case $CONF['ArchivesKey']:
+					$i++;
+					if ( $i < sizeof($data) )
+					{
+						$archivelist = (integer) $data[$i];
+					}
+					break;
+				
+			/* two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid) */
+			case $CONF['ArchiveKey']:
+				if ( (($i + 1) < sizeof($data) ) && (i18n::strpos($data[$i + 1], '-') === FALSE ) )
+				{
+					$blogid = (integer) $data[++$i];
+				}
+				$i++;
+				if ( $i < sizeof($data) )
+				{
+					$archive = $data[$i];
+				}
+				break;
+				
+			/* blogid/1 */
+			case 'blogid':
+			/* blog/1 */
+			case $CONF['BlogKey']:
+				$i++;
+				if ( $i < sizeof($data) )
+				{
+					$blogid = intval($data[$i]);
+				}
+				break;
+			
+			/* category/1 (catid) */
+			case $CONF['CategoryKey']:
+			case 'catid':
+				$i++;
+				if ( $i < sizeof($data) )
+				{
+					$catid = intval($data[$i]);
+				}
+				break;
+			
+			case $CONF['MemberKey']:
+				$i++;
+				if ( $i < sizeof($data) )
+				{
+					$memberid = intval($data[$i]);
+				}
+				break;
+			
+			case $CONF['SpecialskinKey']:
+				$i++;
+				if ( $i < sizeof($data) )
+				{
+					$special = $data[$i];
+				}
+				break;
+			
+			default:
+				/* do nothing */
+				break;
+		}
+	}
+	
+	return;
+}
+
 
 /**
  * redirect()
