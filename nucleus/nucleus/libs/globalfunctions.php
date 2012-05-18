@@ -17,7 +17,10 @@
  */
 
 /* needed if we include globalfunctions from install.php */
-global $nucleus, $CONF, $DIR_LIBS, $DIR_LOCALES, $manager, $member, $MYSQL_HANDLER;
+global $nucleus, $CONF, $DIR_LIBS, $DIR_LOCALES, $manager, $member, $MYSQL_HANDLER, $StartTime;
+
+/* just for benchmark tag */
+$StartTime = microtime(TRUE);
 
 $nucleus['version'] = 'v4.00 SVN';
 $nucleus['codename'] = '';

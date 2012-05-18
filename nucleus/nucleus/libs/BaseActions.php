@@ -54,6 +54,7 @@ class BaseActions
 	
 	/* NOTE: defined actions for this base class */
 	static private $defined_actions = array(
+		'benchmark',
 		'charset',
 		'else',
 		'elseif',
@@ -406,6 +407,20 @@ class BaseActions
 			$data = Entity::highlight($data, $this->aHighlight, $this->template['SEARCH_HIGHLIGHT']);
 		}
 		return $data;
+	}
+	
+	/**
+	 * BaseActions::parse_benchmark()
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function parse_benchmark()
+	{
+		global $StartTime;
+		$loadtime = microtime(TRUE) - $StartTime;
+		printf("%.3F sec/%d queries", $loadtime, DB::getExecCount());
+		return;
 	}
 	
 	/**
