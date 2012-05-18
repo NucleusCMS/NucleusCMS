@@ -20,14 +20,13 @@
 class Action
 {
 	/**
-	 * Action::ACTION()
+	 * Action::__construct()
 	 *  Constructor for an new ACTION object
 	 * 
 	 * @param	void
 	 * @return	void
-	 * 
 	 */
-	function ACTION()
+	public function __construct()
 	{
 		return;
 	}
@@ -39,50 +38,42 @@ class Action
 	 * @param	string	$action	action type
 	 * @return	mixed
 	 */
-	function doAction($action)
+	public function doAction($action)
 	{
 		switch ( $action )
 		{
 			case 'autodraft':
 				return $this->autoDraft();
-			break;
-			
+				break;
 			case 'updateticket':
 				return $this->updateTicket();
-			break;
-			
+				break;
 			case 'addcomment':
 				return $this->addComment();
-			break;
-			
+				break;
 			case 'sendmessage':
 				return $this->sendMessage();
-			break;
-			
+				break;
 			case 'createaccount':
 				return $this->createAccount();
-			break;
-			
+				break;
 			case 'forgotpassword':
 				return $this->forgotPassword();
-			break;
-			
+				break;
 			case 'votepositive':
 				return $this->doKarma('pos');
-			break;
-			
+				break;
 			case 'votenegative':
 				return $this->doKarma('neg');
-			break;
-			
+				break;
 			case 'plugin':
 				return $this->callPlugin();
-			break;
-			
+				break;
 			default:
 				doError(_ERROR_BADACTION);
-			break;
+				break;
 		}
+		return;
 	}
 	
 	/**
@@ -91,18 +82,17 @@ class Action
 	 * 
 	 * @param	void
 	 * @return	void
-	 * 
 	 */
-	function addComment()
+	private function addComment()
 	{
 		global $CONF, $errormessage, $manager;
 		
 		$post['itemid']	= intPostVar('itemid');
-		$post['user']		= postVar('user');
+		$post['user']	= postVar('user');
 		$post['userid']	= postVar('userid');
 		$post['email']	= postVar('email');
-		$post['body']		= postVar('body');
-		$post['remember']	= intPostVar('remember');
+		$post['body']	= postVar('body');
+		$post['remember'] = intPostVar('remember');
 		
 		// begin if: "Remember Me" box checked
 		if ( $post['remember'] == 1 )
@@ -143,7 +133,7 @@ class Action
 				redirect($url);
 			}
 		}
-		exit;
+		return;
 	}
 	
 	/**
@@ -152,9 +142,8 @@ class Action
 	 * 
 	 * @param	void
 	 * @return	void
-	 * 
 	 */
-	function sendMessage()
+	private function sendMessage()
 	{
 		global $CONF, $member;
 		
@@ -176,49 +165,55 @@ class Action
 			$fromName = $member->getDisplayName();
 		}
 		
+		/* TODO: validation */
+		$memberid = postVar('memberid');
 		$tomem = new Member();
-		$tomem->readFromId(postVar('memberid') );
+		$tomem->readFromId($memberid);
 		
+		/* TODO: validation */
+		$message = postVar('message');
 		$message  = _MMAIL_MSG . ' ' . $fromName . "\n"
 			. '(' . _MMAIL_FROMNUC. ' ' . $CONF['IndexURL'] .") \n\n"
 			. _MMAIL_MAIL . " \n\n"
-			. postVar('message');
+			. $message;
 		$message .= Notification::get_mail_footer();
 		
 		$title = _MMAIL_TITLE . ' ' . $fromName;
 		Notification::mail($tomem->getEmail(), $title, $message, $fromMail, i18n::get_current_charset());
 		
-		if ( !postVar('url') )
+		/* TODO: validation */
+		$url = postVar('url');
+		if ( empty($url) )
 		{
 			$CONF['MemberURL'] = $CONF['IndexURL'];
 			
 			if ( $CONF['URLMode'] == 'pathinfo' )
 			{
-				$url = Link::create_link('member', array('memberid' => $tomem->getID(), 'name' => $tomem->getDisplayName() ) );
+				$data = array(
+					'memberid'	=> $tomem->getID(),
+					'name'		=> $tomem->getDisplayName()
+				);
+				$url = Link::create_link('member', $data);
 			}
 			else
 			{
 				$url = $CONF['IndexURL'] . Link::create_member_link($tomem->getID());
 			}
-			redirect($url);
 		}
-		else
-		{
-			redirect(postVar('url') );
-		}
-		exit;
+		redirect($url );
+		
+		return;
 	}
 	
 	/**
 	 * Action::validateMessage()
 	 *  Checks if a mail to a member is allowed
 	 *  Returns a string with the error message if the mail is disallowed
-	 *  
-	 *  @param		void
-	 *  @return	String	Null character string
-	 *  
+	 * 
+	 * @param		void
+	 * @return	String	Null character string
 	 */
-	function validateMessage()
+	private function validateMessage()
 	{
 		global $CONF, $member, $manager;
 		
@@ -242,7 +237,11 @@ class Action
 		 * invalid can change 'error' to something other than '')
 		 */
 		$result = '';
-		$manager->notify('ValidateForm', array('type' => 'membermail', 'error' => &$result) );
+		$data = array(
+			'type'	=> 'membermail',
+			'error'	=> &$result
+		);
+		$manager->notify('ValidateForm', $data);
 		
 		return $result;
 	}
@@ -251,22 +250,24 @@ class Action
 	 * Action::createAccount()
 	 * Creates a new user account
 	 *  
-	 * @param	Void
-	 * @return	Mixed
-	 * 
+	 * @param	void
+	 * @return	mixed
 	 */
-	function createAccount()
+	private function createAccount()
 	{
 		global $CONF, $manager;
 		
-		if ( !$CONF['AllowMemberCreate'] )
+		if ( array_key_exists('AllowMemberCreate', $CONF) && !$CONF['AllowMemberCreate'] )
 		{
 			doError(_ERROR_MEMBERCREATEDISABLED);
 		}
 		
 		// evaluate content from FormExtra
 		$result = 1;
-		$data = array('type' => 'membermail', 'error' => &$result);
+		$data = array(
+			'type'	=> 'membermail',
+			'error'	=> &$result
+		);
 		$manager->notify('ValidateForm', $data);
 		
 		if ( $result != 1 )
@@ -275,12 +276,16 @@ class Action
 		}
 		
 		// even though the member can not log in, set some random initial password. One never knows.
-		srand( (double) microtime() * 1000000);
+		srand((double) microtime() * 1000000);
 		$initialPwd = md5(uniqid(rand(), TRUE) );
 		
 		// create member (non admin/can not login/no notes/random string as password)
-		$name = Entity::shorten(postVar('name'), 32, '');
-		$r = Member::create($name, postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
+		$name		= Entity::shorten(postVar('name'), 32, '');
+		$relname	= postVar('realname');
+		$email		= postVar('email');
+		$url		= postVar('url');
+		
+		$r = Member::create($name, $realname, $initialPwd, $email, $url, 0, 0, '');
 		
 		if ( $r != 1 )
 		{
@@ -298,6 +303,7 @@ class Action
 		{
 			redirect(postVar('desturl') );
 		}
+		
 		return 1;
 	}
 	
@@ -307,9 +313,8 @@ class Action
 	 * 
 	 * @param	void
 	 * @return	void
-	 * 
 	 */
-	function forgotPassword()
+	private function forgotPassword()
 	{
 		$membername = trim(postVar('name') );
 		
@@ -321,7 +326,8 @@ class Action
 		$mem = Member::createFromName($membername);
 		
 		// check if e-mail address is correct
-		if ( $mem->getEmail() != postVar('email') )
+		$email = postVar('email');
+		if ( $mem->getEmail() != $email )
 		{
 			doError(_ERROR_INCORRECTEMAIL);
 		}
@@ -329,27 +335,31 @@ class Action
 		// send activation link
 		$mem->sendActivationLink('forgot');
 		
-		if ( !postVar('url') )
-		{
-			echo _MSG_ACTIVATION_SENT;
-			echo '<br /><br />Return to <a href="'.$CONF['IndexURL'].'" title="'.$CONF['SiteName'].'">'.$CONF['SiteName'].'</a>';
-		}
-		else
+		// redirection
+		$url = postVar('url');
+		if ( !empty($url) )
 		{
 			redirect(postVar('url') );
 		}
-		exit;
+		else
+		{
+			echo _MSG_ACTIVATION_SENT;
+			echo "<br />"
+			    . "<br />"
+			    . "Return to <a href=\"{$CONF['IndexURL']}\" title=\"{$CONF['SiteName']}\">{$CONF['SiteName']}</a>\n";
+		}
+		
+		return;
 	}
 	
 	/**
 	 * Action::doKarma()
 	 * Handle karma votes
 	 * 
-	 * @param	String	$type	pos or neg
+	 * @param	string	$type	pos or neg
 	 * @return	Void
-	 * 
 	 */
-	function doKarma($type)
+	private function doKarma($type)
 	{
 		global $itemid, $member, $CONF, $manager;
 		
@@ -395,7 +405,7 @@ class Action
 		if ( $blog->getNotifyAddress() && $blog->notifyOnVote() )
 		{
 			$message = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
-			$itemLink = Link::create_item_link(intval($itemid) );
+			$itemLink = Link::create_item_link((integer)$itemid);
 			$temp = parse_url($itemLink);
 			
 			if ( !$temp['scheme'] )
@@ -434,7 +444,7 @@ class Action
 		}
 		
 		redirect($url);
-		exit;
+		return;
 	}
 	
 	/**
@@ -443,13 +453,13 @@ class Action
 	 * 
 	 * @param	void
 	 * @return	void
-	 * 
 	 */
-	function callPlugin()
+	private function callPlugin()
 	{
 		global $manager;
 		
-		$pluginName = 'NP_' . requestVar('name');
+		$name = requestVar('name');
+		$pluginName = "NP_{$name}";
 		$actionType = requestVar('type');
 		
 		// 1: check if plugin is installed
@@ -460,7 +470,6 @@ class Action
 		
 		// 2: call plugin
 		$pluginObject =& $manager->getPlugin($pluginName);
-		
 		if ( !$pluginObject )
 		{
 			$error = 'Could not load plugin (see actionlog)';
@@ -479,7 +488,8 @@ class Action
 		{
 			doError($error);
 		}
-		exit;
+		
+		return;
 	}
 	
 	/**
@@ -488,9 +498,8 @@ class Action
 	 * 
 	 * @param	integer	$blogid
 	 * @return	void
-	 * 
 	 */
-	function checkban($blogid)
+	private function checkban($blogid)
 	{
 		// check if banned
 		$ban = Ban::isBanned($blogid, serverVar('REMOTE_ADDR') );
@@ -499,6 +508,7 @@ class Action
 		{
 			doError(_ERROR_BANNED1 . $ban->iprange . _ERROR_BANNED2 . $ban->message . _ERROR_BANNED3);
 		}
+		
 		return;
 	}
 	
@@ -508,12 +518,11 @@ class Action
 	 * 
 	 * @param	void
 	 * @return	boolean	FALSE
-	 * 
 	 */
-	function updateTicket()
+	private function updateTicket()
 	{
 		global $manager;
-
+		
 		if ( !$manager->checkTicket() )
 		{
 			echo _ERROR . ':' . _ERROR_BADTICKET;
@@ -522,6 +531,7 @@ class Action
 		{
 			echo $manager->getNewTicket();
 		}
+		
 		return FALSE;
 	}
 	
@@ -531,9 +541,8 @@ class Action
 	 * 
 	 * @param	void
 	 * @return	boolean	FALSE
-	 * 
 	 */
-	function autoDraft()
+	private function autoDraft()
 	{
 		global $manager;
 		
@@ -555,6 +564,7 @@ class Action
 				echo $info['message'];
 			}
 		}
+		
 		return FALSE;
 	}
 }
