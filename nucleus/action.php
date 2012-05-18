@@ -20,7 +20,7 @@
 
 $CONF = array();
 require('./config.php');
-include_libs('ACTION.php',true,false);
+include_libs('ACTION.php');
 
 $action = requestVar('action');
 $a = new Action();
@@ -28,5 +28,8 @@ $errorInfo = $a->doAction($action);
 
 if ( $errorInfo )
 {
-	doError($errorInfo['message'], new SKIN($errorInfo['skinid']) );
+	$skin = new SKIN($errorInfo['skinid']);
+	doError($errorInfo['message'], $skin);
 }
+
+exit;
