@@ -425,9 +425,8 @@ class Actions extends BaseActions
 		{
 			return $blog->isValidCategory($catid);
 		}
-		
 		// check category name
-		if ( $name == 'catname' )
+		else if ( $name == 'catname' )
 		{
 			$value = $blog->getCategoryIdFromName($value);
 			if ( $value == $catid )
@@ -435,9 +434,8 @@ class Actions extends BaseActions
 				return $blog->isValidCategory($catid);
 			}
 		}
-		
 		// check category id
-		if ( ($name == 'catid') && ($value == $catid) )
+		else if ( ($name == 'catid') && ($value == $catid) )
 		{
 			return $blog->isValidCategory($catid);
 		}
