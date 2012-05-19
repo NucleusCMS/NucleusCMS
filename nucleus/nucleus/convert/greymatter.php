@@ -524,9 +524,9 @@ function gm_linkmo($url, $mouseover, $text) {
 
 // converts GM {{popup command into a link to the image
 function gm_popup($filename, $authorid, $text, $width, $height) {
-	global $grey_datapath;
+	global $grey_datapath, $manager;
 
-	$res = Media::addMediaObject(Member::createFromID($authorid), "$grey_datapath$filename", $filename);
+	$res = Media::addMediaObject(&$manager->getMember($authorid), "$grey_datapath$filename", $filename);
 
 	if ($res != "")
 		die("error copying media files: $res");

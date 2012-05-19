@@ -2009,7 +2009,7 @@ class Admin
 		}
 		echo '<h2>' . _MEMBERS_EDIT . '</h2>';
 		
-		$mem = Member::createFromID($memberid);
+		$mem =& $manager->getMember($memberid);
 		?>
 		<form method="post" action="index.php" name="memberedit"><div>
 		
@@ -2158,7 +2158,7 @@ class Admin
         $notes          = strip_tags(postVar('notes'));
         $locale        = postVar('locale');
 
-        $mem = Member::createFromID($memberid);
+        $mem =& $manager->getMember($memberid);
 
         if ($CONF['AllowLoginEdit'] || $member->isAdmin()) {
 
@@ -2329,7 +2329,7 @@ class Admin
         if (!$info)
             $this->error(_ERROR_ACTIVATE);
 
-        $mem = Member::createFromId($info['vmember']);
+        $mem =& $manager->getMember($info['vmember']);
 
         if (!$mem)
             $this->error(_ERROR_ACTIVATE);
@@ -2414,8 +2414,9 @@ class Admin
      *
      * @author dekarma
      */
-    function action_activatesetpwd() {
-
+    function action_activatesetpwd()
+    {
+		global $manager;
         $key = postVar('key');
 
         // clean up old activation keys
@@ -2427,7 +2428,7 @@ class Admin
         if (!$info || ($info['type'] == 'addresschange'))
             return $this->_showActivationPage($key, _ERROR_ACTIVATE);
 
-        $mem = Member::createFromId($info['vmember']);
+        $mem =& $manager->getMember($info['vmember']);
 
         if (!$mem)
             return $this->_showActivationPage($key, _ERROR_ACTIVATE);
@@ -2583,7 +2584,7 @@ class Admin
         // check if allowed
         $member->blogAdminRights($blogid) or $this->disallow();
 
-        $teammem = Member::createFromID($memberid);
+        $teammem =& $manager->getMember($memberid);
         $blog =& $manager->getBlog($blogid);
 
         $this->pagehead();
@@ -2637,7 +2638,7 @@ class Admin
 
         // check if: - there remains at least one blog admin
         //           - (there remains at least one team member)
-        $tmem = Member::createFromID($memberid);
+        $tmem =& $manager->getMember($memberid);
 
         $manager->notify('PreDeleteTeamMember', array('member' => &$tmem, 'blogid' => $blogid));
 
@@ -2662,7 +2663,7 @@ class Admin
      * @todo document this
      */
     function action_teamchangeadmin() {
-        global $member;
+        global $manager, $member;
 
         $blogid = intRequestVar('blogid');
         $memberid = intRequestVar('memberid');
@@ -2670,7 +2671,7 @@ class Admin
         // check if allowed
         $member->blogAdminRights($blogid) or $this->disallow();
 
-        $mem = Member::createFromID($memberid);
+        $mem =& $manager->getMember($memberid);
 
         // don't allow when there is only one admin at this moment
         if ($mem->isBlogAdmin($blogid)) {
@@ -3415,7 +3416,7 @@ class Admin
 
         ($member->getID() == $memberid) or $member->isAdmin() or $this->disallow();
 
-        $mem = Member::createFromID($memberid);
+        $mem =& $manager->getMember($memberid);
 
         $this->pagehead();
         ?>
@@ -3471,7 +3472,7 @@ class Admin
 		global $manager;
 		
 		$memberid = intval($memberid);
-		$mem = Member::createFromID($memberid);
+		$mem =& $manager->getMember($memberid);
 		
 		if ( !$mem->canBeDeleted() )
 		{

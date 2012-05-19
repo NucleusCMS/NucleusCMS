@@ -1647,7 +1647,7 @@ class Blog
 		$admin = intval($admin);
 		
 		// check if member is already a member
-		$tmem = Member::createFromID($memberid);
+		$tmem =& $manager->getMember($memberid);
 		
 		if ( $tmem->isTeamMember($this->blogid) )
 		{
