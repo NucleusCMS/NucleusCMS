@@ -1220,10 +1220,10 @@ class Actions extends BaseActions
 	 */
 	public function parse_comments($template)
 	{
-		global $itemid, $manager, $blog, $highlight;
+		global $manager, $blog, $highlight, $itemid;
 		
 		$template =& $manager->getTemplate($template);
-		$item = Item::getitem($itemid, 0, 0);
+		$item =& $manager->getItem($itemid, 0, 0);
 		
 		// create parser object & action handler
 		$handler = new ItemActions($blog);
