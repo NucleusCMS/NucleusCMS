@@ -32,12 +32,12 @@ class Manager
 	 * The $items, $blogs, ... arrays map an id to an object (for plugins, the name is used
 	 * rather than an ID)
 	 */
-	var $items;
-	var $blogs;
-	var $plugins;
-	var $karma;
-	var $templates;
-	var $members;
+	private $items;
+	private $blogs;
+	private $plugins;
+	private $karma;
+	private $templates;
+	private $members;
 	
 	/**
 	 * cachedInfo to avoid repeated SQL queries (see pidInstalled/pluginInstalled/getPidFromName)
