@@ -526,7 +526,7 @@ function gm_linkmo($url, $mouseover, $text) {
 function gm_popup($filename, $authorid, $text, $width, $height) {
 	global $grey_datapath, $manager;
 
-	$res = Media::addMediaObject(&$manager->getMember($authorid), "$grey_datapath$filename", $filename);
+	$res = Media::addMediaObject($manager->getMember($authorid), "$grey_datapath$filename", $filename);
 
 	if ($res != "")
 		die("error copying media files: $res");
