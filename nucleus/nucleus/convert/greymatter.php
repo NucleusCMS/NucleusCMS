@@ -266,7 +266,7 @@ fclose($filehandle);
 }
 
 function gmc_doConversion() {
-	global $HTTP_POST_VARS;
+	global $HTTP_POST_VARS, $manager;
 
 	// 1. get all data
 
@@ -337,7 +337,7 @@ function gmc_doConversion() {
 	}
 
 	// add authors to blog team
-	$blog = new Blog($nucleus_blogid);
+	$blog =& $manager->getBlog($nucleus_blogid);
 	global $catid;
 	$catid = $blog->getDefaultCategory();
 	for ($i=0;$i<$authorcount;$i++)

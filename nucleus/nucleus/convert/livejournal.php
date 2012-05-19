@@ -226,7 +226,7 @@ function bc_assignMembers() {
 
 
 function bc_doConversion() {
-	global $HTTP_POST_VARS;
+	global $HTTP_POST_VARS, $manager;
 
 	// 1. get all data
 	$authorcount = intval($HTTP_POST_VARS['authorcount']);
@@ -290,7 +290,7 @@ function bc_doConversion() {
 	}
 
 	// add authors to blog team
-	$b = new Blog($nucleus_blogid);
+	$b =& $manager->getBlog($nucleus_blogid);
 	global $catid;
 	$catid = $b->getDefaultCategory();
 

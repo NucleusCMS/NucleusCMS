@@ -276,7 +276,7 @@
 
 		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
 
-		$blog = new Blog($blogid);
+		$blog =& $manager->getBlog($blogid);
 		if ($blog->convertBreaks())
 			$item['body'] = removeBreaks($item['body']);
 

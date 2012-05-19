@@ -83,7 +83,7 @@
 
 		$blogid = getBlogIDFromItemID($itemid);
 
-		$blog = new Blog($blogid);
+		$blog =& $manager->getBlog($blogid);
 		$catid = $blog->getCategoryIdFromName($category);
 
 		if ($old['draft'] && $publish) {
@@ -267,7 +267,8 @@
 	  * Returns a list of recent items
 	  */
 	function _getRecentItemsBlogger($blogid, $username, $password, $amount) {
-
+		global $manager;
+		
 		$blogid = intval($blogid);
 		$amount = intval($amount);
 
@@ -288,7 +289,7 @@
 		// 3. create and return list of recent items
 		// Struct returned has dateCreated, userid, blogid and content
 
-		$blog = new Blog($blogid);
+		$blog =& $manager->getBlog($blogid);
 
 		$structarray = array();		// the array in which the structs will be stored
 
@@ -345,7 +346,7 @@
 		// Structure returned has dateCreated, userid, blogid and content
 
 		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
-		$blog = new Blog($blogid);
+		$blog =& $manager->getBlog($blogid);
 
 		// get category
 		$item['category'] = $blog->getCategoryName($item['catid']);

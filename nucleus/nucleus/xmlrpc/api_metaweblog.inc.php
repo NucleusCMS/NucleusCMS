@@ -173,7 +173,7 @@
 		}
 		else
 		{
-			$blog = new Blog($blogid);
+			$blog =& $manager->getBlog($blogid);
 			$catid = $blog->getCategoryIdFromName($category);
 		}
 
@@ -262,7 +262,8 @@
 	}
 
 	function _getRecentItemsMetaWeblog($blogid, $username, $password, $amount) {
-
+		global $manager;
+		
 		$blogid = intval($blogid);
 		$amount = intval($amount);
 
@@ -283,7 +284,7 @@
 		// 3. create and return list of recent items
 		// Struct returned has dateCreated, userid, blogid and content
 
-		$blog = new Blog($blogid);
+		$blog =& $manager->getBlog($blogid);
 
 		$structarray = array();		// the array in which the structs will be stored
 
@@ -332,7 +333,7 @@
 	}
 
 	function _newMediaObject($blogid, $username, $password, $info) {
-		global $CONF, $DIR_MEDIA, $DIR_LIBS;
+		global $CONF, $DIR_MEDIA, $DIR_LIBS, $manager;
 
 		// - login
 		$mem = new Member();
@@ -345,7 +346,7 @@
 		if (!$mem->teamRights($blogid))
 			return _error(3,'Not a team member');
 
-		$b = new Blog($blogid);
+		$b =& $manager->getBlog($blogid);
 
 		// - decode data
 		$data = $info['bits']; // decoding was done transparantly by xmlrpclib
@@ -394,6 +395,8 @@
 	}
 
 	function _categoryList($blogid, $username, $password) {
+		global $manager;
+		
 		// 1. login
 		$mem = new Member();
 		if (!$mem->login($username, $password))
@@ -405,7 +408,7 @@
 		if (!$mem->teamRights($blogid))
 			return _error(3,"Not a team member");
 
-		$b = new Blog($blogid);
+		$b =& $manager->getBlog($blogid);
 
 		$categorystruct = array();
 
@@ -450,7 +453,7 @@
 		// 3. return the item
 		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
 
-		$b = new Blog($blogid);
+		$b =& $manager->getBlog($blogid);
 		if ($b->convertBreaks()) {
 			$item['body'] = removeBreaks($item['body']);
 			$item['more'] = removeBreaks($item['more']);

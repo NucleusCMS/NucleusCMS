@@ -262,7 +262,7 @@
 			return _error(6,"No such item ($itemid)");
 
 		$blogid = getBlogIDFromItemID($itemid);
-		$blog = new Blog($blogid);
+		$blog =& $manager->getBlog($blogid);
 
 		if (!$mem->canAlterItem($itemid))
 			return _error(7,"Not allowed to alter item");
@@ -296,7 +296,7 @@
 			return _error(6,"No such item ($itemid)");
 
 		$blogid = getBlogIDFromItemID($itemid);
-		$blog = new Blog($blogid);
+		$blog =& $manager->getBlog($blogid);
 
 		if (!$mem->canAlterItem($itemid))
 			return _error(7, 'You are not allowed to request this information');
@@ -324,7 +324,7 @@
 
 		// get item data
 		$blogid = getBlogIDFromItemID($itemid);
-		$blog = new Blog($blogid);
+		$blog =& $manager->getBlog($blogid);
 		$old =& $manager->getItem($itemid,1,1);
 
 		return _edititem($itemid, $username, $password, $old['catid'], $old['title'], $old['body'], $old['more'], $old['draft'], 1, $old['closed']);
@@ -332,6 +332,7 @@
 
 
 	function _mt_categoryList($blogid, $username, $password) {
+		global $manager;
 		// 1. login
 		$mem = new Member();
 		if (!$mem->login($username, $password))
@@ -343,7 +344,7 @@
 		if (!$mem->teamRights($blogid))
 			return _error(3,"Not a team member");
 
-		$b = new Blog($blogid);
+		$b =& $manager->getBlog($blogid);
 
 		$categorystruct = array();
 
@@ -371,6 +372,8 @@
 
 	function _mt_getRecentPostTitles($blogid, $username, $password, $iAmount)
 	{
+		global $manager;
+		
 		$blogid = intval($blogid);
 		$iAmount = intval($iAmount);
 
@@ -391,7 +394,7 @@
 		// 3. create and return list of recent items
 		// Struct returned has dateCreated, userid, postid and title
 
-		$blog = new Blog($blogid);
+		$blog =& $manager->getBlog($blogid);
 
 		$structarray = array();		// the array in which the structs will be stored
 

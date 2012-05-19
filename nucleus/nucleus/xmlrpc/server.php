@@ -97,7 +97,8 @@ $s = new xmlrpc_server( $functionDefs );
   * Adds an item to the given blog. Username and password are required to login
   */
 function _addItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $catname = "") {
-	$blog = new Blog($blogid);
+	global $manager;
+	$blog =& $manager->getBlog($blogid);
 	$timestamp = $blog->getCorrectTime();
 	return _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $timestamp, 0, $catname);
 }
@@ -106,6 +107,8 @@ function _addItem($blogid, $username, $password, $title, $body, $more, $publish,
   * Adds item to blog, with time of item given
   */
 function _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed = '0', $timestamp, $future, $catname = "") {
+	global $manager;
+	
 	// 1. login
 	$mem = new Member();
 
@@ -121,7 +124,7 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
 		return _error(4,"Cannot add empty items!");
 
 	// 3. calculate missing vars
-	$blog = new Blog($blogid);
+	$blog =& $manager->getBlog($blogid);
 
 	// get category id (or id for default category when false category)
 	$catid = $blog->getCategoryIdFromName($catname);
@@ -264,6 +267,8 @@ function _deleteItem($itemid, $username, $password) {
   * Returns a template
   */
 function _getSkinPart($blogid, $username, $password, $type) {
+	global $manager;
+	
 	// 1. login
 	$mem = new Member();
 	if (!$mem->login($username, $password))
@@ -276,13 +281,15 @@ function _getSkinPart($blogid, $username, $password, $type) {
 		return _error(3,"Not a team member");
 
 	// 3. return skin part
-	$blog = new Blog($blogid);
+	$blog =& $manager->getBlog($blogid);
 	$skin = new SKIN($blog->getDefaultSkin());
 	return new xmlrpcresp(new xmlrpcval($skin->getContentFromDB($type),"string"));
 
 }
 
 function _setSkinPart($blogid, $username, $password, $content, $type) {
+	global $manager;
+	
 	// 1. login
 	$mem = new Member();
 	if (!$mem->login($username, $password))
@@ -295,7 +302,7 @@ function _setSkinPart($blogid, $username, $password, $content, $type) {
 		return _error(3,"Not a team member");
 
 	// 3. update skin part
-	$blog = new Blog($blogid);
+	$blog =& $manager->getBlog($blogid);
 	$skin = new SKIN($blog->getDefaultSkin());
 	$skin->update($type, $content);
 

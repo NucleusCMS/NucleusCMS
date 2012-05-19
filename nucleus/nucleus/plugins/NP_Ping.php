@@ -231,7 +231,9 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingPingomatic()
 	{
-		$b = new Blog($this->myBlogId);
+		global $manager;
+		
+		$b =& $manager->getBlog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'weblogUpdates.ping',
 			array(
@@ -248,7 +250,9 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingWeblogs()
 	{
-		$b = new Blog($this->myBlogId);
+		global $manager;
+		
+		$b =& $manager->getBlog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'weblogupdates.ping',
 			array(
@@ -265,7 +269,9 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingTechnorati()
 	{
-		$b = new Blog($this->myBlogId);
+		global $manager;
+		
+		$b =& $manager->getBlog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'weblogUpdates.ping',
 			array(
@@ -282,7 +288,9 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingBlogRollingDotCom()
 	{
-		$b = new Blog($this->myBlogId);
+		global $manager;
+		
+		$b =& $manager->getBlog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'weblogUpdates.ping',
 			array(
@@ -299,7 +307,9 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingBloGs()
 	{
-		$b = new Blog($this->myBlogId);
+		global $manager;
+		
+		$b =& $manager->getBlog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'weblogUpdates.extendedPing',
 			array(
@@ -316,7 +326,9 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingWebloguesDotCom()
 	{
-		$b = new Blog($this->myBlogId);
+		global $manager;
+		
+		$b =& $manager->getBlog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'weblogUpdates.extendedPing',
 			array(
@@ -333,7 +345,9 @@ class NP_Ping extends NucleusPlugin
 	
 	public function pingBloggDe()
 	{
-		$b = new Blog($this->myBlogId);
+		global $manager;
+		
+		$b =& $manager->getBlog($this->myBlogId);
 		$message = new xmlrpcmsg(
 			'bloggUpdates.ping',
 			array(
