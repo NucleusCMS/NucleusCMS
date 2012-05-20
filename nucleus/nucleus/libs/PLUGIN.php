@@ -136,7 +136,7 @@ abstract class NucleusPlugin
 	 *  Name of the feature. See plugin documentation for more info
 	 *   'SqlTablePrefix' -> if the plugin uses the sql_table() method to get table names
 	 *   'HelpPage' -> if the plugin provides a helppage
-	 *   'SqlApi' -> if the plugin uses DB::* api (or sql_*) (must also require nucleuscms 3.5)
+	 *   'SqlApi' -> if the plugin uses the complete sql_* or DB::* api (must also require nucleuscms 3.5)
 	 */
 	public function supportsFeature($feature)
 	{
@@ -912,7 +912,7 @@ abstract class NucleusPlugin
 					}
 					
 					// retreive any metadata
-					$meta = NucleusPlugin::getOptionMeta($info->oextra);
+					$meta = NucleusPlugin::getOptionMeta($result['oextra']);
 					
 					// if the option is readonly or hidden it may not be saved
 					if ( array_key_exists('access', $meta)
@@ -966,17 +966,18 @@ abstract class NucleusPlugin
 					$query = "INSERT INTO %s (oid, ocontextid, ovalue) VALUES (%d, %d, %s);";
 					$query = sprintf($query, sql_table('plugin_option'), (integer) $oid, (integer) $contextid, DB::quoteValue($value));
 					DB::execute($query);
+					
+					// clear option value cache if the plugin object is already loaded
+					$plugin=& $manager->pidLoaded($result['opid']);
+					if ( $plugin )
+					{
+						$plugin->clearOptionValueCache();
+					}
+					
+					continue;
 				}
 			}
-			// clear option value cache if the plugin object is already loaded
-			if ( is_object($info) )
-			{
-				$plugin=& $manager->pidLoaded($result['opid']);
-				if ( $plugin )
-				{
-					$plugin->clearOptionValueCache();
-				}
-			}
+			continue;
 		}
 		return;
 	}
