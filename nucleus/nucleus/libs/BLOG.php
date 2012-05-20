@@ -1184,11 +1184,11 @@ class Blog
 		
 		if ( !$this->convertBreaks() )
 		{
-			echo "setConvertBreaks(FALSE):\n";
+			echo "setConvertBreaks(false);\n";
 		}
 		else
 		{
-			echo "setConvertBreaks(TRUE):\n";
+			echo "setConvertBreaks(true);\n";
 		}
 		echo "setMediaUrl('{$CONF['MediaURL']}');\n";
 		echo "setAuthorId('{$authorid}');\n";
