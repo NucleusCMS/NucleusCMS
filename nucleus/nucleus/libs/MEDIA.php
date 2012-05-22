@@ -17,17 +17,26 @@
  * @version $Id$
  */
 
-define('PRIVATE_COLLECTION',		'Private Collection');
+define('PRIVATE_COLLECTION', 		'Private Collection');
 define('READ_ONLY_MEDIA_FOLDER',	'(Read Only)');
 
 class Media
 {
+	static public $thumbdir = '.thumb';
+	static public $algorism = 'md5';
+	static public $image_mime = array(
+		'image/jpeg'	=> '.jpeg',
+		'image/png'		=> '.png',
+		'image/gif'		=> '.gif',
+	);
+	
 	/**
 	 * Media::getCollectionList()
 	 * Gets the list of collections available to the currently logged
 	 * in member
-	 *
-	 * @returns array of dirname => display name
+	 * 
+	 * @param	boolean	$exceptReadOnly
+	 * @return array	dirname => display name
 	 */
 	static public function getCollectionList($exceptReadOnly = FALSE)
 	{
@@ -51,7 +60,7 @@ class Media
 			if ( @is_dir($DIR_MEDIA . $dirname) &&
 				($dirname != '.') &&
 				($dirname != '..') &&
-				($dirname != 'CVS') &&
+				($dirname != self::$thumbdir) &&
 				(!is_numeric($dirname)) )
 				{
 				if ( @is_writable($DIR_MEDIA . $dirname) )
@@ -96,15 +105,22 @@ class Media
 		while ( $filename = readdir($dirhandle) )
 		{
 			// only add files that match the filter
-			if ( !@is_dir($filename) && self::checkFilter($filename, $filter) )
+			if ( !is_dir($mediadir . $filename) && self::checkFilter($filename, $filter) )
 			{
-				array_push($filelist, new MediaObject($collection, $filename, filemtime($mediadir . $filename)));
+				array_push($filelist, new MediaObject($collection, $filename, $DIR_MEDIA));
 			}
 		}
 		closedir($dirhandle);
 		
-		// sort array so newer files are shown first
-		usort($filelist,  array(__CLASS__, 'sort_media'));
+		/* sort array */
+		if ( !$CONF['MediaPrefix'] )
+		{
+			usort($filelist,  array(__CLASS__, 'sort_media_by_timestamp'));
+		}
+		else
+		{
+			usort($filelist,  array(__CLASS__, 'sort_media_by_filename'));
+		}
 		
 		return $filelist;
 	}
@@ -329,42 +345,445 @@ class Media
 	}
 	
 	/**
-	 * Media::sort_media()
+	 * Media::responseResampledImage()
+	 * send resampled image via HTTP
+	 * 
+	 * @param	object	$medium		Medium Object
+	 * @exit
+	 */
+	static public function responseResampledImage($medium, $maxwidth=0, $maxheight=0)
+	{
+		if ( get_class($medium) !== 'Medium' )
+		{
+			header("HTTP/1.1 500 Internal Server Error");
+			exit('Nucleus CMS: Fail to generate resampled image');
+			return;
+		}
+		
+		$resampledimage = $medium->getResampledBinary($maxwidth, $maxheight);
+		if ( $resampledimage === FALSE )
+		{
+			unset($resampledimage);
+			header("HTTP/1.1 503 Service Unavailable");
+			exit('Nucleus CMS: Fail to generate resampled image');
+			return;
+		}
+		
+		header("Content-type: {$medium->mime}");
+		echo $resampledimage;
+		
+		unset($resampledimage);
+		
+		exit;
+	}
+	
+	/**
+	 * Media::storeResampledImage()
+	 * Store resampled image binary to filesystem as file
+	 * 
+	 * @param	object	$medium		medium Object
+	 * @param	integer	$maxwidth	maximum width
+	 * @param	integer	$maxheight	maximum height
+	 * @param	string	$path		directory path for destination
+	 * @param	string	$name		file name for destination
+	 * @return	boolean
+	 */
+	static public function storeResampledImage($medium, $maxwidth=0, $maxheight=0, $path='', $name='')
+	{
+		global $DIR_MEDIA;
+		
+		if ( get_class($medium) !== 'Medium' )
+		{
+			return FALSE;
+		}
+		
+		if ( $path !== '' )
+		{
+			$path = realpath($path);
+			if ( !file_exists($path)
+			  || strpos($path, $DIR_MEDIA) !== 0 )
+			{
+				return FALSE;
+			}
+		}
+		else
+		{
+			$path = '$DIR_MEDIA/' . self::$thumbdir;
+		}
+		
+		if ( $name === '' )
+		{
+			$name = $medium->getHashedname();
+		}
+		
+		$resampledimage = $medium->getResampledBinary($maxwidth, $maxheight);
+		if ( !$resampledimage )
+		{
+			unset($resampledimage);
+			return FALSE;
+		}
+		
+		$handle = @fopen("{$path}/{$name}", 'w');
+		if ( !$handle )
+		{
+			unset ($resampledimage);
+			return FALSE;
+		}
+		
+		if ( !@fwrite($handle, $resampledimage) )
+		{
+			unset($resampledimage);
+			@unlink("{$path}/{$name}");
+			return FALSE;
+		}
+		
+		unset($resampledimage);
+		fclose($handle);
+		
+		if ( !@chmod("{$path}/{$name}", 0774) )
+		{
+			@unlink("{$path}/{$name}");
+			return FALSE;
+		}
+		
+		return TRUE;
+	}
+	
+	/**
+	 * Media::sort_media_by_timestamp()
 	 * User-defined sort method to sort an array of MediaObjects
 	 * 
 	 * @param	object	$a
 	 * @param	object	$b
 	 * @return	boolean
 	 */
-	static private function sort_media($a, $b)
+	static private function sort_media_by_timestamp($a, $b)
 	{
 		if ($a->timestamp == $b->timestamp) return 0;
 		return ($a->timestamp > $b->timestamp) ? -1 : 1;
 	}
+	
+	/**
+	 * Media::sort_media_by_filename()
+	 * User-defined sort method to sort an array of MediaObjects
+	 * 
+	 * @param	object	$a
+	 * @param	object	$b
+	 * @return	boolean
+	 */
+	static private function sort_media_by_filename($a, $b)
+	{
+		if ($a->filename == $b->filename) return 0;
+		return ($a->filename > $b->filename) ? -1 : 1;
+	}
 }
 
-/**
- * Represents the characteristics of one single media-object
- *
- * Description of properties:
- *  - filename: filename, without paths
- *  - timestamp: last modification (unix timestamp)
- *  - collection: collection to which the file belongs (can also be a owner ID, for private collections)
- *  - private: true if the media belongs to a private member collection
- */
 class MediaObject
 {
+	public $mime = '';
+	
+	public $root = '';
+	public $path = '';
 	public $private;
 	public $collection;
-	public $filename;
-	public $timestamp;
+	public $filename = '';
 	
-	public function __construct($collection, $filename, $timestamp)
+	public $prefix = '';
+	public $name = '';
+	public $suffix = '';
+	
+	public $timestamp = 0;
+	public $size = 0;
+	
+	public $width = 0;
+	public $height = 0;
+	public $resampledwidth = 0;
+	public $resampledheight = 0;
+	
+	/**
+	 * MediaObject::__construct()
+	 * 
+	 * @param	string		$collection	
+	 * @param	string		$filename	
+	 * @param	string		$root		fullpath to media directory
+	 */
+	public function __construct($collection, $filename, $root=0)
 	{
-		$this->private = is_numeric($collection);
+		global $CONF, $DIR_MEDIA;
+		
+		/* for backward compatibility */
+		if ( is_numeric($root) )
+		{
+			$root = $DIR_MEDIA;
+		}
+		
+		$root = preg_replace('#/*$#', '', $root);
+		
+		/* get and validate fullpath for the medium */
+		if ( !file_exists($root)
+		  || FALSE === ($fullpath = realpath("{$root}/{$collection}/{$filename}"))
+		  || strpos($fullpath, $root) !== 0
+		  || !file_exists($fullpath) )
+		{
+			return FALSE;
+		}
+		
+		/* store fundamentals */
+		$this->root = $root;
+		$this->private = (integer) $collection;
 		$this->collection = $collection;
-		$this->filename = $filename;
-		$this->timestamp = $timestamp;
+		$this->filename = basename($fullpath);
+		$this->timestamp = filemtime($fullpath);
+		
+		/* store relative directory path from root directory for media */
+		$this->path = preg_replace(array("#{$this->root}/#", "#/{$this->filename}#"), '', $fullpath);
+		if ( $this->path === $this->name )
+		{
+			$this->path = ''; 
+		}
+		
 		return;
+	}
+	
+	/**
+	 * MediaObject::refine()
+	 * refine data
+	 * 
+	 * @param	void
+	 * @return	void
+	 */
+	public function refine()
+	{
+		global $CONF;
+		
+		/* store size (byte order) */
+		$this->size = filesize("{$this->root}/{$this->path}/{$this->filename}");
+		
+		/* get width and height if this is image binary */
+		if ( FALSE === ($info = @getimagesize ("{$this->root}/{$this->path}/{$this->filename}")) )
+		{
+			$this->mime = 'application/octet-stream';
+			$this->width = 0;
+			$this->height = 0;
+		}
+		else
+		{
+			$this->mime = $info['mime'];
+			$this->width = $info[0];
+			$this->height = $info[1];
+		}
+		
+		/* utilise Fileinfo subsystem if available */
+		if ( defined('FILEINFO_MIME_TYPE') && function_exists ('finfo_open')
+		  && (FALSE !== ($info = finfo_open(FILEINFO_MIME_TYPE))) )
+		{
+			$this->mime = finfo_file($info, "{$this->root}/{$this->path}/{$this->filename}");
+		}
+		
+		/* store data with parsed filename */
+		if ( preg_match('#^(.*)\.([a-zA-Z0-9]{2,})$#', $this->filename, $info) === 1 )
+		{
+			$this->name = $info[1];
+			$this->suffix = $info[2];
+			
+			if ( $CONF['MediaPrefix'] && preg_match('#^([0-9]{8})\-(.*)$#', $this->name, $info) == 1 )
+			{
+				$this->prefix = preg_replace('#^([0-9]{4})([0-9]{2})([0-9]{2})$#', '$1/$2/$3', $info[1]);
+				$this->name = $info[2];
+			}
+		}
+		
+		return;
+	}
+	
+	/**
+	 * MediaObject::setResampledSize()
+	 * Set resampled size
+	 * 
+	 * @param	integer	$maxwidth
+	 * @param	integer	$maxheight
+	 * @return	boolean
+	 */
+	public function setResampledSize($maxwidth=0, $maxheight=0)
+	{
+		if ( ($maxwidth == 0) && ($maxheight == 0) )
+		{
+			return FALSE;
+		}
+		else if ( $this->width == 0 || $this->height  == 0 )
+		{
+			return FALSE;
+		}
+		else if ($this->width < $maxwidth && $this->height < $maxheight )
+		{
+			$this->resampledwidth = $this->width;
+			$this->resampledheight = $this->height;
+		}
+		else if ( $maxheight == 0 || $this->width > $this->height )
+		{
+			$this->resampledheight = intval ($this->height * $maxwidth / $this->width);
+			$this->resampledwidth = $maxwidth;
+		}
+		else if ( $maxwidth == 0 || $this->width <= $this->height )
+		{
+			$this->resampledwidth = intval ($this->width * $maxheight / $this->height);
+			$this->resampledheight = $maxheight;
+		}
+		return TRUE;
+	}
+	
+	/**
+	 * MediaObject::getResampledBinary()
+	 * Return resampled image binary
+	 * 
+	 * @param	void
+	 * @return	mixed	binary if success, FALSE if failed
+	 */
+	public function getResampledBinary($maxwidth=0, $maxheight=0)
+	{
+		static $gdinfo = array();
+		static $original;
+		static $resampledimage;
+		
+		if ( !$this->setResampledSize($maxwidth, $maxheight) )
+		{
+			return FALSE;
+		}
+		
+		if ( $gdinfo = array() )
+		{
+			$gdinfo = gd_info();
+		}
+		
+		if ( $this->path !== '' )
+		{
+			$fullpath = "{$this->root}/{$this->path}/{$this->name}";
+		}
+		else
+		{
+			$fullpath = "{$this->root}/{$this->name}";
+		}
+		if ( !file_exists($fullpath) )
+		{
+			return FALSE;
+		}
+		
+		if ( !array_key_exists($this->mime, Media::$image_mime)
+		  || $this->width == 0
+		  || $this->height == 0
+		  || $this->resampledwidth == 0
+		  || $this->resampledheight == 0 )
+		{
+			return FALSE;
+		}
+		
+		/* check current available memory */
+		$memorymax = trim(ini_get("memory_limit"));
+		switch ( strtolower ($memorymax[strlen($memorymax)-1]) )
+		{
+			case 'g':
+				$memorymax *= 1024;
+			case 'm':
+				$memorymax *= 1024;
+			case 'k':
+				$memorymax *= 1024;
+		}
+		
+		/*
+		 * this code is based on analyze if gd.c in php source code
+		 * if you can read C/C++, please check these elements and notify us if you have some ideas
+		 */
+		if ( (memory_get_usage()
+		   + ($this->resampledwidth * $this->resampledheight * 5 + $this->resampledheight * 24 + 10000)
+		   + ($this->width * $this->height * 5 + $this->height * 24 + 10000))
+		  > $memorymax )
+		{
+			return FALSE;
+		}
+		
+		switch ( $this->mime )
+		{
+			case 'image/gif':
+				if ( (!array_key_exists('GIF Read Support', $gdinfo) || !isset($gdinfo['GIF Read Support']))
+				  || (!array_key_exists('GIF Create Support', $gdinfo) || !isset($gdinfo['GIF Create Support'])) )
+				{
+					return FALSE;
+				}
+				$function = 'imagecreatefromgif';
+				break;
+			case 'image/jpeg':
+				if ( (!array_key_exists('JPEG Support', $gdinfo) || !isset($gdinfo['JPEG Support']))
+				  && (!array_key_exists('JPG Support', $gdinfo) || !isset($gdinfo['JPG Support'])) )
+				{
+					return FALSE;
+				}
+				$function = 'imagecreatefromjpeg';
+				break;
+			case 'image/png':
+				if ( !array_key_exists('PNG Support', $gdinfo) || !isset($gdinfo['PNG Support']) )
+				{
+					return FALSE;
+				}
+				$function = 'imagecreatefrompng';
+				break;
+			default:
+				return FALSE;
+		}
+		
+		if ( !is_callable($function) )
+		{
+			return FALSE;
+		}
+		
+		$original = call_user_func_array($function, array(&$fullpath));
+		if ( !$original )
+		{
+			return FALSE;
+		}
+		
+		$resampledimage = imagecreatetruecolor($this->resampledwidth, $this->resampledheight);
+		if ( !$resampledimage )
+		{
+			imagedestroy($original);
+			return FALSE;
+		}
+		
+		@set_time_limit(ini_get('max_execution_time'));
+		if ( !ImageCopyResampled($resampledimage, $original, 0, 0, 0, 0, $this->resampledwidth, $this->resampledheight, $this->width, $this->height) )
+		{
+			return FALSE;
+		}
+		
+		imagedestroy($original);
+		
+		ob_start();
+		
+		switch ( $this->mime )
+		{
+			case 'image/gif':
+				imagegif($resampledimage);
+				break;
+			case 'image/jpeg':
+				imagejpeg($resampledimage);
+				break;
+			case 'image/png':
+				imagepng($resampledimage);
+				break;
+			case 'image/bmp':
+			case 'image/x-ms-bmp':
+				imagepng($resampledimage);
+				break;
+			default:
+				return FALSE;
+		}
+		
+		imagedestroy($resampledimage);
+		
+		return ob_get_clean();
+	}
+	
+	public function getHashedName()
+	{
+		return (string) hash(Media::$algorism, "{$this->path}/{$this->name}", FALSE);
 	}
 }

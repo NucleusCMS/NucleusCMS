@@ -163,63 +163,69 @@ function media_select() {
 		</tr>
 
 	<?php
-
-	if (sizeof($arr)>0) {
-
-		if (($offset + $CONF['MediaPerPage']) >= sizeof($arr))
+	if ( sizeof($arr) > 0 )
+	{
+		if ( ($offset + $CONF['MediaPerPage']) >= sizeof($arr) )
+		{
 			$offset = sizeof($arr) - $CONF['MediaPerPage'];
-
-		if ($offset < 0) $offset = 0;
-
+		}
+		
+		if ( $offset < 0 )
+		{
+			$offset = 0;
+		}
+		
 		$idxStart = $offset;
 		$idxEnd = $offset + $CONF['MediaPerPage'];
 		$idxNext = $idxEnd;
 		$idxPrev = $idxStart - $CONF['MediaPerPage'];
-
-		if ($idxPrev < 0) $idxPrev = 0;
-
-		if ($idxEnd > sizeof($arr))
+		
+		if ( $idxPrev < 0 )
+		{
+			$idxPrev = 0;
+		}
+		
+		if ( $idxEnd > sizeof($arr) )
+		{
 			$idxEnd = sizeof($arr);
-
-		for($i=$idxStart;$i<$idxEnd;$i++) {
-			$obj = $arr[$i];
-			$filename = $DIR_MEDIA . $currentCollection . '/' . $obj->filename;
-
-			$old_level = error_reporting(0);
-			$size = @GetImageSize($filename);
-			error_reporting($old_level);
-			$width = $size[0];
-			$height = $size[1];
-			$filetype = $size[2];
-
-			echo "<tr>";
-			echo "<td>". date("Y-m-d",$obj->timestamp) ."</td>";
-
+		}
+		
+		for ( $i = $idxStart; $i < $idxEnd; $i++ )
+		{
+			$medium = $arr[$i];
+			$medium->refine();
+			
+			echo "<tr>\n";
+			echo "<td>" . date("Y-m-d", $medium->timestamp) . "</td>\n";
+			
 			// strings for javascript
-			$jsCurrentCollection = str_replace("'","\\'",$currentCollection);
-			$jsFileName = str_replace("'","\\'",$obj->filename);
-
-			if ($filetype != 0) {
-				// image (gif/jpg/png/swf)
-				echo "<td><a href=\"media.php\" onclick=\"chooseImage('", Entity::hsc($jsCurrentCollection), "','", Entity::hsc($jsFileName), "',"
-							   . "'", Entity::hsc($width), "','" , Entity::hsc($height), "'"
-							   . ")\" title=\"" . Entity::hsc($obj->filename). "\">"
-							   . Entity::hsc(Entity::shorten($obj->filename,25,'...'))
+			$jsCurrentCollection = str_replace("'", "\\'", $currentCollection);
+			$jsFileName = str_replace("'", "\\'", $medium->filename);
+			
+			if ( array_key_exists($medium->mime, Media::$image_mime) )
+			{
+				echo "<td><a href=\"media.php\" onclick=\"chooseImage('" . Entity::hsc($jsCurrentCollection) . "','" . Entity::hsc($jsFileName) . "',"
+							   . "'" . Entity::hsc($medium->width) . "','" . Entity::hsc($medium->height) . "'"
+							   . ")\" title=\"" . Entity::hsc($medium->filename) . "\">"
+							   . Entity::hsc(Entity::shorten($medium->filename, 25, '...'))
 							   ."</a>";
-				echo ' (<a href="', Entity::hsc($CONF['MediaURL'] . $currentCollection . '/' . $obj->filename), '" onclick="window.open(this.href); return false;" title="',Entity::hsc(_MEDIA_VIEW_TT),'">',_MEDIA_VIEW,'</a>)';
-				echo "</td>";
-			} else {
+				echo ' (<a href="', Entity::hsc("{$CONF['MediaURL']}/$currentCollection/$medium->filename"), '" onclick="window.open(this.href); return false;" title="'. Entity::hsc(_MEDIA_VIEW_TT) . '">' . _MEDIA_VIEW . '</a>)';
+				echo "</td>\n";
+				echo '<td>' . Entity::hsc($medium->width) . 'x' . Entity::hsc($medium->height) . "</td>\n";
+			}
+			else
+			{
 				// no image (e.g. mpg)
 				echo "<td><a href='media.php' onclick=\"chooseOther('" , Entity::hsc($jsCurrentCollection), "','", Entity::hsc($jsFileName), "'"
-							   . ")\" title=\"" . Entity::hsc($obj->filename). "\">"
-							   . Entity::hsc(Entity::shorten($obj->filename,30,'...'))
-							   ."</a></td>";
-
+				               . ")\" title=\"" . Entity::hsc($medium->filename). "\">"
+				               . Entity::hsc(Entity::shorten($medium->filename, 30, '...'))
+				               ."</a></td>\n";
+				echo '<td>' . Entity::hsc($medium->size) . "KB</td>\n";
 			}
-			echo '<td>' , Entity::hsc($width) , 'x' , Entity::hsc($height) , '</td>';
-			echo '</tr>';
+			echo "</tr>\n";
+			continue;
 		}
-	} // if (sizeof($arr)>0)
+	}
 	?>
 
 		</table>
