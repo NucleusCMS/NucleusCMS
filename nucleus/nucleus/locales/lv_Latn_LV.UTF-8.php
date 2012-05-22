@@ -1,19 +1,11 @@
 <?php
-// Latvian Nucleus Language File
-//
-// Author: Kaspars Priedols (house@tvertne.nu)
-// Nucleus version: v1.0-v2.0
-//
-// Please note: if you want to translate this file to your own translation, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which 
-// the file was written in your document.
-//
-// Fully translated translation file can be sent to Wouter Demuynck (nucleus@demuynck.org)
-// and will be available for download (with proper credit to the author, of course)
 /**
- * Nucleus Language File
- *
+ * Nucleus CMS Translation File
+ * Latvian in Latvia (Latin script)
+ * 
+ * Nucleus version: v1.0-v2.0
+ * Author: Kaspars Priedols (house@tvertne.nu)
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$

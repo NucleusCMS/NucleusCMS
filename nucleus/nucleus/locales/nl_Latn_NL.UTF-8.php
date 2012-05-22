@@ -1,23 +1,13 @@
 <?php
-// Dutch Nucleus Language File
-//
-// Updates:
-// - Nucleus v2.5-3.1 Norbert (beckerswna@yahoo.com)
-// - Nucleus v1.0-2.5 Wouter Demuynck (nucleuscms.org)
-//
-// Please note: if you want to translate this file to your own translation, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which
-// the file was written in your document.
-//
-// Fully translated translation file can be sent to us
-// and will be available for download (with proper credit to the author, of course)
-//
-// Oct 7, 2005 - Translation fine-tuned and spellingcorrection by Errie (http://getverd.errie.com
-//
 /**
- * Nucleus Language File
+ * Nucleus CMS Translation File
+ * Dutch in Netherlands (Latin script)
  *
+ * Updates:
+ * Oct 7, 2005 - Translation fine-tuned and spellingcorrection by Errie (http://getverd.errie.com
+ * - Nucleus v2.5-3.1 Norbert (beckerswna@yahoo.com)
+ * - Nucleus v1.0-2.5 Wouter Demuynck (nucleuscms.org)
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$

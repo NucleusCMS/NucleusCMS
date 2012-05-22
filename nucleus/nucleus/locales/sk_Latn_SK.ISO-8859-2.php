@@ -1,19 +1,11 @@
 <?php
-// Slovak Nucleus Language File
-// 
-// Author: Fujinmi (fujinmi@seznam.cz)
-// Nucleus version: v1.0-v2.5.1.0
-//
-// Please note: if you want to translate this file to your own translation, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which 
-// the file was written in your document.
-//
-// Fully translated translation file can be sent to Wouter Demuynck (nucleus@demuynck.org)
-// and will be available for download (with proper credit to the author, of course)
 /**
- * Nucleus Language File
+ * Nucleus CMS Translation File
+ * Slovak in Slovakia (Latn script)
  *
+ * Nucleus version: v1.0-v2.5.1.0
+ * Author: Fujinmi (fujinmi@seznam.cz)
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$
@@ -464,181 +456,181 @@ define('_EBLOG_SEARCH',				'<em>Always</em> include in search');
 // START introduced after v2.0 START
 
 // media library
-define('_MEDIA_VIEW',				'zobraziï¿½');
-define('_MEDIA_VIEW_TT',			'Zobraziï¿½ sï¿½bor (v novom okne)');
-define('_MEDIA_FILTER_APPLY',		'Pouï¿½iï¿½ filter');
+define('_MEDIA_VIEW',				'zobrazi»');
+define('_MEDIA_VIEW_TT',			'Zobrazi» súbor (v novom okne)');
+define('_MEDIA_FILTER_APPLY',		'Pou¾i» filter');
 define('_MEDIA_FILTER_LABEL',		'Filter: ');
-define('_MEDIA_UPLOAD_TO',			'Nahraï¿½ do...');
-define('_MEDIA_UPLOAD_NEW',			'Nahraï¿½ novï¿½ sï¿½bor...');
-define('_MEDIA_COLLECTION_SELECT',	'Vï¿½ber');
-define('_MEDIA_COLLECTION_TT',		'Prepnï¿½ sa do tejto kategï¿½rie');
-define('_MEDIA_COLLECTION_LABEL',	'Aktuï¿½lna kolekcia:: ');
+define('_MEDIA_UPLOAD_TO',			'Nahra» do...');
+define('_MEDIA_UPLOAD_NEW',			'Nahra» nový súbor...');
+define('_MEDIA_COLLECTION_SELECT',	'Výber');
+define('_MEDIA_COLLECTION_TT',		'Prepnú» sa do tejto kategórie');
+define('_MEDIA_COLLECTION_LABEL',	'Aktuálna kolekcia:: ');
 
 // tooltips on toolbar
-define('_ADD_ALIGNLEFT_TT',			'Zarovnaï¿½ doï¿½ava');
-define('_ADD_ALIGNRIGHT_TT',		'Zarovnaï¿½ doprava');
-define('_ADD_ALIGNCENTER_TT',		'Zarovnaï¿½ na stred');
+define('_ADD_ALIGNLEFT_TT',			'Zarovna» doµava');
+define('_ADD_ALIGNRIGHT_TT',		'Zarovna» doprava');
+define('_ADD_ALIGNCENTER_TT',		'Zarovna» na stred');
 
 // searchable blog setting (yes/no)
-define('_EBLOG_SEARCH',				'Zahrnï¿½ do hï¿½adania');
+define('_EBLOG_SEARCH',				'Zahrnú» do hµadania');
 
 // generic upload failure
-define('_ERROR_UPLOADFAILED',		'Nahrï¿½vanie zlyhalo');
+define('_ERROR_UPLOADFAILED',		'Nahrávanie zlyhalo');
 
 // END introduced after v2.0 END
 
 // START introduced after v1.5 START
 
 // posting to the past/edit timestamps
-define('_EBLOG_ALLOWPASTPOSTING',	'Povoliï¿½ publikovanie do minulosti');
-define('_ADD_CHANGEDATE',			'Prepï¿½saï¿½ dï¿½tum/ï¿½as');
-define('_BMLET_CHANGEDATE',			'Prepï¿½saï¿½ dï¿½tum/ï¿½as');
+define('_EBLOG_ALLOWPASTPOSTING',	'Povoli» publikovanie do minulosti');
+define('_ADD_CHANGEDATE',			'Prepísa» dátum/èas');
+define('_BMLET_CHANGEDATE',			'Prepísa» dátum/èas');
 
 // skin import/export
-define('_OVERVIEW_SKINIMPORT',		'Import/export vzhï¿½adu...');
+define('_OVERVIEW_SKINIMPORT',		'Import/export vzhµadu...');
 
 // skin settings
-define('_PARSER_INCMODE_NORMAL',	'Normï¿½lny');
-define('_PARSER_INCMODE_SKINDIR',	'Pouï¿½iï¿½ adr. vzhï¿½adu');
-define('_SKIN_INCLUDE_MODE',		'Reï¿½im vkladania');
+define('_PARSER_INCMODE_NORMAL',	'Normálny');
+define('_PARSER_INCMODE_SKINDIR',	'Pou¾i» adr. vzhµadu');
+define('_SKIN_INCLUDE_MODE',		'Re¾im vkladania');
 define('_SKIN_INCLUDE_PREFIX',		'Prefix');
 
 // global settings
-define('_SETTINGS_BASESKIN',		'Zï¿½kladnï¿½ vzhï¿½ad');
-define('_SETTINGS_SKINSURL',		'URL so vzhï¿½admi');
-define('_SETTINGS_ACTIONSURL',		'Plnï¿½ URL k action.php');
+define('_SETTINGS_BASESKIN',		'Základný vzhµad');
+define('_SETTINGS_SKINSURL',		'URL so vzhµadmi');
+define('_SETTINGS_ACTIONSURL',		'Plné URL k action.php');
 
 // category moves (batch)
-define('_ERROR_MOVEDEFCATEGORY',	'Nie je moï¿½nï¿½ presunï¿½ ï¿½tandardnï¿½ kategï¿½riu');
-define('_ERROR_MOVETOSELF',			'Nie je moï¿½nï¿½ presunï¿½ kategï¿½riu (cieï¿½ovï¿½ blog je rovnakï¿½, ako zdrojovï¿½ blog)');
-define('_MOVECAT_TITLE',			'Vyberte blog, do ktorï¿½ho chcete presunï¿½t kategï¿½riu');
-define('_MOVECAT_BTN',				'Presunï¿½ kategï¿½riu');
+define('_ERROR_MOVEDEFCATEGORY',	'Nie je mo¾né presunú» ¹tandardnú kategóriu');
+define('_ERROR_MOVETOSELF',			'Nie je mo¾né presunú» kategóriu (cieµový blog je rovnaký, ako zdrojový blog)');
+define('_MOVECAT_TITLE',			'Vyberte blog, do ktorého chcete presunút kategóriu');
+define('_MOVECAT_BTN',				'Presunú» kategóriu');
 
 // URLMode setting
-define('_SETTINGS_URLMODE',			'Reï¿½im URL');
-define('_SETTINGS_URLMODE_NORMAL',	'Normï¿½lny');
-define('_SETTINGS_URLMODE_PATHINFO','Pestrï¿½');
+define('_SETTINGS_URLMODE',			'Re¾im URL');
+define('_SETTINGS_URLMODE_NORMAL',	'Normálny');
+define('_SETTINGS_URLMODE_PATHINFO','Pestré');
 
 // Batch operations
-define('_BATCH_NOSELECTION',		'Pre prevedenie akcie nieje niï¿½ vybranï¿½');
-define('_BATCH_ITEMS',				'Dï¿½vkovï¿½ operï¿½cia na ï¿½lï¿½nkoch');
-define('_BATCH_CATEGORIES',			'Dï¿½vkovï¿½ operï¿½cia na kategoriï¿½ch');
-define('_BATCH_MEMBERS',			'Dï¿½vkovï¿½ operï¿½cia na uï¿½ï¿½vateï¿½och');
-define('_BATCH_TEAM',				'Dï¿½vkovï¿½ operï¿½cia na ï¿½lenoch tï¿½mu');
-define('_BATCH_COMMENTS',			'Dï¿½vkovï¿½ operï¿½cia na komentï¿½roch');
-define('_BATCH_UNKNOWN',			'Neznï¿½ma dï¿½vkovï¿½ operï¿½cia: ');
-define('_BATCH_EXECUTING',			'Spï¿½a sa');
+define('_BATCH_NOSELECTION',		'Pre prevedenie akcie nieje niè vybrané');
+define('_BATCH_ITEMS',				'Dávková operácia na èlánkoch');
+define('_BATCH_CATEGORIES',			'Dávková operácia na kategoriách');
+define('_BATCH_MEMBERS',			'Dávková operácia na u¾ívateµoch');
+define('_BATCH_TEAM',				'Dávková operácia na èlenoch tímu');
+define('_BATCH_COMMENTS',			'Dávková operácia na komentároch');
+define('_BATCH_UNKNOWN',			'Neznáma dávková operácia: ');
+define('_BATCH_EXECUTING',			'Spú¹»a sa');
 define('_BATCH_ONCATEGORY',			'na kategorii');
-define('_BATCH_ONITEM',				'na ï¿½lï¿½nku');
-define('_BATCH_ONCOMMENT',			'na komentï¿½ri');
-define('_BATCH_ONMEMBER',			'na uï¿½ivateï¿½ovi');
-define('_BATCH_ONTEAM',				'na ï¿½lenovi tï¿½mu');
-define('_BATCH_SUCCESS',			'ï¿½spech!');
+define('_BATCH_ONITEM',				'na èlánku');
+define('_BATCH_ONCOMMENT',			'na komentári');
+define('_BATCH_ONMEMBER',			'na u¾ivateµovi');
+define('_BATCH_ONTEAM',				'na èlenovi tímu');
+define('_BATCH_SUCCESS',			'Úspech!');
 define('_BATCH_DONE',				'Hotovo!');
-define('_BATCH_DELETE_CONFIRM',		'Potvrï¿½te dï¿½vkovï¿½ odstrï¿½nenie');
-define('_BATCH_DELETE_CONFIRM_BTN',	'Potvrï¿½te dï¿½vkovï¿½ odstrï¿½nenie');
-define('_BATCH_SELECTALL',			'vybraï¿½ vï¿½etko');
-define('_BATCH_DESELECTALL',		'nevybraï¿½ niï¿½');
+define('_BATCH_DELETE_CONFIRM',		'Potvrïte dávkové odstránenie');
+define('_BATCH_DELETE_CONFIRM_BTN',	'Potvrïte dávkové odstránenie');
+define('_BATCH_SELECTALL',			'vybra» v¹etko');
+define('_BATCH_DESELECTALL',		'nevybra» niè');
 
 // batch operations: options in dropdowns
-define('_BATCH_ITEM_DELETE',		'Odstrï¿½niï¿½');
-define('_BATCH_ITEM_MOVE',			'Pï¿½esunï¿½');
-define('_BATCH_MEMBER_DELETE',		'Odstrï¿½niï¿½');
-define('_BATCH_MEMBER_SET_ADM',		'Nastaviï¿½ sprï¿½vcovskï¿½ prï¿½va');
-define('_BATCH_MEMBER_UNSET_ADM',	'Odebrat sprï¿½vcovskï¿½ prï¿½va');
-define('_BATCH_TEAM_DELETE',		'Odstrï¿½niï¿½ z tï¿½mu');
-define('_BATCH_TEAM_SET_ADM',		'Nastaviï¿½ sprï¿½vcovskï¿½ prï¿½va');
-define('_BATCH_TEAM_UNSET_ADM',		'Odobraï¿½ sprï¿½vcovskï¿½ prï¿½va');
-define('_BATCH_CAT_DELETE',			'Odstrï¿½niï¿½');
-define('_BATCH_CAT_MOVE',			'Presunï¿½ do inï¿½ho blogu');
-define('_BATCH_COMMENT_DELETE',		'Odstrï¿½niï¿½');
+define('_BATCH_ITEM_DELETE',		'Odstráni»');
+define('_BATCH_ITEM_MOVE',			'Pøesunú»');
+define('_BATCH_MEMBER_DELETE',		'Odstráni»');
+define('_BATCH_MEMBER_SET_ADM',		'Nastavi» správcovské práva');
+define('_BATCH_MEMBER_UNSET_ADM',	'Odebrat správcovské práva');
+define('_BATCH_TEAM_DELETE',		'Odstráni» z tímu');
+define('_BATCH_TEAM_SET_ADM',		'Nastavi» správcovské práva');
+define('_BATCH_TEAM_UNSET_ADM',		'Odobra» správcovské práva');
+define('_BATCH_CAT_DELETE',			'Odstráni»');
+define('_BATCH_CAT_MOVE',			'Presunú» do iného blogu');
+define('_BATCH_COMMENT_DELETE',		'Odstráni»');
 
 // itemlist: Add new item...
-define('_ITEMLIST_ADDNEW',			'Pridat novï¿½ ï¿½lï¿½nok...');
+define('_ITEMLIST_ADDNEW',			'Pridat nový èlánok...');
 define('_ADD_PLUGIN_EXTRAS',		'Nastavenie pre pluginy');
 
 // errors
-define('_ERROR_CATCREATEFAIL',		'Nie je moï¿½nï¿½ vytvoriï¿½ novï¿½ kategï¿½riu');
-define('_ERROR_NUCLEUSVERSIONREQ',	'Tento plugin vyï¿½aduje novï¿½iu verziu Nucleusu: ');
+define('_ERROR_CATCREATEFAIL',		'Nie je mo¾né vytvori» novú kategóriu');
+define('_ERROR_NUCLEUSVERSIONREQ',	'Tento plugin vy¾aduje nov¹iu verziu Nucleusu: ');
 
 // backlinks
-define('_BACK_TO_BLOGSETTINGS',		'Spï¿½ na nastavenie blogu');
+define('_BACK_TO_BLOGSETTINGS',		'Spä» na nastavenie blogu');
 
 // skin import export
 define('_SKINIE_TITLE_IMPORT',		'Import');
 define('_SKINIE_TITLE_EXPORT',		'Export');
 define('_SKINIE_BTN_IMPORT',		'Import');
-define('_SKINIE_BTN_EXPORT',		'Export vybranï¿½ch vzhï¿½adov/ï¿½ablï¿½n');
-define('_SKINIE_LOCAL',				'Import z lokï¿½lneho sï¿½boru:');
-define('_SKINIE_NOCANDIDATES',		'V adresï¿½ri vzhï¿½adov neboli nï¿½jdenï¿½ ï¿½iadne poloï¿½ky pre import');
+define('_SKINIE_BTN_EXPORT',		'Export vybraných vzhµadov/¹ablón');
+define('_SKINIE_LOCAL',				'Import z lokálneho súboru:');
+define('_SKINIE_NOCANDIDATES',		'V adresári vzhµadov neboli nájdené ¾iadne polo¾ky pre import');
 define('_SKINIE_FROMURL',			'Import z URL:');
-define('_SKINIE_EXPORT_INTRO',		'Vyberte vzhï¿½ady a ï¿½ablï¿½ny, ktorï¿½ chcete exportovaï¿½');
-define('_SKINIE_EXPORT_SKINS',		'Vzhï¿½ady');
-define('_SKINIE_EXPORT_TEMPLATES',	'ï¿½ablï¿½ny');
+define('_SKINIE_EXPORT_INTRO',		'Vyberte vzhµady a ¹ablóny, ktoré chcete exportova»');
+define('_SKINIE_EXPORT_SKINS',		'Vzhµady');
+define('_SKINIE_EXPORT_TEMPLATES',	'©ablóny');
 define('_SKINIE_EXPORT_EXTRA',		'Extra info');
-define('_SKINIE_CONFIRM_OVERWRITE',	'Prepï¿½saï¿½ vzhï¿½ady, ktorï¿½ uï¿½ existujï¿½ (viï¿½ konflikty mien)');
-define('_SKINIE_CONFIRM_IMPORT',	'ï¿½no, toto chcem naimportovaï¿½');
-define('_SKINIE_CONFIRM_TITLE',		'Budï¿½ naimportovanï¿½ vzhï¿½ady a ï¿½ablï¿½ny');
-define('_SKINIE_INFO_SKINS',		'Vzhï¿½ady v sï¿½bore:');
-define('_SKINIE_INFO_TEMPLATES',	'ï¿½ablï¿½ny v sï¿½bore:');
+define('_SKINIE_CONFIRM_OVERWRITE',	'Prepísa» vzhµady, ktoré u¾ existujú (viï konflikty mien)');
+define('_SKINIE_CONFIRM_IMPORT',	'Áno, toto chcem naimportova»');
+define('_SKINIE_CONFIRM_TITLE',		'Budú naimportované vzhµady a ¹ablóny');
+define('_SKINIE_INFO_SKINS',		'Vzhµady v súbore:');
+define('_SKINIE_INFO_TEMPLATES',	'©ablóny v súbore:');
 define('_SKINIE_INFO_GENERAL',		'Info:');
-define('_SKINIE_INFO_SKINCLASH',	'Konflikty v nï¿½zvoch vzhï¿½adov:');
-define('_SKINIE_INFO_TEMPLCLASH',	'Konflikty v nï¿½zvoch ï¿½ablï¿½n:');
-define('_SKINIE_INFO_IMPORTEDSKINS','Importovanï¿½ vzhï¿½ady:');
-define('_SKINIE_INFO_IMPORTEDTEMPLS','Importovanï¿½ ï¿½ablï¿½ny::');
-define('_SKINIE_DONE',				'Import dokonï¿½enï¿½');
+define('_SKINIE_INFO_SKINCLASH',	'Konflikty v názvoch vzhµadov:');
+define('_SKINIE_INFO_TEMPLCLASH',	'Konflikty v názvoch ¹ablón:');
+define('_SKINIE_INFO_IMPORTEDSKINS','Importované vzhµady:');
+define('_SKINIE_INFO_IMPORTEDTEMPLS','Importované ¹ablóny::');
+define('_SKINIE_DONE',				'Import dokonèený');
 
 define('_AND',						'a');
 define('_OR',						'alebo');
 
 // empty fields on template edit
-define('_EDITTEMPLATE_EMPTY',		'prï¿½zdne pole (kliknite pre editï¿½ciu)');
+define('_EDITTEMPLATE_EMPTY',		'prázdne pole (kliknite pre editáciu)');
 
 // skin overview list
-define('_LIST_SKINS_INCMODE',		'Reï¿½im vkladania:');
+define('_LIST_SKINS_INCMODE',		'Re¾im vkladania:');
 define('_LIST_SKINS_INCPREFIX',		'Prefix:');
-define('_LIST_SKINS_DEFINED',		'Definovanï¿½ ï¿½asti:');
+define('_LIST_SKINS_DEFINED',		'Definované èasti:');
 
 // backup
-define('_BACKUPS_TITLE',			'Zï¿½loha / obnovenie');
-define('_BACKUP_TITLE',				'Zï¿½loha');
-define('_BACKUP_INTRO',				'Kliknite na tlaï¿½ï¿½tko pre vytvorenie zï¿½lohy Nucleus databï¿½zy. Budete vyzvanï¿½ k uloï¿½eniu sï¿½boru so zï¿½lohou. Tento sï¿½bor potom uschovajte na bezpeï¿½nom mieste.');
-define('_BACKUP_ZIP_YES',			'Pokï¿½siï¿½ sa pouï¿½iï¿½ kompresiu');
-define('_BACKUP_ZIP_NO',			'Nepouï¿½ï¿½vaï¿½ kompresiu');
-define('_BACKUP_BTN',				'Vytvoriï¿½ zï¿½lohu');
-define('_BACKUP_NOTE',				'<b>Poznï¿½mka:</b> Zï¿½lohuje sa iba obsah databï¿½zy. Obrï¿½zky a nastavenia v config.php teda <b>NIESU</b> sï¿½ï¿½ï¿½sï¿½ou zï¿½lohy.');
-define('_RESTORE_TITLE',			'Obnoviï¿½');
-define('_RESTORE_NOTE',				'<b>POZOR:</b> Obnova zo zï¿½lohy <b>VYMAï¿½E</b> sï¿½ï¿½asnï¿½ dï¿½ta v databï¿½zi! Tï¿½to akciu preveï¿½te iba ak ste si naozaj istï¿½!	<br />	<b>Poznï¿½mka:</b> Uistite sa, ï¿½e verzia Nucleusu, v ktorej ste previedol zï¿½lohu, je rovnakï¿½, ako verzia, ktorï¿½ pouï¿½ï¿½vate teraz! Inak obnova nebude fungovaï¿½.');
-define('_RESTORE_INTRO',			'Tu vyberte sï¿½bor so zï¿½lohou (bude nahranï¿½ na server) a kliknite na tlaï¿½ï¿½tko "Obnoviï¿½" pre zahï¿½jenie akcie.');
-define('_RESTORE_IMSURE',			'ï¿½no, som si istï¿½, ï¿½e to chcem urobiï¿½!');
-define('_RESTORE_BTN',				'Obnoviï¿½ zo sï¿½boru');
-define('_RESTORE_WARNING',			'(uistite sa, ï¿½e obnovujete sprï¿½vnu zï¿½lohu, prï¿½padnï¿½ si najprv zazï¿½lohujte terajï¿½ie dï¿½ta)');
-define('_ERROR_BACKUP_NOTSURE',		'Musï¿½te zaï¿½krtnï¿½ polï¿½ï¿½ko \'Som si istï¿½\'');
-define('_RESTORE_COMPLETE',			'Obnova bola dokonï¿½enï¿½');
+define('_BACKUPS_TITLE',			'Záloha / obnovenie');
+define('_BACKUP_TITLE',				'Záloha');
+define('_BACKUP_INTRO',				'Kliknite na tlaèítko pre vytvorenie zálohy Nucleus databázy. Budete vyzvaní k ulo¾eniu súboru so zálohou. Tento súbor potom uschovajte na bezpeènom mieste.');
+define('_BACKUP_ZIP_YES',			'Pokúsi» sa pou¾i» kompresiu');
+define('_BACKUP_ZIP_NO',			'Nepou¾íva» kompresiu');
+define('_BACKUP_BTN',				'Vytvori» zálohu');
+define('_BACKUP_NOTE',				'<b>Poznámka:</b> Zálohuje sa iba obsah databázy. Obrázky a nastavenia v config.php teda <b>NIESU</b> súèás»ou zálohy.');
+define('_RESTORE_TITLE',			'Obnovi»');
+define('_RESTORE_NOTE',				'<b>POZOR:</b> Obnova zo zálohy <b>VYMA®E</b> súèasné dáta v databázi! Túto akciu preveïte iba ak ste si naozaj istí!	<br />	<b>Poznámka:</b> Uistite sa, ¾e verzia Nucleusu, v ktorej ste previedol zálohu, je rovnaká, ako verzia, ktorú pou¾ívate teraz! Inak obnova nebude fungova».');
+define('_RESTORE_INTRO',			'Tu vyberte súbor so zálohou (bude nahraný na server) a kliknite na tlaèítko "Obnovi»" pre zahájenie akcie.');
+define('_RESTORE_IMSURE',			'Áno, som si istý, ¾e to chcem urobi»!');
+define('_RESTORE_BTN',				'Obnovi» zo súboru');
+define('_RESTORE_WARNING',			'(uistite sa, ¾e obnovujete správnu zálohu, prípadnì si najprv zazálohujte teraj¹ie dáta)');
+define('_ERROR_BACKUP_NOTSURE',		'Musíte za¹krtnú» políèko \'Som si istý\'');
+define('_RESTORE_COMPLETE',			'Obnova bola dokonèená');
 
 // new item notification
-define('_NOTIFY_NI_MSG',			'Bol publikovanï¿½ novï¿½ ï¿½lï¿½nok:');
-define('_NOTIFY_NI_TITLE',			'Novï¿½ ï¿½lï¿½nok!');
-define('_NOTIFY_KV_MSG',			'Karma voï¿½ba pri ï¿½lï¿½nku:');
+define('_NOTIFY_NI_MSG',			'Bol publikovaný nový èlánok:');
+define('_NOTIFY_NI_TITLE',			'Nový èlánok!');
+define('_NOTIFY_KV_MSG',			'Karma voµba pri èlánku:');
 define('_NOTIFY_KV_TITLE',			'Nucleus karma:');
-define('_NOTIFY_NC_MSG',			'Komentï¿½r k ï¿½lï¿½nku:');
-define('_NOTIFY_NC_TITLE',			'Nucleus komentï¿½r:');
-define('_NOTIFY_USERID',			'ID uï¿½ï¿½vateï¿½a:');
-define('_NOTIFY_USER',				'Uï¿½ï¿½vateï¿½:');
-define('_NOTIFY_COMMENT',			'Komentï¿½r:');
-define('_NOTIFY_VOTE',				'Voï¿½ba:');
+define('_NOTIFY_NC_MSG',			'Komentár k èlánku:');
+define('_NOTIFY_NC_TITLE',			'Nucleus komentár:');
+define('_NOTIFY_USERID',			'ID u¾ívateµa:');
+define('_NOTIFY_USER',				'U¾ívateµ:');
+define('_NOTIFY_COMMENT',			'Komentár:');
+define('_NOTIFY_VOTE',				'Voµba:');
 define('_NOTIFY_HOST',				'Server:');
 define('_NOTIFY_IP',				'IP:');
-define('_NOTIFY_MEMBER',			'ï¿½len:');
+define('_NOTIFY_MEMBER',			'Èlen:');
 define('_NOTIFY_TITLE',				'Nadpis:');
 define('_NOTIFY_CONTENTS',			'Text:');
 
 // member mail message
-define('_MMAIL_MSG',				'Obdrï¿½al ste novï¿½ sprï¿½vu od');
-define('_MMAIL_FROMANON',			'anonymnï¿½ho nï¿½vï¿½tï¿½vnï¿½ka');
-define('_MMAIL_FROMNUC',			'Odoslanï¿½ v systï¿½me Nucleus weblog v');
-define('_MMAIL_TITLE',				'Sprï¿½va od');
-define('_MMAIL_MAIL',				'Sprï¿½va:');
+define('_MMAIL_MSG',				'Obdr¾al ste novú správu od');
+define('_MMAIL_FROMANON',			'anonymného náv¹tìvníka');
+define('_MMAIL_FROMNUC',			'Odoslané v systéme Nucleus weblog v');
+define('_MMAIL_TITLE',				'Správa od');
+define('_MMAIL_MAIL',				'Správa:');
 
 // END introduced after v1.5 END
 
@@ -646,91 +638,91 @@ define('_MMAIL_MAIL',				'Sprï¿½va:');
 // START introduced after v1.1 START
 
 // bookmarklet buttons
-define('_BMLET_ADD',				'Pridaï¿½ ï¿½lï¿½nok');
-define('_BMLET_EDIT',				'Upraviï¿½ ï¿½lï¿½nok');
-define('_BMLET_DELETE',				'Odstrï¿½niï¿½ ï¿½lï¿½nok');
+define('_BMLET_ADD',				'Prida» èlánok');
+define('_BMLET_EDIT',				'Upravi» èlánok');
+define('_BMLET_DELETE',				'Odstráni» èlánok');
 define('_BMLET_BODY',				'Text');
-define('_BMLET_MORE',				'Rozï¿½ï¿½renï¿½ text');
+define('_BMLET_MORE',				'Roz¹írený text');
 define('_BMLET_OPTIONS',			'Volby');
-define('_BMLET_PREVIEW',			'Nï¿½hï¿½ad');
+define('_BMLET_PREVIEW',			'Náhµad');
 
 // used in bookmarklet
-define('_ITEM_UPDATED',				'ï¿½lï¿½nok bol upravenï¿½');
-define('_ITEM_DELETED',				'ï¿½lï¿½nok bol odstrï¿½nenï¿½');
+define('_ITEM_UPDATED',				'Èlánok bol upravený');
+define('_ITEM_DELETED',				'Èlánok bol odstránený');
 
 // plugins
-define('_CONFIRMTXT_PLUGIN',		'Skutoï¿½ne chcete odstrï¿½niï¿½ plugin');
-define('_ERROR_NOSUCHPLUGIN',		'Takï¿½ plugin neexistuje');
-define('_ERROR_DUPPLUGIN',			'Tento plugin uï¿½ bol nainï¿½talovanï¿½');
-define('_ERROR_PLUGFILEERROR',		'Plugin neexistuje, alebo sï¿½ zle nastavenï¿½ prï¿½stupovï¿½ prï¿½va');
-define('_PLUGS_NOCANDIDATES',		'ï¿½iadne pluginy neboli nï¿½jdenï¿½');
+define('_CONFIRMTXT_PLUGIN',		'Skutoène chcete odstráni» plugin');
+define('_ERROR_NOSUCHPLUGIN',		'Taký plugin neexistuje');
+define('_ERROR_DUPPLUGIN',			'Tento plugin u¾ bol nain¹talovaný');
+define('_ERROR_PLUGFILEERROR',		'Plugin neexistuje, alebo sú zle nastavené prístupové práva');
+define('_PLUGS_NOCANDIDATES',		'®iadne pluginy neboli nájdené');
 
-define('_PLUGS_TITLE_MANAGE',		'Sprï¿½va pluginov');
-define('_PLUGS_TITLE_INSTALLED',	'Momentï¿½lne nainï¿½talovanï¿½');
-define('_PLUGS_TITLE_UPDATE',		'Aktualizovaï¿½ zoznam odberov');
-define('_PLUGS_TEXT_UPDATE',		'Nucleus si udrï¿½uje databï¿½zu odberov udalostï¿½ pre pluginy. Ak nahrï¿½te novï¿½ verziu pluginu, mali by ste spustiï¿½ tï¿½to aktualizï¿½ciu, aby boli odbery obnovenï¿½.');
-define('_PLUGS_TITLE_NEW',			'Nainï¿½talovaï¿½ novï¿½ plugin');
-define('_PLUGS_ADD_TEXT',			'Dole vidï¿½te zoznam sï¿½borov z adresï¿½ra pluginov, ktorï¿½ asi sï¿½  nenainï¿½talovanï¿½ pluginy. Pred ich nainï¿½talovanï¿½m sa uistite, ï¿½e to sï¿½ <strong>urï¿½ite</strong> pluginy.');
-define('_PLUGS_BTN_INSTALL',		'Nainï¿½talovaï¿½ plugin');
-define('_BACKTOOVERVIEW',			'Spï¿½ na prehï¿½ad');
+define('_PLUGS_TITLE_MANAGE',		'Správa pluginov');
+define('_PLUGS_TITLE_INSTALLED',	'Momentálne nain¹talované');
+define('_PLUGS_TITLE_UPDATE',		'Aktualizova» zoznam odberov');
+define('_PLUGS_TEXT_UPDATE',		'Nucleus si udr¾uje databázu odberov udalostí pre pluginy. Ak nahráte novú verziu pluginu, mali by ste spusti» túto aktualizáciu, aby boli odbery obnovené.');
+define('_PLUGS_TITLE_NEW',			'Nain¹talova» nový plugin');
+define('_PLUGS_ADD_TEXT',			'Dole vidíte zoznam súborov z adresára pluginov, ktoré asi sú  nenain¹talované pluginy. Pred ich nain¹talovaním sa uistite, ¾e to sú <strong>urèite</strong> pluginy.');
+define('_PLUGS_BTN_INSTALL',		'Nain¹talova» plugin');
+define('_BACKTOOVERVIEW',			'Spä» na prehµad');
 
 // editlink
-define('_TEMPLATE_EDITLINK',		'Odkaz na editï¿½ciu ï¿½lï¿½nku');
+define('_TEMPLATE_EDITLINK',		'Odkaz na editáciu èlánku');
 
 // add left / add right tooltips
-define('_ADD_LEFT_TT',				'Pridaï¿½ rï¿½mï¿½ek vï¿½avo');
-define('_ADD_RIGHT_TT',				'Pridaï¿½ rï¿½mï¿½ek vpravo');
+define('_ADD_LEFT_TT',				'Prida» rámèek vµavo');
+define('_ADD_RIGHT_TT',				'Prida» rámèek vpravo');
 
 // add/edit item: new category (in dropdown box)
-define('_ADD_NEWCAT',				'Novï¿½ kategï¿½ria...');
+define('_ADD_NEWCAT',				'Nová kategória...');
 
 // new settings
 define('_SETTINGS_PLUGINURL',		'URL s pluginmi');
-define('_SETTINGS_MAXUPLOADSIZE',	'Max. veï¿½kosï¿½ sï¿½boru pre nahranie (bytes)');
-define('_SETTINGS_NONMEMBERMSGS',	'Povoliï¿½ neregistrovanï¿½m posielaï¿½ aprï¿½vy');
-define('_SETTINGS_PROTECTMEMNAMES',	'Chrï¿½niï¿½ menï¿½ ï¿½lenov');
+define('_SETTINGS_MAXUPLOADSIZE',	'Max. veµkos» súboru pre nahranie (bytes)');
+define('_SETTINGS_NONMEMBERMSGS',	'Povoli» neregistrovaným posiela» aprávy');
+define('_SETTINGS_PROTECTMEMNAMES',	'Chráni» mená èlenov');
 
 // overview screen
-define('_OVERVIEW_PLUGINS',			'Sprï¿½va pluginov...');
+define('_OVERVIEW_PLUGINS',			'Správa pluginov...');
 
 // actionlog
-define('_ACTIONLOG_NEWMEMBER',		'Registrï¿½cia novï¿½ho ï¿½lena:');
+define('_ACTIONLOG_NEWMEMBER',		'Registrácia nového èlena:');
 
 // membermail (when not logged in)
-define('_MEMBERMAIL_MAIL',			'Vaï¿½a emailovï¿½ adresa:');
+define('_MEMBERMAIL_MAIL',			'Va¹a emailová adresa:');
 
 // file upload
-define('_ERROR_DISALLOWEDUPLOAD2',	'Nemï¿½te sprï¿½vcovskï¿½ prï¿½va pre ï¿½iadny z blogov, ktorï¿½ majï¿½ prï¿½jemcu vo svojom tï¿½me. Preto nesmiete nahrï¿½vaï¿½ sï¿½bory do adresï¿½ra tetjo osoby.');
+define('_ERROR_DISALLOWEDUPLOAD2',	'Nemáte správcovské práva pre ¾iadny z blogov, ktoré majú príjemcu vo svojom tíme. Preto nesmiete nahráva» súbory do adresára tetjo osoby.');
 
 // plugin list
-define('_LISTS_INFO',				'Informï¿½cie');
+define('_LISTS_INFO',				'Informácie');
 define('_LIST_PLUGS_AUTHOR',		'Od:');
 define('_LIST_PLUGS_VER',			'Verzia:');
-define('_LIST_PLUGS_SITE',			'Navï¿½tï¿½viï¿½ strï¿½nku');
+define('_LIST_PLUGS_SITE',			'Nav¹tívi» stránku');
 define('_LIST_PLUGS_DESC',			'Popis:');
-define('_LIST_PLUGS_SUBS',			'Odberateï¿½ tï¿½chto udalostï¿½:');
+define('_LIST_PLUGS_SUBS',			'Odberate» týchto udalostí:');
 define('_LIST_PLUGS_UP',			'nahor');
 define('_LIST_PLUGS_DOWN',			'nadol');
-define('_LIST_PLUGS_UNINSTALL',		'odinï¿½talovaï¿½');
-define('_LIST_PLUGS_ADMIN',			'sprï¿½vca');
-define('_LIST_PLUGS_OPTIONS',		'upraviï¿½&nbsp;nastavenie');
+define('_LIST_PLUGS_UNINSTALL',		'odin¹talova»');
+define('_LIST_PLUGS_ADMIN',			'správca');
+define('_LIST_PLUGS_OPTIONS',		'upravi»&nbsp;nastavenie');
 
 // plugin option list
 define('_LISTS_VALUE',				'Hodnota');
 
 // plugin options
-define('_ERROR_NOPLUGOPTIONS',		'tento plugin nemï¿½ ï¿½iadne nastavenia');
-define('_PLUGS_BACK',				'Spï¿½ na prehï¿½ad pluginov');
-define('_PLUGS_SAVE',				'Uloï¿½iï¿½ nastavenia');
-define('_PLUGS_OPTIONS_UPDATED',	'Nastavenia pluginu boli upravenï¿½');
+define('_ERROR_NOPLUGOPTIONS',		'tento plugin nemá ¾iadne nastavenia');
+define('_PLUGS_BACK',				'Spä» na prehµad pluginov');
+define('_PLUGS_SAVE',				'Ulo¾i» nastavenia');
+define('_PLUGS_OPTIONS_UPDATED',	'Nastavenia pluginu boli upravené');
 
-define('_OVERVIEW_MANAGEMENT',		'Sprï¿½va');
-define('_OVERVIEW_MANAGE',			'Sprï¿½va Nucleusu...');
-define('_MANAGE_GENERAL',			'Vï¿½eobecnï¿½ nastavenia');
-define('_MANAGE_SKINS',				'Vzhï¿½ad a ï¿½ablï¿½ny');
-define('_MANAGE_EXTRA',				'Extra voï¿½by');
+define('_OVERVIEW_MANAGEMENT',		'Správa');
+define('_OVERVIEW_MANAGE',			'Správa Nucleusu...');
+define('_MANAGE_GENERAL',			'V¹eobecné nastavenia');
+define('_MANAGE_SKINS',				'Vzhµad a ¹ablóny');
+define('_MANAGE_EXTRA',				'Extra voµby');
 
-define('_BACKTOMANAGE',				'Spï¿½ na sprï¿½vu Nucleusu');
+define('_BACKTOMANAGE',				'Spä» na správu Nucleusu');
 
 
 // END introduced after v1.1 END
@@ -740,514 +732,514 @@ define('_BACKTOMANAGE',				'Spï¿½ na sprï¿½vu Nucleusu');
 
 
 // global stuff
-define('_LOGOUT',					'Odhlï¿½siï¿½ sa');
-define('_LOGIN',					'Prihlï¿½siï¿½ sa');
-define('_YES',						'ï¿½no');
+define('_LOGOUT',					'Odhlási» sa');
+define('_LOGIN',					'Prihlási» sa');
+define('_YES',						'Áno');
 define('_NO',						'Nie');
-define('_SUBMIT',					'Odoslaï¿½');
+define('_SUBMIT',					'Odosla»');
 define('_ERROR',					'Chyba');
 define('_ERRORMSG',					'Vyskytla se chyba!');
-define('_BACK',						'Spï¿½');
-define('_NOTLOGGEDIN',				'Nie ste prihlï¿½senï¿½');
-define('_LOGGEDINAS',				'Prihlï¿½senï¿½ ako');
-define('_ADMINHOME',				'Sprï¿½vca');
+define('_BACK',						'Spä»');
+define('_NOTLOGGEDIN',				'Nie ste prihlásení');
+define('_LOGGEDINAS',				'Prihlásený ako');
+define('_ADMINHOME',				'Správca');
 define('_NAME',						'Meno');
-define('_BACKHOME',					'Spï¿½ na sprï¿½vcovskï¿½ strï¿½nku');
-define('_BADACTION',				'Bola poï¿½adovanï¿½ neexistujï¿½ca akcia');
-define('_MESSAGE',					'Sprï¿½va');
+define('_BACKHOME',					'Spä» na správcovskú stránku');
+define('_BADACTION',				'Bola po¾adovaná neexistujúca akcia');
+define('_MESSAGE',					'Správa');
 define('_HELP_TT',					'Pomoc!');
-define('_YOURSITE',					'Vaï¿½a strï¿½nka');
+define('_YOURSITE',					'Va¹a stránka');
 
 
-define('_POPUP_CLOSE',				'Zatvoriï¿½ okno');
+define('_POPUP_CLOSE',				'Zatvori» okno');
 
-define('_LOGIN_PLEASE',				'Prosï¿½m, najprv sa prihlï¿½ste');
+define('_LOGIN_PLEASE',				'Prosím, najprv sa prihláste');
 
 // commentform
 define('_COMMENTFORM_YOUARE',		'Ste');
-define('_COMMENTFORM_SUBMIT',		'Pridaï¿½ komentï¿½r');
-define('_COMMENTFORM_COMMENT',		'Vï¿½ komentï¿½r');
+define('_COMMENTFORM_SUBMIT',		'Prida» komentár');
+define('_COMMENTFORM_COMMENT',		'Vá¹ komentár');
 define('_COMMENTFORM_NAME',			'Meno');
 define('_COMMENTFORM_MAIL',			'E-mail/HTTP');
-define('_COMMENTFORM_REMEMBER',		'Pamï¿½taj si mna');
+define('_COMMENTFORM_REMEMBER',		'Pamätaj si mna');
 
 // loginform
 define('_LOGINFORM_NAME',			'Meno');
 define('_LOGINFORM_PWD',			'Heslo');
-define('_LOGINFORM_YOUARE',			'Prihlï¿½senï¿½ ako');
-define('_LOGINFORM_SHARED',			'Neukladaï¿½ ï¿½daje');
+define('_LOGINFORM_YOUARE',			'Prihlásený ako');
+define('_LOGINFORM_SHARED',			'Neuklada» údaje');
 
 // member mailform
-define('_MEMBERMAIL_SUBMIT',		'Poslat sprï¿½vu');
+define('_MEMBERMAIL_SUBMIT',		'Poslat správu');
 
 // search form
-define('_SEARCHFORM_SUBMIT',		'Hï¿½adanie');
+define('_SEARCHFORM_SUBMIT',		'Hµadanie');
 
 // add item form
-define('_ADD_ADDTO',				'Pridaï¿½ novï¿½ ï¿½lï¿½nok do');
-define('_ADD_CREATENEW',			'Vytvoriï¿½ novï¿½ ï¿½lï¿½nok');
+define('_ADD_ADDTO',				'Prida» nový èlánok do');
+define('_ADD_CREATENEW',			'Vytvori» nový èlánok');
 define('_ADD_BODY',					'Perex');
 define('_ADD_TITLE',				'Nadpis');
-define('_ADD_MORE',					'Celï¿½ ï¿½lï¿½nok');
-define('_ADD_CATEGORY',				'Kategï¿½ria');
-define('_ADD_PREVIEW',				'Nï¿½hï¿½ad');
-define('_ADD_DISABLE_COMMENTS',		'Zakï¿½zaï¿½ komentï¿½re?');
-define('_ADD_DRAFTNFUTURE',			'Koncepty a ï¿½lï¿½nky pre neskorï¿½ie publikovanie');
-define('_ADD_ADDITEM',				'Pridaï¿½ ï¿½lï¿½nok');
-define('_ADD_ADDNOW',				'Pridaï¿½ teraz');
-define('_ADD_ADDLATER',				'Pridaï¿½ neskï¿½r');
-define('_ADD_PLACE_ON',				'Umiestniï¿½ na');
-define('_ADD_ADDDRAFT',				'Pridaï¿½ medzi koncepty');
-define('_ADD_NOPASTDATES',			'(dï¿½tumy a ï¿½asy v minulosti NIE Sï¿½ platnï¿½, v tom prï¿½pade bude pouï¿½itï¿½ aktuï¿½lny ï¿½as)');
-define('_ADD_BOLD_TT',				'Tuï¿½nï¿½');
-define('_ADD_ITALIC_TT',			'Kurzï¿½va');
-define('_ADD_HREF_TT',				'Vytvoriï¿½ odkaz');
-define('_ADD_MEDIA_TT',				'Pridaï¿½ obrï¿½zok');
-define('_ADD_PREVIEW_TT',			'Zobraziï¿½/skryï¿½ nï¿½hï¿½ad');
-define('_ADD_CUT_TT',				'Vybraï¿½');
-define('_ADD_COPY_TT',				'Kopï¿½rovaï¿½');
-define('_ADD_PASTE_TT',				'Vloï¿½it');
+define('_ADD_MORE',					'Celý èlánok');
+define('_ADD_CATEGORY',				'Kategória');
+define('_ADD_PREVIEW',				'Náhµad');
+define('_ADD_DISABLE_COMMENTS',		'Zakáza» komentáre?');
+define('_ADD_DRAFTNFUTURE',			'Koncepty a èlánky pre neskor¹ie publikovanie');
+define('_ADD_ADDITEM',				'Prida» èlánok');
+define('_ADD_ADDNOW',				'Prida» teraz');
+define('_ADD_ADDLATER',				'Prida» neskôr');
+define('_ADD_PLACE_ON',				'Umiestni» na');
+define('_ADD_ADDDRAFT',				'Prida» medzi koncepty');
+define('_ADD_NOPASTDATES',			'(dátumy a èasy v minulosti NIE SÚ platné, v tom prípade bude pou¾itý aktuálny èas)');
+define('_ADD_BOLD_TT',				'Tuèné');
+define('_ADD_ITALIC_TT',			'Kurzíva');
+define('_ADD_HREF_TT',				'Vytvori» odkaz');
+define('_ADD_MEDIA_TT',				'Prida» obrázok');
+define('_ADD_PREVIEW_TT',			'Zobrazi»/skry» náhµad');
+define('_ADD_CUT_TT',				'Vybra»');
+define('_ADD_COPY_TT',				'Kopírova»');
+define('_ADD_PASTE_TT',				'Vlo¾it');
 
 
 // edit item form
-define('_EDIT_ITEM',				'Upraviï¿½ ï¿½lï¿½nok');
-define('_EDIT_SUBMIT',				'Upraviï¿½ ï¿½lï¿½nok');
-define('_EDIT_ORIG_AUTHOR',			'Pï¿½vodnï¿½ autor');
-define('_EDIT_BACKTODRAFTS',		'Pridaï¿½ spï¿½ medzi koncepty');
-define('_EDIT_COMMENTSNOTE',		'(poznï¿½mka: zakï¿½zanie komentï¿½rov _neskryje_ skï¿½r pridanï¿½ komentï¿½re)');
+define('_EDIT_ITEM',				'Upravi» èlánok');
+define('_EDIT_SUBMIT',				'Upravi» èlánok');
+define('_EDIT_ORIG_AUTHOR',			'Pôvodný autor');
+define('_EDIT_BACKTODRAFTS',		'Prida» spä» medzi koncepty');
+define('_EDIT_COMMENTSNOTE',		'(poznámka: zakázanie komentárov _neskryje_ skôr pridané komentáre)');
 
 // used on delete screens
-define('_DELETE_CONFIRM',			'Prosï¿½m, potvrï¿½te odstranenie');
+define('_DELETE_CONFIRM',			'Prosím, potvrïte odstranenie');
 define('_DELETE_CONFIRM_BTN',		'Potvrdenie odstranenia');
-define('_CONFIRMTXT_ITEM',			'Chystï¿½te sa odstrï¿½niï¿½ nasledujï¿½cï¿½ ï¿½lï¿½nok:');
-define('_CONFIRMTXT_COMMENT',		'Chystï¿½te sa odstrï¿½niï¿½ nï¿½sledujï¿½cï¿½ komentï¿½r:');
-define('_CONFIRMTXT_TEAM1',			'Chystï¿½te sa odstrï¿½niï¿½ uï¿½ivateï¿½a ');
-define('_CONFIRMTXT_TEAM2',			' z tï¿½mu pre blog ');
-define('_CONFIRMTXT_BLOG',			'Blog, ktorï¿½ sa chystï¿½te odstrï¿½niï¿½, je: ');
-define('_WARNINGTXT_BLOGDEL',		'Pozor! Odstrï¿½nenï¿½m blogu dojde k vymazaniu Vï¿½ETKï¿½CH ï¿½lï¿½nkov tohoto blogu a vï¿½etkï¿½ch komentï¿½rov. Prosï¿½m, potvrï¿½te, ï¿½e to NAOZAJ chcete urobiï¿½!<br />Behom odstraï¿½ovania blogu nepreruï¿½ujte Nucleus.');
-define('_CONFIRMTXT_MEMBER',		'Chystï¿½te sa odstrï¿½niï¿½ profil nï¿½sledujï¿½ceho ï¿½lena: ');
-define('_CONFIRMTXT_TEMPLATE',		'Chystï¿½te se odstrï¿½niï¿½ ï¿½ablï¿½nu ');
-define('_CONFIRMTXT_SKIN',			'Chystï¿½te sa odstrï¿½niï¿½ vzhï¿½ad ');
-define('_CONFIRMTXT_BAN',			'Chystï¿½te sa odstrï¿½niï¿½ obmedzenie prï¿½stupu pre ip adresy');
-define('_CONFIRMTXT_CATEGORY',		'Chystï¿½te sa odstrï¿½niï¿½ kategï¿½riu ');
+define('_CONFIRMTXT_ITEM',			'Chystáte sa odstráni» nasledujúcí èlánok:');
+define('_CONFIRMTXT_COMMENT',		'Chystáte sa odstráni» následujúcí komentár:');
+define('_CONFIRMTXT_TEAM1',			'Chystáte sa odstráni» u¾ivateµa ');
+define('_CONFIRMTXT_TEAM2',			' z tímu pre blog ');
+define('_CONFIRMTXT_BLOG',			'Blog, ktorý sa chystáte odstráni», je: ');
+define('_WARNINGTXT_BLOGDEL',		'Pozor! Odstránením blogu dojde k vymazaniu V©ETKÝCH èlánkov tohoto blogu a v¹etkých komentárov. Prosím, potvrïte, ¾e to NAOZAJ chcete urobi»!<br />Behom odstraòovania blogu nepreru¹ujte Nucleus.');
+define('_CONFIRMTXT_MEMBER',		'Chystáte sa odstráni» profil následujúceho èlena: ');
+define('_CONFIRMTXT_TEMPLATE',		'Chystáte se odstráni» ¹ablónu ');
+define('_CONFIRMTXT_SKIN',			'Chystáte sa odstráni» vzhµad ');
+define('_CONFIRMTXT_BAN',			'Chystáte sa odstráni» obmedzenie prístupu pre ip adresy');
+define('_CONFIRMTXT_CATEGORY',		'Chystáte sa odstráni» kategóriu ');
 
 // some status messages
-define('_DELETED_ITEM',				'ï¿½lï¿½nok odstrï¿½nenï¿½');
-define('_DELETED_MEMBER',			'Reg. uï¿½ï¿½vateï¿½ odstrï¿½nï¿½');
-define('_DELETED_COMMENT',			'Komentï¿½ï¿½ odstranï¿½n');
-define('_DELETED_BLOG',				'Blog odstrï¿½nenï¿½');
-define('_DELETED_CATEGORY',			'Kategï¿½ria odstrï¿½nenï¿½');
-define('_ITEM_MOVED',				'ï¿½lï¿½nok presunutï¿½');
-define('_ITEM_ADDED',				'ï¿½lï¿½nok pridanï¿½');
-define('_COMMENT_UPDATED',			'Komentï¿½r upravenï¿½');
-define('_SKIN_UPDATED',				'Vzhï¿½ad bol uloï¿½enï¿½');
-define('_TEMPLATE_UPDATED',			'ï¿½ablï¿½na bola uloï¿½enï¿½');
+define('_DELETED_ITEM',				'Èlánok odstránený');
+define('_DELETED_MEMBER',			'Reg. u¾ívateµ odstráný');
+define('_DELETED_COMMENT',			'Komentáø odstranìn');
+define('_DELETED_BLOG',				'Blog odstránený');
+define('_DELETED_CATEGORY',			'Kategória odstránená');
+define('_ITEM_MOVED',				'Èlánok presunutý');
+define('_ITEM_ADDED',				'Èlánok pridaný');
+define('_COMMENT_UPDATED',			'Komentár upravený');
+define('_SKIN_UPDATED',				'Vzhµad bol ulo¾ený');
+define('_TEMPLATE_UPDATED',			'©ablóna bola ulo¾ená');
 
 // errors
-define('_ERROR_COMMENT_LONGWORD',	'Prosï¿½m, v komentï¿½roch nepouï¿½ï¿½vajte slovï¿½ dlhï¿½ie neï¿½ 90 znakov');
-define('_ERROR_COMMENT_NOCOMMENT',	'Prosï¿½m, vloï¿½te komentï¿½r');
-define('_ERROR_COMMENT_NOUSERNAME',	'Neplatnï¿½ uï¿½ivateï¿½skï¿½ meno');
-define('_ERROR_COMMENT_TOOLONG',	'Vï¿½ komentï¿½r je prï¿½liï¿½ dlhï¿½ (max. 5000 znakov)');
-define('_ERROR_COMMENTS_DISABLED',	'Komentï¿½re pre tento blog sï¿½ momentï¿½lne zakï¿½zanï¿½.');
-define('_ERROR_COMMENTS_NONPUBLIC',	'Aby ste mohli pridï¿½vaï¿½ komentï¿½re do tohoto blogu, musï¿½te byï¿½ prihlï¿½senï¿½');
-define('_ERROR_COMMENTS_MEMBERNICK','Meno, pod ktorï¿½m chcete odoslat komentï¿½r, pouï¿½ï¿½va inï¿½ registrovanï¿½ uï¿½ivateï¿½. Pouï¿½ite nejakï¿½ inï¿½.');
-define('_ERROR_SKIN',				'Chyba v definï¿½cii vzhï¿½adu');
-define('_ERROR_ITEMCLOSED',			'Tento ï¿½lï¿½nok bol uzatvorenï¿½. Uï¿½ nie je moï¿½nï¿½ k nemu pridï¿½vaï¿½ komentï¿½re ani hlasovaï¿½');
-define('_ERROR_NOSUCHITEM',			'ï¿½lï¿½nok nenï¿½jdenï¿½');
-define('_ERROR_NOSUCHBLOG',			'Blog nenï¿½jdenï¿½');
-define('_ERROR_NOSUCHSKIN',			'Vzhï¿½ad nenï¿½jdenï¿½');
-define('_ERROR_NOSUCHMEMBER',		'Registrovanï¿½ uï¿½ï¿½vateï¿½ nenï¿½jdenï¿½');
-define('_ERROR_NOTONTEAM',			'Nie ste ï¿½lenom tï¿½mu tohto blogu');
-define('_ERROR_BADDESTBLOG',		'Cieï¿½ovï¿½ blog neexistuje');
-define('_ERROR_NOTONDESTTEAM',		'Nie je moï¿½nï¿½ presunï¿½ ï¿½lï¿½nok, pretoï¿½e nie ste ï¿½lenom tï¿½mu cieï¿½ovï¿½ho blogu');
-define('_ERROR_NOEMPTYITEMS',		'Nie je moï¿½nï¿½ pridaï¿½ prï¿½zdny ï¿½lï¿½nok!');
-define('_ERROR_BADMAILADDRESS',		'Emailovï¿½ adresa nie je platnï¿½');
-define('_ERROR_BADNOTIFY',			'Jedna alebo viac z udanï¿½ch adries pre oznamovanie nie je platnï¿½ emailovï¿½ adresa');
-define('_ERROR_BADNAME',			'Meno nie je platnï¿½ (sï¿½ dovolenï¿½ iba znaky a-z a 0-9, ï¿½iadne medzery na zaï¿½iatku a na konci)');
-define('_ERROR_NICKNAMEINUSE',		'Tï¿½to prezï¿½vku uï¿½ pouï¿½ï¿½va inï¿½ registrovanï¿½ ï¿½len');
-define('_ERROR_PASSWORDMISMATCH',	'Heslï¿½ musia byï¿½ rovnakï¿½');
-define('_ERROR_PASSWORDTOOSHORT',	'Heslo by malo maï¿½ aspoï¿½ 6 znakov');
-define('_ERROR_PASSWORDMISSING',	'Heslo nesmie byï¿½ prï¿½zdne');
-define('_ERROR_REALNAMEMISSING',	'Musï¿½te vloï¿½iï¿½ skutoï¿½nï¿½ meno');
-define('_ERROR_ATLEASTONEADMIN',	'Mal by byï¿½ vï¿½dy aspoï¿½ jeden super-sprï¿½vca, ktorï¿½ ss mï¿½ï¿½e prihlï¿½siï¿½ do sprï¿½vcovskej sekcie.');
-define('_ERROR_ATLEASTONEBLOGADMIN','Vykonsnie tejto akcie by spï¿½sobilo, ï¿½e by vï¿½ blog nemal kto spravovaï¿½.  Uistite sa, ï¿½e vï¿½dy existuje aspoï¿½ jeden sprï¿½vca.');
-define('_ERROR_ALREADYONTEAM',		'Nemï¿½ï¿½ete pridaï¿½ uï¿½ï¿½vateï¿½a, ktorï¿½ uï¿½ je ï¿½lenom tï¿½mu');
-define('_ERROR_BADSHORTBLOGNAME',	'Krï¿½tke meno blogu by malo obsahovaï¿½ len znaky a-z a 0-9, bez medzier');
-define('_ERROR_DUPSHORTBLOGNAME',	'Toto krï¿½tke meno uï¿½ pouï¿½ï¿½va inï¿½ blog. Tieto menï¿½ musia byï¿½ unikï¿½tne.');
-define('_ERROR_UPDATEFILE',			'Nie je moï¿½nï¿½ zapisovaï¿½ do update-souboru. Uistite sa, ï¿½e sï¿½ sprï¿½vne nastavenï¿½ prï¿½stupovï¿½ prï¿½va (skï¿½ste chmod 666). Tieï¿½ pozor na to, ï¿½e umiestnenie je relatï¿½vne k adresï¿½ru sprï¿½vcovskej oblasti, takï¿½e by ste mohli skï¿½siï¿½ absolï¿½tnu cestu (nieï¿½o ako /your/path/to/nucleus/)');
-define('_ERROR_DELDEFBLOG',			'Nie je moï¿½nï¿½ odstrï¿½niï¿½ prednastavenï¿½ blog');
-define('_ERROR_DELETEMEMBER',		'Tento uï¿½ï¿½vateï¿½ nemï¿½ï¿½e byï¿½ odstrï¿½nenï¿½. Pravdepodobne preto, protoï¿½e je autorom nejakï¿½ch ï¿½lï¿½nkov, alebo komentï¿½rov.');
-define('_ERROR_BADTEMPLATENAME',	'Neplatnï¿½ meno ï¿½ablï¿½ny. Pouï¿½ite iba znaky a-z a 0-9, ï¿½iadne medzery.');
-define('_ERROR_DUPTEMPLATENAME',	'Uï¿½ existuje ï¿½ablï¿½na s tï¿½mto nï¿½zvom.');
-define('_ERROR_BADSKINNAME',		'Neplatnï¿½ meno vzhï¿½adu (pouï¿½ite iba znaky a-z a 0-9, ï¿½iadne medzery)');
-define('_ERROR_DUPSKINNAME',		'Uï¿½ existuje vzhï¿½ad s tï¿½mto nï¿½zvom.');
-define('_ERROR_DEFAULTSKIN',		'Vzhï¿½ad s nï¿½zvom "default" musï¿½ byï¿½ vï¿½dy dostupnï¿½.');
-define('_ERROR_SKINDEFDELETE',		'Nie je moï¿½nï¿½ odstrï¿½niï¿½ vzhï¿½ad, pretoï¿½e je to ï¿½tandardnï¿½ vzhï¿½ad pre nssledujï¿½ci blog: ');
-define('_ERROR_DISALLOWED',			'Prepï¿½ï¿½te, ale nie ste oprï¿½vnenï¿½ k tejto akci.');
-define('_ERROR_DELETEBAN',			'Chyba pri odstraï¿½ovanï¿½ obmedzenia pï¿½ï¿½stupu (obmedzenie prï¿½stupu neexistuje)');
-define('_ERROR_ADDBAN',				'Chyba pri pridï¿½vanï¿½ obmedzenia prï¿½stupu. Obmedzenie prï¿½stupu asi nebolo korektne pridanï¿½ do vï¿½etkï¿½ch blogov.');
-define('_ERROR_BADACTION',			'Poï¿½adovanï¿½ akcia neexistuje');
-define('_ERROR_MEMBERMAILDISABLED',	'Mailovï¿½ sprï¿½vy medzi ï¿½lenmi sï¿½ zakï¿½zanï¿½.');
-define('_ERROR_MEMBERCREATEDISABLED','Vytvï¿½ranie uï¿½ï¿½vateï¿½skï¿½ch kont je zakï¿½zanï¿½.');
-define('_ERROR_INCORRECTEMAIL',		'Neplatnï¿½ mailovï¿½ adresa');
-define('_ERROR_VOTEDBEFORE',		'Pre tento ï¿½lï¿½nok uï¿½ ste hlasovali');
-define('_ERROR_BANNED1',			'Akciu nie je moï¿½nï¿½ vykonaï¿½, protoï¿½e vï¿½m (rozsah adries ');
-define('_ERROR_BANNED2',			') byl obmedzenï¿½ prï¿½stup. Sprï¿½va bola: \'');
+define('_ERROR_COMMENT_LONGWORD',	'Prosím, v komentároch nepou¾ívajte slová dlh¹ie ne¾ 90 znakov');
+define('_ERROR_COMMENT_NOCOMMENT',	'Prosím, vlo¾te komentár');
+define('_ERROR_COMMENT_NOUSERNAME',	'Neplatné u¾ivateµské meno');
+define('_ERROR_COMMENT_TOOLONG',	'Vá¹ komentár je príli¹ dlhý (max. 5000 znakov)');
+define('_ERROR_COMMENTS_DISABLED',	'Komentáre pre tento blog sú momentálne zakázané.');
+define('_ERROR_COMMENTS_NONPUBLIC',	'Aby ste mohli pridáva» komentáre do tohoto blogu, musíte by» prihlásení');
+define('_ERROR_COMMENTS_MEMBERNICK','Meno, pod ktorým chcete odoslat komentár, pou¾íva iný registrovaný u¾ivateµ. Pou¾ite nejaké iné.');
+define('_ERROR_SKIN',				'Chyba v definícii vzhµadu');
+define('_ERROR_ITEMCLOSED',			'Tento èlánok bol uzatvorený. U¾ nie je mo¾né k nemu pridáva» komentáre ani hlasova»');
+define('_ERROR_NOSUCHITEM',			'Èlánok nenájdený');
+define('_ERROR_NOSUCHBLOG',			'Blog nenájdený');
+define('_ERROR_NOSUCHSKIN',			'Vzhµad nenájdený');
+define('_ERROR_NOSUCHMEMBER',		'Registrovaný u¾ívateµ nenájdený');
+define('_ERROR_NOTONTEAM',			'Nie ste èlenom tímu tohto blogu');
+define('_ERROR_BADDESTBLOG',		'Cieµový blog neexistuje');
+define('_ERROR_NOTONDESTTEAM',		'Nie je mo¾né presunú» èlánok, preto¾e nie ste èlenom tímu cieµového blogu');
+define('_ERROR_NOEMPTYITEMS',		'Nie je mo¾né prida» prázdny èlánok!');
+define('_ERROR_BADMAILADDRESS',		'Emailová adresa nie je platná');
+define('_ERROR_BADNOTIFY',			'Jedna alebo viac z udaných adries pre oznamovanie nie je platná emailová adresa');
+define('_ERROR_BADNAME',			'Meno nie je platné (sú dovolené iba znaky a-z a 0-9, ¾iadne medzery na zaèiatku a na konci)');
+define('_ERROR_NICKNAMEINUSE',		'Túto prezývku u¾ pou¾íva iný registrovaný èlen');
+define('_ERROR_PASSWORDMISMATCH',	'Heslá musia by» rovnaké');
+define('_ERROR_PASSWORDTOOSHORT',	'Heslo by malo ma» aspoò 6 znakov');
+define('_ERROR_PASSWORDMISSING',	'Heslo nesmie by» prázdne');
+define('_ERROR_REALNAMEMISSING',	'Musíte vlo¾i» skutoèné meno');
+define('_ERROR_ATLEASTONEADMIN',	'Mal by by» v¾dy aspoò jeden super-správca, ktorý ss mô¾e prihlási» do správcovskej sekcie.');
+define('_ERROR_ATLEASTONEBLOGADMIN','Vykonsnie tejto akcie by spôsobilo, ¾e by vá¹ blog nemal kto spravova».  Uistite sa, ¾e v¾dy existuje aspoò jeden správca.');
+define('_ERROR_ALREADYONTEAM',		'Nemô¾ete prida» u¾ívateµa, ktorý u¾ je èlenom tímu');
+define('_ERROR_BADSHORTBLOGNAME',	'Krátke meno blogu by malo obsahova» len znaky a-z a 0-9, bez medzier');
+define('_ERROR_DUPSHORTBLOGNAME',	'Toto krátke meno u¾ pou¾íva iný blog. Tieto mená musia by» unikátne.');
+define('_ERROR_UPDATEFILE',			'Nie je mo¾né zapisova» do update-souboru. Uistite sa, ¾e sú správne nastavené prístupové práva (skúste chmod 666). Tie¾ pozor na to, ¾e umiestnenie je relatívne k adresáru správcovskej oblasti, tak¾e by ste mohli skúsi» absolútnu cestu (nieèo ako /your/path/to/nucleus/)');
+define('_ERROR_DELDEFBLOG',			'Nie je mo¾né odstráni» prednastavený blog');
+define('_ERROR_DELETEMEMBER',		'Tento u¾ívateµ nemô¾e by» odstránený. Pravdepodobne preto, proto¾e je autorom nejakých èlánkov, alebo komentárov.');
+define('_ERROR_BADTEMPLATENAME',	'Neplatné meno ¹ablóny. Pou¾ite iba znaky a-z a 0-9, ¾iadne medzery.');
+define('_ERROR_DUPTEMPLATENAME',	'U¾ existuje ¹ablóna s týmto názvom.');
+define('_ERROR_BADSKINNAME',		'Neplatné meno vzhµadu (pou¾ite iba znaky a-z a 0-9, ¾iadne medzery)');
+define('_ERROR_DUPSKINNAME',		'U¾ existuje vzhµad s týmto názvom.');
+define('_ERROR_DEFAULTSKIN',		'Vzhµad s názvom "default" musí by» v¾dy dostupný.');
+define('_ERROR_SKINDEFDELETE',		'Nie je mo¾né odstráni» vzhµad, preto¾e je to ¹tandardný vzhµad pre nssledujúci blog: ');
+define('_ERROR_DISALLOWED',			'Prepáète, ale nie ste oprávnení k tejto akci.');
+define('_ERROR_DELETEBAN',			'Chyba pri odstraòovaní obmedzenia pøístupu (obmedzenie prístupu neexistuje)');
+define('_ERROR_ADDBAN',				'Chyba pri pridávaní obmedzenia prístupu. Obmedzenie prístupu asi nebolo korektne pridané do v¹etkých blogov.');
+define('_ERROR_BADACTION',			'Po¾adovaná akcia neexistuje');
+define('_ERROR_MEMBERMAILDISABLED',	'Mailové správy medzi èlenmi sú zakázané.');
+define('_ERROR_MEMBERCREATEDISABLED','Vytváranie u¾ívateµských kont je zakázané.');
+define('_ERROR_INCORRECTEMAIL',		'Neplatná mailová adresa');
+define('_ERROR_VOTEDBEFORE',		'Pre tento èlánok u¾ ste hlasovali');
+define('_ERROR_BANNED1',			'Akciu nie je mo¾né vykona», proto¾e vám (rozsah adries ');
+define('_ERROR_BANNED2',			') byl obmedzený prístup. Správa bola: \'');
 define('_ERROR_BANNED3',			'\'');
-define('_ERROR_LOGINNEEDED',		'Aby ste mohli vykonaï¿½ tï¿½to akciu, musï¿½te sa prihlï¿½siï¿½.');
+define('_ERROR_LOGINNEEDED',		'Aby ste mohli vykona» túto akciu, musíte sa prihlási».');
 define('_ERROR_CONNECT',			'Chyba spojenia');
-define('_ERROR_FILE_TOO_BIG',		'Sï¿½bor je prï¿½liï¿½ veï¿½kï¿½!');
-define('_ERROR_BADFILETYPE',		'Prepï¿½ï¿½te, ale tento typ sï¿½boru nie je povolenï¿½.');
-define('_ERROR_BADREQUEST',			'Neplatnï¿½ poï¿½iadavok pre nahranie sï¿½boru');
-define('_ERROR_DISALLOWEDUPLOAD',	'Nie ste ï¿½lenom tï¿½mu ï¿½iadneho blogu, a preto nemï¿½ï¿½ete nahrï¿½vaï¿½ sï¿½bory.');
-define('_ERROR_BADPERMISSIONS',		'Prï¿½va pre sï¿½bor/adresï¿½r nie sï¿½ sprï¿½vne nastavenï¿½');
-define('_ERROR_UPLOADMOVEP',		'Chyba pri presune nahranï¿½ho sï¿½boru');
-define('_ERROR_UPLOADCOPY',			'Chyba pri kopï¿½rovanï¿½ sï¿½boru');
-define('_ERROR_UPLOADDUPLICATE',	'Sï¿½bor s tï¿½mto nï¿½zvom uï¿½ existuje. Pred nahranï¿½m ho skï¿½ste premenovaï¿½.');
-define('_ERROR_LOGINDISALLOWED',	'Prepï¿½ï¿½te, ale nemï¿½ï¿½ete sa prihlï¿½siï¿½ do sprï¿½vcovskej oblasti. Avï¿½ak mï¿½ï¿½ete sa prihlï¿½siï¿½ ako inï¿½ uï¿½ï¿½vateï¿½.');
-define('_ERROR_DBCONNECT',			'Nie je moï¿½nï¿½ pripojiï¿½ sa k mySQL serveru');
-define('_ERROR_DBSELECT',			'Nie je moï¿½nï¿½ vybraï¿½ databï¿½zu nucleus.');
-define('_ERROR_NOSUCHLOCALE',		'Tento jazykovï¿½ sï¿½bor neexistuje');
-define('_ERROR_NOSUCHCATEGORY',		'Takï¿½ kategï¿½ria neexistuje');
-define('_ERROR_DELETELASTCATEGORY',	'Musï¿½ existovaï¿½ aspoï¿½ jedna kategï¿½ria');
-define('_ERROR_DELETEDEFCATEGORY',	'Nie je moï¿½nï¿½ odstrï¿½niï¿½ defaultnï¿½ kategï¿½riu');
-define('_ERROR_BADCATEGORYNAME',	'Neplatnï¿½ nï¿½zov kategï¿½ria');
-define('_ERROR_DUPCATEGORYNAME',	'Kategï¿½ria s tï¿½mto nï¿½zvom uï¿½ existuje');
+define('_ERROR_FILE_TOO_BIG',		'Súbor je príli¹ veµký!');
+define('_ERROR_BADFILETYPE',		'Prepáète, ale tento typ súboru nie je povolený.');
+define('_ERROR_BADREQUEST',			'Neplatný po¾iadavok pre nahranie súboru');
+define('_ERROR_DISALLOWEDUPLOAD',	'Nie ste èlenom tímu ¾iadneho blogu, a preto nemô¾ete nahráva» súbory.');
+define('_ERROR_BADPERMISSIONS',		'Práva pre súbor/adresár nie sú správne nastavené');
+define('_ERROR_UPLOADMOVEP',		'Chyba pri presune nahraného súboru');
+define('_ERROR_UPLOADCOPY',			'Chyba pri kopírovaní súboru');
+define('_ERROR_UPLOADDUPLICATE',	'Súbor s týmto názvom u¾ existuje. Pred nahraním ho skúste premenova».');
+define('_ERROR_LOGINDISALLOWED',	'Prepáète, ale nemô¾ete sa prihlási» do správcovskej oblasti. Av¹ak mô¾ete sa prihlási» ako iný u¾ívateµ.');
+define('_ERROR_DBCONNECT',			'Nie je mo¾né pripoji» sa k mySQL serveru');
+define('_ERROR_DBSELECT',			'Nie je mo¾né vybra» databázu nucleus.');
+define('_ERROR_NOSUCHLOCALE',		'Tento jazykový súbor neexistuje');
+define('_ERROR_NOSUCHCATEGORY',		'Taká kategória neexistuje');
+define('_ERROR_DELETELASTCATEGORY',	'Musí existova» aspoò jedna kategória');
+define('_ERROR_DELETEDEFCATEGORY',	'Nie je mo¾né odstráni» defaultnú kategóriu');
+define('_ERROR_BADCATEGORYNAME',	'Neplatný názov kategória');
+define('_ERROR_DUPCATEGORYNAME',	'Kategória s týmto názvom u¾ existuje');
 
 // some warnings (used for mediadir setting)
-define('_WARNING_NOTADIR',			'Pozor: Aktuï¿½lna hodnota nie je adresï¿½r!');
-define('_WARNING_NOTREADABLE',		'Pozor: Aktuï¿½lna hodnota nie je adresï¿½r na ï¿½ï¿½tanie!');
-define('_WARNING_NOTWRITABLE',		'Pozor: Aktuï¿½lna hodnota NIE JE adresï¿½r, do ktorï¿½ho sa dï¿½ zapisovaï¿½!');
+define('_WARNING_NOTADIR',			'Pozor: Aktuálna hodnota nie je adresár!');
+define('_WARNING_NOTREADABLE',		'Pozor: Aktuálna hodnota nie je adresár na èítanie!');
+define('_WARNING_NOTWRITABLE',		'Pozor: Aktuálna hodnota NIE JE adresár, do ktorého sa dá zapisova»!');
 
 // media and upload
-define('_MEDIA_UPLOADLINK',			'Nahraï¿½ novï¿½ sï¿½bor');
-define('_MEDIA_MODIFIED',			'modifikovanï¿½');
-define('_MEDIA_FILENAME',			'nï¿½zov sï¿½boru');
+define('_MEDIA_UPLOADLINK',			'Nahra» nový súbor');
+define('_MEDIA_MODIFIED',			'modifikovaný');
+define('_MEDIA_FILENAME',			'názov súboru');
 define('_MEDIA_DIMENSIONS',			'rozmery');
-define('_MEDIA_INLINE',				'Vo vnï¿½tri');
+define('_MEDIA_INLINE',				'Vo vnútri');
 define('_MEDIA_POPUP',				'Okno');
-define('_UPLOAD_TITLE',				'Zvoï¿½te sï¿½bor');
-define('_UPLOAD_MSG',				'Vyberte sï¿½bor pre nahratie, a potom stlaï¿½te tlaï¿½ï¿½tko \'Nahraï¿½\'.');
-define('_UPLOAD_BUTTON',			'Nahraï¿½');
+define('_UPLOAD_TITLE',				'Zvoµte súbor');
+define('_UPLOAD_MSG',				'Vyberte súbor pre nahratie, a potom stlaète tlaèítko \'Nahra»\'.');
+define('_UPLOAD_BUTTON',			'Nahra»');
 
 // some status messages
-define('_MSG_ACCOUNTCREATED',		'ï¿½ï¿½et bol vytvorenï¿½. Heslo obdrï¿½ï¿½te e-mailom.');
-define('_MSG_PASSWORDSENT',			'Heslo vï¿½m bolo odoslanï¿½ e-mailom.');
-define('_MSG_LOGINAGAIN',			'Budete sa musieï¿½ znova prihlï¿½siï¿½, pretoï¿½e vaï¿½e ï¿½daje boli zmenenï¿½.');
-define('_MSG_SETTINGSCHANGED',		'Nastavenia zmenenï¿½');
-define('_MSG_ADMINCHANGED',			'Sprï¿½vca zmenenï¿½');
-define('_MSG_NEWBLOG',				'Novï¿½ blog bol vytvorenï¿½');
-define('_MSG_ACTIONLOGCLEARED',		'Log akciï¿½ bol zmazanï¿½');
+define('_MSG_ACCOUNTCREATED',		'Úèet bol vytvorený. Heslo obdr¾íte e-mailom.');
+define('_MSG_PASSWORDSENT',			'Heslo vám bolo odoslané e-mailom.');
+define('_MSG_LOGINAGAIN',			'Budete sa musie» znova prihlási», preto¾e va¹e údaje boli zmenené.');
+define('_MSG_SETTINGSCHANGED',		'Nastavenia zmenené');
+define('_MSG_ADMINCHANGED',			'Správca zmenený');
+define('_MSG_NEWBLOG',				'Nový blog bol vytvorený');
+define('_MSG_ACTIONLOGCLEARED',		'Log akcií bol zmazaný');
 
 // actionlog in admin area
-define('_ACTIONLOG_DISALLOWED',		'Nepovolenï¿½ akcia: ');
-define('_ACTIONLOG_PWDREMINDERSENT','Odoslanï¿½ novï¿½ heslo pre ');
-define('_ACTIONLOG_TITLE',			'Log akciï¿½');
-define('_ACTIONLOG_CLEAR_TITLE',	'Zmazaï¿½ log akciï¿½');
-define('_ACTIONLOG_CLEAR_TEXT',		'Vymazaï¿½ log akciï¿½');
+define('_ACTIONLOG_DISALLOWED',		'Nepovolená akcia: ');
+define('_ACTIONLOG_PWDREMINDERSENT','Odoslané nové heslo pre ');
+define('_ACTIONLOG_TITLE',			'Log akcií');
+define('_ACTIONLOG_CLEAR_TITLE',	'Zmaza» log akcií');
+define('_ACTIONLOG_CLEAR_TEXT',		'Vymaza» log akcií');
 
 // team management
-define('_TEAM_TITLE',				'Sprï¿½va tï¿½mu pre blog ');
-define('_TEAM_CURRENT',				'Aktuï¿½lny tï¿½m');
-define('_TEAM_ADDNEW',				'Pridaï¿½ ï¿½lena do tï¿½mu');
-define('_TEAM_CHOOSEMEMBER',		'Zvoï¿½te ï¿½lena');
-define('_TEAM_ADMIN',				'Sprï¿½vcovskï¿½ prï¿½va? ');
-define('_TEAM_ADD',					'Pridaï¿½ do tï¿½mu');
-define('_TEAM_ADD_BTN',				'Pridaï¿½ do tï¿½mu');
+define('_TEAM_TITLE',				'Správa tímu pre blog ');
+define('_TEAM_CURRENT',				'Aktuálny tím');
+define('_TEAM_ADDNEW',				'Prida» èlena do tímu');
+define('_TEAM_CHOOSEMEMBER',		'Zvoµte èlena');
+define('_TEAM_ADMIN',				'Správcovské práva? ');
+define('_TEAM_ADD',					'Prida» do tímu');
+define('_TEAM_ADD_BTN',				'Prida» do tímu');
 
 // blogsettings
-define('_EBLOG_TITLE',				'Upraviï¿½ nastavenie blogu');
-define('_EBLOG_TEAM_TITLE',			'Upraviï¿½ tï¿½m');
-define('_EBLOG_TEAM_TEXT',			'Kliknite tu pre ï¿½pravu tï¿½mu...');
+define('_EBLOG_TITLE',				'Upravi» nastavenie blogu');
+define('_EBLOG_TEAM_TITLE',			'Upravi» tím');
+define('_EBLOG_TEAM_TEXT',			'Kliknite tu pre úpravu tímu...');
 define('_EBLOG_SETTINGS_TITLE',		'Nastavenie blogu');
 define('_EBLOG_NAME',				'Meno blogu');
-define('_EBLOG_SHORTNAME',			'Krï¿½tke meno blogu');
+define('_EBLOG_SHORTNAME',			'Krátke meno blogu');
 define('_EBLOG_SHORTNAME_EXTRA',	'<br />(iba znaky a-z bez medzier)');
 define('_EBLOG_DESC',				'Popis blogu');
 define('_EBLOG_URL',				'URL');
-define('_EBLOG_DEFSKIN',			'ï¿½tandardnï¿½ vzhï¿½ad');
-define('_EBLOG_DEFCAT',				'ï¿½tandardnï¿½ kategï¿½ria');
-define('_EBLOG_LINEBREAKS',			'Odriadkovï¿½vaï¿½');
-define('_EBLOG_DISABLECOMMENTS',	'Povoliï¿½ komentï¿½re?<br /><small>(Urï¿½uje, ï¿½i je moï¿½nï¿½ pridï¿½vaï¿½ komentï¿½re)</small>');
-define('_EBLOG_ANONYMOUS',			'Povoliï¿½ komentï¿½re od neregistrovanï¿½ch nï¿½vï¿½tï¿½vnï¿½kov?');
-define('_EBLOG_NOTIFY',				'Adresa/adresy pre oznamovanie (pouï¿½ite ; ako oddeï¿½ovaï¿½)');
-define('_EBLOG_NOTIFY_ON',			'Oznamovaï¿½ zaslanie');
-define('_EBLOG_NOTIFY_COMMENT',		'Novï¿½ch komentï¿½rov');
-define('_EBLOG_NOTIFY_KARMA',		'Novï¿½ch karma hlasov');
-define('_EBLOG_NOTIFY_ITEM',		'Novï¿½ch ï¿½lï¿½nkov blogu');
-define('_EBLOG_PING',				'Ping na Weblogs.com pri zmenï¿½ch?');
-define('_EBLOG_MAXCOMMENTS',		'Maximï¿½lny poï¿½et komentï¿½rov');
-define('_EBLOG_UPDATE',				'Zapï¿½saï¿½ zmeny do sï¿½boru');
-define('_EBLOG_OFFSET',				'ï¿½asovï¿½ posun');
-define('_EBLOG_STIME',				'Aktuï¿½lny ï¿½as serveru je');
-define('_EBLOG_BTIME',				'Aktuï¿½lny ï¿½as blogu je');
-define('_EBLOG_CHANGE',				'Zmeniï¿½ nastavenie');
-define('_EBLOG_CHANGE_BTN',			'Zmï¿½nit nastavenï¿½');
-define('_EBLOG_ADMIN',				'Sprï¿½vca blogu');
-define('_EBLOG_ADMIN_MSG',			'Obdrï¿½ï¿½te sprï¿½vcovskï¿½ prï¿½va');
-define('_EBLOG_CREATE_TITLE',		'Vytvoriï¿½ novï¿½ blog');
-define('_EBLOG_CREATE_TEXT',		'Pre vytvorenie novï¿½ho blogu vyplï¿½te nasledujï¿½cï¿½ formulï¿½r. <br /><br /> <b>Poznï¿½mka:</b> Sï¿½ tu vypï¿½sanï¿½ iba najnutnejï¿½ie voï¿½by. Ak chcete zmï¿½nit daï¿½ï¿½ie nastavenia, po vytvorenï¿½ blogu navï¿½tivte strï¿½nku s vlastnosï¿½ami blogu.');
-define('_EBLOG_CREATE',				'Vytvoriï¿½!');
-define('_EBLOG_CREATE_BTN',			'Vytvoriï¿½ blog');
-define('_EBLOG_CAT_TITLE',			'Kategï¿½ria');
-define('_EBLOG_CAT_NAME',			'Nï¿½zov kategï¿½rie');
-define('_EBLOG_CAT_DESC',			'Popis kategï¿½rie');
-define('_EBLOG_CAT_CREATE',			'Vytvoriï¿½ novï¿½ kategï¿½riu');
-define('_EBLOG_CAT_UPDATE',			'Upraviï¿½ kategï¿½riu');
-define('_EBLOG_CAT_UPDATE_BTN',		'Upraviï¿½ kategï¿½riu');
+define('_EBLOG_DEFSKIN',			'©tandardný vzhµad');
+define('_EBLOG_DEFCAT',				'¹tandardná kategória');
+define('_EBLOG_LINEBREAKS',			'Odriadkováva»');
+define('_EBLOG_DISABLECOMMENTS',	'Povoli» komentáre?<br /><small>(Urèuje, èi je mo¾né pridáva» komentáre)</small>');
+define('_EBLOG_ANONYMOUS',			'Povoli» komentáre od neregistrovaných náv¹tìvníkov?');
+define('_EBLOG_NOTIFY',				'Adresa/adresy pre oznamovanie (pou¾ite ; ako oddeµovaè)');
+define('_EBLOG_NOTIFY_ON',			'Oznamova» zaslanie');
+define('_EBLOG_NOTIFY_COMMENT',		'Nových komentárov');
+define('_EBLOG_NOTIFY_KARMA',		'Nových karma hlasov');
+define('_EBLOG_NOTIFY_ITEM',		'Nových èlánkov blogu');
+define('_EBLOG_PING',				'Ping na Weblogs.com pri zmenách?');
+define('_EBLOG_MAXCOMMENTS',		'Maximálny poèet komentárov');
+define('_EBLOG_UPDATE',				'Zapísa» zmeny do súboru');
+define('_EBLOG_OFFSET',				'Èasový posun');
+define('_EBLOG_STIME',				'Aktuálny èas serveru je');
+define('_EBLOG_BTIME',				'Aktuálny èas blogu je');
+define('_EBLOG_CHANGE',				'Zmeni» nastavenie');
+define('_EBLOG_CHANGE_BTN',			'Zmìnit nastavení');
+define('_EBLOG_ADMIN',				'Správca blogu');
+define('_EBLOG_ADMIN_MSG',			'Obdr¾íte správcovské práva');
+define('_EBLOG_CREATE_TITLE',		'Vytvori» nový blog');
+define('_EBLOG_CREATE_TEXT',		'Pre vytvorenie nového blogu vyplòte nasledujúcí formulár. <br /><br /> <b>Poznámka:</b> Sú tu vypísané iba najnutnej¹ie voµby. Ak chcete zmìnit daµ¹ie nastavenia, po vytvorení blogu nav¹tivte stránku s vlastnos»ami blogu.');
+define('_EBLOG_CREATE',				'Vytvori»!');
+define('_EBLOG_CREATE_BTN',			'Vytvori» blog');
+define('_EBLOG_CAT_TITLE',			'Kategória');
+define('_EBLOG_CAT_NAME',			'Názov kategórie');
+define('_EBLOG_CAT_DESC',			'Popis kategórie');
+define('_EBLOG_CAT_CREATE',			'Vytvori» novú kategóriu');
+define('_EBLOG_CAT_UPDATE',			'Upravi» kategóriu');
+define('_EBLOG_CAT_UPDATE_BTN',		'Upravi» kategóriu');
 
 // templates
-define('_TEMPLATE_TITLE',			'Upraviï¿½ ï¿½ablï¿½ny');
-define('_TEMPLATE_AVAILABLE_TITLE',	'Dostupnï¿½ ï¿½ablï¿½ny');
-define('_TEMPLATE_NEW_TITLE',		'Novï¿½ ï¿½ablï¿½na');
-define('_TEMPLATE_NAME',			'Nï¿½zov ï¿½ablï¿½ny');
-define('_TEMPLATE_DESC',			'Popis ï¿½ablï¿½ny');
-define('_TEMPLATE_CREATE',			'Vytvoriï¿½ ï¿½ablï¿½nu');
-define('_TEMPLATE_CREATE_BTN',		'Vytvoriï¿½ ï¿½ablï¿½nu');
-define('_TEMPLATE_EDIT_TITLE',		'Upraviï¿½ ï¿½ablï¿½nu');
-define('_TEMPLATE_BACK',			'Spï¿½ na prehï¿½ad ï¿½ablï¿½n');
-define('_TEMPLATE_EDIT_MSG',		'Nie vï¿½etky ï¿½asti ï¿½ablï¿½ny sï¿½ vyï¿½adovanï¿½. Nepotrebnï¿½ ï¿½asti nechajte prï¿½zdne.');
-define('_TEMPLATE_SETTINGS',		'Nastavenie ï¿½ablï¿½ny');
-define('_TEMPLATE_ITEMS',			'ï¿½lï¿½nky');
-define('_TEMPLATE_ITEMHEADER',		'Hlaviï¿½ka ï¿½lï¿½nku');
-define('_TEMPLATE_ITEMBODY',		'Telo ï¿½lï¿½nku');
-define('_TEMPLATE_ITEMFOOTER',		'Pï¿½tiï¿½ka ï¿½lï¿½nku');
-define('_TEMPLATE_MORELINK',		'Odkaz na rozï¿½irujï¿½cï¿½ text');
-define('_TEMPLATE_NEW',				'Oznaï¿½enie novï¿½ho ï¿½lï¿½nku');
-define('_TEMPLATE_COMMENTS_ANY',	'Komentï¿½re (ak sï¿½)');
-define('_TEMPLATE_CHEADER',			'Hlaviï¿½ka komentï¿½ra');
-define('_TEMPLATE_CBODY',			'Telo komentï¿½ra');
-define('_TEMPLATE_CFOOTER',			'Pï¿½tiï¿½ka komentï¿½ra');
-define('_TEMPLATE_CONE',			'Jeden komentï¿½r');
-define('_TEMPLATE_CMANY',			'Dva (a viac) komentï¿½rov');
-define('_TEMPLATE_CMORE',			'\'ï¿½ï¿½taï¿½ viac\' pri komentï¿½roch');
-define('_TEMPLATE_CMEXTRA',			'Daï¿½ï¿½ie ï¿½daje iba pre ï¿½lenov');
-define('_TEMPLATE_COMMENTS_NONE',	'Komentï¿½re (ak nejakï¿½ sï¿½)');
-define('_TEMPLATE_CNONE',			'ï¿½iadne komentï¿½re');
-define('_TEMPLATE_COMMENTS_TOOMUCH','Komentï¿½re (pokiaï¿½ sï¿½, ale je ich viac, neï¿½ sa dï¿½ zobraziï¿½ priamo)');
-define('_TEMPLATE_CTOOMUCH',		'Prï¿½liï¿½ mnoho komentï¿½rov');
-define('_TEMPLATE_ARCHIVELIST',		'Zeznam archï¿½vov');
-define('_TEMPLATE_AHEADER',			'Hlaviï¿½ka zoznamu archï¿½vov');
-define('_TEMPLATE_AITEM',			'Poloï¿½ka zoznamu archï¿½vov');
-define('_TEMPLATE_AFOOTER',			'Pï¿½tiï¿½ka zoznamu archï¿½vov');
-define('_TEMPLATE_DATETIME',		'Dï¿½tum a ï¿½as');
-define('_TEMPLATE_DHEADER',			'Hlaviï¿½ka dï¿½tumu');
-define('_TEMPLATE_DFOOTER',			'Pï¿½tiï¿½ka dï¿½tumu');
-define('_TEMPLATE_DFORMAT',			'Formï¿½t dï¿½tumu');
-define('_TEMPLATE_TFORMAT',			'Formï¿½t ï¿½asu');
+define('_TEMPLATE_TITLE',			'Upravi» ¹ablóny');
+define('_TEMPLATE_AVAILABLE_TITLE',	'Dostupné ¹ablóny');
+define('_TEMPLATE_NEW_TITLE',		'Nová ¹ablóna');
+define('_TEMPLATE_NAME',			'Názov ¹ablóny');
+define('_TEMPLATE_DESC',			'Popis ¹ablóny');
+define('_TEMPLATE_CREATE',			'Vytvori» ¹ablónu');
+define('_TEMPLATE_CREATE_BTN',		'Vytvori» ¹ablónu');
+define('_TEMPLATE_EDIT_TITLE',		'Upravi» ¹ablónu');
+define('_TEMPLATE_BACK',			'Spä» na prehµad ¹ablón');
+define('_TEMPLATE_EDIT_MSG',		'Nie v¹etky èasti ¹ablóny sú vy¾adované. Nepotrebné èasti nechajte prázdne.');
+define('_TEMPLATE_SETTINGS',		'Nastavenie ¹ablóny');
+define('_TEMPLATE_ITEMS',			'Èlánky');
+define('_TEMPLATE_ITEMHEADER',		'Hlavièka èlánku');
+define('_TEMPLATE_ITEMBODY',		'Telo èlánku');
+define('_TEMPLATE_ITEMFOOTER',		'Pätièka èlánku');
+define('_TEMPLATE_MORELINK',		'Odkaz na roz¹irujúcí text');
+define('_TEMPLATE_NEW',				'Oznaèenie nového èlánku');
+define('_TEMPLATE_COMMENTS_ANY',	'Komentáre (ak sú)');
+define('_TEMPLATE_CHEADER',			'Hlavièka komentára');
+define('_TEMPLATE_CBODY',			'Telo komentára');
+define('_TEMPLATE_CFOOTER',			'Pätièka komentára');
+define('_TEMPLATE_CONE',			'Jeden komentár');
+define('_TEMPLATE_CMANY',			'Dva (a viac) komentárov');
+define('_TEMPLATE_CMORE',			'\'Èíta» viac\' pri komentároch');
+define('_TEMPLATE_CMEXTRA',			'Daµ¹ie údaje iba pre èlenov');
+define('_TEMPLATE_COMMENTS_NONE',	'Komentáre (ak nejaké sú)');
+define('_TEMPLATE_CNONE',			'®iadne komentáre');
+define('_TEMPLATE_COMMENTS_TOOMUCH','Komentáre (pokia» sú, ale je ich viac, ne¾ sa dá zobrazi» priamo)');
+define('_TEMPLATE_CTOOMUCH',		'Príli¹ mnoho komentárov');
+define('_TEMPLATE_ARCHIVELIST',		'Zeznam archívov');
+define('_TEMPLATE_AHEADER',			'Hlavièka zoznamu archívov');
+define('_TEMPLATE_AITEM',			'Polo¾ka zoznamu archívov');
+define('_TEMPLATE_AFOOTER',			'Pätièka zoznamu archívov');
+define('_TEMPLATE_DATETIME',		'Dátum a èas');
+define('_TEMPLATE_DHEADER',			'Hlavièka dátumu');
+define('_TEMPLATE_DFOOTER',			'Pätièka dátumu');
+define('_TEMPLATE_DFORMAT',			'Formát dátumu');
+define('_TEMPLATE_TFORMAT',			'Formát èasu');
 define('_TEMPLATE_LOCALE',			'Miestne nastavenie');
-define('_TEMPLATE_IMAGE',			'Okna s obrï¿½zkom');
-define('_TEMPLATE_PCODE',			'Kï¿½d odkazu pre oknï¿½ s obrï¿½zkom');
-define('_TEMPLATE_ICODE',			'Kï¿½d pro vloï¿½nï¿½ obrï¿½zok');
-define('_TEMPLATE_MCODE',			'Kï¿½d odkazu na soubor mï¿½diï¿½');
-define('_TEMPLATE_SEARCH',			'Hï¿½adanie');
-define('_TEMPLATE_SHIGHLIGHT',		'Zvï¿½raznenie');
-define('_TEMPLATE_SNOTFOUND',		'Pri hï¿½adanï¿½ nebolo niï¿½ nï¿½jdenï¿½');
-define('_TEMPLATE_UPDATE',			'Upraviï¿½');
-define('_TEMPLATE_UPDATE_BTN',		'Upraviï¿½ ï¿½ablï¿½nu');
-define('_TEMPLATE_RESET_BTN',		'Pï¿½vodnï¿½ dï¿½ta');
-define('_TEMPLATE_CATEGORYLIST',	'Zoznamy kategï¿½riï¿½');
-define('_TEMPLATE_CATHEADER',		'Hlaviï¿½ka zoznamu kategï¿½riï¿½');
-define('_TEMPLATE_CATITEM',			'Poloï¿½ka zoznamu kategï¿½riï¿½');
-define('_TEMPLATE_CATFOOTER',		'Pï¿½tiï¿½ka zoznamu kategï¿½riï¿½');
+define('_TEMPLATE_IMAGE',			'Okna s obrázkom');
+define('_TEMPLATE_PCODE',			'Kód odkazu pre okná s obrázkom');
+define('_TEMPLATE_ICODE',			'Kód pro vlo¾ný obrázok');
+define('_TEMPLATE_MCODE',			'Kód odkazu na soubor médií');
+define('_TEMPLATE_SEARCH',			'Hµadanie');
+define('_TEMPLATE_SHIGHLIGHT',		'Zvýraznenie');
+define('_TEMPLATE_SNOTFOUND',		'Pri hµadaní nebolo niè nájdené');
+define('_TEMPLATE_UPDATE',			'Upravi»');
+define('_TEMPLATE_UPDATE_BTN',		'Upravi» ¹ablónu');
+define('_TEMPLATE_RESET_BTN',		'Pôvodné dáta');
+define('_TEMPLATE_CATEGORYLIST',	'Zoznamy kategórií');
+define('_TEMPLATE_CATHEADER',		'Hlavièka zoznamu kategórií');
+define('_TEMPLATE_CATITEM',			'Polo¾ka zoznamu kategórií');
+define('_TEMPLATE_CATFOOTER',		'Pätièka zoznamu kategórií');
 
 // skins
-define('_SKIN_EDIT_TITLE',			'Upraviï¿½ vzhï¿½ady');
-define('_SKIN_AVAILABLE_TITLE',		'Dostupnï¿½ vzhï¿½ady');
-define('_SKIN_NEW_TITLE',			'Novï¿½ vzhï¿½ad');
-define('_SKIN_NAME',				'Nï¿½zov');
+define('_SKIN_EDIT_TITLE',			'Upravi» vzhµady');
+define('_SKIN_AVAILABLE_TITLE',		'Dostupné vzhµady');
+define('_SKIN_NEW_TITLE',			'Nový vzhµad');
+define('_SKIN_NAME',				'Názov');
 define('_SKIN_DESC',				'Popis');
 define('_SKIN_TYPE',				'Typ obsahu');
-define('_SKIN_CREATE',				'Vytvoriï¿½');
-define('_SKIN_CREATE_BTN',			'Vytvoriï¿½ vzhï¿½ad');
-define('_SKIN_EDITONE_TITLE',		'Upraviï¿½ vzhï¿½ad');
-define('_SKIN_BACK',				'Spï¿½ na prehï¿½ad vzhï¿½adov');
-define('_SKIN_PARTS_TITLE',			'ï¿½asti vzhï¿½adu');
-define('_SKIN_PARTS_MSG',			'Pre kaï¿½dï¿½ vzhï¿½ad nie sï¿½ potrebnï¿½ vï¿½etky typy. Tie, ktorï¿½ nepotrebujete, nechajte prï¿½zdne. Zvoï¿½te typ vzhï¿½adu, ktorï¿½ chcete upraviï¿½::');
-define('_SKIN_PART_MAIN',			'Hlavnï¿½ prehï¿½ad');
-define('_SKIN_PART_ITEM',			'Strï¿½nky ï¿½lï¿½nkov');
-define('_SKIN_PART_ALIST',			'Zoznam archï¿½vov');
-define('_SKIN_PART_ARCHIVE',		'Archï¿½v');
-define('_SKIN_PART_SEARCH',			'Hï¿½adanie');
+define('_SKIN_CREATE',				'Vytvori»');
+define('_SKIN_CREATE_BTN',			'Vytvori» vzhµad');
+define('_SKIN_EDITONE_TITLE',		'Upravi» vzhµad');
+define('_SKIN_BACK',				'Spä» na prehµad vzhµadov');
+define('_SKIN_PARTS_TITLE',			'Èasti vzhµadu');
+define('_SKIN_PARTS_MSG',			'Pre ka¾dý vzhµad nie sú potrebné v¹etky typy. Tie, ktoré nepotrebujete, nechajte prázdne. Zvoµte typ vzhµadu, ktorý chcete upravi»::');
+define('_SKIN_PART_MAIN',			'Hlavný prehµad');
+define('_SKIN_PART_ITEM',			'Stránky èlánkov');
+define('_SKIN_PART_ALIST',			'Zoznam archívov');
+define('_SKIN_PART_ARCHIVE',		'Archív');
+define('_SKIN_PART_SEARCH',			'Hµadanie');
 define('_SKIN_PART_ERROR',			'Chyby');
-define('_SKIN_PART_MEMBER',			'Detaily reg. uï¿½ï¿½vateï¿½a');
-define('_SKIN_PART_POPUP',			'Okna s obrï¿½zkom');
-define('_SKIN_GENSETTINGS_TITLE',	'Vï¿½eobecnï¿½ nastavenia');
-define('_SKIN_CHANGE',				'Zmeniï¿½');
-define('_SKIN_CHANGE_BTN',			'Zmeniï¿½ tieto nastavenia');
-define('_SKIN_UPDATE_BTN',			'Uloï¿½iï¿½ vzhï¿½ad');
-define('_SKIN_RESET_BTN',			'Pï¿½vodnï¿½ dï¿½ta');
-define('_SKIN_EDITPART_TITLE',		'Upraviï¿½ vzhï¿½ad');
-define('_SKIN_GOBACK',				'Spï¿½');
-define('_SKIN_ALLOWEDVARS',			'Dostupnï¿½ premennï¿½ (kliknite pre bliï¿½ï¿½ie informï¿½cie):');
+define('_SKIN_PART_MEMBER',			'Detaily reg. u¾ívateµa');
+define('_SKIN_PART_POPUP',			'Okna s obrázkom');
+define('_SKIN_GENSETTINGS_TITLE',	'V¹eobecné nastavenia');
+define('_SKIN_CHANGE',				'Zmeni»');
+define('_SKIN_CHANGE_BTN',			'Zmeni» tieto nastavenia');
+define('_SKIN_UPDATE_BTN',			'Uloµi» vzhµad');
+define('_SKIN_RESET_BTN',			'Pôvodné dáta');
+define('_SKIN_EDITPART_TITLE',		'Upravi» vzhµad');
+define('_SKIN_GOBACK',				'Spä»');
+define('_SKIN_ALLOWEDVARS',			'Dostupné premenné (kliknite pre bli¾¹ie informácie):');
 
 // global settings
-define('_SETTINGS_TITLE',			'Vï¿½eobecnï¿½ nastavenia');
-define('_SETTINGS_SUB_GENERAL',		'Vï¿½eobecnï¿½ nastavenia');
-define('_SETTINGS_DEFBLOG',			'ï¿½tandardnï¿½ blog');
-define('_SETTINGS_ADMINMAIL',		'E-mail sprï¿½vcu');
-define('_SETTINGS_SITENAME',		'Nï¿½zov strï¿½nky');
-define('_SETTINGS_SITEURL',			'URL strï¿½nky (malo by konï¿½iï¿½ lomï¿½tkom)');
-define('_SETTINGS_ADMINURL',		'URL sprï¿½vcovskej oblasti (malo by konï¿½iï¿½ lomï¿½tkom)');
-define('_SETTINGS_DIRS',			'Adresï¿½reNucleusu');
-define('_SETTINGS_MEDIADIR',		'Adresï¿½r s mï¿½diami');
-define('_SETTINGS_SEECONFIGPHP',	'(viï¿½ config.php)');
-define('_SETTINGS_MEDIAURL',		'URL mï¿½diï¿½ (malo by konï¿½iï¿½ lomï¿½tkom)');
-define('_SETTINGS_ALLOWUPLOAD',		'Povoliï¿½ nahrï¿½vanie (upload) souborov?');
-define('_SETTINGS_ALLOWUPLOADTYPES','Typy sï¿½borov, ktorï¿½ je moï¿½nï¿½ nahraï¿½');
-define('_SETTINGS_CHANGELOGIN',		'Povoliï¿½ registrovanï¿½m uï¿½ï¿½vateï¿½om meniï¿½ meno/heslo');
+define('_SETTINGS_TITLE',			'V¹eobecné nastavenia');
+define('_SETTINGS_SUB_GENERAL',		'V¹eobecné nastavenia');
+define('_SETTINGS_DEFBLOG',			'©tandardný blog');
+define('_SETTINGS_ADMINMAIL',		'E-mail správcu');
+define('_SETTINGS_SITENAME',		'Názov stránky');
+define('_SETTINGS_SITEURL',			'URL stránky (malo by konèi» lomítkom)');
+define('_SETTINGS_ADMINURL',		'URL správcovskej oblasti (malo by konèi» lomítkom)');
+define('_SETTINGS_DIRS',			'AdresáreNucleusu');
+define('_SETTINGS_MEDIADIR',		'Adresár s médiami');
+define('_SETTINGS_SEECONFIGPHP',	'(viï config.php)');
+define('_SETTINGS_MEDIAURL',		'URL médií (malo by konèi» lomítkom)');
+define('_SETTINGS_ALLOWUPLOAD',		'Povoli» nahrávanie (upload) souborov?');
+define('_SETTINGS_ALLOWUPLOADTYPES','Typy súborov, ktoré je mo¾né nahra»');
+define('_SETTINGS_CHANGELOGIN',		'Povoli» registrovaným u¾ívateµom meni» meno/heslo');
 define('_SETTINGS_COOKIES_TITLE',	'Nastavenie cookies');
-define('_SETTINGS_COOKIELIFE',		'Doba ï¿½ivotnosti prihlasovacieho cookie');
-define('_SETTINGS_COOKIESESSION',	'Jednorazovï¿½ cookies (session)');
+define('_SETTINGS_COOKIELIFE',		'Doba ¾ivotnosti prihlasovacieho cookie');
+define('_SETTINGS_COOKIESESSION',	'Jednorazové cookies (session)');
 define('_SETTINGS_COOKIEMONTH',		'Mesiac');
-define('_SETTINGS_COOKIEPATH',		'Cesta cookie (pokroï¿½ilï¿½)');
-define('_SETTINGS_COOKIEDOMAIN',	'Domï¿½na cookie (pokroï¿½ilï¿½)');
-define('_SETTINGS_COOKIESECURE',	'Zabezpeï¿½enï¿½ cookie (pokroï¿½ilï¿½)');
-define('_SETTINGS_LASTVISIT',		'Ukladaï¿½ cookies poslednej nï¿½vï¿½tevy');
-define('_SETTINGS_ALLOWCREATE',		'Povoliï¿½ nï¿½vï¿½tevnï¿½kom vytvoriï¿½ si registrovanï¿½ ï¿½ï¿½et');
-define('_SETTINGS_NEWLOGIN',		'Povoliï¿½ prihlï¿½senie z ï¿½ï¿½tov, vytvorenï¿½ch nï¿½vï¿½tevnï¿½kmi');
-define('_SETTINGS_NEWLOGIN2',		'(iba pre novo vytvorenï¿½ ï¿½ï¿½ty)');
-define('_SETTINGS_MEMBERMSGS',		'Povoliï¿½ sluï¿½by medzi ï¿½lenmi');
-define('_SETTINGS_LOCALE',		'ï¿½tandardnï¿½ jazyk');
-define('_SETTINGS_DISABLESITE',		'Vypnï¿½ strï¿½nku');
-define('_SETTINGS_DBLOGIN',			'mySQL Login a Databï¿½za');
-define('_SETTINGS_UPDATE',			'Uloï¿½iï¿½ nastavenia');
-define('_SETTINGS_UPDATE_BTN',		'Uloï¿½iï¿½ nastavenia');
-define('_SETTINGS_DISABLEJS',		'Zakï¿½zaï¿½ JavaScript Toolbar');
-define('_SETTINGS_MEDIA',			'Nastavenia pre mï¿½dia/nahrï¿½vï¿½nie sï¿½borov');
-define('_SETTINGS_MEDIAPREFIX',		'Nahranï¿½m sï¿½borom pridaï¿½ pred meno dï¿½tum');
-define('_SETTINGS_MEMBERS',			'Nastavenie registrovanï¿½ch uï¿½ï¿½vateï¿½om');
+define('_SETTINGS_COOKIEPATH',		'Cesta cookie (pokroèilé)');
+define('_SETTINGS_COOKIEDOMAIN',	'Doména cookie (pokroèilé)');
+define('_SETTINGS_COOKIESECURE',	'Zabezpeèené cookie (pokroèilé)');
+define('_SETTINGS_LASTVISIT',		'Uklada» cookies poslednej náv¹tevy');
+define('_SETTINGS_ALLOWCREATE',		'Povoli» náv¹tevníkom vytvori» si registrovaný úèet');
+define('_SETTINGS_NEWLOGIN',		'Povoli» prihlásenie z úètov, vytvorených náv¹tevníkmi');
+define('_SETTINGS_NEWLOGIN2',		'(iba pre novo vytvorené úèty)');
+define('_SETTINGS_MEMBERMSGS',		'Povoli» slu¾by medzi èlenmi');
+define('_SETTINGS_LOCALE',		'©tandardný jazyk');
+define('_SETTINGS_DISABLESITE',		'Vypnú» stránku');
+define('_SETTINGS_DBLOGIN',			'mySQL Login a Databáza');
+define('_SETTINGS_UPDATE',			'Ulo¾i» nastavenia');
+define('_SETTINGS_UPDATE_BTN',		'Ulo¾i» nastavenia');
+define('_SETTINGS_DISABLEJS',		'Zakáza» JavaScript Toolbar');
+define('_SETTINGS_MEDIA',			'Nastavenia pre média/nahrávánie súborov');
+define('_SETTINGS_MEDIAPREFIX',		'Nahraným súborom prida» pred meno dátum');
+define('_SETTINGS_MEMBERS',			'Nastavenie registrovaných u¾ívateµom');
 
 // bans
-define('_BAN_TITLE',				'Zoznam obmedzenï¿½ prï¿½stupu pre');
-define('_BAN_NONE',					'Tento blog nemï¿½ ï¿½iadne obmedzenia prï¿½stupu');
-define('_BAN_NEW_TITLE',			'Pridat novï¿½ obmedzenie prï¿½stupu');
-define('_BAN_NEW_TEXT',				'Pridaï¿½ obmedzenie');
-define('_BAN_REMOVE_TITLE',			'Odstrï¿½niï¿½ obmedzenie');
+define('_BAN_TITLE',				'Zoznam obmedzení prístupu pre');
+define('_BAN_NONE',					'Tento blog nemá ¾iadne obmedzenia prístupu');
+define('_BAN_NEW_TITLE',			'Pridat nové obmedzenie prístupu');
+define('_BAN_NEW_TEXT',				'Prida» obmedzenie');
+define('_BAN_REMOVE_TITLE',			'Odstráni» obmedzenie');
 define('_BAN_IPRANGE',				'Rozsah IP adries');
-define('_BAN_BLOGS',				'Ktorï¿½ blogy?');
-define('_BAN_DELETE_TITLE',			'Odstrï¿½niï¿½ obmedzenie');
-define('_BAN_ALLBLOGS',				'Vï¿½etky blogy, ku ktorï¿½m mï¿½te sprï¿½vcovskï¿½ prï¿½va.');
-define('_BAN_REMOVED_TITLE',		'Obmedzenie prï¿½stupu bolo odstrï¿½nenï¿½');
-define('_BAN_REMOVED_TEXT',			'Bolo odstrï¿½nenï¿½ obmedzenie prï¿½stupu pre nasledujï¿½ce blogy:');
-define('_BAN_ADD_TITLE',			'Pridaï¿½ obmedzenie prï¿½stupu');
-define('_BAN_IPRANGE_TEXT',			'Zadajte rozsah IP adries, ktorï¿½ chcete blokovaï¿½. ï¿½ï¿½m menï¿½ie ï¿½ï¿½sla, tï¿½m viac adries bude blokovanï¿½ch.');
-define('_BAN_BLOGS_TEXT',			'Mï¿½ï¿½ete zablokovaï¿½ rozsah IP adries iba pre jeden blog, alebo pre vï¿½etky blogy, ku ktorï¿½m mï¿½te sprï¿½vcovskï¿½ prï¿½va.');
-define('_BAN_REASON_TITLE',			'Dï¿½vod');
-define('_BAN_REASON_TEXT',			'Mï¿½ï¿½ete zadaï¿½ dï¿½vod obmedzenia prï¿½stupu, ktorï¿½ bude zobrazenï¿½, ak sa vlastnï¿½k blokovanej IP adresy pokï¿½si pridat komentï¿½r, alebo odoslaï¿½ karma hlas. Maximï¿½lna dï¿½ka je 256 znakov.');
-define('_BAN_ADD_BTN',				'Pridaï¿½ obmedzenie');
+define('_BAN_BLOGS',				'Ktoré blogy?');
+define('_BAN_DELETE_TITLE',			'Odstráni» obmedzenie');
+define('_BAN_ALLBLOGS',				'V¹etky blogy, ku ktorým máte správcovské práva.');
+define('_BAN_REMOVED_TITLE',		'Obmedzenie prístupu bolo odstránené');
+define('_BAN_REMOVED_TEXT',			'Bolo odstránené obmedzenie prístupu pre nasledujúce blogy:');
+define('_BAN_ADD_TITLE',			'Prida» obmedzenie prístupu');
+define('_BAN_IPRANGE_TEXT',			'Zadajte rozsah IP adries, ktoré chcete blokova». Èím men¹ie èísla, tým viac adries bude blokovaných.');
+define('_BAN_BLOGS_TEXT',			'Mô¾ete zablokova» rozsah IP adries iba pre jeden blog, alebo pre v¹etky blogy, ku ktorým máte správcovské práva.');
+define('_BAN_REASON_TITLE',			'Dôvod');
+define('_BAN_REASON_TEXT',			'Mô¾ete zada» dôvod obmedzenia prístupu, ktorý bude zobrazený, ak sa vlastník blokovanej IP adresy pokúsi pridat komentár, alebo odosla» karma hlas. Maximálna då¾ka je 256 znakov.');
+define('_BAN_ADD_BTN',				'Prida» obmedzenie');
 
 // LOGIN screen
-define('_LOGIN_MESSAGE',			'Sprï¿½va');
+define('_LOGIN_MESSAGE',			'Správa');
 define('_LOGIN_NAME',				'Meno');
 define('_LOGIN_PASSWORD',			'Heslo');
 define('_LOGIN_SHARED',				_LOGINFORM_SHARED);
 define('_LOGIN_FORGOT',				'Zabudli ste heslo?');
 
 // membermanagement
-define('_MEMBERS_TITLE',			'Sprï¿½va registrovanï¿½ch uï¿½ï¿½vateï¿½ov');
-define('_MEMBERS_CURRENT',			'Aktuï¿½lni uï¿½ï¿½vatelia');
-define('_MEMBERS_NEW',				'Novï¿½ uï¿½ï¿½vateï¿½');
-define('_MEMBERS_DISPLAY',			'Zobrazovanï¿½ meno');
-define('_MEMBERS_DISPLAY_INFO',		'(Toto je meno, pod ktorï¿½m sa prihlasujete)');
-define('_MEMBERS_REALNAME',			'Skutoï¿½nï¿½ meno');
+define('_MEMBERS_TITLE',			'Správa registrovaných u¾ívateµov');
+define('_MEMBERS_CURRENT',			'Aktuálni u¾ívatelia');
+define('_MEMBERS_NEW',				'Nový u¾ívateµ');
+define('_MEMBERS_DISPLAY',			'Zobrazované meno');
+define('_MEMBERS_DISPLAY_INFO',		'(Toto je meno, pod ktorým sa prihlasujete)');
+define('_MEMBERS_REALNAME',			'Skutoèné meno');
 define('_MEMBERS_PWD',				'Heslo');
-define('_MEMBERS_REPPWD',			'Zopakovaï¿½ heslo');
-define('_MEMBERS_EMAIL',			'E-mailovï¿½ adresa');
-define('_MEMBERS_EMAIL_EDIT',		'(Ak zmenï¿½te e-mailovï¿½ adresu, bude vï¿½m na ï¿½u automaticky odoslanï¿½ novï¿½ heslo)');
-define('_MEMBERS_URL',				'Adresa webovej strï¿½nky (URL)');
-define('_MEMBERS_SUPERADMIN',		'Sprï¿½vcovskï¿½ prï¿½va');
-define('_MEMBERS_CANLOGIN',			'Mï¿½ï¿½e sa prihlï¿½siï¿½ do sprï¿½vcovskej oblasti');
-define('_MEMBERS_NOTES',			'Poznï¿½mky');
-define('_MEMBERS_NEW_BTN',			'Pridaï¿½ uï¿½ï¿½vatele');
-define('_MEMBERS_EDIT',				'Upraviï¿½ uï¿½ï¿½vateï¿½a');
-define('_MEMBERS_EDIT_BTN',			'Uloï¿½iï¿½ nastavenia');
-define('_MEMBERS_BACKTOOVERVIEW',	'Spï¿½ na prehï¿½ad uï¿½ï¿½vateï¿½ov');
+define('_MEMBERS_REPPWD',			'Zopakova» heslo');
+define('_MEMBERS_EMAIL',			'E-mailová adresa');
+define('_MEMBERS_EMAIL_EDIT',		'(Ak zmeníte e-mailovú adresu, bude vám na òu automaticky odoslané nové heslo)');
+define('_MEMBERS_URL',				'Adresa webovej stránky (URL)');
+define('_MEMBERS_SUPERADMIN',		'Správcovské práva');
+define('_MEMBERS_CANLOGIN',			'Mô¾e sa prihlási» do správcovskej oblasti');
+define('_MEMBERS_NOTES',			'Poznámky');
+define('_MEMBERS_NEW_BTN',			'Prida» u¾ívatele');
+define('_MEMBERS_EDIT',				'Upravi» u¾ívateµa');
+define('_MEMBERS_EDIT_BTN',			'Ulo¾i» nastavenia');
+define('_MEMBERS_BACKTOOVERVIEW',	'Spä» na prehµad u¾ívateµov');
 define('_MEMBERS_LOCALE',			'Jazyk');
-define('_MEMBERS_USESITELANG',		'- ï¿½tandardnï¿½ jazyk strï¿½nky -');
+define('_MEMBERS_USESITELANG',		'- ¹tandardný jazyk stránky -');
 
 // List of blogs (TT = tooltip)
-define('_BLOGLIST_TT_VISIT',		'Navï¿½tï¿½viï¿½ strï¿½nku');
-define('_BLOGLIST_ADD',				'Pridaï¿½ ï¿½lï¿½nok');
-define('_BLOGLIST_TT_ADD',			'Pridaï¿½ novï¿½ ï¿½lï¿½nok do tohto blogu');
-define('_BLOGLIST_EDIT',			'Upraviï¿½/odstrï¿½niï¿½ ï¿½lï¿½nky');
+define('_BLOGLIST_TT_VISIT',		'Nav¹tívi» stránku');
+define('_BLOGLIST_ADD',				'Prida» èlánok');
+define('_BLOGLIST_TT_ADD',			'Prida» nový èlánok do tohto blogu');
+define('_BLOGLIST_EDIT',			'Upravi»/odstráni» èlánky');
 define('_BLOGLIST_TT_EDIT',			'');
 define('_BLOGLIST_BMLET',			'Bookmarklet');
 define('_BLOGLIST_TT_BMLET',		'');
 define('_BLOGLIST_SETTINGS',		'Nastavenia');
-define('_BLOGLIST_TT_SETTINGS',		'Upraviï¿½ nastavenia alebo spravovaï¿½ tï¿½m');
-define('_BLOGLIST_BANS',			'Obmedzenie prï¿½stupu');
-define('_BLOGLIST_TT_BANS',			'Zobraziï¿½, pridaï¿½ alebo odstrï¿½niï¿½ blokovanï¿½ IP adresy');
-define('_BLOGLIST_DELETE',			'Odstrï¿½niï¿½ vï¿½etko');
-define('_BLOGLIST_TT_DELETE',		'Odstrï¿½niï¿½ tento blog');
+define('_BLOGLIST_TT_SETTINGS',		'Upravi» nastavenia alebo spravova» tím');
+define('_BLOGLIST_BANS',			'Obmedzenie prístupu');
+define('_BLOGLIST_TT_BANS',			'Zobrazi», prida» alebo odstráni» blokované IP adresy');
+define('_BLOGLIST_DELETE',			'Odstráni» v¹etko');
+define('_BLOGLIST_TT_DELETE',		'Odstráni» tento blog');
 
 // OVERVIEW screen
 define('_OVERVIEW_YRBLOGS',			'Sekcia hulan.info');
-define('_OVERVIEW_YRDRAFTS',		'Vaï¿½e koncepty');
-define('_OVERVIEW_YRSETTINGS',		'Vaï¿½e nastavenia');
-define('_OVERVIEW_GSETTINGS',		'Vï¿½eobecnï¿½ nastavenia');
-define('_OVERVIEW_NOBLOGS',			'Nie ste ï¿½lenom tï¿½mu ï¿½iadneho z blogov');
-define('_OVERVIEW_NODRAFTS',		'ï¿½iadne koncepty');
-define('_OVERVIEW_EDITSETTINGS',	'Upraviï¿½ vaï¿½e nastavenia...');
-define('_OVERVIEW_BROWSEITEMS',		'Prezeraï¿½ vaï¿½e ï¿½lï¿½nky...');
-define('_OVERVIEW_BROWSECOMM',		'Prezeraï¿½ vaï¿½e komentï¿½re...');
-define('_OVERVIEW_VIEWLOG',			'Prezeraï¿½ zoznam akciï¿½...');
-define('_OVERVIEW_MEMBERS',			'Sprï¿½va reg. uï¿½ï¿½vateï¿½ov...');
-define('_OVERVIEW_NEWLOG',			'Vytvoriï¿½ novï¿½ blog...');
-define('_OVERVIEW_SETTINGS',		'Upraviï¿½ nastavenia...');
-define('_OVERVIEW_TEMPLATES',		'Upraviï¿½ ï¿½ablï¿½ny...');
-define('_OVERVIEW_SKINS',			'Upraviï¿½ vzhï¿½ady...');
-define('_OVERVIEW_BACKUP',			'Zï¿½loha/obnova...');
+define('_OVERVIEW_YRDRAFTS',		'Va¹e koncepty');
+define('_OVERVIEW_YRSETTINGS',		'Va¹e nastavenia');
+define('_OVERVIEW_GSETTINGS',		'V¹eobecné nastavenia');
+define('_OVERVIEW_NOBLOGS',			'Nie ste èlenom tímu ¾iadneho z blogov');
+define('_OVERVIEW_NODRAFTS',		'®iadne koncepty');
+define('_OVERVIEW_EDITSETTINGS',	'Upravi» va¹e nastavenia...');
+define('_OVERVIEW_BROWSEITEMS',		'Prezera» va¹e èlánky...');
+define('_OVERVIEW_BROWSECOMM',		'Prezera» va¹e komentáre...');
+define('_OVERVIEW_VIEWLOG',			'Prezera» zoznam akcií...');
+define('_OVERVIEW_MEMBERS',			'Správa reg. u¾ívateµov...');
+define('_OVERVIEW_NEWLOG',			'Vytvori» nový blog...');
+define('_OVERVIEW_SETTINGS',		'Upravi» nastavenia...');
+define('_OVERVIEW_TEMPLATES',		'Upravi» ¹ablóny...');
+define('_OVERVIEW_SKINS',			'Upravi» vzhµady...');
+define('_OVERVIEW_BACKUP',			'Záloha/obnova...');
 
 // ITEMLIST
-define('_ITEMLIST_BLOG',			'ï¿½lï¿½nky pre blog'); 
-define('_ITEMLIST_YOUR',			'Vaï¿½e ï¿½lï¿½nky');
+define('_ITEMLIST_BLOG',			'Èlánky pre blog'); 
+define('_ITEMLIST_YOUR',			'Va¹e èlánky');
 
 // Comments
-define('_COMMENTS',					'Komentï¿½re');
-define('_NOCOMMENTS',				'Tento ï¿½lï¿½nok nemï¿½ ï¿½iadne komentï¿½re');
-define('_COMMENTS_YOUR',			'Vaï¿½e komentï¿½re');
-define('_NOCOMMENTS_YOUR',			'Nenapï¿½sal ste ï¿½iadne komentï¿½re');
+define('_COMMENTS',					'Komentáre');
+define('_NOCOMMENTS',				'Tento èlánok nemá ¾iadne komentáre');
+define('_COMMENTS_YOUR',			'Va¹e komentáre');
+define('_NOCOMMENTS_YOUR',			'Nenapísal ste ¾iadne komentáre');
 
 // LISTS (general)
-define('_LISTS_NOMORE',				'ï¿½iadne daï¿½ï¿½ie alebo vï¿½bec ï¿½iadne vï¿½sledky');
-define('_LISTS_PREV',				'Predoï¿½lï¿½');
-define('_LISTS_NEXT',				'Daï¿½ï¿½ie');
-define('_LISTS_SEARCH',				'Hï¿½adaï¿½');
-define('_LISTS_CHANGE',				'Zmeniï¿½');
-define('_LISTS_PERPAGE',			'ï¿½lï¿½nkov/strana');
+define('_LISTS_NOMORE',				'®iadne daµ¹ie alebo vôbec ¾iadne výsledky');
+define('_LISTS_PREV',				'Predo¹lé');
+define('_LISTS_NEXT',				'Daµ¹ie');
+define('_LISTS_SEARCH',				'Hµada»');
+define('_LISTS_CHANGE',				'Zmeni»');
+define('_LISTS_PERPAGE',			'èlánkov/strana');
 define('_LISTS_ACTIONS',			'Akcia');
-define('_LISTS_DELETE',				'Odstrï¿½niï¿½');
-define('_LISTS_EDIT',				'Upraviï¿½');
-define('_LISTS_MOVE',				'Presunï¿½');
-define('_LISTS_CLONE',				'Skopï¿½rovaï¿½');
+define('_LISTS_DELETE',				'Odstráni»');
+define('_LISTS_EDIT',				'Upravi»');
+define('_LISTS_MOVE',				'Presunú»');
+define('_LISTS_CLONE',				'Skopírova»');
 define('_LISTS_TITLE',				'Titulok');
 define('_LISTS_BLOG',				'Blog');
-define('_LISTS_NAME',				'Nï¿½zov');
+define('_LISTS_NAME',				'Názov');
 define('_LISTS_DESC',				'Popis');
-define('_LISTS_TIME',				'ï¿½as');
-define('_LISTS_COMMENTS',			'Komentï¿½re');
+define('_LISTS_TIME',				'Èas');
+define('_LISTS_COMMENTS',			'Komentáre');
 define('_LISTS_TYPE',				'Typ');
 
 
 // member list 
-define('_LIST_MEMBER_NAME',			'Zobrazovanï¿½ meno');
-define('_LIST_MEMBER_RNAME',		'Skutoï¿½nï¿½ meno');
-define('_LIST_MEMBER_ADMIN',		'Super-sprï¿½vca? ');
-define('_LIST_MEMBER_LOGIN',		'Mï¿½ï¿½e sa prihlï¿½siï¿½? ');
-define('_LIST_MEMBER_URL',			'Strï¿½nka');
+define('_LIST_MEMBER_NAME',			'Zobrazované meno');
+define('_LIST_MEMBER_RNAME',		'Skutoèné meno');
+define('_LIST_MEMBER_ADMIN',		'Super-správca? ');
+define('_LIST_MEMBER_LOGIN',		'Mô¾e sa prihlási»? ');
+define('_LIST_MEMBER_URL',			'Stránka');
 
 // banlist
 define('_LIST_BAN_IPRANGE',			'Rozsah IP adres');
-define('_LIST_BAN_REASON',			'Dï¿½vod');
+define('_LIST_BAN_REASON',			'Dôvod');
 
 // actionlist
-define('_LIST_ACTION_MSG',			'Sprï¿½va');
+define('_LIST_ACTION_MSG',			'Správa');
 
 // commentlist
-define('_LIST_COMMENT_BANIP',		'Blokovaï¿½ IP adresu');
+define('_LIST_COMMENT_BANIP',		'Blokova» IP adresu');
 define('_LIST_COMMENT_WHO',			'Autor');
-define('_LIST_COMMENT',				'Komentï¿½r');
+define('_LIST_COMMENT',				'Komentár');
 define('_LIST_COMMENT_HOST',		'Server');
 
 // itemlist
@@ -1256,19 +1248,19 @@ define('_LIST_ITEM_CONTENT',		'Titulok a text');
 
 
 // teamlist
-define('_LIST_TEAM_ADMIN',			'Sprï¿½vca ');
-define('_LIST_TEAM_CHADMIN',		'Zmeniï¿½ sprï¿½vcu');
+define('_LIST_TEAM_ADMIN',			'Správca ');
+define('_LIST_TEAM_CHADMIN',		'Zmeni» správcu');
 
 // edit comments
-define('_EDITC_TITLE',				'Upraviï¿½ komentï¿½re');
+define('_EDITC_TITLE',				'Upravi» komentáre');
 define('_EDITC_WHO',				'Autor');
-define('_EDITC_HOST',				'Odkiaï¿½?');
+define('_EDITC_HOST',				'Odkiaµ?');
 define('_EDITC_WHEN',				'Kedy?');
 define('_EDITC_TEXT',				'Text');
-define('_EDITC_EDIT',				'Upraviï¿½ komentï¿½r');
-define('_EDITC_MEMBER',				'ï¿½len');
-define('_EDITC_NONMEMBER',			'nie je ï¿½lenom');
+define('_EDITC_EDIT',				'Upravi» komentár');
+define('_EDITC_MEMBER',				'èlen');
+define('_EDITC_NONMEMBER',			'nie je èlenom');
 
 // move item
-define('_MOVE_TITLE',				'Presunï¿½ do akï¿½ho blogu?');
-define('_MOVE_BTN',					'Presunï¿½ ï¿½lï¿½nok');
+define('_MOVE_TITLE',				'Presunú» do akého blogu?');
+define('_MOVE_BTN',					'Presunú» èlánok');

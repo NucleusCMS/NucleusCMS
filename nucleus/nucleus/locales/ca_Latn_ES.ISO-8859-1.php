@@ -1,30 +1,17 @@
 <?php
-// Catalan Nucleus Language File
-// 
-// Author: Roger Pau Monné (royger@gmail.com) 
-// Nucleus version: v1.0-v3.2
-//
-// Please note: if you want to translate this file to your own translation, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which 
-// the file was written in your document.
-//
-// Fully translated translation file can be sent to us and will be made
-// available for download (with proper credit to the author, of course)
-
-// Data translation
 /**
- * Nucleus Language File
- *
+ * Nucleus CMS Translation File
+ * Catalan in Spain (Latin script)
+ * 
+ * Nucleus version: v1.0-v3.2
+ * Author: Roger Pau Monné (royger@gmail.com) 
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$
  */
 
-
-@setlocale(LC_TIME, 'ca_ES@euro'); 
-
- /********************************************
+/********************************************
  *        Start New for 4.0                 *
  ********************************************/
 define('_SKINIE_INVALID_NAMES_DETECTED', 'Invalid skin or templates names detected. Valid names consist of only a-z, A-Z, 0-9, -, and _'); 
@@ -1116,7 +1103,7 @@ define('_SETTINGS_ALLOWCREATE',		'Permetre als visitants crear-se un usuari');
 define('_SETTINGS_NEWLOGIN',		'Permetre el registre d\'usuaris creats per visitants');
 define('_SETTINGS_NEWLOGIN2',		'(només s\'aplica a usuaris recent creats)');
 define('_SETTINGS_MEMBERMSGS',		'Permetre servei Usuari-a-Usuari');
-define('_SETTINGS_LOCALE',		'Idiome per defecte');
+define('_SETTINGS_LOCALE',			'Idiome per defecte');
 define('_SETTINGS_DISABLESITE',		'Descativar la pàgina');
 define('_SETTINGS_DBLOGIN',			'Usuari MySQL &amp; Base de dades');
 define('_SETTINGS_UPDATE',			'Actualitzar els paràmetres');

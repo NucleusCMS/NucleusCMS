@@ -1,26 +1,19 @@
 <?php
-// German Nucleus Language File
-// Date: 2009-02-26
-// Author: Kai Greve
-// Formerly based on translations by: Dieter Mayer, Holger Laschka, Thorsten Bonck
-// Nucleus version: v1.0-v3.4
-//
-// Please note: if you want to translate this file to your own translation, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which
-// the file was written in your document.
-//
-// Fully translated translation file can be sent to us and will be made
-// available for download (with proper credit to the author, of course)
 /**
- * Nucleus Language File
+ * Nucleus CMS Translation File
+ * German in Germany (Latin script)
+ * 
+ * Nucleus version: v1.0-v3.4
+ * Date: 2009-02-26
+ * Author: Kai Greve
+ * Formerly based on translations by: Dieter Mayer, Holger Laschka, Thorsten Bonck
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$
  */
 
- /********************************************
+/********************************************
  *        Start New for 4.0                 *
  ********************************************/
 define('_SKINIE_INVALID_NAMES_DETECTED', 'Invalid skin or templates names detected. Valid names consist of only a-z, A-Z, 0-9, -, and _'); 

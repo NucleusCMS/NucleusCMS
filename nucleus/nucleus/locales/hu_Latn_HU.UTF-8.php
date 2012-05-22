@@ -1,12 +1,11 @@
 <?php
-// Hungarian Nucleus Language File
-//
-// Author: Konczér Tamás (konczer@gmail.com)
-// Nucleus version: v1.0-v3.2
-//
 /**
- * Nucleus Language File
+ * Nucleus CMS Translation File
+ * Hungarian in Hungary (Latin script)
  *
+ * Nucleus version: v1.0-v3.2
+ * Author: Konczér Tamás (konczer@gmail.com)
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$

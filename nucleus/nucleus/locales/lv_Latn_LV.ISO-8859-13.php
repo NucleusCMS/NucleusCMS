@@ -1,19 +1,11 @@
 <?php
-// Latvian Nucleus Language File
-//
-// Author: Kaspars Priedols (house@tvertne.nu)
-// Nucleus version: v1.0-v2.0
-//
-// Please note: if you want to translate this file to your own translation, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which 
-// the file was written in your document.
-//
-// Fully translated translation file can be sent to Wouter Demuynck (nucleus@demuynck.org)
-// and will be available for download (with proper credit to the author, of course)
 /**
- * Nucleus Language File
- *
+ * Nucleus CMS Translation File
+ * Latvian in Latvia (Latin script)
+ * 
+ * Nucleus version: v1.0-v2.0
+ * Author: Kaspars Priedols (house@tvertne.nu)
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$
@@ -465,135 +457,135 @@ define('_EBLOG_SEARCH',				'<em>Always</em> include in search');
 
 // media library
 define('_MEDIA_VIEW',				'skats');
-define('_MEDIA_VIEW_TT',			'Skatï¿½t failu (jaunï¿½ logï¿½)');
+define('_MEDIA_VIEW_TT',			'Skatît failu (jaunâ logâ)');
 define('_MEDIA_FILTER_APPLY',		'Pievienot filtru');
 define('_MEDIA_FILTER_LABEL',		'Filtrs: ');
 define('_MEDIA_UPLOAD_TO',			'Uzlikt uz...');
 define('_MEDIA_UPLOAD_NEW',			'Uzlikt jaunu failu...');
-define('_MEDIA_COLLECTION_SELECT',	'Izvï¿½lï¿½ties');
-define('_MEDIA_COLLECTION_TT',		'Pï¿½riet uz sadaï¿½u');
-define('_MEDIA_COLLECTION_LABEL',	'Paï¿½reizï¿½jï¿½ kolekcija: ');
+define('_MEDIA_COLLECTION_SELECT',	'Izvçlçties');
+define('_MEDIA_COLLECTION_TT',		'Pâriet uz sadaïu');
+define('_MEDIA_COLLECTION_LABEL',	'Paðreizçjâ kolekcija: ');
 
 // tooltips on toolbar
-define('_ADD_ALIGNLEFT_TT',			'Kreisajï¿½ pusï¿½');
-define('_ADD_ALIGNRIGHT_TT',		'Labajï¿½ pusï¿½');
-define('_ADD_ALIGNCENTER_TT',		'Iecentrï¿½ts');
+define('_ADD_ALIGNLEFT_TT',			'Kreisajâ pusç');
+define('_ADD_ALIGNRIGHT_TT',		'Labajâ pusç');
+define('_ADD_ALIGNCENTER_TT',		'Iecentrçts');
 
 // searchable blog setting (yes/no)
-define('_EBLOG_SEARCH',				'Pievienot meklï¿½ï¿½anas indeksam');
+define('_EBLOG_SEARCH',				'Pievienot meklçðanas indeksam');
 
 // generic upload failure
-define('_ERROR_UPLOADFAILED',		'Kï¿½ï¿½das rezultï¿½tï¿½ fails netika pievienots.');
+define('_ERROR_UPLOADFAILED',		'Kïûdas rezultâtâ fails netika pievienots.');
 
 // END introduced after v2.0 END
 
 // START introduced after v1.5 START
 
 // posting to the past/edit timestamps
-define('_EBLOG_ALLOWPASTPOSTING',	'Atï¿½aut sï¿½tï¿½t ar atpakaï¿½ejoï¿½u datumu');
-define('_ADD_CHANGEDATE',			'Izmainï¿½t laiku');
-define('_BMLET_CHANGEDATE',			'Izmainï¿½t laiku');
+define('_EBLOG_ALLOWPASTPOSTING',	'Atïaut sûtît ar atpakaïejoðu datumu');
+define('_ADD_CHANGEDATE',			'Izmainît laiku');
+define('_BMLET_CHANGEDATE',			'Izmainît laiku');
 
 // skin import/export
-define('_OVERVIEW_SKINIMPORT',		'Noformï¿½juma imports/eksports...');
+define('_OVERVIEW_SKINIMPORT',		'Noformçjuma imports/eksports...');
 
 // skin settings
-define('_PARSER_INCMODE_NORMAL',	'Vienkï¿½rï¿½i');
+define('_PARSER_INCMODE_NORMAL',	'Vienkârði');
 define('_PARSER_INCMODE_SKINDIR',	'Izmantot skins direktoriju');
-define('_SKIN_INCLUDE_MODE',		'Pievienoï¿½anas veids');
-define('_SKIN_INCLUDE_PREFIX',		'Pievienoï¿½anas prefikss');
+define('_SKIN_INCLUDE_MODE',		'Pievienoðanas veids');
+define('_SKIN_INCLUDE_PREFIX',		'Pievienoðanas prefikss');
 
 // global settings
-define('_SETTINGS_BASESKIN',		'Pamatnoformï¿½jums');
-define('_SETTINGS_SKINSURL',		'Noformï¿½juma pakotnes URL');
+define('_SETTINGS_BASESKIN',		'Pamatnoformçjums');
+define('_SETTINGS_SKINSURL',		'Noformçjuma pakotnes URL');
 define('_SETTINGS_ACTIONSURL',		'Pilns URL uz action.php');
 
 // category moves (batch)
-define('_ERROR_MOVEDEFCATEGORY',	'Nevar pï¿½rvietot pamatsadaï¿½u');
-define('_ERROR_MOVETOSELF',			'Nevar pï¿½rvietot sadaï¿½u (abas sadaï¿½as ir viens un tas pats)');
-define('_MOVECAT_TITLE',			'Izvï¿½lies kura bloga sadaï¿½u pï¿½rvietot');
-define('_MOVECAT_BTN',				'Pï¿½rvietot sadaï¿½u');
+define('_ERROR_MOVEDEFCATEGORY',	'Nevar pârvietot pamatsadaïu');
+define('_ERROR_MOVETOSELF',			'Nevar pârvietot sadaïu (abas sadaïas ir viens un tas pats)');
+define('_MOVECAT_TITLE',			'Izvçlies kura bloga sadaïu pârvietot');
+define('_MOVECAT_BTN',				'Pârvietot sadaïu');
 
 // URLMode setting
-define('_SETTINGS_URLMODE',			'URL reï¿½ï¿½ms');
+define('_SETTINGS_URLMODE',			'URL reþîms');
 define('_SETTINGS_URLMODE_NORMAL',	'Normal');
 define('_SETTINGS_URLMODE_PATHINFO','Fancy');
 
 // Batch operations
-define('_BATCH_NOSELECTION',		'Nav iezï¿½mï¿½ti objekti');
-define('_BATCH_ITEMS',				'Strï¿½dï¿½t ar ierakstiem');
-define('_BATCH_CATEGORIES',			'Strï¿½dï¿½t ar sadaï¿½ï¿½m');
-define('_BATCH_MEMBERS',			'Strï¿½dï¿½t ar lietotï¿½jiem');
-define('_BATCH_TEAM',				'Strï¿½dï¿½t ar lietotï¿½ju grupu');
-define('_BATCH_COMMENTS',			'Strï¿½dï¿½t ar komentï¿½riem');
-define('_BATCH_UNKNOWN',			'Nepareiza operï¿½cija: ');
-define('_BATCH_EXECUTING',			'Izpildï¿½ï¿½ana');
-define('_BATCH_ONCATEGORY',			'sadaï¿½a');
+define('_BATCH_NOSELECTION',		'Nav iezîmçti objekti');
+define('_BATCH_ITEMS',				'Strâdât ar ierakstiem');
+define('_BATCH_CATEGORIES',			'Strâdât ar sadaïâm');
+define('_BATCH_MEMBERS',			'Strâdât ar lietotâjiem');
+define('_BATCH_TEAM',				'Strâdât ar lietotâju grupu');
+define('_BATCH_COMMENTS',			'Strâdât ar komentâriem');
+define('_BATCH_UNKNOWN',			'Nepareiza operâcija: ');
+define('_BATCH_EXECUTING',			'Izpildîðana');
+define('_BATCH_ONCATEGORY',			'sadaïa');
 define('_BATCH_ONITEM',				'ieraksts');
-define('_BATCH_ONCOMMENT',			'komentï¿½rs');
-define('_BATCH_ONMEMBER',			'lietotï¿½js');
-define('_BATCH_ONTEAM',				'lietotï¿½ju grupa');
-define('_BATCH_SUCCESS',			'Veiksmï¿½gi!');
-define('_BATCH_DONE',				'Padarï¿½ts!');
-define('_BATCH_DELETE_CONFIRM',		'Apstiprinï¿½t dzï¿½ï¿½anu');
-define('_BATCH_DELETE_CONFIRM_BTN',	'Apstiprinï¿½t dzï¿½ï¿½anu');
-define('_BATCH_SELECTALL',			'iezï¿½mï¿½t visu');
-define('_BATCH_DESELECTALL',		'noï¿½emt visus iezï¿½mï¿½jumus');
+define('_BATCH_ONCOMMENT',			'komentârs');
+define('_BATCH_ONMEMBER',			'lietotâjs');
+define('_BATCH_ONTEAM',				'lietotâju grupa');
+define('_BATCH_SUCCESS',			'Veiksmîgi!');
+define('_BATCH_DONE',				'Padarîts!');
+define('_BATCH_DELETE_CONFIRM',		'Apstiprinât dzçðanu');
+define('_BATCH_DELETE_CONFIRM_BTN',	'Apstiprinât dzçðanu');
+define('_BATCH_SELECTALL',			'iezîmçt visu');
+define('_BATCH_DESELECTALL',		'noòemt visus iezîmçjumus');
 
 // batch operations: options in dropdowns
-define('_BATCH_ITEM_DELETE',		'Dzï¿½st');
-define('_BATCH_ITEM_MOVE',			'Pï¿½rvietot');
-define('_BATCH_MEMBER_DELETE',		'Dzï¿½st');
-define('_BATCH_MEMBER_SET_ADM',		'Pieï¿½ï¿½irt administratora tiesï¿½bas');
-define('_BATCH_MEMBER_UNSET_ADM',	'Atï¿½emt administratora tiesï¿½bas');
-define('_BATCH_TEAM_DELETE',		'Dzï¿½st no grupas');
-define('_BATCH_TEAM_SET_ADM',		'Pieï¿½ï¿½irt administratora tiesï¿½bas');
-define('_BATCH_TEAM_UNSET_ADM',		'Atï¿½emt administratora tiesï¿½bas');
-define('_BATCH_CAT_DELETE',			'Dzï¿½st');
-define('_BATCH_CAT_MOVE',			'Pï¿½rvietot uz citu blogu');
-define('_BATCH_COMMENT_DELETE',		'Dzï¿½st');
+define('_BATCH_ITEM_DELETE',		'Dzçst');
+define('_BATCH_ITEM_MOVE',			'Pârvietot');
+define('_BATCH_MEMBER_DELETE',		'Dzçst');
+define('_BATCH_MEMBER_SET_ADM',		'Pieðíirt administratora tiesîbas');
+define('_BATCH_MEMBER_UNSET_ADM',	'Atòemt administratora tiesîbas');
+define('_BATCH_TEAM_DELETE',		'Dzçst no grupas');
+define('_BATCH_TEAM_SET_ADM',		'Pieðíirt administratora tiesîbas');
+define('_BATCH_TEAM_UNSET_ADM',		'Atòemt administratora tiesîbas');
+define('_BATCH_CAT_DELETE',			'Dzçst');
+define('_BATCH_CAT_MOVE',			'Pârvietot uz citu blogu');
+define('_BATCH_COMMENT_DELETE',		'Dzçst');
 
 // itemlist: Add new item...
 define('_ITEMLIST_ADDNEW',			'Pievienot jaunu ierakstu...');
 define('_ADD_PLUGIN_EXTRAS',		'Pluginu ekstra opcijas');
 
 // errors
-define('_ERROR_CATCREATEFAIL',		'Nevar izveidot jaunu sadaï¿½u');
-define('_ERROR_NUCLEUSVERSIONREQ',	'ï¿½ï¿½ plugina aktivizï¿½ï¿½anai nepiecieï¿½ama jaunï¿½ka Nucleus versija: ');
+define('_ERROR_CATCREATEFAIL',		'Nevar izveidot jaunu sadaïu');
+define('_ERROR_NUCLEUSVERSIONREQ',	'Ðî plugina aktivizçðanai nepiecieðama jaunâka Nucleus versija: ');
 
 // backlinks
-define('_BACK_TO_BLOGSETTINGS',		'Atpakaï¿½ uz bloga uzstï¿½dï¿½jumiem');
+define('_BACK_TO_BLOGSETTINGS',		'Atpakaï uz bloga uzstâdîjumiem');
 
 // skin import export
-define('_SKINIE_TITLE_IMPORT',		'Importï¿½t');
-define('_SKINIE_TITLE_EXPORT',		'Eksportï¿½t');
-define('_SKINIE_BTN_IMPORT',		'Importï¿½t');
-define('_SKINIE_BTN_EXPORT',		'Eksportï¿½t izvï¿½lï¿½tos noformï¿½jumus/sagataves');
-define('_SKINIE_LOCAL',				'Importï¿½t no lokï¿½la faila:');
-define('_SKINIE_NOCANDIDATES',		'Skins direktorijï¿½ nekas importï¿½jams nav atrasts');
-define('_SKINIE_FROMURL',			'importï¿½t no URL:');
-define('_SKINIE_EXPORT_INTRO',		'Izvï¿½lies noformï¿½jumu un sagataves, kuras eksportï¿½t');
-define('_SKINIE_EXPORT_SKINS',		'Noformï¿½jums (skins)');
+define('_SKINIE_TITLE_IMPORT',		'Importçt');
+define('_SKINIE_TITLE_EXPORT',		'Eksportçt');
+define('_SKINIE_BTN_IMPORT',		'Importçt');
+define('_SKINIE_BTN_EXPORT',		'Eksportçt izvçlçtos noformçjumus/sagataves');
+define('_SKINIE_LOCAL',				'Importçt no lokâla faila:');
+define('_SKINIE_NOCANDIDATES',		'Skins direktorijâ nekas importçjams nav atrasts');
+define('_SKINIE_FROMURL',			'importçt no URL:');
+define('_SKINIE_EXPORT_INTRO',		'Izvçlies noformçjumu un sagataves, kuras eksportçt');
+define('_SKINIE_EXPORT_SKINS',		'Noformçjums (skins)');
 define('_SKINIE_EXPORT_TEMPLATES',	'Sagataves');
 define('_SKINIE_EXPORT_EXTRA',		'Papildus info');
-#define('_SKINIE_CONFIRM_OVERWRITE', 'Pï¿½rrakstï¿½t jau eksistï¿½joï¿½us noformï¿½jumus (see nameclashes)');
-define('_SKINIE_CONFIRM_OVERWRITE',	'Pï¿½rrakstï¿½t jau eksistï¿½joï¿½us noformï¿½jumus');
-define('_SKINIE_CONFIRM_IMPORT',	'Jï¿½, importï¿½t');
-define('_SKINIE_CONFIRM_TITLE',		'Noformï¿½juma un sagatavju importï¿½ï¿½ana');
-define('_SKINIE_INFO_SKINS',		'Noformï¿½jumi failï¿½:');
-define('_SKINIE_INFO_TEMPLATES',	'Sagataves failï¿½:');
+#define('_SKINIE_CONFIRM_OVERWRITE', 'Pârrakstît jau eksistçjoðus noformçjumus (see nameclashes)');
+define('_SKINIE_CONFIRM_OVERWRITE',	'Pârrakstît jau eksistçjoðus noformçjumus');
+define('_SKINIE_CONFIRM_IMPORT',	'Jâ, importçt');
+define('_SKINIE_CONFIRM_TITLE',		'Noformçjuma un sagatavju importçðana');
+define('_SKINIE_INFO_SKINS',		'Noformçjumi failâ:');
+define('_SKINIE_INFO_TEMPLATES',	'Sagataves failâ:');
 define('_SKINIE_INFO_GENERAL',		'Info:');
-define('_SKINIE_INFO_SKINCLASH',	'Noformï¿½juma nesaderï¿½ba (clashes):');
-define('_SKINIE_INFO_TEMPLCLASH',	'Sagatavju nosaukumu nesaderï¿½ba (clashes):');
-define('_SKINIE_INFO_IMPORTEDSKINS','Importï¿½tie noformï¿½jumi:');
-define('_SKINIE_INFO_IMPORTEDTEMPLS','Importï¿½tï¿½s sagataves:');
-define('_SKINIE_DONE',				'Importï¿½ï¿½ana veiksmï¿½gi paveikta');
+define('_SKINIE_INFO_SKINCLASH',	'Noformçjuma nesaderîba (clashes):');
+define('_SKINIE_INFO_TEMPLCLASH',	'Sagatavju nosaukumu nesaderîba (clashes):');
+define('_SKINIE_INFO_IMPORTEDSKINS','Importçtie noformçjumi:');
+define('_SKINIE_INFO_IMPORTEDTEMPLS','Importçtâs sagataves:');
+define('_SKINIE_DONE',				'Importçðana veiksmîgi paveikta');
 
 define('_AND',						'un');
 define('_OR',						'vai');
 
 // empty fields on template edit
-define('_EDITTEMPLATE_EMPTY',		'tukï¿½s lauks (klikï¿½ï¿½ini, lai modificï¿½tu)');
+define('_EDITTEMPLATE_EMPTY',		'tukðs lauks (klikðíini, lai modificçtu)');
 
 // skin overview list
 //
@@ -605,21 +597,21 @@ define('_LIST_SKINS_INCPREFIX',		'IncludePrefix:');
 define('_LIST_SKINS_DEFINED',		'Defined parts:');
 
 // backup
-define('_BACKUPS_TITLE',			'Rezerves kopija / Atjaunoï¿½ana');
+define('_BACKUPS_TITLE',			'Rezerves kopija / Atjaunoðana');
 define('_BACKUP_TITLE',				'Rezerves kopija');
-define('_BACKUP_INTRO',				'Klikï¿½ï¿½ini uz pogas, lai izveidotu Nucleus rezerves kopiju. Rezerves kopija bï¿½s jasaglabï¿½ uz tava cietï¿½ diska.');
-define('_BACKUP_ZIP_YES',			'Kompresï¿½t');
-define('_BACKUP_ZIP_NO',			'Nekompresï¿½t');
+define('_BACKUP_INTRO',				'Klikðíini uz pogas, lai izveidotu Nucleus rezerves kopiju. Rezerves kopija bûs jasaglabâ uz tava cietâ diska.');
+define('_BACKUP_ZIP_YES',			'Kompresçt');
+define('_BACKUP_ZIP_NO',			'Nekompresçt');
 define('_BACKUP_BTN',				'Izveidot kopiju');
-define('_BACKUP_NOTE',				'<b>Piezï¿½me:</b> Rezerves kopijï¿½ tiek uzglabï¿½ti tikai datu bï¿½zï¿½ esoï¿½ie dati. Attï¿½li un citi faili <b>NETIEK</b> iekï¿½auti.');
+define('_BACKUP_NOTE',				'<b>Piezîme:</b> Rezerves kopijâ tiek uzglabâti tikai datu bâzç esoðie dati. Attçli un citi faili <b>NETIEK</b> iekïauti.');
 define('_RESTORE_TITLE',			'Atjaunot');
-define('_RESTORE_NOTE',				'<b>UZMANï¿½BU:</b> Atjaunoï¿½anas rezultï¿½tï¿½ visi Nucleus datu bï¿½zï¿½ esoï¿½ie dati tiks <b>DZï¿½STI</b>, tï¿½pï¿½c vairï¿½kkï¿½rt pï¿½rliecinies, vai ir izveidota rezerves kopija1<br />	<b>Piezï¿½me:</b> Rezerves kopijas datiem jï¿½bï¿½t no tï¿½s paï¿½as Nucleus versijas, kas paï¿½laik ir uzinstalï¿½ta pretï¿½jï¿½ gadï¿½jumï¿½ Nucleus nestrï¿½dï¿½s!');
-define('_RESTORE_INTRO',			'Izvï¿½lies attiecï¿½gu failu, no kura atjaunot datu bï¿½zi.');
-define('_RESTORE_IMSURE',			'Jï¿½, esmu gatavs!');
+define('_RESTORE_NOTE',				'<b>UZMANÎBU:</b> Atjaunoðanas rezultâtâ visi Nucleus datu bâzç esoðie dati tiks <b>DZÇSTI</b>, tâpçc vairâkkârt pârliecinies, vai ir izveidota rezerves kopija1<br />	<b>Piezîme:</b> Rezerves kopijas datiem jâbût no tâs paðas Nucleus versijas, kas paðlaik ir uzinstalçta pretçjâ gadîjumâ Nucleus nestrâdâs!');
+define('_RESTORE_INTRO',			'Izvçlies attiecîgu failu, no kura atjaunot datu bâzi.');
+define('_RESTORE_IMSURE',			'Jâ, esmu gatavs!');
 define('_RESTORE_BTN',				'Atjaunot no faila');
-define('_RESTORE_WARNING',			'(vï¿½lreiz pï¿½rliecinies, vai ir izveidota rezerves kopija)');
-define('_ERROR_BACKUP_NOTSURE',		'Jï¿½iezï¿½mï¿½ \'Jï¿½, esmu gatavs!\' lauciï¿½ï¿½');
-define('_RESTORE_COMPLETE',			'Atjaunoï¿½ana pabeigta');
+define('_RESTORE_WARNING',			'(vçlreiz pârliecinies, vai ir izveidota rezerves kopija)');
+define('_ERROR_BACKUP_NOTSURE',		'Jâiezîmç \'Jâ, esmu gatavs!\' lauciòð');
+define('_RESTORE_COMPLETE',			'Atjaunoðana pabeigta');
 
 // new item notification
 define('_NOTIFY_NI_MSG',			'Jauns ieraksts:');
@@ -629,24 +621,24 @@ define('_NOTIFY_NI_TITLE',			'Jauns!');
 //define('_NOTIFY_KV_TITLE',            'Nucleus karma:');
 define('_NOTIFY_KV_MSG',			'Karma ierakstam:');
 define('_NOTIFY_KV_TITLE',			'Nucleus karma:');
-define('_NOTIFY_NC_MSG',			'Ieraksta komentï¿½rs:');
-define('_NOTIFY_NC_TITLE',			'Nucleus komentï¿½rs:');
-define('_NOTIFY_USERID',			'Lietotï¿½ja ID:');
-define('_NOTIFY_USER',				'Lietotï¿½js:');
-define('_NOTIFY_COMMENT',			'Komentï¿½rs:');
-define('_NOTIFY_VOTE',				'Vï¿½rtï¿½jums:');
+define('_NOTIFY_NC_MSG',			'Ieraksta komentârs:');
+define('_NOTIFY_NC_TITLE',			'Nucleus komentârs:');
+define('_NOTIFY_USERID',			'Lietotâja ID:');
+define('_NOTIFY_USER',				'Lietotâjs:');
+define('_NOTIFY_COMMENT',			'Komentârs:');
+define('_NOTIFY_VOTE',				'Vçrtçjums:');
 define('_NOTIFY_HOST',				'Adrese:');
 define('_NOTIFY_IP',				'IP:');
-define('_NOTIFY_MEMBER',			'Lietotï¿½js:');
+define('_NOTIFY_MEMBER',			'Lietotâjs:');
 define('_NOTIFY_TITLE',				'Virsraksts:');
 define('_NOTIFY_CONTENTS',			'Saturs:');
 
 // member mail message
-define('_MMAIL_MSG',				'Nosï¿½tï¿½jusi');
-define('_MMAIL_FROMANON',			'anonï¿½ma persona');
-define('_MMAIL_FROMNUC',			'Nosï¿½tï¿½ts no Nucleus [web]bloga');
-define('_MMAIL_TITLE',				'Vï¿½stule no');
-define('_MMAIL_MAIL',				'Ziï¿½a:');
+define('_MMAIL_MSG',				'Nosûtîjusi');
+define('_MMAIL_FROMANON',			'anonîma persona');
+define('_MMAIL_FROMNUC',			'Nosûtîts no Nucleus [web]bloga');
+define('_MMAIL_TITLE',				'Vçstule no');
+define('_MMAIL_MAIL',				'Ziòa:');
 
 // END introduced after v1.5 END
 
@@ -655,55 +647,55 @@ define('_MMAIL_MAIL',				'Ziï¿½a:');
 
 // bookmarklet buttons
 define('_BMLET_ADD',                'Pievienot');
-define('_BMLET_EDIT',                'Modificï¿½t');
-define('_BMLET_DELETE',                'Dzï¿½st');
-define('_BMLET_BODY',                'Paplaï¿½inï¿½ti');
-define('_BMLET_MORE',                'Vienkï¿½rï¿½i');
+define('_BMLET_EDIT',                'Modificçt');
+define('_BMLET_DELETE',                'Dzçst');
+define('_BMLET_BODY',                'Paplaðinâti');
+define('_BMLET_MORE',                'Vienkârði');
 define('_BMLET_OPTIONS',            'Opcijas');
-define('_BMLET_PREVIEW',            'Apskatï¿½t');
+define('_BMLET_PREVIEW',            'Apskatît');
 
 // used in bookmarklet
-define('_ITEM_UPDATED',                'Ieraksts izmainï¿½ts');
-define('_ITEM_DELETED',                'Ieraksts dzï¿½sts');
+define('_ITEM_UPDATED',                'Ieraksts izmainîts');
+define('_ITEM_DELETED',                'Ieraksts dzçsts');
 
 // plugins
-define('_CONFIRMTXT_PLUGIN',        'Tieï¿½ï¿½m dzï¿½st pluginu ');
-define('_ERROR_NOSUCHPLUGIN',        'Nav tï¿½da plugina');
-define('_ERROR_DUPPLUGIN',            'Tï¿½ds plugins jau ir');
-define('_ERROR_PLUGFILEERROR',        'Nav tï¿½da plugina vai arï¿½ nav piekï¿½uves tiesï¿½bu');
+define('_CONFIRMTXT_PLUGIN',        'Tieðâm dzçst pluginu ');
+define('_ERROR_NOSUCHPLUGIN',        'Nav tâda plugina');
+define('_ERROR_DUPPLUGIN',            'Tâds plugins jau ir');
+define('_ERROR_PLUGFILEERROR',        'Nav tâda plugina vai arî nav piekïuves tiesîbu');
 define('_PLUGS_NOCANDIDATES',        'Nav atrasts neviens plugins');
 
 define('_PLUGS_TITLE_MANAGE',        'Plugini');
-define('_PLUGS_TITLE_INSTALLED',    'Paï¿½laik aktï¿½vie');
+define('_PLUGS_TITLE_INSTALLED',    'Paðlaik aktîvie');
 define('_PLUGS_TITLE_UPDATE',        'Atjaunot sarakstu');
-define('_PLUGS_TEXT_UPDATE',        'Nucleus saglabï¿½ keï¿½ï¿½ pluginu sarakstu. Atjaunojot/mainot pluginus, jï¿½pï¿½rliecinï¿½s vai ï¿½is saraksts arï¿½ tiek atjaunots');
+define('_PLUGS_TEXT_UPDATE',        'Nucleus saglabâ keðâ pluginu sarakstu. Atjaunojot/mainot pluginus, jâpârliecinâs vai ðis saraksts arî tiek atjaunots');
 define('_PLUGS_TITLE_NEW',            'Pievienot pluginus');
-define('_PLUGS_ADD_TEXT',            'Zemï¿½k redzams visu pieejamo pluginu saraksts, kas nav uzinstalï¿½ti. Vï¿½lreiz papildus pï¿½rliecinies, vai ï¿½ajï¿½ saraksta atrodamie plugini tieï¿½ï¿½m ir plugini!');
-define('_PLUGS_BTN_INSTALL',        'Instalï¿½t pluginu');
-define('_BACKTOOVERVIEW',            'Atpakaï¿½ uz aprakstu');
+define('_PLUGS_ADD_TEXT',            'Zemâk redzams visu pieejamo pluginu saraksts, kas nav uzinstalçti. Vçlreiz papildus pârliecinies, vai ðajâ saraksta atrodamie plugini tieðâm ir plugini!');
+define('_PLUGS_BTN_INSTALL',        'Instalçt pluginu');
+define('_BACKTOOVERVIEW',            'Atpakaï uz aprakstu');
 
 // editlink
-define('_TEMPLATE_EDITLINK',        'Modificï¿½t linku');
+define('_TEMPLATE_EDITLINK',        'Modificçt linku');
 
 // add left / add right tooltips
-define('_ADD_LEFT_TT',                'Pievienot lodziï¿½u kreisajï¿½ pusï¿½');
-define('_ADD_RIGHT_TT',                'Pievienot lodziï¿½u labajï¿½ pusï¿½');
+define('_ADD_LEFT_TT',                'Pievienot lodziòu kreisajâ pusç');
+define('_ADD_RIGHT_TT',                'Pievienot lodziòu labajâ pusç');
 
 // add/edit item: new category (in dropdown box)
-// category = sadaï¿½a
-define('_ADD_NEWCAT',                'Jauna sadaï¿½a');
+// category = sadaïa
+define('_ADD_NEWCAT',                'Jauna sadaïa');
 
 // new settings
 define('_SETTINGS_PLUGINURL',        'Plugina URL');
-define('_SETTINGS_MAXUPLOADSIZE',    'Max. faila izmï¿½rs (bytes)');
-define('_SETTINGS_NONMEMBERMSGS',    'Atï¿½aut sï¿½tï¿½t ciemiï¿½iem');
-define('_SETTINGS_PROTECTMEMNAMES',    'Aizsargï¿½t dalï¿½bnieku vï¿½rdus');
+define('_SETTINGS_MAXUPLOADSIZE',    'Max. faila izmçrs (bytes)');
+define('_SETTINGS_NONMEMBERMSGS',    'Atïaut sûtît ciemiòiem');
+define('_SETTINGS_PROTECTMEMNAMES',    'Aizsargât dalîbnieku vârdus');
 
 // overview screen
-define('_OVERVIEW_PLUGINS',            'Administrï¿½t pluginus...');
+define('_OVERVIEW_PLUGINS',            'Administrçt pluginus...');
 
 // actionlog
-define('_ACTIONLOG_NEWMEMBER',        'Jauna dalï¿½bnieka reï¿½istrï¿½cija:');
+define('_ACTIONLOG_NEWMEMBER',        'Jauna dalîbnieka reìistrâcija:');
 
 // membermail (when not logged in)
 // email = epasts
@@ -711,38 +703,38 @@ define('_MEMBERMAIL_MAIL',            'Tava epasta adrese:');
 
 // file upload
 //You do not have admin rights on any of the blogs that have the destination member on the //teamlist. Therefor, you\'re not allowed to upload files to this member\'s media directory
-define('_ERROR_DISALLOWEDUPLOAD2',    'Tev nav pieejamas upload tiesï¿½bas attiecï¿½gï¿½ dalï¿½bnieka media katalogï¿½');
+define('_ERROR_DISALLOWEDUPLOAD2',    'Tev nav pieejamas upload tiesîbas attiecîgâ dalîbnieka media katalogâ');
 
 
 // plugin list
-define('_LISTS_INFO',                'Informï¿½cija');
+define('_LISTS_INFO',                'Informâcija');
 define('_LIST_PLUGS_AUTHOR',        'Autors:');
 define('_LIST_PLUGS_VER',            'Versija:');
-define('_LIST_PLUGS_SITE',            'Mï¿½jas lapa');
+define('_LIST_PLUGS_SITE',            'Mâjas lapa');
 define('_LIST_PLUGS_DESC',            'Apraksts:');
-define('_LIST_PLUGS_SUBS',            'Tiek pierakstï¿½ts sekojoï¿½iem notikumiem:');
-define('_LIST_PLUGS_UP',            'pï¿½rvietot uz augï¿½u');
-define('_LIST_PLUGS_DOWN',            'pï¿½rvietot uz leju');
-define('_LIST_PLUGS_UNINSTALL',        'deinstalï¿½t');
+define('_LIST_PLUGS_SUBS',            'Tiek pierakstîts sekojoðiem notikumiem:');
+define('_LIST_PLUGS_UP',            'pârvietot uz augðu');
+define('_LIST_PLUGS_DOWN',            'pârvietot uz leju');
+define('_LIST_PLUGS_UNINSTALL',        'deinstalçt');
 define('_LIST_PLUGS_ADMIN',            'admin');
-define('_LIST_PLUGS_OPTIONS',        'modificï¿½ï¿½anas&nbsp;opcijas');
+define('_LIST_PLUGS_OPTIONS',        'modificçðanas&nbsp;opcijas');
 
 // plugin option list
-define('_LISTS_VALUE',                'Iestatï¿½jums');
+define('_LISTS_VALUE',                'Iestatîjums');
 
 // plugin options
-define('_ERROR_NOPLUGOPTIONS',        'ï¿½im pluginam paï¿½laik nav neviena iestatï¿½juma');
-define('_PLUGS_BACK',                'Atpakaï¿½ uz plugina aprakstu');
-define('_PLUGS_SAVE',                'Saglabï¿½t izmaiï¿½as');
-define('_PLUGS_OPTIONS_UPDATED',    'Plugina opcijas saglabï¿½tas');
+define('_ERROR_NOPLUGOPTIONS',        'ðim pluginam paðlaik nav neviena iestatîjuma');
+define('_PLUGS_BACK',                'Atpakaï uz plugina aprakstu');
+define('_PLUGS_SAVE',                'Saglabât izmaiòas');
+define('_PLUGS_OPTIONS_UPDATED',    'Plugina opcijas saglabâtas');
 
-define('_OVERVIEW_MANAGEMENT',        'Menedï¿½ments');
-define('_OVERVIEW_MANAGE',            'Nucleus menedï¿½ments...');
-define('_MANAGE_GENERAL',            'Galvenais menedï¿½ments');
-define('_MANAGE_SKINS',                'Tï¿½mas un veidnes');
-define('_MANAGE_EXTRA',                'Extra fï¿½ï¿½as');
+define('_OVERVIEW_MANAGEMENT',        'Menedþments');
+define('_OVERVIEW_MANAGE',            'Nucleus menedþments...');
+define('_MANAGE_GENERAL',            'Galvenais menedþments');
+define('_MANAGE_SKINS',                'Tçmas un veidnes');
+define('_MANAGE_EXTRA',                'Extra fîèas');
 
-define('_BACKTOMANAGE',                'Atpakaï¿½ uz Nucleus menedï¿½mentu');
+define('_BACKTOMANAGE',                'Atpakaï uz Nucleus menedþmentu');
 
 
 // END introduced after v1.1 END
@@ -752,518 +744,518 @@ define('_BACKTOMANAGE',                'Atpakaï¿½ uz Nucleus menedï¿½mentu');
 
 
 // global stuff
-define('_LOGOUT',                    'Atslï¿½gties');
-define('_LOGIN',                    'Pieslï¿½gties');
-define('_YES',                        'Jï¿½');
-define('_NO',                        'Nï¿½');
-define('_SUBMIT',                    'Apstiprinï¿½t');
-define('_ERROR',                    'Kï¿½ï¿½da');
-define('_ERRORMSG',                    'Kï¿½ï¿½da!');
+define('_LOGOUT',                    'Atslçgties');
+define('_LOGIN',                    'Pieslçgties');
+define('_YES',                        'Jâ');
+define('_NO',                        'Nç');
+define('_SUBMIT',                    'Apstiprinât');
+define('_ERROR',                    'Kïûda');
+define('_ERRORMSG',                    'Kïûda!');
 define('_BACK',                        'Atgriezties');
-define('_NOTLOGGEDIN',                'Nav pieslï¿½guma');
-define('_LOGGEDINAS',                'Pieslï¿½dzies kï¿½');
-define('_ADMINHOME',                'Admina sadaï¿½a');
-define('_NAME',                        'Vï¿½rds/nosaukums');
-define('_BACKHOME',                    'Atpakaï¿½ uz admina sadaï¿½u');
-define('_BADACTION',                'Pieprasï¿½jumu nav iespï¿½jams izpildï¿½t');
-define('_MESSAGE',                    'Ziï¿½ojums');
-define('_HELP_TT',                    'Palï¿½gï¿½!');
-define('_YOURSITE',                    'Galvenï¿½ lapa');
+define('_NOTLOGGEDIN',                'Nav pieslçguma');
+define('_LOGGEDINAS',                'Pieslçdzies kâ');
+define('_ADMINHOME',                'Admina sadaïa');
+define('_NAME',                        'Vârds/nosaukums');
+define('_BACKHOME',                    'Atpakaï uz admina sadaïu');
+define('_BADACTION',                'Pieprasîjumu nav iespçjams izpildît');
+define('_MESSAGE',                    'Ziòojums');
+define('_HELP_TT',                    'Palîgâ!');
+define('_YOURSITE',                    'Galvenâ lapa');
 
 
-define('_POPUP_CLOSE',                'Aizvï¿½rt logu');
+define('_POPUP_CLOSE',                'Aizvçrt logu');
 
-define('_LOGIN_PLEASE',                'Vispirms pieslï¿½dzies sistï¿½mai');
+define('_LOGIN_PLEASE',                'Vispirms pieslçdzies sistçmai');
 
 // commentform
 define('_COMMENTFORM_YOUARE',        'Tu esi');
-define('_COMMENTFORM_SUBMIT',        'Komentï¿½t');
-define('_COMMENTFORM_COMMENT',        'Tavs komentï¿½rs');
-define('_COMMENTFORM_NAME',            'Vï¿½rds');
+define('_COMMENTFORM_SUBMIT',        'Komentçt');
+define('_COMMENTFORM_COMMENT',        'Tavs komentârs');
+define('_COMMENTFORM_NAME',            'Vârds');
 define('_COMMENTFORM_MAIL',            'Epasts/HTTP');
-define('_COMMENTFORM_REMEMBER',        'Atcerï¿½ties mani turpmï¿½k');
+define('_COMMENTFORM_REMEMBER',        'Atcerçties mani turpmâk');
 
 // loginform
-define('_LOGINFORM_NAME',            'Dalï¿½bnieks');
+define('_LOGINFORM_NAME',            'Dalîbnieks');
 define('_LOGINFORM_PWD',            'Parole');
-define('_LOGINFORM_YOUARE',            'Pieslï¿½dzies kï¿½');
-define('_LOGINFORM_SHARED',            'Koplietoï¿½anas dators (piem. e-cafe)');
+define('_LOGINFORM_YOUARE',            'Pieslçdzies kâ');
+define('_LOGINFORM_SHARED',            'Koplietoðanas dators (piem. e-cafe)');
 
 // member mailform
-define('_MEMBERMAIL_SUBMIT',        'Nosï¿½tï¿½t');
+define('_MEMBERMAIL_SUBMIT',        'Nosûtît');
 
 // search form
-define('_SEARCHFORM_SUBMIT',        'Meklï¿½t');
+define('_SEARCHFORM_SUBMIT',        'Meklçt');
 
 // add item form
 define('_ADD_ADDTO',                'Pievienot pie');
 define('_ADD_CREATENEW',            'Izveidot jaunu');
 define('_ADD_BODY',                    'Teksts');
 define('_ADD_TITLE',                'Virsraksts');
-define('_ADD_MORE',                    'Pievienot tekstu (nav obligï¿½ti)');
-define('_ADD_CATEGORY',                'Sadaï¿½a (Jï¿½IZVï¿½LAS SAVï¿½Jï¿½!)');
-define('_ADD_PREVIEW',                'Apskatï¿½t');
-define('_ADD_DISABLE_COMMENTS',        'Atslï¿½gt komentï¿½rus?');
-define('_ADD_DRAFTNFUTURE',            'Sagataves nï¿½kotnei');
+define('_ADD_MORE',                    'Pievienot tekstu (nav obligâti)');
+define('_ADD_CATEGORY',                'Sadaïa (JÂIZVÇLAS SAVÇJÂ!)');
+define('_ADD_PREVIEW',                'Apskatît');
+define('_ADD_DISABLE_COMMENTS',        'Atslçgt komentârus?');
+define('_ADD_DRAFTNFUTURE',            'Sagataves nâkotnei');
 define('_ADD_ADDITEM',                'Pievienot');
 define('_ADD_ADDNOW',                'Pievienot tagad');
-define('_ADD_ADDLATER',                'Pievienot vï¿½lï¿½k');
+define('_ADD_ADDLATER',                'Pievienot vçlâk');
 define('_ADD_PLACE_ON',                'Vieta');
-define('_ADD_ADDDRAFT',                'Pievienot sagatavï¿½m');
-define('_ADD_NOPASTDATES',            '(pagï¿½tnes datumi un laiki nav iespï¿½jami, ï¿½ajï¿½ gadï¿½jumï¿½ tiks lietots ï¿½ï¿½brï¿½ï¿½a laiks)');
-define('_ADD_BOLD_TT',                'Treknrakstï¿½');
-define('_ADD_ITALIC_TT',            'Slï¿½prakstï¿½');
+define('_ADD_ADDDRAFT',                'Pievienot sagatavçm');
+define('_ADD_NOPASTDATES',            '(pagâtnes datumi un laiki nav iespçjami, ðajâ gadîjumâ tiks lietots ðâbrîþa laiks)');
+define('_ADD_BOLD_TT',                'Treknrakstâ');
+define('_ADD_ITALIC_TT',            'Slîprakstâ');
 define('_ADD_HREF_TT',                'Haiperlinks');
-define('_ADD_MEDIA_TT',                'Pievienot mï¿½diju');
-define('_ADD_PREVIEW_TT',            'Parï¿½dï¿½t/paslï¿½pt to, kï¿½ izskatï¿½sies');
-define('_ADD_CUT_TT',                'Izï¿½emt');
-define('_ADD_COPY_TT',                'Kopï¿½t');
-define('_ADD_PASTE_TT',                'Ielï¿½mï¿½t (paste)');
+define('_ADD_MEDIA_TT',                'Pievienot mçdiju');
+define('_ADD_PREVIEW_TT',            'Parâdît/paslçpt to, kâ izskatîsies');
+define('_ADD_CUT_TT',                'Izòemt');
+define('_ADD_COPY_TT',                'Kopçt');
+define('_ADD_PASTE_TT',                'Ielîmçt (paste)');
 
 
 // edit item form
-define('_EDIT_ITEM',                'Modificï¿½t');
-define('_EDIT_SUBMIT',                'Modificï¿½t');
-define('_EDIT_ORIG_AUTHOR',            'Oriï¿½inï¿½la autors');
-define('_EDIT_BACKTODRAFTS',        'Pievienot atpakaï¿½, sagatavï¿½s');
-define('_EDIT_COMMENTSNOTE',        '(piezï¿½me: visi iepriekï¿½ ierakstï¿½tie komentï¿½ri netiks paslï¿½pti)');
+define('_EDIT_ITEM',                'Modificçt');
+define('_EDIT_SUBMIT',                'Modificçt');
+define('_EDIT_ORIG_AUTHOR',            'Oriìinâla autors');
+define('_EDIT_BACKTODRAFTS',        'Pievienot atpakaï, sagatavçs');
+define('_EDIT_COMMENTSNOTE',        '(piezîme: visi iepriekð ierakstîtie komentâri netiks paslçpti)');
 
 
 // used on delete screens
-define('_DELETE_CONFIRM',            'Lï¿½dzu apstiprini dzï¿½ï¿½anu');
-define('_DELETE_CONFIRM_BTN',        'Apstiprinï¿½t');
-define('_CONFIRMTXT_ITEM',            'Tu vï¿½lies izdzï¿½st sekojoï¿½u ziï¿½u:');
-define('_CONFIRMTXT_COMMENT',        'Tu vï¿½lies izdzï¿½st sekojoï¿½u komentï¿½ru:');
-define('_CONFIRMTXT_TEAM1',            'Tu vï¿½lies izdzï¿½st ');
-define('_CONFIRMTXT_TEAM2',            ' no dalï¿½bnieku komandas ');
-define('_CONFIRMTXT_BLOG',            'Tiks izdzï¿½sts sekojoï¿½s blogs: ');
-define('_WARNINGTXT_BLOGDEL',        'UZMANï¿½BU! Tiks izdzï¿½sts gan pats blogs, gan visi tï¿½ komentï¿½ri. Pï¿½rleicinies, vai tieï¿½ï¿½m to vï¿½lies.<br />Un, lï¿½dzu, nepï¿½rtrauc procesu, kad notiks dzï¿½ï¿½ana!');
+define('_DELETE_CONFIRM',            'Lûdzu apstiprini dzçðanu');
+define('_DELETE_CONFIRM_BTN',        'Apstiprinât');
+define('_CONFIRMTXT_ITEM',            'Tu vçlies izdzçst sekojoðu ziòu:');
+define('_CONFIRMTXT_COMMENT',        'Tu vçlies izdzçst sekojoðu komentâru:');
+define('_CONFIRMTXT_TEAM1',            'Tu vçlies izdzçst ');
+define('_CONFIRMTXT_TEAM2',            ' no dalîbnieku komandas ');
+define('_CONFIRMTXT_BLOG',            'Tiks izdzçsts sekojoðs blogs: ');
+define('_WARNINGTXT_BLOGDEL',        'UZMANÎBU! Tiks izdzçsts gan pats blogs, gan visi tâ komentâri. Pârleicinies, vai tieðâm to vçlies.<br />Un, lûdzu, nepârtrauc procesu, kad notiks dzçðana!');
 
-define('_CONFIRMTXT_MEMBER',        'Tu vï¿½lies dzï¿½st sekojoï¿½a dalï¿½bnieka datus: ');
-define('_CONFIRMTXT_TEMPLATE',        'Tu vï¿½lies dzï¿½st veidni ');
-define('_CONFIRMTXT_SKIN',            'Tu vï¿½lies dzï¿½st tï¿½mu ');
-define('_CONFIRMTXT_BAN',            'Tu vï¿½lies dzï¿½st aizliegumu sekojoï¿½am IP adreï¿½u apgabalam');
-define('_CONFIRMTXT_CATEGORY',        'Tu vï¿½lies dzï¿½st sadaï¿½u ');
+define('_CONFIRMTXT_MEMBER',        'Tu vçlies dzçst sekojoða dalîbnieka datus: ');
+define('_CONFIRMTXT_TEMPLATE',        'Tu vçlies dzçst veidni ');
+define('_CONFIRMTXT_SKIN',            'Tu vçlies dzçst tçmu ');
+define('_CONFIRMTXT_BAN',            'Tu vçlies dzçst aizliegumu sekojoðam IP adreðu apgabalam');
+define('_CONFIRMTXT_CATEGORY',        'Tu vçlies dzçst sadaïu ');
 
 // some status messages
-define('_DELETED_ITEM',                'Ziï¿½a tika izdzï¿½sta');
-define('_DELETED_MEMBER',            'Dalï¿½bnieks tika izdzï¿½sta');
-define('_DELETED_COMMENT',            'Komentï¿½ri tika izdzï¿½sti');
-define('_DELETED_BLOG',                'Blogs tika izdzï¿½sts');
-define('_DELETED_CATEGORY',            'Sadaï¿½a tika izdzï¿½sta');
-define('_ITEM_MOVED',                'Ziï¿½a tika veiksmï¿½gi pï¿½rvietota');
-define('_ITEM_ADDED',                'Ziï¿½a tika veiksmï¿½gi pievienota');
-define('_COMMENT_UPDATED',            'Komentï¿½ri tika modificï¿½ti');
-define('_SKIN_UPDATED',                'Tï¿½mas informï¿½cija tika saglabï¿½ta');
-define('_TEMPLATE_UPDATED',            'Veidnes informï¿½cija tika saglabï¿½ta');
+define('_DELETED_ITEM',                'Ziòa tika izdzçsta');
+define('_DELETED_MEMBER',            'Dalîbnieks tika izdzçsta');
+define('_DELETED_COMMENT',            'Komentâri tika izdzçsti');
+define('_DELETED_BLOG',                'Blogs tika izdzçsts');
+define('_DELETED_CATEGORY',            'Sadaïa tika izdzçsta');
+define('_ITEM_MOVED',                'Ziòa tika veiksmîgi pârvietota');
+define('_ITEM_ADDED',                'Ziòa tika veiksmîgi pievienota');
+define('_COMMENT_UPDATED',            'Komentâri tika modificçti');
+define('_SKIN_UPDATED',                'Tçmas informâcija tika saglabâta');
+define('_TEMPLATE_UPDATED',            'Veidnes informâcija tika saglabâta');
 
 // errors
-define('_ERROR_COMMENT_LONGWORD',    'Lï¿½dzu nelieto komentï¿½ros vï¿½rdus, kas satur vairï¿½k par 90 simboliem');
-define('_ERROR_COMMENT_NOCOMMENT',    'Lï¿½dzu uzraksti arï¿½ komentï¿½ru');
-define('_ERROR_COMMENT_NOUSERNAME',    'Hm. Izskatï¿½s, ka neesi dalï¿½bnieks vai arï¿½ kaut kas nav kï¿½rtï¿½ba ar tavu vï¿½rdu.');
-define('_ERROR_COMMENT_TOOLONG',    'Pï¿½rï¿½k liels komentï¿½rs (max. 5000 simboli)');
-define('_ERROR_COMMENTS_DISABLED',    'ï¿½eit nevar komentï¿½t.');
-define('_ERROR_COMMENTS_NONPUBLIC',    'Hm, nesanï¿½ks komentï¿½t, jo neesi iegï¿½jis sistï¿½mï¿½');
-define('_ERROR_COMMENTS_MEMBERNICK','Ir jau tï¿½ds vï¿½rds. Izvï¿½lies citu.');
-define('_ERROR_SKIN',                'Tï¿½mas kï¿½ï¿½da');
-define('_ERROR_ITEMCLOSED',            'Tï¿½ma slï¿½gta, komentï¿½ri slï¿½gti, balsot nevar');
-define('_ERROR_NOSUCHITEM',            'Nekï¿½ nav');
-define('_ERROR_NOSUCHBLOG',            'Nav tï¿½da bloga');
-define('_ERROR_NOSUCHSKIN',            'Nav tï¿½das tï¿½mas');
-define('_ERROR_NOSUCHMEMBER',        'Nav tï¿½da dalï¿½bnieka');
-define('_ERROR_NOTONTEAM',            'Izskatï¿½s, ka neesi komandï¿½ kï¿½ blog dalï¿½bnieks.');
+define('_ERROR_COMMENT_LONGWORD',    'Lûdzu nelieto komentâros vârdus, kas satur vairâk par 90 simboliem');
+define('_ERROR_COMMENT_NOCOMMENT',    'Lûdzu uzraksti arî komentâru');
+define('_ERROR_COMMENT_NOUSERNAME',    'Hm. Izskatâs, ka neesi dalîbnieks vai arî kaut kas nav kârtîba ar tavu vârdu.');
+define('_ERROR_COMMENT_TOOLONG',    'Pârâk liels komentârs (max. 5000 simboli)');
+define('_ERROR_COMMENTS_DISABLED',    'Ðeit nevar komentçt.');
+define('_ERROR_COMMENTS_NONPUBLIC',    'Hm, nesanâks komentçt, jo neesi iegâjis sistçmâ');
+define('_ERROR_COMMENTS_MEMBERNICK','Ir jau tâds vârds. Izvçlies citu.');
+define('_ERROR_SKIN',                'Tçmas kïûda');
+define('_ERROR_ITEMCLOSED',            'Tçma slçgta, komentâri slçgti, balsot nevar');
+define('_ERROR_NOSUCHITEM',            'Nekâ nav');
+define('_ERROR_NOSUCHBLOG',            'Nav tâda bloga');
+define('_ERROR_NOSUCHSKIN',            'Nav tâdas tçmas');
+define('_ERROR_NOSUCHMEMBER',        'Nav tâda dalîbnieka');
+define('_ERROR_NOTONTEAM',            'Izskatâs, ka neesi komandâ kâ blog dalîbnieks.');
 //define('_ERROR_BADDESTBLOG',        'Destination blog does not exist');
-define('_ERROR_BADDESTBLOG',        'ï¿½is blogs neeksistï¿½');
-define('_ERROR_NOTONDESTTEAM',        'Nevar pï¿½rvietot ï¿½o blogu tur, kur tu neesi pierakstï¿½ts');
-define('_ERROR_NOEMPTYITEMS',        'Neaizpildï¿½tas lietas netiks pievienotas!');
+define('_ERROR_BADDESTBLOG',        'Ðis blogs neeksistç');
+define('_ERROR_NOTONDESTTEAM',        'Nevar pârvietot ðo blogu tur, kur tu neesi pierakstîts');
+define('_ERROR_NOEMPTYITEMS',        'Neaizpildîtas lietas netiks pievienotas!');
 define('_ERROR_BADMAILADDRESS',        'Nepareiza epasta adrese');
 define('_ERROR_BADNOTIFY',            'Epasta adrese(s) nav pareiza(s)');
-define('_ERROR_BADNAME',            'Vï¿½rds nepareizs (atï¿½auti burti a-z, cipari 0-9 un bez atstarpï¿½m sï¿½kumï¿½/beigï¿½s)');
-define('_ERROR_NICKNAMEINUSE',        'Kï¿½dam citam ir ï¿½ï¿½ds vï¿½rds');
-define('_ERROR_PASSWORDMISMATCH',    'Parolï¿½m jï¿½sakrï¿½t');
-define('_ERROR_PASSWORDTOOSHORT',    'Parolei jï¿½bï¿½t ar minimums 6 simboliem');
-define('_ERROR_PASSWORDMISSING',    'Parole nedrï¿½kst bï¿½t tukï¿½a');
-define('_ERROR_REALNAMEMISSING',    'Hm, kautkas nav kï¿½rtï¿½bï¿½ ar vï¿½rdu');
-define('_ERROR_ATLEASTONEADMIN',    'Vienmï¿½r jï¿½bï¿½t vismaz vienam super-adminam, kas var administrï¿½t.');
-define('_ERROR_ATLEASTONEBLOGADMIN','Darot ï¿½ï¿½di, iespï¿½jams blog sistï¿½ma vairs nebï¿½s administrï¿½jama. Pï¿½rliecinies, lai vienmï¿½r bï¿½tu vismaz viens admins.');
-define('_ERROR_ALREADYONTEAM',        'Nevar pievienot jau esoï¿½us dalï¿½bniekus');
-define('_ERROR_BADSHORTBLOGNAME',    'ï¿½ss tava bloga nosaukums (ar burtiem a-z, cipariem 0-9 un bez atstarpï¿½m sï¿½kumï¿½/beigï¿½s');
-define('_ERROR_DUPSHORTBLOGNAME',    'Ir jau tï¿½ds blogs');
-define('_ERROR_UPDATEFILE',            'Atjaunoï¿½anas fails nepieejams. Vai failam var piekï¿½ï¿½t (pamï¿½ï¿½ini uzlikt chmod 666). Ieteicams lietot pilnu ceï¿½u (piem. /sisteemas/celshs/uz/nucleus/)');
+define('_ERROR_BADNAME',            'Vârds nepareizs (atïauti burti a-z, cipari 0-9 un bez atstarpçm sâkumâ/beigâs)');
+define('_ERROR_NICKNAMEINUSE',        'Kâdam citam ir ðâds vârds');
+define('_ERROR_PASSWORDMISMATCH',    'Parolçm jâsakrît');
+define('_ERROR_PASSWORDTOOSHORT',    'Parolei jâbût ar minimums 6 simboliem');
+define('_ERROR_PASSWORDMISSING',    'Parole nedrîkst bût tukða');
+define('_ERROR_REALNAMEMISSING',    'Hm, kautkas nav kârtîbâ ar vârdu');
+define('_ERROR_ATLEASTONEADMIN',    'Vienmçr jâbût vismaz vienam super-adminam, kas var administrçt.');
+define('_ERROR_ATLEASTONEBLOGADMIN','Darot ðâdi, iespçjams blog sistçma vairs nebûs administrçjama. Pârliecinies, lai vienmçr bûtu vismaz viens admins.');
+define('_ERROR_ALREADYONTEAM',        'Nevar pievienot jau esoðus dalîbniekus');
+define('_ERROR_BADSHORTBLOGNAME',    'Îss tava bloga nosaukums (ar burtiem a-z, cipariem 0-9 un bez atstarpçm sâkumâ/beigâs');
+define('_ERROR_DUPSHORTBLOGNAME',    'Ir jau tâds blogs');
+define('_ERROR_UPDATEFILE',            'Atjaunoðanas fails nepieejams. Vai failam var piekïût (pamçìini uzlikt chmod 666). Ieteicams lietot pilnu ceïu (piem. /sisteemas/celshs/uz/nucleus/)');
 //'Cannot get write access to the update-file. Make sure the file permissions are set ok (try chmodding it to 666). Also note that the location is relative to the admin-area directory, so you might want to use an absolute path (something like /your/path/to/nucleus/)');
-define('_ERROR_DELDEFBLOG',            'ï¿½is ir galvenais blogs, to nevar dzï¿½st');
-define('_ERROR_DELETEMEMBER',        'Nevar dzï¿½st ï¿½o dalï¿½bnieku, iespï¿½jams tï¿½pï¿½c, ka viï¿½ï¿½ ir kï¿½du rakstu vai komentï¿½ru autors');
-define('_ERROR_BADTEMPLATENAME',    'Nepareizs sagataves nosaukums, atï¿½auti burti a-z, cipari 0-9 un bez atstarpï¿½m');
-define('_ERROR_DUPTEMPLATENAME',    'Ir jau tï¿½da sagatave');
-define('_ERROR_BADSKINNAME',        'Nepareizs tï¿½mas nosaukums (atï¿½auti burti a-z, cipari 0-9 un bez atstarpï¿½m)');
-define('_ERROR_DUPSKINNAME',        'Ir jau tï¿½ma ar tï¿½du nosaukumu');
-define('_ERROR_DEFAULTSKIN',        'Tï¿½mai "default" jï¿½bï¿½t un tur neko nevar darï¿½t');
-define('_ERROR_SKINDEFDELETE',        'Nevar izdzï¿½st ï¿½o tï¿½mu, jo tï¿½ ir galvenï¿½ sekojoï¿½am blogam: ');
-define('_ERROR_DISALLOWED',            'ï¿½ï¿½das darbï¿½bas ir aizliegtas');
-define('_ERROR_DELETEBAN',            'Kï¿½ï¿½da, dzï¿½ï¿½ot aizliegumu (nav tï¿½da aizlieguma)');
-define('_ERROR_ADDBAN',                'Kï¿½ï¿½da. ï¿½ï¿½ds aizliegums var netikt pievienots visos blogos.');
-define('_ERROR_BADACTION',            'Netiklas..em.. darbï¿½bas sodï¿½mas pï¿½c kriminï¿½llikuma');
-define('_ERROR_MEMBERMAILDISABLED',    'Dalï¿½bnieks-dalï¿½bniekam ziï¿½u sï¿½tï¿½ï¿½ana aizliegta');
-define('_ERROR_MEMBERCREATEDISABLED','Dalï¿½bnieku pievienoï¿½ana atslï¿½gta');
+define('_ERROR_DELDEFBLOG',            'Ðis ir galvenais blogs, to nevar dzçst');
+define('_ERROR_DELETEMEMBER',        'Nevar dzçst ðo dalîbnieku, iespçjams tâpçc, ka viòð ir kâdu rakstu vai komentâru autors');
+define('_ERROR_BADTEMPLATENAME',    'Nepareizs sagataves nosaukums, atïauti burti a-z, cipari 0-9 un bez atstarpçm');
+define('_ERROR_DUPTEMPLATENAME',    'Ir jau tâda sagatave');
+define('_ERROR_BADSKINNAME',        'Nepareizs tçmas nosaukums (atïauti burti a-z, cipari 0-9 un bez atstarpçm)');
+define('_ERROR_DUPSKINNAME',        'Ir jau tçma ar tâdu nosaukumu');
+define('_ERROR_DEFAULTSKIN',        'Tçmai "default" jâbût un tur neko nevar darît');
+define('_ERROR_SKINDEFDELETE',        'Nevar izdzçst ðo tçmu, jo tâ ir galvenâ sekojoðam blogam: ');
+define('_ERROR_DISALLOWED',            'Ðâdas darbîbas ir aizliegtas');
+define('_ERROR_DELETEBAN',            'Kïûda, dzçðot aizliegumu (nav tâda aizlieguma)');
+define('_ERROR_ADDBAN',                'Kïûda. Ðâds aizliegums var netikt pievienots visos blogos.');
+define('_ERROR_BADACTION',            'Netiklas..em.. darbîbas sodâmas pçc kriminâllikuma');
+define('_ERROR_MEMBERMAILDISABLED',    'Dalîbnieks-dalîbniekam ziòu sûtîðana aizliegta');
+define('_ERROR_MEMBERCREATEDISABLED','Dalîbnieku pievienoðana atslçgta');
 define('_ERROR_INCORRECTEMAIL',        'Nepareiza epasta adrese');
-define('_ERROR_VOTEDBEFORE',        'Par ï¿½o jau esi balsojis');
-define('_ERROR_BANNED1',            'Diemï¿½ï¿½l man tevi jï¿½apbï¿½dina, jo tava IP adrese ir iekï¿½auta aizliegto IP adreï¿½u apgabalï¿½ ');
-define('_ERROR_BANNED2',            ' . Tu rakstï¿½ji: \'');
+define('_ERROR_VOTEDBEFORE',        'Par ðo jau esi balsojis');
+define('_ERROR_BANNED1',            'Diemþçl man tevi jâapbçdina, jo tava IP adrese ir iekïauta aizliegto IP adreðu apgabalâ ');
+define('_ERROR_BANNED2',            ' . Tu rakstîji: \'');
 define('_ERROR_BANNED3',            '\'');
-define('_ERROR_LOGINNEEDED',        'Pieslï¿½dzies sistï¿½mai, lai veiktu ï¿½ï¿½du darbï¿½bu');
-define('_ERROR_CONNECT',            'Pieslï¿½gï¿½anï¿½s kï¿½ï¿½da');
-define('_ERROR_FILE_TOO_BIG',        'Fails ir pï¿½rï¿½k liels!');
-define('_ERROR_BADFILETYPE',        'ï¿½ï¿½da formï¿½ta faili ï¿½eit ir aizliegti');
-define('_ERROR_BADREQUEST',            'Fuj! Slikti darï¿½ji.');
-define('_ERROR_DISALLOWEDUPLOAD',    'Nevar atrast tevi mï¿½su komandï¿½. Nu, lï¿½dz ar to tev nesanï¿½ks uzlikt failus');
-define('_ERROR_BADPERMISSIONS',        'Nepareizi uzstï¿½dï¿½tas failu/direktoriju atï¿½aujas');
-define('_ERROR_UPLOADMOVEP',        'Kï¿½ï¿½da dzï¿½ï¿½ot failu');
-define('_ERROR_UPLOADCOPY',            'Kï¿½ï¿½da kopï¿½jot failu');
-define('_ERROR_UPLOADDUPLICATE',    'Fails ar ï¿½ï¿½du nosaukumu jau eksistï¿½. Pirms uzlikï¿½anas to pï¿½rsauc.');
-define('_ERROR_LOGINDISALLOWED',    'Piedod, tev nav dota atï¿½auja ï¿½eit ï¿½rdï¿½ties kï¿½ adminam. Bet vismaz vari padarboties kï¿½ dalï¿½bnieks. Uzraksti kaut ko labu');
-define('_ERROR_DBCONNECT',            'Hm, mySQL serveris nokï¿½ries? Piezvani adminam');
-define('_ERROR_DBSELECT',            'Hm, problï¿½ma ar blogu datu bï¿½zi.');
-define('_ERROR_NOSUCHLOCALE',        'Hm, problï¿½ma ar valodu failu (nav atrasts)');
-define('_ERROR_NOSUCHCATEGORY',        'Hm, sadaï¿½a netika atrasta');
-define('_ERROR_DELETELASTCATEGORY',    'Jï¿½bï¿½t vismaz vienai sadaï¿½ai');
-define('_ERROR_DELETEDEFCATEGORY',    'Pamatsadaï¿½u nedrï¿½kst dzï¿½st');
-define('_ERROR_BADCATEGORYNAME',    'Slikts nosaukums priekï¿½ sadaï¿½as');
-define('_ERROR_DUPCATEGORYNAME',    'Ir, ir jau tï¿½da sadaï¿½a');
+define('_ERROR_LOGINNEEDED',        'Pieslçdzies sistçmai, lai veiktu ðâdu darbîbu');
+define('_ERROR_CONNECT',            'Pieslçgðanâs kïûda');
+define('_ERROR_FILE_TOO_BIG',        'Fails ir pârâk liels!');
+define('_ERROR_BADFILETYPE',        'Ðâda formâta faili ðeit ir aizliegti');
+define('_ERROR_BADREQUEST',            'Fuj! Slikti darîji.');
+define('_ERROR_DISALLOWEDUPLOAD',    'Nevar atrast tevi mûsu komandâ. Nu, lîdz ar to tev nesanâks uzlikt failus');
+define('_ERROR_BADPERMISSIONS',        'Nepareizi uzstâdîtas failu/direktoriju atïaujas');
+define('_ERROR_UPLOADMOVEP',        'Kïûda dzçðot failu');
+define('_ERROR_UPLOADCOPY',            'Kïûda kopçjot failu');
+define('_ERROR_UPLOADDUPLICATE',    'Fails ar ðâdu nosaukumu jau eksistç. Pirms uzlikðanas to pârsauc.');
+define('_ERROR_LOGINDISALLOWED',    'Piedod, tev nav dota atïauja ðeit ârdîties kâ adminam. Bet vismaz vari padarboties kâ dalîbnieks. Uzraksti kaut ko labu');
+define('_ERROR_DBCONNECT',            'Hm, mySQL serveris nokâries? Piezvani adminam');
+define('_ERROR_DBSELECT',            'Hm, problçma ar blogu datu bâzi.');
+define('_ERROR_NOSUCHLOCALE',        'Hm, problçma ar valodu failu (nav atrasts)');
+define('_ERROR_NOSUCHCATEGORY',        'Hm, sadaïa netika atrasta');
+define('_ERROR_DELETELASTCATEGORY',    'Jâbût vismaz vienai sadaïai');
+define('_ERROR_DELETEDEFCATEGORY',    'Pamatsadaïu nedrîkst dzçst');
+define('_ERROR_BADCATEGORYNAME',    'Slikts nosaukums priekð sadaïas');
+define('_ERROR_DUPCATEGORYNAME',    'Ir, ir jau tâda sadaïa');
 
 // some warnings (used for mediadir setting)
-define('_WARNING_NOTADIR',            'Uzmanï¿½bu: ï¿½is uzstï¿½dï¿½jums neizskatï¿½s pï¿½c direktorijas!');
-define('_WARNING_NOTREADABLE',        'Uzmanï¿½bu: ï¿½ï¿½ direktorija nav redzama, ar domu - nevar nolasï¿½t!');
-define('_WARNING_NOTWRITABLE',        'Uzmanï¿½bu: ï¿½ajï¿½ direktorijï¿½ neko nevar saglabï¿½t!');
+define('_WARNING_NOTADIR',            'Uzmanîbu: Ðis uzstâdîjums neizskatâs pçc direktorijas!');
+define('_WARNING_NOTREADABLE',        'Uzmanîbu: Ðî direktorija nav redzama, ar domu - nevar nolasît!');
+define('_WARNING_NOTWRITABLE',        'Uzmanîbu: Ðajâ direktorijâ neko nevar saglabât!');
 
 // media and upload
 define('_MEDIA_UPLOADLINK',            'Pievienot jaunu failu');
-define('_MEDIA_MODIFIED',            'izmaiï¿½as');
+define('_MEDIA_MODIFIED',            'izmaiòas');
 define('_MEDIA_FILENAME',            'nosaukums');
-define('_MEDIA_DIMENSIONS',            'izmï¿½ri');
-define('_MEDIA_INLINE',                'Iekï¿½aut lapï¿½');
-define('_MEDIA_POPUP',                'Atseviï¿½ï¿½s logs');
-define('_UPLOAD_TITLE',                'Izvï¿½lï¿½ties failu');
-define('_UPLOAD_MSG',                'Izvï¿½lies failu un spied \'Uzlikt\' pogu.');
+define('_MEDIA_DIMENSIONS',            'izmçri');
+define('_MEDIA_INLINE',                'Iekïaut lapâ');
+define('_MEDIA_POPUP',                'Atseviðís logs');
+define('_UPLOAD_TITLE',                'Izvçlçties failu');
+define('_UPLOAD_MSG',                'Izvçlies failu un spied \'Uzlikt\' pogu.');
 define('_UPLOAD_BUTTON',            'Uzlikt');
 
 // some status messages
-define('_MSG_ACCOUNTCREATED',        'Konts izveidots, parole nosï¿½tï¿½ta pa epastu');
-define('_MSG_PASSWORDSENT',            'Parole tika nosï¿½tï¿½ta uz attiecï¿½go epasta adresi.');
-define('_MSG_LOGINAGAIN',            'Tev jï¿½pieslï¿½dzas vï¿½leiz, jo informï¿½cija par tevi tika izmainï¿½ta');
-define('_MSG_SETTINGSCHANGED',        'Uzstï¿½dï¿½jumi izmainï¿½ti');
-define('_MSG_ADMINCHANGED',            'Admins nomainï¿½ts');
+define('_MSG_ACCOUNTCREATED',        'Konts izveidots, parole nosûtîta pa epastu');
+define('_MSG_PASSWORDSENT',            'Parole tika nosûtîta uz attiecîgo epasta adresi.');
+define('_MSG_LOGINAGAIN',            'Tev jâpieslçdzas vçleiz, jo informâcija par tevi tika izmainîta');
+define('_MSG_SETTINGSCHANGED',        'Uzstâdîjumi izmainîti');
+define('_MSG_ADMINCHANGED',            'Admins nomainîts');
 define('_MSG_NEWBLOG',                'Jauns blogs izveidots');
-define('_MSG_ACTIONLOGCLEARED',        'Statistika dzï¿½sta');
+define('_MSG_ACTIONLOGCLEARED',        'Statistika dzçsta');
 
 // actionlog in admin area
-define('_ACTIONLOG_DISALLOWED',        'Aizliegta rï¿½cï¿½ba: ');
-define('_ACTIONLOG_PWDREMINDERSENT','Jaunï¿½ parole nosï¿½tï¿½ta dalï¿½bniekam ');
+define('_ACTIONLOG_DISALLOWED',        'Aizliegta rîcîba: ');
+define('_ACTIONLOG_PWDREMINDERSENT','Jaunâ parole nosûtîta dalîbniekam ');
 define('_ACTIONLOG_TITLE',            'Statistika');
-define('_ACTIONLOG_CLEAR_TITLE',    'Dzï¿½st statistiku');
-define('_ACTIONLOG_CLEAR_TEXT',        'Dzï¿½st statistiku tï¿½lï¿½t');
+define('_ACTIONLOG_CLEAR_TITLE',    'Dzçst statistiku');
+define('_ACTIONLOG_CLEAR_TEXT',        'Dzçst statistiku tûlît');
 
 // team management
-define('_TEAM_TITLE',                'Menedï¿½ï¿½t bloga komandu ');
-define('_TEAM_CURRENT',                '\'Tekoï¿½ï¿½\' komanda');
-define('_TEAM_ADDNEW',                'Pievienot komandai jaunu dalï¿½bnieku');
-define('_TEAM_CHOOSEMEMBER',        'Izvï¿½lï¿½ties dalï¿½bnieku');
-define('_TEAM_ADMIN',                'Admina tiesï¿½bas? ');
+define('_TEAM_TITLE',                'Menedþçt bloga komandu ');
+define('_TEAM_CURRENT',                '\'Tekoðâ\' komanda');
+define('_TEAM_ADDNEW',                'Pievienot komandai jaunu dalîbnieku');
+define('_TEAM_CHOOSEMEMBER',        'Izvçlçties dalîbnieku');
+define('_TEAM_ADMIN',                'Admina tiesîbas? ');
 define('_TEAM_ADD',                    'Pievienot komandai');
 define('_TEAM_ADD_BTN',                'Pievienot komandai');
 
 // blogsettings
-define('_EBLOG_TITLE',                'Bloga modificï¿½ï¿½ana');
-define('_EBLOG_TEAM_TITLE',            'Modificï¿½t komandu');
-define('_EBLOG_TEAM_TEXT',            'Spied ï¿½eit, lai modificï¿½tu komandu...');
-define('_EBLOG_SETTINGS_TITLE',        'Bloga uzstï¿½dï¿½jumi');
+define('_EBLOG_TITLE',                'Bloga modificçðana');
+define('_EBLOG_TEAM_TITLE',            'Modificçt komandu');
+define('_EBLOG_TEAM_TEXT',            'Spied ðeit, lai modificçtu komandu...');
+define('_EBLOG_SETTINGS_TITLE',        'Bloga uzstâdîjumi');
 define('_EBLOG_NAME',                'Bloga nosaukums');
-define('_EBLOG_SHORTNAME',            'ï¿½ss bloga nosaukums');
-define('_EBLOG_SHORTNAME_EXTRA',    '<br />(jï¿½satur burtus a-z un bez atstarpï¿½m)');
+define('_EBLOG_SHORTNAME',            'Îss bloga nosaukums');
+define('_EBLOG_SHORTNAME_EXTRA',    '<br />(jâsatur burtus a-z un bez atstarpçm)');
 define('_EBLOG_DESC',                'Bloga apraksts');
 define('_EBLOG_URL',                'URL');
-define('_EBLOG_DEFSKIN',            'Pamattï¿½ma');
-define('_EBLOG_DEFCAT',                'Pamatsadaï¿½a');
-define('_EBLOG_LINEBREAKS',            'Konvertï¿½t rindu pï¿½rnesumus jaunï¿½ rindï¿½');
-define('_EBLOG_DISABLECOMMENTS',    'Komentï¿½ri atï¿½auti?<br /><small>(Atslï¿½dzot komentï¿½rus, komentï¿½ï¿½ana nebï¿½s iespï¿½jama.)</small>');
-define('_EBLOG_ANONYMOUS',            'Atï¿½aut komentï¿½t ciemiï¿½iem?');
-define('_EBLOG_NOTIFY',                'Apziï¿½oï¿½anas adrese(s) (vairï¿½kus atdalï¿½t ar ;)');
-define('_EBLOG_NOTIFY_ON',            'Apziï¿½oï¿½ana ieslï¿½gta');
-define('_EBLOG_NOTIFY_COMMENT',        'Apziï¿½ot par jauniem komentï¿½riem');
-define('_EBLOG_NOTIFY_KARMA',        'Apziï¿½ot par balsojumiem');
-define('_EBLOG_NOTIFY_ITEM',        'Apziï¿½ot par jauniem rakstiem');
-define('_EBLOG_PING',                'Nosï¿½tï¿½t ping uz Weblogs.com pï¿½c izmaiï¿½u veikï¿½anas Nucleus sistï¿½mï¿½?');
-define('_EBLOG_MAXCOMMENTS',        'Maksimï¿½lais atï¿½autais komentï¿½ru skaits');
-define('_EBLOG_UPDATE',                'Atjaunoï¿½anas fails');
-define('_EBLOG_OFFSET',                'Laika nobï¿½de');
-define('_EBLOG_STIME',                'Paï¿½reizï¿½jais servera laiks');
-define('_EBLOG_BTIME',                'Paï¿½reizï¿½jais bloga laiks');
-define('_EBLOG_CHANGE',                'Izmainï¿½t uzstï¿½dï¿½jumus');
-define('_EBLOG_CHANGE_BTN',            'Izmainï¿½t uzstï¿½dï¿½jumus');
+define('_EBLOG_DEFSKIN',            'Pamattçma');
+define('_EBLOG_DEFCAT',                'Pamatsadaïa');
+define('_EBLOG_LINEBREAKS',            'Konvertçt rindu pârnesumus jaunâ rindâ');
+define('_EBLOG_DISABLECOMMENTS',    'Komentâri atïauti?<br /><small>(Atslçdzot komentârus, komentçðana nebûs iespçjama.)</small>');
+define('_EBLOG_ANONYMOUS',            'Atïaut komentçt ciemiòiem?');
+define('_EBLOG_NOTIFY',                'Apziòoðanas adrese(s) (vairâkus atdalît ar ;)');
+define('_EBLOG_NOTIFY_ON',            'Apziòoðana ieslçgta');
+define('_EBLOG_NOTIFY_COMMENT',        'Apziòot par jauniem komentâriem');
+define('_EBLOG_NOTIFY_KARMA',        'Apziòot par balsojumiem');
+define('_EBLOG_NOTIFY_ITEM',        'Apziòot par jauniem rakstiem');
+define('_EBLOG_PING',                'Nosûtît ping uz Weblogs.com pçc izmaiòu veikðanas Nucleus sistçmâ?');
+define('_EBLOG_MAXCOMMENTS',        'Maksimâlais atïautais komentâru skaits');
+define('_EBLOG_UPDATE',                'Atjaunoðanas fails');
+define('_EBLOG_OFFSET',                'Laika nobîde');
+define('_EBLOG_STIME',                'Paðreizçjais servera laiks');
+define('_EBLOG_BTIME',                'Paðreizçjais bloga laiks');
+define('_EBLOG_CHANGE',                'Izmainît uzstâdîjumus');
+define('_EBLOG_CHANGE_BTN',            'Izmainît uzstâdîjumus');
 define('_EBLOG_ADMIN',                'Bloga admins');
-define('_EBLOG_ADMIN_MSG',            'tev pieï¿½ï¿½irtas admina tiesï¿½bas');
+define('_EBLOG_ADMIN_MSG',            'tev pieðíirtas admina tiesîbas');
 define('_EBLOG_CREATE_TITLE',        'Izveidot jaunu blogu');
-define('_EBLOG_CREATE_TEXT',        'Aizpildi formu, lai izveidotu jaunu blogu. <br /><br /> <b>Piezï¿½me:</b> ï¿½eit atrodami tikai nepiecieï¿½amï¿½kie uzstï¿½dï¿½jumi. Ekstra uzstï¿½dï¿½jumi atrodami bloga uzstï¿½dï¿½jumu sadaï¿½ï¿½.');
+define('_EBLOG_CREATE_TEXT',        'Aizpildi formu, lai izveidotu jaunu blogu. <br /><br /> <b>Piezîme:</b> Ðeit atrodami tikai nepiecieðamâkie uzstâdîjumi. Ekstra uzstâdîjumi atrodami bloga uzstâdîjumu sadaïâ.');
 define('_EBLOG_CREATE',                'Izveidot!');
 define('_EBLOG_CREATE_BTN',            'Izveidot blogu');
-define('_EBLOG_CAT_TITLE',            'Sadaï¿½as');
+define('_EBLOG_CAT_TITLE',            'Sadaïas');
 define('_EBLOG_CAT_NAME',            'Nosaukums');
 define('_EBLOG_CAT_DESC',            'Apraksts');
-define('_EBLOG_CAT_CREATE',            'Jaunas sadaï¿½as izveidoï¿½ana');
-define('_EBLOG_CAT_UPDATE',            'Atjauninï¿½t sadaï¿½u');
-define('_EBLOG_CAT_UPDATE_BTN',        'Atjauninï¿½t sadaï¿½u');
+define('_EBLOG_CAT_CREATE',            'Jaunas sadaïas izveidoðana');
+define('_EBLOG_CAT_UPDATE',            'Atjauninât sadaïu');
+define('_EBLOG_CAT_UPDATE_BTN',        'Atjauninât sadaïu');
 
 // templates
-define('_TEMPLATE_TITLE',            'Modificï¿½t veidnes');
-define('_TEMPLATE_AVAILABLE_TITLE',    'Pieejamï¿½s veidnes');
+define('_TEMPLATE_TITLE',            'Modificçt veidnes');
+define('_TEMPLATE_AVAILABLE_TITLE',    'Pieejamâs veidnes');
 define('_TEMPLATE_NEW_TITLE',        'Jauna veidne');
 define('_TEMPLATE_NAME',            'Veidnes nosaukums');
 define('_TEMPLATE_DESC',            'Apraksts');
 define('_TEMPLATE_CREATE',            'Izveidot veidni');
 define('_TEMPLATE_CREATE_BTN',        'Izveidot veidni');
-define('_TEMPLATE_EDIT_TITLE',        'Modificï¿½t veidni');
-define('_TEMPLATE_BACK',            'Atpakaï¿½ uz veidï¿½u aprakstu');
-define('_TEMPLATE_EDIT_MSG',        'Vairï¿½kus uzstï¿½dï¿½jumus drï¿½kst atstï¿½t tukï¿½us.');
-define('_TEMPLATE_SETTINGS',        'Veidnes uzstï¿½dï¿½jumi');
+define('_TEMPLATE_EDIT_TITLE',        'Modificçt veidni');
+define('_TEMPLATE_BACK',            'Atpakaï uz veidòu aprakstu');
+define('_TEMPLATE_EDIT_MSG',        'Vairâkus uzstâdîjumus drîkst atstât tukðus.');
+define('_TEMPLATE_SETTINGS',        'Veidnes uzstâdîjumi');
 define('_TEMPLATE_ITEMS',            'Raksti');
-define('_TEMPLATE_ITEMHEADER',        'Raksta aukï¿½daï¿½a');
-define('_TEMPLATE_ITEMBODY',        'Raksta vidusdaï¿½a');
-define('_TEMPLATE_ITEMFOOTER',        'Raksta apakï¿½daï¿½a');
-define('_TEMPLATE_MORELINK',        'Norï¿½de uz pilnu rakstu');
-define('_TEMPLATE_NEW',                'Norï¿½de uz jaunu rakstu');
-define('_TEMPLATE_COMMENTS_ANY',    'Komentï¿½ri (ja ir)');
-define('_TEMPLATE_CHEADER',            'Komentï¿½ru aukï¿½daï¿½a');
-define('_TEMPLATE_CBODY',            'Komentï¿½ru vidusdaï¿½a');
-define('_TEMPLATE_CFOOTER',            'Komentï¿½ru apakï¿½daï¿½a');
-define('_TEMPLATE_CONE',            'Viens komentï¿½rs');
-define('_TEMPLATE_CMANY',            'Divi (vai vairï¿½k) komentï¿½ri');
-define('_TEMPLATE_CMORE',            'Lasï¿½t vairï¿½k komentï¿½rus');
+define('_TEMPLATE_ITEMHEADER',        'Raksta aukðdaïa');
+define('_TEMPLATE_ITEMBODY',        'Raksta vidusdaïa');
+define('_TEMPLATE_ITEMFOOTER',        'Raksta apakðdaïa');
+define('_TEMPLATE_MORELINK',        'Norâde uz pilnu rakstu');
+define('_TEMPLATE_NEW',                'Norâde uz jaunu rakstu');
+define('_TEMPLATE_COMMENTS_ANY',    'Komentâri (ja ir)');
+define('_TEMPLATE_CHEADER',            'Komentâru aukðdaïa');
+define('_TEMPLATE_CBODY',            'Komentâru vidusdaïa');
+define('_TEMPLATE_CFOOTER',            'Komentâru apakðdaïa');
+define('_TEMPLATE_CONE',            'Viens komentârs');
+define('_TEMPLATE_CMANY',            'Divi (vai vairâk) komentâri');
+define('_TEMPLATE_CMORE',            'Lasît vairâk komentârus');
 define('_TEMPLATE_CMEXTRA',            'Member Extra');
-define('_TEMPLATE_COMMENTS_NONE',    'Ja nav komentï¿½ru');
-define('_TEMPLATE_CNONE',            'Komentï¿½ru nav');
-define('_TEMPLATE_COMMENTS_TOOMUCH','Ja ir pï¿½rï¿½k daudz komentï¿½ru');
-define('_TEMPLATE_CTOOMUCH',        'Pï¿½rï¿½k daudz komentï¿½ru');
-define('_TEMPLATE_ARCHIVELIST',        'Kï¿½ izskatï¿½s arhï¿½vi');
-define('_TEMPLATE_AHEADER',            'Arhï¿½va augï¿½daï¿½a');
-define('_TEMPLATE_AITEM',            'Arhï¿½va vidusdaï¿½a');
-define('_TEMPLATE_AFOOTER',            'Arhï¿½va apakï¿½daï¿½a');
+define('_TEMPLATE_COMMENTS_NONE',    'Ja nav komentâru');
+define('_TEMPLATE_CNONE',            'Komentâru nav');
+define('_TEMPLATE_COMMENTS_TOOMUCH','Ja ir pârâk daudz komentâru');
+define('_TEMPLATE_CTOOMUCH',        'Pârâk daudz komentâru');
+define('_TEMPLATE_ARCHIVELIST',        'Kâ izskatâs arhîvi');
+define('_TEMPLATE_AHEADER',            'Arhîva augðdaïa');
+define('_TEMPLATE_AITEM',            'Arhîva vidusdaïa');
+define('_TEMPLATE_AFOOTER',            'Arhîva apakðdaïa');
 define('_TEMPLATE_DATETIME',        'Datums un laiks');
-define('_TEMPLATE_DHEADER',            'Datuma augï¿½daï¿½a');
-define('_TEMPLATE_DFOOTER',            'Datuma apakï¿½daï¿½a');
-define('_TEMPLATE_DFORMAT',            'Datuma formï¿½ts');
-define('_TEMPLATE_TFORMAT',            'Laika formï¿½ts');
-define('_TEMPLATE_LOCALE',            'Lokï¿½lais uzstï¿½dï¿½jums');
-define('_TEMPLATE_IMAGE',            'Izlecoï¿½ie attï¿½li');
-define('_TEMPLATE_PCODE',            'Kods izlecoï¿½ajam linkam');
-define('_TEMPLATE_ICODE',            'Lapï¿½ iekï¿½aujamï¿½ attï¿½la kods');
-define('_TEMPLATE_MCODE',            'Mï¿½dija objekta kods');
-define('_TEMPLATE_SEARCH',            'Meklï¿½ï¿½anas sistï¿½ma');
-define('_TEMPLATE_SHIGHLIGHT',        'Vï¿½rdu izcelï¿½ana');
+define('_TEMPLATE_DHEADER',            'Datuma augðdaïa');
+define('_TEMPLATE_DFOOTER',            'Datuma apakðdaïa');
+define('_TEMPLATE_DFORMAT',            'Datuma formâts');
+define('_TEMPLATE_TFORMAT',            'Laika formâts');
+define('_TEMPLATE_LOCALE',            'Lokâlais uzstâdîjums');
+define('_TEMPLATE_IMAGE',            'Izlecoðie attçli');
+define('_TEMPLATE_PCODE',            'Kods izlecoðajam linkam');
+define('_TEMPLATE_ICODE',            'Lapâ iekïaujamâ attçla kods');
+define('_TEMPLATE_MCODE',            'Mçdija objekta kods');
+define('_TEMPLATE_SEARCH',            'Meklçðanas sistçma');
+define('_TEMPLATE_SHIGHLIGHT',        'Vârdu izcelðana');
 define('_TEMPLATE_SNOTFOUND',        'Ja nekas nav atrasts');
-define('_TEMPLATE_UPDATE',            'Izmaiï¿½u veikï¿½ana');
-define('_TEMPLATE_UPDATE_BTN',        'Saglabï¿½t izmaiï¿½as veidnï¿½');
-define('_TEMPLATE_RESET_BTN',        'Noklusï¿½tï¿½s vï¿½rtï¿½bas');
-define('_TEMPLATE_CATEGORYLIST',    'Sadaï¿½u saraksti');
-define('_TEMPLATE_CATHEADER',        'Sadaï¿½u saraksta augï¿½daï¿½a');
-define('_TEMPLATE_CATITEM',            'Sadaï¿½u saraksta vidusdaï¿½a');
-define('_TEMPLATE_CATFOOTER',        'Sadaï¿½u saraksta apakï¿½daï¿½a');
+define('_TEMPLATE_UPDATE',            'Izmaiòu veikðana');
+define('_TEMPLATE_UPDATE_BTN',        'Saglabât izmaiòas veidnç');
+define('_TEMPLATE_RESET_BTN',        'Noklusçtâs vçrtîbas');
+define('_TEMPLATE_CATEGORYLIST',    'Sadaïu saraksti');
+define('_TEMPLATE_CATHEADER',        'Sadaïu saraksta augðdaïa');
+define('_TEMPLATE_CATITEM',            'Sadaïu saraksta vidusdaïa');
+define('_TEMPLATE_CATFOOTER',        'Sadaïu saraksta apakðdaïa');
 
 // skins
-define('_SKIN_EDIT_TITLE',            'Modificï¿½t tï¿½mas');
-define('_SKIN_AVAILABLE_TITLE',        'Pieejamï¿½s tï¿½mas');
-define('_SKIN_NEW_TITLE',            'Jauna tï¿½ma');
+define('_SKIN_EDIT_TITLE',            'Modificçt tçmas');
+define('_SKIN_AVAILABLE_TITLE',        'Pieejamâs tçmas');
+define('_SKIN_NEW_TITLE',            'Jauna tçma');
 define('_SKIN_NAME',                'Nosaukums');
 define('_SKIN_DESC',                'Apraksts');
 define('_SKIN_TYPE',                '"Content Type"');
-define('_SKIN_CREATE',                'Izveidoï¿½ana');
-define('_SKIN_CREATE_BTN',            'Izveidot tï¿½mu');
-define('_SKIN_EDITONE_TITLE',        'Modificï¿½t tï¿½mu');
-define('_SKIN_BACK',                'Atpakaï¿½ pie tï¿½mu apraksta');
-define('_SKIN_PARTS_TITLE',            'Katras lapas tï¿½ma');
-define('_SKIN_PARTS_MSG',            'Ne visi uzstï¿½dï¿½jumi ir obligï¿½ti. Nevajadzï¿½gos var atstï¿½t tukï¿½us. Tï¿½mas iespï¿½jams mainï¿½t ï¿½ï¿½dï¿½m sadaï¿½ï¿½m:');
-define('_SKIN_PART_MAIN',            'Galvenï¿½ lapa');
+define('_SKIN_CREATE',                'Izveidoðana');
+define('_SKIN_CREATE_BTN',            'Izveidot tçmu');
+define('_SKIN_EDITONE_TITLE',        'Modificçt tçmu');
+define('_SKIN_BACK',                'Atpakaï pie tçmu apraksta');
+define('_SKIN_PARTS_TITLE',            'Katras lapas tçma');
+define('_SKIN_PARTS_MSG',            'Ne visi uzstâdîjumi ir obligâti. Nevajadzîgos var atstât tukðus. Tçmas iespçjams mainît ðâdâm sadaïâm:');
+define('_SKIN_PART_MAIN',            'Galvenâ lapa');
 define('_SKIN_PART_ITEM',            'Raksti');
-define('_SKIN_PART_ALIST',            'Arhï¿½vu saraksts');
-define('_SKIN_PART_ARCHIVE',        'Arhï¿½vs');
-define('_SKIN_PART_SEARCH',            'Meklï¿½ï¿½ana');
-define('_SKIN_PART_ERROR',            'Kï¿½ï¿½du paziï¿½ojumi');
-define('_SKIN_PART_MEMBER',            'Informï¿½cija par dalï¿½bniekiem');
-define('_SKIN_PART_POPUP',            'Izlecoï¿½ie attï¿½li');
-define('_SKIN_GENSETTINGS_TITLE',    'Infomï¿½cija par tï¿½mu');
-define('_SKIN_CHANGE',                'Izmaiï¿½as');
-define('_SKIN_CHANGE_BTN',            'Saglabï¿½t izmaiï¿½as');
-define('_SKIN_UPDATE_BTN',            'Saglabï¿½t izmaiï¿½as');
-define('_SKIN_RESET_BTN',            'Noklusï¿½tie uzstï¿½dï¿½jumi');
-define('_SKIN_EDITPART_TITLE',        'Modificï¿½t tï¿½mu');
-define('_SKIN_GOBACK',                'Atpakaï¿½');
-define('_SKIN_ALLOWEDVARS',            'Pieejamie uzstï¿½dï¿½jumi (sï¿½kï¿½ka informï¿½cija, uzklikï¿½ï¿½inot):');
+define('_SKIN_PART_ALIST',            'Arhîvu saraksts');
+define('_SKIN_PART_ARCHIVE',        'Arhîvs');
+define('_SKIN_PART_SEARCH',            'Meklçðana');
+define('_SKIN_PART_ERROR',            'Kïûdu paziòojumi');
+define('_SKIN_PART_MEMBER',            'Informâcija par dalîbniekiem');
+define('_SKIN_PART_POPUP',            'Izlecoðie attçli');
+define('_SKIN_GENSETTINGS_TITLE',    'Infomâcija par tçmu');
+define('_SKIN_CHANGE',                'Izmaiòas');
+define('_SKIN_CHANGE_BTN',            'Saglabât izmaiòas');
+define('_SKIN_UPDATE_BTN',            'Saglabât izmaiòas');
+define('_SKIN_RESET_BTN',            'Noklusçtie uzstâdîjumi');
+define('_SKIN_EDITPART_TITLE',        'Modificçt tçmu');
+define('_SKIN_GOBACK',                'Atpakaï');
+define('_SKIN_ALLOWEDVARS',            'Pieejamie uzstâdîjumi (sîkâka informâcija, uzklikðíinot):');
 
 // global settings
-define('_SETTINGS_TITLE',            'Galvenie uzstï¿½dï¿½jumi');
-define('_SETTINGS_SUB_GENERAL',        'Galvenie uzstï¿½dï¿½jumi');
-define('_SETTINGS_DEFBLOG',            'Primï¿½rais blogs');
+define('_SETTINGS_TITLE',            'Galvenie uzstâdîjumi');
+define('_SETTINGS_SUB_GENERAL',        'Galvenie uzstâdîjumi');
+define('_SETTINGS_DEFBLOG',            'Primârais blogs');
 define('_SETTINGS_ADMINMAIL',        'Admina epasta adrese');
-define('_SETTINGS_SITENAME',        'Mï¿½jas lapas nosaukums');
-define('_SETTINGS_SITEURL',            'Lapas URL (ar slï¿½psvï¿½tru beigï¿½s)');
-define('_SETTINGS_ADMINURL',        'Administrï¿½ï¿½anas URL (ar slï¿½psvï¿½tru beigï¿½s)');
-define('_SETTINGS_DIRS',            'Nucleus pilna atraï¿½anï¿½s vieta sistï¿½mï¿½');
-define('_SETTINGS_MEDIADIR',        'Mï¿½diju direktorija');
+define('_SETTINGS_SITENAME',        'Mâjas lapas nosaukums');
+define('_SETTINGS_SITEURL',            'Lapas URL (ar slîpsvîtru beigâs)');
+define('_SETTINGS_ADMINURL',        'Administrçðanas URL (ar slîpsvîtru beigâs)');
+define('_SETTINGS_DIRS',            'Nucleus pilna atraðanâs vieta sistçmâ');
+define('_SETTINGS_MEDIADIR',        'Mçdiju direktorija');
 define('_SETTINGS_SEECONFIGPHP',    '(skat. config.php)');
-define('_SETTINGS_MEDIAURL',        'Mï¿½diju URL (ar slï¿½psvï¿½tru beigï¿½s)');
-define('_SETTINGS_ALLOWUPLOAD',        'Atï¿½aut likt failus?');
-define('_SETTINGS_ALLOWUPLOADTYPES','Atï¿½autie failu formï¿½ti');
-define('_SETTINGS_CHANGELOGIN',        'Atï¿½aut dalï¿½bniekiem mainï¿½t vï¿½rdu/paroli');
-define('_SETTINGS_COOKIES_TITLE',    'Cookie uzstï¿½dï¿½jumi');
-define('_SETTINGS_COOKIELIFE',        'Sistï¿½mas Cookie ilgums');
+define('_SETTINGS_MEDIAURL',        'Mçdiju URL (ar slîpsvîtru beigâs)');
+define('_SETTINGS_ALLOWUPLOAD',        'Atïaut likt failus?');
+define('_SETTINGS_ALLOWUPLOADTYPES','Atïautie failu formâti');
+define('_SETTINGS_CHANGELOGIN',        'Atïaut dalîbniekiem mainît vârdu/paroli');
+define('_SETTINGS_COOKIES_TITLE',    'Cookie uzstâdîjumi');
+define('_SETTINGS_COOKIELIFE',        'Sistçmas Cookie ilgums');
 define('_SETTINGS_COOKIESESSION',    'tik pat, cik sesija');
-define('_SETTINGS_COOKIEMONTH',        'viens mï¿½nesis');
-define('_SETTINGS_COOKIEPATH',        'Cookie ceï¿½ï¿½ (advanced)');
-define('_SETTINGS_COOKIEDOMAIN',    'Cookie domï¿½ns (advanced)');
-define('_SETTINGS_COOKIESECURE',    'Droï¿½ie Cookie (advanced)');
-define('_SETTINGS_LASTVISIT',        'Saglabï¿½t pï¿½dï¿½jï¿½ apmeklï¿½juma Cookies');
-define('_SETTINGS_ALLOWCREATE',        'Atï¿½aut visiem apmeklï¿½tï¿½jiem reï¿½istrï¿½ties');
-define('_SETTINGS_NEWLOGIN',        'Atï¿½aut pieslï¿½gties kï¿½ administratoram uzreiz pï¿½c reï¿½istrï¿½ï¿½anï¿½s');
+define('_SETTINGS_COOKIEMONTH',        'viens mçnesis');
+define('_SETTINGS_COOKIEPATH',        'Cookie ceïð (advanced)');
+define('_SETTINGS_COOKIEDOMAIN',    'Cookie domçns (advanced)');
+define('_SETTINGS_COOKIESECURE',    'Droðie Cookie (advanced)');
+define('_SETTINGS_LASTVISIT',        'Saglabât pçdçjâ apmeklçjuma Cookies');
+define('_SETTINGS_ALLOWCREATE',        'Atïaut visiem apmeklçtâjiem reìistrçties');
+define('_SETTINGS_NEWLOGIN',        'Atïaut pieslçgties kâ administratoram uzreiz pçc reìistrçðanâs');
 define('_SETTINGS_NEWLOGIN2',        '(tikai jaunizveidotiem)');
-define('_SETTINGS_MEMBERMSGS',        'Atï¿½aut izmantot dalï¿½bnieks-dalï¿½bniekam servisu');
+define('_SETTINGS_MEMBERMSGS',        'Atïaut izmantot dalîbnieks-dalîbniekam servisu');
 define('_SETTINGS_LOCALE',        'Valoda');
-define('_SETTINGS_DISABLESITE',        'Apstï¿½dinï¿½t sistï¿½mu');
-define('_SETTINGS_DBLOGIN',            'mySQL DB informï¿½cija');
-define('_SETTINGS_UPDATE',            'Uzstï¿½dï¿½jumu saglabï¿½ï¿½ana');
-define('_SETTINGS_UPDATE_BTN',        'Saglabï¿½t izmaiï¿½as');
-define('_SETTINGS_DISABLEJS',        'Atslï¿½gt JavaScript paneli');
-define('_SETTINGS_MEDIA',            'Mediju/Failu uzstï¿½dï¿½jumi');
-define('_SETTINGS_MEDIAPREFIX',        'Failu nosaukumu sï¿½kumu likt tekoï¿½o datumu');
-define('_SETTINGS_MEMBERS',            'Dalï¿½bnieku uzstï¿½dï¿½jumi');
+define('_SETTINGS_DISABLESITE',        'Apstâdinât sistçmu');
+define('_SETTINGS_DBLOGIN',            'mySQL DB informâcija');
+define('_SETTINGS_UPDATE',            'Uzstâdîjumu saglabâðana');
+define('_SETTINGS_UPDATE_BTN',        'Saglabât izmaiòas');
+define('_SETTINGS_DISABLEJS',        'Atslçgt JavaScript paneli');
+define('_SETTINGS_MEDIA',            'Mediju/Failu uzstâdîjumi');
+define('_SETTINGS_MEDIAPREFIX',        'Failu nosaukumu sâkumu likt tekoðo datumu');
+define('_SETTINGS_MEMBERS',            'Dalîbnieku uzstâdîjumi');
 
 // bans
 define('_BAN_TITLE',                'Aizliegumi: ');
-define('_BAN_NONE',                    'ï¿½im blogam nav IP adreï¿½u aizliegumu');
+define('_BAN_NONE',                    'Ðim blogam nav IP adreðu aizliegumu');
 define('_BAN_NEW_TITLE',            'Pievienot jaunu aizliegumu');
 define('_BAN_NEW_TEXT',                'Pievienot aizliegumu(s)');
-define('_BAN_REMOVE_TITLE',            'Noï¿½emt aizliegumu(s)');
-define('_BAN_IPRANGE',                'IP adreï¿½u apgabals');
-define('_BAN_BLOGS',                'Kï¿½diem blogiem?');
-define('_BAN_DELETE_TITLE',            'Dzï¿½st aizliegumu');
-define('_BAN_ALLBLOGS',                'Visi blogi, kurï¿½ esi admins.');
-define('_BAN_REMOVED_TITLE',        'Aizliegums noï¿½emts');
-define('_BAN_REMOVED_TEXT',            'Aizliegums noï¿½emts no sekojoï¿½iem blogiem:');
+define('_BAN_REMOVE_TITLE',            'Noòemt aizliegumu(s)');
+define('_BAN_IPRANGE',                'IP adreðu apgabals');
+define('_BAN_BLOGS',                'Kâdiem blogiem?');
+define('_BAN_DELETE_TITLE',            'Dzçst aizliegumu');
+define('_BAN_ALLBLOGS',                'Visi blogi, kurâ esi admins.');
+define('_BAN_REMOVED_TITLE',        'Aizliegums noòemts');
+define('_BAN_REMOVED_TEXT',            'Aizliegums noòemts no sekojoðiem blogiem:');
 define('_BAN_ADD_TITLE',            'Pievienot aizliegumu');
-define('_BAN_IPRANGE_TEXT',            'Izvï¿½lies bloï¿½ï¿½jamo IP adreï¿½u apgabalu. Jo mazï¿½k ciparu IP adresï¿½, jo lielï¿½ks apgabals tiks bloï¿½ï¿½ts.');
-define('_BAN_BLOGS_TEXT',            'Var bloï¿½ï¿½t pieeju vienam noteiktam blogam vai arï¿½ visiem blogiem, kurï¿½ esi administrators.');
+define('_BAN_IPRANGE_TEXT',            'Izvçlies bloíçjamo IP adreðu apgabalu. Jo mazâk ciparu IP adresç, jo lielâks apgabals tiks bloíçts.');
+define('_BAN_BLOGS_TEXT',            'Var bloíçt pieeju vienam noteiktam blogam vai arî visiem blogiem, kurâ esi administrators.');
 define('_BAN_REASON_TITLE',            'Iemesls');
-define('_BAN_REASON_TEXT',            'Pievieno iemeslu, kï¿½pï¿½c dalï¿½bniekam tiek bloï¿½ï¿½ta pieeja. Maksimums 256 simboli.');
+define('_BAN_REASON_TEXT',            'Pievieno iemeslu, kâpçc dalîbniekam tiek bloíçta pieeja. Maksimums 256 simboli.');
 define('_BAN_ADD_BTN',                'Pievienot aizliegumu');
 
 // LOGIN screen
-define('_LOGIN_MESSAGE',            'Ziï¿½ojums');
-define('_LOGIN_NAME',                'Vï¿½rds/nosaukums');
+define('_LOGIN_MESSAGE',            'Ziòojums');
+define('_LOGIN_NAME',                'Vârds/nosaukums');
 define('_LOGIN_PASSWORD',            'Parole');
 define('_LOGIN_SHARED',                _LOGINFORM_SHARED);
-define('_LOGIN_FORGOT',                'Aizmirsï¿½s parole?');
+define('_LOGIN_FORGOT',                'Aizmirsâs parole?');
 
 // membermanagement
-define('_MEMBERS_TITLE',            'Dalï¿½bnieku menedï¿½ments');
-define('_MEMBERS_CURRENT',            'Reï¿½istrï¿½tie dalï¿½bnieki');
-define('_MEMBERS_NEW',                'Jauns dalï¿½bnieks');
-define('_MEMBERS_DISPLAY',            'Atspoguï¿½ojamais vï¿½rds');
-define('_MEMBERS_DISPLAY_INFO',        '(segvï¿½rds, ar kuru pieslï¿½dzas sistï¿½mai)');
-define('_MEMBERS_REALNAME',            'Pilnais vï¿½rds');
+define('_MEMBERS_TITLE',            'Dalîbnieku menedþments');
+define('_MEMBERS_CURRENT',            'Reìistrçtie dalîbnieki');
+define('_MEMBERS_NEW',                'Jauns dalîbnieks');
+define('_MEMBERS_DISPLAY',            'Atspoguïojamais vârds');
+define('_MEMBERS_DISPLAY_INFO',        '(segvârds, ar kuru pieslçdzas sistçmai)');
+define('_MEMBERS_REALNAME',            'Pilnais vârds');
 define('_MEMBERS_PWD',                'Parole');
-define('_MEMBERS_REPPWD',            'Atkï¿½rtot paroli');
+define('_MEMBERS_REPPWD',            'Atkârtot paroli');
 define('_MEMBERS_EMAIL',            'Epasta adrese');
-define('_MEMBERS_EMAIL_EDIT',        '(Mainot epasta adresi, jaunï¿½ parole<br /> automï¿½tiski nosï¿½tï¿½sies uz jauno adresi)');
-define('_MEMBERS_URL',                'Mï¿½jas lapa (URL)');
-define('_MEMBERS_SUPERADMIN',        'Admina tiesï¿½bas');
-define('_MEMBERS_CANLOGIN',            'Var pieslï¿½gties adminu sadaï¿½ai');
-define('_MEMBERS_NOTES',            'Piezï¿½mes');
+define('_MEMBERS_EMAIL_EDIT',        '(Mainot epasta adresi, jaunâ parole<br /> automâtiski nosûtîsies uz jauno adresi)');
+define('_MEMBERS_URL',                'Mâjas lapa (URL)');
+define('_MEMBERS_SUPERADMIN',        'Admina tiesîbas');
+define('_MEMBERS_CANLOGIN',            'Var pieslçgties adminu sadaïai');
+define('_MEMBERS_NOTES',            'Piezîmes');
 define('_MEMBERS_NEW_BTN',            'Pievienot');
-define('_MEMBERS_EDIT',                'Modificï¿½t dalï¿½bnieka informï¿½ciju');
-define('_MEMBERS_EDIT_BTN',            'Mainï¿½t uzstï¿½dï¿½jumus');
-define('_MEMBERS_BACKTOOVERVIEW',    'Atpakaï¿½ uz Dalï¿½bnieku informï¿½ciju');
+define('_MEMBERS_EDIT',                'Modificçt dalîbnieka informâciju');
+define('_MEMBERS_EDIT_BTN',            'Mainît uzstâdîjumus');
+define('_MEMBERS_BACKTOOVERVIEW',    'Atpakaï uz Dalîbnieku informâciju');
 define('_MEMBERS_LOCALE',            'Valoda');
-define('_MEMBERS_USESITELANG',        '- sistï¿½mas pamatvaloda -');
+define('_MEMBERS_USESITELANG',        '- sistçmas pamatvaloda -');
 
 // List of blogs (TT = tooltip)
-define('_BLOGLIST_TT_VISIT',        'apmeklï¿½t saitu');
+define('_BLOGLIST_TT_VISIT',        'apmeklçt saitu');
 define('_BLOGLIST_ADD',                'Pievienot');
-define('_BLOGLIST_TT_ADD',            'Pievienot jaunu rakstu ï¿½im blogam');
-define('_BLOGLIST_EDIT',            'Modificï¿½t/dzï¿½st');
+define('_BLOGLIST_TT_ADD',            'Pievienot jaunu rakstu ðim blogam');
+define('_BLOGLIST_EDIT',            'Modificçt/dzçst');
 define('_BLOGLIST_TT_EDIT',            '');
-define('_BLOGLIST_BMLET',            'Noderï¿½gas saites');
+define('_BLOGLIST_BMLET',            'Noderîgas saites');
 define('_BLOGLIST_TT_BMLET',        '');
-define('_BLOGLIST_SETTINGS',        'Uzstï¿½dï¿½jumi');
-define('_BLOGLIST_TT_SETTINGS',        'Modificï¿½t uzstï¿½dï¿½jumus vai informï¿½ciju par komandu');
+define('_BLOGLIST_SETTINGS',        'Uzstâdîjumi');
+define('_BLOGLIST_TT_SETTINGS',        'Modificçt uzstâdîjumus vai informâciju par komandu');
 define('_BLOGLIST_BANS',            'Aizliegumi');
-define('_BLOGLIST_TT_BANS',            'Skatï¿½t/pievienot/dzï¿½st bloï¿½ï¿½tï¿½s IP');
-define('_BLOGLIST_DELETE',            'Dzï¿½st visu');
-define('_BLOGLIST_TT_DELETE',        'Dzï¿½st ï¿½o blogu');
+define('_BLOGLIST_TT_BANS',            'Skatît/pievienot/dzçst bloíçtâs IP');
+define('_BLOGLIST_DELETE',            'Dzçst visu');
+define('_BLOGLIST_TT_DELETE',        'Dzçst ðo blogu');
 
 // OVERVIEW screen
 define('_OVERVIEW_YRBLOGS',            'Tavi blogi');
 define('_OVERVIEW_YRDRAFTS',        'Tavas sagataves');
-define('_OVERVIEW_YRSETTINGS',        'Tavi uzstï¿½dï¿½jumi');
-define('_OVERVIEW_GSETTINGS',        'Galvenie uzstï¿½dï¿½jumi');
-define('_OVERVIEW_NOBLOGS',            'Tu neesi nevienï¿½ blogu komandï¿½');
+define('_OVERVIEW_YRSETTINGS',        'Tavi uzstâdîjumi');
+define('_OVERVIEW_GSETTINGS',        'Galvenie uzstâdîjumi');
+define('_OVERVIEW_NOBLOGS',            'Tu neesi nevienâ blogu komandâ');
 define('_OVERVIEW_NODRAFTS',        'Sagatavju nav');
-define('_OVERVIEW_EDITSETTINGS',    'Modificï¿½t savus uzstï¿½dï¿½jumus...');
-define('_OVERVIEW_BROWSEITEMS',        'Skatï¿½ties savus rakstus...');
-define('_OVERVIEW_BROWSECOMM',        'Skatï¿½ties savus komentï¿½rus...');
-define('_OVERVIEW_VIEWLOG',            'Skatï¿½ties statistiku...');
-define('_OVERVIEW_MEMBERS',            'Administrï¿½t dalï¿½bniekus...');
+define('_OVERVIEW_EDITSETTINGS',    'Modificçt savus uzstâdîjumus...');
+define('_OVERVIEW_BROWSEITEMS',        'Skatîties savus rakstus...');
+define('_OVERVIEW_BROWSECOMM',        'Skatîties savus komentârus...');
+define('_OVERVIEW_VIEWLOG',            'Skatîties statistiku...');
+define('_OVERVIEW_MEMBERS',            'Administrçt dalîbniekus...');
 define('_OVERVIEW_NEWLOG',            'Izveidot jaunu blogu...');
-define('_OVERVIEW_SETTINGS',        'Modificï¿½t uzstï¿½dï¿½jumus...');
-define('_OVERVIEW_TEMPLATES',        'Modificï¿½t veidnes...');
-define('_OVERVIEW_SKINS',            'Modificï¿½t tï¿½mas...');
-define('_OVERVIEW_BACKUP',            'Rezerves kopija/Atjaunoï¿½ana...');
+define('_OVERVIEW_SETTINGS',        'Modificçt uzstâdîjumus...');
+define('_OVERVIEW_TEMPLATES',        'Modificçt veidnes...');
+define('_OVERVIEW_SKINS',            'Modificçt tçmas...');
+define('_OVERVIEW_BACKUP',            'Rezerves kopija/Atjaunoðana...');
 
 // ITEMLIST
-define('_ITEMLIST_BLOG',            'Kas atrodams blogï¿½, ar nosaukumu');
+define('_ITEMLIST_BLOG',            'Kas atrodams blogâ, ar nosaukumu');
 define('_ITEMLIST_YOUR',            'Tavi raksti');
 
 // Comments
-define('_COMMENTS',                    'Komentï¿½ri');
-define('_NOCOMMENTS',                'Nav komentï¿½ru');
-define('_COMMENTS_YOUR',            'Tavi komentï¿½ri');
-define('_NOCOMMENTS_YOUR',            'Neesi rakstï¿½jis komentï¿½rus');
+define('_COMMENTS',                    'Komentâri');
+define('_NOCOMMENTS',                'Nav komentâru');
+define('_COMMENTS_YOUR',            'Tavi komentâri');
+define('_NOCOMMENTS_YOUR',            'Neesi rakstîjis komentârus');
 
 // LISTS (general)
-define('_LISTS_NOMORE',                'Vairï¿½k rezultï¿½tu nav vai rezultï¿½tu nav vispï¿½r');
-define('_LISTS_PREV',                'Iepriekï¿½ï¿½jie');
-define('_LISTS_NEXT',                'Nï¿½kamie');
-define('_LISTS_SEARCH',                'Meklï¿½t');
-define('_LISTS_CHANGE',                'Modificï¿½t');
-define('_LISTS_PERPAGE',            'rezultï¿½ti/lapï¿½');
-define('_LISTS_ACTIONS',            'Darbï¿½bas');
-define('_LISTS_DELETE',                'Dzï¿½st');
-define('_LISTS_EDIT',                'Modificï¿½t');
-define('_LISTS_MOVE',                'Pï¿½rvietot');
-define('_LISTS_CLONE',                'Klonï¿½t');
+define('_LISTS_NOMORE',                'Vairâk rezultâtu nav vai rezultâtu nav vispâr');
+define('_LISTS_PREV',                'Iepriekðçjie');
+define('_LISTS_NEXT',                'Nâkamie');
+define('_LISTS_SEARCH',                'Meklçt');
+define('_LISTS_CHANGE',                'Modificçt');
+define('_LISTS_PERPAGE',            'rezultâti/lapâ');
+define('_LISTS_ACTIONS',            'Darbîbas');
+define('_LISTS_DELETE',                'Dzçst');
+define('_LISTS_EDIT',                'Modificçt');
+define('_LISTS_MOVE',                'Pârvietot');
+define('_LISTS_CLONE',                'Klonçt');
 define('_LISTS_TITLE',                'Virsraksts');
 define('_LISTS_BLOG',                'Blogs');
 define('_LISTS_NAME',                'Nosaukums');
 define('_LISTS_DESC',                'Apraksts');
 define('_LISTS_TIME',                'Laiks');
-define('_LISTS_COMMENTS',            'Komentï¿½ri');
-define('_LISTS_TYPE',                'Formï¿½ts');
+define('_LISTS_COMMENTS',            'Komentâri');
+define('_LISTS_TYPE',                'Formâts');
 
 
 // member list
-define('_LIST_MEMBER_NAME',            'Publicï¿½jamais vï¿½rds');
-define('_LIST_MEMBER_RNAME',        'ï¿½stais vï¿½rds');
+define('_LIST_MEMBER_NAME',            'Publicçjamais vârds');
+define('_LIST_MEMBER_RNAME',        'Îstais vârds');
 define('_LIST_MEMBER_ADMIN',        'Super-admins? ');
-define('_LIST_MEMBER_LOGIN',        'Var pieslï¿½gties? ');
-define('_LIST_MEMBER_URL',            'Mï¿½jas lapa');
+define('_LIST_MEMBER_LOGIN',        'Var pieslçgties? ');
+define('_LIST_MEMBER_URL',            'Mâjas lapa');
 
 // banlist
 define('_LIST_BAN_IPRANGE',            'IP apgabals');
 define('_LIST_BAN_REASON',            'Iemesls');
 
 // actionlist
-define('_LIST_ACTION_MSG',            'Ziï¿½ojums');
+define('_LIST_ACTION_MSG',            'Ziòojums');
 
 // commentlist
-define('_LIST_COMMENT_BANIP',        'Bloï¿½ï¿½t IP');
+define('_LIST_COMMENT_BANIP',        'Bloíçt IP');
 define('_LIST_COMMENT_WHO',            'Autors');
-define('_LIST_COMMENT',                'Komentï¿½ri');
+define('_LIST_COMMENT',                'Komentâri');
 define('_LIST_COMMENT_HOST',        'Hosts');
 
 // itemlist
@@ -1276,15 +1268,15 @@ define('_LIST_TEAM_ADMIN',            'Admins ');
 define('_LIST_TEAM_CHADMIN',        'Mainam adminu');
 
 // edit comments
-define('_EDITC_TITLE',                'Modificï¿½t komentï¿½rus');
+define('_EDITC_TITLE',                'Modificçt komentârus');
 define('_EDITC_WHO',                'Autors');
 define('_EDITC_HOST',                'No kurienes?');
 define('_EDITC_WHEN',                'Kad?');
 define('_EDITC_TEXT',                'Teksts');
-define('_EDITC_EDIT',                'Modificï¿½t komentï¿½ru');
-define('_EDITC_MEMBER',                'dalï¿½bnieks');
-define('_EDITC_NONMEMBER',            'ciemiï¿½ï¿½');
+define('_EDITC_EDIT',                'Modificçt komentâru');
+define('_EDITC_MEMBER',                'dalîbnieks');
+define('_EDITC_NONMEMBER',            'ciemiòð');
 
 // move item
 define('_MOVE_TITLE',                'Uz kuru blogu?');
-define('_MOVE_BTN',                    'Pï¿½rvietot...');
+define('_MOVE_BTN',                    'Pârvietot...');

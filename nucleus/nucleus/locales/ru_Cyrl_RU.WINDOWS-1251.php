@@ -1,19 +1,19 @@
 <?php
-// Russian Nucleus Language File
-//
-// Author: Andrey Serebryakov - saahov@gmail.com
-// Nucleus version: v1.0-v3.2
-// Update: 19.10.2005
-// пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Nucleus пїЅпїЅпїЅпїЅпїЅ
-// пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: http://nucleus.net.ru .
 /**
- * Nucleus Language File
- *
+ * Nucleus CMS Translation File
+ * Russian in Russia (Cyrillic script)
+ * 
+ * Nucleus version: v1.0-v3.2
+ * Author: Andrey Serebryakov - saahov@gmail.com
+ * Update: 19.10.2005
+ * 
+ * Вопросы по управлению, настройке и модернизации Nucleus можно
+ * задать на форуме сообщества русских пользователей: http://nucleus.net.ru .
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$
  */
-
 
 /********************************************
  *        Start New for 4.0                 *
@@ -335,114 +335,114 @@ define('_ERROR_COMMENTS_SPAM',      'Your comment was rejected because it did no
 
 // START changed/added after 3.15 START
 
-define('_LIST_PLUG_SUBS_NEEDUPDATE','пїЅпїЅпїЅпїЅпїЅпїЅпїЅ \'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ\'-button to update the plugin\'s subscription list.');
-define('_LIST_PLUGS_DEP',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
+define('_LIST_PLUG_SUBS_NEEDUPDATE','Нажмите \'Обновить список\'-button to update the plugin\'s subscription list.');
+define('_LIST_PLUGS_DEP',			'Плагину требуется:');
 
 // END changed/added after 3.15
 
 // START changed/added after 3.1 START
 
 // comments list per weblog
-define('_COMMENTS_BLOG',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_NOCOMMENTS_BLOG',			'пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BLOGLIST_COMMENTS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BLOGLIST_TT_COMMENTS',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_COMMENTS_BLOG',			'Все комментарии в разделе');
+define('_NOCOMMENTS_BLOG',			'В этом разделе нет комментариев');
+define('_BLOGLIST_COMMENTS',		'Комментарии');
+define('_BLOGLIST_TT_COMMENTS',		'Список всех комментариев, сделанных к сообщениям этого раздела');
 
 
 // for use in archivetype-skinvar
-define('_ARCHIVETYPE_DAY',			'пїЅпїЅпїЅпїЅ');
-define('_ARCHIVETYPE_MONTH',		'пїЅпїЅпїЅпїЅпїЅ');
+define('_ARCHIVETYPE_DAY',			'день');
+define('_ARCHIVETYPE_MONTH',		'месяц');
 
 // tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
-define('_ERROR_BADTICKET',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.');
+define('_ERROR_BADTICKET',			'Неправильная или используемая повторно ссылка.');
 
 // plugin dependency
-define('_ERROR_INSREQPLUGIN',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ');
-define('_ERROR_DELREQPLUGIN',		'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ');
+define('_ERROR_INSREQPLUGIN',		'Ошибка при установке плагина, требуется ');
+define('_ERROR_DELREQPLUGIN',		'Не удалось выполнить удаление плагина, требуется ');
 
 // cookie prefix
-define('_SETTINGS_COOKIEPREFIX',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ Cookie');
+define('_SETTINGS_COOKIEPREFIX',	'Префикс Cookie');
 
 // account activation
-define('_ERROR_NOLOGON_NOACTIVATE',	'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ.');
-define('_ERROR_ACTIVATE',			'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_ACTIONLOG_ACTIVATIONLINK', 'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MSG_ACTIVATION_SENT',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ e-mail.');
+define('_ERROR_NOLOGON_NOACTIVATE',	'Ссылка активации не отослана. Вам запрещено входить на сайт.');
+define('_ERROR_ACTIVATE',			'Ключ активации не существует, неправильный или используется повторно.');
+define('_ACTIONLOG_ACTIVATIONLINK', 'Ссылка активации была отослана');
+define('_MSG_ACTIVATION_SENT',		'Ссылка для активации была отослана на e-mail.');
 
 // activation link emails
-define('_ACTIVATE_REGISTER_MAIL',	"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, <%memberName%>,\n\nпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ <%siteName%> (<%siteUrl%>).\nпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ: \n\n\t<%activationUrl%>\n\nпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 2 пїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
-define('_ACTIVATE_REGISTER_MAILTITLE',	"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ '<%memberName%>'");
-define('_ACTIVATE_REGISTER_TITLE',	'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ <%memberName%>');
-define('_ACTIVATE_REGISTER_TEXT',	'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_ACTIVATE_FORGOT_MAIL',		"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, <%memberName%>,\n\nпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ <%siteName%> (<%siteUrl%>)\n\n\t<%activationUrl%>\n\nпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 2 пїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
-define('_ACTIVATE_FORGOT_MAILTITLE',"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ '<%memberName%>'");
-define('_ACTIVATE_FORGOT_TITLE',	'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ <%memberName%>');
-define('_ACTIVATE_FORGOT_TEXT',		'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_ACTIVATE_CHANGE_MAIL',		"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, <%memberName%>,\n\nпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ e-mail пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ <%siteName%> (<%siteUrl%>).\nпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ: \n\n\t<%activationUrl%>\n\nпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ 2 пїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.");
-define('_ACTIVATE_CHANGE_MAILTITLE',"пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ '<%memberName%>'");
-define('_ACTIVATE_CHANGE_TITLE',	'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ <%memberName%>');
-define('_ACTIVATE_CHANGE_TEXT',		'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_ACTIVATE_SUCCESS_TITLE',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ACTIVATE_SUCCESS_TEXT',	'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_MEMBERS_SETPWD',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEMBERS_SETPWD_BTN',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_ACTIVATE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_ACTIVATE_TEXT',		'<p>пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ <a href="index.php?action=showlogin"><strong>пїЅпїЅпїЅпїЅпїЅ</strong></a>.</p>');
+define('_ACTIVATE_REGISTER_MAIL',	"Здравствуйте, <%memberName%>,\n\nВам необходимо активировать свою эккаунт на <%siteName%> (<%siteUrl%>).\nДля этого перйдите по ссылке: \n\n\t<%activationUrl%>\n\nУ вас есть 2 дня, по истечение этого срока ссылка становится недействительной.");
+define('_ACTIVATE_REGISTER_MAILTITLE',	"Активация эккаунта '<%memberName%>'");
+define('_ACTIVATE_REGISTER_TITLE',	'Добро пожаловать <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',	'Вы почти прошли процедуру регистрации. Пожалуйста, введите пароль для Вашей учётной записи.');
+define('_ACTIVATE_FORGOT_MAIL',		"Здравствуйте, <%memberName%>,\n\nПерейдя по следующей ссылке, вы можете выбрать новый пароль для своего аккаунта на <%siteName%> (<%siteUrl%>)\n\n\t<%activationUrl%>\n\nУ вас есть 2 дня, по истечение этого срока ссылка становится недействительной.");
+define('_ACTIVATE_FORGOT_MAILTITLE',"Переактивация эккаунта '<%memberName%>'");
+define('_ACTIVATE_FORGOT_TITLE',	'Добро пожаловать <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',		'Вы можете ввести новый пароль для Вашего эккаунта:');
+define('_ACTIVATE_CHANGE_MAIL',		"Здравствуйте, <%memberName%>,\n\nПосле изменения Вашего e-mail требуется переактивация эккаунта на <%siteName%> (<%siteUrl%>).\nВы можете сделать это перейдя по следующей ссылке: \n\n\t<%activationUrl%>\n\nУ Вас есть 2 дня, по истечение этого срока ссылка становится недействительной.");
+define('_ACTIVATE_CHANGE_MAILTITLE',"Переактивация эккаунта '<%memberName%>'");
+define('_ACTIVATE_CHANGE_TITLE',	'Добро пожаловать <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',		'Ваш изменённый адрес был проверен. Спасибо!');
+define('_ACTIVATE_SUCCESS_TITLE',	'Активация прошла успешно');
+define('_ACTIVATE_SUCCESS_TEXT',	'Ваш эккаунт был успешно активирован.');
+define('_MEMBERS_SETPWD',			'Введите пароль');
+define('_MEMBERS_SETPWD_BTN',		'Введите пароль');
+define('_QMENU_ACTIVATE',			'Активация эккаунта');
+define('_QMENU_ACTIVATE_TEXT',		'<p>После активации эккаунта, Вы сможете использовать свои логин и пароль для <a href="index.php?action=showlogin"><strong>входа</strong></a>.</p>');
 
-define('_PLUGS_BTN_UPDATE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_PLUGS_BTN_UPDATE',			'Обновить список');
 
 // global settings
-define('_SETTINGS_JSTOOLBAR',		'Javascript пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_JSTOOLBAR_FULL',	'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (IE)');
-define('_SETTINGS_JSTOOLBAR_SIMPLE','пїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅ IE)');
-define('_SETTINGS_JSTOOLBAR_NONE',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ fancy URLs (пїЅпїЅпїЅ)</a>)');
+define('_SETTINGS_JSTOOLBAR',		'Javascript панель');
+define('_SETTINGS_JSTOOLBAR_FULL',	'Полная панель (IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE','Мини-панель (не IE)');
+define('_SETTINGS_JSTOOLBAR_NONE',	'Выключить панель');
+define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">Как включить fancy URLs (ЧПУ)</a>)');
 
 // extra plugin settings part when editing categories/members/blogs/...
-define('_PLUGINS_EXTRA',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_PLUGINS_EXTRA',			'Дополнительные опции плагинов');
 
 // itemlist info column keys
-define('_LIST_ITEM_BLOG',			'пїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_LIST_ITEM_CAT',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_LIST_ITEM_AUTHOR',			'пїЅпїЅпїЅпїЅпїЅ:');
-define('_LIST_ITEM_DATE',			'пїЅпїЅпїЅпїЅ:');
-define('_LIST_ITEM_TIME',			'пїЅпїЅпїЅпїЅпїЅ:');
+define('_LIST_ITEM_BLOG',			'раздел:');
+define('_LIST_ITEM_CAT',			'категория:');
+define('_LIST_ITEM_AUTHOR',			'автор:');
+define('_LIST_ITEM_DATE',			'дата:');
+define('_LIST_ITEM_TIME',			'время:');
 
 // indication of registered members in comments list
-define('_LIST_COMMENTS_MEMBER', 	'(пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
+define('_LIST_COMMENTS_MEMBER', 	'(пользователь)');
 
 // batch operations
-define('_BATCH_WITH_SEL',			'пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_BATCH_EXEC',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_BATCH_WITH_SEL',			'С выбранными:');
+define('_BATCH_EXEC',				'Сделать');
 
 // quickmenu
-define('_QMENU_HOME',				'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_ADD',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ:');
-define('_QMENU_ADD_SELECT',			'-- пїЅпїЅпїЅпїЅпїЅпїЅпїЅ --');
-define('_QMENU_USER_SETTINGS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_USER_ITEMS',			'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_USER_COMMENTS',		'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_MANAGE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_MANAGE_LOG',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_MANAGE_SETTINGS',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_MANAGE_MEMBERS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_MANAGE_NEWBLOG',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_MANAGE_BACKUPS',		'пїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_MANAGE_PLUGINS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_LAYOUT',				'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_LAYOUT_SKINS',		'пїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_LAYOUT_TEMPL',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_LAYOUT_IEXPORT',		'пїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_PLUGINS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_QMENU_HOME',				'Начало');
+define('_QMENU_ADD',				'Добавить сообщение в:');
+define('_QMENU_ADD_SELECT',			'-- выбрать --');
+define('_QMENU_USER_SETTINGS',		'Профиль');
+define('_QMENU_USER_ITEMS',			'Свои сообщения');
+define('_QMENU_USER_COMMENTS',		'Свои комментарии');
+define('_QMENU_MANAGE',				'Управление');
+define('_QMENU_MANAGE_LOG',			'Лог действий');
+define('_QMENU_MANAGE_SETTINGS',	'Конфигурация');
+define('_QMENU_MANAGE_MEMBERS',		'Пользователи');
+define('_QMENU_MANAGE_NEWBLOG',		'Создать раздел');
+define('_QMENU_MANAGE_BACKUPS',		'Бэкап');
+define('_QMENU_MANAGE_PLUGINS',		'Плагины');
+define('_QMENU_LAYOUT',				'Дизайн');
+define('_QMENU_LAYOUT_SKINS',		'Скины');
+define('_QMENU_LAYOUT_TEMPL',		'Шаблоны');
+define('_QMENU_LAYOUT_IEXPORT',		'Импорт/Экспорт');
+define('_QMENU_PLUGINS',			'Плагины');
 
 // quickmenu on logon screen
-define('_QMENU_INTRO',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_QMENU_INTRO_TEXT',			'<p>пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</p><p>пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.</p>');
+define('_QMENU_INTRO',				'Необходимо авторизоваться');
+define('_QMENU_INTRO_TEXT',			'<p>Для продолжения работы с сайтом необходима авторизация.</p><p>После авторизации Вы сможете добавлять новые сообщения.</p>');
 
 // helppages for plugins
-define('_ERROR_PLUGNOHELPFILE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_PLUGS_HELP_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LIST_PLUGS_HELP', 			'пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ERROR_PLUGNOHELPFILE',		'Документация не найдена');
+define('_PLUGS_HELP_TITLE',			'Документация к плагину');
+define('_LIST_PLUGS_HELP', 			'помощь');
 
 
 // END changed/started after 3.1
@@ -450,193 +450,193 @@ define('_LIST_PLUGS_HELP', 			'пїЅпїЅпїЅпїЅпїЅпїЅ');
 // START changed/added after v2.5beta START
 
 // general settings (security)
-define('_SETTINGS_EXTAUTH',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_WARNING_EXTAUTH',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
+define('_SETTINGS_EXTAUTH',			'Включить внешнюю аутентификацию');
+define('_WARNING_EXTAUTH',			'Внимание: Включать только при необходимости.');
 
 // member profile
-define('_MEMBERS_BYPASS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_MEMBERS_BYPASS',			'Включить внешнюю аутентификацию');
 
 // 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
-define('_EBLOG_SEARCH',				'<em>пїЅпїЅпїЅпїЅпїЅпїЅ</em> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ');
+define('_EBLOG_SEARCH',				'<em>Всегда</em> включать в поиск');
 
 // END changed/added after v2.5beta
 
 // START introduced after v2.0 START
 
 // media library
-define('_MEDIA_VIEW',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEDIA_VIEW_TT',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ)');
-define('_MEDIA_FILTER_APPLY',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEDIA_FILTER_LABEL',		'пїЅпїЅпїЅпїЅпїЅпїЅ: ');
-define('_MEDIA_UPLOAD_TO',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ ...');
-define('_MEDIA_UPLOAD_NEW',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ...');
-define('_MEDIA_COLLECTION_SELECT',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEDIA_COLLECTION_TT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEDIA_COLLECTION_LABEL',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ');
+define('_MEDIA_VIEW',				'просмотр');
+define('_MEDIA_VIEW_TT',			'Просмотр файл (откроется в новом окне)');
+define('_MEDIA_FILTER_APPLY',		'Применить фильтр');
+define('_MEDIA_FILTER_LABEL',		'Фильтр: ');
+define('_MEDIA_UPLOAD_TO',			'Закачать в ...');
+define('_MEDIA_UPLOAD_NEW',			'Закачать новый файл...');
+define('_MEDIA_COLLECTION_SELECT',	'Выбрать');
+define('_MEDIA_COLLECTION_TT',		'Переключить на эту категорию');
+define('_MEDIA_COLLECTION_LABEL',	'Текущая коллекция: ');
 
 // tooltips on toolbar
-define('_ADD_ALIGNLEFT_TT',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_ALIGNRIGHT_TT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_ALIGNCENTER_TT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ADD_ALIGNLEFT_TT',			'Выровнять влево');
+define('_ADD_ALIGNRIGHT_TT',		'Выровнять вправо');
+define('_ADD_ALIGNCENTER_TT',		'Выровнять по-центру');
 
 
 // generic upload failure
-define('_ERROR_UPLOADFAILED',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ERROR_UPLOADFAILED',		'Ошибка закачки');
 
 // END introduced after v2.0 END
 
 // START introduced after v1.5 START
 
 // posting to the past/edit timestamps
-define('_EBLOG_ALLOWPASTPOSTING',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_CHANGEDATE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_BMLET_CHANGEDATE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
+define('_EBLOG_ALLOWPASTPOSTING',	'Разрешить размещение сообщений в прошлое');
+define('_ADD_CHANGEDATE',			'Обновить время');
+define('_BMLET_CHANGEDATE',			'Обновить время');
 
 // skin import/export
-define('_OVERVIEW_SKINIMPORT',		'пїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ...');
+define('_OVERVIEW_SKINIMPORT',		'Импорт/экспорт скинов...');
 
 // skin settings
-define('_PARSER_INCMODE_NORMAL',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_PARSER_INCMODE_SKINDIR',	'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
+define('_PARSER_INCMODE_NORMAL',	'Обычный');
+define('_PARSER_INCMODE_SKINDIR',	'Папка скина');
 define('_SKIN_INCLUDE_MODE',		'Include mode');
 define('_SKIN_INCLUDE_PREFIX',		'Include prefix');
 
 // global settings
-define('_SETTINGS_BASESKIN',		'пїЅпїЅпїЅпїЅ пїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_SKINSURL',		'URL пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_ACTIONSURL',		'пїЅпїЅпїЅпїЅпїЅпїЅ URL пїЅ action.php');
+define('_SETTINGS_BASESKIN',		'Скин по-умолчанию');
+define('_SETTINGS_SKINSURL',		'URL скинов');
+define('_SETTINGS_ACTIONSURL',		'Полный URL к action.php');
 
 // category moves (batch)
-define('_ERROR_MOVEDEFCATEGORY',	'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_MOVETOSELF',			'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MOVECAT_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MOVECAT_BTN',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ERROR_MOVEDEFCATEGORY',	'Нельзя перемещать заданную по умолчанию категорию');
+define('_ERROR_MOVETOSELF',			'Нельзя перемещать категорию в тот же раздел');
+define('_MOVECAT_TITLE',			'Выберите раздел, в который хотите переместить категорию');
+define('_MOVECAT_BTN',				'Переместить категорию');
 
 // URLMode setting
-define('_SETTINGS_URLMODE',			'пїЅпїЅпїЅ URL');
-define('_SETTINGS_URLMODE_NORMAL',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_URLMODE_PATHINFO','пїЅпїЅпїЅ');
+define('_SETTINGS_URLMODE',			'Тип URL');
+define('_SETTINGS_URLMODE_NORMAL',	'Обычный');
+define('_SETTINGS_URLMODE_PATHINFO','ЧПУ');
 
 // Batch operations
-define('_BATCH_NOSELECTION',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_ITEMS',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_CATEGORIES',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_MEMBERS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_TEAM',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_COMMENTS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_UNKNOWN',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ');
-define('_BATCH_EXECUTING',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_ONCATEGORY',			'пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_ONITEM',				'пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_ONCOMMENT',			'пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_ONMEMBER',			'пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_ONTEAM',				'пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_SUCCESS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_BATCH_DONE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_BATCH_DELETE_CONFIRM',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_DELETE_CONFIRM_BTN',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_SELECTALL',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_BATCH_DESELECTALL',		'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_BATCH_NOSELECTION',		'Ничего не выбрано для выполнения действия');
+define('_BATCH_ITEMS',				'Массовая обработка сообщений');
+define('_BATCH_CATEGORIES',			'Массовая операция с категориями');
+define('_BATCH_MEMBERS',			'Массовая операция с пользователями');
+define('_BATCH_TEAM',				'Массовая операция с участниками команды авторов');
+define('_BATCH_COMMENTS',			'Массовая операция с комментариями');
+define('_BATCH_UNKNOWN',			'Неизвестная массовая операция: ');
+define('_BATCH_EXECUTING',			'Выполнение');
+define('_BATCH_ONCATEGORY',			'с категориями');
+define('_BATCH_ONITEM',				'с сообщениями');
+define('_BATCH_ONCOMMENT',			'с комментариями');
+define('_BATCH_ONMEMBER',			'с пользователями');
+define('_BATCH_ONTEAM',				'с участником команды авторов');
+define('_BATCH_SUCCESS',			'Успешно!');
+define('_BATCH_DONE',				'Выполнено!');
+define('_BATCH_DELETE_CONFIRM',		'Потвердите массовое удаление');
+define('_BATCH_DELETE_CONFIRM_BTN',	'Потвердите массовое удаление');
+define('_BATCH_SELECTALL',			'выделить все');
+define('_BATCH_DESELECTALL',		'снять выделение');
 
 // batch operations: options in dropdowns
-define('_BATCH_ITEM_DELETE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_ITEM_MOVE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_MEMBER_DELETE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_MEMBER_SET_ADM',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_MEMBER_UNSET_ADM',	'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_TEAM_DELETE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_TEAM_SET_ADM',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_TEAM_UNSET_ADM',		'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_CAT_DELETE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_CAT_MOVE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BATCH_COMMENT_DELETE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_BATCH_ITEM_DELETE',		'Удалить');
+define('_BATCH_ITEM_MOVE',			'Переместить');
+define('_BATCH_MEMBER_DELETE',		'Удалить');
+define('_BATCH_MEMBER_SET_ADM',		'Назначить права администратора');
+define('_BATCH_MEMBER_UNSET_ADM',	'Снять права администратора');
+define('_BATCH_TEAM_DELETE',		'Удалить из команды авторов');
+define('_BATCH_TEAM_SET_ADM',		'Назначить права администратора');
+define('_BATCH_TEAM_UNSET_ADM',		'Снять права администратора');
+define('_BATCH_CAT_DELETE',			'Удалить');
+define('_BATCH_CAT_MOVE',			'Переместить в другой раздел');
+define('_BATCH_COMMENT_DELETE',		'Удалить');
 
 // itemlist: Add new item...
-define('_ITEMLIST_ADDNEW',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ...');
-define('_ADD_PLUGIN_EXTRAS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ITEMLIST_ADDNEW',			'Добавить новое сообщение ...');
+define('_ADD_PLUGIN_EXTRAS',		'Дополнительные опции плагинов');
 
 // errors
-define('_ERROR_CATCREATEFAIL',		'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_NUCLEUSVERSIONREQ',	'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ Nucleus: ');
+define('_ERROR_CATCREATEFAIL',		'Не удалось создать новую категорию');
+define('_ERROR_NUCLEUSVERSIONREQ',	'Этот плагин предназначен для более поздней версии Nucleus: ');
 
 // backlinks
-define('_BACK_TO_BLOGSETTINGS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_BACK_TO_BLOGSETTINGS',		'Вернуться к настройкам раздела');
 
 // skin import export
-define('_SKINIE_TITLE_IMPORT',		'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKINIE_TITLE_EXPORT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKINIE_BTN_IMPORT',		'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKINIE_BTN_EXPORT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKINIE_LOCAL',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_SKINIE_NOCANDIDATES',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_SKINIE_FROMURL',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ URL:');
-define('_SKINIE_EXPORT_INTRO',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKINIE_EXPORT_SKINS',		'пїЅпїЅпїЅпїЅпїЅ');
-define('_SKINIE_EXPORT_TEMPLATES',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKINIE_EXPORT_EXTRA',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKINIE_CONFIRM_OVERWRITE',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_SKINIE_CONFIRM_IMPORT',	'пїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_SKINIE_CONFIRM_TITLE',		'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKINIE_INFO_SKINS',		'пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ:');
-define('_SKINIE_INFO_TEMPLATES',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ:');
-define('_SKINIE_INFO_GENERAL',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_SKINIE_INFO_SKINCLASH',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_SKINIE_INFO_TEMPLCLASH',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_SKINIE_INFO_IMPORTEDSKINS','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ:');
-define('_SKINIE_INFO_IMPORTEDTEMPLS','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_SKINIE_DONE',				'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_SKINIE_TITLE_IMPORT',		'Импорт');
+define('_SKINIE_TITLE_EXPORT',		'Экспорт');
+define('_SKINIE_BTN_IMPORT',		'Импорт');
+define('_SKINIE_BTN_EXPORT',		'Экспортировать выбранные скины/шаблоны');
+define('_SKINIE_LOCAL',				'Импортировать с файла на сервере:');
+define('_SKINIE_NOCANDIDATES',		'Ничего не найдено для импорта в папке скина');
+define('_SKINIE_FROMURL',			'Импортировать из URL:');
+define('_SKINIE_EXPORT_INTRO',		'Выберите скины и шаблоны, которые вы хотите экспортировать');
+define('_SKINIE_EXPORT_SKINS',		'Скины');
+define('_SKINIE_EXPORT_TEMPLATES',	'Шаблоны');
+define('_SKINIE_EXPORT_EXTRA',		'Дополнительная информация');
+define('_SKINIE_CONFIRM_OVERWRITE',	'Перезаписать уже существующие скины (смотрите совпадающие названия)');
+define('_SKINIE_CONFIRM_IMPORT',	'Да, я хочу импортировать это');
+define('_SKINIE_CONFIRM_TITLE',		'Об импортируемых скинах и шаблонах');
+define('_SKINIE_INFO_SKINS',		'Скины в файле:');
+define('_SKINIE_INFO_TEMPLATES',	'Шаблоны в файле:');
+define('_SKINIE_INFO_GENERAL',		'Информация:');
+define('_SKINIE_INFO_SKINCLASH',	'Совпадающие названия скинов:');
+define('_SKINIE_INFO_TEMPLCLASH',	'Совпадающие названия шаблонов:');
+define('_SKINIE_INFO_IMPORTEDSKINS','Импортированные скины:');
+define('_SKINIE_INFO_IMPORTEDTEMPLS','Импортрованные шаблоны:');
+define('_SKINIE_DONE',				'Импорт произведён');
 
-define('_AND',						'пїЅ');
-define('_OR',						'пїЅпїЅпїЅ');
+define('_AND',						'и');
+define('_OR',						'или');
 
 // empty fields on template edit
-define('_EDITTEMPLATE_EMPTY',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
+define('_EDITTEMPLATE_EMPTY',		'пустое поле (нажмите для редактирования)');
 
 // skin overview list
 define('_LIST_SKINS_INCMODE',		'IncludeMode:');
 define('_LIST_SKINS_INCPREFIX',		'IncludePrefix:');
-define('_LIST_SKINS_DEFINED',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ:');
+define('_LIST_SKINS_DEFINED',		'Используемые части:');
 
 // backup
-define('_BACKUPS_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ / пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BACKUP_TITLE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BACKUP_INTRO',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.');
-define('_BACKUP_ZIP_YES',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BACKUP_ZIP_NO',			'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BACKUP_BTN',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_BACKUP_NOTE',				'<b>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:</b> пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ MEDIA пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ config.php <b>пїЅпїЅ</b> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.');
-define('_RESTORE_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_RESTORE_NOTE',				'<b>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:</b> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ <b>пїЅпїЅпїЅРЁпїЅ</b> пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ Nucleus пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!	<br />	<b>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:</b> пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ Nucleus пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.');
-define('_RESTORE_INTRO',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ) пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ", пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_RESTORE_IMSURE',			'пїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ!');
-define('_RESTORE_BTN',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_RESTORE_WARNING',			'(пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.)');
-define('_ERROR_BACKUP_NOTSURE',		'пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ "пїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ"');
-define('_RESTORE_COMPLETE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_BACKUPS_TITLE',			'Резервное копирование базы данных / Восстановление');
+define('_BACKUP_TITLE',				'Резервное копирование');
+define('_BACKUP_INTRO',				'Нажмите кнопку ниже, чтобы сделать резервное копирование базы данных. Сохраните файл в безопасном месте.');
+define('_BACKUP_ZIP_YES',			'Попробовать использовать сжатие');
+define('_BACKUP_ZIP_NO',			'Не использовать сжатие');
+define('_BACKUP_BTN',				'Создать бэкап');
+define('_BACKUP_NOTE',				'<b>Примечание:</b> В резервную копию включено только содержание базы данных. Файлы из папки MEDIA и настройки из файла config.php <b>НЕ</b> включены в резервную копию.');
+define('_RESTORE_TITLE',			'Восстановление');
+define('_RESTORE_NOTE',				'<b>Предупреждение:</b> Восстановление из резервной копии <b>СОТРЁТ</b> все текущии данные Nucleus в базе данных! Вы должны быть уверены в правильности своих действий!	<br />	<b>Примечание:</b> Удостоверитесь, что используемая сейчас версия Nucleus та же самая, какая была при резервном копировании. Иначе могут возникнуть ошибки в работе сайта.');
+define('_RESTORE_INTRO',			'Выберите файл с резервной копией (он будет загружен на сервер) и нажмите кнопку "Восстановить из файла", чтобы запустить процесс востановления.');
+define('_RESTORE_IMSURE',			'Да, я уверен, что хочу сделать это!');
+define('_RESTORE_BTN',				'Восстановить из файла');
+define('_RESTORE_WARNING',			'(Убедитесь, что файл резервной копии не повреждён. Возможно следует сделать новую резервную копию.)');
+define('_ERROR_BACKUP_NOTSURE',		'Вы не отметили поле "Да, я уверен, что хочу сделать это"');
+define('_RESTORE_COMPLETE',			'Восстановление завершено');
 
 // new item notification
-define('_NOTIFY_NI_MSG',			'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_NOTIFY_NI_TITLE',			'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_NOTIFY_KV_MSG',			'Karma-пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
+define('_NOTIFY_NI_MSG',			'Новое сообщение было добавлено:');
+define('_NOTIFY_NI_TITLE',			'Новое сообщение!');
+define('_NOTIFY_KV_MSG',			'Karma-голос к сообщению:');
 define('_NOTIFY_KV_TITLE',			'Nucleus karma:');
-define('_NOTIFY_NC_MSG',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_NOTIFY_NC_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Nucleus:');
-define('_NOTIFY_USERID',			'ID пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_NOTIFY_USER',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_NOTIFY_COMMENT',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_NOTIFY_VOTE',				'пїЅпїЅпїЅпїЅпїЅ:');
-define('_NOTIFY_HOST',				'пїЅпїЅпїЅпїЅ:');
+define('_NOTIFY_NC_MSG',			'Комментарии к сообщению:');
+define('_NOTIFY_NC_TITLE',			'Комментарии Nucleus:');
+define('_NOTIFY_USERID',			'ID пользователя:');
+define('_NOTIFY_USER',				'Пользователь:');
+define('_NOTIFY_COMMENT',			'Комментарий:');
+define('_NOTIFY_VOTE',				'Голос:');
+define('_NOTIFY_HOST',				'Хост:');
 define('_NOTIFY_IP',				'IP:');
-define('_NOTIFY_MEMBER',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_NOTIFY_TITLE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_NOTIFY_CONTENTS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
+define('_NOTIFY_MEMBER',			'Пользователь:');
+define('_NOTIFY_TITLE',				'Заголовок:');
+define('_NOTIFY_CONTENTS',			'Содержание:');
 
 // member mail message
-define('_MMAIL_MSG',				'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ:');
-define('_MMAIL_FROMANON',			'пїЅпїЅпїЅпїЅпїЅ');
-define('_MMAIL_FROMNUC',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MMAIL_TITLE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ:');
-define('_MMAIL_MAIL',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
+define('_MMAIL_MSG',				'Вам послано письмо от:');
+define('_MMAIL_FROMANON',			'гость');
+define('_MMAIL_FROMNUC',			'Пользователь');
+define('_MMAIL_TITLE',				'Сообщение от:');
+define('_MMAIL_MAIL',				'Сообщение:');
 
 // END introduced after v1.5 END
 
@@ -644,91 +644,91 @@ define('_MMAIL_MAIL',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
 // START introduced after v1.1 START
 
 // bookmarklet buttons
-define('_BMLET_ADD',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BMLET_EDIT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BMLET_DELETE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BMLET_BODY',				'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BMLET_MORE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_BMLET_OPTIONS',			'пїЅпїЅпїЅпїЅпїЅ');
-define('_BMLET_PREVIEW',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_BMLET_ADD',				'Добавить сообщение');
+define('_BMLET_EDIT',				'Редактировать сообщение');
+define('_BMLET_DELETE',				'Удалить сообщение');
+define('_BMLET_BODY',				'Превью');
+define('_BMLET_MORE',				'Основная часть');
+define('_BMLET_OPTIONS',			'Опции');
+define('_BMLET_PREVIEW',			'Просмотр');
 
 // used in bookmarklet
-define('_ITEM_UPDATED',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ITEM_DELETED',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ITEM_UPDATED',				'Сообщение изменено');
+define('_ITEM_DELETED',				'Сообщение удалено');
 
 // plugins
-define('_CONFIRMTXT_PLUGIN',		'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_NOSUCHPLUGIN',		'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_DUPPLUGIN',			'пїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_PLUGFILEERROR',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ CHMOD пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_PLUGS_NOCANDIDATES',		'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_CONFIRMTXT_PLUGIN',		'Вы действительно хотите удалить плагин');
+define('_ERROR_NOSUCHPLUGIN',		'Нет такого плагина');
+define('_ERROR_DUPPLUGIN',			'Жаль, но этот плагин уже установлен');
+define('_ERROR_PLUGFILEERROR',		'Такого плагина не существует или CHMOD установлен неверно');
+define('_PLUGS_NOCANDIDATES',		'Нет плагинов для установки');
 
-define('_PLUGS_TITLE_MANAGE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_PLUGS_TITLE_INSTALLED',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_PLUGS_TITLE_UPDATE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_PLUGS_TEXT_UPDATE',		'пїЅ Nucleus пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_PLUGS_TITLE_NEW',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_PLUGS_ADD_TEXT',			'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ plugins, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_PLUGS_BTN_INSTALL',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BACKTOOVERVIEW',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_PLUGS_TITLE_MANAGE',		'Управление плагинами');
+define('_PLUGS_TITLE_INSTALLED',	'Установленные плагины');
+define('_PLUGS_TITLE_UPDATE',		'Обновить список');
+define('_PLUGS_TEXT_UPDATE',		'В Nucleus сохраняется кэшированный список плагинов. Если вы заменили или удалили какой-то плагин, обновите список.');
+define('_PLUGS_TITLE_NEW',			'Установить новый плагин');
+define('_PLUGS_ADD_TEXT',			'Ниже приведён список всех файлов, находящихся в папке plugins, которые могут быть установлены. Удостоверьтесь перед установкой, что выбранный Вами файл действительно является плагином.');
+define('_PLUGS_BTN_INSTALL',		'Установить плагин');
+define('_BACKTOOVERVIEW',			'Вернуться к управлению плагинами');
 
 // editlink
-define('_TEMPLATE_EDITLINK',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
+define('_TEMPLATE_EDITLINK',		'Ссылка на редактирование поста');
 
 // add left / add right tooltips
-define('_ADD_LEFT_TT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_RIGHT_TT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ADD_LEFT_TT',				'Добавить левую колонку');
+define('_ADD_RIGHT_TT',				'Добавить правую колонку');
 
 // add/edit item: new category (in dropdown box)
-define('_ADD_NEWCAT',				'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ...');
+define('_ADD_NEWCAT',				'Новая категория...');
 
 // new settings
-define('_SETTINGS_PLUGINURL',		'URL пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_MAXUPLOADSIZE',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_SETTINGS_NONMEMBERMSGS',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_PROTECTMEMNAMES',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_SETTINGS_PLUGINURL',		'URL плагина');
+define('_SETTINGS_MAXUPLOADSIZE',	'Максимальный размер закачиваемых файлов (в байтах)');
+define('_SETTINGS_NONMEMBERMSGS',	'Разрешить гостям посылать сообщения');
+define('_SETTINGS_PROTECTMEMNAMES',	'Защитить имена пользователей');
 
 // overview screen
-define('_OVERVIEW_PLUGINS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ...');
+define('_OVERVIEW_PLUGINS',			'Управление плагинами...');
 
 // actionlog
-define('_ACTIONLOG_NEWMEMBER',		'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
+define('_ACTIONLOG_NEWMEMBER',		'Новый пользователь зарегистрирован:');
 
 // membermail (when not logged in)
-define('_MEMBERMAIL_MAIL',			'пїЅпїЅпїЅ e-mail:');
+define('_MEMBERMAIL_MAIL',			'Ваш e-mail:');
 
 // file upload
-define('_ERROR_DISALLOWEDUPLOAD2',	'пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ERROR_DISALLOWEDUPLOAD2',	'Вы не имеете прав для закачки файлов. С вопросами обращайтесь к администратору');
 
 // plugin list
-define('_LISTS_INFO',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LIST_PLUGS_AUTHOR',		'пїЅпїЅпїЅпїЅпїЅ:');
-define('_LIST_PLUGS_VER',			'пїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_LIST_PLUGS_SITE',			'пїЅпїЅпїЅпїЅ');
-define('_LIST_PLUGS_DESC',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_LIST_PLUGS_SUBS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ:');
-define('_LIST_PLUGS_UP',			'пїЅпїЅпїЅпїЅпїЅ');
-define('_LIST_PLUGS_DOWN',			'пїЅпїЅпїЅпїЅ');
-define('_LIST_PLUGS_UNINSTALL',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LIST_PLUGS_ADMIN',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LIST_PLUGS_OPTIONS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_LISTS_INFO',				'Информация');
+define('_LIST_PLUGS_AUTHOR',		'Автор:');
+define('_LIST_PLUGS_VER',			'версия:');
+define('_LIST_PLUGS_SITE',			'сайт');
+define('_LIST_PLUGS_DESC',			'Описание:');
+define('_LIST_PLUGS_SUBS',			'Зависит от:');
+define('_LIST_PLUGS_UP',			'вверх');
+define('_LIST_PLUGS_DOWN',			'вниз');
+define('_LIST_PLUGS_UNINSTALL',		'удалить');
+define('_LIST_PLUGS_ADMIN',			'управление');
+define('_LIST_PLUGS_OPTIONS',		'настроить');
 
 // plugin option list
-define('_LISTS_VALUE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_LISTS_VALUE',				'Значение');
 
 // plugin options
-define('_ERROR_NOPLUGOPTIONS',		'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_PLUGS_BACK',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_PLUGS_SAVE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_PLUGS_OPTIONS_UPDATED',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ERROR_NOPLUGOPTIONS',		'Нет настроек для плагина');
+define('_PLUGS_BACK',				'Вернуться к обзору плагинов');
+define('_PLUGS_SAVE',				'Сохранить настройки');
+define('_PLUGS_OPTIONS_UPDATED',	'Настройки плагина обновлены');
 
-define('_OVERVIEW_MANAGEMENT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_OVERVIEW_MANAGE',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ...');
-define('_MANAGE_GENERAL',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MANAGE_SKINS',				'пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MANAGE_EXTRA',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_OVERVIEW_MANAGEMENT',		'Управление сайтом');
+define('_OVERVIEW_MANAGE',			'Все настройки...');
+define('_MANAGE_GENERAL',			'Основные настройки');
+define('_MANAGE_SKINS',				'Скины и шаблоны');
+define('_MANAGE_EXTRA',				'Дополнительные настройки');
 
-define('_BACKTOMANAGE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_BACKTOMANAGE',				'Вернуться к управлению сайтом');
 
 
 // END introduced after v1.1 END
@@ -738,535 +738,535 @@ define('_BACKTOMANAGE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпї
 
 
 // global stuff
-define('_LOGOUT',					'пїЅпїЅпїЅпїЅпїЅ');
-define('_LOGIN',					'пїЅпїЅпїЅпїЅ');
-define('_YES',						'пїЅпїЅ');
-define('_NO',						'пїЅпїЅпїЅ');
-define('_SUBMIT',					'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR',					'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERRORMSG',					'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_BACK',						'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_NOTLOGGEDIN',				'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LOGGEDINAS',				'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_ADMINHOME',				'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_NAME',						'пїЅпїЅпїЅ');
-define('_BACKHOME',					'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BADACTION',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MESSAGE',					'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_HELP_TT',					'пїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_YOURSITE',					'пїЅпїЅ пїЅпїЅпїЅпїЅ');
+define('_LOGOUT',					'Выход');
+define('_LOGIN',					'Вход');
+define('_YES',						'Да');
+define('_NO',						'Нет');
+define('_SUBMIT',					'Отправить');
+define('_ERROR',					'Ошибка');
+define('_ERRORMSG',					'Произошла ошибка!');
+define('_BACK',						'Вернуться');
+define('_NOTLOGGEDIN',				'Не авторизованы');
+define('_LOGGEDINAS',				'Вошли как');
+define('_ADMINHOME',				'Начало');
+define('_NAME',						'Имя');
+define('_BACKHOME',					'Вернуться на главную страницу управления сайтом');
+define('_BADACTION',				'Запрашивается несуществующее действие');
+define('_MESSAGE',					'Сообщение');
+define('_HELP_TT',					'Помощь!');
+define('_YOURSITE',					'На сайт');
 
 
-define('_POPUP_CLOSE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
+define('_POPUP_CLOSE',				'Закрыть окно');
 
-define('_LOGIN_PLEASE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_LOGIN_PLEASE',				'Необходимо сначала авторизоваться');
 
 // commentform
-define('_COMMENTFORM_YOUARE',		'пїЅпїЅ');
-define('_COMMENTFORM_SUBMIT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_COMMENTFORM_COMMENT',		'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_COMMENTFORM_NAME',			'пїЅпїЅпїЅ');
+define('_COMMENTFORM_YOUARE',		'Вы');
+define('_COMMENTFORM_SUBMIT',		'Комментировать!');
+define('_COMMENTFORM_COMMENT',		'Ваш комментарий');
+define('_COMMENTFORM_NAME',			'Имя');
 define('_COMMENTFORM_MAIL',			'E-mail/HTTP');
-define('_COMMENTFORM_REMEMBER',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
+define('_COMMENTFORM_REMEMBER',		'Запомнить меня');
 
 // loginform
-define('_LOGINFORM_NAME',			'пїЅпїЅпїЅпїЅпїЅ');
-define('_LOGINFORM_PWD',			'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LOGINFORM_YOUARE',			'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_LOGINFORM_SHARED',			'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_LOGINFORM_NAME',			'Логин');
+define('_LOGINFORM_PWD',			'Пароль');
+define('_LOGINFORM_YOUARE',			'Вы вошли как');
+define('_LOGINFORM_SHARED',			'Чужой компьютер');
 
 // member mailform
-define('_MEMBERMAIL_SUBMIT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_MEMBERMAIL_SUBMIT',		'Отправить');
 
 // search form
-define('_SEARCHFORM_SUBMIT',		'пїЅпїЅпїЅпїЅпїЅ!');
+define('_SEARCHFORM_SUBMIT',		'Найти!');
 
 // add item form
-define('_ADD_ADDTO',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ');
-define('_ADD_CREATENEW',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_BODY',					'пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_ADD_TITLE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_MORE',					'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_CATEGORY',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_PREVIEW',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_DISABLE_COMMENTS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?');
-define('_ADD_DRAFTNFUTURE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ &amp; пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_ADDITEM',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_ADDNOW',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_ADDLATER',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_PLACE_ON',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
-define('_ADD_ADDDRAFT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_NOPASTDATES',			'(пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ)');
-define('_ADD_BOLD_TT',				'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_ITALIC_TT',			'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_HREF_TT',				'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_MEDIA_TT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ media');
-define('_ADD_PREVIEW_TT',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_CUT_TT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_COPY_TT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ADD_PASTE_TT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ADD_ADDTO',				'Добавить сообщение в');
+define('_ADD_CREATENEW',			'Создать новое сообщение');
+define('_ADD_BODY',					'Анонс (превью)');
+define('_ADD_TITLE',				'Заголовок');
+define('_ADD_MORE',					'Основная часть');
+define('_ADD_CATEGORY',				'Категория');
+define('_ADD_PREVIEW',				'Предпросмотр');
+define('_ADD_DISABLE_COMMENTS',		'Выключить комментарии?');
+define('_ADD_DRAFTNFUTURE',			'Черновики &amp; Будущие сообшения');
+define('_ADD_ADDITEM',				'Добавить сообщение');
+define('_ADD_ADDNOW',				'Добавить сейчас');
+define('_ADD_ADDLATER',				'Добавить позже');
+define('_ADD_PLACE_ON',				'Выберите дату');
+define('_ADD_ADDDRAFT',				'Добавить в черновики');
+define('_ADD_NOPASTDATES',			'(дата и время в прошлом недействительны, будут использовано текущее время)');
+define('_ADD_BOLD_TT',				'Жирный');
+define('_ADD_ITALIC_TT',			'Курсив');
+define('_ADD_HREF_TT',				'Ссылка');
+define('_ADD_MEDIA_TT',				'Добавить media');
+define('_ADD_PREVIEW_TT',			'Показать/Спрятать предпросмотр');
+define('_ADD_CUT_TT',				'Вырезать');
+define('_ADD_COPY_TT',				'Копировать');
+define('_ADD_PASTE_TT',				'Вставить');
 
 
 // edit item form
-define('_EDIT_ITEM',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EDIT_SUBMIT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EDIT_ORIG_AUTHOR',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_EDIT_BACKTODRAFTS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EDIT_COMMENTSNOTE',		'(пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
+define('_EDIT_ITEM',				'Редактировать сообщение');
+define('_EDIT_SUBMIT',				'Сохранить изменения');
+define('_EDIT_ORIG_AUTHOR',			'Первоначальный автор');
+define('_EDIT_BACKTODRAFTS',		'Добавить в черновики');
+define('_EDIT_COMMENTSNOTE',		'(примечание: выключение комментариев не уберёт оставленные ранее комментарии)');
 
 // used on delete screens
-define('_DELETE_CONFIRM',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_DELETE_CONFIRM_BTN',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_CONFIRMTXT_ITEM',			'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_CONFIRMTXT_COMMENT',		'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_CONFIRMTXT_TEAM1',			'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ');
-define('_CONFIRMTXT_TEAM2',			' пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ');
-define('_CONFIRMTXT_BLOG',			'пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ');
-define('_WARNINGTXT_BLOGDEL',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ! пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅ.<br />пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_CONFIRMTXT_MEMBER',		'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ');
-define('_CONFIRMTXT_TEMPLATE',		'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ');
-define('_CONFIRMTXT_SKIN',			'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ ');
-define('_CONFIRMTXT_BAN',			'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP');
-define('_CONFIRMTXT_CATEGORY',		'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ');
+define('_DELETE_CONFIRM',			'Потдверждение удаления');
+define('_DELETE_CONFIRM_BTN',		'Удалить!');
+define('_CONFIRMTXT_ITEM',			'Вы собираетесь удалить следующие сообщения:');
+define('_CONFIRMTXT_COMMENT',		'Вы собираетесь удалить следующие комментарии:');
+define('_CONFIRMTXT_TEAM1',			'Вы собираетесь удалить ');
+define('_CONFIRMTXT_TEAM2',			' из команды авторов раздела ');
+define('_CONFIRMTXT_BLOG',			'Раздел, который вы собираетесь удалить: ');
+define('_WARNINGTXT_BLOGDEL',		'Внимание! Удалив раздел, Вы удалите вместе с ним все сообщения и комментарии, находящиеся в нём.<br />Убедитесь, что такие действия необходимы.');
+define('_CONFIRMTXT_MEMBER',		'Вы собираетесь удалить следующего пользователя: ');
+define('_CONFIRMTXT_TEMPLATE',		'Вы собираетесь удалить шаблон ');
+define('_CONFIRMTXT_SKIN',			'Вы собираетесь удалить скин ');
+define('_CONFIRMTXT_BAN',			'Вы собираетесь снять бан для следующего диапозона IP');
+define('_CONFIRMTXT_CATEGORY',		'Вы собираетесь удалить категорию ');
 
 // some status messages
-define('_DELETED_ITEM',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_DELETED_MEMBER',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_DELETED_COMMENT',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_DELETED_BLOG',				'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_DELETED_CATEGORY',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ITEM_MOVED',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ITEM_ADDED',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_COMMENT_UPDATED',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_UPDATED',				'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_UPDATED',			'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_DELETED_ITEM',				'Сообщение удалено');
+define('_DELETED_MEMBER',			'Пользователь удалён');
+define('_DELETED_COMMENT',			'Комментарий удалён');
+define('_DELETED_BLOG',				'Раздел удалён');
+define('_DELETED_CATEGORY',			'Категория удалена');
+define('_ITEM_MOVED',				'Сообщение перемещено');
+define('_ITEM_ADDED',				'Сообщение добавлено');
+define('_COMMENT_UPDATED',			'Комментарий обновлён');
+define('_SKIN_UPDATED',				'Скин был изменён');
+define('_TEMPLATE_UPDATED',			'Шаблон был изменён');
 
 // errors
-define('_ERROR_COMMENT_LONGWORD',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 90 пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_COMMENT_NOCOMMENT',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_COMMENT_NOUSERNAME',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_ERROR_COMMENT_TOOLONG',	'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ. 5000 пїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_ERROR_COMMENTS_DISABLED',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_ERROR_COMMENTS_NONPUBLIC',	'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_COMMENTS_MEMBERNICK','пїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_ERROR_SKIN',				'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_ITEMCLOSED',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_ERROR_NOSUCHITEM',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_NOSUCHBLOG',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_NOSUCHSKIN',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_NOSUCHMEMBER',		'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_NOTONTEAM',			'пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_ERROR_BADDESTBLOG',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_NOTONDESTTEAM',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_NOEMPTYITEMS',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_ERROR_BADMAILADDRESS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ e-mail');
-define('_ERROR_BADNOTIFY',			'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ email пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_BADNAME',			'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ a-z пїЅ 0-9, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_ERROR_NICKNAMEINUSE',		'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_PASSWORDMISMATCH',	'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_PASSWORDTOOSHORT',	'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 6 пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_PASSWORDMISSING',	'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_REALNAMEMISSING',	'пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_ERROR_ATLEASTONEADMIN',	'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_ATLEASTONEBLOGADMIN','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_ERROR_ALREADYONTEAM',		'пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_ERROR_BADSHORTBLOGNAME',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ a-z, 0-9, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_DUPSHORTBLOGNAME',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. ');
-define('_ERROR_UPDATEFILE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ CHMOD пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 666). пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ admin-area пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ /vash/put/k/nucleus/)');
-define('_ERROR_DELDEFBLOG',			'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_DELETEMEMBER',		'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_BADTEMPLATENAME',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ a-z, 0-9, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_DUPTEMPLATENAME',	'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_BADSKINNAME',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ a-z, 0-9, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_DUPSKINNAME',		'пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_DEFAULTSKIN',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ "default"');
-define('_ERROR_SKINDEFDELETE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅ.пїЅ. пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ');
-define('_ERROR_DISALLOWED',			'пїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_DELETEBAN',			'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_ERROR_ADDBAN',				'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_ERROR_BADACTION',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_MEMBERMAILDISABLED',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_MEMBERCREATEDISABLED','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_INCORRECTEMAIL',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ e-mail пїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_VOTEDBEFORE',		'пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_BANNED1',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ (ip ');
-define('_ERROR_BANNED2',			') пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.<br> пїЅпїЅпїЅпїЅпїЅпїЅпїЅ: \'');
+define('_ERROR_COMMENT_LONGWORD',	'Пожалуйста, не используйте слова длинной более 90 знаков в ваших комментариях');
+define('_ERROR_COMMENT_NOCOMMENT',	'Введите комментарий');
+define('_ERROR_COMMENT_NOUSERNAME',	'Введите другое имя');
+define('_ERROR_COMMENT_TOOLONG',	'Ваш комментарий слишком большой (макс. 5000 знаков)');
+define('_ERROR_COMMENTS_DISABLED',	'Комментарии для этого раздела запрещены.');
+define('_ERROR_COMMENTS_NONPUBLIC',	'Вы должны быть зарегистрированным пользователем, чтобы добавлять комментарии в этом разделе');
+define('_ERROR_COMMENTS_MEMBERNICK','Имя, которое Вы хотите использовать, уже занято другим пользователем. Придумайте любое другое.');
+define('_ERROR_SKIN',				'Ошибка скина');
+define('_ERROR_ITEMCLOSED',			'Это сообщение закрыто для добавления комментариев.');
+define('_ERROR_NOSUCHITEM',			'Нет такого сообщения');
+define('_ERROR_NOSUCHBLOG',			'Нет такого раздела');
+define('_ERROR_NOSUCHSKIN',			'Нет такого скина');
+define('_ERROR_NOSUCHMEMBER',		'Нет такого пользователя');
+define('_ERROR_NOTONTEAM',			'Вы не входите в команду авторов этого раздела.');
+define('_ERROR_BADDESTBLOG',		'Запрашиваемый раздел не существует');
+define('_ERROR_NOTONDESTTEAM',		'Нельзя перемещать сообщения, пока Вы не вступили в команду авторов');
+define('_ERROR_NOEMPTYITEMS',		'Нельзя добавлять пустые сообщения!');
+define('_ERROR_BADMAILADDRESS',		'Неправильный адрес e-mail');
+define('_ERROR_BADNOTIFY',			'Один или несколько email адресов неправильны');
+define('_ERROR_BADNAME',			'Не допустимое имя (только символы a-z и 0-9, без пробелов)');
+define('_ERROR_NICKNAMEINUSE',		'Такой ник уже используется другим пользователем');
+define('_ERROR_PASSWORDMISMATCH',	'Пароли должны соответствовать');
+define('_ERROR_PASSWORDTOOSHORT',	'Пароль должен быть не менее 6 символов');
+define('_ERROR_PASSWORDMISSING',	'Пароль не ожет быть пустым');
+define('_ERROR_REALNAMEMISSING',	'Вы не ввели настоящее имя');
+define('_ERROR_ATLEASTONEADMIN',	'Всегда должен быть хотя бы один супер-администратор, который сможет входить в админку');
+define('_ERROR_ATLEASTONEBLOGADMIN','Выполнение этого действия сделало бы раздел неуправляемым. Должен быть хотя бы один администратор.');
+define('_ERROR_ALREADYONTEAM',		'Вы не можете добавить пользователя, который уже находится в команде авторов.');
+define('_ERROR_BADSHORTBLOGNAME',	'Короткое название раздела может состоять из символов a-z, 0-9, без пробелов');
+define('_ERROR_DUPSHORTBLOGNAME',	'Короткое название раздела совпадает с другим разделом. Короткое название раздела должно быть уникальным. ');
+define('_ERROR_UPDATEFILE',			'Невозможно получить доступ к файлу обновлений. Убедитесь что CHMOD установлен правильно (попробуйте поставить 666). Также обратите внимание на расположение файла относительно admin-area папки, возможно лучше использовать абсолютные пути (например /vash/put/k/nucleus/)');
+define('_ERROR_DELDEFBLOG',			'Нельзя удалить раздел по умолчанию');
+define('_ERROR_DELETEMEMBER',		'Этот пользователь не может быть удалён, вероятно потому, что он автор сообщений или комментариев');
+define('_ERROR_BADTEMPLATENAME',	'Недопустимое имя шаблона, используйте символы a-z, 0-9, без пробелов');
+define('_ERROR_DUPTEMPLATENAME',	'Шаблон с таким именем уже существует');
+define('_ERROR_BADSKINNAME',		'Недопустимое имя скина, используйте символы a-z, 0-9, без пробелов');
+define('_ERROR_DUPSKINNAME',		'Скин с таким именем уже существует');
+define('_ERROR_DEFAULTSKIN',		'Всегда должен быть существовать скин с названием "default"');
+define('_ERROR_SKINDEFDELETE',		'Невозможно удалить скин, т.к. он используется по умолчанию в следующем разделе: ');
+define('_ERROR_DISALLOWED',			'Жаль, но Вы не можете выполнить это действие');
+define('_ERROR_DELETEBAN',			'Ошибка при удалении бана (бана не существует)');
+define('_ERROR_ADDBAN',				'Ошибка при добавлении бана. Возможно, бан добавился не корректно во всех разделах.');
+define('_ERROR_BADACTION',			'Запрашиваемое действие не существует');
+define('_ERROR_MEMBERMAILDISABLED',	'Сообщения между пользователями запрещены');
+define('_ERROR_MEMBERCREATEDISABLED','Создание эккаунтов отключено');
+define('_ERROR_INCORRECTEMAIL',		'Неправильный e-mail адрес');
+define('_ERROR_VOTEDBEFORE',		'Вы уже проголосовали за это сообщение');
+define('_ERROR_BANNED1',			'Это действие запрещено пока Ваш (ip ');
+define('_ERROR_BANNED2',			') забанен.<br> Причина: \'');
 define('_ERROR_BANNED3',			'\'');
-define('_ERROR_LOGINNEEDED',		'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_CONNECT',			'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_FILE_TOO_BIG',		'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_ERROR_BADFILETYPE',		'пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_BADREQUEST',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_DISALLOWEDUPLOAD',	'пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.');
-define('_ERROR_BADPERMISSIONS',		'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_UPLOADMOVEP',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_UPLOADCOPY',			'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_UPLOADDUPLICATE',	'пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_ERROR_LOGINDISALLOWED',	'пїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_ERROR_DBCONNECT',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ MySQL пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_DBSELECT',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ Nucleus.');
-define('_ERROR_NOSUCHLOCALE',		'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_NOSUCHCATEGORY',		'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_DELETELASTCATEGORY',	'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_DELETEDEFCATEGORY',	'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_BADCATEGORYNAME',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ERROR_DUPCATEGORYNAME',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ERROR_LOGINNEEDED',		'Вы должны авторизоваться, чтобы выполнить это действие');
+define('_ERROR_CONNECT',			'Ошибка подключения');
+define('_ERROR_FILE_TOO_BIG',		'Файл слишком большой!');
+define('_ERROR_BADFILETYPE',		'Жаль, это расширение запрещено');
+define('_ERROR_BADREQUEST',			'Неверный запрос закачки');
+define('_ERROR_DISALLOWEDUPLOAD',	'Вы не входите ни в одну команду авторов, следовательно, Вам запрещено закачивать файлы.');
+define('_ERROR_BADPERMISSIONS',		'Права доступа к файлу/папке установлены неправильно');
+define('_ERROR_UPLOADMOVEP',		'Ошибка при перемещении загруженного файла');
+define('_ERROR_UPLOADCOPY',			'Ошибка при копировании файла');
+define('_ERROR_UPLOADDUPLICATE',	'Файл с таким именем уже существует. Попробуйте переименовать файл перед закачкой.');
+define('_ERROR_LOGINDISALLOWED',	'Жаль, но Вам запрещено входить в панель управления сайтом.');
+define('_ERROR_DBCONNECT',			'Невозможно соединиться с MySQL сервером');
+define('_ERROR_DBSELECT',			'Невозможно выбрать базу данных Nucleus.');
+define('_ERROR_NOSUCHLOCALE',		'Нет такого языкового файла');
+define('_ERROR_NOSUCHCATEGORY',		'Нет такой категории');
+define('_ERROR_DELETELASTCATEGORY',	'Должна быть хотя бы одна категория');
+define('_ERROR_DELETEDEFCATEGORY',	'Нельзя удалить заданную по умолчанию категорию');
+define('_ERROR_BADCATEGORYNAME',	'Неправильное имя категории');
+define('_ERROR_DUPCATEGORYNAME',	'Категория с таким именем уже существует');
 
 // some warnings (used for mediadir setting)
-define('_WARNING_NOTADIR',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_WARNING_NOTREADABLE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_WARNING_NOTWRITABLE',		'Warning: пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ - пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ!');
+define('_WARNING_NOTADIR',			'Предупреждение: Текущее значение - не директория!');
+define('_WARNING_NOTREADABLE',		'Предупреждение: Текущее значение - нечитаемая директория!');
+define('_WARNING_NOTWRITABLE',		'Warning: Текущее значение - не перезаписываемая директория!');
 
 // media and upload
-define('_MEDIA_UPLOADLINK',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
-define('_MEDIA_MODIFIED',			'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEDIA_FILENAME',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_MEDIA_DIMENSIONS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEDIA_INLINE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_MEDIA_UPLOADLINK',			'Закачать файл');
+define('_MEDIA_MODIFIED',			'изменён');
+define('_MEDIA_FILENAME',			'имя файла');
+define('_MEDIA_DIMENSIONS',			'размеры');
+define('_MEDIA_INLINE',				'Встроенный');
 define('_MEDIA_POPUP',				'Popup');
-define('_UPLOAD_TITLE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
-define('_UPLOAD_MSG',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ".');
-define('_UPLOAD_BUTTON',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_UPLOAD_TITLE',				'Выберите файл');
+define('_UPLOAD_MSG',				'Выберите файл, который вы хотите закачать и нажмите кнопку "Закачать".');
+define('_UPLOAD_BUTTON',			'Закачать');
 
 // some status messages
 //define('_MSG_ACCOUNTCREATED',		'Account created, password will be sent through email');
 //define('_MSG_PASSWORDSENT',			'Password has been sent by e-mail.');
-define('_MSG_LOGINAGAIN',			'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_MSG_SETTINGSCHANGED',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MSG_ADMINCHANGED',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MSG_NEWBLOG',				'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MSG_ACTIONLOGCLEARED',		'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_MSG_LOGINAGAIN',			'Вы должны войти снова, потому что информация о Вас изменена.');
+define('_MSG_SETTINGSCHANGED',		'Настройки сохранены');
+define('_MSG_ADMINCHANGED',			'Администратор изменён');
+define('_MSG_NEWBLOG',				'Новый раздел создан');
+define('_MSG_ACTIONLOGCLEARED',		'Лог действий очищен');
 
 // actionlog in admin area
-define('_ACTIONLOG_DISALLOWED',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: ');
-define('_ACTIONLOG_PWDREMINDERSENT','пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ ');
-define('_ACTIONLOG_TITLE',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ACTIONLOG_CLEAR_TITLE',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ACTIONLOG_CLEAR_TEXT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ACTIONLOG_DISALLOWED',		'Запрещённые действия: ');
+define('_ACTIONLOG_PWDREMINDERSENT','Отослан новый пароль для ');
+define('_ACTIONLOG_TITLE',			'Лог действий');
+define('_ACTIONLOG_CLEAR_TITLE',	'Очистить лог действий');
+define('_ACTIONLOG_CLEAR_TEXT',		'Запустить процесс очистки');
 
 // team management
-define('_TEAM_TITLE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ');
-define('_TEAM_CURRENT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEAM_ADDNEW',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEAM_CHOOSEMEMBER',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEAM_ADMIN',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ? ');
-define('_TEAM_ADD',					'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEAM_ADD_BTN',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_TEAM_TITLE',				'Управление командой авторов для раздела ');
+define('_TEAM_CURRENT',				'Текущая команда');
+define('_TEAM_ADDNEW',				'Добавить пользователя в команду авторов');
+define('_TEAM_CHOOSEMEMBER',		'Выберите пользователя');
+define('_TEAM_ADMIN',				'Привилегии администратора? ');
+define('_TEAM_ADD',					'Добавить в команду');
+define('_TEAM_ADD_BTN',				'Добавить в команду');
 
 // blogsettings
-define('_EBLOG_TITLE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_TEAM_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_TEAM_TEXT',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ...');
-define('_EBLOG_SETTINGS_TITLE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_NAME',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_SHORTNAME',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_EBLOG_SHORTNAME_EXTRA',	'<br />(пїЅпїЅпїЅпїЅпїЅпїЅпїЅ a-z пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_EBLOG_DESC',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_EBLOG_TITLE',				'Настройка раздела');
+define('_EBLOG_TEAM_TITLE',			'Управление командой авторов');
+define('_EBLOG_TEAM_TEXT',			'Изменить команду авторов для этого раздела...');
+define('_EBLOG_SETTINGS_TITLE',		'Настройки раздела');
+define('_EBLOG_NAME',				'Название раздела');
+define('_EBLOG_SHORTNAME',			'Короткое имя');
+define('_EBLOG_SHORTNAME_EXTRA',	'<br />(символы a-z без пробелов)');
+define('_EBLOG_DESC',				'Описание раздела');
 define('_EBLOG_URL',				'URL');
-define('_EBLOG_DEFSKIN',			'пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_DEFCAT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_LINEBREAKS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ br');
-define('_EBLOG_DISABLECOMMENTS',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?<br /><small>(пїЅпїЅпїЅпїЅ "пїЅпїЅпїЅ", пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.)</small>');
-define('_EBLOG_ANONYMOUS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ?');
-define('_EBLOG_NOTIFY',				'пїЅпїЅпїЅпїЅпїЅ (пїЅ) e-mail пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ<br /> (пїЅпїЅпїЅпїЅ ; пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_EBLOG_NOTIFY_ON',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_EBLOG_NOTIFY_COMMENT',		'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_NOTIFY_KARMA',		'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_NOTIFY_ITEM',		'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_PING',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Weblogs.com пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?');
-define('_EBLOG_MAXCOMMENTS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_UPDATE',				'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_OFFSET',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_STIME',				'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_BTIME',				'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_CHANGE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_CHANGE_BTN',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_ADMIN',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_ADMIN_MSG',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_CREATE_TITLE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_CREATE_TEXT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ. <br /><br /> <b>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:</b> пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_EBLOG_CREATE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ!');
-define('_EBLOG_CREATE_BTN',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_CAT_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_CAT_NAME',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_CAT_DESC',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_CAT_CREATE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_CAT_UPDATE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EBLOG_CAT_UPDATE_BTN',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_EBLOG_DEFSKIN',			'Скин по умолчанию');
+define('_EBLOG_DEFCAT',				'Основная категория');
+define('_EBLOG_LINEBREAKS',			'Автоматическая конвертация пустых срок в br');
+define('_EBLOG_DISABLECOMMENTS',	'Разрешить комментарии?<br /><small>(Если "Нет", то комментировать будет невозможно.)</small>');
+define('_EBLOG_ANONYMOUS',			'Разрешить комментирование гостям?');
+define('_EBLOG_NOTIFY',				'Адрес (а) e-mail для уведомлений<br /> (знак ; как разделитель)');
+define('_EBLOG_NOTIFY_ON',			'Уведомлять при');
+define('_EBLOG_NOTIFY_COMMENT',		'Новых комментариях');
+define('_EBLOG_NOTIFY_KARMA',		'Новых карма голосах');
+define('_EBLOG_NOTIFY_ITEM',		'Новых сообщениях');
+define('_EBLOG_PING',				'Пинговать Weblogs.com при обновлении?');
+define('_EBLOG_MAXCOMMENTS',		'Максимум комментариев');
+define('_EBLOG_UPDATE',				'Файл обновлений');
+define('_EBLOG_OFFSET',				'Корректировка времени');
+define('_EBLOG_STIME',				'Время сервера');
+define('_EBLOG_BTIME',				'Время раздела');
+define('_EBLOG_CHANGE',				'Применить изменения');
+define('_EBLOG_CHANGE_BTN',			'Применить изменения');
+define('_EBLOG_ADMIN',				'Администратор раздела');
+define('_EBLOG_ADMIN_MSG',			'Вам будут назначены права администратора');
+define('_EBLOG_CREATE_TITLE',		'Создать новый раздел');
+define('_EBLOG_CREATE_TEXT',		'Заполните форму для создания блога. <br /><br /> <b>Примечание:</b> В форме только самые необходимые опции. Чтобы изменить и настроить раздел, перейдите на страницу настроек после создания раздела.');
+define('_EBLOG_CREATE',				'Создать!');
+define('_EBLOG_CREATE_BTN',			'Создать раздел');
+define('_EBLOG_CAT_TITLE',			'Категории');
+define('_EBLOG_CAT_NAME',			'Имя категории');
+define('_EBLOG_CAT_DESC',			'Описание категории');
+define('_EBLOG_CAT_CREATE',			'Создать новую категорию');
+define('_EBLOG_CAT_UPDATE',			'Обновить категорию');
+define('_EBLOG_CAT_UPDATE_BTN',		'Обновить категорию');
 
 // templates
-define('_TEMPLATE_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_AVAILABLE_TITLE',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_NEW_TITLE',		'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_NAME',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_DESC',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_CREATE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_CREATE_BTN',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_EDIT_TITLE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_BACK',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_EDIT_MSG',		'пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_TEMPLATE_SETTINGS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_ITEMS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_ITEMHEADER',		'"пїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_ITEMBODY',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_ITEMFOOTER',		'"пїЅпїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_MORELINK',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_NEW',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_COMMENTS_ANY',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ)');
-define('_TEMPLATE_CHEADER',			'"пїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ');
-define('_TEMPLATE_CBODY',			'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_CFOOTER',			'"пїЅпїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_CONE',			'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_CMANY',			'2 пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_CMORE',			'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_CMEXTRA',			'Extra пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_COMMENTS_NONE',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ)');
-define('_TEMPLATE_CNONE',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_COMMENTS_TOOMUCH','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_TEMPLATE_CTOOMUCH',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_ARCHIVELIST',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_AHEADER',			'"пїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_AITEM',			'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_AFOOTER',			'"пїЅпїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_DATETIME',		'пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_DHEADER',			'"пїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_DFOOTER',			'"пїЅпїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_DFORMAT',			'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_TFORMAT',			'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_LOCALE',			'пїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅ)');
-define('_TEMPLATE_IMAGE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Popup');
-define('_TEMPLATE_PCODE',			'пїЅпїЅпїЅпїЅпїЅпїЅ Popup');
-define('_TEMPLATE_ICODE',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_MCODE',			'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ media-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_SEARCH',			'пїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_SHIGHLIGHT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_SNOTFOUND',		'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_UPDATE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_UPDATE_BTN',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_RESET_BTN',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_CATEGORYLIST',	'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_CATHEADER',		'"пїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_CATITEM',			'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_TEMPLATE_CATFOOTER',		'"пїЅпїЅпїЅпїЅпїЅпїЅ" пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_TEMPLATE_TITLE',			'Управление шаблонами');
+define('_TEMPLATE_AVAILABLE_TITLE',	'Доступные шаблоны');
+define('_TEMPLATE_NEW_TITLE',		'Новый шаблон');
+define('_TEMPLATE_NAME',			'Имя шаблона');
+define('_TEMPLATE_DESC',			'Описание шаблона');
+define('_TEMPLATE_CREATE',			'Создать шаблон');
+define('_TEMPLATE_CREATE_BTN',		'Создать шаблон');
+define('_TEMPLATE_EDIT_TITLE',		'Изменить шаблон');
+define('_TEMPLATE_BACK',			'Вернуться к обзору шаблонов');
+define('_TEMPLATE_EDIT_MSG',		'Не все части шаблона необходимы. Некоторые поля можно оставить незаполненными.');
+define('_TEMPLATE_SETTINGS',		'Главные настройки шаблона');
+define('_TEMPLATE_ITEMS',			'Сообщение');
+define('_TEMPLATE_ITEMHEADER',		'"Шапка" сообщения');
+define('_TEMPLATE_ITEMBODY',		'Краткое описание');
+define('_TEMPLATE_ITEMFOOTER',		'"Подвал" сообщения');
+define('_TEMPLATE_MORELINK',		'Ссылка на полное сообщение');
+define('_TEMPLATE_NEW',				'Индикация новых сообщений');
+define('_TEMPLATE_COMMENTS_ANY',	'Комментарии (если есть)');
+define('_TEMPLATE_CHEADER',			'"Шапка" комментария ');
+define('_TEMPLATE_CBODY',			'Тело комменатрия');
+define('_TEMPLATE_CFOOTER',			'"Подвал" комментария');
+define('_TEMPLATE_CONE',			'Один комментарий');
+define('_TEMPLATE_CMANY',			'2 или больше комментариев');
+define('_TEMPLATE_CMORE',			'Ссылка на все комментарии');
+define('_TEMPLATE_CMEXTRA',			'Extra настройки пользователей');
+define('_TEMPLATE_COMMENTS_NONE',	'Комментарии (если нет)');
+define('_TEMPLATE_CNONE',			'Нет комментариев');
+define('_TEMPLATE_COMMENTS_TOOMUCH','Комментарии (если есть, но больше, чем положено)');
+define('_TEMPLATE_CTOOMUCH',		'Слишком много комментариев');
+define('_TEMPLATE_ARCHIVELIST',		'Список архива');
+define('_TEMPLATE_AHEADER',			'"Шапка" списка архива');
+define('_TEMPLATE_AITEM',			'Пункт списка архива');
+define('_TEMPLATE_AFOOTER',			'"Подвал" списка архива');
+define('_TEMPLATE_DATETIME',		'Время и дата');
+define('_TEMPLATE_DHEADER',			'"Шапка" даты');
+define('_TEMPLATE_DFOOTER',			'"Подвал" даты');
+define('_TEMPLATE_DFORMAT',			'Формат даты');
+define('_TEMPLATE_TFORMAT',			'Формат времени');
+define('_TEMPLATE_LOCALE',			'Регион (язык)');
+define('_TEMPLATE_IMAGE',			'Картинка Popup');
+define('_TEMPLATE_PCODE',			'Ссылка Popup');
+define('_TEMPLATE_ICODE',			'Код встроенного изображения');
+define('_TEMPLATE_MCODE',			'Код ссылки media-объектов');
+define('_TEMPLATE_SEARCH',			'Поиск');
+define('_TEMPLATE_SHIGHLIGHT',		'Подстветка');
+define('_TEMPLATE_SNOTFOUND',		'Ничего не найдено при поиске');
+define('_TEMPLATE_UPDATE',			'Обновить');
+define('_TEMPLATE_UPDATE_BTN',		'Обновить шаблон');
+define('_TEMPLATE_RESET_BTN',		'Сбросить данные');
+define('_TEMPLATE_CATEGORYLIST',	'Список категорий');
+define('_TEMPLATE_CATHEADER',		'"Шапка" списка категорий');
+define('_TEMPLATE_CATITEM',			'Пункт списка категорий');
+define('_TEMPLATE_CATFOOTER',		'"Подвал" списка категорий');
 
 // skins
-define('_SKIN_EDIT_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
-define('_SKIN_AVAILABLE_TITLE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_NEW_TITLE',			'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
-define('_SKIN_NAME',				'пїЅпїЅпїЅ');
-define('_SKIN_DESC',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_TYPE',				'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_CREATE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_CREATE_BTN',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
-define('_SKIN_EDITONE_TITLE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
-define('_SKIN_BACK',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_PARTS_TITLE',			'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_PARTS_MSG',			'пїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ. <br>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_SKIN_PART_MAIN',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_PART_ITEM',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_PART_ALIST',			'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_PART_ARCHIVE',		'пїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_PART_SEARCH',			'пїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_PART_ERROR',			'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_PART_MEMBER',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_PART_POPUP',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Popups');
-define('_SKIN_GENSETTINGS_TITLE',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_CHANGE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_CHANGE_BTN',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_UPDATE_BTN',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
-define('_SKIN_RESET_BTN',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_EDITPART_TITLE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
-define('_SKIN_GOBACK',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SKIN_ALLOWEDVARS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ):');
+define('_SKIN_EDIT_TITLE',			'Редактировать скин');
+define('_SKIN_AVAILABLE_TITLE',		'Доступные скины');
+define('_SKIN_NEW_TITLE',			'Новый скин');
+define('_SKIN_NAME',				'Имя');
+define('_SKIN_DESC',				'Описание');
+define('_SKIN_TYPE',				'Тип контента');
+define('_SKIN_CREATE',				'Создать');
+define('_SKIN_CREATE_BTN',			'Создать скин');
+define('_SKIN_EDITONE_TITLE',		'Изменить скин');
+define('_SKIN_BACK',				'Вернуться к обзору скинов');
+define('_SKIN_PARTS_TITLE',			'Части скина');
+define('_SKIN_PARTS_MSG',			'Не все составляющие необходимы для скинов. Оставте пустыми те, которые Вам не нужны. <br>Выберите скин, который Вы хотите отредактировать:');
+define('_SKIN_PART_MAIN',			'Главная страница');
+define('_SKIN_PART_ITEM',			'Страница с сообщением');
+define('_SKIN_PART_ALIST',			'Список архива');
+define('_SKIN_PART_ARCHIVE',		'Архив');
+define('_SKIN_PART_SEARCH',			'Поиск');
+define('_SKIN_PART_ERROR',			'Ошибки');
+define('_SKIN_PART_MEMBER',			'Информация о пользователе');
+define('_SKIN_PART_POPUP',			'Картинка Popups');
+define('_SKIN_GENSETTINGS_TITLE',	'Основные настройки');
+define('_SKIN_CHANGE',				'Изменить');
+define('_SKIN_CHANGE_BTN',			'Изменить настройки');
+define('_SKIN_UPDATE_BTN',			'Обновить скин');
+define('_SKIN_RESET_BTN',			'Сбосить данные');
+define('_SKIN_EDITPART_TITLE',		'Редактировать скин');
+define('_SKIN_GOBACK',				'Вернуться');
+define('_SKIN_ALLOWEDVARS',			'Доступные переменные (нажмите для информации):');
 
 // global settings
-define('_SETTINGS_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_SUB_GENERAL',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_DEFBLOG',			'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_ADMINMAIL',		'E-mail пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_SITENAME',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_SITEURL',			'URL пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "/")');
-define('_SETTINGS_ADMINURL',		'URL пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "/")');
-define('_SETTINGS_DIRS',			'Nucleus - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_MEDIADIR',		'Media - пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_SEECONFIGPHP',	'(пїЅпїЅ. config.php)');
-define('_SETTINGS_MEDIAURL',		'Media URL (пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ "/")');
-define('_SETTINGS_ALLOWUPLOAD',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?');
-define('_SETTINGS_ALLOWUPLOADTYPES','пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_CHANGELOGIN',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_COOKIES_TITLE',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Cookie');
-define('_SETTINGS_COOKIELIFE',		'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Cookie');
-define('_SETTINGS_COOKIESESSION',	'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_COOKIEMONTH',		'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_COOKIEPATH',		'пїЅпїЅпїЅпїЅ Cookie (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_SETTINGS_COOKIEDOMAIN',	'пїЅпїЅпїЅпїЅпїЅ Cookie (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_SETTINGS_COOKIESECURE',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Cookie (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_SETTINGS_LASTVISIT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Cookies пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_ALLOWCREATE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_NEWLOGIN',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_NEWLOGIN2',		'(пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_SETTINGS_MEMBERMSGS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_LOCALE',		'пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_DISABLESITE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
-define('_SETTINGS_DBLOGIN',			'mySQL пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_UPDATE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_UPDATE_BTN',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_DISABLEJS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ JavaScript');
-define('_SETTINGS_MEDIA',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Media/Upload');
-define('_SETTINGS_MEDIAPREFIX',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_SETTINGS_MEMBERS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_SETTINGS_TITLE',			'Основные настройки');
+define('_SETTINGS_SUB_GENERAL',		'Основные настройки');
+define('_SETTINGS_DEFBLOG',			'Раздел по умолчанию');
+define('_SETTINGS_ADMINMAIL',		'E-mail администратора');
+define('_SETTINGS_SITENAME',		'Название сайта');
+define('_SETTINGS_SITEURL',			'URL сайта (должен заканчиваться слэшом "/")');
+define('_SETTINGS_ADMINURL',		'URL администраторской части (должен заканчиваться слэшом "/")');
+define('_SETTINGS_DIRS',			'Nucleus - абсолютный путь на сервере');
+define('_SETTINGS_MEDIADIR',		'Media - абсолютный путь на сервере');
+define('_SETTINGS_SEECONFIGPHP',	'(см. config.php)');
+define('_SETTINGS_MEDIAURL',		'Media URL (должен заканчиваться слэшом "/")');
+define('_SETTINGS_ALLOWUPLOAD',		'Разрешить загрузку?');
+define('_SETTINGS_ALLOWUPLOADTYPES','Разрешённые расширения');
+define('_SETTINGS_CHANGELOGIN',		'Разрешить пользователям менять логин/пароль');
+define('_SETTINGS_COOKIES_TITLE',	'Настройки Cookie');
+define('_SETTINGS_COOKIELIFE',		'Срок действия Cookie');
+define('_SETTINGS_COOKIESESSION',	'По сессиям');
+define('_SETTINGS_COOKIEMONTH',		'Один месяц');
+define('_SETTINGS_COOKIEPATH',		'Путь Cookie (расширенные настройки)');
+define('_SETTINGS_COOKIEDOMAIN',	'Домен Cookie (расширенные настройки)');
+define('_SETTINGS_COOKIESECURE',	'Безопасные Cookie (расширенные настройки)');
+define('_SETTINGS_LASTVISIT',		'Сохранять Cookies последнего посещения');
+define('_SETTINGS_ALLOWCREATE',		'Разрешить самостоятельную регистрацию');
+define('_SETTINGS_NEWLOGIN',		'Разрешить зарегистрированным пользователям входить в админку');
+define('_SETTINGS_NEWLOGIN2',		'(только для новых эккаунтов)');
+define('_SETTINGS_MEMBERMSGS',		'Разрешить сообщения между пользователями');
+define('_SETTINGS_LOCALE',		'Язык по умолчанию');
+define('_SETTINGS_DISABLESITE',		'Выключить сайт');
+define('_SETTINGS_DBLOGIN',			'mySQL данные');
+define('_SETTINGS_UPDATE',			'Сохранить изменения');
+define('_SETTINGS_UPDATE_BTN',		'Сохранить изменения');
+define('_SETTINGS_DISABLEJS',		'Выключить панель JavaScript');
+define('_SETTINGS_MEDIA',			'Настройки Media/Upload');
+define('_SETTINGS_MEDIAPREFIX',		'Префикс даты для загружаемых файлов');
+define('_SETTINGS_MEMBERS',			'Настройки пользователей');
 
 // bans
-define('_BAN_TITLE',				'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_BAN_NONE',					'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BAN_NEW_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_BAN_NEW_TEXT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_BAN_REMOVE_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_BAN_IPRANGE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP');
-define('_BAN_BLOGS',				'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?');
-define('_BAN_DELETE_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_BAN_ALLBLOGS',				'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_BAN_REMOVED_TITLE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_BAN_REMOVED_TEXT',			'пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ:');
-define('_BAN_ADD_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_BAN_IPRANGE_TEXT',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP, пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_BAN_BLOGS_TEXT',			'пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP - пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.');
-define('_BAN_REASON_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BAN_REASON_TEXT',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ (пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP-пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ 256 пїЅпїЅпїЅпїЅпїЅпїЅ)');
-define('_BAN_ADD_BTN',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
+define('_BAN_TITLE',				'Список бана для');
+define('_BAN_NONE',					'Нет банов для этого раздела');
+define('_BAN_NEW_TITLE',			'Установить бан');
+define('_BAN_NEW_TEXT',				'Установить бан');
+define('_BAN_REMOVE_TITLE',			'Удалить бан');
+define('_BAN_IPRANGE',				'Диапозон IP');
+define('_BAN_BLOGS',				'Для каких разделов?');
+define('_BAN_DELETE_TITLE',			'Удалить бан');
+define('_BAN_ALLBLOGS',				'Все разделы, в которых Вы имеете администраторские привилегии.');
+define('_BAN_REMOVED_TITLE',		'Удалить бан');
+define('_BAN_REMOVED_TEXT',			'Бан был снят для следующих разделов:');
+define('_BAN_ADD_TITLE',			'Установить бан');
+define('_BAN_IPRANGE_TEXT',			'Выберите диапозон IP, который Вы хотите заблокировать. Чем меньше чисел будет в диапозоне, тем больше адресов будет заблокировано.');
+define('_BAN_BLOGS_TEXT',			'Вы можете выбрать, как забанить IP - в одном разделе или в всех разделах, в которых вы обладаете привилегиями администратора.');
+define('_BAN_REASON_TITLE',			'Причина');
+define('_BAN_REASON_TEXT',			'Причина бана (появится при попытке обладателя IP-адреса оставить комментарий или сделать голос кармы, максимум 256 знаков)');
+define('_BAN_ADD_BTN',				'Установить бан');
 
 // LOGIN screen
-define('_LOGIN_MESSAGE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LOGIN_NAME',				'пїЅпїЅпїЅ');
-define('_LOGIN_PASSWORD',			'пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_LOGIN_MESSAGE',			'Сообщение');
+define('_LOGIN_NAME',				'Имя');
+define('_LOGIN_PASSWORD',			'Пароль');
 define('_LOGIN_SHARED',				_LOGINFORM_SHARED);
-define('_LOGIN_FORGOT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_LOGIN_FORGOT',				'Вспомнить пароль');
 
 // membermanagement
-define('_MEMBERS_TITLE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEMBERS_CURRENT',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEMBERS_NEW',				'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEMBERS_DISPLAY',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_MEMBERS_DISPLAY_INFO',		'(пїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ)');
-define('_MEMBERS_REALNAME',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_MEMBERS_PWD',				'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEMBERS_REPPWD',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_MEMBERS_TITLE',			'Управление пользователями');
+define('_MEMBERS_CURRENT',			'Текущие пользователи');
+define('_MEMBERS_NEW',				'Новый пользователь');
+define('_MEMBERS_DISPLAY',			'Отображаемое имя');
+define('_MEMBERS_DISPLAY_INFO',		'(Это имя используется для входа)');
+define('_MEMBERS_REALNAME',			'Настоящее имя');
+define('_MEMBERS_PWD',				'Пароль');
+define('_MEMBERS_REPPWD',			'Повторите пароль');
 define('_MEMBERS_EMAIL',			'E-mail');
-define('_MEMBERS_EMAIL_EDIT',		'(пїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ e-mail, пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ)');
-define('_MEMBERS_URL',				'пїЅпїЅпїЅпїЅ (URL)');
-define('_MEMBERS_SUPERADMIN',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEMBERS_CANLOGIN',			'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEMBERS_NOTES',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEMBERS_NEW_BTN',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEMBERS_EDIT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEMBERS_EDIT_BTN',			'пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEMBERS_BACKTOOVERVIEW',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MEMBERS_LOCALE',			'пїЅпїЅпїЅпїЅ');
-define('_MEMBERS_USESITELANG',		'- пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ -');
+define('_MEMBERS_EMAIL_EDIT',		'(Когда Вы изменяте e-mail, новый пароль будет выслан автоматически на новый адрес)');
+define('_MEMBERS_URL',				'Сайт (URL)');
+define('_MEMBERS_SUPERADMIN',		'Администратор');
+define('_MEMBERS_CANLOGIN',			'Может входить в админку');
+define('_MEMBERS_NOTES',			'Заметки');
+define('_MEMBERS_NEW_BTN',			'Добавить пользователя');
+define('_MEMBERS_EDIT',				'Изменить профиль пользователя');
+define('_MEMBERS_EDIT_BTN',			'Внести изменения');
+define('_MEMBERS_BACKTOOVERVIEW',	'Вернуться к обзору пользователей');
+define('_MEMBERS_LOCALE',			'Язык');
+define('_MEMBERS_USESITELANG',		'- использовать настройки сайта -');
 
 // List of blogs (TT = tooltip)
-define('_BLOGLIST_TT_VISIT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ');
-define('_BLOGLIST_ADD',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BLOGLIST_TT_ADD',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BLOGLIST_EDIT',			'пїЅпїЅпїЅ./пїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_BLOGLIST_TT_VISIT',		'Посетить сайт');
+define('_BLOGLIST_ADD',				'Добавить сообщение');
+define('_BLOGLIST_TT_ADD',			'Добавить сообщение в этот раздел');
+define('_BLOGLIST_EDIT',			'Ред./Уд. сообщения');
 define('_BLOGLIST_TT_EDIT',			'');
 define('_BLOGLIST_BMLET',			'Bookmarklet');
 define('_BLOGLIST_TT_BMLET',		'');
-define('_BLOGLIST_SETTINGS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BLOGLIST_TT_SETTINGS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_BLOGLIST_SETTINGS',		'Настройки');
+define('_BLOGLIST_TT_SETTINGS',		'Настройки и управление командой авторов');
 define('_BLOGLIST_BANS',			'Bans');
-define('_BLOGLIST_TT_BANS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP-пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BLOGLIST_DELETE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_BLOGLIST_TT_DELETE',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_BLOGLIST_TT_BANS',			'Просмотреть, добавить или удалить забаненные IP-адресы');
+define('_BLOGLIST_DELETE',			'Удалить');
+define('_BLOGLIST_TT_DELETE',		'Удалить раздел');
 
 // OVERVIEW screen
-define('_OVERVIEW_YRBLOGS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_OVERVIEW_YRDRAFTS',		'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_OVERVIEW_YRSETTINGS',		'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_OVERVIEW_GSETTINGS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ');
-define('_OVERVIEW_NOBLOGS',			'пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_OVERVIEW_NODRAFTS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_OVERVIEW_EDITSETTINGS',	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ...');
-define('_OVERVIEW_BROWSEITEMS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ...');
-define('_OVERVIEW_BROWSECOMM',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ...');
-define('_OVERVIEW_VIEWLOG',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ...');
-define('_OVERVIEW_MEMBERS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ...');
-define('_OVERVIEW_NEWLOG',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ ...');
-define('_OVERVIEW_SETTINGS',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ...');
-define('_OVERVIEW_TEMPLATES',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ ...');
-define('_OVERVIEW_SKINS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ ...');
-define('_OVERVIEW_BACKUP',			'пїЅпїЅпїЅпїЅпїЅ/пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ...');
+define('_OVERVIEW_YRBLOGS',			'Разделы сайта');
+define('_OVERVIEW_YRDRAFTS',		'Ваши черновики');
+define('_OVERVIEW_YRSETTINGS',		'Ваши настройки');
+define('_OVERVIEW_GSETTINGS',		'Конфигурация сайта');
+define('_OVERVIEW_NOBLOGS',			'Вы не входите ни в одну команду авторов');
+define('_OVERVIEW_NODRAFTS',		'Черновиков нет');
+define('_OVERVIEW_EDITSETTINGS',	'Настроить профиль ...');
+define('_OVERVIEW_BROWSEITEMS',		'Посмотреть свои сообщения ...');
+define('_OVERVIEW_BROWSECOMM',		'Посмотреть свои комментарии ...');
+define('_OVERVIEW_VIEWLOG',			'Посмотреть лог действий ...');
+define('_OVERVIEW_MEMBERS',			'Управление пользователями ...');
+define('_OVERVIEW_NEWLOG',			'Создать новый раздел ...');
+define('_OVERVIEW_SETTINGS',		'Изменить настройки ...');
+define('_OVERVIEW_TEMPLATES',		'Изменить шаблоны ...');
+define('_OVERVIEW_SKINS',			'Изменить скины ...');
+define('_OVERVIEW_BACKUP',			'Бэкап/Восстановление ...');
 
 // ITEMLIST
-define('_ITEMLIST_BLOG',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_ITEMLIST_YOUR',			'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_ITEMLIST_BLOG',			'Сообщения в разделе');
+define('_ITEMLIST_YOUR',			'Ваши сообщения');
 
 // Comments
-define('_COMMENTS',					'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_NOCOMMENTS',				'пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_COMMENTS_YOUR',			'пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_NOCOMMENTS_YOUR',			'пїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_COMMENTS',					'Комментарии');
+define('_NOCOMMENTS',				'Нет комментариев к этому сообщению');
+define('_COMMENTS_YOUR',			'Ваши комментарии');
+define('_NOCOMMENTS_YOUR',			'Вы не оставляли комментариев');
 
 // LISTS (general)
 define('_LISTS_NOMORE',				'No more results, or no results at all');
-define('_LISTS_PREV',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_NEXT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_SEARCH',				'пїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_CHANGE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_PERPAGE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_ACTIONS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_DELETE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_EDIT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_MOVE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_CLONE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_TITLE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_BLOG',				'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_NAME',				'пїЅпїЅпїЅ');
-define('_LISTS_DESC',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_TIME',				'пїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_COMMENTS',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LISTS_TYPE',				'пїЅпїЅпїЅ');
+define('_LISTS_PREV',				'Предыдущая');
+define('_LISTS_NEXT',				'Следующая');
+define('_LISTS_SEARCH',				'Поиск');
+define('_LISTS_CHANGE',				'Показать');
+define('_LISTS_PERPAGE',			'сообщений на странице');
+define('_LISTS_ACTIONS',			'Действия');
+define('_LISTS_DELETE',				'Удалить');
+define('_LISTS_EDIT',				'Редактировать');
+define('_LISTS_MOVE',				'Переместить');
+define('_LISTS_CLONE',				'Копировать');
+define('_LISTS_TITLE',				'Название');
+define('_LISTS_BLOG',				'Раздел');
+define('_LISTS_NAME',				'Имя');
+define('_LISTS_DESC',				'Описание');
+define('_LISTS_TIME',				'Время');
+define('_LISTS_COMMENTS',			'Комментарии');
+define('_LISTS_TYPE',				'Тип');
 
 
 // member list
-define('_LIST_MEMBER_NAME',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_LIST_MEMBER_RNAME',		'RпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ');
-define('_LIST_MEMBER_ADMIN',		'пїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅ? ');
-define('_LIST_MEMBER_LOGIN',		'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ? ');
-define('_LIST_MEMBER_URL',			'пїЅпїЅпїЅпїЅ');
+define('_LIST_MEMBER_NAME',			'Отображаемое имя');
+define('_LIST_MEMBER_RNAME',		'RНастоящее имя');
+define('_LIST_MEMBER_ADMIN',		'Супер-админ? ');
+define('_LIST_MEMBER_LOGIN',		'Может входить в админку? ');
+define('_LIST_MEMBER_URL',			'Сайт');
 
 // banlist
-define('_LIST_BAN_IPRANGE',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ IP');
-define('_LIST_BAN_REASON',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_LIST_BAN_IPRANGE',			'Диапозон IP');
+define('_LIST_BAN_REASON',			'Причина');
 
 // actionlist
-define('_LIST_ACTION_MSG',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_LIST_ACTION_MSG',			'Сообщение');
 
 // commentlist
-define('_LIST_COMMENT_BANIP',		'пїЅпїЅпїЅ IP');
-define('_LIST_COMMENT_WHO',			'пїЅпїЅпїЅпїЅпїЅ');
-define('_LIST_COMMENT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LIST_COMMENT_HOST',		'пїЅпїЅпїЅпїЅ');
+define('_LIST_COMMENT_BANIP',		'Бан IP');
+define('_LIST_COMMENT_WHO',			'Автор');
+define('_LIST_COMMENT',				'Комментарий');
+define('_LIST_COMMENT_HOST',		'Хост');
 
 // itemlist
-define('_LIST_ITEM_INFO',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_LIST_ITEM_CONTENT',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ');
+define('_LIST_ITEM_INFO',			'Информация');
+define('_LIST_ITEM_CONTENT',		'Заголовок и текст');
 
 
 // teamlist
-define('_LIST_TEAM_ADMIN',			'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ ');
-define('_LIST_TEAM_CHADMIN',		'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_LIST_TEAM_ADMIN',			'Администратор ');
+define('_LIST_TEAM_CHADMIN',		'Сделать администратором');
 
 // edit comments
-define('_EDITC_TITLE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EDITC_WHO',				'пїЅпїЅпїЅпїЅпїЅ');
-define('_EDITC_HOST',				'пїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EDITC_WHEN',				'пїЅпїЅпїЅпїЅпїЅ');
-define('_EDITC_TEXT',				'пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EDITC_EDIT',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EDITC_MEMBER',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_EDITC_NONMEMBER',			'пїЅпїЅпїЅпїЅпїЅ');
+define('_EDITC_TITLE',				'Изменить комментарии');
+define('_EDITC_WHO',				'Автор');
+define('_EDITC_HOST',				'Откуда');
+define('_EDITC_WHEN',				'Когда');
+define('_EDITC_TEXT',				'Текст комментария');
+define('_EDITC_EDIT',				'Изменить комментарий');
+define('_EDITC_MEMBER',				'пользователь');
+define('_EDITC_NONMEMBER',			'гость');
 
 // move item
-define('_MOVE_TITLE',				'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
-define('_MOVE_BTN',					'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ');
+define('_MOVE_TITLE',				'Выберите раздел для перемещения');
+define('_MOVE_BTN',					'Переместить сообщение');

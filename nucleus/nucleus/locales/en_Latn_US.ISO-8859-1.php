@@ -1,19 +1,7 @@
 <?php
-// English Nucleus Language File
-//
-// Author: Wouter Demuynck
-// Nucleus version: v1.0-v3.4
-//
-// Please note: if you want to translate this file to your own translation, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefore, it's important to list the Nucleus version for which
-// the file was written in your document.
-//
-// Fully translated translation file can be sent to us and will be made
-// available for download (with proper credit to the author, of course)
-
 /**
- * English Nucleus Language File
+ * Nucleus CMS Translation File
+ * English in United States (Latin script)
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2009 The Nucleus Group
@@ -122,7 +110,6 @@ define('_BOOKMARKLET_SEND_PING',					'Item was added successfully. Now pinging w
 
 // END merge UTF-8 and EUC-JP
 
-// <add by shizuki>
 // OVERVIEW screen
 define('_OVERVIEW_SHOWALL',							'Show all blogs');	// <add by shizuki />
 

@@ -1,21 +1,13 @@
 <?php
-// Italian Nucleus Language File
-//
-// Author: Antonio Fragola - MrShark (http://www.mrshark.it)
-// Previous Author: Roberto Bolli (http://www.rbnet.it)
-// Previous Previous Author: Antonio Fragola - MrShark (http://www.mrshark.it)
-// Nucleus version: v3.2
-//
-// Please note: if you want to translate this file to your own translation, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which
-// the file was written in your document.
-//
-// Fully translated translation file can be sent to Wouter Demuynck (nucleus@demuynck.org)
-// and will be available for download (with proper credit to the author, of course)
 /**
- * Nucleus Language File
+ * Nucleus CMS Translation File
+ * Italian in Italy (latin Script)
  *
+ * Nucleus version: v3.2
+ * Author: Antonio Fragola - MrShark (http://www.mrshark.it)
+ * Previous Author: Roberto Bolli (http://www.rbnet.it)
+ * Previous Previous Author: Antonio Fragola - MrShark (http://www.mrshark.it)
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$
@@ -350,7 +342,7 @@ define('_LIST_PLUGS_DEP',			'I Plugin richiedono:');
 
 // comments list per weblog
 define('_COMMENTS_BLOG',			'Tutti i commenti di un blog');
-define('_NOCOMMENTS_BLOG',			'Nessun commento ï¿½ stato fatto agli elementi di questo blog');
+define('_NOCOMMENTS_BLOG',			'Nessun commento è stato fatto agli elementi di questo blog');
 define('_BLOGLIST_COMMENTS',		'Commenti');
 define('_BLOGLIST_TT_COMMENTS',		'Un elenco di tutti i commenti fatti agli elementi di questo blog');
 
@@ -364,7 +356,7 @@ define('_ERROR_BADTICKET',			'Biglietto non valido o scaduto.');
 
 // plugin dependency
 define('_ERROR_INSREQPLUGIN',		'Installazione del plugin fallita, richiede ');
-define('_ERROR_DELREQPLUGIN',		'Cancellazione del plugin fallita, ï¿½ richiesto da ');
+define('_ERROR_DELREQPLUGIN',		'Cancellazione del plugin fallita, è richiesto da ');
 
 // cookie prefix
 define('_SETTINGS_COOKIEPREFIX',	'Prefisso dei Cookie');

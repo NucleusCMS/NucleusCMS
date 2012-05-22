@@ -1,23 +1,15 @@
 <?php
-// Dutch Nucleus Language File
-//
-// Updates:
-// - Nucleus v2.5-3.1 Norbert (beckerswna@yahoo.com)
-// - Nucleus v1.0-2.5 Wouter Demuynck (nucleuscms.org)
-//
-// Please note: if you want to translate this file to your own translation, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which
-// the file was written in your document.
-//
-// Fully translated translation file can be sent to us
-// and will be available for download (with proper credit to the author, of course)
-//
-// Oct 7, 2005 - Translation fine-tuned and spellingcorrection by Errie (http://getverd.errie.com
-//
 /**
  * Nucleus Language File
  *
+ * Nucleus CMS Translation File
+ * Dutch in Netherlands (Latin script)
+ *
+ * Updates:
+ * Oct 7, 2005 - Translation fine-tuned and spellingcorrection by Errie (http://getverd.errie.com
+ * - Nucleus v2.5-3.1 Norbert (beckerswna@yahoo.com)
+ * - Nucleus v1.0-2.5 Wouter Demuynck (nucleuscms.org)
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$
@@ -362,7 +354,7 @@ define('_ARCHIVETYPE_MONTH',		'maand');
 define('_ERROR_BADTICKET',			'Ongeldig ticket.');
 
 // plugin dependency
-define('_ERROR_INSREQPLUGIN',		'Plugin kon niet geï¿½nstalleerd worden: vereist ');
+define('_ERROR_INSREQPLUGIN',		'Plugin kon niet geïnstalleerd worden: vereist ');
 define('_ERROR_DELREQPLUGIN',		'Plugin kon niet verwijderd worden: vereist door ');
 
 // cookie prefix
@@ -523,7 +515,7 @@ define('_SETTINGS_URLMODE_PATHINFO','Fancy');
 // Batch operations
 define('_BATCH_NOSELECTION',		'Er werd niks geselecteerd');
 define('_BATCH_ITEMS',				'Groepbewerking op berichten');
-define('_BATCH_CATEGORIES',			'Groepbewerking op categorieï¿½n');
+define('_BATCH_CATEGORIES',			'Groepbewerking op categorieën');
 define('_BATCH_MEMBERS',			'Groepbewerking op leden');
 define('_BATCH_TEAM',				'Groepbewerking op teamleden');
 define('_BATCH_COMMENTS',			'Groepbewerking op reacties');
@@ -586,8 +578,8 @@ define('_SKINIE_INFO_TEMPLATES',	'Sjablonen in bestand:');
 define('_SKINIE_INFO_GENERAL',		'Info:');
 define('_SKINIE_INFO_SKINCLASH',	'Dubbele skinnamen:');
 define('_SKINIE_INFO_TEMPLCLASH',	'Dubbele templatenamen:');
-define('_SKINIE_INFO_IMPORTEDSKINS','Geï¿½mporteerde skins:');
-define('_SKINIE_INFO_IMPORTEDTEMPLS','Geï¿½mporteerde templats:');
+define('_SKINIE_INFO_IMPORTEDSKINS','Geïmporteerde skins:');
+define('_SKINIE_INFO_IMPORTEDTEMPLS','Geïmporteerde templats:');
 define('_SKINIE_DONE',				'Klaar met importeren');
 
 define('_AND',						'en');
@@ -666,12 +658,12 @@ define('_ITEM_DELETED',				'Bericht werd verwijderd');
 // plugins
 define('_CONFIRMTXT_PLUGIN',		'Doorgaan met het verwijderen van plugin');
 define('_ERROR_NOSUCHPLUGIN',		'Gevraagde plugin bestaat niet');
-define('_ERROR_DUPPLUGIN',			'Sorry, deze plugin is reeds geï¿½nstalleerd');
+define('_ERROR_DUPPLUGIN',			'Sorry, deze plugin is reeds geïnstalleerd');
 define('_ERROR_PLUGFILEERROR',		'Er bestaat geen dergelijke plugin, ofwel zijn de bestandspermissies fout.');
 define('_PLUGS_NOCANDIDATES',		'Geen kandidaat-plugins gevonden');
 
 define('_PLUGS_TITLE_MANAGE',		'Beheer Plugins');
-define('_PLUGS_TITLE_INSTALLED',	'Momenteel geï¿½nstalleerd');
+define('_PLUGS_TITLE_INSTALLED',	'Momenteel geïnstalleerd');
 define('_PLUGS_TITLE_UPDATE',		'Plugin Subscriptions vernieuwen');
 define('_PLUGS_TEXT_UPDATE',		'Nucleus houdt een cache bij van de gebeurtenissen waarop een plugin ingeschreven is. Na een plugin upgrade kan het nodig zijn dat je de lijst van subscriptions vernieuwd.');
 define('_PLUGS_TITLE_NEW',			'Nieuwe plugin installeren');
@@ -705,7 +697,7 @@ define('_ACTIONLOG_NEWMEMBER',		'Nieuwe gebruiker:');
 define('_MEMBERMAIL_MAIL',			'Uw email adres:');
 
 // file upload
-define('_ERROR_DISALLOWEDUPLOAD2',	'Je probeert een bestand op te laden in de media directory van een andere gebruiker. U beschikt echter niet over de nodige rechten om dit te doen (U heeft admin-rechten nodig voor minstens ï¿½ï¿½n blog dat de doelgebruiker in het team heeft).');
+define('_ERROR_DISALLOWEDUPLOAD2',	'Je probeert een bestand op te laden in de media directory van een andere gebruiker. U beschikt echter niet over de nodige rechten om dit te doen (U heeft admin-rechten nodig voor minstens één blog dat de doelgebruiker in het team heeft).');
 
 // plugin list
 define('_LISTS_INFO',				'Informatie');
@@ -806,7 +798,7 @@ define('_ADD_HREF_TT',				'Link Maken');
 define('_ADD_MEDIA_TT',				'Media Toevoegen');
 define('_ADD_PREVIEW_TT',			'Voorbeeld Tonen/Verbergen');
 define('_ADD_CUT_TT',				'Knippen');
-define('_ADD_COPY_TT',				'Kopiï¿½ren');
+define('_ADD_COPY_TT',				'Kopiëren');
 define('_ADD_PASTE_TT',				'Plakken');
 
 
@@ -903,14 +895,14 @@ define('_ERROR_BADREQUEST',			'Foutief upload verzoek');
 define('_ERROR_DISALLOWEDUPLOAD',	'U bent niet gemachtigd om bestanden op te laden');
 define('_ERROR_BADPERMISSIONS',		'File/Dir permissies zijn niet correct ingesteld');
 define('_ERROR_UPLOADMOVEP',		'Probleem bij verplaatsen van opgeladen bestand');
-define('_ERROR_UPLOADCOPY',			'Probleem bij kopiï¿½ren van bestand');
+define('_ERROR_UPLOADCOPY',			'Probleem bij kopiëren van bestand');
 define('_ERROR_UPLOADDUPLICATE',	'Een bestand met dezelfde naam bestaat reeds. Probeer uw bestand eerst te hernoemen.');
 define('_ERROR_LOGINDISALLOWED',	'Sorry, U bent niet gemachtigd om in te loggen op de admin area');
 define('_ERROR_DBCONNECT',			'Kon geen verbinding maken met de MySQL database');
 define('_ERROR_DBSELECT',			'Kon de databank niet correct selecteren.');
 define('_ERROR_NOSUCHLOCALE',		'De gevraagde taal bestaat niet');
 define('_ERROR_NOSUCHCATEGORY',		'Categorie bestaat niet');
-define('_ERROR_DELETELASTCATEGORY',	'Er moet steeds minstens ï¿½ï¿½n categorie bestaan');
+define('_ERROR_DELETELASTCATEGORY',	'Er moet steeds minstens één categorie bestaan');
 define('_ERROR_DELETEDEFCATEGORY',	'Kan default categorie niet wissen');
 define('_ERROR_BADCATEGORYNAME',	'Ongeldige categorie-naam');
 define('_ERROR_DUPCATEGORYNAME',	'Er bestaat reeds een categorie met die naam');
@@ -990,7 +982,7 @@ define('_EBLOG_CREATE_TITLE',		'Nieuw weblog');
 define('_EBLOG_CREATE_TEXT',		'Vul het onderstaande formulier in om een nieuw weblog aan te maken. <br /><br /> <b>Opmerking:</b> Enkel de verplichte velden worden hier getoond. Later kunt u extra opties instellen.');
 define('_EBLOG_CREATE',				'Aanmaken');
 define('_EBLOG_CREATE_BTN',			'Weblog Aanmaken');
-define('_EBLOG_CAT_TITLE',			'Categorieï¿½n');
+define('_EBLOG_CAT_TITLE',			'Categorieën');
 define('_EBLOG_CAT_NAME',			'Naam');
 define('_EBLOG_CAT_DESC',			'Omschrijving');
 define('_EBLOG_CAT_CREATE',			'Categorie Aanmaken');

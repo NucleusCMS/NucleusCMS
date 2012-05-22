@@ -1,19 +1,19 @@
 <?php
-// Russian Nucleus Language File
-//
-// Author: Andrey Serebryakov - saahov@gmail.com
-// Nucleus version: v1.0-v3.2
-// Update: 19.10.2005
-// Вопросы по управлению, настройке и модернизации Nucleus можно
-// задать на форуме сообщества русских пользователей: http://nucleus.net.ru .
 /**
- * Nucleus Language File
- *
+ * Nucleus CMS Translation File
+ * Russian in Russia (Cyrillic script)
+ * 
+ * Nucleus version: v1.0-v3.2
+ * Author: Andrey Serebryakov - saahov@gmail.com
+ * Update: 19.10.2005
+ * 
+ * Вопросы по управлению, настройке и модернизации Nucleus можно
+ * задать на форуме сообщества русских пользователей: http://nucleus.net.ru .
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$
  */
-
 
 /********************************************
  *        Start New for 4.0                 *

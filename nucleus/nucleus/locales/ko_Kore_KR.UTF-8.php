@@ -1,12 +1,12 @@
 <?php
-// Korean Nucleus Language File
-// 
-// Author: 노정용(Jungyong Ro) (http://www.ibizkorea.com, laotzu@ibizkorea.com)
-// Nucleus version: v1.0-v2.5 based with enamu & sicrone
-//
 /**
- * Nucleus Language File
- *
+ * Nucleus CMS Translation File
+ * Korean in Korea (Korean script)
+ * 
+ * Nucleus version: v1.0-v2.5
+ * Author: 노정용(Jungyong Ro) (http://www.ibizkorea.com, laotzu@ibizkorea.com)
+ * based with enamu & sicrone
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$

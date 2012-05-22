@@ -1,21 +1,13 @@
 <?php
-// Italian Nucleus Language File
-//
-// Author: Antonio Fragola - MrShark (http://www.mrshark.it)
-// Previous Author: Roberto Bolli (http://www.rbnet.it)
-// Previous Previous Author: Antonio Fragola - MrShark (http://www.mrshark.it)
-// Nucleus version: v3.2
-//
-// Please note: if you want to translate this file to your own translation, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which
-// the file was written in your document.
-//
-// Fully translated translation file can be sent to Wouter Demuynck (nucleus@demuynck.org)
-// and will be available for download (with proper credit to the author, of course)
 /**
- * Nucleus Language File
+ * Nucleus CMS Translation File
+ * Italian in Italy (latin Script)
  *
+ * Nucleus version: v3.2
+ * Author: Antonio Fragola - MrShark (http://www.mrshark.it)
+ * Previous Author: Roberto Bolli (http://www.rbnet.it)
+ * Previous Previous Author: Antonio Fragola - MrShark (http://www.mrshark.it)
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$

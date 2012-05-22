@@ -1,19 +1,13 @@
 <?php
-// French Nucleus Language File
-//
-// Author: Papachango <pfffouitt@yahoo.fr> (updated by Julien Pauthier <julienpauthier@yahoo.fr>)
-// Nucleus version: v1.0-v3.2
-//
-// Please note: if you want to translate this file to your own translation, be aware
-// that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which
-// the file was written in your document.
-//
-// Fully translated translation file can be sent to us and will be made
-// available for download (with proper credit to the author, of course)
 /**
- * Nucleus Language File
+ * Nucleus CMS Translation File
+ * French in France (Latin script)
  *
+ * Nucleus version: v1.0-v3.2
+ * Author: Toni Ruuska, http://www.feldon.net 
+ * Based on earlier translations by Marko Seppänen (http://hoito.org) 
+ * and Jussi Josefsson (http://www.nominaali.com).
+ * 
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$
