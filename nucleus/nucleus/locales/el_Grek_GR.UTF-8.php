@@ -1,7 +1,7 @@
 <?php
 /**
  * Nucleus CMS Translation File
- * Greek in Greece (Latin script)
+ * Greek in Greece (Greek script)
  * 
  * Nucleus version: v1.0-v2.5
  * Authors: Antonis Scandalis (scandalis@datapages.gr) and Vangelis Pantelias (gelitheworm@limoutsis.gr)
