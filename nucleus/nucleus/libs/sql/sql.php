@@ -15,7 +15,6 @@
  * @copyright Copyright (C) 2012 The Nucleus Group
  * @version $Id$
  */
-
 /*
  * sql_* wrappers for DB class access
  */

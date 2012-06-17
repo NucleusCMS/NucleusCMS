@@ -9,6 +9,7 @@
 <description>
 <![CDATA[ADMIN Area Default skin]]>
 </description>
+
 <part name="actionlog"><![CDATA[
 	<%pagehead%>
 	

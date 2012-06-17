@@ -1,5 +1,4 @@
 <?php
-
 // ADMIN-skin skin types
 define('_ADM_SKPRT_ACTIONLOG',                              '[' . _ACTIONLOG_TITLE . ']' . _SKINABLEADMIN_PAGE_STR);
 define('_ADM_SKPRT_ACTIVATE',                               '[' . _QMENU_ACTIVATE . ']' . _SKINABLEADMIN_PAGE_STR);

@@ -7,7 +7,6 @@ class NP_ImageLimitSize extends NucleusPlugin {
  History:
  	v0.01 (2006-12-30):
 		- release for testing purposes (demonstrates the usage of the PreMediaUpload event)
-
 */
 
 	function getName() 		  { return 'NP_ImageLimitSize'; }

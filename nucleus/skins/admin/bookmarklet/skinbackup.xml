@@ -9,6 +9,7 @@
 <description>
 <![CDATA[ADMIN Area Default Bookmarklet Skin]]>
 </description>
+
 <part name="createitem">
 <![CDATA[<%pagehead%>
 <h1><%text(_ADD_ADDTO)%> '<%bloglink%>'</h1>

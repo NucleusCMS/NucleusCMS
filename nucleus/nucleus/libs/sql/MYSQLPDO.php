@@ -17,7 +17,6 @@
 
 if ( !class_exists('PDO') )
 {
-
 	/**
 	 * Dummy constant of the PDO class
 	 */
