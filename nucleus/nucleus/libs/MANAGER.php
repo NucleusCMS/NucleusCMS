@@ -38,6 +38,7 @@ class Manager
 	private $karma;
 	private $templates;
 	private $members;
+	private $skins;
 	
 	/**
 	 * cachedInfo to avoid repeated SQL queries (see pidInstalled/pluginInstalled/getPidFromName)
@@ -90,44 +91,41 @@ class Manager
 		$this->blogs = array();
 		$this->plugins = array();
 		$this->karma = array();
+		$this->templates = array();
+		$this->skins = array();
 		$this->parserPrefs = array();
 		$this->cachedInfo = array();
+		$this->members = array();
 		return;
 	}
 	
 	/**
 	 * Returns the requested item object. If it is not in the cache, it will
 	 * first be loaded and then placed in the cache.
-	 * Intended use: $item =& $manager->getItem(1234)
+	 * Intended use: $item =& $manager->getItem(1234, 0, 0)
 	 */
 	public function &getItem($itemid, $allowdraft, $allowfuture)
 	{
-		$item =& $this->items[$itemid];
-		
-		// check the draft and future rules if the item was already cached
-		if ( $item )
+		/* confirm to cached */
+		if ( !array_key_exists($itemid, $this->items) )
 		{
-			if ( (!$allowdraft) && ($item['draft']) )
-			{
-				return 0;
-			}
-			
-			$blog =& $this->getBlog(getBlogIDFromItemID($itemid));
-			
-			if ( (!$allowfuture) && ($item['timestamp'] > $blog->getCorrectTime()) )
-			{
-				return 0;
-			}
-		}
-		
-		if ( !$item )
-		{
-			// load class if needed
 			$this->loadClass('ITEM');
-			// load item object
 			$item = Item::getitem($itemid, $allowdraft, $allowfuture);
 			$this->items[$itemid] = $item;
 		}
+		
+		$item =& $this->items[$itemid];
+		if ( !$allowdraft && ($item['draft']) )
+		{
+			return 0;
+		}
+		
+		$blog =& $this->getBlog($item['blogid']);
+		if ( !$allowfuture && ($item['timestamp'] > $blog->getCorrectTime()) )
+		{
+			return 0;
+		}
+		
 		return $item;
 	}
 	
@@ -162,17 +160,12 @@ class Manager
 	 */
 	public function &getBlog($blogid)
 	{
-		$blog =& $this->blogs[$blogid];
-		
-		if ( !$blog )
+		if ( !array_key_exists($blogid, $this->blogs) )
 		{
-			// load class if needed
 			$this->_loadClass('BLOG','BLOG.php');
-			// load blog object
-			$blog = new Blog($blogid);
-			$this->blogs[$blogid] =& $blog;
+			$this->blogs[$blogid] = new Blog($blogid);
 		}
-		return $blog;
+		return $this->blogs[$blogid];
 	}
 	
 	/**
@@ -198,14 +191,12 @@ class Manager
 	 */
 	public function &getTemplate($templateName)
 	{
-		$template =& $this->templates[$templateName];
-		
-		if ( !$template )
+		if ( !array_key_exists($templateName, $this->templates) )
 		{
-			$template = Template::read($templateName);
-			$this->templates[$templateName] =& $template;
+			$this->_loadClass('Template','TEMPLATE.php');
+			$this->templates[$templateName] =& Template::read($templateName);
 		}
-		return $template;
+		return $this->templates[$templateName];
 	}
 	
 	/**
@@ -213,17 +204,12 @@ class Manager
 	 */
 	public function &getKarma($itemid)
 	{
-		$karma =& $this->karma[$itemid];
-		
-		if ( !$karma )
+		if ( !array_key_exists($itemid, $this->karma) )
 		{
-			// load class if needed
-			$this->_loadClass('KARMA','KARMA.php');
-			// create KARMA object
-			$karma = new Karma($itemid);
-			$this->karma[$itemid] =& $karma;
+			$this->_loadClass('Karma','KARMA.php');
+			$this->karma[$itemid] = new Karma($itemid);
 		}
-		return $karma;
+		return $this->karma[$itemid];
 	}
 	
 	/**
@@ -231,17 +217,31 @@ class Manager
 	 */
 	public function &getMember($memberid)
 	{
-		$mem =& $this->members[$memberid];
-		
-		if ( !$mem )
+		if ( !array_key_exists($memberid, $this->members) )
 		{
-			// load class if needed
-			$this->_loadClass('MEMBER','MEMBER.php');
-			// create MEMBER object
-			$mem =& Member::createFromID($memberid);
-			$this->members[$memberid] =& $mem;
+			$this->_loadClass('Member','MEMBER.php');
+			$this->members[$memberid] =& Member::createFromID($memberid);;
 		}
-		return $mem;
+		return $this->members[$memberid];
+	}
+	
+	/**
+	 * Manager::getSkin()
+	 * 
+	 * @param	integer	$skinid				ID for skin
+	 * @param	string	$action_class		action class for handling skin variables
+	 * @param	string	$event_identifier	identifier for event name
+	 * @return	object	instance of Skin class
+	 */
+	public function &getSkin($skinid, $action_class='Actions', $event_identifier='Skin')
+	{
+		if ( !array_key_exists($skinid, $this->skins) )
+		{
+			$this->_loadClass('Skin', 'SKIN.php');
+			$this->skins[$skinid] = new Skin($skinid, $action_class, $event_identifier);
+		}
+		
+		return $this->skins[$skinid];
 	}
 	
 	/**
@@ -268,10 +268,11 @@ class Manager
 	 */
 	private function _loadClass($name, $filename)
 	{
+		global $DIR_LIBS;
+		
 		if ( !class_exists($name) )
 		{
-				global $DIR_LIBS;
-				include($DIR_LIBS . $filename);
+			include($DIR_LIBS . $filename);
 		}
 		return;
 	}
