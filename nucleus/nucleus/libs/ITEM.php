@@ -105,13 +105,14 @@ class Item
 		$query .= ' LIMIT 1';
 		$result = DB::getResult($query);
 		
-		if ( $result->rowCount() == 1 )
+		if ( $result->rowCount() != 1 )
 		{
-			$aItemInfo = $result->fetch(PDO::FETCH_ASSOC);
-			$aItemInfo['timestamp'] = strtotime($aItemInfo['itime']);
-			return $aItemInfo;
+			return 0;
 		}
-		return 0;
+		
+		$aItemInfo = $result->fetch(PDO::FETCH_ASSOC);
+		$aItemInfo['timestamp'] = strtotime($aItemInfo['itime']);
+		return $aItemInfo;
 	}
 	
 	/**
@@ -412,9 +413,9 @@ class Item
 	{
 		global $manager;
 		
-		$itemid = (integer) $itemid;
-		$new_catid = (integer) $new_catid;
-		$new_blogid = getBlogIDFromCatID($new_catid);
+		$itemid		= (integer) $itemid;
+		$new_catid	= (integer) $new_catid;
+		$new_blogid	= getBlogIDFromCatID($new_catid);
 		
 		$data = array(
 			'itemid'		=> $itemid,
