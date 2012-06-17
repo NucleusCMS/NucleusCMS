@@ -1,0 +1,48 @@
+<%pagehead%>
+
+<form method="post" action="<%actionurl%>">
+<p>
+
+<%collectionlist%>
+
+<button type="submit" name="type" value="select" title="<%text(_MEDIA_COLLECTION_TT)%>">
+<%text(_MEDIA_COLLECTION_SELECT)%>
+</button>
+<button type="submit" name="type" value="choose" title="<%text(_MEDIA_UPLOADLINK)%>" />
+<%text(_MEDIA_UPLOAD_TO)%>
+</button>
+
+</p>
+
+<p>
+<label for="media_filter"><%text(_MEDIA_FILTER_LABEL)%></label>
+<input type="text" id="media_filter" name="filter" value="<%filter%>" />
+<button type="submit" name="type" value="select"><%text(_MEDIA_FILTER_APPLY)%></button>
+<input type="hidden" name="offset" value="<%offset%>" />
+</p>
+
+</form>
+
+<%medialist%>
+
+<p>
+
+<%if(prev)%>
+<a href="<%actionurl%>&amp;type=select&amp;offset=<%prev%>&amp;collection=<%collection%>">
+<%text(_LISTS_PREV)%>
+</a>
+<%endif%>
+<%if(next)%>
+<a href="<%actionurl%>&amp;type=select&amp;offset=<%next%>&amp;collection=<%collection%>">
+<%text(_LISTS_NEXT)%>
+</a>
+<%endif%>
+
+<input type="radio" id="typeradio0" name="typeradio" onclick="medium.setType('inline');" checked="checked" />
+<label for="typeradio0"><%text(_MEDIA_INLINE)%></label>
+<input type="radio" id="typeradio1" name="typeradio" onclick="medium.setType('popup');" />
+<label for="typeradio1"><%text(_MEDIA_POPUP)%></label>
+
+</p>
+
+<%pagefoot%>

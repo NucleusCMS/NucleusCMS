@@ -1,0 +1,25 @@
+<%pagehead%>
+
+<h1><%text(_LOGIN_PLEASE)%></h1>
+
+<form method="post" action="<%conf(AdminURL)%>">
+
+<dl>
+<dt><%text(_LOGINFORM_NAME)%></dt>
+<dd><input type="text" name="login" value="" /></dd>
+<dt><%text(_LOGINFORM_PWD)%></dt>
+<dd><input type="password" name="password" /></dd>
+</dl>
+
+<p>
+<input type="checkbox" value="1" name="shared" tabindex="40" id="shared" />
+<label for="shared"><%text(_LOGIN_SHARED)%></label>
+<input type="hidden" name="collection" value="<%collection%>" />
+<button type="submit" name="action" value="login"><%text(_LOGIN)%></button>
+</p>
+
+</form>
+
+<p><a href="<%actionurl%>" onclick="window.close();"><%text(_POPUP_CLOSE)%></a></p>
+
+<%pagefoot%>

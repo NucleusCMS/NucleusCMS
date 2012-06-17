@@ -1,0 +1,31 @@
+<%pagehead%>
+
+<h1><%text(_UPLOAD_TITLE)%></h1>
+
+<p><%text(_UPLOAD_MSG)%></p>
+
+<form method="post" action="<%actionurl%>" enctype="multipart/form-data">
+
+<p>
+File:
+<input type="file" name="uploadfile" size="40" />
+</p>
+
+<p><%text(_SETTINGS_ALLOWUPLOADTYPES)%>: <%conf(AllowedTypes)%></p>
+
+<p>
+<%collectionlist%>
+</p>
+
+<%pluginextras%>
+
+<p>
+<%ticket%>
+<input type="hidden" name="MAX_FILE_SIZE" value="<%conf(MaxUploadSize)%>" />
+<button type="submit" name ="type" value="upload"><%text(_UPLOAD_BUTTON)%></button>
+<button type="submit" name ="type" value="select"><%text(_BACK)%></button>
+</p>
+
+</form>
+
+<%pagefoot%>

@@ -1,0 +1,7 @@
+<%pagehead%>
+
+<h1><%text(_ERROR)%></h1>
+<p><%message%></p>
+<p><a href="<%actionurl%>" onclick="history.back()"><%text(_BACK)%></a></p>
+
+<%pagefoot%>

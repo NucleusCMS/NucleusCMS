@@ -1,0 +1,59 @@
+body {
+	font-family: verdana, arial;
+	font-size: small;
+	background-color: #FFFFFF;
+	color: #000000;
+}
+
+a:link, a:visited {
+	color: #1D3565; 
+	font-weight: bold;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+h1 {
+	border-bottom: 1px dotted gray;
+	font-size: x-large;
+	color: #596d9d;
+}
+
+h2 {
+	color: gray;
+	font-size: large;
+	margin-left: 20px;
+	text-indent: 10px;
+	border-bottom: 1px solid #ddd;
+}
+
+table {
+	border: none;
+	width:	100%;
+}
+
+table th {
+	background-color: linen;
+	font-size: medium;
+}
+
+table th,
+table td {
+	padding: 5px;
+}
+
+table td {
+	background-color: #dddddd;
+	font-size: small;
+	vertical-align: top;
+	text-align: left;
+}
+
+p {
+	margin:	0px 0px 5px 0px
+}
+
+label {
+	cursor: pointer;
+}
