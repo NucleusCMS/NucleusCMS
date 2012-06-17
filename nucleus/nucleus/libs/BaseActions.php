@@ -139,14 +139,14 @@ class BaseActions
 	
 	/**
 	 * BaseActions::parse_locale()
-	 * Parse locale to language-script-region according to RFC 4646
+	 * Parse locale to language-region according to RFC 4646
 	 * 
 	 * @param	void
 	 * @return	void
 	 */
 	public function parse_locale()
 	{
-		echo preg_replace('#_#', '-', i18n::get_current_locale());
+		echo preg_replace('#(.+)_(.+)_(.+)#', '$1-$3', i18n::get_current_locale());
 		return;
 	}
 	
@@ -197,7 +197,7 @@ class BaseActions
 		}
 		
 		$file = $this->getIncludeFileName($name);
-		if ( !file_exists($file) )
+		if ( !file_exists($file) && $this->parser->skin != NULL)
 		{
 			$contents = $this->parser->skin->getContentFromDB($name);
 		}
