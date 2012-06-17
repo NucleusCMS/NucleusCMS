@@ -874,9 +874,9 @@ class Blog
 			else
 			{
 				global $itemid;
-				if ( intval($itemid) && $manager->existsItem(intval($itemid), 0, 0) )
+				if ( (integer) $itemid && $manager->existsItem((integer) $itemid, 0, 0) )
 				{
-					$iobj	=& $manager->getItem(intval($itemid), 0, 0);
+					$iobj	=& $manager->getItem($itemid, 0, 0);
 					$cid	= $iobj['catid'];
 					
 					if ( $cid == $data['catid'] )
