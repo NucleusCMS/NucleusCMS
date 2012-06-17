@@ -1,5 +1,4 @@
 <?php
-global $special;
 
 include('./fancyurls.config.php');
 include('./config.php');
@@ -9,7 +8,7 @@ if ( !requestVar('special') )
 	$data = preg_split("#/#", serverVar('PATH_INFO'));
 	if ( count($data) > 1 )
 	{
-		$special = $data[1];
+		$_REQUEST['special'] = $data[1];
 	}
 }
 
