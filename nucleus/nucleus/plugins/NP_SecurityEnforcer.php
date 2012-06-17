@@ -85,7 +85,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		$this->createOption('login_lockout',		'_SECURITYENFORCER_OPT_LOGIN_LOCKOUT',		'text', '15');
 		
 		// create needed tables
-		DB::execute("CREATE TABLE IF NOT EXISTS ". sql_table('plug_securityenforcer').
+		DB::execute('CREATE TABLE IF NOT EXISTS '. sql_table('plug_securityenforcer').
 					" (login varchar(255),
 					   fails int(11) NOT NULL default '0',
 					   lastfail bigint NOT NULL default '0',
@@ -203,12 +203,17 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		global $_SERVER;
 		$login = $data['login'];
 		$ip = $_SERVER['REMOTE_ADDR'];
-		DB::execute("DELETE FROM " . sql_table('plug_securityenforcer') . " WHERE lastfail < " . (time() - ($this->login_lockout * 60)));
-		$query = "SELECT fails as result FROM " . sql_table('plug_securityenforcer') . " ";
-		$query .= 'WHERE login=' . DB::quoteValue($login);
+		
+		$query = "DELETE FROM %s WHERE lastfail < %d;";
+		$query = sprintf($query, sql_table('plug_securityenforcer'), (integer) (time() - ($this->login_lockout * 60)));
+		DB::execute($query);
+		
+		$query = "SELECT fails as result FROM %s WHERE login=%s;";
+		$query = sprintf($query, sql_table('plug_securityenforcer'), DB::quoteValue($login));
 		$flogin = DB::getValue($query); 
-		$query = "SELECT fails as result FROM " . sql_table('plug_securityenforcer') . " ";
-		$query .= 'WHERE login=' . DB::quoteValue($ip);
+		
+		$query = "SELECT fails as result FROM %s WHERE login=%s;";
+		$query = sprintf($query, sql_table('plug_securityenforcer'), DB::quoteValue($ip));
 		$fip = DB::getValue($query); 
 		
 		if ( $flogin >= $this->max_failed_login || $fip >= $this->max_failed_login )
@@ -231,8 +236,8 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		global $_SERVER;
 		$login = $data['username'];
 		$ip = $_SERVER['REMOTE_ADDR'];
-		DB::execute("DELETE FROM " . sql_table('plug_securityenforcer') . " WHERE login=" . DB::quoteValue($login));
-		DB::execute("DELETE FROM " . sql_table('plug_securityenforcer') . " WHERE login=" . DB::quoteValue($ip));
+		DB::execute('DELETE FROM ' . sql_table('plug_securityenforcer') . ' WHERE login=' . DB::quoteValue($login));
+		DB::execute('DELETE FROM ' . sql_table('plug_securityenforcer') . ' WHERE login=' . DB::quoteValue($ip));
 		return;
 	}
 	
@@ -246,23 +251,23 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		global $_SERVER;
 		$login = $data['username'];
 		$ip = $_SERVER['REMOTE_ADDR'];
-		$lres = DB::getValue("SELECT * FROM " . sql_table('plug_securityenforcer') . ' WHERE login=' . DB::quoteValue($login));
-		if ( $lres )
+		$lres = DB::getResult('SELECT * FROM ' . sql_table('plug_securityenforcer') . ' WHERE login=' . DB::quoteValue($login));
+		if ( $lres->rowCount() > 0 )
 		{
-			DB::execute("UPDATE " . sql_table('plug_securityenforcer') . " SET fails=fails+1, lastfail=" . time() . ' WHERE login=' . DB::quoteValue($login));
+			DB::execute('UPDATE ' . sql_table('plug_securityenforcer') . ' SET fails=fails+1, lastfail=' . time() . ' WHERE login=' . DB::quoteValue($login));
 		}
 		else
 		{
-			DB::execute("INSERT INTO " . sql_table('plug_securityenforcer') . ' (login,fails,lastfail) VALUES (' . DB::quoteValue($login) . ',1,' . time() . ')');
+			DB::execute('INSERT INTO ' . sql_table('plug_securityenforcer') . ' (login,fails,lastfail) VALUES (' . DB::quoteValue($login) . ',1,' . time() . ')');
 		}
-		$lres = DB::getValue("SELECT * FROM " . sql_table('plug_securityenforcer') . " WHERE login='" . DB::quoteValue($ip) . "'");
-		if ( $lres )
+		$lres = DB::getResult('SELECT * FROM ' . sql_table('plug_securityenforcer') . ' WHERE login=' . DB::quoteValue($ip));
+		if ( $lres->rowCount() > 0 )
 		{
-			DB::execute("UPDATE " . sql_table('plug_securityenforcer') . ' SET fails=fails+1, lastfail=' . time() . ' WHERE login=' . DB::quoteValue($ip));
+			DB::execute('UPDATE ' . sql_table('plug_securityenforcer') . ' SET fails=fails+1, lastfail=' . time() . ' WHERE login=' . DB::quoteValue($ip));
 		}
 		else
 		{
-			DB::execute("INSERT INTO " . sql_table('plug_securityenforcer') . ' (login,fails,lastfail) VALUES (' . DB::quoteValue($ip) . ',1,' . time() . ')');
+			DB::execute('INSERT INTO ' . sql_table('plug_securityenforcer') . ' (login,fails,lastfail) VALUES (' . DB::quoteValue($ip) . ',1,' . time() . ')');
 		}
 		return;
 	}
@@ -271,6 +276,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 	{
 		$minlength = intval($minlength);
 		$complexity = intval($complexity);
+		$message = '';
 		
 		if ( $minlength < 6 )
 		{
@@ -286,17 +292,17 @@ class NP_SecurityEnforcer extends NucleusPlugin
 			$complexity = 4;
 		}
 		
-		$ucchars	= "[A-Z]";
-		$lcchars	= "[a-z]";
-		$numchars	= "[0-9]";
-		$ochars		= "[-~!@#$%^&*()_+=,.<>?:;|]";
+		$ucchars	= '[A-Z]';
+		$lcchars	= '[a-z]';
+		$numchars	= '[0-9]';
+		$ochars		= '[#-~!@\\$%^&*()_+=,.<>?:;|]';
 		$chartypes	= array($ucchars, $lcchars, $numchars, $ochars);
 		$tot		= array(0,0,0,0);
 		$i			= 0;
 		
 		foreach ( $chartypes as $value )
 		{
-			$tot[$i] = preg_match("#{$value}#", $passwd);
+			$tot[$i] = preg_match("/" . $value . "/", $passwd);
 			$i = $i + 1;
 		}
 		
