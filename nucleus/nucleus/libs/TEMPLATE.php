@@ -108,7 +108,7 @@ class Template
 		// write new thingie
 		if ( $content )
 		{
-			$query = "INSERT %s (tcontent, tpartname, tdesc) VALUE (%s, %s, %d)";
+			$query = "INSERT INTO %s (tcontent, tpartname, tdesc) VALUES (%s, %s, %d)";
 			$query = sprintf($query, sql_table('template'), DB::quoteValue($content), DB::quoteValue($type), (integer) $this->getID());
 			DB::execute($query);
 		}
@@ -187,6 +187,7 @@ class Template
 		$query = sprintf($query, sql_table('template_desc'), sql_table('template'), DB::quoteValue($name));
 		$res = DB::getResult($query);
 		
+		$template = array();
 		foreach ( $res as $row )
 		{
 			$template[$row['tpartname']] = $row['tcontent'];
@@ -231,7 +232,7 @@ class Template
 	}
 	
 	/**
-	 * TEMPLATE::exists()
+	 * Template::exists()
 	 * returns true if there is a template with the given shortname
 	 * 
 	 * @static
@@ -247,7 +248,7 @@ class Template
 	}
 	
 	/**
-	 * TEMPLATE::existsID()
+	 * Template::existsID()
 	 * returns true if there is a template with the given ID
 	 * 
 	 * @static
@@ -263,7 +264,7 @@ class Template
 	}
 	
 	/**
-	 * TEMPLATE::getNameFromId()
+	 * Template::getNameFromId()
 	 * 
 	 * @static
 	 * @param	integer	$id	id for template
@@ -277,7 +278,7 @@ class Template
 	}
 	
 	/**
-	 * TEMPLATE::getDesc()
+	 * Template::getDesc()
 	 * 
 	 * @static
 	 * @param	integer	$id	id for template
