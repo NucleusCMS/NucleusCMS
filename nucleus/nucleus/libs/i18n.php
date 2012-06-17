@@ -445,6 +445,12 @@ class i18n
 	static public function substr($string, $start, $length=0)
 	{
 		$return = '';
+		
+		if ( $length == 0 )
+		{
+			$length = self::strlen($string) - $start;
+		}
+		
 		if ( self::$mode == 'iconv' )
 		{
 			$return = iconv_substr($string, $start, $length, self::$current_charset);
@@ -650,7 +656,7 @@ class i18n
 		"english"		=> "en_Latn_US",
 		"english-utf8"	=> "en_Latn_US.UTF-8",
 		"bulgarian"	=> "bg_Cyrl_BG",
-		"finnish"		=> "fi_Latn_FU",
+		"finnish"		=> "fi_Latn_FI",
 		"catalan"		=> "ca_Latn_ES",
 		"french"		=> "fr_Latn_FR",
 		"russian"		=> "ru_Cyrl_RU",
