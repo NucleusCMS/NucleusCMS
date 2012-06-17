@@ -348,12 +348,12 @@ class Media
 	 * Media::responseResampledImage()
 	 * send resampled image via HTTP
 	 * 
-	 * @param	object	$medium		Medium Object
+	 * @param	object	$medium		MediaObject Object
 	 * @exit
 	 */
 	static public function responseResampledImage($medium, $maxwidth=0, $maxheight=0)
 	{
-		if ( get_class($medium) !== 'Medium' )
+		if ( get_class($medium) !== 'MediaObject' )
 		{
 			header("HTTP/1.1 500 Internal Server Error");
 			exit('Nucleus CMS: Fail to generate resampled image');
@@ -381,7 +381,7 @@ class Media
 	 * Media::storeResampledImage()
 	 * Store resampled image binary to filesystem as file
 	 * 
-	 * @param	object	$medium		medium Object
+	 * @param	object	$medium		MediaObject Object
 	 * @param	integer	$maxwidth	maximum width
 	 * @param	integer	$maxheight	maximum height
 	 * @param	string	$path		directory path for destination
@@ -392,7 +392,7 @@ class Media
 	{
 		global $DIR_MEDIA;
 		
-		if ( get_class($medium) !== 'Medium' )
+		if ( get_class($medium) !== 'MediaObject' )
 		{
 			return FALSE;
 		}
