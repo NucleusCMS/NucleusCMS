@@ -103,13 +103,12 @@ class Action
 			setcookie($CONF['CookiePrefix'] . 'comment_email', $post['email'], $lifetime, '/', '', 0);
 		}
 		
-		$comments = new Comments($post['itemid']);
-		
-		$blog_id = getBlogIDFromItemID($post['itemid']);
-		$this->checkban($blog_id);
-		$blog =& $manager->getBlog($blog_id);
+		$item =& $manager->getItem($post['itemid'], 0, 0);
+		$this->checkban($item['blogid']);
+		$blog =& $manager->getBlog($item['blogid']);
 		
 		// note: PreAddComment and PostAddComment gets called somewhere inside addComment
+		$comments = new Comments($post['itemid']);
 		$errormessage = $comments->addComment($blog->getCorrectTime(), $post);
 		
 		if ( $errormessage != '1' )
@@ -260,6 +259,7 @@ class Action
 		if ( array_key_exists('AllowMemberCreate', $CONF) && !$CONF['AllowMemberCreate'] )
 		{
 			doError(_ERROR_MEMBERCREATEDISABLED);
+			return;
 		}
 		
 		// evaluate content from FormExtra
@@ -321,6 +321,7 @@ class Action
 		if ( !Member::exists($membername) )
 		{
 			doError(_ERROR_NOSUCHMEMBER);
+			return;
 		}
 		
 		$mem = Member::createFromName($membername);
@@ -330,6 +331,7 @@ class Action
 		if ( $mem->getEmail() != $email )
 		{
 			doError(_ERROR_INCORRECTEMAIL);
+			return;
 		}
 		
 		// send activation link
@@ -367,10 +369,11 @@ class Action
 		if ( !$manager->existsItem($itemid, 0, 0) )
 		{
 			doError(_ERROR_NOSUCHITEM);
+			return;
 		}
 		
-		$blogid = getBlogIDFromItemID($itemid);
-		$this->checkban($blogid);
+		$item =& $manager->getItem($itemid, 0, 0);
+		$this->checkban($item['blogid']);
 		
 		$karma =& $manager->getKarma($itemid);
 		
@@ -378,6 +381,7 @@ class Action
 		if ( !$karma->isVoteAllowed(serverVar('REMOTE_ADDR') ) )
 		{
 			doError(_ERROR_VOTEDBEFORE);
+			return;
 		}
 		
 		// check if item does allow voting
@@ -386,6 +390,7 @@ class Action
 		if ( $item['closed'] )
 		{
 			doError(_ERROR_ITEMCLOSED);
+			return;
 		}
 		
 		switch ( $type )
@@ -466,6 +471,7 @@ class Action
 		if ( !$manager->pluginInstalled($pluginName) )
 		{
 			doError(_ERROR_NOSUCHPLUGIN);
+			return;
 		}
 		
 		// 2: call plugin
@@ -487,6 +493,7 @@ class Action
 		if ( $error )
 		{
 			doError($error);
+			return;
 		}
 		
 		return;
@@ -507,6 +514,7 @@ class Action
 		if ( $ban != 0 )
 		{
 			doError(_ERROR_BANNED1 . $ban->iprange . _ERROR_BANNED2 . $ban->message . _ERROR_BANNED3);
+			return;
 		}
 		
 		return;

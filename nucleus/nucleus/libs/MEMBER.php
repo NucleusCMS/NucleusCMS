@@ -37,6 +37,8 @@ class Member
 	public $canlogin = 0;		// (either 0 or 1)
 	public $notes;
 	public $autosave = 1;		// if the member use the autosave draft function
+	public $adminskin = 0;		// if the member use the autosave draft function
+	public $bookmarklet = 0;		// if the member use the autosave draft function
 	private $locale = '';
 	
 	/**
@@ -368,6 +370,8 @@ class Member
 		$this->setNotes($row['mnotes']);
 		$this->setLocale($row['mlocale']);
 		$this->setAutosave($row['mautosave']);
+		$this->setAdminSkin($row['madminskin']);
+		$this->setBookmarklet($row['mbkmklt']);
 		
 		return $row ? TRUE : FALSE;
 	}
@@ -594,7 +598,8 @@ class Member
 		}
 		
 		// get destination blog
-		$source_blogid = getBlogIDFromItemID($itemid);
+		$item =& $manager->getItem($itemid, 1, 1);
+		$source_blogid = $item['blogid'];
 		$dest_blogid = getBlogIDFromCatID($newcat);
 		
 		// not a team member of destination blog -> NOK
@@ -819,6 +824,8 @@ class Member
 		           . 'mnotes=' . DB::quoteValue($this->notes) . ', '
 		           . 'mcanlogin=' . intval($this->canlogin) . ', '
 		           . 'mlocale=' . DB::quoteValue($this->locale) . ', '
+		           . 'madminskin=' . DB::quoteValue($this->adminskin) . ', '
+		           . 'mbkmklt=' . DB::quoteValue($this->bookmarklet) . ', '
 		           . 'mautosave=' . intval($this->autosave) . ' '
 		        . 'WHERE mnumber=' . intval($this->id);
 		DB::execute($query);
@@ -906,6 +913,26 @@ class Member
 		$this->url = $site;
 	}
 	
+	public function setAdminSkin($skin)
+	{
+		$this->adminskin = $skin;
+	}
+
+	public function setBookmarklet($skin)
+	{
+		$this->bookmarklet = $skin;
+	}
+	
+	public function getAdminSkin()
+	{
+		return $this->adminskin;
+	}
+
+	public function getBookmarklet()
+	{
+		return $this->bookmarklet;
+	}
+
 	public function getLocale()
 	{
 		return $this->locale;

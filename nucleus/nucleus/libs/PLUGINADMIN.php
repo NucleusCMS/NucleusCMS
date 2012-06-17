@@ -20,11 +20,14 @@
 
 class PluginAdmin
 {
-	public $strFullName;		// NP_SomeThing
-	public $plugin;			// ref. to plugin object
-	public $bValid;			// evaluates to true when object is considered valid
-	public $admin;				// ref to an admin object
-	
+	public $strFullName;	// NP_SomeThing
+	public $plugin;		// ref. to plugin object
+	public $bValid;		// evaluates to true when object is considered valid
+	public $admin;			// ref to an admin object
+
+	private $skinContents;	// PluginAdmin contents
+	private $extrahead;		// extrahead
+
 	public function __construct($pluginName)
 	{
 		global $manager, $DIR_LIBS;
@@ -40,18 +43,21 @@ class PluginAdmin
 		if ( !$manager->pluginInstalled($this->strFullName) )
 		{
 			doError(_ERROR_INVALID_PLUGIN);
+			return;
 		}
 		
-		$this->plugin =& $manager->getPlugin($this->strFullName);
-		$this->bValid = $this->plugin;
+		$this->plugin = &$manager->getPlugin($this->strFullName);
+		$this->bValid =  $this->plugin;
 		
 		if ( !$this->bValid )
 		{
 			doError(_ERROR_INVALID_PLUGIN);
+			return;
 		}
 		
-		$this->admin = new Admin();
-		$this->admin->action = "plugin_{$pluginName}";
+		Admin::initialize();
+		Admin::$action = "plugin_{$pluginName}";
+		
 		return;
 	}
 	
@@ -64,10 +70,8 @@ class PluginAdmin
 	public function start($extraHead = '')
 	{
 		global $CONF;
-		$strBaseHref  = '<base href="' . Entity::hsc($CONF['AdminURL']) . '" />';
-		$extraHead .= $strBaseHref;
-		
-		$this->admin->pagehead($extraHead);
+		$this->extrahead = $extraHead . '<base href="' . Entity::hsc($CONF['AdminURL']) . '" />' . "\n";
+		ob_start();
 		return;
 	}
 	
@@ -79,8 +83,11 @@ class PluginAdmin
 	 */
 	public function end()
 	{
-		$this->_AddTicketByJS();
-		$this->admin->pagefoot();
+		$this->AddTicketByJS();
+		$contents = ob_get_contents();
+		ob_end_clean();
+		$this->skinContents = '<%pagehead%>' . $contents . '<%pagefoot%>';
+		Admin::action_PluginAdmin($this->skinContents, $this->extrahead);
 		return;
 	}
 	
@@ -92,10 +99,10 @@ class PluginAdmin
 	 * @param	void
 	 * @return	void
 	 */
-	public function _AddTicketByJS()
+	private function AddTicketByJS()
 	{
 		global $CONF,$ticketforplugin;
-		if ( !($ticket=$ticketforplugin['ticket']) ) 
+		if ( !($ticket = $ticketforplugin['ticket']) )
 		{
 			return;
 		}

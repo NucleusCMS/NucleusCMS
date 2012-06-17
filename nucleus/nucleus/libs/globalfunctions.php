@@ -369,7 +369,6 @@ include($DIR_LIBS . 'COMMENTS.php');
 include($DIR_LIBS . 'COMMENT.php');
 include($DIR_LIBS . 'NOTIFICATION.php');
 include($DIR_LIBS . 'BAN.php');
-include($DIR_LIBS . 'PAGEFACTORY.php');
 include($DIR_LIBS . 'SEARCH.php');
 include($DIR_LIBS . 'LINK.php');
 
@@ -384,13 +383,6 @@ if ( !headers_sent() )
 	{
 		setcookie($CONF['CookiePrefix'] . 'lastVisit', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
 	}
-}
-
-if ( !defined('_ARCHIVETYPE_MONTH') )
-{
-	define('_ARCHIVETYPE_DAY', 'day');
-	define('_ARCHIVETYPE_MONTH', 'month');
-	define('_ARCHIVETYPE_YEAR', 'year');
 }
 
 /* for path resolving */
@@ -976,6 +968,7 @@ function selector()
 		if ( !$manager->existsItem($itemid,intval($CONF['allowFuture']),intval($CONF['allowDrafts'])) )
 		{
 			doError(_ERROR_NOSUCHITEM);
+			return;
 		}
 		
 		// 1. get timestamp, blogid and catid for item
@@ -989,6 +982,7 @@ function selector()
 		if ( $blogid && (intval($blogid) != $row['iblog']) )
 		{
 			doError(_ERROR_NOSUCHITEM);
+			return;
 		}
 		
 		// if a category has been selected which doesn't match the item, ignore the
@@ -1055,7 +1049,7 @@ function selector()
 		
 		if ( $d != 0 )
 		{
-			$archivetype = _ARCHIVETYPE_DAY;
+			$archivetype = _LABEL_DAY_UNIT;
 			$t = mktime(0, 0, 0, $m, $d, $y);
 			// one day has 24 * 60 * 60 = 86400 seconds
 			$archiveprev = i18n::formatted_datetime('%Y-%m-%d', $t - 86400 );
@@ -1083,7 +1077,7 @@ function selector()
 		}
 		elseif ( $m == 0 )
 		{
-			$archivetype = _ARCHIVETYPE_YEAR;
+			$archivetype = _LABEL_YEAR_UNIT;
 			$t = mktime(0, 0, 0, 12, 31, $y - 1);
 			// one day before is in the previous year
 			$archiveprev = i18n::formatted_datetime('%Y', $t);
@@ -1110,7 +1104,7 @@ function selector()
 		}
 		else
 		{
-			$archivetype = _ARCHIVETYPE_MONTH;
+			$archivetype = _LABEL_MONTH_UNIT;
 			$t = mktime(0, 0, 0, $m, 1, $y);
 			// one day before is in the previous month
 			$archiveprev = i18n::formatted_datetime('%Y-%m', $t - 86400);
@@ -1152,6 +1146,7 @@ function selector()
 		if ( !$blogid )
 		{
 			doError(_ERROR_NOSUCHBLOG);
+			return;
 		}
 	}
 	elseif ( $query )
@@ -1172,6 +1167,7 @@ function selector()
 		if ( !$blogid )
 		{
 			doError(_ERROR_NOSUCHBLOG);
+			return;
 		}
 	}
 	elseif ( $memberid )
@@ -1181,6 +1177,7 @@ function selector()
 		if ( !Member::existsID($memberid) )
 		{
 			doError(_ERROR_NOSUCHMEMBER);
+			return;
 		}
 		$memberinfo = $manager->getMember($memberid);
 	}
@@ -1217,6 +1214,7 @@ function selector()
 	if ( !$blog->isValid )
 	{
 		doError(_ERROR_NOSUCHBLOG);
+		return;
 	}
 	
 	// set catid if necessary
@@ -1226,6 +1224,7 @@ function selector()
 		if ( !$blog->isValidCategory($catid) )
 		{
 			doError(_ERROR_NOSUCHCATEGORY);
+			return;
 		}
 		else
 		{
@@ -1243,11 +1242,12 @@ function selector()
 		$type = strtolower($special);
 	}
 	
-	$skin = new SKIN($skinid);
+	$skin =& $manager->getSkin($skinid);
 	
 	if ( !$skin->isValid() )
 	{
 		doError(_ERROR_NOSUCHSKIN);
+		return;
 	}
 	
 	// set global skinpart variable so can determine quickly what is being parsed from any plugin or phpinclude
@@ -1294,7 +1294,7 @@ function doError($msg, $skin = '')
 			// this statement should actually never be executed
 			$id = $CONF['BaseSkin'];
 		}
-		$skin = new Skin($id);
+		$skin =& $manager->getSkin($id);
 	}
 	
 	$errormessage = $msg;
@@ -1364,15 +1364,15 @@ function removeBreaks($var)
  */
 function parseFile($filename, $includeMode = 'normal', $includePrefix = '')
 {
-	global $skinid;
+	global $manager, $skinid;
 	
 	if ( !$skinid || !existsID($skinid) )
 	{
-		$skin = new Skin($CONF['BaseSkin']);
+		$skin =& $manager->getSkin($CONF['BaseSkin']);
 	}
 	else
 	{
-		$skin = new Skin($skinid);
+		$skin =& $manager->getSkin($skinid);
 	}
 	
 	$oldIncludeMode = Parser::getProperty('IncludeMode');

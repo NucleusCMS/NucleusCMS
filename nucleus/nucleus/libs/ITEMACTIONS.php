@@ -101,7 +101,7 @@ class ItemActions extends BaseActions
 	/* actions defined in BodyAction class */
 		'image',
 		'media',
-		'popup',
+		'popup'
 		);
 	
 	/**
@@ -847,8 +847,9 @@ class ItemActions extends BaseActions
 				$condition = ($blog && ($blog->getSetting($name) == $value));
 				break;
 			case 'itemblogsetting':
-				$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem['itemid']));
-				$condition = ($b && ($b->getSetting($name) == $value));
+				$item =& $manager->getItem($this->currentItem['itemid'], 1, 1);
+				$t_blog =& $manager->getBlog($item['blogid']);
+				$condition = ($t_blog && ($t_blog->getSetting($name) == $value));
 				break;
 			case 'loggedin':
 				$condition = $member->isLoggedIn();
@@ -920,8 +921,6 @@ class ItemActions extends BaseActions
 	{
 		global $member, $manager;
 		
-		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem['itemid']));
-		
 		// when no parameter is defined, just check if author is current visitor
 		if ( ($key != 'isadmin' && $key != 'name') || ($key == 'name' && $value == '') )
 		{
@@ -941,14 +940,12 @@ class ItemActions extends BaseActions
 		// check if author is admin
 		if ( ($key == 'isadmin') )
 		{
-			$aid = intval($this->currentItem['authorid']);
-			$blogid = intval($b->getID());			
-			$amember =& $manager->getMember($aid);
-			if ( $amember->isAdmin() )
+			$i_author =& $manager->getMember($this->currentItem['authorid']);
+			if ( $i_author->isAdmin() )
 			{
 				return TRUE;
 			}
-			return (boolean) $amember->isBlogAdmin($blogid);
+			return (boolean) $i_author->isBlogAdmin($this->currentItem['blogid']);
 		}
 		
 		return FALSE;
@@ -966,12 +963,12 @@ class ItemActions extends BaseActions
 	{
 		global $catid, $manager;
 		
-		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem['itemid']));
+		$blog =& $manager->getBlog($this->currentItem['blogid']);
 		
 		// when no parameter is defined, just check if a category is selected
 		if ( ($key != 'catname' && $key != 'catid') || ($value == '') )
 		{
-			return (boolean) $b->isValidCategory($catid);
+			return (boolean) $blog->isValidCategory($catid);
 		}
 		
 		$icatid = $this->currentItem['catid'];
@@ -979,17 +976,17 @@ class ItemActions extends BaseActions
 		// check category name
 		if ( $key == 'catname' )
 		{
-			$value = $b->getCategoryIdFromName($value);
+			$value = $blog->getCategoryIdFromName($value);
 			if ( $value == $icatid )
 			{
-				return (boolean) $b->isValidCategory($icatid);
+				return (boolean) $blog->isValidCategory($icatid);
 			}
 		}
 		
 		// check category id
 		if ( ($key == 'catid') && ($value == $icatid) )
 		{
-			return (boolean) $b->isValidCategory($icatid);
+			return (boolean) $blog->isValidCategory($icatid);
 		}
 		return FALSE;
 	}

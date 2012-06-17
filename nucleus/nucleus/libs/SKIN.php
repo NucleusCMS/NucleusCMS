@@ -54,9 +54,7 @@ class Skin
 		
 		$this->id = (integer) $id;
 		
-		/*
-		 * NOTE: include needed action class
-		 */
+		/* NOTE: include needed action class */
 		if ( $action_class != 'Actions' )
 		{
 			if ( !class_exists($action_class, FALSE)
@@ -338,13 +336,20 @@ class Skin
 		
 		// retrieve contents
 		$contents = FALSE;
-		if ( $type != 'fileparse' )
+		if ( $type == 'pluginadmin' )
 		{
-			$contents = $this->getContentFromDB($type);
+			$contents = $path;
 		}
-		else if ( $path !== ''  && i18n::strpos(realpath($path), realpath("$DIR_NUCLEUS/../")) == 0 )
+		else
 		{
-			$contents = $this->getContentFromFile($path);
+			if ( $type != 'fileparse' && $type != 'importAdmin')
+			{
+				$contents = $this->getContentFromDB($type);
+			}
+			else if ( $path !== ''  && i18n::strpos(realpath($path), realpath("$DIR_NUCLEUS/../")) == 0 )
+			{
+				$contents = $this->getContentFromFile($path);
+			}
 		}
 		// use base skin if this skin does not have contents
 		if ( $contents === FALSE )
@@ -450,7 +455,7 @@ class Skin
 		$res = DB::getValue($query);
 		
 		$skintypeexists = !empty($res);
-		$skintypevalue = ($content == true);
+		$skintypevalue = !empty($content);
 		
 		if( $skintypevalue && $skintypeexists )
 		{
@@ -459,39 +464,35 @@ class Skin
 				'type'		=>  $type,
 				'content'	=> &$content
 			);
-			
-			// PreUpdateSkinPart event
-			$manager->notify("PreUpdate{{$this->event_identifier}}Part", $data);
+			$manager->notify("PreUpdate{$this->event_identifier}Part", $data);
 		}
-		else if( $skintypevalue && !$skintypeexists )
+		else if( $skintypevalue )
 		{
 			$data = array(
-				'skinid'	=> $this->id,
-				'type'		=> $type,
+				'skinid'	=>  $this->id,
+				'type'		=>  $type,
 				'content'	=> &$content
 			);
-			
 			$manager->notify("PreAdd{$this->event_identifier}Part", $data);
 		}
-		else if( !$skintypevalue && $skintypeexists )
+		else if( $skintypeexists )
 		{
 			$data = array(
 				'skinid'	=> $this->id,
 				'type'		=> $type
 			);
-			
 			$manager->notify("PreDelete{$this->event_identifier}Part", $data);
 		}
 		
 		// delete old thingie
-		$query = "DELETE FROM %s WHERE stype=%s and sdesc=%d";
+		$query = "DELETE FROM %s WHERE stype=%s and sdesc=%d;";
 		$query = sprintf($query, sql_table('skin'), DB::quoteValue($type), (integer) $this->id);
 		DB::execute($query);
 		
 		// write new thingie
 		if ( $content )
 		{
-			$query = "INSERT INTO %s (scontent, stype, sdesc) VALUE (%s, %s, %d)";
+			$query = "INSERT INTO %s (scontent, stype, sdesc) VALUES (%s, %s, %d);";
 			$query = sprintf($query, sql_table('skin'), DB::quoteValue($content), DB::quoteValue($type), (integer) $this->id);
 			DB::execute($query);
 		}
@@ -499,32 +500,27 @@ class Skin
 		if( $skintypevalue && $skintypeexists )
 		{
 			$data = array(
-				'skinid'	=> $this->id,
-				'type'		=> $type,
+				'skinid'	=>  $this->id,
+				'type'		=>  $type,
 				'content'	=> &$content
 			);
-			
-			// PostUpdateSkinPart event
 			$manager->notify("PostUpdate{$this->event_identifier}Part", $data);
 		}
-		else if( $skintypevalue && (!$skintypeexists) )
+		else if( $skintypevalue )
 		{
 			$data = array(
-				'skinid'	=> $this->id,
-				'type'		=> $type,
+				'skinid'	=>  $this->id,
+				'type'		=>  $type,
 				'content'	=> &$content
 			);
-			
-			// PostAddSkinPart event
 			$manager->notify("PostAdd{$this->event_identifier}Part", $data);
 		}
-		else if( (!$skintypevalue) && $skintypeexists )
+		else if( $skintypeexists )
 		{
 			$data = array(
 				'skinid'	=> $this->id,
 				'type'		=> $type
 			);
-			
 			$manager->notify("PostDelete{$this->event_identifier}Part", $data);
 		}
 		return;
@@ -613,14 +609,14 @@ class Skin
 	}
 	
 	/**
-	 * Skin::getDefaultTypes()
+	 * Skin::getNormalTypes()
 	 * 
 	 * @param	string	void
 	 * @return	array	default skin types
 	 */
-	public function getDefaultTypes()
+	public function getNormalTypes()
 	{
-		return call_user_func(array($this->action_class, 'getAvailableSkinTypes'));
+		return call_user_func(array($this->action_class, 'getNormalSkinTypes'));
 	}
 	
 	/**
@@ -631,7 +627,7 @@ class Skin
 	 */
 	public function getAvailableTypes()
 	{
-		$default_skintypes = $this->getDefaultTypes();
+		$default_skintypes = $this->getNormalTypes();
 		$query = "SELECT stype FROM %s WHERE sdesc=%d;";
 		$query = sprintf($query, sql_table('skin'), (integer) $this->id);
 		
@@ -659,7 +655,7 @@ class Skin
 	 * Skin::getAllowedActionsForType()
 	 * Get the allowed actions for a skin type
 	 * returns an array with the allowed actions
-	 * 
+	 * @return	array	allowed action types
 	 * @param	string	$skintype	type of the skin
 	 * @return	array	allowed action types
 	 */

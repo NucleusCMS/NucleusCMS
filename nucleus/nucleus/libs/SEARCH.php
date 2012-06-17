@@ -42,9 +42,9 @@ class Search
 		$this->blogs		= array();
 
 		// get all public searchable blogs, no matter what, include the current blog allways.
-		$res = sql_query('SELECT bnumber FROM '.sql_table('blog').' WHERE bincludesearch=1 ');
-		while ($obj = sql_fetch_object($res))
-			$this->blogs[] = intval($obj->bnumber);
+		$res = DB::getResult('SELECT bnumber FROM '.sql_table('blog').' WHERE bincludesearch=1 ');
+		foreach ( $res as $row )
+			$this->blogs[] = intval($row['bnumber']);
 	}
 
 	function  boolean_sql_select($match){

@@ -232,8 +232,8 @@ class CommentActions extends BaseActions
 	public function parse_blogurl()
 	{
 		global $manager;
-		$blogid = getBlogIDFromItemID($this->commentsObj->itemid);
-		$blog =& $manager->getBlog($blogid);
+		$item =& $manager->getItem($this->commentsObj->itemid, 1, 1);
+		$blog =& $manager->getBlog($item['blogid']);
 		echo $blog->getURL();
 		return;
 	}
@@ -641,7 +641,7 @@ class CommentActions extends BaseActions
 	 */
 	public function parse_userlinkraw()
 	{
-		echo $this->currentComment['userlinkraw'];
+		echo (array_key_exists('userlinkraw', $this->currentComment) && !empty($this->currentComment['userlinkraw'])) ? $this->currentComment['userlinkraw'] : '';
 		return;
 	}
 	
@@ -705,8 +705,9 @@ class CommentActions extends BaseActions
 				$condition = ($blog && ($blog->getSetting($name) == $value));
 				break;
 			case 'itemblogsetting':
-				$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
-				$condition = ($b && ($b->getSetting($name) == $value));
+				$item =& $manager->getItem($this->currentComment['itemid'], 1, 1);
+				$blog =& $manager->getBlog($item['blogid']);
+				$condition = ($blog && ($blog->getSetting($name) == $value));
 				break;
 			case 'loggedin':
 				$condition = $member->isLoggedIn();
@@ -781,13 +782,13 @@ class CommentActions extends BaseActions
 			return FALSE;
 		}
 		
-		$mem =& $manager->getMember($this->currentComment['memberid']);
-		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
-		$citem =& $manager->getItem($this->currentComment['itemid'], 1, 1);
+		$member =& $manager->getMember($this->currentComment['memberid']);
+		$item =& $manager->getItem($this->currentComment['itemid'], 1, 1);
 		
 		// when no parameter is defined, just check if item author is current visitor
-		if (($key != 'isadmin' && $key != 'name' && $key != 'isauthor' && $key != 'isonteam')) {
-			return (intval($member->getID()) > 0 && intval($member->getID()) == intval($citem['authorid']));
+		if ( ($key != 'isadmin' && $key != 'name' && $key != 'isauthor' && $key != 'isonteam') )
+		{
+			return (intval($memberber->getID()) > 0 && intval($memberber->getID()) == (integer) $item['authorid']);
 		}
 		
 		// check comment author name
@@ -798,7 +799,7 @@ class CommentActions extends BaseActions
 			{
 				return FALSE;
 			}
-			if ( $value == strtolower($mem->getDisplayName()) )
+			if ( $value == strtolower($member->getDisplayName()) )
 			{
 				return TRUE;
 			}
@@ -807,24 +808,23 @@ class CommentActions extends BaseActions
 		// check if comment author is admin
 		if ( $key == 'isadmin' )
 		{
-			$blogid = intval($b->getID());
-			if ( $mem->isAdmin() )
+			if ( $member->isAdmin() )
 			{
 				return TRUE;
 			}
-			return $mem->isBlogAdmin($blogid);
+			return $member->isBlogAdmin($item['blogid']);
 		}
 		
 		// check if comment author is item author
 		if ( $key == 'isauthor' )
 		{
-			return (intval($citem['authorid']) == intval($this->currentComment['memberid']));
+			return ((integer) $item['authorid'] == (integer) $this->currentComment['memberid']);
 		}
 		
 		// check if comment author is on team
 		if ( $key == 'isonteam' )
 		{
-			return $mem->teamRights(intval($b->getID()));
+			return $member->teamRights((integer) $item['blogid']);
 		}
 		return FALSE;
 	}
@@ -840,31 +840,30 @@ class CommentActions extends BaseActions
 	private function ifItemCategory($key = '', $value = '')
 	{
 		global $catid, $manager;
-	
-		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
-		$citem =& $manager->getItem($this->currentComment['itemid'],1,1);
-		$icatid = $citem['catid'];
-	
+		
+		$item =& $manager->getItem($this->currentComment['itemid'],1,1);
+		$blog =& $manager->getBlog($item['blogid']);
+		
 		// when no parameter is defined, just check if a category is selected
 		if ( ($key != 'catname' && $key != 'catid') || ($value == '') )
 		{
-			return $b->isValidCategory($icatid);
+			return $blog->isValidCategory($item['catid']);
 		}
-	
+		
 		// check category name
 		if ( $key == 'catname' )
 		{
-			$value = $b->getCategoryIdFromName($value);
-			if ( $value == $icatid )
+			$value = $blog->getCategoryIdFromName($value);
+			if ( $value == $item['catid'] )
 			{
-				return $b->isValidCategory($icatid);
+				return $blog->isValidCategory($item['catid']);
 			}
 		}
-	
+		
 		// check category id
-		if ( ($key == 'catid') && ($value == $icatid) )
+		if ( ($key == 'catid') && ($value == $item['catid']) )
 		{
-			return $b->isValidCategory($icatid);
+			return $blog->isValidCategory($item['catid']);
 		}
 		return FALSE;
 	}
@@ -878,12 +877,13 @@ class CommentActions extends BaseActions
 	 */
 	private function ifOnTeam($blogName = '')
 	{
-		global $blog, $member, $manager;
+		global $member, $manager;
 		
-		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+		$item =& $manager->getItem($this->currentComment['itemid'], 1, 1);
+		$blog =& $manager->getBlog($item['blogid']);
 		
 		// when no blog found
-		if ( ($blogName == '') && (!is_object($b)) )
+		if ( ($blogName == '') && !is_object($blog) )
 		{
 			return 0;
 		}
@@ -897,7 +897,7 @@ class CommentActions extends BaseActions
 		// use current blog
 		if ( ($blogName == '') || !$manager->existsBlogID($blogid) )
 		{
-			$blogid = $b->getID();
+			$blogid = $blog->getID();
 		}
 		
 		return $member->teamRights($blogid);
@@ -912,12 +912,13 @@ class CommentActions extends BaseActions
 	 */
 	private function ifAdmin($blogName = '')
 	{
-		global $blog, $member, $manager;
+		global $member, $manager;
 		
-		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+		$item =& $manager->getItem($this->currentComment['itemid'], 1, 1);
+		$blog =& $manager->getBlog($item['blogid']);
 		
 		// when no blog found
-		if ( ($blogName == '') && (!is_object($b)) )
+		if ( ($blogName == '') && !is_object($blog) )
 		{
 			return 0;
 		}
@@ -931,7 +932,7 @@ class CommentActions extends BaseActions
 		// use current blog
 		if ( ($blogName == '') || !$manager->existsBlogID($blogid) )
 		{
-			$blogid = $b->getID();
+			$blogid = $blog->getID();
 		}
 		
 		return $member->isBlogAdmin($blogid);

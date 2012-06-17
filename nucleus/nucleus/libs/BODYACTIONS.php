@@ -280,7 +280,7 @@ class BodyActions extends BaseActions
 				$condition = ($blog && ($blog->getSetting($name) == $value));
 				break;
 			case 'itemblogsetting':
-				$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem['itemid']));
+				$b =& $manager->getBlog($this->currentItem['blogid']);
 				$condition = ($b && ($b->getSetting($name) == $value));
 				break;
 			case 'loggedin':
@@ -354,7 +354,7 @@ class BodyActions extends BaseActions
 	{
 		global $member, $manager;
 		
-		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem['itemid']));
+		$b =& $manager->getBlog($this->currentItem['blogid']);
 		
 		// when no parameter is defined, just check if author is current visitor
 		if ( ($key != 'isadmin' && $key != 'name') || ($key == 'name' && $value == '') )
@@ -400,7 +400,7 @@ class BodyActions extends BaseActions
 	{
 		global $catid, $manager;
 		
-		$b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem['itemid']));
+		$b =& $manager->getBlog($this->currentItem['blogid']);
 		
 		// when no parameter is defined, just check if a category is selected
 		if ( ($key != 'catname' && $key != 'catid') || ($value == '') )

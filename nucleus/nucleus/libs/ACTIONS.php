@@ -69,10 +69,10 @@ class Actions extends BaseActions
 	);
 	
 	/**
-	 * Actions::$skin_type_friendly_names
+	 * Actions::$normal_skin_types
 	 * friendly name for wrapped page types
 	 */
-	static public $default_skin_types = array(
+	static public $normal_skin_types = array(
 		'index'			=> _SKIN_PART_MAIN,
 		'item'			=> _SKIN_PART_ITEM,
 		'archivelist'	=> _SKIN_PART_ALIST,
@@ -84,15 +84,15 @@ class Actions extends BaseActions
 	);
 	
 	/**
-	 * Actions::getAvailableSkinTypes()
+	 * Actions::getNormalSkinTypes()
 	 * 
 	 * @static
 	 * @param	void
 	 * @return	array	list of friendly names for page actions
 	 */
-	static public function getAvailableSkinTypes()
+	static public function getNormalSkinTypes()
 	{
-		return self::$default_skin_types;
+		return self::$normal_skin_types;
 	}
 	
 	/**
@@ -552,8 +552,8 @@ class Actions extends BaseActions
 		// TODO: Move request uri to linkparams. this is ugly. sorry for that.
 		$startpos	= (integer) $startpos;
 		$parsed		= parse_url(serverVar('REQUEST_URI'));
-		$path		= $parsed['path'];
-		$parsed		= $parsed['query'];
+		$path		= ( in_array('path', $parsed) ) ? $parsed['path'] : '';
+		$parsed		= ( in_array('query', $parsed) ) ? $parsed['query'] : '';
 		$url		= '';
 		
 		if ( $direction == 'prev' )
@@ -1221,7 +1221,7 @@ class Actions extends BaseActions
 		global $manager, $blog, $highlight, $itemid;
 		
 		$template =& $manager->getTemplate($template);
-		$item =& $manager->getItem($itemid, 0, 0);
+		$item =& $manager->getitem($itemid, 0, 0);
 		
 		// create parser object & action handler
 		$handler = new ItemActions($blog);
@@ -1422,7 +1422,7 @@ class Actions extends BaseActions
 	public function parse_itemtitle($format = '')
 	{
 		global $manager, $itemid;
-		$item =& $manager->getItem($itemid,0,0);
+		$item =& $manager->getItem($itemid, 1, 1);
 		
 		switch ( $format )
 		{
@@ -2204,17 +2204,19 @@ class Actions extends BaseActions
 	 * @param	string	$template	name of template
 	 * @return	void
 	 */
-	public function parse_sticky($itemnumber = 0, $template = '')
+	public function parse_sticky($itemid = 0, $template = '')
 	{
 		global $manager;
 		
-		$itemnumber = intval($itemnumber);
-		$itemarray = array($itemnumber);
+		$itemid = (integer) $itemid;
+		$itemarray = array($itemid);
 		
-		$b =& $manager->getBlog(getBlogIDFromItemID($itemnumber));
-		$this->preBlogContent('sticky',$b);
-		$this->amountfound = $b->readLogFromList($itemarray, $template);
-		$this->postBlogContent('sticky',$b);
+		$item =& $manager->getItem($post['itemid'], 1, 1);
+		$blog =& $manager->getBlog($item['blogid']);
+		
+		$this->preBlogContent('sticky', $blog);
+		$this->amountfound = $blog->readLogFromList($itemarray, $template);
+		$this->postBlogContent('sticky', $blog);
 		return;
 	}
 }
