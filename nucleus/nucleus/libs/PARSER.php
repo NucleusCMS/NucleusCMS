@@ -34,7 +34,7 @@ class Parser
 	public $handler;
 	
 	// reference to an instance of Skin class
-	public $skin;
+	public $skin = NULL;
 	
 	// delimiters that can be used for skin/templatevars
 	public $delim;
