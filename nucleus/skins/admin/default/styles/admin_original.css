@@ -269,9 +269,7 @@ div#content table tbody tr:hover {
 	background-color:	#F5F5F5;
 }
 
-div#content table thead tr th,
-div#content table tfoot tr th,
-div#content table tbody tr th {
+div#content table thead tr th {
 	border: none;
 	background-color: #BBBBCC;
 	color: #000000;
@@ -279,23 +277,17 @@ div#content table tbody tr th {
 }
 
 div#content table thead th,
-div#content table thead td,
-div#content table tfoot th,
-div#content table tfoot td,
 div#content table tbody td {
 	padding: 4px;
 	empty-cells: show;
 }
 
 /* systemconfig column */
-div#content table.systemoverview thead td,
-div#content table.systemoverview tfoot td,
+div#content table.systemoverview thead th,
 div#content table.systemoverview tbody td {
 	width:	50%;
 }
 
-div#content table thead tr td,
-div#content table tfoot tr td,
 div#content table tbody tr td {
 	border: 1px solid #ddd;
 	font-size: small;

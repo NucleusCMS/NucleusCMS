@@ -1,0 +1,627 @@
+<?xml version="1.0"?>
+<nucleusskin>
+<meta>
+<skin name="admin/bookmarklet"/>
+<template name="admin/bookmarklet"/>
+<info><![CDATA[20120430]]></info>
+</meta>
+<skin name="admin/bookmarklet" type="text/html" includeMode="skindir" includePrefix="admin/bookmarklet">
+<description>
+<![CDATA[ADMIN Area Default Bookmarklet Skin]]>
+</description>
+<part name="createitem">
+<![CDATA[<%pagehead%>
+<h1><%text(_ADD_ADDTO)%> '<%bloglink%>'</h1>
+
+<form id="addform" method="post" action="<%adminurl%>bookmarklet.php" >
+
+<div>
+<input type="hidden" name="action" value="additem" />
+<input type="hidden" name="blogid" value="<%blogid%>" />
+<input type="hidden" name="draftid" value="0" />
+
+<%ticket%>
+
+<div id="submit" class="buttonbar">
+<div id="switchbuttons">
+<input type="button" onclick="flipBlock('body');" value="<%text(_BMLET_BODY)%> &gt;&gt;" />
+<input type="button" onclick="flipBlock('more');" value="<%text(_BMLET_MORE)%> &gt;&gt;" />
+<input type="button" onclick="flipBlock('options');" value="<%text(_BMLET_OPTIONS)%> &gt;&gt;" />
+<input type="button" onclick="updAllPreviews(); flipBlock('preview');" value="<%text(_BMLET_PREVIEW)%> &gt;&gt;" />
+</div>
+<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
+<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
+</div>
+
+<div id="body" class="contentblock">
+<table frame="box" rules="all" summary="<%text(_BMLET_BODY)%>">
+<%if(autosave)%>
+<tr>
+<td><%text(_AUTOSAVEDRAFT)%></td>
+<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+</tr>
+<%endif%>
+<tr>
+<td><%text(_ADD_TITLE)%></td>
+<td><input type="text" id="inputtitle" name="title" value="<%contents(title)%>" size="60" maxlength="160" /></td>
+</tr>
+<tr>
+<td>
+<%text(_ADD_BODY)%> <%helplink(additem)%></td>
+<td>
+
+<div class="jsbuttonbar">
+<!--[if IE]>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="cutThis()">
+<img src="<%skinfile(/images/button-cut.gif)%>" title="<%text(_ADD_CUT_TT)%>(Ctrl + X)" alt="<%text(_ADD_CUT_TT)%>(Ctrl + X)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="copyThis()">
+<img src="<%skinfile(/images/button-copy.gif)%>" title="<%text(_ADD_COPY_TT)%>(Ctrl + C)" alt="<%text(_ADD_COPY_TT)%>(Ctrl + C)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="pasteThis()">
+<img src="<%skinfile(/images/button-paste.gif)%>" title="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" alt="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" width="16" height="16" />
+</span>
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
+</span>
+<![endif]-->
+<!--[if ! IE]>-->
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
+</span>
+<!--<![endif]-->
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignleftThis()">
+<img src="<%skinfile(/images/button-alignleft.gif)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignrightThis()">
+<img src="<%skinfile(/images/button-alignright.gif)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="aligncenterThis()">
+<img src="<%skinfile(/images/button-aligncenter.gif)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="leftThis()">
+<img src="<%skinfile(/images/button-left.gif)%>" title="<%text(_ADD_LEFT_TT)%>" alt="<%text(_ADD_LEFT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="rightThis()">
+<img src="<%skinfile(/images/button-right.gif)%>" title="<%text(_ADD_RIGHT_TT)%>" alt="<%text(_ADD_RIGHT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="addMedia()">
+<img src="<%skinfile(/images/button-media.gif)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
+</span>
+<!--[if IE]>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="showedit()">
+<img src="<%skinfile(/images/button-preview.gif)%>" title="<%text(_ADD_PREVIEW_TT)%>" alt="<%text(_ADD_PREVIEW_TT)%>" width="16" height="16" />
+</span>
+<![endif]-->
+<div class="jsbuttonend"></div>
+</div>
+
+<textarea id="inputbody" name="body" cols="58" rows="12"><%contents(body)%></textarea></td>
+</tr>
+<tr>
+<td><%text(_ADD_CATEGORY)%></td>
+<td><%categories%></td>
+</tr>
+<tr>
+<%if(autosave)%>
+<td><%text(_AUTOSAVEDRAFT_NOW)%></td>
+<td><input type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" tabindex="80" onclick="autoSaveDraft();" /></td>
+<%endif%>
+</tr>
+</table>
+</div>
+
+<div id="more" class="contentblock">
+<table frame="box" rules="all" summary="<%text(_BMLET_MORE)%>">
+<tr>
+<td><%text(_ADD_MORE)%> <%helplink(extended)%></td>
+<td>
+
+<div class="jsbuttonbar">
+<!--[if IE]>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="cutThis()">
+<img src="<%skinfile(/images/button-cut.gif)%>" title="<%text(_ADD_CUT_TT)%>(Ctrl + X)" alt="<%text(_ADD_CUT_TT)%>(Ctrl + X)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="copyThis()">
+<img src="<%skinfile(/images/button-copy.gif)%>" title="<%text(_ADD_COPY_TT)%>(Ctrl + C)" alt="<%text(_ADD_COPY_TT)%>(Ctrl + C)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="pasteThis()">
+<img src="<%skinfile(/images/button-paste.gif)%>" title="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" alt="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" width="16" height="16" />
+</span>
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
+</span>
+<![endif]-->
+<!--[if ! IE]>-->
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
+</span>
+<!--<![endif]-->
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignleftThis()">
+<img src="<%skinfile(/images/button-alignleft.gif)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignrightThis()">
+<img src="<%skinfile(/images/button-alignright.gif)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="aligncenterThis()">
+<img src="<%skinfile(/images/button-aligncenter.gif)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="leftThis()">
+<img src="<%skinfile(/images/button-left.gif)%>" title="<%text(_ADD_LEFT_TT)%>" alt="<%text(_ADD_LEFT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="rightThis()">
+<img src="<%skinfile(/images/button-right.gif)%>" title="<%text(_ADD_RIGHT_TT)%>" alt="<%text(_ADD_RIGHT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="addMedia()">
+<img src="<%skinfile(/images/button-media.gif)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
+</span>
+<!--[if IE]>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="showedit()">
+<img src="<%skinfile(/images/button-preview.gif)%>" title="<%text(_ADD_PREVIEW_TT)%>" alt="<%text(_ADD_PREVIEW_TT)%>" width="16" height="16" />
+</span>
+<![endif]-->
+<div class="jsbuttonend"></div>
+</div>
+
+<textarea id="inputmore" name="more" cols="58" rows="17"><%contents(more)%></textarea>
+</td>
+</tr>
+</table>
+</div>
+
+<div id="options" class="contentblock">
+<table frame="box" rules="all" summary="<%text(_BMLET_OPTIONS)%>">
+
+<%if(blogsetting, bcomments)%>
+<tr>
+<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+<td>
+<input type='radio' id="closed_yes" name='closed' value='1' />
+<label for="closed_yes"><%text(_YES)%></label>
+<input type='radio' id="closed_no" name='closed' value='0' checked='checked' />
+<label for="closed_no"><%text(_NO)%></label>
+</td>
+</tr>
+<%endif%>
+
+<tr>
+<td><%text(_ADD_DRAFTNFUTURE)%></td>
+<td>
+<input type="radio" name="actiontype" value="addnow" checked='checked' id="act_now" />
+<label for="act_now"><%text(_ADD_ADDNOW)%></label><br />
+<input type="radio" id="act_future" name="actiontype" value="addfuture" />
+<label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+<div class="indent">
+<%text(_ADD_PLACE_ON)%>
+<input id="inputday" name="day" value="<%currenttime(mday)%>" size="2" onchange="document.forms[0].act_future.checked=true;" />/
+<input id="inputmonth" name="month" value="<%currenttime(mon)%>" size="2" onchange="document.forms[0].act_future.checked=true;" />/
+<input id="inputyear" name="year" value="<%currenttime(year)%>" size="4" onchange="document.forms[0].act_future.checked=true;" />
+at
+<input id="inputhour" name="hour" value="<%currenttime(hours)%>" size="2" onchange="document.forms[0].act_future.checked=true;" />:
+<input id="inputminutes" name="minutes" value="<%currenttime(minutes)%>" size="2" onchange="document.forms[0].act_future.checked=true;" />
+(dd/mm/yyyy hh:mm)
+
+<%if(blogsetting, ballowpast,0)%>
+<br />
+<%text(_ADD_NOPASTDATES)%>
+<%endif%>
+
+</div>
+<input type="radio" name="actiontype" value="adddraft" id="act_draft" />
+<label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+</td>
+</tr>
+
+<tr>
+<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+<td><%pluginextras%></td>
+</tr>
+<%itemoptions%>
+</table>
+
+</div>
+
+<div id="preview" class="contentblock">
+<h2><%text(_ADD_PREVIEW)%></h2>
+<b><span id="prevtitle">&#160;</span></b><br />
+<span id="prevbody">&#160;</span><br />
+<span id="prevmore">&#160;</span>
+</div>
+
+<%if(autosave)%>
+<script type="text/javascript">
+	var xmlhttprequest = new Array();
+	xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
+	xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
+	var seconds = now(); // Last AutoDraft time
+	var checks = 0; // Number of checks since last AutoDraft
+	var addform = document.getElementById('addform');
+	var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
+	var goalurl = '../action.php'; // The PHP file where the content must be posted to
+	var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
+	var formtype = 'add';
+</script>
+<%endif%>
+
+</div>
+
+</form>
+<%pagefoot%>]]>
+</part>
+
+<part name="itemedit">
+<![CDATA[<%pagehead%>
+<h1><%text(_EDIT_ITEM)%> (<%contents(itemid)%>)</h1>
+<form id="editform" method="post" action="<%adminurl%>bookmarklet.php" ><div>
+<input type="hidden" name="action" value="edititem" />
+<input type="hidden" name="itemid" value="<%contents(itemid)%>" />
+<input type="hidden" name="draftid" value="0" />
+<%ticket%>
+
+<div id="submit" class="buttonbar">
+<div id="switchbuttons">
+<input type="button" value="<%text(_BMLET_BODY)%> &gt;&gt;" onclick="flipBlock('body');" />
+<input type="button" value="<%text(_BMLET_MORE)%> &gt;&gt;" onclick="flipBlock('more');" />
+<input type="button" value="<%text(_BMLET_OPTIONS)%> &gt;&gt;" onclick="flipBlock('options');" />
+<input type="button" value="<%text(_BMLET_PREVIEW)%> &gt;&gt;" onclick="updAllPreviews(); flipBlock('preview');" />
+</div>
+<input type="submit" value="<%text(_BMLET_EDIT)%>" onclick="return checkSubmit();" />
+<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
+</div>
+
+<div id="body" class="contentblock">
+<table frame="box" rules="all" summary="<%text(_BMLET_BODY)%>">
+
+<%if(autosave)%>
+<tr>
+<td><%text(_AUTOSAVEDRAFT)%></td>
+<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+</tr>
+<%endif%>
+
+<tr>
+<td><%text(_ADD_TITLE)%></td>
+<td><input type="text" id="inputtitle" name="title" value="<%contents(title)%>" size="60" maxlength="160" /></td>
+</tr>
+<tr>
+<td><%text(_ADD_BODY)%></td>
+<td>
+
+<div class="jsbuttonbar">
+<!--[if IE]>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="cutThis()">
+<img src="<%skinfile(/images/button-cut.gif)%>" title="<%text(_ADD_CUT_TT)%>(Ctrl + X)" alt="<%text(_ADD_CUT_TT)%>(Ctrl + X)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="copyThis()">
+<img src="<%skinfile(/images/button-copy.gif)%>" title="<%text(_ADD_COPY_TT)%>(Ctrl + C)" alt="<%text(_ADD_COPY_TT)%>(Ctrl + C)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="pasteThis()">
+<img src="<%skinfile(/images/button-paste.gif)%>" title="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" alt="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" width="16" height="16" />
+</span>
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
+</span>
+<![endif]-->
+<!--[if ! IE]>-->
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
+</span>
+<!--<![endif]-->
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignleftThis()">
+<img src="<%skinfile(/images/button-alignleft.gif)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignrightThis()">
+<img src="<%skinfile(/images/button-alignright.gif)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="aligncenterThis()">
+<img src="<%skinfile(/images/button-aligncenter.gif)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="leftThis()">
+<img src="<%skinfile(/images/button-left.gif)%>" title="<%text(_ADD_LEFT_TT)%>" alt="<%text(_ADD_LEFT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="rightThis()">
+<img src="<%skinfile(/images/button-right.gif)%>" title="<%text(_ADD_RIGHT_TT)%>" alt="<%text(_ADD_RIGHT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="addMedia()">
+<img src="<%skinfile(/images/button-media.gif)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
+</span>
+<!--[if IE]>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="showedit()">
+<img src="<%skinfile(/images/button-preview.gif)%>" title="<%text(_ADD_PREVIEW_TT)%>" alt="<%text(_ADD_PREVIEW_TT)%>" width="16" height="16" />
+</span>
+<![endif]-->
+<div class="jsbuttonend"></div>
+</div>
+
+<textarea id="inputbody" name="body" cols="58" rows="12"><%contents(body)%></textarea>
+</td>
+</tr>
+<tr>
+<td><%text(_ADD_CATEGORY)%></td>
+<td><%categories%></td>
+</tr>
+<%if(autosave)%>
+<tr>
+<td><%text(_AUTOSAVEDRAFT_NOW)%></td>
+<td><input type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" tabindex="80" onclick="autoSaveDraft();" /></td>
+</tr>
+<%endif%>
+</table>
+</div>
+
+<div id="more" class="contentblock">
+<table frame="box" rules="all" summary="<%text(_BMLET_MORE)%>">
+<tr>
+<td><%text(_ADD_MORE)%> <%helplink(extended)%></td>
+<td>
+
+<div class="jsbuttonbar">
+<!--[if IE]>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="cutThis()">
+<img src="<%skinfile(/images/button-cut.gif)%>" title="<%text(_ADD_CUT_TT)%>(Ctrl + X)" alt="<%text(_ADD_CUT_TT)%>(Ctrl + X)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="copyThis()">
+<img src="<%skinfile(/images/button-copy.gif)%>" title="<%text(_ADD_COPY_TT)%>(Ctrl + C)" alt="<%text(_ADD_COPY_TT)%>(Ctrl + C)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="pasteThis()">
+<img src="<%skinfile(/images/button-paste.gif)%>" title="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" alt="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" width="16" height="16" />
+</span>
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
+</span>
+<![endif]-->
+<!--[if ! IE]>-->
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
+</span>
+<!--<![endif]-->
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignleftThis()">
+<img src="<%skinfile(/images/button-alignleft.gif)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignrightThis()">
+<img src="<%skinfile(/images/button-alignright.gif)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="aligncenterThis()">
+<img src="<%skinfile(/images/button-aligncenter.gif)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="leftThis()">
+<img src="<%skinfile(/images/button-left.gif)%>" title="<%text(_ADD_LEFT_TT)%>" alt="<%text(_ADD_LEFT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="rightThis()">
+<img src="<%skinfile(/images/button-right.gif)%>" title="<%text(_ADD_RIGHT_TT)%>" alt="<%text(_ADD_RIGHT_TT)%>" width="16" height="16" />
+</span>
+<span class="jsbuttonspacer">&nbsp;</span>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="addMedia()">
+<img src="<%skinfile(/images/button-media.gif)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
+</span>
+<!--[if IE]>
+<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="showedit()">
+<img src="<%skinfile(/images/button-preview.gif)%>" title="<%text(_ADD_PREVIEW_TT)%>" alt="<%text(_ADD_PREVIEW_TT)%>" width="16" height="16" />
+</span>
+<![endif]-->
+<div class="jsbuttonend"></div>
+</div>
+
+<textarea id="inputmore" name="more" cols="58" rows="17"><%contents(more)%></textarea>
+</td>
+</tr>
+</table>
+</div>
+
+<div id="options" class="contentblock">
+<table frame="box" rules="all" summary="<%text(_BMLET_OPTIONS)%>">
+<%if(blogsetting, bcomments)%>
+<tr>
+<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+<td>
+<input type="radio" name="closed" value="1" id="closed_yes" <%checkedonval(1,closed)%> /><label for="closed_yes"><%text(_YES)%></label>
+<input type="radio" name="closed" value="0" id="closed_no" <%checkedonval(0,closed)%> /><label for="closed_no"><%text(_NO)%></label>
+</td>
+</tr>
+<%endif%>
+<tr>
+<td><%text(_SUBMIT)%></td>
+<td>
+<input id="act_edit" type="radio" name="actiontype" value="edit" checked="checked" />
+<label for="act_edit"><%text(_BMLET_EDIT)%></label><br />
+<input id="act_delete" type="radio" name="actiontype" value="delete" />
+<label for="act_delete"><%text(_BMLET_DELETE)%></label><br />
+
+<%if(blogsetting, ballowpast)%>
+<input id="act_changedate" name="actiontype" value="changedate" type="radio" tabindex="70" />
+<label for="act_changedate"><%text(_BMLET_CHANGEDATE)%></label> <%helplink(changedate)%>
+
+<div class="indent">
+<input id="inputday" name="day" value="<%itemtime(mday)%>" size="2" tabindex="71" onchange="document.forms[0].act_changedate.checked=true;" />/
+<input id="inputmonth" name="month" value="<%itemtime(mon)%>" tabindex="72" size="2" onchange="document.forms[0].act_changedate.checked=true;" />/
+<input id="inputyear" name="year" tabindex="73" size="4" value="<%itemtime(year)%>" onchange="document.forms[0].act_changedate.checked=true;" />
+at
+<input id="inputhour" name="hour" value="<%itemtime(hours)%>" size="2" tabindex="74" onchange="document.forms[0].act_changedate.checked=true;" />:
+<input id="inputminutes" name="minutes" value="<%itemtime(minutes)%>" size="2" tabindex="75" onchange="document.forms[0].act_changedate.checked=true;" />
+(dd/mm/yyyy hh:mm)
+</div>
+<input type="radio" id="act_backtodrafts" name="actiontype" value="backtodrafts" tabindex="71" />
+<label for="act_backtodrafts">
+<%text(_BMLET_BACKTODRAFTS)%></label> <%helplink(draft)%>
+<%endif%>
+
+</td>
+</tr>
+
+<tr>
+<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+<td><%pluginextras%></td>
+</tr>
+
+<%itemoptions%>
+</table>
+</div>
+
+<div id="preview" class="contentblock">
+<h2><%text(_ADD_PREVIEW)%></h2>
+<b><span id="prevtitle">&#160;</span></b><br />
+<span id="prevbody">&#160;</span><br />
+<span id="prevmore">&#160;</span>
+</div>
+</div>
+</form>
+<%if(autosave)%>
+<script type="text/javascript">
+	var xmlhttprequest = new Array();
+	xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
+	xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
+	var seconds = now(); // Last AutoDraft time
+	var checks = 0; // Number of checks since last AutoDraft
+	var addform = document.getElementById('editform');
+	var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
+	var goalurl = '../action.php'; // The PHP file where the content must be posted to
+	var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
+	var formtype = 'edit';
+</script>
+<%endif%>
+<%pagefoot%>]]>
+</part>
+
+<part name="pagefoot">
+<![CDATA[
+	</body>
+	</html>
+]]></part>
+
+<part name="pagehead">
+<![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+	<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<%locale%>" lang="<%locale%>">
+	<head>
+	<title><%title%></title>
+	<link rel="stylesheet" type="text/css" href="<%skinfile(/styles/bookmarklet.css)%>" /> 
+	<link rel="stylesheet" type="text/css" href="<%skinfile(/styles/addedit.css)%>" />
+	<script type="text/javascript" src="<%skinfile(/javascripts/bookmarklet.js)%>"></script>
+	<script type="text/javascript" src="<%skinfile(/javascripts/edit.js)%>"></script>
+	<script type="text/javascript" src="<%skinfile(/javascripts/numbercheck.js)%>"></script>
+	
+	<%if(autosave)%>
+	<script type="text/javascript" src="<%skinfile(/javascripts/xmlhttprequest.js)%>"></script>
+	<%endif%>
+	
+	<%init%>
+	
+	<%extrahead%>
+	
+	<script type="text/javascript">
+	var nucleus_initbm_oldonload = window.onload;
+	function nucleus_initbm()
+	{
+		initStyles();
+		updAllPreviews();
+		
+		if ( nucleus_initbm_oldonload )
+		{
+			nucleus_initbm_oldonload();
+		}
+	}
+	window.onload = nucleus_initbm;
+	</script>
+	</head>
+	<body>
+]]></part>
+
+<part name="showlogin">
+<![CDATA[<%pagehead%><h2><%text(_LOGIN)%></h2>
+	<%headmessage%>
+	<form method="post" action="<%adminurl%>bookmarklet.php">
+	<p>
+	<%text(_LOGIN_NAME)%> <br /><input name="login" tabindex="10" /><br />
+	<%text(_LOGIN_PASSWORD)%> <br /><input name="password"  tabindex="20" type="password" /><br />
+	<input type="checkbox" value="1" name="shared" tabindex="40" id="shared" />
+	<label for="shared"><%text(_LOGIN_SHARED)%></label><br />
+	<a href="forgotpassword.php"><%text(_LOGIN_FORGOT)%></a>
+	
+	<%passrequestvars%>
+	
+	<input type="hidden" name="blogid" value="<%blogid%>" />
+	<input type="hidden" name="itemid" value="<%itemid%>" />
+	<input type="hidden" name="logtext" value="<%log_text%>" />
+	<input type="hidden" name="loglink" value="<%log_link%>" />
+	<input type="hidden" name="loglinktitle" value="<%log_linktitle%>" />
+	
+	<input type="hidden" name="nextaction" value="<%action%>" />
+	<button type="submit" name="action" value="login"><%text(_LOGIN)%></button>
+	</p>
+	</form>
+<%pagefoot%>]]></part>
+
+<part name="adminerrorpage"><![CDATA[
+<%pagehead%>
+<%headmessage%>
+<p><a href="<%adminurl%>bookmarklet.php" onclick="window.close();window.opener.location.reload();"><%text(_POPUP_CLOSE)%></a></p>
+<%pagefoot%>
+]]></part>
+
+</skin>
+<template name="admin/bookmarklet">
+<description><![CDATA[ADMIN Area Default bookmarklet template]]></description>
+</template>
+</nucleusskin>

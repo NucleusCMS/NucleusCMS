@@ -78,7 +78,27 @@ if ( $bNeedsLogin )
 	$action = 'showlogin';
 }
 
-sendContentType('text/html', 'admin-' . $action);
+if ( !Admin::initialize() )
+{
+	/* TODO: this is a bad way... */
+	sendContentType('text/html', 'admin-' . $action);
+	
+	$skin =& $manager->getSkin(0, 'AdminActions', 'AdminSkin');
+	if ( $bNeedsLogin )
+	{
+		$skin->parse('fileparse', $DIR_SKINS . 'admin/showlogin.skn');
+	}
+	else if ($action == 'adminskinieimport' )
+	{
+		Admin::action($action);
+	}
+	else
+	{
+		$skin->parse('importAdmin', $DIR_SKINS . 'admin/defaultimporter.skn');
+	}
+	/* TODO: something to handling errors */
+	exit;
+}
 
-$admin = new Admin();
-$admin->action($action);
+Admin::action($action);
+exit;

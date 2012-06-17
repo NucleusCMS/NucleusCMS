@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<%charset%>" />
+<title><%sitevar(name)%> - Admin</title>
+<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<%skinfile(admin/default/styles/admin_contemporary.css)%>" />
+<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<%skinfile(admin/default/styles/addedit.css)%>" />
+<script type="text/javascript" src="<%skinfile(admin/default/javascript/edit.js)%>"></script>
+<script type="text/javascript" src="<%skinfile(admin/default/javascript/admin.js)%>"></script>
+<script type="text/javascript" src="<%skinfile(admin/default/javascript/compatibility.js)%>"></script>
+<meta http-equiv='Pragma' content='no-cache' />
+<meta http-equiv='Cache-Control' content='no-cache, must-revalidate' />
+<meta http-equiv='Expires' content='-1' />
+<%extrahead%>
+</head>
+<body>
+<div id="adminwrapper">
+<div class="header">
+<h1><%sitevar(name)%></h1>
+</div>
+<div id="container">
+<div id="content">
+<div class="loginname">
+<a href="<%adminurl%>index.php?action=showlogin" title="Log in"><%text(_NOTLOGGEDIN)%></a><br />
+<a href="<%sitevar(url)%>"><%text(_YOURSITE)%></a><br />
+(<%version%><%codename%>)
+</div>
+
+<h2><%text(_LOGIN)%></h2>
+<%headmessage%>
+
+<form action="index.php" method="post"><p>
+<%text(_LOGIN_NAME)%> <br />
+<input name="login"  tabindex="10" /><br />
+<%text(_LOGIN_PASSWORD)%> <br />
+<input name="password"  tabindex="20" type="password" /><br />
+<input name="action" value="login" type="hidden" /><input name="customaction" value="top" type="hidden" /><br />
+<input type="submit" value="<%text(_LOGIN)%>" tabindex="30" /><br />
+<small>
+<input type="checkbox" value="1" name="shared" tabindex="40" id="shared" /><label for="shared"><%text(_LOGIN_SHARED)%></label><br />
+<a href="forgotpassword.php"><%text(_LOGIN_FORGOT)%></a>
+</small>
+<%passrequestvars%>
+</p>
+</form>
+
+<div class="foot">
+<a href="<%text(_ADMINPAGEFOOT_OFFICIALURL)%>">Nucleus CMS</a> &copy; 2002- <%date(%Y)%> <%text(_ADMINPAGEFOOT_COPYRIGHT)%>
+ - <a href="<%text(_ADMINPAGEFOOT_DONATEURL)%>"><%text(_ADMINPAGEFOOT_DONATE)%></a>
+</div>
+
+</div>
+
+<!-- content -->
+<div id="quickmenu">
+<h2><%text(_QMENU_INTRO)%></h2>
+<%text(_QMENU_INTRO_TEXT)%>
+</div>
+<!-- content / quickmenu container -->
+<div class="clear"></div>
+<!-- new -->
+</div>
+
+<!-- adminwrapper --><!-- new -->
+</div> <!-- new -->
+</body>
+</html>

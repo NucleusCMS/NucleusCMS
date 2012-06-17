@@ -1,6 +1,6 @@
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-  * Copyright (C) 2002-2009 The Nucleus Group
+  * Copyright (C) 2002-2012 The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -11,7 +11,7 @@
   * This file contains functions to allow adding items from inside the weblog.
   * Also contains code to avoid submitting form data twice.
   *
-  * $Id$
+  * $Id: edit.js 1388 2009-07-18 06:31:28Z shizuki $
   */
 
 var nucleusConvertBreaks = true;
@@ -137,16 +137,14 @@ var nonie_FormType = 'body';
 
 // Add media to new item
 function addMedia() {
-
-	var mediapopup = window.open(nucleusMediaPopupURL + 'media.php','name',
-		'status=yes,toolbar=no,scrollbars=yes,resizable=yes,width=500,height=450,top=0,left=0');
-
-	return;
-}
-
-
-function setMediaPopupURL(url) {
-	nucleusMediaPopupURL = url;
+	if ( typeof(medium) != 'undefined' )
+	{
+		medium.addMedia();
+	}
+	else
+	{
+		alert('Media Plugin Not Found');
+	}
 }
 
 function includeImage(collection, filename, type, width, height) {
@@ -329,10 +327,10 @@ function isCaretEmpty() {
 
 function BtnHighlight(el) {
 	with(el.style){
-		borderLeft="1px solid gray";
-		borderRight="1px solid #e9e9e9";
-		borderTop="1px solid gray";
-		borderBottom="1px solid #e9e9e9";
+		borderLeft="1px solid #e9e9e9";
+		borderRight="1px solid gray";
+		borderTop="1px solid #e9e9e9";
+		borderBottom="1px solid gray";
 	}
 }
 

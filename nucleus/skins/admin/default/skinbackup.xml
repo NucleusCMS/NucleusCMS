@@ -1,0 +1,3922 @@
+<?xml version="1.0"?>
+<nucleusskin>
+<meta>
+<skin name="admin/default"/>
+<template name="admin/default"/>
+<info><![CDATA[20120525]]></info>
+</meta>
+<skin name="admin/default" type="text/html" includeMode="skindir" includePrefix="admin/default">
+<description>
+<![CDATA[ADMIN Area Default skin]]>
+</description>
+<part name="actionlog"><![CDATA[
+	<%pagehead%>
+	
+	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+	
+	<h2><%text(_ACTIONLOG_CLEAR_TITLE)%></h2>
+	<p><a href="<%adminurl%><%addtickettourl(index.php?action=clearactionlog)%>"><%text(_ACTIONLOG_CLEAR_TEXT)%></a></p>
+	
+	<h2><%text(_ACTIONLOG_TITLE)%></h2>
+	<%actionloglist(admin/default)%>
+	<%pagefoot%>
+]]></part>
+<part name="activate"><![CDATA[
+	<%pagehead%>
+	<h2><%activationmessage(title)%></h2>
+	<p><%activationmessage(text)%></p>
+	<p class="error"><%headmessage%></p>
+	<%if(bechangepass)%>
+		<form action="<%adminurl%>index.php" method="post">
+		<p>
+		<input type="hidden" name="action" value="activatesetpwd" />
+		<%ticket%>
+		<input type="hidden" name="key" value="<%activationmessage(ackey)%>" />
+		</p>
+		<table frame="box" rules="all" summary="<%text(_MEMBERS_SETPWD_BTN)%>">
+		<tr>
+		<td><%text(_MEMBERS_PWD)%></td>
+		<td><input type="password" maxlength="40" size="16" name="password" /></td>
+		</tr>
+		<tr>
+		<td><%text(_MEMBERS_REPPWD)%></td>
+		<td><input type="password" maxlength="40" size="16" name="repeatpassword" /></td>
+		<%eventformextra(activation)%>
+		</tr>
+		<tr>
+		<td><%text(_MEMBERS_SETPWD)%></td>
+		<td><input type="submit" value="<%text(_MEMBERS_SETPWD_BTN)%>" /></td>
+		</tr>
+		</table>
+		</form>
+		<%endif%>
+	<%pagefoot%>
+]]></part>
+<part name="activatesetpwd"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_ACTIVATE_SUCCESS_TITLE)%></h2>
+	<p><%text(_ACTIVATE_SUCCESS_TEXT)%></p>
+	<%pagefoot%>
+]]></part>
+<part name="addnewlog"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_BLOGCREATED_TITLE)%></h2>
+	<p><%sprinttext(_BLOGCREATED_ADDEDTXT,<|%createdblogsetting(name)%|>)%></p>
+	<ol>
+	<li><a href="#index_php"><%sprinttext(_BLOGCREATED_SIMPLEWAY,<|%getblogsetting(short)%|>)%></a></li>
+	<li><a href="#skins"><%text(_BLOGCREATED_ADVANCEDWAY)%></a></li>
+	</ol>
+	<h3><a id="index_php"><%sprinttext(_BLOGCREATED_SIMPLEDESC1,<|%getblogsetting(short)%|>)%></a></h3>
+	<p><%sprinttext(_BLOGCREATED_SIMPLEDESC2,<|%getblogsetting(short)%|>)%></p>
+	<pre><code>&lt;?php
+	
+	$CONF['Self'] = '<b><%blogsetting(short)%>.php</b>';
+	
+	include('<i>./config.php</i>');
+	
+	selectBlog('<b><%blogsetting(short)%></b>');
+	selector();
+	
+	?&gt;</code></pre>
+	<p><%text(_BLOGCREATED_SIMPLEDESC3)%></p>
+	<p><%text(_BLOGCREATED_SIMPLEDESC4)%></p>
+	<form action="<%adminurl%>index.php" method="post">
+	<p>
+	<input type="hidden" name="action" value="addnewlog2" />
+	<%ticket%>
+	<input type="hidden" name="blogid" value="<%requestblogid%>" />
+	</p>
+	
+	<table frame="box" rules="all" summary="<%text(_BLOGCREATED_TITLE)%>">
+	<tr>
+	<td><%text(_EBLOG_URL)%></td>
+	<td><input name="url" maxlength="100" size="40" value="<%sitevar(url)%><%blogsetting(short)%>.php" /></td>
+	</tr>
+	<tr>
+	<td><%text(_EBLOG_CREATE)%></td>
+	<td><input type="submit" value="<%text(_EBLOG_CREATE_BTN)%>" onclick="return checkSubmit();" /></td>
+	</tr>
+	</table>
+	</form>
+	
+	<h3><a id="skins"><%text(_BLOGCREATED_ADVANCEDWAY2)%></a></h3>
+	<p><%text(_BLOGCREATED_ADVANCEDWAY3)%></p>
+	
+	<form action="<%adminurl%>index.php" method="post">
+	<p>
+	<input type="hidden" name="action" value="addnewlog2" />
+	<%ticket%>
+	<input type="hidden" name="blogid" value="<%requestblogid%>" />
+	</p>
+	<table frame="box" rules="all" summary="<%text(_BLOGCREATED_ADVANCEDWAY2)%>">
+	<tr>
+	<td><%text(_EBLOG_URL)%></td>
+	<td><input name="url" maxlength="100" size="40" /></td>
+	</tr>
+	<tr>
+	<td><%text(_EBLOG_CREATE)%></td>
+	<td><input type="submit" value="<%text(_EBLOG_CREATE_BTN)%>" onclick="return checkSubmit();" /></td>
+	</tr>
+	</table>
+	</div>
+	</form><%pagefoot%>
+]]></part>
+<part name="adminerrorpage"><![CDATA[
+	<%pagehead%>
+	<h2>Error!</h2>
+	<%headmessage%><br />
+	<a href="<%adminurl%>index.php" onclick="history.back()"><%text(_BACK)%></a>
+	<%pagefoot%>
+]]></part>
+<part name="adminskindelete"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_DELETE_CONFIRM)%></h2>
+	
+	<form method="post" action="<%adminurl%>index.php">
+	<p><%text(_CONFIRMTXT_SKIN)%><b><%editskintype(name)%></b> (<%editskintype(desc)%>)</p>
+	<input type="hidden" name="action" value="adminskindeleteconfirm" />
+	<%ticket%>
+	<input type="hidden" name="skinid" value="<%editskintype(id)%>" />
+	<input type="submit" tabindex="10" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+	</p>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="adminskinedit"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=adminskinoverview">(<%text(_SKIN_BACK)%>)</a></p>
+	
+	<h2><%text(_SKIN_EDITONE_TITLE)%> '<%editskin(name)%>'</h2>
+	
+	<h3><%text(_SKIN_PARTS_TITLE)%></h3>
+	<%text(_SKIN_PARTS_MSG)%>
+	<%normalskinlist(admin/default)%>
+	
+	<h3><%text(_SKIN_PARTS_SPECIAL)%></h3>
+	<form method="get" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="adminskinedittype" />
+	<input type="hidden" name="skinid" value="<%editskin(id)%>" />
+	<input name="type" tabindex="89" size="30" maxlength="64" />
+	<input type="submit" tabindex="140" value="<%text(_SKIN_CREATE)%>" onclick="return checkSubmit();" />
+	</p>
+	</form>
+	<%specialskinlist(admin/default)%>
+	
+	<h3><%text(_SKIN_GENSETTINGS_TITLE)%></h3>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="adminskineditgeneral" />
+	<%ticket%>
+	<input type="hidden" name="skinid" value="<%editskin(id)%>" />
+	</p>
+	<table frame="box" rules="all" summary="<%text(_SKIN_GENSETTINGS_TITLE)%>">
+	<tr>
+	<td><%text(_SKIN_NAME)%> <%helplink(shortnames)%></td>
+	<td><input name="name" value="<%editskin(name)%>" maxlength="64" size="30" tabindex="90" /></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_DESC)%></td>
+	<td><input name="desc" value="<%editskin(desc)%>" maxlength="200" size="50" tabindex="100" /></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_TYPE)%></td>
+	<td><input name="type" value="<%editskin(type)%>" maxlength="40" size="20" tabindex="110" /></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_INCLUDE_MODE)%> <%helplink(includemode)%></td>
+	<td><%editskin(mode)%></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_INCLUDE_PREFIX)%> <%helplink(includeprefix)%></td>
+	<td><input name="inc_prefix" value="<%editskin(prefix)%>" maxlength="40" size="20" tabindex="130" /></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_CHANGE)%></td>
+	<td><input type="submit" value="<%text(_SKIN_CHANGE_BTN)%>" onclick="return checkSubmit();" tabindex="140" /></td>
+	</tr>
+	</table>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="adminskinedittype"><![CDATA[
+	<%pagehead%>
+	<p>(<a href="<%adminurl%>index.php?action=adminskinoverview"><%text(_SKIN_GOBACK)%></a>)</p>
+	
+	<h2><%text(_SKIN_EDITPART_TITLE)%> '<%editskintype(name)%>': <%editskintype(skintype)%></h2>
+	<%headmessage%>
+	
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="adminskinupdate" />
+	<%ticket%>
+	<input type="hidden" name="skinid" value="<%editskintype(id)%>" />
+	<input type="hidden" name="type" value="<%editskintype(skintyperaw)%>" />
+	<input type="submit" value="<%text(_SKIN_UPDATE_BTN)%>" onclick="return checkSubmit();" />
+	<input type="reset" value="<%text(_SKIN_RESET_BTN)%>" />
+	(skin type: <%editskintype(skintype)%>)<%skintypehelp%><br />
+	<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content"><%editskintype(content)%></textarea><br />
+	<input type="submit" tabindex="20" value="<%text(_SKIN_UPDATE_BTN)%>" onclick="return checkSubmit();" />
+	<input type="reset" value="<%text(_SKIN_RESET_BTN)%>" />
+	(skin type: <%editskintype(skintype)%>)
+	<br />
+	<br />
+	<%text(_SKIN_ALLOWEDVARS)%>
+	<%allowedskinactions%><br /><br />
+	<%text(_SKINEDIT_ALLOWEDTEMPLATESS)%>
+	<%skineditallowedlist(template)%><br />
+	</p>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="adminskiniedoimport"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+	
+	<h2><%text(_SKINIE_DONE)%></h2>
+	
+	<ul>
+	<li><strong><%text(_SKINIE_INFO_GENERAL)%></strong> <%importskininfo(info)%></li>
+	<li><strong><%text(_SKINIE_INFO_IMPORTEDSKINS)%></strong> <%importskininfo(snames)%></li>
+	<li><strong><%text(_SKINIE_INFO_IMPORTEDTEMPLS)%></strong> <%importskininfo(tnames)%></li>
+	</ul>
+	<%pagefoot%>
+]]></part>
+<part name="adminskinieimport"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=adminskinieoverview">(<%text(_BACK)%>)</a></p>
+	<h2><%text(_SKINIE_CONFIRM_TITLE)%></h2>
+	
+	<ul>
+	<li><strong><%text(_SKINIE_INFO_GENERAL)%></strong> <%importskininfo(info)%></li>
+	<li><strong><%text(_SKINIE_INFO_SKINS)%></strong> <%importskininfo(snames)%></li>
+	<li><strong><%text(_SKINIE_INFO_TEMPLATES)%></strong> <%importskininfo(tnames)%></li>
+	<%if(nameclashes)%>
+		<li><strong style="color: red;"><%text(_SKINIE_INFO_SKINCLASH)%></strong> <%importskininfo(sclashes)%></li>
+		<li><strong style="color: red;"><%text(_SKINIE_INFO_TEMPLCLASH)%></strong> <%importskininfo(tclashes)%></li>
+	<%endif%>
+	</ul>
+	
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="adminskiniedoimport" />
+	<%ticket%>
+	<input type="hidden" name="skinfile" value="<%importskininfo(skinfile)%>" />
+	<input type="hidden" name="mode" value="<%importskininfo(mode)%>" />
+	<input type="submit" value="<%text(_SKINIE_CONFIRM_IMPORT)%>" />
+	<%if(nameclashes)%>
+		<br />
+		<input type="checkbox" name="overwrite" value="1" id="cb_overwrite" />
+		<label for="cb_overwrite"><%text(_SKINIE_CONFIRM_OVERWRITE)%></label>
+	<%endif%>
+	</p>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="adminskinieoverview"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+	
+	<h2><%text(_SKINIE_TITLE_IMPORT)%></h2>
+	
+	<p>
+	<label for="skinie_import_local"><%text(_SKINIE_LOCAL)%></label>
+	</p>
+	
+	<%if(superadmin)%>
+		<form method="post" action="<%adminurl%>index.php">
+		<p>
+		<input type="hidden" name="action" value="adminskinieimport" />
+		<%ticket%>
+		<input type="hidden" name="mode" value="file" />
+		<select name="skinfile" id="skinie_import_local">
+		<%selectlocalskinfiles%>
+		</select>
+		<input type="submit" value="<%text(_SKINIE_BTN_IMPORT)%>" />
+		</p>
+		</form>
+	<%else%>
+		<p><%text(_SKINIE_NOCANDIDATES)%></p>
+	<%endif%>
+	
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<em><%text(_OR)%></em>
+	<%ticket%>
+	<input type="hidden" name="action" value="adminskinieimport" />
+	<input type="hidden" name="mode" value="url" />
+	<label for="skinie_import_url"><%text(_SKINIE_FROMURL)%></label>
+	<input type="text" name="skinfile" id="skinie_import_url" size="60" value="http://" />
+	<input type="submit" value="<%text(_SKINIE_BTN_IMPORT)%>" />
+	</p>
+	</form>
+	
+	<h2><%text(_SKINIE_TITLE_EXPORT)%></h2>
+	
+	<form method="post" action="<%adminurl%>index.php">
+	
+	<p><%text(_SKINIE_EXPORT_INTRO)%></p>
+	
+	<table frame="box" rules="all" summary="<%text(_SKINIE_EXPORT_SKINS)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_SKINIE_EXPORT_SKINS)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%skinielist(skin,admin/default)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_SKINIE_EXPORT_TEMPLATES)%>">
+	<thead>
+	<th colspan="2"><%text(_SKINIE_EXPORT_TEMPLATES)%></th>
+	</thead>
+	<tbody>
+	<%skinielist(template,admin/default)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_SKINIE_EXPORT_EXTRA)%>">
+	<thead>
+	<th colspan="2"><%text(_SKINIE_EXPORT_EXTRA)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td colspan="2"><textarea cols="40" rows="5" name="info"></textarea></td>
+	</tr>
+	</tbody>
+	</table>
+	
+	<p>
+	<input type="hidden" name="action" value="adminskinieexport" />
+	<%ticket%>
+	<input type="submit" value="<%text(_SKINIE_BTN_EXPORT)%>" />
+	</p>
+	
+	
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="adminskinoverview"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+	<h2><%text(_SKIN_EDIT_TITLE)%></h2>
+	
+	<h3><%text(_SKIN_AVAILABLE_TITLE)%></h3>
+	<%skinoverview(admin/default)%>
+	
+	<h3><%text(_SKIN_NEW_TITLE)%></h3>
+	<form method="post" action="<%adminurl%>">
+	<p>
+	<input type="hidden" name="action" value="adminskinnew" />
+	<%ticket%>
+	</p>
+	<table frame="box" rules="all" summary="<%text(_SKIN_NEW_TITLE)%>">
+	<tr>
+	<td><%text(_SKIN_NAME)%> <%helplink(shortnames)%></td>
+	<td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_DESC)%></td>
+	<td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_CREATE)%></td>
+	<td><input type="submit" tabindex="10030" value="<%text(_SKIN_CREATE_BTN)%>" onclick="return checkSubmit();" /></td>
+	</tr>
+	</table>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="adminskinremovetype"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_DELETE_CONFIRM)%></h2>
+	<p><%text(_CONFIRMTXT_SKIN_PARTS_SPECIAL)%><br />
+	<b><%editskintype(skintype)%> (<%editskintype(name)%>)</b> (<%editskintype(desc)%>)</p>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="adminskinremovetypeconfirm" />
+	<%ticket%>
+	<input type="hidden" name="skinid" value="<%editskintype(id)%>" />
+	<input type="hidden" name="type" value="<%editskintype(skintype)%>" />
+	<input type="submit" tabindex="10" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+	</p>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="admintemplatedelete"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_DELETE_CONFIRM)%></h2>
+	<p><%text(_CONFIRMTXT_TEMPLATE)%><b><%edittemplateinfo(name)%></b> (<%edittemplateinfo(desc)%>)</p>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="admintemplatedeleteconfirm" />
+	<%ticket%>
+	<input type="hidden" name="templateid" value="<%edittemplateinfo(id)%>" />
+	<input type="submit" tabindex="10" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+	</p>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="admintemplateedit"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=admintemplateoverview">(<%text(_TEMPLATE_BACK)%>)</a></p>
+	
+	<h2><%text(_TEMPLATE_EDIT_TITLE)%> '<%edittemplateinfo(name)%>'</h2>
+	<%headmessage%>
+	
+	<p><%text(_TEMPLATE_EDIT_MSG)%></p>
+	
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="admintemplateupdate" />
+	<%ticket%>
+	<input type="hidden" name="templateid" value="<%edittemplateinfo(id)%>" />
+	</p>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_EDIT_TITLE)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_SETTINGS)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td><%text(_TEMPLATE_NAME)%> <%helplink(shortnames)%></td>
+	<td><input name="tname" tabindex="4" size="20" maxlength="20" value="<%edittemplateinfo(name)%>" /></td>
+	</tr>
+	<tr>
+	<td><%text(_TEMPLATE_DESC)%></td>
+	<td><input name="tdesc" tabindex="5" size="50" maxlength="200" value="<%edittemplateinfo(desc)%>" /></td>
+	</tr>
+	<tr>
+	<td><%text(_TEMPLATE_UPDATE)%></td>
+	<td>
+	<input type="submit" tabindex="6" value="<%text(_TEMPLATE_UPDATE_BTN)%>" onclick="return checkSubmit();" />
+	<input type="reset" tabindex="7" value="<%text(_TEMPLATE_RESET_BTN)%>" />
+	</td>
+	</tr>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_QMENU_LAYOUT_SKINS)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_QMENU_LAYOUT_SKINS)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row, _ADM_TPLPT_NORMALSKINLIST_HEAD, NORMALSKINLIST_HEAD, ,8)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_NORMALSKINLIST_BODY, NORMALSKINLIST_BODY, ,9)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_NORMALSKINLIST_FOOT, NORMALSKINLIST_FOOT, ,10)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SPECIALSKINLIST_HEAD, SPECIALSKINLIST_HEAD, , 11)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SPECIALSKINLIST_BODY, SPECIALSKINLIST_BODY, , 12)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SPECIALSKINLIST_FOOT, SPECIALSKINLIST_FOOT, , 13)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SKINIE_EXPORT_LIST, SKINIE_EXPORT_LIST, , 17)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_QMENU_LAYOUT_TEMPL)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_QMENU_LAYOUT_TEMPL)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row, _ADM_TPLPT_TEMPLATE_EDIT_EXPLUGNAME, TEMPLATE_EDIT_EXPLUGNAME, , 18)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_TEMPLATE_EDIT_ROW_HEAD, TEMPLATE_EDIT_ROW_HEAD, , 19)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_TEMPLATE_EDIT_ROW_TAIL, TEMPLATE_EDIT_ROW_TAIL, , 20)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_SKINABLEADMIN_ADMINAREAHEADLINK)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_SKINABLEADMIN_ADMINAREAHEADLINK)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row, _ADM_TPLPT_ADMIN_BLOGLINK, ADMIN_BLOGLINK, , 21)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_SKINABLEADMIN_BATCH)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_SKINABLEADMIN_BATCH)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row, _ADM_TPLPT_ADMIN_BATCHLIST, ADMIN_BATCHLIST, , 22)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_QMENU_ACTIVATE)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_QMENU_ACTIVATE)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row, _ADM_TPLPT_ACTIVATE_FORGOT_TITLE, ACTIVATE_FORGOT_TITLE, , 23)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_ACTIVATE_FORGOT_TEXT, ACTIVATE_FORGOT_TEXT, , 24)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_ACTIVATE_REGISTER_TITLE, ACTIVATE_REGISTER_TITLE, , 25)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_ACTIVATE_REGISTER_TEXT, ACTIVATE_REGISTER_TEXT, , 26)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_ACTIVATE_CHANGE_TITLE, ACTIVATE_CHANGE_TITLE, , 27)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_ACTIVATE_CHANGE_TEXT, ACTIVATE_CHANGE_TEXT, , 28)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_QMENU_MANAGE_SYSTEM)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_QMENU_MANAGE_SYSTEM)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row, _ADM_TPLPT_SYSTEMINFO_GDSETTINGS, SYSTEMINFO_GDSETTINGS, , 29)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_BLOGLIST_BANS)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_BLOGLIST_BANS)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row, _ADM_TPLPT_BANLIST_DELETED_LIST, BANLIST_DELETED_LIST, , 30)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_SKINABLEADMIN_TPLSETTING_INGENERAL)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_SKINABLEADMIN_TPLSETTING_INGENERAL)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row, _ADM_TPLPT_INSERT_PLUGOPTION_TITLE, INSERT_PLUGOPTION_TITLE, , 31)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_INSERT_PLUGOPTION_BODY, INSERT_PLUGOPTION_BODY, , 32)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_INPUTYESNO_TEMPLATE_ADMIN, INPUTYESNO_TEMPLATE_ADMIN, , 33)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_INPUTYESNO_TEMPLATE_NORMAL, INPUTYESNO_TEMPLATE_NORMAL, , 34)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_ADMIN_CUSTOMHELPLINK_ICON, ADMIN_CUSTOMHELPLINK_ICON, , 35)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_ADMIN_CUSTOMHELPLINK_ANCHOR, ADMIN_CUSTOMHELPLINK_ANCHOR, , 36)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_SKINABLEADMIN_SHOWLIST_LISTPLUG_SELECT)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_SKINABLEADMIN_SHOWLIST_LISTPLUG_SELECT)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_SELECT_HEAD, SHOWLIST_LISTPLUG_SELECT_HEAD, , 37)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_SELECT_BODY, SHOWLIST_LISTPLUG_SELECT_BODY, , 38)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_SELECT_FOOT, SHOWLIST_LISTPLUG_SELECT_FOOT, , 39)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_SKINABLEADMIN_SHOWLIST_LISTPLUG_TABLE)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_SKINABLEADMIN_SHOWLIST_LISTPLUG_TABLE)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_HEAD, SHOWLIST_LISTPLUG_TABLE_HEAD, , 40)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BODY, SHOWLIST_LISTPLUG_TABLE_BODY, , 41)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_FOOT, SHOWLIST_LISTPLUG_TABLE_FOOT, , 42)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_MEMBLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_MEMBLIST_HEAD, , 43)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_MEMBLIST_BODY, SHOWLIST_LISTPLUG_TABLE_MEMBLIST_BODY, , 44)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_MEMBLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_MEMBLIST_FOOT, , 45)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_TEAMLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_TEAMLIST_HEAD, , 46)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_TEAMLIST_BODY, SHOWLIST_LISTPLUG_TABLE_TEAMLIST_BODY, , 47)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_TEAMLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_TEAMLIST_FOOT, , 48)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_PLUGLIST_HEAD, , 49)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY, SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY, , 50)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_GURL, SHOWLIST_LISTPLUG_TABLE_PLUGLIST_GURL, , 51)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGEVENTLIST, SHOWLIST_LISTPLUG_TABLE_PLUGEVENTLIST, , 52)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGNEDUPDATE, SHOWLIST_LISTPLUG_TABLE_PLUGNEDUPDATE, , 53)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGIN_DEPEND, SHOWLIST_LISTPLUG_TABLE_PLUGIN_DEPEND, , 54)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGIN_DEPREQ, SHOWLIST_LISTPLUG_TABLE_PLUGIN_DEPREQ, , 55)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLISTFALSE, SHOWLIST_LISTPLUG_TABLE_PLUGLISTFALSE, , 56)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_ACTN, SHOWLIST_LISTPLUG_TABLE_PLUGLIST_ACTN, , 57)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_ADMN, SHOWLIST_LISTPLUG_TABLE_PLUGLIST_ADMN, , 58)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_HELP, SHOWLIST_LISTPLUG_TABLE_PLUGLIST_HELP, , 59)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGOPTSETURL, SHOWLIST_LISTPLUG_TABLE_PLUGOPTSETURL, , 60)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_PLUGLIST_FOOT, , 61)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_POPTLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_POPTLIST_HEAD, , 62)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_POPTLIST_BODY, SHOWLIST_LISTPLUG_TABLE_POPTLIST_BODY, , 63)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLGOPT_OYESNO, SHOWLIST_LISTPLUG_TABLE_PLGOPT_OYESNO, , 64)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLGOPT_OPWORD, SHOWLIST_LISTPLUG_TABLE_PLGOPT_OPWORD, , 65)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEP, SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEP, , 66)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEO, SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEO, , 67)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEC, SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEC, , 68)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLGOPT_OTAREA, SHOWLIST_LISTPLUG_TABLE_PLGOPT_OTAREA, , 69)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLGOPT_OITEXT, SHOWLIST_LISTPLUG_TABLE_PLGOPT_OITEXT, , 70)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGOPTN_FOOT, SHOWLIST_LISTPLUG_TABLE_PLUGOPTN_FOOT, , 71)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_POPTLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_POPTLIST_FOOT, , 72)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_ITEMLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_ITEMLIST_HEAD, , 73)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_ITEMLIST_BODY, SHOWLIST_LISTPLUG_TABLE_ITEMLIST_BODY, , 74)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_ITEMLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_ITEMLIST_FOOT, , 75)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_CMNTLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_CMNTLIST_HEAD, , 76)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_CMNTLIST_BODY, SHOWLIST_LISTPLUG_TABLE_CMNTLIST_BODY, , 77)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_CMNTLIST_ABAN, SHOWLIST_LISTPLUG_TABLE_CMNTLIST_ABAN, , 78)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_CMNTLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_CMNTLIST_FOOT, , 79)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLOGLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_BLOGLIST_HEAD, , 80)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLOGLIST_BODY, SHOWLIST_LISTPLUG_TABLE_BLOGLIST_BODY, , 81)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLIST_BD_TADM, SHOWLIST_LISTPLUG_TABLE_BLIST_BD_TADM, , 82)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLIST_BD_SADM, SHOWLIST_LISTPLUG_TABLE_BLIST_BD_SADM, , 83)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLOGLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_BLOGLIST_FOOT, , 84)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLOGSNAM_HEAD, SHOWLIST_LISTPLUG_TABLE_BLOGSNAM_HEAD, , 85)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLOGSNAM_BODY, SHOWLIST_LISTPLUG_TABLE_BLOGSNAM_BODY, , 86)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLOGSNAM_FOOT, SHOWLIST_LISTPLUG_TABLE_BLOGSNAM_FOOT, , 87)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_SHORTNAM_HEAD, SHOWLIST_LISTPLUG_TABLE_SHORTNAM_HEAD, , 88)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_SHORTNAM_BODY, SHOWLIST_LISTPLUG_TABLE_SHORTNAM_BODY, , 89)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_SHORTNAM_FOOT, SHOWLIST_LISTPLUG_TABLE_SHORTNAM_FOOT, , 90)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_CATELIST_HEAD, SHOWLIST_LISTPLUG_TABLE_CATELIST_HEAD, , 91)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_CATELIST_BODY, SHOWLIST_LISTPLUG_TABLE_CATELIST_BODY, , 92)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_CATELIST_FOOT, SHOWLIST_LISTPLUG_TABLE_CATELIST_FOOT, , 93)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_TPLTLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_TPLTLIST_HEAD, , 94)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_TPLTLIST_BODY, SHOWLIST_LISTPLUG_TABLE_TPLTLIST_BODY, , 95)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_TPLTLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_TPLTLIST_FOOT, , 96)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_SKINLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_SKINLIST_HEAD, , 97)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_SKINLIST_BODY, SHOWLIST_LISTPLUG_TABLE_SKINLIST_BODY, , 98)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_SKINLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_SKINLIST_FOOT, , 99)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_DRFTLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_DRFTLIST_HEAD, , 100)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_DRFTLIST_BODY, SHOWLIST_LISTPLUG_TABLE_DRFTLIST_BODY, , 101)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_DRFTLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_DRFTLIST_FOOT, , 102)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_ACTNLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_ACTNLIST_HEAD, , 103)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_ACTNLIST_BODY, SHOWLIST_LISTPLUG_TABLE_ACTNLIST_BODY, , 104)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_ACTNLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_ACTNLIST_FOOT, , 105)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_IBANLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_IBANLIST_HEAD, , 106)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_IBANLIST_BODY, SHOWLIST_LISTPLUG_TABLE_IBANLIST_BODY, , 107)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_IBANLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_IBANLIST_FOOT, , 108)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_SKINABLEADMIN_PLUGIN_QUICKMENU)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_SKINABLEADMIN_PLUGIN_QUICKMENU)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row, _ADM_TPLPT_PLUGIN_QUICKMENU_TITLE, PLUGIN_QUICKMENU_TITLE, , 109)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_PLUGIN_QUICKMENU_HEAD, PLUGIN_QUICKMENU_HEAD, , 110)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_PLUGIN_QUICKMENU_BODY, PLUGIN_QUICKMENU_BODY, , 111)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_PLUGIN_QUICKMENU_FOOT, PLUGIN_QUICKMENU_FOOT, , 112)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_PLUGIN_FIELDS)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_PLUGIN_FIELDS)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(extratemplate,admin/default)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_UPDATE)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_UPDATE)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td><%text(_TEMPLATE_UPDATE)%></td>
+	<td>
+	<input type="submit" tabindex="800" value="<%text(_TEMPLATE_UPDATE_BTN)%>" onclick="return checkSubmit();" />
+	<input type="reset" tabindex="810" value="<%text(_TEMPLATE_RESET_BTN)%>" />
+	</td>
+	</tr>
+	</tbody>
+	</table>
+	
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="admntemplateoverview"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+	<h2><%text(_TEMPLATE_TITLE)%></h2>
+	
+	<h3><%text(_TEMPLATE_AVAILABLE_TITLE)%></h3>
+	<%templateoverview(admin/default)%>
+	
+	<h3><%text(_TEMPLATE_NEW_TITLE)%></h3>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input name="action" value="admintemplatenew" type="hidden" />
+	<%ticket%>
+	</p>
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_NEW_TITLE)%>">
+	<tr>
+	<td><%text(_TEMPLATE_NAME)%> <%helplink(shortnames)%></td>
+	<td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
+	</tr>
+	<tr>
+	<td><%text(_TEMPLATE_DESC)%></td>
+	<td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
+	</tr>
+	<tr>
+	<td><%text(_TEMPLATE_CREATE)%></td>
+	<td><input type="submit" tabindex="10030" value="<%text(_TEMPLATE_CREATE_BTN)%>" onclick="return checkSubmit();" /></td>
+	</tr>
+	</table>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="backupoverview"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+	<h2><%text(_BACKUPS_TITLE)%></h2>
+	<h3><%text(_BACKUP_TITLE)%></h3>
+	<p><%text(_BACKUP_INTRO)%></p>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="backupcreate" />
+	<%ticket%>
+	<input type="radio" name="gzip" value="1" checked="checked" id="gzip_yes" tabindex="10" /><label for="gzip_yes"><%text(_BACKUP_ZIP_YES)%></label><br />
+	<input type="radio" name="gzip" value="0" id="gzip_no" tabindex="10" /><label for="gzip_no" ><%text(_BACKUP_ZIP_NO)%></label><br /><br />
+	<input type="submit" value="<%text(_BACKUP_BTN)%>" tabindex="20" />
+	</p>
+	</form>
+	<p class="note"><%text(_BACKUP_NOTE)%></p>
+	<h3><%text(_RESTORE_TITLE)%></h3>
+	<p class="note"><%text(_RESTORE_NOTE)%></p>
+	<p><%text(_RESTORE_INTRO)%></p>
+	<form method="post" action="<%adminurl%>index.php" enctype="multipart/form-data">
+	<p>
+	<input type="hidden" name="action" value="backuprestore" />
+	<%ticket%>
+	<input name="backup_file" type="file" tabindex="30" />
+	<br /><br />
+	<input type="submit" value="<%text(_RESTORE_BTN)%>" tabindex="40" /><br />
+	<input type="checkbox" name="letsgo" value="1" id="letsgo" tabindex="50" /><label for="letsgo"><%text(_RESTORE_IMSURE)%></label><br />
+	<%text(_RESTORE_WARNING)%>
+	</p>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="backuprestore"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_RESTORE_COMPLETE)%></h2>
+	<%pagefoot%>
+]]></part>
+<part name="banlist"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=overview">(<%text(_BACKHOME)%>)</a></p>
+	<h2><%text(_BAN_TITLE)%> '<%adminbloglink(admin/default)%>'</h2>
+	<%adminbanlist%>
+	<h2><%text(_BAN_NEW_TITLE)%></h2>
+	<p><a href="<%adminurl%>index.php?action=banlistnew&amp;blogid=<%requestblogid%>"><%text(_BAN_NEW_TEXT)%></a></p><%pagefoot%>
+]]></part>
+<part name="banlistdelete"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_BAN_REMOVE_TITLE)%></h2>
+	
+	<form method="post" action="<%adminurl%>index.php">
+	
+	<h3><%text(_BAN_IPRANGE)%></h3>
+	
+	<p>
+	<%text(_CONFIRMTXT_BAN)%> <%requestiprange%>
+	<input name="iprange" type="hidden" value="<%requestiprange%>" />
+	</p>
+	
+	<h3><%text(_BAN_BLOGS)%></h3>
+	
+	<p>
+	<input type="hidden" name="blogid" value="<%requestblogid%>" />
+	<input name="allblogs" type="radio" value="0" id="allblogs_one" />
+	<label for="allblogs_one"><%sprinttext(_BAN_BANBLOGNAME,<|%getblogsetting(name)%|>)%></label>
+	<br />
+	<input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><%text(_BAN_ALLBLOGS)%></label>
+	</p>
+	
+	<h3><%text(_BAN_DELETE_TITLE)%></h3>
+	
+	<p>
+	<%ticket%>
+	<input type="hidden" name="action" value="banlistdeleteconfirm" />
+	<input type="submit" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+	</p>
+	
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="banlistdeleteconfirm"><![CDATA[
+	<%pagehead%>
+	<a href="<%adminurl%>index.php?action=banlist&amp;blogid=<%requestblogid%>">(<%text(_BACK)%>)</a>
+	<h2><%text(_BAN_REMOVED_TITLE)%></h2>
+	<p><%text(_BAN_REMOVED_TEXT)%></p>
+	<ul>
+	<%banlistdeletedlist%>
+	</ul>
+	<%pagefoot%>
+]]></part>
+<part name="banlistnew"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_BAN_ADD_TITLE)%></h2>
+	<form method="post" action="<%adminurl%>index.php">
+	<h3><%text(_BAN_IPRANGE)%></h3>
+	<p><%text(_BAN_IPRANGE_TEXT)%></p>
+	<p class="note">
+	<strong><%text(_BAN_EXAMPLE_TITLE)%></strong>
+	<%text(_BAN_EXAMPLE_TEXT)%>
+	<%iprangeinput%>
+	</p>
+	</div>
+	<h3><%text(_BAN_BLOGS)%></h3>
+	<p><%text(_BAN_BLOGS_TEXT)%></p>
+	<p>
+	<input type="hidden" name="blogid" value="<%requestblogid%>" />
+	<input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">'<%blogsetting(name)%>'</label><br />
+	<input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><%text(_BAN_ALLBLOGS)%></label>
+	</p>
+	<h3><%text(_BAN_REASON_TITLE)%></h3>
+	<p><%text(_BAN_REASON_TEXT)%></p>
+	<p><textarea name="reason" cols="40" rows="5"></textarea></p>
+	<h3><%text(_BAN_ADD_TITLE)%></h3>
+	<p>
+	<input name="action" type="hidden" value="banlistadd" />
+	<%ticket%>
+	<input type="submit" value="<%text(_BAN_ADD_BTN)%>" />
+	</p>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="batchcategory"><![CDATA[
+	<%pagehead%>
+	<a href="<%adminurl%>index.php?action=overview"><%text(_BACKHOME)%></a>
+	<h2><%text(_BATCH_CATEGORIES)%></h2>
+	<p><%text(_BATCH_EXECUTING)%><b><%adminbatchaction%></b></p>
+	<ul>
+	<%adminbatchlist%>
+	</ul>
+	<b><%text(_BATCH_DONE)%></b>
+	<%pagefoot%>
+]]></part>
+<part name="batchcomment"><![CDATA[
+	<%pagehead%>
+	<a href="<%adminurl%>index.php?action=overview"><%text(_BACKHOME)%></a>
+	<h2><%text(_BATCH_COMMENTS)%></h2>
+	<p><%text(_BATCH_EXECUTING)%><b><%adminbatchaction%></b></p>
+	<ul>
+	<%adminbatchlist%>
+	</ul>
+	<b><%text(_BATCH_DONE)%></b><%pagefoot%>
+]]></part>
+<part name="batchdelete"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_BATCH_DELETE_CONFIRM)%></h2>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="<%batchdeletetype%>" />
+	<input type="hidden" name="batchaction" value="delete" />
+	<input type="hidden" name="confirmation" value="yes" />
+	<%ticket%>
+	<%batchdeletelist%>
+	<input type="submit" value="<%text(_BATCH_DELETE_CONFIRM_BTN)%>" onclick="return checkSubmit();" />
+	</p>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="batchitem"><![CDATA[
+	<%pagehead%>
+	<a href="<%adminurl%>index.php?action=overview"><%text(_BACKHOME)%></a>
+	<h2><%text(_BATCH_ITEMS)%></h2>
+	<p><%text(_BATCH_EXECUTING)%><b><%adminbatchaction%></b></p>
+	<ul>
+	<%adminbatchlist%>
+	</ul>
+	<b><%text(_BATCH_DONE)%></b><%pagefoot%>
+]]></part>
+<part name="batchmember"><![CDATA[
+	<%pagehead%>
+	<a href="<%adminurl%>index.php?action=usermanagement"><%text(_MEMBERS_BACKTOOVERVIEW)%></a>
+	<h2><%text(_BATCH_MEMBERS)%></h2>
+	<p><%text(_BATCH_EXECUTING)%><b><%adminbatchaction%></b></p>
+	<ul>
+	<%adminbatchlist%>
+	</ul>
+	<b><%text(_BATCH_DONE)%></b><%pagefoot%>
+]]></part>
+<part name="batchmove"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_MOVE_TITLE)%></h2>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="<%batchmovetype%>" />
+	<input type="hidden" name="batchaction" value="move" />
+	<%ticket%>
+	<%batchmovelist%>
+	<%movedistselect%>
+	<input type="submit" value="<%batchmovebtn%>" onclick="return checkSubmit();" />
+	</p>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="batchmovecat"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_MOVECAT_TITLE)%></h2>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="<%batchmovetype%>" />
+	<input type="hidden" name="batchaction" value="move" />
+	<%ticket%>
+	<%batchmovelist%>
+	<%movedistselect%>
+	<input type="submit" value="<%batchmovebtn%>" onclick="return checkSubmit();" />
+	</p>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="batchteam"><![CDATA[
+<%pagehead%>
+<a href="<%adminurl%>index.php?action=manageteam&amp;blogid=<%requestblogid%>"><%text(_BACK)%></a>
+<h2><%text(_BATCH_TEAM)%></h2>
+<p><%text(_BATCH_EXECUTING)%><b><%adminbatchaction%></b></p>
+<ul>
+<%adminbatchlist%>
+</ul>
+<b><%text(_BATCH_DONE)%></b><%pagefoot%>
+]]></part>
+<part name="blogcommentlist"><![CDATA[
+<%pagehead%>
+<p>(<a href="<%adminurl%>index.php?action=overview"><%text(_BACKHOME)%></a>)</p>
+<h2><%text(_COMMENTS_BLOG)%> <%adminbloglink(admin/default)%></h2>
+<%commentnavlist(admin/default)%><%pagefoot%>
+]]></part>
+<part name="blogsettings"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=overview">(<%text(_BACKHOME)%>)</a></p>
+<h2><%text(_EBLOG_TITLE)%>: '<%adminbloglink(admin/default)%>'</h2>
+
+<h3><%text(_EBLOG_TEAM_TITLE)%></h3>
+
+<p>
+<%text(_EBLOG_CURRENT_TEAM_MEMBER)%>
+<%blogteammembers%>
+</p>
+
+<p><a href="<%adminurl%>index.php?action=manageteam&amp;blogid=<%requestblogid%>"><%text(_EBLOG_TEAM_TEXT)%></a></p>
+
+<h3><%text(_EBLOG_SETTINGS_TITLE)%></h3>
+
+<form method="post" action="<%adminurl%>index.php">
+
+<p>
+<input type="hidden" name="action" value="blogsettingsupdate" />
+<%ticket%>
+<input type="hidden" name="blogid" value="<%requestblogid%>" />
+</p>
+
+<table frame="box" rules="all" summary="<%text(_EBLOG_SETTINGS_TITLE)%>">
+<thead>
+<tr>
+<th colspan="2"><%text(_EBLOG_SETTINGS_TITLE)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><%text(_EBLOG_NAME)%></td>
+<td><input name="name" tabindex="10" size="40" maxlength="60" value="<%blogsetting(name)%>" /></td>
+</tr>
+<tr>
+<td>
+<%text(_EBLOG_SHORTNAME)%> <%helplink(shortblogname)%>
+<%text(_EBLOG_SHORTNAME_EXTRA)%>
+</td>
+<td><input name="shortname" tabindex="20" maxlength="15" size="15" value="<%blogsetting(short)%>" /></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_DESC)%></td>
+<td><input name="desc" tabindex="30" maxlength="200" size="40" value="<%blogsetting(desc)%>" /></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_URL)%></td>
+<td><input name="url" tabindex="40" size="40" maxlength="100" value="<%blogsetting(url)%>" /></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_DEFSKIN)%><%helplink(blogdefaultskin)%></td>
+<td><%defskinselect(blog)%></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_LINEBREAKS)%> <%helplink(convertbreaks)%></td>
+<td><%blogsettingyesno(convertbreaks)%></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_ALLOWPASTPOSTING)%> <%helplink(allowpastposting)%></td>
+<td><%blogsettingyesno(allowpastposting)%></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_DISABLECOMMENTS)%></td>
+<td><%blogsettingyesno(comments)%></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_ANONYMOUS)%></td>
+<td><%blogsettingyesno(public)%></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_REQUIREDEMAIL)%></td>
+<td><%blogsettingyesno(reqemail)%></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_NOTIFY)%> <%helplink(blognotify)%></td>
+<td><input name="notify" tabindex="80" maxlength="60" size="40" value="<%blogsetting(notifyaddress)%>" /></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_NOTIFY_ON)%></td>
+<td>
+<input name="notifyComment" value="3" type="checkbox" tabindex="81" id="notifyComment"<%blognotifysetting(comment)%> />
+<label for="notifyComment"><%text(_EBLOG_NOTIFY_COMMENT)%></label><br />
+<input name="notifyVote" value="5" type="checkbox" tabindex="82" id="notifyVote"<%blognotifysetting(vote)%> />
+<label for="notifyVote"><%text(_EBLOG_NOTIFY_KARMA)%></label><br />
+<input name="notifyNewItem" value="7" type="checkbox" tabindex="83" id="notifyNewItem"<%blognotifysetting(newitem)%> />
+<label for="notifyNewItem"><%text(_EBLOG_NOTIFY_ITEM)%></label>
+</td>
+</tr>
+<tr>
+<td><%text(_EBLOG_MAXCOMMENTS)%> <%helplink(blogmaxcomments)%></td>
+<td><input name="maxcomments" tabindex="90" size="3" value="<%blogsetting(maxcomments)%>" /></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_UPDATE)%> <%helplink(blogupdatefile)%></td>
+<td><input name="update" tabindex="100" size="40" maxlength="60" value="<%blogsetting(updatefile)%>" /></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_DEFCAT)%></td>
+<td><%defcatselect%></td>
+</tr>
+<tr>
+<td>
+<%text(_EBLOG_OFFSET)%> <%helplink(blogtimeoffset)%><br />
+<%text(_EBLOG_STIME)%> <b><%blogtime(servertime,"%H:%M")%></b><br />
+<%text(_EBLOG_BTIME)%> <b><%blogtime(blogtime,"%H:%M")%></b>
+</td>
+<td><input name="timeoffset" tabindex="120" size="3" value="<%blogsetting(timeoffset)%>" /></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_SEARCH)%> <%helplink(blogsearchable)%></td>
+<td><%blogsettingyesno(searchable)%></td>
+</tr>
+<%pluginoptions(blog)%>
+<tr>
+<td><%text(_EBLOG_CHANGE)%></td>
+<td><input type="submit" tabindex="130" value="<%text(_EBLOG_CHANGE_BTN)%>" onclick="return checkSubmit();" /></td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<h3><%text(_EBLOG_CAT_TITLE)%></h3>
+
+<%blogcatlist%>
+
+<form action="<%adminurl%>index.php" method="post">
+<p>
+<input name="action" value="categorynew" type="hidden" />
+<%ticket%>
+<input name="blogid" value="<%blogsetting(id)%>" type="hidden" />
+</p>
+
+<table frame="box" rules="all" summary="<%text(_EBLOG_CAT_CREATE)%>">
+<thead>
+<tr>
+<th colspan="2"><%text(_EBLOG_CAT_CREATE)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><%text(_EBLOG_CAT_NAME)%></td>
+<td><input name="cname" size="40" maxlength="40" tabindex="300" /></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_CAT_DESC)%></td>
+<td><input name="cdesc" size="40" maxlength="200" tabindex="310" /></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_CAT_CREATE)%></td>
+<td><input type="submit" value="<%text(_EBLOG_CAT_CREATE)%>" tabindex="320" /></td>
+</tr>
+</tbody>
+</table>
+
+</form>
+<h3><%text(_PLUGINS_EXTRA)%></h3>
+<%pluginextras(blog)%>
+<%pagefoot%>
+]]></part>
+<part name="bookmarklet"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=overview">(<%text(_BACKHOME)%>)</a></p>
+<h2><%text(_BOOKMARKLET_TITLE)%></h2>
+<p><%text(_BOOKMARKLET_DESC1)%><%text(_BOOKMARKLET_DESC2)%><%text(_BOOKMARKLET_DESC3)%><%text(_BOOKMARKLET_DESC4)%><%text(_BOOKMARKLET_DESC5)%></p>
+<h3><%text(_BOOKMARKLET_BOOKARKLET)%></h3>
+<p>
+<%text(_BOOKMARKLET_BMARKTEXT)%><small><%text(_BOOKMARKLET_BMARKTEST)%></small>
+<br />
+<br />
+<a href="<%bookmarkletadmin(url)%>"><%sprinttext(_BOOKMARKLET_ANCHOR,<|%getblogsetting(name)%|>)%></a><%text(_BOOKMARKLET_BMARKFOLLOW)%>
+</p>
+<%pagefoot%>
+]]></part>
+<part name="browseowncomments"><![CDATA[
+<%pagehead%>
+<p>(<a href="<%adminurl%>index.php?action=overview"><%text(_BACKHOME)%></a>)</p>
+<h2><%text(_COMMENTS_YOUR)%></h2>
+<%commentnavlist(admin/default)%><%pagefoot%>
+]]></part>
+<part name="browseownitems"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=overview"><%text(_BACKHOME)%></a></p>
+<h2><%text(_ITEMLIST_YOUR)%></h2>
+<%itemnavlist(admin/default)%><%pagefoot%>
+]]></part>
+<part name="categorydelete"><![CDATA[
+<%pagehead%>
+<h2><%text(_DELETE_CONFIRM)%></h2>
+<p>
+<%text(_CONFIRMTXT_CATEGORY)%><b><%categorysetting(name)%></b>
+</p>
+<form method="post" action="<%adminurl%>index.php">
+<p>
+<input type="hidden" name="action" value="categorydeleteconfirm" />
+<%ticket%>
+<input type="hidden" name="blogid" value="<%requestblogid%>" />
+<input type="hidden" name="catid" value="<%categorysetting(id)%>" />
+<input type="submit" tabindex="10" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="categoryedit"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=blogsettings&amp;blogid=<%requestblogid%>">(<%text(_BACK_TO_BLOGSETTINGS)%>)</a></p>
+<h2><%text(_EBLOG_CAT_UPDATE)%> '<%categorysetting(name)%>'</h2>
+<form method='post' action='<%adminurl%>index.php'>
+<p>
+<input name="blogid" type="hidden" value="<%requestblogid%>" />
+<input name="catid" type="hidden" value="<%categorysetting(id)%>" />
+<input name="desturl" type="hidden" value="<%editdesturl%>" />
+<input name="action" type="hidden" value="categoryupdate" />
+<%ticket%>
+</p>
+
+<table frame="box" rules="all" summary="<%text(_EBLOG_CAT_UPDATE)%>">
+<tr>
+<th colspan="2"><%text(_EBLOG_CAT_UPDATE)%></th>
+</tr>
+<tr>
+<td><%text(_EBLOG_CAT_NAME)%></td>
+<td><input type="text" name="cname" value="<%categorysetting(name)%>" size="40" maxlength="40" /></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_CAT_DESC)%></td>
+<td><input type="text" name="cdesc" value="<%categorysetting(desc)%>" size="40" maxlength="200" /></td>
+</tr>
+<%pluginoptions(category)%>
+<tr>
+<th colspan="2"><%text(_EBLOG_CAT_UPDATE)%></th>
+</tr>
+<tr>
+<td><%text(_EBLOG_CAT_UPDATE)%></td>
+<td><input type="submit" value="<%text(_EBLOG_CAT_UPDATE_BTN)%>" /></td>
+</tr>
+</table>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="commentdelete"><![CDATA[
+<%pagehead%>
+<h2><%text(_DELETE_CONFIRM)%></h2>
+<p><%text(_CONFIRMTXT_COMMENT)%></p>
+<p class="note">
+<b><%text(_EDITC_WHO)%>:</b> <%deletecomment(author)%><br />
+<b><%text(_EDITC_TEXT)%>:</b> <%deletecomment(body)%></div>
+</p>
+<form method="post" action="<%adminurl%>index.php">
+<p>
+<input type="hidden" name="action" value="commentdeleteconfirm" />
+<%ticket%>
+<input type="hidden" name="commentid" value="<%deletecomment(id)%>" />
+<input type="submit" tabindex="10" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="commentedit"><![CDATA[
+<%pagehead%>
+<h2><%text(_EDITC_TITLE)%></h2>
+
+<form method="post" action="<%adminurl%>index.php">
+
+<p>
+<input type="hidden" name="action" value="commentupdate" />
+<%ticket%>
+<input type="hidden" name="commentid" value="<%editcomment(id)%>" />
+</p>
+
+<table frame="box" rules="all" summary="<%text(_EDITC_TITLE)%>">
+<tr>
+<th colspan="2"><%text(_EDITC_TITLE)%></th>
+</tr>
+<tr>
+<td><%text(_EDITC_WHO)%></td>
+<td><%editcomment(user)%></td>
+</tr>
+<tr>
+<td><%text(_EDITC_WHEN)%></td>
+<td><%editcomment(date)%></td>
+</tr>
+<tr>
+<td><%text(_EDITC_HOST)%></td>
+<td><%editcomment(host)%></td>
+</tr>
+<tr>
+<td><%text(_EDITC_URL)%></td>
+<td><input type="text" name="url" size="30" tabindex="6" value="<%editcomment(url)%>" /></td>
+</tr>
+<tr>
+<td><%text(_EDITC_EMAIL)%></td>
+<td><input type="text" name="email" size="30" tabindex="8" value="<%editcomment(email)%>" /></td>
+</tr>
+<tr>
+<td><%text(_EDITC_TEXT)%></td>
+<td><textarea name="body" tabindex="10" rows="10" cols="50"><%editcomment(body)%></textarea></td>
+</tr>
+<tr>
+<td><%text(_EDITC_EDIT)%></td>
+<td><input type="submit"  tabindex="20" value="<%text(_EDITC_EDIT)%>" onclick="return checkSubmit();" /></td>
+</tr>
+</table>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="createitem"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_ADD_ADDTO)%> '<%adminbloglink(admin/default)%>'</h2>
+	<%init%>
+	<script type="text/javascript" src="<%skinfile(/javascripts/numbercheck.js)%>"></script>
+	<%if(autosave)%><script type="text/javascript" src="<%skinfile(/javascripts/xmlhttprequest.js)%>"></script><%endif%>
+	<form id="addform" method="post" action="<%adminurl%>index.php" >
+	<p>
+	<input type="hidden" name="action" value="additem" />
+	<input name="blogid" value="<%blogid%>" type="hidden" />
+	<input type="hidden" name="draftid" value="0" />
+	<%ticket%>
+	</p>
+	<table frame="box" rules="all" summary="<%text(_ADD_ADDTO)%>">
+	<tr>
+	<th colspan="2"><%text(_ADD_CREATENEW)%></th>
+	</tr>
+	<%if(autosave)%>
+	<tr>
+	<td><%text(_AUTOSAVEDRAFT)%></td>
+	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+	</tr>
+	<%endif%>
+	<tr>
+	<td><%text(_ADD_TITLE)%></td>
+	<td><input id="inputtitle" name="title" value="<%contents(title)%>" onkeyup="storeCaret(this); updPreview(title); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);" tabindex="10" size="60" maxlength="160" /></td>
+	</tr>
+	<tr>
+	<td>
+	<%text(_ADD_BODY)%> <%helplink(additem)%>
+	</td>
+	<td>
+	<div class="jsbuttonbar">
+	<!--[if IE]>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="cutThis()">
+	<img src="<%skinfile(/images/button-cut.gif)%>" title="<%text(_ADD_CUT_TT)%>(Ctrl + X)" alt="<%text(_ADD_CUT_TT)%>(Ctrl + X)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="copyThis()">
+	<img src="<%skinfile(/images/button-copy.gif)%>" title="<%text(_ADD_COPY_TT)%>(Ctrl + C)" alt="<%text(_ADD_COPY_TT)%>(Ctrl + C)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="pasteThis()">
+	<img src="<%skinfile(/images/button-paste.gif)%>" title="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" alt="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" width="16" height="16" />
+	</span>
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
+	</span>
+	<![endif]-->
+	<!--[if ! IE]>-->
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
+	</span>
+	<!--<![endif]-->
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignleftThis()">
+	<img src="<%skinfile(/images/button-alignleft.gif)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignrightThis()">
+	<img src="<%skinfile(/images/button-alignright.gif)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="aligncenterThis()">
+	<img src="<%skinfile(/images/button-aligncenter.gif)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="leftThis()">
+	<img src="<%skinfile(/images/button-left.gif)%>" title="<%text(_ADD_LEFT_TT)%>" alt="<%text(_ADD_LEFT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="rightThis()">
+	<img src="<%skinfile(/images/button-right.gif)%>" title="<%text(_ADD_RIGHT_TT)%>" alt="<%text(_ADD_RIGHT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="addMedia()">
+	<img src="<%skinfile(/images/button-media.gif)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
+	</span>
+	<!--[if IE]>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="showedit()">
+	<img src="<%skinfile(/images/button-preview.gif)%>" title="<%text(_ADD_PREVIEW_TT)%>" alt="<%text(_ADD_PREVIEW_TT)%>" width="16" height="16" />
+	</span>
+	<![endif]-->
+	<div class="jsbuttonend"></div>
+	</div>
+	<textarea id="inputbody" name="body" tabindex="20" cols="60" rows="20" onkeyup="storeCaret(this); updPreview(body); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);"><%contents(body)%></textarea>
+	</td>
+	</tr>
+	<tr id="edit" style="display:none;">
+	<td><%text(_ADD_PREVIEW)%></td>
+	<td><b><span id="prevtitle">&#160;</span></b><br />
+	<span id="prevbody">&#160;</span><br />
+	<span id="prevmore">&#160;</span><br />
+	</td>
+	</tr>
+	<%if(blogsetting, bcomments)%>
+	<tr>
+	<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+	<td>
+	<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+	<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
+	</td>
+	</tr>
+	<%endif%>
+	<tr>
+	<td><%text(_ADD_CATEGORY)%></td>
+	<td><%categories(40)%></td>
+	</tr>
+	<tr>
+	<td><%text(_SUBMIT)%></td>
+	<td>
+	<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" onclick="return checkSubmit();" /><br />
+	<br />
+	<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="61" />
+	<label for="act_now"><%text(_ADD_ADDNOW)%></label><br />
+	<input type="radio" id="act_future" name="actiontype" value="addfuture" tabindex="61" />
+	<label for="act_future" ><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+	<div class="indent">
+	<%text(_ADD_PLACE_ON)%>
+	<input type="text" id="inputyear" name="year" value="<%currenttime(year)%>" tabindex="63" size="4" onchange="document.forms[0].act_future.checked=true;" />
+	<%text(_LABEL_YEAR_UNIT)%>
+	<input type="text" id="inputmonth" name="month" value="<%currenttime(mon)%>" tabindex="64" size="2" onchange="document.forms[0].act_future.checked=true;" />
+	<%text(_LABEL_MONTH_UNIT)%>
+	<input type="text" id="inputday" name="day" value="<%currenttime(mday)%>" tabindex="65" size="2" onchange="document.forms[0].act_future.checked=true;" />
+	<%text(_LABEL_DAY_UNIT)%>
+	<input id="inputhour" name="hour" value="<%currenttime(hours)%>" tabindex="66" size="2" onchange="document.forms[0].act_future.checked=true;" />
+	<%text(_LABEL_HOUR_UNIT)%>
+	<input type="text" id="inputminutes" name="minutes" value="<%currenttime(minutes)%>" tabindex="67" size="2" onchange="document.forms[0].act_future.checked=true;" />
+	<%text(_LABEL_MINUTE_UNIT)%><br />
+	
+	<%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_LABEL_YEAR_UNIT)%>(mm)<%text(_LABEL_MONTH_UNIT)%>(dd)<%text(_LABEL_DAY_UNIT)%> (hh)<%text(_LABEL_HOUR_UNIT)%>(mm)<%text(_LABEL_MINUTE_UNIT)%>
+	
+	<%if(blogsetting, ballowpast,0)%>
+	<br />
+	<%text(_ADD_NOPASTDATES)%>
+	<%endif%>
+	</div>
+	<input type="radio" id="act_draft" name="actiontype" value="adddraft" tabindex="61" />
+	<label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+	</td>
+	</tr>
+	<tr>
+	<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+	<td><%pluginextras%></td>
+	</tr>
+	<%pluginoptions(item)%>
+	<tr>
+	<th colspan="2"><%text(_ADD_MORE)%></th>
+	</tr>
+	<tr>
+	<td><%text(_ADD_MORE)%><br />
+	<%helplink(extended)%>
+	</td>
+	<td>
+	<div class="jsbuttonbar">
+	<!--[if IE]>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="cutThis()">
+	<img src="<%skinfile(/images/button-cut.gif)%>" title="<%text(_ADD_CUT_TT)%>(Ctrl + X)" alt="<%text(_ADD_CUT_TT)%>(Ctrl + X)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="copyThis()">
+	<img src="<%skinfile(/images/button-copy.gif)%>" title="<%text(_ADD_COPY_TT)%>(Ctrl + C)" alt="<%text(_ADD_COPY_TT)%>(Ctrl + C)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="pasteThis()">
+	<img src="<%skinfile(/images/button-paste.gif)%>" title="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" alt="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" width="16" height="16" />
+	</span>
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
+	</span>
+	<![endif]-->
+	<!--[if ! IE]>-->
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
+	</span>
+	<!--<![endif]-->
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignleftThis()">
+	<img src="<%skinfile(/images/button-alignleft.gif)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignrightThis()">
+	<img src="<%skinfile(/images/button-alignright.gif)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="aligncenterThis()">
+	<img src="<%skinfile(/images/button-aligncenter.gif)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="leftThis()">
+	<img src="<%skinfile(/images/button-left.gif)%>" title="<%text(_ADD_LEFT_TT)%>" alt="<%text(_ADD_LEFT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="rightThis()">
+	<img src="<%skinfile(/images/button-right.gif)%>" title="<%text(_ADD_RIGHT_TT)%>" alt="<%text(_ADD_RIGHT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="addMedia()">
+	<img src="<%skinfile(/images/button-media.gif)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
+	</span>
+	<!--[if IE]>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="showedit()">
+	<img src="<%skinfile(/images/button-preview.gif)%>" title="<%text(_ADD_PREVIEW_TT)%>" alt="<%text(_ADD_PREVIEW_TT)%>" width="16" height="16" />
+	</span>
+	<![endif]-->
+	</div>
+	<textarea id="inputmore" name="more" onkeyup="storeCaret(this); updPreview(more); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);" tabindex="70" cols="60" rows="20"><%contents(more)%></textarea>
+	</td>
+	</tr>
+	<tr>
+	<td><%text(_SUBMIT)%></td>
+	<td>
+	<input type="submit" value="<%text(_ADD_ADDITEM)%>" onclick="return checkSubmit();" tabindex="60" />
+	<%if(autosave)%>
+	<input type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" tabindex="80" onclick="autoSaveDraft();" />
+	<%endif%>
+	</td>
+	</tr>
+	</table>
+	
+	</form>
+	<%if(autosave)%>
+	<script type="text/javascript">
+		var xmlhttprequest = new Array();
+		xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
+		xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
+		var seconds = now(); // Last AutoDraft time
+		var checks = 0; // Number of checks since last AutoDraft
+		var addform = document.getElementById('addform'); // The form id
+		var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
+		var goalurl = '../action.php'; // The PHP file where the content must be posted to
+		var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
+		var formtype = 'add'; // Add or edit form
+	</script>
+	<%endif%>
+	<%pagefoot%>
+]]></part>
+<part name="createnewlog"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+<h2><%text(_EBLOG_CREATE_TITLE)%></h2>
+<h3><%text(_ADMIN_NOTABILIA)%></h3>
+<p><%text(_ADMIN_PLEASE_READ)%></p>
+<p><%text(_ADMIN_HOW_TO_ACCESS)%></p>
+<ol>
+<li><%text(_ADMIN_SIMPLE_WAY)%></li>
+<li><%text(_ADMIN_ADVANCED_WAY)%></li>
+</ol>
+
+<h3><%text(_ADMIN_HOW_TO_CREATE)%></h3>
+
+<p><%text(_EBLOG_CREATE_TEXT)%></p>
+
+<form method="post" action="<%adminurl%>index.php">
+
+<p>
+<input type="hidden" name="action" value="addnewlog" />
+<%ticket%>
+</p>
+
+<table frame="box" rules="all" summary="<%text(_EBLOG_CREATE_TEXT)%>">
+<tr>
+<td><%text(_EBLOG_NAME)%></td>
+<td><input name="name" tabindex="10" size="40" maxlength="60" /></td>
+</tr>
+<tr>
+<td>
+<%text(_EBLOG_SHORTNAME)%>
+<%helplink(shortblogname)%>
+</td>
+<td><input name="shortname" tabindex="20" maxlength="15" size="15" /></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_DESC)%></td>
+<td><input name="desc" tabindex="30" maxlength="200" size="40" /></td>
+</tr>
+<tr>
+<td>
+<%text(_EBLOG_DEFSKIN)%>
+<%helplink(blogdefaultskin)%>
+</td>
+<td><%defskinselect(blog,admin/default)%></td>
+</tr>
+<tr>
+<td>
+<%text(_EBLOG_OFFSET)%>
+<%helplink(blogtimeoffset)%><br />
+<%text(_EBLOG_STIME)%> <b><%blogtime(servertime,"%H:%M")%></b>
+</td>
+<td><input name="timeoffset" tabindex="110" size="3" value="0" /></td>
+</tr>
+<tr>
+<td>
+<%text(_EBLOG_ADMIN)%>
+<%helplink(teamadmin)%>
+</td>
+<td><%text(_EBLOG_ADMIN_MSG)%></td>
+</tr>
+<tr>
+<td><%text(_EBLOG_CREATE)%></td>
+<td><input type="submit" tabindex="120" value="<%text(_EBLOG_CREATE_BTN)%>" onclick="return checkSubmit();" /></td>
+</tr>
+</table>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="deleteblog"><![CDATA[
+<%pagehead%>
+<h2><%text(_DELETE_CONFIRM)%></h2>
+
+<p>
+<%text(_WARNINGTXT_BLOGDEL)%>
+</p>
+
+<p>
+<%text(_CONFIRMTXT_BLOG)%><b><%blogsetting(name)%></b>
+</p>
+
+<form method="post" action="<%adminurl%>index.php">
+
+<p>
+<input type="hidden" name="action" value="deleteblogconfirm" />
+<%ticket%>
+<input type="hidden" name="blogid" value="<%requestblogid%>" />
+<input type="submit" tabindex="10" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="editmembersettings"><![CDATA[
+<%pagehead%>
+<p>
+<%if(superadmin)%>
+<a href="<%adminurl%>index.php?action=usermanagement">(<%text(_MEMBERS_BACKTOOVERVIEW)%>)
+<%else%>
+<a href="<%adminurl%>index.php?action=overview">(<%text(_BACKHOME)%>)
+<%endif%>
+</a>
+</p>
+<h2><%text(_MEMBERS_EDIT)%></h2>
+
+<form method="post" action="<%adminurl%>index.php" name="memberedit">
+
+<p>
+<input type="hidden" name="action" value="changemembersettings" />
+<input type="hidden" name="memberid" value="<%editmember(id)%>" />
+<%ticket%>
+</p>
+
+<table frame="box" rules="all" summary="<%text(_MEMBERS_EDIT)%>">
+<thead>
+<tr>
+<th colspan="2"><%text(_MEMBERS_EDIT)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<%text(_MEMBERS_DISPLAY)%> <%helplink(shortnames)%><br />
+<small><%text(_MEMBERS_DISPLAY_INFO)%></small>
+</td>
+<td><%editmember(displayname)%></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_REALNAME)%></td>
+<td><input name="realname" tabindex="20" maxlength="60" size="40" value="<%editmember(realname)%>" /></td>
+</tr>
+<tr><%if(allowloginedit)%>
+<td><%text(_MEMBERS_PWD)%></td>
+<td><input type="password" tabindex="30" maxlength="40" size="16" name="password" /></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_REPPWD)%></td>
+<td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" /></td>
+</tr>
+<tr><%endif%>
+<td>
+<%text(_MEMBERS_EMAIL)%><br />
+<small><%text(_MEMBERS_EMAIL_EDIT)%></small>
+</td>
+<td><input name="email" tabindex="40" size="40" maxlength="60" value="<%editmember(email)%>" /></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_URL)%></td>
+<td><input name="url" tabindex="50" size="40" maxlength="100" value="<%editmember(url)%>" /></td>
+</tr>
+<%if(superadmin)%>
+<tr>
+<td><%text(_MEMBERS_SUPERADMIN)%> <%helplink(superadmin)%></td>
+<td><%editmember(admin)%></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_CANLOGIN)%> <%helplink(canlogin)%></td>
+<td><%editmember(canlogin)%></td><%endif%>
+</tr>
+<tr>
+<td><%text(_MEMBERS_NOTES)%></td>
+<td><input name="notes" tabindex="80" size="40" maxlength="100" value="<%editmember(notes)%>" /></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_LOCALE)%> <%helplink(locale)%></td>
+<td>
+<select name="locale" tabindex="85">
+<%localeselectoptions%>
+</select>
+</td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_USEAUTOSAVE)%> <%helplink(autosave)%></td>
+<td><%editmember(autosave)%></td>
+</tr><%if(superadmin)%><tr>
+<td><%text(_SKINABLEADMIN_MEMBERS_ADMINSKIN)%> <%customhelplink(useadminskin)%></td>
+<td>
+<%defadminskinselect(admin/default)%>
+</td>
+</tr><%endif%><%if(superadmin)%><tr>
+<td><%text(_MEMBERS_BKMKLTSKIN)%></td>
+<td>
+<%defbookmarkletselect(admin/default)%>
+</td>
+</tr>
+<%endif%>
+<%pluginoptions(member)%>
+</tbody>
+</table>
+
+<table frame="box" rules="all" summary="<%text(_MEMBERS_EDIT)%>">
+<thead>
+<tr>
+<th colspan="2"><%text(_MEMBERS_EDIT)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><%text(_MEMBERS_EDIT)%></td>
+<td><input type="submit" tabindex="90" value="<%text(_MEMBERS_EDIT_BTN)%>" onclick="return checkSubmit();" /></td>
+</tr>
+</tbody>
+</table>
+</form>
+<h3><%text(_PLUGINS_EXTRA)%></h3>
+<%pluginextras(member)%>
+<%pagefoot%>
+]]></part>
+<part name="itemcommentlist"><![CDATA[
+<%pagehead%>
+<p>(<a href="<%adminurl%>index.php?action=itemlist&amp;blogid=<%requestblogid%>"><%text(_BACKTOOVERVIEW)%></a>)</p>
+<h2><%text(_COMMENTS)%></h2>
+<%commentnavlist(admin/default)%>
+<%pagefoot%>
+]]></part>
+<part name="itemdelete"><![CDATA[
+<%pagehead%>
+<h2><%text(_DELETE_CONFIRM)%></h2>
+<p><%text(_CONFIRMTXT_ITEM)%></p>
+<p class="note">
+<b>"<%deleteitemtitle%>"</b><br />
+<%deleteitembody%>
+</p>
+<form method="post" action="<%adminurl%>index.php">
+<p>
+<input type="hidden" name="action" value="itemdeleteconfirm" />
+<%ticket%>
+<input type="hidden" name="itemid" value="<%deleteitemid%>" />
+<input type="submit" value="<%text(_DELETE_CONFIRM_BTN)%>" tabindex="10" />
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="itemedit"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_EDIT_ITEM)%></h2>
+	
+	<%init%>
+	<script type="text/javascript" src="<%skinfile(/javascripts/numbercheck.js)%>"></script>
+	<%if(autosave)%>
+	<script type="text/javascript" src="<%skinfile(/javascripts/xmlhttprequest.js)%>"></script>
+	<%endif%>
+	
+	<form id="editform" method="post" action="<%adminurl%>index.php">
+	
+	<p>
+	<input type="hidden" name="action" value="itemupdate" />
+	<input name="itemid" value="<%contents(itemid)%>" type="hidden" />
+	<input type="hidden" name="draftid" value="0" />
+	<%ticket%>
+	</p>
+	
+	<table frame="box" rules="all" summary="<%text(_EDIT_ITEM)%>">
+	<tr>
+	<th colspan="2"><%text(_EDIT_ITEM)%></th>
+	</tr>
+	<%if(autosave)%><tr>
+	<td><%text(_AUTOSAVEDRAFT)%></td>
+	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+	</tr>
+	<%endif%>
+	<tr>
+	<td><%text(_EDIT_ORIG_AUTHOR)%></td>
+	<td><%contents(author)%></td>
+	</tr>
+	<tr>
+	<td><%text(_ADD_TITLE)%></td>
+	<td><input type="text" id="inputtitle" name="title" value="<%contents(title)%>" tabindex="10" size="60"  maxlength="160" onkeyup="storeCaret(this); updPreview(title); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);" />
+	</td>
+	</tr>
+	<tr>
+	<td><%text(_ADD_BODY)%></td>
+	<td>
+	<div class="jsbuttonbar">
+	<!--[if IE]>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="cutThis()">
+	<img src="<%skinfile(/images/button-cut.gif)%>" title="<%text(_ADD_CUT_TT)%>(Ctrl + X)" alt="<%text(_ADD_CUT_TT)%>(Ctrl + X)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="copyThis()">
+	<img src="<%skinfile(/images/button-copy.gif)%>" title="<%text(_ADD_COPY_TT)%>(Ctrl + C)" alt="<%text(_ADD_COPY_TT)%>(Ctrl + C)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="pasteThis()">
+	<img src="<%skinfile(/images/button-paste.gif)%>" title="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" alt="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" width="16" height="16" />
+	</span>
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
+	</span>
+	<![endif]-->
+	<!--[if ! IE]>-->
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
+	</span>
+	<!--<![endif]-->
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignleftThis()">
+	<img src="<%skinfile(/images/button-alignleft.gif)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignrightThis()">
+	<img src="<%skinfile(/images/button-alignright.gif)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="aligncenterThis()">
+	<img src="<%skinfile(/images/button-aligncenter.gif)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="leftThis()">
+	<img src="<%skinfile(/images/button-left.gif)%>" title="<%text(_ADD_LEFT_TT)%>" alt="<%text(_ADD_LEFT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="rightThis()">
+	<img src="<%skinfile(/images/button-right.gif)%>" title="<%text(_ADD_RIGHT_TT)%>" alt="<%text(_ADD_RIGHT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="addMedia()">
+	<img src="<%skinfile(/images/button-media.gif)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
+	</span>
+	<!--[if IE]>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="showedit()">
+	<img src="<%skinfile(/images/button-preview.gif)%>" title="<%text(_ADD_PREVIEW_TT)%>" alt="<%text(_ADD_PREVIEW_TT)%>" width="16" height="16" />
+	</span>
+	<![endif]-->
+	</div>
+	<textarea id="inputbody" name="body" tabindex="20" cols="60" rows="20" onkeyup="storeCaret(this); updPreview(body); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);"><%contents(body)%></textarea>
+	</td>
+	</tr>
+	<tr id="edit" style="display:none;">
+	<td><%text(_ADD_PREVIEW)%></td>
+	<td><b><span id="prevtitle">&#160;</span></b><br />
+	<span id="prevbody">&#160;</span><br />
+	<span id="prevmore">&#160;</span><br />
+	</td>
+	</tr>
+	
+	<%if(blogsetting, bcomments)%>
+	<tr>
+	<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+	<td> 
+	<input type="radio" name="closed" value="1" <%checkedonval(1,closed)%> tabindex="30" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+	<input type="radio" name="closed" value="0" <%checkedonval(0,closed)%> tabindex="30" id="closed_no" /><label for="closed_no"><%text(_NO)%></label><br />
+	<small><%text(_EDIT_COMMENTSNOTE)%></small>
+	</td>
+	</tr>
+	<%endif%>
+	
+	<tr>
+	<td><%text(_ADD_CATEGORY)%></td>
+	<td><%categories(40)%></td>
+	</tr>
+	<tr>
+	<td><%text(_EDIT_SUBMIT)%></td>
+	<td>
+	<input type="submit" tabindex="60" value="<%text(_EDIT_SUBMIT)%>" onclick="return checkSubmit();" />
+	<%if(itemproperty, draft)%>
+	<br />
+	<br />
+	<input name="actiontype" value="addnow" type="radio" id="act_now" />
+	<label for="act_now" tabindex="61"><%text(_ADD_ADDNOW)%></label><br />
+	<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="61" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+	<div class="indent">
+	<%text(_ADD_PLACE_ON)%>
+	<input type="text" id="inputyear" name="year" tabindex="71" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" />
+	<%text(_LABEL_YEAR_UNIT)%>
+	<input type="text" id="inputmonth" name="month" tabindex="72" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" />
+	<%text(_LABEL_MONTH_UNIT)%>
+	<input type="text" id="inputday" name="day" tabindex="73" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" />
+	<%text(_LABEL_DAY_UNIT)%>
+	
+	<input type="text" id="inputhour" name="hour" tabindex="74" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" />
+	<%text(_LABEL_HOUR_UNIT)%>
+	<input type="text" id="inputminutes" name="minutes" tabindex="75" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />
+	<%text(_LABEL_MINUTE_UNIT)%><br />
+	<%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_LABEL_YEAR_UNIT)%>(mm)<%text(_LABEL_MONTH_UNIT)%>(dd)<%text(_LABEL_DAY_UNIT)%> (hh)<%text(_LABEL_HOUR_UNIT)%>(mm)<%text(_LABEL_MINUTE_UNIT)%>
+	
+	<%if(blogsetting, ballowpast,0)%>
+	<br />
+	<%text(_ADD_NOPASTDATES)%>
+	<%endif%>
+	
+	</div>
+	<input type="radio" id="act_draft" name="actiontype" value="adddraft" checked='checked' tabindex="61" />
+	<label for="act_draft"><%text(_EDIT_BACKTODRAFTS)%></label> <%helplink(draft)%><br />
+	<input type="radio" id="act_delete" name="actiontype" value="delete" tabindex="61" />
+	<label for="act_delete"><%text(_BMLET_DELETE)%></label>
+	<%endif%>
+	
+	<%if(itemproperty, draft,0)%>
+	<br />
+	<br />
+	<input type="radio" id="act_edit" name="actiontype" value="edit" checked="checked" tabindex="61" />
+	<label for="act_edit"><%text(_BMLET_EDIT)%></label>
+	<%if(blogsetting, ballowpast)%>
+	<br />
+	<input type="radio" id="act_changedate" name="actiontype" value="changedate" tabindex="70" />
+	<label for="act_changedate"><%text(_ADD_CHANGEDATE)%></label> <%helplink(changedate)%>
+	<div class="indent">
+	<input type="text" id="inputyear" name="year" value="<%itemtime(year)%>" size="4" tabindex="71" onchange="document.forms[0].act_changedate.checked=true;" />
+	<%text(_LABEL_YEAR_UNIT)%>
+	<input type="text" id="inputmonth" name="month" value="<%itemtime(mon)%>" size="2" tabindex="72" onchange="document.forms[0].act_changedate.checked=true;" />
+	<%text(_LABEL_MONTH_UNIT)%>
+	<input type="text" id="inputday" name="day" value="<%itemtime(mday)%>" size="2" tabindex="73" onchange="document.forms[0].act_changedate.checked=true;" />
+	<%text(_LABEL_DAY_UNIT)%>
+	<input type="text" id="inputhour" name="hour" value="<%itemtime(hours)%>" size="2" tabindex="74" onchange="document.forms[0].act_changedate.checked=true;" />
+	<%text(_LABEL_HOUR_UNIT)%>
+	<input type="text" id="inputminutes" name="minutes" value="<%itemtime(minutes)%>" size="2" tabindex="75" onchange="document.forms[0].act_changedate.checked=true;" />
+	<%text(_LABEL_MINUTE_UNIT)%>
+	<br /><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_LABEL_YEAR_UNIT)%>(mm)<%text(_LABEL_MONTH_UNIT)%>(dd)<%text(_LABEL_DAY_UNIT)%> (hh)<%text(_LABEL_HOUR_UNIT)%>(mm)<%text(_LABEL_MINUTE_UNIT)%>
+	</div>
+	<%endif%>
+	<input type="radio" id="act_backtodrafts" name="actiontype" value="backtodrafts" tabindex="71" />
+	<label for="act_backtodrafts"><%text(_BMLET_BACKTODRAFTS)%></label> <%helplink(draft)%><br />
+	<input type="radio" id="act_delete" name="actiontype" value="delete" tabindex="61" />
+	<label for="act_delete"><%text(_BMLET_DELETE)%></label>
+	<%endif%>
+	
+	</td>
+	</tr>
+	<tr>
+	<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+	<td><%pluginextras%></td>
+	</tr>
+	<%pluginoptions(item)%>
+	<tr>
+	<th colspan="2"><%text(_ADD_MORE)%></th>
+	</tr>
+	<tr>
+	<td>
+	<%text(_ADD_MORE)%><br />
+	<%helplink(extended)%>
+	</td>
+	<td>
+	<div class="jsbuttonbar">
+	<!--[if IE]>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="cutThis()">
+	<img src="<%skinfile(/images/button-cut.gif)%>" title="<%text(_ADD_CUT_TT)%>(Ctrl + X)" alt="<%text(_ADD_CUT_TT)%>(Ctrl + X)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="copyThis()">
+	<img src="<%skinfile(/images/button-copy.gif)%>" title="<%text(_ADD_COPY_TT)%>(Ctrl + C)" alt="<%text(_ADD_COPY_TT)%>(Ctrl + C)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="pasteThis()">
+	<img src="<%skinfile(/images/button-paste.gif)%>" title="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" alt="<%text(_ADD_PASTE_TT)%>(Ctrl + V)" width="16" height="16" />
+	</span>
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
+	</span>
+	<![endif]-->
+	<!--[if ! IE]>-->
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
+	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
+	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
+	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
+	</span>
+	<!--<![endif]-->
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignleftThis()">
+	<img src="<%skinfile(/images/button-alignleft.gif)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignrightThis()">
+	<img src="<%skinfile(/images/button-alignright.gif)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="aligncenterThis()">
+	<img src="<%skinfile(/images/button-aligncenter.gif)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="leftThis()">
+	<img src="<%skinfile(/images/button-left.gif)%>" title="<%text(_ADD_LEFT_TT)%>" alt="<%text(_ADD_LEFT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="rightThis()">
+	<img src="<%skinfile(/images/button-right.gif)%>" title="<%text(_ADD_RIGHT_TT)%>" alt="<%text(_ADD_RIGHT_TT)%>" width="16" height="16" />
+	</span>
+	<span class="jsbuttonspacer">&nbsp;</span>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="addMedia()">
+	<img src="<%skinfile(/images/button-media.gif)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
+	</span>
+	<!--[if IE]>
+	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="showedit()">
+	<img src="<%skinfile(/images/button-preview.gif)%>" title="<%text(_ADD_PREVIEW_TT)%>" alt="<%text(_ADD_PREVIEW_TT)%>" width="16" height="16" />
+	</span>
+	<![endif]-->
+	</div>
+	<textarea id="inputmore" name="more" cols="60" rows="20" tabindex="90" onkeyup="storeCaret(this); updPreview(more); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);"><%contents(more)%></textarea>
+	</td>
+	</tr>
+	<tr>
+	<td><%text(_SUBMIT)%></td>
+	<td>
+	<input type="submit" value="<%text(_EDIT_SUBMIT)%>" tabindex="60" onclick="return checkSubmit();" />
+	<%if(autosave)%>
+	<input type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" tabindex="80" onclick="autoSaveDraft();" />
+	<%endif%>
+	</td>
+	</tr>
+	</table>
+	</div>
+	</form>
+	<%if(autosave)%>
+	<script type="text/javascript">
+		var xmlhttprequest = new Array();
+		xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
+		xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
+		var seconds = now(); // Last AutoDraft time
+		var checks = 0; // Number of checks since last AutoDraft
+		var addform = document.getElementById('editform'); // The form id
+		var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
+		var goalurl = '../action.php'; // The PHP file where the content must be posted to
+		var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
+		var formtype = 'edit'; // Add or edit form
+	</script>
+	<%endif%>
+	<%pagefoot%>
+]]></part>
+<part name="itemlist"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=overview">(<%text(_BACKHOME)%>)</a></p>
+<h2><%text(_ITEMLIST_BLOG)%><%adminbloglink(admin/default)%></h2>
+<%ilistaddnew%>
+<%itemnavlist(admin/default)%>
+<%pagefoot%>
+]]></part>
+<part name="itemmove"><![CDATA[
+<%pagehead%>
+<h2><%text(_MOVE_TITLE)%></h2>
+<form method="post" action="<%adminurl%>index.php">
+<p>
+<input type="hidden" name="action" value="itemmoveto" />
+<input type="hidden" name="itemid" value="<%moveitemid%>" />
+<%ticket%>
+<%movedistselect%>
+<input type="submit" value="<%text(_MOVE_BTN)%>" tabindex="10000" onclick="return checkSubmit();" />
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="manage"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=overview">(<%text(_BACKHOME)%>)</a></p>
+<%headmessage%>
+<h2><%text(_MANAGE_GENERAL)%></h2>
+
+<ul>
+<li><a href="<%adminurl%>index.php?action=createnewlog"><%text(_OVERVIEW_NEWLOG)%></a></li>
+<li><a href="<%adminurl%>index.php?action=settingsedit"><%text(_OVERVIEW_SETTINGS)%></a></li>
+<li><a href="<%adminurl%>index.php?action=usermanagement"><%text(_OVERVIEW_MEMBERS)%></a></li>
+<li><a href="<%adminurl%>index.php?action=actionlog"><%text(_OVERVIEW_VIEWLOG)%></a></li>
+</ul>
+
+<h2><%text(_MANAGE_SKINS)%></h2>
+<ul>
+<li><a href="<%adminurl%>index.php?action=skinoverview"><%text(_OVERVIEW_SKINS)%></a></li>
+<li><a href="<%adminurl%>index.php?action=templateoverview"><%text(_OVERVIEW_TEMPLATES)%></a></li>
+<li><a href="<%adminurl%>index.php?action=skinieoverview"><%text(_OVERVIEW_SKINIMPORT)%></a></li>
+</ul>
+
+<h2><%text(_MANAGE_EXTRA)%></h2>
+<ul>
+<li><a href="<%adminurl%>index.php?action=backupoverview"><%text(_OVERVIEW_BACKUP)%></a></li>
+<li><a href="<%adminurl%>index.php?action=pluginlist"><%text(_OVERVIEW_PLUGINS)%></a></li>
+</ul><%pagefoot%>
+]]></part>
+<part name="manageteam"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=blogsettings&amp;blogid=<%requestblogid%>">(<%text(_BACK_TO_BLOGSETTINGS)%>)</a></p>
+<h2><%text(_TEAM_TITLE)%><%blogsetting(name)%></h2>
+<h3><%text(_TEAM_CURRENT)%></h3>
+<%blogteamlist(admin/default)%>
+<h3><%text(_TEAM_ADDNEW)%></h3>
+
+<form method='post' action='<%adminurl%>index.php'>
+
+<p>
+<input type='hidden' name='action' value='teamaddmember' />
+<input type='hidden' name='blogid' value='<%requestblogid%>' />
+<%ticket%>
+</p>
+
+<table frame="box" rules="all" summary="<%text(_TEAM_ADDNEW)%>">
+<tr>
+<td><%text(_TEAM_CHOOSEMEMBER)%></td>
+<td><%newmemberselect%></td>
+</tr>
+<tr>
+<td><%text(_TEAM_ADMIN)%><%helplink(teamadmin)%></td>
+<td><%inputyesno(admin,0,10020)%></td>
+</tr>
+<tr>
+<td><%text(_TEAM_ADD)%></td>
+<td><input type='submit' value='<%text(_TEAM_ADD_BTN)%>' tabindex="10030" /></td>
+</tr>
+</table>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="memberdelete"><![CDATA[
+<%pagehead%>
+<h2><%text(_DELETE_CONFIRM)%></h2>
+<p><%text(_CONFIRMTXT_MEMBER%><b><%editmember(displayname)%></b></p>
+<p><%text(_WARNINGTXT_NOTDELMEDIAFILES)%></p>
+
+<form method="post" action="<%adminurl%>index.php">
+
+<p>
+<input type="hidden" name="action" value="memberdeleteconfirm" />
+<%ticket%>
+<input type="hidden" name="memberid" value="<%editmember(id)%>" />
+<input type="submit" tabindex="10" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="overview"><![CDATA[
+<%pagehead%>
+<%headmessage%>
+<h2><%text(_OVERVIEW_YRBLOGS)%></h2>
+<%yrbloglist(admin/default)%>
+<h2><%text(_OVERVIEW_YRSETTINGS)%></h2>
+<ul>
+<li><a href="<%adminurl%>index.php?action=editmembersettings"><%text(_OVERVIEW_EDITSETTINGS)%></a></li>
+<li><a href="<%adminurl%>index.php?action=browseownitems"><%text(_OVERVIEW_BROWSEITEMS)%></a></li>
+<li><a href="<%adminurl%>index.php?action=browseowncomments"><%text(_OVERVIEW_BROWSECOMM)%></a></li>
+</ul>
+<%if(superadmin)%>
+<h2><%text(_OVERVIEW_MANAGEMENT)%></h2>
+<ul>
+<li><a href="<%adminurl%>index.php?action=manage"><%text(_OVERVIEW_MANAGE)%></a></li>
+</ul>
+<%pagefoot%>
+]]></part>
+<part name="pagefoot"><![CDATA[
+	<%if(loggedin)%>
+		<%ifnot(adminaction,showlogin)%>
+			<h2><%text(_LOGOUT)%></h2>
+			<ul>
+			<li><a href="<%adminurl%>index.php?action=overview"><%text(_BACKHOME)%></a></li>
+			<li><a href="<%adminurl%>index.php?action=logout"><%text(_LOGOUT)%></a></li>
+			</ul>
+		<%endif%>
+	<%endif%>
+	
+	<p class="foot">
+	<a href="<%text(_ADMINPAGEFOOT_OFFICIALURL)%>">Nucleus CMS</a> &copy; 2002- <%date(%Y)%> <%text(_ADMINPAGEFOOT_COPYRIGHT)%>
+	 - <a href="<%text(_ADMINPAGEFOOT_DONATEURL)%>"><%text(_ADMINPAGEFOOT_DONATE)%></a>
+	</p>
+	</div>
+	
+	<!-- content -->
+	<div id="quickmenu">
+	
+	<%if(loggedin)%>
+		<%ifnot(adminaction,showlogin)%>
+			<ul>
+			<li><a href="<%adminurl%>index.php?action=overview"><%text(_QMENU_HOME)%></a></li>
+			</ul>
+			
+			<h2><%text(_QMENU_ADD)%></h2>
+			<form method="get" action="<%adminurl%>index.php">
+			<div>
+			<input type="hidden" name="action" value="createitem" />
+			<%qmenuaddselect(admin/default)%>
+			</div>
+			</form>
+			
+			<h2><%member(yourrealname)%></h2>
+			<ul>
+			<li><a href="<%adminurl%>index.php?action=editmembersettings"><%text(_QMENU_USER_SETTINGS)%></a></li>
+			<li><a href="<%adminurl%>index.php?action=browseownitems"><%text(_QMENU_USER_ITEMS)%></a></li>
+			<li><a href="<%adminurl%>index.php?action=browseowncomments"><%text(_QMENU_USER_COMMENTS)%></a></li>
+			</ul>
+			
+			<%if(superadmin)%>
+				<h2><%text(_QMENU_MANAGE)%></h2>
+				<ul>
+				<li><a href="<%adminurl%>index.php?action=actionlog"><%text(_QMENU_MANAGE_LOG)%></a></li>
+				<li><a href="<%adminurl%>index.php?action=settingsedit"><%text(_QMENU_MANAGE_SETTINGS)%></a></li>
+				<li><a href="<%adminurl%>index.php?action=systemoverview"><%text(_QMENU_MANAGE_SYSTEM)%></a></li>
+				<li><a href="<%adminurl%>index.php?action=usermanagement"><%text(_QMENU_MANAGE_MEMBERS)%></a></li>
+				<li><a href="<%adminurl%>index.php?action=createnewlog"><%text(_QMENU_MANAGE_NEWBLOG)%></a></li>
+				<li><a href="<%adminurl%>index.php?action=backupoverview"><%text(_QMENU_MANAGE_BACKUPS)%></a></li>
+				<li><a href="<%adminurl%>index.php?action=pluginlist"><%text(_QMENU_MANAGE_PLUGINS)%></a></li>
+				</ul>
+				<h2><%text(_QMENU_LAYOUT)%></h2>
+				<ul>
+				<li><a href="<%adminurl%>index.php?action=skinoverview"><%text(_QMENU_LAYOUT_SKINS)%></a></li>
+				<li><a href="<%adminurl%>index.php?action=templateoverview"><%text(_QMENU_LAYOUT_TEMPL)%></a></li>
+				<li><a href="<%adminurl%>index.php?action=skinieoverview"><%text(_QMENU_LAYOUT_IEXPORT)%></a></li>
+				</ul>
+				<h2><%text(_SKINABLEADMIN_QMENU_LAYOUT)%></h2>
+				<ul>
+				<li><a href="<%adminurl%>index.php?action=adminskinoverview"><%text(_QMENU_LAYOUT_SKINS)%></a></li>
+				<li><a href="<%adminurl%>index.php?action=admintemplateoverview"><%text(_QMENU_LAYOUT_TEMPL)%></a></li>
+				<li><a href="<%adminurl%>index.php?action=adminskinieoverview"><%text(_QMENU_LAYOUT_IEXPORT)%></a></li>
+				</ul>
+			<%endif%>
+			
+			<%quickmenu(admin/default)%>
+		<%endif%>
+		
+	<%elseif(adminaction,activate)%>
+		<h2><%text(_QMENU_ACTIVATE)%></h2>
+		<%text(_QMENU_ACTIVATE_TEXT)%>
+	
+	<%elseif(adminaction,activatesetpwd)%>
+		<h2><%text(_QMENU_ACTIVATE)%></h2><%text(_QMENU_ACTIVATE_TEXT)%>
+	
+	<%else%>
+		<h2><%text(_QMENU_INTRO)%></h2><%text(_QMENU_INTRO_TEXT)%>
+	
+	<%endif%>
+	
+	</div>
+	<!-- content / quickmenu container -->
+	<div class="clear"></div>
+	<!-- new -->
+	</div>
+	<!-- adminwrapper -->
+	<!-- new -->
+	</div>
+	<!-- new -->
+	<p style="text-align:right;"><%benchmark%></p>
+	</body>
+	</html>
+]]></part>
+<part name="pagehead"><![CDATA[
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<%locale%>" lang="<%locale%>">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<%charset%>" />
+<title><%sitevar(name)%> - Admin</title>
+<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<%skinfile(/styles/admin_contemporary.css)%>" />
+<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<%skinfile(/styles/addedit.css)%>" />
+
+<script type="text/javascript" src="<%skinfile(/javascripts/edit.js)%>"></script>
+<script type="text/javascript" src="<%skinfile(/javascripts/admin.js)%>"></script>
+<script type="text/javascript" src="<%skinfile(/javascripts/compatibility.js)%>"></script>
+
+<meta http-equiv='Pragma' content='no-cache' />
+<meta http-equiv='Cache-Control' content='no-cache, must-revalidate' />
+<meta http-equiv='Expires' content='-1' />
+<%extrahead%>
+</head>
+<body>
+<div id="adminwrapper">
+<div class="header">
+<h1><%sitevar(name)%></h1>
+</div>
+<div id="container">
+<div id="content">
+<div class="loginname">
+<%if(loggedin)%>
+<%text(_LOGGEDINAS)%> <%member(yourrealname)%> - <a href="<%adminurl%>index.php?action=logout"><%text(_LOGOUT)%></a><br /><a href="<%adminurl%>index.php?action=overview"><%text(_ADMINHOME)%></a> - 
+<%else%>
+<a href="<%adminurl%>index.php?action=showlogin" title="Log in"><%text(_NOTLOGGEDIN)%></a><br />
+<%endif%>
+<a href="<%sitevar(url)%>"><%text(_YOURSITE)%></a><br />
+(
+<%if(superadmin)%>
+<a href="<%versioncheckurl%>" title="<%text(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE)%>"><%version%><%codename%></a>
+<%else%>
+<%version%><%codename%>
+<%endif%>
+)
+</div>
+]]></part>
+<part name="plugindelete"><![CDATA[
+<%pagehead%>
+<h2><%text(_DELETE_CONFIRM)%></h2>
+
+<p><%text(_CONFIRMTXT_PLUGIN)%> <strong><%editpluginfo(name)%></strong>?</p>
+<form method="post" action="<%adminurl%>index.php">
+<p>
+<%ticket%>
+<input type="hidden" name="action" value="plugindeleteconfirm" />
+<input type="hidden" name="plugid" value="<%editpluginfo(id)%>" />
+<input type="submit" tabindex="10" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="pluginhelp"><![CDATA[
+<p><a href="<%adminurl%>index.php?action=pluginlist">(<%text(_PLUGS_BACK)%>)</a></p>
+<h2><%text(_PLUGS_HELP_TITLE)%>: <%helpplugname%></h2>
+<%pluginhelp%>
+]]></part>
+<part name="pluginlist"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+<h2><%text(_PLUGS_TITLE_MANAGE)%><%helplink(plugins)%></h2>
+<h3><%text(_PLUGS_TITLE_INSTALLED)%> &nbsp;&nbsp;<span style="font-size:smaller"><%helplink('getplugins')%><%text(_PLUGS_TITLE_GETPLUGINS)%></a></span></h3>
+<%pluginlistlist(admin/default)%>
+<h3><%text(_PLUGS_TITLE_UPDATE)%></h3>
+<p><%text(_PLUGS_TEXT_UPDATE)%></p>
+<form method="post" action="<%adminurl%>index.php">
+<p>
+<input type="hidden" name="action" value="pluginupdate" />
+<%ticket%>
+<input type="submit" value="<%text(_PLUGS_BTN_UPDATE)%>" tabindex="20" />
+</p>
+</form>
+<h3><%text(_PLUGS_TITLE_NEW)%></h3>
+
+<%if(existsnewplugin)%>
+<p><%text(_PLUGS_ADD_TEXT)%></p>
+<form method='post' action='index.php'>
+
+<p>
+<input type='hidden' name='action' value='pluginadd' />
+<%ticket%>
+<select name="filename" tabindex="30">
+<%newpluginlist%>
+</select>
+<input type='submit' tabindex="40" value='<%text(_PLUGS_BTN_INSTALL)%>' />
+</p>
+</form>
+<%else%>
+<p><%text(_PLUGS_NOCANDIDATES)%></p>
+<%endif%>
+<%pagefoot%>
+]]></part>
+<part name="pluginoptions"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=pluginlist">(<%text(_PLUGS_BACK)%>)</a></p>
+<h2><%sprinttext(_PLUGIN_OPTIONS_TITLE,<|%geteditpluginfo(name)%|>)%></h2>
+<%headmessage%>
+
+<form action="<%adminurl%>index.php" method="post">
+
+<p>
+<input type="hidden" name="action" value="pluginoptionsupdate" />
+<input type="hidden" name="plugid" value="<%editpluginfo(id)%>" />
+<%ticket%>
+</p>
+
+<%editplugoptionslist(admin/default)%>
+
+</form>
+<%pagefoot%>
+]]></part>
+<part name="settingsedit"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+<h2><%text(_SETTINGS_TITLE)%></h2>
+
+<form action="<%adminurl%>index.php" method="post">
+
+<p>
+<input type="hidden" name="action" value="settingsupdate" />
+<%ticket%>
+</p>
+
+<table frame="box" rules="all" summary="<%text(_SETTINGS_SUB_GENERAL)%>">
+<thead>
+<tr>
+<th colspan="2"><%text(_SETTINGS_SUB_GENERAL)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><%text(_SETTINGS_DEFBLOG)%> <%helplink(defaultblog)%></td>
+<td><%defblogselect(admin/default)%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_BASESKIN)%> <%helplink(baseskin)%></td>
+<td><%defskinselect(,admin/default)%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_ADMINMAIL)%></td>
+<td><input name="AdminEmail" tabindex="10010" size="40" value="<%configsettingsedit(AdminEmail)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_SITENAME)%></td>
+<td><input name="SiteName" tabindex="10020" size="40" value="<%configsettingsedit(SiteName)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_SITEURL)%></td>
+<td><input name="IndexURL" tabindex="10030" size="40" value="<%configsettingsedit(IndexURL)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_ADMINURL)%></td>
+<td><input name="AdminURL" tabindex="10040" size="40" value="<%configsettingsedit(AdminURL)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_PLUGINURL)%> <%helplink(pluginurl)%></td>
+<td><input name="PluginURL" tabindex="10045" size="40" value="<%configsettingsedit(PluginURL)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_SKINSURL)%> <%helplink(skinsurl)%></td>
+<td><input name="SkinsURL" tabindex="10046" size="40" value="<%configsettingsedit(SkinsURL)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_ACTIONSURL)%> <%helplink(actionurl)%></td>
+<td><input name="ActionURL" tabindex="10047" size="40" value="<%configsettingsedit(ActionURL)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_LOCALE)%> <%helplink(locale)%></td>
+<td><select name="Locale" tabindex="10050"><%localeselectoptions%></select></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_DISABLESITE)%> <%helplink(disablesite)%></td>
+<td>
+<%configsettingsyesno(DisableSite, 10060)%><br />
+<%text(_SETTINGS_DISABLESITEURL)%> <input name="DisableSiteURL" tabindex="10070" size="40" value="<%configsettingsedit(DisableSiteURL)%>" />
+</td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_DIRS)%></td>
+<td><%outputspecialdirs(nucleusdir)%><i><%text(_SETTINGS_SEECONFIGPHP)%></i></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_DBLOGIN)%></td>
+<td><i><%text(_SETTINGS_SEECONFIGPHP)%></i></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_JSTOOLBAR)%></td>
+<td>
+<select name="DisableJsTools" tabindex="10075">
+<%jstoolbaroptions%>
+</select>
+</td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_URLMODE)%> <%helplink(urlmode)%></td>
+<td><%configsettingsedit(URLMode)%> <%text(_SETTINGS_URLMODE_HELP)%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_DEBUGVARS)%> <%helplink(debugvars)%></td>
+<td><%configsettingsyesno(DebugVars, 10078)%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_DEFAULTLISTSIZE)%> <%helplink(defaultlistsize)%></td>
+<td><input name="DefaultListSize" tabindex="10079" size="40" value="<%configsettingsedit(DefaultListSize)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_ADMINSKIN)%></td>
+<td><%defadminskinselect(admin/default%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_BKMKLTSKIN)%></td>
+<td><%defbookmarkletselect(admin/default%></td>
+</tr>
+</tbody>
+</table>
+
+<table frame="box" rules="all" summary="<%text(_SETTINGS_MEDIA)%>">
+<thead>
+<tr>
+<th colspan="2"><%text(_SETTINGS_MEDIA)%> <%helplink(media)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><%text(_SETTINGS_MEDIADIR)%></td>
+<td>
+<%outputspecialdirs(mediadir)%>
+<i><%text(_SETTINGS_SEECONFIGPHP)%></i><%mediadirwarning%>
+</td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_MEDIAURL)%></td>
+<td><input name="MediaURL" tabindex="10090" size="40" value="<%configsettingsedit(MediaURL)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_ALLOWUPLOAD)%></td>
+<td><%configsettingsyesno(AllowUpload, 10095)%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_ALLOWUPLOADTYPES)%></td>
+<td><input name="AllowedTypes" tabindex="10100" size="40" value="<%configsettingsedit(AllowedTypes)%>" />
+</tr>
+<tr>
+<td><%text(_SETTINGS_MAXUPLOADSIZE)%></td>
+<td><input name="MaxUploadSize" tabindex="10105" size="40" value="<%configsettingsedit(MaxUploadSize)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_MEDIAPREFIX)%></td>
+<td><%configsettingsyesno(MediaPrefix, 10110)%></td>
+</tr>
+</tbody>
+</table>
+
+<table frame="box" rules="all" summary="<%text(_SETTINGS_MEMBERS)%>">
+<thead>
+<tr>
+<th colspan="2"><%text(_SETTINGS_MEMBERS)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><%text(_SETTINGS_CHANGELOGIN)%></td>
+<td><%configsettingsyesno(AllowLoginEdit, 10120)%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_ALLOWCREATE)%> <%helplink(allowaccountcreation)%>
+</td>
+<td><%configsettingsyesno(AllowMemberCreate, 10130)%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_NEWLOGIN)%> <%helplink(allownewmemberlogin)%><br /><%text(_SETTINGS_NEWLOGIN2)%></td>
+<td><%configsettingsyesno(NewMemberCanLogon, 10140)%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_MEMBERMSGS)%> <%helplink(messageservice)%></td>
+<td><%configsettingsyesno(AllowMemberMail, 10150)%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_NONMEMBERMSGS)%> <%helplink(messageservice)%></td>
+<td><%configsettingsyesno(NonmemberMail, 10155%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_PROTECTMEMNAMES)%> <%helplink(protectmemnames)%></td>
+<td><%configsettingsyesno(ProtectMemNames, 10156)%></td>
+</tr>
+</tbody>
+</table>
+
+<table frame="box" rules="all" summary="<%text(_SETTINGS_COOKIES_TITLE)%>">
+<thead>
+<tr>
+<th colspan="2"><%text(_SETTINGS_COOKIES_TITLE)%> <%helplink(cookies)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><%text(_SETTINGS_COOKIEPREFIX)%></td>
+<td><input name="CookiePrefix" tabindex="10159" size="40" value="<%configsettingsedit(CookiePrefix)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_COOKIEDOMAIN)%></td>
+<td><input name="CookieDomain" tabindex="10160" size="40" value="<%configsettingsedit(CookieDomain)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_COOKIEPATH)%></td>
+<td><input name="CookiePath" tabindex="10170" size="40" value="<%configsettingsedit(CookiePath)%>" /></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_COOKIESECURE)%></td>
+<td><%configsettingsyesno(CookieSecure, 10180)%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_COOKIELIFE)%></td>
+<td><%configsettingsedit(SessionCookie)%></td>
+</tr>
+<tr>
+<td><%text(_SETTINGS_LASTVISIT)%></td>
+<td><%configsettingsyesno(LastVisit, 10200)%></td>
+</tr>
+</tbody>
+</table>
+
+<table frame="box" rules="all" summary="<%text(_SETTINGS_UPDATE)%>">
+<thead>
+<tr>
+<th colspan="2"><%text(_SETTINGS_UPDATE)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><%text(_SETTINGS_UPDATE)%></td>
+<td><input type="submit" tabindex="10210" value="<%text(_SETTINGS_UPDATE_BTN)%>" onclick="return checkSubmit();" /></td>
+</tr>
+</tbody>
+</table>
+
+</form>
+
+<h2><%text(_PLUGINS_EXTRA)%></h2>
+
+<%pluginextras%>
+<%pagefoot%>
+]]></part>
+<part name="showlogin"><![CDATA[
+<%pagehead%>
+<h2><%text(_LOGIN)%></h2>
+<%headmessage%>
+<form action="<%adminurl%>index.php" method="post">
+<p>
+<%text(_LOGIN_NAME)%> <br /><input name="login"  tabindex="10" /><br />
+<%text(_LOGIN_PASSWORD)%> <br /><input name="password"  tabindex="20" type="password" /><br />
+<input name="action" value="login" type="hidden" /><br />
+<input type="submit" value="<%text(_LOGIN)%>" tabindex="30" /><br />
+<small>
+<input type="checkbox" value="1" name="shared" tabindex="40" id="shared" /><label for="shared"><%text(_LOGIN_SHARED)%></label><br />
+<a href="forgotpassword.php"><%text(_LOGIN_FORGOT)%></a>
+</small>
+<%passrequestvars%>
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="skindelete"><![CDATA[
+<%pagehead%>
+<h2><%text(_DELETE_CONFIRM)%></h2>
+<p><%text(_CONFIRMTXT_SKIN)%><b><%editskintype(name)%></b> (<%editskintype(desc)%>)</p>
+<form method="post" action="<%adminurl%>index.php">
+<p>
+<input type="hidden" name="action" value="skindeleteconfirm" />
+<%ticket%>
+<input type="hidden" name="skinid" value="<%editskintype(id)%>" />
+<input type="submit" tabindex="10" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="skinedit"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=skinoverview">(<%text(_SKIN_BACK)%>)</a></p>
+	
+	<h2><%text(_SKIN_EDITONE_TITLE)%> '<%editskin(name)%>'</h2>
+	
+	<h3><%text(_SKIN_PARTS_TITLE)%></h3>
+	<%text(_SKIN_PARTS_MSG)%>
+	<%normalskinlist(admin/default)%>
+	
+	<h3><%text(_SKIN_PARTS_SPECIAL)%></h3>
+	<form method="get" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="skinedittype" />
+	<input type="hidden" name="skinid" value="<%editskin(id)%>" />
+	<input name="type" tabindex="89" size="20" maxlength="20" />
+	<input type="submit" tabindex="140" value="<%text(_SKIN_CREATE)%>" onclick="return checkSubmit();" />
+	</p>
+	</form>
+	<%specialskinlist(admin/default)%>
+	
+	<h3><%text(_SKIN_GENSETTINGS_TITLE)%></h3>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="skineditgeneral" />
+	<%ticket%>
+	<input type="hidden" name="skinid" value="<%editskin(id)%>" />
+	</p>
+	<table frame="box" rules="all" summary="<%text(_SKIN_GENSETTINGS_TITLE)%>">
+	<tr>
+	<td><%text(_SKIN_NAME)%> <%helplink(shortnames)%></td>
+	<td><input name="name" tabindex="90" value="<%editskin(name)%>" maxlength="20" size="20" /></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_DESC)%></td>
+	<td><input name="desc" tabindex="100" value="<%editskin(desc)%>" maxlength="200" size="50" /></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_TYPE)%></td>
+	<td><input name="type" tabindex="110" value="<%editskin(type)%>" maxlength="40" size="20" /></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_INCLUDE_MODE)%> <%helplink(includemode)%></td>
+	<td><%editskin(mode)%></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_INCLUDE_PREFIX)%> <%helplink(includeprefix)%></td>
+	<td><input name="inc_prefix" tabindex="130" value="<%editskin(prefix)%>" maxlength="40" size="20" /></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_CHANGE)%></td>
+	<td><input type="submit" tabindex="140" value="<%text(_SKIN_CHANGE_BTN)%>" onclick="return checkSubmit();" /></td>
+	</tr>
+	</table>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="skinedittype"><![CDATA[
+	<%pagehead%>
+	<p>(<a href="<%adminurl%>index.php?action=skinoverview"><%text(_SKIN_GOBACK)%></a>)</p>
+	
+	<h2><%text(_SKIN_EDITPART_TITLE)%> '<%editskintype(name)%>': <%editskintype(skintype)%></h2>
+	<%headmessage%>
+	
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="skinupdate" />
+	<%ticket%>
+	<input type="hidden" name="skinid" value="<%editskintype(id)%>" />
+	<input type="hidden" name="type" value="<%editskintype(skintyperaw)%>" />
+	<input type="submit" value="<%text(_SKIN_UPDATE_BTN)%>" onclick="return checkSubmit();" />
+	<input type="reset" value="<%text(_SKIN_RESET_BTN)%>" />
+	(skin type: <%editskintype(skintype)%>)<%skintypehelp%><br />
+	<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content"><%editskintype(content)%></textarea>
+	<br />
+	<input type="submit" tabindex="20" value="<%text(_SKIN_UPDATE_BTN)%>" onclick="return checkSubmit();" />
+	<input type="reset" value="<%text(_SKIN_RESET_BTN)%>" />
+	(skin type: <%editskintype(skintype)%>)
+	<br />
+	<br />
+	
+	<%text(_SKIN_ALLOWEDVARS)%>
+	<%allowedskinactions%><br /><br />
+	<%text(_SKINEDIT_ALLOWEDBLOGS)%>
+	<%skineditallowedlist(blog)%>
+	<%text(_SKINEDIT_ALLOWEDTEMPLATESS)%>
+	</p>
+	<%skineditallowedlist(template)%>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="skiniedoimport"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+<h2><%text(_SKINIE_DONE)%></h2>
+
+<ul>
+<li><strong><%text(_SKINIE_INFO_GENERAL)%></strong> <%importskininfo(info)%></li>
+<li><strong><%text(_SKINIE_INFO_IMPORTEDSKINS)%></strong> <%importskininfo(snames)%></li>
+<li><strong><%text(_SKINIE_INFO_IMPORTEDTEMPLS)%></strong> <%importskininfo(tnames)%></li>
+</ul><%pagefoot%>
+]]></part>
+<part name="skinieimport"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=skinieoverview">(<%text(_BACK)%>)</a></p>
+<h2><%text(_SKINIE_CONFIRM_TITLE)%></h2>
+<ul>
+<li><strong><%text(_SKINIE_INFO_GENERAL)%></strong> <%importskininfo(info)%></li>
+<li><strong><%text(_SKINIE_INFO_SKINS)%></strong> <%importskininfo(snames)%></li>
+<li><strong><%text(_SKINIE_INFO_TEMPLATES)%></strong> <%importskininfo(tnames)%></li>
+<%if(nameclashes)%>
+<li><strong style="color: red;"><%text(_SKINIE_INFO_SKINCLASH)%></strong> <%importskininfo(sclashes)%></li>
+<li><strong style="color: red;"><%text(_SKINIE_INFO_TEMPLCLASH)%></strong> <%importskininfo(tclashes)%></li>
+<%endif%>
+</ul>
+
+<form method="post" action="<%adminurl%>index.php">
+<p>
+<input type="hidden" name="action" value="skiniedoimport" />
+<%ticket%>
+<input type="hidden" name="skinfile" value="<%importskininfo(skinfile)%>" />
+<input type="hidden" name="mode" value="<%importskininfo(mode)%>" />
+<input type="submit" value="<%text(_SKINIE_CONFIRM_IMPORT)%>" />
+<%if(nameclashes)%>
+<br />
+<input type="checkbox" name="overwrite" value="1" id="cb_overwrite" />
+<label for="cb_overwrite"><%text(_SKINIE_CONFIRM_OVERWRITE)%></label>
+<%endif%>
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="skinieoverview"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+	<h2><%text(_SKINIE_TITLE_IMPORT)%></h2>
+	<p>
+	<label for="skinie_import_local"><%text(_SKINIE_LOCAL)%></label>
+	</p>
+	<%if(skincandidates)%>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="skinieimport" />
+	<%ticket%>
+	<input type="hidden" name="mode" value="file" />
+	<select name="skinfile" id="skinie_import_local">
+	<%selectlocalskinfiles%>
+	</select>
+	<input type="submit" value="<%text(_SKINIE_BTN_IMPORT)%>" />
+	</p>
+	</form>
+	<%else%>
+	<p>
+	<%text(_SKINIE_NOCANDIDATES)%>
+	</p>
+	<%endif%>
+	<p><em><%text(_OR)%></em></p>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<%ticket%>
+	<input type="hidden" name="action" value="skinieimport" />
+	<input type="hidden" name="mode" value="url" />
+	<label for="skinie_import_url"><%text(_SKINIE_FROMURL)%></label>
+	<input type="text" name="skinfile" id="skinie_import_url" size="60" value="http://" />
+	<input type="submit" value="<%text(_SKINIE_BTN_IMPORT)%>" />
+	</p>
+	</form>
+	
+	<h2><%text(_SKINIE_TITLE_EXPORT)%></h2>
+	<form method="post" action="<%adminurl%>index.php">
+	
+	<p><%text(_SKINIE_EXPORT_INTRO)%></p>
+	
+	<table frame="box" rules="all" summary="<%text(_SKINIE_EXPORT_SKINS)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_SKINIE_EXPORT_SKINS)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%skinielist(skin,admin/default)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_SKINIE_EXPORT_TEMPLATES)%>">
+	<thead>
+	<th colspan="2"><%text(_SKINIE_EXPORT_TEMPLATES)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%skinielist(template,admin/default)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_SKINIE_EXPORT_SKINS)%>">
+	<thead>
+	<th colspan="2"><%text(_SKINIE_EXPORT_EXTRA)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td colspan="2"><textarea cols="40" rows="5" name="info"></textarea></td>
+	</tr>
+	</tbody>
+	</table>
+	
+	<p>
+	<input type="hidden" name="action" value="skinieexport" />
+	<%ticket%>
+	<input type="submit" value="<%text(_SKINIE_BTN_EXPORT)%>" />
+	</p>
+	
+	</form>
+	
+	<%pagefoot%>
+]]></part>
+<part name="skinoverview"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+	
+	<h2><%text(_SKIN_EDIT_TITLE)%></h2>
+	
+	<h3><%text(_SKIN_AVAILABLE_TITLE)%></h3>
+	<%skinoverview(admin/default)%>
+	
+	<h3><%text(_SKIN_NEW_TITLE)%></h3>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input name="action" value="skinnew" type="hidden" />
+	<%ticket%>
+	</p>
+	
+	<table frame="box" rules="all" sumamry="<%text(_SKIN_NEW_TITLE)%>">
+	<tr>
+	<td><%text(_SKIN_NAME)%> <%helplink(shortnames)%></td>
+	<td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_DESC)%></td>
+	<td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
+	</tr>
+	<tr>
+	<td><%text(_SKIN_CREATE)%></td>
+	<td><input type="submit" tabindex="10030" value="<%text(_SKIN_CREATE_BTN)%>" onclick="return checkSubmit();" /></td>
+	</tr>
+	</table>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="skinremovetype"><![CDATA[
+<%pagehead%>
+<h2><%text(_DELETE_CONFIRM)%></h2>
+<p>
+<%text(_CONFIRMTXT_SKIN_PARTS_SPECIAL)%><br />
+<b><%editskintype(skintype)%> (<%editskintype(name)%>)</b> (<%editskintype(desc)%>)
+</p>
+<form method="post" action="<%adminurl%>index.php">
+<p>
+<input type="hidden" name="action" value="skinremovetypeconfirm" />
+<%ticket%>
+<input type="hidden" name="skinid" value="<%editskintype(id)%>" />
+<input type="hidden" name="type" value="<%editskintype(skintype)%>" />
+<input type="submit" tabindex="10" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="systemoverview"><![CDATA[
+<%pagehead%>
+<h2><%text(_ADMIN_SYSTEMOVERVIEW_HEADING)%></h2>
+<%if(superadmin)%>
+<h3><%text(_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL)%></h3>
+
+<table frame="box" rules="all" summary="<%text(_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL)%>">
+<thead>
+<tr>
+<th colspan="2"><%text(_ADMIN_SYSTEMOVERVIEW_VERSIONS)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="50%"><%text(_ADMIN_SYSTEMOVERVIEW_PHPVERSION)%></td>
+<td><%systemsettings(phpversion)%></td>
+</tr>
+<tr>
+<td><%text(_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION)%></td>
+<td><%systemsettings(sqlserverinfo)%> (<%systemsettings(sqlclientinfo)%>)</td>
+</tr>
+</tbody>
+</table>
+
+<table frame="box" rules="all" summary="Important PHP settings">
+<thead>
+<tr>
+<th colspan="2"><%text(_ADMIN_SYSTEMOVERVIEW_SETTINGS)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="50%">magic_quotes_gpc</td>
+<td><%systemsettings(magicquotesgpc)%></td>
+</tr>
+<tr>
+<td width="50%">magic_quotes_runtime</td>
+<td><%systemsettings(magicquotesruntime)%></td>
+</tr>
+<tr>
+<td width="50%">register_globals</td>
+<td><%systemsettings(registerglobals)%></td>
+</tr>
+</tbody>
+</table>
+
+<table summary="Information about GD library">
+<thead>
+<tr>
+<th colspan="2"><%text(_ADMIN_SYSTEMOVERVIEW_GDLIBRALY)%></th>
+</tr>
+</thead>
+<tbody>
+<%systemsettings(gdinfo)%>
+</tbody>
+</table>
+
+<table frame="box" rules="all" summary="special modules are loaded">
+<thead>
+<tr>
+<th colspan="2"><%text(_ADMIN_SYSTEMOVERVIEW_MODULES)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="50%">mod_rewrite</td>
+<td><%systemsettings(modrewrite)%></td>
+</tr>
+</tbody>
+</table>
+
+<h3><%text(_ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM)%></h3>
+<table frame="box" rules="all" summary="<%text(_ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM)%>">
+<thead>
+<tr>
+<th colspan="2">Nucleus CMS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="50%"><%text(_ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION)%></td>
+<td><%systemsettings(nucleusversion)%></td>
+</tr>
+<tr>
+<td width="50%"><%text(_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL)%></td>
+<td><%systemsettings(nucleuspatchlevel)%></td>
+</tr>
+<tr>
+<td colspan="2"><%newestcompare%></td>
+</tr>
+</tbody>
+</table>
+
+<table frame="box" rules="all" summary="Important settings of the installation">
+<thead>
+<tr>
+<th colspan="2"><%text(_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td width="50%">$CONF['Self']</td>
+<td><%systemsettings(confself)%></td>
+</tr>
+<tr>
+<td width="50%">$CONF['ItemURL']</td>
+<td><%systemsettings(confitemurl)%></td>
+</tr>
+<tr>
+<td width="50%">$CONF['alertOnHeadersSent']</td>
+<td><%systemsettings(alertonheaderssent)%></td>
+</tr>
+</tbody>
+</table>
+
+<h3><%text(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK)%></h3>
+<!-- Link to the online version test at the Nucleus CMS website -->
+<p>
+<%text(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT)%>
+<a href="<%systemsettings(versioncheckurl)%>" title="<%text(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE)%>">
+Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)%></a>
+</p>
+
+<%else%>
+<p>
+<%text(_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN)%>
+</p>
+<%endif%>
+<%pagefoot%>
+]]></part>
+<part name="teamdelete"><![CDATA[
+<%pagehead%>
+<h2><%text(_DELETE_CONFIRM)%></h2>
+<p>
+<%text(_CONFIRMTXT_TEAM1)%>
+<b><%editmember(displayname)%></b>
+<%text(_CONFIRMTXT_TEAM2)%>
+<b><%blogsetting(name)%></b>
+</p>
+<form method="post" action="<%adminurl%>index.php">
+<p>
+<input type="hidden" name="action" value="teamdeleteconfirm" />
+<%ticket%>
+<input type="hidden" name="memberid" value="<%editmember(id)%>" />
+<input type="hidden" name="blogid" value="<%requestblogid%>" />
+<input type="submit" tabindex="10" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="templatedelete"><![CDATA[
+<%pagehead%>
+<h2><%text(_DELETE_CONFIRM)%></h2>
+<p><%text(_CONFIRMTXT_TEMPLATE)%><b><%edittemplateinfo(name)%></b> (<%edittemplateinfo(desc)%>)</p>
+<form method="post" action="<%adminurl%>index.php">
+<p>
+<input type="hidden" name="action" value="templatedeleteconfirm" />
+<%ticket%>
+<input type="hidden" name="templateid" value="<%edittemplateinfo(id)%>" />
+<input type="submit" tabindex="10" value="<%text(_DELETE_CONFIRM_BTN)%>" />
+</p>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="templateedit"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=templateoverview">(<%text(_TEMPLATE_BACK)%>)</a></p>
+	
+	<h2><%text(_TEMPLATE_EDIT_TITLE)%> '<%edittemplateinfo(name)%>'</h2>
+	<%headmessage%>
+	
+	<p><%text(_TEMPLATE_EDIT_MSG)%></p>
+	
+	<form method="post" action="<%adminurl%>index.php">
+	
+	<p>
+	<input type="hidden" name="action" value="templateupdate" />
+	<%ticket%>
+	<input type="hidden" name="templateid" value="<%edittemplateinfo(id)%>" />
+	</p>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_SETTINGS)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_SETTINGS)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td><%text(_TEMPLATE_NAME)%> <%helplink(shortnames)%></td>
+	<td><input name="tname" tabindex="4" size="20" maxlength="20" value="<%edittemplateinfo(name)%>" /></td>
+	</tr>
+	<tr>
+	<td><%text(_TEMPLATE_DESC)%></td>
+	<td><input name="tdesc" tabindex="5" size="50" maxlength="200" value="<%edittemplateinfo(desc)%>" /></td>
+	</tr>
+	<tr>
+	<td><%text(_TEMPLATE_UPDATE)%></td>
+	<td>
+	<input type="submit" tabindex="6" value="<%text(_TEMPLATE_UPDATE_BTN)%>" onclick="return checkSubmit();" />
+	<input type="reset" tabindex="7" value="<%text(_TEMPLATE_RESET_BTN)%>" />
+	</td>
+	</tr>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_ITEMS)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_ITEMS)%> <%helplink(templateitems)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row,_TEMPLATE_ITEMHEADER,ITEM_HEADER,,8)%>
+	<%edittemplateinfo(row,_TEMPLATE_ITEMBODY,ITEM,,9,1)%>
+	<%edittemplateinfo(row,_TEMPLATE_ITEMFOOTER,ITEM_FOOTER,,10)%>
+	<%edittemplateinfo(row,_TEMPLATE_MORELINK,MORELINK,morelink, 20)%>
+	<%edittemplateinfo(row,_TEMPLATE_EDITLINK, EDITLINK, editlink, 25)%>
+	<%edittemplateinfo(row,_TEMPLATE_NEW, NEW, new, 30)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_COMMENTS_ANY)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_COMMENTS_ANY)%> <%helplink(templatecomments)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row,_TEMPLATE_CHEADER, COMMENTS_HEADER, commentheaders, 40)%>
+	<%edittemplateinfo(row,_TEMPLATE_CBODY, COMMENTS_BODY, commentbody, 50, 1)%>
+	<%edittemplateinfo(row,_TEMPLATE_CFOOTER, COMMENTS_FOOTER, commentheaders, 60)%>
+	<%edittemplateinfo(row,_TEMPLATE_CONE, COMMENTS_ONE, commentwords, 70)%>
+	<%edittemplateinfo(row,_TEMPLATE_CMANY, COMMENTS_MANY, commentwords, 80)%>
+	<%edittemplateinfo(row,_TEMPLATE_CMORE, COMMENTS_CONTINUED, commentcontinued, 90)%>
+	<%edittemplateinfo(row,_TEMPLATE_CMEXTRA, COMMENTS_AUTH, memberextra, 100)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_COMMENTS_NONE)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_COMMENTS_NONE)%> <%helplink(templatecomments)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row,_TEMPLATE_CNONE, COMMENTS_NONE, , 110)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_COMMENTS_TOOMUCH)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_COMMENTS_TOOMUCH)%> <%helplink(templatecomments)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row,_TEMPLATE_CTOOMUCH, COMMENTS_TOOMUCH, , 120)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_ARCHIVELIST)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_ARCHIVELIST)%> <%helplink(templatearchivelists)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row,_TEMPLATE_AHEADER, ARCHIVELIST_HEADER, , 130)%>
+	<%edittemplateinfo(row,_TEMPLATE_AITEM, ARCHIVELIST_LISTITEM, , 140)%>
+	<%edittemplateinfo(row,_TEMPLATE_AFOOTER, ARCHIVELIST_FOOTER, , 150)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_BLOGLIST)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_BLOGLIST)%> <%helplink(templatebloglists)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row,_TEMPLATE_BLOGHEADER, BLOGLIST_HEADER, , 160)%>
+	<%edittemplateinfo(row,_TEMPLATE_BLOGITEM, BLOGLIST_LISTITEM, , 170)%>
+	<%edittemplateinfo(row,_TEMPLATE_BLOGFOOTER, BLOGLIST_FOOTER, , 180)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_CATEGORYLIST)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_CATEGORYLIST)%> <%helplink(templatecategorylists)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row,_TEMPLATE_CATHEADER, CATLIST_HEADER, , 190)%>
+	<%edittemplateinfo(row,_TEMPLATE_CATITEM, CATLIST_LISTITEM, , 200)%>
+	<%edittemplateinfo(row,_TEMPLATE_CATFOOTER, CATLIST_FOOTER, , 210)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_DATETIME)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_DATETIME)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row,_TEMPLATE_DHEADER, DATE_HEADER, dateheads, 220)%>
+	<%edittemplateinfo(row,_TEMPLATE_DFOOTER, DATE_FOOTER, dateheads, 230)%>
+	<%edittemplateinfo(row,_TEMPLATE_DFORMAT, FORMAT_DATE, datetime, 240)%>
+	<%edittemplateinfo(row,_TEMPLATE_TFORMAT, FORMAT_TIME, datetime, 250)%>
+	<%edittemplateinfo(row,_TEMPLATE_LOCALE, LOCALE, locale, 260)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_IMAGE)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_IMAGE)%> <%helplink(templatepopups)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row,_TEMPLATE_PCODE, POPUP_CODE, , 270)%>
+	<%edittemplateinfo(row,_TEMPLATE_ICODE, IMAGE_CODE, , 280)%>
+	<%edittemplateinfo(row,_TEMPLATE_MCODE, MEDIA_CODE, , 290)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_SEARCH)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_SEARCH)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(row,_TEMPLATE_SHIGHLIGHT, SEARCH_HIGHLIGHT, highlight,300)%>
+	<%edittemplateinfo(row,_TEMPLATE_SNOTFOUND, SEARCH_NOTHINGFOUND, nothingfound,310)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_PLUGIN_FIELDS)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_PLUGIN_FIELDS)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<%edittemplateinfo(extratemplate,admin/default)%>
+	</tbody>
+	</table>
+	
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_UPDATE)%>">
+	<thead>
+	<tr>
+	<th colspan="2"><%text(_TEMPLATE_UPDATE)%></th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+	<td><%text(_TEMPLATE_UPDATE)%></td>
+	<td>
+	<input type="submit" tabindex="800" value="<%text(_TEMPLATE_UPDATE_BTN)%>" onclick="return checkSubmit();" />
+	<input type="reset" tabindex="810" value="<%text(_TEMPLATE_RESET_BTN)%>" />
+	</td>
+	</tr>
+	</tbody>
+	</table>
+	
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="templateoverview"><![CDATA[
+	<%pagehead%>
+	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+	<h2><%text(_TEMPLATE_TITLE)%></h2>
+	
+	<h3><%text(_TEMPLATE_AVAILABLE_TITLE)%></h3>
+	<%templateoverview(admin/default)%>
+	
+	<h3><%text(_TEMPLATE_NEW_TITLE)%></h3>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input name="action" value="templatenew" type="hidden" />
+	<%ticket%>
+	</p>
+	<table frame="box" rules="all" summary="<%text(_TEMPLATE_NEW_TITLE)%>">
+	<tr>
+	<td><%text(_TEMPLATE_NAME)%> <%helplink(shortnames)%></td>
+	<td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
+	</tr>
+	<tr>
+	<td><%text(_TEMPLATE_DESC)%></td>
+	<td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
+	</tr>
+	<tr>
+	<td><%text(_TEMPLATE_CREATE)%></td>
+	<td><input type="submit" tabindex="10030" value="<%text(_TEMPLATE_CREATE_BTN)%>" onclick="return checkSubmit();" /></td>
+	</tr>
+	</table>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="usermanagement"><![CDATA[
+<%pagehead%>
+<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+<h2><%text(_MEMBERS_TITLE)%></h2>
+<h3><%text(_MEMBERS_CURRENT)%></h3>
+<%editmemberlist(admin/default)%>
+<h3><%text(_MEMBERS_NEW)%></h3>
+
+<form method="post" action="<%adminurl%>index.php" name="memberedit">
+
+<p>
+<input type="hidden" name="action" value="memberadd" />
+<%ticket%>
+</p>
+
+<table frame="box" rules="all" summary="<%text(_MEMBERS_NEW)%>">
+<thead>
+<tr>
+<th colspan="2"><%text(_MEMBERS_NEW)%></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<%text(_MEMBERS_DISPLAY)%> <%helplink(shortnames)%>
+<br /><small><%text(_MEMBERS_DISPLAY_INFO)%></small>
+</td>
+<td><input tabindex="10010" name="name" size="32" maxlength="32" /></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_REALNAME)%></td>
+<td><input name="realname" tabindex="10020" size="40" maxlength="60" /></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_PWD)%></td>
+<td><input name="password" tabindex="10030" size="16" maxlength="40" type="password" /></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_REPPWD)%></td>
+<td><input name="repeatpassword" tabindex="10035" size="16" maxlength="40" type="password" /></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_EMAIL)%></td>
+<td><input name="email" tabindex="10040" size="40" maxlength="60" /></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_URL)%></td>
+<td><input name="url" tabindex="10050" size="40" maxlength="100" /></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_SUPERADMIN)%> <%helplink(superadmin)%></td>
+<td><%inputyesno(admin,1,10060)%> </td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_CANLOGIN)%> <%helplink(canlogin)%></td>
+<td><%inputyesno(canlogin,1,10070)%></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_NOTES)%></td>
+<td><input name="notes" maxlength="100" size="40" tabindex="10080" /></td>
+</tr>
+<tr>
+<td><%text(_MEMBERS_NEW)%></td>
+<td><input type="submit" value="<%text(_MEMBERS_NEW_BTN)%>" tabindex="10090" onclick="return checkSubmit();" /></td>
+</tr>
+</tbody>
+</table>
+</form>
+<%pagefoot%>
+]]></part>
+<part name="createaccountinput"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_CREATE_ACCOUNT0)%></h2>
+	<%headmessage%>
+	<form method="post" action="<%sitevar(url)%>createaccount.php">
+	<dl>
+	<dt><label for="name"><%text(_CREATE_ACCOUNT_LOGIN_NAME)%></label></dt>
+	<dd>
+	<input id="name" name="name" value="<%contents(name)%>" size="32" maxlength="32" />
+	<span style="\small"><%text(_CREATE_ACCOUNT_LOGIN_NAME_VALID)%></span>
+	</dd>
+	<dt><label for="realname"><%text(_CREATE_ACCOUNT_REAL_NAME)%></label></dt>
+	<dd><input id="realname" name="realname" value="<%contents(realname)%>" size="40" /></dd>
+	<dt><label for="email"><%text(_CREATE_ACCOUNT_EMAIL)%></label></dt>
+	<dd>
+	<input id="email"name="email" value="<%contents(email)%>" size="40" />
+	<span style="\small"><%text(_CREATE_ACCOUNT_EMAIL2)%></span>
+	</dd>
+	<dt><label for="url"><%text(_CREATE_ACCOUNT_URL)%></label></dt>
+	<dd><input id="url"name="url" value="<%contents(url)%>" size="60" /></dd>
+	</dl>
+	<%pluginextras(createaccount)%>
+	<%eventformextra(membermailform-notloggedin)%>
+	<p>
+	<input type="hidden" name="showform" value="1" />
+	<button type="submit" name="action" value="createaccount"><%text(_CREATE_ACCOUNT_SUBMIT)%></button>
+	</p>
+	</form>
+	<%pagefoot%>
+]]></part>
+<part name="createaccountsuccess"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_CREATE_ACCOUNT)%></h2>
+	<%headmessage%>
+	<p><%text(_MSG_ACTIVATION_SENT)%></p>
+	<p><%text(_BACK)%> <a href="<%sitevar(IndexURL)%>" title="<%sitevar(SiteName)%>"><%sitevar(SiteName)%></a></p>
+	<%pagefoot%>
+]]></part>
+<part name="createaccountdisable"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_CREATE_ACCOUNT0)%></h2>
+	<p><%text(_CREATE_ACCOUNT1)%></p>
+	<p><%text(_CREATE_ACCOUNT2)%></p>
+	<p><%text(_BACK)%> <a href="<%sitevar(IndexURL)%>" title="<%sitevar(SiteName)%>"><%sitevar(SiteName)%></a></p>
+	<%pagefoot%>
+]]></part>
+<part name="forgotpassword"><![CDATA[
+	<%pagehead%>
+	<h2><%text(_FORGOTPASSWORD_TITLE)%></h2>
+	<p><%text(_FORGOTPASSWORD_MSG)%></p>
+	<form method="post" action="<%actionurl%>">
+	<dl>
+	<dt><label for="nucleus_pf_username"><%text(_CREATE_ACCOUNT_LOGIN_NAME)%></label></dt>
+	<dd><input type="text" name="name" id="nucleus_pf_username" /></dd>
+	<dt><label for="nucleus_pf_email"><%text(_CREATE_ACCOUNT_EMAIL)%></label></dt>
+	<dd><input type="text" name="email" id="nucleus_pf_email" /></dd>
+	</dl>
+	<p>
+	<input type="hidden" name="action" value="forgotpassword" />
+	<input type="submit" value="<%text(_FORGOTPASSWORD_SUBMIT)%>" class="transparent" />
+	</p>
+	</form>
+	<p><%text(_FORGOTPASSWORD_CONTACT)%></p>
+	<%pagefoot%>
+]]></part>
+</skin>
+<template name="admin/default">
+<description><![CDATA[
+	ADMIN Area Default template
+]]></description>
+
+<part name="PLUGIN_QUICKMENU_HEAD"><![CDATA[
+	<h2><%text(_QMENU_PLUGINS)%></h2>
+	<ul>
+]]></part>
+<part name="PLUGIN_QUICKMENU_BODY"><![CDATA[
+	<li><a href="<%plugadminurl%>" title="<%plugadmintooltip%>"><%plugadmintitle%></a></li>
+]]></part>
+<part name="PLUGIN_QUICKMENU_FOOT"><![CDATA[
+	</ul>
+]]></part>
+
+<part name="SHOWLIST_LISTPLUG_TABLE_ACTNLIST_HEAD"><![CDATA[
+	<th><%coltime%></th>
+	<th><%colmesg%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_ACTNLIST_BODY"><![CDATA[
+	<td><%timestamp%></td>
+	<td><%message%></td>
+]]></part>
+
+<part name="SHOWLIST_LISTPLUG_TABLE_IBANLIST_HEAD"><![CDATA[
+	<th><%iprange%></th>
+	<th><%reason%></th>
+	<th><%colact%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_IBANLIST_BODY"><![CDATA[
+	<td><%iprange%></td>
+	<td><%reason%></td>
+	<td><a href="<%adminurl%>index.php?action=banlistdelete&amp;blogid=<%blogid%>&amp;iprange=<%iprange%>"><%delbtn%></a></td>
+]]></part>
+
+<part name="SHOWLIST_LISTPLUG_TABLE_SKINLIST_HEAD"><![CDATA[
+	<th><%colname%></th>
+	<th><%coldesc%></th>
+	<th colspan="3"><%colact%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_SKINLIST_BODY"><![CDATA[
+	<td><%skinname%><br /><br />
+	<%skintypelabel%> <%skintype%><br />
+	<%incmodelabel%> <%incmode%><br />
+	<%incpreflabel%> <%incpref%><br />
+	<%skinthumb%>
+	<%readme%></td>
+	<td class="availableSkinTypes"><%skindesc%><%skinparts%></td>
+	<td style="white-space:nowrap">
+	<a href="<%editurl%>" tabindex="<%tabindex%>">
+	<%editbtn%>
+	</a>
+	</td>
+	<td style="white-space:nowrap">
+	<a href="<%cloneurl%>" tabindex="<%tabindex%>">
+	<%clonebtn%>
+	</a>
+	</td>
+	<td style="white-space:nowrap">
+	<a href="<%deleteurl%>" tabindex="<%tabindex%>">
+	<%delbtn%>
+	</a>
+	</td>
+]]></part>
+
+<part name="SHOWLIST_LISTPLUG_TABLE_BLIST_BD_TADM"><![CDATA[
+	<td>
+	<a href="<%adminurl%>index.php?action=blogsettings&amp;blogid=<%blogid%>" title="<%ttsettingtext%>"><%settingtext%></a>
+	</td>
+	<td>
+	<a href="<%adminurl%>index.php?action=banlist&amp;blogid=<%blogid%>" title="<%ttbanstext%>"><%banstext%></a>
+	</td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_BLIST_BD_SADM"><![CDATA[
+	<td>
+	<a href="<%adminurl%>index.php?action=deleteblog&amp;blogid=<%blogid%>" title="<%ttdeletetext%>"><%deletetext%></a>
+	</td>
+]]></part>
+
+<part name="SHOWLIST_LISTPLUG_TABLE_BLOGSNAM_HEAD"><![CDATA[
+	<th><%colshortname%></th>
+	<th><%colblogname%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_BLOGSNAM_BODY"><![CDATA[
+	<td><%bshortname%></td>
+	<td><%blogname%></td>
+]]></part>
+
+<part name="SHOWLIST_LISTPLUG_TABLE_SHORTNAM_HEAD"><![CDATA[
+	<th><%colname%></th>
+	<th><%coldesc%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_SHORTNAM_BODY"><![CDATA[
+	<td><%name%></td>
+	<td><%desc%></td>
+]]></part>
+
+<part name="SHOWLIST_LISTPLUG_TABLE_CATELIST_HEAD"><![CDATA[
+	<th><%colname%></th>
+	<th><%coldesc%></th>
+	<th colspan="2"><%colact%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_CATELIST_BODY"><![CDATA[
+	<td><input type="checkbox" id="batch<%batchid%>" name="batch[<%batchid%>]" value="<%catid%>" />
+	<label for="batch<%batchid%>"><%catname%></label>
+	</td>
+	<td><%catdesc%></td>
+	<td><a href="<%adminurl%>index.php?action=categorydelete&amp;blogid=<%blogid%>&amp;catid=<%catid%>" tabindex="<%tabindex%>">
+	<%delbtn%></a></td>
+	<td><a href="<%adminurl%>index.php?action=categoryedit&amp;blogid=<%blogid%>&amp;catid=<%catid%>" tabindex="<%tabindex%>">
+	<%editbtn%></a></td>
+]]></part>
+
+<part name="SHOWLIST_LISTPLUG_TABLE_TPLTLIST_HEAD"><![CDATA[
+	<th><%colname%></th>
+	<th><%coldesc%></th>
+	<th colspan="3"><%colact%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_TPLTLIST_BODY"><![CDATA[
+	<td><%templatename%></td>
+	<td><%templatedesc%></td>
+	<td style="white-space:nowrap">
+	<a href="<%editurl%>" tabindex="<%tabindex%>"><%editbtn%>
+	</a></td>
+	<td style="white-space:nowrap">
+	<a href="<%cloneurl%>" tabindex="<%tabindex%>"><%clonebtn%>
+	</a></td>
+	<td style="white-space:nowrap">
+	<a href="<%deleteurl%>" tabindex="<%tabindex%>"><%delbtn%>
+	</a></td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_DRFTLIST_HEAD"><![CDATA[
+	<th><%colblog%></th>
+	<th><%coldesc%></th>
+	<th colspan="2"><%colact%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_DRFTLIST_BODY"><![CDATA[
+	<td><%bshortname%></td>
+	<td><%ititle%></td>
+	<td><a href="<%adminurl%>index.php?action=itemedit&amp;itemid=<%itemid%>"><%editbtn%></a></td>
+	<td><a href="<%adminurl%>index.php?action=itemdelete&amp;itemid=<%itemid%>"><%delbtn%></a></td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_CMNTLIST_ABAN"><![CDATA[
+	<td style="white-space:nowrap"><a href="<%adminurl%>index.php?action=banlistnewfromitem&amp;itemid=<%itemid%>&amp;ip=<%banip%>" title="<%banhost%>"><%banbtn%></a></td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_BLOGLIST_HEAD"><![CDATA[
+	<th><%blognames%></th><th colspan="8"><%actionshead%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_BLOGLIST_BODY"><![CDATA[
+	<td title="blogid:<%blogid%> shortname:<%shortname%>">
+	<a href="<%blogurl%>"><img src="<%skinfile(/images/globe.gif)%>" width="13" height="13" alt="<%iconalt%>" /></a> <%blogname%>
+	</td>
+	<td>
+	<a href="<%adminurl%>index.php?action=createitem&amp;blogid=<%blogid%>" title="<%ttaddtext%>"><%addtext%></a>
+	</td>
+	<td>
+	<a href="<%adminurl%>index.php?action=itemlist&amp;blogid=<%blogid%>" title="<%ttedittext%>"><%edittext%></a>
+	</td>
+	<td>
+	<a href="<%adminurl%>index.php?action=blogcommentlist&amp;blogid=<%blogid%>" title="<%ttcommenttext%>"><%commenttext%></a>
+	</td>
+	<td>
+	<a href="<%adminurl%>index.php?action=bookmarklet&amp;blogid=<%blogid%>" title="<%ttbmlettext%>"><%bmlettext%></a>
+	</td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_CMNTLIST_HEAD"><![CDATA[
+	<th><%colinfo%></th>
+	<th><%colcontent%></th>
+	<th colspan="3"><%colaction%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_CMNTLIST_BODY"><![CDATA[
+	<td><%commentdate%><br /><%commentator%><br /><%commentsite%><br /><%commentmail%><br /></td>
+	<td><input type="checkbox" id="batch<%batchid%>" name="batch[<%batchid%>]" value="<%commentid%>" />
+	<label for="batch<%batchid%>"><%commentbody%></label></td>
+	<td style="white-space:nowrap">
+	<a href="<%adminurl%>index.php?action=commentedit&amp;commentid=<%commentid%>"><%editbtn%></a></td>
+	<td style="white-space:nowrap">
+	<a href="<%adminurl%>index.php?action=commentdelete&amp;commentid=<%commentid%>"><%delbtn%></a></td>
+	<%addbanlist%>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLGOPT_OPWORD"><![CDATA[
+<input type="password" size="40" maxlength="128" name="<%varname%>" value="<%value%>" />
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEP"><![CDATA[
+<select name="<%varname%>">
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEO"><![CDATA[
+<option value="<%value%>"<%selected%>><%optname%></option>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEC"><![CDATA[
+</select>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLGOPT_OTAREA"><![CDATA[
+<textarea class="pluginoption" cols="30" rows="5" name="<%varname%>"<%readonly%>><%value%></textarea>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLGOPT_OITEXT"><![CDATA[
+<input type="text" size="40" maxlength="128" name="<%varname%>" value="<%value%>"<%datatype%><%readonly%> />
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGOPTN_FOOT"><![CDATA[
+<%extra%></td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_POPTLIST_FOOT"><![CDATA[
+
+<tr>
+<td><%savetext%></td>
+<td><input type="submit" value="<%savetext%>" /></td>
+</tr>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_ITEMLIST_HEAD"><![CDATA[
+	<th><%colinfo%></th>
+	<th><%colcontent%></th>
+	<th style="white-space:nowrap"><%colaction%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_ITEMLIST_BODY"><![CDATA[
+	<td<%cssclass%>>
+	<%bshortlabel%> <%bshortnameval%><br />
+	<%categorylabel%> <%categorynameval%><br />
+	<%authorlabel%> <%authornameval%><br />
+	<%itemdatelabel%> <%itemdateval%><br />
+	<%itemtimelabel%> <%itemtimeval%>
+	</td>
+	<td<%cssclass%>>
+	<input type="checkbox" id="batch<%batchid%>" name="batch[<%batchid%>]" value="<%itemid%>" />
+	<label for="batch<%batchid%>"><b><%itemtitle%></b></label><br />
+	<%itembody%></td>
+	<td style="white-space:nowrap"<%cssclass%>>
+	<a href="<%adminurl%>index.php?action=itemedit&amp;itemid=<%itemid%>"><%editbtn%></a><br />
+	<a href="<%adminurl%>index.php?action=itemmove&amp;itemid=<%itemid%>"><%movebtn%></a><br />
+	<a href="<%adminurl%>index.php?action=itemdelete&amp;itemid=<%itemid%>"><%delbtn%></a><br />
+	<%camount%>
+	</td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_POPTLIST_HEAD"><![CDATA[
+	<th><%colinfo%></th>
+	<th><%colvalue%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGIN_DEPEND"><![CDATA[
+	<br /><br /><%deplistlbl%><br /><%dependlist%>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGIN_DEPREQ"><![CDATA[
+	<br /><br /><%deprlstlbl%><br /><%depreqlist%>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGLISTFALSE"><![CDATA[
+	<td colspan="2"><%noplugalert%></td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGLIST_ACTN"><![CDATA[
+	<td>
+	<a href="<%actionupurl%>" tabindex="<%tabindex%>"><%actionuptxt%></a><br />
+	<a href="<%actiondownurl%>" tabindex="<%tabindex%>"><%actiondowntxt%></a><br />
+	<a href="<%actuninsturl%>" tabindex="<%tabindex%>"><%actuninsttxt%></a><br />
+	<%plugadminurl%>
+	<%plughelpurl%>
+	<%plugoptsetting%>
+	</td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_POPTLIST_BODY"><![CDATA[
+	<td><%description%></td>
+	<td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLGOPT_OYESNO"><![CDATA[
+	<input type="radio" name="<%name%>" value="<%yesval%>"<%yescheckedval%> id="<%yesid%>" />
+	<label for="<%yesid%>"><%yesvaltext%></label>
+	<input type="radio" name="<%name%>" value="<%noval%>"<%nocheckedval%> id="<%noid%>"<%disabled%> />
+	<label for="<%noid%>"><%novaltext%></label>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGOPTSETURL"><![CDATA[
+	<a href="<%actoptionurl%>" tabindex="<%tabindex%>"><%actoptiontxt%></a><br />
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGLIST_ADMN"><![CDATA[
+	<a href="<%actadminurl%>" tabindex="<%tabindex%>"><%actadmintxt%></a><br />
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGLIST_HELP"><![CDATA[
+	<a href="<%acthelpurl%>" tabindex="<%tabindex%>"><%acthelptxt%></a><br />
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGLIST_GURL"><![CDATA[
+	<a href="<%plugurl%>" tabindex="<%tabindex%>"><%plugsite%></a>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGLIST_HEAD"><![CDATA[
+	<th><%colinfo%></th>
+	<th><%coldesc%></th>
+	<th style=\"white-space:nowrap\"><%colactions%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGEVENTLIST"><![CDATA[
+	<br /><br /><%evntlstlbl%><br /><%eventlist%>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGNEDUPDATE"><![CDATA[
+	<br /><br /><strong><%updatealert%></strong>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY"><![CDATA[
+	<td>
+	<strong><%plugname%></strong><br />
+	<%autherlabel%> <%plugauther%><br />
+	<%versionlabel%> <%plugversion%><br />
+	<%pluggeturl%><br />
+	</td>
+	<td>
+	<%desclabel%><br /><%plugdesc%>
+	<%eventlist%>
+	<%needupdate%>
+	<%dependlist%>
+	<%depreqlist%>
+	</td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_TEAMLIST_HEAD"><![CDATA[
+	<th><%colmembername%></th>
+	<th><%colmemberrname%></th>
+	<th><%colteamadmin%><%helplink(teamadmin)%></th>
+	<th colspan="2"><%colactions%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_TEAMLIST_BODY"><![CDATA[
+	<td>
+	<input type="checkbox" id="batch<%id%>" name="batch[<%id%>]" value="<%memberid%>" />
+	<label for="batch<%id%>">
+	<a href="mailto:<%mailaddress%>" tabindex="<%tabindex%>"><%name%></a>
+	</label>
+	</td>
+	<td><%realname%></td>
+	<td><%admin%></td>
+	<td><a href="<%adminurl%>index.php?action=teamdelete&amp;memberid=<%memberid%>&amp;blogid=<%blogid%>" tabindex="<%tabindex%>"><%deletebtn%></a></td>
+	<td><a href="<%chadminurl%>" tabindex="<%tabindex%>"><%chadminbtn%></a></td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_MEMBLIST_BODY"><![CDATA[
+	<td>
+	<input type="checkbox" id="batch<%id%>" name="batch[<%id%>]" value="<%memberid%>" />
+	<label for="batch<%id%>">
+	<a href="mailto:<%mailaddress%>" tabindex="<%tabindex%>"><%name%></a>
+	</label>
+	</td>
+	<td><%realname%></td>
+	<td><a href="<%url%>" tabindex="<%tabindex%>"><%url%></a></td>
+	<td><%admin%></td>
+	<td><%login%></td>
+	<td><a href="<%adminurl%>index.php?action=memberedit&amp;memberid=<%memberid%>" tabindex="<%tabindex%>"><%editbtn%></a></td>
+	<td><a href="<%adminurl%>index.php?action=memberdelete&amp;memberid=<%memberid%>" tabindex="<%tabindex%>"><%deletebtn%></a></td>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_FOOT"><![CDATA[
+	<%typefoot%>
+	</tbody>
+	</table>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_MEMBLIST_HEAD"><![CDATA[
+	<th><%colmembername%></th>
+	<th><%colmemberrname%></th>
+	<th><%colmemberurl%></th>
+	<th><%colmemberadmin%><%helplink(superadmin)%></th>
+	<th><%colmemberlogin%><%helplink(canlogin)%></th>
+	<th colspan="2"><%colactions%></th>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_SELECT_FOOT"><![CDATA[
+	</select>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_HEAD"><![CDATA[
+	<table frame="box" rules="all" summary="<%summary%>">
+	<thead>
+	<tr>
+	<%typehead%>
+	</tr>
+	</thead>
+	<tbody>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_BODY"><![CDATA[
+	<tr onmouseover="focusRow(this);" onmouseout="blurRow(this);">
+	<%typebody%>
+	</tr>
+]]></part>
+<part name="SKINIE_EXPORT_LIST"><![CDATA[
+	<tr>
+	<td><input type="checkbox" name="<%typeid%>"  id="<%expid%>" /><label for="<%expid%>"><%expname%></label></td>
+	<td><%expdesc%></td>
+	</tr>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_SELECT_HEAD"><![CDATA[
+	<select name="<%name%>" tabindex="<%tabindex%>" <%javascript%>>
+	<%extraoption%>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_SELECT_BODY"><![CDATA[
+	<option value="<%value%>" <%selected%> title="<%title%>"><%option%></option>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_SELECT_FOOT"><![CDATA[
+	</select>
+]]></part>
+<part name="INPUTYESNO_TEMPLATE_NORMAL"><![CDATA[
+	<input type="radio" name="<%name%>" value="<%yesval%>"<%yescheckedval%> id="<%yesid%>" />
+	<label for="<%yesid%>"><%yesvaltext%></label>
+	<input type="radio" name="<%name%>" value="<%noval%>"<%nocheckedval%> id="<%noid%>"<%disabled%> />
+	<label for="<%noid%>"><%novaltext%></label>
+]]></part>
+<part name="SYSTEMINFO_GDSETTINGS"><![CDATA[
+	<tr>
+	<td width="50%"><%key%></td>
+	<td><%value%></td>
+	</tr>
+]]></part>
+<part name="BANLIST_DELETED_LIST"><![CDATA[
+	<li><%blogname%></li>
+]]></part>
+<part name="INSERT_PLUGOPTION_TITLE"><![CDATA[
+	<tr>
+	<th colspan="2"><%sprinttext(_PLUGIN_OPTIONS_TITLE, <|%insertpluginfo(name)%|>)%></th>
+	</tr>
+]]></part>
+<part name="INSERT_PLUGOPTION_BODY"><![CDATA[
+	<tr><%listplugplugoptionrow(admin/default)%></tr>
+]]></part>
+<part name="INPUTYESNO_TEMPLATE_ADMIN"><![CDATA[
+	<input onclick="selectCanLogin(true);" type="radio" name="<%name%>" value="<%yesval%>"<%yescheckedval%> id="<%yesid%>" />
+	<label for="<%yesid%>"><%yesvaltext%></label>
+	<input onclick="selectCanLogin(false);" type="radio" name="<%name%>" value="<%noval%>"<%nocheckedval%> id="<%noid%>"<%disabled%> />
+	<label for="<%noid%>"><%novaltext%></label>
+]]></part>
+<part name="SPECIALSKINLIST_HEAD"><![CDATA[
+	<ul>
+]]></part>
+<part name="SPECIALSKINLIST_BODY"><![CDATA[
+	<li><a tabindex="<%tabindex%>" href="<%adminurl%>index.php?action=skinedittype&skinid=<%skinid%>&type=<%skintype%>"><%skintype%></a> (<a tabindex="<%tabindex%>" href="<%adminurl%>index.php?action=skinremovetype&skinid=<%skinid%>&type=<%skintype%>">remove</a>)</li>
+]]></part>
+<part name="SPECIALSKINLIST_FOOT"><![CDATA[
+	</ul>
+]]></part>
+
+<part name="TEMPLATE_EDIT_ROW_HEAD"><![CDATA[
+	<tr>
+	<td><%description%><%help%></td>
+	<td id="td<%count%>">
+	<textarea class="templateedit" name="<%name%>" tabindex="<%tabindex%>" cols="50" rows="<%rows%>" id="textarea<%count%>">
+]]></part>
+<part name="TEMPLATE_EDIT_ROW_TAIL"><![CDATA[
+	</textarea>
+	</td>
+	</tr>
+]]></part>
+
+<part name="TEMPLATE_EDIT_EXPLUGNAME"><![CDATA[
+	<tr>
+	<th colspan="2"><%explugtplname%></th>
+	</tr>
+]]></part>
+
+<part name="ADMIN_BATCHLIST"><![CDATA[
+	<li><%text(_BATCH_EXECUTING)%&nbsp;<b><%adminbatchaction%></b>&nbsp;<%batchlisttype%>&nbsp;<b><%batchid%></b>...&nbsp;<b><%batchlistmsg%></b></li>
+]]></part>
+<part name="ADMIN_BLOGLINK"><![CDATA[
+	<a href="<%url%>" title="<%adminbloglinktitle%>"><%blogname%></a>
+]]></part>
+
+<part name="ADMIN_CUSTOMHELPLINK_ANCHOR"><![CDATA[
+	<a href="<%helpurl%>#<%helptarget%>" title="<%title%>" <%onclick%>>
+]]></part>
+<part name="ADMIN_CUSTOMHELPLINK_ICON"><![CDATA[
+	<img src="<%iconurl%>" <%width%><%height%>alt="<%alt%>" title="<%title%>" /></a>
+]]></part>
+<part name="NORMALSKINLIST_HEAD"><![CDATA[
+	<ul>
+]]></part>
+<part name="NORMALSKINLIST_BODY"><![CDATA[
+	<li><a href="<%editurl%>" tabindex="<%tabindex%>"><%skintypename%></a> <%help%></li>
+]]></part>
+<part name="NORMALSKINLIST_FOOT"><![CDATA[
+	</ul>
+]]></part>
+<part name="SPECIALSKINLIST_HEAD"><![CDATA[
+	<ul>
+]]></part>
+<part name="SPECIALSKINLIST_BODY"><![CDATA[
+	<li><a href="<%editurl%>" tabindex="<%tabindex%>"><%skintype%></a> (<a href="<%removeurl%>" tabindex="<%tabindex%>">remove</a>)</li>
+]]></part>
+<part name="SPECIALSKINLIST_FOOT"><![CDATA[
+	</ul>
+]]></part>
+<part name="PLUGIN_QUICKMENU_BODY"><![CDATA[
+	<li><a href="<%plugadminurl%>" title="<%plugadmintooltip%>"><%plugadmintitle%></a></li>
+]]></part>
+<part name="PLUGIN_QUICKMENU_FOOT"><![CDATA[
+	</ul>
+]]></part>
+</template>
+</nucleusskin>

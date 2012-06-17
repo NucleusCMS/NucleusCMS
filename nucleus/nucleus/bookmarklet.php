@@ -25,11 +25,25 @@ $CONF['UsingAdminArea'] = 1;
 // include all classes and config data
 include('../config.php');
 
+// get skin object
+$skinid = $member->bookmarklet;
+if ( !Skin::existsID($skinid) )
+{
+	$skinid = $CONF['BookmarkletSkin'];
+	if ( !Skin::existsID($skinid) )
+	{
+		sendContentType('text/html');
+		echo _ERROR_SKIN;
+		exit;
+	}
+}
+$skin =& $manager->getSkin($skinid, 'AdminActions', 'AdminSkin');
+
 // check logged-in or pass through
 $action = requestVar('action');
 if ( !$member->isLoggedIn() )
 {
-	bm_loginAndPassThrough($action);
+	bm_loginAndPassThrough($skin, $action);
 	exit;
 }
 else if ( $action == 'login')
@@ -49,16 +63,13 @@ else if ( $action == '' )
 	$action = 'add';
 }
 
-// send HTTP 1.1 message header for Content-Type
-sendContentType('text/html', 'bookmarklet-' . $action);
-
 // check ticket
 $aActionsNotToCheck = array('login', 'add', 'edit');
 if ( !in_array($action, $aActionsNotToCheck) )
 {
 	if ( !$manager->checkTicket() )
 	{
-		bm_doError(_ERROR_BADTICKET);
+		bm_doError($skin, _ERROR_BADTICKET);
 	}
 }
 
@@ -67,32 +78,32 @@ switch ( $action )
 {
 	// adds the item for real
 	case 'additem':
-		bm_doAddItem();
+		bm_doAddItem($skin);
 		break;
 	
 	// shows the edit item form
 	case 'edit':
-		bm_doEditForm();
+		bm_doEditForm($skin);
 		break;
 	
 	// edits the item for real
 	case 'edititem':
-		bm_doEditItem();
+		bm_doEditItem($skin);
 		break;
 	
 	// on login, 'action' gets changed to 'nextaction'
 	case 'login':
-		bm_doError('Something went wrong');
+		bm_doError($skin, 'Something went wrong');
 		break;
 	
 	// shows the fill in form
 	case 'add':
 	default:
-		bm_doShowForm();
+		bm_doShowForm($skin);
 		break;
 }
 
-function bm_doAddItem()
+function bm_doAddItem($skin)
 {
 	global $member, $manager, $CONF;
 	
@@ -101,7 +112,7 @@ function bm_doAddItem()
 	
 	if ( $result['status'] == 'error' )
 	{
-		bm_doError($result['message']);
+		bm_doError($skin, $result['message']);
 	}
 	
 	$blogid = getBlogIDFromItemID($result['itemid']);
@@ -118,12 +129,12 @@ function bm_doAddItem()
 		$extrahead = '';
 	}
 	
-	bm_message(_ITEM_ADDED, _ITEM_ADDED, $message,$extrahead);
+	bm_message($skin, _ITEM_ADDED, $message,$extrahead);
 	
 	return;
 }
 
-function bm_doEditItem()
+function bm_doEditItem($skin)
 {
 	global $member, $manager, $CONF;
 	
@@ -133,7 +144,7 @@ function bm_doEditItem()
 	// only allow if user is allowed to alter item
 	if ( !$member->canUpdateItem($itemid, $catid) )
 	{
-		bm_doError(_ERROR_DISALLOWED);
+		bm_doError($skin, _ERROR_DISALLOWED);
 	}
 	
 	$body = postVar('body');
@@ -163,7 +174,7 @@ function bm_doEditItem()
 		// show error when sth goes wrong
 		if ( !$catid )
 		{
-			bm_doError('Could not create new category');
+			bm_doError($skin, 'Could not create new category');
 		}
 	}
 	
@@ -186,7 +197,7 @@ function bm_doEditItem()
 			$timestamp = 0;
 			break;
 		default:
-			bm_doError('Something went wrong');
+			bm_doError($skin, 'Something went wrong');
 	}
 	
 	// update item for real
@@ -197,58 +208,48 @@ function bm_doEditItem()
 		Item::delete($draftid);
 	}
 	
-	// show success message
-	if ( $catid != intPostVar('catid') )
+	if ( $result['status'] == 'newcategory' )
 	{
-		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid=' . $blog->getID() . '&amp;catid=' . $catid . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>', '');
+		$href		= "index.php?action=categoryedit&amp;blogid={$blogid}&amp;catid={$result['catid']}";
+		$onclick	= 'if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;';
+		$title		= _BOOKMARKLET_NEW_WINDOW;
+		$aTag		= " <a href=\"{$href}\" onclick=\"{$onclick}\" title=\"{$title}\">";
+		$message	= _BOOKMARKLET_NEW_CATEGORY . $aTag . _BOOKMARKLET_NEW_CATEGORY_EDIT . '</a>';
 	}
 	else
 	{
-		bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _ITEM_UPDATED, '');
+		$message = _ITEM_ADDED;
 	}
 	
+	// show success message
+	bm_message($skin, _ITEM_ADDED, $message, '');
 	return;
 }
 
-function bm_loginAndPassThrough($action='add')
+function bm_loginAndPassThrough($skin, $action='add')
 {
+	/*
+	 * TODO: これを出力させる
 	$blogid = intRequestVar('blogid');
 	$itemid = intRequestVar('itemid');
 	$log_text = requestVar('logtext');
 	$log_link = requestVar('loglink');
 	$log_linktitle = requestVar('loglinktitle');
 	
-	echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
-	echo "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
-	echo "<head>\n";
-	echo "<title>Nucleus CMS Bookmarklet</title>\n";
-	
-	bm_style();
-	
-	echo "</head>\n";
-	echo "<body>\n";
-	echo '<h1>' . _LOGIN_PLEASE . "</h1>\n";
-	echo "<form method=\"post\" action=\"bookmarklet.php\">\n";
-	echo "<p>\n";
-	echo _LOGINFORM_NAME . "<input type=\"text\" name=\"login\" value=\"\" /><br />\n";
-	echo _LOGINFORM_PWD . "<input type=\"password\" name=\"password\" value=\"\" /><br />\n";
 	echo '<input type="hidden" name="blogid" value="' . Entity::hsc($blogid). '" />' . "\n";
 	echo '<input type="hidden" name="itemid" value="' . Entity::hsc($itemid). '" />' . "\n";
 	echo '<input type="hidden" name="logtext" value="' . Entity::hsc($log_text) . '" />' . "\n";
 	echo '<input type="hidden" name="loglink" value="' . Entity::hsc($log_link) . '" />' . "\n";
 	echo '<input type="hidden" name="loglinktitle" value="' . Entity::hsc($log_linktitle) . '" />' . "\n";
 	echo "<input type=\"hidden\" name=\"nextaction\" value=\"{$action}\" />\n";
-	echo '<button type="submit" name="action" value="login">' . _LOGIN . "</button>\n";
-	echo "</p>\n";
-	echo "</form>\n";
-	echo '<p><a href="bookmarklet.php" onclick="window.close();">' . _POPUP_CLOSE . "</a></p>\n";
-	echo "</body>\n";
-	echo "</html>\n";
+	*/
+	
+	$skin->parse('showlogin');
 	
 	return;
 }
 
-function bm_doShowForm()
+function bm_doShowForm($skin)
 {
 	global $manager, $member;
 	
@@ -259,17 +260,14 @@ function bm_doShowForm()
 	
 	if ( !Blog::existsID($blogid) )
 	{
-		bm_doError(_ERROR_NOSUCHBLOG);
+		bm_doError($skin, _ERROR_NOSUCHBLOG);
 	}
-	else
+	else if ( !$member->isTeamMember($blogid) )
 	{
-		$blog =& $manager->getBlog($blogid);
+		bm_doError($skin, _ERROR_NOTONTEAM);
 	}
 	
-	if ( !$member->isTeamMember($blogid) )
-	{
-		bm_doError(_ERROR_NOTONTEAM);
-	}
+	$blog =& $manager->getBlog($blogid);
 	
 	$logje = '';
 	
@@ -288,23 +286,32 @@ function bm_doShowForm()
 		$logje .= '<a href="' . Entity::hsc($log_link) . '">' . Entity::hsc($log_linktitle) . '</a>';
 	}
 	
-	$variables = array();
-	$variables['body'] = $logje;
-	$variables['title'] = Entity::hsc($log_linktitle);
+	$item = array();
+	$item['body'] = $logje;
+	$item['title'] = Entity::hsc($log_linktitle);
 	
-	$handler = new PageFactory($blog);
-	$handler->setVariables($variables);
+	$data = array(
+		'blog'		=> &$blog,
+		'item'		=> &$item,
+		'contents'	=> &$item
+	);
+	$manager->notify('PreAddItemForm', $data);
 	
-	$contents = $handler->getTemplateFor('bookmarklet', 'add');
-	$manager->notify('PreAddItemForm', array('contents' => &$contents, 'blog' => &$blog));
+	if ( $blog->convertBreaks() )
+	{
+		$item['body'] = removeBreaks($item['body']);
+	}
 	
-	$parser = new Parser($handler);
-	$parser->parse($contents);
+	Admin::$blog = &$blog;
+	Admin::$contents = &$item;
+	
+	Admin::$action = 'createitem';
+	$skin->parse('createitem');
 	
 	return;
 }
 
-function bm_doEditForm()
+function bm_doEditForm($skin)
 {
 	global $member, $manager;
 	
@@ -312,74 +319,54 @@ function bm_doEditForm()
 	
 	if ( !$manager->existsItem($itemid, 0, 0) )
 	{
-		bm_doError(_ERROR_NOSUCHITEM);
+		bm_doError($skin, _ERROR_NOSUCHITEM);
 	}
-	
-	if ( !$member->canAlterItem($itemid) )
+	else if ( !$member->canAlterItem($itemid) )
 	{
-		bm_doError(_ERROR_DISALLOWED);
+		bm_doError($skin, _ERROR_DISALLOWED);
 	}
 	
-	$variables =& $manager->getItem($itemid, 1, 1);
 	$blog =& $manager->getBlog(getBlogIDFromItemID($itemid) );
+	$item =& $manager->getItem($itemid, 1, 1);
 	
-	$manager->notify('PrepareItemForEdit', array('item' => &$variables) );
+	$data = array(
+		'blog' => &$blog,
+		'item' => &$item
+	);
+	$manager->notify('PrepareItemForEdit', $data);
 	
 	if ( $blog->convertBreaks() )
 	{
-		$variables['body'] = removeBreaks($variables['body']);
-		$variables['more'] = removeBreaks($variables['more']);
+		$item['body'] = removeBreaks($item['body']);
+		$item['more'] = removeBreaks($item['more']);
 	}
 	
-	$handler = new PageFactory($blog);
-	$handler->setVariables($variables);
+	Admin::$blog = &$blog;
+	Admin::$contents = &$item;
 	
-	$contents = $handler->getTemplateFor('bookmarklet', 'edit');
+	Admin::$action = 'itemedit';
+	$skin->parse('itemedit');
 	
-	$parser = new Parser($handler);
-	$parser->parse($contents);
-	
-	return;
-}
+	return;}
 
-function bm_doError($msg)
+function bm_doError($skin, $msg)
 {
-	bm_message(_ERROR, _ERRORMSG, $msg);
+	bm_message($skin, _ERRORMSG, $msg);
 	die;
 }
 
-function bm_message($title, $head, $msg, $extrahead = '')
+function bm_message($skin, $title, $msg, $extrahead = '')
 {
-	echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
-	echo "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
-	echo "<head>\n";
-	echo "<title>{$title}</title>\n";
+	Admin::$extrahead = $extrahead;
+	Admin::$headMess = $msg;
+	$skin->parse('adminerrorpage');
 	
-	bm_style();
-	
-	echo $extrahead . "\n";
-	echo "</head>\n";
-	echo "<body>\n";
-	echo "<h1>{$head}</h1>\n";
-	echo "<p>{$msg}</p>\n";
-	echo '<p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();">' . _POPUP_CLOSE . "</a></p>\n";
-	echo "</body>\n";
-	echo "</html>\n";
-	
-	return;
-}
-
-function bm_style()
-{
-	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/bookmarklet.css\" />\n";
-	echo "<link rel=\"stylesheet\" type=\"text/css\" href=\"styles/addedit.css\" />\n";
 	return;
 }
 
 function bm_doContextMenuCode($width=600, $height=500)
 {
-	global $CONF;
-	
+	global $CONF;	
 	$blogid = (integer) intGetVar('blogid');
 	
 	echo "<script type=\"text/javascript\" defer=\"defer\">\n";

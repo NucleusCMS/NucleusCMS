@@ -21,19 +21,26 @@
 }
 
 /* markup buttons */
-.jsbutton {
-	text-align: center; 
-
-	padding: 3px;
-	border: 1px solid #dddddd;
-}
-
-.jsbuttonspacer {
-	padding-right: 10px;
-}
-
 .jsbuttonbar {
 	padding: 3px;
 	cursor: default;
 }
 
+.jsbutton {
+	float: left;
+	padding: 3px;
+	margin-right: 4px;
+	height: 16px;
+	width: 16px;
+	border: 1px solid #dddddd;
+	background-color: white;
+}
+
+.jsbuttonspacer {
+	float: left;
+	width: 10px;
+}
+
+.jsbuttonend {
+	clear: both;
+}

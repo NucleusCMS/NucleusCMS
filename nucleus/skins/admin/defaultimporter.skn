@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=<%charset%>" />
+<title><%sitevar(name)%> - Admin</title>
+<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<%skinfile(admin/default/styles/admin_contemporary.css)%>" />
+<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<%skinfile(admin/default/styles/addedit.css)%>" />
+
+<script type="text/javascript" src="<%skinfile(admin/default/javascript/edit.js)%>"></script>
+<script type="text/javascript" src="<%skinfile(admin/default/javascript/admin.js)%>"></script>
+<script type="text/javascript" src="<%skinfile(admin/default/javascript/compatibility.js)%>"></script>
+
+<meta http-equiv='Pragma' content='no-cache' />
+<meta http-equiv='Cache-Control' content='no-cache, must-revalidate' />
+<meta http-equiv='Expires' content='-1' />
+<%extrahead%>
+</head>
+<body>
+<div id="adminwrapper">
+<div class="header">
+<h1><%sitevar(name)%></h1>
+</div>
+<div id="container">
+<div id="content">
+<div class="loginname">
+
+<%if(loggedin)%>
+	<%text(_LOGGEDINAS)%> <%member(yourrealname)%> - <a href="<%adminurl%>index.php?action=logout"><%text(_LOGOUT)%></a><br />
+	<a href="<%adminurl%>index.php?action=overview"><%text(_ADMINHOME)%></a> - 
+<%else%>
+	<a href="<%adminurl%>index.php?action=showlogin" title="Log in"><%text(_NOTLOGGEDIN)%></a><br />
+<%endif%>
+
+<a href="<%sitevar(url)%>"><%text(_YOURSITE)%></a><br />
+(
+<%if(superadmin)%>
+	<a href="<%versioncheckurl%>" title="<%text(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE)%>"><%version%><%codename%></a>
+<%else%>
+	<%version%><%codename%>
+<%endif%>
+)
+</div>
+
+<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
+
+<h2><%text(_SKINIE_TITLE_IMPORT)%></h2>
+
+<p>
+<label for="skinie_import_local"><%text(_SKINIE_LOCAL)%></label>
+<%if(superadmin)%>
+	<form method="post" action="<%adminurl%>index.php">
+	<p>
+	<input type="hidden" name="action" value="adminskinieimport" />
+	<input type="hidden" name="overwrite" value="1" />
+	<%ticket%>
+	<input type="hidden" name="mode" value="file" />
+	<select name="skinfile" id="skinie_import_local">
+	<%selectlocalskinfiles%>
+	</select>
+	<input type="submit" value="<%text(_SKINIE_BTN_IMPORT)%>" />
+	</p>
+	</form>
+<%else%>
+	<p><%text(_SKINIE_NOCANDIDATES)%></p>
+<%endif%>
+
+<p><em><%text(_OR)%></em></p>
+
+<form method="post" action="<%adminurl%>index.php">
+<p>
+<%ticket%>
+<input type="hidden" name="action" value="adminskinieimport" />
+<input type="hidden" name="mode" value="url" />
+<label for="skinie_import_url"><%text(_SKINIE_FROMURL)%></label>
+<input type="text" name="skinfile" id="skinie_import_url" size="60" value="http://" />
+<input type="submit" value="<%text(_SKINIE_BTN_IMPORT)%>" />
+</p>
+</form>
+
+<%if(loggedin)%>
+	<%ifnot(adminaction,showlogin)%>
+		<h2><%text(_LOGOUT)%></h2>
+		<ul>
+		<li><a href="<%adminurl%>index.php?action=overview"><%text(_BACKHOME)%></a></li>
+		<li><a href="<%adminurl%>index.php?action=logout"><%text(_LOGOUT)%></a></li>
+		</ul>
+	<%endif%>
+<%endif%>
+
+<div class="foot">
+<a href="<%text(_ADMINPAGEFOOT_OFFICIALURL)%>">Nucleus CMS</a> &copy; 2002- <%date(%Y)%> <%text(_ADMINPAGEFOOT_COPYRIGHT)%> - <a href="<%text(_ADMINPAGEFOOT_DONATEURL)%>"><%text(_ADMINPAGEFOOT_DONATE)%></a>
+</div>
+</div>
+<!-- content -->
+
+<div id="quickmenu">
+<%if(loggedin)%>
+<%ifnot(adminaction,showlogin)%>
+<ul>
+<li><a href="<%adminurl%>index.php?action=overview"><%text(_QMENU_HOME)%></a></li>
+</ul>
+
+<h2><%text(_QMENU_ADD)%></h2>
+<form method="get" action="<%adminurl%>index.php">
+<div>
+<input type="hidden" name="action" value="createitem" />
+<%qmenuaddselect%>
+</div>
+</form>
+
+<h2><%member(yourrealname)%></h2>
+<ul>
+<li><a href="<%adminurl%>index.php?action=editmembersettings"><%text(_QMENU_USER_SETTINGS)%></a></li>
+<li><a href="<%adminurl%>index.php?action=browseownitems"><%text(_QMENU_USER_ITEMS)%></a></li>
+<li><a href="<%adminurl%>index.php?action=browseowncomments"><%text(_QMENU_USER_COMMENTS)%></a></li>
+</ul>
+
+<%if(superadmin)%>
+	<h2><%text(_QMENU_MANAGE)%></h2>
+	<ul>
+	<li><a href="<%adminurl%>index.php?action=actionlog"><%text(_QMENU_MANAGE_LOG)%></a></li>
+	<li><a href="<%adminurl%>index.php?action=settingsedit"><%text(_QMENU_MANAGE_SETTINGS)%></a></li>
+	<li><a href="<%adminurl%>index.php?action=systemoverview"><%text(_QMENU_MANAGE_SYSTEM)%></a></li>
+	<li><a href="<%adminurl%>index.php?action=usermanagement"><%text(_QMENU_MANAGE_MEMBERS)%></a></li>
+	<li><a href="<%adminurl%>index.php?action=createnewlog"><%text(_QMENU_MANAGE_NEWBLOG)%></a></li>
+	<li><a href="<%adminurl%>index.php?action=backupoverview"><%text(_QMENU_MANAGE_BACKUPS)%></a></li>
+	<li><a href="<%adminurl%>index.php?action=pluginlist"><%text(_QMENU_MANAGE_PLUGINS)%></a></li>
+	</ul>
+	<h2><%text(_QMENU_LAYOUT)%></h2>
+	<ul>
+	<li><a href="<%adminurl%>index.php?action=skinoverview"><%text(_QMENU_LAYOUT_SKINS)%></a></li>
+	<li><a href="<%adminurl%>index.php?action=templateoverview"><%text(_QMENU_LAYOUT_TEMPL)%></a></li>
+	<li><a href="<%adminurl%>index.php?action=skinieoverview"><%text(_QMENU_LAYOUT_IEXPORT)%></a></li>
+	</ul>
+	<h2><%text(_SKINABLEADMIN_QMENU_LAYOUT)%></h2>
+	<ul>
+	<li><a href="<%adminurl%>index.php?action=adminskinoverview"><%text(_QMENU_LAYOUT_SKINS)%></a></li>
+	<li><a href="<%adminurl%>index.php?action=admintemplateoverview"><%text(_QMENU_LAYOUT_TEMPL)%></a></li>
+	<li><a href="<%adminurl%>index.php?action=adminskinieoverview"><%text(_QMENU_LAYOUT_IEXPORT)%></a></li>
+	</ul><%endif%>
+	<%quickmenu(default/admin)%>
+<%elseif(adminaction,activate)%>
+	<h2><%text(_QMENU_ACTIVATE)%></h2><%text(_QMENU_ACTIVATE_TEXT)%>
+<%elseif(adminaction,activatesetpwd)%>
+	<h2><%text(_QMENU_ACTIVATE)%></h2><%text(_QMENU_ACTIVATE_TEXT)%>
+<%else%>
+	<h2><%text(_QMENU_INTRO)%></h2><%text(_QMENU_INTRO_TEXT)%>
+<%endif%>
+
+</div>
+<!-- content / quickmenu container -->
+<div class="clear"></div>
+<!-- new -->
+</div>
+<!-- adminwrapper -->
+<!-- new -->
+</div>
+ <!-- new -->
+</body>
+</html>

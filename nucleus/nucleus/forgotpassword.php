@@ -21,7 +21,7 @@
 $CONF = array();
 $CONF['UsingAdminArea'] = 1;
 
-require_once "./config.php";
+require_once "../config.php";
 include_libs('ACTION.php');
 
 if ( !Admin::initialize() )
@@ -30,5 +30,5 @@ if ( !Admin::initialize() )
 	exit;
 }
 
-Admin::action('createaccount');
+Admin::action('forgotpassword');
 exit;

@@ -28,7 +28,7 @@ $errorInfo = $a->doAction($action);
 
 if ( $errorInfo )
 {
-	$skin = new SKIN($errorInfo['skinid']);
+	$skin =& $manager->getSkin($errorInfo['skinid']);
 	doError($errorInfo['message'], $skin);
 }
 
