@@ -115,6 +115,8 @@ INSERT INTO nucleus_config VALUES ('DatabaseVersion', '350');
 INSERT INTO nucleus_config VALUES ('DebugVars', '0');
 INSERT INTO nucleus_config VALUES ('DefaultListSize', '10');
 INSERT INTO nucleus_config VALUES ('AdminCSS', 'original');
+INSERT INTO nucleus_config VALUES ('AdminSkin', '0');
+INSERT INTO nucleus_config VALUES ('BookmarkletSkin', '0');
 
 CREATE TABLE nucleus_item (
   inumber int(11) NOT NULL auto_increment,
@@ -157,12 +159,14 @@ CREATE TABLE nucleus_member (
   mcookiekey varchar(40) default NULL,
   mlocale varchar(20) NOT NULL default '',
   mautosave tinyint(2) NOT NULL default '1',
+  madminskin tinyint(2) NOT NULL default '0',
+  mbkmklt tinyint(2) NOT NULL default '0',
   PRIMARY KEY  (mnumber),
 --  UNIQUE KEY mnumber (mnumber),
   UNIQUE KEY mname (mname)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO nucleus_member VALUES (1, 'example', 'example', '1a79a4d60de6718e8e5b326e338ae533', 'example@example.org', 'http://localhost:8080/nucleus/', '', 1, 1, 'd767aefc60415859570d64c649257f19', '', 1);
+INSERT INTO nucleus_member VALUES (1, 'example', 'example', '1a79a4d60de6718e8e5b326e338ae533', 'example@example.org', 'http://localhost:8080/nucleus/', '', 1, 1, 'd767aefc60415859570d64c649257f19', '', 1, 0, 0);
 
 CREATE TABLE nucleus_plugin (
   pid int(11) NOT NULL auto_increment,

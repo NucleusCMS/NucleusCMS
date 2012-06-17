@@ -149,7 +149,7 @@ function gi_assignMembers() {
 			<?php					$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
 					$template['name'] = 'blogid';
 					$template['selected'] = $CONF['DefaultBlog'];
-					showlist($query,'select',$template);
+					echo showlist($query,'select',$template);
 			?>
 		</div>
 		<div>
@@ -160,7 +160,7 @@ function gi_assignMembers() {
 				<?php					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 					$template['name'] = 'newowner';
-					showlist($query,'select',$template);
+					echo showlist($query,'select',$template);
 				?>
 				</li>
 			</ul>

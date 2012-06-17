@@ -220,7 +220,7 @@ while ($a_name = array_pop($authors)) {
 		<?php			$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 			$template['name'] = 'memberid[' . $idx . ']';
-			showlist($query,'select',$template);
+			echo showlist($query,'select',$template);
 		?>
 			</td>
 			<td>
@@ -247,7 +247,7 @@ while ($a_name = array_pop($authors)) {
 			<?php					$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
 					$template['name'] = 'blogid';
 					$template['selected'] = $CONF['DefaultBlog'];
-					showlist($query,'select',$template);
+					echo showlist($query,'select',$template);
 			?>
 		</div>
 		<div>
@@ -258,7 +258,7 @@ while ($a_name = array_pop($authors)) {
 				<?php					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 					$template['name'] = 'newowner';
-					showlist($query,'select',$template);
+					echo showlist($query,'select',$template);
 				?>
 				</li>
 			</ul>

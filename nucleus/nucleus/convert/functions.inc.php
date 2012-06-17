@@ -294,7 +294,7 @@ class BlogImport {
 				$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
 				$template['name'] = 'blogid';
 				$template['selected'] = $CONF['DefaultBlog'];
-				showlist($query,'select',$template);
+				echo showlist($query,'select',$template);
 				break;
 // ----------------------------------------------------------------------------------------
 			case 'ConvertSelectMembers':
@@ -796,34 +796,34 @@ class BlogImport {
 	}
 
 	function sql_addToItem($title, $body, $more, $blogid, $authorid, $timestamp, $closed, $category, $karmapos, $karmaneg) {
-		$title 		= trim(addslashes($title));
-		$body 		= trim(addslashes($body));
-		$more 		= trim(addslashes($more));
-		$timestamp 	= date("Y-m-d H:i:s", $timestamp);
+		$title 		= DB::quoteValue(trim($title));
+		$body 		= DB::quoteValue(trim($body));
+		$more 		= DB::quoteValue(trim($more));
+		$timestamp 	= DB::formatDateTime($timestamp);
 
 		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IKARMAPOS, IKARMANEG, ICAT) '
-			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $karmapos, $karmaneg,  $category)";
+			   . "VALUES ($title, $body, $more, $blogid, $authorid, $timestamp, $closed, $karmapos, $karmaneg,  $category)";
 
 		if ( DB::execute($query) === FALSE )
 		{
-			die("Error while executing query: " . $query);
+			die('Error while executing query: ' . $query);
 		}
 
 		return DB::getInsertId();
 	}
 
 	function sql_addToBlog($name, $shortname, $ownerid) {
-		$name 		= addslashes($name);
-		$shortname 	= addslashes($shortname);
+		$name 		= DB::quoteValue($name);
+		$shortname 	= DB::quoteValue($shortname);
 
 		// create new category first
 		DB::execute('INSERT INTO '.sql_table('category')." (CNAME, CDESC) VALUES ('General','Items that do not fit in another category')");
 		$defcat = DB::getInsertId();
 
-		$query = 'INSERT INTO '.sql_table('blog')." (BNAME, BSHORTNAME, BCOMMENTS, BMAXCOMMENTS, BDEFCAT) VALUES ('$name','$shortname',1 ,0, $defcat)";
+		$query = 'INSERT INTO '.sql_table('blog')." (BNAME, BSHORTNAME, BCOMMENTS, BMAXCOMMENTS, BDEFCAT) VALUES ($name, $shortname, 1, 0, $defcat)";
 		if ( DB::execute($query) === FALSE )
 		{
-			die("Error while executing query: " . $query);
+			die('Error while executing query: ' . $query);
 		}
 		$id = DB::getInsertId();
 
@@ -837,20 +837,20 @@ class BlogImport {
 	}
 
 	function sql_addToComments($name, $url, $body, $blogid, $itemid, $memberid, $timestamp, $host, $ip='') {
-		$name 		= addslashes($name);
-		$url 		= addslashes($url);
-		$body 		= trim(addslashes($body));
-		$host 		= addslashes($host);
-		$ip 		= addslashes($ip);
-		$timestamp 	= date("Y-m-d H:i:s", $timestamp);
+		$name 		= DB::quoteValue($name);
+		$url 		= DB::quoteValue($url);
+		$body 		= DB::quoteValue(trim($body));
+		$host 		= DB::quoteValue($host);
+		$ip 		= DB::quoteValue($ip);
+		$timestamp 	= DB::formatDateTime($timestamp);
 
 		$query = 'INSERT INTO '.sql_table('comment')
 			   . ' (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CBLOG, CIP) '
-			   . "VALUES ('$name', '$url', $memberid, '$body', $itemid, '$timestamp', '$host', $blogid, '$ip')";
+			   . "VALUES ($name, $url, $memberid, $body, $itemid, $timestamp, $host, $blogid, $ip)";
 
 		if ( DB::execute($query) === FALSE )
 		{
-			die("Error while executing query: " . $query);
+			die('Error while executing query: ' . $query);
 		}
 
 		return DB::getInsertId();
@@ -863,7 +863,7 @@ class BlogImport {
 
 		if ( DB::execute($query) === FALSE )
 		{
-			die("Error while executing query: " . $query);
+			die('Error while executing query: ' . $query);
 		}
 
 		return DB::getInsertId();
@@ -893,16 +893,16 @@ if ($ver > 250)
 
 	// TODO: remove this function (replaced by BlogImport::sql_addToItem)
 	function convert_addToItem($title, $body, $more, $blogid, $authorid, $timestamp, $closed, $category, $karmapos, $karmaneg) {
-		$title = trim(addslashes($title));
-		$body = trim(addslashes($body));
-		$more = trim(addslashes($more));
+		$title = DB::quoteValue(trim($title));
+		$body = DB::quoteValue(trim($body));
+		$more = DB::quoteValue(trim($more));
 
 		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IKARMAPOS, IKARMANEG, ICAT) '
-			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $karmapos, $karmaneg,  $category)";
+			   . "VALUES ($title, $body, $more, $blogid, $authorid, '$timestamp', $closed, $karmapos, $karmaneg,  $category)";
 
 		if ( DB::execute($query) === FALSE )
 		{
-			die("Error while executing query: " . $query);
+			die('Error while executing query: ' . $query);
 		}
 
 		return DB::getInsertId();
@@ -911,17 +911,17 @@ if ($ver > 250)
 
 	// TODO: remove this function (replaced by BlogImport::sql_addToBlog)
 	function convert_addToBlog($name, $shortname, $ownerid) {
-		$name = addslashes($name);
-		$shortname = addslashes($shortname);
+		$name = DB::quoteValue($name);
+		$shortname = DB::quoteValue($shortname);
 
 		// create new category first
 		DB::execute('INSERT INTO '.sql_table('category')." (CNAME, CDESC) VALUES ('General','Items that do not fit in another categort')");
 		$defcat = DB::getInsertId();
 
-		$query = 'INSERT INTO '.sql_table('blog')." (BNAME, BSHORTNAME, BCOMMENTS, BMAXCOMMENTS, BDEFCAT) VALUES ('$name','$shortname',1 ,0, $defcat)";
+		$query = 'INSERT INTO '.sql_table('blog')." (BNAME, BSHORTNAME, BCOMMENTS, BMAXCOMMENTS, BDEFCAT) VALUES ($name, $shortname, 1, 0, $defcat)";
 		if ( DB::execute($query) === FALSE )
 		{
-			die("Error while executing query: " . $query);
+			die('Error while executing query: ' . $query);
 		}
 		$id = DB::getInsertId();
 
@@ -932,15 +932,15 @@ if ($ver > 250)
 
 	// TODO: remove this function (replaced by BlogImport::sql_addToComments)
 	function convert_addToComments($name, $url, $body, $blogid, $itemid, $memberid, $timestamp, $host, $ip='') {
-		$name = addslashes($name);
-		$url = addslashes($url);
-		$body = trim(addslashes($body));
-		$host = addslashes($host);
-		$ip = addslashes($ip);
+		$name = DB::quoteValue($name);
+		$url = DB::quoteValue($url);
+		$body = DB::quoteValue(trim($body));
+		$host = DB::quoteValue($host);
+		$ip = DB::quoteValue($ip);
 
 		$query = 'INSERT INTO '.sql_table('comment')
 			   . ' (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CBLOG, CIP) '
-			   . "VALUES ('$name', '$url', $memberid, '$body', $itemid, '$timestamp', '$host', $blogid, '$ip')";
+			   . "VALUES ($name, $url, $memberid, $body, $itemid, '$timestamp', $host, $blogid, $ip)";
 
 		if ( DB::execute($query) === FALSE )
 		{
@@ -994,7 +994,7 @@ if ($ver > 250)
 		<head>
 			<title>Nucleus Convert</title>
 			<style><!--
-				@import url('../styles/manual.css');
+				@import url('../styles/documentation/manual.css');
 			--></style>
 		</head>
 		<body>

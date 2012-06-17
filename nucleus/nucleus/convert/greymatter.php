@@ -184,7 +184,7 @@ while ($author = fgets($filehandle,4096)) {
 			$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 			$template['name'] = 'memberid[' . $idx . ']';
-			showlist($query,'select',$template);
+			echo showlist($query,'select',$template);
 		?>
 			</td>
 			<td>
@@ -209,7 +209,7 @@ fclose($filehandle);
 					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 					$template['name'] = 'memberid[0]';
-					showlist($query,'select',$template);
+					echo showlist($query,'select',$template);
 				?>
 			</td>
 			<td>
@@ -231,7 +231,7 @@ fclose($filehandle);
 			<?php					$query =  'SELECT bname as text, bnumber as value FROM '.sql_table('blog');
 					$template['name'] = 'blogid';
 					$template['selected'] = $CONF['DefaultBlog'];
-					showlist($query,'select',$template);
+					echo showlist($query,'select',$template);
 			?>
 		</div>
 		<div>
@@ -243,7 +243,7 @@ fclose($filehandle);
 					$query =  'SELECT mname as text, mnumber as value FROM '.sql_table('member');
 
 					$template['name'] = 'newowner';
-					showlist($query,'select',$template);
+					echo showlist($query,'select',$template);
 				?>
 				</li>
 			</ul>

@@ -137,7 +137,6 @@
     <!-- Copy necessary files in root -->
     <copy file="${src.home}/action.php" todir="${upgrade.home}" preservelastmodified="yes" />
 	<copy file="${src.home}/atom.php" todir="${upgrade.home}" preservelastmodified="yes" />
-	<copy file="${src.home}/createaccount.html" todir="${upgrade.home}" preservelastmodified="yes" />
 	<copy file="${src.home}/createaccount.php" todir="${upgrade.home}" preservelastmodified="yes" />
 	<copy file="${src.home}/readme.html" todir="${upgrade.home}" preservelastmodified="yes" />
 	<copy file="${src.home}/robots.txt" todir="${upgrade.home}" preservelastmodified="yes" />

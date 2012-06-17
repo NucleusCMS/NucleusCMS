@@ -85,7 +85,7 @@ function upgrade_do150() {
 	$res = DB::getResult('SELECT * FROM '.sql_table('template').' WHERE tpartname=\'DATE_HEADER\'');
 	foreach ( $res as $row ) {
 		$newval = str_replace('<%daylink%>','<%%daylink%%>',$row['tcontent']);
-		$query = 'UPDATE '.sql_table('template').' SET tcontent=\''. addslashes($newval).'\' WHERE tdesc=' . $row['tdesc'] . ' AND tpartname=\'DATE_HEADER\'';
+		$query = 'UPDATE '.sql_table('template').' SET tcontent='. DB::quoteValue($newval).' WHERE tdesc=' . $row['tdesc'] . ' AND tpartname=\'DATE_HEADER\'';
 		upgrade_query('Updating DATE_HEADER part in template ' . $row['tdesc'], $query);
 	}
 	
@@ -93,10 +93,10 @@ function upgrade_do150() {
 	$res = DB::getResult('SELECT * FROM '.sql_table('template').' WHERE tpartname=\'ITEM\'');
 	foreach ( $res as $row )
 	{
-		if ( i18n::strpos($o->tcontent,'<%comments%>') === FALSE )
+		if ( i18n::strpos($row['tcontent'],'<%comments%>') === FALSE )
 		{
 			$newval = $row['tcontent'] . '<%comments%>';
-			$query = 'UPDATE '.sql_table('template').' SET tcontent=\''. addslashes($newval).'\' WHERE tdesc=' . $row['tdesc'] . ' AND tpartname=\'ITEM\'';
+			$query = 'UPDATE '.sql_table('template').' SET tcontent='. DB::quoteValue($newval).' WHERE tdesc=' . $row['tdesc'] . ' AND tpartname=\'ITEM\'';
 			upgrade_query('Updating ITEM part in template ' . $row['tdesc'], $query);
 		}
 	}

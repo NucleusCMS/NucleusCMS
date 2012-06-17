@@ -30,7 +30,7 @@ function upgrade_do400()
 		{
 			$locale = $row['Language'];
 		}
-		$query = 'INSERT INTO ' . sql_table('config') . " (name, value) VALUE('Locale', '{$locale}');";
+		$query = 'INSERT INTO ' . sql_table('config') . " (name, value) VALUES ('Locale', '{$locale}');";
 		upgrade_query("Renaming Language for configs to Locale", $query);
 	}
 	

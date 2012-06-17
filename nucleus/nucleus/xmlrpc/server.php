@@ -282,7 +282,7 @@ function _getSkinPart($blogid, $username, $password, $type) {
 
 	// 3. return skin part
 	$blog =& $manager->getBlog($blogid);
-	$skin = new SKIN($blog->getDefaultSkin());
+	$skin =& $manager->getSkin($blog->getDefaultSkin());
 	return new xmlrpcresp(new xmlrpcval($skin->getContentFromDB($type),"string"));
 
 }
@@ -303,7 +303,7 @@ function _setSkinPart($blogid, $username, $password, $content, $type) {
 
 	// 3. update skin part
 	$blog =& $manager->getBlog($blogid);
-	$skin = new SKIN($blog->getDefaultSkin());
+	$skin =& $manager->getSkin($blog->getDefaultSkin());
 	$skin->update($type, $content);
 
 	return new xmlrpcresp(new xmlrpcval(1,'boolean'));

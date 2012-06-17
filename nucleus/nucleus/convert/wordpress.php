@@ -21,70 +21,64 @@
 /*
   v1.1 - add robustness code for category creation and item adding (admun)
   v1.2 - add sql_table()
-*/
+ */
 
 include("../../config.php");
 
-function def($s)
-{
-	if ( isset($_POST[$s]) )
-		echo addslashes(stripslashes($_POST[$s]));
-	else
-	{
-		if ( i18n::strpos($s, 'host') !== FALSE ) echo "localhost";
-		if ( i18n::strpos($s, 'username') !== FALSE ) echo "root";
-		if ( i18n::strpos($s, 'wpprefix') !== FALSE ) echo "wp_";
-	}
-}
+  function def($s){ 
+    if (isset($_POST[$s])) 
+      echo Entity::hsc($_POST[$s]); 
+    else {
+      if (i18n::strpos($s,'host')!==FALSE) echo "localhost";
+      if (i18n::strpos($s,'username')!==FALSE) echo "root";
+      if (i18n::strpos($s,'wpprefix')!==FALSE) echo "wp_";
+    }
+  }
+  
+  function error($s){
+    global $isok;
+    $isok=false;
+    echo "<h3>Error: $s</h3>";
+  }
+  
+  // line breaks into properly formatted paragraphs
+  function paragraph($text, $br = false) {
+    $text=trim($text);
+    $text = str_replace("\r",'',$text);
+    $text = preg_replace('/&([^#])(?![a-z]{1,8};)/', '&amp;$1', $text);
+    if ($text=="") return "";
+    $text = $text . "\n"; // just to make things a little easier, pad the end
+    $text = preg_replace('|<br/>\s*<br/>|', "\n\n", $text);
+    $text = preg_replace('!(<(?:table|ul|ol|li|pre|form|blockquote|h[1-6])[^>]*>)!', "\n$1", $text); // Space things out a little
+    $text = preg_replace('!(</(?:table|ul|ol|li|pre|form|blockquote|h[1-6])>)!', "$1\n", $text); // Space things out a little
+    $text = preg_replace("/(\r\n|\r)/", "\n", $text); // cross-platform newlines 
+    $text = preg_replace("/\n\n+/", "\n\n", $text); // take care of duplicates
+    $text = preg_replace('/\n?(.+?)(?:\n\s*\n|\z)/s', "\t<p>$1</p>\n", $text); // make paragraphs, including one at the end 
+    $text = preg_replace('|<p>\s*?</p>|', '', $text); // under certain strange conditions it could create a P of entirely whitespace 
+    $text = preg_replace("|<p>(<li.+?)</p>|", "$1", $text); // problem with nested lists
+    // blockquote
+    $text = preg_replace('|<p><blockquote([^>]*)>|i', "<blockquote$1><p>", $text);
+    $text = str_replace('</blockquote></p>', '</p></blockquote>', $text);
+    // now the hard work
+    $text = preg_replace('!<p>\s*(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)!', "$1", $text);
+    $text = preg_replace('!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>|</div>"!', "$1", $text); 
+    if ($br) $text = preg_replace('|(?<!<br />)\s*\n|', "<br />\n", $text); // optionally make line breaks
+    $text = preg_replace('!(</?(?:table|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*<br/>!', "$1", $text);
+    $text = preg_replace('!<br/>(\s*</?(?:p|li|div|th|pre|td|ul|ol)>)!', '$1', $text);
+    // some cleanup
+    $text = str_replace('</p><br />','</p>',$text);
+    $text = str_replace("<br />\n</p>",'</p>',$text);
+    return $text; 
+  }
 
-function error($s)
-{
-	global $isok;
-	$isok = false;
-	echo "<h3>Error: $s</h3>";
-}
-
-// line breaks into properly formatted paragraphs
-function paragraph($text, $br = false)
-{
-	$text = trim($text);
-	$text = str_replace("\r", '', $text);
-	$text = preg_replace('/&([^#])(?![a-z]{1,8};)/', '&amp;$1', $text);
-	if ( $text == "" ) return "";
-	$text = $text . "\n"; // just to make things a little easier, pad the end
-	$text = preg_replace('|<br/>\s*<br/>|', "\n\n", $text);
-	$text = preg_replace('!(<(?:table|ul|ol|li|pre|form|blockquote|h[1-6])[^>]*>)!', "\n$1", $text); // Space things out a little
-	$text = preg_replace('!(</(?:table|ul|ol|li|pre|form|blockquote|h[1-6])>)!', "$1\n", $text); // Space things out a little
-	$text = preg_replace("/(\r\n|\r)/", "\n", $text); // cross-platform newlines 
-	$text = preg_replace("/\n\n+/", "\n\n", $text); // take care of duplicates
-	$text = preg_replace('/\n?(.+?)(?:\n\s*\n|\z)/s', "\t<p>$1</p>\n", $text); // make paragraphs, including one at the end 
-	$text = preg_replace('|<p>\s*?</p>|', '', $text); // under certain strange conditions it could create a P of entirely whitespace 
-	$text = preg_replace("|<p>(<li.+?)</p>|", "$1", $text); // problem with nested lists
-	// blockquote
-	$text = preg_replace('|<p><blockquote([^>]*)>|i', "<blockquote$1><p>", $text);
-	$text = str_replace('</blockquote></p>', '</p></blockquote>', $text);
-	// now the hard work
-	$text = preg_replace('!<p>\s*(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)!', "$1", $text);
-	$text = preg_replace('!(</?(?:table|tr|td|th|div|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*</p>|</div>"!', "$1", $text);
-	if ( $br ) $text = preg_replace('|(?<!<br />)\s*\n|', "<br />\n", $text);
-	// optionally make line breaks
-	$text = preg_replace('!(</?(?:table|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|p|h[1-6])[^>]*>)\s*<br/>!', "$1", $text);
-	$text = preg_replace('!<br/>(\s*</?(?:p|li|div|th|pre|td|ul|ol)>)!', '$1', $text);
-	// some cleanup
-	$text = str_replace('</p><br />', '</p>', $text);
-	$text = str_replace("<br />\n</p>", '</p>', $text);
-	return $text;
-}
-
-function encoding($s)
-{
-	global $input;
-	if ( is_callable("iconv") )
-		return iconv($input, 'utf-8', $s);
-	else
-		return $s;
-}
-
+  function encoding($s){
+    global $input;
+    if (is_callable("iconv"))
+      return iconv($input,'utf-8',$s);
+    else 
+      return $s;
+  }
+  
 ?>
 <!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='cs' lang='cs'>

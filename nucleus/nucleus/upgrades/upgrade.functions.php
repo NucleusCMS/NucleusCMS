@@ -202,9 +202,9 @@
 		echo "<head>\n";
 		echo "<title> Nucleus Upgrade </title>\n";
 		
-		if ( file_exists('../styles/manual.css') )
+		if ( file_exists('../documentation/styles/manual.css') )
 		{
-			echo "<link rel=\"stylesheet\" href=\"../styles/manual.css\" type=\"text/css\" />\n";
+			echo "<link rel=\"stylesheet\" href=\"../documentation/styles/manual.css\" type=\"text/css\" />\n";
 		}
 		else
 		{

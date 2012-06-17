@@ -29,6 +29,12 @@ define('_MODE2',				'Detailed setting');
 define('_NEXT',					'NEXT');
 define('_INSTALL',				'INSTALL');
 
+// locale setting
+define('_LOCALE_HEADER',		'Select Your Locale');
+define('_LOCALE_DESC1',			'Nucleus CMS can be used under several locales.');
+define('_LOCALE_DESC2',			'If you can see prefixed name with asterisk in above select box, it means translation for the locale is not enough yet.');
+define('_LOCALE_NEED_HELP',		'We\'re waiting for your contribution to translate!');
+
 // database settings
 define('_SIMPLE_NAVI1',			'At first I confirm the connection of the database. I input setting of MySQL, and please click to "next".<br />When I input detailed information and set it, please click "Detailed Setting".');
 define('_DB_HEADER',			'Check Database');

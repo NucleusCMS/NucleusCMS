@@ -43,8 +43,8 @@ if ( version_compare(PHP_VERSION, '5.3.0', '<') )
 }
 
 /* default installed plugins and skins */
-$aConfPlugsToInstall = array('NP_SecurityEnforcer', 'NP_SkinFiles');
-$aConfSkinsToImport = array('atom', 'rss2.0', 'rsd', 'default');
+$aConfPlugsToInstall = array('NP_SecurityEnforcer', 'NP_SkinFiles', 'NP_Medium');
+$aConfSkinsToImport = array('atom', 'rss2.0', 'rsd', 'default', 'admin/default', 'admin/bookmarklet');
 
 // Check if some important files
 do_check_files();
@@ -90,14 +90,7 @@ else
 }
 
 // include translation file
-if ( array_key_exists('locale', $_POST) ) $param->set_locale();
-i18n::set_current_locale($param->locale);
-$translation_file = './locales/' . i18n::get_current_locale() . '.' . i18n::get_current_charset() . '.php';
-if ( !file_exists($translation_file) )
-{
-	$translation_file = './locales/en_Latn_US.UTF-8.php';
-}
-include($translation_file);
+$param->set_locale();
 
 do_action();
 
@@ -147,7 +140,6 @@ function do_action()
 		switch ( $param->state )
 		{
 			case 'locale':
-				$param->set_locale();
 				$param->set_state('mysql');
 				$isPostback = false;
 				break;
@@ -242,9 +234,21 @@ function show_header()
 				<h1><img src="./styles/nucleus_rogo.png" alt="NucleusCMS" /></h1>
 				<ul>
 <?php
+	echo '<li>';
+	$label = '_LOCALE_' . strtoupper($param->locale);
+	if ( !defined($label) )
+	{
+		echo $param->locale;
+	}
+	else
+	{
+		echo constant($label);
+	}
+	echo "</li>\n";
+	
 	if ( in_array($param->state, array('mysql', 'weblog', 'install')) )
 	{
-		echo '<li>', _STEP1, '</li><li';
+		echo '<li>&nbsp; &gt; &nbsp;' . _STEP1, '</li><li';
 		if ( $param->state == 'mysql' )
 		{
 			echo ' class="gry"';
@@ -296,42 +300,52 @@ function show_footer()
  */
 function show_select_locale_form()
 {
-	// get locale list
-	$localelist = i18n::get_available_locale_list();
-	$locales = array();
-	foreach ( $localelist as $locale ) {
-		$checkfile = './locales/' . $locale . '.' . i18n::get_current_charset() . '.php';
-		$locales[] = array( $locale, (!file_exists($checkfile) ? '*&nbsp;' : '') . $locale );
-	}
+	global $param;
+	
 ?>
 		<div id="container">
 			<p style="font-size:152%;font-weight:bold;">
-				Select your locale:
+				<?php echo _LOCALE_HEADER; ?>
 			</p>
 			<form method="post" action="./index.php">
 
 				<div class="prt">
 					<select name="locale">
 <?php
-	// Get the browser language that can be displayed
-	// TODO: default locale select simple implementation
-	$languages = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-	$language = (is_array($languages) && count($languages) > 0) ? preg_replace('#^([\w]+).*$#', '$1', $languages[0]) : '';
-
+	$locales = i18n::get_available_locale_list();
 	foreach ( $locales as $locale )
 	{
-		echo "<option value=\"$locale[0]\"";
-		if ( i18n::strpos($locale[0], $language) === 0 )
+		if ( $param->locale != $locale )
 		{
-			echo ' selected';
+			echo "<option value=\"{$locale}\">";
 		}
-		echo ">$locale[1]</option>\n";
+		else
+		{
+			echo "<option value=\"{$locale}\" selected=\"selected\">";
+		}
+		
+		$checkfile = "./locales/{$locale}." . i18n::get_current_charset() . '.php';
+		if ( !file_exists($checkfile) )
+		{
+			echo '*&nbsp;';
+		}
+
+		$label = '_LOCALE_' . strtoupper($locale);
+		if ( !defined($label) )
+	{
+			echo $locale;
+		}
+		else
+		{
+			echo constant($label);
+		}
+		echo "</option>\n";
 	}
 ?>
 					</select>
-					<p>Nucleus is installed in the selected locale, the locale of the Asterisk prefixed will be displayed in English because there is no translation of the installer file.</p>
-					<p>We will wait for the translator by volunteers!</p>
-					</p>
+					<p><?php echo _LOCALE_DESC1; ?></p>
+					<p><?php echo _LOCALE_DESC2; ?></p>
+					<p><?php echo _LOCALE_NEED_HELP;?></p>
 					<p class="sbt">
 						<button type="submit" name="action" value="locale" class="sbt_arw">START</button>
 					</p>
@@ -944,7 +958,7 @@ function do_install()
 	if ( DB::execute($query) === FALSE )
 	{
 		$errinfo = DB::getError();
-		$errors[] = _INST_ERROR4 . ' (<small>' . $newpost . '</small>): ' . $errinfo[2];
+		$errors[] = _INST_ERROR4 . ' (<small>' . $query . '</small>): ' . $errinfo[2];
 	}
 
 	/* push configurations */
@@ -1025,6 +1039,16 @@ function do_install()
 			array_merge($errors, $aSkinErrors);
 		}
 
+		$query	= "SELECT sdnumber FROM %s WHERE sdname='admin/default'";
+		$query	= sprintf($query, tableName('nucleus_skin_desc'));
+		$res	= intval(DB::getValue($query));
+		array_merge($errors, updateConfig('AdminSkin', $res));
+		
+		$query	= "SELECT sdnumber FROM %s WHERE sdname='admin/bookmarklet'";
+		$query	= sprintf($query, tableName('nucleus_skin_desc'));
+		$res	= intval(DB::getValue($query));
+		array_merge($errors, updateConfig('BookmarkletSkin', $res));
+		
 		$query		= "SELECT sdnumber FROM %s WHERE sdname='default'";
 		$query		= sprintf($query, tableName('nucleus_skin_desc'));
 		$defSkinID	= intval(DB::getValue($query));
@@ -1319,7 +1343,6 @@ function do_check_files()
 		'../index.php',
 		'../action.php',
 		'../nucleus/index.php',
-		'../nucleus/media.php',
 		'../nucleus/libs/ACTION.php',
 		'../nucleus/libs/ACTIONLOG.php',
 		'../nucleus/libs/ACTIONS.php',
@@ -1330,7 +1353,6 @@ function do_check_files()
 		'../nucleus/libs/COMMENT.php',
 		'../nucleus/libs/COMMENTACTIONS.php',
 		'../nucleus/libs/COMMENTS.php',
-		'../nucleus/libs/ENCAPSULATE.php',
 		'../nucleus/libs/ENTITY.php',
 		'../nucleus/libs/globalfunctions.php',
 		'../nucleus/libs/i18n.php',
@@ -1341,7 +1363,6 @@ function do_check_files()
 		'../nucleus/libs/MEDIA.php',
 		'../nucleus/libs/MEMBER.php',
 		'../nucleus/libs/NOTIFICATION.php',
-		'../nucleus/libs/PAGEFACTORY.php',
 		'../nucleus/libs/PARSER.php',
 		'../nucleus/libs/PLUGIN.php',
 		'../nucleus/libs/PLUGINADMIN.php',
@@ -1445,7 +1466,7 @@ class ParamManager
 		// set default values
 		$this->state = 'locale';
 		$this->install_mode = 'simple';
-		$this->locale = 'en_Latn_US';
+		$this->locale = '';
 		$this->mysql_host = @ini_get('mysql.default_host');
 		$this->blog_name = 'My Nucleus CMS';
 		$this->blog_shortname = 'mynucleuscms';
@@ -1503,10 +1524,81 @@ class ParamManager
 	{
 		$this->read_parameter(array('locale'));
 
-		if ( !in_array($this->locale, i18n::get_available_locale_list()) )
+		if ( !$this->locale )
 		{
-			$this->locale = 'en_Latn_US';
+			/**
+			 * default locale select simple implementation
+			 * 
+			 * NOTE:
+			 * RFC2616: Hypertext Transfer Protocol -- HTTP/1.1
+			 * http://www.ietf.org/rfc/rfc2616.txt
+			 * 
+			 * 14.4 Accept-Language
+			 * 
+			 *    The Accept-Language request-header field is similar to Accept, but
+			 *    restricts the set of natural languages that are preferred as a
+			 *    response to the request. Language tags are defined in section 3.10.
+			 * 
+			 *        Accept-Language = "Accept-Language" ":"
+			 *                          1#( language-range [ ";" "q" "=" qvalue ] )
+			 *        language-range  = ( ( 1*8ALPHA *( "-" 1*8ALPHA ) ) | "*" )
+			 *        
+			 *    Each language-range MAY be given an associated quality value which
+			 *    represents an estimate of the user's preference for the languages
+			 *    specified by that range. The quality value defaults to "q=1". For
+			 *    example,
+			 * 
+			 *        Accept-Language: da, en-gb;q=0.8, en;q=0.7
+			 * 
+			 *    would mean: "I prefer Danish, but will accept British English and
+			 *    other types of English." A language-range matches a language-tag if
+			 *    it exactly equals the tag, or if it exactly equals a prefix of the
+			 *    tag such that the first tag character following the prefix is "-".
+			 *    The special range "*", if present in the Accept-Language field,
+			 *    matches every tag not matched by any other range present in the
+			 *    Accept-Language field.
+			 * 
+			 * TODO: this is appropriate implement or not
+			 */
+			$languages = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+			
+			/* retrieve language token of language tag from first token */
+			$language = '';
+			if ( is_array($languages) && count($languages) > 0 )
+			{
+				$language = preg_replace('#^([\w]+).*$#', '$1', $languages[0]);
+			}
+			
+			$locales = i18n::get_available_locale_list();
+			foreach ( $locales as $locale )
+			{
+				if ( i18n::strpos($locale, $language) === 0 )
+				{
+					$this->locale = $locale;
+					break;
+				}
+			}
 		}
+		
+		/* include installer translation messages */
+		$translation_file = "./locales/{$this->locale}." . i18n::get_current_charset() . '.php';
+		if ( !file_exists($translation_file) )
+		{
+			$translation_file = './locales/en_Latn_US.UTF-8.php';
+		}
+		include($translation_file);
+		
+		/* include global translation messages */
+		$translation_file = "../nucleus/locales/{$this->locale}." . i18n::get_current_charset() . '.php';
+		if ( !file_exists($translation_file) )
+		{
+			$translation_file = './locales/en_Latn_US.UTF-8.php';
+		}
+		include($translation_file);
+		
+		i18n::set_current_locale($this->locale);
+		
+		return;
 	}
 
 	public function check_mysql_parameters()
