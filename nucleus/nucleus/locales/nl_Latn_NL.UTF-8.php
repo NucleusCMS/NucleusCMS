@@ -16,10 +16,88 @@
 /********************************************
  *        Start New for 4.0                 *
  ********************************************/
-define('_SKINIE_INVALID_NAMES_DETECTED', 'Invalid skin or templates names detected. Valid names consist of only a-z, A-Z, 0-9, -, and _'); 
-define('_LISTS_AUTHOR', 'Author');
-define('_OVERVIEW_OTHER_DRAFTS', 'Other Drafts');
- 
+/* labels for date and time measurement unit */
+define('_LABEL_YEAR_UNIT',		'year');
+define('_LABEL_MONTH_UNIT',		'month');
+define('_LABEL_DAY_UNIT',		'day');
+define('_LABEL_HOUR_UNIT',		'hour');
+define('_LABEL_MINUTE_UNIT',	'minute');
+
+// SkinableAdminArea vars
+define('_SKINABLEADMIN_DEL_UNINSTALL_DATA',			'Delete ADMIN skin data table on uninstall?');
+define('_SKINABLEADMIN_DEFAULT_SKIN',				'Choose a skin of the management area of the default.');
+define('_SKINABLEADMIN_MEMBER_DEFAULT_SKIN',		'Choose a skin of the management area of you use.');
+define('_SKINABLEADMIN_QMENU_LAYOUT',				'Admin layout');
+define('_SKINABLEADMIN_PAGE_STR',					'page');
+define('_SKINABLEADMIN_BATCH_MOVE',					'Item move other category/Category move other blog');
+define('_SKINABLEADMIN_BATCH',						'batch');
+define('_SKINABLEADMIN_PAGEHEAD',					'Admin page head');
+define('_SKINABLEADMIN_PAGEFOOT',					'Admin page foot');
+define('_SKINABLEADMIN_TEMPLATEOVERVIEW',			'Template overview');
+define('_SKINABLEADMIN_ADMINAREAHEADLINK',			'[Your site]link');
+define('_SKINABLEADMIN_TPLSETTING_INGENERAL',		'In general');
+define('_SKINABLEADMIN_HEAD_STR',					' head');
+define('_SKINABLEADMIN_BODY_STR',					' body');
+define('_SKINABLEADMIN_FOOT_STR',					' foot');
+define('_SKINABLEADMIN_TEXT_STR',					' text');
+define('_SKINABLEADMIN_TITLE_STR',					' title');
+define('_SKINABLEADMIN_ADMINSETTING_STR',			' set editmember is \'admin\'');
+define('_SKINABLEADMIN_NORMALSETTING_STR',			' normal');
+define('_SKINABLEADMIN_HELPICONURL_STR',			' icon URL');
+define('_SKINABLEADMIN_HELPFILEURL_STR',			' help file URL');
+define('_SKINABLEADMIN_ADMINSKINVAR_STR',			' skinvars');
+define('_SKINABLEADMIN_SHOWLIST_LISTPLUG_SELECT',	'selectbox used in ADMIN area');
+define('_SKINABLEADMIN_SHOWLIST_LISTPLUG_TABLE',	'Table for list indication');
+define('_SKINABLEADMIN_PLUGIN_QUICKMENU',			'Link to admin page of the plugin shown to the quick-menu');
+define('_SKINABLEADMIN_PLUGIN_PLGOPT_OPTTYPE',		'Template for option-type %s');
+define('_SKINABLEADMIN_PLUGIN_PLGOPT_OPTMETA',		'Template for option-meta-data %s');
+define('_SKINABLEADMIN_MEMBERS_ADMINSKIN',			"ADMIN-Area's skin");
+
+define('_LOCALE_BG_CYRL_BG',	'Bulgarian in Bulgaria');
+define('_LOCALE_CA_LATN_ES',	'Catalan in Spain');
+define('_LOCALE_CS_LATN_CZ',	'Czech in Czech Republic');
+define('_LOCALE_DE_LATN_DE',	'German in Germany');
+define('_LOCALE_EL_GREK_GR',	'Greek in Greece (Greek script)');
+define('_LOCALE_EN_LATN_US',	'English in United States');
+define('_LOCALE_ES_LATN_ES',	'Spanish in Spain');
+define('_LOCALE_FA_ARAB_IR',	'Persian in Islamic Republic of Iran');
+define('_LOCALE_FI_LATN_FI',	'Finnish in Finland');
+define('_LOCALE_FR_LATN_FR',	'French in France');
+define('_LOCALE_GL_LATN_ES',	'Galician in Spain');
+define('_LOCALE_HR_LATN_HR',	'Croatian in Croatia');
+define('_LOCALE_HU_LATN_HU',	'Hungarian in Hungary');
+define('_LOCALE_ID_LATN_ID',	'Indonesian in Indonesia (Latin script)');
+define('_LOCALE_IT_LATN_IT',	'Italian in Italy');
+define('_LOCALE_JA_JPAN_JP',	'Japanese in Japan');
+define('_LOCALE_KO_KORE_KR',	'Korean in Korea');
+define('_LOCALE_KU_ARAB_TR',	'Kurdish in Turkey (Arabic script)');
+define('_LOCALE_LV_LATN_LV',	'Latvian in Latvia');
+define('_LOCALE_NL_LATN_NL',	'Dutch in Netherlands');
+define('_LOCALE_PL_LATN_PL',	'Polish in Poland');
+define('_LOCALE_PT_LATN_BR',	'Portuguese in Brazil');
+define('_LOCALE_RO_LATN_RO',	'Romainan in Romania');
+define('_LOCALE_RU_CYRL_RU',	'Russian in Russia');
+define('_LOCALE_SK_LATN_SK',	'Slovak in Slovakia');
+define('_LOCALE_SR_CYRL_RS',	'Serbian in Serbia');
+define('_LOCALE_UR_ARAB_PK',	'Urdu in Pakistan');
+define('_LOCALE_VI_LATN_VN',	'Vietnamese in Vietnam (Latin script)');
+define('_LOCALE_ZH_HANS_CN',	'Chinese in China (simplified script)');
+define('_LOCALE_ZH_HANT_TW',	'Chinese in Taiwan (Traditional script)');
+
+define('_FORGOTPASSWORD_TITLE',				'Forgot your password?');
+define('_FORGOTPASSWORD_MSG',				'Enter your username and email address below, and you\'ll be sent an e-mail with a link where you can choose a new password.');
+define('_FORGOTPASSWORD_SUBMIT',			'Send Activation Link" class="transparent');
+define('_FORGOTPASSWORD_CONTACT',			'If you don\'t remember your exact username, contact the site administrator.');
+define('_SKINIE_INVALID_NAMES_DETECTED',	'Invalid skin or templates names detected. Valid names consist of only a-z, A-Z, 0-9, -, and _'); 
+define('_LISTS_AUTHOR',						'Author');
+define('_OVERVIEW_OTHER_DRAFTS',			'Other Drafts');
+define('_ERROR_BADADMINSKINNAME',			'the name of skin for admin area must start with \'admin/\'.');
+define('_ERROR_BADADMINTEMPLATENAME',		'the name of template for admin area must start with \'admin/\'.');
+define('_SETTINGS_ADMINSKIN',				'default skin for admin area');
+define('_SETTINGS_BKMKLTSKIN',				'default skin for bookmarklet');
+define('_MEMBERS_BKMKLTSKIN',				"bookmarklet skin");
+define('_ADMIN_SYSTEMOVERVIEW_VERSION_LATEST',		'The version which is being used is latest.');
+
 /********************************************
  *        Start New for 3.6x                *
  ********************************************/
@@ -189,13 +267,7 @@ define('_PLUGIN_OPTIONS_TITLE',							'Options for %s');
 // Plugin file loda error
 define('_PLUGINFILE_COULDNT_BELOADED',				'Error: plugin file <strong>%s.php</strong> could not be loaded, or it has been set inactive because it does not support some features (check the <a href="?action=actionlog">actionlog</a> for more info)');
 
-//ITEM add/edit template (for japanese only)
 define('_ITEM_ADDEDITTEMPLATE_FORMAT',				'Format :');
-define('_ITEM_ADDEDITTEMPLATE_YEAR',				'Year');
-define('_ITEM_ADDEDITTEMPLATE_MONTH',				'Month');
-define('_ITEM_ADDEDITTEMPLATE_DAY',					'Day');
-define('_ITEM_ADDEDITTEMPLATE_HOUR',				'Hour');
-define('_ITEM_ADDEDITTEMPLATE_MINUTE',				'Minute');
 
 // Errors
 define('_ERRORS_INSTALLSQL',						'install.sql should be deleted');
@@ -350,10 +422,6 @@ define('_ARCHIVETYPE_MONTH',		'maand');
 
 // tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
 define('_ERROR_BADTICKET',			'Ongeldig ticket.');
-
-// plugin dependency
-define('_ERROR_INSREQPLUGIN',		'Plugin kon niet geïnstalleerd worden: vereist ');
-define('_ERROR_DELREQPLUGIN',		'Plugin kon niet verwijderd worden: vereist door ');
 
 // cookie prefix
 define('_SETTINGS_COOKIEPREFIX',	'Cookie Prefix');
@@ -759,7 +827,6 @@ define('_COMMENTFORM_YOUARE',		'U bent');
 define('_COMMENTFORM_SUBMIT',		'Reactie toevoegen');
 define('_COMMENTFORM_COMMENT',		'Uw reactie');
 define('_COMMENTFORM_NAME',			'Naam');
-define('_COMMENTFORM_MAIL',			'E-mail/HTTP');
 define('_COMMENTFORM_REMEMBER',		'Onthoud wie ik ben');
 
 // loginform
@@ -786,7 +853,6 @@ define('_ADD_DISABLE_COMMENTS',		'Commentaar uitschakelen?');
 define('_ADD_DRAFTNFUTURE',			'Kladversies &amp; Future Items');
 define('_ADD_ADDITEM',				'Toevoegen');
 define('_ADD_ADDNOW',				'Nu toevoegen');
-define('_ADD_ADDLATER',				'Later toevoegen');
 define('_ADD_PLACE_ON',				'Toevoegen op');
 define('_ADD_ADDDRAFT',				'Als kladversie bewaren');
 define('_ADD_NOPASTDATES',			'(Data in het verleden gelden niet. In dat geval wordt de huidige datum genomen)');
@@ -1132,8 +1198,6 @@ define('_BAN_ADD_BTN',				'Ban Toevoegen');
 
 // LOGIN screen
 define('_LOGIN_MESSAGE',			'Bericht:');
-define('_LOGIN_NAME',				'Naam');
-define('_LOGIN_PASSWORD',			'Wachtwoord');
 define('_LOGIN_SHARED',				_LOGINFORM_SHARED);
 define('_LOGIN_FORGOT',				'Paswoord vergeten?');
 
@@ -1266,3 +1330,18 @@ define('_EDITC_NONMEMBER',			'niet geregistreerd');
 // move item
 define('_MOVE_TITLE',				'Verplaatsen naar welk blog?');
 define('_MOVE_BTN',					'Verplaats');
+
+// ADMIN-template template types
+include_once('adminskinTypes.php');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLIST_BD_TADM',  _SKINABLEADMIN_ADMINSKINVAR_STR . ' [yrbloglist] member is blog ADMIN');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLIST_BD_SADM',  _SKINABLEADMIN_ADMINSKINVAR_STR . ' [yrbloglist] member is super ADMIN');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_GURL',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'plugin URL');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGEVENTLIST',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'API entry');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGNEDUPDATE',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'eventlist updates');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGIN_DEPEND',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'dependency to');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGIN_DEPREQ',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'dependency by');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLISTFALSE',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'couldn\'t load file');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_ACTN',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'plugin actions');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_ADMN',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'plugin admin link');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_HELP',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'plugin help link');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGOPTSETURL',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'plugin option setting link');

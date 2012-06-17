@@ -16,10 +16,88 @@
 /********************************************
  *        Start New for 4.0                *
  ********************************************/
-define('_SKINIE_INVALID_NAMES_DETECTED', 'Invalid skin or templates names detected. Valid names consist of only a-z, A-Z, 0-9, -, and _'); 
-define('_LISTS_AUTHOR', '著者');
-define('_OVERVIEW_OTHER_DRAFTS', 'その他のドラフト');
- 
+/* labels for date and time measurement unit */
+define('_LABEL_YEAR_UNIT',		'年');
+define('_LABEL_MONTH_UNIT',		'月');
+define('_LABEL_DAY_UNIT',		'日');
+define('_LABEL_HOUR_UNIT',		'時');
+define('_LABEL_MINUTE_UNIT',	'分');
+
+// SkinableAdminArea vars
+define('_SKINABLEADMIN_DEL_UNINSTALL_DATA',			'プラグインを削除するときに管理エリア用スキンのデータも削除しますか？');
+define('_SKINABLEADMIN_DEFAULT_SKIN',				'管理領域のデフォルトのスキン');
+define('_SKINABLEADMIN_MEMBER_DEFAULT_SKIN',		'あなたが使う管理領域のスキン');
+define('_SKINABLEADMIN_QMENU_LAYOUT',				'管理エリア用設定');
+define('_SKINABLEADMIN_PAGE_STR',					'ページ');
+define('_SKINABLEADMIN_BATCH_MOVE',					'アイテムのカテゴリ移動/カテゴリのブログ移動');
+define('_SKINABLEADMIN_BATCH',						'バッチ処理');
+define('_SKINABLEADMIN_PAGEHEAD',					'管理ページのヘッダ');
+define('_SKINABLEADMIN_PAGEFOOT',					'管理ページのフッタ');
+define('_SKINABLEADMIN_TEMPLATEOVERVIEW',			'テンプレート一覧');
+define('_SKINABLEADMIN_ADMINAREAHEADLINK',			'[サイトの確認]リンク');
+define('_SKINABLEADMIN_TPLSETTING_INGENERAL',		'全般的に使用');
+define('_SKINABLEADMIN_HEAD_STR',					' のヘッダ');
+define('_SKINABLEADMIN_BODY_STR',					' の本体');
+define('_SKINABLEADMIN_FOOT_STR',					' のフッタ');
+define('_SKINABLEADMIN_TEXT_STR',					' の本体');
+define('_SKINABLEADMIN_TITLE_STR',					' のタイトル');
+define('_SKINABLEADMIN_ADMINSETTING_STR',			' 管理者設定用');
+define('_SKINABLEADMIN_NORMALSETTING_STR',			' 通常仕様');
+define('_SKINABLEADMIN_HELPICONURL_STR',			' で使用するアイコンのURL');
+define('_SKINABLEADMIN_HELPFILEURL_STR',			' で使用するヘルプファイルのURL');
+define('_SKINABLEADMIN_ADMINSKINVAR_STR',			' スキン変数');
+define('_SKINABLEADMIN_SHOWLIST_LISTPLUG_SELECT',	'管理エリアで使用するセレクトボックス');
+define('_SKINABLEADMIN_SHOWLIST_LISTPLUG_TABLE',	'一覧表示用テーブル');
+define('_SKINABLEADMIN_PLUGIN_QUICKMENU',			'クイックメニューに表示するプラグインの管理ページへのリンク');
+define('_SKINABLEADMIN_PLUGIN_PLGOPT_OPTTYPE',		'オプションタイプ%sのテンプレート');
+define('_SKINABLEADMIN_PLUGIN_PLGOPT_OPTMETA',		'オプション・メタデータ%sのテンプレート');
+define('_SKINABLEADMIN_MEMBERS_ADMINSKIN',			'使用する管理領域のスキン');
+
+define('_LOCALE_BG_CYRL_BG',	'ブルガリア語（ブルガリア）');
+define('_LOCALE_CA_LATN_ES',	'カタルーニャ語（スペイン）');
+define('_LOCALE_CS_LATN_CZ',	'チェコ語（チェコ）');
+define('_LOCALE_DE_LATN_DE',	'ドイツ語（ドイツ）');
+define('_LOCALE_EL_GREK_GR',	'ギリシャ語（ギリシャ、ギリシャ文字）');
+define('_LOCALE_EN_LATN_US',	'英語（アメリカ）');
+define('_LOCALE_ES_LATN_ES',	'スペイン語（スペイン）');
+define('_LOCALE_FA_ARAB_IR',	'ペルシャ語（イラン）');
+define('_LOCALE_FI_LATN_FI',	'フィンランド語（フィンランド）');
+define('_LOCALE_FR_LATN_FR',	'フランス語（フランス）');
+define('_LOCALE_GL_LATN_ES',	'ガリシア語（スペイン）');
+define('_LOCALE_HR_LATN_HR',	'クロアチア語（クロアチア）');
+define('_LOCALE_HU_LATN_HU',	'ハンガリー語（ハンガリー）');
+define('_LOCALE_ID_LATN_ID',	'インドネシア語（インドネシア、ラテン文字）');
+define('_LOCALE_IT_LATN_IT',	'イタリア語（イタリア）');
+define('_LOCALE_JA_JPAN_JP',	'日本語（日本）');
+define('_LOCALE_KO_KORE_KR',	'韓国語（韓国）');
+define('_LOCALE_KU_ARAB_TR',	'クルド語（トルコ、アラビア文字）');
+define('_LOCALE_LV_LATN_LV',	'ラトビア語（ラトビア）');
+define('_LOCALE_NL_LATN_NL',	'オランダ語（オランダ）');
+define('_LOCALE_PL_LATN_PL',	'ポーランド語（ポーランド）');
+define('_LOCALE_PT_LATN_BR',	'ポルトガル語（ブラジル）');
+define('_LOCALE_RO_LATN_RO',	'ルーマニア語（ルーマニア）');
+define('_LOCALE_RU_CYRL_RU',	'ロシア語（ロシア）');
+define('_LOCALE_SK_LATN_SK',	'スロバキア語（スロバキア）');
+define('_LOCALE_SR_CYRL_RS',	'セルビア語（セルビア）');
+define('_LOCALE_UR_ARAB_PK',	'ウルドゥー語（パキスタン）');
+define('_LOCALE_VI_LATN_VN',	'ベトナム語（ベトナム、ラテン文字）');
+define('_LOCALE_ZH_HANS_CN',	'中国語（中国、簡体字）');
+define('_LOCALE_ZH_HANT_TW',	'中国語（台湾、繁体字）');
+
+define('_FORGOTPASSWORD_TITLE',				'パスワードを忘れましたか？');
+define('_FORGOTPASSWORD_MSG',				'以下にユーザー名とメールアドレスを入力してください。新しいパスワードを設定するページへのリンクの入ったメールが送信されます。');
+define('_FORGOTPASSWORD_SUBMIT',			'認証用リンクの送信');
+define('_FORGOTPASSWORD_CONTACT',			'もしユーザー名をお忘れなら、あなたのNucleusサイト管理者に連絡してください。');
+define('_SKINIE_INVALID_NAMES_DETECTED',	'Invalid skin or templates names detected. Valid names consist of only a-z, A-Z, 0-9, -, and _'); 
+define('_LISTS_AUTHOR',						'著者');
+define('_OVERVIEW_OTHER_DRAFTS',			'その他のドラフト');
+define('_ERROR_BADADMINSKINNAME',			'管理画面用スキン名は先頭が「admin/」で始まっている必要があります。');
+define('_ERROR_BADADMINTEMPLATENAME',		'管理画面用スキンのテンプレート名は先頭が「admin/」で始まっている必要があります。');
+define('_SETTINGS_ADMINSKIN',				'デフォルトの管理画面用スキン');
+define('_SETTINGS_BKMKLTSKIN',				'デフォルトのブックマークレット用スキン');
+define('_MEMBERS_BKMKLTSKIN',				'使用するブックマークレット用のスキン');
+define('_ADMIN_SYSTEMOVERVIEW_VERSION_LATEST',		'使用中のバージョンは最新です');
+
 /********************************************
  *        Start New for 3.64                *
  ********************************************/
@@ -188,13 +266,7 @@ define('_PLUGIN_OPTIONS_TITLE',						'%s のオプション設定');
 // Plugin file loda error
 define('_PLUGINFILE_COULDNT_BELOADED',				'エラー: プラグインファイル <strong>%s.php</strong> を読み込めませんでした。ファイルが存在しない、もくは使用中の Nucleus 上で動作させるために必要な機能がプラグインでサポートされていません。(<a href="?action=actionlog">管理操作履歴</a>に詳細があります。)');
 
-//ITEM add/edit template (for japanese only)
 define('_ITEM_ADDEDITTEMPLATE_FORMAT',				'フォーマット：');
-define('_ITEM_ADDEDITTEMPLATE_YEAR',				'年');
-define('_ITEM_ADDEDITTEMPLATE_MONTH',				'月');
-define('_ITEM_ADDEDITTEMPLATE_DAY',					'日');
-define('_ITEM_ADDEDITTEMPLATE_HOUR',				'時');
-define('_ITEM_ADDEDITTEMPLATE_MINUTE',				'分');
 
 // Errors
 define('_ERRORS_INSTALLSQL',						'｢install.sql｣ファイルを削除してください');
@@ -1273,3 +1345,18 @@ define('_EDITC_NONMEMBER',							'非メンバー');
 // move item
 define('_MOVE_TITLE',								'どのBlogに移動しますか？');
 define('_MOVE_BTN',									'アイテムを移動する');
+
+// ADMIN-template template types
+include_once('adminskinTypes.php');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLIST_BD_TADM',  _SKINABLEADMIN_ADMINSKINVAR_STR . ' [yrbloglist] メンバーがブログ管理権限を持っている時の追加項目');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLIST_BD_SADM',  _SKINABLEADMIN_ADMINSKINVAR_STR . ' [yrbloglist] メンバーが最高管理権限を持っている時の追加項目');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_GURL',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'プラグインの入手リンク');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGEVENTLIST',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . '登録されているイベント');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGNEDUPDATE',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'イベント情報のアップデートが必要な時のアラート');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGIN_DEPEND',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . '依存するプラグイン');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGIN_DEPREQ',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . '依存されているプラグイン');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLISTFALSE',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'プラグインが読み込めなかった時のアラート');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_ACTN',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . '「アクション」列のテンプレート');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_ADMN',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'プラグインの管理領域へのリンク');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_HELP',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'プラグインのヘルプへのリンク');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGOPTSETURL',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'プラグインのオプション設定画面へのリンク');
