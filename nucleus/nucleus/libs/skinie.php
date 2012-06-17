@@ -210,6 +210,8 @@ class SkinImport
 	 */
 	public function writeToDatabase($allowOverwrite = 0)
 	{
+		global $manager;
+		
 		$existingSkins = $this->checkSkinNameClashes();
 		$existingTemplates = $this->checkTemplateNameClashes();
 		$invalidSkinNames = $this->checkSkinNamesValid();
@@ -270,7 +272,7 @@ class SkinImport
 					$data['includeMode'],
 					$data['includePrefix']
 				);
-				$skinObj = new SKIN($skinid);
+				$skinObj =& $manager->getSkin($skinid);
 			}
 			
 			// 2. add parts
@@ -663,6 +665,8 @@ class SkinExport
 	 */
 	public function export($setHeaders = 1)
 	{
+		global $manager;
+		
 		if ( $setHeaders )
 		{
 			// make sure the mimetype is correct, and that the data does not show up
@@ -697,8 +701,8 @@ class SkinExport
 		// contents skins
 		foreach ($this->skins as $skinId => $skinName)
 		{
-			$skinId = intval($skinId);
-			$skinObj = new SKIN($skinId);
+			$skinId = (integer) $skinId;
+			$skinObj =& $manager->getSkin($skinId);
 			
 			echo "\t" . '<skin name="' . Entity::hsc($skinName) . '" type="' . Entity::hsc($skinObj->getContentType()) . '" includeMode="' . Entity::hsc($skinObj->getIncludeMode()) . '" includePrefix="' . Entity::hsc($skinObj->getIncludePrefix()) . '">' . "\n";
 			echo "\t\t<description>" . Entity::hsc($skinObj->getDescription()) . "</description>\n";
