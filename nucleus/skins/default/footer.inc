@@ -11,6 +11,7 @@
 	<a href="http://jigsaw.w3.org/css-validator/">Valid CSS</a> | 
 	<a href="#top">Back to top</a></small>
 </div>
+<%benchmark%>
 </div>
 
 </body>
