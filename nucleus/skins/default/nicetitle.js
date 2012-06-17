@@ -224,9 +224,10 @@ function makeNiceTitles()
 			{
 			lnk.setAttribute('nicetitle', lnk.title);
 			lnk.removeAttribute('title');
-			addEvent(lnk, 'mouseover', showDelay);
+			addEvent(lnk, 'mouseover', showNiceTitle);
+			addEvent(lnk, 'mousemove', moveNiceTitle);
 			addEvent(lnk, 'mouseout', hideNiceTitle);
-			addEvent(lnk, 'focus', showDelay);
+			addEvent(lnk, 'focus', showNiceTitle);
 			addEvent(lnk, 'blur', hideNiceTitle);
 			}
 		}
@@ -259,9 +260,10 @@ function makeNiceTitles()
 						}
 					var dtIns = new Date(strDate.substring(0,4), month-1, day, strDate.substring(11,13), strDate.substring(14,16), strDate.substring(17,19));
 					tag.setAttribute('nicetitle', (tt == 0 ? 'Added' : 'Deleted') + ' on ' + dtIns.toString());
-					addEvent(tag, 'mouseover', showDelay);
+					addEvent(tag, 'mouseover', showNiceTitle);
+					addEvent(tag, 'mousemove', moveNiceTitle);
 					addEvent(tag, 'mouseout', hideNiceTitle);
-					addEvent(tag, 'focus', showDelay);
+					addEvent(tag, 'focus', showNiceTitle);
 					addEvent(tag, 'blur', hideNiceTitle);
 					}
 				}
@@ -305,124 +307,152 @@ function getParent(el, pTagName)
 
 // 2003-11-19 sidesh0w
 // trailerpark wrapper function
-function showDelay(e)
+function showDelay()
 	{
-    if (window.event && window.event.srcElement)
+	if (CURRENT_NICE_TITLE)
 		{
-        lnk = window.event.srcElement
+		CURRENT_NICE_TITLE.style.display = '';
+		}
+	}
+
+// build and show the nice titles
+function showNiceTitle(e)
+	{
+	if (CURRENT_NICE_TITLE) hideNiceTitle(CURRENT_NICE_TITLE);
+	if (!document.getElementsByTagName) return;
+
+	if (window.event && window.event.srcElement)
+		{
+		lnk = window.event.srcElement
 		}
 	else if (e && e.target)
 		{
-        lnk = e.target
+		lnk = e.target
 		}
-    if (!lnk) return;
+	if (!lnk) return;
 
 	// lnk is a textnode or an elementnode that's not ins/del
-    if (lnk.nodeType == 3 || (lnk.nodeType == 1 && lnk.tagName.toLowerCase() != 'ins' && lnk.tagName.toLowerCase() != 'del'))
+	if (lnk.nodeType == 3 || (lnk.nodeType == 1 && lnk.tagName.toLowerCase() != 'ins' && lnk.tagName.toLowerCase() != 'del'))
 		{
 		// ascend parents until we hit a link
 		lnk = getParent(lnk, 'a');
 		}
 
-	delay = setTimeout("showNiceTitle(lnk)", interval * 1000);
-	}
+	 nicetitle = lnk.getAttribute('nicetitle');
 
-// build and show the nice titles
-function showNiceTitle(link)
-	{
-    if (CURRENT_NICE_TITLE) hideNiceTitle(CURRENT_NICE_TITLE);
-    if (!document.getElementsByTagName) return;
-
-    nicetitle = lnk.getAttribute('nicetitle');
-
-    var d = document.createElementNS(XHTMLNS, 'div');
-    d.className = 'nicetitle';
-    var dc = document.createElementNS(XHTMLNS, 'div');
-    dc.className = 'nicetitle-content';
-    d.appendChild(dc);
-    tnt = document.createTextNode(nicetitle);
-    pat = document.createElementNS(XHTMLNS, 'p');
-    pat.className = 'titletext';
-    pat.appendChild(tnt);
+	var d = document.createElementNS(XHTMLNS, 'div');
+	d.className = 'nicetitle';
+	var dc = document.createElementNS(XHTMLNS, 'div');
+	dc.className = 'nicetitle-content';
+	d.appendChild(dc);
+	tnt = document.createTextNode(nicetitle);
+	pat = document.createElementNS(XHTMLNS, 'p');
+	pat.className = 'titletext';
+	pat.appendChild(tnt);
 
 	// 2003-11-18 Dunstan Orchard
 	// added in accesskey info
 	if (lnk.accessKey)
 		{
-        axs = document.createTextNode(' [' + lnk.accessKey + ']');
+		axs = document.createTextNode(' [' + lnk.accessKey + ']');
 		axsk = document.createElementNS(XHTMLNS, 'span');
-        axsk.className = 'accesskey';
-        axsk.appendChild(axs);
+		axsk.className = 'accesskey';
+		axsk.appendChild(axs);
 		pat.appendChild(axsk);
 		}
-    dc.appendChild(pat);
-
-    if (lnk.href)
-		{
-        tnd = document.createTextNode(lnk.href);
-        pad = document.createElementNS(XHTMLNS, 'p');
-        pad.className = 'destination';
-        pad.appendChild(tnd);
-        dc.appendChild(pad);
-		}
-
-    STD_WIDTH = 300;
+	dc.appendChild(pat);
 
 	if (lnk.href)
 		{
-        h = lnk.href.length;
+		tnd = document.createTextNode(lnk.href);
+		pad = document.createElementNS(XHTMLNS, 'p');
+		pad.className = 'destination';
+		pad.appendChild(tnd);
+		dc.appendChild(pad);
+		}
+
+	STD_WIDTH = 300;
+
+	if (lnk.href)
+		{
+		h = lnk.href.length;
 		}
 	else
 		{
 		h = nicetitle.length;
 		}
 
-    if (nicetitle.length)
+	if (nicetitle.length)
 		{
 		t = nicetitle.length;
 		}
 
-    h_pixels = h*6;
+	h_pixels = h*6;
 	t_pixels = t*10;
 
-    if (h_pixels > STD_WIDTH)
+	if (t_pixels > STD_WIDTH)
 		{
-        w = h_pixels;
+		w = t_pixels;
 		}
-	else if ((STD_WIDTH>t_pixels) && (t_pixels>h_pixels))
+	else if ((STD_WIDTH > t_pixels) && (t_pixels > h_pixels))
 		{
-        w = t_pixels;
+		w = t_pixels;
 		}
-	else if ((STD_WIDTH>t_pixels) && (h_pixels>t_pixels))
+	else if ((STD_WIDTH > h_pixels) && (h_pixels > t_pixels))
 		{
-        w = h_pixels;
+		w = h_pixels;
 		}
 	else
 		{
-        w = STD_WIDTH;
+		w = STD_WIDTH;
 		}
 
-    d.style.width = w + 'px';
+	d.style.width = w + 'px';
+	d.style.display = 'none';
 
-    mpos = findPosition(lnk);
-    mx = mpos[0];
-    my = mpos[1];
+	document.getElementsByTagName('body')[0].appendChild(d);
 
-    d.style.left = (mx+15) + 'px';
-    d.style.top = (my+35) + 'px';
+	CURRENT_NICE_TITLE = d;
 
-    if (window.innerWidth && ((mx+w) > window.innerWidth))
+	moveNiceTitle(e);
+
+	delay = setTimeout("showDelay()", interval * 1000);
+	}
+
+function moveNiceTitle(e)
+	{
+	if (!document.getElementsByTagName) return;
+	if (!CURRENT_NICE_TITLE) return;
+
+	if (document.all)
 		{
-        d.style.left = (window.innerWidth - w - 25) + 'px';
+		X = document.body.scrollLeft + window.event.clientX;
 		}
-    if (document.body.scrollWidth && ((mx+w) > document.body.scrollWidth))
+	else if (document.layers || document.getElementById)
 		{
-        d.style.left = (document.body.scrollWidth - w - 25) + 'px';
+		X = e.pageX;
+		}
+	w_title = Number(CURRENT_NICE_TITLE.style.width.replace(/^(\d+).*$/, '$1'));
+	if (w_title + X > (window.innerWidth + (document.documentElement.scrollLeft || window.pageXOffset) - 20))
+		{
+		X = (window.innerWidth + (document.documentElement.scrollLeft || window.pageXOffset) - 20) - w_title;
 		}
 
-    document.getElementsByTagName('body')[0].appendChild(d);
-
-    CURRENT_NICE_TITLE = d;
+	if (document.all)
+		{
+		Y = document.body.scrollTop + window.event.clientY;
+		}
+	else if (document.layers || document.getElementById)
+		{
+		Y = e.pageY;
+		}
+	if (Y > (window.innerHeight + (document.documentElement.scrollTop || window.pageYOffset) - 60))
+		{
+		Y = Y - 25 - 60;
+		}
+	
+	CURRENT_NICE_TITLE.style.left = X + 'px';
+	CURRENT_NICE_TITLE.style.top = (Y + 25) + 'px';
 	}
 
 function hideNiceTitle(e)
