@@ -700,7 +700,8 @@ class AdminActions extends BaseActions
 		if ( $resource->rowCount() > 0 )
 		{
 			$template['content'] = 'actionlist';
-			$this->parser->parse(showlist($resource, 'table', $template, $template_name));
+			$action_list = showlist($resource, 'table', $template, $template_name);
+			$this->parser->parse($action_list);
 		}
 		else
 		{
@@ -854,7 +855,8 @@ class AdminActions extends BaseActions
 		if ( $resource->rowCount() > 0 )
 		{
 			$template['content'] = 'banlist';
-			$this->parser-parse(showlist($resource, 'table', $template, $template_name));
+			$ban_list = showlist($resource, 'table', $template, $template_name);
+			$this->parser-parse($ban_list);
 		}
 		else
 		{
@@ -1213,7 +1215,8 @@ class AdminActions extends BaseActions
 			$template['extra'] = Entity::hsc(_MEMBERS_USESITELANG);
 		}
 		
-		$this->parser->parse(showlist($query, 'select', $template, $template_name));
+		$skin_select = showlist($query, 'select', $template, $template_name);
+		$this->parser->parse($skin_select);
 		return;
 	}
 	
@@ -1257,7 +1260,8 @@ class AdminActions extends BaseActions
 			$template['extra'] = Entity::hsc(_MEMBERS_USESITELANG);
 		}
 		
-		$this->parser->parse(showlist($query, 'select', $template, $template_name));
+		$bookmarklet_select = showlist($query, 'select', $template, $template_name);
+		$this->parser->parse($bookmarklet_select);
 		return;
 	}
 	
@@ -1369,7 +1373,8 @@ class AdminActions extends BaseActions
 		{
 			$template['content']  = 'categorylist';
 			$template['tabindex'] = 200;
-			$this->parser->parse(listplug_batchlist('category', $resource, 'table', $template, $template_name));
+			$category_list = listplug_batchlist('category', $resource, 'table', $template, $template_name);
+			$this->parser->parse($category_list);
 		}
 		else
 		{
@@ -1511,8 +1516,9 @@ class AdminActions extends BaseActions
 		{
 			$template['content']  = 'teamlist';
 			$template['tabindex'] = 10;
-				
-			$this->parser->parse(listplug_batchlist('team', $resource, 'table', $template, $template_name));
+			
+			$team_list = listplug_batchlist('team', $resource, 'table', $template, $template_name);
+			$this->parser->parse($team_list);
 		}
 		else
 		{
@@ -1797,7 +1803,8 @@ class AdminActions extends BaseActions
 				
 			$template['content'] = 'commentlist';
 				
-			$this->parser->parse(listplug_navlist('comment', $resource, 'table', $template, $template_name));
+			$navlist = listplug_navlist('comment', $resource, 'table', $template, $template_name);
+			$this->parser->parse($navlist);
 		}
 		else
 		{
@@ -1970,7 +1977,8 @@ class AdminActions extends BaseActions
 		$template['tabindex'] = 10;
 		$template['skinid'] = intRequestVar('skinid');
 		$template['skinname'] = $skin->getName();
-		$this->parser->parse(showlist($normal_skintype, 'list_normalskinlist', $template, $template_name));
+		$skin_list = showlist($normal_skintype, 'list_normalskinlist', $template, $template_name);
+		$this->parser->parse($skin_list);
 		
 		return;
 	}
@@ -1992,7 +2000,8 @@ class AdminActions extends BaseActions
 		$template['name'] = 'DefaultBlog';
 		$template['selected'] = $CONF['DefaultBlog'];
 		$template['tabindex'] = 10;
-		$this->parser->parse(showlist($query, 'select', $template, $template_name));
+		$blog_select = showlist($query, 'select', $template, $template_name);
+		$this->parser->parse($blog_select);
 		
 		return;
 	}
@@ -2018,7 +2027,8 @@ class AdminActions extends BaseActions
 		$template['selected'] = $blog->getDefaultCategory();
 		$template['tabindex'] = 110;
 		
-		$this->parser->parse(showlist($query, 'select', $template, $template_name));
+		$category_select = showlist($query, 'select', $template, $template_name);
+		$this->parser->parse($category_select);
 		
 		return;
 	}
@@ -2070,7 +2080,8 @@ class AdminActions extends BaseActions
 		$query = sprintf($query, sql_table('skin_desc'));
 		$template['tabindex'] = 50;
 		
-		$this->parser->parse(showlist($query, 'select', $template, $template_name));
+		$skin_select = showlist($query, 'select', $template, $template_name);
+		$this->parser->parse($skin_select);
 		
 		return;
 	}
@@ -2246,8 +2257,9 @@ class AdminActions extends BaseActions
 		{
 			$template['content'] = 'memberlist';
 			$template['tabindex'] = 10;
-				
-			$this->parser->parse(listplug_batchlist('member', $resource, 'table', $template, $template_name));
+			
+			$member_list = listplug_batchlist('member', $resource, 'table', $template, $template_name);
+			$this->parser->parse($member_list);
 		}
 		else
 		{
@@ -2404,7 +2416,8 @@ class AdminActions extends BaseActions
 		if ( sizeof($aOptions) > 0 )
 		{
 			$template['content'] = 'plugoptionlist';
-			$this->parser->parse(showlist($aOptions, 'table', $template, $template_name));
+			$option_list = showlist($aOptions, 'table', $template, $template_name);
+			$this->parser->parse($option_list);
 		}
 		else
 		{
@@ -2653,7 +2666,8 @@ class AdminActions extends BaseActions
 						{
 							$content = $template[$ptname];
 						}
-						$this->parser->parse(listplug_templateEditRow($content, $ptdesc, $ptname, $help, $tabidx++, $big, $template_name));
+						$tempate_textarea = listplug_templateEditRow($content, $ptdesc, $ptname, $help, $tabidx++, $big, $template_name);
+						$this->parser->parse($tempate_textarea);
 						continue;
 					}
 				}
@@ -2670,7 +2684,8 @@ class AdminActions extends BaseActions
 				{
 					$content = $template[$typename];
 				}
-				$this->parser->parse(listplug_templateEditRow($content, $typedesc, $typename, $help, $tabindex, $big, $template_name));
+				$tempate_textarea = listplug_templateEditRow($content, $typedesc, $typename, $help, $tabindex, $big, $template_name);
+				$this->parser->parse($tempate_textarea);
 				break;
 		}
 		
@@ -3156,7 +3171,8 @@ class AdminActions extends BaseActions
 	 */
 	public function parse_inputyesno($name, $checkedval, $tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0, $template_name = '')
 	{
-		$this->parser->parse(listplug_input_yesno($name, $checkedval, $tabindex, $value1, $value2, $yesval, $noval, $isAdmin, $template_name));
+		$input_yesno = listplug_input_yesno($name, $checkedval, $tabindex, $value1, $value2, $yesval, $noval, $isAdmin, $template_name);
+		$this->parser->parse($input_yesno);
 		return;
 	}
 	
@@ -3321,7 +3337,8 @@ class AdminActions extends BaseActions
 				
 			$template['content'] = 'itemlist';
 				
-			$this->parser->parse(listplug_navlist('item', $query, 'table', $template, $template_name));
+			$navlist = listplug_navlist('item', $query, 'table', $template, $template_name);
+			$this->parser->parse($navlist);
 		}
 		else
 		{
@@ -3591,7 +3608,8 @@ class AdminActions extends BaseActions
 			'tabindex'	=> 10000,
 			'selected'	=> 0
 		);
-		$this->parser->parse(showlist($query, 'select', $template, $template_name));
+		$member_select = showlist($query, 'select', $template, $template_name);
+		$this->parser->parse($member_select);
 		return;
 	}
 	
@@ -3749,7 +3767,8 @@ class AdminActions extends BaseActions
 		$template['content']  = 'pluginlist';
 		$template['tabindex'] = 10;
 		
-		$this->parser->parse(showlist($query, 'table', $template, $template_name));
+		$plugin_list = showlist($query, 'table', $template, $template_name);
+		$this->parser->parse($plugin_list);
 		
 		return;
 	}
@@ -3909,7 +3928,8 @@ class AdminActions extends BaseActions
 		$template['shortenel']	= '';
 		$template['javascript']	= 'onchange="return form.submit()"';
 		
-		$this->parser->parse(showlist($query, 'select', $template, $template_name));
+		$selectlist = showlist($query, 'select', $template, $template_name);
+		$this->parser->parse($selectlist);
 		
 		return;
 	}
@@ -3973,7 +3993,8 @@ class AdminActions extends BaseActions
 					'plugadmintooltip'	=> Entity::hsc($aInfo['tooltip']),
 					'plugadmintitle'	=> Entity::hsc($aInfo['title']),
 				);
-				$this->parser->parse(Template::fill($template['body'], $data));
+				$body = Template::fill($template['body'], $data);
+				$this->parser->parse($body);
 			}
 			$this->parser->parse($template['foot']);
 		}
@@ -4090,8 +4111,9 @@ class AdminActions extends BaseActions
 				$query = sprintf($query, sql_table('template_desc'));
 				break;
 		}
-	
-		$this->parser->parse(showlist($query, 'table', $show, $template_name));
+		
+		$skin_list = showlist($query, 'table', $show, $template_name);
+		$this->parser->parse($skin_list);
 		return;
 	}
 	
@@ -4210,7 +4232,8 @@ class AdminActions extends BaseActions
 		$template['tabindex'] = 10;
 		$template['content'] = 'skinlist';
 		
-		$this->parser->parse(showlist($query, 'table', $template, $template_name));
+		$skin_list = showlist($query, 'table', $template, $template_name);
+		$this->parser->parse($skin_list);
 		
 		return;
 	}
@@ -4293,7 +4316,8 @@ class AdminActions extends BaseActions
 			$template['tabindex'] = 75;
 			$template['skinid'] = $skin->getID();
 			$template['skinname'] = $skin->getName();
-			$this->parser->parse(showlist($special_skintypes, 'list_specialskinlist', $template, $template_name));
+			$skin_list = showlist($special_skintypes, 'list_specialskinlist', $template, $template_name);
+			$this->parser->parse($skin_list);
 		}
 		else
 		{
@@ -4499,7 +4523,8 @@ class AdminActions extends BaseActions
 		$template['tabindex'] = 10;
 		$template['content'] = 'templatelist';
 		
-		$this->parser->parse(showlist($query, 'table', $template, $template_name));
+		$template_list = showlist($query, 'table', $template, $template_name);
+		$this->parser->parse($template_list);
 		
 		return;
 	}
@@ -4577,7 +4602,8 @@ class AdminActions extends BaseActions
 			$template['content']	= 'bloglist';
 			$template['superadmin'] = $member->isAdmin();
 				
-			$this->parser->parse(showlist($resource, 'table', $template, $template_name));
+			$list_resource_table = showlist($resource, 'table', $template, $template_name);
+			$this->parser->parse($list_resource_table);
 			$resource->closeCursor();
 				
 			echo '<h2>' . _OVERVIEW_YRDRAFTS . '</h2>';
@@ -4590,7 +4616,8 @@ class AdminActions extends BaseActions
 			if ( $resource->rowCount() > 0 )
 			{
 				$template['content'] = 'draftlist';
-				$this->parser->parse(showlist($resource, 'table', $template, $template_name));
+				$draft_list = showlist($resource, 'table', $template, $template_name);
+				$this->parser->parse($draft_list);
 			}
 			else
 			{

@@ -941,7 +941,7 @@ class Blog
 	 * @param	string	$direction	ASC/DESC
 	 * @return	void
 	 */
-	public function showBlogList($template, $bnametype, $orderby, $direction)
+	static public function showBlogList($template, $bnametype, $orderby, $direction)
 	{
 		global $CONF, $manager;
 		

@@ -72,7 +72,7 @@ class Manager
 	 * $manager =& Manager::instance(); to get a reference to the object
 	 * instead of a copy
 	 */
-	public function &instance()
+	static public function &instance()
 	{
 		static $instance = array();
 		if ( empty($instance) )
