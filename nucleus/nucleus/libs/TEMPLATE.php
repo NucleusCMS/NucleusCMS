@@ -193,18 +193,6 @@ class Template
 			$template[$row['tpartname']] = $row['tcontent'];
 		}
 		
-		/*
-		 * TODO: this is appropriate or not?
-		 */
-		if ( array_key_exists('LOCALE', $template) && !empty($template['LOCALE']) )
-		{
-			setlocale(LC_TIME, $template['LOCALE']);
-		}
-		else
-		{
-			setlocale(LC_TIME,'');
-		}
-		
 		return $template;
 	}
 	

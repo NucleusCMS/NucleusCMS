@@ -294,8 +294,6 @@ Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 
 		<part name="FORMAT_TIME"><![CDATA[%X]]></part>
 
-		<part name="LOCALE"><![CDATA[en]]></part>
-
 		<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
 
 		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
@@ -360,8 +358,6 @@ title="<%ip%> | Click to visit <%user%>'s website or send an email">
 		<part name="FORMAT_DATE"><![CDATA[%d/%m]]></part>
 
 		<part name="FORMAT_TIME"><![CDATA[%X]]></part>
-
-		<part name="LOCALE"><![CDATA[en]]></part>
 
 		<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
 

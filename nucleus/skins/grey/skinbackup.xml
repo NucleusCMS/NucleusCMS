@@ -641,7 +641,6 @@
 </div>
 ]]></part>
 
-<part name="LOCALE"><![CDATA[en]]></part>
 <part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
 <part name="MORELINK"><![CDATA[<a href="<%itemlink%>">[Read More!]</a>]]></part>
 <part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
@@ -687,7 +686,6 @@
 </div>
 ]]></part>
 
-<part name="LOCALE"><![CDATA[en]]></part>
 <part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
 <part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
 <part name="SEARCH_HIGHLIGHT"><![CDATA[<span class="highlight">\0</span>]]></part>

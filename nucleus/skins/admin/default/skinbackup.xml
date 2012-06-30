@@ -3216,7 +3216,6 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%edittemplateinfo(row,_TEMPLATE_DFOOTER, DATE_FOOTER, dateheads, 230)%>
 	<%edittemplateinfo(row,_TEMPLATE_DFORMAT, FORMAT_DATE, datetime, 240)%>
 	<%edittemplateinfo(row,_TEMPLATE_TFORMAT, FORMAT_TIME, datetime, 250)%>
-	<%edittemplateinfo(row,_TEMPLATE_LOCALE, LOCALE, locale, 260)%>
 	</tbody>
 	</table>
 	

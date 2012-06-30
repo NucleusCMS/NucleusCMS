@@ -3044,7 +3044,6 @@ class Admin
 		self::addToTemplate($templateid, 'DATE_FOOTER',			postVar('DATE_FOOTER'));
 		self::addToTemplate($templateid, 'FORMAT_DATE',			postVar('FORMAT_DATE'));
 		self::addToTemplate($templateid, 'FORMAT_TIME',			postVar('FORMAT_TIME'));
-		self::addToTemplate($templateid, 'LOCALE',				postVar('LOCALE'));
 		self::addToTemplate($templateid, 'SEARCH_HIGHLIGHT',	postVar('SEARCH_HIGHLIGHT'));
 		self::addToTemplate($templateid, 'SEARCH_NOTHINGFOUND', postVar('SEARCH_NOTHINGFOUND'));
 		self::addToTemplate($templateid, 'POPUP_CODE',			postVar('POPUP_CODE'));

@@ -813,24 +813,12 @@ class Actions extends BaseActions
 	 * Actions::parse_archivedate()
 	 * %archivedate(locale,date format)%
 	 * 
-	 * @param	string	$locale
+	 * @param	deprecated	$locale	
 	 * @return	void
 	 */
-	public function parse_archivedate($locale = '-def-')
+	public function parse_archivedate($locale='')
 	{
 		global $archive;
-		
-		/* 
-		 * TODO: these lines are no meaning because there is no $template.
-		if ( $locale == '-def-' )
-		{
-			setlocale(LC_TIME, $template['LOCALE']);
-		}
-		else
-		{
-			setlocale(LC_TIME, $locale);
-		}
-		 */
 		
 		// get archive date
 		sscanf($archive,'%d-%d-%d',$y,$m,$d);

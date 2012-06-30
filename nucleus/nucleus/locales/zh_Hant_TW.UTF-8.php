@@ -13,6 +13,9 @@
 /********************************************
  *        Start New for 4.0                 *
  ********************************************/
+/* argument value for setlocale() in Microsoft's windows operating system */
+define('_LOCALE_IN_WINDOWS',	'cht_twn');
+
 /* labels for date and time measurement unit */
 define('_LABEL_YEAR_UNIT',		'year');
 define('_LABEL_MONTH_UNIT',		'month');

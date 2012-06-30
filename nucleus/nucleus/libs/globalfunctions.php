@@ -524,6 +524,39 @@ function include_translation(&$locale)
 		$translation_file = $DIR_LOCALES . 'en_Latn_US.ISO-8859-1.php';
 	}
 	include($translation_file);
+	
+	/*
+	 * NOTE:
+	 * PHP is written by C and utilize C library, whose APIs are defined in POSIX.
+	 * 
+	 * setlocale() is one of APIs of C library.
+	 * but the argument value for setlocale() depends on each implements
+	 * 
+	 * The latest POSIX standard:
+	 * The Open Group Base Specifications Issue 7
+	 * IEEE Std 1003.1™-2008
+	 * http://pubs.opengroup.org/onlinepubs/9699919799/mindex.html
+	 * 
+	 * Microsoft's operating system uses their own implementation
+	 *  Language Strings
+	 *   http://msdn.microsoft.com/en-us/library/39cwe7zf%28v=vs.110%29.aspx
+	 *  Country/Region Strings
+	 *   http://msdn.microsoft.com/en-us/library/cdax410z%28v=vs.110%29.aspx
+	 * 
+	 * Linux and Unix (in this meaning, Apple's OS X derives from UNIX) uses ISO standard.
+	 *  two characters language tag (ISO 639-1)
+	 *  two characters region and country lag (ISO 3166-1 alpha-1)
+	 * 
+	 */
+	if ( PHP_OS == "WIN32" || PHP_OS == "WINNT" )
+	{
+		/* LOCALE_IN_WINDOWS is defined in each translation files */
+		setlocale(LC_ALL, _LOCALE_IN_WINDOWS);
+	}
+	else
+	{
+		setlocale(LC_ALL, preg_replace('#(.+)_(.+)_(.+)#', '$1-$3', $locale));
+	}
 	return;
 }
 
