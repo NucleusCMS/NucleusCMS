@@ -51,7 +51,7 @@ if ( !isset($CONF) )
 if ( array_key_exists('debug', $CONF) && $CONF['debug'] )
 {
 	/* report all errors! */
-	error_reporting(E_ALL);
+	error_reporting(E_ALL | E_STRICT);
 }
 else
 {
