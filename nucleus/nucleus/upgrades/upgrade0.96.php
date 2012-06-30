@@ -74,15 +74,17 @@ function upgrade_do96() {
 	// 6. add 'imagepopup' skincontents in skin 'default'
 	
 	$query = 'SELECT sdnumber FROM '.sql_table('skin_desc')." WHERE sdname='default'";
-	$res = DB::getValue($query);
-	$query = 'INSERT INTO '.sql_table('skin')." VALUES (" . $res . ", 'imagepopup', '<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n  <title><%imagetext%></title>\r\n  <style type=\"text/css\">\r\n   img { border: none; }\r\n  </style>\r\n</head>\r\n<body>\r\n  <a href=\"javascript:window.close();\"><%image%></a>\r\n</body>\r\n</html>');";
+	$res = sql_query($query);
+	$obj = mysql_fetch_object($res);
+	$skinid = $obj->sdnumber;
+	$query = 'INSERT INTO '.sql_table('skin')." VALUES (" . $skinid . ", 'imagepopup', '<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n  <title><%imagetext%></title>\r\n  <style type=\"text/css\">\r\n   img { border: none; }\r\n  </style>\r\n</head>\r\n<body>\r\n  <a href=\"javascript:window.close();\"><%image%></a>\r\n</body>\r\n</html>');";
 	upgrade_query("Adding 'imagepopup' skinparts",$query);
 	
 	// 7. add POPUP_CODE, MEDIA_CODE, IMAGE_CODE to ALL templates
 	$query = 'SELECT tdnumber FROM '.sql_table('template_desc');
-	$res = DB::getResult($query);	// get all template ids
-	foreach ( $res as $row ) {
-		$tid = $row['tdnumber']; 	// template id
+	$res = sql_query($query);	// get all template ids
+	while ($obj = mysql_fetch_object($res)) {
+		$tid = $obj->tdnumber; 	// template id
 	
 		$query = 'INSERT INTO '.sql_table('template')." VALUES ($tid, 'POPUP_CODE', '<%popuplink%>');";
 		$query2 = 'INSERT INTO '.sql_table('template')." VALUES ($tid, 'MEDIA_CODE', '<%media%>');";

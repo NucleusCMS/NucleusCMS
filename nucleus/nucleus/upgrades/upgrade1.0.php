@@ -51,11 +51,11 @@ function upgrade_do100() {
 		if ($res) {
 			// 5. for all members: hash their password and also copy it to mcookiekey
 			$query = 'SELECT * FROM '.sql_table('member');
-			$res = DB::getResult($query);
-			foreach ( $res as $current ) {
-				$hashedpw = md5($current['mpassword']);
-				$updquery = 'UPDATE '.sql_table('member')." SET mpassword='$hashedpw' WHERE mnumber=" . $current['mnumber'];
-				upgrade_query("Encrypting password for member " . $current['mnumber'], $updquery);
+			$res = mysql_query($query);
+			while ($current = mysql_fetch_object($res)) {
+				$hashedpw = md5($current->mpassword);
+				$updquery = 'UPDATE '.sql_table('member')." SET mpassword='$hashedpw' WHERE mnumber=" . $current->mnumber;
+				upgrade_query("Encrypting password for member " . $current->mnumber,$updquery);
 			}
 		}
 	}else{

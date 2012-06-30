@@ -47,23 +47,23 @@ function upgrade_do250() {
 			$query = 'DELETE FROM ' . sql_table('plugin_option_desc');
 			upgrade_query('Flushing plugin option descriptions', $query);
 			$query = 'SELECT * FROM ' . sql_table('plugin_option') .' ORDER BY oid ASC';
-			$res = DB::getResult($query);
+			$res = sql_query($query);
 			$aValues = array();
-			foreach ( $res as $row) {
+			while ($o = mysql_fetch_object($res)) {
 				$query = 'INSERT INTO ' . sql_table('plugin_option_desc')
 					   .' (opid, oname, ocontext, odesc, otype)'
 					   ." VALUES ("
-							.DB::quoteValue($row['opid']).','
-							.DB::quoteValue($row['oname']) .','
+							."'".addslashes($o->opid)."',"
+							."'".addslashes($o->oname) ."',"
 							."'global',"
-							.DB::quoteValue($row['odesc']) .','
-							.DB::quoteValue($row['otype']) .')';
-				upgrade_query('Moving option description for '.i18n::hsc($row['oname']).' to ' . sql_table('plugin_option_desc'), $query);
+							."'".addslashes($o->odesc) ."',"
+							."'".addslashes($o->otype) ."')";
+				upgrade_query('Moving option description for '.i18n::hsc($o->oname).' to ' . sql_table('plugin_option_desc'), $query);
 	
 				// store new id
 				$aValues[] = array ( 
-								'id' => DB::getInsertId(),
-								'value' => $row['ovalue']
+								'id' => mysql_insert_id(),
+								'value' => $o->ovalue
 							);
 			}
 		}
@@ -90,7 +90,7 @@ function upgrade_do250() {
 				foreach ($aValues as $aInfo) {
 					$query = 'INSERT INTO ' . sql_table('plugin_option') 
 						   .' (oid, ocontextid, ovalue)'
-						   ." VALUES (".$aInfo['id'].",'0',".DB::quoteValue($aInfo['value']).')';
+						   ." VALUES (".$aInfo['id'].",'0','".addslashes($aInfo['value'])."')";
 					upgrade_query('Re-filling ' . sql_table('plugin_option') . ' ('.$aInfo['id'].')', $query);
 				}
 			}	

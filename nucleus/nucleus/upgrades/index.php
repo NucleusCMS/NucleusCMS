@@ -201,7 +201,7 @@
 	<p> A manual addition needs to be made to <em>config.php</em>, in order to get the media functions to work. Here's what to add: </p>
 	<pre>
 	// path to media dir
-	$DIR_MEDIA = '<strong><?php echo i18n;;hsc($guess)?></strong>';
+	$DIR_MEDIA = '<strong><?php echo htmlspecialchars($guess)?></strong>';
 	</pre>
 
 	<p> Also, it will be necessary to create that directory yourself. If you want to make file upload possible, you should set the permissions of the media/ directory to 777 (see the documentation/tips.html in Nucleus 0.96+ for a quick guide on setting permissions). </p>
@@ -223,7 +223,7 @@
 	<p> A manual addition needs to be made to <i>config.php</i>, in order to get imported skins to work correctly. Here's what to add: </p>
 	<pre>
 	// extra skin files for imported skins
-	$DIR_SKINS = '<strong><?php echo i18n;;hsc($guess)?></strong>';
+	$DIR_SKINS = '<strong><?php echo htmlspecialchars($guess)?></strong>';
 	</pre>
 
 	<p> Also, it will be necessary to create this directory yourself. Downloaded skins can then be expanded into that directory and be imported from inside the Nucleus admin area. </p>
