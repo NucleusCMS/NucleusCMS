@@ -1714,10 +1714,10 @@ class AdminActions extends BaseActions
 	 * AdminActions::parse_commentnavlist()
 	 * Parse skinvar commentnavlist
 	 *
-	 * @param	void
+	 * @param	string	$template_name	name of template to use
 	 * @return	void
 	 */
-	public function parse_commentnavlist()
+	public function parse_commentnavlist($template_name = '')
 	{
 		global $CONF, $manager, $member;
 		
@@ -1797,7 +1797,7 @@ class AdminActions extends BaseActions
 				
 			$template['content'] = 'commentlist';
 				
-			$this->parser->parse(listplug_navlist('comment', $resource, 'table', $template));
+			$this->parser->parse(listplug_navlist('comment', $resource, 'table', $template, $template_name));
 		}
 		else
 		{
@@ -3227,10 +3227,10 @@ class AdminActions extends BaseActions
 	 * AdminActions::parse_itemnavlist()
 	 * Parse skinvar itemnavlist
 	 *
-	 * @param	void
+	 * @param	string	$template_name	name of template to use
 	 * @return	void
 	 */
-	public function parse_itemnavlist($template_name)
+	public function parse_itemnavlist($template_name = '')
 	{
 		global $CONF, $manager, $member;
 		
