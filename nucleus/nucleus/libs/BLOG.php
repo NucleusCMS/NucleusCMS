@@ -228,7 +228,8 @@ class Blog
 					if ( $old_date != 0 )
 					{
 						$oldTS = strtotime($old_date);
-						$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
+						$data = array('blog' => &$this, 'timestamp' => $oldTS);
+						$manager->notify('PreDateFoot', $data);
 						
 						if ( !in_array('DATE_FOOTER', $template) || empty($template['DATE_FOOTER']) )
 						{
@@ -239,10 +240,11 @@ class Blog
 							$tmp_footer = i18n::formatted_datetime($template['DATE_FOOTER'], $oldTS);
 						}
 						$parser->parse($tmp_footer);
-						$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
+						$manager->notify('PostDateFoot', $data);
 					}
 					
-					$manager->notify('PreDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
+					$data = array('blog' => &$this, 'timestamp' => $timestamp);
+					$manager->notify('PreDateHead', $data);
 					
 					// note, to use templatvars in the dateheader, the %-characters need to be doubled in
 					// order to be preserved by strftime
@@ -255,16 +257,17 @@ class Blog
 						$tmp_header = i18n::formatted_datetime($template['DATE_HEADER'], $timestamp);
 					}
 					$parser->parse($tmp_header);
-					$manager->notify('PostDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
+					$manager->notify('PostDateHead', $data);
 				}
 				$old_date = $new_date;
 			}
 			
 			// parse item
 			$parser->parse($template['ITEM_HEADER']);
-			$manager->notify('PreItem', array('blog' => &$this, 'item' => &$item));
+			$data = array('blog' => &$this, 'item' => &$item);
+			$manager->notify('PreItem', $data);
 			$parser->parse($template['ITEM']);
-			$manager->notify('PostItem', array('blog' => &$this, 'item' => &$item));
+			$manager->notify('PostItem', $data);
 			$parser->parse($template['ITEM_FOOTER']);
 		}
 		
@@ -273,9 +276,10 @@ class Blog
 		// add another date footer if there was at least one item
 		if ( ($numrows > 0) && $dateheads )
 		{
-			$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));
+			$data = array('blog' => &$this, 'timestamp' => strtotime($old_date));
+			$manager->notify('PreDateFoot', $data);
 			$parser->parse($template['DATE_FOOTER']);
-			$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));
+			$manager->notify('PostDateFoot', $data);
 		}
 		
 		$items->closeCursor();
@@ -353,8 +357,9 @@ class Blog
 		}
 		
 		$timestamp = date('Y-m-d H:i:s',$timestamp);
-		
-		$manager->notify('PreAddItem',array('title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => &$this, 'authorid' => &$authorid, 'timestamp' => &$timestamp, 'closed' => &$closed, 'draft' => &$draft, 'catid' => &$catid));
+
+		$data = array('title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => $this, 'authorid' => &$authorid, 'timestamp' => &$timestamp, 'closed' => &$closed, 'draft' => &$draft, 'catid' => &$catid);
+		$manager->notify('PreAddItem', $data);
 		
 		$ititle = DB::quoteValue($title);
 		$ibody = DB::quoteValue($body);
@@ -365,8 +370,9 @@ class Blog
 		$query = sprintf($query, sql_table('item'), $ititle, $ibody, $imore, $blogid, $authorid, $timestamp, $closed, $draft, $catid, $posted);
 		DB::execute($query);
 		$itemid = DB::getInsertId();
-		
-		$manager->notify('PostAddItem',array('itemid' => $itemid));
+
+		$data = array('itemid' => $itemid);
+		$manager->notify('PostAddItem', $data);
 		
 		if ( !$draft )
 		{
@@ -681,7 +687,7 @@ class Blog
 		}
 		
 		$template =& $manager->getTemplate($template);
-		$data['blogid'] = $this->blogid;
+		$listitem['blogid'] = $this->blogid;
 		
 		if ( !array_key_exists('ARCHIVELIST_HEADER', $template) || !$template['ARCHIVELIST_HEADER'] )
 		{
@@ -692,7 +698,7 @@ class Blog
 			$tplt = $template['ARCHIVELIST_HEADER'];
 		}
 		
-		echo Template::fill($tplt, $data);
+		echo Template::fill($tplt, $listitem);
 		
 		$query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) AS Day'
 				. ' FROM '.sql_table('item')
@@ -732,34 +738,35 @@ class Blog
 			{
 				$archivedate = date('Y-m-d',$current['itime']);
 				$archive['day'] = date('d',$current['itime']);
-				$data['day'] = date('d',$current['itime']);
-				$data['month'] = date('m',$current['itime']);
-				$archive['month'] = $data['month'];
+				$listitem['day'] = date('d',$current['itime']);
+				$listitem['month'] = date('m',$current['itime']);
+				$archive['month'] = $listitem['month'];
 			}
 			elseif ( $mode == 'year' )
 			{
 				$archivedate = date('Y',$current['itime']);
-				$data['day'] = '';
-				$data['month'] = '';
+				$listitem['day'] = '';
+				$listitem['month'] = '';
 				$archive['day'] = '';
 				$archive['month'] = '';
 			}
 			else
 			{
 				$archivedate = date('Y-m',$current['itime']);
-				$data['month'] = date('m',$current['itime']);
-				$archive['month'] = $data['month'];
-				$data['day'] = '';
+				$listitem['month'] = date('m',$current['itime']);
+				$archive['month'] = $listitem['month'];
+				$listitem['day'] = '';
 				$archive['day'] = '';
 			}
 			
-			$data['year'] = date('Y',$current['itime']);
-			$archive['year'] = $data['year'];
-			$data['archivelink'] = Link::create_archive_link($this->blogid,$archivedate,$linkparams);
+			$listitem['year'] = date('Y',$current['itime']);
+			$archive['year'] = $listitem['year'];
+			$listitem['archivelink'] = Link::create_archive_link($this->blogid,$archivedate,$linkparams);
+
+			$data = array('listitem' => &$listitem);
+			$manager->notify('PreArchiveListItem', $data);
 			
-			$manager->notify('PreArchiveListItem', array('listitem' => &$data));
-			
-			$temp = Template::fill($template['ARCHIVELIST_LISTITEM'],$data);
+			$temp = Template::fill($template['ARCHIVELIST_LISTITEM'],$listitem);
 			echo i18n::formatted_datetime($temp, $current['itime']);
 			return;
 		}
@@ -775,7 +782,7 @@ class Blog
 			$tplt = $template['ARCHIVELIST_FOOTER'];
 		}
 		
-		echo Template::fill($tplt, $data);
+		echo Template::fill($tplt, $listitem);
 		return;
 	}
 	
@@ -846,29 +853,29 @@ class Blog
 		$query = sprintf($query, sql_table('category'), (integer) $this->blogid);
 		$res = DB::getResult($query);
 		
-		foreach ( $res as $data )
+		foreach ( $res as $row )
 		{
 			$args = array(
-				'catid'	=> $data['catid'],
-				'name'	=> $data['catname'],
+				'catid'	=> $row['catid'],
+				'name'	=> $row['catname'],
 				'extra'	=> $linkparams
 			);
 			
-			$data['blogid']		= $this->blogid;
-			$data['blogurl']	= $blogurl;
-			$data['catlink']	= Link::create_link('category', $args);
-			$data['self']		= $CONF['Self'];
+			$row['blogid']		= $this->blogid;
+			$row['blogurl']		= $blogurl;
+			$row['catlink']		= Link::create_link('category', $args);
+			$row['self']		= $CONF['Self'];
 			
 			// this gives catiscurrent = no when no category is selected.
-			$data['catiscurrent'] = 'no';
-			$data['currentcat'] = 'no';
+			$row['catiscurrent'] = 'no';
+			$row['currentcat'] = 'no';
 			
 			if ( $this->selectedcatid )
 			{
-				if ( $this->selectedcatid == $data['catid'] )
+				if ( $this->selectedcatid == $row['catid'] )
 				{
-					$data['catiscurrent']	= 'yes';
-					$data['currentcat']		= 'yes';
+					$row['catiscurrent']	= 'yes';
+					$row['currentcat']		= 'yes';
 				}
 			}
 			else
@@ -879,23 +886,24 @@ class Blog
 					$iobj	=& $manager->getItem($itemid, 0, 0);
 					$cid	= $iobj['catid'];
 					
-					if ( $cid == $data['catid'] )
+					if ( $cid == $row['catid'] )
 					{
-						$data['catiscurrent']	= 'yes';
-						$data['currentcat']		= 'yes';
+						$row['catiscurrent']	= 'yes';
+						$row['currentcat']		= 'yes';
 					}
 				}
 			}
-			
-			$manager->notify('PreCategoryListItem', array('listitem' => &$data));
+
+			$data = array('listitem' => &$row);
+			$manager->notify('PreCategoryListItem', $data);
 			
 			if ( !array_key_exists('CATLIST_LISTITEM', $template) || empty($template['CATLIST_LISTITEM']))
 			{
-				echo Template::fill(NULL, $data);
+				echo Template::fill(NULL, $row);
 			}
 			else
 			{
-				echo Template::fill($template['CATLIST_LISTITEM'], $data);
+				echo Template::fill($template['CATLIST_LISTITEM'], $row);
 			}
 		}
 		
@@ -987,24 +995,25 @@ class Blog
 			$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY '.$orderby.' '.$direction;
 			$res = DB::getResult($query);
 			
-			foreach ( $res as $data )
+			foreach ( $res as $row )
 			{
 				$list = array();
-				$list['bloglink'] = Link::create_blogid_link($data['bnumber']);
-				$list['blogdesc'] = $data['bdesc'];
-				$list['blogurl'] = $data['burl'];
+				$list['bloglink'] = Link::create_blogid_link($row['bnumber']);
+				$list['blogdesc'] = $row['bdesc'];
+				$list['blogurl'] = $row['burl'];
 				
 				if ( $bnametype == 'shortname' )
 				{
-					$list['blogname'] = $data['bshortname'];
+					$list['blogname'] = $row['bshortname'];
 				}
 				else
 				{
 					/* all other cases */
-					$list['blogname'] = $data['bname'];
+					$list['blogname'] = $row['bname'];
 				}
-				
-				$manager->notify('PreBlogListItem',array('listitem' => &$list));
+
+				$data = array('listitem' => &$list);
+				$manager->notify('PreBlogListItem', $data);
 				
 				echo Template::fill($template['BLOGLIST_LISTITEM'], $list);
 			}
@@ -1139,8 +1148,8 @@ class Blog
 	public function getCategoryDesc($catid)
 	{
 		$query = 'SELECT cdesc FROM %s WHERE cblog=%d and catid=%d;';
-		$query = sprintf($querym, sql_table('category'), (integer) $this->blogid, (integer) $catid);
-		$res = DB::getValue();
+		$query = sprintf($query, sql_table('category'), (integer) $this->blogid, (integer) $catid);
+		$res = DB::getValue($query);
 		return $res;
 	}
 	
@@ -1767,7 +1776,8 @@ class Blog
 				// This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
 				// Note that the plugins's calling order is subject to thri order in the plugin list
 				$pinged = FALSE;
-				$manager->notify('JustPosted', array('blogid' => $this->blogid, 'pinged' => &$pinged));
+				$data = array('blogid' => $this->blogid, 'pinged' => &$pinged);
+				$manager->notify('JustPosted', $data);
 				
 				// clear all expired future posts
 				$query = "UPDATE %s SET iposted='1' WHERE iblog=%d AND itime < NOW();";

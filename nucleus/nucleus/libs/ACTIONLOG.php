@@ -64,7 +64,8 @@ class ActionLog
 
 		$query = sprintf('DELETE FROM %s', sql_table('actionlog'));
 
-		$manager->notify('ActionLogCleared',array());
+		$data = array();
+		$manager->notify('ActionLogCleared', $data);
 
 		return DB::execute($query) !== FALSE;
 	}

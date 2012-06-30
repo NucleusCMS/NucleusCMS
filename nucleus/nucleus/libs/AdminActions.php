@@ -2610,11 +2610,13 @@ class AdminActions extends BaseActions
 				$pluginfields = array();
 				if ( !in_array($this->skintype, Admin::$adminskin_actions) )
 				{
-					$manager->notify('TemplateExtraFields', array('fields' => &$pluginfields));
+					$data = array('fields' => &$pluginfields);
+					$manager->notify('TemplateExtraFields', $data);
 				}
 				else
 				{
-					$manager->notify('AdminTemplateExtraFields', array('fields' => &$pluginfields));
+					$data = array('fields' => &$pluginfields);
+					$manager->notify('AdminTemplateExtraFields', $data);
 				}
 				
 				foreach ( $pluginfields as $ptkey => $ptvalue )
@@ -3671,12 +3673,14 @@ class AdminActions extends BaseActions
 			case 'member':
 				$id  = intRequestVar('memberid');
 				$mem =& $manager->getMember($id);
-				$manager->notify('MemberSettingsFormExtras', array('member' => &$mem));
+				$data = array('member' => &$mem);
+				$manager->notify('MemberSettingsFormExtras', $data);
 				break;
 			case 'blog':
 				$id  = intRequestVar('blogid');
 				$blg =& $manager->getBlog($id);
-				$manager->notify('BlogSettingsFormExtras', array('member' => &$blg));
+				$data = array('member' => &$blg);
+				$manager->notify('BlogSettingsFormExtras', $data);
 				break;
 			case 'createaccount':
 				$data = array(
@@ -3689,7 +3693,8 @@ class AdminActions extends BaseActions
 				$manager->notify('RegistrationFormExtraFields', $data);
 				break;
 			default:
-				$manager->notify('GeneralSettingsFormExtras', array());
+			$data = array();
+				$manager->notify('GeneralSettingsFormExtras', $data);
 				break;
 		}
 		return;
@@ -3926,7 +3931,8 @@ class AdminActions extends BaseActions
 			$templates = & $manager->getTemplate($template_name);
 		}
 		$pluginExtras = array();
-		$manager->notify('QuickMenu', array('options' => &$pluginExtras));
+		$data = array('options' => &$pluginExtras);
+		$manager->notify('QuickMenu', $data);
 		
 		$template  = array();
 		if ( count($pluginExtras) > 0 )
@@ -5210,8 +5216,9 @@ class AdminActions extends BaseActions
 	public function parse_pagefoot()
 	{
 		global $action, $member, $manager, $blogid;
-		
-		$manager->notify('AdminPrePageFoot', array('action' => Admin::$action));
+
+		$data = array('action' => Admin::$action);
+		$manager->notify('AdminPrePageFoot', $data);
 		
 		$content = $this->parser->skin->getContentFromDB('pagefoot');
 		if ( !$content )

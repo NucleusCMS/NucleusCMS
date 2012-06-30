@@ -194,7 +194,8 @@ class Manager
 		if ( !array_key_exists($templateName, $this->templates) )
 		{
 			$this->_loadClass('Template','TEMPLATE.php');
-			$this->templates[$templateName] =& Template::read($templateName);
+			$tmplate_tmp = Template::read($templateName);
+			$this->templates[$templateName] =& $tmplate_tmp;
 		}
 		return $this->templates[$templateName];
 	}
@@ -541,7 +542,7 @@ class Manager
 	 * 								but it can also be an array containing multiple values
 	 * @return	void
 	 */
-	public function notify($eventName, $data)
+	public function notify($eventName, &$data)
 	{
 		// load subscription list if needed
 		if ( !is_array($this->subscriptions) )
@@ -570,7 +571,7 @@ class Manager
 				  && !empty($this->plugins[$listener])
 				  && method_exists($this->plugins[$listener], 'event_' . $eventName) )
 				{
-					call_user_func(array(&$this->plugins[$listener],'event_' . $eventName), $data);
+					call_user_func(array(&$this->plugins[$listener], 'event_' . $eventName), $data);
 				}
 			}
 		}

@@ -104,7 +104,7 @@ class NP_SkinFiles extends NucleusPlugin {
 		return;
 	}
 	
-	public function event_QuickMenu($data)
+	public function event_QuickMenu(&$data)
 	{
 		global $member;
 		

@@ -200,7 +200,8 @@ class MediumActions extends BaseActions
 	public function parse_pluginextras()
 	{
 		global $manager;
-		$manager->notify("MediaUploadFormExtras", array());
+		$data = array();
+		$manager->notify("MediaUploadFormExtras", $data);
 		return;
 	}
 	

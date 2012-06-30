@@ -201,7 +201,8 @@ class Member
 		
 		$success = 0;
 		$allowlocal = 1;
-		$manager->notify('CustomLogin', array('login' => &$login, 'password'=>&$password, 'success'=>&$success, 'allowlocal'=>&$allowlocal));
+		$data = array('login' => &$login, 'password'=>&$password, 'success'=>&$success, 'allowlocal'=>&$allowlocal);
+		$manager->notify('CustomLogin', $data);
 		
 		$this->loggedin = 0;
 		if ( $success )
@@ -225,7 +226,8 @@ class Member
 			{
 				$errormessage = 'Login failed for ' . $login;
 			}
-			$manager->notify('LoginFailed', array('username' => $login) );
+			$data = array('username' => $login);
+			$manager->notify('LoginFailed', $data);
 			ActionLog::add(INFO, $errormessage);
 		}
 		/* login success */
@@ -248,7 +250,8 @@ class Member
 			}
 			
 			$errormessage = '';
-			$manager->notify('LoginSuccess', array('member' => &$member, 'username' => $login) );
+			$data = array('member' => &$this, 'username' => $login);
+			$manager->notify('LoginSuccess', $data);
 			ActionLog::add(INFO, "Login successful for $login (sharedpc=$shared)");
 		}
 		
@@ -324,7 +327,8 @@ class Member
 			/* remove cookies on logout */
 			setcookie("{$CONF['CookiePrefix']}user", '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
 			setcookie("{$CONF['CookiePrefix']}loginkey", '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-			$manager->notify('Logout', array('username' => cookieVar("{$CONF['CookiePrefix']}user") ) );
+			$data = array('username' => cookieVar("{$CONF['CookiePrefix']}user"));
+			$manager->notify('Logout', $data);
 		}
 		
 		$this->loggedin = 0;

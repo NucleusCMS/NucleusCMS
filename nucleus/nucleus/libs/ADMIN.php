@@ -813,7 +813,8 @@ class Admin
 		
 		$item =& $manager->getItem($itemid, 1, 1);
 		$blog =& $manager->getBlog($item['blogid']);
-		$manager->notify('PrepareItemForEdit', array('blog'=> &$blog, 'item' => &$item));
+		$data = array('blog'=> &$blog, 'item' => &$item);
+		$manager->notify('PrepareItemForEdit', $data);
 		
 		if ( $blog->convertBreaks() )
 		{
@@ -1202,8 +1203,9 @@ class Admin
 		
 		$member->canAlterComment($commentid) or self::disallow();
 		
-		$comment = COMMENT::getComment($commentid);
-		$manager->notify('PrepareCommentForEdit', array('comment' => &$comment));
+		$comment = Comment::getComment($commentid);
+		$data = array('comment' => &$comment);
+		$manager->notify('PrepareCommentForEdit', $data);
 		
 		self::$contents = $comment;
 		self::$skin->parse('commentedit');
@@ -2355,14 +2357,12 @@ class Admin
 		if ($blog->getDefaultCategory() == $catid) {
 			return _ERROR_MOVEDEFCATEGORY;
 		}
-		$manager->notify(
-				'PreMoveCategory',
-				array(
-						'catid'      => &$catid,
-						'sourceblog' => &$blog,
-						'destblog'   => &$destblog
-				)
+		$data = array(
+			'catid'			=> &$catid,
+			'sourceblog'	=> &$blog,
+			'destblog'		=> &$destblog
 		);
+		$manager->notify('PreMoveCategory', $data);
 		// update comments table (cblog)
 		$query = 'SELECT '
 		. '    inumber '
@@ -2398,14 +2398,13 @@ class Admin
 		. 'WHERE '
 		. '    catid = %d';
 		sql_query(sprintf($query, $destblogid, $catid));
-		$manager->notify(
-				'PostMoveCategory',
-				array(
-						'catid'      => &$catid,
-						'sourceblog' => &$blog,
-						'destblog'   => $destblog
-				)
+		
+		$data = array(
+			'catid'			=> &$catid,
+			'sourceblog'	=> &$blog,
+			'destblog'		=>  $destblog
 		);
+		$manager->notify('PostMoveCategory', $data);
 		return;
 	}
 
@@ -5249,8 +5248,9 @@ class Admin
 		{
 			$event_identifier = 'AdminSkin';
 		}
-		
-		$manager->notify("PreDelete{$event_identifier}", array('skinid' => $skinid));
+
+		$data = array('skinid' => $skinid);
+		$manager->notify("PreDelete{$event_identifier}", $data);
 		
 		// 1. delete description
 		$query = "DELETE FROM %s WHERE sdnumber=%d;";
@@ -5262,7 +5262,7 @@ class Admin
 		$query = sprintf($query, sql_table('skin'), (integer) $skinid);
 		DB::execute($query);
 		
-		$manager->notify("PostDelete{$event_identifier}", array('skinid' => $skinid));
+		$manager->notify("PostDelete{$event_identifier}", $data);
 		
 		return;
 	}

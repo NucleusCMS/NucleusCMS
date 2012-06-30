@@ -111,7 +111,7 @@ class NP_Ping extends NucleusPlugin
 		return;
 	}
 	
-	public function event_JustPosted($data)
+	public function event_JustPosted(&$data)
 	{
 		global $DIR_PLUGINS, $DIR_NUCLEUS;
 		
@@ -138,13 +138,13 @@ class NP_Ping extends NucleusPlugin
 		return;
 	}
 	
-	public function event_PostAddItem($data)
+	public function event_PostAddItem(&$data)
 	{
 		$this->_sendPingCheck($data['itemid']);
 		return ;
 	}
 	
-	public function event_PostUpdateItem($data)
+	public function event_PostUpdateItem(&$data)
 	{
 		$this->_sendPingCheck($data['itemid']);
 		return;

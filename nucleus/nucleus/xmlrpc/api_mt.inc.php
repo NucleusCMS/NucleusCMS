@@ -188,8 +188,9 @@
 
 		$trackbacks = array ();
 		$tbstruct   = array ();
-			
-		$manager->notify('RetrieveTrackback', array ('tb_id' => $itemid, 'trackbacks' => & $trackbacks));
+		
+		$data = array('tb_id' => $itemid, 'trackbacks' => &$trackbacks);
+		$manager->notify('RetrieveTrackback', $data);
 				
 		while (list(,$v) = each ($trackbacks)) {
 			$tbstruct[] = new xmlrpcval(

@@ -123,7 +123,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		return;
 	}
 	
-	public function event_QuickMenu($data)
+	public function event_QuickMenu(&$data)
 	{
 		// only show when option enabled
 		global $member;
@@ -143,7 +143,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		return;
 	}
 	
-	public function event_PrePasswordSet($data)
+	public function event_PrePasswordSet(&$data)
 	{
 		//password, errormessage, valid
 		if ( $this->enable_security == 'no' )
@@ -172,7 +172,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		return;
 	}
 	
-	public function event_PostRegister($data)
+	public function event_PostRegister(&$data)
 	{
 		if ( $this->enable_security != 'yes' )
 		{
@@ -192,7 +192,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		return;
 	}
 	
-	public function event_CustomLogin($data)
+	public function event_CustomLogin(&$data)
 	{
 		if ( $this->enable_security != 'yes' || $this->max_failed_login <= 0 )
 		{
@@ -226,7 +226,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		return;
 	}
 	
-	public function event_LoginSuccess($data)
+	public function event_LoginSuccess(&$data)
 	{
 		//member(obj),username
 		if ( $this->enable_security != 'yes' || $this->max_failed_login <= 0 )
@@ -241,7 +241,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 		return;
 	}
 	
-	public function event_LoginFailed($data)
+	public function event_LoginFailed(&$data)
 	{
 		//username
 		if ( $this->enable_security != 'yes' || $this->max_failed_login <= 0 )

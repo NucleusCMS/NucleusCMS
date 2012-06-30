@@ -135,7 +135,7 @@ class NP_Medium extends NucleusPlugin
 		return;
 	}
 	
-	public function event_AdminPrePageHead($data)
+	public function event_AdminPrePageHead(&$data)
 	{
 		global $CONF;
 		

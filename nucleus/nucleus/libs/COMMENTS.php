@@ -120,10 +120,11 @@ class Comments
 			$comment['timestamp'] = strtotime($comment['ctime']);
 			$handler->setCurrentComment($comment);
 			$handler->setHighlight($highlight);
-			
-			$manager->notify('PreComment', array('comment' => &$comment));
+
+			$data = array('comment' => &$comment);
+			$manager->notify('PreComment', $data);
 			$parser->parse($template['COMMENTS_BODY']);
-			$manager->notify('PostComment', array('comment' => &$comment));
+			$manager->notify('PostComment', $data);
 		}
 		
 		$parser->parse($template['COMMENTS_FOOTER']);
@@ -273,8 +274,9 @@ class Comments
 			$spamcheck['email'] = $comment['email'];
 			$spamcheck['url'] = $comment['userid'];
 		}
-		
-		$manager->notify('SpamCheck', array('spamcheck' => &$spamcheck) );
+
+		$data = array('spamcheck' => &$spamcheck);
+		$manager->notify('SpamCheck', $data);
 		
 		if ( !$continue && isset($spamcheck['result']) && $spamcheck['result'] == TRUE )
 		{
@@ -336,8 +338,9 @@ class Comments
 		}
 		
 		$comment = Comment::prepare($comment);
-		
-		$manager->notify('PreAddComment', array('comment' => &$comment, 'spamcheck' => &$spamcheck) );
+
+		$data = array('comment' => &$comment, 'spamcheck' => &$spamcheck);
+		$manager->notify('PreAddComment', $data);
 		
 		$name		= DB::quoteValue($comment['user']);
 		$url		= DB::quoteValue($comment['userid']);
@@ -372,7 +375,8 @@ class Comments
 		
 		// post add comment
 		$commentid = DB::getInsertId();
-		$manager->notify('PostAddComment', array('comment' => &$comment, 'commentid' => &$commentid, 'spamcheck' => &$spamcheck) );
+		$data = array('comment' => &$comment, 'commentid' => &$commentid, 'spamcheck' => &$spamcheck);
+		$manager->notify('PostAddComment', $data);
 		
 		// succeeded !
 		return TRUE;
@@ -435,7 +439,8 @@ class Comments
 		// let plugins do verification (any plugin which thinks the comment is invalid
 		// can change 'error' to something other than '1')
 		$result = 1;
-		$manager->notify('ValidateForm', array('type' => 'comment', 'comment' => &$comment, 'error' => &$result, 'spamcheck' => &$spamcheck) );
+		$data = array('type' => 'comment', 'comment' => &$comment, 'error' => &$result, 'spamcheck' => &$spamcheck);
+		$manager->notify('ValidateForm', $data);
 		
 		return $result;
 	}

@@ -206,7 +206,8 @@ class Media
 		}
 		
 		// trigger PreMediaUpload event
-		$manager->notify('PreMediaUpload',array('collection' => &$collection, 'uploadfile' => $uploadfile, 'filename' => &$filename));
+		$data = array('collection' => &$collection, 'uploadfile' => $uploadfile, 'filename' => &$filename);
+		$manager->notify('PreMediaUpload', $data);
 		
 		// don't allow uploads to unknown or forbidden collections
 		$exceptReadOnly = TRUE;
@@ -268,8 +269,9 @@ class Media
 		$oldumask = umask(0000);
 		@chmod($mediadir . $filename, 0644);
 		umask($oldumask);
-		
-		$manager->notify('PostMediaUpload',array('collection' => $collection, 'mediadir' => $mediadir, 'filename' => $filename));
+
+		$data = array('collection' => $collection, 'mediadir' => $mediadir, 'filename' => $filename);
+		$manager->notify('PostMediaUpload', $data);
 		
 		return '';
 	}

@@ -373,8 +373,9 @@ class Item
 		
 		// off we go!
 		DB::execute($query);
-		
-		$manager->notify('PostUpdateItem', array('itemid' => $itemid));
+
+		$data = array('itemid' => $itemid);
+		$manager->notify('PostUpdateItem', $data);
 		
 		// when needed, move item and comments to new blog
 		if ( $moveNeeded )
@@ -461,8 +462,9 @@ class Item
 		{
 			return 1;
 		}
-		
-		$manager->notify('PreDeleteItem', array('itemid' => $itemid));
+
+		$data = array('itemid' => $itemid);
+		$manager->notify('PreDeleteItem', $data);
 		
 		// delete item
 		$query = "DELETE FROM %s WHERE inumber=%d;";
@@ -477,7 +479,7 @@ class Item
 		// delete all associated plugin options
 		NucleusPlugin::delete_option_values('item', $itemid);
 		
-		$manager->notify('PostDeleteItem', array('itemid' => $itemid));
+		$manager->notify('PostDeleteItem', $data);
 		
 		return 0;
 	}

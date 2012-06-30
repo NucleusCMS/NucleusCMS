@@ -116,15 +116,13 @@ class Link
 	
 		if ($usePathInfo)
 		{
-			$manager->notify(
-				'GenerateURL',
-				array(
-					'type' => $type,
-					'params' => $params,
-					'completed' => &$created,
-					'url' => &$url
-				)
+			$data = array(
+				'type'		=>  $type,
+				'params'	=>  $params,
+				'completed'	=> &$created,
+				'url'		=> &$url
 			);
+			$manager->notify('GenerateURL', $data);
 		}
 	
 		// if a plugin created the URL, return it

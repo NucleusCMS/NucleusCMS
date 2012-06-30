@@ -75,7 +75,8 @@
 				$trackbacks[] = _getArrayVal($tblist, $i);
 			}
 			
-			$manager->notify('SendTrackback', array ('tb_id' => $itemid, 'urls' => & $trackbacks));
+			$data = array('tb_id' => $itemid, 'urls' => &$trackbacks);
+			$manager->notify('SendTrackback', $data);
 		}
 
 		return $res;
@@ -209,7 +210,8 @@
 				$trackbacks[] = _getArrayVal($tblist, $i);
 			}
 			
-			$manager->notify('SendTrackback', array ('tb_id' => $itemid, 'urls' => & $trackbacks));
+			$data = array('tb_id' => $itemid, 'urls' => &$trackbacks);
+			$manager->notify('SendTrackback', $data);
 		}
 
 		return $res;

@@ -296,8 +296,9 @@ class Action
 		$newmem = new Member();
 		$newmem->readFromName($name);
 		$newmem->sendActivationLink('register');
-		
-		$manager->notify('PostRegister', array('member' => &$newmem) );
+
+		$data = array('member' => $newmem);
+		$manager->notify('PostRegister', $data);
 		
 		if ( postVar('desturl') )
 		{

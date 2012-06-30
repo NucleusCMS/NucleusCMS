@@ -55,28 +55,19 @@ class Ban
 	public function addBan($blogid, $iprange, $reason)
 	{
 		global $manager;
-		
-		$manager->notify(
-			'PreAddBan',
-			array(
-				'blogid' => $blogid,
-				'iprange' => &$iprange,
-				'reason' => &$reason
-			)
-		);
+
+		$data = array(
+				'blogid'	=> $blogid,
+				'iprange'	=> &$iprange,
+				'reason'	=> &$reason
+			);
+		$manager->notify('PreAddBan', $data);
 		
 		$query = 'INSERT INTO %s (blogid, iprange, reason) VALUES (%d, %s, %s)';
 		$query = sprintf($query, sql_table('ban'), intval($blogid), DB::quoteValue($iprange), DB::quoteValue($reason));
 		$res = DB::execute($query);
 		
-		$manager->notify(
-			'PostAddBan',
-			array(
-				'blogid' => $blogid,
-				'iprange' => $iprange,
-				'reason' => $reason
-			)
-		);
+		$manager->notify('PostAddBan', $data);
 		
 		return $res !== FALSE ? 1 : 0;
 	}
@@ -89,25 +80,17 @@ class Ban
 	{
 		global $manager;
 		
-		$manager->notify(
-			'PreDeleteBan',
-			array(
-				'blogid' => $blogid,
-				'range' => $iprange
-			)
+		$data = array(
+			'blogid'	=> $blogid,
+			'range'		=> $iprange
 		);
+		$manager->notify('PreDeleteBan', $data);
 		
 		$query = 'DELETE FROM %s WHERE blogid=%d and iprange=%s';
 		$query = sprintf($query, sql_table('ban'), intval($blogid), DB::quoteValue($iprange));
 		$res = DB::execute($query);
 		
-		$manager->notify(
-			'PostDeleteBan',
-			array(
-				'blogid' => $blogid,
-				'range' => $iprange
-			)
-		);
+		$manager->notify('PostDeleteBan', $data);
 		
 		return $res !== FALSE ? 1 : 0;
 	}

@@ -344,7 +344,8 @@ i18n::set_current_locale($locale);
 
 
 /* login completed */
-$manager->notify('PostAuthentication', array('loggedIn' => $member->isLoggedIn() ) );
+$data = array('loggedIn' => $member->isLoggedIn());
+$manager->notify('PostAuthentication', $data);
 
 /* next action */
 if ( $member->isLoggedIn() && $nextaction )

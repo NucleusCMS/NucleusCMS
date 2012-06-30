@@ -709,7 +709,8 @@ class Actions extends BaseActions
 	private function preBlogContent($type, &$blog)
 	{
 		global $manager;
-		$manager->notify('PreBlogContent',array('blog' => &$blog, 'type' => $type));
+		$data = array('blog' => &$blog, 'type' => $type);
+		$manager->notify('PreBlogContent', $data);
 		return;
 	}
 
@@ -724,7 +725,8 @@ class Actions extends BaseActions
 	private function postBlogContent($type, &$blog)
 	{
 		global $manager;
-		$manager->notify('PostBlogContent', array('blog' => &$blog, 'type' => $type));
+		$data = array('blog' => &$blog, 'type' => $type);
+		$manager->notify('PostBlogContent', $data);
 		return;
 	}
 	
@@ -1030,7 +1032,8 @@ class Actions extends BaseActions
 	public function parse_callback($eventName, $type)
 	{
 		global $manager;
-		$manager->notify($eventName, array('type' => $type));
+		$data = array('type' => $type);
+		$manager->notify($eventName, $data);
 		return;
 	}
 	

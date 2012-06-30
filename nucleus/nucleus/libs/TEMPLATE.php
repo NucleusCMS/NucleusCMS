@@ -142,26 +142,22 @@ class Template
 	static public function createNew($name, $desc)
 	{
 		global $manager;
-		
-		$manager->notify(
-			'PreAddTemplate',
-			array(
-				'name' => &$name,
-				'description' => &$desc
-			)
+
+		$data = array(
+			'name'			=> &$name,
+			'description'	=> &$desc
 		);
+		$manager->notify('PreAddTemplate', $data);
 		
 		DB::execute('INSERT INTO '.sql_table('template_desc').' (tdname, tddesc) VALUES (' . DB::quoteValue($name) . ',' . DB::quoteValue($desc) . ')');
 		$newId = DB::getInsertId();
-		
-		$manager->notify(
-			'PostAddTemplate',
-			array(
-				'templateid' => $newId,
-				'name' => $name,
-				'description' => $desc
-			)
+
+		$data = array(
+			'templateid'	=> $newId,
+			'name'			=> $name,
+			'description'	=> $desc
 		);
+		$manager->notify('PostAddTemplate', $data);
 		
 		return $newId;
 	}
@@ -176,12 +172,8 @@ class Template
 	static public function read($name)
 	{
 		global $manager;
-		$manager->notify(
-			'PreTemplateRead',
-			array(
-				'template' => &$name
-			)
-		);
+		$data = array('template' => &$name);
+		$manager->notify('PreTemplateRead', $data);
 		
 		$query = "SELECT tpartname, tcontent FROM %s, %s WHERE tdesc=tdnumber and tdname=%s";
 		$query = sprintf($query, sql_table('template_desc'), sql_table('template'), DB::quoteValue($name));
