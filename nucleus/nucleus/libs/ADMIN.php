@@ -2968,7 +2968,7 @@ class Admin
 		
 		$member->isAdmin() or self::disallow();
 		
-		self::$extrahead .= "<script type=\"text/javascript\" src=\"<%skinfile(javascript/templateEdit.js)%>\"></script>\n";
+		self::$extrahead .= "<script type=\"text/javascript\" src=\"<%skinfile(/javascripts/templateEdit.js)%>\"></script>\n";
 		self::$extrahead .= "<script type=\"text/javascript\">setTemplateEditText('" . Entity::hsc(_EDITTEMPLATE_EMPTY) . "');</script>\n";
 		
 		self::$skin->parse('templateedit');
@@ -3252,7 +3252,7 @@ class Admin
 		}
 		$member->isAdmin() or self::disallow();
 		
-		self::$extrahead .= "<script type=\"text/javascript\" src=\"<%skinfile(javascript/templateEdit.js)%>\"></script>\n";
+		self::$extrahead .= "<script type=\"text/javascript\" src=\"<%skinfile(/javascripts/templateEdit.js)%>\"></script>\n";
 		self::$extrahead .= '<script type="text/javascript">setTemplateEditText("' . Entity::hsc(_EDITTEMPLATE_EMPTY) . '");</script>' . "\n";
 		
 		self::$skin->parse('admintemplateedit');
