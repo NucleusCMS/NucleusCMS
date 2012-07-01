@@ -1351,6 +1351,7 @@ define('_MOVE_BTN',                    'Pārvietot...');
 
 // ADMIN-template template types
 include_once('adminskinTypes.php');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_NAVILIST',		'navibar for item/comment list');
 define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLIST_BD_TADM',  _SKINABLEADMIN_ADMINSKINVAR_STR . ' [yrbloglist] member is blog ADMIN');
 define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLIST_BD_SADM',  _SKINABLEADMIN_ADMINSKINVAR_STR . ' [yrbloglist] member is super ADMIN');
 define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_GURL',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'plugin URL');

@@ -3397,6 +3397,7 @@ class Admin
 		self::addToTemplate($templateid, 'SHOWLIST_LISTPLUG_TABLE_IBANLIST_HEAD',	postVar('SHOWLIST_LISTPLUG_TABLE_IBANLIST_HEAD'));
 		self::addToTemplate($templateid, 'SHOWLIST_LISTPLUG_TABLE_IBANLIST_BODY',	postVar('SHOWLIST_LISTPLUG_TABLE_IBANLIST_BODY'));
 		self::addToTemplate($templateid, 'SHOWLIST_LISTPLUG_TABLE_IBANLIST_FOOT',	postVar('SHOWLIST_LISTPLUG_TABLE_IBANLIST_FOOT'));
+		self::addToTemplate($templateid, 'SHOWLIST_LISTPLUG_TABLE_NAVILIST',		postVar('SHOWLIST_LISTPLUG_TABLE_NAVILIST'));
 		self::addToTemplate($templateid, 'PLUGIN_QUICKMENU_TITLE',					postVar('PLUGIN_QUICKMENU_TITLE'));
 		self::addToTemplate($templateid, 'PLUGIN_QUICKMENU_HEAD',					postVar('PLUGIN_QUICKMENU_HEAD'));
 		self::addToTemplate($templateid, 'PLUGIN_QUICKMENU_BODY',					postVar('PLUGIN_QUICKMENU_BODY'));

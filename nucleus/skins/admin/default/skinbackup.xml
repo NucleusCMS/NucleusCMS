@@ -657,6 +657,7 @@
 	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_IBANLIST_HEAD, SHOWLIST_LISTPLUG_TABLE_IBANLIST_HEAD, , 106)%>
 	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_IBANLIST_BODY, SHOWLIST_LISTPLUG_TABLE_IBANLIST_BODY, , 107)%>
 	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_IBANLIST_FOOT, SHOWLIST_LISTPLUG_TABLE_IBANLIST_FOOT, , 108)%>
+	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_NAVILIST, SHOWLIST_LISTPLUG_TABLE_NAVILIST, , 109)%>
 	</tbody>
 	</table>
 	
@@ -2030,7 +2031,6 @@
 	</td>
 	</tr>
 	</table>
-	</div>
 	</form>
 	<%if(autosave)%>
 	<script type="text/javascript">
@@ -3824,6 +3824,54 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 <part name="SHOWLIST_LISTPLUG_SELECT_FOOT"><![CDATA[
 	</select>
 ]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_NAVILIST"><![CDATA[
+<table frame="box" rules="all" sumamry="navigation actions" class="navigation">
+<tr>
+<td>
+<form method="post" action="<%adminurl%>">
+<input type="hidden" name="start" value="<%prev%>" />
+<button type="submit" name="action" value="<%action%>">&lt; &lt; <%listsprev%></button>
+<input type="hidden" name="blogid" value="<%blogid%>" />
+<input type="hidden" name="itemid" value="<%itemid%>" />
+<input type="hidden" name="search" value="<%search%>" />
+<input type="hidden" name="amount" value="<%amount%>" />
+</form>
+</td>
+<td>
+<form method="post" action="<%adminurl%>">
+<input type="text" name="amount" size="3" value="<%amount%>" />
+<%listsperpage%>
+<input type="hidden" name="start" value="0" />
+<button type="submit" name="action" value="<%action%>">&gt; <%listschange%></button>
+<input type="hidden" name="blogid" value="<%blogid%>" />
+<input type="hidden" name="itemid" value="<%itemid%>" />
+<input type="hidden" name="search" value="<%search%>" />
+<input type="hidden" name="amount" value="<%amount%>" />
+</form>
+</td>
+<td>
+<form method="post" action="<%adminurl%>">
+<input type="text" name="search" value="<%search%>" size="7" />
+<input type="hidden" name="start" value="0" />
+<button type="submit" name="action" value="<%action%>">&gt; <%listssearch%></button>
+<input type="hidden" name="blogid" value="<%blogid%>" />
+<input type="hidden" name="itemid" value="<%itemid%>" />
+<input type="hidden" name="search" value="<%search%>" />
+<input type="hidden" name="amount" value="<%amount%>" />
+</form>
+</td>
+<td>
+<form method="post" action="<%adminurl%>">
+<input type="hidden" name="start" value="<%next%>" />
+<button type="submit" name="action" value="<%action%>"><%listsnext%>&gt; &gt; </button>
+<input type="hidden" name="blogid" value="<%blogid%>" />
+<input type="hidden" name="itemid" value="<%itemid%>" />
+<input type="hidden" name="search" value="<%search%>" />
+<input type="hidden" name="amount" value="<%amount%>" />
+</form>
+</td>
+</tr>
+</table>]]></part>
 <part name="INPUTYESNO_TEMPLATE_NORMAL"><![CDATA[
 	<input type="radio" name="<%name%>" value="<%yesval%>"<%yescheckedval%> id="<%yesid%>" />
 	<label for="<%yesid%>"><%yesvaltext%></label>
@@ -3917,6 +3965,55 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 ]]></part>
 <part name="PLUGIN_QUICKMENU_FOOT"><![CDATA[
 	</ul>
+]]></part>
+<part name="SHOWLIST_LISTPLUG_TABLE_NAVILIST"><![CDATA[
+	<table frame="box" rules="all" sumamry="navigation actions" class="navigation">
+	<tr>
+	<td>
+	<form method="post" action="<%adminurl%>">
+	<input type="hidden" name="start" value="<%prev%>" />
+	<button type="submit" name="action" value="<%action%>">&lt; &lt; <%listsprev%></button>
+	<input type="hidden" name="blogid" value="<%blogid%>" />
+	<input type="hidden" name="itemid" value="<%itemid%>" />
+	<input type="hidden" name="search" value="<%search%>" />
+	<input type="hidden" name="amount" value="<%amount%>" />
+	</form>
+	</td>
+	<td>
+	<form method="post" action="<%adminurl%>">
+	<input type="text" name="amount" size="3" value="<%amount%>" />
+	<%listsperpage%>
+	<input type="hidden" name="start" value="0" />
+	<button type="submit" name="action" value="<%action%>">&gt; <%listschange%></button>
+	<input type="hidden" name="blogid" value="<%blogid%>" />
+	<input type="hidden" name="itemid" value="<%itemid%>" />
+	<input type="hidden" name="search" value="<%search%>" />
+	<input type="hidden" name="amount" value="<%amount%>" />
+	</form>
+	</td>
+	<td>
+	<form method="post" action="<%adminurl%>">
+	<input type="text" name="search" value="<%search%>" size="7" />
+	<input type="hidden" name="start" value="0" />
+	<button type="submit" name="action" value="<%action%>">&gt; <%listssearch%></button>
+	<input type="hidden" name="blogid" value="<%blogid%>" />
+	<input type="hidden" name="itemid" value="<%itemid%>" />
+	<input type="hidden" name="search" value="<%search%>" />
+	<input type="hidden" name="amount" value="<%amount%>" />
+	</form>
+	</td>
+	<td>
+	<form method="post" action="<%adminurl%>">
+	<input type="hidden" name="start" value="<%next%>" />
+	<button type="submit" name="action" value="<%action%>"><%listsnext%>&gt; &gt; </button>
+	<input type="hidden" name="blogid" value="<%blogid%>" />
+	<input type="hidden" name="itemid" value="<%itemid%>" />
+	<input type="hidden" name="search" value="<%search%>" />
+	<input type="hidden" name="amount" value="<%amount%>" />
+	</form>
+	</td>
+	</tr>
+	</table>
 ]]></part>
 </template>
 </nucleusskin>

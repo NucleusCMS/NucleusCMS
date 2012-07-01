@@ -2374,73 +2374,91 @@ function listplug_batchlist($attr, $query, $type, $vars, $template_name)
  */
 function listplug_navlist($attribute, $query, $type, $vars, $template_name)
 {
-	global $CONF;
+	global $CONF, $manager;
+	$dat['adminurl'] = $CONF['AdminURL'];
 	
-	$prev = $vars['start'] - $vars['amount'];
-	if ( $prev < $vars['minamount'] )
+	$templates = array();
+	if ( $template_name )
 	{
-		$prev = $vars['minamount'];
+		$templates =& $manager->getTemplate($template_name);
 	}
 	
-	$next = $vars['start'] + $vars['amount'];
+	$dat['prev'] = $vars['start'] - $vars['amount'];
+	if ( $dat['prev'] < $vars['minamount'] )
+	{
+		$dat['prev'] = $vars['minamount'];
+	}
+	
+	$dat['next'] = $vars['start'] + $vars['amount'];
 	
 	$navi = "\n";
-	$navi .= "<table frame=\"box\" rules=\"all\" sumamry=\"navigation actions\" class=\"navigation\">\n"
-	       . "<tr>\n";
-	$navi .= "<td>\n"
-	       . "<form method=\"post\" action=\"{$CONF['AdminURL']}\">\n"
-	       . "<input type=\"hidden\" name=\"start\" value=\"{$prev}\" />\n"
-	       . "<button type=\"submit\" name=\"action\" value=\"{$vars['action']}\">&lt; &lt; " . _LISTS_PREV . "</button>\n"
-	       . "<input type=\"hidden\" name=\"blogid\" value=\"{$vars['blogid']}\" />\n"
-	       . "<input type=\"hidden\" name=\"itemid\" value=\"{$vars['itemid']}\" />\n"
-	       . "<input type=\"hidden\" name=\"search\" value=\"{$vars['search']}\" />\n"
-	       . "<input type=\"hidden\" name=\"amount\" value=\"{$vars['amount']}\" />\n"
-	       . "</form>\n"
-	       . "</td>\n";
-	$navi .= "<td>\n"
-	       . "<form method=\"post\" action=\"{$CONF['AdminURL']}\">\n"
-	       . "<input type=\"text\" name=\"amount\" size=\"3\" value=\"{$vars['amount']}\" />\n"
-	       . _LISTS_PERPAGE
-	       . "<input type=\"hidden\" name=\"start\" value=\"0\" />\n"
-	       . "<button type=\"submit\" name=\"action\" value=\"{$vars['action']}\">&gt; " . _LISTS_CHANGE . "</button>\n"
-	       . "<input type=\"hidden\" name=\"blogid\" value=\"{$vars['blogid']}\" />\n"
-	       . "<input type=\"hidden\" name=\"itemid\" value=\"{$vars['itemid']}\" />\n"
-	       . "<input type=\"hidden\" name=\"search\" value=\"{$vars['search']}\" />\n"
-	       . "<input type=\"hidden\" name=\"amount\" value=\"{$vars['amount']}\" />\n"
-	       . "</form>\n"
-	       . "</td>\n";
-	$navi .= "<td>\n"
-	       . "<form method=\"post\" action=\"{$CONF['AdminURL']}\">\n"
-	       . "<input type=\"text\" name=\"search\" value=\"{$vars['search']}\" size=\"7\" />\n"
-	       . "<input type=\"hidden\" name=\"start\" value=\"0\" />\n"
-	       . "<button type=\"submit\" name=\"action\" value=\"{$vars['action']}\">&gt; " . _LISTS_SEARCH . "</button>\n"
-	       . "<input type=\"hidden\" name=\"blogid\" value=\"{$vars['blogid']}\" />\n"
-	       . "<input type=\"hidden\" name=\"itemid\" value=\"{$vars['itemid']}\" />\n"
-	       . "<input type=\"hidden\" name=\"search\" value=\"{$vars['search']}\" />\n"
-	       . "<input type=\"hidden\" name=\"amount\" value=\"{$vars['amount']}\" />\n"
-	       . "</form>\n"
-	       . "</td>\n";
-	$navi .= "<td>\n"
-	       . "<form method=\"post\" action=\"{$CONF['AdminURL']}\">\n"
-	       . "<input type=\"hidden\" name=\"start\" value=\"{$next}\" />\n"
-	       . "<button type=\"submit\" name=\"action\" value=\"{$vars['action']}\">" . _LISTS_NEXT . "&gt; &gt; </button>\n"
-	       . "<input type=\"hidden\" name=\"blogid\" value=\"{$vars['blogid']}\" />\n"
-	       . "<input type=\"hidden\" name=\"itemid\" value=\"{$vars['itemid']}\" />\n"
-	       . "<input type=\"hidden\" name=\"search\" value=\"{$vars['search']}\" />\n"
-	       . "<input type=\"hidden\" name=\"amount\" value=\"{$vars['amount']}\" />\n"
-	       . "</form>\n"
-	       . "</td>\n";
-	$navi .= "</tr>\n"
-	       . "</table>\n";
-	
+	if ( !array_key_exists('SHOWLIST_LISTPLUG_TABLE_NAVILIST', $templates) || empty($templates['SHOWLIST_LISTPLUG_TABLE_NAVILIST']) )
+	{
+		$navi .= "<table frame=\"box\" rules=\"all\" sumamry=\"navigation actions\" class=\"navigation\">\n"
+		       . "<tr>\n";
+		$navi .= "<td>\n"
+		       . "<form method=\"post\" action=\"<%adminurl%>\">\n"
+		       . "<input type=\"hidden\" name=\"start\" value=\"<%prev%>\" />\n"
+		       . "<button type=\"submit\" name=\"action\" value=\"<%action%>\">&lt; &lt; <%listsprev%></button>\n"
+		       . "<input type=\"hidden\" name=\"blogid\" value=\"<%blogid%>\" />\n"
+		       . "<input type=\"hidden\" name=\"itemid\" value=\"<%itemid%>\" />\n"
+		       . "<input type=\"hidden\" name=\"search\" value=\"<%search%>\" />\n"
+		       . "<input type=\"hidden\" name=\"amount\" value=\"<%amount%>\" />\n"
+		       . "</form>\n"
+		       . "</td>\n";
+		$navi .= "<td>\n"
+		       . "<form method=\"post\" action=\"<%adminurl%>\">\n"
+		       . "<input type=\"text\" name=\"amount\" size=\"3\" value=\"<%amount%>\" />\n"
+		       . "<%listsperpage%>"
+		       . "<input type=\"hidden\" name=\"start\" value=\"0\" />\n"
+		       . "<button type=\"submit\" name=\"action\" value=\"<%action%>\">&gt; <%listschange%></button>\n"
+		       . "<input type=\"hidden\" name=\"blogid\" value=\"<%blogid%>\" />\n"
+		       . "<input type=\"hidden\" name=\"itemid\" value=\"<%itemid%>\" />\n"
+		       . "<input type=\"hidden\" name=\"search\" value=\"<%search%>\" />\n"
+		       . "<input type=\"hidden\" name=\"amount\" value=\"<%amount%>\" />\n"
+		       . "</form>\n"
+		       . "</td>\n";
+		$navi .= "<td>\n"
+		       . "<form method=\"post\" action=\"<%adminurl%>\">\n"
+		       . "<input type=\"text\" name=\"search\" value=\"<%search%>\" size=\"7\" />\n"
+		       . "<input type=\"hidden\" name=\"start\" value=\"0\" />\n"
+		       . "<button type=\"submit\" name=\"action\" value=\"<%action%>\">&gt; <%listssearch%></button>\n"
+		       . "<input type=\"hidden\" name=\"blogid\" value=\"<%blogid%>\" />\n"
+		       . "<input type=\"hidden\" name=\"itemid\" value=\"<%itemid%>\" />\n"
+		       . "<input type=\"hidden\" name=\"search\" value=\"<%search%>\" />\n"
+		       . "<input type=\"hidden\" name=\"amount\" value=\"<%amount%>\" />\n"
+		       . "</form>\n"
+		       . "</td>\n";
+		$navi .= "<td>\n"
+		       . "<form method=\"post\" action=\"<%adminurl%>\">\n"
+		       . "<input type=\"hidden\" name=\"start\" value=\"<%next%>\" />\n"
+		       . "<button type=\"submit\" name=\"action\" value=\"<%action%>\"><%listsnext%>&gt; &gt; </button>\n"
+		       . "<input type=\"hidden\" name=\"blogid\" value=\"<%blogid%>\" />\n"
+		       . "<input type=\"hidden\" name=\"itemid\" value=\"<%itemid%>\" />\n"
+		       . "<input type=\"hidden\" name=\"search\" value=\"<%search%>\" />\n"
+		       . "<input type=\"hidden\" name=\"amount\" value=\"<%amount%>\" />\n"
+		       . "</form>\n"
+		       . "</td>\n";
+		$navi .= "</tr>\n"
+		       . "</table>\n";
+	}
+	else
+	{
+		$navi .= $templates['SHOWLIST_LISTPLUG_TABLE_NAVILIST'];
+	}
+	$dat['listsprev']		= _LISTS_PREV;
+	$dat['listschange']		= _LISTS_CHANGE;
+	$dat['listssearch']		= _LISTS_SEARCH;
+	$dat['listsnext']		= _LISTS_NEXT;
+	$dat['listsperpage']	= _LISTS_PERPAGE;
 	/* HEAD */
-	$template = $navi;
+	$template = Template::fill($navi, $dat);
 	
 	/* BODY */
 	$template .= listplug_batchlist($attribute, $query, $type, $vars, $template_name);
 	
 	/* FOOT */
-	$template .= $navi;
+	$template .= Template::fill($navi, $dat);
 	
 	return $template;
 }

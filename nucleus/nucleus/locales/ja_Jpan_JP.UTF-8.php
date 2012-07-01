@@ -1351,6 +1351,7 @@ define('_MOVE_BTN',									'アイテムを移動する');
 
 // ADMIN-template template types
 include_once('adminskinTypes.php');
+define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_NAVILIST',		'アイテム/コメントのリストのナビゲーション');
 define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLIST_BD_TADM',  _SKINABLEADMIN_ADMINSKINVAR_STR . ' [yrbloglist] メンバーがブログ管理権限を持っている時の追加項目');
 define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_BLIST_BD_SADM',  _SKINABLEADMIN_ADMINSKINVAR_STR . ' [yrbloglist] メンバーが最高管理権限を持っている時の追加項目');
 define('_ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_GURL',  _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_PLUGLIST_BODY . 'プラグインの入手リンク');
