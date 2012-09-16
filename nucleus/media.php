@@ -282,10 +282,8 @@ function media_choose() {
 	?>
 	<br /><br />
 	<?php
-	$manager->notify(
-                'MediaUploadFormExtras',
-                array()
-            );
+	$data = array();
+	$manager->notify('MediaUploadFormExtras', $data);
 	?>
 	  <br /><br />
 	  <input type="submit" value="<?php echo _UPLOAD_BUTTON?>" />

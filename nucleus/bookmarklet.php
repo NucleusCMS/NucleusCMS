@@ -279,7 +279,8 @@ function bm_doEditForm() {
 	$item =& $manager->getItem($itemid, 1, 1);
 	$blog =& $manager->getBlog(getBlogIDFromItemID($itemid) );
 
-	$manager->notify('PrepareItemForEdit', array('item' => &$item) );
+	$data = array('item' => &$item);
+	$manager->notify('PrepareItemForEdit', $data);
 
 	if ($blog->convertBreaks() ) {
 		$item['body'] = removeBreaks($item['body']);

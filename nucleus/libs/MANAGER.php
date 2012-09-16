@@ -403,7 +403,7 @@ class MANAGER {
 	  *		Can contain any type of data, depending on the event type. Usually this is
 	  *		an itemid, blogid, ... but it can also be an array containing multiple values
 	  */
-	function notify($eventName, $data) {
+	function notify($eventName, &$data) {
 		// load subscription list if needed
 		if (!is_array($this->subscriptions))
 			$this->_loadSubscriptions();
@@ -421,8 +421,8 @@ class MANAGER {
 				// load class if needed
 				$this->_loadPlugin($listener);
 				// do notify (if method exists)
-                if (isset($this->plugins[$listener]) && method_exists($this->plugins[$listener], 'event_' . $eventName))
-					call_user_func(array(&$this->plugins[$listener],'event_' . $eventName), &$data);
+				if (isset($this->plugins[$listener]) && method_exists($this->plugins[$listener], 'event_' . $eventName))
+					call_user_func(array($this->plugins[$listener], 'event_' . $eventName), $data);
 			}
 		}
 

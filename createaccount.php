@@ -74,10 +74,16 @@
 		<br />
 		<?php
 		// add extra fields from Plugins, like NP_Profile
-		$manager->notify('RegistrationFormExtraFields', array('type' => 'createaccount.php', 'prelabel' => '', 'postlabel' => '<br />', 'prefield' => '', 'postfield' => '<br /><br />'));
+		$data = array(
+			'type'		=> 'createaccount.php',
+			'prelabel'	=> '', 'postlabel' => '<br />',
+			'prefield'	=> '', 'postfield' => '<br /><br />'
+		);
+		$manager->notify('RegistrationFormExtraFields', $data);
 		// add a Captcha challenge or something else
 		global $manager;
-		$manager->notify('FormExtra', array('type' => 'membermailform-notloggedin'));
+		$data = array('type' => 'membermailform-notloggedin');
+		$manager->notify('FormExtra', $data);
 		?>
 		<br />
 		<br />						
@@ -126,10 +132,16 @@
 		<br />
 		<?php
 		// add extra fields from plugin, like NP_Profile
-		$manager->notify('RegistrationFormExtraFields', array('type' => 'createaccount.php', 'prelabel' => '', 'postlabel' => '<br />', 'prefield' => '', 'postfield' => '<br /><br />'));
+		$data = array(
+			'type'		=> 'createaccount.php',
+			'prelabel'	=> '', 'postlabel' => '<br />',
+			'prefield'	=> '', 'postfield' => '<br /><br />'
+		);
+		$manager->notify('RegistrationFormExtraFields', $data);
 		// add a Captcha challenge or something else
 		global $manager;
-		$manager->notify('FormExtra', array('type' => 'membermailform-notloggedin'));
+		$data = array('type' => 'membermailform-notloggedin');
+		$manager->notify('FormExtra', $data);
 		?>
 		<br />
 		<br />

@@ -163,7 +163,19 @@ class ITEM {
 		//Setting the itemOptions
 		$aOptions = requestArray('plugoption');
 		NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
-		$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $i_title, 'body' => $i_body, 'more' => $i_more, 'closed' => $i_closed, 'catid' => $i_catid)));
+		
+		$data = array(
+			'context'	=> 'item',
+			'itemid'	=> $itemid,
+			'item'		=> array(
+				'title'		=> $i_title,
+				'body'		=> $i_body,
+				'more'		=> $i_more,
+				'closed'	=> $i_closed,
+				'catid'		=> $i_catid
+			)
+		);
+		$manager->notify('PostPluginOptionsUpdate', $data);
 
 		if ($i_draftid > 0) {
 			// delete permission is checked inside ITEM::delete()
@@ -207,7 +219,16 @@ class ITEM {
 		}
 
 		// call plugins
-		$manager->notify('PreUpdateItem',array('itemid' => $itemid, 'title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => &$blog, 'closed' => &$closed, 'catid' => &$catid));
+		$data = array(
+			'itemid'	=>  $itemid,
+			'title'		=> &$title,
+			'body'		=> &$body,
+			'more'		=> &$more,
+			'blog'		=> &$blog,
+			'closed'	=> &$closed,
+			'catid'		=> &$catid
+		);
+		$manager->notify('PreUpdateItem', $data);
 
 		// update item itsself
 		$query =  'UPDATE '.sql_table('item')
@@ -263,7 +284,8 @@ class ITEM {
 		// off we go!
 		sql_query($query);
 
-		$manager->notify('PostUpdateItem',array('itemid' => $itemid));
+		$data = array('itemid' => $itemid);
+		$manager->notify('PostUpdateItem', $data);
 
 		// when needed, move item and comments to new blog
 		if ($moveNeeded)
@@ -272,7 +294,19 @@ class ITEM {
 		//update the itemOptions
 		$aOptions = requestArray('plugoption');
 		NucleusPlugin::_applyPluginOptions($aOptions);
-		$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $title, 'body' => $body, 'more' => $more, 'closed' => $closed, 'catid' => $catid)));
+		
+		$data = array(
+			'context'	=> 'item',
+			'itemid'	=> $itemid,
+			'item'		=> array(
+				'title'		=> $title,
+				'body'		=> $body,
+				'more'		=> $more,
+				'closed'	=> $closed,
+				'catid'		=> $catid
+			)
+		);
+		$manager->notify('PostPluginOptionsUpdate', $data);
 
 	}
 
@@ -289,14 +323,12 @@ class ITEM {
 
 		$new_blogid = getBlogIDFromCatID($new_catid);
 
-		$manager->notify(
-			'PreMoveItem',
-			array(
-				'itemid' => $itemid,
-				'destblogid' => $new_blogid,
-				'destcatid' => $new_catid
-			)
+		$data = array(
+			'itemid'		=> $itemid,
+			'destblogid'	=> $new_blogid,
+			'destcatid'		=> $new_catid
 		);
+		$manager->notify('PreMoveItem', $data);
 
 
 		// update item table
@@ -307,14 +339,12 @@ class ITEM {
 		$query = 'UPDATE '.sql_table('comment')." SET cblog=" . $new_blogid." WHERE citem=" . $itemid;
 		sql_query($query);
 
-		$manager->notify(
-			'PostMoveItem',
-			array(
-				'itemid' => $itemid,
-				'destblogid' => $new_blogid,
-				'destcatid' => $new_catid
-			)
+		$data = array(
+			'itemid'		=> $itemid,
+			'destblogid'	=> $new_blogid,
+			'destcatid'		=> $new_catid
 		);
+		$manager->notify('PostMoveItem', $data);
 	}
 
 	/**
@@ -332,7 +362,8 @@ class ITEM {
 		}
 
 
-		$manager->notify('PreDeleteItem', array('itemid' => $itemid));
+		$data = array('itemid' => $itemid);
+		$manager->notify('PreDeleteItem', $data);
 
 		// delete item
 		$query = 'DELETE FROM '.sql_table('item').' WHERE inumber=' . $itemid;
@@ -345,7 +376,8 @@ class ITEM {
 		// delete all associated plugin options
 		NucleusPlugin::_deleteOptionValues('item', $itemid);
 
-		$manager->notify('PostDeleteItem', array('itemid' => $itemid));
+		$data = array('itemid' => $itemid);
+		$manager->notify('PostDeleteItem', $data);
 
 		return 0;
 	}
@@ -445,7 +477,18 @@ class ITEM {
 		//Setting the itemOptions
 		//$aOptions = requestArray('plugoption');
 		//NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
-		//$manager->notify('PostPluginOptionsUpdate',array('context' => 'item', 'itemid' => $itemid, 'item' => array('title' => $i_title, 'body' => $i_body, 'more' => $i_more, 'closed' => $i_closed, 'catid' => $i_catid)));
+		$data = array(
+			'context'	=> 'item',
+			'itemid'	=> $itemid,
+			'item'		=> array(
+				'title'		=> $i_title,
+				'body'		=> $i_body,
+				'more'		=> $i_more,
+				'closed'	=> $i_closed,
+				'catid'		=> $i_catid
+			)
+		);
+		//$manager->notify('PostPluginOptionsUpdate', $data);
 
 		// success
 		return array('status' => 'added', 'draftid' => $itemid);

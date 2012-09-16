@@ -198,26 +198,46 @@ class BLOG {
 					$timestamp = $item->timestamp;
 					if ($old_date != 0) {
 						$oldTS = strtotime($old_date);
-						$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
+						$data = array(
+							'blog'		=> &$this,
+							'timestamp'	=>  $oldTS
+						);
+						$manager->notify('PreDateFoot', $data);
 						$tmp_footer = strftime(isset($template['DATE_FOOTER'])?$template['DATE_FOOTER']:'', $oldTS);
 						$parser->parse($tmp_footer);
-						$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => $oldTS));
+						$data = array(
+							'blog'		=> &$this,
+							'timestamp'	=>  $oldTS
+						);
+						$manager->notify('PostDateFoot', $data);
 					}
-					$manager->notify('PreDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
+					$data = array(
+						'blog'		=> &$this,
+						'timestamp'	=>  $timestamp
+					);
+					$manager->notify('PreDateHead', $data);
 					// note, to use templatvars in the dateheader, the %-characters need to be doubled in
 					// order to be preserved by strftime
 					$tmp_header = strftime((isset($template['DATE_HEADER']) ? $template['DATE_HEADER'] : null), $timestamp);
 					$parser->parse($tmp_header);
-					$manager->notify('PostDateHead',array('blog' => &$this, 'timestamp' => $timestamp));
+					$data = array(
+						'blog'		=> &$this,
+						'timestamp'	=>  $timestamp
+					);
+					$manager->notify('PostDateHead', $data);
 				}
 				$old_date = $new_date;
 			}
 
 			// parse item
+			$data = array(
+				'blog' => &$this,
+				'item' => &$item
+			);
 			$parser->parse($template['ITEM_HEADER']);
-			$manager->notify('PreItem', array('blog' => &$this, 'item' => &$item));
+			$manager->notify('PreItem', $data);
 			$parser->parse($template['ITEM']);
-			$manager->notify('PostItem', array('blog' => &$this, 'item' => &$item));
+			$manager->notify('PostItem', $data);
 			$parser->parse($template['ITEM_FOOTER']);
 
 		}
@@ -225,10 +245,15 @@ class BLOG {
 		$numrows = sql_num_rows($items);
 
 		// add another date footer if there was at least one item
-		if (($numrows > 0) && $dateheads) {
-			$manager->notify('PreDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));
+		if ( ($numrows > 0) && $dateheads )
+		{
+			$data = array(
+				'blog'		=> &$this,
+				'timestamp'	=> strtotime($old_date)
+			);
+			$manager->notify('PreDateFoot', $data);
 			$parser->parse($template['DATE_FOOTER']);
-			$manager->notify('PostDateFoot',array('blog' => &$this, 'timestamp' => strtotime($old_date)));
+			$manager->notify('PostDateFoot', $data);
 		}
 
 		sql_free_result($items);	// free memory
@@ -277,7 +302,18 @@ class BLOG {
 
 		$timestamp = date('Y-m-d H:i:s',$timestamp);
 
-		$manager->notify('PreAddItem',array('title' => &$title, 'body' => &$body, 'more' => &$more, 'blog' => &$this, 'authorid' => &$authorid, 'timestamp' => &$timestamp, 'closed' => &$closed, 'draft' => &$draft, 'catid' => &$catid));
+		$data = array(
+			'title'		=> &$title,
+			'body'		=> &$body,
+			'more'		=> &$more,
+			'blog'		=> &$this,
+			'authorid'	=> &$authorid,
+			'timestamp'	=> &$timestamp,
+			'closed'	=> &$closed,
+			'draft'		=> &$draft,
+			'catid'		=> &$catid
+		);
+		$manager->notify('PreAddItem', $data);
 
 		$ititle = sql_real_escape_string($title);
 		$ibody = sql_real_escape_string($body);
@@ -288,7 +324,8 @@ class BLOG {
 		sql_query($query);
 		$itemid = sql_insert_id();
 
-		$manager->notify('PostAddItem',array('itemid' => $itemid));
+		$data = array('itemid' => $itemid);
+		$manager->notify('PostAddItem', $data);
 
 		if (!$draft)
 			$this->updateUpdateFile();
@@ -375,28 +412,24 @@ class BLOG {
 				$catName = $catName . $i;
 			}
 
-			$manager->notify(
-				'PreAddCategory',
-				array(
-					'blog' => &$this,
-					'name' => &$catName,
-					'description' => $catDescription
-				)
+			$data = array(
+				'blog'			=> &$this,
+				'name'			=> &$catName,
+				'description'	=> $catDescription
 			);
+			$manager->notify('PreAddCategory', $data);
 
 			$query = 'INSERT INTO '.sql_table('category').' (cblog, cname, cdesc) VALUES (' . $this->getID() . ", '" . sql_real_escape_string($catName) . "', '" . sql_real_escape_string($catDescription) . "')";
 			sql_query($query);
 			$catid = sql_insert_id();
 
-			$manager->notify(
-				'PostAddCategory',
-				array(
-					'blog' => &$this,
-					'name' => $catName,
-					'description' => $catDescription,
-					'catid' => $catid
-				)
+			$data = array(
+				'blog'			=> &$this,
+				'name'			=>  $catName,
+				'description'	=>  $catDescription,
+				'catid'			=>  $catid
 			);
+			$manager->notify('PostAddCategory', $data);
 
 			return $catid;
 		} else {
@@ -638,12 +671,10 @@ class BLOG {
 			$archive['year'] = $data['year'];
 			$data['archivelink'] = createArchiveLink($this->getID(),$archivedate,$linkparams);
 
-			$manager->notify(
-				'PreArchiveListItem',
-				array(
-					'listitem' => &$data
-				)
+			$data = array(
+				'listitem' => &$data
 			);
+			$manager->notify('PreArchiveListItem', $data);
 
 			$temp = TEMPLATE::fill($template['ARCHIVELIST_LISTITEM'],$data);
 			echo strftime($temp,$current->itime);
@@ -751,12 +782,10 @@ class BLOG {
 				}
 			}
 
-			$manager->notify(
-				'PreCategoryListItem',
-				array(
-					'listitem' => &$data
-				)
+			$data = array(
+				'listitem' => &$data
 			);
+			$manager->notify('PreCategoryListItem', $data);
 
 			echo TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
 			//$temp = TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
@@ -845,12 +874,10 @@ class BLOG {
 				$list['blogname'] = $data['bname'];
 			}
 
-			$manager->notify(
-				'PreBlogListItem',
-				array(
-					'listitem' => &$list
-				)
+			$data = array(
+				'listitem' => &$list
 			);
+			$manager->notify('PreBlogListItem', $data);
 
 			echo TEMPLATE::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
 
@@ -1211,29 +1238,24 @@ class BLOG {
 		if ($tmem->isTeamMember($this->getID()))
 			return 0;
 
-		$manager->notify(
-			'PreAddTeamMember',
-			array(
-				'blog' => &$this,
-				'member' => &$tmem,
-				'admin' => &$admin
-			)
+		$data = array(
+			'blog'		=> &$this,
+			'member'	=> &$tmem,
+			'admin'		=> &$admin
 		);
+		$manager->notify('PreAddTeamMember', $data);
 
 		// add to team
 		$query = 'INSERT INTO '.sql_table('team').' (TMEMBER, TBLOG, TADMIN) '
 			   . 'VALUES (' . $memberid .', '.$this->getID().', "'.$admin.'")';
 		sql_query($query);
 
-		$manager->notify(
-			'PostAddTeamMember',
-			array(
-				'blog' => &$this,
-				'member' => &$tmem,
-				'admin' => $admin
-			)
-
+		$data = array(
+			'blog'		=> &$this,
+			'member'	=> &$tmem,
+			'admin'		=>  $admin
 		);
+		$manager->notify('PostAddTeamMember', $data);
 
 		$logMsg = sprintf(_TEAM_ADD_NEWTEAMMEMBER, $tmem->getDisplayName(), $memberid, $this->getName());
 		ACTIONLOG::add(INFO, $logMsg);
@@ -1301,12 +1323,11 @@ class BLOG {
 				// This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
 				// Note that the plugins's calling order is subject to thri order in the plugin list
 				$pinged = false;
-				$manager->notify(
-						'JustPosted',
-						array('blogid' => $blogid,
-						'pinged' => &$pinged
-						)
+				$data = array(
+					'blogid' =>  $blogid,
+					'pinged' => &$pinged
 				);
+				$manager->notify('JustPosted', $data);
 
 				// clear all expired future posts
 				sql_query("UPDATE " . sql_table('item') . " SET iposted='1' WHERE iblog=" . $blogid . " AND itime<NOW()");

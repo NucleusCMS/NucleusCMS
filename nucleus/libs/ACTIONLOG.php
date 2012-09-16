@@ -53,7 +53,8 @@ class ACTIONLOG {
 
 		$query = 'DELETE FROM ' . sql_table('actionlog');
 
-		$manager->notify('ActionLogCleared',array());
+		$data = array();
+		$manager->notify('ActionLogCleared', $data);
 
 		return sql_query($query);
 	}

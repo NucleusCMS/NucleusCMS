@@ -229,7 +229,8 @@ class BlogImport {
 
 		// - call callback
 		if ($this->strCallback && function_exists($this->strCallback)) {
-			call_user_func_array($this->strCallback, array(&$aData));
+			$data = array(&$aData);
+			call_user_func_array($this->strCallback, $data);
 		}
 
 		if ($this->bDebug) {

@@ -100,7 +100,11 @@ class PAGEFACTORY extends BaseActions {
 		$this->method = 'add';
 
 		global $manager;
-		$manager->notify('PreAddItemForm', array('contents' => &$contents, 'blog' => &$this->blog));
+		$data = array(
+			'contents'	=> &$contents,
+			'blog'		=> &$this->blog
+		);
+		$manager->notify('PreAddItemForm', $data);
 
 		$this->createForm($contents);
 	}
@@ -244,12 +248,8 @@ class PAGEFACTORY extends BaseActions {
 
 		$extrahead = '';
 
-		$manager->notify(
-			'BookmarkletExtraHead',
-			array(
-				'extrahead' => &$extrahead
-			)
-		);
+		$data = array('extrahead' => &$extrahead);
+		$manager->notify('BookmarkletExtraHead', $data);
 
 		echo $extrahead;
 	}
@@ -386,20 +386,16 @@ class PAGEFACTORY extends BaseActions {
 
 		switch ($this->method) {
 			case 'add':
-				$manager->notify('AddItemFormExtras',
-						array(
-							'blog' => &$this->blog
-						)
-				);
+				$data = array('blog' => &$this->blog);
+				$manager->notify('AddItemFormExtras', $data);
 				break;
 			case 'edit':
-				$manager->notify('EditItemFormExtras',
-						array(
-							'variables' => $this->variables,
-							'blog' => &$this->blog,
-							'itemid' => $this->variables['itemid']
-						)
+				$data = array(
+					'variables'	=> $this->variables,
+					'blog'		=> &$this->blog,
+					'itemid'	=> $this->variables['itemid']
 				);
+				$manager->notify('EditItemFormExtras', $data);
 				break;
 		}
 	}

@@ -171,31 +171,27 @@ class SKIN {
 	function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
 		global $manager;
 
-		$manager->notify(
-			'PreAddSkin',
-			array(
-				'name' => &$name,
-				'description' => &$desc,
-				'type' => &$type,
-				'includeMode' => &$includeMode,
-				'includePrefix' => &$includePrefix
-			)
+		$data = array(
+			'name'			=> &$name,
+			'description'	=> &$desc,
+			'type'			=> &$type,
+			'includeMode'	=> &$includeMode,
+			'includePrefix'	=> &$includePrefix
 		);
+		$manager->notify('PreAddSkin', $data);
 
 		sql_query('INSERT INTO '.sql_table('skin_desc')." (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('" . sql_real_escape_string($name) . "','" . sql_real_escape_string($desc) . "','".sql_real_escape_string($type)."','".sql_real_escape_string($includeMode)."','".sql_real_escape_string($includePrefix)."')");
 		$newid = sql_insert_id();
 
-		$manager->notify(
-			'PostAddSkin',
-			array(
-				'skinid' => $newid,
-				'name' => $name,
-				'description' => $desc,
-				'type' => $type,
-				'includeMode' => $includeMode,
-				'includePrefix' => $includePrefix
-			)
+		$data = array(
+			'skinid'		=> $newid,
+			'name'			=> $name,
+			'description'	=> $desc,
+			'type'			=> $type,
+			'includeMode'	=> $includeMode,
+			'includePrefix'	=> $includePrefix
 		);
+		$manager->notify('PostAddSkin', $data);
 
 		return $newid;
 	}
@@ -208,7 +204,11 @@ class SKIN {
 	function parse($type) {
 		global $manager, $CONF;
 
-		$manager->notify('InitSkinParse',array('skin' => &$this, 'type' => $type));
+		$data = array(
+			'skin' => &$this,
+			'type' => $type
+		);
+		$manager->notify('InitSkinParse', $data);
 
 		// set output type
 		sendContentType($this->getContentType(), 'skin', _CHARSET);
@@ -231,7 +231,12 @@ class SKIN {
 
 		$actions = $this->getAllowedActionsForType($type);
 
-		$manager->notify('PreSkinParse',array('skin' => &$this, 'type' => $type, 'contents' => &$contents));
+		$data = array(
+			'skin'		=> &$this,
+			'type'		=> $type,
+			'contents'	=> &$contents
+		);
+		$manager->notify('PreSkinParse', $data);
 
 		// set IncludeMode properties of parser
 		PARSER::setProperty('IncludeMode',$this->getIncludeMode());
@@ -243,7 +248,11 @@ class SKIN {
 		$handler->setSkin($this);
 		$parser->parse($contents);
 
-		$manager->notify('PostSkinParse',array('skin' => &$this, 'type' => $type));
+		$data = array(
+			'skin' => &$this,
+			'type' => $type
+		);
+		$manager->notify('PostSkinParse', $data);
 
 
 	}

@@ -27,7 +27,7 @@ class ENCAPSULATE {
 	  *
 	  * Passes on the amount of results found (for further encapsulation)
 	  */
-	function doEncapsulate($call, $params, $errorMessage = _ENCAPSULATE_ENCAPSULATE_NOENTRY) {
+	function doEncapsulate(&$call, &$params, $errorMessage = _ENCAPSULATE_ENCAPSULATE_NOENTRY) {
 		// start output buffering
 		ob_start();
 
@@ -65,15 +65,12 @@ class NAVLIST extends ENCAPSULATE {
 		$this->itemid = $itemid;
 	}
 
-	function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE) {
+	function showBatchList($batchtype, &$query, $type, $template, $errorMessage = _LISTS_NOMORE)
+	{
 		$batch = new BATCH($batchtype);
-
-		$this->doEncapsulate(
-				array(&$batch, 'showlist'),
-				array(&$query, $type, $template),
-				$errorMessage
-		);
-
+		$call = array(&$batch, 'showlist');
+		$params = array(&$query, $type, $template);
+		$this->doEncapsulate($call, $params, $errorMessage);
 	}
 
 
@@ -247,12 +244,11 @@ class BATCH extends ENCAPSULATE {
 		<?php	}
 
 	// shortcut :)
-	function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-		return $this->doEncapsulate(	'showlist',
-									array($query, $type, $template),
-									$errorMessage
-								);
+	function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE)
+	{
+		$call = 'showlist';
+		$params = array($query, $type, $template);
+		return $this->doEncapsulate($call, $params, $errorMessage);
 	}
-
 }
 ?>

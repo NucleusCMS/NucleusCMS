@@ -108,11 +108,9 @@ class PARSER {
 		if (!$this->handler->if_currentlevel && ($actionlc != 'else') && ($actionlc != 'elseif') && ($actionlc != 'endif') && ($actionlc != 'ifnot') && ($actionlc != 'elseifnot') && (substr($actionlc,0,2) != 'if'))
 			return;
 
-		if (in_array($actionlc, $this->actions) || $this->norestrictions ) {
-			// when using PHP versions lower than 4.0.5, uncomment the line before
-			// and comment the call_user_func_array call
-			//$this->call_using_array($action, $this->handler, $params);
-			call_user_func_array(array(&$this->handler,'parse_' . $actionlc), $params);
+		if ( in_array($actionlc, $this->actions) || $this->norestrictions )
+		{
+			call_user_func_array(array($this->handler, 'parse_' . $actionlc), $params);
 		} else {
 			// redirect to plugin action if possible
 			if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_'.$action)) {
@@ -126,26 +124,7 @@ class PARSER {
 		}
 
 	}
-
-	/**
-	  * Calls a method using an array of parameters (for use with PHP versions lower than 4.0.5)
-	  * ( = call_user_func_array() function )
-	  */
-	function call_using_array($methodname, &$handler, $paramarray) {
-
-		$methodname = 'parse_' . $methodname;
-
-		if (!method_exists($handler, $methodname)) {
-			return;
-		}
-
-		$command = 'call_user_func(array(&$handler,$methodname)';
-		for ($i = 0; $i<count($paramarray); $i++)
-			$command .= ',$paramarray[' . $i . ']';
-		$command .= ');';
-		eval($command);	// execute the correct method
-	}
-
+	
 	/**
 	 * Set a property of the parser in the manager
 	 * 

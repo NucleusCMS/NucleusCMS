@@ -84,7 +84,15 @@ class MEMBER {
 		$this->loggedin = 0;
 		$success = 0;
 		$allowlocal = 1;
-		$manager->notify('CustomLogin', array('login' => &$login, 'password'=>&$password, 'success'=>&$success, 'allowlocal'=>&$allowlocal) );
+		
+		$data = array(
+			'login'			=>  &$login,
+			'password'		=> &$password,
+			'success'		=> &$success,
+			'allowlocal'	=> &$allowlocal
+		);
+		$manager->notify('CustomLogin', $data);
+		
 		if ($success && $this->readFromName($login)) {
 			$this->loggedin = 1;
 			return $this->isLoggedIn();

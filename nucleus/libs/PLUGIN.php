@@ -47,14 +47,14 @@
 			$args = func_get_args();
 			array_shift($args);
 			array_unshift($args, 'template');
-			call_user_func_array(array(&$this,'doSkinVar'),$args);
+			call_user_func_array(array($this, 'doSkinVar'), $args);
 		}
 		function doTemplateCommentsVar(&$item, &$comment) {
 			$args = func_get_args();
 			array_shift($args);
 			array_shift($args);
 			array_unshift($args, 'template');
-			call_user_func_array(array(&$this,'doSkinVar'),$args);
+			call_user_func_array(array($this, 'doSkinVar'), $args);
 		}
 		function doAction($type) { return _ERROR_PLUGIN_NOSUCHACTION; }
 		function doIf($key,$value) { return false; }
@@ -662,7 +662,14 @@
 
 							//trigger event PrePluginOptionsUpdate to give the plugin the
 							//possibility to change/validate the new value for the option
-							$manager->notify('PrePluginOptionsUpdate',array('context' => $o->ocontext, 'plugid' => $o->opid, 'optionname' => $o->oname, 'contextid' => $contextid, 'value' => &$value));
+							$data = array(
+								'context'		=> $o->ocontext,
+								'plugid'		=> $o->opid,
+								'optionname'	=> $o->oname,
+								'contextid'		=> $contextid,
+								'value'			=> &$value
+							);
+							$manager->notify('PrePluginOptionsUpdate', $data);
 
 							// delete the old value for the option
 							sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));

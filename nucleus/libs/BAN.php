@@ -46,27 +46,23 @@ class BAN {
 
 		$blogid = intval($blogid);
 
-		$manager->notify(
-			'PreAddBan',
-			array(
-				'blogid' => $blogid,
-				'iprange' => &$iprange,
-				'reason' => &$reason
-			)
+		$data = array(
+			'blogid'	=> $blogid,
+			'iprange'	=> &$iprange,
+			'reason'	=> &$reason
 		);
+		$manager->notify('PreAddBan', $data);
 
 		$query = 'INSERT INTO '.sql_table('ban')." (blogid, iprange, reason) VALUES "
 			   . "($blogid,'".sql_real_escape_string($iprange)."','".sql_real_escape_string($reason)."')";
 		$res = sql_query($query);
 
-		$manager->notify(
-			'PostAddBan',
-			array(
-				'blogid' => $blogid,
-				'iprange' => $iprange,
-				'reason' => $reason
-			)
+		$data = array(
+			'blogid'	=> $blogid,
+			'iprange'	=> $iprange,
+			'reason'	=> $reason
 		);
+		$manager->notify('PostAddBan', $data);
 
 		return $res ? 1 : 0;
 	}
@@ -79,14 +75,22 @@ class BAN {
 		global $manager;
 		$blogid = intval($blogid);
 
-		$manager->notify('PreDeleteBan', array('blogid' => $blogid, 'range' => $iprange));
+		$data = array(
+			'blogid'	=> $blogid,
+			'range'		=> $iprange
+		);
+		$manager->notify('PreDeleteBan', $data);
 
 		$query = 'DELETE FROM '.sql_table('ban')." WHERE blogid=$blogid and iprange='" .sql_real_escape_string($iprange). "'";
 		sql_query($query);
 
 		$result = (sql_affected_rows() > 0);
 
-		$manager->notify('PostDeleteBan', array('blogid' => $blogid, 'range' => $iprange));
+		$data = array(
+		'blogid'	=> $blogid,
+		'range'		=> $iprange
+		);
+		$manager->notify('PostDeleteBan', $data);
 
 		return $result;
 	}

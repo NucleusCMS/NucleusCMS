@@ -106,9 +106,11 @@ class COMMENTS {
 			$comment['timestamp'] = strtotime($comment['ctime']);
 			$actions->setCurrentComment($comment);
 			$actions->setHighlight($highlight);
-			$manager->notify('PreComment', array('comment' => &$comment));
+			$data = array('comment' => &$comment);
+			$manager->notify('PreComment', $data);
 			$parser->parse($template['COMMENTS_BODY']);
-			$manager->notify('PostComment', array('comment' => &$comment));
+			$data = array('comment' => &$comment);
+			$manager->notify('PostComment', $data);
 		}
 
 		$parser->parse($template['COMMENTS_FOOTER']);
@@ -170,22 +172,20 @@ class COMMENTS {
 			return _ERROR_EMAIL_REQUIRED;
 		} // end if
 
-		## Note usage of mb_strlen() vs strlen() below ##
-
 		// begin if: commenter's name is too long
-		if ( mb_strlen($comment['user']) > 40 )
+		if ( strlen($comment['user']) > 40 )
 		{
 			return _ERROR_USER_TOO_LONG;
 		} // end if
 
 		// begin if: commenter's email is too long
-		if ( mb_strlen($comment['email']) > 100 )
+		if ( strlen($comment['email']) > 100 )
 		{
 			return _ERROR_EMAIL_TOO_LONG;
 		} // end if
 
 		// begin if: commenter's url is too long
-		if ( mb_strlen($comment['userid']) > 100 )
+		if ( strlen($comment['userid']) > 100 )
 		{
 			return _ERROR_URL_TOO_LONG;
 		} // end if
@@ -256,7 +256,8 @@ class COMMENTS {
 			$spamcheck['url'] = $comment['userid'];
 		} // end if
 
-		$manager->notify('SpamCheck', array('spamcheck' => &$spamcheck) );
+		$data = array('spamcheck' => &$spamcheck);
+		$manager->notify('SpamCheck', $data);
 
 		if ( !$continue && isset($spamcheck['result']) && $spamcheck['result'] == TRUE )
 		{
@@ -322,7 +323,11 @@ class COMMENTS {
 
 		$comment = COMMENT::prepare($comment);
 
-		$manager->notify('PreAddComment', array('comment' => &$comment, 'spamcheck' => &$spamcheck) );
+		$data = array(
+			'comment'	=> &$comment,
+			'spamcheck'	=> &$spamcheck
+		);
+		$manager->notify('PreAddComment', $data);
 
 		$name		= sql_real_escape_string($comment['user']);
 		$url		= sql_real_escape_string($comment['userid']);
@@ -356,7 +361,12 @@ class COMMENTS {
 
 		// post add comment
 		$commentid = sql_insert_id();
-		$manager->notify('PostAddComment', array('comment' => &$comment, 'commentid' => &$commentid, 'spamcheck' => &$spamcheck) );
+		$data = array(
+			'comment'	=> &$comment,
+			'commentid'	=> &$commentid,
+			'spamcheck'	=> &$spamcheck
+		);
+		$manager->notify('PostAddComment', $data);
 
 		// succeeded !
 		return TRUE;
@@ -423,7 +433,13 @@ class COMMENTS {
 		// let plugins do verification (any plugin which thinks the comment is invalid
 		// can change 'error' to something other than '1')
 		$result = 1;
-		$manager->notify('ValidateForm', array('type' => 'comment', 'comment' => &$comment, 'error' => &$result, 'spamcheck' => &$spamcheck) );
+		$data = array(
+			'type'		=>  'comment',
+			'comment'	=> &$comment,
+			'error'		=> &$result,
+			'spamcheck'	=> &$spamcheck
+		);
+		$manager->notify('ValidateForm', $data);
 
 		return $result;
 	}

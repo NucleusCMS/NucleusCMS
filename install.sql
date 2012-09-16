@@ -1,7 +1,7 @@
 CREATE TABLE `nucleus_actionlog` (
   `timestamp` datetime NOT NULL default '0000-00-00 00:00:00',
   `message` varchar(255) NOT NULL default ''
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_activation` (
   `vkey` varchar(40) NOT NULL default '',
@@ -10,13 +10,13 @@ CREATE TABLE `nucleus_activation` (
   `vtype` varchar(15) NOT NULL default '',
   `vextra` varchar(128) NOT NULL default '',
   PRIMARY KEY  (`vkey`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_ban` (
   `iprange` varchar(15) NOT NULL default '',
   `reason` varchar(255) NOT NULL default '',
   `blogid` int(11) NOT NULL default '0'
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_blog` (
   `bnumber` int(11) NOT NULL auto_increment,
@@ -41,7 +41,7 @@ CREATE TABLE `nucleus_blog` (
   PRIMARY KEY  (`bnumber`),
 --  UNIQUE KEY `bnumber` (`bnumber`),
   UNIQUE KEY `bshortname` (`bshortname`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 INSERT INTO `nucleus_blog` VALUES (1, 'My Nucleus CMS', 'mynucleuscms', '', 1, 0, 0.0, '', 'http://localhost:8080/nucleus/', '', 5, 1, 1, 1, 1, 1, 0, 0, 0);
 
@@ -51,7 +51,7 @@ CREATE TABLE `nucleus_category` (
   `cname` varchar(200) default NULL,
   `cdesc` varchar(200) default NULL,
   PRIMARY KEY  (`catid`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 INSERT INTO `nucleus_category` VALUES (1, 1, 'General', 'Items that do not fit in other categories');
 
@@ -72,13 +72,13 @@ CREATE TABLE `nucleus_comment` (
   KEY `citem` (`citem`),
   FULLTEXT KEY `cbody` (`cbody`),
   INDEX `cblog` (`cblog`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_config` (
   `name` varchar(20) NOT NULL default '',
   `value` varchar(128) default NULL,
   PRIMARY KEY  (`name`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 INSERT INTO `nucleus_config` VALUES ('DefaultBlog', '1');
 INSERT INTO `nucleus_config` VALUES ('AdminEmail', 'example@example.org');
@@ -137,12 +137,12 @@ CREATE TABLE `nucleus_item` (
   INDEX `idraft` (`idraft`),
   INDEX `icat` (`icat`),
   FULLTEXT KEY `ibody` (`ibody`,`ititle`,`imore`)
-) TYPE=MyISAM PACK_KEYS=0;
+) ENGINE=MyISAM PACK_KEYS=0;
 
 CREATE TABLE `nucleus_karma` (
   `itemid` int(11) NOT NULL default '0',
   `ip` char(15) NOT NULL default ''
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_member` (
   `mnumber` int(11) NOT NULL auto_increment,
@@ -160,7 +160,7 @@ CREATE TABLE `nucleus_member` (
   PRIMARY KEY  (`mnumber`),
 --  UNIQUE KEY `mnumber` (`mnumber`),
   UNIQUE KEY `mname` (`mname`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 INSERT INTO `nucleus_member` VALUES (1, 'example', 'example', '1a79a4d60de6718e8e5b326e338ae533', 'example@example.org', 'http://localhost:8080/nucleus/', '', 1, 1, 'd767aefc60415859570d64c649257f19', '', 1);
 
@@ -171,20 +171,20 @@ CREATE TABLE `nucleus_plugin` (
   PRIMARY KEY  (`pid`),
 --  KEY `pid` (`pid`),
   KEY `porder` (`porder`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_plugin_event` (
   `pid` int(11) NOT NULL default '0',
   `event` varchar(40) default NULL,
   KEY `pid` (`pid`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_plugin_option` (
   `ovalue` text NOT NULL,
   `oid` int(11) NOT NULL auto_increment,
   `ocontextid` int(11) NOT NULL default '0',
   PRIMARY KEY  (`oid`,`ocontextid`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_plugin_option_desc` (
   `oid` int(11) NOT NULL auto_increment,
@@ -197,14 +197,14 @@ CREATE TABLE `nucleus_plugin_option_desc` (
   `oextra` text,
   PRIMARY KEY  (`opid`,`oname`,`ocontext`),
   UNIQUE KEY `oid` (`oid`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_skin` (
   `sdesc` int(11) NOT NULL default '0',
   `stype` varchar(20) NOT NULL default '',
   `scontent` text NOT NULL,
   PRIMARY KEY  (`sdesc`,`stype`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- INSERT INTO `nucleus_skin` VALUES (2, 'index', '<?xml version=\"1.0\" encoding=\"<%charset%>\"?>\n\n<feed xml:lang=\"en-us\" xmlns=\"http://www.w3.org/2005/Atom\">\n    <title><%blogsetting(name)%></title>\n    <id><%blogsetting(url)%>:<%blogsetting(id)%></id>\n\n    <link rel=\"alternate\" type=\"text/html\" href=\"<%blogsetting(url)%>\" />\n    <link rel=\"self\" type=\"application/atom+xml\" href=\"<%blogsetting(url)%><%self%>\" />\n    <generator uri=\"http://nucleuscms.org/\"><%version%></generator>\n    <updated><%blog(feeds/atom/modified,1)%></updated>\n\n    <%blog(feeds/atom/entries,10)%>\n</feed>');
 -- INSERT INTO `nucleus_skin` VALUES (4, 'index', '<?xml version="1.0"?>\r\n<rsd version="1.0">\r\n <service>\r\n  <engineName><%version%></engineName>\r\n  <engineLink>http://nucleuscms.org/</engineLink>\r\n  <homepageLink><%sitevar(url)%></homepageLink>\r\n  <apis>\r\n   <api name="MetaWeblog" preferred="true" apiLink="<%adminurl%>xmlrpc/server.php" blogID="<%blogsetting(id)%>">\r\n    <docs>http://nucleuscms.org/documentation/devdocs/xmlrpc.html</docs>\r\n   </api>\r\n   <api name="Blogger" preferred="false" apiLink="<%adminurl%>xmlrpc/server.php" blogID="<%blogsetting(id)%>">\r\n    <docs>http://nucleuscms.org/documentation/devdocs/xmlrpc.html</docs>\r\n   </api>\r\n  </apis>\r\n </service>\r\n</rsd>');
@@ -220,7 +220,7 @@ CREATE TABLE `nucleus_skin_desc` (
   PRIMARY KEY  (`sdnumber`),
 --  UNIQUE KEY `sdnumber` (`sdnumber`),
   UNIQUE KEY `sdname` (`sdname`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- INSERT INTO `nucleus_skin_desc` VALUES (2, 'feeds/atom', 'Atom 1.0 weblog syndication', 'application/atom+xml', 'normal', '');
 -- INSERT INTO `nucleus_skin_desc` VALUES (3, 'feeds/rss20', 'RSS 2.0 syndication of weblogs', 'text/xml', 'normal', '');
@@ -232,7 +232,7 @@ CREATE TABLE `nucleus_team` (
   `tblog` int(11) NOT NULL default '0',
   `tadmin` tinyint(2) NOT NULL default '0',
   PRIMARY KEY  (`tmember`,`tblog`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 INSERT INTO `nucleus_team` VALUES (1, 1, 1);
 
@@ -241,7 +241,7 @@ CREATE TABLE `nucleus_template` (
   `tpartname` varchar(64) NOT NULL default '',
   `tcontent` text NOT NULL,
   PRIMARY KEY  (`tdesc`,`tpartname`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- INSERT INTO `nucleus_template` VALUES (3, 'ITEM', '<item>\r\n <title><%title(xml)%></title>\r\n <link><%blogurl%>index.php?itemid=<%itemid%></link>\r\n<description><![CDATA[<%body%><%more%>]]></description>\r\n <category><%category%></category>\r\n<comments><%blogurl%>index.php?itemid=<%itemid%></comments>\r\n <pubDate><%date(rfc822)%></pubDate>\r\n</item>');
 -- INSERT INTO `nucleus_template` VALUES (3, 'EDITLINK', '<a href="<%editlink%>" onclick="<%editpopupcode%>">edit</a>');
@@ -263,7 +263,7 @@ CREATE TABLE `nucleus_template_desc` (
   PRIMARY KEY  (`tdnumber`),
 --  UNIQUE KEY `tdnumber` (`tdnumber`),
   UNIQUE KEY `tdname` (`tdname`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 -- INSERT INTO `nucleus_template_desc` VALUES (4, 'feeds/atom/modified', 'Atom feeds: Inserts last modification date');
 -- INSERT INTO `nucleus_template_desc` VALUES (5, 'feeds/atom/entries', 'Atom feeds: Feed items');
@@ -276,4 +276,4 @@ CREATE TABLE `nucleus_tickets` (
   `ctime` datetime NOT NULL default '0000-00-00 00:00:00',
   `member` int(11) NOT NULL default '0',
   PRIMARY KEY  (`ticket`,`member`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

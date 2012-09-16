@@ -229,7 +229,8 @@ class ACTION
 		// let plugins do verification (any plugin which thinks the comment is invalid
 		// can change 'error' to something other than '')
 		$result = '';
-		$manager->notify('ValidateForm', array('type' => 'membermail', 'error' => &$result) );
+		$data = array('type' => 'membermail', 'error' => &$result);
+		$manager->notify('ValidateForm', $data);
 
 		return $result;
 
@@ -251,7 +252,7 @@ class ACTION
 		// evaluate content from FormExtra
 		$result = 1;
 		$data = array('type' => 'membermail', 'error' => &$result);
-		$manager->notify('ValidateForm', &$data);
+		$manager->notify('ValidateForm', $data);
 
 		if ( $result != 1 )
 		{
@@ -277,8 +278,9 @@ class ACTION
 			$newmem = new MEMBER();
 			$newmem->readFromName($name);
 			$newmem->sendActivationLink('register');
-
-			$manager->notify('PostRegister', array('member' => &$newmem) );
+			
+			$data = array('member' => &$newmem);
+			$manager->notify('PostRegister', $data);
 
 			if ( postVar('desturl') )
 			{
