@@ -470,6 +470,7 @@ class AdminActions extends BaseActions
 				'pluginoptions',
 				'defadminskinselect',
 				'defbookmarkletselect',
+				'pluginextras',
 				);
 				break;
 			case 'forgotpassword':
