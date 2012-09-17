@@ -135,7 +135,7 @@ class Parser
 		
 		if ( in_array($actionlc, $this->actions) || $this->norestrictions )
 		{
-			call_user_func_array(array(&$this->handler, "parse_{$actionlc}"), $params);
+			call_user_func_array(array($this->handler, "parse_{$actionlc}"), $params);
 		}
 		else
 		{

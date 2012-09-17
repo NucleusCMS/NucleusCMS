@@ -753,9 +753,10 @@ class ItemActions extends BaseActions
 		array_shift($params);
 		
 		// add item reference (array_unshift didn't work)
-		$params = array_merge(array(&$this->currentItem),$params);
+		$target = array(&$this->currentItem);
+		$params = array_merge($target,$params);
 		
-		call_user_func_array(array(&$plugin,'doTemplateVar'), $params);
+		call_user_func_array(array($plugin,'doTemplateVar'), $params);
 		return;
 	}
 	
@@ -1121,6 +1122,6 @@ class ItemActions extends BaseActions
 		$params = func_get_args();
 		array_shift($params);
 		
-		return (boolean) call_user_func_array(array(&$plugin, 'doIf'), $params);
+		return (boolean) call_user_func_array(array($plugin, 'doIf'), $params);
 	}
 }

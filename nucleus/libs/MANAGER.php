@@ -571,7 +571,7 @@ class Manager
 				  && !empty($this->plugins[$listener])
 				  && method_exists($this->plugins[$listener], 'event_' . $eventName) )
 				{
-					call_user_func(array(&$this->plugins[$listener], 'event_' . $eventName), $data);
+					call_user_func(array($this->plugins[$listener], 'event_' . $eventName), $data);
 				}
 			}
 		}

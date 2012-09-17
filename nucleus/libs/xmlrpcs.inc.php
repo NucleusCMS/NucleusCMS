@@ -1092,7 +1092,8 @@
 					// 3rd API convention for method-handling functions: EPI-style
 					if ($this->functions_parameters_type == 'epivals')
 					{
-						$r = call_user_func_array($func, array($methName, $params, $this->user_data));
+						$params = array($methName, $params, $this->user_data);
+						$r = call_user_func_array($func, $params);
 						// mimic EPI behaviour: if we get an array that looks like an error, make it
 						// an eror response
 						if (is_array($r) && array_key_exists('faultCode', $r) && array_key_exists('faultString', $r))

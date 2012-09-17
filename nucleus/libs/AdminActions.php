@@ -960,7 +960,8 @@ class AdminActions extends BaseActions
 				case 'delete':
 					if ( $this->skintype != 'batchteam' )
 					{
-						$error = call_user_func_array(array('Admin', $deleteaction), array($selectedid));
+						$params = array($selectedid);
+						$error = call_user_func_array(array('Admin', $deleteaction), $params);
 					}
 					else
 					{
@@ -968,7 +969,8 @@ class AdminActions extends BaseActions
 					}
 					break;
 				case 'move':
-					$error = call_user_func_array(array('Admin', $moveaction), array($selectedid, $destid));
+					$params = array($selectedid, $destid);
+					$error = call_user_func_array(array('Admin', $moveaction), $params);
 					break;
 				case 'setadmin':
 					// always succeeds
@@ -4361,7 +4363,7 @@ class AdminActions extends BaseActions
 			
 			if ( method_exists($this, $met) )
 			{
-				$value = call_user_func(array(&$this, $met), $arg);
+				$value = call_user_func(array($this, $met), $arg);
 			}
 		}
 		
@@ -4852,7 +4854,7 @@ class AdminActions extends BaseActions
 		$params = func_get_args();
 		array_shift($params);
 		
-		return call_user_func_array(array(&$plugin, 'doIf'), $params);
+		return call_user_func_array(array($plugin, 'doIf'), $params);
 	}
 	
 	/**

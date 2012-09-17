@@ -99,7 +99,7 @@ abstract class NucleusPlugin
 		$args = func_get_args();
 		array_shift($args);
 		array_unshift($args, 'template');
-		call_user_func_array(array(&$this,'doSkinVar'),$args);
+		call_user_func_array(array($this, 'doSkinVar'), $args);
 		return;
 	}
 	
@@ -109,7 +109,7 @@ abstract class NucleusPlugin
 		array_shift($args);
 		array_shift($args);
 		array_unshift($args, 'template');
-		call_user_func_array(array(&$this,'doSkinVar'),$args);
+		call_user_func_array(array($this, 'doSkinVar'), $args);
 		return;
 	}
 	

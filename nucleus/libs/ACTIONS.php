@@ -405,7 +405,7 @@ class Actions extends BaseActions
 		$params = func_get_args();
 		array_shift($params);
 		
-		return call_user_func_array(array(&$plugin, 'doIf'), $params);
+		return call_user_func_array(array($plugin, 'doIf'), $params);
 	}
 	
 	/**
@@ -1865,7 +1865,7 @@ class Actions extends BaseActions
 		// add skin type on front
 		array_unshift($params, $this->skintype);
 		
-		call_user_func_array(array(&$plugin,'doSkinVar'), $params);
+		call_user_func_array(array($plugin,'doSkinVar'), $params);
 		return;
 	}
 	

@@ -107,9 +107,10 @@ class BodyActions extends BaseActions
 		array_shift($params);
 		
 		// add item reference (array_unshift didn't work)
-		$params = array_merge(array(&$this->currentItem), $params);
+		$target = array(&$this->currentItem);
+		$params = array_merge($target, $params);
 		
-		call_user_func_array(array(&$plugin, 'doItemVar'), $params);
+		call_user_func_array(array($plugin, 'doItemVar'), $params);
 		return;
 	}
 	
@@ -126,7 +127,7 @@ class BodyActions extends BaseActions
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
 		$args = preg_split('#\|#', implode($args, ', '));
-		echo call_user_func_array(array(&$this, 'createImageCode'), $args);
+		echo call_user_func_array(array($this, 'createImageCode'), $args);
 	}
 	
 	/**
@@ -174,7 +175,7 @@ class BodyActions extends BaseActions
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
 		$args = preg_split('#\|#', implode($args, ', '));
-		echo call_user_func_array(array(&$this, 'createMediaCode'), $args);
+		echo call_user_func_array(array($this, 'createMediaCode'), $args);
 	}
 	
 	/**
@@ -215,7 +216,7 @@ class BodyActions extends BaseActions
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
 		$args = preg_split('#\|#', implode($args, ', '));
-		echo call_user_func_array(array(&$this, 'createPopupCode'), $args);
+		echo call_user_func_array(array($this, 'createPopupCode'), $args);
 	}
 	
 	/**
@@ -558,6 +559,6 @@ class BodyActions extends BaseActions
 		$params = func_get_args();
 		array_shift($params);
 		
-		return call_user_func_array(array(&$plugin, 'doIf'), $params);
+		return call_user_func_array(array($plugin, 'doIf'), $params);
 	}
 }

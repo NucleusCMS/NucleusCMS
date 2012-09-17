@@ -737,7 +737,7 @@ class MediaObject
 			return FALSE;
 		}
 		
-		$original = call_user_func_array($function, array(&$fullpath));
+		$original = call_user_func_array($function, $fullpath);
 		if ( !$original )
 		{
 			return FALSE;

@@ -537,10 +537,12 @@ class CommentActions extends BaseActions
 		array_shift($params);
 		
 		// pass info on current item and current comment as well
-		$params = array_merge(array(&$this->currentComment), $params);
-		$params = array_merge(array(&$this->commentsObj->itemActions->currentItem), $params);
+		$target = array(&$this->currentComment);
+		$params = array_merge($target, $params);
+		$target = array(&$this->commentsObj->itemActions->currentItem);
+		$params = array_merge($target, $params);
 		
-		call_user_func_array(array(&$plugin,'doTemplateCommentsVar'), $params);
+		call_user_func_array(array($plugin,'doTemplateCommentsVar'), $params);
 		return;
 	}
 	
@@ -1005,6 +1007,6 @@ class CommentActions extends BaseActions
 		$params = func_get_args();
 		array_shift($params);
 		
-		return call_user_func_array(array(&$plugin, 'doIf'), $params);
+		return call_user_func_array(array($plugin, 'doIf'), $params);
 	}
 }
