@@ -119,8 +119,7 @@ class Backup
 		
 		// dump all tables
 		reset($tables);
-		$callback = array(&$this, '_backup_dump_table');
-		array_walk($tables, $callback);
+		array_walk($tables, array($this, '_backup_dump_table'));
 		
 		if($gzip) {
 			$Size = ob_get_length();
