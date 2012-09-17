@@ -4186,7 +4186,7 @@ class Admin
 	 */
 	static private function action_adminskiniedoimport()
 	{
-		global $DIR_SKINS, $member;
+		global $DIR_SKINS, $member, $CONF;
 		
 		$member->isAdmin() or self::disallow();
 		
@@ -4210,6 +4210,11 @@ class Admin
 			$query	= "UPDATE %s SET value = %d WHERE name = 'AdminSkin'";
 			$query	= sprintf($query, sql_table('config'), $res);
 			DB::execute($query);
+			if ( $res )
+			{
+				redirect($CONF['AdminURL']);
+				exit;
+			}
 			$skin	= new Skin(0, 'AdminActions', 'AdminSkin');
 			$skin->parse('importAdmin', $DIR_SKINS . 'admin/defaultimporter.skn');
 		}
