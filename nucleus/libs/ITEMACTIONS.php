@@ -817,7 +817,8 @@ class ItemActions extends BaseActions
 		$handler->setCurrentItem($this->currentItem);
 		
 		$parser = new Parser($handler);
-		$parser->parse($handler->highlight($data));
+		$highlight = $handler->highlight($data);
+		$parser->parse($highlight);
 		return;
 	}
 	
