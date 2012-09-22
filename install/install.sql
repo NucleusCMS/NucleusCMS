@@ -1,7 +1,7 @@
 CREATE TABLE `nucleus_actionlog` (
   `timestamp`  datetime     NOT NULL default '0000-00-00 00:00:00',
   `message`    varchar(255) NOT NULL default ''
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_activation` (
   `vkey`    varchar(40)  NOT NULL default '',
@@ -10,13 +10,13 @@ CREATE TABLE `nucleus_activation` (
   `vtype`   varchar(15)  NOT NULL default '',
   `vextra`  varchar(128) NOT NULL default '',
   PRIMARY KEY  (`vkey`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_ban` (
   `iprange` varchar(15)  NOT NULL default '',
   `reason`  varchar(255) NOT NULL default '',
   `blogid`  int(11)      NOT NULL default '0'
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_blog` (
   `bnumber`        int(11)      NOT NULL auto_increment,
@@ -40,7 +40,7 @@ CREATE TABLE `nucleus_blog` (
   `bfuturepost`    tinyint(2)   NOT NULL default '0',
   PRIMARY KEY  (`bnumber`),
   UNIQUE KEY `bshortname` (`bshortname`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 INSERT INTO `nucleus_blog` VALUES (
     1,                                  /* bnumber */
@@ -70,7 +70,7 @@ CREATE TABLE `nucleus_category` (
   `cname` varchar(200) default NULL,
   `cdesc` varchar(200) default NULL,
   PRIMARY KEY  (`catid`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 INSERT INTO `nucleus_category` VALUES (1, 1, 'General', 'Items that do not fit in other categories');
 
@@ -90,13 +90,13 @@ CREATE TABLE `nucleus_comment` (
   KEY `citem` (`citem`),
   FULLTEXT KEY `cbody` (`cbody`),
   INDEX `cblog` (`cblog`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_config` (
   `name`  varchar(20)  NOT NULL default '',
   `value` varchar(128)          default NULL,
   PRIMARY KEY  (`name`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('DefaultBlog',       '1'),
@@ -155,12 +155,12 @@ CREATE TABLE `nucleus_item` (
   INDEX `idraft` (`idraft`),
   INDEX `icat` (`icat`),
   FULLTEXT KEY `ibody` (`ibody`, `ititle`, `imore`)
-) TYPE=MyISAM PACK_KEYS=0;
+) ENGINE=MyISAM PACK_KEYS=0;
 
 CREATE TABLE `nucleus_karma` (
   `itemid` int(11)  NOT NULL default '0',
   `ip`     char(15) NOT NULL default ''
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_member` (
   `mnumber`    int(11)      NOT NULL auto_increment,
@@ -177,7 +177,7 @@ CREATE TABLE `nucleus_member` (
   `mautosave`  tinyint(2)   NOT NULL default '1',
   PRIMARY KEY         (`mnumber`),
   UNIQUE  KEY `mname` (`mname`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 INSERT INTO `nucleus_member` VALUES (
     1,                                  /* mnumber */
@@ -200,20 +200,20 @@ CREATE TABLE `nucleus_plugin` (
   `porder` int(11)     NOT NULL default '0',
   PRIMARY KEY     (`pid`),
   KEY    `porder` (`porder`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_plugin_event` (
   `pid`   int(11)     NOT NULL default '0',
   `event` varchar(40)          default NULL,
   KEY `pid` (`pid`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_plugin_option` (
   `ovalue`     text    NOT NULL,
   `oid`        int(11) NOT NULL auto_increment,
   `ocontextid` int(11) NOT NULL default '0',
   PRIMARY KEY  (`oid`, `ocontextid`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_plugin_option_desc` (
   `oid`      int(11)     NOT NULL auto_increment,
@@ -226,14 +226,14 @@ CREATE TABLE `nucleus_plugin_option_desc` (
   `oextra`   text,
   PRIMARY KEY  (`opid`, `oname`, `ocontext`),
   UNIQUE KEY `oid` (`oid`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_skin` (
   `sdesc`    int(11)     NOT NULL default '0',
   `stype`    varchar(20) NOT NULL default '',
   `scontent` text        NOT NULL,
   PRIMARY KEY  (`sdesc`,`stype`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_skin_desc` (
   `sdnumber`  int(11)     NOT NULL auto_increment,
@@ -244,14 +244,14 @@ CREATE TABLE `nucleus_skin_desc` (
   `sdincpref` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`sdnumber`),
   UNIQUE KEY `sdname` (`sdname`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_team` (
   `tmember` int(11)     NOT NULL default '0',
   `tblog`   int(11)     NOT NULL default '0',
   `tadmin`   tinyint(2) NOT NULL default '0',
   PRIMARY KEY  (`tmember`, `tblog`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 INSERT INTO `nucleus_team` VALUES (1, 1, 1);
 
@@ -260,7 +260,7 @@ CREATE TABLE `nucleus_template` (
   `tpartname` varchar(64) NOT NULL default '',
   `tcontent`  text        NOT NULL,
   PRIMARY KEY  (`tdesc`, `tpartname`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_template_desc` (
   `tdnumber` int(11)     NOT NULL auto_increment,
@@ -268,11 +268,11 @@ CREATE TABLE `nucleus_template_desc` (
   `tddesc`   varchar(200)         default NULL,
   PRIMARY KEY (`tdnumber`),
   UNIQUE  KEY `tdname` (`tdname`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_tickets` (
   `ticket` varchar(40) NOT NULL default '',
   `ctime` datetime     NOT NULL default '0000-00-00 00:00:00',
   `member` int(11)     NOT NULL default '0',
   PRIMARY KEY  (`ticket`,`member`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;

@@ -51,7 +51,7 @@ class MEMBER {
 	 * @static
 	 */
 	function &createFromName($displayname) {
-		$mem =& new MEMBER();
+		$mem = new MEMBER();
 		$mem->readFromName($displayname);
 		return $mem;
 	}
@@ -62,7 +62,7 @@ class MEMBER {
 	 * @static
 	 */
 	function &createFromID($id) {
-		$mem =& new MEMBER();
+		$mem = new MEMBER();
 		$mem->readFromID($id);
 		return $mem;
 	}
@@ -85,7 +85,13 @@ class MEMBER {
 		$this->loggedin = 0;
 		$success = 0;
 		$allowlocal = 1;
-		$manager->notify('CustomLogin', array('login' => &$login, 'password'=>&$password, 'success'=>&$success, 'allowlocal'=>&$allowlocal) );
+		$param = array(
+			'login'			=> &$login,
+			'password'		=>&$password,
+			'success'		=>&$success,
+			'allowlocal'	=>&$allowlocal
+		);
+		$manager->notify('CustomLogin', $param);
 		if ($success && $this->readFromName($login)) {
 			$this->loggedin = 1;
 			return $this->isLoggedIn();

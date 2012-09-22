@@ -224,7 +224,7 @@ class BaseActions {
 		$this->_addIfExecute();
 
 		$args = func_get_args();
-		$condition = call_user_func_array(array(&$this,'checkCondition'), $args);
+		$condition = call_user_func_array(array($this,'checkCondition'), $args);
 		$this->_addIfCondition($condition);
 	}
 
@@ -263,7 +263,7 @@ class BaseActions {
 		} else {
 			ob_end_clean();
 			$args = func_get_args();
-			$condition = call_user_func_array(array(&$this,'checkCondition'), $args);
+			$condition = call_user_func_array(array($this,'checkCondition'), $args);
 			$this->_addIfCondition($condition);
 		}
 	}
@@ -275,7 +275,7 @@ class BaseActions {
 		$this->_addIfExecute();
 
 		$args = func_get_args();
-		$condition = call_user_func_array(array(&$this,'checkCondition'), $args);
+		$condition = call_user_func_array(array($this,'checkCondition'), $args);
 		$this->_addIfCondition(!$condition);
 	}
 
@@ -295,7 +295,7 @@ class BaseActions {
 		} else {
 			ob_end_clean();
 			$args = func_get_args();
-			$condition = call_user_func_array(array(&$this,'checkCondition'), $args);
+			$condition = call_user_func_array(array($this,'checkCondition'), $args);
 			$this->_addIfCondition(!$condition);
 		}
 	}

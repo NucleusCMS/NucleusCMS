@@ -101,7 +101,11 @@ class PAGEFACTORY extends BaseActions {
 		$this->method = 'add';
 
 		global $manager;
-		$manager->notify('PreAddItemForm', array('contents' => &$contents, 'blog' => &$this->blog));
+		$param = array(
+			'contents'	=> &$contents,
+			'blog'		=> &$this->blog
+		);
+		$manager->notify('PreAddItemForm', $param);
 
 		$this->createForm($contents);
 	}
@@ -135,7 +139,7 @@ class PAGEFACTORY extends BaseActions {
 		$template = $this->getTemplateFor($this->type);
 
 		// use the PARSER engine to parse that template
-		$parser =& new PARSER($this->actions, $this);
+		$parser = new PARSER($this->actions, $this);
 		$parser->parse($template);
 	}
 
@@ -245,12 +249,10 @@ class PAGEFACTORY extends BaseActions {
 
 		$extrahead = '';
 
-		$manager->notify(
-			'BookmarkletExtraHead',
-			array(
-				'extrahead' => &$extrahead
-			)
+		$param = array(
+			'extrahead' => &$extrahead
 		);
+		$manager->notify('BookmarkletExtraHead', $param);
 
 		echo $extrahead;
 	}
@@ -387,20 +389,18 @@ class PAGEFACTORY extends BaseActions {
 
 		switch ($this->method) {
 			case 'add':
-				$manager->notify('AddItemFormExtras',
-						array(
-							'blog' => &$this->blog
-						)
+				$param = array(
+					'blog' => &$this->blog
 				);
+				$manager->notify('AddItemFormExtras', $param);
 				break;
 			case 'edit':
-				$manager->notify('EditItemFormExtras',
-						array(
-							'variables' => $this->variables,
-							'blog' => &$this->blog,
-							'itemid' => $this->variables['itemid']
-						)
+				$PARAM = array(
+					'variables'	=>  $this->variables,
+					'blog'		=> &$this->blog,
+					'itemid'	=>  $this->variables['itemid']
 				);
+				$manager->notify('EditItemFormExtras', $param);
 				break;
 		}
 	}

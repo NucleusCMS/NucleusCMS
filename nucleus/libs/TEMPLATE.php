@@ -87,25 +87,21 @@ class TEMPLATE {
 	function createNew($name, $desc) {
 		global $manager;
 
-		$manager->notify(
-			'PreAddTemplate',
-			array(
-				'name' => &$name,
-				'description' => &$desc
-			)
+		$param = array(
+			'name'			=> &$name,
+			'description'	=> &$desc
 		);
+		$manager->notify('PreAddTemplate', $param);
 
 		sql_query('INSERT INTO '.sql_table('template_desc')." (tdname, tddesc) VALUES ('" . sql_real_escape_string($name) . "','" . sql_real_escape_string($desc) . "')");
 		$newId = sql_insert_id();
 
-		$manager->notify(
-			'PostAddTemplate',
-			array(
-				'templateid' => $newId,
-				'name' => $name,
-				'description' => $desc
-			)
+		$param = array(
+			'templateid'	=> $newId,
+			'name'			=> $name,
+			'description'	=> $desc
 		);
+		$manager->notify('PostAddTemplate', $param);
 
 		return $newId;
 	}
@@ -120,12 +116,11 @@ class TEMPLATE {
 	 */
 	function read($name) {
 		global $manager;
-		$manager->notify(
-			'PreTemplateRead',
-			array(
-				'template' => &$name
-			)
+		
+		$param = array(
+			'template' => &$name
 		);
+		$manager->notify('PreTemplateRead', $param);
 
 		$query = 'SELECT tpartname, tcontent'
 			   . ' FROM '.sql_table('template_desc').', '.sql_table('template')

@@ -149,7 +149,12 @@ class MEDIA {
 		if ($filename === false) 
 			return _ERROR_BADFILETYPE;
 		
-		$manager->notify('PreMediaUpload',array('collection' => &$collection, 'uploadfile' => $uploadfile, 'filename' => &$filename));
+		$param = array(
+			'collection'	=> &$collection,
+			'uploadfile'	=>  $uploadfile,
+			'filename'		=> &$filename
+		);
+		$manager->notify('PreMediaUpload', $param);
 		
 		// don't allow uploads to unknown or forbidden collections
 		$exceptReadOnly = true;
@@ -194,7 +199,12 @@ class MEDIA {
 		@chmod($mediadir . $filename, 0644);
 		umask($oldumask);
 
-		$manager->notify('PostMediaUpload',array('collection' => $collection, 'mediadir' => $mediadir, 'filename' => $filename));
+		$param = array(
+			'collection'	=> $collection,
+			'mediadir'		=> $mediadir,
+			'filename'		=> $filename
+		);
+		$manager->notify('PostMediaUpload', $param);
 
 		return '';
 

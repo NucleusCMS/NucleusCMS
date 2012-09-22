@@ -64,14 +64,14 @@ class BODYACTIONS extends BaseActions {
 		// add item reference (array_unshift didn't work)
 		$params = array_merge(array(&$this->currentItem),$params);
 
-		call_user_func_array(array(&$plugin,'doItemVar'), $params);
+		call_user_func_array(array($plugin,'doItemVar'), $params);
 	}
 	
 	function parse_image() {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
 		$args = explode('|',implode($args,', '));
-		call_user_func_array(array(&$this,'createImageCode'),$args);
+		call_user_func_array(array($this,'createImageCode'), $args);
 	}
 	
 	function createImageCode($filename, $width, $height, $text = '') {
@@ -101,7 +101,7 @@ class BODYACTIONS extends BaseActions {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
 		$args = explode('|',implode($args,', '));
-		call_user_func_array(array(&$this,'createMediaCode'),$args);
+		call_user_func_array(array($this,'createMediaCode'), $args);
 	}
 
 	function createMediaCode($filename, $text = '') {
@@ -124,7 +124,7 @@ class BODYACTIONS extends BaseActions {
 		// image/popup calls have arguments separated by |
 		$args = func_get_args();
 		$args = explode('|',implode($args,', '));
-		call_user_func_array(array(&$this,'createPopupCode'),$args);
+		call_user_func_array(array($this,'createPopupCode'), $args);
 	}
 
 	function createPopupCode($filename, $width, $height, $text = '') {
@@ -390,7 +390,7 @@ class BODYACTIONS extends BaseActions {
 		$params = func_get_args();
 		array_shift($params);
 		
-		return call_user_func_array(array(&$plugin, 'doIf'), $params);
+		return call_user_func_array(array($plugin, 'doIf'), $params);
 	}
 }
 ?>

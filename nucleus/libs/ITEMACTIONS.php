@@ -454,7 +454,7 @@ class ITEMACTIONS extends BaseActions {
 
 		// add comments
 		if ($this->showComments && $this->blog->commentsEnabled()) {
-			$comments =& new COMMENTS($this->currentItem->itemid);
+			$comments = new COMMENTS($this->currentItem->itemid);
 			$comments->setItemActions($this);
 			$comments->showComments($this->template, $maxToShow, $this->currentItem->closed ? 0 : 1, $this->strHighlight);
 		}
@@ -487,7 +487,7 @@ class ITEMACTIONS extends BaseActions {
 		// add item reference (array_unshift didn't work)
 		$params = array_merge(array(&$this->currentItem),$params);
 
-		call_user_func_array(array(&$plugin,'doTemplateVar'), $params);
+		call_user_func_array(array($plugin,'doTemplateVar'), $params);
 	}
 
 	/**
@@ -523,8 +523,8 @@ class ITEMACTIONS extends BaseActions {
 	 * 'plugin variables in items' implementation by Andy
 	 */
 	function highlightAndParse(&$data) {
-		$actions =& new BODYACTIONS($this->blog);
-		$parser =& new PARSER($actions->getDefinedActions(), $actions);
+		$actions = new BODYACTIONS($this->blog);
+		$parser = new PARSER($actions->getDefinedActions(), $actions);
 		$actions->setTemplate($this->template);
 		$actions->setHighlight($this->strHighlight);
 		$actions->setCurrentItem($this->currentItem);
@@ -781,7 +781,7 @@ class ITEMACTIONS extends BaseActions {
 		$params = func_get_args();
 		array_shift($params);
 
-		return call_user_func_array(array(&$plugin, 'doIf'), $params);
+		return call_user_func_array(array($plugin, 'doIf'), $params);
 	}
 }
 ?>

@@ -26,7 +26,7 @@ function upgrade_do150() {
     if (upgrade_checkIfTableExists('plugin_events')) {//present in dev version
         upgrade_query('Renaming table nucleus_plugins_events','RENAME TABLE '.sql_table('plugins_events').' TO '.sql_table('plugin_event'));
     }elseif (!upgrade_checkIfTableExists('plugin_event')) {
-        $query = 'CREATE TABLE '.sql_table('plugin_event').' (pid int(11) NOT NULL, event varchar(40)) TYPE=MyISAM;';
+        $query = 'CREATE TABLE '.sql_table('plugin_event').' (pid int(11) NOT NULL, event varchar(40)) ENGINE=MyISAM;';
         upgrade_query("Creating nucleus_plugin_event table",$query);
     }
 
@@ -34,7 +34,7 @@ function upgrade_do150() {
     if (upgrade_checkIfTableExists('plugins')) {//present in dev version
         upgrade_query('Renaming table nucleus_plugins','RENAME TABLE '.sql_table('plugins').' TO '.sql_table('plugin'));
     }elseif (!upgrade_checkIfTableExists('plugin')) {
-        $query = 'CREATE TABLE '.sql_table('plugin')." (pid int(11) NOT NULL auto_increment, pfile varchar(40) NOT NULL, porder int(11) not null, PRIMARY KEY(pid)) TYPE=MyISAM;";
+        $query = 'CREATE TABLE '.sql_table('plugin')." (pid int(11) NOT NULL auto_increment, pfile varchar(40) NOT NULL, porder int(11) not null, PRIMARY KEY(pid)) ENGINE=MyISAM;";
         upgrade_query("Creating nucleus_plugin table",$query);
     }
 
@@ -116,7 +116,7 @@ function upgrade_do150() {
     // create new table: nucleus_plugin_option
     global $upgrade_failures;
     if (0==$upgrade_failures && !upgrade_checkIfTableExists('plugin_option')) {
-        $query = 'CREATE TABLE '.sql_table('plugin_option')." (opid int(11) NOT NULL, oname varchar(20) NOT NULL, ovalue varchar(128) not null, odesc varchar(255), otype varchar(8), PRIMARY KEY(opid, oname)) TYPE=MyISAM;";
+        $query = 'CREATE TABLE '.sql_table('plugin_option')." (opid int(11) NOT NULL, oname varchar(20) NOT NULL, ovalue varchar(128) not null, odesc varchar(255), otype varchar(8), PRIMARY KEY(opid, oname)) ENGINE=MyISAM;";
         upgrade_query("Creating nucleus_plugin_option table",$query);
     }else{
         echo "<li>Creating nucleus_plugin_option table ... <span class=\"warning\">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>";

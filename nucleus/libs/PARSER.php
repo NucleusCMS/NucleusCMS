@@ -111,7 +111,7 @@ class PARSER {
 			// when using PHP versions lower than 4.0.5, uncomment the line before
 			// and comment the call_user_func_array call
 			//$this->call_using_array($action, $this->handler, $params);
-			call_user_func_array(array(&$this->handler,'parse_' . $actionlc), $params);
+			call_user_func_array(array($this->handler, 'parse_' . $actionlc), $params);
 		} else {
 			// redirect to plugin action if possible
 			if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_' . $action)) {
@@ -138,7 +138,7 @@ class PARSER {
 			return;
 		}
 
-		$command = 'call_user_func(array(&$handler,$methodname)';
+		$command = 'call_user_func(array($handler,$methodname)';
 		for ($i = 0; $i<count($paramarray); $i++)
 			$command .= ',$paramarray[' . $i . ']';
 		$command .= ');';

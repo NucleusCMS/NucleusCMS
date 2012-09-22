@@ -75,9 +75,17 @@ if ($CONF['AllowMemberCreate']==1) {
 				<br />
 		<?php
 		// add extra fields from Plugins, like NP_Profile
-		$manager->notify('RegistrationFormExtraFields', array('type' => 'createaccount.php', 'prelabel' => '', 'postlabel' => '<br />', 'prefield' => '', 'postfield' => '<br /><br />'));
+		$param = array(
+			'type'		=> 'createaccount.php',
+			'prelabel'	=> '',
+			'postlabel'	=> '<br />',
+			'prefield'	=> '',
+			'postfield'	=> '<br /><br />'
+		);
+		$manager->notify('RegistrationFormExtraFields', $param);
 		// add a Captcha challenge or something else
-		$manager->notify('FormExtra', array('type' => 'membermailform-notloggedin'));
+		$param = array('type' => 'membermailform-notloggedin');
+		$manager->notify('FormExtra', $param);
 		?>
 		<br />
 		<br />

@@ -290,7 +290,11 @@ if ($action == 'login') {
 			$action = $nextaction;
 		}
 
-		$manager->notify('LoginSuccess', array('member' => &$member, 'username' => $login) );
+		$param = array(
+			'member'	=> &$member,
+			'username'	=>  $login
+		);
+		$manager->notify('LoginSuccess', $param);
 		$errormessage = '';
 		ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
 	} else {
@@ -303,8 +307,9 @@ if ($action == 'login') {
 		else 
 		{
 			$errormessage = 'Login failed for ' . $login;
-		} 
-		$manager->notify('LoginFailed', array('username' => $login) );
+		}
+		$param = array('username' => $login);
+		$manager->notify('LoginFailed', $param);
 		ACTIONLOG::add(INFO, $errormessage);
 	}
 /*
@@ -317,10 +322,12 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 	$pw	 = serverVar('PHP_AUTH_PW');
 
 	if ($member->login($login, $pw) ) {
-		$manager->notify('LoginSuccess',array('member' => &$member));
+		$param = array('member' => &$member);
+		$manager->notify('LoginSuccess', $param);
 		ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
 	} else {
-		$manager->notify('LoginFailed',array('username' => $login));
+		$param = array('username' => $login);
+		$manager->notify('LoginFailed', $param);
 		ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
 
 		//Since bad credentials, generate an apropriate error page
@@ -335,7 +342,8 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 	// remove cookies on logout
 	setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
 	setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-	$manager->notify('Logout', array('username' => cookieVar($CONF['CookiePrefix'] . 'user') ) );
+	$param = array('username' => cookieVar($CONF['CookiePrefix'] . 'user'));
+	$manager->notify('Logout', $param);
 } elseif (cookieVar($CONF['CookiePrefix'] . 'user') ) {
 	// Cookie Authentication
 	$ck=cookieVar($CONF['CookiePrefix'] . 'loginkey');
@@ -353,7 +361,8 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 }
 
 // login completed
-$manager->notify('PostAuthentication', array('loggedIn' => $member->isLoggedIn() ) );
+$param = array('loggedIn' => $member->isLoggedIn());
+$manager->notify('PostAuthentication', $param);
 ticketForPlugin();
 
 // first, let's see if the site is disabled or not. always allow admin area access.
@@ -459,14 +468,12 @@ if ($CONF['URLMode'] == 'pathinfo') {
 	}
 
 	$parsed = false;
-	$manager->notify(
-		'ParseURL',
-		array(
-			'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
-			'info' => $virtualpath,
-			'complete' => &$parsed
-		)
+	$param = array(
+		'type'		=>  basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
+		'info'		=>  $virtualpath,
+		'complete'	=> &$parsed
 	);
+	$manager->notify('ParseURL', $param);
 
 	if (!$parsed) {
 		// default implementation
@@ -548,13 +555,11 @@ if ($CONF['URLMode'] == 'pathinfo') {
 	the values of something like catid or itemid
 	New in 3.60
 */
-$manager->notify(
-	'PostParseURL',
-	array(
-		'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
-		'info' => $virtualpath
-	)
+$param = array(
+	'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
+	'info' => $virtualpath
 );
+$manager->notify('PostParseURL', $param);
 
 function include_libs($file,$once=true,$require=true){
 	global $DIR_LIBS;
@@ -684,14 +689,12 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 			$contenttype = 'text/html';
 		}
 
-		$manager->notify(
-			'PreSendContentType',
-			array(
-				'contentType' => &$contenttype,
-				'charset' => &$charset,
-				'pageType' => $pagetype
-			)
+		$param = array(
+			'contentType'	=> &$contenttype,
+			'charset'		=> &$charset,
+			'pageType'		=>  $pagetype
 		);
+		$manager->notify('PreSendContentType', $param);
 
 		// strip strange characters
 		$contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
@@ -1549,7 +1552,7 @@ function createBlogidLink($blogid, $params = '') {
 	return createLink('blog', array('blogid' => $blogid, 'extra' => $params) );
 }
 
-function createLink($type, $params) {
+function createLink($type, $args) {
 	global $manager, $CONF;
 
 	$generatedURL = '';
@@ -1559,15 +1562,13 @@ function createLink($type, $params) {
 	$created = false;
 
 	if ($usePathInfo) {
-		$manager->notify(
-			'GenerateURL',
-			array(
-				'type' => $type,
-				'params' => $params,
-				'completed' => &$created,
-				'url' => &$url
-			)
+		$param = array(
+			'type'		=>  $type,
+			'args'		=>  $args,
+			'completed'	=> &$created,
+			'url'		=> &$url
 		);
+		$manager->notify('GenerateURL', $param);
 	}
 
 	// if a plugin created the URL, return it
@@ -1579,58 +1580,58 @@ function createLink($type, $params) {
 	switch ($type) {
 		case 'item':
 			if ($usePathInfo) {
-				$url = $CONF['ItemURL'] . '/' . $CONF['ItemKey'] . '/' . $params['itemid'];
+				$url = $CONF['ItemURL'] . '/' . $CONF['ItemKey'] . '/' . $args['itemid'];
 			} else {
-				$url = $CONF['ItemURL'] . '?itemid=' . $params['itemid'];
+				$url = $CONF['ItemURL'] . '?itemid=' . $args['itemid'];
 			}
 			break;
 
 		case 'member':
 			if ($usePathInfo) {
-				$url = $CONF['MemberURL'] . '/' . $CONF['MemberKey'] . '/' . $params['memberid'];
+				$url = $CONF['MemberURL'] . '/' . $CONF['MemberKey'] . '/' . $args['memberid'];
 			} else {
-				$url = $CONF['MemberURL'] . '?memberid=' . $params['memberid'];
+				$url = $CONF['MemberURL'] . '?memberid=' . $args['memberid'];
 			}
 			break;
 
 		case 'category':
 			if ($usePathInfo) {
-				$url = $CONF['CategoryURL'] . '/' . $CONF['CategoryKey'] . '/' . $params['catid'];
+				$url = $CONF['CategoryURL'] . '/' . $CONF['CategoryKey'] . '/' . $args['catid'];
 			} else {
-				$url = $CONF['CategoryURL'] . '?catid=' . $params['catid'];
+				$url = $CONF['CategoryURL'] . '?catid=' . $args['catid'];
 			}
 			break;
 
 		case 'archivelist':
-			if (!$params['blogid']) {
-				$params['blogid'] = $CONF['DefaultBlog'];
+			if (!$args['blogid']) {
+				$args['blogid'] = $CONF['DefaultBlog'];
 			}
 
 			if ($usePathInfo) {
-				$url = $CONF['ArchiveListURL'] . '/' . $CONF['ArchivesKey'] . '/' . $params['blogid'];
+				$url = $CONF['ArchiveListURL'] . '/' . $CONF['ArchivesKey'] . '/' . $args['blogid'];
 			} else {
-				$url = $CONF['ArchiveListURL'] . '?archivelist=' . $params['blogid'];
+				$url = $CONF['ArchiveListURL'] . '?archivelist=' . $args['blogid'];
 			}
 			break;
 
 		case 'archive':
 			if ($usePathInfo) {
-				$url = $CONF['ArchiveURL'] . '/' . $CONF['ArchiveKey'] . '/'.$params['blogid'].'/' . $params['archive'];
+				$url = $CONF['ArchiveURL'] . '/' . $CONF['ArchiveKey'] . '/'.$args['blogid'].'/' . $args['archive'];
 			} else {
-				$url = $CONF['ArchiveURL'] . '?blogid='.$params['blogid'].'&amp;archive=' . $params['archive'];
+				$url = $CONF['ArchiveURL'] . '?blogid='.$args['blogid'].'&amp;archive=' . $args['archive'];
 			}
 			break;
 
 		case 'blog':
 			if ($usePathInfo) {
-				$url = $CONF['BlogURL'] . '/' . $CONF['BlogKey'] . '/' . $params['blogid'];
+				$url = $CONF['BlogURL'] . '/' . $CONF['BlogKey'] . '/' . $args['blogid'];
 			} else {
-				$url = $CONF['BlogURL'] . '?blogid=' . $params['blogid'];
+				$url = $CONF['BlogURL'] . '?blogid=' . $args['blogid'];
 			}
 			break;
 	}
 
-	return addLinkParams($url, (isset($params['extra'])? $params['extra'] : null));
+	return addLinkParams($url, (isset($args['extra'])? $args['extra'] : null));
 }
 
 function createBlogLink($url, $params) {

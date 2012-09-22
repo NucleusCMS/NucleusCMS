@@ -185,7 +185,7 @@ class ACTIONS extends BaseActions {
 		$params = func_get_args();
 		array_shift($params);
 
-		return call_user_func_array(array(&$plugin, 'doIf'), $params);
+		return call_user_func_array(array($plugin, 'doIf'), $params);
 	}
 
 	/**
@@ -397,7 +397,11 @@ class ACTIONS extends BaseActions {
 	 */
 	function _preBlogContent($type, &$blog) {
 		global $manager;
-		$manager->notify('PreBlogContent',array('blog' => &$blog, 'type' => $type));
+		$param = array(
+			'blog' => &$blog,
+			'type' =>  $type
+		);
+		$manager->notify('PreBlogContent', $param);
 	}
 
 	/**
@@ -405,7 +409,11 @@ class ACTIONS extends BaseActions {
 	 */
 	function _postBlogContent($type, &$blog) {
 		global $manager;
-		$manager->notify('PostBlogContent',array('blog' => &$blog, 'type' => $type));
+		$param = array(
+			'blog' => &$blog,
+			'type' =>  $type
+		);
+		$manager->notify('PostBlogContent', $param);
 	}
 	
 	/**
@@ -596,7 +604,8 @@ class ACTIONS extends BaseActions {
 	function parse_callback($eventName, $type)
 	{
 		global $manager;
-		$manager->notify($eventName, array('type' => $type));
+		$param = array('type' => $type);
+		$manager->notify($eventName, $param);
 	}
 	
 	/**
@@ -733,14 +742,14 @@ class ACTIONS extends BaseActions {
 		$template =& $manager->getTemplate($template);
 
 		// create parser object & action handler
-		$actions =& new ITEMACTIONS($blog);
-		$parser =& new PARSER($actions->getDefinedActions(),$actions);
+		$actions = new ITEMACTIONS($blog);
+		$parser = new PARSER($actions->getDefinedActions(),$actions);
 		$actions->setTemplate($template);
 		$actions->setParser($parser);
 		$item = ITEM::getitem($itemid, 0, 0);
 		$actions->setCurrentItem($item);
 
-		$comments =& new COMMENTS($itemid);
+		$comments = new COMMENTS($itemid);
 		$comments->setItemActions($actions);
 		$comments->showComments($template, -1, 1, $highlight);	// shows ALL comments
 	}
@@ -1175,7 +1184,7 @@ class ACTIONS extends BaseActions {
 		// add skin type on front
 		array_unshift($params, $this->skintype);
 
-		call_user_func_array(array(&$plugin,'doSkinVar'), $params);
+		call_user_func_array(array($plugin,'doSkinVar'), $params);
 	}
 	
 	/**
