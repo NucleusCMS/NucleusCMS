@@ -821,7 +821,7 @@ class ADMIN {
 		if ($iForcedBlogInclude != -1)
 			$aBlogIds[] = intval($iForcedBlogInclude);
 
-		if (($member->isAdmin()) && ($CONF['ShowAllBlogs']))
+		if (($member->isAdmin()) && (array_key_exists('ShowAllBlogs', $CONF) && $CONF['ShowAllBlogs']))
 			$queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').' ORDER BY bname';
 		else
 			$queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').', '.sql_table('team').' WHERE tblog=bnumber and tmember=' . $member->getID();
@@ -842,6 +842,8 @@ class ADMIN {
 		if ($mode == 'category') {
 			if (sql_num_rows($blogs) > 1)
 				$multipleBlogs = 1;
+			else
+				$multipleBlogs = 0;
 
 			while ($oBlog = sql_fetch_object($blogs)) {
 				if ($multipleBlogs)

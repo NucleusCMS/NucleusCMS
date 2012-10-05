@@ -407,7 +407,7 @@ class MANAGER {
       *     Can contain any type of data, depending on the event type. Usually this is
       *     an itemid, blogid, ... but it can also be an array containing multiple values
       */
-    function notify($eventName, $data) {
+    function notify($eventName, &$data) {
         // load subscription list if needed
         if (!is_array($this->subscriptions))
             $this->_loadSubscriptions();

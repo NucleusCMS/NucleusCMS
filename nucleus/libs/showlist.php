@@ -272,7 +272,7 @@ function listplug_plugOptionRow($current) {
 	$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 
 	// only if it is not a hidden option write the controls to the page
-	if ($meta['access'] != 'hidden') {
+	if (!array_key_exists('access', $meta) || $meta['access'] != 'hidden') {
 		echo '<td>',htmlspecialchars($current['description']?$current['description']:$current['name']),'</td>';
 		echo '<td>';
 		switch($current['type']) {
@@ -307,15 +307,17 @@ function listplug_plugOptionRow($current) {
 				//$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 
 				echo '<input type="text" size="40" maxlength="128" name="',htmlspecialchars($varname),'" value="',htmlspecialchars($current['value']),'"';
-				if ($meta['datatype'] == 'numerical') {
+				if (array_key_exists('datatype', $meta) && $meta['datatype'] == 'numerical') {
 					echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
 				}
-				if ($meta['access'] == 'readonly') {
+				if (array_key_exists('access', $meta) && $meta['access'] == 'readonly') {
 					echo ' readonly="readonly"';
 				}
 				echo ' />';
 		}
-		echo $current['extra'];
+		if (array_key_exists('extra', $current)) {
+			echo $current['extra'];
+		}
 		echo '</td>';
 	}
 }

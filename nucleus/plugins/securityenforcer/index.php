@@ -34,6 +34,7 @@ Admin area for NP_SecurityEnforcer
 	$oPluginAdmin->start('');
 	
 	// if form to unlock is posted
+	$message = '';
 	if(postVar('action') == 'unlock') {
 		if (!$manager->checkTicket()) 
 			doError('Invalid Ticket');

@@ -121,7 +121,7 @@ class NP_SkinFiles extends NucleusPlugin {
 	}
 	
 	public function event_PrePluginOptionsEdit($data) {
-		if ($data['plugid'] !== $this->getID()) {
+		if ($data['context'] !== 'global' || $data['plugid'] !== $this->getID()) {
 			return;
 		}
 		foreach($data['options'] as $key => $value){

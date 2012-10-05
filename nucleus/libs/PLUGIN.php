@@ -510,8 +510,10 @@
 		 */
 		function _getOID($context, $name) {
 			$key = $context . '_' . $name;
-			$info = $this->_aOptionToInfo[$key];
-			if (is_array($info)) return $info['oid'];
+			if (array_key_exists($key, $this->_aOptionToInfo)) {
+				$info = $this->_aOptionToInfo[$key];
+				if (is_array($info)) return $info['oid'];
+			}
 
 			// load all OIDs for this plugin from the database
 			$this->_aOptionToInfo = array();
@@ -523,8 +525,13 @@
 			}
 			sql_free_result($res);
 
-			return $this->_aOptionToInfo[$key]['oid'];
+			if (array_key_exists($key, $this->_aOptionToInfo)) {
+				return $this->_aOptionToInfo[$key]['oid'];
+			} else {
+				return null;
+			}
 		}
+		
 		function _getDefVal($context, $name) {
 			$key = $context . '_' . $name;
 			$info = $this->_aOptionToInfo[$key];
@@ -637,7 +644,7 @@
 						$meta = NucleusPlugin::getOptionMeta($o->oextra);
 
 						// if the option is readonly or hidden it may not be saved
-						if (($meta['access'] != 'readonly') && ($meta['access'] != 'hidden')) {
+						if (!array_key_exists('access', $meta) || (($meta['access'] != 'readonly') && ($meta['access'] != 'hidden'))) {
 
 							$value = undoMagic($value);	// value comes from request
 
@@ -650,7 +657,7 @@
 							}
 
 							// check the validity of numerical options
-							if (($meta['datatype'] == 'numerical') && (!is_numeric($value))) {
+							if (array_key_exists('datatype', $meta) && ($meta['datatype'] == 'numerical') && (!is_numeric($value))) {
 								//the option must be numeric, but the it isn't
 								//use the default for this option
 								$value = $o->odef;

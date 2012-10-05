@@ -28,7 +28,7 @@ class PluginAdmin {
 
 	function PluginAdmin($pluginName)
 	{
-		global $manager;
+		global $manager, $DIR_LIBS;
 		include_once($DIR_LIBS . 'ADMIN.php');
 		
 		$this->strFullName = 'NP_' . $pluginName;

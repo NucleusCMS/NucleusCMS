@@ -123,7 +123,11 @@ class ITEMACTIONS extends BaseActions {
 	function setCurrentItem(&$item) {
 		$this->currentItem =& $item;
 		global $currentitemid;
-		$currentitemid = $this->currentItem->itemid;
+		if (is_array($this->currentItem)) {
+			$currentitemid = $this->currentItem['itemid'];
+		} else {
+			$currentitemid = $this->currentItem->itemid;
+		}
 	}
 	
 	function setBlog(&$blog) {
