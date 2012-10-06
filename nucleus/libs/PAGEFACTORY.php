@@ -168,7 +168,7 @@ class PAGEFACTORY extends BaseActions {
 
 	// create category dropdown box
 	function parse_categories($startidx = 0) {
-			if ($this->variables['catid'])
+			if (array_key_exists('catid', $this->variables) && $this->variables['catid'])
 				$catid = $this->variables['catid'];				// on edit item
 			else
 				$catid = $this->blog->getDefaultCategory();		// on add item

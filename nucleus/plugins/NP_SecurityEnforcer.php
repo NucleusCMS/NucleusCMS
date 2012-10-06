@@ -61,7 +61,7 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 		sql_query("CREATE TABLE IF NOT EXISTS ". sql_table('plug_securityenforcer').
 					" ( 
 					  `login` varchar(255),
-					  `fails` int(11) NOT NULL default '0',					  
+					  `fails` int(11) NOT NULL default '0',
 					  `lastfail` bigint NOT NULL default '0',
 					  KEY `login` (`login`)) ENGINE=MyISAM");
 
@@ -192,7 +192,7 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 	}
 	
 	function event_PrePluginOptionsEdit($data) {
-		if ($data['plugid'] === $this->getID()) {
+		if (array_key_exists('plugid', $data) && $data['plugid'] === $this->getID()) {
 			foreach($data['options'] as $key => $value){
 				if (defined($value['description'])) {
 					$data['options'][$key]['description'] = constant($value['description']);

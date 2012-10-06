@@ -164,6 +164,9 @@ function media_select() {
 
 	<?php
 
+	$idxStart = 0;
+	$idxEnd = 0;
+	
 	if (sizeof($arr)>0) {
 
 		if (($offset + $CONF['MediaPerPage']) >= sizeof($arr))

@@ -634,7 +634,7 @@ class ACTIONS extends BaseActions {
 		global $blog, $manager;
 
 		// when no blog found
-		if (($blogName == '') && (!is_object($blog)))
+		if (($blogname == '') && (!is_object($blog)))
 			return 0;
 			
 		if ($blogname == '') {

@@ -284,6 +284,7 @@ class BLOG {
 		$body		= $body;
 		$more		= $more;
 		$catid		= intval($catid);
+		$isFuture	= 0;
 
 		// convert newlines to <br />
 		if ($this->convertBreaks()) {
