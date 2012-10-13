@@ -8,15 +8,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-
-/**
- * Part of the code for the Nucleus admin area
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * @version $NucleusJP: ENCAPSULATE.php,v 1.4.2.1 2007/08/08 05:32:54 kimitake Exp $
+ * Part of the code for the Nucleus admin area
  */
 
 class ENCAPSULATE {

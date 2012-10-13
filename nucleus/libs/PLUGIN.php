@@ -8,17 +8,11 @@
 	 * as published by the Free Software Foundation; either version 2
 	 * of the License, or (at your option) any later version.
 	 * (see nucleus/documentation/index.html#license for more info)
-	 */
-	/**
+	 *
 	 * This is an (abstract) class of which all Nucleus Plugins must inherit
 	 *
 	 * for more information on plugins and how to write your own, see the
 	 * plugins.html file that is included with the Nucleus documenation
-	 *
-	 * @license http://nucleuscms.org/license.txt GNU General Public License
-	 * @copyright Copyright (C) 2002-2012 The Nucleus Group
-	 * @version $Id$
-	 * $NucleusJP: PLUGIN.php,v 1.12.2.3 2007/12/03 02:22:42 kmorimatsu Exp $
 	 */
 	class NucleusPlugin {
 

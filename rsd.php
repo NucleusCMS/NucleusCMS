@@ -11,14 +11,6 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
-/**
- * RSD API
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- */
-
 // RSD file (http://archipelago.phrasewise.com/rsd)
 $CONF = array();
 include('./config.php');

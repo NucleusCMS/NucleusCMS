@@ -8,14 +8,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * The code for the Nucleus admin area
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * @version $NucleusJP: ADMIN.php,v 1.21.2.4 2007/10/30 19:04:24 kmorimatsu Exp $
+ * The code for the Nucleus admin area
  */
 
 if ( !function_exists('requestVar') ) exit;

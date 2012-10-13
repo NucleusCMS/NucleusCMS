@@ -16,7 +16,7 @@
  * @license   http://www.gnu.org/licenses/gpl.txt  GNU GENERAL PUBLIC LICENSE Version 2, June 1991
  * @version   1.8
  * @link	  http://edmondhui.homeip.net/nudn
- * $id$
+ *
  * History
  *   v1.0 - Initial version
  *   v1.1 - Add JustPosted event support

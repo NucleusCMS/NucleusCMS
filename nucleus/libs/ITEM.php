@@ -9,14 +9,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * A class representing an item
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: ITEM.php,v 1.7.2.3 2008/02/07 06:13:30 kimitake Exp $
+ * A class representing an item
  */
 class ITEM {
 

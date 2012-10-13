@@ -17,9 +17,6 @@
   *		- Use createElement() instead of document.createElement()
   *
   * That's basically it :)
-  *
-  * $Id$
-  * $NucleusJP: compatibility.js,v 1.4 2006/07/12 07:11:47 kimitake Exp $
   */
 
 // to get the script working when page is sent as application/xhtml+xml

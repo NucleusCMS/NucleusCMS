@@ -10,13 +10,6 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-/**
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * @version $NucleusJP: vars4.1.0.php,v 1.10.2.2 2007/10/30 19:01:33 kmorimatsu Exp $
- */
-
 
 // Remove $_COOKIE keys in $_REQUEST
 // This is for maintaining the compatibility with PHP 4.0.6

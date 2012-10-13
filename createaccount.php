@@ -10,14 +10,6 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
-/**
- * Create account form
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- */
-
 require_once "./config.php";
 //include $DIR_LIBS."ACTION.php";
 include_libs('ACTION.php',false,false);

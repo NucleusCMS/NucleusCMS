@@ -9,12 +9,6 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-/**
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: index.php,v 1.8.2.1 2007/09/07 07:36:09 kimitake Exp $
- */
 	// we are using admin stuff:
 	$CONF = array();
 	$CONF['UsingAdminArea'] = 1;

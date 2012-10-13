@@ -9,14 +9,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * A class representing a template
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * @version $NucleusJP: TEMPLATE.php,v 1.6 2006/07/20 08:01:52 kimitake Exp $
+ * A class representing a template
  */
 class TEMPLATE {
 

@@ -11,13 +11,6 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
-/**
- * Nucleus configration file
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- */
-
 // このファイルはサーバ内のディレクトリに対するパスと
 // Nucleus CMSの基本機能に関する設定を行います
 

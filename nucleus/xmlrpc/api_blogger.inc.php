@@ -8,15 +8,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-
-/**
- * This file contains definitions for the methods in the Blogger API
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: api_blogger.inc.php,v 1.5 2006/07/17 20:03:45 kimitake Exp $
+ * This file contains definitions for the methods in the Blogger API
  */
 
 

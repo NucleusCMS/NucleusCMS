@@ -8,15 +8,7 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: PAGEFACTORY.php,v 1.8.2.2 2007/10/30 16:12:27 shizuki Exp $
- */
-
-/**
+ *
  * The formfactory class can be used to insert add/edit item forms into
  * admin area, bookmarklet, skins or any other places where such a form
  * might be needed

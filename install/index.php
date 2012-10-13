@@ -16,13 +16,6 @@
  * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>/install/</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php
  */
 
-/**
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: index.php,v 1.7 2007/02/04 06:28:44 kimitake Exp $
- */
-
 /*
 	This part of the index.php code allows for customization of the install process.
 	When distributing plugins or skins together with a Nucleus installation, the

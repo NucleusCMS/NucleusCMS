@@ -8,14 +8,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * This class is used when parsing comment templates
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * @version $NucleusJP: COMMENTACTIONS.php,v 1.5.2.1 2007/08/08 05:31:31 kimitake Exp $
+ * This class is used when parsing comment templates
  */
 
 class COMMENTACTIONS extends BaseActions {

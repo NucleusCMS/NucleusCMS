@@ -9,19 +9,11 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- */
- 
-/*
+ *
  * complete sql_* wrappers for mysql functions
  *
  * functions moved from globalfunctions.php: sql_connect, sql_disconnect, sql_query
  */
- 
 
 $MYSQL_CONN = 0;
 global $SQL_DBH;

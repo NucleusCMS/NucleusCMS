@@ -9,19 +9,11 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
+ *
+ * The purpose of the functions below is to avoid declaring HTTP_ vars to be global
+ * everywhere, plus to offer support for php versions before 4.1.0, that do not
+ * have the _GET etc vars
  */
-/**
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * @version $NucleusJP: vars4.0.6.php,v 1.10.2.1 2007/09/05 07:46:30 kimitake Exp $
- */
-
-/**
-  * The purpose of the functions below is to avoid declaring HTTP_ vars to be global
-  * everywhere, plus to offer support for php versions before 4.1.0, that do not
-  * have the _GET etc vars
-  */
 function getVar($name) {
 	global $HTTP_GET_VARS;
 

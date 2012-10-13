@@ -9,14 +9,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * Some functions common to all upgrade scripts
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: upgrade.functions.php,v 1.10 2007/04/26 06:20:19 kimitake Exp $
+ * Some functions common to all upgrade scripts
  */
 
 /*************************************************************

@@ -8,15 +8,9 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * Class used to represent a collection of e-mail addresses, to which a
  * message can be sent (e.g. comment or karma vote notification).
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: NOTIFICATION.php,v 1.6 2006/07/17 20:03:44 kimitake Exp $
  */
 class NOTIFICATION {
 

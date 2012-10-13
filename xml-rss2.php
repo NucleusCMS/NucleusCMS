@@ -11,14 +11,6 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
-/**
- * Nucleus RSS syndication channel skin
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: xml-rss2.php,v 1.7 2006/07/17 19:59:46 kimitake Exp $
- */
-
 header('Pragma: no-cache');
 
 $CONF = array();

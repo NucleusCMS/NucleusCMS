@@ -2,8 +2,6 @@
 // by Edd Dumbill (C) 1999-2002
 // <edd@usefulinc.com>
 // $Original: xmlrpcs.inc,v 1.66 2006/09/17 21:25:06 ggiunta Exp $
-// $Id$
-// $NucleusJP: xmlrpcs.inc.php,v 1.9.2.2 2007/09/07 07:04:24 kimitake Exp $
 
 // Copyright (c) 1999,2000,2002 Edd Dumbill.
 // All rights reserved.

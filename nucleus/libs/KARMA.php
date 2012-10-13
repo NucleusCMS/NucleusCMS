@@ -8,14 +8,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * Class representing the karma votes for a certain item
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: KARMA.php,v 1.5 2006/07/17 20:03:44 kimitake Exp $
+ * Class representing the karma votes for a certain item
  */
 class KARMA {
 

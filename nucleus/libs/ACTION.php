@@ -9,15 +9,10 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * Actions that can be called via action.php
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: ACTION.php,v 1.10 2007/05/31 07:23:39 kimitake Exp $
+ * Actions that can be called via action.php
  */
+
 class ACTION
 {
 

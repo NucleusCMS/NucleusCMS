@@ -4,9 +4,6 @@
  *
  * Copyright 2005-2009 by Jeff MacMichael and Niels Leenheer
  *
- * @version $Id$
- * @version $NucleusJP: NP_SkinFiles.php,v 1.4 2007/02/04 06:28:46 kimitake Exp $
- *
  * ==========================================================================================
  * This program is free software and open source software; you can redistribute
  * it and/or modify it under the terms of the GNU General Public License as

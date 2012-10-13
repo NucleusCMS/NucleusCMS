@@ -10,11 +10,6 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
-/**
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- */
 define('_HEADER1_2',			'キャラクタセット');
 define('_TEXT1_2',				'使用するキャラクタセットを選択します。UTF-8を推奨します。');
 define('_TEXT1_2_TAB_HEAD',		'キャラクタセットの選択');

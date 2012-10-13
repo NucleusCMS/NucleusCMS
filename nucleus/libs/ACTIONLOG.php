@@ -8,15 +8,10 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * Actionlog class for Nucleus
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: ACTIONLOG.php,v 1.7 2007/03/13 05:18:32 shizuki Exp $
+ * Actionlog class for Nucleus
  */
+
 define('ERROR',1);		// only errors
 define('WARNING',2);	// errors and warnings
 define('INFO',3);		// info, errors and warnings

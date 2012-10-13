@@ -9,14 +9,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * A class representing site members
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: MEMBER.php,v 1.6 2006/07/17 20:03:44 kimitake Exp $
+ * A class representing site members
  */
 class MEMBER {
 

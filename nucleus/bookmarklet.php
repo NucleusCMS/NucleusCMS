@@ -8,15 +8,9 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * This script allows adding items to Nucleus through bookmarklets. The member must be logged in
  * in order to use this.
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: bookmarklet.php,v 1.9.2.1 2007/09/07 07:16:39 kimitake Exp $
  */
 
 // bookmarklet is part of admin area (might need XML-RPC)

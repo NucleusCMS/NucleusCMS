@@ -9,9 +9,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *  
   * Some JavaScript code for the admin area
-  *
-  * $Id$
-  * $NucleusJP: admin.js,v 1.6.2.1 2007/09/05 05:58:56 kimitake Exp $
   */
 
 function help(url) {

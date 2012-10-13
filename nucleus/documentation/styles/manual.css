@@ -1,11 +1,5 @@
 @charset 'UTF-8';
 
-/**
- * NucleusCMS Manual Style sheet
- *
- * $Id$
- */
-
 body {
 	background: #fff url(background.png) repeat-x;
 	padding-top: 13px;

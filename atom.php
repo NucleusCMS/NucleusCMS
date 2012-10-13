@@ -10,14 +10,6 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
-/**
- * Nucleus Atom Syndication
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: atom.php,v 1.6 2006/07/12 07:11:45 kimitake Exp $
- */
-
 header('Pragma: no-cache');
 
 $CONF = array();

@@ -10,9 +10,6 @@
   *
   * This file contains functions to allow adding items from inside the weblog.
   * Also contains code to avoid submitting form data twice.
-  *
-  * $Id$
-  * $NucleusJP: edit.js,v 1.5 2006/07/12 07:11:47 kimitake Exp $
   */
 
 var nucleusConvertBreaks = true;

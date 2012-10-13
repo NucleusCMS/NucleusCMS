@@ -1,7 +1,4 @@
 <?php
-/** Japanese-EUC language file for NP_SECURITYENFORCER Plugin
-*/
-
 // Plugin Options
 define('_SECURITYENFORCER_OPT_QUICKMENU',			'クイックメニューに表示しますか？');
 define('_SECURITYENFORCER_OPT_DEL_UNINSTALL_DATA',	'アンインストール時にデータベースのテーブルを削除しますか？');

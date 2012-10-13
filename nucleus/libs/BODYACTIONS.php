@@ -9,14 +9,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * A class to parses plugin calls inside items
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * @version $NucleusJP: BODYACTIONS.php,v 1.6.2.1 2007/08/08 05:27:14 kimitake Exp $
+ * A class to parses plugin calls inside items
  */
 
 class BODYACTIONS extends BaseActions {

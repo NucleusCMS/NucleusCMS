@@ -1,10 +1,5 @@
 <?php
 
-   /*
-	* @version $Id$
-	* @version $NucleusJP: english.php,v 1.3 2007/02/04 06:28:46 kimitake Exp $
-	*/
-
 define('_SKINFILES_TITLE',				'Skin Files');
 define('_SKINFILES_TOOLTIP',			'Manage skin files');
 

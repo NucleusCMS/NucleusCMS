@@ -9,19 +9,13 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * SEARCH(querystring) offers different functionality to create an
  * SQL query to find certain items. (and comments)
  *
  * based on code by David Altherr:
  * http://www.evolt.org/article/Boolean_Fulltext_Searching_with_PHP_and_MySQL/18/15665/
  * http://davidaltherr.net/web/php_functions/boolean/funcs.mysql.boolean.txt
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * @version $NucleusJP: SEARCH.php,v 1.7 2006/07/20 08:01:52 kimitake Exp $
  */
 
 class SEARCH {

@@ -17,16 +17,6 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
-
-
-/**
- * Japanese UTF-8 Nucleus Language File
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The NucleusCMS Japanチーム
- * @version $Id$
- */
-
 /********************************************
  *        Start New for 3.64                *
  ********************************************/

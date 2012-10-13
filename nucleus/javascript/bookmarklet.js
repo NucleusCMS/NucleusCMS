@@ -10,8 +10,6 @@
   *  
   * Some JavaScript code for the bookmarklets
   *
-  * $Id$
-  * $NucleusJP: bookmarklet.js,v 1.4 2006/07/12 07:11:47 kimitake Exp $
   */
 
 /**

@@ -9,12 +9,6 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-/**
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: PARSER.php,v 1.7.2.1 2007/09/05 07:35:59 kimitake Exp $
- */
 
 if ( !function_exists('requestVar') ) exit;
 require_once dirname(__FILE__) . '/BaseActions.php';

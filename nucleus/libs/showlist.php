@@ -8,16 +8,9 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * Functions to create lists of things inside the admin are
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * @version $NucleusJP: showlist.php,v 1.7.2.3 2007/12/03 00:01:48 kmorimatsu Exp $
+ * Functions to create lists of things inside the admin are
  */
-
 
 // can take either an array of objects, or an SQL query
 function showlist($query, $type, $template) {

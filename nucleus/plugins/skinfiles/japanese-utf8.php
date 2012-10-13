@@ -1,10 +1,5 @@
 <?php
 
-   /*
-	* @version $Id$
-	* @version $NucleusJP: japanese-utf8.php,v 1.3 2007/02/04 06:28:46 kimitake Exp $
-	*/
-
 define('_SKINFILES_TITLE',				'スキンファイル');
 define('_SKINFILES_TOOLTIP',			'スキンファイルの管理');
 

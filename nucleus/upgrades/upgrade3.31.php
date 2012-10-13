@@ -9,13 +9,6 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-/**
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: upgrade3.31.php,v 1.1.2.4 2008/02/04 07:05:36 kimitake Exp $
- *
- */
 
 function upgrade_do331() {
 

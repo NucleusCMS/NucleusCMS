@@ -9,14 +9,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
- * code to make it easier to create plugin admin areas
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: PLUGINADMIN.php,v 1.8.2.2 2007/10/23 22:48:56 kmorimatsu Exp $
+ * code to make it easier to create plugin admin areas
  */
 
 class PluginAdmin {

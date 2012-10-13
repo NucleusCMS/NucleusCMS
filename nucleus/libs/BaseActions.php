@@ -8,17 +8,11 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * This class contains parse actions that are available in all ACTION classes
  * e.g. include, phpinclude, parsedinclude, skinfile, ...
  *
  * It should never be used on it's own
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * @version $NucleusJP: BaseActions.php,v 1.2 2006/07/20 08:01:52 kimitake Exp $
  */
 
 class BaseActions {

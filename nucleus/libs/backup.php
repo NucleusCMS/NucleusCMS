@@ -8,18 +8,11 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * Scripts to create/restore a backup of the Nucleus database
  *
  * Based on code in phpBB (http://phpBB.sourceforge.net)
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: backup.php,v 1.8.2.1 2007/08/08 05:23:31 kimitake Exp $
  */
-
 
 class Backup
 { 

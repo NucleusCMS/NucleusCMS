@@ -10,14 +10,6 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
-/**
- * Nucleus index.php
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- */
-
 //setup for benchmarking
 include('./benchmark.inc');
 

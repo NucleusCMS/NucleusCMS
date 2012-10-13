@@ -59,11 +59,6 @@
  * The Movable Type API
  *
  * mt.supportedMethods
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * @version $NucleusJP: server.php,v 1.8.2.1 2007/09/07 07:12:42 kimitake Exp $
  */
 $CONF = array();
 $DIR_LIBS = '';

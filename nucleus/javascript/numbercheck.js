@@ -10,9 +10,6 @@
   *
   * script the check (on the clientside) if a entered value
   * is a valid number and remove the invalid chars
-  *
-  * $Id$
-  * $NucleusJP: numbercheck.js,v 1.3 2006/07/12 07:11:47 kimitake Exp $
   */
 
 function checkNumeric(f)

@@ -5,9 +5,6 @@
  *
  * Copyright 2005-2007 by Jeff MacMichael and Niels Leenheer
  *
- * @version $Id$
- * @version $NucleusJP: index.php,v 1.6 2007/03/20 19:32:47 kmorimatsu Exp $
- *
  * ==========================================================================================
  * This program is free software and open source software; you can redistribute
  * it and/or modify it under the terms of the GNU General Public License as

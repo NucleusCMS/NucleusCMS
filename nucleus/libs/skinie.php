@@ -8,15 +8,9 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  *	This class contains two classes that can be used for importing and
  *	exporting Nucleus skins: SKINIMPORT and SKINEXPORT
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * @version $NucleusJP: skinie.php,v 1.9.2.1 2007/09/05 07:46:30 kimitake Exp $
  */
 
 class SKINIMPORT {

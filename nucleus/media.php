@@ -8,8 +8,7 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * Media popup window for Nucleus
  *
  * Purpose:
@@ -18,12 +17,6 @@
  *     upload of new files
  *   - close the popup by selecting a file in the list. The file gets
  *     passed through to the add-item form (linkto, popupimg or inline img)
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: media.php,v 1.8.2.1 2007/09/07 07:36:44 kimitake Exp $
- *
  */
 
 $CONF = array();

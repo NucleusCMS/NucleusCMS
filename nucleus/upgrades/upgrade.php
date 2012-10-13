@@ -9,12 +9,6 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
-/**
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2012 The Nucleus Group
- * @version $Id$
- * $NucleusJP: upgrade.php,v 1.7 2007/04/26 06:20:19 kimitake Exp $
- */
 
 include('upgrade.functions.php');
 

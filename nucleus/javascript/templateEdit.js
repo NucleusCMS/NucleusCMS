@@ -10,10 +10,7 @@
   *
   *	Javascript code to hide empty textareas when editing templates.
   *
-  * @require compatibility.js
-  *
-  * $Id$
-  * $NucleusJP: templateEdit.js,v 1.4 2006/07/12 07:11:47 kimitake Exp $
+  * compatibility.js is required.
   */
 
 var amountOfFields = 1;
