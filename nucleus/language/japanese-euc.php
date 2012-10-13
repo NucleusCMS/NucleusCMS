@@ -15,7 +15,7 @@
 // available for download (with proper credit to the author, of course)
 
 // Note for Japanese users
-// ¤³¤Î¥Õ¥¡¥¤¥ë¤Ï Nucleus ¤Î EUC-JP ÈÇÆüËÜ¸ì¥é¥ó¥²¡¼¥¸¥Õ¥¡¥¤¥ë¤Ç¤¹¡£
+// ï¿½ï¿½ï¿½Î¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Nucleus ï¿½ï¿½ EUC-JP ï¿½ï¿½ï¿½ï¿½ï¿½Ü¸ï¿½ï¿½ó¥²¡ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½
 
 
 
@@ -23,31 +23,31 @@
  * Japanese EUC-JP Nucleus Language File
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2011 The NucleusCMS Japan¥Á¡¼¥à
+ * @copyright Copyright (C) 2002-2012 The NucleusCMS Japanï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
  * @version $Id$
  */
 
 /********************************************
  *        Start New for 3.64                *
  ********************************************/
-define('_ERROR_USER_TOO_LONG',				'Ì¾Á°¤ò40Ê¸»ú°ÊÆâ¤ÇÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_ERROR_EMAIL_TOO_LONG',				'e¥á¡¼¥ë¤ò40Ê¸»ú°ÊÆâ¤ÇÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_ERROR_URL_TOO_LONG',				'¥¦¥§¥Ö¥µ¥¤¥È¤ò40Ê¸»ú°ÊÆâ¤ÇÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('_ERROR_USER_TOO_LONG',				'Ì¾ï¿½ï¿½ï¿½ï¿½40Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_EMAIL_TOO_LONG',				'eï¿½á¡¼ï¿½ï¿½ï¿½40Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_URL_TOO_LONG',				'ï¿½ï¿½ï¿½ï¿½ï¿½Ö¥ï¿½ï¿½ï¿½ï¿½È¤ï¿½40Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 /********************************************
  *        Start New for 3.62                *
  ********************************************/
-define('_SETTINGS_ADMINCSS',		'´ÉÍýÎÎ°è¤Î¥¹¥¿¥¤¥ë¥·¡¼¥È');
+define('_SETTINGS_ADMINCSS',		'ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¥·ï¿½ï¿½ï¿½ï¿½');
 
 
 /********************************************
  *        Start New for 3.50                *
  ********************************************/
-define('_PLUGS_TITLE_GETPLUGINS',		'¥×¥é¥°¥¤¥ó¤òÆþ¼ê¡Ä');
+define('_PLUGS_TITLE_GETPLUGINS',		'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 define('_ARCHIVETYPE_YEAR', 'Ç¯');
-define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'¿·¤·¤¤¥Ð¡¼¥¸¥ç¥ó¤¬Æþ¼ê²ÄÇ½¤«¤â¤·¤ì¤Þ¤»¤ó');
-define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'¥¢¥Ã¥×¥°¥ì¡¼¥É¤¬Æþ¼ê²ÄÇ½¤«¤â¤·¤ì¤Þ¤»¤ó¡§ v');
-define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "¥×¥é¥°¥¤¥ó %s ¤òÆÉ¤ß¹þ¤á¤Þ¤»¤ó¤Ç¤·¤¿¡£(¤³¤Î¥×¥é¥°¥¤¥ó¤ÏSqlAPI¤ò¥µ¥Ý¡¼¥È¤·¤Æ¤¤¤Þ¤»¤ó¡£¥Ç¡¼¥¿¥Ù¡¼¥¹¤ÎÀÜÂ³ÊýË¡¤ò¸«Ä¾¤·¤Æ¤¯¤À¤µ¤¤)");
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½ï¿½ï¿½â¤·ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'ï¿½ï¿½ï¿½Ã¥×¥ï¿½ï¿½ì¡¼ï¿½É¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½ï¿½ï¿½â¤·ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ v');
+define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½ %s ï¿½ï¿½ï¿½É¤ß¹ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Î¥×¥é¥°ï¿½ï¿½ï¿½ï¿½ï¿½SqlAPIï¿½ò¥µ¥Ý¡ï¿½ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ó¡£¥Ç¡ï¿½ï¿½ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â³ï¿½ï¿½Ë¡ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)");
 
 
 /********************************************
@@ -55,316 +55,316 @@ define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "¥×¥é¥°¥¤¥ó %s ¤òÆÉ¤ß¹þ¤á¤Þ¤»¤ó¤Ç¤·¤¿
  ********************************************/
 
 // START changed/added after 3.33 START
-define('_MEMBERS_USEAUTOSAVE',				'²¼½ñ¤­¤Î¼«Æ°ÊÝÂ¸µ¡Ç½¤òÍ­¸ú¤Ë¤·¤Þ¤¹¤«?');
+define('_MEMBERS_USEAUTOSAVE',				'ï¿½ï¿½ï¿½ñ¤­¤Î¼ï¿½Æ°ï¿½ï¿½Â¸ï¿½ï¿½Ç½ï¿½ï¿½Í­ï¿½ï¿½Ë¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½?');
 
-define('_TEMPLATE_PLUGIN_FIELDS',			'¥×¥é¥°¥¤¥ó¤Ë¤è¤ë³ÈÄ¥¥Õ¥£¡¼¥ë¥É');
-define('_TEMPLATE_BLOGLIST',				'Blog°ìÍ÷');
-define('_TEMPLATE_BLOGHEADER',				'Blog°ìÍ÷¤Î¥Ø¥Ã¥À¡¼');
-define('_TEMPLATE_BLOGITEM',				'Blog°ìÍ÷¤ÎËÜÂÎ');
-define('_TEMPLATE_BLOGFOOTER',				'Blog°ìÍ÷¤Î¥Õ¥Ã¥¿¡¼');
+define('_TEMPLATE_PLUGIN_FIELDS',			'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½Ä¥ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_BLOGLIST',				'Blogï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_BLOGHEADER',				'Blogï¿½ï¿½ï¿½ï¿½ï¿½Î¥Ø¥Ã¥ï¿½ï¿½ï¿½');
+define('_TEMPLATE_BLOGITEM',				'Blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_BLOGFOOTER',				'Blogï¿½ï¿½ï¿½ï¿½ï¿½Î¥Õ¥Ã¥ï¿½ï¿½ï¿½');
 
-define('_SETTINGS_DEFAULTLISTSIZE',			'°ìÍ÷¤Î´ûÄê¤ÎÉ½¼¨¿ô');
-define('_SETTINGS_DEBUGVARS',				'¥Ç¥Ð¥Ã¥°¥â¡¼¥É¤òÍ­¸ú¤Ë¤¹¤ë');
+define('_SETTINGS_DEFAULTLISTSIZE',			'ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½');
+define('_SETTINGS_DEBUGVARS',				'ï¿½Ç¥Ð¥Ã¥ï¿½ï¿½â¡¼ï¿½É¤ï¿½Í­ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½');
 
-define('_CREATE_ACCOUNT_TITLE',				'¥¢¥«¥¦¥ó¥È¤Î¿·µ¬ºîÀ®');
-define('_CREATE_ACCOUNT0',					'¥¢¥«¥¦¥ó¥È¤ÎºîÀ®');
-define('_CREATE_ACCOUNT1',					'¥¢¥«¥¦¥ó¥È¤ÎºîÀ®¤Ïµö²Ä¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£<br /><br />');
-define('_CREATE_ACCOUNT2',					'¾ÜºÙ¤Ï¥¦¥§¥Ö¥µ¥¤¥È¤Î´ÉÍý¼Ô¤Ë¤ªÌä¤¤¹ç¤ï¤»¤¯¤À¤µ¤¤¡£');
-define('_CREATE_ACCOUNT_USER_DATA',			'¿·µ¬¥¢¥«¥¦¥ó¥È¤Î¾ðÊó');
-define('_CREATE_ACCOUNT_LOGIN_NAME',		'¥í¥°¥¤¥óID (É¬¿Ü)¡§');
-define('_CREATE_ACCOUNT_LOGIN_NAME_VALID',	' a-z ¤Î±Ñ¾®Ê¸»ú¤È 0-9 ¤Î¿ô»ú¤Î¤ß»ÈÍÑ¤Ç¤­¤Þ¤¹');
-define('_CREATE_ACCOUNT_REAL_NAME',			'¥Ï¥ó¥É¥ë (É¬¿Ü)¡§');
-define('_CREATE_ACCOUNT_EMAIL',				'¥á¡¼¥ë¥¢¥É¥ì¥¹ (É¬¿Ü)¡§');
-define('_CREATE_ACCOUNT_EMAIL2',			'(¥¢¥¯¥Æ¥£¥Ù¡¼¥·¥ç¥óÍÑ¤Î¥ê¥ó¥¯¤¬Á÷¤é¤ì¤ë¤Î¤ÇÍ­¸ú¤Ê¤â¤Î¤ò»ÈÍÑ¤·¤Æ¤¯¤À¤µ¤¤)');
-define('_CREATE_ACCOUNT_URL',				'(¤â¤·¤¢¤ì¤Ð)¼«Ê¬¤Î¥µ¥¤¥È¤ÎURL¡§');
-define('_CREATE_ACCOUNT_SUBMIT',			'¥¢¥«¥¦¥ó¥È¤ÎºîÀ®');
+define('_CREATE_ACCOUNT_TITLE',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_CREATE_ACCOUNT0',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤Îºï¿½ï¿½ï¿½');
+define('_CREATE_ACCOUNT1',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤Îºï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ä¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½<br /><br />');
+define('_CREATE_ACCOUNT2',					'ï¿½ÜºÙ¤Ï¥ï¿½ï¿½ï¿½ï¿½Ö¥ï¿½ï¿½ï¿½ï¿½È¤Î´ï¿½ï¿½ï¿½Ô¤Ë¤ï¿½ï¿½ä¤¤ï¿½ï¿½ï¤»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_CREATE_ACCOUNT_USER_DATA',			'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤Î¾ï¿½ï¿½ï¿½');
+define('_CREATE_ACCOUNT_LOGIN_NAME',		'ï¿½?ï¿½ï¿½ï¿½ï¿½ID (É¬ï¿½ï¿½)ï¿½ï¿½');
+define('_CREATE_ACCOUNT_LOGIN_NAME_VALID',	' a-z ï¿½Î±Ñ¾ï¿½Ê¸ï¿½ï¿½ï¿½ 0-9 ï¿½Î¿ï¿½ï¿½ï¿½Î¤ß»ï¿½ï¿½Ñ¤Ç¤ï¿½ï¿½Þ¤ï¿½');
+define('_CREATE_ACCOUNT_REAL_NAME',			'ï¿½Ï¥ï¿½É¥ï¿½ (É¬ï¿½ï¿½)ï¿½ï¿½');
+define('_CREATE_ACCOUNT_EMAIL',				'ï¿½á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹ (É¬ï¿½ï¿½)ï¿½ï¿½');
+define('_CREATE_ACCOUNT_EMAIL2',			'(ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤Î¥ï¿½ó¥¯¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¤ï¿½Í­ï¿½ï¿½Ê¤ï¿½Î¤ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)');
+define('_CREATE_ACCOUNT_URL',				'(ï¿½â¤·ï¿½ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½Ê¬ï¿½Î¥ï¿½ï¿½ï¿½ï¿½È¤ï¿½URLï¿½ï¿½');
+define('_CREATE_ACCOUNT_SUBMIT',			'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤Îºï¿½ï¿½ï¿½');
 
-define('_BMLET_BACKTODRAFTS',				'¥É¥é¥Õ¥È¤ËÌá¤¹');
-define('_BMLET_CANCEL',						'¥­¥ã¥ó¥»¥ë');
+define('_BMLET_BACKTODRAFTS',				'ï¿½É¥ï¿½Õ¥È¤ï¿½ï¿½á¤¹');
+define('_BMLET_CANCEL',						'ï¿½ï¿½ï¿½ï¿½ó¥»¥ï¿½');
 
-define('_LIST_ITEM_NOCONTENT',						'¥³¥á¥ó¥È¤Ï¤¢¤ê¤Þ¤»¤ó');
-define('_LIST_ITEM_COMMENTS',						'¥³¥á¥ó¥È(%d)·ï');
+define('_LIST_ITEM_NOCONTENT',						'ï¿½ï¿½ï¿½ï¿½ï¿½È¤Ï¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_LIST_ITEM_COMMENTS',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(%d)ï¿½ï¿½');
 
 define('_EDITC_URL',								'Web site');
 define('_EDITC_EMAIL',								'E-mail');
 
-define('_MANAGER_PLUGINFILE_NOTFOUND',				"¥×¥é¥°¥¤¥ó¡Ö%s¡×¤òÆÉ¤ß¹þ¤á¤Þ¤»¤ó¤Ç¤·¤¿(¥Õ¥¡¥¤¥ë¤¬¸«¤Ä¤«¤ê¤Þ¤»¤ó)");
+define('_MANAGER_PLUGINFILE_NOTFOUND',				"ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½ï¿½%sï¿½×¤ï¿½ï¿½É¤ß¹ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½(ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¤¬ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½)");
 /* changed */
 // plugin dependency
-define('_ERROR_INSREQPLUGIN',				'¥×¥é¥°¥¤¥ó %s ¤¬¥¤¥ó¥¹¥È¡¼¥ë¤µ¤ì¤Æ¤¤¤Ê¤¤¤¿¤á¤Ë¥¤¥ó¥¹¥È¡¼¥ë¤¹¤ë¤³¤È¤¬¤Ç¤­¤Þ¤»¤ó¤Ç¤·¤¿¡£');
-define('_ERROR_DELREQPLUGIN',				'¥×¥é¥°¥¤¥ó %s ¤¬¤³¤Î¥×¥é¥°¥¤¥ó¤Ë°ÍÂ¸¤·¤Æ¤¤¤ë°Ù¤Ëºï½ü¤Ç¤­¤Þ¤»¤ó¡£');
+define('_ERROR_INSREQPLUGIN',				'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½ %s ï¿½ï¿½ï¿½ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ë¤µï¿½ï¿½Æ¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½Ë¥ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ë¤¹ï¿½ë¤³ï¿½È¤ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_DELREQPLUGIN',				'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½ %s ï¿½ï¿½ï¿½ï¿½ï¿½Î¥×¥é¥°ï¿½ï¿½ï¿½ï¿½Ë°ï¿½Â¸ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½Ù¤Ëºï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
-//define('_ADD_ADDLATER',						'¸å¤ÇÄÉ²Ã');
-define('_ADD_ADDLATER',						'Æü»þ¤ò»ØÄê¤·¤ÆÄÉ²Ã');	// <mod by shizuki />
+//define('_ADD_ADDLATER',						'ï¿½ï¿½ï¿½ï¿½É²ï¿½');
+define('_ADD_ADDLATER',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê¤·ï¿½ï¿½ï¿½É²ï¿½');	// <mod by shizuki />
 
-define('_LOGIN_NAME',						'¥í¥°¥¤¥óID:');
-define('_LOGIN_PASSWORD',					'¥Ñ¥¹¥ï¡¼¥É:');
+define('_LOGIN_NAME',						'ï¿½?ï¿½ï¿½ï¿½ï¿½ID:');
+define('_LOGIN_PASSWORD',					'ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½ï¿½:');
 
 // changed from _BOOKMARLET_BMARKLFOLLOW
-define('_BOOKMARKLET_BMARKFOLLOW',					' (¤Û¤È¤ó¤É¤Î¥Ö¥é¥¦¥¶¤ÇÆ°ºî¤·¤Þ¤¹)');
+define('_BOOKMARKLET_BMARKFOLLOW',					' (ï¿½Û¤È¤ï¿½É¤Î¥Ö¥é¥¦ï¿½ï¿½ï¿½ï¿½Æ°ï¿½î¤·ï¿½Þ¤ï¿½)');
 // END changed/added after 3.33 END
 
 // START merge UTF-8 and EUC-JP
 
 // Create New blog
-define('_ADMIN_NOTABILIA',					'Ãí°Õ»ö¹à');
-define('_ADMIN_PLEASE_READ',				'ºîÀ®¤Ë¤¢¤¿¤Ã¤Æ¡¢²¼µ­¤Î<strong>Ãí°Õ»ö¹à</strong> ¤ò¤Þ¤º¤ªÆÉ¤ß²¼¤µ¤¤');
-define('_ADMIN_HOW_TO_ACCESS',				'¿·¤·¤¤Blog¤òºîÀ®¤·¤¿¸å¤Ë¡¢¤³¤ÎBlog¤Ë¥¢¥¯¥»¥¹¤¹¤ë¤¿¤á¤ÎÊýË¡¤ò¾Ò²ð¤·¤Æ¤ª¤­¤Þ¤¹¡£ÊýË¡¤Ï2¤Ä¤¢¤ê¤Þ¤¹:');
-define('_ADMIN_SIMPLE_WAY',					'<strong>´ÊÃ±¤ÊÊýË¡:</strong> <code>index.php</code>¤ÎÊ£À½¤òºî¤ê¡¢¿·¤·¤¤Blog¤òÉ½¼¨¤¹¤ë¤è¤¦¤ËÊÑ¹¹¤ò²Ã¤¨¤Þ¤¹¡£ ¤³¤ÎÊÑ¹¹¤Î¾ÜºÙ¤Ï¡¢ºîÀ®¸å¤ËÉ½¼¨¤µ¤ì¤Þ¤¹¡£');
-define('_ADMIN_ADVANCED_WAY',				'<strong>¹âÅÙ¤ÊÊýË¡:</strong> ¸½ºß¤ÎBlog¤Ç»ÈÍÑ¤·¤Æ¤¤¤ë¥¹¥­¥ó¤Ë<code>&lt;%otherblog()&gt;</code>¤È¤¤¤¦¥³¡¼¥É¤ò»È¤Ã¤¿µ­½Ò¤ò²Ã¤¨¤Þ¤¹¡£¤³¤ÎÊýË¡¤Ç¤Ï¡¢Æ±¤¸¥Ú¡¼¥¸Æâ¤ÇÊ£¿ô¤ÎBlog¤òÉ½¼¨¤¹¤ë¤³¤È¤¬²ÄÇ½¤È¤Ê¤ê¤Þ¤¹¡£');
-define('_ADMIN_HOW_TO_CREATE',				'Blog¤ÎºîÀ®');
+define('_ADMIN_NOTABILIA',					'ï¿½ï¿½Õ»ï¿½ï¿½ï¿½');
+define('_ADMIN_PLEASE_READ',				'ï¿½ï¿½ï¿½ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½ï¿½Ã¤Æ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½<strong>ï¿½ï¿½Õ»ï¿½ï¿½ï¿½</strong> ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½É¤ß²ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ADMIN_HOW_TO_ACCESS',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½ï¿½ï¿½ï¿½ï¿½Blogï¿½Ë¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¤¿ï¿½ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½ï¿½Ò²ð¤·¤Æ¤ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½ï¿½2ï¿½Ä¤ï¿½ï¿½ï¿½Þ¤ï¿½:');
+define('_ADMIN_SIMPLE_WAY',					'<strong>ï¿½ï¿½Ã±ï¿½ï¿½ï¿½ï¿½Ë¡:</strong> <code>index.php</code>ï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½ï¿½ê¡¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è¤¦ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½Ã¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½Î¾ÜºÙ¤Ï¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ADMIN_ADVANCED_WAY',				'<strong>ï¿½ï¿½ï¿½Ù¤ï¿½ï¿½ï¿½Ë¡:</strong> ï¿½ï¿½ï¿½ß¤ï¿½Blogï¿½Ç»ï¿½ï¿½Ñ¤ï¿½ï¿½Æ¤ï¿½ï¿½ë¥¹ï¿½ï¿½ï¿½ï¿½ï¿½<code>&lt;%otherblog()&gt;</code>ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¤ï¿½È¤Ã¤ï¿½ï¿½ï¿½ï¿½Ò¤ï¿½Ã¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½Ç¤Ï¡ï¿½Æ±ï¿½ï¿½ï¿½Ú¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê£ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ë¤³ï¿½È¤ï¿½ï¿½ï¿½Ç½ï¿½È¤Ê¤ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ADMIN_HOW_TO_CREATE',				'Blogï¿½Îºï¿½ï¿½ï¿½');
 
 
-define('_BOOKMARKLET_NEW_CATEGORY',			'¥¢¥¤¥Æ¥à¤ÏÄÉ²Ã¤µ¤ì¡¢¿·¤·¤¤¥«¥Æ¥´¥ê¤¬ºîÀ®¤µ¤ì¤Þ¤·¤¿¡£');
-define('_BOOKMARKLET_NEW_CATEGORY_EDIT',	'¤³¤³¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¥«¥Æ¥´¥ê¡¼¤ÎÌ¾Á°¤ÈÀâÌÀ¤òÊÔ½¸¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_BOOKMARKLET_NEW_WINDOW',			'¿·¤·¤¤¥¦¥£¥ó¥É¥¦¤¬³«¤­¤Þ¤¹');
-define('_BOOKMARKLET_SEND_PING',			'¥¢¥¤¥Æ¥à¤ÎÄÉ²Ã¤ËÀ®¸ù¤·¤Þ¤·¤¿¡£¸½ºßblog¸¡º÷¥µ¡¼¥Ó¥¹¤Ë¹¹¿·ping¤òÁ÷¿®¤·¤Þ¤¹¡£'); // NOTE: This string is no longer in used
+define('_BOOKMARKLET_NEW_CATEGORY',			'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½É²Ã¤ï¿½ï¿½ì¡¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¤¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BOOKMARKLET_NEW_CATEGORY_EDIT',	'ï¿½ï¿½ï¿½ï¿½ï¿½ò¥¯¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BOOKMARKLET_NEW_WINDOW',			'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½');
+define('_BOOKMARKLET_SEND_PING',			'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½É²Ã¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¥ï¿½ï¿½Ë¹ï¿½ï¿½ï¿½pingï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½'); // NOTE: This string is no longer in used
 
 // END merge UTF-8 and EUC-JP
 
 // <add by shizuki>
 // OVERVIEW screen
-define('_OVERVIEW_SHOWALL',							'Á´¤Æ¤Îblog¤òÉ½¼¨');
+define('_OVERVIEW_SHOWALL',							'ï¿½ï¿½ï¿½Æ¤ï¿½blogï¿½ï¿½É½ï¿½ï¿½');
 
 // Edit skins
-define('_SKINEDIT_ALLOWEDBLOGS',					'ºîÀ®ºÑ¤ß¤Îblog:');
-define('_SKINEDIT_ALLOWEDTEMPLATESS',				'»ÈÍÑ²ÄÇ½¤Ê¥Æ¥ó¥×¥ì¡¼¥È:');
+define('_SKINEDIT_ALLOWEDBLOGS',					'ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤ß¤ï¿½blog:');
+define('_SKINEDIT_ALLOWEDTEMPLATESS',				'ï¿½ï¿½ï¿½Ñ²ï¿½Ç½ï¿½Ê¥Æ¥ï¿½×¥ì¡¼ï¿½ï¿½:');
 
 // delete member
-define('_WARNINGTXT_NOTDELMEDIAFILES',				'¥á¥ó¥Ð¡¼¤Ë¤è¤Ã¤Æ¥¢¥Ã¥×¥í¡¼¥É¤µ¤ì¤¿¥Õ¥¡¥¤¥ë¤Ï<b>ºï½ü¤µ¤ì¤Þ¤»¤ó</b>¤Î¤Çµ¤¤ò¤Ä¤±¤Æ¤¯¤À¤µ¤¤¡£(¾¯¤Ê¤¯¤È¤â¤³¤Î¥Ð¡¼¥¸¥ç¥ó°Ê²¼¤ÎNucleus¤Ç¤Ï¤½¤¦¤Ê¤Ã¤Æ¤¤¤Þ¤¹)');	// <add by shizuki />
+define('_WARNINGTXT_NOTDELMEDIAFILES',				'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Ë¤ï¿½Ã¤Æ¥ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½ì¤¿ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½<b>ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½</b>ï¿½Î¤Çµï¿½ï¿½ï¿½Ä¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½È¤â¤³ï¿½Î¥Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê²ï¿½ï¿½ï¿½Nucleusï¿½Ç¤Ï¤ï¿½ï¿½ï¿½ï¿½Ê¤Ã¤Æ¤ï¿½ï¿½Þ¤ï¿½)');	// <add by shizuki />
 
 // send Weblogupdate.ping
-define('_UPDATEDPING_MESSAGE',						'<h2>¥µ¥¤¥È¤¬¹¹¿·¤µ¤ì¤Þ¤·¤¿¡£Ping¥µ¡¼¥Ð¤Ë¹¹¿·¤òÄÌÃÎ¤·¤Þ¤¹¡£</h2><p>¤·¤Ð¤é¤¯¤ªÂÔ¤Á¤¯¤À¤µ¤¤</p><p>¼«Æ°Åª¤Ë¥Ú¡¼¥¸¤¬ÀÚ¤êÂØ¤ï¤é¤Ê¤¤¾ì¹ç¤Ï¡¢É½¼¨¤µ¤ì¤ë¥ê¥ó¥¯¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£'); // NOTE: This string is no longer in used
-define('_UPDATEDPING_GOPINGPAGE',					'¹¹¿·PingÁ÷¿®'); // NOTE: This string is no longer in used
-define('_UPDATEDPING_PINGING',						'Ping¥µ¡¼¥Ð¤ËÁ÷¿®Ãæ¤Ç¤¹'); // NOTE: This string is no longer in used
-define('_UPDATEDPING_VIEWITEM',						'¹¹¿·¤µ¤ì¤¿blog:'); // NOTE: This string is no longer in used
-define('_UPDATEDPING_VISITOWNSITE',					'¥µ¥¤¥È¤Ø¹Ô¤Ã¤Æ¤ß¤ë'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_MESSAGE',						'<h2>ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½Pingï¿½ï¿½ï¿½ï¿½ï¿½Ð¤Ë¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½</h2><p>ï¿½ï¿½ï¿½Ð¤é¤¯ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</p><p>ï¿½ï¿½Æ°Åªï¿½Ë¥Ú¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¤ï¿½ï¿½Ø¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½Ï¡ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ó¥¯¤ò¥¯¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_GOPINGPAGE',					'ï¿½ï¿½ï¿½ï¿½Pingï¿½ï¿½ï¿½ï¿½'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_PINGING',						'Pingï¿½ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_VIEWITEM',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì¤¿blog:'); // NOTE: This string is no longer in used
+define('_UPDATEDPING_VISITOWNSITE',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¤Ø¹Ô¤Ã¤Æ¤ß¤ï¿½'); // NOTE: This string is no longer in used
 
 // General category
-define('_EBLOGDEFAULTCATEGORY_NAME',				'Áí¹ç');
-define('_EBLOGDEFAULTCATEGORY_DESC',				'Åê¹Æ¤·¤¿µ­»ö¤Ë¹ç¤¦¥«¥Æ¥´¥ê¤¬Ìµ¤¤»þ¤Ë¤³¤Î¥«¥Æ¥´¥ê¤ò»ÈÍÑ¤¹¤ë¤ÈÎÉ¤¤¤Ç¤·¤ç¤¦');
+define('_EBLOGDEFAULTCATEGORY_NAME',				'ï¿½ï¿½ï¿½');
+define('_EBLOGDEFAULTCATEGORY_DESC',				'ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¹ç¤¦ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¤¬Ìµï¿½ï¿½ï¿½ï¿½ï¿½Ë¤ï¿½ï¿½Î¥ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½ï¿½ï¿½É¤ï¿½ï¿½Ç¤ï¿½ï¿½ç¤¦');
 
 // First ITEM
-define('_EBLOG_FIRSTITEM_TITLE',					'ºÇ½é¤Îµ­»ö(¼«Æ°Åê¹Æ)');
-define('_EBLOG_FIRSTITEM_BODY',						'¤³¤ì¤Ï¤¢¤Ê¤¿¤Îblog¤Ë¤ª¤±¤ëºÇ½é¤Î¥¢¥¤¥Æ¥à¤Ç¤¹¡£¼«Í³¤Ëºï½ü¤·¤Æ¤¤¤¿¤À¤¤¤Æ¤«¤Þ¤¤¤Þ¤»¤ó¡£');
+define('_EBLOG_FIRSTITEM_TITLE',					'ï¿½Ç½ï¿½Îµï¿½ï¿½ï¿½(ï¿½ï¿½Æ°ï¿½ï¿½ï¿½)');
+define('_EBLOG_FIRSTITEM_BODY',						'ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½blogï¿½Ë¤ï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½Í³ï¿½Ëºï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // New weblog was created
-define('_BLOGCREATED_TITLE',						'¿·¤·¤¤blog¤¬ºîÀ®¤µ¤ì¤Þ¤·¤¿');
-define('_BLOGCREATED_ADDEDTXT',						'¿·¤·¤¤blog ¡Ö%s¡×¤¬ºîÀ®¤µ¤ì¤Þ¤·¤¿¡£Â³¤±¤Æ¡¢blog¤Ë¥¢¥¯¥»¥¹¤¹¤ë¤¿¤á¤Ë°Ê²¼¤Î¤É¤Á¤é¤«¤Î¼ê½ç¤Ë¿Ê¤ó¤Ç¤¯¤À¤µ¤¤¡£');
-define('_BLOGCREATED_SIMPLEWAY',					'´ÊÃ±¤ÊÊýË¡: ²¼¤Î¥³¡¼¥É¤òÅ½ÉÕ¤±¤¿ <code>%s.php</code> ¤È¤¤¤¦¥Õ¥¡¥¤¥ë¤òºîÀ®¤¹¤ë');
-define('_BLOGCREATED_ADVANCEDWAY',					'¹âÅÙ¤ÊÊýË¡: ¸½ºß»ÈÍÑ¤·¤Æ¤¤¤ë¥¹¥­¥ó¤Ë¿·¤·¤¤blog¤òÅ¸³«¤µ¤»¤ë¤¿¤á¤Îµ­½Ò¤ò²Ã¤¨¤ë');
-define('_BLOGCREATED_SIMPLEDESC1',					'ÊýË¡ 1 :´ÊÃ±¤ÊÊýË¡: <code>%s.php</code> ¤È¤¤¤¦¥Õ¥¡¥¤¥ë¤òºîÀ®');
-define('_BLOGCREATED_SIMPLEDESC2',					'<code>%s.php</code> ¤È¤¤¤¦¥Õ¥¡¥¤¥ë¤òºîÀ®¤·¤Æ¡¢Ãæ¿È¤Ë°Ê²¼¤Î¥³¡¼¥É¤òÅ½¤êÉÕ¤±¤Þ¤¹:');
-define('_BLOGCREATED_SIMPLEDESC3',					'¤¹¤Ç¤Ë¤¢¤ë<code>index.php</code>¤ÈÆ±¤¸¥Ç¥£¥ì¥¯¥È¥ê¤Ë¥¢¥Ã¥×¥í¡¼¥É¤·¤Þ¤¹¡£');
-define('_BLOGCREATED_SIMPLEDESC4',					'¿·¤·¤¤blog¤ÎºîÀ®¤ò´°Î»¤¹¤ë¤¿¤á¤Ë¡¢¤³¤Î¥Õ¥¡¥¤¥ë¤ÎURL¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£(<em>Â¿Ê¬</em>ÆþÎÏºÑ¤ß¤ÎÃÍ¤Ç¹ç¤Ã¤Æ¤¤¤ë¤È¤Ï»×¤¤¤Þ¤¹¤¬ÊÝ¾Ú¤Ï¤Ç¤­¤Þ¤»¤ó):');
-define('_BLOGCREATED_ADVANCEDWAY2',					'ÊýË¡ 2 :¹âÅÙ¤ÊÊýË¡: ¸½ºß»ÈÍÑ¤·¤Æ¤¤¤ë¥¹¥­¥ó¤Ë¿·¤·¤¤blog¤òÅ¸³«¤¹¤ëµ­½Ò¤ò²Ã¤¨¤ë');
-define('_BLOGCREATED_ADVANCEDWAY3',					'¿·¤·¤¤blog¤ÎºîÀ®¤ò´°Î»¤¹¤ë¤¿¤á¤ËURL¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£(¤Û¤È¤ó¤É¤Î¾ì¹ç´ûÂ¸blog¤ÈÆ±¤¸URL¤Ë¤Ê¤ê¤Þ¤¹)');
+define('_BLOGCREATED_TITLE',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_BLOGCREATED_ADDEDTXT',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½blog ï¿½ï¿½%sï¿½×¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½Â³ï¿½ï¿½ï¿½Æ¡ï¿½blogï¿½Ë¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¤¿ï¿½ï¿½Ë°Ê²ï¿½ï¿½Î¤É¤ï¿½ï¿½é¤«ï¿½Î¼ï¿½ï¿½Ë¿Ê¤ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BLOGCREATED_SIMPLEWAY',					'ï¿½ï¿½Ã±ï¿½ï¿½ï¿½ï¿½Ë¡: ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½É¤ï¿½Å½ï¿½Õ¤ï¿½ï¿½ï¿½ <code>%s.php</code> ï¿½È¤ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BLOGCREATED_ADVANCEDWAY',					'ï¿½ï¿½ï¿½Ù¤ï¿½ï¿½ï¿½Ë¡: ï¿½ï¿½ï¿½ß»ï¿½ï¿½Ñ¤ï¿½ï¿½Æ¤ï¿½ï¿½ë¥¹ï¿½ï¿½ï¿½ï¿½Ë¿ï¿½ï¿½ï¿½ï¿½ï¿½blogï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¤¿ï¿½ï¿½Îµï¿½ï¿½Ò¤ï¿½Ã¤ï¿½ï¿½ï¿½');
+define('_BLOGCREATED_SIMPLEDESC1',					'ï¿½ï¿½Ë¡ 1 :ï¿½ï¿½Ã±ï¿½ï¿½ï¿½ï¿½Ë¡: <code>%s.php</code> ï¿½È¤ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BLOGCREATED_SIMPLEDESC2',					'<code>%s.php</code> ï¿½È¤ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¡ï¿½ï¿½ï¿½È¤Ë°Ê²ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½É¤ï¿½Å½ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½Þ¤ï¿½:');
+define('_BLOGCREATED_SIMPLEDESC3',					'ï¿½ï¿½ï¿½Ç¤Ë¤ï¿½ï¿½ï¿½<code>index.php</code>ï¿½ï¿½Æ±ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½Ë¥ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_BLOGCREATED_SIMPLEDESC4',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½blogï¿½Îºï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ë¤¿ï¿½ï¿½Ë¡ï¿½ï¿½ï¿½ï¿½Î¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½URLï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(<em>Â¿Ê¬</em>ï¿½ï¿½ï¿½ÏºÑ¤ß¤ï¿½ï¿½Í¤Ç¹ï¿½Ã¤Æ¤ï¿½ï¿½ï¿½È¤Ï»×¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½Ý¾Ú¤Ï¤Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½):');
+define('_BLOGCREATED_ADVANCEDWAY2',					'ï¿½ï¿½Ë¡ 2 :ï¿½ï¿½ï¿½Ù¤ï¿½ï¿½ï¿½Ë¡: ï¿½ï¿½ï¿½ß»ï¿½ï¿½Ñ¤ï¿½ï¿½Æ¤ï¿½ï¿½ë¥¹ï¿½ï¿½ï¿½ï¿½Ë¿ï¿½ï¿½ï¿½ï¿½ï¿½blogï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ëµ­ï¿½Ò¤ï¿½Ã¤ï¿½ï¿½ï¿½');
+define('_BLOGCREATED_ADVANCEDWAY3',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½blogï¿½Îºï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ë¤¿ï¿½ï¿½ï¿½URLï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Û¤È¤ï¿½É¤Î¾ï¿½ï¿½ï¿½Â¸blogï¿½ï¿½Æ±ï¿½ï¿½URLï¿½Ë¤Ê¤ï¿½Þ¤ï¿½)');
 
 // Donate!
 define('_ADMINPAGEFOOT_OFFICIALURL',				'http://japan.nucleuscms.org/');
 define('_ADMINPAGEFOOT_DONATEURL',					'http://japan.nucleuscms.org/donate.php');
-define('_ADMINPAGEFOOT_DONATE',						'´óÉÕ¤Ë¤Ä¤¤¤Æ');
-define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group &amp; Nucleus CMS Japan¥Á¡¼¥à');
+define('_ADMINPAGEFOOT_DONATE',						'ï¿½ï¿½ï¿½Õ¤Ë¤Ä¤ï¿½ï¿½ï¿½');
+define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group &amp; Nucleus CMS Japanï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // Quick menu
-define('_QMENU_MANAGE_SYSTEM',						'¥·¥¹¥Æ¥à´Ä¶­');
+define('_QMENU_MANAGE_SYSTEM',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Ä¶ï¿½');
 
 // REG file
-define('_WINREGFILE_TEXT',							'¡Ö%s¡×¤Ëµ­»ö¤òÅê¹Æ');
+define('_WINREGFILE_TEXT',							'ï¿½ï¿½%sï¿½×¤Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // Bookmarklet
-define('_BOOKMARKLET_TITLE',						'¥Ö¥Ã¥¯¥Þ¡¼¥¯¥ì¥Ã¥È<!-- ¤È ±¦¥¯¥ê¥Ã¥¯¥á¥Ë¥å¡¼ -->');
-define('_BOOKMARKLET_DESC1',						'¥Ö¥Ã¥¯¥Þ¡¼¥¯¥ì¥Ã¥È¡ÊBookmarklet¡Ë¤È¤Ï¡¢Web¥Ö¥é¥¦¥¶¤Î¥Ö¥Ã¥¯¥Þ¡¼¥¯¤ËÅÐÏ¿¤·¤Æ»È¤¦JavaScript¥×¥í¥°¥é¥à¤Ç¤¹¡£<br />');
-define('_BOOKMARKLET_DESC2',						'Nucleus¤Ë¤Ï¡Ø¤ªµ¤¤ËÆþ¤ê¡Ù¤Þ¤¿¤Ï¡Ø¥Ö¥Ã¥¯¥Þ¡¼¥¯¥Ä¡¼¥ë¥Ð¡¼¡Ù¤ËÅÐÏ¿¤Ç¤­¡¢¥¯¥ê¥Ã¥¯¤Ò¤È¤Ä¤Ç blog ¤Ø¤ÎÅê¹Æ²èÌÌ¤ò³«¤¯µ¡Ç½¤ò¥Ö¥é¥¦¥¶¤ËÄÉ²Ã¤¹¤ë¤³¤È¤¬½ÐÍè¤Þ¤¹¡£<br />');
-define('_BOOKMARKLET_DESC3',						'Web¥µ¥¤¥È¤ò¸«¤Æ¤¤¤Æ¤½¤Î¥Ú¡¼¥¸¤Ë¥ê¥ó¥¯¤òÄ¥¤Ã¤¿Åê¹Æ¤ò¤·¤¿¤¤¤È»×¤Ã¤¿»þ¤Ë¥Ö¥Ã¥¯¥Þ¡¼¥¯¥ì¥Ã¥È¤ò»ÈÍÑ¤¹¤ì¤Ð¡¢¤½¤Î¥µ¥¤¥È(¥Ú¡¼¥¸)¤Ø¤Î¥ê¥ó¥¯¤¬½ñ¤­¹þ¤Þ¤ì¤¿¾õÂÖ¤Ç¡¢');
-define('_BOOKMARKLET_DESC4',						'¤µ¤é¤Ë¡¢¤½¤Î¥Ú¡¼¥¸Æâ¤ÇÊ¸¾Ï¤òÁªÂò¤·¤¿¾õÂÖ¤Ç»ÈÍÑ¤·¤¿¾ì¹ç¡¢ÁªÂò¤µ¤ì¤Æ¤¤¤ëÊ¸¾Ï¤¬¼«Æ°Åª¤Ë°úÍÑ¤µ¤ì¤¿¾õÂÖ¤Ç¡¢Nucleus¤Î¿·µ¬¥¢¥¤¥Æ¥à¤ÎÄÉ²Ã¥¦¥£¥ó¥É¥¦¤¬¥Ý¥Ã¥×¥¢¥Ã¥×¤·¤Þ¤¹¡£<br />');
-define('_BOOKMARKLET_DESC5',						'¤Þ¤¿Windows Internet Explorer¤Î¤ß¤Ç¤¹¤¬¡¢¤³¤Îµ¡Ç½¤ò±¦¥¯¥ê¥Ã¥¯¥á¥Ë¥å¡¼¤ËÅÐÏ¿¤¹¤ë¤³¤È¤â½ÐÍè¤Þ¤¹¡£');
-define('_BOOKMARKLET_BOOKARKLET',					'¥Ö¥Ã¥¯¥Þ¡¼¥¯¥ì¥Ã¥È');
-define('_BOOKMARKLET_ANCHOR',						'¡Ö%s¡×¤Ëµ­»ö¤òÅê¹Æ');
-define('_BOOKMARKLET_BMARKTEXT',					' ²¼¤Î¥ê¥ó¥¯¤ò¡Ö¤ªµ¤¤ËÆþ¤ê¡×¤â¤·¤¯¤Ï¡Ö¥Ö¥Ã¥¯¥Þ¡¼¥¯¡×¤ËÄÉ²Ã¤·¤Æ¤¯¤À¤µ¤¤¡£ÄÉ²Ã¤Î»ÅÊý¤Ï¤½¤ì¤¾¤ì¤Î¥Ö¥é¥¦¥¶¤Î¥Ø¥ë¥×¤ò»²¾È¤·¤Æ¤¯¤À¤µ¤¤¡£<br />');
-define('_BOOKMARKLET_BMARKTEST',					' (¥Æ¥¹¥È¤·¤Æ¤ß¤¿¤¤¾ì¹ç¤Ï²¼¤Î¥ê¥ó¥¯¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¤ß¤Æ¤¯¤À¤µ¤¤)');
-define('_BOOKMARKLET_RIGHTCLICK',					'±¦¥¯¥ê¥Ã¥¯¥á¥Ë¥å¡¼¤Ë¥¤¥ó¥¹¥È¡¼¥ë(Windows Internet Explorer¤Î¤ß)');
-define('_BOOKMARKLET_RIGHTLABEL',					'±¦¥¯¥ê¥Ã¥¯¥á¥Ë¥å¡¼');
-define('_BOOKMARKLET_RIGHTTEXT1',					'Windows¤Ç¥¤¥ó¥¿¡¼¥Í¥Ã¥È¥¨¥¯¥¹¥×¥í¡¼¥é¡¼¤ò»ÈÍÑ¤·¤Æ¤¤¤ë¾ì¹ç¤Ï¡¢');
-define('_BOOKMARKLET_RIGHTTEXT2',					'¤Ë¥¤¥ó¥¹¥È¡¼¥ë¤¹¤ë¤³¤È¤â½ÐÍè¤Þ¤¹<br />(¡Ö³«¤¯¡×¤òÁªÂò¤¹¤ì¤ÐÄ¾ÀÜ¥ì¥¸¥¹¥È¥ê¤ËÅÐÏ¿¤·¤Þ¤¹)');
-define('_BOOKMARKLET_RIGHTTEXT3',					'¤³¤Î¥¤¥ó¥¹¥È¡¼¥ë¤·¤¿±¦¥¯¥ê¥Ã¥¯¥á¥Ë¥å¡¼¤òÉ½¼¨¤¹¤ë¤¿¤á¤Ë¤ÏIE¤ÎºÆµ¯Æ°¤¬É¬Í×¤Ç¤¹¡£');
-define('_BOOKMARKLET_UNINSTALLTT',					'¥¢¥ó¥¤¥ó¥¹¥È¡¼¥ë');
-define('_BOOKMARKLET_DELETEBAR',					'¡Ö¤ªµ¤¤ËÆþ¤ê¡×¤â¤·¤¯¤Ï¥Ä¡¼¥ë¥Ð¡¼¤«¤é¾Ã¤¹¤Ë¤Ï¡¢Ã±¤Ëºï½ü¤¹¤ë¤À¤±¤Ç¤¹¡£');
-define('_BOOKMARKLET_DELETERIGHTT',					'±¦¥¯¥ê¥Ã¥¯¥á¥Ë¥å¡¼¤«¤é¾Ã¤·¤¿¤¤»þ¤Ï¡¢°Ê²¼¤Î¼ê½ç¤òÆ§¤ó¤Ç¤¯¤À¤µ¤¤:');
-define('_BOOKMARKLET_DELETERIGHT1',					'¥¹¥¿¡¼¥È¥á¥Ë¥å¡¼¤«¤é¡Ö¥Õ¥¡¥¤¥ë¤ò»ØÄê¤·¤Æ¼Â¹Ô...¡×¤òÁªÂò');
-define('_BOOKMARKLET_DELETERIGHT2',					'"regedit" ¤ÈÆþÎÏ');
-define('_BOOKMARKLET_DELETERIGHT3',					'"OK" ¥Ü¥¿¥ó¤ò²¡¤¹');
-define('_BOOKMARKLET_DELETERIGHT4',					'"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" ¤ò¥Ä¥ê¡¼¤ÎÃæ¤«¤é¸¡º÷');
-define('_BOOKMARKLET_DELETERIGHT5',					'"¡Ö(¤¢¤Ê¤¿¤Îblog¤ÎÌ¾Á°)¡×¤Ëµ­»ö¤òÅê¹Æ" ¥¨¥ó¥È¥ê¤òºï½ü');
+define('_BOOKMARKLET_TITLE',						'ï¿½Ö¥Ã¥ï¿½ï¿½Þ¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½<!-- ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½Ë¥å¡¼ -->');
+define('_BOOKMARKLET_DESC1',						'ï¿½Ö¥Ã¥ï¿½ï¿½Þ¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥È¡ï¿½Bookmarkletï¿½Ë¤È¤Ï¡ï¿½Webï¿½Ö¥é¥¦ï¿½ï¿½ï¿½Î¥Ö¥Ã¥ï¿½ï¿½Þ¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½Æ»È¤ï¿½JavaScriptï¿½×¥?ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½<br />');
+define('_BOOKMARKLET_DESC2',						'Nucleusï¿½Ë¤Ï¡Ø¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¤Þ¤ï¿½ï¿½Ï¡Ø¥Ö¥Ã¥ï¿½ï¿½Þ¡ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Ù¤ï¿½ï¿½ï¿½Ï¿ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½Ò¤È¤Ä¤ï¿½ blog ï¿½Ø¤ï¿½ï¿½ï¿½Æ²ï¿½ï¿½Ì¤ò³«¤ï¿½ï¿½ï¿½Ç½ï¿½ï¿½Ö¥é¥¦ï¿½ï¿½ï¿½ï¿½ï¿½É²Ã¤ï¿½ï¿½ë¤³ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½<br />');
+define('_BOOKMARKLET_DESC3',						'Webï¿½ï¿½ï¿½ï¿½ï¿½È¤ò¸«¤Æ¤ï¿½ï¿½Æ¤ï¿½ï¿½Î¥Ú¡ï¿½ï¿½ï¿½ï¿½Ë¥ï¿½ó¥¯¤ï¿½Ä¥ï¿½Ã¤ï¿½ï¿½ï¿½Æ¤ò¤·¤ï¿½ï¿½ï¿½ï¿½È»×¤Ã¤ï¿½ï¿½ï¿½ï¿½Ë¥Ö¥Ã¥ï¿½ï¿½Þ¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥È¤ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½Ú¡ï¿½ï¿½ï¿½)ï¿½Ø¤Î¥ï¿½ó¥¯¤ï¿½ï¿½ñ¤­¹ï¿½ï¿½Þ¤ì¤¿ï¿½ï¿½ï¿½Ö¤Ç¡ï¿½');
+define('_BOOKMARKLET_DESC4',						'ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½ï¿½ï¿½ï¿½Î¥Ú¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¸ï¿½Ï¤ï¿½ï¿½ï¿½ï¿½ò¤·¤ï¿½ï¿½ï¿½ï¿½Ö¤Ç»ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½ï¿½ï¿½ç¡¢ï¿½ï¿½ï¿½ò¤µ¤ï¿½Æ¤ï¿½ï¿½ï¿½Ê¸ï¿½Ï¤ï¿½ï¿½ï¿½Æ°Åªï¿½Ë°ï¿½ï¿½Ñ¤ï¿½ï¿½ì¤¿ï¿½ï¿½ï¿½Ö¤Ç¡ï¿½Nucleusï¿½Î¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½É²Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½É¥ï¿½ï¿½ï¿½ï¿½Ý¥Ã¥×¥ï¿½ï¿½Ã¥×¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½<br />');
+define('_BOOKMARKLET_DESC5',						'ï¿½Þ¤ï¿½Windows Internet Explorerï¿½Î¤ß¤Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îµï¿½Ç½ï¿½ò±¦¥ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½Ë¥å¡¼ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ë¤³ï¿½È¤ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_BOOKMARKLET_BOOKARKLET',					'ï¿½Ö¥Ã¥ï¿½ï¿½Þ¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½');
+define('_BOOKMARKLET_ANCHOR',						'ï¿½ï¿½%sï¿½×¤Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BOOKMARKLET_BMARKTEXT',					' ï¿½ï¿½ï¿½Î¥ï¿½ó¥¯¤ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¤â¤·ï¿½ï¿½ï¿½Ï¡Ö¥Ö¥Ã¥ï¿½ï¿½Þ¡ï¿½ï¿½ï¿½ï¿½×¤ï¿½ï¿½É²Ã¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É²Ã¤Î»ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½ì¤¾ï¿½ï¿½Î¥Ö¥é¥¦ï¿½ï¿½ï¿½Î¥Ø¥ï¿½×¤ò»²¾È¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½<br />');
+define('_BOOKMARKLET_BMARKTEST',					' (ï¿½Æ¥ï¿½ï¿½È¤ï¿½ï¿½Æ¤ß¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï²ï¿½ï¿½Î¥ï¿½ó¥¯¤ò¥¯¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½Æ¤ß¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)');
+define('_BOOKMARKLET_RIGHTCLICK',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½Ë¥å¡¼ï¿½Ë¥ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ï¿½(Windows Internet Explorerï¿½Î¤ï¿½)');
+define('_BOOKMARKLET_RIGHTLABEL',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½Ë¥å¡¼');
+define('_BOOKMARKLET_RIGHTTEXT1',					'Windowsï¿½Ç¥ï¿½ï¿½ó¥¿¡ï¿½ï¿½Í¥Ã¥È¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¥?ï¿½é¡¼ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½Ï¡ï¿½');
+define('_BOOKMARKLET_RIGHTTEXT2',					'ï¿½Ë¥ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ë¤¹ï¿½ë¤³ï¿½È¤ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½<br />(ï¿½Ö³ï¿½ï¿½ï¿½ï¿½×¤ï¿½ï¿½ï¿½ï¿½ò¤¹¤ï¿½ï¿½Ä¾ï¿½Ü¥ì¥¸ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½Þ¤ï¿½)');
+define('_BOOKMARKLET_RIGHTTEXT3',					'ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ë¤·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½Ë¥å¡¼ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ë¤¿ï¿½ï¿½Ë¤ï¿½IEï¿½ÎºÆµï¿½Æ°ï¿½ï¿½É¬ï¿½×¤Ç¤ï¿½ï¿½ï¿½');
+define('_BOOKMARKLET_UNINSTALLTT',					'ï¿½ï¿½ï¿½ó¥¤¥ó¥¹¥È¡ï¿½ï¿½ï¿½');
+define('_BOOKMARKLET_DELETEBAR',					'ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¤â¤·ï¿½ï¿½ï¿½Ï¥Ä¡ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã¤ï¿½ï¿½Ë¤Ï¡ï¿½Ã±ï¿½Ëºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½');
+define('_BOOKMARKLET_DELETERIGHTT',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½Ë¥å¡¼ï¿½ï¿½ï¿½ï¿½Ã¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¡ï¿½ï¿½Ê²ï¿½ï¿½Î¼ï¿½ï¿½ï¿½Æ§ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:');
+define('_BOOKMARKLET_DELETERIGHT1',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½Ë¥å¡¼ï¿½ï¿½ï¿½ï¿½Ö¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê¤·ï¿½Æ¼Â¹ï¿½...ï¿½×¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BOOKMARKLET_DELETERIGHT2',					'"regedit" ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BOOKMARKLET_DELETERIGHT3',					'"OK" ï¿½Ü¥ï¿½ï¿½ï¿½ò²¡¤ï¿½');
+define('_BOOKMARKLET_DELETERIGHT4',					'"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" ï¿½ï¿½Ä¥ê¡¼ï¿½ï¿½ï¿½æ¤«ï¿½é¸¡ï¿½ï¿½');
+define('_BOOKMARKLET_DELETERIGHT5',					'"ï¿½ï¿½(ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½blogï¿½ï¿½Ì¾ï¿½ï¿½)ï¿½×¤Ëµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½" ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½');
 
-define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'²¿¤«¤¬´Ö°ã¤Ã¤Æ¤¤¤Þ¤¹');
-define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'¿·¤·¤¤¥«¥Æ¥´¥ê¤òºî¤ë¤³¤È¤¬½ÐÍè¤Þ¤»¤ó¤Ç¤·¤¿');
+define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½Ã¤Æ¤ï¿½ï¿½Þ¤ï¿½');
+define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½ï¿½ë¤³ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½');
 
 // BAN
-define('_BAN_EXAMPLE_TITLE',						'Îã');
-define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193"¤ÈÆþÎÏ¤·¤¿¾ì¹ç¤Ï¡¢¤³¤ÎIP¥¢¥É¥ì¥¹¤ò»ý¤ÄPC1Âæ¤À¤±¤ò¥Ö¥í¥Ã¥¯¤·¤Þ¤¹¡£"134.58.253"¤ÈÆþÎÏ¤·¤¿¾ì¹ç¤Ï¡¢"134.58.235.0½áŽµ134.58.235.255"¤ÎÈÏ°Ï¤Î256¸Ä¤ÎIP¥¢¥É¥ì¥¹¤ò»ý¤ÄPC¤òÁ´¤Æ¥Ö¥í¥Ã¥¯¤·¤Þ¤¹¡£¤³¤ì¤Ï¡¢Á°¼Ô¤ÎIP¥¢¥É¥ì¥¹(134.58.253.193)¤ò´Þ¤ß¤Þ¤¹¡£');
-define('_BAN_IP_CUSTOM',							'¥Ö¥í¥Ã¥¯»ØÄê: ');
-define('_BAN_BANBLOGNAME',							'%s ¤Î¤ß');
+define('_BAN_EXAMPLE_TITLE',						'ï¿½ï¿½');
+define('_BAN_EXAMPLE_TEXT',							': "134.58.253.193"ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¡ï¿½ï¿½ï¿½ï¿½ï¿½IPï¿½ï¿½ï¿½É¥ì¥¹ï¿½ï¿½ï¿½ï¿½PC1ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½"134.58.253"ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¡ï¿½"134.58.235.0ï¿½áŽµ134.58.235.255"ï¿½ï¿½ï¿½Ï°Ï¤ï¿½256ï¿½Ä¤ï¿½IPï¿½ï¿½ï¿½É¥ì¥¹ï¿½ï¿½ï¿½ï¿½PCï¿½ï¿½ï¿½ï¿½ï¿½Æ¥Ö¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¡ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½IPï¿½ï¿½ï¿½É¥ì¥¹(134.58.253.193)ï¿½ï¿½Þ¤ß¤Þ¤ï¿½ï¿½ï¿½');
+define('_BAN_IP_CUSTOM',							'ï¿½Ö¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½: ');
+define('_BAN_BANBLOGNAME',							'%s ï¿½Î¤ï¿½');
 
 // Plugin Options
-define('_PLUGIN_OPTIONS_TITLE',						'%s ¤Î¥ª¥×¥·¥ç¥óÀßÄê');
+define('_PLUGIN_OPTIONS_TITLE',						'%s ï¿½Î¥ï¿½ï¿½×¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // Plugin file loda error
-define('_PLUGINFILE_COULDNT_BELOADED',				'¥¨¥é¡¼: ¥×¥é¥°¥¤¥ó¥Õ¥¡¥¤¥ë <strong>%s.php</strong> ¤òÆÉ¤ß¹þ¤á¤Þ¤»¤ó¤Ç¤·¤¿¡£¥Õ¥¡¥¤¥ë¤¬Â¸ºß¤·¤Ê¤¤¡¢¤â¤¯¤Ï»ÈÍÑÃæ¤Î Nucleus ¾å¤ÇÆ°ºî¤µ¤»¤ë¤¿¤á¤ËÉ¬Í×¤Êµ¡Ç½¤¬¥×¥é¥°¥¤¥ó¤Ç¥µ¥Ý¡¼¥È¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£(<a href="?action=actionlog">´ÉÍýÁàºîÍúÎò</a>¤Ë¾ÜºÙ¤¬¤¢¤ê¤Þ¤¹¡£)');
+define('_PLUGINFILE_COULDNT_BELOADED',				'ï¿½ï¿½ï¿½é¡¼: ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ <strong>%s.php</strong> ï¿½ï¿½ï¿½É¤ß¹ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¤¬Â¸ï¿½ß¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½â¤¯ï¿½Ï»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Nucleus ï¿½ï¿½ï¿½Æ°ï¿½î¤µï¿½ï¿½ï¿½ë¤¿ï¿½ï¿½ï¿½É¬ï¿½×¤Êµï¿½Ç½ï¿½ï¿½ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½Ý¡ï¿½ï¿½È¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½(<a href="?action=actionlog">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</a>ï¿½Ë¾ÜºÙ¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½)');
 
 //ITEM add/edit template (for japanese only)
-define('_ITEM_ADDEDITTEMPLATE_FORMAT',				'¥Õ¥©¡¼¥Þ¥Ã¥È¡§');
+define('_ITEM_ADDEDITTEMPLATE_FORMAT',				'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½Þ¥Ã¥È¡ï¿½');
 define('_ITEM_ADDEDITTEMPLATE_YEAR',				'Ç¯');
-define('_ITEM_ADDEDITTEMPLATE_MONTH',				'·î');
-define('_ITEM_ADDEDITTEMPLATE_DAY',					'Æü');
-define('_ITEM_ADDEDITTEMPLATE_HOUR',				'»þ');
+define('_ITEM_ADDEDITTEMPLATE_MONTH',				'ï¿½ï¿½');
+define('_ITEM_ADDEDITTEMPLATE_DAY',					'ï¿½ï¿½');
+define('_ITEM_ADDEDITTEMPLATE_HOUR',				'ï¿½ï¿½');
 define('_ITEM_ADDEDITTEMPLATE_MINUTE',				'Ê¬');
 
 // Errors
-define('_ERRORS_INSTALLSQL',						'Ž¢install/install.sqlŽ£¥Õ¥¡¥¤¥ë¤òºï½ü¤·¤Æ¤¯¤À¤µ¤¤');
-define('_ERRORS_INSTALLDIR',						'Ž¢installŽ£¥Ç¥£¥ì¥¯¥È¥ê¤òºï½ü¤·¤Æ¤¯¤À¤µ¤¤');  // <add by shizuki />
-define('_ERRORS_INSTALLPHP',						'Ž¢install/index.phpŽ£¥Õ¥¡¥¤¥ë¤òºï½ü¤·¤Æ¤¯¤À¤µ¤¤');
-define('_ERRORS_UPGRADESDIR',						'Ž¢nucleus/upgradesŽ£¥Ç¥£¥ì¥¯¥È¥ê¤òºï½ü¤·¤Æ¤¯¤À¤µ¤¤');
-define('_ERRORS_CONVERTDIR',						'Ž¢nucleus/convertŽ£¥Ç¥£¥ì¥¯¥È¥ê¤òºï½ü¤·¤Æ¤¯¤À¤µ¤¤');
-define('_ERRORS_CONFIGPHP',							'Ž¢config.phpŽ£¥Õ¥¡¥¤¥ë¤òÆÉ¤ß¼è¤êÀìÍÑ(Ž¢chmod 444Ž£Åù)¤Ë¤·¤Æ¤¯¤À¤µ¤¤');
-define('_ERRORS_STARTUPERROR1',						'<p>°ì¤Ä¡¢¤Þ¤¿¤Ï¤½¤ì°Ê¾å¤ÎNucleusCMS¤Î¥¤¥ó¥¹¥È¡¼¥ë(¥¢¥Ã¥×¥°¥ì¡¼¥É)ÍÑ¥Õ¥¡¥¤¥ë¤¬¥µ¡¼¥Ð¾å¤Ë»Ä¤Ã¤Æ¤¤¤ë¡¢¤â¤·¤¯¤Ï½ñ¤­¹þ¤ß²ÄÇ½¤Ë¤Ê¤Ã¤Æ¤¤¤Þ¤¹¡£</p><p>¤³¤ì¤é¤Î¥Õ¥¡¥¤¥ë¤òºï½ü¡¢¤Þ¤¿¤Ï¥Ñ¡¼¥ß¥Ã¥·¥ç¥ó¤òÊÑ¹¹¤·¤Æ¥»¥­¥å¥ê¥Æ¥£¤ò³ÎÊÝ¤·¤Æ¤¯¤À¤µ¤¤¡£Nucleus¤¬¸«¤Ä¤±¤¿¥Õ¥¡¥¤¥ë¤Î¤¤¤¯¤Ä¤«¤ò¼¡¤Ë¼¨¤·¤Þ¤¹¡£</p> <ul><li>');
-define('_ERRORS_STARTUPERROR2',						'</li></ul><p>¤³¤Î·Ù¹ð¤òÉ½¼¨¤µ¤»¤¿¤¯¤Ê¤¤¾ì¹ç¤Ï¡¢<code>globalfunctions.php</code>¤Î<code>$CONF[\'alertOnSecurityRisk\']</code>¤ÎÃÍ¤ò<code>0</code>¤Ë¤¹¤ë¤«¡¢Æ±ÍÍ¤ÎÆâÍÆ¤ò<code>config.php</code>¤ÎºÇ¸å¤Ëµ­½Ò¤·¤Þ¤¹(¥»¥­¥å¥ê¥Æ¥£¥ì¥Ù¥ë¤¬²¼¤¬¤ê¤Þ¤¹)</p>');
-define('_ERRORS_STARTUPERROR3',						'¥»¥­¥å¥ê¥Æ¥£ ¥ê¥¹¥¯¤Î·Ù¹ð');
+define('_ERRORS_INSTALLSQL',						'ï¿½ï¿½install/install.sqlï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERRORS_INSTALLDIR',						'ï¿½ï¿½installï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');  // <add by shizuki />
+define('_ERRORS_INSTALLPHP',						'ï¿½ï¿½install/index.phpï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERRORS_UPGRADESDIR',						'ï¿½ï¿½nucleus/upgradesï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERRORS_CONVERTDIR',						'ï¿½ï¿½nucleus/convertï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERRORS_CONFIGPHP',							'ï¿½ï¿½config.phpï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¤ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½chmod 444ï¿½ï¿½ï¿½ï¿½)ï¿½Ë¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERRORS_STARTUPERROR1',						'<p>ï¿½ï¿½Ä¡ï¿½ï¿½Þ¤ï¿½ï¿½Ï¤ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½NucleusCMSï¿½Î¥ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½Ã¥×¥ï¿½ï¿½ì¡¼ï¿½ï¿½)ï¿½Ñ¥Õ¥ï¿½ï¿½ï¿½ï¿½ë¤¬ï¿½ï¿½ï¿½ï¿½ï¿½Ð¾ï¿½Ë»Ä¤Ã¤Æ¤ï¿½ï¿½ë¡¢ï¿½â¤·ï¿½ï¿½ï¿½Ï½ñ¤­¹ï¿½ï¿½ß²ï¿½Ç½ï¿½Ë¤Ê¤Ã¤Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½</p><p>ï¿½ï¿½ï¿½ï¿½ï¿½Î¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½Ï¥Ñ¡ï¿½ï¿½ß¥Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ý¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Nucleusï¿½ï¿½ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Î¤ï¿½ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ò¼¡¤Ë¼ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½</p> <ul><li>');
+define('_ERRORS_STARTUPERROR2',						'</li></ul><p>ï¿½ï¿½ï¿½Î·Ù¹ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½Ï¡ï¿½<code>globalfunctions.php</code>ï¿½ï¿½<code>$CONF[\'alertOnSecurityRisk\']</code>ï¿½ï¿½ï¿½Í¤ï¿½<code>0</code>ï¿½Ë¤ï¿½ï¿½ë¤«ï¿½ï¿½Æ±ï¿½Í¤ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½<code>config.php</code>ï¿½ÎºÇ¸ï¿½Ëµï¿½ï¿½Ò¤ï¿½ï¿½Þ¤ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½Ù¥ë¤¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½)</p>');
+define('_ERRORS_STARTUPERROR3',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ ï¿½ê¥¹ï¿½ï¿½ï¿½Î·Ù¹ï¿½');
 
 // PluginAdmin tickets by javascript
-define('_PLUGINADMIN_TICKETS_JAVASCRIPT',			'<p><b>¥Á¥±¥Ã¥È¤Î¼«Æ°È¯¹ÔÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿</b></p>');
+define('_PLUGINADMIN_TICKETS_JAVASCRIPT',			'<p><b>ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥È¤Î¼ï¿½Æ°È¯ï¿½ï¿½ï¿½ï¿½Ë¥ï¿½ï¿½é¡¼ï¿½ï¿½È¯ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½</b></p>');
 
 // Global settings disablesite URL
-define('_SETTINGS_DISABLESITEURL',					'Å¾Á÷Àè¤ÎURL:');
+define('_SETTINGS_DISABLESITEURL',					'Å¾ï¿½ï¿½ï¿½ï¿½ï¿½URL:');
 
 // Skin import/export
-define('_SKINIE_SEELEMENT_UNEXPECTEDTAG',			'Í½´ü¤·¤Ê¤¤¥¿¥°');
-define('_SKINIE_ERROR_FAILEDOPEN_FILEURL',			'¥Õ¥¡¥¤¥ë¡¢¤Þ¤¿¤ÏURL¤ò³«¤¯»ö¤¬½ÐÍè¤Þ¤»¤ó');
-define('_SKINIE_NAME_CLASHES_DETECTED',				'¥¹¥­¥ó/¥Æ¥ó¥×¥ì¡¼¥È¤ËÌ¾Á°¤ÎÆ±¤¸¤â¤Î¤¬¤¢¤ê¤Þ¤¹¡£allowOverwrite¤ò1¤ËÀßÄê¤·¤Æ¡¢¾å½ñ¤­¥â¡¼¥É¤ÇºÆÅÙ¼Â¹Ô¤·¤Æ¤¯¤À¤µ¤¤¡£');
+define('_SKINIE_SEELEMENT_UNEXPECTEDTAG',			'Í½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SKINIE_ERROR_FAILEDOPEN_FILEURL',			'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¡¢ï¿½Þ¤ï¿½ï¿½ï¿½URLï¿½ò³«¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_SKINIE_NAME_CLASHES_DETECTED',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½Æ¥ï¿½×¥ì¡¼ï¿½È¤ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½ï¿½ï¿½Î¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½allowOverwriteï¿½ï¿½1ï¿½ï¿½ï¿½ï¿½ï¿½ê¤·ï¿½Æ¡ï¿½ï¿½ï¿½ñ¤­¥â¡¼ï¿½É¤Çºï¿½ï¿½Ù¼Â¹Ô¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // ACTIONS.php parse_commentform
-define('_ACTIONURL_NOTLONGER_PARAMATER',			'Ž¢action.phpŽ£¤ÎURL¤Ï¥³¥á¥ó¥È¥Õ¥©¡¼¥àÍÑ¤ÎÊÑ¿ô¤Î¥Ñ¥é¥á¡¼¥¿¡¼¤Ç¤Ï¤Ê¤¯¤Ê¤Ã¤Æ¤¤¤Þ¤¹¡£¤³¤ÎÀßÄê¤ÏŽ¢¥°¥í¡¼¥Ð¥ëÀßÄêŽ£¤Ë°ÜÆ°¤·¤Þ¤·¤¿');
+define('_ACTIONURL_NOTLONGER_PARAMATER',			'ï¿½ï¿½action.phpï¿½ï¿½ï¿½ï¿½URLï¿½Ï¥ï¿½ï¿½ï¿½ï¿½È¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½Ñ¿ï¿½ï¿½Î¥Ñ¥ï¿½á¡¼ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤Ï¤Ê¤ï¿½ï¿½Ê¤Ã¤Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÏŽï¿½ï¿½ï¿½ï¿½?ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½êŽ£ï¿½Ë°ï¿½Æ°ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // ADMIN.php addToTemplate 'Query error: '
-define('_ADMIN_SQLDIE_QUERYERROR',					'¥¯¥¨¥ê ¥¨¥é¡¼: ');
+define('_ADMIN_SQLDIE_QUERYERROR',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½é¡¼: ');
 
 // backup.php Backup WARNING
-define('_BACKUP_BACKUPFILE_TITLE',					'Nucleus CMS ¤Î¥Ç¡¼¥¿¥Ù¡¼¥¹¥Ð¥Ã¥¯¥¢¥Ã¥×¥Õ¥¡¥¤¥ë¤Ç¤¹');
-define('_BACKUP_BACKUPFILE_BACKUPDATE',				'¥Ð¥Ã¥¯¥¢¥Ã¥×¤·¤¿Æü:');
-define('_BACKUP_BACKUPFILE_NUCLEUSVERSION',			'Nucleus CMS ¤Î¥Ð¡¼¥¸¥ç¥ó:');
-define('_BACKUP_BACKUPFILE_DATABASE_NAME',			'Nucleus CMS ¤Î¥Ç¡¼¥¿¥Ù¡¼¥¹¤ÎÌ¾Á°:');
-define('_BACKUP_BACKUPFILE_TABLE_NAME',				'¥Æ¡¼¥Ö¥ë¤Î¹½Â¤ :');
-define('_BACKUP_BACKUPFILE_TABLEDATAFOR',			'%s ¥Æ¡¼¥Ö¥ë¤Î¥À¥ó¥×¥Ç¡¼¥¿');
-define('_BACKUP_WARNING_NUCLEUSVERSION',				'Ãí°Õ¡ª: ¥Ð¥Ã¥¯¥¢¥Ã¥×¤«¤é¥Ç¡¼¥¿¥Ù¡¼¥¹¤òÉü¸µ¤¹¤ëºÝ¤Ï¡¢Nucleus¤Î¥Ð¡¼¥¸¥ç¥ó¤¬¥Ð¥Ã¥¯¥¢¥Ã¥×¤òºîÀ®¤·¤¿»þ¤ÈÆ±¤¸¤â¤Î¤«¤è¤¯³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_BACKUP_RESTOR_NOFILEUPLOADED',				'¥Õ¥¡¥¤¥ë¤¬¥¢¥Ã¥×¥í¡¼¥É¤µ¤ì¤Æ¤¤¤Þ¤»¤ó');
-define('_BACKUP_RESTOR_UPLOAD_ERROR',				'¥¢¥Ã¥×¥í¡¼¥ÉÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿');
-define('_BACKUP_RESTOR_UPLOAD_NOCORRECTTYPE',		'¥¢¥Ã¥×¥í¡¼¥É¤µ¤ì¤¿¥Õ¥¡¥¤¥ë¤Î·Á¼°¤¬ÉÔÀµ¤Ç¤¹');
-define('_BACKUP_RESTOR_UPLOAD_NOZLIB',				'°µ½Ì·Á¼°¤Î¥Ð¥Ã¥¯¥¢¥Ã¥×¥Õ¥¡¥¤¥ë¤ò²òÅà¤Ç¤­¤Þ¤»¤ó¤Ç¤·¤¿(Ž¢zlibŽ£¥é¥¤¥Ö¥é¥ê¤¬¥¤¥ó¥¹¥È¡¼¥ë¤µ¤ì¤Æ¤¤¤Þ¤»¤ó)');
-define('_BACKUP_RESTOR_SQL_ERROR',					'SQL ¥¨¥é¡¼: ');
+define('_BACKUP_BACKUPFILE_TITLE',					'Nucleus CMS ï¿½Î¥Ç¡ï¿½ï¿½ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½');
+define('_BACKUP_BACKUPFILE_BACKUPDATE',				'ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¤ï¿½ï¿½ï¿½ï¿½ï¿½:');
+define('_BACKUP_BACKUPFILE_NUCLEUSVERSION',			'Nucleus CMS ï¿½Î¥Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:');
+define('_BACKUP_BACKUPFILE_DATABASE_NAME',			'Nucleus CMS ï¿½Î¥Ç¡ï¿½ï¿½ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½:');
+define('_BACKUP_BACKUPFILE_TABLE_NAME',				'ï¿½Æ¡ï¿½ï¿½Ö¥ï¿½Î¹ï¿½Â¤ :');
+define('_BACKUP_BACKUPFILE_TABLEDATAFOR',			'%s ï¿½Æ¡ï¿½ï¿½Ö¥ï¿½Î¥ï¿½ï¿½ï¿½×¥Ç¡ï¿½ï¿½ï¿½');
+define('_BACKUP_WARNING_NUCLEUSVERSION',				'ï¿½ï¿½Õ¡ï¿½: ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¤ï¿½ï¿½ï¿½Ç¡ï¿½ï¿½ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¤Ï¡ï¿½Nucleusï¿½Î¥Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ó¤¬¥Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½ï¿½ï¿½Î¤ï¿½ï¿½è¤¯ï¿½ï¿½Ç§ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BACKUP_RESTOR_NOFILEUPLOADED',				'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¤¬ï¿½ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_BACKUP_RESTOR_UPLOAD_ERROR',				'ï¿½ï¿½ï¿½Ã¥×¥?ï¿½ï¿½ï¿½ï¿½Ë¥ï¿½ï¿½é¡¼ï¿½ï¿½È¯ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_BACKUP_RESTOR_UPLOAD_NOCORRECTTYPE',		'ï¿½ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½ì¤¿ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Î·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½');
+define('_BACKUP_RESTOR_UPLOAD_NOZLIB',				'ï¿½ï¿½ï¿½Ì·ï¿½ï¿½ï¿½ï¿½Î¥Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½(ï¿½ï¿½zlibï¿½ï¿½ï¿½é¥¤ï¿½Ö¥ï¿½ê¤¬ï¿½ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ë¤µï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½)');
+define('_BACKUP_RESTOR_SQL_ERROR',					'SQL ï¿½ï¿½ï¿½é¡¼: ');
 
 // BLOG.php addTeamMember
-define('_TEAM_ADD_NEWTEAMMEMBER',					'%s(ID=%d) ¤ò¡¢¥Ö¥í¥° "%s" ¤Î¥Á¡¼¥à¤Ë²Ã¤¨¤Þ¤·¤¿');
+define('_TEAM_ADD_NEWTEAMMEMBER',					'%s(ID=%d) ï¿½ò¡¢¥Ö¥? "%s" ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½Ë²Ã¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // ADMIN.php systemoverview()
-define('_ADMIN_SYSTEMOVERVIEW_HEADING',				'¥·¥¹¥Æ¥à´Ä¶­°ìÍ÷');
-define('_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL',			'PHP ¤È MySQL');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONS',			'¥Ð¡¼¥¸¥ç¥ó');
-define('_ADMIN_SYSTEMOVERVIEW_PHPVERSION',			'PHP ¤Î¥Ð¡¼¥¸¥ç¥ó');
-define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL ¤Î¥Ð¡¼¥¸¥ç¥ó');
-define('_ADMIN_SYSTEMOVERVIEW_SETTINGS',			'PHP ¤ÎÀßÄê');
-define('_ADMIN_SYSTEMOVERVIEW_GDLIBRALY',			'GD ¥é¥¤¥Ö¥é¥ê');
-define('_ADMIN_SYSTEMOVERVIEW_MODULES',				'Apache ¥â¥¸¥å¡¼¥ë');
-define('_ADMIN_SYSTEMOVERVIEW_ENABLE',				'Í­¸ú');
-define('_ADMIN_SYSTEMOVERVIEW_DISABLE',				'Ìµ¸ú');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM',		'Nucleus ¤Î¥·¥¹¥Æ¥à¤Ë¤Ä¤¤¤Æ');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION',		'Nucleus ¤Î¥Ð¡¼¥¸¥ç¥ó');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus ¤Î¥Ñ¥Ã¥Á¥ì¥Ù¥ë');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'½ÅÍ×¤ÊÀßÄê');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'¥Ð¡¼¥¸¥ç¥ó¥Á¥§¥Ã¥¯');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'¤è¤ê¿·¤·¤¤¥Ð¡¼¥¸¥ç¥ó¤Î¥ê¥ê¡¼¥¹¤¬Ìµ¤¤¤«¡¢¸ø¼°¥µ¥¤¥È¤Ç¥Á¥§¥Ã¥¯¤Ç¤­¤Þ¤¹: ');
+define('_ADMIN_SYSTEMOVERVIEW_HEADING',				'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Ä¶ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL',			'PHP ï¿½ï¿½ MySQL');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONS',			'ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_PHPVERSION',			'PHP ï¿½Î¥Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL ï¿½Î¥Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_SETTINGS',			'PHP ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_GDLIBRALY',			'GD ï¿½é¥¤ï¿½Ö¥ï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_MODULES',				'Apache ï¿½â¥¸ï¿½å¡¼ï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_ENABLE',				'Í­ï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_DISABLE',				'Ìµï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM',		'Nucleus ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Ë¤Ä¤ï¿½ï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION',		'Nucleus ï¿½Î¥Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus ï¿½Î¥Ñ¥Ã¥ï¿½ï¿½ï¿½Ù¥ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'ï¿½ï¿½ï¿½×¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'ï¿½ï¿½ê¿·ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤Ç¥ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½: ');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://japan.nucleuscms.org/version.php?v=%d&amp;pl=%d');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'ºÇ¿·¤Î¥Ð¡¼¥¸¥ç¥ó¤ò¥Á¥§¥Ã¥¯');
-define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			'¤³¤Î²èÌÌ¤ò±ÜÍ÷¤¹¤ë¸¢¸Â¤¬¤¢¤ê¤Þ¤»¤ó');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'ï¿½Ç¿ï¿½ï¿½Î¥Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½');
+define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			'ï¿½ï¿½ï¿½Î²ï¿½ï¿½Ì¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¸¢ï¿½Â¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // ENCAPSULATE.php
-define('_ENCAPSULATE_ENCAPSULATE_NOENTRY',			'¥¨¥ó¥È¥ê¡¼¤¬¤¢¤ê¤Þ¤»¤ó');
+define('_ENCAPSULATE_ENCAPSULATE_NOENTRY',			'ï¿½ï¿½ï¿½ï¿½È¥ê¡¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // globalfunctions.php
-define('_GFUNCTIONS_LOGINPCSHARED_YES',				'¶¦Í­PC¤«¤é¤Î¥í¥°¥¤¥ó');
-define('_GFUNCTIONS_LOGINPCSHARED_NO',				'¶¦Í­¤Ç¤Ï¤Ê¤¤PC¤«¤é¤Î¥í¥°¥¤¥ó');
-define('_GFUNCTIONS_LOGINSUCCESSFUL_TXT',			'%s ¤¬¥í¥°¥¤¥ó¤·¤Þ¤·¤¿ (%s)');
-define('_GFUNCTIONS_LOGINFAILED_TXT',				'%s ¤¬¥í¥°¥¤¥ó¤Ë¼ºÇÔ¤·¤Þ¤·¤¿');
-define('_GFUNCTIONS_LOGOUT_TXT',					'%s ¤¬¥í¥°¥¢¥¦¥È¤·¤Þ¤·¤¿');
-define('_GFUNCTIONS_HEADERSALREADYSENT_FILE',		'<code>%s</code> ¤Î <code>%s</code> ¹ÔÌÜ¤Ç');
-define('_GFUNCTIONS_HEADERSALREADYSENT_TITLE',		'HTTP¥Ø¥Ã¥À¤ÏÁ÷¿®ºÑ¤ß¤Ç¤¹');
-define('_GFUNCTIONS_HEADERSALREADYSENT_TXT',		'<p>%s¤¹¤Ç¤Ë¥Ú¡¼¥¸¤ÎHTTP¥Ø¥Ã¥À¤¬Á÷½Ð¤µ¤ì¤Æ¤ª¤ê¡¢Nucleus¤¬Àµ¾ï¤ËÆ°ºî¤·¤Ê¤¯¤Ê¤ë²ÄÇ½À­¤¬¤¢¤ê¤Þ¤¹¡£</p><p><code>config.php</code>¤ä¥é¥ó¥²¡¼¥¸¥Õ¥¡¥¤¥ë¡¢¤½¤ÎÂ¾¥×¥é¥°¥¤¥ó¤Î¥Õ¥¡¥¤¥ë¤Î½ª¤ï¤ê¤Ë¡¢Í¾Ê¬¤Ê²þ¹Ô¤äÊ¸»úÎó¤¬¤Ê¤¤¤«³ÎÇ§¤·¤Æ¤â¤¦¤¤¤Á¤É¥¢¥¯¥»¥¹¤·¤Æ¤ß¤Æ¤¯¤À¤µ¤¤¡£</p><p>º¬ËÜÅª¤Ê²ò·è¤ò¤»¤º¤Ë¤³¤Î¥á¥Ã¥»¡¼¥¸¤òÉ½¼¨¤µ¤»¤Ê¤¯¤¹¤ë¤Ë¤Ï¡¢<code>globalfunctions.php</code>¤ÎËÁÆ¬¤Î<code>$CONF[\'alertOnHeadersSent\']</code>¤ò<code>0</code>¤ËÀßÄê¤·¤Þ¤¹¡£</p>');
-define('_GFUNCTIONS_PARSEFILE_FILEMISSING',			'¥Õ¥¡¥¤¥ë¤¬¸«¤Ä¤«¤ê¤Þ¤»¤ó');
-define('_GFUNCTIONS_AN_ERROR_OCCURRED',				'¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿');
-define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			'¥í¥°¥¤¥ó¤·¤Æ¤¤¤Þ¤»¤ó');
+define('_GFUNCTIONS_LOGINPCSHARED_YES',				'ï¿½ï¿½Í­PCï¿½ï¿½ï¿½ï¿½Î¥?ï¿½ï¿½ï¿½ï¿½');
+define('_GFUNCTIONS_LOGINPCSHARED_NO',				'ï¿½ï¿½Í­ï¿½Ç¤Ï¤Ê¤ï¿½PCï¿½ï¿½ï¿½ï¿½Î¥?ï¿½ï¿½ï¿½ï¿½');
+define('_GFUNCTIONS_LOGINSUCCESSFUL_TXT',			'%s ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ó¤·¤Þ¤ï¿½ï¿½ï¿½ (%s)');
+define('_GFUNCTIONS_LOGINFAILED_TXT',				'%s ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½Ë¼ï¿½ï¿½Ô¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_GFUNCTIONS_LOGOUT_TXT',					'%s ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_GFUNCTIONS_HEADERSALREADYSENT_FILE',		'<code>%s</code> ï¿½ï¿½ <code>%s</code> ï¿½ï¿½ï¿½Ü¤ï¿½');
+define('_GFUNCTIONS_HEADERSALREADYSENT_TITLE',		'HTTPï¿½Ø¥Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤ß¤Ç¤ï¿½');
+define('_GFUNCTIONS_HEADERSALREADYSENT_TXT',		'<p>%sï¿½ï¿½ï¿½Ç¤Ë¥Ú¡ï¿½ï¿½ï¿½ï¿½ï¿½HTTPï¿½Ø¥Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ê¡¢Nucleusï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ°ï¿½î¤·ï¿½Ê¤ï¿½ï¿½Ê¤ï¿½ï¿½Ç½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½</p><p><code>config.php</code>ï¿½ï¿½ï¿½ó¥²¡ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¡¢ï¿½ï¿½ï¿½ï¿½Â¾ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Î¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Î½ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½Í¾Ê¬ï¿½Ê²ï¿½ï¿½Ô¤ï¿½Ê¸ï¿½ï¿½ï¿½ó¤¬¤Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½Ç§ï¿½ï¿½ï¿½Æ¤â¤¦ï¿½ï¿½ï¿½ï¿½ï¿½É¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ß¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</p><p>ï¿½ï¿½ï¿½ï¿½Åªï¿½Ê²ï¿½ï¿½ò¤»¤ï¿½ï¿½Ë¤ï¿½ï¿½Î¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½Ë¤Ï¡ï¿½<code>globalfunctions.php</code>ï¿½ï¿½ï¿½ï¿½Æ¬ï¿½ï¿½<code>$CONF[\'alertOnHeadersSent\']</code>ï¿½ï¿½<code>0</code>ï¿½ï¿½ï¿½ï¿½ï¿½ê¤·ï¿½Þ¤ï¿½ï¿½ï¿½</p>');
+define('_GFUNCTIONS_PARSEFILE_FILEMISSING',			'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¤¬ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_GFUNCTIONS_AN_ERROR_OCCURRED',				'ï¿½ï¿½ï¿½é¡¼ï¿½ï¿½È¯ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			'ï¿½?ï¿½ï¿½ï¿½ó¤·¤Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // MANAGER.php
-define('_MANAGER_PLUGINFILE_NOCLASS',				"¥×¥é¥°¥¤¥ó¡Ö%s¡×¤òÆÉ¤ß¹þ¤á¤Þ¤»¤ó¤Ç¤·¤¿(¥Õ¥¡¥¤¥ëÆâ¤Ë¥×¥é¥°¥¤¥ó¥¯¥é¥¹¤¬Â¸ºß¤·¤Þ¤»¤ó)");
-define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"¥×¥é¥°¥¤¥ó¡Ö%s¡×¤òÆÉ¤ß¹þ¤á¤Þ¤»¤ó¤Ç¤·¤¿(Ž¢SqlTablePrefixŽ£¤ò¥µ¥Ý¡¼¥È¤·¤Æ¤¤¤Þ¤»¤ó)");
+define('_MANAGER_PLUGINFILE_NOCLASS',				"ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½ï¿½%sï¿½×¤ï¿½ï¿½É¤ß¹ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½(ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¥×¥é¥°ï¿½ï¿½ï¿½ó¥¯¥é¥¹ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½)");
+define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½ï¿½%sï¿½×¤ï¿½ï¿½É¤ß¹ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½(ï¿½ï¿½SqlTablePrefixï¿½ï¿½ï¿½ò¥µ¥Ý¡ï¿½ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½)");
 
 // mysql.php
-define('_NO_SUITABLE_MYSQL_LIBRARY',				"<p>Nucleus¤òÆ°¤«¤¹¤Î¤ËÉ¬Í×¤ÊmySQLÍÑ¤Î¥é¥¤¥Ö¥é¥ê¤¬¥¤¥ó¥¹¥È¡¼¥ë¤µ¤ì¤Æ¤¤¤Þ¤»¤ó</p>");
+define('_NO_SUITABLE_MYSQL_LIBRARY',				"<p>Nucleusï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½ï¿½Î¤ï¿½É¬ï¿½×¤ï¿½mySQLï¿½Ñ¤Î¥é¥¤ï¿½Ö¥ï¿½ê¤¬ï¿½ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ë¤µï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½</p>");
 
 // PLUGIN.php
-define('_ERROR_PLUGIN_NOSUCHACTION',				'»ØÄê¤µ¤ì¤¿¥¢¥¯¥·¥ç¥ó¤ÏÂ¸ºß¤·¤Þ¤»¤ó¡£');
+define('_ERROR_PLUGIN_NOSUCHACTION',				'ï¿½ï¿½ï¿½ê¤µï¿½ì¤¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // PLUGINADMIN.php
-define('_ERROR_INVALID_PLUGIN',						'ÉÔÀµ¤Ê¥×¥é¥°¥¤¥ó¤Ç¤¹');
+define('_ERROR_INVALID_PLUGIN',						'ï¿½ï¿½ï¿½ï¿½ï¿½Ê¥×¥é¥°ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½');
 
 // showlist.php
-define('_LIST_PLUGS_DEPREQ',						'¤³¤Î¥×¥é¥°¥¤¥ó¤Ë°ÍÂ¸¤¹¤ë¥×¥é¥°¥¤¥ó:');
-define('_LIST_SKIN_PREVIEW',						"'%s' ¥¹¥­¥ó¤Î¥×¥ì¥Ó¥å¡¼");
-define('_LIST_SKIN_PREVIEW_VIEWLARGER',				"Âç¤­¤Ê²èÁü¤ò¸«¤ë");
-define('_LIST_SKIN_README',							"'%s' ¥¹¥­¥ó¤Ë¤Ä¤¤¤Æ¤â¤Ã¤È¾Ü¤·¤¯");
+define('_LIST_PLUGS_DEPREQ',						'ï¿½ï¿½ï¿½Î¥×¥é¥°ï¿½ï¿½ï¿½ï¿½Ë°ï¿½Â¸ï¿½ï¿½ï¿½ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½:');
+define('_LIST_SKIN_PREVIEW',						"'%s' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¥×¥ï¿½Ó¥å¡¼");
+define('_LIST_SKIN_PREVIEW_VIEWLARGER',				"ï¿½ç¤­ï¿½Ê²ï¿½ï¿½ï¿½ò¸«¤ï¿½");
+define('_LIST_SKIN_README',							"'%s' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¤Ä¤ï¿½ï¿½Æ¤ï¿½Ã¤È¾Ü¤ï¿½ï¿½ï¿½");
 define('_LIST_SKIN_README_TXT',						'Read me');
 
 // BLOG.php createNewCategory()
-define('_CREATED_NEW_CATEGORY_NAME',				'¿·¤·¤¤¥«¥Æ¥´¥ê');
-define('_CREATED_NEW_CATEGORY_DESC',				'¿·¤·¤¤¥«¥Æ¥´¥ê¤ÎÀâÌÀ');
+define('_CREATED_NEW_CATEGORY_NAME',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½');
+define('_CREATED_NEW_CATEGORY_DESC',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // ADMIN.php blog settings
-define('_EBLOG_CURRENT_TEAM_MEMBER',				'¤³¤Î¥Ö¥í¥°¥Á¡¼¥à¤Î¸½ºß¤Î¥á¥ó¥Ð¡¼¡§');
+define('_EBLOG_CURRENT_TEAM_MEMBER',				'ï¿½ï¿½ï¿½Î¥Ö¥?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¸ï¿½ï¿½ß¤Î¥ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½');
 
 // HTML outputs
 define('_HTML_XML_NAME_SPACE_AND_LANG_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"');
 
 // Language Files
-define('_LANGUAGEFILES_JAPANESE-UTF8',				'ÆüËÜ¸ì - ÆüËÜ¸ì (UTF-8)');
-define('_LANGUAGEFILES_JAPANESE-EUC',				'ÆüËÜ¸ì - ÆüËÜ¸ì (EUC)');
-define('_LANGUAGEFILES_JAPANESE-SJIS',				'ÆüËÜ¸ì - ÆüËÜ¸ì (Shift-JIS)');
-define('_LANGUAGEFILES_ENGLISH-UTF8',				'±Ñ¸ì - English (UTF-8)');
-define('_LANGUAGEFILES_ENGLISH',					'±Ñ¸ì - English (iso-8859-1)');
+define('_LANGUAGEFILES_JAPANESE-UTF8',				'ï¿½ï¿½ï¿½Ü¸ï¿½ - ï¿½ï¿½ï¿½Ü¸ï¿½ (UTF-8)');
+define('_LANGUAGEFILES_JAPANESE-EUC',				'ï¿½ï¿½ï¿½Ü¸ï¿½ - ï¿½ï¿½ï¿½Ü¸ï¿½ (EUC)');
+define('_LANGUAGEFILES_JAPANESE-SJIS',				'ï¿½ï¿½ï¿½Ü¸ï¿½ - ï¿½ï¿½ï¿½Ü¸ï¿½ (Shift-JIS)');
+define('_LANGUAGEFILES_ENGLISH-UTF8',				'ï¿½Ñ¸ï¿½ - English (UTF-8)');
+define('_LANGUAGEFILES_ENGLISH',					'ï¿½Ñ¸ï¿½ - English (iso-8859-1)');
 /*
-define('_LANGUAGEFILES_BULGARIAN',					'¥Ö¥ë¥¬¥ê¥¢¸ì - &#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080; (iso-8859-5)');
-define('_LANGUAGEFILES_CATALAN',					'¥«¥¿¥é¥ó¸ì - Catal&agrave; (iso-8859-1)');
-define('_LANGUAGEFILES_CHINESE-GBK',				'´ÊÂÎ»úÃæ¹ñ¸ì - &#31777;&#20307;&#23383;&#20013;&#25991; (gbk)');
-define('_LANGUAGEFILES_SIMCHINESE',					'´ÊÂÎ»úÃæ¹ñ¸ì - &#31777;&#20307;&#23383;&#20013;&#25991; (gb2312)');
-define('_LANGUAGEFILES_CHINESE-UTF8',				'´ÊÂÎ»úÃæ¹ñ¸ì - &#31777;&#20307;&#23383;&#20013;&#25991; (utf-8)');
-define('_LANGUAGEFILES_CHINESEB5',					'ÈËÂÎ»úÃæ¹ñ¸ì - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
-define('_LANGUAGEFILES_CHINESEB5-UTF8',				'ÈËÂÎ»úÃæ¹ñ¸ì - &#32321;&#20307;&#23383;&#20013;&#25991; (utf-8)');
-define('_LANGUAGEFILES_TRADITIONAL_CHINESE',		'ÈËÂÎ»úÃæ¹ñ¸ì - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
-define('_LANGUAGEFILES_TRADITIONAL_CHINESE-UTF-8',	'ÈËÂÎ»úÃæ¹ñ¸ì - &#32321;&#20307;&#23383;&#20013;&#25991; (utf-8)');
-define('_LANGUAGEFILES_CZECH',						'¥Á¥§¥³¸ì - &#268;esky (windows-1250)');
-define('_LANGUAGEFILES_FINNISH',					'¥Õ¥£¥ó¥é¥ó¥É¸ì - Suomi (iso-8859-1)');
-define('_LANGUAGEFILES_FRENCH',						'¥Õ¥é¥ó¥¹¸ì - Fran&ccedil;ais (iso-8859-1)');
-define('_LANGUAGEFILES_GALEGO',						'¥¬¥ê¥·¥¢¸ì - Galego (iso-8859-1)');
-define('_LANGUAGEFILES_GERMAN',						'¥É¥¤¥Ä¸ì - Deutsch (iso-8859-1)');
-define('_LANGUAGEFILES_HUNGARIAN',					'¥Ï¥ó¥¬¥ê¡¼¸ì - Magyar (iso-8859-2)');
-define('_LANGUAGEFILES_ITALIANO',					'¥¤¥¿¥ê¥¢¸ì - Italiano (iso-8859-1)');
-define('_LANGUAGEFILES_KOREAN-EUC-KR',				'´Ú¹ñ¸ì - &#54620;&#44397;&#50612; (euc-kr)');
-define('_LANGUAGEFILES_KOREAN-UTF',					'´Ú¹ñ¸ì - &#54620;&#44397;&#50612; (utf-8)');
-define('_LANGUAGEFILES_LATVIAN',					'¥é¥È¥Ó¥¢¸ì - Latvie&scaron;u (windows-1257)');
-define('_LANGUAGEFILES_NEDERLANDS',					'¥ª¥é¥ó¥À¸ì - Nederlands (iso-8859-15)');
-define('_LANGUAGEFILES_PERSIAN',					'¥Ú¥ë¥·¥¢¸ì - &#1601;&#1575;&#1585;&#1587;&#1740; (utf-8)');
-define('_LANGUAGEFILES_PORTUGUESE_BRAZIL',			'¥Ö¥é¥¸¥ë-¥Ý¥ë¥È¥¬¥ë¸ì - Portugu&ecirc;s (iso-8859-1)');
-define('_LANGUAGEFILES_RUSSIAN',					'¥í¥·¥¢¸ì - &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; (windows-1251)');
-define('_LANGUAGEFILES_SLOVAK',						'¥¹¥í¥Ù¥­¥¢¸ì - Sloven&#269;ina (ISO-8859-2)');
-define('_LANGUAGEFILES_SPANISH-UTF8',				'¥¹¥Ú¥¤¥ó¸ì - Espa&ntilde;ol (utf-8)');
-define('_LANGUAGEFILES_SPANISH',					'¥¹¥Ú¥¤¥ó¸ì - Espa&ntilde;ol (iso-8859-1)');
+define('_LANGUAGEFILES_BULGARIAN',					'ï¿½Ö¥ë¥¬ï¿½ê¥¢ï¿½ï¿½ - &#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080; (iso-8859-5)');
+define('_LANGUAGEFILES_CATALAN',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - Catal&agrave; (iso-8859-1)');
+define('_LANGUAGEFILES_CHINESE-GBK',				'ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ - &#31777;&#20307;&#23383;&#20013;&#25991; (gbk)');
+define('_LANGUAGEFILES_SIMCHINESE',					'ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ - &#31777;&#20307;&#23383;&#20013;&#25991; (gb2312)');
+define('_LANGUAGEFILES_CHINESE-UTF8',				'ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ - &#31777;&#20307;&#23383;&#20013;&#25991; (utf-8)');
+define('_LANGUAGEFILES_CHINESEB5',					'ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
+define('_LANGUAGEFILES_CHINESEB5-UTF8',				'ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ - &#32321;&#20307;&#23383;&#20013;&#25991; (utf-8)');
+define('_LANGUAGEFILES_TRADITIONAL_CHINESE',		'ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ - &#32321;&#20307;&#23383;&#20013;&#25991; (big5)');
+define('_LANGUAGEFILES_TRADITIONAL_CHINESE-UTF-8',	'ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ - &#32321;&#20307;&#23383;&#20013;&#25991; (utf-8)');
+define('_LANGUAGEFILES_CZECH',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - &#268;esky (windows-1250)');
+define('_LANGUAGEFILES_FINNISH',					'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ - Suomi (iso-8859-1)');
+define('_LANGUAGEFILES_FRENCH',						'ï¿½Õ¥ï¿½ó¥¹¸ï¿½ - Fran&ccedil;ais (iso-8859-1)');
+define('_LANGUAGEFILES_GALEGO',						'ï¿½ï¿½ï¿½ê¥·ï¿½ï¿½ï¿½ï¿½ - Galego (iso-8859-1)');
+define('_LANGUAGEFILES_GERMAN',						'ï¿½É¥ï¿½ï¿½Ä¸ï¿½ - Deutsch (iso-8859-1)');
+define('_LANGUAGEFILES_HUNGARIAN',					'ï¿½Ï¥ó¥¬¥ê¡¼ï¿½ï¿½ - Magyar (iso-8859-2)');
+define('_LANGUAGEFILES_ITALIANO',					'ï¿½ï¿½ï¿½ï¿½ï¿½ê¥¢ï¿½ï¿½ - Italiano (iso-8859-1)');
+define('_LANGUAGEFILES_KOREAN-EUC-KR',				'ï¿½Ú¹ï¿½ï¿½ - &#54620;&#44397;&#50612; (euc-kr)');
+define('_LANGUAGEFILES_KOREAN-UTF',					'ï¿½Ú¹ï¿½ï¿½ - &#54620;&#44397;&#50612; (utf-8)');
+define('_LANGUAGEFILES_LATVIAN',					'ï¿½ï¿½È¥Ó¥ï¿½ï¿½ï¿½ - Latvie&scaron;u (windows-1257)');
+define('_LANGUAGEFILES_NEDERLANDS',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ - Nederlands (iso-8859-15)');
+define('_LANGUAGEFILES_PERSIAN',					'ï¿½Ú¥ë¥·ï¿½ï¿½ï¿½ï¿½ - &#1601;&#1575;&#1585;&#1587;&#1740; (utf-8)');
+define('_LANGUAGEFILES_PORTUGUESE_BRAZIL',			'ï¿½Ö¥é¥¸ï¿½ï¿½-ï¿½Ý¥ï¿½È¥ï¿½ï¿½ï¿½ï¿½ - Portugu&ecirc;s (iso-8859-1)');
+define('_LANGUAGEFILES_RUSSIAN',					'ï¿½?ï¿½ï¿½ï¿½ï¿½ - &#1056;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081; (windows-1251)');
+define('_LANGUAGEFILES_SLOVAK',						'ï¿½ï¿½ï¿½ï¿½Ù¥ï¿½ï¿½ï¿½ï¿½ï¿½ - Sloven&#269;ina (ISO-8859-2)');
+define('_LANGUAGEFILES_SPANISH-UTF8',				'ï¿½ï¿½ï¿½Ú¥ï¿½ï¿½ï¿½ï¿½ - Espa&ntilde;ol (utf-8)');
+define('_LANGUAGEFILES_SPANISH',					'ï¿½ï¿½ï¿½Ú¥ï¿½ï¿½ï¿½ï¿½ - Espa&ntilde;ol (iso-8859-1)');
 */
 
 // </add by shizuki>
@@ -374,135 +374,135 @@ define('_LANGUAGEFILES_SPANISH',					'¥¹¥Ú¥¤¥ó¸ì - Espa&ntilde;ol (iso-8859-1)')
  ********************************************/
 
 // START changed/added after 3.3 START
-define('_AUTOSAVEDRAFT',					'¥É¥é¥Õ¥ÈÊÝÂ¸¾õ¶·');
-define('_AUTOSAVEDRAFT_LASTSAVED',			'ºÇ½ª¥É¥é¥Õ¥ÈÊÝÂ¸Æü»þ: ');
-define('_AUTOSAVEDRAFT_NOTYETSAVED',		'ÊÝÂ¸¤µ¤ì¤Æ¤¤¤Þ¤»¤ó');
-define('_AUTOSAVEDRAFT_NOW',				'¥É¥é¥Õ¥ÈÊÝÂ¸');
-define('_SKIN_PARTS_SPECIAL',				'¥¹¥Ú¥·¥ã¥ë¥¹¥­¥ó¥Ñ¡¼¥Ä');
-define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',	'±Ñ¿ô»ú°Ê³°¤ÎÊ¸»ú¤Ï»È¤¨¤Þ¤»¤ó');
-define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',	'¤³¤Î¥¹¥­¥ó¥Ñ¡¼¥Ä¤òºï½ü¤Ç¤­¤Þ¤»¤ó');
-define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',	'ËÜÅö¤Ë¤³¤Î¥¹¥Ú¥·¥ã¥ë¥¹¥­¥ó¥Ñ¡¼¥Ä¤òºï½ü¤·¤Æ¤â¤¤¤¤¤Ç¤¹¤«¡©');
-define('_ERROR_PLUGIN_LOAD',				'Nucleus¤Î¥×¥é¥°¥¤¥ó¤È¤·¤ÆÉ¬Í×¤Ê¥á¥½¥Ã¥É¤¬¥×¥é¥°¥¤¥ó¤Ç¥µ¥Ý¡¼¥È¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¡¢¥×¥é¥°¥¤¥ó¥Õ¥¡¥¤¥ë¤¬¸«Åö¤¿¤ê¤Þ¤»¤ó¡£(<a href="?action=actionlog">´ÉÍýÁàºîÍúÎò</a>¤Ë¾ÜºÙ¤¬¤¢¤ê¤Þ¤¹¡£)');
+define('_AUTOSAVEDRAFT',					'ï¿½É¥ï¿½Õ¥ï¿½ï¿½ï¿½Â¸ï¿½ï¿½ï¿½ï¿½');
+define('_AUTOSAVEDRAFT_LASTSAVED',			'ï¿½Ç½ï¿½ï¿½É¥ï¿½Õ¥ï¿½ï¿½ï¿½Â¸ï¿½ï¿½ï¿½: ');
+define('_AUTOSAVEDRAFT_NOTYETSAVED',		'ï¿½ï¿½Â¸ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_AUTOSAVEDRAFT_NOW',				'ï¿½É¥ï¿½Õ¥ï¿½ï¿½ï¿½Â¸');
+define('_SKIN_PARTS_SPECIAL',				'ï¿½ï¿½ï¿½Ú¥ï¿½ï¿½ï¿½ë¥¹ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½');
+define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',	'ï¿½Ñ¿ï¿½ï¿½ï¿½Ê³ï¿½ï¿½ï¿½Ê¸ï¿½ï¿½Ï»È¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',	'ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL',	'ï¿½ï¿½ï¿½ï¿½ï¿½Ë¤ï¿½ï¿½Î¥ï¿½ï¿½Ú¥ï¿½ï¿½ï¿½ë¥¹ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½Æ¤â¤¤ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_PLUGIN_LOAD',				'Nucleusï¿½Î¥×¥é¥°ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½É¬ï¿½×¤Ê¥á¥½ï¿½Ã¥É¤ï¿½ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½Ý¡ï¿½ï¿½È¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¤¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½(<a href="?action=actionlog">ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½</a>ï¿½Ë¾ÜºÙ¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½)');
 // END changed/added after 3.3 END
 
 // START changed/added after 3.22 START
-define('_SEARCHFORM_QUERY',					'¸¡º÷¥­¡¼¥ï¡¼¥É');
-define('_ERROR_EMAIL_REQUIRED',				'¥á¡¼¥ë¥¢¥É¥ì¥¹¤¬É¬Í×¤Ç¤¹');
-define('_COMMENTFORM_MAIL',					'¤¢¤Ê¤¿¤Î¥µ¥¤¥È¤ÎURL:');
-define('_COMMENTFORM_EMAIL',				'¥á¡¼¥ë¥¢¥É¥ì¥¹:');
-define('_EBLOG_REQUIREDEMAIL',				'¥³¥á¥ó¥È»þ¤Ë¥á¡¼¥ë¥¢¥É¥ì¥¹¤òÍ×µá¤¹¤ë');
-define('_ERROR_COMMENTS_SPAM',              '¤¢¤Ê¤¿¤Î¥³¥á¥ó¥È¤Ï¡¢¥¹¥Ñ¥à¥Æ¥¹¥È¤Î·ë²ÌµñÈÝ¤µ¤ì¤Þ¤·¤¿');
+define('_SEARCHFORM_QUERY',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¡¼ï¿½ï¿½');
+define('_ERROR_EMAIL_REQUIRED',				'ï¿½á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹ï¿½ï¿½É¬ï¿½×¤Ç¤ï¿½');
+define('_COMMENTFORM_MAIL',					'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½È¤ï¿½URL:');
+define('_COMMENTFORM_EMAIL',				'ï¿½á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹:');
+define('_EBLOG_REQUIREDEMAIL',				'ï¿½ï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½Ë¥á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹ï¿½ï¿½ï¿½×µá¤¹ï¿½ï¿½');
+define('_ERROR_COMMENTS_SPAM',              'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½È¤Ï¡ï¿½ï¿½ï¿½ï¿½Ñ¥ï¿½Æ¥ï¿½ï¿½È¤Î·ï¿½Ìµï¿½ï¿½Ý¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 // END changed/added after 3.22 END
 
 // START changed/added after 3.15 START
 
-define('_LIST_PLUG_SUBS_NEEDUPDATE',		'Ž¢ÅÐÏ¿¥ê¥¹¥È¤Î¥¢¥Ã¥×¥Ç¡¼¥ÈŽ£¥Ü¥¿¥ó¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¥¤¥Ù¥ó¥È¾ðÊó¤ò¹¹¿·¤·¤Æ¤¯¤À¤µ¤¤');
-define('_LIST_PLUGS_DEP',					'°ÍÂ¸¤¹¤ë¥×¥é¥°¥¤¥ó:');
+define('_LIST_PLUG_SUBS_NEEDUPDATE',		'ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ê¥¹ï¿½È¤Î¥ï¿½ï¿½Ã¥×¥Ç¡ï¿½ï¿½ÈŽï¿½ï¿½Ü¥ï¿½ï¿½ï¿½ò¥¯¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ù¥ï¿½È¾ï¿½ï¿½ï¿½ò¹¹¿ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_DEP',					'ï¿½ï¿½Â¸ï¿½ï¿½ï¿½ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½:');
 
 // END changed/added after 3.15
 
 // START changed/added after 3.1 START
 
 // comments list per weblog
-define('_COMMENTS_BLOG',					'¥³¥á¥ó¥È¤Î¥ê¥¹¥È:');
-define('_NOCOMMENTS_BLOG',					'¤³¤Îblog¤Ë¤Ï¤Þ¤À¥³¥á¥ó¥È¤¬¤Ä¤±¤é¤ì¤Æ¤¤¤Þ¤»¤ó');
-define('_BLOGLIST_COMMENTS',				'¥³¥á¥ó¥È');
-define('_BLOGLIST_TT_COMMENTS',				'¤³¤Îblog¤Ë¤Ä¤±¤é¤ì¤¿¥³¥á¥ó¥È¤Î¥ê¥¹¥È');
+define('_COMMENTS_BLOG',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¤Î¥ê¥¹ï¿½ï¿½:');
+define('_NOCOMMENTS_BLOG',					'ï¿½ï¿½ï¿½ï¿½blogï¿½Ë¤Ï¤Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_BLOGLIST_COMMENTS',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BLOGLIST_TT_COMMENTS',				'ï¿½ï¿½ï¿½ï¿½blogï¿½Ë¤Ä¤ï¿½ï¿½ï¿½ì¤¿ï¿½ï¿½ï¿½ï¿½ï¿½È¤Î¥ê¥¹ï¿½ï¿½');
 
 
 // for use in archivetype-skinvar
-define('_ARCHIVETYPE_DAY',					'Æü');
-define('_ARCHIVETYPE_MONTH',				'·î');
+define('_ARCHIVETYPE_DAY',					'ï¿½ï¿½');
+define('_ARCHIVETYPE_MONTH',				'ï¿½ï¿½');
 
 // tickets (prevents malicious users to trick an admin to perform actions he doesn't want)
-define('_ERROR_BADTICKET',					'¥Á¥±¥Ã¥È¤¬ÉÔÀµ¡¢¤â¤·¤¯¤Ï´ü¸ÂÀÚ¤ì¤Ç¤¹');
+define('_ERROR_BADTICKET',					'ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥È¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½â¤·ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½Ú¤ï¿½Ç¤ï¿½');
 
 // cookie prefix
-define('_SETTINGS_COOKIEPREFIX',			'Cookie ¥×¥ì¥Õ¥£¥Ã¥¯¥¹');
+define('_SETTINGS_COOKIEPREFIX',			'Cookie ï¿½×¥ï¿½Õ¥ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½');
 
 // account activation
-define('_ERROR_NOLOGON_NOACTIVATE',			'Ç§¾ÚÍÑ¥ê¥ó¥¯¤òÁ÷¿®¤Ç¤­¤Þ¤»¤ó¡£¤¢¤Ê¤¿¤Î¥í¥°¥¤¥ó¤Ïµö²Ä¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£');
-define('_ERROR_ACTIVATE',					'Ç§¾Ú¥­¡¼¤ÏÂ¸ºß¤·¤Ê¤¤¤«¡¢Ìµ¸ú¤«¡¢¤¢¤ë¤¤¤Ï´ü¸ÂÀÚ¤ì¤Ç¤¹¡£');
-define('_ACTIONLOG_ACTIVATIONLINK',			'Ç§¾ÚÍÑ¥ê¥ó¥¯¤¬Á÷¿®¤µ¤ì¤Þ¤·¤¿¡£');
-define('_MSG_ACTIVATION_SENT',				'Ç§¾ÚÍÑ¥ê¥ó¥¯¤ò¥á¡¼¥ë¤ÇÁ÷¿®¤·¤Þ¤·¤¿¡£');
+define('_ERROR_NOLOGON_NOACTIVATE',			'Ç§ï¿½ï¿½ï¿½Ñ¥ï¿½ó¥¯¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ó¡£¤ï¿½ï¿½Ê¤ï¿½ï¿½Î¥?ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½Ä¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_ACTIVATE',					'Ç§ï¿½Ú¥ï¿½ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½ë¤¤ï¿½Ï´ï¿½ï¿½ï¿½Ú¤ï¿½Ç¤ï¿½ï¿½ï¿½');
+define('_ACTIONLOG_ACTIVATIONLINK',			'Ç§ï¿½ï¿½ï¿½Ñ¥ï¿½ó¥¯¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MSG_ACTIVATION_SENT',				'Ç§ï¿½ï¿½ï¿½Ñ¥ï¿½ó¥¯¤ï¿½á¡¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // activation link emails
-define('_ACTIVATE_REGISTER_MAIL',			"¤³¤ó¤Ë¤Á¤Ï <%memberName%>\n\n<%siteName%> (<%siteUrl%>)¤Ë¤ª¤±¤ë¥¢¥«¥¦¥ó¥È¤òÍ­¸ú¤Ë¤·¤Ê¤±¤ì¤Ð¤Ê¤ê¤Þ¤»¤ó¡£\n²¼¤Î¥ê¥ó¥¯¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¥¢¥¯¥Æ¥£¥Ù¡¼¥·¥ç¥ó¤ò¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£¡§\n\n\t<%activationUrl%>\n\n¥¢¥¯¥Æ¥£¥Ù¡¼¥·¥ç¥óÍÑ¤ÎURL¤ÎÍ­¸ú´ü¸Â¤Ï<%activationDays%>Æü´Ö¤Ç¤¹¡£¤½¤ì°Ê¹ß¤ÏÌµ¸ú¤Ë¤Ê¤ê¤Þ¤¹¤Î¤ÇÁá¤á¤Ë¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£");
-define('_ACTIVATE_REGISTER_MAILTITLE',		"¥¢¥«¥¦¥ó¥È'<%memberName%>'¤Î¥¢¥¯¥Æ¥£¥Ù¡¼¥·¥ç¥ó");
-define('_ACTIVATE_REGISTER_TITLE',			'¤è¤¦¤³¤½ <%memberName%>');
-define('_ACTIVATE_REGISTER_TEXT',			'¥¢¥«¥¦¥ó¥ÈºîÀ®¤Ï¤Û¤Ü´°Î»¤·¤Þ¤·¤¿¡£²¼¤Î¥Õ¥©¡¼¥à¤Ç¥¢¥«¥¦¥ó¥È¤Î¥Ñ¥¹¥ï¡¼¥É¤òÀßÄê¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_ACTIVATE_FORGOT_MAIL',				"¤³¤ó¤Ë¤Á¤Ï <%memberName%>\n\n²¼¤Î¥ê¥ó¥¯¤«¤é¡¢¤³¤Î<%siteName%> (<%siteUrl%>)¤Ë¤ª¤±¤ë¿·¤·¤¤¥Ñ¥¹¥ï¡¼¥É¤òÀßÄê¤¹¤ë¤³¤È¤¬¤Ç¤­¤Þ¤¹¡£\n\n\t<%activationUrl%>\n\n¥¢¥¯¥Æ¥£¥Ù¡¼¥·¥ç¥óÍÑ¤ÎURL¤ÎÍ­¸ú´ü¸Â¤Ï<%activationDays%>Æü´Ö¤Ç¤¹¡£¤½¤ì°Ê¹ß¤ÏÌµ¸ú¤Ë¤Ê¤ê¤Þ¤¹¤Î¤ÇÁá¤á¤Ë¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£");
-define('_ACTIVATE_FORGOT_MAILTITLE',		"¥¢¥«¥¦¥ó¥È'<%memberName%>'¤ÎºÆÇ§¾Ú");
-define('_ACTIVATE_FORGOT_TITLE',			'¤è¤¦¤³¤½ <%memberName%>');
-define('_ACTIVATE_FORGOT_TEXT',				'²¼¤Î¥Õ¥©¡¼¥à¤Ç¿·¤·¤¤¥Ñ¥¹¥ï¡¼¥É¤¬ÀßÄê¤Ç¤­¤Þ¤¹¡£');
-define('_ACTIVATE_CHANGE_MAIL',				"¤³¤ó¤Ë¤Á¤Ï <%memberName%>\n\n¥á¡¼¥ë¥¢¥É¥ì¥¹¤¬ÊÑ¹¹¤µ¤ì¤Þ¤·¤¿¡£\n\n<%siteName%> (<%siteUrl%>)¤Ë¤ª¤±¤ë¥¢¥«¥¦¥ó¥È¤òºÆÇ§¾Ú¤¹¤ëÉ¬Í×¤¬¤¢¤ê¤Þ¤¹¡£\n²¼¤Î¥ê¥ó¥¯¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¥¢¥¯¥Æ¥£¥Ù¡¼¥·¥ç¥ó¤ò¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£¡§\n\n\t<%activationUrl%>\n\n¥¢¥¯¥Æ¥£¥Ù¡¼¥·¥ç¥óÍÑ¤ÎURL¤ÎÍ­¸ú´ü¸Â¤Ï<%activationDays%>Æü´Ö¤Ç¤¹¡£¤½¤ì°Ê¹ß¤ÏÌµ¸ú¤Ë¤Ê¤ê¤Þ¤¹¤Î¤ÇÁá¤á¤Ë¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£");
-define('_ACTIVATE_CHANGE_MAILTITLE',		"¥¢¥«¥¦¥ó¥È'<%memberName%>'¤ÎºÆÇ§¾Ú");
-define('_ACTIVATE_CHANGE_TITLE',			'¤è¤¦¤³¤½ <%memberName%>');
-define('_ACTIVATE_CHANGE_TEXT',				'¥á¡¼¥ë¥¢¥É¥ì¥¹¤ÎÊÑ¹¹¤¬³ÎÇ§¤µ¤ì¤Þ¤·¤¿¡£');
-define('_ACTIVATE_SUCCESS_TITLE',			'¥¢¥¯¥Æ¥£¥Ù¡¼¥·¥ç¥ó¤ËÀ®¸ù¤·¤Þ¤·¤¿');
-define('_ACTIVATE_SUCCESS_TEXT',			'¥¢¥¯¥Æ¥£¥Ù¡¼¥·¥ç¥ó¤ËÀ®¸ù¤·¤Þ¤·¤¿¡£');
-define('_MEMBERS_SETPWD',					'¥Ñ¥¹¥ï¡¼¥É¤òÀßÄê¤¹¤ë');
-define('_MEMBERS_SETPWD_BTN',				'¥Ñ¥¹¥ï¡¼¥É¤òÀßÄê');
-define('_QMENU_ACTIVATE',					'¥¢¥¯¥Æ¥£¥Ù¡¼¥·¥ç¥ó');
-define('_QMENU_ACTIVATE_TEXT',				'<p>¥¢¥¯¥Æ¥£¥Ù¡¼¥·¥ç¥ó¤ò´°Î»¤¹¤ì¤Ð¡¢<a href="index.php?action=showlogin">¥í¥°¥¤¥ó</a>¤·¤Æ¤«¤éÍøÍÑ¤Ç¤­¤Þ¤¹¡£</p>');
+define('_ACTIVATE_REGISTER_MAIL',			"ï¿½ï¿½ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½ <%memberName%>\n\n<%siteName%> (<%siteUrl%>)ï¿½Ë¤ï¿½ï¿½ï¿½ï¿½ë¥¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½Í­ï¿½ï¿½Ë¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½Ð¤Ê¤ï¿½Þ¤ï¿½ï¿½ï¿½\nï¿½ï¿½ï¿½Î¥ï¿½ó¥¯¤ò¥¯¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤Ã¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n\n\t<%activationUrl%>\n\nï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½URLï¿½ï¿½Í­ï¿½ï¿½ï¿½Â¤ï¿½<%activationDays%>ï¿½ï¿½Ö¤Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ß¤ï¿½Ìµï¿½ï¿½Ë¤Ê¤ï¿½Þ¤ï¿½ï¿½Î¤ï¿½ï¿½ï¿½ï¿½Ë¹Ô¤Ã¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_ACTIVATE_REGISTER_MAILTITLE',		"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½'<%memberName%>'ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_ACTIVATE_REGISTER_TITLE',			'ï¿½è¤¦ï¿½ï¿½ï¿½ï¿½ <%memberName%>');
+define('_ACTIVATE_REGISTER_TEXT',			'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Èºï¿½ï¿½ï¿½ï¿½Ï¤Û¤Ü´ï¿½Î»ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤Î¥Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½ï¿½ï¿½ï¿½ê¤·ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ACTIVATE_FORGOT_MAIL',				"ï¿½ï¿½ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½ <%memberName%>\n\nï¿½ï¿½ï¿½Î¥ï¿½ó¥¯¤ï¿½ï¿½é¡¢ï¿½ï¿½ï¿½ï¿½<%siteName%> (<%siteUrl%>)ï¿½Ë¤ï¿½ï¿½ï¿½ï¿½ë¿·ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½ï¿½ï¿½ï¿½ê¤¹ï¿½ë¤³ï¿½È¤ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½\n\n\t<%activationUrl%>\n\nï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½URLï¿½ï¿½Í­ï¿½ï¿½ï¿½Â¤ï¿½<%activationDays%>ï¿½ï¿½Ö¤Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ß¤ï¿½Ìµï¿½ï¿½Ë¤Ê¤ï¿½Þ¤ï¿½ï¿½Î¤ï¿½ï¿½ï¿½ï¿½Ë¹Ô¤Ã¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_ACTIVATE_FORGOT_MAILTITLE',		"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½'<%memberName%>'ï¿½Îºï¿½Ç§ï¿½ï¿½");
+define('_ACTIVATE_FORGOT_TITLE',			'ï¿½è¤¦ï¿½ï¿½ï¿½ï¿½ <%memberName%>');
+define('_ACTIVATE_FORGOT_TEXT',				'ï¿½ï¿½ï¿½Î¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ACTIVATE_CHANGE_MAIL',				"ï¿½ï¿½ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½ <%memberName%>\n\nï¿½á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½\n\n<%siteName%> (<%siteUrl%>)ï¿½Ë¤ï¿½ï¿½ï¿½ï¿½ë¥¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½Ç§ï¿½Ú¤ï¿½ï¿½ï¿½É¬ï¿½×¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½\nï¿½ï¿½ï¿½Î¥ï¿½ó¥¯¤ò¥¯¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¤Ã¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n\n\t<%activationUrl%>\n\nï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½URLï¿½ï¿½Í­ï¿½ï¿½ï¿½Â¤ï¿½<%activationDays%>ï¿½ï¿½Ö¤Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¹ß¤ï¿½Ìµï¿½ï¿½Ë¤Ê¤ï¿½Þ¤ï¿½ï¿½Î¤ï¿½ï¿½ï¿½ï¿½Ë¹Ô¤Ã¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½");
+define('_ACTIVATE_CHANGE_MAILTITLE',		"ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½'<%memberName%>'ï¿½Îºï¿½Ç§ï¿½ï¿½");
+define('_ACTIVATE_CHANGE_TITLE',			'ï¿½è¤¦ï¿½ï¿½ï¿½ï¿½ <%memberName%>');
+define('_ACTIVATE_CHANGE_TEXT',				'ï¿½á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½Ç§ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ACTIVATE_SUCCESS_TITLE',			'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ACTIVATE_SUCCESS_TEXT',			'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MEMBERS_SETPWD',					'ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½ï¿½ï¿½ï¿½ê¤¹ï¿½ï¿½');
+define('_MEMBERS_SETPWD_BTN',				'ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_QMENU_ACTIVATE',					'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_QMENU_ACTIVATE_TEXT',				'<p>ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½<a href="index.php?action=showlogin">ï¿½?ï¿½ï¿½ï¿½ï¿½</a>ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½</p>');
 
-define('_PLUGS_BTN_UPDATE',					'ÅÐÏ¿¥ê¥¹¥È¤Î¥¢¥Ã¥×¥Ç¡¼¥È');
+define('_PLUGS_BTN_UPDATE',					'ï¿½ï¿½Ï¿ï¿½ê¥¹ï¿½È¤Î¥ï¿½ï¿½Ã¥×¥Ç¡ï¿½ï¿½ï¿½');
 
 // global settings
-define('_SETTINGS_JSTOOLBAR',				'Javascript¥Ä¡¼¥ë¥Ð¡¼¤Î¥¹¥¿¥¤¥ë');
-define('_SETTINGS_JSTOOLBAR_FULL',			'¥Õ¥ë¡¦¥Ä¡¼¥ë¥Ð¡¼(IE)');
-define('_SETTINGS_JSTOOLBAR_SIMPLE',		'¥·¥ó¥×¥ë¡¦¥Ä¡¼¥ë¥Ð¡¼(IE°Ê³°)');
-define('_SETTINGS_JSTOOLBAR_NONE',			'¥Ä¡¼¥ë¥Ð¡¼¤ò»È¤ï¤Ê¤¤');
-define('_SETTINGS_URLMODE_HELP',			'(»²¹Í¡§<a href="documentation/tips.html#searchengines-fancyurls">FancyURL¤òÍ­¸ú¤Ë¤¹¤ëÊýË¡</a>)');
+define('_SETTINGS_JSTOOLBAR',				'Javascriptï¿½Ä¡ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SETTINGS_JSTOOLBAR_FULL',			'ï¿½Õ¥ë¡¦ï¿½Ä¡ï¿½ï¿½ï¿½Ð¡ï¿½(IE)');
+define('_SETTINGS_JSTOOLBAR_SIMPLE',		'ï¿½ï¿½ï¿½ï¿½×¥ë¡¦ï¿½Ä¡ï¿½ï¿½ï¿½Ð¡ï¿½(IEï¿½Ê³ï¿½)');
+define('_SETTINGS_JSTOOLBAR_NONE',			'ï¿½Ä¡ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½È¤ï¿½Ê¤ï¿½');
+define('_SETTINGS_URLMODE_HELP',			'(ï¿½ï¿½ï¿½Í¡ï¿½<a href="documentation/tips.html#searchengines-fancyurls">FancyURLï¿½ï¿½Í­ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½ï¿½ï¿½Ë¡</a>)');
 
 // extra plugin settings part when editing categories/members/blogs/...
-define('_PLUGINS_EXTRA',					'¥×¥é¥°¥¤¥ó¤Ë¤è¤ëÄÉ²ÃÀßÄê');
+define('_PLUGINS_EXTRA',					'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½É²ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // itemlist info column keys
 define('_LIST_ITEM_BLOG',					'blog:');
 define('_LIST_ITEM_CAT',					'cat:');
-define('_LIST_ITEM_AUTHOR',					'Ãø¼Ô:');
-define('_LIST_ITEM_DATE',					'ÆüÉÕ:');
-define('_LIST_ITEM_TIME',					'»þ´Ö:');
+define('_LIST_ITEM_AUTHOR',					'ï¿½ï¿½ï¿½:');
+define('_LIST_ITEM_DATE',					'ï¿½ï¿½ï¿½ï¿½:');
+define('_LIST_ITEM_TIME',					'ï¿½ï¿½ï¿½ï¿½:');
 
 // indication of registered members in comments list
-define('_LIST_COMMENTS_MEMBER', 			'(¥á¥ó¥Ð¡¼)');
+define('_LIST_COMMENTS_MEMBER', 			'(ï¿½ï¿½ï¿½Ð¡ï¿½)');
 
 // batch operations
-define('_BATCH_WITH_SEL',					'ÁªÂò¤µ¤ì¤¿¤â¤Î¤ò¡§');
-define('_BATCH_EXEC',						'¼Â¹Ô');
+define('_BATCH_WITH_SEL',					'ï¿½ï¿½ï¿½ò¤µ¤ì¤¿ï¿½ï¿½Î¤ï¿½');
+define('_BATCH_EXEC',						'ï¿½Â¹ï¿½');
 
 // quickmenu
-// Note: _USER_SETTINGS ¤È _MANAGE_SETTINGS ¤Ï 3.3 °Ê¹ß¡¢¥ª¥ê¥¸¥Ê¥ëÈÇ¤Ï
-// ÊÑ¹¹¤µ¤ì¤Þ¤·¤¿¤¬¡¢ÆüËÜ¸ìÈÇ¤ÏÉ½µ­¤ò¤½¤Î¤Þ¤Þ¤È¤·¤Þ¤¹¡£
-// ´Ö°ã¤Ã¤Æ¹¹¿·¤·¤Ê¤¤¤è¤¦¤Ë!!
-define('_QMENU_HOME',						'´ÉÍý¥Û¡¼¥à');
-define('_QMENU_ADD',						'¥¢¥¤¥Æ¥àÄÉ²Ã');
-define('_QMENU_ADD_SELECT',					'- blogÁªÂò -');
-define('_QMENU_USER_SETTINGS',				'¤¢¤Ê¤¿¤ÎÀßÄê');
-define('_QMENU_USER_ITEMS',					'¤¢¤Ê¤¿¤Î¥¢¥¤¥Æ¥à');
-define('_QMENU_USER_COMMENTS',				'¤¢¤Ê¤¿¤Î¥³¥á¥ó¥È');
-define('_QMENU_MANAGE',						'¥µ¥¤¥È´ÉÍý');
-define('_QMENU_MANAGE_LOG',					'´ÉÍýÁàºîÍúÎò');
-define('_QMENU_MANAGE_SETTINGS',			'¥°¥í¡¼¥Ð¥ëÀßÄê');
-define('_QMENU_MANAGE_MEMBERS',				'¥á¥ó¥Ð¡¼´ÉÍý');
-define('_QMENU_MANAGE_NEWBLOG',				'¿·µ¬BlogºîÀ®');
-define('_QMENU_MANAGE_BACKUPS',				'DBÊÝÂ¸/Éü¸µ');
-define('_QMENU_MANAGE_PLUGINS',				'¥×¥é¥°¥¤¥ó´ÉÍý');
-define('_QMENU_LAYOUT',						'¥ì¥¤¥¢¥¦¥ÈÀßÄê');
-define('_QMENU_LAYOUT_SKINS',				'¥¹¥­¥óÊÔ½¸');
-define('_QMENU_LAYOUT_TEMPL',				'¥Æ¥ó¥×¥ì¡¼¥ÈÊÔ½¸');
-define('_QMENU_LAYOUT_IEXPORT',				'ÆÉ¹þ/½ñ½Ð');
-define('_QMENU_PLUGINS',					'¥×¥é¥°¥¤¥ó');
+// Note: _USER_SETTINGS ï¿½ï¿½ _MANAGE_SETTINGS ï¿½ï¿½ 3.3 ï¿½Ê¹ß¡ï¿½ï¿½ï¿½ï¿½ê¥¸ï¿½Ê¥ï¿½ï¿½Ç¤ï¿½
+// ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü¸ï¿½ï¿½Ç¤ï¿½É½ï¿½ï¿½ï¿½ò¤½¤Î¤Þ¤Þ¤È¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½
+// ï¿½Ö°ï¿½Ã¤Æ¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½è¤¦ï¿½ï¿½!!
+define('_QMENU_HOME',						'ï¿½ï¿½ï¿½ï¿½Û¡ï¿½ï¿½ï¿½');
+define('_QMENU_ADD',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½É²ï¿½');
+define('_QMENU_ADD_SELECT',					'- blogï¿½ï¿½ï¿½ï¿½ -');
+define('_QMENU_USER_SETTINGS',				'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_QMENU_USER_ITEMS',					'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½');
+define('_QMENU_USER_COMMENTS',				'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_QMENU_MANAGE',						'ï¿½ï¿½ï¿½ï¿½ï¿½È´ï¿½ï¿½ï¿½');
+define('_QMENU_MANAGE_LOG',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_QMENU_MANAGE_SETTINGS',			'ï¿½ï¿½ï¿½?ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_QMENU_MANAGE_MEMBERS',				'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_QMENU_MANAGE_NEWBLOG',				'ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½ï¿½ï¿½');
+define('_QMENU_MANAGE_BACKUPS',				'DBï¿½ï¿½Â¸/ï¿½ï¿½');
+define('_QMENU_MANAGE_PLUGINS',				'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_QMENU_LAYOUT',						'ï¿½ì¥¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_QMENU_LAYOUT_SKINS',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½');
+define('_QMENU_LAYOUT_TEMPL',				'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½ï¿½ï¿½Ô½ï¿½');
+define('_QMENU_LAYOUT_IEXPORT',				'ï¿½É¹ï¿½/ï¿½ï¿½ï¿½');
+define('_QMENU_PLUGINS',					'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½');
 
 // quickmenu on logon screen
-define('_QMENU_INTRO',						'Æ³Æþ¥¬¥¤¥É');
-define('_QMENU_INTRO_TEXT',					'<p>¤³¤³¤Ï¥¦¥§¥Ö¥µ¥¤¥È¤Î´ÉÍý¤ò¹Ô¤¦¥³¥ó¥Æ¥ó¥Ä´ÉÍý¥·¥¹¥Æ¥à¡¢¡ÖNucleus CMS¡×¤Î¥í¥°¥¤¥ó²èÌÌ¤Ç¤¹¡£</p><p>¥¢¥«¥¦¥ó¥È¤ò»ý¤Ã¤Æ¤¤¤ì¤Ð¥í¥°¥¤¥ó¤·¤Æ¿·¤·¤¤µ­»ö¤ÎÅê¹Æ¤¬¤Ç¤­¤Þ¤¹¡£</p>');
+define('_QMENU_INTRO',						'Æ³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_QMENU_INTRO_TEXT',					'<p>ï¿½ï¿½ï¿½ï¿½ï¿½Ï¥ï¿½ï¿½ï¿½ï¿½Ö¥ï¿½ï¿½ï¿½ï¿½È¤Î´ï¿½ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Ä´ï¿½ï¿½ï¿½Æ¥à¡¢ï¿½ï¿½Nucleus CMSï¿½×¤Î¥?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¤Ç¤ï¿½ï¿½ï¿½</p><p>ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½Ã¤Æ¤ï¿½ï¿½ï¿½Ð¥?ï¿½ï¿½ï¿½ó¤·¤Æ¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½</p>');
 
 // helppages for plugins
-define('_ERROR_PLUGNOHELPFILE',				'¤³¤Î¥×¥é¥°¥¤¥óÍÑ¤Î¥Ø¥ë¥×¥Õ¥¡¥¤¥ë¤¬¸«¤Ä¤«¤ê¤Þ¤»¤ó');
-define('_PLUGS_HELP_TITLE',					'¥×¥é¥°¥¤¥ó¤Î¥Ø¥ë¥×¥Ú¡¼¥¸');
-define('_LIST_PLUGS_HELP', 					'¥Ø¥ë¥×');
+define('_ERROR_PLUGNOHELPFILE',				'ï¿½ï¿½ï¿½Î¥×¥é¥°ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤Î¥Ø¥ï¿½×¥Õ¥ï¿½ï¿½ï¿½ï¿½ë¤¬ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_PLUGS_HELP_TITLE',					'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Î¥Ø¥ï¿½×¥Ú¡ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_HELP', 					'ï¿½Ø¥ï¿½ï¿½');
 
 
 // END changed/started after 3.1
@@ -510,193 +510,193 @@ define('_LIST_PLUGS_HELP', 					'¥Ø¥ë¥×');
 // START changed/added after v2.5beta START
 
 // general settings (security)
-define('_SETTINGS_EXTAUTH',					'³°ÉôÇ§¾Ú¤ÎÍ­¸ú²½');
-define('_WARNING_EXTAUTH',					'·Ù¹ð:É¬Í×¤Ê»þ°Ê³°¤ÏÍ­¸ú¤Ë¤·¤Ê¤¤');
+define('_SETTINGS_EXTAUTH',					'ï¿½ï¿½ï¿½ï¿½Ç§ï¿½Ú¤ï¿½Í­ï¿½ï¿½');
+define('_WARNING_EXTAUTH',					'ï¿½Ù¹ï¿½:É¬ï¿½×¤Ê»ï¿½ï¿½Ê³ï¿½ï¿½ï¿½Í­ï¿½ï¿½Ë¤ï¿½ï¿½Ê¤ï¿½');
 
 // member profile
-define('_MEMBERS_BYPASS',					'³°ÉôÇ§¾Ú¤ò»ÈÍÑ¤¹¤ë');
+define('_MEMBERS_BYPASS',					'ï¿½ï¿½ï¿½ï¿½Ç§ï¿½Ú¤ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½');
 
 // 'always include in search' blog setting (yes/no) [in v2.5beta, the 'always' part wasn't clear]
-define('_EBLOG_SEARCH',						'<em>¾ï¤Ë</em>¸¡º÷ÂÐ¾Ý¤Ë¤¹¤ë');
+define('_EBLOG_SEARCH',						'<em>ï¿½ï¿½ï¿½</em>ï¿½ï¿½ï¿½ï¿½ï¿½Ð¾Ý¤Ë¤ï¿½ï¿½ï¿½');
 
 // END changed/added after v2.5beta
 
 // START introduced after v2.0 START
 
 // media library
-define('_MEDIA_VIEW',						'É½¼¨');
-define('_MEDIA_VIEW_TT',					'¥Õ¥¡¥¤¥ëÉ½¼¨ (¿·¤·¤¤¥¦¥£¥ó¥É¥¦¤¬³«¤­¤Þ¤¹)');
-define('_MEDIA_FILTER_APPLY',				'¥Õ¥£¥ë¥¿¡¼Å¬ÍÑ');
-define('_MEDIA_FILTER_LABEL',				'¥Õ¥£¥ë¥¿¡¼: ');
-define('_MEDIA_UPLOAD_TO',					'¥¢¥Ã¥×¥í¡¼¥ÉÀè...');
-define('_MEDIA_UPLOAD_NEW',					'¿·µ¬¥¢¥Ã¥×¥í¡¼¥É...');
-define('_MEDIA_COLLECTION_SELECT',			'ÁªÂò');
-define('_MEDIA_COLLECTION_TT',				'¤³¤Î¥«¥Æ¥´¥ê¡¼¤ËÀÚ¤êÂØ¤¨');
-define('_MEDIA_COLLECTION_LABEL',			'¸½ºß¤Î¥³¥ì¥¯¥·¥ç¥ó: ');
+define('_MEDIA_VIEW',						'É½ï¿½ï¿½');
+define('_MEDIA_VIEW_TT',					'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½É½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½)');
+define('_MEDIA_FILTER_APPLY',				'ï¿½Õ¥ï¿½ï¿½ë¥¿ï¿½ï¿½Å¬ï¿½ï¿½');
+define('_MEDIA_FILTER_LABEL',				'ï¿½Õ¥ï¿½ï¿½ë¥¿ï¿½ï¿½: ');
+define('_MEDIA_UPLOAD_TO',					'ï¿½ï¿½ï¿½Ã¥×¥?ï¿½ï¿½ï¿½ï¿½...');
+define('_MEDIA_UPLOAD_NEW',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥×¥?ï¿½ï¿½...');
+define('_MEDIA_COLLECTION_SELECT',			'ï¿½ï¿½ï¿½ï¿½');
+define('_MEDIA_COLLECTION_TT',				'ï¿½ï¿½ï¿½Î¥ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½Ú¤ï¿½ï¿½Ø¤ï¿½');
+define('_MEDIA_COLLECTION_LABEL',			'ï¿½ï¿½ï¿½ß¤Î¥ï¿½ï¿½ì¥¯ï¿½ï¿½ï¿½ï¿½ï¿½: ');
 
 // tooltips on toolbar
-define('_ADD_ALIGNLEFT_TT',					'º¸´ó¤»');
-define('_ADD_ALIGNRIGHT_TT',				'±¦´ó¤»');
-define('_ADD_ALIGNCENTER_TT',				'Ãæ±û´ó¤»');
+define('_ADD_ALIGNLEFT_TT',					'ï¿½ï¿½ï¿½ï¿½');
+define('_ADD_ALIGNRIGHT_TT',				'ï¿½ï¿½ï¿½ï¿½');
+define('_ADD_ALIGNCENTER_TT',				'ï¿½ï¿½ï¿½ï¿½');
 
 
 // generic upload failure
-define('_ERROR_UPLOADFAILED',				'¥¢¥Ã¥×¥í¡¼¥É¤Ë¼ºÇÔ¤·¤Þ¤·¤¿');
+define('_ERROR_UPLOADFAILED',				'ï¿½ï¿½ï¿½Ã¥×¥?ï¿½É¤Ë¼ï¿½ï¿½Ô¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // END introduced after v2.0 END
 
 // START introduced after v1.5 START
 
 // posting to the past/edit timestamps
-define('_EBLOG_ALLOWPASTPOSTING',			'²áµî¤ÎÆü»þ¤Ç¤ÎÅê¹Æ¤òµö²Ä¤¹¤ë');
-define('_ADD_CHANGEDATE',					'¥¿¥¤¥à¥¹¥¿¥ó¥×¤ò¹¹¿·');
-define('_BMLET_CHANGEDATE',					'¥¿¥¤¥à¥¹¥¿¥ó¥×¤ò¹¹¿·');
+define('_EBLOG_ALLOWPASTPOSTING',			'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½');
+define('_ADD_CHANGEDATE',					'ï¿½ï¿½ï¿½ï¿½ï¿½à¥¹ï¿½ï¿½ï¿½ï¿½×¤ò¹¹¿ï¿½');
+define('_BMLET_CHANGEDATE',					'ï¿½ï¿½ï¿½ï¿½ï¿½à¥¹ï¿½ï¿½ï¿½ï¿½×¤ò¹¹¿ï¿½');
 
 // skin import/export
-define('_OVERVIEW_SKINIMPORT',				'ÆÉ¹þ/½ñ½Ð');
+define('_OVERVIEW_SKINIMPORT',				'ï¿½É¹ï¿½/ï¿½ï¿½ï¿½');
 
 // skin settings
-define('_PARSER_INCMODE_NORMAL',			'¥Î¡¼¥Þ¥ë');
-define('_PARSER_INCMODE_SKINDIR',			'skindir¤ò»È¤¦');
-define('_SKIN_INCLUDE_MODE',				'Include¥â¡¼¥É');
-define('_SKIN_INCLUDE_PREFIX',				'Include¥×¥ê¥Õ¥£¥Ã¥¯¥¹');
+define('_PARSER_INCMODE_NORMAL',			'ï¿½Î¡ï¿½ï¿½Þ¥ï¿½');
+define('_PARSER_INCMODE_SKINDIR',			'skindirï¿½ï¿½È¤ï¿½');
+define('_SKIN_INCLUDE_MODE',				'Includeï¿½â¡¼ï¿½ï¿½');
+define('_SKIN_INCLUDE_PREFIX',				'Includeï¿½×¥ï¿½Õ¥ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½');
 
 // global settings
-define('_SETTINGS_BASESKIN',				'´ðËÜ¤Î¥¹¥­¥ó');
-define('_SETTINGS_SKINSURL',				'¥¹¥­¥óURL');
-define('_SETTINGS_ACTIONSURL',				'¡Öhttp://¡×¤«¤é»Ï¤Þ¤ë action.php ¤ÎURL');
+define('_SETTINGS_BASESKIN',				'ï¿½ï¿½ï¿½Ü¤Î¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SETTINGS_SKINSURL',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½URL');
+define('_SETTINGS_ACTIONSURL',				'ï¿½ï¿½http://ï¿½×¤ï¿½ï¿½ï¿½Ï¤Þ¤ï¿½ action.php ï¿½ï¿½URL');
 
 // category moves (batch)
-define('_ERROR_MOVEDEFCATEGORY',			'¥Ç¥Õ¥©¥ë¥È¤Î¥«¥Æ¥´¥ê¡¼¤Ï°ÜÆ°¤Ç¤­¤Þ¤»¤ó');
-define('_ERROR_MOVETOSELF',					'¥«¥Æ¥´¥ê¡¼¤ò°ÜÆ°¤Ç¤­¤Þ¤»¤ó (°ÜÆ°Àè¤ÎBlog¤¬°ÜÆ°¸µ¤ÈÆ±¤¸¤Ç¤¹)');
-define('_MOVECAT_TITLE',					'¥«¥Æ¥´¥ê¡¼¤ò°ÜÆ°¤¹¤ëBlog¤òÁªÂò¤·¤Æ¤¯¤À¤µ¤¤');
-define('_MOVECAT_BTN',						'¥«¥Æ¥´¥ê¡¼¤ò°ÜÆ°');
+define('_ERROR_MOVEDEFCATEGORY',			'ï¿½Ç¥Õ¥ï¿½ï¿½ï¿½È¤Î¥ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½Ï°ï¿½Æ°ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_MOVETOSELF',					'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½Æ°ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ (ï¿½ï¿½Æ°ï¿½ï¿½ï¿½Blogï¿½ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½ï¿½Ç¤ï¿½)');
+define('_MOVECAT_TITLE',					'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½ï¿½ï¿½ï¿½ò¤·¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MOVECAT_BTN',						'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½Æ°');
 
 // URLMode setting
-define('_SETTINGS_URLMODE',					'URL ¥â¡¼¥É');
+define('_SETTINGS_URLMODE',					'URL ï¿½â¡¼ï¿½ï¿½');
 define('_SETTINGS_URLMODE_NORMAL',			'Normal');
 define('_SETTINGS_URLMODE_PATHINFO',		'Fancy');
 
 // Batch operations
-define('_BATCH_NOSELECTION',				'ÂÐ¾Ý¤¬ÁªÂò¤µ¤ì¤Æ¤¤¤Þ¤»¤ó');
-define('_BATCH_ITEMS',						'¥¢¥¤¥Æ¥à¡¡¡¡¡¡¤ËÂÐ¤·¤Æ¤Î¥Ð¥Ã¥ÁÁàºî');
-define('_BATCH_CATEGORIES',					'¥«¥Æ¥´¥ê¡¼¡¡¡¡¤ËÂÐ¤·¤Æ¤Î¥Ð¥Ã¥ÁÁàºî');
-define('_BATCH_MEMBERS',					'¥á¥ó¥Ð¡¼¡¡¡¡¡¡¤ËÂÐ¤·¤Æ¤Î¥Ð¥Ã¥ÁÁàºî');
-define('_BATCH_TEAM',						'¥Á¡¼¥à¥á¥ó¥Ð¡¼¤ËÂÐ¤·¤Æ¤Î¥Ð¥Ã¥ÁÁàºî');
-define('_BATCH_COMMENTS',					'¥³¥á¥ó¥È¡¡¡¡¡¡¤ËÂÐ¤·¤Æ¤Î¥Ð¥Ã¥ÁÁàºî');
-define('_BATCH_UNKNOWN',					'Ì¤ÃÎ¤Î¥Ð¥Ã¥ÁÁàºî: ');
-define('_BATCH_EXECUTING',					'¼Â¹ÔÃæ');
-define('_BATCH_ONCATEGORY',					'- ÂÐ¾Ý¥«¥Æ¥´¥ê¡¼');
-define('_BATCH_ONITEM',						'- ÂÐ¾Ý¥¢¥¤¥Æ¥à');
-define('_BATCH_ONCOMMENT',					'- ÂÐ¾Ý¥³¥á¥ó¥È');
-define('_BATCH_ONMEMBER',					'- ÂÐ¾Ý¥á¥ó¥Ð¡¼');
-define('_BATCH_ONTEAM',						'- ÂÐ¾Ý¥Á¡¼¥à¥á¥ó¥Ð¡¼');
-define('_BATCH_SUCCESS',					'À®¸ù!');
-define('_BATCH_DONE',						'½ªÎ»!');
-define('_BATCH_DELETE_CONFIRM',				'¥Ð¥Ã¥Áºï½ü¤Î³ÎÇ§');
-define('_BATCH_DELETE_CONFIRM_BTN',			'¥Ð¥Ã¥Áºï½ü¤Î³ÎÇ§');
-define('_BATCH_SELECTALL',					'Á´¤ÆÁªÂò');
-define('_BATCH_DESELECTALL',				'Á´¤Æ¤ÎÁªÂò¤ò²ò½ü');
+define('_BATCH_NOSELECTION',				'ï¿½Ð¾Ý¤ï¿½ï¿½ï¿½ï¿½ò¤µ¤ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_BATCH_ITEMS',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥à¡¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½Æ¤Î¥Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½');
+define('_BATCH_CATEGORIES',					'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½Æ¤Î¥Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½');
+define('_BATCH_MEMBERS',					'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½Æ¤Î¥Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½');
+define('_BATCH_TEAM',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½Æ¤Î¥Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½');
+define('_BATCH_COMMENTS',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½Æ¤Î¥Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½');
+define('_BATCH_UNKNOWN',					'Ì¤ï¿½Î¤Î¥Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½: ');
+define('_BATCH_EXECUTING',					'ï¿½Â¹ï¿½ï¿½ï¿½');
+define('_BATCH_ONCATEGORY',					'- ï¿½Ð¾Ý¥ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼');
+define('_BATCH_ONITEM',						'- ï¿½Ð¾Ý¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½');
+define('_BATCH_ONCOMMENT',					'- ï¿½Ð¾Ý¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BATCH_ONMEMBER',					'- ï¿½Ð¾Ý¥ï¿½ï¿½Ð¡ï¿½');
+define('_BATCH_ONTEAM',						'- ï¿½Ð¾Ý¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½');
+define('_BATCH_SUCCESS',					'ï¿½ï¿½ï¿½ï¿½!');
+define('_BATCH_DONE',						'ï¿½ï¿½Î»!');
+define('_BATCH_DELETE_CONFIRM',				'ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Î³ï¿½Ç§');
+define('_BATCH_DELETE_CONFIRM_BTN',			'ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Î³ï¿½Ç§');
+define('_BATCH_SELECTALL',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BATCH_DESELECTALL',				'ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // batch operations: options in dropdowns
-define('_BATCH_ITEM_DELETE',				'ºï½ü');
-define('_BATCH_ITEM_MOVE',					'°ÜÆ°');
-define('_BATCH_MEMBER_DELETE',				'ºï½ü');
-define('_BATCH_MEMBER_SET_ADM',				'´ÉÍý¼Ô¸¢¸Â¤òÍ¿¤¨¤ë');
-define('_BATCH_MEMBER_UNSET_ADM',			'´ÉÍý¼Ô¸¢¸Â¤ò³°¤¹');
-define('_BATCH_TEAM_DELETE',				'¥Á¡¼¥à¤«¤éºï½ü');
-define('_BATCH_TEAM_SET_ADM',				'´ÉÍý¼Ô¸¢¸Â¤òÍ¿¤¨¤ë');
-define('_BATCH_TEAM_UNSET_ADM',				'´ÉÍý¼Ô¸¢¸Â¤ò³°¤¹');
-define('_BATCH_CAT_DELETE',					'ºï½ü');
-define('_BATCH_CAT_MOVE',					'Â¾¤ÎBlog¤Ë°ÜÆ°');
-define('_BATCH_COMMENT_DELETE',				'ºï½ü');
+define('_BATCH_ITEM_DELETE',				'ï¿½ï¿½ï¿½');
+define('_BATCH_ITEM_MOVE',					'ï¿½ï¿½Æ°');
+define('_BATCH_MEMBER_DELETE',				'ï¿½ï¿½ï¿½');
+define('_BATCH_MEMBER_SET_ADM',				'ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½Â¤ï¿½Í¿ï¿½ï¿½ï¿½ï¿½');
+define('_BATCH_MEMBER_UNSET_ADM',			'ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½Â¤ò³°¤ï¿½');
+define('_BATCH_TEAM_DELETE',				'ï¿½ï¿½ï¿½ï¿½ï¿½à¤«ï¿½ï¿½ï¿½ï¿½');
+define('_BATCH_TEAM_SET_ADM',				'ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½Â¤ï¿½Í¿ï¿½ï¿½ï¿½ï¿½');
+define('_BATCH_TEAM_UNSET_ADM',				'ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½Â¤ò³°¤ï¿½');
+define('_BATCH_CAT_DELETE',					'ï¿½ï¿½ï¿½');
+define('_BATCH_CAT_MOVE',					'Â¾ï¿½ï¿½Blogï¿½Ë°ï¿½Æ°');
+define('_BATCH_COMMENT_DELETE',				'ï¿½ï¿½ï¿½');
 
 // itemlist: Add new item...
-define('_ITEMLIST_ADDNEW',					'¿·¤·¤¤¥¢¥¤¥Æ¥à¤ÎÄÉ²Ã...');
-define('_ADD_PLUGIN_EXTRAS',				'ÄÉ²Ã¥×¥é¥°¥¤¥ó¥ª¥×¥·¥ç¥ó');
+define('_ITEMLIST_ADDNEW',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½É²ï¿½...');
+define('_ADD_PLUGIN_EXTRAS',				'ï¿½É²Ã¥×¥é¥°ï¿½ï¿½ï¿½ó¥ª¥×¥ï¿½ï¿½ï¿½ï¿½');
 
 // errors
-define('_ERROR_CATCREATEFAIL',				'¿·¤·¤¤¥«¥Æ¥´¥ê¡¼¤òºîÀ®¤Ç¤­¤Þ¤»¤ó');
-define('_ERROR_NUCLEUSVERSIONREQ',			'¤³¤Î¥×¥é¥°¥¤¥ó¤ò»ÈÍÑ¤¹¤ë¤Ë¤Ï¡¢¿·¤·¤¤¥Ð¡¼¥¸¥ç¥ó¤Î Nucleus ¤¬É¬Í×¤Ç¤¹: ');
+define('_ERROR_CATCREATEFAIL',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_NUCLEUSVERSIONREQ',			'ï¿½ï¿½ï¿½Î¥×¥é¥°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½Ë¤Ï¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Nucleus ï¿½ï¿½É¬ï¿½×¤Ç¤ï¿½: ');
 
 // backlinks
-define('_BACK_TO_BLOGSETTINGS',				'Blog¤ÎÀßÄê¤ËÌá¤ë');
+define('_BACK_TO_BLOGSETTINGS',				'Blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // skin import export
-define('_SKINIE_TITLE_IMPORT',				'ÆÉ¤ß¹þ¤ß');
-define('_SKINIE_TITLE_EXPORT',				'½ñ¤­½Ð¤·');
-define('_SKINIE_BTN_IMPORT',				'ÆÉ¤ß¹þ¤ß');
-define('_SKINIE_BTN_EXPORT',				'ÁªÂò¤µ¤ì¤¿¥¹¥­¥ó/¥Æ¥ó¥×¥ì¡¼¥È¤ò½ñ¤­½Ð¤·');
-define('_SKINIE_LOCAL',						'¥í¡¼¥«¥ë¥Õ¥¡¥¤¥ë¤«¤éÆÉ¤ß¹þ¤ß:');
-define('_SKINIE_NOCANDIDATES',				'¥¹¥­¥ó¥Ç¥£¥ì¥¯¥È¥êÆâ¤ËÆÉ¤ß¹þ¤á¤ë¥Õ¥¡¥¤¥ë¤¬¤¢¤ê¤Þ¤»¤ó');
-define('_SKINIE_FROMURL',					'URL¤ò»ØÄê¤·¤ÆÆÉ¤ß¹þ¤ß:');
-define('_SKINIE_EXPORT_INTRO',				'½ñ¤­½Ð¤¹¥¹¥­¥ó/¥Æ¥ó¥×¥ì¡¼¥È¤ò°Ê²¼¤«¤éÁªÂò¤·¤Æ¤¯¤À¤µ¤¤');
-define('_SKINIE_EXPORT_SKINS',				'¥¹¥­¥ó');
-define('_SKINIE_EXPORT_TEMPLATES',			'¥Æ¥ó¥×¥ì¡¼¥È');
-define('_SKINIE_EXPORT_EXTRA',				'ÄÉ²Ã¾ðÊó¡Ê½ñ¤­½Ð¤·¥Õ¥¡¥¤¥ë¤ËÄÉ²Ã¤¹¤ëÈ÷¹Í¡Ë');
-define('_SKINIE_CONFIRM_OVERWRITE',			'´û¤ËÂ¸ºß¤¹¤ë¥¹¥­¥ó¤ò¾å½ñ¤­¤¹¤ë (¤Ö¤Ä¤«¤ë¥¹¥­¥óÌ¾¤ò»²¾È)');
-define('_SKINIE_CONFIRM_IMPORT',			'¤Ï¤¤¡¢¤³¤ì¤òÆÉ¤ß¹þ¤ß¤Þ¤¹');
-define('_SKINIE_CONFIRM_TITLE',				'¥¹¥­¥ó¤È¥Æ¥ó¥×¥ì¡¼¥È¤òÆÉ¤ß¹þ¤â¤¦¤È¤·¤Æ¤¤¤Þ¤¹');
-define('_SKINIE_INFO_SKINS',				'¥Õ¥¡¥¤¥ëÆâ¤Î¥¹¥­¥ó:');
-define('_SKINIE_INFO_TEMPLATES',			'¥Õ¥¡¥¤¥ëÆâ¤Î¥Æ¥ó¥×¥ì¡¼¥È:');
-define('_SKINIE_INFO_GENERAL',				'¾ðÊó:');
-define('_SKINIE_INFO_SKINCLASH',			'¼¡¤Î¥¹¥­¥óÌ¾¤¬¤Ö¤Ä¤«¤ê¤Þ¤¹:');
-define('_SKINIE_INFO_TEMPLCLASH',			'¼¡¤Î¥Æ¥ó¥×¥ì¡¼¥ÈÌ¾¤¬¤Ö¤Ä¤«¤ê¤Þ¤¹:');
-define('_SKINIE_INFO_IMPORTEDSKINS',		'ÆÉ¤ß¹þ¤Þ¤ì¤¿¥¹¥­¥ó:');
-define('_SKINIE_INFO_IMPORTEDTEMPLS',		'ÆÉ¤ß¹þ¤Þ¤ì¤¿¥Æ¥ó¥×¥ì¡¼¥È:');
-define('_SKINIE_DONE',						'ÆÉ¤ß¹þ¤ß´°Î»');
+define('_SKINIE_TITLE_IMPORT',				'ï¿½É¤ß¹ï¿½ï¿½ï¿½');
+define('_SKINIE_TITLE_EXPORT',				'ï¿½ñ¤­½Ð¤ï¿½');
+define('_SKINIE_BTN_IMPORT',				'ï¿½É¤ß¹ï¿½ï¿½ï¿½');
+define('_SKINIE_BTN_EXPORT',				'ï¿½ï¿½ï¿½ò¤µ¤ì¤¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½Æ¥ï¿½×¥ì¡¼ï¿½È¤ï¿½ñ¤­½Ð¤ï¿½');
+define('_SKINIE_LOCAL',						'ï¿½?ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¤«ï¿½ï¿½ï¿½É¤ß¹ï¿½ï¿½ï¿½:');
+define('_SKINIE_NOCANDIDATES',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½ï¿½ï¿½ï¿½ï¿½É¤ß¹ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¤¬ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_SKINIE_FROMURL',					'URLï¿½ï¿½ï¿½ï¿½ê¤·ï¿½ï¿½ï¿½É¤ß¹ï¿½ï¿½ï¿½:');
+define('_SKINIE_EXPORT_INTRO',				'ï¿½ñ¤­½Ð¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½Æ¥ï¿½×¥ì¡¼ï¿½È¤ï¿½Ê²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò¤·¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SKINIE_EXPORT_SKINS',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SKINIE_EXPORT_TEMPLATES',			'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½ï¿½');
+define('_SKINIE_EXPORT_EXTRA',				'ï¿½É²Ã¾ï¿½ï¿½ï¿½Ê½ñ¤­½Ð¤ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É²Ã¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¡ï¿½');
+define('_SKINIE_CONFIRM_OVERWRITE',			'ï¿½ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½ë¥¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ñ¤­¤ï¿½ï¿½ï¿½ (ï¿½Ö¤Ä¤ï¿½ï¿½ë¥¹ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½ò»²¾ï¿½)');
+define('_SKINIE_CONFIRM_IMPORT',			'ï¿½Ï¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¤ß¹ï¿½ï¿½ß¤Þ¤ï¿½');
+define('_SKINIE_CONFIRM_TITLE',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥Æ¥ï¿½×¥ì¡¼ï¿½È¤ï¿½ï¿½É¤ß¹ï¿½ï¿½â¤¦ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½');
+define('_SKINIE_INFO_SKINS',				'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½:');
+define('_SKINIE_INFO_TEMPLATES',			'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¥Æ¥ï¿½×¥ì¡¼ï¿½ï¿½:');
+define('_SKINIE_INFO_GENERAL',				'ï¿½ï¿½ï¿½ï¿½:');
+define('_SKINIE_INFO_SKINCLASH',			'ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½Ö¤Ä¤ï¿½ï¿½ï¿½Þ¤ï¿½:');
+define('_SKINIE_INFO_TEMPLCLASH',			'ï¿½ï¿½ï¿½Î¥Æ¥ï¿½×¥ì¡¼ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½Ö¤Ä¤ï¿½ï¿½ï¿½Þ¤ï¿½:');
+define('_SKINIE_INFO_IMPORTEDSKINS',		'ï¿½É¤ß¹ï¿½ï¿½Þ¤ì¤¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:');
+define('_SKINIE_INFO_IMPORTEDTEMPLS',		'ï¿½É¤ß¹ï¿½ï¿½Þ¤ì¤¿ï¿½Æ¥ï¿½×¥ì¡¼ï¿½ï¿½:');
+define('_SKINIE_DONE',						'ï¿½É¤ß¹ï¿½ï¿½ß´ï¿½Î»');
 
 define('_AND',								'and');
 define('_OR',								'or');
 
 // empty fields on template edit
-define('_EDITTEMPLATE_EMPTY',				'Ìµ¤·(¥¯¥ê¥Ã¥¯¤¹¤ë¤È¥Õ¥©¡¼¥à¤¬³«¤­¤Þ¤¹)');
+define('_EDITTEMPLATE_EMPTY',				'Ìµï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½È¥Õ¥ï¿½ï¿½ï¿½ï¿½à¤¬ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½)');
 
 // skin overview list
-define('_LIST_SKINS_INCMODE',				'Include¥â¡¼¥É:');
-define('_LIST_SKINS_INCPREFIX',				'Include¥×¥ê¥Õ¥£¥Ã¥¯¥¹:');
-define('_LIST_SKINS_DEFINED',				'ÄêµÁºÑ¤ß¥Ñ¡¼¥Ä:');
+define('_LIST_SKINS_INCMODE',				'Includeï¿½â¡¼ï¿½ï¿½:');
+define('_LIST_SKINS_INCPREFIX',				'Includeï¿½×¥ï¿½Õ¥ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½:');
+define('_LIST_SKINS_DEFINED',				'ï¿½ï¿½ï¿½ï¿½Ñ¤ß¥Ñ¡ï¿½ï¿½ï¿½:');
 
 // backup
-define('_BACKUPS_TITLE',					'¥Ð¥Ã¥¯¥¢¥Ã¥× / ¥ê¥¹¥È¥¢');
-define('_BACKUP_TITLE',						'¥Ð¥Ã¥¯¥¢¥Ã¥×');
-define('_BACKUP_INTRO',						'²¼¤Î¥Ü¥¿¥ó¤ò²¡¤¹¤È¡¢Nucleus¤¬»ÈÍÑ¤·¤Æ¤¤¤ë¥Ç¡¼¥¿¥Ù¡¼¥¹¤ò¥Ð¥Ã¥¯¥¢¥Ã¥×¤Ç¤­¤Þ¤¹¡£¥Ð¥Ã¥¯¥¢¥Ã¥×¥Õ¥¡¥¤¥ë¤Ï°ÂÁ´¤Ê¾ì½ê¤ËÊÝÂ¸¤·¤Æ¤ª¤¯¤³¤È¤ò¤ª´«¤á¤·¤Þ¤¹¡£');
-define('_BACKUP_ZIP_YES',					'°µ½Ì¤¹¤ë');
-define('_BACKUP_ZIP_NO',					'°µ½Ì¤·¤Ê¤¤');
-define('_BACKUP_BTN',						'¥Ð¥Ã¥¯¥¢¥Ã¥×¤òºîÀ®¤¹¤ë');
-define('_BACKUP_NOTE',						'<b style="color:#f00;">Ãí°Õ:</b> ¥Ð¥Ã¥¯¥¢¥Ã¥×¤µ¤ì¤ë¤Î¤Ï¥Ç¡¼¥¿¥Ù¡¼¥¹¤ÎÆâÍÆ¤À¤±¤Ç¤¹¡£¥¢¥Ã¥×¥í¡¼¥É¤·¤¿¥Õ¥¡¥¤¥ë¤ä config.php Æâ¤ÎÀßÄê¤Ï¥Ð¥Ã¥¯¥¢¥Ã¥×<b style="color:#f00;">¤µ¤ì¤Þ¤»¤ó</b>¡£');
-define('_RESTORE_TITLE',					'¥ê¥¹¥È¥¢');
-define('_RESTORE_NOTE',						'<b style="color:#f00;">·Ù¹ð:</b> ¥Ð¥Ã¥¯¥¢¥Ã¥×¤«¤é¤Î¥ê¥¹¥È¥¢¤Ï¸½ºß¤Î¥Ç¡¼¥¿¥Ù¡¼¥¹Æâ¤Î Nucleus ¥Ç¡¼¥¿¤òÁ´¤Æ<b style="color:#f00;">ºï½ü</b>¤·¤Þ¤¹¡ªÎÉ¤¯Ãí°Õ¤·¤Æ»ÈÍÑ¤·¤Æ¤¯¤À¤µ¤¤¡ª<br /><b style="color:#f00;">Ãí°Õ:</b> ¥Ð¥Ã¥¯¥¢¥Ã¥×¤òºîÀ®¤·¤¿ Nucleus ¤Î¥Ð¡¼¥¸¥ç¥ó¤¬ ¸½ºß»ÈÍÑ¤·¤Æ¤¤¤ë Nucleus ¤Î¥Ð¡¼¥¸¥ç¥ó¤ÈÆ±¤¸¤«³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤¡ª¤½¤¦¤Ç¤Ê¤±¤ì¤ÐÀµ¤·¤¯Æ°ºî¤·¤Þ¤»¤ó¡£');
-define('_RESTORE_INTRO',					'°Ê²¼¤«¤é¥Ð¥Ã¥¯¥¢¥Ã¥×¥Õ¥¡¥¤¥ë¤òÁªÂò¡Ê¥µ¡¼¥Ð¤Ë¥¢¥Ã¥×¥í¡¼¥É¤µ¤ì¤Þ¤¹¡Ë¤·¤Æ"¥ê¥¹¥È¥¢"¥Ü¥¿¥ó¤ò²¡¤¹¤È³«»Ï¤·¤Þ¤¹¡£');
-define('_RESTORE_IMSURE',					'¤Ï¤¤¡¢³Î¤«¤Ë¤³¤ÎÁàºî¤Î¼Â¹Ô¤ò¾µÇ§¤·¤Þ¤¹¡ª');
-define('_RESTORE_BTN',						'¥Õ¥¡¥¤¥ë¤«¤é¥ê¥¹¥È¥¢');
-define('_RESTORE_WARNING',					'¡ÊÀµ¤·¤¤¥Ð¥Ã¥¯¥¢¥Ã¥×¤ò¥ê¥¹¥È¥¢¤·¤è¤¦¤È¤·¤Æ¤¤¤ë¤«³ÎÇ§¤·¡¢»Ï¤á¤ëÁ°¤Ë¸½ºß¤Î¥Ð¥Ã¥¯¥¢¥Ã¥×¤òºî¤Ã¤Æ¤ª¤¤¤Æ¤¯¤À¤µ¤¤¡Ë');
-define('_ERROR_BACKUP_NOTSURE',				'"¾µÇ§"¥Á¥§¥Ã¥¯¥Ü¥Ã¥¯¥¹¤ò¥Á¥§¥Ã¥¯¤¹¤ëÉ¬Í×¤¬¤¢¤ê¤Þ¤¹');
-define('_RESTORE_COMPLETE',					'¥ê¥¹¥È¥¢´°Î»');
+define('_BACKUPS_TITLE',					'ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ / ï¿½ê¥¹ï¿½È¥ï¿½');
+define('_BACKUP_TITLE',						'ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½');
+define('_BACKUP_INTRO',						'ï¿½ï¿½ï¿½Î¥Ü¥ï¿½ï¿½ï¿½ò²¡¤ï¿½ï¿½È¡ï¿½Nucleusï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½Ç¡ï¿½ï¿½ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¤Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤ò¤ª´ï¿½ï¿½á¤·ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_BACKUP_ZIP_YES',					'ï¿½ï¿½ï¿½Ì¤ï¿½ï¿½ï¿½');
+define('_BACKUP_ZIP_NO',					'ï¿½ï¿½ï¿½Ì¤ï¿½ï¿½Ê¤ï¿½');
+define('_BACKUP_BTN',						'ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BACKUP_NOTE',						'<b style="color:#f00;">ï¿½ï¿½ï¿½:</b> ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¤ï¿½ï¿½ï¿½ï¿½Î¤Ï¥Ç¡ï¿½ï¿½ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ config.php ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¥Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½<b style="color:#f00;">ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½</b>ï¿½ï¿½');
+define('_RESTORE_TITLE',					'ï¿½ê¥¹ï¿½È¥ï¿½');
+define('_RESTORE_NOTE',						'<b style="color:#f00;">ï¿½Ù¹ï¿½:</b> ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¤ï¿½ï¿½ï¿½Î¥ê¥¹ï¿½È¥ï¿½ï¿½Ï¸ï¿½ï¿½ß¤Î¥Ç¡ï¿½ï¿½ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Nucleus ï¿½Ç¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½<b style="color:#f00;">ï¿½ï¿½ï¿½</b>ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½É¤ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½Æ»ï¿½ï¿½Ñ¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½<br /><b style="color:#f00;">ï¿½ï¿½ï¿½:</b> ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Nucleus ï¿½Î¥Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ß»ï¿½ï¿½Ñ¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ Nucleus ï¿½Î¥Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç§ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ°ï¿½î¤·ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_RESTORE_INTRO',					'ï¿½Ê²ï¿½ï¿½ï¿½ï¿½ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¥ï¿½ï¿½ï¿½ï¿½Ð¤Ë¥ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½"ï¿½ê¥¹ï¿½È¥ï¿½"ï¿½Ü¥ï¿½ï¿½ï¿½ò²¡¤ï¿½ï¿½È³ï¿½ï¿½Ï¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_RESTORE_IMSURE',					'ï¿½Ï¤ï¿½ï¿½ï¿½ï¿½Î¤ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¼Â¹Ô¤ï¿½Ç§ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_RESTORE_BTN',						'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¤«ï¿½ï¿½ê¥¹ï¿½È¥ï¿½');
+define('_RESTORE_WARNING',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¤ï¿½ê¥¹ï¿½È¥ï¿½ï¿½ï¿½ï¿½è¤¦ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½ë¤«ï¿½ï¿½Ç§ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½ï¿½ï¿½ï¿½Ë¸ï¿½ï¿½ß¤Î¥Ð¥Ã¥ï¿½ï¿½ï¿½ï¿½Ã¥×¤ï¿½ï¿½Ã¤Æ¤ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_BACKUP_NOTSURE',				'"ï¿½ï¿½Ç§"ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½Ü¥Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½É¬ï¿½×¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½');
+define('_RESTORE_COMPLETE',					'ï¿½ê¥¹ï¿½È¥ï¿½ï¿½ï¿½Î»');
 
 // new item notification
-define('_NOTIFY_NI_MSG',					'¿·¤·¤¤¥¢¥¤¥Æ¥à¤¬Åê¹Æ¤µ¤ì¤Þ¤·¤¿:');
-define('_NOTIFY_NI_TITLE',					'¿·¤·¤¤¥¢¥¤¥Æ¥à!');
-define('_NOTIFY_KV_MSG',					'¥¢¥¤¥Æ¥à¤Ë¥«¥ë¥Þ¤ÎÅêÉ¼¤¬¤¢¤ê¤Þ¤·¤¿:');
-define('_NOTIFY_KV_TITLE',					'Nucleus¥«¥ë¥Þ:');
-define('_NOTIFY_NC_MSG',					'¥¢¥¤¥Æ¥à¤Ë¥³¥á¥ó¥È¤¬¤¢¤ê¤Þ¤·¤¿:');
-define('_NOTIFY_NC_TITLE',					'Nucleus¥³¥á¥ó¥È:');
-define('_NOTIFY_USERID',					'¥æ¡¼¥¶¡¼ID:');
-define('_NOTIFY_USER',						'¥æ¡¼¥¶¡¼:');
-define('_NOTIFY_COMMENT',					'¥³¥á¥ó¥È:');
-define('_NOTIFY_VOTE',						'ÅêÉ¼:');
-define('_NOTIFY_HOST',						'¥Û¥¹¥È:');
-define('_NOTIFY_IP',						'IP¥¢¥É¥ì¥¹:');
-define('_NOTIFY_MEMBER',					'¥á¥ó¥Ð¡¼:');
-define('_NOTIFY_TITLE',						'¥¿¥¤¥È¥ë:');
-define('_NOTIFY_CONTENTS',					'ÆâÍÆ:');
+define('_NOTIFY_NI_MSG',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥à¤¬ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½:');
+define('_NOTIFY_NI_TITLE',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½!');
+define('_NOTIFY_KV_MSG',					'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Ë¥ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½É¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½:');
+define('_NOTIFY_KV_TITLE',					'Nucleusï¿½ï¿½ï¿½ï¿½ï¿½:');
+define('_NOTIFY_NC_MSG',					'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Ë¥ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½:');
+define('_NOTIFY_NC_TITLE',					'Nucleusï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:');
+define('_NOTIFY_USERID',					'ï¿½æ¡¼ï¿½ï¿½ï¿½ï¿½ID:');
+define('_NOTIFY_USER',						'ï¿½æ¡¼ï¿½ï¿½ï¿½ï¿½:');
+define('_NOTIFY_COMMENT',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:');
+define('_NOTIFY_VOTE',						'ï¿½ï¿½É¼:');
+define('_NOTIFY_HOST',						'ï¿½Û¥ï¿½ï¿½ï¿½:');
+define('_NOTIFY_IP',						'IPï¿½ï¿½ï¿½É¥ì¥¹:');
+define('_NOTIFY_MEMBER',					'ï¿½ï¿½ï¿½Ð¡ï¿½:');
+define('_NOTIFY_TITLE',						'ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½:');
+define('_NOTIFY_CONTENTS',					'ï¿½ï¿½ï¿½ï¿½:');
 
 // member mail message
-define('_MMAIL_MSG',						'¼¡¤ÎÊý¤«¤é¤¢¤Ê¤¿°¸¤Î¥á¥Ã¥»¡¼¥¸¤¬Á÷¤é¤ì¤Æ¤­¤Þ¤·¤¿');
-define('_MMAIL_FROMANON',					'Æ¿Ì¾¤Î¥Ó¥¸¥¿¡¼');
-define('_MMAIL_FROMNUC',					'Á÷¿®¸µ¤ÎNucleus Blog');
-define('_MMAIL_TITLE',						'¥á¥Ã¥»¡¼¥¸ from');
-define('_MMAIL_MAIL',						'¥á¥Ã¥»¡¼¥¸:');
+define('_MMAIL_MSG',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½é¤¢ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½Î¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_MMAIL_FROMANON',					'Æ¿Ì¾ï¿½Î¥Ó¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MMAIL_FROMNUC',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Nucleus Blog');
+define('_MMAIL_TITLE',						'ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ from');
+define('_MMAIL_MAIL',						'ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½:');
 
 // END introduced after v1.5 END
 
@@ -704,102 +704,102 @@ define('_MMAIL_MAIL',						'¥á¥Ã¥»¡¼¥¸:');
 // START introduced after v1.1 START
 
 // bookmarklet buttons
-define('_BMLET_ADD',						'¥¢¥¤¥Æ¥à¤ÎÄÉ²Ã');
-define('_BMLET_EDIT',						'ÊÝÂ¸');
-define('_BMLET_DELETE',						'¥¢¥¤¥Æ¥à¤Îºï½ü');
-define('_BMLET_BODY',						'ËÜÊ¸');
-define('_BMLET_MORE',						'Â³¤­');
-define('_BMLET_OPTIONS',					'¥ª¥×¥·¥ç¥ó');
-define('_BMLET_PREVIEW',					'¥×¥ì¥Ó¥å¡¼');
+define('_BMLET_ADD',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½É²ï¿½');
+define('_BMLET_EDIT',						'ï¿½ï¿½Â¸');
+define('_BMLET_DELETE',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Îºï¿½ï¿½');
+define('_BMLET_BODY',						'ï¿½ï¿½Ê¸');
+define('_BMLET_MORE',						'Â³ï¿½ï¿½');
+define('_BMLET_OPTIONS',					'ï¿½ï¿½ï¿½×¥ï¿½ï¿½ï¿½ï¿½');
+define('_BMLET_PREVIEW',					'ï¿½×¥ï¿½Ó¥å¡¼');
 
 // used in bookmarklet
-define('_ITEM_UPDATED',						'¥¢¥¤¥Æ¥à¤¬¹¹¿·¤µ¤ì¤Þ¤·¤¿');
-define('_ITEM_DELETED',						'¥¢¥¤¥Æ¥à¤¬ºï½ü¤µ¤ì¤Þ¤·¤¿');
+define('_ITEM_UPDATED',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥à¤¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ITEM_DELETED',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥à¤¬ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // plugins
-define('_CONFIRMTXT_PLUGIN',				'¤³¤Î¥×¥é¥°¥¤¥ó¤òºï½ü¤·¤Þ¤¹¤«¡©');
-define('_ERROR_NOSUCHPLUGIN',				'»ØÄê¤µ¤ì¤¿¥×¥é¥°¥¤¥ó¤Ï¤¢¤ê¤Þ¤»¤ó');
-define('_ERROR_DUPPLUGIN',					'¤½¤Î¥×¥é¥°¥¤¥ó¤Ï´û¤Ë¥¤¥ó¥¹¥È¡¼¥ë¤µ¤ì¤Æ¤¤¤Þ¤¹');
-define('_ERROR_PLUGFILEERROR',				'»ØÄê¤µ¤ì¤¿¥×¥é¥°¥¤¥ó¤ÏÂ¸ºß¤·¤Ê¤¤¤«¡¢¥Ñ¡¼¥ß¥Ã¥·¥ç¥ó¤¬Àµ¤·¤¯ÀßÄê¤µ¤ì¤Æ¤¤¤Þ¤»¤ó');
-define('_PLUGS_NOCANDIDATES',				'¥×¥é¥°¥¤¥ó¤Î¥¤¥ó¥¹¥È¡¼¥ë¸õÊä¤Ï¤¢¤ê¤Þ¤»¤ó¡£');
+define('_CONFIRMTXT_PLUGIN',				'ï¿½ï¿½ï¿½Î¥×¥é¥°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_NOSUCHPLUGIN',				'ï¿½ï¿½ï¿½ê¤µï¿½ì¤¿ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_DUPPLUGIN',					'ï¿½ï¿½ï¿½Î¥×¥é¥°ï¿½ï¿½ï¿½ï¿½Ï´ï¿½Ë¥ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ë¤µï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½');
+define('_ERROR_PLUGFILEERROR',				'ï¿½ï¿½ï¿½ê¤µï¿½ì¤¿ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ß¥Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê¤µï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_PLUGS_NOCANDIDATES',				'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
-define('_PLUGS_TITLE_MANAGE',				'¥×¥é¥°¥¤¥ó¤Î´ÉÍý');
-define('_PLUGS_TITLE_INSTALLED',			'¥¤¥ó¥¹¥È¡¼¥ëºÑ¤ß');
-define('_PLUGS_TITLE_UPDATE',				'ÅÐÏ¿¥ê¥¹¥È¤Î¥¢¥Ã¥×¥Ç¡¼¥È');
-define('_PLUGS_TEXT_UPDATE',				'Nucleus¤¬´ÉÍý¤·¤Æ¤¤¤ë³Æ¥×¥é¥°¥¤¥ó¤¬ÅÐÏ¿Ãæ¤Î¥¤¥Ù¥ó¥È¾ðÊó¤¬¡¢²¿¤é¤«¤Î¸¶°ø(¥×¥é¥°¥¤¥ó¤Î¥Ð¡¼¥¸¥ç¥ó¥¢¥Ã¥×¤ËÈ¼¤¦¥Õ¥¡¥¤¥ë¤Î¾å½ñ¤­Åù)¤Ë¤è¤Ã¤ÆÀµ¾ï¤Ç¤Ï¤Ê¤¤¾õÂÖ¤Ë¤Ê¤Ã¤¿»þ¤Ë¡Ö¥¢¥Ã¥×¥Ç¡¼¥È¡×¥Ü¥¿¥ó¤ò¥¯¥ê¥Ã¥¯¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_PLUGS_TITLE_NEW',					'¿·¤·¤¤¥×¥é¥°¥¤¥ó¤ò¥¤¥ó¥¹¥È¡¼¥ë');
-define('_PLUGS_ADD_TEXT',					'°Ê²¼¤Ïplugins¥Ç¥£¥ì¥¯¥È¥êÆâ¤Ë¤¢¤ëÁ´¤Æ¤Î¡Ö¥¤¥ó¥¹¥È¡¼¥ë¤µ¤ì¤Æ¤¤¤Ê¤¤¥×¥é¥°¥¤¥ó¡×¤Î²ÄÇ½À­¤¬¤¢¤ë¥Õ¥¡¥¤¥ë¤Î¥ê¥¹¥È¤Ç¤¹¡£ÄÉ²Ã¤¹¤ëÁ°¤Ë¥×¥é¥°¥¤¥ó¤«¤É¤¦¤«¤ò<strong>¤·¤Ã¤«¤ê³ÎÇ§</strong>¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_PLUGS_BTN_INSTALL',				'¥×¥é¥°¥¤¥ó¤Î¥¤¥ó¥¹¥È¡¼¥ë');
-define('_BACKTOOVERVIEW',					'°ìÍ÷¤ËÌá¤ë');
+define('_PLUGS_TITLE_MANAGE',				'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½');
+define('_PLUGS_TITLE_INSTALLED',			'ï¿½ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ï¿½Ñ¤ï¿½');
+define('_PLUGS_TITLE_UPDATE',				'ï¿½ï¿½Ï¿ï¿½ê¥¹ï¿½È¤Î¥ï¿½ï¿½Ã¥×¥Ç¡ï¿½ï¿½ï¿½');
+define('_PLUGS_TEXT_UPDATE',				'Nucleusï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½Æ¥×¥é¥°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½Î¥ï¿½ï¿½Ù¥ï¿½È¾ï¿½ï¿½ó¤¬¡ï¿½ï¿½ï¿½ï¿½é¤«ï¿½Î¸ï¿½ï¿½ï¿½(ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Î¥Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ó¥¢¥Ã¥×¤ï¿½È¼ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Î¾ï¿½ï¿½ï¿½ï¿½)ï¿½Ë¤ï¿½Ã¤ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤Ï¤Ê¤ï¿½ï¿½ï¿½ï¿½Ö¤Ë¤Ê¤Ã¤ï¿½ï¿½ï¿½ï¿½Ë¡Ö¥ï¿½ï¿½Ã¥×¥Ç¡ï¿½ï¿½È¡×¥Ü¥ï¿½ï¿½ï¿½ò¥¯¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_PLUGS_TITLE_NEW',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½ò¥¤¥ó¥¹¥È¡ï¿½ï¿½ï¿½');
+define('_PLUGS_ADD_TEXT',					'ï¿½Ê²ï¿½ï¿½ï¿½pluginsï¿½Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤Î¡Ö¥ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ë¤µï¿½ï¿½Æ¤ï¿½ï¿½Ê¤ï¿½ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½×¤Î²ï¿½Ç½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ê¥¹ï¿½È¤Ç¤ï¿½ï¿½ï¿½ï¿½É²Ã¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¥×¥é¥°ï¿½ï¿½ï¿½ó¤«¤É¤ï¿½ï¿½ï¿½ï¿½ï¿½<strong>ï¿½ï¿½ï¿½Ã¤ï¿½ï¿½ï¿½ï¿½Ç§</strong>ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_PLUGS_BTN_INSTALL',				'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ï¿½');
+define('_BACKTOOVERVIEW',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // editlink
-define('_TEMPLATE_EDITLINK',				'¥¢¥¤¥Æ¥à¤òÊÔ½¸¤¹¤ë¤¿¤á¤Î¥ê¥ó¥¯');
+define('_TEMPLATE_EDITLINK',				'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½ï¿½ë¤¿ï¿½ï¿½Î¥ï¿½ï¿½');
 
 // add left / add right tooltips
-define('_ADD_LEFT_TT',						'left box¤òÄÉ²Ã');
-define('_ADD_RIGHT_TT',						'right box¤òÄÉ²Ã');
+define('_ADD_LEFT_TT',						'left boxï¿½ï¿½ï¿½É²ï¿½');
+define('_ADD_RIGHT_TT',						'right boxï¿½ï¿½ï¿½É²ï¿½');
 
 // add/edit item: new category (in dropdown box)
-define('_ADD_NEWCAT',						'¿·¤·¤¤¥«¥Æ¥´¥ê¡¼¤òÄÉ²Ã...');
+define('_ADD_NEWCAT',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½É²ï¿½...');
 
 // new settings
-define('_SETTINGS_PLUGINURL',				'¥×¥é¥°¥¤¥ó¥Ç¥£¥ì¥¯¥È¥ê¤ÎURL');
-define('_SETTINGS_MAXUPLOADSIZE',			'¥¢¥Ã¥×¥í¡¼¥É¤Ç¤­¤ë¥Õ¥¡¥¤¥ë¤ÎºÇÂç¥µ¥¤¥º (bytes)');
-define('_SETTINGS_NONMEMBERMSGS',			'¥á¥ó¥Ð¡¼°Ê³°¤«¤é¤Î¥á¥Ã¥»¡¼¥¸¤ò¼õ¤±ÉÕ¤±¤ë');
-define('_SETTINGS_PROTECTMEMNAMES',			'¥á¥ó¥Ð¡¼Ì¾¤ÎÊÝ¸î');
+define('_SETTINGS_PLUGINURL',				'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½ï¿½URL');
+define('_SETTINGS_MAXUPLOADSIZE',			'ï¿½ï¿½ï¿½Ã¥×¥?ï¿½É¤Ç¤ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ç¥µï¿½ï¿½ï¿½ï¿½ (bytes)');
+define('_SETTINGS_NONMEMBERMSGS',			'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Ê³ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½ï¿½');
+define('_SETTINGS_PROTECTMEMNAMES',			'ï¿½ï¿½ï¿½Ð¡ï¿½Ì¾ï¿½ï¿½ï¿½Ý¸ï¿½');
 
 // overview screen
-define('_OVERVIEW_PLUGINS',					'¥×¥é¥°¥¤¥ó´ÉÍý');
+define('_OVERVIEW_PLUGINS',					'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // actionlog
-define('_ACTIONLOG_NEWMEMBER',				'¿·¤·¤¤¥á¥ó¥Ð¡¼¤ÎÅÐÏ¿:');
+define('_ACTIONLOG_NEWMEMBER',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿:');
 
 // membermail (when not logged in)
-define('_MEMBERMAIL_MAIL',					'¤¢¤Ê¤¿¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹:');
+define('_MEMBERMAIL_MAIL',					'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Î¥á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹:');
 
 // file upload
-define('_ERROR_DISALLOWEDUPLOAD2',			'¥Á¡¼¥à¤Ë»²²Ã¤·¤Æ¤¤¤ë¤É¤Î¥Ö¥í¥°¤â´ÉÍý¸¢¸Â¤ò»ý¤Ã¤Æ¤¤¤Ê¤¤°Ù¡¢¥Õ¥¡¥¤¥ë¤Î¥¢¥Ã¥×¥í¡¼¥É¤¬½ÐÍè¤Þ¤»¤ó¡£');
+define('_ERROR_DISALLOWEDUPLOAD2',			'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½Ã¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½É¤Î¥Ö¥?ï¿½ï¿½ï¿½ï¿½ï¿½Â¤ï¿½ï¿½Ã¤Æ¤ï¿½ï¿½Ê¤ï¿½ï¿½Ù¡ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 /* plugin list
-define('_LISTS_INFO',						'¾ðÊó');
-define('_LIST_PLUGS_AUTHOR',				'ºî¼Ô:');
-define('_LIST_PLUGS_VER',					'¥Ð¡¼¥¸¥ç¥ó:');
-define('_LIST_PLUGS_SITE',					'¥µ¥¤¥È');
-define('_LIST_PLUGS_DESC',					'ÀâÌÀ:');
-define('_LIST_PLUGS_SUBS',					'°Ê²¼¤Î¥¤¥Ù¥ó¥È¤ËÅÐÏ¿:');
-define('_LIST_PLUGS_UP',					'¾å¤Ø');
-define('_LIST_PLUGS_DOWN',					'²¼¤Ø');
-define('_LIST_PLUGS_UNINSTALL',				'ºï½ü');
-define('_LIST_PLUGS_ADMIN',					'´ÉÍý');
-define('_LIST_PLUGS_OPTIONS',				'ÊÔ½¸');*/
-define('_LISTS_INFO',						'¥¤¥ó¥Õ¥©¥á¡¼¥·¥ç¥ó');
-define('_LIST_PLUGS_AUTHOR',				'À½ºî¼Ô¡§');
-define('_LIST_PLUGS_VER',					'¥Ð¡¼¥¸¥ç¥ó¡§');
-define('_LIST_PLUGS_SITE',					'Æþ¼ê¥µ¥¤¥È¡§');
-define('_LIST_PLUGS_DESC',					'³µÍ×¡§');
-define('_LIST_PLUGS_SUBS',					'ÅÐÏ¿ºÑ¤ß¥¤¥Ù¥ó¥È¡§');
-define('_LIST_PLUGS_UP',					'&uarr; ¤Ò¤È¤Ä¾å¤Ø');
-define('_LIST_PLUGS_DOWN',					'&darr; ¤Ò¤È¤Ä²¼¤Ø');
-define('_LIST_PLUGS_UNINSTALL',				'¥¢¥ó¥¤¥ó¥¹¥È¡¼¥ë');
-define('_LIST_PLUGS_ADMIN',					'´ÉÍý');
-define('_LIST_PLUGS_OPTIONS',				'¥ª¥×¥·¥ç¥óÊÔ½¸');
+define('_LISTS_INFO',						'ï¿½ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_AUTHOR',				'ï¿½ï¿½ï¿½:');
+define('_LIST_PLUGS_VER',					'ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:');
+define('_LIST_PLUGS_SITE',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_DESC',					'ï¿½ï¿½ï¿½ï¿½:');
+define('_LIST_PLUGS_SUBS',					'ï¿½Ê²ï¿½ï¿½Î¥ï¿½ï¿½Ù¥ï¿½È¤ï¿½ï¿½ï¿½Ï¿:');
+define('_LIST_PLUGS_UP',					'ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_DOWN',					'ï¿½ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_UNINSTALL',				'ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_ADMIN',					'ï¿½ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_OPTIONS',				'ï¿½Ô½ï¿½');*/
+define('_LISTS_INFO',						'ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½á¡¼ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_AUTHOR',				'ï¿½ï¿½ï¿½ï¿½Ô¡ï¿½');
+define('_LIST_PLUGS_VER',					'ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_SITE',					'ï¿½ï¿½ï¿½ê¥µï¿½ï¿½ï¿½È¡ï¿½');
+define('_LIST_PLUGS_DESC',					'ï¿½ï¿½ï¿½×¡ï¿½');
+define('_LIST_PLUGS_SUBS',					'ï¿½ï¿½Ï¿ï¿½Ñ¤ß¥ï¿½ï¿½Ù¥ï¿½È¡ï¿½');
+define('_LIST_PLUGS_UP',					'&uarr; ï¿½Ò¤È¤Ä¾ï¿½ï¿½');
+define('_LIST_PLUGS_DOWN',					'&darr; ï¿½Ò¤È¤Ä²ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_UNINSTALL',				'ï¿½ï¿½ï¿½ó¥¤¥ó¥¹¥È¡ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_ADMIN',					'ï¿½ï¿½ï¿½ï¿½');
+define('_LIST_PLUGS_OPTIONS',				'ï¿½ï¿½ï¿½×¥ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½');
 
 // plugin option list
-define('_LISTS_VALUE',						'ÃÍ(ÆâÍÆ)');
+define('_LISTS_VALUE',						'ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½)');
 
 // plugin options
-define('_ERROR_NOPLUGOPTIONS',				'¤³¤Î¥×¥é¥°¥¤¥ó¤Ë¤Ï¥ª¥×¥·¥ç¥ó¤¬¤¢¤ê¤Þ¤»¤ó');
-define('_PLUGS_BACK',						'¥×¥é¥°¥¤¥ó¤Î°ìÍ÷¤ËÌá¤ë');
-define('_PLUGS_SAVE',						'¥ª¥×¥·¥ç¥ó¤ÎÊÝÂ¸');
-define('_PLUGS_OPTIONS_UPDATED',			'¥×¥é¥°¥¤¥ó¥ª¥×¥·¥ç¥ó¤¬¹¹¿·¤µ¤ì¤Þ¤·¤¿');
+define('_ERROR_NOPLUGOPTIONS',				'ï¿½ï¿½ï¿½Î¥×¥é¥°ï¿½ï¿½ï¿½ï¿½Ë¤Ï¥ï¿½ï¿½×¥ï¿½ï¿½ï¿½ó¤¬¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_PLUGS_BACK',						'ï¿½×¥é¥°ï¿½ï¿½ï¿½ï¿½Î°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_PLUGS_SAVE',						'ï¿½ï¿½ï¿½×¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¸');
+define('_PLUGS_OPTIONS_UPDATED',			'ï¿½×¥é¥°ï¿½ï¿½ï¿½ó¥ª¥×¥ï¿½ï¿½ï¿½ó¤¬¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
-define('_OVERVIEW_MANAGEMENT',				'´ÉÍý');
-define('_OVERVIEW_MANAGE',					'Nucleus¤Î´ÉÍý');
-define('_MANAGE_GENERAL',					'´ÉÍý');
-define('_MANAGE_SKINS',						'¥¹¥­¥ó/¥Æ¥ó¥×¥ì¡¼¥È');
-define('_MANAGE_EXTRA',						'ÄÉ²Ãµ¡Ç½');
+define('_OVERVIEW_MANAGEMENT',				'ï¿½ï¿½ï¿½ï¿½');
+define('_OVERVIEW_MANAGE',					'Nucleusï¿½Î´ï¿½ï¿½ï¿½');
+define('_MANAGE_GENERAL',					'ï¿½ï¿½ï¿½ï¿½');
+define('_MANAGE_SKINS',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½Æ¥ï¿½×¥ì¡¼ï¿½ï¿½');
+define('_MANAGE_EXTRA',						'ï¿½É²Ãµï¿½Ç½');
 
-define('_BACKTOMANAGE',						'Nucleus¤Î´ÉÍý¤ËÌá¤ë');
+define('_BACKTOMANAGE',						'Nucleusï¿½Î´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 
 // END introduced after v1.1 END
@@ -811,533 +811,533 @@ define('_BACKTOMANAGE',						'Nucleus¤Î´ÉÍý¤ËÌá¤ë');
 define('_CHARSET',							'EUC-JP');
 
 // global stuff
-define('_LOGOUT',							'¥í¥°¥¢¥¦¥È');
-define('_LOGIN',							'¥í¥°¥¤¥ó');
-define('_YES',								'¤Ï¤¤');
-define('_NO',								'¤¤¤¤¤¨');
-define('_SUBMIT',							'Á÷¿®');
-define('_ERROR',							'¥¨¥é¡¼');
-define('_ERRORMSG',							'¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿¡ª');
-define('_BACK',								'Ìá¤ë');
-define('_NOTLOGGEDIN',						'¥í¥°¥¤¥ó¤·¤Æ¤¤¤Þ¤»¤ó');
-define('_LOGGEDINAS',						'¥í¥°¥¤¥ó:');
-define('_ADMINHOME',						'´ÉÍý¥Û¡¼¥à');
-define('_NAME',								'Ì¾Á°');
-define('_BACKHOME',							'´ÉÍý¥Û¡¼¥à¤ËÌá¤ë');
-define('_BADACTION',						'Â¸ºß¤·¤Ê¤¤¥¢¥¯¥·¥ç¥ó¤¬Í×µá¤µ¤ì¤Þ¤·¤¿');
-define('_MESSAGE',							'¥á¥Ã¥»¡¼¥¸');
-define('_HELP_TT',							'¥Ø¥ë¥×¡ª');
-define('_YOURSITE',							'¥µ¥¤¥È¤Î³ÎÇ§');
+define('_LOGOUT',							'ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_LOGIN',							'ï¿½?ï¿½ï¿½ï¿½ï¿½');
+define('_YES',								'ï¿½Ï¤ï¿½');
+define('_NO',								'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SUBMIT',							'ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR',							'ï¿½ï¿½ï¿½é¡¼');
+define('_ERRORMSG',							'ï¿½ï¿½ï¿½é¡¼ï¿½ï¿½È¯ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BACK',								'ï¿½ï¿½ï¿½');
+define('_NOTLOGGEDIN',						'ï¿½?ï¿½ï¿½ï¿½ó¤·¤Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_LOGGEDINAS',						'ï¿½?ï¿½ï¿½ï¿½ï¿½:');
+define('_ADMINHOME',						'ï¿½ï¿½ï¿½ï¿½Û¡ï¿½ï¿½ï¿½');
+define('_NAME',								'Ì¾ï¿½ï¿½');
+define('_BACKHOME',							'ï¿½ï¿½ï¿½ï¿½Û¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BADACTION',						'Â¸ï¿½ß¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×µá¤µï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_MESSAGE',							'ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_HELP_TT',							'ï¿½Ø¥ï¿½×¡ï¿½');
+define('_YOURSITE',							'ï¿½ï¿½ï¿½ï¿½ï¿½È¤Î³ï¿½Ç§');
 
 
-define('_POPUP_CLOSE',						'¥¦¥£¥ó¥É¥¦¤òÊÄ¤¸¤ë');
+define('_POPUP_CLOSE',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¥ï¿½ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½');
 
-define('_LOGIN_PLEASE',						'¤Þ¤º¥í¥°¥¤¥ó¤·¤Æ¤¯¤À¤µ¤¤');
+define('_LOGIN_PLEASE',						'ï¿½Þ¤ï¿½ï¿½?ï¿½ï¿½ï¿½ó¤·¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // commentform
-define('_COMMENTFORM_YOUARE',				'¥æ¡¼¥¶¡¼Ì¾: ');
-define('_COMMENTFORM_SUBMIT',				'¥³¥á¥ó¥È¤òÄÉ²Ã');
-define('_COMMENTFORM_COMMENT',				'¥³¥á¥ó¥È:');
-define('_COMMENTFORM_NAME',					'¤ªÌ¾Á°:');
-define('_COMMENTFORM_REMEMBER',				'¾ðÊó¤òµ­²±¤·¤Æ¤ª¤¯');
+define('_COMMENTFORM_YOUARE',				'ï¿½æ¡¼ï¿½ï¿½ï¿½ï¿½Ì¾: ');
+define('_COMMENTFORM_SUBMIT',				'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½É²ï¿½');
+define('_COMMENTFORM_COMMENT',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:');
+define('_COMMENTFORM_NAME',					'ï¿½ï¿½Ì¾ï¿½ï¿½:');
+define('_COMMENTFORM_REMEMBER',				'ï¿½ï¿½ï¿½ï¿½òµ­²ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½');
 
 // loginform
-define('_LOGINFORM_NAME',					'¥í¥°¥¤¥óID:');
-define('_LOGINFORM_PWD',					'¥Ñ¥¹¥ï¡¼¥É:');
-define('_LOGINFORM_YOUARE',					'¥í¥°¥¤¥óÃæ:');
-define('_LOGINFORM_SHARED',					'¤³¤ÎPC¤òÂ¾¤Î¿Í¤È¶¦ÍÑ¤¹¤ë');
+define('_LOGINFORM_NAME',					'ï¿½?ï¿½ï¿½ï¿½ï¿½ID:');
+define('_LOGINFORM_PWD',					'ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½ï¿½:');
+define('_LOGINFORM_YOUARE',					'ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:');
+define('_LOGINFORM_SHARED',					'ï¿½ï¿½ï¿½ï¿½PCï¿½ï¿½Â¾ï¿½Î¿Í¤È¶ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½');
 
 // member mailform
-define('_MEMBERMAIL_SUBMIT',				'¥á¥Ã¥»¡¼¥¸Á÷¿®');
+define('_MEMBERMAIL_SUBMIT',				'ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // search form
-define('_SEARCHFORM_SUBMIT',				'¸¡º÷');
+define('_SEARCHFORM_SUBMIT',				'ï¿½ï¿½ï¿½ï¿½');
 
 // add item form
-define('_ADD_ADDTO',						'¥¢¥¤¥Æ¥à¤ÎÄÉ²Ã:');
-define('_ADD_CREATENEW',					'¿·¤·¤¤¥¢¥¤¥Æ¥à');
-define('_ADD_BODY',							'ËÜÊ¸');
-define('_ADD_TITLE',						'¥¿¥¤¥È¥ë');
-define('_ADD_MORE',							'Â³¤­ (¶õÍó¤Ç¤â²Ä)');
-define('_ADD_CATEGORY',						'¥«¥Æ¥´¥ê¡¼');
-define('_ADD_PREVIEW',						'¥×¥ì¥Ó¥å¡¼');
-define('_ADD_DISABLE_COMMENTS',				'¥³¥á¥ó¥È¤ò¼õ¤±ÉÕ¤±¤Ê¤¤');
-define('_ADD_DRAFTNFUTURE',					'¥É¥é¥Õ¥È¤ÈÌ¤Íè¤Îµ­»ö');
-define('_ADD_ADDITEM',						'¥¢¥¤¥Æ¥à¤òÄÉ²Ã');
-define('_ADD_ADDNOW',						'º£¤¹¤°ÄÉ²Ã');
-define('_ADD_PLACE_ON',						'Æü»þ:');
-define('_ADD_ADDDRAFT',						'¥É¥é¥Õ¥È¤ËÄÉ²Ã');
-define('_ADD_NOPASTDATES',					'(²áµî¤ÎÆü»þ¤Ï»ØÄê¤Ç¤­¤Þ¤»¤ó¡£»ØÄê¤µ¤ì¤¿¾ì¹ç¤Ï¸½ºß¤ÎÆü»þ¤¬»ÈÍÑ¤µ¤ì¤Þ¤¹)');
-define('_ADD_BOLD_TT',						'ÂÀ»ú');
-define('_ADD_ITALIC_TT',					'¼ÐÂÎ');
-define('_ADD_HREF_TT',						'¥ê¥ó¥¯ºîÀ®');
-define('_ADD_MEDIA_TT',						'¥á¥Ç¥£¥¢(²èÁü¡¦²»À¼)¤ÎÄÉ²Ã');
-define('_ADD_PREVIEW_TT',					'¥×¥ì¥Ó¥å¡¼¤ÎÉ½¼¨/ÈóÉ½¼¨');
-define('_ADD_CUT_TT',						'¥«¥Ã¥È');
-define('_ADD_COPY_TT',						'¥³¥Ô¡¼');
-define('_ADD_PASTE_TT',						'¥Ú¡¼¥¹¥È');
+define('_ADD_ADDTO',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½É²ï¿½:');
+define('_ADD_CREATENEW',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½');
+define('_ADD_BODY',							'ï¿½ï¿½Ê¸');
+define('_ADD_TITLE',						'ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½');
+define('_ADD_MORE',							'Â³ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½)');
+define('_ADD_CATEGORY',						'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼');
+define('_ADD_PREVIEW',						'ï¿½×¥ï¿½Ó¥å¡¼');
+define('_ADD_DISABLE_COMMENTS',				'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½Ê¤ï¿½');
+define('_ADD_DRAFTNFUTURE',					'ï¿½É¥ï¿½Õ¥È¤ï¿½Ì¤ï¿½ï¿½Îµï¿½ï¿½ï¿½');
+define('_ADD_ADDITEM',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½É²ï¿½');
+define('_ADD_ADDNOW',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É²ï¿½');
+define('_ADD_PLACE_ON',						'ï¿½ï¿½ï¿½:');
+define('_ADD_ADDDRAFT',						'ï¿½É¥ï¿½Õ¥È¤ï¿½ï¿½É²ï¿½');
+define('_ADD_NOPASTDATES',					'(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï»ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ó¡£»ï¿½ï¿½ê¤µï¿½ì¤¿ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ß¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½Þ¤ï¿½)');
+define('_ADD_BOLD_TT',						'ï¿½ï¿½ï¿½ï¿½');
+define('_ADD_ITALIC_TT',					'ï¿½ï¿½ï¿½ï¿½');
+define('_ADD_HREF_TT',						'ï¿½ï¿½ó¥¯ºï¿½ï¿½ï¿½');
+define('_ADD_MEDIA_TT',						'ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½É²ï¿½');
+define('_ADD_PREVIEW_TT',					'ï¿½×¥ï¿½Ó¥å¡¼ï¿½ï¿½É½ï¿½ï¿½/ï¿½ï¿½É½ï¿½ï¿½');
+define('_ADD_CUT_TT',						'ï¿½ï¿½ï¿½Ã¥ï¿½');
+define('_ADD_COPY_TT',						'ï¿½ï¿½ï¿½Ô¡ï¿½');
+define('_ADD_PASTE_TT',						'ï¿½Ú¡ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 
 // edit item form
-define('_EDIT_ITEM',						'¥¢¥¤¥Æ¥à¤ÎÊÔ½¸');
-define('_EDIT_SUBMIT',						'ÊÝÂ¸');
-define('_EDIT_ORIG_AUTHOR',					'¸¶ºî¼Ô');
-define('_EDIT_BACKTODRAFTS',				'ºÆÅÙ¥É¥é¥Õ¥È¤È¤·¤ÆÊÝÂ¸');
-define('_EDIT_COMMENTSNOTE',				'(Ãí°Õ: ¥³¥á¥ó¥È¤ÎÈóÉ½¼¨¤Ï°ÊÁ°¤ËÄÉ²Ã¤µ¤ì¤¿¥³¥á¥ó¥È¤ò±£¤·¤Ï¤·¤Þ¤»¤ó)');
+define('_EDIT_ITEM',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½Ô½ï¿½');
+define('_EDIT_SUBMIT',						'ï¿½ï¿½Â¸');
+define('_EDIT_ORIG_AUTHOR',					'ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_EDIT_BACKTODRAFTS',				'ï¿½ï¿½ï¿½Ù¥É¥ï¿½Õ¥È¤È¤ï¿½ï¿½ï¿½ï¿½ï¿½Â¸');
+define('_EDIT_COMMENTSNOTE',				'(ï¿½ï¿½ï¿½: ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É²Ã¤ï¿½ï¿½ì¤¿ï¿½ï¿½ï¿½ï¿½ï¿½È¤ò±£¤ï¿½ï¿½Ï¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½)');
 
 // used on delete screens
-define('_DELETE_CONFIRM',					'ºï½ü¤Î³ÎÇ§¤ò¤·¤Æ¤¯¤À¤µ¤¤');
-define('_DELETE_CONFIRM_BTN',				'ºï½ü¤Î³ÎÇ§');
-define('_CONFIRMTXT_ITEM',					'°Ê²¼¤Î¥¢¥¤¥Æ¥à¤òºï½ü¤·¤è¤¦¤È¤·¤Æ¤¤¤Þ¤¹:');
-define('_CONFIRMTXT_COMMENT',				'°Ê²¼¤Î¥³¥á¥ó¥È¤òºï½ü¤·¤è¤¦¤È¤·¤Æ¤¤¤Þ¤¹:');
-define('_CONFIRMTXT_TEAM1',					'¤³¤Îblog¤Î¥Á¡¼¥à¥ê¥¹¥È¤«¤é');
-define('_CONFIRMTXT_TEAM2',					'ºï½ü¤·¤è¤¦¤È¤·¤Æ¤¤¤Þ¤¹');
-define('_CONFIRMTXT_BLOG',					'ºï½ü¤¹¤ëBlog: ');
-define('_WARNINGTXT_BLOGDEL',				'·Ù¹ð¡ª Blog¤òºï½ü¤¹¤ë¤È¤½¤ì¤Ë´Þ¤Þ¤ì¤Æ¤¤¤ëÁ´¤Æ¤Î¥¢¥¤¥Æ¥à¡¢¥³¥á¥ó¥È¤Ïºï½ü¤µ¤ì¤Þ¤¹¡£¤½¤ÎÅÀ¤ò³ÎÇ§¤·¤¿¾å¤Ç¹Ô¤Ã¤Æ¤¯¤À¤µ¤¤¡£<br />¤µ¤é¤Ë¡¢Blog¤Îºï½üÃæ¤ËNucleus¤òÃæÃÇ¤µ¤»¤Ê¤¤¤Ç¤¯¤À¤µ¤¤¡£');
-define('_CONFIRMTXT_MEMBER',				'°Ê²¼¤Î¥á¥ó¥Ð¡¼¥×¥í¥Õ¥¡¥¤¥ë¤òºï½ü¤·¤è¤¦¤È¤·¤Æ¤¤¤Þ¤¹: ');
-define('_CONFIRMTXT_TEMPLATE',				'¼¡¤Î¥Æ¥ó¥×¥ì¡¼¥È¤òºï½ü¤·¤è¤¦¤È¤·¤Æ¤¤¤Þ¤¹: ');
-define('_CONFIRMTXT_SKIN',					'¼¡¤Î¥¹¥­¥ó¤òºï½ü¤·¤è¤¦¤È¤·¤Æ¤¤¤Þ¤¹: ');
-define('_CONFIRMTXT_BAN',					'¼¡¤Î¶Ø»ßIPÈÏ°Ï¤òºï½ü¤·¤è¤¦¤È¤·¤Æ¤¤¤Þ¤¹: ');
-define('_CONFIRMTXT_CATEGORY',				'¼¡¤Î¥«¥Æ¥´¥ê¡¼¤òºï½ü¤·¤è¤¦¤È¤·¤Æ¤¤¤Þ¤¹: ');
+define('_DELETE_CONFIRM',					'ï¿½ï¿½ï¿½Î³ï¿½Ç§ï¿½ò¤·¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_DELETE_CONFIRM_BTN',				'ï¿½ï¿½ï¿½Î³ï¿½Ç§');
+define('_CONFIRMTXT_ITEM',					'ï¿½Ê²ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½è¤¦ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½:');
+define('_CONFIRMTXT_COMMENT',				'ï¿½Ê²ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½è¤¦ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½:');
+define('_CONFIRMTXT_TEAM1',					'ï¿½ï¿½ï¿½ï¿½blogï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ê¥¹ï¿½È¤ï¿½ï¿½ï¿½');
+define('_CONFIRMTXT_TEAM2',					'ï¿½ï¿½ï¿½è¤¦ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½');
+define('_CONFIRMTXT_BLOG',					'ï¿½ï¿½ï¿½ï¿½Blog: ');
+define('_WARNINGTXT_BLOGDEL',				'ï¿½Ù¹ï¿½ Blogï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½Ë´Þ¤Þ¤ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤Î¥ï¿½ï¿½ï¿½ï¿½Æ¥à¡¢ï¿½ï¿½ï¿½ï¿½ï¿½È¤Ïºï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¹Ô¤Ã¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½<br />ï¿½ï¿½ï¿½ï¿½Ë¡ï¿½Blogï¿½Îºï¿½ï¿½ï¿½ï¿½ï¿½Nucleusï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_CONFIRMTXT_MEMBER',				'ï¿½Ê²ï¿½ï¿½Î¥ï¿½ï¿½Ð¡ï¿½ï¿½×¥ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è¤¦ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½: ');
+define('_CONFIRMTXT_TEMPLATE',				'ï¿½ï¿½ï¿½Î¥Æ¥ï¿½×¥ì¡¼ï¿½È¤ï¿½ï¿½ï¿½è¤¦ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½: ');
+define('_CONFIRMTXT_SKIN',					'ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½è¤¦ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½: ');
+define('_CONFIRMTXT_BAN',					'ï¿½ï¿½ï¿½Î¶Ø»ï¿½IPï¿½Ï°Ï¤ï¿½ï¿½ï¿½è¤¦ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½: ');
+define('_CONFIRMTXT_CATEGORY',				'ï¿½ï¿½ï¿½Î¥ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½è¤¦ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½: ');
 
 // some status messages
-define('_DELETED_ITEM',						'¥¢¥¤¥Æ¥à¤¬ºï½ü¤µ¤ì¤Þ¤·¤¿');
-define('_DELETED_MEMBER',					'¥á¥ó¥Ð¡¼¤¬ºï½ü¤µ¤ì¤Þ¤·¤¿');
-define('_DELETED_COMMENT',					'¥³¥á¥ó¥È¤¬ºï½ü¤µ¤ì¤Þ¤·¤¿');
-define('_DELETED_BLOG',						'Blog¤¬ºï½ü¤µ¤ì¤Þ¤·¤¿');
-define('_DELETED_CATEGORY',					'¥«¥Æ¥´¥ê¡¼¤¬ºï½ü¤µ¤ì¤Þ¤·¤¿');
-define('_ITEM_MOVED',						'¥¢¥¤¥Æ¥à¤¬°ÜÆ°¤µ¤ì¤Þ¤·¤¿');
-define('_ITEM_ADDED',						'¥¢¥¤¥Æ¥à¤¬ÄÉ²Ã¤µ¤ì¤Þ¤·¤¿');
-define('_COMMENT_UPDATED',					'¥³¥á¥ó¥È¤¬¹¹¿·¤µ¤ì¤Þ¤·¤¿');
-define('_SKIN_UPDATED',						'¥¹¥­¥ó¥Ç¡¼¥¿¤¬ÊÝÂ¸¤µ¤ì¤Þ¤·¤¿');
-define('_TEMPLATE_UPDATED',					'¥Æ¥ó¥×¥ì¡¼¥È¥Ç¡¼¥¿¤¬ÊÝÂ¸¤µ¤ì¤Þ¤·¤¿');
+define('_DELETED_ITEM',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥à¤¬ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_DELETED_MEMBER',					'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_DELETED_COMMENT',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_DELETED_BLOG',						'Blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_DELETED_CATEGORY',					'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ITEM_MOVED',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥à¤¬ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ITEM_ADDED',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥à¤¬ï¿½É²Ã¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_COMMENT_UPDATED',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_SKIN_UPDATED',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_TEMPLATE_UPDATED',					'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½È¥Ç¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // errors
-define('_ERROR_COMMENT_LONGWORD',			'¥³¥á¥ó¥È¤Ë¤ÏÈ¾³Ñ¤Ç90Ê¸»ú°Ê¾å¤ÎÃ±¸ì¤ò»È¤ï¤Ê¤¤¤Ç²¼¤µ¤¤¡£');
-define('_ERROR_COMMENT_NOCOMMENT',			'¥³¥á¥ó¥È¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_ERROR_COMMENT_NOUSERNAME',			'»ÈÍÑ¤Ç¤­¤Ê¤¤Ì¾Á°¤Ç¤¹¡£');
-define('_ERROR_COMMENT_TOOLONG',			'¥³¥á¥ó¥È¤¬Ä¹¤¹¤®¤Þ¤¹¡£(È¾³Ñ¤Ç5000Ê¸»ú¤Þ¤Ç)');
-define('_ERROR_COMMENTS_DISABLED',			'¸½ºß¤³¤ÎBlog¤Ç¤Ï¥³¥á¥ó¥È¤ò¼õ¤±ÉÕ¤±¤Æ¤¤¤Þ¤»¤ó¡£');
-define('_ERROR_COMMENTS_NONPUBLIC',			'¤³¤ÎBlog¤Ø¥³¥á¥ó¥È¤òÄÉ²Ã¤¹¤ë¤Ë¤Ï¥á¥ó¥Ð¡¼¤È¤·¤Æ¥í¥°¥¤¥ó¤·¤Ê¤±¤ì¤Ð¤¤¤±¤Þ¤»¤ó¡£');
-define('_ERROR_COMMENTS_MEMBERNICK',		'¤¢¤Ê¤¿¤¬»È¤ª¤¦¤È¤·¤¿Ì¾Á°¤Ï´û¤Ë»È¤ï¤ì¤Æ¤¤¤Þ¤¹¡£Â¾¤ÎÌ¾Á°¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_ERROR_SKIN',						'¥¹¥­¥ó¡¡¥¨¥é¡¼');
-define('_ERROR_ITEMCLOSED',					'¤³¤Î¥¢¥¤¥Æ¥à¤Ï±ÜÍ÷ÀìÍÑ¤Ç¤¹¡£¥³¥á¥ó¥È¤ÎÅê¹Æ¡¢ÅêÉ¼¤Ï¤Ç¤­¤Þ¤»¤ó¡£');
-define('_ERROR_NOSUCHITEM',					'¤½¤Î¤è¤¦¤Ê¥¢¥¤¥Æ¥à¤ÏÂ¸ºß¤·¤Þ¤»¤ó¡£');
-define('_ERROR_NOSUCHBLOG',					'¤½¤Î¤è¤¦¤ÊBlog¤ÏÂ¸ºß¤·¤Þ¤»¤ó¡£');
-define('_ERROR_NOSUCHSKIN',					'¤½¤Î¤è¤¦¤Ê¥¹¥­¥ó¤ÏÂ¸ºß¤·¤Þ¤»¤ó¡£');
-define('_ERROR_NOSUCHMEMBER',				'¤½¤Î¤è¤¦¤Ê¥á¥ó¥Ð¡¼¤ÏÂ¸ºß¤·¤Þ¤»¤ó¡£');
-define('_ERROR_NOTONTEAM',					'¤¢¤Ê¤¿¤Ï¤³¤ÎBlog¤Î¥Á¡¼¥à¤Ë´Þ¤Þ¤ì¤Æ¤¤¤Þ¤»¤ó¡£');
-define('_ERROR_BADDESTBLOG',				'Á÷¤êÀè¤ÎBlog¤¬Â¸ºß¤·¤Þ¤»¤ó¡£');
-define('_ERROR_NOTONDESTTEAM',				'¤¢¤Ê¤¿¤¬Á÷¤êÀè¤ÎBlog¤Î¥Á¡¼¥à¤ËÆþ¤Ã¤Æ¤¤¤Ê¤¤¤¿¤á¥¢¥¤¥Æ¥à¤ò°ÜÆ°¤Ç¤­¤Þ¤»¤ó¡£');
-define('_ERROR_NOEMPTYITEMS',				'ËÜÊ¸¤¬¶õ¤Î¥¢¥¤¥Æ¥à¤ÏÅê¹Æ¤Ç¤­¤Þ¤»¤ó¡ª');
-define('_ERROR_BADMAILADDRESS',				'¥á¡¼¥ë¥¢¥É¥ì¥¹¤¬ÉÔÀµ¤Ç¤¹¡£');
-define('_ERROR_BADNOTIFY',					'ÄÌÃÎ¥á¡¼¥ë¥¢¥É¥ì¥¹¤ÎÃæ¤ËÉÔÀµ¤Ê¤â¤Î¤¬º®¤¸¤Ã¤Æ¤¤¤Þ¤¹¡£');
-define('_ERROR_BADNAME',					'»ÈÍÑ¤Ç¤­¤Ê¤¤Ì¾Á°¤Ç¤¹¡£( a-z ¡¢0-9 ¤Î±Ñ¿ô»ú¤·¤«»È¤¨¤Þ¤»¤ó)');
-define('_ERROR_NICKNAMEINUSE',				'Â¾¤Î¥á¥ó¥Ð¡¼¤¬Æ±¤¸¥í¥°¥¤¥óID¤ò»ÈÍÑ¤·¤Æ¤¤¤Þ¤¹¡£');
-define('_ERROR_PASSWORDMISMATCH',			'ÆþÎÏ¤µ¤ì¤¿¥Ñ¥¹¥ï¡¼¥É¤¬Æ±°ì¤Ç¤Ï¤¢¤ê¤Þ¤»¤ó¡£');
-define('_ERROR_PASSWORDTOOSHORT',			'¥Ñ¥¹¥ï¡¼¥É¤Ï6Ê¸»ú°Ê¾å¤Ç¤Ê¤±¤ì¤Ð¤Ê¤ê¤Þ¤»¤ó¡£');
-define('_ERROR_PASSWORDMISSING',			'¥Ñ¥¹¥ï¡¼¥É¤¬¶õ¤Ç¤¹¡£');
-define('_ERROR_REALNAMEMISSING',			'¥Ï¥ó¥É¥ë¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_ERROR_ATLEASTONEADMIN',			'´ÉÍýÎÎ°è¤Ë¥í¥°¥¤¥ó¤Ç¤­¤ësuper-admin¤¬¾¯¤Ê¤¯¤È¤â1¿Í¤Ï¤¤¤Ê¤¯¤Æ¤Ï¤¤¤±¤Þ¤»¤ó¡£');
-define('_ERROR_ATLEASTONEBLOGADMIN',		'¤³¤Î¥¢¥¯¥·¥ç¥ó¤ò¼Â¹Ô¤¹¤ë¤È¤¢¤Ê¤¿¤ÎBlog¤Ï¥á¥ó¥Æ¥Ê¥ó¥¹ÉÔÇ½¤Ë¤Ê¤ê¤Þ¤¹¡£¾¯¤Ê¤¯¤È¤â1¿Í¤Î´ÉÍý¼Ô¤¬¤¤¤ë¤è¤¦¤Ë¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_ERROR_ALREADYONTEAM',				'´û¤Ë¥Á¡¼¥à¤ËÆþ¤Ã¤Æ¤¤¤Þ¤¹¡£');
-define('_ERROR_BADSHORTBLOGNAME',			'Blog¤ÎÃ»½ÌÌ¾(Î¬¾Î)¤Ë¤Ï a-z ¡¢0-9¡¢¤Î±Ñ¿ô»ú¤Î¤ß»ÈÍÑ¤Ç¤­¤Þ¤¹¡£¥¹¥Ú¡¼¥¹¤Ï»ÈÍÑ¤Ç¤­¤Þ¤»¤ó¡£');
-define('_ERROR_DUPSHORTBLOGNAME',			'Â¾¤ÎBlog¤ÇÆ±¤¸Ã»½ÌÌ¾(Î¬¾Î)¤¬»È¤ï¤ì¤Æ¤¤¤Þ¤¹¡£ÊÌ¤ÎÃ»½ÌÌ¾(Î¬¾Î)¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_ERROR_UPDATEFILE',					'¹¹¿·¥Õ¥¡¥¤¥ë¤Ë½ñ¤­¹þ¤á¤Þ¤»¤ó¡£¥Õ¥¡¥¤¥ë¤Î¥Ñ¡¼¥ß¥Ã¥·¥ç¥ó¤¬Àµ¤·¤¯¥»¥Ã¥È¤µ¤ì¤Æ¤¤¤ë¤«³ÎÇ§¤·¤Æ¤¯¤À¤µ¤¤ (chmod 666 ¤ò»î¤·¤Æ¤ß¤Æ¤¯¤À¤µ¤¤)¡£¤â¤·ÁêÂÐ¥Ñ¥¹¤Ç»ØÄê¤µ¤ì¤Æ¤¤¤ë¤Ê¤é¡¢ÀäÂÐ¥Ñ¥¹¤Ç»ØÄê¤·¤Æ¤ß¤Æ¤¯¤À¤µ¤¤¡£(/your/path/to/nucleus/ ¤Î¤è¤¦¤Ë)');
-define('_ERROR_DELDEFBLOG',					'´ûÄê¤ÎBlog¤Ïºï½ü¤Ç¤­¤Þ¤»¤ó');
-define('_ERROR_DELETEMEMBER',				'¤ª¤½¤é¤¯¤³¤Î¥á¥ó¥Ð¡¼¤Ï£±¤Ä°Ê¾å¤Î¥¢¥¤¥Æ¥à¤ÎÃø¼Ô¤Ç¤¢¤ë¤¿¤á¡¢ºï½ü¤Ç¤­¤Þ¤»¤ó¡£');
-define('_ERROR_BADTEMPLATENAME',			'ÉÔÀµ¤Ê¥Æ¥ó¥×¥ì¡¼¥ÈÌ¾¤Ç¤¹¡£(a-z ¡¢0-9 ¤Î±Ñ¿ô»ú¤Î¤ß»ÈÍÑ²Ä¡£¥¹¥Ú¡¼¥¹¤Ï»ÈÍÑÉÔ²Ä)');
-define('_ERROR_DUPTEMPLATENAME',			'Æ±¤¸Ì¾Á°¤Î¥Æ¥ó¥×¥ì¡¼¥È¤¬´û¤ËÂ¸ºß¤·¤Þ¤¹');
-define('_ERROR_BADSKINNAME',				'ÉÔÀµ¤Ê¥¹¥­¥óÌ¾¤Ç¤¹¡£(a-z ¡¢0-9 ¤Î±Ñ¿ô»ú¤Î¤ß»ÈÍÑ²Ä¡£¥¹¥Ú¡¼¥¹¤Ï»ÈÍÑÉÔ²Ä)');
-define('_ERROR_DUPSKINNAME',				'Æ±¤¸Ì¾Á°¤Î¥¹¥­¥ó¤¬´û¤ËÂ¸ºß¤·¤Þ¤¹¡£');
-define('_ERROR_DEFAULTSKIN',				'¤³¤Î¥¹¥­¥ó¤ÏÉ¸½à¤Î¥¹¥­¥ó¤ËÀßÄê¤µ¤ì¤Æ¤¤¤ë¤¿¤áºï½ü¤Ç¤­¤Þ¤»¤ó¡£');
-define('_ERROR_SKINDEFDELETE',				'°Ê²¼¤ÎBlog¤Î´ûÄê¤Î¥¹¥­¥ó¤Ë»ØÄê¤µ¤ì¤Æ¤¤¤ë¤¿¤á¡¢¥¹¥­¥ó¤òºï½ü¤Ç¤­¤Þ¤»¤ó¡£: ');
-define('_ERROR_DISALLOWED',					'¤³¤Î¥¢¥¯¥·¥ç¥ó¤Î¼Â¹Ô¤¬µö²Ä¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£');
-define('_ERROR_DELETEBAN',					'¶Ø»ß¼Ô¤Îºï½üÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿(¶Ø»ß¼Ô¤¬Â¸ºß¤·¤Þ¤»¤ó)');
-define('_ERROR_ADDBAN',						'¶Ø»ß¼Ô¤ÎÄÉ²ÃÃæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿¡£Á´¤Æ¤Îblog¤ËÀµ¤·¤¯ÄÉ²Ã¤µ¤ì¤Æ¤¤¤Ê¤¤¤«¤â¤·¤ì¤Þ¤»¤ó¡£');
-define('_ERROR_BADACTION',					'Í×µá¤µ¤ì¤¿¥¢¥¯¥·¥ç¥ó¤¬Â¸ºß¤·¤Þ¤»¤ó¡£');
-define('_ERROR_MEMBERMAILDISABLED',			'¥á¥ó¥Ð¡¼´Ö¤Î¥á¡¼¥ë¥á¥Ã¥»¡¼¥¸¤¬»ÈÍÑÉÔ²Ä¤Ë¤Ê¤Ã¤Æ¤¤¤Þ¤¹¡£');
-define('_ERROR_MEMBERCREATEDISABLED',		'¥á¥ó¥Ð¡¼ºîÀ®¤¬¶Ø»ß¤µ¤ì¤Æ¤¤¤Þ¤¹¡£');
-define('_ERROR_INCORRECTEMAIL',				'ÉÔÀµ¤Ê¥á¡¼¥ë¥¢¥É¥ì¥¹¤Ç¤¹¡£');
-define('_ERROR_VOTEDBEFORE',				'¤³¤Î¥¢¥¤¥Æ¥à¤Ë¤Ï´û¤ËÅêÉ¼ºÑ¤ß¤Ç¤¹¡£');
-define('_ERROR_BANNED1',					'¤¢¤Ê¤¿ (IPÈÏ°Ï ');
-define('_ERROR_BANNED2',					') ¤Ï¤³¤Î¥¢¥¯¥·¥ç¥ó¤Î¼Â¹Ô¤¬¶Ø»ß¤µ¤ì¤Æ¤¤¤Þ¤¹¡£¥á¥Ã¥»¡¼¥¸: \'');
+define('_ERROR_COMMENT_LONGWORD',			'ï¿½ï¿½ï¿½ï¿½ï¿½È¤Ë¤ï¿½È¾ï¿½Ñ¤ï¿½90Ê¸ï¿½ï¿½Ê¾ï¿½ï¿½Ã±ï¿½ï¿½ï¿½È¤ï¿½Ê¤ï¿½ï¿½Ç²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_COMMENT_NOCOMMENT',			'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_COMMENT_NOUSERNAME',			'ï¿½ï¿½ï¿½Ñ¤Ç¤ï¿½ï¿½Ê¤ï¿½Ì¾ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½');
+define('_ERROR_COMMENT_TOOLONG',			'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½Ä¹ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½(È¾ï¿½Ñ¤ï¿½5000Ê¸ï¿½ï¿½Þ¤ï¿½)');
+define('_ERROR_COMMENTS_DISABLED',			'ï¿½ï¿½ï¿½ß¤ï¿½ï¿½ï¿½Blogï¿½Ç¤Ï¥ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_COMMENTS_NONPUBLIC',			'ï¿½ï¿½ï¿½ï¿½Blogï¿½Ø¥ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½É²Ã¤ï¿½ï¿½ï¿½Ë¤Ï¥ï¿½ï¿½Ð¡ï¿½ï¿½È¤ï¿½ï¿½Æ¥?ï¿½ï¿½ï¿½ó¤·¤Ê¤ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_COMMENTS_MEMBERNICK',		'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½Ï´ï¿½Ë»È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½Â¾ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_SKIN',						'ï¿½ï¿½ï¿½ï¿½ï¿½ó¡¡¥ï¿½ï¿½é¡¼');
+define('_ERROR_ITEMCLOSED',					'ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Ï±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½Æ¡ï¿½ï¿½ï¿½É¼ï¿½Ï¤Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_NOSUCHITEM',					'ï¿½ï¿½ï¿½Î¤è¤¦ï¿½Ê¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_NOSUCHBLOG',					'ï¿½ï¿½ï¿½Î¤è¤¦ï¿½ï¿½Blogï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_NOSUCHSKIN',					'ï¿½ï¿½ï¿½Î¤è¤¦ï¿½Ê¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_NOSUCHMEMBER',				'ï¿½ï¿½ï¿½Î¤è¤¦ï¿½Ê¥ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_NOTONTEAM',					'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Ï¤ï¿½ï¿½ï¿½Blogï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½Ë´Þ¤Þ¤ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_BADDESTBLOG',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_NOTONDESTTEAM',				'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Blogï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¤Æ¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½á¥¢ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½Æ°ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_NOEMPTYITEMS',				'ï¿½ï¿½Ê¸ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½Æ¤Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_BADMAILADDRESS',				'ï¿½á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½');
+define('_ERROR_BADNOTIFY',					'ï¿½ï¿½ï¿½Î¥á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¤ï¿½Î¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¤Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_BADNAME',					'ï¿½ï¿½ï¿½Ñ¤Ç¤ï¿½ï¿½Ê¤ï¿½Ì¾ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½( a-z ï¿½ï¿½0-9 ï¿½Î±Ñ¿ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½)');
+define('_ERROR_NICKNAMEINUSE',				'Â¾ï¿½Î¥ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½Æ±ï¿½ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½IDï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_PASSWORDMISMATCH',			'ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½ì¤¿ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½Æ±ï¿½ï¿½Ç¤Ï¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_PASSWORDTOOSHORT',			'ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½6Ê¸ï¿½ï¿½Ê¾ï¿½Ç¤Ê¤ï¿½ï¿½ï¿½Ð¤Ê¤ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_PASSWORDMISSING',			'ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½');
+define('_ERROR_REALNAMEMISSING',			'ï¿½Ï¥ï¿½É¥ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_ATLEASTONEADMIN',			'ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½Ë¥?ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½super-adminï¿½ï¿½ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½È¤ï¿½1ï¿½Í¤Ï¤ï¿½ï¿½Ê¤ï¿½ï¿½Æ¤Ï¤ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_ATLEASTONEBLOGADMIN',		'ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¹Ô¤ï¿½ï¿½ï¿½È¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½Blogï¿½Ï¥ï¿½ï¿½Æ¥Ê¥ï¿½ï¿½ï¿½Ç½ï¿½Ë¤Ê¤ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½È¤ï¿½1ï¿½Í¤Î´ï¿½ï¿½ï¿½Ô¤ï¿½ï¿½ï¿½ï¿½ï¿½è¤¦ï¿½Ë¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_ALREADYONTEAM',				'ï¿½ï¿½Ë¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¤Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_BADSHORTBLOGNAME',			'Blogï¿½ï¿½Ã»ï¿½ï¿½Ì¾(Î¬ï¿½ï¿½)ï¿½Ë¤ï¿½ a-z ï¿½ï¿½0-9ï¿½ï¿½ï¿½Î±Ñ¿ï¿½ï¿½ï¿½Î¤ß»ï¿½ï¿½Ñ¤Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¡ï¿½ï¿½ï¿½ï¿½Ï»ï¿½ï¿½Ñ¤Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_DUPSHORTBLOGNAME',			'Â¾ï¿½ï¿½Blogï¿½ï¿½Æ±ï¿½ï¿½Ã»ï¿½ï¿½Ì¾(Î¬ï¿½ï¿½)ï¿½ï¿½ï¿½È¤ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½Ì¤ï¿½Ã»ï¿½ï¿½Ì¾(Î¬ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_UPDATEFILE',					'ï¿½ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ë½ñ¤­¹ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ó¡£¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Î¥Ñ¡ï¿½ï¿½ß¥Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥È¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ë¤«ï¿½ï¿½Ç§ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (chmod 666 ï¿½ï¿½î¤·ï¿½Æ¤ß¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½â¤·ï¿½ï¿½ï¿½Ð¥Ñ¥ï¿½ï¿½Ç»ï¿½ï¿½ê¤µï¿½ï¿½Æ¤ï¿½ï¿½ï¿½Ê¤é¡¢ï¿½ï¿½ï¿½Ð¥Ñ¥ï¿½ï¿½Ç»ï¿½ï¿½ê¤·ï¿½Æ¤ß¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(/your/path/to/nucleus/ ï¿½Î¤è¤¦ï¿½ï¿½)');
+define('_ERROR_DELDEFBLOG',					'ï¿½ï¿½ï¿½ï¿½ï¿½Blogï¿½Ïºï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_DELETEMEMBER',				'ï¿½ï¿½ï¿½ï¿½ï¿½é¤¯ï¿½ï¿½ï¿½Î¥ï¿½ï¿½Ð¡ï¿½ï¿½Ï£ï¿½ï¿½Ä°Ê¾ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½Ô¤Ç¤ï¿½ï¿½ë¤¿ï¿½á¡¢ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_BADTEMPLATENAME',			'ï¿½ï¿½ï¿½ï¿½ï¿½Ê¥Æ¥ï¿½×¥ì¡¼ï¿½ï¿½Ì¾ï¿½Ç¤ï¿½ï¿½ï¿½(a-z ï¿½ï¿½0-9 ï¿½Î±Ñ¿ï¿½ï¿½ï¿½Î¤ß»ï¿½ï¿½Ñ²Ä¡ï¿½ï¿½ï¿½ï¿½Ú¡ï¿½ï¿½ï¿½ï¿½Ï»ï¿½ï¿½ï¿½ï¿½Ô²ï¿½)');
+define('_ERROR_DUPTEMPLATENAME',			'Æ±ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½Î¥Æ¥ï¿½×¥ì¡¼ï¿½È¤ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½');
+define('_ERROR_BADSKINNAME',				'ï¿½ï¿½ï¿½ï¿½ï¿½Ê¥ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½Ç¤ï¿½ï¿½ï¿½(a-z ï¿½ï¿½0-9 ï¿½Î±Ñ¿ï¿½ï¿½ï¿½Î¤ß»ï¿½ï¿½Ñ²Ä¡ï¿½ï¿½ï¿½ï¿½Ú¡ï¿½ï¿½ï¿½ï¿½Ï»ï¿½ï¿½ï¿½ï¿½Ô²ï¿½)');
+define('_ERROR_DUPSKINNAME',				'Æ±ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ó¤¬´ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_DEFAULTSKIN',				'ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¸ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê¤µï¿½ï¿½Æ¤ï¿½ï¿½ë¤¿ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_SKINDEFDELETE',				'ï¿½Ê²ï¿½ï¿½ï¿½Blogï¿½Î´ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ê¤µï¿½ï¿½Æ¤ï¿½ï¿½ë¤¿ï¿½á¡¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½: ');
+define('_ERROR_DISALLOWED',					'ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¼Â¹Ô¤ï¿½ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_DELETEBAN',					'ï¿½Ø»ß¼Ô¤Îºï¿½ï¿½ï¿½ï¿½Ë¥ï¿½ï¿½é¡¼ï¿½ï¿½È¯ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½(ï¿½Ø»ß¼Ô¤ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½)');
+define('_ERROR_ADDBAN',						'ï¿½Ø»ß¼Ô¤ï¿½ï¿½É²ï¿½ï¿½ï¿½Ë¥ï¿½ï¿½é¡¼ï¿½ï¿½È¯ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É²Ã¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½â¤·ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_BADACTION',					'ï¿½×µá¤µï¿½ì¤¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_MEMBERMAILDISABLED',			'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Ö¤Î¥á¡¼ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô²Ä¤Ë¤Ê¤Ã¤Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_MEMBERCREATEDISABLED',		'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø»ß¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_INCORRECTEMAIL',				'ï¿½ï¿½ï¿½ï¿½ï¿½Ê¥á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹ï¿½Ç¤ï¿½ï¿½ï¿½');
+define('_ERROR_VOTEDBEFORE',				'ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Ë¤Ï´ï¿½ï¿½ï¿½ï¿½É¼ï¿½Ñ¤ß¤Ç¤ï¿½ï¿½ï¿½');
+define('_ERROR_BANNED1',					'ï¿½ï¿½ï¿½Ê¤ï¿½ (IPï¿½Ï°ï¿½ ');
+define('_ERROR_BANNED2',					') ï¿½Ï¤ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¼Â¹Ô¤ï¿½ï¿½Ø»ß¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½: \'');
 define('_ERROR_BANNED3',					'\'');
-define('_ERROR_LOGINNEEDED',				'¼Â¹Ô¤¹¤ë¤Ë¤Ï¥í¥°¥¤¥ó¤¬É¬Í×¤Ç¤¹¡£');
-define('_ERROR_CONNECT',					'ÀÜÂ³¥¨¥é¡¼');
-define('_ERROR_FILE_TOO_BIG',				'¥Õ¥¡¥¤¥ë¤¬Âç¤­¤¹¤®¤Þ¤¹¡ª');
-define('_ERROR_BADFILETYPE',				'¥¢¥Ã¥×¥í¡¼¥É¤¬Ç§¤á¤é¤ì¤Æ¤¤¤Ê¤¤¥Õ¥¡¥¤¥ë¥¿¥¤¥×¤Ç¤¹¡£');
-define('_ERROR_BADREQUEST',					'ÉÔÀµ¤Ê¥¢¥Ã¥×¥í¡¼¥ÉÍ×µá¤Ç¤¹');
-define('_ERROR_DISALLOWEDUPLOAD',			'¤¢¤Ê¤¿¤Ï¤É¤ÎBlog¥Á¡¼¥à¤Ë¤âÆþ¤Ã¤Æ¤¤¤Ê¤¤¤Î¤Ç¥Õ¥¡¥¤¥ë¤ò¥¢¥Ã¥×¥í¡¼¥É¤Ç¤­¤Þ¤»¤ó¡£');
-define('_ERROR_BADPERMISSIONS',				'¥Õ¥¡¥¤¥ë/¥Ç¥£¥ì¥¯¥È¥ê¤Î¥Ñ¡¼¥ß¥Ã¥·¥ç¥ó¤¬Àµ¤·¤¯¥»¥Ã¥È¤µ¤ì¤Æ¤¤¤Þ¤»¤ó¡£');
-define('_ERROR_UPLOADMOVEP',				'¥¢¥Ã¥×¥í¡¼¥É¥Õ¥¡¥¤¥ë¤Î°ÜÆ°Ãæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿¡£');
-define('_ERROR_UPLOADCOPY',					'¥Õ¥¡¥¤¥ë¤Î¥³¥Ô¡¼Ãæ¤Ë¥¨¥é¡¼¤¬È¯À¸¤·¤Þ¤·¤¿¡£');
-define('_ERROR_UPLOADDUPLICATE',			'Æ±¤¸Ì¾Á°¤Î¥Õ¥¡¥¤¥ë¤¬´û¤ËÂ¸ºß¤·¤Þ¤¹¡£¥¢¥Ã¥×¥í¡¼¥É¤¹¤ëÁ°¤ËÌ¾Á°¤òÊÑ¹¹¤·¤Æ¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_ERROR_LOGINDISALLOWED',			'´ÉÍýÎÎ°è¤Ø¤Î¥í¥°¥¤¥ó¤¬Ç§¤á¤é¤ì¤Æ¤¤¤Þ¤»¤ó¡£¤â¤·¤¢¤Ê¤¿¤¬´ÉÍý¥æ¡¼¥¶¡¼¤Î¥¢¥«¥¦¥ó¥È¤ò»ý¤Ã¤Æ¤¤¤ë¤Î¤Ê¤é¡¢´ÉÍý¥æ¡¼¥¶¡¼¤È¤·¤Æ¥í¥°¥¤¥ó¤·¤Ê¤ª¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_ERROR_DBCONNECT',					'MySQL¥µ¡¼¥Ð¤ËÀÜÂ³¤Ç¤­¤Þ¤»¤ó');
-define('_ERROR_DBSELECT',					'Nucleus¤¬»ÈÍÑ¤¹¤ë¥Ç¡¼¥¿¥Ù¡¼¥¹¤òÁªÂò¤Ç¤­¤Þ¤»¤ó¡£');
-define('_ERROR_NOSUCHLANGUAGE',				'»ØÄê¤µ¤ì¤¿¸À¸ì¥Õ¥¡¥¤¥ë¤ÏÂ¸ºß¤·¤Þ¤»¤ó¡£');
-define('_ERROR_NOSUCHCATEGORY',				'»ØÄê¤µ¤ì¤¿¥«¥Æ¥´¥ê¡¼¤ÏÂ¸ºß¤·¤Þ¤»¤ó¡£');
-define('_ERROR_DELETELASTCATEGORY',			'¥«¥Æ¥´¥ê¡¼¤òºÇÄã°ì¤Ä¤ÏÀßÄê¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_ERROR_DELETEDEFCATEGORY',			'´ûÄê¤Î¥«¥Æ¥´¥ê¡¼¤Ïºï½ü¤Ç¤­¤Þ¤»¤ó¡£');
-define('_ERROR_BADCATEGORYNAME',			'¥«¥Æ¥´¥ê¡¼Ì¾¤È¤·¤Æ»È¤¨¤Þ¤»¤ó');
-define('_ERROR_DUPCATEGORYNAME',			'Æ±¤¸Ì¾Á°¤Î¥«¥Æ¥´¥ê¡¼¤¬´û¤ËÂ¸ºß¤·¤Þ¤¹¡£');
+define('_ERROR_LOGINNEEDED',				'ï¿½Â¹Ô¤ï¿½ï¿½ï¿½Ë¤Ï¥?ï¿½ï¿½ï¿½ï¿½É¬ï¿½×¤Ç¤ï¿½ï¿½ï¿½');
+define('_ERROR_CONNECT',					'ï¿½ï¿½Â³ï¿½ï¿½ï¿½é¡¼');
+define('_ERROR_FILE_TOO_BIG',				'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¤¬ï¿½ç¤­ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_BADFILETYPE',				'ï¿½ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½Ç§ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Ê¤ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¥¿ï¿½ï¿½ï¿½×¤Ç¤ï¿½ï¿½ï¿½');
+define('_ERROR_BADREQUEST',					'ï¿½ï¿½ï¿½ï¿½ï¿½Ê¥ï¿½ï¿½Ã¥×¥?ï¿½ï¿½ï¿½×µï¿½Ç¤ï¿½');
+define('_ERROR_DISALLOWEDUPLOAD',			'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Ï¤É¤ï¿½Blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½ï¿½Ã¤Æ¤ï¿½ï¿½Ê¤ï¿½ï¿½Î¤Ç¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ò¥¢¥Ã¥×¥?ï¿½É¤Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_BADPERMISSIONS',				'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½/ï¿½Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½Î¥Ñ¡ï¿½ï¿½ß¥Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥È¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_UPLOADMOVEP',				'ï¿½ï¿½ï¿½Ã¥×¥?ï¿½É¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½Æ°ï¿½ï¿½Ë¥ï¿½ï¿½é¡¼ï¿½ï¿½È¯ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_UPLOADCOPY',					'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½Ô¡ï¿½ï¿½ï¿½Ë¥ï¿½ï¿½é¡¼ï¿½ï¿½È¯ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_UPLOADDUPLICATE',			'Æ±ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½Î¥Õ¥ï¿½ï¿½ï¿½ï¿½ë¤¬ï¿½ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_LOGINDISALLOWED',			'ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½Ø¤Î¥?ï¿½ï¿½ï¿½ï¿½Ç§ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ó¡£¤â¤·ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ¡¼ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½Ã¤Æ¤ï¿½ï¿½ï¿½Î¤Ê¤é¡¢ï¿½ï¿½ï¿½ï¿½æ¡¼ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½Æ¥?ï¿½ï¿½ï¿½ó¤·¤Ê¤ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_DBCONNECT',					'MySQLï¿½ï¿½ï¿½ï¿½ï¿½Ð¤ï¿½ï¿½ï¿½Â³ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_DBSELECT',					'Nucleusï¿½ï¿½ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½Ç¡ï¿½ï¿½ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_NOSUCHLANGUAGE',				'ï¿½ï¿½ï¿½ê¤µï¿½ì¤¿ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_NOSUCHCATEGORY',				'ï¿½ï¿½ï¿½ê¤µï¿½ì¤¿ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_DELETELASTCATEGORY',			'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½ï¿½ê¤·ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ERROR_DELETEDEFCATEGORY',			'ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½Ïºï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_BADCATEGORYNAME',			'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼Ì¾ï¿½È¤ï¿½ï¿½Æ»È¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_ERROR_DUPCATEGORYNAME',			'Æ±ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½Î¥ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½ï¿½Â¸ï¿½ß¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // some warnings (used for mediadir setting)
-define('_WARNING_NOTADIR',					'·Ù¹ð: ¥Ç¥£¥ì¥¯¥È¥ê¤Ç¤Ï¤¢¤ê¤Þ¤»¤ó¡ª');
-define('_WARNING_NOTREADABLE',				'·Ù¹ð: ÆÉ¤ß¼è¤êÉÔ²ÄÇ½¤Ê¥Ç¥£¥ì¥¯¥È¥ê¤Ç¤¹¡ª');
-define('_WARNING_NOTWRITABLE',				'·Ù¹ð: ½ñ¤­¹þ¤ßÉÔ²ÄÇ½¤Ê¥Ç¥£¥ì¥¯¥È¥ê¤Ç¤¹¡ª');
+define('_WARNING_NOTADIR',					'ï¿½Ù¹ï¿½: ï¿½Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½Ç¤Ï¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_WARNING_NOTREADABLE',				'ï¿½Ù¹ï¿½: ï¿½É¤ß¼ï¿½ï¿½ï¿½Ô²ï¿½Ç½ï¿½Ê¥Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½Ç¤ï¿½ï¿½ï¿½');
+define('_WARNING_NOTWRITABLE',				'ï¿½Ù¹ï¿½: ï¿½ñ¤­¹ï¿½ï¿½ï¿½ï¿½Ô²ï¿½Ç½ï¿½Ê¥Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½Ç¤ï¿½ï¿½ï¿½');
 
 // media and upload
-define('_MEDIA_UPLOADLINK',					'¥Õ¥¡¥¤¥ë¤Î¥¢¥Ã¥×¥í¡¼¥É');
-define('_MEDIA_MODIFIED',					'¹¹¿·Æü');
-define('_MEDIA_FILENAME',					'¥Õ¥¡¥¤¥ëÌ¾');
-define('_MEDIA_DIMENSIONS',					'¥µ¥¤¥º');
-define('_MEDIA_INLINE',						'Ëä¤á¹þ¤ß·¿');
-define('_MEDIA_POPUP',						'¥Ý¥Ã¥×¥¢¥Ã¥×·¿');
-define('_UPLOAD_TITLE',						'¥Õ¥¡¥¤¥ëÁªÂò');
-define('_UPLOAD_MSG',						'¥¢¥Ã¥×¥í¡¼¥É¤¹¤ë¥Õ¥¡¥¤¥ë¤òÁªÂò¤·¤Æ¡Ö¥¢¥Ã¥×¥í¡¼¥É¡×¥Ü¥¿¥ó¤ò²¡¤·¤Æ¤¯¤À¤µ¤¤');
-define('_UPLOAD_BUTTON',					'¥¢¥Ã¥×¥í¡¼¥É');
+define('_MEDIA_UPLOADLINK',					'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½Ã¥×¥?ï¿½ï¿½');
+define('_MEDIA_MODIFIED',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MEDIA_FILENAME',					'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾');
+define('_MEDIA_DIMENSIONS',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MEDIA_INLINE',						'ï¿½ï¿½ï¿½ï¿½ï¿½ß·ï¿½');
+define('_MEDIA_POPUP',						'ï¿½Ý¥Ã¥×¥ï¿½ï¿½Ã¥×·ï¿½');
+define('_UPLOAD_TITLE',						'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_UPLOAD_MSG',						'ï¿½ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò¤·¤Æ¡Ö¥ï¿½ï¿½Ã¥×¥?ï¿½É¡×¥Ü¥ï¿½ï¿½ï¿½ò²¡¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_UPLOAD_BUTTON',					'ï¿½ï¿½ï¿½Ã¥×¥?ï¿½ï¿½');
 
 // some status messages
-//define('_MSG_ACCOUNTCREATED',				'¥¢¥«¥¦¥ó¥È¤¬ºîÀ®¤µ¤ì¤Þ¤·¤¿¡£¥Ñ¥¹¥ï¡¼¥É¤¬¥á¡¼¥ë¤ÇÁ÷¿®¤µ¤ì¤Þ¤¹');
-//define('_MSG_PASSWORDSENT',				'¥Ñ¥¹¥ï¡¼¥É¤¬¥á¡¼¥ë¤ÇÁ÷¿®¤µ¤ì¤Þ¤·¤¿¡£');
-define('_MSG_LOGINAGAIN',					'¥¢¥«¥¦¥ó¥È¾ðÊó¤¬ÊÑ¹¹¤µ¤ì¤¿°Ù¡¢¥í¥°¥¤¥ó¤·¤Ê¤ª¤¹É¬Í×¤¬¤¢¤ê¤Þ¤¹');
-define('_MSG_SETTINGSCHANGED',				'ÀßÄê¤¬ÊÑ¹¹¤µ¤ì¤Þ¤·¤¿');
-define('_MSG_ADMINCHANGED',					'´ÉÍý¼Ô¸¢¸Â¤¬ÊÑ¹¹¤µ¤ì¤Þ¤·¤¿');
-define('_MSG_NEWBLOG',						'¿·¤·¤¤Blog¤¬ºîÀ®¤µ¤ì¤Þ¤·¤¿');
-define('_MSG_ACTIONLOGCLEARED',				'´ÉÍýÁàºîÍúÎò¤¬¾Ãµî¤µ¤ì¤Þ¤·¤¿');
+//define('_MSG_ACCOUNTCREATED',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½ï¿½á¡¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½');
+//define('_MSG_PASSWORDSENT',				'ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½ï¿½á¡¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MSG_LOGINAGAIN',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ì¤¿ï¿½Ù¡ï¿½ï¿½?ï¿½ï¿½ï¿½ó¤·¤Ê¤ï¿½ï¿½ï¿½É¬ï¿½×¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½');
+define('_MSG_SETTINGSCHANGED',				'ï¿½ï¿½ï¿½ê¤¬ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_MSG_ADMINCHANGED',					'ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½Â¤ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_MSG_NEWBLOG',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_MSG_ACTIONLOGCLEARED',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò¤¬¾Ãµî¤µï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // actionlog in admin area
-define('_ACTIONLOG_DISALLOWED',				'µö²Ä¤µ¤ì¤Æ¤¤¤Ê¤¤¥¢¥¯¥·¥ç¥ó: ');
-define('_ACTIONLOG_PWDREMINDERSENT',		'¿·¤·¤¤¥Ñ¥¹¥ï¡¼¥É¤ÎÁ÷¿®Àè: ');
-define('_ACTIONLOG_TITLE',					'´ÉÍýÁàºîÍúÎò');
-define('_ACTIONLOG_CLEAR_TITLE',			'´ÉÍýÁàºîÍúÎò¤Î¾Ãµî');
-define('_ACTIONLOG_CLEAR_TEXT',				'´ÉÍýÁàºîÍúÎò¤òº£¤¹¤°¾Ãµî');
+define('_ACTIONLOG_DISALLOWED',				'ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ');
+define('_ACTIONLOG_PWDREMINDERSENT',		'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: ');
+define('_ACTIONLOG_TITLE',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_ACTIONLOG_CLEAR_TITLE',			'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¾Ãµï¿½');
+define('_ACTIONLOG_CLEAR_TEXT',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½òº£¤ï¿½ï¿½ï¿½ï¿½Ãµï¿½');
 
 // team management
-define('_TEAM_TITLE',						'Blog¤Î¥Á¡¼¥à¤ò´ÉÍý¤¹¤ë ');
-define('_TEAM_CURRENT',						'¸½ºß¤Î¥Á¡¼¥à¥á¥ó¥Ð¡¼');
-define('_TEAM_ADDNEW',						'¥Á¡¼¥à¤Ë¿·¤·¤¤¥á¥ó¥Ð¡¼¤òÄÉ²Ã¤¹¤ë');
-define('_TEAM_CHOOSEMEMBER',				'¥á¥ó¥Ð¡¼¤òÁª¤Ö');
-define('_TEAM_ADMIN',						'´ÉÍý¼Ô¸¢¸Â¤òÍ¿¤¨¤ë ');
-define('_TEAM_ADD',							'¥Á¡¼¥à¤ËÄÉ²Ã');
-define('_TEAM_ADD_BTN',						'¥Á¡¼¥à¤ËÄÉ²Ã');
+define('_TEAM_TITLE',						'Blogï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ');
+define('_TEAM_CURRENT',						'ï¿½ï¿½ï¿½ß¤Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½');
+define('_TEAM_ADDNEW',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½É²Ã¤ï¿½ï¿½ï¿½');
+define('_TEAM_CHOOSEMEMBER',				'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEAM_ADMIN',						'ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½Â¤ï¿½Í¿ï¿½ï¿½ï¿½ï¿½ ');
+define('_TEAM_ADD',							'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É²ï¿½');
+define('_TEAM_ADD_BTN',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É²ï¿½');
 
 // blogsettings
-define('_EBLOG_TITLE',						'BlogÀßÄê¤ÎÊÔ½¸');
-define('_EBLOG_TEAM_TITLE',					'¥Á¡¼¥à¤Î´ÉÍý');
-define('_EBLOG_TEAM_TEXT',					'¥Á¡¼¥à¤Î´ÉÍý...');
-define('_EBLOG_SETTINGS_TITLE',				'BlogÀßÄê');
-define('_EBLOG_NAME',						'Blog¤ÎÌ¾Á°');
-define('_EBLOG_SHORTNAME',					'Blog¤ÎÃ»½ÌÌ¾(Î¬¾Î)');
-define('_EBLOG_SHORTNAME_EXTRA',			'<br />(a-z¤Î±Ñ¾®Ê¸»ú¤Î¤ß¤¬»ÈÍÑ¤Ç¤­¤Þ¤¹¡£¶õÇò¤Ï»ÈÍÑ¤Ç¤­¤Þ¤»¤ó)');
-define('_EBLOG_DESC',						'Blog¤ÎÀâÌÀ');
-define('_EBLOG_URL',						'Blog¤ÎURL');
-define('_EBLOG_DEFSKIN',					'Blog¤ÎÉ¸½à¤Î¥¹¥­¥ó');
-define('_EBLOG_DEFCAT',						'Blog¤ÎÉ¸½à¤Î¥«¥Æ¥´¥ê');
-define('_EBLOG_LINEBREAKS',					'¥¢¥¤¥Æ¥à¤Î²þ¹Ô¤òÊÑ´¹¤¹¤ë');
-define('_EBLOG_DISABLECOMMENTS',			'¥³¥á¥ó¥È¤ò¼õ¤±ÉÕ¤±¤ë<br /><small>(¥³¥á¥ó¥È¤ò¶Ø»ß¤¹¤ë¤È¥³¥á¥ó¥È¤ÎÄÉ²Ã¤Ï¤Ç¤­¤Ê¤¯¤Ê¤ê¤Þ¤¹¡£)</small>');
-define('_EBLOG_ANONYMOUS',					'¥á¥ó¥Ð¡¼°Ê³°¤Î¥³¥á¥ó¥È¤ò¼õ¤±ÉÕ¤±¤ë');
-define('_EBLOG_NOTIFY',						'ÄÌÃÎ¤¹¤ë¥á¡¼¥ë¥¢¥É¥ì¥¹ ( ; ¤Ç¶èÀÚ¤Ã¤Æ¤¯¤À¤µ¤¤)');
-define('_EBLOG_NOTIFY_ON',					'°Ê²¼¤òÄÌÃÎ¤¹¤ë');
-define('_EBLOG_NOTIFY_COMMENT',				'¿·¤·¤¤¥³¥á¥ó¥È');
-define('_EBLOG_NOTIFY_KARMA',				'¿·¤·¤¤¥«¥ë¥ÞÅêÉ¼');
-define('_EBLOG_NOTIFY_ITEM',				'¿·¤·¤¤Blog¥¢¥¤¥Æ¥à');
-define('_EBLOG_PING',						'¹¹¿·»þ¤ËBlog¸¡º÷¥µ¡¼¥Ó¥¹¤Ë¹¹¿·¤òÄÌÃÎ¤¹¤ë'); // NOTE: This string is no longer in used
-define('_EBLOG_MAXCOMMENTS',				'°ìÍ÷¤ËÉ½¼¨¤¹¤ë¥³¥á¥ó¥È¤ÎºÇÂç¿ô');
-define('_EBLOG_UPDATE',						'¼«Æ°¹¹¿·¤¹¤ë¥Õ¥¡¥¤¥ë');
-define('_EBLOG_OFFSET',						'¥µ¡¼¥Ð»þ¹ï¤È¤Î»þº¹');
-define('_EBLOG_STIME',						'¸½ºß¤Î¥µ¡¼¥Ð»þ¹ï: ');
-define('_EBLOG_BTIME',						'¸½ºß¤ÎBlog»þ¹ï: ');
-define('_EBLOG_CHANGE',						'ÀßÄê¤ÎÊÑ¹¹');
-define('_EBLOG_CHANGE_BTN',					'ÀßÄê¤ÎÊÑ¹¹');
-define('_EBLOG_ADMIN',						'Blog´ÉÍý¼Ô¸¢¸Â');
-define('_EBLOG_ADMIN_MSG',					'¤¢¤Ê¤¿¤Ë¤Ï´ÉÍý¼Ô¸¢¸Â¤¬³ä¤êÅö¤Æ¤é¤ì¤Þ¤¹');
-define('_EBLOG_CREATE_TITLE',				'¿·¤·¤¤Blog¤ÎºîÀ®');
-define('_EBLOG_CREATE_TEXT',				'¿·¤·¤¤Blog¤òºîÀ®¤¹¤ë°Ù¤Ë°Ê²¼¤Î¥Õ¥©¡¼¥à¤òËä¤á¤Æ¤¯¤À¤µ¤¤¡£<br /><br /> <b>Ãí°Õ:</b> É¬Í×¤Ê¥ª¥×¥·¥ç¥ó¤Î¤ß¤¬É½¼¨¤µ¤ì¤Æ¤¤¤Þ¤¹¡£ÄÉ²Ã¤Î¥ª¥×¥·¥ç¥ó¤òÀßÄê¤·¤¿¤¤¾ì¹ç¤ÏBlog¤òºîÀ®¤·¤¿¸å¡¢BlogÀßÄê¥Ú¡¼¥¸¤ÇÀßÄê¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_EBLOG_CREATE',						'ºîÀ®¡ª');
-define('_EBLOG_CREATE_BTN',					'Blog¤òºîÀ®');
-define('_EBLOG_CAT_TITLE',					'¥«¥Æ¥´¥ê¡¼');
-define('_EBLOG_CAT_NAME',					'¥«¥Æ¥´¥ê¡¼Ì¾');
-define('_EBLOG_CAT_DESC',					'¥«¥Æ¥´¥ê¡¼¤ÎÀâÌÀ');
-define('_EBLOG_CAT_CREATE',					'¿·¤·¤¤¥«¥Æ¥´¥ê¡¼¤òºî¤ë');
-define('_EBLOG_CAT_UPDATE',					'¥«¥Æ¥´¥ê¡¼¤Î¹¹¿·');
-define('_EBLOG_CAT_UPDATE_BTN',				'¥«¥Æ¥´¥ê¡¼¤ò¹¹¿·');
+define('_EBLOG_TITLE',						'Blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½');
+define('_EBLOG_TEAM_TITLE',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½');
+define('_EBLOG_TEAM_TEXT',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½...');
+define('_EBLOG_SETTINGS_TITLE',				'Blogï¿½ï¿½ï¿½ï¿½');
+define('_EBLOG_NAME',						'Blogï¿½ï¿½Ì¾ï¿½ï¿½');
+define('_EBLOG_SHORTNAME',					'Blogï¿½ï¿½Ã»ï¿½ï¿½Ì¾(Î¬ï¿½ï¿½)');
+define('_EBLOG_SHORTNAME_EXTRA',			'<br />(a-zï¿½Î±Ñ¾ï¿½Ê¸ï¿½ï¿½Î¤ß¤ï¿½ï¿½ï¿½ï¿½Ñ¤Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï»ï¿½ï¿½Ñ¤Ç¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½)');
+define('_EBLOG_DESC',						'Blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_EBLOG_URL',						'Blogï¿½ï¿½URL');
+define('_EBLOG_DEFSKIN',					'Blogï¿½ï¿½É¸ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_EBLOG_DEFCAT',						'Blogï¿½ï¿½É¸ï¿½ï¿½Î¥ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½');
+define('_EBLOG_LINEBREAKS',					'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Î²ï¿½ï¿½Ô¤ï¿½ï¿½Ñ´ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_EBLOG_DISABLECOMMENTS',			'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½ï¿½<br /><small>(ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½Ø»ß¤ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½É²Ã¤Ï¤Ç¤ï¿½ï¿½Ê¤ï¿½ï¿½Ê¤ï¿½Þ¤ï¿½ï¿½ï¿½)</small>');
+define('_EBLOG_ANONYMOUS',					'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Ê³ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½ï¿½');
+define('_EBLOG_NOTIFY',						'ï¿½ï¿½ï¿½Î¤ï¿½ï¿½ï¿½á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹ ( ; ï¿½Ç¶ï¿½ï¿½Ú¤Ã¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)');
+define('_EBLOG_NOTIFY_ON',					'ï¿½Ê²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¤ï¿½ï¿½ï¿½');
+define('_EBLOG_NOTIFY_COMMENT',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_EBLOG_NOTIFY_KARMA',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¼');
+define('_EBLOG_NOTIFY_ITEM',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½');
+define('_EBLOG_PING',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¥ï¿½ï¿½Ë¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¤ï¿½ï¿½ï¿½'); // NOTE: This string is no longer in used
+define('_EBLOG_MAXCOMMENTS',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ë¥³ï¿½ï¿½ï¿½È¤Îºï¿½ï¿½ï¿½ï¿½');
+define('_EBLOG_UPDATE',						'ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_EBLOG_OFFSET',						'ï¿½ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½È¤Î»ï¿½ï¿½ï¿½');
+define('_EBLOG_STIME',						'ï¿½ï¿½ï¿½ß¤Î¥ï¿½ï¿½ï¿½ï¿½Ð»ï¿½ï¿½ï¿½: ');
+define('_EBLOG_BTIME',						'ï¿½ï¿½ï¿½ß¤ï¿½Blogï¿½ï¿½ï¿½ï¿½: ');
+define('_EBLOG_CHANGE',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½');
+define('_EBLOG_CHANGE_BTN',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½');
+define('_EBLOG_ADMIN',						'Blogï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½ï¿½');
+define('_EBLOG_ADMIN_MSG',					'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Ë¤Ï´ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½Â¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½');
+define('_EBLOG_CREATE_TITLE',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Blogï¿½Îºï¿½ï¿½ï¿½');
+define('_EBLOG_CREATE_TEXT',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ù¤Ë°Ê²ï¿½ï¿½Î¥Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½<br /><br /> <b>ï¿½ï¿½ï¿½:</b> É¬ï¿½×¤Ê¥ï¿½ï¿½×¥ï¿½ï¿½ï¿½ï¿½Î¤ß¤ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½É²Ã¤Î¥ï¿½ï¿½×¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê¤·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½å¡¢Blogï¿½ï¿½ï¿½ï¿½Ú¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê¤·ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_EBLOG_CREATE',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_EBLOG_CREATE_BTN',					'Blogï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_EBLOG_CAT_TITLE',					'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼');
+define('_EBLOG_CAT_NAME',					'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼Ì¾');
+define('_EBLOG_CAT_DESC',					'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_EBLOG_CAT_CREATE',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½');
+define('_EBLOG_CAT_UPDATE',					'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½Î¹ï¿½ï¿½ï¿½');
+define('_EBLOG_CAT_UPDATE_BTN',				'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ò¹¹¿ï¿½');
 
 // templates
-define('_TEMPLATE_TITLE',					'¥Æ¥ó¥×¥ì¡¼¥È¤ÎÊÔ½¸');
-define('_TEMPLATE_AVAILABLE_TITLE',			'»ÈÍÑ²ÄÇ½¤Ê¥Æ¥ó¥×¥ì¡¼¥È');
-define('_TEMPLATE_NEW_TITLE',				'¿·¤·¤¤¥Æ¥ó¥×¥ì¡¼¥È');
-define('_TEMPLATE_NAME',					'¥Æ¥ó¥×¥ì¡¼¥ÈÌ¾');
-define('_TEMPLATE_DESC',					'¥Æ¥ó¥×¥ì¡¼¥È¤ÎÀâÌÀ');
-define('_TEMPLATE_CREATE',					'¥Æ¥ó¥×¥ì¡¼¥È¤ÎºîÀ®');
-define('_TEMPLATE_CREATE_BTN',				'¥Æ¥ó¥×¥ì¡¼¥È¤òºîÀ®');
-define('_TEMPLATE_EDIT_TITLE',				'¥Æ¥ó¥×¥ì¡¼¥È¤ÎÊÔ½¸');
-define('_TEMPLATE_BACK',					'¥Æ¥ó¥×¥ì¡¼¥È¤Î°ìÍ÷¤ËÌá¤ë');
-define('_TEMPLATE_EDIT_MSG',				'Á´¤Æ¤Î¥Æ¥ó¥×¥ì¡¼¥È¥Ñ¡¼¥Ä¤¬É¬Í×¤ÊÌõ¤Ç¤Ï¤¢¤ê¤Þ¤»¤ó¡£É¬Í×¤Ê¤¤¾ì¹ç¤Ï¶õÍó¤Î¤Þ¤Þ¤Ë¤·¤Æ¤ª¤¤¤Æ¤¯¤À¤µ¤¤¡£');
-define('_TEMPLATE_SETTINGS',				'¥Æ¥ó¥×¥ì¡¼¥ÈÀßÄê');
-define('_TEMPLATE_ITEMS',					'¥¢¥¤¥Æ¥à');
-define('_TEMPLATE_ITEMHEADER',				'¥¢¥¤¥Æ¥à¤Î¥Ø¥Ã¥À¡¼');
-define('_TEMPLATE_ITEMBODY',				'¥¢¥¤¥Æ¥à¤ÎËÜÂÎ');
-define('_TEMPLATE_ITEMFOOTER',				'¥¢¥¤¥Æ¥à¤Î¥Õ¥Ã¥¿¡¼');
-define('_TEMPLATE_MORELINK',				'Â³¤­¤Ø¤Î¥ê¥ó¥¯');
-define('_TEMPLATE_NEW',						'¿·¤·¤¤¥¢¥¤¥Æ¥à¤ËÉÕ¤±¤ë¥Þ¡¼¥¯');
-define('_TEMPLATE_COMMENTS_ANY',			'¥³¥á¥ó¥È (¤¢¤ë¾ì¹ç)');
-define('_TEMPLATE_CHEADER',					'¥³¥á¥ó¥È¤Î¥Ø¥Ã¥À¡¼');
-define('_TEMPLATE_CBODY',					'¥³¥á¥ó¥È¤ÎËÜÂÎ');
-define('_TEMPLATE_CFOOTER',					'¥³¥á¥ó¥È¤Î¥Õ¥Ã¥¿¡¼');
-define('_TEMPLATE_CONE',					'¥³¥á¥ó¥È¤¬1¤Ä¤Î»þ');
-define('_TEMPLATE_CMANY',					'¥³¥á¥ó¥È¤¬2¤Ä°Ê¾å¤Î»þ');
-define('_TEMPLATE_CMORE',					'¥³¥á¥ó¥È¤ÎÂ³¤­¤òÆÉ¤à');
-define('_TEMPLATE_CMEXTRA',					'ÅÐÏ¿¥á¥ó¥Ð¡¼¤«¤é¤Î¥³¥á¥ó¥È¤Ø¤ÎÄÉ²ÃÉ½¼¨');
-define('_TEMPLATE_COMMENTS_NONE',			'¥³¥á¥ó¥È (Ìµ¤¤¾ì¹ç)');
-define('_TEMPLATE_CNONE',					'¥³¥á¥ó¥È¤¬Ìµ¤¤»þ');
-define('_TEMPLATE_COMMENTS_TOOMUCH',		'¥³¥á¥ó¥È (ºÇÂçÉ½¼¨¿ô¤è¤êÂ¿¤¤¾ì¹ç)');
-define('_TEMPLATE_CTOOMUCH',				'¥³¥á¥ó¥È¤¬Â¿¤¹¤®¤ë»þ');
-define('_TEMPLATE_ARCHIVELIST',				'¥¢¡¼¥«¥¤¥Ö°ìÍ÷');
-define('_TEMPLATE_AHEADER',					'¥¢¡¼¥«¥¤¥Ö°ìÍ÷¤Î¥Ø¥Ã¥À¡¼');
-define('_TEMPLATE_AITEM',					'¥¢¡¼¥«¥¤¥Ö°ìÍ÷¤ÎËÜÂÎ');
-define('_TEMPLATE_AFOOTER',					'¥¢¡¼¥«¥¤¥Ö°ìÍ÷¤Î¥Õ¥Ã¥¿¡¼');
-define('_TEMPLATE_DATETIME',				'ÆüÉÕ¤È»þ¹ï');
-define('_TEMPLATE_DHEADER',					'ÆüÉÕ¤Î¥Ø¥Ã¥À¡¼');
-define('_TEMPLATE_DFOOTER',					'ÆüÉÕ¤Î¥Õ¥Ã¥¿¡¼');
-define('_TEMPLATE_DFORMAT',					'ÆüÉÕ¥Õ¥©¡¼¥Þ¥Ã¥È');
-define('_TEMPLATE_TFORMAT',					'»þ¹ï¥Õ¥©¡¼¥Þ¥Ã¥È');
-define('_TEMPLATE_LOCALE',					'¥í¥±¡¼¥ë');
-define('_TEMPLATE_IMAGE',					'²èÁü¤È¥á¥Ç¥£¥¢¤Î¥Ý¥Ã¥×¥¢¥Ã¥×');
-define('_TEMPLATE_PCODE',					'¥Ý¥Ã¥×¥¢¥Ã¥×²èÁü¤Ø¤Î¥ê¥ó¥¯¥³¡¼¥É');
-define('_TEMPLATE_ICODE',					'¥¤¥ó¥é¥¤¥ó²èÁü¤Î¥³¡¼¥É');
-define('_TEMPLATE_MCODE',					'¥á¥Ç¥£¥¢¥ª¥Ö¥¸¥§¥¯¥È¤Ø¤Î¥ê¥ó¥¯¥³¡¼¥É');
-define('_TEMPLATE_SEARCH',					'¸¡º÷');
-define('_TEMPLATE_SHIGHLIGHT',				'¥Ï¥¤¥é¥¤¥ÈÉ½¼¨');
-define('_TEMPLATE_SNOTFOUND',				'¸¡º÷¤Ç²¿¤â¸«¤Ä¤«¤é¤Ê¤«¤Ã¤¿¾ì¹ç');
-define('_TEMPLATE_UPDATE',					'¹¹¿·');
-define('_TEMPLATE_UPDATE_BTN',				'¥Æ¥ó¥×¥ì¡¼¥È¤Î¹¹¿·');
-define('_TEMPLATE_RESET_BTN',				'¥ê¥»¥Ã¥È');
-define('_TEMPLATE_CATEGORYLIST',			'¥«¥Æ¥´¥ê¡¼°ìÍ÷');
-define('_TEMPLATE_CATHEADER',				'¥«¥Æ¥´¥ê¡¼°ìÍ÷¤Î¥Ø¥Ã¥À¡¼');
-define('_TEMPLATE_CATITEM',					'¥«¥Æ¥´¥ê¡¼°ìÍ÷¤ÎËÜÂÎ');
-define('_TEMPLATE_CATFOOTER',				'¥«¥Æ¥´¥ê¡¼°ìÍ÷¤Î¥Õ¥Ã¥¿¡¼');
+define('_TEMPLATE_TITLE',					'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½È¤ï¿½ï¿½Ô½ï¿½');
+define('_TEMPLATE_AVAILABLE_TITLE',			'ï¿½ï¿½ï¿½Ñ²ï¿½Ç½ï¿½Ê¥Æ¥ï¿½×¥ì¡¼ï¿½ï¿½');
+define('_TEMPLATE_NEW_TITLE',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½×¥ì¡¼ï¿½ï¿½');
+define('_TEMPLATE_NAME',					'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½ï¿½Ì¾');
+define('_TEMPLATE_DESC',					'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_CREATE',					'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½È¤Îºï¿½ï¿½ï¿½');
+define('_TEMPLATE_CREATE_BTN',				'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½È¤ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_EDIT_TITLE',				'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½È¤ï¿½ï¿½Ô½ï¿½');
+define('_TEMPLATE_BACK',					'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½È¤Î°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_EDIT_MSG',				'ï¿½ï¿½ï¿½Æ¤Î¥Æ¥ï¿½×¥ì¡¼ï¿½È¥Ñ¡ï¿½ï¿½Ä¤ï¿½É¬ï¿½×¤ï¿½ï¿½ï¿½ï¿½Ç¤Ï¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½É¬ï¿½×¤Ê¤ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½Î¤Þ¤Þ¤Ë¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_SETTINGS',				'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_ITEMS',					'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½');
+define('_TEMPLATE_ITEMHEADER',				'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Î¥Ø¥Ã¥ï¿½ï¿½ï¿½');
+define('_TEMPLATE_ITEMBODY',				'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_ITEMFOOTER',				'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Î¥Õ¥Ã¥ï¿½ï¿½ï¿½');
+define('_TEMPLATE_MORELINK',				'Â³ï¿½ï¿½ï¿½Ø¤Î¥ï¿½ï¿½');
+define('_TEMPLATE_NEW',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½ï¿½Þ¡ï¿½ï¿½ï¿½');
+define('_TEMPLATE_COMMENTS_ANY',			'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)');
+define('_TEMPLATE_CHEADER',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¤Î¥Ø¥Ã¥ï¿½ï¿½ï¿½');
+define('_TEMPLATE_CBODY',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_CFOOTER',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¤Î¥Õ¥Ã¥ï¿½ï¿½ï¿½');
+define('_TEMPLATE_CONE',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½1ï¿½Ä¤Î»ï¿½');
+define('_TEMPLATE_CMANY',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½2ï¿½Ä°Ê¾ï¿½Î»ï¿½');
+define('_TEMPLATE_CMORE',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½Â³ï¿½ï¿½ï¿½ï¿½ï¿½É¤ï¿½');
+define('_TEMPLATE_CMEXTRA',					'ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½È¤Ø¤ï¿½ï¿½É²ï¿½É½ï¿½ï¿½');
+define('_TEMPLATE_COMMENTS_NONE',			'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (Ìµï¿½ï¿½ï¿½ï¿½ï¿½)');
+define('_TEMPLATE_CNONE',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½Ìµï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_COMMENTS_TOOMUCH',		'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â¿ï¿½ï¿½ï¿½ï¿½ï¿½)');
+define('_TEMPLATE_CTOOMUCH',				'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½Â¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_ARCHIVELIST',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½');
+define('_TEMPLATE_AHEADER',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½Î¥Ø¥Ã¥ï¿½ï¿½ï¿½');
+define('_TEMPLATE_AITEM',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_AFOOTER',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½Î¥Õ¥Ã¥ï¿½ï¿½ï¿½');
+define('_TEMPLATE_DATETIME',				'ï¿½ï¿½ï¿½Õ¤È»ï¿½ï¿½ï¿½');
+define('_TEMPLATE_DHEADER',					'ï¿½ï¿½ï¿½Õ¤Î¥Ø¥Ã¥ï¿½ï¿½ï¿½');
+define('_TEMPLATE_DFOOTER',					'ï¿½ï¿½ï¿½Õ¤Î¥Õ¥Ã¥ï¿½ï¿½ï¿½');
+define('_TEMPLATE_DFORMAT',					'ï¿½ï¿½ï¿½Õ¥Õ¥ï¿½ï¿½ï¿½ï¿½Þ¥Ã¥ï¿½');
+define('_TEMPLATE_TFORMAT',					'ï¿½ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½Þ¥Ã¥ï¿½');
+define('_TEMPLATE_LOCALE',					'ï¿½?ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_IMAGE',					'ï¿½ï¿½ï¿½ï¿½È¥ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½Î¥Ý¥Ã¥×¥ï¿½ï¿½Ã¥ï¿½');
+define('_TEMPLATE_PCODE',					'ï¿½Ý¥Ã¥×¥ï¿½ï¿½Ã¥×²ï¿½ï¿½ï¿½Ø¤Î¥ï¿½ó¥¯¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_ICODE',					'ï¿½ï¿½ï¿½ï¿½é¥¤ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_MCODE',					'ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤Ø¤Î¥ï¿½ó¥¯¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_SEARCH',					'ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_SHIGHLIGHT',				'ï¿½Ï¥ï¿½ï¿½é¥¤ï¿½ï¿½É½ï¿½ï¿½');
+define('_TEMPLATE_SNOTFOUND',				'ï¿½ï¿½ï¿½ï¿½ï¿½Ç²ï¿½ï¿½â¸«ï¿½Ä¤ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Ã¤ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_UPDATE',					'ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_UPDATE_BTN',				'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½È¤Î¹ï¿½ï¿½ï¿½');
+define('_TEMPLATE_RESET_BTN',				'ï¿½ê¥»ï¿½Ã¥ï¿½');
+define('_TEMPLATE_CATEGORYLIST',			'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_CATHEADER',				'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½ï¿½Î¥Ø¥Ã¥ï¿½ï¿½ï¿½');
+define('_TEMPLATE_CATITEM',					'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_TEMPLATE_CATFOOTER',				'ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ê¡¼ï¿½ï¿½ï¿½ï¿½ï¿½Î¥Õ¥Ã¥ï¿½ï¿½ï¿½');
 
 // skins
-define('_SKIN_EDIT_TITLE',					'¥¹¥­¥ó¤ÎÊÔ½¸');
-define('_SKIN_AVAILABLE_TITLE',				'»ÈÍÑ²ÄÇ½¤Ê¥¹¥­¥ó');
-define('_SKIN_NEW_TITLE',					'¿·¤·¤¤¥¹¥­¥ó');
-define('_SKIN_NAME',						'Ì¾Á°');
-define('_SKIN_DESC',						'ÀâÌÀ');
+define('_SKIN_EDIT_TITLE',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½');
+define('_SKIN_AVAILABLE_TITLE',				'ï¿½ï¿½ï¿½Ñ²ï¿½Ç½ï¿½Ê¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SKIN_NEW_TITLE',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SKIN_NAME',						'Ì¾ï¿½ï¿½');
+define('_SKIN_DESC',						'ï¿½ï¿½ï¿½ï¿½');
 define('_SKIN_TYPE',						'Content Type');
-define('_SKIN_CREATE',						'ºîÀ®');
-define('_SKIN_CREATE_BTN',					'¥¹¥­¥ó¤ÎºîÀ®');
-define('_SKIN_EDITONE_TITLE',				'¥¹¥­¥ó¤ÎÊÔ½¸');
-define('_SKIN_BACK',						'¥¹¥­¥ó¤Î°ìÍ÷¤ËÌá¤ë');
-define('_SKIN_PARTS_TITLE',					'¥¹¥­¥ó¥Ñ¡¼¥Ä');
-define('_SKIN_PARTS_MSG',					'¤½¤ì¤¾¤ì¤Î¥¹¥­¥ó¤ËÁ´¤Æ¤Î¥¿¥¤¥×¤¬É¬Í×¤È¤Ï¸Â¤ê¤Þ¤»¤ó¡£É¬Í×¤Ê¤¤¾ì¹ç¤Ï¶õÍó¤Î¤Þ¤Þ¤Ë¤·¤Æ¤ª¤¤¤Æ¤¯¤À¤µ¤¤¡£°Ê²¼¤«¤éÊÔ½¸¤¹¤ë¥¹¥­¥ó¤òÁª¤ó¤Ç¤¯¤À¤µ¤¤:');
-define('_SKIN_PART_MAIN',					'¥á¥¤¥ó¤ÎÌÜ¼¡¥Ú¡¼¥¸');
-define('_SKIN_PART_ITEM',					'¸ÄÊÌ¥¢¥¤¥Æ¥à¥Ú¡¼¥¸');
-define('_SKIN_PART_ALIST',					'·îÊÌ¥¢¡¼¥«¥¤¥Ö°ìÍ÷¥Ú¡¼¥¸');
-define('_SKIN_PART_ARCHIVE',				'·îÊÌ¥¢¡¼¥«¥¤¥Ö¥Ú¡¼¥¸');
-define('_SKIN_PART_SEARCH',					'¸¡º÷¥Ú¡¼¥¸');
-define('_SKIN_PART_ERROR',					'¥¨¥é¡¼¥Ú¡¼¥¸');
-define('_SKIN_PART_MEMBER',					'¥á¥ó¥Ð¡¼¾ÜºÙ¥Ú¡¼¥¸');
-define('_SKIN_PART_POPUP',					'²èÁü¥Ý¥Ã¥×¥¢¥Ã¥×¥¦¥£¥ó¥É¥¦');
-define('_SKIN_GENSETTINGS_TITLE',			'°ìÈÌÀßÄê');
-define('_SKIN_CHANGE',						'ÊÑ¹¹');
-define('_SKIN_CHANGE_BTN',					'ÀßÄê¤ÎÊÑ¹¹');
-define('_SKIN_UPDATE_BTN',					'¥¹¥­¥ó¤Î¹¹¿·');
-define('_SKIN_RESET_BTN',					'¥ê¥»¥Ã¥È');
-define('_SKIN_EDITPART_TITLE',				'¥¹¥­¥ó¤ÎÊÔ½¸');
-define('_SKIN_GOBACK',						'Ìá¤ë');
-define('_SKIN_ALLOWEDVARS',					'»ÈÍÑ²ÄÇ½¤ÊÊÑ¿ô (¥¯¥ê¥Ã¥¯¤ÇÀâÌÀÉ½¼¨):');
+define('_SKIN_CREATE',						'ï¿½ï¿½ï¿½ï¿½');
+define('_SKIN_CREATE_BTN',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îºï¿½ï¿½ï¿½');
+define('_SKIN_EDITONE_TITLE',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½');
+define('_SKIN_BACK',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SKIN_PARTS_TITLE',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½');
+define('_SKIN_PARTS_MSG',					'ï¿½ï¿½ï¿½ì¤¾ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤Î¥ï¿½ï¿½ï¿½ï¿½×¤ï¿½É¬ï¿½×¤È¤Ï¸Â¤ï¿½Þ¤ï¿½ï¿½ï¿½É¬ï¿½×¤Ê¤ï¿½ï¿½ï¿½ï¿½Ï¶ï¿½ï¿½ï¿½Î¤Þ¤Þ¤Ë¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½ï¿½ï¿½ï¿½ë¥¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½:');
+define('_SKIN_PART_MAIN',					'ï¿½á¥¤ï¿½ï¿½ï¿½ï¿½Ü¼ï¿½ï¿½Ú¡ï¿½ï¿½ï¿½');
+define('_SKIN_PART_ITEM',					'ï¿½ï¿½ï¿½Ì¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Ú¡ï¿½ï¿½ï¿½');
+define('_SKIN_PART_ALIST',					'ï¿½ï¿½ï¿½Ì¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö°ï¿½ï¿½ï¿½ï¿½Ú¡ï¿½ï¿½ï¿½');
+define('_SKIN_PART_ARCHIVE',				'ï¿½ï¿½ï¿½Ì¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¥Ú¡ï¿½ï¿½ï¿½');
+define('_SKIN_PART_SEARCH',					'ï¿½ï¿½ï¿½ï¿½ï¿½Ú¡ï¿½ï¿½ï¿½');
+define('_SKIN_PART_ERROR',					'ï¿½ï¿½ï¿½é¡¼ï¿½Ú¡ï¿½ï¿½ï¿½');
+define('_SKIN_PART_MEMBER',					'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ÜºÙ¥Ú¡ï¿½ï¿½ï¿½');
+define('_SKIN_PART_POPUP',					'ï¿½ï¿½ï¿½ï¿½Ý¥Ã¥×¥ï¿½ï¿½Ã¥×¥ï¿½ï¿½ï¿½ï¿½ï¿½É¥ï¿½');
+define('_SKIN_GENSETTINGS_TITLE',			'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SKIN_CHANGE',						'ï¿½Ñ¹ï¿½');
+define('_SKIN_CHANGE_BTN',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½');
+define('_SKIN_UPDATE_BTN',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î¹ï¿½ï¿½ï¿½');
+define('_SKIN_RESET_BTN',					'ï¿½ê¥»ï¿½Ã¥ï¿½');
+define('_SKIN_EDITPART_TITLE',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½');
+define('_SKIN_GOBACK',						'ï¿½ï¿½ï¿½');
+define('_SKIN_ALLOWEDVARS',					'ï¿½ï¿½ï¿½Ñ²ï¿½Ç½ï¿½ï¿½ï¿½Ñ¿ï¿½ (ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É½ï¿½ï¿½):');
 
 // global settings
-define('_SETTINGS_TITLE',					'¥°¥í¡¼¥Ð¥ëÀßÄê');
-define('_SETTINGS_SUB_GENERAL',				'¥°¥í¡¼¥Ð¥ëÀßÄê');
-define('_SETTINGS_DEFBLOG',					'´ûÄê¤ÎBlog');
-define('_SETTINGS_ADMINMAIL',				'´ÉÍý¼Ô¤Î¥á¡¼¥ë¥¢¥É¥ì¥¹');
-define('_SETTINGS_SITENAME',				'¥µ¥¤¥ÈÌ¾');
-define('_SETTINGS_SITEURL',					'¥µ¥¤¥È¤ÎURL (ºÇ¸å¤Ë¥¹¥é¥Ã¥·¥å "/" ¤òÉÕ¤±¤Æ¤¯¤À¤µ¤¤)');
-define('_SETTINGS_ADMINURL',				'´ÉÍý¼ÔÎÎ°è¤ÎURL (ºÇ¸å¤Ë¥¹¥é¥Ã¥·¥å "/" ¤òÉÕ¤±¤Æ¤¯¤À¤µ¤¤)');
-define('_SETTINGS_DIRS',					'Nucleus¥Ç¥£¥ì¥¯¥È¥ê');
-define('_SETTINGS_MEDIADIR',				'¥á¥Ç¥£¥¢(²èÁü¡¦²»À¼)¤¬¥¢¥Ã¥×¥í¡¼¥É¤µ¤ì¤ë¥Ç¥£¥ì¥¯¥È¥ê');
-define('_SETTINGS_SEECONFIGPHP',			'(config.php ¤ò»²¾È)');
-define('_SETTINGS_MEDIAURL',				'¥á¥Ç¥£¥¢URL (ºÇ¸å¤Ë¥¹¥é¥Ã¥·¥å "/" ¤òÉÕ¤±¤Æ¤¯¤À¤µ¤¤)');
-define('_SETTINGS_ALLOWUPLOAD',				'¥Õ¥¡¥¤¥ë¤Î¥¢¥Ã¥×¥í¡¼¥É¤ò²ÄÇ½¤Ë¤¹¤ë');
-define('_SETTINGS_ALLOWUPLOADTYPES',		'¥¢¥Ã¥×¥í¡¼¥É¤òµö²Ä¤¹¤ë¥Õ¥¡¥¤¥ë¥¿¥¤¥×');
-define('_SETTINGS_CHANGELOGIN',				'¥á¥ó¥Ð¡¼¤Ë¤è¤ë¥í¥°¥¤¥óÌ¾/¥Ñ¥¹¥ï¡¼¥É¤ÎÊÑ¹¹¤ò²ÄÇ½¤Ë¤¹¤ë');
-define('_SETTINGS_COOKIES_TITLE',			'Cookie ÀßÄê');
-define('_SETTINGS_COOKIELIFE',				'¥í¥°¥¤¥ó Cookie ¤ÎÍ­¸ú´ü´Ö');
-define('_SETTINGS_COOKIESESSION',			'¥»¥Ã¥·¥ç¥ó¤´¤È');
-define('_SETTINGS_COOKIEMONTH',				'°ì¥ö·î');
-define('_SETTINGS_COOKIEPATH',				'Cookie ¥Ñ¥¹ (¾åµé¥ª¥×¥·¥ç¥ó)');
-define('_SETTINGS_COOKIEDOMAIN',			'Cookie ¥É¥á¥¤¥ó (¾åµé¥ª¥×¥·¥ç¥ó)');
-define('_SETTINGS_COOKIESECURE',			'¥»¥­¥å¥¢ Cookie (¾åµé¥ª¥×¥·¥ç¥ó)');
-define('_SETTINGS_LASTVISIT',				'ºÇ½ªË¬ÌäÆü»þ¤òCookie¤ËÊÝÂ¸¤¹¤ë');
-define('_SETTINGS_ALLOWCREATE',				'¥Ó¥¸¥¿¡¼¤Ë¤è¤ë¥á¥ó¥Ð¡¼¥¢¥«¥¦¥ó¥ÈºîÀ®¤ò²ÄÇ½¤Ë¤¹¤ë');
-define('_SETTINGS_NEWLOGIN',				'¥Ó¥¸¥¿¡¼¤¬ºîÀ®¤·¤¿¥¢¥«¥¦¥ó¥È¤Ç¤Î¥í¥°¥¤¥ó¤òºîÀ®Ä¾¸å¤Ë²ÄÇ½¤Ë¤¹¤ë');
-define('_SETTINGS_NEWLOGIN2',				'(¿·¤·¤¯ºîÀ®¤µ¤ì¤¿¥¢¥«¥¦¥ó¥È¤Î¤ß)');
-define('_SETTINGS_MEMBERMSGS',				'¥á¥ó¥Ð¡¼´Ö¥µ¡¼¥Ó¥¹¤ò²ÄÇ½¤Ë¤¹¤ë');
-define('_SETTINGS_LANGUAGE',				'»ÈÍÑ¤¹¤ë¸À¸ì');
-define('_SETTINGS_DISABLESITE',				'¥µ¥¤¥È¤òÊÄº¿¤·¡¢»ØÄê¤ÎURL¤ËÅ¾Á÷¤¹¤ë¡ÊÈó¾ï»þÍÑ¡Ë');
-define('_SETTINGS_DBLOGIN',					'MySQL ¥í¥°¥¤¥ó &amp; ¥Ç¡¼¥¿¥Ù¡¼¥¹');
-define('_SETTINGS_UPDATE',					'ÀßÄê¤Î¹¹¿·');
-define('_SETTINGS_UPDATE_BTN',				'ÀßÄê¤ò¹¹¿·');
-define('_SETTINGS_DISABLEJS',				'JavaScript¥Ä¡¼¥ë¥Ð¡¼¤òÌµ¸ú¤Ë¤¹¤ë');
-define('_SETTINGS_MEDIA',					'¥á¥Ç¥£¥¢/¥¢¥Ã¥×¥í¡¼¥ÉÀßÄê');
-define('_SETTINGS_MEDIAPREFIX',				'¥¢¥Ã¥×¥í¡¼¥É¤¹¤ë¥Õ¥¡¥¤¥ëÌ¾¤ÎÆ¬¤ËÆüÉÕ¤òÉÕ²Ã¤¹¤ë');
-define('_SETTINGS_MEMBERS',					'¥á¥ó¥Ð¡¼ÀßÄê');
+define('_SETTINGS_TITLE',					'ï¿½ï¿½ï¿½?ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SETTINGS_SUB_GENERAL',				'ï¿½ï¿½ï¿½?ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SETTINGS_DEFBLOG',					'ï¿½ï¿½ï¿½ï¿½ï¿½Blog');
+define('_SETTINGS_ADMINMAIL',				'ï¿½ï¿½ï¿½ï¿½Ô¤Î¥á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹');
+define('_SETTINGS_SITENAME',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾');
+define('_SETTINGS_SITEURL',					'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½URL (ï¿½Ç¸ï¿½Ë¥ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ "/" ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)');
+define('_SETTINGS_ADMINURL',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½ï¿½URL (ï¿½Ç¸ï¿½Ë¥ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ "/" ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)');
+define('_SETTINGS_DIRS',					'Nucleusï¿½Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½');
+define('_SETTINGS_MEDIADIR',				'ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½ï¿½ï¿½Ç¥ï¿½ï¿½ì¥¯ï¿½È¥ï¿½');
+define('_SETTINGS_SEECONFIGPHP',			'(config.php ï¿½ò»²¾ï¿½)');
+define('_SETTINGS_MEDIAURL',				'ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½URL (ï¿½Ç¸ï¿½Ë¥ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ "/" ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)');
+define('_SETTINGS_ALLOWUPLOAD',				'ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½Ç½ï¿½Ë¤ï¿½ï¿½ï¿½');
+define('_SETTINGS_ALLOWUPLOADTYPES',		'ï¿½ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½ï¿½Ä¤ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ë¥¿ï¿½ï¿½ï¿½ï¿½');
+define('_SETTINGS_CHANGELOGIN',				'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Ë¤ï¿½ï¿½?ï¿½ï¿½ï¿½ï¿½Ì¾/ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½Ç½ï¿½Ë¤ï¿½ï¿½ï¿½');
+define('_SETTINGS_COOKIES_TITLE',			'Cookie ï¿½ï¿½ï¿½ï¿½');
+define('_SETTINGS_COOKIELIFE',				'ï¿½?ï¿½ï¿½ï¿½ï¿½ Cookie ï¿½ï¿½Í­ï¿½ï¿½ï¿½ï¿½');
+define('_SETTINGS_COOKIESESSION',			'ï¿½ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ó¤´¤ï¿½');
+define('_SETTINGS_COOKIEMONTH',				'ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SETTINGS_COOKIEPATH',				'Cookie ï¿½Ñ¥ï¿½ (ï¿½ï¿½é¥ªï¿½×¥ï¿½ï¿½ï¿½ï¿½)');
+define('_SETTINGS_COOKIEDOMAIN',			'Cookie ï¿½É¥á¥¤ï¿½ï¿½ (ï¿½ï¿½é¥ªï¿½×¥ï¿½ï¿½ï¿½ï¿½)');
+define('_SETTINGS_COOKIESECURE',			'ï¿½ï¿½ï¿½ï¿½ï¿½å¥¢ Cookie (ï¿½ï¿½é¥ªï¿½×¥ï¿½ï¿½ï¿½ï¿½)');
+define('_SETTINGS_LASTVISIT',				'ï¿½Ç½ï¿½Ë¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Cookieï¿½ï¿½ï¿½ï¿½Â¸ï¿½ï¿½ï¿½ï¿½');
+define('_SETTINGS_ALLOWCREATE',				'ï¿½Ó¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¤ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Èºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½Ë¤ï¿½ï¿½ï¿½');
+define('_SETTINGS_NEWLOGIN',				'ï¿½Ó¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤Ç¤Î¥?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½Ë²ï¿½Ç½ï¿½Ë¤ï¿½ï¿½ï¿½');
+define('_SETTINGS_NEWLOGIN2',				'(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ì¤¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤Î¤ï¿½)');
+define('_SETTINGS_MEMBERMSGS',				'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Ö¥ï¿½ï¿½ï¿½ï¿½Ó¥ï¿½ï¿½ï¿½ï¿½Ç½ï¿½Ë¤ï¿½ï¿½ï¿½');
+define('_SETTINGS_LANGUAGE',				'ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SETTINGS_DISABLESITE',				'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½Äºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½URLï¿½ï¿½Å¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½');
+define('_SETTINGS_DBLOGIN',					'MySQL ï¿½?ï¿½ï¿½ï¿½ï¿½ &amp; ï¿½Ç¡ï¿½ï¿½ï¿½ï¿½Ù¡ï¿½ï¿½ï¿½');
+define('_SETTINGS_UPDATE',					'ï¿½ï¿½ï¿½ï¿½Î¹ï¿½ï¿½ï¿½');
+define('_SETTINGS_UPDATE_BTN',				'ï¿½ï¿½ï¿½ï¿½ò¹¹¿ï¿½');
+define('_SETTINGS_DISABLEJS',				'JavaScriptï¿½Ä¡ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½Ìµï¿½ï¿½Ë¤ï¿½ï¿½ï¿½');
+define('_SETTINGS_MEDIA',					'ï¿½ï¿½Ç¥ï¿½ï¿½ï¿½/ï¿½ï¿½ï¿½Ã¥×¥?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_SETTINGS_MEDIAPREFIX',				'ï¿½ï¿½ï¿½Ã¥×¥?ï¿½É¤ï¿½ï¿½ï¿½Õ¥ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½Æ¬ï¿½ï¿½ï¿½ï¿½ï¿½Õ¤ï¿½ï¿½Õ²Ã¤ï¿½ï¿½ï¿½');
+define('_SETTINGS_MEMBERS',					'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // bans
-define('_BAN_TITLE',						'¥¢¥¯¶Ø¥ê¥¹¥È:');
-define('_BAN_NONE',							'¤³¤ÎBlog¤Ï¥¢¥¯¥»¥¹µ¬À©¤µ¤ì¤Æ¤¤¤Þ¤»¤ó');
-define('_BAN_NEW_TITLE',					'µ¬À©¤¹¤ëIP¥¢¥É¥ì¥¹¤ÎÄÉ²Ã');
-define('_BAN_NEW_TEXT',						'º£¤¹¤°µ¬À©¥¢¥É¥ì¥¹¤òÄÉ²Ã¤¹¤ë');
-define('_BAN_REMOVE_TITLE',					'¥¢¥¯¥»¥¹µ¬À©¤Î²ò½ü');
-define('_BAN_IPRANGE',						'¥¢¥¯¥»¥¹µ¬À©¤¹¤ëIP¥¢¥É¥ì¥¹¤ÎÈÏ°Ï');
-define('_BAN_BLOGS',						'¥¢¥¯¥»¥¹µ¬À©¤¹¤ëBlog: ');
-define('_BAN_DELETE_TITLE',					'¥¢¥¯¥»¥¹µ¬À©¤Î²ò½ü');
-define('_BAN_ALLBLOGS',						'¤¢¤Ê¤¿¤¬´ÉÍý¼Ô¸¢¸Â¤ò»ý¤ÄÁ´¤Æ¤ÎBlog');
-define('_BAN_REMOVED_TITLE',				'¥¢¥¯¥»¥¹µ¬À©¤ò²ò½ü¤·¤Þ¤·¤¿');
-define('_BAN_REMOVED_TEXT',					'°Ê²¼¤ÎBlog¤Î¥¢¥¯¥»¥¹µ¬À©¤ò²ò½ü¤·¤Þ¤·¤¿:');
-define('_BAN_ADD_TITLE',					'µ¬À©¤¹¤ëIP¥¢¥É¥ì¥¹¤ÎÄÉ²Ã');
-define('_BAN_IPRANGE_TEXT',					'°Ê²¼¤Ë¥Ö¥í¥Ã¥¯¤·¤¿¤¤IP¥¢¥É¥ì¥¹¤òÆþÎÏ¤·¤Æ¤¯¤À¤µ¤¤¡£');
-define('_BAN_BLOGS_TEXT',					'1¤Ä¤ÎBlog¤Î¤ß¤Çµ¬À©¤¹¤ë¤«¡¢¤¢¤Ê¤¿¤¬´ÉÍý¼Ô¸¢¸Â¤ò»ý¤ÄÁ´¤Æ¤ÎBlog¤Çµ¬À©¤¹¤ë¤«¤òÁªÂò¤¹¤ë¤³¤È¤¬½ÐÍè¤Þ¤¹¡£°Ê²¼¤«¤éÁª¤ó¤Ç¤¯¤À¤µ¤¤¡£');
-define('_BAN_REASON_TITLE',					'ÍýÍ³');
-define('_BAN_REASON_TEXT',					'µ¬À©Ãæ¤ÎIP¥¢¥É¥ì¥¹¤ÎÈÏ°ÏÆâ¤ÎHOST¤«¤é¥³¥á¥ó¥È¤òÅê¹Æ¤·¤¿¤ê¥«¥ë¥ÞÅêÉ¼¤ò¤·¤è¤¦¤È¤·¤¿¤È¤­¤ËÉ½¼¨¤µ¤ì¤ëµ¬À©ÍýÍ³¤ò½ñ¤¤¤Æ¤ª¤¯¤³¤È¤¬¤Ç¤­¤Þ¤¹ (¾å¸Â256Ê¸»ú)¡£');
-define('_BAN_ADD_BTN',						'µ¬À©¤¹¤ëIP¥¢¥É¥ì¥¹¤ÎÄÉ²Ã');
+define('_BAN_TITLE',						'ï¿½ï¿½ï¿½ï¿½ï¿½Ø¥ê¥¹ï¿½ï¿½:');
+define('_BAN_NONE',							'ï¿½ï¿½ï¿½ï¿½Blogï¿½Ï¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_BAN_NEW_TITLE',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IPï¿½ï¿½ï¿½É¥ì¥¹ï¿½ï¿½ï¿½É²ï¿½');
+define('_BAN_NEW_TEXT',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¥ì¥¹ï¿½ï¿½ï¿½É²Ã¤ï¿½ï¿½ï¿½');
+define('_BAN_REMOVE_TITLE',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½');
+define('_BAN_IPRANGE',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IPï¿½ï¿½ï¿½É¥ì¥¹ï¿½ï¿½ï¿½Ï°ï¿½');
+define('_BAN_BLOGS',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Blog: ');
+define('_BAN_DELETE_TITLE',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î²ï¿½ï¿½');
+define('_BAN_ALLBLOGS',						'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½Â¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½Blog');
+define('_BAN_REMOVED_TITLE',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_BAN_REMOVED_TEXT',					'ï¿½Ê²ï¿½ï¿½ï¿½Blogï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½:');
+define('_BAN_ADD_TITLE',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IPï¿½ï¿½ï¿½É¥ì¥¹ï¿½ï¿½ï¿½É²ï¿½');
+define('_BAN_IPRANGE_TEXT',					'ï¿½Ê²ï¿½ï¿½Ë¥Ö¥ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IPï¿½ï¿½ï¿½É¥ì¥¹ï¿½ï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BAN_BLOGS_TEXT',					'1ï¿½Ä¤ï¿½Blogï¿½Î¤ß¤Çµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¤«ï¿½ï¿½ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½Â¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¤ï¿½Blogï¿½Çµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë¤«ï¿½ï¿½ï¿½ï¿½ï¿½ò¤¹¤ë¤³ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½Ê²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BAN_REASON_TITLE',					'ï¿½ï¿½Í³');
+define('_BAN_REASON_TEXT',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IPï¿½ï¿½ï¿½É¥ì¥¹ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ï¿½HOSTï¿½ï¿½ï¿½é¥³ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½Æ¤ï¿½ï¿½ï¿½ï¿½ê¥«ï¿½ï¿½ï¿½ï¿½ï¿½É¼ï¿½ò¤·¤è¤¦ï¿½È¤ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ëµ¬ï¿½ï¿½ï¿½ï¿½Í³ï¿½ï¿½ñ¤¤¤Æ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½Ç¤ï¿½ï¿½Þ¤ï¿½ (ï¿½ï¿½ï¿½256Ê¸ï¿½ï¿½)ï¿½ï¿½');
+define('_BAN_ADD_BTN',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IPï¿½ï¿½ï¿½É¥ì¥¹ï¿½ï¿½ï¿½É²ï¿½');
 
 // LOGIN screen
-define('_LOGIN_MESSAGE',					'¥á¥Ã¥»¡¼¥¸');
+define('_LOGIN_MESSAGE',					'ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½');
 define('_LOGIN_SHARED',						_LOGINFORM_SHARED);
-define('_LOGIN_FORGOT',						'¥Ñ¥¹¥ï¡¼¥É¤òËº¤ì¤¿');
+define('_LOGIN_FORGOT',						'ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½Ëºï¿½ì¤¿');
 
 // membermanagement
-define('_MEMBERS_TITLE',					'¥á¥ó¥Ð¡¼¤Î´ÉÍý');
-define('_MEMBERS_CURRENT',					'¸½ºß¤Î¥á¥ó¥Ð¡¼');
-define('_MEMBERS_NEW',						'¿·¤·¤¤¥á¥ó¥Ð¡¼¤ÎÄÉ²Ã');
-define('_MEMBERS_DISPLAY',					'É½¼¨¤µ¤ì¤ëÌ¾Á°(¥í¥°¥¤¥óID)');
-define('_MEMBERS_DISPLAY_INFO',				'(¤³¤ÎÌ¾Á°¤Ï¥í¥°¥¤¥ó»þ¤Ë»È¤ï¤ì¤Þ¤¹)');
-define('_MEMBERS_REALNAME',					'¥Ï¥ó¥É¥ë¥Í¡¼¥à');
-define('_MEMBERS_PWD',						'¥Ñ¥¹¥ï¡¼¥É');
-define('_MEMBERS_REPPWD',					'¥Ñ¥¹¥ï¡¼¥É¡Ê³ÎÇ§¡Ë');
-define('_MEMBERS_EMAIL',					'¥á¡¼¥ë¥¢¥É¥ì¥¹');
-define('_MEMBERS_EMAIL_EDIT',				'(¥á¡¼¥ë¥¢¥É¥ì¥¹¤òÊÑ¹¹¤¹¤ë¤È¡¢¤½¤Î¥¢¥É¥ì¥¹¤Ø¼«Æ°Åª¤Ë¿·¤·¤¤¥Ñ¥¹¥ï¡¼¥É¤¬Á÷¿®¤µ¤ì¤Þ¤¹)');
-define('_MEMBERS_URL',						'Web site¥¢¥É¥ì¥¹ (URL)');
-define('_MEMBERS_SUPERADMIN',				'Super-admin(ºÇ¹â´ÉÍý)¸¢¸Â¤òÍ¿¤¨¤ë');
-define('_MEMBERS_CANLOGIN',					'´ÉÍý¼ÔÎÎ°è¤Ø¤Î¥í¥°¥¤¥ó¤ò²ÄÇ½¤Ë¤¹¤ë');
-define('_MEMBERS_NOTES',					'È÷¹Í');
-define('_MEMBERS_NEW_BTN',					'¥á¥ó¥Ð¡¼¤ÎÄÉ²Ã');
-define('_MEMBERS_EDIT',						'¥á¥ó¥Ð¡¼¤ÎÊÔ½¸');
-define('_MEMBERS_EDIT_BTN',					'ÀßÄê¤ÎÊÑ¹¹');
-define('_MEMBERS_BACKTOOVERVIEW',			'¥á¥ó¥Ð¡¼¤Î°ìÍ÷¤ËÌá¤ë');
-define('_MEMBERS_DEFLANG',					'»ÈÍÑ¤¹¤ë¸À¸ì');
-define('_MEMBERS_USESITELANG',				'- ¥µ¥¤¥È¤ÎÀßÄê¤ò»È¤¦ -');
+define('_MEMBERS_TITLE',					'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Î´ï¿½ï¿½ï¿½');
+define('_MEMBERS_CURRENT',					'ï¿½ï¿½ï¿½ß¤Î¥ï¿½ï¿½Ð¡ï¿½');
+define('_MEMBERS_NEW',						'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½É²ï¿½');
+define('_MEMBERS_DISPLAY',					'É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½(ï¿½?ï¿½ï¿½ï¿½ï¿½ID)');
+define('_MEMBERS_DISPLAY_INFO',				'(ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½Ï¥?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë»È¤ï¿½ï¿½Þ¤ï¿½)');
+define('_MEMBERS_REALNAME',					'ï¿½Ï¥ï¿½É¥ï¿½Í¡ï¿½ï¿½ï¿½');
+define('_MEMBERS_PWD',						'ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½ï¿½');
+define('_MEMBERS_REPPWD',					'ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¡Ê³ï¿½Ç§ï¿½ï¿½');
+define('_MEMBERS_EMAIL',					'ï¿½á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹');
+define('_MEMBERS_EMAIL_EDIT',				'(ï¿½á¡¼ï¿½ë¥¢ï¿½É¥ì¥¹ï¿½ï¿½ï¿½Ñ¹ï¿½ï¿½ï¿½ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Î¥ï¿½ï¿½É¥ì¥¹ï¿½Ø¼ï¿½Æ°Åªï¿½Ë¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¥ï¿½ï¿½ï¡¼ï¿½É¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þ¤ï¿½)');
+define('_MEMBERS_URL',						'Web siteï¿½ï¿½ï¿½É¥ì¥¹ (URL)');
+define('_MEMBERS_SUPERADMIN',				'Super-admin(ï¿½Ç¹ï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½Â¤ï¿½Í¿ï¿½ï¿½ï¿½ï¿½');
+define('_MEMBERS_CANLOGIN',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î°ï¿½Ø¤Î¥?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ç½ï¿½Ë¤ï¿½ï¿½ï¿½');
+define('_MEMBERS_NOTES',					'ï¿½ï¿½ï¿½ï¿½');
+define('_MEMBERS_NEW_BTN',					'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½É²ï¿½');
+define('_MEMBERS_EDIT',						'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½Ô½ï¿½');
+define('_MEMBERS_EDIT_BTN',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¹ï¿½');
+define('_MEMBERS_BACKTOOVERVIEW',			'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½Î°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MEMBERS_DEFLANG',					'ï¿½ï¿½ï¿½Ñ¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MEMBERS_USESITELANG',				'- ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ -');
 
 // List of blogs (TT = tooltip)
-define('_BLOGLIST_TT_VISIT',				'¥µ¥¤¥È¤ò¸«¤ë');
-define('_BLOGLIST_ADD',						'¥¢¥¤¥Æ¥à¤ÎÄÉ²Ã');
-define('_BLOGLIST_TT_ADD',					'¤³¤ÎBlog¤Ë¿·¤·¤¤¥¢¥¤¥Æ¥à¤òÄÉ²Ã¤·¤Þ¤¹');
-define('_BLOGLIST_EDIT',					'¥¢¥¤¥Æ¥à¤ÎÊÔ½¸/ºï½ü');
-define('_BLOGLIST_TT_EDIT',					'¸ø³«ºÑ¤ß¤Î¥¢¥¤¥Æ¥à¤òÊÔ½¸¤Èºï½ü');
-define('_BLOGLIST_BMLET',					'¥Ö¥Ã¥¯¥Þ¡¼¥¯¥ì¥Ã¥È');
-define('_BLOGLIST_TT_BMLET',				'¥Ö¥Ã¥¯¥Þ¡¼¥¯¥ì¥Ã¥È¤Î¥¤¥ó¥¹¥È¡¼¥ë');
-define('_BLOGLIST_SETTINGS',				'¥Ö¥í¥°ÀßÄê');
-define('_BLOGLIST_TT_SETTINGS',				'¥Ö¥í¥°¤ÎÀßÄê¤È¥Ö¥í¥°¥Á¡¼¥à¤Î´ÉÍý');
-define('_BLOGLIST_BANS',					'¥¢¥¯¥»¥¹µ¬À©');
-define('_BLOGLIST_TT_BANS',					'¥¢¥¯¥»¥¹µ¬À©¤Î³ÎÇ§/ÄÉ²Ã/ºï½ü');
-define('_BLOGLIST_DELETE',					'Á´¤Æºï½ü');
-define('_BLOGLIST_TT_DELETE',				'¤³¤ÎBlog¤òºï½ü');
+define('_BLOGLIST_TT_VISIT',				'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ò¸«¤ï¿½');
+define('_BLOGLIST_ADD',						'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½É²ï¿½');
+define('_BLOGLIST_TT_ADD',					'ï¿½ï¿½ï¿½ï¿½Blogï¿½Ë¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½É²Ã¤ï¿½ï¿½Þ¤ï¿½');
+define('_BLOGLIST_EDIT',					'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½Ô½ï¿½/ï¿½ï¿½ï¿½');
+define('_BLOGLIST_TT_EDIT',					'ï¿½ï¿½Ñ¤ß¤Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½Ô½ï¿½ï¿½Èºï¿½ï¿½');
+define('_BLOGLIST_BMLET',					'ï¿½Ö¥Ã¥ï¿½ï¿½Þ¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥ï¿½');
+define('_BLOGLIST_TT_BMLET',				'ï¿½Ö¥Ã¥ï¿½ï¿½Þ¡ï¿½ï¿½ï¿½ï¿½ï¿½Ã¥È¤Î¥ï¿½ï¿½ó¥¹¥È¡ï¿½ï¿½ï¿½');
+define('_BLOGLIST_SETTINGS',				'ï¿½Ö¥?ï¿½ï¿½ï¿½ï¿½');
+define('_BLOGLIST_TT_SETTINGS',				'ï¿½Ö¥?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¥Ö¥?ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î´ï¿½ï¿½ï¿½');
+define('_BLOGLIST_BANS',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_BLOGLIST_TT_BANS',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î³ï¿½Ç§/ï¿½É²ï¿½/ï¿½ï¿½ï¿½');
+define('_BLOGLIST_DELETE',					'ï¿½ï¿½ï¿½Æºï¿½ï¿½');
+define('_BLOGLIST_TT_DELETE',				'ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½ï¿½ï¿½');
 
 // OVERVIEW screen
-define('_OVERVIEW_YRBLOGS',					'¤¢¤Ê¤¿¤ÎBlog');
-define('_OVERVIEW_YRDRAFTS',				'¥É¥é¥Õ¥È(²¼½ñ¤­)');
-define('_OVERVIEW_YRSETTINGS',				'ÀßÄê');
-define('_OVERVIEW_GSETTINGS',				'´ðËÜÀßÄê');
-define('_OVERVIEW_NOBLOGS',					'¤¢¤Ê¤¿¤Ï¤É¤ÎBlog¥Á¡¼¥à¥ê¥¹¥È¤Ë¤âÆþ¤Ã¤Æ¤¤¤Þ¤»¤ó');
-define('_OVERVIEW_NODRAFTS',				'¥É¥é¥Õ¥È(²¼½ñ¤­Ãæ)¤Îµ­»ö¤Ï¤¢¤ê¤Þ¤»¤ó');
-define('_OVERVIEW_EDITSETTINGS',			'¤¢¤Ê¤¿¤ÎÀßÄê');
-define('_OVERVIEW_BROWSEITEMS',				'¤¢¤Ê¤¿¤Î¥¢¥¤¥Æ¥à');
-define('_OVERVIEW_BROWSECOMM',				'¤¢¤Ê¤¿¤Î¥³¥á¥ó¥È');
-define('_OVERVIEW_VIEWLOG',					'´ÉÍýÁàºîÍúÎò');
-define('_OVERVIEW_MEMBERS',					'¥á¥ó¥Ð¡¼´ÉÍý');
-define('_OVERVIEW_NEWLOG',					'¿·µ¬BlogºîÀ®');
-define('_OVERVIEW_SETTINGS',				'¥°¥í¡¼¥Ð¥ëÀßÄê');
-define('_OVERVIEW_TEMPLATES',				'¥Æ¥ó¥×¥ì¡¼¥ÈÊÔ½¸');
-define('_OVERVIEW_SKINS',					'¥¹¥­¥óÊÔ½¸');
-define('_OVERVIEW_BACKUP',					'DBÊÝÂ¸/Éü¸µ');
+define('_OVERVIEW_YRBLOGS',					'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½Blog');
+define('_OVERVIEW_YRDRAFTS',				'ï¿½É¥ï¿½Õ¥ï¿½(ï¿½ï¿½ï¿½ï¿½)');
+define('_OVERVIEW_YRSETTINGS',				'ï¿½ï¿½ï¿½ï¿½');
+define('_OVERVIEW_GSETTINGS',				'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_OVERVIEW_NOBLOGS',					'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Ï¤É¤ï¿½Blogï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê¥¹ï¿½È¤Ë¤ï¿½ï¿½ï¿½ï¿½Ã¤Æ¤ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_OVERVIEW_NODRAFTS',				'ï¿½É¥ï¿½Õ¥ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)ï¿½Îµï¿½ï¿½ï¿½ï¿½Ï¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_OVERVIEW_EDITSETTINGS',			'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_OVERVIEW_BROWSEITEMS',				'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½');
+define('_OVERVIEW_BROWSECOMM',				'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_OVERVIEW_VIEWLOG',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_OVERVIEW_MEMBERS',					'ï¿½ï¿½ï¿½Ð¡ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_OVERVIEW_NEWLOG',					'ï¿½ï¿½ï¿½ï¿½Blogï¿½ï¿½ï¿½ï¿½');
+define('_OVERVIEW_SETTINGS',				'ï¿½ï¿½ï¿½?ï¿½Ð¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_OVERVIEW_TEMPLATES',				'ï¿½Æ¥ï¿½×¥ì¡¼ï¿½ï¿½ï¿½Ô½ï¿½');
+define('_OVERVIEW_SKINS',					'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô½ï¿½');
+define('_OVERVIEW_BACKUP',					'DBï¿½ï¿½Â¸/ï¿½ï¿½');
 
 // ITEMLIST
-define('_ITEMLIST_BLOG',							'Blog¥¢¥¤¥Æ¥à¤ÎÊÔ½¸: ');
-define('_ITEMLIST_YOUR',							'¤¢¤Ê¤¿¤Î¥¢¥¤¥Æ¥à');
+define('_ITEMLIST_BLOG',							'Blogï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½Ô½ï¿½: ');
+define('_ITEMLIST_YOUR',							'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½');
 
 // Comments
-define('_COMMENTS',									'¥³¥á¥ó¥È');
-define('_NOCOMMENTS',								'¤³¤Î¥¢¥¤¥Æ¥à¤Ø¤Î¥³¥á¥ó¥È¤Ï¤¢¤ê¤Þ¤»¤ó');
-define('_COMMENTS_YOUR',							'¤¢¤Ê¤¿¤Î¥³¥á¥ó¥È');
-define('_NOCOMMENTS_YOUR',							'¤¢¤Ê¤¿¤Î¥³¥á¥ó¥È¤Ï¤¢¤ê¤Þ¤»¤ó');
+define('_COMMENTS',									'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_NOCOMMENTS',								'ï¿½ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½Ø¤Î¥ï¿½ï¿½ï¿½ï¿½È¤Ï¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_COMMENTS_YOUR',							'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_NOCOMMENTS_YOUR',							'ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½Î¥ï¿½ï¿½ï¿½ï¿½È¤Ï¤ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
 
 // LISTS (general)
-define('_LISTS_NOMORE',								'²¿¤â¤¢¤ê¤Þ¤»¤ó');
-define('_LISTS_PREV',								'Á°¤Ø');
-define('_LISTS_NEXT',								'¼¡¤Ø');
-define('_LISTS_SEARCH',								'¸¡º÷');
-define('_LISTS_CHANGE',								'ÊÑ¹¹');
-define('_LISTS_PERPAGE',							'¥¢¥¤¥Æ¥à/¥Ú¡¼¥¸');
-define('_LISTS_ACTIONS',							'¥¢¥¯¥·¥ç¥ó');
-define('_LISTS_DELETE',								'ºï½ü');
-define('_LISTS_EDIT',								'ÊÔ½¸');
-define('_LISTS_MOVE',								'°ÜÆ°');
-define('_LISTS_CLONE',								'Ê£À½');
-define('_LISTS_TITLE',								'¥¿¥¤¥È¥ë');
+define('_LISTS_NOMORE',								'ï¿½ï¿½ï¿½â¤¢ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½');
+define('_LISTS_PREV',								'ï¿½ï¿½ï¿½ï¿½');
+define('_LISTS_NEXT',								'ï¿½ï¿½ï¿½ï¿½');
+define('_LISTS_SEARCH',								'ï¿½ï¿½ï¿½ï¿½');
+define('_LISTS_CHANGE',								'ï¿½Ñ¹ï¿½');
+define('_LISTS_PERPAGE',							'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½/ï¿½Ú¡ï¿½ï¿½ï¿½');
+define('_LISTS_ACTIONS',							'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_LISTS_DELETE',								'ï¿½ï¿½ï¿½');
+define('_LISTS_EDIT',								'ï¿½Ô½ï¿½');
+define('_LISTS_MOVE',								'ï¿½ï¿½Æ°');
+define('_LISTS_CLONE',								'Ê£ï¿½ï¿½');
+define('_LISTS_TITLE',								'ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½');
 define('_LISTS_BLOG',								'Blog');
-define('_LISTS_NAME',								'Ì¾Á°');
-define('_LISTS_DESC',								'ÀâÌÀ');
-define('_LISTS_TIME',								'»þ´Ö');
-define('_LISTS_COMMENTS',							'¥³¥á¥ó¥È');
-define('_LISTS_TYPE',								'¥¿¥¤¥×');
+define('_LISTS_NAME',								'Ì¾ï¿½ï¿½');
+define('_LISTS_DESC',								'ï¿½ï¿½ï¿½ï¿½');
+define('_LISTS_TIME',								'ï¿½ï¿½ï¿½ï¿½');
+define('_LISTS_COMMENTS',							'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_LISTS_TYPE',								'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 
 // member list
-define('_LIST_MEMBER_NAME',							'É½¼¨¤µ¤ì¤ëÌ¾Á°(¥í¥°¥¤¥óID)');
-define('_LIST_MEMBER_RNAME',						'¥Ï¥ó¥É¥ë¥Í¡¼¥à');
-define('_LIST_MEMBER_ADMIN',						'Super-admin¸¢¸Â ');
-define('_LIST_MEMBER_LOGIN',						'¥í¥°¥¤¥ó²ÄÇ½');
-define('_LIST_MEMBER_URL',							'¥¦¥§¥Ö¥µ¥¤¥È');
+define('_LIST_MEMBER_NAME',							'É½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¾ï¿½ï¿½(ï¿½?ï¿½ï¿½ï¿½ï¿½ID)');
+define('_LIST_MEMBER_RNAME',						'ï¿½Ï¥ï¿½É¥ï¿½Í¡ï¿½ï¿½ï¿½');
+define('_LIST_MEMBER_ADMIN',						'Super-adminï¿½ï¿½ï¿½ï¿½ ');
+define('_LIST_MEMBER_LOGIN',						'ï¿½?ï¿½ï¿½ï¿½ï¿½ï¿½Ç½');
+define('_LIST_MEMBER_URL',							'ï¿½ï¿½ï¿½ï¿½ï¿½Ö¥ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // banlist
-define('_LIST_BAN_IPRANGE',							'µ¬À©Ãæ¤ÎIP¥¢¥É¥ì¥¹¤ÎÈÏ°Ï');
-define('_LIST_BAN_REASON',							'µ¬À©¤ÎÍýÍ³');
+define('_LIST_BAN_IPRANGE',							'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½IPï¿½ï¿½ï¿½É¥ì¥¹ï¿½ï¿½ï¿½Ï°ï¿½');
+define('_LIST_BAN_REASON',							'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í³');
 
 // actionlist
-define('_LIST_ACTION_MSG',							'¥á¥Ã¥»¡¼¥¸');
+define('_LIST_ACTION_MSG',							'ï¿½ï¿½Ã¥ï¿½ï¿½ï¿½ï¿½ï¿½');
 
 // commentlist
-define('_LIST_COMMENT_BANIP',						'IP¥¢¥É¥ì¥¹¤òµ¬À©');
-define('_LIST_COMMENT_WHO',							'ºî¼Ô');
-define('_LIST_COMMENT',								'¥³¥á¥ó¥È');
-define('_LIST_COMMENT_HOST',						'¥Û¥¹¥È');
+define('_LIST_COMMENT_BANIP',						'IPï¿½ï¿½ï¿½É¥ì¥¹ï¿½ï¿½ï¿½ï¿½');
+define('_LIST_COMMENT_WHO',							'ï¿½ï¿½ï¿½');
+define('_LIST_COMMENT',								'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_LIST_COMMENT_HOST',						'ï¿½Û¥ï¿½ï¿½ï¿½');
 
 // itemlist
-define('_LIST_ITEM_INFO',							'¾ðÊó');
-define('_LIST_ITEM_CONTENT',						'¥¿¥¤¥È¥ë¤ÈËÜÊ¸');
+define('_LIST_ITEM_INFO',							'ï¿½ï¿½ï¿½ï¿½');
+define('_LIST_ITEM_CONTENT',						'ï¿½ï¿½ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½Ê¸');
 
 
 // teamlist
-define('_LIST_TEAM_ADMIN',							'´ÉÍý¼Ô¸¢¸Â ');
-define('_LIST_TEAM_CHADMIN',						'´ÉÍý¼Ô¸¢¸Â¤ÎÊÑ¹¹');
+define('_LIST_TEAM_ADMIN',							'ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½ï¿½ ');
+define('_LIST_TEAM_CHADMIN',						'ï¿½ï¿½ï¿½ï¿½Ô¸ï¿½ï¿½Â¤ï¿½ï¿½Ñ¹ï¿½');
 
 // edit comments
-define('_EDITC_TITLE',								'¥³¥á¥ó¥È¤ÎÊÔ½¸');
-define('_EDITC_WHO',								'ºî¼Ô');
-define('_EDITC_HOST',								'¥Û¥¹¥È');
-define('_EDITC_WHEN',								'Æü»þ');
-define('_EDITC_TEXT',								'ËÜÊ¸');
-define('_EDITC_EDIT',								'¥³¥á¥ó¥È¤ÎÊÔ½¸');
-define('_EDITC_MEMBER',								'¥á¥ó¥Ð¡¼');
-define('_EDITC_NONMEMBER',							'Èó¥á¥ó¥Ð¡¼');
+define('_EDITC_TITLE',								'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½Ô½ï¿½');
+define('_EDITC_WHO',								'ï¿½ï¿½ï¿½');
+define('_EDITC_HOST',								'ï¿½Û¥ï¿½ï¿½ï¿½');
+define('_EDITC_WHEN',								'ï¿½ï¿½ï¿½');
+define('_EDITC_TEXT',								'ï¿½ï¿½Ê¸');
+define('_EDITC_EDIT',								'ï¿½ï¿½ï¿½ï¿½ï¿½È¤ï¿½ï¿½Ô½ï¿½');
+define('_EDITC_MEMBER',								'ï¿½ï¿½ï¿½Ð¡ï¿½');
+define('_EDITC_NONMEMBER',							'ï¿½ï¿½ï¿½ï¿½Ð¡ï¿½');
 
 // move item
-define('_MOVE_TITLE',								'¤É¤ÎBlog¤Ë°ÜÆ°¤·¤Þ¤¹¤«¡©');
-define('_MOVE_BTN',									'¥¢¥¤¥Æ¥à¤ò°ÜÆ°¤¹¤ë');
+define('_MOVE_TITLE',								'ï¿½É¤ï¿½Blogï¿½Ë°ï¿½Æ°ï¿½ï¿½ï¿½Þ¤ï¿½ï¿½ï¿½ï¿½ï¿½');
+define('_MOVE_BTN',									'ï¿½ï¿½ï¿½ï¿½ï¿½Æ¥ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½ï¿½');
 
 ?>

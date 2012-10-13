@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2011 The Nucleus Group
+ * Copyright (C) 2002-2012 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,7 +13,7 @@
  * PHP class responsible for ban-management.
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2011 The Nucleus Group
+ * @copyright Copyright (C) 2002-2012 The Nucleus Group
  * @version $Id$
  * $NucleusJP: BAN.php,v 1.6 2006/07/20 08:01:52 kimitake Exp $
  */
