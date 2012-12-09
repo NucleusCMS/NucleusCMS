@@ -213,7 +213,7 @@ class ITEM {
 
 		// call plugins
 		$param = array(
-		'	itemid'		=>  $itemid,
+			'itemid'	=>  $itemid,
 			'title'		=> &$title,
 			'body'		=> &$body,
 			'more'		=> &$more,
