@@ -740,31 +740,31 @@ class BLOG {
 		$res = sql_query($query);
 
 
-		while ($data = sql_fetch_assoc($res)) {
-			$data['blogid'] = $this->getID();
-			$data['blogurl'] = $blogurl;
-			$data['catlink'] = createLink(
+		while ($catdata = sql_fetch_assoc($res)) {
+			$catdata['blogid'] = $this->getID();
+			$catdata['blogurl'] = $blogurl;
+			$catdata['catlink'] = createLink(
 								'category',
 								array(
-									'catid' => $data['catid'],
-									'name' => $data['catname'],
+									'catid' => $catdata['catid'],
+									'name' => $catdata['catname'],
 									'extra' => $linkparams
 								)
 							   );
-			$data['self'] = $CONF['Self'];
+			$catdata['self'] = $CONF['Self'];
 			
 			//catiscurrent
 			//: Change: Bugfix for catiscurrent logic so it gives catiscurrent = no when no category is selected.
-			$data['catiscurrent'] = 'no';
-			$data['currentcat'] = 'no'; 
+			$catdata['catiscurrent'] = 'no';
+			$catdata['currentcat'] = 'no'; 
 			if ($this->getSelectedCategory()) {
-				if ($this->getSelectedCategory() == $data['catid']) {
-					$data['catiscurrent'] = 'yes';
-					$data['currentcat'] = 'yes';
+				if ($this->getSelectedCategory() == $catdata['catid']) {
+					$catdata['catiscurrent'] = 'yes';
+					$catdata['currentcat'] = 'yes';
 				}
 				/*else {
-					$data['catiscurrent'] = 'no';
-					$data['currentcat'] = 'no';
+					$catdata['catiscurrent'] = 'no';
+					$catdata['currentcat'] = 'no';
 				}*/
 			}
 			else {
@@ -772,24 +772,25 @@ class BLOG {
 				if (intval($itemid) && $manager->existsItem(intval($itemid),0,0)) {
 					$iobj =& $manager->getItem(intval($itemid),0,0);
 					$cid = $iobj['catid'];
-					if ($cid == $data['catid']) {
-						$data['catiscurrent'] = 'yes';
-						$data['currentcat'] = 'yes';
+					if ($cid == $catdata['catid']) {
+						$catdata['catiscurrent'] = 'yes';
+						$catdata['currentcat'] = 'yes';
 					}
 					/*else {
-						$data['catiscurrent'] = 'no';
-						$data['currentcat'] = 'no';
+						$catdata['catiscurrent'] = 'no';
+						$catdata['currentcat'] = 'no';
 					}*/
 				}
 			}
 
 			$data = array(
-				'listitem' => &$data
+				'listitem' => &$catdata
 			);
+
 			$manager->notify('PreCategoryListItem', $data);
 
-			echo TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
-			//$temp = TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
+			echo TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $catdata);
+			//$temp = TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $catdata);
 			//echo strftime($temp, $current->itime);
 
 		}

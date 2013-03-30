@@ -280,10 +280,12 @@
 		}
 
 		// internal functions of the class starts here
+		// constructor doesn't seem to work in 3.65 or doesn't get called before something
+		// uses the _getOID() method. Set init values here as quick workaround.
 
-		var $_aOptionValues;	// oid_contextid => value
-		var $_aOptionToInfo;	// context_name => array('oid' => ..., 'default' => ...)
-		var $plugin_options;	// see getOption()
+		var $_aOptionValues = array();	// oid_contextid => value
+		var $_aOptionToInfo = array();	// context_name => array('oid' => ..., 'default' => ...)
+		var $plugin_options = 0;	// see getOption()
 		var $plugid;			// plugin id
 
 
