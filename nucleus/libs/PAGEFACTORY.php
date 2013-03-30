@@ -50,7 +50,7 @@ class PAGEFACTORY extends BaseActions {
 
 		// TODO: move the definition of actions to the createXForm
 		// methods
-		$this->actions = Array(
+		$this->actions = array(
 			'actionurl',
 			'title',
 			'body',
@@ -84,7 +84,7 @@ class PAGEFACTORY extends BaseActions {
 
 		// TODO: maybe add 'skin' later on?
 		// TODO: maybe add other pages from admin area
-		$this->allowedTypes = Array('bookmarklet','admin');
+		$this->allowedTypes = array('bookmarklet','admin');
 	}
 
 	/**

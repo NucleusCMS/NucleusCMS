@@ -20,7 +20,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.64';
+$nucleus['version'] = 'v3.65';
 $nucleus['codename'] = '';
 
 // check and die if someone is trying to override internal globals (when register_globals turn on)
@@ -569,7 +569,7 @@ function intCookieVar($name) {
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-    return 364;
+    return 365;
 }
 
 /**
@@ -607,7 +607,7 @@ function getLatestVersion() {
 function sql_connect() {
     global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN;
 
-    $MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
+    $MYSQL_CONN = mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
     mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
 
     return $MYSQL_CONN;
@@ -686,7 +686,7 @@ function startUpError($msg, $title) {
   */
 /* moved to $DIR_LIBS/sql/*.php handler files
 function sql_disconnect() {
-    @mysql_close();
+    mysql_close();
 }*/
 
 /**
@@ -749,8 +749,8 @@ function highlight($text, $expression, $highlight) {
 
 				if ($regex)
 				{
-					//$matches[2][$i] = @eregi_replace($regex, $highlight, $matches[2][$i]);
-					$matches[2][$i] = @preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
+					//$matches[2][$i] = eregi_replace($regex, $highlight, $matches[2][$i]);
+					$matches[2][$i] = preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
 				}
 
 			}
@@ -760,8 +760,8 @@ function highlight($text, $expression, $highlight) {
 		}
 		else
 		{
-			//$result .= @eregi_replace($expression, $highlight, $matches[2][$i]);
-			$result .= @preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
+			//$result .= eregi_replace($expression, $highlight, $matches[2][$i]);
+			$result .= preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
 		}
 
 	}
@@ -1424,7 +1424,7 @@ function includephp($filename) {
     // other
     global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
 
-    if (@file_exists($filename) ) {
+    if (file_exists($filename) ) {
         include($filename);
     }
 }
@@ -1912,7 +1912,7 @@ function ticketForPlugin() {
 		$p_translated = serverVar('SCRIPT_FILENAME');
 	}
 
-	if ($file = @file($p_translated) )
+	if ($file = file($p_translated) )
 	{
 		$prevline = '';
 
