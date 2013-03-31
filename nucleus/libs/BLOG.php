@@ -618,11 +618,11 @@ class BLOG {
 		}
 
 		$template =& $manager->getTemplate($template);
-		$data['blogid'] = $this->getID();
+		$archdata['blogid'] = $this->getID();
 
 		$tplt = isset($template['ARCHIVELIST_HEADER']) ? $template['ARCHIVELIST_HEADER']
 		                                               : '';
-		echo TEMPLATE::fill($tplt, $data);
+		echo TEMPLATE::fill($tplt, $archdata);
 
 		$query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM '.sql_table('item')
 		. ' WHERE iblog=' . $this->getID()
@@ -651,33 +651,33 @@ class BLOG {
 			if ($mode == 'day') {
 				$archivedate = date('Y-m-d',$current->itime);
 				$archive['day'] = date('d',$current->itime);
-				$data['day'] = date('d',$current->itime);
-				$data['month'] = date('m',$current->itime);
-				$archive['month'] = $data['month'];
+				$archdata['day'] = date('d',$current->itime);
+				$archdata['month'] = date('m',$current->itime);
+				$archive['month'] = $archdata['month'];
 			} elseif ($mode == 'year') {
 				$archivedate = date('Y',$current->itime);
-				$data['day'] = '';
-				$data['month'] = '';
+				$archdata['day'] = '';
+				$archdata['month'] = '';
 				$archive['day'] = '';
 				$archive['month'] = '';
 			} else {
 				$archivedate = date('Y-m',$current->itime);
-				$data['month'] = date('m',$current->itime);
-				$archive['month'] = $data['month'];
-				$data['day'] = '';
+				$archdata['month'] = date('m',$current->itime);
+				$archive['month'] = $archdata['month'];
+				$archdata['day'] = '';
 				$archive['day'] = '';
 			}
 
-			$data['year'] = date('Y',$current->itime);
-			$archive['year'] = $data['year'];
-			$data['archivelink'] = createArchiveLink($this->getID(),$archivedate,$linkparams);
+			$archdata['year'] = date('Y',$current->itime);
+			$archive['year'] = $archdata['year'];
+			$archdata['archivelink'] = createArchiveLink($this->getID(),$archivedate,$linkparams);
 
 			$data = array(
-				'listitem' => &$data
+				'listitem' => &$archdata
 			);
 			$manager->notify('PreArchiveListItem', $data);
 
-			$temp = TEMPLATE::fill($template['ARCHIVELIST_LISTITEM'],$data);
+			$temp = TEMPLATE::fill($template['ARCHIVELIST_LISTITEM'],$archdata);
 			echo strftime($temp,$current->itime);
 
 		}
@@ -686,7 +686,7 @@ class BLOG {
 
 		$tplt = isset($template['ARCHIVELIST_FOOTER']) ? $template['ARCHIVELIST_FOOTER']
 		                                               : '';
-		echo TEMPLATE::fill($tplt, $data);
+		echo TEMPLATE::fill($tplt, $archdata);
 	}
 
 
@@ -858,22 +858,22 @@ class BLOG {
 		$query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY '.$orderby.' '.$direction;
 		$res = sql_query($query);
 
-		while ($data = sql_fetch_assoc($res)) {
+		while ($bldata = sql_fetch_assoc($res)) {
 
 			$list = array();
 
 //			$list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
-			$list['bloglink'] = createBlogidLink($data['bnumber']);
+			$list['bloglink'] = createBlogidLink($bldata['bnumber']);
 
-			$list['blogdesc'] = $data['bdesc'];
+			$list['blogdesc'] = $bldata['bdesc'];
 
-			$list['blogurl'] = $data['burl'];
+			$list['blogurl'] = $bldata['burl'];
 
 			if ($bnametype=='shortname') {
-				$list['blogname'] = $data['bshortname'];
+				$list['blogname'] = $bldata['bshortname'];
 			}
 			else { // all other cases
-				$list['blogname'] = $data['bname'];
+				$list['blogname'] = $bldata['bname'];
 			}
 
 			$data = array(
