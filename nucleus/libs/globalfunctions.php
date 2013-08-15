@@ -1546,7 +1546,7 @@ function createBlogidLink($blogid, $params = '') {
 	return createLink('blog', array('blogid' => $blogid, 'extra' => $params) );
 }
 
-function createLink($type, $args) {
+function createLink($type, $params) {
 	global $manager, $CONF;
 
 	$generatedURL = '';
@@ -1558,7 +1558,7 @@ function createLink($type, $args) {
 	if ($usePathInfo) {
 		$param = array(
 			'type'		=>  $type,
-			'args'		=>  $args,
+			'params'	=>  $params,
 			'completed'	=> &$created,
 			'url'		=> &$url
 		);
