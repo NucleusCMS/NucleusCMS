@@ -1574,58 +1574,58 @@ function createLink($type, $params) {
 	switch ($type) {
 		case 'item':
 			if ($usePathInfo) {
-				$url = $CONF['ItemURL'] . '/' . $CONF['ItemKey'] . '/' . $args['itemid'];
+				$url = $CONF['ItemURL'] . '/' . $CONF['ItemKey'] . '/' . $params['itemid'];
 			} else {
-				$url = $CONF['ItemURL'] . '?itemid=' . $args['itemid'];
+				$url = $CONF['ItemURL'] . '?itemid=' . $params['itemid'];
 			}
 			break;
 
 		case 'member':
 			if ($usePathInfo) {
-				$url = $CONF['MemberURL'] . '/' . $CONF['MemberKey'] . '/' . $args['memberid'];
+				$url = $CONF['MemberURL'] . '/' . $CONF['MemberKey'] . '/' . $params['memberid'];
 			} else {
-				$url = $CONF['MemberURL'] . '?memberid=' . $args['memberid'];
+				$url = $CONF['MemberURL'] . '?memberid=' . $params['memberid'];
 			}
 			break;
 
 		case 'category':
 			if ($usePathInfo) {
-				$url = $CONF['CategoryURL'] . '/' . $CONF['CategoryKey'] . '/' . $args['catid'];
+				$url = $CONF['CategoryURL'] . '/' . $CONF['CategoryKey'] . '/' . $params['catid'];
 			} else {
-				$url = $CONF['CategoryURL'] . '?catid=' . $args['catid'];
+				$url = $CONF['CategoryURL'] . '?catid=' . $params['catid'];
 			}
 			break;
 
 		case 'archivelist':
-			if (!$args['blogid']) {
-				$args['blogid'] = $CONF['DefaultBlog'];
+			if (!$params['blogid']) {
+				$params['blogid'] = $CONF['DefaultBlog'];
 			}
 
 			if ($usePathInfo) {
-				$url = $CONF['ArchiveListURL'] . '/' . $CONF['ArchivesKey'] . '/' . $args['blogid'];
+				$url = $CONF['ArchiveListURL'] . '/' . $CONF['ArchivesKey'] . '/' . $params['blogid'];
 			} else {
-				$url = $CONF['ArchiveListURL'] . '?archivelist=' . $args['blogid'];
+				$url = $CONF['ArchiveListURL'] . '?archivelist=' . $params['blogid'];
 			}
 			break;
 
 		case 'archive':
 			if ($usePathInfo) {
-				$url = $CONF['ArchiveURL'] . '/' . $CONF['ArchiveKey'] . '/'.$args['blogid'].'/' . $args['archive'];
+				$url = $CONF['ArchiveURL'] . '/' . $CONF['ArchiveKey'] . '/'.$params['blogid'].'/' . $params['archive'];
 			} else {
-				$url = $CONF['ArchiveURL'] . '?blogid='.$args['blogid'].'&amp;archive=' . $args['archive'];
+				$url = $CONF['ArchiveURL'] . '?blogid='.$params['blogid'].'&amp;archive=' . $params['archive'];
 			}
 			break;
 
 		case 'blog':
 			if ($usePathInfo) {
-				$url = $CONF['BlogURL'] . '/' . $CONF['BlogKey'] . '/' . $args['blogid'];
+				$url = $CONF['BlogURL'] . '/' . $CONF['BlogKey'] . '/' . $params['blogid'];
 			} else {
-				$url = $CONF['BlogURL'] . '?blogid=' . $args['blogid'];
+				$url = $CONF['BlogURL'] . '?blogid=' . $params['blogid'];
 			}
 			break;
 	}
 
-	return addLinkParams($url, (isset($args['extra'])? $args['extra'] : null));
+	return addLinkParams($url, (isset($params['extra'])? $params['extra'] : null));
 }
 
 function createBlogLink($url, $params) {
