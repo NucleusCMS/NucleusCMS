@@ -35,9 +35,9 @@ if (!function_exists('sql_fetch_assoc'))
 	function startUpError($msg, $title) {
 		?>
 		<html xmlns="http://www.w3.org/1999/xhtml">
-			<head><title><?php echo htmlspecialchars($title)?></title></head>
+			<head><title><?php echo htmlspecialchars($title,ENT_QUOTES,_CHARSET)?></title></head>
 			<body>
-				<h1><?php echo htmlspecialchars($title)?></h1>
+				<h1><?php echo htmlspecialchars($title,ENT_QUOTES,_CHARSET)?></h1>
 				<?php echo $msg?>
 			</body>
 		</html>

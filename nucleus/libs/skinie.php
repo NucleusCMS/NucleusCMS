@@ -294,11 +294,11 @@ class SKINIMPORT {
 	 */
 	function startElement($parser, $name, $attrs) {
 		foreach($attrs as $key=>$value) {
-		    $attrs[$key]=htmlspecialchars($value,ENT_QUOTES);
+		    $attrs[$key]=htmlspecialchars($value,ENT_QUOTES,_CHARSET);
 		}
 
 		if ($this->debug) {
-		    echo 'START: ', htmlspecialchars($name), '<br />';
+		    echo 'START: ', htmlspecialchars($name,ENT_QUOTES,_CHARSET), '<br />';
 		}
 
 		switch ($name) {
@@ -341,7 +341,7 @@ class SKINIMPORT {
 				$this->currentPartName = $attrs['name'];
 				break;
 			default:
-				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . htmlspecialchars($name, ENT_QUOTES) , '<br />';
+				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . htmlspecialchars($name,ENT_QUOTES,_CHARSET) , '<br />';
 				break;
 		}
 
@@ -355,7 +355,7 @@ class SKINIMPORT {
 	  */
 	function endElement($parser, $name) {
 		if ($this->debug) {
-			echo 'END: ' . htmlspecialchars($name, ENT_QUOTES) . '<br />';
+			echo 'END: ' . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . '<br />';
 		}
 
 		switch ($name) {
@@ -394,7 +394,7 @@ class SKINIMPORT {
 				}
 				break;
 			default:
-				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . htmlspecialchars($name, ENT_QUOTES) . '<br />';
+				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . '<br />';
 				break;
 		}
 		$this->clearCharacterData();
@@ -406,7 +406,7 @@ class SKINIMPORT {
 	 */
 	function characterData ($parser, $data) {
 		if ($this->debug) {
-			echo 'NEW DATA: ' . htmlspecialchars($data, ENT_QUOTES) . '<br />';
+			echo 'NEW DATA: ' . htmlspecialchars($data,ENT_QUOTES,_CHARSET) . '<br />';
 		}
 		$this->cdata .= $data;
 	}
@@ -542,11 +542,11 @@ class SKINEXPORT {
 		echo "\t<meta>\n";
 			// skins
 			foreach ($this->skins as $skinId => $skinName) {
-				echo "\t\t", '<skin name="',htmlspecialchars($skinName, ENT_QUOTES),'" />',"\n";
+				echo "\t\t", '<skin name="',htmlspecialchars($skinName,ENT_QUOTES,_CHARSET),'" />',"\n";
 			}
 			// templates
 			foreach ($this->templates as $templateId => $templateName) {
-				echo "\t\t", '<template name="',htmlspecialchars($templateName, ENT_QUOTES),'" />',"\n";
+				echo "\t\t", '<template name="',htmlspecialchars($templateName,ENT_QUOTES,_CHARSET),'" />',"\n";
 			}
 			// extra info
 			if ($this->info)
@@ -558,13 +558,13 @@ class SKINEXPORT {
 			$skinId = intval($skinId);
 			$skinObj = new SKIN($skinId);
 
-			echo "\t", '<skin name="',htmlspecialchars($skinName),'" type="',htmlspecialchars($skinObj->getContentType()),'" includeMode="',htmlspecialchars($skinObj->getIncludeMode()),'" includePrefix="',htmlspecialchars($skinObj->getIncludePrefix()),'">',"\n";
+			echo "\t", '<skin name="',htmlspecialchars($skinName,ENT_QUOTES,_CHARSET),'" type="',htmlspecialchars($skinObj->getContentType(),ENT_QUOTES,_CHARSET),'" includeMode="',htmlspecialchars($skinObj->getIncludeMode(),ENT_QUOTES,_CHARSET),'" includePrefix="',htmlspecialchars($skinObj->getIncludePrefix(),ENT_QUOTES,_CHARSET),'">',"\n";
 
-			echo "\t\t", '<description>',htmlspecialchars($skinObj->getDescription()),'</description>',"\n";
+			echo "\t\t", '<description>',htmlspecialchars($skinObj->getDescription(),ENT_QUOTES,_CHARSET),'</description>',"\n";
 
 			$res = sql_query('SELECT stype, scontent FROM '.sql_table('skin').' WHERE sdesc='.$skinId);
 			while ($partObj = sql_fetch_object($res)) {
-				echo "\t\t",'<part name="',htmlspecialchars($partObj->stype),'">';
+				echo "\t\t",'<part name="',htmlspecialchars($partObj->stype,ENT_QUOTES,_CHARSET),'">';
 				echo '<![CDATA[', $this->escapeCDATA($partObj->scontent),']]>';
 				echo "</part>\n\n";
 			}
@@ -576,13 +576,13 @@ class SKINEXPORT {
 		foreach ($this->templates as $templateId => $templateName) {
 			$templateId = intval($templateId);
 
-			echo "\t",'<template name="',htmlspecialchars($templateName),'">',"\n";
+			echo "\t",'<template name="',htmlspecialchars($templateName,ENT_QUOTES,_CHARSET),'">',"\n";
 
-			echo "\t\t",'<description>',htmlspecialchars(TEMPLATE::getDesc($templateId)),'</description>',"\n";
+			echo "\t\t",'<description>',htmlspecialchars(TEMPLATE::getDesc($templateId),ENT_QUOTES,_CHARSET),'</description>',"\n";
 
 			$res = sql_query('SELECT tpartname, tcontent FROM '.sql_table('template').' WHERE tdesc='.$templateId);
 			while ($partObj = sql_fetch_object($res)) {
-				echo "\t\t",'<part name="',htmlspecialchars($partObj->tpartname),'">';
+				echo "\t\t",'<part name="',htmlspecialchars($partObj->tpartname,ENT_QUOTES,_CHARSET),'">';
 				echo '<![CDATA[', $this->escapeCDATA($partObj->tcontent) ,']]>';
 				echo '</part>',"\n\n";
 			}

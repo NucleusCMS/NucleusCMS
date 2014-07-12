@@ -116,26 +116,26 @@ function media_select() {
 	if (sizeof($collections) > 1) {
 	?>
 		<form method="post" action="media.php"><div>
-			<label for="media_collection"><?php echo htmlspecialchars(_MEDIA_COLLECTION_LABEL)?></label>
+			<label for="media_collection"><?php echo htmlspecialchars(_MEDIA_COLLECTION_LABEL,ENT_QUOTES,_CHARSET)?></label>
 			<select name="collection" id="media_collection">
 				<?php					foreach ($collections as $dirname => $description) {
-						echo '<option value="',htmlspecialchars($dirname),'"';
+						echo '<option value="',htmlspecialchars($dirname,ENT_QUOTES,_CHARSET),'"';
 						if ($dirname == $currentCollection) {
 							echo ' selected="selected"';
 						}
-						echo '>',htmlspecialchars($description),'</option>';
+						echo '>',htmlspecialchars($description,ENT_QUOTES,_CHARSET),'</option>';
 					}
 				?>
 			</select>
-			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_COLLECTION_SELECT) ?>" title="<?php echo htmlspecialchars(_MEDIA_COLLECTION_TT)?>" />
-			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_UPLOAD_TO) ?>" title="<?php echo htmlspecialchars(_MEDIA_UPLOADLINK) ?>" />
+			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_COLLECTION_SELECT,ENT_QUOTES,_CHARSET) ?>" title="<?php echo htmlspecialchars(_MEDIA_COLLECTION_TT,ENT_QUOTES,_CHARSET)?>" />
+			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_UPLOAD_TO,ENT_QUOTES,_CHARSET) ?>" title="<?php echo htmlspecialchars(_MEDIA_UPLOADLINK,ENT_QUOTES,_CHARSET) ?>" />
 			<?php $manager->addTicketHidden() ?>
 		</div></form>
 	<?php	} else {
 	?>
 		<form method="post" action="media.php" style="float:right"><div>
-			<input type="hidden" name="collection" value="<?php echo htmlspecialchars($currentCollection)?>" />
-			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_UPLOAD_NEW) ?>" title="<?php echo htmlspecialchars(_MEDIA_UPLOADLINK) ?>" />
+			<input type="hidden" name="collection" value="<?php echo htmlspecialchars($currentCollection,ENT_QUOTES,_CHARSET)?>" />
+			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_UPLOAD_NEW,ENT_QUOTES,_CHARSET) ?>" title="<?php echo htmlspecialchars(_MEDIA_UPLOADLINK,ENT_QUOTES,_CHARSET) ?>" />
 			<?php $manager->addTicketHidden() ?>
 		</div></form>
 	<?php	} // if sizeof
@@ -146,10 +146,10 @@ function media_select() {
 
 	?>
 		<form method="post" action="media.php"><div>
-			<label for="media_filter"><?php echo htmlspecialchars(_MEDIA_FILTER_LABEL)?></label>
-			<input id="media_filter" type="text" name="filter" value="<?php echo htmlspecialchars($filter)?>" />
-			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_FILTER_APPLY) ?>" />
-			<input type="hidden" name="collection" value="<?php echo htmlspecialchars($currentCollection)?>" />
+			<label for="media_filter"><?php echo htmlspecialchars(_MEDIA_FILTER_LABEL,ENT_QUOTES,_CHARSET)?></label>
+			<input id="media_filter" type="text" name="filter" value="<?php echo htmlspecialchars($filter,ENT_QUOTES,_CHARSET)?>" />
+			<input type="submit" name="action" value="<?php echo htmlspecialchars(_MEDIA_FILTER_APPLY,ENT_QUOTES,_CHARSET) ?>" />
+			<input type="hidden" name="collection" value="<?php echo htmlspecialchars($currentCollection,ENT_QUOTES,_CHARSET)?>" />
 			<input type="hidden" name="offset" value="<?php echo intval($offset)?>" />
 		</div></form>
 
@@ -157,7 +157,7 @@ function media_select() {
 
 	?>
 		<table width="100%">
-		<caption><?php echo _MEDIA_COLLECTION_LABEL . htmlspecialchars($collections[$currentCollection])?></caption>
+		<caption><?php echo _MEDIA_COLLECTION_LABEL . htmlspecialchars($collections[$currentCollection],ENT_QUOTES,_CHARSET)?></caption>
 		<tr>
 		 <th><?php echo _MEDIA_MODIFIED?></th><th><?php echo _MEDIA_FILENAME?></th><th><?php echo _MEDIA_DIMENSIONS?></th>
 		</tr>
@@ -204,22 +204,22 @@ function media_select() {
 
 			if ($filetype != 0) {
 				// image (gif/jpg/png/swf)
-				echo "<td><a href=\"media.php\" onclick=\"chooseImage('", htmlspecialchars($jsCurrentCollection), "','", htmlspecialchars($jsFileName), "',"
-							   . "'", htmlspecialchars($width), "','" , htmlspecialchars($height), "'"
-							   . ")\" title=\"" . htmlspecialchars($obj->filename). "\">"
-							   . htmlspecialchars(shorten($obj->filename,25,'...'))
+				echo "<td><a href=\"media.php\" onclick=\"chooseImage('", htmlspecialchars($jsCurrentCollection,ENT_QUOTES,_CHARSET), "','", htmlspecialchars($jsFileName,ENT_QUOTES,_CHARSET), "',"
+							   . "'", htmlspecialchars($width,ENT_QUOTES,_CHARSET), "','" , htmlspecialchars($height,ENT_QUOTES,_CHARSET), "'"
+							   . ")\" title=\"" . htmlspecialchars($obj->filename,ENT_QUOTES,_CHARSET). "\">"
+							   . htmlspecialchars(shorten($obj->filename,25,'...'),ENT_QUOTES,_CHARSET)
 							   ."</a>";
-				echo ' (<a href="', htmlspecialchars($CONF['MediaURL'] . $currentCollection . '/' . $obj->filename), '" onclick="window.open(this.href); return false;" title="',htmlspecialchars(_MEDIA_VIEW_TT),'">',_MEDIA_VIEW,'</a>)';
+				echo ' (<a href="', htmlspecialchars($CONF['MediaURL'] . $currentCollection . '/' . $obj->filename,ENT_QUOTES,_CHARSET), '" onclick="window.open(this.href); return false;" title="',htmlspecialchars(_MEDIA_VIEW_TT,ENT_QUOTES,_CHARSET),'">',_MEDIA_VIEW,'</a>)';
 				echo "</td>";
 			} else {
 				// no image (e.g. mpg)
-				echo "<td><a href='media.php' onclick=\"chooseOther('" , htmlspecialchars($jsCurrentCollection), "','", htmlspecialchars($jsFileName), "'"
-							   . ")\" title=\"" . htmlspecialchars($obj->filename). "\">"
-							   . htmlspecialchars(shorten($obj->filename,30,'...'))
+				echo "<td><a href='media.php' onclick=\"chooseOther('" , htmlspecialchars($jsCurrentCollection,ENT_QUOTES,_CHARSET), "','", htmlspecialchars($jsFileName,ENT_QUOTES,_CHARSET), "'"
+							   . ")\" title=\"" . htmlspecialchars($obj->filename,ENT_QUOTES,_CHARSET). "\">"
+							   . htmlspecialchars(shorten($obj->filename,30,'...'),ENT_QUOTES,_CHARSET)
 							   ."</a></td>";
 
 			}
-			echo '<td>' , htmlspecialchars($width) , 'x' , htmlspecialchars($height) , '</td>';
+			echo '<td>' , htmlspecialchars($width,ENT_QUOTES,_CHARSET) , 'x' , htmlspecialchars($height,ENT_QUOTES,_CHARSET) , '</td>';
 			echo '</tr>';
 		}
 	} // if (sizeof($arr)>0)
@@ -270,17 +270,17 @@ function media_choose() {
 		<br /><br /><label for="upload_collection">Collection:</label>
 		<br /><select name="collection" id="upload_collection">
 			<?php				foreach ($collections as $dirname => $description) {
-					echo '<option value="',htmlspecialchars($dirname),'"';
+					echo '<option value="',htmlspecialchars($dirname,ENT_QUOTES,_CHARSET),'"';
 					if ($dirname == $currentCollection) {
 						echo ' selected="selected"';
 					}
-					echo '>',htmlspecialchars($description),'</option>';
+					echo '>',htmlspecialchars($description,ENT_QUOTES,_CHARSET),'</option>';
 				}
 			?>
 		</select>
 	<?php		} else {
 	?>
-		<input name="collection" type="hidden" value="<?php echo htmlspecialchars(requestVar('collection'))?>" />
+		<input name="collection" type="hidden" value="<?php echo htmlspecialchars(requestVar('collection'),ENT_QUOTES,_CHARSET)?>" />
 	<?php		} // if sizeof
 	?>
 	<br /><br />
@@ -373,7 +373,7 @@ function media_loginAndPassThrough() {
 		<form method="post" action="media.php">
 		<div>
 			<input name="action" value="login" type="hidden" />
-			<input name="collection" value="<?php echo htmlspecialchars(requestVar('collection'))?>" type="hidden" />
+			<input name="collection" value="<?php echo htmlspecialchars(requestVar('collection'),ENT_QUOTES,_CHARSET)?>" type="hidden" />
 			<?php echo _LOGINFORM_NAME?>: <input name="login" />
 			<br /><?php echo _LOGINFORM_PWD?>: <input name="password" type="password" />
 			<br /><input type="submit" value="<?php echo _LOGIN?>" />
