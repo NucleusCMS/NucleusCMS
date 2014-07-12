@@ -91,7 +91,7 @@ class NAVLIST extends ENCAPSULATE {
 		$minamount = $this->minamount;
 		$maxamount = $this->maxamount;
 		$blogid = $this->blogid;
-		$search = htmlspecialchars($this->search);
+		$search = htmlspecialchars($this->search,ENT_QUOTES,_CHARSET);
 		$itemid = $this->itemid;
 
 		$prev = $start - $amount;

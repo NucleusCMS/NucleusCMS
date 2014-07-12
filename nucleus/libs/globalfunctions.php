@@ -20,7 +20,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.65';
+$nucleus['version'] = 'v3.65.01';
 $nucleus['codename'] = '';
 
 // check and die if someone is trying to override internal globals (when register_globals turn on)
@@ -671,10 +671,10 @@ function startUpError($msg, $title) {
 
     ?>
     <html xmlns="http://www.w3.org/1999/xhtml">
-        <head><title><?php echo htmlspecialchars($title)?></title></head>
+        <head><title><?php echo htmlspecialchars($title,ENT_QUOTES,_CHARSET)?></title></head>
 
         <body>
-            <h1><?php echo htmlspecialchars($title)?></h1>
+            <h1><?php echo htmlspecialchars($title,ENT_QUOTES,_CHARSET)?></h1>
             <?php echo $msg?>
         </body>
     </html>
@@ -1686,7 +1686,7 @@ function passVar($key, $value) {
     }
 
     // other values: do stripslashes if needed
-    ?><input type="hidden" name="<?php echo htmlspecialchars($key)?>" value="<?php echo htmlspecialchars(undoMagic($value) )?>" /><?php
+    ?><input type="hidden" name="<?php echo htmlspecialchars($key,ENT_QUOTES,_CHARSET)?>" value="<?php echo htmlspecialchars(undoMagic($value) ,ENT_QUOTES,_CHARSET)?>" /><?php
 }
 
 /*
@@ -1979,18 +1979,18 @@ function ticketForPlugin() {
 			$qstring = '?' . $qstring;
 		}
 
-        echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . htmlspecialchars($plugin_name) . "</span> ?</p>\n";
+        echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . htmlspecialchars($plugin_name,ENT_QUOTES,_CHARSET) . "</span> ?</p>\n";
 
 		switch(strtoupper(serverVar('REQUEST_METHOD') ) )
 		{
 			case 'POST':
-				echo '<form method="POST" action="'.htmlspecialchars($uri.$qstring).'">';
+				echo '<form method="POST" action="'.htmlspecialchars($uri.$qstring,ENT_QUOTES,_CHARSET).'">';
 				$manager->addTicketHidden();
 				_addInputTags($post);
 				break;
 
 			case 'GET':
-				echo '<form method="GET" action="'.htmlspecialchars($uri).'">';
+				echo '<form method="GET" action="'.htmlspecialchars($uri,ENT_QUOTES,_CHARSET).'">';
 				$manager->addTicketHidden();
 				_addInputTags($get);
 
@@ -2018,8 +2018,8 @@ function _addInputTags(&$keys,$prefix=''){
         else {
             if (get_magic_quotes_gpc()) $value=stripslashes($value);
             if ($key=='ticket') continue;
-            echo '<input type="hidden" name="'.htmlspecialchars($key).
-                '" value="'.htmlspecialchars($value).'" />'."\n";
+            echo '<input type="hidden" name="'.htmlspecialchars($key,ENT_QUOTES,_CHARSET).
+                '" value="'.htmlspecialchars($value,ENT_QUOTES,_CHARSET).'" />'."\n";
         }
     }
 }

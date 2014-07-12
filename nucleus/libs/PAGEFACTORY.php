@@ -185,7 +185,7 @@ class PAGEFACTORY extends BaseActions {
 	}
 
 	function parse_bloglink() {
-		echo '<a href="'.htmlspecialchars($this->blog->getURL()).'">'.htmlspecialchars($this->blog->getName()).'</a>';
+		echo '<a href="'.htmlspecialchars($this->blog->getURL(),ENT_QUOTES,_CHARSET).'">'.htmlspecialchars($this->blog->getName(),ENT_QUOTES,_CHARSET).'</a>';
 	}
 
 	function parse_authorname() {
@@ -267,7 +267,7 @@ class PAGEFACTORY extends BaseActions {
 
 	function parse_contents($which) {
 		if (!isset($this->variables[$which])) $this->variables[$which] = '';
-		echo htmlspecialchars($this->variables[$which],ENT_QUOTES);
+		echo htmlspecialchars($this->variables[$which],ENT_QUOTES,_CHARSET);
 	}
 
 	function parse_checkedonval($value, $name) {

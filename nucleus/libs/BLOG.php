@@ -481,7 +481,7 @@ class BLOG {
 			{
 				$template =& $manager->getTemplate($template);
 				$vars = array(
-					'query'		=> htmlspecialchars($query),
+					'query'		=> htmlspecialchars($query,ENT_QUOTES,_CHARSET),
 					'blogid'	=> $this->getID()
 				);
 				echo TEMPLATE::fill($template['SEARCH_NOTHINGFOUND'],$vars);

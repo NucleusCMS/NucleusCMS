@@ -401,7 +401,7 @@ class Backup
 			if(!empty($sql) and $sql[0] != "#")
 			{
 				// DEBUG
-	//			debug("Executing: " . htmlspecialchars($sql) . "\n");
+	//			debug("Executing: " . htmlspecialchars($sql,ENT_QUOTES,_CHARSET) . "\n");
 	
 				$result = sql_query($sql);
 				if (!$result) debug('SQL Error: ' . sql_error());
