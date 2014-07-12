@@ -126,7 +126,7 @@ class ADMIN {
         if (method_exists($this, $methodName))
             call_user_func(array($this, $methodName));
         else
-            $this->error(_BADACTION . htmlspecialchars(" ($action)"));
+            $this->error(_BADACTION . htmlspecialchars(" ($action)",ENT_QUOTES,_CHARSET));
 
     }
 
@@ -153,7 +153,7 @@ class ADMIN {
         $this->pagehead();
 
         echo '<h2>', _LOGIN ,'</h2>';
-        if ($msg) echo _MESSAGE , ': ', htmlspecialchars($msg);
+        if ($msg) echo _MESSAGE , ': ', htmlspecialchars($msg,ENT_QUOTES,_CHARSET);
         ?>
 
         <form action="index.php" method="post"><p>
@@ -285,7 +285,7 @@ class ADMIN {
      * @param object BLOG
      */
     function bloglink(&$blog) {
-        return '<a href="'.htmlspecialchars($blog->getURL()).'" title="'._BLOGLIST_TT_VISIT.'">'. htmlspecialchars( $blog->getName() ) .'</a>';
+        return '<a href="'.htmlspecialchars($blog->getURL(),ENT_QUOTES,_CHARSET).'" title="'._BLOGLIST_TT_VISIT.'">'. htmlspecialchars( $blog->getName(),ENT_QUOTES,_CHARSET ) .'</a>';
     }
 
     /**
@@ -424,14 +424,14 @@ class ADMIN {
 
         echo '<a href="index.php?action=overview">(',_BACKHOME,')</a>';
         echo '<h2>',_BATCH_ITEMS,'</h2>';
-        echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b></p>';
+        echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action,ENT_QUOTES,_CHARSET),'</b></p>';
         echo '<ul>';
 
 
         // walk over all itemids and perform action
         foreach ($selected as $itemid) {
             $itemid = intval($itemid);
-            echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b> ',_BATCH_ONITEM,' <b>', $itemid, '</b>...';
+            echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action,ENT_QUOTES,_CHARSET),'</b> ',_BATCH_ONITEM,' <b>', $itemid, '</b>...';
 
             // perform action, display errors if needed
             switch($action) {
@@ -442,7 +442,7 @@ class ADMIN {
                     $error = $this->moveOneItem($itemid, $destCatid);
                     break;
                 default:
-                    $error = _BATCH_UNKNOWN . htmlspecialchars($action);
+                    $error = _BATCH_UNKNOWN . htmlspecialchars($action,ENT_QUOTES,_CHARSET);
             }
 
             echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -484,13 +484,13 @@ class ADMIN {
 
         echo '<a href="index.php?action=overview">(',_BACKHOME,')</a>';
         echo '<h2>',_BATCH_COMMENTS,'</h2>';
-        echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b></p>';
+        echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action,ENT_QUOTES,_CHARSET),'</b></p>';
         echo '<ul>';
 
         // walk over all itemids and perform action
         foreach ($selected as $commentid) {
             $commentid = intval($commentid);
-            echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b> ',_BATCH_ONCOMMENT,' <b>', $commentid, '</b>...';
+            echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action,ENT_QUOTES,_CHARSET),'</b> ',_BATCH_ONCOMMENT,' <b>', $commentid, '</b>...';
 
             // perform action, display errors if needed
             switch($action) {
@@ -498,7 +498,7 @@ class ADMIN {
                     $error = $this->deleteOneComment($commentid);
                     break;
                 default:
-                    $error = _BATCH_UNKNOWN . htmlspecialchars($action);
+                    $error = _BATCH_UNKNOWN . htmlspecialchars($action,ENT_QUOTES,_CHARSET);
             }
 
             echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -538,13 +538,13 @@ class ADMIN {
 
         echo '<a href="index.php?action=usermanagement">(',_MEMBERS_BACKTOOVERVIEW,')</a>';
         echo '<h2>',_BATCH_MEMBERS,'</h2>';
-        echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b></p>';
+        echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action,ENT_QUOTES,_CHARSET),'</b></p>';
         echo '<ul>';
 
         // walk over all itemids and perform action
         foreach ($selected as $memberid) {
             $memberid = intval($memberid);
-            echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b> ',_BATCH_ONMEMBER,' <b>', $memberid, '</b>...';
+            echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action,ENT_QUOTES,_CHARSET),'</b> ',_BATCH_ONMEMBER,' <b>', $memberid, '</b>...';
 
             // perform action, display errors if needed
             switch($action) {
@@ -565,7 +565,7 @@ class ADMIN {
                         sql_query('UPDATE ' . sql_table('member') .' SET madmin=0 WHERE mnumber='.$memberid);
                     break;
                 default:
-                    $error = _BATCH_UNKNOWN . htmlspecialchars($action);
+                    $error = _BATCH_UNKNOWN . htmlspecialchars($action,ENT_QUOTES,_CHARSET);
             }
 
             echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -608,13 +608,13 @@ class ADMIN {
         echo '<p><a href="index.php?action=manageteam&amp;blogid=',$blogid,'">(',_BACK,')</a></p>';
 
         echo '<h2>',_BATCH_TEAM,'</h2>';
-        echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b></p>';
+        echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action,ENT_QUOTES,_CHARSET),'</b></p>';
         echo '<ul>';
 
         // walk over all itemids and perform action
         foreach ($selected as $memberid) {
             $memberid = intval($memberid);
-            echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b> ',_BATCH_ONTEAM,' <b>', $memberid, '</b>...';
+            echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action,ENT_QUOTES,_CHARSET),'</b> ',_BATCH_ONTEAM,' <b>', $memberid, '</b>...';
 
             // perform action, display errors if needed
             switch($action) {
@@ -635,7 +635,7 @@ class ADMIN {
                         sql_query('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
                     break;
                 default:
-                    $error = _BATCH_UNKNOWN . htmlspecialchars($action);
+                    $error = _BATCH_UNKNOWN . htmlspecialchars($action,ENT_QUOTES,_CHARSET);
             }
 
             echo '<b>',($error ? $error : _BATCH_SUCCESS),'</b>';
@@ -682,13 +682,13 @@ class ADMIN {
 
         echo '<a href="index.php?action=overview">(',_BACKHOME,')</a>';
         echo '<h2>',BATCH_CATEGORIES,'</h2>';
-        echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b></p>';
+        echo '<p>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action,ENT_QUOTES,_CHARSET),'</b></p>';
         echo '<ul>';
 
         // walk over all itemids and perform action
         foreach ($selected as $catid) {
             $catid = intval($catid);
-            echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action),'</b> ',_BATCH_ONCATEGORY,' <b>', $catid, '</b>...';
+            echo '<li>',_BATCH_EXECUTING,' <b>',htmlspecialchars($action,ENT_QUOTES,_CHARSET),'</b> ',_BATCH_ONCATEGORY,' <b>', $catid, '</b>...';
 
             // perform action, display errors if needed
             switch($action) {
@@ -699,7 +699,7 @@ class ADMIN {
                     $error = $this->moveOneCategory($catid, $destBlogId);
                     break;
                 default:
-                    $error = _BATCH_UNKNOWN . htmlspecialchars($action);
+                    $error = _BATCH_UNKNOWN . htmlspecialchars($action,ENT_QUOTES,_CHARSET);
             }
 
             echo '<b>',($error ? _ERROR . ': '.$error : _BATCH_SUCCESS),'</b>';
@@ -872,7 +872,7 @@ class ADMIN {
 
             while ($oBlog = sql_fetch_object($blogs)) {
                 if ($multipleBlogs)
-                    echo '<optgroup label="',htmlspecialchars($oBlog->bname),'">';
+                    echo '<optgroup label="',htmlspecialchars($oBlog->bname,ENT_QUOTES,_CHARSET),'">';
 
                 // show selection to create new category when allowed/wanted
                 if ($showNewCat) {
@@ -888,7 +888,7 @@ class ADMIN {
                         $selectText = ' selected="selected" ';
                     else
                         $selectText = '';
-                    echo '<option value="',$oCat->catid,'" ', $selectText,'>',htmlspecialchars($oCat->cname),'</option>';
+                    echo '<option value="',$oCat->catid,'" ', $selectText,'>',htmlspecialchars($oCat->cname,ENT_QUOTES,_CHARSET),'</option>';
                 }
 
                 if ($multipleBlogs)
@@ -900,7 +900,7 @@ class ADMIN {
                 echo '<option value="',$oBlog->bnumber,'"';
                 if ($oBlog->bnumber == $selected)
                     echo ' selected="selected"';
-                echo'>',htmlspecialchars($oBlog->bname),'</option>';
+                echo'>',htmlspecialchars($oBlog->bname,ENT_QUOTES,_CHARSET),'</option>';
             }
         }
         echo '</select>';
@@ -1278,9 +1278,9 @@ class ADMIN {
             $this->error(_ERROR_NOSUCHITEM);
 
         $item =& $manager->getItem($itemid,1,1);
-        $title = htmlspecialchars(strip_tags($item['title']));
+        $title = htmlspecialchars(strip_tags($item['title']),ENT_QUOTES,_CHARSET);
         $body = strip_tags($item['body']);
-        $body = htmlspecialchars(shorten($body,300,'...'));
+        $body = htmlspecialchars(shorten($body,300,'...'),ENT_QUOTES,_CHARSET);
 
         $this->pagehead();
         ?>
@@ -1630,7 +1630,7 @@ class ADMIN {
         $comment = COMMENT::getComment($commentid);
 
         $body = strip_tags($comment['body']);
-        $body = htmlspecialchars(shorten($body, 300, '...'));
+        $body = htmlspecialchars(shorten($body, 300, '...'),ENT_QUOTES,_CHARSET);
 
         if ($comment['member'])
             $author = $comment['member'];
@@ -1830,15 +1830,15 @@ class ADMIN {
             </td>
             <td>
             <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
-                <input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  htmlspecialchars($mem->getDisplayName()); ?>" />
+                <input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  htmlspecialchars($mem->getDisplayName(),ENT_QUOTES,_CHARSET); ?>" />
             <?php } else {
-                echo htmlspecialchars($member->getDisplayName());
+                echo htmlspecialchars($member->getDisplayName(),ENT_QUOTES,_CHARSET);
                }
             ?>
             </td>
         </tr><tr>
             <td><?php echo _MEMBERS_REALNAME?></td>
-            <td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  htmlspecialchars($mem->getRealName()); ?>" /></td>
+            <td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  htmlspecialchars($mem->getRealName(),ENT_QUOTES,_CHARSET); ?>" /></td>
         </tr><tr>
         <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
             <td><?php echo _MEMBERS_PWD?></td>
@@ -1851,10 +1851,10 @@ class ADMIN {
             <td><?php echo _MEMBERS_EMAIL?>
                 <br /><small><?php echo _MEMBERS_EMAIL_EDIT?></small>
             </td>
-            <td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  htmlspecialchars($mem->getEmail()); ?>" /></td>
+            <td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  htmlspecialchars($mem->getEmail(),ENT_QUOTES,_CHARSET); ?>" /></td>
         </tr><tr>
             <td><?php echo _MEMBERS_URL?></td>
-            <td><input name="url" tabindex="50" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getURL()); ?>" /></td>
+            <td><input name="url" tabindex="50" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getURL(),ENT_QUOTES,_CHARSET); ?>" /></td>
         <?php // only allow to change this by super-admins
            // we don't want normal users to 'upgrade' themselves to super-admins, do we? ;-)
            if ($member->isAdmin()) {
@@ -1868,7 +1868,7 @@ class ADMIN {
         <?php } ?>
         </tr><tr>
             <td><?php echo _MEMBERS_NOTES?></td>
-            <td><input name="notes" tabindex="80" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getNotes()); ?>" /></td>
+            <td><input name="notes" tabindex="80" size="40" maxlength="100" value="<?php echo  htmlspecialchars($mem->getNotes(),ENT_QUOTES,_CHARSET); ?>" /></td>
         </tr><tr>
             <td><?php echo _MEMBERS_DEFLANG?> <?php help('language'); ?>
             </td>
@@ -2156,7 +2156,7 @@ class ADMIN {
         }
 
         $aVars = array(
-            'memberName' => htmlspecialchars($mem->getDisplayName())
+            'memberName' => htmlspecialchars($mem->getDisplayName(),ENT_QUOTES,_CHARSET)
         );
         $title = TEMPLATE::fill($title, $aVars);
         $text = TEMPLATE::fill($text, $aVars);
@@ -2178,7 +2178,7 @@ class ADMIN {
 
                         <input type="hidden" name="action" value="activatesetpwd" />
                         <?php $manager->addTicketHidden() ?>
-                        <input type="hidden" name="key" value="<?php echo htmlspecialchars($key) ?>" />
+                        <input type="hidden" name="key" value="<?php echo htmlspecialchars($key,ENT_QUOTES,_CHARSET) ?>" />
 
                         <table><tr>
                             <td><?php echo _MEMBERS_PWD?></td>
@@ -2376,7 +2376,7 @@ class ADMIN {
         ?>
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
-            <p><?php echo _CONFIRMTXT_TEAM1?><b><?php echo  htmlspecialchars($teammem->getDisplayName()) ?></b><?php echo _CONFIRMTXT_TEAM2?><b><?php echo  htmlspecialchars(strip_tags($blog->getName())) ?></b>
+            <p><?php echo _CONFIRMTXT_TEAM1?><b><?php echo  htmlspecialchars($teammem->getDisplayName(),ENT_QUOTES,_CHARSET) ?></b><?php echo _CONFIRMTXT_TEAM2?><b><?php echo  htmlspecialchars(strip_tags($blog->getName()),ENT_QUOTES,_CHARSET) ?></b>
             </p>
 
 
@@ -2509,7 +2509,7 @@ class ADMIN {
             $res = sql_query('SELECT mname, mrealname FROM ' . sql_table('member') . ',' . sql_table('team') . ' WHERE mnumber=tmember AND tblog=' . intval($blogid));
             $aMemberNames = array();
             while ($o = sql_fetch_object($res))
-                array_push($aMemberNames, htmlspecialchars($o->mname) . ' (' . htmlspecialchars($o->mrealname). ')');
+                array_push($aMemberNames, htmlspecialchars($o->mname,ENT_QUOTES,_CHARSET) . ' (' . htmlspecialchars($o->mrealname,ENT_QUOTES,_CHARSET). ')');
             echo implode(',', $aMemberNames);
         ?>
         </p>
@@ -2529,18 +2529,18 @@ class ADMIN {
         <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
         <table><tr>
             <td><?php echo _EBLOG_NAME?></td>
-            <td><input name="name" tabindex="10" size="40" maxlength="60" value="<?php echo  htmlspecialchars($blog->getName()) ?>" /></td>
+            <td><input name="name" tabindex="10" size="40" maxlength="60" value="<?php echo  htmlspecialchars($blog->getName(),ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_SHORTNAME?> <?php help('shortblogname'); ?>
                 <?php echo _EBLOG_SHORTNAME_EXTRA?>
             </td>
-            <td><input name="shortname" tabindex="20" maxlength="15" size="15" value="<?php echo  htmlspecialchars($blog->getShortName()) ?>" /></td>
+            <td><input name="shortname" tabindex="20" maxlength="15" size="15" value="<?php echo  htmlspecialchars($blog->getShortName(),ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_DESC?></td>
-            <td><input name="desc" tabindex="30" maxlength="200" size="40" value="<?php echo  htmlspecialchars($blog->getDescription()) ?>" /></td>
+            <td><input name="desc" tabindex="30" maxlength="200" size="40" value="<?php echo  htmlspecialchars($blog->getDescription(),ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_URL?></td>
-            <td><input name="url" tabindex="40" size="40" maxlength="100" value="<?php echo  htmlspecialchars($blog->getURL()) ?>" /></td>
+            <td><input name="url" tabindex="40" size="40" maxlength="100" value="<?php echo  htmlspecialchars($blog->getURL(),ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_DEFSKIN?>
                 <?php help('blogdefaultskin'); ?>
@@ -2578,7 +2578,7 @@ class ADMIN {
          <td><?php $this->input_yesno('reqemail',$blog->emailRequired(),72); ?></td>
       </tr><tr>
             <td><?php echo _EBLOG_NOTIFY?> <?php help('blognotify'); ?></td>
-            <td><input name="notify" tabindex="80" maxlength="128" size="40" value="<?php echo  htmlspecialchars($blog->getNotifyAddress()); ?>" /></td>
+            <td><input name="notify" tabindex="80" maxlength="128" size="40" value="<?php echo  htmlspecialchars($blog->getNotifyAddress(),ENT_QUOTES,_CHARSET); ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_NOTIFY_ON?></td>
             <td>
@@ -2596,10 +2596,10 @@ class ADMIN {
             </td>
         </tr><tr>
             <td><?php echo _EBLOG_MAXCOMMENTS?> <?php help('blogmaxcomments'); ?></td>
-            <td><input name="maxcomments" tabindex="90" size="3" value="<?php echo  htmlspecialchars($blog->getMaxComments()); ?>" /></td>
+            <td><input name="maxcomments" tabindex="90" size="3" value="<?php echo  htmlspecialchars($blog->getMaxComments(),ENT_QUOTES,_CHARSET); ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_UPDATE?> <?php help('blogupdatefile'); ?></td>
-            <td><input name="update" tabindex="100" size="40" maxlength="60" value="<?php echo  htmlspecialchars($blog->getUpdateFile()) ?>" /></td>
+            <td><input name="update" tabindex="100" size="40" maxlength="60" value="<?php echo  htmlspecialchars($blog->getUpdateFile(),ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_DEFCAT?></td>
             <td>
@@ -2618,7 +2618,7 @@ class ADMIN {
                 <br /><?php echo _EBLOG_STIME?> <b><?php echo  strftime("%H:%M",time()); ?></b>
                 <br /><?php echo _EBLOG_BTIME?> <b><?php echo  strftime("%H:%M",$blog->getCorrectTime()); ?></b>
                 </td>
-            <td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  htmlspecialchars($blog->getTimeOffset()); ?>" /></td>
+            <td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  htmlspecialchars($blog->getTimeOffset(),ENT_QUOTES,_CHARSET); ?>" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_SEARCH?> <?php help('blogsearchable'); ?></td>
             <td><?php $this->input_yesno('searchable',$blog->getSearchable(),122); ?></td>
@@ -2737,11 +2737,11 @@ class ADMIN {
         echo "<p><a href='index.php?action=blogsettings&amp;blogid=$blogid'>(",_BACK_TO_BLOGSETTINGS,")</a></p>";
 
         ?>
-        <h2><?php echo _EBLOG_CAT_UPDATE?> '<?php echo htmlspecialchars($cname)?>'</h2>
+        <h2><?php echo _EBLOG_CAT_UPDATE?> '<?php echo htmlspecialchars($cname,ENT_QUOTES,_CHARSET)?>'</h2>
         <form method='post' action='index.php'><div>
         <input name="blogid" type="hidden" value="<?php echo $blogid?>" />
         <input name="catid" type="hidden" value="<?php echo $catid?>" />
-        <input name="desturl" type="hidden" value="<?php echo htmlspecialchars($desturl) ?>" />
+        <input name="desturl" type="hidden" value="<?php echo htmlspecialchars($desturl,ENT_QUOTES,_CHARSET) ?>" />
         <input name="action" type="hidden" value="categoryupdate" />
         <?php $manager->addTicketHidden(); ?>
 
@@ -2749,10 +2749,10 @@ class ADMIN {
             <th colspan="2"><?php echo _EBLOG_CAT_UPDATE ?></th>
         </tr><tr>
             <td><?php echo _EBLOG_CAT_NAME?></td>
-            <td><input type="text" name="cname" value="<?php echo htmlspecialchars($cname)?>" size="40" maxlength="40" /></td>
+            <td><input type="text" name="cname" value="<?php echo htmlspecialchars($cname,ENT_QUOTES,_CHARSET)?>" size="40" maxlength="40" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_CAT_DESC?></td>
-            <td><input type="text" name="cdesc" value="<?php echo htmlspecialchars($cdesc)?>" size="40" maxlength="200" /></td>
+            <td><input type="text" name="cdesc" value="<?php echo htmlspecialchars($cdesc,ENT_QUOTES,_CHARSET)?>" size="40" maxlength="200" /></td>
         </tr>
         <?php
             // insert plugin options
@@ -2847,7 +2847,7 @@ class ADMIN {
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
             <div>
-            <?php echo _CONFIRMTXT_CATEGORY?><b><?php echo  htmlspecialchars($blog->getCategoryName($catid))?></b>
+            <?php echo _CONFIRMTXT_CATEGORY?><b><?php echo  htmlspecialchars($blog->getCategoryName($catid),ENT_QUOTES,_CHARSET)?></b>
             </div>
 
             <form method="post" action="index.php"><div>
@@ -3092,7 +3092,7 @@ class ADMIN {
             </p>
 
             <div>
-            <?php echo _CONFIRMTXT_BLOG?><b><?php echo  htmlspecialchars($blog->getName())?></b>
+            <?php echo _CONFIRMTXT_BLOG?><b><?php echo  htmlspecialchars($blog->getName(),ENT_QUOTES,_CHARSET)?></b>
             </div>
 
             <form method="post" action="index.php"><div>
@@ -3171,7 +3171,7 @@ class ADMIN {
         ?>
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
-            <p><?php echo _CONFIRMTXT_MEMBER?><b><?php echo htmlspecialchars($mem->getDisplayName()) ?></b>
+            <p><?php echo _CONFIRMTXT_MEMBER?><b><?php echo htmlspecialchars($mem->getDisplayName(),ENT_QUOTES,_CHARSET) ?></b>
             </p>
 
             <p>
@@ -3418,23 +3418,23 @@ class ADMIN {
         ?>
         <h2><?php echo _BLOGCREATED_TITLE ?></h2>
 
-        <p><?php echo sprintf(_BLOGCREATED_ADDEDTXT, htmlspecialchars($bname)) ?></p>
+        <p><?php echo sprintf(_BLOGCREATED_ADDEDTXT, htmlspecialchars($bname,ENT_QUOTES,_CHARSET)) ?></p>
 
         <ol>
-            <li><a href="#index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEWAY, htmlspecialchars($bshortname)) ?></a></li>
+            <li><a href="#index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEWAY, htmlspecialchars($bshortname,ENT_QUOTES,_CHARSET)) ?></a></li>
             <li><a href="#skins"><?php echo _BLOGCREATED_ADVANCEDWAY ?></a></li>
         </ol>
 
-        <h3><a id="index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEDESC1, htmlspecialchars($bshortname)) ?></a></h3>
+        <h3><a id="index_php"><?php echo sprintf(_BLOGCREATED_SIMPLEDESC1, htmlspecialchars($bshortname,ENT_QUOTES,_CHARSET)) ?></a></h3>
 
-        <p><?php echo sprintf(_BLOGCREATED_SIMPLEDESC2, htmlspecialchars($bshortname)) ?></p>
+        <p><?php echo sprintf(_BLOGCREATED_SIMPLEDESC2, htmlspecialchars($bshortname,ENT_QUOTES,_CHARSET)) ?></p>
 <pre><code>&lt;?php
 
-$CONF['Self'] = '<b><?php echo htmlspecialchars($bshortname)?>.php</b>';
+$CONF['Self'] = '<b><?php echo htmlspecialchars($bshortname,ENT_QUOTES,_CHARSET)?>.php</b>';
 
 include('<i>./config.php</i>');
 
-selectBlog('<b><?php echo htmlspecialchars($bshortname)?></b>');
+selectBlog('<b><?php echo htmlspecialchars($bshortname,ENT_QUOTES,_CHARSET)?></b>');
 selector();
 
 ?&gt;</code></pre>
@@ -3449,7 +3449,7 @@ selector();
             <input type="hidden" name="blogid" value="<?php echo intval($blogid)?>" />
             <table><tr>
                 <td><?php echo _EBLOG_URL?></td>
-                <td><input name="url" maxlength="100" size="40" value="<?php echo htmlspecialchars($CONF['IndexURL'].$bshortname.'.php')?>" /></td>
+                <td><input name="url" maxlength="100" size="40" value="<?php echo htmlspecialchars($CONF['IndexURL'].$bshortname.'.php',ENT_QUOTES,_CHARSET)?>" /></td>
             </tr><tr>
                 <td><?php echo _EBLOG_CREATE?></td>
                 <td><input type="submit" value="<?php echo _EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
@@ -3526,7 +3526,7 @@ selector();
                                 <input type="hidden" name="mode" value="file" />
                                 <select name="skinfile" id="skinie_import_local">
                                 <?php                                   foreach ($candidates as $skinname => $skinfile) {
-                                        $html = htmlspecialchars($skinfile);
+                                        $html = htmlspecialchars($skinfile,ENT_QUOTES,_CHARSET);
                                         echo '<option value="',$html,'">',$skinname,'</option>';
                                     }
                                 ?>
@@ -3566,8 +3566,8 @@ selector();
         while ($skinObj = sql_fetch_object($res)) {
             $id = 'skinexp' . $skinObj->sdnumber;
             echo '<td><input type="checkbox" name="skin[',$skinObj->sdnumber,']"  id="',$id,'" />';
-            echo '<label for="',$id,'">',htmlspecialchars($skinObj->sdname),'</label></td>';
-            echo '<td>',htmlspecialchars($skinObj->sddesc),'</td>';
+            echo '<label for="',$id,'">',htmlspecialchars($skinObj->sdname,ENT_QUOTES,_CHARSET),'</label></td>';
+            echo '<td>',htmlspecialchars($skinObj->sddesc,ENT_QUOTES,_CHARSET),'</td>';
             echo '</tr><tr>';
         }
 
@@ -3578,8 +3578,8 @@ selector();
         while ($templateObj = sql_fetch_object($res)) {
             $id = 'templateexp' . $templateObj->tdnumber;
             echo '<td><input type="checkbox" name="template[',$templateObj->tdnumber,']" id="',$id,'" />';
-            echo '<label for="',$id,'">',htmlspecialchars($templateObj->tdname),'</label></td>';
-            echo '<td>',htmlspecialchars($templateObj->tddesc),'</td>';
+            echo '<label for="',$id,'">',htmlspecialchars($templateObj->tdname,ENT_QUOTES,_CHARSET),'</label></td>';
+            echo '<td>',htmlspecialchars($templateObj->tddesc,ENT_QUOTES,_CHARSET),'</td>';
             echo '</tr><tr>';
         }
 
@@ -3644,7 +3644,7 @@ selector();
         <h2><?php echo _SKINIE_CONFIRM_TITLE?></h2>
 
         <ul>
-            <li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo htmlspecialchars($importer->getInfo())?></p></li>
+            <li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo htmlspecialchars($importer->getInfo(),ENT_QUOTES,_CHARSET)?></p></li>
             <li><p><strong><?php echo _SKINIE_INFO_SKINS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
             <li><p><strong><?php echo _SKINIE_INFO_TEMPLATES?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
             <?php
@@ -3661,8 +3661,8 @@ selector();
         <form method="post" action="index.php"><div>
             <input type="hidden" name="action" value="skiniedoimport" />
             <?php $manager->addTicketHidden() ?>
-            <input type="hidden" name="skinfile" value="<?php echo htmlspecialchars(postVar('skinfile'))?>" />
-            <input type="hidden" name="mode" value="<?php echo htmlspecialchars($mode)?>" />
+            <input type="hidden" name="skinfile" value="<?php echo htmlspecialchars(postVar('skinfile'),ENT_QUOTES,_CHARSET)?>" />
+            <input type="hidden" name="mode" value="<?php echo htmlspecialchars($mode,ENT_QUOTES,_CHARSET)?>" />
             <input type="submit" value="<?php echo _SKINIE_CONFIRM_IMPORT?>" />
             <?php
                 if ($hasNameClashes)
@@ -3728,7 +3728,7 @@ selector();
         <h2><?php echo _SKINIE_DONE?></h2>
 
         <ul>
-            <li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo htmlspecialchars($importer->getInfo())?></p></li>
+            <li><p><strong><?php echo _SKINIE_INFO_GENERAL?></strong> <?php echo htmlspecialchars($importer->getInfo(),ENT_QUOTES,_CHARSET)?></p></li>
             <li><p><strong><?php echo _SKINIE_INFO_IMPORTEDSKINS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getSkinNames())?></p></li>
             <li><p><strong><?php echo _SKINIE_INFO_IMPORTEDTEMPLS?></strong> <?php echo implode(' <em>'._AND.'</em> ',$importer->getTemplateNames())?></p></li>
         </ul>
@@ -3839,7 +3839,7 @@ selector();
         <a href="index.php?action=templateoverview">(<?php echo _TEMPLATE_BACK?>)</a>
         </p>
 
-        <h2><?php echo _TEMPLATE_EDIT_TITLE?> '<?php echo  htmlspecialchars($templatename); ?>'</h2>
+        <h2><?php echo _TEMPLATE_EDIT_TITLE?> '<?php echo  htmlspecialchars($templatename,ENT_QUOTES,_CHARSET); ?>'</h2>
 
         <?php                   if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
         ?>
@@ -3857,10 +3857,10 @@ selector();
             <th colspan="2"><?php echo _TEMPLATE_SETTINGS?></th>
         </tr><tr>
             <td><?php echo _TEMPLATE_NAME?> <?php help('shortnames');?></td>
-            <td><input name="tname" tabindex="4" size="20" maxlength="20" value="<?php echo  htmlspecialchars($templatename) ?>" /></td>
+            <td><input name="tname" tabindex="4" size="20" maxlength="20" value="<?php echo  htmlspecialchars($templatename,ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _TEMPLATE_DESC?></td>
-            <td><input name="tdesc" tabindex="5" size="50" maxlength="200" value="<?php echo  htmlspecialchars($templatedescription) ?>" /></td>
+            <td><input name="tdesc" tabindex="5" size="50" maxlength="200" value="<?php echo  htmlspecialchars($templatedescription,ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_UPDATE?></th>
         </tr><tr>
@@ -3945,7 +3945,7 @@ selector();
 
         foreach ($pluginfields as $pfkey=>$pfvalue) {
             echo "</tr><tr>\n";
-            echo '<th colspan="2">'.htmlentities($pfkey)."</th>\n";
+            echo '<th colspan="2">'.htmlentities($pfkey,ENT_QUOTES,_CHARSET)."</th>\n";
             foreach ($pfvalue as $pffield=>$pfdesc) {
                 $this->_templateEditRow($template, $pfdesc, $pffield, '',++$tab,0);
             }
@@ -3976,7 +3976,7 @@ selector();
     ?>
         </tr><tr>
             <td><?php echo $description?> <?php if ($help) help('template'.$help); ?></td>
-            <td id="td<?php echo $count?>"><textarea class="templateedit" name="<?php echo $name?>" tabindex="<?php echo $tabindex?>" cols="50" rows="<?php echo $big?10:5?>" id="textarea<?php echo $count?>"><?php echo  htmlspecialchars($template[$name]); ?></textarea></td>
+            <td id="td<?php echo $count?>"><textarea class="templateedit" name="<?php echo $name?>" tabindex="<?php echo $tabindex?>" cols="50" rows="<?php echo $big?10:5?>" id="textarea<?php echo $count?>"><?php echo  htmlspecialchars($template[$name],ENT_QUOTES,_CHARSET); ?></textarea></td>
     <?php       $count++;
     }
 
@@ -4103,7 +4103,7 @@ selector();
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
             <p>
-            <?php echo _CONFIRMTXT_TEMPLATE?><b><?php echo htmlspecialchars($name)?></b> (<?php echo  htmlspecialchars($desc) ?>)
+            <?php echo _CONFIRMTXT_TEMPLATE?><b><?php echo htmlspecialchars($name,ENT_QUOTES,_CHARSET)?></b> (<?php echo  htmlspecialchars($desc,ENT_QUOTES,_CHARSET) ?>)
             </p>
 
             <form method="post" action="index.php"><div>
@@ -4319,7 +4319,7 @@ selector();
             $tabstart = 75;
 
             while ($row = sql_fetch_assoc($res)) {
-                echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype'])) . '">' . htmlspecialchars(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype'])) . '">remove</a>)</li>';
+                echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype']),ENT_QUOTES,_CHARSET) . '">' . htmlspecialchars(ucfirst($row['stype']),ENT_QUOTES,_CHARSET) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . htmlspecialchars(strtolower($row['stype']),ENT_QUOTES,_CHARSET) . '">remove</a>)</li>';
             }
 
             echo '</ul>';
@@ -4336,19 +4336,19 @@ selector();
         <input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
         <table><tr>
             <td><?php echo _SKIN_NAME?> <?php help('shortnames');?></td>
-            <td><input name="name" tabindex="90" value="<?php echo  htmlspecialchars($skin->getName()) ?>" maxlength="20" size="20" /></td>
+            <td><input name="name" tabindex="90" value="<?php echo  htmlspecialchars($skin->getName(),ENT_QUOTES,_CHARSET) ?>" maxlength="20" size="20" /></td>
         </tr><tr>
             <td><?php echo _SKIN_DESC?></td>
-            <td><input name="desc" tabindex="100" value="<?php echo  htmlspecialchars($skin->getDescription()) ?>" maxlength="200" size="50" /></td>
+            <td><input name="desc" tabindex="100" value="<?php echo  htmlspecialchars($skin->getDescription(),ENT_QUOTES,_CHARSET) ?>" maxlength="200" size="50" /></td>
         </tr><tr>
             <td><?php echo _SKIN_TYPE?></td>
-            <td><input name="type" tabindex="110" value="<?php echo  htmlspecialchars($skin->getContentType()) ?>" maxlength="40" size="20" /></td>
+            <td><input name="type" tabindex="110" value="<?php echo  htmlspecialchars($skin->getContentType(),ENT_QUOTES,_CHARSET) ?>" maxlength="40" size="20" /></td>
         </tr><tr>
             <td><?php echo _SKIN_INCLUDE_MODE?> <?php help('includemode')?></td>
             <td><?php $this->input_yesno('inc_mode',$skin->getIncludeMode(),120,'skindir','normal',_PARSER_INCMODE_SKINDIR,_PARSER_INCMODE_NORMAL);?></td>
         </tr><tr>
             <td><?php echo _SKIN_INCLUDE_PREFIX?> <?php help('includeprefix')?></td>
-            <td><input name="inc_prefix" tabindex="130" value="<?php echo  htmlspecialchars($skin->getIncludePrefix()) ?>" maxlength="40" size="20" /></td>
+            <td><input name="inc_prefix" tabindex="130" value="<?php echo  htmlspecialchars($skin->getIncludePrefix(),ENT_QUOTES,_CHARSET) ?>" maxlength="40" size="20" /></td>
         </tr><tr>
             <td><?php echo _SKIN_CHANGE?></td>
             <td><input type="submit" tabindex="140" value="<?php echo _SKIN_CHANGE_BTN?>" onclick="return checkSubmit();" /></td>
@@ -4422,7 +4422,7 @@ selector();
         ?>
         <p>(<a href="index.php?action=skinoverview"><?php echo _SKIN_GOBACK?></a>)</p>
 
-        <h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo htmlspecialchars($skin->getName()) ?>': <?php echo htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?></h2>
+        <h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo htmlspecialchars($skin->getName(),ENT_QUOTES,_CHARSET) ?>': <?php echo htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type),ENT_QUOTES,_CHARSET); ?></h2>
 
         <?php           if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
         ?>
@@ -4438,7 +4438,7 @@ selector();
 
         <input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
         <input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-        (skin type: <?php echo htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
+        (skin type: <?php echo htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type),ENT_QUOTES,_CHARSET); ?>)
         <?php if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
             help('skinpart' . $type);
         } else {
@@ -4446,12 +4446,12 @@ selector();
         }?>
         <br />
 
-        <textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content"><?php echo  htmlspecialchars($skin->getContent($type)) ?></textarea>
+        <textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content"><?php echo  htmlspecialchars($skin->getContent($type),ENT_QUOTES,_CHARSET) ?></textarea>
 
         <br />
         <input type="submit" tabindex="20" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
         <input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-        (skin type: <?php echo htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
+        (skin type: <?php echo htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type),ENT_QUOTES,_CHARSET); ?>)
 
         <br /><br />
         <?php echo _SKIN_ALLOWEDVARS?>
@@ -4514,7 +4514,7 @@ selector();
         $query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
         $r = sql_query($query);
         if ($o = sql_fetch_object($r))
-            $this->error(_ERROR_SKINDEFDELETE . htmlspecialchars($o->bname));
+            $this->error(_ERROR_SKINDEFDELETE . htmlspecialchars($o->bname),ENT_QUOTES,_CHARSET);
 
         $this->pagehead();
 
@@ -4526,7 +4526,7 @@ selector();
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
             <p>
-                <?php echo _CONFIRMTXT_SKIN?><b><?php echo htmlspecialchars($name) ?></b> (<?php echo  htmlspecialchars($desc)?>)
+                <?php echo _CONFIRMTXT_SKIN?><b><?php echo htmlspecialchars($name,ENT_QUOTES,_CHARSET) ?></b> (<?php echo  htmlspecialchars($desc,ENT_QUOTES,_CHARSET)?>)
             </p>
 
             <form method="post" action="index.php"><div>
@@ -4604,14 +4604,14 @@ selector();
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
             <p>
-                <?php echo _CONFIRMTXT_SKIN_PARTS_SPECIAL; ?> <b><?php echo htmlspecialchars($skintype); ?> (<?php echo htmlspecialchars($name); ?>)</b> (<?php echo  htmlspecialchars($desc)?>)
+                <?php echo _CONFIRMTXT_SKIN_PARTS_SPECIAL; ?> <b><?php echo htmlspecialchars($skintype,ENT_QUOTES,_CHARSET); ?> (<?php echo htmlspecialchars($name,ENT_QUOTES,_CHARSET); ?>)</b> (<?php echo  htmlspecialchars($desc,ENT_QUOTES,_CHARSET)?>)
             </p>
 
             <form method="post" action="index.php"><div>
                 <input type="hidden" name="action" value="skinremovetypeconfirm" />
                 <?php $manager->addTicketHidden() ?>
                 <input type="hidden" name="skinid" value="<?php echo $skinid; ?>" />
-                <input type="hidden" name="type" value="<?php echo htmlspecialchars($skintype); ?>" />
+                <input type="hidden" name="type" value="<?php echo htmlspecialchars($skintype,ENT_QUOTES,_CHARSET); ?>" />
                 <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
             </div></form>
         <?php
@@ -4766,25 +4766,25 @@ selector();
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_ADMINMAIL?></td>
-            <td><input name="AdminEmail" tabindex="10010" size="40" value="<?php echo  htmlspecialchars($CONF['AdminEmail']) ?>" /></td>
+            <td><input name="AdminEmail" tabindex="10010" size="40" value="<?php echo  htmlspecialchars($CONF['AdminEmail'],ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_SITENAME?></td>
-            <td><input name="SiteName" tabindex="10020" size="40" value="<?php echo  htmlspecialchars($CONF['SiteName']) ?>" /></td>
+            <td><input name="SiteName" tabindex="10020" size="40" value="<?php echo  htmlspecialchars($CONF['SiteName'],ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_SITEURL?></td>
-            <td><input name="IndexURL" tabindex="10030" size="40" value="<?php echo  htmlspecialchars($CONF['IndexURL']) ?>" /></td>
+            <td><input name="IndexURL" tabindex="10030" size="40" value="<?php echo  htmlspecialchars($CONF['IndexURL'],ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_ADMINURL?></td>
-            <td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  htmlspecialchars($CONF['AdminURL']) ?>" /></td>
+            <td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  htmlspecialchars($CONF['AdminURL'],ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_PLUGINURL?> <?php help('pluginurl');?></td>
-            <td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  htmlspecialchars($CONF['PluginURL']) ?>" /></td>
+            <td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  htmlspecialchars($CONF['PluginURL'],ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_SKINSURL?> <?php help('skinsurl');?></td>
-            <td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  htmlspecialchars($CONF['SkinsURL']) ?>" /></td>
+            <td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  htmlspecialchars($CONF['SkinsURL'],ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_ACTIONSURL?> <?php help('actionurl');?></td>
-            <td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  htmlspecialchars($CONF['ActionURL']) ?>" /></td>
+            <td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  htmlspecialchars($CONF['ActionURL'],ENT_QUOTES,_CHARSET) ?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_LANGUAGE?> <?php help('language'); ?>
             </td>
@@ -4829,11 +4829,11 @@ selector();
             </td>
             <td><?php $this->input_yesno('DisableSite',$CONF['DisableSite'],10060); ?>
                     <br />
-                <?php echo _SETTINGS_DISABLESITEURL ?> <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  htmlspecialchars($CONF['DisableSiteURL'])?>" />
+                <?php echo _SETTINGS_DISABLESITEURL ?> <input name="DisableSiteURL" tabindex="10070" size="40" value="<?php echo  htmlspecialchars($CONF['DisableSiteURL'],ENT_QUOTES,_CHARSET)?>" />
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_DIRS?></td>
-            <td><?php echo  htmlspecialchars($DIR_NUCLEUS) ?>
+            <td><?php echo  htmlspecialchars($DIR_NUCLEUS,ENT_QUOTES,_CHARSET) ?>
                 <i><?php echo _SETTINGS_SEECONFIGPHP?></i></td>
         </tr><tr>
             <td><?php echo _SETTINGS_DBLOGIN?></td>
@@ -4895,7 +4895,7 @@ selector();
                     $CONF['DefaultListSize'] = 10;
                 }
             ?>
-                <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  htmlspecialchars((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
+                <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  htmlspecialchars((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize']),ENT_QUOTES,_CHARSET) ?>" />
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_ADMINCSS?> 
@@ -4941,7 +4941,7 @@ selector();
             <th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
         </tr><tr>
             <td><?php echo _SETTINGS_MEDIADIR?></td>
-            <td><?php echo  htmlspecialchars($DIR_MEDIA) ?>
+            <td><?php echo  htmlspecialchars($DIR_MEDIA,ENT_QUOTES,_CHARSET) ?>
                 <i><?php echo _SETTINGS_SEECONFIGPHP?></i>
                 <?php                   if (!is_dir($DIR_MEDIA))
                         echo "<br /><b>" . _WARNING_NOTADIR . "</b>";
@@ -4954,7 +4954,7 @@ selector();
         </tr><tr>
             <td><?php echo _SETTINGS_MEDIAURL?></td>
             <td>
-                <input name="MediaURL" tabindex="10090" size="40" value="<?php echo  htmlspecialchars($CONF['MediaURL']) ?>" />
+                <input name="MediaURL" tabindex="10090" size="40" value="<?php echo  htmlspecialchars($CONF['MediaURL'],ENT_QUOTES,_CHARSET) ?>" />
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_ALLOWUPLOAD?></td>
@@ -4962,12 +4962,12 @@ selector();
         </tr><tr>
             <td><?php echo _SETTINGS_ALLOWUPLOADTYPES?></td>
             <td>
-                <input name="AllowedTypes" tabindex="10100" size="40" value="<?php echo  htmlspecialchars($CONF['AllowedTypes']) ?>" />
+                <input name="AllowedTypes" tabindex="10100" size="40" value="<?php echo  htmlspecialchars($CONF['AllowedTypes'],ENT_QUOTES,_CHARSET) ?>" />
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_MAXUPLOADSIZE?></td>
             <td>
-                <input name="MaxUploadSize" tabindex="10105" size="40" value="<?php echo  htmlspecialchars($CONF['MaxUploadSize']) ?>" />
+                <input name="MaxUploadSize" tabindex="10105" size="40" value="<?php echo  htmlspecialchars($CONF['MaxUploadSize'],ENT_QUOTES,_CHARSET) ?>" />
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_MEDIAPREFIX?></td>
@@ -5015,13 +5015,13 @@ selector();
             <th colspan="2"><?php echo _SETTINGS_COOKIES_TITLE?> <?php help('cookies'); ?></th>
         </tr><tr>
             <td><?php echo _SETTINGS_COOKIEPREFIX?></td>
-            <td><input name="CookiePrefix" tabindex="10159" size="40" value="<?php echo  htmlspecialchars($CONF['CookiePrefix'])?>" /></td>
+            <td><input name="CookiePrefix" tabindex="10159" size="40" value="<?php echo  htmlspecialchars($CONF['CookiePrefix'],ENT_QUOTES,_CHARSET)?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_COOKIEDOMAIN?></td>
-            <td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  htmlspecialchars($CONF['CookieDomain'])?>" /></td>
+            <td><input name="CookieDomain" tabindex="10160" size="40" value="<?php echo  htmlspecialchars($CONF['CookieDomain'],ENT_QUOTES,_CHARSET)?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_COOKIEPATH?></td>
-            <td><input name="CookiePath" tabindex="10170" size="40" value="<?php echo  htmlspecialchars($CONF['CookiePath'])?>" /></td>
+            <td><input name="CookiePath" tabindex="10170" size="40" value="<?php echo  htmlspecialchars($CONF['CookiePath'],ENT_QUOTES,_CHARSET)?>" /></td>
         </tr><tr>
             <td><?php echo _SETTINGS_COOKIESECURE?></td>
             <td><?php $this->input_yesno('CookieSecure',$CONF['CookieSecure'],10180); ?></td>
@@ -5170,7 +5170,7 @@ selector();
                 if (is_bool($value)) {
                     $value = $value ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE;
                 } else {
-                    $value = htmlspecialchars($value, ENT_QUOTES);
+                    $value = htmlspecialchars($value,ENT_QUOTES,_CHARSET);
                 }
                 echo "\t<tr>";
                 echo "\t\t" . '<td width="50%">' . $key . "</td>\n";
@@ -5304,7 +5304,7 @@ selector();
 		);
 		$manager->notify('AdminPrePageHead', $data);
 
-        $baseUrl = htmlspecialchars($CONF['AdminURL']);
+        $baseUrl = htmlspecialchars($CONF['AdminURL'],ENT_QUOTES,_CHARSET);
 		if (!array_key_exists('AdminCSS',$CONF)) 
 		{
 			sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'original')");
@@ -5316,7 +5316,7 @@ selector();
         <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
         <head>
             <meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
-            <title><?php echo htmlspecialchars($CONF['SiteName'])?> - Admin</title>
+            <title><?php echo htmlspecialchars($CONF['SiteName'],ENT_QUOTES,_CHARSET)?> - Admin</title>
             <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
             <link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
             href="<?php echo $baseUrl?>styles/addedit.css" />
@@ -5334,7 +5334,7 @@ selector();
         <body>
         <div id="adminwrapper">
         <div class="header">
-        <h1><?php echo htmlspecialchars($CONF['SiteName'])?></h1>
+        <h1><?php echo htmlspecialchars($CONF['SiteName'],ENT_QUOTES,_CHARSET)?></h1>
         </div>
         <div id="container">
         <div id="content">
@@ -5476,7 +5476,7 @@ selector();
                         echo '<ul>';
                         foreach ($aPluginExtras as $aInfo)
                         {
-                            echo '<li><a href="'.htmlspecialchars($aInfo['url']).'" title="'.htmlspecialchars($aInfo['tooltip']).'">'.htmlspecialchars($aInfo['title']).'</a></li>';
+                            echo '<li><a href="'.htmlspecialchars($aInfo['url'],ENT_QUOTES,_CHARSET).'" title="'.htmlspecialchars($aInfo['tooltip'],ENT_QUOTES,_CHARSET).'">'.htmlspecialchars($aInfo['title'],ENT_QUOTES,_CHARSET).'</a></li>';
                         }
                         echo '</ul>';
                     }
@@ -5558,7 +5558,7 @@ selector();
             <?php echo _BOOKMARKLET_BMARKTEXT ?><small><?php echo _BOOKMARKLET_BMARKTEST ?></small>
             <br />
             <br />
-            <?php echo '<a href="' . htmlspecialchars($bm, ENT_QUOTES) . '">' . sprintf(_BOOKMARKLET_ANCHOR, htmlspecialchars($blog->getName(), ENT_QUOTES)) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
+            <?php echo '<a href="' . htmlspecialchars($bm,ENT_QUOTES,_CHARSET) . '">' . sprintf(_BOOKMARKLET_ANCHOR, htmlspecialchars($blog->getName(),ENT_QUOTES,_CHARSET)) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
         </p>
 
         <h3><?php echo _BOOKMARKLET_RIGHTCLICK ?></h3>
@@ -5567,7 +5567,7 @@ selector();
                 $url = 'index.php?action=regfile&blogid=' . intval($blogid);
                 $url = $manager->addTicketToUrl($url);
             ?>
-            <?php echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . htmlspecialchars($url, ENT_QUOTES, "SJIS") . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2; ?>
+            <?php echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . htmlspecialchars($url,ENT_QUOTES,_CHARSET) . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2; ?>
         </p>
 
         <p>
@@ -5612,7 +5612,7 @@ selector();
 
         ?>
             <h2><?php echo _ACTIONLOG_CLEAR_TITLE?></h2>
-            <p><a href="<?php echo htmlspecialchars($url)?>"><?php echo _ACTIONLOG_CLEAR_TEXT?></a></p>
+            <p><a href="<?php echo htmlspecialchars($url,ENT_QUOTES,_CHARSET)?>"><?php echo _ACTIONLOG_CLEAR_TEXT?></a></p>
         <?php
         echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 
@@ -5669,7 +5669,7 @@ selector();
         $member->blogAdminRights($blogid) or $this->disallow();
 
         $blog =& $manager->getBlog($blogid);
-        $banBlogName =  htmlspecialchars($blog->getName(), ENT_QUOTES);
+        $banBlogName =  htmlspecialchars($blog->getName(),ENT_QUOTES,_CHARSET);
 
         $this->pagehead();
         ?>
@@ -5680,8 +5680,8 @@ selector();
             <h3><?php echo _BAN_IPRANGE?></h3>
 
             <p>
-                <?php echo _CONFIRMTXT_BAN?> <?php echo htmlspecialchars($iprange) ?>
-                <input name="iprange" type="hidden" value="<?php echo htmlspecialchars($iprange)?>" />
+                <?php echo _CONFIRMTXT_BAN?> <?php echo htmlspecialchars($iprange,ENT_QUOTES,_CHARSET) ?>
+                <input name="iprange" type="hidden" value="<?php echo htmlspecialchars($iprange,ENT_QUOTES,_CHARSET)?>" />
             </p>
 
             <h3><?php echo _BAN_BLOGS?></h3>
@@ -5745,7 +5745,7 @@ selector();
         echo "<ul>";
         foreach ($deleted as $delblog) {
             $b =& $manager->getBlog($delblog);
-            echo "<li>" . htmlspecialchars($b->getName()). "</li>";
+            echo "<li>" . htmlspecialchars($b->getName(),ENT_QUOTES,_CHARSET). "</li>";
         }
         echo "</ul>";
 
@@ -5794,7 +5794,7 @@ selector();
         <div>
         <?php
         if ($ip) {
-            $iprangeVal = htmlspecialchars($ip, ENT_QUOTES);
+            $iprangeVal = htmlspecialchars($ip,ENT_QUOTES,_CHARSET);
         ?>
             <input name="iprange" type="radio" value="<?php echo $iprangeVal ?>" checked="checked" id="ip_fixed" />
             <label for="ip_fixed"><?php echo $iprangeVal ?></label>
@@ -5816,7 +5816,7 @@ selector();
 
         <div>
             <input type="hidden" name="blogid" value="<?php echo $blogid?>" />
-            <input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">'<?php echo htmlspecialchars($blog->getName())?>'</label>
+            <input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">'<?php echo htmlspecialchars($blog->getName(),ENT_QUOTES,_CHARSET)?>'</label>
             <br />
             <input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?php echo _BAN_ALLBLOGS?></label>
         </div>
@@ -6073,7 +6073,7 @@ selector();
 <?php
 			foreach($candidates as $name)
 			{
-				echo '<option value="NP_',$name,'">',htmlspecialchars($name),'</option>';
+				echo '<option value="NP_',$name,'">',htmlspecialchars($name,ENT_QUOTES,_CHARSET),'</option>';
 			}
 ?>
 				</select>
@@ -6111,7 +6111,7 @@ selector();
 
         echo '<p><a href="index.php?action=pluginlist">(',_PLUGS_BACK,')</a></p>';
 
-        echo '<h2>',_PLUGS_HELP_TITLE,': ',htmlspecialchars($plugName),'</h2>';
+        echo '<h2>',_PLUGS_HELP_TITLE,': ',htmlspecialchars($plugName,ENT_QUOTES,_CHARSET),'</h2>';
 
         $plug =& $manager->getPlugin($plugName);
         $helpFile = $DIR_PLUGINS.$plug->getShortName().'/help.html';
@@ -6141,7 +6141,7 @@ selector();
         if ($manager->pluginInstalled($name))
             $this->error(_ERROR_DUPPLUGIN);
         if (!checkPlugin($name))
-            $this->error(_ERROR_PLUGFILEERROR . ' (' . htmlspecialchars($name) . ')');
+            $this->error(_ERROR_PLUGFILEERROR . ' (' . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . ')');
 
         // get number of currently installed plugins
         $res = sql_query('SELECT * FROM '.sql_table('plugin'));
@@ -6180,7 +6180,7 @@ selector();
             $this->deleteOnePlugin($plugin->getID());
 
             // ...and show error
-            $this->error(_ERROR_NUCLEUSVERSIONREQ . htmlspecialchars($plugin->getMinNucleusVersion()));
+            $this->error(_ERROR_NUCLEUSVERSIONREQ . htmlspecialchars($plugin->getMinNucleusVersion(),ENT_QUOTES,_CHARSET));
         }
 
         // check if plugin needs a newer Nucleus version
@@ -6190,7 +6190,7 @@ selector();
             $this->deleteOnePlugin($plugin->getID());
 
             // ...and show error
-            $this->error(_ERROR_NUCLEUSVERSIONREQ . htmlspecialchars( $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel() ) );
+            $this->error(_ERROR_NUCLEUSVERSIONREQ . htmlspecialchars( $plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel() ,ENT_QUOTES,_CHARSET) );
         }
 
         $pluginList = $plugin->getPluginDep();
@@ -6203,7 +6203,7 @@ selector();
                 // uninstall plugin again...
                 $this->deleteOnePlugin($plugin->getID());
 
-                $this->error(sprintf(_ERROR_INSREQPLUGIN, htmlspecialchars($pluginName, ENT_QUOTES)));
+                $this->error(sprintf(_ERROR_INSREQPLUGIN, htmlspecialchars($pluginName,ENT_QUOTES,_CHARSET)));
             }
         }
 
@@ -6452,7 +6452,7 @@ selector();
             $this->error(_ERROR_NOSUCHPLUGIN);
 
         $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
-        $pluginName = htmlspecialchars(getPluginNameFromPid($pid), ENT_QUOTES);
+        $pluginName = htmlspecialchars(getPluginNameFromPid($pid),ENT_QUOTES,_CHARSET);
         $this->pagehead($extrahead);
 
         ?>
@@ -6597,7 +6597,7 @@ selector();
                 if (!defined('_PLUGIN_OPTIONS_TITLE')) {
                     define('_PLUGIN_OPTIONS_TITLE', 'Options for %s');
                 }
-                echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, htmlspecialchars($aOption['pfile'], ENT_QUOTES)).'</th></tr>';
+                echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, htmlspecialchars($aOption['pfile'],ENT_QUOTES,_CHARSET)).'</th></tr>';
             }
 
             $meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
@@ -6617,16 +6617,16 @@ selector();
      * @todo document parameters
      */
     function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0) {
-        $id = htmlspecialchars($name);
+        $id = htmlspecialchars($name,ENT_QUOTES,_CHARSET);
         $id = str_replace('[','-',$id);
         $id = str_replace(']','-',$id);
-        $id1 = $id . htmlspecialchars($value1);
-        $id2 = $id . htmlspecialchars($value2);
+        $id1 = $id . htmlspecialchars($value1,ENT_QUOTES,_CHARSET);
+        $id2 = $id . htmlspecialchars($value2,ENT_QUOTES,_CHARSET);
 
         if ($name=="admin") {
-            echo '<input onclick="selectCanLogin(true);" type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value1),'" ';
+            echo '<input onclick="selectCanLogin(true);" type="radio" name="', htmlspecialchars($name,ENT_QUOTES,_CHARSET),'" value="', htmlspecialchars($value1,ENT_QUOTES,_CHARSET),'" ';
         } else {
-            echo '<input type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value1),'" ';
+            echo '<input type="radio" name="', htmlspecialchars($name,ENT_QUOTES,_CHARSET),'" value="', htmlspecialchars($value1,ENT_QUOTES,_CHARSET),'" ';
         }
 
             if ($checkedval == $value1)
@@ -6634,9 +6634,9 @@ selector();
             echo ' id="'.$id1.'" /><label for="'.$id1.'">' . $yesval . '</label>';
         echo ' ';
         if ($name=="admin") {
-            echo '<input onclick="selectCanLogin(false);" type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value2),'" ';
+            echo '<input onclick="selectCanLogin(false);" type="radio" name="', htmlspecialchars($name,ENT_QUOTES,_CHARSET),'" value="', htmlspecialchars($value2,ENT_QUOTES,_CHARSET),'" ';
         } else {
-            echo '<input type="radio" name="', htmlspecialchars($name),'" value="', htmlspecialchars($value2),'" ';
+            echo '<input type="radio" name="', htmlspecialchars($name,ENT_QUOTES,_CHARSET),'" value="', htmlspecialchars($value2,ENT_QUOTES,_CHARSET),'" ';
         }
             if ($checkedval != $value1)
                 echo "tabindex='$tabindex' checked='checked'";
