@@ -257,8 +257,8 @@
 	
 		global $pluginUrl;
 		
-		$result  = '<a href="' . htmlspecialchars($pluginUrl) . '" title="Go back to &laquo;skins&raquo;">';
-		$result .= '<img src="' . htmlspecialchars($pluginUrl . 'home.gif') . '" alt="" /> skins</a> / ';
+		$result  = '<a href="' . htmlspecialchars($pluginUrl,ENT_QUOTES,_CHARSET) . '" title="Go back to &laquo;skins&raquo;">';
+		$result .= '<img src="' . htmlspecialchars($pluginUrl . 'home.gif',ENT_QUOTES,_CHARSET) . '" alt="" /> skins</a> / ';
 
 		$parts = explode('/', $relative);
 		$part = '';
@@ -267,10 +267,10 @@
 			if ($v != '') {
 				$part .= $v . '/';
 				
-				$result .= '<a href="' . htmlspecialchars($pluginUrl . '?dir=' . rawurlencode($part)) . '" ';
-				$result .= 'title="Go back to &laquo;' . htmlspecialchars($v) . '&raquo;">';
-				$result .= '<img src="' . htmlspecialchars($pluginUrl . 'dir.gif') . '" alt="" /> ';
-				$result .= htmlspecialchars($v) . '</a> / ';
+				$result .= '<a href="' . htmlspecialchars($pluginUrl . '?dir=' . rawurlencode($part),ENT_QUOTES,_CHARSET) . '" ';
+				$result .= 'title="Go back to &laquo;' . htmlspecialchars($v,ENT_QUOTES,_CHARSET) . '&raquo;">';
+				$result .= '<img src="' . htmlspecialchars($pluginUrl . 'dir.gif',ENT_QUOTES,_CHARSET) . '" alt="" /> ';
+				$result .= htmlspecialchars($v,ENT_QUOTES,_CHARSET) . '</a> / ';
 			}
 		}
 		
@@ -398,14 +398,14 @@
 			
 			if (is_readable ($directory . $name)) 
 			{
-				echo '<a href="' . htmlspecialchars($pluginUrl . '?dir=' . rawurlencode($dir)) . '">';
-				echo '<img src="' . htmlspecialchars($pluginUrl . 'dir.gif') . '" alt="folder" /> ';
-				echo htmlspecialchars($name).'</a>';			
+				echo '<a href="' . htmlspecialchars($pluginUrl . '?dir=' . rawurlencode($dir),ENT_QUOTES,_CHARSET) . '">';
+				echo '<img src="' . htmlspecialchars($pluginUrl . 'dir.gif',ENT_QUOTES,_CHARSET) . '" alt="folder" /> ';
+				echo htmlspecialchars($name,ENT_QUOTES,_CHARSET).'</a>';			
 			}
 			else
 			{
-				echo '<img src="' . htmlspecialchars($pluginUrl . 'dir.gif') . '" alt="folder" /> ';
-				echo htmlspecialchars($name);			
+				echo '<img src="' . htmlspecialchars($pluginUrl . 'dir.gif',ENT_QUOTES,_CHARSET) . '" alt="folder" /> ';
+				echo htmlspecialchars($name,ENT_QUOTES,_CHARSET);			
 			}
 						
 			echo '</td>';
@@ -418,13 +418,13 @@
 			
 			
 			if (is_writable($directory . $name)) {
-				echo '<td><a href="' . htmlspecialchars($renUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . htmlspecialchars($name) . '&raquo;">' . _SKINFILES_RENAME . '</a></td>';
+				echo '<td><a href="' . htmlspecialchars($renUrl,ENT_QUOTES,_CHARSET) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . '&raquo;">' . _SKINFILES_RENAME . '</a></td>';
 			} else {
 				echo '<td>&nbsp;</td>';
 			}
 			
 			if (is_writable($directory . $name) && sfDirectoryIsEmpty($directory . $name)) {
-				echo '<td><a href="' . htmlspecialchars($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . htmlspecialchars($name) . '&raquo;">' . _SKINFILES_DELETE . '</a></td>';
+				echo '<td><a href="' . htmlspecialchars($delUrl,ENT_QUOTES,_CHARSET) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . '&raquo;">' . _SKINFILES_DELETE . '</a></td>';
 			} else {
 				echo '<td>&nbsp;</td>';
 			}
@@ -448,14 +448,14 @@
 			
 			if (is_readable ($directory . $name) && sfAllowViewing($name)) 
 			{
-				echo '<a href="' . htmlspecialchars($viewUrl) . '">';
-				echo '<img src="' . htmlspecialchars(sfIcon($name)) . '" alt="" /> ';
-				echo htmlspecialchars($name).'</a>';
+				echo '<a href="' . htmlspecialchars($viewUrl,ENT_QUOTES,_CHARSET) . '">';
+				echo '<img src="' . htmlspecialchars(sfIcon($name),ENT_QUOTES,_CHARSET) . '" alt="" /> ';
+				echo htmlspecialchars($name,ENT_QUOTES,_CHARSET).'</a>';
 			}
 			else
 			{
-				echo '<img src="' . htmlspecialchars(sfIcon($name)) . '" alt="" /> ';
-				echo htmlspecialchars($name);
+				echo '<img src="' . htmlspecialchars(sfIcon($name),ENT_QUOTES,_CHARSET) . '" alt="" /> ';
+				echo htmlspecialchars($name,ENT_QUOTES,_CHARSET);
 			}
 
 			echo '</td><td>';
@@ -465,7 +465,7 @@
 			echo '</td><td>';
 				
 			if (is_writable($directory . $name)) {
-				echo '<a href="' . htmlspecialchars($renUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . htmlspecialchars($name) . '&raquo;">' . _SKINFILES_RENAME . '</a>';
+				echo '<a href="' . htmlspecialchars($renUrl,ENT_QUOTES,_CHARSET) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . '&raquo;">' . _SKINFILES_RENAME . '</a>';
 			} else {
 				echo '&nbsp;';
 			}
@@ -473,7 +473,7 @@
 			echo '</td><td>';
 
 			if (is_writable($directory . $name)) {
-				echo '<a href="' . htmlspecialchars($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . htmlspecialchars($name) . '&raquo;">' . _SKINFILES_DELETE . '</a>';
+				echo '<a href="' . htmlspecialchars($delUrl,ENT_QUOTES,_CHARSET) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . '&raquo;">' . _SKINFILES_DELETE . '</a>';
 			} else {
 				echo '&nbsp;';
 			}
@@ -481,14 +481,14 @@
 			echo '</td><td>';
 			
 			if (is_writable($directory . $name) && sfAllowEditing($name))
-				echo '<a href="'. htmlspecialchars($editUrl) . '" title="' . _SKINFILES_EDIT . ' &laquo;' . htmlspecialchars($name) . '&raquo;">' . _SKINFILES_EDIT . '</a>';
+				echo '<a href="'. htmlspecialchars($editUrl,ENT_QUOTES,_CHARSET) . '" title="' . _SKINFILES_EDIT . ' &laquo;' . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . '&raquo;">' . _SKINFILES_EDIT . '</a>';
 			else
 				echo '&nbsp;';
 
 			echo '</td><td>';
 			
 			if (is_readable ($directory . $name))
-				echo '<a href="' . htmlspecialchars($dlUrl) . '" title="' . _SKINFILES_DOWNLOAD . ' &laquo;' . htmlspecialchars($name) . '&raquo;">' . _SKINFILES_DOWNLOAD . '</a>';
+				echo '<a href="' . htmlspecialchars($dlUrl,ENT_QUOTES,_CHARSET) . '" title="' . _SKINFILES_DOWNLOAD . ' &laquo;' . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . '&raquo;">' . _SKINFILES_DOWNLOAD . '</a>';
 			else
 				echo '&nbsp;';
 				
@@ -506,20 +506,20 @@
 			if (is_writable($directory)) {
 				echo '<div class="dialogbox">';
 				echo '<h4 class="light">' . _SKINFILES_CREATE_NEW_FILE . '</h4><div>';
-				echo '<form method="post" action="' . htmlspecialchars($pluginUrl) . '">';
+				echo '<form method="post" action="' . htmlspecialchars($pluginUrl,ENT_QUOTES,_CHARSET) . '">';
 				$manager->addTicketHidden();
 				echo '<input type="hidden" name="action" value="createfile" />';
-				echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative) . '" />';
+				echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative,ENT_QUOTES,_CHARSET) . '" />';
 				echo '<input type="text" name="name" size="40" value="untitled.txt" />';
 				echo '<p class="buttons"><input type="submit" value="' . _SKINFILES_CREATE_FILE . '" /></p></form>';
 				echo '</div></div>';
 	
 				echo '<div class="dialogbox">';
 				echo '<h4 class="light">' . _SKINFILES_UPLOAD_NEW_FILE . '</h4><div>';
-				echo '<form method="post" enctype="multipart/form-data" action="' . htmlspecialchars($pluginUrl) . '">';
+				echo '<form method="post" enctype="multipart/form-data" action="' . htmlspecialchars($pluginUrl,ENT_QUOTES,_CHARSET) . '">';
 				$manager->addTicketHidden();
 				echo '<input type="hidden" name="action" value="uploadfile" />';
-				echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative) . '" />';
+				echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative,ENT_QUOTES,_CHARSET) . '" />';
 				echo '<input type="hidden" name="MAX_FILE_SIZE" value="' . $CONF['MaxUploadSize'] . '" />';
 				echo '<input type="file" name="name" size="40" />';
 				echo '<p class="buttons"><input type="submit" value="' . _SKINFILES_UPLOAD . '" /></p></form>';
@@ -529,10 +529,10 @@
 			if (count($files)) {
 				echo '<div class="dialogbox">';
 				echo '<h4 class="light">' . _SKINFILES_DEL_ALL_FILES . '</h4><div>';
-				echo '<form method="post" action="' . htmlspecialchars($pluginUrl) . '">';
+				echo '<form method="post" action="' . htmlspecialchars($pluginUrl,ENT_QUOTES,_CHARSET) . '">';
 				$manager->addTicketHidden();
 				echo '<input type="hidden" name="action" value="emptydir" />';
-				echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative) . '" />';
+				echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative,ENT_QUOTES,_CHARSET) . '" />';
 				echo _SKINFILES_DEL_ALL_FILES_MSG;
 				echo '<p class="buttons"><input type="submit" value="' . _SKINFILES_DELETE_ALL . '" tabindex="140" onclick="return checkSubmit();" /></p>';
 				echo '</form>';
@@ -543,10 +543,10 @@
 		if (is_writable($directory)) {
 			echo '<div class="dialogbox">';
 			echo '<h4 class="light">' . _SKINFILES_CREATE_NEW_DIR . '</h4><div>';
-			echo '<form method="post" action="' . htmlspecialchars($pluginUrl) . '">';
+			echo '<form method="post" action="' . htmlspecialchars($pluginUrl,ENT_QUOTES,_CHARSET) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="createdir" />';
-			echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative) . '" />';
+			echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative,ENT_QUOTES,_CHARSET) . '" />';
 			echo '<input type="text" name="name" value="untitled" tabindex="90" size="40" />';
 			echo '<p class="buttons"><input type="submit" value="' . _SKINFILES_CREATE . '" tabindex="140" onclick="return checkSubmit();" /></p>';
 			echo '</form>';
@@ -574,17 +574,17 @@
 			$editUrl  = $manager->addTicketToUrl($pluginUrl . '?action=rendir&dir=' . rawurlencode($relative . $file));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . htmlspecialchars($editUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . $file . '&raquo;">';
+			echo '<a href="' . htmlspecialchars($editUrl,ENT_QUOTES,_CHARSET) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . $file . '&raquo;">';
 			echo '<img src="' . $pluginUrl . 'dir.gif' . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
-			echo '<form method="post" action="' . htmlspecialchars($pluginUrl) . '">';
+			echo '<form method="post" action="' . htmlspecialchars($pluginUrl,ENT_QUOTES,_CHARSET) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="rendir_process" />';
-			echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative . $file) . '" />';
+			echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative . $file,ENT_QUOTES,_CHARSET) . '" />';
 
-			echo '<h4>' . _SKINFILES_RENAME_DIR_MSG . ' &laquo;' . htmlspecialchars($file) . '&raquo; ' . _SKINFILES_RENAME_DIR_MSG2 . '</h4><div>';
-			echo '<p><input type="text" name="name" size="40" value="' . htmlspecialchars($preset != '' ? $preset : $file) . '" /></p>';
+			echo '<h4>' . _SKINFILES_RENAME_DIR_MSG . ' &laquo;' . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . '&raquo; ' . _SKINFILES_RENAME_DIR_MSG2 . '</h4><div>';
+			echo '<p><input type="text" name="name" size="40" value="' . htmlspecialchars($preset != '' ? $preset : $file,ENT_QUOTES,_CHARSET) . '" /></p>';
 			echo '<p class="buttons">';
 			echo '<input type="hidden" name="sure" value="yes" />';
 			echo '<input type="submit" value="' . _SKINFILES_RENAME . '" />';
@@ -594,7 +594,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_DIR_DOES_NOT_EXIST1 . " &laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_DIR_DOES_NOT_EXIST2;
+			echo "<p class='error'>" . _SKINFILES_ERR_DIR_DOES_NOT_EXIST1 . " &laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_DIR_DOES_NOT_EXIST2;
 			echo _SKINFILES_ERR_DIR_DOES_NOT_EXIST3 . "</p>";
 		}
 	}
@@ -615,28 +615,28 @@
 				$name = requestVar('name');
 				
 				if ($name == '') {
-					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR1 . "&laquo;" . htmlspecialchars($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR1 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; ";
 					echo _SKINFILES_ERR_COULD_NOT_RENAME_DIR2 . "</p>";
 					_skinfiles_rendir($name);
 					return;
 				}
 				
 				if (sfIllegalFilename($name)) {
-					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR3 . "&laquo;" . htmlspecialchars($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR3 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; ";
 					echo _SKINFILES_ERR_COULD_NOT_RENAME_DIR4 . "</p>";
 					_skinfiles_rendir($name);
 					return;
 				} 
 				
 				if ($name == $file) {
-					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR5 . "&laquo;" . htmlspecialchars($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR5 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; ";
 					echo _SKINFILES_ERR_COULD_NOT_RENAME_DIR6 . _SKINFILES_ERR_COULD_NOT_RENAME_DIR7 . "</p>";
 					_skinfiles_rendir($name);
 					return;
 				}
 				
 				if (file_exists($directory . $name)) {
-					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR8 . "&laquo;" . htmlspecialchars($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR8 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; ";
 					echo _SKINFILES_ERR_COULD_NOT_RENAME_DIR9 . _SKINFILES_ERR_COULD_NOT_RENAME_DIR10 . "</p>";
 					_skinfiles_rendir($name);
 					return;
@@ -644,18 +644,18 @@
 				
 				if (!@rename($directory . $file, $directory . $name)) 
 				{
-					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR11 . "&laquo;" . htmlspecialchars($file) . "&raquo;</p>";
+					echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_RENAME_DIR11 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo;</p>";
 					_skinfiles_rendir($name);
 					return;
 				}
 	
-				echo "<p class='message'>" . _SKINFILES_RENAMED_DIR1 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_RENAMED_DIR2;
-				echo _SKINFILES_RENAMED_DIR3 . "&laquo;" . htmlspecialchars($name) . "&raquo;" . _SKINFILES_RENAMED_DIR4 . "</p>";
+				echo "<p class='message'>" . _SKINFILES_RENAMED_DIR1 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_RENAMED_DIR2;
+				echo _SKINFILES_RENAMED_DIR3 . "&laquo;" . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . "&raquo;" . _SKINFILES_RENAMED_DIR4 . "</p>";
 				sfShowDirectory($directory);
 			} 		
 			else
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_DIR_DOES_NOT_EXIST1 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_DIR_DOES_NOT_EXIST2;
+				echo "<p class='error'>" . _SKINFILES_ERR_DIR_DOES_NOT_EXIST1 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_DIR_DOES_NOT_EXIST2;
 				echo _SKINFILES_ERR_DIR_DOES_NOT_EXIST3 . "</p>";
 			}
 		}
@@ -687,14 +687,14 @@
 			}
 			
 			if (sfIllegalFilename($name)) {
-				echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR2 . "&laquo;" . htmlspecialchars($name) . "&raquo; ";
+				echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR2 . "&laquo;" . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . "&raquo; ";
 				echo _SKINFILES_ERR_COULD_NOT_CREATE_DIR3 . "</p>";
 				sfShowDirectory($directory);
 				return;
 			} 
 			
 			if (file_exists($directory . $name)) {
-				echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR4 . "&laquo;" . htmlspecialchars($name) . "&raquo; ";
+				echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR4 . "&laquo;" . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . "&raquo; ";
 				echo _SKINFILES_ERR_COULD_NOT_CREATE_DIR5 . _SKINFILES_ERR_COULD_NOT_CREATE_DIR6 . "</p>";
 				sfShowDirectory($directory);
 				return;
@@ -704,14 +704,14 @@
 
 			if (!@mkdir($directory . $name, 0755)) 
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR2 . "&laquo;" . htmlspecialchars($name) . "&raquo;</p>";
+				echo "<p class='error'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR2 . "&laquo;" . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . "&raquo;</p>";
 				sfShowDirectory($directory);
 				return;
 			}
 
 			@umask($mask);
 			
-			echo "<p class='message'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR7 . "&laquo;" . htmlspecialchars($name) . "&raquo; " . _SKINFILES_ERR_COULD_NOT_CREATE_DIR8 . "</p>";
+			echo "<p class='message'>" . _SKINFILES_ERR_COULD_NOT_CREATE_DIR7 . "&laquo;" . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_COULD_NOT_CREATE_DIR8 . "</p>";
 			sfShowDirectory($directory);
 		} 		
 		else
@@ -742,16 +742,16 @@
 			$delUrl  = $manager->addTicketToUrl($pluginUrl . '?action=deldir&dir=' . rawurlencode($relative . $file));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . htmlspecialchars($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . $file . '&raquo;">';
+			echo '<a href="' . htmlspecialchars($delUrl,ENT_QUOTES,_CHARSET) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . $file . '&raquo;">';
 			echo '<img src="' . $pluginUrl . 'dir.gif' . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
-			echo '<form method="post" action="' . htmlspecialchars($pluginUrl) . '">';
+			echo '<form method="post" action="' . htmlspecialchars($pluginUrl,ENT_QUOTES,_CHARSET) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="deldir_process" />';
-			echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative . $file) . '" />';
+			echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative . $file,ENT_QUOTES,_CHARSET) . '" />';
 
-			echo '<h4>' . _SKINFILES_DELETE_DIR . ' &laquo;' . htmlspecialchars($file) . '&raquo; ' . _SKINFILES_DELETE_DIR2 . '</h4><div>';
+			echo '<h4>' . _SKINFILES_DELETE_DIR . ' &laquo;' . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . '&raquo; ' . _SKINFILES_DELETE_DIR2 . '</h4><div>';
 			echo '<p class="buttons">';
 			echo '<input type="hidden" name="sure" value="yes" />';
 			echo '<input type="submit" value="' . _SKINFILES_DELETE . '" />';
@@ -761,7 +761,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR1 . " &laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR2;
+			echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR1 . " &laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR2;
 			echo _SKINFILES_ERR_DELETE_DIR3 . "</p>";
 		}
 	}
@@ -782,17 +782,17 @@
 			{
 				if (!@rmdir($directory . $file)) 
 				{
-					echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR4 . "&laquo;" . htmlspecialchars($file) . "&raquo;</p>";
+					echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR4 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo;</p>";
 					sfShowDirectory($directory);
 					return;
 				}
 	
-				echo "<p class='message'>" . _SKINFILES_ERR_DELETE_DIR5 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR6 . "</p>";
+				echo "<p class='message'>" . _SKINFILES_ERR_DELETE_DIR5 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR6 . "</p>";
 				sfShowDirectory($directory);
 			} 		
 			else
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR1 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR2;
+				echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR1 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR2;
 				echo _SKINFILES_ERR_DELETE_DIR3 . "</p>";
 			}
 		}
@@ -837,21 +837,21 @@
 			$emptyUrl  = $manager->addTicketToUrl($pluginUrl . '?action=emptydir&dir=' . rawurlencode($relative . $file));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . htmlspecialchars($emptyUrl) . '" title="Empty &laquo;' . $file . '&raquo;">';
+			echo '<a href="' . htmlspecialchars($emptyUrl,ENT_QUOTES,_CHARSET) . '" title="Empty &laquo;' . $file . '&raquo;">';
 			echo '<img src="' . $pluginUrl . 'dir.gif' . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
-			echo '<form method="post" action="' . htmlspecialchars($pluginUrl) . '">';
+			echo '<form method="post" action="' . htmlspecialchars($pluginUrl,ENT_QUOTES,_CHARSET) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="emptydir_process" />';
-			echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative . $file) . '" />';
+			echo '<input type="hidden" name="dir" value="' . htmlspecialchars($relative . $file,ENT_QUOTES,_CHARSET) . '" />';
 
-			echo '<h4>' . _SKINFILES_DELETE_FILE_MSG . ' &laquo;' . htmlspecialchars($file) . '&raquo;' . _SKINFILES_DELETE_FILE_MSG2 . '</h4><div>';
+			echo '<h4>' . _SKINFILES_DELETE_FILE_MSG . ' &laquo;' . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . '&raquo;' . _SKINFILES_DELETE_FILE_MSG2 . '</h4><div>';
 			
 			if (count($files)) 
 			{
 				echo '<ul>';
-				foreach ($files as $name) {	echo '<li>' . htmlspecialchars($name) . '</li>'; }
+				foreach ($files as $name) {	echo '<li>' . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . '</li>'; }
 				echo '</ul>';
 	
 				echo '<p class="buttons">';
@@ -873,7 +873,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR1 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR2;
+			echo "<p class='error'>" . _SKINFILES_ERR_DELETE_DIR1 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_DELETE_DIR2;
 			echo _SKINFILES_ERR_DELETE_DIR3 . "</p>";
 		}
 	}
@@ -898,9 +898,9 @@
 						   is_writable($directory . $file . '/' . $name)) 
 						{
 							if (unlink ($directory .$file . '/' . $name)) 
-								echo "<p class='message'>" . _SKINFILES_ERR_EMPTY_DIR1 . "&laquo;" . htmlspecialchars($name) . "&raquo; " . _SKINFILES_ERR_EMPTY_DIR2 . "</p>";
+								echo "<p class='message'>" . _SKINFILES_ERR_EMPTY_DIR1 . "&laquo;" . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_EMPTY_DIR2 . "</p>";
 							else
-								echo "<p class='error'>" . _SKINFILES_ERR_EMPTY_DIR3 . "&laquo;" . htmlspecialchars($name) . "&raquo; " . _SKINFILES_ERR_EMPTY_DIR4 . "</p>";
+								echo "<p class='error'>" . _SKINFILES_ERR_EMPTY_DIR3 . "&laquo;" . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_EMPTY_DIR4 . "</p>";
 						}
 					}
 					
@@ -911,7 +911,7 @@
 			}
 			else
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_EMPTY_DIR5 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_EMPTY_DIR6;
+				echo "<p class='error'>" . _SKINFILES_ERR_EMPTY_DIR5 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_EMPTY_DIR6;
 				echo _SKINFILES_ERR_EMPTY_DIR7 . "</p>";
 			}
 		}
@@ -988,10 +988,10 @@
 			$viewUrl  = $manager->addTicketToUrl($pluginUrl . '?action=viewfile&file=' . rawurlencode(sfRelativePath($directory . $file)));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . htmlspecialchars($viewUrl) . '" title="View &laquo;' . $file . '&raquo;">';
-			echo '<img src="' . htmlspecialchars(sfIcon($file)) . '" alt="" /> ' . $file . '</a></p>';
+			echo '<a href="' . htmlspecialchars($viewUrl,ENT_QUOTES,_CHARSET) . '" title="View &laquo;' . $file . '&raquo;">';
+			echo '<img src="' . htmlspecialchars(sfIcon($file),ENT_QUOTES,_CHARSET) . '" alt="" /> ' . $file . '</a></p>';
 
-			echo '<h4>' . _SKINFILES_VIEW_FILE . '&laquo;' . htmlspecialchars($file) . '&raquo;</h4>';
+			echo '<h4>' . _SKINFILES_VIEW_FILE . '&laquo;' . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . '&raquo;</h4>';
 
 			if (sfIsFileType('html', $file))
 			{
@@ -1003,7 +1003,7 @@
 				$content = implode('', file($directory . $file));
 
 				echo '<pre>';
-				echo htmlspecialchars($content);
+				echo htmlspecialchars($content,ENT_QUOTES,_CHARSET);
 				echo '</pre>';
 			}
 
@@ -1039,17 +1039,17 @@
 				
 				echo '<table>';
 				echo '<tr><th colspan="2">' . _SKINFILES_VIEW_FILE_IMG_INFO . '</th></tr>';
-				echo '<tr><td>' . _SKINFILES_VIEW_FILE_TYPE . '</td><td>' . htmlspecialchars($type) . '</td></tr>';
-				echo '<tr><td>' . _SKINFILES_VIEW_FILE_WIDTH . '</td><td>' . htmlspecialchars($size[0]) . _SKINFILES_VIEW_FILE_PX . '</td></tr>';
-				echo '<tr><td>' . _SKINFILES_VIEW_FILE_HEIGHT . '</td><td>' . htmlspecialchars($size[1]) . _SKINFILES_VIEW_FILE_PX . '</td></tr>';	
+				echo '<tr><td>' . _SKINFILES_VIEW_FILE_TYPE . '</td><td>' . htmlspecialchars($type,ENT_QUOTES,_CHARSET) . '</td></tr>';
+				echo '<tr><td>' . _SKINFILES_VIEW_FILE_WIDTH . '</td><td>' . htmlspecialchars($size[0],ENT_QUOTES,_CHARSET) . _SKINFILES_VIEW_FILE_PX . '</td></tr>';
+				echo '<tr><td>' . _SKINFILES_VIEW_FILE_HEIGHT . '</td><td>' . htmlspecialchars($size[1],ENT_QUOTES,_CHARSET) . _SKINFILES_VIEW_FILE_PX . '</td></tr>';	
 				
 				if (isset($size['channels']) || isset($size['bits'])) 
 				{
 					$channels = isset($size['channels']) ? $size['channels'] : 3;
 					$depth    = $size[2] == IMAGETYPE_GIF ? $size['bits'] : $size['bits'] * $channels;
-					echo '<tr><td>' . _SKINFILES_VIEW_FILE_CHANNELS . '</td><td>' . htmlspecialchars($channels) . '</td></tr>';
-					echo '<tr><td>' . _SKINFILES_VIEW_FILE_COLOR_DEPTH . '</td><td>' . htmlspecialchars($depth) . _SKINFILES_VIEW_FILE_BITS . '</td></tr>';
-					echo '<tr><td>' . _SKINFILES_VIEW_FILE_COLORS . '</td><td>' . htmlspecialchars(pow(2, $depth)) . _SKINFILES_VIEW_FILE_COLORS2 . '</td></tr>';
+					echo '<tr><td>' . _SKINFILES_VIEW_FILE_CHANNELS . '</td><td>' . htmlspecialchars($channels,ENT_QUOTES,_CHARSET) . '</td></tr>';
+					echo '<tr><td>' . _SKINFILES_VIEW_FILE_COLOR_DEPTH . '</td><td>' . htmlspecialchars($depth,ENT_QUOTES,_CHARSET) . _SKINFILES_VIEW_FILE_BITS . '</td></tr>';
+					echo '<tr><td>' . _SKINFILES_VIEW_FILE_COLORS . '</td><td>' . htmlspecialchars(pow(2, $depth),ENT_QUOTES,_CHARSET) . _SKINFILES_VIEW_FILE_COLORS2 . '</td></tr>';
 				}
 
 				
@@ -1063,28 +1063,28 @@
 						echo '<tr><th colspan="2">Exif information</th></tr>';
 						
 						if (isset($exif['Make']) && isset($exif['Model']))
-							echo '<tr><td>Camera:</td><td>' . htmlspecialchars($exif['Make'] . ' ' . $exif['Model']) . '</td></tr>';
+							echo '<tr><td>Camera:</td><td>' . htmlspecialchars($exif['Make'] . ' ' . $exif['Model'],ENT_QUOTES,_CHARSET) . '</td></tr>';
 						
 						if (isset($exif['DateTime']))
-							echo '<tr><td>Created on:</td><td>' . htmlspecialchars($exif['DateTime']) . '</td></tr>';
+							echo '<tr><td>Created on:</td><td>' . htmlspecialchars($exif['DateTime'],ENT_QUOTES,_CHARSET) . '</td></tr>';
 						
 						if (isset($exif['XResolution']))
-							echo '<tr><td>Horizontal resolution:</td><td>' . htmlspecialchars(_skinfiles_exif_prepare($exif['XResolution'])) . ' dpi</td></tr>';
+							echo '<tr><td>Horizontal resolution:</td><td>' . htmlspecialchars(_skinfiles_exif_prepare($exif['XResolution']),ENT_QUOTES,_CHARSET) . ' dpi</td></tr>';
 						
 						if (isset($exif['YResolution']))
-							echo '<tr><td>Vertical resolution:</td><td>' . htmlspecialchars(_skinfiles_exif_prepare($exif['YResolution'])) . ' dpi</td></tr>';
+							echo '<tr><td>Vertical resolution:</td><td>' . htmlspecialchars(_skinfiles_exif_prepare($exif['YResolution']),ENT_QUOTES,_CHARSET) . ' dpi</td></tr>';
 						
 						if (isset($exif['FocalLength']))
-							echo '<tr><td>Focal length:</td><td>' . htmlspecialchars(_skinfiles_exif_prepare($exif['FocalLength'])) . ' mm</td></tr>';
+							echo '<tr><td>Focal length:</td><td>' . htmlspecialchars(_skinfiles_exif_prepare($exif['FocalLength']),ENT_QUOTES,_CHARSET) . ' mm</td></tr>';
 						
 						if (isset($exif['FNumber']))
-							echo '<tr><td>F-number:</td><td>F/' . htmlspecialchars(_skinfiles_exif_prepare($exif['FNumber'])) . '</td></tr>';
+							echo '<tr><td>F-number:</td><td>F/' . htmlspecialchars(_skinfiles_exif_prepare($exif['FNumber']),ENT_QUOTES,_CHARSET) . '</td></tr>';
 						
 						if (isset($exif['ExposureTime']))
-							echo '<tr><td>Exposuretime:</td><td>' . htmlspecialchars(_skinfiles_exif_prepare($exif['ExposureTime'])) . ' sec</td></tr>';
+							echo '<tr><td>Exposuretime:</td><td>' . htmlspecialchars(_skinfiles_exif_prepare($exif['ExposureTime']),ENT_QUOTES,_CHARSET) . ' sec</td></tr>';
 						
 						if (isset($exif['ISOSpeedRatings']))
-							echo '<tr><td>ISO-speed:</td><td>' . htmlspecialchars(_skinfiles_exif_prepare($exif['ISOSpeedRatings'])) . '</td></tr>';
+							echo '<tr><td>ISO-speed:</td><td>' . htmlspecialchars(_skinfiles_exif_prepare($exif['ISOSpeedRatings']),ENT_QUOTES,_CHARSET) . '</td></tr>';
 					}
 				}
 
@@ -1093,7 +1093,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_VIEW_FILE1 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_VIEW_FILE2;
+			echo "<p class='error'>" . _SKINFILES_ERR_VIEW_FILE1 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_VIEW_FILE2;
 			echo _SKINFILES_ERR_VIEW_FILE3 . "</p>";
 		}
 	}
@@ -1128,20 +1128,20 @@
 			$editUrl  = $manager->addTicketToUrl($pluginUrl . '?action=editfile&file=' . rawurlencode(sfRelativePath($directory . $file)));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . htmlspecialchars($editUrl) . '" title="Edit &laquo;' . $file . '&raquo;">';
-			echo '<img src="' . htmlspecialchars(sfIcon($file)) . '" alt="" /> ' . $file . '</a></p>';
+			echo '<a href="' . htmlspecialchars($editUrl,ENT_QUOTES,_CHARSET) . '" title="Edit &laquo;' . $file . '&raquo;">';
+			echo '<img src="' . htmlspecialchars(sfIcon($file),ENT_QUOTES,_CHARSET) . '" alt="" /> ' . $file . '</a></p>';
 
 			$content = implode('', file($directory . $file));
 
 			echo '<div class="dialogbox">';
-			echo '<form method="post" action="' . htmlspecialchars($pluginUrl) . '">';
+			echo '<form method="post" action="' . htmlspecialchars($pluginUrl,ENT_QUOTES,_CHARSET) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="editfile_process" />';
-			echo '<input type="hidden" name="file" value="' . htmlspecialchars(sfRelativePath($directory . $file)) . '" />';
+			echo '<input type="hidden" name="file" value="' . htmlspecialchars(sfRelativePath($directory . $file),ENT_QUOTES,_CHARSET) . '" />';
 
-			echo '<h4>' . _SKINFILES_EDIT_FILE_MSG . ' &laquo;' . htmlspecialchars($file) . '&raquo;</h4><div>';
+			echo '<h4>' . _SKINFILES_EDIT_FILE_MSG . ' &laquo;' . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . '&raquo;</h4><div>';
 			echo '<p><textarea class="skinedit" tabindex="8" rows="20" cols="80" name="content">';
-			echo htmlspecialchars($content);
+			echo htmlspecialchars($content,ENT_QUOTES,_CHARSET);
 			echo '</textarea></p>';
 			
 			echo '<p class="buttons">';
@@ -1153,7 +1153,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE1 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE2;
+			echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE1 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE2;
 			echo _SKINFILES_ERR_EDIT_FILE3 . "</p>";
 		}
 	}
@@ -1181,15 +1181,15 @@
 				}
 				
 				if ($success)
-					echo "<p class='message'>" . _SKINFILES_ERR_EDIT_FILE4 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE5 . "</p>";
+					echo "<p class='message'>" . _SKINFILES_ERR_EDIT_FILE4 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE5 . "</p>";
 				else
-					echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE6 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE7 . "</p>";
+					echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE6 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE7 . "</p>";
 			
 				_skinfiles_editfile();
 			}
 			else
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE1 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE2;
+				echo "<p class='error'>" . _SKINFILES_ERR_EDIT_FILE1 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_EDIT_FILE2;
 				echo _SKINFILES_ERR_EDIT_FILE3 . "</p>";
 			}
 		}
@@ -1219,17 +1219,17 @@
 			$editUrl  = $manager->addTicketToUrl($pluginUrl . '?action=renfile&file=' . rawurlencode(sfRelativePath($directory . $file)));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . htmlspecialchars($editUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . $file . '&raquo;">';
-			echo '<img src="' . htmlspecialchars(sfIcon($file)) . '" alt="" /> ' . $file . '</a></p>';
+			echo '<a href="' . htmlspecialchars($editUrl,ENT_QUOTES,_CHARSET) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . $file . '&raquo;">';
+			echo '<img src="' . htmlspecialchars(sfIcon($file),ENT_QUOTES,_CHARSET) . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
-			echo '<form method="post" action="' . htmlspecialchars($pluginUrl) . '">';
+			echo '<form method="post" action="' . htmlspecialchars($pluginUrl,ENT_QUOTES,_CHARSET) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="renfile_process" />';
-			echo '<input type="hidden" name="file" value="' . htmlspecialchars(sfRelativePath($directory . $file)) . '" />';
+			echo '<input type="hidden" name="file" value="' . htmlspecialchars(sfRelativePath($directory . $file),ENT_QUOTES,_CHARSET) . '" />';
 
-			echo '<h4>' . _SKINFILES_RENAME_FILE_MSG . '&laquo;' . htmlspecialchars($file) . '&raquo; ' . _SKINFILES_RENAME_FILE_MSG2 . '</h4><div>';
-			echo '<p><input type="text" name="name" size="40" value="' . htmlspecialchars($preset != '' ? $preset : $file) . '" /></p>';
+			echo '<h4>' . _SKINFILES_RENAME_FILE_MSG . '&laquo;' . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . '&raquo; ' . _SKINFILES_RENAME_FILE_MSG2 . '</h4><div>';
+			echo '<p><input type="text" name="name" size="40" value="' . htmlspecialchars($preset != '' ? $preset : $file,ENT_QUOTES,_CHARSET) . '" /></p>';
 			echo '<p class="buttons">';
 			echo '<input type="hidden" name="sure" value="yes" /">';
 			echo '<input type="submit" value="' . _SKINFILES_RENAME . '" />';
@@ -1239,7 +1239,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE1 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE2;
+			echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE1 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE2;
 			echo _SKINFILES_ERR_RENAME_FILE3 . "</p>";
 		}
 	}
@@ -1260,28 +1260,28 @@
 				$name = requestVar('name');
 
 				if ($name == '') {
-					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE4 . "&laquo;" . htmlspecialchars($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE4 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; ";
 					echo _SKINFILES_ERR_RENAME_FILE5 . "</p>";
 					_skinfiles_renfile($name);
 					return;
 				}
 				
 				if (sfIllegalFilename($name)) {
-					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE6 . "&laquo;" . htmlspecialchars($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE6 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; ";
 					echo _SKINFILES_ERR_RENAME_FILE7 . "</p>";
 					_skinfiles_renfile($name);
 					return;
 				} 
 				
 				if ($name == $file) {
-					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE8 . "&laquo;" . htmlspecialchars($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE8 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; ";
 					echo _SKINFILES_ERR_RENAME_FILE9 . "</p>";
 					_skinfiles_renfile($name);
 					return;
 				}
 				
 				if (file_exists($directory . $name)) {
-					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE10 . "&laquo;" . htmlspecialchars($file) . "&raquo; ";
+					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE10 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; ";
 					echo _SKINFILES_ERR_RENAME_FILE11;
 					echo _SKINFILES_ERR_RENAME_FILE12 . "</p>";
 					_skinfiles_renfile($name);
@@ -1290,18 +1290,18 @@
 
 				if (!@rename($directory . $file, $directory . $name)) 
 				{
-					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE13 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE14 . "</p>";
+					echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE13 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE14 . "</p>";
 					_skinfiles_renfile($name);
 					return;
 				}
 	
-				echo "<p class='message'>" . _SKINFILES_ERR_RENAME_FILE15 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE16;
-				echo _SKINFILES_ERR_RENAME_FILE17 . "&laquo;" . htmlspecialchars($name) . "&raquo;" . _SKINFILES_ERR_RENAME_FILE18 . "</p>";
+				echo "<p class='message'>" . _SKINFILES_ERR_RENAME_FILE15 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE16;
+				echo _SKINFILES_ERR_RENAME_FILE17 . "&laquo;" . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . "&raquo;" . _SKINFILES_ERR_RENAME_FILE18 . "</p>";
 				sfShowDirectory($directory);
 			} 		
 			else
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE1 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE2;
+				echo "<p class='error'>" . _SKINFILES_ERR_RENAME_FILE1 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_RENAME_FILE2;
 				echo _SKINFILES_ERR_RENAME_FILE3 . "</p>";
 			}
 		}
@@ -1333,14 +1333,14 @@
 			}
 			
 			if (sfIllegalFilename($name)) {
-				echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE2 . "&laquo;" . htmlspecialchars($name) . "&raquo; ";
+				echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE2 . "&laquo;" . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . "&raquo; ";
 				echo _SKINFILES_ERR_CREATE_FILE3 . "</p>";
 				sfShowDirectory($directory);
 				return;
 			} 
 			
 			if (file_exists($directory . $name)) {
-				echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE4 . "&laquo;" . htmlspecialchars($name) . "&raquo; ";
+				echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE4 . "&laquo;" . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . "&raquo; ";
 				echo _SKINFILES_ERR_CREATE_FILE5;
 				echo _SKINFILES_ERR_CREATE_FILE6 . "</p>";
 				sfShowDirectory($directory);
@@ -1349,7 +1349,7 @@
 			
 			if (!@touch($directory . $name)) 
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE7 . "&laquo;" . htmlspecialchars($name) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE8 . "</p>";
+				echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE7 . "&laquo;" . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE8 . "</p>";
 				sfShowDirectory($directory);
 				return;
 			}
@@ -1358,12 +1358,12 @@
 			@chmod($directory . $name, 0755);
 			@umask($mask);
 			
-			echo "<p class='message'>" . _SKINFILES_ERR_CREATE_FILE9 . "&laquo;" . htmlspecialchars($name) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE10 . "</p>";
+			echo "<p class='message'>" . _SKINFILES_ERR_CREATE_FILE9 . "&laquo;" . htmlspecialchars($name,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE10 . "</p>";
 			sfShowDirectory($directory);
 		} 		
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE11 . "&laquo;" . htmlspecialchars(basename($directory)) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE12;
+			echo "<p class='error'>" . _SKINFILES_ERR_CREATE_FILE11 . "&laquo;" . htmlspecialchars(basename($directory),ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_CREATE_FILE12;
 			echo _SKINFILES_ERR_CREATE_FILE13 . "</p>";
 		}
 	}
@@ -1388,16 +1388,16 @@
 			$delUrl  = $manager->addTicketToUrl($pluginUrl . '?action=delfile&file=' . rawurlencode(sfRelativePath($directory . $file)));
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
-			echo '<a href="' . htmlspecialchars($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . $file . '&raquo;">';
-			echo '<img src="' . htmlspecialchars(sfIcon($file)) . '" alt="" /> ' . $file . '</a></p>';
+			echo '<a href="' . htmlspecialchars($delUrl,ENT_QUOTES,_CHARSET) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . $file . '&raquo;">';
+			echo '<img src="' . htmlspecialchars(sfIcon($file),ENT_QUOTES,_CHARSET) . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
-			echo '<form method="post" action="' . htmlspecialchars($pluginUrl) . '">';
+			echo '<form method="post" action="' . htmlspecialchars($pluginUrl,ENT_QUOTES,_CHARSET) . '">';
 			$manager->addTicketHidden();
 			echo '<input type="hidden" name="action" value="delfile_process" />';
-			echo '<input type="hidden" name="file" value="' . htmlspecialchars(sfRelativePath($directory . $file)) . '" />';
+			echo '<input type="hidden" name="file" value="' . htmlspecialchars(sfRelativePath($directory . $file),ENT_QUOTES,_CHARSET) . '" />';
 
-			echo '<h4>' . _SKINFILES_DELETE_FILE . ' &laquo;' . htmlspecialchars($file) . '&raquo; ' . _SKINFILES_DELETE_FILE2 . '</h4><div>';
+			echo '<h4>' . _SKINFILES_DELETE_FILE . ' &laquo;' . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . '&raquo; ' . _SKINFILES_DELETE_FILE2 . '</h4><div>';
 			echo '<p class="buttons">';
 			echo '<input type="hidden" name="sure" value="yes" />';
 			echo '<input type="submit" value="' . _SKINFILES_DELETE . '" />';
@@ -1407,7 +1407,7 @@
 		}
 		else
 		{
-			echo "<p class='error'>"  . _SKINFILES_ERR_DELETE_FILE1 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE2;
+			echo "<p class='error'>"  . _SKINFILES_ERR_DELETE_FILE1 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE2;
 			echo _SKINFILES_ERR_DELETE_FILE3 . "</p>";
 		}
 	}
@@ -1427,17 +1427,17 @@
 			{
 				if (!@unlink($directory . $file)) 
 				{
-					echo "<p class='error'>" . _SKINFILES_ERR_DELETE_FILE4 . "&laquo;" . htmlspecialchars($file) . "&raquo;</p>";
+					echo "<p class='error'>" . _SKINFILES_ERR_DELETE_FILE4 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo;</p>";
 					sfShowDirectory($directory);
 					return;
 				}
 	
-				echo "<p class='message'>" . _SKINFILES_ERR_DELETE_FILE5 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE6 . "</p>";
+				echo "<p class='message'>" . _SKINFILES_ERR_DELETE_FILE5 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE6 . "</p>";
 				sfShowDirectory($directory);
 			} 		
 			else
 			{
-				echo "<p class='error'>" . _SKINFILES_ERR_DELETE_FILE1 . "&laquo;" . htmlspecialchars($file) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE2;
+				echo "<p class='error'>" . _SKINFILES_ERR_DELETE_FILE1 . "&laquo;" . htmlspecialchars($file,ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_DELETE_FILE2;
 				echo _SKINFILES_ERR_DELETE_FILE3 . "</p>";
 			}
 		}
@@ -1464,7 +1464,7 @@
 			$file = postFileInfo('name');
 
 			if ($file['size'] > $CONF['MaxUploadSize']) {
-				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . htmlspecialchars($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_FILE_TOO_BIG . "<br />";
+				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . htmlspecialchars($file['name'],ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_FILE_TOO_BIG . "<br />";
 				echo _SKINFILES_ERR_UPLOAD_FILE3 . $CONF['MaxUploadSize'] . " / ";
 				echo $file['size'] . " bytes</p>";
 				sfShowDirectory($directory);
@@ -1472,26 +1472,26 @@
 			}
 
 			if (!is_uploaded_file($file['tmp_name'])) {
-				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . htmlspecialchars($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_BADREQUEST .  _SKINFILES_ERR_UPLOAD_FILE4 . "</p>";
+				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . htmlspecialchars($file['name'],ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_BADREQUEST .  _SKINFILES_ERR_UPLOAD_FILE4 . "</p>";
 				sfShowDirectory($directory);
 				return;
 			}
 			
 			if (sfIllegalFilename($file['name'])) {
-				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE5 . "&laquo;" . htmlspecialchars($file['name']) . "&raquo; ";
+				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE5 . "&laquo;" . htmlspecialchars($file['name'],ENT_QUOTES,_CHARSET) . "&raquo; ";
 				echo _SKINFILES_ERR_UPLOAD_FILE6 . "</p>";
 				sfShowDirectory($directory);
 				return;
 			}
 			
 			if (file_exists($directory . $file['name'])) {
-				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . htmlspecialchars($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_UPLOADDUPLICATE . "</p>";
+				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . htmlspecialchars($file['name'],ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_UPLOADDUPLICATE . "</p>";
 				sfShowDirectory($directory);
 				return;
 			}
 
 			if (!@move_uploaded_file($file['tmp_name'], $directory . $file['name'])) {
-				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . htmlspecialchars($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_UPLOADMOVEP . _SKINFILES_ERR_UPLOAD_FILE4 . "</p>";
+				echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE1 . "&laquo;" . htmlspecialchars($file['name'],ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE2 . _ERROR_UPLOADMOVEP . _SKINFILES_ERR_UPLOAD_FILE4 . "</p>";
 				sfShowDirectory($directory);
 			}
 
@@ -1499,12 +1499,12 @@
 			@chmod($directory . $file['name'], 0755);
 			@umask($mask);
 
-			echo "<p class='message'>" . _SKINFILES_ERR_UPLOAD_FILE7 . "&laquo;" . htmlspecialchars($file['name']) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE8 . "</p>";
+			echo "<p class='message'>" . _SKINFILES_ERR_UPLOAD_FILE7 . "&laquo;" . htmlspecialchars($file['name'],ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE8 . "</p>";
 			sfShowDirectory($directory);
 		}
 		else
 		{
-			echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE9 . "&laquo;" . htmlspecialchars(basename($directory)) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE10;
+			echo "<p class='error'>" . _SKINFILES_ERR_UPLOAD_FILE9 . "&laquo;" . htmlspecialchars(basename($directory),ENT_QUOTES,_CHARSET) . "&raquo; " . _SKINFILES_ERR_UPLOAD_FILE10;
 			echo _SKINFILES_ERR_UPLOAD_FILE11 . "</p>";
 		}	
 	}
