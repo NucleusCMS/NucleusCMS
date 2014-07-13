@@ -488,7 +488,7 @@ class ITEMACTIONS extends BaseActions {
 		array_shift($params);
 
 		// add item reference (array_unshift didn't work)
-		$params = array_merge(array($this->currentItem),$params);
+		$params = array_merge(array(&$this->currentItem),$params);
 
 		call_user_func_array(array($plugin, 'doTemplateVar'), $params);
 	}
