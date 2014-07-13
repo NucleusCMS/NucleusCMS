@@ -30,7 +30,7 @@ class BAN {
 		$query = 'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid;
 		$res = sql_query($query);
 		while ($obj = sql_fetch_object($res)) {
-			$found = strpos ($ip, $obj->iprange);
+			$found = ! strncmp($ip, $obj->iprange, strlen($obj->iprange));
 			if (!($found === false))
 				// found a match!
 					return new BANINFO($obj->iprange, $obj->reason);
