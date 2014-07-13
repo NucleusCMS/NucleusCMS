@@ -342,8 +342,8 @@ function listplug_table_itemlist($template, $type) {
 			echo "<td $cssclass>",_LIST_ITEM_BLOG,' ', htmlspecialchars($current->bshortname,ENT_QUOTES,_CHARSET);
 			echo "    <br />",_LIST_ITEM_CAT,' ', htmlspecialchars($current->cname,ENT_QUOTES,_CHARSET);
 			echo "    <br />",_LIST_ITEM_AUTHOR, ' ', htmlspecialchars($current->mname,ENT_QUOTES,_CHARSET);
-			echo "    <br />",_LIST_ITEM_DATE," " . date("Y-m-d",$current->itime,ENT_QUOTES,_CHARSET);
-			echo "<br />",_LIST_ITEM_TIME," " . date("H:i",$current->itime,ENT_QUOTES,_CHARSET);
+			echo "    <br />",_LIST_ITEM_DATE," " . date("Y-m-d",$current->itime);
+			echo "<br />",_LIST_ITEM_TIME," " . date("H:i",$current->itime);
 			echo "</td>";
 			echo "<td $cssclass>";
 
