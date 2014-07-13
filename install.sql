@@ -111,7 +111,7 @@ INSERT INTO `nucleus_config` VALUES ('BaseSkin', '5');
 INSERT INTO `nucleus_config` VALUES ('SkinsURL', 'http://localhost:8080/nucleus/skins/');
 INSERT INTO `nucleus_config` VALUES ('ActionURL', 'http://localhost:8080/nucleus/action.php');
 INSERT INTO `nucleus_config` VALUES ('URLMode', 'normal');
-INSERT INTO `nucleus_config` VALUES ('DatabaseVersion', '350');
+INSERT INTO `nucleus_config` VALUES ('DatabaseVersion', '360');
 INSERT INTO `nucleus_config` VALUES ('DebugVars', '0');
 INSERT INTO `nucleus_config` VALUES ('DefaultListSize', '10');
 INSERT INTO `nucleus_config` VALUES ('AdminCSS', 'original');
