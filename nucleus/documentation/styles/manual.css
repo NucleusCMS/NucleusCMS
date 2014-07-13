@@ -136,3 +136,7 @@ acronym, abbr {
 label {
 	cursor: hand;
 }
+
+input {
+	font:inherit;
+}

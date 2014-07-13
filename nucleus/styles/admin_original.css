@@ -54,6 +54,10 @@ label {
 	cursor: pointer;
 }
 
+input,textarea,select {
+	font:inherit;
+}
+
 input.transparent {
 	background-color: transparent;
 }
