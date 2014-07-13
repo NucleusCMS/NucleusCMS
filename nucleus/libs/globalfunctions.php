@@ -20,7 +20,7 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.65.01';
+$nucleus['version'] = 'v3.66';
 $nucleus['codename'] = '';
 
 // check and die if someone is trying to override internal globals (when register_globals turn on)
@@ -569,7 +569,7 @@ function intCookieVar($name) {
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-    return 365;
+    return 366;
 }
 
 /**
