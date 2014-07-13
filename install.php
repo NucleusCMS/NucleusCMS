@@ -287,7 +287,7 @@ function showInstallForm() {
 	}
 	*/
 
-	$basePath = dirname(__FILE__) . '/';
+	$basePath = dirname(str_replace('\\', '/', __FILE__)) . '/';
 ?>
 
 		<fieldset>
