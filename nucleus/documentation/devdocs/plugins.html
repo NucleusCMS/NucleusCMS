@@ -243,8 +243,8 @@ So, that wasn't so hard after all. Read on to find out more.
 		<td>(v2.0b) Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (comments-related parts). By default, this method forwards the handling to the <code>doSkinVar</code>-method, using <code>template</code> as skintype. <a href="#templatevars">More information on implementing the <code>doTemplateCommentsVar</code> method</a></td>
 	</tr>
 	<tr>
-		<td><code>doItemVar(&amp;$item, &amp;$param)</code></td>
-		<td>(v3.30) Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in an <i>item</i>. <code>&amp;$item</code> provides the full item object of the item in which the ItemVar appears and <code>&amp;$param</code> the parameters of the ItemVar.</td>
+		<td><code>doItemVar(&amp;$item)</code></td>
+		<td>(v3.30) Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in an <i>item</i>. <code>&amp;$item</code> provides the full item object of the item in which the ItemVar appears. ItemVar parameters are handled the same way as SkinVar parameters.</td>
 	</tr>
 	<tr>
 		<td><code>doIf($key, $value)</code></td>
@@ -2162,7 +2162,7 @@ Make the init method in the plugin like below
          include_once($this->getDirectory().'english.php');
    }</code></pre>
 </li>
-This logic is same as Nucleus’ language file setting.
+This logic is same as Nucleus? language file setting.
 	<li><strong>Add language files</strong>
 
 As English is the default language, it is recommended to have at least the English version.	</li>
