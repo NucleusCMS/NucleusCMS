@@ -129,7 +129,7 @@ class ACTION
 			} // end if
 
 		}
-		// else, show error message using default skin for blo
+		// else, show error message using default skin for blog
 		else
 		{
 			return array(
