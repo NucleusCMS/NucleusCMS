@@ -48,22 +48,22 @@ if ($CONF['AllowMemberCreate']==1) {
 				<input type="hidden" name="action" value="createaccount" />
 				<?php echo _CREATE_ACCOUNT_LOGIN_NAME; ?>
 				<br />
-				<input name="name" size="32" maxlength="32" value="<?php echo htmlspecialchars(postVar('name')); ?>" /> <small><?php echo _CREATE_ACCOUNT_LOGIN_NAME_VALID; ?></small>
+				<input name="name" size="32" maxlength="32" value="<?php echo hsc(postVar('name')); ?>" /> <small><?php echo _CREATE_ACCOUNT_LOGIN_NAME_VALID; ?></small>
 				<br />
 				<br />
 				<?php echo _CREATE_ACCOUNT_REAL_NAME; ?>
 				<br />
-				<input name="realname" size="40" value="<?php echo htmlspecialchars(postVar('realname')); ?>" />
+				<input name="realname" size="40" value="<?php echo hsc(postVar('realname')); ?>" />
 				<br />
 				<br />
 				<?php echo _CREATE_ACCOUNT_EMAIL; ?>
 				<br />
-				<input name="email" size="40" value="<?php echo htmlspecialchars(postVar('email')); ?>" /> <small><?php echo _CREATE_ACCOUNT_EMAIL2; ?></small>
+				<input name="email" size="40" value="<?php echo hsc(postVar('email')); ?>" /> <small><?php echo _CREATE_ACCOUNT_EMAIL2; ?></small>
 				<br />
 				<br />
 				<?php echo _CREATE_ACCOUNT_URL; ?>
 				<br />
-				<input name="url" size="60" value="<?php echo htmlspecialchars(postVar('url')); ?>" />
+				<input name="url" size="60" value="<?php echo hsc(postVar('url')); ?>" />
 				<br />
 		<?php
 		// add extra fields from Plugins, like NP_Profile
