@@ -60,6 +60,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	function sql_connect() {
 		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN;
 
+		if(substr(PHP_OS,0,3)==='WIN' && $MYSQL_HOST==='localhost')
+			$MYSQL_HOST = '127.0.0.1';
 		$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
 		mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
 
