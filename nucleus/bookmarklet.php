@@ -213,10 +213,10 @@ function bm_loginAndPassThrough() {
 <form method="post" action="bookmarklet.php">
 	<p>
 		<input name="action" value="login" type="hidden" />
-		<input name="blogid" value="<?php echo htmlspecialchars($blogid); ?>" type="hidden" />
-		<input name="logtext" value="<?php echo htmlspecialchars($log_text); ?>" type="hidden" />
-		<input name="loglink" value="<?php echo htmlspecialchars($log_link); ?>" type="hidden" />
-		<input name="loglinktitle" value="<?php echo htmlspecialchars($log_linktitle); ?>" type="hidden" />
+		<input name="blogid" value="<?php echo hsc($blogid); ?>" type="hidden" />
+		<input name="logtext" value="<?php echo hsc($log_text); ?>" type="hidden" />
+		<input name="loglink" value="<?php echo hsc($log_link); ?>" type="hidden" />
+		<input name="loglinktitle" value="<?php echo hsc($log_linktitle); ?>" type="hidden" />
 		<?php echo _LOGINFORM_NAME ?>
 		<br /><input name="login" />
 		<br /><?php echo _LOGINFORM_PWD ?>
@@ -253,7 +253,7 @@ function bm_doShowForm() {
 	$logje = '';
 
 	if ($log_text) {
-		$logje .= '<blockquote><div>"' . htmlspecialchars($log_text) . '"</div></blockquote>' . "\n";
+		$logje .= '<blockquote><div>"' . hsc($log_text) . '"</div></blockquote>' . "\n";
 	}
 
 	if (!$log_linktitle) {
@@ -261,11 +261,11 @@ function bm_doShowForm() {
 	}
 
 	if ($log_link) {
-		$logje .= '<a href="' . htmlspecialchars($log_link) . '">' . htmlspecialchars($log_linktitle) . '</a>';
+		$logje .= '<a href="' . hsc($log_link) . '">' . hsc($log_linktitle) . '</a>';
 	}
 
 	$item['body'] = $logje;
-	$item['title'] = htmlspecialchars($log_linktitle);
+	$item['title'] = hsc($log_linktitle);
 
 	$factory = new PAGEFACTORY($blogid);
 	$factory->createAddForm('bookmarklet', $item);
