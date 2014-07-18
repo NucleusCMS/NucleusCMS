@@ -632,7 +632,7 @@ function doInstall() {
 	$collation = ($charset == 'utf8') ? 'utf8_general_ci' : 'ujis_japanese_ci';
 	if ($mysql_create == 1) {
 		$sql = 'CREATE DATABASE '
-			 .	 $mysql_database;
+			 .	 "`{$mysql_database}`";
 // <add for garble measure>
 	if (version_compare($mySqlVer, '4.1.0', '>=')) {
 		$sql .= ' DEFAULT CHARACTER SET '
