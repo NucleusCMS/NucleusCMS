@@ -69,9 +69,12 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if (defined('_CHARSET')){
 			$charset  = _CHARSET;
 		}else{
-			$resource = sql_query("show variables LIKE 'character_set_database'");
-			$fetchDat = sql_fetch_assoc($resource);
-			$charset  = $fetchDat['Value'];
+			$tbl_item = sql_table('item');
+			$rs = sql_query("show table status from `{$MYSQL_DATABASE}` like '{$tbl_item}'");
+			$row=sql_fetch_object($rs);
+			$pos = strpos($row->Collation,'_');
+			if($pos!==false) $charset = substr($row->Collation,0,$pos);
+			else             $charset = 'utf8';
 			// in trouble of encoding,uncomment the following line.
 			// $charset = "ujis";
 			// $charset = "utf8";
