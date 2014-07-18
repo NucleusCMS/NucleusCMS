@@ -79,7 +79,7 @@ class COMMENT {
 		$body = preg_replace("/\n{3,}/", "\n\n", $body);
 
 		// encode special characters as entities
-		$body = htmlspecialchars($body);
+		$body = hsc($body);
 
 		// trim away whitespace and newlines at beginning and end
 		$body = trim($body);

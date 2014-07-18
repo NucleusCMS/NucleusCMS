@@ -44,7 +44,7 @@ class PluginAdmin {
 	function start($extraHead = '')
 	{
 		global $CONF;
-		$strBaseHref  = '<base href="' . htmlspecialchars($CONF['AdminURL']) . '" />';
+		$strBaseHref  = '<base href="' . hsc($CONF['AdminURL']) . '" />';
 		$extraHead .= $strBaseHref;
 
 		$this->admin->pagehead($extraHead);
@@ -66,7 +66,7 @@ class PluginAdmin {
 			//echo "\n<!--TicketForPlugin skipped-->\n";
 			return;
 		}
-		$ticket=htmlspecialchars($ticket,ENT_QUOTES);
+		$ticket=hsc($ticket,ENT_QUOTES);
  
 ?><script type="text/javascript">
 /*<![CDATA[*/

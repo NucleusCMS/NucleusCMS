@@ -395,7 +395,7 @@ class Backup
 			if(!empty($sql) and $sql[0] != "#")
 			{
 				// DEBUG
-	//			debug("Executing: " . htmlspecialchars($sql) . "\n");
+	//			debug("Executing: " . hsc($sql) . "\n");
 	
 				$result = sql_query($sql);
 				if (!$result) debug(_BACKUP_RESTOR_SQL_ERROR . sql_error());

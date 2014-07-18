@@ -468,7 +468,7 @@ class MANAGER {
     {
         $ticket = $this->_generateTicket();
 
-        echo '<input type="hidden" name="ticket" value="', htmlspecialchars($ticket), '" />';
+        echo '<input type="hidden" name="ticket" value="', hsc($ticket), '" />';
     }
 
     /**
