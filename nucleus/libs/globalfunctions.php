@@ -719,9 +719,9 @@ function startUpError($msg, $title) {
 	?>
 	<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
 		<head><meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET?>" />
-		<title><?php echo htmlspecialchars($title)?></title></head>
+		<title><?php echo hsc($title)?></title></head>
 		<body>
-			<h1><?php echo htmlspecialchars($title)?></h1>
+			<h1><?php echo hsc($title)?></h1>
 			<?php echo $msg?>
 		</body>
 	</html>
@@ -1739,7 +1739,7 @@ function passVar($key, $value) {
 	}
 
 	// other values: do stripslashes if needed
-	?><input type="hidden" name="<?php echo htmlspecialchars($key)?>" value="<?php echo htmlspecialchars(undoMagic($value) )?>" /><?php
+	?><input type="hidden" name="<?php echo hsc($key)?>" value="<?php echo hsc(undoMagic($value) )?>" /><?php
 }
 
 /*
@@ -2079,16 +2079,16 @@ function ticketForPlugin(){
 		{
 			$qstring='?'.$qstring;
 		}
-		echo '<p>'._SETTINGS_UPDATE.' : '._QMENU_PLUGINS.' <span style="color:red;">'.htmlspecialchars($plugin_name)."</span> ?</p>\n";
+		echo '<p>'._SETTINGS_UPDATE.' : '._QMENU_PLUGINS.' <span style="color:red;">'.hsc($plugin_name)."</span> ?</p>\n";
 		switch(strtoupper(serverVar('REQUEST_METHOD')))
 		{
 		case 'POST':
-			echo '<form method="POST" action="'.htmlspecialchars($uri.$qstring).'">';
+			echo '<form method="POST" action="'.hsc($uri.$qstring).'">';
 			$manager->addTicketHidden();
 			_addInputTags($post);
 			break;
 		case 'GET':
-			echo '<form method="GET" action="'.htmlspecialchars($uri).'">';
+			echo '<form method="GET" action="'.hsc($uri).'">';
 			$manager->addTicketHidden();
 			_addInputTags($get);
 		default:
@@ -2113,8 +2113,8 @@ function _addInputTags(&$keys,$prefix=''){
 		else {
 			if (get_magic_quotes_gpc()) $value=stripslashes($value);
 			if ($key=='ticket') continue;
-			echo '<input type="hidden" name="'.htmlspecialchars($key).
-				'" value="'.htmlspecialchars($value).'" />'."\n";
+			echo '<input type="hidden" name="'.hsc($key).
+				'" value="'.hsc($value).'" />'."\n";
 		}
 	}
 }
