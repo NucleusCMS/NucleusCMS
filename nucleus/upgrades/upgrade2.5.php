@@ -53,7 +53,7 @@ function upgrade_do250() {
 							."'global',"
 							."'".addslashes($o->odesc) ."',"
 							."'".addslashes($o->otype) ."')";
-				upgrade_query('Moving option description for '.htmlspecialchars($o->oname).' to ' . sql_table('plugin_option_desc'), $query);
+				upgrade_query('Moving option description for '.hsc($o->oname).' to ' . sql_table('plugin_option_desc'), $query);
 	
 				// store new id
 				$aValues[] = array ( 

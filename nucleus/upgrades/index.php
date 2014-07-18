@@ -136,7 +136,7 @@ function upgrade_manual_96() {
 	</p>
 	<pre>
 	// path to media dir
-	$DIR_MEDIA = '<b><?php echo htmlspecialchars($guess)?></b>';
+	$DIR_MEDIA = '<b><?php echo hsc($guess)?></b>';
 	</pre>
 
 	<p>
@@ -156,7 +156,7 @@ function upgrade_manual_200() {
 	</p>
 	<pre>
 	// extra skin files for imported skins
-	$DIR_SKINS = '<b><?php echo htmlspecialchars($guess)?></b>';
+	$DIR_SKINS = '<b><?php echo hsc($guess)?></b>';
 	</pre>
 
 	<p>また、ディレクトリもあなた自身の手で作る必要があります。これでダウンロードしたスキンを上記ディレクトリに展開したり、Nucleus 管理画面から取り込んだりできるようになります。</p>
