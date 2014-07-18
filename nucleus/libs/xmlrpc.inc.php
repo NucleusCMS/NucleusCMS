@@ -3542,7 +3542,6 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
         // header:        Content-type = ...; charset=value(; ...)*
         //   where value is of type token, no LWS allowed between 'charset' and value
         // Note: we do not check for invalid chars in VALUE:
-        //   this had better be done using pure ereg as below
 
         /// @todo this test will pass if ANY header has charset specification, not only Content-Type. Fix it?
         $matches = array();

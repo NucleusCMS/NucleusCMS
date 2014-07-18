@@ -633,8 +633,6 @@ class MEMBER {
 			return _ERROR_PASSWORDMISSING;
 		}
 		
-		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-		# original eregi: !eregi("^https?://", $url)
 		// begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
 		if (!preg_match('#^https?://#', $url) )
 		{

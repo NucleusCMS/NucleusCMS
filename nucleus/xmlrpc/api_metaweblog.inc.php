@@ -365,7 +365,6 @@
 		$allowedtypes = explode (',', $CONF['AllowedTypes']);
 		foreach ( $allowedtypes as $type )
 		{
-			//if (eregi("\." .$type. "$",$filename)) $ok = 1;
 			if (preg_match("#\." .$type. "$#i",$filename)) $ok = 1;
 		}
 		if (!$ok)

@@ -1468,8 +1468,6 @@ class ADMIN {
 		// change <br /> to \n
 		$comment['body'] = str_replace('<br />','',$comment['body']);
 		
-		// replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-		/* original eregi_replace: eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>", "\\1", $comment['body']) */
 		$comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#i", "\\1", $comment['body']);
 		
 		$this->pagehead();
@@ -1539,9 +1537,6 @@ class ADMIN {
 		$email = postVar('email');
 		$body = postVar('body');
 		
-		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-		# original eregi: eregi("[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}", $body) != FALSE
-		# important note that '\' must be matched with '\\\\' in preg* expressions
 		// intercept words that are too long
 		if (preg_match('#[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}#', $body) != FALSE)
 		{
@@ -1846,8 +1841,6 @@ class ADMIN {
 				$dirhandle = opendir($DIR_LANG);
 				while ($filename = readdir($dirhandle))
 				{
-					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-					# original ereg: ereg("^(.*)\.php$", $filename, $matches)
 					if (preg_match('#^(.*)\.php$#', $filename, $matches) )
 					{
 						$name = $matches[1];
@@ -1910,8 +1903,6 @@ class ADMIN {
 		$email		  = strip_tags(postVar('email'));
 		$url			= strip_tags(postVar('url'));
 
-		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-		# original eregi: !eregi("^https?://", $url)
 		// begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
 		if (!preg_match('#^https?://#', $url) )
 		{
@@ -4793,8 +4784,6 @@ selector();
 				$dirhandle = opendir($DIR_LANG);
 				while ($filename = readdir($dirhandle) )
 				{
-					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-					# original ereg: ereg("^(.*)\.php$",$filename,$matches)
 					if (preg_match('#^(.*)\.php$#', $filename, $matches) )
 					{
 						$name = $matches[1];
@@ -4895,8 +4884,6 @@ selector();
 					$dirhandle = opendir($DIR_NUCLEUS."styles/");
 				while ($filename = readdir($dirhandle) )
 				{
-					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-					# original ereg: ereg("^(.*)\.php$",$filename,$matches)
 					if (preg_match('#^admin_(.*)\.css$#', $filename, $matches) )
 					{
 						$name = $matches[1];
@@ -6012,8 +5999,6 @@ selector();
 				$dirhandle = opendir($DIR_PLUGINS);
 				while ($filename = readdir($dirhandle) )
 				{
-					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-					# original ereg: ereg('^NP_(.*)\.php$',$filename,$matches)
 					if (preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
 					{
 						$name = $matches[1];

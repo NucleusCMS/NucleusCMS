@@ -393,8 +393,6 @@ if (!headers_sent() ) {
 // read language file, only after user has been initialized
 $language = getLanguageName();
 
-# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-# original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
 # important note that '\' must be matched with '\\\\' in preg* expressions
 include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
 
@@ -789,7 +787,6 @@ function highlight($text, $expression, $highlight) {
 			{
 				if ($regex)
 				{
-					//$matches[2][$i] = @eregi_replace($regex, $highlight, $matches[2][$i]);
 					$matches[2][$i] = @preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
 				}
 			}
@@ -798,7 +795,6 @@ function highlight($text, $expression, $highlight) {
 		}
 		else
 		{
-			//$result .= @eregi_replace($expression, $highlight, $matches[2][$i]);
 			$result .= @preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
 		}
 	}
@@ -1254,14 +1250,10 @@ function getConfig() {
 
 // some checks for names of blogs, categories, templates, members, ...
 function isValidShortName($name) {
-	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-	# original eregi: eregi('^[a-z0-9]+$', $name)
 	return preg_match('#^[a-z0-9]+$#i', $name);
 }
 
 function isValidDisplayName($name) {
-	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-	# original eregi: eregi('^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$', $name)
 	return preg_match('#^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$#i', $name);
 }
 
@@ -1270,14 +1262,10 @@ function isValidCategoryName($name) {
 }
 
 function isValidTemplateName($name) {
-	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-	# original eregi: eregi('^[a-z0-9/]+$', $name)
 	return preg_match('#^[a-z0-9/]+$#i', $name);
 }
 
 function isValidSkinName($name) {
-	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-	# original eregi: eregi('^[a-z0-9/]+$', $name);
 	return preg_match('#^[a-z0-9/]+$#i', $name);
 }
 
@@ -1365,8 +1353,6 @@ function selectLanguage($language) {
 
 	global $DIR_LANG;
 
-	# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-	# original ereg_replace: preg_replace( '@\\|/@', '', $language) . '.php')
 	# important note that '\' must be matched with '\\\\' in preg* expressions
 
 	include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
@@ -1496,8 +1482,6 @@ function includephp($filename) {
  **/
 function checkLanguage($lang) {
 	global $DIR_LANG;
-	# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-	# original ereg_replace: ereg_replace( '[\\|/]', '', $lang) . '.php')
 	# important note that '\' must be matched with '\\\\' in preg* expressions
 	return file_exists($DIR_LANG . preg_replace('#[\\\\|/]#', '', $lang) . '.php');
 }
@@ -1511,8 +1495,6 @@ function checkPlugin($plug) {
 
 	global $DIR_PLUGINS;
 
-	# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-	# original ereg_replace: ereg_replace( '[\\|/]', '', $plug) . '.php')
 	# important note that '\' must be matched with '\\\\' in preg* expressions
 
 	return file_exists($DIR_PLUGINS . preg_replace('#[\\\\|/]#', '', $plug) . '.php');
@@ -2047,8 +2029,6 @@ function ticketForPlugin(){
 		{
 			$language = getLanguageName();
 			
-			# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-			# original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
 			# important note that '\' must be matched with '\\\\' in preg* expressions
 			include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
 			include($DIR_LIBS . 'PLUGINADMIN.php');

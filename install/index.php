@@ -1213,8 +1213,6 @@ function _isValidMailAddress($address) {
  * Returns true if the given string is a valid shortname
  * logic: only letters and numbers are allowed, no spaces allowed
  * 
- * FIX: function eregi is deprecated since PHP 5.3.0
- * 
  * @param	$name
  * 			name which should be tested	
  */
@@ -1229,8 +1227,6 @@ function _isValidShortName($name) {
 /*
  * Check if a display name is allowed
  * Returns true if the given string is a valid display name
- * 
- * FIX: function eregi is deprecated since PHP 5.3.0
  * 
  * @param	$name
  * 			name which should be tested
