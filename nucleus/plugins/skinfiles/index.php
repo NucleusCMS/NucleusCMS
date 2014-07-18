@@ -27,7 +27,7 @@
 	require($strRel . 'config.php');
 	include_libs('PLUGINADMIN.php');
 
-	$language = preg_replace( '#\\\\|/#', '', getLanguageName());
+	$language = str_replace( array('\\','/'), '', getLanguageName());
 	$langfile = $language.'.php';
 	if (file_exists($langfile))
 		include_once($langfile);
@@ -42,9 +42,7 @@
 
 	if (!($member->isLoggedIn() && $member->isAdmin()))
 	{
-		/* begin modification by yama.kyms */
 		$oPluginAdmin->start();
-		/* end modification */
 		echo '<p>' . _ERROR_DISALLOWED . '</p>';
 		$oPluginAdmin->end();
 		exit;
