@@ -73,6 +73,17 @@ if (phpversion() >= '4.1.0') {
 	include_once('../nucleus/libs/vars4.0.6.php');
 }
 
+switch(postVar('charset'))
+{
+	case 'ujis':
+		$charset = 'EUC-JP';
+		break;
+	case 'utf8':
+	default:
+		$charset = 'EUC-JP';
+}
+define('_CHARSET', $charset);
+
 // include core classes that are needed for login & plugin handling
 include_once('../nucleus/libs/mysql.php');
 // added for 3.5 sql_* wrapper
@@ -244,7 +255,7 @@ function showInstallForm() {
 			<table>
 				<tr>
 					<td><label for="if_mySQL_host"><?php echo _TEXT4_TAB_FIELD1; ?>:</label></td>
-					<td><input id="if_mySQL_host" name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host') )?>" tabindex="10010" /></td>
+					<td><input id="if_mySQL_host" name="mySQL_host" value="<?php echo htmlspecialchars(@ini_get('mysql.default_host'),ENT_QUOTES,_CHARSET )?>" tabindex="10010" /></td>
 				</tr>
 				<tr>
 					<td><label for="if_mySQL_user"><?php echo _TEXT4_TAB_FIELD2; ?>:</label></td>
@@ -716,7 +727,7 @@ function doInstall() {
 			}
 // </add for garble measure>*/
 
-			sql_query($query,$MYSQL_CONN) or _doError(_ERROR30 . ' (' . htmlspecialchars($query) . '): ' . sql_error($MYSQL_CONN) );
+			sql_query($query,$MYSQL_CONN) or _doError(_ERROR30 . ' (' . htmlspecialchars($query,ENT_QUOTES,_CHARSET) . '): ' . sql_error($MYSQL_CONN) );
 		}
 	}
 
@@ -738,7 +749,7 @@ function doInstall() {
 			 . " '" . $itm_body . "',"
 			 . " '" . $itm_more . "',"
 			 . " 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
-	sql_query($newpost,$MYSQL_CONN) or _doError(_ERROR18 . ' (' . htmlspecialchars($newpost) . '): ' . sql_error($MYSQL_CONN) );
+	sql_query($newpost,$MYSQL_CONN) or _doError(_ERROR18 . ' (' . htmlspecialchars($newpost,ENT_QUOTES,_CHARSET) . '): ' . sql_error($MYSQL_CONN) );
 
 	// 6. update global settings
 	updateConfig('IndexURL',   $config_indexurl);
