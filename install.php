@@ -783,6 +783,7 @@ function doInstall() {
 
 		$result = @fputs($fp, $config_data, strlen($config_data) );
 		fclose($fp);
+		if(is_file('config.php')) @chmod('config.php',0444);
 
 		if ($result) {
 			$bConfigWritten = 1;
