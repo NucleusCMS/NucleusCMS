@@ -17,10 +17,6 @@
 	<tr>
 		<th colspan="2"><%text(_ADD_CREATENEW)%></th>
 	</tr>
-	<%ifautosave()%><tr>
-		<td><%text(_AUTOSAVEDRAFT)%></td>
-		<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
-	</tr><%endif%>
 	<tr>
 		<td><%text(_ADD_TITLE)%></td>
 		<td><input 
@@ -48,21 +44,23 @@
 			<span id="prevbody">&#160;</span><br />
 			<span id="prevmore">&#160;</span><br />
 		</td>
-	</tr><tr>
+	</tr>
 	
+<tr>
+		<td><%text(_ADD_CATEGORY)%></td>
+		<td><%categories(40)%></td>
+</tr>
 <%ifblogsetting(bcomments)%>
+<tr>
 		<td><%text(_ADD_DISABLE_COMMENTS)%></td>
 		<td>
 			<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
 			<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
 		</td>
-	</tr><tr>
+</tr>
 <%endif%>
 
-
-		<td><%text(_ADD_CATEGORY)%></td>
-		<td><%categories(40)%></td>
-	</tr><tr>
+<tr>
 		<td><%text(_SUBMIT)%></td>
 		<td>
 			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 
@@ -90,7 +88,12 @@
 			</div>
 			<input name="actiontype" tabindex="61" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
 		</td>
-	</tr><tr>
+	</tr>
+	<%ifautosave()%><tr>
+		<td><%text(_AUTOSAVEDRAFT)%></td>
+		<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+	</tr><%endif%>
+<tr>
 		<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
 		<td>
 			<%pluginextras%>
