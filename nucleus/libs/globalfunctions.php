@@ -2331,4 +2331,21 @@ function cleanFileName($str) {
 	return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
 }
 
-?>
+function hsc($string, $flags=ENT_QUOTES, $encoding='') {
+	if($encoding==='')
+	{
+		if(defined('_CHARSET')) $encoding = _CHARSET;
+		else                    $encoding = 'utf8';
+	}
+	if(version_compare(PHP_VERSION, '5.2.3', '>='))
+		return htmlspecialchars($string, $flags, $encoding, false);
+	else
+	{
+		if(function_exists('htmlspecialchars_decode'))
+			$string = htmlspecialchars_decode($string, $flags);
+		else
+			$string = strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
+		
+		return htmlspecialchars($string, $flags, $encoding);
+	}
+}
