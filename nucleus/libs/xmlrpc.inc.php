@@ -1899,7 +1899,7 @@ $cp1252_to_xmlent =
 				// error response
 				$this->errno = $fcode;
 				$this->errstr = $fstr;
-				//$this->errstr = htmlspecialchars($fstr,ENT_QUOTES,_CHARSET); // XXX: encoding probably shouldn't be done here; fix later.
+				//$this->errstr = hsc($fstr); // XXX: encoding probably shouldn't be done here; fix later.
 			}
 			else
 			{
@@ -2596,7 +2596,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 					print "<PRE>---PARSED---\n";
 					// somehow htmlentities chokes on var_export, and some full html string...
 					//print htmlentitites(var_export($GLOBALS['_xh']['value'], true));
-					print htmlspecialchars(var_export($GLOBALS['_xh']['value'], true),ENT_QUOTES,_CHARSET);
+					print hsc(var_export($GLOBALS['_xh']['value'], true));
 					print "\n---END---</PRE>";
 				}
 
