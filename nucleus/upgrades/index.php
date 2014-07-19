@@ -90,13 +90,6 @@ if (!$DIR_SKINS) {
 	$sth = 1;
 }
 
-// some manual code changes are needed in order to get Nucleus to work on php version
-// lower than 4.0.6
-if (phpversion() < '4.0.6') {
-	upgrade_manual_php405();
-	$sth = 1;
-}
-
 // from v3.3, atom feed supports 1.0 and blogsetting is added
 $sth = upgrade_manual_atom1_0();
 
@@ -197,42 +190,6 @@ function upgrade_manual_350() {
 								echo '<p>警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！</p>';
 				}
 }
-
-function upgrade_manual_php405() {
-?>
-<h2>PHP のバージョンが 4.0.3, 4.0.4 または 4.0.5 の場合に必要となる変更</h2>
-<p>
-	PHP のバージョンが 4.0.6 より以前の場合、変更が必要なファイルが２つあります。PHP のバージョンを 4.0.6 や 4.2.2+以降のものにアップグレードした方がいいでしょう（4.0.6 や 4.2.2 以前のものにはセキュリティー問題があります）。もし PHP のアップグレードが困難もしくは、する予定がない場合は、以下のファイルを変更して下さい。
-</p>
-<ul>
-	<li>nucleus/libs/PARSER.php のコードが下記のようになっていることを確認して下さい。（84行目から）:
-		<pre>
-
-	if (in_array($actionlc, $this-&gt;actions) || $this-&gt;norestrictions ) {
-		<strong>$this-&gt;call_using_array($action, $this-&gt;handler, $params);</strong>
-	} else {
-		// redirect to plugin action if possible
-		if (in_array('plugin', $this-&gt;actions)
-			&& $manager-&gt;pluginInstalled('NP_'.$action))
-			$this-&gt;doAction('plugin('.$action.
-				$this-&gt;pdelim.implode($this-&gt;pdelim,$params).')');
-		else
-			echo '&lt;b&gt;DISALLOWED (' , $action , ')&lt;/b&gt;';
-	}
-
-
-}
-		 </pre>
-		</li>
-		<li>nucleus/libs/PARSER.php のコードが下記のようになっていることを確認して下さい。（75行目から）:
-		<pre>
-// $params = array_map('trim',$params);
-foreach ($params as $key =&gt; $value) { $params[$key] = trim($value); }
-		</pre>
-		</li>
-	</ul>
-
-<?php }
 
 function upgrade_manual_atom1_0() {
 

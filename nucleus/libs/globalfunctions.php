@@ -106,11 +106,7 @@ if (!function_exists('mb_convert_encoding')){
 
 // we will use postVar, getVar, ... methods instead of HTTP_GET_VARS or _GET
 if ($CONF['installscript'] != 1) { // vars were already included in install.php
-	if (phpversion() >= '4.1.0') {
-		include_once($DIR_LIBS . 'vars4.1.0.php');
-	} else {
-		include_once($DIR_LIBS . 'vars4.0.6.php');
-	}
+	include_once($DIR_LIBS . 'vars4.1.0.php');
 }
 
 // sanitize option
@@ -1836,34 +1832,17 @@ function encoding_check($val, $key, $encoding=false, $exclude=false) {
 }
 
 function checkVars($aVars) {
-	global $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_COOKIE_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_SESSION_VARS;
 
 	foreach ($aVars as $varName) {
-
-		if (phpversion() >= '4.1.0') {
-
-			if (   isset($_GET[$varName])
-				|| isset($_POST[$varName])
-				|| isset($_COOKIE[$varName])
-				|| isset($_ENV[$varName])
-				|| isset($_SESSION[$varName])
-				|| isset($_FILES[$varName])
-			) {
-				die('Sorry. An error occurred.');
-			}
-
-		} else {
-
-			if (   isset($HTTP_GET_VARS[$varName])
-				|| isset($HTTP_POST_VARS[$varName])
-				|| isset($HTTP_COOKIE_VARS[$varName])
-				|| isset($HTTP_ENV_VARS[$varName])
-				|| isset($HTTP_SESSION_VARS[$varName])
-				|| isset($HTTP_POST_FILES[$varName])
-			) {
-				die('Sorry. An error occurred.');
-			}
-
+		if (   isset($_GET[$varName])
+			|| isset($_POST[$varName])
+			|| isset($_COOKIE[$varName])
+			|| isset($_ENV[$varName])
+			|| isset($_SESSION[$varName])
+			|| isset($_FILES[$varName])
+		)
+		{
+			die('Sorry. An error occurred.');
 		}
 	}
 }
@@ -1893,19 +1872,17 @@ function sanitizeParams()
 	sanitizeArray($array);
 	arrayToServerString($array, $frontParam, $str);
 
-	if (phpversion() >= '4.1.0') {
-		// REQUEST_URI of $_SERVER
-		$str =& $_SERVER["REQUEST_URI"];
-		serverStringToArray($str, $array, $frontParam);
-		sanitizeArray($array);
-		arrayToServerString($array, $frontParam, $str);
+	// REQUEST_URI of $_SERVER
+	$str =& $_SERVER["REQUEST_URI"];
+	serverStringToArray($str, $array, $frontParam);
+	sanitizeArray($array);
+	arrayToServerString($array, $frontParam, $str);
 
-		// QUERY_STRING of $_SERVER
-		$str =& $_SERVER["QUERY_STRING"];
-		serverStringToArray($str, $array, $frontParam);
-		sanitizeArray($array);
-		arrayToServerString($array, $frontParam, $str);
-	}
+	// QUERY_STRING of $_SERVER
+	$str =& $_SERVER["QUERY_STRING"];
+	serverStringToArray($str, $array, $frontParam);
+	sanitizeArray($array);
+	arrayToServerString($array, $frontParam, $str);
 
 	// $_GET
 	convArrayForSanitizing($_GET, $array);
