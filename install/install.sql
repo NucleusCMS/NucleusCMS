@@ -122,7 +122,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('CookieSecure',      ''),
     ('CookiePrefix',      ''),
     ('MediaPrefix',       '1'),
-    ('MaxUploadSize',     '1048576'),
+    ('MaxUploadSize',     '3145728'),
     ('NonmemberMail',     ''),
     ('PluginURL',         'http://localhost:8080/nucleus/nucleus/plugins/'),
     ('ProtectMemNames',   '1'),

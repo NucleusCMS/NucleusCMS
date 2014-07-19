@@ -33,7 +33,7 @@ function upgrade_do150() {
 
     // add MaxUploadSize to config  
     if (!upgrade_checkIfCVExists('MaxUploadSize')) {
-        $query = 'INSERT INTO '.sql_table('config')." VALUES ('MaxUploadSize','1048576')";
+        $query = 'INSERT INTO '.sql_table('config')." VALUES ('MaxUploadSize','3145728')";
         upgrade_query('MaxUploadSize setting',$query);
     }
     
