@@ -36,13 +36,13 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 // OF THE POSSIBILITY OF SUCH DAMAGE.
 
+    $phpversion = phpversion();
     if(!function_exists('xml_parser_create'))
     {
         // For PHP 4 onward, XML functionality is always compiled-in on windows:
         // no more need to dl-open it. It might have been compiled out on *nix...
         //if(strtoupper(substr(PHP_OS, 0, 3) != 'WIN'))
-        $phpver = phpversion();
-        if (!extension_loaded('xml') && version_compare($phpver,'5.3.0','<'))
+        if (!extension_loaded('xml') && version_compare($phpversion,'5.3.0','<'))
         {
             dl('xml.so');
         }
