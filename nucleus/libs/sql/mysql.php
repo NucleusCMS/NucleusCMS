@@ -372,7 +372,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 				break;
 			*/
 			default:
-				$charset = 'latin1';
+				$charset = 'utf8';
 				break;
 		}
 		$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
