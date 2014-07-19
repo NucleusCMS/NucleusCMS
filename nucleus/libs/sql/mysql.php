@@ -377,7 +377,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		}
 		$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
 		if (version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset')) {
-			$res = mysql_set_charset($charset);
+			$res = sql_query("SET CHARACTER SET {$charset}");
+			if($res)
+				$res = mysql_set_charset($charset);
 		} elseif (version_compare($mySqlVer, '4.1.0', '>=')) {
 			$res = sql_query("SET CHARACTER SET " . $charset);
 		}
