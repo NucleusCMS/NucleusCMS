@@ -900,13 +900,8 @@ function selector() {
 	// show error when headers already sent out
 	if (headers_sent() && $CONF['alertOnHeadersSent']) {
 
-		// try to get line number/filename (extra headers_sent params only exists in PHP 4.3+)
-		if (function_exists('version_compare') && version_compare('4.3.0', phpversion(), '<=') ) {
-			headers_sent($hsFile, $hsLine);
-			$extraInfo = sprintf(_GFUNCTIONS_HEADERSALREADYSENT_FILE,$hsFile,$hsLine);
-		} else {
-			$extraInfo = '';
-		}
+		headers_sent($hsFile, $hsLine);
+		$extraInfo = sprintf(_GFUNCTIONS_HEADERSALREADYSENT_FILE,$hsFile,$hsLine);
 
 		startUpError(
 			sprintf(_GFUNCTIONS_HEADERSALREADYSENT_TXT,$extraInfo),

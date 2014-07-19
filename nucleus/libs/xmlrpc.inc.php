@@ -36,39 +36,15 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 // OF THE POSSIBILITY OF SUCH DAMAGE.
 
-    $phpversion = phpversion();
     if(!function_exists('xml_parser_create'))
     {
         // For PHP 4 onward, XML functionality is always compiled-in on windows:
         // no more need to dl-open it. It might have been compiled out on *nix...
         //if(strtoupper(substr(PHP_OS, 0, 3) != 'WIN'))
-        if (!extension_loaded('xml') && version_compare($phpversion,'5.3.0','<'))
+        if (!extension_loaded('xml') && version_compare(phpversion(),'5.3.0','<'))
         {
             dl('xml.so');
         }
-    }
-
-    // Try to be backward compat with php < 4.2 (are we not being nice ?)
-    $phpversion = phpversion();
-    if($phpversion[0] == '4' && $phpversion[2] < 2)
-    {
-        // give an opportunity to user to specify where to include other files from
-        if(!defined('PHP_XMLRPC_COMPAT_DIR'))
-        {
-            define('PHP_XMLRPC_COMPAT_DIR',dirname(__FILE__).'/compat/');
-        }
-        if($phpversion[2] == '0')
-        {
-            if($phpversion[4] < 6)
-            {
-                include(PHP_XMLRPC_COMPAT_DIR.'is_callable.php');
-            }
-            include(PHP_XMLRPC_COMPAT_DIR.'is_scalar.php');
-            include(PHP_XMLRPC_COMPAT_DIR.'array_key_exists.php');
-            include(PHP_XMLRPC_COMPAT_DIR.'version_compare.php');
-        }
-        include(PHP_XMLRPC_COMPAT_DIR.'var_export.php');
-        include(PHP_XMLRPC_COMPAT_DIR.'is_a.php');
     }
 
     // G. Giunta 2005/01/29: declare global these variables,
