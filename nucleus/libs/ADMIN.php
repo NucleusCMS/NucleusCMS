@@ -207,7 +207,9 @@ class ADMIN {
 		}
 		$template['content'] = 'bloglist';
 		$template['superadmin'] = $member->isAdmin();
+		echo '<div>';
 		$amount = showlist($query,'table',$template);
+		echo '</div>';
 
 		if (($showAll != 'yes') && ($member->isAdmin())) {
 			$total = quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('blog'));
@@ -5970,7 +5972,7 @@ selector();
 
 		echo '<h2>' , _PLUGS_TITLE_MANAGE , ' ', help('plugins'), '</h2>';
 
-		echo '<h3>' , _PLUGS_TITLE_INSTALLED , ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
+		echo '<h3>' , _PLUGS_TITLE_INSTALLED , ' &nbsp;&nbsp;<span style="font-size:small">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
 
 
 		$query =  'SELECT * FROM '.sql_table('plugin').' ORDER BY porder ASC';
