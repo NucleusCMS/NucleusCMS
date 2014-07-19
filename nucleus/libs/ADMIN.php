@@ -5274,33 +5274,33 @@ selector();
 		}
 		
 		?>
-		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-		<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
-		<head>
-			<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
-			<title><?php echo hsc($CONF['SiteName'])?> - Admin</title>
-			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
-			<link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
-			href="<?php echo $baseUrl?>styles/addedit.css" />
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
+	<title><?php echo hsc($CONF['SiteName'])?> - Admin</title>
+	<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
+	<link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
+	href="<?php echo $baseUrl?>styles/addedit.css" />
 
-			<script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit.js"></script>
-			<script type="text/javascript" src="<?php echo $baseUrl?>javascript/admin.js"></script>
-			<script type="text/javascript" src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
+	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit.js"></script>
+	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/admin.js"></script>
+	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
 
-	  <meta http-equiv='Pragma' content='no-cache' />
-	  <meta http-equiv='Cache-Control' content='no-cache, must-revalidate' />
-	  <meta http-equiv='Expires' content='-1' />
+	<meta http-equiv='Pragma' content='no-cache' />
+	<meta http-equiv='Cache-Control' content='no-cache, must-revalidate' />
+	<meta http-equiv='Expires' content='-1' />
 
-			<?php echo $extrahead?>
-		</head>
-		<body>
-		<div id="adminwrapper">
-		<div class="header">
-		<h1><?php echo hsc($CONF['SiteName'])?></h1>
-		</div>
-		<div id="container">
-		<div id="content">
-		<div class="loginname">
+<?php echo $extrahead?>
+</head>
+<body>
+<div id="adminwrapper">
+<div class="header">
+<h1><?php echo hsc($CONF['SiteName'])?></h1>
+</div>
+<div id="container">
+<div id="content">
+<div class="loginname">
 		<?php		   if ($member->isLoggedIn())
 				echo _LOGGEDINAS . ' ' . $member->getDisplayName()
 					." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
