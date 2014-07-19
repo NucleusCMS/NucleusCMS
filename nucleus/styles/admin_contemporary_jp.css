@@ -6,15 +6,19 @@
 
 body {
 	background: #ffffff url(contemporary_jp/background.png) repeat-x;
-
+	color: #333;
+	font-size:85%;
+	font-family: Meiryo, "Hiragino Kaku Gothic Pro", "Osaka", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+/*
+	font-family: "Trebuchet MS","Bitstream Vera Sans", lucida,Arial,"Helvetica Neue",Helvetica,Meiryo,"Hiragino Kaku Gothic Pro", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "MS PGothic", sans-serif;
+*/
 }
 
-body, td, th, a, li, ul, textarea {
-/*	color: #000; modify */
-	color: #333;
-/*	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;*/
-/*	font-family: "Hiragino Kaku Gothic Pro W3", "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif; */
-	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+td, textarea, input, select {
+	font:inherit;
+}
+input[type=submit], input[type=button], input[type=file], select {
+	cursor:pointer;cursor:hand;
 }
 
 /* basic link appearance */
@@ -30,13 +34,10 @@ a:hover {
 
 /* textareas */
 textarea {
-/*  font-size: small;*//*mod yotaka 090323*/
-	font-size: 9pt;/*add yotaka 090323*/
   
-	line-height:145%;/* add */
+	line-height:1.5;/* add */
 	padding:5px;/* add */
 	
-/*  font-family: "Hiragino Kaku Gothic Pro W3", "MS PGothic", "Osaka", sans-serif;
 }
 
 *>textarea {*/
@@ -45,12 +46,10 @@ textarea {
 
 /* textareas for skin/template editing have monospace fonts */
 textarea.skinedit, textarea.templateedit {
-/*	font-family: "Hiragino Kaku Gothic Pro W3", "MS PGothic", "Osaka", monospace;
-/* except MacIE \*//*
-	font-family: monospace;
-/* end */
 /*	font-size: medium;*//*mod yotaka 090323*/
 	font-size: 9pt;/*add yotaka 090323*/
+	width:90%;
+	font-family: 'Courier New','Courier', monospace;
 }
 
 /* add start */
@@ -110,7 +109,7 @@ div.indent {
 h1 {
 	text-align: right;
 /*	font-size: 30px;*//*mod yotaka 090323*/
-	font-size:24pt;/*add yotaka 090323*/
+	font-size:20pt;/*add yotaka 090323*/
 	font-weight: 900;
 	letter-spacing: 0.1em;
 /*	color: #0001AA;*/
@@ -148,6 +147,7 @@ h1 {
 	border-style: solid;
 /*	border-color: black; modify */
 	border-color: #bbb;
+	border-bottom:none;
 
 	background: #ffffff url(contemporary_jp/quickb.jpg) top left fixed repeat-y; 
 }
@@ -178,12 +178,6 @@ h1 {
 	font-size: 9pt;/*add yotaka 090323*/
 	line-height: 1.5em;
 	text-decoration: none;
-/*	font-family: verdana, lucida, arial, helvetica, sans-serif;
-}
-
-*>#quickmenu a {
-	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
-*/
 }
 
 #quickmenu a:hover {
@@ -223,8 +217,12 @@ h1 {
 	font-size: 9pt;/*add yotaka 090323*/
 	text-align: right;
 	line-height: normal;
-	padding-left: 5px;
-	background-color: white;
+	padding: 5px;
+	background-color: #fff;
+	border:1px solid #e5e5e5;
+	border-radius: 4px;
+	margin-top:3px;
+	margin-right:3px;
 }
 
 /* page content */
@@ -232,23 +230,11 @@ h1 {
    margin-left:163px;
 	font-style: normal;
 	text-decoration: none;
-/*	color: black; modify */
 	color: #333;
 	text-align: justify;
 	line-height: 13pt;
 
-	border-width: 1px;
-	border-style: solid;
-/*	border-color: black; modify */
-	border-color: #bbb;
-	
-/*	rounded borders in gecko-based browsers? why not :) */
-	-moz-border-radius: 10px;
-
-/*	rounded borders in webkit-based browsers? why not :) */
-	-webkit-border-radius: 10px;
-
-/*	rounded borders in css3-based browsers? why not :) */
+	border: 1px solid #bbb;
 	border-radius: 10px;
 
 	padding: 10px 10px 0 10px;
@@ -259,8 +245,6 @@ h1 {
 
 #content h2 {
 	color: #596d9d; 
-
-	border-color: gray;
 	border-style: dashed;
 	border-width: 0px 0px 1px 0px;
 
@@ -272,7 +256,6 @@ h1 {
 	text-decoration: none;
 	font-weight: bold; 
 	letter-spacing: 2px;/* add */
-	margin-top:20px;/*add yotaka 090323*/
 }
 
 #content h3 {
