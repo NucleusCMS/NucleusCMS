@@ -4514,7 +4514,7 @@ selector();
         $query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
         $r = sql_query($query);
         if ($o = sql_fetch_object($r))
-            $this->error(_ERROR_SKINDEFDELETE . htmlspecialchars($o->bname),ENT_QUOTES,_CHARSET);
+            $this->error(_ERROR_SKINDEFDELETE . htmlspecialchars($o->bname,ENT_QUOTES,_CHARSET));
 
         $this->pagehead();
 
