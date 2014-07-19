@@ -515,7 +515,7 @@ function doInstall() {
 		array_push($errors, _ERROR3);
 	}
 
-	if (($mysql_usePrefix == 1) && (!eregi('^[a-zA-Z0-9_]+$', $mysql_prefix) ) ) {
+	if (($mysql_usePrefix == 1) && (!preg_match('/^[a-zA-Z0-9_]+$/', $mysql_prefix) ) ) {
 		array_push($errors, _ERROR4);
 	}
 
@@ -1105,7 +1105,7 @@ function _isValidMailAddress($address) {
  * 			name which should be tested	
  */
 function _isValidShortName($name) {
-	if (eregi("^[a-z0-9]+$", $name) ) {
+	if (preg_match("/^[a-zA-Z0-9]+$/", $name) ) {
 		return 1;
 	} else {
 		return 0;
@@ -1122,7 +1122,7 @@ function _isValidShortName($name) {
  * 			name which should be tested	
  */
 function _isValidDisplayName($name) {
-	if (eregi("^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$", $name) ) {
+	if (preg_match("/^[a-zA-Z0-9]+[a-zA-Z0-9 ]*[a-zA-Z0-9]+$/", $name) ) {
 		return 1;
 	} else {
 		return 0;
