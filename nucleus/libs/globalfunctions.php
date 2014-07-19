@@ -2405,6 +2405,9 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='')
 	{
 		if(function_exists('htmlspecialchars_decode'))
 			$string = htmlspecialchars_decode($string, $flags);
+		else
+			$string = strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
+		
 		return htmlspecialchars($string, $flags, $encoding);
 	}
 }
