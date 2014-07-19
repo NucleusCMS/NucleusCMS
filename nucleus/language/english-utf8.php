@@ -2,7 +2,7 @@
 // English Nucleus Language File
 //
 // Author: Wouter Demuynck
-// Nucleus version: v1.0-v3.4
+// Nucleus version: v1.0-v3.6
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -958,7 +958,7 @@ define('_ERROR_UPLOADCOPY',			'Error while copying file');
 define('_ERROR_UPLOADDUPLICATE',	'Another file with that name already exists. Try to rename it before uploading.');
 define('_ERROR_LOGINDISALLOWED',	'Sorry, you\'re not allowed to log in to the admin area. You can log in as another user, though');
 define('_ERROR_DBCONNECT',			'Could not connect to mySQL server');
-define('_ERROR_DBSELECT',			'Could not select the nucleus database.');
+define('_ERROR_DBSELECT',			'Could not select the Nucleus database.');
 define('_ERROR_NOSUCHLANGUAGE',		'No such language file exists');
 define('_ERROR_NOSUCHCATEGORY',		'No such category exists');
 define('_ERROR_DELETELASTCATEGORY',	'There must at least be one category');
@@ -1322,5 +1322,3 @@ define('_EDITC_NONMEMBER',			'non member');
 // move item
 define('_MOVE_TITLE',				'Move to which blog?');
 define('_MOVE_BTN',					'Move Item');
-
-?>
