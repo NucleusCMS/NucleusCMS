@@ -260,10 +260,10 @@ class ACTIONS extends BaseActions {
 	 */
 	function _link($url, $linktext = '')
 	{
-		$u = htmlspecialchars($url,ENT_QUOTES,_CHARSET);
+		$u = hsc($url);
 		$u = preg_replace("/&amp;amp;/",'&amp;',$u); // fix URLs that already had encoded ampersands
 		if ($linktext != '') 
-			$l = '<a href="' . $u .'">'.htmlspecialchars($linktext,ENT_QUOTES,_CHARSET).'</a>';
+			$l = '<a href="' . $u .'">'.hsc($linktext).'</a>';
 		else
 			$l = $u;
 		return $l;
@@ -418,7 +418,7 @@ class ACTIONS extends BaseActions {
 	function parse_additemform() {
 		global $blog, $CONF;
 		$this->formdata = array(
-			'adminurl' => htmlspecialchars($CONF['AdminURL'],ENT_QUOTES,_CHARSET),
+			'adminurl' => hsc($CONF['AdminURL']),
 			'catid' => $blog->getDefaultCategory()
 		);
 		$blog->InsertJavaScriptInfo();
@@ -579,19 +579,19 @@ class ACTIONS extends BaseActions {
 		global $blog;
 		switch($which) {
 			case 'id':
-				echo htmlspecialchars($blog->getID(),ENT_QUOTES,_CHARSET);
+				echo hsc($blog->getID());
 				break;
 			case 'url':
-				echo htmlspecialchars($blog->getURL(),ENT_QUOTES,_CHARSET);
+				echo hsc($blog->getURL());
 				break;
 			case 'name':
-				echo htmlspecialchars($blog->getName(),ENT_QUOTES,_CHARSET);
+				echo hsc($blog->getName());
 				break;
 			case 'desc':
-				echo htmlspecialchars($blog->getDescription(),ENT_QUOTES,_CHARSET);
+				echo hsc($blog->getDescription());
 				break;
 			case 'short':
-				echo htmlspecialchars($blog->getShortName(),ENT_QUOTES,_CHARSET);
+				echo hsc($blog->getShortName());
 				break;
 		}
 	}
@@ -698,7 +698,7 @@ class ACTIONS extends BaseActions {
 			// note: createLink returns an HTML encoded URL
 		} else {
 			// HTML encode URL
-			$destinationurl = htmlspecialchars($destinationurl,ENT_QUOTES,_CHARSET);
+			$destinationurl = hsc($destinationurl);
 		}
 
 		// values to prefill
@@ -714,12 +714,12 @@ class ACTIONS extends BaseActions {
 
 		$this->formdata = array(
 			'destinationurl' => $destinationurl,	// url is already HTML encoded
-			'actionurl' => htmlspecialchars($actionurl,ENT_QUOTES,_CHARSET),
+			'actionurl' => hsc($actionurl),
 			'itemid' => $itemid,
-			'user' => htmlspecialchars($user,ENT_QUOTES,_CHARSET),
-			'userid' => htmlspecialchars($userid,ENT_QUOTES,_CHARSET),
-			'email' => htmlspecialchars($email,ENT_QUOTES,_CHARSET),
-			'body' => htmlspecialchars($body,ENT_QUOTES,_CHARSET),
+			'user' => hsc($user),
+			'userid' => hsc($userid),
+			'email' => hsc($email),
+			'body' => hsc($body),
 			'membername' => $member->getDisplayName(),
 			'rememberchecked' => cookieVar($CONF['CookiePrefix'] .'comment_user')?'checked="checked"':''
 		);
@@ -758,7 +758,7 @@ class ACTIONS extends BaseActions {
 	function parse_errordiv() {
 		global $errormessage;
 		if ($errormessage)
-			echo '<div class="error">', htmlspecialchars($errormessage,ENT_QUOTES,_CHARSET),'</div>';
+			echo '<div class="error">', hsc($errormessage),'</div>';
 	}
 	
 	/**
@@ -797,11 +797,11 @@ class ACTIONS extends BaseActions {
 	function parse_image($what = 'imgtag') {
 		global $CONF;
 
-		$imagetext 	= htmlspecialchars(requestVar('imagetext'),ENT_QUOTES,_CHARSET);
+		$imagetext 	= hsc(requestVar('imagetext'));
 		$imagepopup = requestVar('imagepopup');
 		$width 		= intRequestVar('width');
 		$height 	= intRequestVar('height');
-		$fullurl 	= htmlspecialchars($CONF['MediaURL'] . $imagepopup,ENT_QUOTES,_CHARSET);
+		$fullurl 	= hsc($CONF['MediaURL'] . $imagepopup);
 
 		switch($what)
 		{
@@ -829,7 +829,7 @@ class ACTIONS extends BaseActions {
 	 * Parse skinvar imagetext
 	 */
 	function parse_imagetext() {
-		echo htmlspecialchars(requestVar('imagetext'),ENT_QUOTES,_CHARSET);
+		echo hsc(requestVar('imagetext'));
 	}
 
 	/**
@@ -880,7 +880,7 @@ class ACTIONS extends BaseActions {
 				echo $item['title'];
 				break;
 			default:
-				echo htmlspecialchars(strip_tags($item['title']),ENT_QUOTES,_CHARSET);
+				echo hsc(strip_tags($item['title']));
 				break;
 		}
 	}
@@ -914,22 +914,22 @@ class ACTIONS extends BaseActions {
 
 			switch($what) {
 				case 'name':
-					echo htmlspecialchars($memberinfo->getDisplayName(),ENT_QUOTES,_CHARSET);
+					echo hsc($memberinfo->getDisplayName());
 					break;
 				case 'realname':
-					echo htmlspecialchars($memberinfo->getRealName(),ENT_QUOTES,_CHARSET);
+					echo hsc($memberinfo->getRealName());
 					break;
 				case 'notes':
-					echo htmlspecialchars($memberinfo->getNotes(),ENT_QUOTES,_CHARSET);
+					echo hsc($memberinfo->getNotes());
 					break;
 				case 'url':
-					echo htmlspecialchars($memberinfo->getURL(),ENT_QUOTES,_CHARSET);
+					echo hsc($memberinfo->getURL());
 					break;
 				case 'email':
-					echo htmlspecialchars($memberinfo->getEmail(),ENT_QUOTES,_CHARSET);
+					echo hsc($memberinfo->getEmail());
 					break;
 				case 'id':
-					echo htmlspecialchars($memberinfo->getID(),ENT_QUOTES,_CHARSET);
+					echo hsc($memberinfo->getID());
 					break;
 			}
 		}
@@ -984,13 +984,13 @@ class ACTIONS extends BaseActions {
 		$frommail = postVar('frommail');
 
 		$this->formdata = array(
-			'url' => htmlspecialchars($desturl,ENT_QUOTES,_CHARSET),
-			'actionurl' => htmlspecialchars($CONF['ActionURL'],ENT_QUOTES,_CHARSET),
+			'url' => hsc($desturl),
+			'actionurl' => hsc($CONF['ActionURL']),
 			'memberid' => $memberid,
 			'rows' => $rows,
 			'cols' => $cols,
-			'message' => htmlspecialchars($message,ENT_QUOTES,_CHARSET),
-			'frommail' => htmlspecialchars($frommail,ENT_QUOTES,_CHARSET)
+			'message' => hsc($message),
+			'frommail' => hsc($frommail)
 		);
 		if ($member->isLoggedIn()) {
 			$this->doForm('membermailform-loggedin');
@@ -1037,7 +1037,7 @@ class ACTIONS extends BaseActions {
 				echo $itemtitlenext;
 				break;
 			default:
-				echo htmlspecialchars($itemtitlenext,ENT_QUOTES,_CHARSET);
+				echo hsc($itemtitlenext);
 				break;
 		}
 	}
@@ -1238,7 +1238,7 @@ class ACTIONS extends BaseActions {
 				echo $itemtitleprev;
 				break;
 			default:
-				echo htmlspecialchars($itemtitleprev,ENT_QUOTES,_CHARSET);
+				echo hsc($itemtitleprev);
 				break;
 		}
 	}
@@ -1263,14 +1263,14 @@ class ACTIONS extends BaseActions {
 	 */
 	function parse_query() {
 		global $query;
-		echo htmlspecialchars($query,ENT_QUOTES,_CHARSET);
+		echo hsc($query);
 	}
 	
 	/**
 	 * Parse skinvar referer
 	 */
 	function parse_referer() {
-		echo htmlspecialchars(serverVar('HTTP_REFERER'),ENT_QUOTES,_CHARSET);
+		echo hsc(serverVar('HTTP_REFERER'));
 	}
 
 	/**
@@ -1286,7 +1286,7 @@ class ACTIONS extends BaseActions {
 		// use default blog when no blog is selected
 		$this->formdata = array(
 			'id' => $blog?$blog->getID():$CONF['DefaultBlog'],
-			'query' => htmlspecialchars(getVar('query'),ENT_QUOTES,_CHARSET),
+			'query' => hsc(getVar('query')),
 		);
 		$this->doForm('searchform');
 	}
