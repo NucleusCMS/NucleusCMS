@@ -198,84 +198,84 @@ So, that wasn't so hard after all. Read on to find out more.
 	<tr>
 		<th>Method&nbsp;Signature</th><th>Explanation</th>
 	</tr>
-	<tr>
-		<td><code>getName()</code></td>
+	<tr id="getName">
+		<td><code><a href="#getName">getName()</a></code></td>
 		<td>Returns the name of the plugin. This will be the name that will show up on the list of installed plugins. You should definately redefine this method, since the default implementation returns <q>Undefined</q></td>
 	</tr>
-	<tr>
-		<td><code>getAuthor()</code></td>
+	<tr id="getAuthor">
+		<td><code><a href="#getAuthor">getAuthor()</a></code></td>
 		<td>Returns the name of author of the plugin. This name will show up on the list of installed plugins. You should definately redefine this method, since the default implementation returns <q>Undefined</q></td>
 	</tr>
-	<tr>
-		<td><code>getURL()</code></td>
+	<tr id="getURL">
+		<td><code><a href="#getURL">getURL()</a></code></td>
 		<td>Returns the URL of the site where the plugin can be downloaded, or where additional information about the plugin can be found. If no such site exists, a <code>mailto:</code>-link with the authors email address is appropriate. You should definately redefine this method, since the default implementation returns <q>Undefined</q></td>
 	</tr>
-	<tr>
-		<td><code>getDescription()</code></td>
+	<tr id="getDescription">
+		<td><code><a href="#getDescription">getDescription()</a></code></td>
 		<td>Returns a longer description of the plugin. This will show up on the list of installed plugins. The default implementation returns <q>Undefined</q></td>
 	</tr>
-	<tr>
-		<td><code>getVersion()</code></td>
+	<tr id="getVersion">
+		<td><code><a href="#getVersion">getVersion()</a></code></td>
 		<td>Returns the current version of the plugin. Returns <q>0.0</q> by default</td>
 	</tr>
-	<tr>
-		<td><code>getMinNucleusVersion()</code></td>
+	<tr id="getMinNucleusVersion">
+		<td><code><a href="#getMinNucleusVersion">getMinNucleusVersion()</a></code></td>
 		<td>(v2.0b) Returns the minimum required Nucleus version. By default, this returns <code>155</code> (v1.55). If you are using plugin features that were introduced later, please implement this function (e.g. v2.0 => 200). Please note that Nucleus v1.55 does not use this function at all, so it remains possible to install newer plugins there, even if they use newer features.</td>
 	</tr>
-	<tr>
-		<td><code>getMinNucleusPatchLevel()</code></td>
+	<tr id="getMinNucleusPatchLevel">
+		<td><code><a href="#getMinNucleusPatchLevel">getMinNucleusPatchLevel()</a></code></td>
 		<td>(v3.1) Returns the minimum required Nucleus patch level that needs to be present when running the minimal required Nucleus version (<code>getMinNucleusVersion</code>). By default, this returns <code>0</code>. This function is generally used when new plugin features are available only as patches to the latest released Nucleus version.</td>
 	</tr>
-	<tr>
-		<td><code>init()</code></td>
+	<tr id="init">
+		<td><code><a href="#init">init()</a></code></td>
 		<td>Initializes the plugin. This method gets called immediately after the plugin object is created and the <code>plugid</code>-attribute has been set. By default, this method does nothing.</td>
 	</tr>
-	<tr>
-		<td><code>doSkinVar($skinType)</code></td>
+	<tr id="doSkinVar">
+		<td><code><a href="#doSkinVar">doSkinVar($skinType)</a></code></td>
 		<td>When plugins are called using the <code>&lt;%plugin(...)%&gt;</code>-skinvar, this method will be called. the <code>$skinType</code> parameter contains the type of skin (<code>item</code>, <code>archive</code>, ...) from where the plugin is called. Don't get confused by the fact that there's only one parameter. Multiple parameters <strong>can</strong> still be passed. <a href="#skinvars">More info on implementing the <code>doSkinVar</code> method.</a> By default, this method does no output at all.</td>
 	</tr>
-	<tr>
-		<td><code>doTemplateVar(&amp;$item)</code></td>
+	<tr id="doTemplateVar">
+		<td><code><a href="#doTemplateVar">doTemplateVar(&amp;$item)</a></code></td>
 		<td>Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (item header/body/footer and dateheader/footer). By default, this method forwards the handling to the <code>doSkinVar</code>-method, using <code>template</code> as skintype. <a href="#templatevars">More information on implementing the <code>doTemplateVar</code> method</a></td>
 	</tr>
-	<tr>
-		<td><code>doTemplateCommentsVar(&amp;$item, &amp;$comment)</code></td>
+	<tr id="doTemplateCommentsVar">
+		<td><code><a href="#doTemplateCommentsVar">doTemplateCommentsVar(&amp;$item, &amp;$comment)</a></code></td>
 		<td>(v2.0b) Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in <i>templates</i> (comments-related parts). By default, this method forwards the handling to the <code>doSkinVar</code>-method, using <code>template</code> as skintype. <a href="#templatevars">More information on implementing the <code>doTemplateCommentsVar</code> method</a></td>
 	</tr>
-	<tr>
-		<td><code>doItemVar(&amp;$item)</code></td>
+	<tr id="doItemVar">
+		<td><code><a href="#doItemVar">doItemVar(&amp;$item)</a></code></td>
 		<td>(v3.30) Basically the same as <code>doSkinVar</code>, but this time for calls of the &lt;%plugin(...)%&gt;-var in an <i>item</i>. <code>&amp;$item</code> provides the full item object of the item in which the ItemVar appears. ItemVar parameters are handled the same way as SkinVar parameters.</td>
 	</tr>
-	<tr>
-		<td><code>doIf($key, $value)</code></td>
+	<tr id="doIf">
+		<td><code><a href="#doIf">doIf($key, $value)</a></code></td>
 		<td>(v3.30) Evaluates a custom conditional statement for the <code>if/ifnot/elseif/elseifnot</code> skin variables. Must return either <code>true</code> or <code>false</code>. $key and $value are strings passed from the <code>if/ifnot/elseif/elseifnot</code> skin variable. Normally, the plugin should check whether <code>$key</code> has the value of <code>$value</code>, but other uses are possible. Plugins that make use of this method, should document its use for users of the plugin.</td>
 	</tr>
-	<tr>
-		<td><code>doAction($type)</code></td>
+	<tr id="doAction">
+		<td><code><a href="#doAction">doAction($type)</a></code></td>
 		<td>When a plugin wants to allow user interaction, it can allow actions through <code>action.php</code>. This is the script that Nucleus uses itself to handle new comments and karma votes. Called with the correct parameters, the <code>doAction</code>-method from a plugin can be called. The <code>$type</code> contains an optional message type. Extra variables from the request can be accessed from within the <code>doAction</code> method. By default, this method returns a string <q>No Such Action</q> which will trigger an error message. <a href="#actions">More info on <code>doAction</code>.</a></td>
 	</tr>
-	<tr>
-		<td><code>install()</code></td>
+	<tr id="install">
+		<td><code><a href="#install">install()</a></code></td>
 		<td>This method gets called on the moment the plugin is installed. It can perform initializing actions, such as the creation of database tables, the creation of plugin options, etc... By default, this method does nothing.</td>
 	</tr>
-	<tr>
-		<td><code>unInstall()</code></td>
+	<tr id="unInstall">
+		<td><code><a href="#unInstall">unInstall()</a></code></td>
 		<td>Called when the plugin is uninstalled. It's a good thing to clean up information your plugin created in the database at this point. By default, this method does nothing.</td>
 	</tr>
-	<tr>
-		<td><code>getEventList()</code></td>
+	<tr id="getEventList">
+		<td><code><a href="#getEventList">getEventList()</a></code></td>
 		<td>Plugins can subscribe to events. Events get generated whenever Nucleus performs a certain action. An <code>AddItem</code> event for example, will call all plugins that subscribed to this event. The called method will be <code>event_AddItem($params)</code>. The <code>$params</code>-parameter is an associative array containing several fields of information, like the itemid for <code>AddItem</code>. Returns an empty array by default, indicating that the plugin does not subscribe to any event at all. <a href="#events">More information about events.</a></td>
 	</tr>
-	<tr>
-		<td><code>getTableList()</code></td>
+	<tr id="getTableList">
+		<td><code><a href="#getTableList">getTableList()</a></code></td>
 		<td>This method should return an array of database tables that the plugin has created. It's used in the backup feature that Nucleus offers, so plugin tables are also included in the backup. By default, returns an empty array.</td>
 	</tr>
-	<tr>
-		<td><code>hasAdminArea()</code></td>
+	<tr id="hasAdminArea">
+		<td><code><a href="#hasAdminArea">hasAdminArea()</a></code></td>
 		<td>Should return <code>1</code> if the plugin has an admin area of its own, and <code>0</code> if it doesn't. By default, <code>0</code> is returned.</td>
 	</tr>
-	<tr>
-		<td><code>getPluginDep()</code></td>
+	<tr id="getPluginDep">
+		<td><code><a href="#getPluginDep">getPluginDep()</a></code></td>
 		<td>(v3.2) Returns an array of plugin names. Nucleus refuses to install the plugin if any of these plugins is not installed. By default, an empty array is returned. <a href="#dependency">More information on plugin dependencies.</a></td>
 	</tr>
 </table>
