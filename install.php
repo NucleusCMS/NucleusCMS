@@ -576,7 +576,7 @@ function doInstall() {
 
 	// 3. try to create database (if needed)
 	if ($mysql_create == 1) {
-		sql_query('CREATE DATABASE ' . $mysql_database,$MYSQL_CONN) or _doError(_ERROR16 . ': ' . sql_error($MYSQL_CONN) );
+		sql_query('CREATE DATABASE ' . "`{$mysql_database}`", $MYSQL_CONN) or _doError(_ERROR16 . ': ' . sql_error($MYSQL_CONN) );
 	}
 
 	// 4. try to select database
