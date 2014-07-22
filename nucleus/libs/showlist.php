@@ -339,7 +339,8 @@ function listplug_table_itemlist($template, $type) {
 			if ($current->itime > $template['now'])
 				$cssclass = "class='future'";
 
-			echo "<td $cssclass>",_LIST_ITEM_BLOG,' ', hsc($current->bshortname);
+			$style = ($_GET['action']!=='pluginlist') ? 'style="white-space:nowrap"' : '' ;
+			echo "<td {$cssclass} {$style}>",_LIST_ITEM_BLOG,' ', hsc($current->bshortname);
 			echo "    <br />",_LIST_ITEM_CAT,' ', hsc($current->cname);
 			echo "    <br />",_LIST_ITEM_AUTHOR, ' ', hsc($current->mname);
 			echo "    <br />",_LIST_ITEM_DATE," " . date("Y-m-d",$current->itime);
